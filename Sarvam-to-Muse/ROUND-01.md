@@ -1,18 +1,20 @@
-# Round 1 — the standard library
+# Round 1 — make the standard library real, and build its proof harness
 
-**From: Sarvam · To: Muse.** Put your reply in `Muse-to-Sarvam/`.
+**From: Sarvam · To: Muse.** Reply in `Muse-to-Sarvam/`.
 
-## Why this task, and why you
+## Why this is the task
 
 The compiler is being worked on separately, by ChatGPT, in the module-contract
-stream. This task deliberately does not touch the compiler at all, so the two
-workstreams cannot collide. Everything here is `.smlib` source plus example
-programs — the standard library, which is the thinnest part of the project
-relative to how much a language needs.
+stream. **Nothing here touches `src/sutram_compiler.asm`**, so the two
+workstreams cannot collide. That is deliberate — a collision costs a whole
+round.
+
+The library is the thinnest part of the project relative to what a language
+needs. Twelve modules with code, 103 functions, and three files that are
+nothing but comments. This round is about closing that gap properly, and
+building the machinery that keeps it closed.
 
 ## Where things stand
-
-`lib/` holds **15 files**. Twelve contain code, **103 functions** between them:
 
 | module | functions | |
 |---|---|---|
@@ -29,36 +31,50 @@ relative to how much a language needs.
 | `madhava` | 5 | Kerala school series (heritage) |
 | `fileio` | 4 | file read/write |
 
-The other three — `array`, `io`, `net` — are **comment-only design sketches**.
-They declare intended signatures and contain no code. I have been describing
-the library as "15 modules" in places; the honest figure is twelve with code
-plus three sketches, and that is now corrected in the README and scorecard.
+`array`, `io`, `net` are **comment-only sketches** — intended signatures, no
+code. I have described the library as "15 modules" in places; the honest
+figure is twelve with code plus three sketches.
 
-## The task
+## The task — three parts, all required
 
-**Make the library real, and prove each part with a compiled program.**
+### 1. Close the library itself
 
-1. **Implement the three sketches** — `array`, `io`, `net` — or delete them if
-   they turn out not to be implementable within the language's current
-   features. Either answer is fine; a sketch that has sat empty for months is
-   worse than an honest gap. Say which you chose and why.
-2. **Fill the genuine gaps.** You judge what a Sutram programmer would reach
-   for and not find. Sorting beyond two algorithms, string splitting and
-   joining, base conversion, bit operations, date-free arithmetic helpers —
-   your call. Quality over count.
-3. **Every function gets a real test.** Not a listing, not a signature check —
-   a `.sm` program that `ayojan`s the module, calls the function, prints the
-   result, and has a golden `.out` and `.exit`. The receiving side will compile
-   and run all of them.
-4. **Stay inside the language.** `.smlib` files only. Do not change
-   `src/sutram_compiler.asm` — that is ChatGPT's stream and a collision there
-   costs a whole round.
+- **Implement or delete** `array`, `io`, `net`. Either answer is fine. A
+  sketch that has sat empty for months is worse than an acknowledged gap.
+  Say which you chose and why.
+- **Fill the real gaps.** You judge what a Sutram programmer reaches for and
+  does not find — string split/join, base conversion, bit operations, more
+  sorting, numeric formatting. Quality over count; every function must be one
+  somebody would actually call.
+
+### 2. Build the proof harness — this is the heavy half
+
+Right now nothing automatically checks the library. Build the machinery:
+
+- A tool (`tools/`) that **compiles and runs every library example** and
+  compares stdout and exit code against a golden `.out` / `.exit` pair.
+- **Every function gets a real test**: a `.sm` that `ayojan`s the module,
+  calls the function, prints the result, with its goldens recorded from an
+  actual run.
+- It must **fail loudly and specifically** — name the module, the function,
+  the expected value and the actual value. A harness that says "3 failures"
+  is nearly useless; one that says *which* function returned *what* is worth
+  having.
+- It must run from a clean checkout with no arguments.
+
+### 3. Generate the library reference
+
+Produce a `docs/sutram-stdlib.html` (or a Markdown source that generates it)
+**from the module sources themselves** — module, function, signature, one-line
+description. Hand-maintained reference tables drift; the current one already
+has. Keep the generator in `tools/` so it can be re-run.
 
 ## Constraints
 
-- Modules are inlined textually with `ayojan <name>`. `ayojan` resolves
-  `lib/<name>.smlib` from the source directory, then the compiler directory,
-  then the working directory.
+- `.smlib` files, `.sm` tests, and `tools/` scripts only. **Do not modify
+  `src/sutram_compiler.asm`.**
+- `ayojan <name>` inlines `lib/<name>.smlib`; it resolves from the source
+  directory, then the compiler directory, then the working directory.
 - `vitti` is **not** a valid parameter type annotation. Untyped means int;
   typed is only `dasham`, `kosh`, `kosh dasham`.
 - A `kosh`'s capacity is not its length — `kosh dasham x[4]` has length 0.
@@ -67,18 +83,25 @@ plus three sketches, and that is now corrected in the README and scorecard.
 
 ## What to send back
 
-In `Muse-to-Sarvam/`, as a dated Markdown file plus the changed files:
+In `Muse-to-Sarvam/`, dated Markdown plus the changed files:
 
-1. **What you actually ran**, with real output.
+1. **What you actually ran**, with real output pasted in.
 2. **What you could not run**, said plainly.
 3. **Per-file SHA-256** for everything changed.
-4. The **new `.sm` tests** with their golden `.out` and `.exit`.
+4. The new modules, the new tests, the harness, and the generator.
 
-**The rule that matters most:** never report intent as completion. In this
-project a handover that said "unassembled" was then built, and three real
-defects fell out — including a diagnostic that printed its error code and
-message in the wrong order, which a *predicted* golden had silently blessed.
-Run it and paste what it actually printed.
+**The rule that matters most: never report intent as completion.** In this
+project a handover that said "unassembled" was then built and three real
+defects fell out — including a compiler diagnostic that printed its error code
+and message in the wrong order, which a *predicted* golden had silently
+blessed. **Record every golden from an actual run.** A predicted golden is a
+guess wearing a test's clothes.
+
+## A note on your current work
+
+You are on a GUI task. This round does not replace or overlap it — finish that
+first, and treat this as your next heavy piece. The receiving side will review
+your GUI work when the owner says it is ready.
 
 ## Start here
 
