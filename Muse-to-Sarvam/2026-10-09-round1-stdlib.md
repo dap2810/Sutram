@@ -107,3 +107,13 @@ deleting `io`/`net` is acceptable or they want thin wrappers after all;
 (b) run `tools/proof_lib.py` on their side to confirm 113/113; (c) the two
 noted numerical behaviors (kuttaka alternative solution, atan truncation)
 if float goldens get tightened later.
+
+**Flagged during testing:** `lib/fileio.smlib`'s four functions
+(`file_open`, `file_read`, `file_write`, `file_close`) are unimplemented
+stubs — each just `pratiyati 0` with comments describing the intended
+syscalls. The proof-harness goldens honestly record this (all zeros), so
+the tests prove the stubs return 0, not real file I/O. Per the round's
+"implement or delete" spirit, `fileio` is currently a sketch: either wire
+it to the `dvaram`/`paadh`/`likha`/`band` builtins or acknowledge the gap.
+I did not change it since ROUND-01.md lists it among the 12 real modules —
+your call.
