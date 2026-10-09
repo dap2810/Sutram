@@ -1,0 +1,25 @@
+ayojan bigint
+mukhya() {
+    vitti a = nirmmita(8 * 8)
+    vitti b = nirmmita(8 * 8)
+    vitti r = nirmmita(16 * 8)
+    bigint_from_int(12345, a, 8)
+    bigint_from_int(6789, b, 8)
+    bigint_mul(a, b, r, 8)
+    likha(bigint_to_int(r, 16))
+    likha("\n")
+    # 999 * 999 = 998001
+    bigint_from_int(999, a, 8)
+    bigint_from_int(999, b, 8)
+    bigint_mul(a, b, r, 8)
+    likha(bigint_to_int(r, 16))
+    likha("\n")
+    # multiply by zero
+    bigint_from_int(12345, a, 8)
+    bigint_from_int(0, b, 8)
+    bigint_mul(a, b, r, 8)
+    likha(bigint_to_int(r, 16))
+    likha("\n")
+    likha(bigint_is_zero(r, 16))
+    likha("\n")
+}
