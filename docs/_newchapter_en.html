@@ -1,0 +1,99 @@
+<div class="ch" id="whatsnew">
+  <h2>18. What is new — the current language</h2>
+  <p>This chapter was added after the rest of the book. Everything in it is part of the language
+  <em>today</em> and has been verified against known answers, not just compiled once. If an earlier
+  chapter does not mention something here, this chapter is the more current.</p>
+
+  <h3>Floating-point numbers — <code>dasham</code> / दशम</h3>
+  <p>A variable may hold a 64-bit IEEE-754 floating-point number. Declare it with
+  <span class="kw">dasham</span>; a literal with a decimal point is a float automatically.</p>
+<pre><span class="kw">dasham</span> x = 1.5
+<span class="kw">dasham</span> y = 2.25
+<span class="kw">likha</span>(x + y)      <span class="cm"># 3.750000</span></pre>
+  <p>Floats mix with integers (the integer is promoted), support all four arithmetic operators and all
+  six comparisons, and print with six decimal places. Functions can return a float — the compiler
+  infers that from what they return.</p>
+
+  <h3>Growable arrays — <code>kosh</code> / कोश</h3>
+  <p>An ordinary array (<span class="kw">pankti</span>) is fixed in size. A <span class="kw">kosh</span>
+  grows: it starts at a small capacity and doubles as needed.</p>
+<pre><span class="kw">kosh</span> xs[4]              <span class="cm"># capacity 4, length 0</span>
+<span class="kw">kosh_push</span>(xs, 10)
+<span class="kw">kosh_push</span>(xs, 20)
+<span class="kw">likha</span>(<span class="kw">kosh_len</span>(xs))    <span class="cm"># 2</span>
+<span class="kw">likha</span>(xs[0])            <span class="cm"># 10</span>
+<span class="kw">dasham</span> last = <span class="kw">kosh_pop</span>(xs)</pre>
+  <p><strong>Capacity is not length.</strong> <code>kosh xs[4]</code> has capacity 4 but length 0, so
+  <code>xs[0]</code> is out of bounds until something is pushed. This trips people up once; it is
+  deliberate, and it is what makes indexing safe.</p>
+
+  <h3>Typed arrays — <code>kosh dasham</code></h3>
+  <p>A <span class="kw">kosh</span> can be declared to hold floats. Integer values pushed into it are
+  promoted, and its elements behave as floats everywhere.</p>
+<pre><span class="kw">kosh dasham</span> temps[4]
+<span class="kw">kosh_push</span>(temps, 36.6)
+<span class="kw">kosh_push</span>(temps, 37)      <span class="cm"># promoted to 37.0</span>
+<span class="kw">likha</span>(temps[1])            <span class="cm"># 37.000000</span></pre>
+
+  <h3>Typed function parameters</h3>
+  <p>A function can require a particular kind of argument, and the compiler checks it.</p>
+<pre><span class="kw">prakriya</span> mean(<span class="kw">kosh dasham</span> xs) {
+    <span class="kw">dasham</span> s = 0.0
+    <span class="kw">vitti</span> i = 0
+    <span class="kw">yavat</span> (i &lt; <span class="kw">kosh_len</span>(xs)) {
+        s = s + xs[i]
+        i = i + 1
+    }
+    <span class="kw">pratiyati</span> s / <span class="kw">kosh_len</span>(xs)
+}</pre>
+  <p>A <code>kosh dasham</code> is passed as a pointer, so <strong>indexed writes are visible to the
+  caller</strong> — a function can fill an array for you. But growing it is not allowed: calling
+  <code>kosh_push</code> on a parameter is refused with a named error, because the pointer is passed by
+  value and the caller would be left holding a stale one. This is a deliberate safety boundary, not a
+  missing feature.</p>
+
+  <h3>The standard library</h3>
+  <p>Fifteen modules ship with the compiler. Import one with <span class="kw">ayojan</span>.</p>
+  <table>
+    <tr><th>Module</th><th>What it gives you</th></tr>
+    <tr><td><code>math</code>, <code>num</code>, <code>util</code></td><td>arithmetic, number theory, small helpers</td></tr>
+    <tr><td><code>sort</code>, <code>string</code></td><td>sorting, text handling</td></tr>
+    <tr><td><code>chandas</code></td><td>Piṅgala's prosody — metre, Meru-prastāra</td></tr>
+    <tr><td><code>ganita</code></td><td>Āryabhaṭa and Bhāskara — gcd, kuṭṭaka, cakravāla</td></tr>
+    <tr><td><code>madhava</code></td><td>the Kerala school — π, sin, cos, atan, sqrt</td></tr>
+    <tr><td><code>sankhyiki</code></td><td>statistics — mean, variance, standard deviation, dot product, norm</td></tr>
+    <tr><td><code>kalana</code></td><td>numerical calculus — trapezoid, Simpson, derivatives, polynomial roots</td></tr>
+    <tr><td><code>samanvaya</code></td><td>linear algebra — matrix product, transpose, determinant, trace</td></tr>
+    <tr><td><code>fileio</code></td><td>reading and writing files</td></tr>
+  </table>
+  <div class="try"><b>Try it:</b> the heritage modules compute real mathematics — <code>chakravala(61)</code>
+  returns the smallest solution of x² − 61y² = 1, which is x = 1766319049, y = 226153980. That is a
+  7th-century method, verified against the correct answer.</div>
+
+  <h3>The Sutram IDE</h3>
+  <p>Installed with the language. A single native program — no Python, no interpreter — with:</p>
+  <ul>
+    <li>a code editor with line numbers and syntax highlighting;</li>
+    <li><b>Ctrl-R</b> to compile and run what you have written, with the output shown below;</li>
+    <li><b>Ctrl-E</b> to browse the example programs one at a time;</li>
+    <li><b>Ctrl-T</b> for an interactive shell — type a statement, press Enter, see it run. The session
+    remembers earlier lines, so you can build something up a step at a time;</li>
+    <li><b>Ctrl-S</b> save, <b>Ctrl-L</b> load, <b>Ctrl-Q</b> quit.</li>
+  </ul>
+  <p>On Windows the IDE is not yet available; use the interactive shell (<code>sutram -i</code>)
+  instead.</p>
+
+  <h3>Speed, measured rather than claimed</h3>
+  <p>The compiler keeps variable values in processor registers instead of memory. On a representative
+  numerical program this produced a measured speed-up of about <strong>1.2×</strong> across recent
+  rounds, and on a tight integer loop the generated code went from 13 instructions to 5 — a measured
+  <strong>4.9×</strong>. Every claim in this section was measured on the same machine before and after,
+  not estimated.</p>
+
+  <h3>What the project is careful about</h3>
+  <p>Four memory-corruption bugs were found and fixed, each now covered by a permanent test. The
+  compiler is checked by <strong>160 tests</strong> and by <strong>twelve code-shape gates</strong>
+  that assert how much code a given construct is allowed to produce. Where the project cannot verify
+  something — Windows has not yet been run on a real Windows machine — it says so plainly rather than
+  implying otherwise.</p>
+</div>
