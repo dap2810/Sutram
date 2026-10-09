@@ -161,3 +161,119 @@ prakriya bigint_is_zero(arr, n) {
     }
     pratiyati 1
 }
+
+# bigint_divmod(a, b, q, r, n) — q = a / b, r = a % b (a,b,q,r are n-digit)
+# Requires b != 0. Uses long division, one decimal digit at a time.
+prakriya bigint_divmod(a, b, q, r, n) {
+    vitti x = a
+    vitti y = b
+    vitti qq = q
+    vitti rr = r
+    vitti c = n
+    # zero q and r
+    vitti i = 0
+    yavat (i < c) {
+        likh8(qq + i * 8, 0)
+        likh8(rr + i * 8, 0)
+        i = i + 1
+    }
+    # long division from most significant digit
+    i = c - 1
+    yavat (i >= 0) {
+        # r = r * 10 + a[i]: shift r left by one decimal digit
+        vitti j = c - 1
+        yavat (j > 0) {
+            likh8(rr + j * 8, pad8(rr + (j - 1) * 8))
+            j = j - 1
+        }
+        likh8(rr, pad8(x + i * 8))
+        # q[i] = r / b (0-9), r = r % b — by trial subtraction
+        vitti qd = 0
+        yavat (bigint_cmp(rr, y, c) >= 0) {
+            # r = r - b (in place)
+            vitti borrow = 0
+            vitti k = 0
+            yavat (k < c) {
+                vitti d = pad8(rr + k * 8) - pad8(y + k * 8) - borrow
+                yadi (d < 0) {
+                    likh8(rr + k * 8, d + 10)
+                    borrow = 1
+                }
+                anyatra {
+                    likh8(rr + k * 8, d)
+                    borrow = 0
+                }
+                k = k + 1
+            }
+            qd = qd + 1
+        }
+        likh8(qq + i * 8, qd)
+        i = i - 1
+    }
+    pratiyati 0
+}
+
+# bigint_mod_2n(num, mod, res, n) — res = num % mod, where num has 2n digits
+# Helper for powmod. Uses long division.
+prakriya bigint_mod_2n(num, mod, res, n) {
+    vitti x = num
+    vitti m = mod
+    vitti r = res
+    vitti c = n
+    vitti tr = nirmmita(c * 8)
+    bigint_zero(tr, c)
+    vitti i = c * 2 - 1
+    yavat (i >= 0) {
+        # tr = tr * 10 + x[i]
+        vitti j = c - 1
+        yavat (j > 0) {
+            likh8(tr + j * 8, pad8(tr + (j - 1) * 8))
+            j = j - 1
+        }
+        likh8(tr, pad8(x + i * 8))
+        # while tr >= m: tr -= m
+        yavat (bigint_cmp(tr, m, c) >= 0) {
+            vitti bw = 0
+            vitti k = 0
+            yavat (k < c) {
+                vitti d = pad8(tr + k * 8) - pad8(m + k * 8) - bw
+                yadi (d < 0) {
+                    likh8(tr + k * 8, d + 10)
+                    bw = 1
+                }
+                anyatra {
+                    likh8(tr + k * 8, d)
+                    bw = 0
+                }
+                k = k + 1
+            }
+        }
+        i = i - 1
+    }
+    bigint_copy(r, tr, c)
+    pratiyati 0
+}
+
+# bigint_powmod(base, exp, mod, res, n) — res = base^exp mod mod
+# exp is a plain int. Requires mod != 0. res is n-digit.
+prakriya bigint_powmod(base, exp, mod, res, n) {
+    vitti b = base
+    vitti e = exp
+    vitti m = mod
+    vitti r = res
+    vitti c = n
+    vitti t1 = nirmmita(c * 2 * 8)
+    vitti bcur = nirmmita(c * 8)
+    bigint_from_int(1, r, c)
+    bigint_copy(bcur, b, c)
+    yavat (e > 0) {
+        yadi (e % 2 == 1) {
+            bigint_mul(r, bcur, t1, c)
+            bigint_mod_2n(t1, m, r, c)
+        }
+        bigint_mul(bcur, bcur, t1, c)
+        bigint_mod_2n(t1, m, bcur, c)
+        e = e / 2
+    }
+    pratiyati 0
+}
