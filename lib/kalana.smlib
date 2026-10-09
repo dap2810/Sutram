@@ -1,0 +1,134 @@
+# lib/kalana.smlib — Sutram standard library: कलन (numerical calculus)
+#
+# Built on typed `kosh dasham` parameters (T18) and the float fast paths (F1/F2/FG1/FC1).
+# Every function READS its kosh parameters only — never `kosh_push` on a parameter, which the
+# compiler deliberately rejects because the pointer is passed by value.
+#
+# Sutram has no first-class functions, so anything that would take a callback instead takes
+# either SAMPLES (for integration/differentiation) or POLYNOMIAL COEFFICIENTS (for root finding).
+# Coefficients are in ascending order: c[0] + c[1]*x + c[2]*x^2 + ...
+
+# ---------------------------------------------------------------
+# Integration over sampled data
+# ---------------------------------------------------------------
+
+# Trapezoidal rule. xs and ys are sample points and values; uses the shorter length.
+prakriya trapezoid(kosh dasham xs, kosh dasham ys) {
+    vitti n = kosh_len(xs)
+    yadi (kosh_len(ys) < n) { n = kosh_len(ys) }
+    yadi (n < 2) { pratiyati 0.0 }
+    dasham total = 0.0
+    vitti i = 0
+    yavat (i < n - 1) {
+        dasham h = xs[i + 1] - xs[i]
+        total = total + h * (ys[i] + ys[i + 1]) / 2.0
+        i = i + 1
+    }
+    pratiyati total
+}
+
+# Simpson's 1/3 rule over equally spaced samples. Needs an odd number of points
+# (an even number of intervals); if there are fewer it falls back to the trapezoid.
+prakriya simpson(kosh dasham xs, kosh dasham ys) {
+    vitti n = kosh_len(xs)
+    yadi (kosh_len(ys) < n) { n = kosh_len(ys) }
+    yadi (n < 3) { pratiyati trapezoid(xs, ys) }
+    # if the count is even, drop the last point so the rule applies
+    yadi ((n - 1) - ((n - 1) / 2) * 2 == 1) { n = n - 1 }
+    dasham h = (xs[n - 1] - xs[0]) / (n - 1)
+    dasham total = ys[0] + ys[n - 1]
+    vitti i = 1
+    yavat (i < n - 1) {
+        yadi (i - (i / 2) * 2 == 1) {
+            total = total + 4.0 * ys[i]
+        } anyatra {
+            total = total + 2.0 * ys[i]
+        }
+        i = i + 1
+    }
+    pratiyati total * h / 3.0
+}
+
+# ---------------------------------------------------------------
+# Differentiation over sampled data
+# ---------------------------------------------------------------
+
+# Central difference at interior point i; one-sided at the ends.
+prakriya slope(kosh dasham xs, kosh dasham ys, i) {
+    vitti n = kosh_len(xs)
+    yadi (kosh_len(ys) < n) { n = kosh_len(ys) }
+    yadi (n < 2) { pratiyati 0.0 }
+    yadi (i <= 0) {
+        pratiyati (ys[1] - ys[0]) / (xs[1] - xs[0])
+    }
+    yadi (i >= n - 1) {
+        pratiyati (ys[n - 1] - ys[n - 2]) / (xs[n - 1] - xs[n - 2])
+    }
+    pratiyati (ys[i + 1] - ys[i - 1]) / (xs[i + 1] - xs[i - 1])
+}
+
+# Second derivative at an interior point (central, equally spaced assumption relaxed).
+prakriya slope2(kosh dasham xs, kosh dasham ys, i) {
+    vitti n = kosh_len(xs)
+    yadi (kosh_len(ys) < n) { n = kosh_len(ys) }
+    yadi (i <= 0) { pratiyati 0.0 }
+    yadi (i >= n - 1) { pratiyati 0.0 }
+    dasham hl = xs[i] - xs[i - 1]
+    dasham hr = xs[i + 1] - xs[i]
+    dasham dl = (ys[i] - ys[i - 1]) / hl
+    dasham dr = (ys[i + 1] - ys[i]) / hr
+    pratiyati (dr - dl) / ((hl + hr) / 2.0)
+}
+
+# ---------------------------------------------------------------
+# Polynomials
+# ---------------------------------------------------------------
+
+# Horner evaluation: c[0] + c[1]x + c[2]x^2 + ...
+prakriya bahu_ganana(kosh dasham c, dasham x) {
+    vitti n = kosh_len(c)
+    yadi (n == 0) { pratiyati 0.0 }
+    dasham acc = c[n - 1]
+    vitti k = n - 2
+    yavat (k >= 0) {
+        acc = acc * x + c[k]
+        k = k - 1
+    }
+    pratiyati acc
+}
+
+# Bisection root of a polynomial on [lo, hi].
+# CONTRACT: `ok` must already contain ONE element (call kosh_push(ok, 0.0) first).
+# A kosh's capacity is not its length, so ok[0] is out of bounds until an element exists. Requires a sign change across the interval,
+# which is checked and reported by returning a NaN-like sentinel of 0.0 with ok=0.
+# ok is returned through a one-element kosh so the caller can tell success from failure.
+prakriya bahu_mula(kosh dasham c, dasham lo, dasham hi, kosh dasham ok) {
+    dasham flo = bahu_ganana(c, lo)
+    dasham fhi = bahu_ganana(c, hi)
+    # need opposite signs; treat exact zeros first
+    yadi (flo == 0.0) { ok[0] = 1.0; pratiyati lo }
+    yadi (fhi == 0.0) { ok[0] = 1.0; pratiyati hi }
+    yadi ((flo < 0.0) == (fhi < 0.0)) { ok[0] = 0.0; pratiyati 0.0 }
+    dasham a = lo
+    dasham b = hi
+    vitti k = 0
+    yavat (k < 80) {
+        dasham m = (a + b) / 2.0
+        dasham fm = bahu_ganana(c, m)
+        yadi (fm == 0.0) { ok[0] = 1.0; pratiyati m }
+        yadi ((fm < 0.0) == (flo < 0.0)) {
+            a = m
+            flo = fm
+        } anyatra {
+            b = m
+        }
+        k = k + 1
+    }
+    ok[0] = 1.0
+    pratiyati (a + b) / 2.0
+}
+
+# ---------------------------------------------------------------
+# A small helper: build a coefficient array from scratch is the caller's job
+# (kosh_push on the caller's own kosh, which is allowed).
+# ---------------------------------------------------------------
