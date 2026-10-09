@@ -1,0 +1,15 @@
+Bank Interest Calculator
+========================
+Principal: 100000
+Rate: 8% per year
+
+Growth over 5 years:
+Year 1: 108000
+Year 2: 116640
+Year 3: 125971
+Year 4: 136048
+Year 5: 146931
+
+Compound growth using *= :
+2^10 = 2048
+
