@@ -1,0 +1,41 @@
+# Sutram language pack: Malayalam (മലയാളം)
+# Format: <native word> <sanskrit keyword>
+# Usage: sutram --lang malayalam input.sm output.bin
+#    or: SUTRAM_LANG=malayalam sutram input.sm output.bin
+
+പ്രധാന mukhya
+ചരം vitti
+സംഖ്യ anka
+എങ്കിൽ yadi
+അല്ലെങ്കിൽ anyatra
+എത്രത്തോളം yavat
+ആവർത്തനം punaravartana
+മടങ്ങുക pratiyati
+ക്രിയ prakriya
+എഴുതു likha
+സത്യം purna
+അസത്യം shunya
+സ്ഥിരം sutra
+ക്രമം krama
+തുടരുക uddeshya
+ഗുണം guna
+ഭാവന bhavana
+വരി pankti
+സൃഷ്ടി srijana
+വിലക്ക് nishedha
+ഘടന rachana
+ഉൾപ്പെടുത്തുക ayojan
+ധാരണ parigrah
+
+വായിക്കു grahan
+
+മുതൽ to
+
+# glossary synonyms
+പ്രധാനം mukhya
+പുനരാവൃത്തി punaravartana
+ശബ്ദം shabda
+ദശമ dasham
+കോശം kosh
+ചെയ്യുക kuru
+നിഷ്ക്രിയ nishkriya
