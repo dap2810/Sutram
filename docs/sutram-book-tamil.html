@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="UTF-8">
+<title>சூத்திரம் புத்தகம்</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Georgia,'Noto Serif',serif;line-height:1.7;color:#2c2416;background:#f7f2e7}
+.book{max-width:860px;margin:0 auto;padding:40px 24px 80px}
+.cover{text-align:center;padding:90px 20px 70px;background-color:#1a4a5c;background-image:linear-gradient(160deg,#1a4a5c 0%,#2d6a6a 55%,#4a8a6a 100%);color:#fdf6e3;border-radius:18px;margin-bottom:50px}
+.cover h1{font-size:52px;letter-spacing:2px;margin-bottom:12px}
+.cover .dev{font-size:56px;font-weight:400;margin-bottom:8px}
+.cover h2{font-weight:400;font-size:22px;opacity:.92;font-style:italic}
+.cover .badge{display:inline-block;margin-top:26px;padding:8px 22px;border:1.5px solid rgba(255,255,255,.45);border-radius:30px;font-size:14px;letter-spacing:1.5px}
+.toc{background:#fff;border:1px solid #e0d5bd;border-radius:14px;padding:30px 36px;margin-bottom:44px}
+.toc h2{color:#1a4a5c;margin-bottom:16px;font-size:22px}
+.toc ol{margin-left:22px}
+.toc li{margin:8px 0}
+.toc a{color:#2d6a6a;text-decoration:none}
+.toc a:hover{text-decoration:underline}
+.ch{background:#fff;border:1px solid #e0d5bd;border-radius:14px;padding:36px 40px;margin-bottom:40px}
+.ch h2{color:#1a4a5c;font-size:27px;border-bottom:3px solid #c9a55c;padding-bottom:12px;margin-bottom:20px}
+.ch h3{color:#2d6a6a;margin:24px 0 10px;font-size:19px}
+.ch p{margin:12px 0}
+pre{background:#22303a;color:#e8e2d0;padding:20px 24px;border-radius:10px;overflow-x:auto;font-size:14.5px;line-height:1.55;font-family:'Fira Code',Consolas,monospace;margin:16px 0}
+.cm{color:#7ba05b}
+.kw{color:#e5a54b}
+.try{background:#eef6ee;border-left:4px solid #4a8a6a;padding:14px 18px;border-radius:0 8px 8px 0;margin:18px 0;font-size:15.5px}
+.try b{color:#2d6a6a}
+table{width:100%;border-collapse:collapse;margin:16px 0;background:#fff}
+th{background:#1a4a5c;color:#fdf6e3;padding:10px 12px;text-align:left;font-size:14.5px}
+td{padding:9px 12px;border-bottom:1px solid #eee2c8;font-size:15px}
+tr:nth-child(even) td{background:#faf6ec}
+code{background:#efe7d2;padding:2px 7px;border-radius:5px;font-family:Consolas,monospace;font-size:.93em;color:#8a4b2a}
+pre code{background:none;padding:0;color:inherit}
+.note{background:#fdf3e0;border-left:4px solid #c9a55c;padding:13px 18px;border-radius:0 8px 8px 0;margin:16px 0;font-size:15.5px}
+.out{color:#8ac0ff;font-style:italic}
+.footer{text-align:center;color:#8a7d5c;font-size:14px;margin-top:50px;font-style:italic}
+
+/* ---- v26: hover = Sanskrit (pure CSS, no JS) ---- */
+.k { color: inherit; border-bottom: 2px dotted #E85D04; cursor: help; position: relative; }
+.k:focus { outline: none; }
+.k::after { content: attr(data-tip); position: absolute; left: 50%; bottom: calc(100% + 6px);
+            transform: translateX(-50%); background: #2b2118; color: #fff; padding: 5px 12px;
+            border-radius: 8px; font-size: 13px; white-space: nowrap; opacity: 0;
+            pointer-events: none; transition: opacity .15s; z-index: 9; }
+.k:hover::after, .k:focus::after { opacity: 1; }
+.k::before { content: ""; position: absolute; left: 50%; bottom: calc(100% + 1px);
+             transform: translateX(-50%); border: 6px solid transparent; border-top-color: #2b2118;
+             opacity: 0; transition: opacity .15s; }
+.k:hover::before, .k:focus::before { opacity: 1; }
+pre .k, code .k { font-weight: 700; }
+.en-gloss { color: #94795a; font-size: 0.85em; font-weight: normal; }
+.legend { background: #fdf1e3; border-left: 4px solid #E85D04; padding: 10px 14px;
+          border-radius: 0 8px 8px 0; font-size: 14px; margin: 14px 0; }
+/* readability hardening: cover must stay legible even without gradient/background rendering */
+.cover{background-color:#1a4a5c}
+.cover h1,.cover .dev,.cover h2,.cover .badge{text-shadow:0 1px 3px rgba(0,0,0,.35)}
+@media print{.cover{-webkit-print-color-adjust:exact;print-color-adjust:exact;color:#fdf6e3}body{background:#fff;color:#1a1a1a}}
+</style>
+</head>
+<body>
+<div class="book">
+<div class="cover">
+<img src="data:image/png;base64,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" alt="Sutram Icon" style="width:96px;height:96px;margin-bottom:20px;border-radius:50%;" />
+<div class="dev">॥ सूत्रम् ॥</div>
+<h1>சூத்திரம் புத்தகம்</h1>
+<div id="preface" style="margin:18px 0 30px;padding:18px 22px;border-left:3px solid #b8860b;background:rgba(184,134,11,0.07);border-radius:8px;line-height:1.7"><b>முன்னுரை.</b> Sutram என்பது ஒரு ப்ரோக்ராமிங் மொழி, இதன் கீவேர்டுகள் சமஸ்கிருதத்தில் உள்ளன - இது வெறும் அலங்காரத்திற்காக அல்ல, ஒரு டிசைன் கமிட்மெண்டாக. இதன் பெயரான Sutram என்றால் 'சூத்திரம்' என்று அர்த்தம்: உலகின் முதல் ஃபார்மல் கிராமரான பாணினியின் Ashtadhyayi-ல் வரும் சுருக்கமான விதி-வடிவம். இதன் ஸ்டாண்டர்ட் லைப்ரரி இந்திய கணித மரபை நேரடியாகச் செயல்படுத்துகிறது - பிங்கலரின் பைனரி மற்றும் Meru-prastara, ஆரியபட்டாவின் kuttaka, பாஸ்கராவின் chakravala. மேலும் இதன் கம்பைலரே தன்னிறைவானது: நீங்கள் எந்த ரன்டைமும், டூல்கெயினும் இல்லாமல், சொந்தமாக நேட்டிவ் மெஷின் கோடை உருவாக்கும் ஒரே ஒரு கைப்பட எழுதப்பட்ட அசெம்பிளி ஃபைல் இதில் உள்ளது. இந்தப் புத்தகம் இந்த மொழியை ஆரம்பத்திலிருந்தே கற்றுக்கொடுக்கிறது. இதில் உள்ள ஒவ்வொரு உதாரணமும் கம்பைல் ஆகி ஓடும் உண்மையான கோடாகும், மேலும் மொழியைப் பற்றிய ஒவ்வொரு தகவலையும் நீங்களே சரிபார்த்துக் கொள்ளலாம்.</div>
+
+<div class="legend">💡 <b>பயன்படுத்தும் முறை:</b> குங்குமப் புள்ளியுள்ள சொல்லின் மேல் சுட்டியை வைக்கவும் — அதன் சமசுகிருதச் சொல்லும் English பொருளும் உடனே தெரியும். (அச்சுப் பக்கங்களுக்கு ஒவ்வோர் அத்தியாயத்தின் இறுதியிலும் அட்டவணை உள்ளது.)</div>
+<h2>சமஸ்கிருத குறிச்சொல்கள். நேடிவ் மெஷின் கோட். ஒவ்வொரு மொழியையும் இணைக்கும் ஒரு நூல்.</h2>
+<div class="badge">தமிழ் பதிப்பு</div>
+</div>
+<div class="toc"><h2>விஷய அட்டவணை</h2><ol><li><a href="#ch1"><span class="k" data-tip="சமசுகிருதம்: sutra · constant">சூத்திரம்</span> என்றால் என்ன? <span class="en-gloss">(What is Sutram?)</span></a></li><li><a href="#ch2">உங்கள் <span class="k" data-tip="சமசுகிருதம்: to · range-to">முதல்</span> நிரல் <span class="en-gloss">(Your first program)</span></a></li><li><a href="#ch3">மாறிகள் மற்றும் மாறிலிகள் <span class="en-gloss">(Variables and constants)</span></a></li><li><a href="#ch4">இயக்கிகள் மற்றும் முன்னுரிமை <span class="en-gloss">(Operators and precedence)</span></a></li><li><a href="#ch5">முடிவெடுத்தல்: <span class="k" data-tip="சமசுகிருதம்: yadi · if">yadi</span> / <span class="k" data-tip="சமசுகிருதம்: anyatra · else">anyatra</span> <span class="en-gloss">(Decisions (if / else))</span></a></li><li><a href="#ch6">மடக்குகள்: <span class="k" data-tip="சமசுகிருதம்: punaravartana · for">punaravartana</span>, <span class="k" data-tip="சமசுகிருதம்: yavat · while">yavat</span>, <span class="k" data-tip="சமசுகிருதம்: krama · break">krama</span>, <span class="k" data-tip="சமசுகிருதம்: uddeshya · continue">uddeshya</span> <span class="en-gloss">(Loops)</span></a></li><li><a href="#ch7">சார்புகள்: <span class="k" data-tip="சமசுகிருதம்: prakriya · function">prakriya</span> <span class="en-gloss">(Functions)</span></a></li><li><a href="#ch8">அணிகள்: <span class="k" data-tip="சமசுகிருதம்: pankti · array">pankti</span> <span class="en-gloss">(Arrays)</span></a></li><li><a href="#ch9">உள்ளீடு: <span class="k" data-tip="சமசுகிருதம்: grahan · input">grahan</span> <span class="en-gloss">(Input)</span></a></li><li><a href="#ch10">சூத்திரம் ஓடு (REPL) <span class="en-gloss">(The Sutram shell (REPL))</span></a></li><li><a href="#ch11">மொழித் தொகுப்பு: உங்கள் மொழியில் நிரல் <span class="en-gloss">(Language packs)</span></a></li><li><a href="#ch12">பிழைகள் மற்றும் பிழைத்திருத்தம் <span class="en-gloss">(Errors and debugging)</span></a></li><li><a href="#ch13">முழு மேற்கோள் <span class="en-gloss">(Complete reference)</span></a></li>
+<li><a href="#ch14">புதிய அம்சங்கள் <span class="en-gloss">(New features)</span></a></li>
+<li><a href="#ch15">தொழில்நுட்பச் சொற்களஞ்சியம் <span class="en-gloss">(Technical glossary)</span></a></li>
+<li><a href="#ch16">சமசுகிருத வேர்கள் <span class="en-gloss">(Sanskrit roots)</span></a></li>
+<li><a href="#ch17">விண்டோஸில் நிறுவல் — சொந்தமாக <span class="en-gloss">(விண்டோஸ் நிறுவல்)</span></a></li><li><a href="#whatsnew">18. What is new</a></li>
+</ol></div>
+<div class="ch" id="ch1"><h2>1. <span class="k" data-tip="சமசுகிருதம்: sutra · constant">சூத்திரம்</span> என்றால் என்ன? <span class="en-gloss">(What is Sutram?)</span></h2>
+<p><b>சூத்திரம்</b> (सूत्रम्) என்றால் "நூல்" — எல்லாவற்றையும் இணைக்கும் நூல். சூத்திரம் ஒரு
+புரோகிராமிங் மொழி: இதன் குறிச்சொல்கள் சமஸ்கிருதத்திலிருந்து வருகின்றன, இதன் தொகுப்பி
+தூய அஸெம்பிளியில் எழுதப்பட்டுள்ளது, இது நேரடியாக x86-64 மெஷின் கோடாக மாற்றப்படுகிறது.
+இண்டர்பிரெட்டர் இல்லை, வர்சுவல் மெஷின் இல்லை, ரன்டைம் லைப்ரரி இல்லை.</p>
+<p><b>ஏன் கற்க வேண்டும்?</b></p>
+<p><b>1. பைத்தான் எளிமை, C வேகம்.</b> நீங்கள் சுத்தமான சமஸ்கிருத குறிச்சொல்களுடன்
+படிக்கக்கூடிய கோட் எழுதுகிறீர்கள்; தொகுப்பி ஒரு சிறிய நேடிவ் பைனரியை உருவாக்குகிறது —
+கையால் எழுதப்பட்ட அஸெம்பிளி வேகத்தில் இயங்குகிறது.</p>
+<p><b>2. எல்லாம் தெரியும்.</b> தொகுப்பி ஒரு படிக்கக்கூடிய அஸெம்பிளி கோப்பு (~9000 வரிகள்) —
+உண்மையான தொகுப்பி எப்படி வேலை செய்கிறது என்று பார்க்கலாம்: லெக்ஸர் → பார்ஸர் →
+கோட் ஜெனரேட்டர் → ELF ரைட்டர்.</p>
+<p><b>3. உங்கள் மொழி, உங்கள் வார்த்தைகள்.</b> மொழித் தொகுப்புகுடன் ஒவ்வொரு கீவேர்டையும்
+தமிழிலும் எழுதலாம் — <span class="k" data-tip="சமசுகிருதம்: yadi · if">எனில்</span> (if), <span class="k" data-tip="சமசுகிருதம்: yavat · while">வரை</span> (while), <span class="k" data-tip="சமசுகிருதம்: prakriya · function">செயல்</span> (function), <span class="k" data-tip="சமசுகிருதம்: likha · print">எழுது</span> (print).</p>
+<div class="try"><b>தேவை:</b> Linux x86-64 கணினி (அல்லது Windows-ல் WSL). வேறு
+டிபெண்டென்ஸி இல்லை — C கம்பைலரும் தேவையில்லை.</div>
+</div>
+<div class="ch" id="ch2"><h2>2. உங்கள் <span class="k" data-tip="சமசுகிருதம்: to · range-to">முதல்</span> நிரல் <span class="en-gloss">(Your first program)</span></h2>
+<p>ஒவ்வொரு <span class="k" data-tip="சமசுகிருதம்: sutra · constant">சூத்திரம்</span> புரோகிராமும் <code><span class="k" data-tip="சமசுகிருதம்: mukhya · main">mukhya</span>()</code> உடன் தொடங்குகிறது. செமிகோலன்
+விருப்பம்; ஒரு ஸ்டேட்மெண்டுக்கு பிரேஸும் விருப்பம்; கருத்துகள் <code>//</code> உடன்.</p>
+<pre><code><span class="k" data-tip="சமசுகிருதம்: mukhya · main">mukhya</span>()
+    <span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>("Namaste, Sutram!\n")</code></pre>
+<pre><code>$ sutram namaste.sm namaste.bin
+OK: compiled 90 bytes
+$ ./namaste.bin
+<span class="out">Namaste, Sutram!</span></code></pre>
+<div class="note">தொகுப்பி முழுமையான ELF பைனரியை உருவாக்குகிறது — இந்த புரோகிராமுக்கு
+வெறும் 90 பைட். அதுதான் மொத்த நிரல்.</div>
+</div>
+<div class="ch" id="ch3"><h2>3. மாறிகள் மற்றும் மாறிலிகள் <span class="en-gloss">(Variables and constants)</span></h2>
+<p><code><span class="k" data-tip="சமசுகிருதம்: vitti · variable">vitti</span></code> உடன் <span class="k" data-tip="சமசுகிருதம்: vitti · variable">மாறி</span> அறிவிக்கலாம். <code><span class="k" data-tip="சமசுகிருதம்: sutra · constant">sutra</span></code> உடன் மாறிலி:</p>
+<pre><code><span class="k" data-tip="சமசுகிருதம்: mukhya · main">mukhya</span>()
+    <span class="k" data-tip="சமசுகிருதம்: vitti · variable">vitti</span> x = 10
+    x = x + 5
+    <span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>(x)        <span class="cm">// 15</span>
+    <span class="k" data-tip="சமசுகிருதம்: sutra · constant">sutra</span> pi = 314
+    <span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>(pi / 100)  <span class="cm">// 3</span>
+    <span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>("\n")</code></pre>
+<p><span class="k" data-tip="சமசுகிருதம்: to · range-to">முதல்</span> ஐந்து மாறிகள் ரிஜிஸ்டர்களில் இருக்கும் — தொகுப்பி தானாக ஒதுக்கும்.</p>
+</div>
+<div class="ch" id="ch4"><h2>4. இயக்கிகள் மற்றும் முன்னுரிமை <span class="en-gloss">(Operators and precedence)</span></h2>
+<p>சூத்ரத்தில் முழு இயக்கி தொகுப்பு உள்ளது, கணித விதிகளின்படி:</p>
+
+<table>
+<tr><th>Operator</th><th>Meaning</th><th>Example</th></tr>
+<tr><td><code>+ - * / %</code></td><td>arithmetic, modulo</td><td><code>17 % 5 → 2</code></td></tr>
+<tr><td><code>== != < > <= >=</code></td><td>comparison</td><td><code>x >= 18</code></td></tr>
+<tr><td><code>&& ||</code></td><td>logical and / or</td><td><code>a > 0 && b > 5</code></td></tr>
+<tr><td><code>& | ^</code></td><td>bitwise</td><td><code>2 & 12 → 0</code></td></tr>
+<tr><td><code>( ... )</code></td><td>grouping</td><td><code>(3 + 4) * 2 → 14</code></td></tr>
+</table>
+<pre><code><span class="k" data-tip="சமசுகிருதம்: mukhya · main">mukhya</span>()
+    <span class="k" data-tip="சமசுகிருதம்: vitti · variable">vitti</span> a = 3
+    <span class="k" data-tip="சமசுகிருதம்: vitti · variable">vitti</span> b = 4
+    <span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>((a + b) * 2)   <span class="cm">// 14</span>
+    <span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>("\n")
+    <span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>(17 % 5)         <span class="cm">// 2</span>
+    <span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>("\n")
+    <span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>(2 & 12)         <span class="cm">// 0  (bitwise AND)</span>
+    <span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>("\n")</code></pre>
+</div>
+<div class="ch" id="ch5"><h2>5. முடிவெடுத்தல்: <span class="k" data-tip="சமசுகிருதம்: yadi · if">yadi</span> / <span class="k" data-tip="சமசுகிருதம்: anyatra · else">anyatra</span> <span class="en-gloss">(Decisions (if / else))</span></h2>
+<p><code><span class="k" data-tip="சமசுகிருதம்: yadi · if">yadi</span></code> (<span class="k" data-tip="சமசுகிருதம்: yadi · if">எனில்</span>) ஷரத்து உண்மையெனில் இயக்கும்; <code><span class="k" data-tip="சமசுகிருதம்: anyatra · else">anyatra</span></code> (<span class="k" data-tip="சமசுகிருதம்: anyatra · else">இல்லையெனில்</span>)
+மற்றபடி. பல ஷரத்துகளுக்கு <code><span class="k" data-tip="சமசுகிருதம்: guna · multiply (*)">guna</span></code> (switch):</p>
+<pre><code><span class="k" data-tip="சமசுகிருதம்: mukhya · main">mukhya</span>()
+    <span class="k" data-tip="சமசுகிருதம்: vitti · variable">vitti</span> mulya = 0
+    <span class="k" data-tip="சமசுகிருதம்: yadi · if">yadi</span> (mulya > 0) {
+        <span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>("Positive\n")
+    } <span class="k" data-tip="சமசுகிருதம்: yadi · if">yadi</span> (mulya &lt; 0) {
+        likha("Negative\n")
+    } anyatra {
+        likha("Zero\n")
+    }</code></pre>
+<pre><code><span class="k" data-tip="சமசுகிருதம்: mukhya · main">mukhya</span>()
+    <span class="k" data-tip="சமசுகிருதம்: vitti · variable">vitti</span> divasa = 3
+    <span class="k" data-tip="சமசுகிருதம்: guna · multiply (*)">guna</span> (divasa) {
+        <span class="k" data-tip="சமசுகிருதம்: bhavana · condition">bhavana</span> 1: { <span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>("Somvaar\n") }
+        <span class="k" data-tip="சமசுகிருதம்: bhavana · condition">bhavana</span> 2: { <span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>("Mangalvaar\n") }
+        <span class="k" data-tip="சமசுகிருதம்: bhavana · condition">bhavana</span> 3: { <span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>("Budhvaar\n") }
+        <span class="k" data-tip="சமசுகிருதம்: anyatra · else">anyatra</span>: { <span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>("Anyo divaah\n") }
+    }</code></pre>
+</div>
+<div class="ch" id="ch6"><h2>6. மடக்குகள்: <span class="k" data-tip="சமசுகிருதம்: punaravartana · for">punaravartana</span>, <span class="k" data-tip="சமசுகிருதம்: yavat · while">yavat</span>, <span class="k" data-tip="சமசுகிருதம்: krama · break">krama</span>, <span class="k" data-tip="சமசுகிருதம்: uddeshya · continue">uddeshya</span> <span class="en-gloss">(Loops)</span></h2>
+<pre><code><span class="k" data-tip="சமசுகிருதம்: mukhya · main">mukhya</span>()
+    <span class="k" data-tip="சமசுகிருதம்: punaravartana · for">punaravartana</span> i = 1 <span class="k" data-tip="சமசுகிருதம்: to · range-to">to</span> 5 {
+        <span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>(i)
+        <span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>(" ")   <span class="cm">// 1 2 3 4 5</span>
+    }
+    <span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>("\n")</code></pre>
+<pre><code><span class="k" data-tip="சமசுகிருதம்: mukhya · main">mukhya</span>()
+    <span class="k" data-tip="சமசுகிருதம்: vitti · variable">vitti</span> yogam = 0
+    <span class="k" data-tip="சமசுகிருதம்: punaravartana · for">punaravartana</span> i = 1 <span class="k" data-tip="சமசுகிருதம்: to · range-to">to</span> 100 {
+        <span class="k" data-tip="சமசுகிருதம்: yadi · if">yadi</span> (i > 10) { <span class="k" data-tip="சமசுகிருதம்: krama · break">krama</span> }
+        <span class="k" data-tip="சமசுகிருதம்: yadi · if">yadi</span> (i % 2 == 0) { <span class="k" data-tip="சமசுகிருதம்: uddeshya · continue">uddeshya</span> }
+        yogam = yogam + i
+    }
+    <span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>(yogam)     <span class="cm">// 25</span>
+    <span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>("\n")</code></pre>
+<div class="try"><b>1 <span class="k" data-tip="சமசுகிருதம்: to · range-to">முதல்</span> 10 <span class="k" data-tip="சமசுகிருதம்: yavat · while">வரை</span> ஒற்றைப்படை எண்களின் கூட்டல்:</b> விடை 25.</div>
+</div>
+<div class="ch" id="ch7"><h2>7. சார்புகள்: <span class="k" data-tip="சமசுகிருதம்: prakriya · function">prakriya</span> <span class="en-gloss">(Functions)</span></h2>
+<pre><code><span class="k" data-tip="சமசுகிருதம்: prakriya · function">prakriya</span> vishalya(mulya)
+    <span class="k" data-tip="சமசுகிருதம்: pratiyati · return">pratiyati</span> mulya * mulya
+
+<span class="k" data-tip="சமசுகிருதம்: mukhya · main">mukhya</span>()
+    <span class="k" data-tip="சமசுகிருதம்: vitti · variable">vitti</span> phalam = vishalya(7)
+    <span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>(phalam)     <span class="cm">// 49</span>
+    <span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>("\n")</code></pre>
+<p>ரிகர்ஷன் நேரடியாக வேலை செய்யும்:</p>
+<pre><code><span class="k" data-tip="சமசுகிருதம்: prakriya · function">prakriya</span> fib(n) {
+    <span class="k" data-tip="சமசுகிருதம்: yadi · if">yadi</span> (n &lt; 2) { pratiyati n }
+    pratiyati fib(n - 1) + fib(n - 2)
+}
+
+mukhya()
+    likha(fib(10))     <span class="cm">// 55</span>
+    <span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>("\n")</code></pre>
+</div>
+<div class="ch" id="ch8"><h2>8. அணிகள்: <span class="k" data-tip="சமசுகிருதம்: pankti · array">pankti</span> <span class="en-gloss">(Arrays)</span></h2>
+<p><i>பங்க்தி</i> = "<span class="k" data-tip="சமசுகிருதம்: krama · break">வரிசை</span>". <code><span class="k" data-tip="சமசுகிருதம்: pankti · array">pankti</span></code> உடன் அணி அறிவிக்கலாம்:</p>
+<pre><code><span class="k" data-tip="சமசுகிருதம்: mukhya · main">mukhya</span>()
+    <span class="k" data-tip="சமசுகிருதம்: pankti · array">pankti</span> tarika[5]
+    <span class="k" data-tip="சமசுகிருதம்: punaravartana · for">punaravartana</span> i = 0 <span class="k" data-tip="சமசுகிருதம்: to · range-to">to</span> 5 {
+        tarika[i] = i * i
+    }
+    <span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>(tarika[4])     <span class="cm">// 16</span>
+    <span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>("\n")</code></pre>
+</div>
+<div class="ch" id="ch9"><h2>9. உள்ளீடு: <span class="k" data-tip="சமசுகிருதம்: grahan · input">grahan</span> <span class="en-gloss">(Input)</span></h2>
+<p><b>புதிய ஃபீச்சர்!</b> <code><span class="k" data-tip="சமசுகிருதம்: grahan · input">grahan</span>()</code> (கிரஹணம் = பெறுதல்) பயனரிடமிருந்து
+எண்ணை வாசிக்கும் — இப்போது <span class="k" data-tip="சமசுகிருதம்: sutra · constant">சூத்திரம்</span> நிரல்கள் இணைச்செயல்!</p>
+<pre><code><span class="k" data-tip="சமசுகிருதம்: mukhya · main">mukhya</span>()
+    <span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>("ஒரு <span class="k" data-tip="சமசுகிருதம்: anka · integer">எண்</span> கொடுங்கள்: ")
+    <span class="k" data-tip="சமசுகிருதம்: vitti · variable">vitti</span> x = <span class="k" data-tip="சமசுகிருதம்: grahan · input">grahan</span>()
+    <span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>("நீங்கள் கொடுத்தது: ")
+    <span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>(x)
+    <span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>("\n")</code></pre>
+<pre><code>$ ./out.bin
+ஒரு <span class="k" data-tip="சமசுகிருதம்: anka · integer">எண்</span> கொடுங்கள்: 42
+நீங்கள் கொடுத்தது: 42</code></pre>
+</div>
+<div class="ch" id="ch10"><h2>10. <span class="k" data-tip="சமசுகிருதம்: sutra · constant">சூத்திரம்</span> ஓடு (REPL) <span class="en-gloss">(The Sutram shell (REPL))</span></h2>
+<pre><code>$ sutram -i
+Sutram Shell v1.0 — the complete thread
+
+<span class="k" data-tip="சமசுகிருதம்: sutra · constant">sutra</span>> <span class="k" data-tip="சமசுகிருதம்: vitti · variable">vitti</span> x = 21
+OK: compiled 204 bytes
+<span class="k" data-tip="சமசுகிருதம்: sutra · constant">sutra</span>> <span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>(x / 3)
+OK: compiled 260 bytes
+7
+<span class="k" data-tip="சமசுகிருதம்: sutra · constant">sutra</span>> nirgat</code></pre>
+<div class="try"><b>ஓடு கட்டளைகள்:</b> <code>sahayata</code> (உதவி) · <code>sarvam</code>
+(முழு செஷன்) · <code>nirgat</code> (வெளியேறு)</div>
+</div>
+<div class="ch" id="ch11"><h2>11. மொழித் தொகுப்பு: உங்கள் மொழியில் நிரல் <span class="en-gloss">(Language packs)</span></h2>
+<p>தமிழ்த் தொகுப்புடன் <b>ஒவ்வொரு</b> குறிச்சொல்லையும் தமிழில் எழுதலாம். முழு மூன்று-பாதை அட்டவணை:</p>
+
+<table>
+<tr><th>தமிழ் (உங்கள் மொழி)</th><th>English</th><th>சமசுகிருதம் (<span class="k" data-tip="சமசுகிருதம்: sutra · constant">சூத்திரம்</span>)</th></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: mukhya · main">முதன்மை</span> / <span class="k" data-tip="சமசுகிருதம்: mukhya · main">முக்கியம்</span></code></td><td>main</td><td><code><span class="k" data-tip="சமசுகிருதம்: mukhya · main">mukhya</span></code></td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: vitti · variable">மாறி</span></code></td><td>variable</td><td><code><span class="k" data-tip="சமசுகிருதம்: vitti · variable">vitti</span></code></td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: anka · integer">எண்</span></code></td><td>integer</td><td><code><span class="k" data-tip="சமசுகிருதம்: anka · integer">anka</span></code></td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: sutra · constant">நிலையான</span></code></td><td>constant</td><td><code><span class="k" data-tip="சமசுகிருதம்: sutra · constant">sutra</span></code></td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: yadi · if">எனில்</span> ... <span class="k" data-tip="சமசுகிருதம்: anyatra · else">இல்லையெனில்</span></code></td><td>if ... else</td><td><code><span class="k" data-tip="சமசுகிருதம்: yadi · if">yadi</span> ... <span class="k" data-tip="சமசுகிருதம்: anyatra · else">anyatra</span></code></td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: yavat · while">வரை</span></code></td><td>while</td><td><code><span class="k" data-tip="சமசுகிருதம்: yavat · while">yavat</span></code></td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: punaravartana · for">மீண்டும்</span> x = 1 <span class="k" data-tip="சமசுகிருதம்: to · range-to">முதல்</span> 5</code></td><td>for x = 1 <span class="k" data-tip="சமசுகிருதம்: to · range-to">to</span> 5</td><td><code><span class="k" data-tip="சமசுகிருதம்: punaravartana · for">punaravartana</span> ... <span class="k" data-tip="சமசுகிருதம்: to · range-to">to</span></code></td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: prakriya · function">செயல்</span> / <span class="k" data-tip="சமசுகிருதம்: prakriya · function">சார்பு</span></code></td><td>function</td><td><code><span class="k" data-tip="சமசுகிருதம்: prakriya · function">prakriya</span></code></td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: pratiyati · return">திரும்ப</span></code></td><td>return</td><td><code><span class="k" data-tip="சமசுகிருதம்: pratiyati · return">pratiyati</span></code></td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: likha · print">எழுது</span></code></td><td>print</td><td><code><span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span></code></td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: grahan · input">படி</span></code></td><td>input</td><td><code><span class="k" data-tip="சமசுகிருதம்: grahan · input">grahan</span></code></td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: krama · break">வரிசை</span></code></td><td>break</td><td><code><span class="k" data-tip="சமசுகிருதம்: krama · break">krama</span></code></td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: uddeshya · continue">தொடர்</span></code></td><td>continue</td><td><code><span class="k" data-tip="சமசுகிருதம்: uddeshya · continue">uddeshya</span></code></td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: pankti · array">வரிசைப்பட</span></code></td><td>array</td><td><code><span class="k" data-tip="சமசுகிருதம்: pankti · array">pankti</span></code></td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: purna · true">மெய்</span> / <span class="k" data-tip="சமசுகிருதம்: shunya · false / null">பொய்</span></code></td><td>true / false</td><td><code><span class="k" data-tip="சமசுகிருதம்: purna · true">purna</span> / <span class="k" data-tip="சமசுகிருதம்: shunya · false / null">shunya</span></code></td></tr>
+</table>
+
+<p>இப்போது ஒரு முழு தமிழ் நிரல் — <b>எல்லா சொற்களும் தமிழில்</b>:</p>
+<pre><code># எனது முழு தமிழ் நிரல்
+<span class="k" data-tip="சமசுகிருதம்: mukhya · main">முதன்மை</span>()
+    <span class="k" data-tip="சமசுகிருதம்: vitti · variable">மாறி</span> விகிதம் = 9
+    <span class="k" data-tip="சமசுகிருதம்: likha · print">எழுது</span>("வணக்கம் உலகம்")
+    <span class="k" data-tip="சமசுகிருதம்: punaravartana · for">மீண்டும்</span> i = 1 <span class="k" data-tip="சமசுகிருதம்: to · range-to">முதல்</span> 3 {
+        <span class="k" data-tip="சமசுகிருதம்: likha · print">எழுது</span>(விகிதம் * i)
+    }
+    <span class="k" data-tip="சமசுகிருதம்: yadi · if">எனில்</span> (விகிதம் > 5) {
+        <span class="k" data-tip="சமசுகிருதம்: likha · print">எழுது</span>("பெரிய <span class="k" data-tip="சமசுகிருதம்: anka · integer">எண்</span>")
+    } <span class="k" data-tip="சமசுகிருதம்: anyatra · else">இல்லையெனில்</span> {
+        <span class="k" data-tip="சமசுகிருதம்: likha · print">எழுது</span>("சிறிய <span class="k" data-tip="சமசுகிருதம்: anka · integer">எண்</span>")
+    }</code></pre>
+<pre><code>$ sutram --lang tamil prog.sm prog.bin
+Language pack loaded: tamil
+OK: compiled 436 bytes
+$ ./prog.bin
+வணக்கம் உலகம்9
+18
+27
+பெரிய <span class="k" data-tip="சமசுகிருதம்: anka · integer">எண்</span></code></pre>
+<p>பிழைகளும் தமிழில் வரும்: <code><span class="k" data-tip="சமசுகிருதம்: sutra · constant">சூத்திரம்</span> பிழை: வரி 4 அருகில் டோக்கன் ...</code></p>
+<div class="note"><b>10 மொழித் தொகுப்புகள்:</b> குஜராத்தி, இந்தி, தெலுங்கு, வங்காளம், தமிழ், மராத்தி, கன்னடம், மலையாளம், பஞ்சாபி, ஒடியா. ஒரு சொல்லை மாற்ற விரும்பினால் <code>lang/tamil.lang</code> கோப்பில் சொல்லைச் சேர்க்கவும்.</div>
+</div>
+
+<div class="ch" id="ch12"><h2>12. பிழைகள் மற்றும் பிழைத்திருத்தம் <span class="en-gloss">(Errors and debugging)</span></h2>
+<pre><code>$ ./sutram_compiler galat.sm out.bin
+
+Sutram Error: parse error at line 4 near token '<span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>'
+Hint: check the keyword spelling and syntax near this spot.
+      Run 'sutram -i' and type 'sahayata' for help.</code></pre>
+</div>
+<div class="ch" id="ch13"><h2>13. முழு மேற்கோள் <span class="en-gloss">(Complete reference)</span></h2>
+
+<table>
+<tr><th>குறிச்சொல் / Keyword</th><th>Meaning</th></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: mukhya · main">mukhya</span>()</code></td><td>main() — program entry</td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: vitti · variable">vitti</span></code></td><td>variable declaration</td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: anka · integer">anka</span></code></td><td>integer type</td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: pankti · array">pankti</span></code></td><td>array (a row)</td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: parigrah · boolean">parigrah</span></code></td><td>boolean type</td></tr>
+<tr><td><code>sankhya</code></td><td>4×64-bit vector type</td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: sutra · constant">sutra</span></code></td><td>constant</td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: yadi · if">yadi</span> ... <span class="k" data-tip="சமசுகிருதம்: anyatra · else">anyatra</span></code></td><td>if ... else</td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: guna · multiply (*)">guna</span> / <span class="k" data-tip="சமசுகிருதம்: bhavana · condition">bhavana</span></code></td><td>switch / case</td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: punaravartana · for">punaravartana</span> i = a <span class="k" data-tip="சமசுகிருதம்: to · range-to">to</span> b</code></td><td>for loop</td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: yavat · while">yavat</span></code></td><td>while loop</td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: krama · break">krama</span> / <span class="k" data-tip="சமசுகிருதம்: uddeshya · continue">uddeshya</span></code></td><td>break / continue</td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: prakriya · function">prakriya</span> / <span class="k" data-tip="சமசுகிருதம்: pratiyati · return">pratiyati</span></code></td><td>function / return</td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: srijana · enum">srijana</span></code></td><td>enum</td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: rachana · struct">rachana</span></code></td><td>struct</td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: ayojan · include">ayojan</span></code></td><td>import</td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span></code></td><td>print</td></tr>
+<tr><td><code>nirmmita</code></td><td>allocate memory</td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: purna · true">purna</span> / <span class="k" data-tip="சமசுகிருதம்: shunya · false / null">shunya</span></code></td><td>true / false</td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: nishedha · negation (-)">nishedha</span></code></td><td>assert</td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: nishkriya · inline assembly">nishkriya</span></code></td><td>இன்லைன் இயந்திரக் குறியீடு</td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: lkhb · print (no newline)">lkhb</span></code></td><td>புதிய வரியில்லாமல் அச்சிடுதல்</td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: grahan · input">grahan</span></code></td><td>உள்ளீடு படித்தல் (EOF-இல் -1)</td></tr>
+<tr><td><code># / //</code></td><td>குறிப்புகள்</td></tr>
+</table>
+<h3>தொகுப்பி இயக்குதல்</h3>
+<pre><code>sutram input.sm output.bin            <span class="cm"># கம்பைல்</span>
+sutram --lang tamil in.sm out.bin    <span class="cm"># மொழித் தொகுப்புகுடன்</span>
+sutram -i                            <span class="cm"># இண்டராக்டிவ் ஓடு</span></code></pre>
+</div>
+
+<div class="ch" id="ch14">
+<h2>14. புதிய அம்சங்கள்: v22 <span class="en-gloss">(New features)</span></h2>
+
+<h3>குறிப்புகள் (Comments)</h3>
+<p>நிரலில் குறிப்பு எழுத இரண்டு வழிகள் — <code>#</code> (ஹாஷ்) மற்றும் <code>//</code> (இரட்டை ஸ்லாஷ்)। தொகுப்பி இவற்றை முழுமையாக புறக்கணிக்கிறது.</p>
+<pre><code># இது ஹாஷ் குறிப்பு
+<span class="k" data-tip="சமசுகிருதம்: vitti · variable">vitti</span> x = 10  # குறியீட்டுக்குப் பின்னும் எழுதலாம்
+// இது ஸ்லாஷ் குறிப்பு
+<span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>(x)</code></pre>
+
+<h3>கூட்டு ஒதுக்கீடு (Compound Assignment)</h3>
+<pre><code><span class="k" data-tip="சமசுகிருதம்: vitti · variable">vitti</span> x = 100
+x += 50   <span class="cm"># 150</span>
+x -= 30   <span class="cm"># 120</span>
+x *= 2    <span class="cm"># 240</span>
+x /= 4    <span class="cm"># 60</span>
+x %= 7    <span class="cm"># 4</span></code></pre>
+
+<h3>அதிகரிப்பு / குறைப்பு (++ / --)</h3>
+<pre><code><span class="k" data-tip="சமசுகிருதம்: vitti · variable">vitti</span> n = 5
+n++      <span class="cm"># n = 6</span>
+n--      <span class="cm"># n = 5</span></code></pre>
+
+<h3>சரம் <span class="k" data-tip="சமசுகிருதம்: ayojan · include">இணைப்பு</span> (String Concatenation)</h3>
+<p>தொகுக்கும் நேரத்திலேயே சரங்களும் எண்களும் இணைகின்றன:</p>
+<pre><code><span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>("வணக்கம் " + "உலகம்\n")
+<span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>("பதில்: " + 42 + "\n")
+<span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>(7 + " நாட்கள்\n")</code></pre>
+
+<h3><span class="k" data-tip="சமசுகிருதம்: lkhb · print (no newline)">lkhb</span>() — புதிய வரியில்லாமல் அச்சிடுதல்</h3>
+<p><code><span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>()</code> எண்ணுக்குப் பின் புதிய வரியை சேர்க்கிறது; <code><span class="k" data-tip="சமசுகிருதம்: lkhb · print (no newline)">lkhb</span>()</code> சேர்க்காது — அட்டவணைகளுக்கு:</p>
+<pre><code><span class="k" data-tip="சமசுகிருதம்: punaravartana · for">punaravartana</span> i = 1 <span class="k" data-tip="சமசுகிருதம்: to · range-to">to</span> 5 {
+    <span class="k" data-tip="சமசுகிருதம்: lkhb · print (no newline)">lkhb</span>(i)
+    <span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>(" ")
+}</code></pre>
+
+<h3>இறங்கு மடக்குகள் (Descending Loops)</h3>
+<p>தொடக்க மதிப்பு இறுதி மதிப்பை விட பெரியதாக இருந்தால், எண்ணிக்கை தானாகக் குறையும்:</p>
+<pre><code><span class="k" data-tip="சமசுகிருதம்: punaravartana · for">punaravartana</span> i = 5 <span class="k" data-tip="சமசுகிருதம்: to · range-to">to</span> 1 {
+    <span class="k" data-tip="சமசுகிருதம்: lkhb · print (no newline)">lkhb</span>(i)
+    <span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>(" ")
+}    <span class="cm"># வெளியீடு: 5 4 3 2 1</span></code></pre>
+
+<h3><span class="k" data-tip="சமசுகிருதம்: nishkriya · inline assembly">nishkriya</span>() — இன்லைன் இயந்திரக் குறியீடு</h3>
+<p>மூல x86-64 பைட்டுகளை நேரடியாக உருவாகும் குறியீட்டில் சேர்க்கலாம்:</p>
+<pre><code><span class="k" data-tip="சமசுகிருதம்: nishkriya · inline assembly">nishkriya</span>("B8 3C 00 00 00")  <span class="cm"># mov eax, 60</span>
+<span class="k" data-tip="சமசுகிருதம்: nishkriya · inline assembly">nishkriya</span>("BF 2A 00 00 00")  <span class="cm"># mov edi, 42</span>
+<span class="k" data-tip="சமசுகிருதம்: nishkriya · inline assembly">nishkriya</span>("0F 05")            <span class="cm"># syscall → exit(42)</span></code></pre>
+
+<h3><span class="k" data-tip="சமசுகிருதம்: grahan · input">grahan</span>() மற்றும் உள்ளீட்டின் முடிவு</h3>
+<p>உள்ளீடு முடிந்தால் <code><span class="k" data-tip="சமசுகிருதம்: grahan · input">grahan</span>()</code> இப்போது <code>-1</code> தருகிறது, இதனால் நிரல் சரியாக முடியும்:</p>
+<pre><code><span class="k" data-tip="சமசுகிருதம்: vitti · variable">vitti</span> a = <span class="k" data-tip="சமசுகிருதம்: grahan · input">grahan</span>()
+<span class="k" data-tip="சமசுகிருதம்: yadi · if">yadi</span> (a == -1) {
+    <span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>("உள்ளீடு முடிந்தது\n")
+    <span class="k" data-tip="சமசுகிருதம்: krama · break">krama</span>
+}</code></pre>
+</div>
+
+
+<h3>v29 – v41</h3>
+<p>இந்த பதிப்பு எழுதப்பட்டதிலிருந்து, Sutram-ல் ternary operator, do-while loop, array length மற்றும் bounds checking, ஆறு arguments வரையிலான functions, மற்றும் ஒரு standard library ஆகியவை சேர்க்கப்பட்டுள்ளன. இப்போது out-of-range array index அமைதியாக data-வை corrupt செய்வதற்குப் பதிலாக, ஒரு தெளிவான error-ஐக் காட்டுகிறது. மேலும், Windows programs-ல் keyboard input வேலை செய்கிறது. கீழே உள்ள ஒவ்வொரு example-ம் இந்த project-ன் சொந்த test suite-ஆல் சரிபார்க்கப்பட்டுள்ளது.</p>
+<pre><code>ayojan math
+
+mukhya()
+    likha(gcd(48, 36))
+    vitti n = 7
+    likha(n &gt; 5 ? 100 : 200)
+    vitti i = 0
+    kuru {
+        i = i + 1
+    } yavat (i &lt; 3)
+    likha(i)
+    pankti a[3]
+    likha(pankti_len(a))
+</code></pre>
+
+<h3>The standard library</h3>
+<p>Sutram ஒரு சிறிய ஸ்டாண்டர்ட் லைப்ரரியை வழங்குகிறது, அதை நீங்கள் <code>ayojan</code> மூலம் சேர்த்துக்கொள்ளலாம். இந்த மாட்யூல் கம்பைல் செய்யும்போதே உங்கள் ப்ரோக்ராமில் இன்லைன் செய்யப்படுவதால், ரன்டைம் டிபென்டன்சி எதுவும் இல்லை - லைப்ரரி கோட் உங்கள் பைனரியின் ஒரு பகுதியாகவே மாறிவிடும். இன்று பன்னிரண்டு மாட்யூல்கள் கிடைக்கின்றன; முழுப் பட்டியல் <code>docs/sutram-stdlib.html</code>-இல் உள்ளது.</p>
+<table>
+<tr><th>module</th><th>include with</th><th>functions</th></tr>
+<tr><td><code>math</code></td><td><code>ayojan math</code></td><td>15 functions &mdash; <code>sq</code> <code>square</code> <code>cube</code> <code>double</code> <code>triple</code> <code>inc</code> <code>abs_val</code> <code>min2</code> <code>max2</code> <code>gcd</code> <code>lcm</code> <code>power</code> <code>fact</code> <code>is_prime</code> <code>sum_to</code></td></tr>
+<tr><td><code>num</code></td><td><code>ayojan num</code></td><td>10 functions &mdash; <code>is_even</code> <code>is_odd</code> <code>digit_count</code> <code>digit_sum</code> <code>reverse_num</code> <code>is_palindrome</code> <code>clamp</code> <code>fib</code> <code>is_perfect</code> <code>collatz_steps</code></td></tr>
+<tr><td><code>sort</code></td><td><code>ayojan sort</code></td><td>11 functions &mdash; <code>swap</code> <code>bubble_sort</code> <code>shell_sort</code> <code>reverse_arr</code> <code>min_of</code> <code>max_of</code> <code>sum_of</code> <code>find_linear</code> <code>count_of</code> <code>is_sorted</code> <code>binary_search</code></td></tr>
+<tr><td><code>string</code></td><td><code>ayojan string</code></td><td>13 functions &mdash; <code>str_len</code> <code>char_code_at</code> <code>is_digit_char</code> <code>is_upper_char</code> <code>is_lower_char</code> <code>is_letter_char</code> <code>is_space_char</code> <code>count_vowels</code> <code>count_char</code> <code>find_char</code> <code>is_all_digits</code> <code>upper_code</code> <code>lower_code</code></td></tr>
+</table>
+<pre><code>ayojan math
+
+mukhya()
+    likha(gcd(48, 36))
+    likha(" ")
+    likha(fact(5))
+    likha(" ")
+    likha(is_prime(97))
+    likha("\n")
+</code></pre>
+<p><i>Note: a program can currently include at most two modules &mdash; a compiler limit that is being fixed.</i></p>
+<div class="ch" id="ch15">
+<h2>15. தொழில்நுட்பச் சொற்களஞ்சியம் (Technical Glossary) <span class="en-gloss">(Technical glossary)</span></h2>
+<p>இந்த நூலில் பயன்படுத்தப்படும் தொழில்நுட்பச் சொற்களின் நிலைத்த தமிழ் வடிவம் — மற்றும் அதற்கான காரணம்:</p>
+
+<p><b>Program → நிரல்</b> — கணினி செய்ய வேண்டிய பணிகளின் <span class="k" data-tip="சமசுகிருதம்: krama · break">வரிசை</span>. தமிழ்நாடு அரசு பாடநூல்களிலும் கணினி இதழ்களிலும் "program"-க்குப் பயன்படும் நிலைத்த சொல்.</p>
+
+<p><b>Compiler → தொகுப்பி</b> — மூல நிரலை இயந்திர மொழியாக மாற்றும் மொழிபெயர்ப்பான். "தொகுத்து" (ஒன்றாகச் சேர்த்து) உருவான சொல்.</p>
+
+<p><b>Computer → கணினி</b> — "கணித்தல்" (கணக்கிடுதல்) என்ற வேர்ச்சொல்லிலிருந்து உருவானது; அரசு ஆவணங்களிலும் பாடநூல்களிலும் நிலைத்த சொல்.</p>
+
+<p><b>Keyword → குறிச்சொல்</b> — மொழிக்கென ஒதுக்கப்பட்ட சிறப்புச் சொல், எ.கா. <code><span class="k" data-tip="சமசுகிருதம்: mukhya · main">mukhya</span></code>, <code><span class="k" data-tip="சமசுகிருதம்: vitti · variable">vitti</span></code>.</p>
+
+<p><b>Variable → <span class="k" data-tip="சமசுகிருதம்: vitti · variable">மாறி</span></b> — மதிப்பு மாறக்கூடிய பெயரிடப்பட்ட நினைவக இடம். கணிதப் பாடநூல்களில் x, y மாறிகளுக்கு நிலைத்த சொல்.</p>
+
+<p><b>Constant → மாறிலி</b> — "<span class="k" data-tip="சமசுகிருதம்: vitti · variable">மாறி</span>"யின் இணைச்சொல் போல அமைந்தது: மாறாத மதிப்பு. "மாறா <span class="k" data-tip="சமசுகிருதம்: anka · integer">எண்</span>" என்பதும் பயன்பாட்டில் உண்டு.</p>
+
+<p><b>Function → <span class="k" data-tip="சமசுகிருதம்: prakriya · function">சார்பு</span></b> — உள்ளீட்டிலிருந்து வெளியீட்டின் விதி; கணிதத்திலிருந்து வந்த <span class="k" data-tip="சமசுகிருதம்: sutra · constant">நிலையான</span> சொல்.</p>
+
+<p><b>Loop → <span class="k" data-tip="சமசுகிருதம்: punaravartana · for">மடக்கு</span></b> — திரும்பத் <span class="k" data-tip="சமசுகிருதம்: pratiyati · return">திரும்ப</span> இயங்கும் <span class="k" data-tip="சமசுகிருதம்: rachana · struct">அமைப்பு</span>; "மீள் சுற்று" என்பதும் வழக்கில் உண்டு.</p>
+
+<p><b>Array → <span class="k" data-tip="சமசுகிருதம்: krama · break">வரிசை</span></b> — வரிசையாக அடுக்கிய மதிப்புகள். சூத்ரமில் இதற்கு <code><span class="k" data-tip="சமசுகிருதம்: pankti · array">pankti</span></code> (<span class="k" data-tip="சமசுகிருதம்: krama · break">வரிசை</span>/பங்க்தி) குறிச்சொல் உள்ளது.</p>
+
+<p><b>Memory → நினைவகம்</b> — தரவைச் சேமித்து வைக்கும் இடம்; "நினைவு" என்ற வேரிலிருந்து.</p>
+
+<p><b>Machine Code → இயந்திர மொழி</b> — CPU நேரடியாக இயக்கக்கூடிய இரும (binary) குறியீடு. <span class="k" data-tip="சமசுகிருதம்: sutra · constant">சூத்திரம்</span> நேரடியாக இதிலேயே தொகுக்கப்படுகிறது.</p>
+
+<p><b>String → சரம்</b> — எழுத்துகளின் <span class="k" data-tip="சமசுகிருதம்: uddeshya · continue">தொடர்</span>; "நூல்" என்பதன் இணைச்சொல். சமசுகிருதத்தில் "<span class="k" data-tip="சமசுகிருதம்: sutra · constant">சூத்திரம்</span>" என்றாலே நூல்/இழை — எனவே மொழியின் பெயரே <span class="k" data-tip="சமசுகிருதம்: sutra · constant">சூத்திரம்</span>!</p>
+
+<p><b>Error → பிழை</b> — நிரலில் ஏற்படும் தவறு; தொகுப்பி அதை <span class="k" data-tip="சமசுகிருதம்: krama · break">வரிசை</span> எண்ணுடன் காட்டும்.</p>
+
+<p><b>Debugging → பிழைத்திருத்தம்</b> — பிழையைக் கண்டறிந்து சரிசெய்யும் செயல்முறை.</p>
+
+<p><b>Language → மொழி</b> — நிரலாக்க மொழி: மனிதன் கணினிக்குக் கட்டளையிடும் முறை.</p>
+</div>
+
+<div class="ch" id="ch16">
+<h2>16. சமசுகிருத வேர்கள்: உங்கள் மொழியில் வாழும் சொற்கள் <span class="en-gloss">(Sanskrit roots)</span></h2>
+<p>சூத்ரமின் ஒவ்வொரு குறிச்சொல்லும் சமசுகிருத வேர் ஒன்றிலிருந்து வருகிறது — பல சொற்கள் தமிழிலும் அப்படியே வழக்கில் உள்ளன. நீங்கள் <code><span class="k" data-tip="சமசுகிருதம்: shunya · false / null">shunya</span></code> என எழுதும்போது, அரபு வழியாக ஆங்கிலத்தின் <b>zero</b> ஆன அதே சொல்லைத் தொடுகிறீர்கள்.</p>
+
+<table>
+<tr><th>குறிச்சொல்</th><th>சமசுகிருத வேர் பொருள்</th><th>உங்கள் மொழியில்</th></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: mukhya · main">mukhya</span></code></td><td>முகம் = முன்னால் உள்ளது, தலைமை</td><td>தமிழ் "<span class="k" data-tip="சமசுகிருதம்: mukhya · main">முக்கியம்</span>" — அப்படியே!</td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: vitti · variable">vitti</span></code></td><td>வித் = அறிதல்</td><td>"வித்தகம்" (நிபுணத்துவம்) ஒப்புமை</td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: anka · integer">anka</span></code></td><td>அங்க = <span class="k" data-tip="சமசுகிருதம்: anka · integer">எண்</span> குறியீடு</td><td>தமிழ் "<span class="k" data-tip="சமசுகிருதம்: anka · integer">எண்</span>" (தூய தமிழ்)</td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: yadi · if">yadi</span></code></td><td>யதி = <span class="k" data-tip="சமசுகிருதம்: yadi · if">எனில்</span></td><td>தமிழ் "<span class="k" data-tip="சமசுகிருதம்: yadi · if">எனின்</span> / <span class="k" data-tip="சமசுகிருதம்: yadi · if">எனில்</span>"</td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: anyatra · else">anyatra</span></code></td><td>வேறு இடத்தில்</td><td>"வேறு" என்பதுடன் ஒப்புமை</td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: yavat · while">yavat</span></code></td><td>அளவுக்கு, <span class="k" data-tip="சமசுகிருதம்: yavat · while">வரை</span></td><td>தமிழ் "<span class="k" data-tip="சமசுகிருதம்: yavat · while">வரை</span>"</td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: punaravartana · for">punaravartana</span></code></td><td><span class="k" data-tip="சமசுகிருதம்: punaravartana · for">மீண்டும்</span> <span class="k" data-tip="சமசுகிருதம்: punaravartana · for">மீண்டும்</span> வருதல்</td><td>"மீள்சுற்று"; "புனரவர்த்தனை"</td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: krama · break">krama</span></code></td><td>ஒழுங்கு, <span class="k" data-tip="சமசுகிருதம்: krama · break">வரிசை</span></td><td>தமிழ் "கிரமம்" — அப்படியே வழக்கில்!</td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: prakriya · function">prakriya</span></code></td><td>செயலின் முறை</td><td>தமிழ் "செயல்முறை" (மொழிபெயர்ப்பு)</td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: purna · true">purna</span></code></td><td>நிறைந்த</td><td>தமிழ் "<span class="k" data-tip="சமசுகிருதம்: purna · true">பூரணம்</span>" — அப்படியே!</td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: shunya · false / null">shunya</span></code></td><td>வெறுமை</td><td>"பூஜ்யம்" — சமசுகிருதத்திலிருந்து; தூய தமிழ் "சுழி"</td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span></code></td><td>எழுதுதல்</td><td>தமிழ் "<span class="k" data-tip="சமசுகிருதம்: likha · print">எழுது</span>" (தூய தமிழ் வேர்)</td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: grahan · input">grahan</span></code></td><td>பெறுதல், ஏற்றல்</td><td>தமிழ் "ஏற்றல் / பெறுதல்"</td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: pankti · array">pankti</span></code></td><td><span class="k" data-tip="சமசுகிருதம்: krama · break">வரிசை</span>, கூட்டம்</td><td>தமிழ் "<span class="k" data-tip="சமசுகிருதம்: krama · break">வரிசை</span>"</td></tr>
+<tr><td><code><span class="k" data-tip="சமசுகிருதம்: sutra · constant">sutra</span></code></td><td>நூல், இழை</td><td>தமிழ் "<span class="k" data-tip="சமசுகிருதம்: sutra · constant">சூத்திரம்</span>" — கணிதச் <span class="k" data-tip="சமசுகிருதம்: sutra · constant">சூத்திரம்</span>!</td></tr>
+</table>
+</div>
+
+<div class="ch" id="ch17">
+<h2>17. விண்டோஸில் நிறுவல் — முழு வழிகாட்டி</h2>
+<p>சூத்திரம் விண்டோஸை லினக்ஸைப் போலவே முதன்மை இலக்காகக் கருதுகிறது. முந்தைய
+அத்தியாயங்கள் அனைத்தும் அதேபோல் செயல்படும்; <b>நிறுவல் படி</b> மட்டுமே மாறுகிறது,
+அதை இந்த அத்தியாயம் முழுமையாக விளக்குகிறது.</p>
+
+<h3>17.1 உங்களுக்குக் கிடைப்பது</h3>
+<ul>
+<li><code>sutram.exe</code> — சொந்த Win64 நிரலாக (PE32+) உள்ள தொகுப்பி.</li>
+<li>தொகுக்கப்பட்ட நிரல்கள் உண்மையான விண்டோஸ் செயலிகள், ஸ்கிரிப்ட்கள் அல்ல.</li>
+<li>WSL, லினக்ஸ் VM, பைதான் அல்லது C இயக்கநேரம் தேவையில்லை.</li>
+<li><b>ஒரே தொகுப்பி மூலத்திலிருந்து</b> விண்டோஸ், லினக்ஸ் இரண்டும் உருவாகின்றன,
+எனவே மொழியின் நடத்தை இரண்டிலும் ஒன்றே.</li>
+</ul>
+
+<h3>17.2 தேவைகள்</h3>
+<ul>
+<li>விண்டோஸ் 10 அல்லது 11, 64-பிட்.</li>
+<li>சாதாரண பயன்பாட்டுக்கு வேறு எதுவும் தேவையில்லை. தொகுப்பியை நீங்களே உருவாக்கினால்
+மட்டுமே NASM தேவை.</li>
+</ul>
+
+<h3>17.3 நிறுவல் — முறை அ: வழிகாட்டி (பரிந்துரை)</h3>
+<ol>
+<li><code>Sutram-Setup.exe</code>-ஐப் பெறவும்.</li>
+<li>அதை <b>இரட்டை-கிளிக்</b> செய்யவும். புதிய நிரலுக்கு விண்டோஸ் SmartScreen
+எச்சரிக்கை காட்டலாம்: <i>More info</i> → <i>Run anyway</i> தேர்ந்தெடுக்கவும்.</li>
+<li>வழிகாட்டி <b>இலக்கு கோப்புறையைக்</b> கேட்கும். இயல்புநிலை
+<code>C:\Program Files\Sutram</code>. அதை ஏற்கவும், அல்லது <i>Browse</i> மூலம் உங்கள்
+கோப்புறையைத் தேர்ந்தெடுக்கவும்.</li>
+<li>எந்தக் கோப்புறையிலிருந்தும் <code>sutram</code> எனத் தட்டச்சு செய்ய விரும்பினால்
+<b>“Add Sutram to PATH”</b>-ஐத் தேர்ந்தெடுக்கவும். இது பரிந்துரைக்கப்படுகிறது.</li>
+<li>விரும்பினால் <b>Start Menu</b> உள்ளீடு, <b>Desktop குறுக்குவழி</b> தேர்ந்தெடுக்கவும்.</li>
+<li><b>Install</b> அழுத்தவும். முடிந்ததும் மூடவும்.</li>
+</ol>
+<p>பின்னர் சூத்திரம் <b>Apps &amp; Features</b>-இல் பதிவாகும், எனவே Settings-இலிருந்து
+பழுதுபார்த்தல், மேம்படுத்தல் அல்லது நீக்கம் செய்யலாம்.</p>
+
+<h3>17.4 நிறுவல் — முறை ஆ: எடுத்துச் செல்லக்கூடிய கோப்புறை</h3>
+<ol>
+<li><code>sutram-windows-native.zip</code>-ஐ எங்கும் திறக்கவும், எ.கா. <code>C:\Sutram</code>.</li>
+<li>கோப்புறையை ஒன்றாக வைத்திருங்கள் — மொழித் தொகுப்புகள் <code>sutram.exe</code>-க்கு
+அருகில் <code>lang\</code>-இல் உள்ளன.</li>
+<li>அதே கோப்புறையில் முனையத்தைத் திறக்கவும் (Shift + வலது-கிளிக் → <i>Open in Terminal</i>).</li>
+<li>விரும்பினால் <code>install.bat</code>-ஐ ஒருமுறை இயக்கவும் — அது கோப்புறையை PATH-இல் சேர்க்கும்.</li>
+</ol>
+
+<h3>17.5 நிறுவல் — முறை இ: மூலத்திலிருந்து உருவாக்கு</h3>
+<p>உருவாக்குநர்களுக்கு. NASM மற்றும் PE-திறன் கொண்ட இணைப்பி (GNU <code>ld</code>, MSVC,
+lld-link) தேவை:</p>
+<pre><code>nasm -f win64 -dWINDOWS -I. src\sutram_compiler.asm -o sutram.obj
+ld -mi386pep --entry=_start -o sutram.exe sutram.obj
+</code></pre>
+<p>வழிகாட்டி நிறுவியையும் உருவாக்க வேண்டுமெனில் MinGW GCC மற்றும் PowerShell தேவை;
+ஸ்கிரிப்ட்கள் <code>windows\</code>-இல் உள்ளன (<code>BUILD-WINDOWS-SETUP.cmd</code>).</p>
+
+<h3>17.6 PATH-ஐப் புரிந்துகொள்ளுதல்</h3>
+<p><b>PATH</b> என்பது நீங்கள் ஒரு கட்டளையைத் தட்டச்சு செய்யும்போது விண்டோஸ் தேடும்
+கோப்புறைகளின் பட்டியல். சூத்திரத்தின் கோப்புறை PATH-இல் இருந்தால் எங்கிருந்தும்
+<code>sutram</code> எனத் தட்டச்சு செய்யலாம்; இல்லையெனில் முழுப் பாதையைத் தட்டச்சு செய்ய
+வேண்டும் அல்லது அந்தக் கோப்புறையில் இருக்க வேண்டும்.</p>
+<p>சரிபார்க்க: <b>புதிய</b> முனையத்தைத் திறந்து <code>sutram --version</code> இயக்கவும்.
+பதிப்பு தெரிந்தால் PATH சரி. இல்லையெனில் PATH விருப்பத்துடன் நிறுவியை மீண்டும்
+இயக்கவும், அல்லது <code>sutram.exe</code> உள்ள கோப்புறையிலிருந்து இயக்கவும்.</p>
+
+<h3>17.7 உங்கள் முதல் விண்டோஸ் நிரல்</h3>
+<p><code>namaste.sm</code> கோப்பை உருவாக்கவும்:</p>
+<pre><code># எனது முதல் விண்டோஸ் நிரல்
+mukhya()
+    likha("வணக்கம், விண்டோஸ்!")
+</code></pre>
+<p>தொகுத்து இயக்கவும்:</p>
+<pre><code>sutram.exe namaste.sm namaste.exe
+namaste.exe
+</code></pre>
+<p>வெளியீடு:</p>
+<pre><code>வணக்கம், விண்டோஸ்!
+</code></pre>
+<p><b>வெளியீட்டின் பெயரே இலக்கைத் தீர்மானிக்கிறது</b>: <code>.exe</code> விண்டோஸ் செயலி,
+<code>.bin</code> லினக்ஸ். ஒரு தொகுப்பி, இரண்டு இலக்குகள்.</p>
+
+<h3>17.8 உருவான .exe-இல் என்ன உள்ளது</h3>
+<p>தொகுக்கப்பட்ட நிரல் ஒரு PE32+ பிரிவு:</p>
+<pre><code>[PE தலைப்புகள்][சிறிய இயக்கநேரம்][உங்கள் தொகுக்கப்பட்ட குறியீடு]
+</code></pre>
+<p>இயக்கநேரம் தொடக்கத்தில் செயல்முறை-சூழல் தொகுதியில் நடந்து அதன் ஏற்றுமதி
+அட்டவணையைப் படித்து <code>kernel32</code>-ஐக் கண்டுபிடிக்கிறது, எனவே நிரலில்
+<b>இறக்குமதி அட்டவணையோ வெளிப்புறச் சார்போ இல்லை</b>. வெளியீடு, உள்ளீடு, வெளியேறுதல்
+ஆகியவற்றை <code>WriteFile</code>, <code>ReadFile</code>, <code>ExitProcess</code>-க்கு மாற்றுகிறது.
+சூத்திரத்தால் உருவான <code>.exe</code>-ஐ இயக்க எதுவும் நிறுவ வேண்டியதில்லை.</p>
+
+<h3>17.9 விண்டோஸில் மொழித் தொகுப்புகள்</h3>
+<p>சூத்திரம் இரண்டு இடங்களில் தேடுகிறது: தற்போதைய கோப்புறையைப் பொறுத்து
+<code>lang\&lt;name&gt;.lang</code>, பின் <code>%USERPROFILE%\.local\share\sutram\lang\</code>.
+இரண்டாம் இடத்தில் வைத்தால் எந்தக் கோப்புறையிலிருந்தும் செயல்படும்.</p>
+<pre><code>sutram.exe --lang gujarati prog.sm out.exe
+</code></pre>
+<p>பத்து தொகுப்புகள்: பெங்காலி, குஜராத்தி, இந்தி, கன்னடம், மலையாளம், மராத்தி, ஒடியா,
+பஞ்சாபி, தமிழ், தெலுங்கு. குறிச்சொற்களின் தேவநாகரி எழுத்துப்பிழையும் ஏற்கப்படும்.</p>
+
+<h3>17.10 கட்டளைக் குறிப்பு</h3>
+<table>
+<tr><th>கட்டளை</th><th>செயல்</th></tr>
+<tr><td><code>sutram.exe in.sm out.exe</code></td><td>விண்டோஸ் செயலியாகத் தொகு</td></tr>
+<tr><td><code>sutram.exe in.sm out.bin</code></td><td>லினக்ஸ் செயலியாகத் தொகு</td></tr>
+<tr><td><code>sutram.exe --lang gujarati in.sm out.exe</code></td><td>மொழித் தொகுப்புடன் தொகு</td></tr>
+<tr><td><code>sutram.exe -i</code></td><td>உரையாடல் ஷெல் (REPL)</td></tr>
+<tr><td><code>sutram.exe --version</code></td><td>பதிப்பைக் காட்டு</td></tr>
+<tr><td><code>out.exe</code></td><td>தொகுக்கப்பட்ட நிரலை இயக்கு</td></tr>
+</table>
+
+<h3>17.11 திட்டங்களை எங்கு வைப்பது</h3>
+<p>எங்கும் வைக்கலாம். இரண்டு பழக்கங்கள் சிக்கலைத் தவிர்க்கும்: மிக ஆழமான பாதைகளைத்
+தவிர்க்கவும், <b>இடைவெளி உள்ள பாதைகளை மேற்கோளில் வைக்கவும்</b> —
+<code>sutram.exe "C:\My Files\a.sm" "C:\out\a.exe"</code>. யூனிகோட் கோப்புறைப் பெயர்கள்
+செயல்படும்; தொகுப்பி கோப்புகளை விண்டோஸ் API மூலம் திறக்கிறது.</p>
+
+<h3>17.12 சிக்கல் தீர்த்தல்</h3>
+<table>
+<tr><th>அறிகுறி</th><th>காரணம்</th><th>தீர்வு</th></tr>
+<tr><td>“Unsupported 16-Bit Application” / “not a valid Win32 application”</td><td>கோப்பு லினக்ஸ் ELF, PE அல்ல</td><td><code>.exe</code> பெயரில் தொகுக்கவும்; முதல் இரு பைட்டுகள் <code>4D 5A</code></td></tr>
+<tr><td>இயங்குகிறது, எதையும் அச்சிடவில்லை</td><td>பிரிவு வாசிப்பு-மட்டும் இருந்த பழைய கட்டமைப்பு</td><td>இந்தக் கட்டமைப்பைப் பயன்படுத்தவும்</td></tr>
+<tr><td><code>sutram</code> அடையாளம் தெரியவில்லை</td><td>PATH புதுப்பிக்கப்படவில்லை</td><td><b>புதிய</b> முனையம் திறக்கவும், அல்லது முழுப் பாதை தரவும்</td></tr>
+<tr><td>மொழித் தொகுப்பு கிடைக்கவில்லை</td><td><code>lang\</code> தொகுப்பிக்கு அருகில் இல்லை</td><td>சூத்திரம் கோப்புறையிலிருந்து இயக்கவும், அல்லது சுயவிவரக் கோப்புறையில் வைக்கவும்</td></tr>
+<tr><td>SmartScreen நிறுவியைத் தடுக்கிறது</td><td>புதிய, கையொப்பமிடப்படாத நிரல்</td><td><i>More info</i> → <i>Run anyway</i></td></tr>
+<tr><td>ஆன்டிவைரஸ் புதிய <code>.exe</code>-ஐக் குறிக்கிறது</td><td>புதிய பைனரி, கையொப்பம் இல்லை</td><td>அனுமதிக்கவும்; இது இறக்குமதியற்ற சாதாரண PE</td></tr>
+<tr><td>தொகுக்கப்பட்ட நிரல் இரட்டை-கிளிக்கில் எதுவும் செய்யவில்லை</td><td>இது console நிரல்; முனையம் தேவை</td><td>Command Prompt அல்லது PowerShell-இல் இயக்கவும்</td></tr>
+<tr><td>தொகுப்புப் பிழை உடனே மறைகிறது</td><td>console மிக விரைவாக மூடியது</td><td>முனையத்திலிருந்து இயக்கவும், அல்லது .bat-இல் <code>pause</code> சேர்க்கவும்</td></tr>
+</table>
+
+<h3>17.13 மேம்படுத்தல் மற்றும் நீக்கம்</h3>
+<p>மேம்படுத்த: புதிய <code>Sutram-Setup.exe</code>-ஐ இயக்கவும் — அது தற்போதைய நிறுவலைக்
+கண்டறிந்து பாதுகாப்பாக மாற்றும். நீக்க: <b>Settings → Apps → Installed apps → Sutram →
+Uninstall</b>. நீக்கி தான் நிறுவிய கோப்புகளை மட்டும் அகற்றும்; நீங்கள் உருவாக்கியவற்றை
+விட்டுவிடும்.</p>
+
+<h3>17.14 லினக்ஸ், விண்டோஸ் அருகருகே</h3>
+<table>
+<tr><th></th><th>லினக்ஸ்</th><th>விண்டோஸ்</th></tr>
+<tr><td>தொகுப்பி பைனரி</td><td>ELF (<code>sutram_compiler</code>)</td><td>PE (<code>sutram.exe</code>)</td></tr>
+<tr><td>வெளியீட்டு வடிவம்</td><td>ELF (<code>.bin</code>)</td><td>PE (<code>.exe</code>)</td></tr>
+<tr><td>நிறுவல்</td><td>ஒரு-வரி ஸ்கிரிப்ட் (<code>install.sh</code>)</td><td>வழிகாட்டி அல்லது கோப்புறை</td></tr>
+<tr><td>மொழித் தொகுப்புகள்</td><td><code>lang/</code>, பின் <code>$HOME/.local/share/sutram/lang/</code></td><td><code>lang\</code>, பின் <code>%USERPROFILE%\.local\share\sutram\lang\</code></td></tr>
+<tr><td>மொழியின் நடத்தை</td><td colspan="2">ஒன்றே — ஒரே மூலம், ஒரே குறிச்சொல், ஒரே பொருள்</td></tr>
+</table>
+
+<h3>17.15 விண்டோஸில் இன்னும் வரவேண்டியவை</h3>
+<p>இப்போது செயல்படுபவை: தொகுத்தல், <code>likha</code> மற்றும் <code>shabda</code>,
+கணிதம், மாறிகள், <code>yadi</code>/<code>anyatra</code>, <code>yavat</code>,
+<code>punaravartana</code>, <code>krama</code>/<code>uddeshya</code>, ஆறு
+தொகுதிகள் வரை சார்புகள், மறுநிகழ்வு, முன்கூட்டிய திரும்புதல், தொகுதிக் குறிப்புகள்,
+மொழித் தொகுப்புகள், பிழைச் செய்திகள்.</p>
+<p>Windows இல் விசைப்பலகை உள்ளீடு (<code>grahan</code>) இப்போது வேலை செய்கிறது: உருவாக்கப்பட்ட <code>.exe</code> லினக்ஸ் சிஸ்டம் காலுக்குப் பதிலாக எம்பெடட் ரன்டைம் (<code>ReadFile</code>) வழியாகப் படிக்கிறது. அணி (<code>pankti</code>) மற்றும் அமைப்பு (<code>rachana</code>) <code>VirtualAlloc</code> வழியாக நினைவகம் பெறுகின்றன. இன்னும் போர்ட் செய்யப்படவில்லை: நெட்வொர்க் பில்ட்-இன்கள். இன்டராக்டிவ் REPL உருவாக்கப்பட்டுள்ளது, மேலும் உண்மையான Windows மெஷினில் இதைச் சரிபார்க்க வேண்டியுள்ளது.</p>
+
+<h3>17.16 தத்துவம் — மாறவில்லை</h3>
+<p>தொகுப்பி ஒரே தூய-NASM மூலமாகவே இருக்கும்; C, பைதான் அல்லது இயக்கநேரச் சார்பு
+இல்லை; சமசுகிருதமே மொழியின் மையம், ஒவ்வொரு இந்திய மொழிக்கும் சொந்தச் சொற்கள்;
+உருவான நிரல்கள் சொந்த இயந்திரக் குறியீடு, ஒருபோதும் விளக்கப்படுவதில்லை; இறுதிப்
+பயனருக்கு எந்தக் கருவித்தொகுப்பும் தேவையில்லை. நிறுவி வெறும் பொதியிடல் —
+அது மொழியின் பகுதி அல்ல.</p>
+</div>
+
+<div class="ch" id="whatsnew">
+  <h2>18. புதிதாக என்ன உள்ளது — தற்போதைய மொழி</h2>
+  <p>இந்தப் புத்தகம் முழுமையாக எழுதப்பட்ட பிறகு இந்தப் அத்தியாயம் சேர்க்கப்பட்டது. இதில் உள்ள அனைத்தும் இன்று மொழியின் ஒரு பகுதியாகும். இவை ஒருமுறை மட்டுமே தொகுக்கப்படாமல், சரியான பதில்களுடன் சரிபார்க்கப்பட்டுள்ளன. முந்தைய அத்தியாயங்களில் இது குறிப்பிடப்படவில்லை என்றால், இந்தப் புதிய அத்தியாயமே தற்போதைய நிலையைக் குறிக்கும்.</p>
+  <h3>Floating-point எண்கள் — dasham</h3>
+  <p>ஒரு variable 64-bit IEEE-754 floating-point எண்ணை வைத்திருக்கலாம். இதை dasham மூலம் அறிவிக்கவும்; தசமப் புள்ளி (decimal point) கொண்ட ஒரு literal தானாகவே float ஆகிவிடும்.</p>
+  <p>Floats, integers உடன் கலக்கப்படும் (integer promote செய்யப்படும்), நான்கு arithmetic operators மற்றும் ஆறு comparisons-ஐ ஆதரிக்கும். மேலும், ஆறு தசம இடங்களுடன் print ஆகும். Functions ஒரு float-ஐ return செய்ய முடியும் — அவை return செய்யும் மதிப்பை வைத்து compiler அதைப் புரிந்துகொள்ளும்.</p>
+  <h3>வளரக்கூடிய arrays — kosh</h3>
+  <p>ஒரு சாதாரண array-இன் அளவு நிலையானது. ஆனால் ஒரு kosh வளரக்கூடியது: இது சிறிய அளவிலிருந்து தொடங்கி, தேவைக்கேற்ப இரட்டிப்பாகும்.</p>
+  <p><strong>Capacity என்பது நீளம் (length) அல்ல.</strong> 4 capacity கொண்ட kosh-இல் capacity 4 ஆகவும், length 0 ஆகவும் இருக்கும். எனவே, ஏதாவது push செய்யப்படும் வரை index 0 out of bounds ஆக இருக்கும். இது ஆரம்பத்தில் சிலருக்குச் சிரமமாக இருக்கலாம்; ஆனால் இது திட்டமிட்டுச் செய்யப்பட்டது. இதுவே indexing-ஐ பாதுகாப்பானதாக்குகிறது.</p>
+  <h3>Typed arrays — kosh dasham</h3>
+  <p>Floats-ஐ வைத்திருக்க kosh-ஐ அறிவிக்கலாம். அதில் push செய்யப்படும் integer மதிப்புகள் promote செய்யப்படும், மேலும் அதன் elements எல்லா இடங்களிலும் floats ஆக செயல்படும்.</p>
+  <h3>Typed function parameters</h3>
+  <p>ஒரு function-க்கு ஒரு குறிப்பிட்ட வகையான argument தேவைப்படலாம், compiler அதைச் சரிபார்க்கும்.</p>
+  <p>Typed float array ஒரு pointer ஆக அனுப்பப்படுகிறது, எனவே indexed writes caller-க்குத் தெரியும் — ஒரு function உங்களுக்காக ஒரு array-ஐ நிரப்ப முடியும். ஆனால் அதை வளர்க்க (growing) அனுமதி இல்லை: ஒரு parameter-இல் kosh_push-ஐ அழைப்பது நிராகரிக்கப்படும். ஏனெனில் pointer by value ஆக அனுப்பப்படுகிறது, caller-க்கு ஒரு பழைய pointer மட்டுமே கிடைக்கும். இது ஒரு பாதுகாப்பு அம்சம், விடுபட்ட feature அல்ல.</p>
+  <h3>Standard library</h3>
+  <p>Compiler-உடன் பதினைந்து modules வருகின்றன. ayojan மூலம் ஒன்றைப் import செய்யவும். அவை arithmetic மற்றும் number theory; sorting மற்றும் text; Pingala-வின் prosody; Aryabhata மற்றும் Bhaskara-வின் கணிதம்; pi, sine, cosine மற்றும் square root-க்கான Kerala school-இன் series; statistics; numerical calculus — integration, derivatives மற்றும் polynomial roots; matrices மற்றும் determinants-உடன் linear algebra; மற்றும் file reading மற்றும் writing ஆகியவற்றை உள்ளடக்கியது.</p>
+  <div class="try"><b>Try it:</b> heritage modules உண்மையான கணிதத்தைக் கணக்கிடுகின்றன — 61-இன் chakravala, x squared minus 61 y squared equals 1 என்பதற்கான மிகச்சிறிய தீர்வை வழங்குகிறது, அது x = 1766319049, y = 226153980. இது 7-ஆம் நூற்றாண்டு முறை, சரியான பதிலுடன் சரிபார்க்கப்பட்டது.</div>
+  <h3>Sutram IDE</h3>
+  <p>மொழியுடன் install செய்யப்படுகிறது. இது ஒரு native program — Python இல்லை, interpreter இல்லை. line numbers மற்றும் syntax highlighting கொண்ட code editor இதில் உள்ளது; நீங்கள் எழுதியதை compile செய்து run செய்ய Ctrl-R; example programs-ஐ ஒவ்வொன்றாகப் பார்க்க Ctrl-E; interactive shell-க்கு Ctrl-T, இதில் நீங்கள் ஒரு statement-ஐ type செய்து Enter-ஐ அழுத்தி அது run ஆவதைப் பார்க்கலாம். session முந்தைய வரிகளை நினைவில் வைத்துக்கொள்வதால், நீங்கள் படிப்படியாக ஒரு program-ஐ உருவாக்கலாம்; save செய்ய Ctrl-S, load செய்ய Ctrl-L, quit செய்ய Ctrl-Q.</p>
+  <p>Windows-இல் IDE இன்னும் கிடைக்கவில்லை; அதற்குப் பதிலாக interactive shell-ஐப் பயன்படுத்தவும்.</p>
+  <h3>வேகம் — கூறப்படுவது அல்ல, அளவிடப்படுவது</h3>
+  <p>Compiler variable மதிப்புகளை memory-இல் அல்லாமல் processor registers-இல் வைத்திருக்கிறது. ஒரு representative numerical program-இல், சமீபத்திய சோதனைகளில் இது சுமார் 1.2 மடங்கு வேகத்தை அதிகரித்தது. ஒரு tight integer loop-இல் உருவாக்கப்பட்ட code 13 instructions-லிருந்து 5-ஆகக் குறைந்தது — அளவிடப்பட்ட 4.9 மடங்கு. இந்தப் பகுதியில் உள்ள ஒவ்வொரு கூற்றும் ஒரே இயந்திரத்தில் முன்னும் பின்னும் அளவிடப்பட்டதே தவிர, கணிக்கப்படவில்லை.</p>
+  <h3>திட்டம் எதில் கவனமாக உள்ளது</h3>
+  <p>நான்கு memory-corruption bugs கண்டறியப்பட்டு சரிசெய்யப்பட்டன, ஒவ்வொன்றும் இப்போது ஒரு நிரந்தர test மூலம் பாதுகாக்கப்படுகின்றன. Compiler 160 tests மற்றும் பன்னிரண்டு code-shape gates மூலம் சரிபார்க்கப்படுகிறது. இது ஒரு construct எவ்வளவு code-ஐ உருவாக்க அனுமதிக்கப்படுகிறது என்பதை உறுதிப்படுத்துகிறது. திட்டத்தால் எதையாவது சரிபார்க்க முடியாத இடங்களில் — உண்மையான Windows இயந்திரத்தில் இன்னும் run செய்யப்படாததால் — அது வெளிப்படையாகவே கூறுகிறது, மற்றபடி மறைமுகமாகக் கூறவில்லை.</p>
+</div>
+<div class="ch" id="codeappendix">
+  <h2>19. Code appendix for chapter 18</h2>
+  <p>The examples are given here in Sutram source, which is the same in every edition of this book.</p>
+  <h3>Floats</h3>
+<pre><span class="kw">dasham</span> x = 1.5
+<span class="kw">dasham</span> y = 2.25
+<span class="kw">likha</span>(x + y)      <span class="cm"># 3.750000</span></pre>
+  <h3>Growable arrays</h3>
+<pre><span class="kw">kosh</span> xs[4]
+<span class="kw">kosh_push</span>(xs, 10)
+<span class="kw">kosh_push</span>(xs, 20)
+<span class="kw">likha</span>(<span class="kw">kosh_len</span>(xs))    <span class="cm"># 2</span>
+<span class="kw">likha</span>(xs[0])            <span class="cm"># 10</span>
+<span class="kw">dasham</span> last = <span class="kw">kosh_pop</span>(xs)</pre>
+  <h3>Typed arrays</h3>
+<pre><span class="kw">kosh dasham</span> temps[4]
+<span class="kw">kosh_push</span>(temps, 36.6)
+<span class="kw">kosh_push</span>(temps, 37)      <span class="cm"># promoted to 37.0</span>
+<span class="kw">likha</span>(temps[1])            <span class="cm"># 37.000000</span></pre>
+  <h3>A typed function parameter</h3>
+<pre><span class="kw">prakriya</span> mean(<span class="kw">kosh dasham</span> xs) {
+    <span class="kw">dasham</span> s = 0.0
+    <span class="kw">vitti</span> i = 0
+    <span class="kw">yavat</span> (i &lt; <span class="kw">kosh_len</span>(xs)) {
+        s = s + xs[i]
+        i = i + 1
+    }
+    <span class="kw">pratiyati</span> s / <span class="kw">kosh_len</span>(xs)
+}</pre>
+  <h3>Using the library</h3>
+<pre><span class="kw">ayojan</span> sankhyiki
+<span class="kw">ayojan</span> kalana
+<span class="kw">ayojan</span> samanvaya</pre>
+</div>
+<div class="footer"><span class="k" data-tip="சமசுகிருதம்: sutra · constant">சூத்திரம்</span> — the complete thread · தமிழ் பதிப்பு · v1.0</div>
+</div>
+</body>
+</html>
