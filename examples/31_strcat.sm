@@ -1,0 +1,8 @@
+mukhya()
+    likha("String Concatenation Demo\n")
+    likha("=========================\n")
+    likha("Hello " + "World\n")
+    likha("The answer is " + 42 + "\n")
+    likha(3 + " + " + 4 + " = " + 7 + "\n")
+    likha("Year: " + 2026 + "\n")
+    likha("Done!\n")
