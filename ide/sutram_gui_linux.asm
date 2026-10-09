@@ -36,6 +36,7 @@
 %define X_CreateGC      55
 %define X_PolyFillRect  70
 %define X_ImageText8    76
+%define X_GetKeyboardMapping 101
 
 ; ---- X11 event codes ------------------------------------------------------
 %define EV_KeyPress     2
@@ -84,6 +85,11 @@
 %define KC_CTRL_R       27              ; 'r' keycode, checked with ControlMask
 %define MASK_CONTROL    0x0004
 
+; ---- keyboard mapping (slice 4) -------------------------------------------
+%define KM_FIRST        8               ; first keycode we ask about
+%define KM_COUNT        119             ; keycodes 8..126
+%define KM_SYMS_CAP     4096            ; reply keysym bytes we will accept
+
 section .data
 ; Standard US-QWERTY XKB keycode -> ASCII. This is the common layout on every
 ; mainstream X server. A non-US layout would need the server's own mapping,
@@ -125,6 +131,11 @@ section .bss
     ed_len      resq 1
     ed_cursor   resq 1
     key_char    resb 8
+    ; ---- slice 4: server keymap ----
+    km_reply    resb 32             ; GetKeyboardMapping reply header
+    km_syms     resb 4096           ; keysym array
+    kc_map      resb 256            ; keycode -> ASCII from the server
+    km_ok       resq 1              ; 1 once a keymap has been fetched
     want_quit   resd 1
 
 section .data
@@ -706,6 +717,88 @@ draw_editor:
     pop  rbx
     ret
 
+
+; ---------------------------------------------------------------- fetch_keymap
+; Slice 4: ask the server for its real keyboard mapping (opcode 101) and build
+; kc_map[keycode] = ASCII from keysym index 0. A non-US layout then types
+; correctly, instead of relying on the hardcoded US table. On any protocol
+; problem km_ok stays 0 and handle_key falls back to kc_table.
+fetch_keymap:
+    push rbx
+    push r12
+    push r13
+    ; ---- request: first_keycode, count ----
+    lea rdi, [reqbuf]
+    mov byte [rdi], X_GetKeyboardMapping
+    mov byte [rdi+1], 0
+    mov word [rdi+2], 2             ; 8 bytes = 2 units
+    mov byte [rdi+4], KM_FIRST
+    mov byte [rdi+5], KM_COUNT
+    mov word [rdi+6], 0
+    mov rdi, r12
+    lea rsi, [reqbuf]
+    mov rdx, 8
+    call send_req
+    ; ---- reply header ----
+    mov rax, SYS_read
+    mov rdi, r12
+    lea rsi, [km_reply]
+    mov rdx, 32
+    syscall
+    cmp rax, 32
+    jl .fail
+    cmp byte [km_reply], 1
+    jne .fail
+    movzx r13, byte [km_reply+1]    ; keysyms_per_keycode
+    test r13, r13
+    jz .fail
+    ; ---- read the keysym array ----
+    mov rax, r13
+    imul rax, KM_COUNT*4
+    cmp rax, KM_SYMS_CAP
+    ja .fail
+    mov rdx, rax
+    mov rax, SYS_read
+    mov rdi, r12
+    lea rsi, [km_syms]
+    syscall
+    cmp rax, rdx
+    jl .fail
+    ; ---- build kc_map ----
+    xor rbx, rbx
+.build:
+    cmp rbx, KM_COUNT
+    jae .ok
+    mov rax, rbx
+    imul rax, r13
+    shl rax, 2                      ; byte offset of keysym[0]
+    lea rcx, [rel km_syms]
+    mov ecx, dword [rcx + rax]
+    cmp ecx, 0x20
+    jb .zero
+    cmp ecx, 0x7e
+    ja .zero
+    jmp .store
+.zero:
+    xor ecx, ecx
+.store:
+    lea rdx, [rel kc_map]
+    mov byte [rdx + rbx + KM_FIRST], cl
+    inc rbx
+    jmp .build
+.ok:
+    mov qword [rel km_ok], 1
+    pop r13
+    pop r12
+    pop rbx
+    ret
+.fail:
+    mov qword [rel km_ok], 0
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
 ; ---------------------------------------------------------------- handle_key
 ; rdi = X11 keycode.  Printable ASCII is keycode-8 on the standard map.
 handle_key:
@@ -717,10 +810,19 @@ handle_key:
     je   .bs
     cmp  rbx, KC_RETURN
     je   .nl
+    cmp  qword [rel km_ok], 0
+    je   .fallback
+    lea  rcx, [rel kc_map]
+    cmp  rbx, 255
+    ja   .done
+    movzx edi, byte [rcx + rbx]
+    jmp  .have
+.fallback:
     lea  rcx, [rel kc_table]
     cmp  rbx, 125
     ja   .done
     movzx edi, byte [rcx + rbx]
+.have:
     test edi, edi
     jz   .done
     call ed_insert
@@ -777,6 +879,10 @@ _start:
     lea rsi, [reqbuf]
     mov rdx, 8
     call send_req
+
+    ; ---- keyboard mapping (slice 4) --------------------------------------
+    mov rdi, r12
+    call fetch_keymap
 
     lea rsi, [msg_ok]
     call write_z
