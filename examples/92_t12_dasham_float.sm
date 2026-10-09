@@ -1,0 +1,27 @@
+# T12 scalar binary64: Latin + Devanagari keyword, mixed arithmetic,
+# assignment, comparisons, control flow, negative values, and printing.
+mukhya() {
+    dasham a = 1.5
+    dasham b = 2.25
+    dasham c = a + b
+    likha(c)
+    likha(c == 3.75)
+
+    c = c - 0.5
+    likha(c)
+
+    dasham neg = -1.25
+    likha(neg)
+
+    दशम third = 0.1 + 0.2
+    likha(third)
+    likha(third > 0.299999)
+
+    vitti k = 2
+    dasham mixed = k * 1.25
+    likha(mixed)
+
+    yadi (mixed >= 2.5) {
+        likha(7)
+    }
+}
