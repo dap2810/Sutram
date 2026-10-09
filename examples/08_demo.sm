@@ -1,0 +1,29 @@
+# Sutram v8 - Combined demo
+rachana Person = { age, score }
+
+prakriya double_it(n)
+    pratiyati n * 2
+
+mukhya()
+    likha("=== Sutram Demo ===\n")
+    vitti x = double_it(21)
+    likha("double(21) = ")
+    likha(x)
+    likha("\n")
+    vitti p = nirmmita(16)
+    p.age = 25
+    p.score = 100
+    likha("Age: ")
+    likha(p.age)
+    likha("\n")
+    likha("Score: ")
+    likha(p.score)
+    likha("\n")
+    vitti i = 1
+    yavat (i < 4) {
+        likha("Loop: ")
+        likha(i)
+        likha("\n")
+        i = i + 1
+    }
+    likha("=== Done ===\n")
