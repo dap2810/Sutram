@@ -1,0 +1,25 @@
+ayojan string
+mukhya() {
+    vitti src = nirmmita(10 * 8)
+    src[0] = 97
+    src[1] = 44
+    src[2] = 98
+    src[3] = 44
+    src[4] = 99
+    vitti sep = nirmmita(2 * 8)
+    sep[0] = 44
+    vitti parts = nirmmita(20 * 8)
+    vitti nc = str_split(src, 5, sep, 1, parts, 10)
+    likha(nc)
+    likha("\n")
+    vitti jout = nirmmita(10 * 8)
+    vitti jn = str_join(parts, nc, sep, 1, jout)
+    likha(jn)
+    likha("\n")
+    vitti i = 0
+    yavat (i < jn) {
+        likha(jout[i])
+        likha("\n")
+        i = i + 1
+    }
+}
