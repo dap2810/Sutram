@@ -110,3 +110,342 @@ prakriya str_equals(a, b) {
     }
     pratiyati 1
 }
+
+# ---------------------------------------------------------------------------
+# Text toolkit (ROUND-09): operates on char-code arrays.
+#
+# REPRESENTATION: a "string" here is a pankti of integer character codes
+# (e.g. 104 for 'h'), NOT a byte-packed string literal. This is the idiom
+# established in R7 (baseconv) and R8 (strconv): Sutram has no byte-write
+# primitive (see width_repro fixture), so we build text as cell arrays.
+# Functions take an explicit length; out-buffers get a 0 terminator but the
+# length is the source of truth. The older byte-string functions above
+# (str_len, find_char, etc.) are unchanged.
+# ---------------------------------------------------------------------------
+
+# str_find(hay, hn, needle, nn) — index of first occurrence of needle
+# in hay, or -1. Empty needle matches at 0.
+prakriya str_find(hay, hn, needle, nn) {
+    vitti h = hay
+    vitti hlen = hn
+    vitti nd = needle
+    vitti nlen = nn
+    yadi (nlen == 0) { pratiyati 0 }
+    yadi (nlen > hlen) { pratiyati 0 - 1 }
+    vitti i = 0
+    yavat (i <= hlen - nlen) {
+        vitti match = 1
+        vitti j = 0
+        yavat (j < nlen) {
+            yadi (h[i + j] != nd[j]) { match = 0 }
+            j = j + 1
+        }
+        yadi (match == 1) { pratiyati i }
+        i = i + 1
+    }
+    pratiyati 0 - 1
+}
+
+# str_contains(hay, hn, needle, nn) — 1 if needle occurs in hay, else 0.
+prakriya str_contains(hay, hn, needle, nn) {
+    yadi (str_find(hay, hn, needle, nn) >= 0) { pratiyati 1 }
+    pratiyati 0
+}
+
+# str_replace(src, sn, find, fn, repl, out) — copy src to out,
+# replacing every (non-overlapping) occurrence of find with repl.
+# repl is 0-terminated (its length is derived). Returns the new count.
+# Caller allocates generously.
+prakriya str_replace(src, sn, find, fn, repl, out) {
+    vitti s = src
+    vitti slen = sn
+    vitti f = find
+    vitti flen = fn
+    vitti r = repl
+    vitti dst = out
+    # measure repl (0-terminated)
+    vitti rlen = 0
+    yavat (r[rlen] != 0) { rlen = rlen + 1 }
+    vitti wpos = 0
+    vitti rpos = 0
+    yadi (flen == 0) {
+        # empty find: copy verbatim
+        yavat (rpos < slen) {
+            dst[wpos] = s[rpos]
+            wpos = wpos + 1
+            rpos = rpos + 1
+        }
+        dst[wpos] = 0
+        pratiyati wpos
+    }
+    yavat (rpos < slen) {
+        # check for find at rpos
+        vitti match = 1
+        yadi (rpos + flen > slen) {
+            match = 0
+        } anyatra {
+            vitti j = 0
+            yavat (j < flen) {
+                yadi (s[rpos + j] != f[j]) { match = 0 }
+                j = j + 1
+            }
+        }
+        yadi (match == 1) {
+            vitti k = 0
+            yavat (k < rlen) {
+                dst[wpos] = r[k]
+                wpos = wpos + 1
+                k = k + 1
+            }
+            rpos = rpos + flen
+        } anyatra {
+            dst[wpos] = s[rpos]
+            wpos = wpos + 1
+            rpos = rpos + 1
+        }
+    }
+    dst[wpos] = 0
+    pratiyati wpos
+}
+
+# str_split(src, sn, sep, sepn, parts, maxparts) — split src on sep.
+# parts is a flat buffer holding length-prefixed segments:
+#   [len0, c0, c1, ..., len1, c0, ...]
+# To recover segment i: walk from parts[0], skipping (1 + len) cells per
+# segment; the length is at the segment's start. Returns segment count
+# (capped at maxparts). Empty separator: no split (one segment).
+prakriya str_split(src, sn, sep, sepn, parts, maxparts) {
+    vitti s = src
+    vitti slen = sn
+    vitti sp = sep
+    vitti splen = sepn
+    vitti dst = parts
+    vitti maxp = maxparts
+    # empty input: one empty segment
+    yadi (slen == 0) {
+        dst[0] = 0
+        pratiyati 1
+    }
+    # empty separator: one segment (the whole input)
+    yadi (splen == 0) {
+        dst[0] = slen
+        vitti ci = 0
+        yavat (ci < slen) {
+            dst[1 + ci] = s[ci]
+            ci = ci + 1
+        }
+        pratiyati 1
+    }
+    vitti nseg = 0
+    vitti wpos = 0
+    vitti segstart = 0
+    vitti rpos = 0
+    vitti done = 0
+    vitti fpos = 0
+    vitti si = 0
+    vitti sj = 0
+    vitti smatch = 0
+    vitti segend = 0
+    vitti seglen = 0
+    vitti sk = 0
+    yavat (done == 0) {
+        # find sep at or after rpos
+        fpos = 0 - 1
+        si = rpos
+        yavat (si + splen <= slen) {
+            smatch = 1
+            sj = 0
+            yavat (sj < splen) {
+                yadi (s[si + sj] != sp[sj]) { smatch = 0 }
+                sj = sj + 1
+            }
+            yadi (smatch == 1) {
+                fpos = si
+                si = slen
+            } anyatra {
+                si = si + 1
+            }
+        }
+        segend = slen
+        yadi (fpos >= 0) { segend = fpos }
+        yadi (nseg < maxp) {
+            seglen = segend - segstart
+            dst[wpos] = seglen
+            wpos = wpos + 1
+            sk = segstart
+            yavat (sk < segend) {
+                dst[wpos] = s[sk]
+                wpos = wpos + 1
+                sk = sk + 1
+            }
+            nseg = nseg + 1
+        }
+        yadi (fpos < 0) {
+            done = 1
+        } anyatra {
+            segstart = fpos + splen
+            rpos = segstart
+            yadi (rpos >= slen) {
+                yadi (nseg < maxp) {
+                    dst[wpos] = 0
+                    nseg = nseg + 1
+                }
+                done = 1
+            }
+        }
+    }
+    pratiyati nseg
+}
+
+# str_join(parts, count, sep, sepn, out) — inverse of str_split for the
+# length-prefixed format. Joins `count` segments with sep. Returns new count.
+prakriya str_join(parts, count, sep, sepn, out) {
+    vitti p = parts
+    vitti cnt = count
+    vitti sp = sep
+    vitti splen = sepn
+    vitti dst = out
+    vitti rpos = 0
+    vitti wpos = 0
+    vitti si = 0
+    yavat (si < cnt) {
+        vitti seglen = p[rpos]
+        rpos = rpos + 1
+        vitti k = 0
+        yavat (k < seglen) {
+            dst[wpos] = p[rpos]
+            wpos = wpos + 1
+            rpos = rpos + 1
+            k = k + 1
+        }
+        yadi (si < cnt - 1) {
+            vitti q = 0
+            yavat (q < splen) {
+                dst[wpos] = sp[q]
+                wpos = wpos + 1
+                q = q + 1
+            }
+        }
+        si = si + 1
+    }
+    dst[wpos] = 0
+    pratiyati wpos
+}
+
+# str_trim(src, sn, out) — strip leading/trailing ASCII spaces (32).
+# Returns new count.
+prakriya str_trim(src, sn, out) {
+    vitti s = src
+    vitti slen = sn
+    vitti dst = out
+    vitti lo = 0
+    vitti go = 1
+    yavat (go == 1) {
+        yadi (lo >= slen) {
+            go = 0
+        } anyatra {
+            yadi (s[lo] == 32) { lo = lo + 1 } anyatra { go = 0 }
+        }
+    }
+    vitti hi = slen
+    vitti go2 = 1
+    yavat (go2 == 1) {
+        yadi (hi <= lo) {
+            go2 = 0
+        } anyatra {
+            yadi (s[hi - 1] == 32) { hi = hi - 1 } anyatra { go2 = 0 }
+        }
+    }
+    vitti wpos = 0
+    vitti k = lo
+    yavat (k < hi) {
+        dst[wpos] = s[k]
+        wpos = wpos + 1
+        k = k + 1
+    }
+    dst[wpos] = 0
+    pratiyati wpos
+}
+
+# str_upper(src, sn, out) / str_lower — ASCII case conversion.
+prakriya str_upper(src, sn, out) {
+    vitti s = src
+    vitti slen = sn
+    vitti dst = out
+    vitti i = 0
+    yavat (i < slen) {
+        vitti c = s[i]
+        yadi (c >= 97) {
+            yadi (c <= 122) { c = c - 32 }
+        }
+        dst[i] = c
+        i = i + 1
+    }
+    dst[slen] = 0
+    pratiyati slen
+}
+
+prakriya str_lower(src, sn, out) {
+    vitti s = src
+    vitti slen = sn
+    vitti dst = out
+    vitti i = 0
+    yavat (i < slen) {
+        vitti c = s[i]
+        yadi (c >= 65) {
+            yadi (c <= 90) { c = c + 32 }
+        }
+        dst[i] = c
+        i = i + 1
+    }
+    dst[slen] = 0
+    pratiyati slen
+}
+
+# str_starts(src, sn, pre, pn) / str_ends — 0/1.
+prakriya str_starts(src, sn, pre, pn) {
+    vitti s = src
+    vitti slen = sn
+    vitti pr = pre
+    vitti plen = pn
+    yadi (plen > slen) { pratiyati 0 }
+    vitti i = 0
+    yavat (i < plen) {
+        yadi (s[i] != pr[i]) { pratiyati 0 }
+        i = i + 1
+    }
+    pratiyati 1
+}
+
+prakriya str_ends(src, sn, suf, sn2) {
+    vitti s = src
+    vitti slen = sn
+    vitti sf = suf
+    vitti sflen = sn2
+    yadi (sflen > slen) { pratiyati 0 }
+    vitti i = 0
+    yavat (i < sflen) {
+        yadi (s[slen - sflen + i] != sf[i]) { pratiyati 0 }
+        i = i + 1
+    }
+    pratiyati 1
+}
+
+# str_compare(a, an, b, bn) — -1 / 0 / 1 (lexicographic by char code).
+prakriya str_compare(a, an, b, bn) {
+    vitti x = a
+    vitti xn = an
+    vitti y = b
+    vitti yn = bn
+    vitti i = 0
+    vitti n = xn
+    yadi (yn < n) { n = yn }
+    yavat (i < n) {
+        yadi (x[i] < y[i]) { pratiyati 0 - 1 }
+        yadi (x[i] > y[i]) { pratiyati 1 }
+        i = i + 1
+    }
+    yadi (xn < yn) { pratiyati 0 - 1 }
+    yadi (xn > yn) { pratiyati 1 }
+    pratiyati 0
+}
