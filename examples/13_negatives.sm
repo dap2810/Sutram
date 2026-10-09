@@ -1,0 +1,55 @@
+# Negative numbers and unary minus
+# Sutram supports negative numbers with the - operator
+
+mukhya()
+    likha("=== Negative Numbers ===\n")
+    
+    # Negative variables
+    vitti x = -5
+    vitti y = -10
+    likha("x = ")
+    likha(x)
+    likha("\n")
+    likha("y = ")
+    likha(y)
+    likha("\n")
+    
+    # Arithmetic with negatives
+    vitti sum = x + y
+    likha("x + y = ")
+    likha(sum)
+    likha("\n")
+    
+    vitti diff = x - y
+    likha("x - y = ")
+    likha(diff)
+    likha("\n")
+    
+    vitti prod = x * 3
+    likha("x * 3 = ")
+    likha(prod)
+    likha("\n")
+    
+    # Unary minus on expressions
+    vitti z = -3 + 10
+    likha("-3 + 10 = ")
+    likha(z)
+    likha("\n")
+    
+    # Negation
+    vitti w = 0 - x
+    likha("0 - x = ")
+    likha(w)
+    likha("\n")
+    
+    # Direct negative print
+    likha("-42 = ")
+    likha(-42)
+    likha("\n")
+    
+    # Comparison with negatives
+    yadi (x < 0) {
+        likha("x is negative\n")
+    }
+    
+    likha("=== Done ===\n")
