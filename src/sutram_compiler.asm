@@ -2134,12 +2134,12 @@ r49_print_module_location:
 .r49_on_line:
     mov r15, r9             ; byte start of original physical line
 .r49_findword:
-    mov rax, r9
-    add rax, 6
-    cmp rax, r14
-    ja .r49_unknown
-    cmp byte [rbx+r9], 10
-    je .r49_unknown
+    mov rax,r9
+    add rax,6
+    cmp rax,r14
+    ja .r49_symbol_search
+    cmp byte [rbx+r9],10
+    je .r49_symbol_search
     cmp dword [rbx+r9], 0x6A6F7961 ; "ayoj"
     je .r49_check_ayoj
     cmp dword [rbx+r9],0x7972696E  ; "niry" from niryat
@@ -2162,6 +2162,43 @@ r49_print_module_location:
 .r49_nextword:
     inc r9
     jmp .r49_findword
+.r49_symbol_search:
+    ; R51: qualified private/unknown function errors are on ordinary code
+    ; lines rather than an ayojan/niryat directive. Find exact original
+    ; reference prefix (mg_pat) on this physical source line.
+    lea r11,[rel mg_pat]
+    cmp byte [r11],0
+    je .r49_unknown
+    mov r8,r15
+.r49_symbol_next:
+    cmp r8,r14
+    jae .r49_unknown
+    cmp byte [rbx+r8],10
+    je .r49_unknown
+    xor ecx,ecx
+.r49_symbol_cmp:
+    cmp rcx,62
+    jae .r49_unknown
+    mov dl,[r11+rcx]
+    test dl,dl
+    jz .r49_symbol_found
+    mov rax,r8
+    add rax,rcx
+    cmp rax,r14
+    jae .r49_symbol_next_advance
+    cmp dl,[rbx+rax]
+    jne .r49_symbol_next_advance
+    inc rcx
+    jmp .r49_symbol_cmp
+.r49_symbol_next_advance:
+    inc r8
+    jmp .r49_symbol_next
+.r49_symbol_found:
+    mov rax,r8
+    sub rax,r15
+    inc rax
+    call mg_print_uint
+    jmp .r49_done
 .r49_unknown:
     lea rdi, [rel r49_unknown_column]
     call print_str_z
