@@ -77,7 +77,47 @@ FIXED = {
     56: ("ChangeGC", 12),        # 16 total with one value
     70: ("PolyFillRect", 8),     # 20 total with one rectangle
     76: ("ImageText8", 12),      # 16 + n, padded
+    101: ("GetKeyboardMapping", 4),  # first_keycode, count, 2 unused
 }
+
+
+
+# ---- slice 4: server keymap -------------------------------------------------
+# Standard US keycode -> ASCII (index 0 keysym). The client should fetch this
+# with GetKeyboardMapping (101) rather than assume it.
+KC_TABLE = {}
+for i, ch in enumerate("1234567890"):
+    KC_TABLE[10 + i] = ch
+KC_TABLE[20] = "-"; KC_TABLE[21] = "="
+for i, ch in enumerate("qwertyuiop"):
+    KC_TABLE[24 + i] = ch
+KC_TABLE[34] = "["; KC_TABLE[35] = "]"
+for i, ch in enumerate("asdfghjkl"):
+    KC_TABLE[38 + i] = ch
+KC_TABLE[47] = ";"; KC_TABLE[48] = "'"; KC_TABLE[49] = "`"
+for i, ch in enumerate("zxcvbnm"):
+    KC_TABLE[52 + i] = ch
+KC_TABLE[59] = ","; KC_TABLE[60] = "."; KC_TABLE[61] = "/"
+KC_TABLE[65] = " "
+
+
+def build_keymap_reply(first, count, overrides=None):
+    """GetKeyboardMapping reply: 32-byte header + count*per keysyms."""
+    overrides = overrides or {}
+    per = 2
+    syms = bytearray()
+    for i in range(count):
+        kc = first + i
+        ch = overrides.get(kc, KC_TABLE.get(kc, 0))
+        syms += struct.pack("<I", ord(ch) if isinstance(ch, str) else ch)  # index 0
+        syms += struct.pack("<I", 0)                                       # index 1
+    n = len(syms) // 4
+    hdr = bytearray(32)
+    hdr[0] = 1                       # Reply
+    hdr[1] = per                     # keysyms_per_keycode
+    struct.pack_into("<H", hdr, 2, 0)
+    struct.pack_into("<I", hdr, 4, n)
+    return bytes(hdr) + bytes(syms)
 
 
 def main():
@@ -175,6 +215,24 @@ def main():
     check(seen[:3] == ["CreateWindow", "CreateGC", "MapWindow"],
           "request order is CreateWindow, CreateGC, MapWindow", str(seen[:3]))
 
+    # ---- 2b. slice 4: the client must ask for the real keymap ------------
+    r = read_request()
+    check(r is not None and r[0] == 101,
+          "client requests GetKeyboardMapping (opcode 101)",
+          f"got {r[0] if r else None}")
+    if r is not None:
+        op, ln, body, head = r
+        check(4 * ln == 8, "GetKeyboardMapping: 8-byte request", f"got {4*ln}")
+        first_kc = body[0]
+        count = body[1]
+        check(first_kc == 8 and count == 119,
+              "GetKeyboardMapping: asks for keycodes 8..126",
+              f"first={first_kc} count={count}")
+        # Serve a deliberately NON-US value for keycode 43 ('h' on US): 'Z'.
+        # If the client uses the server map it draws 'Z'; if it uses its
+        # hardcoded US table it draws 'h'. The next section proves which.
+        conn.sendall(build_keymap_reply(first_kc, count, overrides={43: "Z"}))
+
     # ---- 3. provoke a repaint and count what comes back -------------------
     expose = bytearray(32)
     expose[0] = 12                       # Expose
@@ -246,31 +304,36 @@ def main():
             conn.settimeout(old)
         return found
 
-    # 'h' is keycode 43, 'i' is keycode 31 on the standard map
+    # Slice 4: the server served 'Z' for keycode 43. If the client used its
+    # hardcoded US table it would draw 'h' here. It must draw 'Z'.
     keypress(43)
     texts = drain_texts()
-    check(any(t == "h" for t in texts),
-          "typing 'h' drew the character in the editor pane",
+    check(any("Z" in t for t in texts),
+          "client used the SERVER keymap (keycode 43 -> 'Z', not US 'h')",
+          f"saw {texts[:6]}")
+    check(not any(t == "h" for t in texts),
+          "client did NOT fall back to the hardcoded US table for keycode 43",
           f"saw {texts[:6]}")
 
+    # keycode 31 is 'i' in the served map, so the line becomes 'Zi'
     keypress(31)
     texts = drain_texts()
-    check(any(t == "hi" for t in texts),
-          "typing 'i' produced 'hi' on the same line",
+    check(any(t == "Zi" for t in texts),
+          "typing keycode 31 produced 'Zi' on the same line",
           f"saw {texts[:6]}")
 
-    # backspace (keycode 22) removes the 'i'
+    # backspace (keycode 22) removes the last character
     keypress(22)
     texts = drain_texts()
-    check(any(t == "h" for t in texts) and not any(t == "hi" for t in texts),
+    check(any(t == "Z" for t in texts) and not any(t == "Zi" for t in texts),
           "backspace removed the last character",
           f"saw {texts[:6]}")
 
     # Return (keycode 36) starts a new line, so the text splits
     keypress(36)
-    keypress(43)
+    keypress(31)
     texts = drain_texts()
-    check(any(t == "h" for t in texts) and any(t == "h" for t in texts),
+    check(sum(1 for t in texts if t in ("Z", "i")) >= 2,
           "return then a key produced two separate lines",
           f"saw {texts[:6]}")
 
