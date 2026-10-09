@@ -2563,6 +2563,7 @@ mg_deferred_alias_name: resb 64
 mg_deferred_alias_path: resb 512
 mg_deferred_alias_line: resq 1
 mg_pat_len:   resq 1    ; R44 qualified-name prefix length
+mg_preopen_fd: resq 1    ; R45 one-shot open descriptor, -1 means no pending file
 
 section .text
 
@@ -2801,12 +2802,21 @@ mg_read_file:
     push rbx
     push r12
     mov rbx, rdi
+    ; R45: mg_resolve has already opened the path on the immediately
+    ; preceding DFS edge. Consume that fd exactly once instead of opening
+    ; and closing the same module twice. All other call sites use os_open.
+    mov rax, [rel mg_preopen_fd]
+    cmp rax, -1
+    jne .rf_have_fd
+    mov rdi, rbx
     xor rsi, rsi
     xor rdx, rdx
     call os_open
     test rax, rax
     js .rf_fail
+.rf_have_fd:
     mov r12, rax
+    mov qword [rel mg_preopen_fd], -1
     mov rdi, r12
     lea rsi, [rel mg_buf]
     mov rdx, 65536
@@ -2828,6 +2838,9 @@ mg_read_file:
 mg_resolve:
     push rbx
     push r12
+    ; The resolver is paired with mg_read_file in one DFS step.
+    ; Never allow a descriptor from an older step to be reused.
+    mov qword [rel mg_preopen_fd], -1
     mov r12, rdi
     ; num_buf = module name
     lea rbx, [rel num_buf]
@@ -2850,8 +2863,7 @@ mg_resolve:
     call os_open
     test rax, rax
     js .rs_try2
-    mov rdi, rax
-    call os_close
+    mov [rel mg_preopen_fd], rax ; preserve open fd for mg_read_file
     mov rax, 1
     jmp .rs_done
 .rs_try2:
@@ -2863,8 +2875,7 @@ mg_resolve:
     call os_open
     test rax, rax
     js .rs_try3
-    mov rdi, rax
-    call os_close
+    mov [rel mg_preopen_fd], rax ; preserve open fd for mg_read_file
     mov rax, 1
     jmp .rs_done
 .rs_try3:
@@ -2875,8 +2886,7 @@ mg_resolve:
     call os_open
     test rax, rax
     js .rs_fail
-    mov rdi, rax
-    call os_close
+    mov [rel mg_preopen_fd], rax ; preserve open fd for mg_read_file
     mov rax, 1
     jmp .rs_done
 .rs_fail:
@@ -3963,6 +3973,7 @@ check_module_graph:
     push r13
     push r14
     push r15
+    mov qword [rel mg_preopen_fd], -1
     mov byte [rel mg_deferred_alias], 0
     ; root record
     lea rdi, [rel mg_root_name]
