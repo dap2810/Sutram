@@ -1,3 +1,33 @@
+## v92 — Merge: module export visibility (both assistants' work integrated)
+
+- **Two AIs built the same feature and collided; resolving that was the round.**
+  ChatGPT's R41 cycle detector was already merged. Muse's R41 patch
+  (`Muse-to-Sarvam/2026-10-09-deliverable.patch`) could not apply: it was built
+  on a base predating ChatGPT's R41, and its anchor at
+  `src/sutram_compiler.asm:1746` expected `; Expand imports` where the merged
+  source now has `call graph_preflight_v1`.
+- **Rebased by fixing the one stale anchor.** Muse's R41 then assembled and
+  passed 186/186, gate 12/12, packs 30/30, module oracle 18/18, R41 acceptance
+  3/3. All five Muse R41 features verified working: `E_MODULE_CYCLE` with the
+  full cycle path, public export, `E_MODULE_NOT_EXPORTED` (real private-symbol
+  isolation), `E_MODULE_DUP_EXPORT`, `E_MODULE_V1_ALIAS`.
+- **ChatGPT's R42 Stage 1 was reviewed, built, and rejected as a duplicate.**
+  Their SHA-gated patcher applied to `cd7a2908...`, assembled, and passed
+  181/181. But it only *declares* `niryat` visibility — on their own fixture 04
+  a private symbol stays callable — while Muse's implementation *enforces* it.
+  Two parallel visibility systems in one compiler is a defect, not a merge, so
+  the more complete implementation was taken. ChatGPT's one unique diagnostic
+  (`E_EXPORT_UNDEFINED` for undeclared exports) is carried to R43.
+- **Kept ChatGPT's cycle detector.** Removing `graph_preflight_v1` changes the
+  diagnostic on `164_r41_cycle_reject.sm` (Muse's alias rule fires first), so
+  both pre-passes stay. Redundancy documented; R43 cleanup.
+- **A source-shape test needed relaxing, not the source.** The module oracle's
+  `test_optin_only_gate` asserted exact adjacency
+  (`call graph_preflight_v1` then `; Expand imports`); the merge inserts the
+  module pre-pass between them. Rewritten to assert ordering, the real contract.
+- Suite 181 -> **186** (Muse's five R41 examples now pass, expectations
+  recorded). Compiler source SHA `cd7a2908...` -> `6036dd1c...`.
+
 ## v91 — Linux GUI IDE, slice 3: it types
 
 - **The X11 client is now an editor.** Slice 2 could paint panes and labels but
