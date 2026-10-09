@@ -1,3 +1,24 @@
+## v94 — Linux GUI IDE, slice 5: it runs your code
+
+- **Ctrl-R now compiles and runs the buffer.** The editor saves its contents to
+  a temp source, resolves the compiler as `<dir of this executable>/sutram_compiler`
+  via `/proc/self/exe` (the same trick the compiler uses for language packs, so
+  the IDE and compiler ship together with no configuration), forks it with
+  stdout+stderr piped back, and — if compilation succeeds — runs the result.
+  The captured output is drawn in the output pane.
+- **The child's output is appended, not overwritten.** The first version
+  captured the compiler's message and then ran the binary into the same buffer,
+  erasing it. `exec_capture` now appends at the current length.
+- **A real bug of my own, found by testing.** `mov qword [rel run_out+4095], 0`
+  was meant to NUL-terminate the capture buffer. It writes 8 bytes at offset
+  4095, overrunning the 4096-byte buffer by seven and landing on `run_out_len`,
+  zeroing the length — so the pane drew nothing and the capture looked broken.
+  Fixed to a single byte. This is why the tests exist.
+- **Verified with a mock compiler, no display.** `tools/test_x11_run.py` puts a
+  stub `sutram_compiler` beside the GUI, types `likha`, presses Ctrl-R, and
+  asserts the pane draws the stub's output. Protocol suite still 39/39, negatives
+  6/6, build byte-reproducible. `sutram-gui` 12,728 -> 14,688 bytes.
+
 ## v93 — Linux GUI IDE, slice 4: it asks the server how to type
 
 - **The editor now uses the server's own keyboard layout.** Slice 3 typed with
