@@ -1,0 +1,17 @@
+# PERF1 regression: hot loop comparisons/updates keep exact language semantics.
+mukhya()
+    vitti n = 5
+    vitti i = 0
+    vitti s = 0
+    yavat (i < n) {
+        s = s + i
+        i = i + 1
+    }
+    likha(s)
+    punaravartana j = 0 to n {
+        s = s + 1
+    }
+    likha(s)
+    yadi (i == n) {
+        likha(1)
+    }
