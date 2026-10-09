@@ -1,0 +1,100 @@
+# lib/string.smlib — Sutram standard library: strings
+#
+# Built on `vartani_len` and `char_at`, both verified to honour their arguments.
+# (`char_code` is avoided: it currently ignores its index and always reads
+# character 0.)
+# ASCII only for the character predicates; multi-byte UTF-8 is not split.
+
+prakriya str_len(s)
+    pratiyati vartani_len(s)
+
+prakriya char_code_at(s, i)
+    pratiyati char_at(s, i)
+
+prakriya is_digit_char(s, i) {
+    vitti c = char_at(s, i)
+    yadi (c >= 48 && c <= 57) { pratiyati 1 }
+    pratiyati 0
+}
+
+prakriya is_upper_char(s, i) {
+    vitti c = char_at(s, i)
+    yadi (c >= 65 && c <= 90) { pratiyati 1 }
+    pratiyati 0
+}
+
+prakriya is_lower_char(s, i) {
+    vitti c = char_at(s, i)
+    yadi (c >= 97 && c <= 122) { pratiyati 1 }
+    pratiyati 0
+}
+
+prakriya is_letter_char(s, i) {
+    vitti c = char_at(s, i)
+    yadi (c >= 65 && c <= 90) { pratiyati 1 }
+    yadi (c >= 97 && c <= 122) { pratiyati 1 }
+    pratiyati 0
+}
+
+prakriya is_space_char(s, i) {
+    vitti c = char_at(s, i)
+    pratiyati c == 32
+}
+
+prakriya count_vowels(s) {
+    vitti n = vartani_len(s)
+    vitti i = 0
+    vitti c = 0
+    yavat (i < n) {
+        vitti ch = char_at(s, i)
+        yadi (ch == 97 || ch == 101 || ch == 105 || ch == 111 || ch == 117) {
+            c = c + 1
+        }
+        i = i + 1
+    }
+    pratiyati c
+}
+
+prakriya count_char(s, code) {
+    vitti n = vartani_len(s)
+    vitti i = 0
+    vitti c = 0
+    yavat (i < n) {
+        yadi (char_at(s, i) == code) { c = c + 1 }
+        i = i + 1
+    }
+    pratiyati c
+}
+
+prakriya find_char(s, code) {
+    vitti n = vartani_len(s)
+    vitti i = 0
+    yavat (i < n) {
+        yadi (char_at(s, i) == code) { pratiyati i }
+        i = i + 1
+    }
+    pratiyati 0 - 1
+}
+
+prakriya is_all_digits(s) {
+    vitti n = vartani_len(s)
+    yadi (n == 0) { pratiyati 0 }
+    vitti i = 0
+    yavat (i < n) {
+        yadi (is_digit_char(s, i) == 0) { pratiyati 0 }
+        i = i + 1
+    }
+    pratiyati 1
+}
+
+prakriya upper_code(c) {
+    vitti x = c
+    yadi (x >= 97 && x <= 122) { x = x - 32 }
+    pratiyati x
+}
+
+prakriya lower_code(c) {
+    vitti x = c
+    yadi (x >= 65 && x <= 90) { x = x + 32 }
+    pratiyati x
+}
