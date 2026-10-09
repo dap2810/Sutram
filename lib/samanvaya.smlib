@@ -1,0 +1,145 @@
+# lib/samanvaya.smlib — Sutram standard library: समन्वय (linear algebra)
+#
+# Sutram has no 2-D array type, so a matrix is a FLAT `kosh dasham` of m*n elements in
+# row-major order, with the dimensions passed explicitly:
+#
+#     A[i][j]  ==  a[i * n + j]        for an m x n matrix
+#
+# CONTRACT for output matrices: the caller must have pushed m*n elements already.
+# A kosh's capacity is not its length, so out[i] is out of bounds until an element exists.
+# Functions here never `kosh_push` a parameter — the compiler rejects that, correctly,
+# because the pointer is passed by value.
+#
+# Inputs are read-only. Outputs are written in place and are visible to the caller.
+
+# ---------------------------------------------------------------
+# element access helpers (flat index)
+# ---------------------------------------------------------------
+
+# identity matrix: n x n, out must hold n*n elements
+prakriya pehchan(n, kosh dasham out) {
+    vitti i = 0
+    yavat (i < n) {
+        vitti j = 0
+        yavat (j < n) {
+            yadi (i == j) {
+                out[i * n + j] = 1.0
+            } anyatra {
+                out[i * n + j] = 0.0
+            }
+            j = j + 1
+        }
+        i = i + 1
+    }
+    pratiyati n * n
+}
+
+# transpose: a is m x n, out must hold n*m elements
+prakriya vivartana(kosh dasham a, m, n, kosh dasham out) {
+    vitti i = 0
+    yavat (i < m) {
+        vitti j = 0
+        yavat (j < n) {
+            out[j * m + i] = a[i * n + j]
+            j = j + 1
+        }
+        i = i + 1
+    }
+    pratiyati m * n
+}
+
+# element-wise sum: a and b are m x n, out must hold m*n elements
+prakriya mat_yoga(kosh dasham a, kosh dasham b, m, n, kosh dasham out) {
+    vitti k = 0
+    yavat (k < m * n) {
+        out[k] = a[k] + b[k]
+        k = k + 1
+    }
+    pratiyati m * n
+}
+
+# scalar multiple: out must hold m*n elements
+prakriya skalar(kosh dasham a, dasham c, m, n, kosh dasham out) {
+    vitti k = 0
+    yavat (k < m * n) {
+        out[k] = a[k] * c
+        k = k + 1
+    }
+    pratiyati m * n
+}
+
+# matrix product: a is m x n, b is n x p, out must hold m*p elements
+prakriya mat_gunana(kosh dasham a, kosh dasham b, m, n, p, kosh dasham out) {
+    vitti i = 0
+    yavat (i < m) {
+        vitti j = 0
+        yavat (j < p) {
+            dasham acc = 0.0
+            vitti k = 0
+            yavat (k < n) {
+                acc = acc + a[i * n + k] * b[k * p + j]
+                k = k + 1
+            }
+            out[i * p + j] = acc
+            j = j + 1
+        }
+        i = i + 1
+    }
+    pratiyati m * p
+}
+
+# trace of an n x n matrix
+prakriya nishan(kosh dasham a, n) {
+    dasham t = 0.0
+    vitti i = 0
+    yavat (i < n) {
+        t = t + a[i * n + i]
+        i = i + 1
+    }
+    pratiyati t
+}
+
+# determinant of a 2 x 2 matrix (a holds 4 elements)
+prakriya nirnaya2(kosh dasham a) {
+    pratiyati a[0] * a[3] - a[1] * a[2]
+}
+
+# determinant of a 3 x 3 matrix (a holds 9 elements), by cofactor expansion
+prakriya nirnaya3(kosh dasham a) {
+    dasham t1 = a[0] * (a[4] * a[8] - a[5] * a[7])
+    dasham t2 = a[1] * (a[3] * a[8] - a[5] * a[6])
+    dasham t3 = a[2] * (a[3] * a[7] - a[4] * a[6])
+    pratiyati t1 - t2 + t3
+}
+
+# dot product of two flat vectors (row i of a with column j of b) — convenience
+prakriya sadish_yoga(kosh dasham u, kosh dasham v) {
+    vitti n = kosh_len(u)
+    yadi (kosh_len(v) < n) { n = kosh_len(v) }
+    dasham s = 0.0
+    vitti i = 0
+    yavat (i < n) {
+        s = s + u[i] * v[i]
+        i = i + 1
+    }
+    pratiyati s
+}
+
+# largest absolute row sum (a cheap norm, useful for conditioning checks)
+prakriya rekha_manak(kosh dasham a, m, n) {
+    dasham best = 0.0
+    vitti i = 0
+    yavat (i < m) {
+        dasham row = 0.0
+        vitti j = 0
+        yavat (j < n) {
+            dasham e = a[i * n + j]
+            yadi (e < 0.0) { e = 0.0 - e }
+            row = row + e
+            j = j + 1
+        }
+        yadi (row > best) { best = row }
+        i = i + 1
+    }
+    pratiyati best
+}
