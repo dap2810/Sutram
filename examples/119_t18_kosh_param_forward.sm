@@ -1,0 +1,21 @@
+# Typed kosh parameters can be forwarded, participate in float-return inference,
+# and safely mutate shared length/data when no pointer replacement is required.
+prakriya wrapper(kosh dasham a) {
+    pratiyati head(a) + tail(a)
+}
+
+prakriya head(kosh dasham a) {
+    pratiyati a[0]
+}
+
+prakriya tail(kosh dasham a) {
+    pratiyati kosh_pop(a)
+}
+
+mukhya() {
+    kosh dasham values[2]
+    kosh_push(values, 1.25)
+    kosh_push(values, 2.75)
+    likha(wrapper(values))
+    likha(kosh_len(values))
+}
