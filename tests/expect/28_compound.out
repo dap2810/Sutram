@@ -1,0 +1,22 @@
+Compound Assignment Demo
+=======================
+Start: 100
+
+x += 50 -> 150
+
+x -= 30 -> 120
+
+x *= 2  -> 240
+
+x /= 4  -> 60
+
+x %= 7  -> 4
+
+
+Sum 1 to 10 using += :
+Total: 55
+
+
+Factorial of 5 using *= :
+5! = 120
+
