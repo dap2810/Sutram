@@ -59,3 +59,14 @@ jobs:
       - name: Structural module graph tests (old fixtures explicitly skipped)
         if: always()
         run: python3 -m unittest discover -s tests/module_graph -p 'test_*.py' -v
+      - name: Display per-file source integrity manifest (read-only)
+        if: always()
+        run: |
+          git fetch --no-tags --depth=1 origin main
+          echo "===== R44 FILE HASHES BEGIN ====="
+          git diff --name-only origin/main HEAD | while IFS= read -r file; do
+            if test -f "$file" && test "$file" != "ChatGPT-to-Sarvam/ROUND-44-CHANGED-FILES.sha256"; then
+              sha256sum "$file"
+            fi
+          done
+          echo "===== R44 FILE HASHES END ====="
