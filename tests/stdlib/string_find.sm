@@ -1,0 +1,34 @@
+ayojan string
+mukhya() {
+    vitti hay = nirmmita(12 * 8)
+    hay[0] = 104
+    hay[1] = 101
+    hay[2] = 108
+    hay[3] = 108
+    hay[4] = 111
+    hay[5] = 32
+    hay[6] = 119
+    hay[7] = 111
+    hay[8] = 114
+    hay[9] = 108
+    hay[10] = 100
+    vitti nd = nirmmita(6 * 8)
+    nd[0] = 119
+    nd[1] = 111
+    nd[2] = 114
+    nd[3] = 108
+    nd[4] = 100
+    likha(str_find(hay, 11, nd, 5))
+    likha("\n")
+    likha(str_contains(hay, 11, nd, 5))
+    likha("\n")
+    # absent needle
+    nd[0] = 122
+    likha(str_find(hay, 11, nd, 5))
+    likha("\n")
+    likha(str_contains(hay, 11, nd, 5))
+    likha("\n")
+    # empty needle
+    likha(str_find(hay, 11, nd, 0))
+    likha("\n")
+}
