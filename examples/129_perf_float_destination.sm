@@ -1,0 +1,18 @@
+# PERF-F2: distinct float destinations; source operands remain intact.
+mukhya() {
+    dasham a = 7.5
+    dasham b = 2.5
+    dasham c = 0.0
+    dasham d = 0.0
+    dasham e = 0.0
+    c = a + b
+    d = a - b
+    e = a * b
+    likha(c)
+    likha(d)
+    likha(e)
+    c = a / b
+    likha(c)
+    likha(a)
+    likha(b)
+}
