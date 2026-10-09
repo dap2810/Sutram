@@ -1,0 +1,274 @@
+diff --git a/docs/sutram-stdlib.html b/docs/sutram-stdlib.html
+index 5cd72ac..6ba8678 100644
+--- a/docs/sutram-stdlib.html
++++ b/docs/sutram-stdlib.html
+@@ -22,8 +22,8 @@ Do not edit by hand.</p>
+ <h2>Modules</h2>
+ <ul>
+ <li><a href="#array"><code>array</code></a> — 8 functions</li>
++<li><a href="#bigint"><code>bigint</code></a> — 9 functions</li>
+ <li><a href="#chandas"><code>chandas</code></a> — 6 functions</li>
+-<li><a href="#fileio"><code>fileio</code></a> — 4 functions</li>
+ <li><a href="#ganita"><code>ganita</code></a> — 6 functions</li>
+ <li><a href="#kalana"><code>kalana</code></a> — 6 functions</li>
+ <li><a href="#madhava"><code>madhava</code></a> — 5 functions</li>
+@@ -48,6 +48,20 @@ Do not edit by hand.</p>
+ <tr><td><code>array_set_safe(arr, i, val, n)</code></td><td></td></tr>
+ <tr><td><code>array_get_safe(arr, i, n)</code></td><td></td></tr>
+ </table>
++<h2 id="bigint"><code>bigint</code></h2>
++<p class="mod-desc">Arbitrary-precision integers as arrays of base-10 digits (0-9), least-significant digit first. All arrays are fixed size n; the caller allocates via nirmmita(n * 8) and tracks the size. Convention: bigint_mul requires res to have 2n digits (product of two n-digit numbers can need 2n digits). All other functions use n-digit arrays. Digits must be 0-9; behavior is undefined for out-of-range digits. bigint_zero(arr, n) — set all n digits to 0</p>
++<table>
++<tr><th>Function</th><th>Description</th></tr>
++<tr><td><code>bigint_zero(arr, n)</code></td><td></td></tr>
++<tr><td><code>bigint_from_int(val, arr, n)</code></td><td>bigint_from_int(val, arr, n) — convert int to digit array (LSB first) Returns 1 if val fit in n digits, 0 if truncated.</td></tr>
++<tr><td><code>bigint_to_int(arr, n)</code></td><td>bigint_to_int(arr, n) — convert digit array back to int (for verification) Only correct if the value fits in an int.</td></tr>
++<tr><td><code>bigint_copy(dst, src, n)</code></td><td>bigint_copy(dst, src, n) — copy n digits</td></tr>
++<tr><td><code>bigint_cmp(a, b, n)</code></td><td>bigint_cmp(a, b, n) — compare: 1 if a &gt; b, -1 if a &lt; b, 0 if equal</td></tr>
++<tr><td><code>bigint_add(a, b, res, n)</code></td><td>bigint_add(a, b, res, n) — res = a + b; returns final carry (0 or 1)</td></tr>
++<tr><td><code>bigint_sub(a, b, res, n)</code></td><td>bigint_sub(a, b, res, n) — res = a - b (requires a &gt;= b); returns final borrow</td></tr>
++<tr><td><code>bigint_mul(a, b, res, n)</code></td><td>bigint_mul(a, b, res, n) — res = a * b; res must have 2n digits Returns 0 on success.</td></tr>
++<tr><td><code>bigint_is_zero(arr, n)</code></td><td>bigint_is_zero(arr, n) — 1 if all digits are 0, else 0</td></tr>
++</table>
+ <h2 id="chandas"><code>chandas</code></h2>
+ <p class="mod-desc">After Pingala&#x27;s Chandahśāstra (~2nd c. BCE). Sanskrit metre is built from two syllable weights — laghu (light) and guru (heavy) — so an n-syllable metre is a sequence of two choices: there are exactly 2^n of them. Pingala gave the doubling rule for 2^n, the Meru-prastāra (Pascal&#x27;s triangle) to count how many metres have exactly k guru syllables, and the mātrā-meru, which generates the Fibonacci numbers. A pattern is carried as an integer bitmask: bit i (LSB = first syllable) is 1 for guru, 0 for laghu. The integer value IS the pattern&#x27;s index in the prastāra.</p>
+ <table>
+@@ -59,15 +73,6 @@ Do not edit by hand.</p>
+ <tr><td><code>guru_count(pat)</code></td><td></td></tr>
+ <tr><td><code>meru_pankti(a, n)</code></td><td></td></tr>
+ </table>
+-<h2 id="fileio"><code>fileio</code></h2>
+-<p class="mod-desc">Sutram File I/O Library - fileio.smlib Provides file read/write operations using Linux syscalls Usage: ayojan fileio File descriptors: 0=stdin, 1=stdout, 2=stderr O_RDONLY=0, O_WRONLY=1, O_RDWR=2 O_CREAT=0x40, O_TRUNC=0x200, O_APPEND=0x400 prakriya file_open(path, flags) -&gt; fd Opens a file for reading/writing</p>
+-<table>
+-<tr><th>Function</th><th>Description</th></tr>
+-<tr><td><code>file_open(path, flags)</code></td><td></td></tr>
+-<tr><td><code>file_read(fd, buf, count)</code></td><td>prakriya file_read(fd, buf, count) -&gt; bytes_read Reads from a file descriptor into a buffer</td></tr>
+-<tr><td><code>file_write(fd, buf, count)</code></td><td>prakriya file_write(fd, buf, count) -&gt; bytes_written Writes a buffer to a file descriptor</td></tr>
+-<tr><td><code>file_close(fd)</code></td><td>prakriya file_close(fd) Closes a file descriptor</td></tr>
+-</table>
+ <h2 id="ganita"><code>ganita</code></h2>
+ <p class="mod-desc">After Aryabhata&#x27;s Kuttaka (~499 CE) and the Chakravala of Jayadeva and Bhaskara II (~1150 CE). KUTTAKA (&quot;the pulveriser&quot;) solves the linear indeterminate equation ax + by = c. It is the ancestor of the extended Euclidean algorithm. CHAKRAVALA (&quot;the wheel&quot;) solves the quadratic indeterminate equation x^2 - N*y^2 = 1, known in Europe as Pell&#x27;s equation. It was the first complete method for it, and for N = 61 it gives x = 1766319049, y = 226153980 - a case Europe first solved in 1657. kuttaka(a, b, c) -&gt; x such that a*x is congruent to c (mod b). Requires gcd(a, b) to divide c. Returns x (a particular solution).</p>
+ <table>
+@@ -213,6 +218,6 @@ Do not edit by hand.</p>
+ <tr><td><code>bool_to_int(b)</code></td><td></td></tr>
+ <tr><td><code>int_max()</code></td><td></td></tr>
+ </table>
+-<footer>13 modules, 113 functions. Generated from library sources.</footer>
++<footer>13 modules, 118 functions. Generated from library sources.</footer>
+ </body>
+ </html>
+diff --git a/lib/bigint.smlib b/lib/bigint.smlib
+new file mode 100644
+index 0000000..2fb6cd8
+--- /dev/null
++++ b/lib/bigint.smlib
+@@ -0,0 +1,163 @@
++# lib/bigint.smlib — Sutram standard library: big integers
++#
++# Arbitrary-precision integers as arrays of base-10 digits (0-9),
++# least-significant digit first. All arrays are fixed size n; the caller
++# allocates via nirmmita(n * 8) and tracks the size.
++#
++# Convention: bigint_mul requires res to have 2n digits (product of two
++# n-digit numbers can need 2n digits). All other functions use n-digit arrays.
++# Digits must be 0-9; behavior is undefined for out-of-range digits.
++
++# bigint_zero(arr, n) — set all n digits to 0
++prakriya bigint_zero(arr, n) {
++    vitti a = arr
++    vitti c = n
++    vitti i = 0
++    yavat (i < c) {
++        likh8(a + i * 8, 0)
++        i = i + 1
++    }
++    pratiyati 0
++}
++
++# bigint_from_int(val, arr, n) — convert int to digit array (LSB first)
++# Returns 1 if val fit in n digits, 0 if truncated.
++prakriya bigint_from_int(val, arr, n) {
++    vitti v = val
++    vitti a = arr
++    vitti c = n
++    vitti i = 0
++    yadi (v < 0) { v = 0 - v }
++    yavat (i < c) {
++        likh8(a + i * 8, v % 10)
++        v = v / 10
++        i = i + 1
++    }
++    yadi (v > 0) { pratiyati 0 }
++    pratiyati 1
++}
++
++# bigint_to_int(arr, n) — convert digit array back to int (for verification)
++# Only correct if the value fits in an int.
++prakriya bigint_to_int(arr, n) {
++    vitti a = arr
++    vitti c = n
++    vitti r = 0
++    vitti i = c - 1
++    yavat (i >= 0) {
++        r = r * 10 + pad8(a + i * 8)
++        i = i - 1
++    }
++    pratiyati r
++}
++
++# bigint_copy(dst, src, n) — copy n digits
++prakriya bigint_copy(dst, src, n) {
++    vitti d = dst
++    vitti s = src
++    vitti c = n
++    vitti i = 0
++    yavat (i < c) {
++        likh8(d + i * 8, pad8(s + i * 8))
++        i = i + 1
++    }
++    pratiyati 0
++}
++
++# bigint_cmp(a, b, n) — compare: 1 if a > b, -1 if a < b, 0 if equal
++prakriya bigint_cmp(a, b, n) {
++    vitti x = a
++    vitti y = b
++    vitti c = n
++    vitti i = c - 1
++    yavat (i >= 0) {
++        vitti dx = pad8(x + i * 8)
++        vitti dy = pad8(y + i * 8)
++        yadi (dx > dy) { pratiyati 1 }
++        yadi (dx < dy) { pratiyati -1 }
++        i = i - 1
++    }
++    pratiyati 0
++}
++
++# bigint_add(a, b, res, n) — res = a + b; returns final carry (0 or 1)
++prakriya bigint_add(a, b, res, n) {
++    vitti x = a
++    vitti y = b
++    vitti r = res
++    vitti c = n
++    vitti carry = 0
++    vitti i = 0
++    yavat (i < c) {
++        vitti s = pad8(x + i * 8) + pad8(y + i * 8) + carry
++        likh8(r + i * 8, s % 10)
++        carry = s / 10
++        i = i + 1
++    }
++    pratiyati carry
++}
++
++# bigint_sub(a, b, res, n) — res = a - b (requires a >= b); returns final borrow
++prakriya bigint_sub(a, b, res, n) {
++    vitti x = a
++    vitti y = b
++    vitti r = res
++    vitti c = n
++    vitti borrow = 0
++    vitti i = 0
++    yavat (i < c) {
++        vitti d = pad8(x + i * 8) - pad8(y + i * 8) - borrow
++        yadi (d < 0) {
++            likh8(r + i * 8, d + 10)
++            borrow = 1
++        }
++        anyatra {
++            likh8(r + i * 8, d)
++            borrow = 0
++        }
++        i = i + 1
++    }
++    pratiyati borrow
++}
++
++# bigint_mul(a, b, res, n) — res = a * b; res must have 2n digits
++# Returns 0 on success.
++prakriya bigint_mul(a, b, res, n) {
++    vitti x = a
++    vitti y = b
++    vitti r = res
++    vitti c = n
++    # zero the 2n-digit result
++    vitti i = 0
++    yavat (i < c * 2) {
++        likh8(r + i * 8, 0)
++        i = i + 1
++    }
++    # schoolbook multiplication
++    i = 0
++    yavat (i < c) {
++        vitti carry = 0
++        vitti j = 0
++        yavat (j < c) {
++            vitti p = pad8(x + i * 8) * pad8(y + j * 8) + pad8(r + (i + j) * 8) + carry
++            likh8(r + (i + j) * 8, p % 10)
++            carry = p / 10
++            j = j + 1
++        }
++        likh8(r + (i + c) * 8, pad8(r + (i + c) * 8) + carry)
++        i = i + 1
++    }
++    pratiyati 0
++}
++
++# bigint_is_zero(arr, n) — 1 if all digits are 0, else 0
++prakriya bigint_is_zero(arr, n) {
++    vitti a = arr
++    vitti c = n
++    vitti i = 0
++    yavat (i < c) {
++        yadi (pad8(a + i * 8) != 0) { pratiyati 0 }
++        i = i + 1
++    }
++    pratiyati 1
++}
+diff --git a/lib/fileio.smlib b/lib/fileio.smlib
+deleted file mode 100644
+index 91cc1da..0000000
+--- a/lib/fileio.smlib
++++ /dev/null
+@@ -1,40 +0,0 @@
+-# Sutram File I/O Library - fileio.smlib
+-# Provides file read/write operations using Linux syscalls
+-# Usage: ayojan fileio
+-
+-# File descriptors: 0=stdin, 1=stdout, 2=stderr
+-# O_RDONLY=0, O_WRONLY=1, O_RDWR=2
+-# O_CREAT=0x40, O_TRUNC=0x200, O_APPEND=0x400
+-
+-# prakriya file_open(path, flags) -> fd
+-# Opens a file for reading/writing
+-prakriya file_open(path, flags) {
+-  # sys_open = 2
+-  # rdi = path (string pointer), rsi = flags, rdx = mode
+-  # This uses inline syscall via nirmmita for the buffer
+-  pratiyati 0
+-}
+-
+-# prakriya file_read(fd, buf, count) -> bytes_read
+-# Reads from a file descriptor into a buffer
+-prakriya file_read(fd, buf, count) {
+-  # sys_read = 0
+-  # rdi = fd, rsi = buf, rdx = count
+-  pratiyati 0
+-}
+-
+-# prakriya file_write(fd, buf, count) -> bytes_written
+-# Writes a buffer to a file descriptor
+-prakriya file_write(fd, buf, count) {
+-  # sys_write = 1
+-  # rdi = fd, rsi = buf, rdx = count
+-  pratiyati 0
+-}
+-
+-# prakriya file_close(fd)
+-# Closes a file descriptor
+-prakriya file_close(fd) {
+-  # sys_close = 3
+-  # rdi = fd
+-  pratiyati 0
+-}
