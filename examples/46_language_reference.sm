@@ -1,0 +1,42 @@
+# comments:  # ...   or  // ...   or  /* block */
+
+mukhya()
+    vitti count = 3                 # variable
+    sutra LIMIT = 10                # constant
+
+    yadi (count > 2) {              # if / else if / else
+        likha("big")
+    } anyatra yadi (count == 2) {
+        likha("two")
+    } anyatra {
+        likha("small")
+    }
+
+    punaravartana i = 1 to 5 {      # for (ascending)
+        yadi (i == 3) { uddeshya }   # continue
+        yadi (i == 5) { krama }      # break
+        likha(i)
+    }
+
+    punaravartana j = 5 to 1 {      # for (descending)
+        likha(j)
+    }
+
+    vitti k = 0
+    yavat (k < 3) {                 # while
+        k = k + 1
+    }
+
+    likha(joda(3, 4))               # function call
+    likha("x = ", k)                # two-argument print
+    vitti s = "hello"
+    shabda(s)                       # print a string variable
+    vitti n = grahan()              # read a number
+
+prakriya joda(a, b)                 # function (up to 3 arguments)
+    pratiyati a + b                 # return
+
+prakriya fib(n) {                   # braces are required for a body of >1 statement
+    yadi (n < 2) { pratiyati n }
+    pratiyati fib(n - 1) + fib(n - 2)
+}
