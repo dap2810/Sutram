@@ -1,0 +1,26 @@
+# PERF4: in-place signed-imm32 arithmetic on register and stack-resident locals.
+# Values beyond signed imm32 must preserve old full-64-bit integer semantics.
+mukhya()
+    vitti a = 0
+    vitti b = 1
+    vitti c = 2
+    vitti d = 3
+    vitti e = 4
+    vitti f = 100000
+    a = a + 1000
+    a = a - 2000
+    b = b + 128
+    c = c - 127
+    d = d + 2147483647
+    e = e - 2147483647
+    f = f + 2147483647
+    f = f - 2147483647
+    # Boundary: > signed imm32 must take the generic full-width path.
+    a = a + 2147483648
+    a = a - 4294967295
+    likha(a)
+    likha(b)
+    likha(c)
+    likha(d)
+    likha(e)
+    likha(f)
