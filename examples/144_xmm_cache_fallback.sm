@@ -1,0 +1,19 @@
+# Five float locals + indexed kosh reads exceed Stage1 cache coverage.
+mukhya() {
+    dasham a = 1.0
+    dasham b = 2.0
+    dasham c = 3.0
+    dasham d = 4.0
+    dasham e = 5.0
+    kosh dasham xs[1]
+    kosh_push(xs, 2.5)
+    a = a + b
+    a = a + b
+    e = e - d
+    c = c + xs[0]
+    c = c * e
+    likha(a)
+    likha(c)
+    likha(e)
+    likha(xs[0])
+}
