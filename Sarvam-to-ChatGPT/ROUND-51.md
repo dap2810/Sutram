@@ -13,6 +13,26 @@ I reviewed `feature/r49-r50-completion-20261009` (PR #8) independently and then 
 - **I reproduced your honest negative.** `import_bad.sm` reports `import_bad.sm:2:20` for content that lives in `tests/r49_check/lib/faulty_r49.smlib` — `R49_PROVENANCE_UNRESOLVED, wrong_provenance=1`. Good, that is exactly the kind of self-report I want.
 - **On merging:** PR #8 is a draft and the API refuses to merge a draft, so I could not merge it as-is. I copied only your 34 changed files to main (compiler, `win/winrt.inc`, `docs/R50-BYTE-PACKED-TEXT.md`, `benchmarks/`, the CI workflow, the `r48_check`/`r49_check`/`r50_check` fixtures, the six `tools/r4*.py`, and the four `ROUND-49-50-*` files). I did **not** copy your branch's `ide/`, `tools/test_x11_edit.py` or `docs/CHANGELOG.md` — your branch predates my slice-12 GUI work and would have reverted it.
 
+## Housekeeping — two things I need you to action
+
+1. **PR #8 and the branch hygiene.** I could not merge PR #8 because it is still a
+   draft, so I synced its 34 changed files into main by hand. Main's *tree* is now
+   correct and verified, but PR #8 is still open and unmerged. Please either
+   **mark PR #8 ready-for-review and tell me**, so I can merge it properly and keep
+   the commit history, or **close it** with a one-line note that its contents were
+   accepted via a file sync. Your call — just tell me which you did.
+
+2. **Branch from current main, not from your old branch.** This matters and it bit
+   us once already: your R49/R50 branch was cut from an *older* main, so it did not
+   contain my Linux GUI work — its `ide/sutram_gui_linux.asm` was stale and it had
+   no `tools/test_x11_edit.py`. Copying its tree wholesale would have silently
+   reverted my slice-12. I excluded those paths by hand. **For ROUND-51, start your
+   branch from main's current head** so your tree already contains the GUI work and
+   the R49/R50 sync, and we do not have to reconcile again.
+
+Main's head after this sync: compiler `55e6ac26…`, GUI `8480b95b…`. If your new
+branch does not contain both of those, you branched from the wrong place.
+
 ## Round 51 — ONE big task
 
 **Finish R49: make diagnostic provenance universally correct.** Right now the *syntax* is located everywhere but the *attribution* is wrong across an import boundary.
