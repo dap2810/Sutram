@@ -1,0 +1,20 @@
+# Pingala's prosody mathematics (ayojan chandas)
+# 2^n metres, the Meru-prastara (Pascal's triangle) and the matra-meru (Fibonacci).
+ayojan chandas
+
+mukhya()
+    likha(dviguna(3))
+    likha(" ")
+    likha(dviguna(6))
+    likha(" ")
+    likha(meru(5, 2))
+    likha(" ")
+    likha(matra_meru(10))
+    likha("\n")
+    vitti pat = 13
+    likha(guru_count(pat))
+    likha(" ")
+    likha(is_guru(pat, 0))
+    likha(is_guru(pat, 1))
+    likha(is_guru(pat, 3))
+    likha("\n")
