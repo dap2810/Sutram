@@ -1,0 +1,48 @@
+name: R45 Baseline Performance and Profiling
+on:
+  push:
+    branches: [feature/r45-measured-compiler-performance-20261009]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  baseline:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Acquire NASM as non-root user
+        run: |
+          mkdir -p "$RUNNER_TEMP/nasm-user"
+          cd "$RUNNER_TEMP"
+          apt download nasm
+          dpkg-deb -x nasm_*.deb "$RUNNER_TEMP/nasm-user"
+          echo "$RUNNER_TEMP/nasm-user/usr/bin" >> "$GITHUB_PATH"
+      - name: Build Linux ELF profiling compiler
+        run: |
+          mkdir -p win
+          if test ! -f win/rtblob.inc; then
+            printf 'RT_BLOB_LEN equ 0\nRT_SYSCALL_OFF equ 0\nrt_blob: db 0\n' > win/rtblob.inc
+          fi
+          nasm -f elf64 -I. -dR45_PROFILE src/sutram_compiler.asm -o /tmp/r45.o
+          ld -o r45_compiler /tmp/r45.o
+          ./r45_compiler --version
+      - name: Benchmark five representative programs and every compiler stage
+        run: |
+          python3 tools/r45_benchmark.py --compiler ./r45_compiler --label baseline --runs 15 --warmup 4 --output r45_baseline.csv
+          echo "R45_RAW_CSV_START"
+          cat r45_baseline.csv
+          echo "R45_RAW_CSV_END"
+      - name: Check baseline regression suite and gates
+        run: |
+          cp r45_compiler sutram_compiler
+          python3 tests/run_tests.py
+          python3 tools/codegen_gate.py
+          python3 tools/test_lang_packs.py
+          python3 -m unittest discover -s tests/module_graph -p 'test_*.py' -v
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: r45-baseline-raw
+          path: r45_baseline.csv
+          if-no-files-found: warn
