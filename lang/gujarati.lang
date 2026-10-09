@@ -1,0 +1,34 @@
+# Sutram language pack: ગુજરાતી
+# Format: <native word> <sanskrit keyword>
+# Usage: sutram --lang gujarati input.sm output.bin
+
+મુખ્ય mukhya
+ચલ vitti
+અંક anka
+જો yadi
+નહિંતર anyatra
+જ્યાંસુધી yavat
+પુનરાવર્તન punaravartana
+પાછા pratiyati
+ફલન prakriya
+લખો likha
+સાચું purna
+ખોટું shunya
+અચલ sutra
+ક્રમ krama
+આગળ uddeshya
+ગુણ guna
+ભાવના bhavana
+પંક્તિ pankti
+સર્જન srijana
+નિષેધ nishedha
+રચના rachana
+સમાવેશ ayojan
+ધારણ parigrah
+વાંચો grahan
+થી to
+શબ્દ shabda
+દશમ dasham
+કોશ kosh
+કરો kuru
+નિષ્ક્રિય nishkriya
