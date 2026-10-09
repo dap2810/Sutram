@@ -1,0 +1,30 @@
+ayojan bigint
+mukhya() {
+    vitti base = nirmmita(8 * 8)
+    vitti mod = nirmmita(8 * 8)
+    vitti res = nirmmita(8 * 8)
+    # 2^10 mod 1000 = 24
+    bigint_from_int(2, base, 8)
+    bigint_from_int(1000, mod, 8)
+    bigint_powmod(base, 10, mod, res, 8)
+    likha(bigint_to_int(res, 8))
+    likha("\n")
+    # 3^5 mod 100 = 43
+    bigint_from_int(3, base, 8)
+    bigint_from_int(100, mod, 8)
+    bigint_powmod(base, 5, mod, res, 8)
+    likha(bigint_to_int(res, 8))
+    likha("\n")
+    # x^0 mod m = 1
+    bigint_from_int(7, base, 8)
+    bigint_from_int(100, mod, 8)
+    bigint_powmod(base, 0, mod, res, 8)
+    likha(bigint_to_int(res, 8))
+    likha("\n")
+    # 5^3 mod 13 = 8 (125 mod 13)
+    bigint_from_int(5, base, 8)
+    bigint_from_int(13, mod, 8)
+    bigint_powmod(base, 3, mod, res, 8)
+    likha(bigint_to_int(res, 8))
+    likha("\n")
+}
