@@ -1,0 +1,6 @@
+# sutram-module-v1
+# R41: v1 modules require an alias. Negative test: must be E_MODULE_V1_ALIAS.
+ayojan r41_vec
+mukhya() {
+    likha(1)
+}

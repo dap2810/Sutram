@@ -1,0 +1,6 @@
+# sutram-module-v1
+# R41: v1 module import. Only exported `length` is visible as vec__length.
+ayojan r41_vec@vec
+mukhya() {
+    likha(vec__length())
+}

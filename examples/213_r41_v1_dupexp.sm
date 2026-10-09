@@ -1,0 +1,6 @@
+# sutram-module-v1
+# R41: duplicate exports are a compile error. Negative test: E_MODULE_DUP_EXPORT.
+ayojan r41_dup@dd
+mukhya() {
+    likha(dd__thing())
+}

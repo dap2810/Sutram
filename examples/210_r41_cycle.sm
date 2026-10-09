@@ -1,0 +1,6 @@
+# R41: cyclic imports must be E_MODULE_CYCLE with file:line, not silent dedup.
+# Negative test: this program must NOT compile.
+ayojan r41_cyc_a
+mukhya() {
+    likha(cyc_a())
+}

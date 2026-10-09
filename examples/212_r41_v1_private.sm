@@ -1,0 +1,6 @@
+# sutram-module-v1
+# R41: unexported names are invisible. Negative test: must be E_MODULE_NOT_EXPORTED.
+ayojan r41_vec@vec
+mukhya() {
+    likha(vec__helper())
+}

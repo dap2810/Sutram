@@ -1,0 +1,5 @@
+# R41 test: cyclic import (a -> b -> a). Must be E_MODULE_CYCLE, not silent.
+ayojan r41_cyc_a
+prakriya cyc_b() {
+    pratiyati 2
+}

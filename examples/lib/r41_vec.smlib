@@ -1,0 +1,9 @@
+# sutram-module-v1
+# R41 test: export visibility. Only `length` is exported; `helper` is private.
+niryat length
+prakriya length() {
+    pratiyati helper()
+}
+prakriya helper() {
+    pratiyati 42
+}
