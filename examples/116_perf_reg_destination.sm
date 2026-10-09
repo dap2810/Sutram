@@ -1,0 +1,23 @@
+mukhya()
+    vitti a = 7
+    vitti b = 3
+    vitti c = 0
+    vitti d = 0
+    vitti e = 0
+    c = a + b
+    d = a - b
+    e = a * b
+    b = a + b
+    a = a * b
+    c = 9
+    d = c
+    likha(a)
+    likha(" ")
+    likha(b)
+    likha(" ")
+    likha(c)
+    likha(" ")
+    likha(d)
+    likha(" ")
+    likha(e)
+    likha("\n")
