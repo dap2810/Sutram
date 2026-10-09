@@ -1,0 +1,13 @@
+# Multiplication table
+mukhya()
+    vitti i = 1
+    yavat (i <= 5) {
+        vitti j = 1
+        yavat (j <= 5) {
+            likha_fmt("", i * j)
+            likha(" ")
+            j = j + 1
+        }
+        likha("\n")
+        i = i + 1
+    }
