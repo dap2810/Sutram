@@ -1,0 +1,7 @@
+# Dynamic length must drive normal [] bounds checks after pop.
+mukhya() {
+    kosh a[1]
+    kosh_push(a, 42)
+    kosh_pop(a)
+    likha(a[0])
+}
