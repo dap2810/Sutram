@@ -63,6 +63,11 @@ jobs:
             /tmp/win_probe_0.exe
             /tmp/win_probe_1.exe
             /tmp/win_probe_2.exe
+            /tmp/win_probe_3.exe
+            /tmp/win_probe_4.exe
+            /tmp/win_probe_5.exe
+            /tmp/win_probe_6.exe
+            /tmp/win_probe_7.exe
       - name: SHA manifest
         if: always()
         run: sha256sum src/sutram_compiler.asm tools/r50_native_acceptance.py tests/r50_check/*.sm
