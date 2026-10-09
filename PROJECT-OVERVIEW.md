@@ -131,11 +131,11 @@ Loaded with `sutram --lang tamil` or `SUTRAM_LANG=tamil`.
 
 | | |
 |---|---|
-| Compiler SHA-256 | `c814a854607f395a63bd7b46ff1c74ec959e7287d19c964d3e0d41d1a10b073c` |
-| Regression suite | **178/178** |
+| Compiler SHA-256 | `6036dd1cef3bc7f257a5fc7e5244b0a5dda8cc7b38ab78d8d2c4ff6d8b8516d2` |
+| Regression suite | **186/186** |
 | Code-generation gates | **12/12** |
 | Language packs | **30/30** |
-| Examples | 178 |
+| Examples | 186 |
 | Library modules | 12 with code (103 functions); 3 more are comment-only sketches |
 | Books | 6 editions, kept in step with the language |
 
