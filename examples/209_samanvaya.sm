@@ -1,0 +1,67 @@
+# Linear algebra on flat arrays. Checks against hand-computed values:
+#   [[1,2],[3,4]] x [[5,6],[7,8]] = [[19,22],[43,50]]
+#   transpose of [[1,2,3],[4,5,6]] = [[1,4],[2,5],[3,6]]
+#   trace([[1,2],[3,4]]) = 5 ; det = -2
+#   det([[6,1,1],[4,-2,5],[2,8,7]]) = -306
+ayojan samanvaya
+
+mukhya() {
+    kosh dasham a[4]
+    kosh_push(a, 1.0)
+    kosh_push(a, 2.0)
+    kosh_push(a, 3.0)
+    kosh_push(a, 4.0)
+
+    kosh dasham b[4]
+    kosh_push(b, 5.0)
+    kosh_push(b, 6.0)
+    kosh_push(b, 7.0)
+    kosh_push(b, 8.0)
+
+    kosh dasham c[4]
+    vitti z = 0
+    yavat (z < 4) { kosh_push(c, 0.0); z = z + 1 }
+    likha(mat_gunana(a, b, 2, 2, 2, c))
+    likha(c[0])
+    likha(c[1])
+    likha(c[2])
+    likha(c[3])
+
+    likha(nishan(a, 2))
+    likha(nirnaya2(a))
+    likha(rekha_manak(a, 2, 2))
+
+    kosh dasham d[9]
+    kosh_push(d, 6.0)
+    kosh_push(d, 1.0)
+    kosh_push(d, 1.0)
+    kosh_push(d, 4.0)
+    kosh_push(d, -2.0)
+    kosh_push(d, 5.0)
+    kosh_push(d, 2.0)
+    kosh_push(d, 8.0)
+    kosh_push(d, 7.0)
+    likha(nirnaya3(d))
+
+    kosh dasham id[9]
+    vitti w = 0
+    yavat (w < 9) { kosh_push(id, 0.0); w = w + 1 }
+    likha(pehchan(3, id))
+    likha(nishan(id, 3))
+
+    kosh dasham e[6]
+    kosh_push(e, 1.0)
+    kosh_push(e, 2.0)
+    kosh_push(e, 3.0)
+    kosh_push(e, 4.0)
+    kosh_push(e, 5.0)
+    kosh_push(e, 6.0)
+    kosh dasham t[6]
+    vitti y = 0
+    yavat (y < 6) { kosh_push(t, 0.0); y = y + 1 }
+    likha(vivartana(e, 2, 3, t))
+    likha(t[0])
+    likha(t[1])
+    likha(t[2])
+    likha(t[3])
+}
