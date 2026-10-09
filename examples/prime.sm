@@ -1,0 +1,22 @@
+# Prime number checker
+mukhya()
+    vitti n = 2
+    yavat (n <= 20) {
+        vitti is_prime = 1
+        vitti d = 2
+        yavat (d < n) {
+            vitti rem = n - n / d * d
+            yadi (rem == 0) {
+                is_prime = 0
+            }
+            d = d + 1
+        }
+        likha(n)
+        likha(" is ")
+        yadi (is_prime == 1) {
+            likha("prime\n")
+        } anyatra {
+            likha("not prime\n")
+        }
+        n = n + 1
+    }
