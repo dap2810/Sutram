@@ -1,0 +1,10 @@
+# Same names in different modules; all calls must stay disambiguated.
+ayojan r33_alpha@alpha
+ayojan r33_beta@beta
+ayojan r33_alpha@gamma
+mukhya() {
+    likha(alpha__clash())
+    likha(beta__clash())
+    likha(gamma__helper())
+    likha(beta__helper())
+}
