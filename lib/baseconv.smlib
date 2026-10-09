@@ -1,0 +1,81 @@
+# lib/baseconv.smlib — Sutram standard library: base conversion
+#
+# Convert between base-10 bigint digit arrays and digit-value arrays in
+# base 2, 8, 10, 16. The intermediate is a pankti of integer digit values
+# (0..15), most significant first — not a byte string, to avoid packing issues.
+#
+# Round-trip property: from_digits(to_digits(x, b), b) == x for every base.
+
+# bigint_to_digits(x, n, base, out) — render n-digit bigint x in `base`
+# into pankti `out` as digit values (MSB first). Returns digit count.
+# Caller allocates out with >= 70 cells.
+prakriya bigint_to_digits(x, n, base, out) {
+    vitti src = x
+    vitti c = n
+    vitti b = base
+    vitti dst = out
+    vitti w = nirmmita(c * 8)
+    vitti i = 0
+    yavat (i < c) {
+        w[i] = src[i]
+        i = i + 1
+    }
+    yadi (bigint_is_zero(w, c) == 1) {
+        dst[0] = 0
+        pratiyati 1
+    }
+    vitti rev = nirmmita(70 * 8)
+    vitti rlen = 0
+    vitti cont = 1
+    yavat (cont == 1) {
+        yadi (bigint_is_zero(w, c) == 1) {
+            cont = 0
+        } anyatra {
+            vitti rem = 0
+            vitti k = c - 1
+            yavat (k >= 0) {
+                vitti cur = rem * 10 + w[k]
+                w[k] = cur / b
+                rem = cur % b
+                k = k - 1
+            }
+            rev[rlen] = rem
+            rlen = rlen + 1
+        }
+    }
+    vitti p = 0
+    yavat (p < rlen) {
+        dst[p] = rev[rlen - 1 - p]
+        p = p + 1
+    }
+    pratiyati rlen
+}
+
+# bigint_from_digits(d, count, base, x, n) — parse `count` digit values
+# from pankti `d` (MSB first) in `base` into n-digit bigint x.
+# Returns 1 on success, 0 if a digit >= base.
+prakriya bigint_from_digits(d, count, base, x, n) {
+    vitti src = d
+    vitti cnt = count
+    vitti b = base
+    vitti dst = x
+    vitti c = n
+    bigint_zero(dst, c)
+    vitti p = 0
+    yavat (p < cnt) {
+        vitti dv = src[p]
+        yadi (dv < 0) { pratiyati 0 }
+        yadi (dv >= b) { pratiyati 0 }
+        # dst = dst * b + dv
+        vitti carry = dv
+        vitti k = 0
+        yavat (k < c) {
+            vitti cur = dst[k] * b + carry
+            dst[k] = cur % 10
+            carry = cur / 10
+            k = k + 1
+        }
+        p = p + 1
+    }
+    pratiyati 1
+}
