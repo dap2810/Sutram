@@ -1,0 +1,45 @@
+# Sutram language pack: Tamil (தமிழ்)
+# Format: <native word> <sanskrit keyword>
+# Usage: sutram --lang tamil input.sm output.bin
+#    or: SUTRAM_LANG=tamil sutram input.sm output.bin
+
+முதன்மை mukhya
+மாறி vitti
+எண் anka
+எனில் yadi
+இல்லையெனில் anyatra
+வரை yavat
+மீண்டும் punaravartana
+திரும்ப pratiyati
+செயல் prakriya
+எழுது likha
+மெய் purna
+பொய் shunya
+நிலையான sutra
+வரிசை krama
+தொடர் uddeshya
+குணம் guna
+நிலை bhavana
+வரிசைப்பட pankti
+படைப்பு srijana
+தடை nishedha
+அமைப்பு rachana
+இணைப்பு ayojan
+உரிமை parigrah
+
+படி grahan
+
+முதல் to
+
+# glossary synonyms
+முக்கியம் mukhya
+சார்பு prakriya
+மடக்கு punaravartana
+எனின் yadi
+சூத்திரம் sutra
+பூரணம் purna
+சொல் shabda
+தசம dasham
+கோசம் kosh
+செய் kuru
+நிஷ்கிரிய nishkriya
