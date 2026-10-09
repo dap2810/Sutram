@@ -1,0 +1,16 @@
+# PERF-FC1: comparisons with mixed, literals and stack locals use T12 fallback.
+mukhya() {
+    dasham a = 2.5
+    dasham b = 4.5
+    dasham c = 0.5
+    dasham d = 0.0
+    dasham e = 1.0
+    dasham f = 9.5
+    vitti i = 2
+    likha(a < b)
+    likha(a < 3.0)
+    likha(a > i)
+    likha(f > b)
+    likha((a + c) == 3.0)
+    yadi (a < b) { likha(77) }
+}
