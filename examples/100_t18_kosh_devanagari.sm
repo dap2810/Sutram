@@ -1,0 +1,10 @@
+# Devanagari कोश alias + zero-capacity first-growth path.
+mukhya() {
+    कोश b[0]
+    likha(kosh_len(b))
+    likha(kosh_cap(b))
+    kosh_push(b, 7)
+    likha(kosh_len(b))
+    likha(kosh_cap(b))
+    likha(b[0])
+}
