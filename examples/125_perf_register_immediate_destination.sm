@@ -1,0 +1,26 @@
+# PERF5: distinct register destinations for (variable +|- signed imm32).
+# The compiler must preserve the original source, 64-bit arithmetic, and
+# fallback for literals beyond x86-64 signed imm32 range.
+mukhya()
+    vitti a = 37
+    vitti b = 0
+    vitti c = 0
+    vitti d = 0
+    vitti e = 0
+    b = a + 1000
+    c = a - 2000
+    d = a + 2147483647
+    e = a - 2147483647
+    likha(a)
+    likha(b)
+    likha(c)
+    likha(d)
+    likha(e)
+    # The large literals cannot use sign-extending imm32 arithmetic.
+    b = a + 2147483648
+    c = a - 4294967295
+    likha(b)
+    likha(c)
+    # Source/destination alias: the MOV phase must remain a no-op.
+    a = a + 1000
+    likha(a)
