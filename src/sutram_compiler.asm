@@ -2263,6 +2263,7 @@ expand_imports_pass:
     movzx eax, byte [rsi + r12]
     lea rdi, [rel import_buf]
     mov [rdi + r14], al
+    call r51_copy_origin
     inc r12
     inc r14
     cmp eax, 10
