@@ -1,0 +1,18 @@
+# T18 growable array: growth, indexing, assignment, pop, len/cap.
+mukhya() {
+    kosh a[1]
+    likha(kosh_len(a))
+    likha(kosh_cap(a))
+    likha(kosh_push(a, 10))
+    likha(kosh_push(a, 20))
+    likha(kosh_cap(a))
+    likha(kosh_push(a, 30))
+    likha(kosh_cap(a))
+    likha(a[0])
+    likha(a[1])
+    a[1] = 25
+    likha(a[1])
+    likha(kosh_pop(a))
+    likha(kosh_len(a))
+    likha(kosh_cap(a))
+}
