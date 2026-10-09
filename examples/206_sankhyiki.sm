@@ -1,0 +1,25 @@
+# Statistics library over a typed float array (kosh dasham).
+# Textbook dataset [2,4,4,4,5,5,7,9]: mean 5, population variance 4,
+# population stddev 2, min 2, max 9, range 7, sum 40.
+ayojan sankhyiki
+
+mukhya() {
+    kosh dasham xs[4]
+    kosh_push(xs, 2)
+    kosh_push(xs, 4)
+    kosh_push(xs, 4)
+    kosh_push(xs, 4)
+    kosh_push(xs, 5)
+    kosh_push(xs, 5)
+    kosh_push(xs, 7)
+    kosh_push(xs, 9)
+
+    likha(kosh_len(xs))
+    likha(yoga(xs))
+    likha(madhya(xs))
+    likha(prasaran(xs))
+    likha(vichalan(xs))
+    likha(laghutama(xs))
+    likha(adhikatama(xs))
+    likha(vyapti(xs))
+}
