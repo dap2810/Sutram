@@ -1,0 +1,19 @@
+# Sixteen unique namespaced imports fit; the seventeenth must fail explicitly.
+ayojan r33_alpha@mod_0
+ayojan r33_alpha@mod_1
+ayojan r33_alpha@mod_2
+ayojan r33_alpha@mod_3
+ayojan r33_alpha@mod_4
+ayojan r33_alpha@mod_5
+ayojan r33_alpha@mod_6
+ayojan r33_alpha@mod_7
+ayojan r33_alpha@mod_8
+ayojan r33_alpha@mod_9
+ayojan r33_alpha@mod_10
+ayojan r33_alpha@mod_11
+ayojan r33_alpha@mod_12
+ayojan r33_alpha@mod_13
+ayojan r33_alpha@mod_14
+ayojan r33_alpha@mod_15
+ayojan r33_alpha@mod_16
+mukhya() { likha(1) }
