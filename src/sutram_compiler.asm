@@ -673,6 +673,7 @@ str_dot_exe  db ".exe", 0
     msg_namespace_error db "Sutram Error: invalid namespaced ayojan (use module@alias, max 31 alias bytes)", 10, 0
     msg_namespace_module_missing db "Sutram Error: namespaced module file not found", 10, 0
     msg_namespace_alias_reuse db "Sutram Error: namespaced alias already assigned to another module", 10, 0
+    r51_alias_conflict db ": Sutram Error [E_MODULE_ALIAS_REUSE]: namespaced alias already assigned to another module",10,0
     msg_namespace_func_limit db "Sutram Error: namespaced module has too many or oversized function names", 10, 0
     msg_import_overflow db "Sutram Error: expanded module source too large", 10, 0
     graph_v1_header db '# sutram-module-v1', 0
@@ -2504,6 +2505,17 @@ expand_imports_pass:
     call strcmp
     test rax,rax
     jz .ei_next_alias
+    cmp qword [rel r48_mode],0
+    je .ei_alias_old
+    lea rdi,[rel source_buf]
+    add rdi,r12
+    call r51_print_origin
+    lea rdi,[rel r51_alias_conflict]
+    call print_str_z
+    call r51_print_original_context
+    inc qword [rel r48_error_count]
+    jmp .ei_loop
+.ei_alias_old:
     lea rdi,[rel msg_namespace_alias_reuse]
     call print_str_z
     mov rdi,1
