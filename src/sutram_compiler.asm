@@ -3815,6 +3815,14 @@ mg_defer_valias:
     ret
 
 mg_valias_error:
+    cmp qword [rel r48_mode],0
+    je .old
+    mov rsi,[rel mg_cur_line]
+    call r49_print_module_location
+    lea rdi,[rel mg_colon]
+    call print_str_z
+    jmp .message
+.old:
     push rdi
     call print_str_z
     lea rdi, [rel mg_colon]
@@ -3823,6 +3831,7 @@ mg_valias_error:
     call mg_print_uint
     lea rdi, [rel mg_colon]
     call print_str_z
+.message:
     lea rdi, [rel mg_e_valias1]
     call print_str_z
     lea rdi, [rel mg_cur_name]
@@ -3895,6 +3904,8 @@ mg_copy_list_to_rec:
 mg_print_cycle:
     push rbx
     push r12
+    cmp qword [rel r48_mode],0
+    jne .pc_check_prefix
     cmp byte [rel mg_root_exact_v1], 1
     jne .pc_muse_prefix
     ; R41 compatible basename/line and error prefix.
@@ -3911,6 +3922,19 @@ mg_print_cycle:
     lea rdi, [rel graph_close]
     call print_str_z
     lea rdi, [rel graph_cycle_prefix]
+    call print_str_z
+    jmp .pc_prefix_done
+.pc_check_prefix:
+    lea rdi,[rel mg_cur_path]
+    mov rsi,[rel mg_cur_line]
+    call r49_print_module_location
+    lea rdi,[rel graph_prefix]
+    call print_str_z
+    lea rdi,[rel graph_msg_cycle]
+    call print_str_z
+    lea rdi,[rel graph_close]
+    call print_str_z
+    lea rdi,[rel graph_cycle_prefix]
     call print_str_z
     jmp .pc_prefix_done
 .pc_muse_prefix:
