@@ -1,0 +1,20 @@
+# R30: integer RHS, raw literals, and >5 local slots still use safe paths.
+mukhya() {
+    kosh dasham v[1]
+    kosh_push(v, 7.0)
+    dasham x = 2.0
+    dasham y = 3.0
+    dasham z = 4.0
+    dasham q = 5.0
+    dasham spill = 6.0
+    vitti offset = 2
+    dasham out = 0.0
+    out = v[0] + offset
+    likha(out)
+    out = v[0] + spill
+    likha(out)
+    out = (x + y * z) / q
+    likha(out)
+    out = v[0] - 4294967295
+    likha(out)
+}
