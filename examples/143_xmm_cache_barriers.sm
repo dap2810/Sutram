@@ -1,0 +1,29 @@
+# Calls, printing, branches and loops must invalidate cached XMM locals.
+prakriya bump(dasham x) {
+    pratiyati x + 1.5
+}
+mukhya() {
+    dasham a = 1.0
+    dasham b = 2.0
+    dasham c = 3.0
+    dasham d = 4.0
+    a = a + b
+    a = a + b
+    likha(a)
+    b = bump(b)
+    a = a + b
+    yadi (a > 4.0) {
+        c = c + d
+        c = c + d
+    }
+    a = a + b
+    vitti i = 0
+    yavat (i < 3) {
+        a = a + b
+        i = i + 1
+    }
+    a = a + b
+    likha(a)
+    likha(b)
+    likha(c)
+}
