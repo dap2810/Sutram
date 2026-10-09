@@ -128,3 +128,82 @@ prakriya shell_sort(a, n) {
         gap = gap / 2
     }
 }
+
+prakriya insertion_sort(a, n) {
+    vitti arr = a
+    vitti len = n
+    vitti i = 1
+    yavat (i < len) {
+        vitti key = arr[i]
+        vitti j = i - 1
+        vitti done = 0
+        yavat (done == 0) {
+            yadi (j < 0) {
+                done = 1
+            } anyatra {
+                yadi (arr[j] > key) {
+                    arr[j + 1] = arr[j]
+                    j = j - 1
+                } anyatra {
+                    done = 1
+                }
+            }
+        }
+        arr[j + 1] = key
+        i = i + 1
+    }
+}
+
+# merge_sort(a, n) — top-down merge sort using a temp buffer.
+prakriya merge_sort_rec(a, tmp, lo, hi) {
+    yadi (hi - lo < 2) { pratiyati 0 }
+    vitti mid = (lo + hi) / 2
+    merge_sort_rec(a, tmp, lo, mid)
+    merge_sort_rec(a, tmp, mid, hi)
+    # merge a[lo:mid] and a[mid:hi] into tmp[lo:hi], copy back
+    vitti i = lo
+    vitti j = mid
+    vitti k = lo
+    vitti done = 0
+    yavat (done == 0) {
+        vitti iex = 0
+        yadi (i >= mid) { iex = 1 }
+        vitti jex = 0
+        yadi (j >= hi) { jex = 1 }
+        yadi (iex == 1) {
+            yadi (jex == 1) {
+                done = 1
+            } anyatra {
+                tmp[k] = a[j]
+                j = j + 1
+                k = k + 1
+            }
+        } anyatra {
+            yadi (jex == 1) {
+                tmp[k] = a[i]
+                i = i + 1
+                k = k + 1
+            } anyatra {
+                yadi (a[j] < a[i]) {
+                    tmp[k] = a[j]
+                    j = j + 1
+                } anyatra {
+                    tmp[k] = a[i]
+                    i = i + 1
+                }
+                k = k + 1
+            }
+        }
+    }
+    vitti c = lo
+    yavat (c < hi) {
+        a[c] = tmp[c]
+        c = c + 1
+    }
+    pratiyati 0
+}
+
+prakriya merge_sort(a, n) {
+    vitti tmp = nirmmita(n * 8)
+    merge_sort_rec(a, tmp, 0, n)
+}
