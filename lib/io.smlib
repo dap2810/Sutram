@@ -1,0 +1,10 @@
+# Sutram Standard Library — I/O Module
+# io_print(s) -> likha(s)
+# io_print_num(n) -> likha(n)
+# io_printf(fmt, n) -> likha_fmt(fmt, n)
+# io_write(fd, data, len) -> likha(fd, data, len)
+# io_read(fd, buf, len) -> paadh(fd, buf, len)
+# io_open(path, flags) -> dvaram(path, flags)
+# io_close(fd) -> band(fd)
+
+# Note: Use these builtins directly in mukhya().
