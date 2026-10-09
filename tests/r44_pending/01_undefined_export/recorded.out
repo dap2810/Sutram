@@ -1,0 +1,1 @@
+tests/r44_pending/01_undefined_export/lib/calc.smlib:2: Sutram Error [E_EXPORT_UNDEFINED]: export 'missing' has no matching definition in module 'calc'
