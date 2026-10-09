@@ -18457,8 +18457,10 @@ write_elf:
     mov rdx, 0o755
     call os_open
     mov [rel out_fd], rax
-    ; Build headers on stack
-    sub rsp, 64
+    ; R45 output optimization: build ELF header (64 B) and program header
+    ; (56 B) contiguously, then write both in one 120-byte syscall.
+    ; This removes one write(2) without changing a single emitted byte.
+    sub rsp, 128
     ; ELF header
     mov dword [rsp], 0x464C457F
     mov dword [rsp+4], 0x00010102
@@ -18480,32 +18482,28 @@ write_elf:
     mov word [rsp+58], 0
     mov word [rsp+60], 0
     mov word [rsp+62], 0
-    ; Write ELF header
-    mov rdi, [rel out_fd]
-    mov rsi, rsp
-    mov rdx, 64
-    call os_write
-    ; Program header
-    mov dword [rsp], 1
-    mov dword [rsp+4], 7
+    ; Program header at [rsp + 64], immediately after ELF header.
+    lea r10, [rsp+64]
+    mov dword [r10], 1
+    mov dword [r10+4], 7
     mov rax, HEADERS_SIZE
-    mov [rsp+8], rax
+    mov [r10+8], rax
     mov rax, BASE_ADDR + HEADERS_SIZE
-    mov [rsp+16], rax
-    mov [rsp+24], rax
+    mov [r10+16], rax
+    mov [r10+24], rax
     mov rax, [rel code_sz]
-    mov [rsp+32], rax         ; p_filesz = code_sz
+    mov [r10+32], rax        ; p_filesz = code_sz
     mov rax, [rel code_sz]
-    add rax, 0x10000          ; p_memsz = code_sz + 64KB (BSS)
-    mov [rsp+40], rax
+    add rax, 0x10000         ; p_memsz = code_sz + 64KB (BSS)
+    mov [r10+40], rax
     mov rax, 0x1000
-    mov [rsp+48], rax
-    ; Write program header
+    mov [r10+48], rax
+    ; One syscall instead of two: ELF header + program header.
     mov rdi, [rel out_fd]
     mov rsi, rsp
-    mov rdx, 56
+    mov rdx, 120
     call os_write
-    add rsp, 64
+    add rsp, 128
     ; Write code
     mov rdi, [rel out_fd]
     lea rsi, [rel code_buf]
