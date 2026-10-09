@@ -1,0 +1,34 @@
+# Sutram language pack: ଓଡ଼ିଆ
+# Format: <native word> <sanskrit keyword>
+# Usage: sutram --lang odia input.sm output.bin
+
+ମୁଖ୍ୟ mukhya
+ଚଳ vitti
+ଅଙ୍କ anka
+ଯଦି yadi
+ନଚେତ୍ anyatra
+ଯେତେବେଳେ yavat
+ପୁନରାବୃତ୍ତି punaravartana
+ଫେରସ pratiyati
+କାର୍ଯ୍ୟ prakriya
+ଲେଖ likha
+ସତ୍ୟ purna
+ମିଥ୍ୟା shunya
+ସ୍ଥିର sutra
+କ୍ରମ krama
+ଆଗକୁ uddeshya
+ଗୁଣ guna
+ଭାବନା bhavana
+ଧାଡ଼ି pankti
+ସୃଜନ srijana
+ନିଷେଧ nishedha
+ସଂରଚନା rachana
+ସମାବେଶ ayojan
+ଧାରଣ parigrah
+ପଢ଼ grahan
+ଠାରୁ to
+ଶବ୍ଦ shabda
+ଦଶମ dasham
+କୋଶ kosh
+କର kuru
+ନିଷ୍କ୍ରିୟ nishkriya
