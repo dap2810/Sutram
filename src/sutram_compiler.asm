@@ -4732,6 +4732,8 @@ mg_check_visibility:
 .cv_rec:
     cmp r15, [rel mg_rec_n]
     jae .cv_done
+    ; Called validators use volatile r11: rebase every iteration.
+    lea r11, [rel mg_rec_v1]
     movzx eax, byte [r11 + r15]
     test eax, eax
     jz .cv_next_rec
@@ -4773,6 +4775,8 @@ mg_check_visibility:
     xor r14, r14                  ; import index
     lea r11, [rel mg_imp_n]
 .cv_imp:
+    ; Reestablish import-count table after per-edge scanner calls.
+    lea r11, [rel mg_imp_n]
     movzx eax, byte [r11 + r15]
     cmp r14, rax
     jae .cv_next_rec
