@@ -1700,10 +1700,23 @@ repl_win_spawn:
 %endif
 
 _start:
+%ifdef R49_WIN_DIAG_0
+    ; CI-only entrypoint probe. Normal builds never include this.
+    mov eax, 71
+    ret
+%endif
     mov [rel orig_rsp], rsp
 %ifdef WINDOWS
     call rt_init                ; resolve kernel32 before any I/O
+%ifdef R49_WIN_DIAG_1
+    mov eax, 72
+    ret
+%endif
     call win_build_argv         ; build argc/argv from GetCommandLineA
+%ifdef R49_WIN_DIAG_2
+    mov eax, 73
+    ret
+%endif
 %endif
     call get_self_path
     ; decide the output format now: .exe -> Windows PE, else Linux ELF
