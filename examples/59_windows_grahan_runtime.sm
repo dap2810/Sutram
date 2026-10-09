@@ -1,0 +1,6 @@
+# Windows runtime input smoke: grahan() must route through ReadFile for .exe.
+# The normal golden harness exercises the same language semantics on Linux;
+# Windows acceptance additionally compiles this source to PE for real-machine test.
+mukhya()
+    vitti x = grahan()
+    likha(x)
