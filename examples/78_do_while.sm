@@ -1,0 +1,15 @@
+mukhya() {
+    vitti i = 0
+    kuru {
+        i = i + 1
+        yadi (i == 2) { uddeshya }
+        likha(i)
+        yadi (i == 4) { krama }
+    } yavat (i < 10)
+
+    vitti once = 5
+    कुरु {
+        likha(once)
+        once = once + 1
+    } yavat (once < 5)
+}
