@@ -35,7 +35,7 @@ Do not edit by hand.</p>
 <li><a href="#sankhyiki"><code>sankhyiki</code></a> — 10 functions</li>
 <li><a href="#sort"><code>sort</code></a> — 14 functions</li>
 <li><a href="#strconv"><code>strconv</code></a> — 5 functions</li>
-<li><a href="#string"><code>string</code></a> — 14 functions</li>
+<li><a href="#string"><code>string</code></a> — 25 functions</li>
 <li><a href="#util"><code>util</code></a> — 7 functions</li>
 </ul>
 <h2 id="array"><code>array</code></h2>
@@ -238,6 +238,17 @@ Do not edit by hand.</p>
 <tr><td><code>upper_code(c)</code></td><td></td></tr>
 <tr><td><code>lower_code(c)</code></td><td></td></tr>
 <tr><td><code>str_equals(a, b)</code></td><td></td></tr>
+<tr><td><code>str_find(hay, hn, needle, nn)</code></td><td>str_find(hay, hn, needle, nn) — index of first occurrence of needle in hay, or -1. Empty needle matches at 0.</td></tr>
+<tr><td><code>str_contains(hay, hn, needle, nn)</code></td><td>str_contains(hay, hn, needle, nn) — 1 if needle occurs in hay, else 0.</td></tr>
+<tr><td><code>str_replace(src, sn, find, fn, repl, out)</code></td><td>str_replace(src, sn, find, fn, repl, out) — copy src to out, replacing every (non-overlapping) occurrence of find with repl. repl is 0-terminated (its length is derived). Returns the new count. Caller allocates generously.</td></tr>
+<tr><td><code>str_split(src, sn, sep, sepn, parts, maxparts)</code></td><td>str_split(src, sn, sep, sepn, parts, maxparts) — split src on sep. parts is a flat buffer holding length-prefixed segments: [len0, c0, c1, ..., len1, c0, ...] To recover segment i: walk from parts[0], skipping (1 + len) cells per segment; the length is at the segment&#x27;s start. Returns segment count (capped at maxparts). Empty separator: no split (one segment).</td></tr>
+<tr><td><code>str_join(parts, count, sep, sepn, out)</code></td><td>str_join(parts, count, sep, sepn, out) — inverse of str_split for the length-prefixed format. Joins `count` segments with sep. Returns new count.</td></tr>
+<tr><td><code>str_trim(src, sn, out)</code></td><td>str_trim(src, sn, out) — strip leading/trailing ASCII spaces (32). Returns new count.</td></tr>
+<tr><td><code>str_upper(src, sn, out)</code></td><td>str_upper(src, sn, out) / str_lower — ASCII case conversion.</td></tr>
+<tr><td><code>str_lower(src, sn, out)</code></td><td></td></tr>
+<tr><td><code>str_starts(src, sn, pre, pn)</code></td><td>str_starts(src, sn, pre, pn) / str_ends — 0/1.</td></tr>
+<tr><td><code>str_ends(src, sn, suf, sn2)</code></td><td></td></tr>
+<tr><td><code>str_compare(a, an, b, bn)</code></td><td>str_compare(a, an, b, bn) — -1 / 0 / 1 (lexicographic by char code).</td></tr>
 </table>
 <h2 id="util"><code>util</code></h2>
 <p class="mod-desc">Sutram Utility Library - util.smlib General-purpose utility functions Usage: ayojan util</p>
@@ -251,6 +262,6 @@ Do not edit by hand.</p>
 <tr><td><code>bool_to_int(b)</code></td><td></td></tr>
 <tr><td><code>int_max()</code></td><td></td></tr>
 </table>
-<footer>16 modules, 133 functions. Generated from library sources.</footer>
+<footer>16 modules, 144 functions. Generated from library sources.</footer>
 </body>
 </html>
