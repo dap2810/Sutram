@@ -1,0 +1,163 @@
+# lib/bigint.smlib — Sutram standard library: big integers
+#
+# Arbitrary-precision integers as arrays of base-10 digits (0-9),
+# least-significant digit first. All arrays are fixed size n; the caller
+# allocates via nirmmita(n * 8) and tracks the size.
+#
+# Convention: bigint_mul requires res to have 2n digits (product of two
+# n-digit numbers can need 2n digits). All other functions use n-digit arrays.
+# Digits must be 0-9; behavior is undefined for out-of-range digits.
+
+# bigint_zero(arr, n) — set all n digits to 0
+prakriya bigint_zero(arr, n) {
+    vitti a = arr
+    vitti c = n
+    vitti i = 0
+    yavat (i < c) {
+        likh8(a + i * 8, 0)
+        i = i + 1
+    }
+    pratiyati 0
+}
+
+# bigint_from_int(val, arr, n) — convert int to digit array (LSB first)
+# Returns 1 if val fit in n digits, 0 if truncated.
+prakriya bigint_from_int(val, arr, n) {
+    vitti v = val
+    vitti a = arr
+    vitti c = n
+    vitti i = 0
+    yadi (v < 0) { v = 0 - v }
+    yavat (i < c) {
+        likh8(a + i * 8, v % 10)
+        v = v / 10
+        i = i + 1
+    }
+    yadi (v > 0) { pratiyati 0 }
+    pratiyati 1
+}
+
+# bigint_to_int(arr, n) — convert digit array back to int (for verification)
+# Only correct if the value fits in an int.
+prakriya bigint_to_int(arr, n) {
+    vitti a = arr
+    vitti c = n
+    vitti r = 0
+    vitti i = c - 1
+    yavat (i >= 0) {
+        r = r * 10 + pad8(a + i * 8)
+        i = i - 1
+    }
+    pratiyati r
+}
+
+# bigint_copy(dst, src, n) — copy n digits
+prakriya bigint_copy(dst, src, n) {
+    vitti d = dst
+    vitti s = src
+    vitti c = n
+    vitti i = 0
+    yavat (i < c) {
+        likh8(d + i * 8, pad8(s + i * 8))
+        i = i + 1
+    }
+    pratiyati 0
+}
+
+# bigint_cmp(a, b, n) — compare: 1 if a > b, -1 if a < b, 0 if equal
+prakriya bigint_cmp(a, b, n) {
+    vitti x = a
+    vitti y = b
+    vitti c = n
+    vitti i = c - 1
+    yavat (i >= 0) {
+        vitti dx = pad8(x + i * 8)
+        vitti dy = pad8(y + i * 8)
+        yadi (dx > dy) { pratiyati 1 }
+        yadi (dx < dy) { pratiyati -1 }
+        i = i - 1
+    }
+    pratiyati 0
+}
+
+# bigint_add(a, b, res, n) — res = a + b; returns final carry (0 or 1)
+prakriya bigint_add(a, b, res, n) {
+    vitti x = a
+    vitti y = b
+    vitti r = res
+    vitti c = n
+    vitti carry = 0
+    vitti i = 0
+    yavat (i < c) {
+        vitti s = pad8(x + i * 8) + pad8(y + i * 8) + carry
+        likh8(r + i * 8, s % 10)
+        carry = s / 10
+        i = i + 1
+    }
+    pratiyati carry
+}
+
+# bigint_sub(a, b, res, n) — res = a - b (requires a >= b); returns final borrow
+prakriya bigint_sub(a, b, res, n) {
+    vitti x = a
+    vitti y = b
+    vitti r = res
+    vitti c = n
+    vitti borrow = 0
+    vitti i = 0
+    yavat (i < c) {
+        vitti d = pad8(x + i * 8) - pad8(y + i * 8) - borrow
+        yadi (d < 0) {
+            likh8(r + i * 8, d + 10)
+            borrow = 1
+        }
+        anyatra {
+            likh8(r + i * 8, d)
+            borrow = 0
+        }
+        i = i + 1
+    }
+    pratiyati borrow
+}
+
+# bigint_mul(a, b, res, n) — res = a * b; res must have 2n digits
+# Returns 0 on success.
+prakriya bigint_mul(a, b, res, n) {
+    vitti x = a
+    vitti y = b
+    vitti r = res
+    vitti c = n
+    # zero the 2n-digit result
+    vitti i = 0
+    yavat (i < c * 2) {
+        likh8(r + i * 8, 0)
+        i = i + 1
+    }
+    # schoolbook multiplication
+    i = 0
+    yavat (i < c) {
+        vitti carry = 0
+        vitti j = 0
+        yavat (j < c) {
+            vitti p = pad8(x + i * 8) * pad8(y + j * 8) + pad8(r + (i + j) * 8) + carry
+            likh8(r + (i + j) * 8, p % 10)
+            carry = p / 10
+            j = j + 1
+        }
+        likh8(r + (i + c) * 8, pad8(r + (i + c) * 8) + carry)
+        i = i + 1
+    }
+    pratiyati 0
+}
+
+# bigint_is_zero(arr, n) — 1 if all digits are 0, else 0
+prakriya bigint_is_zero(arr, n) {
+    vitti a = arr
+    vitti c = n
+    vitti i = 0
+    yavat (i < c) {
+        yadi (pad8(a + i * 8) != 0) { pratiyati 0 }
+        i = i + 1
+    }
+    pratiyati 1
+}
