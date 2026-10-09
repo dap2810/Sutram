@@ -24,6 +24,13 @@ jobs:
           command -v nasm
           command -v ld
           nasm -v
+      - name: Provide Linux-only PE placeholder for missing generated include
+        run: |
+          if test ! -f win/rtblob.inc; then
+            mkdir -p win
+            printf 'RT_BLOB_LEN equ 0\nRT_SYSCALL_OFF equ 0\nsection .rodata\nrt_blob: db 0\n' > win/rtblob.inc
+            echo 'WARNING: generated Windows runtime blob absent; Linux ELF tests only.'
+          fi
       - name: Assemble and link changed compiler
         run: |
           nasm -f elf64 -I. src/sutram_compiler.asm -o /tmp/sutram_r44.o
