@@ -1,0 +1,10 @@
+mukhya()
+    vitti sum = 0
+    punaravartana i = 1 to 20 {
+        yadi (i > 10) { krama }
+        yadi (i % 2 == 0) { uddeshya }
+        sum = sum + i
+    }
+    likha("Sum of odd numbers 1-10: ")
+    likha(sum)
+    likha("\n")
