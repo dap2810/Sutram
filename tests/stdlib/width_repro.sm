@@ -1,0 +1,18 @@
+# Fixture pinning the buf[i]/char_at width behaviour (ROUND-08 Part B).
+# buf[i] = c writes 8-byte cells; char_at reads 1-byte strides.
+# If the compiler later gains byte writes, this golden SHOULD fail visibly.
+mukhya() {
+    vitti buf = nirmmita(4 * 8)
+    buf[0] = 104
+    buf[1] = 105
+    buf[2] = 0
+    likha(char_at(buf, 0))
+    likha("\n")
+    likha(char_at(buf, 1))
+    likha("\n")
+    vitti s = "hi"
+    likha(char_at(s, 0))
+    likha("\n")
+    likha(char_at(s, 1))
+    likha("\n")
+}
