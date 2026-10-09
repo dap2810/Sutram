@@ -1,0 +1,11 @@
+# Standalone calls must use the same typed-argument path as expression calls.
+prakriya touch(kosh dasham a) {
+    a[0] = a[0] + 0.75
+}
+
+mukhya() {
+    kosh dasham values[1]
+    kosh_push(values, 1.5)
+    touch(values)
+    likha(values[0])
+}
