@@ -1,0 +1,6 @@
+cc027e5e43f62b563bfd94fa295fc3851a08d44bcbe8c241ff5cd3051e723f97  windows/gui/sutram_gui.asm
+b8d78fe54a824b518ca8d78bedc42c6850b1d0c3ee708050137aa66f6562ce85  windows/gui/build-gui.ps1
+ed31c46830be78632af1a82192a3056a8935eed1fd404aea3b18279565c1d9e8  windows/gui/test-gui.ps1
+8b12a8b3b34544e73017b2dca9d6f8b26f930cf322d0230588c61c88d5b85fd6  windows/gui/MANUAL-WINDOWS-GUI-TEST.md
+ad25cecbf105591391875be8684ba975ade2c091cf315471cb30950bb705701b  windows/gui/README-WINDOWS-GUI.md
+79267f24bcc4b4cb748feed26d0c780ab12165bb3edc1dc60e349869e61040ac  tests/gui/test_win_gui_source.py
