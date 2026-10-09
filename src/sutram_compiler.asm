@@ -11446,27 +11446,20 @@ gen_expr:
     mov dil, 0x59            ; discard runtime length
     call emit_byte
 .ge_index_no_bounds:
-    mov dil, 0x48            ; shl rax, 3
+    ; R47: the previous generated sequence was:
+    ;   shl rax,3; pop rcx; add rax,rcx; mov rax,[rax]
+    ; Replace it with pop rcx; mov rax,[rcx+rax*8].
+    ; Exact same 64-bit wrapped effective address, fewer uops/bytes.
+    ; Existing bounds check and runtime base pointer preservation unchanged.
+    mov dil, 0x59            ; pop rcx = array base pointer
     call emit_byte
-    mov dil, 0xC1
-    call emit_byte
-    mov dil, 0xE0
-    call emit_byte
-    mov dil, 0x03
-    call emit_byte
-    mov dil, 0x59            ; pop rcx (base)
-    call emit_byte
-    mov dil, 0x48            ; add rax, rcx
-    call emit_byte
-    mov dil, 0x01
-    call emit_byte
-    mov dil, 0xC8
-    call emit_byte
-    mov dil, 0x48            ; mov rax, [rax]
+    mov dil, 0x48            ; mov rax, [rcx + rax*8] (REX.W)
     call emit_byte
     mov dil, 0x8B
     call emit_byte
-    mov dil, 0x00
+    mov dil, 0x04            ; modrm: 64-bit load, SIB addressing
+    call emit_byte
+    mov dil, 0xC1            ; SIB: scale=8 index=rax base=rcx
     call emit_byte
     pop r12
     pop rbx
