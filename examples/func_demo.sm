@@ -1,0 +1,22 @@
+# Function demo — prakriya with call/ret
+mukhya()
+    likha("=== Function Demo ===\n")
+    likha("Calling greet()...\n")
+    greet()
+    likha("Calling math()...\n")
+    math()
+    likha("Calling answer()...\n")
+    vitti x = answer()
+    likha("answer() = ")
+    likha(x)
+    likha("\n")
+    likha("Done!\n")
+
+prakriya greet()
+    likha("  Namaste from greet()!\n")
+
+prakriya math()
+    likha("  10 + 32 = 42\n")
+
+prakriya answer()
+    pratiyati 42
