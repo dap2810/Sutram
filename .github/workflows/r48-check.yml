@@ -49,13 +49,10 @@ jobs:
           echo R48_SHA_START
           sha256sum src/sutram_compiler.asm tools/r48_native_acceptance.py \
             tests/r48_check/three_parse_errors.sm tests/r48_check/valid.sm \
-            .github/workflows/r48-check.yml
-          if test -f ChatGPT-to-Sarvam/ROUND-48-NASM-REVIEW.patch; then
-            sha256sum ChatGPT-to-Sarvam/ROUND-48-NASM-REVIEW.patch
-          fi
-          if test -f ChatGPT-to-Sarvam/ROUND-48-HANDOFF.md; then
-            sha256sum ChatGPT-to-Sarvam/ROUND-48-HANDOFF.md
-          fi
+            tests/r48_check/semantic_unknown.sm .github/workflows/r48-check.yml \
+            ChatGPT-to-Sarvam/ROUND-48-NASM-REVIEW.patch \
+            ChatGPT-to-Sarvam/ROUND-48-OBSERVED.txt \
+            ChatGPT-to-Sarvam/ROUND-48-HANDOFF.md
           echo R48_SHA_END
           if test -f ChatGPT-to-Sarvam/ROUND-48-SHA256.txt; then
             sha256sum -c ChatGPT-to-Sarvam/ROUND-48-SHA256.txt
