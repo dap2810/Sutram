@@ -1,0 +1,16 @@
+# Srijana (enum/constants) — Sanskrit for 'creation'
+mukhya()
+    srijana RED = 1
+    srijana GREEN = 2
+    srijana BLUE = 3
+    vitti color = GREEN
+    guna (color) {
+        bhavana 1: { likha("Red\n") }
+        bhavana 2: { likha("Green\n") }
+        bhavana 3: { likha("Blue\n") }
+        anyatra: { likha("Unknown\n") }
+    }
+    likha("RED = ")
+    likha(RED)
+    likha("\n")
+    likha("=== Done ===\n")
