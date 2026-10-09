@@ -1,0 +1,45 @@
+# Sutram v6.0 — Complete Feature Demonstration
+
+mukhya()
+    likha("=== Sutram v6.0 ===\n")
+    likha("1. Strings: Namaste!\n")
+    likha("2. Numbers: ")
+    likha(42)
+    likha("\n")
+    vitti a = 15
+    vitti b = 4
+    likha("3. Math: 15+4=")
+    likha(a + b)
+    likha("\n")
+    likha("4. If-else: ")
+    yadi (a > b) {
+        likha("true\n")
+    } anyatra {
+        likha("false\n")
+    }
+    likha("5. Memory: ")
+    vitti buf = nirmmita(1024)
+    likh8c(buf, 99, buf + 1024)
+    likha(pad8c(buf, buf + 1024))
+    likha("\n")
+    likha("6. String len: ")
+    likha(vartani_len("Sutram"))
+    likha("\n")
+    likha("7. Char ops: ")
+    likha(char_at("Hello", 0))
+    likha("\n")
+    likha("8. Format: ")
+    likha_fmt("x=", 42)
+    likha("\n")
+    likha("9. Strength: ")
+    vitti x = 8
+    likha(x * 8)
+    likha("\n")
+    likha("10. Loop: ")
+    vitti i = 3
+    yavat (i > 0) {
+        likha(i)
+        likha(" ")
+        i = i - 1
+    }
+    likha("\nDone!\n")
