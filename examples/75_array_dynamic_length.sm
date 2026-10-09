@@ -1,0 +1,7 @@
+mukhya() {
+    vitti n = 4
+    pankti a[n + 1]
+    a[4] = 55
+    likha(pankti_len(a))
+    likha(a[4])
+}
