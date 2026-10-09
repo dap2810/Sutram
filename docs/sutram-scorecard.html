@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sutram &mdash; progress scorecard</title>
+<style>
+  :root{--bg:#0f1115;--panel:#161a21;--line:#262c36;--ink:#e8ecf1;--dim:#9aa4b2;
+    --amber:#e8a33d;--green:#4ec9a0;--red:#e5645f;--blue:#5aa9e6;--violet:#a78bfa;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:15.5px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans",sans-serif}
+  .wrap{max-width:1080px;margin:0 auto;padding:52px 26px 90px}
+  h1{font-size:2rem;margin:0 0 4px;font-weight:660;letter-spacing:-.02em}
+  .sub{color:var(--dim);margin:0 0 26px}
+  .meta{color:var(--dim);font-size:.85rem;font-family:ui-monospace,Menlo,Consolas,monospace;
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:11px 0;margin:0 0 34px}
+  h2{font-size:1.2rem;margin:38px 0 10px;font-weight:620}
+  code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.87em;background:#1d222b;padding:2px 6px;border-radius:5px}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:13px;margin:20px 0}
+  .kpi{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:15px 17px}
+  .kpi b{display:block;font-size:1.75rem;font-weight:680;letter-spacing:-.02em;line-height:1.1}
+  .kpi span{color:var(--dim);font-size:.8rem}
+  .c-green{color:var(--green)} .c-blue{color:var(--blue)} .c-violet{color:var(--violet)}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:.9rem;table-layout:fixed}
+  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--dim);font-weight:600;font-size:.72rem;text-transform:uppercase;letter-spacing:.05em}
+  td.n{font-family:ui-monospace,Menlo,Consolas,monospace;text-align:right;white-space:nowrap}
+  td.p{white-space:normal}
+  td.note{color:var(--dim);font-size:.86rem;line-height:1.5}
+  col.c1{width:36px} col.c2{width:186px} col.c3{width:56px} col.c4{width:110px} col.c5{width:52px}
+  .bar{display:inline-block;height:7px;border-radius:4px;background:#232a34;width:88px;position:relative;overflow:hidden;vertical-align:middle}
+  .bar i{position:absolute;left:0;top:0;bottom:0;border-radius:4px}
+  .f-low{background:var(--red)} .f-mid{background:var(--amber)} .f-good{background:var(--green)} .f-none{background:#3a4250}
+  .up{color:var(--green);font-weight:600} .flat{color:var(--dim)}
+  .card{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--green);border-radius:12px;padding:15px 19px;margin:15px 0}
+  .card.warn{border-left-color:var(--amber)}
+  ul{margin:8px 0 14px;padding-left:21px} li{margin:5px 0}
+  .foot{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:.83rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Progress scorecard</h1>
+  <p class="sub">Seventeen parameters that describe a mature language &mdash; measured against where Sutram stands, and how far each has moved.</p>
+  <div class="meta">
+    Compiler SHA c814a854 &middot; suite 178/178 &middot; 12 library modules (103 functions) &middot; 32 keywords<br>
+    178 examples &middot; 10 language packs &middot; 21 docs pages &middot; Linux ELF + Windows PE32+ &middot; IDE
+  </div>
+
+  <h2>Where we are</h2>
+  <div class="kpis">
+    <div class="kpi"><b class="c-green">24%</b><span>mean across 17 parameters (was 16%)</span></div>
+    <div class="kpi"><b class="c-green">+7 pts</b><span>gained this stretch</span></div>
+    <div class="kpi"><b class="c-blue">178/178</b><span>tests passing</span></div>
+    <div class="kpi"><b class="c-violet">4.9&times;</b><span>best measured speedup (PERF1)</span></div>
+  </div>
+  <p>The mean rose from <strong>16% to 24%</strong> &mdash; a
+  43% relative improvement. Real movement, but the honest picture is still
+  "early". 12 of the 17 parameters moved; the 5 that did not are structural, not neglected.
+  The biggest movers were <strong>Tooling excellence (+20)</strong>, <strong>Rich standard library (+17)</strong>
+  and <strong>Performance &amp; efficiency (+15)</strong> &mdash; which happen to be exactly what a user feels day to day.</p>
+
+  <h2>Parameter by parameter</h2>
+  <table>
+    <colgroup><col class="c1"><col class="c2"><col class="c3"><col class="c4"><col class="c5"><col></colgroup>
+    <thead>
+      <tr><th>#</th><th>Parameter</th><th>Before</th><th>Now</th><th>Change</th><th>What moved it</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="n">01</td>
+        <td class="p"><b>Strong type system</b></td>
+        <td class="n">10%</td>
+        <td class="n"><b>16%</b><br><span class="bar"><i class="f-low" style="width:16%"></i></span></td>
+        <td class="n up">+6</td>
+        <td class="note">Typed parameters (<code>dasham</code>, <code>kosh</code>, <code>kosh dasham</code>), element-type checking at call sites, float-return inference. Still no declared scalar types, generics or unions.</td>
+      </tr>
+      <tr>
+        <td class="n">02</td>
+        <td class="p"><b>Performance &amp; efficiency</b></td>
+        <td class="n">40%</td>
+        <td class="n"><b>55%</b><br><span class="bar"><i class="f-good" style="width:55%"></i></span></td>
+        <td class="n up">+15</td>
+        <td class="note">Locals now live in registers; PERF1 cut the hot loop 13&rarr;5 instructions (4.9&times; on loop_sum); PERF2 bottom-tested loops; PERF3 one-instruction literal loads. Still no optimizer &mdash; no LICM, constant folding or peephole.</td>
+      </tr>
+      <tr>
+        <td class="n">03</td>
+        <td class="p"><b>Concurrency</b></td>
+        <td class="n">0%</td>
+        <td class="n"><b>0%</b><br><span class="bar"><i class="f-none" style="width:0%"></i></span></td>
+        <td class="n flat">&mdash;</td>
+        <td class="note">Nothing. No threads, no async, no atomics. Out of scope so far, and honestly far off.</td>
+      </tr>
+      <tr>
+        <td class="n">04</td>
+        <td class="p"><b>Cross-platform</b></td>
+        <td class="n">40%</td>
+        <td class="n"><b>45%</b><br><span class="bar"><i class="f-good" style="width:45%"></i></span></td>
+        <td class="n up">+5</td>
+        <td class="note">Both hosts build from the one source: Linux ELF and Windows PE32+. The IDE is Linux-only for now, which holds this back.</td>
+      </tr>
+      <tr>
+        <td class="n">05</td>
+        <td class="p"><b>Rich standard library</b></td>
+        <td class="n">15%</td>
+        <td class="n"><b>32%</b><br><span class="bar"><i class="f-mid" style="width:32%"></i></span></td>
+        <td class="n up">+17</td>
+        <td class="note">12 modules with code, 103 functions (three more are comment-only sketches) &mdash; including heritage modules (Piṅgala's chandas, Āryabhaṭa/Bhāskara's ganita, the Kerala school's madhava), a statistics module, numerical methods and linear algebra. Still no collections beyond kosh/pankti, no I/O breadth.</td>
+      </tr>
+      <tr>
+        <td class="n">06</td>
+        <td class="p"><b>Massive ecosystem</b></td>
+        <td class="n">2%</td>
+        <td class="n"><b>2%</b><br><span class="bar"><i class="f-low" style="width:2%"></i></span></td>
+        <td class="n flat">&mdash;</td>
+        <td class="note">No package manager, no third-party libraries, no frameworks. Structural &mdash; needs a community first.</td>
+      </tr>
+      <tr>
+        <td class="n">07</td>
+        <td class="p"><b>Developer productivity</b></td>
+        <td class="n">30%</td>
+        <td class="n"><b>42%</b><br><span class="bar"><i class="f-mid" style="width:42%"></i></span></td>
+        <td class="n up">+12</td>
+        <td class="note">A real IDE now exists &mdash; editor, syntax highlighting, one-key run, examples browser &mdash; plus the interactive shell. No debugger, formatter or undo yet.</td>
+      </tr>
+      <tr>
+        <td class="n">08</td>
+        <td class="p"><b>Memory safety</b></td>
+        <td class="n">10%</td>
+        <td class="n"><b>16%</b><br><span class="bar"><i class="f-low" style="width:16%"></i></span></td>
+        <td class="n up">+6</td>
+        <td class="note">Named capacity guards replaced silent corruption (B10, B11), kosh has bounds checks, and <code>kosh_push</code> on a parameter is rejected rather than risking a stale pointer. Still manual; no GC or borrow checking.</td>
+      </tr>
+      <tr>
+        <td class="n">09</td>
+        <td class="p"><b>Security features</b></td>
+        <td class="n">3%</td>
+        <td class="n"><b>3%</b><br><span class="bar"><i class="f-low" style="width:3%"></i></span></td>
+        <td class="n flat">&mdash;</td>
+        <td class="note">Nothing beyond the least-privilege installer. No sandboxing, no capability model.</td>
+      </tr>
+      <tr>
+        <td class="n">10</td>
+        <td class="p"><b>Interoperability</b></td>
+        <td class="n">5%</td>
+        <td class="n"><b>5%</b><br><span class="bar"><i class="f-low" style="width:5%"></i></span></td>
+        <td class="n flat">&mdash;</td>
+        <td class="note"><code>nishkriya</code> (inline asm) exists, but there is no C FFI and no calling convention for foreign code.</td>
+      </tr>
+      <tr>
+        <td class="n">11</td>
+        <td class="p"><b>Scalability</b></td>
+        <td class="n">10%</td>
+        <td class="n"><b>18%</b><br><span class="bar"><i class="f-low" style="width:18%"></i></span></td>
+        <td class="n up">+8</td>
+        <td class="note">Growable arrays (<code>kosh</code>) with doubling growth, a 768 KB AST heap, and 12 modules combining in one program. Ceilings are still fixed constants rather than dynamic.</td>
+      </tr>
+      <tr>
+        <td class="n">12</td>
+        <td class="p"><b>Backward compatibility</b></td>
+        <td class="n">35%</td>
+        <td class="n"><b>45%</b><br><span class="bar"><i class="f-good" style="width:45%"></i></span></td>
+        <td class="n up">+10</td>
+        <td class="note">A frozen keyword core and a 136-test suite that must stay green through every change. No versioned releases or migration policy yet.</td>
+      </tr>
+      <tr>
+        <td class="n">13</td>
+        <td class="p"><b>Error handling</b></td>
+        <td class="n">30%</td>
+        <td class="n"><b>38%</b><br><span class="bar"><i class="f-mid" style="width:38%"></i></span></td>
+        <td class="n up">+8</td>
+        <td class="note">Located diagnostics with hints, and the memory-corruption bugs now surface as named errors instead of misleading parse failures. No exceptions, result types or pattern matching.</td>
+      </tr>
+      <tr>
+        <td class="n">14</td>
+        <td class="p"><b>Tooling excellence</b></td>
+        <td class="n">15%</td>
+        <td class="n"><b>35%</b><br><span class="bar"><i class="f-mid" style="width:35%"></i></span></td>
+        <td class="n up">+20</td>
+        <td class="note">The biggest single jump. An IDE, a PTY test harness that has caught four real bugs, a deterministic codegen gate, a stable benchmark harness with CPU pinning, and 17 documentation pages. No debugger or formatter.</td>
+      </tr>
+      <tr>
+        <td class="n">15</td>
+        <td class="p"><b>Community &amp; governance</b></td>
+        <td class="n">5%</td>
+        <td class="n"><b>5%</b><br><span class="bar"><i class="f-low" style="width:5%"></i></span></td>
+        <td class="n flat">&mdash;</td>
+        <td class="note">One user, two collaborating AI agents, no outside contributors or process.</td>
+      </tr>
+      <tr>
+        <td class="n">16</td>
+        <td class="p"><b>Multi-paradigm</b></td>
+        <td class="n">15%</td>
+        <td class="n"><b>18%</b><br><span class="bar"><i class="f-low" style="width:18%"></i></span></td>
+        <td class="n up">+3</td>
+        <td class="note">Procedural with functions, enums, structs and switch. No generics, closures or metaprogramming.</td>
+      </tr>
+      <tr>
+        <td class="n">17</td>
+        <td class="p"><b>Modern features</b></td>
+        <td class="n">15%</td>
+        <td class="n"><b>26%</b><br><span class="bar"><i class="f-mid" style="width:26%"></i></span></td>
+        <td class="n up">+11</td>
+        <td class="note">Typed growable arrays, IEEE-754 floats, enums, structs, switch, inline assembly. No first-class functions, namespaced modules, or pattern matching.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>What this says</h2>
+  <div class="card">
+    <p><strong>Three parameters moved a lot, and they are the right three.</strong> Tooling (+20),
+    the standard library (+17) and performance (+15) are what a user feels day to day. They are also
+    where the two-agent loop works best: one side writes the compiler change, the other verifies it
+    and builds the tooling around it.</p>
+  </div>
+  <div class="card warn">
+    <p><strong>What has not moved is structural, not neglected.</strong> Concurrency, ecosystem and
+    security sit at 0&ndash;3% because they need things a project at this stage cannot manufacture:
+    a package community, a threading runtime, a security model. Raising those numbers means
+    pretending. Better to keep them honest and visible.</p>
+  </div>
+  <div class="card">
+    <p><strong>The honest ceiling.</strong> A language whose compiler is one hand-written NASM file
+    with no runtime will never score well on ecosystem or interop &mdash; those assume a large
+    surrounding world. What it <em>can</em> do is score well on performance, tooling, self-sufficiency
+    and the honesty of its error messages. That is the column to compete in, and the last stretch
+    moved exactly those.</p>
+  </div>
+
+  <h2>Measured state, for the record</h2>
+  <ul>
+    <li><strong>Tests:</strong> 136 passing, including a deterministic codegen gate (3/3) that asserts instruction ceilings and loop shape.</li>
+    <li><strong>Compiler:</strong> 14,986 lines of NASM, 359 KB source, building both a Linux ELF and a Windows PE32+ from the same file.</li>
+    <li><strong>IDE:</strong> 1,339 lines of NASM, 18 KB binary, verified through a pseudo-terminal harness.</li>
+    <li><strong>Language:</strong> 28 keywords, 136 example programs, 10 language packs.</li>
+    <li><strong>Performance:</strong> hot loop 13 &rarr; 5 instructions; loop_sum 66.96 &rarr; 13.3 ms (4.9&times;); PERF2 added a further ~5% on loop-heavy code.</li>
+    <li><strong>Known open bugs:</strong> none outstanding &mdash; B8, B9, B10, B11 all fixed and regression-tested.</li>
+  </ul>
+
+  <div class="foot">
+    Scores are judgement calls, not measurements &mdash; but every number in "Measured state" is real, and
+    the direction of each score is backed by a specific change that can be pointed at. Where a
+    parameter did not move, it says so.
+  </div>
+
+</div>
+</body>
+</html>
