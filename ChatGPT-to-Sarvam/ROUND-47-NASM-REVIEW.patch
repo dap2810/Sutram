@@ -1,8 +1,8 @@
 diff --git a/src/sutram_compiler.asm b/src/sutram_compiler.asm
-index 4d51778..91efccd 100644
+index 4d51778..813c92a 100644
 --- a/src/sutram_compiler.asm
 +++ b/src/sutram_compiler.asm
-@@ -9326,6 +9326,25 @@ gen_stmt:
+@@ -9326,6 +9326,34 @@ gen_stmt:
      call emit_byte
      jmp .gfc_pnext
  .gfc_p0:
@@ -10,6 +10,15 @@ index 4d51778..91efccd 100644
 +    ; with a register move after type conversion; no ABI side-effects.
 +    cmp r15, 1
 +    jne .gfc_old_pop0
++    ; Restrict statement-call optimization to the same proven shapes.
++    mov rax, [rbx+24]
++    cmp qword [rax], AST_INDEX
++    je .gfc_candidate_arg
++    cmp qword [rax], AST_FLOAT
++    je .gfc_candidate_arg
++    cmp qword [rax], AST_NUM
++    jne .gfc_old_pop0
++.gfc_candidate_arg:
 +    mov rax, [rel code_sz]
 +    test rax, rax
 +    jz .gfc_old_pop0
@@ -28,7 +37,7 @@ index 4d51778..91efccd 100644
      mov dil, 0x5F             ; pop rdi  (arg0)
      call emit_byte
      jmp .gfc_pnext
-@@ -11243,6 +11262,25 @@ gen_expr:
+@@ -11243,6 +11271,37 @@ gen_expr:
      call emit_byte
      jmp .ge_fc_call
  .ge_fc_pop1:
@@ -36,6 +45,18 @@ index 4d51778..91efccd 100644
 +    ; Replace its trailing runtime PUSH RAX + POP RDI with MOV RDI,RAX.
 +    ; No other instructions emitted between push and pop in this path.
 +    ; Keep the old POP if the expected last byte is not a push (defensive).
++    ; Only array indexing and numeric literal argument forms opt in.
++    ; An AST_VAR argument remains the accepted R46 PUSH/POP sequence: the
++    ; two follow-up native A/B runs showed pure-stack workloads regressed
++    ; when that common path changed, despite simpler array calls improving.
++    mov rax, [rbx+24]
++    cmp qword [rax], AST_INDEX
++    je .r47_candidate_arg
++    cmp qword [rax], AST_FLOAT
++    je .r47_candidate_arg
++    cmp qword [rax], AST_NUM
++    jne .r47_old_pop
++.r47_candidate_arg:
 +    mov rax, [rel code_sz]
 +    test rax, rax
 +    jz .r47_old_pop
@@ -54,34 +75,3 @@ index 4d51778..91efccd 100644
      mov dil, 0x5F            ; pop rdi
      call emit_byte
  .ge_fc_call:
-diff --git a/tools/codegen_gate.py b/tools/codegen_gate.py
-index 6592fd7..5ffb510 100644
---- a/tools/codegen_gate.py
-+++ b/tools/codegen_gate.py
-@@ -239,14 +239,20 @@ def one(name: str, ceiling: int, require_bottom: bool, source: str, tmp: Path) -
-                         ("addsd", "subsd", "mulsd", "divsd")) and
-                     not any(op in ("push", "pop", "xchg") for op in mnemonics))
-     if name == "float_scalar_call_rhs":
--        # The RHS call needs its own argument and register-save stack work,
--        # but the scalar LHS must NOT be saved as push rax / pop rdx. This
--        # narrows the accepted transformation to ABI-safe GPR residency.
-+        # R47: a single typed argument must move directly RAX -> RDI, rather
-+        # than spilling it as PUSH RAX / POP RDI; preserve the R46 callee-save
-+        # traffic if caller variables occupy r12-r15. The original scalar
-+        # LHS remains in a GPR without an unrelated PUSH/POP to RDX.
-         instructions = [(op, operands) for _, op, operands, _ in ins]
--        shape_ok = (count <= ceiling and sum(op == "movq" for op, _ in instructions) == 3 and
-+        shape_ok = (count <= ceiling and
-+                    sum(op == "movq" for op, _ in instructions) == 3 and
-                     sum(op == "addsd" for op, _ in instructions) == 1 and
--                    sum(op == "push" and "%rax" in operands for op, operands in instructions) == 1 and
--                    not any(op == "pop" and "%rdx" in operands for op, operands in instructions))
-+                    any(op == "mov" and "%rax,%rdi" in operands
-+                        for op, operands in instructions) and
-+                    not any(op == "push" and "%rax" in operands
-+                            for op, operands in instructions) and
-+                    not any(op == "pop" and ("%rdi" in operands or "%rdx" in operands)
-+                            for op, operands in instructions))
-     if name in ("float_index_left_reg_right", "float_call_left_reg_right",
-                 "float_index_left_literal_right"):
-         # FG2: no runtime spill of the outer float expression's LHS.
