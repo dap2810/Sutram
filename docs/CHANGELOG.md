@@ -1,3 +1,30 @@
+## v93 — Linux GUI IDE, slice 4: it asks the server how to type
+
+- **The editor now uses the server's own keyboard layout.** Slice 3 typed with
+  a hardcoded US-QWERTY table. Slice 4 sends `GetKeyboardMapping` (opcode 101)
+  for keycodes 8..126, reads the reply, and builds `kc_map[keycode] = ASCII`
+  from keysym index 0. A non-US layout now types correctly.
+- **The fallback is deliberate.** If the reply is not a Reply, or
+  `keysyms_per_keycode` is zero, or the array is short, `km_ok` stays 0 and
+  `handle_key` falls back to the US table — the editor still works on a server
+  that refuses the request.
+- **Proven by a server that lies.** The mock serves the standard map with one
+  deliberate exception: keycode 43 (US `h`) is served as `Z`. The test then
+  asserts the client draws `Z` and *not* `h` — which is only possible if it
+  really used the server's mapping. A fallback assertion would not distinguish
+  the two.
+- **Negative tests, two protocol edges.** `tools/test_x11_negatives.py` runs a
+  server that answers with a non-Reply and one with `per=0`; in both the client
+  must fall back to `h` and invent nothing. 6 checks, all pass.
+- **A test bug found and fixed, again in the test.** The first negative run hung
+  for 60 s: the client hardcodes `/tmp/.X11-unix/X0`, but the test had bound a
+  tempdir socket, so the client never connected and `accept()` blocked. Second
+  bug: shutting the socket's write side to simulate a refusal also stopped the
+  test sending the follow-up keypress. Both were mine, not the client's.
+- Protocol: 39 checks (was 35), 0 failures. GUI builds reproducibly:
+  `nasm -f elf64 ide/sutram_gui_linux.asm -o /tmp/g.o && ld -o sutram-gui /tmp/g.o`
+  is byte-identical across runs. `sutram-gui` 12,272 -> 12,728 bytes.
+
 ## v92 — Merge: module export visibility (both assistants' work integrated)
 
 - **Two AIs built the same feature and collided; resolving that was the round.**
