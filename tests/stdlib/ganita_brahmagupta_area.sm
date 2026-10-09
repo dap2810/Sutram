@@ -1,0 +1,7 @@
+ayojan ganita
+mukhya() {
+    likha(brahmagupta_area(3, 4, 5, 0))
+    likha("\n")
+    likha(brahmagupta_area(4, 4, 4, 4))
+    likha("\n")
+}

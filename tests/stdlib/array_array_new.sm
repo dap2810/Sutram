@@ -1,0 +1,17 @@
+ayojan array
+mukhya() {
+    vitti a = array_new(4)
+    yadi (a > 0) {
+        likha(1)
+    } anyatra {
+        likha(0)
+    }
+    likha("\n")
+    vitti b = array_new(1)
+    yadi (b > 0) {
+        likha(1)
+    } anyatra {
+        likha(0)
+    }
+    likha("\n")
+}

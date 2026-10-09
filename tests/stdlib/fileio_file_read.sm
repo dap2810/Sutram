@@ -1,0 +1,7 @@
+ayojan fileio
+mukhya() {
+    likha(file_read(0, 0, 100))
+    likha("\n")
+    likha(file_read(3, 0, 0))
+    likha("\n")
+}

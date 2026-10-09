@@ -1,0 +1,9 @@
+ayojan madhava
+mukhya() {
+    likha(madhava_sin(0.0))
+    likha("\n")
+    likha(madhava_sin(1.0))
+    likha("\n")
+    likha(madhava_sin(0.5))
+    likha("\n")
+}

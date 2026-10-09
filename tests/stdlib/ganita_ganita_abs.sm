@@ -1,0 +1,9 @@
+ayojan ganita
+mukhya() {
+    likha(ganita_abs(-5))
+    likha("\n")
+    likha(ganita_abs(7))
+    likha("\n")
+    likha(ganita_abs(0))
+    likha("\n")
+}

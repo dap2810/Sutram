@@ -1,0 +1,16 @@
+ayojan array
+mukhya() {
+    vitti a = array_new(3)
+    likha(array_set_safe(a, 0, 42, 3))
+    likha("\n")
+    likha(array_set_safe(a, 2, 43, 3))
+    likha("\n")
+    likha(array_set_safe(a, 3, 44, 3))
+    likha("\n")
+    likha(array_set_safe(a, 0 - 1, 44, 3))
+    likha("\n")
+    likha(array_get(a, 0))
+    likha("\n")
+    likha(array_get(a, 2))
+    likha("\n")
+}

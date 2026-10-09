@@ -1,0 +1,9 @@
+ayojan ganita
+mukhya() {
+    likha(kuttaka(3, 7, 1))
+    likha("\n")
+    likha(kuttaka(10, 6, 4))
+    likha("\n")
+    likha(kuttaka(2, 4, 2))
+    likha("\n")
+}

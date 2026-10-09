@@ -1,0 +1,15 @@
+ayojan chandas
+mukhya() {
+    pankti a[10]
+    meru_pankti(a, 4)
+    likha(a[0])
+    likha("\n")
+    likha(a[1])
+    likha("\n")
+    likha(a[2])
+    likha("\n")
+    likha(a[3])
+    likha("\n")
+    likha(a[4])
+    likha("\n")
+}

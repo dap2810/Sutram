@@ -1,0 +1,11 @@
+ayojan math
+mukhya() {
+    likha(bit_count(7))
+    likha("\n")
+    likha(bit_count(8))
+    likha("\n")
+    likha(bit_count(0))
+    likha("\n")
+    likha(bit_count(15))
+    likha("\n")
+}

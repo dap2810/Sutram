@@ -1,0 +1,11 @@
+ayojan kalana
+mukhya() {
+    kosh dasham c[3]
+    kosh_push(c, 1.0)
+    kosh_push(c, 2.0)
+    kosh_push(c, 1.0)
+    likha(bahu_ganana(c, 3.0))
+    likha("\n")
+    likha(bahu_ganana(c, 0.0))
+    likha("\n")
+}

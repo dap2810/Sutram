@@ -1,0 +1,11 @@
+ayojan ganita
+mukhya() {
+    likha(ganita_isqrt(16))
+    likha("\n")
+    likha(ganita_isqrt(15))
+    likha("\n")
+    likha(ganita_isqrt(0))
+    likha("\n")
+    likha(ganita_isqrt(100))
+    likha("\n")
+}

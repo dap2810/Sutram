@@ -1,0 +1,9 @@
+ayojan chandas
+mukhya() {
+    likha(matra_meru(1))
+    likha("\n")
+    likha(matra_meru(2))
+    likha("\n")
+    likha(matra_meru(10))
+    likha("\n")
+}

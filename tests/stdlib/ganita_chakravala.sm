@@ -1,0 +1,14 @@
+ayojan ganita
+mukhya() {
+    pankti out[2]
+    chakravala(out, 2)
+    likha(out[0])
+    likha("\n")
+    likha(out[1])
+    likha("\n")
+    chakravala(out, 3)
+    likha(out[0])
+    likha("\n")
+    likha(out[1])
+    likha("\n")
+}

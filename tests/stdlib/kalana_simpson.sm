@@ -1,0 +1,27 @@
+ayojan kalana
+mukhya() {
+    kosh dasham xs[3]
+    kosh dasham ys[3]
+    kosh_push(xs, 0.0)
+    kosh_push(xs, 1.0)
+    kosh_push(xs, 2.0)
+    kosh_push(ys, 0.0)
+    kosh_push(ys, 1.0)
+    kosh_push(ys, 4.0)
+    likha(simpson(xs, ys))
+    likha("\n")
+    kosh dasham xs2[5]
+    kosh dasham ys2[5]
+    kosh_push(xs2, 0.0)
+    kosh_push(xs2, 1.0)
+    kosh_push(xs2, 2.0)
+    kosh_push(xs2, 3.0)
+    kosh_push(xs2, 4.0)
+    kosh_push(ys2, 0.0)
+    kosh_push(ys2, 1.0)
+    kosh_push(ys2, 8.0)
+    kosh_push(ys2, 27.0)
+    kosh_push(ys2, 64.0)
+    likha(simpson(xs2, ys2))
+    likha("\n")
+}
