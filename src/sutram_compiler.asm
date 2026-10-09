@@ -3031,9 +3031,13 @@ mg_print_loc:
     push rax
     cmp qword [rel r48_mode],0
     je .legacy
+    push r8
+    push r9
     lea rdi,[rel mg_cur_path]
     mov rsi,[rel mg_cur_line]
     call r49_print_module_location
+    pop r9
+    pop r8
     lea rdi,[rel mg_colon]
     call print_str_z
     lea rdi,[rel msg_diag_space]
