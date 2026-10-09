@@ -9326,6 +9326,25 @@ gen_stmt:
     call emit_byte
     jmp .gfc_pnext
 .gfc_p0:
+    ; R47: one-arg statement call: replace final PUSH RAX/POP RDI
+    ; with a register move after type conversion; no ABI side-effects.
+    cmp r15, 1
+    jne .gfc_old_pop0
+    mov rax, [rel code_sz]
+    test rax, rax
+    jz .gfc_old_pop0
+    lea rcx, [rel code_buf]
+    cmp byte [rcx + rax - 1], 0x50
+    jne .gfc_old_pop0
+    dec qword [rel code_sz]
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC7            ; mov rdi,rax
+    call emit_byte
+    jmp .gfc_pnext
+.gfc_old_pop0:
     mov dil, 0x5F             ; pop rdi  (arg0)
     call emit_byte
     jmp .gfc_pnext
@@ -11243,6 +11262,25 @@ gen_expr:
     call emit_byte
     jmp .ge_fc_call
 .ge_fc_pop1:
+    ; R47: one argument was just pushed by gen_typed_call_arg.
+    ; Replace its trailing runtime PUSH RAX + POP RDI with MOV RDI,RAX.
+    ; No other instructions emitted between push and pop in this path.
+    ; Keep the old POP if the expected last byte is not a push (defensive).
+    mov rax, [rel code_sz]
+    test rax, rax
+    jz .r47_old_pop
+    lea rcx, [rel code_buf]
+    cmp byte [rcx + rax - 1], 0x50
+    jne .r47_old_pop
+    dec qword [rel code_sz]
+    mov dil, 0x48             ; mov rdi,rax (64-bit)
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    jmp .ge_fc_call
+.r47_old_pop:
     mov dil, 0x5F            ; pop rdi
     call emit_byte
 .ge_fc_call:
@@ -11446,20 +11484,27 @@ gen_expr:
     mov dil, 0x59            ; discard runtime length
     call emit_byte
 .ge_index_no_bounds:
-    ; R47: the previous generated sequence was:
-    ;   shl rax,3; pop rcx; add rax,rcx; mov rax,[rax]
-    ; Replace it with pop rcx; mov rax,[rcx+rax*8].
-    ; Exact same 64-bit wrapped effective address, fewer uops/bytes.
-    ; Existing bounds check and runtime base pointer preservation unchanged.
-    mov dil, 0x59            ; pop rcx = array base pointer
+    mov dil, 0x48            ; shl rax, 3
     call emit_byte
-    mov dil, 0x48            ; mov rax, [rcx + rax*8] (REX.W)
+    mov dil, 0xC1
+    call emit_byte
+    mov dil, 0xE0
+    call emit_byte
+    mov dil, 0x03
+    call emit_byte
+    mov dil, 0x59            ; pop rcx (base)
+    call emit_byte
+    mov dil, 0x48            ; add rax, rcx
+    call emit_byte
+    mov dil, 0x01
+    call emit_byte
+    mov dil, 0xC8
+    call emit_byte
+    mov dil, 0x48            ; mov rax, [rax]
     call emit_byte
     mov dil, 0x8B
     call emit_byte
-    mov dil, 0x04            ; modrm: 64-bit load, SIB addressing
-    call emit_byte
-    mov dil, 0xC1            ; SIB: scale=8 index=rax base=rcx
+    mov dil, 0x00
     call emit_byte
     pop r12
     pop rbx
