@@ -1,0 +1,17 @@
+# Runtime benchmark: bounds-checked indexing and nested user functions.
+prakriya leaf(x) { pratiyati x + 3 }
+prakriya bridge(x) { pratiyati leaf(x) }
+mukhya() {
+    pankti nums[4]
+    nums[0] = 7
+    nums[1] = 11
+    nums[2] = 13
+    nums[3] = 17
+    vitti i = 0
+    vitti sum = 0
+    yavat (i < 3000000) {
+        sum = sum + bridge(nums[i % 4])
+        i = i + 1
+    }
+    likha(sum)
+}
