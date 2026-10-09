@@ -1,0 +1,145 @@
+--- a/src/sutram_compiler.asm
++++ b/src/sutram_compiler.asm
+@@ -669,10 +669,11 @@
+     bn_lkhb      db "lkhb", 0
+     bn_shabda    db "shabda", 0
+ 
+     msg_namespace_error db "Sutram Error: invalid namespaced ayojan (use module@alias, max 31 alias bytes)", 10, 0
+     msg_namespace_module_missing db "Sutram Error: namespaced module file not found", 10, 0
++    msg_namespace_alias_reuse db "Sutram Error: namespaced alias already assigned to another module", 10, 0
+     msg_namespace_func_limit db "Sutram Error: namespaced module has too many or oversized function names", 10, 0
+     msg_import_overflow db "Sutram Error: expanded module source too large", 10, 0
+     msg_ast_overflow db "Sutram Error: AST capacity exceeded", 10, 0
+     msg_func_params_overflow db "Sutram Error: function parameter table capacity exceeded", 10, 0
+     msg_var_table_overflow db "Sutram Error: variable table capacity exceeded", 10, 0
+@@ -2037,10 +2038,41 @@
+     ; num_buf was already terminated before parsing the alias.
+     jmp .ei_build_key
+ .ei_mod_done:
+     mov byte [rdi], 0
+ .ei_build_key:
++    ; R34: opt-in namespace imports must be simple, project-local module names.
++    ; Legacy imports deliberately retain their old path interpretation.
++    ; Disallow '/' and '.' segments so a namespaced module cannot traverse out
++    ; of an intended lib/ lookup root. Allow ASCII alnum, '_' and '-'.
++    cmp qword [rel ns_active],0
++    je .ei_module_safe
++    lea rsi,[rel num_buf]
++.ei_validate_mod:
++    mov al,[rsi]
++    test al,al
++    jz .ei_module_safe
++    cmp al,'_'
++    je .ei_mod_char_ok
++    cmp al,'-'
++    je .ei_mod_char_ok
++    cmp al,'0'
++    jb .ei_namespace_error
++    cmp al,'9'
++    jbe .ei_mod_char_ok
++    cmp al,'A'
++    jb .ei_namespace_error
++    cmp al,'Z'
++    jbe .ei_mod_char_ok
++    cmp al,'a'
++    jb .ei_namespace_error
++    cmp al,'z'
++    ja .ei_namespace_error
++.ei_mod_char_ok:
++    inc rsi
++    jmp .ei_validate_mod
++.ei_module_safe:
+     ; Unique dedupe keys incorporate the alias, so one module may be imported
+     ; under more than one name. Legacy keys remain identical to their old form.
+     lea rsi, [rel num_buf]
+     lea rdi, [rel ns_dedupe_key]
+     xor rcx,rcx
+@@ -2072,10 +2104,54 @@
+     inc rcx
+     inc rdx
+     jmp .ei_key_alias_copy
+ .ei_key_done:
+     mov byte [rdi+rcx],0
++    ; R34: one alias means one module. An exact duplicate is idempotent, but
++    ; importing two different modules under the same alias is ambiguous.
++    ; Reuse the existing bounded dedupe table; never allocate a second registry.
++    cmp qword [rel ns_active],0
++    je .ei_alias_verified
++    xor rbx,rbx
++.ei_alias_scan:
++    cmp rbx,[rel import_count]
++    jae .ei_alias_verified
++    mov rax,rbx
++    shl rax,6
++    lea rsi,[rel import_names]
++    add rsi,rax
++.ei_find_at:
++    mov al,[rsi]
++    test al,al
++    jz .ei_next_alias
++    cmp al,'@'
++    je .ei_compare_alias
++    inc rsi
++    jmp .ei_find_at
++.ei_compare_alias:
++    inc rsi
++    lea rdi,[rel ns_alias]
++    call strcmp
++    test rax,rax
++    jne .ei_next_alias
++    ; Alias matches: allow only the SAME full module@alias key.
++    mov rax,rbx
++    shl rax,6
++    lea rsi,[rel import_names]
++    add rsi,rax
++    lea rdi,[rel ns_dedupe_key]
++    call strcmp
++    test rax,rax
++    jz .ei_next_alias
++    lea rdi,[rel msg_namespace_alias_reuse]
++    call print_str_z
++    mov rdi,1
++    call os_exit
++.ei_next_alias:
++    inc rbx
++    jmp .ei_alias_scan
++.ei_alias_verified:
+     ; T4: including the same module twice is idempotent.  Keep a compact list
+     ; of module names already expanded during this compilation.
+     xor rbx, rbx
+ .ei_dup_loop:
+     cmp rbx, [rel import_count]
+@@ -2090,11 +2166,17 @@
+     jz .ei_duplicate_module
+     inc rbx
+     jmp .ei_dup_loop
+ .ei_new_module:
+     cmp qword [rel import_count], IMPORT_NAMES_CAP
+-    jae .ei_build_path       ; still import; only dedupe table is full
++    jb .ei_add_module
++    ; Legacy behaviour remains unchanged; namespaced imports must fail closed
++    ; once alias deduplication can no longer be guaranteed.
++    cmp qword [rel ns_active],0
++    je .ei_build_path
++    jmp .ei_namespace_error
++.ei_add_module:
+     mov rax, [rel import_count]
+     shl rax, 6
+     lea rdi, [rel import_names]
+     add rdi, rax
+     lea rsi, [rel ns_dedupe_key]
+@@ -2170,10 +2252,14 @@
+     lea rsi, [rel num_buf + 31]
+     mov rdx, 1
+     call os_read
+     cmp rax, 0
+     jg .ei_overflow_close
++    ; If a legacy module exactly fills capacity, the EOF probe returns zero:
++    ; close it normally. Do not fall into the namespaced-read path with an
++    ; already consumed fd (a previously latent boundary-case bug).
++    jmp .ei_close_success
+ .ei_namespaced_read:
+     mov rbx, rax
+     lea rsi, [rel ns_raw_buf]
+     mov rdx, IMPORT_BUF_CAP - 1
+     mov r10, rdx
