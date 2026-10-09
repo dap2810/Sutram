@@ -1,0 +1,9 @@
+# 45 — bit shifts (v32):  << and >>
+mukhya()
+    likha(1 << 4)            # 16   power of two
+    likha(256 >> 3)          # 32   divide by 8
+    vitti n = 3
+    likha(1 << n)            # 8    shift by a variable
+    likha(100 >> n)          # 12
+    likha((1 << 4) + (2 << 2))   # 24
+    likha(5 << 1 | 1)        # 11   (5<<1)=10, |1 = 11
