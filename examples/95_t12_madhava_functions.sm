@@ -1,0 +1,57 @@
+# T12 function interop payoff: the verified scalar Madhava calculations from
+# example 93 now cross prakriya boundaries as reusable floating-point functions.
+
+prakriya madhava_pi(terms) {
+    dasham root12 = 3.5
+    vitti i = 0
+    yavat (i < 12) {
+        root12 = (root12 + 12.0 / root12) / 2.0
+        i = i + 1
+    }
+    dasham sum = 0.0
+    dasham p3 = 1.0
+    vitti k = 0
+    vitti sign = 1
+    yavat (k < terms) {
+        dasham term = 1.0 / ((2.0 * k + 1.0) * p3)
+        yadi (sign > 0) {
+            sum = sum + term
+        } anyatra {
+            sum = sum - term
+        }
+        p3 = p3 * 3.0
+        sign = 0 - sign
+        k = k + 1
+    }
+    pratiyati root12 * sum
+}
+
+prakriya madhava_sin(dasham x, terms) {
+    dasham s = x
+    dasham t = x
+    vitti n = 1
+    yavat (n < terms) {
+        t = 0.0 - t * x * x / ((2.0 * n) * (2.0 * n + 1.0))
+        s = s + t
+        n = n + 1
+    }
+    pratiyati s
+}
+
+prakriya madhava_cos(दशम x, terms) {
+    dasham s = 1.0
+    dasham t = 1.0
+    vitti n = 1
+    yavat (n < terms) {
+        t = 0.0 - t * x * x / ((2.0 * n - 1.0) * (2.0 * n))
+        s = s + t
+        n = n + 1
+    }
+    pratiyati s
+}
+
+mukhya() {
+    likha(madhava_pi(30))
+    likha(madhava_sin(0.5, 12))
+    likha(madhava_cos(0.5, 12))
+}
