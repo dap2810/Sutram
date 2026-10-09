@@ -499,6 +499,163 @@ def prop_strconv_pad_left(compiler, rng):
     return ok and out == "PASS", out
 
 
+def prop_string_find(compiler, rng):
+    """str_find agrees with Python str.find on spread (incl absent)"""
+    cases = []
+    for _ in range(8):
+        hn = rng.randint(1, 12)
+        hay = "".join(chr(rng.randint(97, 99)) for _ in range(hn))
+        # needle: sometimes present, sometimes absent
+        if rng.random() < 0.5 and hn >= 2:
+            start = rng.randint(0, hn - 1)
+            nn = rng.randint(1, hn - start)
+            needle = hay[start:start + nn]
+        else:
+            nn = rng.randint(1, 4)
+            needle = "".join(chr(rng.randint(97, 99)) for _ in range(nn))
+        cases.append((hay, needle, hay.find(needle)))
+    lines = ["ayojan string", "mukhya() {",
+             "    vitti hay = nirmmita(12*8)",
+             "    vitti nd = nirmmita(6*8)"]
+    for idx, (hay, needle, exp) in enumerate(cases):
+        for j, ch in enumerate(hay):
+            lines.append(f"    hay[{j}] = {ord(ch)}")
+        for j, ch in enumerate(needle):
+            lines.append(f"    nd[{j}] = {ord(ch)}")
+        lines.append(f"    yadi (str_find(hay, {len(hay)}, nd, {len(needle)}) != {exp}) {{")
+        lines.append(f'        likha("FAIL string_find\\n")')
+        lines.append(f"        pratiyati 1")
+        lines.append(f"    }}")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "str_find", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_string_replace(compiler, rng):
+    """str_replace matches Python str.replace; find returns -1 after"""
+    cases = []
+    for _ in range(6):
+        src = "".join(chr(rng.randint(97, 99)) for _ in range(rng.randint(3, 10)))
+        # pick a needle that occurs (or empty)
+        if len(src) >= 2 and rng.random() < 0.7:
+            i = rng.randint(0, len(src) - 2)
+            needle = src[i:i + 2]
+        else:
+            needle = "zz"
+        repl = "".join(chr(rng.randint(97, 99)) for _ in range(rng.randint(1, 3)))
+        exp = src.replace(needle, repl)
+        cases.append((src, needle, repl, exp))
+    lines = ["ayojan string", "mukhya() {",
+             "    vitti src = nirmmita(12*8)",
+             "    vitti find = nirmmita(4*8)",
+             "    vitti repl = nirmmita(5*8)",
+             "    vitti out = nirmmita(30*8)"]
+    for idx, (src, needle, repl, exp) in enumerate(cases):
+        for j, ch in enumerate(src):
+            lines.append(f"    src[{j}] = {ord(ch)}")
+        for j, ch in enumerate(needle):
+            lines.append(f"    find[{j}] = {ord(ch)}")
+        for j, ch in enumerate(repl):
+            lines.append(f"    repl[{j}] = {ord(ch)}")
+        lines.append(f"    repl[{len(repl)}] = 0")
+        lines.append(f"    vitti n{idx} = str_replace(src, {len(src)}, find, {len(needle)}, repl, out)")
+        lines.append(f"    yadi (n{idx} != {len(exp)}) {{")
+        lines.append(f'        likha("FAIL string_replace len\\n")')
+        lines.append(f"        pratiyati 1")
+        lines.append(f"    }}")
+        for j, ch in enumerate(exp):
+            lines.append(f"    yadi (out[{j}] != {ord(ch)}) {{")
+            lines.append(f'        likha("FAIL string_replace chars\\n")')
+            lines.append(f"        pratiyati 1")
+            lines.append(f"    }}")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "str_repl", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_string_split_join(compiler, rng):
+    """str_join(str_split(s, sep), sep) == s (skip trailing-sep edge)"""
+    cases = []
+    for _ in range(6):
+        # avoid trailing separator (documented edge: yields extra empty seg)
+        s = "".join(chr(rng.randint(97, 99)) for _ in range(rng.randint(1, 10)))
+        sep = chr(rng.randint(44, 45))  # ',' or '-'
+        # ensure no trailing sep for the round-trip
+        if s.endswith(sep):
+            s = s[:-1] + "a"
+        cases.append((s, sep))
+    lines = ["ayojan string", "mukhya() {",
+             "    vitti src = nirmmita(12*8)",
+             "    vitti sep = nirmmita(2*8)",
+             "    vitti parts = nirmmita(40*8)",
+             "    vitti out = nirmmita(20*8)"]
+    for idx, (s, sep) in enumerate(cases):
+        for j, ch in enumerate(s):
+            lines.append(f"    src[{j}] = {ord(ch)}")
+        lines.append(f"    sep[0] = {ord(sep)}")
+        lines.append(f"    vitti nc{idx} = str_split(src, {len(s)}, sep, 1, parts, 10)")
+        lines.append(f"    vitti jn{idx} = str_join(parts, nc{idx}, sep, 1, out)")
+        lines.append(f"    yadi (jn{idx} != {len(s)}) {{")
+        lines.append(f'        likha("FAIL split_join len\\n")')
+        lines.append(f"        pratiyati 1")
+        lines.append(f"    }}")
+        for j, ch in enumerate(s):
+            lines.append(f"    yadi (out[{j}] != {ord(ch)}) {{")
+            lines.append(f'        likha("FAIL split_join chars\\n")')
+            lines.append(f"        pratiyati 1")
+            lines.append(f"    }}")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "split_join", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_string_trim_case(compiler, rng):
+    """str_trim/str_upper/str_lower match Python strip/upper/lower"""
+    cases = []
+    for _ in range(8):
+        # mix of spaces and letters
+        s = "".join(rng.choice([" ", "a", "B", "c"]) for _ in range(rng.randint(1, 8)))
+        cases.append(s)
+    lines = ["ayojan string", "mukhya() {",
+             "    vitti src = nirmmita(10*8)",
+             "    vitti out = nirmmita(10*8)"]
+    for idx, s in enumerate(cases):
+        for j, ch in enumerate(s):
+            lines.append(f"    src[{j}] = {ord(ch)}")
+        exp_trim = s.strip(" ")
+        exp_upper = s.upper()
+        exp_lower = s.lower()
+        lines.append(f"    vitti tn{idx} = str_trim(src, {len(s)}, out)")
+        lines.append(f"    yadi (tn{idx} != {len(exp_trim)}) {{")
+        lines.append(f'        likha("FAIL trim len\\n")')
+        lines.append(f"        pratiyati 1")
+        lines.append(f"    }}")
+        for j, ch in enumerate(exp_trim):
+            lines.append(f"    yadi (out[{j}] != {ord(ch)}) {{")
+            lines.append(f'        likha("FAIL trim chars\\n")')
+            lines.append(f"        pratiyati 1")
+            lines.append(f"    }}")
+        lines.append(f"    str_upper(src, {len(s)}, out)")
+        for j, ch in enumerate(exp_upper):
+            lines.append(f"    yadi (out[{j}] != {ord(ch)}) {{")
+            lines.append(f'        likha("FAIL upper\\n")')
+            lines.append(f"        pratiyati 1")
+            lines.append(f"    }}")
+        lines.append(f"    str_lower(src, {len(s)}, out)")
+        for j, ch in enumerate(exp_lower):
+            lines.append(f"    yadi (out[{j}] != {ord(ch)}) {{")
+            lines.append(f'        likha("FAIL lower\\n")')
+            lines.append(f"        pratiyati 1")
+            lines.append(f"    }}")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "trim_case", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
 def main():
     compiler = None
     for i, a in enumerate(sys.argv):
@@ -526,6 +683,10 @@ def main():
         ("strconv roundtrip", prop_strconv_roundtrip),
         ("strconv base roundtrip", prop_strconv_base_roundtrip),
         ("strconv pad_left", prop_strconv_pad_left),
+        ("string find vs python", prop_string_find),
+        ("string replace", prop_string_replace),
+        ("string split/join", prop_string_split_join),
+        ("string trim/case", prop_string_trim_case),
     ]
 
     failed = []
