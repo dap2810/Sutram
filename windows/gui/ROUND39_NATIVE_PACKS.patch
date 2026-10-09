@@ -1,0 +1,492 @@
+--- a/windows/gui/sutram_gui.asm
++++ b/windows/gui/sutram_gui.asm
+@@ -3,9 +3,9 @@
+ ; NO C/C++/Python or GUI framework in executable. Standard-user only.
+ ; Build: nasm -f win64 windows/gui/sutram_gui.asm -o sutram_gui.obj
+ ;        ld -mi386pep --subsystem windows --entry=_start -o sutram-ide-gui.exe sutram_gui.obj
+ ; Placement: project root alongside win\sutram.exe and examples\*.sm.
+-; This Unicode-editing revision is source-stage; Windows runtime is UNVERIFIED.
++; Native language-pack highlighting source-stage; Windows runtime is UNVERIFIED.
+ 
+ bits 64
+ default rel
+ 
+@@ -87,8 +87,11 @@
+ %define OFN_NOCHANGEDIR 8
+ %define OFN_EXPLORER 0x80000
+ %define MAX_EDIT 65534
+ %define MAX_OUTPUT 32767
++%define MAX_NATIVE_KEYWORDS 384
++%define NATIVE_KEYWORD_UNITS 64
++%define MAX_LANG_FILE 8191
+ 
+ %macro PROLOG 1
+     push rbp
+     mov rbp,rsp
+@@ -269,8 +272,10 @@
+ msg_input_large db '[file too large; editor limit 64 KiB]',13,10,0
+ msg_shell_limit db '[shell history limit reached; clear shell]',13,10,0
+ msg_timeout db '[process exceeded 10 seconds; terminated]',13,10,0
+ msg_missing_compiler db '[missing win\sutram.exe: compile native compiler first]',13,10,0
++msg_missing_lang db '[native keyword packs unavailable: check lang\*.lang; Latin keywords still work]',13,10,0
++msg_partial_lang db '[some native keyword packs missing or invalid: check lang\*.lang]',13,10,0
+ msg_pipe_fail db '[process or pipe creation failed]',13,10,0
+ msg_more_output db '[output truncated at 32 KiB]',13,10,0
+ prefix_s db 'mukhya()',13,10,0
+ indent_s db '    ',0
+@@ -300,8 +305,21 @@
+ quote_space_quote_w: dw 34,32,34,0
+ 
+ gui_icon_w: dw 105,99,111,110,115,92,115,117,116,114,97,109,46,105,99,111,0
+ gui_icon_installed_w: dw 97,115,115,101,116,115,92,115,117,116,114,97,109,46,105,99,111,0
++
++; Each language pack is read as UTF-8 at GUI startup. The names are UTF-16 paths.
++kw_pack_bengali_w: dw 108,97,110,103,92,98,101,110,103,97,108,105,46,108,97,110,103,0
++kw_pack_gujarati_w: dw 108,97,110,103,92,103,117,106,97,114,97,116,105,46,108,97,110,103,0
++kw_pack_hindi_w: dw 108,97,110,103,92,104,105,110,100,105,46,108,97,110,103,0
++kw_pack_kannada_w: dw 108,97,110,103,92,107,97,110,110,97,100,97,46,108,97,110,103,0
++kw_pack_malayalam_w: dw 108,97,110,103,92,109,97,108,97,121,97,108,97,109,46,108,97,110,103,0
++kw_pack_marathi_w: dw 108,97,110,103,92,109,97,114,97,116,104,105,46,108,97,110,103,0
++kw_pack_odia_w: dw 108,97,110,103,92,111,100,105,97,46,108,97,110,103,0
++kw_pack_punjabi_w: dw 108,97,110,103,92,112,117,110,106,97,98,105,46,108,97,110,103,0
++kw_pack_tamil_w: dw 108,97,110,103,92,116,97,109,105,108,46,108,97,110,103,0
++kw_pack_telugu_w: dw 108,97,110,103,92,116,101,108,117,103,117,46,108,97,110,103,0
++kw_pack_paths: dq kw_pack_bengali_w,kw_pack_gujarati_w,kw_pack_hindi_w,kw_pack_kannada_w,kw_pack_malayalam_w,kw_pack_marathi_w,kw_pack_odia_w,kw_pack_punjabi_w,kw_pack_tamil_w,kw_pack_telugu_w,0
+ section .bss
+ h_kernel resq 1
+ h_user resq 1
+ h_dialog resq 1
+@@ -320,8 +338,14 @@
+ h_btn_send resq 1
+ h_btn_clear resq 1
+ old_shell_proc resq 1
+ is_highlighting resd 1
++native_keyword_count resd 1
++native_pack_count resd 1
++native_pack_errors resd 1
++native_keyword_storage resw MAX_NATIVE_KEYWORDS*NATIVE_KEYWORD_UNITS
++native_pack_bytes resb MAX_LANG_FILE+1
++native_pack_word resb 256
+ is_lineupdating resd 1
+ is_shellrunning resd 1
+ last_shell_out resd 1
+ last_exit_code resd 1
+@@ -437,8 +461,9 @@
+     call init_apis
+     test eax,eax
+     jz .quit
+     call init_paths
++    call load_native_keyword_packs
+     call gui_loop
+ .quit:
+     xor ecx,ecx
+     cmp qword [rel p_ExitProcess],0
+@@ -809,8 +834,22 @@
+     mov r10,[rbp-8]
+     mov [rel h_main],r10
+     call create_controls
+     call set_project_icon
++    ; A missing installed lang/ directory must never masquerade as full support.
++    cmp dword [rel native_pack_count],0
++    jne .check_partial_lang
++    mov rcx,[rel h_output]
++    PTR rdx,msg_missing_lang
++    API SetWindowTextA
++    jmp .created
++.check_partial_lang:
++    cmp dword [rel native_pack_errors],0
++    je .created
++    mov rcx,[rel h_output]
++    PTR rdx,msg_partial_lang
++    API SetWindowTextA
++.created:
+     xor eax,eax
+     jmp .done
+ .resize:
+     mov rcx,[rbp-8]
+@@ -1131,12 +1170,189 @@
+     mov word [r10+1],0x0A0D
+     add r10,3
+     ret
+ 
++; Language pack loader (compile-time independent, only at GUI startup).
++; All ten official UTF-8 *.lang files are read, so users can mix native scripts.
++; The stable pack format is "<native token> <romanized token>" with # comments.
++; Capacity is bounded: 384 tokens * 64 UTF-16 code units, 8191-byte pack.
++; The pack never contributes generated instructions or changes Sutram's ABI.
++load_native_keyword_packs:
++    PROLOG 160
++    PTR rax,kw_pack_paths
++    mov [rbp-8],rax
++.next_pack:
++    mov r10,[rbp-8]
++    mov rcx,[r10]
++    test rcx,rcx
++    jz .done
++    mov edx,GENERIC_READ
++    mov r8d,FILE_SHARE_READ
++    xor r9d,r9d
++    mov qword [rsp+32],OPEN_EXISTING
++    mov qword [rsp+40],FILE_ATTRIBUTE_NORMAL
++    mov qword [rsp+48],0
++    API CreateFileW
++    cmp rax,INVALID_HANDLE
++    je .missing
++    mov [rbp-16],rax
++    mov rcx,rax
++    PTR rdx,native_pack_bytes
++    mov r8d,MAX_LANG_FILE
++    PTR r9,bytes_count
++    mov qword [rsp+32],0
++    API ReadFile
++    mov [rbp-20],eax
++    mov rcx,[rbp-16]
++    API CloseHandle
++    cmp dword [rbp-20],0
++    je .missing
++    mov eax,[rel bytes_count]
++    test eax,eax
++    jz .missing
++    cmp eax,MAX_LANG_FILE
++    jae .missing               ; reject possibly truncated pack
++    PTR rdx,native_pack_bytes
++    mov byte [rdx+rax],0
++    call parse_native_keyword_pack
++    inc dword [rel native_pack_count]
++    jmp .advance
++.missing:
++    inc dword [rel native_pack_errors]
++.advance:
++    add qword [rbp-8],8
++    jmp .next_pack
++.done:
++    EPILOG
++
++; Bounded UTF-8 line parser. Reads only the first whitespace-delimited token
++; from every non-comment line; never consumes/changes the source editor buffer.
++parse_native_keyword_pack:
++    PROLOG 144
++    PTR rax,native_pack_bytes
++    mov [rbp-8],rax             ; scan pointer
++.line:
++    mov r10,[rbp-8]
++    movzx eax,byte [r10]
++    test al,al
++    jz .done
++    cmp al,'#'
++    je .skip_line
++    cmp al,13
++    je .skip_line
++    cmp al,10
++    je .skip_line
++    cmp al,' '
++    je .skip_line
++    cmp al,9
++    je .skip_line
++    PTR r11,native_pack_word
++    xor ecx,ecx
++.copy_word:
++    mov r10,[rbp-8]
++    movzx eax,byte [r10+rcx]
++    test al,al
++    jz .end_word
++    cmp al,32
++    jbe .end_word
++    cmp ecx,254
++    jae .skip_line             ; malformed token: do not truncate
++    mov [r11+rcx],al
++    inc ecx
++    jmp .copy_word
++.end_word:
++    test ecx,ecx
++    jz .skip_line
++    mov byte [r11+rcx],0
++    mov eax,[rel native_keyword_count]
++    cmp eax,MAX_NATIVE_KEYWORDS
++    jae .skip_line
++    shl rax,7                 ; 64 UTF-16 units per slot
++    PTR rdx,native_keyword_storage
++    add rdx,rax
++    PTR rcx,native_pack_word
++    mov r8d,NATIVE_KEYWORD_UNITS
++    call utf8_to_utf16        ; strict UTF-8, no replacement code points
++    test eax,eax
++    jz .skip_line
++    inc dword [rel native_keyword_count]
++.skip_line:
++    mov r10,[rbp-8]
++.skip_chars:
++    mov al,[r10]
++    test al,al
++    jz .done
++    inc r10
++    cmp al,10
++    jne .skip_chars
++    mov [rbp-8],r10
++    jmp .line
++.done:
++    EPILOG
++
++; rcx is a pointer into UTF-16 editor source at a script identifier start.
++; Return keyword length in UTF-16 code units or zero. Whole-token matching.
++native_keyword_match:
++    PROLOG 96
++    mov [rbp-8],rcx
++    xor r10d,r10d
++.token:
++    cmp r10d,[rel native_keyword_count]
++    jae .not_found
++    mov r11,r10
++    shl r11,7
++    PTR r9,native_keyword_storage
++    add r9,r11
++    mov r8,[rbp-8]
++    xor ecx,ecx
++.compare:
++    movzx eax,word [r9+rcx*2]
++    test ax,ax
++    jz .matched
++    cmp ax,[r8+rcx*2]
++    jne .next
++    inc ecx
++    cmp ecx,NATIVE_KEYWORD_UNITS-1
++    jb .compare
++    jmp .next
++.matched:
++    movzx eax,word [r8+rcx*2]
++    call is_ident_u16
++    test eax,eax
++    jnz .next
++    mov eax,ecx
++    jmp .done
++.next:
++    inc r10d
++    jmp .token
++.not_found:
++    xor eax,eax
++.done:
++    EPILOG
++
++; EAX=1 for Latin identifier characters or Brahmic-script characters/marks.
++; Count full UTF-16 code units, including combining signs (virama/matra).
++; This is a conservative scanner for U+0900..U+0DFF, not a Unicode UAX#29 lexer.
++is_ident_u16:
++    cmp ax,0x0900
++    jb .latin
++    cmp ax,0x0DFF
++    jbe .yes
++    cmp ax,0x200C               ; ZWNJ / ZWJ inside orthographic clusters
++    je .yes
++    cmp ax,0x200D
++    je .yes
++    xor eax,eax
++    ret
++.latin:
++    jmp is_ident_byte
++.yes:
++    mov eax,1
++    ret
++
+ ; Native RichEdit keyword coloring. The lexer intentionally skips quoted
+-; strings, # line comments and // line comments; initial support is for Latin
+-; keyword spellings. Unicode display works, Devanagari token styling is a
+-; documented future improvement, not a claim for this preview.
++; strings, # line comments and // line comments. Latin built-ins and all
++; loaded native *.lang tokens share the same UTF-16 RichEdit colour path.
+ highlight_editor:
+     PROLOG 176
+     cmp dword [rel is_highlighting],0
+     jne .done
+@@ -1166,24 +1382,24 @@
+     mov dword [rbp-24],0
+ .scan:
+     mov r10,[rbp-16]
+     mov dx,[r10]
+-    test dl,dl
++    test dx,dx
+     jz .restore
+-    cmp dl,'"'
++    cmp dx,'"'
+     je .quoted
+-    cmp dl,39
++    cmp dx,39
+     je .quoted
+-    cmp dl,'#'
++    cmp dx,'#'
+     je .comment
+-    cmp dl,'/'
++    cmp dx,'/'
+     jne .word
+     cmp word [r10+2],'/'
+     je .comment
+ .word:
+     ; Match only at word start, then whole-keyword boundary.
+     cmp dx,127
+-    ja .advance
++    ja .native_word
+     mov al,dl
+     call is_ident_byte
+     test eax,eax
+     jz .advance
+@@ -1191,11 +1407,9 @@
+     test eax,eax
+     jz .try_words
+     mov r11,[rbp-16]
+     mov ax,[r11-2]
+-    cmp ax,127
+-    ja .try_words
+-    call is_ident_byte
++    call is_ident_u16
+     test eax,eax
+     jnz .advance
+ .try_words:
+     PTR r11,kw_words
+@@ -1219,15 +1433,33 @@
+     jl .kw_cmp
+     jmp .kw_next
+ .kw_found:
+     mov ax,[r10+rcx*2]
+-    cmp ax,127
+-    ja .kw_found_valid
+-    call is_ident_byte
++    call is_ident_u16
+     test eax,eax
+     jnz .kw_next
+-.kw_found_valid:
+     mov [rbp-44],ecx
++    jmp .paint_keyword
++.native_word:
++    ; Existing left-to-right lexer already excluded quoted strings/comments.
++    mov ax,[r10]
++    call is_ident_u16
++    test eax,eax
++    jz .advance
++    cmp dword [rbp-24],0
++    jz .native_start
++    mov r11,[rbp-16]
++    mov ax,[r11-2]
++    call is_ident_u16
++    test eax,eax
++    jnz .advance
++.native_start:
++    mov rcx,[rbp-16]
++    call native_keyword_match
++    test eax,eax
++    jz .advance
++    mov [rbp-44],eax
++.paint_keyword:
+     ; index is measured in UTF-16 code units, including surrogate pairs.
+     mov rcx,[rel h_editor]
+     mov edx,EM_SETSEL
+     mov r8d,[rbp-24]
+@@ -1259,9 +1491,9 @@
+     inc dword [rbp-24]
+ .quote_loop:
+     mov r10,[rbp-16]
+     mov ax,[r10]
+-    test al,al
++    test ax,ax
+     jz .restore
+     cmp ax,'\'
+     je .escape
+     cmp ax,[rbp-48]
+--- a/windows/gui/MANUAL-WINDOWS-GUI-TEST.md
++++ b/windows/gui/MANUAL-WINDOWS-GUI-TEST.md
+@@ -119,4 +119,66 @@
+     FAIL: terminal IDE missing, compiler regressions or a new UAC prompt.
+ 
+ **Acceptance rule:** pass 15–24 on actual Windows and run `test-gui.ps1`. The static
+ Python checks only validate source contracts; they cannot prove the GUI runs.
++
++
++## Round 39 — all ten native-script keyword packs (real Windows acceptance)
++
++Prerequisites: keep `lang/*.lang` alongside the installed GUI directory, do not elevate.
++The GUI reads all **ten** official packs on startup; no selector is required. The
++native compiler must support the chosen language for Run; **highlighting can be
++verified without compiling**. Every expected colour is the same blue used for `mukhya`.
++
++25. **Hindi/Devanagari pack** — verify `lang\hindi.lang` exists, restart GUI,
++    paste these **separate** lines into the editor:
++
++    ```text
++    मुख्य() { लिखो(1) }
++    "मुख्य लिखो"
++    # मुख्य लिखो
++    // मुख्य लिखो
++    ```
++
++    EXPECT: `मुख्य` and `लिखो` **only on line 1** are blue; lines 2–4
++    remain normal text, and cursor/selection do not jump. FAIL: no blue
++    colouring, partial combining marks, colouring inside quotes/comments,
++    or Unicode corruption.
++26. **Tamil pack** — verify `lang\tamil.lang` exists, restart GUI, paste:
++
++    ```text
++    முதன்மை() { எழுது(1) }
++    "முதன்மை எழுது"
++    # முதன்மை எழுது
++    // முதன்மை எழுது
++    ```
++
++    EXPECT: `முதன்மை` and `எழுது` on line 1 are blue, with all quoted and
++    commented occurrences uncoloured. FAIL on split/dropped letters, displaced
++    colours, or missing keyword recognition.
++27. **Mixed-script/Latin boundary and quoted text** — paste `mukhya() { likha(1) }`
++    followed by `मुख्य() { எழுது(2) }`. EXPECT: all four keywords blue,
++    including correct ranges in a mixed-script buffer. Replace with
++    `मुख्यxyz`, `abcஎழுது`, and `முதன்மைfoo`; EXPECT: none are recognised
++    as complete keywords. Put a Latin keyword after several Tamil words;
++    EXPECT: no offset shift.
++28. **Missing pack diagnostics** — with GUI closed, temporarily move
++    `lang\tamil.lang` to an ordinary user-owned backup outside `lang/`;
++    reopen GUI. EXPECT: visible output warning that some packs are missing,
++    while Hindi and Latin highlighting still work. Restore Tamil and restart.
++    Then temporarily rename the entire `lang` directory, reopen and EXPECT a
++    visible `native keyword packs unavailable` warning; Latin highlighting
++    continues. Restore everything before leaving the test. FAIL on silent
++    missing packs or startup crash.
++29. **UTF-8 malformed input and long-file boundary** — duplicate the Hindi pack
++    in a disposable test tree and replace its first keyword with invalid UTF-8
++    bytes; EXPECT that token is not highlighted and the GUI does not crash.
++    Verify the original pack is restored. FAIL if malformed bytes are silently
++    transformed to replacement glyphs and coloured as a valid keyword.
++30. **Installed copy** — install as standard user, verify ten `.lang` files in
++    `%LOCALAPPDATA%\Programs\Sutram\lang\`, then repeat steps 25 and
++    26 through the Start Menu GUI shortcut. EXPECT the same highlighting and
++    thread logo. FAIL on missing pack files, UAC, or the old script icon.
++
++**Status:** These tests have been *written*, not executed on Windows in ChatGPT's
++Linux environment. Record Windows build version, GUI SHA, manual PASS/FAIL per
++step, and screenshots before declaring release acceptance.
+--- a/windows/gui/README-WINDOWS-GUI.md
++++ b/windows/gui/README-WINDOWS-GUI.md
+@@ -103,4 +103,28 @@
+ `Sutram IDE.lnk` and uninstall removes it and files through the payload manifest.
+ Build order: build GUI using `windows/gui/build-gui.ps1`, then call the existing
+ `windows/native-installer/build-installer.ps1`. The installed GUI is still pending
+ Windows runtime acceptance; see steps 15–24 of MANUAL-WINDOWS-GUI-TEST.md.
++
++
++## Round 39: native-script highlighting (unverified Windows runtime)
++
++At GUI startup, Sutram reads all ten UTF-8 language packs from `lang/*.lang`
++relative to the executable directory; it displays a diagnostic in the output
++pane when some or all packs are missing. Every first-column native-script token
++is converted strictly to UTF-16 using Windows `MultiByteToWideChar` and
++loaded into a bounded 384-entry keyword table. No non-Windows runtime or elevated
++privileges are required. The existing Romanized keyword table is retained.
++
++The RichEdit lexer uses whole UTF-16 code units and checks U+0900–U+0DFF (plus
++ZWJ/ZWNJ) for Brahmic-script word boundaries. It suppresses highlighting inside
++quotes and `#`/`//` comments. All ten packs are active simultaneously; menu
++selection is not required and does **not** change the compiler's `--lang` mode.
++Native-script editor colouring does not prove the native Sutram compiler
++understands every pack: verify compilation separately with the chosen language
++configuration. Source-only static tests and Python reference-lexer oracle cannot
++substitute for actual Win64 NASM assembly or Windows GUI operation.
++
++Dependencies for the GUI at runtime: the Windows system libraries already used
++by the GUI and installed `lang/` text files. The per-user installer already
++packages that directory. Place `lang/` next to the GUI executable for portable
++use. Do not fall back to ANSI conversion for malformed UTF-8.
