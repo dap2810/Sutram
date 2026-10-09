@@ -1,0 +1,23 @@
+# 41 — recursion (v29)
+prakriya krama_fal(n) {
+    yadi (n <= 1) {
+        pratiyati 1
+    }
+    pratiyati n * krama_fal(n - 1)
+}
+prakriya fib(n) {
+    yadi (n < 2) {
+        pratiyati n
+    }
+    pratiyati fib(n - 1) + fib(n - 2)
+}
+prakriya shakti(base, exp) {
+    yadi (exp == 0) {
+        pratiyati 1
+    }
+    pratiyati base * shakti(base, exp - 1)
+}
+mukhya()
+    likha(krama_fal(6))
+    likha(fib(20))
+    likha(shakti(2, 10))
