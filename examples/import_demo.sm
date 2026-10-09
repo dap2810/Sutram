@@ -1,7 +1,6 @@
 # Library import demo — Python-style with ayojan
 ayojan math
 ayojan string
-ayojan io
 
 mukhya()
     likha("=== Library Import Demo ===\n")

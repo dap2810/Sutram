@@ -1,291 +1,218 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sutram — Standard Library Reference</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<meta charset="utf-8">
+<title>Sutram Standard Library Reference</title>
 <style>
-  :root{
-    --display:'Instrument Serif',Georgia,serif; --body:'IBM Plex Sans',system-ui,sans-serif;
-    --mono:'IBM Plex Mono','SF Mono',Consolas,monospace;
-    --bg:#f7f6f2;--surface:#fff;--surface2:#f2f0ea;--elevated:#fffdf8;
-    --border:rgba(20,25,40,.08);--border-bright:rgba(20,25,40,.16);
-    --text:#14192b;--dim:#6b7280;--navy:#1e3a5f;--navy-dim:rgba(30,58,95,.07);
-    --gold:#b8860b;--gold-dim:rgba(184,134,11,.10);--green:#15803d;--green-dim:rgba(21,128,61,.09);
-  }
-  @media(prefers-color-scheme:dark){:root{
-    --bg:#0d1117;--surface:#161b22;--surface2:#1c232c;--elevated:#1b232e;
-    --border:rgba(255,255,255,.07);--border-bright:rgba(255,255,255,.14);
-    --text:#e6edf3;--dim:#8b949e;--navy:#7aa5d8;--navy-dim:rgba(122,165,216,.10);
-    --gold:#d4a73a;--gold-dim:rgba(212,167,58,.12);--green:#4ade80;--green-dim:rgba(74,222,128,.10);
-  }}
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{background:var(--bg);
-    background-image:radial-gradient(ellipse at 15% 0%,var(--gold-dim) 0%,transparent 45%),
-                     radial-gradient(ellipse at 90% 100%,var(--navy-dim) 0%,transparent 45%);
-    color:var(--text);font-family:var(--body);padding:48px 32px 72px;min-height:100vh;-webkit-font-smoothing:antialiased}
-  @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-  .animate{animation:fadeUp .45s ease-out both;animation-delay:calc(var(--i,0)*.04s)}
-  @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-delay:0ms!important}}
-  .wrap{max-width:1080px;margin:0 auto}
-  header{border-bottom:2px solid var(--border-bright);padding-bottom:24px;margin-bottom:30px}
-  .eyebrow{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;
-    color:var(--gold);display:flex;align-items:center;gap:9px;margin-bottom:14px}
-  .eyebrow::before{content:'';width:26px;height:2px;background:var(--gold)}
-  h1{font-family:var(--display);font-weight:400;font-size:50px;line-height:1.05;letter-spacing:-.5px;margin-bottom:10px}
-  h1 .deva{color:var(--navy);font-size:38px}
-  .lede{font-size:16px;line-height:1.7;color:var(--dim);max-width:720px}
-  .lede strong{color:var(--text);font-weight:600}
-
-  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:14px;margin:30px 0}
-  .kpi{background:var(--elevated);border:1px solid var(--border);border-radius:11px;padding:18px;box-shadow:0 1px 3px rgba(20,25,40,.05)}
-  .kpi b{font-family:var(--display);font-size:36px;font-weight:400;line-height:1;font-variant-numeric:tabular-nums}
-  .kpi span{display:block;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:1.2px;
-    text-transform:uppercase;color:var(--dim);margin-top:8px}
-
-  .mod{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
-  .mod__head{display:flex;align-items:baseline;gap:12px;padding:18px 22px;background:var(--surface2);
-    border-bottom:1px solid var(--border);flex-wrap:wrap}
-  .mod__head h2{font-family:var(--display);font-weight:400;font-size:26px}
-  .mod__head code{font-family:var(--mono);font-size:13px;color:var(--navy);background:var(--navy-dim);
-    padding:2px 8px;border-radius:5px}
-  .mod__head .n{font-family:var(--mono);font-size:11px;color:var(--dim);margin-left:auto}
-  .mod__head .tag{font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;
-    padding:2px 8px;border-radius:5px}
-  .tag--heritage{background:var(--gold-dim);color:var(--gold)}
-  .tag--io{background:var(--green-dim);color:var(--green)}
-  .mod__note{padding:12px 22px;font-size:13px;color:var(--dim);line-height:1.6;border-bottom:1px solid var(--border)}
-  table{width:100%;border-collapse:collapse;font-size:13.5px}
-  td{padding:11px 22px;border-bottom:1px solid var(--border);vertical-align:top}
-  tr:last-child td{border-bottom:none}
-  td.fn{font-family:var(--mono);font-size:12.5px;color:var(--navy);white-space:nowrap;font-weight:500;width:34%}
-  td.desc{color:var(--dim);line-height:1.55}
-  tr:nth-child(even) td{background:rgba(30,58,95,.025)}
-  .stub{background:var(--surface);border:1px dashed var(--border-bright);border-radius:12px;padding:18px 22px;
-    margin-bottom:14px;font-size:13.5px;color:var(--dim);line-height:1.65}
-  .stub code{font-family:var(--mono);font-size:12.5px;color:var(--navy)}
-  footer{margin-top:38px;padding-top:20px;border-top:1px solid var(--border);font-family:var(--mono);
-    font-size:11px;color:var(--dim);line-height:1.7}
-  @media(max-width:760px){body{padding:28px 16px 48px}h1{font-size:34px}h1 .deva{font-size:26px}td.fn{width:auto}}
+body{font-family:Georgia,serif;max-width:900px;margin:2em auto;padding:0 1em;color:#222}
+h1{border-bottom:2px solid #333}
+h2{margin-top:2em;color:#444;border-bottom:1px solid #ccc}
+table{border-collapse:collapse;width:100%;margin:1em 0}
+th,td{border:1px solid #ccc;padding:.4em .6em;text-align:left;vertical-align:top}
+th{background:#f4f4f4}
+code{font-family:Menlo,Consolas,monospace;background:#f6f6f6;padding:0 .2em}
+.mod-desc{color:#555;font-style:italic}
+footer{margin-top:3em;color:#888;font-size:.9em}
 </style>
 </head>
 <body>
-<div class="wrap">
-
-  <header class="animate" style="--i:0">
-    <div class="eyebrow">Standard Library</div>
-    <h1>Sutram <span class="deva">सूत्रम्</span> — Library</h1>
-    <p class="lede">Every module is pulled in with <code>ayojan &lt;name&gt;</code> and inlined into your program at compile time — no runtime, the code becomes part of your binary. <strong>No module defines a function that another module also defines</strong>, so any set can be imported together.</p>
-  </header>
-
-  <div class="kpis animate" style="--i:1">
-    <div class="kpi"><b>12</b><span>modules</span></div>
-    <div class="kpi"><b>80</b><span>functions</span></div>
-    <div class="kpi"><b>3</b><span>heritage modules</span></div>
-    <div class="kpi"><b>0</b><span>name collisions</span></div>
-  </div>
-
-  <div class="mod animate" style="--i:2">
-    <div class="mod__head"><h2>math</h2><code>ayojan math</code><span class="n">15 functions</span></div>
-    <div class="mod__note">Integer arithmetic and number theory.</div>
-    <table>
-      <tr><td class="fn">sq(n), square(n), cube(n)</td><td class="desc">n², n², n³</td></tr>
-      <tr><td class="fn">double(n), triple(n), inc(n)</td><td class="desc">2n, 3n, n+1</td></tr>
-      <tr><td class="fn">abs_val(n)</td><td class="desc">absolute value</td></tr>
-      <tr><td class="fn">min2(a,b), max2(a,b)</td><td class="desc">smaller / larger of two</td></tr>
-      <tr><td class="fn">gcd(a,b), lcm(a,b)</td><td class="desc">greatest common divisor / least common multiple</td></tr>
-      <tr><td class="fn">power(b,e)</td><td class="desc">b raised to e</td></tr>
-      <tr><td class="fn">fact(n)</td><td class="desc">n factorial</td></tr>
-      <tr><td class="fn">is_prime(n)</td><td class="desc">1 if n is prime, else 0</td></tr>
-      <tr><td class="fn">sum_to(n)</td><td class="desc">1 + 2 + … + n</td></tr>
-    </table>
-  </div>
-
-  <div class="mod animate" style="--i:3">
-    <div class="mod__head"><h2>num</h2><code>ayojan num</code><span class="n">10 functions</span></div>
-    <div class="mod__note">Digits, divisibility and integer sequences.</div>
-    <table>
-      <tr><td class="fn">is_even(n), is_odd(n)</td><td class="desc">parity tests</td></tr>
-      <tr><td class="fn">digit_count(n), digit_sum(n)</td><td class="desc">number of digits / sum of digits</td></tr>
-      <tr><td class="fn">reverse_num(n)</td><td class="desc">digits reversed</td></tr>
-      <tr><td class="fn">is_palindrome(n)</td><td class="desc">1 if n reads the same reversed</td></tr>
-      <tr><td class="fn">clamp(v,lo,hi)</td><td class="desc">v limited to the range [lo,hi]</td></tr>
-      <tr><td class="fn">fib(n)</td><td class="desc">nth Fibonacci number</td></tr>
-      <tr><td class="fn">is_perfect(n)</td><td class="desc">1 if n equals the sum of its divisors</td></tr>
-      <tr><td class="fn">collatz_steps(n)</td><td class="desc">steps for n to reach 1 under Collatz</td></tr>
-    </table>
-  </div>
-
-  <div class="mod animate" style="--i:4">
-    <div class="mod__head"><h2>sort</h2><code>ayojan sort</code><span class="n">11 functions</span></div>
-    <div class="mod__note">Array sorting and searching. Arrays are passed by reference; <code>n</code> is the length.</div>
-    <table>
-      <tr><td class="fn">swap(a,i,j)</td><td class="desc">exchange two elements</td></tr>
-      <tr><td class="fn">bubble_sort(a,n)</td><td class="desc">simple sort, fine for small arrays</td></tr>
-      <tr><td class="fn">shell_sort(a,n)</td><td class="desc">much faster sort — prefer this</td></tr>
-      <tr><td class="fn">reverse_arr(a,n)</td><td class="desc">reverse in place</td></tr>
-      <tr><td class="fn">min_of(a,n), max_of(a,n), sum_of(a,n)</td><td class="desc">smallest, largest, total</td></tr>
-      <tr><td class="fn">find_linear(a,n,key)</td><td class="desc">value at first match, or 0</td></tr>
-      <tr><td class="fn">count_of(a,n,key)</td><td class="desc">how many equal key</td></tr>
-      <tr><td class="fn">is_sorted(a,n)</td><td class="desc">1 if ascending</td></tr>
-      <tr><td class="fn">binary_search(a,n,key)</td><td class="desc">index of key in a sorted array</td></tr>
-    </table>
-  </div>
-
-  <div class="mod animate" style="--i:5">
-    <div class="mod__head"><h2>string</h2><code>ayojan string</code><span class="n">13 functions</span></div>
-    <div class="mod__note">ASCII only — multi-byte UTF-8 is not split. Characters are returned as their code.</div>
-    <table>
-      <tr><td class="fn">str_len(s)</td><td class="desc">length in bytes</td></tr>
-      <tr><td class="fn">char_code_at(s,i)</td><td class="desc">code of the character at i</td></tr>
-      <tr><td class="fn">is_digit_char(s,i), is_upper_char(s,i), is_lower_char(s,i)</td><td class="desc">character class tests</td></tr>
-      <tr><td class="fn">is_letter_char(s,i), is_space_char(s,i)</td><td class="desc">letter / whitespace tests</td></tr>
-      <tr><td class="fn">count_vowels(s)</td><td class="desc">number of a e i o u</td></tr>
-      <tr><td class="fn">count_char(s,c)</td><td class="desc">how many times code c occurs</td></tr>
-      <tr><td class="fn">find_char(s,c)</td><td class="desc">first index of code c, or −1</td></tr>
-      <tr><td class="fn">is_all_digits(s)</td><td class="desc">1 if every character is a digit</td></tr>
-      <tr><td class="fn">upper_code(c), lower_code(c)</td><td class="desc">upper / lower case of a character code</td></tr>
-    </table>
-  </div>
-
-  <div class="mod animate" style="--i:6">
-    <div class="mod__head"><h2>util</h2><code>ayojan util</code><span class="n">7 functions</span></div>
-    <div class="mod__note">General helpers. (is_even, is_odd and clamp live in <code>num</code>.)</div>
-    <table>
-      <tr><td class="fn">lerp(a,b,t)</td><td class="desc">a + (b−a)·t/100 — linear interpolation</td></tr>
-      <tr><td class="fn">sum_range(start,end)</td><td class="desc">sum of an inclusive integer range</td></tr>
-      <tr><td class="fn">mod(a,b)</td><td class="desc">remainder, non-negative</td></tr>
-      <tr><td class="fn">div_ceil(a,b)</td><td class="desc">ceiling of a/b</td></tr>
-      <tr><td class="fn">sign(n)</td><td class="desc">−1, 0 or 1</td></tr>
-      <tr><td class="fn">bool_to_int(b)</td><td class="desc">normalise any value to 0 or 1</td></tr>
-      <tr><td class="fn">int_max()</td><td class="desc">largest 64-bit signed integer</td></tr>
-    </table>
-  </div>
-
-  <div class="mod animate" style="--i:7">
-    <div class="mod__head"><h2>chandas</h2><code>ayojan chandas</code><span class="tag tag--heritage">heritage</span><span class="n">6 functions</span></div>
-    <div class="mod__note">Pingala's prosody mathematics (Chandahśāstra, ~2nd c. BCE). A metre pattern is an integer bitmask: bit <i>i</i> is 1 for <b>guru</b> (heavy), 0 for <b>laghu</b> (light).</div>
-    <table>
-      <tr><td class="fn">dviguna(n)</td><td class="desc">2ⁿ — how many n-syllable metres exist</td></tr>
-      <tr><td class="fn">meru(n,k)</td><td class="desc">C(n,k) — Meru-prastāra (Pascal's triangle)</td></tr>
-      <tr><td class="fn">matra_meru(n)</td><td class="desc">Fibonacci — the mātrā-meru</td></tr>
-      <tr><td class="fn">is_guru(pat,i)</td><td class="desc">1 if syllable i of a pattern is heavy</td></tr>
-      <tr><td class="fn">guru_count(pat)</td><td class="desc">number of heavy syllables</td></tr>
-      <tr><td class="fn">meru_pankti(a,n)</td><td class="desc">fill row n of the triangle into an array</td></tr>
-    </table>
-  </div>
-
-  <div class="mod animate" style="--i:8">
-    <div class="mod__head"><h2>ganita</h2><code>ayojan ganita</code><span class="tag tag--heritage">heritage</span><span class="n">6 functions</span></div>
-    <div class="mod__note">Indian number theory and geometry — Āryabhaṭa, Brahmagupta, Bhāskara II.</div>
-    <table>
-      <tr><td class="fn">kuttaka(a,b,c)</td><td class="desc">Āryabhaṭa's pulveriser: x with a·x ≡ c (mod b)</td></tr>
-      <tr><td class="fn">chakravala(out,n)</td><td class="desc">Bhāskara's cyclic method for Pell's equation x²−n·y²=1; fills out[0]=x, out[1]=y</td></tr>
-      <tr><td class="fn">samasa(out,a,b,c,d,n)</td><td class="desc">Brahmagupta's composition law (bhāvanā)</td></tr>
-      <tr><td class="fn">brahmagupta_area(a,b,c,d)</td><td class="desc">cyclic-quadrilateral area; d=0 gives the triangle formula</td></tr>
-      <tr><td class="fn">ganita_isqrt(n), ganita_abs(n)</td><td class="desc">integer square root / absolute value</td></tr>
-    </table>
-  </div>
-
-  <div class="mod animate" style="--i:9">
-    <div class="mod__head"><h2>madhava</h2><code>ayojan madhava</code><span class="tag tag--heritage">heritage</span><span class="n">5 functions</span></div>
-    <div class="mod__note">The Kerala school — Mādhava of Sangamagrama (~1400 CE). Floating point (T12); results print to six decimals.</div>
-    <table>
-      <tr><td class="fn">madhava_pi()</td><td class="desc">π via Madhava's fast series → 3.141593</td></tr>
-      <tr><td class="fn">madhava_sin(x), madhava_cos(x)</td><td class="desc">sine / cosine series, x in radians</td></tr>
-      <tr><td class="fn">madhava_atan(x)</td><td class="desc">arctangent series</td></tr>
-      <tr><td class="fn">madhava_sqrt(v)</td><td class="desc">square root by Newton's method</td></tr>
-    </table>
-  </div>
-
-  <div class="mod animate" style="--i:10">
-    <div class="mod__head"><h2>fileio</h2><code>ayojan fileio</code><span class="tag tag--io">i/o</span><span class="n">4 functions</span></div>
-    <div class="mod__note">File access through the platform's own syscalls.</div>
-    <table>
-      <tr><td class="fn">file_open(path,flags)</td><td class="desc">open a file, returns a descriptor</td></tr>
-      <tr><td class="fn">file_read(fd,buf,len)</td><td class="desc">read up to len bytes</td></tr>
-      <tr><td class="fn">file_write(fd,buf,len)</td><td class="desc">write len bytes</td></tr>
-      <tr><td class="fn">file_close(fd)</td><td class="desc">close a descriptor</td></tr>
-    </table>
-  </div>
-
-  <div class="stub animate" style="--i:11">
-    <b>Documentation-only modules:</b> <code>array</code>, <code>io</code> and <code>net</code> ship as
-    reference stubs. They list the builtins and patterns (<code>nirmmita</code>, <code>likh8</code>,
-    <code>pad8</code>, <code>darshan</code>, <code>netsock</code>…) in comments but define no
-    <code>prakriya</code> functions — importing them does nothing. They exist so the intended
-    patterns are discoverable.
-  </div>
-
-  <footer>
-    Sutram सूत्रम् · Standard Library Reference · 12 modules, 80 functions, 0 name collisions<br>
-    Every function above is exercised by the project's test suite (100 tests green).
-  </footer>
-
-
-  <h2>sankhyiki — सांख्यिकी (statistics)</h2>
-  <p>The first module built on typed <code>kosh dasham</code> parameters: every function takes a
-  float array and only reads it. Variance and standard deviation are the <strong>population</strong>
-  forms (divide by n).</p>
-  <table>
-    <tr><th>Function</th><th>Meaning</th></tr>
-    <tr><td><code>yoga(xs)</code></td><td>sum</td></tr>
-    <tr><td><code>madhya(xs)</code></td><td>arithmetic mean (माध्य)</td></tr>
-    <tr><td><code>prasaran(xs)</code></td><td>population variance (प्रसरण)</td></tr>
-    <tr><td><code>vichalan(xs)</code></td><td>population standard deviation (मानक विचलन)</td></tr>
-    <tr><td><code>laghutama(xs)</code></td><td>minimum</td></tr>
-    <tr><td><code>adhikatama(xs)</code></td><td>maximum</td></tr>
-    <tr><td><code>vyapti(xs)</code></td><td>range (max − min)</td></tr>
-    <tr><td><code>bindu(a, b)</code></td><td>dot product (uses the shorter array)</td></tr>
-    <tr><td><code>manak(a)</code></td><td>Euclidean norm</td></tr>
-    <tr><td><code>sankhyiki_sqrt(v)</code></td><td>square root (Newton's method)</td></tr>
-  </table>
-  <p>Verified against the textbook dataset <code>[2,4,4,4,5,5,7,9]</code>: mean 5, variance 4,
-  stddev 2, range 7 — every value exact. Empty arrays return 0 rather than dividing by zero.</p>
-
-  <h2>kalana — कलन (numerical calculus)</h2>
-  <p>Built on typed <code>kosh dasham</code> parameters and the float fast paths. Sutram has no
-  first-class functions, so anything that would take a callback takes either <strong>samples</strong>
-  (integration, differentiation) or <strong>polynomial coefficients</strong> (root finding).
-  Coefficients are ascending: <code>c[0] + c[1]x + c[2]x²</code>.</p>
-  <table>
-    <tr><th>Function</th><th>Meaning</th></tr>
-    <tr><td><code>trapezoid(xs, ys)</code></td><td>trapezoidal integration over samples</td></tr>
-    <tr><td><code>simpson(xs, ys)</code></td><td>Simpson's 1/3 rule (falls back to trapezoid if too few points)</td></tr>
-    <tr><td><code>slope(xs, ys, i)</code></td><td>first derivative at sample i (central, one-sided at the ends)</td></tr>
-    <tr><td><code>slope2(xs, ys, i)</code></td><td>second derivative at an interior sample</td></tr>
-    <tr><td><code>bahu_ganana(c, x)</code></td><td>polynomial evaluation by Horner's method</td></tr>
-    <tr><td><code>bahu_mula(c, lo, hi, ok)</code></td><td>bisection root of a polynomial on [lo,hi]</td></tr>
-  </table>
-  <p>Verified against known answers: ∫₀¹x²dx = 0.335000 (trapezoid) and <strong>0.333333</strong>
-  (Simpson, exact for a quadratic); d/dx(x²) = 1.0 at x=0.5 and second derivative 2.0;
-  the root of x²−2 is <strong>1.414214</strong> = √2.
-  <strong>Contract:</strong> <code>bahu_mula</code>'s <code>ok</code> array must already contain one
-  element (<code>kosh_push(ok, 0.0)</code> first) — a kosh's capacity is not its length.</p>
-
-  <h2>samanvaya — समन्वय (linear algebra)</h2>
-  <p>Sutram has no 2-D array type, so a matrix is a <strong>flat</strong> <code>kosh dasham</code>
-  of m×n elements in row-major order, with dimensions passed explicitly:
-  <code>A[i][j] == a[i*n + j]</code>.</p>
-  <table>
-    <tr><th>Function</th><th>Meaning</th></tr>
-    <tr><td><code>pehchan(n, out)</code></td><td>n×n identity matrix</td></tr>
-    <tr><td><code>vivartana(a, m, n, out)</code></td><td>transpose</td></tr>
-    <tr><td><code>mat_yoga(a, b, m, n, out)</code></td><td>element-wise sum</td></tr>
-    <tr><td><code>skalar(a, c, m, n, out)</code></td><td>scalar multiple</td></tr>
-    <tr><td><code>mat_gunana(a, b, m, n, p, out)</code></td><td>matrix product (m×n · n×p)</td></tr>
-    <tr><td><code>nishan(a, n)</code></td><td>trace</td></tr>
-    <tr><td><code>nirnaya2(a)</code> / <code>nirnaya3(a)</code></td><td>determinant, 2×2 / 3×3</td></tr>
-    <tr><td><code>sadish_yoga(u, v)</code></td><td>vector dot product</td></tr>
-    <tr><td><code>rekha_manak(a, m, n)</code></td><td>largest absolute row sum (cheap norm)</td></tr>
-  </table>
-  <p>Verified against hand-computed values: <code>[[1,2],[3,4]]·[[5,6],[7,8]] = [[19,22],[43,50]]</code>,
-  trace 5, det₂ −2, det₃ <strong>−306</strong>, row-norm 7, transpose of a 2×3 giving
-  <code>1 4 2 5 3 6</code>. <strong>Contract:</strong> output matrices must already hold m×n elements
-  (<code>kosh_push</code> them first) — a kosh's capacity is not its length.</p>
-</div>
+<h1>Sutram Standard Library Reference</h1>
+<p>Generated from <code>lib/*.smlib</code> by <code>tools/gen_stdlib_ref.py</code>.
+Do not edit by hand.</p>
+<h2>Modules</h2>
+<ul>
+<li><a href="#array"><code>array</code></a> — 8 functions</li>
+<li><a href="#chandas"><code>chandas</code></a> — 6 functions</li>
+<li><a href="#fileio"><code>fileio</code></a> — 4 functions</li>
+<li><a href="#ganita"><code>ganita</code></a> — 6 functions</li>
+<li><a href="#kalana"><code>kalana</code></a> — 6 functions</li>
+<li><a href="#madhava"><code>madhava</code></a> — 5 functions</li>
+<li><a href="#math"><code>math</code></a> — 16 functions</li>
+<li><a href="#num"><code>num</code></a> — 10 functions</li>
+<li><a href="#samanvaya"><code>samanvaya</code></a> — 10 functions</li>
+<li><a href="#sankhyiki"><code>sankhyiki</code></a> — 10 functions</li>
+<li><a href="#sort"><code>sort</code></a> — 11 functions</li>
+<li><a href="#string"><code>string</code></a> — 14 functions</li>
+<li><a href="#util"><code>util</code></a> — 7 functions</li>
+</ul>
+<h2 id="array"><code>array</code></h2>
+<p class="mod-desc">Real functions over raw memory (nirmmita/likh8/pad8). Each element is 8 bytes (one integer). The caller tracks the length; array_new only allocates. Safe variants take the element count and return 0 / do nothing on out-of-bounds access.</p>
+<table>
+<tr><th>Function</th><th>Description</th></tr>
+<tr><td><code>array_new(n)</code></td><td></td></tr>
+<tr><td><code>array_set(arr, i, val)</code></td><td></td></tr>
+<tr><td><code>array_get(arr, i)</code></td><td></td></tr>
+<tr><td><code>array_fill(arr, val, n)</code></td><td></td></tr>
+<tr><td><code>array_copy(dst, src, n)</code></td><td></td></tr>
+<tr><td><code>array_sum(arr, n)</code></td><td></td></tr>
+<tr><td><code>array_set_safe(arr, i, val, n)</code></td><td></td></tr>
+<tr><td><code>array_get_safe(arr, i, n)</code></td><td></td></tr>
+</table>
+<h2 id="chandas"><code>chandas</code></h2>
+<p class="mod-desc">After Pingala&#x27;s Chandahśāstra (~2nd c. BCE). Sanskrit metre is built from two syllable weights — laghu (light) and guru (heavy) — so an n-syllable metre is a sequence of two choices: there are exactly 2^n of them. Pingala gave the doubling rule for 2^n, the Meru-prastāra (Pascal&#x27;s triangle) to count how many metres have exactly k guru syllables, and the mātrā-meru, which generates the Fibonacci numbers. A pattern is carried as an integer bitmask: bit i (LSB = first syllable) is 1 for guru, 0 for laghu. The integer value IS the pattern&#x27;s index in the prastāra.</p>
+<table>
+<tr><th>Function</th><th>Description</th></tr>
+<tr><td><code>dviguna(n)</code></td><td></td></tr>
+<tr><td><code>meru(n, k)</code></td><td></td></tr>
+<tr><td><code>matra_meru(n)</code></td><td></td></tr>
+<tr><td><code>is_guru(pat, i)</code></td><td></td></tr>
+<tr><td><code>guru_count(pat)</code></td><td></td></tr>
+<tr><td><code>meru_pankti(a, n)</code></td><td></td></tr>
+</table>
+<h2 id="fileio"><code>fileio</code></h2>
+<p class="mod-desc">Sutram File I/O Library - fileio.smlib Provides file read/write operations using Linux syscalls Usage: ayojan fileio File descriptors: 0=stdin, 1=stdout, 2=stderr O_RDONLY=0, O_WRONLY=1, O_RDWR=2 O_CREAT=0x40, O_TRUNC=0x200, O_APPEND=0x400 prakriya file_open(path, flags) -&gt; fd Opens a file for reading/writing</p>
+<table>
+<tr><th>Function</th><th>Description</th></tr>
+<tr><td><code>file_open(path, flags)</code></td><td></td></tr>
+<tr><td><code>file_read(fd, buf, count)</code></td><td>prakriya file_read(fd, buf, count) -&gt; bytes_read Reads from a file descriptor into a buffer</td></tr>
+<tr><td><code>file_write(fd, buf, count)</code></td><td>prakriya file_write(fd, buf, count) -&gt; bytes_written Writes a buffer to a file descriptor</td></tr>
+<tr><td><code>file_close(fd)</code></td><td>prakriya file_close(fd) Closes a file descriptor</td></tr>
+</table>
+<h2 id="ganita"><code>ganita</code></h2>
+<p class="mod-desc">After Aryabhata&#x27;s Kuttaka (~499 CE) and the Chakravala of Jayadeva and Bhaskara II (~1150 CE). KUTTAKA (&quot;the pulveriser&quot;) solves the linear indeterminate equation ax + by = c. It is the ancestor of the extended Euclidean algorithm. CHAKRAVALA (&quot;the wheel&quot;) solves the quadratic indeterminate equation x^2 - N*y^2 = 1, known in Europe as Pell&#x27;s equation. It was the first complete method for it, and for N = 61 it gives x = 1766319049, y = 226153980 - a case Europe first solved in 1657. kuttaka(a, b, c) -&gt; x such that a*x is congruent to c (mod b). Requires gcd(a, b) to divide c. Returns x (a particular solution).</p>
+<table>
+<tr><th>Function</th><th>Description</th></tr>
+<tr><td><code>kuttaka(a, b, c)</code></td><td></td></tr>
+<tr><td><code>ganita_isqrt(n)</code></td><td>integer square root (floor)</td></tr>
+<tr><td><code>ganita_abs(n)</code></td><td></td></tr>
+<tr><td><code>chakravala(out, n)</code></td><td>chakravala(out, n): solves x^2 - n*y^2 = 1 for least positive x, y. Fills out[0] = x and out[1] = y.</td></tr>
+<tr><td><code>samasa(out, a, b, c, d, n)</code></td><td>samasa(out, a, b, c, d, n): Brahmagupta&#x27;s composition law (bhavana / samasa). Given a^2 - n*b^2 = k1 and c^2 - n*d^2 = k2, composes them into a third: (a^2 - n*b^2)(c^2 - n*d^2) = (a*c + n*b*d)^2 - n*(a*d + b*c)^2 Fills out[0] = a*c + n*b*d  and  out[1] = a*d + b*c.</td></tr>
+<tr><td><code>brahmagupta_area(a, b, c, d)</code></td><td>brahmagupta_area(a, b, c, d): Brahmagupta&#x27;s formula for the area of a cyclic quadrilateral (Brahma-sphuta-siddhanta, 628 CE):  area = sqrt((s-a)(s-b)(s-c)(s-d)),  s = (a+b+c+d)/2. With d = 0 this is Brahmagupta&#x27;s triangle (Heron&#x27;s) formula. Returns the integer part.</td></tr>
+</table>
+<h2 id="kalana"><code>kalana</code></h2>
+<p class="mod-desc">Built on typed `kosh dasham` parameters (T18) and the float fast paths (F1/F2/FG1/FC1). Every function READS its kosh parameters only — never `kosh_push` on a parameter, which the compiler deliberately rejects because the pointer is passed by value. Sutram has no first-class functions, so anything that would take a callback instead takes either SAMPLES (for integration/differentiation) or POLYNOMIAL COEFFICIENTS (for root finding). Coefficients are in ascending order: c[0] + c[1]*x + c[2]*x^2 + ... --------------------------------------------------------------- Integration over sampled data --------------------------------------------------------------- Trapezoidal rule. xs and ys are sample points and values; uses the shorter length.</p>
+<table>
+<tr><th>Function</th><th>Description</th></tr>
+<tr><td><code>trapezoid(kosh dasham xs, kosh dasham ys)</code></td><td></td></tr>
+<tr><td><code>simpson(kosh dasham xs, kosh dasham ys)</code></td><td>Simpson&#x27;s 1/3 rule over equally spaced samples. Needs an odd number of points (an even number of intervals); if there are fewer it falls back to the trapezoid.</td></tr>
+<tr><td><code>slope(kosh dasham xs, kosh dasham ys, i)</code></td><td>Central difference at interior point i; one-sided at the ends.</td></tr>
+<tr><td><code>slope2(kosh dasham xs, kosh dasham ys, i)</code></td><td>Second derivative at an interior point (central, equally spaced assumption relaxed).</td></tr>
+<tr><td><code>bahu_ganana(kosh dasham c, dasham x)</code></td><td>Horner evaluation: c[0] + c[1]x + c[2]x^2 + ...</td></tr>
+<tr><td><code>bahu_mula(kosh dasham c, dasham lo, dasham hi, kosh dasham ok)</code></td><td>Bisection root of a polynomial on [lo, hi]. CONTRACT: `ok` must already contain ONE element (call kosh_push(ok, 0.0) first). A kosh&#x27;s capacity is not its length, so ok[0] is out of bounds until an element exists. Requires a sign change across the interval, which is checked and reported by returning a NaN-like sentinel of 0.0 with ok=0. ok is returned through a one-element kosh so the caller can tell success from failure.</td></tr>
+</table>
+<h2 id="madhava"><code>madhava</code></h2>
+<p class="mod-desc">After Madhava of Sangamagrama (~1340-1425 CE) and the Kerala school of astronomy and mathematics. Madhava gave infinite-series expansions for the sine, cosine and arctangent functions, and from the arctangent series a rapidly converging series for pi - more than two centuries before Newton, Gregory and Leibniz. These use T12 scalar floats (dasham). square root by Newton&#x27;s method (Babylonian), to float precision</p>
+<table>
+<tr><th>Function</th><th>Description</th></tr>
+<tr><td><code>madhava_sqrt(dasham v)</code></td><td></td></tr>
+<tr><td><code>madhava_pi()</code></td><td>Madhava&#x27;s fast series for pi:  pi = sqrt(12) * sum (-1)^k / ((2k+1) * 3^k)</td></tr>
+<tr><td><code>madhava_sin(dasham x)</code></td><td>Madhava&#x27;s sine series:  sin(x) = x - x^3/3! + x^5/5! - ...</td></tr>
+<tr><td><code>madhava_cos(dasham x)</code></td><td>Madhava&#x27;s cosine series:  cos(x) = 1 - x^2/2! + x^4/4! - ...</td></tr>
+<tr><td><code>madhava_atan(dasham x)</code></td><td>Madhava-Gregory arctangent series:  atan(x) = x - x^3/3 + x^5/5 - ...</td></tr>
+</table>
+<h2 id="math"><code>math</code></h2>
+<p class="mod-desc">Pure integer arithmetic, written only with verified language features. Every function copies its parameters into locals before mutating them, because the compiler currently faults on assignment to a parameter.</p>
+<table>
+<tr><th>Function</th><th>Description</th></tr>
+<tr><td><code>sq(n)</code></td><td></td></tr>
+<tr><td><code>square(n)</code></td><td></td></tr>
+<tr><td><code>cube(n)</code></td><td></td></tr>
+<tr><td><code>abs_val(n)</code></td><td></td></tr>
+<tr><td><code>min2(a, b)</code></td><td></td></tr>
+<tr><td><code>max2(a, b)</code></td><td></td></tr>
+<tr><td><code>gcd(a, b)</code></td><td></td></tr>
+<tr><td><code>lcm(a, b)</code></td><td></td></tr>
+<tr><td><code>power(base, e)</code></td><td></td></tr>
+<tr><td><code>fact(n)</code></td><td></td></tr>
+<tr><td><code>is_prime(n)</code></td><td></td></tr>
+<tr><td><code>sum_to(n)</code></td><td></td></tr>
+<tr><td><code>double(n)</code></td><td></td></tr>
+<tr><td><code>triple(n)</code></td><td></td></tr>
+<tr><td><code>inc(n)</code></td><td></td></tr>
+<tr><td><code>bit_count(n)</code></td><td></td></tr>
+</table>
+<h2 id="num"><code>num</code></h2>
+<p class="mod-desc">Parameters are copied into locals before mutation (compiler fault workaround).</p>
+<table>
+<tr><th>Function</th><th>Description</th></tr>
+<tr><td><code>is_even(n)</code></td><td></td></tr>
+<tr><td><code>is_odd(n)</code></td><td></td></tr>
+<tr><td><code>digit_count(n)</code></td><td></td></tr>
+<tr><td><code>digit_sum(n)</code></td><td></td></tr>
+<tr><td><code>reverse_num(n)</code></td><td></td></tr>
+<tr><td><code>is_palindrome(n)</code></td><td></td></tr>
+<tr><td><code>clamp(n, lo, hi)</code></td><td></td></tr>
+<tr><td><code>fib(n)</code></td><td></td></tr>
+<tr><td><code>is_perfect(n)</code></td><td></td></tr>
+<tr><td><code>collatz_steps(n)</code></td><td></td></tr>
+</table>
+<h2 id="samanvaya"><code>samanvaya</code></h2>
+<p class="mod-desc">Sutram has no 2-D array type, so a matrix is a FLAT `kosh dasham` of m*n elements in row-major order, with the dimensions passed explicitly: A[i][j]  ==  a[i * n + j]        for an m x n matrix CONTRACT for output matrices: the caller must have pushed m*n elements already. A kosh&#x27;s capacity is not its length, so out[i] is out of bounds until an element exists. Functions here never `kosh_push` a parameter — the compiler rejects that, correctly, because the pointer is passed by value. Inputs are read-only. Outputs are written in place and are visible to the caller. --------------------------------------------------------------- element access helpers (flat index) --------------------------------------------------------------- identity matrix: n x n, out must hold n*n elements</p>
+<table>
+<tr><th>Function</th><th>Description</th></tr>
+<tr><td><code>pehchan(n, kosh dasham out)</code></td><td></td></tr>
+<tr><td><code>vivartana(kosh dasham a, m, n, kosh dasham out)</code></td><td>transpose: a is m x n, out must hold n*m elements</td></tr>
+<tr><td><code>mat_yoga(kosh dasham a, kosh dasham b, m, n, kosh dasham out)</code></td><td>element-wise sum: a and b are m x n, out must hold m*n elements</td></tr>
+<tr><td><code>skalar(kosh dasham a, dasham c, m, n, kosh dasham out)</code></td><td>scalar multiple: out must hold m*n elements</td></tr>
+<tr><td><code>mat_gunana(kosh dasham a, kosh dasham b, m, n, p, kosh dasham out)</code></td><td>matrix product: a is m x n, b is n x p, out must hold m*p elements</td></tr>
+<tr><td><code>nishan(kosh dasham a, n)</code></td><td>trace of an n x n matrix</td></tr>
+<tr><td><code>nirnaya2(kosh dasham a)</code></td><td>determinant of a 2 x 2 matrix (a holds 4 elements)</td></tr>
+<tr><td><code>nirnaya3(kosh dasham a)</code></td><td>determinant of a 3 x 3 matrix (a holds 9 elements), by cofactor expansion</td></tr>
+<tr><td><code>sadish_yoga(kosh dasham u, kosh dasham v)</code></td><td>dot product of two flat vectors (row i of a with column j of b) — convenience</td></tr>
+<tr><td><code>rekha_manak(kosh dasham a, m, n)</code></td><td>largest absolute row sum (a cheap norm, useful for conditioning checks)</td></tr>
+</table>
+<h2 id="sankhyiki"><code>sankhyiki</code></h2>
+<p class="mod-desc">The first library module built on typed `kosh dasham` parameters (T18). Every function takes a float array by parameter and only READS it — no kosh_push, because pushing to a kosh parameter is deliberately rejected by the compiler (the pointer is passed by value; growth would leave the caller with a stale pointer). Float arrays are the natural input here: statistics over integers would silently truncate. Use `kosh dasham` on the caller&#x27;s side. Convention: variance and standard deviation are the POPULATION forms (divide by n). Multiply by n/(n-1) if you need the sample forms. --- sum ---</p>
+<table>
+<tr><th>Function</th><th>Description</th></tr>
+<tr><td><code>yoga(kosh dasham xs)</code></td><td></td></tr>
+<tr><td><code>madhya(kosh dasham xs)</code></td><td>--- arithmetic mean ---</td></tr>
+<tr><td><code>laghutama(kosh dasham xs)</code></td><td>--- minimum ---</td></tr>
+<tr><td><code>adhikatama(kosh dasham xs)</code></td><td>--- maximum ---</td></tr>
+<tr><td><code>vyapti(kosh dasham xs)</code></td><td>--- range (max - min) ---</td></tr>
+<tr><td><code>prasaran(kosh dasham xs)</code></td><td>--- population variance (प्रसरण) ---</td></tr>
+<tr><td><code>sankhyiki_sqrt(dasham v)</code></td><td>--- square root, Newton&#x27;s method (private to this module: distinct name so it never collides with madhava_sqrt or a user function) ---</td></tr>
+<tr><td><code>vichalan(kosh dasham xs)</code></td><td>--- population standard deviation (मानक विचलन) ---</td></tr>
+<tr><td><code>bindu(kosh dasham a, kosh dasham b)</code></td><td>--- dot product of two float arrays (बिंदु गुणनफल) ---</td></tr>
+<tr><td><code>manak(kosh dasham a)</code></td><td>--- Euclidean norm (magnitude) of a vector ---</td></tr>
+</table>
+<h2 id="sort"><code>sort</code></h2>
+<p class="mod-desc">Operates on `pankti` integer arrays, in place. Scalar arguments are copied into locals before mutation; array elements are written directly.</p>
+<table>
+<tr><th>Function</th><th>Description</th></tr>
+<tr><td><code>swap(a, i, j)</code></td><td></td></tr>
+<tr><td><code>bubble_sort(a, n)</code></td><td></td></tr>
+<tr><td><code>reverse_arr(a, n)</code></td><td></td></tr>
+<tr><td><code>min_of(a, n)</code></td><td></td></tr>
+<tr><td><code>max_of(a, n)</code></td><td></td></tr>
+<tr><td><code>sum_of(a, n)</code></td><td></td></tr>
+<tr><td><code>find_linear(a, n, target)</code></td><td></td></tr>
+<tr><td><code>count_of(a, n, target)</code></td><td></td></tr>
+<tr><td><code>is_sorted(a, n)</code></td><td></td></tr>
+<tr><td><code>binary_search(a, n, target)</code></td><td></td></tr>
+<tr><td><code>shell_sort(a, n)</code></td><td></td></tr>
+</table>
+<h2 id="string"><code>string</code></h2>
+<p class="mod-desc">Built on `vartani_len` and `char_at`, both verified to honour their arguments. (`char_code` is avoided: it currently ignores its index and always reads character 0.) ASCII only for the character predicates; multi-byte UTF-8 is not split.</p>
+<table>
+<tr><th>Function</th><th>Description</th></tr>
+<tr><td><code>str_len(s)</code></td><td></td></tr>
+<tr><td><code>char_code_at(s, i)</code></td><td></td></tr>
+<tr><td><code>is_digit_char(s, i)</code></td><td></td></tr>
+<tr><td><code>is_upper_char(s, i)</code></td><td></td></tr>
+<tr><td><code>is_lower_char(s, i)</code></td><td></td></tr>
+<tr><td><code>is_letter_char(s, i)</code></td><td></td></tr>
+<tr><td><code>is_space_char(s, i)</code></td><td></td></tr>
+<tr><td><code>count_vowels(s)</code></td><td></td></tr>
+<tr><td><code>count_char(s, code)</code></td><td></td></tr>
+<tr><td><code>find_char(s, code)</code></td><td></td></tr>
+<tr><td><code>is_all_digits(s)</code></td><td></td></tr>
+<tr><td><code>upper_code(c)</code></td><td></td></tr>
+<tr><td><code>lower_code(c)</code></td><td></td></tr>
+<tr><td><code>str_equals(a, b)</code></td><td></td></tr>
+</table>
+<h2 id="util"><code>util</code></h2>
+<p class="mod-desc">Sutram Utility Library - util.smlib General-purpose utility functions Usage: ayojan util</p>
+<table>
+<tr><th>Function</th><th>Description</th></tr>
+<tr><td><code>lerp(a, b, t)</code></td><td></td></tr>
+<tr><td><code>sum_range(start, end)</code></td><td></td></tr>
+<tr><td><code>mod(a, b)</code></td><td></td></tr>
+<tr><td><code>div_ceil(a, b)</code></td><td></td></tr>
+<tr><td><code>sign(n)</code></td><td></td></tr>
+<tr><td><code>bool_to_int(b)</code></td><td></td></tr>
+<tr><td><code>int_max()</code></td><td></td></tr>
+</table>
+<footer>13 modules, 113 functions. Generated from library sources.</footer>
 </body>
 </html>

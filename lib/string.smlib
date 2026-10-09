@@ -98,3 +98,15 @@ prakriya lower_code(c) {
     yadi (x >= 65 && x <= 90) { x = x + 32 }
     pratiyati x
 }
+
+prakriya str_equals(a, b) {
+    vitti na = vartani_len(a)
+    vitti nb = vartani_len(b)
+    yadi (na != nb) { pratiyati 0 }
+    vitti i = 0
+    yavat (i < na) {
+        yadi (char_at(a, i) != char_at(b, i)) { pratiyati 0 }
+        i = i + 1
+    }
+    pratiyati 1
+}

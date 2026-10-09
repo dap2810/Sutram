@@ -98,3 +98,13 @@ prakriya triple(n)
 
 prakriya inc(n)
     pratiyati n + 1
+
+prakriya bit_count(n) {
+    vitti x = n
+    vitti c = 0
+    yavat (x > 0) {
+        c = c + (x % 2)
+        x = x / 2
+    }
+    pratiyati c
+}

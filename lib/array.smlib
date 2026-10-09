@@ -1,20 +1,81 @@
-# Sutram Standard Library — Array Module
-# Array operations using nirmmita + likh8 + pad8
+# lib/array.smlib — Sutram standard library: dynamic arrays
+#
+# Real functions over raw memory (nirmmita/likh8/pad8). Each element is
+# 8 bytes (one integer). The caller tracks the length; array_new only
+# allocates. Safe variants take the element count and return 0 / do
+# nothing on out-of-bounds access.
 
-# array_new(n) -> nirmmita(n * 8)
-# array_set(arr, i, val) -> likh8(arr + i * 8, val)
-# array_get(arr, i) -> pad8(arr + i * 8)
-# array_fill(arr, val, n) -> smaran(arr, val, n * 8)
-# array_copy(dst, src, n) -> smaran_cp(dst, src, n * 8)
-# array_set_safe(arr, i, val, n) -> likh8c(arr + i * 8, val, arr + n * 8)
-# array_get_safe(arr, i, n) -> pad8c(arr + i * 8, arr + n * 8)
+prakriya array_new(n) {
+    vitti c = n
+    pratiyati nirmmita(c * 8)
+}
 
-# Sum of array elements (inline):
-# vitti sum = 0
-# vitti i = 0
-# yavat (i < n) {
-#     sum = sum + pad8(arr + i * 8)
-#     i = i + 1
-# }
+prakriya array_set(arr, i, val) {
+    vitti a = arr
+    vitti j = i
+    vitti v = val
+    likh8(a + j * 8, v)
+    pratiyati 0
+}
 
-# Note: Use these patterns inline in mukhya().
+prakriya array_get(arr, i) {
+    vitti a = arr
+    vitti j = i
+    pratiyati pad8(a + j * 8)
+}
+
+prakriya array_fill(arr, val, n) {
+    vitti a = arr
+    vitti v = val
+    vitti c = n
+    vitti j = 0
+    yavat (j < c) {
+        likh8(a + j * 8, v)
+        j = j + 1
+    }
+    pratiyati 0
+}
+
+prakriya array_copy(dst, src, n) {
+    vitti d = dst
+    vitti s = src
+    vitti c = n
+    vitti j = 0
+    yavat (j < c) {
+        likh8(d + j * 8, pad8(s + j * 8))
+        j = j + 1
+    }
+    pratiyati 0
+}
+
+prakriya array_sum(arr, n) {
+    vitti a = arr
+    vitti c = n
+    vitti s = 0
+    vitti j = 0
+    yavat (j < c) {
+        s = s + pad8(a + j * 8)
+        j = j + 1
+    }
+    pratiyati s
+}
+
+prakriya array_set_safe(arr, i, val, n) {
+    vitti a = arr
+    vitti j = i
+    vitti v = val
+    vitti c = n
+    yadi (j < 0) { pratiyati 0 }
+    yadi (j >= c) { pratiyati 0 }
+    likh8(a + j * 8, v)
+    pratiyati 1
+}
+
+prakriya array_get_safe(arr, i, n) {
+    vitti a = arr
+    vitti j = i
+    vitti c = n
+    yadi (j < 0) { pratiyati 0 }
+    yadi (j >= c) { pratiyati 0 }
+    pratiyati pad8(a + j * 8)
+}
