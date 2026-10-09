@@ -1,0 +1,30 @@
+ayojan strconv
+mukhya() {
+    vitti buf = nirmmita(30 * 8)
+    vitti ok = nirmmita(1 * 8)
+    # positive
+    vitti n1 = int_to_str(12345, buf)
+    likha(n1)
+    likha("\n")
+    likha(str_to_int(buf, n1, ok))
+    likha("\n")
+    likha(ok[0])
+    likha("\n")
+    # negative
+    vitti n2 = int_to_str(0 - 987, buf)
+    likha(n2)
+    likha("\n")
+    likha(str_to_int(buf, n2, ok))
+    likha("\n")
+    # zero
+    vitti n3 = int_to_str(0, buf)
+    likha(n3)
+    likha("\n")
+    likha(buf[0])
+    likha("\n")
+    # malformed: empty
+    likha(str_to_int(buf, 0, ok))
+    likha("\n")
+    likha(ok[0])
+    likha("\n")
+}
