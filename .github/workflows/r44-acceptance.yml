@@ -56,3 +56,6 @@ jobs:
       - name: R41 opt-in cycle and missing diagnostic parity
         if: always()
         run: python3 tools/r44_optin_graph_acceptance.py
+      - name: Structural module graph tests (old fixtures explicitly skipped)
+        if: always()
+        run: python3 -m unittest discover -s tests/module_graph -p 'test_*.py' -v
