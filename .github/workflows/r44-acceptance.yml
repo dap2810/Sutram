@@ -12,6 +12,13 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+      - name: Acquire NASM without administrator privileges
+        run: |
+          mkdir -p "$RUNNER_TEMP/nasm-user"
+          cd "$RUNNER_TEMP"
+          apt download nasm
+          dpkg-deb -x nasm_*.deb "$RUNNER_TEMP/nasm-user"
+          echo "$RUNNER_TEMP/nasm-user/usr/bin" >> "$GITHUB_PATH"
       - name: Verify local toolchain
         run: |
           command -v nasm
