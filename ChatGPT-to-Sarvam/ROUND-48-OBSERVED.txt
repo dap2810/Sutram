@@ -1,0 +1,25 @@
+ROUND 48 — Actual Linux x86-64 native compiler diagnostics (GitHub Actions run 37968871960)
+Command: ./r48_after --check tests/r48_check/three_parse_errors.sm
+Exit status: non-zero (1)
+STDOUT:
+three_parse_errors.sm:2:11: Sutram Error [E_PARSE]: near '='
+      vitti = 1;
+            ^
+three_parse_errors.sm:3:11: Sutram Error [E_PARSE]: near '+'
+      vitti + 2;
+            ^
+three_parse_errors.sm:4:11: Sutram Error [E_PARSE]: near ';'
+      vitti ;
+            ^
+Sutram check: errors found; no output binary
+
+Command: ./r48_after --check tests/r48_check/semantic_unknown.sm
+Exit status: non-zero (1)
+STDOUT:
+semantic_unknown.sm:2:11: Sutram Error [E_UNDEFINED_FUNCTION]: unknown function 'missing_fun'
+      likha(missing_fun(4))
+            ^
+
+The actual stdout above was read from https://github.com/dap2810/Sutram/actions/runs/37968871960
+It is recorded evidence, not a fabricated golden. Test fixtures under tests/r48_check/
+remain separate from the historical tests/expect/ regression goldens.
