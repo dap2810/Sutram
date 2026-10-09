@@ -692,6 +692,9 @@ str_dot_exe  db ".exe", 0
     msg_block_stmt_overflow db "Sutram Error: too many statements in block", 10, 0
 
 section .bss
+%ifdef R45_PROFILE
+    r45_ticks resq 7          ; 6 compiler phases, TSC boundaries
+%endif
     source_buf  resb 65536
     source_len  resq 1
     source_path_ptr resq 1      ; original input path for ayojan resolution
@@ -829,6 +832,48 @@ section .text
 ; ============================================================
 ; ENTRY POINT
 ; ============================================================
+
+%ifdef R45_PROFILE
+%macro R45_TICK 1
+    rdtsc
+    shl rdx, 32
+    or rax, rdx
+    mov [rel r45_ticks + %1*8], rax
+%endmacro
+
+section .data
+r45_prefix db "R45_STAGE,",0
+r45_comma db ",",0
+r45_names dq r45_graph, r45_expand, r45_lex, r45_parse, r45_gen, r45_write
+r45_graph db "graph",0
+r45_expand db "expand",0
+r45_lex db "lex",0
+r45_parse db "parse",0
+r45_gen db "gen",0
+r45_write db "write",0
+section .text
+r45_print:
+    push rbx
+    mov rbx, rdi
+    lea rdi,[rel r45_prefix]
+    call print_str_z
+    lea rax,[rel r45_names]
+    mov rdi,[rax+rbx*8]
+    call print_str_z
+    lea rdi,[rel r45_comma]
+    call print_str_z
+    lea rax,[rel r45_ticks]
+    mov rdi,[rax+rbx*8+8]
+    sub rdi,[rax+rbx*8]
+    lea rsi,[rel num_buf]
+    call itoa
+    mov rdi,rax
+    call print_str_z
+    lea rdi,[rel msg_nl]
+    call print_str_z
+    pop rbx
+    ret
+%endif
 
 ; ============================================================
 ; SHELL & LANGUAGE PACK RUNTIME
@@ -1766,25 +1811,55 @@ _start:
     call read_file
     mov [rel source_len], rax
 
+%ifdef R45_PROFILE
+    R45_TICK 0
+%endif
     ; R41: opt-in module-v1 graph preflight runs BEFORE destructive expansion.
     ; The legacy import and generated-code path is byte-for-byte unchanged.
     call graph_preflight_v1   ; R44 single graph traversal (dispatch to merged Muse DFS)
+%ifdef R45_PROFILE
+    R45_TICK 1
+%endif
     ; Expand imports (inline .smlib files)
     call expand_imports
+%ifdef R45_PROFILE
+    R45_TICK 2
+%endif
     ; Lex
     call lex
+%ifdef R45_PROFILE
+    R45_TICK 3
+%endif
 
     ; Parse
     mov qword [rel token_idx], 0
     call parse_program
+%ifdef R45_PROFILE
+    R45_TICK 4
+%endif
 
     ; Generate code
     mov qword [rel code_sz], 0
     call gen_code
+%ifdef R45_PROFILE
+    R45_TICK 5
+%endif
 
     ; Write output
     mov rdi, [rsp+24]           ; argv[2]
     call write_elf
+%ifdef R45_PROFILE
+    R45_TICK 6
+    xor rbx, rbx
+.r45_print_stages:
+    cmp rbx, 6
+    jae .r45_done
+    mov rdi, rbx
+    call r45_print
+    inc rbx
+    jmp .r45_print_stages
+.r45_done:
+%endif
 
     ; Print success
     lea rdi, [rel msg_ok]
