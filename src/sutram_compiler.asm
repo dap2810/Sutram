@@ -1699,6 +1699,14 @@ repl_win_spawn:
     ret
 %endif
 
+; The Windows host stores argc/argv in win_stack, NOT at native process RSP.
+; Keep OS thread stack intact (for WinAPI/unwind), switch only argument loads.
+%ifdef WINDOWS
+%define R49_ARG(n) [rel win_stack + n]
+%else
+%define R49_ARG(n) [rsp + n]
+%endif
+
 _start:
 %ifdef R49_WIN_DIAG_0
     ; CI-only entrypoint probe. Normal builds never include this.
@@ -1723,10 +1731,10 @@ _start:
 %ifdef WINDOWS
     mov qword [rel target_pe], 1
 %else
-    mov rax, [rsp]
+    mov rax, R49_ARG(0)
     cmp rax, 3
     jl .tp_done
-    mov rdi, [rsp+24]           ; argv[2] = output file
+    mov rdi, R49_ARG(24)           ; argv[2] = output file
     test rdi, rdi
     jz .tp_done
     call want_pe
@@ -1734,70 +1742,70 @@ _start:
 .tp_done:
 %endif
     ; argc check
-    mov rax, [rsp]
+    mov rax, R49_ARG(0)
     cmp rax, 2
     jl .usage
     ; -i / --shell : interactive REPL
-    mov rdi, [rsp+16]
+    mov rdi, R49_ARG(16)
     lea rsi, [rel str_flag_i]
     call strcmp
     test rax, rax
     jz shell_main
-    mov rdi, [rsp+16]
+    mov rdi, R49_ARG(16)
     lea rsi, [rel str_flag_shell]
     call strcmp
     test rax, rax
     jz shell_main
     ; --version / -v
-    mov rdi, [rsp+16]
+    mov rdi, R49_ARG(16)
     lea rsi, [rel str_flag_ver]
     call strcmp
     test rax, rax
     jz .show_version
-    mov rdi, [rsp+16]
+    mov rdi, R49_ARG(16)
     lea rsi, [rel str_flag_v]
     call strcmp
     test rax, rax
     jz .show_version
     ; R48 --check <input.sm>: use the real lexer/parser/codegen semantic
     ; validation without ever creating the output file.
-    mov rdi, [rsp+16]
+    mov rdi, R49_ARG(16)
     lea rsi, [rel r48_flag]
     call strcmp
     test rax, rax
     jnz .not_check_mode
-    mov rax, [rsp]
+    mov rax, R49_ARG(0)
     cmp rax, 3
     jl .usage
     mov qword [rel r48_mode], 1
-    mov rax, [rsp+24]
-    mov [rsp+16], rax           ; normalize input argument for normal I/O
+    mov rax, R49_ARG(24)
+    mov R49_ARG(16), rax           ; normalize input argument for normal I/O
     call maybe_load_env_lang
     jmp .args_ok
 .not_check_mode:
     ; --lang <pack> <in.sm> <out.bin>
-    mov rdi, [rsp+16]
+    mov rdi, R49_ARG(16)
     lea rsi, [rel str_flag_lang]
     call strcmp
     test rax, rax
     jz .lang_mode
     ; normal mode
-    mov rax, [rsp]
+    mov rax, R49_ARG(0)
     cmp rax, 3
     jl .usage
     call maybe_load_env_lang
     jmp .args_ok
 .lang_mode:
-    mov rax, [rsp]
+    mov rax, R49_ARG(0)
     cmp rax, 5
     jl .usage
-    mov rdi, [rsp+24]           ; argv[2] = pack name
+    mov rdi, R49_ARG(24)           ; argv[2] = pack name
     call try_load_lang
     ; rewrite argv[1]/argv[2] to point at input/output
-    mov rax, [rsp+32]           ; argv[3] = input
-    mov [rsp+16], rax
-    mov rax, [rsp+40]           ; argv[4] = output
-    mov [rsp+24], rax
+    mov rax, R49_ARG(32)           ; argv[3] = input
+    mov R49_ARG(16), rax
+    mov rax, R49_ARG(40)           ; argv[4] = output
+    mov R49_ARG(24), rax
     jmp .args_ok
 .show_version:
     lea rdi, [rel msg_version]
@@ -1809,7 +1817,7 @@ _start:
     jmp do_exit
 .args_ok:
     ; Read source file
-    mov rdi, [rsp+16]          ; argv[1]
+    mov rdi, R49_ARG(16)          ; argv[1]
     mov [rel source_path_ptr], rdi
     call read_file
     mov [rel source_len], rax
@@ -1867,7 +1875,7 @@ _start:
     jmp .r48_parse_again
 .r48_normal_write:
     ; Write output
-    mov rdi, [rsp+24]           ; argv[2]
+    mov rdi, R49_ARG(24)           ; argv[2]
     call write_elf
 
     ; Print success
