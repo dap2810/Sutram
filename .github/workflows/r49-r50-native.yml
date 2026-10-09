@@ -70,7 +70,13 @@ jobs:
             /tmp/win_probe_7.exe
       - name: SHA manifest
         if: always()
-        run: sha256sum src/sutram_compiler.asm tools/r50_native_acceptance.py tests/r50_check/*.sm
+        run: |
+          sha256sum src/sutram_compiler.asm win/winrt.inc \
+            tools/r46_runtime_benchmark.py tools/r48_native_acceptance.py tools/r48_stage2_acceptance.py \
+            tools/r49_repeated_semantic.py tools/r49_diagnostic_audit.py tools/r50_native_acceptance.py \
+            tests/r48_check/*.sm tests/r49_check/*.sm tests/r49_check/lib/*.smlib \
+            tests/r50_check/*.sm benchmarks/r46_*.sm docs/R50-BYTE-PACKED-TEXT.md \
+            ChatGPT-to-Sarvam/ROUND-49-50-HANDOFF.md
   windows-smoke:
     needs: native-linux
     runs-on: windows-2025
