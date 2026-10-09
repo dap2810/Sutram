@@ -1,0 +1,6 @@
+mukhya() {
+    vitti = 1;
+    vitti = 2;
+    vitti = 3;
+    likha(7);
+}
