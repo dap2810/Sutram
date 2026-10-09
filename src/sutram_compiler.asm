@@ -2197,11 +2197,19 @@ graph_error:
     test rdi,rdi
     jz .no_detail
     call print_str_z
-.no_detail:
+ .no_detail:
     lea rdi,[rel graph_nl]
     call print_str_z
+    cmp qword [rel r48_mode],0
+    je .graph_fail_fast
+    inc qword [rel r48_error_count]
+    cmp qword [rel r48_error_count],8
+    jb .graph_return
+.graph_fail_fast:
     mov rdi,1
     call os_exit
+.graph_return:
+    ret
 
 ; ============================================================
 ; MODULE IMPORT - expand ayojan directives
@@ -4024,6 +4032,7 @@ mg_process_imports:
     lea rdx, [rel graph_msg_invalid]
     lea rcx, [rel graph_invalid_prefix]
     call graph_error
+    jmp .pi_next
 .pi_name_checked:
     ; gray check -> cycle
     lea rdi, [rel mg_cur_name]
@@ -4050,6 +4059,7 @@ mg_process_imports:
     lea rdx, [rel graph_msg_missing]
     lea rcx, [rel graph_missing_prefix]
     call graph_error
+    jmp .pi_next
 .pi_resolved:
     ; mg_cur_path = module_path_buf
     lea rsi, [rel module_path_buf]
