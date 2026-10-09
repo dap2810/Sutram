@@ -1,0 +1,14 @@
+# 44 — shabda(): print a string variable (v29)
+# likha() prints numbers (and string literals); shabda() prints a
+# NUL-terminated string held in a variable.
+prakriya abhivadana(name) {
+    pratiyati name
+}
+mukhya()
+    vitti greeting = "Namaste!"
+    shabda(greeting)
+    likha(0)
+    vitti msg = abhivadana("Strings flow through functions too")
+    shabda(msg)
+    likha(0)
+    shabda("and literals work directly")
