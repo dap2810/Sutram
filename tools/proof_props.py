@@ -237,6 +237,63 @@ def prop_math_gcd_lcm(compiler, rng):
     return ok and out == "PASS", out
 
 
+def prop_hash_fnv1a_deterministic(compiler, rng):
+    """fnv1a(s) == fnv1a(s) — deterministic for same input"""
+    cases = []
+    for _ in range(N_CASES):
+        # random lowercase string, length 1..10
+        n = rng.randint(1, 10)
+        s = "".join(chr(rng.randint(97, 122)) for _ in range(n))
+        cases.append(s)
+    lines = ["ayojan hash", "mukhya() {"]
+    for idx, s in enumerate(cases):
+        # escape for Sutram string literal
+        lines.append(f'    vitti s{idx} = "{s}"')
+        lines.append(f"    vitti h{idx}a = fnv1a_str(s{idx})")
+        lines.append(f"    vitti h{idx}b = fnv1a_str(s{idx})")
+        lines.append(f"    yadi (h{idx}a != h{idx}b) {{")
+        lines.append(f'        likha("FAIL fnv1a_deterministic {s}\\n")')
+        lines.append(f"        pratiyati 1")
+        lines.append(f"    }}")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "fnv1a_det", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_hash_fnv1a_empty(compiler, rng):
+    """fnv1a('') == 2166136261 (offset basis)"""
+    lines = ["ayojan hash", "mukhya() {",
+             '    vitti e = ""',
+             "    yadi (fnv1a_str(e) != 2166136261) {",
+             '        likha("FAIL fnv1a_empty\\n")',
+             "        pratiyati 1",
+             "    }",
+             '    likha("PASS\\n")',
+             "}"]
+    ok, out = run_sm(compiler, "fnv1a_empty", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_hash_fnv1a_avalanche(compiler, rng):
+    """Different strings hash differently (for these test cases)"""
+    # fixed pairs known to differ
+    pairs = [("hello", "hellp"), ("abc", "abd"), ("test", "Test"),
+             ("", "a"), ("xyz", "xy")]
+    lines = ["ayojan hash", "mukhya() {"]
+    for idx, (s1, s2) in enumerate(pairs):
+        lines.append(f'    vitti a{idx} = "{s1}"')
+        lines.append(f'    vitti b{idx} = "{s2}"')
+        lines.append(f"    yadi (fnv1a_str(a{idx}) == fnv1a_str(b{idx})) {{")
+        lines.append(f'        likha("FAIL fnv1a_avalanche {s1} {s2}\\n")')
+        lines.append(f"        pratiyati 1")
+        lines.append(f"    }}")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "fnv1a_aval", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
 def main():
     compiler = None
     for i, a in enumerate(sys.argv):
@@ -253,6 +310,9 @@ def main():
         ("bigint divmod reconstruct", prop_bigint_divmod),
         ("math gcd divides", prop_math_gcd),
         ("math gcd*lcm == a*b", prop_math_gcd_lcm),
+        ("hash fnv1a deterministic", prop_hash_fnv1a_deterministic),
+        ("hash fnv1a empty == basis", prop_hash_fnv1a_empty),
+        ("hash fnv1a avalanche", prop_hash_fnv1a_avalanche),
     ]
 
     failed = []
