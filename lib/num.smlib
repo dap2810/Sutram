@@ -1,0 +1,94 @@
+# lib/num.smlib — Sutram standard library: integer utilities
+# Parameters are copied into locals before mutation (compiler fault workaround).
+
+prakriya is_even(n)
+    pratiyati (n % 2) == 0
+
+prakriya is_odd(n)
+    pratiyati (n % 2) != 0
+
+prakriya digit_count(n) {
+    vitti x = n
+    yadi (x < 0) { x = 0 - x }
+    vitti c = 1
+    yavat (x >= 10) {
+        x = x / 10
+        c = c + 1
+    }
+    pratiyati c
+}
+
+prakriya digit_sum(n) {
+    vitti x = n
+    yadi (x < 0) { x = 0 - x }
+    vitti s = 0
+    yavat (x > 0) {
+        s = s + (x % 10)
+        x = x / 10
+    }
+    pratiyati s
+}
+
+prakriya reverse_num(n) {
+    vitti x = n
+    vitti r = 0
+    yavat (x > 0) {
+        r = r * 10 + (x % 10)
+        x = x / 10
+    }
+    pratiyati r
+}
+
+prakriya is_palindrome(n) {
+    vitti r = reverse_num(n)
+    pratiyati r == n
+}
+
+prakriya clamp(n, lo, hi) {
+    vitti x = n
+    vitti a = lo
+    vitti b = hi
+    yadi (x < a) { pratiyati a }
+    yadi (x > b) { pratiyati b }
+    pratiyati x
+}
+
+prakriya fib(n) {
+    vitti x = n
+    yadi (x < 2) { pratiyati x }
+    vitti a = 0
+    vitti b = 1
+    vitti i = 2
+    yavat (i <= x) {
+        vitti t = a + b
+        a = b
+        b = t
+        i = i + 1
+    }
+    pratiyati b
+}
+
+prakriya is_perfect(n) {
+    vitti x = n
+    yadi (x < 2) { pratiyati 0 }
+    vitti s = 1
+    vitti d = 2
+    yavat (d * d <= x) {
+        yadi (x % d == 0) {
+            s = s + d
+            yadi (d != x / d) { s = s + (x / d) }
+        }
+        d = d + 1
+    }
+    pratiyati s == x
+}
+
+prakriya collatz_steps(n) {
+    vitti x = n
+    vitti c = 0
+    yavat (x != 1) {
+        yadi (x % 2 == 0) { x = x / 2 } anyatra { x = 3 * x + 1 }
+        c = c + 1
+    }
+    pratiyati c
+}
