@@ -1,0 +1,28 @@
+# String operations demo
+# Shows string printing, escape sequences, and formatting
+
+mukhya()
+    likha("=== String Operations ===\n")
+    
+    # Basic string printing
+    likha("Hello, World!\n")
+    
+    # Escape sequences
+    likha("Tab:\there\n")
+    likha("Newline:\nhere\n")
+    likha("Quote: \"hello\"\n")
+    likha("Backslash: \\\n")
+    
+    # Multi-line output
+    likha("Line 1\nLine 2\nLine 3\n")
+    
+    # Combining strings and numbers
+    likha("The answer is: ")
+    likha(42)
+    likha("\n")
+    
+    likha("Temperature: ")
+    likha(-15)
+    likha(" degrees\n")
+    
+    likha("=== Done ===\n")
