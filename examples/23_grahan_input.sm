@@ -1,0 +1,17 @@
+mukhya()
+    likha("Enter two numbers:\n")
+    vitti a = grahan()
+    vitti b = grahan()
+    likha("Sum: ")
+    likha(a + b)
+    likha("\n")
+    likha("Product: ")
+    likha(a * b)
+    likha("\n")
+    yadi (a > b) {
+        likha("First is bigger\n")
+    } yadi (b > a) {
+        likha("Second is bigger\n")
+    } anyatra {
+        likha("They are equal\n")
+    }
