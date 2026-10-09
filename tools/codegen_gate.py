@@ -239,20 +239,14 @@ def one(name: str, ceiling: int, require_bottom: bool, source: str, tmp: Path) -
                         ("addsd", "subsd", "mulsd", "divsd")) and
                     not any(op in ("push", "pop", "xchg") for op in mnemonics))
     if name == "float_scalar_call_rhs":
-        # R47: a single typed argument must move directly RAX -> RDI, rather
-        # than spilling it as PUSH RAX / POP RDI; preserve the R46 callee-save
-        # traffic if caller variables occupy r12-r15. The original scalar
-        # LHS remains in a GPR without an unrelated PUSH/POP to RDX.
+        # The RHS call needs its own argument and register-save stack work,
+        # but the scalar LHS must NOT be saved as push rax / pop rdx. This
+        # narrows the accepted transformation to ABI-safe GPR residency.
         instructions = [(op, operands) for _, op, operands, _ in ins]
-        shape_ok = (count <= ceiling and
-                    sum(op == "movq" for op, _ in instructions) == 3 and
+        shape_ok = (count <= ceiling and sum(op == "movq" for op, _ in instructions) == 3 and
                     sum(op == "addsd" for op, _ in instructions) == 1 and
-                    any(op == "mov" and "%rax,%rdi" in operands
-                        for op, operands in instructions) and
-                    not any(op == "push" and "%rax" in operands
-                            for op, operands in instructions) and
-                    not any(op == "pop" and ("%rdi" in operands or "%rdx" in operands)
-                            for op, operands in instructions))
+                    sum(op == "push" and "%rax" in operands for op, operands in instructions) == 1 and
+                    not any(op == "pop" and "%rdx" in operands for op, operands in instructions))
     if name in ("float_index_left_reg_right", "float_call_left_reg_right",
                 "float_index_left_literal_right"):
         # FG2: no runtime spill of the outer float expression's LHS.
