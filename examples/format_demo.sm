@@ -1,0 +1,10 @@
+# String formatting demo
+mukhya()
+    vitti x = 42
+    vitti y = 100
+    likha_fmt("x = ", x)
+    likha("\n")
+    likha_fmt("y = ", y)
+    likha("\n")
+    likha_fmt("Sum = ", x + y)
+    likha("\n")
