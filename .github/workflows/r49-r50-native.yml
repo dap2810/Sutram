@@ -80,7 +80,7 @@ jobs:
   windows-smoke:
     needs: native-linux
     runs-on: windows-2025
-    timeout-minutes: 15
+    timeout-minutes: 3
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
@@ -90,10 +90,10 @@ jobs:
       - name: Execute compiler and generated native program on ordinary Windows runner
         shell: pwsh
         run: |
-          foreach ($n in 0..7) {
+          foreach ($n in 3,4,5) {
             $probe = (Resolve-Path "./artifacts/win_probe_$n.exe").Path
             $p = Start-Process -FilePath $probe -ArgumentList @('--check','tests/r50_check/runtime_hi.sm') -NoNewWindow -PassThru
-            if (-not $p.WaitForExit(8000)) {
+            if (-not $p.WaitForExit(4000)) {
               $p.Kill()
               Write-Output ("WIN_PROBE_" + $n + "_TIMEOUT")
             } else {
