@@ -1,0 +1,50 @@
+name: R49 Linux and Windows PE native integration
+on:
+  push:
+    branches: [feature/r49-r46-r48-integration-20261009]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Download native assemblers as ordinary user
+        run: |
+          cd "$RUNNER_TEMP"
+          apt download nasm binutils-mingw-w64-x86-64
+          mkdir -p tools
+          for pkg in ./*.deb; do dpkg-deb -x "$pkg" tools; done
+          echo "$RUNNER_TEMP/tools/usr/bin" >> "$GITHUB_PATH"
+      - name: Native Linux baseline and proposed compiler
+        run: |
+          test -s win/rtblob.inc
+          git show 72b824f70049765c3977db07d712a1a604b89434:src/sutram_compiler.asm > /tmp/r48_before.asm
+          nasm -f elf64 -I. /tmp/r48_before.asm -o /tmp/before.o
+          nasm -f elf64 -I. src/sutram_compiler.asm -o /tmp/after.o
+          ld -o r48_before /tmp/before.o
+          ld -o r48_after /tmp/after.o
+      - name: Check-mode Stage1 and Stage2 observed tests and byte parity
+        run: |
+          python3 tools/r48_native_acceptance.py
+          python3 tools/r48_stage2_acceptance.py
+      - name: Regression suites
+        run: |
+          cp r48_after sutram_compiler
+          python3 tests/run_tests.py
+          python3 tools/codegen_gate.py
+          python3 tools/test_lang_packs.py
+          python3 -m unittest discover -s tests/module_graph -p 'test_*.py' -v
+      - name: Authentic Windows PE32+ compiler build
+        run: |
+          nasm -f win64 -dWINDOWS -I. src/sutram_compiler.asm -o /tmp/r49_win.obj
+          "$RUNNER_TEMP/tools/usr/bin/x86_64-w64-mingw32-ld" -mi386pep --entry=_start -o /tmp/r49_compiler.exe /tmp/r49_win.obj
+          file /tmp/r49_compiler.exe
+          python3 -c "import struct,pathlib; b=pathlib.Path('/tmp/r49_compiler.exe').read_bytes(); p=struct.unpack_from('<I',b,0x3c)[0]; assert b[:2]==b'MZ' and b[p:p+4]==bytes([80,69,0,0]) and struct.unpack_from('<H',b,p+4)[0]==0x8664 and struct.unpack_from('<H',b,p+24)[0]==0x20b; print('R49_PE32_PLUS_LINK_OK',len(b))"
+      - name: Source/test SHA256
+        if: always()
+        run: sha256sum src/sutram_compiler.asm tools/r48_native_acceptance.py tools/r48_stage2_acceptance.py tests/r48_check/*.sm
