@@ -1,0 +1,15 @@
+# Function with parameters
+prakriya add(a, b)
+    pratiyati a + b
+
+prakriya mul3(a, b, c)
+    pratiyati a * b * c
+
+mukhya()
+    vitti x = add(10, 32)
+    likha("add(10, 32) = ")
+    likha(x)
+    likha("\n")
+    likha("mul3(3, 4, 5) = ")
+    likha(mul3(3, 4, 5))
+    likha("\n")
