@@ -1,0 +1,22 @@
+Increment / Decrement Demo
+==========================
+x = 5
+
+x++ -> 6
+
+x++ -> 7
+
+x-- -> 6
+
+
+Counting with ++:
+count = 5
+
+
+Squares table with ++:
+1 squared = 1
+2 squared = 4
+3 squared = 9
+4 squared = 16
+5 squared = 25
+
