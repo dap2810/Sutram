@@ -2139,10 +2139,18 @@ r49_print_module_location:
     ja .r49_unknown
     cmp byte [rbx+r9], 10
     je .r49_unknown
-    cmp dword [rbx+r9], 0x6A6F7961 ; little endian "ayoj"
+    cmp dword [rbx+r9], 0x6A6F7961 ; "ayoj"
+    je .r49_check_ayoj
+    cmp dword [rbx+r9],0x7972696E  ; "niry" from niryat
     jne .r49_nextword
+    cmp word [rbx+r9+4],0x7461     ; "at"
+    je .r49_word_found
+    jmp .r49_nextword
+.r49_check_ayoj:
     cmp word [rbx+r9+4], 0x6E61     ; "an"
-    jne .r49_nextword
+    je .r49_word_found
+    jmp .r49_nextword
+.r49_word_found:
     mov rax, r9
     sub rax, r15
     inc rax                 ; 1-based position on this physical line
@@ -3021,6 +3029,18 @@ mg_print_uint:
 ; --- mg_print_loc: prints "path:line: " using mg_cur_path / mg_cur_line ---
 mg_print_loc:
     push rax
+    cmp qword [rel r48_mode],0
+    je .legacy
+    lea rdi,[rel mg_cur_path]
+    mov rsi,[rel mg_cur_line]
+    call r49_print_module_location
+    lea rdi,[rel mg_colon]
+    call print_str_z
+    lea rdi,[rel msg_diag_space]
+    call print_str_z
+    pop rax
+    ret
+.legacy:
     lea rdi, [rel mg_cur_path]
     call print_str_z
     lea rdi, [rel mg_colon]
