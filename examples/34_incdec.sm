@@ -1,0 +1,38 @@
+mukhya()
+    likha("Increment / Decrement Demo\n")
+    likha("==========================\n")
+    vitti x = 5
+    likha("x = ")
+    likha(x)
+    likha("\n")
+    x++
+    likha("x++ -> ")
+    likha(x)
+    likha("\n")
+    x++
+    likha("x++ -> ")
+    likha(x)
+    likha("\n")
+    x--
+    likha("x-- -> ")
+    likha(x)
+    likha("\n")
+    likha("\nCounting with ++:\n")
+    vitti count = 0
+    punaravartana i = 1 to 5 {
+        count++
+    }
+    likha("count = ")
+    likha(count)
+    likha("\n")
+    likha("\nSquares table with ++:\n")
+    vitti n = 1
+    punaravartana i = 1 to 5 {
+        vitti sq = n * n
+        lkhb(n)
+        likha(" squared = ")
+        lkhb(sq)
+        likha("\n")
+        n++
+    }
+    likha("\n")
