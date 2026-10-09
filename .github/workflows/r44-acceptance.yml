@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - feature/r44-module-contract-completion-20261009
+      - feature/r44-single-module-graph-experiment-20261009
   workflow_dispatch:
 permissions:
   contents: read
