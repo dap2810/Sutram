@@ -1,0 +1,41 @@
+# Representative end-to-end numerical application, not an isolated micro-kernel.
+# Includes two real library modules and typed kosh parameter chains.
+ayojan sankhyiki
+ayojan madhava
+
+prakriya measure(kosh dasham values) {
+    # 5 + 4 + 2 = 11 for the textbook dataset.
+    pratiyati madhya(values) + prasaran(values) + vichalan(values)
+}
+
+mukhya() {
+    kosh dasham values[4]
+    kosh_push(values, 2)
+    kosh_push(values, 4)
+    kosh_push(values, 4)
+    kosh_push(values, 4)
+    kosh_push(values, 5)
+    kosh_push(values, 5)
+    kosh_push(values, 7)
+    kosh_push(values, 9)
+
+    kosh dasham u[2]
+    kosh_push(u, 3)
+    kosh_push(u, 4)
+    kosh dasham v[2]
+    kosh_push(v, 1)
+    kosh_push(v, 2)
+
+    # Repeated full statistical pipelines: array traversals, nested function
+    # calls, floating-point arithmetic, Newton sqrt, branches and loops.
+    dasham total = 0.0
+    vitti i = 0
+    yavat (i < 100000) {
+        total = total + measure(values)
+        i = i + 1
+    }
+    likha(total)
+    likha(bindu(u, v))
+    likha(manak(u))
+    likha(madhava_pi())
+}
