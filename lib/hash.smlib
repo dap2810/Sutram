@@ -1,0 +1,30 @@
+# lib/hash.smlib — Sutram standard library: checksum/hash functions
+#
+# FNV-1a (Fowler–Noll–Vo) 32-bit hash. Deterministic, fast, good distribution
+# for non-cryptographic use (hash tables, checksums, dedup keys).
+#
+# Reference: http://www.isthe.com/chongo/tech/comp/fnv/
+#   offset_basis = 2166136261
+#   prime        = 16777619
+#   for each byte b: hash = (hash XOR b) * prime  (mod 2^32)
+
+# fnv1a(s, len) — FNV-1a 32-bit hash of first `len` chars of pankti `s`.
+# Returns an unsigned 32-bit value (may print as negative via likha).
+prakriya fnv1a(s, len) {
+    vitti h = 2166136261
+    vitti i = 0
+    vitti n = len
+    vitti str = s
+    yavat (i < n) {
+        vitti b = char_at(str, i)
+        h = h ^ b
+        h = (h * 16777619) % 4294967296
+        i = i + 1
+    }
+    pratiyati h
+}
+
+# fnv1a_str(s) — FNV-1a of NUL-terminated pankti `s` (uses vartani_len).
+prakriya fnv1a_str(s) {
+    pratiyati fnv1a(s, vartani_len(s))
+}
