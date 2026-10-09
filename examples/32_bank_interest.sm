@@ -1,0 +1,28 @@
+mukhya()
+    likha("Bank Interest Calculator\n")
+    likha("========================\n")
+    vitti principal = 100000
+    vitti rate = 8
+    likha("Principal: ")
+    lkhb(principal)
+    likha("\nRate: ")
+    lkhb(rate)
+    likha("% per year\n\n")
+    likha("Growth over 5 years:\n")
+    punaravartana year = 1 to 5 {
+        vitti interest = principal * rate / 100
+        principal += interest
+        likha("Year ")
+        lkhb(year)
+        likha(": ")
+        lkhb(principal)
+        likha("\n")
+    }
+    likha("\nCompound growth using *= :\n")
+    vitti x = 2
+    punaravartana i = 1 to 10 {
+        x *= 2
+    }
+    likha("2^10 = ")
+    likha(x)
+    likha("\n")
