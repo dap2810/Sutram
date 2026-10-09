@@ -6170,7 +6170,7 @@ parse_error:
 
 ; R48 post-parse semantic diagnostics for unresolved user function calls.
 ; The code generator already owns function lookup; no second parser is used.
-; Look up the first matching original lexer token to recover line, column,
+; Match the exact original lexer token pointer to recover line, column,
 ; offending identifier and source/caret. No output binary is written.
 r48_print_undefined_function:
     push rbx
@@ -6187,11 +6187,12 @@ r48_print_undefined_function:
     add r13, rax
     cmp qword [r13], TOK_IDENT
     jne .r48_next
-    mov rdi, [r13+8]
-    mov rsi, r12
-    call strcmp
-    test rax, rax
-    jz .r48_found
+    ; R49: token lexeme pointers are unique per occurrence. Matching by
+    ; string text mislocated repeated unresolved calls at the FIRST call.
+    ; Patch-list function-name pointers come from their exact lexer token,
+    ; so pointer identity gives the original occurrence and caret.
+    cmp qword [r13+8], r12
+    je .r48_found
 .r48_next:
     inc rbx
     jmp .r48_lookup

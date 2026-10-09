@@ -33,6 +33,7 @@ jobs:
           python3 tools/r48_native_acceptance.py
           python3 tools/r48_stage2_acceptance.py
           python3 tools/r50_native_acceptance.py
+          python3 tools/r49_repeated_semantic.py
       - name: Existing full regressions
         run: |
           cp r48_after sutram_compiler
@@ -69,6 +70,7 @@ jobs:
         run: |
           $compiler = (Resolve-Path './artifacts/sutram-r50.exe').Path
           & $compiler --version
+          Write-Output ('Windows compiler --version exit: ' + $LASTEXITCODE)
           if ($LASTEXITCODE -ne 0) { throw 'version failed' }
           & $compiler --check tests/r50_check/runtime_hi.sm
           if ($LASTEXITCODE -ne 0) { throw 'valid check failed' }
