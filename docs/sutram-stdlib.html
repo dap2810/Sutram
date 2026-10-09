@@ -22,6 +22,7 @@ Do not edit by hand.</p>
 <h2>Modules</h2>
 <ul>
 <li><a href="#array"><code>array</code></a> — 8 functions</li>
+<li><a href="#baseconv"><code>baseconv</code></a> — 2 functions</li>
 <li><a href="#bigint"><code>bigint</code></a> — 12 functions</li>
 <li><a href="#chandas"><code>chandas</code></a> — 6 functions</li>
 <li><a href="#ganita"><code>ganita</code></a> — 6 functions</li>
@@ -32,7 +33,7 @@ Do not edit by hand.</p>
 <li><a href="#num"><code>num</code></a> — 10 functions</li>
 <li><a href="#samanvaya"><code>samanvaya</code></a> — 10 functions</li>
 <li><a href="#sankhyiki"><code>sankhyiki</code></a> — 10 functions</li>
-<li><a href="#sort"><code>sort</code></a> — 11 functions</li>
+<li><a href="#sort"><code>sort</code></a> — 14 functions</li>
 <li><a href="#string"><code>string</code></a> — 14 functions</li>
 <li><a href="#util"><code>util</code></a> — 7 functions</li>
 </ul>
@@ -48,6 +49,13 @@ Do not edit by hand.</p>
 <tr><td><code>array_sum(arr, n)</code></td><td></td></tr>
 <tr><td><code>array_set_safe(arr, i, val, n)</code></td><td></td></tr>
 <tr><td><code>array_get_safe(arr, i, n)</code></td><td></td></tr>
+</table>
+<h2 id="baseconv"><code>baseconv</code></h2>
+<p class="mod-desc">Convert between base-10 bigint digit arrays and digit-value arrays in base 2, 8, 10, 16. The intermediate is a pankti of integer digit values (0..15), most significant first — not a byte string, to avoid packing issues. Round-trip property: from_digits(to_digits(x, b), b) == x for every base. bigint_to_digits(x, n, base, out) — render n-digit bigint x in `base` into pankti `out` as digit values (MSB first). Returns digit count. Caller allocates out with &gt;= 70 cells.</p>
+<table>
+<tr><th>Function</th><th>Description</th></tr>
+<tr><td><code>bigint_to_digits(x, n, base, out)</code></td><td></td></tr>
+<tr><td><code>bigint_from_digits(d, count, base, x, n)</code></td><td>bigint_from_digits(d, count, base, x, n) — parse `count` digit values from pankti `d` (MSB first) in `base` into n-digit bigint x. Returns 1 on success, 0 if a digit &gt;= base.</td></tr>
 </table>
 <h2 id="bigint"><code>bigint</code></h2>
 <p class="mod-desc">Arbitrary-precision integers as arrays of base-10 digits (0-9), least-significant digit first. All arrays are fixed size n; the caller allocates via nirmmita(n * 8) and tracks the size. Convention: bigint_mul requires res to have 2n digits (product of two n-digit numbers can need 2n digits). All other functions use n-digit arrays. Digits must be 0-9; behavior is undefined for out-of-range digits. bigint_zero(arr, n) — set all n digits to 0</p>
@@ -197,6 +205,9 @@ Do not edit by hand.</p>
 <tr><td><code>is_sorted(a, n)</code></td><td></td></tr>
 <tr><td><code>binary_search(a, n, target)</code></td><td></td></tr>
 <tr><td><code>shell_sort(a, n)</code></td><td></td></tr>
+<tr><td><code>insertion_sort(a, n)</code></td><td></td></tr>
+<tr><td><code>merge_sort_rec(a, tmp, lo, hi)</code></td><td>merge_sort(a, n) — top-down merge sort using a temp buffer.</td></tr>
+<tr><td><code>merge_sort(a, n)</code></td><td></td></tr>
 </table>
 <h2 id="string"><code>string</code></h2>
 <p class="mod-desc">Built on `vartani_len` and `char_at`, both verified to honour their arguments. (`char_code` is avoided: it currently ignores its index and always reads character 0.) ASCII only for the character predicates; multi-byte UTF-8 is not split.</p>
@@ -229,6 +240,6 @@ Do not edit by hand.</p>
 <tr><td><code>bool_to_int(b)</code></td><td></td></tr>
 <tr><td><code>int_max()</code></td><td></td></tr>
 </table>
-<footer>14 modules, 123 functions. Generated from library sources.</footer>
+<footer>15 modules, 128 functions. Generated from library sources.</footer>
 </body>
 </html>
