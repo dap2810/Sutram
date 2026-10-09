@@ -1,0 +1,11 @@
+=== Library Import Demo ===
+String: Namaste!
+Number: 42
+
+x * 2 = 32
+
+x * 4 = 64
+
+Length: 6
+
+=== Done ===
