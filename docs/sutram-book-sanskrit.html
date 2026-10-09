@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="sa">
+<head>
+<meta charset="UTF-8">
+<title>सूत्रम्-पुस्तकम्</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Georgia,'Noto Serif',serif;line-height:1.7;color:#2c2416;background:#f7f2e7}
+.book{max-width:860px;margin:0 auto;padding:40px 24px 80px}
+.cover{text-align:center;padding:90px 20px 70px;background-color:#1a4a5c;background-image:linear-gradient(160deg,#1a4a5c 0%,#2d6a6a 55%,#4a8a6a 100%);color:#fdf6e3;border-radius:18px;margin-bottom:50px}
+.cover h1{font-size:52px;letter-spacing:2px;margin-bottom:12px}
+.cover .dev{font-size:56px;font-weight:400;margin-bottom:8px}
+.cover h2{font-weight:400;font-size:22px;opacity:.92;font-style:italic}
+.cover .badge{display:inline-block;margin-top:26px;padding:8px 22px;border:1.5px solid rgba(255,255,255,.45);border-radius:30px;font-size:14px;letter-spacing:1.5px}
+.toc{background:#fff;border:1px solid #e0d5bd;border-radius:14px;padding:30px 36px;margin-bottom:44px}
+.toc h2{color:#1a4a5c;margin-bottom:16px;font-size:22px}
+.toc ol{margin-left:22px}
+.toc li{margin:8px 0}
+.toc a{color:#2d6a6a;text-decoration:none}
+.toc a:hover{text-decoration:underline}
+.ch{background:#fff;border:1px solid #e0d5bd;border-radius:14px;padding:36px 40px;margin-bottom:40px}
+.ch h2{color:#1a4a5c;font-size:27px;border-bottom:3px solid #c9a55c;padding-bottom:12px;margin-bottom:20px}
+.ch h3{color:#2d6a6a;margin:24px 0 10px;font-size:19px}
+.ch p{margin:12px 0}
+pre{background:#22303a;color:#e8e2d0;padding:20px 24px;border-radius:10px;overflow-x:auto;font-size:14.5px;line-height:1.55;font-family:'Fira Code',Consolas,monospace;margin:16px 0}
+.cm{color:#7ba05b}
+.kw{color:#e5a54b}
+.try{background:#eef6ee;border-left:4px solid #4a8a6a;padding:14px 18px;border-radius:0 8px 8px 0;margin:18px 0;font-size:15.5px}
+.try b{color:#2d6a6a}
+table{width:100%;border-collapse:collapse;margin:16px 0;background:#fff}
+th{background:#1a4a5c;color:#fdf6e3;padding:10px 12px;text-align:left;font-size:14.5px}
+td{padding:9px 12px;border-bottom:1px solid #eee2c8;font-size:15px}
+tr:nth-child(even) td{background:#faf6ec}
+code{background:#efe7d2;padding:2px 7px;border-radius:5px;font-family:Consolas,monospace;font-size:.93em;color:#8a4b2a}
+pre code{background:none;padding:0;color:inherit}
+.note{background:#fdf3e0;border-left:4px solid #c9a55c;padding:13px 18px;border-radius:0 8px 8px 0;margin:16px 0;font-size:15.5px}
+.out{color:#8ac0ff;font-style:italic}
+.footer{text-align:center;color:#8a7d5c;font-size:14px;margin-top:50px;font-style:italic}
+
+/* ---- v26: hover = Sanskrit (pure CSS, no JS) ---- */
+.k { color: inherit; border-bottom: 2px dotted #E85D04; cursor: help; position: relative; }
+.k:focus { outline: none; }
+.k::after { content: attr(data-tip); position: absolute; left: 50%; bottom: calc(100% + 6px);
+            transform: translateX(-50%); background: #2b2118; color: #fff; padding: 5px 12px;
+            border-radius: 8px; font-size: 13px; white-space: nowrap; opacity: 0;
+            pointer-events: none; transition: opacity .15s; z-index: 9; }
+.k:hover::after, .k:focus::after { opacity: 1; }
+.k::before { content: ""; position: absolute; left: 50%; bottom: calc(100% + 1px);
+             transform: translateX(-50%); border: 6px solid transparent; border-top-color: #2b2118;
+             opacity: 0; transition: opacity .15s; }
+.k:hover::before, .k:focus::before { opacity: 1; }
+pre .k, code .k { font-weight: 700; }
+.en-gloss { color: #94795a; font-size: 0.85em; font-weight: normal; }
+.legend { background: #fdf1e3; border-left: 4px solid #E85D04; padding: 10px 14px;
+          border-radius: 0 8px 8px 0; font-size: 14px; margin: 14px 0; }
+/* readability hardening: cover must stay legible even without gradient/background rendering */
+.cover{background-color:#1a4a5c}
+.cover h1,.cover .dev,.cover h2,.cover .badge{text-shadow:0 1px 3px rgba(0,0,0,.35)}
+@media print{.cover{-webkit-print-color-adjust:exact;print-color-adjust:exact;color:#fdf6e3}body{background:#fff;color:#1a1a1a}}
+</style>
+</head>
+<body>
+<div class="book">
+<div class="cover">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAA0TElEQVR4nO29eZxkRZU/+j0n4t5caul9oWkaaJqtAVkHAdFqxcEFkUFJ4Ok4jjpuM+P2+73R0RktijcjLk9/op9RB3Vcf8J0iqIi/HAZKUUcZFdoWpqGhqbp7uq1tqzMe2+c8/64mVVZlffmUl3dwLw5/cmuzLhxI07E+cY5J3bgv+n/10TPNgOHmEhbRYj/tIr2X4b+ywFAAbqqH7RhQ4GGhoZoEACWLlUU1wvAOhkrkWrVIYTC5YyhIeoDsHTpUl27tqhXDUDpvxg4nvcAUIAuLxS4ODREGFwnwNUyU0YGgAdgQkG4Ch42oWuLl8/kKiUFgIlMno6SUojVGMVJcLnL4SIAUWKO/Yy+27mwdKmuLxbl+Q6I5yUA+vvBt9/ex4OD6wQYkFq4ByDoR/bWjUsO/024/OitYfbYfeIfXRJvZRlmeVl4kRDnQnB3pMgRoFXpEQNBhmSYoJUsuT0+3M4edk/Po+DJFba06ZzMns2XrnxmW+YzGA+mc8N9fbfzunWDMjAAwfOMnjcAmGzpxfVSM+U+gMq7seDqZ048Y4Ob/yc7XfbsEfVPGVNzeIX8XMgeIhBECaJalbbGYldMlb72nQgAgQggIhgAhgSeRvBdJehmeaaXgoeXmvLdJ/gjd/8/+YfuyX0HQ+UpLgmFy7l/bVGfL2B4zgOgvx88sKFAKBYdAOQA/ODPV64pjq64YEvY9YohybxwFNkVZfYRKkFEABGwihBB4gIqSEGgWMzVYs8sexUVUChUiTT+SlAFCzGDGMwMy4qshuiW8q4lJrjnCDP+0z/NDf383esff2h8inMuFDZQsVgUPIfNxHMVAFSoa+0WwOYrF634RHnNa35f6b58SLLnjZt8rqIMcQ4kTpggBAUBDBDHrbmu5lUBVQWgqqog6DQVoCCiSRVAtfep/n2oqkKUSFXBwoaJDXwWdLmJaKkJ7jrBjtz41u7Hf3jBd4ceD6opFAqXmeeqv/CcA0ChUDDF4vccoOgC8M+F486/bWLFW7ZE+UuGKb+orAw4B4ZEVYEbEFOdoFVVnYo4qDqFCqBKWheFJss9zQiQQhRKBFIlJcRKw4CJicjG35mmQCEKVRFiFbCFMciwoseVxo6wE7e8JLP73z524+9/ShQLvlAoPOeA8JwBQL3gdT3MP15/2usGy4vfvU3zLx2lHJxzMBI5hgLERmtiUFUVCVUkBOCgqkpgAhsQGWIyBDCIONb+zYpc10tUEQUEok5VnUIcKRSxNA0zecTGQ6w1QLGGcQLAkTFsLbq1guU0/rvzsvu+/Nkl9/w7XYdSTSMUqybt2aZnHQD9/eCBgX4AA6IKet/rzrrizsrC/7lTu88aVwtEEQxJRIBRilufqqiIVFQkJIUQEyuRR2CPmE3sxVUz0Mn/ZkGN6aiIqGiokJBEnRKYiC0zZ8DMAEAqqoBzSqzG47wRLNGxjWf6+z/31dP+85s0gDKg1N9P9Gw7i88uAAoFg2LRZQD84+tPvfC2iSX/uEXnvXhcDNiFYqCqRLFAFVBxgYirkELAZIhNhog9cP343SHQrlPaByoSiXMVUo1ARGDOMHMm5llBqs4BEOOZnFGs1JEHzs/u+fiXf3BvsVStA30WzcKzAoC41asCpP+nsHLNZ0rH/tMm13vFMDLgKHQGiinBq4pzZYgEymSY2CdjfCKa6tY9q0Q1NqEioToXQCUCG4+Zs2DmKhBEAHXGN90cYTUN3/aG7i0fedf6zfcpCIWCmmIRh9wsHHIAxLa+6LoIuOLiF77vzmBx/y7qXqBhqBZOlKoqXEXESRnqApDxmU22pmKffaGnEdVYVxFXgXMVJbbGmCyxMaoCUhUHglqfF6JUPsvb+6nrz/jNNTSAMvr6LAYHkwcgDxrHh4gUICoUGMWiu/mK5Sd+Yuzkz2/WBS8vhwqroQMxI27WKi4qQTSC4QyzzYLrxuzmjBKGAeY0+ZhnjVxFxVWUiY2xeRBVNYK4kKzxPYNVOnzv27Ob//adP3jsPxX9rBg4ZHMOhwQAscon8aB4x8Vnvvk/ouWf26nd8zmqOCawUmzExbmyuqhCbDw2Nn9ggm9RtI7lf2B8iAvL6lyF2PhsbQ6InUUBOceeXUSl4EXeno+s//FvPzMBoFDAITEJBx0ANZWvH0DutY++5LMPyOJ3jUUMT0MXq3uGinPqonEFGWNtjphZOxY8Nf15wNTATof8EQGiKi6agEhE1uaYjVc1Cy4kY3IeYy3v/t7PFvzyXfRt7Onr67ODB9kkHFQA1Apw7xuWH/ne4ZP/9yZd9KIoCJwlZUU82iZRVFJxIVsvz2w87ahiKfFrm28kUtu5a+qP5vkTQZ1zEkXjysTGet1ArA2cQuBlzGrsf+Svuze+4S3FJx842CA4eACoOjRfKBxz7lfHjrvhKe1dZVwQEdSAmKAqLgrGCcawZ/MxK+1UZHtCP+gKIPVh+2WQKJyASMjWdoHZVIebo4h9u5zH978++9Sb/+kHf/jRwXQODw4A+vosDQ5G//DaU167Pjzyf++SXLd1gUPVw1fnAnHRBBubZ2u99tR9c8Ef6u5MIscdAoGIIE4iiYJxYps11mZikyAuZM/M50Au9J9+19d+dN9XouqYyRyxP8XDXCdYQ+tbLn7hn/86Wvb13c63vsT2nojhomBCVSNjvW4Qt+Hspgu+PeYPtIitBdkcDG2UTxUuCsYIROx5XbVxg5AMzfeEzuKdH/z+zXd+2h0ETTC3AKgy+IbXnP2mO9zh3xqNWD11qhTPzrkwGCcQ2PO7OlL3HQl+DuzCLHsEBwIEAlUbh0TGy/QAsV8QKkveZ3MW7fj7H//kjk/KHIOA5yqhvqraf8vFZ/35He7wb41FLLHwmQGoC4MxYjbstyP8uml7aghNj58UOeFRS0p6l9IitOCPGr4kkkJhPD/HbDIuqIxCRZSYPBIuhxLdo8s/8WcXnfdBOzgYoa/PdlCapjQnAKh5qh++5AUX3xEe9o3RiMWqQ9zyJ4VvjfWzrfv17Qp+hhBmK+xOqCkYmoRMBjRnTlXB1vPZ2EwUhmNQFSUmAzGlQNx9uuyTb7vk9HdicDDqmyMQHDAACoWCGRwcjK69dM053wtWXb9LMuypg8Yje3BBUGLr5dh6WdVmE191rX56SHK85pEOPjWAoU0gTP/SQKoKstY31utyUViKp7djTTAcsrutsupLH77k5D8bHByMCoWCmYtizJpqI3y/u+KwI94+cuqdT0n3Ss+FTokMqmqfrZcjNjZN7RNiFDpqrLxUVmfF9Wxe6nCwp0kvYGZKRhXN14oRIPF4AVvbDWYmEQnZ0lIzMf53+T++5K9ufOz+Ax0xnDUAamP7urbovfjul/3yYVlyjo3Kk129mtpn66WqfQIwoRYVMHo5bNLiO+X2YKmENgHRBhCGxUMGghxF6akSQaMoUOfK7Ps98UpFcYHJmNW8//F7l995Dn19dHc/iAYwu3UFszYB6/r6jC0W3WvvOf9zj2LJOcYF0ZTww/FWNp8RC/+FmV24qvdBGByo8Fs4AGmOXUuHr4M8Enlt1GwKQn/vg3hhZhcm1KYLoWoOyJicCytjIIISG0+C6EksWH3BzjO/kSPSgUJh1oZwVgCo2f13XHL6mx7QZe90YRgRYOKh3bBMALFpbvOJgJAYR5kxfLjnERxnh1FSCzO1RrsaES2KlhDhQHoAbafRIuEE/8BAMSoeXuLvwEd6H8FRZgzB5PrVlLRiEHhExnNhOF5dum4pCqJHsOzVf/aasz9CxaIrFAqzkmXHVVOz+z/9v1Yc+759p9673eW7fERQYlbnQnFR2fjZnubqMnb2GIp9ksGti36GAIwr9q5DnhykXvidsH4oncFOJodmmIRbF/0c21wOl+19KRZwJS5vy/ECgoTBOIgsW5shFQ3BstBE9J7sxr733/ToHbWJt06K0SlqaGBDgbRf+ar9x1+3Ez09voaqIIaqaBSVjOd3tyP8WuYGiusnjsYrMkM4yQ5jXC2YtIkwU3oBHfkHs9L/TdloZX4MKUbUw/n+EM7whvHF8RPgkUy90bKHoGDP64K4iopzSkyeCu3VLH+7cuRXtIDu4tq12qzmkqgjABSqCzredt+Zf/MELVrHLoh0yukbJ8/mQdyEgSnhEwAHQi+HuGFiNQaDxXhL16MIYFJKMJvuXxxp+r92IDAzZsssmgUAiJuEIcXbujbh+okj8MvKYeilEIKpNertlIes16WRGwcAJWLrAreVFp7wutK5AzwwIJd3aArajtzfDy4W18svrzjyqN8Gy/+pHIkwlKt2f4KILRnrNd15m1BAA0WgBt8trcbb80/ghf6uWAtMSyfBxqdSo7BnS8mAaBE5gUmDuPVflH0ar87uwHdKa2DSNqo38wegIDYGzBkXBOPVGXWOwtA9KEve++nCsWcXi99z/f39bcu17YgDGwrkgfSfR4/89BB393pSHeYVcRAJ2PNy6aN804VfXzwHxjwO8ZPKEXjUdeHS7JMYU6+OsXZb/ZSYkrKf1ScxmRaaIUEbEIBADa7IPoFfVxbiznAJeiiCSy5lSxCw9TKAioqLlJisCvZp1t44dsS1ul7NQJO3Z1JbAChUpyI/cunalz2mCy/TMHBK8bvOhSWyXld6ltT0lwLwSLBbMvj46Cl4U+5xvMDbi5JacBpqZqSRKPiOfYMU1hPSmfrZBClVYihG1cNLM9vx8swzuHrsNAQwmNrLREmvtQSBiU1BCQCUyHAUuCdp4Tnv/vaZf46BAbmszVHClgAgAMW1a1X7YX9WXv7Pw+rDxrtzSCNXITA3G+mrL1kiFCj2BXo4xGCwHCDFu/J/xLh6sRlIFWKC4NsW+iydv6ZASI5LAEIYfKDrYWxzedwfLkI3hXDTtGIKCNLSBgA2DCZfonAC1Z3MJUd6V7ioX9+I3mKxPYewJQAuKxQMBgbkPb8/7dKttOAcjqpDvaqqElXY2nw7dj9N+ED8tg/BdpfHNaMvwJ9mtmGZmUCFOLFCUgWfxkPbgm4zbiIQGuMzFCVYHGeHcbq3BwOjp9eNddS9PP1LUlACKdh4WYiEEBElMsaFsoPnH/2G4bPfCbTnELZwpwCFkr6D7FlPvfx3j2PhqV4UiDIbCaMSSJmtn00GQLrdn/ms9tyBYKG4f8lNuKG8Gh8ZPQvzKYhbSzVWip/VSbEOgFKArjO/xv/XnL9vzf8V1pgRvGj3a9BFYVvrBhpHk5PrWF0YiEhgPL+7NldwOI9t/8Oy355E39w/HO+KT1fPTRES2xHSv9918muGqPc0jkKttX6oRGy8FOHPZDP911QZCR4Uw+rjhvJqXJl9HPMoQDjpCbQj/A5VeYcWoB2bX9MG8VC3wZFmHK/yt+GbE2vgquHtZNaeKVCQsT5UFeKcMrGRSPZwz4q37j32LwHSVlqg6cNica2qgu6YWPr+cbVqoAoiiIvKVNv/lsZ+G6p/JgkIeYrwmfFTUFIPb8xtxqh6jfMEqR5fMitzbQESH84IYgATsHh7fiMejubja6Xj0cNhnTZLSHL6lzZNAYGNzTonZcQAo7KDPhgu/Gv9AHLF4npp5gukAqBQgAEG5POvW/PCZ9D9YrgIk61fJCRjM6mqv1kJU1suoARkSLDT5fCzygp8uOsPOIwnENS0QKJQ2rPTs6aWQGgMIigm1OAkux/vyT+K75ePxISaqvPc/N3mz9K0gPFI1UHEKROzi2QX9Rz7P7ec8ppWWiD1QREFGAC3BCveMUo5MhAXt35XAbPfdJ9984aeHLlKAqCLQnypdAIYinX+doyqV9dtqn8v3ftOf9DJp5N0p8gQMKo+LspsxVaXw3fLx6S0/tmYguRYZDgrzlWAeNJpXI3eVV7yzgxiTZ72ZiIAFCAUi+7RK5cuezLqutQ5B4pPWwPEBcxz1fobvcTYDDg8FC3Cv04cj/+76w/opgjRtJfbFXxHBj6F706AUG39MDjOG8Z78xvw+dKJ2Oa6kIFM1Vgze9bSFKRoAbY+VKJ4SREZuAjbtesl/3L56pOBAenvT5Z1YuC6vj4DANeUVr52xHTNNxI5JSZ1LlSwATcZ729D1mnv1MiBsYAr+ErpBMznAJdln6j6AtoYOTWzudD/TdJLAQEDKKnFldnNMAB+WlmJeRxCZlZ1B/XRHosEMHviXKBEMFA3zjnv1ollVxKAgdv72gfA4OA6yQB4JJh/ZVlYa+PyIq7Chv3OuJ5duA/Bdsnjj9E8rPOfqVZgq9bYWvDxEXDpn+Y0I/0UraMgHGNG8EA0H4+7Xvhw1Rps3dpTIswIStYCzCYDkQoAkCoHTvF42H2ZFOBj8FdRkjPYAIB+gIEBufF1S1cPae5cdY5AzFDV+DgWkz7hMwetv/azNntmoI2tp8NM2hdwu3Hb1wambmq7o4bdThYziQ0rlNQ5ByImcboP+eOudsf9CaC4vNBYkQ0Bt/fFqqIYrnr5uMnnDCRSIhLnAhAZNJvtbVWKmeEtfAJt8qydfBoF2Znz1xwMCdog4UdjU5kDLZBGBBCzVZFKzQxMcIbuCxZfBADFob7WGmBwcJ14AJ5y3a+sKE9Oy8Y7lUwmufHT7FDemErrRNpQ+dOFNhtHMBkMLRlqg29qGTE56Wk/08yAxmZAVRwAkCoFAuxw+ZdrPxiDtzesFpoGgFhZDUjwDszb7TLninMAYCbVP3HzSZ82CjE7OxEz1069Nbb4A6UpIDTXBnVfW1RRetHnQAvUjtERkbg34LBPMqfcunHJ0QBp/wyZT/tRGzD42O6Tzhil3HIWJyAmFYm0uuizfeqs8pProH21n9zq55La0QYNUZFehrnmr5YsgZitiIRKBKPOlUwu+8OJVS8Cpkx8jab9KA4NEQBsDHvPLrMPJogCUJGQmG2as9N+o+4E4e17jm23+s5cgKb5NoKgfX4TQ9K0QMdmACBiqyphlU+twODJqOtcBjC4dOk0/TTdB1i3TiyAoSj7wlCndJlCHTPbOTuoqVM/qM1ITIAlbfxw9TMZhpRPWvypT70PnAqCZveSzLrht/uigmJZabzNHOREsVf9M10/OL44Y4rs1GsgGrhawjcje/pOe4qowACssf1XEHewD+1gmIqU3UWT2ocwFhkEwrEApm0vqOXRaV46PVslZFiQNw6dHWWTRm04DLNKtnZStgqIWEUwSt5xQ1vySwHaoagdvVkHgJgUPxlduqKk3kqIACBW1UgJ1d0LB8Jssp1IFklSXo36uSZ8BlASxhsO247T5w/DOYaZYxPrFDBG8Lt9C/C9nUvRxQ5S5WG6YkyzI3Vlqn5tKOVkwIwnaT8J8QzazLoiAhEbVYmIrU8iWrbevC+PrjwGeHTHVf0gDMwAwOXVJd93YNnqCvlZVhEwMZxzBDLJYO3E/regAxAYEVAWxquX7MbFq54CAj9BDScBKo0a1+tBCfAD9D6xGt/Zvhw9xkGqld8IgjaymBbpoGgBo6oOAJjUBezbLVHvcQB+c/vtfQwMClAHgKGqA/h0mD02ZA9EkQBgVREiM2cHSczgctZRpnv8CgIw5gxc4CMKPdgZAEjTJ0lVnxTXaW3dXdIytUNFbYIlXrLJEklUs4QRGHskezwADNZFnQRALXBE/aMcaDIrBRwxee2D9ECrp5Nu04wwTV4WTkDDOvxIKXVoYSZ4BIBW01ad+UaSFmhWhsbxzblv/woCGaC2OVPhlDAq5igLIKrrCUz5AEuXqgEwpt4RTgmT1aOqBPDBYLMd718RTxEzFAyFAzV4304JPcbh408cjS9sPQKi0+NESvjWyQ/hxJ4RhJGF5wf44TOHo3/zsVhgQ0RVwIdKWGhDfO/U+9FjI0TCsDbEv2xZjS89tQqL/Ar2hh56jYNrAEJMNT6lWoNNC59mNpL8gE6JmAk01RNQxQS8w0OAKL6JBUA9AIrrxYJQdmaZQGEVsfMPUhAfoAlIcxRakw9BniJMqI8yhfAhkISEmBTbAx9PV7Kg6u9alvsjD09M5HDivP2T6yvn2wibSnn02igGDIBACYu9sGrba3JQ7Ap8PDLehcWhB0DhUXIfwEJRUosJ9dBFEfy5vAqgUzxQvKA37gmAVRUV0GL0w2CAo1pPgIGaQ8pa7oetEC/WeEU5oXaA3yF06OrJQvDFibV4ibcD18/7GZZwGfs1k7ouwCdFl3HIsiASRiQMnwXd1k2ZgGq3cJ6NsMAP0W0d8sYhx4I8C3LcKDSPFPnqc48UjY0/XoWzBxmsscO4ef6tON/bgS9OrIWFtFEfnVdYe/4lkcbCJKiiomYBNmHazu3pLXsFSJRydXloUnFnxUyHbwkIOXL4ceVIXDr8p1hr9uMX82/Bhf7WeIlYQ9cn/lMWhiHFixbsw4sX7kXWCAJhHJ2bAIRjxUyKkdBi52g3do3lUY4MqNqqG5ee1cxQ1RdI0j6Id/+8IfMYfjb//6CbIrx6+FW4uXIkcvXb3dsod8c0bZyj4QFAUwUSUGanYNp6jrpxAAUG0R0q9cTeDMV3HFDt/pWD0FVJY7r6VQF0U4gHo0VYt/8ifLf3l/j+vF/iFcMX4q5wGbqru2trb4bKWOiFWH/qgzht3n5ACU9P5HHzriU4OlcChOKRPEfYrj7ee8FdWJYvYf09L8ATe7pAVrE/7MDfRbz2f7/6uNR/Al/rvRNfn1iNvxl9UdV0hYnm6lARxS1fwQxShQPn7ggO7wW27ayNBUzTAFtCZCKY3FQKLcY0D0HZHAi9FIIBvGlkHf4zXIQP5h5ogKQhxZgz+MsVz+C0hXsQRhYqjJW5Et511BPwKDYbRhUwFq9/7f249q378ZE3Wtz63ptw1op9WJMp4dLlO5BJMANJFHevCD0U4oP5B/D98kq8d/Q89FCILoqSF7IcKppsF7W+iUJAma3OdtVHmzYSmDPQlCGNZ5UiELKIsFez+OzEyfhC951YZcawzeWRnaFiD8+U4WRq+4UIQ11NxRM4MqCjdyK7ag3covuhlMNh+hLc9rpbgN+vhM1PAJFJ7VLWE0FRVg9n2l04jCfw7tEXgxE7g6nr/59dUt9OR/ezCNHOiACEYCykCiIQQmUwpo3agwDcPTIPps5S15ZlMQuMF59E5kgQIQ+YPMgQIukFs4AJCEKvQ74UQXXB9DyuIAQ3+ifPYZoGgAmXOpD9rJIHwT7N4CSzFwNd9+M/gsOxVbrgk5sUtSih10b4wc5l2DQyD9ZGcNXBHrBg42gvfvTMCkywwAwtgN33AMzec2H2Xgg7fAt4+3xwpgTfD5ryUk+xoxrhoWghHowW4tPdd2MZlzCiPrzn5tXB5GS6Uz/NBByVRcijqEw1q2Y9AI3Hxw8yXAjATsnhZLsXN837OQIwPl06FZnJlbaT3MCSYiSy+NtHTsTNZ94LwwqReHGmkOK9G9ciYx3W9ezFiVtGcMQJT6DHq4CeOhHlvVnsUouhSgbvOeJJdNmoefHr+FMAA6WzcPO823DjvJ+jMHwBnnbdWMjlZ1sX6PT5Ug17qFKpj0BTsUi1X/0z7rrwoS0671hPQlWFuigcN358enUjUYIvmASKpIGgtLNxpscNwXhT9jH8U9c9+G24DO8bOxc7JN/Yvap+tQTsDj28dcUz+JdTfg8XWUAJxgvx6GgPXnnv2XiykkUXBC7y4vEBjgCjKIvBEi/Aw+f9GvO9EKEwPC/A1Y+egGseX43FfoCoNvtWJ1mGYlwtjjf78aWe32Alj+Gj42fixsrRMDUupyFBE/5ow+OGnpdOD9OU8FqFuLAyxsZmmciGZLCMxvffvuDWE5bfgJ3TBoImaTuUoEFdsm2174OBcq6Oqr039xA+mr8PHxo7G1eMvAw7JI88RY3dqyoTUXU072vbDsfVjx4PY8M4PPRwXPcobj3zbpycH4dnBcu6x9Cbn8C8TIj5NsJiL8DCqp/QSWkFhG4KsdHNx0X7L8RnS6fgmq678Z7cw9WDIGfqqjmkROHXP59SYwyEyzxMO2o+vuoUUEAodx3CDMluipcLxPdpI2XcsyVTBxhJ44p9ZeZp3ByswhcnXoAcHLKIqh52+vuREhb7Aa554mh8dvOxMFW7HkUeju8ewQ/PuAdrciUMVTJgjecSnBKi6qdz1mOvvxshCIRPls7Ej4NVeGVm64wzANtOsHMWkmKoanwjeryrO0NuH87HSH27ntIAhcs5ApCBG2IiKKF6UbISVObGo5kF+Etq4UGQp9h0tR5YiTMRJSz0QvzDY2vwhc3HwNaB4Kj8OG4583foW7APe8J446lOvtmMyeYFcNVJqzxV4EFQ0jk71r/zuotH8zW+pxBCRPAhe/AORIBMrgiaAsDQEDkAXey2MtVpfyJStDWg3TH3aaaunmrqs75fnTpSMcOMahUEH9p0HK7dvAbWD0CkcJHFIhvh5jN/hyuW78BIZKtzBdqEl+l2u1msGq+z6g62UyltpSOiiKdFlaBEhCy7ZzyCov+qerMQU181y/lc3mIwpfUpvtivgxHNA7VxSc5QWroJYXU2sQaCBV6Iv990LD696TgYG8YdNFI8Xc7hsVIOHkk879WM9dTyV/NK47UFWA9OL4GqFnSqB2BI0cPhFgcAt98+KffJL0uriwSWm/JjnkbQ2gJYIqOiB+kGyzaKP+samg6CRV6Ijz62Bh/744nw/ADbyllccu8ZuHe4Fzl2kFTbX+f1H7C05rBxNCMCIOqouqVfEY9OLqLyo4q4sddo0kitXVtUADgrs2fzD0urgjHK+lABMRtxUfrJRtWxgLa7DHNEOtnDTch5Mij+ooh9gsV+gE89cTT2RxYPj3ZjY6kLi7xw0vEzpBhxBq+670yYql9AUOwOfPSaKGERSFLrb3jcqiTtROqYVMURs42xAONLgFX+2B+BqcYO1GmAqwZit+HKec883UXhdo3velIiMqSQjqcIEjzlpPBkk5em7qeHa/LLM6LHXxSxt7/YD/BvT6/EA6O9WFgnfGBq7d8j4114aKwbD4914aHRbuwOvElAzOSxsVrSVEWjWUirovRKSoqWXHZVcUTxZZTChjIajF+e2fI4AKwvFied+kkAxI34Y+xfh1IPRw9z3HuQ2Amcw55AErcHM51ptRWvjZvvhchy8rIugiJvHPIcVReBuIQVQAen1c4ZqWi1B2BiGTK6Kdx08uvLz1QH4Bo1AACg73YOASw15bssA0qsAOI15qJh+3sDO6ugthzfSWGlaYEmCUxrlAqntftVNOEDiMQmQ2JPKlX4ya2/ntcUXlrx2/rFJkRQlcm9HEoQy4SFHN5nLodD4bJpG3ymAaBQtQ2rvf2/y2oIqTqCxGRVJeWywinvOV2lzQg4YNs4CxDUHrXzaSPfzixiY+TZqv+W4QSoSETMNo5G8MhhpRm/SwD0VZf/12gaAGq24dPZp+7plok9woahosTGg6qLt4oeDNKU8rfRnao9nnXLapdaCT+N1zbCZ8VFShqx/Y+YyCNVCNjmXTm8MP/0rwFg3brB9PUAsW3o58z1Y7sXceVuYgY07k8qgVWca9/XbwHdTsvfMPqb0Kp0pmM4F0CYSmd6+im8tJFla03ZcYQpEldd3GgMVEXZYAGVN155wo5NAFWd/SlqWBDS13c7BwCOsOO3ZVgh1WVhRPHRI8ny78QMpFGaFmiWXnLERm3QKRga30lX+QnCT6qjafXTpl7v1PsngqhUqLqRVwniGcIyLv+CBxCh7yV25sxEAwBqKuLC/M7b8m4iFJAlVTCzD41HiNqnTrXA9ACaFt5MlbbSBjPjtu8EpLf6GYy0rd7btPHtR5gWVUUiMsaHKkSJc1LBydk9P1FM+Xj11ACAgQEIoPQXNzy5cTGX74GxgKoDc3wClUiUagYOWAvUNSLF5IqeVlq3WSY1AXaC29bvNANkTIK4S1nfWJuz0CkwEkicxCe5sSVVEWN5Hkpbrln8yJ0ATev/1yhxTWBf3zpDBD3WjBQzrJOLm9iYjDqXsmaqU3c1HS0ERRkGR5tRnGT349bKKhgIGualU1t4So7a3qc5teaBoNgQzcdZ3l6cYIZRhkEilFvaPG38lqb+QRCRAEw+ACiReIZxpC39kK9DCYXLTNLEdPJJoYOxGXhnbuuNPa407sgYUlViUz2OtHV3oCMtMOMZQzEsPv42/zA2ux78uLJq8oatxEo8EJXTNiW0+oR8a4tDri+vwS7J4KLMUxgVv3FmsIP6aJs/cQGzyUAVDmS6ZELW5XZ+VwEUUEx8KxEAA4Cgv59fWtz+1OFm/Fa2FoC6+uNIUz2dZvq6maC0xpBiTC3O9XfizbnN+Oz4KQiVWq+qaWrvZ0spaTQpowLIQLDN5XFtaS3ek38Ex9r9VS2Q/l6z8HZavzoXKsXH+JKqg7FYgvG7/8faTfcASmkXTKcfF79hA0UAXpbd+a89qCBS4uo5dFmIq7RTse1V/fRYtbN235nfiD3i485wKXooTJitSwFBqnDSHb2247TpkDiNN7P8tLISXRThjdnHMCK1s44xU6LNkmobvuKiMjNngdj/yLHQGf7e62gA0te3LvV4n1QAfK9YdIDSP57yyO1LdfQ+tV6MLGYCsVUXzZEWmAokjW/ZWG1H0edtx1Vjp2OPZGBnOFPT32siqKa11woQ7aSVrB1iLeCwKerFJ8dPxp9ln8IiriCI1+g0z2v6lxnPUlq/uAhERMYYEhHHHi9yo09/KXP/jYDS7YODqdP56RdXAygULmcaQHROds/n8yzkAEAVbEz1bPoWFdfAcjMQxOq/rAYf7noQAPCjyir0UDB9FWOqzU9JtE05dxY/xSzUBcWrq0J8d+IYHGXG8Nf5DRiT+k2tnar+dBIXldnYbDWq+pboZG/fV6mI4ULhcm62KrHpzqC426B07dIHiotl9DExHle1ABMxSxRVmo56tMc/gLjLVAFjCZfxmsxWfG3iOIypjW/ZAKCY0Qdot0WmRUn7tPVyQvC0GDGvWThskzxuKB+NK7JPIAtJX9DaVt4ziaAuCqGqxGxJRCK2vMCN7vsf3uPXAaCkrl89NQUAAVooXM50HUqn+Xs/lTMgAWItYG0e4iqTZwgkMdyBKWAoxsXiHfmN2CVZ/Mv42tj2TwNYAgha2vy5oPZ8Aq37H4hnErNwuGbsVPRwiCtzmzEy89q4aa904vjF4erchLFevhpLfWvoBG//l/7kB7u3o1Bo2vqBNvYGxgjq52+cfve3V8q+h53xYy1ARGDjiwvLTecH2jAFBKACxpF2DO/vegS3VFZiRDx4mrQiXZO1QUt1PVsb0J7gNSFuTQs87brwm2AZPtz9e8yjcPrtJy2Fn0YEiaIKiCyYDWnc+pfK8M5vz//9tQolbdH6gfZuDtVCYQPRAMovyu36aDdH5OJdx8rWZiEaQlzKquFmpmAKBAaKUfFxYWYb9oqPL5dOQHftjp0mrbwTV6Ax0ixsQIrpb+Z/aFULfGbsJOQpwrn+0NTtJ82E3yQkDhaFSIWtzcXDvtCsJTrN2/uJnu+MD7Wy/TVqfxlffz9nrx6Qs1/50p8/pEsvsFHFKbNRkUijqMR+pjc9v+nbxWjaE0IEwjwOccfiW/BvpTX42OgZWM4TiNq+ZqXFVu65X9HeUvD1ZCHYKVl8Y/6vcaq3Dy/f84rWwm+q+qvbvph9MtYnERca3xxD+x65e9nPzqCj+gMdGNB2AND+9fEYQFkJf9n95AcWaakSEhOpKDFbJTISheX0FUPT/YF6rgwEI+Lj4sxTWMQBbiofiV4KZqzYSXhxRvpT/5Kzn/UnMZkm2iLBNimAHDlcP7Eap9hRnO/vrI4LpGjoFsKPu+CqtUsjIxB6OcQrss+8n76JcmHDBmpH+EAn18cPQAqFy8zbio//4XR/6JO+Z1lADqowntcFkUBds/UCyU5hzHwFb8pvxrVjJ+DBcGHCuToNBrcJTQFhLlzARqE3EXxjEwZQvRybQvyisgLXTxyBt+U3NSwybc/uA1BRdVHZWL87nrwQYd83a2nXNz9508M/LRQKplgstr2Mv6MDItYXi6KFgvn3hXddc4TufdAZz5KqgwJsbZdG4XjL2ZQ6/88gHvN/c/4xnOoN44aJ1cgjSqmDRM+rRUY641+7DT/pjabZNAuYJAPBd0pr8OrsDlyU3YoR9VG/Cac1CgguDMbI2ly8b1MlYp8Pk+Fnru167O8i9PPaYrEj3HcEAAK0f21R6Zsovyv/+F8twkQYkgFBFMwGbDMuCsaaaoG6PyEIXRzirfnHcEv5MPwx6kWO4nP7mqn7zoCQ9O4BOIJN801/12msBX4bLMavKovw5vxjCJWmjEAr4RNBorBEzJbYeBSf4q29JqKLs0/+9XHFHbsKhQ00gDS7kkwdHxETm4KCefuNj99zrrfjwzmPjauaArYmQyCWKJho6g8g3qkyIh6uzD2Bk/wxfGX8OMSn+LRj82sPE4AwF3q/VZaJgm9tGhjxYNfVo6fi1dmd+Iv8YxiuaoGpyAlEBA3DQFWErRd7/YCzvm9O452f/9RNj/ywU9U/mXSnL1TZJCoUOFssuhe9uu/7D+jySzmqRABZEMGFwSgzZ8h6fppJqE36nJ3ZjZdltuNzY2sTmEnpOnRalNn2AloCsN33G+O+v3sD/qOyHHdVllTPO0ghIqhz1Z6W3wNVIhUX2qw5kXbf9Zuzf/ES2lBwWixKu47ftOQ7faFG/QAPoB/6tv81/0+2nfPbzTr/OM9VnBIbEGncTbEZsjYVBASgrBZlMOZxmMJQJyDoOGKH1IF5SHmn9mtYPGQgyFGazwPUJno0ikrsed3xXYAiAXt8hBnb/bnee8654N93b+7vV45XcnVOsz4lbACQ/v4B0NdG9v5t16bCch4fDtljUhUAZKzXpS4qo0nPQAFkKcJCCqaFNVaZpj1MoVnY9LlIZ1q05JLUaCEFLYUPFdEoLJFn8yBiUtGQjC7kirssu/UNF/z7rs2FwmVmtsKv5nJgVLM9H7nkpIuvr6y5ab+z8OBIiQmq6qJwnI3NkTGmeQ+h8RyhZOZmoxEOMjVp8emPW9SFSnw+k7F5MDOpaATj8h7sq+3j777uR/d/ua+vzw4ODqZs2GmP5qQKa4y865Iz/+q2cNVX9gfkPBKugkAkDMfImCxb66fOHdWzQ4mhzVk/1GBooweQHqVJHUza/LDE1uuqjvNrBHZ5j+2LzdaB9T++6yrX12dxgMIH5rLa+vqsHRyMLn3NOX93p6z8VDmUyECMxvcOisSaoKlP0MBWW4094ckhdQHSRy0af7Qod53DR9bm49W9og7kPM+zp2H7tb+85dfvrxQKZrZOX0OWB5rANOrrszw4GF180fkfukeXf6IUSL0mgIuCUSJjjfVyrU+eStYGzZmew57ALHsAs2r1AIgILowqEFeZdPiqLd/3rD2Zdn5+8CeD7wvnUPjAwWgrfX3WDA5Gl1x03gfv02WfHA5ZPHVQIiYiRGE4DoIa63Un7PdKZ3FWDX2uitecx+aKoR05xYM8qiLG87uhAEE0Upa8z+YUDH3uF7f86gPBHAsfOBhnBQ8ORq5QMD/6yZ2fepV96t3zTEQhWyYVp6qwnt9FRDYKghGIc62PZK560wmOeGv/vN2Rv9mNDDYfE2qn50CAqEhQGQGUrBeP75OKhDDIe2RebLYO/PKWX30g6O/nuRZ+lYODRFUn5UOXnnrpD8tHfGOH5Hs9CSYHi1QkclFUYsM+Gy/bfrlaOwaHfBSgRS8giQgEcVHgXFQ21uaYracqIBUXsG8Wmkr0cm/be776o3u/LAeh5U/xcRCp1jv4SuGYM788tub6LZh/LKIgMlCjFJ9B5aJgjATC1usiZtPZqZSddQnn9HiLWQh9kou4izcGAMZ63SAiUlEBOWd8eziNDhVyT/5F//cfvg1z5O034ebgUg0Eo1d2LXvt6Nlf2aiLLy6Hop46jf0ChkgUauRKYPLZern2fIOZdAjGB9ro+qVTzJS4sKzOVdjYLBuTUVWQqkRgWN/yGtr7m4/3PvKWdddv2zQX/fz2uDrIVBssyhNw6UXn/cNvo0VX79McWwkjqtMGEkUlFRcy2yxZm4nfno3WO4DewIGO/6dkqC4K1LkJJbLG2jzi2VwF4CLybK+JcJrZfe1NZ/76gzSAYLaTO7Pj7hBQfz94YECVQPqp1x+/7vrSUV/YSvNPdmEIq642hwCIiHPROAFKbLJkrB8rhLkyfweEgI7zUXGhuKhMgJKxXcxsplo9gT2fD8PI1tdktr3/0zf9/vsRCAcytj87Lg8lVW2avhU9rxs6v//BcMH791HOcBQ6A6VJs6AuEufKJOpiIJgMmOYQCAeJqmczq3OBiisrQGxslpk9VYBURAB1xje9FOAks/fr/9az8cPLbxjaiYPo7KWye6gyqqeaejMAPv26k150Y3nFNVu098UlxzASOgZIieJTrsQ5dVKGSgQ2HjFniI2ZW61wgFRbgSdORKQCkUCZDLPJ1g5rIhFVIheRtVkLrMTw7/80s/Mj/+8PHvxJgKk6OeSsH+oMa1RbU4Bi0amC3n3pWW/5XbDoQ8+g97hKpDASTQMCVFXEVeCkAgKB2GNmH5NgAA5dw6EpP1VERF0FomF8RRv5bEwGxIxaiycSR8Z6lrFMR7ed5g1/9lvH3Pkl+l+YQH8/t7uC9yCV5Nml2DcgART6HvS+cct57/pDOO9vdnH3qooD2EViIDrpIwBQ55yKlIHqGcbEhog8YvZAPDW2NCegqFvSrgBUVEUiVQ2hGgEKJeL61h4P5qgTAI4941vCQhnbfaIdve7GRfd+gb5Z2gEQCoXLnpVWX0/POgBqVK8C9W1Y+PZdL/zL+8P5f7UTXSeW1AIugoFGpMqTWgGITYRqqCJh9Wa42rCzJZAhIoPJ+C26ivXDt7GwRQFRlQjxgdmuepcqxefwkk/GmNgaxY6dEolTsrAWORIs0rEnX+CPfP2j8zd+9YRv7d2mcWEPua1Po+cMAIDpZgEA9APIffDJ01/7n+VFb9sWZV82ZvImFAU5p4bUkSqByGht/aEqVMVB1akiUhUhQCbXk0zqhmq/c3reQHzdOpFOHUaiBKb4Jm4DgiWe0kQUnykjShBRYmHL1jC6ZQLLeOLO0/z9X//S/Lu/R9/EfgDPKcHX6DkFgBpNAeF7DlDkAHyxcOxpt5aXXrY56rp0j+bWljiD0AEQB1bnmKCkIMQtvpZONcGqoFQ1vkEy8TQgQjxrSfFNOVNahmamQxAFQcBW2cAaQl4qWECVzavN+I/Py+wp9n//4TvHazk8BwVfo+ckAGqkAF1eKHAxvu8+tuj/Cu/jPz3xnHsqi161w2Uv2COZF4xzNhvAwonGd1uoKJO6GgxiYIBQswMENBZdJ9VArEri5ZdAbFdEEQ9YsYFhgk8OeTcRLeRgw3JT+Y9TvZFbrn7BA78xAyjFHfjYxq9/jgq+Rs9pANRTfz94YEOBaloBALoJuPnKw4+9YWLFeU+FuXN2S+aMUbHHlcmfH7CHEBwfNad1jV6B5MPnCJOmhAhU/RgAlhx8CZHTcLSLos2LuHLfKm/idxfmtt9x2eu2buTL4SZTKxRM/9qiHqqBnAOl5w0AajSpFYaGCIO/imqCZAA5Aja8Jbfi+r1HrN4kvcfukuzxY2KOKqm3oqJmSag034GykXLOEWVqu7OUQKwaeiTjBAQZcvt9yO48u2e6KXhqkQ0fPcYO//HS/NDjJ31r31ZLqLtChYDCZaaAeOfUc7m1J9HzDgAziPr7Qbff3seDS5dqvXaoka1+Jv4VHh5A91Apn/l1sKBnl/PyrCyRKLFR6o0qlfN6tu8/ShDifIzk34kwBNA4ExMLvG9oiNatG5SrBvCs9eHngp7vAGig/n7whg0FGhoaokEAWLpUUVwvAGv7ciIAQihczhgaoj7E16ysjVV7Oys9njf0Xw4AaaR1Zb2qP7nc9SdpP59b9X/Tf1Pb9P8BgzkR7wHC+D0AAAAASUVORK5CYII=" alt="Sutram Icon" style="width:96px;height:96px;margin-bottom:20px;border-radius:50%;" />
+<div class="dev">॥ सूत्रम् ॥</div>
+<h1>सूत्रम्-पुस्तकम्</h1>
+<div id="preface" style="margin:18px 0 30px;padding:18px 22px;border-left:3px solid #b8860b;background:rgba(184,134,11,0.07);border-radius:8px;line-height:1.7"><b>प्रस्तावना.</b> Sutram इति एका सङ्गणकभाषा अस्ति यस्याः मुख्यशब्दाः संस्कृताः सन्ति - न केवलं सौन्दर्यार्थम्, अपि तु तस्याः रचनासिद्धान्तत्वेन। अस्याः नाम 'Sutram' इत्यस्य अर्थः 'सूत्रम्' इति: पणिनेः Ashtadhyayi (विश्वस्य प्रथमा औपचारिकी व्याकरणपरम्परा) इत्यस्य सङ्क्षिप्तः सूत्ररूपः नियमः। अस्याः मानकपुस्तकालयः साक्षात् भारतीयगणितीयपरम्परां प्रयुङ्क्ते - पिंगलस्य बाइनरी-पद्धतिः तथा मेरु-प्रस्तरः, आर्यभटस्य कुट्टकः, भास्कराचार्यस्य चक्रवालः च। तथा च सङ्कलनयन्त्रम् स्वयंपूर्णम् अस्ति: एकं हस्तलिखितम् असेम्बली-सञ्चिका यत् साक्षात् यन्त्रसङ्केतं जनयति, यत्र भवतः कृते कस्यापि रनटाइम अथवा टूलचेन इत्यस्य आवश्यकता नास्ति। इदं पुस्तकं भाषां आरम्भात् एव शिक्षयति। प्रत्येकम् उदाहरणं वास्तविकः सङ्केतः अस्ति यः सङ्कलितः भूत्वा चलति, तथा च भाषायाः विषये यत्किमपि कथनम् अस्ति तत् भवान् प्रमाणीकर्तुं शक्नोति।</div>
+
+<div class="legend">💡 <b>प्रयोगविधिः:</b> कुङ्कुमचिह्नयुक्ते शब्दे माउस् नयतु — तस्य अर्थः (English) तत्क्षणम् दृश्यते.</div>
+<h2>संस्कृत-कूटशब्दः्स्। नेटिव्-मशीन्-कोड्। सर्वाः भाषाः बध्नाति एकं सूत्रम्।</h2>
+<div class="badge">संस्कृत-संस्करणम्</div>
+</div>
+<div class="toc"><h2>विषयसूचिः</h2><ol><li><a href="#ch1">सूत्रम् किम्? <span class="en-gloss">(What is Sutram?)</span></a></li><li><a href="#ch2">भवतः प्रथमः क्रमादेशः <span class="en-gloss">(Your first program)</span></a></li><li><a href="#ch3">चराणि च स्थिराङ्काः <span class="en-gloss">(Variables and constants)</span></a></li><li><a href="#ch4">संक्रियाः पूर्वता च <span class="en-gloss">(Operators and precedence)</span></a></li><li><a href="#ch5">निर्णयः: <span class="k" data-tip="अर्थः: if">yadi</span> / <span class="k" data-tip="अर्थः: else">anyatra</span> <span class="en-gloss">(Decisions (if / else))</span></a></li><li><a href="#ch6">पाशाः: <span class="k" data-tip="अर्थः: for">punaravartana</span>, <span class="k" data-tip="अर्थः: while">yavat</span>, <span class="k" data-tip="अर्थः: break">krama</span>, <span class="k" data-tip="अर्थः: continue">uddeshya</span> <span class="en-gloss">(Loops)</span></a></li><li><a href="#ch7">फलनानि: <span class="k" data-tip="अर्थः: function">prakriya</span> <span class="en-gloss">(Functions)</span></a></li><li><a href="#ch8">पङ्क्तयः: <span class="k" data-tip="अर्थः: array">pankti</span> <span class="en-gloss">(Arrays)</span></a></li><li><a href="#ch9">गणनानि स्थिराङ्काः च — <span class="k" data-tip="अर्थः: enum">srijana</span>, <span class="k" data-tip="अर्थः: constant">sutra</span> <span class="en-gloss">(Enums and constants)</span></a></li><li><a href="#ch10">सूत्रम्-कवचम् (REPL) <span class="en-gloss">(The Sutram shell (REPL))</span></a></li><li><a href="#ch11">भाषा-संकुलम्: स्वभाषायां क्रमादेशः <span class="en-gloss">(Language packs)</span></a></li><li><a href="#ch12">दोषाः दोषसुधारः च <span class="en-gloss">(Errors and debugging)</span></a></li><li><a href="#ch13">सम्पूर्णः सन्दर्भः <span class="en-gloss">(Complete reference)</span></a></li>
+<li><a href="#ch14">नूतनाः विशेषताः <span class="en-gloss">(New features)</span></a></li>
+<li><a href="#ch15">पारिभाषिकशब्दकोशः <span class="en-gloss">(Technical glossary)</span></a></li>
+<li><a href="#ch16">धातवः — मूलानि <span class="en-gloss">(Sanskrit roots)</span></a></li>
+<li><a href="#ch17">विण्डोज़-स्थापनम् — मूलरूपेण <span class="en-gloss">(विण्डोज़-स्थापनम्)</span></a></li><li><a href="#whatsnew">18. What is new</a></li>
+</ol></div>
+<div class="ch" id="ch1"><h2>1. सूत्रम् किम्? <span class="en-gloss">(What is Sutram?)</span></h2>
+<p><b>सूत्रम्</b> इत्यस्य अर्थः "सूत्रम्" — यत् सर्वं बध्नाति। सूत्रम् एका कम्प्यूटर-भाषा अस्ति
+यस्याः कूटशब्दः्स् संस्कृतात् आगतानि, यस्याः संकलकःः शुद्धायां असेंबली-भाषायां लिखितः, या च सरलतया
+x86-64 मशीन-कोड्-रूपेण परिवर्तते। नास्ति इण्टरप्रेटर्, नास्ति वर्चुअल्-मशीन, नास्ति रनटाइम्-लाइब्रेरी।</p>
+<p><b>कुतः शिक्षणीयम्?</b></p>
+<p><b>१. पायथन-सदृशी सरलता, C-सदृशी वेगः।</b> भवान् स्वच्छैः संस्कृत-कूटशब्दः्स्-भिः पठनीयं कोडं
+लिखति; संकलकःः लघुं नेटिव्-बाइनरी निर्माति यत् हस्त-लिखित-असेंबली-समानं वेगेन चलति।</p>
+<p><b>२. सर्वं पश्यति।</b> संकलकःः एका पठनीया असेंबली-फ़ाइल् (~९००० पङ्क्तयः) — भवान् द्रष्टुं शक्नोति
+यथा वास्तविकः संकलकःः कार्यं करोति: लेक्सर् → पार्सर् → कोड्-जनरेटर् → ELF-लेखकः।</p>
+<p><b>३. भवतः भाषा, भवतः शब्दाः।</b> भाषा-संकुलम्-सहाय्येन भवान् प्रत्येकं कूटशब्दः् हिन्दी-तेलुगु-बाङ्ला-तमिऴ्-
+आदौ लिखितुं शक्नोति। संस्कृत-कूटशब्दः्स् मूलम् — सूत्रं यत् सर्वाः भाषाः बध्नाति।</p>
+<div class="try"><b>आवश्यकम्:</b> Linux x86-64 तन्त्रम् (अथवा Windows-उपरि WSL)। अन्यः आश्रयः न।</div>
+</div>
+<div class="ch" id="ch2"><h2>2. भवतः प्रथमः क्रमादेशः <span class="en-gloss">(Your first program)</span></h2>
+<p>प्रत्येकं सूत्रम्-क्रमादेशः <code><span class="k" data-tip="अर्थः: main">mukhya</span>()</code>-तः आरभते — चलनस्य "मुख्या" धारा।
+सेमीकोलन् ऐच्छिकम्; एकस्य कथनस्य कृते ब्रेस् अपि ऐच्छिकम्; टिप्पणी <code>//</code>-तः आरभते।</p>
+<pre><code><span class="k" data-tip="अर्थः: main">mukhya</span>()
+    <span class="k" data-tip="अर्थः: print">likha</span>("Namaste, Sutram!\n")</code></pre>
+<p>एतत् <code>namaste.sm</code> इति नाम्ना रक्षतु, ततः संकलय च प्रचालय:</p>
+<pre><code>$ sutram namaste.sm namaste.bin
+OK: compiled 90 bytes
+$ ./namaste.bin
+<span class="out">Namaste, Sutram!</span></code></pre>
+<div class="note">संकलकःः सम्पूर्णं चालनीयं ELF-बाइनरी निर्माति — अस्मै क्रमादेशःाय केवलं ९० बाइट्।</div>
+</div>
+<div class="ch" id="ch3"><h2>3. चराणि च स्थिराङ्काः <span class="en-gloss">(Variables and constants)</span></h2>
+<p><code><span class="k" data-tip="अर्थः: variable">vitti</span></code> ("वृत्तिः / अवस्था") इत्यनेन चरं निर्माति। पूर्णाङ्कस्य कृते <code><span class="k" data-tip="अर्थः: integer">anka</span></code>।
+स्थिराङ्कस्य कृते <code><span class="k" data-tip="अर्थः: constant">sutra</span></code>:</p>
+<pre><code><span class="k" data-tip="अर्थः: main">mukhya</span>()
+    <span class="k" data-tip="अर्थः: variable">vitti</span> x = 10
+    x = x + 5
+    <span class="k" data-tip="अर्थः: print">likha</span>(x)        <span class="cm">// 15</span>
+    <span class="k" data-tip="अर्थः: constant">sutra</span> pi = 314
+    <span class="k" data-tip="अर्थः: print">likha</span>(pi / 100)  <span class="cm">// 3</span>
+    <span class="k" data-tip="अर्थः: print">likha</span>("\n")</code></pre>
+<p>प्रथमानि पञ्च चराणि रजिस्टरेषु (rbx, r12–r15) तिष्ठन्ति — संकलकःः स्वयम् एव नियोजयति।</p>
+</div>
+<div class="ch" id="ch4"><h2>4. संक्रियाः पूर्वता च <span class="en-gloss">(Operators and precedence)</span></h2>
+<p>सूत्रम्-भाषायां सम्पूर्णा संक्रिया-सूची अस्ति, गणितस्य मानक-नियमैः सह:</p>
+
+<table>
+<tr><th>Operator</th><th>Meaning</th><th>Example</th></tr>
+<tr><td><code>+ - * / %</code></td><td>arithmetic, modulo</td><td><code>17 % 5 → 2</code></td></tr>
+<tr><td><code>== != < > <= >=</code></td><td>comparison</td><td><code>x >= 18</code></td></tr>
+<tr><td><code>&& ||</code></td><td>logical and / or</td><td><code>a > 0 && b > 5</code></td></tr>
+<tr><td><code>& | ^</code></td><td>bitwise</td><td><code>2 & 12 → 0</code></td></tr>
+<tr><td><code>( ... )</code></td><td>grouping</td><td><code>(3 + 4) * 2 → 14</code></td></tr>
+</table>
+<p>कोष्ठकानि पूर्वतां परिवर्तयन्ति — गणितस्य इव:</p>
+<pre><code><span class="k" data-tip="अर्थः: main">mukhya</span>()
+    <span class="k" data-tip="अर्थः: variable">vitti</span> a = 3
+    <span class="k" data-tip="अर्थः: variable">vitti</span> b = 4
+    <span class="k" data-tip="अर्थः: print">likha</span>((a + b) * 2)   <span class="cm">// 14</span>
+    <span class="k" data-tip="अर्थः: print">likha</span>("\n")
+    <span class="k" data-tip="अर्थः: print">likha</span>(17 % 5)         <span class="cm">// 2</span>
+    <span class="k" data-tip="अर्थः: print">likha</span>("\n")
+    <span class="k" data-tip="अर्थः: print">likha</span>(2 & 12)         <span class="cm">// 0  (bitwise AND)</span>
+    <span class="k" data-tip="अर्थः: print">likha</span>("\n")</code></pre>
+<div class="note">पूर्वता (न्यूनात् अधिकं): <code>||</code> → <code>&&</code> → तुलना →
+<code>+ - & | ^</code> → <code>* / %</code>। सन्देहे कोष्ठकानि लिखतु — वेगः न ह्रियते।</div>
+</div>
+<div class="ch" id="ch5"><h2>5. निर्णयः: <span class="k" data-tip="अर्थः: if">yadi</span> / <span class="k" data-tip="अर्थः: else">anyatra</span> <span class="en-gloss">(Decisions (if / else))</span></h2>
+<p><code><span class="k" data-tip="अर्थः: if">yadi</span></code> शर्तः सत्ये सति ब्लॉकं चालयति; <code><span class="k" data-tip="अर्थः: else">anyatra</span></code> अन्यथा।</p>
+<pre><code><span class="k" data-tip="अर्थः: main">mukhya</span>()
+    <span class="k" data-tip="अर्थः: variable">vitti</span> mulya = 0
+    <span class="k" data-tip="अर्थः: if">yadi</span> (mulya > 0) {
+        <span class="k" data-tip="अर्थः: print">likha</span>("Positive\n")
+    } <span class="k" data-tip="अर्थः: if">yadi</span> (mulya &lt; 0) {
+        likha("Negative\n")
+    } anyatra {
+        likha("Zero\n")
+    }</code></pre>
+<p>एकस्य मूल्यस्य बहु-स्थिति-तुलनायै <code><span class="k" data-tip="अर्थः: multiply (*)">guna</span></code> + <code><span class="k" data-tip="अर्थः: condition">bhavana</span></code> उपयुज्यताम्:</p>
+<pre><code><span class="k" data-tip="अर्थः: main">mukhya</span>()
+    <span class="k" data-tip="अर्थः: variable">vitti</span> divasa = 3
+    <span class="k" data-tip="अर्थः: multiply (*)">guna</span> (divasa) {
+        <span class="k" data-tip="अर्थः: condition">bhavana</span> 1: { <span class="k" data-tip="अर्थः: print">likha</span>("Somvaar\n") }
+        <span class="k" data-tip="अर्थः: condition">bhavana</span> 2: { <span class="k" data-tip="अर्थः: print">likha</span>("Mangalvaar\n") }
+        <span class="k" data-tip="अर्थः: condition">bhavana</span> 3: { <span class="k" data-tip="अर्थः: print">likha</span>("Budhvaar\n") }
+        <span class="k" data-tip="अर्थः: else">anyatra</span>: { <span class="k" data-tip="अर्थः: print">likha</span>("Anyo divaah\n") }
+    }</code></pre>
+</div>
+<div class="ch" id="ch6"><h2>6. पाशाः: <span class="k" data-tip="अर्थः: for">punaravartana</span>, <span class="k" data-tip="अर्थः: while">yavat</span>, <span class="k" data-tip="अर्थः: break">krama</span>, <span class="k" data-tip="अर्थः: continue">uddeshya</span> <span class="en-gloss">(Loops)</span></h2>
+<p><code><span class="k" data-tip="अर्थः: for">punaravartana</span></code> (पुनरावृत्तिः) गणना-पाशः — "i = a तः b पर्यन्तम्":</p>
+<pre><code><span class="k" data-tip="अर्थः: main">mukhya</span>()
+    <span class="k" data-tip="अर्थः: for">punaravartana</span> i = 1 <span class="k" data-tip="अर्थः: range-to">to</span> 5 {
+        <span class="k" data-tip="अर्थः: print">likha</span>(i)
+        <span class="k" data-tip="अर्थः: print">likha</span>(" ")   <span class="cm">// 1 2 3 4 5</span>
+    }
+    <span class="k" data-tip="अर्थः: print">likha</span>("\n")</code></pre>
+<p><code><span class="k" data-tip="अर्थः: while">yavat</span></code> (यावत्) while-पाशः। <code><span class="k" data-tip="अर्थः: break">krama</span></code> पाशं भिनत्ति;
+<code><span class="k" data-tip="अर्थः: continue">uddeshya</span></code> अग्रिमं चरणं प्रति गच्छति:</p>
+<pre><code><span class="k" data-tip="अर्थः: main">mukhya</span>()
+    <span class="k" data-tip="अर्थः: variable">vitti</span> yogam = 0
+    <span class="k" data-tip="अर्थः: for">punaravartana</span> i = 1 <span class="k" data-tip="अर्थः: range-to">to</span> 100 {
+        <span class="k" data-tip="अर्थः: if">yadi</span> (i > 10) { <span class="k" data-tip="अर्थः: break">krama</span> }
+        <span class="k" data-tip="अर्थः: if">yadi</span> (i % 2 == 0) { <span class="k" data-tip="अर्थः: continue">uddeshya</span> }
+        yogam = yogam + i
+    }
+    <span class="k" data-tip="अर्थः: print">likha</span>(yogam)     <span class="cm">// 25</span>
+    <span class="k" data-tip="अर्थः: print">likha</span>("\n")</code></pre>
+</div>
+<div class="ch" id="ch7"><h2>7. फलनानि: <span class="k" data-tip="अर्थः: function">prakriya</span> <span class="en-gloss">(Functions)</span></h2>
+<p><code><span class="k" data-tip="अर्थः: function">prakriya</span></code> (प्रक्रिया) नामकं ब्लॉकं यत् षट् यावत् तर्कान् गृह्णाति,
+<code><span class="k" data-tip="अर्थः: return">pratiyati</span></code>-द्वारा मूल्यं प्रत्यागच्छति:</p>
+<pre><code><span class="k" data-tip="अर्थः: function">prakriya</span> vishalya(mulya)
+    <span class="k" data-tip="अर्थः: return">pratiyati</span> mulya * mulya
+
+<span class="k" data-tip="अर्थः: main">mukhya</span>()
+    <span class="k" data-tip="अर्थः: variable">vitti</span> phalam = vishalya(7)
+    <span class="k" data-tip="अर्थः: print">likha</span>(phalam)     <span class="cm">// 49</span>
+    <span class="k" data-tip="अर्थः: print">likha</span>("\n")</code></pre>
+<p>फलनानि स्वयम् एव आह्वयितुं शक्नुवन्ति — पुनरावृत्तिः प्रत्यक्षतः कार्यं करोति:</p>
+<pre><code><span class="k" data-tip="अर्थः: function">prakriya</span> fib(n) {
+    <span class="k" data-tip="अर्थः: if">yadi</span> (n &lt; 2) { pratiyati n }
+    pratiyati fib(n - 1) + fib(n - 2)
+}
+
+mukhya()
+    likha(fib(10))     <span class="cm">// 55</span>
+    <span class="k" data-tip="अर्थः: print">likha</span>("\n")</code></pre>
+</div>
+<div class="ch" id="ch8"><h2>8. पङ्क्तयः: <span class="k" data-tip="अर्थः: array">pankti</span> <span class="en-gloss">(Arrays)</span></h2>
+<p><i>पङ्क्तिः</i> अर्थः "श्रेणिः" — वस्तूनां एका रेखा। <code><span class="k" data-tip="अर्थः: array">pankti</span></code> इत्यनेन पङ्क्तिः निर्माति:
+<code><span class="k" data-tip="अर्थः: array">pankti</span> tarika[5]</code> पञ्च 64-बिट्-स्थानानि ददाति:</p>
+<pre><code><span class="k" data-tip="अर्थः: main">mukhya</span>()
+    <span class="k" data-tip="अर्थः: array">pankti</span> tarika[5]
+    <span class="k" data-tip="अर्थः: for">punaravartana</span> i = 0 <span class="k" data-tip="अर्थः: range-to">to</span> 5 {
+        tarika[i] = i * i
+    }
+    <span class="k" data-tip="अर्थः: print">likha</span>(tarika[4])     <span class="cm">// 16</span>
+    <span class="k" data-tip="अर्थः: print">likha</span>("\n")</code></pre>
+<p><code>arr[i]</code> सरलतया पॉइन्टर्-द्वारा पठति-लिखति — एकः मशीन्-निर्देशः, C-वेगः।</p>
+</div>
+<div class="ch" id="ch9"><h2>9. गणनानि स्थिराङ्काः च — <span class="k" data-tip="अर्थः: enum">srijana</span>, <span class="k" data-tip="अर्थः: constant">sutra</span> <span class="en-gloss">(Enums and constants)</span></h2>
+<p><code><span class="k" data-tip="अर्थः: enum">srijana</span></code> (सृजनम्) नामकानि पूर्णाङ्क-स्थिराङ्कानि निर्माति — एकं enum:</p>
+<pre><code><span class="k" data-tip="अर्थः: main">mukhya</span>()
+    srijana LAAL = 1
+    srijana HARA = 2
+    srijana NEELA = 3
+    <span class="k" data-tip="अर्थः: variable">vitti</span> mera_ranga = HARA
+    <span class="k" data-tip="अर्थः: multiply (*)">guna</span> (mera_ranga) {
+        <span class="k" data-tip="अर्थः: condition">bhavana</span> 1: { <span class="k" data-tip="अर्थः: print">likha</span>("Red\n") }
+        <span class="k" data-tip="अर्थः: condition">bhavana</span> 2: { <span class="k" data-tip="अर्थः: print">likha</span>("Green\n") }
+        <span class="k" data-tip="अर्थः: condition">bhavana</span> 3: { <span class="k" data-tip="अर्थः: print">likha</span>("Blue\n") }
+    }</code></pre>
+</div>
+<div class="ch" id="ch10"><h2>10. सूत्रम्-कवचम् (REPL) <span class="en-gloss">(The Sutram shell (REPL))</span></h2>
+<p>संस्करणे १.० एकः संवादात्मकः कवचम् आगतः — पायथन-IDLE-सदृशः। प्रचालयतु: <code>sutram -i</code>:</p>
+<pre><code>$ sutram -i
+Sutram Shell v1.0 — the complete thread
+
+<span class="k" data-tip="अर्थः: constant">sutra</span>> <span class="k" data-tip="अर्थः: variable">vitti</span> x = 21
+OK: compiled 204 bytes
+<span class="k" data-tip="अर्थः: constant">sutra</span>> <span class="k" data-tip="अर्थः: print">likha</span>(x / 3)
+OK: compiled 260 bytes
+7
+<span class="k" data-tip="अर्थः: constant">sutra</span>> nirgat</code></pre>
+<p>भवतः प्रत्येका पङ्क्तिः एके वर्धमाने सत्र-क्रमादेशःे युज्यते, तत्क्षणं संकल्य च चाल्यते।
+चराणि पङ्क्तीनां मध्ये तिष्ठन्ति।</p>
+<div class="try"><b>कवचम्-आदेशाः:</b> <code>sahayata</code> (साहाय्यम्) · <code>sarvam</code>
+(सम्पूर्णं सत्रम्) · <code>nirgat</code> (निर्गतिः)</div>
+</div>
+<div class="ch" id="ch11"><h2>11. भाषा-पैकः भवतः भाषायां क्रमादेशः <span class="en-gloss">(Language packs)</span></h2>
+<p>भाषा-पैकेन सह भवान् <b>प्रत्येकम्</b> कूटशब्दं स्वभाषायां लिखितुं शक्नोति। गुजराती-उदाहरणम्:</p>
+
+<table>
+<tr><th>भाषा</th><th>English</th><th>संस्कृतम् (सूत्रम्)</th></tr>
+<tr><td>हिन्दी <code>चर</code></td><td>variable</td><td><code><span class="k" data-tip="अर्थः: variable">vitti</span></code></td></tr>
+<tr><td>গুজরাতি <code>ચલ</code></td><td>variable</td><td><code><span class="k" data-tip="अर्थः: variable">vitti</span></code></td></tr>
+<tr><td>தமிழ் <code>மாறி</code></td><td>variable</td><td><code><span class="k" data-tip="अर्थः: variable">vitti</span></code></td></tr>
+<tr><td>తెలుగు <code>చరం</code></td><td>variable</td><td><code><span class="k" data-tip="अर्थः: variable">vitti</span></code></td></tr>
+<tr><td>বাংলা <code>চল</code></td><td>variable</td><td><code><span class="k" data-tip="अर्थः: variable">vitti</span></code></td></tr>
+</table>
+
+<p>गुजराती-क्रमादेशः — सर्वं गुजरात्याम्:</p>
+<pre><code>મુખ્ય()
+    ચલ સંખ્યા = 7
+    પુનરાવર્તન હું = 1 થી 5 {
+        લખો(સંખ્યા * હું)
+    }</code></pre>
+<p>एतेषु पञ्चदशभिः भाषाभिः प्रत्येकं कूटशब्दं भवतः भाषायां लिखितुं शक्यम्। <code>lang/</code> सञ्चिकायां प्रत्येकस्य भाषायाः सूचिः अस्ति — भवान् स्वपदं योजयितुं शक्नोति।</p>
+</div>
+
+<div class="ch" id="ch12"><h2>12. दोषाः दोषसुधारः च <span class="en-gloss">(Errors and debugging)</span></h2>
+<p>सूत्रम् पार्स्-दोषेषु पङ्क्ति-संख्यां तथा च तत् टोकन् यत्र अटकितवान् इति वदति:</p>
+<pre><code>$ ./sutram_compiler galat.sm out.bin
+
+Sutram Error: parse error at line 4 near token '<span class="k" data-tip="अर्थः: print">likha</span>'
+Hint: check the keyword spelling and syntax near this spot.
+      Run 'sutram -i' and type 'sahayata' for help.</code></pre>
+</div>
+<div class="ch" id="ch13"><h2>13. सम्पूर्णः सन्दर्भः <span class="en-gloss">(Complete reference)</span></h2>
+<p>सूत्रम्-भाषायाः सर्वाणि कूटशब्दः्स्, एकस्मिन् एव तालिकायाम्:</p>
+
+<table>
+<tr><th>कूटशब्दः / Keyword</th><th>Meaning</th></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: main">mukhya</span>()</code></td><td>main() — program entry</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: variable">vitti</span></code></td><td>variable declaration</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: integer">anka</span></code></td><td>integer type</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: array">pankti</span></code></td><td>array (a row)</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: boolean">parigrah</span></code></td><td>boolean type</td></tr>
+<tr><td><code>sankhya</code></td><td>4×64-bit vector type</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: constant">sutra</span></code></td><td>constant</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: if">yadi</span> ... <span class="k" data-tip="अर्थः: else">anyatra</span></code></td><td>if ... else</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: multiply (*)">guna</span> / <span class="k" data-tip="अर्थः: condition">bhavana</span></code></td><td>switch / case</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: for">punaravartana</span> i = a <span class="k" data-tip="अर्थः: range-to">to</span> b</code></td><td>for loop</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: while">yavat</span></code></td><td>while loop</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: break">krama</span> / <span class="k" data-tip="अर्थः: continue">uddeshya</span></code></td><td>break / continue</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: function">prakriya</span> / <span class="k" data-tip="अर्थः: return">pratiyati</span></code></td><td>function / return</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: enum">srijana</span></code></td><td>enum</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: struct">rachana</span></code></td><td>struct</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: include">ayojan</span></code></td><td>import</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: print">likha</span></code></td><td>print</td></tr>
+<tr><td><code>nirmmita</code></td><td>allocate memory</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: true">purna</span> / <span class="k" data-tip="अर्थः: false / null">shunya</span></code></td><td>true / false</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: negation (-)">nishedha</span></code></td><td>assert</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: inline assembly">nishkriya</span></code></td><td>इनलाइन यन्त्रकोडः</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: print (no newline)">lkhb</span></code></td><td>नवीनपङ्क्तिं विना मुद्रणम्</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: input">grahan</span></code></td><td>निवेशपठनम् (EOF इत्यत्र -1)</td></tr>
+<tr><td><code># / //</code></td><td>टिप्पन्यः</td></tr>
+</table>
+<h3>संकलकः-प्रचालनम्</h3>
+<pre><code>sutram input.sm output.bin            <span class="cm"># संकलनम्</span>
+sutram --lang hindi in.sm out.bin    <span class="cm"># भाषा-संकुलम्-सहितम्</span>
+sutram -i                            <span class="cm"># संवादात्मकः कवचम्</span>
+sutram --version                     <span class="cm"># संस्करणम्</span></code></pre>
+</div>
+
+<div class="ch" id="ch14">
+<h2>14. नूतनाः विशेषताः: v22 <span class="en-gloss">(New features)</span></h2>
+
+<h3>टिप्पनी (Comments)</h3>
+<p>क्रमादेशे टिप्पनीलेखनस्य द्वे रूपे स्तः — <code>#</code> तथा <code>//</code>। संकलकः एताः सम्पूर्णतया उपेक्षते।</p>
+<pre><code># एषा हैश-टिप्पनी
+<span class="k" data-tip="अर्थः: variable">vitti</span> x = 10  # कोडस्य अनन्तरम् अपि
+// एषा स्लैश-टिप्पनी
+<span class="k" data-tip="अर्थः: print">likha</span>(x)</code></pre>
+
+<h3>संयुक्तनिर्देशनम् (Compound Assignment)</h3>
+<pre><code><span class="k" data-tip="अर्थः: variable">vitti</span> x = 100
+x += 50   <span class="cm"># 150</span>
+x -= 30   <span class="cm"># 120</span>
+x *= 2    <span class="cm"># 240</span>
+x /= 4    <span class="cm"># 60</span>
+x %= 7    <span class="cm"># 4</span></code></pre>
+
+<h3>वृद्धिः ह्रासः च (++ / --)</h3>
+<pre><code><span class="k" data-tip="अर्थः: variable">vitti</span> n = 5
+n++      <span class="cm"># n = 6</span>
+n--      <span class="cm"># n = 5</span></code></pre>
+
+<h3>सूत्रसंयोगः (String Concatenation)</h3>
+<p>संकलनकाले एव सूत्राणि संख्याः च संयुज्यन्ते:</p>
+<pre><code><span class="k" data-tip="अर्थः: print">likha</span>("नमः " + "संसाराय\n")
+<span class="k" data-tip="अर्थः: print">likha</span>("उत्तरम्: " + 42 + "\n")
+<span class="k" data-tip="अर्थः: print">likha</span>(7 + " दिनानि\n")</code></pre>
+
+<h3><span class="k" data-tip="अर्थः: print (no newline)">lkhb</span>() — नवीनपङ्क्तिं विना मुद्रणम्</h3>
+<p><code><span class="k" data-tip="अर्थः: print">likha</span>()</code> संख्यायाः अनन्तरं नवीनपङ्क्तिं ददाति; <code><span class="k" data-tip="अर्थः: print (no newline)">lkhb</span>()</code> न ददाति — सारणीनिर्माणाय:</p>
+<pre><code><span class="k" data-tip="अर्थः: for">punaravartana</span> i = 1 <span class="k" data-tip="अर्थः: range-to">to</span> 5 {
+    <span class="k" data-tip="अर्थः: print (no newline)">lkhb</span>(i)
+    <span class="k" data-tip="अर्थः: print">likha</span>(" ")
+}</code></pre>
+
+<h3>अवरोही पुनरावृत्तिः (Descending Loops)</h3>
+<p>प्रारम्भिकमूल्यम् अन्तिमात् मूल्यात् बृहत्तरं भवति चेत्, गणना स्वतः अवरोहति:</p>
+<pre><code><span class="k" data-tip="अर्थः: for">punaravartana</span> i = 5 <span class="k" data-tip="अर्थः: range-to">to</span> 1 {
+    <span class="k" data-tip="अर्थः: print (no newline)">lkhb</span>(i)
+    <span class="k" data-tip="अर्थः: print">likha</span>(" ")
+}    <span class="cm"># फलम्: 5 4 3 2 1</span></code></pre>
+
+<h3><span class="k" data-tip="अर्थः: inline assembly">nishkriya</span>() — इनलाइन यन्त्रकोडः</h3>
+<p>कच्चे x86-64 बैट्स् सर्वथा सोद्यत्नं उत्पन्ने कोडे स्थाप्यन्ते:</p>
+<pre><code><span class="k" data-tip="अर्थः: inline assembly">nishkriya</span>("B8 3C 00 00 00")  <span class="cm"># mov eax, 60</span>
+<span class="k" data-tip="अर्थः: inline assembly">nishkriya</span>("BF 2A 00 00 00")  <span class="cm"># mov edi, 42</span>
+<span class="k" data-tip="अर्थः: inline assembly">nishkriya</span>("0F 05")            <span class="cm"># syscall → exit(42)</span></code></pre>
+
+<h3><span class="k" data-tip="अर्थः: input">grahan</span>() तथा निवेशस्य अन्तः</h3>
+<p>निवेशः समाप्तः चेत् <code><span class="k" data-tip="अर्थः: input">grahan</span>()</code> इदानीं <code>-1</code> प्रयच्छति, येन क्रमादेशः शुद्धतया निवृत्तः भवितुम् अर्हति:</p>
+<pre><code><span class="k" data-tip="अर्थः: variable">vitti</span> a = <span class="k" data-tip="अर्थः: input">grahan</span>()
+<span class="k" data-tip="अर्थः: if">yadi</span> (a == -1) {
+    <span class="k" data-tip="अर्थः: print">likha</span>("निवेशः समाप्तः\n")
+    <span class="k" data-tip="अर्थः: break">krama</span>
+}</code></pre>
+</div>
+
+
+<h3>v29 – v41</h3>
+<p>अस्मात् संस्करणात् परं Sutram इत्यस्मिन् त्रयाणां operands-युक्तः operator, do-while loop, array length तथा bounds checking, षट्-arguments-युक्तानि functions, तथा च एका standard library योजिता अस्ति। इदानीं out-of-range array index इत्यनेन विना कोलाहलं data corruption न भवति, अपि तु साक्षात् स्पष्टः error आगच्छति। Windows programs मध्ये keyboard input अपि सम्यक् कार्यं करोति। अधः दत्तं प्रत्येकं उदाहरणं project इत्यस्य स्वस्य test suite द्वारा परीक्षितम् अस्ति।</p>
+<pre><code>ayojan math
+
+mukhya()
+    likha(gcd(48, 36))
+    vitti n = 7
+    likha(n &gt; 5 ? 100 : 200)
+    vitti i = 0
+    kuru {
+        i = i + 1
+    } yavat (i &lt; 3)
+    likha(i)
+    pankti a[3]
+    likha(pankti_len(a))
+</code></pre>
+
+<h3>The standard library</h3>
+<p>Sutram एकां लघ्वीं मानक-पुस्तकालयं प्रेषयति यं भवान् <code>ayojan</code> इत्यनेन आनयति। सङ्कलनकाले सः विभागः भवतः कार्यक्रमे अन्तर्लिखितः भवति, अतः कापि रनटाइम-आश्रयता नास्ति - पुस्तकालयस्य सङ्केतः भवतः बाइनरी-अङ्गत्वेन भवति। अद्यत्वे द्वादश विभागाः सन्ति, पूर्णा सूची च <code>docs/sutram-stdlib.html</code> इत्यत्र अस्ति।</p>
+<table>
+<tr><th>module</th><th>include with</th><th>functions</th></tr>
+<tr><td><code>math</code></td><td><code>ayojan math</code></td><td>15 functions &mdash; <code>sq</code> <code>square</code> <code>cube</code> <code>double</code> <code>triple</code> <code>inc</code> <code>abs_val</code> <code>min2</code> <code>max2</code> <code>gcd</code> <code>lcm</code> <code>power</code> <code>fact</code> <code>is_prime</code> <code>sum_to</code></td></tr>
+<tr><td><code>num</code></td><td><code>ayojan num</code></td><td>10 functions &mdash; <code>is_even</code> <code>is_odd</code> <code>digit_count</code> <code>digit_sum</code> <code>reverse_num</code> <code>is_palindrome</code> <code>clamp</code> <code>fib</code> <code>is_perfect</code> <code>collatz_steps</code></td></tr>
+<tr><td><code>sort</code></td><td><code>ayojan sort</code></td><td>11 functions &mdash; <code>swap</code> <code>bubble_sort</code> <code>shell_sort</code> <code>reverse_arr</code> <code>min_of</code> <code>max_of</code> <code>sum_of</code> <code>find_linear</code> <code>count_of</code> <code>is_sorted</code> <code>binary_search</code></td></tr>
+<tr><td><code>string</code></td><td><code>ayojan string</code></td><td>13 functions &mdash; <code>str_len</code> <code>char_code_at</code> <code>is_digit_char</code> <code>is_upper_char</code> <code>is_lower_char</code> <code>is_letter_char</code> <code>is_space_char</code> <code>count_vowels</code> <code>count_char</code> <code>find_char</code> <code>is_all_digits</code> <code>upper_code</code> <code>lower_code</code></td></tr>
+</table>
+<pre><code>ayojan math
+
+mukhya()
+    likha(gcd(48, 36))
+    likha(" ")
+    likha(fact(5))
+    likha(" ")
+    likha(is_prime(97))
+    likha("\n")
+</code></pre>
+<p><i>Note: a program can currently include at most two modules &mdash; a compiler limit that is being fixed.</i></p>
+<div class="ch" id="ch15">
+<h2>15. पारिभाषिकशब्दकोशः (Technical Glossary) <span class="en-gloss">(Technical glossary)</span></h2>
+<p>अस्मिन् पुस्तके प्रयुक्तानां पारिभाषिकशब्दानां संस्कृतरूपाणि — तेषां च युक्तिः:</p>
+
+<p><b>Program → क्रमादेशः</b> — क्रमेण दत्ताः आदेशाः (क्रमबद्धाः आज्ञाः)। अनेन शब्देन सङ्गणकं किं कर्तव्यम् इति निर्दिश्यते।</p>
+
+<p><b>Compiler → संकलकः</b> — संकलनं करोति, अतः संकलकः। स्रोतकोडं यन्त्रकोडे परिवर्तयति अनुवादकः।</p>
+
+<p><b>Computer → संगणकम्</b> — सम् + गणकः = गणनां करोति यत् यन्त्रम्। आधुनिकसंस्कृते प्रामाणिकः शब्दः।</p>
+
+<p><b>Keyword → कूटशब्दः</b> — कूटः इत्यर्थः संकेतः। भाषायै विशिष्टतया आरक्षितः शब्दः, यथा <code><span class="k" data-tip="अर्थः: main">mukhya</span></code>, <code><span class="k" data-tip="अर्थः: variable">vitti</span></code>।</p>
+
+<p><b>Variable → चरम्</b> — चरति (भ्रमति, बदलते) इति चरम्; यस्य मूल्यं परिवर्तनीयम्। गणितशास्त्रस्य परम्परातः प्रसिद्धः शब्दः।</p>
+
+<p><b>Constant → अचलम्</b> — न चरति, अचलति इति; यस्य मूल्यं न परिवर्तते। "स्थिराङ्कः" इत्यपि शब्दः प्रचलितः।</p>
+
+<p><b>Function → फलकम्</b> — फलं ददाति इति फलकम्; प्रवेशात् (input) निर्गमस्य (output) नियमः। गणिते च सङ्गणकविज्ञाने च प्रामाणिकः।</p>
+
+<p><b>Loop → पुनरावृत्तिः</b> — पुनः पुनः आवर्तते (पुनः चलति) इति; बन्धसदृशा संरचना।</p>
+
+<p><b>Array → पङ्क्तिः</b> — पङ्क्तिबद्धानां मूल्यानां समूहः। सूत्रम्-भाषायामेव अस्य कूटशब्दः <code><span class="k" data-tip="अर्थः: array">pankti</span></code> अस्ति।</p>
+
+<p><b>Memory → स्मृतिः</b> — यत्र सूचनाः संगृह्यन्ते; "मेमोरी" इति केवलं श्रुतिलिपिः, अर्थं न ब्रूते।</p>
+
+<p><b>Machine Code → यन्त्रकोडः</b> — CPU इत्यनेन प्रत्यक्षतया निष्पाद्यमानः द्विअङ्कीयः कोडः। सूत्रम् प्रत्यक्षम् अत्र एव संकल्यते।</p>
+
+<p><b>String → सूत्रम्</b> — अक्षराणां माला। संस्कृते "सूत्रम्" इत्यस्य शाब्दिकोऽर्थः एव दारः (धागा) — अत एव भाषायाः नाम सूत्रम्!</p>
+
+<p><b>Error → दोषः</b> — क्रमादेशे भवति हीनता; संकलकः पङ्क्तिसंख्यया सह दोषं सूचयति।</p>
+
+<p><b>Debugging → दोषसुधारणम्</b> — दोषं अन्विष्य संसाधनं प्रक्रिया।</p>
+
+<p><b>Language → भाषा</b> — क्रमादेशभाषा: यया मनुष्यः सङ्गणकाय आदेशं ददाति।</p>
+</div>
+
+<div class="ch" id="ch16">
+<h2>16. धातवः — कूटशब्दानां मूलानि <span class="en-gloss">(Sanskrit roots)</span></h2>
+<p>सूत्रम्-भाषायाः प्रत्येकं कूटशब्दः कस्याश्चित् धातोः निष्पन्नः। एते धातवः भारतस्य सर्वासु भाषासु अद्यापि जीवन्ति।</p>
+
+<table>
+<tr><th>कूटशब्दः</th><th>मूलम् / धातुः</th><th>अर्थः</th></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: main">mukhya</span></code></td><td>मुखम्</td><td>प्रधानः (आग्र्यभागः)</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: variable">vitti</span></code></td><td>वित् (जानाति)</td><td>ज्ञानम् धारयति</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: integer">anka</span></code></td><td>अङ्कः</td><td>संख्याचिह्नम्</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: if">yadi</span></code></td><td>यदि</td><td>चेत्</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: else">anyatra</span></code></td><td>अन्यत्र</td><td>अन्यस्मिन् स्थाने</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: while">yavat</span></code></td><td>यावत्</td><td>यावत्पर्यन्तम्</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: for">punaravartana</span></code></td><td>पुनः + आवर्तनम्</td><td>पुनः पुनः आवर्तते</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: break">krama</span></code></td><td>क्रमः</td><td>अनुक्रमः, वरीयता</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: function">prakriya</span></code></td><td>प्रक्रिया</td><td>कार्यविधिः</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: true">purna</span></code></td><td>पूर्णः</td><td>सम्पूर्णः</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: false / null">shunya</span></code></td><td>शून्यम्</td><td>रिक्तम् — अरबी-मार्गेण आङ्ग्लस्य "zero" इति अभवत्!</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: print">likha</span></code></td><td>लिख् (लिखति)</td><td>लेखनम्</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: input">grahan</span></code></td><td>ग्रहणम्</td><td>स्वीकरणम्</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: array">pankti</span></code></td><td>पङ्क्तिः</td><td>श्रेणिः, कतिपयः वस्तुनः एकस्मिन् रेखायाम्</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: constant">sutra</span></code></td><td>सूत्रम्</td><td>दारः — येन सर्वाः भाषाः सम्बद्धाः</td></tr>
+</table>
+</div>
+
+<div class="ch" id="ch17">
+<h2>17. विण्डोज़-स्थापनम् — पूर्णा मार्गदर्शिका</h2>
+<p>सूत्रम् विण्डोज़ं लिनक्सवत् प्रथमश्रेणीयलक्ष्यं मन्यते। पूर्वाध्यायाः सर्वे तथैव
+कार्यन्ते; केवलं <b>स्थापन-चरणं</b> भिद्यते, तदेव अस्मिन् अध्याये पूर्णतया वर्ण्यते।</p>
+
+<h3>17.1 किं लभ्यते</h3>
+<ul>
+<li><code>sutram.exe</code> — संकलकः मूलः Win64-क्रमादेशः (PE32+)।</li>
+<li>संकलिताः क्रमादेशाः वास्तविकाः विण्डोज़-कार्यक्रमाः, न स्क्रिप्टाः।</li>
+<li>WSL, लिनक्स-VM, पाइथन्, C-रनटाइम् वा न आवश्यकम्।</li>
+<li><b>एकस्मादेव संकलक-स्रोतात्</b> उभौ संकलकौ भवतः, अतः भाषायाः व्यवहारः समानः।</li>
+</ul>
+
+<h3>17.2 आवश्यकताः</h3>
+<ul>
+<li>विण्डोज़ 10 वा 11, 64-बिट्।</li>
+<li>सामान्यप्रयोगाय अन्यत् किमपि न। NASM केवलं स्वयं संकलकं निर्मातुम् आवश्यकम्।</li>
+</ul>
+
+<h3>17.3 स्थापनम् — मार्गः क: मार्गदर्शकः (अनुशंसितः)</h3>
+<ol>
+<li><code>Sutram-Setup.exe</code> प्राप्नुयात्।</li>
+<li>तस्मिन् <b>द्विगुण-क्लिक्</b> करोतु। नवीनक्रमादेशाय विण्डोज़ SmartScreen-चेतावनी
+दृश्येत: <i>More info</i> → <i>Run anyway</i> चिनोतु।</li>
+<li>मार्गदर्शकः <b>गन्तव्यसञ्चिकां</b> पृच्छति। पूर्वनिर्धारितम्
+<code>C:\Program Files\Sutram</code>। तत् स्वीकरोतु, अन्यथा <i>Browse</i> इत्यनेन स्वकीयां चिनोतु।</li>
+<li>कुत्रापि सञ्चिकायाः <code>sutram</code> लेखितुं शक्यते चेत् <b>“Add Sutram to PATH”</b>
+चिनोतु। एतत् अनुशंसितम्।</li>
+<li>इच्छया <b>Start Menu</b>-प्रवेशं, <b>Desktop-लघुपथं</b> च चिनोतु।</li>
+<li><b>Install</b> नुदतु। समाप्तौ पिधातु।</li>
+</ol>
+<p>ततः सूत्रम् <b>Apps &amp; Features</b> मध्ये पञ्जीक्रियते, अतः Settings-तः संस्करणं,
+नवीकरणं वा अनुस्थापनं कर्तुं शक्यते।</p>
+
+<h3>17.4 स्थापनम् — मार्गः ख: चलनशीलसञ्चिका</h3>
+<ol>
+<li><code>sutram-windows-native.zip</code> कुत्रापि उद्घाटयतु, यथा <code>C:\Sutram</code>।</li>
+<li>सञ्चिका सह रक्षतु — भाषा-सञ्चयाः <code>sutram.exe</code>-पार्श्वे <code>lang\</code> मध्ये सन्ति।</li>
+<li>तस्यामेव सञ्चिकायां टर्मिनल् उद्घाटयतु (Shift + दक्षिण-क्लिक् → <i>Open in Terminal</i>)।</li>
+<li>इच्छया एकवारं <code>install.bat</code> चालयतु — तत् सञ्चिकां PATH मध्ये योजयति।</li>
+</ol>
+
+<h3>17.5 स्थापनम् — मार्गः ग: स्रोततः निर्माणम्</h3>
+<p>विकासकर्तृभ्यः। NASM तथा PE-समर्थः संयोजकः (GNU <code>ld</code>, MSVC, lld-link) आवश्यकौ:</p>
+<pre><code>nasm -f win64 -dWINDOWS -I. src\sutram_compiler.asm -o sutram.obj
+ld -mi386pep --entry=_start -o sutram.exe sutram.obj
+</code></pre>
+<p>मार्गदर्शक-स्थापकम् अपि निर्मातुं MinGW GCC तथा PowerShell आवश्यकौ; स्क्रिप्टाः
+<code>windows\</code> मध्ये सन्ति (<code>BUILD-WINDOWS-SETUP.cmd</code>)।</p>
+
+<h3>17.6 PATH-ज्ञानम्</h3>
+<p><b>PATH</b> तेषां सञ्चिकानां सूची याः विण्डोज़् आदेशं लिखति चेत् अन्विष्यति। सूत्रमः
+सञ्चिका PATH मध्ये चेत् कुत्रापि <code>sutram</code> लेखितुं शक्यते; अन्यथा पूर्णं पथं
+लेखितव्यं वा तस्यामेव सञ्चिकायां स्थातव्यम्।</p>
+<p>परीक्षा: <b>नवीनं</b> टर्मिनल् उद्घाट्य <code>sutram --version</code> चालयतु। संस्करणं
+दृश्यते चेत् PATH सम्यक्। अन्यथा PATH-विकल्पेन स्थापकं पुनः चालयतु, अन्यथा
+<code>sutram.exe</code> यत्र अस्ति तस्याः सञ्चिकायाः चालयतु।</p>
+
+<h3>17.7 प्रथमः विण्डोज़-क्रमादेशः</h3>
+<p>सञ्चिकां <code>namaste.sm</code> रचयतु:</p>
+<pre><code># मम प्रथमः विण्डोज़-क्रमादेशः
+mukhya()
+    likha("नमस्ते, विण्डोज़!")
+</code></pre>
+<p>संकलयतु चालयतु च:</p>
+<pre><code>sutram.exe namaste.sm namaste.exe
+namaste.exe
+</code></pre>
+<p>फलम्:</p>
+<pre><code>नमस्ते, विण्डोज़!
+</code></pre>
+<p><b>फलस्य नाम लक्ष्यं निर्णयति</b>: <code>.exe</code> विण्डोज़-कार्यक्रमं,
+<code>.bin</code> लिनक्सम्। एकः संकलकः, द्वौ लक्ष्यौ।</p>
+
+<h3>17.8 निर्मिते .exe किं भवति</h3>
+<p>संकलितः क्रमादेशः एकः PE32+ खण्डः:</p>
+<pre><code>[PE-शीर्षकाः][लघु रनटाइम्][भवतः संकलितः कोडः]
+</code></pre>
+<p>रनटाइम् आरम्भे प्रक्रिया-पर्यावरण-खण्डे चलित्वा तस्य निर्यात-सारणीं पठित्वा
+<code>kernel32</code> अन्विष्यति, अतः क्रमादेशे <b>न आयात-सारणी न बाह्याश्रयः</b> भवति।
+सः फलम्, आगमनम्, निर्गमनं च <code>WriteFile</code>, <code>ReadFile</code>,
+<code>ExitProcess</code> प्रति नयति। सूत्रम्णा निर्मितं <code>.exe</code> चालयितुं
+किमपि स्थापयितुं न आवश्यकम्।</p>
+
+<h3>17.9 विण्डोज़े भाषा-सञ्चयाः</h3>
+<p>सूत्रम् द्वयोः स्थानयोः अन्विष्यति: वर्तमानसञ्चिकायाः सापेक्षं
+<code>lang\&lt;name&gt;.lang</code>, ततः <code>%USERPROFILE%\.local\share\sutram\lang\</code>।
+द्वितीये स्थाने स्थापिताः सञ्चयाः कुतोऽपि कार्यन्ति।</p>
+<pre><code>sutram.exe --lang gujarati prog.sm out.exe
+</code></pre>
+<p>दश सञ्चयाः: बङ्गाली, गुजराती, हिन्दी, कन्नडः, मलयालम्, मराठी, ओडिया, पञ्जाबी,
+तमिळ्, तेलुगु। कूटशब्दानां देवनागरी-वर्तनी अपि स्वीक्रियते।</p>
+
+<h3>17.10 आदेश-सूची</h3>
+<table>
+<tr><th>आदेशः</th><th>कार्यम्</th></tr>
+<tr><td><code>sutram.exe in.sm out.exe</code></td><td>विण्डोज़-कार्यक्रमरूपेण संकलनम्</td></tr>
+<tr><td><code>sutram.exe in.sm out.bin</code></td><td>लिनक्स-कार्यक्रमरूपेण संकलनम्</td></tr>
+<tr><td><code>sutram.exe --lang gujarati in.sm out.exe</code></td><td>भाषा-सञ्चयेन संकलनम्</td></tr>
+<tr><td><code>sutram.exe -i</code></td><td>संवादात्मकः शेल् (REPL)</td></tr>
+<tr><td><code>sutram.exe --version</code></td><td>संस्करणं दर्शयतु</td></tr>
+<tr><td><code>out.exe</code></td><td>संकलितं क्रमादेशं चालयतु</td></tr>
+</table>
+
+<h3>17.11 परियोजनाः कुत्र स्थापनीयाः</h3>
+<p>कुत्रापि। द्वौ अभ्यासौ क्लेशं रक्षतः: अतिगभीरान् पथान् वर्जयतु, तथा
+<b>अन्तरालयुतान् पथान् उद्धरणे स्थापयतु</b> —
+<code>sutram.exe "C:\My Files\a.sm" "C:\out\a.exe"</code>. यूनिकोड-सञ्चिकानामानि
+कार्यन्ति; संकलकः सञ्चिकाः विण्डोज़-API द्वारा उद्घाटयति।</p>
+
+<h3>17.12 दोष-परिहारः</h3>
+<table>
+<tr><th>लक्षणम्</th><th>कारणम्</th><th>उपायः</th></tr>
+<tr><td>“Unsupported 16-Bit Application” / “not a valid Win32 application”</td><td>सञ्चिका लिनक्स-ELF अस्ति, PE न</td><td><code>.exe</code> नाम्ना संकलयतु; प्रथमौ द्वौ बाइटौ <code>4D 5A</code> भवेताम्</td></tr>
+<tr><td>चलति किन्तु किमपि न मुद्रयति</td><td>पुरातनं निर्माणं यस्य खण्डः केवल-पठनम् आसीत्</td><td>एतत् निर्माणं योजयतु</td></tr>
+<tr><td><code>sutram</code> न ज्ञातम्</td><td>PATH न अद्यतनम्</td><td><b>नवीनं</b> टर्मिनल् उद्घाटयतु, अन्यथा पूर्णं पथं ददातु</td></tr>
+<tr><td>भाषा-सञ्चयः न प्राप्तः</td><td><code>lang\</code> संकलकस्य पार्श्वे नास्ति</td><td>सूत्रम्-सञ्चिकायाः चालयतु, अन्यथा सञ्चयान् प्रोफ़ाइल-सञ्चिकायां स्थापयतु</td></tr>
+<tr><td>SmartScreen स्थापकं निरुणद्धि</td><td>नवीनः, अहस्ताक्षरितः क्रमादेशः</td><td><i>More info</i> → <i>Run anyway</i></td></tr>
+<tr><td>एण्टीवाइरस् नवीनं <code>.exe</code> चिह्नयति</td><td>नवीनं बाइनरी, हस्ताक्षरं नास्ति</td><td>अनुमन्यताम्; एतत् आयात-रहितं सामान्यं PE</td></tr>
+<tr><td>संकलितः क्रमादेशः द्विगुण-क्लिक्-तः किमपि न करोति</td><td>एतत् कन्सोल्-क्रमादेशः; टर्मिनल् आवश्यकम्</td><td>Command Prompt वा PowerShell-तः चालयतु</td></tr>
+<tr><td>संकलन-दोषः तत्क्षणं तिरोभवति</td><td>कन्सोल् अतिशीघ्रं पिहितम्</td><td>टर्मिनल्-तः चालयतु, अन्यथा .bat मध्ये <code>pause</code> योजयतु</td></tr>
+</table>
+
+<h3>17.13 नवीकरणं अनुस्थापनं च</h3>
+<p>नवीकरणम्: नवीनं <code>Sutram-Setup.exe</code> चालयतु — तत् विद्यमानां स्थापनां
+ज्ञात्वा सुरक्षिततया परिवर्तयति। अपनयनम्: <b>Settings → Apps → Installed apps →
+Sutram → Uninstall</b>। अनुस्थापकः केवलं स्वस्थापिताः सञ्चिकाः अपनयति, भवता रचिताः
+रक्षति।</p>
+
+<h3>17.14 लिनक्स-विण्डोज़ौ सह</h3>
+<table>
+<tr><th></th><th>लिनक्स</th><th>विण्डोज़</th></tr>
+<tr><td>संकलक-बाइनरी</td><td>ELF (<code>sutram_compiler</code>)</td><td>PE (<code>sutram.exe</code>)</td></tr>
+<tr><td>फल-रूपम्</td><td>ELF (<code>.bin</code>)</td><td>PE (<code>.exe</code>)</td></tr>
+<tr><td>स्थापनम्</td><td>एक-पङ्क्ति-स्क्रिप्ट् (<code>install.sh</code>)</td><td>मार्गदर्शकः वा चलनशीलसञ्चिका</td></tr>
+<tr><td>भाषा-सञ्चयाः</td><td><code>lang/</code>, ततः <code>$HOME/.local/share/sutram/lang/</code></td><td><code>lang\</code>, ततः <code>%USERPROFILE%\.local\share\sutram\lang\</code></td></tr>
+<tr><td>भाषायाः व्यवहारः</td><td colspan="2">समानः — एकः स्रोतः, एकः कूटशब्दः, एकः अर्थः</td></tr>
+</table>
+
+<h3>17.15 विण्डोज़े अद्यापि शेषम्</h3>
+<p>अधुना कार्यन्ति: संकलनम्, <code>likha</code> तथा <code>shabda</code>, गणितम्,
+चराः, <code>yadi</code>/<code>anyatra</code>, <code>yavat</code>,
+<code>punaravartana</code>, <code>krama</code>/<code>uddeshya</code>, त्रिपर्यन्ताः
+फलनाः, पुनरावृत्तिः, शीघ्रं प्रत्यागमनम्, खण्ड-टिप्पण्यः, भाषा-सञ्चयाः, दोष-सन्देशाः।</p>
+<p>विण्डोज्-आगमनम् (<code>grahan</code>) इदानीं कार्यं करोति: निर्मितः <code>.exe</code> लिनक्स-सिस्टम्-कॉल इत्यस्य स्थाने एम्बेडेड्-रन्टाइम् (<code>ReadFile</code>) माध्यमेन पठति। पङ्क्तिः (<code>pankti</code>) रचना (<code>rachana</code>) च <code>VirtualAlloc</code> माध्यमेन स्मृतिं गृह्णीतः। अद्यापि पोर्ट् न कृतम्: नेटवर्क बिल्टिन्स्। अन्तर्क्रियात्मकं REPL कार्यान्वितम् अस्ति तथा च वास्तविक-विण्डोज्-यन्त्रे परीक्षणस्य प्रतीक्षां करोति।</p>
+
+<h3>17.16 दर्शनम् — अपरिवर्तितम्</h3>
+<p>संकलकः एक एव शुद्ध-NASM-स्रोतः तिष्ठति, यत्र C, पाइथन् वा रनटाइम्-आश्रयः नास्ति;
+संस्कृतम् एव भाषायाः केन्द्रम्, प्रत्येकस्य भारतीयभाषायाः स्वकीयाः शब्दाः सन्ति;
+निर्मिताः क्रमादेशाः मूलाः यन्त्र-कोडाः, न कदापि व्याख्यायन्ते; अन्तिमोपयोक्त्रे
+कस्यापि उपकरणसमूहस्य आवश्यकता नास्ति। स्थापकः केवलं प्याकेजिङ्ग् — सः भाषायाः
+अंशः नास्ति।</p>
+</div>
+
+<div class="ch" id="whatsnew">
+  <h2>18. नूतनं किम् — वर्तमानभाषा</h2>
+  <p>अयं अध्यायः पुस्तकस्य अन्यभागानां पश्चात् योजितः। अत्र सर्वम् अद्यतनभाषायाः भागः अस्ति तथा च ज्ञातोत्तराणां विरुद्धं प्रमाणीकृतम् अस्ति, न केवलम् एकवारं सङ्कलितम्। यदि पूर्वस्मिन् अध्याये अत्र किमपि न उल्लिखितम्, तर्हि अयं अध्यायः अधिकः नवीनः अस्ति।</p>
+  <h3>Floating-point सङ्ख्याः — दशम्</h3>
+  <p>एका चरराशीः 64-bit IEEE-754 floating-point सङ्ख्यां धारयितुं शक्नोति। दशम् इत्यनेन तत् घोषयतु; दशमलवबिन्दुयुक्तं अक्षरं स्वयमेव float भवति।</p>
+  <p>Floats सङ्ख्याभिः सह मिलन्ति (सङ्ख्या उन्नता भवति), सर्वेषां चतुर्णां गणितीयसञ्चालकानां सर्वेषां षण्णां तुलनानां च समर्थनं कुर्वन्ति, तथा च षड्भिः दशमलवस्थानैः मुद्रयन्ति। फलनानि float प्रतिदातुं शक्नुवन्ति — सङ्कलकः तेषां प्रतिदानात् तत् अनुमाति।</p>
+  <h3>वर्धनीयाः व्यूहाः — कोशः</h3>
+  <p>एकः सामान्यः व्यूहः आकारे निश्चितः भवति। कोशः वर्धते: सः लघुक्षमतया आरभ्यते तथा च आवश्यकतानुसारं द्विगुणः भवति।</p>
+  <p><strong>क्षमता दैर्घ्यं न भवति।</strong> 4 क्षमत्या घोषितस्य कोशस्य क्षमता 4 अस्ति परन्तु दैर्घ्यं 0 अस्ति, अतः किमपि न प्रविश्यते तावत् 0 सूचकाङ्कः सीमायाः बहिः भवति। एतेन जनाः एकवारं भ्रमिताः भवन्ति; एतत् जानन् एव कृतम् अस्ति, तथा च एतेन एव सूचकाङ्कनम् सुरक्षितं भवति।</p>
+  <h3>प्रकारिताः व्यूहाः — कोशः दशम्</h3>
+  <p>Floats धारयितुं कोशः घोषितुं शक्यते। तस्मिन् प्रविष्टाः पूर्णाङ्कमूल्याः उन्नताः भवन्ति, तथा च तस्य तत्त्वानि सर्वत्र floats इव व्यवहरन्ति।</p>
+  <h3>प्रकारिताः फलनमापदण्डाः</h3>
+  <p>एकं फलनं विशिष्टप्रकारस्य तर्कम् अपेक्षते, तथा च सङ्कलकः तत् परीक्षते।</p>
+  <p>एकः प्रकारितः float व्यूहः सूचकाङ्करूपेण प्रदीयते, अतः सूचकाङ्कितलेखनानि आह्वानकर्तुः कृते दृश्यन्ते — एकं फलनं भवतः कृते व्यूहं पूरयितुं शक्नोति। परन्तु तस्य वर्धनम् अनुमतं नास्ति: मापदण्डे kosh_push आह्वानं नामयुक्तदोषेण अस्वीकृतं भवति, यतः सूचकः मूल्येन प्रदीयते तथा च आह्वानकर्तुः पार्श्वे पुरातनः एव अवशिष्येत। एषा एका जानन् एव कृता सुरक्षासीमा अस्ति, न तु लुप्तं वैशिष्ट्यम्।</p>
+  <h3>मानकपुस्तकालयः</h3>
+  <p>सङ्कलकेन सह पञ्चदश-माड्युल-सङ्कुलानि आगच्छन्ति। आयोजनेन एकं आयातयतु। तेषु गणितं सङ्ख्यासिद्धान्तः च; वर्गीकरणं पाठ्यं च; पिंगलस्य छन्दःशास्त्रम्; आर्यभटस्य भास्कराचार्यस्य च गणितम्; पाय, साइन, कोसाइन, वर्गमूलस्य च कृते केरलसम्प्रदायस्य शृङ्खला; सांख्यिकी; सङ्ख्यात्मकं कलनम् — समाकलनं, अवकलजाः बहुपदमूलानि च; आव्यूहैः निर्धारकैः च सह रैखिकबीजगणितम्; तथा च सञ्चिकापठनं लेखनं च अन्तर्भवन्ति।</p>
+  <div class="try"><b>प्रयत्नं कुर्वन्तु:</b> परम्परागतमाड्युल-सङ्कुलानि वास्तविकं गणितं गणयन्ति — 61 इत्यस्य चक्रवालः x वर्गं - 61 y वर्गं = 1 इत्यस्य लघुतमं समाधानं प्रतिददाति, यत् x = 1766319049, y = 226153980 अस्ति। तत् सप्तमशताब्द्याः पद्धतिः अस्ति, यत् सम्यक् उत्तरस्य विरुद्धं प्रमाणीकृतम् अस्ति।</div>
+  <h3>सूत्रम् IDE</h3>
+  <p>भाषया सह स्थापितम्। एकः एव स्वदेशी कार्यक्रमः — न पायथन्, न व्याख्याता — रेखासङ्ख्याभिः वाक्यरचना-प्रकाशनैः च युक्तः सङ्केतसम्पादकः; भवता लिखितं सङ्कलितुं चालयितुं च Ctrl-R, परिणामः अधः दर्शितः; एकैकशः उदाहरणकार्यक्रमान् द्रष्टुं Ctrl-E; एकः अन्तर्क्रियाशीलः कमाण्ड-प्रवेशः यत्र भवान् कथनं टङ्कयति, Enter नुदति, तत् च चाल्यमानं पश्यति, यत्र सत्रं पूर्वतनीः पङ्क्तीः स्मरति येन भवान् एकैकं पदं कृत्वा किमपि निर्मातुं शक्नोति; तथा च रक्षितुं Ctrl-S, भारयितुं Ctrl-L, त्यक्तुं च Ctrl-Q।</p>
+  <p>विण्डोज् मध्ये IDE अद्यापि उपलब्धं नास्ति; तस्य स्थाने अन्तर्क्रियाशील-प्रवेशस्य उपयोगं कुर्वन्तु।</p>
+  <h3>गतिः, न तु केवलं प्रतिपादितम्</h3>
+  <p>सङ्कलकः चरराशीनां मूल्यानि स्मृतेः स्थाने प्रोसेसर-पञ्जिकासु स्थापयति। एकस्मिन् प्रतिनिधि-सङ्ख्यात्मक-कार्यक्रमे एतेन नूतनेषु चक्रेषु प्रायः 1.2 गुणितं मापितं वेगवर्धनं उत्पादितम्, तथा च एकस्मिन् दृढे पूर्णाङ्क-लूप् मध्ये उत्पादितः सङ्केतः 13 निर्देशाभ्यः 5 अभवत् — मापितं 4.9 गुणितम्। अस्मिन् खण्डे प्रत्येकं दावः तस्यामेव यन्त्रे पूर्वं पश्चात् च मापितः आसीत्, न तु अनुमानितः।</p>
+  <h3>प्रकल्पः किमर्थं सावधानः अस्ति</h3>
+  <p>चत्वारः स्मृति-भ्रंश-दोषाः प्राप्ताः निवारिताः च, प्रत्येकम् इदानीं स्थायि-परीक्षणेन आच्छादितम् अस्ति। सङ्कलकः 160 परीक्षणैः तथा च द्वादश-सङ्केत-आकार-द्वारैः परीक्षितः भवति ये दावं कुर्वन्ति यत् दत्तं निर्माणं कियत् सङ्केतं उत्पादितुं अनुमतम् अस्ति। यत्र प्रकल्पः किमपि प्रमाणीकर्तुं न शक्नोति — विण्डोज् अद्यापि वास्तविके विण्डोज्-यन्त्रे न चालितम् — तत् अन्यथा सूचयितुं स्थाने स्पष्टतया कथयति।</p>
+</div>
+<div class="ch" id="codeappendix">
+  <h2>19. Code appendix for chapter 18</h2>
+  <p>The examples are given here in Sutram source, which is the same in every edition of this book.</p>
+  <h3>Floats</h3>
+<pre><span class="kw">dasham</span> x = 1.5
+<span class="kw">dasham</span> y = 2.25
+<span class="kw">likha</span>(x + y)      <span class="cm"># 3.750000</span></pre>
+  <h3>Growable arrays</h3>
+<pre><span class="kw">kosh</span> xs[4]
+<span class="kw">kosh_push</span>(xs, 10)
+<span class="kw">kosh_push</span>(xs, 20)
+<span class="kw">likha</span>(<span class="kw">kosh_len</span>(xs))    <span class="cm"># 2</span>
+<span class="kw">likha</span>(xs[0])            <span class="cm"># 10</span>
+<span class="kw">dasham</span> last = <span class="kw">kosh_pop</span>(xs)</pre>
+  <h3>Typed arrays</h3>
+<pre><span class="kw">kosh dasham</span> temps[4]
+<span class="kw">kosh_push</span>(temps, 36.6)
+<span class="kw">kosh_push</span>(temps, 37)      <span class="cm"># promoted to 37.0</span>
+<span class="kw">likha</span>(temps[1])            <span class="cm"># 37.000000</span></pre>
+  <h3>A typed function parameter</h3>
+<pre><span class="kw">prakriya</span> mean(<span class="kw">kosh dasham</span> xs) {
+    <span class="kw">dasham</span> s = 0.0
+    <span class="kw">vitti</span> i = 0
+    <span class="kw">yavat</span> (i &lt; <span class="kw">kosh_len</span>(xs)) {
+        s = s + xs[i]
+        i = i + 1
+    }
+    <span class="kw">pratiyati</span> s / <span class="kw">kosh_len</span>(xs)
+}</pre>
+  <h3>Using the library</h3>
+<pre><span class="kw">ayojan</span> sankhyiki
+<span class="kw">ayojan</span> kalana
+<span class="kw">ayojan</span> samanvaya</pre>
+</div>
+<div class="footer">सूत्रम् — the complete thread · संस्कृत-संस्करणम् · v1.0</div>
+</div>
+</body>
+</html>
