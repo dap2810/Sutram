@@ -127,13 +127,15 @@ def main():
         body = read_exact(4 * ln - 4)
         if len(body) < 4 * ln - 4:
             return None
-        return op, ln, body
+        # body excludes the 4-byte header, so ImageText8's n is head[1], not
+        # body[0] — body[0] is the first byte of the drawable window id.
+        return op, ln, body, head
 
     for _ in range(3):
         r = read_request()
         if r is None:
             break
-        op, ln, body = r
+        op, ln, body, head = r
         name, fixed = FIXED.get(op, (f"op{op}", None))
         seen.append(name)
         total = 4 * ln
@@ -188,7 +190,7 @@ def main():
             break
         if r is None:
             break
-        op, ln, body = r
+        op, ln, body, head = r
         name, fixed = FIXED.get(op, (f"op{op}", None))
         ops[name] = ops.get(name, 0) + 1
         total = 4 * ln
@@ -208,6 +210,69 @@ def main():
     check(ops.get("ChangeGC", 0) >= 4,
           "repaint set the GC colour before each colour change",
           f"got {ops.get('ChangeGC', 0)}")
+
+    # ---- 4. typing: send KeyPress events, expect the text to be drawn ------
+    def keypress(keycode):
+        ev = bytearray(32)
+        ev[0] = 2                        # KeyPress
+        ev[1] = keycode                  # detail = keycode
+        struct.pack_into("<I", ev, 4, RID_BASE | 1)
+        struct.pack_into("<H", ev, 10, 1)
+        conn.sendall(bytes(ev))
+
+    def drain_texts():
+        """Read until the client goes quiet, collecting ImageText8 payloads.
+
+        A fixed request count desynchronises the stream: if the client sends
+        more than the cap, leftovers are attributed to the next key. Drain to
+        quiescence instead.
+        """
+        found = []
+        old = conn.gettimeout()
+        conn.settimeout(0.35)
+        try:
+            while True:
+                try:
+                    r = read_request()
+                except Exception:
+                    break
+                if r is None:
+                    break
+                op, ln, body, head = r
+                if op == 76:             # ImageText8
+                    n_chars = head[1]
+                    found.append(body[12:12 + n_chars].decode("latin-1"))
+        finally:
+            conn.settimeout(old)
+        return found
+
+    # 'h' is keycode 43, 'i' is keycode 31 on the standard map
+    keypress(43)
+    texts = drain_texts()
+    check(any(t == "h" for t in texts),
+          "typing 'h' drew the character in the editor pane",
+          f"saw {texts[:6]}")
+
+    keypress(31)
+    texts = drain_texts()
+    check(any(t == "hi" for t in texts),
+          "typing 'i' produced 'hi' on the same line",
+          f"saw {texts[:6]}")
+
+    # backspace (keycode 22) removes the 'i'
+    keypress(22)
+    texts = drain_texts()
+    check(any(t == "h" for t in texts) and not any(t == "hi" for t in texts),
+          "backspace removed the last character",
+          f"saw {texts[:6]}")
+
+    # Return (keycode 36) starts a new line, so the text splits
+    keypress(36)
+    keypress(43)
+    texts = drain_texts()
+    check(any(t == "h" for t in texts) and any(t == "h" for t in texts),
+          "return then a key produced two separate lines",
+          f"saw {texts[:6]}")
 
     conn.close()
     srv.close()
