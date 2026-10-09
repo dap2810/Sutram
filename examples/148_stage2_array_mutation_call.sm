@@ -1,0 +1,22 @@
+# Stage 2 acceptance: a call can mutate shared typed kosh storage.
+# Never reorder reads across the call or make assumptions about its effects.
+prakriya bump_element(kosh dasham xs) {
+    xs[0] = xs[0] + 1.0
+    pratiyati xs[0]
+}
+mukhya() {
+    kosh dasham xs[1]
+    kosh_push(xs, 2.0)
+    dasham a = 3.0
+    dasham b = 0.5
+    dasham c = 4.0
+    dasham d = 5.0
+    a = a + b
+    c = a + bump_element(xs)
+    d = d + xs[0]
+    a = a + b
+    likha(a)
+    likha(c)
+    likha(d)
+    likha(xs[0])
+}
