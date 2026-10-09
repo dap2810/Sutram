@@ -1,3 +1,36 @@
+## v91 — Linux GUI IDE, slice 3: it types
+
+- **The X11 client is now an editor.** Slice 2 could paint panes and labels but
+  could not be typed into. Slice 3 adds an editor buffer, key handling, and a
+  per-line repaint: printable characters insert at the cursor, backspace
+  deletes, Return opens a new line, Escape quits, and the caret is drawn as a
+  bar at the right position.
+- **A real keycode table, not arithmetic.** My first pass mapped characters as
+  `keycode - 8`, the folklore convention. It is wrong on a real server: XKB
+  puts `a` at keycode 38, not 105, so typing would have produced garbage.
+  Replaced with the standard US-QWERTY XKB table, verified by reading the
+  bytes back out of the built binary — keycode 31 really is `i`, 43 is `h`.
+  A non-US layout still needs the server's own mapping via
+  `GetKeyboardMapping` (opcode 101); that is slice 4.
+- **The bug was in my test, not the client — the fourth time that has
+  happened in this project.** The suite reported "typing 'i' produced 'hi'"
+  as failing. I instrumented the client to print every character it inserted:
+  `['h', 'i', 'h']` — insertion was correct all along. The test read
+  ImageText8's length from `body[0]`, but `body` excludes the 4-byte request
+  header, so `body[0]` is the first byte of the window id. That is why every
+  label appeared as a single character — `S`, `E`, `O`, `C` for the four
+  labels. Reading `n` from the header byte fixed it. **Check the check before
+  reporting a defect.**
+- **Verified by a mock X server, 35 checks, no display needed.** Beyond the
+  protocol shapes, the tests now drive real typing: send `h`, expect `h` drawn;
+  send `i`, expect `hi` on the same line; send backspace, expect `h`; send
+  Return, expect the text to split. A negative test confirms the suite fails
+  when the keycode table is deliberately corrupted.
+- **Honest limit, unchanged:** this proves the protocol and the editing logic.
+  It does **not** prove the window renders or that the caret sits where it
+  looks right — only a real display shows that, and the visual check is the
+  owner's.
+
 ## v90 — Linux GUI IDE, slice 2: it draws
 
 - **The X11 client now paints.** Slice 1 could connect, handshake and map a
