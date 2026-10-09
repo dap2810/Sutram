@@ -1,0 +1,37 @@
+# Sutra (constants) and bitwise operators
+# sutra = rule/formula in Sanskrit
+
+mukhya()
+    sutra MAX_VAL = 100
+    
+    likha("=== Sutra & Bitwise ===\n")
+    
+    likha("MAX_VAL = ")
+    likha(MAX_VAL)
+    likha("\n")
+    
+    vitti rem = 17 % 5
+    likha("17 % 5 = ")
+    likha(rem)
+    likha("\n")
+    
+    vitti a = 12 & 10
+    likha("12 & 10 = ")
+    likha(a)
+    likha("\n")
+    
+    vitti b = 12 | 10
+    likha("12 | 10 = ")
+    likha(b)
+    likha("\n")
+    
+    vitti c = 12 ^ 10
+    likha("12 ^ 10 = ")
+    likha(c)
+    likha("\n")
+    
+    vitti x = 42
+    nishedha(x > 0)
+    likha("Assert passed\n")
+    
+    likha("=== Done ===\n")
