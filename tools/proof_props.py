@@ -414,6 +414,91 @@ def prop_baseconv_roundtrip(compiler, rng):
     return ok and out == "PASS", out
 
 
+def prop_strconv_roundtrip(compiler, rng):
+    """str_to_int(int_to_str(n)) == n for spread incl 0, negatives, large"""
+    vals = [0, 1, 0 - 1, 42, 0 - 987, 12345, 999999, 2147483647]
+    for _ in range(7):
+        vals.append(rng.randint(-999999, 999999))
+    lines = ["ayojan strconv", "mukhya() {",
+             "    vitti buf = nirmmita(30*8)",
+             "    vitti ok = nirmmita(1*8)"]
+    for idx, v in enumerate(vals):
+        lines.append(f"    vitti len{idx} = int_to_str({v}, buf)")
+        lines.append(f"    vitti back{idx} = str_to_int(buf, len{idx}, ok)")
+        lines.append(f"    yadi (back{idx} != {v}) {{")
+        lines.append(f'        likha("FAIL strconv_roundtrip {v}\\n")')
+        lines.append(f"        pratiyati 1")
+        lines.append(f"    }}")
+        lines.append(f"    yadi (ok[0] != 1) {{")
+        lines.append(f'        likha("FAIL strconv_roundtrip ok {v}\\n")')
+        lines.append(f"        pratiyati 1")
+        lines.append(f"    }}")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "strconv_rt", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_strconv_base_roundtrip(compiler, rng):
+    """per-base round-trip through the string path: base 2/8/10/16"""
+    vals = [0, 1, 255, 1024, 999999]
+    for _ in range(5):
+        vals.append(rng.randint(0, 999999))
+    lines = ["ayojan strconv", "mukhya() {",
+             "    vitti buf = nirmmita(70*8)",
+             "    vitti ok = nirmmita(1*8)"]
+    for idx, v in enumerate(vals):
+        for b in (2, 8, 10, 16):
+            lines.append(f"    vitti l{idx}_{b} = int_to_base_str({v}, {b}, buf)")
+            lines.append(f"    vitti r{idx}_{b} = str_to_int_base(buf, l{idx}_{b}, {b}, ok)")
+            lines.append(f"    yadi (r{idx}_{b} != {v}) {{")
+            lines.append(f'        likha("FAIL strconv_base {v} base {b}\\n")')
+            lines.append(f"        pratiyati 1")
+            lines.append(f"    }}")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "strconv_base", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_strconv_pad_left(compiler, rng):
+    """pad_left width invariant: result length == max(count, width),
+    original digits preserved at the right, fill on the left"""
+    lines = ["ayojan strconv", "mukhya() {",
+             "    vitti buf = nirmmita(12*8)"]
+    for idx in range(8):
+        v = rng.randint(0, 9999)
+        width = rng.randint(1, 10)
+        # render v, then pad
+        lines.append(f"    vitti c{idx} = int_to_str({v}, buf)")
+        lines.append(f"    vitti w{idx} = pad_left(buf, c{idx}, {width}, 48)")
+        # expected length
+        # (compute in python for the check)
+        s = str(v)
+        exp_len = max(len(s), width)
+        lines.append(f"    yadi (w{idx} != {exp_len}) {{")
+        lines.append(f'        likha("FAIL pad_left len {v} w{width}\\n")')
+        lines.append(f"        pratiyati 1")
+        lines.append(f"    }}")
+        # check the rightmost len(s) chars are the digits of v
+        for j, ch in enumerate(s):
+            pos = exp_len - len(s) + j
+            lines.append(f"    yadi (buf[{pos}] != {ord(ch)}) {{")
+            lines.append(f'        likha("FAIL pad_left digits {v} w{width}\\n")')
+            lines.append(f"        pratiyati 1")
+            lines.append(f"    }}")
+        # check fill chars on the left
+        for j in range(exp_len - len(s)):
+            lines.append(f"    yadi (buf[{j}] != 48) {{")
+            lines.append(f'        likha("FAIL pad_left fill {v} w{width}\\n")')
+            lines.append(f"        pratiyati 1")
+            lines.append(f"    }}")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "pad_left", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
 def main():
     compiler = None
     for i, a in enumerate(sys.argv):
@@ -438,6 +523,9 @@ def main():
         ("sort idempotent", prop_sort_idempotent),
         ("sort edge cases", prop_sort_edges),
         ("baseconv roundtrip", prop_baseconv_roundtrip),
+        ("strconv roundtrip", prop_strconv_roundtrip),
+        ("strconv base roundtrip", prop_strconv_base_roundtrip),
+        ("strconv pad_left", prop_strconv_pad_left),
     ]
 
     failed = []
