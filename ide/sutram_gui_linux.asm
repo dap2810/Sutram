@@ -94,6 +94,9 @@
 %define KC_CTRL_S       39              ; 's' keycode
 %define KC_CTRL_L       46              ; 'l' keycode
 %define KC_CTRL_Z       52              ; 'z' keycode
+%define KC_PGUP         104             ; output-pane scroll up
+%define KC_PGDN         109             ; output-pane scroll down
+%define OUT_VISIBLE     7               ; output lines that fit in the pane
 %define SAVE_PATH       "/tmp/.sutram_gui_saved.sm"
 %define UNDO_LEVELS     8
 %define MASK_CONTROL    0x0004
@@ -172,6 +175,7 @@ section .bss
     run_envp    resq 2              ; empty environment
     out_lines   resb 1024           ; run_out split into display lines
     out_nlines  resq 1
+    out_top     resq 1               ; first visible output line (scroll)
     want_quit   resd 1
 
 section .data
@@ -477,7 +481,56 @@ draw_text:
 
 
 ; ---------------------------------------------------------------- draw_output
-; Slice 5: render the captured run output in the output pane, one line per
+
+; ---------------------------------------------------------------- out_clamp
+; Keep out_top within [0, max(0, out_nlines - OUT_VISIBLE)].
+out_clamp:
+    mov rax, [rel out_nlines]
+    cmp rax, OUT_VISIBLE
+    jbe .zero
+    sub rax, OUT_VISIBLE
+    cmp [rel out_top], rax
+    jbe .ret
+    mov [rel out_top], rax
+.ret:
+    ret
+.zero:
+    mov qword [rel out_top], 0
+    ret
+
+; ---------------------------------------------------------------- out_to_bottom
+; Auto-scroll so the newest output is visible (called after a run).
+out_to_bottom:
+    call out_clamp
+    mov rax, [rel out_nlines]
+    cmp rax, OUT_VISIBLE
+    jbe .done
+    sub rax, OUT_VISIBLE
+    mov [rel out_top], rax
+.done:
+    ret
+
+; ---------------------------------------------------------------- out_scroll_up
+out_scroll_up:
+    mov rax, [rel out_top]
+    cmp rax, OUT_VISIBLE
+    jb  .zero
+    sub rax, OUT_VISIBLE
+    mov [rel out_top], rax
+    ret
+.zero:
+    mov qword [rel out_top], 0
+    ret
+
+; ---------------------------------------------------------------- out_scroll_down
+out_scroll_down:
+    mov rax, [rel out_top]
+    add rax, OUT_VISIBLE
+    mov [rel out_top], rax
+    call out_clamp
+    ret
+
+; Slice 5/11: render the captured run output in the output pane, one line per
 ; LINE_H. Up to 7 lines fit; extra lines are dropped (the pane scrolls in a
 ; later slice). Uses r14 for the line cursor so it never disturbs r12 (the
 ; socket fd).
@@ -488,16 +541,31 @@ draw_output:
     mov r13, [rel out_nlines]
     test r13, r13
     jz .done
-    cmp r13, 7
-    jbe .clamped
-    mov r13, 7
-.clamped:
+    ; advance r14 to the first visible line (index out_top)
+    lea r14, [rel out_lines]
+    mov rcx, [rel out_top]
+.adv0:
+    test rcx, rcx
+    jz .drawn
+.adv0l:
+    cmp byte [r14], 0
+    je .adv0d
+    inc r14
+    jmp .adv0l
+.adv0d:
+    inc r14
+    dec rcx
+    jmp .adv0
+.drawn:
     mov rdi, COL_TEXT
     call set_fg
-    xor rbx, rbx
-    lea r14, [rel out_lines]
+    xor rbx, rbx                    ; display row 0..OUT_VISIBLE-1
 .line:
-    cmp rbx, r13
+    cmp rbx, OUT_VISIBLE
+    jae .done
+    mov rax, [rel out_top]
+    add rax, rbx
+    cmp rax, r13
     jae .done
     xor rcx, rcx
 .len:
@@ -516,7 +584,6 @@ draw_output:
     mov rdi, r12
     lea rsi, [reqbuf]
     call send_req
-    ; advance past this line's NUL
 .adv:
     cmp byte [r14], 0
     je .adv_done
@@ -1136,6 +1203,7 @@ do_run:
     call exec_capture
     mov byte [rel run_out+4095], 0    ; NUL-terminate without overrunning the buffer
     call split_lines
+    call out_to_bottom
     ; ---- if the compiler succeeded (no output, exit 0) run the binary ----
     ; The compiler prints "OK: compiled N bytes" on success; treat any
     ; non-empty output that contains "Error" as failure and stop.
@@ -1153,6 +1221,7 @@ do_run:
     lea r14, [rel run_argv]
     call exec_capture
     call split_lines
+    call out_to_bottom
 .done:
     pop rbx
     ret
@@ -1475,6 +1544,10 @@ handle_key:
     je   .up
     cmp  rbx, KC_DOWN
     je   .down
+    cmp  rbx, KC_PGUP
+    je   .pgup
+    cmp  rbx, KC_PGDN
+    je   .pgdn
     cmp  qword [rel km_ok], 0
     je   .fallback
     lea  rcx, [rel kc_map]
@@ -1530,6 +1603,14 @@ handle_key:
     jmp  .done
 .down:
     call caret_down
+    jmp  .done
+.pgup:
+    call out_scroll_up
+    call draw_all
+    jmp  .done
+.pgdn:
+    call out_scroll_down
+    call draw_all
     jmp  .done
 .esc:
     mov  dword [rel want_quit], 1
