@@ -1,3 +1,18 @@
+## v102 — Fix clean-checkout build: win/ restored; GUI source + CHANGELOG pushed
+
+- **Root cause of "the AIs can't work": the repo had no `win/` directory.** The
+  compiler source `%include`s `win/rtblob.inc` (line 18721) and `win/winrt.inc`
+  (line 18912), so a fresh clone could not assemble at all. ChatGPT flagged this
+  too. Restored the full `win/` tree to main: `rtblob.inc`, `winrt.inc`,
+  `winrt_blob.asm`, `winapi.asm`, `winio.asm`, `native_host.asm`, `probe.asm`,
+  `build-windows.sh`. Both `.inc` files are self-contained (no further includes).
+- **Verified on a truly clean checkout** — fresh tarball, nothing copied in:
+  `nasm -f elf64 -I. src/sutram_compiler.asm` builds (162,152 B), suite
+  **186/186**, proof_lib **124/124**, proof_props **14/14**.
+- **Large-file write route restored.** Programmatic GitHub writes work again, so
+  files are pushed from disk rather than inline. My stranded work is now on main:
+  `ide/sutram_gui_linux.asm` (slices 1-10, 38,920 B) and this CHANGELOG.
+
 ## v101 — Round check: Muse R7 accepted, ChatGPT R48 accepted as Stage-1; R49/R08 issued
 
 - **Muse R7 verified and accepted.** `lib/sort.smlib` gained `insertion_sort`,
