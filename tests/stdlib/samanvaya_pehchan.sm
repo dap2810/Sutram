@@ -1,0 +1,18 @@
+ayojan samanvaya
+mukhya() {
+    kosh dasham out[4]
+    kosh_push(out, 0.0)
+    kosh_push(out, 0.0)
+    kosh_push(out, 0.0)
+    kosh_push(out, 0.0)
+    likha(pehchan(2, out))
+    likha("\n")
+    likha(out[0])
+    likha("\n")
+    likha(out[1])
+    likha("\n")
+    likha(out[2])
+    likha("\n")
+    likha(out[3])
+    likha("\n")
+}

@@ -1,0 +1,9 @@
+ayojan math
+mukhya() {
+    likha(power(2,10))
+    likha("\n")
+    likha(power(3,0))
+    likha("\n")
+    likha(power(5,3))
+    likha("\n")
+}

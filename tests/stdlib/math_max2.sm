@@ -1,0 +1,11 @@
+ayojan math
+mukhya() {
+    likha(max2(3,7))
+    likha("\n")
+    likha(max2(9,2))
+    likha("\n")
+    likha(max2(4,4))
+    likha("\n")
+    likha(max2(-5,-1))
+    likha("\n")
+}

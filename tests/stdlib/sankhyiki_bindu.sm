@@ -1,0 +1,21 @@
+ayojan sankhyiki
+mukhya() {
+    kosh dasham a[3]
+    kosh_push(a, 1.0)
+    kosh_push(a, 2.0)
+    kosh_push(a, 3.0)
+    kosh dasham b[3]
+    kosh_push(b, 4.0)
+    kosh_push(b, 5.0)
+    kosh_push(b, 6.0)
+    likha(bindu(a, b))
+    likha("\n")
+    kosh dasham c[2]
+    kosh_push(c, 1.5)
+    kosh_push(c, 2.5)
+    kosh dasham d[2]
+    kosh_push(d, 2.0)
+    kosh_push(d, 4.0)
+    likha(bindu(c, d))
+    likha("\n")
+}

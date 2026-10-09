@@ -1,0 +1,14 @@
+ayojan sankhyiki
+mukhya() {
+    kosh dasham a[3]
+    kosh_push(a, 3.0)
+    kosh_push(a, 1.0)
+    kosh_push(a, 2.0)
+    likha(laghutama(a))
+    likha("\n")
+    kosh dasham b[2]
+    kosh_push(b, -5.0)
+    kosh_push(b, 5.0)
+    likha(laghutama(b))
+    likha("\n")
+}

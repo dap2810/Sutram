@@ -1,0 +1,31 @@
+ayojan samanvaya
+mukhya() {
+    kosh dasham a[6]
+    kosh_push(a, 1.0)
+    kosh_push(a, 2.0)
+    kosh_push(a, 3.0)
+    kosh_push(a, 4.0)
+    kosh_push(a, 5.0)
+    kosh_push(a, 6.0)
+    kosh dasham out[6]
+    kosh_push(out, 0.0)
+    kosh_push(out, 0.0)
+    kosh_push(out, 0.0)
+    kosh_push(out, 0.0)
+    kosh_push(out, 0.0)
+    kosh_push(out, 0.0)
+    likha(vivartana(a, 2, 3, out))
+    likha("\n")
+    likha(out[0])
+    likha("\n")
+    likha(out[1])
+    likha("\n")
+    likha(out[2])
+    likha("\n")
+    likha(out[3])
+    likha("\n")
+    likha(out[4])
+    likha("\n")
+    likha(out[5])
+    likha("\n")
+}

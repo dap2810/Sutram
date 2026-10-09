@@ -1,0 +1,9 @@
+ayojan num
+mukhya() {
+    likha(is_palindrome(12321))
+    likha("\n")
+    likha(is_palindrome(12345))
+    likha("\n")
+    likha(is_palindrome(7))
+    likha("\n")
+}

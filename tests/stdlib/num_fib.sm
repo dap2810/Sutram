@@ -1,0 +1,11 @@
+ayojan num
+mukhya() {
+    likha(fib(10))
+    likha("\n")
+    likha(fib(0))
+    likha("\n")
+    likha(fib(1))
+    likha("\n")
+    likha(fib(2))
+    likha("\n")
+}

@@ -1,0 +1,9 @@
+ayojan num
+mukhya() {
+    likha(collatz_steps(6))
+    likha("\n")
+    likha(collatz_steps(1))
+    likha("\n")
+    likha(collatz_steps(3))
+    likha("\n")
+}

@@ -1,0 +1,11 @@
+ayojan num
+mukhya() {
+    likha(is_perfect(6))
+    likha("\n")
+    likha(is_perfect(28))
+    likha("\n")
+    likha(is_perfect(12))
+    likha("\n")
+    likha(is_perfect(1))
+    likha("\n")
+}

@@ -1,0 +1,9 @@
+ayojan num
+mukhya() {
+    likha(reverse_num(12345))
+    likha("\n")
+    likha(reverse_num(100))
+    likha("\n")
+    likha(reverse_num(7))
+    likha("\n")
+}

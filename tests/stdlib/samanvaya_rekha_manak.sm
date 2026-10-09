@@ -1,0 +1,10 @@
+ayojan samanvaya
+mukhya() {
+    kosh dasham a[4]
+    kosh_push(a, 1.0)
+    kosh_push(a, -2.0)
+    kosh_push(a, 3.0)
+    kosh_push(a, -4.0)
+    likha(rekha_manak(a, 2, 2))
+    likha("\n")
+}

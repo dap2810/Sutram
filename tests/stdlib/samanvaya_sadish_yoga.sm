@@ -1,0 +1,13 @@
+ayojan samanvaya
+mukhya() {
+    kosh dasham u[3]
+    kosh_push(u, 1.0)
+    kosh_push(u, 2.0)
+    kosh_push(u, 3.0)
+    kosh dasham v[3]
+    kosh_push(v, 4.0)
+    kosh_push(v, 5.0)
+    kosh_push(v, 6.0)
+    likha(sadish_yoga(u, v))
+    likha("\n")
+}

@@ -1,0 +1,7 @@
+ayojan math
+mukhya() {
+    likha(sq(7))
+    likha("\n")
+    likha(sq(0))
+    likha("\n")
+}

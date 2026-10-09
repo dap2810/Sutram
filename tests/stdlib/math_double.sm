@@ -1,0 +1,9 @@
+ayojan math
+mukhya() {
+    likha(double(21))
+    likha("\n")
+    likha(double(0))
+    likha("\n")
+    likha(double(-5))
+    likha("\n")
+}

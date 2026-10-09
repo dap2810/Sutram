@@ -1,0 +1,9 @@
+ayojan num
+mukhya() {
+    likha(is_odd(4))
+    likha("\n")
+    likha(is_odd(7))
+    likha("\n")
+    likha(is_odd(0))
+    likha("\n")
+}

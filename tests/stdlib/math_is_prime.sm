@@ -1,0 +1,13 @@
+ayojan math
+mukhya() {
+    likha(is_prime(17))
+    likha("\n")
+    likha(is_prime(15))
+    likha("\n")
+    likha(is_prime(2))
+    likha("\n")
+    likha(is_prime(1))
+    likha("\n")
+    likha(is_prime(0))
+    likha("\n")
+}

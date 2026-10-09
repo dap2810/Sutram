@@ -1,0 +1,9 @@
+ayojan num
+mukhya() {
+    likha(clamp(5,1,10))
+    likha("\n")
+    likha(clamp(-5,1,10))
+    likha("\n")
+    likha(clamp(15,1,10))
+    likha("\n")
+}

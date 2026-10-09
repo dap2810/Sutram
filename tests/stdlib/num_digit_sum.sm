@@ -1,0 +1,9 @@
+ayojan num
+mukhya() {
+    likha(digit_sum(12345))
+    likha("\n")
+    likha(digit_sum(0))
+    likha("\n")
+    likha(digit_sum(-987))
+    likha("\n")
+}

@@ -1,0 +1,9 @@
+ayojan math
+mukhya() {
+    likha(sum_to(10))
+    likha("\n")
+    likha(sum_to(0))
+    likha("\n")
+    likha(sum_to(1))
+    likha("\n")
+}
