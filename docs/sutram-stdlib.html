@@ -25,6 +25,7 @@ Do not edit by hand.</p>
 <li><a href="#bigint"><code>bigint</code></a> — 12 functions</li>
 <li><a href="#chandas"><code>chandas</code></a> — 6 functions</li>
 <li><a href="#ganita"><code>ganita</code></a> — 6 functions</li>
+<li><a href="#hash"><code>hash</code></a> — 2 functions</li>
 <li><a href="#kalana"><code>kalana</code></a> — 6 functions</li>
 <li><a href="#madhava"><code>madhava</code></a> — 5 functions</li>
 <li><a href="#math"><code>math</code></a> — 16 functions</li>
@@ -86,6 +87,13 @@ Do not edit by hand.</p>
 <tr><td><code>chakravala(out, n)</code></td><td>chakravala(out, n): solves x^2 - n*y^2 = 1 for least positive x, y. Fills out[0] = x and out[1] = y.</td></tr>
 <tr><td><code>samasa(out, a, b, c, d, n)</code></td><td>samasa(out, a, b, c, d, n): Brahmagupta&#x27;s composition law (bhavana / samasa). Given a^2 - n*b^2 = k1 and c^2 - n*d^2 = k2, composes them into a third: (a^2 - n*b^2)(c^2 - n*d^2) = (a*c + n*b*d)^2 - n*(a*d + b*c)^2 Fills out[0] = a*c + n*b*d  and  out[1] = a*d + b*c.</td></tr>
 <tr><td><code>brahmagupta_area(a, b, c, d)</code></td><td>brahmagupta_area(a, b, c, d): Brahmagupta&#x27;s formula for the area of a cyclic quadrilateral (Brahma-sphuta-siddhanta, 628 CE):  area = sqrt((s-a)(s-b)(s-c)(s-d)),  s = (a+b+c+d)/2. With d = 0 this is Brahmagupta&#x27;s triangle (Heron&#x27;s) formula. Returns the integer part.</td></tr>
+</table>
+<h2 id="hash"><code>hash</code></h2>
+<p class="mod-desc">FNV-1a (Fowler–Noll–Vo) 32-bit hash. Deterministic, fast, good distribution for non-cryptographic use (hash tables, checksums, dedup keys). Reference: http://www.isthe.com/chongo/tech/comp/fnv/ offset_basis = 2166136261 prime        = 16777619 for each byte b: hash = (hash XOR b) * prime  (mod 2^32) fnv1a(s, len) — FNV-1a 32-bit hash of first `len` chars of pankti `s`. Returns an unsigned 32-bit value (may print as negative via likha).</p>
+<table>
+<tr><th>Function</th><th>Description</th></tr>
+<tr><td><code>fnv1a(s, len)</code></td><td></td></tr>
+<tr><td><code>fnv1a_str(s)</code></td><td>fnv1a_str(s) — FNV-1a of NUL-terminated pankti `s` (uses vartani_len).</td></tr>
 </table>
 <h2 id="kalana"><code>kalana</code></h2>
 <p class="mod-desc">Built on typed `kosh dasham` parameters (T18) and the float fast paths (F1/F2/FG1/FC1). Every function READS its kosh parameters only — never `kosh_push` on a parameter, which the compiler deliberately rejects because the pointer is passed by value. Sutram has no first-class functions, so anything that would take a callback instead takes either SAMPLES (for integration/differentiation) or POLYNOMIAL COEFFICIENTS (for root finding). Coefficients are in ascending order: c[0] + c[1]*x + c[2]*x^2 + ... --------------------------------------------------------------- Integration over sampled data --------------------------------------------------------------- Trapezoidal rule. xs and ys are sample points and values; uses the shorter length.</p>
@@ -221,6 +229,6 @@ Do not edit by hand.</p>
 <tr><td><code>bool_to_int(b)</code></td><td></td></tr>
 <tr><td><code>int_max()</code></td><td></td></tr>
 </table>
-<footer>13 modules, 121 functions. Generated from library sources.</footer>
+<footer>14 modules, 123 functions. Generated from library sources.</footer>
 </body>
 </html>
