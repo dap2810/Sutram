@@ -22,6 +22,9 @@ jobs:
           echo "$RUNNER_TEMP/tools/usr/bin" >> "$GITHUB_PATH"
       - name: Compile native NASM compiler
         run: |
+          git show 72b824f70049765c3977db07d712a1a604b89434:src/sutram_compiler.asm > /tmp/r46.asm
+          nasm -f elf64 -I. /tmp/r46.asm -o /tmp/r46.o
+          ld -o r48_before /tmp/r46.o
           nasm -f elf64 -I. src/sutram_compiler.asm -o /tmp/r51.o
           ld -o r48_after /tmp/r51.o
       - name: Provenance and check-mode acceptance
