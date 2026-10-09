@@ -53,7 +53,7 @@ def main():
         print(semantic.stderr,end="")
         print("R48_SEMANTIC_END")
         assert semantic.returncode!=0, "unresolved call should fail --check"
-        assert re.search(r"semantic_unknown\\.sm:\\d+:\\d+: Sutram Error \\[E_UNDEFINED_FUNCTION\\]",semantic.stdout),repr(semantic.stdout)
+        assert "semantic_unknown.sm:2:11: Sutram Error [E_UNDEFINED_FUNCTION]" in semantic.stdout, repr(semantic.stdout)
         assert "missing_fun" in semantic.stdout and "^" in semantic.stdout
         # A user-provided potential output file must not be created.
         assert not (ROOT/"out.bin").exists(), "unexpected workspace output out.bin"
