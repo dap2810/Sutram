@@ -1,0 +1,88 @@
+name: R47 generated native-code runtime A/B
+on:
+  push:
+    branches: [feature/r47-scaled-index-load-native-20261009]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  runtime-benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install NASM in user-owned directory
+        run: |
+          cd "$RUNNER_TEMP"
+          apt download nasm
+          mkdir -p "$RUNNER_TEMP/nasm"
+          dpkg-deb -x nasm_*.deb "$RUNNER_TEMP/nasm"
+          echo "$RUNNER_TEMP/nasm/usr/bin" >> "$GITHUB_PATH"
+      - name: Build reference and candidate from independent sources
+        run: |
+          mkdir -p win
+          if test ! -f win/rtblob.inc; then
+            printf 'RT_BLOB_LEN equ 0\nRT_SYSCALL_OFF equ 0\nrt_blob: db 0\n' > win/rtblob.inc
+            echo "WARNING: Linux ELF ONLY; actual Windows PE runtime not available"
+          fi
+          git show 72b824f70049765c3977db07d712a1a604b89434:src/sutram_compiler.asm > /tmp/r47_before.asm
+          nasm -f elf64 -I. /tmp/r47_before.asm -o /tmp/r47_before.o
+          nasm -f elf64 -I. src/sutram_compiler.asm -o /tmp/r47_after.o
+          ld -o r47_before /tmp/r47_before.o
+          ld -o r47_after /tmp/r47_after.o
+          ./r47_before --version
+          ./r47_after --version
+          echo "R47_COMPILER_HASHES"
+          sha256sum r47_before r47_after src/sutram_compiler.asm
+      - name: Baseline (original source) 186 regressions
+        run: |
+          cp r47_before sutram_compiler
+          python3 tests/run_tests.py
+      - name: Modified source 186 regressions and all gates
+        run: |
+          cp r47_after sutram_compiler
+          python3 tests/run_tests.py
+          python3 tools/codegen_gate.py
+          python3 tools/test_lang_packs.py
+          python3 -m unittest discover -s tests/module_graph -p 'test_*.py' -v
+      - name: Capture long-running paired native A/B benchmark and disassembly
+        run: |
+          python3 tools/r47_runtime_benchmark.py --before ./r47_before --after ./r47_after --runs 40 --warmup 6 --csv r47_runtime_raw.csv --disasm r47_machine_disassembly.txt
+          echo R47_RAW_START
+          cat r47_runtime_raw.csv
+          echo R47_RAW_END
+          echo R47_DISASM_START
+          cat r47_machine_disassembly.txt
+          echo R47_DISASM_END
+      - name: Print per-file SHA-256 for Sarvam and verify manifest if present
+        if: always()
+        run: |
+          echo R47_SHA_START
+          sha256sum src/sutram_compiler.asm tools/r47_runtime_benchmark.py \
+            tools/codegen_gate.py .github/workflows/r47-runtime.yml \
+            benchmarks/r47_pankti_reads.sm benchmarks/r47_kosh_reads.sm \
+            benchmarks/r47_array_mix.sm benchmarks/ROUND-47-README.md \
+            ChatGPT-to-Sarvam/ROUND-47-RAW-NATIVE-RUNTIME.csv \
+            ChatGPT-to-Sarvam/ROUND-47-DISASSEMBLY.txt \
+            ChatGPT-to-Sarvam/ROUND-47-CALL-RUNTIME-RAW.csv \
+            ChatGPT-to-Sarvam/ROUND-47-CALL-DISASSEMBLY.txt \
+            ChatGPT-to-Sarvam/ROUND-47-GUARDED-CALL-RUNTIME.csv \
+            ChatGPT-to-Sarvam/ROUND-47-GUARDED-CALL-DISASSEMBLY.txt \
+            ChatGPT-to-Sarvam/ROUND-47-GUARDED-REPEAT-RUNTIME.csv \
+            ChatGPT-to-Sarvam/ROUND-47-GUARDED-REPEAT-DISASSEMBLY.txt \
+            ChatGPT-to-Sarvam/ROUND-47-NASM-REVIEW.patch \
+            ChatGPT-to-Sarvam/ROUND-47-HANDOFF-2026-10-09.md
+          echo R47_SHA_END
+          if test -f ChatGPT-to-Sarvam/ROUND-47-SHA256.txt; then
+            sha256sum -c ChatGPT-to-Sarvam/ROUND-47-SHA256.txt
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: r47-native-runtime-evidence
+          path: |
+            r47_runtime_raw.csv
+            r47_machine_disassembly.txt
+          if-no-files-found: warn

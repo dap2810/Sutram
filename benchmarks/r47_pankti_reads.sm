@@ -1,0 +1,19 @@
+# R47 read-only fixed array indexing, repeated and safely bounded.
+mukhya() {
+    pankti a[8]
+    a[0]=1
+    a[1]=3
+    a[2]=5
+    a[3]=7
+    a[4]=11
+    a[5]=13
+    a[6]=17
+    a[7]=19
+    vitti i=0
+    vitti sum=0
+    yavat (i < 12000000) {
+        sum = sum + a[i % 8]
+        i = i + 1
+    }
+    likha(sum)
+}

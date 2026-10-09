@@ -1,0 +1,1849 @@
+=== benchmarks/r47_pankti_reads.sm ===
+output_sha256=a3f66f4873da37f838a14ea5a24457e67bbf367de91912675bbcb9a878a749db
+before_image=('4126f230f64a3d61e5c9d237a12d380e11b9a9a060e8f1e97b712205a7c87a97', 1558)
+after_image=('153bec00435ca34aabca4eb97eb4b9e4ad10fd0253f05a3b94c52e30bca14b0b', 1552)
+generated_byte_identical=False
+BEFORE MACHINE CODE:
+00000003  4154              push r12
+00000005  4155              push r13
+00000007  4156              push r14
+00000009  4157              push r15
+0000000B  4889E5            mov rbp,rsp
+0000000E  4881EC00080000    sub rsp,0x800
+00000015  B808000000        mov eax,0x8
+0000001A  50                push rax
+0000001B  4883C001          add rax,byte +0x1
+0000001F  48C1E003          shl rax,byte 0x3
+00000023  4889C6            mov rsi,rax
+00000026  31FF              xor edi,edi
+00000028  BA03000000        mov edx,0x3
+0000002D  41BA22000000      mov r10d,0x22
+00000033  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+0000009E  48C7C701000000    mov rdi,0x1
+000000A5  4889C6            mov rsi,rax
+000000A8  BA28000000        mov edx,0x28
+000000AD  B801000000        mov eax,0x1
+000000B2  0F05              syscall
+000000B4  B83C000000        mov eax,0x3c
+000000B9  BF01000000        mov edi,0x1
+000000BE  0F05              syscall
+000000C0  59                pop rcx
+000000C1  48C1E003          shl rax,byte 0x3
+000000C5  59                pop rcx
+000000C6  4801C8            add rax,rcx
+000000C9  5A                pop rdx
+000000CA  488910            mov [rax],rdx
+000000CD  B803000000        mov eax,0x3
+--- INDEXED READ ---
+000000A8  BA28000000        mov edx,0x28
+000000AD  B801000000        mov eax,0x1
+000000B2  0F05              syscall
+000000B4  B83C000000        mov eax,0x3c
+000000B9  BF01000000        mov edi,0x1
+000000BE  0F05              syscall
+000000C0  59                pop rcx
+000000C1  48C1E003          shl rax,byte 0x3
+000000C5  59                pop rcx
+000000C6  4801C8            add rax,rcx
+000000C9  5A                pop rdx
+000000CA  488910            mov [rax],rdx
+000000CD  B803000000        mov eax,0x3
+000000D2  50                push rax
+000000D3  4889D8            mov rax,rbx
+--- INDEXED READ ---
+0000011C  48C7C701000000    mov rdi,0x1
+00000123  4889C6            mov rsi,rax
+00000126  BA28000000        mov edx,0x28
+0000012B  B801000000        mov eax,0x1
+00000130  0F05              syscall
+00000132  B83C000000        mov eax,0x3c
+00000137  BF01000000        mov edi,0x1
+0000013C  0F05              syscall
+0000013E  59                pop rcx
+0000013F  48C1E003          shl rax,byte 0x3
+00000143  59                pop rcx
+00000144  4801C8            add rax,rcx
+00000147  5A                pop rdx
+00000148  488910            mov [rax],rdx
+0000014B  B805000000        mov eax,0x5
+--- INDEXED READ ---
+00000126  BA28000000        mov edx,0x28
+0000012B  B801000000        mov eax,0x1
+00000130  0F05              syscall
+00000132  B83C000000        mov eax,0x3c
+00000137  BF01000000        mov edi,0x1
+0000013C  0F05              syscall
+0000013E  59                pop rcx
+0000013F  48C1E003          shl rax,byte 0x3
+00000143  59                pop rcx
+00000144  4801C8            add rax,rcx
+00000147  5A                pop rdx
+00000148  488910            mov [rax],rdx
+0000014B  B805000000        mov eax,0x5
+00000150  50                push rax
+00000151  4889D8            mov rax,rbx
+--- INDEXED READ ---
+0000019A  48C7C701000000    mov rdi,0x1
+000001A1  4889C6            mov rsi,rax
+000001A4  BA28000000        mov edx,0x28
+000001A9  B801000000        mov eax,0x1
+000001AE  0F05              syscall
+000001B0  B83C000000        mov eax,0x3c
+000001B5  BF01000000        mov edi,0x1
+000001BA  0F05              syscall
+000001BC  59                pop rcx
+000001BD  48C1E003          shl rax,byte 0x3
+000001C1  59                pop rcx
+000001C2  4801C8            add rax,rcx
+000001C5  5A                pop rdx
+000001C6  488910            mov [rax],rdx
+000001C9  B807000000        mov eax,0x7
+--- INDEXED READ ---
+000001A4  BA28000000        mov edx,0x28
+000001A9  B801000000        mov eax,0x1
+000001AE  0F05              syscall
+000001B0  B83C000000        mov eax,0x3c
+000001B5  BF01000000        mov edi,0x1
+000001BA  0F05              syscall
+000001BC  59                pop rcx
+000001BD  48C1E003          shl rax,byte 0x3
+000001C1  59                pop rcx
+000001C2  4801C8            add rax,rcx
+000001C5  5A                pop rdx
+000001C6  488910            mov [rax],rdx
+000001C9  B807000000        mov eax,0x7
+000001CE  50                push rax
+000001CF  4889D8            mov rax,rbx
+--- INDEXED READ ---
+00000218  48C7C701000000    mov rdi,0x1
+0000021F  4889C6            mov rsi,rax
+00000222  BA28000000        mov edx,0x28
+00000227  B801000000        mov eax,0x1
+0000022C  0F05              syscall
+0000022E  B83C000000        mov eax,0x3c
+00000233  BF01000000        mov edi,0x1
+00000238  0F05              syscall
+0000023A  59                pop rcx
+0000023B  48C1E003          shl rax,byte 0x3
+0000023F  59                pop rcx
+00000240  4801C8            add rax,rcx
+00000243  5A                pop rdx
+00000244  488910            mov [rax],rdx
+00000247  B80B000000        mov eax,0xb
+--- INDEXED READ ---
+00000222  BA28000000        mov edx,0x28
+00000227  B801000000        mov eax,0x1
+0000022C  0F05              syscall
+0000022E  B83C000000        mov eax,0x3c
+00000233  BF01000000        mov edi,0x1
+00000238  0F05              syscall
+0000023A  59                pop rcx
+0000023B  48C1E003          shl rax,byte 0x3
+0000023F  59                pop rcx
+00000240  4801C8            add rax,rcx
+00000243  5A                pop rdx
+00000244  488910            mov [rax],rdx
+00000247  B80B000000        mov eax,0xb
+0000024C  50                push rax
+0000024D  4889D8            mov rax,rbx
+--- INDEXED READ ---
+00000296  48C7C701000000    mov rdi,0x1
+0000029D  4889C6            mov rsi,rax
+000002A0  BA28000000        mov edx,0x28
+000002A5  B801000000        mov eax,0x1
+000002AA  0F05              syscall
+000002AC  B83C000000        mov eax,0x3c
+000002B1  BF01000000        mov edi,0x1
+000002B6  0F05              syscall
+000002B8  59                pop rcx
+000002B9  48C1E003          shl rax,byte 0x3
+000002BD  59                pop rcx
+000002BE  4801C8            add rax,rcx
+000002C1  5A                pop rdx
+000002C2  488910            mov [rax],rdx
+000002C5  B80D000000        mov eax,0xd
+--- INDEXED READ ---
+000002A0  BA28000000        mov edx,0x28
+000002A5  B801000000        mov eax,0x1
+000002AA  0F05              syscall
+000002AC  B83C000000        mov eax,0x3c
+000002B1  BF01000000        mov edi,0x1
+000002B6  0F05              syscall
+000002B8  59                pop rcx
+000002B9  48C1E003          shl rax,byte 0x3
+000002BD  59                pop rcx
+000002BE  4801C8            add rax,rcx
+000002C1  5A                pop rdx
+000002C2  488910            mov [rax],rdx
+000002C5  B80D000000        mov eax,0xd
+000002CA  50                push rax
+000002CB  4889D8            mov rax,rbx
+--- INDEXED READ ---
+00000314  48C7C701000000    mov rdi,0x1
+0000031B  4889C6            mov rsi,rax
+0000031E  BA28000000        mov edx,0x28
+00000323  B801000000        mov eax,0x1
+00000328  0F05              syscall
+0000032A  B83C000000        mov eax,0x3c
+0000032F  BF01000000        mov edi,0x1
+00000334  0F05              syscall
+00000336  59                pop rcx
+00000337  48C1E003          shl rax,byte 0x3
+0000033B  59                pop rcx
+0000033C  4801C8            add rax,rcx
+0000033F  5A                pop rdx
+00000340  488910            mov [rax],rdx
+00000343  B811000000        mov eax,0x11
+AFTER MACHINE CODE:
+00000003  4154              push r12
+00000005  4155              push r13
+00000007  4156              push r14
+00000009  4157              push r15
+0000000B  4889E5            mov rbp,rsp
+0000000E  4881EC00080000    sub rsp,0x800
+00000015  B808000000        mov eax,0x8
+0000001A  50                push rax
+0000001B  4883C001          add rax,byte +0x1
+0000001F  48C1E003          shl rax,byte 0x3
+00000023  4889C6            mov rsi,rax
+00000026  31FF              xor edi,edi
+00000028  BA03000000        mov edx,0x3
+0000002D  41BA22000000      mov r10d,0x22
+00000033  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+0000009E  48C7C701000000    mov rdi,0x1
+000000A5  4889C6            mov rsi,rax
+000000A8  BA28000000        mov edx,0x28
+000000AD  B801000000        mov eax,0x1
+000000B2  0F05              syscall
+000000B4  B83C000000        mov eax,0x3c
+000000B9  BF01000000        mov edi,0x1
+000000BE  0F05              syscall
+000000C0  59                pop rcx
+000000C1  48C1E003          shl rax,byte 0x3
+000000C5  59                pop rcx
+000000C6  4801C8            add rax,rcx
+000000C9  5A                pop rdx
+000000CA  488910            mov [rax],rdx
+000000CD  B803000000        mov eax,0x3
+--- INDEXED READ ---
+000000A8  BA28000000        mov edx,0x28
+000000AD  B801000000        mov eax,0x1
+000000B2  0F05              syscall
+000000B4  B83C000000        mov eax,0x3c
+000000B9  BF01000000        mov edi,0x1
+000000BE  0F05              syscall
+000000C0  59                pop rcx
+000000C1  48C1E003          shl rax,byte 0x3
+000000C5  59                pop rcx
+000000C6  4801C8            add rax,rcx
+000000C9  5A                pop rdx
+000000CA  488910            mov [rax],rdx
+000000CD  B803000000        mov eax,0x3
+000000D2  50                push rax
+000000D3  4889D8            mov rax,rbx
+--- INDEXED READ ---
+0000011C  48C7C701000000    mov rdi,0x1
+00000123  4889C6            mov rsi,rax
+00000126  BA28000000        mov edx,0x28
+0000012B  B801000000        mov eax,0x1
+00000130  0F05              syscall
+00000132  B83C000000        mov eax,0x3c
+00000137  BF01000000        mov edi,0x1
+0000013C  0F05              syscall
+0000013E  59                pop rcx
+0000013F  48C1E003          shl rax,byte 0x3
+00000143  59                pop rcx
+00000144  4801C8            add rax,rcx
+00000147  5A                pop rdx
+00000148  488910            mov [rax],rdx
+0000014B  B805000000        mov eax,0x5
+--- INDEXED READ ---
+00000126  BA28000000        mov edx,0x28
+0000012B  B801000000        mov eax,0x1
+00000130  0F05              syscall
+00000132  B83C000000        mov eax,0x3c
+00000137  BF01000000        mov edi,0x1
+0000013C  0F05              syscall
+0000013E  59                pop rcx
+0000013F  48C1E003          shl rax,byte 0x3
+00000143  59                pop rcx
+00000144  4801C8            add rax,rcx
+00000147  5A                pop rdx
+00000148  488910            mov [rax],rdx
+0000014B  B805000000        mov eax,0x5
+00000150  50                push rax
+00000151  4889D8            mov rax,rbx
+--- INDEXED READ ---
+0000019A  48C7C701000000    mov rdi,0x1
+000001A1  4889C6            mov rsi,rax
+000001A4  BA28000000        mov edx,0x28
+000001A9  B801000000        mov eax,0x1
+000001AE  0F05              syscall
+000001B0  B83C000000        mov eax,0x3c
+000001B5  BF01000000        mov edi,0x1
+000001BA  0F05              syscall
+000001BC  59                pop rcx
+000001BD  48C1E003          shl rax,byte 0x3
+000001C1  59                pop rcx
+000001C2  4801C8            add rax,rcx
+000001C5  5A                pop rdx
+000001C6  488910            mov [rax],rdx
+000001C9  B807000000        mov eax,0x7
+--- INDEXED READ ---
+000001A4  BA28000000        mov edx,0x28
+000001A9  B801000000        mov eax,0x1
+000001AE  0F05              syscall
+000001B0  B83C000000        mov eax,0x3c
+000001B5  BF01000000        mov edi,0x1
+000001BA  0F05              syscall
+000001BC  59                pop rcx
+000001BD  48C1E003          shl rax,byte 0x3
+000001C1  59                pop rcx
+000001C2  4801C8            add rax,rcx
+000001C5  5A                pop rdx
+000001C6  488910            mov [rax],rdx
+000001C9  B807000000        mov eax,0x7
+000001CE  50                push rax
+000001CF  4889D8            mov rax,rbx
+--- INDEXED READ ---
+00000218  48C7C701000000    mov rdi,0x1
+0000021F  4889C6            mov rsi,rax
+00000222  BA28000000        mov edx,0x28
+00000227  B801000000        mov eax,0x1
+0000022C  0F05              syscall
+0000022E  B83C000000        mov eax,0x3c
+00000233  BF01000000        mov edi,0x1
+00000238  0F05              syscall
+0000023A  59                pop rcx
+0000023B  48C1E003          shl rax,byte 0x3
+0000023F  59                pop rcx
+00000240  4801C8            add rax,rcx
+00000243  5A                pop rdx
+00000244  488910            mov [rax],rdx
+00000247  B80B000000        mov eax,0xb
+--- INDEXED READ ---
+00000222  BA28000000        mov edx,0x28
+00000227  B801000000        mov eax,0x1
+0000022C  0F05              syscall
+0000022E  B83C000000        mov eax,0x3c
+00000233  BF01000000        mov edi,0x1
+00000238  0F05              syscall
+0000023A  59                pop rcx
+0000023B  48C1E003          shl rax,byte 0x3
+0000023F  59                pop rcx
+00000240  4801C8            add rax,rcx
+00000243  5A                pop rdx
+00000244  488910            mov [rax],rdx
+00000247  B80B000000        mov eax,0xb
+0000024C  50                push rax
+0000024D  4889D8            mov rax,rbx
+--- INDEXED READ ---
+00000296  48C7C701000000    mov rdi,0x1
+0000029D  4889C6            mov rsi,rax
+000002A0  BA28000000        mov edx,0x28
+000002A5  B801000000        mov eax,0x1
+000002AA  0F05              syscall
+000002AC  B83C000000        mov eax,0x3c
+000002B1  BF01000000        mov edi,0x1
+000002B6  0F05              syscall
+000002B8  59                pop rcx
+000002B9  48C1E003          shl rax,byte 0x3
+000002BD  59                pop rcx
+000002BE  4801C8            add rax,rcx
+000002C1  5A                pop rdx
+000002C2  488910            mov [rax],rdx
+000002C5  B80D000000        mov eax,0xd
+--- INDEXED READ ---
+000002A0  BA28000000        mov edx,0x28
+000002A5  B801000000        mov eax,0x1
+000002AA  0F05              syscall
+000002AC  B83C000000        mov eax,0x3c
+000002B1  BF01000000        mov edi,0x1
+000002B6  0F05              syscall
+000002B8  59                pop rcx
+000002B9  48C1E003          shl rax,byte 0x3
+000002BD  59                pop rcx
+000002BE  4801C8            add rax,rcx
+000002C1  5A                pop rdx
+000002C2  488910            mov [rax],rdx
+000002C5  B80D000000        mov eax,0xd
+000002CA  50                push rax
+000002CB  4889D8            mov rax,rbx
+--- INDEXED READ ---
+00000314  48C7C701000000    mov rdi,0x1
+0000031B  4889C6            mov rsi,rax
+0000031E  BA28000000        mov edx,0x28
+00000323  B801000000        mov eax,0x1
+00000328  0F05              syscall
+0000032A  B83C000000        mov eax,0x3c
+0000032F  BF01000000        mov edi,0x1
+00000334  0F05              syscall
+00000336  59                pop rcx
+00000337  48C1E003          shl rax,byte 0x3
+0000033B  59                pop rcx
+0000033C  4801C8            add rax,rcx
+0000033F  5A                pop rdx
+00000340  488910            mov [rax],rdx
+00000343  B811000000        mov eax,0x11
+=== benchmarks/r47_kosh_reads.sm ===
+output_sha256=56f36d5adddfce2ffdead8cdfe77e25f136775835e3deced891efb1b4cd2b169
+before_image=('fcbfcccd15b377ee9d3834bf1b04fc9dd4c5962adbcb0e325bc77b070d85645e', 1902)
+after_image=('7bde45ea678ea4fc2c413410ba84cc38aa5055fe614569f8c90d3b49885c40eb', 1896)
+generated_byte_identical=False
+BEFORE MACHINE CODE:
+00000009  4157              push r15
+0000000B  4889E5            mov rbp,rsp
+0000000E  4881EC00080000    sub rsp,0x800
+00000015  B808000000        mov eax,0x8
+0000001A  4885C0            test rax,rax
+0000001D  7903              jns 0x22
+0000001F  4831C0            xor rax,rax
+00000022  50                push rax
+00000023  4883C002          add rax,byte +0x2
+00000027  48C1E003          shl rax,byte 0x3
+0000002B  4889C6            mov rsi,rax
+0000002E  31FF              xor edi,edi
+00000030  BA03000000        mov edx,0x3
+00000035  41BA22000000      mov r10d,0x22
+0000003B  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+0000007F  49D1E3            shl r11,1
+00000082  48C7C004000000    mov rax,0x4
+00000089  4D85DB            test r11,r11
+0000008C  4C0F44D8          cmovz r11,rax
+00000090  4150              push r8
+00000092  4151              push r9
+00000094  4153              push r11
+00000096  4C89D8            mov rax,r11
+00000099  4883C002          add rax,byte +0x2
+0000009D  48C1E003          shl rax,byte 0x3
+000000A1  4889C6            mov rsi,rax
+000000A4  31FF              xor edi,edi
+000000A6  BA03000000        mov edx,0x3
+000000AB  41BA22000000      mov r10d,0x22
+000000B1  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+00000126  49D1E3            shl r11,1
+00000129  48C7C004000000    mov rax,0x4
+00000130  4D85DB            test r11,r11
+00000133  4C0F44D8          cmovz r11,rax
+00000137  4150              push r8
+00000139  4151              push r9
+0000013B  4153              push r11
+0000013D  4C89D8            mov rax,r11
+00000140  4883C002          add rax,byte +0x2
+00000144  48C1E003          shl rax,byte 0x3
+00000148  4889C6            mov rsi,rax
+0000014B  31FF              xor edi,edi
+0000014D  BA03000000        mov edx,0x3
+00000152  41BA22000000      mov r10d,0x22
+00000158  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+000001CD  49D1E3            shl r11,1
+000001D0  48C7C004000000    mov rax,0x4
+000001D7  4D85DB            test r11,r11
+000001DA  4C0F44D8          cmovz r11,rax
+000001DE  4150              push r8
+000001E0  4151              push r9
+000001E2  4153              push r11
+000001E4  4C89D8            mov rax,r11
+000001E7  4883C002          add rax,byte +0x2
+000001EB  48C1E003          shl rax,byte 0x3
+000001EF  4889C6            mov rsi,rax
+000001F2  31FF              xor edi,edi
+000001F4  BA03000000        mov edx,0x3
+000001F9  41BA22000000      mov r10d,0x22
+000001FF  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+00000274  49D1E3            shl r11,1
+00000277  48C7C004000000    mov rax,0x4
+0000027E  4D85DB            test r11,r11
+00000281  4C0F44D8          cmovz r11,rax
+00000285  4150              push r8
+00000287  4151              push r9
+00000289  4153              push r11
+0000028B  4C89D8            mov rax,r11
+0000028E  4883C002          add rax,byte +0x2
+00000292  48C1E003          shl rax,byte 0x3
+00000296  4889C6            mov rsi,rax
+00000299  31FF              xor edi,edi
+0000029B  BA03000000        mov edx,0x3
+000002A0  41BA22000000      mov r10d,0x22
+000002A6  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+0000031B  49D1E3            shl r11,1
+0000031E  48C7C004000000    mov rax,0x4
+00000325  4D85DB            test r11,r11
+00000328  4C0F44D8          cmovz r11,rax
+0000032C  4150              push r8
+0000032E  4151              push r9
+00000330  4153              push r11
+00000332  4C89D8            mov rax,r11
+00000335  4883C002          add rax,byte +0x2
+00000339  48C1E003          shl rax,byte 0x3
+0000033D  4889C6            mov rsi,rax
+00000340  31FF              xor edi,edi
+00000342  BA03000000        mov edx,0x3
+00000347  41BA22000000      mov r10d,0x22
+0000034D  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+000003C2  49D1E3            shl r11,1
+000003C5  48C7C004000000    mov rax,0x4
+000003CC  4D85DB            test r11,r11
+000003CF  4C0F44D8          cmovz r11,rax
+000003D3  4150              push r8
+000003D5  4151              push r9
+000003D7  4153              push r11
+000003D9  4C89D8            mov rax,r11
+000003DC  4883C002          add rax,byte +0x2
+000003E0  48C1E003          shl rax,byte 0x3
+000003E4  4889C6            mov rsi,rax
+000003E7  31FF              xor edi,edi
+000003E9  BA03000000        mov edx,0x3
+000003EE  41BA22000000      mov r10d,0x22
+000003F4  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+00000469  49D1E3            shl r11,1
+0000046C  48C7C004000000    mov rax,0x4
+00000473  4D85DB            test r11,r11
+00000476  4C0F44D8          cmovz r11,rax
+0000047A  4150              push r8
+0000047C  4151              push r9
+0000047E  4153              push r11
+00000480  4C89D8            mov rax,r11
+00000483  4883C002          add rax,byte +0x2
+00000487  48C1E003          shl rax,byte 0x3
+0000048B  4889C6            mov rsi,rax
+0000048E  31FF              xor edi,edi
+00000490  BA03000000        mov edx,0x3
+00000495  41BA22000000      mov r10d,0x22
+0000049B  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+00000510  49D1E3            shl r11,1
+00000513  48C7C004000000    mov rax,0x4
+0000051A  4D85DB            test r11,r11
+0000051D  4C0F44D8          cmovz r11,rax
+00000521  4150              push r8
+00000523  4151              push r9
+00000525  4153              push r11
+00000527  4C89D8            mov rax,r11
+0000052A  4883C002          add rax,byte +0x2
+0000052E  48C1E003          shl rax,byte 0x3
+00000532  4889C6            mov rsi,rax
+00000535  31FF              xor edi,edi
+00000537  BA03000000        mov edx,0x3
+0000053C  41BA22000000      mov r10d,0x22
+00000542  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+00000608  48C7C701000000    mov rdi,0x1
+0000060F  4889C6            mov rsi,rax
+00000612  BA28000000        mov edx,0x28
+00000617  B801000000        mov eax,0x1
+0000061C  0F05              syscall
+0000061E  B83C000000        mov eax,0x3c
+00000623  BF01000000        mov edi,0x1
+00000628  0F05              syscall
+0000062A  59                pop rcx
+0000062B  48C1E003          shl rax,byte 0x3
+0000062F  59                pop rcx
+00000630  4801C8            add rax,rcx
+00000633  488B00            mov rax,[rax]
+00000636  5A                pop rdx
+00000637  4887D0            xchg rdx,rax
+--- INDEXED READ ---
+00000612  BA28000000        mov edx,0x28
+00000617  B801000000        mov eax,0x1
+0000061C  0F05              syscall
+0000061E  B83C000000        mov eax,0x3c
+00000623  BF01000000        mov edi,0x1
+00000628  0F05              syscall
+0000062A  59                pop rcx
+0000062B  48C1E003          shl rax,byte 0x3
+0000062F  59                pop rcx
+00000630  4801C8            add rax,rcx
+00000633  488B00            mov rax,[rax]
+00000636  5A                pop rdx
+00000637  4887D0            xchg rdx,rax
+0000063A  4801D0            add rax,rdx
+0000063D  4989C5            mov r13,rax
+AFTER MACHINE CODE:
+00000009  4157              push r15
+0000000B  4889E5            mov rbp,rsp
+0000000E  4881EC00080000    sub rsp,0x800
+00000015  B808000000        mov eax,0x8
+0000001A  4885C0            test rax,rax
+0000001D  7903              jns 0x22
+0000001F  4831C0            xor rax,rax
+00000022  50                push rax
+00000023  4883C002          add rax,byte +0x2
+00000027  48C1E003          shl rax,byte 0x3
+0000002B  4889C6            mov rsi,rax
+0000002E  31FF              xor edi,edi
+00000030  BA03000000        mov edx,0x3
+00000035  41BA22000000      mov r10d,0x22
+0000003B  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+0000007F  49D1E3            shl r11,1
+00000082  48C7C004000000    mov rax,0x4
+00000089  4D85DB            test r11,r11
+0000008C  4C0F44D8          cmovz r11,rax
+00000090  4150              push r8
+00000092  4151              push r9
+00000094  4153              push r11
+00000096  4C89D8            mov rax,r11
+00000099  4883C002          add rax,byte +0x2
+0000009D  48C1E003          shl rax,byte 0x3
+000000A1  4889C6            mov rsi,rax
+000000A4  31FF              xor edi,edi
+000000A6  BA03000000        mov edx,0x3
+000000AB  41BA22000000      mov r10d,0x22
+000000B1  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+00000126  49D1E3            shl r11,1
+00000129  48C7C004000000    mov rax,0x4
+00000130  4D85DB            test r11,r11
+00000133  4C0F44D8          cmovz r11,rax
+00000137  4150              push r8
+00000139  4151              push r9
+0000013B  4153              push r11
+0000013D  4C89D8            mov rax,r11
+00000140  4883C002          add rax,byte +0x2
+00000144  48C1E003          shl rax,byte 0x3
+00000148  4889C6            mov rsi,rax
+0000014B  31FF              xor edi,edi
+0000014D  BA03000000        mov edx,0x3
+00000152  41BA22000000      mov r10d,0x22
+00000158  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+000001CD  49D1E3            shl r11,1
+000001D0  48C7C004000000    mov rax,0x4
+000001D7  4D85DB            test r11,r11
+000001DA  4C0F44D8          cmovz r11,rax
+000001DE  4150              push r8
+000001E0  4151              push r9
+000001E2  4153              push r11
+000001E4  4C89D8            mov rax,r11
+000001E7  4883C002          add rax,byte +0x2
+000001EB  48C1E003          shl rax,byte 0x3
+000001EF  4889C6            mov rsi,rax
+000001F2  31FF              xor edi,edi
+000001F4  BA03000000        mov edx,0x3
+000001F9  41BA22000000      mov r10d,0x22
+000001FF  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+00000274  49D1E3            shl r11,1
+00000277  48C7C004000000    mov rax,0x4
+0000027E  4D85DB            test r11,r11
+00000281  4C0F44D8          cmovz r11,rax
+00000285  4150              push r8
+00000287  4151              push r9
+00000289  4153              push r11
+0000028B  4C89D8            mov rax,r11
+0000028E  4883C002          add rax,byte +0x2
+00000292  48C1E003          shl rax,byte 0x3
+00000296  4889C6            mov rsi,rax
+00000299  31FF              xor edi,edi
+0000029B  BA03000000        mov edx,0x3
+000002A0  41BA22000000      mov r10d,0x22
+000002A6  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+0000031B  49D1E3            shl r11,1
+0000031E  48C7C004000000    mov rax,0x4
+00000325  4D85DB            test r11,r11
+00000328  4C0F44D8          cmovz r11,rax
+0000032C  4150              push r8
+0000032E  4151              push r9
+00000330  4153              push r11
+00000332  4C89D8            mov rax,r11
+00000335  4883C002          add rax,byte +0x2
+00000339  48C1E003          shl rax,byte 0x3
+0000033D  4889C6            mov rsi,rax
+00000340  31FF              xor edi,edi
+00000342  BA03000000        mov edx,0x3
+00000347  41BA22000000      mov r10d,0x22
+0000034D  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+000003C2  49D1E3            shl r11,1
+000003C5  48C7C004000000    mov rax,0x4
+000003CC  4D85DB            test r11,r11
+000003CF  4C0F44D8          cmovz r11,rax
+000003D3  4150              push r8
+000003D5  4151              push r9
+000003D7  4153              push r11
+000003D9  4C89D8            mov rax,r11
+000003DC  4883C002          add rax,byte +0x2
+000003E0  48C1E003          shl rax,byte 0x3
+000003E4  4889C6            mov rsi,rax
+000003E7  31FF              xor edi,edi
+000003E9  BA03000000        mov edx,0x3
+000003EE  41BA22000000      mov r10d,0x22
+000003F4  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+00000469  49D1E3            shl r11,1
+0000046C  48C7C004000000    mov rax,0x4
+00000473  4D85DB            test r11,r11
+00000476  4C0F44D8          cmovz r11,rax
+0000047A  4150              push r8
+0000047C  4151              push r9
+0000047E  4153              push r11
+00000480  4C89D8            mov rax,r11
+00000483  4883C002          add rax,byte +0x2
+00000487  48C1E003          shl rax,byte 0x3
+0000048B  4889C6            mov rsi,rax
+0000048E  31FF              xor edi,edi
+00000490  BA03000000        mov edx,0x3
+00000495  41BA22000000      mov r10d,0x22
+0000049B  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+00000510  49D1E3            shl r11,1
+00000513  48C7C004000000    mov rax,0x4
+0000051A  4D85DB            test r11,r11
+0000051D  4C0F44D8          cmovz r11,rax
+00000521  4150              push r8
+00000523  4151              push r9
+00000525  4153              push r11
+00000527  4C89D8            mov rax,r11
+0000052A  4883C002          add rax,byte +0x2
+0000052E  48C1E003          shl rax,byte 0x3
+00000532  4889C6            mov rsi,rax
+00000535  31FF              xor edi,edi
+00000537  BA03000000        mov edx,0x3
+0000053C  41BA22000000      mov r10d,0x22
+00000542  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+0000060F  4889C6            mov rsi,rax
+00000612  BA28000000        mov edx,0x28
+00000617  B801000000        mov eax,0x1
+0000061C  0F05              syscall
+0000061E  B83C000000        mov eax,0x3c
+00000623  BF01000000        mov edi,0x1
+00000628  0F05              syscall
+0000062A  59                pop rcx
+0000062B  59                pop rcx
+0000062C  488B04C1          mov rax,[rcx+rax*8]
+00000630  5A                pop rdx
+00000631  4887D0            xchg rdx,rax
+00000634  4801D0            add rax,rdx
+00000637  4989C5            mov r13,rax
+0000063A  49FFC4            inc r12
+=== benchmarks/r47_array_mix.sm ===
+output_sha256=1c91f41d5084a11f24400586c9dbab2c11ceff1f1e5361855bd2f44e8f190179
+before_image=('eb135bffd8920d329240cb941599b8015203602e5b7a97d5b46b34f9855610d9', 1763)
+after_image=('3aa292aed83ebfdbb0307557f348af049344c892d7429271081b1c5fee148d40', 1751)
+generated_byte_identical=False
+BEFORE MACHINE CODE:
+00000003  4154              push r12
+00000005  4155              push r13
+00000007  4156              push r14
+00000009  4157              push r15
+0000000B  4889E5            mov rbp,rsp
+0000000E  4881EC00080000    sub rsp,0x800
+00000015  B804000000        mov eax,0x4
+0000001A  50                push rax
+0000001B  4883C001          add rax,byte +0x1
+0000001F  48C1E003          shl rax,byte 0x3
+00000023  4889C6            mov rsi,rax
+00000026  31FF              xor edi,edi
+00000028  BA03000000        mov edx,0x3
+0000002D  41BA22000000      mov r10d,0x22
+00000033  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+0000003D  B809000000        mov eax,0x9
+00000042  0F05              syscall
+00000044  59                pop rcx
+00000045  488908            mov [rax],rcx
+00000048  4883C008          add rax,byte +0x8
+0000004C  4889C3            mov rbx,rax
+0000004F  B804000000        mov eax,0x4
+00000054  50                push rax
+00000055  4883C001          add rax,byte +0x1
+00000059  48C1E003          shl rax,byte 0x3
+0000005D  4889C6            mov rsi,rax
+00000060  31FF              xor edi,edi
+00000062  BA03000000        mov edx,0x3
+00000067  41BA22000000      mov r10d,0x22
+0000006D  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+000000D8  48C7C701000000    mov rdi,0x1
+000000DF  4889C6            mov rsi,rax
+000000E2  BA28000000        mov edx,0x28
+000000E7  B801000000        mov eax,0x1
+000000EC  0F05              syscall
+000000EE  B83C000000        mov eax,0x3c
+000000F3  BF01000000        mov edi,0x1
+000000F8  0F05              syscall
+000000FA  59                pop rcx
+000000FB  48C1E003          shl rax,byte 0x3
+000000FF  59                pop rcx
+00000100  4801C8            add rax,rcx
+00000103  5A                pop rdx
+00000104  488910            mov [rax],rdx
+00000107  B803000000        mov eax,0x3
+--- INDEXED READ ---
+000000E2  BA28000000        mov edx,0x28
+000000E7  B801000000        mov eax,0x1
+000000EC  0F05              syscall
+000000EE  B83C000000        mov eax,0x3c
+000000F3  BF01000000        mov edi,0x1
+000000F8  0F05              syscall
+000000FA  59                pop rcx
+000000FB  48C1E003          shl rax,byte 0x3
+000000FF  59                pop rcx
+00000100  4801C8            add rax,rcx
+00000103  5A                pop rdx
+00000104  488910            mov [rax],rdx
+00000107  B803000000        mov eax,0x3
+0000010C  50                push rax
+0000010D  4889D8            mov rax,rbx
+--- INDEXED READ ---
+00000156  48C7C701000000    mov rdi,0x1
+0000015D  4889C6            mov rsi,rax
+00000160  BA28000000        mov edx,0x28
+00000165  B801000000        mov eax,0x1
+0000016A  0F05              syscall
+0000016C  B83C000000        mov eax,0x3c
+00000171  BF01000000        mov edi,0x1
+00000176  0F05              syscall
+00000178  59                pop rcx
+00000179  48C1E003          shl rax,byte 0x3
+0000017D  59                pop rcx
+0000017E  4801C8            add rax,rcx
+00000181  5A                pop rdx
+00000182  488910            mov [rax],rdx
+00000185  B805000000        mov eax,0x5
+--- INDEXED READ ---
+00000160  BA28000000        mov edx,0x28
+00000165  B801000000        mov eax,0x1
+0000016A  0F05              syscall
+0000016C  B83C000000        mov eax,0x3c
+00000171  BF01000000        mov edi,0x1
+00000176  0F05              syscall
+00000178  59                pop rcx
+00000179  48C1E003          shl rax,byte 0x3
+0000017D  59                pop rcx
+0000017E  4801C8            add rax,rcx
+00000181  5A                pop rdx
+00000182  488910            mov [rax],rdx
+00000185  B805000000        mov eax,0x5
+0000018A  50                push rax
+0000018B  4889D8            mov rax,rbx
+--- INDEXED READ ---
+000001D4  48C7C701000000    mov rdi,0x1
+000001DB  4889C6            mov rsi,rax
+000001DE  BA28000000        mov edx,0x28
+000001E3  B801000000        mov eax,0x1
+000001E8  0F05              syscall
+000001EA  B83C000000        mov eax,0x3c
+000001EF  BF01000000        mov edi,0x1
+000001F4  0F05              syscall
+000001F6  59                pop rcx
+000001F7  48C1E003          shl rax,byte 0x3
+000001FB  59                pop rcx
+000001FC  4801C8            add rax,rcx
+000001FF  5A                pop rdx
+00000200  488910            mov [rax],rdx
+00000203  B807000000        mov eax,0x7
+--- INDEXED READ ---
+000001DE  BA28000000        mov edx,0x28
+000001E3  B801000000        mov eax,0x1
+000001E8  0F05              syscall
+000001EA  B83C000000        mov eax,0x3c
+000001EF  BF01000000        mov edi,0x1
+000001F4  0F05              syscall
+000001F6  59                pop rcx
+000001F7  48C1E003          shl rax,byte 0x3
+000001FB  59                pop rcx
+000001FC  4801C8            add rax,rcx
+000001FF  5A                pop rdx
+00000200  488910            mov [rax],rdx
+00000203  B807000000        mov eax,0x7
+00000208  50                push rax
+00000209  4889D8            mov rax,rbx
+--- INDEXED READ ---
+00000252  48C7C701000000    mov rdi,0x1
+00000259  4889C6            mov rsi,rax
+0000025C  BA28000000        mov edx,0x28
+00000261  B801000000        mov eax,0x1
+00000266  0F05              syscall
+00000268  B83C000000        mov eax,0x3c
+0000026D  BF01000000        mov edi,0x1
+00000272  0F05              syscall
+00000274  59                pop rcx
+00000275  48C1E003          shl rax,byte 0x3
+00000279  59                pop rcx
+0000027A  4801C8            add rax,rcx
+0000027D  5A                pop rdx
+0000027E  488910            mov [rax],rdx
+00000281  B80B000000        mov eax,0xb
+--- INDEXED READ ---
+0000025C  BA28000000        mov edx,0x28
+00000261  B801000000        mov eax,0x1
+00000266  0F05              syscall
+00000268  B83C000000        mov eax,0x3c
+0000026D  BF01000000        mov edi,0x1
+00000272  0F05              syscall
+00000274  59                pop rcx
+00000275  48C1E003          shl rax,byte 0x3
+00000279  59                pop rcx
+0000027A  4801C8            add rax,rcx
+0000027D  5A                pop rdx
+0000027E  488910            mov [rax],rdx
+00000281  B80B000000        mov eax,0xb
+00000286  50                push rax
+00000287  4C89E0            mov rax,r12
+--- INDEXED READ ---
+000002D0  48C7C701000000    mov rdi,0x1
+000002D7  4889C6            mov rsi,rax
+000002DA  BA28000000        mov edx,0x28
+000002DF  B801000000        mov eax,0x1
+000002E4  0F05              syscall
+000002E6  B83C000000        mov eax,0x3c
+000002EB  BF01000000        mov edi,0x1
+000002F0  0F05              syscall
+000002F2  59                pop rcx
+000002F3  48C1E003          shl rax,byte 0x3
+000002F7  59                pop rcx
+000002F8  4801C8            add rax,rcx
+000002FB  5A                pop rdx
+000002FC  488910            mov [rax],rdx
+000002FF  B80D000000        mov eax,0xd
+--- INDEXED READ ---
+000002DA  BA28000000        mov edx,0x28
+000002DF  B801000000        mov eax,0x1
+000002E4  0F05              syscall
+000002E6  B83C000000        mov eax,0x3c
+000002EB  BF01000000        mov edi,0x1
+000002F0  0F05              syscall
+000002F2  59                pop rcx
+000002F3  48C1E003          shl rax,byte 0x3
+000002F7  59                pop rcx
+000002F8  4801C8            add rax,rcx
+000002FB  5A                pop rdx
+000002FC  488910            mov [rax],rdx
+000002FF  B80D000000        mov eax,0xd
+00000304  50                push rax
+00000305  4C89E0            mov rax,r12
+AFTER MACHINE CODE:
+00000003  4154              push r12
+00000005  4155              push r13
+00000007  4156              push r14
+00000009  4157              push r15
+0000000B  4889E5            mov rbp,rsp
+0000000E  4881EC00080000    sub rsp,0x800
+00000015  B804000000        mov eax,0x4
+0000001A  50                push rax
+0000001B  4883C001          add rax,byte +0x1
+0000001F  48C1E003          shl rax,byte 0x3
+00000023  4889C6            mov rsi,rax
+00000026  31FF              xor edi,edi
+00000028  BA03000000        mov edx,0x3
+0000002D  41BA22000000      mov r10d,0x22
+00000033  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+0000003D  B809000000        mov eax,0x9
+00000042  0F05              syscall
+00000044  59                pop rcx
+00000045  488908            mov [rax],rcx
+00000048  4883C008          add rax,byte +0x8
+0000004C  4889C3            mov rbx,rax
+0000004F  B804000000        mov eax,0x4
+00000054  50                push rax
+00000055  4883C001          add rax,byte +0x1
+00000059  48C1E003          shl rax,byte 0x3
+0000005D  4889C6            mov rsi,rax
+00000060  31FF              xor edi,edi
+00000062  BA03000000        mov edx,0x3
+00000067  41BA22000000      mov r10d,0x22
+0000006D  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+000000D8  48C7C701000000    mov rdi,0x1
+000000DF  4889C6            mov rsi,rax
+000000E2  BA28000000        mov edx,0x28
+000000E7  B801000000        mov eax,0x1
+000000EC  0F05              syscall
+000000EE  B83C000000        mov eax,0x3c
+000000F3  BF01000000        mov edi,0x1
+000000F8  0F05              syscall
+000000FA  59                pop rcx
+000000FB  48C1E003          shl rax,byte 0x3
+000000FF  59                pop rcx
+00000100  4801C8            add rax,rcx
+00000103  5A                pop rdx
+00000104  488910            mov [rax],rdx
+00000107  B803000000        mov eax,0x3
+--- INDEXED READ ---
+000000E2  BA28000000        mov edx,0x28
+000000E7  B801000000        mov eax,0x1
+000000EC  0F05              syscall
+000000EE  B83C000000        mov eax,0x3c
+000000F3  BF01000000        mov edi,0x1
+000000F8  0F05              syscall
+000000FA  59                pop rcx
+000000FB  48C1E003          shl rax,byte 0x3
+000000FF  59                pop rcx
+00000100  4801C8            add rax,rcx
+00000103  5A                pop rdx
+00000104  488910            mov [rax],rdx
+00000107  B803000000        mov eax,0x3
+0000010C  50                push rax
+0000010D  4889D8            mov rax,rbx
+--- INDEXED READ ---
+00000156  48C7C701000000    mov rdi,0x1
+0000015D  4889C6            mov rsi,rax
+00000160  BA28000000        mov edx,0x28
+00000165  B801000000        mov eax,0x1
+0000016A  0F05              syscall
+0000016C  B83C000000        mov eax,0x3c
+00000171  BF01000000        mov edi,0x1
+00000176  0F05              syscall
+00000178  59                pop rcx
+00000179  48C1E003          shl rax,byte 0x3
+0000017D  59                pop rcx
+0000017E  4801C8            add rax,rcx
+00000181  5A                pop rdx
+00000182  488910            mov [rax],rdx
+00000185  B805000000        mov eax,0x5
+--- INDEXED READ ---
+00000160  BA28000000        mov edx,0x28
+00000165  B801000000        mov eax,0x1
+0000016A  0F05              syscall
+0000016C  B83C000000        mov eax,0x3c
+00000171  BF01000000        mov edi,0x1
+00000176  0F05              syscall
+00000178  59                pop rcx
+00000179  48C1E003          shl rax,byte 0x3
+0000017D  59                pop rcx
+0000017E  4801C8            add rax,rcx
+00000181  5A                pop rdx
+00000182  488910            mov [rax],rdx
+00000185  B805000000        mov eax,0x5
+0000018A  50                push rax
+0000018B  4889D8            mov rax,rbx
+--- INDEXED READ ---
+000001D4  48C7C701000000    mov rdi,0x1
+000001DB  4889C6            mov rsi,rax
+000001DE  BA28000000        mov edx,0x28
+000001E3  B801000000        mov eax,0x1
+000001E8  0F05              syscall
+000001EA  B83C000000        mov eax,0x3c
+000001EF  BF01000000        mov edi,0x1
+000001F4  0F05              syscall
+000001F6  59                pop rcx
+000001F7  48C1E003          shl rax,byte 0x3
+000001FB  59                pop rcx
+000001FC  4801C8            add rax,rcx
+000001FF  5A                pop rdx
+00000200  488910            mov [rax],rdx
+00000203  B807000000        mov eax,0x7
+--- INDEXED READ ---
+000001DE  BA28000000        mov edx,0x28
+000001E3  B801000000        mov eax,0x1
+000001E8  0F05              syscall
+000001EA  B83C000000        mov eax,0x3c
+000001EF  BF01000000        mov edi,0x1
+000001F4  0F05              syscall
+000001F6  59                pop rcx
+000001F7  48C1E003          shl rax,byte 0x3
+000001FB  59                pop rcx
+000001FC  4801C8            add rax,rcx
+000001FF  5A                pop rdx
+00000200  488910            mov [rax],rdx
+00000203  B807000000        mov eax,0x7
+00000208  50                push rax
+00000209  4889D8            mov rax,rbx
+--- INDEXED READ ---
+00000252  48C7C701000000    mov rdi,0x1
+00000259  4889C6            mov rsi,rax
+0000025C  BA28000000        mov edx,0x28
+00000261  B801000000        mov eax,0x1
+00000266  0F05              syscall
+00000268  B83C000000        mov eax,0x3c
+0000026D  BF01000000        mov edi,0x1
+00000272  0F05              syscall
+00000274  59                pop rcx
+00000275  48C1E003          shl rax,byte 0x3
+00000279  59                pop rcx
+0000027A  4801C8            add rax,rcx
+0000027D  5A                pop rdx
+0000027E  488910            mov [rax],rdx
+00000281  B80B000000        mov eax,0xb
+--- INDEXED READ ---
+0000025C  BA28000000        mov edx,0x28
+00000261  B801000000        mov eax,0x1
+00000266  0F05              syscall
+00000268  B83C000000        mov eax,0x3c
+0000026D  BF01000000        mov edi,0x1
+00000272  0F05              syscall
+00000274  59                pop rcx
+00000275  48C1E003          shl rax,byte 0x3
+00000279  59                pop rcx
+0000027A  4801C8            add rax,rcx
+0000027D  5A                pop rdx
+0000027E  488910            mov [rax],rdx
+00000281  B80B000000        mov eax,0xb
+00000286  50                push rax
+00000287  4C89E0            mov rax,r12
+--- INDEXED READ ---
+000002D0  48C7C701000000    mov rdi,0x1
+000002D7  4889C6            mov rsi,rax
+000002DA  BA28000000        mov edx,0x28
+000002DF  B801000000        mov eax,0x1
+000002E4  0F05              syscall
+000002E6  B83C000000        mov eax,0x3c
+000002EB  BF01000000        mov edi,0x1
+000002F0  0F05              syscall
+000002F2  59                pop rcx
+000002F3  48C1E003          shl rax,byte 0x3
+000002F7  59                pop rcx
+000002F8  4801C8            add rax,rcx
+000002FB  5A                pop rdx
+000002FC  488910            mov [rax],rdx
+000002FF  B80D000000        mov eax,0xd
+--- INDEXED READ ---
+000002DA  BA28000000        mov edx,0x28
+000002DF  B801000000        mov eax,0x1
+000002E4  0F05              syscall
+000002E6  B83C000000        mov eax,0x3c
+000002EB  BF01000000        mov edi,0x1
+000002F0  0F05              syscall
+000002F2  59                pop rcx
+000002F3  48C1E003          shl rax,byte 0x3
+000002F7  59                pop rcx
+000002F8  4801C8            add rax,rcx
+000002FB  5A                pop rdx
+000002FC  488910            mov [rax],rdx
+000002FF  B80D000000        mov eax,0xd
+00000304  50                push rax
+00000305  4C89E0            mov rax,r12
+=== benchmarks/r46_hotcall_array.sm ===
+output_sha256=56f36d5adddfce2ffdead8cdfe77e25f136775835e3deced891efb1b4cd2b169
+before_image=('c87d983e7570e46400b7b2ad6fc0f952706329fabf71b07b2a10b4d4b7f49472', 1150)
+after_image=('6cba3a70607eb3fb461ddc54d45020ad4a1c0b824c51dfe25c30c89093aecfcf', 1144)
+generated_byte_identical=False
+BEFORE MACHINE CODE:
+00000003  4154              push r12
+00000005  4155              push r13
+00000007  4156              push r14
+00000009  4157              push r15
+0000000B  4889E5            mov rbp,rsp
+0000000E  4881EC00080000    sub rsp,0x800
+00000015  B804000000        mov eax,0x4
+0000001A  50                push rax
+0000001B  4883C001          add rax,byte +0x1
+0000001F  48C1E003          shl rax,byte 0x3
+00000023  4889C6            mov rsi,rax
+00000026  31FF              xor edi,edi
+00000028  BA03000000        mov edx,0x3
+0000002D  41BA22000000      mov r10d,0x22
+00000033  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+0000009E  48C7C701000000    mov rdi,0x1
+000000A5  4889C6            mov rsi,rax
+000000A8  BA28000000        mov edx,0x28
+000000AD  B801000000        mov eax,0x1
+000000B2  0F05              syscall
+000000B4  B83C000000        mov eax,0x3c
+000000B9  BF01000000        mov edi,0x1
+000000BE  0F05              syscall
+000000C0  59                pop rcx
+000000C1  48C1E003          shl rax,byte 0x3
+000000C5  59                pop rcx
+000000C6  4801C8            add rax,rcx
+000000C9  5A                pop rdx
+000000CA  488910            mov [rax],rdx
+000000CD  B80B000000        mov eax,0xb
+--- INDEXED READ ---
+000000A8  BA28000000        mov edx,0x28
+000000AD  B801000000        mov eax,0x1
+000000B2  0F05              syscall
+000000B4  B83C000000        mov eax,0x3c
+000000B9  BF01000000        mov edi,0x1
+000000BE  0F05              syscall
+000000C0  59                pop rcx
+000000C1  48C1E003          shl rax,byte 0x3
+000000C5  59                pop rcx
+000000C6  4801C8            add rax,rcx
+000000C9  5A                pop rdx
+000000CA  488910            mov [rax],rdx
+000000CD  B80B000000        mov eax,0xb
+000000D2  50                push rax
+000000D3  4889D8            mov rax,rbx
+--- INDEXED READ ---
+0000011C  48C7C701000000    mov rdi,0x1
+00000123  4889C6            mov rsi,rax
+00000126  BA28000000        mov edx,0x28
+0000012B  B801000000        mov eax,0x1
+00000130  0F05              syscall
+00000132  B83C000000        mov eax,0x3c
+00000137  BF01000000        mov edi,0x1
+0000013C  0F05              syscall
+0000013E  59                pop rcx
+0000013F  48C1E003          shl rax,byte 0x3
+00000143  59                pop rcx
+00000144  4801C8            add rax,rcx
+00000147  5A                pop rdx
+00000148  488910            mov [rax],rdx
+0000014B  B80D000000        mov eax,0xd
+--- INDEXED READ ---
+00000126  BA28000000        mov edx,0x28
+0000012B  B801000000        mov eax,0x1
+00000130  0F05              syscall
+00000132  B83C000000        mov eax,0x3c
+00000137  BF01000000        mov edi,0x1
+0000013C  0F05              syscall
+0000013E  59                pop rcx
+0000013F  48C1E003          shl rax,byte 0x3
+00000143  59                pop rcx
+00000144  4801C8            add rax,rcx
+00000147  5A                pop rdx
+00000148  488910            mov [rax],rdx
+0000014B  B80D000000        mov eax,0xd
+00000150  50                push rax
+00000151  4889D8            mov rax,rbx
+--- INDEXED READ ---
+0000019A  48C7C701000000    mov rdi,0x1
+000001A1  4889C6            mov rsi,rax
+000001A4  BA28000000        mov edx,0x28
+000001A9  B801000000        mov eax,0x1
+000001AE  0F05              syscall
+000001B0  B83C000000        mov eax,0x3c
+000001B5  BF01000000        mov edi,0x1
+000001BA  0F05              syscall
+000001BC  59                pop rcx
+000001BD  48C1E003          shl rax,byte 0x3
+000001C1  59                pop rcx
+000001C2  4801C8            add rax,rcx
+000001C5  5A                pop rdx
+000001C6  488910            mov [rax],rdx
+000001C9  B811000000        mov eax,0x11
+--- INDEXED READ ---
+000001A4  BA28000000        mov edx,0x28
+000001A9  B801000000        mov eax,0x1
+000001AE  0F05              syscall
+000001B0  B83C000000        mov eax,0x3c
+000001B5  BF01000000        mov edi,0x1
+000001BA  0F05              syscall
+000001BC  59                pop rcx
+000001BD  48C1E003          shl rax,byte 0x3
+000001C1  59                pop rcx
+000001C2  4801C8            add rax,rcx
+000001C5  5A                pop rdx
+000001C6  488910            mov [rax],rdx
+000001C9  B811000000        mov eax,0x11
+000001CE  50                push rax
+000001CF  4889D8            mov rax,rbx
+--- INDEXED READ ---
+00000218  48C7C701000000    mov rdi,0x1
+0000021F  4889C6            mov rsi,rax
+00000222  BA28000000        mov edx,0x28
+00000227  B801000000        mov eax,0x1
+0000022C  0F05              syscall
+0000022E  B83C000000        mov eax,0x3c
+00000233  BF01000000        mov edi,0x1
+00000238  0F05              syscall
+0000023A  59                pop rcx
+0000023B  48C1E003          shl rax,byte 0x3
+0000023F  59                pop rcx
+00000240  4801C8            add rax,rcx
+00000243  5A                pop rdx
+00000244  488910            mov [rax],rdx
+00000247  41BC00000000      mov r12d,0x0
+--- INDEXED READ ---
+00000222  BA28000000        mov edx,0x28
+00000227  B801000000        mov eax,0x1
+0000022C  0F05              syscall
+0000022E  B83C000000        mov eax,0x3c
+00000233  BF01000000        mov edi,0x1
+00000238  0F05              syscall
+0000023A  59                pop rcx
+0000023B  48C1E003          shl rax,byte 0x3
+0000023F  59                pop rcx
+00000240  4801C8            add rax,rcx
+00000243  5A                pop rdx
+00000244  488910            mov [rax],rdx
+00000247  41BC00000000      mov r12d,0x0
+0000024D  41BD00000000      mov r13d,0x0
+00000253  E9B2000000        jmp 0x30a
+--- INDEXED READ ---
+000002B8  48C7C701000000    mov rdi,0x1
+000002BF  4889C6            mov rsi,rax
+000002C2  BA28000000        mov edx,0x28
+000002C7  B801000000        mov eax,0x1
+000002CC  0F05              syscall
+000002CE  B83C000000        mov eax,0x3c
+000002D3  BF01000000        mov edi,0x1
+000002D8  0F05              syscall
+000002DA  59                pop rcx
+000002DB  48C1E003          shl rax,byte 0x3
+000002DF  59                pop rcx
+000002E0  4801C8            add rax,rcx
+000002E3  488B00            mov rax,[rax]
+000002E6  50                push rax
+000002E7  5F                pop rdi
+--- INDEXED READ ---
+000002C2  BA28000000        mov edx,0x28
+000002C7  B801000000        mov eax,0x1
+000002CC  0F05              syscall
+000002CE  B83C000000        mov eax,0x3c
+000002D3  BF01000000        mov edi,0x1
+000002D8  0F05              syscall
+000002DA  59                pop rcx
+000002DB  48C1E003          shl rax,byte 0x3
+000002DF  59                pop rcx
+000002E0  4801C8            add rax,rcx
+000002E3  488B00            mov rax,[rax]
+000002E6  50                push rax
+000002E7  5F                pop rdi
+000002E8  4154              push r12
+000002EA  4155              push r13
+AFTER MACHINE CODE:
+00000003  4154              push r12
+00000005  4155              push r13
+00000007  4156              push r14
+00000009  4157              push r15
+0000000B  4889E5            mov rbp,rsp
+0000000E  4881EC00080000    sub rsp,0x800
+00000015  B804000000        mov eax,0x4
+0000001A  50                push rax
+0000001B  4883C001          add rax,byte +0x1
+0000001F  48C1E003          shl rax,byte 0x3
+00000023  4889C6            mov rsi,rax
+00000026  31FF              xor edi,edi
+00000028  BA03000000        mov edx,0x3
+0000002D  41BA22000000      mov r10d,0x22
+00000033  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+0000009E  48C7C701000000    mov rdi,0x1
+000000A5  4889C6            mov rsi,rax
+000000A8  BA28000000        mov edx,0x28
+000000AD  B801000000        mov eax,0x1
+000000B2  0F05              syscall
+000000B4  B83C000000        mov eax,0x3c
+000000B9  BF01000000        mov edi,0x1
+000000BE  0F05              syscall
+000000C0  59                pop rcx
+000000C1  48C1E003          shl rax,byte 0x3
+000000C5  59                pop rcx
+000000C6  4801C8            add rax,rcx
+000000C9  5A                pop rdx
+000000CA  488910            mov [rax],rdx
+000000CD  B80B000000        mov eax,0xb
+--- INDEXED READ ---
+000000A8  BA28000000        mov edx,0x28
+000000AD  B801000000        mov eax,0x1
+000000B2  0F05              syscall
+000000B4  B83C000000        mov eax,0x3c
+000000B9  BF01000000        mov edi,0x1
+000000BE  0F05              syscall
+000000C0  59                pop rcx
+000000C1  48C1E003          shl rax,byte 0x3
+000000C5  59                pop rcx
+000000C6  4801C8            add rax,rcx
+000000C9  5A                pop rdx
+000000CA  488910            mov [rax],rdx
+000000CD  B80B000000        mov eax,0xb
+000000D2  50                push rax
+000000D3  4889D8            mov rax,rbx
+--- INDEXED READ ---
+0000011C  48C7C701000000    mov rdi,0x1
+00000123  4889C6            mov rsi,rax
+00000126  BA28000000        mov edx,0x28
+0000012B  B801000000        mov eax,0x1
+00000130  0F05              syscall
+00000132  B83C000000        mov eax,0x3c
+00000137  BF01000000        mov edi,0x1
+0000013C  0F05              syscall
+0000013E  59                pop rcx
+0000013F  48C1E003          shl rax,byte 0x3
+00000143  59                pop rcx
+00000144  4801C8            add rax,rcx
+00000147  5A                pop rdx
+00000148  488910            mov [rax],rdx
+0000014B  B80D000000        mov eax,0xd
+--- INDEXED READ ---
+00000126  BA28000000        mov edx,0x28
+0000012B  B801000000        mov eax,0x1
+00000130  0F05              syscall
+00000132  B83C000000        mov eax,0x3c
+00000137  BF01000000        mov edi,0x1
+0000013C  0F05              syscall
+0000013E  59                pop rcx
+0000013F  48C1E003          shl rax,byte 0x3
+00000143  59                pop rcx
+00000144  4801C8            add rax,rcx
+00000147  5A                pop rdx
+00000148  488910            mov [rax],rdx
+0000014B  B80D000000        mov eax,0xd
+00000150  50                push rax
+00000151  4889D8            mov rax,rbx
+--- INDEXED READ ---
+0000019A  48C7C701000000    mov rdi,0x1
+000001A1  4889C6            mov rsi,rax
+000001A4  BA28000000        mov edx,0x28
+000001A9  B801000000        mov eax,0x1
+000001AE  0F05              syscall
+000001B0  B83C000000        mov eax,0x3c
+000001B5  BF01000000        mov edi,0x1
+000001BA  0F05              syscall
+000001BC  59                pop rcx
+000001BD  48C1E003          shl rax,byte 0x3
+000001C1  59                pop rcx
+000001C2  4801C8            add rax,rcx
+000001C5  5A                pop rdx
+000001C6  488910            mov [rax],rdx
+000001C9  B811000000        mov eax,0x11
+--- INDEXED READ ---
+000001A4  BA28000000        mov edx,0x28
+000001A9  B801000000        mov eax,0x1
+000001AE  0F05              syscall
+000001B0  B83C000000        mov eax,0x3c
+000001B5  BF01000000        mov edi,0x1
+000001BA  0F05              syscall
+000001BC  59                pop rcx
+000001BD  48C1E003          shl rax,byte 0x3
+000001C1  59                pop rcx
+000001C2  4801C8            add rax,rcx
+000001C5  5A                pop rdx
+000001C6  488910            mov [rax],rdx
+000001C9  B811000000        mov eax,0x11
+000001CE  50                push rax
+000001CF  4889D8            mov rax,rbx
+--- INDEXED READ ---
+00000218  48C7C701000000    mov rdi,0x1
+0000021F  4889C6            mov rsi,rax
+00000222  BA28000000        mov edx,0x28
+00000227  B801000000        mov eax,0x1
+0000022C  0F05              syscall
+0000022E  B83C000000        mov eax,0x3c
+00000233  BF01000000        mov edi,0x1
+00000238  0F05              syscall
+0000023A  59                pop rcx
+0000023B  48C1E003          shl rax,byte 0x3
+0000023F  59                pop rcx
+00000240  4801C8            add rax,rcx
+00000243  5A                pop rdx
+00000244  488910            mov [rax],rdx
+00000247  41BC00000000      mov r12d,0x0
+--- INDEXED READ ---
+00000222  BA28000000        mov edx,0x28
+00000227  B801000000        mov eax,0x1
+0000022C  0F05              syscall
+0000022E  B83C000000        mov eax,0x3c
+00000233  BF01000000        mov edi,0x1
+00000238  0F05              syscall
+0000023A  59                pop rcx
+0000023B  48C1E003          shl rax,byte 0x3
+0000023F  59                pop rcx
+00000240  4801C8            add rax,rcx
+00000243  5A                pop rdx
+00000244  488910            mov [rax],rdx
+00000247  41BC00000000      mov r12d,0x0
+0000024D  41BD00000000      mov r13d,0x0
+00000253  E9AC000000        jmp 0x304
+--- INDEXED READ ---
+000002BF  4889C6            mov rsi,rax
+000002C2  BA28000000        mov edx,0x28
+000002C7  B801000000        mov eax,0x1
+000002CC  0F05              syscall
+000002CE  B83C000000        mov eax,0x3c
+000002D3  BF01000000        mov edi,0x1
+000002D8  0F05              syscall
+000002DA  59                pop rcx
+000002DB  59                pop rcx
+000002DC  488B04C1          mov rax,[rcx+rax*8]
+000002E0  50                push rax
+000002E1  5F                pop rdi
+000002E2  4154              push r12
+000002E4  4155              push r13
+000002E6  4156              push r14
+=== examples/126_numeric_pipeline.sm ===
+output_sha256=03087576c8f8cd0d1b1aee387472e31fe86814a7e9d5f4e546e5ba9938c133ea
+before_image=('38c50da9ec00d8cffbc1d2f42abe63fd1580572f894a74b3677727f7c9b8b8e2', 7450)
+after_image=('9b08546348f4fa8731e4f206761ddd88d2d69361dab1cbf926b0bcdbecfc53b6', 7390)
+generated_byte_identical=False
+BEFORE MACHINE CODE:
+00000009  4157              push r15
+0000000B  4889E5            mov rbp,rsp
+0000000E  4881EC00080000    sub rsp,0x800
+00000015  B804000000        mov eax,0x4
+0000001A  4885C0            test rax,rax
+0000001D  7903              jns 0x22
+0000001F  4831C0            xor rax,rax
+00000022  50                push rax
+00000023  4883C002          add rax,byte +0x2
+00000027  48C1E003          shl rax,byte 0x3
+0000002B  4889C6            mov rsi,rax
+0000002E  31FF              xor edi,edi
+00000030  BA03000000        mov edx,0x3
+00000035  41BA22000000      mov r10d,0x22
+0000003B  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+00000089  49D1E3            shl r11,1
+0000008C  48C7C004000000    mov rax,0x4
+00000093  4D85DB            test r11,r11
+00000096  4C0F44D8          cmovz r11,rax
+0000009A  4150              push r8
+0000009C  4151              push r9
+0000009E  4153              push r11
+000000A0  4C89D8            mov rax,r11
+000000A3  4883C002          add rax,byte +0x2
+000000A7  48C1E003          shl rax,byte 0x3
+000000AB  4889C6            mov rsi,rax
+000000AE  31FF              xor edi,edi
+000000B0  BA03000000        mov edx,0x3
+000000B5  41BA22000000      mov r10d,0x22
+000000BB  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+0000013A  49D1E3            shl r11,1
+0000013D  48C7C004000000    mov rax,0x4
+00000144  4D85DB            test r11,r11
+00000147  4C0F44D8          cmovz r11,rax
+0000014B  4150              push r8
+0000014D  4151              push r9
+0000014F  4153              push r11
+00000151  4C89D8            mov rax,r11
+00000154  4883C002          add rax,byte +0x2
+00000158  48C1E003          shl rax,byte 0x3
+0000015C  4889C6            mov rsi,rax
+0000015F  31FF              xor edi,edi
+00000161  BA03000000        mov edx,0x3
+00000166  41BA22000000      mov r10d,0x22
+0000016C  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+000001EB  49D1E3            shl r11,1
+000001EE  48C7C004000000    mov rax,0x4
+000001F5  4D85DB            test r11,r11
+000001F8  4C0F44D8          cmovz r11,rax
+000001FC  4150              push r8
+000001FE  4151              push r9
+00000200  4153              push r11
+00000202  4C89D8            mov rax,r11
+00000205  4883C002          add rax,byte +0x2
+00000209  48C1E003          shl rax,byte 0x3
+0000020D  4889C6            mov rsi,rax
+00000210  31FF              xor edi,edi
+00000212  BA03000000        mov edx,0x3
+00000217  41BA22000000      mov r10d,0x22
+0000021D  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+0000029C  49D1E3            shl r11,1
+0000029F  48C7C004000000    mov rax,0x4
+000002A6  4D85DB            test r11,r11
+000002A9  4C0F44D8          cmovz r11,rax
+000002AD  4150              push r8
+000002AF  4151              push r9
+000002B1  4153              push r11
+000002B3  4C89D8            mov rax,r11
+000002B6  4883C002          add rax,byte +0x2
+000002BA  48C1E003          shl rax,byte 0x3
+000002BE  4889C6            mov rsi,rax
+000002C1  31FF              xor edi,edi
+000002C3  BA03000000        mov edx,0x3
+000002C8  41BA22000000      mov r10d,0x22
+000002CE  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+0000034D  49D1E3            shl r11,1
+00000350  48C7C004000000    mov rax,0x4
+00000357  4D85DB            test r11,r11
+0000035A  4C0F44D8          cmovz r11,rax
+0000035E  4150              push r8
+00000360  4151              push r9
+00000362  4153              push r11
+00000364  4C89D8            mov rax,r11
+00000367  4883C002          add rax,byte +0x2
+0000036B  48C1E003          shl rax,byte 0x3
+0000036F  4889C6            mov rsi,rax
+00000372  31FF              xor edi,edi
+00000374  BA03000000        mov edx,0x3
+00000379  41BA22000000      mov r10d,0x22
+0000037F  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+000003FE  49D1E3            shl r11,1
+00000401  48C7C004000000    mov rax,0x4
+00000408  4D85DB            test r11,r11
+0000040B  4C0F44D8          cmovz r11,rax
+0000040F  4150              push r8
+00000411  4151              push r9
+00000413  4153              push r11
+00000415  4C89D8            mov rax,r11
+00000418  4883C002          add rax,byte +0x2
+0000041C  48C1E003          shl rax,byte 0x3
+00000420  4889C6            mov rsi,rax
+00000423  31FF              xor edi,edi
+00000425  BA03000000        mov edx,0x3
+0000042A  41BA22000000      mov r10d,0x22
+00000430  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+000004AF  49D1E3            shl r11,1
+000004B2  48C7C004000000    mov rax,0x4
+000004B9  4D85DB            test r11,r11
+000004BC  4C0F44D8          cmovz r11,rax
+000004C0  4150              push r8
+000004C2  4151              push r9
+000004C4  4153              push r11
+000004C6  4C89D8            mov rax,r11
+000004C9  4883C002          add rax,byte +0x2
+000004CD  48C1E003          shl rax,byte 0x3
+000004D1  4889C6            mov rsi,rax
+000004D4  31FF              xor edi,edi
+000004D6  BA03000000        mov edx,0x3
+000004DB  41BA22000000      mov r10d,0x22
+000004E1  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+00000560  49D1E3            shl r11,1
+00000563  48C7C004000000    mov rax,0x4
+0000056A  4D85DB            test r11,r11
+0000056D  4C0F44D8          cmovz r11,rax
+00000571  4150              push r8
+00000573  4151              push r9
+00000575  4153              push r11
+00000577  4C89D8            mov rax,r11
+0000057A  4883C002          add rax,byte +0x2
+0000057E  48C1E003          shl rax,byte 0x3
+00000582  4889C6            mov rsi,rax
+00000585  31FF              xor edi,edi
+00000587  BA03000000        mov edx,0x3
+0000058C  41BA22000000      mov r10d,0x22
+00000592  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+000005DD  49FFC1            inc r9
+000005E0  4D8948F0          mov [r8-0x10],r9
+000005E4  4C89C8            mov rax,r9
+000005E7  B802000000        mov eax,0x2
+000005EC  4885C0            test rax,rax
+000005EF  7903              jns 0x5f4
+000005F1  4831C0            xor rax,rax
+000005F4  50                push rax
+000005F5  4883C002          add rax,byte +0x2
+000005F9  48C1E003          shl rax,byte 0x3
+000005FD  4889C6            mov rsi,rax
+00000600  31FF              xor edi,edi
+00000602  BA03000000        mov edx,0x3
+00000607  41BA22000000      mov r10d,0x22
+0000060D  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+0000065B  49D1E3            shl r11,1
+0000065E  48C7C004000000    mov rax,0x4
+00000665  4D85DB            test r11,r11
+00000668  4C0F44D8          cmovz r11,rax
+0000066C  4150              push r8
+0000066E  4151              push r9
+00000670  4153              push r11
+00000672  4C89D8            mov rax,r11
+00000675  4883C002          add rax,byte +0x2
+00000679  48C1E003          shl rax,byte 0x3
+0000067D  4889C6            mov rsi,rax
+00000680  31FF              xor edi,edi
+00000682  BA03000000        mov edx,0x3
+00000687  41BA22000000      mov r10d,0x22
+0000068D  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+0000070C  49D1E3            shl r11,1
+0000070F  48C7C004000000    mov rax,0x4
+00000716  4D85DB            test r11,r11
+00000719  4C0F44D8          cmovz r11,rax
+0000071D  4150              push r8
+0000071F  4151              push r9
+00000721  4153              push r11
+00000723  4C89D8            mov rax,r11
+00000726  4883C002          add rax,byte +0x2
+0000072A  48C1E003          shl rax,byte 0x3
+0000072E  4889C6            mov rsi,rax
+00000731  31FF              xor edi,edi
+00000733  BA03000000        mov edx,0x3
+00000738  41BA22000000      mov r10d,0x22
+0000073E  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+AFTER MACHINE CODE:
+00000009  4157              push r15
+0000000B  4889E5            mov rbp,rsp
+0000000E  4881EC00080000    sub rsp,0x800
+00000015  B804000000        mov eax,0x4
+0000001A  4885C0            test rax,rax
+0000001D  7903              jns 0x22
+0000001F  4831C0            xor rax,rax
+00000022  50                push rax
+00000023  4883C002          add rax,byte +0x2
+00000027  48C1E003          shl rax,byte 0x3
+0000002B  4889C6            mov rsi,rax
+0000002E  31FF              xor edi,edi
+00000030  BA03000000        mov edx,0x3
+00000035  41BA22000000      mov r10d,0x22
+0000003B  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+00000089  49D1E3            shl r11,1
+0000008C  48C7C004000000    mov rax,0x4
+00000093  4D85DB            test r11,r11
+00000096  4C0F44D8          cmovz r11,rax
+0000009A  4150              push r8
+0000009C  4151              push r9
+0000009E  4153              push r11
+000000A0  4C89D8            mov rax,r11
+000000A3  4883C002          add rax,byte +0x2
+000000A7  48C1E003          shl rax,byte 0x3
+000000AB  4889C6            mov rsi,rax
+000000AE  31FF              xor edi,edi
+000000B0  BA03000000        mov edx,0x3
+000000B5  41BA22000000      mov r10d,0x22
+000000BB  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+0000013A  49D1E3            shl r11,1
+0000013D  48C7C004000000    mov rax,0x4
+00000144  4D85DB            test r11,r11
+00000147  4C0F44D8          cmovz r11,rax
+0000014B  4150              push r8
+0000014D  4151              push r9
+0000014F  4153              push r11
+00000151  4C89D8            mov rax,r11
+00000154  4883C002          add rax,byte +0x2
+00000158  48C1E003          shl rax,byte 0x3
+0000015C  4889C6            mov rsi,rax
+0000015F  31FF              xor edi,edi
+00000161  BA03000000        mov edx,0x3
+00000166  41BA22000000      mov r10d,0x22
+0000016C  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+000001EB  49D1E3            shl r11,1
+000001EE  48C7C004000000    mov rax,0x4
+000001F5  4D85DB            test r11,r11
+000001F8  4C0F44D8          cmovz r11,rax
+000001FC  4150              push r8
+000001FE  4151              push r9
+00000200  4153              push r11
+00000202  4C89D8            mov rax,r11
+00000205  4883C002          add rax,byte +0x2
+00000209  48C1E003          shl rax,byte 0x3
+0000020D  4889C6            mov rsi,rax
+00000210  31FF              xor edi,edi
+00000212  BA03000000        mov edx,0x3
+00000217  41BA22000000      mov r10d,0x22
+0000021D  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+0000029C  49D1E3            shl r11,1
+0000029F  48C7C004000000    mov rax,0x4
+000002A6  4D85DB            test r11,r11
+000002A9  4C0F44D8          cmovz r11,rax
+000002AD  4150              push r8
+000002AF  4151              push r9
+000002B1  4153              push r11
+000002B3  4C89D8            mov rax,r11
+000002B6  4883C002          add rax,byte +0x2
+000002BA  48C1E003          shl rax,byte 0x3
+000002BE  4889C6            mov rsi,rax
+000002C1  31FF              xor edi,edi
+000002C3  BA03000000        mov edx,0x3
+000002C8  41BA22000000      mov r10d,0x22
+000002CE  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+0000034D  49D1E3            shl r11,1
+00000350  48C7C004000000    mov rax,0x4
+00000357  4D85DB            test r11,r11
+0000035A  4C0F44D8          cmovz r11,rax
+0000035E  4150              push r8
+00000360  4151              push r9
+00000362  4153              push r11
+00000364  4C89D8            mov rax,r11
+00000367  4883C002          add rax,byte +0x2
+0000036B  48C1E003          shl rax,byte 0x3
+0000036F  4889C6            mov rsi,rax
+00000372  31FF              xor edi,edi
+00000374  BA03000000        mov edx,0x3
+00000379  41BA22000000      mov r10d,0x22
+0000037F  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+000003FE  49D1E3            shl r11,1
+00000401  48C7C004000000    mov rax,0x4
+00000408  4D85DB            test r11,r11
+0000040B  4C0F44D8          cmovz r11,rax
+0000040F  4150              push r8
+00000411  4151              push r9
+00000413  4153              push r11
+00000415  4C89D8            mov rax,r11
+00000418  4883C002          add rax,byte +0x2
+0000041C  48C1E003          shl rax,byte 0x3
+00000420  4889C6            mov rsi,rax
+00000423  31FF              xor edi,edi
+00000425  BA03000000        mov edx,0x3
+0000042A  41BA22000000      mov r10d,0x22
+00000430  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+000004AF  49D1E3            shl r11,1
+000004B2  48C7C004000000    mov rax,0x4
+000004B9  4D85DB            test r11,r11
+000004BC  4C0F44D8          cmovz r11,rax
+000004C0  4150              push r8
+000004C2  4151              push r9
+000004C4  4153              push r11
+000004C6  4C89D8            mov rax,r11
+000004C9  4883C002          add rax,byte +0x2
+000004CD  48C1E003          shl rax,byte 0x3
+000004D1  4889C6            mov rsi,rax
+000004D4  31FF              xor edi,edi
+000004D6  BA03000000        mov edx,0x3
+000004DB  41BA22000000      mov r10d,0x22
+000004E1  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+00000560  49D1E3            shl r11,1
+00000563  48C7C004000000    mov rax,0x4
+0000056A  4D85DB            test r11,r11
+0000056D  4C0F44D8          cmovz r11,rax
+00000571  4150              push r8
+00000573  4151              push r9
+00000575  4153              push r11
+00000577  4C89D8            mov rax,r11
+0000057A  4883C002          add rax,byte +0x2
+0000057E  48C1E003          shl rax,byte 0x3
+00000582  4889C6            mov rsi,rax
+00000585  31FF              xor edi,edi
+00000587  BA03000000        mov edx,0x3
+0000058C  41BA22000000      mov r10d,0x22
+00000592  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+000005DD  49FFC1            inc r9
+000005E0  4D8948F0          mov [r8-0x10],r9
+000005E4  4C89C8            mov rax,r9
+000005E7  B802000000        mov eax,0x2
+000005EC  4885C0            test rax,rax
+000005EF  7903              jns 0x5f4
+000005F1  4831C0            xor rax,rax
+000005F4  50                push rax
+000005F5  4883C002          add rax,byte +0x2
+000005F9  48C1E003          shl rax,byte 0x3
+000005FD  4889C6            mov rsi,rax
+00000600  31FF              xor edi,edi
+00000602  BA03000000        mov edx,0x3
+00000607  41BA22000000      mov r10d,0x22
+0000060D  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+0000065B  49D1E3            shl r11,1
+0000065E  48C7C004000000    mov rax,0x4
+00000665  4D85DB            test r11,r11
+00000668  4C0F44D8          cmovz r11,rax
+0000066C  4150              push r8
+0000066E  4151              push r9
+00000670  4153              push r11
+00000672  4C89D8            mov rax,r11
+00000675  4883C002          add rax,byte +0x2
+00000679  48C1E003          shl rax,byte 0x3
+0000067D  4889C6            mov rsi,rax
+00000680  31FF              xor edi,edi
+00000682  BA03000000        mov edx,0x3
+00000687  41BA22000000      mov r10d,0x22
+0000068D  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff
+--- INDEXED READ ---
+0000070C  49D1E3            shl r11,1
+0000070F  48C7C004000000    mov rax,0x4
+00000716  4D85DB            test r11,r11
+00000719  4C0F44D8          cmovz r11,rax
+0000071D  4150              push r8
+0000071F  4151              push r9
+00000721  4153              push r11
+00000723  4C89D8            mov rax,r11
+00000726  4883C002          add rax,byte +0x2
+0000072A  48C1E003          shl rax,byte 0x3
+0000072E  4889C6            mov rsi,rax
+00000731  31FF              xor edi,edi
+00000733  BA03000000        mov edx,0x3
+00000738  41BA22000000      mov r10d,0x22
+0000073E  49C7C0FFFFFFFF    mov r8,0xffffffffffffffff

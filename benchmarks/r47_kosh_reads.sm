@@ -1,0 +1,19 @@
+# R47 growable integer kosh read-heavy indexing.
+mukhya() {
+    kosh values[8]
+    kosh_push(values,1)
+    kosh_push(values,2)
+    kosh_push(values,3)
+    kosh_push(values,4)
+    kosh_push(values,5)
+    kosh_push(values,6)
+    kosh_push(values,7)
+    kosh_push(values,8)
+    vitti i=0
+    vitti sum=0
+    yavat (i < 10000000) {
+        sum = sum + values[i % 8]
+        i = i + 1
+    }
+    likha(sum)
+}

@@ -9326,6 +9326,34 @@ gen_stmt:
     call emit_byte
     jmp .gfc_pnext
 .gfc_p0:
+    ; R47: one-arg statement call: replace final PUSH RAX/POP RDI
+    ; with a register move after type conversion; no ABI side-effects.
+    cmp r15, 1
+    jne .gfc_old_pop0
+    ; Restrict statement-call optimization to the same proven shapes.
+    mov rax, [rbx+24]
+    cmp qword [rax], AST_INDEX
+    je .gfc_candidate_arg
+    cmp qword [rax], AST_FLOAT
+    je .gfc_candidate_arg
+    cmp qword [rax], AST_NUM
+    jne .gfc_old_pop0
+.gfc_candidate_arg:
+    mov rax, [rel code_sz]
+    test rax, rax
+    jz .gfc_old_pop0
+    lea rcx, [rel code_buf]
+    cmp byte [rcx + rax - 1], 0x50
+    jne .gfc_old_pop0
+    dec qword [rel code_sz]
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC7            ; mov rdi,rax
+    call emit_byte
+    jmp .gfc_pnext
+.gfc_old_pop0:
     mov dil, 0x5F             ; pop rdi  (arg0)
     call emit_byte
     jmp .gfc_pnext
@@ -9350,6 +9378,10 @@ gen_stmt:
     inc r14
     jmp .gfc_pop
 .gfc_call:
+    call r46_live_callee_saved_vars
+    mov r15, rax
+    test r15, r15
+    jz .gfc_saves_done
     ; B6: user variables may live in r12-r15. Preserve those compiler-allocated
     ; callee-saved registers across every Sutram user-function call.
     mov dil, 0x41             ; push r12 = 41 54
@@ -9368,6 +9400,7 @@ gen_stmt:
     call emit_byte
     mov dil, 0x57
     call emit_byte
+.gfc_saves_done:
     ; Emit call rel32 (E8 + 4-byte offset, patched later)
     mov dil, 0xE8
     call emit_byte
@@ -9386,6 +9419,8 @@ gen_stmt:
     inc qword [rel patch_count]
     xor edi, edi
     call emit_u32
+    test r15, r15
+    jz .gfc_restores_done
     mov dil, 0x41             ; pop r15 = 41 5F
     call emit_byte
     mov dil, 0x5F
@@ -9402,6 +9437,7 @@ gen_stmt:
     call emit_byte
     mov dil, 0x5C
     call emit_byte
+.gfc_restores_done:
     pop r14
     pop r15
     pop rbx
@@ -11066,6 +11102,32 @@ emit_kosh_empty_check_r9:
     pop rbx
     ret
 
+; R46 compiler-time call liveness: 1 if any caller local occupies r12..r15.
+; Argument parameters in stack slots and rbx do not require these saves.
+; No generated runtime code executes this helper.
+r46_live_callee_saved_vars:
+    xor eax, eax
+    xor ecx, ecx
+    mov r8, [rel var_cnt]
+    lea r9, [rel var_table]
+.r46_loop:
+    cmp rcx, r8
+    jae .r46_done
+    mov rdx, rcx
+    shl rdx, 4
+    mov rdx, [r9+rdx+8]
+    cmp rdx, 2
+    jb .r46_next
+    cmp rdx, 5
+    ja .r46_next
+    mov eax, 1
+    ret
+.r46_next:
+    inc rcx
+    jmp .r46_loop
+.r46_done:
+    ret
+
 ; gen_expr(rax = expression node)
 gen_expr:
     push rbx
@@ -11107,6 +11169,7 @@ gen_expr:
     ; [AST_FUNCALL][name_ptr][arg_count][arg1..arg6]
     ; Evaluate args left-to-right, push each result, then pop them into
     ; rdi, rsi, rdx, rcx, r8, r9 in reverse stack order.
+    push r15                  ; save compiler-time r15 for R46
     push r14                  ; save r14 (gen_block uses it)
     mov r14, [rbx+16]        ; arg count
     test r14, r14
@@ -11208,9 +11271,44 @@ gen_expr:
     call emit_byte
     jmp .ge_fc_call
 .ge_fc_pop1:
+    ; R47: one argument was just pushed by gen_typed_call_arg.
+    ; Replace its trailing runtime PUSH RAX + POP RDI with MOV RDI,RAX.
+    ; No other instructions emitted between push and pop in this path.
+    ; Keep the old POP if the expected last byte is not a push (defensive).
+    ; Only array indexing and numeric literal argument forms opt in.
+    ; An AST_VAR argument remains the accepted R46 PUSH/POP sequence: the
+    ; two follow-up native A/B runs showed pure-stack workloads regressed
+    ; when that common path changed, despite simpler array calls improving.
+    mov rax, [rbx+24]
+    cmp qword [rax], AST_INDEX
+    je .r47_candidate_arg
+    cmp qword [rax], AST_FLOAT
+    je .r47_candidate_arg
+    cmp qword [rax], AST_NUM
+    jne .r47_old_pop
+.r47_candidate_arg:
+    mov rax, [rel code_sz]
+    test rax, rax
+    jz .r47_old_pop
+    lea rcx, [rel code_buf]
+    cmp byte [rcx + rax - 1], 0x50
+    jne .r47_old_pop
+    dec qword [rel code_sz]
+    mov dil, 0x48             ; mov rdi,rax (64-bit)
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    jmp .ge_fc_call
+.r47_old_pop:
     mov dil, 0x5F            ; pop rdi
     call emit_byte
 .ge_fc_call:
+    call r46_live_callee_saved_vars
+    mov r15, rax
+    test r15, r15
+    jz .ge_fc_saves_done
     ; B6: preserve caller variables held in r12-r15 across user calls.
     mov dil, 0x41             ; push r12
     call emit_byte
@@ -11228,6 +11326,7 @@ gen_expr:
     call emit_byte
     mov dil, 0x57
     call emit_byte
+.ge_fc_saves_done:
     ; Emit call rel32
     mov dil, 0xE8
     call emit_byte
@@ -11245,6 +11344,8 @@ gen_expr:
     inc qword [rel patch_count]
     xor edi, edi
     call emit_u32
+    test r15, r15
+    jz .ge_fc_restores_done
     mov dil, 0x41             ; pop r15
     call emit_byte
     mov dil, 0x5F
@@ -11261,7 +11362,9 @@ gen_expr:
     call emit_byte
     mov dil, 0x5C
     call emit_byte
+.ge_fc_restores_done:
     pop r14                   ; restore compiler-time r14
+    pop r15                   ; restore compiler-time r15
     pop rbx
     ret
 .ge_patch_overflow:
