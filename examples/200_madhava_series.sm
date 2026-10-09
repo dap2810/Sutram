@@ -1,0 +1,53 @@
+# The Kerala school: Madhava of Sangamagrama (~1400 CE)
+# Infinite series for pi and for sine, over two centuries before Newton and Leibniz.
+# Uses T12 scalar floats (dasham).
+mukhya()
+    # --- pi via Madhava's fast series: pi = sqrt(12) * sum (-1)^k / ((2k+1) * 3^k) ---
+    dasham root12 = 3.5
+    vitti i = 0
+    yavat (i < 12) {
+        root12 = (root12 + 12.0 / root12) / 2.0
+        i = i + 1
+    }
+    dasham sum = 0.0
+    dasham p3 = 1.0
+    vitti k = 0
+    vitti sign = 1
+    yavat (k < 30) {
+        dasham term = 1.0 / ((2.0 * k + 1.0) * p3)
+        yadi (sign > 0) {
+            sum = sum + term
+        } anyatra {
+            sum = sum - term
+        }
+        p3 = p3 * 3.0
+        sign = 0 - sign
+        k = k + 1
+    }
+    likha("pi  = ")
+    likha(root12 * sum)
+
+    # --- sine via Madhava's series: sin(x) = x - x^3/3! + x^5/5! - ... ---
+    dasham x = 0.5
+    dasham s = x
+    dasham t = x
+    vitti n = 1
+    yavat (n < 12) {
+        t = 0.0 - t * x * x / ((2.0 * n) * (2.0 * n + 1.0))
+        s = s + t
+        n = n + 1
+    }
+    likha("sin(0.5) = ")
+    likha(s)
+
+    # --- cosine via Madhava's series: cos(x) = 1 - x^2/2! + x^4/4! - ... ---
+    dasham cs = 1.0
+    dasham ct = 1.0
+    vitti m = 1
+    yavat (m < 12) {
+        ct = 0.0 - ct * x * x / ((2.0 * m - 1.0) * (2.0 * m))
+        cs = cs + ct
+        m = m + 1
+    }
+    likha("cos(0.5) = ")
+    likha(cs)
