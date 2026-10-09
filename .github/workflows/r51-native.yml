@@ -33,6 +33,7 @@ jobs:
           python3 tools/r48_stage2_acceptance.py
           python3 tools/r49_repeated_semantic.py
           python3 tools/r49_diagnostic_audit.py
+          python3 tools/r51_native_audit.py
           python3 tools/r50_native_acceptance.py
       - name: Original regression suite and codegen invariants
         run: |
