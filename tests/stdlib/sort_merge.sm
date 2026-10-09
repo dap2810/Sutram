@@ -1,0 +1,19 @@
+ayojan sort
+mukhya() {
+    vitti a = nirmmita(8 * 8)
+    a[0] = 5
+    a[1] = 2
+    a[2] = 8
+    a[3] = 1
+    a[4] = 9
+    a[5] = 3
+    a[6] = 7
+    a[7] = 4
+    merge_sort(a, 8)
+    vitti i = 0
+    yavat (i < 8) {
+        likha(a[i])
+        likha("\n")
+        i = i + 1
+    }
+}
