@@ -1,0 +1,14 @@
+name: R49 native verification
+on:
+  push:
+    branches: [feature/r49-r46-r48-integration-20261009]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify Windows runtime include
+        run: test -s win/rtblob.inc
