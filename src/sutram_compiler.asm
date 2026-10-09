@@ -2891,6 +2891,13 @@ mg_e_noexp3:  db "'", 10, 0
 mg_e_dupexp1: db "Sutram Error [E_MODULE_DUP_EXPORT]: duplicate export '", 0
 mg_e_dupexp2: db "' in module '", 0
 mg_e_dupexp3: db "'", 10, 0
+mg_e_undef1:  db "Sutram Error [E_EXPORT_UNDEFINED]: export '", 0
+mg_e_undef2:  db "' has no matching definition in module '", 0
+mg_e_undef3:  db "'", 10, 0
+mg_e_unknown1: db "Sutram Error [E_EXPORT_UNDEFINED]: unknown qualified symbol '", 0
+mg_e_unknown2: db "' in module '", 0
+mg_e_unknown3: db "'", 10, 0
+mg_w_sutra:    db "sutra", 0
 mg_e_depth:   db "Sutram Error [E_MODULE_DEPTH]: import depth exceeded", 10, 0
 mg_e_valias1: db "Sutram Error [E_MODULE_V1_ALIAS]: v1 module '", 0
 mg_e_valias2: db "' must be imported with an alias: ayojan ", 0
@@ -2918,6 +2925,7 @@ mg_rec_path:  resb 8192
 mg_rec_v1:    resb 16
 mg_exp:       resb 16384
 mg_exp_n:     resb 16
+mg_exp_line:  resq 16 * 16       ; line number for each rec/declared export
 mg_def:       resb 32768
 mg_def_n:     resb 16
 mg_imp:       resb 24576
@@ -3460,6 +3468,12 @@ mg_parse_niryat:
     inc rcx
     test al, al
     jnz .pn_cp
+    ; Preserve the physical niryat declaration line for diagnostics.
+    mov rax, r15
+    shl rax, 4
+    add rax, r10
+    lea r11, [rel mg_exp_line]
+    mov [r11 + rax*8], r13
     lea r11, [rel mg_exp_n]
     inc byte [r11 + r15]
 .pn_bail:
@@ -3537,6 +3551,86 @@ mg_parse_prakriya:
     pop rcx
     pop r9
     pop r8
+    ret
+
+; --- mg_verify_exports: r15=record index, mg_cur_path is module path. ---
+; Enforces that a v1 niryat names an actual prakriya or sutra definition.
+; Legacy non-opt-in imports bypass this check.
+mg_verify_exports:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    lea rax, [rel mg_rec_v1]
+    cmp byte [rax + r15], 0
+    je .ve_done
+    lea rax, [rel mg_exp_n]
+    movzx r12, byte [rax + r15]
+    xor r13, r13
+.ve_export:
+    cmp r13, r12
+    jae .ve_done
+    mov rax, r15
+    shl rax, 10
+    mov rcx, r13
+    shl rcx, 6
+    add rax, rcx
+    lea rbx, [rel mg_exp]
+    add rbx, rax               ; exported symbol
+    lea rax, [rel mg_def_n]
+    movzx r14, byte [rax + r15]
+    xor r10, r10
+.ve_def:
+    cmp r10, r14
+    jae .ve_missing
+    mov rax, r15
+    shl rax, 11
+    mov rcx, r10
+    shl rcx, 6
+    add rax, rcx
+    lea rsi, [rel mg_def]
+    add rsi, rax
+    mov rdi, rbx
+    push r10
+    call strcmp
+    pop r10
+    test rax, rax
+    jz .ve_valid
+    inc r10
+    jmp .ve_def
+.ve_missing:
+    mov rax, r15
+    shl rax, 4
+    add rax, r13
+    lea rdx, [rel mg_exp_line]
+    mov rax, [rdx + rax*8]
+    mov [rel mg_cur_line], rax
+    call mg_print_loc
+    lea rdi, [rel mg_e_undef1]
+    call print_str_z
+    mov rdi, rbx
+    call print_str_z
+    lea rdi, [rel mg_e_undef2]
+    call print_str_z
+    mov rax, r15
+    shl rax, 6
+    lea rdi, [rel mg_rec_name]
+    add rdi, rax
+    call print_str_z
+    lea rdi, [rel mg_e_undef3]
+    call print_str_z
+    mov rdi, 1
+    call os_exit
+.ve_valid:
+    inc r13
+    jmp .ve_export
+.ve_done:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
     ret
 
 ; --- mg_parse_ayojan: rbx=buf, r12=pos of 'a', rdx=len, r13=line ---
@@ -3772,6 +3866,28 @@ mg_scan_buf:
     mov r14, 0
     jmp .sb_loop
 .sb_not_prakriya:
+    ; v1 top-level sutra names count as local definitions for niryat.
+    cmp r14, 1
+    jne .sb_not_sutra
+    lea rsi, [rel mg_w_sutra]
+    call mg_match_at
+    test rax, rax
+    jz .sb_not_sutra
+    mov r9, r12
+    add r9, 5
+    cmp r9, rdx
+    jae .sb_not_sutra
+    movzx eax, byte [rbx + r9]
+    cmp al, ' '
+    je .sb_sutra_ok
+    cmp al, 9
+    jne .sb_not_sutra
+.sb_sutra_ok:
+    mov r8, 5
+    call mg_parse_prakriya  ; common name collector (no backend effects)
+    mov r14, 0
+    jmp .sb_loop
+.sb_not_sutra:
     lea rsi, [rel mg_w_ayojan]
     call mg_match_at
     test rax, rax
@@ -4083,6 +4199,9 @@ mg_visit:
     add rdi, rax
     call mg_valias_error
 .v_no_valias:
+    ; R44: resolve every declared export after collecting all definitions.
+    ; This must run before recursive visits overwrite mg_cur_path.
+    call mg_verify_exports
     ; save import list to record, then recurse
     call mg_copy_list_to_rec
     call mg_process_imports
