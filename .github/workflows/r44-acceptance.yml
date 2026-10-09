@@ -53,3 +53,6 @@ jobs:
       - name: Five independently recorded R41 native fixtures
         if: always()
         run: python3 tools/r44_r41_native_goldens.py
+      - name: R41 opt-in cycle and missing diagnostic parity
+        if: always()
+        run: python3 tools/r44_optin_graph_acceptance.py
