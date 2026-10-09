@@ -1,0 +1,4 @@
+# Same import/alias twice must not define functions twice.
+ayojan r33_alpha@alpha
+ayojan r33_alpha@alpha
+mukhya() { likha(alpha__clash()) }
