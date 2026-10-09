@@ -4797,6 +4797,7 @@ ns_collect_funcs:
     jmp .nc_dev_byte
 .nc_dev_ok:
     add r15,rcx
+    jmp .nc_after_keyword
 .nc_try_sutra:
     ; Add sutra NAME as a separately tagged unqualified symbol.  Its bare
     ; uses (not only calls) must be renamed under module@alias.
