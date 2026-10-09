@@ -18450,8 +18450,7 @@ write_elf:
     ; output name selects PE (lets us build/test Windows binaries here).
     cmp qword [rel target_pe], 0
     jne write_pe
-    push rbx
-    mov rbx, rdi              ; filename
+    ; The output pathname is used only for open: chmod via the open fd later.
     ; Create file
     mov rsi, 0x241             ; O_WRONLY|O_CREAT|O_TRUNC
     mov rdx, 0o755
@@ -18509,17 +18508,17 @@ write_elf:
     lea rsi, [rel code_buf]
     mov rdx, [rel code_sz]
     call os_write
-    ; Close
-    mov rdi, [rel out_fd]
-    call os_close
 %ifndef WINDOWS
-    ; chmod +x
-    mov rdi, rbx
+    ; fchmod(fd,0755) while descriptor is open: avoids a second pathname
+    ; lookup; preserves historical user-facing mode even with restrictive umask.
+    mov rdi, [rel out_fd]
     mov rsi, 0o755
-    mov rax, 90
+    mov rax, 91
     syscall
 %endif
-    pop rbx
+    ; Close after permissions are applied.
+    mov rdi, [rel out_fd]
+    call os_close
     ret
 
 ; ============================================================
