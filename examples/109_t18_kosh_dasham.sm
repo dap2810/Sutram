@@ -1,0 +1,15 @@
+# T18 typed kosh: binary64 elements, growth, indexing, conversion and pop.
+mukhya() {
+    kosh dasham a[1]
+    likha(kosh_len(a))
+    likha(kosh_push(a, 1.5))
+    likha(kosh_push(a, 2))
+    likha(kosh_cap(a))
+    likha(a[0])
+    likha(a[1])
+    a[0] = 3
+    likha(a[0])
+    dasham p = kosh_pop(a)
+    likha(p)
+    likha(kosh_len(a))
+}
