@@ -1,0 +1,26 @@
+ayojan bigint
+mukhya() {
+    vitti a = nirmmita(8 * 8)
+    vitti b = nirmmita(8 * 8)
+    vitti r = nirmmita(8 * 8)
+    bigint_from_int(12345, a, 8)
+    bigint_from_int(6789, b, 8)
+    likha(bigint_add(a, b, r, 8))
+    likha("\n")
+    likha(bigint_to_int(r, 8))
+    likha("\n")
+    # carry across all digits: 999 + 1 = 1000
+    bigint_from_int(999, a, 8)
+    bigint_from_int(1, b, 8)
+    likha(bigint_add(a, b, r, 8))
+    likha("\n")
+    likha(bigint_to_int(r, 8))
+    likha("\n")
+    # overflow beyond 8 digits: 99999999 + 1 -> carry 1, low digits 0
+    bigint_from_int(99999999, a, 8)
+    bigint_from_int(1, b, 8)
+    likha(bigint_add(a, b, r, 8))
+    likha("\n")
+    likha(bigint_to_int(r, 8))
+    likha("\n")
+}
