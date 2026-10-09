@@ -1,0 +1,16 @@
+# PERF-F1: registered IEEE-754 binary64 accumulators, operator coverage and alias.
+mukhya() {
+    dasham a = 1.5
+    dasham b = 2.0
+    dasham c = 3.0
+    a = a + b
+    a = a - b
+    a = a * b
+    a = a / b
+    b = b + b
+    a = a + a
+    c = c - a
+    likha(a)
+    likha(b)
+    likha(c)
+}
