@@ -1,0 +1,10 @@
+=== Booleans & Logic ===
+is_ready = 1
+
+is_done = 0
+
+Ready but not done
+At least one condition met
+both_positive = 1
+
+=== Done ===
