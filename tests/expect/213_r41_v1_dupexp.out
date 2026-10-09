@@ -1,1 +1,1 @@
-/scratch/work/examples/lib/r41_dup.smlib:4: Sutram Error [E_MODULE_DUP_EXPORT]: duplicate export 'thing' in module 'r41_dup'
+<ROOT>/examples/lib/r41_dup.smlib:4: Sutram Error [E_MODULE_DUP_EXPORT]: duplicate export 'thing' in module 'r41_dup'
