@@ -715,6 +715,17 @@ section .bss
     r48_stmt_valid resq 1
     r48_error_line resq 1
     r48_charbuf resb 4
+    ; R51 diagnostic origin maps, bounded to expanded source capacity.
+    r51_src_file resq IMPORT_BUF_CAP
+    r51_dst_file resq IMPORT_BUF_CAP
+    r51_src_off resd IMPORT_BUF_CAP
+    r51_dst_off resd IMPORT_BUF_CAP
+    r51_import_paths resb IMPORT_NAMES_CAP * 512
+    r51_paths_used resq 1
+    r51_current_path resq 1
+    r51_import_start resq 1
+    r51_raw_map resd IMPORT_BUF_CAP
+    r51_ns_emit_pos resq 1
     token_arr   resb TOKEN_CAP * TOKEN_SIZE ; capacity matches 64 KiB source + EOF
     token_cnt   resq 1
     token_idx   resq 1
