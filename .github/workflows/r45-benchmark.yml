@@ -27,6 +27,7 @@ jobs:
           fi
       - name: Build accepted baseline and optimized candidate
         run: |
+          git fetch --no-tags --depth=1 origin 4a929ea1f89b668bd3b3b9be7f97cfe08309982e
           git show 4a929ea1f89b668bd3b3b9be7f97cfe08309982e:src/sutram_compiler.asm > /tmp/r45_base.asm
           nasm -f elf64 -I. /tmp/r45_base.asm -o /tmp/r45_base.o
           ld -o /tmp/r45_base /tmp/r45_base.o
