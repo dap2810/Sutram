@@ -1,0 +1,4 @@
+# Aliases may not refer to two distinct modules.
+ayojan r33_alpha@same
+ayojan r33_beta@same
+mukhya() { likha(same__clash()) }
