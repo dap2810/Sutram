@@ -5385,6 +5385,53 @@ r51_init_raw_map:
     pop rcx
     ret
 
+
+r51_raw_copy_position:
+    cmp qword [rel r48_mode],0
+    je .done
+    push rdx
+    push rcx
+    lea rdx,[rel r51_raw_map]
+    mov ecx,[rdx+r12*4]
+    mov [rdx+r14*4],ecx
+    pop rcx
+    pop rdx
+.done:
+    ret
+
+r51_mark_namespaced:
+    cmp qword [rel r48_mode],0
+    je .done
+    push rcx
+    push rdx
+    mov rcx,[rel r51_current_path]
+    lea rdx,[rel r51_dst_file]
+    mov [rdx+r14*8],rcx
+    mov rcx,[rel r51_ns_emit_pos]
+    lea rdx,[rel r51_raw_map]
+    mov ecx,[rdx+rcx*4]
+    lea rdx,[rel r51_dst_off]
+    mov [rdx+r14*4],ecx
+    pop rdx
+    pop rcx
+.done:
+    ret
+
+r51_mark_newline:
+    cmp qword [rel r48_mode],0
+    je .done
+    push rcx
+    push rdx
+    mov rcx,[rel r51_current_path]
+    lea rdx,[rel r51_dst_file]
+    mov [rdx+r14*8],rcx
+    lea rdx,[rel r51_dst_off]
+    mov dword [rdx+r14*4],0
+    pop rdx
+    pop rcx
+.done:
+    ret
+
 r51_finish_origin_pass:
     push rsi
     push rdi
