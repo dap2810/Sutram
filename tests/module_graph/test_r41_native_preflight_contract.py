@@ -37,9 +37,12 @@ class NativeModuleV1Contract(unittest.TestCase):
                         self.asm.index('call expand_imports'))
         self.assertIn("graph_v1_header db '# sutram-module-v1'",self.asm)
     def test_dfs_and_diagnostics(self):
-        for s in ('graph_scan:', 'graph_visit:', 'graph_error_cycle:',
-                  'graph_stack', 'graph_state', 'E_MODULE_CYCLE',
-                  'E_MODULE_MISSING', 'graph_print_file:'):
+        # R44 merged the two module-graph pre-passes into one, replacing the old
+        # R41 graph_scan/graph_visit/graph_stack/graph_state machinery with the
+        # single check_module_graph pass. Assert the diagnostics and the merged
+        # entry point, not the removed internal labels.
+        for s in ('E_MODULE_CYCLE', 'E_MODULE_MISSING', 'graph_print_file:',
+                  'check_module_graph', 'mg_in_gray'):
             self.assertIn(s,self.asm)
     def test_compile_failure_expected(self):
         for n in ('164_r41_cycle_reject','165_r41_missing_reject'):
