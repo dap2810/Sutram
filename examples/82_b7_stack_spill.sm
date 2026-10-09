@@ -1,0 +1,32 @@
+prakriya binary_search(a, n, target) {
+    vitti lo = 0
+    vitti hi = n - 1
+    yavat (lo <= hi) {
+        vitti mid = (lo + hi) / 2
+        yadi (a[mid] == target) { pratiyati mid }
+        yadi (a[mid] < target) { lo = mid + 1 } anyatra { hi = mid - 1 }
+    }
+    pratiyati 0 - 1
+}
+
+prakriya min_of(a, n) {
+    vitti m = a[0]
+    vitti i = 1
+    yavat (i < n) {
+        yadi (a[i] < m) { m = a[i] }
+        i = i + 1
+    }
+    pratiyati m
+}
+
+mukhya() {
+    pankti a[6]
+    a[0] = 1
+    a[1] = 2
+    a[2] = 3
+    a[3] = 5
+    a[4] = 7
+    a[5] = 9
+    likha(binary_search(a, 6, 7))
+    likha(min_of(a, 6))
+}
