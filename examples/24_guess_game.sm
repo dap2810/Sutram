@@ -1,0 +1,19 @@
+mukhya()
+    likha("Guess the secret number (1-100): ")
+    vitti secret = 7
+    vitti guess = 0
+    yavat (guess != secret) {
+        guess = grahan()
+        yadi (guess == -1) {
+            likha("Input ended. Goodbye!\n")
+            krama
+        }
+        yadi (guess < secret) {
+            likha("Too low! Try again: ")
+        } anyatra yadi (guess > secret) {
+            likha("Too high! Try again: ")
+        }
+    }
+    yadi (guess == secret) {
+        likha("Correct! You found it!\n")
+    }
