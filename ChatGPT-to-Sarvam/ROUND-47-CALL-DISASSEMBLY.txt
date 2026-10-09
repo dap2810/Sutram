@@ -1,0 +1,793 @@
+=== benchmarks/r46_hotcall_stack.sm ===
+output_sha256=024b7fa8485948c15d5b57579be8f281c3a2c96f69686f268791e763ceb6ae87
+before_image=('20399da50ab83ebcdd8a2e8cfa7a227827979b276fa70f77d8e6b2d5f7abcc38', 451)
+after_image=('7d2ce68252bd519a0d80412f990f9a4b71cb89a9be83f98f5ceb45793416cd29', 453)
+generated_byte_identical=False
+BEFORE MACHINE CODE:
+00000025  4C89E0            mov rax,r12
+00000028  50                push rax
+00000029  4889D8            mov rax,rbx
+0000002C  50                push rax
+0000002D  5F                pop rdi
+0000002E  4154              push r12
+00000030  4155              push r13
+00000032  4156              push r14
+00000034  4157              push r15
+00000036  E8EA000000        call 0x125
+0000003B  415F              pop r15
+0000003D  415E              pop r14
+0000003F  415D              pop r13
+00000041  415C              pop r12
+00000043  5A                pop rdx
+--- INDEXED READ ---
+00000124  C3                ret
+00000125  55                push rbp
+00000126  4889E5            mov rbp,rsp
+00000129  53                push rbx
+0000012A  57                push rdi
+0000012B  4881EC00080000    sub rsp,0x800
+00000132  488B45F0          mov rax,[rbp-0x10]
+00000136  50                push rax
+00000137  5F                pop rdi
+00000138  E8C6FFFFFF        call 0x103
+0000013D  488D65F8          lea rsp,[rbp-0x8]
+00000141  5B                pop rbx
+00000142  5D                pop rbp
+00000143  C3                ret
+00000144  488D65F8          lea rsp,[rbp-0x8]
+AFTER MACHINE CODE:
+00000020  E92C000000        jmp 0x51
+00000025  4C89E0            mov rax,r12
+00000028  50                push rax
+00000029  4889D8            mov rax,rbx
+0000002C  4889C7            mov rdi,rax
+0000002F  4154              push r12
+00000031  4155              push r13
+00000033  4156              push r14
+00000035  4157              push r15
+00000037  E8EA000000        call 0x126
+0000003C  415F              pop r15
+0000003E  415E              pop r14
+00000040  415D              pop r13
+00000042  415C              pop r12
+00000044  5A                pop rdx
+--- INDEXED READ ---
+00000124  5D                pop rbp
+00000125  C3                ret
+00000126  55                push rbp
+00000127  4889E5            mov rbp,rsp
+0000012A  53                push rbx
+0000012B  57                push rdi
+0000012C  4881EC00080000    sub rsp,0x800
+00000133  488B45F0          mov rax,[rbp-0x10]
+00000137  4889C7            mov rdi,rax
+0000013A  E8C5FFFFFF        call 0x104
+0000013F  488D65F8          lea rsp,[rbp-0x8]
+00000143  5B                pop rbx
+00000144  5D                pop rbp
+00000145  C3                ret
+00000146  488D65F8          lea rsp,[rbp-0x8]
+=== benchmarks/r46_hotcall_nested.sm ===
+output_sha256=b8b6df6bb3d03cb825e7be723777daf7a5685d357f44896e72d3465f48e29ed9
+before_image=('5bafa59ae11d23d7c37645532388b69aa005a5b5f812071811db09a6fd1f8a23', 489)
+after_image=('663c18fcf8cce667150689e45f9c8b3fc83bc6aa679cde61d71697effc58bc91', 492)
+generated_byte_identical=False
+BEFORE MACHINE CODE:
+00000025  4C89E0            mov rax,r12
+00000028  50                push rax
+00000029  4889D8            mov rax,rbx
+0000002C  50                push rax
+0000002D  5F                pop rdi
+0000002E  4154              push r12
+00000030  4155              push r13
+00000032  4156              push r14
+00000034  4157              push r15
+00000036  E810010000        call 0x14b
+0000003B  415F              pop r15
+0000003D  415E              pop r14
+0000003F  415D              pop r13
+00000041  415C              pop r12
+00000043  5A                pop rdx
+--- INDEXED READ ---
+00000124  C3                ret
+00000125  55                push rbp
+00000126  4889E5            mov rbp,rsp
+00000129  53                push rbx
+0000012A  57                push rdi
+0000012B  4881EC00080000    sub rsp,0x800
+00000132  488B45F0          mov rax,[rbp-0x10]
+00000136  50                push rax
+00000137  5F                pop rdi
+00000138  E8C6FFFFFF        call 0x103
+0000013D  488D65F8          lea rsp,[rbp-0x8]
+00000141  5B                pop rbx
+00000142  5D                pop rbp
+00000143  C3                ret
+00000144  488D65F8          lea rsp,[rbp-0x8]
+--- INDEXED READ ---
+0000014A  C3                ret
+0000014B  55                push rbp
+0000014C  4889E5            mov rbp,rsp
+0000014F  53                push rbx
+00000150  57                push rdi
+00000151  4881EC00080000    sub rsp,0x800
+00000158  488B45F0          mov rax,[rbp-0x10]
+0000015C  50                push rax
+0000015D  5F                pop rdi
+0000015E  E8C2FFFFFF        call 0x125
+00000163  488D65F8          lea rsp,[rbp-0x8]
+00000167  5B                pop rbx
+00000168  5D                pop rbp
+00000169  C3                ret
+0000016A  488D65F8          lea rsp,[rbp-0x8]
+AFTER MACHINE CODE:
+00000020  E92C000000        jmp 0x51
+00000025  4C89E0            mov rax,r12
+00000028  50                push rax
+00000029  4889D8            mov rax,rbx
+0000002C  4889C7            mov rdi,rax
+0000002F  4154              push r12
+00000031  4155              push r13
+00000033  4156              push r14
+00000035  4157              push r15
+00000037  E811010000        call 0x14d
+0000003C  415F              pop r15
+0000003E  415E              pop r14
+00000040  415D              pop r13
+00000042  415C              pop r12
+00000044  5A                pop rdx
+--- INDEXED READ ---
+00000124  5D                pop rbp
+00000125  C3                ret
+00000126  55                push rbp
+00000127  4889E5            mov rbp,rsp
+0000012A  53                push rbx
+0000012B  57                push rdi
+0000012C  4881EC00080000    sub rsp,0x800
+00000133  488B45F0          mov rax,[rbp-0x10]
+00000137  4889C7            mov rdi,rax
+0000013A  E8C5FFFFFF        call 0x104
+0000013F  488D65F8          lea rsp,[rbp-0x8]
+00000143  5B                pop rbx
+00000144  5D                pop rbp
+00000145  C3                ret
+00000146  488D65F8          lea rsp,[rbp-0x8]
+--- INDEXED READ ---
+0000014B  5D                pop rbp
+0000014C  C3                ret
+0000014D  55                push rbp
+0000014E  4889E5            mov rbp,rsp
+00000151  53                push rbx
+00000152  57                push rdi
+00000153  4881EC00080000    sub rsp,0x800
+0000015A  488B45F0          mov rax,[rbp-0x10]
+0000015E  4889C7            mov rdi,rax
+00000161  E8C0FFFFFF        call 0x126
+00000166  488D65F8          lea rsp,[rbp-0x8]
+0000016A  5B                pop rbx
+0000016B  5D                pop rbp
+0000016C  C3                ret
+0000016D  488D65F8          lea rsp,[rbp-0x8]
+=== benchmarks/r46_hotcall_float.sm ===
+output_sha256=5d43a23b642b94e9ba2fbace9b0e03429be84d750cfa18f9514cee7132d03cd5
+before_image=('3b39138a9b32ead57da2cc0aa06ff861f27274891bd9984245eea35bb8d843a3', 549)
+after_image=('164773766937153d92c37257cc42f5b0d9f03a9b6ff8f6f2116618b290df2c69', 551)
+generated_byte_identical=False
+BEFORE MACHINE CODE:
+00000027  E93A000000        jmp 0x66
+0000002C  48B8000000000000  mov rax,0x4004000000000000
+         -0440
+00000036  50                push rax
+00000037  5F                pop rdi
+00000038  4154              push r12
+0000003A  4155              push r13
+0000003C  4156              push r14
+0000003E  4157              push r15
+00000040  E842010000        call 0x187
+00000045  415F              pop r15
+00000047  415E              pop r14
+00000049  415D              pop r13
+0000004B  415C              pop r12
+0000004D  66480F6EC8        movq xmm1,rax
+--- INDEXED READ ---
+00000186  C3                ret
+00000187  55                push rbp
+00000188  4889E5            mov rbp,rsp
+0000018B  53                push rbx
+0000018C  57                push rdi
+0000018D  4881EC00080000    sub rsp,0x800
+00000194  488B45F0          mov rax,[rbp-0x10]
+00000198  50                push rax
+00000199  5F                pop rdi
+0000019A  E8ACFFFFFF        call 0x14b
+0000019F  488D65F8          lea rsp,[rbp-0x8]
+000001A3  5B                pop rbx
+000001A4  5D                pop rbp
+000001A5  C3                ret
+000001A6  488D65F8          lea rsp,[rbp-0x8]
+AFTER MACHINE CODE:
+00000024  4989C4            mov r12,rax
+00000027  E93B000000        jmp 0x67
+0000002C  48B8000000000000  mov rax,0x4004000000000000
+         -0440
+00000036  4889C7            mov rdi,rax
+00000039  4154              push r12
+0000003B  4155              push r13
+0000003D  4156              push r14
+0000003F  4157              push r15
+00000041  E842010000        call 0x188
+00000046  415F              pop r15
+00000048  415E              pop r14
+0000004A  415D              pop r13
+0000004C  415C              pop r12
+0000004E  66480F6EC8        movq xmm1,rax
+--- INDEXED READ ---
+00000186  5D                pop rbp
+00000187  C3                ret
+00000188  55                push rbp
+00000189  4889E5            mov rbp,rsp
+0000018C  53                push rbx
+0000018D  57                push rdi
+0000018E  4881EC00080000    sub rsp,0x800
+00000195  488B45F0          mov rax,[rbp-0x10]
+00000199  4889C7            mov rdi,rax
+0000019C  E8ABFFFFFF        call 0x14c
+000001A1  488D65F8          lea rsp,[rbp-0x8]
+000001A5  5B                pop rbx
+000001A6  5D                pop rbp
+000001A7  C3                ret
+000001A8  488D65F8          lea rsp,[rbp-0x8]
+=== benchmarks/r46_hotcall_array.sm ===
+output_sha256=56f36d5adddfce2ffdead8cdfe77e25f136775835e3deced891efb1b4cd2b169
+before_image=('c87d983e7570e46400b7b2ad6fc0f952706329fabf71b07b2a10b4d4b7f49472', 1150)
+after_image=('959aa8aaba8f4695bcae1e76ab95c295fedcdfed816257c0b665b3520beb87cb', 1152)
+generated_byte_identical=False
+BEFORE MACHINE CODE:
+000002DF  59                pop rcx
+000002E0  4801C8            add rax,rcx
+000002E3  488B00            mov rax,[rax]
+000002E6  50                push rax
+000002E7  5F                pop rdi
+000002E8  4154              push r12
+000002EA  4155              push r13
+000002EC  4156              push r14
+000002EE  4157              push r15
+000002F0  E8EB000000        call 0x3e0
+000002F5  415F              pop r15
+000002F7  415E              pop r14
+000002F9  415D              pop r13
+000002FB  415C              pop r12
+000002FD  5A                pop rdx
+--- INDEXED READ ---
+000003DF  C3                ret
+000003E0  55                push rbp
+000003E1  4889E5            mov rbp,rsp
+000003E4  53                push rbx
+000003E5  57                push rdi
+000003E6  4881EC00080000    sub rsp,0x800
+000003ED  488B45F0          mov rax,[rbp-0x10]
+000003F1  50                push rax
+000003F2  5F                pop rdi
+000003F3  E8C5FFFFFF        call 0x3bd
+000003F8  488D65F8          lea rsp,[rbp-0x8]
+000003FC  5B                pop rbx
+000003FD  5D                pop rbp
+000003FE  C3                ret
+000003FF  488D65F8          lea rsp,[rbp-0x8]
+AFTER MACHINE CODE:
+000002DB  48C1E003          shl rax,byte 0x3
+000002DF  59                pop rcx
+000002E0  4801C8            add rax,rcx
+000002E3  488B00            mov rax,[rax]
+000002E6  4889C7            mov rdi,rax
+000002E9  4154              push r12
+000002EB  4155              push r13
+000002ED  4156              push r14
+000002EF  4157              push r15
+000002F1  E8EB000000        call 0x3e1
+000002F6  415F              pop r15
+000002F8  415E              pop r14
+000002FA  415D              pop r13
+000002FC  415C              pop r12
+000002FE  5A                pop rdx
+--- INDEXED READ ---
+000003DF  5D                pop rbp
+000003E0  C3                ret
+000003E1  55                push rbp
+000003E2  4889E5            mov rbp,rsp
+000003E5  53                push rbx
+000003E6  57                push rdi
+000003E7  4881EC00080000    sub rsp,0x800
+000003EE  488B45F0          mov rax,[rbp-0x10]
+000003F2  4889C7            mov rdi,rax
+000003F5  E8C4FFFFFF        call 0x3be
+000003FA  488D65F8          lea rsp,[rbp-0x8]
+000003FE  5B                pop rbx
+000003FF  5D                pop rbp
+00000400  C3                ret
+00000401  488D65F8          lea rsp,[rbp-0x8]
+=== examples/126_numeric_pipeline.sm ===
+output_sha256=03087576c8f8cd0d1b1aee387472e31fe86814a7e9d5f4e546e5ba9938c133ea
+before_image=('38c50da9ec00d8cffbc1d2f42abe63fd1580572f894a74b3677727f7c9b8b8e2', 7450)
+after_image=('20cc35240df55e002cf4c1ddeaa6ad33bfb92356e4c205a59c03c2fec5ca2b69', 7463)
+generated_byte_identical=False
+BEFORE MACHINE CODE:
+0000094C  41BF00000000      mov r15d,0x0
+00000952  E933000000        jmp 0x98a
+00000957  4889D8            mov rax,rbx
+0000095A  50                push rax
+0000095B  5F                pop rdi
+0000095C  4154              push r12
+0000095E  4155              push r13
+00000960  4156              push r14
+00000962  4157              push r15
+00000964  E8D3120000        call 0x1c3c
+00000969  415F              pop r15
+0000096B  415E              pop r14
+0000096D  415D              pop r13
+0000096F  415C              pop r12
+00000971  66480F6EC8        movq xmm1,rax
+--- INDEXED READ ---
+00000A56  50                push rax
+00000A57  4C89E8            mov rax,r13
+00000A5A  50                push rax
+00000A5B  5E                pop rsi
+00000A5C  5F                pop rdi
+00000A5D  4154              push r12
+00000A5F  4155              push r13
+00000A61  4156              push r14
+00000A63  4157              push r15
+00000A65  E81A0A0000        call 0x1484
+00000A6A  415F              pop r15
+00000A6C  415E              pop r14
+00000A6E  415D              pop r13
+00000A70  415C              pop r12
+00000A72  66480F6EC0        movq xmm0,rax
+--- INDEXED READ ---
+00000B1C  0F05              syscall
+00000B1E  4883C440          add rsp,byte +0x40
+00000B22  4C89E0            mov rax,r12
+00000B25  50                push rax
+00000B26  5F                pop rdi
+00000B27  4154              push r12
+00000B29  4155              push r13
+00000B2B  4156              push r14
+00000B2D  4157              push r15
+00000B2F  E8EB0A0000        call 0x161f
+00000B34  415F              pop r15
+00000B36  415E              pop r14
+00000B38  415D              pop r13
+00000B3A  415C              pop r12
+00000B3C  66480F6EC0        movq xmm0,rax
+--- INDEXED READ ---
+00000BD9  4829F2            sub rdx,rsi
+00000BDC  BF01000000        mov edi,0x1
+00000BE1  B801000000        mov eax,0x1
+00000BE6  0F05              syscall
+00000BE8  4883C440          add rsp,byte +0x40
+00000BEC  4154              push r12
+00000BEE  4155              push r13
+00000BF0  4156              push r14
+00000BF2  4157              push r15
+00000BF4  E81B0B0000        call 0x1714
+00000BF9  415F              pop r15
+00000BFB  415E              pop r14
+00000BFD  415D              pop r13
+00000BFF  415C              pop r12
+00000C01  66480F6EC0        movq xmm0,rax
+--- INDEXED READ ---
+00000DDF  5D                pop rbp
+00000DE0  C3                ret
+00000DE1  488B45F0          mov rax,[rbp-0x10]
+00000DE5  50                push rax
+00000DE6  5F                pop rdi
+00000DE7  4154              push r12
+00000DE9  4155              push r13
+00000DEB  4156              push r14
+00000DED  4157              push r15
+00000DEF  E8D9FEFFFF        call 0xccd
+00000DF4  415F              pop r15
+00000DF6  415E              pop r14
+00000DF8  415D              pop r13
+00000DFA  415C              pop r12
+00000DFC  50                push rax
+--- INDEXED READ ---
+000011ED  C3                ret
+000011EE  55                push rbp
+000011EF  4889E5            mov rbp,rsp
+000011F2  53                push rbx
+000011F3  57                push rdi
+000011F4  4881EC00080000    sub rsp,0x800
+000011FB  488B45F0          mov rax,[rbp-0x10]
+000011FF  50                push rax
+00001200  5F                pop rdi
+00001201  E802FEFFFF        call 0x1008
+00001206  50                push rax
+00001207  488B45F0          mov rax,[rbp-0x10]
+0000120B  50                push rax
+0000120C  5F                pop rdi
+0000120D  E810FCFFFF        call 0xe22
+--- INDEXED READ ---
+000011F4  4881EC00080000    sub rsp,0x800
+000011FB  488B45F0          mov rax,[rbp-0x10]
+000011FF  50                push rax
+00001200  5F                pop rdi
+00001201  E802FEFFFF        call 0x1008
+00001206  50                push rax
+00001207  488B45F0          mov rax,[rbp-0x10]
+0000120B  50                push rax
+0000120C  5F                pop rdi
+0000120D  E810FCFFFF        call 0xe22
+00001212  66480F6EC8        movq xmm1,rax
+00001217  5A                pop rdx
+00001218  66480F6EC2        movq xmm0,rdx
+0000121D  F20F5CC1          subsd xmm0,xmm1
+00001221  66480F7EC0        movq rax,xmm0
+--- INDEXED READ ---
+00001268  5D                pop rbp
+00001269  C3                ret
+0000126A  488B45F0          mov rax,[rbp-0x10]
+0000126E  50                push rax
+0000126F  5F                pop rdi
+00001270  4154              push r12
+00001272  4155              push r13
+00001274  4156              push r14
+00001276  4157              push r15
+00001278  E82EFBFFFF        call 0xdab
+0000127D  415F              pop r15
+0000127F  415E              pop r14
+00001281  415D              pop r13
+00001283  415C              pop r12
+00001285  4989C5            mov r13,rax
+--- INDEXED READ ---
+00001456  C3                ret
+00001457  55                push rbp
+00001458  4889E5            mov rbp,rsp
+0000145B  53                push rbx
+0000145C  57                push rdi
+0000145D  4881EC00080000    sub rsp,0x800
+00001464  488B45F0          mov rax,[rbp-0x10]
+00001468  50                push rax
+00001469  5F                pop rdi
+0000146A  E8C5FDFFFF        call 0x1234
+0000146F  50                push rax
+00001470  5F                pop rdi
+00001471  E81AFFFFFF        call 0x1390
+00001476  488D65F8          lea rsp,[rbp-0x8]
+0000147A  5B                pop rbx
+--- INDEXED READ ---
+0000145B  53                push rbx
+0000145C  57                push rdi
+0000145D  4881EC00080000    sub rsp,0x800
+00001464  488B45F0          mov rax,[rbp-0x10]
+00001468  50                push rax
+00001469  5F                pop rdi
+0000146A  E8C5FDFFFF        call 0x1234
+0000146F  50                push rax
+00001470  5F                pop rdi
+00001471  E81AFFFFFF        call 0x1390
+00001476  488D65F8          lea rsp,[rbp-0x8]
+0000147A  5B                pop rbx
+0000147B  5D                pop rbp
+0000147C  C3                ret
+0000147D  488D65F8          lea rsp,[rbp-0x8]
+--- INDEXED READ ---
+00001623  53                push rbx
+00001624  57                push rdi
+00001625  4881EC00080000    sub rsp,0x800
+0000162C  488B45F0          mov rax,[rbp-0x10]
+00001630  50                push rax
+00001631  488B45F0          mov rax,[rbp-0x10]
+00001635  50                push rax
+00001636  5E                pop rsi
+00001637  5F                pop rdi
+00001638  E847FEFFFF        call 0x1484
+0000163D  50                push rax
+0000163E  5F                pop rdi
+0000163F  E84CFDFFFF        call 0x1390
+00001644  488D65F8          lea rsp,[rbp-0x8]
+00001648  5B                pop rbx
+--- INDEXED READ ---
+0000162C  488B45F0          mov rax,[rbp-0x10]
+00001630  50                push rax
+00001631  488B45F0          mov rax,[rbp-0x10]
+00001635  50                push rax
+00001636  5E                pop rsi
+00001637  5F                pop rdi
+00001638  E847FEFFFF        call 0x1484
+0000163D  50                push rax
+0000163E  5F                pop rdi
+0000163F  E84CFDFFFF        call 0x1390
+00001644  488D65F8          lea rsp,[rbp-0x8]
+00001648  5B                pop rbx
+00001649  5D                pop rbp
+0000164A  C3                ret
+0000164B  488D65F8          lea rsp,[rbp-0x8]
+--- INDEXED READ ---
+00001713  C3                ret
+00001714  55                push rbp
+00001715  4889E5            mov rbp,rsp
+00001718  53                push rbx
+00001719  4881EC00080000    sub rsp,0x800
+00001720  48B8000000000000  mov rax,0x4028000000000000
+         -2840
+0000172A  50                push rax
+0000172B  5F                pop rdi
+0000172C  E821FFFFFF        call 0x1652
+00001731  4889C3            mov rbx,rax
+00001734  48B8000000000000  mov rax,0x0
+         -0000
+0000173E  4989C4            mov r12,rax
+00001741  48B8000000000000  mov rax,0x3ff0000000000000
+--- INDEXED READ ---
+00001C3B  C3                ret
+00001C3C  55                push rbp
+00001C3D  4889E5            mov rbp,rsp
+00001C40  53                push rbx
+00001C41  57                push rdi
+00001C42  4881EC00080000    sub rsp,0x800
+00001C49  488B45F0          mov rax,[rbp-0x10]
+00001C4D  50                push rax
+00001C4E  5F                pop rdi
+00001C4F  E857F1FFFF        call 0xdab
+00001C54  50                push rax
+00001C55  488B45F0          mov rax,[rbp-0x10]
+00001C59  50                push rax
+00001C5A  5F                pop rdi
+00001C5B  E8D4F5FFFF        call 0x1234
+--- INDEXED READ ---
+00001C42  4881EC00080000    sub rsp,0x800
+00001C49  488B45F0          mov rax,[rbp-0x10]
+00001C4D  50                push rax
+00001C4E  5F                pop rdi
+00001C4F  E857F1FFFF        call 0xdab
+00001C54  50                push rax
+00001C55  488B45F0          mov rax,[rbp-0x10]
+00001C59  50                push rax
+00001C5A  5F                pop rdi
+00001C5B  E8D4F5FFFF        call 0x1234
+00001C60  66480F6EC8        movq xmm1,rax
+00001C65  5A                pop rdx
+00001C66  66480F6EC2        movq xmm0,rdx
+00001C6B  F20F58C1          addsd xmm0,xmm1
+00001C6F  66480F7EC0        movq rax,xmm0
+AFTER MACHINE CODE:
+00000949  4989C6            mov r14,rax
+0000094C  41BF00000000      mov r15d,0x0
+00000952  E934000000        jmp 0x98b
+00000957  4889D8            mov rax,rbx
+0000095A  4889C7            mov rdi,rax
+0000095D  4154              push r12
+0000095F  4155              push r13
+00000961  4156              push r14
+00000963  4157              push r15
+00000965  E8DC120000        call 0x1c46
+0000096A  415F              pop r15
+0000096C  415E              pop r14
+0000096E  415D              pop r13
+00000970  415C              pop r12
+00000972  66480F6EC8        movq xmm1,rax
+--- INDEXED READ ---
+00000A57  50                push rax
+00000A58  4C89E8            mov rax,r13
+00000A5B  50                push rax
+00000A5C  5E                pop rsi
+00000A5D  5F                pop rdi
+00000A5E  4154              push r12
+00000A60  4155              push r13
+00000A62  4156              push r14
+00000A64  4157              push r15
+00000A66  E8210A0000        call 0x148c
+00000A6B  415F              pop r15
+00000A6D  415E              pop r14
+00000A6F  415D              pop r13
+00000A71  415C              pop r12
+00000A73  66480F6EC0        movq xmm0,rax
+--- INDEXED READ ---
+00000B18  B801000000        mov eax,0x1
+00000B1D  0F05              syscall
+00000B1F  4883C440          add rsp,byte +0x40
+00000B23  4C89E0            mov rax,r12
+00000B26  4889C7            mov rdi,rax
+00000B29  4154              push r12
+00000B2B  4155              push r13
+00000B2D  4156              push r14
+00000B2F  4157              push r15
+00000B31  E8F10A0000        call 0x1627
+00000B36  415F              pop r15
+00000B38  415E              pop r14
+00000B3A  415D              pop r13
+00000B3C  415C              pop r12
+00000B3E  66480F6EC0        movq xmm0,rax
+--- INDEXED READ ---
+00000BDB  4829F2            sub rdx,rsi
+00000BDE  BF01000000        mov edi,0x1
+00000BE3  B801000000        mov eax,0x1
+00000BE8  0F05              syscall
+00000BEA  4883C440          add rsp,byte +0x40
+00000BEE  4154              push r12
+00000BF0  4155              push r13
+00000BF2  4156              push r14
+00000BF4  4157              push r15
+00000BF6  E8220B0000        call 0x171d
+00000BFB  415F              pop r15
+00000BFD  415E              pop r14
+00000BFF  415D              pop r13
+00000C01  415C              pop r12
+00000C03  66480F6EC0        movq xmm0,rax
+--- INDEXED READ ---
+00000DE0  5B                pop rbx
+00000DE1  5D                pop rbp
+00000DE2  C3                ret
+00000DE3  488B45F0          mov rax,[rbp-0x10]
+00000DE7  4889C7            mov rdi,rax
+00000DEA  4154              push r12
+00000DEC  4155              push r13
+00000DEE  4156              push r14
+00000DF0  4157              push r15
+00000DF2  E8D8FEFFFF        call 0xccf
+00000DF7  415F              pop r15
+00000DF9  415E              pop r14
+00000DFB  415D              pop r13
+00000DFD  415C              pop r12
+00000DFF  50                push rax
+--- INDEXED READ ---
+000011EF  5D                pop rbp
+000011F0  C3                ret
+000011F1  55                push rbp
+000011F2  4889E5            mov rbp,rsp
+000011F5  53                push rbx
+000011F6  57                push rdi
+000011F7  4881EC00080000    sub rsp,0x800
+000011FE  488B45F0          mov rax,[rbp-0x10]
+00001202  4889C7            mov rdi,rax
+00001205  E801FEFFFF        call 0x100b
+0000120A  50                push rax
+0000120B  488B45F0          mov rax,[rbp-0x10]
+0000120F  4889C7            mov rdi,rax
+00001212  E80EFCFFFF        call 0xe25
+00001217  66480F6EC8        movq xmm1,rax
+--- INDEXED READ ---
+000011F5  53                push rbx
+000011F6  57                push rdi
+000011F7  4881EC00080000    sub rsp,0x800
+000011FE  488B45F0          mov rax,[rbp-0x10]
+00001202  4889C7            mov rdi,rax
+00001205  E801FEFFFF        call 0x100b
+0000120A  50                push rax
+0000120B  488B45F0          mov rax,[rbp-0x10]
+0000120F  4889C7            mov rdi,rax
+00001212  E80EFCFFFF        call 0xe25
+00001217  66480F6EC8        movq xmm1,rax
+0000121C  5A                pop rdx
+0000121D  66480F6EC2        movq xmm0,rdx
+00001222  F20F5CC1          subsd xmm0,xmm1
+00001226  66480F7EC0        movq rax,xmm0
+--- INDEXED READ ---
+0000126C  5B                pop rbx
+0000126D  5D                pop rbp
+0000126E  C3                ret
+0000126F  488B45F0          mov rax,[rbp-0x10]
+00001273  4889C7            mov rdi,rax
+00001276  4154              push r12
+00001278  4155              push r13
+0000127A  4156              push r14
+0000127C  4157              push r15
+0000127E  E82AFBFFFF        call 0xdad
+00001283  415F              pop r15
+00001285  415E              pop r14
+00001287  415D              pop r13
+00001289  415C              pop r12
+0000128B  4989C5            mov r13,rax
+--- INDEXED READ ---
+0000145B  5D                pop rbp
+0000145C  C3                ret
+0000145D  55                push rbp
+0000145E  4889E5            mov rbp,rsp
+00001461  53                push rbx
+00001462  57                push rdi
+00001463  4881EC00080000    sub rsp,0x800
+0000146A  488B45F0          mov rax,[rbp-0x10]
+0000146E  4889C7            mov rdi,rax
+00001471  E8C3FDFFFF        call 0x1239
+00001476  4889C7            mov rdi,rax
+00001479  E818FFFFFF        call 0x1396
+0000147E  488D65F8          lea rsp,[rbp-0x8]
+00001482  5B                pop rbx
+00001483  5D                pop rbp
+--- INDEXED READ ---
+0000145D  55                push rbp
+0000145E  4889E5            mov rbp,rsp
+00001461  53                push rbx
+00001462  57                push rdi
+00001463  4881EC00080000    sub rsp,0x800
+0000146A  488B45F0          mov rax,[rbp-0x10]
+0000146E  4889C7            mov rdi,rax
+00001471  E8C3FDFFFF        call 0x1239
+00001476  4889C7            mov rdi,rax
+00001479  E818FFFFFF        call 0x1396
+0000147E  488D65F8          lea rsp,[rbp-0x8]
+00001482  5B                pop rbx
+00001483  5D                pop rbp
+00001484  C3                ret
+00001485  488D65F8          lea rsp,[rbp-0x8]
+--- INDEXED READ ---
+0000162B  53                push rbx
+0000162C  57                push rdi
+0000162D  4881EC00080000    sub rsp,0x800
+00001634  488B45F0          mov rax,[rbp-0x10]
+00001638  50                push rax
+00001639  488B45F0          mov rax,[rbp-0x10]
+0000163D  50                push rax
+0000163E  5E                pop rsi
+0000163F  5F                pop rdi
+00001640  E847FEFFFF        call 0x148c
+00001645  4889C7            mov rdi,rax
+00001648  E849FDFFFF        call 0x1396
+0000164D  488D65F8          lea rsp,[rbp-0x8]
+00001651  5B                pop rbx
+00001652  5D                pop rbp
+--- INDEXED READ ---
+0000162D  4881EC00080000    sub rsp,0x800
+00001634  488B45F0          mov rax,[rbp-0x10]
+00001638  50                push rax
+00001639  488B45F0          mov rax,[rbp-0x10]
+0000163D  50                push rax
+0000163E  5E                pop rsi
+0000163F  5F                pop rdi
+00001640  E847FEFFFF        call 0x148c
+00001645  4889C7            mov rdi,rax
+00001648  E849FDFFFF        call 0x1396
+0000164D  488D65F8          lea rsp,[rbp-0x8]
+00001651  5B                pop rbx
+00001652  5D                pop rbp
+00001653  C3                ret
+00001654  488D65F8          lea rsp,[rbp-0x8]
+--- INDEXED READ ---
+0000171B  5D                pop rbp
+0000171C  C3                ret
+0000171D  55                push rbp
+0000171E  4889E5            mov rbp,rsp
+00001721  53                push rbx
+00001722  4881EC00080000    sub rsp,0x800
+00001729  48B8000000000000  mov rax,0x4028000000000000
+         -2840
+00001733  4889C7            mov rdi,rax
+00001736  E820FFFFFF        call 0x165b
+0000173B  4889C3            mov rbx,rax
+0000173E  48B8000000000000  mov rax,0x0
+         -0000
+00001748  4989C4            mov r12,rax
+0000174B  48B8000000000000  mov rax,0x3ff0000000000000
+--- INDEXED READ ---
+00001C44  5D                pop rbp
+00001C45  C3                ret
+00001C46  55                push rbp
+00001C47  4889E5            mov rbp,rsp
+00001C4A  53                push rbx
+00001C4B  57                push rdi
+00001C4C  4881EC00080000    sub rsp,0x800
+00001C53  488B45F0          mov rax,[rbp-0x10]
+00001C57  4889C7            mov rdi,rax
+00001C5A  E84EF1FFFF        call 0xdad
+00001C5F  50                push rax
+00001C60  488B45F0          mov rax,[rbp-0x10]
+00001C64  4889C7            mov rdi,rax
+00001C67  E8CDF5FFFF        call 0x1239
+00001C6C  66480F6EC8        movq xmm1,rax
+--- INDEXED READ ---
+00001C4A  53                push rbx
+00001C4B  57                push rdi
+00001C4C  4881EC00080000    sub rsp,0x800
+00001C53  488B45F0          mov rax,[rbp-0x10]
+00001C57  4889C7            mov rdi,rax
+00001C5A  E84EF1FFFF        call 0xdad
+00001C5F  50                push rax
+00001C60  488B45F0          mov rax,[rbp-0x10]
+00001C64  4889C7            mov rdi,rax
+00001C67  E8CDF5FFFF        call 0x1239
+00001C6C  66480F6EC8        movq xmm1,rax
+00001C71  5A                pop rdx
+00001C72  66480F6EC2        movq xmm0,rdx
+00001C77  F20F58C1          addsd xmm0,xmm1
+00001C7B  66480F7EC0        movq rax,xmm0
