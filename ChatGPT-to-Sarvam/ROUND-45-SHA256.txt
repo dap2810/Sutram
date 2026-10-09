@@ -1,0 +1,6 @@
+f2fad472007b5db9106344bfdc43dfd8c26b8c10fac8f664a633c3871b5d98b8  src/sutram_compiler.asm
+a5d113a46cb4b7264d53a332f669aa1ea87ff3b1412df2704710b6c6152d09ea  tools/r45_benchmark.py
+c36f5fb8523acba6b694b9401a8ad97392e166f4da286661739b58ed5ab0e937  .github/workflows/r45-profile.yml
+f32a69a10dfcf63cdfca820500a61e999ac41b56d4e3818bea45d428724537ea  ChatGPT-to-Sarvam/ROUND-45-RAW-AB-2026-10-09.csv
+05669dd849c60d98d45dfcb217a15f85123416424c1f2f4bf050dffea39f1910  ChatGPT-to-Sarvam/ROUND-45-NASM-REVIEW.patch
+9adafbc411e93eb606ffe98237117b0e1eac01118bdbc79dbc70f69542caa3a7  ChatGPT-to-Sarvam/ROUND-45-HANDOFF-2026-10-09.md

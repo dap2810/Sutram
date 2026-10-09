@@ -1,0 +1,210 @@
+diff --git a/src/sutram_compiler.asm b/src/sutram_compiler.asm
+index 76215b7..ebe5c3f 100644
+--- a/src/sutram_compiler.asm
++++ b/src/sutram_compiler.asm
+@@ -692,6 +692,9 @@ str_dot_exe  db ".exe", 0
+     msg_block_stmt_overflow db "Sutram Error: too many statements in block", 10, 0
+ 
+ section .bss
++%ifdef R45_PROFILE
++    r45_ticks resq 7          ; 6 compiler phases, TSC boundaries
++%endif
+     source_buf  resb 65536
+     source_len  resq 1
+     source_path_ptr resq 1      ; original input path for ayojan resolution
+@@ -830,6 +833,48 @@ section .text
+ ; ENTRY POINT
+ ; ============================================================
+ 
++%ifdef R45_PROFILE
++%macro R45_TICK 1
++    rdtsc
++    shl rdx, 32
++    or rax, rdx
++    mov [rel r45_ticks + %1*8], rax
++%endmacro
++
++section .data
++r45_prefix db "R45_STAGE,",0
++r45_comma db ",",0
++r45_names dq r45_graph, r45_expand, r45_lex, r45_parse, r45_gen, r45_write
++r45_graph db "graph",0
++r45_expand db "expand",0
++r45_lex db "lex",0
++r45_parse db "parse",0
++r45_gen db "gen",0
++r45_write db "write",0
++section .text
++r45_print:
++    push rbx
++    mov rbx, rdi
++    lea rdi,[rel r45_prefix]
++    call print_str_z
++    lea rax,[rel r45_names]
++    mov rdi,[rax+rbx*8]
++    call print_str_z
++    lea rdi,[rel r45_comma]
++    call print_str_z
++    lea rax,[rel r45_ticks]
++    mov rdi,[rax+rbx*8+8]
++    sub rdi,[rax+rbx*8]
++    lea rsi,[rel num_buf]
++    call itoa
++    mov rdi,rax
++    call print_str_z
++    lea rdi,[rel msg_nl]
++    call print_str_z
++    pop rbx
++    ret
++%endif
++
+ ; ============================================================
+ ; SHELL & LANGUAGE PACK RUNTIME
+ ; ============================================================
+@@ -1766,25 +1811,55 @@ _start:
+     call read_file
+     mov [rel source_len], rax
+ 
++%ifdef R45_PROFILE
++    R45_TICK 0
++%endif
+     ; R41: opt-in module-v1 graph preflight runs BEFORE destructive expansion.
+     ; The legacy import and generated-code path is byte-for-byte unchanged.
+     call graph_preflight_v1   ; R44 single graph traversal (dispatch to merged Muse DFS)
++%ifdef R45_PROFILE
++    R45_TICK 1
++%endif
+     ; Expand imports (inline .smlib files)
+     call expand_imports
++%ifdef R45_PROFILE
++    R45_TICK 2
++%endif
+     ; Lex
+     call lex
++%ifdef R45_PROFILE
++    R45_TICK 3
++%endif
+ 
+     ; Parse
+     mov qword [rel token_idx], 0
+     call parse_program
++%ifdef R45_PROFILE
++    R45_TICK 4
++%endif
+ 
+     ; Generate code
+     mov qword [rel code_sz], 0
+     call gen_code
++%ifdef R45_PROFILE
++    R45_TICK 5
++%endif
+ 
+     ; Write output
+     mov rdi, [rsp+24]           ; argv[2]
+     call write_elf
++%ifdef R45_PROFILE
++    R45_TICK 6
++    xor rbx, rbx
++.r45_print_stages:
++    cmp rbx, 6
++    jae .r45_done
++    mov rdi, rbx
++    call r45_print
++    inc rbx
++    jmp .r45_print_stages
++.r45_done:
++%endif
+ 
+     ; Print success
+     lea rdi, [rel msg_ok]
+@@ -18375,15 +18450,16 @@ write_elf:
+     ; output name selects PE (lets us build/test Windows binaries here).
+     cmp qword [rel target_pe], 0
+     jne write_pe
+-    push rbx
+-    mov rbx, rdi              ; filename
++    ; The output pathname is used only for open: chmod via the open fd later.
+     ; Create file
+     mov rsi, 0x241             ; O_WRONLY|O_CREAT|O_TRUNC
+     mov rdx, 0o755
+     call os_open
+     mov [rel out_fd], rax
+-    ; Build headers on stack
+-    sub rsp, 64
++    ; R45 output optimization: build ELF header (64 B) and program header
++    ; (56 B) contiguously, then write both in one 120-byte syscall.
++    ; This removes one write(2) without changing a single emitted byte.
++    sub rsp, 128
+     ; ELF header
+     mov dword [rsp], 0x464C457F
+     mov dword [rsp+4], 0x00010102
+@@ -18405,48 +18481,44 @@ write_elf:
+     mov word [rsp+58], 0
+     mov word [rsp+60], 0
+     mov word [rsp+62], 0
+-    ; Write ELF header
+-    mov rdi, [rel out_fd]
+-    mov rsi, rsp
+-    mov rdx, 64
+-    call os_write
+-    ; Program header
+-    mov dword [rsp], 1
+-    mov dword [rsp+4], 7
++    ; Program header at [rsp + 64], immediately after ELF header.
++    lea r10, [rsp+64]
++    mov dword [r10], 1
++    mov dword [r10+4], 7
+     mov rax, HEADERS_SIZE
+-    mov [rsp+8], rax
++    mov [r10+8], rax
+     mov rax, BASE_ADDR + HEADERS_SIZE
+-    mov [rsp+16], rax
+-    mov [rsp+24], rax
++    mov [r10+16], rax
++    mov [r10+24], rax
+     mov rax, [rel code_sz]
+-    mov [rsp+32], rax         ; p_filesz = code_sz
++    mov [r10+32], rax        ; p_filesz = code_sz
+     mov rax, [rel code_sz]
+-    add rax, 0x10000          ; p_memsz = code_sz + 64KB (BSS)
+-    mov [rsp+40], rax
++    add rax, 0x10000         ; p_memsz = code_sz + 64KB (BSS)
++    mov [r10+40], rax
+     mov rax, 0x1000
+-    mov [rsp+48], rax
+-    ; Write program header
++    mov [r10+48], rax
++    ; One syscall instead of two: ELF header + program header.
+     mov rdi, [rel out_fd]
+     mov rsi, rsp
+-    mov rdx, 56
++    mov rdx, 120
+     call os_write
+-    add rsp, 64
++    add rsp, 128
+     ; Write code
+     mov rdi, [rel out_fd]
+     lea rsi, [rel code_buf]
+     mov rdx, [rel code_sz]
+     call os_write
+-    ; Close
+-    mov rdi, [rel out_fd]
+-    call os_close
+ %ifndef WINDOWS
+-    ; chmod +x
+-    mov rdi, rbx
++    ; fchmod(fd,0755) while descriptor is open: avoids a second pathname
++    ; lookup; preserves historical user-facing mode even with restrictive umask.
++    mov rdi, [rel out_fd]
+     mov rsi, 0o755
+-    mov rax, 90
++    mov rax, 91
+     syscall
+ %endif
+-    pop rbx
++    ; Close after permissions are applied.
++    mov rdi, [rel out_fd]
++    call os_close
+     ret
+ 
+ ; ============================================================
