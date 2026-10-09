@@ -1,0 +1,100 @@
+# lib/math.smlib — Sutram standard library: mathematics
+#
+# Pure integer arithmetic, written only with verified language features.
+# Every function copies its parameters into locals before mutating them,
+# because the compiler currently faults on assignment to a parameter.
+
+prakriya sq(n)
+    pratiyati n * n
+
+prakriya square(n)
+    pratiyati n * n
+
+prakriya cube(n)
+    pratiyati n * n * n
+
+prakriya abs_val(n) {
+    vitti x = n
+    yadi (x < 0) {
+        x = 0 - x
+    }
+    pratiyati x
+}
+
+prakriya min2(a, b) {
+    vitti x = a
+    vitti y = b
+    yadi (x < y) { pratiyati x }
+    pratiyati y
+}
+
+prakriya max2(a, b) {
+    vitti x = a
+    vitti y = b
+    yadi (x > y) { pratiyati x }
+    pratiyati y
+}
+
+prakriya gcd(a, b) {
+    vitti x = a
+    vitti y = b
+    yavat (y != 0) {
+        vitti t = y
+        y = x % y
+        x = t
+    }
+    pratiyati x
+}
+
+prakriya lcm(a, b) {
+    vitti g = gcd(a, b)
+    pratiyati (a / g) * b
+}
+
+prakriya power(base, e) {
+    vitti b = base
+    vitti n = e
+    vitti r = 1
+    yavat (n > 0) {
+        r = r * b
+        n = n - 1
+    }
+    pratiyati r
+}
+
+prakriya fact(n) {
+    vitti x = n
+    yadi (x < 2) { pratiyati 1 }
+    pratiyati x * fact(x - 1)
+}
+
+prakriya is_prime(n) {
+    vitti x = n
+    yadi (x < 2) { pratiyati 0 }
+    vitti i = 2
+    yavat (i * i <= x) {
+        yadi (x % i == 0) { pratiyati 0 }
+        i = i + 1
+    }
+    pratiyati 1
+}
+
+prakriya sum_to(n) {
+    vitti x = n
+    vitti s = 0
+    vitti i = 1
+    yavat (i <= x) {
+        s = s + i
+        i = i + 1
+    }
+    pratiyati s
+}
+
+prakriya double(n)
+    pratiyati n * 2
+
+prakriya triple(n)
+    pratiyati n * 3
+
+prakriya inc(n)
+    pratiyati n + 1
