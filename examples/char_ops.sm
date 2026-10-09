@@ -1,0 +1,17 @@
+# Character operations demo
+mukhya()
+    vitti s = "Hello"
+    vitti c0 = char_at(s, 0)
+    likha("First char code: ")
+    likha(c0)
+    likha("\n")
+    vitti code = char_code("A")
+    likha("ASCII of A: ")
+    likha(code)
+    likha("\n")
+    vitti lower_a = char_code("a")
+    vitti upper_a = char_upper(lower_a)
+    likha("Upper of a: ")
+    likha(upper_a)
+    likha("\n")
+    likha("Done!\n")
