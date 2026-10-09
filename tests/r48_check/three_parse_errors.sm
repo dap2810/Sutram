@@ -1,6 +1,6 @@
 mukhya() {
     vitti = 1;
-    vitti = 2;
-    vitti = 3;
+    vitti count = ;
+    vitti values[ ];
     likha(7);
 }
