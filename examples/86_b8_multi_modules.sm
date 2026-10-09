@@ -1,0 +1,11 @@
+ayojan math
+ayojan num
+ayojan string
+
+mukhya()
+    likha(sq(3))
+    likha(" ")
+    likha(is_even(4))
+    likha(" ")
+    likha(str_len("abc"))
+    likha("\n")
