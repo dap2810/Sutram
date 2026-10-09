@@ -33,8 +33,12 @@ jobs:
           nasm -f elf64 -I. -dR45_PROFILE src/sutram_compiler.asm -o /tmp/r45_after.o
           ld -o r45_before_compiler /tmp/r45_before.o
           ld -o r45_after_compiler /tmp/r45_after.o
+          # Build actual release binary WITHOUT optional R45_PROFILE instrumentation.
+          nasm -f elf64 -I. src/sutram_compiler.asm -o /tmp/r45_release.o
+          ld -o r45_release_compiler /tmp/r45_release.o
           ./r45_before_compiler --version
           ./r45_after_compiler --version
+          ./r45_release_compiler --version
       - name: Interleaved A/B native benchmarks
         run: |
           python3 tools/r45_benchmark.py --compiler ./r45_before_compiler --other ./r45_after_compiler --label baseline --runs 30 --warmup 5 --output r45_ab.csv
@@ -43,11 +47,17 @@ jobs:
           echo "R45_RAW_CSV_END"
       - name: Check baseline regression suite and gates
         run: |
-          cp r45_after_compiler sutram_compiler
+          cp r45_release_compiler sutram_compiler
           python3 tests/run_tests.py
           python3 tools/codegen_gate.py
           python3 tools/test_lang_packs.py
           python3 -m unittest discover -s tests/module_graph -p 'test_*.py' -v
+      - name: Print exact source/workflow/timings SHA-256 for Sarvam
+        if: always()
+        run: |
+          echo R45_SHA_START
+          sha256sum src/sutram_compiler.asm tools/r45_benchmark.py .github/workflows/r45-profile.yml ChatGPT-to-Sarvam/ROUND-45-RAW-AB-2026-10-09.csv
+          echo R45_SHA_END
       - uses: actions/upload-artifact@v4
         if: always()
         with:
