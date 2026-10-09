@@ -1,0 +1,5 @@
+mukhya() {
+    pankti a[3]
+    a[3] = 99
+    likha(999)
+}
