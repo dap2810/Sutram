@@ -1,0 +1,9 @@
+mukhya() {
+    vitti buf = nirmmita(8)
+    likha(set_char(buf, 0, 300))
+    likha(char_at(buf, 0))
+    likha(set_char(buf, 1, -1))
+    likha(char_at(buf, 1))
+    set_char(buf, 2, 0)
+    likha(vartani_len(buf))
+}
