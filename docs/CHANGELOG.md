@@ -1,3 +1,111 @@
+## v101 — Round check: Muse R7 accepted, ChatGPT R48 accepted as Stage-1; R49/R08 issued
+
+- **Muse R7 verified and accepted.** `lib/sort.smlib` gained `insertion_sort`,
+  `merge_sort_rec`, `merge_sort`; new `lib/baseconv.smlib` with
+  `bigint_to_digits` / `bigint_from_digits`. All three SHA-256 hashes match,
+  all 9 test files present. Reproduced on my own build: proof_lib **124/124**,
+  proof_props **14/14**, suite **186/186**, stdlib regenerates to **15 modules,
+  128 functions**. Compiler untouched.
+- **ChatGPT R48 verified and accepted as a Stage-1 proposal (not merged).**
+  `--check` mode reproduced exactly: three located parse errors, one located
+  undefined function, valid program clean, no binary in any case. Manifest 9/9
+  verifies; `r48_native_acceptance.py` passes with 4/4 ordinary programs
+  byte-identical between R46 and R48 (`126_numeric_pipeline` = 7450 B). 186/186,
+  codegen gate, 30/30 packs, module graph OK, `tests/expect` byte-identical to
+  main. Retained on branch: it is a self-declared Stage-1, and it chains off the
+  unmerged R46.
+- **Issued ROUND-49 to ChatGPT** (rebase R46+R48 onto main as one series; complete
+  check-mode across all diagnostic families with adversarial fixtures) and
+  **ROUND-08 to Muse** (`lib/strconv.smlib` plus a minimal reproduction settling
+  the `buf[i]=c` 8-byte-cell vs `char_at` byte-read question). Both pushed to
+  GitHub and verified live.
+
+## v100 — Linux GUI IDE, slice 10: Up/Down line movement
+
+- **Up and Down move the caret between lines, keeping the column.** The caret's
+  line start and column are found by scanning for newlines, the caret moves to the
+  same column on the adjacent line, and the column is clamped to the line's end -
+  so moving up from a long line to a short one lands at the short line's end
+  rather than overshooting into the next line. Two small helpers (`line_start`,
+  `line_end`) do the scanning; `caret_up` and `caret_down` use them.
+- **Verified with a mock X server.** Type `ab`, Return, `cde`; the caret is at
+  line 2 col 3. Up, then type `x` -> `abx` / `cde` (clamped to col 2). Down, then
+  type `y` -> `abx` / `cdey`.
+- Like Left/Right, vertical movement takes no undo snapshot - it is not an edit.
+- Protocol 39/39, negatives 6/6, run path still draws its output. `sutram-gui`
+  19,552 -> 20,096 bytes.
+
+## v99 — Linux GUI IDE, slice 9: the arrow keys work
+
+- **Left/Right move the caret.** They were defined since slice 2 and never
+  handled. Left decrements the cursor (bounded at 0), Right increments it
+  (bounded at the buffer length), and the next character inserts at the caret -
+  so editing in the middle of a line now works. Verified with a mock X server:
+  type `abc`, press Left twice, type `x` -> `axbc`; press Right, type `y` ->
+  `axbyc`.
+- Arrow movement takes no undo snapshot, because moving the caret is not an edit;
+  Ctrl-Z still steps back through actual changes only.
+- Protocol 39/39, negatives 6/6, run path still draws its output. `sutram-gui`
+  19,472 -> 19,552 bytes.
+
+## v98 — Linux GUI IDE, slice 8: a real undo stack
+
+- **Ctrl-Z now steps back through several edits.** Slice 7 was single-level; this
+  is a bounded stack of 8 snapshots. Each edit pushes the pre-edit buffer; Ctrl-Z
+  pops the most recent. When the stack is full the oldest slot is dropped, so the
+  last seven edits are always recoverable. A full stack costs one 7-slot memmove
+  per keystroke, which is nothing.
+- **Verified with a mock X server.** Type `abc`; Ctrl-Z gives `ab`, then `a`,
+  then empty, and a fourth Ctrl-Z correctly does nothing. Protocol 39/39,
+  negatives 6/6, Ctrl-R run path still draws its output. `sutram-gui`
+  15,392 -> 19,472 bytes (the 8-slot stack is 64 KiB of .bss).
+
+## v97 — Linux GUI IDE, slice 7: undo
+
+- **Ctrl-Z now undoes an edit.** The hint line had advertised "Ctrl-Z undo" since
+  slice 2; it is real now. Before every insert or backspace the buffer is
+  snapshotted; Ctrl-Z restores the pre-edit state and consumes the snapshot, so a
+  second Ctrl-Z does nothing. Single-level on purpose — a bounded undo stack is
+  the next step, not this one.
+- **Verified with a mock X server.** Type `ab` (pane shows `ab`), press Ctrl-Z
+  (pane shows `a`), press Ctrl-Z again (still `a`). Protocol 39/39, negatives 6/6,
+  Ctrl-R run path still draws its output. `sutram-gui` 15,008 -> 15,392 bytes.
+
+## v96 — Linux GUI IDE, slice 6: save and load
+
+- **Ctrl-S writes the editor buffer to a file; Ctrl-L reads it back.** The hint
+  line had advertised Ctrl-S since slice 2; it now actually does something. The
+  save path is `/tmp/.sutram_gui_saved.sm`; load replaces the buffer and moves the
+  caret to the end.
+- **Verified with a mock X server, no display.** Type `saveme`, press Ctrl-S:
+  the saved file contains exactly `saveme`. Backspace it all away, press Ctrl-L:
+  the pane redraws `saveme`. Protocol suite still 39/39, negatives 6/6, and the
+  Ctrl-R run path still draws its output.
+- **One test-only mistake, mine again.** My first save/load test used the wrong
+  US keycodes for `v` and `e`, so it typed `samo` and I nearly misread the result
+  as a client bug. The round trip was correct the whole time; the test was wrong.
+  `sutram-gui` 14,688 -> 15,008 bytes.
+
+## v95 — R45: an ELF-write syscall reduction (performance NOT claimed)
+
+- **Merged from ChatGPT's R45, independently verified.** Their compiler source
+  (`f2fad472…`) assembles, passes **186/186**, and produces **byte-identical
+  generated output** to the previous compiler across **40/40** examples — I
+  compared the binaries directly. Their six-file manifest verifies, and 600 raw
+  timing records are committed.
+- **What changed:** the ELF write path now combines two header write syscalls
+  into one contiguous 120-byte write, and uses `fchmod` on the already-open
+  output descriptor instead of re-resolving the output pathname. Objectively
+  fewer kernel operations.
+- **No speedup is claimed, and none was demonstrated.** ChatGPT reported medians
+  of +1.32%, +2.54%, -0.94%, -0.25%, +1.12% with paired success of only 17–19/30
+  and called the result "modest and not statistically conclusive". My own A/B
+  re-measurement was dominated by process-spawn noise (±40%). Under this
+  project's rule — performance measured, not assumed — the change is accepted as
+  a behaviour-preserving simplification, **not** as a performance improvement.
+  R46 asks for a decisive measurement of a real hotspot.
+- Optional `R45_PROFILE` cycle attribution was added, compiled out of production.
+
 ## v94 — Linux GUI IDE, slice 5: it runs your code
 
 - **Ctrl-R now compiles and runs the buffer.** The editor saves its contents to
