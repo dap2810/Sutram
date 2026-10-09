@@ -1,0 +1,43 @@
+# Comparison operators test - <=, >=, ==, !=
+# Shows all new comparison operators working
+
+mukhya()
+    vitti a = 10
+    vitti b = 20
+
+    likha("=== Comparison Operators ===\n")
+
+    yadi (a <= b) {
+        likha("a <= b: true\n")
+    }
+    yadi (b >= 20) {
+        likha("b >= 20: true\n")
+    }
+    yadi (a != b) {
+        likha("a != b: true\n")
+    }
+    yadi (a == 10) {
+        likha("a == 10: true\n")
+    }
+
+    # Test while with <=
+    likha("Loop with <=: ")
+    vitti i = 0
+    yavat (i <= 5) {
+        likha(i)
+        likha(" ")
+        i = i + 1
+    }
+    likha("\n")
+
+    # Test while with !=
+    likha("Loop with !=: ")
+    vitti j = 0
+    yavat (j != 5) {
+        likha(j)
+        likha(" ")
+        j = j + 1
+    }
+    likha("\n")
+
+    likha("=== Done ===\n")
