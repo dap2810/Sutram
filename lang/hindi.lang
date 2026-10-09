@@ -1,0 +1,34 @@
+# Sutram language pack: हिन्दी
+# Format: <native word> <sanskrit keyword>
+# Usage: sutram --lang hindi input.sm output.bin
+
+मुख्य mukhya
+चर vitti
+अंक anka
+यदि yadi
+अन्यथा anyatra
+जबतक yavat
+पुनरावृत्ति punaravartana
+वापस pratiyati
+फलन prakriya
+लिखो likha
+सत्य purna
+असत्य shunya
+स्थिर sutra
+क्रम krama
+आगे uddeshya
+गुण guna
+भावना bhavana
+पंक्ति pankti
+सृजन srijana
+निषेध nishedha
+संरचना rachana
+समावेश ayojan
+धारण parigrah
+पढ़ो grahan
+से to
+शब्द shabda
+दशम dasham
+कोश kosh
+करो kuru
+निष्क्रिय nishkriya
