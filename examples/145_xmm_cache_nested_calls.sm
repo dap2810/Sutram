@@ -1,0 +1,20 @@
+# Recursion and nested calls keep the custom raw-qword ABI.
+prakriya repeat(dasham x, n) {
+    yadi (n <= 0) {
+        pratiyati x
+    }
+    pratiyati repeat(x + 0.5, n - 1)
+}
+mukhya() {
+    dasham a = 2.0
+    dasham b = 0.25
+    dasham c = 1.0
+    dasham d = 1.5
+    a = a + b
+    a = a + b
+    a = repeat(a, 4)
+    a = a - b
+    d = a / d
+    likha(a)
+    likha(d)
+}
