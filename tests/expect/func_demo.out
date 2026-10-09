@@ -1,0 +1,9 @@
+=== Function Demo ===
+Calling greet()...
+  Namaste from greet()!
+Calling math()...
+  10 + 32 = 42
+Calling answer()...
+answer() = 42
+
+Done!
