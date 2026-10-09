@@ -11,6 +11,8 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Acquire NASM as non-root user
         run: |
           mkdir -p "$RUNNER_TEMP/nasm-user"
@@ -24,18 +26,24 @@ jobs:
           if test ! -f win/rtblob.inc; then
             printf 'RT_BLOB_LEN equ 0\nRT_SYSCALL_OFF equ 0\nrt_blob: db 0\n' > win/rtblob.inc
           fi
-          nasm -f elf64 -I. -dR45_PROFILE src/sutram_compiler.asm -o /tmp/r45.o
-          ld -o r45_compiler /tmp/r45.o
-          ./r45_compiler --version
-      - name: Benchmark five representative programs and every compiler stage
+          # Same instrumentation in both baselines: commit predates only the ELF
+          # header write optimization, and is a parent of the current HEAD.
+          git show 7434104529280bcab7657cef818955019951f7d6:src/sutram_compiler.asm > /tmp/r45_before.asm
+          nasm -f elf64 -I. -dR45_PROFILE /tmp/r45_before.asm -o /tmp/r45_before.o
+          nasm -f elf64 -I. -dR45_PROFILE src/sutram_compiler.asm -o /tmp/r45_after.o
+          ld -o r45_before_compiler /tmp/r45_before.o
+          ld -o r45_after_compiler /tmp/r45_after.o
+          ./r45_before_compiler --version
+          ./r45_after_compiler --version
+      - name: Interleaved A/B native benchmarks
         run: |
-          python3 tools/r45_benchmark.py --compiler ./r45_compiler --label baseline --runs 15 --warmup 4 --output r45_baseline.csv
+          python3 tools/r45_benchmark.py --compiler ./r45_before_compiler --other ./r45_after_compiler --label baseline --runs 30 --warmup 5 --output r45_ab.csv
           echo "R45_RAW_CSV_START"
-          cat r45_baseline.csv
+          cat r45_ab.csv
           echo "R45_RAW_CSV_END"
       - name: Check baseline regression suite and gates
         run: |
-          cp r45_compiler sutram_compiler
+          cp r45_after_compiler sutram_compiler
           python3 tests/run_tests.py
           python3 tools/codegen_gate.py
           python3 tools/test_lang_packs.py
@@ -43,6 +51,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: r45-baseline-raw
-          path: r45_baseline.csv
+          name: r45-interleaved-ab-raw
+          path: r45_ab.csv
           if-no-files-found: warn
