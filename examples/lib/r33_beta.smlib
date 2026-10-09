@@ -1,0 +1,3 @@
+# Namespaced fixture B: same exported names, distinct implementations.
+prakriya helper() { pratiyati 200 }
+prakriya clash() { pratiyati helper() + 3 }
