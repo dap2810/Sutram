@@ -1,0 +1,5 @@
+mukhya() {
+    pankti a[3]
+    a[3] = 77
+    likha(777)
+}
