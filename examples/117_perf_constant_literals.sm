@@ -1,0 +1,16 @@
+mukhya()
+    vitti a = 0
+    vitti b = 255
+    vitti c = 65535
+    vitti d = 4294967295
+    vitti e = 4294967296
+    likha(a)
+    likha(" ")
+    likha(b)
+    likha(" ")
+    likha(c)
+    likha(" ")
+    likha(d)
+    likha(" ")
+    likha(e)
+    likha("\n")
