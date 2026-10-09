@@ -1,0 +1,39 @@
+# Boolean type and logical operators
+# parigrah = bool (possession/holding)
+# purna = true (complete/full)
+# shunya = false (void/empty)
+# && = logical AND, || = logical OR
+
+mukhya()
+    parigrah is_ready = purna
+    parigrah is_done = shunya
+    
+    likha("=== Booleans & Logic ===\n")
+    
+    likha("is_ready = ")
+    likha(is_ready)
+    likha("\n")
+    
+    likha("is_done = ")
+    likha(is_done)
+    likha("\n")
+    
+    # Logical AND
+    yadi (is_ready == purna && is_done == shunya) {
+        likha("Ready but not done\n")
+    }
+    
+    # Logical OR
+    yadi (is_done == purna || is_ready == purna) {
+        likha("At least one condition met\n")
+    }
+    
+    # Using in computation
+    vitti x = 5
+    vitti y = 10
+    vitti both_positive = x > 0 && y > 0
+    likha("both_positive = ")
+    likha(both_positive)
+    likha("\n")
+    
+    likha("=== Done ===\n")
