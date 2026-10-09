@@ -1,0 +1,18 @@
+# R30: literals are side-effect-free, safe to materialize after indexed LHS.
+prakriya twice(dasham x) {
+    pratiyati x * 2.0
+}
+mukhya() {
+    kosh dasham values[2]
+    kosh_push(values, 3.0)
+    kosh_push(values, 5.0)
+    dasham out = 0.0
+    out = values[0] + 2.5
+    likha(out)
+    out = values[1] - 1.5
+    likha(out)
+    out = (values[0] + values[1]) * 3.0
+    likha(out)
+    out = twice(values[0]) / 2
+    likha(out)
+}
