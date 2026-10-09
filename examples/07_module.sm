@@ -1,0 +1,9 @@
+# Module inclusion example
+# Requires lib/math.smlib in current directory
+ayojan math
+
+mukhya()
+    vitti x = square(7)
+    likha("square(7) = ")
+    likha(x)
+    likha("\n")
