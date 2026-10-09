@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Sutram — Roadmap</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Georgia,'Noto Serif',serif;line-height:1.7;color:#2c2416;background:#f7f2e7}
+.book{max-width:880px;margin:0 auto;padding:40px 24px 80px}
+.cover{text-align:center;padding:70px 20px 56px;background-color:#1a4a5c;background-image:linear-gradient(160deg,#1a4a5c 0%,#2d6a6a 55%,#4a8a6a 100%);color:#fdf6e3;border-radius:18px;margin-bottom:46px}
+.cover h1{font-size:44px;letter-spacing:2px;margin-bottom:10px}
+.cover .dev{font-size:46px;font-weight:400;margin-bottom:8px}
+.cover h2{font-weight:400;font-size:20px;opacity:.92;font-style:italic}
+.cover .badge{display:inline-block;margin-top:24px;padding:7px 20px;border:1.5px solid rgba(255,255,255,.45);border-radius:30px;font-size:13px;letter-spacing:1.5px}
+.ch{background:#fff;border:1px solid #e0d5bd;border-radius:14px;padding:34px 38px;margin-bottom:34px}
+.ch h2{color:#1a4a5c;font-size:26px;border-bottom:3px solid #c9a55c;padding-bottom:12px;margin-bottom:18px}
+.ch h3{color:#2d6a6a;margin:24px 0 10px;font-size:19px}
+.ch p{margin:12px 0}
+.ch ul,.ch ol{margin:12px 0 12px 26px}
+.ch li{margin:7px 0}
+code{background:#eef3f0;padding:2px 7px;border-radius:5px;font-family:'Fira Code',Consolas,monospace;font-size:14px;color:#1a4a5c}
+pre{background:#22303a;color:#e8e2d0;padding:18px 22px;border-radius:10px;overflow-x:auto;font-size:14px;line-height:1.55;font-family:'Fira Code',Consolas,monospace;margin:16px 0}
+.note{background:#fdf6e3;border-left:4px solid #c9a55c;padding:14px 18px;border-radius:0 8px 8px 0;margin:18px 0;font-size:15.5px}
+.note b{color:#8a6d2f}
+table{width:100%;border-collapse:collapse;margin:16px 0;background:#fff}
+th{background:#1a4a5c;color:#fdf6e3;text-align:left;padding:11px 14px;font-size:15px}
+td{padding:10px 14px;border-bottom:1px solid #ece3cf;font-size:15px;vertical-align:top}
+tr:last-child td{border-bottom:none}
+.exists{color:#2d6a6a;font-weight:600}
+.planned{color:#8a6d2f;font-weight:600}
+.explore{color:#8a5a3f;font-weight:600}
+.footer{text-align:center;color:#8a7f66;font-size:14px;margin-top:30px;font-style:italic}
+</style>
+</head>
+<body>
+<div class="book">
+
+<div class="cover">
+  <div class="dev">सूत्रम्</div>
+  <h1>Roadmap</h1>
+  <h2>Where the language goes next</h2>
+  <div class="badge">DIRECTION · NOT COMMITMENT</div>
+</div>
+
+<div class="ch">
+  <h2>How to read this</h2>
+  <p>This page is direction, not commitment. Nothing here is promised, scheduled, or partly built
+  unless it says so. It is written down so the direction is visible — and so we do not accidentally
+  design against something we intend to do later.</p>
+  <table>
+    <tr><th>Mark</th><th>Meaning</th></tr>
+    <tr><td><span class="exists">Exists</span></td><td>In the compiler today, tested</td></tr>
+    <tr><td><span class="planned">Planned</span></td><td>Decided, not started</td></tr>
+    <tr><td><span class="explore">Exploratory</span></td><td>A real possibility; the path is understood, the work is not committed</td></tr>
+  </table>
+
+  <h3>The guardrails — these do not change</h3>
+  <ul>
+    <li>Sanskrit keyword core; Latin transliteration primary, Devanagari optional</li>
+    <li><code>.sm</code> file extension</li>
+    <li><strong>one hand-written pure-NASM compiler source</strong> — no C, no Python, no runtime dependency</li>
+    <li>programs compile to <strong>native machine code</strong>, never interpreted</li>
+    <li>the end user needs <strong>no toolchain</strong> — the installer ships a prebuilt binary</li>
+    <li>all work at the lowest practical permission level; no elevation</li>
+  </ul>
+  <p>Any roadmap item that would break one of these is out of scope by definition.</p>
+</div>
+
+<div class="ch">
+  <h2>Future feature: operating-system capability <span class="explore">· Exploratory</span></h2>
+  <p>The question we asked ourselves: <em>could Sutram be used to write an operating system?</em></p>
+  <p><strong>Today, no</strong> — not a full OS, and not a minimal one either. But the gap is specific
+  and bounded rather than fundamental, and this page records exactly what stands in the way.</p>
+
+  <h3>What Sutram already brings to that job</h3>
+  <ul>
+    <li><strong>Freestanding.</strong> No libc, no runtime, no interpreter — raw machine code with
+    nothing underneath it but syscalls. The correct starting shape for kernel code.</li>
+    <li><strong>Inline assembly.</strong> <code>nishkriya</code> makes any instruction reachable from
+    Sutram source today.</li>
+    <li><strong>A flat binary with a known entry point</strong> — close to the shape a bootloader wants.</li>
+    <li><strong>PE32+ output already exists</strong> (used for the Windows build). A UEFI application
+    <em>is</em> a PE32+ image, so the output machinery for something that boots on real hardware is
+    partly in place.</li>
+  </ul>
+
+  <h3>What is missing — the blockers</h3>
+  <ol>
+    <li><strong>No raw pointers.</strong> No address-of, no dereference. A kernel is largely "poke
+    memory-mapped hardware", and there is currently no way to name an address. The decisive blocker.</li>
+    <li><strong>No <code>volatile</code>.</strong> The performance work teaches the compiler to keep
+    values in registers and reorder them — fatal for a status register polled in a loop.</li>
+    <li><strong>Hard-coded load address</strong> (<code>0x400000</code>), with no linker-script
+    equivalent. A kernel needs to control where it loads.</li>
+    <li><strong>64-bit codegen only.</strong> It cannot write the boot chain — only the 64-bit kernel body.</li>
+    <li><strong>No naked or interrupt functions.</strong> Interrupt handlers need no prologue and a
+    specific return tail; neither is expressible today.</li>
+    <li><strong>No freestanding mode.</strong> The standard library assumes an OS underneath it.</li>
+  </ol>
+  <div class="note"><b>For comparison:</b> the languages that do write kernels — C, Rust, Zig, Ada,
+  Forth, Modula-2 — all share raw pointers, <code>volatile</code>, inline assembly, no required
+  runtime, linker control, and naked/ISR support. Sutram has two of those six.</div>
+
+  <h3>The route we would take</h3>
+  <p>Not a rewrite — six bounded additions, all front-end and codegen work, none of which touches the
+  one-pure-NASM-compiler fundamental:</p>
+  <ol>
+    <li>a raw pointer type, with address-of and dereference;</li>
+    <li>a <code>volatile</code> qualifier;</li>
+    <li>output control: a configurable load address and a raw-binary mode;</li>
+    <li>naked functions and an interrupt attribute;</li>
+    <li>a configurable entry point that is not <code>mukhya</code>;</li>
+    <li>a freestanding mode that excludes the syscall-based library.</li>
+  </ol>
+  <p>The entry point we would choose is <strong>UEFI</strong>, because the PE32+ output already exists
+  and a UEFI application is a PE32+ image with a defined entry — the shortest realistic path from
+  "compiler" to "something that boots on real hardware". It still needs raw pointers to touch
+  hardware, so the first item comes first regardless.</p>
+
+  <div class="note"><b>Honest caveat:</b> we cannot verify any of this in the build environment — no
+  emulator, no display, no way to boot a kernel. Any claim about actually booting would be unverified
+  until it is run on real hardware. That is exactly the kind of claim this project does not make.</div>
+</div>
+
+<div class="ch">
+  <h2>Nearer-term items</h2>
+  <table>
+    <tr><th>Item</th><th>Status</th><th>Note</th></tr>
+    <tr><td>Undo in the IDE</td><td><span class="planned">Planned</span></td><td>Editor comfort; the one obvious missing editor feature</td></tr>
+    <tr><td>Verify on a real Windows machine</td><td><span class="planned">Planned</span></td><td>The largest untested area; the Windows build has never been run on Windows</td></tr>
+    <tr><td>Module system for <code>ayojan</code></td><td><span class="planned">Planned</span></td><td>Today it inlines textually, so all library functions share one global namespace</td></tr>
+    <tr><td>Windows build of the IDE</td><td><span class="planned">Planned</span></td><td>The IDE is Linux-only today; Windows users have the interactive shell</td></tr>
+    <tr><td>XMM register residency (Stage 2)</td><td><span class="explore">Exploratory</span></td><td>Stage 1 was implemented and measured slightly slower, so the flag stays off</td></tr>
+    <tr><td>A standard-library package format</td><td><span class="explore">Exploratory</span></td><td>Would follow the module system</td></tr>
+    <tr><td>Operating-system capability</td><td><span class="explore">Exploratory</span></td><td>Described above</td></tr>
+  </table>
+</div>
+
+<div class="ch">
+  <h2>What we will not do</h2>
+  <ul>
+    <li>We will not add a runtime, an interpreter, or a dependency on another language's toolchain.</li>
+    <li>We will not trade the guardrails above for a feature.</li>
+    <li>We will not describe something as working before it has been measured or run.</li>
+  </ul>
+</div>
+
+<div class="footer">सूत्रम् — the complete thread · Roadmap</div>
+</div>
+</body>
+</html>
