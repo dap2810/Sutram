@@ -5327,6 +5327,50 @@ r51_register_module:
     lea rdi,[rel msg_import_overflow]
     jmp capacity_fail
 
+
+r51_stamp_legacy:
+    push rcx
+    push rdx
+    push r8
+    push r9
+    push r10
+    mov rcx,[rel r51_import_start]
+    mov r8,[rel r51_current_path]
+    lea r9,[rel r51_dst_file]
+    lea r10,[rel r51_dst_off]
+.loop:
+    cmp rcx,r14
+    jae .done
+    mov [r9+rcx*8],r8
+    mov rdx,rcx
+    sub rdx,[rel r51_import_start]
+    mov [r10+rcx*4],edx
+    inc rcx
+    jmp .loop
+.done:
+    pop r10
+    pop r9
+    pop r8
+    pop rdx
+    pop rcx
+    ret
+
+r51_init_raw_map:
+    push rcx
+    push rdx
+    lea rdx,[rel r51_raw_map]
+    xor ecx,ecx
+.loop:
+    cmp rcx,[rel ns_raw_len]
+    jae .done
+    mov [rdx+rcx*4],ecx
+    inc rcx
+    jmp .loop
+.done:
+    pop rdx
+    pop rcx
+    ret
+
 r51_finish_origin_pass:
     push rsi
     push rdi
