@@ -1,0 +1,34 @@
+# Sutram language pack: বাংলা
+# Format: <native word> <sanskrit keyword>
+# Usage: sutram --lang bengali input.sm output.bin
+
+মুখ্য mukhya
+চল vitti
+সংখ্যা anka
+যদি yadi
+অন্যথা anyatra
+যতক্ষণ yavat
+পুনরাবৃত্তি punaravartana
+ফেরত pratiyati
+ফলন prakriya
+লিখো likha
+সত্য purna
+মিথ্যা shunya
+স্থির sutra
+ক্রম krama
+এগিয়ে uddeshya
+গুণ guna
+ভাবনা bhavana
+পঙক্তি pankti
+সৃজন srijana
+নিষেধ nishedha
+সংরচনা rachana
+সমাবেশ ayojan
+ধারণ parigrah
+পড়ো grahan
+থেকে to
+শব্দ shabda
+দশম dasham
+কোশ kosh
+করো kuru
+নিষ্ক্রিয় nishkriya
