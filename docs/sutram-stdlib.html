@@ -34,6 +34,7 @@ Do not edit by hand.</p>
 <li><a href="#samanvaya"><code>samanvaya</code></a> — 10 functions</li>
 <li><a href="#sankhyiki"><code>sankhyiki</code></a> — 10 functions</li>
 <li><a href="#sort"><code>sort</code></a> — 14 functions</li>
+<li><a href="#strconv"><code>strconv</code></a> — 5 functions</li>
 <li><a href="#string"><code>string</code></a> — 14 functions</li>
 <li><a href="#util"><code>util</code></a> — 7 functions</li>
 </ul>
@@ -209,6 +210,16 @@ Do not edit by hand.</p>
 <tr><td><code>merge_sort_rec(a, tmp, lo, hi)</code></td><td>merge_sort(a, n) — top-down merge sort using a temp buffer.</td></tr>
 <tr><td><code>merge_sort(a, n)</code></td><td></td></tr>
 </table>
+<h2 id="strconv"><code>strconv</code></h2>
+<p class="mod-desc">Renders integers as decimal (or base-2/8/16) digit characters into a buffer, and parses them back. Buffers are pankti of integer character codes (not byte-packed strings — see ROUND-08 Part B: Sutram has no byte-write primitive, so we use cell arrays of char codes, the same idiom as lib/baseconv.smlib). All functions handle: zero, negative numbers (decimal only), empty input. int_to_str(n, out) — write decimal representation of int n into pankti out as character codes. Returns the character count (excluding terminator). out[ count ] is set to 0 as a terminator. Caller allocates &gt;= 22 cells.</p>
+<table>
+<tr><th>Function</th><th>Description</th></tr>
+<tr><td><code>int_to_str(n, out)</code></td><td></td></tr>
+<tr><td><code>str_to_int(buf, n, ok)</code></td><td>str_to_int(buf, n) — parse first n character codes of pankti buf as a decimal integer. Leading &#x27;-&#x27; negates. Returns the value; sets ok[0] to 1 on success, 0 on malformed input (ok is a 1-cell pankti).</td></tr>
+<tr><td><code>int_to_base_str(n, base, out)</code></td><td>int_to_base_str(n, base, out) — write n in `base` (2/8/10/16) into out as character codes (0-9, a-f). Returns count. No sign handling; n &gt;= 0.</td></tr>
+<tr><td><code>str_to_int_base(buf, n, base, ok)</code></td><td>str_to_int_base(buf, n, base, ok) — parse first n char codes of buf in `base` (2/8/10/16). Sets ok[0]. Returns value.</td></tr>
+<tr><td><code>pad_left(out, count, width, fill)</code></td><td>pad_left(out, count, width, fill) — left-pad the `count` character codes in pankti `out` to `width` using fill character code `fill`, in place. Returns the new count (width if width &gt; count, else count). Caller must allocate &gt;= width cells.</td></tr>
+</table>
 <h2 id="string"><code>string</code></h2>
 <p class="mod-desc">Built on `vartani_len` and `char_at`, both verified to honour their arguments. (`char_code` is avoided: it currently ignores its index and always reads character 0.) ASCII only for the character predicates; multi-byte UTF-8 is not split.</p>
 <table>
@@ -240,6 +251,6 @@ Do not edit by hand.</p>
 <tr><td><code>bool_to_int(b)</code></td><td></td></tr>
 <tr><td><code>int_max()</code></td><td></td></tr>
 </table>
-<footer>15 modules, 128 functions. Generated from library sources.</footer>
+<footer>16 modules, 133 functions. Generated from library sources.</footer>
 </body>
 </html>
