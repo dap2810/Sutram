@@ -9330,6 +9330,15 @@ gen_stmt:
     ; with a register move after type conversion; no ABI side-effects.
     cmp r15, 1
     jne .gfc_old_pop0
+    ; Restrict statement-call optimization to the same proven shapes.
+    mov rax, [rbx+24]
+    cmp qword [rax], AST_INDEX
+    je .gfc_candidate_arg
+    cmp qword [rax], AST_FLOAT
+    je .gfc_candidate_arg
+    cmp qword [rax], AST_NUM
+    jne .gfc_old_pop0
+.gfc_candidate_arg:
     mov rax, [rel code_sz]
     test rax, rax
     jz .gfc_old_pop0
@@ -11266,6 +11275,18 @@ gen_expr:
     ; Replace its trailing runtime PUSH RAX + POP RDI with MOV RDI,RAX.
     ; No other instructions emitted between push and pop in this path.
     ; Keep the old POP if the expected last byte is not a push (defensive).
+    ; Only array indexing and numeric literal argument forms opt in.
+    ; An AST_VAR argument remains the accepted R46 PUSH/POP sequence: the
+    ; two follow-up native A/B runs showed pure-stack workloads regressed
+    ; when that common path changed, despite simpler array calls improving.
+    mov rax, [rbx+24]
+    cmp qword [rax], AST_INDEX
+    je .r47_candidate_arg
+    cmp qword [rax], AST_FLOAT
+    je .r47_candidate_arg
+    cmp qword [rax], AST_NUM
+    jne .r47_old_pop
+.r47_candidate_arg:
     mov rax, [rel code_sz]
     test rax, rax
     jz .r47_old_pop
