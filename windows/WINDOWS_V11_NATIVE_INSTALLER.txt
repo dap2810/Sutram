@@ -1,0 +1,15 @@
+Sutram Windows v11 native installer release
+
+Release architecture:
+- Sutram compiler host: NASM + MinGW GCC (already validated on the target Windows 11 machine in v7).
+- Setup wizard: native x64 Win32 C application compiled with MinGW GCC.
+- Installer payload: appended PE overlay with a fixed footer and SHA-256 hashes.
+- Runtime self-test validates every appended part before installation.
+- No windres/resource compiler, IExpress, Inno Setup, WSL, or Linux is used for the setup.
+- Diagnostics display Windows 11 by friendly product name and also show the NT kernel version.
+- PATH and desktop-shortcut ownership are tracked so uninstall does not delete user-owned entries.
+- Source-integrity parsing is standardized across preflight and native-build stages.
+  Standard sha256sum binary markers (`*filename`) are parsed correctly and the
+  `*` is never treated as part of the Windows path.
+
+The end user does not need NASM or MinGW after Sutram is installed.
