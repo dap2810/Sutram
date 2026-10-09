@@ -8887,7 +8887,15 @@ parse_primary:
 
 .pp_builtin:
     cmp rcx, TOK_BUILTIN
-    jne .pp_paren
+    je .pp_builtin_valid
+    ; Check mode must reject stray ';', ']', ',' and other tokens here.
+    ; The legacy fallback treated every unsupported primary as '(' and
+    ; accidentally consumed tokens in later malformed declarations.
+    ; Preserve historical non-check compilation behavior unchanged.
+    cmp qword [rel r48_mode], 0
+    jne parse_error
+    jmp .pp_paren
+.pp_builtin_valid:
     mov rbx, [rax+16]        ; builtin id
     call advance_tok          ; consume builtin name
     ; expect (
