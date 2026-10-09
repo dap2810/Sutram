@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sutram IDE — the complete thread</title>
+<style>
+  :root{--bg:#0f1115;--panel:#161a21;--line:#262c36;--ink:#e8ecf1;--dim:#9aa4b2;--amber:#e8a33d;--green:#4ec9a0;--violet:#a78bfa}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans",sans-serif}
+  .wrap{max-width:900px;margin:0 auto;padding:56px 28px 96px}
+  h1{font-size:2.05rem;margin:0 0 6px;font-weight:650;letter-spacing:-.02em}
+  .sub{color:var(--dim);margin:0 0 24px}
+  h2{font-size:1.24rem;margin:40px 0 10px;font-weight:620}
+  code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.88em;background:#1d222b;padding:2px 6px;border-radius:5px}
+  pre{background:#12161d;border:1px solid var(--line);border-radius:10px;padding:16px 18px;overflow-x:auto;
+    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.84rem;line-height:1.6;color:#c9d3df}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:.93rem}
+  th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line)}
+  th{color:var(--dim);font-size:.8rem;text-transform:uppercase;letter-spacing:.04em}
+  kbd{background:#1d222b;border:1px solid var(--line);border-radius:5px;padding:1px 7px;font-family:ui-monospace,monospace;font-size:.85em}
+  .card{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--green);border-radius:12px;padding:16px 20px;margin:16px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Sutram IDE</h1>
+  <p class="sub">A full-screen editor and runner that ships with the language — and depends on nothing.</p>
+
+  <div class="card">
+    <strong>The point:</strong> Python's IDLE is a Python program, so it needs a Python interpreter.
+    The Sutram IDE is a single native binary written in the same hand-written NASM as the compiler.
+    No Python, no runtime, no toolkit, no interpreter — one executable that runs the moment it exists.
+  </div>
+
+  <h2>Install</h2>
+  <p>It comes with the language. Run the normal installer and it is placed alongside the compiler,
+  with a menu entry:</p>
+<pre>./install.sh            # installs sutram, sutram-ide, language packs, examples
+sutram-ide examples/01_hello.sm</pre>
+  <p>Or launch <strong>Sutram IDE</strong> from your applications menu.</p>
+
+  <h2>Keys</h2>
+  <table>
+    <tr><th>Key</th><th>Action</th></tr>
+    <tr><td><kbd>Ctrl-R</kbd></td><td>Run — compile and execute the buffer; output appears in the pane below</td></tr>
+    <tr><td><kbd>Ctrl-S</kbd></td><td>Save to the current file</td></tr>
+    <tr><td><kbd>Ctrl-Z</kbd></td><td>Undo — step back one edit, up to 4096 edits deep</td></tr>
+    <tr><td><kbd>Ctrl-L</kbd></td><td>Load a file (prompts on the status line)</td></tr>
+    <tr><td><kbd>Ctrl-T</kbd></td><td>Open the interactive <strong>shell pane</strong> — type a statement, press Enter, see it run; the session accumulates</td></tr>
+    <tr><td><kbd>Ctrl-E</kbd></td><td>Browse examples — each press loads the next <code>examples/*.sm</code>, wrapping at the end</td></tr>
+    <tr><td><kbd>Ctrl-Q</kbd></td><td>Quit</td></tr>
+    <tr><td>Arrows / Home / End</td><td>Move the cursor</td></tr>
+    <tr><td>Enter, Backspace</td><td>Edit — it is a normal text editor</td></tr>
+  </table>
+
+  <h2>The screen</h2>
+<pre> row 1            title
+ rows 2..R-6      your code, with line numbers and syntax highlighting
+ row R-5          Output
+ rows R-4..R-1    what your program printed
+ row R            file name, modified marker, key hints</pre>
+
+  <h2>Syntax highlighting</h2>
+  <p>Keywords in magenta, strings in green, numbers in cyan, comments in grey — for the
+  <em>current</em> keyword set, including the newer additions (<code>kosh</code>, <code>dasham</code>,
+  <code>guna</code>, <code>bhavana</code>, <code>rachana</code>, <code>ayojan</code>, <code>kuru</code>,
+  <code>pankti</code>).</p>
+
+  <h2>How Run works</h2>
+  <p>The buffer is written to a temporary <code>.sm</code> file, the compiler is invoked on it, and the
+  resulting program is executed — both their output captured into the pane. The compiler is located
+  in this order, so the IDE works whether you launch it from the source tree or from the app menu:</p>
+  <ol>
+    <li><code>./sutram_compiler</code> (running inside the source tree)</li>
+    <li><code>sutram</code> (the installed command, from your PATH)</li>
+  </ol>
+
+  <h2>Honest status</h2>
+  <p>This is version 1. It is verified by driving the real binary through a pseudo-terminal and
+  checking what it draws — not by inspection. Working today: open, edit, save, syntax highlighting,
+  run with output, quit. <strong>Working today:</strong> open, edit, save, syntax highlighting,
+  run with output, the examples browser, an interactive shell pane, quit. <strong>Not yet:</strong> an interactive shell pane
+  inside the IDE, undo, and a windowed (rather than terminal) build. Those are the next steps, and
+  they are shared with the compiler workstream so the whole project moves together.</p>
+</div>
+</body>
+</html>
