@@ -2944,6 +2944,7 @@ mg_path_stk:  resb 8192
 mg_tmp_name:  resb 64
 mg_tmp_alias: resb 64
 mg_pat:       resb 128
+mg_pat_len:   resq 1    ; R44 qualified-name prefix length
 
 section .text
 
@@ -4516,6 +4517,209 @@ mg_check_edge:
     pop rbx
     ret
 
+; --- R44: validate any qualified alias__symbol token, including constants. ---
+; rbx=importer bytes, r12=length, r13=target rec, r14=import alias.
+; Lexically ignores comments and double-quoted strings (with escapes).
+; This distinguishes unknown symbols from defined-but-private symbols.
+mg_check_qualified:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    ; Build the exact alias__ prefix in a bounded scratch buffer.
+    lea rdi, [rel mg_pat]
+    mov rsi, r14
+    xor rcx, rcx
+.cq_prefix:
+    cmp rcx, 62
+    jae .cq_done
+    mov al, [rsi + rcx]
+    test al, al
+    jz .cq_prefix_end
+    mov [rdi + rcx], al
+    inc rcx
+    jmp .cq_prefix
+.cq_prefix_end:
+    mov byte [rdi + rcx], '_'
+    mov byte [rdi + rcx + 1], '_'
+    add rcx, 2
+    mov byte [rdi + rcx], 0
+    mov [rel mg_pat_len], rcx
+    xor r8, r8                    ; input offset
+    mov r9, 1                     ; physical line
+    xor r10, r10                  ; 0 code, 1 comment, 2 string, 3 escaped
+.cq_scan:
+    cmp r8, r12
+    jae .cq_done
+    movzx eax, byte [rbx + r8]
+    cmp al, 10
+    je .cq_newline
+    cmp r10, 1
+    je .cq_advance
+    cmp r10, 2
+    je .cq_string
+    cmp r10, 3
+    je .cq_escaped
+    cmp al, '#'
+    je .cq_comment
+    cmp al, '/'
+    jne .cq_quote
+    lea rcx, [r8 + 1]
+    cmp rcx, r12
+    jae .cq_quote
+    cmp byte [rbx + rcx], '/'
+    je .cq_comment
+.cq_quote:
+    cmp al, '"'
+    jne .cq_ident
+    mov r10, 2
+    jmp .cq_advance
+.cq_ident:
+    mov dil, al
+    call mg_is_ident
+    test rax, rax
+    jz .cq_advance
+    mov r15, r8
+.cq_token:
+    cmp r8, r12
+    jae .cq_token_end
+    mov dil, [rbx + r8]
+    call mg_is_ident
+    test rax, rax
+    jz .cq_token_end
+    inc r8
+    jmp .cq_token
+.cq_token_end:
+    mov rcx, [rel mg_pat_len]
+    mov rax, r8
+    sub rax, r15
+    cmp rax, rcx
+    jbe .cq_scan                 ; no suffix
+    lea rsi, [rel mg_pat]
+    lea rdi, [rbx + r15]
+    xor r11, r11
+.cq_prefix_match:
+    cmp r11, rcx
+    jae .cq_copy_suffix
+    mov al, [rsi + r11]
+    cmp al, [rdi + r11]
+    jne .cq_scan
+    inc r11
+    jmp .cq_prefix_match
+.cq_copy_suffix:
+    mov rax, r8
+    sub rax, r15
+    sub rax, rcx
+    cmp rax, 63
+    ja .cq_scan
+    lea rsi, [rbx + r15]
+    add rsi, rcx
+    lea rdi, [rel mg_tmp_name]
+    mov rcx, rax
+    rep movsb
+    mov byte [rdi], 0
+    ; Lookup in *definitions* before exports, so private != unknown.
+    lea rax, [rel mg_def_n]
+    movzx r14, byte [rax + r13]
+    xor r15, r15
+.cq_def:
+    cmp r15, r14
+    jae .cq_unknown
+    mov rax, r13
+    shl rax, 11
+    mov rcx, r15
+    shl rcx, 6
+    add rax, rcx
+    lea rsi, [rel mg_def]
+    add rsi, rax
+    lea rdi, [rel mg_tmp_name]
+    call strcmp
+    test rax, rax
+    jz .cq_known
+    inc r15
+    jmp .cq_def
+.cq_known:
+    lea rax, [rel mg_exp_n]
+    movzx r14, byte [rax + r13]
+    xor r15, r15
+.cq_exp:
+    cmp r15, r14
+    jae .cq_private
+    mov rax, r13
+    shl rax, 10
+    mov rcx, r15
+    shl rcx, 6
+    add rax, rcx
+    lea rsi, [rel mg_exp]
+    add rsi, rax
+    lea rdi, [rel mg_tmp_name]
+    call strcmp
+    test rax, rax
+    jz .cq_scan
+    inc r15
+    jmp .cq_exp
+.cq_private:
+    mov [rel mg_cur_line], r9
+    call mg_print_loc
+    lea rdi, [rel mg_e_noexp1]
+    call print_str_z
+    lea rdi, [rel mg_tmp_name]
+    call print_str_z
+    lea rdi, [rel mg_e_noexp2]
+    call print_str_z
+    jmp .cq_module_name
+.cq_unknown:
+    mov [rel mg_cur_line], r9
+    call mg_print_loc
+    lea rdi, [rel mg_e_unknown1]
+    call print_str_z
+    lea rdi, [rel mg_tmp_name]
+    call print_str_z
+    lea rdi, [rel mg_e_unknown2]
+    call print_str_z
+.cq_module_name:
+    mov rax, r13
+    shl rax, 6
+    lea rdi, [rel mg_rec_name]
+    add rdi, rax
+    call print_str_z
+    lea rdi, [rel mg_e_unknown3]
+    call print_str_z
+    mov rdi, 1
+    call os_exit
+.cq_comment:
+    mov r10, 1
+    jmp .cq_advance
+.cq_string:
+    cmp al, 92
+    jne .cq_end_quote
+    mov r10, 3
+    jmp .cq_advance
+.cq_end_quote:
+    cmp al, '"'
+    jne .cq_advance
+    xor r10, r10
+    jmp .cq_advance
+.cq_escaped:
+    mov r10, 2
+    jmp .cq_advance
+.cq_newline:
+    inc r9
+    cmp r10, 1
+    jne .cq_advance
+    xor r10, r10
+.cq_advance:
+    inc r8
+    jmp .cq_scan
+.cq_done:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
 ; --- mg_check_visibility: Phase B. Checks all v1 import edges. ---
 mg_check_visibility:
     push rbx
@@ -4595,6 +4799,7 @@ mg_check_visibility:
     lea r14, [rsi + 64]
     ; rbx, r12 already set
     call mg_check_edge
+    call mg_check_qualified
     pop r14
 .cv_next_imp:
     inc r14
