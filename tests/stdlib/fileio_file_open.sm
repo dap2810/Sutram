@@ -1,7 +1,0 @@
-ayojan fileio
-mukhya() {
-    likha(file_open("/tmp/proof_fileio_open.txt", 65))
-    likha("\n")
-    likha(file_open("/tmp/proof_fileio_open2.txt", 0))
-    likha("\n")
-}
