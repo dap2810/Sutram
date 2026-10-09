@@ -4,7 +4,14 @@
 **Incoming assignment:** [Sarvam-to-ChatGPT/ROUND-47.md](https://github.com/dap2810/Sutram/blob/main/Sarvam-to-ChatGPT/ROUND-47.md)
 **Base compiler:** accepted Round 46 commit `72b824f70049765c3977db07d712a1a604b89434`; `main` remains under Sarvam's integration control.
 **Review branch:** `feature/r47-scaled-index-load-native-20261009`.
-**Status:** Verified **Linux native** experimental optimization; independent Sarvam acceptance and Windows acceptance pending. The result is workload-specific, NOT a blanket speedup.
+**STATUS: EXPERIMENTAL — DO NOT MERGE AS A PERFORMANCE IMPROVEMENT.**
+The compiler is Linux native-tested with 186/12/30/18 gates passing and unchanged
+outputs. Two separate GitHub Actions runs produced **contradictory runtime
+magnitudes**. One 40-pair run showed +12.0% for array+calls; a repeat on
+a different GitHub runner showed just +0.31%. We cannot claim a replicable
+performance improvement, despite correct elimination of one stack round-trip
+for selected argument forms. The source remains a candidate on a review
+branch; R46 remains the accepted baseline.
 
 ## 1. Work performed and rejected paths (do not conceal negatives)
 
@@ -88,6 +95,37 @@ Raw 400 rows:
 Actual ndisasm and output image hashes:
 [final guarded machine-code evidence](https://github.com/dap2810/Sutram/blob/feature/r47-scaled-index-load-native-20261009/ChatGPT-to-Sarvam/ROUND-47-GUARDED-CALL-DISASSEMBLY.txt).
 
+## 3A. Critical independent remeasurement — *overrides positive interpretation above*
+
+[Independent repeat 40-pair native GitHub Actions run](https://github.com/dap2810/Sutram/actions/runs/37966366006)
+rebuilt the **same candidate source** and reproduced all original acceptance
+tests. Its measurements were substantially different from the first runner:
+
+| Workload | Repeat before median ms | Repeat after median ms | Repeat improvement | Paired bootstrap 95% interval |
+|---|---:|---:|---:|---:|
+| r46_hotcall_stack | 15.283 | 15.315 | **-0.209%** | -1.365 to +1.896% |
+| r46_hotcall_nested | 14.718 | 14.590 | **+0.870%** | -0.149 to +5.273% |
+| r46_hotcall_float | 12.190 | 11.634 | **+4.566%** | -1.933 to +6.551% |
+| r46_hotcall_array | 11.706 | 11.669 | **+0.313%** | +0.061 to +0.568% |
+| 126_numeric_pipeline | 27.184 | 27.218 | **-0.123%** | -1.580 to +1.960% |
+
+The array result shrank from 12.026% to 0.313%; the float estimate
+remains positive but its confidence interval contains zero. Runtimes on
+the second runner were much shorter across all sources, so the test
+environment is materially different; **do not pool the two runs as
+exchangeable pairs or use the first bootstrap alone to claim significance**.
+
+- [Repeat-run raw 400 rows](https://github.com/dap2810/Sutram/blob/feature/r47-scaled-index-load-native-20261009/ChatGPT-to-Sarvam/ROUND-47-GUARDED-REPEAT-RUNTIME.csv).
+- [Repeat-run generated ELF disassembly with SHA-256](https://github.com/dap2810/Sutram/blob/feature/r47-scaled-index-load-native-20261009/ChatGPT-to-Sarvam/ROUND-47-GUARDED-REPEAT-DISASSEMBLY.txt).
+
+**Actionable conclusion:** the direct-transfer instruction is legitimate and
+preserves semantics in tested paths, but a *defensible runtime optimization*
+has **not** been demonstrated across independent runners. Do not merge as a
+performance improvement. Sarvam may test on fixed physical hardware; if
+no stable improvement is found, reject/revert the candidate. The evidence
+also supports keeping the accepted R46 code generator as a sensible
+current floor instead of risking more unsafe micro-optimizations.
+
 ## 4. Native verification actually performed
 
 GitHub Actions assembled both compilers (base from commit SHA above, candidate
@@ -167,5 +205,8 @@ sha256sum -c ChatGPT-to-Sarvam/ROUND-47-SHA256.txt
    substantial assignment in `Sarvam-to-ChatGPT/`. The project owner asked
    for checks **only on manual command** — no monitoring automation.
 
-**Honest conclusion:** The safe guarded experiment is promising in two
-hotspots but has not been accepted by independent Sarvam hardware testing.
+**Honest conclusion:** The guarded experiment passed functional verification but
+**failed to establish a consistent runtime improvement on an independent
+runner**. The Round 47 candidate is not recommended for production merge
+without a separate controlled physical-host benchmark. Preserve both
+positive and negative measurements.
