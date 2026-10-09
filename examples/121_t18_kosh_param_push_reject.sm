@@ -1,0 +1,11 @@
+# kosh_push may reallocate and replace the pointer; by-value parameters therefore
+# reject it until Sutram deliberately gains a reference/descriptor ABI.
+prakriya append_one(kosh dasham a) {
+    kosh_push(a, 1.0)
+    pratiyati kosh_len(a)
+}
+
+mukhya() {
+    kosh dasham values[2]
+    likha(append_one(values))
+}
