@@ -1777,10 +1777,7 @@ _start:
 
     ; R41: opt-in module-v1 graph preflight runs BEFORE destructive expansion.
     ; The legacy import and generated-code path is byte-for-byte unchanged.
-    call graph_preflight_v1
-    ; Round 41 (Muse): module graph pre-pass — cycle detection, niryat
-    ; visibility, v1 alias enforcement.
-    call check_module_graph
+    call graph_preflight_v1   ; R44 single graph traversal (dispatch to merged Muse DFS)
     ; Expand imports (inline .smlib files)
     call expand_imports
     ; Lex
@@ -1919,35 +1916,32 @@ build_module_path_cwd:
 ; Source-path diagnostics point at the importing file and directive line.
 ; ============================================================
 graph_preflight_v1:
-    lea rdi,[rel source_buf]
-    lea rsi,[rel graph_v1_header]
-    xor rcx,rcx
-.check_header:
-    mov al,[rsi+rcx]
-    test al,al
-    jz .header_end
-    cmp rcx,[rel source_len]
-    jae .skip
-    cmp al,[rdi+rcx]
-    jne .skip
+    ; R44: one module graph traversal, preserving R41 exact-header semantics.
+    ; Historic R41 graph_scan/graph_visit remain temporarily for regression
+    ; compatibility, but are never called. The merged Muse DFS is authoritative.
+    mov byte [rel mg_root_exact_v1], 0
+    lea rdi, [rel source_buf]
+    lea rsi, [rel graph_v1_header]
+    xor rcx, rcx
+.r44_header:
+    mov al, [rsi + rcx]
+    test al, al
+    jz .r44_eol
+    cmp rcx, [rel source_len]
+    jae .r44_done
+    cmp al, [rdi + rcx]
+    jne .r44_done
     inc rcx
-    jmp .check_header
-.header_end:
-    ; Require end of header line: a partial prefix is not an opt-in.
-    cmp byte [rdi+rcx],10
-    je .go
-    cmp byte [rdi+rcx],13
-    jne .skip
-.go:
-    mov qword [rel graph_count],0
-    mov qword [rel graph_depth],0
-    mov qword [rel graph_detail_ptr],0
-    lea rdi,[rel source_buf]
-    mov rsi,[rel source_len]
-    mov rdx,[rel source_path_ptr]
-    call graph_scan
-.skip:
-    ret
+    jmp .r44_header
+.r44_eol:
+    cmp byte [rdi + rcx], 10
+    je .r44_optin
+    cmp byte [rdi + rcx], 13
+    jne .r44_done
+.r44_optin:
+    mov byte [rel mg_root_exact_v1], 1
+.r44_done:
+    jmp check_module_graph
 
 ; graph_scan(rdi=source bytes, rsi=length, rdx=origin file path)
 ; All new imports are found at physical line starts after whitespace. Skip
@@ -2944,6 +2938,7 @@ mg_path_stk:  resb 8192
 mg_tmp_name:  resb 64
 mg_tmp_alias: resb 64
 mg_pat:       resb 128
+mg_root_exact_v1: resb 1 ; R44 preserve R41 header-specific cycle/missing precedence
 mg_pat_len:   resq 1    ; R44 qualified-name prefix length
 
 section .text
@@ -3994,9 +3989,29 @@ mg_copy_list_to_rec:
 mg_print_cycle:
     push rbx
     push r12
+    cmp byte [rel mg_root_exact_v1], 1
+    jne .pc_muse_prefix
+    ; R41 compatible basename/line and error prefix.
+    lea rdi, [rel mg_cur_path]
+    call graph_print_file
+    lea rdi, [rel graph_colon]
+    call print_str_z
+    mov rax, [rel mg_cur_line]
+    call mg_print_uint
+    lea rdi, [rel graph_prefix]
+    call print_str_z
+    lea rdi, [rel graph_msg_cycle]
+    call print_str_z
+    lea rdi, [rel graph_close]
+    call print_str_z
+    lea rdi, [rel graph_cycle_prefix]
+    call print_str_z
+    jmp .pc_prefix_done
+.pc_muse_prefix:
     call mg_print_loc
     lea rdi, [rel mg_e_cycle]
     call print_str_z
+.pc_prefix_done:
     ; start from the first occurrence of the offending module (the actual cycle)
     xor r12, r12
 .pc_find:
@@ -4103,7 +4118,18 @@ mg_process_imports:
     lea rdi, [rel mg_cur_name]
     call mg_resolve
     test rax, rax
-    jz .pi_next               ; missing: expansion reports it
+    jnz .pi_resolved
+    ; R41 exact opt-in: missing import fails with stable basename:line.
+    cmp byte [rel mg_root_exact_v1], 1
+    jne .pi_next               ; legacy missing behaviour is unchanged
+    lea rax, [rel mg_cur_name]
+    mov [rel graph_detail_ptr], rax
+    lea rdi, [rel mg_cur_path]
+    mov rsi, [rel mg_cur_line]
+    lea rdx, [rel graph_msg_missing]
+    lea rcx, [rel graph_missing_prefix]
+    call graph_error
+.pi_resolved:
     ; mg_cur_path = module_path_buf
     lea rsi, [rel module_path_buf]
     lea rdi, [rel mg_cur_path]
