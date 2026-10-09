@@ -1,0 +1,6 @@
+# If/else conditional
+mukhya()
+    vitti x = 10
+    yadi (x > 5) {
+        likha("big\n")
+    }
