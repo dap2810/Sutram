@@ -1,1 +1,1 @@
-/scratch/work/examples/lib/r41_cyc_b.smlib:2: Sutram Error [E_MODULE_CYCLE]: cyclic import: r41_cyc_a -> r41_cyc_b -> r41_cyc_a
+<ROOT>/examples/lib/r41_cyc_b.smlib:2: Sutram Error [E_MODULE_CYCLE]: cyclic import: r41_cyc_a -> r41_cyc_b -> r41_cyc_a
