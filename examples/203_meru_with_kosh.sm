@@ -1,0 +1,25 @@
+# Meru-prastara (Pascal's triangle) built with a growable array (kosh).
+# Pingala's combinatorics, now with T18 growable arrays.
+ayojan chandas
+
+mukhya()
+    kosh row
+    vitti n = 0
+    yavat (n < 6) {
+        vitti i = 0
+        yavat (i <= n) {
+            kosh_push(row, meru(n, i))
+            i = i + 1
+        }
+        n = n + 1
+    }
+    likha("length = ")
+    likha(kosh_len(row))
+    likha("\n")
+    vitti j = 0
+    yavat (j < kosh_len(row)) {
+        likha(row[j])
+        likha(" ")
+        j = j + 1
+    }
+    likha("\n")
