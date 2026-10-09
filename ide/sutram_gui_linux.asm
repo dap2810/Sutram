@@ -64,6 +64,49 @@
 %define COL_RULE        0x1A4A5C        ; teal separator
 %define COL_TEXT        0xDFE7EE        ; body text
 %define COL_ACCENT      0xE86D11        ; orange heading
+%define COL_CARET       0xE86D11        ; cursor
+
+; ---- editor ---------------------------------------------------------------
+%define ED_CAP          8192            ; editor buffer capacity
+%define LINE_H          16
+%define ED_TEXT_X       (PANE_X + 8)
+%define ED_TEXT_Y       (ED_Y + 30)
+%define ED_LINES_MAX    23              ; visible lines in the pane
+
+; ---- X11 keys -------------------------------------------------------------
+%define KC_ESCAPE       9
+%define KC_BACKSPACE    22
+%define KC_RETURN       36
+%define KC_LEFT         113
+%define KC_RIGHT        114
+%define KC_UP           111
+%define KC_DOWN         116
+%define KC_CTRL_R       27              ; 'r' keycode, checked with ControlMask
+%define MASK_CONTROL    0x0004
+
+section .data
+; Standard US-QWERTY XKB keycode -> ASCII. This is the common layout on every
+; mainstream X server. A non-US layout would need the server's own mapping,
+; fetched with GetKeyboardMapping (opcode 101) — that is the next slice.
+; 0 means "no printable character".
+kc_table:
+    times 10 db 0                       ; 0..9
+    db '1','2','3','4','5','6','7','8','9','0'   ; 10..19
+    db '-','='                          ; 20..21
+    db 0,0                              ; 22 (backspace), 23 (tab)
+    db 'q','w','e','r','t','y','u','i','o','p'   ; 24..33
+    db '[',']'                          ; 34..35
+    db 0,0                              ; 36 (return), 37 (ctrl)
+    db 'a','s','d','f','g','h','j','k','l'       ; 38..46
+    db ';',0x27                         ; 47..48
+    db '`'                              ; 49
+    db 0,0                              ; 50,51
+    db 'z','x','c','v','b','n','m'      ; 52..58
+    db ',','.','/'                      ; 59..61
+    db 0,0,0                            ; 62..64
+    db ' '                              ; 65
+    times 60 db 0                       ; 66..125
+section .text
 
 section .bss
     sockaddr    resb 128
@@ -76,6 +119,13 @@ section .bss
     rid_mask    resq 1
     next_id     resq 1
     reqbuf      resb 1024
+
+; --- editor state ---
+    ed_buf      resb ED_CAP
+    ed_len      resq 1
+    ed_cursor   resq 1
+    key_char    resb 8
+    want_quit   resd 1
 
 section .data
     xsock_path  db "/tmp/.X11-unix/X0", 0
@@ -471,6 +521,223 @@ draw_all:
     pop r12
     ret
 
+; ---------------------------------------------------------------- ed_insert
+; rdi = character.  Insert at the cursor, bounded by ED_CAP.
+ed_insert:
+    push rbx
+    lea  rbx, [rel ed_buf]
+    mov  rax, [rel ed_len]
+    cmp  rax, ED_CAP - 2
+    jae  .done
+    mov  rcx, [rel ed_cursor]
+    mov  rdx, rax
+.shift:
+    cmp  rdx, rcx
+    jbe  .place
+    mov  r8b, [rbx + rdx - 1]
+    mov  [rbx + rdx], r8b
+    dec  rdx
+    jmp  .shift
+.place:
+    mov  [rbx + rcx], dil
+    inc  qword [rel ed_len]
+    inc  qword [rel ed_cursor]
+.done:
+    pop  rbx
+    ret
+
+; ---------------------------------------------------------------- ed_backspace
+ed_backspace:
+    push rbx
+    lea  rbx, [rel ed_buf]
+    mov  rcx, [rel ed_cursor]
+    test rcx, rcx
+    jz   .done
+    dec  rcx
+    mov  rax, [rel ed_len]
+.shift:
+    mov  rdx, rcx
+    inc  rdx
+    cmp  rdx, rax
+    jae  .shrink
+    mov  r8b, [rbx + rdx]
+    mov  [rbx + rdx - 1], r8b
+    inc  rcx
+    jmp  .shift
+.shrink:
+    dec  qword [rel ed_len]
+    dec  qword [rel ed_cursor]
+.done:
+    pop  rbx
+    ret
+
+; ---------------------------------------------------------------- ed_caret_x
+; Compute the caret's column (0-based) on its current line -> rax.
+ed_caret_x:
+    push rbx
+    lea  rbx, [rel ed_buf]
+    mov  rcx, [rel ed_cursor]
+    xor  rax, rax
+.loop:
+    test rcx, rcx
+    jz   .done
+    dec  rcx
+    cmp  byte [rbx + rcx], 10
+    je   .done
+    inc  rax
+    jmp  .loop
+.done:
+    pop  rbx
+    ret
+
+; ---------------------------------------------------------------- ed_caret_y
+; Compute the caret's line index (0-based) -> rax.
+ed_caret_y:
+    push rbx
+    lea  rbx, [rel ed_buf]
+    mov  rcx, [rel ed_cursor]
+    xor  rax, rax
+    xor  rdx, rdx
+.loop:
+    cmp  rdx, rcx
+    jae  .done
+    cmp  byte [rbx + rdx], 10
+    jne  .next
+    inc  rax
+.next:
+    inc  rdx
+    jmp  .loop
+.done:
+    pop  rbx
+    ret
+
+; ---------------------------------------------------------------- draw_editor
+; Repaint the editor pane background and its text, then the caret.
+draw_editor:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    lea  rbx, [rel ed_buf]
+
+    ; pane background
+    mov  rdi, COL_PANE
+    call set_fg
+    mov  rsi, PANE_X
+    mov  rdx, ED_Y
+    mov  rcx, ED_W
+    mov  r8,  ED_H
+    call fill_rect
+    mov  rdi, r12
+    lea  rsi, [reqbuf]
+    call send_req
+
+    ; walk the buffer a line at a time
+    mov  rdi, COL_TEXT
+    call set_fg
+
+    xor  r13, r13                   ; line index
+    xor  r14, r14                   ; line start offset
+    xor  r15, r15                   ; scan offset
+.line:
+    cmp  r15, [rel ed_len]
+    ja   .after
+    ; is this the end of a line (newline or end of buffer)?
+    mov  rax, [rel ed_len]
+    cmp  r15, rax
+    je   .emit
+    cmp  byte [rbx + r15], 10
+    jne  .advance
+.emit:
+    cmp  r13, ED_LINES_MAX
+    jae  .after
+    mov  rdx, r15
+    sub  rdx, r14                   ; line length
+    test rdx, rdx
+    jz   .next_line                 ; empty line: nothing to draw
+    mov  rsi, rbx
+    add  rsi, r14
+    mov  rcx, ED_TEXT_X
+    mov  r8,  ED_TEXT_Y
+    mov  rax, r13
+    imul rax, LINE_H
+    add  r8,  rax
+    call draw_text
+    mov  rdi, r12
+    lea  rsi, [reqbuf]
+    call send_req
+    mov  rdi, COL_TEXT
+    call set_fg
+.next_line:
+    inc  r13
+    mov  r14, r15
+    inc  r14                        ; skip the newline
+    inc  r15
+    jmp  .line
+.advance:
+    inc  r15
+    jmp  .line
+
+.after:
+    ; caret: a 2x14 bar at the cursor
+    mov  rdi, COL_CARET
+    call set_fg
+    call ed_caret_x
+    imul rax, 8                     ; approximate advance per character
+    add  rax, ED_TEXT_X
+    mov  rsi, rax
+    call ed_caret_y
+    imul rax, LINE_H
+    add  rax, ED_TEXT_Y
+    sub  rax, 12
+    mov  rdx, rax
+    mov  rcx, 2
+    mov  r8,  14
+    call fill_rect
+    mov  rdi, r12
+    lea  rsi, [reqbuf]
+    call send_req
+
+    pop  r15
+    pop  r14
+    pop  r13
+    pop  r12
+    pop  rbx
+    ret
+
+; ---------------------------------------------------------------- handle_key
+; rdi = X11 keycode.  Printable ASCII is keycode-8 on the standard map.
+handle_key:
+    push rbx
+    mov  rbx, rdi
+    cmp  rbx, KC_ESCAPE
+    je   .esc
+    cmp  rbx, KC_BACKSPACE
+    je   .bs
+    cmp  rbx, KC_RETURN
+    je   .nl
+    lea  rcx, [rel kc_table]
+    cmp  rbx, 125
+    ja   .done
+    movzx edi, byte [rcx + rbx]
+    test edi, edi
+    jz   .done
+    call ed_insert
+    jmp  .done
+.bs:
+    call ed_backspace
+    jmp  .done
+.nl:
+    mov  rdi, 10
+    call ed_insert
+    jmp  .done
+.esc:
+    mov  dword [rel want_quit], 1
+.done:
+    pop  rbx
+    ret
+
 ; ---------------------------------------------------------------- _start
 _start:
     call connect_x
@@ -528,8 +795,16 @@ _start:
     cmp r13, EV_Expose
     je .expose
     cmp r13, EV_KeyPress
-    je .done
+    je .key
     jmp .loop
+
+.key:
+    movzx rdi, byte [event+1]       ; detail = keycode
+    call handle_key
+    call draw_editor
+    cmp  dword [rel want_quit], 0
+    jne  .done
+    jmp  .loop
 
 .expose:
     call draw_all
