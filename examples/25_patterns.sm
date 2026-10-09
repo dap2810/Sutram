@@ -1,0 +1,17 @@
+mukhya()
+    likha("Number Pyramid:\n")
+    punaravartana i = 1 to 5 {
+        punaravartana j = 1 to i {
+            likha("* ")
+        }
+        likha("\n")
+    }
+    likha("\nTable of 7:\n")
+    punaravartana n = 1 to 10 {
+        likha(7)
+        likha(" x ")
+        likha(n)
+        likha(" = ")
+        likha(7 * n)
+        likha("\n")
+    }
