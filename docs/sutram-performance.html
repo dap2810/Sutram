@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sutram — Codegen Performance Analysis</title>
+<style>
+  :root{
+    --bg:#0f1115; --panel:#161a21; --line:#262c36; --ink:#e8ecf1; --dim:#9aa4b2;
+    --amber:#e8a33d; --green:#4ec9a0; --red:#e5645f; --blue:#5aa9e6; --violet:#a78bfa;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans",sans-serif}
+  .wrap{max-width:960px;margin:0 auto;padding:56px 28px 96px}
+  h1{font-size:2.1rem;line-height:1.2;margin:0 0 6px;font-weight:650;letter-spacing:-.02em}
+  .sub{color:var(--dim);font-size:1.02rem;margin:0 0 8px}
+  .meta{color:var(--dim);font-size:.86rem;font-family:ui-monospace,Menlo,Consolas,monospace;
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:12px 0;margin:24px 0 40px}
+  h2{font-size:1.28rem;margin:44px 0 12px;font-weight:620;letter-spacing:-.01em}
+  h3{font-size:1.02rem;margin:28px 0 8px;font-weight:600;color:var(--amber)}
+  p{margin:0 0 14px}
+  code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.88em;
+    background:#1d222b;padding:2px 6px;border-radius:5px;color:#cfd8e3}
+  pre{background:#12161d;border:1px solid var(--line);border-radius:10px;padding:16px 18px;
+    overflow-x:auto;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.84rem;line-height:1.6;
+    color:#c9d3df;margin:14px 0}
+  pre .c{color:#6b7686}
+  pre .hot{color:var(--red)}
+  pre .ok{color:var(--green)}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:.92rem}
+  th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line)}
+  th{color:var(--dim);font-weight:600;font-size:.82rem;text-transform:uppercase;letter-spacing:.04em}
+  td.n{font-family:ui-monospace,Menlo,Consolas,monospace;text-align:right}
+  .bad{color:var(--red);font-weight:600}
+  .good{color:var(--green)}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 22px;margin:18px 0}
+  .card.find{border-left:3px solid var(--red)}
+  .card.rec{border-left:3px solid var(--green)}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin:22px 0}
+  .kpi{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+  .kpi b{display:block;font-size:1.9rem;font-weight:680;letter-spacing:-.02em;line-height:1.1}
+  .kpi span{color:var(--dim);font-size:.82rem}
+  .c-red{color:var(--red)} .c-green{color:var(--green)} .c-amber{color:var(--amber)}
+  ul{margin:10px 0 14px;padding-left:22px} li{margin:6px 0}
+  .foot{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);color:var(--dim);font-size:.84rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Codegen Performance Analysis</h1>
+  <p class="sub">Where Sutram's generated machine code spends its instructions — and the one change that would cut it most.</p>
+  <div class="meta">
+    Source SHA a14d0241 · suite 123/123 · compiler 347,156 B<br>
+    Method: delta-instruction counting over <code>ndisasm</code> disassembly of the emitted ELF
+  </div>
+
+  <h2>Why this document exists</h2>
+  <p>Performance is the standing project priority, and the compiler is now feature-complete enough that
+  speed — not features — is the main gap. Register allocation and local-memory traffic are the next
+  work item. This analysis measures the current codegen so that work has a baseline and a target, rather
+  than proceeding on intuition.</p>
+  <p>The compiler emits a real ELF (entry <code>0x400078</code>, code at file offset <code>0x78</code>) with no
+  section headers, so <code>objdump -d</code> cannot read it; the disassembly here comes from
+  <code>ndisasm -b 64 -e 0x78</code>. Per-construct cost is measured as a <em>delta</em>: two programs that
+  differ by exactly one statement, subtracted, so prologue and the integer-print routine do not dilute
+  the result.</p>
+
+  <h2>The headline</h2>
+  <div class="kpis">
+    <div class="kpi"><b class="c-red">6</b><span>instructions for <code>s = s + i</code> — ideal is 1</span></div>
+    <div class="kpi"><b class="c-red">10</b><span>instructions for <code>c = a + b</code> (incl. decl) — ideal 3</span></div>
+    <div class="kpi"><b class="c-amber">~3×</b><span>overhead on binary operators</span></div>
+    <div class="kpi"><b class="c-green">0</b><span>spills with ≤16 live variables — registers are used</span></div>
+  </div>
+  <p>Variables <strong>are</strong> allocated to registers (<code>rbx</code>, <code>r12</code>, <code>r13</code>, …) — that part works,
+  and 16 live variables still do not spill. The cost is elsewhere: <strong>every binary operation routes its
+  operands through the machine stack</strong> instead of using the registers the values are already in.</p>
+
+  <h2>Finding 1 — binary operators bounce operands through the stack</h2>
+  <p>For <code>c = a + b</code>, with <code>a</code> in <code>rbx</code> and <code>b</code> in <code>r12</code>, the compiler emits:</p>
+<pre>mov rax,rbx      <span class="c">; load a</span>
+push rax         <span class="hot">; \</span>
+mov rax,r12      <span class="hot">;  |  operands round-trip through the stack</span>
+pop rdx          <span class="hot">;  |</span>
+xchg rdx,rax     <span class="hot">; /</span>
+add rax,rdx
+mov r13,rax      <span class="c">; store c</span></pre>
+  <p>The same value could be produced in three instructions — and <code>s = s + i</code> in <em>one</em>:</p>
+<pre><span class="ok">mov rax,rbx      ; a is already in rbx</span>
+<span class="ok">add rax,r12      ; b is already in r12</span>
+<span class="ok">mov r13,rax      ; c</span>
+
+<span class="ok">add rbx,r12      ; s = s + i, in a single instruction</span></pre>
+  <p>This is not a register-allocation problem — the values are already in registers. It is that the
+  expression evaluator is written as a stack machine: evaluate the left operand, push it, evaluate the
+  right, pop and combine. In a tree-walking codegen that is the natural first shape, but the register
+  file is sitting unused beside it.</p>
+
+  <h3>Measured per-construct cost (delta instructions)</h3>
+  <table>
+    <thead><tr><th>construct</th><th class="n">emitted</th><th class="n">ideal</th><th class="n">overhead</th></tr></thead>
+    <tbody>
+      <tr><td><code>c = a + b</code></td><td class="n">10</td><td class="n">3</td><td class="n bad">+7</td></tr>
+      <tr><td><code>c = a * b</code></td><td class="n">10</td><td class="n">3</td><td class="n bad">+7</td></tr>
+      <tr><td><code>c = a - b</code></td><td class="n">10</td><td class="n">3</td><td class="n bad">+7</td></tr>
+      <tr><td><code>c = a</code></td><td class="n">5</td><td class="n">2</td><td class="n bad">+3</td></tr>
+      <tr><td><code>c = 7</code></td><td class="n">6</td><td class="n">2</td><td class="n bad">+4</td></tr>
+      <tr><td><code>yadi (a &lt; b) { }</code></td><td class="n">7</td><td class="n">4</td><td class="n bad">+3</td></tr>
+      <tr><td><code>i = i + 1</code></td><td class="n">6</td><td class="n">4</td><td class="n bad">+2</td></tr>
+    </tbody>
+  </table>
+  <p>(The <code>+ b</code> rows include the <code>vitti c = 0</code> declaration, ~3–4 instructions, which the ideal column
+  also omits; the operator overhead itself is the larger part.)</p>
+
+  <h2>Finding 2 — integer constants cost three instructions to load</h2>
+  <p>A literal is materialised as <code>xor rax,rax</code> / <code>mov al,N</code> / <code>mov rbx,rax</code> — three instructions
+  to put a small number in a register. A single <code>mov rbx, N</code> would do. This shows up in every constant
+  initialiser and every literal operand.</p>
+
+  <h2>What is already good</h2>
+  <div class="card rec">
+    <ul>
+      <li><strong>Register allocation works.</strong> Variables live in <code>rbx</code>/<code>r12</code>–<code>r15</code>; 16 simultaneous
+      variables do not spill.</li>
+      <li><strong>Loop conditionals are cheap.</strong> <code>i = i + 1</code> compiles to <code>mov rax,rbx / inc rax / mov rbx,rax</code>
+      — an <code>inc</code> is already used rather than <code>add</code>.</li>
+      <li><strong>No hidden calls.</strong> Arithmetic is inline; there is no runtime to call into.</li>
+    </ul>
+  </div>
+
+  <h2>Recommendations, in order of expected payoff</h2>
+  <div class="card find">
+    <h3>1. Evaluate binary operands in registers, not on the stack</h3>
+    <p>The single highest-value change. Keep a simple destination-register discipline for
+    <code>OP_ADD/SUB/MUL/DIV</code>: evaluate left into a register, evaluate right into another, combine in
+    place. This removes <code>push</code>/<code>pop</code>/<code>xchg</code> from every arithmetic statement — the most frequent
+    construct in real code. A <code>s = s + i</code> inside a loop is the canonical case and drops from six
+    instructions to one.</p>
+  </div>
+  <div class="card rec">
+    <h3>2. Load small constants directly</h3>
+    <p><code>mov rN, imm</code> instead of the three-instruction <code>xor</code>/<code>mov al</code>/<code>mov</code> sequence. Cheap and
+    local to the literal emitter.</p>
+  </div>
+  <div class="card rec">
+    <h3>3. Peephole: <code>mov rax,rX / … / mov rX,rax</code> round-trips</h3>
+    <p>Many statements end by moving a result into <code>rax</code> and straight back into the variable's register.
+    A peephole pass that folds <code>mov rX,rax</code> into the preceding operation's destination removes a
+    further instruction per statement.</p>
+  </div>
+
+
+  <h2 id="perf1">PERF1 results — measured, not claimed</h2>
+  <p>ChatGPT's PERF1 patch (source <code>532eaff7</code>) attacks the exact hotspot above: values already
+  register-resident were being copied through <code>rax</code>, the runtime stack, <code>rdx</code> and <code>xchg</code>. It adds
+  direct self-update forms (<code>x = x + y</code> → one <code>add</code>), direct register comparisons, and cleaner
+  <code>punaravartana</code> codegen. Both hosts rebuilt; suite <strong>125/125</strong>; 113/114 outputs match exactly.</p>
+
+  <h3>The hot loop, before and after</h3>
+<pre><span class="c">BEFORE — 13 instructions</span>
+cmp rax,byte +0x64
+jnl near 0x51
+mov rax,r12      <span class="hot">; s -> rax</span>
+push rax         <span class="hot">; \</span>
+mov rax,rbx      <span class="hot">;  |  stack round-trip</span>
+pop rdx          <span class="hot">;  |</span>
+xchg rdx,rax     <span class="hot">; /</span>
+add rax,rdx
+mov r12,rax
+mov rax,rbx
+inc rax
+mov rbx,rax
+jmp 0x25
+
+<span class="ok">AFTER — 5 instructions</span>
+cmp rax,byte +0x64
+jnl near 0x3d
+add r12,rbx      <span class="ok">; s = s + i   — one instruction</span>
+inc rbx          <span class="ok">; i = i + 1   — one instruction</span>
+jmp 0x25</pre>
+  <p><code>s = s + i</code> is now a single <code>add r12,rbx</code>, and <code>i = i + 1</code> a single <code>inc rbx</code>. The loop body
+  drops from <strong>13 to 5 instructions</strong>.</p>
+
+  <h3>Wall-clock, same machine, median of 25 runs</h3>
+  <table>
+    <thead><tr><th>program</th><th class="n">before (ms)</th><th class="n">after (ms)</th><th class="n">speedup</th></tr></thead>
+    <tbody>
+      <tr><td>loop_sum</td><td class="n">66.96</td><td class="n">13.3</td><td class="n good">4.9×</td></tr>
+      <tr><td>nested_loop</td><td class="n">14.58</td><td class="n">13.2</td><td class="n">1.1×</td></tr>
+      <tr><td>fib_rec</td><td class="n">55.12</td><td class="n">56.0</td><td class="n">1.0×</td></tr>
+    </tbody>
+  </table>
+  <p><code>fib_rec</code> is unchanged, exactly as predicted — this patch targets local loop traffic, not call
+  overhead. <code>loop_sum</code> gains <strong>4.9×</strong>, which is the headline: it was instruction-bound, and the
+  instructions are gone.</p>
+
+  <h3>Why <code>nested_loop</code> barely moved — it is now branch-bound</h3>
+  <p>The inner body shrank as promised, but the loop still carries <strong>two branches per iteration</strong>:</p>
+<pre>0x43  cmp r14,rbx
+0x46  jg  near 0x57   <span class="hot">; forward conditional (exit)</span>
+0x4c  inc r12
+0x4f  inc r14
+0x52  jmp 0x43        <span class="hot">; backward unconditional</span></pre>
+  <p>Once the body is only two instructions, the branch pair dominates. A <strong>test-at-bottom</strong> loop form —
+  an initial jump into the test, then a single backward conditional at the end — would halve the branches
+  per iteration:</p>
+<pre>        jmp test
+top:    inc r12
+        inc r14
+test:   cmp r14,rbx
+        jl  top        <span class="ok">; one branch per iteration, not two</span></pre>
+  <p>That is the natural PERF2 candidate for loop-bound code, alongside the general <code>c = a + b</code>
+  destination scheduling that PERF1 deliberately left out.</p>
+
+  <h2>Revised recommendation order</h2>
+  <div class="card rec">
+    <ol>
+      <li><strong>PERF1 is verified and a large win</strong> (loop_sum 4.9×). Keep it.</li>
+      <li><strong>Test-at-bottom loop form</strong> — the remaining cost in <code>nested_loop</code> is the branch pair,
+      not the body. Halve the branches per iteration.</li>
+      <li><strong>General <code>c = a + b</code> register scheduling</strong> (PERF2) — the distinct-destination case
+      still round-trips through the stack.</li>
+      <li><strong>Direct small-constant loads</strong> (PERF3).</li>
+      <li>An instruction-count gate in CI, so these hot forms cannot silently regress.</li>
+    </ol>
+  </div>
+
+
+  <h2 id="perff1">PERF-F1 — the float hotspot, found by measurement and fixed</h2>
+  <p>For five rounds the optimizer shrank integer instruction shapes. A static census of real
+  numerical code showed why that produced no measurable speedup: <strong>61% of assignments are
+  float</strong>, and PERF5's integer pattern occurred <strong>0 times</strong> in a realistic program
+  and 4 times in the whole 13-module library. Meanwhile the float path cost 8× the integer path.</p>
+  <p>The fix keeps the operands out of general-purpose registers for a float self-update:</p>
+<pre><span class="c">BEFORE — 8 instructions, with a stack round-trip</span>
+mov rax,r12
+movq xmm1,rax
+pop rdx
+movq xmm0,rdx
+addsd xmm0,xmm1
+movq rax,xmm0
+mov rbx,rax
+
+<span class="ok">AFTER — 4 instructions, no stack traffic</span>
+movq xmm0,rbx
+movq xmm1,r12
+addsd xmm0,xmm1
+movq rbx,xmm0</pre>
+  <table>
+    <thead><tr><th>float self-update benchmark</th><th class="n">min ms</th><th class="n">p10 ms</th></tr></thead>
+    <tbody>
+      <tr><td>before</td><td class="n">51.1</td><td class="n">52.4</td></tr>
+      <tr><td>after</td><td class="n">38.3</td><td class="n">39.2</td></tr>
+      <tr><td><strong>gain</strong></td><td class="n good">1.33&times;</td><td class="n good">1.34&times;</td></tr>
+    </tbody>
+  </table>
+  <p>This is the first optimization since PERF1 to move the clock. Still on the slow path:
+  distinct-destination float (<code>c = a + b</code>), complex float expressions, and persistent XMM
+  residency (which needs an explicit ABI design).</p>
+
+  <h2>Baseline to compare against</h2>
+  <p>CPU-bound run times from <code>tools/bench.py</code> on this build (median of 10 runs, this machine):</p>
+  <table>
+    <thead><tr><th>program</th><th class="n">compile ms</th><th class="n">run ms</th></tr></thead>
+    <tbody>
+      <tr><td>loop_sum</td><td class="n">4.21</td><td class="n">70.914</td></tr>
+      <tr><td>nested_loop</td><td class="n">2.63</td><td class="n">14.003</td></tr>
+      <tr><td>fib_rec</td><td class="n">2.48</td><td class="n">54.699</td></tr>
+    </tbody>
+  </table>
+  <p>These are machine-local and vary between runs; they are useful as a <em>relative</em> baseline — re-run
+  after each codegen change and compare, rather than treating the absolute numbers as a specification.</p>
+
+  <h2>Method notes, so the numbers are checkable</h2>
+  <ul>
+    <li>Delta measurement: two programs differing by one statement; instruction counts subtracted.</li>
+    <li>Disassembly: <code>ndisasm -b 64 -e 0x78</code> (skips the 0x78-byte ELF header; code begins at the
+    entry point <code>0x400078</code>).</li>
+    <li>Instruction totals include prologue/epilogue and the integer-print routine, which is why per-construct
+    figures use deltas rather than totals.</li>
+    <li>Run-time samples use the median of ten runs, excluding I/O-bound programs.</li>
+  </ul>
+
+  <div class="foot">
+    Sutram — a Sanskrit-keyword programming language with a single hand-written NASM x86-64 compiler.
+    This analysis is measurement, not prescription: the compiler's author decides which changes are worth
+    the complexity.
+  </div>
+
+</div>
+</body>
+</html>
