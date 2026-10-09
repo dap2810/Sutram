@@ -210,6 +210,7 @@ str_dot_exe  db ".exe", 0
     r48_msg_ok db "Sutram check: OK (no output binary)",10,0
     r48_msg_errors db "Sutram check: errors found; no output binary",10,0
     r48_msg_eof db "<EOF>",0
+    r48_msg_undefined db ": Sutram Error [E_UNDEFINED_FUNCTION]: unknown function '",0
     msg_err_line db 10, "Sutram Error: parse error at line ", 0
     msg_err_near db " near token '", 0
     msg_err_end  db "'", 10, 0
@@ -6163,6 +6164,76 @@ parse_error:
     mov rdi, 1
     call os_exit
 
+; R48 post-parse semantic diagnostics for unresolved user function calls.
+; The code generator already owns function lookup; no second parser is used.
+; Look up the first matching original lexer token to recover line, column,
+; offending identifier and source/caret. No output binary is written.
+r48_print_undefined_function:
+    push rbx
+    push r12
+    push r13
+    mov r12, rdi
+    xor ebx, ebx
+.r48_lookup:
+    cmp rbx, [rel token_cnt]
+    jae .r48_fallback
+    mov rax, rbx
+    imul rax, TOKEN_SIZE
+    lea r13, [rel token_arr]
+    add r13, rax
+    cmp qword [r13], TOK_IDENT
+    jne .r48_next
+    mov rdi, [r13+8]
+    mov rsi, r12
+    call strcmp
+    test rax, rax
+    jz .r48_found
+.r48_next:
+    inc rbx
+    jmp .r48_lookup
+.r48_found:
+    mov rdi, [rel source_path_ptr]
+    call graph_print_file
+    lea rdi, [rel msg_err_colon]
+    call print_str_z
+    mov rdi, [r13+24]
+    lea rsi, [rel num_buf]
+    call itoa
+    mov rdi, rax
+    call print_str_z
+    lea rdi, [rel msg_err_colon]
+    call print_str_z
+    mov rdi, [r13+32]
+    call calc_src_column
+    mov rdi, rax
+    lea rsi, [rel num_buf]
+    call itoa
+    mov rdi, rax
+    call print_str_z
+    lea rdi, [rel r48_msg_undefined]
+    call print_str_z
+    mov rdi, r12
+    call print_str_z
+    lea rdi, [rel r48_msg_end]
+    call print_str_z
+    mov rdi, [r13+32]
+    call print_source_context
+    jmp .r48_sem_done
+.r48_fallback:
+    ; In unusual imported/rewritten source, a call-name pointer may not
+    ; match a local token. Never fabricate a line number or location.
+    lea rdi, [rel msg_undefined_func]
+    call print_str_z
+    mov rdi, r12
+    call print_str_z
+    lea rdi, [rel msg_nl]
+    call print_str_z
+.r48_sem_done:
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
 ; R48 check mode: diagnostics reuse lexer-origin token source position.
 ; Unlike the normal localized parser error output, the check-mode protocol
 ; produces stable path:line:column and offending token plus source/caret.
@@ -9379,6 +9450,15 @@ backpatch_calls:
     jmp .bc_next
 .bc_not_found:
     ; B2: unresolved user calls are a compiler error, never a rel32=0 call.
+    ; R48 uses the token's lexer position for a stable source-level
+    ; diagnostic; normal compilation keeps the exact legacy output.
+    cmp qword [rel r48_mode], 0
+    je .bc_old_error
+    mov rdi, r14
+    call r48_print_undefined_function
+    mov rdi, 1
+    call os_exit
+.bc_old_error:
     lea rdi, [rel msg_undefined_func]
     call print_str_z
     mov rdi, r14
