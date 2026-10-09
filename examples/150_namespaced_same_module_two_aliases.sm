@@ -1,0 +1,7 @@
+# One file can appear under distinct isolated namespaces.
+ayojan r33_alpha@north
+ayojan r33_alpha@south
+mukhya() {
+    likha(north__clash())
+    likha(south__clash())
+}
