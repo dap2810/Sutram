@@ -85,13 +85,23 @@ os_write:
     sub rsp, 48                ; 32-byte shadow + 5th argument
     mov r12, rsi
     mov r13, rdx
-    mov rcx, -11                 ; STD_OUTPUT_HANDLE
+    ; Linux-like logical fd 1/2 map to standard handles. Any other
+    ; value is a real Windows HANDLE returned by CreateFileA.
+    cmp rdi, 1
+    je .ow_stdout
     cmp rdi, 2
-    jne .ow_go
-    mov rcx, -12                 ; STD_ERROR_HANDLE
-.ow_go:
+    je .ow_stderr
+    mov rcx, rdi
+    jmp .ow_handle
+.ow_stdout:
+    mov rcx, -11
+    jmp .ow_std
+.ow_stderr:
+    mov rcx, -12
+.ow_std:
     call qword [rel p_getstd]
     mov rcx, rax
+.ow_handle:
     mov rdx, r12
     mov r8, r13
     lea r9, [rel wn_written]
@@ -113,9 +123,17 @@ os_read:
     sub rsp, 48
     mov r12, rsi
     mov r13, rdx
-    mov rcx, -10                 ; STD_INPUT_HANDLE
+    ; fd 0 is stdin; nonzero fd is a genuine CreateFileA handle.
+    test rdi, rdi
+    jnz .or_handle
+    mov rcx, -10
     call qword [rel p_getstd]
     mov rcx, rax
+    jmp .or_ready
+.or_handle:
+    mov rcx, rdi
+.or_ready:
+    mov dword [rel wn_got], 0
     mov rdx, r12
     mov r8, r13
     lea r9, [rel wn_got]
@@ -140,7 +158,8 @@ os_open:
     mov r8, 1                    ; FILE_SHARE_READ
     xor r9, r9
     mov qword [rsp+32], 3        ; OPEN_EXISTING
-    mov qword [rsp+40], 0
+    mov qword [rsp+40], 0x80     ; FILE_ATTRIBUTE_NORMAL
+    mov qword [rsp+48], 0        ; hTemplateFile = NULL, 7th argument
     test rsi, rsi
     jz .oo_go
     mov rdx, 0x40000000          ; GENERIC_WRITE
