@@ -1,1 +1,1 @@
-/scratch/work/examples/214_r41_v1_noalias.sm:3:Sutram Error [E_MODULE_V1_ALIAS]: v1 module 'r41_vec' must be imported with an alias: ayojan r41_vec@alias
+<ROOT>/examples/214_r41_v1_noalias.sm:3:Sutram Error [E_MODULE_V1_ALIAS]: v1 module 'r41_vec' must be imported with an alias: ayojan r41_vec@alias
