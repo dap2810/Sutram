@@ -1,0 +1,5 @@
+mukhya() {
+    likha(missing_repeat(1))
+    likha(missing_repeat(2))
+    likha(missing_repeat(3))
+}
