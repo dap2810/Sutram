@@ -1775,6 +1775,9 @@ _start:
     ; R41: opt-in module-v1 graph preflight runs BEFORE destructive expansion.
     ; The legacy import and generated-code path is byte-for-byte unchanged.
     call graph_preflight_v1
+    ; Round 41 (Muse): module graph pre-pass — cycle detection, niryat
+    ; visibility, v1 alias enforcement.
+    call check_module_graph
     ; Expand imports (inline .smlib files)
     call expand_imports
     ; Lex
@@ -2798,6 +2801,7 @@ expand_imports_pass:
     mov rdi,rbx
     call os_close
     call ns_collect_funcs
+    call ns_strip_niryat         ; drop niryat lines (v1 modules) before rewrite
     call ns_rewrite_funcs        ; updates r14, keeps r12/r13 intact
     jmp .ei_no_file
 .ei_close_success:
@@ -2867,12 +2871,1740 @@ expand_imports_pass:
     ret
 
 ; ============================================================
+; ROUND 41: module graph pre-pass.
+; Three-colour DFS over the import graph BEFORE textual expansion:
+;  - visiting -> visiting  =  E_MODULE_CYCLE with file:line and the cycle path
+;  - v1 modules (marked "# sutram-module-v1" in both importer and module)
+;    get export visibility: `niryat` declares exports; duplicate exports are
+;    E_MODULE_DUP_EXPORT; references to alias__<private> from outside the
+;    defining module are E_MODULE_NOT_EXPORTED (checked in Phase B below).
+;  - v1 modules must be imported with an alias (E_MODULE_V1_ALIAS otherwise).
+; The pass is read-only: it never modifies source_buf. Missing module files
+; are skipped here and reported by the expansion phase as before.
+; ============================================================
+
+section .data
+mg_e_cycle:   db "Sutram Error [E_MODULE_CYCLE]: cyclic import: ", 0
+mg_e_noexp1:  db "Sutram Error [E_MODULE_NOT_EXPORTED]: '", 0
+mg_e_noexp2:  db "' is not exported by module '", 0
+mg_e_noexp3:  db "'", 10, 0
+mg_e_dupexp1: db "Sutram Error [E_MODULE_DUP_EXPORT]: duplicate export '", 0
+mg_e_dupexp2: db "' in module '", 0
+mg_e_dupexp3: db "'", 10, 0
+mg_e_depth:   db "Sutram Error [E_MODULE_DEPTH]: import depth exceeded", 10, 0
+mg_e_valias1: db "Sutram Error [E_MODULE_V1_ALIAS]: v1 module '", 0
+mg_e_valias2: db "' must be imported with an alias: ayojan ", 0
+mg_e_valias3: db "@alias", 10, 0
+mg_e_limit:   db "Sutram Error [E_MODULE_LIMIT]: too many modules or imports", 10, 0
+mg_root_name: db "__root__", 0
+mg_v1_mark:   db "sutram-module-v1", 0
+mg_arrow:     db " -> ", 0
+mg_colon:     db ":", 0
+mg_w_niryat:   db "niryat", 0
+mg_w_prakriya: db "prakriya", 0
+mg_w_ayojan:   db "ayojan", 0
+; Devanagari प्रक्रिया (27 bytes), same as kw_dev_prakriya
+mg_w_devprak:  db 0xE0,0xA4,0xAA,0xE0,0xA5,0x8D,0xE0,0xA4,0xB0,0xE0,0xA4,0x95,0xE0,0xA5,0x8D,0xE0,0xA4,0xB0,0xE0,0xA4,0xBF,0xE0,0xA4,0xAF,0xE0,0xA4,0xBE,0
+
+section .bss
+mg_buf:       resb 65536
+mg_gray:      resb 1024
+mg_gray_n:    resq 1
+mg_black:     resb 1024
+mg_black_n:   resq 1
+mg_rec_n:     resq 1
+mg_rec_name:  resb 1024
+mg_rec_path:  resb 8192
+mg_rec_v1:    resb 16
+mg_exp:       resb 16384
+mg_exp_n:     resb 16
+mg_def:       resb 32768
+mg_def_n:     resb 16
+mg_imp:       resb 24576
+mg_imp_n:     resb 16
+mg_list:      resb 2048
+mg_list_line: resq 16
+mg_list_n:    resq 1
+mg_cur_name:  resb 64
+mg_cur_path:  resb 512
+mg_cur_line:  resq 1
+mg_cur_alias: resb 64
+mg_path_stk:  resb 8192
+mg_tmp_name:  resb 64
+mg_tmp_alias: resb 64
+mg_pat:       resb 128
+
+section .text
+
+; --- mg_in_gray: rdi = name -> rax = 1 if on DFS stack, else 0 ---
+mg_in_gray:
+    push rbx
+    push r12
+    xor r12, r12
+.g_loop:
+    cmp r12, [rel mg_gray_n]
+    jae .g_no
+    mov rax, r12
+    shl rax, 6
+    lea rsi, [rel mg_gray]
+    add rsi, rax
+    call strcmp
+    test rax, rax
+    jz .g_yes
+    inc r12
+    jmp .g_loop
+.g_no:
+    xor eax, eax
+    jmp .g_done
+.g_yes:
+    mov eax, 1
+.g_done:
+    pop r12
+    pop rbx
+    ret
+
+; --- mg_in_black: rdi = name -> rax = 1 if fully visited, else 0 ---
+mg_in_black:
+    push rbx
+    push r12
+    xor r12, r12
+.b_loop:
+    cmp r12, [rel mg_black_n]
+    jae .b_no
+    mov rax, r12
+    shl rax, 6
+    lea rsi, [rel mg_black]
+    add rsi, rax
+    call strcmp
+    test rax, rax
+    jz .b_yes
+    inc r12
+    jmp .b_loop
+.b_no:
+    xor eax, eax
+    jmp .b_done
+.b_yes:
+    mov eax, 1
+.b_done:
+    pop r12
+    pop rbx
+    ret
+
+; --- mg_push_gray: rdi = name (copies to stack top) ---
+mg_push_gray:
+    push rbx
+    mov rax, [rel mg_gray_n]
+    shl rax, 6
+    lea rbx, [rel mg_gray]
+    add rbx, rax
+    ; copy NUL-terminated, max 63 chars
+    xor rcx, rcx
+.pg_copy:
+    mov al, [rdi + rcx]
+    mov [rbx + rcx], al
+    inc rcx
+    test al, al
+    jz .pg_done
+    cmp rcx, 63
+    jb .pg_copy
+    mov byte [rbx + 63], 0
+.pg_done:
+    inc qword [rel mg_gray_n]
+    pop rbx
+    ret
+
+; --- mg_pop_gray ---
+mg_pop_gray:
+    dec qword [rel mg_gray_n]
+    ret
+
+; --- mg_add_black: rdi = name ---
+mg_add_black:
+    push rbx
+    mov rax, [rel mg_black_n]
+    shl rax, 6
+    lea rbx, [rel mg_black]
+    add rbx, rax
+    xor rcx, rcx
+.ab_copy:
+    mov al, [rdi + rcx]
+    mov [rbx + rcx], al
+    inc rcx
+    test al, al
+    jz .ab_done
+    cmp rcx, 63
+    jb .ab_copy
+    mov byte [rbx + 63], 0
+.ab_done:
+    inc qword [rel mg_black_n]
+    pop rbx
+    ret
+
+; --- mg_find_rec: rdi = name -> rax = record index or -1 ---
+mg_find_rec:
+    push rbx
+    push r12
+    xor r12, r12
+.fr_loop:
+    cmp r12, [rel mg_rec_n]
+    jae .fr_no
+    mov rax, r12
+    shl rax, 6
+    lea rsi, [rel mg_rec_name]
+    add rsi, rax
+    call strcmp
+    test rax, rax
+    jz .fr_yes
+    inc r12
+    jmp .fr_loop
+.fr_no:
+    mov rax, -1
+    jmp .fr_done
+.fr_yes:
+    mov rax, r12
+.fr_done:
+    pop r12
+    pop rbx
+    ret
+
+; --- mg_new_rec: rdi = name, rsi = path -> rax = index or -1 ---
+mg_new_rec:
+    push rbx
+    push r12
+    cmp qword [rel mg_rec_n], 16
+    jae .nr_full
+    mov r12, [rel mg_rec_n]
+    ; name
+    mov rax, r12
+    shl rax, 6
+    lea rbx, [rel mg_rec_name]
+    add rbx, rax
+    xor rcx, rcx
+.nr_name:
+    mov al, [rdi + rcx]
+    mov [rbx + rcx], al
+    inc rcx
+    test al, al
+    jz .nr_path
+    cmp rcx, 63
+    jb .nr_name
+    mov byte [rbx + 63], 0
+.nr_path:
+    mov rax, r12
+    shl rax, 9
+    lea rbx, [rel mg_rec_path]
+    add rbx, rax
+    xor rcx, rcx
+.nr_pcopy:
+    mov al, [rsi + rcx]
+    mov [rbx + rcx], al
+    inc rcx
+    test al, al
+    jz .nr_zero
+    cmp rcx, 511
+    jb .nr_pcopy
+    mov byte [rbx + 511], 0
+.nr_zero:
+    lea rax, [rel mg_rec_v1]
+    mov byte [rax + r12], 0
+    lea rax, [rel mg_exp_n]
+    mov byte [rax + r12], 0
+    lea rax, [rel mg_def_n]
+    mov byte [rax + r12], 0
+    lea rax, [rel mg_imp_n]
+    mov byte [rax + r12], 0
+    inc qword [rel mg_rec_n]
+    mov rax, r12
+    jmp .nr_done
+.nr_full:
+    mov rax, -1
+.nr_done:
+    pop r12
+    pop rbx
+    ret
+
+; --- mg_print_uint: rax = number -> prints decimal ---
+mg_print_uint:
+    push rbx
+    sub rsp, 32
+    lea rbx, [rsp + 31]
+    mov byte [rbx], 0
+    mov rcx, 10
+.pu_loop:
+    xor rdx, rdx
+    div rcx
+    add dl, '0'
+    dec rbx
+    mov [rbx], dl
+    test rax, rax
+    jnz .pu_loop
+    mov rdi, rbx
+    call print_str_z
+    add rsp, 32
+    pop rbx
+    ret
+
+; --- mg_print_loc: prints "path:line: " using mg_cur_path / mg_cur_line ---
+mg_print_loc:
+    push rax
+    lea rdi, [rel mg_cur_path]
+    call print_str_z
+    lea rdi, [rel mg_colon]
+    call print_str_z
+    mov rax, [rel mg_cur_line]
+    call mg_print_uint
+    lea rdi, [rel mg_colon]
+    call print_str_z
+    mov al, ' '
+    ; print single space via stack
+    sub rsp, 16
+    mov [rsp], al
+    mov byte [rsp+1], 0
+    lea rdi, [rsp]
+    call print_str_z
+    add rsp, 16
+    pop rax
+    ret
+
+; --- mg_read_file: rdi = path -> rax = bytes read into mg_buf, or -1 ---
+mg_read_file:
+    push rbx
+    push r12
+    mov rbx, rdi
+    xor rsi, rsi
+    xor rdx, rdx
+    call os_open
+    test rax, rax
+    js .rf_fail
+    mov r12, rax
+    mov rdi, r12
+    lea rsi, [rel mg_buf]
+    mov rdx, 65536
+    call os_read
+    push rax
+    mov rdi, r12
+    call os_close
+    pop rax
+    jmp .rf_done
+.rf_fail:
+    mov rax, -1
+.rf_done:
+    pop r12
+    pop rbx
+    ret
+
+; --- mg_resolve: rdi = module name -> rax=1 and module_path_buf set, else 0 ---
+; Mirrors the expansion's three-step resolution (source dir, exe dir, CWD).
+mg_resolve:
+    push rbx
+    push r12
+    mov r12, rdi
+    ; num_buf = module name
+    lea rbx, [rel num_buf]
+    xor rcx, rcx
+.rs_name:
+    mov al, [r12 + rcx]
+    mov [rbx + rcx], al
+    inc rcx
+    test al, al
+    jz .rs_try1
+    cmp rcx, 31
+    jb .rs_name
+    mov byte [rbx + 31], 0
+.rs_try1:
+    mov rdi, [rel source_path_ptr]
+    call build_module_path_from_file
+    lea rdi, [rel module_path_buf]
+    xor rsi, rsi
+    xor rdx, rdx
+    call os_open
+    test rax, rax
+    js .rs_try2
+    mov rdi, rax
+    call os_close
+    mov rax, 1
+    jmp .rs_done
+.rs_try2:
+    lea rdi, [rel repl_self]
+    call build_module_path_from_file
+    lea rdi, [rel module_path_buf]
+    xor rsi, rsi
+    xor rdx, rdx
+    call os_open
+    test rax, rax
+    js .rs_try3
+    mov rdi, rax
+    call os_close
+    mov rax, 1
+    jmp .rs_done
+.rs_try3:
+    call build_module_path_cwd
+    lea rdi, [rel module_path_buf]
+    xor rsi, rsi
+    xor rdx, rdx
+    call os_open
+    test rax, rax
+    js .rs_fail
+    mov rdi, rax
+    call os_close
+    mov rax, 1
+    jmp .rs_done
+.rs_fail:
+    xor eax, eax
+.rs_done:
+    pop r12
+    pop rbx
+    ret
+
+; --- mg_match_at: rbx=buf, r12=pos, rdx=len, rsi=word -> rax=1 if word matches ---
+mg_match_at:
+    push rcx
+    xor rcx, rcx
+.mm_loop:
+    mov al, [rsi + rcx]
+    test al, al
+    jz .mm_yes
+    mov r8, r12
+    add r8, rcx
+    cmp r8, rdx
+    jae .mm_no
+    cmp al, [rbx + r8]
+    jne .mm_no
+    inc rcx
+    jmp .mm_loop
+.mm_yes:
+    mov rax, 1
+    jmp .mm_done
+.mm_no:
+    xor eax, eax
+.mm_done:
+    pop rcx
+    ret
+
+; --- mg_is_ident: dil = char -> rax=1 if [A-Za-z0-9_], else 0 ---
+mg_is_ident:
+    movzx eax, dil
+    cmp al, '_'
+    je .ii_yes
+    cmp al, 'A'
+    jb .ii_no
+    cmp al, 'Z'
+    jbe .ii_yes
+    cmp al, 'a'
+    jb .ii_no
+    cmp al, 'z'
+    jbe .ii_yes
+    cmp al, '0'
+    jb .ii_no
+    cmp al, '9'
+    jbe .ii_yes
+.ii_no:
+    xor eax, eax
+    ret
+.ii_yes:
+    mov eax, 1
+    ret
+
+; --- mg_check_marker: rbx=buf, r12=pos of '#', rdx=len, r15=rec ---
+; Sets mg_rec_v1[r15]=1 if the line is "# sutram-module-v1".
+mg_check_marker:
+    push rcx
+    push r8
+    mov r8, r12
+    inc r8                       ; skip '#'
+.cm_ws:
+    cmp r8, rdx
+    jae .cm_no
+    movzx eax, byte [rbx + r8]
+    cmp al, ' '
+    je .cm_adv
+    cmp al, 9
+    jne .cm_match
+.cm_adv:
+    inc r8
+    jmp .cm_ws
+.cm_match:
+    lea rsi, [rel mg_v1_mark]
+    xor rcx, rcx
+.cm_loop:
+    mov al, [rsi + rcx]
+    test al, al
+    jz .cm_end_ok
+    mov r9, r8
+    add r9, rcx
+    cmp r9, rdx
+    jae .cm_no
+    cmp al, [rbx + r9]
+    jne .cm_no
+    inc rcx
+    jmp .cm_loop
+.cm_end_ok:
+    ; must be followed by end-of-line
+    mov r9, r8
+    add r9, rcx
+    cmp r9, rdx
+    jae .cm_yes
+    movzx eax, byte [rbx + r9]
+    cmp al, 10
+    je .cm_yes
+    cmp al, 13
+    je .cm_yes
+    cmp al, ' '
+    je .cm_yes
+    cmp al, 9
+    jne .cm_no
+.cm_yes:
+    lea r9, [rel mg_rec_v1]
+    mov byte [r9 + r15], 1
+.cm_no:
+    pop r8
+    pop rcx
+    ret
+
+; --- mg_parse_niryat: rbx=buf, r12=pos of 'n', rdx=len, r13=line, r15=rec ---
+; Parses "niryat <name>", adds to exports, errors on duplicates.
+mg_parse_niryat:
+    push r8
+    push r9
+    push rcx
+    mov r8, r12
+    add r8, 6                    ; skip "niryat"
+.pn_ws:
+    cmp r8, rdx
+    jae .pn_bail
+    movzx eax, byte [rbx + r8]
+    cmp al, ' '
+    je .pn_adv
+    cmp al, 9
+    jne .pn_name
+.pn_adv:
+    inc r8
+    jmp .pn_ws
+.pn_name:
+    ; read identifier into mg_tmp_name
+    lea r9, [rel mg_tmp_name]
+    xor rcx, rcx
+.pn_rd:
+    cmp r8, rdx
+    jae .pn_got
+    movzx eax, byte [rbx + r8]
+    mov dil, al
+    call mg_is_ident
+    test rax, rax
+    jz .pn_got
+    cmp rcx, 63
+    jae .pn_bail
+    movzx eax, byte [rbx + r8]
+    mov [r9 + rcx], al
+    inc rcx
+    inc r8
+    jmp .pn_rd
+.pn_got:
+    test rcx, rcx
+    jz .pn_bail
+    mov byte [r9 + rcx], 0
+    ; duplicate check against mg_exp[r15]
+    lea r11, [rel mg_exp_n]
+    movzx r10, byte [r11 + r15]
+    xor rcx, rcx
+.pn_dup:
+    cmp rcx, r10
+    jae .pn_add
+    mov rax, r15
+    shl rax, 10                  ; rec * 1024
+    mov r11, rcx
+    shl r11, 6
+    add rax, r11
+    lea rsi, [rel mg_exp]
+    add rsi, rax
+    mov rdi, r9
+    call strcmp
+    test rax, rax
+    jz .pn_dup_err
+    inc rcx
+    jmp .pn_dup
+.pn_dup_err:
+    ; E_MODULE_DUP_EXPORT with file:line
+    mov [rel mg_cur_line], r13
+    call mg_print_loc
+    lea rdi, [rel mg_e_dupexp1]
+    call print_str_z
+    mov rdi, r9
+    call print_str_z
+    lea rdi, [rel mg_e_dupexp2]
+    call print_str_z
+    mov rax, r15
+    shl rax, 6
+    lea rdi, [rel mg_rec_name]
+    add rdi, rax
+    call print_str_z
+    lea rdi, [rel mg_e_dupexp3]
+    call print_str_z
+    mov rdi, 1
+    call os_exit
+.pn_add:
+    cmp r10, 16
+    jae .pn_bail                  ; too many exports; ignore extras
+    mov rax, r15
+    shl rax, 10
+    mov r11, r10
+    shl r11, 6
+    add rax, r11
+    lea rsi, [rel mg_exp]
+    add rsi, rax
+    mov rdi, r9
+    xor rcx, rcx
+.pn_cp:
+    mov al, [rdi + rcx]
+    mov [rsi + rcx], al
+    inc rcx
+    test al, al
+    jnz .pn_cp
+    lea r11, [rel mg_exp_n]
+    inc byte [r11 + r15]
+.pn_bail:
+    mov r12, r8                   ; advance past parsed text
+    pop rcx
+    pop r9
+    pop r8
+    ret
+
+; --- mg_parse_prakriya: rbx=buf, r12=pos (after keyword), rdx=len, r15=rec ---
+; r8 = keyword length (8 or 27). Collects the defined function name.
+mg_parse_prakriya:
+    push r8
+    push r9
+    push rcx
+    mov r9, r12
+    add r9, r8                    ; skip keyword
+.pp_ws:
+    cmp r9, rdx
+    jae .pp_bail
+    movzx eax, byte [rbx + r9]
+    cmp al, ' '
+    je .pp_adv
+    cmp al, 9
+    jne .pp_name
+.pp_adv:
+    inc r9
+    jmp .pp_ws
+.pp_name:
+    lea rsi, [rel mg_tmp_name]
+    xor rcx, rcx
+.pp_rd:
+    cmp r9, rdx
+    jae .pp_got
+    movzx eax, byte [rbx + r9]
+    cmp al, '('
+    je .pp_got
+    mov dil, al
+    call mg_is_ident
+    test rax, rax
+    jz .pp_got
+    cmp rcx, 63
+    jae .pp_bail
+    movzx eax, byte [rbx + r9]
+    mov [rsi + rcx], al
+    inc rcx
+    inc r9
+    jmp .pp_rd
+.pp_got:
+    test rcx, rcx
+    jz .pp_bail
+    mov byte [rsi + rcx], 0
+    lea r11, [rel mg_def_n]
+    movzx r10, byte [r11 + r15]
+    cmp r10, 32
+    jae .pp_bail
+    mov rax, r15
+    shl rax, 11                  ; rec * 2048
+    mov r11, r10
+    shl r11, 6
+    add rax, r11
+    lea rdi, [rel mg_def]
+    add rdi, rax
+    xor rcx, rcx
+.pp_cp:
+    mov al, [rsi + rcx]
+    mov [rdi + rcx], al
+    inc rcx
+    test al, al
+    jnz .pp_cp
+    lea r11, [rel mg_def_n]
+    inc byte [r11 + r15]
+.pp_bail:
+    mov r12, r9
+    pop rcx
+    pop r9
+    pop r8
+    ret
+
+; --- mg_parse_ayojan: rbx=buf, r12=pos of 'a', rdx=len, r13=line ---
+; Adds (name, alias, line) to mg_list. Advances r12 past the directive.
+mg_parse_ayojan:
+    push r8
+    push r9
+    push rcx
+    mov r8, r12
+    add r8, 6
+.pa_ws:
+    cmp r8, rdx
+    jae .pa_bail
+    movzx eax, byte [rbx + r8]
+    cmp al, 32
+    je .pa_adv
+    cmp al, 10
+    je .pa_adv
+    cmp al, 13
+    je .pa_adv
+    jmp .pa_name
+.pa_adv:
+    inc r8
+    jmp .pa_ws
+.pa_name:
+    lea r9, [rel mg_tmp_name]
+    xor rcx, rcx
+.pa_rd:
+    cmp r8, rdx
+    jae .pa_got
+    movzx eax, byte [rbx + r8]
+    cmp al, 10
+    je .pa_got
+    cmp al, 13
+    je .pa_got
+    cmp al, 32
+    je .pa_got
+    cmp al, 9
+    je .pa_got
+    cmp al, '@'
+    je .pa_alias
+    cmp rcx, 63
+    jae .pa_bail
+    mov [r9 + rcx], al
+    inc rcx
+    inc r8
+    jmp .pa_rd
+.pa_got:
+    mov byte [r9 + rcx], 0
+    jmp .pa_store
+.pa_alias:
+    mov byte [r9 + rcx], 0
+    inc r8
+    lea r9, [rel mg_tmp_alias]
+    xor rcx, rcx
+.pa_aloop:
+    cmp r8, rdx
+    jae .pa_agot
+    movzx eax, byte [rbx + r8]
+    cmp al, 10
+    je .pa_agot
+    cmp al, 13
+    je .pa_agot
+    cmp al, 32
+    je .pa_agot
+    cmp al, 9
+    je .pa_agot
+    mov dil, al
+    call mg_is_ident
+    test rax, rax
+    jz .pa_agot
+    cmp rcx, 63
+    jae .pa_bail
+    movzx eax, byte [rbx + r8]
+    mov [r9 + rcx], al
+    inc rcx
+    inc r8
+    jmp .pa_aloop
+.pa_agot:
+    mov byte [r9 + rcx], 0
+    jmp .pa_store2
+.pa_store:
+    ; no alias: clear temp
+    mov byte [rel mg_tmp_alias], 0
+.pa_store2:
+    cmp qword [rel mg_list_n], 16
+    jae .pa_bail
+    mov rax, [rel mg_list_n]
+    shl rax, 7                   ; *128
+    lea rsi, [rel mg_list]
+    add rsi, rax
+    ; name
+    lea rdi, [rel mg_tmp_name]
+    xor rcx, rcx
+.pa_cpn:
+    mov al, [rdi + rcx]
+    mov [rsi + rcx], al
+    inc rcx
+    test al, al
+    jnz .pa_cpn
+    ; alias at +64
+    lea rdi, [rel mg_tmp_alias]
+    xor rcx, rcx
+.pa_cpa:
+    mov al, [rdi + rcx]
+    mov [rsi + 64 + rcx], al
+    inc rcx
+    test al, al
+    jnz .pa_cpa
+    ; line
+    mov rax, [rel mg_list_n]
+    lea rcx, [rel mg_list_line]
+    mov [rcx + rax*8], r13
+    inc qword [rel mg_list_n]
+.pa_bail:
+    mov r12, r8
+    pop rcx
+    pop r9
+    pop r8
+    ret
+
+; --- mg_scan_buf: rsi=buf, rdx=len, rdi=rec_idx ---
+; Fills v1 flag, exports, defs, and the temp import list (mg_list).
+mg_scan_buf:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    mov rbx, rsi
+    mov r15, rdi
+    xor r12, r12
+    mov r13, 1
+    mov r14, 1
+    mov qword [rel mg_list_n], 0
+.sb_loop:
+    cmp r12, rdx
+    jae .sb_done
+    movzx eax, byte [rbx + r12]
+    cmp al, 10
+    jne .sb_not_nl
+    inc r13
+    mov r14, 1
+    inc r12
+    jmp .sb_loop
+.sb_not_nl:
+    cmp r14, 1
+    jne .sb_not_ws
+    cmp al, ' '
+    je .sb_ws
+    cmp al, 9
+    je .sb_ws
+    cmp al, 13
+    je .sb_ws
+    jmp .sb_not_ws
+.sb_ws:
+    inc r12
+    jmp .sb_loop
+.sb_not_ws:
+    cmp al, '#'
+    je .sb_comment
+    cmp al, '/'
+    jne .sb_not_cmt
+    mov r8, r12
+    inc r8
+    cmp r8, rdx
+    jae .sb_not_cmt
+    movzx eax, byte [rbx + r8]
+    cmp al, '/'
+    jne .sb_not_cmt
+.sb_comment:
+    call mg_check_marker
+.sb_skip:
+    cmp r12, rdx
+    jae .sb_done
+    movzx eax, byte [rbx + r12]
+    inc r12
+    cmp al, 10
+    jne .sb_skip
+    inc r13
+    mov r14, 1
+    jmp .sb_loop
+.sb_not_cmt:
+    cmp r14, 1
+    jne .sb_not_niryat
+    lea rsi, [rel mg_w_niryat]
+    call mg_match_at
+    test rax, rax
+    jz .sb_not_niryat
+    mov r8, r12
+    add r8, 6
+    cmp r8, rdx
+    jae .sb_not_niryat
+    movzx eax, byte [rbx + r8]
+    cmp al, ' '
+    je .sb_niryat_ok
+    cmp al, 9
+    jne .sb_not_niryat
+.sb_niryat_ok:
+    call mg_parse_niryat
+    mov r14, 0
+    jmp .sb_loop
+.sb_not_niryat:
+    cmp r14, 1
+    jne .sb_not_prakriya
+    lea rsi, [rel mg_w_prakriya]
+    call mg_match_at
+    test rax, rax
+    jnz .sb_prak_ok
+    lea rsi, [rel mg_w_devprak]
+    call mg_match_at
+    test rax, rax
+    jz .sb_not_prakriya
+    mov r8, 27
+    jmp .sb_prak_do
+.sb_prak_ok:
+    mov r8, 8
+.sb_prak_do:
+    ; word boundary: whitespace or '(' after keyword
+    mov r9, r12
+    add r9, r8
+    cmp r9, rdx
+    jae .sb_not_prakriya
+    movzx eax, byte [rbx + r9]
+    cmp al, ' '
+    je .sb_prak_call
+    cmp al, 9
+    je .sb_prak_call
+    cmp al, '('
+    jne .sb_not_prakriya
+.sb_prak_call:
+    call mg_parse_prakriya
+    mov r14, 0
+    jmp .sb_loop
+.sb_not_prakriya:
+    lea rsi, [rel mg_w_ayojan]
+    call mg_match_at
+    test rax, rax
+    jz .sb_advance
+    call mg_parse_ayojan
+    mov r14, 0
+    jmp .sb_loop
+.sb_advance:
+    mov r14, 0
+    inc r12
+    jmp .sb_loop
+.sb_done:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; --- mg_valias_error: rdi = parent path. Prints E_MODULE_V1_ALIAS and exits. ---
+; Uses mg_cur_line, mg_cur_name.
+mg_valias_error:
+    push rdi
+    call print_str_z
+    lea rdi, [rel mg_colon]
+    call print_str_z
+    mov rax, [rel mg_cur_line]
+    call mg_print_uint
+    lea rdi, [rel mg_colon]
+    call print_str_z
+    lea rdi, [rel mg_e_valias1]
+    call print_str_z
+    lea rdi, [rel mg_cur_name]
+    call print_str_z
+    lea rdi, [rel mg_e_valias2]
+    call print_str_z
+    lea rdi, [rel mg_cur_name]
+    call print_str_z
+    lea rdi, [rel mg_e_valias3]
+    call print_str_z
+    mov rdi, 1
+    call os_exit
+
+; --- mg_copy_list_to_rec: r15 = rec_idx. Copies mg_list -> mg_imp[r15]. ---
+mg_copy_list_to_rec:
+    push r12
+    push r13
+    mov r12, [rel mg_list_n]
+    cmp r12, 12
+    jbe .cl_ok
+    mov r12, 12
+.cl_ok:
+    lea r11, [rel mg_imp_n]
+    mov byte [r11 + r15], r12b
+    xor r13, r13
+.cl_loop:
+    cmp r13, r12
+    jae .cl_done
+    ; src = mg_list[r13] (128B), dst = mg_imp + r15*1632 + r13*136
+    mov rax, r13
+    shl rax, 7
+    lea rsi, [rel mg_list]
+    add rsi, rax
+    mov rax, r15
+    imul rax, rax, 1632
+    mov rbx, r13
+    imul rbx, rbx, 136
+    add rax, rbx
+    lea rdi, [rel mg_imp]
+    add rdi, rax
+    ; name (64)
+    xor rcx, rcx
+.cl_name:
+    mov al, [rsi + rcx]
+    mov [rdi + rcx], al
+    inc rcx
+    test al, al
+    jnz .cl_name
+    ; alias (64) at +64
+    xor rcx, rcx
+.cl_alias:
+    mov al, [rsi + 64 + rcx]
+    mov [rdi + 64 + rcx], al
+    inc rcx
+    test al, al
+    jnz .cl_alias
+    ; line at +128
+    lea r11, [rel mg_list_line]
+    mov rax, [r11 + r13*8]
+    mov [rdi + 128], rax
+    inc r13
+    jmp .cl_loop
+.cl_done:
+    pop r13
+    pop r12
+    ret
+
+; --- mg_print_cycle: prints E_MODULE_CYCLE with file:line and cycle path ---
+; Uses mg_cur_path, mg_cur_line (back-edge location), mg_gray, mg_cur_name.
+mg_print_cycle:
+    push rbx
+    push r12
+    call mg_print_loc
+    lea rdi, [rel mg_e_cycle]
+    call print_str_z
+    ; start from the first occurrence of the offending module (the actual cycle)
+    xor r12, r12
+.pc_find:
+    cmp r12, [rel mg_gray_n]
+    jae .pc_loop
+    mov rax, r12
+    shl rax, 6
+    lea rsi, [rel mg_gray]
+    add rsi, rax
+    lea rdi, [rel mg_cur_name]
+    push r12
+    call strcmp
+    pop r12
+    test rax, rax
+    jz .pc_loop
+    inc r12
+    jmp .pc_find
+.pc_loop:
+    cmp r12, [rel mg_gray_n]
+    jae .pc_last
+    mov rax, r12
+    shl rax, 6
+    lea rdi, [rel mg_gray]
+    add rdi, rax
+    call print_str_z
+    lea rdi, [rel mg_arrow]
+    call print_str_z
+    inc r12
+    jmp .pc_loop
+.pc_last:
+    lea rdi, [rel mg_cur_name]
+    call print_str_z
+    sub rsp, 16
+    mov byte [rsp], 10
+    mov byte [rsp+1], 0
+    lea rdi, [rsp]
+    call print_str_z
+    add rsp, 16
+    pop r12
+    pop rbx
+    ret
+
+; --- mg_process_imports: r15 = rec_idx. Loops over mg_imp[r15], recursing. ---
+; Expects mg_cur_path = this module's path (saved/restored via mg_path_stk).
+mg_process_imports:
+    push rbx
+    push r12
+    push r13
+    push r14
+    ; save this module's path at depth gray_n
+    mov rax, [rel mg_gray_n]
+    shl rax, 9
+    lea rdi, [rel mg_path_stk]
+    add rdi, rax
+    lea rsi, [rel mg_cur_path]
+    mov rcx, 512
+    rep movsb
+    xor r12, r12                  ; import index
+.pi_loop:
+    lea r11, [rel mg_imp_n]
+    movzx eax, byte [r11 + r15]
+    cmp r12, rax
+    jae .pi_done
+    ; entry = mg_imp + r15*1632 + r12*136
+    mov rax, r15
+    imul rax, rax, 1632
+    mov rbx, r12
+    imul rbx, rbx, 136
+    add rax, rbx
+    lea rsi, [rel mg_imp]
+    add rsi, rax
+    ; name -> mg_cur_name
+    lea rdi, [rel mg_cur_name]
+    xor rcx, rcx
+.pi_name:
+    mov al, [rsi + rcx]
+    mov [rdi + rcx], al
+    inc rcx
+    test al, al
+    jnz .pi_name
+    ; alias -> mg_cur_alias
+    lea rdi, [rel mg_cur_alias]
+    xor rcx, rcx
+.pi_alias:
+    mov al, [rsi + 64 + rcx]
+    mov [rdi + rcx], al
+    inc rcx
+    test al, al
+    jnz .pi_alias
+    ; line -> mg_cur_line
+    mov rax, [rsi + 128]
+    mov [rel mg_cur_line], rax
+    ; gray check -> cycle
+    lea rdi, [rel mg_cur_name]
+    call mg_in_gray
+    test rax, rax
+    jnz .pi_cycle
+    ; black check -> skip recurse (but valias check below needs record)
+    lea rdi, [rel mg_cur_name]
+    call mg_in_black
+    test rax, rax
+    jnz .pi_black
+    ; resolve
+    lea rdi, [rel mg_cur_name]
+    call mg_resolve
+    test rax, rax
+    jz .pi_next               ; missing: expansion reports it
+    ; mg_cur_path = module_path_buf
+    lea rsi, [rel module_path_buf]
+    lea rdi, [rel mg_cur_path]
+    xor rcx, rcx
+.pi_cpp:
+    mov al, [rsi + rcx]
+    mov [rdi + rcx], al
+    inc rcx
+    test al, al
+    jnz .pi_cpp
+    call mg_visit
+    ; restore this module's path
+    mov rax, [rel mg_gray_n]
+    shl rax, 9
+    lea rsi, [rel mg_path_stk]
+    add rsi, rax
+    lea rdi, [rel mg_cur_path]
+    mov rcx, 512
+    rep movsb
+    jmp .pi_next
+.pi_black:
+    ; already visited: still enforce v1+alias for this edge
+    lea rdi, [rel mg_cur_name]
+    call mg_find_rec
+    cmp rax, 0
+    jl .pi_next
+    lea r11, [rel mg_rec_v1]
+    movzx r8, byte [r11 + rax]
+    test r8, r8
+    jz .pi_next
+    cmp byte [rel mg_cur_alias], 0
+    jne .pi_next
+    ; parent's path is mg_cur_path (not clobbered in this branch)
+    lea rdi, [rel mg_cur_path]
+    call mg_valias_error
+.pi_next:
+    inc r12
+    jmp .pi_loop
+.pi_cycle:
+    call mg_print_cycle
+    mov rdi, 1
+    call os_exit
+.pi_done:
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; --- mg_visit: DFS visit. mg_cur_name/path/alias/line set by caller. ---
+mg_visit:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    ; depth check
+    cmp qword [rel mg_gray_n], 16
+    jae .v_depth
+    ; push gray
+    lea rdi, [rel mg_cur_name]
+    call mg_push_gray
+    ; find or create record
+    lea rdi, [rel mg_cur_name]
+    call mg_find_rec
+    test rax, rax
+    jns .v_have_rec
+    lea rdi, [rel mg_cur_name]
+    lea rsi, [rel mg_cur_path]
+    call mg_new_rec
+    test rax, rax
+    js .v_limit
+.v_have_rec:
+    mov r15, rax
+    ; read file
+    lea rdi, [rel mg_cur_path]
+    call mg_read_file
+    test rax, rax
+    js .v_read_fail
+    ; scan
+    lea rsi, [rel mg_buf]
+    mov rdx, rax
+    mov rdi, r15
+    call mg_scan_buf
+    ; v1+alias check (fresh visit; v1 flag now known)
+    lea r11, [rel mg_rec_v1]
+    movzx eax, byte [r11 + r15]
+    test eax, eax
+    jz .v_no_valias
+    cmp byte [rel mg_cur_alias], 0
+    jne .v_no_valias
+    ; parent's path is at mg_path_stk[gray_n - 1]
+    mov rax, [rel mg_gray_n]
+    dec rax
+    shl rax, 9
+    lea rdi, [rel mg_path_stk]
+    add rdi, rax
+    call mg_valias_error
+.v_no_valias:
+    ; save import list to record, then recurse
+    call mg_copy_list_to_rec
+    call mg_process_imports
+    ; pop gray, blacken
+    call mg_pop_gray
+    lea rdi, [rel mg_cur_name]
+    call mg_add_black
+    jmp .v_done
+.v_read_fail:
+    call mg_pop_gray
+    jmp .v_done
+.v_depth:
+    lea rdi, [rel mg_e_depth]
+    call print_str_z
+    mov rdi, 1
+    call os_exit
+.v_limit:
+    lea rdi, [rel mg_e_limit]
+    call print_str_z
+    mov rdi, 1
+    call os_exit
+.v_done:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; --- check_module_graph: main pre-pass entry. Called before expand_imports. ---
+check_module_graph:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    ; root record
+    lea rdi, [rel mg_root_name]
+    mov rsi, [rel source_path_ptr]
+    call mg_new_rec
+    ; mg_cur_path = source_path_ptr (for error locations in root scan)
+    mov rsi, [rel source_path_ptr]
+    lea rdi, [rel mg_cur_path]
+    xor rcx, rcx
+.cg_cpp:
+    mov al, [rsi + rcx]
+    mov [rdi + rcx], al
+    inc rcx
+    test al, al
+    jnz .cg_cpp
+    mov qword [rel mg_cur_line], 1
+    mov byte [rel mg_cur_alias], 0
+    ; push root to gray; save root path at stack[0]
+    lea rdi, [rel mg_root_name]
+    call mg_push_gray
+    lea rdi, [rel mg_path_stk]
+    lea rsi, [rel mg_cur_path]
+    mov rcx, 512
+    rep movsb
+    ; scan root source
+    lea rsi, [rel source_buf]
+    mov rdx, [rel source_len]
+    xor rdi, rdi
+    call mg_scan_buf
+    ; save imports, process
+    xor r15, r15
+    call mg_copy_list_to_rec
+    call mg_process_imports
+    ; pop gray, blacken root
+    call mg_pop_gray
+    lea rdi, [rel mg_root_name]
+    call mg_add_black
+    ; Phase B: export visibility
+    call mg_check_visibility
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; --- mg_find_ref: rbx=buf, r12=len, rdi=pattern -> rax=line or 0 ---
+; Finds `pattern` as a whole token followed by optional space/tab and '('.
+; Skips # and // comments and "..." strings.
+mg_find_ref:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    mov r9, rdi                   ; pattern (r9 survives: mg_is_ident uses only rax)
+    xor r13, r13
+.fr_plen:
+    cmp byte [r9 + r13], 0
+    je .fr_scan
+    inc r13
+    jmp .fr_plen
+.fr_scan:
+    xor r14, r14                  ; pos
+    mov r15, 1                    ; line
+    xor r8, r8                    ; in_string
+    xor r10, r10                  ; at_line_start
+    inc r10
+.fr_loop:
+    mov rax, r14
+    add rax, r13
+    cmp rax, r12
+    ja .fr_notfound
+    movzx eax, byte [rbx + r14]
+    cmp al, 10
+    jne .fr_not_nl
+    inc r15
+    mov r10, 1
+    inc r14
+    jmp .fr_loop
+.fr_not_nl:
+    mov r10, 0
+    cmp al, '"'
+    jne .fr_not_q
+    xor r8, 1
+    inc r14
+    jmp .fr_loop
+.fr_not_q:
+    cmp r8, 1
+    je .fr_adv
+    cmp al, '#'
+    je .fr_skip
+    cmp al, '/'
+    jne .fr_match
+    mov rax, r14
+    inc rax
+    cmp rax, r12
+    jae .fr_match
+    movzx eax, byte [rbx + rax]
+    cmp al, '/'
+    jne .fr_match
+.fr_skip:
+    ; skip to end of line
+.fr_sl:
+    cmp r14, r12
+    jae .fr_notfound
+    movzx eax, byte [rbx + r14]
+    inc r14
+    cmp al, 10
+    jne .fr_sl
+    inc r15
+    jmp .fr_loop
+.fr_match:
+.fr_cmp_entry:
+    xor rcx, rcx
+.fr_cmp:
+    cmp rcx, r13
+    jae .fr_matched
+    mov rax, r14
+    add rax, rcx
+    mov ah, [rbx + rax]
+    mov al, [r9 + rcx]
+    cmp al, ah
+    jne .fr_adv
+    inc rcx
+    jmp .fr_cmp
+.fr_matched:
+    ; preceding char must not be an identifier char
+    test r14, r14
+    jz .fr_after
+    movzx eax, byte [rbx + r14 - 1]
+    mov edi, eax
+    call mg_is_ident
+    test rax, rax
+    jnz .fr_adv
+.fr_after:
+    mov rax, r14
+    add rax, r13
+.fr_ws:
+    cmp rax, r12
+    jae .fr_adv
+    movzx ecx, byte [rbx + rax]
+    cmp cl, ' '
+    je .fr_ws_adv
+    cmp cl, 9
+    jne .fr_chk_p
+.fr_ws_adv:
+    inc rax
+    jmp .fr_ws
+.fr_chk_p:
+    cmp cl, '('
+    jne .fr_adv
+    mov rax, r15
+    jmp .fr_done
+.fr_adv:
+    inc r14
+    jmp .fr_loop
+.fr_notfound:
+    xor eax, eax
+.fr_done:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; --- mg_check_edge: rbx=importer buf, r12=len, r13=mod rec, r14=alias ---
+; Errors if the importer references alias__<private> for a private of the module.
+mg_check_edge:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    xor r15, r15                  ; def index
+.ce_def:
+    lea r11, [rel mg_def_n]
+    movzx eax, byte [r11 + r13]
+    cmp r15, rax
+    jae .ce_done
+    ; def_is_exported?
+    xor r8, r8
+    lea r11, [rel mg_exp_n]
+    movzx eax, byte [r11 + r13]
+.ce_exp:
+    cmp r8, rax
+    jae .ce_private
+    ; exp = mg_exp + r13*1024 + r8*64 ; def = mg_def + r13*2048 + r15*64
+    mov rcx, r13
+    shl rcx, 10
+    mov rdx, r8
+    shl rdx, 6
+    add rcx, rdx
+    lea rsi, [rel mg_exp]
+    add rsi, rcx
+    mov rcx, r13
+    shl rcx, 11
+    mov rdx, r15
+    shl rdx, 6
+    add rcx, rdx
+    lea rdi, [rel mg_def]
+    add rdi, rcx
+    call strcmp
+    test rax, rax
+    jz .ce_next_def
+    inc r8
+    jmp .ce_exp
+.ce_private:
+    ; build "alias__def" in mg_pat
+    lea rdi, [rel mg_pat]
+    mov rsi, r14
+    xor rcx, rcx
+.ce_pa:
+    mov al, [rsi + rcx]
+    mov [rdi + rcx], al
+    inc rcx
+    test al, al
+    jnz .ce_pa
+    dec rcx
+    mov byte [rdi + rcx], '_'
+    mov byte [rdi + rcx + 1], '_'
+    add rcx, 2
+    mov rax, r13
+    shl rax, 11
+    mov rdx, r15
+    shl rdx, 6
+    add rax, rdx
+    lea rsi, [rel mg_def]
+    add rsi, rax
+    push rsi                      ; save def ptr
+    xor rdx, rdx
+.ce_pd:
+    mov al, [rsi + rdx]
+    mov [rdi + rcx], al
+    inc rcx
+    inc rdx
+    test al, al
+    jnz .ce_pd
+    lea rdi, [rel mg_pat]
+    call mg_find_ref              ; rbx, r12 live; rdi = mg_pat
+    test rax, rax
+    jz .ce_no_ref
+    ; E_MODULE_NOT_EXPORTED at mg_cur_path:rax
+    mov [rel mg_cur_line], rax
+    call mg_print_loc
+    lea rdi, [rel mg_e_noexp1]
+    call print_str_z
+    pop rsi
+    push rsi
+    mov rdi, rsi                  ; def name
+    call print_str_z
+    lea rdi, [rel mg_e_noexp2]
+    call print_str_z
+    mov rax, r13
+    shl rax, 6
+    lea rdi, [rel mg_rec_name]
+    add rdi, rax
+    call print_str_z
+    lea rdi, [rel mg_e_noexp3]
+    call print_str_z
+    mov rdi, 1
+    call os_exit
+.ce_no_ref:
+    pop rsi
+.ce_next_def:
+    inc r15
+    jmp .ce_def
+.ce_done:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; --- mg_check_visibility: Phase B. Checks all v1 import edges. ---
+mg_check_visibility:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    xor r15, r15                  ; importer rec
+    lea r11, [rel mg_rec_v1]
+.cv_rec:
+    cmp r15, [rel mg_rec_n]
+    jae .cv_done
+    movzx eax, byte [r11 + r15]
+    test eax, eax
+    jz .cv_next_rec
+    ; load importer's buffer: rbx, r12; set mg_cur_path for errors
+    cmp r15, 0
+    jne .cv_module
+    lea rbx, [rel source_buf]
+    mov r12, [rel source_len]
+    mov rsi, [rel source_path_ptr]
+    lea rdi, [rel mg_cur_path]
+    xor rcx, rcx
+.cv_cproot:
+    mov al, [rsi + rcx]
+    mov [rdi + rcx], al
+    inc rcx
+    test al, al
+    jnz .cv_cproot
+    jmp .cv_buf_ok
+.cv_module:
+    mov rax, r15
+    shl rax, 9
+    lea rsi, [rel mg_rec_path]
+    add rsi, rax
+    lea rdi, [rel mg_cur_path]
+    xor rcx, rcx
+.cv_cpmod:
+    mov al, [rsi + rcx]
+    mov [rdi + rcx], al
+    inc rcx
+    test al, al
+    jnz .cv_cpmod
+    lea rdi, [rel mg_cur_path]
+    call mg_read_file
+    test rax, rax
+    js .cv_next_rec
+    lea rbx, [rel mg_buf]
+    mov r12, rax
+.cv_buf_ok:
+    xor r14, r14                  ; import index
+    lea r11, [rel mg_imp_n]
+.cv_imp:
+    movzx eax, byte [r11 + r15]
+    cmp r14, rax
+    jae .cv_next_rec
+    mov rax, r15
+    imul rax, rax, 1632
+    mov rcx, r14
+    imul rcx, rcx, 136
+    add rax, rcx
+    lea rsi, [rel mg_imp]
+    add rsi, rax
+    push rsi
+    mov rdi, rsi                  ; name
+    call mg_find_rec
+    pop rsi
+    cmp rax, 0
+    jl .cv_next_imp
+    lea r11, [rel mg_rec_v1]
+    movzx ecx, byte [r11 + rax]
+    test ecx, ecx
+    jz .cv_next_imp
+    ; r13 = mod rec; alias = rsi+64 -> r14 (save index first)
+    mov r13, rax
+    push r14
+    lea r14, [rsi + 64]
+    ; rbx, r12 already set
+    call mg_check_edge
+    pop r14
+.cv_next_imp:
+    inc r14
+    jmp .cv_imp
+.cv_next_rec:
+    inc r15
+    jmp .cv_rec
+.cv_done:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; ============================================================
 ; R33: namespaced module lexical rewriting (compile time, pure NASM)
 ; ayojan module@alias  -> exported calls alias__function(...).
 ; Collect only top-level line-start prakriya declarations, then rename those
 ; identifier tokens when followed by '(' (definition or local call). Strings,
 ; # comments and // comments are copied verbatim. No runtime linker/namespace.
 ; ============================================================
+; --- ns_strip_niryat: removes `niryat <name>` lines from ns_raw_buf ---
+; Only for v1-marked modules (detected via the marker substring). Updates
+; ns_raw_len. Called before ns_rewrite_funcs so niryat never reaches the parser.
+ns_strip_niryat:
+    push rbx
+    push r12
+    push r13
+    push r14
+    lea rbx, [rel ns_raw_buf]
+    mov r13, [rel ns_raw_len]
+    lea rsi, [rel mg_v1_mark]
+    xor r12, r12
+.ns_find:
+    mov rax, r12
+    add rax, 16
+    cmp rax, r13
+    ja .ns_done
+    xor rcx, rcx
+.ns_cmp:
+    mov al, [rsi + rcx]
+    test al, al
+    jz .ns_found
+    mov r9, r12
+    add r9, rcx
+    cmp al, [rbx + r9]
+    jne .ns_next
+    inc rcx
+    jmp .ns_cmp
+.ns_next:
+    inc r12
+    jmp .ns_find
+.ns_found:
+    xor r12, r12                  ; read pos
+    xor r14, r14                  ; write pos
+    mov r8, 1                     ; at_line_start
+.ns_loop:
+    cmp r12, r13
+    jae .ns_strip_done
+    movzx eax, byte [rbx + r12]
+    cmp al, 10
+    jne .ns_not_nl
+    mov [rbx + r14], al
+    inc r12
+    inc r14
+    mov r8, 1
+    jmp .ns_loop
+.ns_not_nl:
+    cmp r8, 1
+    jne .ns_copy
+    cmp al, ' '
+    je .ns_ws
+    cmp al, 9
+    je .ns_ws
+    cmp al, 13
+    je .ns_ws
+    ; try match "niryat"
+    lea rsi, [rel mg_w_niryat]
+    xor rcx, rcx
+.ns_m:
+    mov al, [rsi + rcx]
+    test al, al
+    jz .ns_m_ok
+    mov r9, r12
+    add r9, rcx
+    cmp r9, r13
+    jae .ns_copy
+    cmp al, [rbx + r9]
+    jne .ns_copy
+    inc rcx
+    jmp .ns_m
+.ns_m_ok:
+    mov r9, r12
+    add r9, rcx
+    cmp r9, r13
+    jae .ns_copy
+    movzx eax, byte [rbx + r9]
+    cmp al, ' '
+    je .ns_skip_line
+    cmp al, 9
+    jne .ns_copy
+.ns_skip_line:
+    cmp r12, r13
+    jae .ns_strip_done
+    movzx eax, byte [rbx + r12]
+    inc r12
+    cmp al, 10
+    jne .ns_skip_line
+    mov r8, 1
+    jmp .ns_loop
+.ns_ws:
+    movzx eax, byte [rbx + r12]
+    mov [rbx + r14], al
+    inc r12
+    inc r14
+    jmp .ns_loop
+.ns_copy:
+    movzx eax, byte [rbx + r12]
+    mov [rbx + r14], al
+    inc r12
+    inc r14
+    mov r8, 0
+    jmp .ns_loop
+.ns_strip_done:
+    mov [rel ns_raw_len], r14
+.ns_done:
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
 ns_collect_funcs:
     push rbx
     push r12
