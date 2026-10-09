@@ -45,6 +45,13 @@ CWD = {
 }
 
 
+def norm(s):
+    """Make compiler output checkout-independent: the compiler echoes the
+    source path it was given, so goldens would otherwise embed an absolute
+    path and fail in any other checkout."""
+    return s.replace(ROOT, "<ROOT>")
+
+
 def tests():
     return sorted(os.path.basename(p)[:-3] for p in glob.glob(os.path.join(EXAMPLES, "*.sm")))
 
@@ -69,14 +76,14 @@ def run_one(name, record=False):
         exp_exit = os.path.join(EXPECT, name + ".exit")
         if record:
             os.makedirs(EXPECT, exist_ok=True)
-            open(exp_out, "w").write(stdout)
+            open(exp_out, "w").write(norm(stdout))
             open(exp_exit, "w").write(str(code))
             return ("RECORDED", stdout, code, None)
         if not os.path.exists(exp_out) or not os.path.exists(exp_exit):
             return ("NO-EXPECTATION", stdout, code, None)
         want_out = open(exp_out).read()
         want_code = open(exp_exit).read().strip()
-        if stdout == want_out and str(code) == want_code:
+        if norm(stdout) == want_out and str(code) == want_code:
             return ("PASS", stdout, code, None)
         return ("FAIL", stdout, code, f"expected compile exit {want_code}, got {code}\n"
                                       f"--- expected compiler output ---\n{want_out}\n"
