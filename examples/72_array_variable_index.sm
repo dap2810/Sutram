@@ -1,0 +1,7 @@
+mukhya() {
+    pankti a[4]
+    vitti i = 2
+    a[i] = 21
+    likha(a[i])
+    likha(pankti_len(a))
+}
