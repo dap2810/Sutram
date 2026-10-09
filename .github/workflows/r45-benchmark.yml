@@ -30,6 +30,7 @@ jobs:
           nasm -f elf64 -I. src/sutram_compiler.asm -o /tmp/r45_base.o
           ld -o /tmp/r45_base /tmp/r45_base.o
           cp /tmp/r45_base /tmp/r45_new
+          ln -s /tmp/r45_base sutram_compiler
           echo "R45 BASELINE: $(sha256sum src/sutram_compiler.asm)"
       - name: Baseline profile (strace syscalls; advisory, includes tracer overhead)
         run: |
