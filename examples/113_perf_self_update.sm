@@ -1,0 +1,21 @@
+# PERF1 regression: direct integer self-updates must preserve semantics.
+# First five locals are register-resident; later locals exercise stack imm updates.
+mukhya()
+    vitti a = 10
+    vitti b = 3
+    vitti c = 5
+    vitti d = 0
+    vitti e = 7
+    vitti f = 20
+    vitti g = 4
+    a = a + b
+    a = a - 2
+    c = c + 1
+    e = e - 1
+    f = f + 5
+    g = g - 3
+    likha(a)
+    likha(c)
+    likha(e)
+    likha(f)
+    likha(g)
