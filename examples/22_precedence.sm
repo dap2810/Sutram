@@ -1,0 +1,12 @@
+mukhya()
+    vitti a = 3
+    vitti b = 4
+    likha((a + b) * 2)
+    likha("\n")
+    vitti x = 10
+    yadi (x > 5 && b > 2) { likha("Both true\n") }
+    yadi (x > 100 || b > 2) { likha("At least one\n") }
+    likha(10 % 3 + 1)
+    likha("\n")
+    likha(a & b)
+    likha("\n")
