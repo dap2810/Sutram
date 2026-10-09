@@ -1,0 +1,24 @@
+# T18: typed kosh parameters keep element typing without changing the qword ABI.
+prakriya average(kosh dasham a) {
+    dasham total = a[0] + a[1] + a[2]
+    a[1] = 4.0
+    pratiyati total / kosh_len(a)
+}
+
+prakriya raw_total(kosh a) {
+    pratiyati a[0] + a[1] + kosh_len(a)
+}
+
+mukhya() {
+    kosh dasham values[4]
+    kosh_push(values, 1.5)
+    kosh_push(values, 2.5)
+    kosh_push(values, 2.0)
+    likha(average(values))
+    likha(values[1])
+
+    kosh nums[2]
+    kosh_push(nums, 3)
+    kosh_push(nums, 7)
+    likha(raw_total(nums))
+}
