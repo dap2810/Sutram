@@ -1,0 +1,124 @@
+# lib/ganita.smlib — Sutram standard library: Indian number theory
+#
+# After Aryabhata's Kuttaka (~499 CE) and the Chakravala of Jayadeva and Bhaskara II (~1150 CE).
+#
+# KUTTAKA ("the pulveriser") solves the linear indeterminate equation ax + by = c.
+# It is the ancestor of the extended Euclidean algorithm.
+#
+# CHAKRAVALA ("the wheel") solves the quadratic indeterminate equation x^2 - N*y^2 = 1,
+# known in Europe as Pell's equation. It was the first complete method for it, and for
+# N = 61 it gives x = 1766319049, y = 226153980 - a case Europe first solved in 1657.
+
+# kuttaka(a, b, c) -> x such that a*x is congruent to c (mod b).
+# Requires gcd(a, b) to divide c. Returns x (a particular solution).
+prakriya kuttaka(a, b, c) {
+    vitti old_r = a
+    vitti r = b
+    vitti old_s = 1
+    vitti s = 0
+    yavat (r != 0) {
+        vitti q = old_r / r
+        vitti tmp = old_r - q * r
+        old_r = r
+        r = tmp
+        tmp = old_s - q * s
+        old_s = s
+        s = tmp
+    }
+    yadi (old_r == 0) { pratiyati 0 }
+    vitti mult = c / old_r
+    vitti res = old_s * mult
+    vitti bb = b
+    yadi (bb < 0) { bb = 0 - bb }
+    yadi (bb > 0) {
+        res = res % bb
+        yadi (res < 0) { res = res + bb }
+    }
+    pratiyati res
+}
+
+# integer square root (floor)
+prakriya ganita_isqrt(n) {
+    vitti x = n
+    yadi (x < 0) { pratiyati 0 }
+    vitti i = 0
+    yavat ((i + 1) * (i + 1) <= x) { i = i + 1 }
+    pratiyati i
+}
+
+prakriya ganita_abs(n) {
+    vitti x = n
+    yadi (x < 0) { pratiyati 0 - x }
+    pratiyati x
+}
+
+# chakravala(out, n): solves x^2 - n*y^2 = 1 for least positive x, y.
+# Fills out[0] = x and out[1] = y.
+prakriya chakravala(out, n) {
+    vitti a = ganita_isqrt(n)
+    vitti b = 1
+    vitti k = a * a - n
+    vitti guard = 0
+    yavat (k != 1) {
+        # choose m: (a + b*m) divisible by |k|, minimising |m*m - n|
+        vitti ak = ganita_abs(k)
+        vitti m = 0
+        vitti best = 0 - 1
+        vitti bestm = 0
+        vitti found = 0
+        yavat (found == 0) {
+            vitti t = a + b * m
+            vitti rem = t % ak
+            yadi (rem == 0) {
+                vitti d = ganita_abs(m * m - n)
+                yadi (best < 0) {
+                    best = d
+                    bestm = m
+                } anyatra {
+                    yadi (d < best) {
+                        best = d
+                        bestm = m
+                    } anyatra {
+                        found = 1
+                    }
+                }
+            }
+            m = m + 1
+        }
+        vitti mm = bestm
+        vitti na = (a * mm + n * b) / ak
+        vitti nb = (a + b * mm) / ak
+        vitti nk = (mm * mm - n) / k
+        a = na
+        b = nb
+        k = nk
+        guard = guard + 1
+        yadi (guard > 1000) { pratiyati 0 }
+    }
+    out[0] = a
+    out[1] = b
+}
+
+# samasa(out, a, b, c, d, n): Brahmagupta's composition law (bhavana / samasa).
+# Given a^2 - n*b^2 = k1 and c^2 - n*d^2 = k2, composes them into a third:
+#   (a^2 - n*b^2)(c^2 - n*d^2) = (a*c + n*b*d)^2 - n*(a*d + b*c)^2
+# Fills out[0] = a*c + n*b*d  and  out[1] = a*d + b*c.
+prakriya samasa(out, a, b, c, d, n) {
+    vitti p = a
+    vitti q = b
+    vitti r = c
+    vitti s = d
+    vitti nn = n
+    out[0] = p * r + nn * q * s
+    out[1] = p * s + q * r
+}
+
+# brahmagupta_area(a, b, c, d): Brahmagupta's formula for the area of a cyclic quadrilateral
+# (Brahma-sphuta-siddhanta, 628 CE):  area = sqrt((s-a)(s-b)(s-c)(s-d)),  s = (a+b+c+d)/2.
+# With d = 0 this is Brahmagupta's triangle (Heron's) formula. Returns the integer part.
+prakriya brahmagupta_area(a, b, c, d) {
+    vitti s = (a + b + c + d) / 2
+    vitti p = (s - a) * (s - b) * (s - c) * (s - d)
+    yadi (p < 0) { pratiyati 0 }
+    pratiyati ganita_isqrt(p)
+}
