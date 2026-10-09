@@ -1,0 +1,14 @@
+# Sutram supports two comment styles
+# This is a hash comment (like Python)
+
+mukhya()  // This is a slash comment (like C)
+    # Comments are ignored by the compiler
+    vitti x = 10  # comment after code
+    likha("x = ")
+    likha(x)
+    likha("\n")
+    // Use comments to explain your program
+    vitti y = x * 2   // y = 20
+    likha("y = ")
+    likha(y)
+    likha("\n")
