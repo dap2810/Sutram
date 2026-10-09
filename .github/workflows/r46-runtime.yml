@@ -56,6 +56,22 @@ jobs:
           echo R46_DISASM_START
           cat r46_machine_disassembly.txt
           echo R46_DISASM_END
+      - name: Print and optionally verify changed-file SHA-256 manifest
+        if: always()
+        run: |
+          echo R46_SHA_START
+          sha256sum src/sutram_compiler.asm tools/r46_runtime_benchmark.py \
+            .github/workflows/r46-runtime.yml \
+            benchmarks/r46_hotcall_stack.sm benchmarks/r46_hotcall_nested.sm \
+            benchmarks/r46_hotcall_float.sm benchmarks/r46_hotcall_array.sm \
+            ChatGPT-to-Sarvam/ROUND-46-RUNTIME-RAW-2026-10-09.csv \
+            ChatGPT-to-Sarvam/ROUND-46-DISASSEMBLY-2026-10-09.txt \
+            ChatGPT-to-Sarvam/ROUND-46-NASM-REVIEW.patch \
+            ChatGPT-to-Sarvam/ROUND-46-HANDOFF-2026-10-09.md
+          echo R46_SHA_END
+          if test -f ChatGPT-to-Sarvam/ROUND-46-SHA256.txt; then
+            sha256sum -c ChatGPT-to-Sarvam/ROUND-46-SHA256.txt
+          fi
       - uses: actions/upload-artifact@v4
         if: always()
         with:
