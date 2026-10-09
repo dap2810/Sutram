@@ -56,8 +56,14 @@ jobs:
         if: always()
         run: |
           echo R45_SHA_START
-          sha256sum src/sutram_compiler.asm tools/r45_benchmark.py .github/workflows/r45-profile.yml ChatGPT-to-Sarvam/ROUND-45-RAW-AB-2026-10-09.csv
+          sha256sum src/sutram_compiler.asm tools/r45_benchmark.py .github/workflows/r45-profile.yml \
+            ChatGPT-to-Sarvam/ROUND-45-RAW-AB-2026-10-09.csv \
+            ChatGPT-to-Sarvam/ROUND-45-NASM-REVIEW.patch \
+            ChatGPT-to-Sarvam/ROUND-45-HANDOFF-2026-10-09.md
           echo R45_SHA_END
+          if test -f ChatGPT-to-Sarvam/ROUND-45-SHA256.txt; then
+            sha256sum -c ChatGPT-to-Sarvam/ROUND-45-SHA256.txt
+          fi
       - uses: actions/upload-artifact@v4
         if: always()
         with:
