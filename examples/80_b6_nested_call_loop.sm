@@ -1,0 +1,32 @@
+prakriya sw(a, i, j) {
+    vitti t = a[i]
+    a[i] = a[j]
+    a[j] = t
+}
+
+prakriya bsort(a, n) {
+    vitti i = 0
+    yavat (i < n) {
+        vitti j = 0
+        yavat (j < n - 1 - i) {
+            yadi (a[j] > a[j + 1]) {
+                sw(a, j, j + 1)
+            }
+            j = j + 1
+        }
+        i = i + 1
+    }
+}
+
+mukhya() {
+    pankti a[4]
+    a[0] = 4
+    a[1] = 3
+    a[2] = 2
+    a[3] = 1
+    bsort(a, 4)
+    likha(a[0])
+    likha(a[1])
+    likha(a[2])
+    likha(a[3])
+}
