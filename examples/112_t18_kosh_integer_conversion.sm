@@ -1,0 +1,8 @@
+# Integer kosh normalizes dasham input by truncation, matching scalar assignment semantics.
+mukhya() {
+    kosh a[1]
+    kosh_push(a, 2.9)
+    likha(a[0])
+    a[0] = 4.8
+    likha(kosh_pop(a))
+}
