@@ -1,0 +1,3 @@
+# Namespaced fixture A: deliberately collides with fixture B.
+prakriya helper() { pratiyati 12 }
+prakriya clash() { pratiyati helper() + 1 }
