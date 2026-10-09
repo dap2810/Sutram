@@ -91,6 +91,11 @@
 %define KC_UP           111
 %define KC_DOWN         116
 %define KC_CTRL_R       27              ; 'r' keycode, checked with ControlMask
+%define KC_CTRL_S       39              ; 's' keycode
+%define KC_CTRL_L       46              ; 'l' keycode
+%define KC_CTRL_Z       52              ; 'z' keycode
+%define SAVE_PATH       "/tmp/.sutram_gui_saved.sm"
+%define UNDO_LEVELS     8
 %define MASK_CONTROL    0x0004
 
 ; ---- keyboard mapping (slice 4) -------------------------------------------
@@ -153,6 +158,11 @@ section .bss
     km_syms     resb 4096           ; keysym array
     kc_map      resb 256            ; keycode -> ASCII from the server
     km_ok       resq 1              ; 1 once a keymap has been fetched
+    ; ---- slice 8: bounded undo stack (8 levels) ----
+    undo_stack  resb UNDO_LEVELS * ED_CAP   ; slot i = snapshot i
+    undo_slen   resq UNDO_LEVELS            ; saved length per slot
+    undo_scur   resq UNDO_LEVELS            ; saved cursor per slot
+    undo_depth  resq 1                      ; number of live snapshots
     ; ---- slice 5: run path ----
     pipefd      resd 2
     comp_path   resb 512            ; resolved compiler path
@@ -170,6 +180,7 @@ section .data
     comp_suffix  db "/sutram_compiler", 0
     run_src_z    db RUN_SRC, 0
     run_bin_z    db RUN_BIN, 0
+    save_z       db SAVE_PATH, 0
     msg_run      db "Sutram GUI: run (Ctrl-R)", 10, 0
 
     handshake   db 0x6C, 0x00
@@ -625,6 +636,9 @@ draw_all:
 ; rdi = character.  Insert at the cursor, bounded by ED_CAP.
 ed_insert:
     push rbx
+    push rdi
+    call snapshot
+    pop rdi
     lea  rbx, [rel ed_buf]
     mov  rax, [rel ed_len]
     cmp  rax, ED_CAP - 2
@@ -649,6 +663,7 @@ ed_insert:
 ; ---------------------------------------------------------------- ed_backspace
 ed_backspace:
     push rbx
+    call snapshot
     lea  rbx, [rel ed_buf]
     mov  rcx, [rel ed_cursor]
     test rcx, rcx
@@ -1178,6 +1193,258 @@ has_error:
     pop rbx
     ret
 
+
+; ---------------------------------------------------------------- save_saved
+; Ctrl-S: write the editor buffer to SAVE_PATH. 0 ok, -1 error.
+save_saved:
+    push rbx
+    mov rax, SYS_open
+    lea rdi, [rel save_z]
+    mov rsi, O_WRONLY | O_CREAT | O_TRUNC
+    mov rdx, 0o644
+    syscall
+    cmp rax, 0
+    jl .fail
+    mov rbx, rax
+    mov rdx, [rel ed_len]
+    test rdx, rdx
+    jz .close
+    mov rax, SYS_write
+    mov rdi, rbx
+    lea rsi, [rel ed_buf]
+    syscall
+.close:
+    mov rax, SYS_close
+    mov rdi, rbx
+    syscall
+    xor rax, rax
+    pop rbx
+    ret
+.fail:
+    mov rax, -1
+    pop rbx
+    ret
+
+; ---------------------------------------------------------------- load_saved
+; Ctrl-L: read SAVE_PATH into the editor buffer, replacing its contents.
+load_saved:
+    push rbx
+    push r12
+    mov rax, SYS_open
+    lea rdi, [rel save_z]
+    xor rsi, rsi                    ; O_RDONLY
+    xor rdx, rdx
+    syscall
+    cmp rax, 0
+    jl .fail
+    mov rbx, rax
+    mov rax, SYS_read
+    mov rdi, rbx
+    lea rsi, [rel ed_buf]
+    mov rdx, ED_CAP - 2
+    syscall
+    cmp rax, 0
+    jl .fail
+    mov r12, rax
+    mov rax, SYS_close
+    mov rdi, rbx
+    syscall
+    mov [rel ed_len], r12
+    mov [rel ed_cursor], r12
+    xor rax, rax
+    pop r12
+    pop rbx
+    ret
+.fail:
+    mov rax, SYS_close
+    mov rdi, rbx
+    syscall
+    pop r12
+    pop rbx
+    mov rax, -1
+    ret
+
+
+
+; ---------------------------------------------------------------- snapshot
+; Slice 8: push the current buffer onto a bounded undo stack before an edit.
+; When the stack is full the oldest slot is dropped (a 7-slot memmove), so the
+; most recent UNDO_LEVELS-1 edits are always recoverable.
+snapshot:
+    push rbx
+    push rcx
+    push rdi
+    push rsi
+    ; if full, shift slots 1..N-1 down to 0..N-2
+    mov rax, [rel undo_depth]
+    cmp rax, UNDO_LEVELS
+    jb .push
+    lea rsi, [rel undo_stack + ED_CAP]      ; source: slot 1
+    lea rdi, [rel undo_stack]               ; dest:   slot 0
+    mov rcx, (UNDO_LEVELS - 1) * ED_CAP
+    rep movsb
+    lea rsi, [rel undo_slen + 8]
+    lea rdi, [rel undo_slen]
+    mov rcx, UNDO_LEVELS - 1
+    rep movsq
+    lea rsi, [rel undo_scur + 8]
+    lea rdi, [rel undo_scur]
+    mov rcx, UNDO_LEVELS - 1
+    rep movsq
+    mov rax, UNDO_LEVELS - 1
+    mov [rel undo_depth], rax
+.push:
+    mov rax, [rel undo_depth]
+    mov rcx, rax
+    imul rcx, ED_CAP
+    lea rdi, [rel undo_stack]
+    add rdi, rcx
+    lea rsi, [rel ed_buf]
+    mov rcx, [rel ed_len]
+    test rcx, rcx
+    jz .meta
+    rep movsb
+.meta:
+    mov rax, [rel undo_depth]
+    lea rdi, [rel undo_slen]
+    mov rcx, [rel ed_len]
+    mov [rdi + rax*8], rcx
+    lea rdi, [rel undo_scur]
+    mov rcx, [rel ed_cursor]
+    mov [rdi + rax*8], rcx
+    inc rax
+    mov [rel undo_depth], rax
+    pop rsi
+    pop rdi
+    pop rcx
+    pop rbx
+    ret
+
+; ---------------------------------------------------------------- undo_restore
+; Ctrl-Z: pop the most recent snapshot back into the buffer.
+undo_restore:
+    push rbx
+    push rcx
+    push rdi
+    push rsi
+    mov rax, [rel undo_depth]
+    test rax, rax
+    jz .done
+    dec rax
+    mov [rel undo_depth], rax
+    mov rcx, rax
+    imul rcx, ED_CAP
+    lea rsi, [rel undo_stack]
+    add rsi, rcx
+    lea rdi, [rel ed_buf]
+    lea rcx, [rel undo_slen]
+    mov rcx, [rcx + rax*8]
+    mov [rel ed_len], rcx
+    lea rdx, [rel undo_scur]
+    mov rdx, [rdx + rax*8]
+    mov [rel ed_cursor], rdx
+    test rcx, rcx
+    jz .done
+    rep movsb
+.done:
+    pop rsi
+    pop rdi
+    pop rcx
+    pop rbx
+    ret
+
+
+; ---------------------------------------------------------------- line_start
+; rdi = index. Returns in rax the index of the first char of that line.
+line_start:
+    mov rax, rdi
+.ls_back:
+    test rax, rax
+    jz .ls_done
+    lea rcx, [rel ed_buf]
+    cmp byte [rcx + rax - 1], 10
+    je .ls_done
+    dec rax
+    jmp .ls_back
+.ls_done:
+    ret
+
+; ---------------------------------------------------------------- line_end
+; rdi = index. Returns in rax the index of the newline ending that line
+; (or ed_len at end of buffer).
+line_end:
+    mov rax, rdi
+.le_fwd:
+    cmp rax, [rel ed_len]
+    jae .le_done
+    lea rcx, [rel ed_buf]
+    cmp byte [rcx + rax], 10
+    je .le_done
+    inc rax
+    jmp .le_fwd
+.le_done:
+    ret
+
+; ---------------------------------------------------------------- caret_up
+; Move the caret one line up, keeping the column where possible.
+caret_up:
+    push rbx
+    push r12
+    mov rdi, [rel ed_cursor]
+    call line_start
+    mov rbx, rax                    ; current line start
+    test rbx, rbx
+    jz .cu_done                     ; already on the first line
+    mov rdi, [rel ed_cursor]
+    sub rdi, rbx                    ; column
+    mov r12, rdi
+    mov rdi, rbx
+    dec rdi                         ; the newline above
+    call line_start
+    mov rbx, rax                    ; previous line start
+    mov rdi, rbx
+    call line_end
+    add rbx, r12                    ; start + column
+    cmp rbx, rax
+    jbe .cu_set
+    mov rbx, rax                    ; clamp to end of the previous line
+.cu_set:
+    mov [rel ed_cursor], rbx
+.cu_done:
+    pop r12
+    pop rbx
+    ret
+
+; ---------------------------------------------------------------- caret_down
+; Move the caret one line down, keeping the column where possible.
+caret_down:
+    push rbx
+    push r12
+    mov rdi, [rel ed_cursor]
+    call line_start
+    mov rbx, rax
+    mov rdi, [rel ed_cursor]
+    sub rdi, rbx                    ; column
+    mov r12, rdi
+    mov rdi, [rel ed_cursor]
+    call line_end
+    cmp rax, [rel ed_len]
+    jae .cd_done                    ; already on the last line
+    inc rax                         ; start of the next line
+    mov rbx, rax
+    mov rdi, rbx
+    call line_end
+    add rbx, r12
+    cmp rbx, rax
+    jbe .cd_set
+    mov rbx, rax
+.cd_set:
+    mov [rel ed_cursor], rbx
+.cd_done:
+    pop r12
+    pop rbx
+    ret
+
 ; ---------------------------------------------------------------- handle_key
 ; rdi = X11 keycode, rsi = event state (modifier mask).
 handle_key:
@@ -1187,6 +1454,12 @@ handle_key:
     jz   .nocontrol
     cmp  rbx, KC_CTRL_R
     je   .run
+    cmp  rbx, KC_CTRL_S
+    je   .save
+    cmp  rbx, KC_CTRL_L
+    je   .load
+    cmp  rbx, KC_CTRL_Z
+    je   .undo
 .nocontrol:
     cmp  rbx, KC_ESCAPE
     je   .esc
@@ -1194,6 +1467,14 @@ handle_key:
     je   .bs
     cmp  rbx, KC_RETURN
     je   .nl
+    cmp  rbx, KC_LEFT
+    je   .left
+    cmp  rbx, KC_RIGHT
+    je   .right
+    cmp  rbx, KC_UP
+    je   .up
+    cmp  rbx, KC_DOWN
+    je   .down
     cmp  qword [rel km_ok], 0
     je   .fallback
     lea  rcx, [rel kc_map]
@@ -1221,6 +1502,34 @@ handle_key:
 .run:
     call do_run
     call draw_all
+    jmp  .done
+.save:
+    call save_saved
+    jmp  .done
+.load:
+    call load_saved
+    call draw_editor
+    jmp  .done
+.undo:
+    call undo_restore
+    call draw_editor
+    jmp  .done
+.left:
+    cmp  qword [rel ed_cursor], 0
+    je   .done
+    dec  qword [rel ed_cursor]
+    jmp  .done
+.right:
+    mov  rax, [rel ed_cursor]
+    cmp  rax, [rel ed_len]
+    jae  .done
+    inc  qword [rel ed_cursor]
+    jmp  .done
+.up:
+    call caret_up
+    jmp  .done
+.down:
+    call caret_down
     jmp  .done
 .esc:
     mov  dword [rel want_quit], 1
