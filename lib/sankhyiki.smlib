@@ -1,0 +1,114 @@
+# lib/sankhyiki.smlib — Sutram standard library: सांख्यिकी (statistics)
+#
+# The first library module built on typed `kosh dasham` parameters (T18).
+# Every function takes a float array by parameter and only READS it — no kosh_push,
+# because pushing to a kosh parameter is deliberately rejected by the compiler
+# (the pointer is passed by value; growth would leave the caller with a stale pointer).
+#
+# Float arrays are the natural input here: statistics over integers would silently
+# truncate. Use `kosh dasham` on the caller's side.
+#
+# Convention: variance and standard deviation are the POPULATION forms
+# (divide by n). Multiply by n/(n-1) if you need the sample forms.
+
+# --- sum ---
+prakriya yoga(kosh dasham xs) {
+    dasham s = 0.0
+    vitti i = 0
+    yavat (i < kosh_len(xs)) {
+        s = s + xs[i]
+        i = i + 1
+    }
+    pratiyati s
+}
+
+# --- arithmetic mean ---
+prakriya madhya(kosh dasham xs) {
+    vitti n = kosh_len(xs)
+    yadi (n == 0) { pratiyati 0.0 }
+    pratiyati yoga(xs) / n
+}
+
+# --- minimum ---
+prakriya laghutama(kosh dasham xs) {
+    vitti n = kosh_len(xs)
+    yadi (n == 0) { pratiyati 0.0 }
+    dasham m = xs[0]
+    vitti i = 1
+    yavat (i < n) {
+        yadi (xs[i] < m) { m = xs[i] }
+        i = i + 1
+    }
+    pratiyati m
+}
+
+# --- maximum ---
+prakriya adhikatama(kosh dasham xs) {
+    vitti n = kosh_len(xs)
+    yadi (n == 0) { pratiyati 0.0 }
+    dasham m = xs[0]
+    vitti i = 1
+    yavat (i < n) {
+        yadi (xs[i] > m) { m = xs[i] }
+        i = i + 1
+    }
+    pratiyati m
+}
+
+# --- range (max - min) ---
+prakriya vyapti(kosh dasham xs) {
+    pratiyati adhikatama(xs) - laghutama(xs)
+}
+
+# --- population variance (प्रसरण) ---
+prakriya prasaran(kosh dasham xs) {
+    vitti n = kosh_len(xs)
+    yadi (n == 0) { pratiyati 0.0 }
+    dasham m = madhya(xs)
+    dasham acc = 0.0
+    vitti i = 0
+    yavat (i < n) {
+        dasham d = xs[i] - m
+        acc = acc + d * d
+        i = i + 1
+    }
+    pratiyati acc / n
+}
+
+# --- square root, Newton's method (private to this module: distinct name so it
+#     never collides with madhava_sqrt or a user function) ---
+prakriya sankhyiki_sqrt(dasham v) {
+    yadi (v <= 0.0) { pratiyati 0.0 }
+    dasham g = v
+    vitti k = 0
+    yavat (k < 20) {
+        g = (g + v / g) / 2.0
+        k = k + 1
+    }
+    pratiyati g
+}
+
+# --- population standard deviation (मानक विचलन) ---
+prakriya vichalan(kosh dasham xs) {
+    pratiyati sankhyiki_sqrt(prasaran(xs))
+}
+
+# --- dot product of two float arrays (बिंदु गुणनफल) ---
+prakriya bindu(kosh dasham a, kosh dasham b) {
+    vitti na = kosh_len(a)
+    vitti nb = kosh_len(b)
+    vitti n = na
+    yadi (nb < n) { n = nb }
+    dasham s = 0.0
+    vitti i = 0
+    yavat (i < n) {
+        s = s + a[i] * b[i]
+        i = i + 1
+    }
+    pratiyati s
+}
+
+# --- Euclidean norm (magnitude) of a vector ---
+prakriya manak(kosh dasham a) {
+    pratiyati sankhyiki_sqrt(bindu(a, a))
+}
