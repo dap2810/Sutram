@@ -36,19 +36,32 @@ def run_one(name, expected_kind, needles, binpath):
         cwd=ROOT, capture_output=True, text=True, timeout=30
     )
     raw = result.stdout + result.stderr
+    # Goldens are recorded from an actual GitHub Actions native run
+    # (2026-10-09, run 37945627640). Normalize only checkout-directory prefixes,
+    # preserving source-relative paths, line numbers, code and punctuation.
+    expected_file = CASES / name / "recorded.out"
+    expected_code = int((CASES / name / "recorded.exit").read_text().strip())
+    expected_stdout = expected_file.read_text()
+    assert expected_stdout, f"{name}: recorded.out must not be empty"
     if expected_kind != "OK":
-        ok = result.returncode != 0 and expected_kind in raw
-        ok = ok and all(s in raw for s in needles)
-        print(f"{'PASS' if ok else 'FAIL'} {name}: compile rc={result.returncode} {raw!r}")
+        actual = raw.replace(str(ROOT) + "/", "")
+        ok = (result.returncode == expected_code and actual == expected_stdout
+              and expected_kind in actual and all(t in actual for t in needles))
+        print(f"{'PASS' if ok else 'FAIL'} {name}: compile rc={result.returncode} {actual!r}")
+        if not ok:
+            print(f"  REAL GOLDEN: rc={expected_code} {expected_stdout!r}")
         return ok
     if result.returncode:
         print(f"FAIL {name}: compiler rc={result.returncode} {raw!r}")
         return False
     program = subprocess.run([str(binpath)], cwd=ROOT,
                              capture_output=True, text=True, timeout=10)
-    actual = program.stdout.strip()
-    ok = program.returncode == 0 and actual == needles[0]
-    print(f"{'PASS' if ok else 'FAIL'} {name}: run rc={program.returncode} {program.stdout!r}")
+    actual = program.stdout
+    ok = (program.returncode == expected_code and actual == expected_stdout
+          and actual.strip() == needles[0])
+    print(f"{'PASS' if ok else 'FAIL'} {name}: run rc={program.returncode} {actual!r}")
+    if not ok:
+        print(f"  REAL GOLDEN: rc={expected_code} {expected_stdout!r}")
     return ok
 
 def main():
