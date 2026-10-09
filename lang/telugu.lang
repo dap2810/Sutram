@@ -1,0 +1,34 @@
+# Sutram language pack: తెలుగు
+# Format: <native word> <sanskrit keyword>
+# Usage: sutram --lang telugu input.sm output.bin
+
+ముఖ్యం mukhya
+చరం vitti
+సంఖ్య anka
+ఒకవేళ yadi
+లేకపోతే anyatra
+ఎంతవరకు yavat
+పునరావృతం punaravartana
+తిరిగి pratiyati
+ప్రక్రియ prakriya
+వ్రాయు likha
+నిజం purna
+అబద్ధం shunya
+స్థిరం sutra
+క్రమం krama
+కొనసాగు uddeshya
+గుణం guna
+భావన bhavana
+పంక్తి pankti
+సృజన srijana
+నిషేధం nishedha
+రచన rachana
+చేర్చు ayojan
+కలిగివుండు parigrah
+చదువు grahan
+నుండి to
+శబ్దం shabda
+దశమ dasham
+కోశం kosh
+చేయి kuru
+నిష్క్రియ nishkriya
