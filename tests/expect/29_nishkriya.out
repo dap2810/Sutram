@@ -1,0 +1,8 @@
+Nishkriya: Inline Assembly
+==========================
+This program exits with code 42 using raw x86-64 bytes.
+mov eax,60 / mov edi,42 / syscall  is just:
+  nishkriya("B8 3C 00 00 00")
+  nishkriya("BF 2A 00 00 00")
+  nishkriya("0F 05")
+Exiting with code 42...
