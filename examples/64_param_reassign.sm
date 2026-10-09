@@ -1,0 +1,8 @@
+prakriya bump(a) {
+    a = a + 1
+    pratiyati a
+}
+
+mukhya() {
+    likha(bump(4))
+}
