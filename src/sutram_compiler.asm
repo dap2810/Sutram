@@ -2558,6 +2558,10 @@ mg_tmp_name:  resb 64
 mg_tmp_alias: resb 64
 mg_pat:       resb 128
 mg_root_exact_v1: resb 1 ; R44 preserve R41 header-specific cycle/missing precedence
+mg_deferred_alias: resb 1
+mg_deferred_alias_name: resb 64
+mg_deferred_alias_path: resb 512
+mg_deferred_alias_line: resq 1
 mg_pat_len:   resq 1    ; R44 qualified-name prefix length
 
 section .text
@@ -3527,6 +3531,25 @@ mg_scan_buf:
 
 ; --- mg_valias_error: rdi = parent path. Prints E_MODULE_V1_ALIAS and exits. ---
 ; Uses mg_cur_line, mg_cur_name.
+mg_defer_valias:
+    ; rdi=importer path, mg_cur_name/line=offending import. Retain the first
+    ; deterministic v1 alias error until AFTER dependency graph DFS diagnostics.
+    cmp byte [rel mg_deferred_alias], 0
+    jne .da_done
+    mov byte [rel mg_deferred_alias], 1
+    mov rax, [rel mg_cur_line]
+    mov [rel mg_deferred_alias_line], rax
+    mov rsi, rdi
+    lea rdi, [rel mg_deferred_alias_path]
+    mov rcx, 512
+    rep movsb
+    lea rsi, [rel mg_cur_name]
+    lea rdi, [rel mg_deferred_alias_name]
+    mov rcx, 64
+    rep movsb
+.da_done:
+    ret
+
 mg_valias_error:
     push rdi
     call print_str_z
@@ -3826,6 +3849,11 @@ mg_process_imports:
     jne .pi_next
     ; parent's path is mg_cur_path (not clobbered in this branch)
     lea rdi, [rel mg_cur_path]
+    cmp byte [rel mg_root_exact_v1], 1
+    jne .pi_alias_now
+    call mg_defer_valias
+    jmp .pi_next
+.pi_alias_now:
     call mg_valias_error
 .pi_next:
     inc r12
@@ -3889,14 +3917,19 @@ mg_visit:
     shl rax, 9
     lea rdi, [rel mg_path_stk]
     add rdi, rax
+    cmp byte [rel mg_root_exact_v1], 1
+    jne .v_alias_now
+    call mg_defer_valias
+    jmp .v_no_valias
+.v_alias_now:
     call mg_valias_error
 .v_no_valias:
-    ; R44: resolve every declared export after collecting all definitions.
-    ; This must run before recursive visits overwrite mg_cur_path.
-    call mg_verify_exports
-    ; save import list to record, then recurse
+    ; Save import list, traverse dependencies and collect R41 cycle/missing
+    ; errors before either export or alias diagnostics for an exact-v1 root.
     call mg_copy_list_to_rec
     call mg_process_imports
+    ; Now root graph reachability is checked through this module.
+    call mg_verify_exports
     ; pop gray, blacken
     call mg_pop_gray
     lea rdi, [rel mg_cur_name]
@@ -3930,6 +3963,7 @@ check_module_graph:
     push r13
     push r14
     push r15
+    mov byte [rel mg_deferred_alias], 0
     ; root record
     lea rdi, [rel mg_root_name]
     mov rsi, [rel source_path_ptr]
@@ -3966,6 +4000,19 @@ check_module_graph:
     call mg_pop_gray
     lea rdi, [rel mg_root_name]
     call mg_add_black
+    ; After DFS, replay the first v1 alias violation, preserving the old
+    ; cycle/missing diagnostic precedence of the R41-first architecture.
+    cmp byte [rel mg_deferred_alias], 0
+    je .cg_no_alias
+    lea rsi, [rel mg_deferred_alias_name]
+    lea rdi, [rel mg_cur_name]
+    mov rcx, 64
+    rep movsb
+    mov rax, [rel mg_deferred_alias_line]
+    mov [rel mg_cur_line], rax
+    lea rdi, [rel mg_deferred_alias_path]
+    call mg_valias_error
+.cg_no_alias:
     ; Phase B: export visibility
     call mg_check_visibility
     pop r15
