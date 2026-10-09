@@ -49,3 +49,6 @@ jobs:
       - name: Round 44 pending native cases
         if: always()
         run: python3 tools/r44_pending_acceptance.py
+      - name: Five independently recorded R41 native fixtures
+        if: always()
+        run: python3 tools/r44_r41_native_goldens.py
