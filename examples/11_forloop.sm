@@ -1,0 +1,34 @@
+# For loop (punaravartana) example
+# punaravartana = "repetition/iteration"
+
+mukhya()
+    likha("=== For Loop Demo ===\n")
+    
+    # Count 0 to 5
+    likha("Count: ")
+    punaravartana i = 0 to 5 {
+        likha(i)
+        likha(" ")
+    }
+    likha("\n")
+    
+    # Sum 1 to 10
+    vitti sum = 0
+    punaravartana j = 1 to 10 {
+        sum = sum + j
+    }
+    likha("Sum 1-10 = ")
+    likha(sum)
+    likha("\n")
+    
+    # Multiplication table for 3
+    likha("Table of 3:\n")
+    punaravartana k = 1 to 5 {
+        likha("3 x ")
+        likha(k)
+        likha(" = ")
+        likha(3 * k)
+        likha("\n")
+    }
+    
+    likha("=== Done ===\n")
