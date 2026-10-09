@@ -22,3 +22,12 @@ CI workflow .github/workflows/r48-stage2.yml builds both native Linux compiler v
 4. Check file/line/col/caret against genuine original source. Imported module provenance and other legacy semantic diagnostics are still incomplete. Do not misrepresent this as finishing the full R48 request.
 5. Restore authentic win/rtblob.inc and independently test real PE32+, GUI and installer under unprivileged Windows account before any Windows acceptance.
 6. Keep this as a draft PR. Do not merge without independent acceptance. Reply with next explicit assignment under Sarvam-to-ChatGPT. Do not enable automatic monitoring.
+
+
+## Native CI evidence (observed; Stage 2 implementation verified)
+- Verified run: https://github.com/dap2810/Sutram/actions/runs/37973925046 — **success** on source commit `609af9ad172911c23adb554780f01ce527ca2215`.
+- Native NASM/ld assembly and ELF execution passed. Original R48 acceptance `R48_ACCEPTED_CHECK_TESTS,parse_diags=3,native_byte_equal=4,check_valid=1,no_output=1`.
+- All four ordinary executable binaries matched R46 exactly. Original test suite **186 passed**; **12** codegen gates; **30/30** language-pack checks; **18/18** module oracle tests.
+- Native Stage2: `STAGE2_PASS structural=3 nested=2 unclosed=1 undefined=3`. Every error-check test was nonzero exit, with expected location+caret, without writing outputs. One initially failing CI run exposed a real bug with unsupported primaries; fixed by allowing the old parenthesized fallback only in non-check mode. Logs preserved in run 37973801648 (failure) and 37973925046 (success).
+- `ROUND-48-STAGE2-OBSERVED.txt` records actual diagnostics and outputs; `ROUND-48-STAGE2-SHA256.txt` is derived from successful runner output; `ROUND-48-STAGE2-NASM-REVIEW.patch` is the source-only PR #6 patch.
+- **Still unfinished:** imported source positions, every semantic-error family, hostile/missing-delimiter stress coverage, and genuine Windows PE/installer testing. Sarvam must not merge based only on this Linux result. Preserve R47 rejection. Manual work only.

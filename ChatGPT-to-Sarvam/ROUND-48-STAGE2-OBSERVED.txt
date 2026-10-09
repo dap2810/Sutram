@@ -1,0 +1,24 @@
+# R48 Stage2 — native Linux execution observed (GitHub Actions)
+Run: https://github.com/dap2810/Sutram/actions/runs/37973925046
+Head source-tested commit: 609af9ad172911c23adb554780f01ce527ca2215
+Status: success, ubuntu-24.04, NASM 2.16.01, ld. Linux ELF-only stub was used because genuine win/rtblob.inc is missing.
+Original R48 acceptance: R48_ACCEPTED_CHECK_TESTS,parse_diags=3,native_byte_equal=4,check_valid=1,no_output=1
+R46 byte-identical sample binaries:
+R48_BINARY_EQUAL,41_recursion.sm,846,8ab871455f57bff8a95ac7c840c52f8245e434c7016af5b3e3cedf6bfbd6d0e3
+R48_BINARY_EQUAL,126_numeric_pipeline.sm,7450,38c50da9ec00d8cffbc1d2f42abe63fd1580572f894a74b3677727f7c9b8b8e2
+R48_BINARY_EQUAL,163_r40_transitive_diamond.sm,575,e3024b0282767501627e44d5243e32fcbd3ee5ad717a030cd3e7b8e7a7e2f984
+R48_BINARY_EQUAL,111_t18_kosh_dasham_function_return.sm,1307,96e602630d053ddf7a61ed32badde5b293597569977ccd4bfbc7a61e07cc14b2
+Stage2 observed diagnostics:
+structural_three_errors.sm:2:24: Sutram Error [E_PARSE]: near ';'
+structural_three_errors.sm:3:23: Sutram Error [E_PARSE]: near ']'
+structural_three_errors.sm:4:26: Sutram Error [E_PARSE]: near ';'
+nested_recovery.sm:3:30: Sutram Error [E_PARSE]: near ';'
+nested_recovery.sm:6:26: Sutram Error [E_PARSE]: near ';'
+unclosed_block.sm:4:1: Sutram Error [E_PARSE]: near '<EOF>'
+three_undefined_functions.sm:2:11: Sutram Error [E_UNDEFINED_FUNCTION]: unknown function 'missing_alpha'
+three_undefined_functions.sm:3:11: Sutram Error [E_UNDEFINED_FUNCTION]: unknown function 'missing_beta'
+three_undefined_functions.sm:4:11: Sutram Error [E_UNDEFINED_FUNCTION]: unknown function 'missing_gamma'
+STAGE2_PASS structural=3 nested=2 unclosed=1 undefined=3
+Full existing regression results: PASS=186, twelve PASS codegen gate lines, 30/30 pack checks, 18 unittest module-graph tests OK.
+Check-mode error paths exited nonzero and created no file in isolated test directories.
+Windows PE, GUI and installer not built or executed. No claim of complete module provenance or semantic error families.
