@@ -1,3 +1,22 @@
+## v104 — Muse R8 accepted; ROUND-50 (ChatGPT) and ROUND-09 (Muse) issued
+
+- **Muse R8 verified and accepted.** `lib/strconv.smlib` (5 functions:
+  int_to_str, str_to_int, int_to_base_str, str_to_int_base, pad_left), plus the
+  `width_repro` fixture. Both SHA-256 hashes match; all 15 files present.
+  Reproduced on my own clean build: proof_lib **128/128**, proof_props **17/17**,
+  suite **186/186**, stdlib **16 modules / 133 functions**. Compiler untouched.
+- **The width finding is confirmed.** `width_repro.sm` on a clean main build gives
+  `104 / 0 / 104 / 105` — `char_at(buf,1)` is 0 while `char_at("hi",1)` is 105.
+  `buf[i]=c` writes qword cells (correct for pankti), `char_at` reads bytes
+  (correct for literals); the gap is a **missing byte-write primitive**.
+- **Issued ROUND-50 to ChatGPT** — add `set_char` (byte store) so byte-packed
+  strings can be built at runtime, keep `char_at` byte-based and cell assignment
+  unchanged, all goldens byte-identical. Noted ROUND-49 (rebase + complete
+  `--check`) is still outstanding and comes first.
+- **Issued ROUND-09 to Muse** — build `lib/string.smlib` into a text toolkit
+  (find/contains/replace/split/join/trim/case/compare) with properties.
+- Both handoffs pushed and verified live (HTTP 200).
+
 ## v103 — Linux GUI IDE, slice 11: output-pane scrolling
 
 - **The output pane scrolls.** It used to draw at most 7 lines and silently drop
