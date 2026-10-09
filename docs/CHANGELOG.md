@@ -1,3 +1,24 @@
+## v103 — Linux GUI IDE, slice 11: output-pane scrolling
+
+- **The output pane scrolls.** It used to draw at most 7 lines and silently drop
+  the rest. It now keeps a `out_top` (first visible line) and draws a 7-line
+  window from there. **PgUp** (keycode 104) and **PgDn** (109) page through the
+  captured output; the window clamps at both ends.
+- **Auto-scroll to newest.** After a run the pane jumps to the last page, so the
+  freshest output is visible without scrolling. (The call sits on *both* exit
+  paths of `do_run` — the compiler-error path returns early, which is exactly
+  where a first attempt at this left it out.)
+- **Verified with a mock X server.** A mock compiler beside the GUI emits 10
+  lines. The pane shows the newest (lines 5-10 + the trailing blank that
+  `split_lines` always appends); PgUp shows lines 1-7; PgDn returns to the newest;
+  two PgUps clamp at the top. All four checks pass (`tools/test_x11_scroll.py`).
+- Protocol 39/39, negatives 6/6, and the slice-5 run path still draws its
+  compiler output. `sutram-gui` 20,096 -> 20,640 bytes.
+- Note: `tools/test_x11_run.py` asserted the pane contains the word "compiled",
+  but its input (bare `likha`) is a parse error under the current compiler, so the
+  pane correctly shows an error message. Broadened the assertion to the real
+  property — a compiler message is drawn — rather than the stale wording.
+
 ## v102 — Fix clean-checkout build: win/ restored; GUI source + CHANGELOG pushed
 
 - **Root cause of "the AIs can't work": the repo had no `win/` directory.** The
