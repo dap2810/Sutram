@@ -1,0 +1,70 @@
+# B11: 65 statements in a nested block must compile and run.
+mukhya() {
+    yadi (1) {
+        vitti x = 0
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        x = x + 1
+        likha(x)
+    }
+}
