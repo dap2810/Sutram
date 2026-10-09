@@ -6728,32 +6728,15 @@ r48_print_undefined_function:
     inc rbx
     jmp .r48_lookup
 .r48_found:
-    mov rdi, [rel source_path_ptr]
-    call graph_print_file
-    lea rdi, [rel msg_err_colon]
-    call print_str_z
-    mov rdi, [r13+24]
-    lea rsi, [rel num_buf]
-    call itoa
-    mov rdi, rax
-    call print_str_z
-    lea rdi, [rel msg_err_colon]
-    call print_str_z
-    mov rdi, [r13+32]
-    call calc_src_column
-    mov rdi, rax
-    lea rsi, [rel num_buf]
-    call itoa
-    mov rdi, rax
-    call print_str_z
+    mov rdi,[r13+32]
+    call r51_print_origin
     lea rdi, [rel r48_msg_undefined]
     call print_str_z
     mov rdi, r12
     call print_str_z
     lea rdi, [rel r48_msg_end]
     call print_str_z
-    mov rdi, [r13+32]
-    call print_source_context
+    call r51_print_original_context
     jmp .r48_sem_done
 .r48_fallback:
     ; In unusual imported/rewritten source, a call-name pointer may not
@@ -6776,27 +6759,11 @@ r48_print_undefined_function:
 r48_print_parse_error:
     push rbx
     call cur_tok
-    mov rbx, rax
-    mov rax, [rbx+24]
-    mov [rel r48_error_line], rax
-    mov rdi, [rel source_path_ptr]
-    call graph_print_file
-    lea rdi, [rel msg_err_colon]
-    call print_str_z
-    mov rdi, [rbx+24]
-    lea rsi, [rel num_buf]
-    call itoa
-    mov rdi, rax
-    call print_str_z
-    lea rdi, [rel msg_err_colon]
-    call print_str_z
-    mov rdi, [rbx+32]
-    call calc_src_column
-    mov rdi, rax
-    lea rsi, [rel num_buf]
-    call itoa
-    mov rdi, rax
-    call print_str_z
+    mov rbx,rax
+    mov rax,[rbx+24]
+    mov [rel r48_error_line],rax
+    mov rdi,[rbx+32]
+    call r51_print_origin
     lea rdi, [rel r48_msg_near]
     call print_str_z
     mov rcx, [rbx]
@@ -6842,8 +6809,7 @@ r48_print_parse_error:
 .r48_end:
     lea rdi, [rel r48_msg_end]
     call print_str_z
-    mov rdi, [rbx+32]
-    call print_source_context
+    call r51_print_original_context
     pop rbx
     ret
 
