@@ -1,3 +1,19 @@
+## v105 — Linux GUI IDE, slice 12: Home/End caret movement
+
+- **Home and End move the caret to the start and end of the current line.** Both
+  reuse the `line_start` / `line_end` helpers added in slice 10. Like the arrow
+  keys, neither takes an undo snapshot - they are not edits.
+- **Verified with a mock X server** (`tools/test_x11_edit.py`): type `ab`, Return,
+  `cde` (caret at end of line 2); Home then `x` inserts at the line start ->
+  `ab`/`xcde`; End then `y` appends -> `ab`/`xcdey`. Then Up to line 1, End, `x`,
+  Home, `a` -> `aabx`/`xcdey` (Home on the first line reaches index 0). Both
+  checks pass; the buffer is read back through Ctrl-S so the assertion is on real
+  saved content, not on screen bytes.
+- Protocol 39/39, negatives 6/6, scroll test still green. `sutram-gui` 20,640 ->
+  20,720 bytes.
+- The caret now has the full complement: four arrows, Home, End, insertion at the
+  caret, and undo that steps back through edits only.
+
 ## v104 — Muse R8 accepted; ROUND-50 (ChatGPT) and ROUND-09 (Muse) issued
 
 - **Muse R8 verified and accepted.** `lib/strconv.smlib` (5 functions:
