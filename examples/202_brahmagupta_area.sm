@@ -1,0 +1,18 @@
+# Brahmagupta's area formula (Brahma-sphuta-siddhanta, 628 CE)
+# area = sqrt((s-a)(s-b)(s-c)(s-d)) for a cyclic quadrilateral; with d=0 it is the
+# triangle formula. ayojan ganita.
+ayojan ganita
+
+mukhya()
+    likha("triangle 3,4,5  = ")
+    likha(brahmagupta_area(3, 4, 5, 0))
+    likha("\n")
+    likha("triangle 5,5,6  = ")
+    likha(brahmagupta_area(5, 5, 6, 0))
+    likha("\n")
+    likha("cyclic 3,4,5,6  = ")
+    likha(brahmagupta_area(3, 4, 5, 6))
+    likha("\n")
+    likha("square side 4   = ")
+    likha(brahmagupta_area(4, 4, 4, 4))
+    likha("\n")
