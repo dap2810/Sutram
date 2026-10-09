@@ -1,0 +1,29 @@
+mukhya()
+    likha("Unit Conversion\n")
+    likha("==============\n")
+    likha("Kilometers to Miles:\n")
+    punaravartana km = 1 to 5 {
+        vitti miles = km * 62 / 100
+        lkhb(km)
+        likha(" km = ")
+        lkhb(miles)
+        likha(" miles\n")
+    }
+    likha("\nKilograms to Pounds:\n")
+    punaravartana kg = 1 to 5 {
+        vitti pounds = kg * 220 / 100
+        lkhb(kg)
+        likha(" kg = ")
+        lkhb(pounds)
+        likha(" lbs\n")
+    }
+    likha("\nCelsius to Fahrenheit:\n")
+    punaravartana c = 0 to 40 {
+        vitti f = c * 9 / 5 + 32
+        lkhb(c)
+        likha("C = ")
+        lkhb(f)
+        likha("F\n")
+        c += 9
+    }
+    likha("\n")
