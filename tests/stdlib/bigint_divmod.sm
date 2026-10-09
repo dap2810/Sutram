@@ -1,0 +1,31 @@
+ayojan bigint
+mukhya() {
+    vitti a = nirmmita(8 * 8)
+    vitti b = nirmmita(8 * 8)
+    vitti q = nirmmita(8 * 8)
+    vitti r = nirmmita(8 * 8)
+    # 12345 / 67 = 184 r 17
+    bigint_from_int(12345, a, 8)
+    bigint_from_int(67, b, 8)
+    bigint_divmod(a, b, q, r, 8)
+    likha(bigint_to_int(q, 8))
+    likha("\n")
+    likha(bigint_to_int(r, 8))
+    likha("\n")
+    # exact division: 100 / 4 = 25 r 0
+    bigint_from_int(100, a, 8)
+    bigint_from_int(4, b, 8)
+    bigint_divmod(a, b, q, r, 8)
+    likha(bigint_to_int(q, 8))
+    likha("\n")
+    likha(bigint_to_int(r, 8))
+    likha("\n")
+    # dividend < divisor: 5 / 10 = 0 r 5
+    bigint_from_int(5, a, 8)
+    bigint_from_int(10, b, 8)
+    bigint_divmod(a, b, q, r, 8)
+    likha(bigint_to_int(q, 8))
+    likha("\n")
+    likha(bigint_to_int(r, 8))
+    likha("\n")
+}
