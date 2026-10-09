@@ -685,6 +685,7 @@ str_dot_exe  db ".exe", 0
     graph_arrow db ' -> ', 0
     graph_colon db ':', 0
     r49_unknown_column db "?", 0
+    r51_unknown_origin db ":?:?",0
     graph_nl db 10,0
     graph_cycle_prefix db 'dependency cycle: ',0
     graph_missing_prefix db 'cannot open import ',0
@@ -726,6 +727,8 @@ section .bss
     r51_import_start resq 1
     r51_raw_map resd IMPORT_BUF_CAP
     r51_ns_emit_pos resq 1
+    r51_last_off resq 1
+    r51_last_size resq 1
     token_arr   resb TOKEN_CAP * TOKEN_SIZE ; capacity matches 64 KiB source + EOF
     token_cnt   resq 1
     token_idx   resq 1
@@ -6536,6 +6539,165 @@ parse_error:
     pop rbx
     mov rdi, 1
     call os_exit
+
+
+; R51 prints the exact original location of a token in flattened source.
+; Input rdi = lexer token's pointer inside source_buf. Loads original source
+; into mg_buf for the subsequent origin-aware source/caret context printer.
+r51_print_origin:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    lea rax,[rel source_buf]
+    sub rdi,rax
+    cmp rdi,IMPORT_BUF_CAP
+    jb .index_ok
+    xor edi,edi
+.index_ok:
+    lea rax,[rel r51_src_file]
+    mov r13,[rax+rdi*8]
+    test r13,r13
+    jnz .path_ok
+    mov r13,[rel source_path_ptr]
+.path_ok:
+    lea rax,[rel r51_src_off]
+    mov r14d,[rax+rdi*4]
+    mov [rel r51_last_off],r14
+    mov rdi,r13
+    call mg_read_file
+    mov [rel r51_last_size],rax
+    test rax,rax
+    js .missing
+    mov r15,rax
+    cmp r14,r15
+    jbe .offset_ok
+    mov r14,r15
+.offset_ok:
+    lea rbx,[rel mg_buf]
+    xor ecx,ecx
+    mov r12d,1             ; original line
+    mov r15d,1             ; original UTF-8 display column
+.scan:
+    cmp rcx,r14
+    jae .display
+    movzx eax,byte [rbx+rcx]
+    cmp al,10
+    jne .not_newline
+    inc r12
+    mov r15d,1
+    jmp .next
+.not_newline:
+    and al,0xC0
+    cmp al,0x80
+    je .next
+    inc r15
+.next:
+    inc rcx
+    jmp .scan
+.display:
+    mov rdi,r13
+    call graph_print_file
+    lea rdi,[rel msg_err_colon]
+    call print_str_z
+    mov rax,r12
+    call mg_print_uint
+    lea rdi,[rel msg_err_colon]
+    call print_str_z
+    mov rax,r15
+    call mg_print_uint
+    jmp .done
+.missing:
+    mov rdi,r13
+    call graph_print_file
+    lea rdi,[rel r51_unknown_origin]
+    call print_str_z
+.done:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+r51_print_original_context:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    mov r15,[rel r51_last_size]
+    test r15,r15
+    js .done
+    lea r12,[rel mg_buf]
+    mov rbx,[rel r51_last_off]
+    cmp rbx,r15
+    jbe .bounded
+    mov rbx,r15
+.bounded:
+    add rbx,r12              ; current source location
+    mov r13,rbx
+.back:
+    cmp r13,r12
+    jbe .start
+    cmp byte [r13-1],10
+    je .start
+    dec r13
+    jmp .back
+.start:
+    add r15,r12
+    mov r14,r13
+.forward:
+    cmp r14,r15
+    jae .end
+    mov al,[r14]
+    cmp al,10
+    je .end
+    cmp al,13
+    je .end
+    inc r14
+    jmp .forward
+.end:
+    lea rdi,[rel msg_diag_indent]
+    call print_str_z
+    mov rdi,1
+    mov rsi,r13
+    mov rdx,r14
+    sub rdx,r13
+    call os_write
+    lea rdi,[rel msg_diag_nl]
+    call print_str_z
+    lea rdi,[rel msg_diag_indent]
+    call print_str_z
+.loop:
+    cmp r13,rbx
+    jae .caret
+    movzx eax,byte [r13]
+    cmp al,9
+    je .tab
+    and al,0xC0
+    cmp al,0x80
+    je .next
+    lea rdi,[rel msg_diag_space]
+    call print_str_z
+    jmp .next
+.tab:
+    lea rdi,[rel msg_diag_tab]
+    call print_str_z
+.next:
+    inc r13
+    jmp .loop
+.caret:
+    lea rdi,[rel msg_diag_caret]
+    call print_str_z
+.done:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
 
 ; R48 post-parse semantic diagnostics for unresolved user function calls.
 ; The code generator already owns function lookup; no second parser is used.
