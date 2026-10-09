@@ -1,0 +1,11 @@
+ayojan string
+mukhya() {
+    likha(count_vowels("hello"))
+    likha("\n")
+    likha(count_vowels(""))
+    likha("\n")
+    likha(count_vowels("aeiou"))
+    likha("\n")
+    likha(count_vowels("xyz"))
+    likha("\n")
+}

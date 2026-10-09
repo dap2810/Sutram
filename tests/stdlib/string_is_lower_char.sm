@@ -1,0 +1,11 @@
+ayojan string
+mukhya() {
+    likha(is_lower_char("aB", 0))
+    likha("\n")
+    likha(is_lower_char("aB", 1))
+    likha("\n")
+    likha(is_lower_char("`", 0))
+    likha("\n")
+    likha(is_lower_char("{", 0))
+    likha("\n")
+}

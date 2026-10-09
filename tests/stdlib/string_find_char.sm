@@ -1,0 +1,11 @@
+ayojan string
+mukhya() {
+    likha(find_char("hello", 108))
+    likha("\n")
+    likha(find_char("hello", 104))
+    likha("\n")
+    likha(find_char("hello", 111))
+    likha("\n")
+    likha(find_char("hello", 122))
+    likha("\n")
+}

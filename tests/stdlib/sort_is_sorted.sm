@@ -1,0 +1,15 @@
+ayojan sort
+mukhya() {
+    pankti a[3]
+    a[0] = 1
+    a[1] = 2
+    a[2] = 3
+    likha(is_sorted(a, 3))
+    likha("\n")
+    pankti b[3]
+    b[0] = 3
+    b[1] = 1
+    b[2] = 2
+    likha(is_sorted(b, 3))
+    likha("\n")
+}

@@ -1,0 +1,9 @@
+ayojan string
+mukhya() {
+    likha(lower_code(65))
+    likha("\n")
+    likha(lower_code(97))
+    likha("\n")
+    likha(lower_code(48))
+    likha("\n")
+}

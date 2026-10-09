@@ -1,0 +1,9 @@
+ayojan util
+mukhya() {
+    likha(lerp(0,100,50))
+    likha("\n")
+    likha(lerp(10,20,0))
+    likha("\n")
+    likha(lerp(10,20,100))
+    likha("\n")
+}

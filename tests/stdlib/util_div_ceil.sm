@@ -1,0 +1,9 @@
+ayojan util
+mukhya() {
+    likha(div_ceil(7,3))
+    likha("\n")
+    likha(div_ceil(9,3))
+    likha("\n")
+    likha(div_ceil(10,3))
+    likha("\n")
+}

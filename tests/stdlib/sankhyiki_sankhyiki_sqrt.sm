@@ -1,0 +1,9 @@
+ayojan sankhyiki
+mukhya() {
+    likha(sankhyiki_sqrt(2.0))
+    likha("\n")
+    likha(sankhyiki_sqrt(9.0))
+    likha("\n")
+    likha(sankhyiki_sqrt(0.0))
+    likha("\n")
+}

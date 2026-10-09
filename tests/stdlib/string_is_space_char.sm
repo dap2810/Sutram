@@ -1,0 +1,9 @@
+ayojan string
+mukhya() {
+    likha(is_space_char("a b", 1))
+    likha("\n")
+    likha(is_space_char("a b", 0))
+    likha("\n")
+    likha(is_space_char(" ", 0))
+    likha("\n")
+}

@@ -1,0 +1,11 @@
+ayojan sort
+mukhya() {
+    pankti a[3]
+    a[0] = 10
+    a[1] = 20
+    a[2] = 30
+    likha(find_linear(a, 3, 20))
+    likha("\n")
+    likha(find_linear(a, 3, 99))
+    likha("\n")
+}

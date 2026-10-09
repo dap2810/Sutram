@@ -1,0 +1,9 @@
+ayojan util
+mukhya() {
+    likha(sum_range(1,10))
+    likha("\n")
+    likha(sum_range(5,5))
+    likha("\n")
+    likha(sum_range(1,100))
+    likha("\n")
+}

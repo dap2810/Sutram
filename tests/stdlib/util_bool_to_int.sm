@@ -1,0 +1,7 @@
+ayojan util
+mukhya() {
+    likha(bool_to_int(1))
+    likha("\n")
+    likha(bool_to_int(0))
+    likha("\n")
+}

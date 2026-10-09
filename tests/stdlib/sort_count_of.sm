@@ -1,0 +1,13 @@
+ayojan sort
+mukhya() {
+    pankti a[5]
+    a[0] = 1
+    a[1] = 2
+    a[2] = 1
+    a[3] = 3
+    a[4] = 1
+    likha(count_of(a, 5, 1))
+    likha("\n")
+    likha(count_of(a, 5, 9))
+    likha("\n")
+}

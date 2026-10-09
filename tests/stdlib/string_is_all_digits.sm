@@ -1,0 +1,9 @@
+ayojan string
+mukhya() {
+    likha(is_all_digits("12345"))
+    likha("\n")
+    likha(is_all_digits("12a45"))
+    likha("\n")
+    likha(is_all_digits(""))
+    likha("\n")
+}

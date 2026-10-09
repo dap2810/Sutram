@@ -1,0 +1,15 @@
+ayojan sort
+mukhya() {
+    pankti a[3]
+    a[0] = 3
+    a[1] = 1
+    a[2] = 2
+    likha(max_of(a, 3))
+    likha("\n")
+    pankti b[3]
+    b[0] = -1
+    b[1] = -5
+    b[2] = -3
+    likha(max_of(b, 3))
+    likha("\n")
+}

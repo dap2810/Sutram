@@ -1,0 +1,9 @@
+ayojan util
+mukhya() {
+    likha(mod(17,5))
+    likha("\n")
+    likha(mod(10,3))
+    likha("\n")
+    likha(mod(7,7))
+    likha("\n")
+}

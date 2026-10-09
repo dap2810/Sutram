@@ -1,0 +1,24 @@
+ayojan sort
+mukhya() {
+    pankti a[4]
+    a[0] = 4
+    a[1] = 1
+    a[2] = 3
+    a[3] = 2
+    shell_sort(a, 4)
+    punaravartana i = 0 to 3 {
+        likha(a[i])
+    }
+    likha("\n")
+    pankti b[5]
+    b[0] = 9
+    b[1] = 7
+    b[2] = 5
+    b[3] = 3
+    b[4] = 1
+    shell_sort(b, 5)
+    punaravartana j = 0 to 4 {
+        likha(b[j])
+    }
+    likha("\n")
+}

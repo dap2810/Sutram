@@ -1,0 +1,9 @@
+ayojan string
+mukhya() {
+    likha(str_len("hello"))
+    likha("\n")
+    likha(str_len(""))
+    likha("\n")
+    likha(str_len("a"))
+    likha("\n")
+}

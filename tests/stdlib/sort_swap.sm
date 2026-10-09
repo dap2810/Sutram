@@ -1,0 +1,12 @@
+ayojan sort
+mukhya() {
+    pankti a[3]
+    a[0] = 1
+    a[1] = 2
+    a[2] = 3
+    swap(a, 0, 2)
+    punaravartana i = 0 to 2 {
+        likha(a[i])
+    }
+    likha("\n")
+}
