@@ -1,0 +1,28 @@
+# Array demo — arr[i] syntax
+mukhya()
+    likha("=== Array Demo ===\n")
+    vitti arr = nirmmita(128)
+    arr[0] = 10
+    arr[1] = 20
+    arr[2] = 30
+    arr[3] = 40
+    arr[4] = 50
+    likha("Array values:\n")
+    vitti i = 0
+    yavat (i < 5) {
+        likha("  arr[")
+        likha(i)
+        likha("] = ")
+        likha(arr[i])
+        likha("\n")
+        i = i + 1
+    }
+    likha("Sum: ")
+    vitti sum = 0
+    i = 0
+    yavat (i < 5) {
+        sum = sum + arr[i]
+        i = i + 1
+    }
+    likha(sum)
+    likha("\n")
