@@ -1,0 +1,10 @@
+# कोश + दशम aliases with zero-capacity growth and float expression typing.
+mukhya() {
+    कोश दशम b[0]
+    kosh_push(b, 0.5)
+    dasham x = b[0] + 0.25
+    likha(x)
+    b[0] = 2.25
+    likha(kosh_pop(b))
+    likha(kosh_len(b))
+}
