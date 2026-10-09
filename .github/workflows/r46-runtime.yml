@@ -1,0 +1,82 @@
+name: R46 generated native-code runtime A/B
+on:
+  push:
+    branches: [feature/r46-native-generated-code-call-optimization-20261009]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  runtime-benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install NASM in user-owned directory
+        run: |
+          cd "$RUNNER_TEMP"
+          apt download nasm
+          mkdir -p "$RUNNER_TEMP/nasm"
+          dpkg-deb -x nasm_*.deb "$RUNNER_TEMP/nasm"
+          echo "$RUNNER_TEMP/nasm/usr/bin" >> "$GITHUB_PATH"
+      - name: Build reference and candidate from independent sources
+        run: |
+          mkdir -p win
+          if test ! -f win/rtblob.inc; then
+            printf 'RT_BLOB_LEN equ 0\nRT_SYSCALL_OFF equ 0\nrt_blob: db 0\n' > win/rtblob.inc
+            echo "WARNING: Linux ELF ONLY; actual Windows PE runtime not available"
+          fi
+          git show cd2febc5589f69601efb8dc8e3c954f59f35baf2:src/sutram_compiler.asm > /tmp/r46_before.asm
+          nasm -f elf64 -I. /tmp/r46_before.asm -o /tmp/r46_before.o
+          nasm -f elf64 -I. src/sutram_compiler.asm -o /tmp/r46_after.o
+          ld -o r46_before /tmp/r46_before.o
+          ld -o r46_after /tmp/r46_after.o
+          ./r46_before --version
+          ./r46_after --version
+          echo "R46_COMPILER_HASHES"
+          sha256sum r46_before r46_after src/sutram_compiler.asm
+      - name: Baseline (original source) 186 regressions
+        run: |
+          cp r46_before sutram_compiler
+          python3 tests/run_tests.py
+      - name: Modified source 186 regressions and all gates
+        run: |
+          cp r46_after sutram_compiler
+          python3 tests/run_tests.py
+          python3 tools/codegen_gate.py
+          python3 tools/test_lang_packs.py
+          python3 -m unittest discover -s tests/module_graph -p 'test_*.py' -v
+      - name: Capture long-running paired native A/B benchmark and disassembly
+        run: |
+          python3 tools/r46_runtime_benchmark.py --before ./r46_before --after ./r46_after --runs 40 --warmup 6 --csv r46_runtime_raw.csv --disasm r46_machine_disassembly.txt
+          echo R46_RAW_START
+          cat r46_runtime_raw.csv
+          echo R46_RAW_END
+          echo R46_DISASM_START
+          cat r46_machine_disassembly.txt
+          echo R46_DISASM_END
+      - name: Print and optionally verify changed-file SHA-256 manifest
+        if: always()
+        run: |
+          echo R46_SHA_START
+          sha256sum src/sutram_compiler.asm tools/r46_runtime_benchmark.py \
+            .github/workflows/r46-runtime.yml \
+            benchmarks/r46_hotcall_stack.sm benchmarks/r46_hotcall_nested.sm \
+            benchmarks/r46_hotcall_float.sm benchmarks/r46_hotcall_array.sm \
+            ChatGPT-to-Sarvam/ROUND-46-RUNTIME-RAW-2026-10-09.csv \
+            ChatGPT-to-Sarvam/ROUND-46-DISASSEMBLY-2026-10-09.txt \
+            ChatGPT-to-Sarvam/ROUND-46-NASM-REVIEW.patch \
+            ChatGPT-to-Sarvam/ROUND-46-HANDOFF-2026-10-09.md
+          echo R46_SHA_END
+          if test -f ChatGPT-to-Sarvam/ROUND-46-SHA256.txt; then
+            sha256sum -c ChatGPT-to-Sarvam/ROUND-46-SHA256.txt
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: r46-native-runtime-evidence
+          path: |
+            r46_runtime_raw.csv
+            r46_machine_disassembly.txt
+          if-no-files-found: warn

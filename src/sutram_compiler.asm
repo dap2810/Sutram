@@ -198,11 +198,19 @@ str_dot_exe  db ".exe", 0
     msg_usage    db "Sutram — the complete thread", 10
                   db "Usage:", 10
                   db "  sutram <input.sm> <output.bin>          compile", 10
+                  db "  sutram --check <input.sm>               parse/check, no output binary", 10
                   db "  sutram --lang <pack> <in.sm> <out.bin>  with language pack", 10
                   db "  sutram -i                               interactive shell", 10
                   db "  sutram --version                        version info", 10, 0
     msg_version  db "Sutram 1.0 (v29) — the complete thread", 10
                   db "Sanskrit-keyword language -> x86-64 machine code", 10, 0
+    r48_flag db "--check",0
+    r48_msg_near db ": Sutram Error [E_PARSE]: near '",0
+    r48_msg_end db "'",10,0
+    r48_msg_ok db "Sutram check: OK (no output binary)",10,0
+    r48_msg_errors db "Sutram check: errors found; no output binary",10,0
+    r48_msg_eof db "<EOF>",0
+    r48_msg_undefined db ": Sutram Error [E_UNDEFINED_FUNCTION]: unknown function '",0
     msg_err_line db 10, "Sutram Error: parse error at line ", 0
     msg_err_near db " near token '", 0
     msg_err_end  db "'", 10, 0
@@ -695,6 +703,13 @@ section .bss
     source_buf  resb 65536
     source_len  resq 1
     source_path_ptr resq 1      ; original input path for ayojan resolution
+    r48_mode resq 1
+    r48_error_count resq 1
+    r48_parse_rsp resq 1
+    r48_stmt_start resq 1
+    r48_stmt_valid resq 1
+    r48_error_line resq 1
+    r48_charbuf resb 4
     token_arr   resb TOKEN_CAP * TOKEN_SIZE ; capacity matches 64 KiB source + EOF
     token_cnt   resq 1
     token_idx   resq 1
@@ -1727,6 +1742,22 @@ _start:
     call strcmp
     test rax, rax
     jz .show_version
+    ; R48 --check <input.sm>: use the real lexer/parser/codegen semantic
+    ; validation without ever creating the output file.
+    mov rdi, [rsp+16]
+    lea rsi, [rel r48_flag]
+    call strcmp
+    test rax, rax
+    jnz .not_check_mode
+    mov rax, [rsp]
+    cmp rax, 3
+    jl .usage
+    mov qword [rel r48_mode], 1
+    mov rax, [rsp+24]
+    mov [rsp+16], rax           ; normalize input argument for normal I/O
+    call maybe_load_env_lang
+    jmp .args_ok
+.not_check_mode:
     ; --lang <pack> <in.sm> <out.bin>
     mov rdi, [rsp+16]
     lea rsi, [rel str_flag_lang]
@@ -1774,14 +1805,50 @@ _start:
     ; Lex
     call lex
 
-    ; Parse
+    ; Parse using the ordinary parser, but in check mode recover at a safe
+    ; statement/brace boundary after each parser error and restart the parser.
+.r48_parse_again:
     mov qword [rel token_idx], 0
+    cmp qword [rel r48_mode], 0
+    je .r48_parse_normal
+    mov [rel r48_parse_rsp], rsp
+    mov qword [rel r48_stmt_valid], 0
+    mov qword [rel func_def_cnt], 0
+    mov qword [rel parse_block_depth], 0
+.r48_parse_normal:
     call parse_program
-
-    ; Generate code
+    cmp qword [rel r48_mode], 0
+    je .r48_generate
+    cmp qword [rel r48_error_count], 0
+    jne .r48_check_fail
+.r48_generate:
+    ; Generate code. --check intentionally still validates generator-side
+    ; semantic constraints; code is kept in memory and never written.
     mov qword [rel code_sz], 0
     call gen_code
-
+    cmp qword [rel r48_mode], 0
+    je .r48_normal_write
+    lea rdi, [rel r48_msg_ok]
+    call print_str_z
+    jmp do_exit
+.r48_check_fail:
+    lea rdi, [rel r48_msg_errors]
+    call print_str_z
+    mov rdi, 1
+    call os_exit
+.r48_parse_failure:
+    ; A parser may jump here with arbitrary nested expression/AST stack
+    ; frames. Restore its saved top-level stack before attempting recovery.
+    mov rsp, [rel r48_parse_rsp]
+    call r48_print_parse_error
+    inc qword [rel r48_error_count]
+    cmp qword [rel r48_error_count], 8
+    jae .r48_check_fail
+    call r48_recover_stmt
+    test rax, rax
+    jz .r48_check_fail
+    jmp .r48_parse_again
+.r48_normal_write:
     ; Write output
     mov rdi, [rsp+24]           ; argv[2]
     call write_elf
@@ -5991,6 +6058,8 @@ set_lang_id:
     ret
 
 parse_error:
+    cmp qword [rel r48_mode], 0
+    jne _start.r48_parse_failure
     ; Sutram Error: parse error at line N near token 'X'
     push rbx
     lea rbx, [rel token_arr]
@@ -6094,6 +6163,227 @@ parse_error:
     pop rbx
     mov rdi, 1
     call os_exit
+
+; R48 post-parse semantic diagnostics for unresolved user function calls.
+; The code generator already owns function lookup; no second parser is used.
+; Look up the first matching original lexer token to recover line, column,
+; offending identifier and source/caret. No output binary is written.
+r48_print_undefined_function:
+    push rbx
+    push r12
+    push r13
+    mov r12, rdi
+    xor ebx, ebx
+.r48_lookup:
+    cmp rbx, [rel token_cnt]
+    jae .r48_fallback
+    mov rax, rbx
+    imul rax, TOKEN_SIZE
+    lea r13, [rel token_arr]
+    add r13, rax
+    cmp qword [r13], TOK_IDENT
+    jne .r48_next
+    mov rdi, [r13+8]
+    mov rsi, r12
+    call strcmp
+    test rax, rax
+    jz .r48_found
+.r48_next:
+    inc rbx
+    jmp .r48_lookup
+.r48_found:
+    mov rdi, [rel source_path_ptr]
+    call graph_print_file
+    lea rdi, [rel msg_err_colon]
+    call print_str_z
+    mov rdi, [r13+24]
+    lea rsi, [rel num_buf]
+    call itoa
+    mov rdi, rax
+    call print_str_z
+    lea rdi, [rel msg_err_colon]
+    call print_str_z
+    mov rdi, [r13+32]
+    call calc_src_column
+    mov rdi, rax
+    lea rsi, [rel num_buf]
+    call itoa
+    mov rdi, rax
+    call print_str_z
+    lea rdi, [rel r48_msg_undefined]
+    call print_str_z
+    mov rdi, r12
+    call print_str_z
+    lea rdi, [rel r48_msg_end]
+    call print_str_z
+    mov rdi, [r13+32]
+    call print_source_context
+    jmp .r48_sem_done
+.r48_fallback:
+    ; In unusual imported/rewritten source, a call-name pointer may not
+    ; match a local token. Never fabricate a line number or location.
+    lea rdi, [rel msg_undefined_func]
+    call print_str_z
+    mov rdi, r12
+    call print_str_z
+    lea rdi, [rel msg_nl]
+    call print_str_z
+.r48_sem_done:
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; R48 check mode: diagnostics reuse lexer-origin token source position.
+; Unlike the normal localized parser error output, the check-mode protocol
+; produces stable path:line:column and offending token plus source/caret.
+r48_print_parse_error:
+    push rbx
+    call cur_tok
+    mov rbx, rax
+    mov rax, [rbx+24]
+    mov [rel r48_error_line], rax
+    mov rdi, [rel source_path_ptr]
+    call graph_print_file
+    lea rdi, [rel msg_err_colon]
+    call print_str_z
+    mov rdi, [rbx+24]
+    lea rsi, [rel num_buf]
+    call itoa
+    mov rdi, rax
+    call print_str_z
+    lea rdi, [rel msg_err_colon]
+    call print_str_z
+    mov rdi, [rbx+32]
+    call calc_src_column
+    mov rdi, rax
+    lea rsi, [rel num_buf]
+    call itoa
+    mov rdi, rax
+    call print_str_z
+    lea rdi, [rel r48_msg_near]
+    call print_str_z
+    mov rcx, [rbx]
+    cmp rcx, TOK_EOF
+    je .r48_eof
+    cmp rcx, TOK_IDENT
+    je .r48_word
+    cmp rcx, TOK_KEYWORD
+    je .r48_word
+    cmp rcx, TOK_BUILTIN
+    je .r48_word
+    cmp rcx, TOK_STRING
+    je .r48_word
+    cmp rcx, TOK_NUMBER
+    je .r48_num
+    mov rax, [rbx+8]
+    lea rcx, [rel r48_charbuf]
+    mov [rcx], al
+    mov byte [rcx+1], 0
+    cmp rax, 255
+    jbe .r48_chars
+    shr rax, 8
+    mov [rcx+1], al
+    mov byte [rcx+2], 0
+.r48_chars:
+    mov rdi, rcx
+    call print_str_z
+    jmp .r48_end
+.r48_word:
+    mov rdi, [rbx+8]
+    call print_str_z
+    jmp .r48_end
+.r48_num:
+    mov rdi, [rbx+8]
+    lea rsi, [rel num_buf]
+    call itoa
+    mov rdi, rax
+    call print_str_z
+    jmp .r48_end
+.r48_eof:
+    lea rdi, [rel r48_msg_eof]
+    call print_str_z
+.r48_end:
+    lea rdi, [rel r48_msg_end]
+    call print_str_z
+    mov rdi, [rbx+32]
+    call print_source_context
+    pop rbx
+    ret
+
+; Synchronize by removing ONLY the malformed lexical statement from the
+; in-memory token stream, then re-run the same parser from its top level.
+; Original source text and source offsets remain unchanged for diagnostics.
+; Stop before '}' or EOF, or consume ';'; do not discard a closing brace.
+; Abort when a safe separator cannot be found to avoid phantom errors.
+r48_recover_stmt:
+    cmp qword [rel r48_stmt_valid], 1
+    jne .r48_no
+    mov r8, [rel r48_stmt_start]     ; first token of malformed stmt
+    mov r9, [rel token_idx]          ; offending token
+    mov r10, [rel token_cnt]
+    cmp r8, r9
+    ja .r48_no
+    cmp r9, r10
+    jae .r48_no
+.r48_find:
+    cmp r9, r10
+    jae .r48_no
+    mov rax, r9
+    imul rax, TOKEN_SIZE
+    lea r11, [rel token_arr]
+    add r11, rax
+    cmp qword [r11], TOK_EOF
+    je .r48_found
+    cmp qword [r11], TOK_DELIMITER
+    jne .r48_line
+    cmp qword [r11+8], '}'
+    je .r48_found
+    cmp qword [r11+8], ';'
+    jne .r48_line
+    inc r9                         ; consume statement terminator
+    jmp .r48_found
+.r48_line:
+    cmp r9, [rel token_idx]
+    jbe .r48_next
+    mov rax, [r11+24]
+    cmp rax, [rel r48_error_line]
+    jbe .r48_next
+    ; A later physical line is a conservative resync point only if it
+    ; starts a new keyword-led statement.
+    cmp qword [r11], TOK_KEYWORD
+    jne .r48_next
+    jmp .r48_found
+.r48_next:
+    inc r9
+    jmp .r48_find
+.r48_found:
+    cmp r9, r8
+    jbe .r48_no
+    ; move token slots [end, token_cnt) over [start, ...), including EOF.
+    mov rax, r9
+    sub rax, r8                   ; tokens to drop
+    mov rdx, r10
+    sub rdx, rax
+    mov [rel token_cnt], rdx
+    lea rdi, [rel token_arr]
+    mov rax, r8
+    imul rax, TOKEN_SIZE
+    add rdi, rax
+    lea rsi, [rel token_arr]
+    mov rax, r9
+    imul rax, TOKEN_SIZE
+    add rsi, rax
+    mov rcx, r10
+    sub rcx, r9
+    imul rcx, TOKEN_SIZE
+    cld
+    rep movsb
+    mov rax, 1
+    ret
+.r48_no:
+    xor eax, eax
+    ret
 
 ; calc_src_column(rdi = token source pointer) -> rax = 1-based display column
 ; UTF-8 continuation bytes do not advance the display column.
@@ -6256,6 +6546,12 @@ parse_block:
 ; parse_stmt() → rax = statement node
 parse_stmt:
     push rbx
+    cmp qword [rel r48_mode], 0
+    je .r48_no_mark
+    mov rax, [rel token_idx]
+    mov [rel r48_stmt_start], rax
+    mov qword [rel r48_stmt_valid], 1
+.r48_no_mark:
     call cur_tok
     mov rcx, [rax]
     cmp rcx, TOK_EOF          ; stop cleanly instead of looping on malformed input
@@ -9154,6 +9450,15 @@ backpatch_calls:
     jmp .bc_next
 .bc_not_found:
     ; B2: unresolved user calls are a compiler error, never a rel32=0 call.
+    ; R48 uses the token's lexer position for a stable source-level
+    ; diagnostic; normal compilation keeps the exact legacy output.
+    cmp qword [rel r48_mode], 0
+    je .bc_old_error
+    mov rdi, r14
+    call r48_print_undefined_function
+    mov rdi, 1
+    call os_exit
+.bc_old_error:
     lea rdi, [rel msg_undefined_func]
     call print_str_z
     mov rdi, r14
@@ -9350,6 +9655,10 @@ gen_stmt:
     inc r14
     jmp .gfc_pop
 .gfc_call:
+    call r46_live_callee_saved_vars
+    mov r15, rax
+    test r15, r15
+    jz .gfc_saves_done
     ; B6: user variables may live in r12-r15. Preserve those compiler-allocated
     ; callee-saved registers across every Sutram user-function call.
     mov dil, 0x41             ; push r12 = 41 54
@@ -9368,6 +9677,7 @@ gen_stmt:
     call emit_byte
     mov dil, 0x57
     call emit_byte
+.gfc_saves_done:
     ; Emit call rel32 (E8 + 4-byte offset, patched later)
     mov dil, 0xE8
     call emit_byte
@@ -9386,6 +9696,8 @@ gen_stmt:
     inc qword [rel patch_count]
     xor edi, edi
     call emit_u32
+    test r15, r15
+    jz .gfc_restores_done
     mov dil, 0x41             ; pop r15 = 41 5F
     call emit_byte
     mov dil, 0x5F
@@ -9402,6 +9714,7 @@ gen_stmt:
     call emit_byte
     mov dil, 0x5C
     call emit_byte
+.gfc_restores_done:
     pop r14
     pop r15
     pop rbx
@@ -11066,6 +11379,32 @@ emit_kosh_empty_check_r9:
     pop rbx
     ret
 
+; R46 compiler-time call liveness: 1 if any caller local occupies r12..r15.
+; Argument parameters in stack slots and rbx do not require these saves.
+; No generated runtime code executes this helper.
+r46_live_callee_saved_vars:
+    xor eax, eax
+    xor ecx, ecx
+    mov r8, [rel var_cnt]
+    lea r9, [rel var_table]
+.r46_loop:
+    cmp rcx, r8
+    jae .r46_done
+    mov rdx, rcx
+    shl rdx, 4
+    mov rdx, [r9+rdx+8]
+    cmp rdx, 2
+    jb .r46_next
+    cmp rdx, 5
+    ja .r46_next
+    mov eax, 1
+    ret
+.r46_next:
+    inc rcx
+    jmp .r46_loop
+.r46_done:
+    ret
+
 ; gen_expr(rax = expression node)
 gen_expr:
     push rbx
@@ -11107,6 +11446,7 @@ gen_expr:
     ; [AST_FUNCALL][name_ptr][arg_count][arg1..arg6]
     ; Evaluate args left-to-right, push each result, then pop them into
     ; rdi, rsi, rdx, rcx, r8, r9 in reverse stack order.
+    push r15                  ; save compiler-time r15 for R46
     push r14                  ; save r14 (gen_block uses it)
     mov r14, [rbx+16]        ; arg count
     test r14, r14
@@ -11211,6 +11551,10 @@ gen_expr:
     mov dil, 0x5F            ; pop rdi
     call emit_byte
 .ge_fc_call:
+    call r46_live_callee_saved_vars
+    mov r15, rax
+    test r15, r15
+    jz .ge_fc_saves_done
     ; B6: preserve caller variables held in r12-r15 across user calls.
     mov dil, 0x41             ; push r12
     call emit_byte
@@ -11228,6 +11572,7 @@ gen_expr:
     call emit_byte
     mov dil, 0x57
     call emit_byte
+.ge_fc_saves_done:
     ; Emit call rel32
     mov dil, 0xE8
     call emit_byte
@@ -11245,6 +11590,8 @@ gen_expr:
     inc qword [rel patch_count]
     xor edi, edi
     call emit_u32
+    test r15, r15
+    jz .ge_fc_restores_done
     mov dil, 0x41             ; pop r15
     call emit_byte
     mov dil, 0x5F
@@ -11261,7 +11608,9 @@ gen_expr:
     call emit_byte
     mov dil, 0x5C
     call emit_byte
+.ge_fc_restores_done:
     pop r14                   ; restore compiler-time r14
+    pop r15                   ; restore compiler-time r15
     pop rbx
     ret
 .ge_patch_overflow:

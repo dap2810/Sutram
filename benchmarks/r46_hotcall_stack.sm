@@ -1,0 +1,12 @@
+# Runtime benchmark: stack-only intermediate caller, native repeated function calls.
+prakriya leaf(x) { pratiyati x + 1 }
+prakriya bridge(x) { pratiyati leaf(x) }
+mukhya() {
+    vitti i = 0
+    vitti sum = 0
+    yavat (i < 6000000) {
+        sum = sum + bridge(i)
+        i = i + 1
+    }
+    likha(sum)
+}

@@ -1,0 +1,59 @@
+name: R48 native check-mode acceptance
+on:
+  push:
+    branches: [feature/r48-check-mode-20261009]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check-mode-linux:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install NASM without administrator privileges
+        run: |
+          cd "$RUNNER_TEMP"
+          apt download nasm
+          mkdir -p "$RUNNER_TEMP/nasm"
+          dpkg-deb -x nasm_*.deb "$RUNNER_TEMP/nasm"
+          echo "$RUNNER_TEMP/nasm/usr/bin" >> "$GITHUB_PATH"
+      - name: Assemble old R46 and new R48 native compilers
+        run: |
+          mkdir -p win
+          if ! test -f win/rtblob.inc; then
+            printf 'RT_BLOB_LEN equ 0\nRT_SYSCALL_OFF equ 0\nrt_blob: db 0\n' > win/rtblob.inc
+            echo "LINUX ELF only, missing real win/rtblob.inc"
+          fi
+          git show 72b824f70049765c3977db07d712a1a604b89434:src/sutram_compiler.asm > /tmp/r48_before.asm
+          nasm -f elf64 -I. /tmp/r48_before.asm -o /tmp/r48_before.o
+          nasm -f elf64 -I. src/sutram_compiler.asm -o /tmp/r48_after.o
+          ld -o r48_before /tmp/r48_before.o
+          ld -o r48_after /tmp/r48_after.o
+          ./r48_before --version
+          ./r48_after --version
+      - name: Native --check syntax recovery, output suppression and R46 code identity
+        run: python3 tools/r48_native_acceptance.py
+      - name: Full existing native regressions and unchanged golden output
+        run: |
+          cp r48_after sutram_compiler
+          python3 tests/run_tests.py
+          python3 tools/codegen_gate.py
+          python3 tools/test_lang_packs.py
+          python3 -m unittest discover -s tests/module_graph -p 'test_*.py' -v
+      - name: Integrity manifest
+        if: always()
+        run: |
+          echo R48_SHA_START
+          sha256sum src/sutram_compiler.asm tools/r48_native_acceptance.py \
+            tests/r48_check/three_parse_errors.sm tests/r48_check/valid.sm \
+            tests/r48_check/semantic_unknown.sm .github/workflows/r48-check.yml \
+            ChatGPT-to-Sarvam/ROUND-48-NASM-REVIEW.patch \
+            ChatGPT-to-Sarvam/ROUND-48-OBSERVED.txt \
+            ChatGPT-to-Sarvam/ROUND-48-HANDOFF.md
+          echo R48_SHA_END
+          if test -f ChatGPT-to-Sarvam/ROUND-48-SHA256.txt; then
+            sha256sum -c ChatGPT-to-Sarvam/ROUND-48-SHA256.txt
+          fi
