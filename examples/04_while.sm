@@ -1,0 +1,8 @@
+# While loop - count to 5
+mukhya()
+    vitti i = 0
+    yavat (i < 5) {
+        likha(i)
+        likha("\n")
+        i = i + 1
+    }
