@@ -45,6 +45,16 @@ def main():
         assert ok.returncode==0 and "Sutram check: OK" in ok.stdout, f"valid source failed {ok}"
         invalid=run((NEW,"--check",failed))
         assert invalid.returncode!=0
+        # Semantic validation uses the real backpatch resolver without output.
+        unknown=FIXTURES/"semantic_unknown.sm"
+        semantic=run((NEW,"--check",unknown))
+        print("R48_SEMANTIC_BEGIN")
+        print(semantic.stdout,end="")
+        print(semantic.stderr,end="")
+        print("R48_SEMANTIC_END")
+        assert semantic.returncode!=0, "unresolved call should fail --check"
+        assert re.search(r"semantic_unknown\\.sm:\\d+:\\d+: Sutram Error \\[E_UNDEFINED_FUNCTION\\]",semantic.stdout),repr(semantic.stdout)
+        assert "missing_fun" in semantic.stdout and "^" in semantic.stdout
         # A user-provided potential output file must not be created.
         assert not (ROOT/"out.bin").exists(), "unexpected workspace output out.bin"
         data=[]
