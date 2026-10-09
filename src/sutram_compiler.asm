@@ -5210,12 +5210,14 @@ ns_rewrite_funcs:
     lea rsi,[rel ns_alias]
 .nr_prefix:
     mov al,[rsi]
+    mov [rel r51_ns_emit_pos],r12
     test al,al
     jz .nr_separator
     call ns_emit_byte
     inc rsi
     jmp .nr_prefix
 .nr_separator:
+    mov [rel r51_ns_emit_pos],r12
     mov al,'_'
     call ns_emit_byte
     mov al,'_'
@@ -5228,6 +5230,9 @@ ns_rewrite_funcs:
     lea rdx,[rel ns_raw_buf]
     lea rax,[rdx+r12]
     mov al,[rax+r10]
+    mov rdx,r12
+    add rdx,r10
+    mov [rel r51_ns_emit_pos],rdx
     call ns_emit_byte
     inc r10
     jmp .nr_emit_token
@@ -5273,6 +5278,7 @@ ns_emit_byte:
     lea rdx,[rel import_buf]
     mov [rdx+r14],al
     pop rdx
+    call r51_mark_namespaced
     inc r14
     ret
 .ne_overflow:
