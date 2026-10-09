@@ -1,0 +1,16 @@
+# PERF-F1: stack-resident float and mixed int/float remain on existing path.
+mukhya() {
+    dasham a = 1.5
+    dasham b = 2.5
+    dasham c = 3.5
+    dasham d = 4.5
+    dasham e = 5.5
+    dasham f = 6.5
+    vitti i = 3
+    f = f + b
+    f = f * a
+    a = a + i
+    f = f - a
+    likha(f)
+    likha(a)
+}
