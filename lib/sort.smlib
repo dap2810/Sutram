@@ -1,0 +1,130 @@
+# lib/sort.smlib — Sutram standard library: sorting and searching
+#
+# Operates on `pankti` integer arrays, in place. Scalar arguments are copied into
+# locals before mutation; array elements are written directly.
+
+prakriya swap(a, i, j) {
+    vitti t = a[i]
+    a[i] = a[j]
+    a[j] = t
+}
+
+prakriya bubble_sort(a, n) {
+    vitti i = 0
+    yavat (i < n) {
+        vitti j = 0
+        yavat (j < n - 1 - i) {
+            yadi (a[j] > a[j + 1]) {
+                swap(a, j, j + 1)
+            }
+            j = j + 1
+        }
+        i = i + 1
+    }
+}
+
+prakriya reverse_arr(a, n) {
+    vitti i = 0
+    vitti j = n - 1
+    yavat (i < j) {
+        swap(a, i, j)
+        i = i + 1
+        j = j - 1
+    }
+}
+
+prakriya min_of(a, n) {
+    vitti i = 1
+    vitti best = a[0]
+    yavat (i < n) {
+        yadi (a[i] < best) { best = a[i] }
+        i = i + 1
+    }
+    pratiyati best
+}
+
+prakriya max_of(a, n) {
+    vitti i = 1
+    vitti best = a[0]
+    yavat (i < n) {
+        yadi (a[i] > best) { best = a[i] }
+        i = i + 1
+    }
+    pratiyati best
+}
+
+prakriya sum_of(a, n) {
+    vitti i = 0
+    vitti s = 0
+    yavat (i < n) {
+        s = s + a[i]
+        i = i + 1
+    }
+    pratiyati s
+}
+
+prakriya find_linear(a, n, target) {
+    vitti i = 0
+    yavat (i < n) {
+        yadi (a[i] == target) { pratiyati i }
+        i = i + 1
+    }
+    pratiyati 0 - 1
+}
+
+prakriya count_of(a, n, target) {
+    vitti i = 0
+    vitti c = 0
+    yavat (i < n) {
+        yadi (a[i] == target) { c = c + 1 }
+        i = i + 1
+    }
+    pratiyati c
+}
+
+prakriya is_sorted(a, n) {
+    vitti i = 0
+    yavat (i < n - 1) {
+        yadi (a[i] > a[i + 1]) { pratiyati 0 }
+        i = i + 1
+    }
+    pratiyati 1
+}
+
+prakriya binary_search(a, n, target) {
+    vitti lo = 0
+    vitti hi = n - 1
+    yavat (lo <= hi) {
+        vitti mid = (lo + hi) / 2
+        yadi (a[mid] == target) { pratiyati mid }
+        yadi (a[mid] < target) { lo = mid + 1 } anyatra { hi = mid - 1 }
+    }
+    pratiyati 0 - 1
+}
+
+prakriya shell_sort(a, n) {
+    vitti gap = n / 2
+    yavat (gap > 0) {
+        vitti i = gap
+        yavat (i < n) {
+            vitti temp = a[i]
+            vitti j = i
+            vitti go = 1
+            yavat (go == 1) {
+                yadi (j >= gap) {
+                    yadi (a[j - gap] > temp) {
+                        a[j] = a[j - gap]
+                        j = j - gap
+                    } anyatra {
+                        go = 0
+                    }
+                } anyatra {
+                    go = 0
+                }
+            }
+            a[j] = temp
+            i = i + 1
+        }
+        gap = gap / 2
+    }
+}
