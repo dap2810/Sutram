@@ -26,6 +26,14 @@
 %define SYS_socket      41
 %define SYS_connect     42
 %define SYS_exit        60
+%define SYS_readlink    89
+%define SYS_open        2
+%define SYS_close       3
+%define SYS_pipe        22
+%define SYS_dup2        33
+%define SYS_fork        57
+%define SYS_execve      59
+%define SYS_wait4       61
 
 %define AF_UNIX         1
 %define SOCK_STREAM     1
@@ -90,6 +98,15 @@
 %define KM_COUNT        119             ; keycodes 8..126
 %define KM_SYMS_CAP     4096            ; reply keysym bytes we will accept
 
+; ---- run path (slice 5) ---------------------------------------------------
+%define RUN_SRC         "/tmp/.sutram_gui_run.sm"
+%define RUN_BIN         "/tmp/.sutram_gui_run.bin"
+%define RUN_CAP         4096            ; captured child output bytes
+%define O_WRONLY        1
+%define O_CREAT         64
+%define O_TRUNC         512
+%define MASK_CONTROL_ST 0x0004
+
 section .data
 ; Standard US-QWERTY XKB keycode -> ASCII. This is the common layout on every
 ; mainstream X server. A non-US layout would need the server's own mapping,
@@ -136,10 +153,24 @@ section .bss
     km_syms     resb 4096           ; keysym array
     kc_map      resb 256            ; keycode -> ASCII from the server
     km_ok       resq 1              ; 1 once a keymap has been fetched
+    ; ---- slice 5: run path ----
+    pipefd      resd 2
+    comp_path   resb 512            ; resolved compiler path
+    run_out     resb RUN_CAP        ; captured output from the last run
+    run_out_len resq 1
+    run_argv    resq 8              ; execve argv for the compiler
+    run_envp    resq 2              ; empty environment
+    out_lines   resb 1024           ; run_out split into display lines
+    out_nlines  resq 1
     want_quit   resd 1
 
 section .data
     xsock_path  db "/tmp/.X11-unix/X0", 0
+    str_procself db "/proc/self/exe", 0
+    comp_suffix  db "/sutram_compiler", 0
+    run_src_z    db RUN_SRC, 0
+    run_bin_z    db RUN_BIN, 0
+    msg_run      db "Sutram GUI: run (Ctrl-R)", 10, 0
 
     handshake   db 0x6C, 0x00
                 dw 11
@@ -433,6 +464,63 @@ draw_text:
     pop rbx
     ret
 
+
+; ---------------------------------------------------------------- draw_output
+; Slice 5: render the captured run output in the output pane, one line per
+; LINE_H. Up to 7 lines fit; extra lines are dropped (the pane scrolls in a
+; later slice). Uses r14 for the line cursor so it never disturbs r12 (the
+; socket fd).
+draw_output:
+    push rbx
+    push r13
+    push r14
+    mov r13, [rel out_nlines]
+    test r13, r13
+    jz .done
+    cmp r13, 7
+    jbe .clamped
+    mov r13, 7
+.clamped:
+    mov rdi, COL_TEXT
+    call set_fg
+    xor rbx, rbx
+    lea r14, [rel out_lines]
+.line:
+    cmp rbx, r13
+    jae .done
+    xor rcx, rcx
+.len:
+    cmp byte [r14 + rcx], 0
+    je .have
+    inc rcx
+    jmp .len
+.have:
+    mov rsi, r14
+    mov rdx, rcx
+    mov rcx, PANE_X + 8
+    mov r8, rbx
+    imul r8, LINE_H
+    add r8, OUT_Y + 24
+    call draw_text
+    mov rdi, r12
+    lea rsi, [reqbuf]
+    call send_req
+    ; advance past this line's NUL
+.adv:
+    cmp byte [r14], 0
+    je .adv_done
+    inc r14
+    jmp .adv
+.adv_done:
+    inc r14
+    inc rbx
+    jmp .line
+.done:
+    pop r14
+    pop r13
+    pop rbx
+    ret
+
 ; ---------------------------------------------------------------- draw_all
 ; the Expose repaint: background, two panes, a rule, and the labels.
 draw_all:
@@ -518,6 +606,7 @@ draw_all:
     mov rdi, r12
     lea rsi, [reqbuf]
     call send_req
+    call draw_output
 
     lea rsi, [txt_hint]
     mov rdx, txt_hint_n
@@ -799,11 +888,306 @@ fetch_keymap:
     pop rbx
     ret
 
+
+; ---------------------------------------------------------------- save_buffer
+; Write the editor buffer to RUN_SRC. Returns 0 ok, -1 on error.
+save_buffer:
+    push rbx
+    mov rax, SYS_open
+    lea rdi, [rel run_src_z]
+    mov rsi, O_WRONLY | O_CREAT | O_TRUNC
+    mov rdx, 0o644
+    syscall
+    cmp rax, 0
+    jl .fail
+    mov rbx, rax
+    mov rdx, [rel ed_len]
+    test rdx, rdx
+    jz .close
+    mov rax, SYS_write
+    mov rdi, rbx
+    lea rsi, [rel ed_buf]
+    syscall
+.close:
+    mov rax, SYS_close
+    mov rdi, rbx
+    syscall
+    xor rax, rax
+    pop rbx
+    ret
+.fail:
+    mov rax, -1
+    pop rbx
+    ret
+
+; ---------------------------------------------------------------- find_compiler
+; Resolve the compiler as "<dir of this executable>/sutram_compiler" using
+; /proc/self/exe, the same trick the compiler itself uses for language packs.
+; The IDE and compiler ship together, so this needs no configuration.
+find_compiler:
+    push rbx
+    push r12
+    mov rax, SYS_readlink
+    lea rdi, [rel str_procself]
+    lea rsi, [rel comp_path]
+    mov rdx, 500
+    syscall
+    cmp rax, 0
+    jle .fail
+    lea rbx, [rel comp_path]
+    add rbx, rax
+    mov byte [rbx], 0
+.sb:
+    dec rbx
+    lea rcx, [rel comp_path]
+    cmp rbx, rcx
+    jbe .fail
+    cmp byte [rbx], '/'
+    jne .sb
+    lea rsi, [rel comp_suffix]
+.copy:
+    mov al, [rsi]
+    mov [rbx], al
+    test al, al
+    jz .done
+    inc rbx
+    inc rsi
+    jmp .copy
+.done:
+    xor rax, rax
+    pop r12
+    pop rbx
+    ret
+.fail:
+    mov rax, -1
+    pop r12
+    pop rbx
+    ret
+
+; ---------------------------------------------------------------- exec_capture
+; Fork, run r13 = path with r14 = argv (NULL-terminated) and an empty envp,
+; capture stdout+stderr into run_out. Sets run_out_len. Waits for the child.
+exec_capture:
+    push rbx
+    push r12
+    push r15
+    ; pipe
+    lea rdi, [rel pipefd]
+    mov rax, SYS_pipe
+    syscall
+    cmp rax, 0
+    jl .fail
+    ; fork
+    mov rax, SYS_fork
+    syscall
+    cmp rax, 0
+    jl .fail
+    jne .parent
+    ; ---- child: stdout+stderr -> pipe write end ----
+    mov rdi, [rel pipefd+4]
+    mov rsi, 1
+    mov rax, SYS_dup2
+    syscall
+    mov rdi, [rel pipefd+4]
+    mov rsi, 2
+    mov rax, SYS_dup2
+    syscall
+    mov rdi, [rel pipefd]
+    mov rax, SYS_close
+    syscall
+    mov rdi, [rel pipefd+4]
+    mov rax, SYS_close
+    syscall
+    mov rdi, r13
+    mov rsi, r14
+    lea rdx, [rel run_envp]
+    mov rax, SYS_execve
+    syscall
+    mov rdi, 127
+    mov rax, SYS_exit
+    syscall
+.parent:
+    mov rdi, [rel pipefd+4]
+    mov rax, SYS_close
+    syscall
+    mov r12, [rel run_out_len]      ; append, so compiler output survives the run
+    cmp r12, RUN_CAP
+    jb .read
+    mov r12, RUN_CAP
+.read:
+    mov rax, SYS_read
+    mov rdi, [rel pipefd]
+    lea rsi, [rel run_out]
+    add rsi, r12
+    mov rdx, RUN_CAP
+    sub rdx, r12
+    syscall
+    cmp rax, 0
+    jle .drained
+    add r12, rax
+    cmp r12, RUN_CAP
+    jb .read
+.drained:
+    mov [rel run_out_len], r12
+    mov rdi, [rel pipefd]
+    mov rax, SYS_close
+    syscall
+    mov rax, SYS_wait4
+    mov rdi, -1
+    xor rsi, rsi
+    xor rdx, rdx
+    xor r10, r10
+    syscall
+    pop r15
+    pop r12
+    pop rbx
+    xor rax, rax
+    ret
+.fail:
+    mov qword [rel run_out_len], 0
+    pop r15
+    pop r12
+    pop rbx
+    mov rax, -1
+    ret
+
+; ---------------------------------------------------------------- split_lines
+; Turn run_out into out_lines (out_nlines lines, each NUL-terminated, CR
+; stripped) for the output pane.
+split_lines:
+    push rbx
+    push r12
+    push r13
+    xor rbx, rbx                    ; src index
+    xor r12, r12                    ; dst index
+    xor r13, r13                    ; line count
+    lea rdi, [rel out_lines]
+.next:
+    cmp rbx, [rel run_out_len]
+    jae .end
+    cmp r13, 60
+    jae .end
+    lea rsi, [rel run_out]
+    add rsi, rbx
+    mov al, [rsi]
+    cmp al, 10
+    je .eol
+    cmp al, 13
+    je .skip
+    mov [rdi], al
+    inc rdi
+    inc r12
+.skip:
+    inc rbx
+    jmp .next
+.eol:
+    mov byte [rdi], 0
+    inc rdi
+    inc r12
+    inc r13
+    inc rbx
+    jmp .next
+.end:
+    mov byte [rdi], 0
+    inc r13
+    mov [rel out_nlines], r13
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; ---------------------------------------------------------------- do_run
+; Ctrl-R: save the buffer, compile it, and if that succeeds run the result.
+; Output (compiler messages, then program output) lands in the output pane.
+do_run:
+    push rbx
+    mov qword [rel run_out_len], 0
+    call save_buffer
+    cmp rax, 0
+    jl .done
+    call find_compiler
+    cmp rax, 0
+    jl .done
+    ; ---- argv for the compiler: [comp, src, bin, NULL] ----
+    lea rax, [rel comp_path]
+    mov [rel run_argv], rax
+    lea rax, [rel run_src_z]
+    mov [rel run_argv+8], rax
+    lea rax, [rel run_bin_z]
+    mov [rel run_argv+16], rax
+    mov qword [rel run_argv+24], 0
+    lea r13, [rel comp_path]
+    lea r14, [rel run_argv]
+    call exec_capture
+    mov byte [rel run_out+4095], 0    ; NUL-terminate without overrunning the buffer
+    call split_lines
+    ; ---- if the compiler succeeded (no output, exit 0) run the binary ----
+    ; The compiler prints "OK: compiled N bytes" on success; treat any
+    ; non-empty output that contains "Error" as failure and stop.
+    cmp qword [rel run_out_len], 0
+    je .run_bin
+    ; scan for the substring "Error"
+    call has_error
+    cmp rax, 0
+    jne .done
+.run_bin:
+    lea rax, [rel run_bin_z]
+    mov [rel run_argv], rax
+    mov qword [rel run_argv+8], 0
+    lea r13, [rel run_bin_z]
+    lea r14, [rel run_argv]
+    call exec_capture
+    call split_lines
+.done:
+    pop rbx
+    ret
+
+; ---------------------------------------------------------------- has_error
+; rax = 1 if run_out contains "Error", else 0.
+has_error:
+    push rbx
+    push rcx
+    xor rbx, rbx
+.scan:
+    mov rax, [rel run_out_len]
+    sub rax, 5
+    cmp rbx, rax
+    ja .no
+    lea rsi, [rel run_out]
+    add rsi, rbx
+    cmp byte [rsi], 'E'
+    jne .next
+    cmp byte [rsi+1], 'r'
+    jne .next
+    cmp byte [rsi+2], 'r'
+    jne .next
+    cmp byte [rsi+3], 'o'
+    jne .next
+    cmp byte [rsi+4], 'r'
+    jne .next
+    mov rax, 1
+    pop rcx
+    pop rbx
+    ret
+.next:
+    inc rbx
+    jmp .scan
+.no:
+    xor rax, rax
+    pop rcx
+    pop rbx
+    ret
+
 ; ---------------------------------------------------------------- handle_key
-; rdi = X11 keycode.  Printable ASCII is keycode-8 on the standard map.
+; rdi = X11 keycode, rsi = event state (modifier mask).
 handle_key:
     push rbx
     mov  rbx, rdi
+    test rsi, MASK_CONTROL_ST
+    jz   .nocontrol
+    cmp  rbx, KC_CTRL_R
+    je   .run
+.nocontrol:
     cmp  rbx, KC_ESCAPE
     je   .esc
     cmp  rbx, KC_BACKSPACE
@@ -833,6 +1217,10 @@ handle_key:
 .nl:
     mov  rdi, 10
     call ed_insert
+    jmp  .done
+.run:
+    call do_run
+    call draw_all
     jmp  .done
 .esc:
     mov  dword [rel want_quit], 1
@@ -906,6 +1294,7 @@ _start:
 
 .key:
     movzx rdi, byte [event+1]       ; detail = keycode
+    movzx rsi, word [event+28]      ; state (modifier mask)
     call handle_key
     call draw_editor
     cmp  dword [rel want_quit], 0
