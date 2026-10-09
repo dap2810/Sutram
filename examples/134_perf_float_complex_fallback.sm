@@ -1,0 +1,20 @@
+# PERF-FG1 guards: indexed LHS and nested function-call expressions remain
+# on the generic path; scalar local can be read after call expressions.
+prakriya make_float(dasham x) {
+    pratiyati x + 0.5
+}
+mukhya() {
+    kosh dasham data[2]
+    kosh_push(data, 3.0)
+    kosh_push(data, 8.0)
+    dasham total = 1.0
+    total = total + make_float(data[0])
+    likha(total)
+    total = total * (make_float(data[0]) + make_float(data[1]))
+    likha(total)
+    total = total - data[1]
+    likha(total)
+    total = total / make_float(0.5)
+    likha(total)
+    likha(data[0])
+}
