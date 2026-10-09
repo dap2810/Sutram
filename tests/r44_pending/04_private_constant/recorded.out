@@ -1,0 +1,1 @@
+tests/r44_pending/04_private_constant/main.sm:3: Sutram Error [E_MODULE_NOT_EXPORTED]: 'SECRET' is not exported by module 'config'

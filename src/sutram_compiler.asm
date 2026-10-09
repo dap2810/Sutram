@@ -709,6 +709,7 @@ section .bss
     ns_raw_len resq 1
     ns_func_count resq 1
     ns_func_names resb NS_FUNC_CAP * 64
+    ns_func_is_const resb NS_FUNC_CAP ; 1 for top-level sutra, 0 for prakriya
     module_path_buf resb 512      ; dedicated ayojan path scratch
     str_ptr     resq 1
     code_buf    resb CODE_BUF_CAP
@@ -755,6 +756,8 @@ section .bss
     patch_count  resq 1
     func_defs    resb FUNC_DEFS_CAP * 8 ; [funcdef_node_ptr(8)]
     func_def_cnt resq 1
+    top_const_count resq 1
+    top_const_nodes resq 128   ; compile-time top-level sutra initializers
     in_function  resq 1       ; 0 = in main, 1 = in user function
     current_func_float resq 1 ; T12: active prakriya returns binary64 when nonzero
     alloc_sizes  resb 1024    ; [name_ptr(8)][size(8)] = 16 bytes each (borrow checker)
@@ -763,18 +766,9 @@ section .bss
     import_count resq 1
     import_new_this_pass resq 1  ; R40: transitive import fixed-point tracker
     import_depth_round resq 1   ; R40: bounded graph expansion passes
-    ; R41 opt-in graph preflight: independent from legacy import deduplication.
-    ; 16 modules x 64 KiB is a bounded static workspace, no allocator/runtime.
-    graph_count resq 1
-    graph_depth resq 1
-    graph_detail_ptr resq 1
-    graph_names resb IMPORT_NAMES_CAP * 64
-    graph_paths resb IMPORT_NAMES_CAP * 512
-    graph_state resb IMPORT_NAMES_CAP
-    graph_stack resb IMPORT_NAMES_CAP
-    graph_buffers resb IMPORT_NAMES_CAP * 65536
-    graph_lengths resq IMPORT_NAMES_CAP
-    graph_scratch_names resb (IMPORT_NAMES_CAP + 1) * 64
+    ; Single-pass R44 module graph uses mg_* tables below; no duplicate 1MiB
+    ; R41 graph_buffers allocation or second DFS state remains.
+    graph_detail_ptr resq 1  ; only retained for portable R41 missing diagnostic
     rachana_defs resb RACHANA_CAP * 256 ; [name_ptr(8)][field_count(8)][fields...]
     rachana_cnt  resq 1
     break_patch_positions resq BREAK_PATCH_CAP ; positions of break jmps to backpatch
@@ -1774,10 +1768,7 @@ _start:
 
     ; R41: opt-in module-v1 graph preflight runs BEFORE destructive expansion.
     ; The legacy import and generated-code path is byte-for-byte unchanged.
-    call graph_preflight_v1
-    ; Round 41 (Muse): module graph pre-pass — cycle detection, niryat
-    ; visibility, v1 alias enforcement.
-    call check_module_graph
+    call graph_preflight_v1   ; R44 single graph traversal (dispatch to merged Muse DFS)
     ; Expand imports (inline .smlib files)
     call expand_imports
     ; Lex
@@ -1916,350 +1907,34 @@ build_module_path_cwd:
 ; Source-path diagnostics point at the importing file and directive line.
 ; ============================================================
 graph_preflight_v1:
-    lea rdi,[rel source_buf]
-    lea rsi,[rel graph_v1_header]
-    xor rcx,rcx
-.check_header:
-    mov al,[rsi+rcx]
-    test al,al
-    jz .header_end
-    cmp rcx,[rel source_len]
-    jae .skip
-    cmp al,[rdi+rcx]
-    jne .skip
+    ; R44: one module graph traversal, preserving R41 exact-header semantics.
+    ; The merged Muse DFS is authoritative; duplicate R41 scan was removed.
+    mov byte [rel mg_root_exact_v1], 0
+    lea rdi, [rel source_buf]
+    lea rsi, [rel graph_v1_header]
+    xor rcx, rcx
+.r44_header:
+    mov al, [rsi + rcx]
+    test al, al
+    jz .r44_eol
+    cmp rcx, [rel source_len]
+    jae .r44_done
+    cmp al, [rdi + rcx]
+    jne .r44_done
     inc rcx
-    jmp .check_header
-.header_end:
-    ; Require end of header line: a partial prefix is not an opt-in.
-    cmp byte [rdi+rcx],10
-    je .go
-    cmp byte [rdi+rcx],13
-    jne .skip
-.go:
-    mov qword [rel graph_count],0
-    mov qword [rel graph_depth],0
-    mov qword [rel graph_detail_ptr],0
-    lea rdi,[rel source_buf]
-    mov rsi,[rel source_len]
-    mov rdx,[rel source_path_ptr]
-    call graph_scan
-.skip:
-    ret
+    jmp .r44_header
+.r44_eol:
+    cmp byte [rdi + rcx], 10
+    je .r44_optin
+    cmp byte [rdi + rcx], 13
+    jne .r44_done
+.r44_optin:
+    mov byte [rel mg_root_exact_v1], 1
+.r44_done:
+    jmp check_module_graph
 
-; graph_scan(rdi=source bytes, rsi=length, rdx=origin file path)
-; All new imports are found at physical line starts after whitespace. Skip
-; comments and all other source lines. Recursive calls preserve scan registers.
-graph_scan:
-    push rbx
-    push r12
-    push r13
-    push r14
-    push r15
-    mov r12,rdi
-    mov r13,rdi
-    add r13,rsi
-    mov r14,1
-    mov r15,rdx
-.line:
-    cmp r12,r13
-    jae .done
-    mov rbx,r12
-.spaces:
-    cmp rbx,r13
-    jae .next
-    mov al,[rbx]
-    cmp al,32
-    je .space
-    cmp al,9
-    jne .head
-.space:
-    inc rbx
-    jmp .spaces
-.head:
-    lea rax,[rbx+7]
-    cmp rax,r13
-    ja .next
-    cmp dword [rbx],0x6A6F7961  ; ayoj
-    jne .next
-    cmp word [rbx+4],0x6E61    ; an
-    jne .next
-    mov al,[rbx+6]
-    cmp al,32
-    je .keyword
-    cmp al,9
-    jne .next
-.keyword:
-    add rbx,6
-.white:
-    cmp rbx,r13
-    jae .invalid
-    mov al,[rbx]
-    cmp al,32
-    je .whplus
-    cmp al,9
-    jne .name
-.whplus:
-    inc rbx
-    jmp .white
-.name:
-    ; Depth 0 is entry source; depth 1..16 correspond to imported modules.
-    mov rax,[rel graph_depth]
-    cmp rax,IMPORT_NAMES_CAP
-    ja .limit
-    shl rax,6
-    lea rdi,[rel graph_scratch_names]
-    add rdi,rax
-    xor rcx,rcx
-.copy_name:
-    cmp rbx,r13
-    jae .end_name
-    mov al,[rbx]
-    cmp al,'@'
-    je .end_name
-    cmp al,'#'
-    je .end_name
-    cmp al,10
-    je .end_name
-    cmp al,13
-    je .end_name
-    cmp al,32
-    je .end_name
-    cmp al,9
-    je .end_name
-    cmp rcx,30
-    jae .invalid
-    ; Module names are local identifiers. Reject paths, separators and dots.
-    cmp al,'_'
-    je .okchar
-    cmp al,'-'
-    je .okchar
-    cmp al,'0'
-    jb .invalid
-    cmp al,'9'
-    jbe .okchar
-    cmp al,'A'
-    jb .invalid
-    cmp al,'Z'
-    jbe .okchar
-    cmp al,'a'
-    jb .invalid
-    cmp al,'z'
-    ja .invalid
-.okchar:
-    mov [rdi+rcx],al
-    inc rcx
-    inc rbx
-    jmp .copy_name
-.end_name:
-    test rcx,rcx
-    jz .invalid
-    mov byte [rdi+rcx],0
-    mov rsi,r15
-    mov rdx,r14
-    call graph_visit
-    jmp .next
-.invalid:
-    mov rdi,r15
-    mov rsi,r14
-    lea rdx,[rel graph_msg_invalid]
-    lea rcx,[rel graph_invalid_prefix]
-    call graph_error
-.limit:
-    mov rdi,r15
-    mov rsi,r14
-    lea rdx,[rel graph_msg_limit]
-    lea rcx,[rel graph_limit_prefix]
-    call graph_error
-.next:
-    cmp r12,r13
-    jae .done
-    mov al,[r12]
-    inc r12
-    cmp al,10
-    jne .next
-    inc r14
-    jmp .line
-.done:
-    pop r15
-    pop r14
-    pop r13
-    pop r12
-    pop rbx
-    ret
-
-; graph_visit(rdi=module name, rsi=importing file, rdx=source line)
-; Three-colour DFS: 0 not found, 1 active path (cycle), 2 finished (diamond).
-graph_visit:
-    push rbx
-    push r12
-    push r13
-    push r14
-    push r15
-    mov r12,rdi
-    mov r13,rsi
-    mov r14,rdx
-    xor ebx,ebx
-.lookup:
-    cmp rbx,[rel graph_count]
-    jae .new
-    mov rax,rbx
-    shl rax,6
-    lea rsi,[rel graph_names]
-    add rsi,rax
-    mov rdi,r12
-    call strcmp
-    test rax,rax
-    jz .found
-    inc rbx
-    jmp .lookup
-.found:
-    lea rax,[rel graph_state]
-    cmp byte [rax+rbx],1
-    je .cycle
-    jmp .return               ; already finalized: valid diamond
-.new:
-    cmp rbx,IMPORT_NAMES_CAP
-    jae .limit
-    mov r15,rbx
-    inc qword [rel graph_count]
-    ; Persist graph identity independently of the short-lived lexer scratch.
-    lea rdi,[rel graph_names]
-    mov rax,r15
-    shl rax,6
-    add rdi,rax
-    mov rsi,r12
-.copy:
-    lodsb
-    stosb
-    test al,al
-    jnz .copy
-    lea rax,[rel graph_state]
-    mov byte [rax+r15],1
-    mov rax,[rel graph_depth]
-    cmp rax,IMPORT_NAMES_CAP
-    jae .limit
-    lea rdi,[rel graph_stack]
-    mov [rdi+rax],r15b
-    inc qword [rel graph_depth]
-
-    ; Use the same three lookup roots as R40's importer.
-    lea rdi,[rel num_buf]
-    mov rsi,r12
-.copy_query:
-    lodsb
-    stosb
-    test al,al
-    jnz .copy_query
-    mov rdi,[rel source_path_ptr]
-    call build_module_path_from_file
-    lea rdi,[rel module_path_buf]
-    xor rsi,rsi
-    call os_open
-    test rax,rax
-    jns .opened
-    lea rdi,[rel repl_self]
-    call build_module_path_from_file
-    lea rdi,[rel module_path_buf]
-    xor rsi,rsi
-    call os_open
-    test rax,rax
-    jns .opened
-    call build_module_path_cwd
-    lea rdi,[rel module_path_buf]
-    xor rsi,rsi
-    call os_open
-    test rax,rax
-    js .missing
-.opened:
-    mov rbx,rax              ; file handle
-    ; Save actual diagnostic path before future nested imports change scratch.
-    mov rax,r15
-    shl rax,9
-    lea rdi,[rel graph_paths]
-    add rdi,rax
-    lea rsi,[rel module_path_buf]
-.copy_path:
-    lodsb
-    stosb
-    test al,al
-    jnz .copy_path
-    mov rax,r15
-    shl rax,16
-    lea rsi,[rel graph_buffers]
-    add rsi,rax
-    mov rdi,rbx
-    mov rdx,65535
-    call os_read
-    test rax,rax
-    js .read_error
-    mov r12,rax              ; read length, scratch
-    cmp r12,65535
-    jne .file_complete
-    ; Explicit EOF probe: never silently truncate an oversized module.
-    mov rdi,rbx
-    lea rsi,[rel num_buf+31]
-    mov rdx,1
-    call os_read
-    cmp rax,0
-    jg .read_limit
-.file_complete:
-    mov rdi,rbx
-    call os_close
-    mov rax,r15
-    shl rax,3
-    lea rdi,[rel graph_lengths]
-    mov [rdi+rax],r12
-    mov rax,r15
-    shl rax,16
-    lea rdi,[rel graph_buffers]
-    add rdi,rax
-    mov rsi,r12
-    mov rax,r15
-    shl rax,9
-    lea rdx,[rel graph_paths]
-    add rdx,rax
-    call graph_scan
-    lea rax,[rel graph_state]
-    mov byte [rax+r15],2
-    dec qword [rel graph_depth]
-.return:
-    pop r15
-    pop r14
-    pop r13
-    pop r12
-    pop rbx
-    ret
-.read_limit:
-    mov rdi,rbx
-    call os_close
-    jmp .limit
-.read_error:
-    mov rdi,rbx
-    call os_close
-.missing:
-    mov rax,r15
-    shl rax,6
-    lea rdi,[rel graph_names]
-    add rdi,rax
-    mov [rel graph_detail_ptr],rdi
-    mov rdi,r13
-    mov rsi,r14
-    lea rdx,[rel graph_msg_missing]
-    lea rcx,[rel graph_missing_prefix]
-    call graph_error
-.limit:
-    mov rdi,r13
-    mov rsi,r14
-    lea rdx,[rel graph_msg_limit]
-    lea rcx,[rel graph_limit_prefix]
-    call graph_error
-.cycle:
-    mov r15,rbx             ; matching node for cycle-path diagnostic
-    mov rdi,r13
-    mov rsi,r14
-    lea rdx,[rel graph_msg_cycle]
-    lea rcx,[rel graph_cycle_prefix]
-    call graph_error_cycle
+; R44: historic R41 graph_scan/graph_visit removed. The Muse DFS now performs
+; the ONE native dependency traversal for modern and legacy programs.
 
 ; File:line uses a stable basename so golden diagnostics remain portable
 ; across checkout locations on Windows/Linux.
@@ -2312,65 +1987,6 @@ graph_error:
     jz .no_detail
     call print_str_z
 .no_detail:
-    lea rdi,[rel graph_nl]
-    call print_str_z
-    mov rdi,1
-    call os_exit
-
-graph_error_cycle:
-    ; Path+line+code followed by explicit ordered path printed from the
-    ; active recursion stack, then repeated target. Distinct from deduplication.
-    push rbx
-    push r12
-    push rcx               ; message prefix (printed second)
-    push rdx               ; error code     (printed first)
-    push rsi               ; line
-    call graph_print_file
-    lea rdi,[rel graph_colon]
-    call print_str_z
-    pop rdi
-    lea rsi,[rel num_buf]
-    call itoa
-    mov rdi,rax
-    call print_str_z
-    lea rdi,[rel graph_prefix]
-    call print_str_z
-    pop rdi
-    call print_str_z
-    lea rdi,[rel graph_close]
-    call print_str_z
-    pop rdi
-    call print_str_z
-    mov r12,[rel graph_depth]
-    xor rbx,rbx
-.find_first:
-    cmp rbx,r12
-    jae .end_chain
-    lea rsi,[rel graph_stack]
-    movzx eax,byte [rsi+rbx]
-    cmp eax,r15d
-    je .emit_chain
-    inc rbx
-    jmp .find_first
-.emit_chain:
-    cmp rbx,r12
-    jae .end_chain
-    lea rsi,[rel graph_stack]
-    movzx eax,byte [rsi+rbx]
-    shl rax,6
-    lea rdi,[rel graph_names]
-    add rdi,rax
-    call print_str_z
-    lea rdi,[rel graph_arrow]
-    call print_str_z
-    inc rbx
-    jmp .emit_chain
-.end_chain:
-    mov rax,r15
-    shl rax,6
-    lea rdi,[rel graph_names]
-    add rdi,rax
-    call print_str_z
     lea rdi,[rel graph_nl]
     call print_str_z
     mov rdi,1
@@ -2891,6 +2507,13 @@ mg_e_noexp3:  db "'", 10, 0
 mg_e_dupexp1: db "Sutram Error [E_MODULE_DUP_EXPORT]: duplicate export '", 0
 mg_e_dupexp2: db "' in module '", 0
 mg_e_dupexp3: db "'", 10, 0
+mg_e_undef1:  db "Sutram Error [E_EXPORT_UNDEFINED]: export '", 0
+mg_e_undef2:  db "' has no matching definition in module '", 0
+mg_e_undef3:  db "'", 10, 0
+mg_e_unknown1: db "Sutram Error [E_EXPORT_UNDEFINED]: unknown qualified symbol '", 0
+mg_e_unknown2: db "' in module '", 0
+mg_e_unknown3: db "'", 10, 0
+mg_w_sutra:    db "sutra", 0
 mg_e_depth:   db "Sutram Error [E_MODULE_DEPTH]: import depth exceeded", 10, 0
 mg_e_valias1: db "Sutram Error [E_MODULE_V1_ALIAS]: v1 module '", 0
 mg_e_valias2: db "' must be imported with an alias: ayojan ", 0
@@ -2918,6 +2541,7 @@ mg_rec_path:  resb 8192
 mg_rec_v1:    resb 16
 mg_exp:       resb 16384
 mg_exp_n:     resb 16
+mg_exp_line:  resq 16 * 16       ; line number for each rec/declared export
 mg_def:       resb 32768
 mg_def_n:     resb 16
 mg_imp:       resb 24576
@@ -2933,6 +2557,12 @@ mg_path_stk:  resb 8192
 mg_tmp_name:  resb 64
 mg_tmp_alias: resb 64
 mg_pat:       resb 128
+mg_root_exact_v1: resb 1 ; R44 preserve R41 header-specific cycle/missing precedence
+mg_deferred_alias: resb 1
+mg_deferred_alias_name: resb 64
+mg_deferred_alias_path: resb 512
+mg_deferred_alias_line: resq 1
+mg_pat_len:   resq 1    ; R44 qualified-name prefix length
 
 section .text
 
@@ -3460,6 +3090,12 @@ mg_parse_niryat:
     inc rcx
     test al, al
     jnz .pn_cp
+    ; Preserve the physical niryat declaration line for diagnostics.
+    mov rax, r15
+    shl rax, 4
+    add rax, r10
+    lea r11, [rel mg_exp_line]
+    mov [r11 + rax*8], r13
     lea r11, [rel mg_exp_n]
     inc byte [r11 + r15]
 .pn_bail:
@@ -3537,6 +3173,86 @@ mg_parse_prakriya:
     pop rcx
     pop r9
     pop r8
+    ret
+
+; --- mg_verify_exports: r15=record index, mg_cur_path is module path. ---
+; Enforces that a v1 niryat names an actual prakriya or sutra definition.
+; Legacy non-opt-in imports bypass this check.
+mg_verify_exports:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    lea rax, [rel mg_rec_v1]
+    cmp byte [rax + r15], 0
+    je .ve_done
+    lea rax, [rel mg_exp_n]
+    movzx r12, byte [rax + r15]
+    xor r13, r13
+.ve_export:
+    cmp r13, r12
+    jae .ve_done
+    mov rax, r15
+    shl rax, 10
+    mov rcx, r13
+    shl rcx, 6
+    add rax, rcx
+    lea rbx, [rel mg_exp]
+    add rbx, rax               ; exported symbol
+    lea rax, [rel mg_def_n]
+    movzx r14, byte [rax + r15]
+    xor r10, r10
+.ve_def:
+    cmp r10, r14
+    jae .ve_missing
+    mov rax, r15
+    shl rax, 11
+    mov rcx, r10
+    shl rcx, 6
+    add rax, rcx
+    lea rsi, [rel mg_def]
+    add rsi, rax
+    mov rdi, rbx
+    push r10
+    call strcmp
+    pop r10
+    test rax, rax
+    jz .ve_valid
+    inc r10
+    jmp .ve_def
+.ve_missing:
+    mov rax, r15
+    shl rax, 4
+    add rax, r13
+    lea rdx, [rel mg_exp_line]
+    mov rax, [rdx + rax*8]
+    mov [rel mg_cur_line], rax
+    call mg_print_loc
+    lea rdi, [rel mg_e_undef1]
+    call print_str_z
+    mov rdi, rbx
+    call print_str_z
+    lea rdi, [rel mg_e_undef2]
+    call print_str_z
+    mov rax, r15
+    shl rax, 6
+    lea rdi, [rel mg_rec_name]
+    add rdi, rax
+    call print_str_z
+    lea rdi, [rel mg_e_undef3]
+    call print_str_z
+    mov rdi, 1
+    call os_exit
+.ve_valid:
+    inc r13
+    jmp .ve_export
+.ve_done:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
     ret
 
 ; --- mg_parse_ayojan: rbx=buf, r12=pos of 'a', rdx=len, r13=line ---
@@ -3772,6 +3488,28 @@ mg_scan_buf:
     mov r14, 0
     jmp .sb_loop
 .sb_not_prakriya:
+    ; v1 top-level sutra names count as local definitions for niryat.
+    cmp r14, 1
+    jne .sb_not_sutra
+    lea rsi, [rel mg_w_sutra]
+    call mg_match_at
+    test rax, rax
+    jz .sb_not_sutra
+    mov r9, r12
+    add r9, 5
+    cmp r9, rdx
+    jae .sb_not_sutra
+    movzx eax, byte [rbx + r9]
+    cmp al, ' '
+    je .sb_sutra_ok
+    cmp al, 9
+    jne .sb_not_sutra
+.sb_sutra_ok:
+    mov r8, 5
+    call mg_parse_prakriya  ; common name collector (no backend effects)
+    mov r14, 0
+    jmp .sb_loop
+.sb_not_sutra:
     lea rsi, [rel mg_w_ayojan]
     call mg_match_at
     test rax, rax
@@ -3793,6 +3531,25 @@ mg_scan_buf:
 
 ; --- mg_valias_error: rdi = parent path. Prints E_MODULE_V1_ALIAS and exits. ---
 ; Uses mg_cur_line, mg_cur_name.
+mg_defer_valias:
+    ; rdi=importer path, mg_cur_name/line=offending import. Retain the first
+    ; deterministic v1 alias error until AFTER dependency graph DFS diagnostics.
+    cmp byte [rel mg_deferred_alias], 0
+    jne .da_done
+    mov byte [rel mg_deferred_alias], 1
+    mov rax, [rel mg_cur_line]
+    mov [rel mg_deferred_alias_line], rax
+    mov rsi, rdi
+    lea rdi, [rel mg_deferred_alias_path]
+    mov rcx, 512
+    rep movsb
+    lea rsi, [rel mg_cur_name]
+    lea rdi, [rel mg_deferred_alias_name]
+    mov rcx, 64
+    rep movsb
+.da_done:
+    ret
+
 mg_valias_error:
     push rdi
     call print_str_z
@@ -3874,9 +3631,29 @@ mg_copy_list_to_rec:
 mg_print_cycle:
     push rbx
     push r12
+    cmp byte [rel mg_root_exact_v1], 1
+    jne .pc_muse_prefix
+    ; R41 compatible basename/line and error prefix.
+    lea rdi, [rel mg_cur_path]
+    call graph_print_file
+    lea rdi, [rel graph_colon]
+    call print_str_z
+    mov rax, [rel mg_cur_line]
+    call mg_print_uint
+    lea rdi, [rel graph_prefix]
+    call print_str_z
+    lea rdi, [rel graph_msg_cycle]
+    call print_str_z
+    lea rdi, [rel graph_close]
+    call print_str_z
+    lea rdi, [rel graph_cycle_prefix]
+    call print_str_z
+    jmp .pc_prefix_done
+.pc_muse_prefix:
     call mg_print_loc
     lea rdi, [rel mg_e_cycle]
     call print_str_z
+.pc_prefix_done:
     ; start from the first occurrence of the offending module (the actual cycle)
     xor r12, r12
 .pc_find:
@@ -3969,6 +3746,49 @@ mg_process_imports:
     ; line -> mg_cur_line
     mov rax, [rsi + 128]
     mov [rel mg_cur_line], rax
+    ; Match R41 exact opt-in preflight name validation before the DFS edge.
+    ; Old graph_scan allows only up to 30 ASCII module-name bytes (A-Z,
+    ; a-z, 0-9, '_' and '-'). Legacy behavior is deliberately unchanged.
+    cmp byte [rel mg_root_exact_v1], 1
+    jne .pi_name_checked
+    lea rdi, [rel mg_cur_name]
+    xor rcx, rcx
+.pi_validate_name:
+    movzx eax, byte [rdi + rcx]
+    test al, al
+    jz .pi_validate_end
+    cmp rcx, 30
+    jae .pi_invalid_name
+    cmp al, '_'
+    je .pi_valid_char
+    cmp al, '-'
+    je .pi_valid_char
+    cmp al, '0'
+    jb .pi_invalid_name
+    cmp al, '9'
+    jbe .pi_valid_char
+    cmp al, 'A'
+    jb .pi_invalid_name
+    cmp al, 'Z'
+    jbe .pi_valid_char
+    cmp al, 'a'
+    jb .pi_invalid_name
+    cmp al, 'z'
+    ja .pi_invalid_name
+.pi_valid_char:
+    inc rcx
+    jmp .pi_validate_name
+.pi_validate_end:
+    test rcx, rcx
+    jz .pi_invalid_name
+    jmp .pi_name_checked
+.pi_invalid_name:
+    lea rdi, [rel mg_cur_path]
+    mov rsi, [rel mg_cur_line]
+    lea rdx, [rel graph_msg_invalid]
+    lea rcx, [rel graph_invalid_prefix]
+    call graph_error
+.pi_name_checked:
     ; gray check -> cycle
     lea rdi, [rel mg_cur_name]
     call mg_in_gray
@@ -3983,7 +3803,18 @@ mg_process_imports:
     lea rdi, [rel mg_cur_name]
     call mg_resolve
     test rax, rax
-    jz .pi_next               ; missing: expansion reports it
+    jnz .pi_resolved
+    ; R41 exact opt-in: missing import fails with stable basename:line.
+    cmp byte [rel mg_root_exact_v1], 1
+    jne .pi_next               ; legacy missing behaviour is unchanged
+    lea rax, [rel mg_cur_name]
+    mov [rel graph_detail_ptr], rax
+    lea rdi, [rel mg_cur_path]
+    mov rsi, [rel mg_cur_line]
+    lea rdx, [rel graph_msg_missing]
+    lea rcx, [rel graph_missing_prefix]
+    call graph_error
+.pi_resolved:
     ; mg_cur_path = module_path_buf
     lea rsi, [rel module_path_buf]
     lea rdi, [rel mg_cur_path]
@@ -4018,6 +3849,11 @@ mg_process_imports:
     jne .pi_next
     ; parent's path is mg_cur_path (not clobbered in this branch)
     lea rdi, [rel mg_cur_path]
+    cmp byte [rel mg_root_exact_v1], 1
+    jne .pi_alias_now
+    call mg_defer_valias
+    jmp .pi_next
+.pi_alias_now:
     call mg_valias_error
 .pi_next:
     inc r12
@@ -4081,11 +3917,19 @@ mg_visit:
     shl rax, 9
     lea rdi, [rel mg_path_stk]
     add rdi, rax
+    cmp byte [rel mg_root_exact_v1], 1
+    jne .v_alias_now
+    call mg_defer_valias
+    jmp .v_no_valias
+.v_alias_now:
     call mg_valias_error
 .v_no_valias:
-    ; save import list to record, then recurse
+    ; Save import list, traverse dependencies and collect R41 cycle/missing
+    ; errors before either export or alias diagnostics for an exact-v1 root.
     call mg_copy_list_to_rec
     call mg_process_imports
+    ; Now root graph reachability is checked through this module.
+    call mg_verify_exports
     ; pop gray, blacken
     call mg_pop_gray
     lea rdi, [rel mg_cur_name]
@@ -4119,6 +3963,7 @@ check_module_graph:
     push r13
     push r14
     push r15
+    mov byte [rel mg_deferred_alias], 0
     ; root record
     lea rdi, [rel mg_root_name]
     mov rsi, [rel source_path_ptr]
@@ -4155,6 +4000,19 @@ check_module_graph:
     call mg_pop_gray
     lea rdi, [rel mg_root_name]
     call mg_add_black
+    ; After DFS, replay the first v1 alias violation, preserving the old
+    ; cycle/missing diagnostic precedence of the R41-first architecture.
+    cmp byte [rel mg_deferred_alias], 0
+    je .cg_no_alias
+    lea rsi, [rel mg_deferred_alias_name]
+    lea rdi, [rel mg_cur_name]
+    mov rcx, 64
+    rep movsb
+    mov rax, [rel mg_deferred_alias_line]
+    mov [rel mg_cur_line], rax
+    lea rdi, [rel mg_deferred_alias_path]
+    call mg_valias_error
+.cg_no_alias:
     ; Phase B: export visibility
     call mg_check_visibility
     pop r15
@@ -4394,6 +4252,209 @@ mg_check_edge:
     pop rbx
     ret
 
+; --- R44: validate any qualified alias__symbol token, including constants. ---
+; rbx=importer bytes, r12=length, r13=target rec, r14=import alias.
+; Lexically ignores comments and double-quoted strings (with escapes).
+; This distinguishes unknown symbols from defined-but-private symbols.
+mg_check_qualified:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    ; Build the exact alias__ prefix in a bounded scratch buffer.
+    lea rdi, [rel mg_pat]
+    mov rsi, r14
+    xor rcx, rcx
+.cq_prefix:
+    cmp rcx, 62
+    jae .cq_done
+    mov al, [rsi + rcx]
+    test al, al
+    jz .cq_prefix_end
+    mov [rdi + rcx], al
+    inc rcx
+    jmp .cq_prefix
+.cq_prefix_end:
+    mov byte [rdi + rcx], '_'
+    mov byte [rdi + rcx + 1], '_'
+    add rcx, 2
+    mov byte [rdi + rcx], 0
+    mov [rel mg_pat_len], rcx
+    xor r8, r8                    ; input offset
+    mov r9, 1                     ; physical line
+    xor r10, r10                  ; 0 code, 1 comment, 2 string, 3 escaped
+.cq_scan:
+    cmp r8, r12
+    jae .cq_done
+    movzx eax, byte [rbx + r8]
+    cmp al, 10
+    je .cq_newline
+    cmp r10, 1
+    je .cq_advance
+    cmp r10, 2
+    je .cq_string
+    cmp r10, 3
+    je .cq_escaped
+    cmp al, '#'
+    je .cq_comment
+    cmp al, '/'
+    jne .cq_quote
+    lea rcx, [r8 + 1]
+    cmp rcx, r12
+    jae .cq_quote
+    cmp byte [rbx + rcx], '/'
+    je .cq_comment
+.cq_quote:
+    cmp al, '"'
+    jne .cq_ident
+    mov r10, 2
+    jmp .cq_advance
+.cq_ident:
+    mov dil, al
+    call mg_is_ident
+    test rax, rax
+    jz .cq_advance
+    mov r15, r8
+.cq_token:
+    cmp r8, r12
+    jae .cq_token_end
+    mov dil, [rbx + r8]
+    call mg_is_ident
+    test rax, rax
+    jz .cq_token_end
+    inc r8
+    jmp .cq_token
+.cq_token_end:
+    mov rcx, [rel mg_pat_len]
+    mov rax, r8
+    sub rax, r15
+    cmp rax, rcx
+    jbe .cq_scan                 ; no suffix
+    lea rsi, [rel mg_pat]
+    lea rdi, [rbx + r15]
+    xor r11, r11
+.cq_prefix_match:
+    cmp r11, rcx
+    jae .cq_copy_suffix
+    mov al, [rsi + r11]
+    cmp al, [rdi + r11]
+    jne .cq_scan
+    inc r11
+    jmp .cq_prefix_match
+.cq_copy_suffix:
+    mov rax, r8
+    sub rax, r15
+    sub rax, rcx
+    cmp rax, 63
+    ja .cq_scan
+    lea rsi, [rbx + r15]
+    add rsi, rcx
+    lea rdi, [rel mg_tmp_name]
+    mov rcx, rax
+    rep movsb
+    mov byte [rdi], 0
+    ; Lookup in *definitions* before exports, so private != unknown.
+    lea rax, [rel mg_def_n]
+    movzx r14, byte [rax + r13]
+    xor r15, r15
+.cq_def:
+    cmp r15, r14
+    jae .cq_unknown
+    mov rax, r13
+    shl rax, 11
+    mov rcx, r15
+    shl rcx, 6
+    add rax, rcx
+    lea rsi, [rel mg_def]
+    add rsi, rax
+    lea rdi, [rel mg_tmp_name]
+    call strcmp
+    test rax, rax
+    jz .cq_known
+    inc r15
+    jmp .cq_def
+.cq_known:
+    lea rax, [rel mg_exp_n]
+    movzx r14, byte [rax + r13]
+    xor r15, r15
+.cq_exp:
+    cmp r15, r14
+    jae .cq_private
+    mov rax, r13
+    shl rax, 10
+    mov rcx, r15
+    shl rcx, 6
+    add rax, rcx
+    lea rsi, [rel mg_exp]
+    add rsi, rax
+    lea rdi, [rel mg_tmp_name]
+    call strcmp
+    test rax, rax
+    jz .cq_scan
+    inc r15
+    jmp .cq_exp
+.cq_private:
+    mov [rel mg_cur_line], r9
+    call mg_print_loc
+    lea rdi, [rel mg_e_noexp1]
+    call print_str_z
+    lea rdi, [rel mg_tmp_name]
+    call print_str_z
+    lea rdi, [rel mg_e_noexp2]
+    call print_str_z
+    jmp .cq_module_name
+.cq_unknown:
+    mov [rel mg_cur_line], r9
+    call mg_print_loc
+    lea rdi, [rel mg_e_unknown1]
+    call print_str_z
+    lea rdi, [rel mg_tmp_name]
+    call print_str_z
+    lea rdi, [rel mg_e_unknown2]
+    call print_str_z
+.cq_module_name:
+    mov rax, r13
+    shl rax, 6
+    lea rdi, [rel mg_rec_name]
+    add rdi, rax
+    call print_str_z
+    lea rdi, [rel mg_e_unknown3]
+    call print_str_z
+    mov rdi, 1
+    call os_exit
+.cq_comment:
+    mov r10, 1
+    jmp .cq_advance
+.cq_string:
+    cmp al, 92
+    jne .cq_end_quote
+    mov r10, 3
+    jmp .cq_advance
+.cq_end_quote:
+    cmp al, '"'
+    jne .cq_advance
+    xor r10, r10
+    jmp .cq_advance
+.cq_escaped:
+    mov r10, 2
+    jmp .cq_advance
+.cq_newline:
+    inc r9
+    cmp r10, 1
+    jne .cq_advance
+    xor r10, r10
+.cq_advance:
+    inc r8
+    jmp .cq_scan
+.cq_done:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
 ; --- mg_check_visibility: Phase B. Checks all v1 import edges. ---
 mg_check_visibility:
     push rbx
@@ -4406,6 +4467,8 @@ mg_check_visibility:
 .cv_rec:
     cmp r15, [rel mg_rec_n]
     jae .cv_done
+    ; Called validators use volatile r11: rebase every iteration.
+    lea r11, [rel mg_rec_v1]
     movzx eax, byte [r11 + r15]
     test eax, eax
     jz .cv_next_rec
@@ -4447,6 +4510,8 @@ mg_check_visibility:
     xor r14, r14                  ; import index
     lea r11, [rel mg_imp_n]
 .cv_imp:
+    ; Reestablish import-count table after per-edge scanner calls.
+    lea r11, [rel mg_imp_n]
     movzx eax, byte [r11 + r15]
     cmp r14, rax
     jae .cv_next_rec
@@ -4473,6 +4538,7 @@ mg_check_visibility:
     lea r14, [rsi + 64]
     ; rbx, r12 already set
     call mg_check_edge
+    call mg_check_qualified
     pop r14
 .cv_next_imp:
     inc r14
@@ -4609,11 +4675,13 @@ ns_collect_funcs:
     push rbx
     push r12
     push r13
+    push r14
     push r15
     mov qword [rel ns_func_count],0
     mov rbx,[rel ns_raw_len]
     xor r15,r15
 .nc_line:
+    xor r14,r14              ; 0 function; 1 compile-time constant
     cmp r15,rbx
     jae .nc_done
 .nc_indent:
@@ -4665,14 +4733,36 @@ ns_collect_funcs:
     mov rax,r15
     add rax,rcx
     cmp rax,rbx
-    jae .nc_next_line
+    jae .nc_try_sutra
     lea rdx,[rel ns_raw_buf]
     cmp r11b,[rdx+rax]
-    jne .nc_next_line
+    jne .nc_try_sutra
     inc rcx
     jmp .nc_dev_byte
 .nc_dev_ok:
     add r15,rcx
+    jmp .nc_after_keyword
+.nc_try_sutra:
+    ; Add sutra NAME as a separately tagged unqualified symbol.  Its bare
+    ; uses (not only calls) must be renamed under module@alias.
+    lea rdx, [rel ns_raw_buf]
+    mov rax, rbx
+    sub rax, r15
+    cmp rax, 5
+    jb .nc_next_line
+    cmp byte [rdx+r15], 's'
+    jne .nc_next_line
+    cmp byte [rdx+r15+1], 'u'
+    jne .nc_next_line
+    cmp byte [rdx+r15+2], 't'
+    jne .nc_next_line
+    cmp byte [rdx+r15+3], 'r'
+    jne .nc_next_line
+    cmp byte [rdx+r15+4], 'a'
+    jne .nc_next_line
+    mov r14, 1
+    add r15, 5
+    jmp .nc_after_keyword
 .nc_after_keyword:
     cmp r15,rbx
     jae .nc_next_line
@@ -4725,6 +4815,9 @@ ns_collect_funcs:
     mov rcx,rax
     rep movsb
     mov byte [rdi],0
+    mov rax, [rel ns_func_count]
+    lea rdi, [rel ns_func_is_const]
+    mov byte [rdi+rax], r14b
     inc qword [rel ns_func_count]
 .nc_next_line:
     cmp r15,rbx
@@ -4742,6 +4835,7 @@ ns_collect_funcs:
     call os_exit
 .nc_done:
     pop r15
+    pop r14
     pop r13
     pop r12
     pop rbx
@@ -4839,8 +4933,10 @@ ns_rewrite_funcs:
     inc r8
     jmp .nr_skip_ws
 .nr_check_paren:
+    ; Functions require a call '('; compile-time sutra constants do not.
+    xor r8,r8
     cmp al,'('
-    jne .nr_raw_token
+    sete r8b
     xor r10,r10
 .nr_match_func:
     cmp r10,[rel ns_func_count]
@@ -4864,7 +4960,12 @@ ns_rewrite_funcs:
     jmp .nr_compare
 .nr_exact:
     cmp byte [r11+rcx],0
+    jne .nr_next_func
+    lea rdx, [rel ns_func_is_const]
+    cmp byte [rdx+r10],1
     je .nr_qualified
+    test r8,r8
+    jnz .nr_qualified
 .nr_next_func:
     inc r10
     jmp .nr_match_func
@@ -5654,6 +5755,7 @@ advance_tok:
     ret
 
 parse_program:
+    mov qword [rel top_const_count], 0
     mov qword [rel parse_error_kind], 0
     lea rax, [rel ast_heap]
     mov [rel ast_ptr], rax
@@ -5676,7 +5778,25 @@ parse_function:
     je .pf_top_decl
     cmp rcx, KW_PRAKRIYA
     je .pf_top_decl
+    cmp rcx, KW_SUTRA
+    je .pf_top_const
     jmp .pf_expect_mukhya
+.pf_top_const:
+    ; Top-level sutra is a compile-time constant available to main and
+    ; functions parsed below it. No native global storage/runtime init.
+    call parse_stmt
+    cmp qword [rax], AST_DECL
+    jne parse_error
+    mov rcx, [rel top_const_count]
+    cmp rcx, 128
+    jae .pf_top_const_limit
+    lea rdx, [rel top_const_nodes]
+    mov [rdx + rcx*8], rax
+    inc qword [rel top_const_count]
+    jmp .pf_top_loop
+.pf_top_const_limit:
+    lea rdi, [rel msg_func_defs_overflow]
+    jmp capacity_fail
 .pf_top_decl:
     call parse_stmt          ; parse the declaration
     ; If it's a FUNCDEF, store it in func_defs for gen_all_functions
@@ -8158,6 +8278,34 @@ parse_primary:
     cmp rcx, TOK_IDENT
     jne .pp_builtin
     mov rbx, [rax+8]         ; name ptr
+    ; Resolve previously declared top-level sutra symbols before building an
+    ; AST_VAR. Compile-time inlining works inside functions without a global
+    ; data section or cross-function variable lifetime.
+    xor r8, r8
+.pp_top_const:
+    cmp r8, [rel top_const_count]
+    jae .pp_not_top_const
+    lea rdx, [rel top_const_nodes]
+    mov rax, [rdx + r8*8]
+    mov rdi, rbx
+    mov rsi, [rax+8]
+    push r8
+    call strcmp
+    pop r8
+    test rax,rax
+    jz .pp_found_top_const
+    inc r8
+    jmp .pp_top_const
+.pp_found_top_const:
+    lea rdx, [rel top_const_nodes]
+    mov rax, [rdx + r8*8]
+    mov rax, [rax+16]        ; initializer AST, immutable read-only use
+    push rax
+    call advance_tok
+    pop rax
+    pop rbx
+    ret
+.pp_not_top_const:
     call advance_tok
     ; Check if next token is '(' → function call
     call cur_tok

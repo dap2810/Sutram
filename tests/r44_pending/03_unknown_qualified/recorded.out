@@ -1,0 +1,1 @@
+tests/r44_pending/03_unknown_qualified/main.sm:3: Sutram Error [E_EXPORT_UNDEFINED]: unknown qualified symbol 'missing' in module 'calc'

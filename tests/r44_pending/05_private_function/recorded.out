@@ -1,0 +1,1 @@
+tests/r44_pending/05_private_function/main.sm:3: Sutram Error [E_MODULE_NOT_EXPORTED]: 'helper' is not exported by module 'calc'

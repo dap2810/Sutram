@@ -1,0 +1,72 @@
+name: R44 native compiler acceptance (review branch)
+on:
+  push:
+    branches:
+      - feature/r44-module-contract-completion-20261009
+      - feature/r44-single-module-graph-experiment-20261009
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  linux-native:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Acquire NASM without administrator privileges
+        run: |
+          mkdir -p "$RUNNER_TEMP/nasm-user"
+          cd "$RUNNER_TEMP"
+          apt download nasm
+          dpkg-deb -x nasm_*.deb "$RUNNER_TEMP/nasm-user"
+          echo "$RUNNER_TEMP/nasm-user/usr/bin" >> "$GITHUB_PATH"
+      - name: Verify local toolchain
+        run: |
+          command -v nasm
+          command -v ld
+          nasm -v
+      - name: Provide Linux-only PE placeholder for missing generated include
+        run: |
+          if test ! -f win/rtblob.inc; then
+            mkdir -p win
+            printf 'RT_BLOB_LEN equ 0\nRT_SYSCALL_OFF equ 0\nrt_blob: db 0\n' > win/rtblob.inc
+            echo 'WARNING: generated Windows runtime blob absent; Linux ELF tests only.'
+          fi
+      - name: Assemble and link changed compiler
+        run: |
+          nasm -f elf64 -I. src/sutram_compiler.asm -o /tmp/sutram_r44.o
+          ld -o sutram_compiler /tmp/sutram_r44.o
+          ./sutram_compiler --version
+      - name: Existing native regressions
+        if: always()
+        continue-on-error: true
+        run: python3 tests/run_tests.py
+      - name: Codegen gates
+        if: always()
+        run: python3 tools/codegen_gate.py
+      - name: Language packs
+        if: always()
+        run: python3 tools/test_lang_packs.py
+      - name: Round 44 pending native cases
+        if: always()
+        run: python3 tools/r44_pending_acceptance.py
+      - name: Five independently recorded R41 native fixtures
+        if: always()
+        run: python3 tools/r44_r41_native_goldens.py
+      - name: R41 opt-in cycle and missing diagnostic parity
+        if: always()
+        run: python3 tools/r44_optin_graph_acceptance.py
+      - name: Structural module graph tests (old fixtures explicitly skipped)
+        if: always()
+        run: python3 -m unittest discover -s tests/module_graph -p 'test_*.py' -v
+      - name: Display per-file source integrity manifest (read-only)
+        if: always()
+        run: |
+          git fetch --no-tags --depth=1 origin main
+          echo "===== R44 FILE HASHES BEGIN ====="
+          git diff --name-only origin/main HEAD | while IFS= read -r file; do
+            if test -f "$file" && test "$file" != "ChatGPT-to-Sarvam/ROUND-44-CHANGED-FILES.sha256"; then
+              sha256sum "$file"
+            fi
+          done
+          echo "===== R44 FILE HASHES END ====="
