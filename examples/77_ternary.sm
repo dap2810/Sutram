@@ -1,0 +1,8 @@
+mukhya() {
+    vitti x = 7
+    likha(x > 5 ? 100 : 200)
+    likha(x < 5 ? 300 : 400)
+    likha(0 ? 1 : 2)
+    likha(0 ? 10 : 1 ? 20 : 30)
+    likha(1 + 2 > 2 ? 50 : 60)
+}
