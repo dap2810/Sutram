@@ -1,0 +1,859 @@
+diff --git a/.github/workflows/r44-acceptance.yml b/.github/workflows/r44-acceptance.yml
+new file mode 100644
+index 0000000..e01f54c
+--- /dev/null
++++ b/.github/workflows/r44-acceptance.yml
+@@ -0,0 +1,32 @@
++name: R44 native compiler acceptance (review branch)
++on:
++  push:
++    branches:
++      - feature/r44-module-contract-completion-20261009
++  workflow_dispatch:
++permissions:
++  contents: read
++jobs:
++  linux-native:
++    runs-on: ubuntu-24.04
++    timeout-minutes: 20
++    steps:
++      - uses: actions/checkout@v4
++      - name: Verify local toolchain
++        run: |
++          command -v nasm
++          command -v ld
++          nasm -v
++      - name: Assemble and link changed compiler
++        run: |
++          nasm -f elf64 -I. src/sutram_compiler.asm -o /tmp/sutram_r44.o
++          ld -o sutram_compiler /tmp/sutram_r44.o
++          ./sutram_compiler --version
++      - name: Existing native regressions
++        run: python3 tests/run_tests.py
++      - name: Codegen gates
++        run: python3 tools/codegen_gate.py
++      - name: Language packs
++        run: python3 tools/test_lang_packs.py
++      - name: Round 44 pending native cases
++        run: python3 tools/r44_pending_acceptance.py
+diff --git a/src/sutram_compiler.asm b/src/sutram_compiler.asm
+index abd4bc6..232099a 100644
+--- a/src/sutram_compiler.asm
++++ b/src/sutram_compiler.asm
+@@ -709,6 +709,7 @@ section .bss
+     ns_raw_len resq 1
+     ns_func_count resq 1
+     ns_func_names resb NS_FUNC_CAP * 64
++    ns_func_is_const resb NS_FUNC_CAP ; 1 for top-level sutra, 0 for prakriya
+     module_path_buf resb 512      ; dedicated ayojan path scratch
+     str_ptr     resq 1
+     code_buf    resb CODE_BUF_CAP
+@@ -755,6 +756,8 @@ section .bss
+     patch_count  resq 1
+     func_defs    resb FUNC_DEFS_CAP * 8 ; [funcdef_node_ptr(8)]
+     func_def_cnt resq 1
++    top_const_count resq 1
++    top_const_nodes resq 128   ; compile-time top-level sutra initializers
+     in_function  resq 1       ; 0 = in main, 1 = in user function
+     current_func_float resq 1 ; T12: active prakriya returns binary64 when nonzero
+     alloc_sizes  resb 1024    ; [name_ptr(8)][size(8)] = 16 bytes each (borrow checker)
+@@ -2891,6 +2894,13 @@ mg_e_noexp3:  db "'", 10, 0
+ mg_e_dupexp1: db "Sutram Error [E_MODULE_DUP_EXPORT]: duplicate export '", 0
+ mg_e_dupexp2: db "' in module '", 0
+ mg_e_dupexp3: db "'", 10, 0
++mg_e_undef1:  db "Sutram Error [E_EXPORT_UNDEFINED]: export '", 0
++mg_e_undef2:  db "' has no matching definition in module '", 0
++mg_e_undef3:  db "'", 10, 0
++mg_e_unknown1: db "Sutram Error [E_EXPORT_UNDEFINED]: unknown qualified symbol '", 0
++mg_e_unknown2: db "' in module '", 0
++mg_e_unknown3: db "'", 10, 0
++mg_w_sutra:    db "sutra", 0
+ mg_e_depth:   db "Sutram Error [E_MODULE_DEPTH]: import depth exceeded", 10, 0
+ mg_e_valias1: db "Sutram Error [E_MODULE_V1_ALIAS]: v1 module '", 0
+ mg_e_valias2: db "' must be imported with an alias: ayojan ", 0
+@@ -2918,6 +2928,7 @@ mg_rec_path:  resb 8192
+ mg_rec_v1:    resb 16
+ mg_exp:       resb 16384
+ mg_exp_n:     resb 16
++mg_exp_line:  resq 16 * 16       ; line number for each rec/declared export
+ mg_def:       resb 32768
+ mg_def_n:     resb 16
+ mg_imp:       resb 24576
+@@ -2933,6 +2944,7 @@ mg_path_stk:  resb 8192
+ mg_tmp_name:  resb 64
+ mg_tmp_alias: resb 64
+ mg_pat:       resb 128
++mg_pat_len:   resq 1    ; R44 qualified-name prefix length
+ 
+ section .text
+ 
+@@ -3460,6 +3472,12 @@ mg_parse_niryat:
+     inc rcx
+     test al, al
+     jnz .pn_cp
++    ; Preserve the physical niryat declaration line for diagnostics.
++    mov rax, r15
++    shl rax, 4
++    add rax, r10
++    lea r11, [rel mg_exp_line]
++    mov [r11 + rax*8], r13
+     lea r11, [rel mg_exp_n]
+     inc byte [r11 + r15]
+ .pn_bail:
+@@ -3539,6 +3557,86 @@ mg_parse_prakriya:
+     pop r8
+     ret
+ 
++; --- mg_verify_exports: r15=record index, mg_cur_path is module path. ---
++; Enforces that a v1 niryat names an actual prakriya or sutra definition.
++; Legacy non-opt-in imports bypass this check.
++mg_verify_exports:
++    push rbx
++    push r12
++    push r13
++    push r14
++    push r15
++    lea rax, [rel mg_rec_v1]
++    cmp byte [rax + r15], 0
++    je .ve_done
++    lea rax, [rel mg_exp_n]
++    movzx r12, byte [rax + r15]
++    xor r13, r13
++.ve_export:
++    cmp r13, r12
++    jae .ve_done
++    mov rax, r15
++    shl rax, 10
++    mov rcx, r13
++    shl rcx, 6
++    add rax, rcx
++    lea rbx, [rel mg_exp]
++    add rbx, rax               ; exported symbol
++    lea rax, [rel mg_def_n]
++    movzx r14, byte [rax + r15]
++    xor r10, r10
++.ve_def:
++    cmp r10, r14
++    jae .ve_missing
++    mov rax, r15
++    shl rax, 11
++    mov rcx, r10
++    shl rcx, 6
++    add rax, rcx
++    lea rsi, [rel mg_def]
++    add rsi, rax
++    mov rdi, rbx
++    push r10
++    call strcmp
++    pop r10
++    test rax, rax
++    jz .ve_valid
++    inc r10
++    jmp .ve_def
++.ve_missing:
++    mov rax, r15
++    shl rax, 4
++    add rax, r13
++    lea rdx, [rel mg_exp_line]
++    mov rax, [rdx + rax*8]
++    mov [rel mg_cur_line], rax
++    call mg_print_loc
++    lea rdi, [rel mg_e_undef1]
++    call print_str_z
++    mov rdi, rbx
++    call print_str_z
++    lea rdi, [rel mg_e_undef2]
++    call print_str_z
++    mov rax, r15
++    shl rax, 6
++    lea rdi, [rel mg_rec_name]
++    add rdi, rax
++    call print_str_z
++    lea rdi, [rel mg_e_undef3]
++    call print_str_z
++    mov rdi, 1
++    call os_exit
++.ve_valid:
++    inc r13
++    jmp .ve_export
++.ve_done:
++    pop r15
++    pop r14
++    pop r13
++    pop r12
++    pop rbx
++    ret
++
+ ; --- mg_parse_ayojan: rbx=buf, r12=pos of 'a', rdx=len, r13=line ---
+ ; Adds (name, alias, line) to mg_list. Advances r12 past the directive.
+ mg_parse_ayojan:
+@@ -3772,6 +3870,28 @@ mg_scan_buf:
+     mov r14, 0
+     jmp .sb_loop
+ .sb_not_prakriya:
++    ; v1 top-level sutra names count as local definitions for niryat.
++    cmp r14, 1
++    jne .sb_not_sutra
++    lea rsi, [rel mg_w_sutra]
++    call mg_match_at
++    test rax, rax
++    jz .sb_not_sutra
++    mov r9, r12
++    add r9, 5
++    cmp r9, rdx
++    jae .sb_not_sutra
++    movzx eax, byte [rbx + r9]
++    cmp al, ' '
++    je .sb_sutra_ok
++    cmp al, 9
++    jne .sb_not_sutra
++.sb_sutra_ok:
++    mov r8, 5
++    call mg_parse_prakriya  ; common name collector (no backend effects)
++    mov r14, 0
++    jmp .sb_loop
++.sb_not_sutra:
+     lea rsi, [rel mg_w_ayojan]
+     call mg_match_at
+     test rax, rax
+@@ -4083,6 +4203,9 @@ mg_visit:
+     add rdi, rax
+     call mg_valias_error
+ .v_no_valias:
++    ; R44: resolve every declared export after collecting all definitions.
++    ; This must run before recursive visits overwrite mg_cur_path.
++    call mg_verify_exports
+     ; save import list to record, then recurse
+     call mg_copy_list_to_rec
+     call mg_process_imports
+@@ -4394,6 +4517,209 @@ mg_check_edge:
+     pop rbx
+     ret
+ 
++; --- R44: validate any qualified alias__symbol token, including constants. ---
++; rbx=importer bytes, r12=length, r13=target rec, r14=import alias.
++; Lexically ignores comments and double-quoted strings (with escapes).
++; This distinguishes unknown symbols from defined-but-private symbols.
++mg_check_qualified:
++    push rbx
++    push r12
++    push r13
++    push r14
++    push r15
++    ; Build the exact alias__ prefix in a bounded scratch buffer.
++    lea rdi, [rel mg_pat]
++    mov rsi, r14
++    xor rcx, rcx
++.cq_prefix:
++    cmp rcx, 62
++    jae .cq_done
++    mov al, [rsi + rcx]
++    test al, al
++    jz .cq_prefix_end
++    mov [rdi + rcx], al
++    inc rcx
++    jmp .cq_prefix
++.cq_prefix_end:
++    mov byte [rdi + rcx], '_'
++    mov byte [rdi + rcx + 1], '_'
++    add rcx, 2
++    mov byte [rdi + rcx], 0
++    mov [rel mg_pat_len], rcx
++    xor r8, r8                    ; input offset
++    mov r9, 1                     ; physical line
++    xor r10, r10                  ; 0 code, 1 comment, 2 string, 3 escaped
++.cq_scan:
++    cmp r8, r12
++    jae .cq_done
++    movzx eax, byte [rbx + r8]
++    cmp al, 10
++    je .cq_newline
++    cmp r10, 1
++    je .cq_advance
++    cmp r10, 2
++    je .cq_string
++    cmp r10, 3
++    je .cq_escaped
++    cmp al, '#'
++    je .cq_comment
++    cmp al, '/'
++    jne .cq_quote
++    lea rcx, [r8 + 1]
++    cmp rcx, r12
++    jae .cq_quote
++    cmp byte [rbx + rcx], '/'
++    je .cq_comment
++.cq_quote:
++    cmp al, '"'
++    jne .cq_ident
++    mov r10, 2
++    jmp .cq_advance
++.cq_ident:
++    mov dil, al
++    call mg_is_ident
++    test rax, rax
++    jz .cq_advance
++    mov r15, r8
++.cq_token:
++    cmp r8, r12
++    jae .cq_token_end
++    mov dil, [rbx + r8]
++    call mg_is_ident
++    test rax, rax
++    jz .cq_token_end
++    inc r8
++    jmp .cq_token
++.cq_token_end:
++    mov rcx, [rel mg_pat_len]
++    mov rax, r8
++    sub rax, r15
++    cmp rax, rcx
++    jbe .cq_scan                 ; no suffix
++    lea rsi, [rel mg_pat]
++    lea rdi, [rbx + r15]
++    xor r11, r11
++.cq_prefix_match:
++    cmp r11, rcx
++    jae .cq_copy_suffix
++    mov al, [rsi + r11]
++    cmp al, [rdi + r11]
++    jne .cq_scan
++    inc r11
++    jmp .cq_prefix_match
++.cq_copy_suffix:
++    mov rax, r8
++    sub rax, r15
++    sub rax, rcx
++    cmp rax, 63
++    ja .cq_scan
++    lea rsi, [rbx + r15]
++    add rsi, rcx
++    lea rdi, [rel mg_tmp_name]
++    mov rcx, rax
++    rep movsb
++    mov byte [rdi], 0
++    ; Lookup in *definitions* before exports, so private != unknown.
++    lea rax, [rel mg_def_n]
++    movzx r14, byte [rax + r13]
++    xor r15, r15
++.cq_def:
++    cmp r15, r14
++    jae .cq_unknown
++    mov rax, r13
++    shl rax, 11
++    mov rcx, r15
++    shl rcx, 6
++    add rax, rcx
++    lea rsi, [rel mg_def]
++    add rsi, rax
++    lea rdi, [rel mg_tmp_name]
++    call strcmp
++    test rax, rax
++    jz .cq_known
++    inc r15
++    jmp .cq_def
++.cq_known:
++    lea rax, [rel mg_exp_n]
++    movzx r14, byte [rax + r13]
++    xor r15, r15
++.cq_exp:
++    cmp r15, r14
++    jae .cq_private
++    mov rax, r13
++    shl rax, 10
++    mov rcx, r15
++    shl rcx, 6
++    add rax, rcx
++    lea rsi, [rel mg_exp]
++    add rsi, rax
++    lea rdi, [rel mg_tmp_name]
++    call strcmp
++    test rax, rax
++    jz .cq_scan
++    inc r15
++    jmp .cq_exp
++.cq_private:
++    mov [rel mg_cur_line], r9
++    call mg_print_loc
++    lea rdi, [rel mg_e_noexp1]
++    call print_str_z
++    lea rdi, [rel mg_tmp_name]
++    call print_str_z
++    lea rdi, [rel mg_e_noexp2]
++    call print_str_z
++    jmp .cq_module_name
++.cq_unknown:
++    mov [rel mg_cur_line], r9
++    call mg_print_loc
++    lea rdi, [rel mg_e_unknown1]
++    call print_str_z
++    lea rdi, [rel mg_tmp_name]
++    call print_str_z
++    lea rdi, [rel mg_e_unknown2]
++    call print_str_z
++.cq_module_name:
++    mov rax, r13
++    shl rax, 6
++    lea rdi, [rel mg_rec_name]
++    add rdi, rax
++    call print_str_z
++    lea rdi, [rel mg_e_unknown3]
++    call print_str_z
++    mov rdi, 1
++    call os_exit
++.cq_comment:
++    mov r10, 1
++    jmp .cq_advance
++.cq_string:
++    cmp al, 92
++    jne .cq_end_quote
++    mov r10, 3
++    jmp .cq_advance
++.cq_end_quote:
++    cmp al, '"'
++    jne .cq_advance
++    xor r10, r10
++    jmp .cq_advance
++.cq_escaped:
++    mov r10, 2
++    jmp .cq_advance
++.cq_newline:
++    inc r9
++    cmp r10, 1
++    jne .cq_advance
++    xor r10, r10
++.cq_advance:
++    inc r8
++    jmp .cq_scan
++.cq_done:
++    pop r15
++    pop r14
++    pop r13
++    pop r12
++    pop rbx
++    ret
++
+ ; --- mg_check_visibility: Phase B. Checks all v1 import edges. ---
+ mg_check_visibility:
+     push rbx
+@@ -4406,6 +4732,8 @@ mg_check_visibility:
+ .cv_rec:
+     cmp r15, [rel mg_rec_n]
+     jae .cv_done
++    ; Called validators use volatile r11: rebase every iteration.
++    lea r11, [rel mg_rec_v1]
+     movzx eax, byte [r11 + r15]
+     test eax, eax
+     jz .cv_next_rec
+@@ -4447,6 +4775,8 @@ mg_check_visibility:
+     xor r14, r14                  ; import index
+     lea r11, [rel mg_imp_n]
+ .cv_imp:
++    ; Reestablish import-count table after per-edge scanner calls.
++    lea r11, [rel mg_imp_n]
+     movzx eax, byte [r11 + r15]
+     cmp r14, rax
+     jae .cv_next_rec
+@@ -4473,6 +4803,7 @@ mg_check_visibility:
+     lea r14, [rsi + 64]
+     ; rbx, r12 already set
+     call mg_check_edge
++    call mg_check_qualified
+     pop r14
+ .cv_next_imp:
+     inc r14
+@@ -4609,11 +4940,13 @@ ns_collect_funcs:
+     push rbx
+     push r12
+     push r13
++    push r14
+     push r15
+     mov qword [rel ns_func_count],0
+     mov rbx,[rel ns_raw_len]
+     xor r15,r15
+ .nc_line:
++    xor r14,r14              ; 0 function; 1 compile-time constant
+     cmp r15,rbx
+     jae .nc_done
+ .nc_indent:
+@@ -4665,14 +4998,36 @@ ns_collect_funcs:
+     mov rax,r15
+     add rax,rcx
+     cmp rax,rbx
+-    jae .nc_next_line
++    jae .nc_try_sutra
+     lea rdx,[rel ns_raw_buf]
+     cmp r11b,[rdx+rax]
+-    jne .nc_next_line
++    jne .nc_try_sutra
+     inc rcx
+     jmp .nc_dev_byte
+ .nc_dev_ok:
+     add r15,rcx
++    jmp .nc_after_keyword
++.nc_try_sutra:
++    ; Add sutra NAME as a separately tagged unqualified symbol.  Its bare
++    ; uses (not only calls) must be renamed under module@alias.
++    lea rdx, [rel ns_raw_buf]
++    mov rax, rbx
++    sub rax, r15
++    cmp rax, 5
++    jb .nc_next_line
++    cmp byte [rdx+r15], 's'
++    jne .nc_next_line
++    cmp byte [rdx+r15+1], 'u'
++    jne .nc_next_line
++    cmp byte [rdx+r15+2], 't'
++    jne .nc_next_line
++    cmp byte [rdx+r15+3], 'r'
++    jne .nc_next_line
++    cmp byte [rdx+r15+4], 'a'
++    jne .nc_next_line
++    mov r14, 1
++    add r15, 5
++    jmp .nc_after_keyword
+ .nc_after_keyword:
+     cmp r15,rbx
+     jae .nc_next_line
+@@ -4725,6 +5080,9 @@ ns_collect_funcs:
+     mov rcx,rax
+     rep movsb
+     mov byte [rdi],0
++    mov rax, [rel ns_func_count]
++    lea rdi, [rel ns_func_is_const]
++    mov byte [rdi+rax], r14b
+     inc qword [rel ns_func_count]
+ .nc_next_line:
+     cmp r15,rbx
+@@ -4742,6 +5100,7 @@ ns_collect_funcs:
+     call os_exit
+ .nc_done:
+     pop r15
++    pop r14
+     pop r13
+     pop r12
+     pop rbx
+@@ -4839,8 +5198,10 @@ ns_rewrite_funcs:
+     inc r8
+     jmp .nr_skip_ws
+ .nr_check_paren:
++    ; Functions require a call '('; compile-time sutra constants do not.
++    xor r8,r8
+     cmp al,'('
+-    jne .nr_raw_token
++    sete r8b
+     xor r10,r10
+ .nr_match_func:
+     cmp r10,[rel ns_func_count]
+@@ -4864,7 +5225,12 @@ ns_rewrite_funcs:
+     jmp .nr_compare
+ .nr_exact:
+     cmp byte [r11+rcx],0
++    jne .nr_next_func
++    lea rdx, [rel ns_func_is_const]
++    cmp byte [rdx+r10],1
+     je .nr_qualified
++    test r8,r8
++    jnz .nr_qualified
+ .nr_next_func:
+     inc r10
+     jmp .nr_match_func
+@@ -5654,6 +6020,7 @@ advance_tok:
+     ret
+ 
+ parse_program:
++    mov qword [rel top_const_count], 0
+     mov qword [rel parse_error_kind], 0
+     lea rax, [rel ast_heap]
+     mov [rel ast_ptr], rax
+@@ -5676,7 +6043,25 @@ parse_function:
+     je .pf_top_decl
+     cmp rcx, KW_PRAKRIYA
+     je .pf_top_decl
++    cmp rcx, KW_SUTRA
++    je .pf_top_const
+     jmp .pf_expect_mukhya
++.pf_top_const:
++    ; Top-level sutra is a compile-time constant available to main and
++    ; functions parsed below it. No native global storage/runtime init.
++    call parse_stmt
++    cmp qword [rax], AST_DECL
++    jne parse_error
++    mov rcx, [rel top_const_count]
++    cmp rcx, 128
++    jae .pf_top_const_limit
++    lea rdx, [rel top_const_nodes]
++    mov [rdx + rcx*8], rax
++    inc qword [rel top_const_count]
++    jmp .pf_top_loop
++.pf_top_const_limit:
++    lea rdi, [rel msg_func_defs_overflow]
++    jmp capacity_fail
+ .pf_top_decl:
+     call parse_stmt          ; parse the declaration
+     ; If it's a FUNCDEF, store it in func_defs for gen_all_functions
+@@ -8158,6 +8543,34 @@ parse_primary:
+     cmp rcx, TOK_IDENT
+     jne .pp_builtin
+     mov rbx, [rax+8]         ; name ptr
++    ; Resolve previously declared top-level sutra symbols before building an
++    ; AST_VAR. Compile-time inlining works inside functions without a global
++    ; data section or cross-function variable lifetime.
++    xor r8, r8
++.pp_top_const:
++    cmp r8, [rel top_const_count]
++    jae .pp_not_top_const
++    lea rdx, [rel top_const_nodes]
++    mov rax, [rdx + r8*8]
++    mov rdi, rbx
++    mov rsi, [rax+8]
++    push r8
++    call strcmp
++    pop r8
++    test rax,rax
++    jz .pp_found_top_const
++    inc r8
++    jmp .pp_top_const
++.pp_found_top_const:
++    lea rdx, [rel top_const_nodes]
++    mov rax, [rdx + r8*8]
++    mov rax, [rax+16]        ; initializer AST, immutable read-only use
++    push rax
++    call advance_tok
++    pop rax
++    pop rbx
++    ret
++.pp_not_top_const:
+     call advance_tok
+     ; Check if next token is '(' → function call
+     call cur_tok
+diff --git a/tests/r44_pending/01_undefined_export/lib/calc.smlib b/tests/r44_pending/01_undefined_export/lib/calc.smlib
+new file mode 100644
+index 0000000..1eca912
+--- /dev/null
++++ b/tests/r44_pending/01_undefined_export/lib/calc.smlib
+@@ -0,0 +1,3 @@
++# sutram-module-v1
++niryat missing
++prakriya add() { pratiyati 3 }
+diff --git a/tests/r44_pending/01_undefined_export/main.sm b/tests/r44_pending/01_undefined_export/main.sm
+new file mode 100644
+index 0000000..7f8f981
+--- /dev/null
++++ b/tests/r44_pending/01_undefined_export/main.sm
+@@ -0,0 +1,3 @@
++# sutram-module-v1
++ayojan calc@c
++mukhya() { likha(c__add()) }
+diff --git a/tests/r44_pending/02_exported_constant/lib/config.smlib b/tests/r44_pending/02_exported_constant/lib/config.smlib
+new file mode 100644
+index 0000000..46cb654
+--- /dev/null
++++ b/tests/r44_pending/02_exported_constant/lib/config.smlib
+@@ -0,0 +1,3 @@
++# sutram-module-v1
++niryat LIMIT
++sutra LIMIT = 64
+diff --git a/tests/r44_pending/02_exported_constant/main.sm b/tests/r44_pending/02_exported_constant/main.sm
+new file mode 100644
+index 0000000..077c8a4
+--- /dev/null
++++ b/tests/r44_pending/02_exported_constant/main.sm
+@@ -0,0 +1,3 @@
++# sutram-module-v1
++ayojan config@cfg
++mukhya() { likha(cfg__LIMIT) }
+diff --git a/tests/r44_pending/03_unknown_qualified/lib/calc.smlib b/tests/r44_pending/03_unknown_qualified/lib/calc.smlib
+new file mode 100644
+index 0000000..01d4806
+--- /dev/null
++++ b/tests/r44_pending/03_unknown_qualified/lib/calc.smlib
+@@ -0,0 +1,3 @@
++# sutram-module-v1
++niryat add
++prakriya add() { pratiyati 9 }
+diff --git a/tests/r44_pending/03_unknown_qualified/main.sm b/tests/r44_pending/03_unknown_qualified/main.sm
+new file mode 100644
+index 0000000..c6dc998
+--- /dev/null
++++ b/tests/r44_pending/03_unknown_qualified/main.sm
+@@ -0,0 +1,3 @@
++# sutram-module-v1
++ayojan calc@c
++mukhya() { likha(c__missing()) }
+diff --git a/tests/r44_pending/04_private_constant/lib/config.smlib b/tests/r44_pending/04_private_constant/lib/config.smlib
+new file mode 100644
+index 0000000..7e87098
+--- /dev/null
++++ b/tests/r44_pending/04_private_constant/lib/config.smlib
+@@ -0,0 +1,4 @@
++# sutram-module-v1
++niryat PUBLIC
++sutra PUBLIC = 1
++sutra SECRET = 9
+diff --git a/tests/r44_pending/04_private_constant/main.sm b/tests/r44_pending/04_private_constant/main.sm
+new file mode 100644
+index 0000000..1b2a600
+--- /dev/null
++++ b/tests/r44_pending/04_private_constant/main.sm
+@@ -0,0 +1,3 @@
++# sutram-module-v1
++ayojan config@c
++mukhya() { likha(c__SECRET) }
+diff --git a/tests/r44_pending/05_private_function/lib/calc.smlib b/tests/r44_pending/05_private_function/lib/calc.smlib
+new file mode 100644
+index 0000000..3eb2bce
+--- /dev/null
++++ b/tests/r44_pending/05_private_function/lib/calc.smlib
+@@ -0,0 +1,4 @@
++# sutram-module-v1
++niryat add
++prakriya helper() { pratiyati 9 }
++prakriya add() { pratiyati helper() + 2 }
+diff --git a/tests/r44_pending/05_private_function/main.sm b/tests/r44_pending/05_private_function/main.sm
+new file mode 100644
+index 0000000..875983a
+--- /dev/null
++++ b/tests/r44_pending/05_private_function/main.sm
+@@ -0,0 +1,3 @@
++# sutram-module-v1
++ayojan calc@c
++mukhya() { likha(c__helper()) }
+diff --git a/tests/r44_pending/06_public_function/lib/calc.smlib b/tests/r44_pending/06_public_function/lib/calc.smlib
+new file mode 100644
+index 0000000..3eb2bce
+--- /dev/null
++++ b/tests/r44_pending/06_public_function/lib/calc.smlib
+@@ -0,0 +1,4 @@
++# sutram-module-v1
++niryat add
++prakriya helper() { pratiyati 9 }
++prakriya add() { pratiyati helper() + 2 }
+diff --git a/tests/r44_pending/06_public_function/main.sm b/tests/r44_pending/06_public_function/main.sm
+new file mode 100644
+index 0000000..7f8f981
+--- /dev/null
++++ b/tests/r44_pending/06_public_function/main.sm
+@@ -0,0 +1,3 @@
++# sutram-module-v1
++ayojan calc@c
++mukhya() { likha(c__add()) }
+diff --git a/tests/r44_pending/07_legacy_import/lib/legacy.smlib b/tests/r44_pending/07_legacy_import/lib/legacy.smlib
+new file mode 100644
+index 0000000..61affa8
+--- /dev/null
++++ b/tests/r44_pending/07_legacy_import/lib/legacy.smlib
+@@ -0,0 +1 @@
++prakriya legacy_answer() { pratiyati 42 }
+diff --git a/tests/r44_pending/07_legacy_import/main.sm b/tests/r44_pending/07_legacy_import/main.sm
+new file mode 100644
+index 0000000..bfbaae8
+--- /dev/null
++++ b/tests/r44_pending/07_legacy_import/main.sm
+@@ -0,0 +1,2 @@
++ayojan legacy
++mukhya() { likha(legacy_answer()) }
+diff --git a/tests/r44_pending/README.md b/tests/r44_pending/README.md
+new file mode 100644
+index 0000000..2d0f982
+--- /dev/null
++++ b/tests/r44_pending/README.md
+@@ -0,0 +1,25 @@
++# R44 native acceptance candidates
++
++These seven cases are intentionally *not* in the golden suite yet. Their success or
++failure has not been observed on an assembled Round 44 native compiler. Do not
++copy predicted output into tests/expect.
++
++After assembling the compiler, run:
++
++    python3 tools/r44_pending_acceptance.py
++    python3 tests/run_tests.py
++    python3 tools/codegen_gate.py
++    python3 tools/test_lang_packs.py
++
++Cases:
++1. Undeclared export: E_EXPORT_UNDEFINED with module file and niryat line.
++2. Exported top-level sutra: use alias-qualified constant with no runtime global.
++3. Unknown qualified function: E_EXPORT_UNDEFINED, not generic undefined function.
++4. Known private constant: E_MODULE_NOT_EXPORTED.
++5. Known private function: E_MODULE_NOT_EXPORTED.
++6. Exported function calling local private helper: must run successfully.
++7. Legacy non-opt-in import unchanged.
++
++After native execution, record actual stdout, exit status, generated executable
++format, and normalized diagnostic path. Only then consider promoting cases to
++the main suite with .out/.exit/.compile_fail files.
+diff --git a/tools/r44_pending_acceptance.py b/tools/r44_pending_acceptance.py
+new file mode 100644
+index 0000000..dffb1e6
+--- /dev/null
++++ b/tools/r44_pending_acceptance.py
+@@ -0,0 +1,67 @@
++#!/usr/bin/env python3
++"""R44 native acceptance candidates. No output goldens are manufactured here.
++
++Run ONLY after assembling the modified handwritten NASM compiler:
++  nasm -f elf64 -I. src/sutram_compiler.asm -o /tmp/r44.o
++  ld -o sutram_compiler /tmp/r44.o
++  python3 tools/r44_pending_acceptance.py
++
++A passing candidate is not a replacement for tests/run_tests.py.
++"""
++from __future__ import annotations
++
++from pathlib import Path
++from tempfile import TemporaryDirectory
++import subprocess
++import sys
++
++ROOT = Path(__file__).resolve().parents[1]
++CASES = ROOT / "tests" / "r44_pending"
++COMPILER = ROOT / "sutram_compiler"
++
++CASES_SPEC = {
++    "01_undefined_export": ("E_EXPORT_UNDEFINED", ("missing", "calc.smlib:2")),
++    "02_exported_constant": ("OK", ("64",)),
++    "03_unknown_qualified": ("E_EXPORT_UNDEFINED", ("missing", "main.sm:3")),
++    "04_private_constant": ("E_MODULE_NOT_EXPORTED", ("SECRET", "main.sm:3")),
++    "05_private_function": ("E_MODULE_NOT_EXPORTED", ("helper", "main.sm:3")),
++    "06_public_function": ("OK", ("11",)),
++    "07_legacy_import": ("OK", ("42",)),
++}
++
++def run_one(name, expected_kind, needles, binpath):
++    entry = CASES / name / "main.sm"
++    result = subprocess.run(
++        [str(COMPILER), str(entry), str(binpath)],
++        cwd=ROOT, capture_output=True, text=True, timeout=30
++    )
++    raw = result.stdout + result.stderr
++    if expected_kind != "OK":
++        ok = result.returncode != 0 and expected_kind in raw
++        ok = ok and all(s in raw for s in needles)
++        print(f"{'PASS' if ok else 'FAIL'} {name}: compile rc={result.returncode} {raw!r}")
++        return ok
++    if result.returncode:
++        print(f"FAIL {name}: compiler rc={result.returncode} {raw!r}")
++        return False
++    program = subprocess.run([str(binpath)], cwd=ROOT,
++                             capture_output=True, text=True, timeout=10)
++    actual = program.stdout.strip()
++    ok = program.returncode == 0 and actual == needles[0]
++    print(f"{'PASS' if ok else 'FAIL'} {name}: run rc={program.returncode} {program.stdout!r}")
++    return ok
++
++def main():
++    if not COMPILER.is_file():
++        print("NO NATIVE COMPILER: assemble current src/sutram_compiler.asm first")
++        return 2
++    passed = 0
++    with TemporaryDirectory(prefix="sutram-r44-") as temp:
++        for name, (kind, needles) in CASES_SPEC.items():
++            if run_one(name, kind, needles, Path(temp) / f"{name}.bin"):
++                passed += 1
++    print(f"R44 native candidates: {passed}/{len(CASES_SPEC)}")
++    return 0 if passed == len(CASES_SPEC) else 1
++
++if __name__ == "__main__":
++    sys.exit(main())
