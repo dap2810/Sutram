@@ -1,0 +1,185 @@
+# lib/strconv.smlib — Sutram standard library: number <-> string conversion
+#
+# Renders integers as decimal (or base-2/8/16) digit characters into a buffer,
+# and parses them back. Buffers are pankti of integer character codes (not
+# byte-packed strings — see ROUND-08 Part B: Sutram has no byte-write primitive,
+# so we use cell arrays of char codes, the same idiom as lib/baseconv.smlib).
+#
+# All functions handle: zero, negative numbers (decimal only), empty input.
+
+# int_to_str(n, out) — write decimal representation of int n into pankti out
+# as character codes. Returns the character count (excluding terminator).
+# out[ count ] is set to 0 as a terminator. Caller allocates >= 22 cells.
+prakriya int_to_str(n, out) {
+    vitti val = n
+    vitti dst = out
+    vitti neg = 0
+    yadi (val < 0) {
+        neg = 1
+        val = 0 - val
+    }
+    # collect digits least-significant first
+    vitti rev = nirmmita(22 * 8)
+    vitti rlen = 0
+    yadi (val == 0) {
+        rev[0] = 48
+        rlen = 1
+    } anyatra {
+        yavat (val > 0) {
+            rev[rlen] = (val % 10) + 48
+            rlen = rlen + 1
+            val = val / 10
+        }
+    }
+    vitti pos = 0
+    yadi (neg == 1) {
+        dst[0] = 45
+        pos = 1
+    }
+    vitti p = 0
+    yavat (p < rlen) {
+        dst[pos + p] = rev[rlen - 1 - p]
+        p = p + 1
+    }
+    dst[pos + rlen] = 0
+    pratiyati pos + rlen
+}
+
+# str_to_int(buf, n) — parse first n character codes of pankti buf as a
+# decimal integer. Leading '-' negates. Returns the value; sets ok[0] to 1
+# on success, 0 on malformed input (ok is a 1-cell pankti).
+prakriya str_to_int(buf, n, ok) {
+    vitti src = buf
+    vitti cnt = n
+    vitti okp = ok
+    okp[0] = 1
+    yadi (cnt == 0) {
+        okp[0] = 0
+        pratiyati 0
+    }
+    vitti neg = 0
+    vitti p = 0
+    yadi (src[0] == 45) {
+        neg = 1
+        p = 1
+        yadi (cnt == 1) {
+            okp[0] = 0
+            pratiyati 0
+        }
+    }
+    vitti val = 0
+    yavat (p < cnt) {
+        vitti c = src[p]
+        yadi (c < 48) {
+            okp[0] = 0
+            pratiyati 0
+        }
+        yadi (c > 57) {
+            okp[0] = 0
+            pratiyati 0
+        }
+        val = val * 10 + (c - 48)
+        p = p + 1
+    }
+    yadi (neg == 1) { val = 0 - val }
+    pratiyati val
+}
+
+# int_to_base_str(n, base, out) — write n in `base` (2/8/10/16) into out
+# as character codes (0-9, a-f). Returns count. No sign handling; n >= 0.
+prakriya int_to_base_str(n, base, out) {
+    vitti val = n
+    vitti b = base
+    vitti dst = out
+    vitti rev = nirmmita(70 * 8)
+    vitti rlen = 0
+    yadi (val == 0) {
+        dst[0] = 48
+        dst[1] = 0
+        pratiyati 1
+    }
+    yavat (val > 0) {
+        vitti d = val % b
+        yadi (d < 10) {
+            rev[rlen] = d + 48
+        } anyatra {
+            rev[rlen] = d + 87
+        }
+        rlen = rlen + 1
+        val = val / b
+    }
+    vitti p = 0
+    yavat (p < rlen) {
+        dst[p] = rev[rlen - 1 - p]
+        p = p + 1
+    }
+    dst[rlen] = 0
+    pratiyati rlen
+}
+
+# str_to_int_base(buf, n, base, ok) — parse first n char codes of buf in
+# `base` (2/8/10/16). Sets ok[0]. Returns value.
+prakriya str_to_int_base(buf, n, base, ok) {
+    vitti src = buf
+    vitti cnt = n
+    vitti b = base
+    vitti okp = ok
+    okp[0] = 1
+    yadi (cnt == 0) {
+        okp[0] = 0
+        pratiyati 0
+    }
+    vitti val = 0
+    vitti p = 0
+    yavat (p < cnt) {
+        vitti c = src[p]
+        vitti d = 0 - 1
+        yadi (c >= 48) {
+            yadi (c <= 57) { d = c - 48 }
+        }
+        yadi (c >= 97) {
+            yadi (c <= 102) { d = c - 87 }
+        }
+        yadi (c >= 65) {
+            yadi (c <= 70) { d = c - 55 }
+        }
+        yadi (d < 0) {
+            okp[0] = 0
+            pratiyati 0
+        }
+        yadi (d >= b) {
+            okp[0] = 0
+            pratiyati 0
+        }
+        val = val * b + d
+        p = p + 1
+    }
+    pratiyati val
+}
+
+# pad_left(out, count, width, fill) — left-pad the `count` character codes
+# in pankti `out` to `width` using fill character code `fill`, in place.
+# Returns the new count (width if width > count, else count).
+# Caller must allocate >= width cells.
+prakriya pad_left(out, count, width, fill) {
+    vitti dst = out
+    vitti cnt = count
+    vitti w = width
+    vitti f = fill
+    yadi (w <= cnt) { pratiyati cnt }
+    vitti shift = w - cnt
+    # move existing chars right
+    vitti p = cnt - 1
+    yavat (p >= 0) {
+        dst[p + shift] = dst[p]
+        p = p - 1
+    }
+    # fill the left
+    vitti q = 0
+    yavat (q < shift) {
+        dst[q] = f
+        q = q + 1
+    }
+    dst[w] = 0
+    pratiyati w
+}
