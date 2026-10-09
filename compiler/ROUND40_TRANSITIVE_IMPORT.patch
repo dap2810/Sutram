@@ -1,0 +1,61 @@
+--- a/src/sutram_compiler.asm
++++ b/src/sutram_compiler.asm
+@@ -747,6 +747,8 @@
+     alloc_sz_cnt resq 1
+     import_names resb IMPORT_NAMES_CAP * 64 ; fixed 64-byte module-name slots for ayojan dedupe
+     import_count resq 1
++    import_new_this_pass resq 1  ; R40: transitive import fixed-point tracker
++    import_depth_round resq 1   ; R40: bounded graph expansion passes
+     rachana_defs resb RACHANA_CAP * 256 ; [name_ptr(8)][field_count(8)][fields...]
+     rachana_cnt  resq 1
+     break_patch_positions resq BREAK_PATCH_CAP ; positions of break jmps to backpatch
+@@ -1877,12 +1879,38 @@
+ ; MODULE IMPORT - expand ayojan directives
+ ; Scans source for ayojan <name> and inlines lib/<name>.smlib
+ ; ============================================================
++; R40: Expand transitive imports in bounded, deterministic breadth-first rounds.
++; The visited module key table is shared by every round, so diamond imports
++; include the same module source once. Existing legacy imports remain accepted.
++; NOTE: this is still single-translation-unit source expansion; NOT object-file
++; separate compilation. Cyclic edges currently collapse via visited keys rather
++; than yielding a cycle diagnostic. Do not advertise this as the complete module
++; system until that distinct failure mode and export isolation exist.
+ expand_imports:
+     push rbx
++    mov qword [rel import_count], 0
++    mov qword [rel import_depth_round], 0
++.ei_round:
++    mov qword [rel import_new_this_pass], 0
++    call expand_imports_pass
++    cmp qword [rel import_new_this_pass], 0
++    je .ei_finished
++    inc qword [rel import_depth_round]
++    cmp qword [rel import_depth_round], IMPORT_NAMES_CAP
++    jbe .ei_round
++    lea rdi,[rel msg_import_overflow]
++    call print_str_z
++    mov rdi,1
++    call os_exit
++.ei_finished:
++    pop rbx
++    ret
++
++expand_imports_pass:
++    push rbx
+     push r12
+     push r13
+     push r14
+-    mov qword [rel import_count], 0
+     lea rsi, [rel source_buf]
+     lea rdi, [rel import_buf] ; dedicated expanded-source output buffer
+     xor r12, r12              ; source pos
+@@ -2215,6 +2243,9 @@
+     test rax, rax
+     js .ei_missing_module
+ .ei_opened:
++    ; This source was not previously imported: scan newly inserted text in the
++    ; next pass. In particular this resolves children of imports and diamonds.
++    mov qword [rel import_new_this_pass], 1
+     ; Qualified imports run a bounded lexical rename pass on module source.
+     ; Existing unqualified imports use the EXACT legacy path below.
+     cmp qword [rel ns_active], 0
