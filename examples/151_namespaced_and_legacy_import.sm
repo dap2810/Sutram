@@ -1,0 +1,7 @@
+# Legacy import remains unqualified and can coexist with an isolated import.
+ayojan r33_alpha
+ayojan r33_beta@isolated
+mukhya() {
+    likha(clash())
+    likha(isolated__clash())
+}
