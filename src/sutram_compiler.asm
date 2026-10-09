@@ -2569,6 +2569,14 @@ expand_imports_pass:
     test rax, rax
     js .ei_missing_module
 .ei_opened:
+    cmp qword [rel r48_mode],0
+    je .r51_open_ready
+    push rax
+    call r51_register_module
+    mov [rel r51_current_path],rax
+    mov [rel r51_import_start],r14
+    pop rax
+.r51_open_ready:
     ; This source was not previously imported: scan newly inserted text in the
     ; next pass. In particular this resolves children of imports and diamonds.
     mov qword [rel import_new_this_pass], 1
@@ -2589,8 +2597,14 @@ expand_imports_pass:
     call os_read
     test rax, rax
     js .ei_close_only
-    add r14, rax
-    cmp rax, r10
+    add r14,rax
+    cmp qword [rel r48_mode],0
+    je .r51_read_ready
+    push rax
+    call r51_stamp_legacy
+    pop rax
+.r51_read_ready:
+    cmp rax,r10
     jne .ei_close_success
     ; Buffer filled exactly: probe one more byte so oversized modules fail
     ; cleanly instead of being silently truncated.
