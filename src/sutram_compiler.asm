@@ -684,6 +684,7 @@ str_dot_exe  db ".exe", 0
     graph_close db ']: ', 0
     graph_arrow db ' -> ', 0
     graph_colon db ':', 0
+    r49_unknown_column db "?", 0
     graph_nl db 10,0
     graph_cycle_prefix db 'dependency cycle: ',0
     graph_missing_prefix db 'cannot open import ',0
@@ -2052,12 +2053,87 @@ graph_print_file:
     pop rbx
     ret
 
+; R49 check-only accurate location for an ayojan module directive.
+; Reads the original importer (not flattened source), searches that line for
+; the actual "ayojan" keyword and returns an honest column.  If the original
+; location cannot be recovered, use '?' rather than fabricating column 1.
+; rdi = original importer path, rsi = original 1-based line.
+r49_print_module_location:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    mov r12, rdi
+    mov r13, rsi
+    call graph_print_file
+    lea rdi, [rel graph_colon]
+    call print_str_z
+    mov rax, r13
+    call mg_print_uint
+    lea rdi, [rel graph_colon]
+    call print_str_z
+    mov rdi, r12
+    call mg_read_file
+    test rax, rax
+    js .r49_unknown
+    mov r14, rax             ; original file size
+    lea rbx, [rel mg_buf]
+    xor r9, r9               ; byte position
+    mov r8, 1                ; current source line
+.r49_findline:
+    cmp r8, r13
+    jae .r49_on_line
+    cmp r9, r14
+    jae .r49_unknown
+    cmp byte [rbx+r9], 10
+    jne .r49_nextline
+    inc r8
+.r49_nextline:
+    inc r9
+    jmp .r49_findline
+.r49_on_line:
+    mov r15, r9             ; byte start of original physical line
+.r49_findword:
+    mov rax, r9
+    add rax, 6
+    cmp rax, r14
+    ja .r49_unknown
+    cmp byte [rbx+r9], 10
+    je .r49_unknown
+    cmp dword [rbx+r9], 0x6A6F7961 ; little endian "ayoj"
+    jne .r49_nextword
+    cmp word [rbx+r9+4], 0x6E61     ; "an"
+    jne .r49_nextword
+    mov rax, r9
+    sub rax, r15
+    inc rax                 ; 1-based position on this physical line
+    ; Count ASCII module-keyword positions precisely. The keyword itself is
+    ; ASCII; tabs before it count as one source column, like calc_src_column.
+    call mg_print_uint
+    jmp .r49_done
+.r49_nextword:
+    inc r9
+    jmp .r49_findword
+.r49_unknown:
+    lea rdi, [rel r49_unknown_column]
+    call print_str_z
+.r49_done:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
 ; Diagnostic rdi=importer path, rsi=1-based line, rdx=code, rcx=message.
 ; Print to stdout to match the existing compiler's diagnostic convention.
 graph_error:
     push rcx               ; message prefix (printed second)
     push rdx               ; error code     (printed first)
     push rsi               ; line
+    cmp qword [rel r48_mode], 0
+    jne .r49_check_location
     call graph_print_file
     lea rdi,[rel graph_colon]
     call print_str_z
@@ -2066,6 +2142,11 @@ graph_error:
     call itoa
     mov rdi,rax
     call print_str_z
+    jmp .r49_after_location
+.r49_check_location:
+    pop rsi
+    call r49_print_module_location
+.r49_after_location:
     lea rdi,[rel graph_prefix]
     call print_str_z
     pop rdi
