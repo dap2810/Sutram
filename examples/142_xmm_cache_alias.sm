@@ -1,0 +1,17 @@
+# Destination also right operand; preserve SUB/DIV order.
+mukhya() {
+    dasham a = 9.0
+    dasham b = 3.0
+    dasham c = 2.0
+    dasham d = 1.5
+    b = a / b
+    b = a - b
+    a = a / a
+    a = a * b
+    c = b / c
+    d = c - d
+    likha(a)
+    likha(b)
+    likha(c)
+    likha(d)
+}
