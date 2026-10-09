@@ -1,0 +1,7 @@
+# 42 — block comments /* ... */
+/* ignored:
+   vitti x = ;;; # //
+*/
+mukhya()
+    /* inline */ likha(42)
+    likha(7) /* trailing */
