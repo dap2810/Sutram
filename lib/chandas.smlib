@@ -1,0 +1,81 @@
+# lib/chandas.smlib — Sutram standard library: Pingala's prosody mathematics
+#
+# After Pingala's Chandahśāstra (~2nd c. BCE). Sanskrit metre is built from two
+# syllable weights — laghu (light) and guru (heavy) — so an n-syllable metre is a
+# sequence of two choices: there are exactly 2^n of them. Pingala gave the doubling
+# rule for 2^n, the Meru-prastāra (Pascal's triangle) to count how many metres have
+# exactly k guru syllables, and the mātrā-meru, which generates the Fibonacci numbers.
+#
+# A pattern is carried as an integer bitmask: bit i (LSB = first syllable) is 1 for
+# guru, 0 for laghu. The integer value IS the pattern's index in the prastāra.
+
+prakriya dviguna(n) {
+    vitti x = n
+    vitti r = 1
+    vitti i = 0
+    yavat (i < x) {
+        r = r * 2
+        i = i + 1
+    }
+    pratiyati r
+}
+
+prakriya meru(n, k) {
+    vitti top = n
+    vitti r = k
+    yadi (r < 0) { pratiyati 0 }
+    yadi (r > top) { pratiyati 0 }
+    yadi (r > top - r) { r = top - r }
+    vitti res = 1
+    vitti i = 1
+    yavat (i <= r) {
+        res = res * (top - r + i) / i
+        i = i + 1
+    }
+    pratiyati res
+}
+
+prakriya matra_meru(n) {
+    vitti x = n
+    yadi (x <= 0) { pratiyati 0 }
+    yadi (x == 1) { pratiyati 1 }
+    vitti a = 0
+    vitti b = 1
+    vitti i = 2
+    yavat (i <= x) {
+        vitti c = a + b
+        a = b
+        b = c
+        i = i + 1
+    }
+    pratiyati b
+}
+
+prakriya is_guru(pat, i) {
+    vitti p = pat
+    vitti d = 1
+    vitti j = 0
+    yavat (j < i) {
+        d = d * 2
+        j = j + 1
+    }
+    pratiyati (p / d) % 2
+}
+
+prakriya guru_count(pat) {
+    vitti p = pat
+    vitti c = 0
+    yavat (p > 0) {
+        c = c + (p % 2)
+        p = p / 2
+    }
+    pratiyati c
+}
+
+prakriya meru_pankti(a, n) {
+    vitti i = 0
+    yavat (i <= n) {
+        a[i] = meru(n, i)
+        i = i + 1
+    }
+}
