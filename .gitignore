@@ -1,0 +1,15 @@
+# build artifacts
+*.o
+*.obj
+*.exe
+*.bin
+
+# sandbox / scratch
+nasm/
+__pycache__/
+.backup/
+.oldicons/
+ret/
+inbox/
+*.zip
+payload.manifest.sha256
