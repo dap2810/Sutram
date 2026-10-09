@@ -1,0 +1,42 @@
+# Advanced Sutram — combining all features
+
+mukhya()
+    sutra LIMIT = 10
+    
+    likha("=== Advanced Sutram ===\n")
+    likha("Primes up to ")
+    likha(LIMIT)
+    likha(":\n")
+    
+    punaravartana n = 2 to LIMIT {
+        vitti is_prime = 1
+        vitti d = 2
+        yavat (d * d <= n) {
+            yadi (n % d == 0) {
+                is_prime = 0
+            }
+            d = d + 1
+        }
+        yadi (is_prime != 0) {
+            likha(n)
+            likha(" ")
+        }
+    }
+    likha("\n")
+    
+    vitti flags = 0
+    flags = flags | 1
+    flags = flags | 4
+    likha("Flags: ")
+    likha(flags)
+    likha("\n")
+    
+    vitti check = flags & 4
+    yadi (check != 0) {
+        likha("Bit 2 is set\n")
+    }
+    
+    nishedha(flags > 0)
+    likha("All assertions passed\n")
+    
+    likha("=== Done ===\n")
