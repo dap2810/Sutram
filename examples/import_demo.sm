@@ -1,0 +1,25 @@
+# Library import demo — Python-style with ayojan
+ayojan math
+ayojan string
+ayojan io
+
+mukhya()
+    likha("=== Library Import Demo ===\n")
+    likha("String: Namaste!\n")
+    likha("Number: ")
+    likha(42)
+    likha("\n")
+    vitti x = 16
+    vitti doubled = x * 2
+    likha("x * 2 = ")
+    likha(doubled)
+    likha("\n")
+    vitti quad = x * 4
+    likha("x * 4 = ")
+    likha(quad)
+    likha("\n")
+    vitti s = "Sutram"
+    likha("Length: ")
+    likha(vartani_len(s))
+    likha("\n")
+    likha("=== Done ===\n")
