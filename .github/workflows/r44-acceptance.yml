@@ -28,7 +28,7 @@ jobs:
         run: |
           if test ! -f win/rtblob.inc; then
             mkdir -p win
-            printf 'RT_BLOB_LEN equ 0\nRT_SYSCALL_OFF equ 0\nsection .rodata\nrt_blob: db 0\n' > win/rtblob.inc
+            printf 'RT_BLOB_LEN equ 0\nRT_SYSCALL_OFF equ 0\nrt_blob: db 0\n' > win/rtblob.inc
             echo 'WARNING: generated Windows runtime blob absent; Linux ELF tests only.'
           fi
       - name: Assemble and link changed compiler
