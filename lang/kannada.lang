@@ -1,0 +1,34 @@
+# Sutram language pack: ಕನ್ನಡ
+# Format: <native word> <sanskrit keyword>
+# Usage: sutram --lang kannada input.sm output.bin
+
+ಮುಖ್ಯ mukhya
+ಚರ vitti
+ಸಂಖ್ಯೆ anka
+ಒಂದುವೇಳೆ yadi
+ಇಲ್ಲದಿದ್ದರೆ anyatra
+ಯಾವವರೆಗೂ yavat
+ಪುನರಾವರ್ತನೆ punaravartana
+ಹಿಂತಿರುಗು pratiyati
+ಕ್ರಿಯೆ prakriya
+ಬರೆ likha
+ನಿಜ purna
+ಸುಳ್ಳು shunya
+ಸ್ಥಿರ sutra
+ಕ್ರಮ krama
+ಮುಂದುವರಿಸು uddeshya
+ಗುಣ guna
+ಭಾವನೆ bhavana
+ಪಂಕ್ತಿ pankti
+ಸೃಜನ srijana
+ನಿಷೇಧ nishedha
+ರಚನೆ rachana
+ಸೇರಿಸು ayojan
+ಧಾರಣೆ parigrah
+ಓದು grahan
+ರಿಂದ to
+ಶಬ್ದ shabda
+ದಶಮ dasham
+ಕೋಶ kosh
+ಮಾಡು kuru
+ನಿಷ್ಕ್ರಿಯ nishkriya
