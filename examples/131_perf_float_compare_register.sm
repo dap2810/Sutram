@@ -1,0 +1,15 @@
+# PERF-FC1: all six float comparisons in first two register locals.
+mukhya() {
+    dasham a = 2.5
+    dasham b = 4.5
+    likha(a == b)
+    likha(a != b)
+    likha(a < b)
+    likha(a > b)
+    likha(a <= b)
+    likha(a >= b)
+    b = a
+    likha(a == b)
+    likha(a <= b)
+    likha(a >= b)
+}
