@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sutram — Philosophy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --display:'Instrument Serif',Georgia,serif;
+    --body:'IBM Plex Sans',system-ui,sans-serif;
+    --mono:'IBM Plex Mono','SF Mono',Consolas,monospace;
+    --bg:#f7f6f2;--surface:#fff;--surface2:#f2f0ea;--elevated:#fffdf8;
+    --border:rgba(20,25,40,.08);--border-bright:rgba(20,25,40,.16);
+    --text:#14192b;--dim:#6b7280;--navy:#1e3a5f;--navy-dim:rgba(30,58,95,.07);
+    --gold:#b8860b;--gold-dim:rgba(184,134,11,.10);--green:#15803d;--green-dim:rgba(21,128,61,.09);
+  }
+  @media(prefers-color-scheme:dark){:root{
+    --bg:#0d1117;--surface:#161b22;--surface2:#1c232c;--elevated:#1b232e;
+    --border:rgba(255,255,255,.07);--border-bright:rgba(255,255,255,.14);
+    --text:#e6edf3;--dim:#8b949e;--navy:#7aa5d8;--navy-dim:rgba(122,165,216,.10);
+    --gold:#d4a73a;--gold-dim:rgba(212,167,58,.12);--green:#4ade80;--green-dim:rgba(74,222,128,.10);
+  }}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);
+    background-image:radial-gradient(ellipse at 15% 0%,var(--gold-dim) 0%,transparent 45%),
+                     radial-gradient(ellipse at 90% 100%,var(--navy-dim) 0%,transparent 45%);
+    color:var(--text);font-family:var(--body);padding:48px 32px 72px;min-height:100vh;-webkit-font-smoothing:antialiased}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+  .animate{animation:fadeUp .45s ease-out both;animation-delay:calc(var(--i,0)*.05s)}
+  @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-delay:0ms!important}}
+  .wrap{max-width:940px;margin:0 auto}
+
+  header{border-bottom:2px solid var(--border-bright);padding-bottom:26px;margin-bottom:34px}
+  .eyebrow{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;
+    color:var(--gold);display:flex;align-items:center;gap:9px;margin-bottom:14px}
+  .eyebrow::before{content:'';width:26px;height:2px;background:var(--gold)}
+  h1{font-family:var(--display);font-weight:400;font-size:54px;line-height:1.05;letter-spacing:-.5px;margin-bottom:12px}
+  h1 .deva{color:var(--navy);font-size:42px}
+  .lede{font-size:17px;line-height:1.7;color:var(--dim);max-width:700px}
+  .lede strong{color:var(--text);font-weight:600}
+
+  .layer{background:var(--elevated);border:1px solid var(--border);border-left:3px solid var(--gold);
+    border-radius:12px;padding:24px 26px;margin-bottom:16px;box-shadow:0 1px 3px rgba(20,25,40,.05)}
+  .layer h2{font-family:var(--display);font-weight:400;font-size:29px;margin-bottom:4px}
+  .layer .k{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:1.4px;text-transform:uppercase;
+    color:var(--gold);margin-bottom:10px}
+  .layer p{font-size:15px;line-height:1.75;color:var(--dim)}
+  .layer p+p{margin-top:11px}
+  .layer strong{color:var(--text);font-weight:600}
+  .layer code{font-family:var(--mono);font-size:12.5px;background:var(--navy-dim);color:var(--navy);
+    padding:1px 6px;border-radius:4px}
+
+  .sec-label{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:1.6px;text-transform:uppercase;
+    color:var(--dim);margin:40px 0 18px;display:flex;align-items:center;gap:10px}
+  .sec-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+  .road{position:relative;padding-left:26px}
+  .road::before{content:'';position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:var(--border-bright)}
+  .stop{position:relative;margin-bottom:20px}
+  .stop::before{content:'';position:absolute;left:-24px;top:6px;width:11px;height:11px;border-radius:50%;
+    background:var(--gold);border:2px solid var(--bg)}
+  .stop.done::before{background:var(--green)}
+  .stop h3{font-family:var(--display);font-weight:400;font-size:23px;margin-bottom:2px}
+  .stop .who{font-family:var(--mono);font-size:11px;letter-spacing:.6px;color:var(--gold);text-transform:uppercase;margin-bottom:6px}
+  .stop p{font-size:14px;line-height:1.65;color:var(--dim)}
+  .stop p strong{color:var(--text);font-weight:600}
+  .badge{font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;
+    padding:2px 8px;border-radius:5px;margin-left:8px}
+  .badge--ship{background:var(--green-dim);color:var(--green)}
+  .badge--next{background:var(--gold-dim);color:var(--gold)}
+
+  .callout{background:var(--navy-dim);border:1px solid var(--border);border-left:3px solid var(--navy);
+    border-radius:12px;padding:24px 26px;margin-top:34px}
+  .callout h3{font-family:var(--display);font-weight:400;font-size:26px;margin-bottom:10px}
+  .callout p{font-size:14.5px;line-height:1.75;color:var(--dim)}
+  .callout p+p{margin-top:11px}
+  .callout strong{color:var(--text);font-weight:600}
+
+  .scope{margin-top:22px;padding:20px 24px;border:1px dashed var(--border-bright);border-radius:12px}
+  .scope h3{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:1.4px;text-transform:uppercase;
+    color:var(--dim);margin-bottom:9px}
+  .scope p{font-size:14px;line-height:1.7;color:var(--dim)}
+
+  footer{margin-top:42px;padding-top:20px;border-top:1px solid var(--border);
+    font-family:var(--mono);font-size:11px;color:var(--dim);line-height:1.7}
+  @media(max-width:760px){body{padding:28px 16px 48px}h1{font-size:36px}h1 .deva{font-size:28px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="animate" style="--i:0">
+    <div class="eyebrow">Philosophy</div>
+    <h1>Sutram <span class="deva">सूत्रम्</span></h1>
+    <p class="lede">Sutram is a programming language whose keywords are Sanskrit. That is a design commitment, not decoration — and it holds in <strong>three layers</strong>.</p>
+  </header>
+
+  <div class="layer animate" style="--i:1">
+    <div class="k">Layer one</div>
+    <h2>The words</h2>
+    <p><code>yadi</code>, <code>yavat</code>, <code>prakriya</code> are not Sanskrit translations of <code>if</code>, <code>while</code>, <code>function</code> — they <strong>are</strong> the language's words. A programmer writing Sutram is writing in Sanskrit's technical vocabulary, the same vocabulary Indian mathematicians and grammarians used.</p>
+    <p>The language packs extend this to ten Indian languages, but Sanskrit is the base.</p>
+  </div>
+
+  <div class="layer animate" style="--i:2">
+    <div class="k">Layer two</div>
+    <h2>The name</h2>
+    <p><strong>सूत्रम्</strong> means <em>sūtra</em> — a thread, a rule. Pāṇini's <em>Aṣṭādhyāyī</em>, the world's first formal grammar, is a book of roughly four thousand sūtras that generate an entire language from a finite set of precise rules.</p>
+    <p>Sutram is named after that tradition of terse, exact specification. It is a deliberate ancestor.</p>
+  </div>
+
+  <div class="layer animate" style="--i:3">
+    <div class="k">Layer three</div>
+    <h2>The methods</h2>
+    <p>The standard library is not a translation of other languages' libraries. It is the <strong>Indian mathematical tradition, made executable</strong> — and that is a roadmap, not a sentiment: it answers the question <em>"what do we build next?"</em> without copying another language.</p>
+  </div>
+
+  <div class="sec-label animate" style="--i:4">The roadmap</div>
+
+  <div class="road animate" style="--i:5">
+    <div class="stop done">
+      <h3>Pingala <span class="badge badge--ship">shipped</span></h3>
+      <div class="who">Chandahśāstra · ~2nd c. BCE</div>
+      <p>The binary enumeration of metres, the <strong>Meru-prastāra</strong> (Pascal's triangle), and the <strong>mātrā-meru</strong> (Fibonacci numbers) — in a treatise on poetry. Shipped as the <code>chandas</code> module.</p>
+    </div>
+    <div class="stop">
+      <h3>Āryabhaṭa <span class="badge badge--next">next</span></h3>
+      <div class="who">Āryabhaṭīya · ~499 CE</div>
+      <p>The <strong>kuṭṭaka</strong>, the "pulveriser", for linear indeterminate equations — the ancestor of the extended Euclidean algorithm.</p>
+    </div>
+    <div class="stop">
+      <h3>Brahmagupta &amp; Bhāskara II</h3>
+      <div class="who">628 CE · ~1150 CE</div>
+      <p><strong>Bhāvanā</strong> and the <strong>chakravala</strong>, the cyclic method that solves Pell's equation. For N = 61 it gives x = 1766319049 — a case Europe first solved in 1657.</p>
+    </div>
+    <div class="stop">
+      <h3>The Kerala school <span class="badge badge--ship">shipped</span></h3>
+      <div class="who">Mādhava · ~1400 CE</div>
+      <p>Infinite series for <strong>sine, cosine and π</strong>, over two centuries before Newton and Leibniz. Shipped as the <code>madhava</code> library module: π 3.141593, sin(0.5) 0.479426, cos(0.5) 0.877583, atan(0.5) 0.463648.</p>
+    </div>
+    <div class="stop">
+      <h3>Kaṭapayādi</h3>
+      <div class="who">notation · Kerala</div>
+      <p>The letter-to-number system that hid numerals in verse.</p>
+    </div>
+  </div>
+
+  <div class="callout animate" style="--i:6">
+    <h3>Engineering and heritage point the same way</h3>
+    <p>Sutram is <strong>self-sufficient</strong> — one hand-written NASM file, native machine code, no runtime, no toolchain required of the end user. The tradition it draws on was self-sufficient too: Pāṇini needed no foreign grammar, Mādhava needed no foreign calculus.</p>
+    <p>So the technical fundamentals are not separate from the philosophy — they are the same principle applied to machines.</p>
+  </div>
+
+  <div class="scope animate" style="--i:7">
+    <h3>Scope, honestly</h3>
+    <p>We name only what is documented and verifiable. We do not claim these methods are "the origin of computing", and we do not use twentieth-century "Vedic mathematics" branding — because it would undermine the credibility of everything true above.</p>
+  </div>
+
+  <footer>
+    Sutram सूत्रम् · Philosophy · a separate document in the project's <code>docs/</code><br>
+    Named sources are verifiable; the library roadmap above is the intended order of work.
+  </footer>
+
+</div>
+</body>
+</html>
