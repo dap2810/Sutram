@@ -1,0 +1,44 @@
+name: R51 original imported diagnostic provenance
+on:
+  push:
+    branches: [feature/r51-origin-tracking-20261009]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Download NASM without elevation
+        run: |
+          cd "$RUNNER_TEMP"
+          apt download nasm
+          mkdir -p tools
+          for p in ./*.deb; do dpkg-deb -x "$p" tools; done
+          echo "$RUNNER_TEMP/tools/usr/bin" >> "$GITHUB_PATH"
+      - name: Compile native NASM compiler
+        run: |
+          nasm -f elf64 -I. src/sutram_compiler.asm -o /tmp/r51.o
+          ld -o r48_after /tmp/r51.o
+      - name: Provenance and check-mode acceptance
+        run: |
+          python3 tools/r48_native_acceptance.py
+          python3 tools/r48_stage2_acceptance.py
+          python3 tools/r49_repeated_semantic.py
+          python3 tools/r49_diagnostic_audit.py
+          python3 tools/r50_native_acceptance.py
+      - name: Original regression suite and codegen invariants
+        run: |
+          cp r48_after sutram_compiler
+          python3 tests/run_tests.py
+          python3 tools/codegen_gate.py
+          python3 tools/test_lang_packs.py
+          python3 -m unittest discover -s tests/module_graph -p 'test_*.py' -v
+      - name: Source checksum
+        if: always()
+        run: |
+          sha256sum src/sutram_compiler.asm tools/r49_diagnostic_audit.py
