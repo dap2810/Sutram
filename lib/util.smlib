@@ -1,0 +1,27 @@
+# Sutram Utility Library - util.smlib
+# General-purpose utility functions
+# Usage: ayojan util
+
+
+prakriya lerp(a, b, t)
+    pratiyati a + (b - a) * t / 100
+
+prakriya sum_range(start, end)
+    pratiyati (start + end) * (end - start + 1) / 2
+
+
+
+prakriya mod(a, b)
+    pratiyati a - (a / b) * b
+
+prakriya div_ceil(a, b)
+    pratiyati (a + b - 1) / b
+
+prakriya sign(n)
+    pratiyati (n > 0) - (n < 0)
+
+prakriya bool_to_int(b)
+    pratiyati b * 1
+
+prakriya int_max()
+    pratiyati 9223372036854775807
