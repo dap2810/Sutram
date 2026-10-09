@@ -1,0 +1,25 @@
+# R30: preserve indexed read order; right float register is never mutated.
+prakriya replace_zero(kosh dasham xs) {
+    xs[0] = 100.0
+    pratiyati 3.0
+}
+mukhya() {
+    kosh dasham xs[2]
+    kosh_push(xs, 2.0)
+    kosh_push(xs, 4.0)
+    dasham weight = 1.5
+    dasham result = 0.0
+    result = xs[0] + weight
+    likha(result)
+    result = xs[1] - weight
+    likha(result)
+    result = xs[0] * weight
+    likha(result)
+    result = xs[1] / weight
+    likha(result)
+    result = xs[0] + replace_zero(xs)
+    likha(result)
+    likha(xs[0])
+    result = replace_zero(xs) + xs[0]
+    likha(result)
+}
