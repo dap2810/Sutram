@@ -1,0 +1,10 @@
+# Devanagari type aliases are first-class in function parameter syntax.
+prakriya first(कोश दशम a) {
+    pratiyati a[0]
+}
+
+mukhya() {
+    कोश दशम values[1]
+    kosh_push(values, 2.25)
+    likha(first(values))
+}
