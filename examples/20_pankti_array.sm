@@ -1,0 +1,12 @@
+mukhya()
+    pankti nums[6]   # 0..5 inclusive in the loops below
+    punaravartana i = 0 to 5 {
+        nums[i] = i * i
+    }
+    punaravartana j = 0 to 5 {
+        likha(nums[j])
+        likha(" ")
+    }
+    likha("\n")
+    likha(nums[4])
+    likha("\n")
