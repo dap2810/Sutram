@@ -1,0 +1,15 @@
+# 43 — multi-argument likha + nested calls (v29)
+prakriya joda(a, b) {
+    pratiyati a + b
+}
+prakriya gunana(a, b) {
+    pratiyati a * b
+}
+prakriya varga(n) {
+    pratiyati gunana(n, n)
+}
+mukhya()
+    likha("2 + 3 = ", joda(2, 3))
+    likha("7 * 6 = ", gunana(7, 6))
+    likha("5^2 = ", varga(5))
+    likha("nested = ", joda(gunana(2, 3), varga(4)))
