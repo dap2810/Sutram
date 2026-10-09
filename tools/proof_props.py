@@ -294,6 +294,126 @@ def prop_hash_fnv1a_avalanche(compiler, rng):
     return ok and out == "PASS", out
 
 
+def prop_sort_ordered(compiler, rng):
+    """insertion_sort and merge_sort output is ordered (is_sorted==1)"""
+    # fewer cases: each case emits many statements (block size limit)
+    lines = ["ayojan sort", "mukhya() {",
+             "    vitti a = nirmmita(10*8)",
+             "    vitti b = nirmmita(10*8)"]
+    for idx in range(5):
+        vals = [rng.randint(0, 99) for _ in range(10)]
+        for j, v in enumerate(vals):
+            lines.append(f"    a[{j}] = {v}")
+            lines.append(f"    b[{j}] = {v}")
+        lines.append(f"    insertion_sort(a, 10)")
+        lines.append(f"    yadi (is_sorted(a, 10) != 1) {{")
+        lines.append(f'        likha("FAIL sort_ordered insertion\\n")')
+        lines.append(f"        pratiyati 1")
+        lines.append(f"    }}")
+        lines.append(f"    merge_sort(b, 10)")
+        lines.append(f"    yadi (is_sorted(b, 10) != 1) {{")
+        lines.append(f'        likha("FAIL sort_ordered merge\\n")')
+        lines.append(f"        pratiyati 1")
+        lines.append(f"    }}")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "sort_ord", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_sort_permutation(compiler, rng):
+    """insertion_sort and merge_sort give identical output (same multiset)"""
+    lines = ["ayojan sort", "mukhya() {",
+             "    vitti a = nirmmita(10*8)",
+             "    vitti b = nirmmita(10*8)"]
+    for idx in range(5):
+        vals = [rng.randint(0, 99) for _ in range(10)]
+        for j, v in enumerate(vals):
+            lines.append(f"    a[{j}] = {v}")
+            lines.append(f"    b[{j}] = {v}")
+        lines.append(f"    insertion_sort(a, 10)")
+        lines.append(f"    merge_sort(b, 10)")
+        lines.append(f"    vitti k{idx} = 0")
+        lines.append(f"    yavat (k{idx} < 10) {{")
+        lines.append(f"        yadi (a[k{idx}] != b[k{idx}]) {{")
+        lines.append(f'            likha("FAIL sort_permutation\\n")')
+        lines.append(f"            pratiyati 1")
+        lines.append(f"        }}")
+        lines.append(f"        k{idx} = k{idx} + 1")
+        lines.append(f"    }}")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "sort_perm", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_sort_idempotent(compiler, rng):
+    """sorting an already-sorted array is a no-op"""
+    lines = ["ayojan sort", "mukhya() {",
+             "    vitti a = nirmmita(10*8)"]
+    for idx in range(5):
+        vals = sorted(rng.randint(0, 99) for _ in range(10))
+        for j, v in enumerate(vals):
+            lines.append(f"    a[{j}] = {v}")
+        lines.append(f"    insertion_sort(a, 10)")
+        for j, v in enumerate(vals):
+            lines.append(f"    yadi (a[{j}] != {v}) {{")
+            lines.append(f'        likha("FAIL sort_idempotent\\n")')
+            lines.append(f"        pratiyati 1")
+            lines.append(f"    }}")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "sort_idem", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_sort_edges(compiler, rng):
+    """empty and single-element arrays are handled"""
+    lines = ["ayojan sort", "mukhya() {",
+             "    vitti e = nirmmita(1*8)",
+             "    insertion_sort(e, 0)",
+             "    merge_sort(e, 0)",
+             "    vitti s = nirmmita(1*8)",
+             "    s[0] = 42",
+             "    insertion_sort(s, 1)",
+             "    yadi (s[0] != 42) {",
+             '        likha("FAIL sort_edges single insertion\\n")',
+             "        pratiyati 1",
+             "    }",
+             "    s[0] = 42",
+             "    merge_sort(s, 1)",
+             "    yadi (s[0] != 42) {",
+             '        likha("FAIL sort_edges single merge\\n")',
+             "        pratiyati 1",
+             "    }",
+             '    likha("PASS\\n")',
+             "}"]
+    ok, out = run_sm(compiler, "sort_edge", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_baseconv_roundtrip(compiler, rng):
+    """from_digits(to_digits(x, b), b) == x for b in {2,8,10,16}"""
+    lines = ["ayojan bigint", "ayojan baseconv", "mukhya() {",
+             "    vitti x = nirmmita(8*8)",
+             "    vitti digits = nirmmita(70*8)",
+             "    vitti y = nirmmita(8*8)"]
+    for idx in range(N_CASES):
+        val = rng.randint(0, 999999)
+        for b in (2, 8, 10, 16):
+            lines.append(f"    bigint_from_int({val}, x, 8)")
+            lines.append(f"    vitti len{idx}_{b} = bigint_to_digits(x, 8, {b}, digits)")
+            lines.append(f"    bigint_from_digits(digits, len{idx}_{b}, {b}, y, 8)")
+            lines.append(f"    yadi (bigint_cmp(x, y, 8) != 0) {{")
+            lines.append(f'        likha("FAIL baseconv_roundtrip {val} base {b}\\n")')
+            lines.append(f"        pratiyati 1")
+            lines.append(f"    }}")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "baseconv_rt", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
 def main():
     compiler = None
     for i, a in enumerate(sys.argv):
@@ -313,6 +433,11 @@ def main():
         ("hash fnv1a deterministic", prop_hash_fnv1a_deterministic),
         ("hash fnv1a empty == basis", prop_hash_fnv1a_empty),
         ("hash fnv1a avalanche", prop_hash_fnv1a_avalanche),
+        ("sort output ordered", prop_sort_ordered),
+        ("sort permutation", prop_sort_permutation),
+        ("sort idempotent", prop_sort_idempotent),
+        ("sort edge cases", prop_sort_edges),
+        ("baseconv roundtrip", prop_baseconv_roundtrip),
     ]
 
     failed = []
