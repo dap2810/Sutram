@@ -1,0 +1,35 @@
+ayojan string
+mukhya() {
+    vitti src = nirmmita(20 * 8)
+    # "foo bar foo"
+    src[0] = 102
+    src[1] = 111
+    src[2] = 111
+    src[3] = 32
+    src[4] = 98
+    src[5] = 97
+    src[6] = 114
+    src[7] = 32
+    src[8] = 102
+    src[9] = 111
+    src[10] = 111
+    vitti find = nirmmita(4 * 8)
+    find[0] = 102
+    find[1] = 111
+    find[2] = 111
+    vitti repl = nirmmita(4 * 8)
+    repl[0] = 98
+    repl[1] = 97
+    repl[2] = 122
+    repl[3] = 0
+    vitti out = nirmmita(30 * 8)
+    vitti n = str_replace(src, 11, find, 3, repl, out)
+    likha(n)
+    likha("\n")
+    vitti i = 0
+    yavat (i < n) {
+        likha(out[i])
+        likha("\n")
+        i = i + 1
+    }
+}
