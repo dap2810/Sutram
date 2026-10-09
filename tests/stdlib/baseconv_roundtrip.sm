@@ -1,0 +1,27 @@
+ayojan bigint
+ayojan baseconv
+mukhya() {
+    vitti x = nirmmita(8 * 8)
+    vitti digits = nirmmita(70 * 8)
+    vitti y = nirmmita(8 * 8)
+    # 255 in hex, binary, octal
+    bigint_from_int(255, x, 8)
+    vitti l1 = bigint_to_digits(x, 8, 16, digits)
+    likha(l1)
+    likha("\n")
+    likha(digits[0])
+    likha("\n")
+    likha(digits[1])
+    likha("\n")
+    vitti l2 = bigint_to_digits(x, 8, 2, digits)
+    likha(l2)
+    likha("\n")
+    vitti l3 = bigint_to_digits(x, 8, 8, digits)
+    likha(l3)
+    likha("\n")
+    # round-trip via base 16
+    bigint_to_digits(x, 8, 16, digits)
+    bigint_from_digits(digits, 2, 16, y, 8)
+    likha(bigint_to_int(y, 8))
+    likha("\n")
+}
