@@ -1,0 +1,4 @@
+mukhya() {
+    vitti result = 7
+    likha(result)
+}

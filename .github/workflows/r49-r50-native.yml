@@ -1,0 +1,83 @@
+name: R49 R50 integrated native verification
+on:
+  push:
+    branches: [feature/r49-r50-completion-20261009]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native-linux:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install NASM without elevation
+        run: |
+          cd "$RUNNER_TEMP"
+          apt download nasm binutils-mingw-w64-x86-64
+          mkdir -p tools
+          for p in ./*.deb; do dpkg-deb -x "$p" tools; done
+          echo "$RUNNER_TEMP/tools/usr/bin" >> "$GITHUB_PATH"
+      - name: Native build R46 baseline and proposed NASM compiler
+        run: |
+          test -s win/rtblob.inc
+          git show 72b824f70049765c3977db07d712a1a604b89434:src/sutram_compiler.asm > /tmp/r48_before.asm
+          nasm -f elf64 -I. /tmp/r48_before.asm -o /tmp/base.o
+          nasm -f elf64 -I. src/sutram_compiler.asm -o /tmp/new.o
+          ld -o r48_before /tmp/base.o
+          ld -o r48_after /tmp/new.o
+      - name: Check parser and codegen parity, and new byte-write programs
+        run: |
+          python3 tools/r48_native_acceptance.py
+          python3 tools/r48_stage2_acceptance.py
+          python3 tools/r50_native_acceptance.py
+      - name: Existing full regressions
+        run: |
+          cp r48_after sutram_compiler
+          python3 tests/run_tests.py
+          python3 tools/codegen_gate.py
+          python3 tools/test_lang_packs.py
+          python3 -m unittest discover -s tests/module_graph -p 'test_*.py' -v
+      - name: Build native PE32+ compiler using authentic runtime include
+        run: |
+          nasm -f win64 -dWINDOWS -I. src/sutram_compiler.asm -o /tmp/r50_win.obj
+          "$RUNNER_TEMP/tools/usr/bin/x86_64-w64-mingw32-ld" -mi386pep --entry=_start -o /tmp/sutram-r50.exe /tmp/r50_win.obj
+          file /tmp/sutram-r50.exe
+          python3 -c "import struct,pathlib; b=pathlib.Path('/tmp/sutram-r50.exe').read_bytes(); p=struct.unpack_from('<I',b,0x3c)[0]; assert b[:2]==b'MZ' and b[p:p+4]==bytes([80,69,0,0]) and struct.unpack_from('<H',b,p+4)[0]==0x8664 and struct.unpack_from('<H',b,p+24)[0]==0x20b; print('R50_PE32_LINK_OK bytes',len(b))"
+      - name: Publish Windows compiler binary for test
+        uses: actions/upload-artifact@v4
+        with:
+          name: sutram-r50-windows-native
+          path: /tmp/sutram-r50.exe
+      - name: SHA manifest
+        if: always()
+        run: sha256sum src/sutram_compiler.asm tools/r50_native_acceptance.py tests/r50_check/*.sm
+  windows-smoke:
+    needs: native-linux
+    runs-on: windows-2025
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: sutram-r50-windows-native
+          path: artifacts
+      - name: Execute compiler and generated native program on ordinary Windows runner
+        shell: pwsh
+        run: |
+          $compiler = (Resolve-Path './artifacts/sutram-r50.exe').Path
+          & $compiler --version
+          if ($LASTEXITCODE -ne 0) { throw 'version failed' }
+          & $compiler --check tests/r50_check/runtime_hi.sm
+          if ($LASTEXITCODE -ne 0) { throw 'valid check failed' }
+          $invalid = (& $compiler --check tests/r48_check/three_parse_errors.sm | Out-String)
+          Write-Output $invalid
+          if ($LASTEXITCODE -eq 0 -or [regex]::Matches($invalid, 'E_PARSE').Count -lt 3) { throw 'Windows syntax diagnostics fail' }
+          & $compiler tests/r50_check/runtime_hi.sm runtime_hi.exe
+          if ($LASTEXITCODE -ne 0) { throw 'Windows codegen failed' }
+          $result = & ./runtime_hi.exe
+          Write-Output $result
+          if ($LASTEXITCODE -ne 0) { throw 'Generated PE failed' }
+          if (($result -join ',') -ne '104,105,104,105,2,0') { throw 'PE emitted wrong byte-string output' }

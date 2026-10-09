@@ -1,0 +1,5 @@
+mukhya() {
+    likha(missing_alpha(1))
+    likha(missing_beta(2))
+    likha(missing_gamma(3))
+}
