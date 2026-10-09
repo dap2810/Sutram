@@ -8,6 +8,8 @@ ROOT=Path(__file__).resolve().parents[1]
 COMP=ROOT/"sutram_compiler"
 
 TESTS=[
+ ("invalid_path", {"main.sm":"# sutram-module-v1\nayojan ../evil\nmukhya() { likha(1) }\n"},
+  "main.sm:2: Sutram Error [E_MODULE_INVALID]: invalid module name\n"),
  ("root_missing", {"main.sm":"# sutram-module-v1\nayojan absent\nmukhya() { likha(1) }\n"},
   "main.sm:2: Sutram Error [E_MODULE_MISSING]: cannot open import absent\n"),
  ("nested_missing",{"main.sm":"# sutram-module-v1\nayojan outer@o\nmukhya() { likha(1) }\n",
