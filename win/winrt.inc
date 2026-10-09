@@ -13,7 +13,34 @@ section .text
 ; --- rt_init: resolve the kernel32 functions we need -----------------------
 rt_init:
     push rbx
-    sub rsp, 32
+    sub rsp, 40                ; Win64 16-byte alignment and shadow space
+    ; Resolve modules by their Unicode basename, NEVER by ordinal position
+    ; in PEB's loader chain. A no-import PE may have only ntdll loaded.
+    lea rdi, [rel wn_kernel32_ascii]
+    call win_find_module
+    mov [rel p_win_kernel32], rax
+    test rax, rax
+    jnz .rt_kernel_ready
+    lea rdi, [rel wn_ntdll_ascii]
+    call win_find_module
+    test rax, rax
+    jz .rt_init_failed
+    mov rsi, rax
+    lea rdi, [rel wn_ldrloaddll]
+    call win_resolve_from
+    test rax, rax
+    jz .rt_init_failed
+    mov rbx, rax
+    xor ecx, ecx                ; SearchPath = NULL
+    xor edx, edx                ; DllCharacteristics = NULL
+    lea r8, [rel wn_kernel32_us]
+    lea r9, [rel p_win_kernel32]
+    call rbx
+    test eax, eax               ; signed NTSTATUS, negative indicates failure
+    js .rt_init_failed
+.rt_kernel_ready:
+    cmp qword [rel p_win_kernel32], 0
+    je .rt_init_failed
     lea rdi, [rel wn_getstd]
     call win_resolve
     mov [rel p_getstd], rax
@@ -38,7 +65,13 @@ rt_init:
     lea rdi, [rel wn_cmdline]
     call win_resolve
     mov [rel p_cmdline], rax
-    add rsp, 32
+    add rsp, 40
+    pop rbx
+    ret
+.rt_init_failed:
+    ; Return to startup without usable WinAPI pointers. A later diagnostic
+    ; guard in _start reports this failure via the normal Windows exit path.
+    add rsp, 40
     pop rbx
     ret
 
@@ -47,22 +80,34 @@ os_write:
     push rbx
     push r12
     push r13
-    sub rsp, 48
+    mov rbx, rsp
+    and rsp, -16               ; WinAPI calls require 16-byte aligned RSP
+    sub rsp, 48                ; 32-byte shadow + 5th argument
     mov r12, rsi
     mov r13, rdx
-    mov rcx, -11                 ; STD_OUTPUT_HANDLE
+    ; Linux-like logical fd 1/2 map to standard handles. Any other
+    ; value is a real Windows HANDLE returned by CreateFileA.
+    cmp rdi, 1
+    je .ow_stdout
     cmp rdi, 2
-    jne .ow_go
-    mov rcx, -12                 ; STD_ERROR_HANDLE
-.ow_go:
+    je .ow_stderr
+    mov rcx, rdi
+    jmp .ow_handle
+.ow_stdout:
+    mov rcx, -11
+    jmp .ow_std
+.ow_stderr:
+    mov rcx, -12
+.ow_std:
     call qword [rel p_getstd]
     mov rcx, rax
+.ow_handle:
     mov rdx, r12
     mov r8, r13
     lea r9, [rel wn_written]
     mov qword [rsp+32], 0
     call qword [rel p_writefile]
-    add rsp, 48
+    mov rsp, rbx
     pop r13
     pop r12
     pop rbx
@@ -73,19 +118,29 @@ os_read:
     push rbx
     push r12
     push r13
+    mov rbx, rsp
+    and rsp, -16
     sub rsp, 48
     mov r12, rsi
     mov r13, rdx
-    mov rcx, -10                 ; STD_INPUT_HANDLE
+    ; fd 0 is stdin; nonzero fd is a genuine CreateFileA handle.
+    test rdi, rdi
+    jnz .or_handle
+    mov rcx, -10
     call qword [rel p_getstd]
     mov rcx, rax
+    jmp .or_ready
+.or_handle:
+    mov rcx, rdi
+.or_ready:
+    mov dword [rel wn_got], 0
     mov rdx, r12
     mov r8, r13
     lea r9, [rel wn_got]
     mov qword [rsp+32], 0
     call qword [rel p_readfile]
     mov eax, [rel wn_got]
-    add rsp, 48
+    mov rsp, rbx
     pop r13
     pop r12
     pop rbx
@@ -94,13 +149,17 @@ os_read:
 ; --- os_open(rdi=path, rsi=flags, rdx=mode) -> rax = handle (-1 on error) --
 os_open:
     push rbx
-    sub rsp, 48
+    push r14
+    mov r14, rsp
+    and rsp, -16
+    sub rsp, 64                ; 32 shadow + 3 stack arguments, aligned
     mov rbx, rdi                 ; path
     mov rdx, 0x80000000          ; GENERIC_READ
     mov r8, 1                    ; FILE_SHARE_READ
     xor r9, r9
     mov qword [rsp+32], 3        ; OPEN_EXISTING
-    mov qword [rsp+40], 0
+    mov qword [rsp+40], 0x80     ; FILE_ATTRIBUTE_NORMAL
+    mov qword [rsp+48], 0        ; hTemplateFile = NULL, 7th argument
     test rsi, rsi
     jz .oo_go
     mov rdx, 0x40000000          ; GENERIC_WRITE
@@ -112,25 +171,30 @@ os_open:
     jne .oo_done
     mov rax, -1
 .oo_done:
-    add rsp, 48
+    mov rsp, r14
+    pop r14
     pop rbx
     ret
 
 ; --- os_close(rdi=handle) --------------------------------------------------
 os_close:
-    sub rsp, 40
+    push rbx
+    mov rbx, rsp
+    and rsp, -16
+    sub rsp, 32
     mov rcx, rdi
     call qword [rel p_closehandle]
-    add rsp, 40
+    mov rsp, rbx
+    pop rbx
     ret
 
 ; --- os_exit(rdi=code) -----------------------------------------------------
 os_exit:
-    sub rsp, 40
+    and rsp, -16
+    sub rsp, 32
     mov rcx, rdi
     call qword [rel p_exitprocess]
-    add rsp, 40
-    ret
+    hlt
 
 ; --- win_build_argv: parse GetCommandLineA into a stack-like argv[] ---------
 ; The compiler reads argc/argv from the stack (Linux layout). We build an
@@ -141,7 +205,9 @@ win_build_argv:
     push r13
     push r14
     push r15
+    sub rsp, 40                ; Win64 shadow and alignment
     call qword [rel p_cmdline]
+    add rsp, 40
     test rax, rax
     jz .ba_done
     mov r12, rax                     ; r12 = source
@@ -211,38 +277,94 @@ os_readlink:
     mov rax, -1
     ret
 
-; --- win_kernel32: kernel32 base via PEB walk ------------------------------
-win_kernel32:
+; --- win_find_module(rdi = lower-case ASCII DLL name) ---
+; Walk InMemoryOrderModuleList and compare exact Unicode BaseDllName. This
+; avoids guessing the number/order of loader modules on Windows versions.
+win_find_module:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    mov rbx, rdi
     mov rax, [gs:0x60]
     test rax, rax
-    jz .k_fail
+    jz .fm_fail
     mov rax, [rax+0x18]
     test rax, rax
-    jz .k_fail
-    mov rax, [rax+0x20]
-    test rax, rax
-    jz .k_fail
-    mov rax, [rax]
-    test rax, rax
-    jz .k_fail
-    mov rax, [rax]
-    test rax, rax
-    jz .k_fail
-    mov rax, [rax+0x20]
+    jz .fm_fail
+    lea r12, [rax+0x20]      ; InMemoryOrderModuleList head
+    mov r13, [r12]           ; first InMemoryOrderLinks
+    mov r15d, 64             ; hard traversal bound
+.fm_next:
+    test r15, r15
+    jz .fm_fail
+    dec r15
+    cmp r13, r12
+    je .fm_fail
+    test r13, r13
+    jz .fm_fail
+    mov r14, [r13+0x50]     ; BaseDllName.Buffer from InMemoryOrderLinks
+    test r14, r14
+    jz .fm_advance
+    xor ecx, ecx
+.fm_cmp:
+    movzx edx, byte [rbx+rcx]
+    movzx eax, word [r14+rcx*2]
+    cmp edx, 'A'
+    jb .fm_folded
+    cmp edx, 'Z'
+    ja .fm_folded
+    or edx, 0x20
+.fm_folded:
+    cmp eax, 'A'
+    jb .fm_check
+    cmp eax, 'Z'
+    ja .fm_check
+    or eax, 0x20
+.fm_check:
+    cmp eax, edx
+    jne .fm_advance
+    test edx, edx
+    jz .fm_found
+    inc rcx
+    cmp rcx, 60
+    jb .fm_cmp
+.fm_advance:
+    mov r13, [r13]          ; LIST_ENTRY.Flink
+    jmp .fm_next
+.fm_found:
+    mov rax, [r13+0x20]    ; DllBase from InMemoryOrderLinks
+    jmp .fm_done
+.fm_fail:
+    xor eax, eax
+.fm_done:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
     ret
-.k_fail:
-    xor rax, rax
+
+; --- win_kernel32: already loaded or loaded through ntdll ---
+win_kernel32:
+    mov rax, [rel p_win_kernel32]
     ret
 
 ; --- win_resolve(rdi=name) -> rax = address --------------------------------
 win_resolve:
+    mov rsi, [rel p_win_kernel32]
+    jmp win_resolve_from
+
+; win_resolve_from(rdi=ASCII export, rsi=module base)
+win_resolve_from:
     push rbx
     push r12
     push r13
     push r14
     push r15
     mov r14, rdi
-    call win_kernel32
+    mov rax, rsi
     test rax, rax
     jz .r_fail
     mov rbx, rax
@@ -304,6 +426,15 @@ win_resolve:
     ret
 
 section .data
+wn_ntdll_ascii:   db "ntdll.dll", 0
+wn_kernel32_ascii: db "kernel32.dll", 0
+wn_ldrloaddll:   db "LdrLoadDll", 0
+; Unicode string "kernel32.dll" for ntdll loader (length excludes zero).
+wn_kernel32_chars: dw 'k','e','r','n','e','l','3','2','.','d','l','l',0
+align 8
+wn_kernel32_us:    dw 24,26
+                   dd 0
+                   dq wn_kernel32_chars
 wn_getstd:       db "GetStdHandle", 0
 wn_writefile:    db "WriteFile", 0
 wn_readfile:     db "ReadFile", 0
@@ -314,6 +445,7 @@ wn_exitprocess:  db "ExitProcess", 0
 wn_cmdline:      db "GetCommandLineA", 0
 
 section .bss
+p_win_kernel32:  resq 1
 p_getstd:       resq 1
 p_writefile:    resq 1
 p_readfile:     resq 1
