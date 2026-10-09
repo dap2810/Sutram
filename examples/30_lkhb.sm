@@ -1,0 +1,25 @@
+mukhya()
+    likha("lkhb: Formatted Output Demo\n")
+    likha("===========================\n")
+    likha("Multiplication table (aligned):\n")
+    punaravartana i = 1 to 5 {
+        punaravartana j = 1 to 5 {
+            vitti p = i * j
+            yadi (p < 10) {
+                lkhb(p)
+                likha("  ")
+            } anyatra {
+                lkhb(p)
+                likha(" ")
+            }
+        }
+        likha("\n")
+    }
+    likha("\nCountdown: ")
+    vitti n = 5
+    punaravartana i = 1 to 5 {
+        lkhb(n)
+        likha(" ")
+        n--
+    }
+    likha("Done!\n")
