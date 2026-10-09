@@ -1,0 +1,10 @@
+mukhya()
+    punaravartana n = 1 to 10 {
+        yadi (n % 2 == 0) {
+            likha(n)
+            likha(" is even\n")
+        } anyatra {
+            likha(n)
+            likha(" is odd\n")
+        }
+    }
