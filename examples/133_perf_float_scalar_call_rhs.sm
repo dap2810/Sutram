@@ -1,0 +1,28 @@
+# PERF-FG1: a register-resident dasham local is the LHS of a float
+# operation whose RHS is a function call. The caller-local scalar must
+# survive the function call; all four operator orders must be preserved.
+prakriya double_of(dasham x) {
+    pratiyati x * 2.0
+}
+prakriya half_of(dasham x) {
+    pratiyati x / 2.0
+}
+mukhya() {
+    dasham s = 10.0
+    dasham x = 2.0
+    s = s + double_of(x)
+    likha(s)
+    s = s - half_of(x)
+    likha(s)
+    s = s * double_of(x)
+    likha(s)
+    s = s / half_of(x)
+    likha(s)
+    likha(x)
+    vitti two = 2
+    s = s + two
+    likha(s)
+    vitti truth = 0
+    truth = s > half_of(x)
+    likha(truth)
+}
