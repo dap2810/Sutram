@@ -1,0 +1,22 @@
+# FizzBuzz — the classic interview problem
+mukhya()
+    vitti i = 1
+    yavat (i <= 30) {
+        vitti mod3 = i - i / 3 * 3
+        vitti mod5 = i - i / 5 * 5
+        yadi (mod3 == 0) {
+            yadi (mod5 == 0) {
+                likha("FizzBuzz\n")
+            } anyatra {
+                likha("Fizz\n")
+            }
+        } anyatra {
+            yadi (mod5 == 0) {
+                likha("Buzz\n")
+            } anyatra {
+                likha(i)
+                likha("\n")
+            }
+        }
+        i = i + 1
+    }
