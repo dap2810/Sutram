@@ -1,0 +1,19 @@
+# R30: nested expression LHS + safe scalar RHS, including a function call.
+prakriya add_half(dasham x) {
+    pratiyati x + 0.5
+}
+mukhya() {
+    kosh dasham data[2]
+    kosh_push(data, 4.0)
+    kosh_push(data, 6.0)
+    dasham scale = 2.0
+    dasham out = 0.0
+    out = (data[0] + data[1]) * scale
+    likha(out)
+    out = (add_half(data[0]) * add_half(data[1])) + scale
+    likha(out)
+    out = add_half(data[1]) / scale
+    likha(out)
+    out = (data[0] + data[1]) - scale
+    likha(out)
+}
