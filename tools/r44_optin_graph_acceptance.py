@@ -8,6 +8,15 @@ ROOT=Path(__file__).resolve().parents[1]
 COMP=ROOT/"sutram_compiler"
 
 TESTS=[
+ ("cycle_precedes_v1_alias",{
+      "main.sm":"# sutram-module-v1\nayojan cyc_a\nmukhya() { likha(1) }\n",
+      "lib/cyc_a.smlib":"# sutram-module-v1\nayojan cyc_b\nprakriya p() { pratiyati 1 }\n",
+      "lib/cyc_b.smlib":"# sutram-module-v1\nayojan cyc_a\nprakriya q() { pratiyati 1 }\n"},
+  "cyc_b.smlib:2: Sutram Error [E_MODULE_CYCLE]: dependency cycle: cyc_a -> cyc_b -> cyc_a\n"),
+ ("deferred_v1_noalias",{
+      "main.sm":"# sutram-module-v1\nayojan vec\nmukhya() { likha(1) }\n",
+      "lib/vec.smlib":"# sutram-module-v1\nniryat answer\nprakriya answer() { pratiyati 1 }\n"},
+  "main.sm:2:Sutram Error [E_MODULE_V1_ALIAS]: v1 module 'vec' must be imported with an alias: ayojan vec@alias\n"),
  ("invalid_path", {"main.sm":"# sutram-module-v1\nayojan ../evil\nmukhya() { likha(1) }\n"},
   "main.sm:2: Sutram Error [E_MODULE_INVALID]: invalid module name\n"),
  ("root_missing", {"main.sm":"# sutram-module-v1\nayojan absent\nmukhya() { likha(1) }\n"},
@@ -32,7 +41,7 @@ def main():
                 p.write_text(text)
             run=subprocess.run([str(COMP),str(directory/"main.sm"),str(directory/"result.bin")],
                     cwd=ROOT,capture_output=True,text=True,timeout=30)
-            got=run.stdout+run.stderr
+            got=(run.stdout+run.stderr).replace(str(directory)+"/","")
             ok=(run.returncode==1 and got==want)
             print(f"{'PASS' if ok else 'FAIL'} {name}: rc={run.returncode} {got!r}")
             if not ok: print(f"  expected rc=1 {want!r}")
