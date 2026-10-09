@@ -1,0 +1,28 @@
+# Indian number theory (ayojan ganita)
+# Aryabhata's kuttaka (linear indeterminate equations) and
+# Bhaskara II's chakravala (Pell's equation x^2 - N*y^2 = 1).
+ayojan ganita
+
+mukhya()
+    likha("kuttaka(3,7,1) = ")
+    likha(kuttaka(3, 7, 1))
+    likha("\n")
+    pankti r[2]
+    chakravala(r, 13)
+    likha("x^2 - 13y^2 = 1: x = ")
+    likha(r[0])
+    likha(", y = ")
+    likha(r[1])
+    likha("\n")
+    chakravala(r, 61)
+    likha("x^2 - 61y^2 = 1: x = ")
+    likha(r[0])
+    likha(", y = ")
+    likha(r[1])
+    likha("\n")
+    samasa(r, 8, 1, 8, 1, 61)
+    likha("bhavana (8,1) x (8,1) for N=61: x = ")
+    likha(r[0])
+    likha(", y = ")
+    likha(r[1])
+    likha("\n")
