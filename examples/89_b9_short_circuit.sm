@@ -1,0 +1,21 @@
+prakriya set0(a, v) {
+    a[0] = v
+    pratiyati v
+}
+
+mukhya() {
+    pankti a[1]
+    a[0] = 10
+
+    likha(0 && set0(a, 20))
+    likha(a[0])
+
+    likha(1 || set0(a, 30))
+    likha(a[0])
+
+    likha(1 && set0(a, 40))
+    likha(a[0])
+
+    likha(0 || set0(a, 50))
+    likha(a[0])
+}
