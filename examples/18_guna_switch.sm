@@ -1,0 +1,12 @@
+# Guna (switch/case) — Sanskrit for 'quality/attribute'
+mukhya()
+    vitti day = 3
+    guna (day) {
+        bhavana 1: { likha("Monday\n") }
+        bhavana 2: { likha("Tuesday\n") }
+        bhavana 3: { likha("Wednesday\n") }
+        bhavana 4: { likha("Thursday\n") }
+        bhavana 5: { likha("Friday\n") }
+        anyatra: { likha("Weekend\n") }
+    }
+    likha("=== Done ===\n")
