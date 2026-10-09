@@ -56,6 +56,28 @@ jobs:
           echo R47_DISASM_START
           cat r47_machine_disassembly.txt
           echo R47_DISASM_END
+      - name: Print per-file SHA-256 for Sarvam and verify manifest if present
+        if: always()
+        run: |
+          echo R47_SHA_START
+          sha256sum src/sutram_compiler.asm tools/r47_runtime_benchmark.py \
+            tools/codegen_gate.py .github/workflows/r47-runtime.yml \
+            benchmarks/r47_pankti_reads.sm benchmarks/r47_kosh_reads.sm \
+            benchmarks/r47_array_mix.sm benchmarks/ROUND-47-README.md \
+            ChatGPT-to-Sarvam/ROUND-47-RAW-NATIVE-RUNTIME.csv \
+            ChatGPT-to-Sarvam/ROUND-47-DISASSEMBLY.txt \
+            ChatGPT-to-Sarvam/ROUND-47-CALL-RUNTIME-RAW.csv \
+            ChatGPT-to-Sarvam/ROUND-47-CALL-DISASSEMBLY.txt
+          if test -f ChatGPT-to-Sarvam/ROUND-47-NASM-REVIEW.patch; then
+            sha256sum ChatGPT-to-Sarvam/ROUND-47-NASM-REVIEW.patch
+          fi
+          if test -f ChatGPT-to-Sarvam/ROUND-47-HANDOFF-2026-10-09.md; then
+            sha256sum ChatGPT-to-Sarvam/ROUND-47-HANDOFF-2026-10-09.md
+          fi
+          echo R47_SHA_END
+          if test -f ChatGPT-to-Sarvam/ROUND-47-SHA256.txt; then
+            sha256sum -c ChatGPT-to-Sarvam/ROUND-47-SHA256.txt
+          fi
       - uses: actions/upload-artifact@v4
         if: always()
         with:
