@@ -25,22 +25,28 @@ jobs:
           if test ! -f win/rtblob.inc; then
             printf 'RT_BLOB_LEN equ 0\nRT_SYSCALL_OFF equ 0\nrt_blob: db 0\n' > win/rtblob.inc
           fi
-      - name: Build accepted baseline and candidate
+      - name: Build accepted baseline and optimized candidate
         run: |
-          nasm -f elf64 -I. src/sutram_compiler.asm -o /tmp/r45_base.o
+          git show 4a929ea1f89b668bd3b3b9be7f97cfe08309982e:src/sutram_compiler.asm > /tmp/r45_base.asm
+          nasm -f elf64 -I. /tmp/r45_base.asm -o /tmp/r45_base.o
           ld -o /tmp/r45_base /tmp/r45_base.o
-          cp /tmp/r45_base /tmp/r45_new
-          ln -s /tmp/r45_base sutram_compiler
-          echo "R45 BASELINE: $(sha256sum src/sutram_compiler.asm)"
-      - name: Baseline profile (strace syscalls; advisory, includes tracer overhead)
+          nasm -f elf64 -I. src/sutram_compiler.asm -o /tmp/r45_new.o
+          ld -o /tmp/r45_new /tmp/r45_new.o
+          ln -s /tmp/r45_new sutram_compiler
+          echo "R45 BASELINE SHA: $(sha256sum /tmp/r45_base.asm)"
+          echo "R45 CANDIDATE SHA: $(sha256sum src/sutram_compiler.asm)"
+      - name: Baseline and candidate syscall profiles
         run: |
-          strace -f -c -o /tmp/r45_strace.txt /tmp/r45_base examples/163_r40_transitive_diamond.sm /tmp/r45_strace_result.bin
-          echo "R45 PROFILE START"
-          cat /tmp/r45_strace.txt
-          echo "R45 PROFILE END"
-      - name: Baseline A/A noise floor and golden comparison
+          strace -f -c -o /tmp/r45_strace_A.txt /tmp/r45_base examples/163_r40_transitive_diamond.sm /tmp/r45_prof_A.bin
+          strace -f -c -o /tmp/r45_strace_B.txt /tmp/r45_new examples/163_r40_transitive_diamond.sm /tmp/r45_prof_B.bin
+          cmp /tmp/r45_prof_A.bin /tmp/r45_prof_B.bin
+          echo "R45 PROFILE BASELINE"
+          cat /tmp/r45_strace_A.txt
+          echo "R45 PROFILE CANDIDATE"
+          cat /tmp/r45_strace_B.txt
+      - name: Paired baseline versus optimization with raw CSV
         run: |
-          python3 tools/r45_benchmark.py --baseline /tmp/r45_base --candidate /tmp/r45_new --runs 31 --warmup 4 --csv /tmp/r45_aa.csv --summary /tmp/r45_aa.json
+          python3 tools/r45_benchmark.py --baseline /tmp/r45_base --candidate /tmp/r45_new --runs 61 --warmup 6 --csv /tmp/r45_compare.csv --summary /tmp/r45_compare.json
       - name: Existing native regression tests
         run: python3 tests/run_tests.py
       - name: Codegen gate
@@ -51,9 +57,10 @@ jobs:
         run: python3 -m unittest discover -s tests/module_graph -p 'test_*.py' -v
       - uses: actions/upload-artifact@v4
         with:
-          name: r45-baseline-raw
+          name: r45-interleaved-raw
           path: |
-            /tmp/r45_aa.csv
-            /tmp/r45_aa.json
-            /tmp/r45_strace.txt
+            /tmp/r45_compare.csv
+            /tmp/r45_compare.json
+            /tmp/r45_strace_A.txt
+            /tmp/r45_strace_B.txt
           retention-days: 30
