@@ -1,0 +1,25 @@
+# PERF-F2: right-input destination alias must preserve order (SUB/DIV).
+# Also mixed operands, stack locals and complex expressions keep old path.
+mukhya() {
+    dasham a = 9.0
+    dasham b = 3.0
+    dasham c = 4.0
+    dasham d = 1.0
+    dasham e = 2.0
+    dasham f = 4.0
+    vitti i = 2
+    b = a - b
+    likha(b)
+    b = a / b
+    likha(b)
+    a = c + a
+    likha(a)
+    d = c * e
+    likha(d)
+    f = f + d
+    likha(f)
+    f = f + i
+    likha(f)
+    f = (a + c) / e
+    likha(f)
+}
