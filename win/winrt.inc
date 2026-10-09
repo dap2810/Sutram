@@ -14,9 +14,17 @@ section .text
 rt_init:
     push rbx
     sub rsp, 40                ; Win64 16-byte alignment and shadow space
-    ; A no-import PE might have only ntdll loaded. Do not assume that
-    ; kernel32 is the third PEB module: load it explicitly through ntdll.
-    call win_ntdll
+    ; Resolve modules by their Unicode basename, NEVER by ordinal position
+    ; in PEB's loader chain. A no-import PE may have only ntdll loaded.
+    lea rdi, [rel wn_kernel32_ascii]
+    call win_find_module
+    mov [rel p_win_kernel32], rax
+    test rax, rax
+    jnz .rt_kernel_ready
+    lea rdi, [rel wn_ntdll_ascii]
+    call win_find_module
+    test rax, rax
+    jz .rt_init_failed
     mov rsi, rax
     lea rdi, [rel wn_ldrloaddll]
     call win_resolve_from
@@ -28,8 +36,9 @@ rt_init:
     lea r8, [rel wn_kernel32_us]
     lea r9, [rel p_win_kernel32]
     call rbx
-    test eax, eax               ; NT_SUCCESS means signed nonnegative
+    test eax, eax               ; signed NTSTATUS, negative indicates failure
     js .rt_init_failed
+.rt_kernel_ready:
     cmp qword [rel p_win_kernel32], 0
     je .rt_init_failed
     lea rdi, [rel wn_getstd]
@@ -249,27 +258,76 @@ os_readlink:
     mov rax, -1
     ret
 
-; --- win_ntdll: ntdll is always present (second loader entry) ---
-win_ntdll:
-    mov rax, [gs:0x60]         ; PEB
+; --- win_find_module(rdi = lower-case ASCII DLL name) ---
+; Walk InMemoryOrderModuleList and compare exact Unicode BaseDllName. This
+; avoids guessing the number/order of loader modules on Windows versions.
+win_find_module:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    mov rbx, rdi
+    mov rax, [gs:0x60]
     test rax, rax
-    jz .nt_fail
-    mov rax, [rax+0x18]        ; PEB_LDR_DATA
+    jz .fm_fail
+    mov rax, [rax+0x18]
     test rax, rax
-    jz .nt_fail
-    mov rax, [rax+0x20]        ; first InMemoryOrderLinks
-    test rax, rax
-    jz .nt_fail
-    mov rax, [rax]             ; second = ntdll InMemoryOrderLinks
-    test rax, rax
-    jz .nt_fail
-    mov rax, [rax+0x20]        ; DllBase relative to InMemoryOrderLinks
-    ret
-.nt_fail:
+    jz .fm_fail
+    lea r12, [rax+0x20]      ; InMemoryOrderModuleList head
+    mov r13, [r12]           ; first InMemoryOrderLinks
+    mov r15d, 64             ; hard traversal bound
+.fm_next:
+    test r15, r15
+    jz .fm_fail
+    dec r15
+    cmp r13, r12
+    je .fm_fail
+    test r13, r13
+    jz .fm_fail
+    mov r14, [r13+0x50]     ; BaseDllName.Buffer from InMemoryOrderLinks
+    test r14, r14
+    jz .fm_advance
+    xor ecx, ecx
+.fm_cmp:
+    movzx edx, byte [rbx+rcx]
+    movzx eax, word [r14+rcx*2]
+    cmp edx, 'A'
+    jb .fm_folded
+    cmp edx, 'Z'
+    ja .fm_folded
+    or edx, 0x20
+.fm_folded:
+    cmp eax, 'A'
+    jb .fm_check
+    cmp eax, 'Z'
+    ja .fm_check
+    or eax, 0x20
+.fm_check:
+    cmp eax, edx
+    jne .fm_advance
+    test edx, edx
+    jz .fm_found
+    inc rcx
+    cmp rcx, 60
+    jb .fm_cmp
+.fm_advance:
+    mov r13, [r13]          ; LIST_ENTRY.Flink
+    jmp .fm_next
+.fm_found:
+    mov rax, [r13+0x20]    ; DllBase from InMemoryOrderLinks
+    jmp .fm_done
+.fm_fail:
     xor eax, eax
+.fm_done:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
     ret
 
-; --- win_kernel32: obtained via ntdll!LdrLoadDll during rt_init ---
+; --- win_kernel32: already loaded or loaded through ntdll ---
 win_kernel32:
     mov rax, [rel p_win_kernel32]
     ret
@@ -349,6 +407,8 @@ win_resolve_from:
     ret
 
 section .data
+wn_ntdll_ascii:   db "ntdll.dll", 0
+wn_kernel32_ascii: db "kernel32.dll", 0
 wn_ldrloaddll:   db "LdrLoadDll", 0
 ; Unicode string "kernel32.dll" for ntdll loader (length excludes zero).
 wn_kernel32_chars: dw 'k','e','r','n','e','l','3','2','.','d','l','l',0
