@@ -1,0 +1,21 @@
+# Number guessing game
+mukhya()
+    vitti secret = 42
+    vitti guess = 50
+    likha("Guessing game!\n")
+    likha("Secret: ")
+    likha(secret)
+    likha("\n")
+    yadi (guess == secret) {
+        likha("Correct!\n")
+    } anyatra {
+        yadi (guess > secret) {
+            likha("Too high!\n")
+        } anyatra {
+            likha("Too low!\n")
+        }
+        likha("The answer was: ")
+        likha(secret)
+        likha("\n")
+    }
+    likha("Game over!\n")
