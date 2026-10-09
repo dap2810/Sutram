@@ -1,0 +1,140 @@
+Sutram R49/R50 — REAL CI OBSERVED OUTPUT, NOT INFERRED
+GitHub Actions Linux run: https://github.com/dap2810/Sutram/actions/runs/37981990558
+Job: native-linux; source SHA256 55e6ac269e7bf391dcb01cd0b632a00a3e7191ac27d3e203a8325e440a42ff0a
+Windows runtime status is a separate job; do not claim Windows complete.
+
+=== Native R48/R49/R50 checker stdout from CI job ===
+R48_MULTI_BEGIN
+three_parse_errors.sm:2:11: Sutram Error [E_PARSE]: near '='
+      vitti = 1;
+            ^
+three_parse_errors.sm:3:11: Sutram Error [E_PARSE]: near '+'
+      vitti + 2;
+            ^
+three_parse_errors.sm:4:11: Sutram Error [E_PARSE]: near ';'
+      vitti ;
+            ^
+Sutram check: errors found; no output binary
+R48_MULTI_END
+R48_SEMANTIC_BEGIN
+semantic_unknown.sm:2:11: Sutram Error [E_UNDEFINED_FUNCTION]: unknown function 'missing_fun'
+      likha(missing_fun(4))
+            ^
+Sutram check: errors found; no output binary
+R48_SEMANTIC_END
+R48_BINARY_EQUAL,41_recursion.sm,846,8ab871455f57bff8a95ac7c840c52f8245e434c7016af5b3e3cedf6bfbd6d0e3
+R48_BINARY_EQUAL,126_numeric_pipeline.sm,7450,38c50da9ec00d8cffbc1d2f42abe63fd1580572f894a74b3677727f7c9b8b8e2
+R48_BINARY_EQUAL,163_r40_transitive_diamond.sm,575,e3024b0282767501627e44d5243e32fcbd3ee5ad717a030cd3e7b8e7a7e2f984
+R48_BINARY_EQUAL,111_t18_kosh_dasham_function_return.sm,1307,96e602630d053ddf7a61ed32badde5b293597569977ccd4bfbc7a61e07cc14b2
+R48_ACCEPTED_CHECK_TESTS,parse_diags=3,native_byte_equal=4,check_valid=1,no_output=1
+== structural_three_errors.sm exit 1 ==
+structural_three_errors.sm:2:24: Sutram Error [E_PARSE]: near ';'
+      vitti broken_one = ;
+                         ^
+structural_three_errors.sm:3:23: Sutram Error [E_PARSE]: near ']'
+      vitti broken_two[ ];
+                        ^
+structural_three_errors.sm:4:26: Sutram Error [E_PARSE]: near ';'
+      vitti broken_three = ;
+                           ^
+Sutram check: errors found; no output binary
+ 
+== nested_recovery.sm exit 1 ==
+nested_recovery.sm:3:30: Sutram Error [E_PARSE]: near ';'
+          vitti broken_inner = ;
+                               ^
+nested_recovery.sm:6:26: Sutram Error [E_PARSE]: near ';'
+      vitti broken_outer = ;
+                           ^
+Sutram check: errors found; no output binary
+ 
+== unclosed_block.sm exit 1 ==
+unclosed_block.sm:4:1: Sutram Error [E_PARSE]: near '<EOF>'
+  
+  ^
+Sutram check: errors found; no output binary
+ 
+== three_undefined_functions.sm exit 1 ==
+three_undefined_functions.sm:2:11: Sutram Error [E_UNDEFINED_FUNCTION]: unknown function 'missing_alpha'
+      likha(missing_alpha(1))
+            ^
+three_undefined_functions.sm:3:11: Sutram Error [E_UNDEFINED_FUNCTION]: unknown function 'missing_beta'
+      likha(missing_beta(2))
+            ^
+three_undefined_functions.sm:4:11: Sutram Error [E_UNDEFINED_FUNCTION]: unknown function 'missing_gamma'
+      likha(missing_gamma(3))
+            ^
+Sutram check: errors found; no output binary
+ 
+STAGE2_PASS structural=3 nested=2 unclosed=1 undefined=3
+R50_RUN runtime_hi.sm rc 0 stdout '104\n105\n104\n105\n2\n0\n' stderr ''
+R50_RUN byte_truncation.sm rc 0 stdout '44\n44\n255\n255\n2\n' stderr ''
+R50_ACCEPTED: runtime byte writes, byte truncation, char_at, vartani_len and vartani_cmp; 2/2 native executions; 2/2 --check
+R49_REPEATED_SEMANTIC_RAW_BEGIN
+repeated_undefined.sm:2:11: Sutram Error [E_UNDEFINED_FUNCTION]: unknown function 'missing_repeat'
+      likha(missing_repeat(1))
+            ^
+repeated_undefined.sm:3:11: Sutram Error [E_UNDEFINED_FUNCTION]: unknown function 'missing_repeat'
+      likha(missing_repeat(2))
+            ^
+repeated_undefined.sm:4:11: Sutram Error [E_UNDEFINED_FUNCTION]: unknown function 'missing_repeat'
+      likha(missing_repeat(3))
+            ^
+Sutram check: errors found; no output binary
+R49_REPEATED_SEMANTIC_RAW_END
+R49_REPEATED_SEMANTIC_PASS,unique_correct_lines=3,no_output=1
+R49_AUDIT_BEGIN missing_separators.sm rc 1
+missing_separators.sm:2:11: Sutram Error [E_PARSE]: near '='
+      vitti = 1
+            ^
+missing_separators.sm:3:11: Sutram Error [E_PARSE]: near '='
+      vitti = 2
+            ^
+missing_separators.sm:4:11: Sutram Error [E_PARSE]: near '='
+      vitti = 3
+            ^
+Sutram check: errors found; no output binary
+R49_AUDIT_COUNTS missing_separators.sm error_lines 3 located 3
+R49_AUDIT_END missing_separators.sm
+R49_AUDIT_BEGIN nested_expressions.sm rc 1
+nested_expressions.sm:2:29: Sutram Error [E_PARSE]: near ')'
+      vitti broken_one = (1 + );
+                              ^
+nested_expressions.sm:4:29: Sutram Error [E_PARSE]: near ')'
+      vitti broken_two = (2 * );
+                              ^
+Sutram check: errors found; no output binary
+R49_AUDIT_COUNTS nested_expressions.sm error_lines 2 located 2
+R49_AUDIT_END nested_expressions.sm
+R49_AUDIT_BEGIN top_level_malformed.sm rc 1
+top_level_malformed.sm:1:1: Sutram Error [E_PARSE]: near 'vitti'
+  vitti misplaced = ;
+  ^
+Sutram check: errors found; no output binary
+R49_AUDIT_COUNTS top_level_malformed.sm error_lines 1 located 1
+R49_AUDIT_END top_level_malformed.sm
+R49_AUDIT_BEGIN module_missing.sm rc 1
+module_missing.sm:2:1: Sutram Error [E_MODULE_MISSING]: cannot open import unprovided_r49_module
+R49_AUDIT_COUNTS module_missing.sm error_lines 1 located 1
+R49_AUDIT_END module_missing.sm
+R49_AUDIT_BEGIN import_bad.sm rc 1
+import_bad.sm:2:20: Sutram Error [E_PARSE]: near ';'
+      vitti broken = ;
+                     ^
+Sutram check: errors found; no output binary
+R49_AUDIT_COUNTS import_bad.sm error_lines 1 located 1
+R49_AUDIT_END import_bad.sm
+R49_PROVENANCE_UNRESOLVED: imported parser error reports root filename
+R49_AUDIT_STATUS unlocated=0,wrong_provenance=1,universal_diagnostics_accepted=0
+
+=== Regression and PE link observations from same CI ===
+PASS=186
+PASS while_hot: 5 instructions (ceiling 5) bottom-test
+PASS for_hot: 7 instructions (ceiling 7) bottom-test
+  30/30 pack checks pass (10 packs x 3 keyword groups)
+Ran 18 tests in 0.010s
+OK
+R50_PE32_LINK_OK bytes 156492
+
+CAUTION: import_bad.sm errors use the root filename instead of imported faulty_r49.smlib.
+R49_AUDIT_STATUS reports that origin mismatch even if diagnostic syntax is file:line:column.
