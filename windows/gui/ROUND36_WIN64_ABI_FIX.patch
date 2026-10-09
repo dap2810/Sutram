@@ -1,0 +1,57 @@
+--- a/windows/gui/sutram_gui.asm
++++ b/windows/gui/sutram_gui.asm
+@@ -1489,10 +1489,13 @@
+     xor edx,edx
+     xor r8d,r8d
+     xor r9d,r9d
+-    mov qword [rsp+32],0
++    ; PeekNamedPipe's 5th arg is lpTotalBytesAvail, 6th is
++    ; lpBytesLeftThisMessage (always 0 for anonymous pipes).
++    ; The old source put pipe_available in arg6 and therefore
++    ; never observed pending stdout/stderr bytes.
+     PTR r10,pipe_available
+-    mov [rsp+40],r10
+-    mov qword [rsp+48],0
++    mov [rsp+32],r10
++    mov qword [rsp+40],0
+     API PeekNamedPipe
+     test eax,eax
+     jz .process_state
+@@ -1553,10 +1556,13 @@
+     xor edx,edx
+     xor r8d,r8d
+     xor r9d,r9d
+-    mov qword [rsp+32],0
++    ; PeekNamedPipe's 5th arg is lpTotalBytesAvail, 6th is
++    ; lpBytesLeftThisMessage (always 0 for anonymous pipes).
++    ; The old source put pipe_available in arg6 and therefore
++    ; never observed pending stdout/stderr bytes.
+     PTR r10,pipe_available
+-    mov [rsp+40],r10
+-    mov qword [rsp+48],0
++    mov [rsp+32],r10
++    mov qword [rsp+40],0
+     API PeekNamedPipe
+     test eax,eax
+     jz .exit_code
+@@ -1799,7 +1805,11 @@
+ 
+ ; rdi = requested kernel32 export, rax = address or 0.
+ win_resolve:
++    ; Windows x64 requires RSI and RDI preserved by callees.
++    ; The export-name comparison writes both registers.
+     push rbx
++    push rsi
++    push rdi
+     push r12
+     push r13
+     push r14
+@@ -1854,6 +1864,8 @@
+     pop r14
+     pop r13
+     pop r12
++    pop rdi
++    pop rsi
+     pop rbx
+     ret
+ 
