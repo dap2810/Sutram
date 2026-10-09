@@ -28,14 +28,19 @@ pure stack-only calls 3–5% slower on two A/B runs. Evidence:
 `ChatGPT-to-Sarvam/ROUND-47-CALL-RUNTIME-RAW.csv` and
 `ROUND-47-CALL-DISASSEMBLY.txt`.
 
-**Experiment C (CURRENT REVIEW CANDIDATE):** restrict the direct
-`mov rdi,rax` call transfer to one-argument calls where the argument
-AST is `AST_INDEX`, `AST_FLOAT` or `AST_NUM`. Plain `AST_VAR` and
-all multi-argument calls retain the R46 stack transfer. This retains
-the R46 binary unchanged for pure stack variable-call benchmarks and
-improves some indexing/float cases. Evidence:
-`ChatGPT-to-Sarvam/ROUND-47-GUARDED-CALL-RUNTIME.csv` and
-`ROUND-47-GUARDED-CALL-DISASSEMBLY.txt`.
+**Experiment C (FINAL GUARDED CANDIDATE, NOT ACCEPTED):** restrict direct
+`mov rdi,rax` to a single `AST_INDEX`, `AST_FLOAT` or `AST_NUM`
+argument. Plain `AST_VAR` and multi-argument calls stay exactly R46.
+All 186/12/30/18 gates pass, and image output is unchanged on pure
+stack-variable callers. A first 40-pair runtime run found +12% for
+array+calls, but a second independent GitHub runner found only +0.31%
+for that workload. **The performance gain did not replicate and
+the candidate should not be merged until separately measured on fixed
+hardware.** Both runs' raw data and ndisasm files are retained:
+`ChatGPT-to-Sarvam/ROUND-47-GUARDED-CALL-RUNTIME.csv`,
+`ROUND-47-GUARDED-CALL-DISASSEMBLY.txt`,
+`ROUND-47-GUARDED-REPEAT-RUNTIME.csv`, and
+`ROUND-47-GUARDED-REPEAT-DISASSEMBLY.txt`.
 
 ## Current five runtime inputs
 
