@@ -1,0 +1,37 @@
+mukhya()
+    likha("Simple Calculator\n")
+    likha("=================\n")
+    likha("Enter first number: ")
+    vitti a = grahan()
+    likha("Enter second number: ")
+    vitti b = grahan()
+    yadi (a == -1) {
+        likha("No input. Goodbye!\n")
+        purna
+    }
+    yadi (b == -1) {
+        likha("No input. Goodbye!\n")
+        purna
+    }
+    likha("Sum: ")
+    likha(a + b)
+    likha("\nDifference: ")
+    likha(a - b)
+    likha("\nProduct: ")
+    likha(a * b)
+    yadi (b != 0) {
+        likha("\nQuotient: ")
+        likha(a / b)
+        likha("\nRemainder: ")
+        likha(a % b)
+    } anyatra {
+        likha("\nCannot divide by zero!\n")
+    }
+    likha("\n")
+    yadi (a > b) {
+        likha("First is greater\n")
+    } anyatra yadi (b > a) {
+        likha("Second is greater\n")
+    } anyatra {
+        likha("Both are equal\n")
+    }
