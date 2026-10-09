@@ -1822,14 +1822,30 @@ _start:
     mov [rel source_path_ptr], rdi
     call read_file
     mov [rel source_len], rax
+%ifdef R49_WIN_DIAG_3
+    mov eax, [rel source_len]   ; host exit = actual bytes read
+    ret
+%endif
 
     ; R41: opt-in module-v1 graph preflight runs BEFORE destructive expansion.
     ; The legacy import and generated-code path is byte-for-byte unchanged.
     call graph_preflight_v1   ; R44 single graph traversal (dispatch to merged Muse DFS)
+%ifdef R49_WIN_DIAG_4
+    mov eax, 74
+    ret
+%endif
     ; Expand imports (inline .smlib files)
     call expand_imports
+%ifdef R49_WIN_DIAG_5
+    mov eax, 75
+    ret
+%endif
     ; Lex
     call lex
+%ifdef R49_WIN_DIAG_6
+    mov eax, 76
+    ret
+%endif
 
     ; Parse using the ordinary parser, but in check mode recover at a safe
     ; statement/brace boundary after each parser error and restart the parser.
@@ -1843,6 +1859,10 @@ _start:
     mov qword [rel parse_block_depth], 0
 .r48_parse_normal:
     call parse_program
+%ifdef R49_WIN_DIAG_7
+    mov eax, 77
+    ret
+%endif
     cmp qword [rel r48_mode], 0
     je .r48_generate
     cmp qword [rel r48_error_count], 0

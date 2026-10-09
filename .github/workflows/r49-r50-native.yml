@@ -50,7 +50,7 @@ jobs:
           python3 -c "import struct,pathlib; b=pathlib.Path('/tmp/sutram-r50.exe').read_bytes(); p=struct.unpack_from('<I',b,0x3c)[0]; assert b[:2]==b'MZ' and b[p:p+4]==bytes([80,69,0,0]) and struct.unpack_from('<H',b,p+4)[0]==0x8664 and struct.unpack_from('<H',b,p+24)[0]==0x20b; print('R50_PE32_LINK_OK bytes',len(b))"
       - name: Build isolated Windows startup probes (never shipped)
         run: |
-          for n in 0 1 2; do
+          for n in 0 1 2 3 4 5 6 7; do
             nasm -f win64 -dWINDOWS -DR49_WIN_DIAG_$n -I. src/sutram_compiler.asm -o /tmp/win_probe_$n.obj
             "$RUNNER_TEMP/tools/usr/bin/x86_64-w64-mingw32-ld" -mi386pep --entry=_start -o /tmp/win_probe_$n.exe /tmp/win_probe_$n.obj
           done
@@ -79,17 +79,26 @@ jobs:
       - name: Execute compiler and generated native program on ordinary Windows runner
         shell: pwsh
         run: |
-          foreach ($n in 0,1,2) {
+          foreach ($n in 0..7) {
             $probe = (Resolve-Path "./artifacts/win_probe_$n.exe").Path
-            & $probe
-            Write-Output ("WIN_PROBE_" + $n + "_EXIT=" + $LASTEXITCODE)
+            $p = Start-Process -FilePath $probe -ArgumentList @('--check','tests/r50_check/runtime_hi.sm') -NoNewWindow -PassThru
+            if (-not $p.WaitForExit(8000)) {
+              $p.Kill()
+              Write-Output ("WIN_PROBE_" + $n + "_TIMEOUT")
+            } else {
+              Write-Output ("WIN_PROBE_" + $n + "_EXIT=" + $p.ExitCode)
+            }
           }
           $compiler = (Resolve-Path './artifacts/sutram-r50.exe').Path
           & $compiler --version
           Write-Output ('Windows compiler --version exit: ' + $LASTEXITCODE)
           if ($LASTEXITCODE -ne 0) { throw 'version failed' }
-          & $compiler --check tests/r50_check/runtime_hi.sm
-          if ($LASTEXITCODE -ne 0) { throw 'valid check failed' }
+          $check = Start-Process -FilePath $compiler -ArgumentList @('--check','tests/r50_check/runtime_hi.sm') -NoNewWindow -PassThru
+          if (-not $check.WaitForExit(12000)) {
+            $check.Kill()
+            throw 'Windows valid --check timeout'
+          }
+          if ($check.ExitCode -ne 0) { throw ('valid check failed: ' + $check.ExitCode) }
           $invalid = (& $compiler --check tests/r48_check/three_parse_errors.sm | Out-String)
           Write-Output $invalid
           if ($LASTEXITCODE -eq 0 -or [regex]::Matches($invalid, 'E_PARSE').Count -lt 3) { throw 'Windows syntax diagnostics fail' }
