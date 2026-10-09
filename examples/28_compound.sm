@@ -1,0 +1,43 @@
+mukhya()
+    likha("Compound Assignment Demo\n")
+    likha("=======================\n")
+    vitti x = 100
+    likha("Start: ")
+    likha(x)
+    likha("\n")
+    x += 50
+    likha("x += 50 -> ")
+    likha(x)
+    likha("\n")
+    x -= 30
+    likha("x -= 30 -> ")
+    likha(x)
+    likha("\n")
+    x *= 2
+    likha("x *= 2  -> ")
+    likha(x)
+    likha("\n")
+    x /= 4
+    likha("x /= 4  -> ")
+    likha(x)
+    likha("\n")
+    x %= 7
+    likha("x %= 7  -> ")
+    likha(x)
+    likha("\n")
+    likha("\nSum 1 to 10 using += :\n")
+    vitti total = 0
+    punaravartana i = 1 to 10 {
+        total += i
+    }
+    likha("Total: ")
+    likha(total)
+    likha("\n")
+    likha("\nFactorial of 5 using *= :\n")
+    vitti fact = 1
+    punaravartana n = 1 to 5 {
+        fact *= n
+    }
+    likha("5! = ")
+    likha(fact)
+    likha("\n")
