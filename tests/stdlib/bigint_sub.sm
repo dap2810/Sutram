@@ -1,0 +1,26 @@
+ayojan bigint
+mukhya() {
+    vitti a = nirmmita(8 * 8)
+    vitti b = nirmmita(8 * 8)
+    vitti r = nirmmita(8 * 8)
+    bigint_from_int(12345, a, 8)
+    bigint_from_int(6789, b, 8)
+    likha(bigint_sub(a, b, r, 8))
+    likha("\n")
+    likha(bigint_to_int(r, 8))
+    likha("\n")
+    # borrow chain: 1000 - 1 = 999
+    bigint_from_int(1000, a, 8)
+    bigint_from_int(1, b, 8)
+    likha(bigint_sub(a, b, r, 8))
+    likha("\n")
+    likha(bigint_to_int(r, 8))
+    likha("\n")
+    # equal: 500 - 500 = 0
+    bigint_from_int(500, a, 8)
+    bigint_from_int(500, b, 8)
+    likha(bigint_sub(a, b, r, 8))
+    likha("\n")
+    likha(bigint_to_int(r, 8))
+    likha("\n")
+}
