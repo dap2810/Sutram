@@ -19,9 +19,9 @@ import time
 
 ROOT=Path(__file__).resolve().parents[1]
 SOURCES=[
- "benchmarks/r47_pankti_reads.sm",
- "benchmarks/r47_kosh_reads.sm",
- "benchmarks/r47_array_mix.sm",
+ "benchmarks/r46_hotcall_stack.sm",
+ "benchmarks/r46_hotcall_nested.sm",
+ "benchmarks/r46_hotcall_float.sm",
  "benchmarks/r46_hotcall_array.sm",
  "examples/126_numeric_pipeline.sm",
 ]
@@ -47,17 +47,14 @@ def disasm_excerpt(path):
     raw=subprocess.check_output(["ndisasm","-b","64","-e","0x78",str(path)],
                                 cwd=ROOT,timeout=30,text=True)
     insn=raw.splitlines()
-    # R47: actual generated indexed loads; include before shift/add pattern
-    # and candidate SIB addressing, not unrelated function-call windows.
-    hits=[i for i,line in enumerate(insn)
-          if ("shl rax,byte 0x3" in line.lower()
-              or "mov rax,[rcx+rax*8]" in line.lower()
-              or "add rax,rcx" in line.lower())]
+    # R47: center disassembly on actual CALL and PUSH/POP register traffic,
+    # including single-arg PUSH RAX -> POP RDI and its candidate MOV RDI,RAX.
+    hits=[i for i,line in enumerate(insn) if "call " in line.lower()]
     items=[]
-    for pos in hits[:12]:
+    for pos in hits[:15]:
         lo=max(0,pos-9); hi=min(len(insn),pos+6)
         items.append("\n".join(insn[lo:hi]))
-    return "\n--- INDEXED READ ---\n".join(items) if items else "No indexed array read found in disassembly"
+    return "\n--- INDEXED READ ---\n".join(items) if items else "No native CALL found in disassembly"
 def bootstrap_pct(before,after):
     # Paired median ratio, 2,000 reproducible bootstrap resamples.
     rng=random.Random(4609)
@@ -125,7 +122,7 @@ def main():
             b,aft=pairs["before"],pairs["after"]
             ci=bootstrap_pct(b,aft)
             bm,am=statistics.median(b),statistics.median(aft)
-            print(f"R46_RESULT,{rel},before_median_ms={bm/1e6:.6f},after_median_ms={am/1e6:.6f},"
+            print(f"R47_RESULT,{rel},before_median_ms={bm/1e6:.6f},after_median_ms={am/1e6:.6f},"
                   f"speedup_pct={100*(bm-am)/bm:.3f},bootstrap_95_pct=[{ci[0]:.3f},{ci[1]:.3f}],"
                   f"before_p10p90_ms=[{pct(b,.1)/1e6:.4f},{pct(b,.9)/1e6:.4f}],"
                   f"after_p10p90_ms=[{pct(aft,.1)/1e6:.4f},{pct(aft,.9)/1e6:.4f}],"
@@ -138,7 +135,7 @@ def main():
         w.writeheader();w.writerows(measurements)
     a.disasm.parent.mkdir(parents=True,exist_ok=True)
     a.disasm.write_text("\n".join(evidence))
-    print(f"R46_RECORDS={len(measurements)},cpu={cpu},csv={a.csv},disasm={a.disasm}")
+    print(f"R47_RECORDS={len(measurements)},cpu={cpu},csv={a.csv},disasm={a.disasm}")
     return 0
 if __name__=="__main__":
     raise SystemExit(main())
