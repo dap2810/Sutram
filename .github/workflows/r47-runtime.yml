@@ -70,6 +70,8 @@ jobs:
             ChatGPT-to-Sarvam/ROUND-47-CALL-DISASSEMBLY.txt \
             ChatGPT-to-Sarvam/ROUND-47-GUARDED-CALL-RUNTIME.csv \
             ChatGPT-to-Sarvam/ROUND-47-GUARDED-CALL-DISASSEMBLY.txt \
+            ChatGPT-to-Sarvam/ROUND-47-GUARDED-REPEAT-RUNTIME.csv \
+            ChatGPT-to-Sarvam/ROUND-47-GUARDED-REPEAT-DISASSEMBLY.txt \
             ChatGPT-to-Sarvam/ROUND-47-NASM-REVIEW.patch \
             ChatGPT-to-Sarvam/ROUND-47-HANDOFF-2026-10-09.md
           echo R47_SHA_END
