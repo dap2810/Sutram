@@ -1,0 +1,56 @@
+name: R48 Stage2 native verification
+on:
+  push:
+    branches: [feature/r48-stage2-validation-20261009]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install NASM without admin
+        run: |
+          cd "$RUNNER_TEMP"
+          apt download nasm
+          mkdir -p "$RUNNER_TEMP/nasm"
+          dpkg-deb -x nasm_*.deb "$RUNNER_TEMP/nasm"
+          echo "$RUNNER_TEMP/nasm/usr/bin" >> "$GITHUB_PATH"
+      - name: Assemble independent R46 and Stage2 compiler
+        run: |
+          mkdir -p win
+          if ! test -f win/rtblob.inc; then
+            printf 'RT_BLOB_LEN equ 0\nRT_SYSCALL_OFF equ 0\nrt_blob: db 0\n' > win/rtblob.inc
+            echo "LINUX ELF ONLY; genuine Windows runtime include unavailable"
+          fi
+          git show 72b824f70049765c3977db07d712a1a604b89434:src/sutram_compiler.asm > /tmp/r48_before.asm
+          nasm -f elf64 -I. /tmp/r48_before.asm -o /tmp/r48_before.o
+          nasm -f elf64 -I. src/sutram_compiler.asm -o /tmp/r48_after.o
+          ld -o r48_before /tmp/r48_before.o
+          ld -o r48_after /tmp/r48_after.o
+      - name: Original native Stage1 acceptance and byte equality to R46
+        run: python3 tools/r48_native_acceptance.py
+      - name: Stage2 native adversarial diagnostics
+        run: python3 tools/r48_stage2_acceptance.py
+      - name: Full original golden regressions
+        run: |
+          cp r48_after sutram_compiler
+          python3 tests/run_tests.py
+          python3 tools/codegen_gate.py
+          python3 tools/test_lang_packs.py
+          python3 -m unittest discover -s tests/module_graph -p 'test_*.py' -v
+      - name: SHA256 evidence
+        if: always()
+        run: |
+          sha256sum src/sutram_compiler.asm tools/r48_stage2_acceptance.py tests/r48_check/{structural_three_errors,nested_recovery,unclosed_block,three_undefined_functions}.sm > r48_stage2_sha256.txt
+          cat r48_stage2_sha256.txt
+      - name: Attach raw evidence (when available)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: r48-stage2-integrity
+          path: r48_stage2_sha256.txt
