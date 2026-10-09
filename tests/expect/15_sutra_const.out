@@ -1,0 +1,13 @@
+=== Sutra & Bitwise ===
+MAX_VAL = 100
+
+17 % 5 = 2
+
+12 & 10 = 8
+
+12 | 10 = 14
+
+12 ^ 10 = 6
+
+Assert passed
+=== Done ===
