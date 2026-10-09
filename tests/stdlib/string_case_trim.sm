@@ -1,0 +1,51 @@
+ayojan string
+mukhya() {
+    vitti src = nirmmita(10 * 8)
+    src[0] = 104
+    src[1] = 69
+    src[2] = 76
+    src[3] = 76
+    src[4] = 111
+    vitti out = nirmmita(10 * 8)
+    vitti n1 = str_upper(src, 5, out)
+    likha(n1)
+    likha("\n")
+    likha(out[0])
+    likha("\n")
+    vitti n2 = str_lower(src, 5, out)
+    likha(out[0])
+    likha("\n")
+    # trim "  hi  "
+    vitti sp = nirmmita(8 * 8)
+    sp[0] = 32
+    sp[1] = 32
+    sp[2] = 104
+    sp[3] = 105
+    sp[4] = 32
+    sp[5] = 32
+    vitti tout = nirmmita(8 * 8)
+    vitti tn = str_trim(sp, 6, tout)
+    likha(tn)
+    likha("\n")
+    likha(tout[0])
+    likha("\n")
+    likha(tout[1])
+    likha("\n")
+    # compare / starts / ends
+    vitti a = nirmmita(3 * 8)
+    a[0] = 97
+    a[1] = 98
+    a[2] = 99
+    vitti b = nirmmita(3 * 8)
+    b[0] = 97
+    b[1] = 98
+    b[2] = 100
+    likha(str_compare(a, 3, b, 3))
+    likha("\n")
+    likha(str_compare(a, 3, a, 3))
+    likha("\n")
+    likha(str_starts(a, 3, a, 2))
+    likha("\n")
+    likha(str_ends(b, 3, b, 2))
+    likha("\n")
+}
