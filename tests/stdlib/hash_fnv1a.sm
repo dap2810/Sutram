@@ -1,0 +1,11 @@
+ayojan hash
+mukhya() {
+    likha(fnv1a_str("hello"))
+    likha("\n")
+    likha(fnv1a_str("a"))
+    likha("\n")
+    likha(fnv1a_str(""))
+    likha("\n")
+    likha(fnv1a("hello world", 5))
+    likha("\n")
+}
