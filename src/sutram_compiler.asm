@@ -4835,10 +4835,11 @@ ns_strip_niryat:
     movzx eax, byte [rbx + r12]
     cmp al, 10
     jne .ns_not_nl
-    mov [rbx + r14], al
+    mov [rbx + r14],al
+    call r51_raw_copy_position
     inc r12
     inc r14
-    mov r8, 1
+    mov r8,1
     jmp .ns_loop
 .ns_not_nl:
     cmp r8, 1
@@ -4885,16 +4886,18 @@ ns_strip_niryat:
     jmp .ns_loop
 .ns_ws:
     movzx eax, byte [rbx + r12]
-    mov [rbx + r14], al
+    mov [rbx + r14],al
+    call r51_raw_copy_position
     inc r12
     inc r14
     jmp .ns_loop
 .ns_copy:
     movzx eax, byte [rbx + r12]
-    mov [rbx + r14], al
+    mov [rbx + r14],al
+    call r51_raw_copy_position
     inc r12
     inc r14
-    mov r8, 0
+    mov r8,0
     jmp .ns_loop
 .ns_strip_done:
     mov [rel ns_raw_len], r14
@@ -5087,6 +5090,7 @@ ns_rewrite_funcs:
     jae .nr_done
     lea rdx,[rel ns_raw_buf]
     mov al,[rdx+r15]
+    mov [rel r51_ns_emit_pos],r15
     cmp r13,1
     je .nr_comment
     cmp r13,2
