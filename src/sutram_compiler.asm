@@ -709,6 +709,7 @@ section .bss
     ns_raw_len resq 1
     ns_func_count resq 1
     ns_func_names resb NS_FUNC_CAP * 64
+    ns_func_is_const resb NS_FUNC_CAP ; 1 for top-level sutra, 0 for prakriya
     module_path_buf resb 512      ; dedicated ayojan path scratch
     str_ptr     resq 1
     code_buf    resb CODE_BUF_CAP
@@ -755,6 +756,8 @@ section .bss
     patch_count  resq 1
     func_defs    resb FUNC_DEFS_CAP * 8 ; [funcdef_node_ptr(8)]
     func_def_cnt resq 1
+    top_const_count resq 1
+    top_const_nodes resq 128   ; compile-time top-level sutra initializers
     in_function  resq 1       ; 0 = in main, 1 = in user function
     current_func_float resq 1 ; T12: active prakriya returns binary64 when nonzero
     alloc_sizes  resb 1024    ; [name_ptr(8)][size(8)] = 16 bytes each (borrow checker)
@@ -4728,11 +4731,13 @@ ns_collect_funcs:
     push rbx
     push r12
     push r13
+    push r14
     push r15
     mov qword [rel ns_func_count],0
     mov rbx,[rel ns_raw_len]
     xor r15,r15
 .nc_line:
+    xor r14,r14              ; 0 function; 1 compile-time constant
     cmp r15,rbx
     jae .nc_done
 .nc_indent:
@@ -4784,14 +4789,35 @@ ns_collect_funcs:
     mov rax,r15
     add rax,rcx
     cmp rax,rbx
-    jae .nc_next_line
+    jae .nc_try_sutra
     lea rdx,[rel ns_raw_buf]
     cmp r11b,[rdx+rax]
-    jne .nc_next_line
+    jne .nc_try_sutra
     inc rcx
     jmp .nc_dev_byte
 .nc_dev_ok:
     add r15,rcx
+.nc_try_sutra:
+    ; Add sutra NAME as a separately tagged unqualified symbol.  Its bare
+    ; uses (not only calls) must be renamed under module@alias.
+    lea rdx, [rel ns_raw_buf]
+    mov rax, rbx
+    sub rax, r15
+    cmp rax, 5
+    jb .nc_next_line
+    cmp byte [rdx+r15], 's'
+    jne .nc_next_line
+    cmp byte [rdx+r15+1], 'u'
+    jne .nc_next_line
+    cmp byte [rdx+r15+2], 't'
+    jne .nc_next_line
+    cmp byte [rdx+r15+3], 'r'
+    jne .nc_next_line
+    cmp byte [rdx+r15+4], 'a'
+    jne .nc_next_line
+    mov r14, 1
+    add r15, 5
+    jmp .nc_after_keyword
 .nc_after_keyword:
     cmp r15,rbx
     jae .nc_next_line
@@ -4844,6 +4870,9 @@ ns_collect_funcs:
     mov rcx,rax
     rep movsb
     mov byte [rdi],0
+    mov rax, [rel ns_func_count]
+    lea rdi, [rel ns_func_is_const]
+    mov byte [rdi+rax], r14b
     inc qword [rel ns_func_count]
 .nc_next_line:
     cmp r15,rbx
@@ -4861,6 +4890,7 @@ ns_collect_funcs:
     call os_exit
 .nc_done:
     pop r15
+    pop r14
     pop r13
     pop r12
     pop rbx
@@ -4958,8 +4988,10 @@ ns_rewrite_funcs:
     inc r8
     jmp .nr_skip_ws
 .nr_check_paren:
+    ; Functions require a call '('; compile-time sutra constants do not.
+    xor r8,r8
     cmp al,'('
-    jne .nr_raw_token
+    sete r8b
     xor r10,r10
 .nr_match_func:
     cmp r10,[rel ns_func_count]
@@ -4983,7 +5015,12 @@ ns_rewrite_funcs:
     jmp .nr_compare
 .nr_exact:
     cmp byte [r11+rcx],0
+    jne .nr_next_func
+    lea rdx, [rel ns_func_is_const]
+    cmp byte [rdx+r10],1
     je .nr_qualified
+    test r8,r8
+    jnz .nr_qualified
 .nr_next_func:
     inc r10
     jmp .nr_match_func
@@ -5773,6 +5810,7 @@ advance_tok:
     ret
 
 parse_program:
+    mov qword [rel top_const_count], 0
     mov qword [rel parse_error_kind], 0
     lea rax, [rel ast_heap]
     mov [rel ast_ptr], rax
@@ -5795,7 +5833,25 @@ parse_function:
     je .pf_top_decl
     cmp rcx, KW_PRAKRIYA
     je .pf_top_decl
+    cmp rcx, KW_SUTRA
+    je .pf_top_const
     jmp .pf_expect_mukhya
+.pf_top_const:
+    ; Top-level sutra is a compile-time constant available to main and
+    ; functions parsed below it. No native global storage/runtime init.
+    call parse_stmt
+    cmp qword [rax], AST_DECL
+    jne parse_error
+    mov rcx, [rel top_const_count]
+    cmp rcx, 128
+    jae .pf_top_const_limit
+    lea rdx, [rel top_const_nodes]
+    mov [rdx + rcx*8], rax
+    inc qword [rel top_const_count]
+    jmp .pf_top_loop
+.pf_top_const_limit:
+    lea rdi, [rel msg_func_defs_overflow]
+    jmp capacity_fail
 .pf_top_decl:
     call parse_stmt          ; parse the declaration
     ; If it's a FUNCDEF, store it in func_defs for gen_all_functions
@@ -8277,6 +8333,34 @@ parse_primary:
     cmp rcx, TOK_IDENT
     jne .pp_builtin
     mov rbx, [rax+8]         ; name ptr
+    ; Resolve previously declared top-level sutra symbols before building an
+    ; AST_VAR. Compile-time inlining works inside functions without a global
+    ; data section or cross-function variable lifetime.
+    xor r8, r8
+.pp_top_const:
+    cmp r8, [rel top_const_count]
+    jae .pp_not_top_const
+    lea rdx, [rel top_const_nodes]
+    mov rax, [rdx + r8*8]
+    mov rdi, rbx
+    mov rsi, [rax+8]
+    push r8
+    call strcmp
+    pop r8
+    test rax,rax
+    jz .pp_found_top_const
+    inc r8
+    jmp .pp_top_const
+.pp_found_top_const:
+    lea rdx, [rel top_const_nodes]
+    mov rax, [rdx + r8*8]
+    mov rax, [rax+16]        ; initializer AST, immutable read-only use
+    push rax
+    call advance_tok
+    pop rax
+    pop rbx
+    ret
+.pp_not_top_const:
     call advance_tok
     ; Check if next token is '(' → function call
     call cur_tok
