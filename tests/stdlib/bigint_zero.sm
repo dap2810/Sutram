@@ -1,0 +1,12 @@
+ayojan bigint
+mukhya() {
+    vitti a = nirmmita(8 * 8)
+    bigint_from_int(12345, a, 8)
+    likha(bigint_is_zero(a, 8))
+    likha("\n")
+    bigint_zero(a, 8)
+    likha(bigint_is_zero(a, 8))
+    likha("\n")
+    likha(bigint_to_int(a, 8))
+    likha("\n")
+}
