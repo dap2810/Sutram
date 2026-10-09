@@ -1,0 +1,41 @@
+# Numerical calculus over sampled data and polynomials.
+# Checks against known values:
+#   integral of x^2 from 0 to 1   = 1/3  ~ 0.333333
+#   root of x^2 - 2               = sqrt(2) ~ 1.414214
+#   derivative of x^2 at x = 1    = 2
+ayojan kalana
+
+mukhya() {
+    # --- integrate x^2 over [0,1] with 11 equally spaced samples ---
+    kosh dasham xs[4]
+    kosh dasham ys[4]
+    vitti i = 0
+    yavat (i < 11) {
+        dasham x = i
+        x = x / 10.0
+        kosh_push(xs, x)
+        kosh_push(ys, x * x)
+        i = i + 1
+    }
+    likha(kosh_len(xs))
+    likha(trapezoid(xs, ys))
+    likha(simpson(xs, ys))
+
+    # --- derivative of x^2 at the midpoint sample (i=5 -> x=0.5 -> 2x = 1) ---
+    likha(slope(xs, ys, 5))
+    # --- second derivative of x^2 is 2 everywhere ---
+    likha(slope2(xs, ys, 5))
+
+    # --- root of x^2 - 2 on [0,2] ---
+    kosh dasham c[4]
+    kosh_push(c, -2.0)
+    kosh_push(c, 0.0)
+    kosh_push(c, 1.0)
+    likha(bahu_ganana(c, 2.0))
+    # the out-parameter needs one element pushed: a kosh's CAPACITY is not its LENGTH,
+    # so ok[0] would be out of bounds until something is pushed.
+    kosh dasham ok[1]
+    kosh_push(ok, 0.0)
+    likha(bahu_mula(c, 0.0, 2.0, ok))
+    likha(ok[0])
+}
