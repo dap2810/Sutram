@@ -2628,6 +2628,10 @@ expand_imports_pass:
     test rax,rax
     js .ei_close_only
     mov [rel ns_raw_len],rax
+    cmp qword [rel r48_mode],0
+    je .r51_raw_ready
+    call r51_init_raw_map
+.r51_raw_ready:
     cmp rax,r10
     jne .ei_ns_read_complete
     mov rdi,rbx
@@ -2655,7 +2659,8 @@ expand_imports_pass:
     cmp r14, IMPORT_BUF_CAP
     jae .ei_overflow
     lea rdi, [rel import_buf]
-    mov byte [rdi + r14], 10
+    mov byte [rdi + r14],10
+    call r51_mark_newline
     inc r14
     jmp .ei_loop
 .ei_copy:
@@ -2664,7 +2669,8 @@ expand_imports_pass:
     lea rsi, [rel source_buf]
     movzx eax, byte [rsi + r12]
     lea rdi, [rel import_buf]
-    mov [rdi + r14], al
+    mov [rdi + r14],al
+    call r51_copy_origin
     inc r12
     inc r14
     jmp .ei_loop
@@ -2699,7 +2705,11 @@ expand_imports_pass:
     lea rdi, [rel source_buf]
     mov rcx, r14
     rep movsb
-    mov [rel source_len], r14
+    mov [rel source_len],r14
+    cmp qword [rel r48_mode],0
+    je .r51_map_ready
+    call r51_finish_origin_pass
+.r51_map_ready:
     ; Reset str_ptr
     lea rax, [rel str_pool]
     mov [rel str_ptr], rax
