@@ -1,0 +1,19 @@
+=== Comparison Operators ===
+a <= b: true
+b >= 20: true
+a != b: true
+a == 10: true
+Loop with <=: 0
+ 1
+ 2
+ 3
+ 4
+ 5
+ 
+Loop with !=: 0
+ 1
+ 2
+ 3
+ 4
+ 
+=== Done ===
