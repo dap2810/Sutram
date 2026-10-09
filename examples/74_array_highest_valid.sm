@@ -1,0 +1,6 @@
+mukhya() {
+    pankti a[3]
+    a[2] = 42
+    likha(a[2])
+    likha(pankti_len(a))
+}
