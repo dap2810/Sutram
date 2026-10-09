@@ -1838,6 +1838,10 @@ _start:
     ret
 %endif
 
+    cmp qword [rel r48_mode],0
+    je .r51_not_check
+    call r51_init_map
+.r51_not_check:
     ; R41: opt-in module-v1 graph preflight runs BEFORE destructive expansion.
     ; The legacy import and generated-code path is byte-for-byte unchanged.
     call graph_preflight_v1   ; R44 single graph traversal (dispatch to merged Muse DFS)
@@ -5247,6 +5251,112 @@ ns_emit_byte:
     call print_str_z
     mov rdi,1
     call os_exit
+
+
+; R51 check-only source-to-origin mapping; two buffers follow import passes.
+r51_init_map:
+    xor ecx,ecx
+    mov rdx,[rel source_path_ptr]
+    lea r8,[rel r51_src_file]
+    lea r9,[rel r51_src_off]
+    mov r10,[rel source_len]
+    cmp r10,IMPORT_BUF_CAP
+    jae .done
+    inc r10
+.loop:
+    cmp rcx,r10
+    jae .done
+    mov [r8+rcx*8],rdx
+    mov [r9+rcx*4],ecx
+    inc rcx
+    jmp .loop
+.done:
+    ret
+
+r51_copy_origin:
+    cmp qword [rel r48_mode],0
+    je .done
+    push rcx
+    push rdx
+    lea rcx,[rel r51_src_file]
+    mov rdx,[rcx+r12*8]
+    lea rcx,[rel r51_dst_file]
+    mov [rcx+r14*8],rdx
+    lea rcx,[rel r51_src_off]
+    mov edx,[rcx+r12*4]
+    lea rcx,[rel r51_dst_off]
+    mov [rcx+r14*4],edx
+    pop rdx
+    pop rcx
+.done:
+    ret
+
+r51_register_module:
+    push rbx
+    push rcx
+    push rdx
+    push rsi
+    mov rbx,[rel r51_paths_used]
+    cmp rbx,IMPORT_NAMES_CAP
+    jae .over
+    inc qword [rel r51_paths_used]
+    shl rbx,9
+    lea rax,[rel r51_import_paths]
+    add rbx,rax
+    lea rsi,[rel module_path_buf]
+    xor ecx,ecx
+.copy:
+    cmp rcx,511
+    jae .last
+    mov dl,[rsi+rcx]
+    mov [rbx+rcx],dl
+    test dl,dl
+    jz .last
+    inc rcx
+    jmp .copy
+.last:
+    mov byte [rbx+511],0
+    mov rax,rbx
+    pop rsi
+    pop rdx
+    pop rcx
+    pop rbx
+    ret
+.over:
+    lea rdi,[rel msg_import_overflow]
+    jmp capacity_fail
+
+r51_finish_origin_pass:
+    push rsi
+    push rdi
+    push rcx
+    cld
+    lea rsi,[rel r51_dst_file]
+    lea rdi,[rel r51_src_file]
+    mov rcx,r14
+    rep movsq
+    lea rsi,[rel r51_dst_off]
+    lea rdi,[rel r51_src_off]
+    mov rcx,r14
+    rep movsd
+    cmp r14,IMPORT_BUF_CAP
+    jae .done
+    test r14,r14
+    jz .done
+    mov rcx,r14
+    dec rcx
+    lea rsi,[rel r51_src_file]
+    mov rdx,[rsi+rcx*8]
+    mov [rsi+r14*8],rdx
+    lea rsi,[rel r51_src_off]
+    mov edx,[rsi+rcx*4]
+    inc edx
+    mov [rsi+r14*4],edx
+.done:
+    pop rcx
+    pop rdi
+    pop rsi
+    ret
 
 ; ============================================================
 ; FILE I/O
