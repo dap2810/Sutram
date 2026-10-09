@@ -1,7 +1,0 @@
-ayojan fileio
-mukhya() {
-    likha(file_write(1, 0, 5))
-    likha("\n")
-    likha(file_write(2, 0, 0))
-    likha("\n")
-}
