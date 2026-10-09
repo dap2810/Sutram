@@ -1,0 +1,17 @@
+ayojan bigint
+mukhya() {
+    vitti a = nirmmita(8 * 8)
+    likha(bigint_from_int(12345, a, 8))
+    likha("\n")
+    likha(bigint_to_int(a, 8))
+    likha("\n")
+    likha(bigint_from_int(0, a, 8))
+    likha("\n")
+    likha(bigint_to_int(a, 8))
+    likha("\n")
+    # 8 digits cannot hold 123456789 (9 digits) -> truncated, returns 0
+    likha(bigint_from_int(123456789, a, 8))
+    likha("\n")
+    likha(bigint_to_int(a, 8))
+    likha("\n")
+}
