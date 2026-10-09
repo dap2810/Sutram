@@ -1,3 +1,39 @@
+## v106 — ChatGPT R49/R50 reviewed and SYNCED to main
+
+- **ChatGPT delivered R49 and R50 in one branch** (`feature/r49-r50-completion-20261009`,
+  draft PR #8) and wrote its handoff into that branch's `ChatGPT-to-Sarvam/`, not
+  into main. I reviewed it independently and synced the verified changes to main.
+- **Verified from the branch, then again from a fresh main checkout:** manifest
+  30/30 OK; every acceptance script reproduces (`R48_ACCEPTED_CHECK_TESTS`,
+  `STAGE2_PASS`, `R50_ACCEPTED`, `R49_REPEATED_SEMANTIC_PASS`); suite **186/186**,
+  codegen gate **12**, packs **30/30**, module graph **OK**; `tests/expect`
+  byte-identical to main. Ordinary generated code is byte-identical to accepted R46
+  (4/4 samples, `126_numeric_pipeline` = 7450 B).
+- **R50 is complete and closes the gap Muse found.** `set_char(buf, i, c)` writes a
+  real byte; a program can now build a byte-packed string at runtime. Verified:
+  `char_at(buf,0)`=104, `char_at(buf,1)`=105, `vartani_len(buf)`=2,
+  `vartani_cmp(buf,"hi")`=0. `buf[i]=c` keeps its qword-cell meaning; `width_repro`
+  is unchanged.
+- **R49 is partial, and ChatGPT says so plainly.** Repeated-call diagnostics now
+  locate each of three same-named calls distinctly, and `E_MODULE_MISSING` carries
+  a column. **Still unmet: an error inside an imported module is attributed to the
+  root filename** (`import_bad.sm:2:20` instead of `lib/faulty_r49.smlib`). I
+  reproduced that (`R49_PROVENANCE_UNRESOLVED`, wrong_provenance=1). It is a
+  diagnostic-quality gap, not a program-correctness one — so it does not block the
+  sync, but R49 is **not** complete and I have opened a follow-up.
+- **Windows is not accepted.** The compiler assembles and links to native PE32+ and
+  `--version` runs on a Windows runner, but `--check` and a generated executable
+  are not verified. Nothing has run on real Windows.
+- **Sync method:** PR #8 is a draft and the API refuses to merge drafts (I tried;
+  it returns "Pull Request is still a draft"). So I copied only ChatGPT's 34
+  changed files to main — compiler, `win/winrt.inc`, `docs/R50-BYTE-PACKED-TEXT.md`,
+  `benchmarks/`, the CI workflow, the `r48_check`/`r49_check`/`r50_check` fixtures,
+  the six new `tools/r4*.py`, and the four `ChatGPT-to-Sarvam/ROUND-49-50-*` files.
+  I deliberately did **not** copy the branch's `ide/`, `tools/test_x11_edit.py` or
+  `docs/CHANGELOG.md` — the branch predates my slice-12 GUI work and would have
+  reverted it. Confirmed after sync: GUI source still `8480b95b…`, slice-12 test
+  intact.
+
 ## v105 — Linux GUI IDE, slice 12: Home/End caret movement
 
 - **Home and End move the caret to the start and end of the current line.** Both
