@@ -1,0 +1,34 @@
+# Sutram language pack: ਪੰਜਾਬੀ
+# Format: <native word> <sanskrit keyword>
+# Usage: sutram --lang punjabi input.sm output.bin
+
+ਮੁੱਖ mukhya
+ਵੇਰੀਏਬਲ vitti
+ਅੰਕ anka
+ਜੇ yadi
+ਨਹੀਂਤਾਂ anyatra
+ਜਦੋਂਤਕ yavat
+ਦੁਹਰਾਓ punaravartana
+ਵਾਪਸ pratiyati
+ਕਾਰਜ prakriya
+ਲਿਖੋ likha
+ਸੱਚ purna
+ਝੂਠ shunya
+ਸਥਿਰ sutra
+ਕ੍ਰਮ krama
+ਅੱਗੇ uddeshya
+ਗੁਣ guna
+ਭਾਵਨਾ bhavana
+ਕਤਾਰ pankti
+ਸਿਰਜਣ srijana
+ਨਿਸ਼ੇਧ nishedha
+ਰਚਨਾ rachana
+ਸ਼ਾਮਲ ayojan
+ਧਾਰਨ parigrah
+ਪੜ੍ਹੋ grahan
+ਤੋਂ to
+ਸ਼ਬਦ shabda
+ਦਸ਼ਮ dasham
+ਕੋਸ਼ kosh
+ਕਰੋ kuru
+ਨਿਸ਼ਕ੍ਰਿਯ nishkriya
