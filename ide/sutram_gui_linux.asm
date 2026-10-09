@@ -96,6 +96,8 @@
 %define KC_CTRL_Z       52              ; 'z' keycode
 %define KC_PGUP         104             ; output-pane scroll up
 %define KC_PGDN         109             ; output-pane scroll down
+%define KC_HOME         102             ; caret to line start
+%define KC_END          107             ; caret to line end
 %define OUT_VISIBLE     7               ; output lines that fit in the pane
 %define SAVE_PATH       "/tmp/.sutram_gui_saved.sm"
 %define UNDO_LEVELS     8
@@ -1548,6 +1550,10 @@ handle_key:
     je   .pgup
     cmp  rbx, KC_PGDN
     je   .pgdn
+    cmp  rbx, KC_HOME
+    je   .home
+    cmp  rbx, KC_END
+    je   .end
     cmp  qword [rel km_ok], 0
     je   .fallback
     lea  rcx, [rel kc_map]
@@ -1611,6 +1617,16 @@ handle_key:
 .pgdn:
     call out_scroll_down
     call draw_all
+    jmp  .done
+.home:
+    mov  rdi, [rel ed_cursor]
+    call line_start
+    mov  [rel ed_cursor], rax
+    jmp  .done
+.end:
+    mov  rdi, [rel ed_cursor]
+    call line_end
+    mov  [rel ed_cursor], rax
     jmp  .done
 .esc:
     mov  dword [rel want_quit], 1
