@@ -1,0 +1,573 @@
+=== benchmarks/r46_hotcall_stack.sm ===
+output_sha256=024b7fa8485948c15d5b57579be8f281c3a2c96f69686f268791e763ceb6ae87
+before_image=('d38f2dceda8002c10a6156dffc19a7a13b6f6ee0b16c14c21e8b3b492cf50853', 467)
+after_image=('20399da50ab83ebcdd8a2e8cfa7a227827979b276fa70f77d8e6b2d5f7abcc38', 451)
+generated_byte_identical=False
+BEFORE MACHINE CODE:
+00000025  4C89E0            mov rax,r12
+00000028  50                push rax
+00000029  4889D8            mov rax,rbx
+0000002C  50                push rax
+0000002D  5F                pop rdi
+0000002E  4154              push r12
+00000030  4155              push r13
+00000032  4156              push r14
+00000034  4157              push r15
+00000036  E8EA000000        call 0x125
+0000003B  415F              pop r15
+0000003D  415E              pop r14
+0000003F  415D              pop r13
+00000041  415C              pop r12
+00000043  5A                pop rdx
+--- CALL BOUNDARY ---
+0000012A  57                push rdi
+0000012B  4881EC00080000    sub rsp,0x800
+00000132  488B45F0          mov rax,[rbp-0x10]
+00000136  50                push rax
+00000137  5F                pop rdi
+00000138  4154              push r12
+0000013A  4155              push r13
+0000013C  4156              push r14
+0000013E  4157              push r15
+00000140  E8BEFFFFFF        call 0x103
+00000145  415F              pop r15
+00000147  415E              pop r14
+00000149  415D              pop r13
+0000014B  415C              pop r12
+0000014D  488D65F8          lea rsp,[rbp-0x8]
+AFTER MACHINE CODE:
+00000025  4C89E0            mov rax,r12
+00000028  50                push rax
+00000029  4889D8            mov rax,rbx
+0000002C  50                push rax
+0000002D  5F                pop rdi
+0000002E  4154              push r12
+00000030  4155              push r13
+00000032  4156              push r14
+00000034  4157              push r15
+00000036  E8EA000000        call 0x125
+0000003B  415F              pop r15
+0000003D  415E              pop r14
+0000003F  415D              pop r13
+00000041  415C              pop r12
+00000043  5A                pop rdx
+--- CALL BOUNDARY ---
+00000124  C3                ret
+00000125  55                push rbp
+00000126  4889E5            mov rbp,rsp
+00000129  53                push rbx
+0000012A  57                push rdi
+0000012B  4881EC00080000    sub rsp,0x800
+00000132  488B45F0          mov rax,[rbp-0x10]
+00000136  50                push rax
+00000137  5F                pop rdi
+00000138  E8C6FFFFFF        call 0x103
+0000013D  488D65F8          lea rsp,[rbp-0x8]
+00000141  5B                pop rbx
+00000142  5D                pop rbp
+00000143  C3                ret
+00000144  488D65F8          lea rsp,[rbp-0x8]
+
+=== benchmarks/r46_hotcall_nested.sm ===
+output_sha256=b8b6df6bb3d03cb825e7be723777daf7a5685d357f44896e72d3465f48e29ed9
+before_image=('ef76779f178916e656259cf69997838e892e5528100e25f13eebcf8119c60e6e', 521)
+after_image=('5bafa59ae11d23d7c37645532388b69aa005a5b5f812071811db09a6fd1f8a23', 489)
+generated_byte_identical=False
+BEFORE MACHINE CODE:
+00000025  4C89E0            mov rax,r12
+00000028  50                push rax
+00000029  4889D8            mov rax,rbx
+0000002C  50                push rax
+0000002D  5F                pop rdi
+0000002E  4154              push r12
+00000030  4155              push r13
+00000032  4156              push r14
+00000034  4157              push r15
+00000036  E820010000        call 0x15b
+0000003B  415F              pop r15
+0000003D  415E              pop r14
+0000003F  415D              pop r13
+00000041  415C              pop r12
+00000043  5A                pop rdx
+--- CALL BOUNDARY ---
+0000012A  57                push rdi
+0000012B  4881EC00080000    sub rsp,0x800
+00000132  488B45F0          mov rax,[rbp-0x10]
+00000136  50                push rax
+00000137  5F                pop rdi
+00000138  4154              push r12
+0000013A  4155              push r13
+0000013C  4156              push r14
+0000013E  4157              push r15
+00000140  E8BEFFFFFF        call 0x103
+00000145  415F              pop r15
+00000147  415E              pop r14
+00000149  415D              pop r13
+0000014B  415C              pop r12
+0000014D  488D65F8          lea rsp,[rbp-0x8]
+--- CALL BOUNDARY ---
+00000160  57                push rdi
+00000161  4881EC00080000    sub rsp,0x800
+00000168  488B45F0          mov rax,[rbp-0x10]
+0000016C  50                push rax
+0000016D  5F                pop rdi
+0000016E  4154              push r12
+00000170  4155              push r13
+00000172  4156              push r14
+00000174  4157              push r15
+00000176  E8AAFFFFFF        call 0x125
+0000017B  415F              pop r15
+0000017D  415E              pop r14
+0000017F  415D              pop r13
+00000181  415C              pop r12
+00000183  488D65F8          lea rsp,[rbp-0x8]
+AFTER MACHINE CODE:
+00000025  4C89E0            mov rax,r12
+00000028  50                push rax
+00000029  4889D8            mov rax,rbx
+0000002C  50                push rax
+0000002D  5F                pop rdi
+0000002E  4154              push r12
+00000030  4155              push r13
+00000032  4156              push r14
+00000034  4157              push r15
+00000036  E810010000        call 0x14b
+0000003B  415F              pop r15
+0000003D  415E              pop r14
+0000003F  415D              pop r13
+00000041  415C              pop r12
+00000043  5A                pop rdx
+--- CALL BOUNDARY ---
+00000124  C3                ret
+00000125  55                push rbp
+00000126  4889E5            mov rbp,rsp
+00000129  53                push rbx
+0000012A  57                push rdi
+0000012B  4881EC00080000    sub rsp,0x800
+00000132  488B45F0          mov rax,[rbp-0x10]
+00000136  50                push rax
+00000137  5F                pop rdi
+00000138  E8C6FFFFFF        call 0x103
+0000013D  488D65F8          lea rsp,[rbp-0x8]
+00000141  5B                pop rbx
+00000142  5D                pop rbp
+00000143  C3                ret
+00000144  488D65F8          lea rsp,[rbp-0x8]
+--- CALL BOUNDARY ---
+0000014A  C3                ret
+0000014B  55                push rbp
+0000014C  4889E5            mov rbp,rsp
+0000014F  53                push rbx
+00000150  57                push rdi
+00000151  4881EC00080000    sub rsp,0x800
+00000158  488B45F0          mov rax,[rbp-0x10]
+0000015C  50                push rax
+0000015D  5F                pop rdi
+0000015E  E8C2FFFFFF        call 0x125
+00000163  488D65F8          lea rsp,[rbp-0x8]
+00000167  5B                pop rbx
+00000168  5D                pop rbp
+00000169  C3                ret
+0000016A  488D65F8          lea rsp,[rbp-0x8]
+
+=== benchmarks/r46_hotcall_float.sm ===
+output_sha256=5d43a23b642b94e9ba2fbace9b0e03429be84d750cfa18f9514cee7132d03cd5
+before_image=('f3229e09d5676cdf6852e3c9039b4d898407ae7a5be15d80dbe8d9900b066129', 565)
+after_image=('3b39138a9b32ead57da2cc0aa06ff861f27274891bd9984245eea35bb8d843a3', 549)
+generated_byte_identical=False
+BEFORE MACHINE CODE:
+00000027  E93A000000        jmp 0x66
+0000002C  48B8000000000000  mov rax,0x4004000000000000
+         -0440
+00000036  50                push rax
+00000037  5F                pop rdi
+00000038  4154              push r12
+0000003A  4155              push r13
+0000003C  4156              push r14
+0000003E  4157              push r15
+00000040  E842010000        call 0x187
+00000045  415F              pop r15
+00000047  415E              pop r14
+00000049  415D              pop r13
+0000004B  415C              pop r12
+0000004D  66480F6EC8        movq xmm1,rax
+--- CALL BOUNDARY ---
+0000018C  57                push rdi
+0000018D  4881EC00080000    sub rsp,0x800
+00000194  488B45F0          mov rax,[rbp-0x10]
+00000198  50                push rax
+00000199  5F                pop rdi
+0000019A  4154              push r12
+0000019C  4155              push r13
+0000019E  4156              push r14
+000001A0  4157              push r15
+000001A2  E8A4FFFFFF        call 0x14b
+000001A7  415F              pop r15
+000001A9  415E              pop r14
+000001AB  415D              pop r13
+000001AD  415C              pop r12
+000001AF  488D65F8          lea rsp,[rbp-0x8]
+AFTER MACHINE CODE:
+00000027  E93A000000        jmp 0x66
+0000002C  48B8000000000000  mov rax,0x4004000000000000
+         -0440
+00000036  50                push rax
+00000037  5F                pop rdi
+00000038  4154              push r12
+0000003A  4155              push r13
+0000003C  4156              push r14
+0000003E  4157              push r15
+00000040  E842010000        call 0x187
+00000045  415F              pop r15
+00000047  415E              pop r14
+00000049  415D              pop r13
+0000004B  415C              pop r12
+0000004D  66480F6EC8        movq xmm1,rax
+--- CALL BOUNDARY ---
+00000186  C3                ret
+00000187  55                push rbp
+00000188  4889E5            mov rbp,rsp
+0000018B  53                push rbx
+0000018C  57                push rdi
+0000018D  4881EC00080000    sub rsp,0x800
+00000194  488B45F0          mov rax,[rbp-0x10]
+00000198  50                push rax
+00000199  5F                pop rdi
+0000019A  E8ACFFFFFF        call 0x14b
+0000019F  488D65F8          lea rsp,[rbp-0x8]
+000001A3  5B                pop rbx
+000001A4  5D                pop rbp
+000001A5  C3                ret
+000001A6  488D65F8          lea rsp,[rbp-0x8]
+
+=== benchmarks/r46_hotcall_array.sm ===
+output_sha256=56f36d5adddfce2ffdead8cdfe77e25f136775835e3deced891efb1b4cd2b169
+before_image=('17b29ae8efad5ed64caecbe284c178427f6f6ef70d1316fc5668bbce22946a5e', 1166)
+after_image=('c87d983e7570e46400b7b2ad6fc0f952706329fabf71b07b2a10b4d4b7f49472', 1150)
+generated_byte_identical=False
+BEFORE MACHINE CODE:
+000002DF  59                pop rcx
+000002E0  4801C8            add rax,rcx
+000002E3  488B00            mov rax,[rax]
+000002E6  50                push rax
+000002E7  5F                pop rdi
+000002E8  4154              push r12
+000002EA  4155              push r13
+000002EC  4156              push r14
+000002EE  4157              push r15
+000002F0  E8EB000000        call 0x3e0
+000002F5  415F              pop r15
+000002F7  415E              pop r14
+000002F9  415D              pop r13
+000002FB  415C              pop r12
+000002FD  5A                pop rdx
+--- CALL BOUNDARY ---
+000003E5  57                push rdi
+000003E6  4881EC00080000    sub rsp,0x800
+000003ED  488B45F0          mov rax,[rbp-0x10]
+000003F1  50                push rax
+000003F2  5F                pop rdi
+000003F3  4154              push r12
+000003F5  4155              push r13
+000003F7  4156              push r14
+000003F9  4157              push r15
+000003FB  E8BDFFFFFF        call 0x3bd
+00000400  415F              pop r15
+00000402  415E              pop r14
+00000404  415D              pop r13
+00000406  415C              pop r12
+00000408  488D65F8          lea rsp,[rbp-0x8]
+AFTER MACHINE CODE:
+000002DF  59                pop rcx
+000002E0  4801C8            add rax,rcx
+000002E3  488B00            mov rax,[rax]
+000002E6  50                push rax
+000002E7  5F                pop rdi
+000002E8  4154              push r12
+000002EA  4155              push r13
+000002EC  4156              push r14
+000002EE  4157              push r15
+000002F0  E8EB000000        call 0x3e0
+000002F5  415F              pop r15
+000002F7  415E              pop r14
+000002F9  415D              pop r13
+000002FB  415C              pop r12
+000002FD  5A                pop rdx
+--- CALL BOUNDARY ---
+000003DF  C3                ret
+000003E0  55                push rbp
+000003E1  4889E5            mov rbp,rsp
+000003E4  53                push rbx
+000003E5  57                push rdi
+000003E6  4881EC00080000    sub rsp,0x800
+000003ED  488B45F0          mov rax,[rbp-0x10]
+000003F1  50                push rax
+000003F2  5F                pop rdi
+000003F3  E8C5FFFFFF        call 0x3bd
+000003F8  488D65F8          lea rsp,[rbp-0x8]
+000003FC  5B                pop rbx
+000003FD  5D                pop rbp
+000003FE  C3                ret
+000003FF  488D65F8          lea rsp,[rbp-0x8]
+
+=== examples/126_numeric_pipeline.sm ===
+output_sha256=03087576c8f8cd0d1b1aee387472e31fe86814a7e9d5f4e546e5ba9938c133ea
+before_image=('5aa11073d708375bf810d5f5176c1679c71d29e2bcf1509e2da54c92071b5ffc', 7610)
+after_image=('38c50da9ec00d8cffbc1d2f42abe63fd1580572f894a74b3677727f7c9b8b8e2', 7450)
+generated_byte_identical=False
+BEFORE MACHINE CODE:
+0000094C  41BF00000000      mov r15d,0x0
+00000952  E933000000        jmp 0x98a
+00000957  4889D8            mov rax,rbx
+0000095A  50                push rax
+0000095B  5F                pop rdi
+0000095C  4154              push r12
+0000095E  4155              push r13
+00000960  4156              push r14
+00000962  4157              push r15
+00000964  E843130000        call 0x1cac
+00000969  415F              pop r15
+0000096B  415E              pop r14
+0000096D  415D              pop r13
+0000096F  415C              pop r12
+00000971  66480F6EC8        movq xmm1,rax
+--- CALL BOUNDARY ---
+00000A56  50                push rax
+00000A57  4C89E8            mov rax,r13
+00000A5A  50                push rax
+00000A5B  5E                pop rsi
+00000A5C  5F                pop rdi
+00000A5D  4154              push r12
+00000A5F  4155              push r13
+00000A61  4156              push r14
+00000A63  4157              push r15
+00000A65  E85A0A0000        call 0x14c4
+00000A6A  415F              pop r15
+00000A6C  415E              pop r14
+00000A6E  415D              pop r13
+00000A70  415C              pop r12
+00000A72  66480F6EC0        movq xmm0,rax
+--- CALL BOUNDARY ---
+00000B1C  0F05              syscall
+00000B1E  4883C440          add rsp,byte +0x40
+00000B22  4C89E0            mov rax,r12
+00000B25  50                push rax
+00000B26  5F                pop rdi
+00000B27  4154              push r12
+00000B29  4155              push r13
+00000B2B  4156              push r14
+00000B2D  4157              push r15
+00000B2F  E82B0B0000        call 0x165f
+00000B34  415F              pop r15
+00000B36  415E              pop r14
+00000B38  415D              pop r13
+00000B3A  415C              pop r12
+00000B3C  66480F6EC0        movq xmm0,rax
+--- CALL BOUNDARY ---
+00000BD9  4829F2            sub rdx,rsi
+00000BDC  BF01000000        mov edi,0x1
+00000BE1  B801000000        mov eax,0x1
+00000BE6  0F05              syscall
+00000BE8  4883C440          add rsp,byte +0x40
+00000BEC  4154              push r12
+00000BEE  4155              push r13
+00000BF0  4156              push r14
+00000BF2  4157              push r15
+00000BF4  E87B0B0000        call 0x1774
+00000BF9  415F              pop r15
+00000BFB  415E              pop r14
+00000BFD  415D              pop r13
+00000BFF  415C              pop r12
+00000C01  66480F6EC0        movq xmm0,rax
+--- CALL BOUNDARY ---
+00000DDF  5D                pop rbp
+00000DE0  C3                ret
+00000DE1  488B45F0          mov rax,[rbp-0x10]
+00000DE5  50                push rax
+00000DE6  5F                pop rdi
+00000DE7  4154              push r12
+00000DE9  4155              push r13
+00000DEB  4156              push r14
+00000DED  4157              push r15
+00000DEF  E8D9FEFFFF        call 0xccd
+00000DF4  415F              pop r15
+00000DF6  415E              pop r14
+00000DF8  415D              pop r13
+00000DFA  415C              pop r12
+00000DFC  50                push rax
+--- CALL BOUNDARY ---
+000011F3  57                push rdi
+000011F4  4881EC00080000    sub rsp,0x800
+000011FB  488B45F0          mov rax,[rbp-0x10]
+000011FF  50                push rax
+00001200  5F                pop rdi
+00001201  4154              push r12
+00001203  4155              push r13
+00001205  4156              push r14
+00001207  4157              push r15
+00001209  E8FAFDFFFF        call 0x1008
+0000120E  415F              pop r15
+00001210  415E              pop r14
+00001212  415D              pop r13
+00001214  415C              pop r12
+00001216  50                push rax
+--- CALL BOUNDARY ---
+00001214  415C              pop r12
+00001216  50                push rax
+00001217  488B45F0          mov rax,[rbp-0x10]
+0000121B  50                push rax
+0000121C  5F                pop rdi
+0000121D  4154              push r12
+0000121F  4155              push r13
+00001221  4156              push r14
+00001223  4157              push r15
+00001225  E8F8FBFFFF        call 0xe22
+0000122A  415F              pop r15
+0000122C  415E              pop r14
+0000122E  415D              pop r13
+00001230  415C              pop r12
+00001232  66480F6EC8        movq xmm1,rax
+--- CALL BOUNDARY ---
+00001288  5D                pop rbp
+00001289  C3                ret
+0000128A  488B45F0          mov rax,[rbp-0x10]
+0000128E  50                push rax
+0000128F  5F                pop rdi
+00001290  4154              push r12
+00001292  4155              push r13
+00001294  4156              push r14
+00001296  4157              push r15
+00001298  E80EFBFFFF        call 0xdab
+0000129D  415F              pop r15
+0000129F  415E              pop r14
+000012A1  415D              pop r13
+000012A3  415C              pop r12
+000012A5  4989C5            mov r13,rax
+AFTER MACHINE CODE:
+0000094C  41BF00000000      mov r15d,0x0
+00000952  E933000000        jmp 0x98a
+00000957  4889D8            mov rax,rbx
+0000095A  50                push rax
+0000095B  5F                pop rdi
+0000095C  4154              push r12
+0000095E  4155              push r13
+00000960  4156              push r14
+00000962  4157              push r15
+00000964  E8D3120000        call 0x1c3c
+00000969  415F              pop r15
+0000096B  415E              pop r14
+0000096D  415D              pop r13
+0000096F  415C              pop r12
+00000971  66480F6EC8        movq xmm1,rax
+--- CALL BOUNDARY ---
+00000A56  50                push rax
+00000A57  4C89E8            mov rax,r13
+00000A5A  50                push rax
+00000A5B  5E                pop rsi
+00000A5C  5F                pop rdi
+00000A5D  4154              push r12
+00000A5F  4155              push r13
+00000A61  4156              push r14
+00000A63  4157              push r15
+00000A65  E81A0A0000        call 0x1484
+00000A6A  415F              pop r15
+00000A6C  415E              pop r14
+00000A6E  415D              pop r13
+00000A70  415C              pop r12
+00000A72  66480F6EC0        movq xmm0,rax
+--- CALL BOUNDARY ---
+00000B1C  0F05              syscall
+00000B1E  4883C440          add rsp,byte +0x40
+00000B22  4C89E0            mov rax,r12
+00000B25  50                push rax
+00000B26  5F                pop rdi
+00000B27  4154              push r12
+00000B29  4155              push r13
+00000B2B  4156              push r14
+00000B2D  4157              push r15
+00000B2F  E8EB0A0000        call 0x161f
+00000B34  415F              pop r15
+00000B36  415E              pop r14
+00000B38  415D              pop r13
+00000B3A  415C              pop r12
+00000B3C  66480F6EC0        movq xmm0,rax
+--- CALL BOUNDARY ---
+00000BD9  4829F2            sub rdx,rsi
+00000BDC  BF01000000        mov edi,0x1
+00000BE1  B801000000        mov eax,0x1
+00000BE6  0F05              syscall
+00000BE8  4883C440          add rsp,byte +0x40
+00000BEC  4154              push r12
+00000BEE  4155              push r13
+00000BF0  4156              push r14
+00000BF2  4157              push r15
+00000BF4  E81B0B0000        call 0x1714
+00000BF9  415F              pop r15
+00000BFB  415E              pop r14
+00000BFD  415D              pop r13
+00000BFF  415C              pop r12
+00000C01  66480F6EC0        movq xmm0,rax
+--- CALL BOUNDARY ---
+00000DDF  5D                pop rbp
+00000DE0  C3                ret
+00000DE1  488B45F0          mov rax,[rbp-0x10]
+00000DE5  50                push rax
+00000DE6  5F                pop rdi
+00000DE7  4154              push r12
+00000DE9  4155              push r13
+00000DEB  4156              push r14
+00000DED  4157              push r15
+00000DEF  E8D9FEFFFF        call 0xccd
+00000DF4  415F              pop r15
+00000DF6  415E              pop r14
+00000DF8  415D              pop r13
+00000DFA  415C              pop r12
+00000DFC  50                push rax
+--- CALL BOUNDARY ---
+000011ED  C3                ret
+000011EE  55                push rbp
+000011EF  4889E5            mov rbp,rsp
+000011F2  53                push rbx
+000011F3  57                push rdi
+000011F4  4881EC00080000    sub rsp,0x800
+000011FB  488B45F0          mov rax,[rbp-0x10]
+000011FF  50                push rax
+00001200  5F                pop rdi
+00001201  E802FEFFFF        call 0x1008
+00001206  50                push rax
+00001207  488B45F0          mov rax,[rbp-0x10]
+0000120B  50                push rax
+0000120C  5F                pop rdi
+0000120D  E810FCFFFF        call 0xe22
+--- CALL BOUNDARY ---
+000011F4  4881EC00080000    sub rsp,0x800
+000011FB  488B45F0          mov rax,[rbp-0x10]
+000011FF  50                push rax
+00001200  5F                pop rdi
+00001201  E802FEFFFF        call 0x1008
+00001206  50                push rax
+00001207  488B45F0          mov rax,[rbp-0x10]
+0000120B  50                push rax
+0000120C  5F                pop rdi
+0000120D  E810FCFFFF        call 0xe22
+00001212  66480F6EC8        movq xmm1,rax
+00001217  5A                pop rdx
+00001218  66480F6EC2        movq xmm0,rdx
+0000121D  F20F5CC1          subsd xmm0,xmm1
+00001221  66480F7EC0        movq rax,xmm0
+--- CALL BOUNDARY ---
+00001268  5D                pop rbp
+00001269  C3                ret
+0000126A  488B45F0          mov rax,[rbp-0x10]
+0000126E  50                push rax
+0000126F  5F                pop rdi
+00001270  4154              push r12
+00001272  4155              push r13
+00001274  4156              push r14
+00001276  4157              push r15
+00001278  E82EFBFFFF        call 0xdab
+0000127D  415F              pop r15
+0000127F  415E              pop r14
+00001281  415D              pop r13
+00001283  415C              pop r12
+00001285  4989C5            mov r13,rax
