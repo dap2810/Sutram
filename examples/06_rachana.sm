@@ -1,0 +1,17 @@
+# Rachana - Sutram's simpler struct alternative
+rachana Point = { x, y, z }
+
+mukhya()
+    vitti p = nirmmita(24)
+    p.x = 10
+    p.y = 20
+    p.z = 30
+    likha("p.x = ")
+    likha(p.x)
+    likha("\n")
+    likha("p.y = ")
+    likha(p.y)
+    likha("\n")
+    likha("Sum = ")
+    likha(p.x + p.y + p.z)
+    likha("\n")
