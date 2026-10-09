@@ -3723,6 +3723,49 @@ mg_process_imports:
     ; line -> mg_cur_line
     mov rax, [rsi + 128]
     mov [rel mg_cur_line], rax
+    ; Match R41 exact opt-in preflight name validation before the DFS edge.
+    ; Old graph_scan allows only up to 30 ASCII module-name bytes (A-Z,
+    ; a-z, 0-9, '_' and '-'). Legacy behavior is deliberately unchanged.
+    cmp byte [rel mg_root_exact_v1], 1
+    jne .pi_name_checked
+    lea rdi, [rel mg_cur_name]
+    xor rcx, rcx
+.pi_validate_name:
+    movzx eax, byte [rdi + rcx]
+    test al, al
+    jz .pi_validate_end
+    cmp rcx, 30
+    jae .pi_invalid_name
+    cmp al, '_'
+    je .pi_valid_char
+    cmp al, '-'
+    je .pi_valid_char
+    cmp al, '0'
+    jb .pi_invalid_name
+    cmp al, '9'
+    jbe .pi_valid_char
+    cmp al, 'A'
+    jb .pi_invalid_name
+    cmp al, 'Z'
+    jbe .pi_valid_char
+    cmp al, 'a'
+    jb .pi_invalid_name
+    cmp al, 'z'
+    ja .pi_invalid_name
+.pi_valid_char:
+    inc rcx
+    jmp .pi_validate_name
+.pi_validate_end:
+    test rcx, rcx
+    jz .pi_invalid_name
+    jmp .pi_name_checked
+.pi_invalid_name:
+    lea rdi, [rel mg_cur_path]
+    mov rsi, [rel mg_cur_line]
+    lea rdx, [rel graph_msg_invalid]
+    lea rcx, [rel graph_invalid_prefix]
+    call graph_error
+.pi_name_checked:
     ; gray check -> cycle
     lea rdi, [rel mg_cur_name]
     call mg_in_gray
