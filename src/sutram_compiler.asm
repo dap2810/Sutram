@@ -663,6 +663,20 @@ str_dot_exe  db ".exe", 0
     msg_namespace_alias_reuse db "Sutram Error: namespaced alias already assigned to another module", 10, 0
     msg_namespace_func_limit db "Sutram Error: namespaced module has too many or oversized function names", 10, 0
     msg_import_overflow db "Sutram Error: expanded module source too large", 10, 0
+    graph_v1_header db '# sutram-module-v1', 0
+    graph_msg_cycle db 'E_MODULE_CYCLE', 0
+    graph_msg_missing db 'E_MODULE_MISSING', 0
+    graph_msg_limit db 'E_MODULE_LIMIT', 0
+    graph_msg_invalid db 'E_MODULE_INVALID', 0
+    graph_prefix db ': Sutram Error [', 0
+    graph_close db ']: ', 0
+    graph_arrow db ' -> ', 0
+    graph_colon db ':', 0
+    graph_nl db 10,0
+    graph_cycle_prefix db 'dependency cycle: ',0
+    graph_missing_prefix db 'cannot open import ',0
+    graph_limit_prefix db 'too many modules or oversized module',0
+    graph_invalid_prefix db 'invalid module name',0
     msg_ast_overflow db "Sutram Error: AST capacity exceeded", 10, 0
     msg_func_params_overflow db "Sutram Error: function parameter table capacity exceeded", 10, 0
     msg_var_table_overflow db "Sutram Error: variable table capacity exceeded", 10, 0
@@ -749,6 +763,18 @@ section .bss
     import_count resq 1
     import_new_this_pass resq 1  ; R40: transitive import fixed-point tracker
     import_depth_round resq 1   ; R40: bounded graph expansion passes
+    ; R41 opt-in graph preflight: independent from legacy import deduplication.
+    ; 16 modules x 64 KiB is a bounded static workspace, no allocator/runtime.
+    graph_count resq 1
+    graph_depth resq 1
+    graph_detail_ptr resq 1
+    graph_names resb IMPORT_NAMES_CAP * 64
+    graph_paths resb IMPORT_NAMES_CAP * 512
+    graph_state resb IMPORT_NAMES_CAP
+    graph_stack resb IMPORT_NAMES_CAP
+    graph_buffers resb IMPORT_NAMES_CAP * 65536
+    graph_lengths resq IMPORT_NAMES_CAP
+    graph_scratch_names resb (IMPORT_NAMES_CAP + 1) * 64
     rachana_defs resb RACHANA_CAP * 256 ; [name_ptr(8)][field_count(8)][fields...]
     rachana_cnt  resq 1
     break_patch_positions resq BREAK_PATCH_CAP ; positions of break jmps to backpatch
@@ -1746,6 +1772,9 @@ _start:
     call read_file
     mov [rel source_len], rax
 
+    ; R41: opt-in module-v1 graph preflight runs BEFORE destructive expansion.
+    ; The legacy import and generated-code path is byte-for-byte unchanged.
+    call graph_preflight_v1
     ; Expand imports (inline .smlib files)
     call expand_imports
     ; Lex
@@ -1874,6 +1903,475 @@ build_module_path_cwd:
     mov byte [rdi+5], 'b'
     mov byte [rdi+6], 0
     ret
+
+; ============================================================
+; R41: opt-in module-v1 dependency graph preflight, pure x86-64 NASM.
+; This rejects cycles/missing modules before the R40 visited-set expansion.
+; It changes NOTHING for existing files without an exact v1 header.
+; Contract: source-order DFS, dependencies before importer, siblings in source
+; order, and each module visited once. Runtime initializers are NOT yet supplied.
+; Source-path diagnostics point at the importing file and directive line.
+; ============================================================
+graph_preflight_v1:
+    lea rdi,[rel source_buf]
+    lea rsi,[rel graph_v1_header]
+    xor rcx,rcx
+.check_header:
+    mov al,[rsi+rcx]
+    test al,al
+    jz .header_end
+    cmp rcx,[rel source_len]
+    jae .skip
+    cmp al,[rdi+rcx]
+    jne .skip
+    inc rcx
+    jmp .check_header
+.header_end:
+    ; Require end of header line: a partial prefix is not an opt-in.
+    cmp byte [rdi+rcx],10
+    je .go
+    cmp byte [rdi+rcx],13
+    jne .skip
+.go:
+    mov qword [rel graph_count],0
+    mov qword [rel graph_depth],0
+    mov qword [rel graph_detail_ptr],0
+    lea rdi,[rel source_buf]
+    mov rsi,[rel source_len]
+    mov rdx,[rel source_path_ptr]
+    call graph_scan
+.skip:
+    ret
+
+; graph_scan(rdi=source bytes, rsi=length, rdx=origin file path)
+; All new imports are found at physical line starts after whitespace. Skip
+; comments and all other source lines. Recursive calls preserve scan registers.
+graph_scan:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    mov r12,rdi
+    mov r13,rdi
+    add r13,rsi
+    mov r14,1
+    mov r15,rdx
+.line:
+    cmp r12,r13
+    jae .done
+    mov rbx,r12
+.spaces:
+    cmp rbx,r13
+    jae .next
+    mov al,[rbx]
+    cmp al,32
+    je .space
+    cmp al,9
+    jne .head
+.space:
+    inc rbx
+    jmp .spaces
+.head:
+    lea rax,[rbx+7]
+    cmp rax,r13
+    ja .next
+    cmp dword [rbx],0x6A6F7961  ; ayoj
+    jne .next
+    cmp word [rbx+4],0x6E61    ; an
+    jne .next
+    mov al,[rbx+6]
+    cmp al,32
+    je .keyword
+    cmp al,9
+    jne .next
+.keyword:
+    add rbx,6
+.white:
+    cmp rbx,r13
+    jae .invalid
+    mov al,[rbx]
+    cmp al,32
+    je .whplus
+    cmp al,9
+    jne .name
+.whplus:
+    inc rbx
+    jmp .white
+.name:
+    ; Depth 0 is entry source; depth 1..16 correspond to imported modules.
+    mov rax,[rel graph_depth]
+    cmp rax,IMPORT_NAMES_CAP
+    ja .limit
+    shl rax,6
+    lea rdi,[rel graph_scratch_names]
+    add rdi,rax
+    xor rcx,rcx
+.copy_name:
+    cmp rbx,r13
+    jae .end_name
+    mov al,[rbx]
+    cmp al,'@'
+    je .end_name
+    cmp al,'#'
+    je .end_name
+    cmp al,10
+    je .end_name
+    cmp al,13
+    je .end_name
+    cmp al,32
+    je .end_name
+    cmp al,9
+    je .end_name
+    cmp rcx,30
+    jae .invalid
+    ; Module names are local identifiers. Reject paths, separators and dots.
+    cmp al,'_'
+    je .okchar
+    cmp al,'-'
+    je .okchar
+    cmp al,'0'
+    jb .invalid
+    cmp al,'9'
+    jbe .okchar
+    cmp al,'A'
+    jb .invalid
+    cmp al,'Z'
+    jbe .okchar
+    cmp al,'a'
+    jb .invalid
+    cmp al,'z'
+    ja .invalid
+.okchar:
+    mov [rdi+rcx],al
+    inc rcx
+    inc rbx
+    jmp .copy_name
+.end_name:
+    test rcx,rcx
+    jz .invalid
+    mov byte [rdi+rcx],0
+    mov rsi,r15
+    mov rdx,r14
+    call graph_visit
+    jmp .next
+.invalid:
+    mov rdi,r15
+    mov rsi,r14
+    lea rdx,[rel graph_msg_invalid]
+    lea rcx,[rel graph_invalid_prefix]
+    call graph_error
+.limit:
+    mov rdi,r15
+    mov rsi,r14
+    lea rdx,[rel graph_msg_limit]
+    lea rcx,[rel graph_limit_prefix]
+    call graph_error
+.next:
+    cmp r12,r13
+    jae .done
+    mov al,[r12]
+    inc r12
+    cmp al,10
+    jne .next
+    inc r14
+    jmp .line
+.done:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; graph_visit(rdi=module name, rsi=importing file, rdx=source line)
+; Three-colour DFS: 0 not found, 1 active path (cycle), 2 finished (diamond).
+graph_visit:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    mov r12,rdi
+    mov r13,rsi
+    mov r14,rdx
+    xor ebx,ebx
+.lookup:
+    cmp rbx,[rel graph_count]
+    jae .new
+    mov rax,rbx
+    shl rax,6
+    lea rsi,[rel graph_names]
+    add rsi,rax
+    mov rdi,r12
+    call strcmp
+    test rax,rax
+    jz .found
+    inc rbx
+    jmp .lookup
+.found:
+    lea rax,[rel graph_state]
+    cmp byte [rax+rbx],1
+    je .cycle
+    jmp .return               ; already finalized: valid diamond
+.new:
+    cmp rbx,IMPORT_NAMES_CAP
+    jae .limit
+    mov r15,rbx
+    inc qword [rel graph_count]
+    ; Persist graph identity independently of the short-lived lexer scratch.
+    lea rdi,[rel graph_names]
+    mov rax,r15
+    shl rax,6
+    add rdi,rax
+    mov rsi,r12
+.copy:
+    lodsb
+    stosb
+    test al,al
+    jnz .copy
+    lea rax,[rel graph_state]
+    mov byte [rax+r15],1
+    mov rax,[rel graph_depth]
+    cmp rax,IMPORT_NAMES_CAP
+    jae .limit
+    lea rdi,[rel graph_stack]
+    mov [rdi+rax],r15b
+    inc qword [rel graph_depth]
+
+    ; Use the same three lookup roots as R40's importer.
+    lea rdi,[rel num_buf]
+    mov rsi,r12
+.copy_query:
+    lodsb
+    stosb
+    test al,al
+    jnz .copy_query
+    mov rdi,[rel source_path_ptr]
+    call build_module_path_from_file
+    lea rdi,[rel module_path_buf]
+    xor rsi,rsi
+    call os_open
+    test rax,rax
+    jns .opened
+    lea rdi,[rel repl_self]
+    call build_module_path_from_file
+    lea rdi,[rel module_path_buf]
+    xor rsi,rsi
+    call os_open
+    test rax,rax
+    jns .opened
+    call build_module_path_cwd
+    lea rdi,[rel module_path_buf]
+    xor rsi,rsi
+    call os_open
+    test rax,rax
+    js .missing
+.opened:
+    mov rbx,rax              ; file handle
+    ; Save actual diagnostic path before future nested imports change scratch.
+    mov rax,r15
+    shl rax,9
+    lea rdi,[rel graph_paths]
+    add rdi,rax
+    lea rsi,[rel module_path_buf]
+.copy_path:
+    lodsb
+    stosb
+    test al,al
+    jnz .copy_path
+    mov rax,r15
+    shl rax,16
+    lea rsi,[rel graph_buffers]
+    add rsi,rax
+    mov rdi,rbx
+    mov rdx,65535
+    call os_read
+    test rax,rax
+    js .read_error
+    mov r12,rax              ; read length, scratch
+    cmp r12,65535
+    jne .file_complete
+    ; Explicit EOF probe: never silently truncate an oversized module.
+    mov rdi,rbx
+    lea rsi,[rel num_buf+31]
+    mov rdx,1
+    call os_read
+    cmp rax,0
+    jg .read_limit
+.file_complete:
+    mov rdi,rbx
+    call os_close
+    mov rax,r15
+    shl rax,3
+    lea rdi,[rel graph_lengths]
+    mov [rdi+rax],r12
+    mov rax,r15
+    shl rax,16
+    lea rdi,[rel graph_buffers]
+    add rdi,rax
+    mov rsi,r12
+    mov rax,r15
+    shl rax,9
+    lea rdx,[rel graph_paths]
+    add rdx,rax
+    call graph_scan
+    lea rax,[rel graph_state]
+    mov byte [rax+r15],2
+    dec qword [rel graph_depth]
+.return:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+.read_limit:
+    mov rdi,rbx
+    call os_close
+    jmp .limit
+.read_error:
+    mov rdi,rbx
+    call os_close
+.missing:
+    mov rax,r15
+    shl rax,6
+    lea rdi,[rel graph_names]
+    add rdi,rax
+    mov [rel graph_detail_ptr],rdi
+    mov rdi,r13
+    mov rsi,r14
+    lea rdx,[rel graph_msg_missing]
+    lea rcx,[rel graph_missing_prefix]
+    call graph_error
+.limit:
+    mov rdi,r13
+    mov rsi,r14
+    lea rdx,[rel graph_msg_limit]
+    lea rcx,[rel graph_limit_prefix]
+    call graph_error
+.cycle:
+    mov r15,rbx             ; matching node for cycle-path diagnostic
+    mov rdi,r13
+    mov rsi,r14
+    lea rdx,[rel graph_msg_cycle]
+    lea rcx,[rel graph_cycle_prefix]
+    call graph_error_cycle
+
+; File:line uses a stable basename so golden diagnostics remain portable
+; across checkout locations on Windows/Linux.
+graph_print_file:
+    push rbx
+    mov rbx,rdi
+.find_separator:
+    mov al,[rdi]
+    test al,al
+    jz .basename
+    cmp al,'/'
+    je .mark
+    cmp al,92
+    jne .advance
+.mark:
+    lea rbx,[rdi+1]
+.advance:
+    inc rdi
+    jmp .find_separator
+.basename:
+    mov rdi,rbx
+    call print_str_z
+    pop rbx
+    ret
+
+; Diagnostic rdi=importer path, rsi=1-based line, rdx=code, rcx=message.
+; Print to stdout to match the existing compiler's diagnostic convention.
+graph_error:
+    push rcx               ; message prefix (printed second)
+    push rdx               ; error code     (printed first)
+    push rsi               ; line
+    call graph_print_file
+    lea rdi,[rel graph_colon]
+    call print_str_z
+    pop rdi
+    lea rsi,[rel num_buf]
+    call itoa
+    mov rdi,rax
+    call print_str_z
+    lea rdi,[rel graph_prefix]
+    call print_str_z
+    pop rdi
+    call print_str_z
+    lea rdi,[rel graph_close]
+    call print_str_z
+    pop rdi
+    call print_str_z
+    mov rdi,[rel graph_detail_ptr]
+    test rdi,rdi
+    jz .no_detail
+    call print_str_z
+.no_detail:
+    lea rdi,[rel graph_nl]
+    call print_str_z
+    mov rdi,1
+    call os_exit
+
+graph_error_cycle:
+    ; Path+line+code followed by explicit ordered path printed from the
+    ; active recursion stack, then repeated target. Distinct from deduplication.
+    push rbx
+    push r12
+    push rcx               ; message prefix (printed second)
+    push rdx               ; error code     (printed first)
+    push rsi               ; line
+    call graph_print_file
+    lea rdi,[rel graph_colon]
+    call print_str_z
+    pop rdi
+    lea rsi,[rel num_buf]
+    call itoa
+    mov rdi,rax
+    call print_str_z
+    lea rdi,[rel graph_prefix]
+    call print_str_z
+    pop rdi
+    call print_str_z
+    lea rdi,[rel graph_close]
+    call print_str_z
+    pop rdi
+    call print_str_z
+    mov r12,[rel graph_depth]
+    xor rbx,rbx
+.find_first:
+    cmp rbx,r12
+    jae .end_chain
+    lea rsi,[rel graph_stack]
+    movzx eax,byte [rsi+rbx]
+    cmp eax,r15d
+    je .emit_chain
+    inc rbx
+    jmp .find_first
+.emit_chain:
+    cmp rbx,r12
+    jae .end_chain
+    lea rsi,[rel graph_stack]
+    movzx eax,byte [rsi+rbx]
+    shl rax,6
+    lea rdi,[rel graph_names]
+    add rdi,rax
+    call print_str_z
+    lea rdi,[rel graph_arrow]
+    call print_str_z
+    inc rbx
+    jmp .emit_chain
+.end_chain:
+    mov rax,r15
+    shl rax,6
+    lea rdi,[rel graph_names]
+    add rdi,rax
+    call print_str_z
+    lea rdi,[rel graph_nl]
+    call print_str_z
+    mov rdi,1
+    call os_exit
 
 ; ============================================================
 ; MODULE IMPORT - expand ayojan directives
