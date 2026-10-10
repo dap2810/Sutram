@@ -29,7 +29,7 @@ IMPORT_BUF_CAP equ 65536    ; expanded source cannot exceed source_buf
 AST_NODE_SIZE equ 72
 BLOCK_STMT_CAP equ 256        ; B11: max statements stored in one AST_BLOCK
 AST_BLOCK_EXTRA equ (BLOCK_STMT_CAP * 8) - (AST_NODE_SIZE - 16)
-AST_HEAP_CAP equ 786432       ; T18/R12: 4x headroom (~10922 regular nodes)
+AST_HEAP_CAP equ 3145728      ; R53: 3 MiB compile-time AST heap for expanded modern stdlib (no runtime/codegen ABI change)
 FUNC_PARAMS_CAP equ 8192      ; 1024 parameter-name slots; >= 128 funcs * 6 args
 VAR_TABLE_CAP equ 256         ; entries; 16 bytes each
 FUNC_TABLE_CAP equ 128        ; entries; matches func_defs capacity
