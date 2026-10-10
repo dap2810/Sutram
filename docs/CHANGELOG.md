@@ -1,3 +1,22 @@
+## v110 — Linux GUI IDE, slice 13: editor-pane scrolling
+
+- **The editor pane now scrolls to follow the caret.** It was capped at 23 lines
+  (`ED_LINES_MAX`) with everything past that silently dropped, so a file longer
+  than the pane lost its tail. It now keeps `ed_top` (first visible line) and draws
+  a 23-line window from there; `ed_ensure_visible` runs at the top of every
+  `draw_editor`, so moving the caret or editing scrolls the pane just enough to
+  keep the caret's line visible, and the caret is not drawn when it is off-window.
+- **Verified with a mock X server** (`tools/test_x11_edscroll.py`): type 30 lines
+  (`l01`..`l30`); the final frame shows **`l08`..`l30`** (the last 23, caret at the
+  bottom); then 29 Ups and the frame shows **`l01`..`l23`** (scrolled back to the
+  top); the buffer is intact (`Ctrl-S` read-back gives 30 lines `l01`..`l30`).
+- A test-harness note worth keeping: the pane repaints on *every* keystroke, so a
+  naive drain collects thousands of draws across many frames. The test now reads
+  only the **last** 23 editor draws - the current frame. My first version compared
+  across frames and reported a false failure.
+- Protocol 39/39, negatives 6/6, output-scroll / Home-End tests still green.
+  `sutram-gui` 20,720 -> 20,936 bytes.
+
 ## v109 — R51 substance independently verified (still unreported)
 
 - ChatGPT still has **no handoff file** for R51, so it remains unaccepted and unsynced.
