@@ -1,13 +1,16 @@
-Sutram ROUND53 integrated branch SHA256 manifest, produced by successful native GitHub CI.
-Built/tested commit: 25f02bbd689467d1a2e3be031b3cfb12dc6cb279
+Sutram ROUND53 FINAL reconciled branch SHA256 manifest, produced by successful native GitHub CI.
+Source/test commit: 48d0105d3c31e0e2fff8835c6cf2ff9d6e016765
 Branch: feature/r53-consolidated-r51-r52-20261010
-Run: https://github.com/dap2810/Sutram/actions/runs/38093784372
-Job: 114335378510, conclusion SUCCESS.
-All hashes below were emitted from that native CI checkout, not invented.
-Handoff text files committed after that CI; changes to them do not alter below source digests.
+Merge latest Sarvam/Muse main through 3c59dc652f32d954d969f9fae934827194ded951
+CI: https://github.com/dap2810/Sutram/actions/runs/38094062988
+Job: 114336209366, conclusion SUCCESS.
+All 26 digests below were emitted by that native CI checkout.
+The former R53 compiler digest 5e987e4a49... is OBSOLETE: AST heap was expanded
+to retain newer Muse stdlib without dropping or modifying its new functions.
+Documentation-only edits after this source commit do not alter these digests.
 
-5e987e4a49d0bf2142a24f223b0b9bb9a486415b1887f8d835f065259b1c45a1  src/sutram_compiler.asm
-25110cc6b8e00e3016c8c5931e61422e0f0125afc6f57ebad59f4d11e856c857  lib/string.smlib
+a3fe1b1239b147d95b616d9e9468ccbea3b43b59549e89c570a4ff5bfee5bb17  src/sutram_compiler.asm
+25fee766c4749620d29267b25e92869f42f3bc4245e93e952b77214949f392bc  lib/string.smlib
 7d1e23e8d00b9ad96405acda231fd53df1938091810562dc5d564e4d8a0433c7  docs/R52-BUILTIN-FIXES.md
 8d25b3d35e1c042b0dbd4c7ff8242f5453ac31ba59bedfe789b90febf655ed22  tools/r49_diagnostic_audit.py
 a20fbb6bee72557c8d8e1e188f19262b1329471536ee909328b5573ba56cb452  tools/r51_native_audit.py
