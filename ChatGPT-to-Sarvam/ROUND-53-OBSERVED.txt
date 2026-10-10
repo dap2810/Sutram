@@ -1,0 +1,237 @@
+Sutram Round53 - observed native compiler stdout and test results (not estimated)
+Clean GitHub Actions CI run: https://github.com/dap2810/Sutram/actions/runs/38093784372
+Job 114335378510 (Ubuntu 24.04), completed SUCCESS.
+Source-tested combined commit 25f02bbd689467d1a2e3be031b3cfb12dc6cb279.
+Removed CI timestamps and terminal ANSI escape codes only.
+R51 and R52 cases come from the SAME compiler checkout and actual compiled native binaries.
+Ordinary generated binary outputs are byte-identical to R46 for four acceptance cases.
+
+=== R51 strict 15-case original-file/line/column diagnostic audit ===
+R49_AUDIT_BEGIN missing_separators.sm exit 1
+missing_separators.sm:2:11: Sutram Error [E_PARSE]: near '='
+      vitti = 1
+            ^
+missing_separators.sm:3:11: Sutram Error [E_PARSE]: near '='
+      vitti = 2
+            ^
+missing_separators.sm:4:11: Sutram Error [E_PARSE]: near '='
+      vitti = 3
+            ^
+Sutram check: errors found; no output binary
+R49_AUDIT_COUNTS missing_separators.sm expected 3 located 3 source_matched 3
+R49_AUDIT_END missing_separators.sm PASS
+R49_AUDIT_BEGIN nested_expressions.sm exit 1
+nested_expressions.sm:2:29: Sutram Error [E_PARSE]: near ')'
+      vitti broken_one = (1 + );
+                              ^
+nested_expressions.sm:4:29: Sutram Error [E_PARSE]: near ')'
+      vitti broken_two = (2 * );
+                              ^
+Sutram check: errors found; no output binary
+R49_AUDIT_COUNTS nested_expressions.sm expected 2 located 2 source_matched 2
+R49_AUDIT_END nested_expressions.sm PASS
+R49_AUDIT_BEGIN top_level_malformed.sm exit 1
+top_level_malformed.sm:1:1: Sutram Error [E_PARSE]: near 'vitti'
+  vitti misplaced = ;
+  ^
+Sutram check: errors found; no output binary
+R49_AUDIT_COUNTS top_level_malformed.sm expected 1 located 1 source_matched 1
+R49_AUDIT_END top_level_malformed.sm PASS
+R49_AUDIT_BEGIN module_missing.sm exit 1
+module_missing.sm:2:1: Sutram Error [E_MODULE_MISSING]: cannot open import unprovided_r49_module
+Sutram check: errors found; no output binary
+R49_AUDIT_COUNTS module_missing.sm expected 1 located 1 source_matched 1
+R49_AUDIT_END module_missing.sm PASS
+R49_AUDIT_BEGIN import_bad.sm exit 1
+faulty_r49.smlib:2:20: Sutram Error [E_PARSE]: near ';'
+      vitti broken = ;
+                     ^
+Sutram check: errors found; no output binary
+R49_AUDIT_COUNTS import_bad.sm expected 1 located 1 source_matched 1
+R49_AUDIT_END import_bad.sm PASS
+R49_AUDIT_BEGIN nested_root.sm exit 1
+inner_r51.smlib:2:23: Sutram Error [E_PARSE]: near ';'
+      vitti bad_value = ;
+                        ^
+Sutram check: errors found; no output binary
+R49_AUDIT_COUNTS nested_root.sm expected 1 located 1 source_matched 1
+R49_AUDIT_END nested_root.sm PASS
+R49_AUDIT_BEGIN namespaced_root.sm exit 1
+broken_ns_r51.smlib:2:26: Sutram Error [E_PARSE]: near ';'
+      vitti invalid_char = ;
+                           ^
+Sutram check: errors found; no output binary
+R49_AUDIT_COUNTS namespaced_root.sm expected 1 located 1 source_matched 1
+R49_AUDIT_END namespaced_root.sm PASS
+R49_AUDIT_BEGIN semantic_import.sm exit 1
+semantics_r51.smlib:2:11: Sutram Error [E_UNDEFINED_FUNCTION]: unknown function 'missing_sem_one'
+      likha(missing_sem_one(1));
+            ^
+semantics_r51.smlib:3:11: Sutram Error [E_UNDEFINED_FUNCTION]: unknown function 'missing_sem_two'
+      likha(missing_sem_two(2));
+            ^
+semantics_r51.smlib:4:11: Sutram Error [E_UNDEFINED_FUNCTION]: unknown function 'missing_sem_three'
+      likha(missing_sem_three(3));
+            ^
+Sutram check: errors found; no output binary
+R49_AUDIT_COUNTS semantic_import.sm expected 3 located 3 source_matched 3
+R49_AUDIT_END semantic_import.sm PASS
+R49_AUDIT_BEGIN missing_three.sm exit 1
+missing_three.sm:2:1: Sutram Error [E_MODULE_MISSING]: cannot open import no_module_r51_alpha
+missing_three.sm:3:1: Sutram Error [E_MODULE_MISSING]: cannot open import no_module_r51_beta
+missing_three.sm:4:1: Sutram Error [E_MODULE_MISSING]: cannot open import no_module_r51_gamma
+Sutram check: errors found; no output binary
+R49_AUDIT_COUNTS missing_three.sm expected 3 located 3 source_matched 3
+R49_AUDIT_END missing_three.sm PASS
+R49_AUDIT_BEGIN nested_braces.sm exit 1
+nested_braces.sm:3:29: Sutram Error [E_PARSE]: near ';'
+          vitti missing_one = ;
+                              ^
+nested_braces.sm:5:33: Sutram Error [E_PARSE]: near ';'
+              vitti missing_two = ;
+                                  ^
+nested_braces.sm:9:1: Sutram Error [E_PARSE]: near '<EOF>'
+  
+  ^
+Sutram check: errors found; no output binary
+R49_AUDIT_COUNTS nested_braces.sm expected 3 located 3 source_matched 3
+R49_AUDIT_END nested_braces.sm PASS
+R49_AUDIT_BEGIN 164_r41_cycle_reject.sm exit 1
+r41_cycle_b.smlib:2:1: Sutram Error [E_MODULE_CYCLE]: dependency cycle: r41_cycle_a -> r41_cycle_b -> r41_cycle_a
+R49_AUDIT_COUNTS 164_r41_cycle_reject.sm expected 1 located 1 source_matched 1
+R49_AUDIT_END 164_r41_cycle_reject.sm PASS
+R49_AUDIT_BEGIN 212_r41_v1_private.sm exit 1
+212_r41_v1_private.sm:5:11: Sutram Error [E_MODULE_NOT_EXPORTED]: 'helper' is not exported by module 'r41_vec'
+R49_AUDIT_COUNTS 212_r41_v1_private.sm expected 1 located 1 source_matched 1
+R49_AUDIT_END 212_r41_v1_private.sm PASS
+R49_AUDIT_BEGIN 213_r41_v1_dupexp.sm exit 1
+r41_dup.smlib:4:1: Sutram Error [E_MODULE_DUP_EXPORT]: duplicate export 'thing' in module 'r41_dup'
+R49_AUDIT_COUNTS 213_r41_v1_dupexp.sm expected 1 located 1 source_matched 1
+R49_AUDIT_END 213_r41_v1_dupexp.sm PASS
+R49_AUDIT_BEGIN 214_r41_v1_noalias.sm exit 1
+214_r41_v1_noalias.sm:3:1: Sutram Error [E_MODULE_V1_ALIAS]: v1 module 'r41_vec' must be imported with an alias: ayojan r41_vec@alias
+R49_AUDIT_COUNTS 214_r41_v1_noalias.sm expected 1 located 1 source_matched 1
+R49_AUDIT_END 214_r41_v1_noalias.sm PASS
+R49_AUDIT_BEGIN 156_namespaced_alias_collision.sm exit 1
+156_namespaced_alias_collision.sm:3:21: Sutram Error [E_MODULE_ALIAS_REUSE]: namespaced alias already assigned to another module
+  ayojan r33_beta@same
+                      ^
+Sutram check: errors found; no output binary
+R49_AUDIT_COUNTS 156_namespaced_alias_collision.sm expected 1 located 1 source_matched 1
+R49_AUDIT_END 156_namespaced_alias_collision.sm PASS
+R49_AUDIT_STATUS wrong_provenance=0 unlocated=0 universal_diagnostics_accepted=1 cases=15 failures=0
+
+=== R51 adversarial source provenance and error accumulation ===
+R51_BEGIN nested_root.sm exit 1
+inner_r51.smlib:2:23: Sutram Error [E_PARSE]: near ';'
+      vitti bad_value = ;
+                        ^
+Sutram check: errors found; no output binary
+R51_COUNTS nested_root.sm reported 1 correct_origin 1 expected_at_least 1
+R51_END nested_root.sm
+R51_BEGIN namespaced_root.sm exit 1
+broken_ns_r51.smlib:2:26: Sutram Error [E_PARSE]: near ';'
+      vitti invalid_char = ;
+                           ^
+Sutram check: errors found; no output binary
+R51_COUNTS namespaced_root.sm reported 1 correct_origin 1 expected_at_least 1
+R51_END namespaced_root.sm
+R51_BEGIN semantic_import.sm exit 1
+semantics_r51.smlib:2:11: Sutram Error [E_UNDEFINED_FUNCTION]: unknown function 'missing_sem_one'
+      likha(missing_sem_one(1));
+            ^
+semantics_r51.smlib:3:11: Sutram Error [E_UNDEFINED_FUNCTION]: unknown function 'missing_sem_two'
+      likha(missing_sem_two(2));
+            ^
+semantics_r51.smlib:4:11: Sutram Error [E_UNDEFINED_FUNCTION]: unknown function 'missing_sem_three'
+      likha(missing_sem_three(3));
+            ^
+Sutram check: errors found; no output binary
+R51_COUNTS semantic_import.sm reported 3 correct_origin 3 expected_at_least 3
+R51_END semantic_import.sm
+R51_BEGIN missing_three.sm exit 1
+missing_three.sm:2:1: Sutram Error [E_MODULE_MISSING]: cannot open import no_module_r51_alpha
+missing_three.sm:3:1: Sutram Error [E_MODULE_MISSING]: cannot open import no_module_r51_beta
+missing_three.sm:4:1: Sutram Error [E_MODULE_MISSING]: cannot open import no_module_r51_gamma
+Sutram check: errors found; no output binary
+R51_COUNTS missing_three.sm reported 3 correct_origin 3 expected_at_least 3
+R51_END missing_three.sm
+R51_BEGIN nested_braces.sm exit 1
+nested_braces.sm:3:29: Sutram Error [E_PARSE]: near ';'
+          vitti missing_one = ;
+                              ^
+nested_braces.sm:5:33: Sutram Error [E_PARSE]: near ';'
+              vitti missing_two = ;
+                                  ^
+nested_braces.sm:9:1: Sutram Error [E_PARSE]: near '<EOF>'
+  
+  ^
+Sutram check: errors found; no output binary
+R51_COUNTS nested_braces.sm reported 3 correct_origin 3 expected_at_least 1
+R51_END nested_braces.sm
+R51_ACCEPTANCE PASS failed_cases 0
+
+=== R51 graph diagnostic inventory ===
+R51_GRAPH_BEGIN 164_r41_cycle_reject.sm exit 1
+r41_cycle_b.smlib:2:1: Sutram Error [E_MODULE_CYCLE]: dependency cycle: r41_cycle_a -> r41_cycle_b -> r41_cycle_a
+R51_GRAPH_END 164_r41_cycle_reject.sm
+R51_GRAPH_BEGIN 212_r41_v1_private.sm exit 1
+212_r41_v1_private.sm:5:11: Sutram Error [E_MODULE_NOT_EXPORTED]: 'helper' is not exported by module 'r41_vec'
+R51_GRAPH_END 212_r41_v1_private.sm
+R51_GRAPH_BEGIN 213_r41_v1_dupexp.sm exit 1
+r41_dup.smlib:4:1: Sutram Error [E_MODULE_DUP_EXPORT]: duplicate export 'thing' in module 'r41_dup'
+R51_GRAPH_END 213_r41_v1_dupexp.sm
+R51_GRAPH_BEGIN 214_r41_v1_noalias.sm exit 1
+214_r41_v1_noalias.sm:3:1: Sutram Error [E_MODULE_V1_ALIAS]: v1 module 'r41_vec' must be imported with an alias: ayojan r41_vec@alias
+R51_GRAPH_END 214_r41_v1_noalias.sm
+R51_GRAPH_BEGIN 156_namespaced_alias_collision.sm exit 1
+156_namespaced_alias_collision.sm:3:21: Sutram Error [E_MODULE_ALIAS_REUSE]: namespaced alias already assigned to another module
+  ayojan r33_beta@same
+                      ^
+Sutram check: errors found; no output binary
+R51_GRAPH_END 156_namespaced_alias_collision.sm
+
+=== R52 original-main versus combined compiler - real program outputs ===
+R52_OBSERVED before char_code_index.sm compile exit 0 stdout 'OK: compiled 890 bytes\n' stderr ''
+R52_OBSERVED before char_code_index.sm execute exit 0 stdout '90\n65\n90\n105\n105\n' stderr ''
+R52_OBSERVED before likh_valid.sm compile exit -11 stdout '' stderr ''
+R52_OBSERVED before dvaram_default.sm compile exit 0 stdout 'OK: compiled 260 bytes\n' stderr ''
+R52_OBSERVED before dvaram_default.sm execute exit 0 stdout '1\n' stderr ''
+R52_FILE_MODE before dvaram_default.sm mode 0o0
+R52_OBSERVED before dvaram_explicit.sm compile exit 0 stdout 'OK: compiled 260 bytes\n' stderr ''
+R52_OBSERVED before dvaram_explicit.sm execute exit 0 stdout '1\n' stderr ''
+R52_FILE_MODE before dvaram_explicit.sm mode 0o0
+R52_OBSERVED after char_code_index.sm compile exit 0 stdout 'OK: compiled 890 bytes\n' stderr ''
+R52_OBSERVED after char_code_index.sm execute exit 0 stdout '90\n65\n90\n105\n105\n' stderr ''
+R52_OBSERVED after likh_valid.sm compile exit 0 stdout 'OK: compiled 402 bytes\n' stderr ''
+R52_OBSERVED after likh_valid.sm execute exit 0 stdout '44\n66\n' stderr ''
+R52_OBSERVED after dvaram_default.sm compile exit 0 stdout 'OK: compiled 264 bytes\n' stderr ''
+R52_OBSERVED after dvaram_default.sm execute exit 0 stdout '1\n' stderr ''
+R52_FILE_MODE after dvaram_default.sm mode 0o644
+R52_OBSERVED after dvaram_explicit.sm compile exit 0 stdout 'OK: compiled 267 bytes\n' stderr ''
+R52_OBSERVED after dvaram_explicit.sm execute exit 0 stdout '1\n' stderr ''
+R52_FILE_MODE after dvaram_explicit.sm mode 0o600
+R52_INVALID after likh_missing_value.sm check exit 1 stdout "likh_missing_value.sm:3:1: Sutram Error [E_PARSE]: near '}'\n  }\n  ^\nSutram check: errors found; no output binary\n" stderr ''
+R52_INVALID after likh_no_args.sm check exit 1 stdout "likh_no_args.sm:3:1: Sutram Error [E_PARSE]: near '}'\n  }\n  ^\nSutram check: errors found; no output binary\n" stderr ''
+R52_INVALID after dvaram_bad_arity.sm check exit 1 stdout 'Sutram Error: dvaram requires 2 or 3 arguments\n' stderr ''
+R52_INVALID after char_at_bad_arity.sm check exit 1 stdout 'Sutram Error: char_at requires exactly 2 arguments\n' stderr ''
+R52_INVALID after char_code_bad_arity.sm check exit 1 stdout 'Sutram Error: char_code requires 1 or 2 arguments\n' stderr ''
+R52_ACCEPTED PASS indexed_char_code=1 likh_store=1 dvaram_default_mode=0644 dvaram_explicit_mode=0600 bad_arity=5
+
+=== Compatibility and provenance of original acceptance ===
+R48_BINARY_EQUAL,41_recursion.sm,846,8ab871455f57bff8a95ac7c840c52f8245e434c7016af5b3e3cedf6bfbd6d0e3
+R48_BINARY_EQUAL,126_numeric_pipeline.sm,7450,38c50da9ec00d8cffbc1d2f42abe63fd1580572f894a74b3677727f7c9b8b8e2
+R48_BINARY_EQUAL,163_r40_transitive_diamond.sm,575,e3024b0282767501627e44d5243e32fcbd3ee5ad717a030cd3e7b8e7a7e2f984
+R48_BINARY_EQUAL,111_t18_kosh_dasham_function_return.sm,1307,96e602630d053ddf7a61ed32badde5b293597569977ccd4bfbc7a61e07cc14b2
+R48_ACCEPTED_CHECK_TESTS,parse_diags=3,native_byte_equal=4,check_valid=1,no_output=1
+STAGE2_PASS structural=3 nested=2 unclosed=1 undefined=3
+R49_REPEATED_SEMANTIC_PASS,unique_correct_lines=3,no_output=1
+R50_ACCEPTED: runtime byte writes, byte truncation, char_at, vartani_len and vartani_cmp; 2/2 native executions; 2/2 --check
+PASS=186
+PASS while_hot: 5 instructions (ceiling 5) bottom-test
+PASS for_hot: 7 instructions (ceiling 7) bottom-test
+  30/30 pack checks pass (10 packs x 3 keyword groups)
+Ran 18 tests in 0.010s
+R53_GUI_AND_INSTALLER_UNCHANGED_PASS
+
+Complete GitHub Actions logs: https://github.com/dap2810/Sutram/actions/runs/38093784372
