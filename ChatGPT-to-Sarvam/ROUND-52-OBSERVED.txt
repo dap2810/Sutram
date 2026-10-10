@@ -1,0 +1,55 @@
+Sutram ROUND 52 -- ACTUAL NATIVE CI OBSERVED STDOUT/STDERR (not predicted)
+Branch: feature/r52-stdlib-compiler-defects-20261010
+Source/test commit: 13c8775701df6e5582e8bbb45285fa11ba8d96ba
+CI run: https://github.com/dap2810/Sutram/actions/runs/38067029160
+Native Linux Ubuntu 24.04, job 114256646910, conclusion SUCCESS.
+The 'before' compiler is built from pre-R52 main 853083c9762992757b8f6682e5b3a3fc7296d8bf.
+The 'after' compiler is built from native NASM src/sutram_compiler.asm on the above R52 commit.
+stdout/stderr below are repr-encoded bytes from real subprocess execution.
+The test script also inspected actual file mode bits using stat.S_IMODE.
+No files were created by invalid --check commands.
+
+=== ORIGINAL VS R52 EXECUTION ===
+R52_OBSERVED before char_code_index.sm compile exit 0 stdout 'OK: compiled 890 bytes\n' stderr ''
+R52_OBSERVED before char_code_index.sm execute exit 0 stdout '90\n65\n90\n105\n105\n' stderr ''
+R52_OBSERVED before likh_valid.sm compile exit -11 stdout '' stderr ''
+R52_OBSERVED before dvaram_default.sm compile exit 0 stdout 'OK: compiled 260 bytes\n' stderr ''
+R52_OBSERVED before dvaram_default.sm execute exit 0 stdout '1\n' stderr ''
+R52_FILE_MODE before dvaram_default.sm mode 0o0
+R52_OBSERVED before dvaram_explicit.sm compile exit 0 stdout 'OK: compiled 260 bytes\n' stderr ''
+R52_OBSERVED before dvaram_explicit.sm execute exit 0 stdout '1\n' stderr ''
+R52_FILE_MODE before dvaram_explicit.sm mode 0o0
+R52_OBSERVED after char_code_index.sm compile exit 0 stdout 'OK: compiled 890 bytes\n' stderr ''
+R52_OBSERVED after char_code_index.sm execute exit 0 stdout '90\n65\n90\n105\n105\n' stderr ''
+R52_OBSERVED after likh_valid.sm compile exit 0 stdout 'OK: compiled 402 bytes\n' stderr ''
+R52_OBSERVED after likh_valid.sm execute exit 0 stdout '44\n66\n' stderr ''
+R52_OBSERVED after dvaram_default.sm compile exit 0 stdout 'OK: compiled 264 bytes\n' stderr ''
+R52_OBSERVED after dvaram_default.sm execute exit 0 stdout '1\n' stderr ''
+R52_FILE_MODE after dvaram_default.sm mode 0o644
+R52_OBSERVED after dvaram_explicit.sm compile exit 0 stdout 'OK: compiled 267 bytes\n' stderr ''
+R52_OBSERVED after dvaram_explicit.sm execute exit 0 stdout '1\n' stderr ''
+R52_FILE_MODE after dvaram_explicit.sm mode 0o600
+R52_INVALID after likh_missing_value.sm check exit 1 stdout "likh_missing_value.sm:3:1: Sutram Error [E_PARSE]: near '}'\n  }\n  ^\nSutram check: errors found; no output binary\n" stderr ''
+R52_INVALID after likh_no_args.sm check exit 1 stdout "likh_no_args.sm:3:1: Sutram Error [E_PARSE]: near '}'\n  }\n  ^\nSutram check: errors found; no output binary\n" stderr ''
+R52_INVALID after dvaram_bad_arity.sm check exit 1 stdout 'Sutram Error: dvaram requires 2 or 3 arguments\n' stderr ''
+R52_INVALID after char_at_bad_arity.sm check exit 1 stdout 'Sutram Error: char_at requires exactly 2 arguments\n' stderr ''
+R52_INVALID after char_code_bad_arity.sm check exit 1 stdout 'Sutram Error: char_code requires 1 or 2 arguments\n' stderr ''
+R52_ACCEPTED PASS indexed_char_code=1 likh_store=1 dvaram_default_mode=0644 dvaram_explicit_mode=0600 bad_arity=5
+
+=== ORIGINAL REGRESSION AND OUTPUT-PARITY RESULTS ===
+R48_BINARY_EQUAL,41_recursion.sm,846,8ab871455f57bff8a95ac7c840c52f8245e434c7016af5b3e3cedf6bfbd6d0e3
+R48_BINARY_EQUAL,126_numeric_pipeline.sm,7450,38c50da9ec00d8cffbc1d2f42abe63fd1580572f894a74b3677727f7c9b8b8e2
+R48_BINARY_EQUAL,163_r40_transitive_diamond.sm,575,e3024b0282767501627e44d5243e32fcbd3ee5ad717a030cd3e7b8e7a7e2f984
+R48_BINARY_EQUAL,111_t18_kosh_dasham_function_return.sm,1307,96e602630d053ddf7a61ed32badde5b293597569977ccd4bfbc7a61e07cc14b2
+R48_ACCEPTED_CHECK_TESTS,parse_diags=3,native_byte_equal=4,check_valid=1,no_output=1
+STAGE2_PASS structural=3 nested=2 unclosed=1 undefined=3
+R49_REPEATED_SEMANTIC_PASS,unique_correct_lines=3,no_output=1
+R50_ACCEPTED: runtime byte writes, byte truncation, char_at, vartani_len and vartani_cmp; 2/2 native executions; 2/2 --check
+PASS=186
+PASS while_hot: 5 instructions (ceiling 5) bottom-test
+PASS for_hot: 7 instructions (ceiling 7) bottom-test
+  30/30 pack checks pass (10 packs x 3 keyword groups)
+Ran 18 tests in 0.010s
+
+The original 186 tests and 12 codegen gates did not rewrite any expected output golden.
+Full logs: https://github.com/dap2810/Sutram/actions/runs/38067029160

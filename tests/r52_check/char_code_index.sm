@@ -1,0 +1,11 @@
+mukhya() {
+    likha(char_code("AZ", 1))
+    likha(char_code("AZ"))
+    likha(char_at("AZ", 1))
+    vitti b = nirmmita(16)
+    set_char(b, 0, 104)
+    set_char(b, 1, 105)
+    set_char(b, 2, 0)
+    likha(char_code(b, 1))
+    likha(char_at(b, 1))
+}

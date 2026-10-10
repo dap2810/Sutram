@@ -212,6 +212,9 @@ str_dot_exe  db ".exe", 0
     r48_msg_errors db "Sutram check: errors found; no output binary",10,0
     r48_msg_eof db "<EOF>",0
     r50_msg_setchar_arity db "Sutram Error: set_char requires exactly 3 arguments",10,0
+    r52_msg_dvaram_arity db "Sutram Error: dvaram requires 2 or 3 arguments",10,0
+    r52_msg_charat_arity db "Sutram Error: char_at requires exactly 2 arguments",10,0
+    r52_msg_charcode_arity db "Sutram Error: char_code requires 1 or 2 arguments",10,0
     r48_msg_undefined db ": Sutram Error [E_UNDEFINED_FUNCTION]: unknown function '",0
     msg_err_line db 10, "Sutram Error: parse error at line ", 0
     msg_err_near db " near token '", 0
@@ -673,6 +676,7 @@ str_dot_exe  db ".exe", 0
     msg_namespace_error db "Sutram Error: invalid namespaced ayojan (use module@alias, max 31 alias bytes)", 10, 0
     msg_namespace_module_missing db "Sutram Error: namespaced module file not found", 10, 0
     msg_namespace_alias_reuse db "Sutram Error: namespaced alias already assigned to another module", 10, 0
+    r51_alias_conflict db ": Sutram Error [E_MODULE_ALIAS_REUSE]: namespaced alias already assigned to another module",10,0
     msg_namespace_func_limit db "Sutram Error: namespaced module has too many or oversized function names", 10, 0
     msg_import_overflow db "Sutram Error: expanded module source too large", 10, 0
     graph_v1_header db '# sutram-module-v1', 0
@@ -685,6 +689,7 @@ str_dot_exe  db ".exe", 0
     graph_arrow db ' -> ', 0
     graph_colon db ':', 0
     r49_unknown_column db "?", 0
+    r51_unknown_origin db ":?:?",0
     graph_nl db 10,0
     graph_cycle_prefix db 'dependency cycle: ',0
     graph_missing_prefix db 'cannot open import ',0
@@ -715,6 +720,19 @@ section .bss
     r48_stmt_valid resq 1
     r48_error_line resq 1
     r48_charbuf resb 4
+    ; R51 diagnostic origin maps, bounded to expanded source capacity.
+    r51_src_file resq IMPORT_BUF_CAP
+    r51_dst_file resq IMPORT_BUF_CAP
+    r51_src_off resd IMPORT_BUF_CAP
+    r51_dst_off resd IMPORT_BUF_CAP
+    r51_import_paths resb IMPORT_NAMES_CAP * 512
+    r51_paths_used resq 1
+    r51_current_path resq 1
+    r51_import_start resq 1
+    r51_raw_map resd IMPORT_BUF_CAP
+    r51_ns_emit_pos resq 1
+    r51_last_off resq 1
+    r51_last_size resq 1
     token_arr   resb TOKEN_CAP * TOKEN_SIZE ; capacity matches 64 KiB source + EOF
     token_cnt   resq 1
     token_idx   resq 1
@@ -1827,6 +1845,10 @@ _start:
     ret
 %endif
 
+    cmp qword [rel r48_mode],0
+    je .r51_not_check
+    call r51_init_map
+.r51_not_check:
     ; R41: opt-in module-v1 graph preflight runs BEFORE destructive expansion.
     ; The legacy import and generated-code path is byte-for-byte unchanged.
     call graph_preflight_v1   ; R44 single graph traversal (dispatch to merged Muse DFS)
@@ -2115,16 +2137,24 @@ r49_print_module_location:
 .r49_on_line:
     mov r15, r9             ; byte start of original physical line
 .r49_findword:
-    mov rax, r9
-    add rax, 6
-    cmp rax, r14
-    ja .r49_unknown
-    cmp byte [rbx+r9], 10
-    je .r49_unknown
-    cmp dword [rbx+r9], 0x6A6F7961 ; little endian "ayoj"
+    mov rax,r9
+    add rax,6
+    cmp rax,r14
+    ja .r49_symbol_search
+    cmp byte [rbx+r9],10
+    je .r49_symbol_search
+    cmp dword [rbx+r9], 0x6A6F7961 ; "ayoj"
+    je .r49_check_ayoj
+    cmp dword [rbx+r9],0x7972696E  ; "niry" from niryat
     jne .r49_nextword
+    cmp word [rbx+r9+4],0x7461     ; "at"
+    je .r49_word_found
+    jmp .r49_nextword
+.r49_check_ayoj:
     cmp word [rbx+r9+4], 0x6E61     ; "an"
-    jne .r49_nextword
+    je .r49_word_found
+    jmp .r49_nextword
+.r49_word_found:
     mov rax, r9
     sub rax, r15
     inc rax                 ; 1-based position on this physical line
@@ -2135,6 +2165,43 @@ r49_print_module_location:
 .r49_nextword:
     inc r9
     jmp .r49_findword
+.r49_symbol_search:
+    ; R51: qualified private/unknown function errors are on ordinary code
+    ; lines rather than an ayojan/niryat directive. Find exact original
+    ; reference prefix (mg_pat) on this physical source line.
+    lea r11,[rel mg_pat]
+    cmp byte [r11],0
+    je .r49_unknown
+    mov r8,r15
+.r49_symbol_next:
+    cmp r8,r14
+    jae .r49_unknown
+    cmp byte [rbx+r8],10
+    je .r49_unknown
+    xor ecx,ecx
+.r49_symbol_cmp:
+    cmp rcx,62
+    jae .r49_unknown
+    mov dl,[r11+rcx]
+    test dl,dl
+    jz .r49_symbol_found
+    mov rax,r8
+    add rax,rcx
+    cmp rax,r14
+    jae .r49_symbol_next_advance
+    cmp dl,[rbx+rax]
+    jne .r49_symbol_next_advance
+    inc rcx
+    jmp .r49_symbol_cmp
+.r49_symbol_next_advance:
+    inc r8
+    jmp .r49_symbol_next
+.r49_symbol_found:
+    mov rax,r8
+    sub rax,r15
+    inc rax
+    call mg_print_uint
+    jmp .r49_done
 .r49_unknown:
     lea rdi, [rel r49_unknown_column]
     call print_str_z
@@ -2179,11 +2246,19 @@ graph_error:
     test rdi,rdi
     jz .no_detail
     call print_str_z
-.no_detail:
+ .no_detail:
     lea rdi,[rel graph_nl]
     call print_str_z
+    cmp qword [rel r48_mode],0
+    je .graph_fail_fast
+    inc qword [rel r48_error_count]
+    cmp qword [rel r48_error_count],8
+    jb .graph_return
+.graph_fail_fast:
     mov rdi,1
     call os_exit
+.graph_return:
+    ret
 
 ; ============================================================
 ; MODULE IMPORT - expand ayojan directives
@@ -2248,6 +2323,7 @@ expand_imports_pass:
     movzx eax, byte [rsi + r12]
     lea rdi, [rel import_buf]
     mov [rdi + r14], al
+    call r51_copy_origin
     inc r12
     inc r14
     cmp eax, 10
@@ -2469,6 +2545,17 @@ expand_imports_pass:
     call strcmp
     test rax,rax
     jz .ei_next_alias
+    cmp qword [rel r48_mode],0
+    je .ei_alias_old
+    lea rdi,[rel source_buf]
+    add rdi,r12
+    call r51_print_origin
+    lea rdi,[rel r51_alias_conflict]
+    call print_str_z
+    call r51_print_original_context
+    inc qword [rel r48_error_count]
+    jmp .ei_loop
+.ei_alias_old:
     lea rdi,[rel msg_namespace_alias_reuse]
     call print_str_z
     mov rdi,1
@@ -2553,6 +2640,14 @@ expand_imports_pass:
     test rax, rax
     js .ei_missing_module
 .ei_opened:
+    cmp qword [rel r48_mode],0
+    je .r51_open_ready
+    push rax
+    call r51_register_module
+    mov [rel r51_current_path],rax
+    mov [rel r51_import_start],r14
+    pop rax
+.r51_open_ready:
     ; This source was not previously imported: scan newly inserted text in the
     ; next pass. In particular this resolves children of imports and diamonds.
     mov qword [rel import_new_this_pass], 1
@@ -2573,8 +2668,14 @@ expand_imports_pass:
     call os_read
     test rax, rax
     js .ei_close_only
-    add r14, rax
-    cmp rax, r10
+    add r14,rax
+    cmp qword [rel r48_mode],0
+    je .r51_read_ready
+    push rax
+    call r51_stamp_legacy
+    pop rax
+.r51_read_ready:
+    cmp rax,r10
     jne .ei_close_success
     ; Buffer filled exactly: probe one more byte so oversized modules fail
     ; cleanly instead of being silently truncated.
@@ -2598,6 +2699,10 @@ expand_imports_pass:
     test rax,rax
     js .ei_close_only
     mov [rel ns_raw_len],rax
+    cmp qword [rel r48_mode],0
+    je .r51_raw_ready
+    call r51_init_raw_map
+.r51_raw_ready:
     cmp rax,r10
     jne .ei_ns_read_complete
     mov rdi,rbx
@@ -2625,7 +2730,8 @@ expand_imports_pass:
     cmp r14, IMPORT_BUF_CAP
     jae .ei_overflow
     lea rdi, [rel import_buf]
-    mov byte [rdi + r14], 10
+    mov byte [rdi + r14],10
+    call r51_mark_newline
     inc r14
     jmp .ei_loop
 .ei_copy:
@@ -2634,7 +2740,8 @@ expand_imports_pass:
     lea rsi, [rel source_buf]
     movzx eax, byte [rsi + r12]
     lea rdi, [rel import_buf]
-    mov [rdi + r14], al
+    mov [rdi + r14],al
+    call r51_copy_origin
     inc r12
     inc r14
     jmp .ei_loop
@@ -2669,7 +2776,11 @@ expand_imports_pass:
     lea rdi, [rel source_buf]
     mov rcx, r14
     rep movsb
-    mov [rel source_len], r14
+    mov [rel source_len],r14
+    cmp qword [rel r48_mode],0
+    je .r51_map_ready
+    call r51_finish_origin_pass
+.r51_map_ready:
     ; Reset str_ptr
     lea rax, [rel str_pool]
     mov [rel str_ptr], rax
@@ -2708,6 +2819,7 @@ mg_e_unknown2: db "' in module '", 0
 mg_e_unknown3: db "'", 10, 0
 mg_w_sutra:    db "sutra", 0
 mg_e_depth:   db "Sutram Error [E_MODULE_DEPTH]: import depth exceeded", 10, 0
+r51_colon_space: db ": ", 0
 mg_e_valias1: db "Sutram Error [E_MODULE_V1_ALIAS]: v1 module '", 0
 mg_e_valias2: db "' must be imported with an alias: ayojan ", 0
 mg_e_valias3: db "@alias", 10, 0
@@ -2970,6 +3082,22 @@ mg_print_uint:
 ; --- mg_print_loc: prints "path:line: " using mg_cur_path / mg_cur_line ---
 mg_print_loc:
     push rax
+    cmp qword [rel r48_mode],0
+    je .legacy
+    push r8
+    push r9
+    lea rdi,[rel mg_cur_path]
+    mov rsi,[rel mg_cur_line]
+    call r49_print_module_location
+    pop r9
+    pop r8
+    lea rdi,[rel mg_colon]
+    call print_str_z
+    lea rdi,[rel msg_diag_space]
+    call print_str_z
+    pop rax
+    ret
+.legacy:
     lea rdi, [rel mg_cur_path]
     call print_str_z
     lea rdi, [rel mg_colon]
@@ -3744,6 +3872,14 @@ mg_defer_valias:
     ret
 
 mg_valias_error:
+    cmp qword [rel r48_mode],0
+    je .old
+    mov rsi,[rel mg_cur_line]
+    call r49_print_module_location
+    lea rdi,[rel r51_colon_space]
+    call print_str_z
+    jmp .message
+.old:
     push rdi
     call print_str_z
     lea rdi, [rel mg_colon]
@@ -3752,6 +3888,7 @@ mg_valias_error:
     call mg_print_uint
     lea rdi, [rel mg_colon]
     call print_str_z
+.message:
     lea rdi, [rel mg_e_valias1]
     call print_str_z
     lea rdi, [rel mg_cur_name]
@@ -3824,6 +3961,8 @@ mg_copy_list_to_rec:
 mg_print_cycle:
     push rbx
     push r12
+    cmp qword [rel r48_mode],0
+    jne .pc_check_prefix
     cmp byte [rel mg_root_exact_v1], 1
     jne .pc_muse_prefix
     ; R41 compatible basename/line and error prefix.
@@ -3840,6 +3979,19 @@ mg_print_cycle:
     lea rdi, [rel graph_close]
     call print_str_z
     lea rdi, [rel graph_cycle_prefix]
+    call print_str_z
+    jmp .pc_prefix_done
+.pc_check_prefix:
+    lea rdi,[rel mg_cur_path]
+    mov rsi,[rel mg_cur_line]
+    call r49_print_module_location
+    lea rdi,[rel graph_prefix]
+    call print_str_z
+    lea rdi,[rel graph_msg_cycle]
+    call print_str_z
+    lea rdi,[rel graph_close]
+    call print_str_z
+    lea rdi,[rel graph_cycle_prefix]
     call print_str_z
     jmp .pc_prefix_done
 .pc_muse_prefix:
@@ -3981,6 +4133,7 @@ mg_process_imports:
     lea rdx, [rel graph_msg_invalid]
     lea rcx, [rel graph_invalid_prefix]
     call graph_error
+    jmp .pi_next
 .pi_name_checked:
     ; gray check -> cycle
     lea rdi, [rel mg_cur_name]
@@ -4007,6 +4160,7 @@ mg_process_imports:
     lea rdx, [rel graph_msg_missing]
     lea rcx, [rel graph_missing_prefix]
     call graph_error
+    jmp .pi_next
 .pi_resolved:
     ; mg_cur_path = module_path_buf
     lea rsi, [rel module_path_buf]
@@ -4795,10 +4949,11 @@ ns_strip_niryat:
     movzx eax, byte [rbx + r12]
     cmp al, 10
     jne .ns_not_nl
-    mov [rbx + r14], al
+    mov [rbx + r14],al
+    call r51_raw_copy_position
     inc r12
     inc r14
-    mov r8, 1
+    mov r8,1
     jmp .ns_loop
 .ns_not_nl:
     cmp r8, 1
@@ -4845,16 +5000,18 @@ ns_strip_niryat:
     jmp .ns_loop
 .ns_ws:
     movzx eax, byte [rbx + r12]
-    mov [rbx + r14], al
+    mov [rbx + r14],al
+    call r51_raw_copy_position
     inc r12
     inc r14
     jmp .ns_loop
 .ns_copy:
     movzx eax, byte [rbx + r12]
-    mov [rbx + r14], al
+    mov [rbx + r14],al
+    call r51_raw_copy_position
     inc r12
     inc r14
-    mov r8, 0
+    mov r8,0
     jmp .ns_loop
 .ns_strip_done:
     mov [rel ns_raw_len], r14
@@ -5047,6 +5204,7 @@ ns_rewrite_funcs:
     jae .nr_done
     lea rdx,[rel ns_raw_buf]
     mov al,[rdx+r15]
+    mov [rel r51_ns_emit_pos],r15
     cmp r13,1
     je .nr_comment
     cmp r13,2
@@ -5166,12 +5324,14 @@ ns_rewrite_funcs:
     lea rsi,[rel ns_alias]
 .nr_prefix:
     mov al,[rsi]
+    mov [rel r51_ns_emit_pos],r12
     test al,al
     jz .nr_separator
     call ns_emit_byte
     inc rsi
     jmp .nr_prefix
 .nr_separator:
+    mov [rel r51_ns_emit_pos],r12
     mov al,'_'
     call ns_emit_byte
     mov al,'_'
@@ -5184,6 +5344,9 @@ ns_rewrite_funcs:
     lea rdx,[rel ns_raw_buf]
     lea rax,[rdx+r12]
     mov al,[rax+r10]
+    mov rdx,r12
+    add rdx,r10
+    mov [rel r51_ns_emit_pos],rdx
     call ns_emit_byte
     inc r10
     jmp .nr_emit_token
@@ -5229,6 +5392,7 @@ ns_emit_byte:
     lea rdx,[rel import_buf]
     mov [rdx+r14],al
     pop rdx
+    call r51_mark_namespaced
     inc r14
     ret
 .ne_overflow:
@@ -5236,6 +5400,203 @@ ns_emit_byte:
     call print_str_z
     mov rdi,1
     call os_exit
+
+
+; R51 check-only source-to-origin mapping; two buffers follow import passes.
+r51_init_map:
+    xor ecx,ecx
+    mov rdx,[rel source_path_ptr]
+    lea r8,[rel r51_src_file]
+    lea r9,[rel r51_src_off]
+    mov r10,[rel source_len]
+    cmp r10,IMPORT_BUF_CAP
+    jae .done
+    inc r10
+.loop:
+    cmp rcx,r10
+    jae .done
+    mov [r8+rcx*8],rdx
+    mov [r9+rcx*4],ecx
+    inc rcx
+    jmp .loop
+.done:
+    ret
+
+r51_copy_origin:
+    cmp qword [rel r48_mode],0
+    je .done
+    push rcx
+    push rdx
+    lea rcx,[rel r51_src_file]
+    mov rdx,[rcx+r12*8]
+    lea rcx,[rel r51_dst_file]
+    mov [rcx+r14*8],rdx
+    lea rcx,[rel r51_src_off]
+    mov edx,[rcx+r12*4]
+    lea rcx,[rel r51_dst_off]
+    mov [rcx+r14*4],edx
+    pop rdx
+    pop rcx
+.done:
+    ret
+
+r51_register_module:
+    push rbx
+    push rcx
+    push rdx
+    push rsi
+    mov rbx,[rel r51_paths_used]
+    cmp rbx,IMPORT_NAMES_CAP
+    jae .over
+    inc qword [rel r51_paths_used]
+    shl rbx,9
+    lea rax,[rel r51_import_paths]
+    add rbx,rax
+    lea rsi,[rel module_path_buf]
+    xor ecx,ecx
+.copy:
+    cmp rcx,511
+    jae .last
+    mov dl,[rsi+rcx]
+    mov [rbx+rcx],dl
+    test dl,dl
+    jz .last
+    inc rcx
+    jmp .copy
+.last:
+    mov byte [rbx+511],0
+    mov rax,rbx
+    pop rsi
+    pop rdx
+    pop rcx
+    pop rbx
+    ret
+.over:
+    lea rdi,[rel msg_import_overflow]
+    jmp capacity_fail
+
+
+r51_stamp_legacy:
+    push rcx
+    push rdx
+    push r8
+    push r9
+    push r10
+    mov rcx,[rel r51_import_start]
+    mov r8,[rel r51_current_path]
+    lea r9,[rel r51_dst_file]
+    lea r10,[rel r51_dst_off]
+.loop:
+    cmp rcx,r14
+    jae .done
+    mov [r9+rcx*8],r8
+    mov rdx,rcx
+    sub rdx,[rel r51_import_start]
+    mov [r10+rcx*4],edx
+    inc rcx
+    jmp .loop
+.done:
+    pop r10
+    pop r9
+    pop r8
+    pop rdx
+    pop rcx
+    ret
+
+r51_init_raw_map:
+    push rcx
+    push rdx
+    lea rdx,[rel r51_raw_map]
+    xor ecx,ecx
+.loop:
+    cmp rcx,[rel ns_raw_len]
+    jae .done
+    mov [rdx+rcx*4],ecx
+    inc rcx
+    jmp .loop
+.done:
+    pop rdx
+    pop rcx
+    ret
+
+
+r51_raw_copy_position:
+    cmp qword [rel r48_mode],0
+    je .done
+    push rdx
+    push rcx
+    lea rdx,[rel r51_raw_map]
+    mov ecx,[rdx+r12*4]
+    mov [rdx+r14*4],ecx
+    pop rcx
+    pop rdx
+.done:
+    ret
+
+r51_mark_namespaced:
+    cmp qword [rel r48_mode],0
+    je .done
+    push rcx
+    push rdx
+    mov rcx,[rel r51_current_path]
+    lea rdx,[rel r51_dst_file]
+    mov [rdx+r14*8],rcx
+    mov rcx,[rel r51_ns_emit_pos]
+    lea rdx,[rel r51_raw_map]
+    mov ecx,[rdx+rcx*4]
+    lea rdx,[rel r51_dst_off]
+    mov [rdx+r14*4],ecx
+    pop rdx
+    pop rcx
+.done:
+    ret
+
+r51_mark_newline:
+    cmp qword [rel r48_mode],0
+    je .done
+    push rcx
+    push rdx
+    mov rcx,[rel r51_current_path]
+    lea rdx,[rel r51_dst_file]
+    mov [rdx+r14*8],rcx
+    lea rdx,[rel r51_dst_off]
+    mov dword [rdx+r14*4],0
+    pop rdx
+    pop rcx
+.done:
+    ret
+
+r51_finish_origin_pass:
+    push rsi
+    push rdi
+    push rcx
+    cld
+    lea rsi,[rel r51_dst_file]
+    lea rdi,[rel r51_src_file]
+    mov rcx,r14
+    rep movsq
+    lea rsi,[rel r51_dst_off]
+    lea rdi,[rel r51_src_off]
+    mov rcx,r14
+    rep movsd
+    cmp r14,IMPORT_BUF_CAP
+    jae .done
+    test r14,r14
+    jz .done
+    mov rcx,r14
+    dec rcx
+    lea rsi,[rel r51_src_file]
+    mov rdx,[rsi+rcx*8]
+    mov [rsi+r14*8],rdx
+    lea rsi,[rel r51_src_off]
+    mov edx,[rsi+rcx*4]
+    inc edx
+    mov [rsi+r14*4],edx
+.done:
+    pop rcx
+    pop rdi
+    pop rsi
+    ret
 
 ; ============================================================
 ; FILE I/O
@@ -6290,6 +6651,165 @@ parse_error:
     mov rdi, 1
     call os_exit
 
+
+; R51 prints the exact original location of a token in flattened source.
+; Input rdi = lexer token's pointer inside source_buf. Loads original source
+; into mg_buf for the subsequent origin-aware source/caret context printer.
+r51_print_origin:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    lea rax,[rel source_buf]
+    sub rdi,rax
+    cmp rdi,IMPORT_BUF_CAP
+    jb .index_ok
+    xor edi,edi
+.index_ok:
+    lea rax,[rel r51_src_file]
+    mov r13,[rax+rdi*8]
+    test r13,r13
+    jnz .path_ok
+    mov r13,[rel source_path_ptr]
+.path_ok:
+    lea rax,[rel r51_src_off]
+    mov r14d,[rax+rdi*4]
+    mov [rel r51_last_off],r14
+    mov rdi,r13
+    call mg_read_file
+    mov [rel r51_last_size],rax
+    test rax,rax
+    js .missing
+    mov r15,rax
+    cmp r14,r15
+    jbe .offset_ok
+    mov r14,r15
+.offset_ok:
+    lea rbx,[rel mg_buf]
+    xor ecx,ecx
+    mov r12d,1             ; original line
+    mov r15d,1             ; original UTF-8 display column
+.scan:
+    cmp rcx,r14
+    jae .display
+    movzx eax,byte [rbx+rcx]
+    cmp al,10
+    jne .not_newline
+    inc r12
+    mov r15d,1
+    jmp .next
+.not_newline:
+    and al,0xC0
+    cmp al,0x80
+    je .next
+    inc r15
+.next:
+    inc rcx
+    jmp .scan
+.display:
+    mov rdi,r13
+    call graph_print_file
+    lea rdi,[rel msg_err_colon]
+    call print_str_z
+    mov rax,r12
+    call mg_print_uint
+    lea rdi,[rel msg_err_colon]
+    call print_str_z
+    mov rax,r15
+    call mg_print_uint
+    jmp .done
+.missing:
+    mov rdi,r13
+    call graph_print_file
+    lea rdi,[rel r51_unknown_origin]
+    call print_str_z
+.done:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+r51_print_original_context:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    mov r15,[rel r51_last_size]
+    test r15,r15
+    js .done
+    lea r12,[rel mg_buf]
+    mov rbx,[rel r51_last_off]
+    cmp rbx,r15
+    jbe .bounded
+    mov rbx,r15
+.bounded:
+    add rbx,r12              ; current source location
+    mov r13,rbx
+.back:
+    cmp r13,r12
+    jbe .start
+    cmp byte [r13-1],10
+    je .start
+    dec r13
+    jmp .back
+.start:
+    add r15,r12
+    mov r14,r13
+.forward:
+    cmp r14,r15
+    jae .end
+    mov al,[r14]
+    cmp al,10
+    je .end
+    cmp al,13
+    je .end
+    inc r14
+    jmp .forward
+.end:
+    lea rdi,[rel msg_diag_indent]
+    call print_str_z
+    mov rdi,1
+    mov rsi,r13
+    mov rdx,r14
+    sub rdx,r13
+    call os_write
+    lea rdi,[rel msg_diag_nl]
+    call print_str_z
+    lea rdi,[rel msg_diag_indent]
+    call print_str_z
+.loop:
+    cmp r13,rbx
+    jae .caret
+    movzx eax,byte [r13]
+    cmp al,9
+    je .tab
+    and al,0xC0
+    cmp al,0x80
+    je .next
+    lea rdi,[rel msg_diag_space]
+    call print_str_z
+    jmp .next
+.tab:
+    lea rdi,[rel msg_diag_tab]
+    call print_str_z
+.next:
+    inc r13
+    jmp .loop
+.caret:
+    lea rdi,[rel msg_diag_caret]
+    call print_str_z
+.done:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
 ; R48 post-parse semantic diagnostics for unresolved user function calls.
 ; The code generator already owns function lookup; no second parser is used.
 ; Match the exact original lexer token pointer to recover line, column,
@@ -6319,32 +6839,15 @@ r48_print_undefined_function:
     inc rbx
     jmp .r48_lookup
 .r48_found:
-    mov rdi, [rel source_path_ptr]
-    call graph_print_file
-    lea rdi, [rel msg_err_colon]
-    call print_str_z
-    mov rdi, [r13+24]
-    lea rsi, [rel num_buf]
-    call itoa
-    mov rdi, rax
-    call print_str_z
-    lea rdi, [rel msg_err_colon]
-    call print_str_z
-    mov rdi, [r13+32]
-    call calc_src_column
-    mov rdi, rax
-    lea rsi, [rel num_buf]
-    call itoa
-    mov rdi, rax
-    call print_str_z
+    mov rdi,[r13+32]
+    call r51_print_origin
     lea rdi, [rel r48_msg_undefined]
     call print_str_z
     mov rdi, r12
     call print_str_z
     lea rdi, [rel r48_msg_end]
     call print_str_z
-    mov rdi, [r13+32]
-    call print_source_context
+    call r51_print_original_context
     jmp .r48_sem_done
 .r48_fallback:
     ; In unusual imported/rewritten source, a call-name pointer may not
@@ -6367,27 +6870,11 @@ r48_print_undefined_function:
 r48_print_parse_error:
     push rbx
     call cur_tok
-    mov rbx, rax
-    mov rax, [rbx+24]
-    mov [rel r48_error_line], rax
-    mov rdi, [rel source_path_ptr]
-    call graph_print_file
-    lea rdi, [rel msg_err_colon]
-    call print_str_z
-    mov rdi, [rbx+24]
-    lea rsi, [rel num_buf]
-    call itoa
-    mov rdi, rax
-    call print_str_z
-    lea rdi, [rel msg_err_colon]
-    call print_str_z
-    mov rdi, [rbx+32]
-    call calc_src_column
-    mov rdi, rax
-    lea rsi, [rel num_buf]
-    call itoa
-    mov rdi, rax
-    call print_str_z
+    mov rbx,rax
+    mov rax,[rbx+24]
+    mov [rel r48_error_line],rax
+    mov rdi,[rbx+32]
+    call r51_print_origin
     lea rdi, [rel r48_msg_near]
     call print_str_z
     mov rcx, [rbx]
@@ -6433,8 +6920,7 @@ r48_print_parse_error:
 .r48_end:
     lea rdi, [rel r48_msg_end]
     call print_str_z
-    mov rdi, [rbx+32]
-    call print_source_context
+    call r51_print_original_context
     pop rbx
     ret
 
@@ -9102,19 +9588,23 @@ parse_primary:
     ret
 
 .pp_writemem:
+    ; R52: the generic argument parser stashes nodes on the stack, not in
+    ; call_args (which can contain stale pointers from unrelated calls).
+    ; Previous code read call_args and could crash the compiler for likh().
+    cmp r12, 2
+    jne parse_error
     push rbx
     push r12
     call alloc_ast
     pop r12
     pop rbx
     mov qword [rax], AST_WRITEMEM
-    mov [rax+8], r12          ; arg count
-    lea rdx, [rel call_args]
-    mov rcx, [rdx]            ; arg1 (address)
-    mov [rax+16], rcx
-    mov rcx, [rdx+8]         ; arg2 (value)
+    mov [rax+8], r12
+    pop rcx                    ; second argument, most recent stashed node
+    pop rdx                    ; first argument, destination address node
+    mov [rax+16], rdx
     mov [rax+24], rcx
-    pop r12                   ; restore r12
+    pop r12                    ; restore r12
     pop rbx
     ret
 
@@ -12636,40 +13126,53 @@ gen_expr:
     jmp .ge_call_done
 
 .ge_call_dvaram:
-    ; dvaram(path, flags) -> fd (sys_open=2)
-    ; gen_expr(arg1) → rax = path, push, gen_expr(arg2) → rax = flags
+    ; R52: dvaram(path, flags[, mode]) -> Linux sys_open result.
+    ; The previous two-argument path left rdx unspecified and O_CREAT could
+    ; create inaccessible mode-000 files. Default creation mode is 0644.
+    ; Explicit third argument supplies the mode; effective bits honor umask.
+    cmp qword [rbx+16], 2
+    je .ge_dvaram_args_ok
+    cmp qword [rbx+16], 3
+    jne .ge_dvaram_arity
+.ge_dvaram_args_ok:
     mov rax, [rbx+24]
     call gen_expr
-    ; emit: push rax (50)
-    mov dil, 0x50
+    mov dil, 0x50                 ; push path
     call emit_byte
-    ; gen_expr(arg2)
     mov rax, [rbx+32]
     call gen_expr
-    ; emit: mov rsi, rax (48 89 C6)
-    mov dil, 0x48
+    mov dil, 0x50                 ; push flags
+    call emit_byte
+    cmp qword [rbx+16], 3
+    jne .ge_dvaram_default
+    mov rax, [rbx+40]
+    call gen_expr
+    mov dil, 0x48                 ; mov rdx,rax = 48 89 C2
     call emit_byte
     mov dil, 0x89
     call emit_byte
-    mov dil, 0xC6
+    mov dil, 0xC2
     call emit_byte
-    ; emit: pop rdi (5F)
-    mov dil, 0x5F
+    jmp .ge_dvaram_ready
+.ge_dvaram_default:
+    mov dil, 0xBA                 ; mov edx,420 = 0644
     call emit_byte
-    ; emit: mov eax, 2 (B8 02 00 00 00)
-    mov dil, 0xB8
+    mov edi, 420
+    call emit_u32
+.ge_dvaram_ready:
+    mov dil, 0x5E                 ; pop rsi = flags
     call emit_byte
-    mov dil, 0x02
+    mov dil, 0x5F                 ; pop rdi = path
     call emit_byte
-    xor edi, edi
+    mov dil, 0xB8                 ; mov eax,2 = sys_open
     call emit_byte
-    xor edi, edi
-    call emit_byte
-    xor edi, edi
-    call emit_byte
-    ; emit: syscall (0F 05)
+    mov edi, 2
+    call emit_u32
     call emit_syscall
     jmp .ge_call_done
+.ge_dvaram_arity:
+    lea rdi, [rel r52_msg_dvaram_arity]
+    jmp capacity_fail
 
 .ge_call_paadh:
     ; paadh(fd, buf, count) -> bytes_read (sys_read=0)
@@ -14126,6 +14629,8 @@ gen_expr:
 
 .ge_call_charat:
     ; char_at(str, index) → byte at str[index] in rax
+    cmp qword [rbx+16], 2
+    jne .ge_charat_arity
     mov rax, [rbx+24]
     call gen_expr
     mov dil, 0x50           ; push rax (str)
@@ -14152,12 +14657,17 @@ gen_expr:
     mov dil, 0x17
     call emit_byte
     jmp .ge_call_done
+.ge_charat_arity:
+    lea rdi, [rel r52_msg_charat_arity]
+    jmp capacity_fail
 
 .ge_call_charcd:
     ; B3: char_code(str, index) returns the indexed byte.  Keep the historical
     ; one-argument form as char_code(str, 0) for compatibility.
+    cmp qword [rbx+16], 1
+    je .ge_call_charcd_first
     cmp qword [rbx+16], 2
-    jb .ge_call_charcd_first
+    jne .ge_call_charcd_arity
     mov rax, [rbx+24]
     call gen_expr
     mov dil, 0x50           ; push rax (str)
@@ -14191,6 +14701,9 @@ gen_expr:
     xor edi, edi
     call emit_byte
     jmp .ge_call_done
+.ge_call_charcd_arity:
+    lea rdi, [rel r52_msg_charcode_arity]
+    jmp capacity_fail
 
 .ge_call_charfr:
     ; char_from(code) → pointer to a char (writes code to a temp buffer)

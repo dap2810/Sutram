@@ -1,0 +1,5 @@
+mukhya() {
+    vitti fd = dvaram("created_default.txt", 577)
+    likha(fd >= 0)
+    band(fd)
+}

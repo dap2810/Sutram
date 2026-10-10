@@ -1,0 +1,68 @@
+name: R53 consolidated R51 provenance and R52 builtin fixes
+on:
+  push:
+    branches: [feature/r53-consolidated-r51-r52-20261010]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: NASM without elevation
+        run: |
+          cd "$RUNNER_TEMP"
+          apt download nasm
+          mkdir -p tools
+          for p in ./*.deb; do dpkg-deb -x "$p" tools; done
+          echo "$RUNNER_TEMP/tools/usr/bin" >> "$GITHUB_PATH"
+      - name: Build R46 reference, R52 pre-fix baseline and combined compiler
+        run: |
+          git show 72b824f70049765c3977db07d712a1a604b89434:src/sutram_compiler.asm > /tmp/r46.asm
+          nasm -f elf64 -I. /tmp/r46.asm -o /tmp/r46.o
+          ld -o r48_before /tmp/r46.o
+          git show 853083c9762992757b8f6682e5b3a3fc7296d8bf:src/sutram_compiler.asm > /tmp/r52_before.asm
+          nasm -f elf64 -I. /tmp/r52_before.asm -o /tmp/before.o
+          ld -o r52_before /tmp/before.o
+          nasm -f elf64 -I. src/sutram_compiler.asm -o /tmp/integrated.o
+          ld -o r48_after /tmp/integrated.o
+      - name: Real R51 provenance checks and native R52 before-vs-after checks
+        run: |
+          python3 tools/r48_native_acceptance.py
+          python3 tools/r48_stage2_acceptance.py
+          python3 tools/r49_repeated_semantic.py
+          python3 tools/r49_diagnostic_audit.py
+          python3 tools/r51_native_audit.py
+          python3 tools/r51_graph_inventory.py
+          python3 tools/r50_native_acceptance.py
+          python3 tools/r52_native_acceptance.py
+      - name: Existing full regression, codegen, packs and graph
+        run: |
+          cp r48_after sutram_compiler
+          python3 tests/run_tests.py
+          python3 tools/codegen_gate.py
+          python3 tools/test_lang_packs.py
+          python3 -m unittest discover -s tests/module_graph -p 'test_*.py' -v
+      - name: Assert GUI and installer remain unchanged
+        run: |
+          git diff --exit-code 7492baa739ee2ad603e463ca8313e6382cf9ea87 -- ide/sutram_gui_linux.asm win/winrt.inc windows/ ide/
+          echo R53_GUI_AND_INSTALLER_UNCHANGED_PASS
+      - name: SHA256 manifest for combined sources and fixtures
+        if: always()
+        run: |
+          sha256sum src/sutram_compiler.asm lib/string.smlib \
+            docs/R52-BUILTIN-FIXES.md tools/r49_diagnostic_audit.py \
+            tools/r51_native_audit.py tools/r51_graph_inventory.py tools/r52_native_acceptance.py \
+            tests/r51_check/*.sm tests/r51_check/lib/*.smlib tests/r52_check/*.sm \
+            .github/workflows/r53-integrated.yml > r53_sha256.txt
+          cat r53_sha256.txt
+      - name: Upload SHA256 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sutram-r53-verified-sha256
+          path: r53_sha256.txt
