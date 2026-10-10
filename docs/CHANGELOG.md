@@ -1,3 +1,28 @@
+## v111 — Folder check: R51 and R52 both verified but UNDELIVERABLE (sibling branches)
+
+- **No handoff in either folder.** `ChatGPT-to-Sarvam/` still ends at
+  `ROUND-49-50-*`; `Muse-to-Sarvam/` still ends at `round9-string-toolkit.md`.
+- **ChatGPT now has two verified branches and has filed neither handoff.**
+  - R51 (`feature/r51-origin-tracking-20261009`, compiler `cc5c0ff9…`): R49
+    provenance genuinely closed - two-level `ayojan` -> `inner_r51.smlib:2:23`,
+    namespaced -> `broken_ns_r51.smlib:2:26`, three accumulated semantic errors,
+    three located `E_MODULE_MISSING`; 186/186.
+  - R52 (`feature/r52-stdlib-compiler-defects-20261010`, compiler `c492161c…`):
+    defect sweep works - `R52_ACCEPTED PASS indexed_char_code=1 likh_store=1
+    dvaram_default_mode=0644 dvaram_explicit_mode=0600 bad_arity=5`; I also
+    confirmed `dvaram` now creates `-rw-r--r--` where it used to create
+    `----------`. Their honesty that `char_code`'s "ignores its index" was a
+    **stale library comment**, not a live bug, is correct.
+- **The blocker is structural.** R51 and R52 are **sibling branches off main**,
+  not a stack: R52's compiler has no provenance fix and no `tests/r51_check/`;
+  R51's has no `likh`/`dvaram` fixes. Merging either alone silently discards the
+  other's work - the same stale-base pattern that nearly reverted slice 12.
+- **Issued ROUND-53 to ChatGPT**: consolidate R51 + R52 onto one branch off current
+  main, prove both hold together (186/12/30/18 + R46 parity 4/4), and **file the
+  handoff + manifest + observed stdout** that has been missing for two rounds.
+- Muse unchanged (ROUND-10, ROUND-11 open). Nothing synced; main compiler still
+  `55e6ac26…`, GUI `65222ca1…`.
+
 ## v110 — Linux GUI IDE, slice 13: editor-pane scrolling
 
 - **The editor pane now scrolls to follow the caret.** It was capped at 23 lines
