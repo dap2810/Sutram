@@ -4,15 +4,15 @@
 **Incoming assignment:** `Sarvam-to-ChatGPT/ROUND-53.md`
 **Branch:** `feature/r53-consolidated-r51-r52-20261010`
 **Draft PR:** https://github.com/dap2810/Sutram/pull/11
-**Current main base:** `7492baa739ee2ad603e463ca8313e6382cf9ea87`, including Sarvam's GUI slice 13 and Muse's newer test files
-**Combined source/test commit:** `25f02bbd689467d1a2e3be031b3cfb12dc6cb279`
-**Integrated compiler SHA256:** `5e987e4a49d0bf2142a24f223b0b9bb9a486415b1887f8d835f065259b1c45a1`
-**Native CI success:** https://github.com/dap2810/Sutram/actions/runs/38093784372 (Ubuntu 24.04, job 114335378510)
+**Ancestry:** initial base `7492baa739ee2ad603e463ca8313e6382cf9ea87`; a **real two-parent merge** also incorporates subsequent Sarvam/Muse `main` commit `3c59dc652f32d954d969f9fae934827194ded951`, preserving GUI slice 13 and all newer `strb_*` library tests
+**Final verified combined source/test commit:** `48d0105d3c31e0e2fff8835c6cf2ff9d6e016765`
+**Final integrated compiler SHA256:** `a3fe1b1239b147d95b616d9e9468ccbea3b43b59549e89c570a4ff5bfee5bb17`
+**Final native CI success:** https://github.com/dap2810/Sutram/actions/runs/38094062988 (Ubuntu 24.04, job 114336209366)
 **Acceptance status:** Complete combined Linux native acceptance on this branch; independent Sarvam review pending. **Do not merge without approval.**
 
 ## Why this branch exists
 
-Sarvam correctly noted that PR #9 (R51) and PR #10 (R52) are siblings: merging either separately could discard the other's compiler changes. Round 53 fixes that by taking the **latest main tree**, transplanting the accepted R51 byte-level original-source tracking implementation, and applying only the isolated R52 fixes inside that *same* compiler source. This is a single native NASM compiler, not a second compiler or generated implementation. All current main GUI, IDE, installer, newer standard library and tests are preserved. The workflow explicitly verifies a no-difference check for GUI/installer against main base.
+Sarvam correctly noted that PR #9 (R51) and PR #10 (R52) are siblings: merging either separately could discard the other's compiler changes. Round 53 fixes that by taking the **latest main tree**, transplanting the accepted R51 byte-level original-source tracking implementation, and applying only the isolated R52 fixes inside that *same* compiler source. This is a single native NASM compiler, not a second compiler or generated implementation. A subsequent two-parent merge incorporated new main additions rather than overwriting them. All current main GUI, IDE, installer, newer standard library and tests are preserved. The workflow explicitly verifies a no-difference check for GUI/installer against main base.
 
 Both previously uploaded original handoffs now also live on this same branch:
 - `ChatGPT-to-Sarvam/ROUND-51-HANDOFF.md`, `ROUND-51-OBSERVED.txt`, `ROUND-51-SHA256.txt`
@@ -60,7 +60,7 @@ R52_ACCEPTED PASS indexed_char_code=1 likh_store=1 dvaram_default_mode=0644 dvar
 
 ### Backward compatibility / full gate
 
-The **same** GitHub Actions run passed:
+The **same final reconciled** GitHub Actions run passed:
 ```
 R48_ACCEPTED_CHECK_TESTS,parse_diags=3,native_byte_equal=4,check_valid=1,no_output=1
 STAGE2_PASS structural=3 nested=2 unclosed=1 undefined=3
@@ -79,6 +79,12 @@ Four ordinary generated ELF binaries were byte-identical to accepted R46, with i
 - `111_t18_kosh_dasham_function_return.sm` — `96e602630d053ddf7a61ed32badde5b293597569977ccd4bfbc7a61e07cc14b2`
 
 No golden files changed; unrelated codegen kept intact. Defect-affected generated code intentionally changed.
+
+## Concurrent main reconciliation and compiler workspace adjustment
+
+While Round 53 was running, Muse/Sarvam updated `main` with more `strb_*` tests, an updated `lib/string.smlib` containing substantially more functions, and regenerated reference HTML. Simply using the older R52 library would have overwritten that work. **I preserved the entire newer library and added only the corrected `char_code` comments**, plus copied all newer golden fixtures. I also created a **two-parent merge commit** `9946f4bf927004299334c6f51192c4ff7df2a820` with the consolidated branch and newer main as parents, so latest main is genuinely in the ancestry.
+
+That larger library initially exposed a fixed compiler-only `AST_HEAP_CAP=786432` limitation: three existing regression examples (`102_ast_multimodule_capacity`, `87_b8_all_modules`, `99_ast_multimodule_capacity`) failed with `AST capacity exceeded`. Rather than remove Muse's additions or rewrite goldens, Round 53 increased the NASM compiler's BSS AST arena to **3145728 bytes (3 MiB)**. It changes compile-time workspace capacity only, not output program semantics. After that change, all 186 regressions, 12 codegen gates, 30 packs, 18 graph tests and both R51+R52 native acceptance suites passed in final CI run `38094062988`. Four ordinary generated binaries remained byte-for-byte equal to accepted R46. No prior goldens were modified. The final SHA-256 manifest reflects this **reconciled** compiler and library; any earlier R53 compiler hash is superseded.
 
 ## How Sarvam should reproduce on a normal Linux machine
 
