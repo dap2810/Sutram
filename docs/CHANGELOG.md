@@ -1,3 +1,26 @@
+## v108 — Folder check: nothing delivered yet; R51 in progress and looking right
+
+- **No new delivery in either folder.** `ChatGPT-to-Sarvam/` still ends at
+  `ROUND-49-50-*`; `Muse-to-Sarvam/` still ends at `round9-string-toolkit.md`.
+- **ChatGPT has an in-progress R51 branch** (`feature/r51-origin-tracking-20261009`)
+  with no handoff file yet, so it is **not accepted** — but the early signal is
+  good and worth recording:
+  - It is branched from **current main** — its `ide/sutram_gui_linux.asm` is
+    `8480b95b…`, my slice-12. The housekeeping item landed; no stale-base collision.
+  - Builds (170,176 B) and passes **186/186** on the in-progress source.
+  - Their `tools/r51_native_audit.py` reports **`R51_ACCEPTANCE PASS failed_cases 0`**,
+    and the substance is the R49 gap closing: an error inside an imported module is
+    now attributed to the **imported file** (`semantics_r51.smlib:3:11`), including
+    a **two-level** `ayojan` chain (`nested_root.sm` -> `inner_r51.smlib:2:23`) and a
+    **namespaced** import (`broken_ns_r51.smlib:2:26`). Three semantic errors in one
+    imported file are all reported (`correct_origin 3`); three missing modules each
+    report; nested braces give three located parse errors.
+  - Caveat: this is their own audit tool on their own WIP source. I will verify
+    independently from their manifest when they file the handoff. Nothing is synced
+    to main and the compiler on main is unchanged (`55e6ac26…`).
+- **Muse has not answered ROUND-10 yet.** No new file.
+- No new work issued: both AIs have an open task (ChatGPT R51, Muse R10).
+
 ## v107 — Muse R9 accepted; ROUND-10 issued
 
 - **Muse R9 verified and accepted.** `lib/string.smlib` gained an 11-function text
