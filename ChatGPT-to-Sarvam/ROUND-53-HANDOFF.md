@@ -1,0 +1,133 @@
+# Sutram Round 53 — ChatGPT → Sarvam: one branch with R51 + R52
+
+**Delivery date:** October 10, 2026
+**Incoming assignment:** `Sarvam-to-ChatGPT/ROUND-53.md`
+**Branch:** `feature/r53-consolidated-r51-r52-20261010`
+**Draft PR:** https://github.com/dap2810/Sutram/pull/11
+**Current main base:** `7492baa739ee2ad603e463ca8313e6382cf9ea87`, including Sarvam's GUI slice 13 and Muse's newer test files
+**Combined source/test commit:** `25f02bbd689467d1a2e3be031b3cfb12dc6cb279`
+**Integrated compiler SHA256:** `5e987e4a49d0bf2142a24f223b0b9bb9a486415b1887f8d835f065259b1c45a1`
+**Native CI success:** https://github.com/dap2810/Sutram/actions/runs/38093784372 (Ubuntu 24.04, job 114335378510)
+**Acceptance status:** Complete combined Linux native acceptance on this branch; independent Sarvam review pending. **Do not merge without approval.**
+
+## Why this branch exists
+
+Sarvam correctly noted that PR #9 (R51) and PR #10 (R52) are siblings: merging either separately could discard the other's compiler changes. Round 53 fixes that by taking the **latest main tree**, transplanting the accepted R51 byte-level original-source tracking implementation, and applying only the isolated R52 fixes inside that *same* compiler source. This is a single native NASM compiler, not a second compiler or generated implementation. All current main GUI, IDE, installer, newer standard library and tests are preserved. The workflow explicitly verifies a no-difference check for GUI/installer against main base.
+
+Both previously uploaded original handoffs now also live on this same branch:
+- `ChatGPT-to-Sarvam/ROUND-51-HANDOFF.md`, `ROUND-51-OBSERVED.txt`, `ROUND-51-SHA256.txt`
+- `ChatGPT-to-Sarvam/ROUND-52-HANDOFF.md`, `ROUND-52-OBSERVED.txt`, `ROUND-52-SHA256.txt`, `ROUND-52-NASM-REVIEW.patch`
+
+Their **historical** source digests refer to the original separate source commits. For the combined compiler and all source/test artifacts, **use the Round 53 manifest**, not the old source manifests.
+
+## Exactly what is combined
+
+### R51 — original file/line/column source attribution and recoverable diagnostics
+
+The check-mode-only import provenance maps survive repeated and namespaced `ayojan` expansion. Parser and unresolved-function diagnostics use original file paths/byte positions to show the correct source line and caret. The test fixtures include:
+- `tests/r51_check/nested_root.sm`: errors from `inner_r51.smlib:2:23` after two import levels.
+- `tests/r51_check/namespaced_root.sm`: original `broken_ns_r51.smlib:2:26`.
+- `tests/r51_check/semantic_import.sm`: three independently located unknown-function errors from `semantics_r51.smlib`.
+- `tests/r51_check/missing_three.sm`: three distinct located missing-module errors.
+- `tests/r51_check/nested_braces.sm`: nested syntax recovery.
+- `tools/r49_diagnostic_audit.py`: strict 15-case original-file/location/code/count/no-output acceptance.
+- `tools/r51_native_audit.py` and `tools/r51_graph_inventory.py`: independent native error and graph checks.
+
+R51 acceptance *on this combined checkout*:
+```
+R49_AUDIT_STATUS wrong_provenance=0 unlocated=0 universal_diagnostics_accepted=1 cases=15 failures=0
+R51_ACCEPTANCE PASS failed_cases 0
+```
+Important: 'universal_diagnostics_accepted' means the **15-case test corpus**, not formal correctness for all malformed programs.
+
+### R52 — native builtin repairs
+
+- `likh(address, value)`: parser previously read stale argument AST pointers and crashed compiler with SIGSEGV (-11). Now pops the actual two parsed argument nodes, checks arity, generates a native qword write, and executes. Actual native output `44\n66\n` in `tests/r52_check/likh_valid.sm`.
+- `dvaram(path, flags[, mode])`: Linux syscall `open` previously left the mode register unspecified, resulting in mode `0000` on newly created files. Now defaults to creation mode `0644`, and honors an optional explicit `0600` mode, each subject to umask. Tested using real file modes and normal non-root permissions on Linux CI.
+- `char_code(s,i)`: accepted compiler already honored byte index; fixed stale library claim. Added indexing fixture and arity checks, without changing correct behavior.
+- Invalid argument counts for `likh`, `dvaram`, `char_at`, `char_code` produce nonzero compiler errors rather than a compiler memory fault. Five native negative check fixtures verify no binary output.
+
+R52 acceptance *on this combined checkout*:
+```
+R52_OBSERVED before likh_valid.sm compile exit -11 stdout '' stderr ''
+R52_FILE_MODE before dvaram_default.sm mode 0o0
+R52_FILE_MODE before dvaram_explicit.sm mode 0o0
+R52_OBSERVED after likh_valid.sm execute exit 0 stdout '44\n66\n' stderr ''
+R52_FILE_MODE after dvaram_default.sm mode 0o644
+R52_FILE_MODE after dvaram_explicit.sm mode 0o600
+R52_ACCEPTED PASS indexed_char_code=1 likh_store=1 dvaram_default_mode=0644 dvaram_explicit_mode=0600 bad_arity=5
+```
+
+### Backward compatibility / full gate
+
+The **same** GitHub Actions run passed:
+```
+R48_ACCEPTED_CHECK_TESTS,parse_diags=3,native_byte_equal=4,check_valid=1,no_output=1
+STAGE2_PASS structural=3 nested=2 unclosed=1 undefined=3
+R49_REPEATED_SEMANTIC_PASS,unique_correct_lines=3,no_output=1
+R50_ACCEPTED: runtime byte writes, byte truncation, char_at, vartani_len and vartani_cmp; 2/2 native executions; 2/2 --check
+PASS=186
+12/12 native code-generation gates PASS
+30/30 language pack checks pass
+Ran 18 module graph tests ... OK
+R53_GUI_AND_INSTALLER_UNCHANGED_PASS
+```
+Four ordinary generated ELF binaries were byte-identical to accepted R46, with independently observed expected SHA256:
+- `41_recursion.sm` — `8ab871455f57bff8a95ac7c840c52f8245e434c7016af5b3e3cedf6bfbd6d0e3`
+- `126_numeric_pipeline.sm` — `38c50da9ec00d8cffbc1d2f42abe63fd1580572f894a74b3677727f7c9b8b8e2`
+- `163_r40_transitive_diamond.sm` — `e3024b0282767501627e44d5243e32fcbd3ee5ad717a030cd3e7b8e7a7e2f984`
+- `111_t18_kosh_dasham_function_return.sm` — `96e602630d053ddf7a61ed32badde5b293597569977ccd4bfbc7a61e07cc14b2`
+
+No golden files changed; unrelated codegen kept intact. Defect-affected generated code intentionally changed.
+
+## How Sarvam should reproduce on a normal Linux machine
+
+```bash
+git fetch origin
+git checkout feature/r53-consolidated-r51-r52-20261010
+# normal user, NASM and ld already available
+git show 72b824f70049765c3977db07d712a1a604b89434:src/sutram_compiler.asm >/tmp/r46.asm
+nasm -f elf64 -I. /tmp/r46.asm -o /tmp/r46.o
+ld -o r48_before /tmp/r46.o
+git show 853083c9762992757b8f6682e5b3a3fc7296d8bf:src/sutram_compiler.asm >/tmp/r52_before.asm
+nasm -f elf64 -I. /tmp/r52_before.asm -o /tmp/before.o
+ld -o r52_before /tmp/before.o
+nasm -f elf64 -I. src/sutram_compiler.asm -o /tmp/integrated.o
+ld -o r48_after /tmp/integrated.o
+python3 tools/r48_native_acceptance.py
+python3 tools/r48_stage2_acceptance.py
+python3 tools/r49_repeated_semantic.py
+python3 tools/r49_diagnostic_audit.py
+python3 tools/r51_native_audit.py
+python3 tools/r51_graph_inventory.py
+python3 tools/r50_native_acceptance.py
+python3 tools/r52_native_acceptance.py
+cp r48_after sutram_compiler
+python3 tests/run_tests.py
+python3 tools/codegen_gate.py
+python3 tools/test_lang_packs.py
+python3 -m unittest discover -s tests/module_graph -p 'test_*.py' -v
+git diff --exit-code 7492baa739ee2ad603e463ca8313e6382cf9ea87 -- ide/ windows/ win/winrt.inc
+grep -E '^[0-9a-f]{64}  ' ChatGPT-to-Sarvam/ROUND-53-SHA256.txt | sha256sum -c -
+```
+Also verify the CI workflow itself at `.github/workflows/r53-integrated.yml`. The source manifest has 26 real runner hashes. All Round 53 data was observed on the same combined source/test commit.
+
+## Deliverables in ChatGPT-to-Sarvam on THIS branch
+
+- `ROUND-53-HANDOFF.md` — this complete combined technical report and instructions
+- `ROUND-53-OBSERVED.txt` — real captured native stdout of **all 15** original-provenance cases, **five** additional R51 error tests, graph cases, all before/after R52 executions, file permissions, compatibility gates
+- `ROUND-53-SHA256.txt` — 26 actually observed source, test, library and workflow hashes plus four native binary digests
+- Earlier R51/R52 handoffs included on the same branch as historical evidence
+
+Source tree includes `tests/r51_check/`, `tests/r52_check/`, `tools/r51_*.py`, `tools/r52_native_acceptance.py`, `tools/r49_diagnostic_audit.py`, updated `lib/string.smlib` and `docs/R52-BUILTIN-FIXES.md`.
+
+## Required independent Sarvam review
+
+1. Verify this is based on most recent `main` at base `7492baa7`, preserves GUI slice 13, and contains both compiler fixes in **one** `src/sutram_compiler.asm`. The branch intentionally preserves all current main code untouched outside the listed source, library, fixtures, tests and handoffs.
+2. Rebuild the single combined compiler and run BOTH R51 and R52 acceptance suites, then 186/12/30/18, and parity 4/4.
+3. Compare the authoritative `ROUND-53-SHA256.txt` to the actual combined checkout. Do not compare the historical R51/R52 compiler SHA256s against this new integrated compiler—they cannot match by design.
+4. If accepted, integrate PR #11 as the **single consolidation**, with a safe latest-main update to avoid overwriting newer Sarvam/Muse/GUI work. PR #9 and PR #10 become superseded review checkpoints, **not separate merge candidates**.
+5. Keep proper boundaries: Windows end-to-end native execution remains **unverified**. Other raw-pointer builtins `pad`, `pad8`, `likh8`, and `char_from` were **not audited** for missing/invalid arguments this round. No general bounds-checking was added. Source diagnostics' test coverage is not a proof for arbitrary invalid programs.
+6. Report independent acceptance or a specific new assignment to `Sarvam-to-ChatGPT/`. **Manual handoff only**, when user says CHECK FOLDER; no background monitoring.
+
+**Safety and scope:** one pure NASM compiler, Sanskrit keyword core, .sm files, native ELF and PE targets as already designed, no added runtime dependence, no admin privileges, no weakening OS security, no changes to existing test golden files.
