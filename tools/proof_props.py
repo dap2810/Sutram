@@ -613,13 +613,29 @@ def prop_string_split_join(compiler, rng):
 
 
 def prop_string_trim_case(compiler, rng):
-    """str_trim/str_upper/str_lower match Python strip/upper/lower"""
+    """str_trim/str_upper/str_lower match Python strip/upper/lower.
+
+    NOTE (R10): the per-character checks are done through a loop helper
+    comparing against a literal, not unrolled yadi blocks — the string
+    module grew (byte-string surface) and the unrolled form exceeded the
+    compiler's fixed AST capacity. Same 8 inputs, same invariant.
+    """
     cases = []
     for _ in range(8):
         # mix of spaces and letters
         s = "".join(rng.choice([" ", "a", "B", "c"]) for _ in range(rng.randint(1, 8)))
         cases.append(s)
-    lines = ["ayojan string", "mukhya() {",
+    lines = ["ayojan string",
+             "prakriya cells_match(cells, n, lit, ln) {",
+             "    vitti i = 0",
+             "    yadi (n != ln) { pratiyati 0 }",
+             "    yavat (i < n) {",
+             "        yadi (cells[i] != char_at(lit, i)) { pratiyati 0 }",
+             "        i = i + 1",
+             "    }",
+             "    pratiyati 1",
+             "}",
+             "mukhya() {",
              "    vitti src = nirmmita(10*8)",
              "    vitti out = nirmmita(10*8)"]
     for idx, s in enumerate(cases):
@@ -629,30 +645,498 @@ def prop_string_trim_case(compiler, rng):
         exp_upper = s.upper()
         exp_lower = s.lower()
         lines.append(f"    vitti tn{idx} = str_trim(src, {len(s)}, out)")
-        lines.append(f"    yadi (tn{idx} != {len(exp_trim)}) {{")
-        lines.append(f'        likha("FAIL trim len\\n")')
+        lines.append(f'    yadi (cells_match(out, tn{idx}, "{exp_trim}", {len(exp_trim)}) == 0) {{')
+        lines.append(f'        likha("FAIL trim\\n")')
         lines.append(f"        pratiyati 1")
         lines.append(f"    }}")
-        for j, ch in enumerate(exp_trim):
-            lines.append(f"    yadi (out[{j}] != {ord(ch)}) {{")
-            lines.append(f'        likha("FAIL trim chars\\n")')
-            lines.append(f"        pratiyati 1")
-            lines.append(f"    }}")
         lines.append(f"    str_upper(src, {len(s)}, out)")
-        for j, ch in enumerate(exp_upper):
-            lines.append(f"    yadi (out[{j}] != {ord(ch)}) {{")
-            lines.append(f'        likha("FAIL upper\\n")')
-            lines.append(f"        pratiyati 1")
-            lines.append(f"    }}")
+        lines.append(f'    yadi (cells_match(out, {len(s)}, "{exp_upper}", {len(exp_upper)}) == 0) {{')
+        lines.append(f'        likha("FAIL upper\\n")')
+        lines.append(f"        pratiyati 1")
+        lines.append(f"    }}")
         lines.append(f"    str_lower(src, {len(s)}, out)")
-        for j, ch in enumerate(exp_lower):
-            lines.append(f"    yadi (out[{j}] != {ord(ch)}) {{")
-            lines.append(f'        likha("FAIL lower\\n")')
+        lines.append(f'    yadi (cells_match(out, {len(s)}, "{exp_lower}", {len(exp_lower)}) == 0) {{')
+        lines.append(f'        likha("FAIL lower\\n")')
+        lines.append(f"        pratiyati 1")
+        lines.append(f"    }}")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "trim_case", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_strb_find(compiler, rng):
+    """strb_find agrees with Python str.find on byte strings incl literals"""
+    cases = []
+    for _ in range(8):
+        hn = rng.randint(1, 12)
+        hay = "".join(chr(rng.randint(97, 99)) for _ in range(hn))
+        if rng.random() < 0.5 and hn >= 2:
+            start = rng.randint(0, hn - 1)
+            nn = rng.randint(1, hn - start)
+            needle = hay[start:start + nn]
+        else:
+            nn = rng.randint(1, 4)
+            needle = "".join(chr(rng.randint(97, 99)) for _ in range(nn))
+        cases.append((hay, needle, hay.find(needle)))
+    # one explicit literal case (a literal, not a hand-built buffer)
+    cases.append(("literal probe", "probe", "literal probe".find("probe")))
+    lines = ["ayojan strb", "mukhya() {"]
+    for idx, (hay, needle, exp) in enumerate(cases):
+        lines.append(f'    yadi (strb_find("{hay}", {len(hay)}, "{needle}", {len(needle)}) != {exp}) {{')
+        lines.append(f'        likha("FAIL strb_find\\n")')
+        lines.append(f"        pratiyati 1")
+        lines.append(f"    }}")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "strb_find", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_strb_replace(compiler, rng):
+    """strb_replace matches Python str.replace; incl a literal-driven case"""
+    cases = []
+    for _ in range(6):
+        src = "".join(chr(rng.randint(97, 99)) for _ in range(rng.randint(3, 10)))
+        if len(src) >= 2 and rng.random() < 0.7:
+            i = rng.randint(0, len(src) - 2)
+            needle = src[i:i + 2]
+        else:
+            needle = "zz"
+        repl = "".join(chr(rng.randint(97, 99)) for _ in range(rng.randint(1, 3)))
+        exp = src.replace(needle, repl)
+        cases.append((src, needle, repl, exp))
+    # excluded edge: empty needle (strb_replace copies verbatim, Python
+    # interleaves the replacement) — documented in the module header.
+    cases.append(("foo bar foo", "foo", "baz", "baz bar baz"))
+    lines = ["ayojan strb", "mukhya() {",
+             "    vitti out = nirmmita(64)"]
+    for idx, (src, needle, repl, exp) in enumerate(cases):
+        lines.append(f'    vitti n{idx} = strb_replace("{src}", {len(src)}, "{needle}", {len(needle)}, "{repl}", out)')
+        lines.append(f"    yadi (n{idx} != {len(exp)}) {{")
+        lines.append(f'        likha("FAIL strb_replace len\\n")')
+        lines.append(f"        pratiyati 1")
+        lines.append(f"    }}")
+        for j, ch in enumerate(exp):
+            lines.append(f"    yadi (char_at(out, {j}) != {ord(ch)}) {{")
+            lines.append(f'        likha("FAIL strb_replace chars\\n")')
             lines.append(f"        pratiyati 1")
             lines.append(f"    }}")
     lines.append('    likha("PASS\\n")')
     lines.append("}")
-    ok, out = run_sm(compiler, "trim_case", "\n".join(lines))
+    ok, out = run_sm(compiler, "strb_repl", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_strb_split_join(compiler, rng):
+    """strb_join(strb_split(s, sep), sep) == s (skip trailing-sep edge)"""
+    cases = []
+    for _ in range(6):
+        s = "".join(chr(rng.randint(97, 99)) for _ in range(rng.randint(1, 10)))
+        sep = chr(rng.randint(44, 45))  # ',' or '-'
+        if s.endswith(sep):
+            s = s[:-1] + "a"
+        cases.append((s, sep))
+    lines = ["ayojan strb", "mukhya() {",
+             "    vitti parts = nirmmita(40*8)",
+             "    vitti out = nirmmita(32)"]
+    for idx, (s, sep) in enumerate(cases):
+        lines.append(f'    vitti nc{idx} = strb_split("{s}", {len(s)}, "{sep}", 1, parts, 12)')
+        lines.append(f'    vitti jn{idx} = strb_join(parts, nc{idx}, "{sep}", 1, out)')
+        lines.append(f"    yadi (jn{idx} != {len(s)}) {{")
+        lines.append(f'        likha("FAIL strb_split_join len\\n")')
+        lines.append(f"        pratiyati 1")
+        lines.append(f"    }}")
+        for j, ch in enumerate(s):
+            lines.append(f"    yadi (char_at(out, {j}) != {ord(ch)}) {{")
+            lines.append(f'        likha("FAIL strb_split_join chars\\n")')
+            lines.append(f"        pratiyati 1")
+            lines.append(f"    }}")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "strb_sj", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_strb_trim_case(compiler, rng):
+    """strb_trim/strb_upper/strb_lower match Python (literal inputs).
+
+    Loop-helper comparison (see prop_string_trim_case note): keeps the
+    generated program under the compiler's fixed AST capacity.
+    """
+    cases = []
+    for _ in range(8):
+        s = "".join(rng.choice([" ", "a", "B", "c"]) for _ in range(rng.randint(1, 8)))
+        cases.append(s)
+    lines = ["ayojan strb",
+             "prakriya bytes_match(buf, n, lit, ln) {",
+             "    vitti i = 0",
+             "    yadi (n != ln) { pratiyati 0 }",
+             "    yavat (i < n) {",
+             "        yadi (char_at(buf, i) != char_at(lit, i)) { pratiyati 0 }",
+             "        i = i + 1",
+             "    }",
+             "    pratiyati 1",
+             "}",
+             "mukhya() {",
+             "    vitti out = nirmmita(16)"]
+    for idx, s in enumerate(cases):
+        exp_trim = s.strip(" ")
+        exp_upper = s.upper()
+        exp_lower = s.lower()
+        lines.append(f'    vitti tn{idx} = strb_trim("{s}", {len(s)}, out)')
+        lines.append(f'    yadi (bytes_match(out, tn{idx}, "{exp_trim}", {len(exp_trim)}) == 0) {{')
+        lines.append(f'        likha("FAIL strb_trim\\n")')
+        lines.append(f"        pratiyati 1")
+        lines.append(f"    }}")
+        lines.append(f'    strb_upper("{s}", {len(s)}, out)')
+        lines.append(f'    yadi (bytes_match(out, {len(s)}, "{exp_upper}", {len(exp_upper)}) == 0) {{')
+        lines.append(f'        likha("FAIL strb_upper\\n")')
+        lines.append(f"        pratiyati 1")
+        lines.append(f"    }}")
+        lines.append(f'    strb_lower("{s}", {len(s)}, out)')
+        lines.append(f'    yadi (bytes_match(out, {len(s)}, "{exp_lower}", {len(exp_lower)}) == 0) {{')
+        lines.append(f'        likha("FAIL strb_lower\\n")')
+        lines.append(f"        pratiyati 1")
+        lines.append(f"    }}")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "strb_tc", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def _fnv1a_py(s):
+    h = 2166136261
+    for b in s.encode():
+        h = ((h ^ b) * 16777619) % 4294967296
+    return h
+
+
+def _distinct_keys(rng, n, lo=97, hi=99):
+    keys = []
+    while len(keys) < n:
+        k = "".join(chr(rng.randint(lo, hi)) for _ in range(rng.randint(2, 5)))
+        if k not in keys:
+            keys.append(k)
+    return keys
+
+
+def prop_map_roundtrip(compiler, rng):
+    """map_get returns what map_put stored, for a spread of distinct keys"""
+    keys = _distinct_keys(rng, 8)
+    vals = [rng.randint(1, 999) for _ in keys]
+    lines = ["ayojan map", "mukhya() {",
+             "    vitti m = map_init(16)"]
+    for k, v in zip(keys, vals):
+        lines.append(f'    map_put(m, 16, "{k}", {len(k)}, {v})')
+    lines.append("    yadi (map_size(m) != 8) {")
+    lines.append('        likha("FAIL map size\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    for k, v in zip(keys, vals):
+        lines.append(f'    yadi (map_get(m, 16, "{k}", {len(k)}) != {v}) {{')
+        lines.append(f'        likha("FAIL map roundtrip\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "map_rt", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_map_update(compiler, rng):
+    """putting the same key twice: size unchanged, second value wins"""
+    keys = _distinct_keys(rng, 4)
+    lines = ["ayojan map", "mukhya() {",
+             "    vitti m = map_init(8)"]
+    for k in keys:
+        v1 = rng.randint(1, 500)
+        v2 = rng.randint(501, 999)
+        lines.append(f'    map_put(m, 8, "{k}", {len(k)}, {v1})')
+        lines.append(f'    map_put(m, 8, "{k}", {len(k)}, {v2})')
+        lines.append(f'    yadi (map_get(m, 8, "{k}", {len(k)}) != {v2}) {{')
+        lines.append(f'        likha("FAIL map update\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append("    yadi (map_size(m) != 4) {")
+    lines.append('        likha("FAIL map update size\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "map_upd", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_map_delete(compiler, rng):
+    """after remove: contains 0, size decreases, other keys unaffected"""
+    keys = _distinct_keys(rng, 6)
+    vals = [rng.randint(1, 999) for _ in keys]
+    drop = (1, 4)
+    lines = ["ayojan map", "mukhya() {",
+             "    vitti m = map_init(16)"]
+    for k, v in zip(keys, vals):
+        lines.append(f'    map_put(m, 16, "{k}", {len(k)}, {v})')
+    for d in drop:
+        k = keys[d]
+        lines.append(f'    yadi (map_remove(m, 16, "{k}", {len(k)}) != 1) {{')
+        lines.append(f'        likha("FAIL map remove rc\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    for d in drop:
+        k = keys[d]
+        lines.append(f'    yadi (map_contains(m, 16, "{k}", {len(k)}) != 0) {{')
+        lines.append(f'        likha("FAIL map remove contains\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append("    yadi (map_size(m) != 4) {")
+    lines.append('        likha("FAIL map remove size\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    for i, (k, v) in enumerate(zip(keys, vals)):
+        if i in drop:
+            continue
+        lines.append(f'    yadi (map_get(m, 16, "{k}", {len(k)}) != {v}) {{')
+        lines.append(f'        likha("FAIL map remove survivor\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "map_del", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_map_collision(compiler, rng):
+    """keys hashing to the same bucket are all still retrievable"""
+    cands = []
+    while len(cands) < 40:
+        cands.append("".join(chr(rng.randint(97, 102))
+                             for _ in range(rng.randint(2, 5))))
+    buckets = {}
+    for k in cands:
+        buckets.setdefault(_fnv1a_py(k) % 8, []).append(k)
+    triple = next(v[:3] for v in buckets.values() if len(v) >= 3)
+    vals = [rng.randint(1, 999) for _ in triple]
+    lines = ["ayojan map", "mukhya() {",
+             "    vitti m = map_init(8)"]
+    for k, v in zip(triple, vals):
+        lines.append(f'    map_put(m, 8, "{k}", {len(k)}, {v})')
+    for k, v in zip(triple, vals):
+        lines.append(f'    yadi (map_get(m, 8, "{k}", {len(k)}) != {v}) {{')
+        lines.append(f'        likha("FAIL map collision\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "map_col", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_map_keys_count(compiler, rng):
+    """map_keys count == map_size, and the written bytes add up"""
+    keys = _distinct_keys(rng, 5)
+    vals = [rng.randint(1, 999) for _ in keys]
+    total_len = sum(len(k) for k in keys)
+    lines = ["ayojan map", "mukhya() {",
+             "    vitti m = map_init(16)",
+             "    vitti out = nirmmita(32*8)",
+             "    vitti nk = 0",
+             "    vitti rpos = 0",
+             "    vitti total = 0",
+             "    vitti t = 0",
+             "    vitti sl = 0"]
+    for k, v in zip(keys, vals):
+        lines.append(f'    map_put(m, 16, "{k}", {len(k)}, {v})')
+    lines.append("    nk = map_keys(m, out)")
+    lines.append("    yadi (nk != 5) {")
+    lines.append('        likha("FAIL map keys count\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append("    yadi (nk != map_size(m)) {")
+    lines.append('        likha("FAIL map keys vs size\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append("    yavat (t < nk) {")
+    lines.append("        sl = out[rpos]")
+    lines.append("        total = total + sl")
+    lines.append("        rpos = rpos + 1 + sl")
+    lines.append("        t = t + 1")
+    lines.append("    }")
+    lines.append(f"    yadi (total != {total_len}) {{")
+    lines.append('        likha("FAIL map keys bytes\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "map_keys", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_strb_find(compiler, rng):
+    """strb_find vs Python str.find, incl a literal-input case"""
+    cases = []
+    # one literal case as required
+    cases.append(("hello world", "world", 6, True))
+    for _ in range(7):
+        hn = rng.randint(1, 12)
+        hay = "".join(chr(rng.randint(97, 99)) for _ in range(hn))
+        if rng.random() < 0.5 and hn >= 2:
+            start = rng.randint(0, hn - 1)
+            nn = rng.randint(1, hn - start)
+            needle = hay[start:start + nn]
+        else:
+            nn = rng.randint(1, 4)
+            needle = "".join(chr(rng.randint(97, 99)) for _ in range(nn))
+        cases.append((hay, needle, hay.find(needle), False))
+    lines = ["ayojan string", "mukhya() {"]
+    for idx, (hay, needle, exp, is_literal) in enumerate(cases):
+        if is_literal:
+            lines.append(f'    yadi (strb_find("{hay}", "{needle}") != {exp}) {{')
+        else:
+            # build via set_char into a buffer (still byte-string, not literal)
+            lines.append(f"    vitti h{idx} = nirmmita(16*8)")
+            lines.append(f"    vitti n{idx} = nirmmita(8*8)")
+            for j, ch in enumerate(hay):
+                lines.append(f"    set_char(h{idx}, {j}, {ord(ch)})")
+            lines.append(f"    set_char(h{idx}, {len(hay)}, 0)")
+            for j, ch in enumerate(needle):
+                lines.append(f"    set_char(n{idx}, {j}, {ord(ch)})")
+            lines.append(f"    set_char(n{idx}, {len(needle)}, 0)")
+            lines.append(f"    yadi (strb_find(h{idx}, n{idx}) != {exp}) {{")
+        lines.append(f'        likha("FAIL strb_find\\n")')
+        lines.append(f"        pratiyati 1")
+        lines.append(f"    }}")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "strb_find", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_strb_replace(compiler, rng):
+    """strb_replace vs Python str.replace (byte strings)"""
+    cases = []
+    cases.append(("foo bar foo", "foo", "baz", "baz bar baz", True))
+    for _ in range(5):
+        src = "".join(chr(rng.randint(97, 99)) for _ in range(rng.randint(3, 10)))
+        if len(src) >= 2 and rng.random() < 0.7:
+            i = rng.randint(0, len(src) - 2)
+            needle = src[i:i + 2]
+        else:
+            needle = "zz"
+        repl = "".join(chr(rng.randint(97, 99)) for _ in range(rng.randint(1, 3)))
+        cases.append((src, needle, repl, src.replace(needle, repl), False))
+    lines = ["ayojan string", "mukhya() {",
+             "    vitti out = nirmmita(40*8)"]
+    for idx, (src, needle, repl, exp, is_literal) in enumerate(cases):
+        if is_literal:
+            lines.append(f'    vitti n{idx} = strb_replace("{src}", "{needle}", "{repl}", out)')
+        else:
+            lines.append(f"    vitti s{idx} = nirmmita(16*8)")
+            lines.append(f"    vitti f{idx} = nirmmita(8*8)")
+            lines.append(f"    vitti r{idx} = nirmmita(8*8)")
+            for j, ch in enumerate(src):
+                lines.append(f"    set_char(s{idx}, {j}, {ord(ch)})")
+            lines.append(f"    set_char(s{idx}, {len(src)}, 0)")
+            for j, ch in enumerate(needle):
+                lines.append(f"    set_char(f{idx}, {j}, {ord(ch)})")
+            lines.append(f"    set_char(f{idx}, {len(needle)}, 0)")
+            for j, ch in enumerate(repl):
+                lines.append(f"    set_char(r{idx}, {j}, {ord(ch)})")
+            lines.append(f"    set_char(r{idx}, {len(repl)}, 0)")
+            lines.append(f"    vitti n{idx} = strb_replace(s{idx}, f{idx}, r{idx}, out)")
+        lines.append(f"    yadi (n{idx} != {len(exp)}) {{")
+        lines.append(f'        likha("FAIL strb_replace len\\n")')
+        lines.append(f"        pratiyati 1")
+        lines.append(f"    }}")
+        for j, ch in enumerate(exp):
+            lines.append(f"    yadi (char_at(out, {j}) != {ord(ch)}) {{")
+            lines.append(f'        likha("FAIL strb_replace chars\\n")')
+            lines.append(f"        pratiyati 1")
+            lines.append(f"    }}")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "strb_repl", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_strb_split_join(compiler, rng):
+    """strb_join(strb_split(s, sep), sep) == s"""
+    cases = []
+    for _ in range(6):
+        s = "".join(chr(rng.randint(97, 99)) for _ in range(rng.randint(1, 10)))
+        sep = chr(rng.randint(44, 45))
+        if s.endswith(sep):
+            s = s[:-1] + "a"
+        cases.append((s, sep))
+    lines = ["ayojan string", "mukhya() {",
+             "    vitti parts = nirmmita(60*8)",
+             "    vitti out = nirmmita(30*8)"]
+    for idx, (s, sep) in enumerate(cases):
+        lines.append(f"    vitti src{idx} = nirmmita(16*8)")
+        for j, ch in enumerate(s):
+            lines.append(f"    set_char(src{idx}, {j}, {ord(ch)})")
+        lines.append(f"    set_char(src{idx}, {len(s)}, 0)")
+        lines.append(f"    vitti sep{idx} = nirmmita(4*8)")
+        lines.append(f"    set_char(sep{idx}, 0, {ord(sep)})")
+        lines.append(f"    set_char(sep{idx}, 1, 0)")
+        lines.append(f"    vitti nc{idx} = strb_split(src{idx}, sep{idx}, parts, 10)")
+        lines.append(f"    vitti jn{idx} = strb_join(parts, nc{idx}, sep{idx}, out)")
+        lines.append(f"    yadi (jn{idx} != {len(s)}) {{")
+        lines.append(f'        likha("FAIL strb_split_join len\\n")')
+        lines.append(f"        pratiyati 1")
+        lines.append(f"    }}")
+        for j, ch in enumerate(s):
+            lines.append(f"    yadi (char_at(out, {j}) != {ord(ch)}) {{")
+            lines.append(f'        likha("FAIL strb_split_join chars\\n")')
+            lines.append(f"        pratiyati 1")
+            lines.append(f"    }}")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "strb_sj", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_strb_trim_case(compiler, rng):
+    """strb_trim/upper/lower vs Python"""
+    cases = []
+    for _ in range(5):
+        s = "".join(rng.choice([" ", "a", "B", "c"]) for _ in range(rng.randint(1, 8)))
+        cases.append(s)
+    lines = ["ayojan string", "mukhya() {",
+             "    vitti out = nirmmita(16*8)"]
+    for idx, s in enumerate(cases):
+        lines.append(f"    vitti src{idx} = nirmmita(16*8)")
+        for j, ch in enumerate(s):
+            lines.append(f"    set_char(src{idx}, {j}, {ord(ch)})")
+        lines.append(f"    set_char(src{idx}, {len(s)}, 0)")
+        exp_trim = s.strip(" ")
+        exp_upper = s.upper()
+        exp_lower = s.lower()
+        lines.append(f"    vitti tn{idx} = strb_trim(src{idx}, out)")
+        lines.append(f"    yadi (tn{idx} != {len(exp_trim)}) {{")
+        lines.append(f'        likha("FAIL strb_trim len\\n")')
+        lines.append(f"        pratiyati 1")
+        lines.append(f"    }}")
+        for j, ch in enumerate(exp_trim):
+            lines.append(f"    yadi (char_at(out, {j}) != {ord(ch)}) {{")
+            lines.append(f'        likha("FAIL strb_trim chars\\n")')
+            lines.append(f"        pratiyati 1")
+            lines.append(f"    }}")
+        lines.append(f"    strb_upper(src{idx}, out)")
+        for j, ch in enumerate(exp_upper):
+            lines.append(f"    yadi (char_at(out, {j}) != {ord(ch)}) {{")
+            lines.append(f'        likha("FAIL strb_upper\\n")')
+            lines.append(f"        pratiyati 1")
+            lines.append(f"    }}")
+        lines.append(f"    strb_lower(src{idx}, out)")
+        for j, ch in enumerate(exp_lower):
+            lines.append(f"    yadi (char_at(out, {j}) != {ord(ch)}) {{")
+            lines.append(f'        likha("FAIL strb_lower\\n")')
+            lines.append(f"        pratiyati 1")
+            lines.append(f"    }}")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "strb_tc", "\n".join(lines))
     return ok and out == "PASS", out
 
 
@@ -687,6 +1171,15 @@ def main():
         ("string replace", prop_string_replace),
         ("string split/join", prop_string_split_join),
         ("string trim/case", prop_string_trim_case),
+        ("strb find vs python", prop_strb_find),
+        ("strb replace", prop_strb_replace),
+        ("strb split/join", prop_strb_split_join),
+        ("strb trim/case", prop_strb_trim_case),
+        ("map put/get roundtrip", prop_map_roundtrip),
+        ("map update", prop_map_update),
+        ("map delete", prop_map_delete),
+        ("map collision survival", prop_map_collision),
+        ("map keys count", prop_map_keys_count),
     ]
 
     failed = []
