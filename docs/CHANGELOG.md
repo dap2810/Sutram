@@ -1,3 +1,24 @@
+## v107 — Muse R9 accepted; ROUND-10 issued
+
+- **Muse R9 verified and accepted.** `lib/string.smlib` gained an 11-function text
+  toolkit (find/contains/replace/split/join/trim/upper/lower/starts/ends/compare).
+  Both SHA-256 hashes match; all files present. Reproduced on my own build:
+  proof_lib **132/132**, proof_props **21/21**, suite **186/186**, stdlib
+  **16 modules / 144 functions**. Compiler untouched (main's is ChatGPT's
+  `55e6ac26…`).
+- **Testing it exposed a real gap, now the next round.** My first call passed a
+  string *literal* to `str_find` and got `-1`; the source indexes `h[i+j]`, so it
+  wants a **char-code array**. On a char-code array it is correct
+  (`str_find("hello","ll")`=2, `str_contains`=1, `str_compare(x,x)`=0,
+  `str_upper("hello")`->`HELLO`). The toolkit is right; the two representations
+  (byte-packed literals vs qword cells) are simply not bridged. My misuse, not a
+  defect — but a genuine usability hole.
+- **Issued ROUND-10 to Muse** — a byte-string surface for the toolkit (`strb_*`)
+  built on the newly-available `set_char`/`char_at`, so literals flow through with
+  no hand-built array; char-code API and R9 goldens untouched. Also told them main
+  moved off R44 and to branch from `55e6ac26…`.
+- ROUND-51 to ChatGPT (finish R49 provenance) is still outstanding; no reply yet.
+
 ## v106 — ChatGPT R49/R50 reviewed and SYNCED to main
 
 - **ChatGPT delivered R49 and R50 in one branch** (`feature/r49-r50-completion-20261009`,
