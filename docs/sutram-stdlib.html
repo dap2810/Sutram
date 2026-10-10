@@ -29,13 +29,15 @@ Do not edit by hand.</p>
 <li><a href="#hash"><code>hash</code></a> — 2 functions</li>
 <li><a href="#kalana"><code>kalana</code></a> — 6 functions</li>
 <li><a href="#madhava"><code>madhava</code></a> — 5 functions</li>
+<li><a href="#map"><code>map</code></a> — 11 functions</li>
 <li><a href="#math"><code>math</code></a> — 16 functions</li>
 <li><a href="#num"><code>num</code></a> — 10 functions</li>
 <li><a href="#samanvaya"><code>samanvaya</code></a> — 10 functions</li>
 <li><a href="#sankhyiki"><code>sankhyiki</code></a> — 10 functions</li>
 <li><a href="#sort"><code>sort</code></a> — 14 functions</li>
+<li><a href="#strb"><code>strb</code></a> — 12 functions</li>
 <li><a href="#strconv"><code>strconv</code></a> — 5 functions</li>
-<li><a href="#string"><code>string</code></a> — 25 functions</li>
+<li><a href="#string"><code>string</code></a> — 37 functions</li>
 <li><a href="#util"><code>util</code></a> — 7 functions</li>
 </ul>
 <h2 id="array"><code>array</code></h2>
@@ -125,6 +127,22 @@ Do not edit by hand.</p>
 <tr><td><code>madhava_cos(dasham x)</code></td><td>Madhava&#x27;s cosine series:  cos(x) = 1 - x^2/2! + x^4/4! - ...</td></tr>
 <tr><td><code>madhava_atan(dasham x)</code></td><td>Madhava-Gregory arctangent series:  atan(x) = x - x^3/3 + x^5/5 - ...</td></tr>
 </table>
+<h2 id="map"><code>map</code></h2>
+<p class="mod-desc">Open addressing with linear probing over parallel pankti arrays. KEY REPRESENTATION: byte strings (the R10 strb_* surface), NOT char-code arrays. Rationale: keys are usually literals (&quot;apple&quot;), and byte strings let the caller pass a literal directly — no hand-built cell array. The hash (lib/hash.smlib fnv1a, via `ayojan hash` below) is byte-based (char_at), so the choice is consistent end to end. Worked example: ayojan map mukhya() { vitti m = map_init(8) map_put(m, 8, &quot;apple&quot;, 5, 42) likha(map_get(m, 8, &quot;apple&quot;, 5))   # 42 likha(&quot;\n&quot;) } This matches lib/string.smlib&#x27;s header: a byte string is bytes packed 1-per-byte (a literal, or a set_char-built buffer), measured with an explicit length, read with char_at. Do not pass char-code arrays here. Layout of the map buffer m (qword cells, except the key bytes): m[0]           capacity m[1]           live entry count m[2+i]         state[i]   (0 = empty, 1 = live), i in 0..cap-1 m[2+cap+i]     keylen[i] m[2+2*cap+i]   val[i] key bytes: byte region at byte offset (2+3*cap)*8, KEY_MAX bytes/slot. KEY_MAX = 32: keys longer than 32 bytes are truncated to 32, consistently on put/get/contains/remove (documented; excluded from the properties). cap must be &gt;= 1 (clamped). Probing wraps modulo cap. DELETION is backward-shift (Knuth 6.4R): the freed slot is filled by shifting later probe-chain entries back toward their home bucket, so there is no &quot;deleted&quot; state and no tombstones — a lookup stops at the first empty slot and never misses a live entry. ABSENT SENTINEL: map_get returns -1 (0-1) for a missing key. Values are programmer-managed integers; do not store -1 as a value unless you disambiguate with map_contains first. FULL TABLE: map_put returns 0 and changes nothing.</p>
+<table>
+<tr><th>Function</th><th>Description</th></tr>
+<tr><td><code>map_key_hash(key, keyn, cap)</code></td><td>map_key_hash(key, keyn, cap) — home bucket of key (internal helper).</td></tr>
+<tr><td><code>map_key_eq(m, slot, cap, key, keyn)</code></td><td>map_key_eq(m, slot, cap, key, keyn) — 1 if slot&#x27;s key equals (key,keyn) (internal helper; keyn already truncated by the caller).</td></tr>
+<tr><td><code>map_slot_write(m, slot, cap, key, keyn, val)</code></td><td>map_slot_write(m, slot, cap, key, keyn, val) — store key+val at slot and mark it live (internal helper; keyn already truncated by the caller).</td></tr>
+<tr><td><code>map_find(m, cap, key, keyn)</code></td><td>map_find(m, cap, key, keyn) — slot index holding key, or -1 if absent (internal helper; stops at the first empty slot — valid because deletion is backward-shift, so chains have no holes).</td></tr>
+<tr><td><code>map_init(cap)</code></td><td>map_init(cap) — allocate and clear a map of capacity cap (clamped to &gt;= 1).</td></tr>
+<tr><td><code>map_put(m, cap, key, keyn, val)</code></td><td>map_put(m, cap, key, keyn, val) — insert or update key; returns 1 on success, 0 if the table is full (then the map is unchanged). Updating an existing key keeps map_size unchanged.</td></tr>
+<tr><td><code>map_get(m, cap, key, keyn)</code></td><td>map_get(m, cap, key, keyn) — value stored for key, or -1 if absent (documented sentinel; use map_contains to disambiguate).</td></tr>
+<tr><td><code>map_contains(m, cap, key, keyn)</code></td><td>map_contains(m, cap, key, keyn) — 1 if key is present, else 0.</td></tr>
+<tr><td><code>map_remove(m, cap, key, keyn)</code></td><td>map_remove(m, cap, key, keyn) — delete key; 1 if removed, 0 if absent. Backward-shift deletion (Knuth 6.4R): after clearing the slot, each following live entry whose home bucket is NOT cyclically past the hole is shifted back into it, preserving every probe chain with no tombstones.</td></tr>
+<tr><td><code>map_size(m)</code></td><td>map_size(m) — number of live entries.</td></tr>
+<tr><td><code>map_keys(m, out)</code></td><td>map_keys(m, out) — write live keys into out in length-prefixed form [len0, b0, b1, ..., len1, b0, ...] (same shape as str_split parts). Returns the key count, which equals map_size(m).</td></tr>
+</table>
 <h2 id="math"><code>math</code></h2>
 <p class="mod-desc">Pure integer arithmetic, written only with verified language features. Every function copies its parameters into locals before mutating them, because the compiler currently faults on assignment to a parameter.</p>
 <table>
@@ -210,6 +228,23 @@ Do not edit by hand.</p>
 <tr><td><code>merge_sort_rec(a, tmp, lo, hi)</code></td><td>merge_sort(a, n) — top-down merge sort using a temp buffer.</td></tr>
 <tr><td><code>merge_sort(a, n)</code></td><td></td></tr>
 </table>
+<h2 id="strb"><code>strb</code></h2>
+<p class="mod-desc">The string toolkit operating on BYTE-PACKED strings — the representation of a literal and of set_char-built buffers. This is the ROUND-10 answer to the R9 gap: a programmer holding &quot;hello world&quot; can now use the toolkit directly, with no hand-built char-code array. THE TWO REPRESENTATIONS, side by side (kept consistent with the char-code array (lib/string.smlib R9 toolkit): qword cells, one char code per cell, read with h[i] (8-byte stride). Idiom: vitti h = nirmmita(6*8); h[0]=104; h[1]=105  (&quot;hi&quot; as cells); str_find(h, 2, nd, 1). byte string (this module): bytes packed 1-per-byte, read with char_at(s, i) (1-byte stride), written with set_char(s, i, v), measured with vartani_len(s). Idiom: strb_find(&quot;hi&quot;, 2, &quot;i&quot;, 1) -&gt; 1; or vitti b = nirmmita(8); set_char(b,0,104); set_char(b,1,105); set_char(b,2,0); strb_len(b) -&gt; 2. Do NOT mix them: h[i] on a byte string reads 8 bytes at once, and char_at on a char-code array reads one byte of a qword cell. This lives in its own module (not inside string.smlib) because the compiler has a fixed AST ceiling: inlining the combined module together with the other stdlib modules exceeded it (suite tests 87/99/102). The char-code toolkit in lib/string.smlib is byte-for-byte unchanged. Conventions: lengths are explicit (source of truth); out-buffers get a 0 terminator via set_char; the caller allocates generously. Empty needle matches at 0; &quot;not found&quot; is -1. All signatures stay within the compiler&#x27;s 6-argument cap (repl is 0-terminated, its length derived). strb_split/strb_join use the same length-prefixed segment format as str_split/str_join (R9): [len0, b0, b1, ..., len1, b0, ...], one byte value per cell.</p>
+<table>
+<tr><th>Function</th><th>Description</th></tr>
+<tr><td><code>strb_len(s)</code></td><td></td></tr>
+<tr><td><code>strb_find(hay, hn, needle, nn)</code></td><td>strb_find(hay, hn, needle, nn) — byte index of first occurrence of needle in hay, or -1. Empty needle matches at 0.</td></tr>
+<tr><td><code>strb_contains(hay, hn, needle, nn)</code></td><td>strb_contains(hay, hn, needle, nn) — 1 if needle occurs in hay, else 0.</td></tr>
+<tr><td><code>strb_replace(src, sn, find, fn, repl, out)</code></td><td>strb_replace(src, sn, find, fn, repl, out) — copy src to out, replacing every (non-overlapping) occurrence of find with repl. repl is 0-terminated (its length is derived, so a literal works). Returns the new byte count. Empty find: copy verbatim. Caller allocates generously.</td></tr>
+<tr><td><code>strb_split(src, sn, sep, sepn, parts, maxparts)</code></td><td>strb_split(src, sn, sep, sepn, parts, maxparts) — split src on sep. Same length-prefixed segment format as str_split (R9): parts holds [len0, b0, b1, ..., len1, b0, ...]; cells hold one byte value each. Returns the segment count (capped at maxparts). Empty separator: no split (one segment). Empty input: one empty segment.</td></tr>
+<tr><td><code>strb_join(parts, count, sep, sepn, out)</code></td><td>strb_join(parts, count, sep, sepn, out) — inverse of strb_split for the length-prefixed format. Joins `count` segments with sep into a byte string. Returns the new byte count.</td></tr>
+<tr><td><code>strb_trim(src, sn, out)</code></td><td>strb_trim(src, sn, out) — strip leading/trailing ASCII spaces (32). Returns the new byte count.</td></tr>
+<tr><td><code>strb_upper(src, sn, out)</code></td><td>strb_upper(src, sn, out) / strb_lower — ASCII case conversion on byte strings. Returns the byte count.</td></tr>
+<tr><td><code>strb_lower(src, sn, out)</code></td><td></td></tr>
+<tr><td><code>strb_starts(src, sn, pre, pn)</code></td><td>strb_starts(src, sn, pre, pn) / strb_ends — 0/1 on byte strings.</td></tr>
+<tr><td><code>strb_ends(src, sn, suf, sn2)</code></td><td></td></tr>
+<tr><td><code>strb_compare(a, an, b, bn)</code></td><td>strb_compare(a, an, b, bn) — -1 / 0 / 1 (lexicographic by byte value).</td></tr>
+</table>
 <h2 id="strconv"><code>strconv</code></h2>
 <p class="mod-desc">Renders integers as decimal (or base-2/8/16) digit characters into a buffer, and parses them back. Buffers are pankti of integer character codes (not byte-packed strings — see ROUND-08 Part B: Sutram has no byte-write primitive, so we use cell arrays of char codes, the same idiom as lib/baseconv.smlib). All functions handle: zero, negative numbers (decimal only), empty input. int_to_str(n, out) — write decimal representation of int n into pankti out as character codes. Returns the character count (excluding terminator). out[ count ] is set to 0 as a terminator. Caller allocates &gt;= 22 cells.</p>
 <table>
@@ -249,6 +284,18 @@ Do not edit by hand.</p>
 <tr><td><code>str_starts(src, sn, pre, pn)</code></td><td>str_starts(src, sn, pre, pn) / str_ends — 0/1.</td></tr>
 <tr><td><code>str_ends(src, sn, suf, sn2)</code></td><td></td></tr>
 <tr><td><code>str_compare(a, an, b, bn)</code></td><td>str_compare(a, an, b, bn) — -1 / 0 / 1 (lexicographic by char code).</td></tr>
+<tr><td><code>strb_len(s)</code></td><td>strb_len(s) — length of NUL-terminated byte string (excluding NUL).</td></tr>
+<tr><td><code>strb_find(hay, needle)</code></td><td>strb_find(hay, needle) — index of first occurrence, or -1. Empty needle matches at 0.</td></tr>
+<tr><td><code>strb_contains(hay, needle)</code></td><td>strb_contains(hay, needle) — 1 if found, else 0.</td></tr>
+<tr><td><code>strb_replace(src, find, repl, out)</code></td><td>strb_replace(src, find, repl, out) — byte-string replace all. All inputs NUL-terminated; out gets NUL-terminated result. Returns new length (excluding NUL). Caller allocates generously.</td></tr>
+<tr><td><code>strb_split(src, sep, parts, maxparts)</code></td><td>strb_split(src, sep, parts, maxparts) — split byte string on sep. parts is a flat byte buffer holding NUL-terminated segments consecutively. Returns segment count. To recover segment i: walk from parts[0], skipping (strb_len(seg)+1) bytes per segment.</td></tr>
+<tr><td><code>strb_join(parts, count, sep, out)</code></td><td>strb_join(parts, count, sep, out) — join NUL-terminated segments.</td></tr>
+<tr><td><code>strb_trim(src, out)</code></td><td>strb_trim(src, out) — strip ASCII spaces.</td></tr>
+<tr><td><code>strb_upper(src, out)</code></td><td>strb_upper(src, out) / strb_lower — ASCII case.</td></tr>
+<tr><td><code>strb_lower(src, out)</code></td><td></td></tr>
+<tr><td><code>strb_starts(src, pre)</code></td><td>strb_starts(src, pre) / strb_ends — 0/1.</td></tr>
+<tr><td><code>strb_ends(src, suf)</code></td><td></td></tr>
+<tr><td><code>strb_compare(a, b)</code></td><td>strb_compare(a, b) — -1/0/1 lexicographic.</td></tr>
 </table>
 <h2 id="util"><code>util</code></h2>
 <p class="mod-desc">Sutram Utility Library - util.smlib General-purpose utility functions Usage: ayojan util</p>
@@ -262,6 +309,6 @@ Do not edit by hand.</p>
 <tr><td><code>bool_to_int(b)</code></td><td></td></tr>
 <tr><td><code>int_max()</code></td><td></td></tr>
 </table>
-<footer>16 modules, 144 functions. Generated from library sources.</footer>
+<footer>18 modules, 179 functions. Generated from library sources.</footer>
 </body>
 </html>
