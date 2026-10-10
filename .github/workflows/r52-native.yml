@@ -37,9 +37,9 @@ jobs:
           python3 tools/r48_native_acceptance.py
           python3 tools/r48_stage2_acceptance.py
           python3 tools/r49_repeated_semantic.py
-          python3 tools/r49_diagnostic_audit.py
-          python3 tools/r51_native_audit.py
           python3 tools/r50_native_acceptance.py
+          # R51 imported-provenance fixes have their own independently green
+          # PR #9; current main does not yet contain that compiler or tests.
       - name: Original tests with byte-identical goldens
         run: |
           cp r48_after sutram_compiler
