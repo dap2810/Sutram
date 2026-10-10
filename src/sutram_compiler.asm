@@ -2816,6 +2816,7 @@ mg_e_unknown2: db "' in module '", 0
 mg_e_unknown3: db "'", 10, 0
 mg_w_sutra:    db "sutra", 0
 mg_e_depth:   db "Sutram Error [E_MODULE_DEPTH]: import depth exceeded", 10, 0
+r51_colon_space: db ": ", 0
 mg_e_valias1: db "Sutram Error [E_MODULE_V1_ALIAS]: v1 module '", 0
 mg_e_valias2: db "' must be imported with an alias: ayojan ", 0
 mg_e_valias3: db "@alias", 10, 0
@@ -3872,7 +3873,7 @@ mg_valias_error:
     je .old
     mov rsi,[rel mg_cur_line]
     call r49_print_module_location
-    lea rdi,[rel mg_colon]
+    lea rdi,[rel r51_colon_space]
     call print_str_z
     jmp .message
 .old:

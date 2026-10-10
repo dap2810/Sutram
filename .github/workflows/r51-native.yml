@@ -43,7 +43,14 @@ jobs:
           python3 tools/codegen_gate.py
           python3 tools/test_lang_packs.py
           python3 -m unittest discover -s tests/module_graph -p 'test_*.py' -v
-      - name: Source checksum
+      - name: Source checksum and accepted fixtures
         if: always()
         run: |
-          sha256sum src/sutram_compiler.asm tools/r49_diagnostic_audit.py
+          sha256sum src/sutram_compiler.asm tools/r49_diagnostic_audit.py tools/r51_native_audit.py tools/r51_graph_inventory.py tests/r51_check/*.sm tests/r51_check/lib/*.smlib > r51_sha256.txt
+          cat r51_sha256.txt
+      - name: Attach checksum evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: r51-source-manifest
+          path: r51_sha256.txt
