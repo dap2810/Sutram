@@ -1,0 +1,21 @@
+ayojan string
+mukhya() {
+    vitti out = nirmmita(20 * 8)
+    strb_upper("hello", out)
+    likha(char_at(out, 0))
+    likha("\n")
+    strb_lower("HELLO", out)
+    likha(char_at(out, 0))
+    likha("\n")
+    vitti tn = strb_trim("  hi  ", out)
+    likha(tn)
+    likha("\n")
+    likha(char_at(out, 0))
+    likha("\n")
+    likha(strb_compare("abc", "abd"))
+    likha("\n")
+    likha(strb_starts("hello", "he"))
+    likha("\n")
+    likha(strb_ends("hello", "lo"))
+    likha("\n")
+}
