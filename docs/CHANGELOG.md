@@ -1,3 +1,19 @@
+## v109 — R51 substance independently verified (still unreported)
+
+- ChatGPT still has **no handoff file** for R51, so it remains unaccepted and unsynced.
+  But I ran the branch's own fixtures through `--check` **with my own commands**, not
+  their audit script, and the R49 gap is genuinely closed:
+  - `nested_root.sm` -> `outer_r51` -> `inner_r51`: the error is attributed to
+    **`inner_r51.smlib:2:23`** — correct provenance through **two** `ayojan` levels.
+  - `namespaced_root.sm`: **`broken_ns_r51.smlib:2:26`** — namespaced import correct.
+  - `semantic_import.sm`: **three** semantic errors, all attributed to
+    `semantics_r51.smlib` — accumulation and origin both right.
+  - `missing_three.sm`: three located `E_MODULE_MISSING`.
+- Branch also builds (170,176 B) and passes **186/186**; it is based on current main
+  (GUI `8480b95b…`). Nothing synced; main's compiler unchanged (`55e6ac26…`).
+- Both AIs already hold an open task (ChatGPT ROUND-51, Muse ROUND-10), so no new
+  round was issued this check — per the instruction not to duplicate.
+
 ## v108 — Folder check: nothing delivered yet; R51 in progress and looking right
 
 - **No new delivery in either folder.** `ChatGPT-to-Sarvam/` still ends at
