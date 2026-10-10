@@ -1,0 +1,60 @@
+name: R52 native builtin defects and full backwards compatibility
+on:
+  push:
+    branches: [feature/r52-stdlib-compiler-defects-20261010]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install NASM as normal user
+        run: |
+          cd "$RUNNER_TEMP"
+          apt download nasm
+          mkdir -p tools
+          for p in ./*.deb; do dpkg-deb -x "$p" tools; done
+          echo "$RUNNER_TEMP/tools/usr/bin" >> "$GITHUB_PATH"
+      - name: Build original main compiler, accepted R46, and proposed Round52 NASM compiler
+        run: |
+          git show 853083c9762992757b8f6682e5b3a3fc7296d8bf:src/sutram_compiler.asm > /tmp/r52_before.asm
+          nasm -f elf64 -I. /tmp/r52_before.asm -o /tmp/r52_before.o
+          ld -o r52_before /tmp/r52_before.o
+          git show 72b824f70049765c3977db07d712a1a604b89434:src/sutram_compiler.asm > /tmp/r46.asm
+          nasm -f elf64 -I. /tmp/r46.asm -o /tmp/r46.o
+          ld -o r48_before /tmp/r46.o
+          nasm -f elf64 -I. src/sutram_compiler.asm -o /tmp/r52.o
+          ld -o r48_after /tmp/r52.o
+      - name: Real baseline and corrected native executable tests
+        run: python3 tools/r52_native_acceptance.py
+      - name: Strict diagnostic provenance and earlier native acceptance
+        run: |
+          python3 tools/r48_native_acceptance.py
+          python3 tools/r48_stage2_acceptance.py
+          python3 tools/r49_repeated_semantic.py
+          python3 tools/r49_diagnostic_audit.py
+          python3 tools/r51_native_audit.py
+          python3 tools/r50_native_acceptance.py
+      - name: Original tests with byte-identical goldens
+        run: |
+          cp r48_after sutram_compiler
+          python3 tests/run_tests.py
+          python3 tools/codegen_gate.py
+          python3 tools/test_lang_packs.py
+          python3 -m unittest discover -s tests/module_graph -p 'test_*.py' -v
+      - name: SHA256 source and new cases
+        if: always()
+        run: |
+          sha256sum src/sutram_compiler.asm lib/string.smlib tools/r52_native_acceptance.py tests/r52_check/*.sm > r52_sha256.txt
+          cat r52_sha256.txt
+      - name: Publish hash evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: r52-sha256
+          path: r52_sha256.txt

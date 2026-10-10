@@ -1,0 +1,3 @@
+mukhya() {
+    likha(dvaram("missing_mode_arguments.txt"))
+}

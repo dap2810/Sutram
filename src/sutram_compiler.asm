@@ -212,6 +212,9 @@ str_dot_exe  db ".exe", 0
     r48_msg_errors db "Sutram check: errors found; no output binary",10,0
     r48_msg_eof db "<EOF>",0
     r50_msg_setchar_arity db "Sutram Error: set_char requires exactly 3 arguments",10,0
+    r52_msg_dvaram_arity db "Sutram Error: dvaram requires 2 or 3 arguments",10,0
+    r52_msg_charat_arity db "Sutram Error: char_at requires exactly 2 arguments",10,0
+    r52_msg_charcode_arity db "Sutram Error: char_code requires 1 or 2 arguments",10,0
     r48_msg_undefined db ": Sutram Error [E_UNDEFINED_FUNCTION]: unknown function '",0
     msg_err_line db 10, "Sutram Error: parse error at line ", 0
     msg_err_near db " near token '", 0
@@ -9102,19 +9105,23 @@ parse_primary:
     ret
 
 .pp_writemem:
+    ; R52: the generic argument parser stashes nodes on the stack, not in
+    ; call_args (which can contain stale pointers from unrelated calls).
+    ; Previous code read call_args and could crash the compiler for likh().
+    cmp r12, 2
+    jne parse_error
     push rbx
     push r12
     call alloc_ast
     pop r12
     pop rbx
     mov qword [rax], AST_WRITEMEM
-    mov [rax+8], r12          ; arg count
-    lea rdx, [rel call_args]
-    mov rcx, [rdx]            ; arg1 (address)
-    mov [rax+16], rcx
-    mov rcx, [rdx+8]         ; arg2 (value)
+    mov [rax+8], r12
+    pop rcx                    ; second argument, most recent stashed node
+    pop rdx                    ; first argument, destination address node
+    mov [rax+16], rdx
     mov [rax+24], rcx
-    pop r12                   ; restore r12
+    pop r12                    ; restore r12
     pop rbx
     ret
 
@@ -12636,40 +12643,53 @@ gen_expr:
     jmp .ge_call_done
 
 .ge_call_dvaram:
-    ; dvaram(path, flags) -> fd (sys_open=2)
-    ; gen_expr(arg1) → rax = path, push, gen_expr(arg2) → rax = flags
+    ; R52: dvaram(path, flags[, mode]) -> Linux sys_open result.
+    ; The previous two-argument path left rdx unspecified and O_CREAT could
+    ; create inaccessible mode-000 files. Default creation mode is 0644.
+    ; Explicit third argument supplies the mode; effective bits honor umask.
+    cmp qword [rbx+16], 2
+    je .ge_dvaram_args_ok
+    cmp qword [rbx+16], 3
+    jne .ge_dvaram_arity
+.ge_dvaram_args_ok:
     mov rax, [rbx+24]
     call gen_expr
-    ; emit: push rax (50)
-    mov dil, 0x50
+    mov dil, 0x50                 ; push path
     call emit_byte
-    ; gen_expr(arg2)
     mov rax, [rbx+32]
     call gen_expr
-    ; emit: mov rsi, rax (48 89 C6)
-    mov dil, 0x48
+    mov dil, 0x50                 ; push flags
+    call emit_byte
+    cmp qword [rbx+16], 3
+    jne .ge_dvaram_default
+    mov rax, [rbx+40]
+    call gen_expr
+    mov dil, 0x48                 ; mov rdx,rax = 48 89 C2
     call emit_byte
     mov dil, 0x89
     call emit_byte
-    mov dil, 0xC6
+    mov dil, 0xC2
     call emit_byte
-    ; emit: pop rdi (5F)
-    mov dil, 0x5F
+    jmp .ge_dvaram_ready
+.ge_dvaram_default:
+    mov dil, 0xBA                 ; mov edx,420 = 0644
     call emit_byte
-    ; emit: mov eax, 2 (B8 02 00 00 00)
-    mov dil, 0xB8
+    mov edi, 420
+    call emit_u32
+.ge_dvaram_ready:
+    mov dil, 0x5E                 ; pop rsi = flags
     call emit_byte
-    mov dil, 0x02
+    mov dil, 0x5F                 ; pop rdi = path
     call emit_byte
-    xor edi, edi
+    mov dil, 0xB8                 ; mov eax,2 = sys_open
     call emit_byte
-    xor edi, edi
-    call emit_byte
-    xor edi, edi
-    call emit_byte
-    ; emit: syscall (0F 05)
+    mov edi, 2
+    call emit_u32
     call emit_syscall
     jmp .ge_call_done
+.ge_dvaram_arity:
+    lea rdi, [rel r52_msg_dvaram_arity]
+    jmp capacity_fail
 
 .ge_call_paadh:
     ; paadh(fd, buf, count) -> bytes_read (sys_read=0)
@@ -14126,6 +14146,8 @@ gen_expr:
 
 .ge_call_charat:
     ; char_at(str, index) → byte at str[index] in rax
+    cmp qword [rbx+16], 2
+    jne .ge_charat_arity
     mov rax, [rbx+24]
     call gen_expr
     mov dil, 0x50           ; push rax (str)
@@ -14152,12 +14174,17 @@ gen_expr:
     mov dil, 0x17
     call emit_byte
     jmp .ge_call_done
+.ge_charat_arity:
+    lea rdi, [rel r52_msg_charat_arity]
+    jmp capacity_fail
 
 .ge_call_charcd:
     ; B3: char_code(str, index) returns the indexed byte.  Keep the historical
     ; one-argument form as char_code(str, 0) for compatibility.
+    cmp qword [rbx+16], 1
+    je .ge_call_charcd_first
     cmp qword [rbx+16], 2
-    jb .ge_call_charcd_first
+    jne .ge_call_charcd_arity
     mov rax, [rbx+24]
     call gen_expr
     mov dil, 0x50           ; push rax (str)
@@ -14191,6 +14218,9 @@ gen_expr:
     xor edi, edi
     call emit_byte
     jmp .ge_call_done
+.ge_call_charcd_arity:
+    lea rdi, [rel r52_msg_charcode_arity]
+    jmp capacity_fail
 
 .ge_call_charfr:
     ; char_from(code) → pointer to a char (writes code to a temp buffer)

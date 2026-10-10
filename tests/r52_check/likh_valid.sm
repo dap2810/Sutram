@@ -1,0 +1,7 @@
+mukhya() {
+    vitti b = nirmmita(16)
+    likh(b, 300)
+    likha(pad(b))
+    likh(b + 8, 66)
+    likha(pad(b + 8))
+}
