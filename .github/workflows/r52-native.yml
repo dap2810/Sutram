@@ -50,7 +50,7 @@ jobs:
       - name: SHA256 source and new cases
         if: always()
         run: |
-          sha256sum src/sutram_compiler.asm lib/string.smlib tools/r52_native_acceptance.py tests/r52_check/*.sm > r52_sha256.txt
+          sha256sum src/sutram_compiler.asm lib/string.smlib docs/R52-BUILTIN-FIXES.md tools/r52_native_acceptance.py tests/r52_check/*.sm .github/workflows/r52-native.yml > r52_sha256.txt
           cat r52_sha256.txt
       - name: Publish hash evidence
         if: always()
