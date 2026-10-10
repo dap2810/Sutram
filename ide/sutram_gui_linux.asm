@@ -81,6 +81,7 @@
 %define ED_TEXT_X       (PANE_X + 8)
 %define ED_TEXT_Y       (ED_Y + 30)
 %define ED_LINES_MAX    23              ; visible lines in the pane
+%define ED_VISIBLE      ED_LINES_MAX    ; lines visible before scrolling
 
 ; ---- X11 keys -------------------------------------------------------------
 %define KC_ESCAPE       9
@@ -157,6 +158,7 @@ section .bss
     ed_buf      resb ED_CAP
     ed_len      resq 1
     ed_cursor   resq 1
+    ed_top      resq 1               ; first visible editor line (scroll)
     key_char    resb 8
     ; ---- slice 4: server keymap ----
     km_reply    resb 32             ; GetKeyboardMapping reply header
@@ -755,6 +757,29 @@ ed_backspace:
     pop  rbx
     ret
 
+
+; ---------------------------------------------------------------- ed_ensure_visible
+; Scroll so the caret's line is inside [ed_top, ed_top + ED_VISIBLE - 1].
+ed_ensure_visible:
+    push rbx
+    call ed_caret_y
+    mov  rbx, rax
+    cmp  rbx, [rel ed_top]
+    jae  .not_above
+    mov  [rel ed_top], rbx          ; caret above the window -> scroll up to it
+    jmp  .done
+.not_above:
+    mov  rax, [rel ed_top]
+    add  rax, ED_VISIBLE
+    cmp  rbx, rax
+    jb   .done
+    mov  rax, rbx                   ; caret below the window -> scroll down
+    sub  rax, ED_VISIBLE - 1
+    mov  [rel ed_top], rax
+.done:
+    pop  rbx
+    ret
+
 ; ---------------------------------------------------------------- ed_caret_x
 ; Compute the caret's column (0-based) on its current line -> rax.
 ed_caret_x:
@@ -803,6 +828,7 @@ draw_editor:
     push r13
     push r14
     push r15
+    call ed_ensure_visible
     lea  rbx, [rel ed_buf]
 
     ; pane background
@@ -834,8 +860,13 @@ draw_editor:
     cmp  byte [rbx + r15], 10
     jne  .advance
 .emit:
-    cmp  r13, ED_LINES_MAX
-    jae  .after
+    mov  rax, [rel ed_top]
+    cmp  r13, rax
+    jb   .next_line                 ; above the visible window: skip
+    mov  rax, r13
+    sub  rax, [rel ed_top]          ; display row
+    cmp  rax, ED_VISIBLE
+    jae  .after                     ; below the visible window: stop
     mov  rdx, r15
     sub  rdx, r14                   ; line length
     test rdx, rdx
@@ -844,7 +875,6 @@ draw_editor:
     add  rsi, r14
     mov  rcx, ED_TEXT_X
     mov  r8,  ED_TEXT_Y
-    mov  rax, r13
     imul rax, LINE_H
     add  r8,  rax
     call draw_text
@@ -872,16 +902,21 @@ draw_editor:
     add  rax, ED_TEXT_X
     mov  rsi, rax
     call ed_caret_y
-    imul rax, LINE_H
-    add  rax, ED_TEXT_Y
-    sub  rax, 12
-    mov  rdx, rax
+    mov  rcx, rax
+    sub  rcx, [rel ed_top]          ; caret row within the window
+    cmp  rcx, ED_VISIBLE
+    jae  .no_caret                  ; scrolled off: do not draw it
+    imul rcx, LINE_H
+    add  rcx, ED_TEXT_Y
+    sub  rcx, 12
+    mov  rdx, rcx
     mov  rcx, 2
     mov  r8,  14
     call fill_rect
     mov  rdi, r12
     lea  rsi, [reqbuf]
     call send_req
+.no_caret:
 
     pop  r15
     pop  r14
