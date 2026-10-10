@@ -1,0 +1,30 @@
+Sutram ROUND 52 -- SHA-256 manifest from actual successful GitHub Actions run
+Reference code commit: 13c8775701df6e5582e8bbb45285fa11ba8d96ba
+Branch: feature/r52-stdlib-compiler-defects-20261010
+Run: https://github.com/dap2810/Sutram/actions/runs/38067029160
+Native Linux job: 114256646910
+No source/test changes after this run; later handoff-only commits do not alter these hashes.
+
+c492161ccdc25f27f9cf2147c0d6811caa127540bf7f9492ccee7eeced0d0647  src/sutram_compiler.asm
+25110cc6b8e00e3016c8c5931e61422e0f0125afc6f57ebad59f4d11e856c857  lib/string.smlib
+7d1e23e8d00b9ad96405acda231fd53df1938091810562dc5d564e4d8a0433c7  docs/R52-BUILTIN-FIXES.md
+8c5cd752cbc713992d5432348a7c4a7b3c8862fc3cf98a1a107b515855103274  tools/r52_native_acceptance.py
+e9f939bcd42a8f9774626c77678a8c3077eeb00f799155b51f47ceefe92f8bc1  tests/r52_check/char_at_bad_arity.sm
+4ab8a8b46fad7d7ed854a01079ea81524c4912ffbe1769d1568893bcee38dc85  tests/r52_check/char_code_bad_arity.sm
+fcea7f5c3347ca90ea570cdf10322dd83182095c25432982157036ff6664e666  tests/r52_check/char_code_index.sm
+6d5a76c67c4330d01376b31fd65a1c4660706f7d817ed190f81e67795c500acc  tests/r52_check/dvaram_bad_arity.sm
+5d3f5ee0d7fe9972d6dcccfe2905a21b80662c37a582989df2ea0e0e5e12aa6e  tests/r52_check/dvaram_default.sm
+e406e1c2ea477bc50203892bb0e84c9c2841cd4ca8ff74d89304072c8907b225  tests/r52_check/dvaram_explicit.sm
+f4c18153a0ad889c4d057eac1438d7652e382af3e52afb8fbf8ee36f40ac8d58  tests/r52_check/likh_missing_value.sm
+38d0fcbf5f0add82f1326d6e5904a128040a381e059ca10dc21eb3571f54ebb2  tests/r52_check/likh_no_args.sm
+8310700a4e1f33f93ab26d6674acecf2a15e8bb44082e24c191bd9e72d5588fa  tests/r52_check/likh_valid.sm
+5480af5c4856e7c2cdfcebd61f422a91adb4d308fe1832181aa43c2418b5ac1c  .github/workflows/r52-native.yml
+
+Verify fresh checkout:
+grep -E '^[a-f0-9]{64}  ' ChatGPT-to-Sarvam/ROUND-52-SHA256.txt | sha256sum -c -
+
+Four ordinary R46 executable byte-for-byte equivalences checked by tools/r48_native_acceptance.py:
+41_recursion.sm                         846 bytes  8ab871455f57bff8a95ac7c840c52f8245e434c7016af5b3e3cedf6bfbd6d0e3
+126_numeric_pipeline.sm               7450 bytes  38c50da9ec00d8cffbc1d2f42abe63fd1580572f894a74b3677727f7c9b8b8e2
+163_r40_transitive_diamond.sm          575 bytes  e3024b0282767501627e44d5243e32fcbd3ee5ad717a030cd3e7b8e7a7e2f984
+111_t18_kosh_dasham_function_return  1307 bytes  96e602630d053ddf7a61ed32badde5b293597569977ccd4bfbc7a61e07cc14b2
