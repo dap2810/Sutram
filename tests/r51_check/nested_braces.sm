@@ -1,0 +1,8 @@
+mukhya() {
+    yadi (1) {
+        vitti missing_one = ;
+        yadi (1) {
+            vitti missing_two = ;
+        }
+    likha(2);
+}
