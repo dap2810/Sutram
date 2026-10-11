@@ -1,0 +1,21 @@
+ayojan strb
+mukhya() {
+    vitti out = nirmmita(32)
+    # trim
+    likha(strb_trim("  hi  ", 6, out))
+    likha("\n")
+    likha(strb_compare(out, 2, "hi", 2))
+    likha("\n")
+    # all spaces -> empty
+    likha(strb_trim("   ", 3, out))
+    likha("\n")
+    # upper / lower
+    likha(strb_upper("aBc xYz", 7, out))
+    likha("\n")
+    likha(strb_compare(out, 7, "ABC XYZ", 7))
+    likha("\n")
+    likha(strb_lower("aBc xYz", 7, out))
+    likha("\n")
+    likha(strb_compare(out, 7, "abc xyz", 7))
+    likha("\n")
+}
