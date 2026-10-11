@@ -1,0 +1,51 @@
+Sutram ROUND53 updated checkout SHA256 - verified on newest Sarvam/Muse main.
+Source-tested merge commit: 114ff53fc502d0b8fb86c227a98d2cd19422568d
+Branch: feature/r53-consolidated-r51-r52-20261010
+Second merge parent: 31ee50165064ab35ee11db1e26336b44ce7cbc09 (latest main at check)
+GitHub CI: https://github.com/dap2810/Sutram/actions/runs/38100925367
+Native CI job: 114356515767, conclusion SUCCESS.
+The newer main restores / simplifies string.smlib NUL/strb source, so this
+new string.smlib digest SUPERCEDES the prior Round53 digest. The compiler SHA256
+remains the same, since no compiler code changed during this reconciliation.
+Below are 26 actual hashes from the latest CI; no guesses or stale file hashes.
+
+a3fe1b1239b147d95b616d9e9468ccbea3b43b59549e89c570a4ff5bfee5bb17  src/sutram_compiler.asm
+25110cc6b8e00e3016c8c5931e61422e0f0125afc6f57ebad59f4d11e856c857  lib/string.smlib
+7d1e23e8d00b9ad96405acda231fd53df1938091810562dc5d564e4d8a0433c7  docs/R52-BUILTIN-FIXES.md
+8d25b3d35e1c042b0dbd4c7ff8242f5453ac31ba59bedfe789b90febf655ed22  tools/r49_diagnostic_audit.py
+a20fbb6bee72557c8d8e1e188f19262b1329471536ee909328b5573ba56cb452  tools/r51_native_audit.py
+afa6ac97d7ee2a1875e87c1506d1d1d044b1840df38f46115b21ab33edd0bdb8  tools/r51_graph_inventory.py
+8c5cd752cbc713992d5432348a7c4a7b3c8862fc3cf98a1a107b515855103274  tools/r52_native_acceptance.py
+38a0c8e7fff082e5e8e770f3902c233ee51b205b9d5a5b7d1312e3fd76b18edb  tests/r51_check/missing_three.sm
+925a90f3780b039cb300aaa2b6c9e3db475e784618357d4fb9e722dc297a9442  tests/r51_check/namespaced_root.sm
+bcdfbaabe73d5633599dfa9f662a447166dde3b7c1e2c5d6090b75092432ede3  tests/r51_check/nested_braces.sm
+88702cd9332aa62e6e942b3439a4de269042ded8e0278f6e6aba84dd205fac69  tests/r51_check/nested_root.sm
+3cc27d3848fd6802eb0e9f8c109071dce03b23a8609bfde0e3a43b88ebac7261  tests/r51_check/semantic_import.sm
+42b741ebb01ac8c7c48ad328b4c80f8f993d9701a10ecf9c91568ad38a4300fa  tests/r51_check/lib/broken_ns_r51.smlib
+ffbdf626f48a0fd4d44de6f9b368b183e20b1eb2d0429803af311042fe92dc0d  tests/r51_check/lib/inner_r51.smlib
+240363b9ce8f899f05a3d57bccd0b6042b6b9ac453fb3a07a470bb380f247344  tests/r51_check/lib/outer_r51.smlib
+acde61eec2571b4a1ef57f151750e68199e8317af5b8c22e0de06dd3ca66aef5  tests/r51_check/lib/semantics_r51.smlib
+e9f939bcd42a8f9774626c77678a8c3077eeb00f799155b51f47ceefe92f8bc1  tests/r52_check/char_at_bad_arity.sm
+4ab8a8b46fad7d7ed854a01079ea81524c4912ffbe1769d1568893bcee38dc85  tests/r52_check/char_code_bad_arity.sm
+fcea7f5c3347ca90ea570cdf10322dd83182095c25432982157036ff6664e666  tests/r52_check/char_code_index.sm
+6d5a76c67c4330d01376b31fd65a1c4660706f7d817ed190f81e67795c500acc  tests/r52_check/dvaram_bad_arity.sm
+5d3f5ee0d7fe9972d6dcccfe2905a21b80662c37a582989df2ea0e0e5e12aa6e  tests/r52_check/dvaram_default.sm
+e406e1c2ea477bc50203892bb0e84c9c2841cd4ca8ff74d89304072c8907b225  tests/r52_check/dvaram_explicit.sm
+f4c18153a0ad889c4d057eac1438d7652e382af3e52afb8fbf8ee36f40ac8d58  tests/r52_check/likh_missing_value.sm
+38d0fcbf5f0add82f1326d6e5904a128040a381e059ca10dc21eb3571f54ebb2  tests/r52_check/likh_no_args.sm
+8310700a4e1f33f93ab26d6674acecf2a15e8bb44082e24c191bd9e72d5588fa  tests/r52_check/likh_valid.sm
+c470112498b7f18e708dbdaa4192b14d5f049ef6e6681673452bdd9a604b3b77  .github/workflows/r53-integrated.yml
+
+Reproduce the 4 native executable byte-for-byte parity checks by running
+python3 tools/r48_native_acceptance.py after building accepted R46 and current compiler.
+Expected executable SHA256 from accepted R46 and actual combined R53 output:
+41_recursion.sm                         846 bytes  8ab871455f57bff8a95ac7c840c52f8245e434c7016af5b3e3cedf6bfbd6d0e3
+126_numeric_pipeline.sm               7450 bytes  38c50da9ec00d8cffbc1d2f42abe63fd1580572f894a74b3677727f7c9b8b8e2
+163_r40_transitive_diamond.sm          575 bytes  e3024b0282767501627e44d5243e32fcbd3ee5ad717a030cd3e7b8e7a7e2f984
+111_t18_kosh_dasham_function_return  1307 bytes  96e602630d053ddf7a61ed32badde5b293597569977ccd4bfbc7a61e07cc14b2
+
+Fresh checkout verification:
+grep -E '^[0-9a-f]{64}  ' ChatGPT-to-Sarvam/ROUND-53-SHA256.txt | sha256sum -c -
+
+R51 and R52 original historical manifests in the same branch refer to their
+separate source commits; the combined compiler is identified by THIS manifest.
