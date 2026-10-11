@@ -1,0 +1,379 @@
+# lib/strb.smlib — Sutram standard library: byte-string surface
+#
+# The string toolkit operating on BYTE-PACKED strings — the representation
+# of a literal and of set_char-built buffers. This is the ROUND-10 answer
+# to the R9 gap: a programmer holding "hello world" can now use the
+# toolkit directly, with no hand-built char-code array.
+#
+# THE TWO REPRESENTATIONS, side by side (kept consistent with the
+# lib/string.smlib header so a reader can move between modules):
+#   char-code array (lib/string.smlib R9 toolkit): qword cells, one char
+#     code per cell, read with h[i] (8-byte stride). Idiom:
+#     vitti h = nirmmita(6*8); h[0]=104; h[1]=105  ("hi" as cells);
+#     str_find(h, 2, nd, 1).
+#   byte string (this module): bytes packed 1-per-byte, read with
+#     char_at(s, i) (1-byte stride), written with set_char(s, i, v),
+#     measured with vartani_len(s). Idiom: strb_find("hi", 2, "i", 1) -> 1;
+#     or vitti b = nirmmita(8); set_char(b,0,104); set_char(b,1,105);
+#     set_char(b,2,0); strb_len(b) -> 2.
+# Do NOT mix them: h[i] on a byte string reads 8 bytes at once, and
+# char_at on a char-code array reads one byte of a qword cell.
+#
+# This lives in its own module (not inside string.smlib) because the
+# compiler has a fixed AST ceiling: inlining the combined module together
+# with the other stdlib modules exceeded it (suite tests 87/99/102).
+# The char-code toolkit in lib/string.smlib is byte-for-byte unchanged.
+#
+# Conventions: lengths are explicit (source of truth); out-buffers get a
+# 0 terminator via set_char; the caller allocates generously. Empty needle
+# matches at 0; "not found" is -1. All signatures stay within the
+# compiler's 6-argument cap (repl is 0-terminated, its length derived).
+# strb_split/strb_join use the same length-prefixed segment format as
+# str_split/str_join (R9): [len0, b0, b1, ..., len1, b0, ...], one byte
+# value per cell.
+
+prakriya strb_len(s) {
+    pratiyati vartani_len(s)
+}
+
+# strb_find(hay, hn, needle, nn) — byte index of first occurrence of
+# needle in hay, or -1. Empty needle matches at 0.
+prakriya strb_find(hay, hn, needle, nn) {
+    vitti h = hay
+    vitti hlen = hn
+    vitti nd = needle
+    vitti nlen = nn
+    vitti i = 0
+    vitti match = 0
+    vitti j = 0
+    yadi (nlen == 0) { pratiyati 0 }
+    yadi (nlen > hlen) { pratiyati 0 - 1 }
+    i = 0
+    yavat (i <= hlen - nlen) {
+        match = 1
+        j = 0
+        yavat (j < nlen) {
+            yadi (char_at(h, i + j) != char_at(nd, j)) { match = 0 }
+            j = j + 1
+        }
+        yadi (match == 1) { pratiyati i }
+        i = i + 1
+    }
+    pratiyati 0 - 1
+}
+
+# strb_contains(hay, hn, needle, nn) — 1 if needle occurs in hay, else 0.
+prakriya strb_contains(hay, hn, needle, nn) {
+    yadi (strb_find(hay, hn, needle, nn) >= 0) { pratiyati 1 }
+    pratiyati 0
+}
+
+# strb_replace(src, sn, find, fn, repl, out) — copy src to out, replacing
+# every (non-overlapping) occurrence of find with repl. repl is
+# 0-terminated (its length is derived, so a literal works). Returns the
+# new byte count. Empty find: copy verbatim. Caller allocates generously.
+prakriya strb_replace(src, sn, find, fn, repl, out) {
+    vitti s = src
+    vitti slen = sn
+    vitti f = find
+    vitti flen = fn
+    vitti r = repl
+    vitti dst = out
+    vitti rlen = 0
+    vitti wpos = 0
+    vitti rpos = 0
+    vitti match = 0
+    vitti j = 0
+    vitti k = 0
+    yavat (char_at(r, rlen) != 0) { rlen = rlen + 1 }
+    yadi (flen == 0) {
+        yavat (rpos < slen) {
+            set_char(dst, wpos, char_at(s, rpos))
+            wpos = wpos + 1
+            rpos = rpos + 1
+        }
+        set_char(dst, wpos, 0)
+        pratiyati wpos
+    }
+    yavat (rpos < slen) {
+        match = 1
+        yadi (rpos + flen > slen) {
+            match = 0
+        } anyatra {
+            j = 0
+            yavat (j < flen) {
+                yadi (char_at(s, rpos + j) != char_at(f, j)) { match = 0 }
+                j = j + 1
+            }
+        }
+        yadi (match == 1) {
+            k = 0
+            yavat (k < rlen) {
+                set_char(dst, wpos, char_at(r, k))
+                wpos = wpos + 1
+                k = k + 1
+            }
+            rpos = rpos + flen
+        } anyatra {
+            set_char(dst, wpos, char_at(s, rpos))
+            wpos = wpos + 1
+            rpos = rpos + 1
+        }
+    }
+    set_char(dst, wpos, 0)
+    pratiyati wpos
+}
+
+# strb_split(src, sn, sep, sepn, parts, maxparts) — split src on sep.
+# Same length-prefixed segment format as str_split (R9): parts holds
+# [len0, b0, b1, ..., len1, b0, ...]; cells hold one byte value each.
+# Returns the segment count (capped at maxparts). Empty separator: no
+# split (one segment). Empty input: one empty segment.
+prakriya strb_split(src, sn, sep, sepn, parts, maxparts) {
+    vitti s = src
+    vitti slen = sn
+    vitti sp = sep
+    vitti splen = sepn
+    vitti dst = parts
+    vitti maxp = maxparts
+    vitti nseg = 0
+    vitti wpos = 0
+    vitti segstart = 0
+    vitti rpos = 0
+    vitti done = 0
+    vitti fpos = 0
+    vitti si = 0
+    vitti sj = 0
+    vitti smatch = 0
+    vitti segend = 0
+    vitti seglen = 0
+    vitti sk = 0
+    vitti ci = 0
+    yadi (slen == 0) {
+        dst[0] = 0
+        pratiyati 1
+    }
+    yadi (splen == 0) {
+        dst[0] = slen
+        ci = 0
+        yavat (ci < slen) {
+            dst[1 + ci] = char_at(s, ci)
+            ci = ci + 1
+        }
+        pratiyati 1
+    }
+    done = 0
+    yavat (done == 0) {
+        fpos = 0 - 1
+        si = rpos
+        yavat (si + splen <= slen) {
+            smatch = 1
+            sj = 0
+            yavat (sj < splen) {
+                yadi (char_at(s, si + sj) != char_at(sp, sj)) { smatch = 0 }
+                sj = sj + 1
+            }
+            yadi (smatch == 1) {
+                fpos = si
+                si = slen
+            } anyatra {
+                si = si + 1
+            }
+        }
+        segend = slen
+        yadi (fpos >= 0) { segend = fpos }
+        yadi (nseg < maxp) {
+            seglen = segend - segstart
+            dst[wpos] = seglen
+            wpos = wpos + 1
+            sk = segstart
+            yavat (sk < segend) {
+                dst[wpos] = char_at(s, sk)
+                wpos = wpos + 1
+                sk = sk + 1
+            }
+            nseg = nseg + 1
+        }
+        yadi (fpos < 0) {
+            done = 1
+        } anyatra {
+            segstart = fpos + splen
+            rpos = segstart
+            yadi (rpos >= slen) {
+                yadi (nseg < maxp) {
+                    dst[wpos] = 0
+                    nseg = nseg + 1
+                }
+                done = 1
+            }
+        }
+    }
+    pratiyati nseg
+}
+
+# strb_join(parts, count, sep, sepn, out) — inverse of strb_split for the
+# length-prefixed format. Joins `count` segments with sep into a byte
+# string. Returns the new byte count.
+prakriya strb_join(parts, count, sep, sepn, out) {
+    vitti p = parts
+    vitti cnt = count
+    vitti sp = sep
+    vitti splen = sepn
+    vitti dst = out
+    vitti rpos = 0
+    vitti wpos = 0
+    vitti si = 0
+    vitti seglen = 0
+    vitti k = 0
+    vitti q = 0
+    yavat (si < cnt) {
+        seglen = p[rpos]
+        rpos = rpos + 1
+        k = 0
+        yavat (k < seglen) {
+            set_char(dst, wpos, p[rpos])
+            wpos = wpos + 1
+            rpos = rpos + 1
+            k = k + 1
+        }
+        yadi (si < cnt - 1) {
+            q = 0
+            yavat (q < splen) {
+                set_char(dst, wpos, char_at(sp, q))
+                wpos = wpos + 1
+                q = q + 1
+            }
+        }
+        si = si + 1
+    }
+    set_char(dst, wpos, 0)
+    pratiyati wpos
+}
+
+# strb_trim(src, sn, out) — strip leading/trailing ASCII spaces (32).
+# Returns the new byte count.
+prakriya strb_trim(src, sn, out) {
+    vitti s = src
+    vitti slen = sn
+    vitti dst = out
+    vitti lo = 0
+    vitti go = 1
+    vitti hi = 0
+    vitti go2 = 1
+    vitti wpos = 0
+    vitti k = 0
+    yavat (go == 1) {
+        yadi (lo >= slen) {
+            go = 0
+        } anyatra {
+            yadi (char_at(s, lo) == 32) { lo = lo + 1 } anyatra { go = 0 }
+        }
+    }
+    hi = slen
+    yavat (go2 == 1) {
+        yadi (hi <= lo) {
+            go2 = 0
+        } anyatra {
+            yadi (char_at(s, hi - 1) == 32) { hi = hi - 1 } anyatra { go2 = 0 }
+        }
+    }
+    k = lo
+    yavat (k < hi) {
+        set_char(dst, wpos, char_at(s, k))
+        wpos = wpos + 1
+        k = k + 1
+    }
+    set_char(dst, wpos, 0)
+    pratiyati wpos
+}
+
+# strb_upper(src, sn, out) / strb_lower — ASCII case conversion on byte
+# strings. Returns the byte count.
+prakriya strb_upper(src, sn, out) {
+    vitti s = src
+    vitti slen = sn
+    vitti dst = out
+    vitti i = 0
+    vitti c = 0
+    yavat (i < slen) {
+        c = char_at(s, i)
+        yadi (c >= 97) {
+            yadi (c <= 122) { c = c - 32 }
+        }
+        set_char(dst, i, c)
+        i = i + 1
+    }
+    set_char(dst, slen, 0)
+    pratiyati slen
+}
+
+prakriya strb_lower(src, sn, out) {
+    vitti s = src
+    vitti slen = sn
+    vitti dst = out
+    vitti i = 0
+    vitti c = 0
+    yavat (i < slen) {
+        c = char_at(s, i)
+        yadi (c >= 65) {
+            yadi (c <= 90) { c = c + 32 }
+        }
+        set_char(dst, i, c)
+        i = i + 1
+    }
+    set_char(dst, slen, 0)
+    pratiyati slen
+}
+
+# strb_starts(src, sn, pre, pn) / strb_ends — 0/1 on byte strings.
+prakriya strb_starts(src, sn, pre, pn) {
+    vitti s = src
+    vitti slen = sn
+    vitti pr = pre
+    vitti plen = pn
+    vitti i = 0
+    yadi (plen > slen) { pratiyati 0 }
+    yavat (i < plen) {
+        yadi (char_at(s, i) != char_at(pr, i)) { pratiyati 0 }
+        i = i + 1
+    }
+    pratiyati 1
+}
+
+prakriya strb_ends(src, sn, suf, sn2) {
+    vitti s = src
+    vitti slen = sn
+    vitti sf = suf
+    vitti sflen = sn2
+    vitti i = 0
+    yadi (sflen > slen) { pratiyati 0 }
+    yavat (i < sflen) {
+        yadi (char_at(s, slen - sflen + i) != char_at(sf, i)) { pratiyati 0 }
+        i = i + 1
+    }
+    pratiyati 1
+}
+
+# strb_compare(a, an, b, bn) — -1 / 0 / 1 (lexicographic by byte value).
+prakriya strb_compare(a, an, b, bn) {
+    vitti x = a
+    vitti xn = an
+    vitti y = b
+    vitti yn = bn
+    vitti i = 0
+    vitti n = 0
+    vitti cx = 0
+    vitti cy = 0
+    n = xn
+    yadi (yn < n) { n = yn }
+    yavat (i < n) {
+        cx = char_at(x, i)
+        cy = char_at(y, i)
+        yadi (cx < cy) { pratiyati 0 - 1 }
+        yadi (cx > cy) { pratiyati 1 }
+        i = i + 1
+    }
+    yadi (xn < yn) { pratiyati 0 - 1 }
+    yadi (xn > yn) { pratiyati 1 }
+    pratiyati 0
+}

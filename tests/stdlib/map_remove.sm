@@ -1,0 +1,35 @@
+ayojan map
+mukhya() {
+    # eaeb / ad / abaed all hash to bucket 0 at cap 8: one probe chain
+    vitti m = map_init(8)
+    vitti out = nirmmita(16 * 8)
+    map_put(m, 8, "eaeb", 4, 10)
+    map_put(m, 8, "ad", 2, 20)
+    map_put(m, 8, "abaed", 5, 30)
+    # remove the middle of the chain: the rest must stay reachable
+    likha(map_remove(m, 8, "ad", 2))
+    likha("\n")
+    likha(map_size(m))
+    likha("\n")
+    likha(map_get(m, 8, "eaeb", 4))
+    likha("\n")
+    likha(map_get(m, 8, "abaed", 5))
+    likha("\n")
+    likha(map_contains(m, 8, "ad", 2))
+    likha("\n")
+    # removing an absent key changes nothing
+    likha(map_remove(m, 8, "ad", 2))
+    likha("\n")
+    likha(map_size(m))
+    likha("\n")
+    # remove the head of the chain
+    likha(map_remove(m, 8, "eaeb", 4))
+    likha("\n")
+    likha(map_get(m, 8, "abaed", 5))
+    likha("\n")
+    likha(map_size(m))
+    likha("\n")
+    # keys enumeration matches the live count
+    likha(map_keys(m, out))
+    likha("\n")
+}

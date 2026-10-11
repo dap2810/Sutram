@@ -1,0 +1,262 @@
+# lib/map.smlib — Sutram standard library: associative map (hash table)
+#
+# Open addressing with linear probing over parallel pankti arrays.
+#
+# KEY REPRESENTATION: byte strings (the R10 strb_* surface), NOT char-code
+# arrays. Rationale: keys are usually literals ("apple"), and byte strings
+# let the caller pass a literal directly — no hand-built cell array. The
+# hash (lib/hash.smlib fnv1a, via `ayojan hash` below) is byte-based
+# (char_at), so the choice is consistent end to end. Worked example:
+#     ayojan map
+#     mukhya() {
+#         vitti m = map_init(8)
+#         map_put(m, 8, "apple", 5, 42)
+#         likha(map_get(m, 8, "apple", 5))   # 42
+#         likha("\n")
+#     }
+# This matches lib/string.smlib's header: a byte string is bytes packed
+# 1-per-byte (a literal, or a set_char-built buffer), measured with an
+# explicit length, read with char_at. Do not pass char-code arrays here.
+#
+# Layout of the map buffer m (qword cells, except the key bytes):
+#   m[0]           capacity
+#   m[1]           live entry count
+#   m[2+i]         state[i]   (0 = empty, 1 = live), i in 0..cap-1
+#   m[2+cap+i]     keylen[i]
+#   m[2+2*cap+i]   val[i]
+#   key bytes: byte region at byte offset (2+3*cap)*8, KEY_MAX bytes/slot.
+#
+# KEY_MAX = 32: keys longer than 32 bytes are truncated to 32, consistently
+# on put/get/contains/remove (documented; excluded from the properties).
+# cap must be >= 1 (clamped). Probing wraps modulo cap.
+#
+# DELETION is backward-shift (Knuth 6.4R): the freed slot is filled by
+# shifting later probe-chain entries back toward their home bucket, so
+# there is no "deleted" state and no tombstones — a lookup stops at the
+# first empty slot and never misses a live entry.
+#
+# ABSENT SENTINEL: map_get returns -1 (0-1) for a missing key. Values are
+# programmer-managed integers; do not store -1 as a value unless you
+# disambiguate with map_contains first.
+#
+# FULL TABLE: map_put returns 0 and changes nothing.
+
+ayojan hash
+
+# map_key_hash(key, keyn, cap) — home bucket of key (internal helper).
+prakriya map_key_hash(key, keyn, cap) {
+    vitti h = fnv1a(key, keyn)
+    pratiyati h % cap
+}
+
+# map_key_eq(m, slot, cap, key, keyn) — 1 if slot's key equals (key,keyn)
+# (internal helper; keyn already truncated by the caller).
+prakriya map_key_eq(m, slot, cap, key, keyn) {
+    vitti i = 0
+    vitti base = 0
+    vitti kl = m[2 + cap + slot]
+    yadi (kl != keyn) { pratiyati 0 }
+    base = (2 + 3 * cap) * 8 + slot * 32
+    yavat (i < keyn) {
+        yadi (char_at(m, base + i) != char_at(key, i)) { pratiyati 0 }
+        i = i + 1
+    }
+    pratiyati 1
+}
+
+# map_slot_write(m, slot, cap, key, keyn, val) — store key+val at slot and
+# mark it live (internal helper; keyn already truncated by the caller).
+prakriya map_slot_write(m, slot, cap, key, keyn, val) {
+    vitti i = 0
+    vitti base = (2 + 3 * cap) * 8 + slot * 32
+    m[2 + slot] = 1
+    m[2 + cap + slot] = keyn
+    m[2 + 2 * cap + slot] = val
+    yavat (i < keyn) {
+        set_char(m, base + i, char_at(key, i))
+        i = i + 1
+    }
+    yavat (i < 32) {
+        set_char(m, base + i, 0)
+        i = i + 1
+    }
+    pratiyati 1
+}
+
+# map_find(m, cap, key, keyn) — slot index holding key, or -1 if absent
+# (internal helper; stops at the first empty slot — valid because
+# deletion is backward-shift, so chains have no holes).
+prakriya map_find(m, cap, key, keyn) {
+    vitti kn = keyn
+    vitti idx = 0
+    vitti start = 0
+    yadi (kn > 32) { kn = 32 }
+    idx = map_key_hash(key, kn, cap)
+    start = idx
+    yavat (m[2 + idx] == 1) {
+        yadi (map_key_eq(m, idx, cap, key, kn) == 1) { pratiyati idx }
+        idx = idx + 1
+        yadi (idx >= cap) { idx = 0 }
+        yadi (idx == start) { pratiyati 0 - 1 }
+    }
+    pratiyati 0 - 1
+}
+
+# map_init(cap) — allocate and clear a map of capacity cap (clamped to >= 1).
+prakriya map_init(cap) {
+    vitti c = cap
+    vitti m = 0
+    vitti i = 0
+    yadi (c < 1) { c = 1 }
+    m = nirmmita((2 + 3 * c) * 8 + c * 32)
+    m[0] = c
+    m[1] = 0
+    yavat (i < c) {
+        m[2 + i] = 0
+        i = i + 1
+    }
+    pratiyati m
+}
+
+# map_put(m, cap, key, keyn, val) — insert or update key; returns 1 on
+# success, 0 if the table is full (then the map is unchanged). Updating an
+# existing key keeps map_size unchanged.
+prakriya map_put(m, cap, key, keyn, val) {
+    vitti kn = keyn
+    vitti idx = 0
+    vitti start = 0
+    vitti slot = 0
+    yadi (kn > 32) { kn = 32 }
+    slot = map_find(m, cap, key, kn)
+    yadi (slot >= 0) {
+        m[2 + 2 * cap + slot] = val
+        pratiyati 1
+    }
+    idx = map_key_hash(key, kn, cap)
+    start = idx
+    yavat (m[2 + idx] == 1) {
+        idx = idx + 1
+        yadi (idx >= cap) { idx = 0 }
+        yadi (idx == start) { pratiyati 0 }
+    }
+    map_slot_write(m, idx, cap, key, kn, val)
+    m[1] = m[1] + 1
+    pratiyati 1
+}
+
+# map_get(m, cap, key, keyn) — value stored for key, or -1 if absent
+# (documented sentinel; use map_contains to disambiguate).
+prakriya map_get(m, cap, key, keyn) {
+    vitti kn = keyn
+    vitti slot = 0
+    yadi (kn > 32) { kn = 32 }
+    slot = map_find(m, cap, key, kn)
+    yadi (slot < 0) { pratiyati 0 - 1 }
+    pratiyati m[2 + 2 * cap + slot]
+}
+
+# map_contains(m, cap, key, keyn) — 1 if key is present, else 0.
+prakriya map_contains(m, cap, key, keyn) {
+    vitti kn = keyn
+    yadi (kn > 32) { kn = 32 }
+    yadi (map_find(m, cap, key, kn) < 0) { pratiyati 0 }
+    pratiyati 1
+}
+
+# map_remove(m, cap, key, keyn) — delete key; 1 if removed, 0 if absent.
+# Backward-shift deletion (Knuth 6.4R): after clearing the slot, each
+# following live entry whose home bucket is NOT cyclically past the hole
+# is shifted back into it, preserving every probe chain with no
+# tombstones.
+prakriya map_remove(m, cap, key, keyn) {
+    vitti kn = keyn
+    vitti pos = 0
+    vitti i = 0
+    vitti j = 0
+    vitti r = 0
+    vitti can_move = 0
+    vitti k = 0
+    vitti base_i = 0
+    vitti base_j = 0
+    vitti keyaddr = 0
+    vitti kl = 0
+    yadi (kn > 32) { kn = 32 }
+    pos = map_find(m, cap, key, kn)
+    yadi (pos < 0) { pratiyati 0 }
+    m[2 + pos] = 0
+    m[1] = m[1] - 1
+    i = pos
+    j = pos + 1
+    yadi (j >= cap) { j = 0 }
+    yavat (m[2 + j] == 1) {
+        kl = m[2 + cap + j]
+        base_j = (2 + 3 * cap) * 8 + j * 32
+        keyaddr = m + base_j
+        r = fnv1a(keyaddr, kl) % cap
+        # the entry at j may move into the hole at i iff i lies on the
+        # clockwise path from its home bucket r to j
+        can_move = 0
+        yadi (r <= j) {
+            yadi (r <= i) {
+                yadi (i <= j) { can_move = 1 }
+            }
+        } anyatra {
+            yadi (i >= r) {
+                can_move = 1
+            } anyatra {
+                yadi (i <= j) { can_move = 1 }
+            }
+        }
+        yadi (can_move == 1) {
+            base_i = (2 + 3 * cap) * 8 + i * 32
+            m[2 + i] = 1
+            m[2 + cap + i] = kl
+            m[2 + 2 * cap + i] = m[2 + 2 * cap + j]
+            k = 0
+            yavat (k < 32) {
+                set_char(m, base_i + k, char_at(m, base_j + k))
+                k = k + 1
+            }
+            m[2 + j] = 0
+            i = j
+        }
+        j = j + 1
+        yadi (j >= cap) { j = 0 }
+    }
+    pratiyati 1
+}
+
+# map_size(m) — number of live entries.
+prakriya map_size(m) {
+    pratiyati m[1]
+}
+
+# map_keys(m, out) — write live keys into out in length-prefixed form
+# [len0, b0, b1, ..., len1, b0, ...] (same shape as str_split parts).
+# Returns the key count, which equals map_size(m).
+prakriya map_keys(m, out) {
+    vitti cap = m[0]
+    vitti i = 0
+    vitti wpos = 0
+    vitti n = 0
+    vitti kl = 0
+    vitti base = 0
+    vitti k = 0
+    yavat (i < cap) {
+        yadi (m[2 + i] == 1) {
+            kl = m[2 + cap + i]
+            base = (2 + 3 * cap) * 8 + i * 32
+            out[wpos] = kl
+            wpos = wpos + 1
+            k = 0
+            yavat (k < kl) {
+                out[wpos] = char_at(m, base + k)
+                wpos = wpos + 1
+                k = k + 1
+            }
+            n = n + 1
+        }
+        i = i + 1
+    }
+    pratiyati n
+}

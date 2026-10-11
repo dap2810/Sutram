@@ -1,0 +1,31 @@
+ayojan strb
+mukhya() {
+    # byte-string find/contains, driven by literals
+    likha(strb_find("hello world", 11, "world", 5))
+    likha("\n")
+    likha(strb_contains("hello world", 11, "world", 5))
+    likha("\n")
+    # absent needle
+    likha(strb_find("hello world", 11, "xyz", 3))
+    likha("\n")
+    likha(strb_contains("hello world", 11, "xyz", 3))
+    likha("\n")
+    # empty needle matches at 0
+    likha(strb_find("hello", 5, "", 0))
+    likha("\n")
+    # needle longer than haystack
+    likha(strb_find("hi", 2, "hello", 5))
+    likha("\n")
+    # strb_len on a literal
+    likha(strb_len("hello"))
+    likha("\n")
+    # set_char-built byte string
+    vitti b = nirmmita(16)
+    set_char(b, 0, 104)
+    set_char(b, 1, 105)
+    set_char(b, 2, 0)
+    likha(strb_len(b))
+    likha("\n")
+    likha(strb_find(b, 2, "i", 1))
+    likha("\n")
+}

@@ -1,0 +1,28 @@
+ayojan strb
+mukhya() {
+    vitti parts = nirmmita(64 * 8)
+    vitti out = nirmmita(32)
+    # split "a,b,c" on ","
+    vitti nc = strb_split("a,b,c", 5, ",", 1, parts, 8)
+    likha(nc)
+    likha("\n")
+    # join round trip
+    vitti jn = strb_join(parts, nc, ",", 1, out)
+    likha(jn)
+    likha("\n")
+    likha(strb_compare(out, jn, "a,b,c", 5))
+    likha("\n")
+    # empty separator: no split
+    likha(strb_split("abc", 3, "", 0, parts, 8))
+    likha("\n")
+    # empty input: one empty segment
+    likha(strb_split("", 0, ",", 1, parts, 8))
+    likha("\n")
+    # adjacent separators give an empty middle segment
+    vitti nc2 = strb_split("a,,b", 4, ",", 1, parts, 8)
+    likha(nc2)
+    likha("\n")
+    vitti jn2 = strb_join(parts, nc2, ",", 1, out)
+    likha(strb_compare(out, jn2, "a,,b", 4))
+    likha("\n")
+}
