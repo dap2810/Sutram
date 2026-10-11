@@ -37,7 +37,7 @@ Do not edit by hand.</p>
 <li><a href="#sort"><code>sort</code></a> — 14 functions</li>
 <li><a href="#strb"><code>strb</code></a> — 12 functions</li>
 <li><a href="#strconv"><code>strconv</code></a> — 5 functions</li>
-<li><a href="#string"><code>string</code></a> — 37 functions</li>
+<li><a href="#string"><code>string</code></a> — 25 functions</li>
 <li><a href="#util"><code>util</code></a> — 7 functions</li>
 </ul>
 <h2 id="array"><code>array</code></h2>
@@ -284,18 +284,6 @@ Do not edit by hand.</p>
 <tr><td><code>str_starts(src, sn, pre, pn)</code></td><td>str_starts(src, sn, pre, pn) / str_ends — 0/1.</td></tr>
 <tr><td><code>str_ends(src, sn, suf, sn2)</code></td><td></td></tr>
 <tr><td><code>str_compare(a, an, b, bn)</code></td><td>str_compare(a, an, b, bn) — -1 / 0 / 1 (lexicographic by char code).</td></tr>
-<tr><td><code>strb_len(s)</code></td><td>strb_len(s) — length of NUL-terminated byte string (excluding NUL).</td></tr>
-<tr><td><code>strb_find(hay, needle)</code></td><td>strb_find(hay, needle) — index of first occurrence, or -1. Empty needle matches at 0.</td></tr>
-<tr><td><code>strb_contains(hay, needle)</code></td><td>strb_contains(hay, needle) — 1 if found, else 0.</td></tr>
-<tr><td><code>strb_replace(src, find, repl, out)</code></td><td>strb_replace(src, find, repl, out) — byte-string replace all. All inputs NUL-terminated; out gets NUL-terminated result. Returns new length (excluding NUL). Caller allocates generously.</td></tr>
-<tr><td><code>strb_split(src, sep, parts, maxparts)</code></td><td>strb_split(src, sep, parts, maxparts) — split byte string on sep. parts is a flat byte buffer holding NUL-terminated segments consecutively. Returns segment count. To recover segment i: walk from parts[0], skipping (strb_len(seg)+1) bytes per segment.</td></tr>
-<tr><td><code>strb_join(parts, count, sep, out)</code></td><td>strb_join(parts, count, sep, out) — join NUL-terminated segments.</td></tr>
-<tr><td><code>strb_trim(src, out)</code></td><td>strb_trim(src, out) — strip ASCII spaces.</td></tr>
-<tr><td><code>strb_upper(src, out)</code></td><td>strb_upper(src, out) / strb_lower — ASCII case.</td></tr>
-<tr><td><code>strb_lower(src, out)</code></td><td></td></tr>
-<tr><td><code>strb_starts(src, pre)</code></td><td>strb_starts(src, pre) / strb_ends — 0/1.</td></tr>
-<tr><td><code>strb_ends(src, suf)</code></td><td></td></tr>
-<tr><td><code>strb_compare(a, b)</code></td><td>strb_compare(a, b) — -1/0/1 lexicographic.</td></tr>
 </table>
 <h2 id="util"><code>util</code></h2>
 <p class="mod-desc">Sutram Utility Library - util.smlib General-purpose utility functions Usage: ayojan util</p>
@@ -309,6 +297,6 @@ Do not edit by hand.</p>
 <tr><td><code>bool_to_int(b)</code></td><td></td></tr>
 <tr><td><code>int_max()</code></td><td></td></tr>
 </table>
-<footer>18 modules, 179 functions. Generated from library sources.</footer>
+<footer>18 modules, 167 functions. Generated from library sources.</footer>
 </body>
 </html>
