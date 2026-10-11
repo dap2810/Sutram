@@ -1,0 +1,33 @@
+ayojan map
+mukhya() {
+    vitti m = map_init(8)
+    # put / get round trip with literal keys
+    likha(map_put(m, 8, "apple", 5, 42))
+    likha("\n")
+    likha(map_put(m, 8, "pear", 4, 7))
+    likha("\n")
+    likha(map_put(m, 8, "plum", 4, 99))
+    likha("\n")
+    likha(map_get(m, 8, "apple", 5))
+    likha("\n")
+    likha(map_get(m, 8, "pear", 4))
+    likha("\n")
+    likha(map_get(m, 8, "plum", 4))
+    likha("\n")
+    likha(map_size(m))
+    likha("\n")
+    # absent key: sentinel -1, contains 0
+    likha(map_get(m, 8, "fig", 3))
+    likha("\n")
+    likha(map_contains(m, 8, "fig", 3))
+    likha("\n")
+    likha(map_contains(m, 8, "apple", 5))
+    likha("\n")
+    # update: size unchanged, new value visible
+    likha(map_put(m, 8, "apple", 5, 100))
+    likha("\n")
+    likha(map_size(m))
+    likha("\n")
+    likha(map_get(m, 8, "apple", 5))
+    likha("\n")
+}
