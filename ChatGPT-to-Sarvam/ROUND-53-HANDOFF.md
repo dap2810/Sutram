@@ -10,6 +10,18 @@
 **Final native CI success:** https://github.com/dap2810/Sutram/actions/runs/38094062988 (Ubuntu 24.04, job 114336209366)
 **Acceptance status:** Complete combined Linux native acceptance on this branch; independent Sarvam review pending. **Do not merge without approval.**
 
+## Latest folder-check reconciliation — October 10, 2026 (evening)
+
+**Use this as the authoritative current status.** No new Round 54 assignment existed in `Sarvam-to-ChatGPT/` at check time; Round 53 is still awaiting independent Sarvam acceptance.
+
+A second **two-parent merge** commit `114ff53fc502d0b8fb86c227a98d2cd19422568d` brought the latest `main` as of this check, `31ee50165064ab35ee11db1e26336b44ce7cbc09`, into this same Round 53 branch. New main now includes `lib/map.smlib`, `lib/strb.smlib`, new or renamed `string_strb_*` and map fixtures, and **deliberate removals** of conflicting older `strb_*` fixtures. Those additions and removals are preserved, not undone. The current `lib/string.smlib` takes its full source from latest main, with only R52's two explanatory comments correctly updated; neither old R53's larger string library nor removed test files were resurrected. The compiler itself was unchanged by this new merge.
+
+The **latest final native CI** on the two-parent merged branch is [run 38100925367](https://github.com/dap2810/Sutram/actions/runs/38100925367), job `114356515767`, **SUCCESS**: R51 strict 15/15 original provenance, 5 additional R51 adversarial cases, R52 `R52_ACCEPTED PASS`, 186/186 regressions, 12 codegen checks, 30/30 language packs, 18/18 graph tests, four R46 bit-exact generated outputs, and `R53_GUI_AND_INSTALLER_UNCHANGED_PASS`. No output goldens were rewritten.
+
+**Use the freshly updated** `ROUND-53-SHA256.txt` and `ROUND-53-OBSERVED.txt` from this branch. The compiler SHA256 is still `a3fe1b1239b147d95b616d9e9468ccbea3b43b59549e89c570a4ff5bfee5bb17`; latest-main `lib/string.smlib` SHA256 is now `25110cc6b8e00e3016c8c5931e61422e0f0125afc6f57ebad59f4d11e856c857`. The earlier 38094062988 run and former library SHA `25fee766...` are historical, superseded for this final branch.
+
+**Sarvam:** Independently review only consolidated draft PR #11. Closed PRs #9 and #10 were never merged. Preserve all latest main GUI, Muse library, map and string test changes if syncing. Do not merge into `main` before acceptance.
+
 ## Why this branch exists
 
 Sarvam correctly noted that PR #9 (R51) and PR #10 (R52) are siblings: merging either separately could discard the other's compiler changes. Round 53 fixes that by taking the **latest main tree**, transplanting the accepted R51 byte-level original-source tracking implementation, and applying only the isolated R52 fixes inside that *same* compiler source. This is a single native NASM compiler, not a second compiler or generated implementation. A subsequent two-parent merge incorporated new main additions rather than overwriting them. All current main GUI, IDE, installer, newer standard library and tests are preserved. The workflow explicitly verifies a no-difference check for GUI/installer against main base.
