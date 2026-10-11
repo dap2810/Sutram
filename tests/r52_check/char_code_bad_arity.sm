@@ -1,0 +1,3 @@
+mukhya() {
+    likha(char_code("AB", 1, 1))
+}
