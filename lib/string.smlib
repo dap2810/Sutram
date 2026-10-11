@@ -1,8 +1,9 @@
 # lib/string.smlib — Sutram standard library: strings
 #
 # Built on `vartani_len` and `char_at`, both verified to honour their arguments.
-# (`char_code` is avoided: it currently ignores its index and always reads
-# character 0.)
+# R52 audit: `char_code(s, i)` already honours i in the compiler; a one-argument
+# `char_code(s)` remains a compatible alias for the first byte. This library
+# continues to call `char_at(s, i)` as before, without changing its API.
 # ASCII only for the character predicates; multi-byte UTF-8 is not split.
 
 prakriya str_len(s)
@@ -116,8 +117,9 @@ prakriya str_equals(a, b) {
 #
 # REPRESENTATION: a "string" here is a pankti of integer character codes
 # (e.g. 104 for 'h'), NOT a byte-packed string literal. This is the idiom
-# established in R7 (baseconv) and R8 (strconv): Sutram has no byte-write
-# primitive (see width_repro fixture), so we build text as cell arrays.
+# established in R7 (baseconv) and R8 (strconv). R50 added byte-write
+# set_char(buf,i,value), but these older functions deliberately keep the
+# established qword cell-array format (see width_repro fixture).
 # Functions take an explicit length; out-buffers get a 0 terminator but the
 # length is the source of truth. The older byte-string functions above
 # (str_len, find_char, etc.) are unchanged.
