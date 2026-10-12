@@ -27,6 +27,9 @@ jobs:
           ld -o r48_before /tmp/r46.o
           nasm -f elf64 -I. src/sutram_compiler.asm -o /tmp/r54.o
           ld -o r48_after /tmp/r54.o
+          git show 53d9b6f14f832a6d4b962fbe6f303983895782cb:src/sutram_compiler.asm >/tmp/r54-before.asm
+          nasm -f elf64 -I. /tmp/r54-before.asm -o /tmp/r54-before.o
+          ld -o r54_before /tmp/r54-before.o
       - name: All registered builtin signatures, native executable and diagnostic checks
         run: python3 tools/r54_native_acceptance.py
       - name: Prior accepted native compatibility checks
@@ -56,7 +59,7 @@ jobs:
       - name: SHA256 evidence
         if: always()
         run: |
-          sha256sum src/sutram_compiler.asm tools/r54_native_acceptance.py tests/r54_check/*.sm .github/workflows/r54-native.yml > r54_sha256.txt
+          sha256sum src/sutram_compiler.asm docs/R54-BUILTIN-BOUNDS.md tools/r54_native_acceptance.py tests/r54_check/*.sm .github/workflows/r54-native.yml > r54_sha256.txt
           cat r54_sha256.txt
       - name: Upload checksum
         if: always()

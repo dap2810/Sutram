@@ -4,6 +4,7 @@ from pathlib import Path
 import subprocess, tempfile
 ROOT=Path(__file__).resolve().parents[1]
 COMP=ROOT/"r48_after"
+BASELINE=ROOT/"r54_before"
 FIX=ROOT/"tests/r54_check"
 SPECS=[["likh",2,2,"b, 300"],["sthagita",0,0,""],["pad",1,1,"b"],["dvaram",2,3,"\"missing\", 0"],["paadh",3,3,"0, b, 0"],["likha",1,3,"5"],["band",1,1,"0"],["netsock",0,0,""],["netbind",2,2,"0, 9000"],["netlisten",1,1,"0"],["netaccept",1,1,"0"],["nirmmita",1,1,"64"],["likh8",2,2,"b, 66"],["pad8",1,1,"b"],["vartani_len",1,1,"\"hi\""],["vartani_cmp",2,2,"\"hi\", \"hi\""],["vartani_cat",2,2,"b, \"hi\""],["sankhya_yog",3,3,"b, b, b"],["sankhya_gunan",3,3,"b, b, b"],["sankhya_dot",2,2,"b, b"],["likha_fmt",2,2,"\"x\", 1"],["char_at",2,2,"\"Hi\", 1"],["char_code",1,2,"\"Hi\""],["char_from",1,1,"65"],["char_upper",1,1,"97"],["char_lower",1,1,"65"],["likh8c",3,3,"b, 9, b + 128"],["pad8c",2,2,"b, b + 128"],["smaran",3,3,"b, 0, 16"],["smaran_cp",3,3,"b, \"AB\", 3"],["vartani_cp",2,2,"b, \"AB\""],["grahan",0,0,""],["lkhb",1,1,"7"],["shabda",1,1,"\"hi\""],["pankti_len",1,1,"b"],["kosh_push",2,2,"a, 3"],["kosh_pop",1,1,"a"],["kosh_len",1,1,"a"],["kosh_cap",1,1,"a"],["set_char",3,3,"b, 0, 65"]]
 OPTIONAL={"dvaram":'"missing", 0, 384',"char_code":'"Hi", 1',"likha":"1, 2, 3"}
@@ -46,6 +47,14 @@ def main():
             case(name,"optional",OPTIONAL[name],True)
         case(name,"too_few",", ".join(["1"]*(lo-1)) if lo else "1",False)
         case(name,"too_many",", ".join(["1"]*(hi+1)),False)
+    # Observe (do not normalize away) the pre-R54 copy defect on real ELF.
+    with tempfile.TemporaryDirectory(prefix="r54-baseline-") as d:
+        wd=Path(d)
+        pre=execute([BASELINE,FIX/"raw_valid.sm",wd/"before"],wd)
+        assert pre.returncode==0,(pre.returncode,pre.stdout,pre.stderr)
+        prev=execute([wd/"before"],wd)
+        print("R54_BEFORE_RAW_COPY",prev.returncode,"stdout",repr(prev.stdout),flush=True)
+        assert prev.returncode==0 and prev.stdout.endswith("0\\n1\\n"),repr(prev.stdout)
     with tempfile.TemporaryDirectory(prefix="r54-raw-") as d:
         wd=Path(d)
         p=execute([COMP,FIX/"raw_valid.sm",wd/"raw"],wd)
