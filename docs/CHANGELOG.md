@@ -1,3 +1,23 @@
+## v115 — Linux GUI IDE, slice 15: find (Ctrl-F)
+
+- **Ctrl-F opens a find prompt on the bottom line.** Typing fills the search
+  string, **Enter** searches, **Esc** cancels. The search is a plain substring
+  scan of the editor buffer from the caret, and **wraps** to the start if it runs
+  off the end; on a hit it moves the caret there. Backspace edits the search
+  string. The prompt replaces the key hint while it is open.
+- **Verified with a mock X server** (`tools/test_x11_find.py`): `abcabc`, caret at
+  the end; Ctrl-F, `bc`, Enter -> wraps and finds `bc` at index 1; typing `z`
+  lands at that hit giving `azbcabc`. Then Ctrl-F, `abc`, **Esc**, `q` -> `azqbcabc`,
+  proving Esc leaves the caret where it was. Both checks pass.
+- Protocol 39/39, negatives 6/6, and the scroll / Home-End / editor-scroll / Tab
+  tests all still green. `sutram-gui` 21,104 -> 21,992 bytes.
+- Debugging note worth keeping: my first test sent Ctrl-F **without the control
+  modifier**, so it typed a literal `f` and find mode never opened - and the
+  subsequent Esc then quit the application. The IDE was correct throughout; the
+  test was wrong. Took a while because the symptom (a stray `f`, then the app
+  exiting) looks like a feature bug. When a control key "does nothing", check the
+  test actually sent the modifier.
+
 ## v114 — Muse R12 accepted; ChatGPT R54 verified and SYNCED to main
 
 - **Muse R12 verified and accepted.** Three real programs — word frequency
