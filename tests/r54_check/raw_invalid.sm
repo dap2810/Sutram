@@ -1,0 +1,6 @@
+mukhya() {
+    vitti b = nirmmita(32)
+    likha(pad())
+    likh8(b)
+    likha(char_from())
+}
