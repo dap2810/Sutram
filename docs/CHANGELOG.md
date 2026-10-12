@@ -1,3 +1,19 @@
+## v113 — Linux GUI IDE, slice 14: Tab indent, Ctrl-Home / Ctrl-End
+
+- **Tab inserts a 4-space indent.** It goes through the same `ed_insert` path as a
+  typed character, so it takes an undo snapshot and scrolls the pane like any edit.
+- **Ctrl-Home jumps the caret to the start of the file, Ctrl-End to the end.** Both
+  are caret moves only, so (like the arrows, Home/End and PgUp/PgDn) they take no
+  undo snapshot.
+- **Verified with a mock X server** (`tools/test_x11_keys.py`): `a`, Tab, `b` ->
+  `a    b`; Ctrl-Home then `z` -> `za    b`; Ctrl-End then `y` -> `za    by`. The
+  buffer is read back through Ctrl-S, so the assertion is on real saved content.
+- Protocol 39/39, negatives 6/6, and the scroll / Home-End / editor-scroll tests
+  all still pass. `sutram-gui` 20,936 -> 21,104 bytes.
+- Test-harness note: two of my own keycodes were wrong again (26 is `e` on the mock
+  keymap, not `z`; `z` is 52). The IDE was correct; the test was not. Worth
+  remembering that the mock keymap is not the hardware one.
+
 ## v112 — Muse R10/R11 accepted; ChatGPT R53 (consolidated) verified and SYNCED to main
 
 - **Muse R10 + R11 verified and accepted.** `lib/strb.smlib` (12-function
