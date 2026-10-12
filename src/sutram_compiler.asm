@@ -215,6 +215,52 @@ str_dot_exe  db ".exe", 0
     r52_msg_dvaram_arity db "Sutram Error: dvaram requires 2 or 3 arguments",10,0
     r52_msg_charat_arity db "Sutram Error: char_at requires exactly 2 arguments",10,0
     r52_msg_charcode_arity db "Sutram Error: char_code requires 1 or 2 arguments",10,0
+    r54_msg_arity db "Sutram Error: builtin argument count does not match signature",10,0
+    ; R54 builtin signature min,max in declaration ID order.
+r54_builtin_arity_table:
+    db 0,0               ; 0 reserved0
+    db 2,2               ; 1 likh
+    db 0,0               ; 2 reserved2
+    db 0,0               ; 3 sthagita
+    db 1,1               ; 4 pad
+    db 2,3               ; 5 dvaram
+    db 3,3               ; 6 paadh
+    db 1,3               ; 7 likha
+    db 1,1               ; 8 band
+    db 0,0               ; 9 netsock
+    db 2,2               ; 10 netbind
+    db 1,1               ; 11 netlisten
+    db 1,1               ; 12 netaccept
+    db 1,1               ; 13 nirmmita
+    db 2,2               ; 14 likh8
+    db 1,1               ; 15 pad8
+    db 1,1               ; 16 vartani_len
+    db 2,2               ; 17 vartani_cmp
+    db 2,2               ; 18 vartani_cat
+    db 3,3               ; 19 sankhya_yog
+    db 3,3               ; 20 sankhya_gunan
+    db 2,2               ; 21 sankhya_dot
+    db 2,2               ; 22 likha_fmt
+    db 2,2               ; 23 char_at
+    db 1,2               ; 24 char_code
+    db 1,1               ; 25 char_from
+    db 1,1               ; 26 char_upper
+    db 1,1               ; 27 char_lower
+    db 3,3               ; 28 likh8c
+    db 2,2               ; 29 pad8c
+    db 3,3               ; 30 smaran
+    db 3,3               ; 31 smaran_cp
+    db 2,2               ; 32 vartani_cp
+    db 0,0               ; 33 grahan
+    db 1,1               ; 34 lkhb
+    db 1,1               ; 35 shabda
+    db 1,1               ; 36 pankti_len
+    db 2,2               ; 37 kosh_push
+    db 1,1               ; 38 kosh_pop
+    db 1,1               ; 39 kosh_len
+    db 1,1               ; 40 kosh_cap
+    db 3,3               ; 41 set_char
+
     r48_msg_undefined db ": Sutram Error [E_UNDEFINED_FUNCTION]: unknown function '",0
     msg_err_line db 10, "Sutram Error: parse error at line ", 0
     msg_err_near db " near token '", 0
@@ -9517,6 +9563,8 @@ parse_primary:
     cmp rcx, '('
     jne parse_error
     call advance_tok
+    ; R54: parser-level builtin arity validation happens before AST creation
+    ; or machine-code emission, including special sthagita/likh nodes.
     ; Parse args
     push r12                  ; save r12 (parse_func_block uses it)
     xor r12, r12             ; arg count
@@ -9529,6 +9577,10 @@ parse_primary:
     cmp rcx, ')'
     je .pp_args_done
 .pp_arg_parse:
+    ; R54: AST_CALL stores at most six expression pointers ([+24..+64]).
+    ; Reject oversized lists BEFORE spilling beyond the 72-byte AST node.
+    cmp r12, 6
+    jae parse_error
     call parse_expr          ; rax = arg
     push rax                 ; stash arg (nest-safe; call_args would be clobbered)
     inc r12
@@ -9543,6 +9595,13 @@ parse_primary:
     call advance_tok          ; consume comma
     jmp .pp_args
 .pp_args_done:
+    ; The current token is ')'; report a located, recoverable parse error
+    ; for EVERY builtin, not only the R50/R52 special cases. rbx/r12 survive.
+    mov rdi, rbx
+    mov rsi, r12
+    call r54_builtin_arity_ok
+    test eax, eax
+    jz parse_error
     call advance_tok          ; consume )
     ; Build node based on builtin
     cmp rbx, BN_STHAGITA
@@ -9606,6 +9665,27 @@ parse_primary:
     mov [rax+24], rcx
     pop r12                    ; restore r12
     pop rbx
+    ret
+
+; R54: verified ABI signatures for builtin IDs 1..41.
+; Input rdi=id, rsi=parsed arg count, return eax=1 iff allowed.
+; The check is before any AST argument pointer dereference in codegen.
+; Updating a builtin ABI requires updating this table and the R54 test matrix.
+r54_builtin_arity_ok:
+    cmp rdi, 41
+    ja .bad
+    lea rax, [rel r54_builtin_arity_table]
+    lea rax, [rax+rdi*2]
+    movzx ecx, byte [rax]
+    cmp rsi, rcx
+    jb .bad
+    movzx ecx, byte [rax+1]
+    cmp rsi, rcx
+    ja .bad
+    mov eax, 1
+    ret
+.bad:
+    xor eax,eax
     ret
 
 ; ============================================================
