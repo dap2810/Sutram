@@ -54,7 +54,7 @@ def main():
         assert pre.returncode==0,(pre.returncode,pre.stdout,pre.stderr)
         prev=execute([wd/"before"],wd)
         print("R54_BEFORE_RAW_COPY",prev.returncode,"stdout",repr(prev.stdout),flush=True)
-        assert prev.returncode==0 and prev.stdout.endswith("0\\n1\\n"),repr(prev.stdout)
+        assert prev.returncode==0 and prev.stdout.endswith("0\n1\n"),repr(prev.stdout)
     with tempfile.TemporaryDirectory(prefix="r54-raw-") as d:
         wd=Path(d)
         p=execute([COMP,FIX/"raw_valid.sm",wd/"raw"],wd)
