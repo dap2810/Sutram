@@ -1,0 +1,25 @@
+Sutram ROUND54 — final GitHub Actions SHA256 manifest, latest Muse Round12 reconciled branch.
+Tested combined compiler branch commit: 8c8e31888225dcb845ad597c89632c70001d1db3
+Compiler source SHA256: 9ce0c6ad2876d99ae0275e32c62c9806bac40d67e47d59eafb9c67fbdfb233e9
+Branch: feature/r54-builtin-arity-bounds-20261012
+Current main merge parent: 107cb382fe5450169a80eee19685216d5beebbb2
+Clean CI success: https://github.com/dap2810/Sutram/actions/runs/38260879416
+Native Linux job: 114850757491.
+Seven exact actual runner hashes. No old golden or GUI changes.
+
+9ce0c6ad2876d99ae0275e32c62c9806bac40d67e47d59eafb9c67fbdfb233e9  src/sutram_compiler.asm
+bc36b453b7b2ada30d7a1dc5982b9a5ec2abe13c2f98565f80f3b612e874a006  docs/R54-BUILTIN-BOUNDS.md
+ad224b6e0e4488ba79a6b429a210923730980bcf19f5f6beb408c26fa403a3cb  tools/r54_native_acceptance.py
+949720470a5a47c1377fa2377ac23409ced6657d3c70dbd6ce18339d8abda57b  tools/r54_muse_acceptance.py
+e21159f2bd1973791ad75fd2e3a01e426e10c3962f256b82e42eba58d693a99f  tests/r54_check/raw_invalid.sm
+ecfb0cb9dc93d2d7523dd6b00dd2568640ce7b875a81683c5e61eb08db40f902  tests/r54_check/raw_valid.sm
+7d91b1a126469488e3cd6e9d161e68e22e7e18237176336fe32709c4db48d39c  .github/workflows/r54-native.yml
+
+Fresh checkout verification:
+grep -E '^[0-9a-f]{64}  ' ChatGPT-to-Sarvam/ROUND-54-SHA256.txt | sha256sum -c -
+
+Accepted R46 ordinary native binary parity (all four byte identical):
+41_recursion.sm 846 B 8ab871455f57bff8a95ac7c840c52f8245e434c7016af5b3e3cedf6bfbd6d0e3
+126_numeric_pipeline.sm 7450 B 38c50da9ec00d8cffbc1d2f42abe63fd1580572f894a74b3677727f7c9b8b8e2
+163_r40_transitive_diamond.sm 575 B e3024b0282767501627e44d5243e32fcbd3ee5ad717a030cd3e7b8e7a7e2f984
+111_t18_kosh_dasham_function_return.sm 1307 B 96e602630d053ddf7a61ed32badde5b293597569977ccd4bfbc7a61e07cc14b2
