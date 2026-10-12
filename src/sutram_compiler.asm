@@ -15064,87 +15064,72 @@ gen_expr:
     jmp .ge_call_done
 
 .ge_call_vartcp:
-    ; vartani_cp(dst, src) — strcpy (copies until null)
+    ; R54: vartani_cp(dst,src) copies a complete NUL-terminated byte string.
+    ; Previous sequence scanned dst with repne scasb and failed to copy src.
+    ; No allocation length is known: the caller must supply writable capacity.
     mov rax, [rbx+24]
     call gen_expr
-    mov dil, 0x50           ; push rax (dst)
+    mov dil, 0x50              ; push generated dst pointer
     call emit_byte
     mov rax, [rbx+32]
     call gen_expr
-    ; mov rsi, rax (src) = 48 89 C6
+    ; mov rsi,rax
     mov dil, 0x48
     call emit_byte
     mov dil, 0x89
     call emit_byte
     mov dil, 0xC6
     call emit_byte
-    ; pop rdi (dst) = 5F
+    ; pop rdi
     mov dil, 0x5F
     call emit_byte
-    ; mov rcx, -1 = 48 C7 C1 FF FF FF FF
-    mov dil, 0x48
-    call emit_byte
-    mov dil, 0xC7
-    call emit_byte
-    mov dil, 0xC1
-    call emit_byte
-    mov dil, 0xFF
-    call emit_byte
-    mov dil, 0xFF
-    call emit_byte
-    mov dil, 0xFF
-    call emit_byte
-    mov dil, 0xFF
-    call emit_byte
-    ; xor eax, eax = 31 C0
-    mov dil, 0x31
-    call emit_byte
-    mov dil, 0xC0
-    call emit_byte
-    ; repne scasb = F2 AE
-    mov dil, 0xF2
-    call emit_byte
-    mov dil, 0xAE
-    call emit_byte
-    ; not rcx = 48 F7 D1
-    mov dil, 0x48
-    call emit_byte
-    mov dil, 0xF7
-    call emit_byte
-    mov dil, 0xD1
-    call emit_byte
-    ; dec rcx = 48 FF C9
-    mov dil, 0x48
-    call emit_byte
-    mov dil, 0xFF
-    call emit_byte
-    mov dil, 0xC9
-    call emit_byte
-    ; sub rsi, rcx = 48 29 CE (adjust src back)
-    mov dil, 0x48
-    call emit_byte
-    mov dil, 0x29
-    call emit_byte
-    mov dil, 0xCE
-    call emit_byte
-    ; add rsi, rcx = 48 01 CE
-    mov dil, 0x48
-    call emit_byte
-    mov dil, 0x01
-    call emit_byte
-    mov dil, 0xCE
-    call emit_byte
-    ; rep movsb = F3 A4
-    mov dil, 0xF3
-    call emit_byte
-    mov dil, 0xA4
-    call emit_byte
-    ; mov rax, rdi (return dst) = 48 89 F8
-    mov dil, 0x48
+    ; mov r8,rdi
+    mov dil, 0x49
     call emit_byte
     mov dil, 0x89
     call emit_byte
     mov dil, 0xF8
+    call emit_byte
+    ; loop: mov al,[rsi]
+    mov dil, 0x8A
+    call emit_byte
+    mov dil, 0x06
+    call emit_byte
+    ; mov [rdi],al
+    mov dil, 0x88
+    call emit_byte
+    mov dil, 0x07
+    call emit_byte
+    ; inc rsi
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0xC6
+    call emit_byte
+    ; inc rdi
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    ; test al,al
+    mov dil, 0x84
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    ; jnz loop (-14)
+    mov dil, 0x75
+    call emit_byte
+    mov dil, 0xF2
+    call emit_byte
+    ; mov rax,r8
+    mov dil, 0x4C
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC0
     call emit_byte
     jmp .ge_call_done
 
