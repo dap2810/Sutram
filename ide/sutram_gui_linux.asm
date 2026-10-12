@@ -100,6 +100,8 @@
 %define KC_HOME         102             ; caret to line start
 %define KC_END          107             ; caret to line end
 %define KC_TAB          23              ; insert an indent
+%define KC_CTRL_F       41              ; 'f' keycode, checked with ControlMask
+%define FIND_CAP        128             ; find-string capacity
 %define INDENT_SPACES   4
 %define OUT_VISIBLE     7               ; output lines that fit in the pane
 %define SAVE_PATH       "/tmp/.sutram_gui_saved.sm"
@@ -182,6 +184,9 @@ section .bss
     out_lines   resb 1024           ; run_out split into display lines
     out_nlines  resq 1
     out_top     resq 1               ; first visible output line (scroll)
+    find_mode   resq 1               ; 1 while the find prompt is open
+    find_len    resq 1
+    find_buf    resb FIND_CAP
     want_quit   resd 1
 
 section .data
@@ -208,6 +213,8 @@ section .data
     txt_output  db "Output"
     txt_output_n equ $ - txt_output
     txt_hint    db "Ctrl-R run   Ctrl-S save   Ctrl-Z undo"
+    txt_find    db "Find: "
+    txt_find_n  equ $ - txt_find
     txt_hint_n  equ $ - txt_hint
 
     msg_ok      db "Sutram GUI: connected to X, window created.", 10, 0
@@ -692,14 +699,7 @@ draw_all:
     call send_req
     call draw_output
 
-    lea rsi, [txt_hint]
-    mov rdx, txt_hint_n
-    mov rcx, PANE_X + 8
-    mov r8, ED_Y + ED_H - 12
-    call draw_text
-    mov rdi, r12
-    lea rsi, [reqbuf]
-    call send_req
+    call draw_prompt
 
     pop r13
     pop r12
@@ -1553,11 +1553,109 @@ caret_down:
     pop rbx
     ret
 
+
+; ---------------------------------------------------------------- find_do
+; Search ed_buf for find_buf (find_len bytes) starting at the caret; if not
+; found, wrap and search from the start. Moves the caret to a hit.
+find_do:
+    push rbx
+    push r12
+    push r13
+    push r14
+    mov  r12, [rel find_len]
+    test r12, r12
+    jz   .done
+    mov  r13, [rel ed_cursor]
+    mov  r14, 1
+.pass:
+    mov  rbx, r13
+.scan:
+    mov  rax, rbx
+    add  rax, r12
+    cmp  rax, [rel ed_len]
+    ja   .next_pass
+    xor  rcx, rcx
+.cmp:
+    cmp  rcx, r12
+    jae  .found
+    mov  rax, rbx
+    add  rax, rcx
+    lea  rdx, [rel ed_buf]
+    movzx edi, byte [rdx + rax]
+    lea  rdx, [rel find_buf]
+    movzx esi, byte [rdx + rcx]
+    cmp  edi, esi
+    jne  .mismatch
+    inc  rcx
+    jmp  .cmp
+.mismatch:
+    inc  rbx
+    jmp  .scan
+.found:
+    mov  [rel ed_cursor], rbx
+    jmp  .done
+.next_pass:
+    test r14, r14
+    jz   .done
+    xor  r14, r14
+    xor  r13, r13
+    jmp  .pass
+.done:
+    pop  r14
+    pop  r13
+    pop  r12
+    pop  rbx
+    ret
+
+; ---------------------------------------------------------------- draw_prompt
+; The bottom line: the find prompt while searching, the key hint otherwise.
+draw_prompt:
+    push rbx
+    cmp  qword [rel find_mode], 0
+    je   .hint
+    mov  rdi, COL_ACCENT
+    call set_fg
+    lea  rsi, [rel txt_find]
+    mov  rdx, txt_find_n
+    mov  rcx, PANE_X + 8
+    mov  r8,  ED_Y + ED_H - 12
+    call draw_text
+    mov  rdi, r12
+    lea  rsi, [reqbuf]
+    call send_req
+    mov  rdi, COL_TEXT
+    call set_fg
+    lea  rsi, [rel find_buf]
+    mov  rdx, [rel find_len]
+    mov  rcx, PANE_X + 8 + 48
+    mov  r8,  ED_Y + ED_H - 12
+    call draw_text
+    mov  rdi, r12
+    lea  rsi, [reqbuf]
+    call send_req
+    jmp  .done
+.hint:
+    mov  rdi, COL_TEXT
+    call set_fg
+    lea  rsi, [rel txt_hint]
+    mov  rdx, txt_hint_n
+    mov  rcx, PANE_X + 8
+    mov  r8,  ED_Y + ED_H - 12
+    call draw_text
+    mov  rdi, r12
+    lea  rsi, [reqbuf]
+    call send_req
+.done:
+    pop  rbx
+    ret
+
 ; ---------------------------------------------------------------- handle_key
 ; rdi = X11 keycode, rsi = event state (modifier mask).
 handle_key:
     push rbx
     mov  rbx, rdi
+    cmp  qword [rel find_mode], 0
+    jne  .findkey
     test rsi, MASK_CONTROL_ST
     jz   .nocontrol
     cmp  rbx, KC_CTRL_R
@@ -1568,6 +1666,8 @@ handle_key:
     je   .load
     cmp  rbx, KC_CTRL_Z
     je   .undo
+    cmp  rbx, KC_CTRL_F
+    je   .findopen
     cmp  rbx, KC_HOME
     je   .ctop
     cmp  rbx, KC_END
@@ -1670,6 +1770,64 @@ handle_key:
     mov  rdi, [rel ed_cursor]
     call line_end
     mov  [rel ed_cursor], rax
+    jmp  .done
+.findopen:
+    mov  qword [rel find_mode], 1
+    mov  qword [rel find_len], 0
+    lea  rcx, [rel find_buf]
+    mov  byte [rcx], 0
+    call draw_all
+    jmp  .done
+.findkey:
+    cmp  rbx, KC_ESCAPE
+    je   .fcancel
+    cmp  rbx, KC_RETURN
+    je   .faccept
+    cmp  rbx, KC_BACKSPACE
+    je   .fback
+    cmp  qword [rel km_ok], 0
+    je   .ffallback
+    lea  rcx, [rel kc_map]
+    cmp  rbx, 255
+    ja   .done
+    movzx edi, byte [rcx + rbx]
+    jmp  .fhave
+.ffallback:
+    lea  rcx, [rel kc_table]
+    cmp  rbx, 125
+    ja   .done
+    movzx edi, byte [rcx + rbx]
+.fhave:
+    test edi, edi
+    jz   .done
+    mov  rax, [rel find_len]
+    cmp  rax, FIND_CAP - 1
+    jae  .done
+    lea  rcx, [rel find_buf]
+    mov  [rcx + rax], dil
+    inc  rax
+    mov  [rel find_len], rax
+    mov  byte [rcx + rax], 0
+    call draw_all
+    jmp  .done
+.fcancel:
+    mov  qword [rel find_mode], 0
+    call draw_all
+    jmp  .done
+.faccept:
+    call find_do
+    mov  qword [rel find_mode], 0
+    call draw_all
+    jmp  .done
+.fback:
+    mov  rax, [rel find_len]
+    test rax, rax
+    jz   .done
+    dec  rax
+    mov  [rel find_len], rax
+    lea  rcx, [rel find_buf]
+    mov  byte [rcx + rax], 0
+    call draw_all
     jmp  .done
 .ctop:
     mov  qword [rel ed_cursor], 0
