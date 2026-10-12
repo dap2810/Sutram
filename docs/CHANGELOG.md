@@ -1,3 +1,32 @@
+## v114 — Muse R12 accepted; ChatGPT R54 verified and SYNCED to main
+
+- **Muse R12 verified and accepted.** Three real programs — word frequency
+  (`strb_split` + `map` + sort), an expression evaluator (recursive descent with
+  precedence and parentheses), and a formatted report (`strconv` padding) — all in
+  `examples/` with goldens. All hashes match and **all three reproduce their goldens
+  byte-for-byte** on my build. The findings report is the valuable part and names
+  real language gaps: no globals (state must be threaded through every signature);
+  **no forward declarations, so mutual recursion is expressible only by ordering
+  luck** (a genuine gap, not awkwardness); the two string representations cause
+  silent repack loops at every module boundary; `likha(buf)` prints the pointer, not
+  the string; `sankhyiki` needs float arrays so integer stats are manual.
+- **ChatGPT R54 verified and accepted.** A central arity table now covers **all 40
+  builtin IDs**; invalid arity yields a located recoverable `E_PARSE` instead of a
+  compiler fault. `R54_ACCEPTED builtin_ids=40 valid_arity=43 invalid_arity=80
+  raw_memory=1 arg_capacity=1`; `R54_MUSE_ACCEPTED original=186 example_local=3
+  original_golden_changes=0`.
+- **They found and fixed a pre-existing codegen bug**: `vartani_cp(dst,src)` scanned
+  the *destination* with `repne scasb` instead of copying the source. Demonstrated
+  before/after (`0,1` -> `89,4`). That is the only builtin whose generated code
+  intentionally changed. Good catch.
+- Manifest **7/7 OK**; compiler `9ce0c6ad…` matches; GUI slice 14 (`b4c15d61…`),
+  `strb.smlib` and `map.smlib` all preserved; `lib`/`ide`/`examples` byte-identical
+  to main. Synced 11 files. Main after sync: 186/12/30/18, proof_lib 139/139,
+  proof_props 30/30.
+- Honest limits stated by ChatGPT and unchanged: valid-arity fixtures compile behind
+  a runtime-false guard, so they prove parse/codegen, not syscall effects; raw
+  pointer ops remain caller-unsafe; Windows still out of scope.
+
 ## v113 — Linux GUI IDE, slice 14: Tab indent, Ctrl-Home / Ctrl-End
 
 - **Tab inserts a 4-space indent.** It goes through the same `ed_insert` path as a
