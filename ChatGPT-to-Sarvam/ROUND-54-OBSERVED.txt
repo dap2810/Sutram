@@ -1,5 +1,9 @@
-Actual CI Linux stdout, successful run https://github.com/dap2810/Sutram/actions/runs/38259778017
-Job 114847016669. Timestamps/ANSI codes removed. 43 valid + 80 invalid calls, baseline and fixed copy fixture, compatibility.
+Sutram R54 — real Linux stdout after integration of new Muse Round12 examples.
+Native CI https://github.com/dap2810/Sutram/actions/runs/38260879416 (job 114850757491, success).
+Source-tested commit 8c8e31888225dcb845ad597c89632c70001d1db3.
+40 builtin signatures; 43 native-valid and 80 native-invalid arity invocations; one executed memory fixture.
+Actual raw before/after copy outputs, R51/R52 acceptance, 186 original goldens and 3 Muse example-local goldens.
+All output below is copied from native CI logs after stripping CI timestamps and ANSI codes.
 
 R54_VALID likh valid compile 0 run 0 stdout '54\n'
 R54_INVALID likh too_few exit 1 stdout "case.sm:6:15: Sutram Error [E_PARSE]: near ')'\n          likh(1)\n                ^\nSutram check: errors found; no output binary\n"
@@ -139,7 +143,15 @@ R49_REPEATED_SEMANTIC_PASS,unique_correct_lines=3,no_output=1
 R49_AUDIT_STATUS wrong_provenance=0 unlocated=0 universal_diagnostics_accepted=1 cases=15 failures=0
 R51_ACCEPTANCE PASS failed_cases 0
 R52_ACCEPTED PASS indexed_char_code=1 likh_store=1 dvaram_default_mode=0644 dvaram_explicit_mode=0600 bad_arity=5
+R54_ORIGINAL_GOLDENS 186
 PASS=186
+R54_MUSE_GOLDEN 215_r12_wordfreq compile 0 exit 0 stdout 'brown: 1\n\ndog: 1\n\nfox: 2\n\njumps: 1\n\nlazy: 1\n\nover: 1\n\nquick: 1\n\nthe: 3\n\n'
+R54_MUSE_GOLDEN 216_r12_expr compile 0 exit 0 stdout '14\n\n20\n\n8\n\n10\n\n'
+R54_MUSE_GOLDEN 217_r12_report compile 0 exit 0 stdout '=== Test Scores Report ===\nCount: 8\n\nSum:   688\n\nMean:  86\n\nMin:   76\n\nMax:   95\n\nRange: 19\n\n-------------------------\nPadded scores:\n    85\n    92\n    78\n    95\n    88\n    76\n    90\n    84\n'
+R54_MUSE_ACCEPTED original=186 example_local=3 original_golden_changes=0
   30/30 pack checks pass (10 packs x 3 keyword groups)
 Ran 18 tests in 0.011s
 R54_GUI_GOLDENS_UNCHANGED_PASS
+
+Full log includes all 12 codegen gate outputs, 30 pack checks and 18 graph unittest results:
+https://github.com/dap2810/Sutram/actions/runs/38260879416
