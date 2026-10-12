@@ -99,6 +99,8 @@
 %define KC_PGDN         109             ; output-pane scroll down
 %define KC_HOME         102             ; caret to line start
 %define KC_END          107             ; caret to line end
+%define KC_TAB          23              ; insert an indent
+%define INDENT_SPACES   4
 %define OUT_VISIBLE     7               ; output lines that fit in the pane
 %define SAVE_PATH       "/tmp/.sutram_gui_saved.sm"
 %define UNDO_LEVELS     8
@@ -1566,6 +1568,10 @@ handle_key:
     je   .load
     cmp  rbx, KC_CTRL_Z
     je   .undo
+    cmp  rbx, KC_HOME
+    je   .ctop
+    cmp  rbx, KC_END
+    je   .cend
 .nocontrol:
     cmp  rbx, KC_ESCAPE
     je   .esc
@@ -1589,6 +1595,8 @@ handle_key:
     je   .home
     cmp  rbx, KC_END
     je   .end
+    cmp  rbx, KC_TAB
+    je   .tab
     cmp  qword [rel km_ok], 0
     je   .fallback
     lea  rcx, [rel kc_map]
@@ -1662,6 +1670,21 @@ handle_key:
     mov  rdi, [rel ed_cursor]
     call line_end
     mov  [rel ed_cursor], rax
+    jmp  .done
+.ctop:
+    mov  qword [rel ed_cursor], 0
+    jmp  .done
+.cend:
+    mov  rax, [rel ed_len]
+    mov  [rel ed_cursor], rax
+    jmp  .done
+.tab:
+    mov  rbx, INDENT_SPACES
+.tabloop:
+    mov  rdi, 32
+    call ed_insert
+    dec  rbx
+    jnz  .tabloop
     jmp  .done
 .esc:
     mov  dword [rel want_quit], 1
