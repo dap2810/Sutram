@@ -1,0 +1,10 @@
+Actual SHA256 from GitHub Actions run https://github.com/dap2810/Sutram/actions/runs/38259778017
+Tested source commit 7c22756ea7bc45e69c4b42b6024e52a56ebd6974
+Six source/test/docs/workflow hashes. Verify using: grep -E '^[a-f0-9]{64}  ' ChatGPT-to-Sarvam/ROUND-54-SHA256.txt | sha256sum -c -
+
+9ce0c6ad2876d99ae0275e32c62c9806bac40d67e47d59eafb9c67fbdfb233e9  src/sutram_compiler.asm
+bc36b453b7b2ada30d7a1dc5982b9a5ec2abe13c2f98565f80f3b612e874a006  docs/R54-BUILTIN-BOUNDS.md
+ad224b6e0e4488ba79a6b429a210923730980bcf19f5f6beb408c26fa403a3cb  tools/r54_native_acceptance.py
+e21159f2bd1973791ad75fd2e3a01e426e10c3962f256b82e42eba58d693a99f  tests/r54_check/raw_invalid.sm
+ecfb0cb9dc93d2d7523dd6b00dd2568640ce7b875a81683c5e61eb08db40f902  tests/r54_check/raw_valid.sm
+3f0f70a41411d13835cedadee74b03c25c66daf885d132f8329b7c95274530e7  .github/workflows/r54-native.yml
