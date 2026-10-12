@@ -1,0 +1,63 @@
+# R12 program 3: formatted report — stats + strconv padding.
+# Computes statistics on test scores and prints a formatted table.
+ayojan strconv
+ayojan strb
+
+mukhya() {
+    vitti scores = nirmmita(8 * 8)
+    scores[0] = 85
+    scores[1] = 92
+    scores[2] = 78
+    scores[3] = 95
+    scores[4] = 88
+    scores[5] = 76
+    scores[6] = 90
+    scores[7] = 84
+    vitti n = 8
+    # compute stats
+    vitti sum = 0
+    vitti mn = scores[0]
+    vitti mx = scores[0]
+    vitti i = 0
+    yavat (i < n) {
+        sum = sum + scores[i]
+        yadi (scores[i] < mn) { mn = scores[i] }
+        yadi (scores[i] > mx) { mx = scores[i] }
+        i = i + 1
+    }
+    vitti mean = sum / n
+    likha("=== Test Scores Report ===\n")
+    likha("Count: ")
+    likha(n)
+    likha("\nSum:   ")
+    likha(sum)
+    likha("\nMean:  ")
+    likha(mean)
+    likha("\nMin:   ")
+    likha(mn)
+    likha("\nMax:   ")
+    likha(mx)
+    likha("\nRange: ")
+    likha(mx - mn)
+    likha("\n")
+    likha("-------------------------\n")
+    likha("Padded scores:\n")
+    # demonstrate pad_left: right-align each score in width 6
+    vitti buf = nirmmita(32)
+    vitti row = nirmmita(64)
+    i = 0
+    yavat (i < n) {
+        vitti cnt = int_to_str(scores[i], buf)
+        # pad buf in place to width 6 (buf holds qword cells)
+        pad_left(buf, cnt, 6, 32)
+        # repack 6 qword cells to bytes for printing
+        vitti j = 0
+        yavat (j < 6) {
+            set_char(row, j, buf[j])
+            j = j + 1
+        }
+        likha(1, row, 6)
+        likha("\n")
+        i = i + 1
+    }
+}
