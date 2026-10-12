@@ -1,0 +1,157 @@
+Sutram R54 — real Linux stdout after integration of new Muse Round12 examples.
+Native CI https://github.com/dap2810/Sutram/actions/runs/38260879416 (job 114850757491, success).
+Source-tested commit 8c8e31888225dcb845ad597c89632c70001d1db3.
+40 builtin signatures; 43 native-valid and 80 native-invalid arity invocations; one executed memory fixture.
+Actual raw before/after copy outputs, R51/R52 acceptance, 186 original goldens and 3 Muse example-local goldens.
+All output below is copied from native CI logs after stripping CI timestamps and ANSI codes.
+
+R54_VALID likh valid compile 0 run 0 stdout '54\n'
+R54_INVALID likh too_few exit 1 stdout "case.sm:6:15: Sutram Error [E_PARSE]: near ')'\n          likh(1)\n                ^\nSutram check: errors found; no output binary\n"
+R54_INVALID likh too_many exit 1 stdout "case.sm:6:21: Sutram Error [E_PARSE]: near ')'\n          likh(1, 1, 1)\n                      ^\nSutram check: errors found; no output binary\n"
+R54_VALID sthagita valid compile 0 run 0 stdout '54\n'
+R54_INVALID sthagita too_few exit 1 stdout "case.sm:6:19: Sutram Error [E_PARSE]: near ')'\n          sthagita(1)\n                    ^\nSutram check: errors found; no output binary\n"
+R54_INVALID sthagita too_many exit 1 stdout "case.sm:6:19: Sutram Error [E_PARSE]: near ')'\n          sthagita(1)\n                    ^\nSutram check: errors found; no output binary\n"
+R54_VALID pad valid compile 0 run 0 stdout '54\n'
+R54_INVALID pad too_few exit 1 stdout "case.sm:6:19: Sutram Error [E_PARSE]: near ')'\n          likha(pad())\n                    ^\nSutram check: errors found; no output binary\n"
+R54_INVALID pad too_many exit 1 stdout "case.sm:6:23: Sutram Error [E_PARSE]: near ')'\n          likha(pad(1, 1))\n                        ^\nSutram check: errors found; no output binary\n"
+R54_VALID dvaram valid compile 0 run 0 stdout '54\n'
+R54_VALID dvaram optional compile 0 run 0 stdout '54\n'
+R54_INVALID dvaram too_few exit 1 stdout "case.sm:6:23: Sutram Error [E_PARSE]: near ')'\n          likha(dvaram(1))\n                        ^\nSutram check: errors found; no output binary\n"
+R54_INVALID dvaram too_many exit 1 stdout "case.sm:6:32: Sutram Error [E_PARSE]: near ')'\n          likha(dvaram(1, 1, 1, 1))\n                                 ^\nSutram check: errors found; no output binary\n"
+R54_VALID paadh valid compile 0 run 0 stdout '54\n'
+R54_INVALID paadh too_few exit 1 stdout "case.sm:6:25: Sutram Error [E_PARSE]: near ')'\n          likha(paadh(1, 1))\n                          ^\nSutram check: errors found; no output binary\n"
+R54_INVALID paadh too_many exit 1 stdout "case.sm:6:31: Sutram Error [E_PARSE]: near ')'\n          likha(paadh(1, 1, 1, 1))\n                                ^\nSutram check: errors found; no output binary\n"
+R54_VALID likha valid compile 0 run 0 stdout '54\n'
+R54_VALID likha optional compile 0 run 0 stdout '54\n'
+R54_INVALID likha too_few exit 1 stdout "case.sm:6:15: Sutram Error [E_PARSE]: near ')'\n          likha()\n                ^\nSutram check: errors found; no output binary\n"
+R54_INVALID likha too_many exit 1 stdout "case.sm:6:25: Sutram Error [E_PARSE]: near ')'\n          likha(1, 1, 1, 1)\n                          ^\nSutram check: errors found; no output binary\n"
+R54_VALID band valid compile 0 run 0 stdout '54\n'
+R54_INVALID band too_few exit 1 stdout "case.sm:6:20: Sutram Error [E_PARSE]: near ')'\n          likha(band())\n                     ^\nSutram check: errors found; no output binary\n"
+R54_INVALID band too_many exit 1 stdout "case.sm:6:24: Sutram Error [E_PARSE]: near ')'\n          likha(band(1, 1))\n                         ^\nSutram check: errors found; no output binary\n"
+R54_VALID netsock valid compile 0 run 0 stdout '54\n'
+R54_INVALID netsock too_few exit 1 stdout "case.sm:6:24: Sutram Error [E_PARSE]: near ')'\n          likha(netsock(1))\n                         ^\nSutram check: errors found; no output binary\n"
+R54_INVALID netsock too_many exit 1 stdout "case.sm:6:24: Sutram Error [E_PARSE]: near ')'\n          likha(netsock(1))\n                         ^\nSutram check: errors found; no output binary\n"
+R54_VALID netbind valid compile 0 run 0 stdout '54\n'
+R54_INVALID netbind too_few exit 1 stdout "case.sm:6:24: Sutram Error [E_PARSE]: near ')'\n          likha(netbind(1))\n                         ^\nSutram check: errors found; no output binary\n"
+R54_INVALID netbind too_many exit 1 stdout "case.sm:6:30: Sutram Error [E_PARSE]: near ')'\n          likha(netbind(1, 1, 1))\n                               ^\nSutram check: errors found; no output binary\n"
+R54_VALID netlisten valid compile 0 run 0 stdout '54\n'
+R54_INVALID netlisten too_few exit 1 stdout "case.sm:6:25: Sutram Error [E_PARSE]: near ')'\n          likha(netlisten())\n                          ^\nSutram check: errors found; no output binary\n"
+R54_INVALID netlisten too_many exit 1 stdout "case.sm:6:29: Sutram Error [E_PARSE]: near ')'\n          likha(netlisten(1, 1))\n                              ^\nSutram check: errors found; no output binary\n"
+R54_VALID netaccept valid compile 0 run 0 stdout '54\n'
+R54_INVALID netaccept too_few exit 1 stdout "case.sm:6:25: Sutram Error [E_PARSE]: near ')'\n          likha(netaccept())\n                          ^\nSutram check: errors found; no output binary\n"
+R54_INVALID netaccept too_many exit 1 stdout "case.sm:6:29: Sutram Error [E_PARSE]: near ')'\n          likha(netaccept(1, 1))\n                              ^\nSutram check: errors found; no output binary\n"
+R54_VALID nirmmita valid compile 0 run 0 stdout '54\n'
+R54_INVALID nirmmita too_few exit 1 stdout "case.sm:6:24: Sutram Error [E_PARSE]: near ')'\n          likha(nirmmita())\n                         ^\nSutram check: errors found; no output binary\n"
+R54_INVALID nirmmita too_many exit 1 stdout "case.sm:6:28: Sutram Error [E_PARSE]: near ')'\n          likha(nirmmita(1, 1))\n                             ^\nSutram check: errors found; no output binary\n"
+R54_VALID likh8 valid compile 0 run 0 stdout '54\n'
+R54_INVALID likh8 too_few exit 1 stdout "case.sm:6:16: Sutram Error [E_PARSE]: near ')'\n          likh8(1)\n                 ^\nSutram check: errors found; no output binary\n"
+R54_INVALID likh8 too_many exit 1 stdout "case.sm:6:22: Sutram Error [E_PARSE]: near ')'\n          likh8(1, 1, 1)\n                       ^\nSutram check: errors found; no output binary\n"
+R54_VALID pad8 valid compile 0 run 0 stdout '54\n'
+R54_INVALID pad8 too_few exit 1 stdout "case.sm:6:20: Sutram Error [E_PARSE]: near ')'\n          likha(pad8())\n                     ^\nSutram check: errors found; no output binary\n"
+R54_INVALID pad8 too_many exit 1 stdout "case.sm:6:24: Sutram Error [E_PARSE]: near ')'\n          likha(pad8(1, 1))\n                         ^\nSutram check: errors found; no output binary\n"
+R54_VALID vartani_len valid compile 0 run 0 stdout '54\n'
+R54_INVALID vartani_len too_few exit 1 stdout "case.sm:6:27: Sutram Error [E_PARSE]: near ')'\n          likha(vartani_len())\n                            ^\nSutram check: errors found; no output binary\n"
+R54_INVALID vartani_len too_many exit 1 stdout "case.sm:6:31: Sutram Error [E_PARSE]: near ')'\n          likha(vartani_len(1, 1))\n                                ^\nSutram check: errors found; no output binary\n"
+R54_VALID vartani_cmp valid compile 0 run 0 stdout '54\n'
+R54_INVALID vartani_cmp too_few exit 1 stdout "case.sm:6:28: Sutram Error [E_PARSE]: near ')'\n          likha(vartani_cmp(1))\n                             ^\nSutram check: errors found; no output binary\n"
+R54_INVALID vartani_cmp too_many exit 1 stdout "case.sm:6:34: Sutram Error [E_PARSE]: near ')'\n          likha(vartani_cmp(1, 1, 1))\n                                   ^\nSutram check: errors found; no output binary\n"
+R54_VALID vartani_cat valid compile 0 run 0 stdout '54\n'
+R54_INVALID vartani_cat too_few exit 1 stdout "case.sm:6:22: Sutram Error [E_PARSE]: near ')'\n          vartani_cat(1)\n                       ^\nSutram check: errors found; no output binary\n"
+R54_INVALID vartani_cat too_many exit 1 stdout "case.sm:6:28: Sutram Error [E_PARSE]: near ')'\n          vartani_cat(1, 1, 1)\n                             ^\nSutram check: errors found; no output binary\n"
+R54_VALID sankhya_yog valid compile 0 run 0 stdout '54\n'
+R54_INVALID sankhya_yog too_few exit 1 stdout "case.sm:6:31: Sutram Error [E_PARSE]: near ')'\n          likha(sankhya_yog(1, 1))\n                                ^\nSutram check: errors found; no output binary\n"
+R54_INVALID sankhya_yog too_many exit 1 stdout "case.sm:6:37: Sutram Error [E_PARSE]: near ')'\n          likha(sankhya_yog(1, 1, 1, 1))\n                                      ^\nSutram check: errors found; no output binary\n"
+R54_VALID sankhya_gunan valid compile 0 run 0 stdout '54\n'
+R54_INVALID sankhya_gunan too_few exit 1 stdout "case.sm:6:33: Sutram Error [E_PARSE]: near ')'\n          likha(sankhya_gunan(1, 1))\n                                  ^\nSutram check: errors found; no output binary\n"
+R54_INVALID sankhya_gunan too_many exit 1 stdout "case.sm:6:39: Sutram Error [E_PARSE]: near ')'\n          likha(sankhya_gunan(1, 1, 1, 1))\n                                        ^\nSutram check: errors found; no output binary\n"
+R54_VALID sankhya_dot valid compile 0 run 0 stdout '54\n'
+R54_INVALID sankhya_dot too_few exit 1 stdout "case.sm:6:28: Sutram Error [E_PARSE]: near ')'\n          likha(sankhya_dot(1))\n                             ^\nSutram check: errors found; no output binary\n"
+R54_INVALID sankhya_dot too_many exit 1 stdout "case.sm:6:34: Sutram Error [E_PARSE]: near ')'\n          likha(sankhya_dot(1, 1, 1))\n                                   ^\nSutram check: errors found; no output binary\n"
+R54_VALID likha_fmt valid compile 0 run 0 stdout '54\n'
+R54_INVALID likha_fmt too_few exit 1 stdout "case.sm:6:20: Sutram Error [E_PARSE]: near ')'\n          likha_fmt(1)\n                     ^\nSutram check: errors found; no output binary\n"
+R54_INVALID likha_fmt too_many exit 1 stdout "case.sm:6:26: Sutram Error [E_PARSE]: near ')'\n          likha_fmt(1, 1, 1)\n                           ^\nSutram check: errors found; no output binary\n"
+R54_VALID char_at valid compile 0 run 0 stdout '54\n'
+R54_INVALID char_at too_few exit 1 stdout "case.sm:6:24: Sutram Error [E_PARSE]: near ')'\n          likha(char_at(1))\n                         ^\nSutram check: errors found; no output binary\n"
+R54_INVALID char_at too_many exit 1 stdout "case.sm:6:30: Sutram Error [E_PARSE]: near ')'\n          likha(char_at(1, 1, 1))\n                               ^\nSutram check: errors found; no output binary\n"
+R54_VALID char_code valid compile 0 run 0 stdout '54\n'
+R54_VALID char_code optional compile 0 run 0 stdout '54\n'
+R54_INVALID char_code too_few exit 1 stdout "case.sm:6:25: Sutram Error [E_PARSE]: near ')'\n          likha(char_code())\n                          ^\nSutram check: errors found; no output binary\n"
+R54_INVALID char_code too_many exit 1 stdout "case.sm:6:32: Sutram Error [E_PARSE]: near ')'\n          likha(char_code(1, 1, 1))\n                                 ^\nSutram check: errors found; no output binary\n"
+R54_VALID char_from valid compile 0 run 0 stdout '54\n'
+R54_INVALID char_from too_few exit 1 stdout "case.sm:6:25: Sutram Error [E_PARSE]: near ')'\n          likha(char_from())\n                          ^\nSutram check: errors found; no output binary\n"
+R54_INVALID char_from too_many exit 1 stdout "case.sm:6:29: Sutram Error [E_PARSE]: near ')'\n          likha(char_from(1, 1))\n                              ^\nSutram check: errors found; no output binary\n"
+R54_VALID char_upper valid compile 0 run 0 stdout '54\n'
+R54_INVALID char_upper too_few exit 1 stdout "case.sm:6:26: Sutram Error [E_PARSE]: near ')'\n          likha(char_upper())\n                           ^\nSutram check: errors found; no output binary\n"
+R54_INVALID char_upper too_many exit 1 stdout "case.sm:6:30: Sutram Error [E_PARSE]: near ')'\n          likha(char_upper(1, 1))\n                               ^\nSutram check: errors found; no output binary\n"
+R54_VALID char_lower valid compile 0 run 0 stdout '54\n'
+R54_INVALID char_lower too_few exit 1 stdout "case.sm:6:26: Sutram Error [E_PARSE]: near ')'\n          likha(char_lower())\n                           ^\nSutram check: errors found; no output binary\n"
+R54_INVALID char_lower too_many exit 1 stdout "case.sm:6:30: Sutram Error [E_PARSE]: near ')'\n          likha(char_lower(1, 1))\n                               ^\nSutram check: errors found; no output binary\n"
+R54_VALID likh8c valid compile 0 run 0 stdout '54\n'
+R54_INVALID likh8c too_few exit 1 stdout "case.sm:6:20: Sutram Error [E_PARSE]: near ')'\n          likh8c(1, 1)\n                     ^\nSutram check: errors found; no output binary\n"
+R54_INVALID likh8c too_many exit 1 stdout "case.sm:6:26: Sutram Error [E_PARSE]: near ')'\n          likh8c(1, 1, 1, 1)\n                           ^\nSutram check: errors found; no output binary\n"
+R54_VALID pad8c valid compile 0 run 0 stdout '54\n'
+R54_INVALID pad8c too_few exit 1 stdout "case.sm:6:22: Sutram Error [E_PARSE]: near ')'\n          likha(pad8c(1))\n                       ^\nSutram check: errors found; no output binary\n"
+R54_INVALID pad8c too_many exit 1 stdout "case.sm:6:28: Sutram Error [E_PARSE]: near ')'\n          likha(pad8c(1, 1, 1))\n                             ^\nSutram check: errors found; no output binary\n"
+R54_VALID smaran valid compile 0 run 0 stdout '54\n'
+R54_INVALID smaran too_few exit 1 stdout "case.sm:6:20: Sutram Error [E_PARSE]: near ')'\n          smaran(1, 1)\n                     ^\nSutram check: errors found; no output binary\n"
+R54_INVALID smaran too_many exit 1 stdout "case.sm:6:26: Sutram Error [E_PARSE]: near ')'\n          smaran(1, 1, 1, 1)\n                           ^\nSutram check: errors found; no output binary\n"
+R54_VALID smaran_cp valid compile 0 run 0 stdout '54\n'
+R54_INVALID smaran_cp too_few exit 1 stdout "case.sm:6:23: Sutram Error [E_PARSE]: near ')'\n          smaran_cp(1, 1)\n                        ^\nSutram check: errors found; no output binary\n"
+R54_INVALID smaran_cp too_many exit 1 stdout "case.sm:6:29: Sutram Error [E_PARSE]: near ')'\n          smaran_cp(1, 1, 1, 1)\n                              ^\nSutram check: errors found; no output binary\n"
+R54_VALID vartani_cp valid compile 0 run 0 stdout '54\n'
+R54_INVALID vartani_cp too_few exit 1 stdout "case.sm:6:21: Sutram Error [E_PARSE]: near ')'\n          vartani_cp(1)\n                      ^\nSutram check: errors found; no output binary\n"
+R54_INVALID vartani_cp too_many exit 1 stdout "case.sm:6:27: Sutram Error [E_PARSE]: near ')'\n          vartani_cp(1, 1, 1)\n                            ^\nSutram check: errors found; no output binary\n"
+R54_VALID grahan valid compile 0 run 0 stdout '54\n'
+R54_INVALID grahan too_few exit 1 stdout "case.sm:6:23: Sutram Error [E_PARSE]: near ')'\n          likha(grahan(1))\n                        ^\nSutram check: errors found; no output binary\n"
+R54_INVALID grahan too_many exit 1 stdout "case.sm:6:23: Sutram Error [E_PARSE]: near ')'\n          likha(grahan(1))\n                        ^\nSutram check: errors found; no output binary\n"
+R54_VALID lkhb valid compile 0 run 0 stdout '54\n'
+R54_INVALID lkhb too_few exit 1 stdout "case.sm:6:14: Sutram Error [E_PARSE]: near ')'\n          lkhb()\n               ^\nSutram check: errors found; no output binary\n"
+R54_INVALID lkhb too_many exit 1 stdout "case.sm:6:18: Sutram Error [E_PARSE]: near ')'\n          lkhb(1, 1)\n                   ^\nSutram check: errors found; no output binary\n"
+R54_VALID shabda valid compile 0 run 0 stdout '54\n'
+R54_INVALID shabda too_few exit 1 stdout "case.sm:6:16: Sutram Error [E_PARSE]: near ')'\n          shabda()\n                 ^\nSutram check: errors found; no output binary\n"
+R54_INVALID shabda too_many exit 1 stdout "case.sm:6:20: Sutram Error [E_PARSE]: near ')'\n          shabda(1, 1)\n                     ^\nSutram check: errors found; no output binary\n"
+R54_VALID pankti_len valid compile 0 run 0 stdout '54\n'
+R54_INVALID pankti_len too_few exit 1 stdout "case.sm:6:26: Sutram Error [E_PARSE]: near ')'\n          likha(pankti_len())\n                           ^\nSutram check: errors found; no output binary\n"
+R54_INVALID pankti_len too_many exit 1 stdout "case.sm:6:30: Sutram Error [E_PARSE]: near ')'\n          likha(pankti_len(1, 1))\n                               ^\nSutram check: errors found; no output binary\n"
+R54_VALID kosh_push valid compile 0 run 0 stdout '54\n'
+R54_INVALID kosh_push too_few exit 1 stdout "case.sm:6:20: Sutram Error [E_PARSE]: near ')'\n          kosh_push(1)\n                     ^\nSutram check: errors found; no output binary\n"
+R54_INVALID kosh_push too_many exit 1 stdout "case.sm:6:26: Sutram Error [E_PARSE]: near ')'\n          kosh_push(1, 1, 1)\n                           ^\nSutram check: errors found; no output binary\n"
+R54_VALID kosh_pop valid compile 0 run 0 stdout '54\n'
+R54_INVALID kosh_pop too_few exit 1 stdout "case.sm:6:24: Sutram Error [E_PARSE]: near ')'\n          likha(kosh_pop())\n                         ^\nSutram check: errors found; no output binary\n"
+R54_INVALID kosh_pop too_many exit 1 stdout "case.sm:6:28: Sutram Error [E_PARSE]: near ')'\n          likha(kosh_pop(1, 1))\n                             ^\nSutram check: errors found; no output binary\n"
+R54_VALID kosh_len valid compile 0 run 0 stdout '54\n'
+R54_INVALID kosh_len too_few exit 1 stdout "case.sm:6:24: Sutram Error [E_PARSE]: near ')'\n          likha(kosh_len())\n                         ^\nSutram check: errors found; no output binary\n"
+R54_INVALID kosh_len too_many exit 1 stdout "case.sm:6:28: Sutram Error [E_PARSE]: near ')'\n          likha(kosh_len(1, 1))\n                             ^\nSutram check: errors found; no output binary\n"
+R54_VALID kosh_cap valid compile 0 run 0 stdout '54\n'
+R54_INVALID kosh_cap too_few exit 1 stdout "case.sm:6:24: Sutram Error [E_PARSE]: near ')'\n          likha(kosh_cap())\n                         ^\nSutram check: errors found; no output binary\n"
+R54_INVALID kosh_cap too_many exit 1 stdout "case.sm:6:28: Sutram Error [E_PARSE]: near ')'\n          likha(kosh_cap(1, 1))\n                             ^\nSutram check: errors found; no output binary\n"
+R54_VALID set_char valid compile 0 run 0 stdout '54\n'
+R54_INVALID set_char too_few exit 1 stdout "case.sm:6:28: Sutram Error [E_PARSE]: near ')'\n          likha(set_char(1, 1))\n                             ^\nSutram check: errors found; no output binary\n"
+R54_INVALID set_char too_many exit 1 stdout "case.sm:6:34: Sutram Error [E_PARSE]: near ')'\n          likha(set_char(1, 1, 1, 1))\n                                   ^\nSutram check: errors found; no output binary\n"
+R54_BEFORE_RAW_COPY 0 stdout '258\n2\n66\n77\n0\n65\n65\n79\n75\n0\n1\n'
+R54_RAW_VALID 0 stdout '258\n2\n66\n77\n0\n65\n65\n79\n75\n89\n4\n'
+R54_RAW_INVALID 1 stdout "raw_invalid.sm:3:15: Sutram Error [E_PARSE]: near ')'\n      likha(pad())\n                ^\nSutram check: errors found; no output binary\n"
+R54_SEVEN_ARGUMENT_GUARD 1 stdout "seven.sm:6:27: Sutram Error [E_PARSE]: near '7'\n          likha(1,2,3,4,5,6,7)\n                            ^\nSutram check: errors found; no output binary\n"
+R54_ACCEPTED builtin_ids=40 valid_arity=43 invalid_arity=80 raw_memory=1 arg_capacity=1
+R48_BINARY_EQUAL,41_recursion.sm,846,8ab871455f57bff8a95ac7c840c52f8245e434c7016af5b3e3cedf6bfbd6d0e3
+R48_BINARY_EQUAL,126_numeric_pipeline.sm,7450,38c50da9ec00d8cffbc1d2f42abe63fd1580572f894a74b3677727f7c9b8b8e2
+R48_BINARY_EQUAL,163_r40_transitive_diamond.sm,575,e3024b0282767501627e44d5243e32fcbd3ee5ad717a030cd3e7b8e7a7e2f984
+R48_BINARY_EQUAL,111_t18_kosh_dasham_function_return.sm,1307,96e602630d053ddf7a61ed32badde5b293597569977ccd4bfbc7a61e07cc14b2
+R48_ACCEPTED_CHECK_TESTS,parse_diags=3,native_byte_equal=4,check_valid=1,no_output=1
+STAGE2_PASS structural=3 nested=2 unclosed=1 undefined=3
+R49_REPEATED_SEMANTIC_PASS,unique_correct_lines=3,no_output=1
+R49_AUDIT_STATUS wrong_provenance=0 unlocated=0 universal_diagnostics_accepted=1 cases=15 failures=0
+R51_ACCEPTANCE PASS failed_cases 0
+R52_ACCEPTED PASS indexed_char_code=1 likh_store=1 dvaram_default_mode=0644 dvaram_explicit_mode=0600 bad_arity=5
+R54_ORIGINAL_GOLDENS 186
+PASS=186
+R54_MUSE_GOLDEN 215_r12_wordfreq compile 0 exit 0 stdout 'brown: 1\n\ndog: 1\n\nfox: 2\n\njumps: 1\n\nlazy: 1\n\nover: 1\n\nquick: 1\n\nthe: 3\n\n'
+R54_MUSE_GOLDEN 216_r12_expr compile 0 exit 0 stdout '14\n\n20\n\n8\n\n10\n\n'
+R54_MUSE_GOLDEN 217_r12_report compile 0 exit 0 stdout '=== Test Scores Report ===\nCount: 8\n\nSum:   688\n\nMean:  86\n\nMin:   76\n\nMax:   95\n\nRange: 19\n\n-------------------------\nPadded scores:\n    85\n    92\n    78\n    95\n    88\n    76\n    90\n    84\n'
+R54_MUSE_ACCEPTED original=186 example_local=3 original_golden_changes=0
+  30/30 pack checks pass (10 packs x 3 keyword groups)
+Ran 18 tests in 0.011s
+R54_GUI_GOLDENS_UNCHANGED_PASS
+
+Full log includes all 12 codegen gate outputs, 30 pack checks and 18 graph unittest results:
+https://github.com/dap2810/Sutram/actions/runs/38260879416
