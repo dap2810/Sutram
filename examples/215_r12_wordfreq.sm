@@ -1,0 +1,84 @@
+# R12 program 1: word frequency — strb_split + map + sort together.
+# Splits an embedded passage, counts words with a hash map, prints
+# counts in alphabetical order.
+ayojan strb
+ayojan map
+
+# Bubble-sort an array of (ptr,len) pairs by string content.
+prakriya sort_keys(ptrs, lens, n) {
+    vitti a = ptrs
+    vitti b = lens
+    vitti c = n
+    vitti i = 0
+    vitti j = 0
+    vitti tp = 0
+    vitti tl = 0
+    yavat (i < c - 1) {
+        j = 0
+        yavat (j < c - 1 - i) {
+            yadi (strb_compare(a[j], b[j], a[j + 1], b[j + 1]) > 0) {
+                tp = a[j]
+                a[j] = a[j + 1]
+                a[j + 1] = tp
+                tl = b[j]
+                b[j] = b[j + 1]
+                b[j + 1] = tl
+            }
+            j = j + 1
+        }
+        i = i + 1
+    }
+    pratiyati 0
+}
+
+mukhya() {
+    vitti text = "the quick brown fox jumps over the lazy dog the fox"
+    vitti tlen = strb_len(text)
+    vitti parts = nirmmita(512 * 8)
+    vitti nseg = strb_split(text, tlen, " ", 1, parts, 64)
+    vitti m = map_init(32)
+    # track unique words: we repack each word's bytes into a contiguous
+    # buffer (segments store bytes as qword cells, not packed bytes)
+    vitti uptrs = nirmmita(64 * 8)
+    vitti ulens = nirmmita(64 * 8)
+    vitti nuniq = 0
+    vitti wbuf = nirmmita(64 * 40)
+    vitti wpos = 0
+    vitti i = 0
+    vitti pos = 0
+    vitti wlen = 0
+    vitti cur = 0
+    vitti j = 0
+    yavat (i < nseg) {
+        wlen = parts[pos]
+        # repack wlen bytes from qword cells into wbuf+wpos
+        j = 0
+        yavat (j < wlen) {
+            set_char(wbuf, wpos + j, parts[pos + 1 + j])
+            j = j + 1
+        }
+        cur = map_get(m, 32, wbuf + wpos, wlen)
+        yadi (cur < 0) {
+            map_put(m, 32, wbuf + wpos, wlen, 1)
+            uptrs[nuniq] = wbuf + wpos
+            ulens[nuniq] = wlen
+            nuniq = nuniq + 1
+            wpos = wpos + wlen
+        } anyatra {
+            map_put(m, 32, wbuf + wpos, wlen, cur + 1)
+        }
+        pos = pos + 1 + wlen
+        i = i + 1
+    }
+    sort_keys(uptrs, ulens, nuniq)
+    vitti tmp = nirmmita(64)
+    i = 0
+    yavat (i < nuniq) {
+        # uptrs[i] already points to packed bytes; print directly
+        likha(1, uptrs[i], ulens[i])
+        likha(": ")
+        likha(map_get(m, 32, uptrs[i], ulens[i]))
+        likha("\n")
+        i = i + 1
+    }
+}

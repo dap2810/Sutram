@@ -1,0 +1,104 @@
+# R12 program 2: expression evaluator — strb scanning + integer math.
+# Grammar: expr := term (('+'|'-') term)* ; term := factor (('*'|'/') factor)*
+#          factor := number | '(' expr ')' . Integers only.
+# State is an array [src, len, pos] passed explicitly (no globals in Sutram).
+ayojan strb
+
+prakriya skip_ws(st) {
+    yavat (st[2] < st[1]) {
+        yadi (char_at(st[0], st[2]) != 32) { pratiyati 0 }
+        st[2] = st[2] + 1
+    }
+    pratiyati 0
+}
+
+prakriya parse_num(st) {
+    vitti v = 0
+    vitti c = 0
+    skip_ws(st)
+    yavat (st[2] < st[1]) {
+        c = char_at(st[0], st[2])
+        yadi (c < 48 || c > 57) { pratiyati v }
+        v = v * 10 + (c - 48)
+        st[2] = st[2] + 1
+    }
+    pratiyati v
+}
+
+prakriya parse_factor(st) {
+    vitti v = 0
+    skip_ws(st)
+    yadi (st[2] < st[1]) {
+        yadi (char_at(st[0], st[2]) == 40) {
+            st[2] = st[2] + 1
+            v = parse_expr(st)
+            skip_ws(st)
+            yadi (st[2] < st[1]) {
+                yadi (char_at(st[0], st[2]) == 41) { st[2] = st[2] + 1 }
+            }
+            pratiyati v
+        }
+    }
+    pratiyati parse_num(st)
+}
+
+prakriya parse_term(st) {
+    vitti v = parse_factor(st)
+    vitti op = 0
+    vitti rhs = 0
+    vitti cont = 1
+    yavat (cont == 1) {
+        skip_ws(st)
+        cont = 0
+        yadi (st[2] < st[1]) {
+            op = char_at(st[0], st[2])
+            yadi (op == 42 || op == 47) {
+                st[2] = st[2] + 1
+                rhs = parse_factor(st)
+                yadi (op == 42) { v = v * rhs } anyatra { v = v / rhs }
+                cont = 1
+            }
+        }
+    }
+    pratiyati v
+}
+
+prakriya parse_expr(st) {
+    vitti v = parse_term(st)
+    vitti op = 0
+    vitti rhs = 0
+    vitti cont = 1
+    yavat (cont == 1) {
+        skip_ws(st)
+        cont = 0
+        yadi (st[2] < st[1]) {
+            op = char_at(st[0], st[2])
+            yadi (op == 43 || op == 45) {
+                st[2] = st[2] + 1
+                rhs = parse_term(st)
+                yadi (op == 43) { v = v + rhs } anyatra { v = v - rhs }
+                cont = 1
+            }
+        }
+    }
+    pratiyati v
+}
+
+prakriya eval(s, n) {
+    vitti st = nirmmita(3 * 8)
+    st[0] = s
+    st[1] = n
+    st[2] = 0
+    pratiyati parse_expr(st)
+}
+
+mukhya() {
+    likha(eval("2+3*4", 5))
+    likha("\n")
+    likha(eval("(2+3)*4", 7))
+    likha("\n")
+    likha(eval("10-4/2", 6))
+    likha("\n")
+    likha(eval("100/(5+5)", 9))
+    likha("\n")
+}
