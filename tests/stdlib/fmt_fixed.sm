@@ -1,0 +1,38 @@
+ayojan fmt
+mukhya() {
+    vitti out = nirmmita(128)
+    vitti n = 0
+    n = fmt_fixed(3.14159, 2, out)
+    likha(1, out, n)
+    likha("\n")
+    # half away from zero: 2.5 -> 3, -2.5 -> -3
+    n = fmt_fixed(2.5, 0, out)
+    likha(1, out, n)
+    likha("\n")
+    n = fmt_fixed(0.0 - 2.5, 0, out)
+    likha(1, out, n)
+    likha("\n")
+    # negative that rounds to zero keeps the sign
+    n = fmt_fixed(0.0 - 0.004, 2, out)
+    likha(1, out, n)
+    likha("\n")
+    # zero-padded fraction, 3 places
+    n = fmt_fixed(100.0, 3, out)
+    likha(1, out, n)
+    likha("\n")
+    # always-sign form
+    n = fmt_fixed_signed(3.1, 2, out)
+    likha(1, out, n)
+    likha("\n")
+    n = fmt_fixed_signed(0.0 - 3.1, 2, out)
+    likha(1, out, n)
+    likha("\n")
+    # places clamped to 0..9: 12 -> 9
+    n = fmt_fixed(1.5, 12, out)
+    likha(1, out, n)
+    likha("\n")
+    # negative places clamped to 0
+    n = fmt_fixed(1.5, 0 - 3, out)
+    likha(1, out, n)
+    likha("\n")
+}
