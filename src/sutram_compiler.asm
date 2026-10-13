@@ -16395,7 +16395,21 @@ gen_expr:
     pop rbx
     ret
 .ge_binop_generic:
+    ; R57: preserve source-order pure integer trees in RAX/R10/R11, without
+    ; round-tripping each nested operand through runtime PUSH/POP. Register
+    ; depth is statically bounded; any unsafe shape takes the old generator.
     pop rbx
+    mov rdi, rbx
+    xor esi, esi
+    call r57_tree_fits
+    test rax, rax
+    jz .r57_old_stack_tree
+    mov rdi, rbx
+    xor esi, esi
+    call r57_emit_tree
+    pop rbx
+    ret
+.r57_old_stack_tree:
     ; Evaluate left -> RAX
     mov rax, [rbx+16]        ; left
     call gen_expr
@@ -20084,6 +20098,470 @@ lookup_var:
     mov rdi, rbx
     call alloc_var
     pop r13
+    pop r12
+    pop rbx
+    ret
+
+; ============================================================
+; R57: bounded deterministic integer expression register allocator.
+;
+; Runtime: RAX = destination register 0; R10 = temp 1; R11 = temp 2.
+; The compiler never uses R10/R11 for named local storage. Fast paths only
+; accept AST_NUM/AST_VAR and pure integer +,-,*,&,|,^ expression trees, with
+; source-order evaluation. Fitted trees need at most 3 simultaneously live
+; result registers. Immediate RHS ADD/SUB 0..127 or power-of-two MUL uses
+; the left register directly without allocating a second temporary.
+; Overflowed register depth, stack-resident locals, floats, calls, divisions,
+; logical short-circuits, indexing, unknown names and effects stay in the
+; original proven stack evaluator (the deterministic spill/fallback rule).
+; Every checked tree is emitted as a whole; no partial emission on rejection.
+; ============================================================
+
+; In: rdi = name. Returns local register id 1..5, or a global sentinel
+; -65537 - global_index, or 0 if this is stack-resident / unresolved.
+; Never allocates a new local during the eligibility probe.
+r57_find_home:
+    push rbx
+    push r12
+    mov rbx,rdi
+    xor r12,r12
+.r57_find_loop:
+    cmp r12,[rel var_cnt]
+    jae .r57_find_global
+    lea rdx,[rel var_table]
+    mov rcx,r12
+    shl rcx,4
+    mov rdi,[rdx+rcx]
+    mov rsi,rbx
+    call strcmp
+    test rax,rax
+    jz .r57_find_local
+    inc r12
+    jmp .r57_find_loop
+.r57_find_local:
+    lea rdx,[rel var_table]
+    mov rcx,r12
+    shl rcx,4
+    mov rax,[rdx+rcx+8]
+    cmp rax,1
+    jl .r57_find_none
+    cmp rax,5
+    jg .r57_find_none
+    jmp .r57_find_done
+.r57_find_global:
+    mov rdi,rbx
+    call r56_global_index
+    test rax,rax
+    jz .r57_find_none
+    neg rax
+    sub rax,65536
+    jmp .r57_find_done
+.r57_find_none:
+    xor eax,eax
+.r57_find_done:
+    pop r12
+    pop rbx
+    ret
+
+; Pure integer immediate folded into one emitted register operation?
+; rdi=AST_BINOP -> eax=1 eligible (integer 0..127 ADD/SUB or
+; power-of-two MUL 2..64), 0 otherwise.
+r57_is_immediate:
+    mov rax,[rdi+24]
+    cmp qword [rax],AST_NUM
+    jne .r57_imm_no
+    mov rcx,[rax+8]
+    cmp qword [rdi+8],OP_ADD
+    je .r57_imm_arith
+    cmp qword [rdi+8],OP_SUB
+    je .r57_imm_arith
+    cmp qword [rdi+8],OP_MUL
+    jne .r57_imm_no
+    cmp rcx,2
+    je .r57_imm_yes
+    cmp rcx,4
+    je .r57_imm_yes
+    cmp rcx,8
+    je .r57_imm_yes
+    cmp rcx,16
+    je .r57_imm_yes
+    cmp rcx,32
+    je .r57_imm_yes
+    cmp rcx,64
+    je .r57_imm_yes
+    jmp .r57_imm_no
+.r57_imm_arith:
+    cmp rcx,127
+    ja .r57_imm_no
+.r57_imm_yes:
+    mov eax,1
+    ret
+.r57_imm_no:
+    xor eax,eax
+    ret
+
+; rdi=AST node, rsi=register index (0..2).
+; Determine eligibility BEFORE any bytes are emitted. No reordering, no
+; side-effectful expression; if a fourth live register is needed fail entire
+; tree and use the existing stack codegen.
+r57_tree_fits:
+    push rbx
+    push r12
+    mov rbx,rdi
+    mov r12,rsi
+    cmp r12,2
+    ja .r57_fit_no
+    cmp qword [rbx],AST_NUM
+    je .r57_fit_yes
+    cmp qword [rbx],AST_VAR
+    jne .r57_fit_binop
+    mov rdi,[rbx+8]
+    call r57_find_home
+    test rax,rax
+    jnz .r57_fit_yes
+    jmp .r57_fit_no
+.r57_fit_binop:
+    cmp qword [rbx],AST_BINOP
+    jne .r57_fit_no
+    mov rax,[rbx+8]
+    cmp rax,OP_ADD
+    je .r57_fit_op_ok
+    cmp rax,OP_SUB
+    je .r57_fit_op_ok
+    cmp rax,OP_MUL
+    je .r57_fit_op_ok
+    cmp rax,OP_AND
+    je .r57_fit_op_ok
+    cmp rax,OP_OR
+    je .r57_fit_op_ok
+    cmp rax,OP_XOR
+    jne .r57_fit_no
+.r57_fit_op_ok:
+    mov rdi,rbx
+    call r57_is_immediate
+    test rax,rax
+    jnz .r57_fit_left
+    cmp r12,2
+    jae .r57_fit_no
+    mov rdi,[rbx+16]
+    mov rsi,r12
+    call r57_tree_fits
+    test rax,rax
+    jz .r57_fit_no
+    mov rdi,[rbx+24]
+    lea rsi,[r12+1]
+    call r57_tree_fits
+    test rax,rax
+    jz .r57_fit_no
+    jmp .r57_fit_yes
+.r57_fit_left:
+    mov rdi,[rbx+16]
+    mov rsi,r12
+    call r57_tree_fits
+    test rax,rax
+    jz .r57_fit_no
+.r57_fit_yes:
+    mov eax,1
+    jmp .r57_fit_done
+.r57_fit_no:
+    xor eax,eax
+.r57_fit_done:
+    pop r12
+    pop rbx
+    ret
+
+; rdi = expression AST, rsi = destination register index 0..2.
+; Called only if r57_tree_fits has proved the entire subtree safe.
+r57_emit_tree:
+    push rbx
+    push r12
+    mov rbx,rdi
+    mov r12,rsi
+    cmp qword [rbx],AST_VAR
+    je .r57_et_var
+    cmp qword [rbx],AST_NUM
+    je .r57_et_num
+    mov rdi,rbx
+    call r57_is_immediate
+    test rax,rax
+    jnz .r57_et_immediate
+    mov rdi,[rbx+16]
+    mov rsi,r12
+    call r57_emit_tree
+    mov rdi,[rbx+24]
+    lea rsi,[r12+1]
+    call r57_emit_tree
+    mov rdi,[rbx+8]
+    mov rsi,r12
+    call r57_emit_op
+    jmp .r57_et_done
+.r57_et_immediate:
+    mov rdi,[rbx+16]
+    mov rsi,r12
+    call r57_emit_tree
+    mov rdi,rbx
+    mov rsi,r12
+    call r57_emit_imm
+    jmp .r57_et_done
+.r57_et_var:
+    mov rdi,[rbx+8]
+    call r57_find_home
+    mov rdi,rax
+    mov rsi,r12
+    call r57_emit_var
+    jmp .r57_et_done
+.r57_et_num:
+    mov rdi,[rbx+8]
+    mov rsi,r12
+    call r57_emit_num
+.r57_et_done:
+    pop r12
+    pop rbx
+    ret
+
+; rdi=integer literal, rsi=register index.
+r57_emit_num:
+    push rbx
+    push r12
+    mov rbx,rdi
+    mov r12,rsi
+    cmp rbx,0xFFFFFFFF
+    ja .r57_num_64
+    test r12,r12
+    jz .r57_num_opcode
+    mov dil,0x41             ; REX.B for 32-bit r10d/r11d
+    call emit_byte
+.r57_num_opcode:
+    mov rdi,r12
+    test r12,r12
+    jz .r57_num_emit_opcode
+    inc rdi                  ; low opcode BAh/BBh
+.r57_num_emit_opcode:
+    add rdi,0xB8
+    call emit_byte
+    mov edi,ebx
+    call emit_u32
+    jmp .r57_num_done
+.r57_num_64:
+    mov dil,0x48
+    test r12,r12
+    jz .r57_num_rex
+    inc rdi                  ; REX.W+B
+.r57_num_rex:
+    call emit_byte
+    mov rdi,r12
+    test r12,r12
+    jz .r57_num_full_op
+    inc rdi
+.r57_num_full_op:
+    add rdi,0xB8
+    call emit_byte
+    mov rdi,rbx
+    call emit_u64
+.r57_num_done:
+    pop r12
+    pop rbx
+    ret
+
+; rdi=home (1..5 or -65537-index), rsi=destination index (0..2).
+; mov destination, named register or [rip+global], never alter other temps.
+r57_emit_var:
+    push rbx
+    push r12
+    push r13
+    mov rbx,rdi
+    mov r12,rsi
+    test rbx,rbx
+    jl .r57_var_global
+    ; REX.W + REX.R for r10/r11 destinations + B for r12..r15 locals.
+    mov rdi,0x48
+    test r12,r12
+    jz .r57_var_no_rex_r
+    or rdi,4
+.r57_var_no_rex_r:
+    cmp rbx,1
+    je .r57_var_no_rex_b
+    or rdi,1
+.r57_var_no_rex_b:
+    call emit_byte
+    mov dil,0x8B
+    call emit_byte
+    ; dst low code: RAX=0, R10=2, R11=3.
+    mov r13,r12
+    test r12,r12
+    jz .r57_var_dest_ok
+    inc r13
+.r57_var_dest_ok:
+    shl r13,3
+    ; source local 1=RBX (3); 2..5=R12..R15 (4..7).
+    mov rax,rbx
+    cmp rbx,1
+    jne .r57_var_src_extended
+    mov rax,3
+    jmp .r57_var_modrm
+.r57_var_src_extended:
+    add rax,2
+.r57_var_modrm:
+    or rax,r13
+    or rax,0xC0
+    mov dil,al
+    call emit_byte
+    jmp .r57_var_done
+.r57_var_global:
+    mov dil,0x48
+    test r12,r12
+    jz .r57_var_g_rex
+    mov dil,0x4C            ; REX.R for r10/r11
+.r57_var_g_rex:
+    call emit_byte
+    mov dil,0x8B
+    call emit_byte
+    mov rax,r12
+    test r12,r12
+    jz .r57_var_g_modrm
+    inc rax
+.r57_var_g_modrm:
+    shl rax,3
+    or rax,5                ; RIP + disp32
+    mov dil,al
+    call emit_byte
+    mov rdi,rbx
+    neg rdi
+    sub rdi,65537
+    call r56_record_patch
+.r57_var_done:
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; rdi=AST_BINOP with supported immediate rhs; rsi=destination index.
+; The lhs is already in its destination. MUL by power 2 -> SHL.
+r57_emit_imm:
+    push rbx
+    push r12
+    push r13
+    mov rbx,rdi
+    mov r12,rsi
+    mov rax,[rbx+24]
+    mov r13,[rax+8]
+    mov rdi,0x48
+    test r12,r12
+    jz .r57_imm_rex
+    inc rdi
+.r57_imm_rex:
+    call emit_byte
+    cmp qword [rbx+8],OP_MUL
+    je .r57_imm_mul
+    mov dil,0x83
+    call emit_byte
+    mov rdi,r12
+    test r12,r12
+    jz .r57_imm_arith_mod
+    inc rdi
+.r57_imm_arith_mod:
+    add rdi,0xC0
+    cmp qword [rbx+8],OP_SUB
+    jne .r57_imm_arith_emit
+    add rdi,0x28
+.r57_imm_arith_emit:
+    call emit_byte
+    mov rdi,r13
+    call emit_byte
+    jmp .r57_imm_emit_done
+.r57_imm_mul:
+    mov dil,0xC1
+    call emit_byte
+    mov rdi,r12
+    test r12,r12
+    jz .r57_imm_mul_mod
+    inc rdi
+.r57_imm_mul_mod:
+    add rdi,0xE0
+    call emit_byte
+    xor ecx,ecx
+.r57_imm_shift_loop:
+    shr r13,1
+    inc ecx
+    cmp r13,1
+    ja .r57_imm_shift_loop
+    mov edi,ecx
+    call emit_byte
+.r57_imm_emit_done:
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; rdi=OP_ADD/SUB/MUL/AND/OR/XOR, rsi=destination index.
+; Left = index, right = index+1. The target is always in r/m for
+; two-operand ALU ops; for IMUL target occupies the ModRM.reg field.
+r57_emit_op:
+    push rbx
+    push r12
+    mov rbx,rdi
+    mov r12,rsi
+    cmp rbx,OP_MUL
+    je .r57_op_mul
+    mov rdi,0x4C            ; REX.W|REX.R: RHS R10/R11
+    test r12,r12
+    jz .r57_op_rex
+    or rdi,1                ; REX.B: LHS R10
+.r57_op_rex:
+    call emit_byte
+    mov dil,0x01
+    cmp rbx,OP_ADD
+    je .r57_op_opcode
+    mov dil,0x29
+    cmp rbx,OP_SUB
+    je .r57_op_opcode
+    mov dil,0x21
+    cmp rbx,OP_AND
+    je .r57_op_opcode
+    mov dil,0x09
+    cmp rbx,OP_OR
+    je .r57_op_opcode
+    mov dil,0x31            ; XOR
+.r57_op_opcode:
+    call emit_byte
+    ; ModRM = 0xC0 | RHS code << 3 | LHS code
+    mov rax,r12
+    add rax,2
+    shl rax,3
+    mov rdx,r12
+    test r12,r12
+    jz .r57_op_arith_mod
+    inc rdx
+.r57_op_arith_mod:
+    or rax,rdx
+    or rax,0xC0
+    mov dil,al
+    call emit_byte
+    jmp .r57_op_done
+.r57_op_mul:
+    mov rdi,0x49            ; REX.W|REX.B: RHS r10/r11
+    test r12,r12
+    jz .r57_op_mul_rex
+    or rdi,4                ; REX.R: LHS r10
+.r57_op_mul_rex:
+    call emit_byte
+    mov dil,0x0F
+    call emit_byte
+    mov dil,0xAF
+    call emit_byte
+    mov rax,r12
+    test r12,r12
+    jz .r57_op_mul_mod
+    inc rax
+.r57_op_mul_mod:
+    shl rax,3
+    mov rdx,r12
+    add rdx,2
+    or rax,rdx
+    or rax,0xC0
+    mov dil,al
+    call emit_byte
+.r57_op_done:
     pop r12
     pop rbx
     ret
