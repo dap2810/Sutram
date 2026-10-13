@@ -20,6 +20,15 @@ global _start
 %define WM_SIZE 5
 %define WM_CLOSE 16
 %define WM_COMMAND 0x111
+; ---- IDLE-style menu bar (slice 19) ----
+%define MF_STRING 0x00000000
+%define MF_POPUP  0x00000010
+%define MID_OPEN   2001
+%define MID_SAVE   2002
+%define MID_EXIT   2003
+%define MID_RUN    2010
+%define MID_CLEAR  2011
+%define MID_ABOUT  2020
 %define WM_KEYDOWN 0x100
 %define WM_CHAR 0x102
 %define VK_RETURN 13
@@ -110,7 +119,21 @@ global _start
 
 section .data
 app_class db 'SutramNativeGUIWindow',0
-app_title db 'Sutram - Native Windows IDE (Preview)',0
+app_title db 'Sutram Shell 1.0',0
+m_file   db 'File',0
+m_edit   db 'Edit',0
+m_shell  db 'Shell',0
+m_debug  db 'Debug',0
+m_opts   db 'Options',0
+m_window db 'Window',0
+m_help   db 'Help',0
+i_open   db 'Open...',0
+i_save   db 'Save',0
+i_exit   db 'Exit',0
+i_run    db 'Run module',0
+i_clear  db 'Clear shell',0
+i_about  db 'About Sutram',0
+about_text db 'Sutram Shell 1.0',13,10,'Sanskrit-keyword language -> x86-64 machine code.',13,10,13,10,'Type a statement at the >>> prompt and press Enter.',0
 class_button db 'BUTTON',0
 class_edit db 'EDIT',0
 class_list db 'LISTBOX',0
@@ -132,6 +155,9 @@ n_LoadImageW db 'LoadImageW',0
 n_LoadLibraryA db 'LoadLibraryA',0
 n_GetProcAddress db 'GetProcAddress',0
 n_GetModuleHandleA db 'GetModuleHandleA',0
+n_CreateMenu db 'CreateMenu',0
+n_CreatePopupMenu db 'CreatePopupMenu',0
+n_AppendMenuA db 'AppendMenuA',0
 n_GetModuleFileNameA db 'GetModuleFileNameA',0
 n_SetCurrentDirectoryA db 'SetCurrentDirectoryA',0
 n_ExitProcess db 'ExitProcess',0
@@ -246,6 +272,9 @@ user_table:
     IMPORTS SetWindowLongPtrA
     IMPORTS CallWindowProcA
     IMPORTS GetClientRect
+    IMPORTS CreateMenu
+    IMPORTS CreatePopupMenu
+    IMPORTS AppendMenuA
     dq 0,0
 comdlg_table:
     IMPORTS GetOpenFileNameA
@@ -261,7 +290,7 @@ label_example db 'Load example',0
 label_send db 'Send',0
 label_clear db 'Clear shell',0
 label_output db 'Compile / run output',0
-label_shell db 'Sutram shell (one statement per Enter)',0
+label_shell db '>>>',0
 label_examples db 'Examples (double click)',0
 err_init db 'Windows APIs could not be loaded. IDE cannot start.',0
 err_title db 'Sutram IDE',0
@@ -377,6 +406,7 @@ char_fmt resb 60
 ch_start resd 1
 ch_end resd 1
 bytes_count resd 1
+h_menu resq 1
 pipe_available resd 1
 pi_struct resb 24
 si_struct resb 104
@@ -418,6 +448,9 @@ IMPORTS ShowWindow
 IMPORTS UpdateWindow
 IMPORTS DefWindowProcA
 IMPORTS GetMessageA
+IMPORTS CreateMenu
+IMPORTS CreatePopupMenu
+IMPORTS AppendMenuA
 IMPORTS TranslateMessage
 IMPORTS DispatchMessageA
 IMPORTS PostQuitMessage
@@ -739,6 +772,7 @@ gui_loop:
     API RegisterClassExA
     test ax,ax
     jz .end
+    call build_menu
     xor ecx,ecx
     PTR rdx,app_class
     PTR r8,app_title
@@ -748,7 +782,8 @@ gui_loop:
     mov qword [rsp+48],1180
     mov qword [rsp+56],800
     mov qword [rsp+64],0
-    mov qword [rsp+72],0
+    mov rax,[rel h_menu]
+    mov [rsp+72],rax
     mov rax,[rel h_instance]
     mov [rsp+80],rax
     mov qword [rsp+88],0
@@ -775,6 +810,100 @@ gui_loop:
     API DispatchMessageA
     jmp .msg
 .end:
+    EPILOG
+
+; ---- build_menu: an IDLE-style menu bar, stored in h_menu ----------------
+build_menu:
+    PROLOG 64
+    API CreateMenu
+    mov [rel h_menu],rax
+    test rax,rax
+    jz .bm_done
+    ; --- File ---
+    API CreatePopupMenu
+    mov [rbp-8],rax
+    mov rcx,rax
+    mov edx,MF_STRING
+    mov r8d,MID_OPEN
+    PTR r9,i_open
+    API AppendMenuA
+    mov rcx,[rbp-8]
+    mov edx,MF_STRING
+    mov r8d,MID_SAVE
+    PTR r9,i_save
+    API AppendMenuA
+    mov rcx,[rbp-8]
+    mov edx,MF_STRING
+    mov r8d,MID_EXIT
+    PTR r9,i_exit
+    API AppendMenuA
+    mov rcx,[rel h_menu]
+    mov edx,MF_POPUP
+    mov r8,[rbp-8]
+    PTR r9,m_file
+    API AppendMenuA
+    ; --- Edit ---
+    API CreatePopupMenu
+    mov [rbp-8],rax
+    mov rcx,[rel h_menu]
+    mov edx,MF_POPUP
+    mov r8,[rbp-8]
+    PTR r9,m_edit
+    API AppendMenuA
+    ; --- Shell ---
+    API CreatePopupMenu
+    mov [rbp-8],rax
+    mov rcx,rax
+    mov edx,MF_STRING
+    mov r8d,MID_RUN
+    PTR r9,i_run
+    API AppendMenuA
+    mov rcx,[rbp-8]
+    mov edx,MF_STRING
+    mov r8d,MID_CLEAR
+    PTR r9,i_clear
+    API AppendMenuA
+    mov rcx,[rel h_menu]
+    mov edx,MF_POPUP
+    mov r8,[rbp-8]
+    PTR r9,m_shell
+    API AppendMenuA
+    ; --- Debug / Options / Window (popups, no items yet) ---
+    API CreatePopupMenu
+    mov [rbp-8],rax
+    mov rcx,[rel h_menu]
+    mov edx,MF_POPUP
+    mov r8,[rbp-8]
+    PTR r9,m_debug
+    API AppendMenuA
+    API CreatePopupMenu
+    mov [rbp-8],rax
+    mov rcx,[rel h_menu]
+    mov edx,MF_POPUP
+    mov r8,[rbp-8]
+    PTR r9,m_opts
+    API AppendMenuA
+    API CreatePopupMenu
+    mov [rbp-8],rax
+    mov rcx,[rel h_menu]
+    mov edx,MF_POPUP
+    mov r8,[rbp-8]
+    PTR r9,m_window
+    API AppendMenuA
+    ; --- Help ---
+    API CreatePopupMenu
+    mov [rbp-8],rax
+    mov rcx,rax
+    mov edx,MF_STRING
+    mov r8d,MID_ABOUT
+    PTR r9,i_about
+    API AppendMenuA
+    mov rcx,[rel h_menu]
+    mov edx,MF_POPUP
+    mov r8,[rbp-8]
+    PTR r9,m_help
+    API AppendMenuA
+.bm_done:
     EPILOG
 
 ; Create child controls. rcx=class,rdx=caption,r8=style,r9=id,
