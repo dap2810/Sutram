@@ -112,3 +112,81 @@ prakriya bindu(kosh dasham a, kosh dasham b) {
 prakriya manak(kosh dasham a) {
     pratiyati sankhyiki_sqrt(bindu(a, a))
 }
+
+# ---------------------------------------------------------------------------
+# Integer statistics (ROUND-13, Part B): `purna` (whole/integer) variants
+# over `pankti` integer arrays, same (xs, n) shape as lib/sort.smlib.
+# The float functions above take `kosh dasham`; these take plain integer
+# arrays, so integer data no longer needs float conversion.
+#
+# TRUNCATION: mean and variance are TRUNCATED toward zero (integer
+# division), not rounded. Variance uses the truncated mean, so it is
+# exact only when the mean is integral; for exact variance use the float
+# prasaran. Empty input (n <= 0) returns 0 for every function.
+# ---------------------------------------------------------------------------
+
+# --- integer sum ---
+prakriya purna_yoga(xs, n) {
+    vitti i = 0
+    vitti s = 0
+    yavat (i < n) {
+        s = s + xs[i]
+        i = i + 1
+    }
+    pratiyati s
+}
+
+# --- integer mean (truncated toward zero) ---
+prakriya purna_madhya(xs, n) {
+    yadi (n <= 0) { pratiyati 0 }
+    pratiyati purna_yoga(xs, n) / n
+}
+
+# --- integer minimum ---
+prakriya purna_laghutama(xs, n) {
+    vitti m = 0
+    vitti i = 1
+    yadi (n <= 0) { pratiyati 0 }
+    m = xs[0]
+    yavat (i < n) {
+        yadi (xs[i] < m) { m = xs[i] }
+        i = i + 1
+    }
+    pratiyati m
+}
+
+# --- integer maximum ---
+prakriya purna_adhikatama(xs, n) {
+    vitti m = 0
+    vitti i = 1
+    yadi (n <= 0) { pratiyati 0 }
+    m = xs[0]
+    yavat (i < n) {
+        yadi (xs[i] > m) { m = xs[i] }
+        i = i + 1
+    }
+    pratiyati m
+}
+
+# --- integer range (max - min) ---
+prakriya purna_vyapti(xs, n) {
+    yadi (n <= 0) { pratiyati 0 }
+    pratiyati purna_adhikatama(xs, n) - purna_laghutama(xs, n)
+}
+
+# --- integer population variance (truncated toward zero; uses the
+# truncated mean, so exact only when the mean is integral) ---
+prakriya purna_prasaran(xs, n) {
+    vitti m = 0
+    vitti acc = 0
+    vitti i = 0
+    vitti d = 0
+    yadi (n <= 0) { pratiyati 0 }
+    m = purna_madhya(xs, n)
+    yavat (i < n) {
+        d = xs[i] - m
+        acc = acc + d * d
+        i = i + 1
+    }
+    pratiyati acc / n
+}
