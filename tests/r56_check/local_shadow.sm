@@ -1,0 +1,8 @@
+vitti count = 31
+prakriya local_test() {
+    vitti count = 99
+    count = count + 1
+    pratiyati count
+}
+prakriya global_test() { pratiyati count }
+mukhya() { likha(local_test()) likha(global_test()) }

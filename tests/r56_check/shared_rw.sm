@@ -1,0 +1,10 @@
+vitti shared = 7
+prakriya read_one() { pratiyati shared }
+prakriya increase() { shared = shared + 2 pratiyati shared }
+prakriya read_two() { pratiyati shared }
+mukhya() {
+    likha(read_one())
+    likha(increase())
+    likha(read_two())
+    likha(read_one())
+}
