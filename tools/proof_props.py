@@ -972,6 +972,151 @@ def prop_map_keys_count(compiler, rng):
     return ok and out == "PASS", out
 
 
+def _tdiv(a, b):
+    """Integer division truncated toward zero (matches Sutram /)."""
+    q = abs(a) // abs(b)
+    return q if (a >= 0) == (b >= 0) else -q
+
+
+def prop_strb_pack_unpack(compiler, rng):
+    """strb_unpack(strb_pack(x)) == x and strb_pack(strb_unpack(b)) == b"""
+    cases = []
+    for _ in range(8):
+        s = "".join(rng.choice("abc") for _ in range(rng.randint(1, 8)))
+        cases.append(s)
+    lines = ["ayojan strb",
+             "prakriya cells_match(a, b, n) {",
+             "    vitti i = 0",
+             "    yavat (i < n) {",
+             "        yadi (a[i] != b[i]) { pratiyati 0 }",
+             "        i = i + 1",
+             "    }",
+             "    pratiyati 1",
+             "}",
+             "prakriya bytes_match(buf, n, lit, ln) {",
+             "    vitti i = 0",
+             "    yadi (n != ln) { pratiyati 0 }",
+             "    yavat (i < n) {",
+             "        yadi (char_at(buf, i) != char_at(lit, i)) { pratiyati 0 }",
+             "        i = i + 1",
+             "    }",
+             "    pratiyati 1",
+             "}",
+             "mukhya() {",
+             "    vitti cells = nirmmita(8*8)",
+             "    vitti back = nirmmita(8*8)",
+             "    vitti out = nirmmita(16)",
+             "    vitti out2 = nirmmita(16)"]
+    for s in cases:
+        n = len(s)
+        for i, ch in enumerate(s):
+            lines.append(f"    cells[{i}] = {ord(ch)}")
+        lines.append(f"    yadi (strb_pack(cells, {n}, out) != {n}) {{")
+        lines.append('        likha("FAIL strb_pack len\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+        lines.append(f"    strb_unpack(out, {n}, back)")
+        lines.append(f"    yadi (cells_match(cells, back, {n}) == 0) {{")
+        lines.append('        likha("FAIL strb_pack_unpack roundtrip\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+        lines.append(f'    strb_unpack("{s}", {n}, back)')
+        lines.append(f"    strb_pack(back, {n}, out2)")
+        lines.append(f'    yadi (bytes_match(out2, {n}, "{s}", {n}) == 0) {{')
+        lines.append('        likha("FAIL strb_unpack_pack roundtrip\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "strb_pu", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_strb_dup(compiler, rng):
+    """strb_dup copies the source bytes exactly, including empty input"""
+    cases = [""]
+    for _ in range(8):
+        cases.append("".join(rng.choice(["a", "b", "c", " "])
+                             for _ in range(rng.randint(1, 8))))
+    lines = ["ayojan strb",
+             "prakriya bytes_match(buf, n, lit, ln) {",
+             "    vitti i = 0",
+             "    yadi (n != ln) { pratiyati 0 }",
+             "    yavat (i < n) {",
+             "        yadi (char_at(buf, i) != char_at(lit, i)) { pratiyati 0 }",
+             "        i = i + 1",
+             "    }",
+             "    pratiyati 1",
+             "}",
+             "mukhya() {",
+             "    vitti out = nirmmita(16)"]
+    for s in cases:
+        n = len(s)
+        lines.append(f'    yadi (strb_dup("{s}", {n}, out) != {n}) {{')
+        lines.append('        likha("FAIL strb_dup len\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+        lines.append(f'    yadi (bytes_match(out, {n}, "{s}", {n}) == 0) {{')
+        lines.append('        likha("FAIL strb_dup bytes\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "strb_dup", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_sankhyiki_purna(compiler, rng):
+    """purna_* integer stats agree with Python (trunc division) on a
+    spread of arrays including negatives, a single element, and empty."""
+    cases = [[], [7], [1, 2, 3, 4, 5]]
+    for _ in range(8):
+        cases.append([rng.randint(-20, 20)
+                      for _ in range(rng.randint(2, 6))])
+    lines = ["ayojan sankhyiki",
+             "prakriya check_purna_a(xs, n, esum, emean, emin) {",
+             "    yadi (purna_yoga(xs, n) != esum) { pratiyati 1 }",
+             "    yadi (purna_madhya(xs, n) != emean) { pratiyati 1 }",
+             "    yadi (purna_laghutama(xs, n) != emin) { pratiyati 1 }",
+             "    pratiyati 0",
+             "}",
+             "prakriya check_purna_b(xs, n, emax, erange, evar) {",
+             "    yadi (purna_adhikatama(xs, n) != emax) { pratiyati 1 }",
+             "    yadi (purna_vyapti(xs, n) != erange) { pratiyati 1 }",
+             "    yadi (purna_prasaran(xs, n) != evar) { pratiyati 1 }",
+             "    pratiyati 0",
+             "}",
+             "mukhya() {",
+             "    pankti a[6]"]
+    for vals in cases:
+        n = len(vals)
+        if n == 0:
+            esum = emean = emin = emax = erange = evar = 0
+        else:
+            esum = sum(vals)
+            emean = _tdiv(esum, n)
+            emin = min(vals)
+            emax = max(vals)
+            erange = emax - emin
+            evar = _tdiv(sum((v - emean) ** 2 for v in vals), n)
+        for i, v in enumerate(vals):
+            lines.append(f"    a[{i}] = {v}")
+        lines.append(
+            f"    yadi (check_purna_a(a, {n}, {esum}, {emean}, {emin}) != 0) {{")
+        lines.append('        likha("FAIL purna_a\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+        lines.append(
+            f"    yadi (check_purna_b(a, {n}, {emax}, {erange}, {evar}) != 0) {{")
+        lines.append('        likha("FAIL purna_b\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "purna", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
 def main():
     compiler = None
     for i, a in enumerate(sys.argv):
@@ -1012,6 +1157,9 @@ def main():
         ("map delete", prop_map_delete),
         ("map collision survival", prop_map_collision),
         ("map keys count", prop_map_keys_count),
+        ("strb pack/unpack roundtrip", prop_strb_pack_unpack),
+        ("strb dup", prop_strb_dup),
+        ("sankhyiki purna int stats", prop_sankhyiki_purna),
     ]
 
     failed = []
