@@ -1,0 +1,74 @@
+name: R55 mutual recursion with verified forward prototypes
+on:
+  push:
+    branches: [feature/r55-forward-prototypes-20261013]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: NASM without administrator
+        run: |
+          cd "$RUNNER_TEMP"
+          apt download nasm
+          mkdir -p nasm-tools
+          for p in ./*.deb; do dpkg-deb -x "$p" nasm-tools; done
+          echo "$RUNNER_TEMP/nasm-tools/usr/bin" >> "$GITHUB_PATH"
+      - name: Build pre-R55 baseline, new native compiler and accepted R46
+        run: |
+          git show 4f294f7728e8fd86dc5c3c01335d30162b0d92ad:src/sutram_compiler.asm >/tmp/r55-before.asm
+          nasm -f elf64 -I. /tmp/r55-before.asm -o /tmp/r55-before.o
+          ld -o r55_before /tmp/r55-before.o
+          nasm -f elf64 -I. src/sutram_compiler.asm -o /tmp/r55.o
+          ld -o r48_after /tmp/r55.o
+          git show 72b824f70049765c3977db07d712a1a604b89434:src/sutram_compiler.asm >/tmp/r46.asm
+          nasm -f elf64 -I. /tmp/r46.asm -o /tmp/r46.o
+          ld -o r48_before /tmp/r46.o
+          git show 53d9b6f14f832a6d4b962fbe6f303983895782cb:src/sutram_compiler.asm >/tmp/oldraw.asm
+          nasm -f elf64 -I. /tmp/oldraw.asm -o /tmp/oldraw.o
+          ld -o r54_before /tmp/oldraw.o
+          git show 853083c9762992757b8f6682e5b3a3fc7296d8bf:src/sutram_compiler.asm >/tmp/r52-before.asm
+          nasm -f elf64 -I. /tmp/r52-before.asm -o /tmp/r52-before.o
+          ld -o r52_before /tmp/r52-before.o
+      - name: Native R55 before-vs-after mutual recursion plus negative fixtures
+        run: python3 tools/r55_native_acceptance.py
+      - name: R54 accepted builtin and all historical compiler acceptance suites
+        run: |
+          python3 tools/r54_native_acceptance.py
+          python3 tools/r48_native_acceptance.py
+          python3 tools/r48_stage2_acceptance.py
+          python3 tools/r49_repeated_semantic.py
+          python3 tools/r49_diagnostic_audit.py
+          python3 tools/r51_native_audit.py
+          python3 tools/r51_graph_inventory.py
+          python3 tools/r50_native_acceptance.py
+          python3 tools/r52_native_acceptance.py
+      - name: Full baseline regressions, codegen, packs and module graph
+        run: |
+          cp r48_after sutram_compiler
+          python3 tools/r54_muse_acceptance.py
+          python3 tools/codegen_gate.py
+          python3 tools/test_lang_packs.py
+          python3 -m unittest discover -s tests/module_graph -p 'test_*.py' -v
+      - name: Prove no GUI or golden changes
+        run: |
+          git diff --exit-code 4f294f7728e8fd86dc5c3c01335d30162b0d92ad -- ide/ win/winrt.inc tests/expect/
+          echo R55_GUI_GOLDENS_UNCHANGED_PASS
+      - name: Final native SHA256 evidence
+        if: always()
+        run: |
+          sha256sum src/sutram_compiler.asm tools/r55_native_acceptance.py \
+            tests/r55_check/*.sm .github/workflows/r55-native.yml > r55_sha256.txt
+          cat r55_sha256.txt
+      - name: Upload SHA256 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: r55-signed-source-manifest
+          path: r55_sha256.txt
