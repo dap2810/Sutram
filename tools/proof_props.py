@@ -1117,6 +1117,287 @@ def prop_sankhyiki_purna(compiler, rng):
     return ok and out == "PASS", out
 
 
+def _emit_segments(lines, var, words):
+    """Emit cell assignments building a length-prefixed segment array."""
+    pos = 0
+    for w in words:
+        lines.append(f"    {var}[{pos}] = {len(w)}")
+        for k, ch in enumerate(w):
+            lines.append(f"    {var}[{pos + 1 + k}] = {ord(ch)}")
+        pos += 1 + len(w)
+    return pos
+
+
+def _segs_equal_lines():
+    return ["prakriya segs_equal(x, xn, y, yn) {",
+            "    vitti px = 0",
+            "    vitti py = 0",
+            "    vitti i = 0",
+            "    vitti lx = 0",
+            "    vitti ly = 0",
+            "    vitti k = 0",
+            "    yadi (xn != yn) { pratiyati 0 }",
+            "    yavat (i < xn) {",
+            "        lx = x[px]",
+            "        ly = y[py]",
+            "        yadi (lx != ly) { pratiyati 0 }",
+            "        k = 0",
+            "        yavat (k < lx) {",
+            "            yadi (x[px + 1 + k] != y[py + 1 + k]) { pratiyati 0 }",
+            "            k = k + 1",
+            "        }",
+            "        px = px + 1 + lx",
+            "        py = py + 1 + ly",
+            "        i = i + 1",
+            "    }",
+            "    pratiyati 1",
+            "}"]
+
+
+def prop_set_add_contains_remove(compiler, rng):
+    """set_add then set_contains is true; set_remove then false"""
+    keys = _distinct_keys(rng, 6)
+    drop = keys[:3]
+    keep = keys[3:]
+    lines = ["ayojan set", "mukhya() {",
+             "    vitti s = set_init(16)"]
+    for k in keys:
+        lines.append(f'    set_add(s, 16, "{k}", {len(k)})')
+    lines.append("    yadi (set_size(s) != 6) {")
+    lines.append('        likha("FAIL set size\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    for k in keys:
+        lines.append(f'    yadi (set_contains(s, 16, "{k}", {len(k)}) != 1) {{')
+        lines.append('        likha("FAIL set contains after add\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    for k in drop:
+        lines.append(f'    yadi (set_remove(s, 16, "{k}", {len(k)}) != 1) {{')
+        lines.append('        likha("FAIL set remove rc\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+        lines.append(f'    yadi (set_contains(s, 16, "{k}", {len(k)}) != 0) {{')
+        lines.append('        likha("FAIL set contains after remove\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append("    yadi (set_size(s) != 3) {")
+    lines.append('        likha("FAIL set size after remove\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    for k in keep:
+        lines.append(f'    yadi (set_contains(s, 16, "{k}", {len(k)}) != 1) {{')
+        lines.append('        likha("FAIL set survivor\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "set_acr", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_set_idempotent(compiler, rng):
+    """set_add twice does not change set_size"""
+    keys = _distinct_keys(rng, 5)
+    lines = ["ayojan set", "mukhya() {",
+             "    vitti s = set_init(16)"]
+    for k in keys:
+        lines.append(f'    set_add(s, 16, "{k}", {len(k)})')
+        lines.append(f'    set_add(s, 16, "{k}", {len(k)})')
+    lines.append("    yadi (set_size(s) != 5) {")
+    lines.append('        likha("FAIL set idempotent size\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "set_idem", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_set_union_commutative(compiler, rng):
+    """set_union is commutative in size and content (sorted compare)"""
+    words = _distinct_keys(rng, 6)
+    avals, bvals = words[:4], words[2:]
+    exp = sorted(set(avals) | set(bvals))
+    lines = ["ayojan set"] + _segs_equal_lines() + [
+             "mukhya() {",
+             "    vitti a = set_init(16)",
+             "    vitti b = set_init(16)",
+             "    vitti u1 = set_init(32)",
+             "    vitti u2 = set_init(32)",
+             "    vitti arr1 = nirmmita(64*8)",
+             "    vitti arr2 = nirmmita(64*8)",
+             "    vitti exp = nirmmita(64*8)",
+             "    vitti n1 = 0",
+             "    vitti n2 = 0"]
+    for k in avals:
+        lines.append(f'    set_add(a, 16, "{k}", {len(k)})')
+    for k in bvals:
+        lines.append(f'    set_add(b, 16, "{k}", {len(k)})')
+    lines.append("    set_union(a, 16, b, 16, u1)")
+    lines.append("    set_union(b, 16, a, 16, u2)")
+    lines.append("    yadi (set_size(u1) != set_size(u2)) {")
+    lines.append('        likha("FAIL set union size commutative\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append("    n1 = set_to_array(u1, 32, arr1)")
+    lines.append("    n2 = set_to_array(u2, 32, arr2)")
+    lines.append("    yadi (segs_equal(arr1, n1, arr2, n2) == 0) {")
+    lines.append('        likha("FAIL set union content commutative\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    _emit_segments(lines, "exp", exp)
+    lines.append(f"    yadi (segs_equal(arr1, n1, exp, {len(exp)}) == 0) {{")
+    lines.append('        likha("FAIL set union content\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "set_union", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_set_intersect_self_empty(compiler, rng):
+    """intersect with itself equals the set; with empty is empty"""
+    keys = _distinct_keys(rng, 4)
+    exp = sorted(keys)
+    lines = ["ayojan set"] + _segs_equal_lines() + [
+             "mukhya() {",
+             "    vitti a = set_init(16)",
+             "    vitti e = set_init(16)",
+             "    vitti o1 = set_init(16)",
+             "    vitti o2 = set_init(16)",
+             "    vitti arr0 = nirmmita(64*8)",
+             "    vitti arr1 = nirmmita(64*8)",
+             "    vitti exp = nirmmita(64*8)",
+             "    vitti n0 = 0",
+             "    vitti n1 = 0"]
+    for k in keys:
+        lines.append(f'    set_add(a, 16, "{k}", {len(k)})')
+    lines.append("    set_intersect(a, 16, a, 16, o1)")
+    lines.append("    set_intersect(a, 16, e, 16, o2)")
+    lines.append("    yadi (set_size(o2) != 0) {")
+    lines.append('        likha("FAIL set intersect empty\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append("    n0 = set_to_array(a, 16, arr0)")
+    lines.append("    n1 = set_to_array(o1, 16, arr1)")
+    lines.append("    yadi (segs_equal(arr0, n0, arr1, n1) == 0) {")
+    lines.append('        likha("FAIL set intersect self\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    _emit_segments(lines, "exp", exp)
+    lines.append(f"    yadi (segs_equal(arr1, n1, exp, {len(exp)}) == 0) {{")
+    lines.append('        likha("FAIL set intersect content\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "set_inter", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_set_difference(compiler, rng):
+    """difference(a, b) contains nothing in b; equals Python expectation"""
+    words = _distinct_keys(rng, 5)
+    avals, bvals = words[:4], words[2:]
+    exp = sorted(set(avals) - set(bvals))
+    lines = ["ayojan set"] + _segs_equal_lines() + [
+             "mukhya() {",
+             "    vitti a = set_init(16)",
+             "    vitti b = set_init(16)",
+             "    vitti d = set_init(16)",
+             "    vitti arr = nirmmita(64*8)",
+             "    vitti exp = nirmmita(64*8)",
+             "    vitti n = 0"]
+    for k in avals:
+        lines.append(f'    set_add(a, 16, "{k}", {len(k)})')
+    for k in bvals:
+        lines.append(f'    set_add(b, 16, "{k}", {len(k)})')
+    lines.append("    set_difference(a, 16, b, 16, d)")
+    lines.append("    n = set_to_array(d, 16, arr)")
+    _emit_segments(lines, "exp", exp)
+    lines.append(f"    yadi (segs_equal(arr, n, exp, {len(exp)}) == 0) {{")
+    lines.append('        likha("FAIL set difference content\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    for k in exp:
+        lines.append(f'    yadi (set_contains(a, 16, "{k}", {len(k)}) != 1) {{')
+        lines.append('        likha("FAIL set difference in a\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+        lines.append(f'    yadi (set_contains(b, 16, "{k}", {len(k)}) != 0) {{')
+        lines.append('        likha("FAIL set difference not in b\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "set_diff", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_set_subset(compiler, rng):
+    """subset: reflexive, empty subset, both-directions-implies-equal"""
+    words = _distinct_keys(rng, 4)
+    avals, bvals, cvals = words[:2], words[:3], [words[0], words[3]]
+    lines = ["ayojan set"] + _segs_equal_lines() + [
+             "mukhya() {",
+             "    vitti a = set_init(16)",
+             "    vitti b = set_init(16)",
+             "    vitti c = set_init(16)",
+             "    vitti d = set_init(16)",
+             "    vitti e = set_init(16)",
+             "    vitti arr1 = nirmmita(64*8)",
+             "    vitti arr2 = nirmmita(64*8)",
+             "    vitti n1 = 0",
+             "    vitti n2 = 0"]
+    for k in avals:
+        lines.append(f'    set_add(a, 16, "{k}", {len(k)})')
+        lines.append(f'    set_add(d, 16, "{k}", {len(k)})')
+    for k in bvals:
+        lines.append(f'    set_add(b, 16, "{k}", {len(k)})')
+    for k in cvals:
+        lines.append(f'    set_add(c, 16, "{k}", {len(k)})')
+    lines.append("    yadi (set_is_subset(a, 16, a, 16) != 1) {")
+    lines.append('        likha("FAIL set subset reflexive\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append("    yadi (set_is_subset(a, 16, b, 16) != 1) {")
+    lines.append('        likha("FAIL set subset a b\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append("    yadi (set_is_subset(b, 16, a, 16) != 0) {")
+    lines.append('        likha("FAIL set subset b a\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append("    yadi (set_is_subset(e, 16, b, 16) != 1) {")
+    lines.append('        likha("FAIL set subset empty\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append("    yadi (set_is_subset(c, 16, b, 16) != 0) {")
+    lines.append('        likha("FAIL set subset c b\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append("    yadi (set_is_subset(a, 16, d, 16) != 1) {")
+    lines.append('        likha("FAIL set subset a d\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append("    yadi (set_is_subset(d, 16, a, 16) != 1) {")
+    lines.append('        likha("FAIL set subset d a\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append("    n1 = set_to_array(a, 16, arr1)")
+    lines.append("    n2 = set_to_array(d, 16, arr2)")
+    lines.append("    yadi (segs_equal(arr1, n1, arr2, n2) == 0) {")
+    lines.append('        likha("FAIL set subset both ways equal\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "set_sub", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
 def main():
     compiler = None
     for i, a in enumerate(sys.argv):
@@ -1160,6 +1441,12 @@ def main():
         ("strb pack/unpack roundtrip", prop_strb_pack_unpack),
         ("strb dup", prop_strb_dup),
         ("sankhyiki purna int stats", prop_sankhyiki_purna),
+        ("set add/contains/remove", prop_set_add_contains_remove),
+        ("set add idempotent", prop_set_idempotent),
+        ("set union commutative", prop_set_union_commutative),
+        ("set intersect self/empty", prop_set_intersect_self_empty),
+        ("set difference", prop_set_difference),
+        ("set subset", prop_set_subset),
     ]
 
     failed = []
