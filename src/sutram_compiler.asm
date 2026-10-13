@@ -848,6 +848,7 @@ section .bss
     r55_proto_count resq 1
     r55_proto_names resq FUNC_DEFS_CAP
     r55_proto_arity resq FUNC_DEFS_CAP
+    r55_proto_param_end resq FUNC_DEFS_CAP
     top_const_count resq 1
     top_const_nodes resq 128   ; compile-time top-level sutra initializers
     in_function  resq 1       ; 0 = in main, 1 = in user function
@@ -9966,6 +9967,9 @@ r55_register_proto:
     mov rcx,[rbx+16]
     lea rax,[rel r55_proto_arity]
     mov [rax+r12*8],rcx
+    mov rcx,[rbx+32]
+    lea rax,[rel r55_proto_param_end]
+    mov [rax+r12*8],rcx
     inc qword [rel r55_proto_count]
     pop r13
     pop r12
@@ -10011,6 +10015,28 @@ r55_validate_prototypes:
 .vp_match:
     cmp r14,[rbx+16]
     jne .vp_mismatch
+    ; Compare the parameter-type bytes as well as the ABI arity.
+    ; Param *names* may differ, but dasham/kosh types must agree.
+    lea rcx,[rel r55_proto_param_end]
+    mov rcx,[rcx+r12*8]
+    shr rcx,3
+    sub rcx,r14
+    mov rdx,[rbx+32]
+    shr rdx,3
+    sub rdx,r14
+    lea r10,[rel func_param_types]
+    xor r8,r8
+.vp_type_loop:
+    cmp r8,r14
+    jae .vp_accepted
+    mov r9b,[r10+rcx]
+    cmp r9b,[r10+rdx]
+    jne .vp_mismatch
+    inc rcx
+    inc rdx
+    inc r8
+    jmp .vp_type_loop
+.vp_accepted:
     inc r12
     jmp .vp_outer
 .vp_missing:
