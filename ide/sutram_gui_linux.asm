@@ -14,6 +14,12 @@
 ;  selection before it quits. With no selection, Ctrl-C / Ctrl-X take the
 ;  current line. The selection is painted as a highlight behind the text.
 ;
+;  SLICE 17: Ctrl-O opens a file by path through an "Open:" prompt, Ctrl-N
+;  starts a new empty buffer. This slice also fixes a pre-existing defect: the
+;  key loop repainted the editor pane after every key, which overpainted the
+;  prompt strip (it lies inside the pane) - so the find prompt had never
+;  actually been visible. The repaint is now skipped while a prompt is open.
+;
 ;  FIXED IN SLICE 2: the CreateWindow request carries a value-mask and one
 ;  value, so its body is 36 bytes = 9 four-byte units. Slice 1 declared 8.
 ;  A real server would have misparsed the request. The mock test asserted 8,
@@ -115,6 +121,10 @@
 %define MASK_SHIFT      0x0001          ; ShiftMask bit in the event state
 %define CLIP_CAP        4096            ; internal clipboard capacity
 %define COL_SEL         0x2B4A6B        ; selection highlight
+; ---- slice 17: open / new ----------------------------------------------
+%define KC_CTRL_O       32              ; 'o' keycode -> open a file
+%define KC_CTRL_N       57              ; 'n' keycode -> new buffer
+%define OPEN_CAP        512             ; typed path capacity
 %define FIND_CAP        128             ; find-string capacity
 %define INDENT_SPACES   4
 %define OUT_VISIBLE     7               ; output lines that fit in the pane
@@ -206,6 +216,10 @@ section .bss
     sel_anchor  resq 1               ; selection anchor; -1 when there is none
     clip_buf    resb CLIP_CAP        ; internal clipboard bytes
     clip_len    resq 1               ; bytes held in clip_buf
+    ; ---- slice 17: open prompt ----
+    open_mode   resq 1               ; 1 while the Open: prompt is open
+    open_len    resq 1
+    open_buf    resb OPEN_CAP        ; typed path
 
 section .data
     xsock_path  db "/tmp/.X11-unix/X0", 0
@@ -230,10 +244,13 @@ section .data
     txt_editor_n equ $ - txt_editor
     txt_output  db "Output"
     txt_output_n equ $ - txt_output
-    txt_hint    db "Ctrl-R run  Ctrl-S save  Ctrl-Z undo  Ctrl-C/X/V clip"
+    txt_hint    db "Ctrl-R run  Ctrl-S save  Ctrl-O open  Ctrl-N new  Ctrl-C/X/V clip"
     txt_find    db "Find: "
     txt_find_n  equ $ - txt_find
+    txt_open    db "Open: "
+    txt_open_n  equ $ - txt_open
     txt_hint_n  equ $ - txt_hint
+    msg_openfail db "Sutram IDE: cannot open that file.", 10, 0
 
     msg_ok      db "Sutram GUI: connected to X, window created.", 10, 0
     msg_nox     db "Sutram GUI: cannot reach an X server (no DISPLAY).", 10, 0
@@ -1694,6 +1711,8 @@ find_do:
 ; The bottom line: the find prompt while searching, the key hint otherwise.
 draw_prompt:
     push rbx
+    cmp  qword [rel open_mode], 0
+    jne  .open
     cmp  qword [rel find_mode], 0
     je   .hint
     mov  rdi, COL_ACCENT
@@ -1710,6 +1729,28 @@ draw_prompt:
     call set_fg
     lea  rsi, [rel find_buf]
     mov  rdx, [rel find_len]
+    mov  rcx, PANE_X + 8 + 48
+    mov  r8,  ED_Y + ED_H - 12
+    call draw_text
+    mov  rdi, r12
+    lea  rsi, [reqbuf]
+    call send_req
+    jmp  .done
+.open:
+    mov  rdi, COL_ACCENT
+    call set_fg
+    lea  rsi, [rel txt_open]
+    mov  rdx, txt_open_n
+    mov  rcx, PANE_X + 8
+    mov  r8,  ED_Y + ED_H - 12
+    call draw_text
+    mov  rdi, r12
+    lea  rsi, [reqbuf]
+    call send_req
+    mov  rdi, COL_TEXT
+    call set_fg
+    lea  rsi, [rel open_buf]
+    mov  rdx, [rel open_len]
     mov  rcx, PANE_X + 8 + 48
     mov  r8,  ED_Y + ED_H - 12
     call draw_text
@@ -1899,11 +1940,91 @@ clip_line_bounds:
     pop rbx
     ret
 
+; ================================================================ slice 17
+; Ctrl-O: open a file by path (an "Open:" prompt); Ctrl-N: a new buffer.
+; ========================================================================
+
+; ---- open_do : load open_buf into the editor buffer. 0 ok, -1 error ------
+open_do:
+    push rbx
+    push r12
+    mov rax, [rel open_len]
+    test rax, rax
+    jz .fail                        ; an empty path is not an open
+    mov rax, SYS_open
+    lea rdi, [rel open_buf]
+    xor rsi, rsi                    ; O_RDONLY
+    xor rdx, rdx
+    syscall
+    cmp rax, 0
+    jl .fail
+    mov rbx, rax
+    call snapshot                   ; the old buffer is still intact here
+    mov rax, SYS_read
+    mov rdi, rbx
+    lea rsi, [rel ed_buf]
+    mov rdx, ED_CAP - 2
+    syscall
+    cmp rax, 0
+    jl .closefail
+    mov r12, rax
+    mov rax, SYS_close
+    mov rdi, rbx
+    syscall
+    mov [rel ed_len], r12
+    mov qword [rel ed_cursor], 0
+    mov qword [rel ed_top], 0
+    mov qword [rel sel_anchor], -1
+    xor rax, rax
+    pop r12
+    pop rbx
+    ret
+.closefail:
+    mov rax, SYS_close
+    mov rdi, rbx
+    syscall
+.fail:
+    call open_error
+    mov rax, -1
+    pop r12
+    pop rbx
+    ret
+
+; ---- open_error : report a failed open in the output pane ----------------
+open_error:
+    push rbx
+    push rcx
+    push rdi
+    push rsi
+    lea rsi, [rel msg_openfail]
+    lea rdi, [rel run_out]
+    xor rcx, rcx
+.cp:
+    mov al, [rsi]
+    test al, al
+    jz .fin
+    mov [rdi], al
+    inc rsi
+    inc rdi
+    inc rcx
+    jmp .cp
+.fin:
+    mov [rel run_out_len], rcx
+    call split_lines
+    call out_to_bottom
+    pop rsi
+    pop rdi
+    pop rcx
+    pop rbx
+    ret
+
 ; ---------------------------------------------------------------- handle_key
 ; rdi = X11 keycode, rsi = event state (modifier mask).
 handle_key:
     push rbx
     mov  rbx, rdi
+    cmp  qword [rel open_mode], 0
+    jne  .openkey
     cmp  qword [rel find_mode], 0
     jne  .findkey
     test rsi, MASK_CONTROL_ST
@@ -1926,6 +2047,10 @@ handle_key:
     je   .cut
     cmp  rbx, KC_CTRL_V
     je   .paste
+    cmp  rbx, KC_CTRL_O
+    je   .openopen
+    cmp  rbx, KC_CTRL_N
+    je   .newbuf
     cmp  rbx, KC_HOME
     je   .ctop
     cmp  rbx, KC_END
@@ -2215,6 +2340,72 @@ handle_key:
     call line_end
     mov  [rel ed_cursor], rax
     jmp  .done
+; ---- slice 17: open / new -------------------------------------------
+.openopen:
+    mov  qword [rel open_mode], 1
+    mov  qword [rel open_len], 0
+    lea  rcx, [rel open_buf]
+    mov  byte [rcx], 0
+    call draw_all
+    jmp  .done
+.newbuf:
+    call snapshot
+    mov  qword [rel ed_len], 0
+    mov  qword [rel ed_cursor], 0
+    mov  qword [rel ed_top], 0
+    mov  qword [rel sel_anchor], -1
+    jmp  .done
+.openkey:
+    cmp  rbx, KC_ESCAPE
+    je   .ocancel
+    cmp  rbx, KC_RETURN
+    je   .oaccept
+    cmp  rbx, KC_BACKSPACE
+    je   .oback
+    cmp  qword [rel km_ok], 0
+    je   .ofallback
+    lea  rcx, [rel kc_map]
+    cmp  rbx, 255
+    ja   .done
+    movzx edi, byte [rcx + rbx]
+    jmp  .ohave
+.ofallback:
+    lea  rcx, [rel kc_table]
+    cmp  rbx, 125
+    ja   .done
+    movzx edi, byte [rcx + rbx]
+.ohave:
+    test edi, edi
+    jz   .done
+    mov  rax, [rel open_len]
+    cmp  rax, OPEN_CAP - 1
+    jae  .done
+    lea  rcx, [rel open_buf]
+    mov  [rcx + rax], dil
+    inc  rax
+    mov  [rel open_len], rax
+    mov  byte [rcx + rax], 0
+    call draw_all
+    jmp  .done
+.ocancel:
+    mov  qword [rel open_mode], 0
+    call draw_all
+    jmp  .done
+.oaccept:
+    call open_do
+    mov  qword [rel open_mode], 0
+    call draw_all
+    jmp  .done
+.oback:
+    mov  rax, [rel open_len]
+    test rax, rax
+    jz   .done
+    dec  rax
+    mov  [rel open_len], rax
+    lea  rcx, [rel open_buf]
+    mov  byte [rcx + rax], 0
+    call draw_all
+    jmp  .done
 .esc:
     cmp  qword [rel sel_anchor], 0
     jl   .esc_quit
@@ -2295,7 +2486,15 @@ _start:
     movzx rdi, byte [event+1]       ; detail = keycode
     movzx rsi, word [event+28]      ; state (modifier mask)
     call handle_key
+    ; slice 17 fix: while a prompt is open the handler has already repainted
+    ; the whole window, and draw_editor would overpaint the prompt strip
+    ; (it lies inside the editor pane).
+    cmp  qword [rel find_mode], 0
+    jne  .key_drawn
+    cmp  qword [rel open_mode], 0
+    jne  .key_drawn
     call draw_editor
+.key_drawn:
     cmp  dword [rel want_quit], 0
     jne  .done
     jmp  .loop
