@@ -1,0 +1,12 @@
+mukhya() {
+    likha(1 << 6)
+    likha((3 + 4) << 3)
+    likha(((0 - 5) + 8) << 2)
+    likha((3 & 7) | (2 ^ 1))
+    likha((1 << 70))
+    likha((0 - 5) + (1 << 6))
+    vitti x = 11
+    likha(x * 1)
+    likha(x + 0)
+    likha(x - 0)
+}
