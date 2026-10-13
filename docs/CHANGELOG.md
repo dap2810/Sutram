@@ -1,3 +1,25 @@
+## v123 — GUI slice 18: graphical directory browser (verified)
+
+- **My own stream (Linux X11 IDE), slice 18.** `Ctrl-B` opens a **directory browser**:
+  entries of the current directory are listed in the editor pane, Up/Down move the
+  selection (kept visible), Enter opens a file or **descends into a directory**,
+  Backspace goes up one level, Esc cancels. Directories are drawn with a trailing `/`,
+  and the current path is shown in the prompt strip. Ctrl-O and Ctrl-N are unchanged.
+- Implementation: `getdents64` (217) into a bounded buffer, `d_type` marks directories,
+  names stored NUL-separated with an offset table, `.` and `..` skipped, bounded to 128
+  entries. `draw_all` routes to `draw_browser` while browsing, and the key loop skips the
+  editor repaint in browse mode too.
+- **One bug found and fixed during the round:** `.braccept` cleared the browse flag
+  unconditionally, so descending into a directory *exited* the browser instead of staying
+  in it. `br_open_sel` now reports "descended" and the flag is kept. Caught by the new
+  test, not by inspection.
+- Source: `ide/sutram_gui_linux.asm` 60,414 -> 70,004 chars; binary 24,776 -> 31,192 B.
+  New test `tools/test_x11_browser.py` (3 checks, spawns the GUI with a controlled cwd).
+- **Verification:** lists a known file, opens it and reads the buffer back through the real
+  Ctrl-S save path (content matches exactly), descends into a subdirectory and lists its
+  contents, Esc cancels without opening. All 3 pass. **All 11 GUI tests pass** in place.
+- Compiler untouched: still R57 `2b0b5fcf…`.
+
 ## v122 — ChatGPT R57 (register expression trees) + Muse R15 (fmt) verified and SYNCED
 
 - **ChatGPT R57 verified and accepted as a verified partial.** The expression evaluator now emits
