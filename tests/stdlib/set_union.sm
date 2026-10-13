@@ -1,0 +1,33 @@
+ayojan set
+ayojan strb
+mukhya() {
+    vitti a = set_init(16)
+    set_add(a, 16, "pear", 4)
+    set_add(a, 16, "apple", 5)
+    vitti b = set_init(16)
+    set_add(b, 16, "apple", 5)
+    set_add(b, 16, "fig", 3)
+    vitti u = set_init(32)
+    likha(set_union(a, 16, b, 16, u))
+    likha("\n")
+    # sorted dump: apple, fig, pear
+    vitti arr = nirmmita(64 * 8)
+    vitti buf = nirmmita(64)
+    vitti n = set_to_array(u, 32, arr)
+    vitti pos = 0
+    vitti i = 0
+    vitti sl = 0
+    yavat (i < n) {
+        sl = arr[pos]
+        strb_pack(arr + (pos + 1) * 8, sl, buf)
+        likha(1, buf, sl)
+        likha("\n")
+        pos = pos + 1 + sl
+        i = i + 1
+    }
+    # union with an empty set: just a's elements
+    vitti e = set_init(16)
+    vitti u2 = set_init(32)
+    likha(set_union(a, 16, e, 16, u2))
+    likha("\n")
+}
