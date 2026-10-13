@@ -1,0 +1,7 @@
+# Negative evidence of the still unimplemented R55 global scope.
+vitti shared_value = 10
+prakriya increment() {
+    shared_value = shared_value + 1
+    pratiyati shared_value
+}
+mukhya() { likha(increment()) }

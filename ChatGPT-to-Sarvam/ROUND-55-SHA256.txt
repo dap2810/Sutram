@@ -1,0 +1,27 @@
+Sutram R55 source/test SHA256, actual GitHub Actions native runner stdout
+Branch feature/r55-forward-prototypes-20261013
+Source-tested commit 5ff0755c176356bba230ababb2193932f54ca051
+CI https://github.com/dap2810/Sutram/actions/runs/38414002033
+Job 115353434800 conclusion SUCCESS
+10 source/compiler/test/workflow SHA256 values captured by native GitHub Actions.
+Handoff documents and review patch are evidence, not input to tested compiler.
+
+6db0adf7e89446775b026a347b6ee093cf2c7386e4d993c2a93f0aeafbaa8727  src/sutram_compiler.asm
+8d89a267dd747937db60c9f4e664236bde7a4dcd0b2857b8fb8341a1c34f8cee  tools/r55_native_acceptance.py
+0f6082f6e5fefb037b115446d533f99da9c9f503c2a13578d718f812e2c8269b  tests/r55_check/mutual_even_odd.sm
+ee32df19a4bc98f2e54f1d6803f3ffb73c90b3e300c0a44b9cc8d4511510f973  tests/r55_check/mutual_triple_reverse.sm
+936c459bc1cd716049c29e23fe3144ce6c479c410a530f4050421eb040945955  tests/r55_check/prototype_duplicate.sm
+a98eefa7710802b01b9071273001af21c4b2b7e88a24eef504908ed39c6a1abb  tests/r55_check/prototype_mismatch.sm
+1b47e6e0aab67c16cbc8a930440d5ab2ebab54cd10c4c6dd53683e02eb49ddfd  tests/r55_check/prototype_missing.sm
+35203a1ae8cf4e980365738b1d4e7cc756f418488a159bf8ecdb5f9a199824c7  tests/r55_check/prototype_type_mismatch.sm
+7b815a487b64df769cd3b94bad721e9e337bed83ff26a49cba3e98195b2e7f89  tests/r55_check/without_global_gap.sm
+8a5d80409b14ceb2278e903f3de47e073c5c2127b32d7c9075bf60cf4dec9175  .github/workflows/r55-native.yml
+
+Verifying a fresh checkout:
+grep -E '^[a-f0-9]{64}  ' ChatGPT-to-Sarvam/ROUND-55-SHA256.txt | sha256sum -c -
+
+Four ordinary ELF native binaries matched accepted R46 byte-for-byte in the same run:
+41_recursion.sm                         846 bytes  8ab871455f57bff8a95ac7c840c52f8245e434c7016af5b3e3cedf6bfbd6d0e3
+126_numeric_pipeline.sm               7450 bytes  38c50da9ec00d8cffbc1d2f42abe63fd1580572f894a74b3677727f7c9b8b8e2
+163_r40_transitive_diamond.sm          575 bytes  e3024b0282767501627e44d5243e32fcbd3ee5ad717a030cd3e7b8e7a7e2f984
+111_t18_kosh_dasham_function_return  1307 bytes  96e602630d053ddf7a61ed32badde5b293597569977ccd4bfbc7a61e07cc14b2

@@ -1,0 +1,4 @@
+# Arity matches, but prototype promises a binary64 parameter and body is integer.
+prakriya typed(dasham n);
+prakriya typed(n) { pratiyati n }
+mukhya() { likha(typed(1)) }
