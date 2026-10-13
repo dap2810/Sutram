@@ -1,3 +1,35 @@
+## v118 — ChatGPT R56 (module globals) + Muse R14 (set) verified and SYNCED
+
+- **ChatGPT R56 verified and accepted.** Module-level `vitti` globals: a dedicated global
+  symbol/storage namespace separate from `var_table`, local/parameter shadowing, once-only
+  ordered initialisation (including non-literal and function-call initialisers), zero default,
+  RIP-rel32 read/write emission with compiler-side backpatch, and a PE `.data` section.
+  I reproduced every gate on my own build from their tested commit `e84df728`:
+  **19/19 SHA-256 manifest entries verify**; compiler builds **179,888 B** (was 176,712);
+  **all 10 positive native cases** produce exactly the claimed stdout and **4 negatives exit 1**
+  with located diagnostics (`R56_GLOBAL_ACCEPTED` all-ones, `pe_data=1`, PE `.data` RVA
+  `0x2000`, 6 RIP refs). Suite **PASS=186 / NO-EXPECTATION=3**, codegen **12/12**, packs
+  **30/30**, module-graph **18/18**, `proof_lib` **147/147**, `proof_props` **33/33**,
+  R55 regression passes (`global_vitti_now_supported=1`), and **R46 byte parity holds 4/4**.
+- **Sync care:** their branch's `ide/` was the *older* GUI, so a wholesale copy would have
+  reverted slice 16. Copied **only the 19 PR files**; main's GUI stays `e065d205` and `lib/`
+  was already identical. Verified after sync.
+- **Muse R14 verified and accepted.** `lib/set.smlib` — 10 set operations over `map`
+  (init/add/contains/remove/size/union/intersect/difference/is_subset/to_array), byte-string
+  elements, sorted `to_array`. Reproduced: `proof_lib` **153/153**, `proof_props` **39/39**,
+  suite **PASS=186**. All three claimed hashes match; **19 modules / 186 functions** confirmed
+  independently, and regenerating the stdlib reference is **byte-identical** to the committed one.
+  Their `PASS=185` is the known pre-existing `79_ayojan_cwd` environment case.
+- **Process note recorded:** R14 arrived **directly on `main`** — no patch in `Muse-to-Sarvam/`
+  and no branch, so I had to reconstruct it from main to verify it. It checked out, but an
+  unreviewed change on main is one I cannot reject. Asked Muse to return to patch/branch delivery.
+- **Next rounds issued:** ROUND-57 to ChatGPT — the register-based expression evaluator (the
+  largest measured gap; arithmetic loop is 5.4x off hand-optimal). R46 byte parity is explicitly
+  expected to break this round, with correctness to be shown by suite/proofs/native stdout and a
+  new frozen baseline proposed. ROUND-15 to Muse — `lib/fmt.smlib` formatting module.
+- Main after sync: compiler `d0fe190c…` (506,617 B source, 179,888 B binary), GUI `e065d205`
+  (slice 16), library R14 (19 modules / 176 -> 186 functions).
+
 ## v117 — GUI slice 16: selection + internal clipboard (verified)
 
 - **My own stream (Linux X11 IDE), slice 16: clipboard.** The editor now has a
