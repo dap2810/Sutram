@@ -1,3 +1,31 @@
+## v124 — ChatGPT R58 (constant folding) + Muse R16 (list) verified and SYNCED
+
+- **ChatGPT R58 verified and accepted as a verified partial.** A bounded recursive integer
+  constant-folding pass on the AST at `gen_expr` (ADD/SUB/MUL/AND/OR/XOR/SHL/SHR over literal
+  subtrees, nested, negatives, x86 shift-mask semantics, depth-capped at 64), safe `x+0`/`x-0`/`x*1`
+  elimination that still evaluates a side-effectful LHS exactly once, and signed `x / 2^k` strength
+  reduction with a correction step that truncates toward zero for negatives. 12/12 manifest hashes
+  verify; builds to 183,712 B; **`R58_FROZEN_CODEGEN_ACCEPTED 8/8`**; suite 186/3, codegen 12/12,
+  packs 30/30, module-graph 18/18, proof_lib 158/158, proof_props 44/44.
+- **They declared the generic machine-code peephole as NOT implemented** rather than claiming it,
+  with a sound reason (post-hoc byte deletion would invalidate patch lists, branch offsets and
+  RIP-relative immediates). That is the right call and it is now ROUND-59.
+- **They did not double-count R57's power-of-two multiply shift** as an R58 win, and they did not
+  rewrite the R57 frozen baseline. I re-checked: **`R57_FROZEN_CODEGEN_ACCEPTED 6/6`, 0/6 changed.**
+- **Muse R16 verified and accepted.** `lib/list.smlib` — 21 functions covering list, stack and
+  queue. All three hashes match exactly; proof_lib **161/161**, proof_props **49/49**, suite
+  **PASS=186**; library now **21 modules / 230 functions**. Delivered as a patch, applied cleanly.
+- **Sync care:** disjoint file sets again. Copied only the 24 changed files; GUI and all previously
+  accepted goldens untouched. Verified on main afterwards.
+- **Process note:** `raw.githubusercontent.com` served a stale compiler after the push; the
+  authoritative API blob sha (`dad3d2f4…`) confirmed the file was correct. Re-confirmed the
+  standing lesson: verify with the API, not raw.
+- **Next rounds issued:** ROUND-59 to ChatGPT — the instruction-boundary-safe peephole (decide at
+  emission time, never post-process bytes). ROUND-17 to Muse — the `map_keys_bytes` refactor from
+  their own R14 friction note, a correctness fix for a silent-misuse class.
+- Main after sync: compiler `35d85b80…` (R58), GUI slice 18, library R16 (21 modules / 230 functions),
+  proofs 161/49.
+
 ## v123 — GUI slice 18: graphical directory browser (verified)
 
 - **My own stream (Linux X11 IDE), slice 18.** `Ctrl-B` opens a **directory browser**:
