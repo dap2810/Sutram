@@ -1,0 +1,36 @@
+ayojan set
+ayojan strb
+mukhya() {
+    # inserted cherry, apple, banana — dump is sorted, not insertion order
+    vitti s = set_init(16)
+    set_add(s, 16, "cherry", 6)
+    set_add(s, 16, "apple", 5)
+    set_add(s, 16, "banana", 6)
+    vitti arr = nirmmita(64 * 8)
+    vitti buf = nirmmita(64)
+    vitti n = set_to_array(s, 16, arr)
+    likha(n)
+    likha("\n")
+    vitti pos = 0
+    vitti i = 0
+    vitti sl = 0
+    yavat (i < n) {
+        sl = arr[pos]
+        strb_pack(arr + (pos + 1) * 8, sl, buf)
+        likha(1, buf, sl)
+        likha("\n")
+        pos = pos + 1 + sl
+        i = i + 1
+    }
+    # empty set dumps to zero elements
+    vitti e = set_init(16)
+    likha(set_to_array(e, 16, arr))
+    likha("\n")
+    # single element
+    vitti one = set_init(16)
+    set_add(one, 16, "solo", 4)
+    likha(set_to_array(one, 16, arr))
+    likha("\n")
+    likha(arr[0])
+    likha("\n")
+}
