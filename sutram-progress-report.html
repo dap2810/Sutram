@@ -98,7 +98,7 @@
     <div class="row"><div class="lab">01 Strong type system</div><div class="bar"><i class="l" style="width:17%"></i></div><div class="pct">17%</div></div>
     <div class="row"><div class="lab">02 Performance &amp; efficiency</div><div class="bar"><i class="m" style="width:58%"></i></div><div class="pct">58%</div></div>
     <div class="row"><div class="lab">03 Concurrency</div><div class="bar"><i class="l" style="width:0%"></i></div><div class="pct">0%</div></div>
-    <div class="row"><div class="lab">04 Cross-platform</div><div class="bar"><i class="m" style="width:48%"></i></div><div class="pct">48%</div></div>
+    <div class="row"><div class="lab">04 Cross-platform</div><div class="bar"><i class="m" style="width:50%"></i></div><div class="pct">50%</div></div>
     <div class="row"><div class="lab">05 Rich standard library</div><div class="bar"><i class="m" style="width:48%"></i></div><div class="pct">48%</div></div>
     <div class="row"><div class="lab">06 Massive ecosystem</div><div class="bar"><i class="l" style="width:2%"></i></div><div class="pct">2%</div></div>
     <div class="row"><div class="lab">07 Developer productivity</div><div class="bar"><i class="m" style="width:50%"></i></div><div class="pct">50%</div></div>
@@ -252,14 +252,14 @@
     <ul>
       <li><b>A register-based expression evaluator</b> — closes most of the 5.4× arithmetic gap. Big, contained, measurable.</li>
       <li><b>Generics and first-class functions</b> — the language still has one array type and no closures.</li>
-      <li><b>A real Windows end-to-end run</b> — one binary, executed, converts the biggest unverified claim into a fact.</li>
+      <li><b>A real Windows end-to-end run</b> — both Windows binaries now build and their PE headers verify, but neither has been executed on Windows. One run converts the biggest unverified claim into a fact.</li>
       <li><b>Library breadth</b> — formatting, file I/O, dates. The 45% bar is the one most within reach.</li>
     </ul>
   </div>
 
   <div class="hr"></div>
   <p class="note">
-    Snapshot: compiler <code>d0fe190c</code> (20,687 lines, 179,888 B binary) · IDE <code>bc2d5905</code> (2,523 lines, 17 slices) ·
+    Snapshot: compiler <code>d0fe190c</code> (20,687 lines, 179,888 B binary) · IDE <code>bc2d5905</code> (2,523 lines, 17 slices) · Windows binaries build (PE32+) ·
     19 library modules / 186 functions · 32 keywords · 10 language packs · 189 example programs · 29 docs pages ·
     Linux ELF + Windows PE32+ (Windows unverified).
     Percentages are judgement against a mature-language yardstick, not measurements; speed figures marked
