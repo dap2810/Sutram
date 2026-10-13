@@ -14,6 +14,11 @@
 ;  selection before it quits. With no selection, Ctrl-C / Ctrl-X take the
 ;  current line. The selection is painted as a highlight behind the text.
 ;
+;  SLICE 18: Ctrl-B opens a directory browser - the entries of the current
+;  directory are listed in the editor pane, Up/Down select, Enter opens a file
+;  or descends into a directory, Backspace goes up one level, Esc cancels.
+;  Ctrl-O (open by path) and Ctrl-N (new buffer) are unchanged.
+;
 ;  SLICE 17: Ctrl-O opens a file by path through an "Open:" prompt, Ctrl-N
 ;  starts a new empty buffer. This slice also fixes a pre-existing defect: the
 ;  key loop repainted the editor pane after every key, which overpainted the
@@ -125,6 +130,14 @@
 %define KC_CTRL_O       32              ; 'o' keycode -> open a file
 %define KC_CTRL_N       57              ; 'n' keycode -> new buffer
 %define OPEN_CAP        512             ; typed path capacity
+; ---- slice 18: directory browser ---------------------------------------
+%define KC_CTRL_B       56              ; 'b' keycode -> browse the directory
+%define SYS_getdents64  217
+%define BR_MAX          128             ; most entries we will list
+%define BR_NAMES_CAP    8192            ; names storage (NUL-separated)
+%define BR_DENTS_CAP    8192            ; raw getdents64 buffer
+%define BR_PATH_CAP     512
+%define O_DIRECTORY     0x10000
 %define FIND_CAP        128             ; find-string capacity
 %define INDENT_SPACES   4
 %define OUT_VISIBLE     7               ; output lines that fit in the pane
@@ -220,6 +233,17 @@ section .bss
     open_mode   resq 1               ; 1 while the Open: prompt is open
     open_len    resq 1
     open_buf    resb OPEN_CAP        ; typed path
+    ; ---- slice 18: directory browser ----
+    br_mode     resq 1               ; 1 while the browser is open
+    br_count    resq 1               ; entries listed
+    br_sel      resq 1               ; selected index
+    br_top      resq 1               ; first visible entry
+    br_nlen     resq 1               ; bytes used in br_names
+    br_path     resb BR_PATH_CAP     ; the directory being browsed
+    br_names    resb BR_NAMES_CAP
+    br_off      resq BR_MAX          ; name offset per entry
+    br_is       resq BR_MAX          ; 1 if the entry is a directory
+    br_dents    resb BR_DENTS_CAP
 
 section .data
     xsock_path  db "/tmp/.X11-unix/X0", 0
@@ -249,6 +273,11 @@ section .data
     txt_find_n  equ $ - txt_find
     txt_open    db "Open: "
     txt_open_n  equ $ - txt_open
+    txt_browse  db "Browse: "
+    txt_browse_n equ $ - txt_browse
+    br_dot      db ".", 0
+    br_dotdot   db "..", 0
+    br_slash    db "/", 0
     txt_hint_n  equ $ - txt_hint
     msg_openfail db "Sutram IDE: cannot open that file.", 10, 0
 
@@ -734,8 +763,13 @@ draw_all:
     call send_req
     call draw_output
 
+    cmp qword [rel br_mode], 0
+    je  .notbr
+    call draw_browser
+    jmp .brdone
+.notbr:
     call draw_prompt
-
+.brdone:
     pop r13
     pop r12
     ret
@@ -2018,11 +2052,357 @@ open_error:
     pop rbx
     ret
 
+; ================================================================ slice 18
+; Directory browser.
+; ========================================================================
+
+; ---- br_load : read br_path into br_names/br_off/br_is/br_count --------
+; returns 0 on success, -1 on failure.
+br_load:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    mov qword [rel br_nlen], 0
+    mov qword [rel br_count], 0
+    mov qword [rel br_sel], 0
+    mov qword [rel br_top], 0
+    mov rax, SYS_open
+    lea rdi, [rel br_path]
+    mov rsi, O_DIRECTORY
+    xor rdx, rdx
+    syscall
+    cmp rax, 0
+    jl .fail
+    mov r12, rax
+    mov rax, SYS_getdents64
+    mov rdi, r12
+    lea rsi, [rel br_dents]
+    mov rdx, BR_DENTS_CAP
+    syscall
+    mov r13, rax                    ; bytes read (or -1)
+    push r13
+    mov rax, SYS_close
+    mov rdi, r12
+    syscall
+    pop r13
+    cmp r13, 0
+    jle .fail
+    lea rbx, [rel br_dents]
+    xor r14, r14                    ; walk offset
+    xor r15, r15                    ; entry count
+.parse:
+    cmp r14, r13
+    jae .ok
+    cmp r15, BR_MAX
+    jae .ok
+    movzx r9d, word [rbx + r14 + 16] ; d_reclen
+    test r9, r9
+    jz .ok
+    lea rsi, [rbx + r14 + 19]        ; d_name
+    ; skip "." and ".."
+    cmp byte [rsi], '.'
+    jne .keep
+    cmp byte [rsi + 1], 0
+    je .skip
+    cmp byte [rsi + 1], '.'
+    jne .keep
+    cmp byte [rsi + 2], 0
+    je .skip
+.keep:
+    movzx eax, byte [rbx + r14 + 18] ; d_type
+    cmp al, 4                        ; DT_DIR
+    sete al
+    movzx eax, al
+    lea rdi, [rel br_is]
+    mov [rdi + r15*8], rax
+    lea rdi, [rel br_off]
+    mov rax, [rel br_nlen]
+    mov [rdi + r15*8], rax
+    lea rdi, [rel br_names]
+    add rdi, rax
+.cp:
+    mov dl, [rsi]
+    mov [rdi], dl
+    inc rsi
+    inc rdi
+    inc rax
+    test dl, dl
+    jz .cpd
+    jmp .cp
+.cpd:
+    mov [rel br_nlen], rax
+    inc r15
+.skip:
+    add r14, r9
+    jmp .parse
+.ok:
+    mov [rel br_count], r15
+    xor rax, rax
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+.fail:
+    mov rax, -1
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; ---- br_open_sel : Enter. If the selection is a directory, descend; -----
+; otherwise open the file. Returns 0 ok, -1 error.
+br_open_sel:
+    push rbx
+    push r12
+    mov rax, [rel br_sel]
+    cmp rax, [rel br_count]
+    jae .fail
+    lea rdi, [rel br_off]
+    mov r12, [rdi + rax*8]          ; name offset
+    lea rdi, [rel br_is]
+    mov rbx, [rdi + rax*8]          ; is-dir
+    ; build the full path into open_buf (reuse the path prompt buffer)
+    lea rsi, [rel br_path]
+    lea rdi, [rel open_buf]
+    xor rcx, rcx
+.cpdir:
+    mov al, [rsi]
+    test al, al
+    jz .sep
+    mov [rdi], al
+    inc rsi
+    inc rdi
+    inc rcx
+    jmp .cpdir
+.sep:
+    mov byte [rdi], '/'
+    inc rdi
+    inc rcx
+    lea rsi, [rel br_names]
+    add rsi, r12
+.cpname:
+    mov al, [rsi]
+    mov [rdi], al
+    inc rsi
+    inc rdi
+    inc rcx
+    test al, al
+    jz .cped
+    jmp .cpname
+.cped:
+    mov [rel open_len], rcx
+    test rbx, rbx
+    jz .openfile
+    ; ---- directory: make it the new br_path and reload ----
+    lea rsi, [rel open_buf]
+    lea rdi, [rel br_path]
+    xor rcx, rcx
+.todir:
+    mov al, [rsi]
+    mov [rdi], al
+    inc rsi
+    inc rdi
+    test al, al
+    jz .reload
+    jmp .todir
+.reload:
+    call br_load
+    mov rax, 1                      ; 1 = we descended, stay in the browser
+    pop r12
+    pop rbx
+    ret
+.openfile:
+    call open_do
+    xor rax, rax                    ; 0 = a file was opened, leave the browser
+    pop r12
+    pop rbx
+    ret
+.fail:
+    mov rax, -1
+    pop r12
+    pop rbx
+    ret
+
+; ---- br_up : Backspace. Drop the last path component and reload. --------
+br_up:
+    push rbx
+    lea rbx, [rel br_path]
+    xor rcx, rcx
+.findend:
+    cmp byte [rbx + rcx], 0
+    je .back
+    inc rcx
+    jmp .findend
+.back:
+    cmp rcx, 1
+    jbe .done
+    dec rcx
+.trim:
+    cmp rcx, 0
+    jbe .set
+    cmp byte [rbx + rcx], '/'
+    je .set
+    dec rcx
+    jmp .trim
+.set:
+    test rcx, rcx
+    jnz .put
+    mov byte [rbx + 1], 0           ; keep at least "/"
+    jmp .done
+.put:
+    mov byte [rbx + rcx], 0
+.done:
+    call br_load
+    pop rbx
+    ret
+
+; ---- draw_browser : paint the list into the editor pane -----------------
+draw_browser:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    ; pane background
+    mov rdi, COL_PANE
+    call set_fg
+    mov rsi, PANE_X
+    mov rdx, ED_Y
+    mov rcx, ED_W
+    mov r8,  ED_H
+    call fill_rect
+    mov rdi, r12
+    lea rsi, [reqbuf]
+    call send_req
+    ; heading
+    mov rdi, COL_ACCENT
+    call set_fg
+    lea rsi, [rel txt_browse]
+    mov rdx, txt_browse_n
+    mov rcx, ED_TEXT_X
+    mov r8,  ED_TEXT_Y
+    call draw_text
+    mov rdi, r12
+    lea rsi, [reqbuf]
+    call send_req
+    ; entries
+    xor r13, r13                    ; display row
+    mov r14, [rel br_top]           ; entry index
+.loop:
+    cmp r13, ED_VISIBLE - 1
+    jae .after
+    cmp r14, [rel br_count]
+    jae .after
+    ; highlight the selected row
+    cmp r14, [rel br_sel]
+    jne .text
+    mov rdi, COL_SEL
+    call set_fg
+    mov rsi, ED_TEXT_X
+    mov rdx, ED_TEXT_Y
+    imul rax, r13, LINE_H
+    add rdx, rax
+    sub rdx, 12
+    mov rcx, ED_W - 16
+    mov r8, 14
+    call fill_rect
+    mov rdi, r12
+    lea rsi, [reqbuf]
+    call send_req
+.text:
+    mov rdi, COL_TEXT
+    call set_fg
+    ; name = br_names + br_off[i]
+    lea rdi, [rel br_off]
+    mov rbx, [rdi + r14*8]
+    lea rsi, [rel br_names]
+    add rsi, rbx
+    ; length
+    xor rdx, rdx
+.len:
+    cmp byte [rsi + rdx], 0
+    je .lenend
+    inc rdx
+    cmp rdx, 240
+    jae .lenend
+    jmp .len
+.lenend:
+    test rdx, rdx
+    jz .next
+    mov rcx, ED_TEXT_X
+    mov r8,  ED_TEXT_Y
+    imul rax, r13, LINE_H
+    add r8, rax
+    ; mark directories with a trailing '/'
+    lea rdi, [rel br_is]
+    cmp qword [rdi + r14*8], 0
+    je .draw
+    lea rdi, [rel br_names]
+    add rdi, rbx
+    add rdi, rdx
+    mov byte [rdi], '/'
+    inc rdx
+.draw:
+    call draw_text
+    mov rdi, r12
+    lea rsi, [reqbuf]
+    call send_req
+.next:
+    inc r13
+    inc r14
+    jmp .loop
+.after:
+    ; the current directory, in the prompt strip
+    mov rdi, COL_ACCENT
+    call set_fg
+    lea rsi, [rel br_path]
+    xor rdx, rdx
+.plen:
+    cmp byte [rsi + rdx], 0
+    je .pend
+    inc rdx
+    cmp rdx, 200
+    jae .pend
+    jmp .plen
+.pend:
+    mov rcx, PANE_X + 8
+    mov r8,  ED_Y + ED_H - 12
+    call draw_text
+    mov rdi, r12
+    lea rsi, [reqbuf]
+    call send_req
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; ---- br_start : Ctrl-B. Begin browsing the current directory -----------
+br_start:
+    mov qword [rel br_mode], 1
+    lea rsi, [rel br_dot]
+    lea rdi, [rel br_path]
+    mov al, '.'
+    mov [rdi], al
+    mov byte [rdi + 1], 0
+    call br_load
+    call draw_all
+    ret
+
 ; ---------------------------------------------------------------- handle_key
 ; rdi = X11 keycode, rsi = event state (modifier mask).
 handle_key:
     push rbx
     mov  rbx, rdi
+    cmp  qword [rel br_mode], 0
+    jne  .brkey
     cmp  qword [rel open_mode], 0
     jne  .openkey
     cmp  qword [rel find_mode], 0
@@ -2051,6 +2431,8 @@ handle_key:
     je   .openopen
     cmp  rbx, KC_CTRL_N
     je   .newbuf
+    cmp  rbx, KC_CTRL_B
+    je   .browse
     cmp  rbx, KC_HOME
     je   .ctop
     cmp  rbx, KC_END
@@ -2340,6 +2722,65 @@ handle_key:
     call line_end
     mov  [rel ed_cursor], rax
     jmp  .done
+; ---- slice 18: directory browser ------------------------------------
+.browse:
+    call br_start
+    jmp  .done
+.brkey:
+    cmp  rbx, KC_ESCAPE
+    je   .brcancel
+    cmp  rbx, KC_RETURN
+    je   .braccept
+    cmp  rbx, KC_BACKSPACE
+    je   .brup
+    cmp  rbx, KC_UP
+    je   .brupsel
+    cmp  rbx, KC_DOWN
+    je   .brdnsel
+    jmp  .done
+.brcancel:
+    mov  qword [rel br_mode], 0
+    call draw_all
+    jmp  .done
+.braccept:
+    call br_open_sel
+    cmp  rax, 1
+    je   .brstay
+    mov  qword [rel br_mode], 0
+.brstay:
+    call draw_all
+    jmp  .done
+.brup:
+    call br_up
+    call draw_all
+    jmp  .done
+.brupsel:
+    cmp  qword [rel br_sel], 0
+    je   .brdraw
+    dec  qword [rel br_sel]
+    ; keep the selection visible
+    mov  rax, [rel br_sel]
+    cmp  rax, [rel br_top]
+    jae  .brdraw
+    mov  [rel br_top], rax
+.brdraw:
+    call draw_all
+    jmp  .done
+.brdnsel:
+    mov  rax, [rel br_sel]
+    inc  rax
+    cmp  rax, [rel br_count]
+    jae  .brdraw
+    mov  [rel br_sel], rax
+    ; keep the selection visible
+    mov  rcx, [rel br_top]
+    add  rcx, ED_VISIBLE - 1
+    cmp  rax, rcx
+    jb   .brdraw
+    sub  rax, ED_VISIBLE - 2
+    mov  [rel br_top], rax
+    jmp  .brdraw
+
 ; ---- slice 17: open / new -------------------------------------------
 .openopen:
     mov  qword [rel open_mode], 1
@@ -2492,6 +2933,8 @@ _start:
     cmp  qword [rel find_mode], 0
     jne  .key_drawn
     cmp  qword [rel open_mode], 0
+    jne  .key_drawn
+    cmp  qword [rel br_mode], 0
     jne  .key_drawn
     call draw_editor
 .key_drawn:
