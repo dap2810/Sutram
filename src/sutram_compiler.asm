@@ -90,6 +90,8 @@ AST_ASSERT    equ 23    ; assert: [type][cond_expr][0][0][0]
 AST_TERNARY   equ 27    ; conditional expr: [type][cond][true_expr][false_expr]
 AST_DO_WHILE  equ 28    ; do-while stmt: [type][body][cond]
 AST_FLOAT     equ 29    ; T12 IEEE-754 binary64 bits in field1
+R56_GLOBAL_CAP equ 128
+R56_PATCH_CAP equ 16384
 FUNC_SPILL_BYTES equ 2048 ; reserved stack spill area per generated function/main
 ; R31 experimental, disabled by default. Enable only with NASM:
 ;   -DSUTRAM_EXPERIMENTAL_XMM_CACHE=1
@@ -758,6 +760,9 @@ r54_builtin_arity_table:
     r55_msg_proto_missing db "Sutram Error: prakriya forward declaration has no definition",10,0
     r55_msg_proto_signature db "Sutram Error: prakriya prototype signature (arity/type) differs from definition",10,0
     r55_msg_proto_capacity db "Sutram Error: too many prakriya prototypes",10,0
+    r56_msg_global_capacity db "Sutram Error: too many module-level vitti variables",10,0
+    r56_msg_global_duplicate db "Sutram Error: duplicate module-level vitti name",10,0
+    r56_msg_patch_capacity db "Sutram Error: too many global data references",10,0
 
 section .bss
     source_buf  resb 65536
@@ -849,6 +854,13 @@ section .bss
     r55_proto_names resq FUNC_DEFS_CAP
     r55_proto_arity resq FUNC_DEFS_CAP
     r55_proto_param_end resq FUNC_DEFS_CAP
+    ; R56: separate module-global names/declarations, not per-function registers.
+    r56_global_count resq 1
+    r56_global_names resq R56_GLOBAL_CAP
+    r56_global_nodes resq R56_GLOBAL_CAP
+    ; [generated RIP displacement field offset, 0-based module-global index].
+    r56_patch_count resq 1
+    r56_patches resq R56_PATCH_CAP * 2
     top_const_count resq 1
     top_const_nodes resq 128   ; compile-time top-level sutra initializers
     in_function  resq 1       ; 0 = in main, 1 = in user function
@@ -6364,6 +6376,8 @@ advance_tok:
     ret
 
 parse_program:
+    mov qword [rel r56_global_count], 0
+    mov qword [rel r56_patch_count], 0
     mov qword [rel r55_proto_count], 0
     mov qword [rel top_const_count], 0
     mov qword [rel parse_error_kind], 0
@@ -6390,7 +6404,19 @@ parse_function:
     je .pf_top_decl
     cmp rcx, KW_SUTRA
     je .pf_top_const
+    cmp rcx, KW_VITTI
+    je .pf_top_global
     jmp .pf_expect_mukhya
+.pf_top_global:
+    ; Only scalar vitti is permitted at module level in R56. AST_DECL is
+    ; parsed once; runtime initializers are emitted before mukhya's body.
+    call parse_stmt
+    cmp qword [rax], AST_DECL
+    jne parse_error
+    cmp qword [rax+24], 0
+    jne parse_error
+    call r56_register_global
+    jmp .pf_top_loop
 .pf_top_const:
     ; Top-level sutra is a compile-time constant available to main and
     ; functions parsed below it. No native global storage/runtime init.
@@ -6502,6 +6528,18 @@ parse_function:
     call advance_tok          ; consume '{'
     call parse_block          ; rax = block node
 .pf_done:
+    ; A declaration after mukhya is not a module declaration. Detect this
+    ; particular accidental silent trailing statement as a syntax error.
+    push rax
+    call cur_tok
+    cmp qword [rax], TOK_KEYWORD
+    jne .pf_after_main_ok
+    cmp qword [rax+16], KW_VITTI
+    jne .pf_after_main_ok
+    pop rax
+    jmp parse_error
+.pf_after_main_ok:
+    pop rax
     mov rbx, rax              ; save block
     call alloc_ast            ; rax = new node
     mov qword [rax], 11      ; AST_FUNC
@@ -9876,6 +9914,11 @@ gen_code:
     mov edi, FUNC_SPILL_BYTES
     call emit_u32
 
+    ; R56: once-only ordered global initialization at process entry.
+    ; This runs before mukhya and before any user function can be called.
+    call r56_gen_global_initializers
+    mov rax, [rel root_node]
+    mov rax, [rax+8]
     ; Generate body
     call gen_block
 
@@ -9929,6 +9972,10 @@ gen_code:
     mov qword [rel current_func_float], 0
     ; Backpatch all call sites
     call backpatch_calls
+    ; Final function/code size is now known; fix RIP-relative globals.
+    ; ELF appends zero-initialized writable slots to the existing load segment;
+    ; PE emits a distinct RW .data section in write_pe.
+    call r56_patch_global_storage
 
     pop r15
     pop r14
@@ -10088,6 +10135,32 @@ funcdef_name_exists:
     ret
 
 ; gen_all_functions — emit code for all collected FUNCDEF nodes
+ ; R56 top-level global initializer list: each expression executes once,
+ ; in source order, with every slot initially zero. Nonliteral expressions
+ ; and function calls use the ordinary expression emitter and call patches.
+r56_gen_global_initializers:
+    push rbx
+    push r12
+    xor r12, r12
+.r56_init_loop:
+    cmp r12, [rel r56_global_count]
+    jae .r56_init_done
+    lea rcx, [rel r56_global_nodes]
+    mov rbx, [rcx+r12*8]
+    mov rax, [rbx+16]
+    test rax, rax
+    jz .r56_init_next
+    call gen_expr
+    mov rdi, r12
+    call r56_emit_global_store
+.r56_init_next:
+    inc r12
+    jmp .r56_init_loop
+.r56_init_done:
+    pop r12
+    pop rbx
+    ret
+
 gen_all_functions:
     push rbx
     push r12
@@ -10878,6 +10951,24 @@ gen_stmt:
 
 .gs_assign:
     ; [AST_ASSIGN][target_ptr][value_ptr]
+    ; R56: resolve a module global only if the current scope has no local
+    ; parameter/declaration with the same name. Bypass every fast store path.
+    mov rax, [rbx+8]
+    cmp qword [rax], AST_VAR
+    jne .r56_assign_local
+    mov rdi, [rax+8]
+    call r56_global_index
+    test rax, rax
+    jz .r56_assign_local
+    push rax
+    mov rax, [rbx+16]
+    call gen_expr
+    pop rdi
+    dec rdi
+    call r56_emit_global_store
+    pop rbx
+    ret
+.r56_assign_local:
     ; Check if target is AST_INDEX (array store)
     mov rax, [rbx+8]         ; target node
     mov rcx, [rax]           ; target type
@@ -11028,6 +11119,16 @@ gen_stmt:
     call emit_byte
     mov rax, [rbx+8]
     mov rdi, [rax+8]
+    call r56_global_index
+    test rax, rax
+    jz .r56_ai_local
+    dec rax
+    mov rdi, rax
+    call r56_emit_global_load
+    jmp .gs_ai_have
+.r56_ai_local:
+    mov rax, [rbx+8]
+    mov rdi, [rax+8]
     call lookup_var
     test rax, rax
     jle .gs_ai_stk
@@ -11146,6 +11247,16 @@ gen_stmt:
     ; Load base
     mov rax, [rbx+8]         ; target = AST_FIELD
     mov rdi, [rax+8]         ; name ptr
+    call r56_global_index
+    test rax, rax
+    jz .r56_af_local
+    dec rax
+    mov rdi, rax
+    call r56_emit_global_load
+    jmp .gs_af_have
+.r56_af_local:
+    mov rax, [rbx+8]
+    mov rdi, [rax+8]
     call lookup_var
     test rax, rax
     jle .gs_af_stk
@@ -11516,10 +11627,18 @@ gen_stmt:
     call alloc_var
     mov r14, rax
 .gf2_have_loc:
+    cmp r14, -65536
+    jle .r56_for_init_global
     test r14, r14
     jle .gf2_stk_init
     mov rdi, r14
     call emit_store_reg
+    jmp .gf2_emit_entry_jump
+.r56_for_init_global:
+    mov rdi, r14
+    neg rdi
+    sub rdi, 65537
+    call r56_emit_global_store
     jmp .gf2_emit_entry_jump
 .gf2_stk_init:
     mov dil, 0x48
@@ -11557,9 +11676,33 @@ gen_stmt:
     mov rsi, OP_SUB
 .gf2_inc_ready:
     mov rdx, 1
+    cmp r14, -65536
+    jle .r56_for_inc_global
     test r14, r14
     jle .gf2_inc_stack
     call emit_reg_self_update_imm
+    jmp .gf2_test_start
+.r56_for_inc_global:
+    mov rdi, r14
+    neg rdi
+    sub rdi, 65537
+    call r56_emit_global_load
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    cmp qword [rel for_descend],0
+    jne .r56_for_dec
+    mov dil, 0xC0             ; inc rax
+    jmp .r56_for_inc_op
+.r56_for_dec:
+    mov dil, 0xC8             ; dec rax
+.r56_for_inc_op:
+    call emit_byte
+    mov rdi, r14
+    neg rdi
+    sub rdi, 65537
+    call r56_emit_global_store
     jmp .gf2_test_start
 .gf2_inc_stack:
     call emit_stack_self_update_imm
@@ -11593,6 +11736,14 @@ gen_stmt:
     call emit_load_reg
     jmp .gf2_have_var
 .gf2_stk_load:
+    cmp r14,-65536
+    jg .r56_for_load_stack
+    mov rdi,r14
+    neg rdi
+    sub rdi,65537
+    call r56_emit_global_load
+    jmp .gf2_have_var
+.r56_for_load_stack:
     mov dil, 0x48
     call emit_byte
     mov dil, 0x8B
@@ -12607,6 +12758,15 @@ gen_expr:
     ; Load variable (address), push base + runtime length, eval index, check.
     push r12
     mov rdi, [rbx+8]         ; variable name ptr
+    call r56_global_index
+    test rax, rax
+    jz .r56_index_local
+    dec rax
+    mov rdi, rax
+    call r56_emit_global_load
+    jmp .ge_index_have_addr
+.r56_index_local:
+    mov rdi, [rbx+8]
     call lookup_var          ; rax = location
     test rax, rax
     jle .ge_index_stack
@@ -12697,6 +12857,15 @@ gen_expr:
 .ge_field:
     ; [AST_FIELD][var_name][field_offset]
     ; Load var (base addr), add offset, load value
+    mov rdi, [rbx+8]
+    call r56_global_index
+    test rax, rax
+    jz .r56_field_local
+    dec rax
+    mov rdi, rax
+    call r56_emit_global_load
+    jmp .ge_field_have
+.r56_field_local:
     mov rdi, [rbx+8]
     call lookup_var
     test rax, rax
@@ -15825,6 +15994,16 @@ gen_expr:
     ret
 
 .ge_var:
+    mov rdi, [rbx+8]
+    call r56_global_index
+    test rax, rax
+    jz .r56_var_local
+    dec rax
+    mov rdi, rax
+    call r56_emit_global_load
+    pop rbx
+    ret
+.r56_var_local:
     mov rdi, [rbx+8]         ; name ptr
     call lookup_var           ; rax = location
     ; Check if register or stack
@@ -17986,6 +18165,17 @@ is_kosh_var:
 
 emit_load_named_var:
     ; Compiler-time rdi=name; emit runtime load of variable into RAX.
+    push rdi
+    call r56_global_index
+    test rax, rax
+    jz .r56_named_load_local
+    add rsp, 8
+    dec rax
+    mov rdi, rax
+    call r56_emit_global_load
+    ret
+.r56_named_load_local:
+    pop rdi
     call lookup_var
     test rax, rax
     jle .elnv_stack
@@ -18005,6 +18195,17 @@ emit_load_named_var:
 
 emit_store_named_var:
     ; Compiler-time rdi=name; emit runtime store from RAX into variable.
+    push rdi
+    call r56_global_index
+    test rax, rax
+    jz .r56_named_store_local
+    add rsp, 8
+    dec rax
+    mov rdi, rax
+    call r56_emit_global_store
+    ret
+.r56_named_store_local:
+    pop rdi
     call lookup_var
     test rax, rax
     jle .esnv_stack
@@ -19642,6 +19843,195 @@ emit_load_reg:
 ; Tests if location > 0 (register IDs are 1-5)
 
 ; lookup_var(rdi = name ptr) → rax = stack offset
+; R56 registration and scoped resolution. Module globals are never added to
+; the local/parameter var_table and are never reset per function.
+r56_register_global:
+    push rbx
+    push r12
+    push r13
+    mov rbx,rax
+    mov r13,[rbx+8]
+    xor r12,r12
+.r56_rg_scan:
+    cmp r12,[rel r56_global_count]
+    jae .r56_rg_insert
+    lea rax,[rel r56_global_names]
+    mov rdi,r13
+    mov rsi,[rax+r12*8]
+    call strcmp
+    test rax,rax
+    jz .r56_rg_duplicate
+    inc r12
+    jmp .r56_rg_scan
+.r56_rg_insert:
+    cmp r12,R56_GLOBAL_CAP
+    jae .r56_rg_overflow
+    lea rax,[rel r56_global_names]
+    mov [rax+r12*8],r13
+    lea rax,[rel r56_global_nodes]
+    mov [rax+r12*8],rbx
+    inc qword [rel r56_global_count]
+    pop r13
+    pop r12
+    pop rbx
+    ret
+.r56_rg_duplicate:
+    lea rdi,[rel r56_msg_global_duplicate]
+    jmp capacity_fail
+.r56_rg_overflow:
+    lea rdi,[rel r56_msg_global_capacity]
+    jmp capacity_fail
+
+; name rdi -> rax 1-based global slot, or 0 when local exists or not global.
+; A parameter or local declaration shadows a global (including in main).
+r56_global_index:
+    push rbx
+    push r12
+    push r13
+    mov rbx,rdi
+    xor r12,r12
+.r56_gi_local_loop:
+    cmp r12,[rel var_cnt]
+    jae .r56_gi_globals
+    mov rcx,r12
+    shl rcx,4
+    lea rdx,[rel var_table]
+    mov rdi,[rdx+rcx]
+    mov rsi,rbx
+    call strcmp
+    test rax,rax
+    jz .r56_gi_notfound
+    inc r12
+    jmp .r56_gi_local_loop
+.r56_gi_globals:
+    xor r12,r12
+.r56_gi_gl_loop:
+    cmp r12,[rel r56_global_count]
+    jae .r56_gi_notfound
+    lea rcx,[rel r56_global_names]
+    mov rdi,[rcx+r12*8]
+    mov rsi,rbx
+    call strcmp
+    test rax,rax
+    jz .r56_gi_found
+    inc r12
+    jmp .r56_gi_gl_loop
+.r56_gi_found:
+    lea rax,[r12+1]
+    jmp .r56_gi_done
+.r56_gi_notfound:
+    xor rax,rax
+.r56_gi_done:
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; Store a RIP displacement patch: rdi=0-based global index, current code_sz
+; points to the next 4-byte displacement. All relocation math is compiler-side.
+r56_record_patch:
+    push rbx
+    mov rbx,rdi
+    mov rcx,[rel r56_patch_count]
+    cmp rcx,R56_PATCH_CAP
+    jae .r56_patch_overflow
+    shl rcx,4
+    lea rdx,[rel r56_patches]
+    mov rax,[rel code_sz]
+    mov [rdx+rcx],rax
+    mov [rdx+rcx+8],rbx
+    inc qword [rel r56_patch_count]
+    xor edi,edi
+    call emit_u32
+    pop rbx
+    ret
+.r56_patch_overflow:
+    lea rdi,[rel r56_msg_patch_capacity]
+    jmp capacity_fail
+
+; Emit mov rax,[rip+disp32] with later relocation into writable storage.
+r56_emit_global_load:
+    push rbx
+    mov rbx,rdi
+    mov dil,0x48
+    call emit_byte
+    mov dil,0x8B
+    call emit_byte
+    mov dil,0x05
+    call emit_byte
+    mov rdi,rbx
+    call r56_record_patch
+    pop rbx
+    ret
+
+; Emit mov [rip+disp32],rax with later relocation.
+r56_emit_global_store:
+    push rbx
+    mov rbx,rdi
+    mov dil,0x48
+    call emit_byte
+    mov dil,0x89
+    call emit_byte
+    mov dil,0x05
+    call emit_byte
+    mov rdi,rbx
+    call r56_record_patch
+    pop rbx
+    ret
+
+; Finalize after main + all functions + user call backpatches.
+; ELF storage begins at code_sz and is appended to its writable PT_LOAD;
+; PE storage is its own read/write .data section with page-aligned RVA.
+r56_patch_global_storage:
+    cmp qword [rel r56_global_count],0
+    je .r56_pg_done
+    push rbx
+    push r12
+    push r13
+    mov r12,[rel code_sz]
+    cmp qword [rel target_pe],0
+    je .r56_pg_target_ready
+    add r12,RT_BLOB_LEN+0xFFF
+    and r12,-0x1000
+    sub r12,RT_BLOB_LEN
+.r56_pg_target_ready:
+    xor r13,r13
+.r56_pg_fix_loop:
+    cmp r13,[rel r56_patch_count]
+    jae .r56_pg_patched
+    lea rdx,[rel r56_patches]
+    mov rcx,r13
+    shl rcx,4
+    mov rbx,[rdx+rcx]         ; rel32 field offset in code_buf
+    mov rax,[rdx+rcx+8]       ; global index
+    shl rax,3
+    add rax,r12              ; final data offset from code origin
+    sub rax,rbx
+    sub rax,4
+    lea rdx,[rel code_buf]
+    mov [rdx+rbx],eax
+    inc r13
+    jmp .r56_pg_fix_loop
+.r56_pg_patched:
+    cmp qword [rel target_pe],0
+    jne .r56_pg_leave        ; PE writer owns physical data section
+    xor r13,r13
+.r56_pg_zero_loop:
+    cmp r13,[rel r56_global_count]
+    jae .r56_pg_leave
+    xor edi,edi
+    call emit_u32
+    xor edi,edi
+    call emit_u32
+    inc r13
+    jmp .r56_pg_zero_loop
+.r56_pg_leave:
+    pop r13
+    pop r12
+    pop rbx
+.r56_pg_done:
+    ret
+
 lookup_var:
     push rbx
     push r12
@@ -19676,6 +20066,20 @@ lookup_var:
     pop rbx
     ret
 .lv_notfound:
+    ; R56: never accidentally auto-allocate a global as a stack/register local
+    ; from an integer fast path. The sentinel is rejected by fast register
+    ; optimizations; actual accesses go through the RIP-relative emitters.
+    mov rdi, rbx
+    call r56_global_index
+    test rax, rax
+    jz .r56_lv_allocate
+    neg rax
+    sub rax, 65536
+    pop r13
+    pop r12
+    pop rbx
+    ret
+.r56_lv_allocate:
     ; Auto-allocate
     mov rdi, rbx
     call alloc_var
@@ -20087,6 +20491,10 @@ write_pe:
     mov dword [rdi+0x40], 0x00004550
     mov word [rdi+0x44], 0x8664
     mov word [rdi+0x46], 1
+    cmp qword [rel r56_global_count],0
+    je .r56_pe_single_section
+    mov word [rdi+0x46],2
+.r56_pe_single_section:
     mov word [rdi+0x54], 0xF0
     mov word [rdi+0x56], 0x0022
     ; Optional header
@@ -20131,6 +20539,31 @@ write_pe:
     mov [rdi+0x158], eax
     mov dword [rdi+0x15C], 0x200
     mov dword [rdi+0x16C], 0x60000020
+    cmp qword [rel r56_global_count],0
+    je .r56_pe_no_data_header
+    ; Separate initialized RW data section (not RWX text): 128*8 <= 4096.
+    ; RVA = 0x1000 + round_up(.text virtual size, 0x1000).
+    mov rax, r12
+    add rax, 0xFFF
+    and rax, -0x1000
+    add rax, 0x1000
+    mov [rdi+0x17C], eax      ; .data virtual address
+    add rax, 0x1000
+    mov [rdi+0x90], eax       ; SizeOfImage
+    mov dword [rdi+0x170], 0x7461642E  ; '.dat'
+    mov word [rdi+0x174], 0x0061       ; 'a', NUL
+    mov rax, [rel r56_global_count]
+    shl rax, 3
+    mov [rdi+0x178], eax      ; .data virtual size
+    add rax, 0x1FF
+    and rax, -0x200
+    mov [rdi+0x180], eax      ; aligned .data raw size
+    mov [rdi+0x60], eax       ; SizeOfInitializedData
+    mov eax, r13d
+    add eax,0x200
+    mov [rdi+0x184], eax      ; .data raw pointer after .text
+    mov dword [rdi+0x194],0xC0000040  ; initialized, read/write
+.r56_pe_no_data_header:
     ; --- write headers ---
     mov rdi, [rel out_fd]
     lea rsi, [rel pe_hdr]
@@ -20186,6 +20619,30 @@ write_pe:
     sub r13, rdx
     jmp .pp_pad
 .pp_done:
+    ; R56: physically write zero-initialized .data raw bytes after .text pad.
+    ; PE's section loader makes these independent writable qwords.
+    cmp qword [rel r56_global_count],0
+    je .r56_pe_close
+    mov r12,[rel r56_global_count]
+    shl r12,3
+    add r12,0x1FF
+    and r12,-0x200
+.r56_pe_data_loop:
+    test r12,r12
+    jz .r56_pe_close
+    mov rdx,r12
+    cmp rdx,0x100
+    jbe .r56_pe_data_write
+    mov rdx,0x100
+.r56_pe_data_write:
+    mov rdi,[rel out_fd]
+    lea rsi,[rel pe_pad]
+    push rdx
+    call os_write
+    pop rdx
+    sub r12,rdx
+    jmp .r56_pe_data_loop
+.r56_pe_close:
     mov rdi, [rel out_fd]
     call os_close
     pop r13
