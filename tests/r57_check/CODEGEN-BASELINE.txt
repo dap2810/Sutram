@@ -1,0 +1,8 @@
+# R57 proposed frozen generated-ELF baseline, standalone inputs.
+# Observed from successful CI: https://github.com/dap2810/Sutram/actions/runs/38434189829
+2375b2a6d001d45350f2e8a22c95983da762ea3cf50cba616c2eeaed929a9467  tests/r57_check/arithmetic_10m.sm
+c87ed1ac07777239e2c1693442fec5b8be76e79d6be3e25d6c9386c42595040a  tests/r57_check/control_10m.sm
+3e403cac60b4880117c36de288521d3a1c1fb5b3e14826aee64035ac4a6beb51  tests/r57_check/nested_registers.sm
+b29f89497a2ead114a4561d77bab12314424781ee65483791244202de1ed8b40  tests/r57_check/legacy_fallback.sm
+3a0b47897d60d5e9992e6e0ca9b49e4875385be68b95d3ffbd00d301c2f0a9ba  tests/r57_check/large_literals.sm
+725a401b59c78a05f589b3d2aebd8e7cc04dd214160ed54a1edbab68bc0e4cb3  tests/r57_check/global_registers.sm
