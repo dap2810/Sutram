@@ -1,3 +1,36 @@
+## v117 — GUI slice 16: selection + internal clipboard (verified)
+
+- **My own stream (Linux X11 IDE), slice 16: clipboard.** The editor now has a
+  selection model and an internal clipboard:
+  - Shift+Left/Right/Up/Down/Home/End extend a selection (the anchor is set on
+    the first shift-move).
+  - Ctrl-A selects the whole buffer; Ctrl-C copies; Ctrl-X cuts; Ctrl-V pastes.
+  - With no selection, Ctrl-C copies and Ctrl-X cuts the current line (cut takes
+    the trailing newline too).
+  - Typing or Backspace over a selection replaces it.
+  - Plain navigation clears the selection. Escape clears a selection *before* it
+    quits — Escape only quits when nothing is selected.
+  - The selection is painted as a highlight (ChangeGC foreground 0x2B4A6B
+    followed by PolyFillRect) beneath the line text.
+- Source: `ide/sutram_gui_linux.asm` 46,452 -> 55,311 B; binary 21,992 -> 23,880 B.
+  New test: `tools/test_x11_clipboard.py` (8 checks).
+- **Verification.** The new test reads the buffer back through the real Ctrl-S
+  save path, so it proves the whole pipeline, not just protocol bytes: copy-all
+  then paste, cut-line then paste, shift-select then copy, escape-clears-selection
+  (the process stays alive), backspace-deletes-selection, type-replaces-selection,
+  and highlight-colour present/absent. All 8 pass.
+  **Negative control:** against the slice-15 binary the same test fails — the
+  highlight is absent, Ctrl-C types a literal `c`, and Escape quits the app
+  (broken pipe). The test therefore discriminates; it is not vacuous.
+- All 9 GUI tests pass against the new binary, run in place (protocol, negatives,
+  run, scroll, edit, edscroll, keys, find, clipboard).
+- Compiler untouched: R55 still builds 176,712 B from a 494,900 B source, suite
+  PASS=186.
+- **Base hygiene:** the local compiler source had drifted to an older round
+  (455,363 B) while main is R55 (494,900 B). Refreshed the local copy from main
+  and re-verified 176,712 B / PASS=186. Only the GUI and the new test are pushed;
+  the compiler is deliberately not touched.
+
 ## v116 — Muse R13 accepted; ChatGPT R55 (forward prototypes, PARTIAL) verified and SYNCED
 
 - **Muse R13 verified and accepted.** `strb_pack`/`unpack`/`dup` plus six integer
