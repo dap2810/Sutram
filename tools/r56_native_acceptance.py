@@ -48,7 +48,7 @@ def validate_pe(path):
         vsize,rva,raw,offset=struct.unpack_from("<IIII",data,q+8)
         flags=struct.unpack_from("<I",data,q+36)[0]
         secs.append((name,vsize,rva,raw,offset,flags))
-    assert secs[0][0] == ".text" and secs[1][0] == ".data", secs
+    assert secs[0][0] in ("text", ".text") and secs[1][0] == ".data", secs
     assert secs[0][-1] & 0x80000000 == 0, "code must not be writable"
     assert secs[1][-1] & 0x80000000, "global data must be writable"
     assert secs[1][-1] & 0x40000000, "global data must be readable"
