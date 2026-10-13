@@ -34,6 +34,7 @@ Do not edit by hand.</p>
 <li><a href="#num"><code>num</code></a> — 10 functions</li>
 <li><a href="#samanvaya"><code>samanvaya</code></a> — 10 functions</li>
 <li><a href="#sankhyiki"><code>sankhyiki</code></a> — 16 functions</li>
+<li><a href="#set"><code>set</code></a> — 10 functions</li>
 <li><a href="#sort"><code>sort</code></a> — 14 functions</li>
 <li><a href="#strb"><code>strb</code></a> — 15 functions</li>
 <li><a href="#strconv"><code>strconv</code></a> — 5 functions</li>
@@ -215,6 +216,21 @@ Do not edit by hand.</p>
 <tr><td><code>purna_vyapti(xs, n)</code></td><td>--- integer range (max - min) ---</td></tr>
 <tr><td><code>purna_prasaran(xs, n)</code></td><td>--- integer population variance (truncated toward zero; uses the truncated mean, so exact only when the mean is integral) ---</td></tr>
 </table>
+<h2 id="set"><code>set</code></h2>
+<p class="mod-desc">A set IS a map (`lib/map.smlib`) with a dummy value of 1: membership is map_contains, iteration is map_keys. The set functions are thin wrappers plus the algebra (union / intersect / difference / subset) and a sorted dump (set_to_array). ELEMENTS ARE BYTE STRINGS — the same choice as `map.smlib`&#x27;s keys, for the same reason: a caller passes a literal directly (&quot;apple&quot;), with an explicit length, and the whole strb_* surface (compare, pack, unpack) works on the elements unchanged. Do NOT pass char-code (qword-cell) arrays here; see the lib/strb.smlib header for the two representations. Consequences inherited from map: keys longer than 32 bytes are truncated to 32 on every operation, consistently. CAPACITY: a set&#x27;s capacity is fixed at set_init and stored in the buffer (m[0]). Set operations that write into `out` read out&#x27;s capacity from out[0], so the caller MUST pass a set_init&#x27;d buffer with room for the result: cap + bcap for union, cap for difference, min(cap, bcap) for intersection. If `out` is too small, map_put silently drops the overflowing elements (map&#x27;s full-table behaviour) and the returned size will be smaller than the true result — size the output generously and check the returned size. `out` for union / intersect / difference must be a FRESH, EMPTY set: the operations ADD into it and return map_size(out) afterwards. set_is_subset(a, ...) with an empty `a` is 1 (vacuous truth). The 6-argument cap still applies: union / intersect / difference keep the 5-argument shape from the round brief by reading out&#x27;s capacity from out[0] instead of taking it as a sixth parameter.</p>
+<table>
+<tr><th>Function</th><th>Description</th></tr>
+<tr><td><code>set_init(cap)</code></td><td>set_init(cap) — allocate an empty set of capacity cap (clamped to &gt;= 1).</td></tr>
+<tr><td><code>set_add(s, cap, elem, elem_n)</code></td><td>set_add(s, cap, elem, elem_n) — add elem; 1 on success, 0 if the set is full (then the set is unchanged). Adding an existing element keeps set_size unchanged (idempotent).</td></tr>
+<tr><td><code>set_contains(s, cap, elem, elem_n)</code></td><td>set_contains(s, cap, elem, elem_n) — 1 if elem is in the set, else 0.</td></tr>
+<tr><td><code>set_remove(s, cap, elem, elem_n)</code></td><td>set_remove(s, cap, elem, elem_n) — remove elem; 1 if removed, 0 if absent.</td></tr>
+<tr><td><code>set_size(s)</code></td><td>set_size(s) — number of elements.</td></tr>
+<tr><td><code>set_union(a, cap, b, bcap, out)</code></td><td>set_union(a, cap, b, bcap, out) — add every element of a and of b into out (fresh, empty, capacity &gt;= cap + bcap). Returns set_size(out). NOTE: map_keys segments are CELLS, but map_put takes packed BYTES — each segment is repacked with strb_pack first. Passing the cell pointer straight to map_put compiles fine and silently compares the wrong bytes (the first cell&#x27;s low byte, then zeroes). That is the R12 repack trap; strb_pack is the fix.</td></tr>
+<tr><td><code>set_intersect(a, cap, b, bcap, out)</code></td><td>set_intersect(a, cap, b, bcap, out) — add every element of a that is also in b into out (fresh, empty, capacity &gt;= min(cap, bcap)). Returns set_size(out). Segments are repacked with strb_pack before map_contains (see set_union note).</td></tr>
+<tr><td><code>set_difference(a, cap, b, bcap, out)</code></td><td>set_difference(a, cap, b, bcap, out) — add every element of a that is NOT in b into out (fresh, empty, capacity &gt;= cap). Returns set_size(out). Segments are repacked with strb_pack before map_contains (see set_union note).</td></tr>
+<tr><td><code>set_is_subset(a, cap, b, bcap)</code></td><td>set_is_subset(a, cap, b, bcap) — 1 if every element of a is in b, else 0. Empty a is a subset of everything. Segments are repacked with strb_pack before map_contains (see set_union note).</td></tr>
+<tr><td><code>set_to_array(s, cap, out)</code></td><td>set_to_array(s, cap, out) — write the set&#x27;s elements into out in length-prefixed form [len0, b0, b1, ..., len1, b0, ...] (same shape as map_keys / strb_split parts), SORTED lexicographically by byte value (strb_compare), so output is deterministic regardless of insertion order or hash layout. Returns the element count.</td></tr>
+</table>
 <h2 id="sort"><code>sort</code></h2>
 <p class="mod-desc">Operates on `pankti` integer arrays, in place. Scalar arguments are copied into locals before mutation; array elements are written directly.</p>
 <table>
@@ -306,6 +322,6 @@ Do not edit by hand.</p>
 <tr><td><code>bool_to_int(b)</code></td><td></td></tr>
 <tr><td><code>int_max()</code></td><td></td></tr>
 </table>
-<footer>18 modules, 176 functions. Generated from library sources.</footer>
+<footer>19 modules, 186 functions. Generated from library sources.</footer>
 </body>
 </html>
