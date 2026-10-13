@@ -33,7 +33,7 @@ jobs:
           git show 4f294f7728e8fd86dc5c3c01335d30162b0d92ad:src/sutram_compiler.asm >/tmp/r55-before.asm
           nasm -f elf64 -I. /tmp/r55-before.asm -o /tmp/r55-before.o
           ld -o r55_before /tmp/r55-before.o
-          git show 53d9b6f14f832fe6f303983895782cb:src/sutram_compiler.asm >/tmp/oldraw.asm
+          git show 53d9b6f14f832a6d4b962fbe6f303983895782cb:src/sutram_compiler.asm >/tmp/oldraw.asm
           nasm -f elf64 -I. /tmp/oldraw.asm -o /tmp/oldraw.o
           ld -o r54_before /tmp/oldraw.o
           git show 853083c9762992757b8f6682e5b3a3fc7296d8bf:src/sutram_compiler.asm >/tmp/r52-before.asm
