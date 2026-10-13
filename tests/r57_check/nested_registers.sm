@@ -1,0 +1,11 @@
+mukhya() {
+    vitti a = 3
+    vitti b = 4
+    vitti c = 5
+    vitti d = 6
+    likha((a + b) * (c + d))
+    likha(a - (b - c))
+    likha((a ^ b) & (c | d))
+    likha((a + b) - (c * d))
+    likha(a + (b + (c + (d + a))))
+}
