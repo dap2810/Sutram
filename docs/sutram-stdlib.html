@@ -29,6 +29,7 @@ Do not edit by hand.</p>
 <li><a href="#ganita"><code>ganita</code></a> — 6 functions</li>
 <li><a href="#hash"><code>hash</code></a> — 2 functions</li>
 <li><a href="#kalana"><code>kalana</code></a> — 6 functions</li>
+<li><a href="#list"><code>list</code></a> — 21 functions</li>
 <li><a href="#madhava"><code>madhava</code></a> — 5 functions</li>
 <li><a href="#map"><code>map</code></a> — 11 functions</li>
 <li><a href="#math"><code>math</code></a> — 16 functions</li>
@@ -146,6 +147,32 @@ Do not edit by hand.</p>
 <tr><td><code>slope2(kosh dasham xs, kosh dasham ys, i)</code></td><td>Second derivative at an interior point (central, equally spaced assumption relaxed).</td></tr>
 <tr><td><code>bahu_ganana(kosh dasham c, dasham x)</code></td><td>Horner evaluation: c[0] + c[1]x + c[2]x^2 + ...</td></tr>
 <tr><td><code>bahu_mula(kosh dasham c, dasham lo, dasham hi, kosh dasham ok)</code></td><td>Bisection root of a polynomial on [lo, hi]. CONTRACT: `ok` must already contain ONE element (call kosh_push(ok, 0.0) first). A kosh&#x27;s capacity is not its length, so ok[0] is out of bounds until an element exists. Requires a sign change across the interval, which is checked and reported by returning a NaN-like sentinel of 0.0 with ok=0. ok is returned through a one-element kosh so the caller can tell success from failure.</td></tr>
+</table>
+<h2 id="list"><code>list</code></h2>
+<p class="mod-desc">Representation decision — QWORD CELLS (the pankti/kosh convention), not byte strings. Reasoning: - A list is the growable analogue of pankti: same element model (one qword per element), same indexing, same literal passing (list_push(l, 42)). A byte-string list would be a string-list only, and would force every element through copy + length bookkeeping. Users with byte strings can store POINTERS (list_push(l, ptr)) — a qword list of pointers is the escape hatch, and it is the caller&#x27;s job to keep the pointed-to buffers alive. - No mixing: every element in this module is a qword. Do not pass byte-string buffers here expecting string semantics, and do not pass fmt/strb outputs as elements. - dasham elements are NOT supported. An untyped parameter truncates a dasham argument to its integer part (the R15 trap), so list_push(l, 3.7) stores 3. There is no way to store a dasham bit pattern through this API. Format floats first (fmt) if you need them as text, or keep a parallel structure. Two handle layouts (do NOT mix families on one handle): - list / stack handle: header [len, cap, data_ptr]; data is a separate cell array. The HANDLE address is stable across growth — only the data pointer inside it moves. - queue handle: header [len, cap, data_ptr, head]; a RING BUFFER (see queue_enqueue). queue_* on a list handle (or list_* on a queue handle) reads the wrong header and corrupts memory. Growth rule: when len == cap, capacity DOUBLES (cap *= 2), a new data array is allocated, elements are copied in logical order, and the header&#x27;s data pointer is updated. The old data array is NOT freed — the language has no deallocation primitive, so growth leaks the previous array (same as every other growing structure in the stdlib). Capacity never shrinks: list_clear and queue dequeue keep the allocated capacity. Allocation failure: if nirmmita returns 0 during growth, the operation returns 0 (or ok[0] = 0) and the structure is UNCHANGED. list_init returns 0 if either allocation fails. Out-of-bounds reads: list_get returns 0 for i outside [0, len). 0 is a legal stored value, so check list_len first when it matters. list_set / list_insert_at / list_remove_at return 1 ok / 0 out of bounds (or allocation failure for insert). stack_pop / stack_peek / queue_dequeue / queue_peek return the value and set ok[0] (a 1-cell pankti) to 1 on success, 0 when empty — the value alone cannot signal emptiness. All signatures stay within the 6-argument cap. --- lists --- list_init(cap) — allocate an empty list. cap clamped to &gt;= 1. Returns the list handle, or 0 on allocation failure.</p>
+<table>
+<tr><th>Function</th><th>Description</th></tr>
+<tr><td><code>list_init(cap)</code></td><td></td></tr>
+<tr><td><code>list_grow(l)</code></td><td>list_grow(l) — private helper: double l&#x27;s capacity, copying the data. Returns 1 ok / 0 allocation failure (list unchanged).</td></tr>
+<tr><td><code>list_push(l, v)</code></td><td>list_push(l, v) — append v. Returns 1 ok / 0 allocation failure.</td></tr>
+<tr><td><code>list_get(l, i)</code></td><td>list_get(l, i) — element i, or 0 if i is out of bounds.</td></tr>
+<tr><td><code>list_set(l, i, v)</code></td><td>list_set(l, i, v) — set element i. Returns 1 ok / 0 out of bounds.</td></tr>
+<tr><td><code>list_len(l)</code></td><td>list_len(l) — element count.</td></tr>
+<tr><td><code>list_insert_at(l, i, v)</code></td><td>list_insert_at(l, i, v) — insert v before index i (i == len appends). Returns 1 ok / 0 out of bounds or allocation failure.</td></tr>
+<tr><td><code>list_remove_at(l, i)</code></td><td>list_remove_at(l, i) — remove element i, shifting the rest left. Returns 1 ok / 0 out of bounds.</td></tr>
+<tr><td><code>list_clear(l)</code></td><td>list_clear(l) — empty the list, keeping the allocated capacity. Returns 1.</td></tr>
+<tr><td><code>list_contains(l, v)</code></td><td>list_contains(l, v) — 1 if any element equals v, else 0.</td></tr>
+<tr><td><code>list_index_of(l, v)</code></td><td>list_index_of(l, v) — first index with value v, or -1 if absent.</td></tr>
+<tr><td><code>stack_push(l, v)</code></td><td>stack_push(l, v) — push v. Returns 1 ok / 0 allocation failure.</td></tr>
+<tr><td><code>stack_pop(l, ok)</code></td><td>stack_pop(l, ok) — pop the top value; sets ok[0] to 1 on success, 0 when the stack is empty (returns 0 then).</td></tr>
+<tr><td><code>stack_peek(l, ok)</code></td><td>stack_peek(l, ok) — top value without removing it; ok[0] 1/0.</td></tr>
+<tr><td><code>stack_empty(l)</code></td><td>stack_empty(l) — 1 if the stack is empty, else 0.</td></tr>
+<tr><td><code>queue_init(cap)</code></td><td>queue_init(cap) — allocate an empty queue. cap clamped to &gt;= 1. Returns the queue handle, or 0 on allocation failure.</td></tr>
+<tr><td><code>queue_enqueue(q, v)</code></td><td>queue_enqueue(q, v) — append v at the tail. Returns 1 ok / 0 allocation failure.</td></tr>
+<tr><td><code>queue_dequeue(q, ok)</code></td><td>queue_dequeue(q, ok) — remove and return the front value; sets ok[0] to 1 on success, 0 when the queue is empty (returns 0 then).</td></tr>
+<tr><td><code>queue_peek(q, ok)</code></td><td>queue_peek(q, ok) — front value without removing it; ok[0] 1/0.</td></tr>
+<tr><td><code>queue_empty(q)</code></td><td>queue_empty(q) — 1 if the queue is empty, else 0.</td></tr>
+<tr><td><code>queue_len(q)</code></td><td>queue_len(q) — element count.</td></tr>
 </table>
 <h2 id="madhava"><code>madhava</code></h2>
 <p class="mod-desc">After Madhava of Sangamagrama (~1340-1425 CE) and the Kerala school of astronomy and mathematics. Madhava gave infinite-series expansions for the sine, cosine and arctangent functions, and from the arctangent series a rapidly converging series for pi - more than two centuries before Newton, Gregory and Leibniz. These use T12 scalar floats (dasham). square root by Newton&#x27;s method (Babylonian), to float precision</p>
@@ -351,6 +378,6 @@ Do not edit by hand.</p>
 <tr><td><code>bool_to_int(b)</code></td><td></td></tr>
 <tr><td><code>int_max()</code></td><td></td></tr>
 </table>
-<footer>20 modules, 209 functions. Generated from library sources.</footer>
+<footer>21 modules, 230 functions. Generated from library sources.</footer>
 </body>
 </html>
