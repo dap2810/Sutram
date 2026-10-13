@@ -1,0 +1,1313 @@
+diff --git a/docs/sutram-stdlib.html b/docs/sutram-stdlib.html
+index 2cfa852..40e412b 100644
+--- a/docs/sutram-stdlib.html
++++ b/docs/sutram-stdlib.html
+@@ -25,6 +25,7 @@ Do not edit by hand.</p>
+ <li><a href="#baseconv"><code>baseconv</code></a> — 2 functions</li>
+ <li><a href="#bigint"><code>bigint</code></a> — 12 functions</li>
+ <li><a href="#chandas"><code>chandas</code></a> — 6 functions</li>
++<li><a href="#fmt"><code>fmt</code></a> — 23 functions</li>
+ <li><a href="#ganita"><code>ganita</code></a> — 6 functions</li>
+ <li><a href="#hash"><code>hash</code></a> — 2 functions</li>
+ <li><a href="#kalana"><code>kalana</code></a> — 6 functions</li>
+@@ -89,6 +90,34 @@ Do not edit by hand.</p>
+ <tr><td><code>guru_count(pat)</code></td><td></td></tr>
+ <tr><td><code>meru_pankti(a, n)</code></td><td></td></tr>
+ </table>
++<h2 id="fmt"><code>fmt</code></h2>
++<p class="mod-desc">Number and string formatting on BYTE strings (packed bytes, explicit lengths, `strb` idiom): every function writes packed bytes into `out` with a 0 terminator and returns the byte count. This is the modern idiom; the older `lib/strconv.smlib` works on CELL arrays (pankti of char codes) and has no width/alignment/grouping/fixed-decimal/sign surface — fmt is the formatting module, strconv is the conversion module. Do not mix the representations: fmt outputs are bytes (read with char_at), strconv outputs are cells (read with [i]). Defaults, stated once here and at each function: - Bases: no prefix unless the _pre / flags form is used. - Grouping: fmt_group defaults to INDIAN grouping (12,34,567). - Rounding: fmt_fixed rounds HALF AWAY FROM ZERO (2.5 -&gt; 3, -2.5 -&gt; -3). - Centre padding: the extra pad byte goes RIGHT. - INT64_MIN (-2^63) is excluded from the integer formatters: negating it overflows, as in strconv. Every other int64 value works. - fmt_fixed is exact while |x| * 10^places &lt; 2^52; beyond that the +0.5 rounding step is below float precision. |x| * 10^places must fit in int64. places is clamped to 0..9. All signatures stay within the 6-argument cap. --- integer digits (private helper) --- fmt_digits(v, out) — write the decimal digits of |v| (no sign) into out as packed bytes. Returns the digit count. Internal; the public formatters below build on it.</p>
++<table>
++<tr><th>Function</th><th>Description</th></tr>
++<tr><td><code>fmt_digits(v, out)</code></td><td></td></tr>
++<tr><td><code>fmt_digits_base(v, base, upper, out)</code></td><td>--- integer digits in a base (private helper) --- fmt_digits_base(v, base, upper, out) — write |v| in `base` (2..36) into out as packed bytes, no sign, no prefix. `upper` 1 -&gt; A-F/A-Z. Base outside 2..36 writes only the terminator and returns 0.</td></tr>
++<tr><td><code>fmt_int_base(v, base, out)</code></td><td>fmt_int_base(v, base, out) — write v in `base` (2..36), lowercase digits, &#x27;-&#x27; for negatives, no prefix. Returns the byte count. Base outside 2..36: terminator only, returns 0. Digits are written directly at dst + neg, so the sign just fills position 0.</td></tr>
++<tr><td><code>fmt_int_flags(v, base, flags, out)</code></td><td>fmt_int_flags(v, base, flags, out) — fmt_int_base plus flags: bit 0 (1) = prefix: &quot;0b&quot; / &quot;0o&quot; / &quot;0x&quot; for bases 2 / 8 / 16 (no prefix for other bases, including 10); bit 1 (2) = uppercase hex digits (the prefix itself stays lowercase). Returns byte count.</td></tr>
++<tr><td><code>fmt_dec(v, out)</code></td><td>fmt_dec(v, out) — decimal, no prefix. fmt_hex / fmt_hex_upper / fmt_oct / fmt_bin — base 16 (lower / upper), 8, 2, no prefix.</td></tr>
++<tr><td><code>fmt_hex(v, out)</code></td><td></td></tr>
++<tr><td><code>fmt_hex_upper(v, out)</code></td><td></td></tr>
++<tr><td><code>fmt_oct(v, out)</code></td><td></td></tr>
++<tr><td><code>fmt_bin(v, out)</code></td><td></td></tr>
++<tr><td><code>fmt_int_pre(v, base, upper, out)</code></td><td>fmt_int_pre(v, base, upper, out) — any base with its prefix (&quot;0b&quot;/&quot;0o&quot;/&quot;0x&quot; for 2/8/16; none for other bases). `upper` 1 -&gt; uppercase digits, prefix stays lowercase.</td></tr>
++<tr><td><code>fmt_pad_left(src, sn, width, padbyte, out)</code></td><td>--- padding / alignment --- fmt_pad_left(src, sn, width, padbyte, out) — pad on the LEFT with `padbyte` (32 space, 48 &#x27;0&#x27;) to `width`. width &lt;= sn: copy unchanged.</td></tr>
++<tr><td><code>fmt_pad_right(src, sn, width, padbyte, out)</code></td><td>fmt_pad_right(src, sn, width, padbyte, out) — pad on the RIGHT.</td></tr>
++<tr><td><code>fmt_pad_center(src, sn, width, padbyte, out)</code></td><td>fmt_pad_center(src, sn, width, padbyte, out) — npad on BOTH sides; when width-sn is odd, the extra npad byte goes RIGHT.</td></tr>
++<tr><td><code>fmt_group_impl(src, sn, step, out)</code></td><td>--- thousands grouping (private helper) --- fmt_group_impl(src, sn, step, out) — group the integer part of a digit string. step 2 = Indian (3, then 2s: 12,34,567), step 3 = international (3s: 1,234,567). A leading &#x27;-&#x27; or &#x27;+&#x27; is kept as a sign; a &#x27;.&#x27; splits off a fraction, copied verbatim. Empty input copies to empty.</td></tr>
++<tr><td><code>fmt_group_indian(src, sn, out)</code></td><td>fmt_group_indian(src, sn, out) — 1234567 -&gt; 12,34,567.</td></tr>
++<tr><td><code>fmt_group_intl(src, sn, out)</code></td><td>fmt_group_intl(src, sn, out) — 1234567 -&gt; 1,234,567.</td></tr>
++<tr><td><code>fmt_group(src, sn, out)</code></td><td>fmt_group(src, sn, out) — DEFAULT grouping: Indian (12,34,567). The default is Indian because the audience is Indian.</td></tr>
++<tr><td><code>fmt_group_int(v, indian, out)</code></td><td>fmt_group_int(v, indian, out) — format integer v, then group it. `indian` 1 -&gt; Indian grouping, 0 -&gt; international.</td></tr>
++<tr><td><code>fmt_fixed_impl(dasham x, places, always_sign, out)</code></td><td>--- fixed decimals (private helper) --- fmt_fixed_impl(dasham x, places, always_sign, out) — |x| rounded HALF AWAY FROM ZERO to `places` digits after &#x27;.&#x27;, exactly `places` digits emitted (zero-padded). places clamped to 0..9. `always_sign` 1 emits &#x27;+&#x27; for non-negative values. places 0 emits no &#x27;.&#x27;.</td></tr>
++<tr><td><code>fmt_fixed(dasham x, places, out)</code></td><td>fmt_fixed(dasham x, places, out) — fixed decimals, &#x27;-&#x27; for negatives only. 3.14159 at 2 places -&gt; &quot;3.14&quot;. Rounding: half away from zero.</td></tr>
++<tr><td><code>fmt_fixed_signed(dasham x, places, out)</code></td><td>fmt_fixed_signed(dasham x, places, out) — fixed decimals, always a sign: &quot;+3.14&quot; / &quot;-3.14&quot;.</td></tr>
++<tr><td><code>fmt_signed(v, out)</code></td><td>--- signed formatting --- fmt_signed(v, out) — always a sign: &quot;+42&quot; / &quot;-42&quot; / &quot;+0&quot;.</td></tr>
++<tr><td><code>fmt_sign_char(v, signch, out)</code></td><td>fmt_sign_char(v, signch, out) — `signch` (a byte value, e.g. 32 for a blank, 43 for &#x27;+&#x27;) in place of &#x27;+&#x27; for non-negative values; negatives always get &#x27;-&#x27;.</td></tr>
++</table>
+ <h2 id="ganita"><code>ganita</code></h2>
+ <p class="mod-desc">After Aryabhata&#x27;s Kuttaka (~499 CE) and the Chakravala of Jayadeva and Bhaskara II (~1150 CE). KUTTAKA (&quot;the pulveriser&quot;) solves the linear indeterminate equation ax + by = c. It is the ancestor of the extended Euclidean algorithm. CHAKRAVALA (&quot;the wheel&quot;) solves the quadratic indeterminate equation x^2 - N*y^2 = 1, known in Europe as Pell&#x27;s equation. It was the first complete method for it, and for N = 61 it gives x = 1766319049, y = 226153980 - a case Europe first solved in 1657. kuttaka(a, b, c) -&gt; x such that a*x is congruent to c (mod b). Requires gcd(a, b) to divide c. Returns x (a particular solution).</p>
+ <table>
+@@ -322,6 +351,6 @@ Do not edit by hand.</p>
+ <tr><td><code>bool_to_int(b)</code></td><td></td></tr>
+ <tr><td><code>int_max()</code></td><td></td></tr>
+ </table>
+-<footer>19 modules, 186 functions. Generated from library sources.</footer>
++<footer>20 modules, 209 functions. Generated from library sources.</footer>
+ </body>
+ </html>
+diff --git a/lib/fmt.smlib b/lib/fmt.smlib
+new file mode 100644
+index 0000000..e9e07b0
+--- /dev/null
++++ b/lib/fmt.smlib
+@@ -0,0 +1,569 @@
++# lib/fmt.smlib — Sutram standard library: formatting
++#
++# Number and string formatting on BYTE strings (packed bytes, explicit
++# lengths, `strb` idiom): every function writes packed bytes into `out`
++# with a 0 terminator and returns the byte count. This is the modern
++# idiom; the older `lib/strconv.smlib` works on CELL arrays (pankti of
++# char codes) and has no width/alignment/grouping/fixed-decimal/sign
++# surface — fmt is the formatting module, strconv is the conversion
++# module. Do not mix the representations: fmt outputs are bytes
++# (read with char_at), strconv outputs are cells (read with [i]).
++#
++# Defaults, stated once here and at each function:
++#   - Bases: no prefix unless the _pre / flags form is used.
++#   - Grouping: fmt_group defaults to INDIAN grouping (12,34,567).
++#   - Rounding: fmt_fixed rounds HALF AWAY FROM ZERO (2.5 -> 3, -2.5 -> -3).
++#   - Centre padding: the extra pad byte goes RIGHT.
++#   - INT64_MIN (-2^63) is excluded from the integer formatters: negating
++#     it overflows, as in strconv. Every other int64 value works.
++#   - fmt_fixed is exact while |x| * 10^places < 2^52; beyond that the
++#     +0.5 rounding step is below float precision. |x| * 10^places must
++#     fit in int64. places is clamped to 0..9.
++#
++# All signatures stay within the 6-argument cap.
++
++# --- integer digits (private helper) ---
++# fmt_digits(v, out) — write the decimal digits of |v| (no sign) into
++# out as packed bytes. Returns the digit count. Internal; the public
++# formatters below build on it.
++prakriya fmt_digits(v, out) {
++    vitti val = v
++    vitti dst = out
++    vitti rev = nirmmita(22 * 8)
++    vitti rlen = 0
++    vitti i = 0
++    yadi (val == 0) {
++        set_char(dst, 0, 48)
++        set_char(dst, 1, 0)
++        pratiyati 1
++    }
++    yavat (val > 0) {
++        rev[rlen] = (val % 10) + 48
++        rlen = rlen + 1
++        val = val / 10
++    }
++    i = 0
++    yavat (i < rlen) {
++        set_char(dst, i, rev[rlen - 1 - i])
++        i = i + 1
++    }
++    set_char(dst, rlen, 0)
++    pratiyati rlen
++}
++
++# --- integer digits in a base (private helper) ---
++# fmt_digits_base(v, base, upper, out) — write |v| in `base` (2..36)
++# into out as packed bytes, no sign, no prefix. `upper` 1 -> A-F/A-Z.
++# Base outside 2..36 writes only the terminator and returns 0.
++prakriya fmt_digits_base(v, base, upper, out) {
++    vitti val = v
++    vitti b = base
++    vitti up = upper
++    vitti dst = out
++    vitti rev = nirmmita(70 * 8)
++    vitti rlen = 0
++    vitti i = 0
++    vitti d = 0
++    vitti ch = 0
++    yadi (b < 2) {
++        set_char(dst, 0, 0)
++        pratiyati 0
++    }
++    yadi (b > 36) {
++        set_char(dst, 0, 0)
++        pratiyati 0
++    }
++    yadi (val == 0) {
++        set_char(dst, 0, 48)
++        set_char(dst, 1, 0)
++        pratiyati 1
++    }
++    yavat (val > 0) {
++        d = val % b
++        yadi (d < 10) {
++            ch = d + 48
++        } anyatra {
++            yadi (up == 1) {
++                ch = d + 55
++            } anyatra {
++                ch = d + 87
++            }
++        }
++        rev[rlen] = ch
++        rlen = rlen + 1
++        val = val / b
++    }
++    i = 0
++    yavat (i < rlen) {
++        set_char(dst, i, rev[rlen - 1 - i])
++        i = i + 1
++    }
++    set_char(dst, rlen, 0)
++    pratiyati rlen
++}
++
++# fmt_int_base(v, base, out) — write v in `base` (2..36), lowercase
++# digits, '-' for negatives, no prefix. Returns the byte count.
++# Base outside 2..36: terminator only, returns 0. Digits are written
++# directly at dst + neg, so the sign just fills position 0.
++prakriya fmt_int_base(v, base, out) {
++    vitti val = v
++    vitti dst = out
++    vitti neg = 0
++    vitti n = 0
++    yadi (val < 0) {
++        neg = 1
++        val = 0 - val
++    }
++    n = fmt_digits_base(val, base, 0, dst + neg)
++    yadi (n == 0) {
++        set_char(dst, 0, 0)
++        pratiyati 0
++    }
++    yadi (neg == 1) {
++        set_char(dst, 0, 45)
++    }
++    pratiyati n + neg
++}
++
++# fmt_int_flags(v, base, flags, out) — fmt_int_base plus flags:
++# bit 0 (1) = prefix: "0b" / "0o" / "0x" for bases 2 / 8 / 16
++# (no prefix for other bases, including 10); bit 1 (2) = uppercase
++# hex digits (the prefix itself stays lowercase). Returns byte count.
++prakriya fmt_int_flags(v, base, flags, out) {
++    vitti val = v
++    vitti b = base
++    vitti fl = flags
++    vitti dst = out
++    vitti neg = 0
++    vitti pre = 0
++    vitti up = 0
++    vitti n = 0
++    vitti i = 0
++    yadi (val < 0) {
++        neg = 1
++        val = 0 - val
++    }
++    yadi (fl % 2 == 1) {
++        yadi (b == 2) { pre = 2 }
++        yadi (b == 8) { pre = 2 }
++        yadi (b == 16) { pre = 2 }
++    }
++    yadi ((fl / 2) % 2 == 1) { up = 1 }
++    n = fmt_digits_base(val, b, up, dst + neg + pre)
++    yadi (n == 0) {
++        set_char(dst, 0, 0)
++        pratiyati 0
++    }
++    # digits already sit at [neg+pre, ...); fill in sign + prefix.
++    yadi (neg == 1) { set_char(dst, 0, 45) }
++    yadi (pre == 2) {
++        set_char(dst, neg, 48)
++        yadi (b == 2) { set_char(dst, neg + 1, 98) }
++        yadi (b == 8) { set_char(dst, neg + 1, 111) }
++        yadi (b == 16) { set_char(dst, neg + 1, 120) }
++    }
++    pratiyati neg + pre + n
++}
++
++# fmt_dec(v, out) — decimal, no prefix. fmt_hex / fmt_hex_upper /
++# fmt_oct / fmt_bin — base 16 (lower / upper), 8, 2, no prefix.
++prakriya fmt_dec(v, out) {
++    pratiyati fmt_int_base(v, 10, out)
++}
++
++prakriya fmt_hex(v, out) {
++    pratiyati fmt_int_base(v, 16, out)
++}
++
++prakriya fmt_hex_upper(v, out) {
++    pratiyati fmt_int_flags(v, 16, 2, out)
++}
++
++prakriya fmt_oct(v, out) {
++    pratiyati fmt_int_base(v, 8, out)
++}
++
++prakriya fmt_bin(v, out) {
++    pratiyati fmt_int_base(v, 2, out)
++}
++
++# fmt_int_pre(v, base, upper, out) — any base with its prefix
++# ("0b"/"0o"/"0x" for 2/8/16; none for other bases). `upper` 1 ->
++# uppercase digits, prefix stays lowercase.
++prakriya fmt_int_pre(v, base, upper, out) {
++    vitti fl = 1
++    yadi (upper == 1) { fl = 3 }
++    pratiyati fmt_int_flags(v, base, fl, out)
++}
++
++# --- padding / alignment ---
++# fmt_pad_left(src, sn, width, padbyte, out) — pad on the LEFT with
++# `padbyte` (32 space, 48 '0') to `width`. width <= sn: copy unchanged.
++prakriya fmt_pad_left(src, sn, width, padbyte, out) {
++    vitti s = src
++    vitti cnt = sn
++    vitti w = width
++    vitti f = padbyte
++    vitti dst = out
++    vitti npad = 0
++    vitti i = 0
++    yadi (w <= cnt) {
++        i = 0
++        yavat (i < cnt) {
++            set_char(dst, i, char_at(s, i))
++            i = i + 1
++        }
++        set_char(dst, cnt, 0)
++        pratiyati cnt
++    }
++    npad = w - cnt
++    i = 0
++    yavat (i < npad) {
++        set_char(dst, i, f)
++        i = i + 1
++    }
++    i = 0
++    yavat (i < cnt) {
++        set_char(dst, npad + i, char_at(s, i))
++        i = i + 1
++    }
++    set_char(dst, w, 0)
++    pratiyati w
++}
++
++# fmt_pad_right(src, sn, width, padbyte, out) — pad on the RIGHT.
++prakriya fmt_pad_right(src, sn, width, padbyte, out) {
++    vitti s = src
++    vitti cnt = sn
++    vitti w = width
++    vitti f = padbyte
++    vitti dst = out
++    vitti npad = 0
++    vitti i = 0
++    yadi (w <= cnt) {
++        i = 0
++        yavat (i < cnt) {
++            set_char(dst, i, char_at(s, i))
++            i = i + 1
++        }
++        set_char(dst, cnt, 0)
++        pratiyati cnt
++    }
++    npad = w - cnt
++    i = 0
++    yavat (i < cnt) {
++        set_char(dst, i, char_at(s, i))
++        i = i + 1
++    }
++    i = 0
++    yavat (i < npad) {
++        set_char(dst, cnt + i, f)
++        i = i + 1
++    }
++    set_char(dst, w, 0)
++    pratiyati w
++}
++
++# fmt_pad_center(src, sn, width, padbyte, out) — npad on BOTH sides;
++# when width-sn is odd, the extra npad byte goes RIGHT.
++prakriya fmt_pad_center(src, sn, width, padbyte, out) {
++    vitti s = src
++    vitti cnt = sn
++    vitti w = width
++    vitti f = padbyte
++    vitti dst = out
++    vitti npad = 0
++    vitti left = 0
++    vitti i = 0
++    yadi (w <= cnt) {
++        i = 0
++        yavat (i < cnt) {
++            set_char(dst, i, char_at(s, i))
++            i = i + 1
++        }
++        set_char(dst, cnt, 0)
++        pratiyati cnt
++    }
++    npad = w - cnt
++    left = npad / 2
++    i = 0
++    yavat (i < left) {
++        set_char(dst, i, f)
++        i = i + 1
++    }
++    i = 0
++    yavat (i < cnt) {
++        set_char(dst, left + i, char_at(s, i))
++        i = i + 1
++    }
++    i = 0
++    yavat (i < npad - left) {
++        set_char(dst, left + cnt + i, f)
++        i = i + 1
++    }
++    set_char(dst, w, 0)
++    pratiyati w
++}
++
++# --- thousands grouping (private helper) ---
++# fmt_group_impl(src, sn, step, out) — group the integer part of a digit
++# string. step 2 = Indian (3, then 2s: 12,34,567), step 3 = international
++# (3s: 1,234,567). A leading '-' or '+' is kept as a sign; a '.' splits
++# off a fraction, copied verbatim. Empty input copies to empty.
++prakriya fmt_group_impl(src, sn, step, out) {
++    vitti s = src
++    vitti cnt = sn
++    vitti st = step
++    vitti dst = out
++    vitti start = 0
++    vitti dot = 0
++    vitti wpos = 0
++    vitti i = 0
++    vitti k = 0
++    vitti rem = 0
++    yadi (cnt == 0) {
++        set_char(dst, 0, 0)
++        pratiyati 0
++    }
++    yadi (char_at(s, 0) == 45) { start = 1 }
++    yadi (char_at(s, 0) == 43) { start = 1 }
++    dot = cnt
++    i = start
++    yavat (i < cnt) {
++        yadi (char_at(s, i) == 46) {
++            dot = i
++            i = cnt
++        } anyatra {
++            i = i + 1
++        }
++    }
++    # copy the sign, if any
++    yadi (start == 1) {
++        set_char(dst, 0, char_at(s, 0))
++        wpos = 1
++    }
++    # emit the integer part with ',' separators. A comma goes after
++    # digit i iff rem (digits after i) marks a group boundary:
++    # international: rem % 3 == 0; Indian: rem == 3, or rem > 3 with
++    # (rem - 3) % 2 == 0 (rightmost group is 3, then 2s).
++    i = start
++    yavat (i < dot) {
++        set_char(dst, wpos, char_at(s, i))
++        wpos = wpos + 1
++        rem = dot - i - 1
++        yadi (rem > 0) {
++            yadi (st == 3) {
++                yadi (rem % 3 == 0) {
++                    set_char(dst, wpos, 44)
++                    wpos = wpos + 1
++                }
++            } anyatra {
++                yadi (rem == 3) {
++                    set_char(dst, wpos, 44)
++                    wpos = wpos + 1
++                } anyatra {
++                    yadi (rem > 3) {
++                        yadi ((rem - 3) % 2 == 0) {
++                            set_char(dst, wpos, 44)
++                            wpos = wpos + 1
++                        }
++                    }
++                }
++            }
++        }
++        i = i + 1
++    }
++    # copy the fraction (including the '.') verbatim
++    k = dot
++    yavat (k < cnt) {
++        set_char(dst, wpos, char_at(s, k))
++        wpos = wpos + 1
++        k = k + 1
++    }
++    set_char(dst, wpos, 0)
++    pratiyati wpos
++}
++
++# fmt_group_indian(src, sn, out) — 1234567 -> 12,34,567.
++prakriya fmt_group_indian(src, sn, out) {
++    pratiyati fmt_group_impl(src, sn, 2, out)
++}
++
++# fmt_group_intl(src, sn, out) — 1234567 -> 1,234,567.
++prakriya fmt_group_intl(src, sn, out) {
++    pratiyati fmt_group_impl(src, sn, 3, out)
++}
++
++# fmt_group(src, sn, out) — DEFAULT grouping: Indian (12,34,567).
++# The default is Indian because the audience is Indian.
++prakriya fmt_group(src, sn, out) {
++    pratiyati fmt_group_indian(src, sn, out)
++}
++
++# fmt_group_int(v, indian, out) — format integer v, then group it.
++# `indian` 1 -> Indian grouping, 0 -> international.
++prakriya fmt_group_int(v, indian, out) {
++    vitti tmp = nirmmita(32)
++    vitti n = fmt_int_base(v, 10, tmp)
++    yadi (indian == 1) {
++        pratiyati fmt_group_indian(tmp, n, out)
++    }
++    pratiyati fmt_group_intl(tmp, n, out)
++}
++
++# --- fixed decimals (private helper) ---
++# fmt_fixed_impl(dasham x, places, always_sign, out) — |x| rounded HALF AWAY
++# FROM ZERO to `places` digits after '.', exactly `places` digits
++# emitted (zero-padded). places clamped to 0..9. `always_sign` 1 emits
++# '+' for non-negative values. places 0 emits no '.'.
++prakriya fmt_fixed_impl(dasham x, places, always_sign, out) {
++    dasham v = x
++    vitti pl = places
++    vitti asign = always_sign
++    vitti dst = out
++    dasham p10f = 1.0
++    vitti p10i = 1
++    vitti i = 0
++    vitti neg = 0
++    dasham mag = 0.0
++    dasham scaled = 0.0
++    vitti rounded = 0
++    vitti intpart = 0
++    vitti fracpart = 0
++    vitti wpos = 0
++    vitti ndig = 0
++    vitti rev = nirmmita(22 * 8)
++    vitti rlen = 0
++    vitti k = 0
++    yadi (pl < 0) { pl = 0 }
++    yadi (pl > 9) { pl = 9 }
++    yavat (i < pl) {
++        p10f = p10f * 10.0
++        p10i = p10i * 10
++        i = i + 1
++    }
++    yadi (v < 0.0) {
++        neg = 1
++        mag = 0.0 - v
++    } anyatra {
++        mag = v
++    }
++    scaled = mag * p10f + 0.5
++    rounded = scaled
++    intpart = rounded / p10i
++    fracpart = rounded % p10i
++    # sign
++    yadi (neg == 1) {
++        set_char(dst, 0, 45)
++        wpos = 1
++    } anyatra {
++        yadi (asign == 1) {
++            set_char(dst, 0, 43)
++            wpos = 1
++        }
++    }
++    # integer part
++    ndig = fmt_digits(intpart, dst + wpos)
++    wpos = wpos + ndig
++    # fraction part, zero-padded to exactly pl digits
++    yadi (pl > 0) {
++        set_char(dst, wpos, 46)
++        wpos = wpos + 1
++        rlen = 0
++        yadi (fracpart == 0) {
++            rev[0] = 48
++            rlen = 1
++        } anyatra {
++            yavat (fracpart > 0) {
++                rev[rlen] = (fracpart % 10) + 48
++                rlen = rlen + 1
++                fracpart = fracpart / 10
++            }
++        }
++        k = 0
++        yavat (k < pl - rlen) {
++            set_char(dst, wpos, 48)
++            wpos = wpos + 1
++            k = k + 1
++        }
++        k = 0
++        yavat (k < rlen) {
++            set_char(dst, wpos, rev[rlen - 1 - k])
++            wpos = wpos + 1
++            k = k + 1
++        }
++    }
++    set_char(dst, wpos, 0)
++    pratiyati wpos
++}
++
++# fmt_fixed(dasham x, places, out) — fixed decimals, '-' for negatives only.
++# 3.14159 at 2 places -> "3.14". Rounding: half away from zero.
++prakriya fmt_fixed(dasham x, places, out) {
++    pratiyati fmt_fixed_impl(x, places, 0, out)
++}
++
++# fmt_fixed_signed(dasham x, places, out) — fixed decimals, always a sign:
++# "+3.14" / "-3.14".
++prakriya fmt_fixed_signed(dasham x, places, out) {
++    pratiyati fmt_fixed_impl(x, places, 1, out)
++}
++
++# --- signed formatting ---
++# fmt_signed(v, out) — always a sign: "+42" / "-42" / "+0".
++prakriya fmt_signed(v, out) {
++    vitti val = v
++    vitti dst = out
++    vitti tmp = nirmmita(32)
++    vitti n = 0
++    vitti i = 0
++    n = fmt_int_base(val, 10, tmp)
++    yadi (val < 0) {
++        i = 0
++        yavat (i < n) {
++            set_char(dst, i, char_at(tmp, i))
++            i = i + 1
++        }
++        set_char(dst, n, 0)
++        pratiyati n
++    }
++    set_char(dst, 0, 43)
++    i = 0
++    yavat (i < n) {
++        set_char(dst, i + 1, char_at(tmp, i))
++        i = i + 1
++    }
++    set_char(dst, n + 1, 0)
++    pratiyati n + 1
++}
++
++# fmt_sign_char(v, signch, out) — `signch` (a byte value, e.g. 32 for a
++# blank, 43 for '+') in place of '+' for non-negative values; negatives
++# always get '-'.
++prakriya fmt_sign_char(v, signch, out) {
++    vitti val = v
++    vitti sc = signch
++    vitti dst = out
++    vitti tmp = nirmmita(32)
++    vitti n = 0
++    vitti i = 0
++    n = fmt_int_base(val, 10, tmp)
++    yadi (val < 0) {
++        i = 0
++        yavat (i < n) {
++            set_char(dst, i, char_at(tmp, i))
++            i = i + 1
++        }
++        set_char(dst, n, 0)
++        pratiyati n
++    }
++    set_char(dst, 0, sc)
++    i = 0
++    yavat (i < n) {
++        set_char(dst, i + 1, char_at(tmp, i))
++        i = i + 1
++    }
++    set_char(dst, n + 1, 0)
++    pratiyati n + 1
++}
+diff --git a/tests/stdlib/fmt_fixed.exit b/tests/stdlib/fmt_fixed.exit
+new file mode 100644
+index 0000000..573541a
+--- /dev/null
++++ b/tests/stdlib/fmt_fixed.exit
+@@ -0,0 +1 @@
++0
+diff --git a/tests/stdlib/fmt_fixed.out b/tests/stdlib/fmt_fixed.out
+new file mode 100644
+index 0000000..eac406f
+--- /dev/null
++++ b/tests/stdlib/fmt_fixed.out
+@@ -0,0 +1,9 @@
++3.14
++3
++-3
++-0.00
++100.000
+++3.10
++-3.10
++1.500000000
++2
+diff --git a/tests/stdlib/fmt_fixed.sm b/tests/stdlib/fmt_fixed.sm
+new file mode 100644
+index 0000000..19ca71b
+--- /dev/null
++++ b/tests/stdlib/fmt_fixed.sm
+@@ -0,0 +1,38 @@
++ayojan fmt
++mukhya() {
++    vitti out = nirmmita(128)
++    vitti n = 0
++    n = fmt_fixed(3.14159, 2, out)
++    likha(1, out, n)
++    likha("\n")
++    # half away from zero: 2.5 -> 3, -2.5 -> -3
++    n = fmt_fixed(2.5, 0, out)
++    likha(1, out, n)
++    likha("\n")
++    n = fmt_fixed(0.0 - 2.5, 0, out)
++    likha(1, out, n)
++    likha("\n")
++    # negative that rounds to zero keeps the sign
++    n = fmt_fixed(0.0 - 0.004, 2, out)
++    likha(1, out, n)
++    likha("\n")
++    # zero-padded fraction, 3 places
++    n = fmt_fixed(100.0, 3, out)
++    likha(1, out, n)
++    likha("\n")
++    # always-sign form
++    n = fmt_fixed_signed(3.1, 2, out)
++    likha(1, out, n)
++    likha("\n")
++    n = fmt_fixed_signed(0.0 - 3.1, 2, out)
++    likha(1, out, n)
++    likha("\n")
++    # places clamped to 0..9: 12 -> 9
++    n = fmt_fixed(1.5, 12, out)
++    likha(1, out, n)
++    likha("\n")
++    # negative places clamped to 0
++    n = fmt_fixed(1.5, 0 - 3, out)
++    likha(1, out, n)
++    likha("\n")
++}
+diff --git a/tests/stdlib/fmt_group.exit b/tests/stdlib/fmt_group.exit
+new file mode 100644
+index 0000000..573541a
+--- /dev/null
++++ b/tests/stdlib/fmt_group.exit
+@@ -0,0 +1 @@
++0
+diff --git a/tests/stdlib/fmt_group.out b/tests/stdlib/fmt_group.out
+new file mode 100644
+index 0000000..79a0e58
+--- /dev/null
++++ b/tests/stdlib/fmt_group.out
+@@ -0,0 +1,12 @@
++12,34,567
++1,234,567
++1,23,456
++-12,34,567.89
++-1,234,567.89
++123
++12
++0
++
++-12,34,567
++1,234,567
++999
+diff --git a/tests/stdlib/fmt_group.sm b/tests/stdlib/fmt_group.sm
+new file mode 100644
+index 0000000..cadbcd4
+--- /dev/null
++++ b/tests/stdlib/fmt_group.sm
+@@ -0,0 +1,43 @@
++ayojan fmt
++mukhya() {
++    vitti out = nirmmita(128)
++    vitti n = 0
++    n = fmt_group_indian("1234567", 7, out)
++    likha(1, out, n)
++    likha("\n")
++    n = fmt_group_intl("1234567", 7, out)
++    likha(1, out, n)
++    likha("\n")
++    # default grouping is Indian
++    n = fmt_group("123456", 6, out)
++    likha(1, out, n)
++    likha("\n")
++    # negative + decimal fraction copied verbatim
++    n = fmt_group_indian("-1234567.89", 11, out)
++    likha(1, out, n)
++    likha("\n")
++    n = fmt_group_intl("-1234567.89", 11, out)
++    likha(1, out, n)
++    likha("\n")
++    # short inputs: no commas
++    n = fmt_group_indian("123", 3, out)
++    likha(1, out, n)
++    likha("\n")
++    n = fmt_group_intl("12", 2, out)
++    likha(1, out, n)
++    likha("\n")
++    # empty input
++    n = fmt_group_indian("", 0, out)
++    likha(n)
++    likha("\n")
++    # integer convenience: Indian + international
++    n = fmt_group_int(0 - 1234567, 1, out)
++    likha(1, out, n)
++    likha("\n")
++    n = fmt_group_int(1234567, 0, out)
++    likha(1, out, n)
++    likha("\n")
++    n = fmt_group_int(999, 1, out)
++    likha(1, out, n)
++    likha("\n")
++}
+diff --git a/tests/stdlib/fmt_int_base.exit b/tests/stdlib/fmt_int_base.exit
+new file mode 100644
+index 0000000..573541a
+--- /dev/null
++++ b/tests/stdlib/fmt_int_base.exit
+@@ -0,0 +1 @@
++0
+diff --git a/tests/stdlib/fmt_int_base.out b/tests/stdlib/fmt_int_base.out
+new file mode 100644
+index 0000000..eb547ed
+--- /dev/null
++++ b/tests/stdlib/fmt_int_base.out
+@@ -0,0 +1,15 @@
++-255
++ff
++FF
++0xff
++-0xFF
++101
++0b101
++777
++0o777
++z
++10
++0
++0
++
++0xFF
+diff --git a/tests/stdlib/fmt_int_base.sm b/tests/stdlib/fmt_int_base.sm
+new file mode 100644
+index 0000000..05436cd
+--- /dev/null
++++ b/tests/stdlib/fmt_int_base.sm
+@@ -0,0 +1,53 @@
++ayojan fmt
++mukhya() {
++    vitti out = nirmmita(128)
++    vitti n = 0
++    # decimal, negative
++    n = fmt_dec(0 - 255, out)
++    likha(1, out, n)
++    likha("\n")
++    # hex lower / upper
++    n = fmt_hex(255, out)
++    likha(1, out, n)
++    likha("\n")
++    n = fmt_hex_upper(255, out)
++    likha(1, out, n)
++    likha("\n")
++    # prefixed, negative + upper digits, prefix stays lowercase
++    n = fmt_int_pre(255, 16, 0, out)
++    likha(1, out, n)
++    likha("\n")
++    n = fmt_int_pre(0 - 255, 16, 1, out)
++    likha(1, out, n)
++    likha("\n")
++    # binary + prefix, octal
++    n = fmt_bin(5, out)
++    likha(1, out, n)
++    likha("\n")
++    n = fmt_int_pre(5, 2, 0, out)
++    likha(1, out, n)
++    likha("\n")
++    n = fmt_oct(511, out)
++    likha(1, out, n)
++    likha("\n")
++    n = fmt_int_pre(511, 8, 0, out)
++    likha(1, out, n)
++    likha("\n")
++    # base 36, zero, bad base
++    n = fmt_int_base(35, 36, out)
++    likha(1, out, n)
++    likha("\n")
++    n = fmt_int_base(36, 36, out)
++    likha(1, out, n)
++    likha("\n")
++    n = fmt_dec(0, out)
++    likha(1, out, n)
++    likha("\n")
++    n = fmt_int_base(255, 1, out)
++    likha(n)
++    likha("\n")
++    # flags: prefix + upper together (0x + FF)
++    n = fmt_int_flags(255, 16, 3, out)
++    likha(1, out, n)
++    likha("\n")
++}
+diff --git a/tests/stdlib/fmt_pad.exit b/tests/stdlib/fmt_pad.exit
+new file mode 100644
+index 0000000..573541a
+--- /dev/null
++++ b/tests/stdlib/fmt_pad.exit
+@@ -0,0 +1 @@
++0
+diff --git a/tests/stdlib/fmt_pad.out b/tests/stdlib/fmt_pad.out
+new file mode 100644
+index 0000000..48b16e9
+--- /dev/null
++++ b/tests/stdlib/fmt_pad.out
+@@ -0,0 +1,8 @@
++   hi
++hi000
++-hi--
++--hi--
++hello
++hello
++***
++00042
+diff --git a/tests/stdlib/fmt_pad.sm b/tests/stdlib/fmt_pad.sm
+new file mode 100644
+index 0000000..b1ddabf
+--- /dev/null
++++ b/tests/stdlib/fmt_pad.sm
+@@ -0,0 +1,38 @@
++ayojan fmt
++mukhya() {
++    vitti out = nirmmita(128)
++    vitti n = 0
++    # left pad with spaces
++    n = fmt_pad_left("hi", 2, 5, 32, out)
++    likha(1, out, n)
++    likha("\n")
++    # right pad with '0'
++    n = fmt_pad_right("hi", 2, 5, 48, out)
++    likha(1, out, n)
++    likha("\n")
++    # centre, odd extra goes right
++    n = fmt_pad_center("hi", 2, 5, 45, out)
++    likha(1, out, n)
++    likha("\n")
++    # centre, even
++    n = fmt_pad_center("hi", 2, 6, 45, out)
++    likha(1, out, n)
++    likha("\n")
++    # width <= length: copy unchanged
++    n = fmt_pad_left("hello", 5, 3, 32, out)
++    likha(1, out, n)
++    likha("\n")
++    n = fmt_pad_right("hello", 5, 5, 32, out)
++    likha(1, out, n)
++    likha("\n")
++    # empty input pads to all fill
++    n = fmt_pad_left("", 0, 3, 42, out)
++    likha(1, out, n)
++    likha("\n")
++    # pad a formatted number: "42" zero-padded to 5
++    vitti num = nirmmita(32)
++    vitti nd = fmt_dec(42, num)
++    n = fmt_pad_left(num, nd, 5, 48, out)
++    likha(1, out, n)
++    likha("\n")
++}
+diff --git a/tests/stdlib/fmt_signed.exit b/tests/stdlib/fmt_signed.exit
+new file mode 100644
+index 0000000..573541a
+--- /dev/null
++++ b/tests/stdlib/fmt_signed.exit
+@@ -0,0 +1 @@
++0
+diff --git a/tests/stdlib/fmt_signed.out b/tests/stdlib/fmt_signed.out
+new file mode 100644
+index 0000000..9fb054d
+--- /dev/null
++++ b/tests/stdlib/fmt_signed.out
+@@ -0,0 +1,6 @@
+++42
++-42
+++0
++ 42
++-42
++*7
+diff --git a/tests/stdlib/fmt_signed.sm b/tests/stdlib/fmt_signed.sm
+new file mode 100644
+index 0000000..1270755
+--- /dev/null
++++ b/tests/stdlib/fmt_signed.sm
+@@ -0,0 +1,25 @@
++ayojan fmt
++mukhya() {
++    vitti out = nirmmita(128)
++    vitti n = 0
++    n = fmt_signed(42, out)
++    likha(1, out, n)
++    likha("\n")
++    n = fmt_signed(0 - 42, out)
++    likha(1, out, n)
++    likha("\n")
++    n = fmt_signed(0, out)
++    likha(1, out, n)
++    likha("\n")
++    # caller-chosen sign char: blank for non-negative
++    n = fmt_sign_char(42, 32, out)
++    likha(1, out, n)
++    likha("\n")
++    n = fmt_sign_char(0 - 42, 32, out)
++    likha(1, out, n)
++    likha("\n")
++    # caller-chosen sign char: '*' for non-negative
++    n = fmt_sign_char(7, 42, out)
++    likha(1, out, n)
++    likha("\n")
++}
+diff --git a/tools/proof_props.py b/tools/proof_props.py
+index 37e2ffd..5e413fe 100644
+--- a/tools/proof_props.py
++++ b/tools/proof_props.py
+@@ -1398,6 +1398,324 @@ def prop_set_subset(compiler, rng):
+     return ok and out == "PASS", out
+ 
+ 
++def _fmt_half_away(x, places):
++    """Python mirror of fmt_fixed: half away from zero, float arithmetic
++    identical to the Sutram side (magnitude * 10**places + 0.5, floor)."""
++    import math
++    places = max(0, min(9, places))
++    p10 = 10.0 ** places
++    mag = abs(x)
++    r = math.floor(mag * p10 + 0.5)
++    ip, fp = divmod(r, 10 ** places)
++    sign = "-" if x < 0 else ""
++    if places == 0:
++        return f"{sign}{ip}"
++    return f"{sign}{ip}.{fp:0{places}d}"
++
++
++def prop_fmt_int_base_roundtrip(compiler, rng):
++    """fmt_int_base then parse == original, incl negatives and base 36;
++    bad bases return 0"""
++    vals = [0, 1, -1, 255, -255, 99999, -99999, rng.randint(-10 ** 6, 10 ** 6)]
++    bases = [2, 8, 10, 16, 36]
++    lines = ["ayojan fmt",
++             "prakriya parse_base(buf, n, base) {",
++             "    vitti i = 0",
++             "    vitti neg = 0",
++             "    vitti val = 0",
++             "    vitti c = 0",
++             "    vitti d = 0",
++             "    yadi (n == 0) { pratiyati 0 }",
++             "    yadi (char_at(buf, 0) == 45) { neg = 1 }",
++             "    yadi (neg == 1) { i = 1 }",
++             "    yavat (i < n) {",
++             "        c = char_at(buf, i)",
++             "        d = 0 - 1",
++             "        yadi (c >= 48) {",
++             "            yadi (c <= 57) { d = c - 48 }",
++             "        }",
++             "        yadi (c >= 97) {",
++             "            yadi (c <= 122) { d = c - 87 }",
++             "        }",
++             "        yadi (c >= 65) {",
++             "            yadi (c <= 90) { d = c - 55 }",
++             "        }",
++             "        val = val * base + d",
++             "        i = i + 1",
++             "    }",
++             "    yadi (neg == 1) { val = 0 - val }",
++             "    pratiyati val",
++             "}",
++             "mukhya() {",
++             "    vitti out = nirmmita(128)"]
++    for v in vals:
++        for b in bases:
++            lines.append(f"    yadi (parse_base(out, fmt_int_base({v}, {b}, out), {b}) != {v}) {{")
++            lines.append('        likha("FAIL fmt base roundtrip\\n")')
++            lines.append("        pratiyati 1")
++            lines.append("    }")
++    # uppercase hex round-trips through the same parser (A-F handled)
++    lines.append("    yadi (parse_base(out, fmt_int_flags(255, 16, 2, out), 16) != 255) {")
++    lines.append('        likha("FAIL fmt hex upper roundtrip\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    # prefixed form: skip the 0x and parse the rest
++    lines.append("    vitti pn = fmt_int_pre(255, 16, 0, out)")
++    lines.append("    yadi (parse_base(out + 2, pn - 2, 16) != 255) {")
++    lines.append('        likha("FAIL fmt prefix skip\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    # flags 3 = prefix + upper: skip 0x, parse "FF"
++    lines.append("    vitti pn3 = fmt_int_flags(255, 16, 3, out)")
++    lines.append("    yadi (parse_base(out + 2, pn3 - 2, 16) != 255) {")
++    lines.append('        likha("FAIL fmt hex prefix roundtrip\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    lines.append("    yadi (fmt_int_base(255, 1, out) != 0) {")
++    lines.append('        likha("FAIL fmt bad base low\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    lines.append("    yadi (fmt_int_base(255, 37, out) != 0) {")
++    lines.append('        likha("FAIL fmt bad base high\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    lines.append('    likha("PASS\\n")')
++    lines.append("}")
++    ok, out = run_sm(compiler, "fmt_base", "\n".join(lines))
++    return ok and out == "PASS", out
++
++
++def prop_fmt_pad_content(compiler, rng):
++    """padding never changes the non-pad content; length == max(width, n)"""
++    cases = []
++    for _ in range(6):
++        s = "".join(rng.choice("abc") for _ in range(rng.randint(1, 5)))
++        w = rng.randint(0, len(s) + 4)
++        cases.append((s, w))
++    lines = ["ayojan fmt",
++             "prakriya bytes_match_at(buf, off, lit, ln) {",
++             "    vitti i = 0",
++             "    yavat (i < ln) {",
++             "        yadi (char_at(buf, off + i) != char_at(lit, i)) { pratiyati 0 }",
++             "        i = i + 1",
++             "    }",
++             "    pratiyati 1",
++             "}",
++             "prakriya all_fill(buf, n, byte) {",
++             "    vitti i = 0",
++             "    yavat (i < n) {",
++             "        yadi (char_at(buf, i) != byte) { pratiyati 0 }",
++             "        i = i + 1",
++             "    }",
++             "    pratiyati 1",
++             "}",
++             "mukhya() {",
++             "    vitti out = nirmmita(64)"]
++    for s, w in cases:
++        n = len(s)
++        exp_len = max(w, n)
++        pad = w - n if w > n else 0
++        left = pad // 2
++        # pad_left: content at offset pad, fill before it
++        lines.append(f'    yadi (fmt_pad_left("{s}", {n}, {w}, 42, out) != {exp_len}) {{')
++        lines.append('        likha("FAIL fmt pad_left len\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++        lines.append(f'    yadi (bytes_match_at(out, {pad}, "{s}", {n}) == 0) {{')
++        lines.append('        likha("FAIL fmt pad_left content\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++        if pad:
++            lines.append(f'    yadi (all_fill(out, {pad}, 42) == 0) {{')
++            lines.append('        likha("FAIL fmt pad_left fill\\n")')
++            lines.append("        pratiyati 1")
++            lines.append("    }")
++        # pad_right: content at 0, fill after it
++        lines.append(f'    yadi (fmt_pad_right("{s}", {n}, {w}, 42, out) != {exp_len}) {{')
++        lines.append('        likha("FAIL fmt pad_right len\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++        lines.append(f'    yadi (bytes_match_at(out, 0, "{s}", {n}) == 0) {{')
++        lines.append('        likha("FAIL fmt pad_right content\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++        # pad_center: content at offset left
++        lines.append(f'    yadi (fmt_pad_center("{s}", {n}, {w}, 42, out) != {exp_len}) {{')
++        lines.append('        likha("FAIL fmt pad_center len\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++        lines.append(f'    yadi (bytes_match_at(out, {left}, "{s}", {n}) == 0) {{')
++        lines.append('        likha("FAIL fmt pad_center content\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++    lines.append('    likha("PASS\\n")')
++    lines.append("}")
++    ok, out = run_sm(compiler, "fmt_pad", "\n".join(lines))
++    return ok and out == "PASS", out
++
++
++def _fmt_group_py(digits, indian):
++    """Python mirror of the grouping rules, digits only (no sign/dot)."""
++    if len(digits) <= 3:
++        return digits
++    parts = []
++    if indian:
++        # rightmost group 3, then 2s
++        rest = digits[:-3]
++        parts.append(digits[-3:])
++        while rest:
++            parts.append(rest[-2:])
++            rest = rest[:-2]
++    else:
++        rest = digits
++        while len(rest) > 3:
++            parts.append(rest[-3:])
++            rest = rest[:-3]
++        parts.append(rest)
++    return ",".join(reversed(parts))
++
++
++def prop_fmt_group_digits(compiler, rng):
++    """grouping never alters the digits; strip commas == original;
++    grouped output matches Python grouping"""
++    cases = ["0", "12", "123", "1234", "12345", "123456", "1234567",
++             "12345678", "-1234567", "1234567.89", "-12.5"]
++    lines = ["ayojan fmt",
++             "prakriya strip_commas(src, sn, out) {",
++             "    vitti i = 0",
++             "    vitti w = 0",
++             "    yavat (i < sn) {",
++             "        yadi (char_at(src, i) != 44) {",
++             "            set_char(out, w, char_at(src, i))",
++             "            w = w + 1",
++             "        }",
++             "        i = i + 1",
++             "    }",
++             "    set_char(out, w, 0)",
++             "    pratiyati w",
++             "}",
++             "prakriya bytes_match(buf, n, lit, ln) {",
++             "    vitti i = 0",
++             "    yadi (n != ln) { pratiyati 0 }",
++             "    yavat (i < n) {",
++             "        yadi (char_at(buf, i) != char_at(lit, i)) { pratiyati 0 }",
++             "        i = i + 1",
++             "    }",
++             "    pratiyati 1",
++             "}",
++             "mukhya() {",
++             "    vitti out = nirmmita(64)",
++             "    vitti stripped = nirmmita(64)"]
++    for ci, s in enumerate(cases):
++        n = len(s)
++        sign = ""
++        body = s
++        if s[:1] in ("-", "+"):
++            sign, body = s[0], s[1:]
++        if "." in body:
++            intpart, frac = body.split(".")
++            exp_in = sign + _fmt_group_py(intpart, True) + "." + frac
++            exp_intl = sign + _fmt_group_py(intpart, False) + "." + frac
++        else:
++            exp_in = sign + _fmt_group_py(body, True)
++            exp_intl = sign + _fmt_group_py(body, False)
++        for fi, (fn, exp) in enumerate((("fmt_group_indian", exp_in),
++                                     ("fmt_group_intl", exp_intl))):
++            lines.append(f'    vitti gn{ci}_{fi} = {fn}("{s}", {n}, out)')
++            lines.append(f'    yadi (bytes_match(out, gn{ci}_{fi}, "{exp}", {len(exp)}) == 0) {{')
++            lines.append('        likha("FAIL fmt group content\\n")')
++            lines.append("        pratiyati 1")
++            lines.append("    }")
++            lines.append(f"    vitti sn2_{ci}_{fi} = strip_commas(out, gn{ci}_{fi}, stripped)")
++            lines.append(f'    yadi (bytes_match(stripped, sn2_{ci}_{fi}, "{s}", {n}) == 0) {{')
++            lines.append('        likha("FAIL fmt group digits\\n")')
++            lines.append("        pratiyati 1")
++            lines.append("    }")
++    # fmt_group_int agrees with Python on plain integers
++    for gi, v in enumerate([0, 999, 1234, -1234567, 1000000]):
++        for indian in (0, 1):
++            exp = ("-" if v < 0 else "") + _fmt_group_py(str(abs(v)), bool(indian))
++            lines.append(f"    vitti gin{gi}_{indian} = fmt_group_int({v}, {indian}, out)")
++            lines.append(f'    yadi (bytes_match(out, gin{gi}_{indian}, "{exp}", {len(exp)}) == 0) {{')
++            lines.append('        likha("FAIL fmt group_int\\n")')
++            lines.append("        pratiyati 1")
++            lines.append("    }")
++    lines.append('    likha("PASS\\n")')
++    lines.append("}")
++    ok, out = run_sm(compiler, "fmt_grp", "\n".join(lines))
++    return ok and out == "PASS", out
++
++
++def prop_fmt_fixed(compiler, rng):
++    """fmt_fixed matches Python half-away-from-zero formatting"""
++    cases = [(0.0, 2), (1.5, 0), (2.5, 0), (-2.5, 0), (3.14159, 2),
++             (-0.004, 2), (100.0, 3), (0.125, 2), (999.999, 2),
++             (-0.5, 0), (7.25, 1), (-7.25, 1)]
++    lines = ["ayojan fmt",
++             "prakriya bytes_match(buf, n, lit, ln) {",
++             "    vitti i = 0",
++             "    yadi (n != ln) { pratiyati 0 }",
++             "    yavat (i < n) {",
++             "        yadi (char_at(buf, i) != char_at(lit, i)) { pratiyati 0 }",
++             "        i = i + 1",
++             "    }",
++             "    pratiyati 1",
++             "}",
++             "mukhya() {",
++             "    vitti out = nirmmita(64)"]
++    for ci, (x, places) in enumerate(cases):
++        exp = _fmt_half_away(x, places)
++        lines.append(f"    vitti fn{ci} = fmt_fixed({x!r}, {places}, out)")
++        lines.append(f'    yadi (bytes_match(out, fn{ci}, "{exp}", {len(exp)}) == 0) {{')
++        lines.append('        likha("FAIL fmt_fixed\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++        exp_s = "+" + exp if x >= 0 else exp
++        lines.append(f"    vitti fs{ci} = fmt_fixed_signed({x!r}, {places}, out)")
++        lines.append(f'    yadi (bytes_match(out, fs{ci}, "{exp_s}", {len(exp_s)}) == 0) {{')
++        lines.append('        likha("FAIL fmt_fixed_signed\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++    lines.append('    likha("PASS\\n")')
++    lines.append("}")
++    ok, out = run_sm(compiler, "fmt_fixed", "\n".join(lines))
++    return ok and out == "PASS", out
++
++
++def prop_fmt_signed(compiler, rng):
++    """fmt_signed / fmt_sign_char match Python sign + digits"""
++    vals = [0, 1, -1, 42, -42, 99999, -99999]
++    lines = ["ayojan fmt",
++             "prakriya bytes_match(buf, n, lit, ln) {",
++             "    vitti i = 0",
++             "    yadi (n != ln) { pratiyati 0 }",
++             "    yavat (i < n) {",
++             "        yadi (char_at(buf, i) != char_at(lit, i)) { pratiyati 0 }",
++             "        i = i + 1",
++             "    }",
++             "    pratiyati 1",
++             "}",
++             "mukhya() {",
++             "    vitti out = nirmmita(64)"]
++    for ci, v in enumerate(vals):
++        exp = ("+" if v >= 0 else "-") + str(abs(v))
++        exp_sp = (" " if v >= 0 else "-") + str(abs(v))
++        lines.append(f"    vitti sn{ci} = fmt_signed({v}, out)")
++        lines.append(f'    yadi (bytes_match(out, sn{ci}, "{exp}", {len(exp)}) == 0) {{')
++        lines.append('        likha("FAIL fmt_signed\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++        lines.append(f"    vitti sc{ci} = fmt_sign_char({v}, 32, out)")
++        lines.append(f'    yadi (bytes_match(out, sc{ci}, "{exp_sp}", {len(exp_sp)}) == 0) {{')
++        lines.append('        likha("FAIL fmt_sign_char\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++    lines.append('    likha("PASS\\n")')
++    lines.append("}")
++    ok, out = run_sm(compiler, "fmt_sign", "\n".join(lines))
++    return ok and out == "PASS", out
++
++
+ def main():
+     compiler = None
+     for i, a in enumerate(sys.argv):
+@@ -1447,6 +1765,11 @@ def main():
+         ("set intersect self/empty", prop_set_intersect_self_empty),
+         ("set difference", prop_set_difference),
+         ("set subset", prop_set_subset),
++        ("fmt int base roundtrip", prop_fmt_int_base_roundtrip),
++        ("fmt pad content", prop_fmt_pad_content),
++        ("fmt group digits", prop_fmt_group_digits),
++        ("fmt fixed decimals", prop_fmt_fixed),
++        ("fmt signed", prop_fmt_signed),
+     ]
+ 
+     failed = []
