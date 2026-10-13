@@ -67,7 +67,7 @@ jobs:
       - name: Native SHA256 evidence
         if: always()
         run: |
-          sha256sum src/sutram_compiler.asm tools/r56_native_acceptance.py             tools/r55_native_acceptance.py tests/r56_check/*.sm             .github/workflows/r56-native.yml > r56_sha256.txt
+          sha256sum src/sutram_compiler.asm tools/r56_native_acceptance.py             tools/r55_native_acceptance.py tests/r56_check/*.sm docs/R56-MODULE-GLOBALS.md             .github/workflows/r56-native.yml > r56_sha256.txt
           cat r56_sha256.txt
       - uses: actions/upload-artifact@v4
         if: always()
