@@ -756,7 +756,7 @@ r54_builtin_arity_table:
     msg_block_stmt_overflow db "Sutram Error: too many statements in block", 10, 0
     r55_msg_proto_duplicate db "Sutram Error: duplicate prakriya forward declaration",10,0
     r55_msg_proto_missing db "Sutram Error: prakriya forward declaration has no definition",10,0
-    r55_msg_proto_signature db "Sutram Error: prakriya prototype parameter count differs from definition",10,0
+    r55_msg_proto_signature db "Sutram Error: prakriya prototype signature (arity/type) differs from definition",10,0
     r55_msg_proto_capacity db "Sutram Error: too many prakriya prototypes",10,0
 
 section .bss
