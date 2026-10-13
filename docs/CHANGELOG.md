@@ -1,3 +1,21 @@
+## v120 — Windows build produced and packaged; Windows test zip delivered
+
+- **Both Windows binaries build here** with the documented commands
+  (`nasm -f win64` + `ld -mi386pep`), and their PE headers verify:
+  - `sutram.exe` — PE32+ console, x86-64, 167,789 B, 5 sections, import table present, **0 warnings**.
+  - `sutram-ide-gui.exe` — PE32+ GUI, x86-64, 32,215 B, 5 sections, import table present
+    (61 benign NASM warnings: the import-pointer slots are initialised in `.bss`, which
+    NASM ignores by design).
+- **Still unverified on Windows.** Format and headers are checked; neither binary has been
+  *executed* on a real Windows machine. This remains the project's largest untested claim.
+- **Delivered two zips:** `sutram-progress.zip` (full project snapshot, 1,426 files) and
+  `sutram-windows-test.zip` (ready-to-run Windows folder: both exes, `sutram.cmd`, lang/lib/
+  examples/docs, and a READ-ME-FIRST with honest status).
+- **Note for the record:** the first GUI link attempt produced a 3,729-byte stub. Cause was my
+  own build command — piping NASM's output through `head` closed the pipe and killed the
+  assembler (SIGPIPE) mid-write, truncating the object. Rebuilding without the pipe gives the
+  correct 32,215-byte PE. Lesson: never pipe a long-running assembler through `head`.
+
 ## v119 — GUI slice 17: open-file prompt, new buffer, and a prompt-overdraw fix
 
 - **My own stream (Linux X11 IDE), slice 17.** `Ctrl-O` opens a file by path through
