@@ -1,3 +1,32 @@
+## v122 — ChatGPT R57 (register expression trees) + Muse R15 (fmt) verified and SYNCED
+
+- **ChatGPT R57 verified and accepted as a verified partial.** The expression evaluator now emits
+  pure integer arithmetic trees directly into a deterministic 3-register set (RAX/R10/R11) instead
+  of push/pop round-trips, with a whole-tree eligibility preflight that falls back to the untouched
+  stack evaluator for anything it cannot prove safe. 12/12 manifest hashes verify; compiler builds
+  to 182,680 B; `R57_FROZEN_CODEGEN_ACCEPTED 6/6` on my build; suite 186/3, codegen 12/12,
+  packs 30/30, module-graph 18/18, proof_lib 153/153, proof_props 39/39.
+- **I re-measured the arithmetic benchmark myself** rather than trusting their runner:
+  `arithmetic_10m.sm`, 10M iterations, warmup + best of 3, pre-R57 `3631070a` vs R57, both binaries
+  printing `99999990000000`: **34.009 ms -> 8.517 ms best (3.99x)**, median 34.605 -> 8.796 ms
+  (3.93x). Larger than their recorded 2.11x, on different hardware; same direction. They were
+  honest about runner variance and did not oversell.
+- **R46 byte-parity retired for this round, as instructed**, replaced by native-stdout equivalence
+  4/4 plus a proposed new frozen codegen baseline (six hashes, `tools/r57_codegen_baseline.py`).
+- **Muse R15 verified and accepted.** `lib/fmt.smlib`, 23 functions: integer bases, width/alignment,
+  Indian and international grouping (Indian by default), fixed decimals, signed formatting.
+  Delivered as a **patch**, applied cleanly. Hashes match exactly; proof_lib **158/158**,
+  proof_props **44/44**, suite **PASS=186**; library now **20 modules / 209 functions**. Their five
+  documented traps are the valuable part - especially that an **untyped parameter truncates a
+  `dasham` argument**, and that **redeclaration is silently ignored**.
+- **Sync care:** R57 and R15 touch disjoint files. Copied only the 30 changed files; GUI (slice 17)
+  and all previously accepted goldens untouched. Verified on main afterwards.
+- **Next rounds issued:** ROUND-58 to ChatGPT - compile-time constant folding plus strength
+  reduction and a small peephole pass, with the R57 frozen baseline to be re-proposed rather than
+  silently rewritten. ROUND-16 to Muse - `lib/list.smlib` (dynamic list, stack, queue).
+- Main after sync: compiler `2b0b5fcf…` (517,157 B source, 182,680 B binary), GUI `b5d19201`
+  (slice 17), library R15 (20 modules / 209 functions), proofs 158/44.
+
 ## v121 — all documents moved to the new thread logo; icon assets added to the tree
 
 - **The old logo was still in the docs, and you were right to flag it.** The previous logo
