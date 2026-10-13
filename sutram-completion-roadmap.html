@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sutram — Completion Roadmap &amp; Live Task Board</title>
+<style>
+  :root{
+    --bg:#0f1117; --card:#171a23; --line:#2a2f40; --ink:#e8ecf5;
+    --dim:#98a2b8; --dim2:#6b7590;
+    --good:#39c07a; --mid:#e0a83a; --low:#d9604f; --accent:#6aa9ff; --violet:#a98bff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  .wrap{max-width:1060px;margin:0 auto;padding:40px 22px 70px}
+  h1{font-size:30px;margin:0 0 6px;letter-spacing:-.3px}
+  h2{font-size:19px;margin:46px 0 14px;letter-spacing:-.2px}
+  h3{font-size:15px;margin:24px 0 10px;color:var(--dim)}
+  .sub{color:var(--dim);margin:0 0 26px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin:14px 0}
+  .big{display:flex;gap:30px;align-items:center;flex-wrap:wrap}
+  .bignum{font-size:50px;font-weight:700;line-height:1}
+  .bignum small{font-size:19px;color:var(--dim);font-weight:500}
+  .note{color:var(--dim);font-size:13.5px}
+  .bar{height:10px;border-radius:6px;background:#232838;overflow:hidden}
+  .bar > i{display:block;height:100%;border-radius:6px}
+  .g{background:var(--good)} .m{background:var(--mid)} .l{background:var(--low)}
+  .a{background:var(--accent)} .v{background:var(--violet)}
+  .row{display:grid;grid-template-columns:250px 1fr 58px;gap:14px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line)}
+  .row:last-child{border-bottom:0}
+  .row .lab{font-size:13.5px}
+  .row .pct{text-align:right;font-variant-numeric:tabular-nums;font-size:13.5px;color:var(--dim)}
+  table{width:100%;border-collapse:collapse;margin:10px 0;font-size:14px}
+  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--dim);font-weight:600;font-size:12.5px;text-transform:uppercase;letter-spacing:.4px}
+  code{background:#232838;padding:1px 6px;border-radius:5px;font-size:13px}
+  ul{margin:8px 0 0 18px;padding:0} li{margin:5px 0}
+  .done{color:var(--good)} .todo{color:var(--low)} .part{color:var(--mid)}
+  .pill{display:inline-block;font-size:11.5px;padding:2px 8px;border-radius:20px;border:1px solid var(--line);color:var(--dim);white-space:nowrap}
+  .pill.live{border-color:#3a4a6b;color:var(--accent)}
+  .pill.mine{border-color:#4a3a6b;color:var(--violet)}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12.5px;color:var(--dim);margin-top:10px}
+  .sw{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:middle}
+  .hr{height:1px;background:var(--line);margin:32px 0}
+  .ws{border-left:3px solid var(--line);padding-left:16px;margin:20px 0}
+  .ws h3{margin-top:0;color:var(--ink);font-size:15.5px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  @media(max-width:760px){.grid2{grid-template-columns:1fr}.row{grid-template-columns:1fr 1fr 52px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Completion Roadmap &amp; Live Task Board</h1>
+  <p class="sub">What is left before Sutram can be called finished, how much of each piece is done, and what is being worked on right now.
+  Nothing in the project was changed to produce this.</p>
+
+  <div class="card">
+    <div class="big">
+      <div>
+        <div class="bignum">46<small>%</small></div>
+        <div class="note">toward a complete <b>v1.0</b><br>(mean of 11 workstreams)</div>
+      </div>
+      <div style="flex:1;min-width:300px">
+        <div class="bar" style="height:14px"><i class="m" style="width:46%"></i></div>
+        <div class="note" style="margin-top:10px">
+          Two different numbers, both true, and worth keeping apart:<br>
+          <b>46%</b> — how far the <i>planned build</i> is from a shippable v1.0 (this page).<br>
+          <b>28%</b> — how mature the language is against C/Rust/Python on a 17-axis yardstick (previous report).<br>
+          The gap is the point: the build is more than half assembled, but a young language is still a young language.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2>1 · What “complete” means — the finish line</h2>
+  <div class="card">
+    <p class="note" style="margin-top:0">Sutram v1.0 is done when <b>all</b> of these hold. This is the definition the percentages below are measured against.</p>
+    <table>
+      <thead><tr><th>#</th><th>Finish-line condition</th><th class="n">Now</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>One pure-NASM compiler source emits correct native binaries for Linux <i>and</i> Windows</td><td class="n part">85%</td></tr>
+        <tr><td>2</td><td>A generated Windows binary has actually <b>run</b> on real Windows</td><td class="n todo">0%</td></tr>
+        <tr><td>3</td><td>The compiler optimises: register-based expressions, LICM, constant folding, peephole</td><td class="n todo">15%</td></tr>
+        <tr><td>4</td><td>The language surface is settled: globals, generics or templates, first-class functions, error values</td><td class="n part">55%</td></tr>
+        <tr><td>5</td><td>The standard library covers everyday work: collections, text, formatting, files, time, math</td><td class="n part">45%</td></tr>
+        <tr><td>6</td><td>Diagnostics are complete across every error family, with recovery</td><td class="n part">60%</td></tr>
+        <tr><td>7</td><td>The IDE is a tool someone would choose: edit, run, debug, format, clipboard, file picker</td><td class="n part">50%</td></tr>
+        <tr><td>8</td><td>Installers work on Linux and Windows; releases are versioned and reproducible</td><td class="n part">35%</td></tr>
+        <tr><td>9</td><td>Verification is broad enough to trust: fuzzing, adversarial corpora, cross-platform CI</td><td class="n part">85%</td></tr>
+        <tr><td>10</td><td>Documentation and books are accurate and current for the shipped version</td><td class="n part">70%</td></tr>
+        <tr><td>11</td><td>Concurrency exists at all (threads or async)</td><td class="n todo">0%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>2 · Remaining work, by workstream</h2>
+  <p class="note">Each bar is “how much of this workstream is done”. The bullets under it are the concrete tasks still outstanding.</p>
+
+  <div class="card">
+    <div class="row"><div class="lab">A · Compiler core</div><div class="bar"><i class="g" style="width:88%"></i></div><div class="pct">88%</div></div>
+    <div class="row"><div class="lab">B · Optimiser</div><div class="bar"><i class="l" style="width:15%"></i></div><div class="pct">15%</div></div>
+    <div class="row"><div class="lab">C · Language surface</div><div class="bar"><i class="m" style="width:55%"></i></div><div class="pct">55%</div></div>
+    <div class="row"><div class="lab">D · Standard library</div><div class="bar"><i class="m" style="width:45%"></i></div><div class="pct">45%</div></div>
+    <div class="row"><div class="lab">E · Diagnostics &amp; errors</div><div class="bar"><i class="m" style="width:60%"></i></div><div class="pct">60%</div></div>
+    <div class="row"><div class="lab">F · IDE &amp; dev tooling</div><div class="bar"><i class="m" style="width:50%"></i></div><div class="pct">50%</div></div>
+    <div class="row"><div class="lab">G · Cross-platform &amp; packaging</div><div class="bar"><i class="l" style="width:35%"></i></div><div class="pct">35%</div></div>
+    <div class="row"><div class="lab">H · Verification &amp; QA</div><div class="bar"><i class="g" style="width:85%"></i></div><div class="pct">85%</div></div>
+    <div class="row"><div class="lab">I · Docs &amp; teaching</div><div class="bar"><i class="m" style="width:70%"></i></div><div class="pct">70%</div></div>
+    <div class="row"><div class="lab">J · Concurrency</div><div class="bar"><i class="l" style="width:0%"></i></div><div class="pct">0%</div></div>
+    <div class="row"><div class="lab">K · Ecosystem &amp; community</div><div class="bar"><i class="l" style="width:5%"></i></div><div class="pct">5%</div></div>
+    <div class="legend">
+      <span><i class="sw l"></i>0–35% mostly ahead</span>
+      <span><i class="sw m"></i>36–70% in progress</span>
+      <span><i class="sw g"></i>71–100% nearly there</span>
+    </div>
+  </div>
+
+  <div class="ws">
+    <h3>A · Compiler core — 88%</h3>
+    <p class="note">20,230 lines of hand-written x86-64 assembly in one file; emits native ELF, links PE32+.</p>
+    <ul>
+      <li class="done">✔ Lexer, parser, AST, codegen, ELF writer, 32 keywords, 10 language packs</li>
+      <li class="done">✔ Arrays, <code>kosh</code> growable arrays, structs, enums, switch, floats, byte strings</li>
+      <li class="done">✔ 186 regression tests + 12 codegen ceilings held through every change</li>
+      <li class="todo">✗ <b>PE end-to-end</b>: a Windows binary that actually runs (blocked on a Windows machine)</li>
+      <li class="todo">✗ Namespaced modules / real import semantics beyond inlining</li>
+      <li class="todo">✗ `char_code`/arity guards extended to the last few legacy builtins</li>
+    </ul>
+  </div>
+
+  <div class="ws">
+    <h3>B · Optimiser — 15% <span class="pill">biggest single gap</span></h3>
+    <p class="note">Measured: 5.4× slower than hand-optimal code on <code>s = s + i*2</code>. Cause is known.</p>
+    <ul>
+      <li class="done">✔ Locals in registers; bottom-tested loops; one-instruction literal loads; call register-saves removed</li>
+      <li class="todo">✗ <b>Register-based expression evaluator</b> — stop pushing/popping operands that are already in registers <i>(largest win)</i></li>
+      <li class="todo">✗ Loop-invariant code motion (hoist <code>i*2</code> out of the loop)</li>
+      <li class="todo">✗ Constant folding and propagation</li>
+      <li class="todo">✗ Peephole pass; strength reduction (<code>*2</code> → add)</li>
+      <li class="todo">✗ Dead-code elimination; a repeatable A/B benchmark harness as the gate</li>
+    </ul>
+  </div>
+
+  <div class="ws">
+    <h3>C · Language surface — 55%</h3>
+    <ul>
+      <li class="done">✔ Functions, parameters, returns, recursion, forward prototypes (mutual recursion works)</li>
+      <li class="live">◐ <b>Module-level globals</b> — in flight as ROUND-56 <span class="pill live">active</span></li>
+      <li class="todo">✗ Generics / templates (one array type, not many)</li>
+      <li class="todo">✗ First-class functions, closures, lambdas</li>
+      <li class="todo">✗ Error values / exceptions / <code>result</code> types</li>
+      <li class="todo">✗ Pattern matching, destructuring</li>
+      <li class="todo">✗ Declared scalar types, unions, type aliases</li>
+    </ul>
+  </div>
+
+  <div class="ws">
+    <h3>D · Standard library — 45%</h3>
+    <p class="note">18 modules, 176 functions, 147 proofs, 33 properties. Strong in data structures and maths; thin in everyday text and I/O.</p>
+    <ul>
+      <li class="done">✔ <code>map</code>, <code>strb</code> (byte strings), <code>string</code>, <code>sort</code>, <code>bigint</code>, <code>hash</code>, <code>math</code>, <code>sankhyiki</code> (stats), <code>baseconv</code>, <code>strconv</code>, <code>array</code>, <code>util</code>, heritage modules</li>
+      <li class="live">◐ <b>Sets</b> — in flight as ROUND-14 <span class="pill live">active</span></li>
+      <li class="todo">✗ Lists / queues / stacks built on <code>kosh</code></li>
+      <li class="todo">✗ Formatting and templates (printf-style, or interpolation)</li>
+      <li class="todo">✗ File I/O breadth (read whole file, line iteration, directories)</li>
+      <li class="todo">✗ Time and dates</li>
+      <li class="todo">✗ JSON / CSV / simple serialisation</li>
+      <li class="todo">✗ Regex or even glob matching</li>
+      <li class="todo">✗ A documented stability promise per module</li>
+    </ul>
+  </div>
+
+  <div class="ws">
+    <h3>E · Diagnostics &amp; errors — 60%</h3>
+    <ul>
+      <li class="done">✔ <code>--check</code> mode: located <code>file:line:column</code>, source line + caret, bounded recovery</li>
+      <li class="done">✔ Multiple errors accumulated in one run; correct file attribution through nested and namespaced imports</li>
+      <li class="todo">✗ Every remaining diagnostic family carries a location</li>
+      <li class="todo">✗ Windows <code>--check</code> verified</li>
+      <li class="todo">✗ Warnings (unused variable, unreachable code, shadowing)</li>
+      <li class="todo">✗ “Did you mean …?” suggestions for misspelled keywords and names</li>
+      <li class="todo">✗ A stable, documented error-code catalogue</li>
+    </ul>
+  </div>
+
+  <div class="ws">
+    <h3>F · IDE &amp; developer tooling — 50%</h3>
+    <p class="note">Linux X11 IDE, 1,947 lines, 15 working slices, all verified against a mock server.</p>
+    <ul>
+      <li class="done">✔ Edit, compile-and-run, save/load, 8-level undo, four arrows, Home/End, Tab, Ctrl-Home/End, find, both panes scrolling</li>
+      <li class="todo">✗ <b>Clipboard</b> (cut/copy/paste)</li>
+      <li class="todo">✗ <b>File picker</b> / open-recent</li>
+      <li class="todo">✗ Find-and-replace</li>
+      <li class="todo">✗ Syntax highlighting and bracket matching</li>
+      <li class="todo">✗ <b>Debugger</b> (breakpoints, step, inspect) — the biggest tooling gap</li>
+      <li class="todo">✗ Formatter / auto-indent</li>
+      <li class="todo">✗ Windows IDE (Linux-only today)</li>
+    </ul>
+  </div>
+
+  <div class="ws">
+    <h3>G · Cross-platform &amp; packaging — 35%</h3>
+    <ul>
+      <li class="done">✔ One source → Linux ELF and Windows PE32+; Linux installer script; Windows <code>.exe</code>; portable zips</li>
+      <li class="todo">✗ <b>Verified Windows run</b> — the largest unverified claim in the project</li>
+      <li class="todo">✗ Windows CI in the pipeline</li>
+      <li class="todo">✗ Versioned releases (semver, tags, changelog per release)</li>
+      <li class="todo">✗ Package manager / dependency mechanism</li>
+      <li class="todo">✗ Reproducible-build check (same source → same bytes, pinned toolchain)</li>
+      <li class="todo">✗ macOS, or a documented “not planned”</li>
+    </ul>
+  </div>
+
+  <div class="ws">
+    <h3>H · Verification &amp; QA — 85%</h3>
+    <ul>
+      <li class="done">✔ 186 + 3 tests, 12 codegen ceilings, 30 pack checks, 18 module-graph tests</li>
+      <li class="done">✔ 147 library proofs, 33 properties, R46 parity 4/4 held across every merge</li>
+      <li class="done">✔ Seven independent acceptance harnesses (R48–R55), each re-run on merge</li>
+      <li class="todo">✗ Fuzzing / random-program generation</li>
+      <li class="todo">✗ Coverage measurement (which compiler paths are never exercised)</li>
+      <li class="todo">✗ A documented, minimal test corpus for each language feature</li>
+    </ul>
+  </div>
+
+  <div class="ws">
+    <h3>I · Docs &amp; teaching — 70%</h3>
+    <ul>
+      <li class="done">✔ Language reference, 29 doc pages, books in English/Hindi/Sanskrit/Tamil/Telugu/Gujarati, generated stdlib reference</li>
+      <li class="todo">✗ A step-by-step tutorial (“write your first Sutram program”)</li>
+      <li class="todo">✗ Per-module API docs with examples</li>
+      <li class="todo">✗ Books refreshed to the shipped version (they lag the compiler)</li>
+      <li class="todo">✗ Migration notes for every breaking change</li>
+    </ul>
+  </div>
+
+  <div class="ws">
+    <h3>J · Concurrency — 0%</h3>
+    <ul>
+      <li class="todo">✗ Everything. No threads, no async, no atomics, no green threads.</li>
+      <li class="note">Honest position: this is the most expensive remaining item and the least connected to the project’s core goal.</li>
+    </ul>
+  </div>
+
+  <div class="ws">
+    <h3>K · Ecosystem &amp; community — 5%</h3>
+    <ul>
+      <li class="todo">✗ Package manager and a place to publish modules</li>
+      <li class="todo">✗ Third-party libraries</li>
+      <li class="todo">✗ Outside contributors, issue tracker process, release governance</li>
+      <li class="note">Cannot be engineered. Needs people first.</li>
+    </ul>
+  </div>
+
+  <h2>3 · Currently in flight</h2>
+  <p class="note">The live board. Three streams run in parallel; each is verified before it touches <code>main</code>.</p>
+  <table>
+    <thead><tr><th>Owner</th><th>Task</th><th>Workstream</th><th>State</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><b>ChatGPT</b></td>
+        <td><b>ROUND-56</b> — module-level globals (the second half of R55)</td>
+        <td>C · Language surface</td>
+        <td><span class="pill live">issued, in progress</span></td>
+      </tr>
+      <tr>
+        <td><b>Muse</b></td>
+        <td><b>ROUND-14</b> — <code>lib/set.smlib</code>: union, intersect, difference, subset, to_array</td>
+        <td>D · Standard library</td>
+        <td><span class="pill live">issued, in progress</span></td>
+      </tr>
+      <tr>
+        <td><b>Sarvam</b> (me)</td>
+        <td><b>GUI slice 16</b> — clipboard, then file picker, then find-and-replace</td>
+        <td>F · IDE &amp; dev tooling</td>
+        <td><span class="pill mine">mine, next up</span></td>
+      </tr>
+      <tr>
+        <td><b>Sarvam</b> (me)</td>
+        <td><b>Pipeline</b> — check both handoff folders → verify independently → sync to <code>main</code> → issue next round</td>
+        <td>H · Verification &amp; QA</td>
+        <td><span class="pill">continuous</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Recently closed</h3>
+  <p class="note">
+    R55 forward prototypes (compiler <code>6db0adf7</code>) · R13 pack/unpack + integer statistics · R54 builtin arity sweep
+    (40 builtins, plus a fixed <code>vartani_cp</code> codegen bug) · R12 three real programs · R53 consolidated checker ·
+    R51/R52 diagnostics and defect fixes · GUI slices 13–15 (editor scrolling, Tab, Ctrl-Home/End, find).
+    Main today: compiler <code>6db0adf7</code>, IDE <code>cb3c78d7</code>, 18 modules / 176 functions, 186/12/30/18 green.
+  </p>
+
+  <h2>4 · Critical path — what to do in what order</h2>
+  <div class="card">
+    <p class="note" style="margin-top:0">Ordered by what unblocks the most, not by what is easiest.</p>
+    <table>
+      <thead><tr><th class="n">#</th><th>Next step</th><th>Why it is here</th><th class="n">Effort</th></tr></thead>
+      <tbody>
+        <tr><td class="n">1</td><td><b>Register-based expression evaluator</b></td>
+            <td>Closes most of the measured 5.4× arithmetic gap. Contained, measurable, and the compiler is otherwise feature-complete enough to stop hiding behind missing features.</td><td class="n">large</td></tr>
+        <tr><td class="n">2</td><td><b>Module-level globals</b> (in flight)</td>
+            <td>Removes the state-threading that makes every non-trivial program awkward. Already designed.</td><td class="n">medium</td></tr>
+        <tr><td class="n">3</td><td><b>One verified Windows run</b></td>
+            <td>Turns the project’s biggest unverified claim into a fact. Needs a Windows machine, not code.</td><td class="n">small*</td></tr>
+        <tr><td class="n">4</td><td><b>Optimiser, part 2</b>: LICM, constant folding, peephole</td>
+            <td>Only worth starting once the expression evaluator is register-based — otherwise it optimises a stack machine.</td><td class="n">large</td></tr>
+        <tr><td class="n">5</td><td><b>Library breadth</b>: formatting, file I/O, lists, time</td>
+            <td>The 45% bar is the one most within reach, and it is what a user feels first.</td><td class="n">medium</td></tr>
+        <tr><td class="n">6</td><td><b>IDE: clipboard, file picker, replace</b></td>
+            <td>Cheap, visible, and makes the IDE usable for real editing rather than demos.</td><td class="n">small</td></tr>
+        <tr><td class="n">7</td><td><b>Debugger</b></td>
+            <td>The biggest remaining tooling gap; needs the diagnostics work to be finished first.</td><td class="n">large</td></tr>
+        <tr><td class="n">8</td><td><b>Versioned releases + package manager</b></td>
+            <td>Makes the project distributable rather than a zip collection.</td><td class="n">medium</td></tr>
+        <tr><td class="n">9</td><td><b>Concurrency</b></td>
+            <td>Last, deliberately. Expensive and furthest from the core goal.</td><td class="n">very large</td></tr>
+      </tbody>
+    </table>
+    <p class="note">* small in code, but it requires a Windows machine and a least-privilege account — that is the real blocker, and it has been open for many rounds.</p>
+  </div>
+
+  <h2>5 · The shape of what is left</h2>
+  <div class="card">
+    <div class="grid2">
+      <div>
+        <h3 style="margin-top:0">Already done and verified</h3>
+        <ul>
+          <li class="done">✔ A real native compiler that beats Node by 8× and Python by 167× on a loop</li>
+          <li class="done">✔ 186-test safety net + four byte-identical reference binaries held across every merge</li>
+          <li class="done">✔ Real diagnostics: located, recoverable, accumulating, correct provenance</li>
+          <li class="done">✔ 18-module library with proofs and properties</li>
+          <li class="done">✔ A 15-feature IDE, all slices verified</li>
+          <li class="done">✔ Books and docs in six languages</li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="margin-top:0">Still ahead</h3>
+        <ul>
+          <li class="todo">✗ No optimiser — the clearest, biggest gap</li>
+          <li class="todo">✗ Windows has never run a generated binary</li>
+          <li class="todo">✗ No concurrency, no FFI, no package manager, no debugger</li>
+          <li class="todo">✗ Library thin on everyday text, files and time</li>
+          <li class="todo">✗ Language lacks generics, closures and error values</li>
+          <li class="todo">✗ One user and two AI agents — no community yet</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="hr"></div>
+  <p class="note">
+    Snapshot: compiler <code>6db0adf7</code> · IDE <code>cb3c78d7</code> · 18 library modules / 176 functions ·
+    186 + 3 tests · 12 codegen ceilings · 30 pack checks · 18 module-graph tests · 147 proofs · 33 properties ·
+    32 keywords · 10 language packs · 189 examples · 29 doc pages · Linux ELF + Windows PE32+ (Windows unverified).
+    Percentages are honest judgement against the finish line in section 1, not measurements.
+    No part of the project was modified to produce this roadmap.
+  </p>
+
+</div>
+</body>
+</html>
