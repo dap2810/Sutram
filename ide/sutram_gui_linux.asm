@@ -8,6 +8,12 @@
 ;  SLICE 2: graphics context, an Expose-driven repaint that draws two panes
 ;  with labels, and a key/close event loop.
 ;
+;  SLICE 16: selection + an internal clipboard. Shift+arrows / Shift+Home /
+;  Shift+End extend a selection, Ctrl-C and Ctrl-X copy or cut it, Ctrl-V
+;  pastes at the caret, Ctrl-A selects the whole buffer, and Escape clears a
+;  selection before it quits. With no selection, Ctrl-C / Ctrl-X take the
+;  current line. The selection is painted as a highlight behind the text.
+;
 ;  FIXED IN SLICE 2: the CreateWindow request carries a value-mask and one
 ;  value, so its body is 36 bytes = 9 four-byte units. Slice 1 declared 8.
 ;  A real server would have misparsed the request. The mock test asserted 8,
@@ -101,6 +107,14 @@
 %define KC_END          107             ; caret to line end
 %define KC_TAB          23              ; insert an indent
 %define KC_CTRL_F       41              ; 'f' keycode, checked with ControlMask
+; ---- slice 16: clipboard -----------------------------------------------
+%define KC_CTRL_A       38              ; 'a' keycode -> select all
+%define KC_CTRL_C       54              ; 'c' keycode -> copy
+%define KC_CTRL_X       53              ; 'x' keycode -> cut
+%define KC_CTRL_V       55              ; 'v' keycode -> paste
+%define MASK_SHIFT      0x0001          ; ShiftMask bit in the event state
+%define CLIP_CAP        4096            ; internal clipboard capacity
+%define COL_SEL         0x2B4A6B        ; selection highlight
 %define FIND_CAP        128             ; find-string capacity
 %define INDENT_SPACES   4
 %define OUT_VISIBLE     7               ; output lines that fit in the pane
@@ -188,6 +202,10 @@ section .bss
     find_len    resq 1
     find_buf    resb FIND_CAP
     want_quit   resd 1
+    ; ---- slice 16: selection + internal clipboard ----
+    sel_anchor  resq 1               ; selection anchor; -1 when there is none
+    clip_buf    resb CLIP_CAP        ; internal clipboard bytes
+    clip_len    resq 1               ; bytes held in clip_buf
 
 section .data
     xsock_path  db "/tmp/.X11-unix/X0", 0
@@ -212,7 +230,7 @@ section .data
     txt_editor_n equ $ - txt_editor
     txt_output  db "Output"
     txt_output_n equ $ - txt_output
-    txt_hint    db "Ctrl-R run   Ctrl-S save   Ctrl-Z undo"
+    txt_hint    db "Ctrl-R run  Ctrl-S save  Ctrl-Z undo  Ctrl-C/X/V clip"
     txt_find    db "Find: "
     txt_find_n  equ $ - txt_find
     txt_hint_n  equ $ - txt_hint
@@ -710,8 +728,18 @@ draw_all:
 ed_insert:
     push rbx
     push rdi
+    cmp  qword [rel sel_anchor], 0
+    jl   .no_sel
+    call sel_lo
+    mov  rdi, rax
+    call sel_hi
+    mov  rsi, rax
+    call ed_delete_range
+.no_sel:
+    pop  rdi
+    push rdi
     call snapshot
-    pop rdi
+    pop  rdi
     lea  rbx, [rel ed_buf]
     mov  rax, [rel ed_len]
     cmp  rax, ED_CAP - 2
@@ -736,6 +764,8 @@ ed_insert:
 ; ---------------------------------------------------------------- ed_backspace
 ed_backspace:
     push rbx
+    cmp  qword [rel sel_anchor], 0
+    jge  .del_sel
     call snapshot
     lea  rbx, [rel ed_buf]
     mov  rcx, [rel ed_cursor]
@@ -756,6 +786,14 @@ ed_backspace:
     dec  qword [rel ed_len]
     dec  qword [rel ed_cursor]
 .done:
+    pop  rbx
+    ret
+.del_sel:
+    call sel_lo
+    mov  rdi, rax
+    call sel_hi
+    mov  rsi, rax
+    call ed_delete_range
     pop  rbx
     ret
 
@@ -869,6 +907,49 @@ draw_editor:
     sub  rax, [rel ed_top]          ; display row
     cmp  rax, ED_VISIBLE
     jae  .after                     ; below the visible window: stop
+
+    ; ---- slice 16: selection highlight, painted under the text --------
+    cmp  qword [rel sel_anchor], 0
+    jl   .no_hl
+    mov  rdi, COL_SEL
+    call set_fg
+    call sel_lo
+    mov  r9, rax                    ; selection low
+    call sel_hi
+    mov  r10, r14                   ; o0 = max(line start, sel low)
+    cmp  r9, r10
+    jbe  .hl_o0
+    mov  r10, r9
+.hl_o0:
+    mov  rcx, r15                   ; o1 = min(line end, sel high)
+    cmp  rax, rcx
+    jae  .hl_o1
+    mov  rcx, rax
+.hl_o1:
+    cmp  rcx, r10
+    jbe  .hl_none                   ; nothing of this line is selected
+    mov  rsi, r10
+    sub  rsi, r14
+    imul rsi, 8
+    add  rsi, ED_TEXT_X             ; x
+    sub  rcx, r10
+    imul rcx, 8                     ; width
+    mov  rdx, r13
+    sub  rdx, [rel ed_top]
+    imul rdx, LINE_H
+    add  rdx, ED_TEXT_Y
+    sub  rdx, 12                    ; y
+    mov  r8, 14                     ; height
+    call fill_rect
+    mov  rdi, r12
+    lea  rsi, [reqbuf]
+    mov  rdx, 20
+    call send_req
+.hl_none:
+    mov  rdi, COL_TEXT
+    call set_fg
+.no_hl:
+
     mov  rdx, r15
     sub  rdx, r14                   ; line length
     test rdx, rdx
@@ -877,6 +958,8 @@ draw_editor:
     add  rsi, r14
     mov  rcx, ED_TEXT_X
     mov  r8,  ED_TEXT_Y
+    mov  rax, r13
+    sub  rax, [rel ed_top]
     imul rax, LINE_H
     add  r8,  rax
     call draw_text
@@ -1649,6 +1732,173 @@ draw_prompt:
     pop  rbx
     ret
 
+; ================================================================ slice 16
+; Selection + internal clipboard.
+;   sel_anchor = -1  -> no selection
+;   sel_anchor >= 0  -> the selection spans
+;                       [min(cursor,anchor), max(cursor,anchor))
+; ========================================================================
+
+; ---- sel_begin : if there is no selection yet, anchor it at the caret -----
+sel_begin:
+    cmp qword [rel sel_anchor], 0
+    jge .done
+    mov rax, [rel ed_cursor]
+    mov [rel sel_anchor], rax
+.done:
+    ret
+
+; ---- sel_clear : drop any selection --------------------------------------
+sel_clear:
+    mov qword [rel sel_anchor], -1
+    ret
+
+; ---- sel_lo : rax = low end of the selection (caret if none) -------------
+sel_lo:
+    mov rax, [rel ed_cursor]
+    mov rcx, [rel sel_anchor]
+    test rcx, rcx
+    js  .done
+    cmp rcx, rax
+    jae .done
+    mov rax, rcx
+.done:
+    ret
+
+; ---- sel_hi : rax = high end of the selection (caret if none) ------------
+sel_hi:
+    mov rax, [rel ed_cursor]
+    mov rcx, [rel sel_anchor]
+    test rcx, rcx
+    js  .done
+    cmp rcx, rax
+    jbe .done
+    mov rax, rcx
+.done:
+    ret
+
+; ---- ed_delete_range : rdi = lo, rsi = hi. Delete [lo,hi); caret to lo ----
+ed_delete_range:
+    push rbx
+    push rdi
+    push rsi
+    call snapshot
+    pop rsi
+    pop rdi
+    lea rbx, [rel ed_buf]
+    mov rax, [rel ed_len]
+    mov rcx, rdi                    ; dst
+    mov rdx, rsi                    ; src
+.shift:
+    cmp rdx, rax
+    jae .shrink
+    mov r8b, [rbx + rdx]
+    mov [rbx + rcx], r8b
+    inc rcx
+    inc rdx
+    jmp .shift
+.shrink:
+    mov rcx, rsi
+    sub rcx, rdi                    ; bytes removed
+    sub qword [rel ed_len], rcx
+    mov [rel ed_cursor], rdi
+    mov qword [rel sel_anchor], -1
+    pop rbx
+    ret
+
+; ---- clip_copy : rdi = lo, rsi = hi. Copy [lo,hi) into clip_buf ----------
+clip_copy:
+    push rbx
+    push r12
+    lea rbx, [rel ed_buf]
+    lea r12, [rel clip_buf]
+    mov rcx, rsi
+    sub rcx, rdi
+    cmp rcx, CLIP_CAP - 1
+    jbe .fit
+    mov rcx, CLIP_CAP - 1
+.fit:
+    mov [rel clip_len], rcx
+    xor rdx, rdx
+.loop:
+    cmp rdx, rcx
+    jae .done
+    mov al, [rbx + rdi]
+    mov [r12 + rdx], al
+    inc rdi
+    inc rdx
+    jmp .loop
+.done:
+    pop r12
+    pop rbx
+    ret
+
+; ---- clip_paste : insert clip_buf[0..clip_len) at the caret --------------
+clip_paste:
+    push rbx
+    push r12
+    push r13
+    push r14
+    mov r13, [rel clip_len]
+    test r13, r13
+    jz .done
+    mov rax, [rel ed_len]
+    mov rcx, rax
+    add rcx, r13
+    cmp rcx, ED_CAP - 2
+    jbe .room
+    mov r13, ED_CAP - 2
+    sub r13, rax
+    jle .done                       ; no room at all
+.room:
+    call snapshot
+    lea rbx, [rel ed_buf]
+    lea r12, [rel clip_buf]
+    mov r14, [rel ed_cursor]
+    mov rax, [rel ed_len]           ; i = old length
+.shift:
+    cmp rax, r14
+    jbe .copyin
+    dec rax
+    mov r8b, [rbx + rax]
+    lea rcx, [rax + r13]
+    mov [rbx + rcx], r8b
+    jmp .shift
+.copyin:
+    mov rdi, r14
+    xor rdx, rdx
+.cp:
+    cmp rdx, r13
+    jae .fin
+    mov al, [r12 + rdx]
+    mov [rbx + rdi], al
+    inc rdi
+    inc rdx
+    jmp .cp
+.fin:
+    add qword [rel ed_len], r13
+    add qword [rel ed_cursor], r13
+    mov qword [rel sel_anchor], -1
+.done:
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; ---- clip_line_bounds : rdi = lo, rsi = hi for the caret's whole line ----
+clip_line_bounds:
+    push rbx
+    mov rdi, [rel ed_cursor]
+    call line_start
+    mov rbx, rax
+    mov rdi, [rel ed_cursor]
+    call line_end
+    mov rsi, rax
+    mov rdi, rbx
+    pop rbx
+    ret
+
 ; ---------------------------------------------------------------- handle_key
 ; rdi = X11 keycode, rsi = event state (modifier mask).
 handle_key:
@@ -1668,11 +1918,35 @@ handle_key:
     je   .undo
     cmp  rbx, KC_CTRL_F
     je   .findopen
+    cmp  rbx, KC_CTRL_A
+    je   .selall
+    cmp  rbx, KC_CTRL_C
+    je   .copy
+    cmp  rbx, KC_CTRL_X
+    je   .cut
+    cmp  rbx, KC_CTRL_V
+    je   .paste
     cmp  rbx, KC_HOME
     je   .ctop
     cmp  rbx, KC_END
     je   .cend
+    jmp  .done
 .nocontrol:
+    test rsi, MASK_SHIFT
+    jz   .plain
+    cmp  rbx, KC_LEFT
+    je   .sleft
+    cmp  rbx, KC_RIGHT
+    je   .sright
+    cmp  rbx, KC_UP
+    je   .sup
+    cmp  rbx, KC_DOWN
+    je   .sdown
+    cmp  rbx, KC_HOME
+    je   .shome
+    cmp  rbx, KC_END
+    je   .send
+.plain:
     cmp  rbx, KC_ESCAPE
     je   .esc
     cmp  rbx, KC_BACKSPACE
@@ -1737,20 +2011,24 @@ handle_key:
     call draw_editor
     jmp  .done
 .left:
+    call sel_clear
     cmp  qword [rel ed_cursor], 0
     je   .done
     dec  qword [rel ed_cursor]
     jmp  .done
 .right:
+    call sel_clear
     mov  rax, [rel ed_cursor]
     cmp  rax, [rel ed_len]
     jae  .done
     inc  qword [rel ed_cursor]
     jmp  .done
 .up:
+    call sel_clear
     call caret_up
     jmp  .done
 .down:
+    call sel_clear
     call caret_down
     jmp  .done
 .pgup:
@@ -1762,11 +2040,13 @@ handle_key:
     call draw_all
     jmp  .done
 .home:
+    call sel_clear
     mov  rdi, [rel ed_cursor]
     call line_start
     mov  [rel ed_cursor], rax
     jmp  .done
 .end:
+    call sel_clear
     mov  rdi, [rel ed_cursor]
     call line_end
     mov  [rel ed_cursor], rax
@@ -1844,7 +2124,103 @@ handle_key:
     dec  rbx
     jnz  .tabloop
     jmp  .done
+; ---- slice 16: clipboard + selection --------------------------------
+.selall:
+    mov  qword [rel sel_anchor], 0
+    mov  rax, [rel ed_len]
+    mov  [rel ed_cursor], rax
+    jmp  .done
+.copy:
+    cmp  qword [rel sel_anchor], 0
+    jge  .copy_sel
+    call clip_line_bounds           ; rdi = lo, rsi = hi of the current line
+    call clip_copy
+    jmp  .done
+.copy_sel:
+    call sel_lo
+    mov  rdi, rax
+    call sel_hi
+    mov  rsi, rax
+    call clip_copy
+    call sel_clear
+    jmp  .done
+.cut:
+    cmp  qword [rel sel_anchor], 0
+    jge  .cut_sel
+    call clip_line_bounds
+    cmp  rsi, [rel ed_len]
+    jae  .cut_nolines
+    inc  rsi                        ; take the trailing newline too
+.cut_nolines:
+    push rdi
+    push rsi
+    call clip_copy
+    pop  rsi
+    pop  rdi
+    call ed_delete_range
+    jmp  .done
+.cut_sel:
+    call sel_lo
+    mov  rdi, rax
+    call sel_hi
+    mov  rsi, rax
+    push rdi
+    push rsi
+    call clip_copy
+    pop  rsi
+    pop  rdi
+    call ed_delete_range
+    jmp  .done
+.paste:
+    cmp  qword [rel sel_anchor], 0
+    jl   .paste_go
+    call sel_lo
+    mov  rdi, rax
+    call sel_hi
+    mov  rsi, rax
+    call ed_delete_range
+.paste_go:
+    call clip_paste
+    jmp  .done
+.sleft:
+    cmp  qword [rel ed_cursor], 0
+    je   .done
+    call sel_begin
+    dec  qword [rel ed_cursor]
+    jmp  .done
+.sright:
+    mov  rax, [rel ed_cursor]
+    cmp  rax, [rel ed_len]
+    jae  .done
+    call sel_begin
+    inc  qword [rel ed_cursor]
+    jmp  .done
+.sup:
+    call sel_begin
+    call caret_up
+    jmp  .done
+.sdown:
+    call sel_begin
+    call caret_down
+    jmp  .done
+.shome:
+    call sel_begin
+    mov  rdi, [rel ed_cursor]
+    call line_start
+    mov  [rel ed_cursor], rax
+    jmp  .done
+.send:
+    call sel_begin
+    mov  rdi, [rel ed_cursor]
+    call line_end
+    mov  [rel ed_cursor], rax
+    jmp  .done
 .esc:
+    cmp  qword [rel sel_anchor], 0
+    jl   .esc_quit
+    call sel_clear                  ; Escape clears a selection before quitting
+    jmp  .done
+.esc_quit:
     mov  dword [rel want_quit], 1
 .done:
     pop  rbx
@@ -1864,6 +2240,7 @@ _start:
 
     call parse_setup
     mov qword [next_id], 1
+    mov qword [rel sel_anchor], -1   ; no selection to start
 
     ; ---- window ----------------------------------------------------------
     call create_win
