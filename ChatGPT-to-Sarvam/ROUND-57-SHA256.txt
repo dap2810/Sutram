@@ -1,0 +1,17 @@
+# R57 — 12 real SHA-256 source/document/fixture hashes, obtained from successful GitHub Actions.
+# Tested source commit fd314635d7e387381e662dab1cdb5bdf5f9a320a
+# Run https://github.com/dap2810/Sutram/actions/runs/38435033066 (job 115426692641).
+# Independently check: grep -E '^[a-f0-9]{64}  ' ChatGPT-to-Sarvam/ROUND-57-SHA256.txt | sha256sum -c -
+# These are source digests, not the six proposed generated-ELF codegen hashes.
+2b0b5fcf6694b94cd3b784a11b7aaa602c02905812bab1a07d033d5a0180535f  src/sutram_compiler.asm
+1d3fd3177115737a24df7c1e0692e15eaa302cf1a3b6fd3b86ea39df8da8bbdb  tools/r57_native_acceptance.py
+1f19c02d013141a11d5209a273cee52fc4eda510121d8dac844cafd2ad91f4f6  tools/r57_codegen_baseline.py
+a7d284b377e99dbcdb62268db46c2ae09791af5fda6cebf7711eced619860c31  docs/R57-REGISTER-EVALUATOR.md
+6a8b30ca792163ac9288ca9b2c0beac3474546c41629ccd2e8dd15b81f3bff4f  tests/r57_check/CODEGEN-BASELINE.txt
+09ec6f4f77e6198ad8a3b83b6dbfbe7dd1791848d65c8eb99a73e47a18eb8b3f  tests/r57_check/arithmetic_10m.sm
+b13cfa096ce8ef8a25ce345051d2687b9c95b1f045003324f18453013cb46a5c  tests/r57_check/control_10m.sm
+8d6594e68c784556e16d78ecdf697a9e94e0149a1463cd3c2309d4cdae0d5bb5  tests/r57_check/global_registers.sm
+cb8e27e0a4d1a4f89ba95ba958f72e923022ffe1c10bd6b524b193d84fc820e9  tests/r57_check/large_literals.sm
+12e2c62e7baf09e23d16ef21137bdac45c4d3d1185f02aecd388d5b13b6861aa  tests/r57_check/legacy_fallback.sm
+b60678f4272e33252855b8b07eed024f5d9bb60b9726d5bf043c62426d152216  tests/r57_check/nested_registers.sm
+4b463712cf92b48fe2f4dbded8943b6bad44b1e0d72ca1afc0ad057b165063a4  .github/workflows/r57-native.yml
