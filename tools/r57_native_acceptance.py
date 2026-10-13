@@ -21,6 +21,7 @@ CASES = {
  "nested_registers.sm":"77\n4\n7\n-23\n21\n",
  "legacy_fallback.sm":"7\n4\n6\n",
  "large_literals.sm":"23622320128\n4294967307\n33\n",
+ "global_registers.sm":"99\n30\n17\n10\n20\n",
 }
 REFERENCE = [
  "examples/41_recursion.sm",
@@ -65,6 +66,16 @@ def check():
                 print("R57_STDOUT",name,label,cp.returncode,repr(cp.stdout),flush=True)
                 assert cp.returncode==0 and cp.stdout==expected,(
                     name,label,repr(cp.stdout),repr(expected))
+            if name == "arithmetic_10m.sm":
+                # Compiler output bytes: the original generic tree used
+                # POP RDX / XCHG RAX,RDX after PUSH RAX; the R57 pure-register
+                # expression tree must not contain that operand roundtrip.
+                old=bins["before"].read_bytes()
+                new=bins["after"].read_bytes()
+                assert bytes.fromhex("5a 48 87 d0") in old
+                assert bytes.fromhex("5a 48 87 d0") not in new
+                assert bytes.fromhex("4c 01 d0") in new
+                print("R57_CODE_SHAPE old_pop_xchg=1 new_pop_xchg=0 new_add_rax_r10=1",flush=True)
             if name in ("arithmetic_10m.sm","control_10m.sm"):
                 for label in ("before","after"):
                     time_bin(bins[label],expected)
