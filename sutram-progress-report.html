@@ -77,8 +77,8 @@
     <div class="row"><div class="lab">Codegen gate (instruction ceilings)</div><div class="bar"><i class="g" style="width:100%"></i></div><div class="pct">12/12</div></div>
     <div class="row"><div class="lab">Language packs</div><div class="bar"><i class="g" style="width:100%"></i></div><div class="pct">30/30</div></div>
     <div class="row"><div class="lab">Module-graph / import semantics</div><div class="bar"><i class="g" style="width:100%"></i></div><div class="pct">18/18</div></div>
-    <div class="row"><div class="lab">Library proofs <span class="pill">147 passed</span></div><div class="bar"><i class="g" style="width:100%"></i></div><div class="pct">147/147</div></div>
-    <div class="row"><div class="lab">Library properties <span class="pill">33 hold</span></div><div class="bar"><i class="g" style="width:100%"></i></div><div class="pct">33/33</div></div>
+    <div class="row"><div class="lab">Library proofs <span class="pill">153 passed</span></div><div class="bar"><i class="g" style="width:100%"></i></div><div class="pct">153/153</div></div>
+    <div class="row"><div class="lab">Library properties <span class="pill">39 hold</span></div><div class="bar"><i class="g" style="width:100%"></i></div><div class="pct">39/39</div></div>
     <div class="row"><div class="lab">R46 ordinary-codegen parity</div><div class="bar"><i class="g" style="width:100%"></i></div><div class="pct">4/4</div></div>
     <div class="row"><div class="lab">IDE slices (Linux X11)</div><div class="bar"><i class="g" style="width:100%"></i></div><div class="pct">16/16</div></div>
     <div class="row"><div class="lab">Windows end-to-end run</div><div class="bar"><i class="l" style="width:8%"></i></div><div class="pct">8%</div></div>
@@ -99,13 +99,13 @@
     <div class="row"><div class="lab">02 Performance &amp; efficiency</div><div class="bar"><i class="m" style="width:58%"></i></div><div class="pct">58%</div></div>
     <div class="row"><div class="lab">03 Concurrency</div><div class="bar"><i class="l" style="width:0%"></i></div><div class="pct">0%</div></div>
     <div class="row"><div class="lab">04 Cross-platform</div><div class="bar"><i class="m" style="width:48%"></i></div><div class="pct">48%</div></div>
-    <div class="row"><div class="lab">05 Rich standard library</div><div class="bar"><i class="m" style="width:45%"></i></div><div class="pct">45%</div></div>
+    <div class="row"><div class="lab">05 Rich standard library</div><div class="bar"><i class="m" style="width:48%"></i></div><div class="pct">48%</div></div>
     <div class="row"><div class="lab">06 Massive ecosystem</div><div class="bar"><i class="l" style="width:2%"></i></div><div class="pct">2%</div></div>
     <div class="row"><div class="lab">07 Developer productivity</div><div class="bar"><i class="m" style="width:50%"></i></div><div class="pct">50%</div></div>
     <div class="row"><div class="lab">08 Memory safety</div><div class="bar"><i class="l" style="width:17%"></i></div><div class="pct">17%</div></div>
     <div class="row"><div class="lab">09 Security features</div><div class="bar"><i class="l" style="width:3%"></i></div><div class="pct">3%</div></div>
     <div class="row"><div class="lab">10 Interoperability</div><div class="bar"><i class="l" style="width:5%"></i></div><div class="pct">5%</div></div>
-    <div class="row"><div class="lab">11 Scalability</div><div class="bar"><i class="l" style="width:22%"></i></div><div class="pct">22%</div></div>
+    <div class="row"><div class="lab">11 Scalability</div><div class="bar"><i class="l" style="width:24%"></i></div><div class="pct">24%</div></div>
     <div class="row"><div class="lab">12 Backward compatibility</div><div class="bar"><i class="m" style="width:50%"></i></div><div class="pct">50%</div></div>
     <div class="row"><div class="lab">13 Error handling</div><div class="bar"><i class="m" style="width:52%"></i></div><div class="pct">52%</div></div>
     <div class="row"><div class="lab">14 Tooling excellence</div><div class="bar"><i class="m" style="width:48%"></i></div><div class="pct">48%</div></div>
@@ -251,7 +251,7 @@
     <h3>What would move the needle most, in order</h3>
     <ul>
       <li><b>A register-based expression evaluator</b> — closes most of the 5.4× arithmetic gap. Big, contained, measurable.</li>
-      <li><b>Module-level globals</b> — the remaining half of R55, and the thing that makes larger programs bearable.</li>
+      <li><b>Generics and first-class functions</b> — the language still has one array type and no closures.</li>
       <li><b>A real Windows end-to-end run</b> — one binary, executed, converts the biggest unverified claim into a fact.</li>
       <li><b>Library breadth</b> — formatting, file I/O, dates. The 45% bar is the one most within reach.</li>
     </ul>
@@ -259,8 +259,8 @@
 
   <div class="hr"></div>
   <p class="note">
-    Snapshot: compiler <code>6db0adf7</code> (20,230 lines, 176,712 B binary) · IDE <code>2216a476</code> (2,324 lines, 16 slices) ·
-    18 library modules / 176 functions · 32 keywords · 10 language packs · 189 example programs · 29 docs pages ·
+    Snapshot: compiler <code>d0fe190c</code> (20,687 lines, 179,888 B binary) · IDE <code>2216a476</code> (2,324 lines, 16 slices) ·
+    19 library modules / 186 functions · 32 keywords · 10 language packs · 189 example programs · 29 docs pages ·
     Linux ELF + Windows PE32+ (Windows unverified).
     Percentages are judgement against a mature-language yardstick, not measurements; speed figures marked
     “measured here” are real timings from this machine, everything else is an estimate and labelled as such.
