@@ -25,6 +25,7 @@ Do not edit by hand.</p>
 <li><a href="#baseconv"><code>baseconv</code></a> — 2 functions</li>
 <li><a href="#bigint"><code>bigint</code></a> — 12 functions</li>
 <li><a href="#chandas"><code>chandas</code></a> — 6 functions</li>
+<li><a href="#fmt"><code>fmt</code></a> — 23 functions</li>
 <li><a href="#ganita"><code>ganita</code></a> — 6 functions</li>
 <li><a href="#hash"><code>hash</code></a> — 2 functions</li>
 <li><a href="#kalana"><code>kalana</code></a> — 6 functions</li>
@@ -88,6 +89,34 @@ Do not edit by hand.</p>
 <tr><td><code>is_guru(pat, i)</code></td><td></td></tr>
 <tr><td><code>guru_count(pat)</code></td><td></td></tr>
 <tr><td><code>meru_pankti(a, n)</code></td><td></td></tr>
+</table>
+<h2 id="fmt"><code>fmt</code></h2>
+<p class="mod-desc">Number and string formatting on BYTE strings (packed bytes, explicit lengths, `strb` idiom): every function writes packed bytes into `out` with a 0 terminator and returns the byte count. This is the modern idiom; the older `lib/strconv.smlib` works on CELL arrays (pankti of char codes) and has no width/alignment/grouping/fixed-decimal/sign surface — fmt is the formatting module, strconv is the conversion module. Do not mix the representations: fmt outputs are bytes (read with char_at), strconv outputs are cells (read with [i]). Defaults, stated once here and at each function: - Bases: no prefix unless the _pre / flags form is used. - Grouping: fmt_group defaults to INDIAN grouping (12,34,567). - Rounding: fmt_fixed rounds HALF AWAY FROM ZERO (2.5 -&gt; 3, -2.5 -&gt; -3). - Centre padding: the extra pad byte goes RIGHT. - INT64_MIN (-2^63) is excluded from the integer formatters: negating it overflows, as in strconv. Every other int64 value works. - fmt_fixed is exact while |x| * 10^places &lt; 2^52; beyond that the +0.5 rounding step is below float precision. |x| * 10^places must fit in int64. places is clamped to 0..9. All signatures stay within the 6-argument cap. --- integer digits (private helper) --- fmt_digits(v, out) — write the decimal digits of |v| (no sign) into out as packed bytes. Returns the digit count. Internal; the public formatters below build on it.</p>
+<table>
+<tr><th>Function</th><th>Description</th></tr>
+<tr><td><code>fmt_digits(v, out)</code></td><td></td></tr>
+<tr><td><code>fmt_digits_base(v, base, upper, out)</code></td><td>--- integer digits in a base (private helper) --- fmt_digits_base(v, base, upper, out) — write |v| in `base` (2..36) into out as packed bytes, no sign, no prefix. `upper` 1 -&gt; A-F/A-Z. Base outside 2..36 writes only the terminator and returns 0.</td></tr>
+<tr><td><code>fmt_int_base(v, base, out)</code></td><td>fmt_int_base(v, base, out) — write v in `base` (2..36), lowercase digits, &#x27;-&#x27; for negatives, no prefix. Returns the byte count. Base outside 2..36: terminator only, returns 0. Digits are written directly at dst + neg, so the sign just fills position 0.</td></tr>
+<tr><td><code>fmt_int_flags(v, base, flags, out)</code></td><td>fmt_int_flags(v, base, flags, out) — fmt_int_base plus flags: bit 0 (1) = prefix: &quot;0b&quot; / &quot;0o&quot; / &quot;0x&quot; for bases 2 / 8 / 16 (no prefix for other bases, including 10); bit 1 (2) = uppercase hex digits (the prefix itself stays lowercase). Returns byte count.</td></tr>
+<tr><td><code>fmt_dec(v, out)</code></td><td>fmt_dec(v, out) — decimal, no prefix. fmt_hex / fmt_hex_upper / fmt_oct / fmt_bin — base 16 (lower / upper), 8, 2, no prefix.</td></tr>
+<tr><td><code>fmt_hex(v, out)</code></td><td></td></tr>
+<tr><td><code>fmt_hex_upper(v, out)</code></td><td></td></tr>
+<tr><td><code>fmt_oct(v, out)</code></td><td></td></tr>
+<tr><td><code>fmt_bin(v, out)</code></td><td></td></tr>
+<tr><td><code>fmt_int_pre(v, base, upper, out)</code></td><td>fmt_int_pre(v, base, upper, out) — any base with its prefix (&quot;0b&quot;/&quot;0o&quot;/&quot;0x&quot; for 2/8/16; none for other bases). `upper` 1 -&gt; uppercase digits, prefix stays lowercase.</td></tr>
+<tr><td><code>fmt_pad_left(src, sn, width, padbyte, out)</code></td><td>--- padding / alignment --- fmt_pad_left(src, sn, width, padbyte, out) — pad on the LEFT with `padbyte` (32 space, 48 &#x27;0&#x27;) to `width`. width &lt;= sn: copy unchanged.</td></tr>
+<tr><td><code>fmt_pad_right(src, sn, width, padbyte, out)</code></td><td>fmt_pad_right(src, sn, width, padbyte, out) — pad on the RIGHT.</td></tr>
+<tr><td><code>fmt_pad_center(src, sn, width, padbyte, out)</code></td><td>fmt_pad_center(src, sn, width, padbyte, out) — npad on BOTH sides; when width-sn is odd, the extra npad byte goes RIGHT.</td></tr>
+<tr><td><code>fmt_group_impl(src, sn, step, out)</code></td><td>--- thousands grouping (private helper) --- fmt_group_impl(src, sn, step, out) — group the integer part of a digit string. step 2 = Indian (3, then 2s: 12,34,567), step 3 = international (3s: 1,234,567). A leading &#x27;-&#x27; or &#x27;+&#x27; is kept as a sign; a &#x27;.&#x27; splits off a fraction, copied verbatim. Empty input copies to empty.</td></tr>
+<tr><td><code>fmt_group_indian(src, sn, out)</code></td><td>fmt_group_indian(src, sn, out) — 1234567 -&gt; 12,34,567.</td></tr>
+<tr><td><code>fmt_group_intl(src, sn, out)</code></td><td>fmt_group_intl(src, sn, out) — 1234567 -&gt; 1,234,567.</td></tr>
+<tr><td><code>fmt_group(src, sn, out)</code></td><td>fmt_group(src, sn, out) — DEFAULT grouping: Indian (12,34,567). The default is Indian because the audience is Indian.</td></tr>
+<tr><td><code>fmt_group_int(v, indian, out)</code></td><td>fmt_group_int(v, indian, out) — format integer v, then group it. `indian` 1 -&gt; Indian grouping, 0 -&gt; international.</td></tr>
+<tr><td><code>fmt_fixed_impl(dasham x, places, always_sign, out)</code></td><td>--- fixed decimals (private helper) --- fmt_fixed_impl(dasham x, places, always_sign, out) — |x| rounded HALF AWAY FROM ZERO to `places` digits after &#x27;.&#x27;, exactly `places` digits emitted (zero-padded). places clamped to 0..9. `always_sign` 1 emits &#x27;+&#x27; for non-negative values. places 0 emits no &#x27;.&#x27;.</td></tr>
+<tr><td><code>fmt_fixed(dasham x, places, out)</code></td><td>fmt_fixed(dasham x, places, out) — fixed decimals, &#x27;-&#x27; for negatives only. 3.14159 at 2 places -&gt; &quot;3.14&quot;. Rounding: half away from zero.</td></tr>
+<tr><td><code>fmt_fixed_signed(dasham x, places, out)</code></td><td>fmt_fixed_signed(dasham x, places, out) — fixed decimals, always a sign: &quot;+3.14&quot; / &quot;-3.14&quot;.</td></tr>
+<tr><td><code>fmt_signed(v, out)</code></td><td>--- signed formatting --- fmt_signed(v, out) — always a sign: &quot;+42&quot; / &quot;-42&quot; / &quot;+0&quot;.</td></tr>
+<tr><td><code>fmt_sign_char(v, signch, out)</code></td><td>fmt_sign_char(v, signch, out) — `signch` (a byte value, e.g. 32 for a blank, 43 for &#x27;+&#x27;) in place of &#x27;+&#x27; for non-negative values; negatives always get &#x27;-&#x27;.</td></tr>
 </table>
 <h2 id="ganita"><code>ganita</code></h2>
 <p class="mod-desc">After Aryabhata&#x27;s Kuttaka (~499 CE) and the Chakravala of Jayadeva and Bhaskara II (~1150 CE). KUTTAKA (&quot;the pulveriser&quot;) solves the linear indeterminate equation ax + by = c. It is the ancestor of the extended Euclidean algorithm. CHAKRAVALA (&quot;the wheel&quot;) solves the quadratic indeterminate equation x^2 - N*y^2 = 1, known in Europe as Pell&#x27;s equation. It was the first complete method for it, and for N = 61 it gives x = 1766319049, y = 226153980 - a case Europe first solved in 1657. kuttaka(a, b, c) -&gt; x such that a*x is congruent to c (mod b). Requires gcd(a, b) to divide c. Returns x (a particular solution).</p>
@@ -322,6 +351,6 @@ Do not edit by hand.</p>
 <tr><td><code>bool_to_int(b)</code></td><td></td></tr>
 <tr><td><code>int_max()</code></td><td></td></tr>
 </table>
-<footer>19 modules, 186 functions. Generated from library sources.</footer>
+<footer>20 modules, 209 functions. Generated from library sources.</footer>
 </body>
 </html>
