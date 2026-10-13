@@ -1,0 +1,21 @@
+# R55: declarations first; definitions in reverse call order.
+prakriya stage_one(n);
+prakriya stage_two(n);
+prakriya stage_three(n);
+
+prakriya stage_three(n) {
+    yadi (n <= 0) { pratiyati 0 }
+    pratiyati 1 + stage_one(n - 1)
+}
+prakriya stage_two(n) {
+    yadi (n <= 0) { pratiyati 0 }
+    pratiyati 1 + stage_three(n - 1)
+}
+prakriya stage_one(n) {
+    yadi (n <= 0) { pratiyati 0 }
+    pratiyati 1 + stage_two(n - 1)
+}
+mukhya() {
+    likha(stage_one(15))
+    likha(stage_three(8))
+}

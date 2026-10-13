@@ -754,6 +754,10 @@ r54_builtin_arity_table:
     msg_rachana_fields_overflow db "Sutram Error: too many fields in rachana", 10, 0
     msg_block_nesting_overflow db "Sutram Error: block nesting capacity exceeded", 10, 0
     msg_block_stmt_overflow db "Sutram Error: too many statements in block", 10, 0
+    r55_msg_proto_duplicate db "Sutram Error: duplicate prakriya forward declaration",10,0
+    r55_msg_proto_missing db "Sutram Error: prakriya forward declaration has no definition",10,0
+    r55_msg_proto_signature db "Sutram Error: prakriya prototype parameter count differs from definition",10,0
+    r55_msg_proto_capacity db "Sutram Error: too many prakriya prototypes",10,0
 
 section .bss
     source_buf  resb 65536
@@ -840,6 +844,10 @@ section .bss
     patch_count  resq 1
     func_defs    resb FUNC_DEFS_CAP * 8 ; [funcdef_node_ptr(8)]
     func_def_cnt resq 1
+    ; R55 compile-time only forward declarations (no emitted code/data).
+    r55_proto_count resq 1
+    r55_proto_names resq FUNC_DEFS_CAP
+    r55_proto_arity resq FUNC_DEFS_CAP
     top_const_count resq 1
     top_const_nodes resq 128   ; compile-time top-level sutra initializers
     in_function  resq 1       ; 0 = in main, 1 = in user function
@@ -6355,6 +6363,7 @@ advance_tok:
     ret
 
 parse_program:
+    mov qword [rel r55_proto_count], 0
     mov qword [rel top_const_count], 0
     mov qword [rel parse_error_kind], 0
     lea rax, [rel ast_heap]
@@ -6403,6 +6412,13 @@ parse_function:
     mov rcx, [rax]          ; node type
     cmp rcx, AST_FUNCDEF
     jne .pf_top_skip_store
+    ; R55: an AST_FUNCDEF with null body is a prototype, not a duplicate
+    ; definition and not executable. It is matched to a later real body.
+    cmp qword [rax+24],0
+    jne .pf_body_defined
+    call r55_register_proto
+    jmp .pf_top_skip_store
+.pf_body_defined:
     ; T4: definitions imported by ayojan share the same namespace as program
     ; functions.  Reject collisions instead of silently clobbering addresses.
     push rax
@@ -6440,6 +6456,7 @@ parse_function:
 .pf_top_skip_store:
     jmp .pf_top_loop
 .pf_expect_mukhya:
+    call r55_validate_prototypes
     ; Now expect mukhya
     call cur_tok
     mov rcx, [rax]
@@ -7713,8 +7730,19 @@ parse_stmt:
     jmp capacity_fail
 .ps_fd_params_done:
     call advance_tok          ; consume ')'
-    ; Parse body
-    call parse_body           ; rax = body block
+    ; R55: an explicit ';' after the signature declares a forward prototype.
+    ; No body is emitted, and the declaration must match a real definition.
+    call cur_tok
+    cmp qword [rax],TOK_DELIMITER
+    jne .r55_parse_real_body
+    cmp qword [rax+8],';'
+    jne .r55_parse_real_body
+    call advance_tok
+    xor eax,eax               ; null body = prototype
+    jmp .r55_body_ready
+.r55_parse_real_body:
+    call parse_body           ; rax = real block node
+.r55_body_ready:
     ; Build funcdef node: [AST_FUNCDEF][name_ptr][param_count][body]
     push rax                  ; save body
     push rbx                  ; save name
@@ -9901,6 +9929,97 @@ gen_code:
     ; Backpatch all call sites
     call backpatch_calls
 
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+
+; R55: store explicit prakriya name(params); declarations, rejecting repeated
+; prototypes and enforcing that each has a complete matching body.
+; Input RAX = AST_FUNCDEF with [rax+24]==0. No emitted runtime data.
+r55_register_proto:
+    push rbx
+    push r12
+    push r13
+    mov rbx,rax
+    mov r13,[rbx+8]
+    xor r12,r12
+.rp_loop:
+    cmp r12,[rel r55_proto_count]
+    jae .rp_add
+    lea rax,[rel r55_proto_names]
+    mov rdi,r13
+    mov rsi,[rax+r12*8]
+    call strcmp
+    test rax,rax
+    jz .rp_duplicate
+    inc r12
+    jmp .rp_loop
+.rp_add:
+    cmp r12,FUNC_DEFS_CAP
+    jae .rp_full
+    lea rax,[rel r55_proto_names]
+    mov [rax+r12*8],r13
+    mov rcx,[rbx+16]
+    lea rax,[rel r55_proto_arity]
+    mov [rax+r12*8],rcx
+    inc qword [rel r55_proto_count]
+    pop r13
+    pop r12
+    pop rbx
+    ret
+.rp_duplicate:
+    lea rdi,[rel r55_msg_proto_duplicate]
+    jmp capacity_fail
+.rp_full:
+    lea rdi,[rel r55_msg_proto_capacity]
+    jmp capacity_fail
+
+; Run after collecting top-level functions, before parsing mukhya. A prototype
+; is not allowed to remain undefined (even if uncalled); matching arity protects
+; callers from silently invoking an incorrect parameter ABI.
+r55_validate_prototypes:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    xor r12,r12
+.vp_outer:
+    cmp r12,[rel r55_proto_count]
+    jae .vp_done
+    lea rcx,[rel r55_proto_names]
+    mov r13,[rcx+r12*8]
+    lea rcx,[rel r55_proto_arity]
+    mov r14,[rcx+r12*8]
+    xor r15,r15
+.vp_inner:
+    cmp r15,[rel func_def_cnt]
+    jae .vp_missing
+    lea rcx,[rel func_defs]
+    mov rbx,[rcx+r15*8]
+    mov rdi,r13
+    mov rsi,[rbx+8]
+    call strcmp
+    test rax,rax
+    jz .vp_match
+    inc r15
+    jmp .vp_inner
+.vp_match:
+    cmp r14,[rbx+16]
+    jne .vp_mismatch
+    inc r12
+    jmp .vp_outer
+.vp_missing:
+    lea rdi,[rel r55_msg_proto_missing]
+    jmp capacity_fail
+.vp_mismatch:
+    lea rdi,[rel r55_msg_proto_signature]
+    jmp capacity_fail
+.vp_done:
     pop r15
     pop r14
     pop r13
