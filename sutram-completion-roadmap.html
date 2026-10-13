@@ -87,7 +87,7 @@
         <tr><td>5</td><td>The standard library covers everyday work: collections, text, formatting, files, time, math</td><td class="n part">50%</td></tr>
         <tr><td>6</td><td>Diagnostics are complete across every error family, with recovery</td><td class="n part">60%</td></tr>
         <tr><td>7</td><td>The IDE is a tool someone would choose: edit, run, debug, format, clipboard, file picker</td><td class="n part">55%</td></tr>
-        <tr><td>8</td><td>Installers work on Linux and Windows; releases are versioned and reproducible</td><td class="n part">35%</td></tr>
+        <tr><td>8</td><td>Installers work on Linux and Windows; releases are versioned and reproducible</td><td class="n part">38%</td></tr>
         <tr><td>9</td><td>Verification is broad enough to trust: fuzzing, adversarial corpora, cross-platform CI</td><td class="n part">85%</td></tr>
         <tr><td>10</td><td>Documentation and books are accurate and current for the shipped version</td><td class="n part">70%</td></tr>
         <tr><td>11</td><td>Concurrency exists at all (threads or async)</td><td class="n todo">0%</td></tr>
@@ -105,7 +105,7 @@
     <div class="row"><div class="lab">D · Standard library</div><div class="bar"><i class="m" style="width:50%"></i></div><div class="pct">50%</div></div>
     <div class="row"><div class="lab">E · Diagnostics &amp; errors</div><div class="bar"><i class="m" style="width:60%"></i></div><div class="pct">60%</div></div>
     <div class="row"><div class="lab">F · IDE &amp; dev tooling</div><div class="bar"><i class="m" style="width:58%"></i></div><div class="pct">58%</div></div>
-    <div class="row"><div class="lab">G · Cross-platform &amp; packaging</div><div class="bar"><i class="l" style="width:35%"></i></div><div class="pct">35%</div></div>
+    <div class="row"><div class="lab">G · Cross-platform &amp; packaging</div><div class="bar"><i class="l" style="width:38%"></i></div><div class="pct">38%</div></div>
     <div class="row"><div class="lab">H · Verification &amp; QA</div><div class="bar"><i class="g" style="width:85%"></i></div><div class="pct">85%</div></div>
     <div class="row"><div class="lab">I · Docs &amp; teaching</div><div class="bar"><i class="m" style="width:70%"></i></div><div class="pct">70%</div></div>
     <div class="row"><div class="lab">J · Concurrency</div><div class="bar"><i class="l" style="width:0%"></i></div><div class="pct">0%</div></div>
@@ -204,9 +204,10 @@
   </div>
 
   <div class="ws">
-    <h3>G · Cross-platform &amp; packaging — 35%</h3>
+    <h3>G · Cross-platform &amp; packaging — 38%</h3>
     <ul>
       <li class="done">✔ One source → Linux ELF and Windows PE32+; Linux installer script; Windows <code>.exe</code>; portable zips</li>
+      <li class="done">✔ Both Windows binaries now <b>build and verify</b> — <code>sutram.exe</code> (PE32+ console) and <code>sutram-ide-gui.exe</code> (PE32+ GUI), headers inspected, import tables present</li>
       <li class="todo">✗ <b>Verified Windows run</b> — the largest unverified claim in the project</li>
       <li class="todo">✗ Windows CI in the pipeline</li>
       <li class="todo">✗ Versioned releases (semver, tags, changelog per release)</li>
@@ -291,11 +292,11 @@
 
   <h3>Recently closed</h3>
   <p class="note">
-    R55 forward prototypes (compiler <code>6db0adf7</code>) · R13 pack/unpack + integer statistics · R54 builtin arity sweep
-    (40 builtins, plus a fixed <code>vartani_cp</code> codegen bug) · R12 three real programs · R53 consolidated checker ·
-    R56 module-level globals · R14 <code>set.smlib</code> · R55 forward prototypes · R13 pack/unpack + integer statistics ·
-    R54 builtin arity sweep · GUI slices 13–17 (editor scrolling, Tab, Ctrl-Home/End, find, selection + clipboard, open/new).
-    Main today: compiler <code>d0fe190c</code>, IDE <code>bc2d5905</code>, 19 modules / 186 functions, 186/12/30/18 green.
+    R56 module-level globals · R14 <code>set.smlib</code> (19 modules / 186 functions) · R55 forward prototypes ·
+    R54 builtin arity sweep · R13 pack/unpack + integer statistics · R51/R52 diagnostics and defect fixes ·
+    GUI slices 13–17 (editor scrolling, Tab, Ctrl-Home/End, find, selection + clipboard, open/new) ·
+    both Windows binaries now build · every document moved to the new thread logo, icon assets added to the tree.
+    Main today: compiler <code>d0fe190c</code>, IDE <code>bc2d5905</code>, 186/12/30/18 green.
   </p>
 
   <h2>4 · Critical path — what to do in what order</h2>
@@ -358,6 +359,7 @@
   <div class="hr"></div>
   <p class="note">
     Snapshot: compiler <code>d0fe190c</code> · IDE <code>bc2d5905</code> · 19 library modules / 186 functions ·
+    one thread logo across every document, canonical vector at <code>icons/sutram-icon.svg</code> ·
     186 + 3 tests · 12 codegen ceilings · 30 pack checks · 18 module-graph tests · 153 proofs · 39 properties ·
     32 keywords · 10 language packs · 189 examples · 29 doc pages · Linux ELF + Windows PE32+ (Windows unverified).
     Percentages are honest judgement against the finish line in section 1, not measurements.
