@@ -73,6 +73,8 @@ jobs:
           python3 -m unittest discover -s tests/module_graph -p 'test_*.py' -v
       - name: R57 baseline remains frozen in accepted R57 compiler
         run: SUTRAM_COMPILER="$(pwd)/r58_before" python3 tools/r57_codegen_baseline.py
+      - name: Verify proposed R58 frozen generated-ELF hashes
+        run: python3 tools/r58_codegen_baseline.py
       - name: Standard library fixed and property proofs
         run: |
           python3 tools/proof_lib.py --compiler "$(pwd)/r48_after"
@@ -84,7 +86,7 @@ jobs:
       - name: SHA-256 actual source manifest
         if: always()
         run: |
-          sha256sum src/sutram_compiler.asm tools/r58_native_acceptance.py tests/r58_check/* .github/workflows/r58-native.yml > r58_sha256.txt
+          sha256sum src/sutram_compiler.asm tools/r58_native_acceptance.py tools/r58_codegen_baseline.py tests/r58_check/* .github/workflows/r58-native.yml > r58_sha256.txt
           cat r58_sha256.txt
       - uses: actions/upload-artifact@v4
         if: always()
