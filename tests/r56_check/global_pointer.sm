@@ -1,0 +1,3 @@
+vitti buf = nirmmita(16)
+prakriya fill() { buf[0] = 44 pratiyati buf[0] }
+mukhya() { likha(fill()) likha(buf[0]) }
