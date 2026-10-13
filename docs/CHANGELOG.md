@@ -1,3 +1,26 @@
+## v121 — all documents moved to the new thread logo; icon assets added to the tree
+
+- **The old logo was still in the docs, and you were right to flag it.** The previous logo
+  (Devanagari स between braces) was embedded as a **base64 PNG** in exactly six files - the six
+  book editions. `docs/mockup-setup.html` already carried the new thread logo.
+- **Replaced in all six books** (English, Hindi, Sanskrit, Tamil, Telugu, Gujarati) with the new
+  thread logo as clean **inline SVG** - teal `#1A4A5C` disc, orange `#E86D11` ring and S-curve,
+  copied verbatim from the canonical `icons/sutram-icon.svg`. The SVG parses as valid XML.
+- **`docs/mockup-setup.html`**: its three remaining base64 images were converted to the same
+  inline SVG, and its `.titlebar img` / `.hero img` size rules were extended to `svg` so the
+  layout is unchanged.
+- The tree is now **free of base64 images and of `<img>` entirely** - one identical logo asset
+  (the inline SVG) in every document that carries a logo.
+- **Icon assets were missing from the tree altogether.** They existed only inside a previously
+  built Windows package. Added the canonical `icons/` folder: `sutram.ico` (a real 8-size icon -
+  16/20/24/32/48/64/128/256, 36,693 B, byte-identical to the installer's copy), `sutram-icon.svg`,
+  and the PNG ladder (1024 master down to 16).
+- **Not changed, deliberately:** `docs/sutram-book-2.html` and `docs/sutram-book-3.html` are
+  "superseded" stub pages with no logo at all. `windows/` documentation already refers to
+  `icons/sutram.ico` and describes the thread logo, so it needed no edit.
+- **Known limitation, unchanged:** the Windows GUI loads its icon from `icons\sutram.ico` **at
+  runtime**; the icon is not embedded in the executable, so the file must sit beside the exe.
+
 ## v120 — Windows build produced and packaged; Windows test zip delivered
 
 - **Both Windows binaries build here** with the documented commands
