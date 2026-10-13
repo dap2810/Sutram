@@ -1,0 +1,17 @@
+# Sutram R58 — source-file SHA-256, 12 real measured entries from successful CI.
+# Source tested commit: eb16dd137d1b13cfb1592ae14f8c88023241b0a5
+# CI run https://github.com/dap2810/Sutram/actions/runs/38463770927 ; job 115525337441 SUCCESS
+# Verify: grep -E '^[a-f0-9]{64}  ' ChatGPT-to-Sarvam/ROUND-58-SHA256.txt | sha256sum -c -
+# These are SHA of source/test/docs/workflow, not post-R58 ELF image hashes.
+35d85b803924c96db111a62c2867a3f28b80a4778605526e8cf3175823e89aff  src/sutram_compiler.asm
+74302746153c795d24b7a5b42f13ad79b8ed24f4f5bcc5c29f9b5996e5d8c9fc  tools/r58_native_acceptance.py
+b8f12acef9b5075e82cbc2ec71f5445835d296ca0f2c23e407faca266575d284  tools/r58_codegen_baseline.py
+90340787d3255350a47055e7135e10ff1c6cf98e8272231a52149503fed7fc9a  docs/R58-CONSTANT-FOLDING.md
+e40204d7c0e39dbcfd69223121dbaaddcd76db4129bef84ba007580103928dcf  tests/r58_check/CODEGEN-BASELINE.txt
+40c48366b2f264713bbe7491933abf329ca92117c81ef49e56e2ff583e4184d8  tests/r58_check/div_signed.sm
+173d3b6b87a8ce90fac4028da4f82d10c6341ba04591ae1fa5291029737d4a58  tests/r58_check/effectful_identity.sm
+4a3be946148def48eef40e413aff32fd2f7058613630b0705792b00b54e8d22c  tests/r58_check/fold_nested.sm
+df4880e6b73ddbdadd17e6d002df58559acae419c17e1137f0c74b9d6d8b9030  tests/r58_check/fold_vs_dynamic_dynamic.sm
+b1032eb8cd17097b7efa51a57f9eb6f9b951125fe3358862fe2e776f55824bda  tests/r58_check/fold_vs_dynamic_folded.sm
+ead6c655628cd02fa17c4fd0c2f87db23ec150cd4615f7bc06c0c708b96fbd31  tests/r58_check/foldable_10m.sm
+4df20f38234c22b8ac835a3b219f65383b28fd5b8e11431bf8e9b18827f74b9c  .github/workflows/r58-native.yml
