@@ -104,7 +104,7 @@
     <div class="row"><div class="lab">C · Language surface</div><div class="bar"><i class="m" style="width:60%"></i></div><div class="pct">60%</div></div>
     <div class="row"><div class="lab">D · Standard library</div><div class="bar"><i class="m" style="width:50%"></i></div><div class="pct">50%</div></div>
     <div class="row"><div class="lab">E · Diagnostics &amp; errors</div><div class="bar"><i class="m" style="width:60%"></i></div><div class="pct">60%</div></div>
-    <div class="row"><div class="lab">F · IDE &amp; dev tooling</div><div class="bar"><i class="m" style="width:55%"></i></div><div class="pct">55%</div></div>
+    <div class="row"><div class="lab">F · IDE &amp; dev tooling</div><div class="bar"><i class="m" style="width:58%"></i></div><div class="pct">58%</div></div>
     <div class="row"><div class="lab">G · Cross-platform &amp; packaging</div><div class="bar"><i class="l" style="width:35%"></i></div><div class="pct">35%</div></div>
     <div class="row"><div class="lab">H · Verification &amp; QA</div><div class="bar"><i class="g" style="width:85%"></i></div><div class="pct">85%</div></div>
     <div class="row"><div class="lab">I · Docs &amp; teaching</div><div class="bar"><i class="m" style="width:70%"></i></div><div class="pct">70%</div></div>
@@ -186,13 +186,15 @@
   </div>
 
   <div class="ws">
-    <h3>F · IDE &amp; developer tooling — 55%</h3>
-    <p class="note">Linux X11 IDE, 2,324 lines, 16 working slices, all verified against a mock server.</p>
+    <h3>F · IDE &amp; developer tooling — 58%</h3>
+    <p class="note">Linux X11 IDE, 2,523 lines, 17 working slices, all verified against a mock server.</p>
     <ul>
       <li class="done">✔ Edit, compile-and-run, save/load, 8-level undo, four arrows, Home/End, Tab, Ctrl-Home/End, find, both panes scrolling</li>
       <li class="done">✔ <b>Clipboard</b> — selection model (Shift+arrows/Home/End), Ctrl-A / Ctrl-C / Ctrl-X / Ctrl-V, whole-line copy and cut, selection highlight, Escape clears before quitting</li>
       <li class="done">✔ Slice 16 verified: 8 clipboard checks read the buffer back through the real Ctrl-S save path, with a negative control against the slice-15 binary</li>
-      <li class="todo">✗ <b>File picker</b> / open-recent</li>
+      <li class="done">✔ <b>Open / new</b> — Ctrl-O opens any file by path, Ctrl-N starts a new buffer (slice 17)</li>
+      <li class="done">✔ Fixed a pre-existing defect: the editor repaint overpainted the prompt strip, so the find prompt had never actually been visible</li>
+      <li class="done">✔ Open any file by path (<b>Ctrl-O</b>) and new buffer (<b>Ctrl-N</b>) — slice 17; a graphical directory browser is still to come</li>
       <li class="todo">✗ Find-and-replace</li>
       <li class="todo">✗ Syntax highlighting and bracket matching</li>
       <li class="todo">✗ <b>Debugger</b> (breakpoints, step, inspect) — the biggest tooling gap</li>
@@ -274,7 +276,7 @@
       </tr>
       <tr>
         <td><b>Sarvam</b> (me)</td>
-        <td><b>GUI slice 17</b> — file picker / open-recent, then find-and-replace<br><span class="pill">slice 16 clipboard: done, verified</span></td>
+        <td><b>GUI slice 18</b> — a graphical directory browser, then find-and-replace<br><span class="pill">slice 17 open/new: done, verified</span></td>
         <td>F · IDE &amp; dev tooling</td>
         <td><span class="pill mine">mine, next up</span></td>
       </tr>
@@ -292,8 +294,8 @@
     R55 forward prototypes (compiler <code>6db0adf7</code>) · R13 pack/unpack + integer statistics · R54 builtin arity sweep
     (40 builtins, plus a fixed <code>vartani_cp</code> codegen bug) · R12 three real programs · R53 consolidated checker ·
     R56 module-level globals · R14 <code>set.smlib</code> · R55 forward prototypes · R13 pack/unpack + integer statistics ·
-    R54 builtin arity sweep · GUI slices 13–16 (editor scrolling, Tab, Ctrl-Home/End, find, selection + clipboard).
-    Main today: compiler <code>d0fe190c</code>, IDE <code>2216a476</code>, 19 modules / 186 functions, 186/12/30/18 green.
+    R54 builtin arity sweep · GUI slices 13–17 (editor scrolling, Tab, Ctrl-Home/End, find, selection + clipboard, open/new).
+    Main today: compiler <code>d0fe190c</code>, IDE <code>bc2d5905</code>, 19 modules / 186 functions, 186/12/30/18 green.
   </p>
 
   <h2>4 · Critical path — what to do in what order</h2>
@@ -355,7 +357,7 @@
 
   <div class="hr"></div>
   <p class="note">
-    Snapshot: compiler <code>d0fe190c</code> · IDE <code>2216a476</code> · 19 library modules / 186 functions ·
+    Snapshot: compiler <code>d0fe190c</code> · IDE <code>bc2d5905</code> · 19 library modules / 186 functions ·
     186 + 3 tests · 12 codegen ceilings · 30 pack checks · 18 module-graph tests · 153 proofs · 39 properties ·
     32 keywords · 10 language packs · 189 examples · 29 doc pages · Linux ELF + Windows PE32+ (Windows unverified).
     Percentages are honest judgement against the finish line in section 1, not measurements.
