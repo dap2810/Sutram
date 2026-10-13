@@ -1,0 +1,32 @@
+ayojan sankhyiki
+mukhya() {
+    # mean 3, variance (4+1+0+1+4)/5 = 2
+    pankti a[5]
+    a[0] = 1
+    a[1] = 2
+    a[2] = 3
+    a[3] = 4
+    a[4] = 5
+    likha(purna_prasaran(a, 5))
+    likha("\n")
+    # mean 3, variance (1+1)/2 = 1
+    pankti b[2]
+    b[0] = 2
+    b[1] = 4
+    likha(purna_prasaran(b, 2))
+    likha("\n")
+    # single element: variance 0
+    pankti c[1]
+    c[0] = 7
+    likha(purna_prasaran(c, 1))
+    likha("\n")
+    # truncated mean (1) -> squared deviations (0+1) -> 1/2 truncates to 0
+    pankti d[2]
+    d[0] = 1
+    d[1] = 2
+    likha(purna_prasaran(d, 2))
+    likha("\n")
+    # empty input
+    likha(purna_prasaran(a, 0))
+    likha("\n")
+}
