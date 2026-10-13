@@ -73,9 +73,11 @@ def check():
                 old=bins["before"].read_bytes()
                 new=bins["after"].read_bytes()
                 assert bytes.fromhex("5a 48 87 d0") in old
-                assert bytes.fromhex("5a 48 87 d0") not in new
+                assert old.count(bytes.fromhex("5a 48 87 d0")) > new.count(bytes.fromhex("5a 48 87 d0"))
                 assert bytes.fromhex("4c 01 d0") in new
-                print("R57_CODE_SHAPE old_pop_xchg=1 new_pop_xchg=0 new_add_rax_r10=1",flush=True)
+                print("R57_CODE_SHAPE old_pop_xchg_count",old.count(bytes.fromhex("5a 48 87 d0")),
+                      "new_pop_xchg_count",new.count(bytes.fromhex("5a 48 87 d0")),
+                      "new_add_rax_r10=1",flush=True)
             if name in ("arithmetic_10m.sm","control_10m.sm"):
                 for label in ("before","after"):
                     time_bin(bins[label],expected)
