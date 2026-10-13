@@ -1,0 +1,11 @@
+mukhya() {
+    vitti a = 1
+    vitti shift = 6
+    vitti b = 3
+    vitti c = 4
+    vitti minus = 0 - 5
+    vitti e = 1
+    vitti f = 3
+    likha((a << shift) + ((b + c) << 2))
+    likha(minus + (e << f))
+}

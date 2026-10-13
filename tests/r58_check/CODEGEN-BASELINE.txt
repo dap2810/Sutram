@@ -1,0 +1,11 @@
+# Proposed post-R58 frozen generated-ELF SHA-256 baseline.
+# Observed in SUCCESS GitHub Actions 38463183054; all 8 native stdout cases validated.
+# Distinct from accepted R57 baseline: tests/r57_check/CODEGEN-BASELINE.txt (untouched).
+e9e1142352bc6a03039e8165d51b8e9c7a602d3d8c50c8ee24bdc293948d66f5  tests/r58_check/fold_vs_dynamic_folded.sm
+c60fbc8f7b22e613b5b36b0bd7869ee70c9289270b9197f323b9759499f46a72  tests/r58_check/fold_vs_dynamic_dynamic.sm
+30bf9e4f35f2203f5e2925929fe9833c7d4fadd130eb617c6da17a96d9e27c72  tests/r58_check/div_signed.sm
+7bd5ea230773b11eada43fc2cef34e64b2543969a36af491aa25bef046d82832  tests/r58_check/effectful_identity.sm
+01e495500a9ea93bc465536e1c28c94bec1c84049a82586309cdcce31ed1242f  tests/r58_check/fold_nested.sm
+2375b2a6d001d45350f2e8a22c95983da762ea3cf50cba616c2eeaed929a9467  tests/r57_check/arithmetic_10m.sm
+c87ed1ac07777239e2c1693442fec5b8be76e79d6be3e25d6c9386c42595040a  tests/r57_check/control_10m.sm
+e6625142c744ff0ba114eacff153e52f9b3b9585dcf98daa7e1e1a3a941363eb  tests/r58_check/foldable_10m.sm

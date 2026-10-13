@@ -1,0 +1,11 @@
+mukhya() {
+    vitti neg = 0 - 101
+    vitti pos = 101
+    likha(neg / 2)
+    likha(neg / 4)
+    likha(neg / 8)
+    likha(neg / 16)
+    likha(neg / 64)
+    likha(pos / 8)
+    likha(pos / 64)
+}
