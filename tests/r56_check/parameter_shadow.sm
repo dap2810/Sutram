@@ -1,0 +1,12 @@
+vitti level = 40
+prakriya use_param(level) {
+    level = level + 1
+    pratiyati level
+}
+prakriya use_global() { level = level + 2 pratiyati level }
+mukhya() {
+    likha(use_param(5))
+    likha(level)
+    likha(use_global())
+    likha(level)
+}

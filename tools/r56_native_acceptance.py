@@ -21,6 +21,9 @@ POSITIVE = {
     "initializer_calls.sm": "17\n6\n",
     "global_for.sm": "1\n2\n3\n4\n",
     "global_pointer.sm": "44\n44\n",
+    "parameter_shadow.sm": "6\n40\n42\n42\n",
+    "compound_global.sm": "12\n12\n",
+    "global_string_pointer.sm": "7\n",
 }
 NEGATIVE = ["bad_declaration.sm", "after_main.sm", "duplicate_global.sm",
             "global_array_unsupported.sm"]
@@ -55,6 +58,24 @@ def validate_pe(path):
     assert secs[1][-1] & 0x20000000 == 0, "data must not execute"
     assert secs[1][3] > 0 and len(data) >= secs[1][4]+secs[1][3]
     assert set(data[secs[1][4]:secs[1][4]+secs[1][3]]) == {0}
+    # Verify RIP-relative read/write displacements actually address the PE
+    # .data section, instead of merely asserting section-header correctness.
+    entry_rva = struct.unpack_from("<I",data,pe+0x28)[0]
+    entry_off = secs[0][4] + (entry_rva - secs[0][2])
+    code_end = secs[0][4] + secs[0][1]
+    code = data[entry_off:code_end]
+    targets = []
+    for i in range(len(code)-7):
+        if code[i:i+3] not in (bytes([0x48,0x8b,0x05]),
+                               bytes([0x48,0x89,0x05])):
+            continue
+        disp=struct.unpack_from("<i",code,i+3)[0]
+        target = entry_rva + i + 7 + disp
+        if secs[1][2] <= target < secs[1][2]+secs[1][1]:
+            targets.append(target)
+    assert len(targets)>=4 and set(targets)=={secs[1][2]}, (
+        "RIP relocations must resolve to writable global slot",targets,secs)
+    print("R56_PE_RIP_DATA_PATCH count",len(targets),"rva",hex(secs[1][2]),flush=True)
     print("R56_PE_STRUCT",secs,flush=True)
 def check():
     assert COMPILER.is_file(), "build r48_after first"

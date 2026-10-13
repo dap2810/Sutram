@@ -1,0 +1,8 @@
+vitti total = 0
+prakriya run_steps() {
+    total += 5
+    total++
+    total *= 2
+    pratiyati total
+}
+mukhya() { likha(run_steps()) likha(total) }
