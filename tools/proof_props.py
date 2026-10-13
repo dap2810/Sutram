@@ -1716,6 +1716,269 @@ def prop_fmt_signed(compiler, rng):
     return ok and out == "PASS", out
 
 
+def prop_list_push_get(compiler, rng):
+    """push N values (past initial capacity), get(i) == pushed[i], len == N"""
+    vals = [rng.randint(-100, 100) for _ in range(12)] + [0]
+    lines = ["ayojan list",
+             "mukhya() {",
+             "    vitti l = list_init(2)"]
+    for v in vals:
+        lines.append(f"    yadi (list_push(l, {v}) != 1) {{")
+        lines.append('        likha("FAIL list push\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append(f"    yadi (list_len(l) != {len(vals)}) {{")
+    lines.append('        likha("FAIL list len\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    for i, v in enumerate(vals):
+        lines.append(f"    yadi (list_get(l, {i}) != {v}) {{")
+        lines.append('        likha("FAIL list get\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "list_pg", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_list_stack_lifo(compiler, rng):
+    """stack pops come back in reverse push order; peek is non-destructive;
+    pop/peek on empty give ok 0"""
+    vals = [rng.randint(-100, 100) for _ in range(8)]
+    lines = ["ayojan list",
+             "mukhya() {",
+             "    vitti s = list_init(1)",
+             "    vitti ok = nirmmita(8)"]
+    for v in vals:
+        lines.append(f"    yadi (stack_push(s, {v}) != 1) {{")
+        lines.append('        likha("FAIL stack push\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append(f"    yadi (stack_peek(s, ok) != {vals[-1]}) {{")
+    lines.append('        likha("FAIL stack peek value\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append("    yadi (ok[0] != 1) {")
+    lines.append('        likha("FAIL stack peek ok\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append(f"    yadi (list_len(s) != {len(vals)}) {{")
+    lines.append('        likha("FAIL stack peek removed\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    for i, v in enumerate(reversed(vals)):
+        lines.append(f"    vitti p{i} = stack_pop(s, ok)")
+        lines.append(f"    yadi (p{i} != {v}) {{")
+        lines.append('        likha("FAIL stack LIFO\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+        lines.append("    yadi (ok[0] != 1) {")
+        lines.append('        likha("FAIL stack pop ok\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append("    yadi (stack_empty(s) != 1) {")
+    lines.append('        likha("FAIL stack empty\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append("    vitti pe = stack_pop(s, ok)")
+    lines.append("    yadi (ok[0] != 0) {")
+    lines.append('        likha("FAIL stack pop empty ok\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append("    vitti pk = stack_peek(s, ok)")
+    lines.append("    yadi (ok[0] != 0) {")
+    lines.append('        likha("FAIL stack peek empty ok\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "list_st", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_list_queue_fifo(compiler, rng):
+    """queue dequeues come back in enqueue order, across wrap-around and
+    growth; peek is non-destructive; dequeue/peek on empty give ok 0"""
+    from collections import deque
+    # scenario 1: deterministic wrap + grow
+    # scenario 2: randomized ops against a deque model
+    lines = ["ayojan list",
+             "mukhya() {",
+             "    vitti q = queue_init(2)",
+             "    vitti ok = nirmmita(8)"]
+    lines.append("    yadi (queue_enqueue(q, 1) != 1) {")
+    lines.append('        likha("FAIL queue enqueue\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append("    yadi (queue_enqueue(q, 2) != 1) {")
+    lines.append('        likha("FAIL queue enqueue\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append("    vitti d0 = queue_dequeue(q, ok)")
+    lines.append("    yadi (d0 != 1) {")
+    lines.append('        likha("FAIL queue FIFO 1\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append("    yadi (queue_enqueue(q, 3) != 1) {")
+    lines.append('        likha("FAIL queue enqueue wrap\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append("    yadi (queue_enqueue(q, 4) != 1) {")
+    lines.append('        likha("FAIL queue enqueue grow\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append("    yadi (queue_peek(q, ok) != 2) {")
+    lines.append('        likha("FAIL queue peek\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append("    yadi (queue_len(q) != 3) {")
+    lines.append('        likha("FAIL queue peek removed\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    for i, v in enumerate((2, 3, 4)):
+        lines.append(f"    vitti d{i + 1} = queue_dequeue(q, ok)")
+        lines.append(f"    yadi (d{i + 1} != {v}) {{")
+        lines.append('        likha("FAIL queue FIFO 2\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append("    yadi (queue_empty(q) != 1) {")
+    lines.append('        likha("FAIL queue empty\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append("    vitti de = queue_dequeue(q, ok)")
+    lines.append("    yadi (ok[0] != 0) {")
+    lines.append('        likha("FAIL queue dequeue empty ok\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append("    vitti pk = queue_peek(q, ok)")
+    lines.append("    yadi (ok[0] != 0) {")
+    lines.append('        likha("FAIL queue peek empty ok\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    # scenario 2: randomized
+    model = deque()
+    lines.append("    vitti q2 = queue_init(3)")
+    n_ops = 0
+    for step in range(30):
+        if not model or rng.random() < 0.55:
+            v = rng.randint(-50, 50)
+            model.append(v)
+            lines.append(f"    yadi (queue_enqueue(q2, {v}) != 1) {{")
+            lines.append('        likha("FAIL queue rand enqueue\\n")')
+            lines.append("        pratiyati 1")
+            lines.append("    }")
+        else:
+            v = model.popleft()
+            lines.append(f"    vitti r{n_ops} = queue_dequeue(q2, ok)")
+            lines.append(f"    yadi (r{n_ops} != {v}) {{")
+            lines.append('        likha("FAIL queue rand FIFO\\n")')
+            lines.append("        pratiyati 1")
+            lines.append("    }")
+            lines.append("    yadi (ok[0] != 1) {")
+            lines.append('        likha("FAIL queue rand ok\\n")')
+            lines.append("        pratiyati 1")
+            lines.append("    }")
+            n_ops += 1
+        lines.append(f"    yadi (queue_len(q2) != {len(model)}) {{")
+        lines.append('        likha("FAIL queue rand len\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "list_qu", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_list_len_tracks(compiler, rng):
+    """list_len tracks pushes, inserts, removes and clear exactly"""
+    lines = ["ayojan list",
+             "mukhya() {",
+             "    vitti l = list_init(1)"]
+    expected = 0
+
+    def check_len():
+        lines.append(f"    yadi (list_len(l) != {expected}) {{")
+        lines.append('        likha("FAIL list len tracks\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+
+    check_len()
+    for v in (5, 6, 7):
+        lines.append(f"    list_push(l, {v})")
+        expected += 1
+        check_len()
+    lines.append("    list_insert_at(l, 1, 99)")
+    expected += 1
+    check_len()
+    lines.append("    list_remove_at(l, 0)")
+    expected -= 1
+    check_len()
+    lines.append("    list_remove_at(l, 2)")
+    expected -= 1
+    check_len()
+    lines.append("    list_clear(l)")
+    expected = 0
+    check_len()
+    lines.append("    list_push(l, 42)")
+    expected = 1
+    check_len()
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "list_len", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_list_insert_remove(compiler, rng):
+    """insert/remove preserve the rest: full contents match a Python list;
+    contains / index_of agree with Python"""
+    model = []
+    lines = ["ayojan list",
+             "mukhya() {",
+             "    vitti l = list_init(2)"]
+    for step in range(20):
+        r = rng.random()
+        if not model or r < 0.5:
+            v = rng.randint(0, 9)
+            i = rng.randint(0, len(model))
+            model.insert(i, v)
+            lines.append(f"    yadi (list_insert_at(l, {i}, {v}) != 1) {{")
+            lines.append('        likha("FAIL list insert\\n")')
+            lines.append("        pratiyati 1")
+            lines.append("    }")
+        else:
+            i = rng.randrange(len(model))
+            del model[i]
+            lines.append(f"    yadi (list_remove_at(l, {i}) != 1) {{")
+            lines.append('        likha("FAIL list remove\\n")')
+            lines.append("        pratiyati 1")
+            lines.append("    }")
+        lines.append(f"    yadi (list_len(l) != {len(model)}) {{")
+        lines.append('        likha("FAIL list insert/remove len\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    for j, v in enumerate(model):
+        lines.append(f"    yadi (list_get(l, {j}) != {v}) {{")
+        lines.append('        likha("FAIL list insert/remove content\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    for v in range(12):
+        want_c = 1 if v in model else 0
+        want_i = model.index(v) if v in model else -1
+        lines.append(f"    yadi (list_contains(l, {v}) != {want_c}) {{")
+        lines.append('        likha("FAIL list contains\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+        lines.append(f"    yadi (list_index_of(l, {v}) != {want_i}) {{")
+        lines.append('        likha("FAIL list index_of\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "list_ir", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
 def main():
     compiler = None
     for i, a in enumerate(sys.argv):
@@ -1770,6 +2033,11 @@ def main():
         ("fmt group digits", prop_fmt_group_digits),
         ("fmt fixed decimals", prop_fmt_fixed),
         ("fmt signed", prop_fmt_signed),
+        ("list push/get", prop_list_push_get),
+        ("list stack LIFO", prop_list_stack_lifo),
+        ("list queue FIFO", prop_list_queue_fifo),
+        ("list len tracks", prop_list_len_tracks),
+        ("list insert/remove", prop_list_insert_remove),
     ]
 
     failed = []
