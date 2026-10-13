@@ -20325,8 +20325,9 @@ r57_emit_num:
     push r12
     mov rbx,rdi
     mov r12,rsi
-    cmp rbx,0xFFFFFFFF
-    ja .r57_num_64
+    mov rax,rbx
+    shr rax,32
+    jnz .r57_num_64
     test r12,r12
     jz .r57_num_opcode
     mov dil,0x41             ; REX.B for 32-bit r10d/r11d
