@@ -198,14 +198,14 @@ BN_SETCHAR  equ 41   ; R50 one-byte store into byte-packed text
 ; ============================================================
 section .data
 str_dot_exe  db ".exe", 0
-    msg_usage    db "Sutram - the complete thread", 10
+    msg_usage    db "Sutram — the complete thread", 10
                   db "Usage:", 10
                   db "  sutram <input.sm> <output.bin>          compile", 10
                   db "  sutram --check <input.sm>               parse/check, no output binary", 10
                   db "  sutram --lang <pack> <in.sm> <out.bin>  with language pack", 10
                   db "  sutram -i                               interactive shell", 10
                   db "  sutram --version                        version info", 10, 0
-    msg_version  db "Sutram 1.0 (v29) - the complete thread", 10
+    msg_version  db "Sutram 1.0 (v29) — the complete thread", 10
                   db "Sanskrit-keyword language -> x86-64 machine code", 10, 0
     r48_flag db "--check",0
     r48_msg_near db ": Sutram Error [E_PARSE]: near '",0
@@ -409,7 +409,7 @@ r54_builtin_arity_table:
     str_help1    db "sahayata", 0
     str_help2    db "help", 0
     str_sarvam   db "sarvam", 0
-    msg_shell_banner db "Sutram Shell v1.0 - the complete thread", 10
+    msg_shell_banner db "Sutram Shell v1.0 — the complete thread", 10
                       db "Type a Sutram statement and press Enter. It runs instantly.", 10
                       db "Commands: sahayata (help) | nirgat (exit) | sarvam (show session)", 10, 10, 0
     msg_shell_prompt db "sutra> ", 0
@@ -12475,8 +12475,13 @@ r46_live_callee_saved_vars:
 
 ; gen_expr(rax = expression node)
 gen_expr:
+    ; R58: fold a bounded pure integer subtree before generating native code.
+    ; The optimizer returns the original node or a proven equivalent AST node.
     push rbx
-    mov rbx, rax
+    mov rdi,rax
+    xor esi,esi
+    call r58_fold_tree
+    mov rbx,rax
     mov rax, [rbx]            ; node type
     cmp rax, AST_NUM
     je .ge_num
@@ -16043,9 +16048,14 @@ gen_expr:
     call binop_needs_float
     test rax, rax
     jnz .ge_fbinop
+    ; R58: signed division by an exact positive power of two, with a
+    ; correction for negative inputs so rounding stays toward zero (IDIV).
+    mov rdi,rbx
+    call r58_is_div_pow2
+    test rax,rax
+    jnz .ge_r58_div_pow2
     ; Logical && / || require true short-circuit evaluation. Handle them
     ; before the generic binary path, which necessarily evaluates both sides.
-    ; All non-logical operators continue through the byte-identical old paths.
     push rbx
     mov rax, [rbx+8]         ; operator
     cmp rax, OP_LAND
@@ -16070,6 +16080,16 @@ gen_expr:
     cmp rax, OP_MUL
     je .ge_binop_mul_imm
     jmp .ge_binop_generic
+.ge_r58_div_pow2:
+    ; RHS is a positive literal 2,4,8,16,32,64: no side effects.
+    ; rax = LHS, output signed truncating quotient via r58_div_pow2.
+    mov rax,[rbx+16]
+    call gen_expr
+    mov rdi,[rbx+24]
+    mov rdi,[rdi+8]
+    call r58_emit_div_pow2
+    pop rbx
+    ret
 .ge_binop_land_sc:
     ; Undo .ge_binop's extra save; gen_expr's entry save remains on stack.
     pop rbx
@@ -20098,6 +20118,218 @@ lookup_var:
     mov rdi, rbx
     call alloc_var
     pop r13
+    pop r12
+    pop rbx
+    ret
+
+; ============================================================
+; R58: SAFE integer constant folding / limited strength reduction.
+;
+; r58_fold_tree returns an equivalent AST pointer and rewrites only numeric
+; literal-literal BINOP nodes (integer arithmetic, bitwise, masked shifts).
+; It never descends into calls, float/string nodes or arbitrary AST forms.
+; AST_BINOP recursion is conservatively capped to 64 for hostile input.
+; The parser's earlier fold_const already handles simple +/-/* and signed
+; integer / and %, so this pass extends that without changing old behavior.
+;
+; Identity reduction x+0, x-0, x*1 is only allowed after checking that
+; the expression does not require floating arithmetic. The original LHS
+; is still evaluated exactly once, and the RHS is a literal (no effects).
+; ============================================================
+r58_fold_tree:
+    push rbx
+    push r12
+    mov rbx,rdi
+    mov r12,rsi
+    test rbx,rbx
+    jz .r58_ft_original
+    cmp qword [rbx],AST_BINOP
+    jne .r58_ft_original
+    cmp r12,64
+    jae .r58_ft_original
+    mov rdi,[rbx+16]
+    lea rsi,[r12+1]
+    call r58_fold_tree
+    mov [rbx+16],rax
+    mov rdi,[rbx+24]
+    lea rsi,[r12+1]
+    call r58_fold_tree
+    mov [rbx+24],rax
+    mov rcx,[rbx+16]
+    mov rdx,[rbx+24]
+    cmp qword [rcx],AST_NUM
+    jne .r58_ft_identity
+    cmp qword [rdx],AST_NUM
+    jne .r58_ft_identity
+    mov r8,[rbx+8]
+    mov rax,[rcx+8]
+    mov r9,[rdx+8]
+    cmp r8,OP_ADD
+    je .r58_ft_add
+    cmp r8,OP_SUB
+    je .r58_ft_sub
+    cmp r8,OP_MUL
+    je .r58_ft_mul
+    cmp r8,OP_AND
+    je .r58_ft_and
+    cmp r8,OP_OR
+    je .r58_ft_or
+    cmp r8,OP_XOR
+    je .r58_ft_xor
+    cmp r8,OP_SHL
+    je .r58_ft_shl
+    cmp r8,OP_SHR
+    je .r58_ft_shr
+    jmp .r58_ft_original
+.r58_ft_add:
+    add rax,r9
+    jmp .r58_ft_set
+.r58_ft_sub:
+    sub rax,r9
+    jmp .r58_ft_set
+.r58_ft_mul:
+    imul rax,r9
+    jmp .r58_ft_set
+.r58_ft_and:
+    and rax,r9
+    jmp .r58_ft_set
+.r58_ft_or:
+    or rax,r9
+    jmp .r58_ft_set
+.r58_ft_xor:
+    xor rax,r9
+    jmp .r58_ft_set
+.r58_ft_shl:
+    mov rcx,r9
+    shl rax,cl
+    jmp .r58_ft_set
+.r58_ft_shr:
+    mov rcx,r9
+    shr rax,cl
+.r58_ft_set:
+    mov qword [rbx],AST_NUM
+    mov [rbx+8],rax
+    mov rax,rbx
+    jmp .r58_ft_done
+.r58_ft_identity:
+    ; Only eliminate a harmless *integer* algebraic identity.
+    mov rax,[rdx]
+    cmp rax,AST_NUM
+    jne .r58_ft_original
+    mov rax,[rdx+8]
+    test rax,rax
+    jz .r58_ft_id_zero
+    cmp rax,1
+    jne .r58_ft_original
+    cmp qword [rbx+8],OP_MUL
+    jne .r58_ft_original
+    jmp .r58_ft_check_type
+.r58_ft_id_zero:
+    cmp qword [rbx+8],OP_ADD
+    je .r58_ft_check_type
+    cmp qword [rbx+8],OP_SUB
+    jne .r58_ft_original
+.r58_ft_check_type:
+    mov rdi,rbx
+    call binop_needs_float
+    test rax,rax
+    jnz .r58_ft_original
+    mov rax,[rbx+16]
+    jmp .r58_ft_done
+.r58_ft_original:
+    mov rax,rbx
+.r58_ft_done:
+    pop r12
+    pop rbx
+    ret
+
+; In rdi=AST node; returns 1 iff op is DIV and RHS is a *positive*
+; exact power of two in 2..64. Float arithmetic is filtered by caller.
+r58_is_div_pow2:
+    xor eax,eax
+    cmp qword [rdi+8],OP_DIV
+    jne .r58_id_no
+    mov rcx,[rdi+24]
+    cmp qword [rcx],AST_NUM
+    jne .r58_id_no
+    mov rcx,[rcx+8]
+    cmp rcx,2
+    je .r58_id_yes
+    cmp rcx,4
+    je .r58_id_yes
+    cmp rcx,8
+    je .r58_id_yes
+    cmp rcx,16
+    je .r58_id_yes
+    cmp rcx,32
+    je .r58_id_yes
+    cmp rcx,64
+    jne .r58_id_no
+.r58_id_yes:
+    mov eax,1
+.r58_id_no:
+    ret
+
+; Input rdi=positive power-of-two 2..64, generated RAX has signed dividend.
+; Signed truncate-toward-zero correction:
+;   q=(x+((x>>63) & (divisor-1))) >> log2(divisor)
+; Note: 0x7fffffffffffffff + bias not possible on positive x; on
+; negative x, bias <=63 and cannot overflow signed to positive outside
+; range. RHS count known at compile time.
+r58_emit_div_pow2:
+    push rbx
+    push r12
+    mov rbx,rdi
+    xor r12,r12
+.r58_div_log_loop:
+    shr rbx,1
+    inc r12
+    cmp rbx,1
+    ja .r58_div_log_loop
+    ; mov rdx,rax
+    mov dil,0x48
+    call emit_byte
+    mov dil,0x89
+    call emit_byte
+    mov dil,0xC2
+    call emit_byte
+    ; sar rdx,63 (sign mask)
+    mov dil,0x48
+    call emit_byte
+    mov dil,0xC1
+    call emit_byte
+    mov dil,0xFA
+    call emit_byte
+    mov dil,63
+    call emit_byte
+    ; and edx,divisor-1 (mask <=63)
+    mov dil,0x83
+    call emit_byte
+    mov dil,0xE2
+    call emit_byte
+    ; Encode the correction mask as imm8: (1<<log2(divisor))-1.
+    mov rcx,r12
+    mov rax,1
+    shl rax,cl
+    dec rax
+    mov dil,al
+    call emit_byte
+    ; add rax,rdx
+    mov dil,0x48
+    call emit_byte
+    mov dil,0x01
+    call emit_byte
+    mov dil,0xD0
+    call emit_byte
+    ; sar rax, log2(divisor)
+    mov dil,0x48
+    call emit_byte
+    mov dil,0xC1
+    call emit_byte
+    mov dil,0xF8
+    call emit_byte
+    mov rdi,r12
+    call emit_byte
     pop r12
     pop rbx
     ret
