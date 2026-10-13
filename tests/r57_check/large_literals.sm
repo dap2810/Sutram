@@ -1,0 +1,7 @@
+mukhya() {
+    vitti a = 5
+    vitti b = 6
+    likha((a + b) * 2147483648)
+    likha((a + b) + 4294967296)
+    likha((a + b) * 3)
+}
