@@ -1,0 +1,64 @@
+R58 GENUINE NATIVE OBSERVED OUTPUT (copied from green GitHub Actions stdout, not simulated)
+Run https://github.com/dap2810/Sutram/actions/runs/38463770927 ; Job 115525337441 = SUCCESS
+Tested source commit eb16dd137d1b13cfb1592ae14f8c88023241b0a5
+Compiler-source SHA256 35d85b803924c96db111a62c2867a3f28b80a4778605526e8cf3175823e89aff
+Compiler: hand-written pure NASM / standalone Linux native ELF.
+The original pre-R58 R57 compiler from 29e7c106 was compiled in the same runner and compared
+against the new compiler. Actual native stdout/exit status is checked on EVERY fixture run.
+Timers: Python perf_counter_ns, CPU affinity when available, 2 warmups, 3 measured interleaved
+pairs. best-of-three AND median AND all raw samples are included. Runner variance exists.
+Neither arbitrary-binary peephole nor LICM is claimed implemented. R57 arithmetic and
+simple control emit bitwise IDENTICAL binaries, so their runtime variation is runner noise.
+
+R58_CPU_PIN 0
+R58_NATIVE tests/r58_check/fold_vs_dynamic_folded.sm before sha256 83b71844a03e00ebe54bfd6840b09d85494e3a5a2f9b010ae781629449d5631e bytes 510 stdout '92\n3\n'
+R58_NATIVE tests/r58_check/fold_vs_dynamic_folded.sm after sha256 e9e1142352bc6a03039e8165d51b8e9c7a602d3d8c50c8ee24bdc293948d66f5 bytes 431 stdout '92\n3\n'
+R58_NATIVE tests/r58_check/fold_vs_dynamic_dynamic.sm before sha256 c60fbc8f7b22e613b5b36b0bd7869ee70c9289270b9197f323b9759499f46a72 bytes 552 stdout '92\n3\n'
+R58_NATIVE tests/r58_check/fold_vs_dynamic_dynamic.sm after sha256 c60fbc8f7b22e613b5b36b0bd7869ee70c9289270b9197f323b9759499f46a72 bytes 552 stdout '92\n3\n'
+R58_NATIVE tests/r58_check/div_signed.sm before sha256 63b628ff8eacd84359c9431d7926a95df87fffb55f02fe5e25d1114cf2dc6959 bytes 1214 stdout '-50\n-25\n-12\n-6\n-1\n12\n1\n'
+R58_NATIVE tests/r58_check/div_signed.sm after sha256 30bf9e4f35f2203f5e2925929fe9833c7d4fadd130eb617c6da17a96d9e27c72 bytes 1207 stdout '-50\n-25\n-12\n-6\n-1\n12\n1\n'
+R58_NATIVE tests/r58_check/effectful_identity.sm before sha256 88013030490a4df8c6faffd5f89813d649b937d6545a8c2ca2bb9285ea39038c bytes 787 stdout '1\n2\n3\n3\n'
+R58_NATIVE tests/r58_check/effectful_identity.sm after sha256 7bd5ea230773b11eada43fc2cef34e64b2543969a36af491aa25bef046d82832 bytes 765 stdout '1\n2\n3\n3\n'
+R58_NATIVE tests/r58_check/fold_nested.sm before sha256 6797f5cf6622046747991c197730a8140c68993d75f097ece7ce38094d30a1d5 bytes 1463 stdout '64\n56\n12\n3\n64\n59\n11\n11\n11\n'
+R58_NATIVE tests/r58_check/fold_nested.sm after sha256 01e495500a9ea93bc465536e1c28c94bec1c84049a82586309cdcce31ed1242f bytes 1347 stdout '64\n56\n12\n3\n64\n59\n11\n11\n11\n'
+R58_NATIVE tests/r57_check/arithmetic_10m.sm before sha256 2375b2a6d001d45350f2e8a22c95983da762ea3cf50cba616c2eeaed929a9467 bytes 348 stdout '99999990000000\n'
+R58_NATIVE tests/r57_check/arithmetic_10m.sm after sha256 2375b2a6d001d45350f2e8a22c95983da762ea3cf50cba616c2eeaed929a9467 bytes 348 stdout '99999990000000\n'
+R58_NATIVE tests/r57_check/control_10m.sm before sha256 c87ed1ac07777239e2c1693442fec5b8be76e79d6be3e25d6c9386c42595040a bytes 335 stdout '49999995000000\n'
+R58_NATIVE tests/r57_check/control_10m.sm after sha256 c87ed1ac07777239e2c1693442fec5b8be76e79d6be3e25d6c9386c42595040a bytes 335 stdout '49999995000000\n'
+R58_NATIVE tests/r58_check/foldable_10m.sm before sha256 40420bac902f13852be5228a2af0e6775c324b22a750335052143079a35793d3 bytes 367 stdout '640000000\n'
+R58_NATIVE tests/r58_check/foldable_10m.sm after sha256 e6625142c744ff0ba114eacff153e52f9b3b9585dcf98daa7e1e1a3a941363eb bytes 342 stdout '640000000\n'
+R58_FOLD_DEMO folded_bytes 431 unfolded_bytes 552 folded_changed_vs_before=1 same_stdout=1
+R58_TIMING tests/r57_check/arithmetic_10m.sm iterations=10000000 before_best3_ms=5.628233 after_best3_ms=5.539381 best_speedup=1.0160x before_median_ms=5.679779 after_median_ms=5.664797 median_speedup=1.0026x before_samples_ms=[5.679779, 5.628233, 5.719579] after_samples_ms=[5.539381, 5.673641, 5.664797]
+R58_TIMING tests/r57_check/control_10m.sm iterations=10000000 before_best3_ms=4.127783 after_best3_ms=4.106482 best_speedup=1.0052x before_median_ms=4.129836 after_median_ms=4.107434 median_speedup=1.0055x before_samples_ms=[4.129836, 4.127783, 7.042524] after_samples_ms=[4.107434, 4.106482, 7.15365]
+R58_TIMING tests/r58_check/foldable_10m.sm iterations=10000000 before_best3_ms=10.893417 after_best3_ms=4.335642 best_speedup=2.5125x before_median_ms=15.331692 after_median_ms=7.212427 median_speedup=2.1257x before_samples_ms=[15.503156, 15.331692, 10.893417] after_samples_ms=[7.282351, 7.212427, 4.335642]
+R58_ACCEPTED native_cases 8 fold_demo=1 arithmetic_control_foldable_timed=3
+R57_R46_OUTPUT_ACCEPTED samples 4 different_binaries 1
+R57_FROZEN_CODEGEN_ACCEPTED 6 / 6
+R56_GLOBAL_ACCEPTED scalar_read_write=1 shadowing=1 recursion=1 ordered_init=1 nonliteral_init=1 function_init=1 zero_default=1 global_for=1 pointer_index=1 bad_declarations=4 pe_data=1
+R55_FORWARD_ACCEPTED two_cycle=1 three_cycle=1 prototype_mismatch=1 type_mismatch=1 duplicate=1 missing=1 global_vitti_now_supported=1
+R54_ACCEPTED builtin_ids=40 valid_arity=43 invalid_arity=80 raw_memory=1 arg_capacity=1
+STAGE2_PASS structural=3 nested=2 unclosed=1 undefined=3
+R49_AUDIT_STATUS wrong_provenance=0 unlocated=0 universal_diagnostics_accepted=1 cases=15 failures=0
+R51_ACCEPTANCE PASS failed_cases 0
+R50_ACCEPTED: runtime byte writes, byte truncation, char_at, vartani_len and vartani_cmp; 2/2 native executions; 2/2 --check
+R52_ACCEPTED PASS indexed_char_code=1 likh_store=1 dvaram_default_mode=0644 dvaram_explicit_mode=0600 bad_arity=5
+PASS=186
+R54_MUSE_ACCEPTED original=186 example_local=3 original_golden_changes=0
+  30/30 pack checks pass (10 packs x 3 keyword groups)
+Ran 18 tests in 0.008s
+R57_FROZEN_CODEGEN_ACCEPTED 6 / 6
+R58_FROZEN tests/r58_check/fold_vs_dynamic_folded.sm e9e1142352bc6a03039e8165d51b8e9c7a602d3d8c50c8ee24bdc293948d66f5
+R58_FROZEN tests/r58_check/fold_vs_dynamic_dynamic.sm c60fbc8f7b22e613b5b36b0bd7869ee70c9289270b9197f323b9759499f46a72
+R58_FROZEN tests/r58_check/div_signed.sm 30bf9e4f35f2203f5e2925929fe9833c7d4fadd130eb617c6da17a96d9e27c72
+R58_FROZEN tests/r58_check/effectful_identity.sm 7bd5ea230773b11eada43fc2cef34e64b2543969a36af491aa25bef046d82832
+R58_FROZEN tests/r58_check/fold_nested.sm 01e495500a9ea93bc465536e1c28c94bec1c84049a82586309cdcce31ed1242f
+R58_FROZEN tests/r57_check/arithmetic_10m.sm 2375b2a6d001d45350f2e8a22c95983da762ea3cf50cba616c2eeaed929a9467
+R58_FROZEN tests/r57_check/control_10m.sm c87ed1ac07777239e2c1693442fec5b8be76e79d6be3e25d6c9386c42595040a
+R58_FROZEN tests/r58_check/foldable_10m.sm e6625142c744ff0ba114eacff153e52f9b3b9585dcf98daa7e1e1a3a941363eb
+R58_FROZEN_CODEGEN_ACCEPTED 8 / 8
+158 passed, 0 failed, 158 total
+44/44 properties hold
+[36;1mecho R58_GUI_GOLDENS_UNCHANGED[0m
+R58_GUI_GOLDENS_UNCHANGED
+
+Full CI log and repeatable source: https://github.com/dap2810/Sutram/actions/runs/38463770927
