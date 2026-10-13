@@ -1,0 +1,42 @@
+ayojan strb
+mukhya() {
+    # pack cells [104, 105] ("hi") -> bytes
+    vitti cells = nirmmita(8 * 8)
+    cells[0] = 104
+    cells[1] = 105
+    vitti out = nirmmita(16)
+    likha(strb_pack(cells, 2, out))
+    likha("\n")
+    likha(char_at(out, 0))
+    likha("\n")
+    likha(char_at(out, 1))
+    likha("\n")
+    # unpack the bytes back into cells
+    vitti back = nirmmita(8 * 8)
+    likha(strb_unpack(out, 2, back))
+    likha("\n")
+    likha(back[0])
+    likha("\n")
+    likha(back[1])
+    likha("\n")
+    # round trip on a longer input: unpack(pack(x)) == x
+    cells[0] = 97
+    cells[1] = 98
+    cells[2] = 99
+    cells[3] = 100
+    strb_pack(cells, 4, out)
+    strb_unpack(out, 4, back)
+    likha(back[0])
+    likha("\n")
+    likha(back[1])
+    likha("\n")
+    likha(back[2])
+    likha("\n")
+    likha(back[3])
+    likha("\n")
+    # empty edge: only the terminator is written
+    likha(strb_pack(cells, 0, out))
+    likha("\n")
+    likha(strb_unpack(out, 0, back))
+    likha("\n")
+}
