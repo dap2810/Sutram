@@ -32,6 +32,73 @@
 # str_split/str_join (R9): [len0, b0, b1, ..., len1, b0, ...], one byte
 # value per cell.
 
+# strb_pack(cells, n, out) — pack a qword-cell sequence (one byte value
+# per cell, the str_split/strb_split segment format) into contiguous
+# bytes. Writes a 0 terminator at out[n]. Returns n. This is the
+# boundary helper: hand-written repack loops (one per call site, each a
+# chance to get the stride wrong) become one call. n <= 0 writes only
+# the terminator and returns 0.
+# POINTER ARITHMETIC IS IN BYTES: to pack starting at cell i of a cell
+# array, pass cells + i*8, not cells + i.
+prakriya strb_pack(cells, n, out) {
+    vitti c = cells
+    vitti cnt = n
+    vitti dst = out
+    vitti i = 0
+    yadi (cnt <= 0) {
+        set_char(dst, 0, 0)
+        pratiyati 0
+    }
+    yavat (i < cnt) {
+        set_char(dst, i, c[i])
+        i = i + 1
+    }
+    set_char(dst, cnt, 0)
+    pratiyati cnt
+}
+
+# strb_unpack(bytes, n, out) — the inverse: expand n contiguous bytes
+# into qword cells (one byte value per cell). Writes a 0 terminator cell
+# at out[n]. Returns n. n <= 0 writes only the terminator, returns 0.
+# POINTER ARITHMETIC IS IN BYTES: to unpack into cell i of a cell
+# array, pass out + i*8, not out + i.
+prakriya strb_unpack(bytes, n, out) {
+    vitti s = bytes
+    vitti cnt = n
+    vitti dst = out
+    vitti i = 0
+    yadi (cnt <= 0) {
+        dst[0] = 0
+        pratiyati 0
+    }
+    yavat (i < cnt) {
+        dst[i] = char_at(s, i)
+        i = i + 1
+    }
+    dst[cnt] = 0
+    pratiyati cnt
+}
+
+# strb_dup(src, n, out) — copy n bytes verbatim ("make me a real byte
+# string from this"). Writes a 0 terminator at out[n]. Returns n.
+# n <= 0 writes only the terminator, returns 0.
+prakriya strb_dup(src, n, out) {
+    vitti s = src
+    vitti cnt = n
+    vitti dst = out
+    vitti i = 0
+    yadi (cnt <= 0) {
+        set_char(dst, 0, 0)
+        pratiyati 0
+    }
+    yavat (i < cnt) {
+        set_char(dst, i, char_at(s, i))
+        i = i + 1
+    }
+    set_char(dst, cnt, 0)
+    pratiyati cnt
+}
+
 prakriya strb_len(s) {
     pratiyati vartani_len(s)
 }
@@ -155,11 +222,7 @@ prakriya strb_split(src, sn, sep, sepn, parts, maxparts) {
     }
     yadi (splen == 0) {
         dst[0] = slen
-        ci = 0
-        yavat (ci < slen) {
-            dst[1 + ci] = char_at(s, ci)
-            ci = ci + 1
-        }
+        strb_unpack(s, slen, dst + 8)
         pratiyati 1
     }
     done = 0
@@ -185,13 +248,11 @@ prakriya strb_split(src, sn, sep, sepn, parts, maxparts) {
         yadi (nseg < maxp) {
             seglen = segend - segstart
             dst[wpos] = seglen
-            wpos = wpos + 1
-            sk = segstart
-            yavat (sk < segend) {
-                dst[wpos] = char_at(s, sk)
-                wpos = wpos + 1
-                sk = sk + 1
-            }
+            # unpack writes a 0 cell at dst[wpos+1+seglen]; the next
+            # segment's length overwrites it (or it trails harmlessly).
+            # Cell index -> byte offset: (wpos + 1) * 8.
+            strb_unpack(s + segstart, seglen, dst + (wpos + 1) * 8)
+            wpos = wpos + 1 + seglen
             nseg = nseg + 1
         }
         yadi (fpos < 0) {
@@ -229,13 +290,12 @@ prakriya strb_join(parts, count, sep, sepn, out) {
     yavat (si < cnt) {
         seglen = p[rpos]
         rpos = rpos + 1
-        k = 0
-        yavat (k < seglen) {
-            set_char(dst, wpos, p[rpos])
-            wpos = wpos + 1
-            rpos = rpos + 1
-            k = k + 1
-        }
+        # pack writes a 0 byte at dst[wpos+seglen]; the separator (or
+        # the final terminator below) overwrites it.
+        # Cell index -> byte offset: rpos * 8.
+        strb_pack(p + rpos * 8, seglen, dst + wpos)
+        wpos = wpos + seglen
+        rpos = rpos + seglen
         yadi (si < cnt - 1) {
             q = 0
             yavat (q < splen) {
