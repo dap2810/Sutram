@@ -1,0 +1,38 @@
+ayojan fmt
+mukhya() {
+    vitti out = nirmmita(128)
+    vitti n = 0
+    # left pad with spaces
+    n = fmt_pad_left("hi", 2, 5, 32, out)
+    likha(1, out, n)
+    likha("\n")
+    # right pad with '0'
+    n = fmt_pad_right("hi", 2, 5, 48, out)
+    likha(1, out, n)
+    likha("\n")
+    # centre, odd extra goes right
+    n = fmt_pad_center("hi", 2, 5, 45, out)
+    likha(1, out, n)
+    likha("\n")
+    # centre, even
+    n = fmt_pad_center("hi", 2, 6, 45, out)
+    likha(1, out, n)
+    likha("\n")
+    # width <= length: copy unchanged
+    n = fmt_pad_left("hello", 5, 3, 32, out)
+    likha(1, out, n)
+    likha("\n")
+    n = fmt_pad_right("hello", 5, 5, 32, out)
+    likha(1, out, n)
+    likha("\n")
+    # empty input pads to all fill
+    n = fmt_pad_left("", 0, 3, 42, out)
+    likha(1, out, n)
+    likha("\n")
+    # pad a formatted number: "42" zero-padded to 5
+    vitti num = nirmmita(32)
+    vitti nd = fmt_dec(42, num)
+    n = fmt_pad_left(num, nd, 5, 48, out)
+    likha(1, out, n)
+    likha("\n")
+}
