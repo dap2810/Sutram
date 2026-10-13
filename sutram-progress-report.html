@@ -80,7 +80,7 @@
     <div class="row"><div class="lab">Library proofs <span class="pill">153 passed</span></div><div class="bar"><i class="g" style="width:100%"></i></div><div class="pct">153/153</div></div>
     <div class="row"><div class="lab">Library properties <span class="pill">39 hold</span></div><div class="bar"><i class="g" style="width:100%"></i></div><div class="pct">39/39</div></div>
     <div class="row"><div class="lab">R46 ordinary-codegen parity</div><div class="bar"><i class="g" style="width:100%"></i></div><div class="pct">4/4</div></div>
-    <div class="row"><div class="lab">IDE slices (Linux X11)</div><div class="bar"><i class="g" style="width:100%"></i></div><div class="pct">16/16</div></div>
+    <div class="row"><div class="lab">IDE slices (Linux X11)</div><div class="bar"><i class="g" style="width:100%"></i></div><div class="pct">17/17</div></div>
     <div class="row"><div class="lab">Windows end-to-end run</div><div class="bar"><i class="l" style="width:8%"></i></div><div class="pct">8%</div></div>
   </div>
   <div class="note" style="margin-top:-4px">
@@ -135,7 +135,7 @@
       <tr><td>06</td><td>Massive ecosystem</td><td class="n">2%</td><td class="n">2%</td><td class="n">—</td>
         <td>No package manager, no third-party libraries. Structural — needs a community first.</td></tr>
       <tr><td>07</td><td>Developer productivity</td><td class="n">42%</td><td class="n">50%</td><td class="n">+8</td>
-        <td>The IDE grew from a basic editor to 16 working features — run, save/load, 8-level undo, full caret movement, Tab, find, both panes scrolling, and a selection model with copy/cut/paste. No debugger, formatter or file picker yet.</td></tr>
+        <td>The IDE grew from a basic editor to 17 working features — run, save/load, 8-level undo, full caret movement, Tab, find, both panes scrolling, a selection model with copy/cut/paste, and open-by-path / new buffer. No debugger, formatter or graphical file browser yet.</td></tr>
       <tr><td>08</td><td>Memory safety</td><td class="n">16%</td><td class="n">17%</td><td class="n">+1</td>
         <td>Byte-write <code>set_char</code> added, but deliberately <b>unbounded</b>; the builtin-bounds sweep (R54) documents every raw-pointer precondition rather than adding checks. Still no GC or borrow checking.</td></tr>
       <tr><td>09</td><td>Security features</td><td class="n">3%</td><td class="n">3%</td><td class="n">—</td>
@@ -259,7 +259,7 @@
 
   <div class="hr"></div>
   <p class="note">
-    Snapshot: compiler <code>d0fe190c</code> (20,687 lines, 179,888 B binary) · IDE <code>2216a476</code> (2,324 lines, 16 slices) ·
+    Snapshot: compiler <code>d0fe190c</code> (20,687 lines, 179,888 B binary) · IDE <code>bc2d5905</code> (2,523 lines, 17 slices) ·
     19 library modules / 186 functions · 32 keywords · 10 language packs · 189 example programs · 29 docs pages ·
     Linux ELF + Windows PE32+ (Windows unverified).
     Percentages are judgement against a mature-language yardstick, not measurements; speed figures marked
