@@ -1,0 +1,14 @@
+vitti a = 3
+vitti b = a + 4
+vitti c = b * 2
+vitti empty
+vitti d = c + a
+prakriya read_global() { pratiyati d + empty }
+mukhya() {
+    likha(a)
+    likha(b)
+    likha(c)
+    likha(empty)
+    likha(d)
+    likha(read_global())
+}

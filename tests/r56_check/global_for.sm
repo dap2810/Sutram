@@ -1,0 +1,5 @@
+vitti step = 0
+mukhya() {
+    punaravartana step = 1 to 3 { likha(step) }
+    likha(step)
+}
