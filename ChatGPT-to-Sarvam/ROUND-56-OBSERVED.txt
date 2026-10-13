@@ -1,0 +1,48 @@
+Sutram Round 56 — ACTUAL observed output (not simulated)
+Run: https://github.com/dap2810/Sutram/actions/runs/38421928070
+Native job: 115381203349 (SUCCESS)
+Tested source commit: e84df7283dd8028ffcb7a1c6b75eb7503d0d4b2f
+All lines below were copied from the actual successful GitHub Actions job log.
+
+2026-10-13T15:25:39.7153213Z R56_NATIVE shared_rw.sm compile 0 'OK: compiled 710 bytes\n' ''
+2026-10-13T15:25:39.7155485Z R56_NATIVE shared_rw.sm execute 0 '7\n9\n9\n9\n' ''
+2026-10-13T15:25:39.7161771Z R56_NATIVE local_shadow.sm compile 0 'OK: compiled 401 bytes\n' ''
+2026-10-13T15:25:39.7164941Z R56_NATIVE local_shadow.sm execute 0 '100\n31\n' ''
+2026-10-13T15:25:39.7170489Z R56_NATIVE recursive_global.sm compile 0 'OK: compiled 431 bytes\n' ''
+2026-10-13T15:25:39.7173503Z R56_NATIVE recursive_global.sm execute 0 '5\n7\n' ''
+2026-10-13T15:25:39.7178971Z R56_NATIVE ordered_initializers.sm compile 0 'OK: compiled 1010 bytes\n' ''
+2026-10-13T15:25:39.7182000Z R56_NATIVE ordered_initializers.sm execute 0 '3\n7\n14\n0\n17\n17\n' ''
+2026-10-13T15:25:39.7187543Z R56_NATIVE initializer_calls.sm compile 0 'OK: compiled 407 bytes\n' ''
+2026-10-13T15:25:39.7190252Z R56_NATIVE initializer_calls.sm execute 0 '17\n6\n' ''
+2026-10-13T15:25:39.7195637Z R56_NATIVE global_for.sm compile 0 'OK: compiled 395 bytes\n' ''
+2026-10-13T15:25:39.7204361Z R56_NATIVE global_for.sm execute 0 '1\n2\n3\n4\n' ''
+2026-10-13T15:25:39.7204786Z R56_NATIVE global_pointer.sm compile 0 'OK: compiled 464 bytes\n' ''
+2026-10-13T15:25:39.7207575Z R56_NATIVE global_pointer.sm execute 0 '44\n44\n' ''
+2026-10-13T15:25:39.7213342Z R56_NATIVE parameter_shadow.sm compile 0 'OK: compiled 691 bytes\n' ''
+2026-10-13T15:25:39.7216127Z R56_NATIVE parameter_shadow.sm execute 0 '6\n40\n42\n42\n' ''
+2026-10-13T15:25:39.7221308Z R56_NATIVE compound_global.sm compile 0 'OK: compiled 419 bytes\n' ''
+2026-10-13T15:25:39.7224279Z R56_NATIVE compound_global.sm execute 0 '12\n12\n' ''
+2026-10-13T15:25:39.7229538Z R56_NATIVE global_string_pointer.sm compile 0 'OK: compiled 266 bytes\n' ''
+2026-10-13T15:25:39.7232683Z R56_NATIVE global_string_pointer.sm execute 0 '7\n' ''
+2026-10-13T15:25:39.7237691Z R56_NATIVE bad_declaration.sm compile 1 "\nSutram Error: parse error at line 1:7 near token '='\n  vitti = 4\n        ^\nHint: check the keyword spelling and syntax near this spot.\n" ''
+2026-10-13T15:25:39.7243441Z R56_NATIVE after_main.sm compile 1 "\nSutram Error: parse error at line 2:1 near token 'vitti'\n  vitti too_late = 9\n  ^\nHint: check the keyword spelling and syntax near this spot.\n" ''
+2026-10-13T15:25:39.7249771Z R56_NATIVE duplicate_global.sm compile 1 'Sutram Error: duplicate module-level vitti name\n' ''
+2026-10-13T15:25:39.7256924Z R56_NATIVE global_array_unsupported.sm compile 1 "\nSutram Error: parse error at line 2:1 near token 'mukhya'\n  mukhya() { likha(1) }\n  ^\nHint: check the keyword spelling and syntax near this spot.\n" ''
+2026-10-13T15:25:39.7262026Z R56_NATIVE shared_rw.sm compile 0 'OK: compiled 734 bytes\n' ''
+2026-10-13T15:25:39.7265069Z R56_PE_RIP_DATA_PATCH count 6 rva 0x2000
+2026-10-13T15:25:39.7265809Z R56_PE_STRUCT [('text', 1576, 4096, 2048, 512, 1610612768), ('.data', 8, 8192, 512, 2560, 3221225536)]
+2026-10-13T15:25:39.7266959Z R56_GLOBAL_ACCEPTED scalar_read_write=1 shadowing=1 recursion=1 ordered_init=1 nonliteral_init=1 function_init=1 zero_default=1 global_for=1 pointer_index=1 bad_declarations=4 pe_data=1
+2026-10-13T15:25:39.8690890Z R55_FORWARD_ACCEPTED two_cycle=1 three_cycle=1 prototype_mismatch=1 type_mismatch=1 duplicate=1 missing=1 global_vitti_now_supported=1
+2026-10-13T15:25:40.0147777Z R54_ACCEPTED builtin_ids=40 valid_arity=43 invalid_arity=80 raw_memory=1 arg_capacity=1
+2026-10-13T15:25:40.0571651Z R48_ACCEPTED_CHECK_TESTS,parse_diags=3,native_byte_equal=4,check_valid=1,no_output=1
+2026-10-13T15:25:40.0919510Z STAGE2_PASS structural=3 nested=2 unclosed=1 undefined=3
+2026-10-13T15:25:40.1617868Z R49_AUDIT_STATUS wrong_provenance=0 unlocated=0 universal_diagnostics_accepted=1 cases=15 failures=0
+2026-10-13T15:25:40.1941594Z R51_ACCEPTANCE PASS failed_cases 0
+2026-10-13T15:25:40.2575287Z R50_ACCEPTED: runtime byte writes, byte truncation, char_at, vartani_len and vartani_cmp; 2/2 native executions; 2/2 --check
+2026-10-13T15:25:40.3773088Z R52_ACCEPTED PASS indexed_char_code=1 likh_store=1 dvaram_default_mode=0644 dvaram_explicit_mode=0600 bad_arity=5
+2026-10-13T15:25:40.6614967Z PASS=186
+2026-10-13T15:25:40.6714647Z R54_MUSE_ACCEPTED original=186 example_local=3 original_golden_changes=0
+2026-10-13T15:25:40.8853853Z   30/30 pack checks pass (10 packs x 3 keyword groups)
+2026-10-13T15:25:40.9603283Z Ran 18 tests in 0.008s
+2026-10-13T15:25:40.9706117Z [36;1mecho R56_PRESERVATION_PASS[0m
+2026-10-13T15:25:40.9883335Z R56_PRESERVATION_PASS
