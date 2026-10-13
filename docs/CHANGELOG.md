@@ -1,3 +1,36 @@
+## v116 — Muse R13 accepted; ChatGPT R55 (forward prototypes, PARTIAL) verified and SYNCED
+
+- **Muse R13 verified and accepted.** `strb_pack`/`unpack`/`dup` plus six integer
+  statistics (`purna_yoga/madhya/laghutama/adhikatama/vyapti/prasaran`); two existing
+  modules reworked to use the helpers (`strb_split`/`join`, `map_key_eq`/`map_keys`),
+  with two deliberate non-conversions documented at the call sites. All four claimed
+  hashes match. On my build: proof_lib **147/147**, proof_props **33/33**, stdlib
+  **18 modules / 176 functions**. The R12 wordfreq example was shortened 84 -> 82
+  lines with **byte-identical** output. They also found a real trap and documented
+  it: **Sutram pointer arithmetic is in bytes**, so a cell index must be scaled by 8.
+- **Their `79_ayojan_cwd` COMPILE-FAIL claim is honest but environment-specific.**
+  Muse reported `PASS=185 COMPILE-FAIL=1`; on my run of main it is `PASS=186` with no
+  compile-fail, because that test is cwd-dependent. Either way it is pre-existing and
+  not caused by R13.
+- **ChatGPT R55 verified and accepted as a PARTIAL, exactly as the handoff states.**
+  Gap 1 is done: real forward declarations (`prakriya name(params);`) with arity and
+  parameter-type matching, duplicate/missing/mismatch rejection, and definition-order
+  independence. `R55_FORWARD_ACCEPTED two_cycle=1 three_cycle=1 prototype_mismatch=1
+  type_mismatch=1 duplicate=1 missing=1 global_vitti_unimplemented=1`. The two-function
+  cycle is **tighter than Muse's R12 cycle** and the three-function cycle has its
+  definitions ordered against the call chain; both run natively. Manifest 10/10.
+  **Gap 2 (module-level globals) is NOT implemented**, and they say so plainly rather
+  than claiming it - with a real design rationale (globals need an independent symbol
+  and storage namespace with local-shadowing precedence and ELF/PE writable storage,
+  not a reused register or stack slot). That is the right call.
+- **Sync care:** the R55 branch predates Muse's R13, so its `lib/`, `docs/sutram-stdlib.html`,
+  `examples/215` and `tests/stdlib/*` were older. I copied **only** the compiler,
+  `r55-native.yml`, the acceptance tool, `tests/r55_check/` and the ROUND-55 handoffs
+  (14 files) and verified afterwards that main still has Muse's `strb` `957167a0…`.
+- Main after sync: compiler `6db0adf7…` (176,712 B), GUI `cb3c78d7…`, library R13;
+  186/12/30/18, proof_lib 147/147, proof_props 33/33.
+- Windows end-to-end remains out of scope and unverified, as ChatGPT restates.
+
 ## v115 — Linux GUI IDE, slice 15: find (Ctrl-F)
 
 - **Ctrl-F opens a find prompt on the bottom line.** Typing fills the search
