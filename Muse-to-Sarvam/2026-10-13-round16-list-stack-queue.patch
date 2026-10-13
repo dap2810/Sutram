@@ -1,0 +1,1021 @@
+diff --git a/docs/sutram-stdlib.html b/docs/sutram-stdlib.html
+index 40e412b..f440824 100644
+--- a/docs/sutram-stdlib.html
++++ b/docs/sutram-stdlib.html
+@@ -29,6 +29,7 @@ Do not edit by hand.</p>
+ <li><a href="#ganita"><code>ganita</code></a> — 6 functions</li>
+ <li><a href="#hash"><code>hash</code></a> — 2 functions</li>
+ <li><a href="#kalana"><code>kalana</code></a> — 6 functions</li>
++<li><a href="#list"><code>list</code></a> — 21 functions</li>
+ <li><a href="#madhava"><code>madhava</code></a> — 5 functions</li>
+ <li><a href="#map"><code>map</code></a> — 11 functions</li>
+ <li><a href="#math"><code>math</code></a> — 16 functions</li>
+@@ -147,6 +148,32 @@ Do not edit by hand.</p>
+ <tr><td><code>bahu_ganana(kosh dasham c, dasham x)</code></td><td>Horner evaluation: c[0] + c[1]x + c[2]x^2 + ...</td></tr>
+ <tr><td><code>bahu_mula(kosh dasham c, dasham lo, dasham hi, kosh dasham ok)</code></td><td>Bisection root of a polynomial on [lo, hi]. CONTRACT: `ok` must already contain ONE element (call kosh_push(ok, 0.0) first). A kosh&#x27;s capacity is not its length, so ok[0] is out of bounds until an element exists. Requires a sign change across the interval, which is checked and reported by returning a NaN-like sentinel of 0.0 with ok=0. ok is returned through a one-element kosh so the caller can tell success from failure.</td></tr>
+ </table>
++<h2 id="list"><code>list</code></h2>
++<p class="mod-desc">Representation decision — QWORD CELLS (the pankti/kosh convention), not byte strings. Reasoning: - A list is the growable analogue of pankti: same element model (one qword per element), same indexing, same literal passing (list_push(l, 42)). A byte-string list would be a string-list only, and would force every element through copy + length bookkeeping. Users with byte strings can store POINTERS (list_push(l, ptr)) — a qword list of pointers is the escape hatch, and it is the caller&#x27;s job to keep the pointed-to buffers alive. - No mixing: every element in this module is a qword. Do not pass byte-string buffers here expecting string semantics, and do not pass fmt/strb outputs as elements. - dasham elements are NOT supported. An untyped parameter truncates a dasham argument to its integer part (the R15 trap), so list_push(l, 3.7) stores 3. There is no way to store a dasham bit pattern through this API. Format floats first (fmt) if you need them as text, or keep a parallel structure. Two handle layouts (do NOT mix families on one handle): - list / stack handle: header [len, cap, data_ptr]; data is a separate cell array. The HANDLE address is stable across growth — only the data pointer inside it moves. - queue handle: header [len, cap, data_ptr, head]; a RING BUFFER (see queue_enqueue). queue_* on a list handle (or list_* on a queue handle) reads the wrong header and corrupts memory. Growth rule: when len == cap, capacity DOUBLES (cap *= 2), a new data array is allocated, elements are copied in logical order, and the header&#x27;s data pointer is updated. The old data array is NOT freed — the language has no deallocation primitive, so growth leaks the previous array (same as every other growing structure in the stdlib). Capacity never shrinks: list_clear and queue dequeue keep the allocated capacity. Allocation failure: if nirmmita returns 0 during growth, the operation returns 0 (or ok[0] = 0) and the structure is UNCHANGED. list_init returns 0 if either allocation fails. Out-of-bounds reads: list_get returns 0 for i outside [0, len). 0 is a legal stored value, so check list_len first when it matters. list_set / list_insert_at / list_remove_at return 1 ok / 0 out of bounds (or allocation failure for insert). stack_pop / stack_peek / queue_dequeue / queue_peek return the value and set ok[0] (a 1-cell pankti) to 1 on success, 0 when empty — the value alone cannot signal emptiness. All signatures stay within the 6-argument cap. --- lists --- list_init(cap) — allocate an empty list. cap clamped to &gt;= 1. Returns the list handle, or 0 on allocation failure.</p>
++<table>
++<tr><th>Function</th><th>Description</th></tr>
++<tr><td><code>list_init(cap)</code></td><td></td></tr>
++<tr><td><code>list_grow(l)</code></td><td>list_grow(l) — private helper: double l&#x27;s capacity, copying the data. Returns 1 ok / 0 allocation failure (list unchanged).</td></tr>
++<tr><td><code>list_push(l, v)</code></td><td>list_push(l, v) — append v. Returns 1 ok / 0 allocation failure.</td></tr>
++<tr><td><code>list_get(l, i)</code></td><td>list_get(l, i) — element i, or 0 if i is out of bounds.</td></tr>
++<tr><td><code>list_set(l, i, v)</code></td><td>list_set(l, i, v) — set element i. Returns 1 ok / 0 out of bounds.</td></tr>
++<tr><td><code>list_len(l)</code></td><td>list_len(l) — element count.</td></tr>
++<tr><td><code>list_insert_at(l, i, v)</code></td><td>list_insert_at(l, i, v) — insert v before index i (i == len appends). Returns 1 ok / 0 out of bounds or allocation failure.</td></tr>
++<tr><td><code>list_remove_at(l, i)</code></td><td>list_remove_at(l, i) — remove element i, shifting the rest left. Returns 1 ok / 0 out of bounds.</td></tr>
++<tr><td><code>list_clear(l)</code></td><td>list_clear(l) — empty the list, keeping the allocated capacity. Returns 1.</td></tr>
++<tr><td><code>list_contains(l, v)</code></td><td>list_contains(l, v) — 1 if any element equals v, else 0.</td></tr>
++<tr><td><code>list_index_of(l, v)</code></td><td>list_index_of(l, v) — first index with value v, or -1 if absent.</td></tr>
++<tr><td><code>stack_push(l, v)</code></td><td>stack_push(l, v) — push v. Returns 1 ok / 0 allocation failure.</td></tr>
++<tr><td><code>stack_pop(l, ok)</code></td><td>stack_pop(l, ok) — pop the top value; sets ok[0] to 1 on success, 0 when the stack is empty (returns 0 then).</td></tr>
++<tr><td><code>stack_peek(l, ok)</code></td><td>stack_peek(l, ok) — top value without removing it; ok[0] 1/0.</td></tr>
++<tr><td><code>stack_empty(l)</code></td><td>stack_empty(l) — 1 if the stack is empty, else 0.</td></tr>
++<tr><td><code>queue_init(cap)</code></td><td>queue_init(cap) — allocate an empty queue. cap clamped to &gt;= 1. Returns the queue handle, or 0 on allocation failure.</td></tr>
++<tr><td><code>queue_enqueue(q, v)</code></td><td>queue_enqueue(q, v) — append v at the tail. Returns 1 ok / 0 allocation failure.</td></tr>
++<tr><td><code>queue_dequeue(q, ok)</code></td><td>queue_dequeue(q, ok) — remove and return the front value; sets ok[0] to 1 on success, 0 when the queue is empty (returns 0 then).</td></tr>
++<tr><td><code>queue_peek(q, ok)</code></td><td>queue_peek(q, ok) — front value without removing it; ok[0] 1/0.</td></tr>
++<tr><td><code>queue_empty(q)</code></td><td>queue_empty(q) — 1 if the queue is empty, else 0.</td></tr>
++<tr><td><code>queue_len(q)</code></td><td>queue_len(q) — element count.</td></tr>
++</table>
+ <h2 id="madhava"><code>madhava</code></h2>
+ <p class="mod-desc">After Madhava of Sangamagrama (~1340-1425 CE) and the Kerala school of astronomy and mathematics. Madhava gave infinite-series expansions for the sine, cosine and arctangent functions, and from the arctangent series a rapidly converging series for pi - more than two centuries before Newton, Gregory and Leibniz. These use T12 scalar floats (dasham). square root by Newton&#x27;s method (Babylonian), to float precision</p>
+ <table>
+@@ -351,6 +378,6 @@ Do not edit by hand.</p>
+ <tr><td><code>bool_to_int(b)</code></td><td></td></tr>
+ <tr><td><code>int_max()</code></td><td></td></tr>
+ </table>
+-<footer>20 modules, 209 functions. Generated from library sources.</footer>
++<footer>21 modules, 230 functions. Generated from library sources.</footer>
+ </body>
+ </html>
+diff --git a/lib/list.smlib b/lib/list.smlib
+new file mode 100644
+index 0000000..79b6116
+--- /dev/null
++++ b/lib/list.smlib
+@@ -0,0 +1,354 @@
++# lib/list.smlib — Sutram standard library: dynamic lists, stacks, queues
++#
++# Representation decision — QWORD CELLS (the pankti/kosh convention),
++# not byte strings. Reasoning:
++#   - A list is the growable analogue of pankti: same element model
++#     (one qword per element), same indexing, same literal passing
++#     (list_push(l, 42)). A byte-string list would be a string-list
++#     only, and would force every element through copy + length
++#     bookkeeping. Users with byte strings can store POINTERS
++#     (list_push(l, ptr)) — a qword list of pointers is the escape
++#     hatch, and it is the caller's job to keep the pointed-to
++#     buffers alive.
++#   - No mixing: every element in this module is a qword. Do not
++#     pass byte-string buffers here expecting string semantics, and
++#     do not pass fmt/strb outputs as elements.
++#   - dasham elements are NOT supported. An untyped parameter
++#     truncates a dasham argument to its integer part (the R15 trap),
++#     so list_push(l, 3.7) stores 3. There is no way to store a
++#     dasham bit pattern through this API. Format floats first
++#     (fmt) if you need them as text, or keep a parallel structure.
++#
++# Two handle layouts (do NOT mix families on one handle):
++#   - list / stack handle: header [len, cap, data_ptr]; data is a
++#     separate cell array. The HANDLE address is stable across
++#     growth — only the data pointer inside it moves.
++#   - queue handle: header [len, cap, data_ptr, head]; a RING BUFFER
++#     (see queue_enqueue). queue_* on a list handle (or list_* on a
++#     queue handle) reads the wrong header and corrupts memory.
++#
++# Growth rule: when len == cap, capacity DOUBLES (cap *= 2), a new
++# data array is allocated, elements are copied in logical order,
++# and the header's data pointer is updated. The old data array is
++# NOT freed — the language has no deallocation primitive, so growth
++# leaks the previous array (same as every other growing structure
++# in the stdlib). Capacity never shrinks: list_clear and queue
++# dequeue keep the allocated capacity.
++#
++# Allocation failure: if nirmmita returns 0 during growth, the
++# operation returns 0 (or ok[0] = 0) and the structure is UNCHANGED.
++# list_init returns 0 if either allocation fails.
++#
++# Out-of-bounds reads: list_get returns 0 for i outside [0, len).
++# 0 is a legal stored value, so check list_len first when it
++# matters. list_set / list_insert_at / list_remove_at return
++# 1 ok / 0 out of bounds (or allocation failure for insert).
++# stack_pop / stack_peek / queue_dequeue / queue_peek return the
++# value and set ok[0] (a 1-cell pankti) to 1 on success, 0 when
++# empty — the value alone cannot signal emptiness.
++#
++# All signatures stay within the 6-argument cap.
++
++# --- lists ---
++
++# list_init(cap) — allocate an empty list. cap clamped to >= 1.
++# Returns the list handle, or 0 on allocation failure.
++prakriya list_init(cap) {
++    vitti c = cap
++    vitti l = 0
++    vitti d = 0
++    yadi (c < 1) { c = 1 }
++    l = nirmmita(3 * 8)
++    yadi (l == 0) { pratiyati 0 }
++    d = nirmmita(c * 8)
++    yadi (d == 0) { pratiyati 0 }
++    l[0] = 0
++    l[1] = c
++    l[2] = d
++    pratiyati l
++}
++
++# list_grow(l) — private helper: double l's capacity, copying the
++# data. Returns 1 ok / 0 allocation failure (list unchanged).
++prakriya list_grow(l) {
++    vitti lst = l
++    vitti ncap = lst[1] * 2
++    vitti nd = nirmmita(ncap * 8)
++    vitti old = lst[2]
++    vitti i = 0
++    yadi (nd == 0) { pratiyati 0 }
++    yavat (i < lst[0]) {
++        nd[i] = old[i]
++        i = i + 1
++    }
++    lst[2] = nd
++    lst[1] = ncap
++    pratiyati 1
++}
++
++# list_push(l, v) — append v. Returns 1 ok / 0 allocation failure.
++prakriya list_push(l, v) {
++    vitti lst = l
++    vitti val = v
++    yadi (lst[0] == lst[1]) {
++        yadi (list_grow(lst) == 0) { pratiyati 0 }
++    }
++    vitti d = lst[2]
++    d[lst[0]] = val
++    lst[0] = lst[0] + 1
++    pratiyati 1
++}
++
++# list_get(l, i) — element i, or 0 if i is out of bounds.
++prakriya list_get(l, i) {
++    vitti lst = l
++    vitti idx = i
++    yadi (idx < 0) { pratiyati 0 }
++    yadi (idx >= lst[0]) { pratiyati 0 }
++    vitti d = lst[2]
++    pratiyati d[idx]
++}
++
++# list_set(l, i, v) — set element i. Returns 1 ok / 0 out of bounds.
++prakriya list_set(l, i, v) {
++    vitti lst = l
++    vitti idx = i
++    vitti val = v
++    yadi (idx < 0) { pratiyati 0 }
++    yadi (idx >= lst[0]) { pratiyati 0 }
++    vitti d = lst[2]
++    d[idx] = val
++    pratiyati 1
++}
++
++# list_len(l) — element count.
++prakriya list_len(l) {
++    pratiyati l[0]
++}
++
++# list_insert_at(l, i, v) — insert v before index i (i == len
++# appends). Returns 1 ok / 0 out of bounds or allocation failure.
++prakriya list_insert_at(l, i, v) {
++    vitti lst = l
++    vitti idx = i
++    vitti val = v
++    vitti d = 0
++    vitti k = 0
++    yadi (idx < 0) { pratiyati 0 }
++    yadi (idx > lst[0]) { pratiyati 0 }
++    yadi (lst[0] == lst[1]) {
++        yadi (list_grow(lst) == 0) { pratiyati 0 }
++    }
++    d = lst[2]
++    k = lst[0]
++    yavat (k > idx) {
++        d[k] = d[k - 1]
++        k = k - 1
++    }
++    d[idx] = val
++    lst[0] = lst[0] + 1
++    pratiyati 1
++}
++
++# list_remove_at(l, i) — remove element i, shifting the rest left.
++# Returns 1 ok / 0 out of bounds.
++prakriya list_remove_at(l, i) {
++    vitti lst = l
++    vitti idx = i
++    vitti d = 0
++    vitti k = 0
++    yadi (idx < 0) { pratiyati 0 }
++    yadi (idx >= lst[0]) { pratiyati 0 }
++    d = lst[2]
++    k = idx
++    yavat (k < lst[0] - 1) {
++        d[k] = d[k + 1]
++        k = k + 1
++    }
++    lst[0] = lst[0] - 1
++    pratiyati 1
++}
++
++# list_clear(l) — empty the list, keeping the allocated capacity.
++# Returns 1.
++prakriya list_clear(l) {
++    l[0] = 0
++    pratiyati 1
++}
++
++# list_contains(l, v) — 1 if any element equals v, else 0.
++prakriya list_contains(l, v) {
++    vitti lst = l
++    vitti val = v
++    vitti d = lst[2]
++    vitti i = 0
++    yavat (i < lst[0]) {
++        yadi (d[i] == val) { pratiyati 1 }
++        i = i + 1
++    }
++    pratiyati 0
++}
++
++# list_index_of(l, v) — first index with value v, or -1 if absent.
++prakriya list_index_of(l, v) {
++    vitti lst = l
++    vitti val = v
++    vitti d = lst[2]
++    vitti i = 0
++    yavat (i < lst[0]) {
++        yadi (d[i] == val) { pratiyati i }
++        i = i + 1
++    }
++    pratiyati 0 - 1
++}
++
++# --- stacks (built on the same list storage) ---
++
++# stack_push(l, v) — push v. Returns 1 ok / 0 allocation failure.
++prakriya stack_push(l, v) {
++    pratiyati list_push(l, v)
++}
++
++# stack_pop(l, ok) — pop the top value; sets ok[0] to 1 on success,
++# 0 when the stack is empty (returns 0 then).
++prakriya stack_pop(l, ok) {
++    vitti lst = l
++    vitti okp = ok
++    vitti d = 0
++    vitti val = 0
++    yadi (lst[0] == 0) {
++        okp[0] = 0
++        pratiyati 0
++    }
++    d = lst[2]
++    lst[0] = lst[0] - 1
++    val = d[lst[0]]
++    okp[0] = 1
++    pratiyati val
++}
++
++# stack_peek(l, ok) — top value without removing it; ok[0] 1/0.
++prakriya stack_peek(l, ok) {
++    vitti lst = l
++    vitti okp = ok
++    vitti d = 0
++    yadi (lst[0] == 0) {
++        okp[0] = 0
++        pratiyati 0
++    }
++    d = lst[2]
++    okp[0] = 1
++    pratiyati d[lst[0] - 1]
++}
++
++# stack_empty(l) — 1 if the stack is empty, else 0.
++prakriya stack_empty(l) {
++    yadi (l[0] == 0) { pratiyati 1 }
++    pratiyati 0
++}
++
++# --- queues (ring buffer) ---
++#
++# A queue is a RING BUFFER over the same kind of cell array: elements
++# live at data[(head + k) % cap] for logical index k. Enqueue writes
++# at the tail slot, dequeue reads at head and advances head by one
++# (mod cap). Dequeued slots are DEAD SPACE until the ring wraps
++# around and reuses them — no shifting, so dequeue is O(1). Growth
++# (len == cap) allocates a doubled array, copies elements in
++# LOGICAL order, and resets head to 0, so the buffer is re-packed.
++# The buffer only grows, never shrinks.
++
++# queue_init(cap) — allocate an empty queue. cap clamped to >= 1.
++# Returns the queue handle, or 0 on allocation failure.
++prakriya queue_init(cap) {
++    vitti c = cap
++    vitti q = 0
++    vitti d = 0
++    yadi (c < 1) { c = 1 }
++    q = nirmmita(4 * 8)
++    yadi (q == 0) { pratiyati 0 }
++    d = nirmmita(c * 8)
++    yadi (d == 0) { pratiyati 0 }
++    q[0] = 0
++    q[1] = c
++    q[2] = d
++    q[3] = 0
++    pratiyati q
++}
++
++# queue_enqueue(q, v) — append v at the tail.
++# Returns 1 ok / 0 allocation failure.
++prakriya queue_enqueue(q, v) {
++    vitti qu = q
++    vitti val = v
++    vitti d = 0
++    vitti tail = 0
++    vitti ncap = 0
++    vitti nd = 0
++    vitti old = 0
++    vitti k = 0
++    yadi (qu[0] == qu[1]) {
++        # grow: double, copy in logical order, reset head to 0
++        ncap = qu[1] * 2
++        nd = nirmmita(ncap * 8)
++        yadi (nd == 0) { pratiyati 0 }
++        old = qu[2]
++        k = 0
++        yavat (k < qu[0]) {
++            nd[k] = old[(qu[3] + k) % qu[1]]
++            k = k + 1
++        }
++        qu[2] = nd
++        qu[1] = ncap
++        qu[3] = 0
++    }
++    d = qu[2]
++    tail = (qu[3] + qu[0]) % qu[1]
++    d[tail] = val
++    qu[0] = qu[0] + 1
++    pratiyati 1
++}
++
++# queue_dequeue(q, ok) — remove and return the front value; sets
++# ok[0] to 1 on success, 0 when the queue is empty (returns 0 then).
++prakriya queue_dequeue(q, ok) {
++    vitti qu = q
++    vitti okp = ok
++    vitti d = 0
++    vitti val = 0
++    yadi (qu[0] == 0) {
++        okp[0] = 0
++        pratiyati 0
++    }
++    d = qu[2]
++    val = d[qu[3]]
++    qu[3] = (qu[3] + 1) % qu[1]
++    qu[0] = qu[0] - 1
++    okp[0] = 1
++    pratiyati val
++}
++
++# queue_peek(q, ok) — front value without removing it; ok[0] 1/0.
++prakriya queue_peek(q, ok) {
++    vitti qu = q
++    vitti okp = ok
++    vitti d = 0
++    yadi (qu[0] == 0) {
++        okp[0] = 0
++        pratiyati 0
++    }
++    d = qu[2]
++    okp[0] = 1
++    pratiyati d[qu[3]]
++}
++
++# queue_empty(q) — 1 if the queue is empty, else 0.
++prakriya queue_empty(q) {
++    yadi (q[0] == 0) { pratiyati 1 }
++    pratiyati 0
++}
++
++# queue_len(q) — element count.
++prakriya queue_len(q) {
++    pratiyati q[0]
++}
+diff --git a/tests/stdlib/list_basic.exit b/tests/stdlib/list_basic.exit
+new file mode 100644
+index 0000000..573541a
+--- /dev/null
++++ b/tests/stdlib/list_basic.exit
+@@ -0,0 +1 @@
++0
+diff --git a/tests/stdlib/list_basic.out b/tests/stdlib/list_basic.out
+new file mode 100644
+index 0000000..d0a4147
+--- /dev/null
++++ b/tests/stdlib/list_basic.out
+@@ -0,0 +1,56 @@
++0
++
++1
++
++1
++
++1
++
++3
++
++10
++
++30
++
++0
++
++0
++
++1
++
++99
++
++0
++
++1
++
++0
++
++2
++
++-1
++
++1
++
++15
++
++4
++
++1
++
++0
++
++1
++
++15
++
++0
++
++1
++
++0
++
++1
++
++5
++
+diff --git a/tests/stdlib/list_basic.sm b/tests/stdlib/list_basic.sm
+new file mode 100644
+index 0000000..5dfd4e9
+--- /dev/null
++++ b/tests/stdlib/list_basic.sm
+@@ -0,0 +1,64 @@
++ayojan list
++mukhya() {
++    vitti l = list_init(2)
++    likha(list_len(l))
++    likha("\n")
++    likha(list_push(l, 10))
++    likha("\n")
++    likha(list_push(l, 20))
++    likha("\n")
++    # third push grows capacity 2 -> 4
++    likha(list_push(l, 30))
++    likha("\n")
++    likha(list_len(l))
++    likha("\n")
++    likha(list_get(l, 0))
++    likha("\n")
++    likha(list_get(l, 2))
++    likha("\n")
++    # out of bounds reads return 0
++    likha(list_get(l, 9))
++    likha("\n")
++    likha(list_get(l, 0 - 1))
++    likha("\n")
++    likha(list_set(l, 1, 99))
++    likha("\n")
++    likha(list_get(l, 1))
++    likha("\n")
++    likha(list_set(l, 9, 1))
++    likha("\n")
++    likha(list_contains(l, 99))
++    likha("\n")
++    likha(list_contains(l, 20))
++    likha("\n")
++    likha(list_index_of(l, 30))
++    likha("\n")
++    likha(list_index_of(l, 7))
++    likha("\n")
++    likha(list_insert_at(l, 1, 15))
++    likha("\n")
++    likha(list_get(l, 1))
++    likha("\n")
++    likha(list_len(l))
++    likha("\n")
++    # insert at the end appends; insert out of bounds fails
++    likha(list_insert_at(l, 4, 40))
++    likha("\n")
++    likha(list_insert_at(l, 6, 1))
++    likha("\n")
++    likha(list_remove_at(l, 0))
++    likha("\n")
++    likha(list_get(l, 0))
++    likha("\n")
++    likha(list_remove_at(l, 9))
++    likha("\n")
++    likha(list_clear(l))
++    likha("\n")
++    likha(list_len(l))
++    likha("\n")
++    # clear keeps capacity: push works again
++    likha(list_push(l, 5))
++    likha("\n")
++    likha(list_get(l, 0))
++    likha("\n")
++}
+diff --git a/tests/stdlib/list_queue.exit b/tests/stdlib/list_queue.exit
+new file mode 100644
+index 0000000..573541a
+--- /dev/null
++++ b/tests/stdlib/list_queue.exit
+@@ -0,0 +1 @@
++0
+diff --git a/tests/stdlib/list_queue.out b/tests/stdlib/list_queue.out
+new file mode 100644
+index 0000000..6b4afe1
+--- /dev/null
++++ b/tests/stdlib/list_queue.out
+@@ -0,0 +1,34 @@
++1
++
++1
++
++1
++
++1
++
++1
++
++1
++
++1
++
++2
++
++3
++
++2
++
++3
++
++4
++
++1
++
++0
++
++0
++
++0
++
++0
++
+diff --git a/tests/stdlib/list_queue.sm b/tests/stdlib/list_queue.sm
+new file mode 100644
+index 0000000..846cd06
+--- /dev/null
++++ b/tests/stdlib/list_queue.sm
+@@ -0,0 +1,43 @@
++ayojan list
++mukhya() {
++    vitti q = queue_init(2)
++    vitti ok = nirmmita(8)
++    likha(queue_empty(q))
++    likha("\n")
++    likha(queue_enqueue(q, 1))
++    likha("\n")
++    likha(queue_enqueue(q, 2))
++    likha("\n")
++    likha(queue_dequeue(q, ok))
++    likha("\n")
++    likha(ok[0])
++    likha("\n")
++    # enqueue wraps around the ring (head = 1, tail slot 0)
++    likha(queue_enqueue(q, 3))
++    likha("\n")
++    # full again: growth re-packs in logical order, head resets
++    likha(queue_enqueue(q, 4))
++    likha("\n")
++    likha(queue_peek(q, ok))
++    likha("\n")
++    likha(queue_len(q))
++    likha("\n")
++    # FIFO order
++    likha(queue_dequeue(q, ok))
++    likha("\n")
++    likha(queue_dequeue(q, ok))
++    likha("\n")
++    likha(queue_dequeue(q, ok))
++    likha("\n")
++    likha(queue_empty(q))
++    likha("\n")
++    # empty dequeue / peek: value 0, ok 0
++    likha(queue_dequeue(q, ok))
++    likha("\n")
++    likha(ok[0])
++    likha("\n")
++    likha(queue_peek(q, ok))
++    likha("\n")
++    likha(ok[0])
++    likha("\n")
++}
+diff --git a/tests/stdlib/list_stack.exit b/tests/stdlib/list_stack.exit
+new file mode 100644
+index 0000000..573541a
+--- /dev/null
++++ b/tests/stdlib/list_stack.exit
+@@ -0,0 +1 @@
++0
+diff --git a/tests/stdlib/list_stack.out b/tests/stdlib/list_stack.out
+new file mode 100644
+index 0000000..8d9288a
+--- /dev/null
++++ b/tests/stdlib/list_stack.out
+@@ -0,0 +1,30 @@
++1
++
++1
++
++1
++
++1
++
++3
++
++1
++
++3
++
++3
++
++2
++
++1
++
++1
++
++0
++
++0
++
++0
++
++0
++
+diff --git a/tests/stdlib/list_stack.sm b/tests/stdlib/list_stack.sm
+new file mode 100644
+index 0000000..58126e0
+--- /dev/null
++++ b/tests/stdlib/list_stack.sm
+@@ -0,0 +1,38 @@
++ayojan list
++mukhya() {
++    vitti s = list_init(1)
++    vitti ok = nirmmita(8)
++    likha(stack_empty(s))
++    likha("\n")
++    likha(stack_push(s, 1))
++    likha("\n")
++    likha(stack_push(s, 2))
++    likha("\n")
++    likha(stack_push(s, 3))
++    likha("\n")
++    # peek does not remove
++    likha(stack_peek(s, ok))
++    likha("\n")
++    likha(ok[0])
++    likha("\n")
++    likha(stack_peek(s, ok))
++    likha("\n")
++    # LIFO order
++    likha(stack_pop(s, ok))
++    likha("\n")
++    likha(stack_pop(s, ok))
++    likha("\n")
++    likha(stack_pop(s, ok))
++    likha("\n")
++    likha(stack_empty(s))
++    likha("\n")
++    # empty pop / peek: value 0, ok 0
++    likha(stack_pop(s, ok))
++    likha("\n")
++    likha(ok[0])
++    likha("\n")
++    likha(stack_peek(s, ok))
++    likha("\n")
++    likha(ok[0])
++    likha("\n")
++}
+diff --git a/tools/proof_props.py b/tools/proof_props.py
+index 5e413fe..f9e0b3b 100644
+--- a/tools/proof_props.py
++++ b/tools/proof_props.py
+@@ -1716,6 +1716,269 @@ def prop_fmt_signed(compiler, rng):
+     return ok and out == "PASS", out
+ 
+ 
++def prop_list_push_get(compiler, rng):
++    """push N values (past initial capacity), get(i) == pushed[i], len == N"""
++    vals = [rng.randint(-100, 100) for _ in range(12)] + [0]
++    lines = ["ayojan list",
++             "mukhya() {",
++             "    vitti l = list_init(2)"]
++    for v in vals:
++        lines.append(f"    yadi (list_push(l, {v}) != 1) {{")
++        lines.append('        likha("FAIL list push\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++    lines.append(f"    yadi (list_len(l) != {len(vals)}) {{")
++    lines.append('        likha("FAIL list len\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    for i, v in enumerate(vals):
++        lines.append(f"    yadi (list_get(l, {i}) != {v}) {{")
++        lines.append('        likha("FAIL list get\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++    lines.append('    likha("PASS\\n")')
++    lines.append("}")
++    ok, out = run_sm(compiler, "list_pg", "\n".join(lines))
++    return ok and out == "PASS", out
++
++
++def prop_list_stack_lifo(compiler, rng):
++    """stack pops come back in reverse push order; peek is non-destructive;
++    pop/peek on empty give ok 0"""
++    vals = [rng.randint(-100, 100) for _ in range(8)]
++    lines = ["ayojan list",
++             "mukhya() {",
++             "    vitti s = list_init(1)",
++             "    vitti ok = nirmmita(8)"]
++    for v in vals:
++        lines.append(f"    yadi (stack_push(s, {v}) != 1) {{")
++        lines.append('        likha("FAIL stack push\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++    lines.append(f"    yadi (stack_peek(s, ok) != {vals[-1]}) {{")
++    lines.append('        likha("FAIL stack peek value\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    lines.append("    yadi (ok[0] != 1) {")
++    lines.append('        likha("FAIL stack peek ok\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    lines.append(f"    yadi (list_len(s) != {len(vals)}) {{")
++    lines.append('        likha("FAIL stack peek removed\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    for i, v in enumerate(reversed(vals)):
++        lines.append(f"    vitti p{i} = stack_pop(s, ok)")
++        lines.append(f"    yadi (p{i} != {v}) {{")
++        lines.append('        likha("FAIL stack LIFO\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++        lines.append("    yadi (ok[0] != 1) {")
++        lines.append('        likha("FAIL stack pop ok\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++    lines.append("    yadi (stack_empty(s) != 1) {")
++    lines.append('        likha("FAIL stack empty\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    lines.append("    vitti pe = stack_pop(s, ok)")
++    lines.append("    yadi (ok[0] != 0) {")
++    lines.append('        likha("FAIL stack pop empty ok\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    lines.append("    vitti pk = stack_peek(s, ok)")
++    lines.append("    yadi (ok[0] != 0) {")
++    lines.append('        likha("FAIL stack peek empty ok\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    lines.append('    likha("PASS\\n")')
++    lines.append("}")
++    ok, out = run_sm(compiler, "list_st", "\n".join(lines))
++    return ok and out == "PASS", out
++
++
++def prop_list_queue_fifo(compiler, rng):
++    """queue dequeues come back in enqueue order, across wrap-around and
++    growth; peek is non-destructive; dequeue/peek on empty give ok 0"""
++    from collections import deque
++    # scenario 1: deterministic wrap + grow
++    # scenario 2: randomized ops against a deque model
++    lines = ["ayojan list",
++             "mukhya() {",
++             "    vitti q = queue_init(2)",
++             "    vitti ok = nirmmita(8)"]
++    lines.append("    yadi (queue_enqueue(q, 1) != 1) {")
++    lines.append('        likha("FAIL queue enqueue\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    lines.append("    yadi (queue_enqueue(q, 2) != 1) {")
++    lines.append('        likha("FAIL queue enqueue\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    lines.append("    vitti d0 = queue_dequeue(q, ok)")
++    lines.append("    yadi (d0 != 1) {")
++    lines.append('        likha("FAIL queue FIFO 1\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    lines.append("    yadi (queue_enqueue(q, 3) != 1) {")
++    lines.append('        likha("FAIL queue enqueue wrap\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    lines.append("    yadi (queue_enqueue(q, 4) != 1) {")
++    lines.append('        likha("FAIL queue enqueue grow\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    lines.append("    yadi (queue_peek(q, ok) != 2) {")
++    lines.append('        likha("FAIL queue peek\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    lines.append("    yadi (queue_len(q) != 3) {")
++    lines.append('        likha("FAIL queue peek removed\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    for i, v in enumerate((2, 3, 4)):
++        lines.append(f"    vitti d{i + 1} = queue_dequeue(q, ok)")
++        lines.append(f"    yadi (d{i + 1} != {v}) {{")
++        lines.append('        likha("FAIL queue FIFO 2\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++    lines.append("    yadi (queue_empty(q) != 1) {")
++    lines.append('        likha("FAIL queue empty\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    lines.append("    vitti de = queue_dequeue(q, ok)")
++    lines.append("    yadi (ok[0] != 0) {")
++    lines.append('        likha("FAIL queue dequeue empty ok\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    lines.append("    vitti pk = queue_peek(q, ok)")
++    lines.append("    yadi (ok[0] != 0) {")
++    lines.append('        likha("FAIL queue peek empty ok\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    # scenario 2: randomized
++    model = deque()
++    lines.append("    vitti q2 = queue_init(3)")
++    n_ops = 0
++    for step in range(30):
++        if not model or rng.random() < 0.55:
++            v = rng.randint(-50, 50)
++            model.append(v)
++            lines.append(f"    yadi (queue_enqueue(q2, {v}) != 1) {{")
++            lines.append('        likha("FAIL queue rand enqueue\\n")')
++            lines.append("        pratiyati 1")
++            lines.append("    }")
++        else:
++            v = model.popleft()
++            lines.append(f"    vitti r{n_ops} = queue_dequeue(q2, ok)")
++            lines.append(f"    yadi (r{n_ops} != {v}) {{")
++            lines.append('        likha("FAIL queue rand FIFO\\n")')
++            lines.append("        pratiyati 1")
++            lines.append("    }")
++            lines.append("    yadi (ok[0] != 1) {")
++            lines.append('        likha("FAIL queue rand ok\\n")')
++            lines.append("        pratiyati 1")
++            lines.append("    }")
++            n_ops += 1
++        lines.append(f"    yadi (queue_len(q2) != {len(model)}) {{")
++        lines.append('        likha("FAIL queue rand len\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++    lines.append('    likha("PASS\\n")')
++    lines.append("}")
++    ok, out = run_sm(compiler, "list_qu", "\n".join(lines))
++    return ok and out == "PASS", out
++
++
++def prop_list_len_tracks(compiler, rng):
++    """list_len tracks pushes, inserts, removes and clear exactly"""
++    lines = ["ayojan list",
++             "mukhya() {",
++             "    vitti l = list_init(1)"]
++    expected = 0
++
++    def check_len():
++        lines.append(f"    yadi (list_len(l) != {expected}) {{")
++        lines.append('        likha("FAIL list len tracks\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++
++    check_len()
++    for v in (5, 6, 7):
++        lines.append(f"    list_push(l, {v})")
++        expected += 1
++        check_len()
++    lines.append("    list_insert_at(l, 1, 99)")
++    expected += 1
++    check_len()
++    lines.append("    list_remove_at(l, 0)")
++    expected -= 1
++    check_len()
++    lines.append("    list_remove_at(l, 2)")
++    expected -= 1
++    check_len()
++    lines.append("    list_clear(l)")
++    expected = 0
++    check_len()
++    lines.append("    list_push(l, 42)")
++    expected = 1
++    check_len()
++    lines.append('    likha("PASS\\n")')
++    lines.append("}")
++    ok, out = run_sm(compiler, "list_len", "\n".join(lines))
++    return ok and out == "PASS", out
++
++
++def prop_list_insert_remove(compiler, rng):
++    """insert/remove preserve the rest: full contents match a Python list;
++    contains / index_of agree with Python"""
++    model = []
++    lines = ["ayojan list",
++             "mukhya() {",
++             "    vitti l = list_init(2)"]
++    for step in range(20):
++        r = rng.random()
++        if not model or r < 0.5:
++            v = rng.randint(0, 9)
++            i = rng.randint(0, len(model))
++            model.insert(i, v)
++            lines.append(f"    yadi (list_insert_at(l, {i}, {v}) != 1) {{")
++            lines.append('        likha("FAIL list insert\\n")')
++            lines.append("        pratiyati 1")
++            lines.append("    }")
++        else:
++            i = rng.randrange(len(model))
++            del model[i]
++            lines.append(f"    yadi (list_remove_at(l, {i}) != 1) {{")
++            lines.append('        likha("FAIL list remove\\n")')
++            lines.append("        pratiyati 1")
++            lines.append("    }")
++        lines.append(f"    yadi (list_len(l) != {len(model)}) {{")
++        lines.append('        likha("FAIL list insert/remove len\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++    for j, v in enumerate(model):
++        lines.append(f"    yadi (list_get(l, {j}) != {v}) {{")
++        lines.append('        likha("FAIL list insert/remove content\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++    for v in range(12):
++        want_c = 1 if v in model else 0
++        want_i = model.index(v) if v in model else -1
++        lines.append(f"    yadi (list_contains(l, {v}) != {want_c}) {{")
++        lines.append('        likha("FAIL list contains\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++        lines.append(f"    yadi (list_index_of(l, {v}) != {want_i}) {{")
++        lines.append('        likha("FAIL list index_of\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++    lines.append('    likha("PASS\\n")')
++    lines.append("}")
++    ok, out = run_sm(compiler, "list_ir", "\n".join(lines))
++    return ok and out == "PASS", out
++
++
+ def main():
+     compiler = None
+     for i, a in enumerate(sys.argv):
+@@ -1770,6 +2033,11 @@ def main():
+         ("fmt group digits", prop_fmt_group_digits),
+         ("fmt fixed decimals", prop_fmt_fixed),
+         ("fmt signed", prop_fmt_signed),
++        ("list push/get", prop_list_push_get),
++        ("list stack LIFO", prop_list_stack_lifo),
++        ("list queue FIFO", prop_list_queue_fifo),
++        ("list len tracks", prop_list_len_tracks),
++        ("list insert/remove", prop_list_insert_remove),
+     ]
+ 
+     failed = []
