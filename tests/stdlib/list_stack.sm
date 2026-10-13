@@ -1,0 +1,38 @@
+ayojan list
+mukhya() {
+    vitti s = list_init(1)
+    vitti ok = nirmmita(8)
+    likha(stack_empty(s))
+    likha("\n")
+    likha(stack_push(s, 1))
+    likha("\n")
+    likha(stack_push(s, 2))
+    likha("\n")
+    likha(stack_push(s, 3))
+    likha("\n")
+    # peek does not remove
+    likha(stack_peek(s, ok))
+    likha("\n")
+    likha(ok[0])
+    likha("\n")
+    likha(stack_peek(s, ok))
+    likha("\n")
+    # LIFO order
+    likha(stack_pop(s, ok))
+    likha("\n")
+    likha(stack_pop(s, ok))
+    likha("\n")
+    likha(stack_pop(s, ok))
+    likha("\n")
+    likha(stack_empty(s))
+    likha("\n")
+    # empty pop / peek: value 0, ok 0
+    likha(stack_pop(s, ok))
+    likha("\n")
+    likha(ok[0])
+    likha("\n")
+    likha(stack_peek(s, ok))
+    likha("\n")
+    likha(ok[0])
+    likha("\n")
+}
