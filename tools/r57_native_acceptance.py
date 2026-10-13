@@ -92,6 +92,9 @@ def check():
                 print("R57_TIMING",name,"iterations=10000000",
                       "before_best3_ms=%.6f"%before,"after_best3_ms=%.6f"%after,
                       "speedup=%.4fx"%(before/after),
+                      "before_median_ms=%.6f"%statistics.median(results["before"]),
+                      "after_median_ms=%.6f"%statistics.median(results["after"]),
+                      "median_speedup=%.4fx"%(statistics.median(results["before"])/statistics.median(results["after"])),
                       "before_samples_ms="+repr(results["before"]),
                       "after_samples_ms="+repr(results["after"]),flush=True)
         different=0
