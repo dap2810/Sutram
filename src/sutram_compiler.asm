@@ -198,14 +198,14 @@ BN_SETCHAR  equ 41   ; R50 one-byte store into byte-packed text
 ; ============================================================
 section .data
 str_dot_exe  db ".exe", 0
-    msg_usage    db "Sutram — the complete thread", 10
+    msg_usage    db "Sutram - the complete thread", 10
                   db "Usage:", 10
                   db "  sutram <input.sm> <output.bin>          compile", 10
                   db "  sutram --check <input.sm>               parse/check, no output binary", 10
                   db "  sutram --lang <pack> <in.sm> <out.bin>  with language pack", 10
                   db "  sutram -i                               interactive shell", 10
                   db "  sutram --version                        version info", 10, 0
-    msg_version  db "Sutram 1.0 (v29) — the complete thread", 10
+    msg_version  db "Sutram 1.0 (v29) - the complete thread", 10
                   db "Sanskrit-keyword language -> x86-64 machine code", 10, 0
     r48_flag db "--check",0
     r48_msg_near db ": Sutram Error [E_PARSE]: near '",0
@@ -409,7 +409,7 @@ r54_builtin_arity_table:
     str_help1    db "sahayata", 0
     str_help2    db "help", 0
     str_sarvam   db "sarvam", 0
-    msg_shell_banner db "Sutram Shell v1.0 — the complete thread", 10
+    msg_shell_banner db "Sutram Shell v1.0 - the complete thread", 10
                       db "Type a Sutram statement and press Enter. It runs instantly.", 10
                       db "Commands: sahayata (help) | nirgat (exit) | sarvam (show session)", 10, 10, 0
     msg_shell_prompt db "sutra> ", 0
