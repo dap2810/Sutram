@@ -1,3 +1,30 @@
+## v119 — GUI slice 17: open-file prompt, new buffer, and a prompt-overdraw fix
+
+- **My own stream (Linux X11 IDE), slice 17.** `Ctrl-O` opens a file by path through
+  an `Open:` prompt (type the path, Enter loads it; Esc cancels); `Ctrl-N` starts a new
+  empty buffer. Loading replaces the buffer, resets the caret and scroll, clears any
+  selection, and pushes an undo snapshot. A failed open leaves the buffer untouched and
+  reports "Sutram IDE: cannot open that file." in the output pane.
+- **A real pre-existing defect found and fixed.** The key loop called `draw_editor` after
+  *every* key, and `draw_editor` repaints the whole editor pane - which contains the
+  prompt strip at `ED_Y+ED_H-12`. So the prompt was drawn by `draw_all` and then
+  immediately overpainted: **the find prompt had never actually been visible**. The loop
+  now skips the repaint while a prompt is open. Proven with a request-order probe:
+  baseline `Find` prompt drawn=True, **overpainted=True**; fixed build drawn=True,
+  **overpainted=False**.
+- Source: `ide/sutram_gui_linux.asm` 55,317 -> 60,414 B; binary 23,880 -> 24,776 B.
+  New test: `tools/test_x11_open.py` (5 checks).
+- **Verification.** The test reads the buffer back through the real Ctrl-S save path:
+  open-by-path loads exactly the file's bytes; `Ctrl-N` empties the buffer; a bad path
+  leaves the buffer untouched and shows the error; Esc cancels without loading; and the
+  prompt is drawn and **not** overpainted (checked by scanning the ordered request
+  stream for a PolyFillRect covering the prompt strip after the prompt text).
+  **Negative control:** against the slice-16 binary the same test fails - `Ctrl-O`/`Ctrl-N`
+  type literal `o`/`n`, no `Open:` prompt is ever drawn, and Esc quits the app.
+- All 10 GUI tests pass against the new binary, run in place (protocol, negatives, run,
+  scroll, edit, edscroll, keys, find, clipboard, open).
+- Compiler untouched this round: still `d0fe190c…`, 179,888 B, suite 186.
+
 ## v118 — ChatGPT R56 (module globals) + Muse R14 (set) verified and SYNCED
 
 - **ChatGPT R56 verified and accepted.** Module-level `vitti` globals: a dedicated global
