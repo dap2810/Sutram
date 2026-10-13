@@ -59,14 +59,14 @@
   <div class="card">
     <div class="big">
       <div>
-        <div class="bignum">47<small>%</small></div>
+        <div class="bignum">48<small>%</small></div>
         <div class="note">toward a complete <b>v1.0</b><br>(mean of 11 workstreams)</div>
       </div>
       <div style="flex:1;min-width:300px">
-        <div class="bar" style="height:14px"><i class="m" style="width:47%"></i></div>
+        <div class="bar" style="height:14px"><i class="m" style="width:48%"></i></div>
         <div class="note" style="margin-top:10px">
           Two different numbers, both true, and worth keeping apart:<br>
-          <b>47%</b> — how far the <i>planned build</i> is from a shippable v1.0 (this page).<br>
+          <b>48%</b> — how far the <i>planned build</i> is from a shippable v1.0 (this page).<br>
           <b>28%</b> — how mature the language is against C/Rust/Python on a 17-axis yardstick (previous report).<br>
           The gap is the point: the build is more than half assembled, but a young language is still a young language.
         </div>
@@ -83,8 +83,8 @@
         <tr><td>1</td><td>One pure-NASM compiler source emits correct native binaries for Linux <i>and</i> Windows</td><td class="n part">85%</td></tr>
         <tr><td>2</td><td>A generated Windows binary has actually <b>run</b> on real Windows</td><td class="n todo">0%</td></tr>
         <tr><td>3</td><td>The compiler optimises: register-based expressions, LICM, constant folding, peephole</td><td class="n todo">15%</td></tr>
-        <tr><td>4</td><td>The language surface is settled: globals, generics or templates, first-class functions, error values</td><td class="n part">55%</td></tr>
-        <tr><td>5</td><td>The standard library covers everyday work: collections, text, formatting, files, time, math</td><td class="n part">45%</td></tr>
+        <tr><td>4</td><td>The language surface is settled: globals, generics or templates, first-class functions, error values</td><td class="n part">60%</td></tr>
+        <tr><td>5</td><td>The standard library covers everyday work: collections, text, formatting, files, time, math</td><td class="n part">50%</td></tr>
         <tr><td>6</td><td>Diagnostics are complete across every error family, with recovery</td><td class="n part">60%</td></tr>
         <tr><td>7</td><td>The IDE is a tool someone would choose: edit, run, debug, format, clipboard, file picker</td><td class="n part">55%</td></tr>
         <tr><td>8</td><td>Installers work on Linux and Windows; releases are versioned and reproducible</td><td class="n part">35%</td></tr>
@@ -101,8 +101,8 @@
   <div class="card">
     <div class="row"><div class="lab">A · Compiler core</div><div class="bar"><i class="g" style="width:88%"></i></div><div class="pct">88%</div></div>
     <div class="row"><div class="lab">B · Optimiser</div><div class="bar"><i class="l" style="width:15%"></i></div><div class="pct">15%</div></div>
-    <div class="row"><div class="lab">C · Language surface</div><div class="bar"><i class="m" style="width:55%"></i></div><div class="pct">55%</div></div>
-    <div class="row"><div class="lab">D · Standard library</div><div class="bar"><i class="m" style="width:45%"></i></div><div class="pct">45%</div></div>
+    <div class="row"><div class="lab">C · Language surface</div><div class="bar"><i class="m" style="width:60%"></i></div><div class="pct">60%</div></div>
+    <div class="row"><div class="lab">D · Standard library</div><div class="bar"><i class="m" style="width:50%"></i></div><div class="pct">50%</div></div>
     <div class="row"><div class="lab">E · Diagnostics &amp; errors</div><div class="bar"><i class="m" style="width:60%"></i></div><div class="pct">60%</div></div>
     <div class="row"><div class="lab">F · IDE &amp; dev tooling</div><div class="bar"><i class="m" style="width:55%"></i></div><div class="pct">55%</div></div>
     <div class="row"><div class="lab">G · Cross-platform &amp; packaging</div><div class="bar"><i class="l" style="width:35%"></i></div><div class="pct">35%</div></div>
@@ -144,10 +144,10 @@
   </div>
 
   <div class="ws">
-    <h3>C · Language surface — 55%</h3>
+    <h3>C · Language surface — 60%</h3>
     <ul>
       <li class="done">✔ Functions, parameters, returns, recursion, forward prototypes (mutual recursion works)</li>
-      <li class="live">◐ <b>Module-level globals</b> — in flight as ROUND-56 <span class="pill live">active</span></li>
+      <li class="done">✔ <b>Module-level globals</b> — done and verified as R56: shared storage, local shadowing, ordered once-only initialisers, PE <code>.data</code></li>
       <li class="todo">✗ Generics / templates (one array type, not many)</li>
       <li class="todo">✗ First-class functions, closures, lambdas</li>
       <li class="todo">✗ Error values / exceptions / <code>result</code> types</li>
@@ -157,11 +157,11 @@
   </div>
 
   <div class="ws">
-    <h3>D · Standard library — 45%</h3>
-    <p class="note">18 modules, 176 functions, 147 proofs, 33 properties. Strong in data structures and maths; thin in everyday text and I/O.</p>
+    <h3>D · Standard library — 50%</h3>
+    <p class="note">19 modules, 186 functions, 153 proofs, 39 properties. Strong in data structures and maths; thin in everyday text and I/O.</p>
     <ul>
-      <li class="done">✔ <code>map</code>, <code>strb</code> (byte strings), <code>string</code>, <code>sort</code>, <code>bigint</code>, <code>hash</code>, <code>math</code>, <code>sankhyiki</code> (stats), <code>baseconv</code>, <code>strconv</code>, <code>array</code>, <code>util</code>, heritage modules</li>
-      <li class="live">◐ <b>Sets</b> — in flight as ROUND-14 <span class="pill live">active</span></li>
+      <li class="done">✔ <code>map</code>, <code>set</code>, <code>strb</code> (byte strings), <code>string</code>, <code>sort</code>, <code>bigint</code>, <code>hash</code>, <code>math</code>, <code>sankhyiki</code> (stats), <code>baseconv</code>, <code>strconv</code>, <code>array</code>, <code>util</code>, heritage modules</li>
+      <li class="done">✔ <b>Sets</b> — <code>lib/set.smlib</code>, done and verified as R14: union, intersect, difference, subset, sorted to_array</li>
       <li class="todo">✗ Lists / queues / stacks built on <code>kosh</code></li>
       <li class="todo">✗ Formatting and templates (printf-style, or interpolation)</li>
       <li class="todo">✗ File I/O breadth (read whole file, line iteration, directories)</li>
@@ -262,13 +262,13 @@
     <tbody>
       <tr>
         <td><b>ChatGPT</b></td>
-        <td><b>ROUND-56</b> — module-level globals (the second half of R55)</td>
-        <td>C · Language surface</td>
+        <td><b>ROUND-57</b> — register-based expression evaluator (the 5.4&times; arithmetic gap)</td>
+        <td>B · Optimiser</td>
         <td><span class="pill live">issued, in progress</span></td>
       </tr>
       <tr>
         <td><b>Muse</b></td>
-        <td><b>ROUND-14</b> — <code>lib/set.smlib</code>: union, intersect, difference, subset, to_array</td>
+        <td><b>ROUND-15</b> — <code>lib/fmt.smlib</code> formatting module</td>
         <td>D · Standard library</td>
         <td><span class="pill live">issued, in progress</span></td>
       </tr>
@@ -291,8 +291,9 @@
   <p class="note">
     R55 forward prototypes (compiler <code>6db0adf7</code>) · R13 pack/unpack + integer statistics · R54 builtin arity sweep
     (40 builtins, plus a fixed <code>vartani_cp</code> codegen bug) · R12 three real programs · R53 consolidated checker ·
-    R51/R52 diagnostics and defect fixes · GUI slices 13–16 (editor scrolling, Tab, Ctrl-Home/End, find, selection + clipboard).
-    Main today: compiler <code>6db0adf7</code>, IDE <code>2216a476</code>, 18 modules / 176 functions, 186/12/30/18 green.
+    R56 module-level globals · R14 <code>set.smlib</code> · R55 forward prototypes · R13 pack/unpack + integer statistics ·
+    R54 builtin arity sweep · GUI slices 13–16 (editor scrolling, Tab, Ctrl-Home/End, find, selection + clipboard).
+    Main today: compiler <code>d0fe190c</code>, IDE <code>2216a476</code>, 19 modules / 186 functions, 186/12/30/18 green.
   </p>
 
   <h2>4 · Critical path — what to do in what order</h2>
@@ -354,8 +355,8 @@
 
   <div class="hr"></div>
   <p class="note">
-    Snapshot: compiler <code>6db0adf7</code> · IDE <code>2216a476</code> · 18 library modules / 176 functions ·
-    186 + 3 tests · 12 codegen ceilings · 30 pack checks · 18 module-graph tests · 147 proofs · 33 properties ·
+    Snapshot: compiler <code>d0fe190c</code> · IDE <code>2216a476</code> · 19 library modules / 186 functions ·
+    186 + 3 tests · 12 codegen ceilings · 30 pack checks · 18 module-graph tests · 153 proofs · 39 properties ·
     32 keywords · 10 language packs · 189 examples · 29 doc pages · Linux ELF + Windows PE32+ (Windows unverified).
     Percentages are honest judgement against the finish line in section 1, not measurements.
     No part of the project was modified to produce this roadmap.
