@@ -20307,10 +20307,7 @@ r58_emit_div_pow2:
     call emit_byte
     mov dil,0xE2
     call emit_byte
-    mov rdi,r12
-    mov rcx,1
-    shl rcx,cl
-    ; recompute mask without clobber surprises: (1<<log)-1
+    ; Encode the correction mask as imm8: (1<<log2(divisor))-1.
     mov rcx,r12
     mov rax,1
     shl rax,cl
