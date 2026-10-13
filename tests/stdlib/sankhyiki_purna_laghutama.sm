@@ -1,0 +1,21 @@
+ayojan sankhyiki
+mukhya() {
+    pankti a[3]
+    a[0] = 3
+    a[1] = 1
+    a[2] = 2
+    likha(purna_laghutama(a, 3))
+    likha("\n")
+    pankti b[3]
+    b[0] = 0 - 5
+    b[1] = 0 - 1
+    b[2] = 0 - 3
+    likha(purna_laghutama(b, 3))
+    likha("\n")
+    pankti c[1]
+    c[0] = 9
+    likha(purna_laghutama(c, 1))
+    likha("\n")
+    likha(purna_laghutama(a, 0))
+    likha("\n")
+}
