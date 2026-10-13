@@ -1,0 +1,30 @@
+ayojan sankhyiki
+mukhya() {
+    pankti a[4]
+    a[0] = 1
+    a[1] = 2
+    a[2] = 3
+    a[3] = 4
+    likha(purna_madhya(a, 4))
+    likha("\n")
+    # 3/2 truncates toward zero to 1
+    pankti b[2]
+    b[0] = 1
+    b[1] = 2
+    likha(purna_madhya(b, 2))
+    likha("\n")
+    # -3/2 truncates toward zero to -1 (NOT floor -2)
+    pankti c[2]
+    c[0] = 0 - 3
+    c[1] = 0
+    likha(purna_madhya(c, 2))
+    likha("\n")
+    # single element
+    pankti d[1]
+    d[0] = 7
+    likha(purna_madhya(d, 1))
+    likha("\n")
+    # empty input
+    likha(purna_madhya(a, 0))
+    likha("\n")
+}
