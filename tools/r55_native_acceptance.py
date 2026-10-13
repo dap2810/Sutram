@@ -45,7 +45,7 @@ def check():
     rc,_=one(NEW,"global-gap", "without_global_gap.sm")
     assert rc!=0,("unexpected global acceptance",rc)
     print("R55_FORWARD_ACCEPTED two_cycle=1 three_cycle=1 "
-          prototype_mismatch=1 type_mismatch=1 duplicate=1 missing=1 "
+          "prototype_mismatch=1 type_mismatch=1 duplicate=1 missing=1 "
           "global_vitti_unimplemented=1",flush=True)
 if __name__=="__main__":
     assert OLD.is_file() and NEW.is_file()
