@@ -1398,6 +1398,324 @@ def prop_set_subset(compiler, rng):
     return ok and out == "PASS", out
 
 
+def _fmt_half_away(x, places):
+    """Python mirror of fmt_fixed: half away from zero, float arithmetic
+    identical to the Sutram side (magnitude * 10**places + 0.5, floor)."""
+    import math
+    places = max(0, min(9, places))
+    p10 = 10.0 ** places
+    mag = abs(x)
+    r = math.floor(mag * p10 + 0.5)
+    ip, fp = divmod(r, 10 ** places)
+    sign = "-" if x < 0 else ""
+    if places == 0:
+        return f"{sign}{ip}"
+    return f"{sign}{ip}.{fp:0{places}d}"
+
+
+def prop_fmt_int_base_roundtrip(compiler, rng):
+    """fmt_int_base then parse == original, incl negatives and base 36;
+    bad bases return 0"""
+    vals = [0, 1, -1, 255, -255, 99999, -99999, rng.randint(-10 ** 6, 10 ** 6)]
+    bases = [2, 8, 10, 16, 36]
+    lines = ["ayojan fmt",
+             "prakriya parse_base(buf, n, base) {",
+             "    vitti i = 0",
+             "    vitti neg = 0",
+             "    vitti val = 0",
+             "    vitti c = 0",
+             "    vitti d = 0",
+             "    yadi (n == 0) { pratiyati 0 }",
+             "    yadi (char_at(buf, 0) == 45) { neg = 1 }",
+             "    yadi (neg == 1) { i = 1 }",
+             "    yavat (i < n) {",
+             "        c = char_at(buf, i)",
+             "        d = 0 - 1",
+             "        yadi (c >= 48) {",
+             "            yadi (c <= 57) { d = c - 48 }",
+             "        }",
+             "        yadi (c >= 97) {",
+             "            yadi (c <= 122) { d = c - 87 }",
+             "        }",
+             "        yadi (c >= 65) {",
+             "            yadi (c <= 90) { d = c - 55 }",
+             "        }",
+             "        val = val * base + d",
+             "        i = i + 1",
+             "    }",
+             "    yadi (neg == 1) { val = 0 - val }",
+             "    pratiyati val",
+             "}",
+             "mukhya() {",
+             "    vitti out = nirmmita(128)"]
+    for v in vals:
+        for b in bases:
+            lines.append(f"    yadi (parse_base(out, fmt_int_base({v}, {b}, out), {b}) != {v}) {{")
+            lines.append('        likha("FAIL fmt base roundtrip\\n")')
+            lines.append("        pratiyati 1")
+            lines.append("    }")
+    # uppercase hex round-trips through the same parser (A-F handled)
+    lines.append("    yadi (parse_base(out, fmt_int_flags(255, 16, 2, out), 16) != 255) {")
+    lines.append('        likha("FAIL fmt hex upper roundtrip\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    # prefixed form: skip the 0x and parse the rest
+    lines.append("    vitti pn = fmt_int_pre(255, 16, 0, out)")
+    lines.append("    yadi (parse_base(out + 2, pn - 2, 16) != 255) {")
+    lines.append('        likha("FAIL fmt prefix skip\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    # flags 3 = prefix + upper: skip 0x, parse "FF"
+    lines.append("    vitti pn3 = fmt_int_flags(255, 16, 3, out)")
+    lines.append("    yadi (parse_base(out + 2, pn3 - 2, 16) != 255) {")
+    lines.append('        likha("FAIL fmt hex prefix roundtrip\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append("    yadi (fmt_int_base(255, 1, out) != 0) {")
+    lines.append('        likha("FAIL fmt bad base low\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append("    yadi (fmt_int_base(255, 37, out) != 0) {")
+    lines.append('        likha("FAIL fmt bad base high\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "fmt_base", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_fmt_pad_content(compiler, rng):
+    """padding never changes the non-pad content; length == max(width, n)"""
+    cases = []
+    for _ in range(6):
+        s = "".join(rng.choice("abc") for _ in range(rng.randint(1, 5)))
+        w = rng.randint(0, len(s) + 4)
+        cases.append((s, w))
+    lines = ["ayojan fmt",
+             "prakriya bytes_match_at(buf, off, lit, ln) {",
+             "    vitti i = 0",
+             "    yavat (i < ln) {",
+             "        yadi (char_at(buf, off + i) != char_at(lit, i)) { pratiyati 0 }",
+             "        i = i + 1",
+             "    }",
+             "    pratiyati 1",
+             "}",
+             "prakriya all_fill(buf, n, byte) {",
+             "    vitti i = 0",
+             "    yavat (i < n) {",
+             "        yadi (char_at(buf, i) != byte) { pratiyati 0 }",
+             "        i = i + 1",
+             "    }",
+             "    pratiyati 1",
+             "}",
+             "mukhya() {",
+             "    vitti out = nirmmita(64)"]
+    for s, w in cases:
+        n = len(s)
+        exp_len = max(w, n)
+        pad = w - n if w > n else 0
+        left = pad // 2
+        # pad_left: content at offset pad, fill before it
+        lines.append(f'    yadi (fmt_pad_left("{s}", {n}, {w}, 42, out) != {exp_len}) {{')
+        lines.append('        likha("FAIL fmt pad_left len\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+        lines.append(f'    yadi (bytes_match_at(out, {pad}, "{s}", {n}) == 0) {{')
+        lines.append('        likha("FAIL fmt pad_left content\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+        if pad:
+            lines.append(f'    yadi (all_fill(out, {pad}, 42) == 0) {{')
+            lines.append('        likha("FAIL fmt pad_left fill\\n")')
+            lines.append("        pratiyati 1")
+            lines.append("    }")
+        # pad_right: content at 0, fill after it
+        lines.append(f'    yadi (fmt_pad_right("{s}", {n}, {w}, 42, out) != {exp_len}) {{')
+        lines.append('        likha("FAIL fmt pad_right len\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+        lines.append(f'    yadi (bytes_match_at(out, 0, "{s}", {n}) == 0) {{')
+        lines.append('        likha("FAIL fmt pad_right content\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+        # pad_center: content at offset left
+        lines.append(f'    yadi (fmt_pad_center("{s}", {n}, {w}, 42, out) != {exp_len}) {{')
+        lines.append('        likha("FAIL fmt pad_center len\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+        lines.append(f'    yadi (bytes_match_at(out, {left}, "{s}", {n}) == 0) {{')
+        lines.append('        likha("FAIL fmt pad_center content\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "fmt_pad", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def _fmt_group_py(digits, indian):
+    """Python mirror of the grouping rules, digits only (no sign/dot)."""
+    if len(digits) <= 3:
+        return digits
+    parts = []
+    if indian:
+        # rightmost group 3, then 2s
+        rest = digits[:-3]
+        parts.append(digits[-3:])
+        while rest:
+            parts.append(rest[-2:])
+            rest = rest[:-2]
+    else:
+        rest = digits
+        while len(rest) > 3:
+            parts.append(rest[-3:])
+            rest = rest[:-3]
+        parts.append(rest)
+    return ",".join(reversed(parts))
+
+
+def prop_fmt_group_digits(compiler, rng):
+    """grouping never alters the digits; strip commas == original;
+    grouped output matches Python grouping"""
+    cases = ["0", "12", "123", "1234", "12345", "123456", "1234567",
+             "12345678", "-1234567", "1234567.89", "-12.5"]
+    lines = ["ayojan fmt",
+             "prakriya strip_commas(src, sn, out) {",
+             "    vitti i = 0",
+             "    vitti w = 0",
+             "    yavat (i < sn) {",
+             "        yadi (char_at(src, i) != 44) {",
+             "            set_char(out, w, char_at(src, i))",
+             "            w = w + 1",
+             "        }",
+             "        i = i + 1",
+             "    }",
+             "    set_char(out, w, 0)",
+             "    pratiyati w",
+             "}",
+             "prakriya bytes_match(buf, n, lit, ln) {",
+             "    vitti i = 0",
+             "    yadi (n != ln) { pratiyati 0 }",
+             "    yavat (i < n) {",
+             "        yadi (char_at(buf, i) != char_at(lit, i)) { pratiyati 0 }",
+             "        i = i + 1",
+             "    }",
+             "    pratiyati 1",
+             "}",
+             "mukhya() {",
+             "    vitti out = nirmmita(64)",
+             "    vitti stripped = nirmmita(64)"]
+    for ci, s in enumerate(cases):
+        n = len(s)
+        sign = ""
+        body = s
+        if s[:1] in ("-", "+"):
+            sign, body = s[0], s[1:]
+        if "." in body:
+            intpart, frac = body.split(".")
+            exp_in = sign + _fmt_group_py(intpart, True) + "." + frac
+            exp_intl = sign + _fmt_group_py(intpart, False) + "." + frac
+        else:
+            exp_in = sign + _fmt_group_py(body, True)
+            exp_intl = sign + _fmt_group_py(body, False)
+        for fi, (fn, exp) in enumerate((("fmt_group_indian", exp_in),
+                                     ("fmt_group_intl", exp_intl))):
+            lines.append(f'    vitti gn{ci}_{fi} = {fn}("{s}", {n}, out)')
+            lines.append(f'    yadi (bytes_match(out, gn{ci}_{fi}, "{exp}", {len(exp)}) == 0) {{')
+            lines.append('        likha("FAIL fmt group content\\n")')
+            lines.append("        pratiyati 1")
+            lines.append("    }")
+            lines.append(f"    vitti sn2_{ci}_{fi} = strip_commas(out, gn{ci}_{fi}, stripped)")
+            lines.append(f'    yadi (bytes_match(stripped, sn2_{ci}_{fi}, "{s}", {n}) == 0) {{')
+            lines.append('        likha("FAIL fmt group digits\\n")')
+            lines.append("        pratiyati 1")
+            lines.append("    }")
+    # fmt_group_int agrees with Python on plain integers
+    for gi, v in enumerate([0, 999, 1234, -1234567, 1000000]):
+        for indian in (0, 1):
+            exp = ("-" if v < 0 else "") + _fmt_group_py(str(abs(v)), bool(indian))
+            lines.append(f"    vitti gin{gi}_{indian} = fmt_group_int({v}, {indian}, out)")
+            lines.append(f'    yadi (bytes_match(out, gin{gi}_{indian}, "{exp}", {len(exp)}) == 0) {{')
+            lines.append('        likha("FAIL fmt group_int\\n")')
+            lines.append("        pratiyati 1")
+            lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "fmt_grp", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_fmt_fixed(compiler, rng):
+    """fmt_fixed matches Python half-away-from-zero formatting"""
+    cases = [(0.0, 2), (1.5, 0), (2.5, 0), (-2.5, 0), (3.14159, 2),
+             (-0.004, 2), (100.0, 3), (0.125, 2), (999.999, 2),
+             (-0.5, 0), (7.25, 1), (-7.25, 1)]
+    lines = ["ayojan fmt",
+             "prakriya bytes_match(buf, n, lit, ln) {",
+             "    vitti i = 0",
+             "    yadi (n != ln) { pratiyati 0 }",
+             "    yavat (i < n) {",
+             "        yadi (char_at(buf, i) != char_at(lit, i)) { pratiyati 0 }",
+             "        i = i + 1",
+             "    }",
+             "    pratiyati 1",
+             "}",
+             "mukhya() {",
+             "    vitti out = nirmmita(64)"]
+    for ci, (x, places) in enumerate(cases):
+        exp = _fmt_half_away(x, places)
+        lines.append(f"    vitti fn{ci} = fmt_fixed({x!r}, {places}, out)")
+        lines.append(f'    yadi (bytes_match(out, fn{ci}, "{exp}", {len(exp)}) == 0) {{')
+        lines.append('        likha("FAIL fmt_fixed\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+        exp_s = "+" + exp if x >= 0 else exp
+        lines.append(f"    vitti fs{ci} = fmt_fixed_signed({x!r}, {places}, out)")
+        lines.append(f'    yadi (bytes_match(out, fs{ci}, "{exp_s}", {len(exp_s)}) == 0) {{')
+        lines.append('        likha("FAIL fmt_fixed_signed\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "fmt_fixed", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_fmt_signed(compiler, rng):
+    """fmt_signed / fmt_sign_char match Python sign + digits"""
+    vals = [0, 1, -1, 42, -42, 99999, -99999]
+    lines = ["ayojan fmt",
+             "prakriya bytes_match(buf, n, lit, ln) {",
+             "    vitti i = 0",
+             "    yadi (n != ln) { pratiyati 0 }",
+             "    yavat (i < n) {",
+             "        yadi (char_at(buf, i) != char_at(lit, i)) { pratiyati 0 }",
+             "        i = i + 1",
+             "    }",
+             "    pratiyati 1",
+             "}",
+             "mukhya() {",
+             "    vitti out = nirmmita(64)"]
+    for ci, v in enumerate(vals):
+        exp = ("+" if v >= 0 else "-") + str(abs(v))
+        exp_sp = (" " if v >= 0 else "-") + str(abs(v))
+        lines.append(f"    vitti sn{ci} = fmt_signed({v}, out)")
+        lines.append(f'    yadi (bytes_match(out, sn{ci}, "{exp}", {len(exp)}) == 0) {{')
+        lines.append('        likha("FAIL fmt_signed\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+        lines.append(f"    vitti sc{ci} = fmt_sign_char({v}, 32, out)")
+        lines.append(f'    yadi (bytes_match(out, sc{ci}, "{exp_sp}", {len(exp_sp)}) == 0) {{')
+        lines.append('        likha("FAIL fmt_sign_char\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "fmt_sign", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
 def main():
     compiler = None
     for i, a in enumerate(sys.argv):
@@ -1447,6 +1765,11 @@ def main():
         ("set intersect self/empty", prop_set_intersect_self_empty),
         ("set difference", prop_set_difference),
         ("set subset", prop_set_subset),
+        ("fmt int base roundtrip", prop_fmt_int_base_roundtrip),
+        ("fmt pad content", prop_fmt_pad_content),
+        ("fmt group digits", prop_fmt_group_digits),
+        ("fmt fixed decimals", prop_fmt_fixed),
+        ("fmt signed", prop_fmt_signed),
     ]
 
     failed = []
