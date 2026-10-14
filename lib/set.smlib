@@ -133,6 +133,14 @@ prakriya set_difference(a, cap, b, bcap, out) {
     pratiyati map_size(out)
 }
 
+# set_resize(s, newcap) — copy the set into a fresh set of capacity
+# newcap (WS2, R20). A set IS a map, so this is map_resize's copy
+# with the same all-or-nothing rule: returns the new handle, or 0
+# if newcap < set_size(s). Rebind: s = set_resize(s, 32).
+prakriya set_resize(s, newcap) {
+    pratiyati map_resize(s, newcap)
+}
+
 # set_clear(s) — reset the set to empty in place (WS2, R19): same
 # handle, same capacity. A set IS a map, so this is map_clear's full
 # zero (count, state, keylens, vals, key bytes) with no stale
