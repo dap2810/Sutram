@@ -1,0 +1,41 @@
+name: R60 genuine Windows desktop probe (no installer side-effects)
+on:
+  push:
+    branches: [feature/r60-windows-smoke-20261014]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  windows-native:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Confirm Windows host and uploaded binary hashes
+        shell: pwsh
+        run: |
+          Write-Host "RUNNER_OS=$env:RUNNER_OS"
+          [Environment]::OSVersion.VersionString
+          Get-FileHash -Algorithm SHA256 "Sarvam-to-ChatGPT/Sutram-Setup.exe"
+          Get-FileHash -Algorithm SHA256 "Sarvam-to-ChatGPT/sutram-windows-idle-test.zip"
+          Get-FileHash -Algorithm SHA256 "icons/sutram.ico"
+      - name: Run executable GUI and installer window probe on real Windows
+        shell: powershell
+        run: |
+          powershell.exe -NoProfile -File tools/r60_windows_desktop_probe.ps1 -ResultsDir "$env:RUNNER_TEMP\sutram-r60"
+      - name: Static Windows GUI unit checks
+        shell: pwsh
+        run: |
+          python -m unittest discover -s tests/gui -p "test_*.py" -v
+      - name: Upload screenshot and exact Windows result logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: r60-windows-desktop-evidence
+          path: ${{ runner.temp }}/sutram-r60/
+          if-no-files-found: warn
+      - name: Display source checksums
+        if: always()
+        shell: pwsh
+        run: |
+          Get-FileHash -Algorithm SHA256 tools/r60_windows_desktop_probe.ps1
