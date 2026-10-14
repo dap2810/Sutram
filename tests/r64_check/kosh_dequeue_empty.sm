@@ -1,0 +1,5 @@
+# R64: empty dequeue must identify 'dequeue' and exit nonzero.
+mukhya() {
+    kosh k[1]
+    likha(kosh_dequeue(k))
+}
