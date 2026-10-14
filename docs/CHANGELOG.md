@@ -1,3 +1,18 @@
+## v133 — Linux X11 GUI slice 22: danda recognition in the tokeniser (my own stream)
+
+- The Linux GUI tokeniser now recognises the **danda `।` / double danda `॥`** as a single 3-byte
+  token and colours it **orange** (`COL_DANDA`), instead of letting `classify` split it into three
+  separate bytes and mis-colour them. Matches the Windows side and the new language feature.
+- Implementation: `classify` tests for the `E0 A5 A4` / `E0 A5 A5` sequence first and returns a new
+  class 6 with length 3; `draw_line_coloured` maps class 6 to `COL_DANDA`.
+- GUI source ~83 KB; binary **35,128 B**. **All 13 GUI tests pass.** Compiler untouched.
+- Honest note: the danda colouring is verified by **build + full regression**, not by a dedicated
+  colour assertion — the mock X keyboard cannot emit a 3-byte UTF-8 sequence, so there is no
+  protocol-level proof of the orange paint yet. Recorded as a known gap, not claimed as proven.
+- **Windows artifacts rebuilt for the user's own testing** and delivered: `Sutram-Setup.exe`
+  (596,624 B) and `sutram-windows-test.zip` (222,296 B), both carrying `lang/sanskrit.lang` and
+  `examples/218_sanskrit_devanagari.sm`.
+
 ## v132 — ChatGPT R62 (Windows acceptance tooling) + Muse R19 (map_clear, container breadth) verified and SYNCED
 
 - **Muse R19 accepted — all four workstreams landed.** 8 new functions and 1 strengthened:
