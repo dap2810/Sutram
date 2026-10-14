@@ -1,3 +1,28 @@
+## v134 — ChatGPT R63 (kosh builtins) + Muse R20 (string surface) verified and SYNCED
+
+- **R63 accepted — and I ran the gates they could not.** ChatGPT marked it source-level only; I
+  built it and it passes. Compiler hash matches theirs exactly (`f52a9ad7...`); builds to 189,168 B;
+  **`R63_NATIVE_ACCEPTED 9 gates`** — `kosh_fifo_core`, `kosh_fifo_float`, the danda regression, both
+  expected compile errors, and the empty-peek / empty-dequeue traps. Suite **187/3**; codegen
+  **12/12**; packs **33/33**; graph **OK**; proofs **167/167** and **57/57**; **R58 baseline 8/8**
+  and **R59 baseline 3/3** untouched.
+- **The five `kosh` builtins close the gap Muse named in R19:** `kosh_clear`, `kosh_empty`,
+  `kosh_peek`, `kosh_enqueue`, and a FIFO `kosh_dequeue`. They are compiler builtins, not library
+  functions — exactly as Muse proved they had to be (no generic parameter type, no overloading).
+- **Muse R20 accepted.** 13 new functions across all four workstreams (the `strb_`/`str_` surface
+  parity, `map_resize`/`set_resize`/`list_swap`/`list_reverse`, `ganita_checked_fact`/
+  `ganita_sat_pow`). Patch clean; **14/14 hashes**; proof_lib **170/170** (was 167), proof_props
+  **60/60** (was 57), suite **187/3**; library now **21 modules / 260 functions**.
+- **The per-pair table was the right shape of answer** — what was added *and* what was deliberately
+  not, with reasons (`is_*_char` already serves both surfaces). Slice-correctness was measured, e.g.
+  `strb_find_char("hello world", 5, 'w')` -> `-1` where the NUL-terminated form would read past the
+  slice end.
+- **32 files synced** (R63 compiler + tools + 14 fixtures + doc; R20 library + tests + docs).
+- **Next:** ROUND-64 to ChatGPT (execute the Windows acceptance at last, the two deferred peepholes,
+  an **opt-in** overflow trap, and accurate `kosh_peek`/`kosh_dequeue` diagnostics). ROUND-21 to Muse
+  (write the compiler-side `kosh` builtin spec, remaining container gaps, accumulated small gaps, and
+  the final trap-vs-checked division of labour).
+
 ## v133 — Linux X11 GUI slice 22: danda recognition in the tokeniser (my own stream)
 
 - The Linux GUI tokeniser now recognises the **danda `।` / double danda `॥`** as a single 3-byte
