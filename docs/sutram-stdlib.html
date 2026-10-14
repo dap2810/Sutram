@@ -26,7 +26,7 @@ Do not edit by hand.</p>
 <li><a href="#bigint"><code>bigint</code></a> — 12 functions</li>
 <li><a href="#chandas"><code>chandas</code></a> — 6 functions</li>
 <li><a href="#fmt"><code>fmt</code></a> — 23 functions</li>
-<li><a href="#ganita"><code>ganita</code></a> — 6 functions</li>
+<li><a href="#ganita"><code>ganita</code></a> — 14 functions</li>
 <li><a href="#hash"><code>hash</code></a> — 2 functions</li>
 <li><a href="#kalana"><code>kalana</code></a> — 6 functions</li>
 <li><a href="#list"><code>list</code></a> — 21 functions</li>
@@ -120,7 +120,7 @@ Do not edit by hand.</p>
 <tr><td><code>fmt_sign_char(v, signch, out)</code></td><td>fmt_sign_char(v, signch, out) — `signch` (a byte value, e.g. 32 for a blank, 43 for &#x27;+&#x27;) in place of &#x27;+&#x27; for non-negative values; negatives always get &#x27;-&#x27;.</td></tr>
 </table>
 <h2 id="ganita"><code>ganita</code></h2>
-<p class="mod-desc">After Aryabhata&#x27;s Kuttaka (~499 CE) and the Chakravala of Jayadeva and Bhaskara II (~1150 CE). KUTTAKA (&quot;the pulveriser&quot;) solves the linear indeterminate equation ax + by = c. It is the ancestor of the extended Euclidean algorithm. CHAKRAVALA (&quot;the wheel&quot;) solves the quadratic indeterminate equation x^2 - N*y^2 = 1, known in Europe as Pell&#x27;s equation. It was the first complete method for it, and for N = 61 it gives x = 1766319049, y = 226153980 - a case Europe first solved in 1657. kuttaka(a, b, c) -&gt; x such that a*x is congruent to c (mod b). Requires gcd(a, b) to divide c. Returns x (a particular solution).</p>
+<p class="mod-desc">After Aryabhata&#x27;s Kuttaka (~499 CE) and the Chakravala of Jayadeva and Bhaskara II (~1150 CE). KUTTAKA (&quot;the pulveriser&quot;) solves the linear indeterminate equation ax + by = c. It is the ancestor of the extended Euclidean algorithm. CHAKRAVALA (&quot;the wheel&quot;) solves the quadratic indeterminate equation x^2 - N*y^2 = 1, known in Europe as Pell&#x27;s equation. It was the first complete method for it, and for N = 61 it gives x = 1766319049, y = 226153980 - a case Europe first solved in 1657. CHECKED / SATURATING ARITHMETIC (R18) lives here too: ganita is the arithmetic module. See the notes above ganita_checked_add. kuttaka(a, b, c) -&gt; x such that a*x is congruent to c (mod b). Requires gcd(a, b) to divide c. Returns x (a particular solution).</p>
 <table>
 <tr><th>Function</th><th>Description</th></tr>
 <tr><td><code>kuttaka(a, b, c)</code></td><td></td></tr>
@@ -129,6 +129,14 @@ Do not edit by hand.</p>
 <tr><td><code>chakravala(out, n)</code></td><td>chakravala(out, n): solves x^2 - n*y^2 = 1 for least positive x, y. Fills out[0] = x and out[1] = y.</td></tr>
 <tr><td><code>samasa(out, a, b, c, d, n)</code></td><td>samasa(out, a, b, c, d, n): Brahmagupta&#x27;s composition law (bhavana / samasa). Given a^2 - n*b^2 = k1 and c^2 - n*d^2 = k2, composes them into a third: (a^2 - n*b^2)(c^2 - n*d^2) = (a*c + n*b*d)^2 - n*(a*d + b*c)^2 Fills out[0] = a*c + n*b*d  and  out[1] = a*d + b*c.</td></tr>
 <tr><td><code>brahmagupta_area(a, b, c, d)</code></td><td>brahmagupta_area(a, b, c, d): Brahmagupta&#x27;s formula for the area of a cyclic quadrilateral (Brahma-sphuta-siddhanta, 628 CE):  area = sqrt((s-a)(s-b)(s-c)(s-d)),  s = (a+b+c+d)/2. With d = 0 this is Brahmagupta&#x27;s triangle (Heron&#x27;s) formula. Returns the integer part.</td></tr>
+<tr><td><code>ganita_checked_add(a, b, ok)</code></td><td>ganita_checked_add(a, b, ok) — a + b; ok[0] 1, or 0 on overflow (returns 0 then).</td></tr>
+<tr><td><code>ganita_checked_sub(a, b, ok)</code></td><td>ganita_checked_sub(a, b, ok) — a - b; ok[0] 1, or 0 on overflow (returns 0 then).</td></tr>
+<tr><td><code>ganita_checked_mul(a, b, ok)</code></td><td>ganita_checked_mul(a, b, ok) — a * b; ok[0] 1, or 0 on overflow (returns 0 then). The check is m / a == b, with the INT64_MIN * -1 case handled explicitly (the division itself would SIGFPE there).</td></tr>
+<tr><td><code>ganita_checked_div(a, b, ok)</code></td><td>ganita_checked_div(a, b, ok) — truncating a / b; ok[0] 1, or 0 on division by zero or INT64_MIN / -1 (both would SIGFPE; returns 0).</td></tr>
+<tr><td><code>ganita_checked_mod(a, b, ok)</code></td><td>ganita_checked_mod(a, b, ok) — truncating a % b (remainder takes the dividend&#x27;s sign); ok[0] 1, or 0 on b == 0 or INT64_MIN % -1.</td></tr>
+<tr><td><code>ganita_sat_add(a, b)</code></td><td>ganita_sat_add(a, b) — a + b, SATURATING: on overflow returns INT64_MAX (positive overflow) or INT64_MIN (negative overflow).</td></tr>
+<tr><td><code>ganita_sat_sub(a, b)</code></td><td>ganita_sat_sub(a, b) — a - b, saturating (see ganita_sat_add).</td></tr>
+<tr><td><code>ganita_sat_mul(a, b)</code></td><td>ganita_sat_mul(a, b) — a * b, saturating (see ganita_sat_add). The overflow direction is the sign of the true product.</td></tr>
 </table>
 <h2 id="hash"><code>hash</code></h2>
 <p class="mod-desc">FNV-1a (Fowler–Noll–Vo) 32-bit hash. Deterministic, fast, good distribution for non-cryptographic use (hash tables, checksums, dedup keys). Reference: http://www.isthe.com/chongo/tech/comp/fnv/ offset_basis = 2166136261 prime        = 16777619 for each byte b: hash = (hash XOR b) * prime  (mod 2^32) fnv1a(s, len) — FNV-1a 32-bit hash of first `len` chars of pankti `s`. Returns an unsigned 32-bit value (may print as negative via likha).</p>
@@ -379,6 +387,6 @@ Do not edit by hand.</p>
 <tr><td><code>bool_to_int(b)</code></td><td></td></tr>
 <tr><td><code>int_max()</code></td><td></td></tr>
 </table>
-<footer>21 modules, 231 functions. Generated from library sources.</footer>
+<footer>21 modules, 239 functions. Generated from library sources.</footer>
 </body>
 </html>
