@@ -93,7 +93,7 @@ jobs:
       - name: SHA-256 actual source manifest
         if: always()
         run: |
-          sha256sum src/sutram_compiler.asm tools/r59_native_acceptance.py tools/r59_codegen_baseline.py tests/r59_check/* .github/workflows/r59-native.yml > r59_sha256.txt
+          sha256sum src/sutram_compiler.asm tools/r59_native_acceptance.py tools/r59_codegen_baseline.py docs/R59-PREEMISSION-PEEPHOLE.md tests/r59_check/* .github/workflows/r59-native.yml > r59_sha256.txt
           cat r59_sha256.txt
       - uses: actions/upload-artifact@v4
         if: always()
