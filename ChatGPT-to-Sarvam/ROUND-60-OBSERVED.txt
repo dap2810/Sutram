@@ -1,0 +1,36 @@
+# Sutram R60 — real Windows-native observations (no simulated screenshots)
+
+## Provenance
+
+Actual Windows-hosted GitHub Actions run **38562501834** (result: FAILED on two genuine end-to-end acceptance gates; other gates successful):
+https://github.com/dap2810/Sutram/actions/runs/38562501834
+
+Artifact name **r60-windows-desktop-evidence**, id **11892492523**, approx **2,457,616 bytes**, containing real-host screenshots and installer test files. GitHub Actions shows this under Artifacts on the run page; the archive is downloadable by a repo collaborator. Capture used real Win32 windows and Windows screen CopyFromScreen on Windows 10.0.26100.0, host runneradmin. Screenshots are captured but have NOT been visually inspected and should NOT be treated as proof of color accuracy or installed shortcut icon.
+
+Screenshots in artifact: IDE.png, SETUP_WIZARD.png (actual GUI/window open), SETUP_PRE_INSTALL.png and SETUP_POST_INSTALL.png (actual installer before/after clicking Install); IDE_SYNTAX_TEST.png and IDE_SHELL_TEST.png were captured in earlier R60 Windows native control attempts, but are not guaranteed in the latest run because CLI preflight failed and editor step was skipped. Do not invent missing screenshots.
+
+## Actual commands/gates run
+
+1. `windows/gui/build-gui.ps1` with Windows NASM `C:\Strawberry\c\bin\nasm.exe` and MinGW `C:\mingw64\bin\ld.exe`: **PASS**, genuine compiled Windows PE GUI, no C/Qt/Python runtime in the GUI.
+2. `tools/r60_windows_desktop_probe.ps1`: **PASS** as a process/window/menu probe. The freshly compiled GUI launched successfully; menu count 7, exact names File / Edit / Shell / Debug / Options / Window / Help. Native P/Invoke `GetDlgItem` returned nonzero handles for IDs 101–106, 201–205 (including Unicode RichEdit editor ID201, output 203, shell 204).
+3. Windows `PYTHONUTF8=1 python -m unittest discover -s tests/gui -p 'test_*.py' -v`: **28/28 PASS**; the PYTHONUTF8 flag fixes a Windows cp1252-only test-discovery decode failure, does not change any GUI source.
+4. Uploaded portable ZIP `Sarvam-to-ChatGPT/sutram-windows-idle-test.zip`: SHA256 `9a0379fc85339d09b4bd0ebb6146d3d7b41e6f25d84a2b35a3cb2a7d1ecb63ad` (292,506 B); contains `sutram-ide-gui.exe`, `sutram.exe`, and `win\sutram.exe`. The original uploaded GUI binary was 34,581 B; source-compiled R60 GUI was approx 35 KB. The portable's compiler `win\sutram.exe` SHA256 `34afbbc16a5ba331ba831b176170e46f0363c151565b54f600b770eca43bd99d`.
+5. Actual direct Windows command-line compiler probe `tools/r60_native_cli_smoke.ps1`: **FAIL**. It wrote a trivial Sutram program `mukhya() { likha("WIN_NATIVE_TEST_OK") }` in UTF-8 and launched the uploaded `win\sutram.exe`. Native compiler did not return within **12,000 milliseconds**, was terminated by bounded test. `R60_CLI_COMPILER_TIMEOUT 12000ms`. Independent of GUI; uploaded compiler is **NOT verified operational**. The editor's source-built `Run` also waited ~10 s without stdout in an earlier live attempt; the `>>> ` shell cannot be marked working, and the later shell test was correctly skipped after CLI failure.
+6. Original uploaded installer `Sarvam-to-ChatGPT/Sutram-Setup.exe`: SHA256 `7a783f1d4b49ca2910a8abeb2a7eacef74d9dc1a0950f70f617879d478209ff9` (578,192 B). Launched/painted wizard on Windows but **crashed on real Install click** with process exit `-1073741819` (Windows **0xC0000005**, access violation), before producing installed files/shortcut. NOT a successful installer.
+7. Inspected `windows/native-installer/sutram_setup.asm`: the two call sites in `do_install` and `do_uninstall` incorrectly placed `temp_path` pointer in RCX and `MAXP` in RDX when calling `GetTempPathW(DWORD nBufferLength, LPWSTR lpBuffer)`. Fixed to `ECX=MAXP; RDX=&temp_path` at **both call sites**, before emitted bytes, preserving pure NASM and least privilege. This defect is a concrete plausible reason for the observed access violation.
+8. On real Windows reassembled linked source `windows/native-installer/sutram_setup.asm` with an archive containing **210** original portable files and a SHA-256 manifest (plus source installer/uninstaller PowerShell scripts). `tools/r60_rebuild_installer.ps1`: **PASS**, built `Sutram-Setup-R60-Fixed.exe` **856,853 B**, SHA256 **`f3cfce0ddb0e1c9795d584ab733e3e827c90a1d79b63186f5e1d65b3af8254f3`**. Bundled fixed setup is present inside Windows Actions artifact directory `fixed-setup/` (not a release-approved binary).
+9. `tools/r60_windows_installer_acceptance.ps1` clicked the **actual Win32 Install control ID1001** on rebuilt setup as normal Windows runner user: **FAIL** at 45-second bounded wait, *without immediate original access-violation exit*. No installed GUI, no canonical icon and no Start Menu shortcut materialized. It may be blocked in the embedded `install-core.ps1` compiler pre-install `--version`/`--help` checks given the independent native compiler timeout, but that precise cause is NOT proven without installer log; do not claim install success or UAC acceptance. The test captures before/after PNG. The test did not disable UAC or elevate.
+10. `icons/sutram.ico` SHA256 `b48aeb52516433c3cce51ffe436fa04355cb938aa0b5188c60fe7c02f2923ec1`, 36,693 B, matches canonical supplied source. The *installed* window/shortcut icon cannot be verified since installation failed. A standalone installer launched from `Sarvam-to-ChatGPT/` does not necessarily have `sutram.ico` next to it; source tries to load sidecar icon. Rebuilt test directory explicitly includes the approved `sutram.ico` sidecar, but no visual inspection was performed.
+
+## Expected unverified acceptance criteria
+
+GUI orange/teal/green/purple/grey visual token colors, interactive editor Run stdout, >>> shell result, wizard completion, no-UAC install, Start Menu icon/target and launching installed GUI are **NOT ACCEPTED**. No fake screenshots, no release claim. Neither compiler source nor approved keyword color constants nor lib/*.smlib were changed.
+
+Source manifest in `ChatGPT-to-Sarvam/ROUND-60-SHA256.txt` is copied from Windows CI SHA lines, not synthesized. GUI and setup source changes remain on draft R60 PR #18 awaiting Sarvam independent review.
+
+## Sarvam next
+
+- Obtain latest R60 Actions artifact screenshots/logs from https://github.com/dap2810/Sutram/actions/runs/38562501834 and inspect visuals yourself.
+- Investigate 12s native `win\sutram.exe` hang independently; Windows CLI runtime fix is a release blocker. Round60 explicitly prohibited editing compiler here, so this work left it untouched.
+- Review ABI fix and rebuild/setup test. Once Windows native compiler is operational, rerun bounded editor/shell and installer checks on actual Windows; verify icon and all syntax colors visually, Start Menu target, per-user install without UAC.
+- Do NOT merge PR #18 or ship installer as "working" without those independent tests.
