@@ -1,0 +1,5 @@
+# Attempting to dequeue from an empty typed kosh must trap with exit != 0.
+mukhya() {
+    kosh q[1]
+    likha(kosh_dequeue(q))
+}

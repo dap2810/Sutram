@@ -1,0 +1,5 @@
+# R63 builtin ABI enforces one argument for kosh_empty.
+mukhya() {
+    kosh a[1]
+    likha(kosh_empty(a, 2))
+}
