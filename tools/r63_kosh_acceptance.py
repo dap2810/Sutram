@@ -39,7 +39,7 @@ def main() -> int:
     passed = 0
     with tempfile.TemporaryDirectory(prefix="sutram-r63-") as temporary:
         folder = Path(temporary)
-        for case in ("kosh_native_core", "kosh_native_float", "indic_danda_regression"):
+        for case in ("kosh_native_core", "kosh_native_float", "kosh_fifo_core", "kosh_fifo_float", "indic_danda_regression"):
             src = CASES / (case + ".sm")
             expect = (CASES / (case + ".out")).read_bytes()
             exe = folder / case
@@ -82,6 +82,19 @@ def main() -> int:
             f"missing inherited empty kosh diagnostic: {completed.stdout!r}"
         )
         print(f"R63_EMPTY_PEEK_TRAP_PASS runtime_exit={completed.returncode}")
+        passed += 1
+        src = CASES / "kosh_dequeue_empty.sm"
+        exe = folder / "kosh_dequeue_empty"
+        compiled = compile_program(compiler, src, exe)
+        assert compiled.returncode == 0 and exe.exists(), (
+            f"dequeue empty compile failed unexpectedly: {compiled.stdout!r} {compiled.stderr!r}"
+        )
+        completed = run([str(exe)])
+        assert completed.returncode != 0, "dequeue empty kosh did not terminate with error"
+        assert b"kosh pop from empty array" in completed.stdout, (
+            f"missing inherited empty kosh diagnostic: {completed.stdout!r}"
+        )
+        print(f"R63_EMPTY_DEQUEUE_TRAP_PASS runtime_exit={completed.returncode}")
         passed += 1
     print(f"R63_NATIVE_ACCEPTED {passed} gates")
     return 0
