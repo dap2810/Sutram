@@ -78,8 +78,8 @@ def main() -> int:
         )
         completed = run([str(exe)])
         assert completed.returncode != 0, "peeking empty kosh did not terminate with error"
-        assert b"kosh pop from empty array" in completed.stdout, (
-            f"missing inherited empty kosh diagnostic: {completed.stdout!r}"
+        assert b"kosh peek from empty array" in completed.stdout, (
+            f"missing R64 empty-peek diagnostic: {completed.stdout!r}"
         )
         print(f"R63_EMPTY_PEEK_TRAP_PASS runtime_exit={completed.returncode}")
         passed += 1
@@ -91,8 +91,8 @@ def main() -> int:
         )
         completed = run([str(exe)])
         assert completed.returncode != 0, "dequeue empty kosh did not terminate with error"
-        assert b"kosh pop from empty array" in completed.stdout, (
-            f"missing inherited empty kosh diagnostic: {completed.stdout!r}"
+        assert b"kosh dequeue from empty array" in completed.stdout, (
+            f"missing R64 empty-dequeue diagnostic: {completed.stdout!r}"
         )
         print(f"R63_EMPTY_DEQUEUE_TRAP_PASS runtime_exit={completed.returncode}")
         passed += 1
