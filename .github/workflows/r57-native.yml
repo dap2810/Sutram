@@ -1,7 +1,7 @@
 name: R57 native register expression optimization
+# Experimental CI is intentionally manual-only to avoid notification floods.
+# Run one full regression at a verified milestone, not at every source commit.
 on:
-  push:
-    branches: [feature/r57-register-expression-tree-20261013]
   workflow_dispatch:
 permissions:
   contents: read
