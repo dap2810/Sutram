@@ -91,6 +91,12 @@
 %define COL_TEXT        0xDFE7EE        ; body text
 %define COL_ACCENT      0xE86D11        ; orange heading
 %define COL_CARET       0xE86D11        ; cursor
+; token colours (approved colourful palette)
+%define COL_KW          0xE86D11        ; keyword  orange
+%define COL_BI          0x4EC9B0        ; builtin  teal
+%define COL_STR         0x6A9955        ; string   green
+%define COL_NUM         0xB586E8        ; number   purple
+%define COL_CMT         0x6A6A6A        ; comment  grey
 
 ; ---- editor ---------------------------------------------------------------
 %define ED_CAP          8192            ; editor buffer capacity
@@ -164,6 +170,18 @@ section .data
 ; mainstream X server. A non-US layout would need the server's own mapping,
 ; fetched with GetKeyboardMapping (opcode 101) — that is the next slice.
 ; 0 means "no printable character".
+; ---- token word tables (NUL-separated, empty entry terminates) ------------
+kw_tab:
+    db 'mukhya',0,'vitti',0,'anka',0,'yadi',0,'anyatra',0,'yavat',0
+    db 'punaravartana',0,'pratiyati',0,'prakriya',0,'likha',0,'purna',0
+    db 'shunya',0,'sutra',0,'krama',0,'uddeshya',0,'guna',0,'pankti',0
+    db 'srijana',0,'rachana',0,'ayojan',0,'grahan',0,'dasham',0,'kosh',0
+    db 'kuru',0,'shabda',0,'parigrah',0,0
+bi_tab:
+    db 'dvaram',0,'band',0,'sthagita',0,'char_at',0,'char_code',0
+    db 'set_char',0,'vartani_len',0,'vartani_cmp',0,'vartani_cp',0
+    db 'nirmmita',0,'likh',0,'likh8',0,'pad',0,'pad8',0,0
+
 kc_table:
     times 10 db 0                       ; 0..9
     db '1','2','3','4','5','6','7','8','9','0'   ; 10..19
@@ -1013,10 +1031,7 @@ draw_editor:
     sub  rax, [rel ed_top]
     imul rax, LINE_H
     add  r8,  rax
-    call draw_text
-    mov  rdi, r12
-    lea  rsi, [reqbuf]
-    call send_req
+    call draw_line_coloured
     mov  rdi, COL_TEXT
     call set_fg
 .next_line:
@@ -1061,6 +1076,295 @@ draw_editor:
     pop  rbx
     ret
 
+
+; ------------------------------------------------------------- tokeniser
+; al -> eax=1 if [A-Za-z0-9_]
+is_word_char:
+    cmp al, '_'
+    je .yw
+    cmp al, '0'
+    jb .nw
+    cmp al, '9'
+    jbe .yw
+    cmp al, 'A'
+    jb .nw
+    cmp al, 'Z'
+    jbe .yw
+    cmp al, 'a'
+    jb .nw
+    cmp al, 'z'
+    jbe .yw
+.nw: xor eax, eax
+    ret
+.yw: mov eax, 1
+    ret
+
+; match [rbx+r15..] against NUL-separated table in rdi. eax = entry length or 0.
+; clobbers r8,r9,r10,r11 (r11 is fine here: no send_req inside).
+match_tab:
+    mov r8, rdi
+.mt_entry:
+    cmp byte [r8], 0
+    je .mt_no
+    xor r9, r9
+.mt_cmp:
+    movzx eax, byte [r8+r9]
+    test eax, eax
+    jz .mt_hit
+    mov r10, r15
+    add r10, r9
+    cmp r10, r13
+    jae .mt_next
+    mov r11b, [rbx+r10]
+    cmp al, r11b
+    jne .mt_next
+    inc r9
+    jmp .mt_cmp
+.mt_hit:
+    mov r10, r15
+    add r10, r9
+    cmp r10, r13
+    jae .mt_ok
+    mov al, [rbx+r10]
+    call is_word_char
+    test eax, eax
+    jnz .mt_next
+.mt_ok:
+    mov eax, r9d
+    ret
+.mt_next:
+.mt_skip:
+    cmp byte [r8], 0
+    je .mt_adv
+    inc r8
+    jmp .mt_skip
+.mt_adv:
+    inc r8
+    jmp .mt_entry
+.mt_no:
+    xor eax, eax
+    ret
+
+; classify token at column r15. eax = length, edx = class
+; (0 default, 1 kw, 2 builtin, 3 string, 4 number, 5 comment)
+classify:
+    mov al, [rbx+r15]
+    cmp al, '#'
+    je .c_cmt
+    cmp al, '/'
+    jne .c_q
+    lea rax, [r15+1]
+    cmp rax, r13
+    jae .c_q
+    cmp byte [rbx+r15+1], '/'
+    je .c_cmt
+.c_q:
+    mov al, [rbx+r15]
+    cmp al, 34
+    je .c_str
+    cmp al, 39
+    je .c_str
+    mov al, [rbx+r15]
+    cmp al, '0'
+    jb .c_word
+    cmp al, '9'
+    ja .c_word
+    test r15, r15
+    jz .c_num
+    mov al, [rbx+r15-1]
+    call is_word_char
+    test eax, eax
+    jnz .c_word
+.c_num:
+    xor r9, r9
+.c_num_loop:
+    mov r10, r15
+    add r10, r9
+    cmp r10, r13
+    jae .c_num_done
+    mov al, [rbx+r10]
+    cmp al, '0'
+    jb .c_num_dot
+    cmp al, '9'
+    jbe .c_num_inc
+.c_num_dot:
+    cmp al, '.'
+    jne .c_num_hex
+.c_num_inc:
+    inc r9
+    jmp .c_num_loop
+.c_num_hex:
+    cmp al, 'x'
+    je .c_num_inc
+    cmp al, 'X'
+    je .c_num_inc
+    cmp al, 'a'
+    jb .c_num_done
+    cmp al, 'f'
+    jbe .c_num_inc
+    cmp al, 'A'
+    jb .c_num_done
+    cmp al, 'F'
+    jbe .c_num_inc
+.c_num_done:
+    test r9, r9
+    jz .c_word
+    mov eax, r9d
+    mov edx, 4
+    ret
+.c_str:
+    mov r9, r15
+    inc r9
+.c_str_loop:
+    cmp r9, r13
+    jae .c_str_done
+    mov al, [rbx+r9]
+    cmp al, 92
+    je .c_str_esc
+    cmp al, 34
+    je .c_str_done
+    cmp al, 39
+    je .c_str_done
+    inc r9
+    jmp .c_str_loop
+.c_str_esc:
+    add r9, 2
+    jmp .c_str_loop
+.c_str_done:
+    cmp r9, r13
+    jae .c_str_len
+    inc r9
+.c_str_len:
+    mov rax, r9
+    sub rax, r15
+    test rax, rax
+    jnz .c_str_ok
+    mov rax, 1
+.c_str_ok:
+    mov edx, 3
+    ret
+.c_cmt:
+    mov rax, r13
+    sub rax, r15
+    mov edx, 5
+    ret
+.c_word:
+    mov al, [rbx+r15]
+    call is_word_char
+    test eax, eax
+    jz .c_punct
+    lea rdi, [rel kw_tab]
+    call match_tab
+    test eax, eax
+    jnz .c_is_kw
+    lea rdi, [rel bi_tab]
+    call match_tab
+    test eax, eax
+    jnz .c_is_bi
+    xor r9, r9
+.c_w_loop:
+    mov r10, r15
+    add r10, r9
+    cmp r10, r13
+    jae .c_w_done
+    mov al, [rbx+r10]
+    call is_word_char
+    test eax, eax
+    jz .c_w_done
+    inc r9
+    jmp .c_w_loop
+.c_w_done:
+    mov eax, r9d
+    test eax, eax
+    jnz .c_w_ok
+    mov eax, 1
+.c_w_ok:
+    xor edx, edx
+    ret
+.c_is_kw:
+    mov edx, 1
+    ret
+.c_is_bi:
+    mov edx, 2
+    ret
+.c_punct:
+    mov eax, 1
+    xor edx, edx
+    ret
+
+; draw one line with per-token colours.
+; rsi=line ptr, rdx=len, rcx=x0, r8=y.  Preserves r12 (the X fd).
+draw_line_coloured:
+    push rbx
+    push rbp
+    push r13
+    push r14
+    push r15
+    sub  rsp, 16
+    mov rbx, rsi
+    mov r13, rdx                    ; line length
+    mov rbp, rcx                    ; x0
+    mov r14, r8                     ; y
+    xor r15, r15                    ; column
+.dlc_loop:
+    cmp r15, r13
+    jae .dlc_done
+    call classify                   ; eax=len, edx=class
+    test eax, eax
+    jnz .dlc_have
+    mov eax, 1
+    xor edx, edx
+.dlc_have:
+    mov [rsp], rax                  ; token length (survives send_req)
+    mov edi, COL_TEXT
+    cmp edx, 1
+    jne .dlc_k2
+    mov edi, COL_KW
+    jmp .dlc_set
+.dlc_k2:
+    cmp edx, 2
+    jne .dlc_k3
+    mov edi, COL_BI
+    jmp .dlc_set
+.dlc_k3:
+    cmp edx, 3
+    jne .dlc_k4
+    mov edi, COL_STR
+    jmp .dlc_set
+.dlc_k4:
+    cmp edx, 4
+    jne .dlc_k5
+    mov edi, COL_NUM
+    jmp .dlc_set
+.dlc_k5:
+    cmp edx, 5
+    jne .dlc_set
+    mov edi, COL_CMT
+.dlc_set:
+    call set_fg
+    mov rsi, rbx
+    add rsi, r15
+    mov rcx, r15
+    imul rcx, 8
+    add rcx, rbp
+    mov r8, r14
+    mov rdx, [rsp]
+    call draw_text
+    mov rdi, r12
+    lea rsi, [reqbuf]
+    call send_req
+    add r15, [rsp]
+    jmp .dlc_loop
+.dlc_done:
+    mov rdi, COL_TEXT
+    call set_fg
+    add rsp, 16
+    pop r15
+    pop r14
+    pop r13
+    pop rbp
+    pop rbx
+    ret
 
 ; ---------------------------------------------------------------- fetch_keymap
 ; Slice 4: ask the server for its real keyboard mapping (opcode 101) and build
