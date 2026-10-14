@@ -97,6 +97,14 @@
 %define COL_STR         0x6A9955        ; string   green
 %define COL_NUM         0xB586E8        ; number   purple
 %define COL_CMT         0x6A6A6A        ; comment  grey
+; menu bar (slice 20)
+%define MENU_Y          8              ; label baseline row
+%define MENU_H          28             ; strip height for hit-testing
+%define COL_MENUBG      0x16202B        ; strip background
+%define COL_MENUSEL     0x1A4A5C        ; open-menu highlight (teal)
+%define COL_DROPBG      0x1B2733        ; dropdown background
+%define EV_ButtonPress  4
+%define MENU_COUNT      7
 
 ; ---- editor ---------------------------------------------------------------
 %define ED_CAP          8192            ; editor buffer capacity
@@ -181,6 +189,32 @@ bi_tab:
     db 'dvaram',0,'band',0,'sthagita',0,'char_at',0,'char_code',0
     db 'set_char',0,'vartani_len',0,'vartani_cmp',0,'vartani_cp',0
     db 'nirmmita',0,'likh',0,'likh8',0,'pad',0,'pad8',0,0
+
+; ---- menu bar data (slice 20) ----------------------------------------------
+; 7 names, their x offsets in the strip, and their byte lengths.
+menu_name_0 db 'File',0
+menu_name_1 db 'Edit',0
+menu_name_2 db 'Shell',0
+menu_name_3 db 'Debug',0
+menu_name_4 db 'Options',0
+menu_name_5 db 'Window',0
+menu_name_6 db 'Help',0
+menu_names dq menu_name_0, menu_name_1, menu_name_2, menu_name_3, menu_name_4, menu_name_5, menu_name_6
+menu_len   db 4,4,5,5,7,6,4
+menu_xoff  dw 300,352,410,478,548,632,712
+; dropdown items: 0=Open 1=Save 2=Exit   (per menu, only some have items)
+menu_items db 'Open',0,'Save',0,'Exit',0
+menu_items_n db 4,4,4
+menu_has   db 3,0,0,0,0,0,0          ; item count per menu (only File for now)
+; dropdown item actions
+%define ACT_OPEN 0
+%define ACT_SAVE 1
+%define ACT_EXIT 2
+open_act  dd -1                      ; pending action, -1 = none
+
+section .bss
+menu_open resq 1
+section .text
 
 kc_table:
     times 10 db 0                       ; 0..9
@@ -735,6 +769,19 @@ draw_all:
     mov rdi, r12
     lea rsi, [reqbuf]
     call send_req
+
+    ; ---- menu bar strip (slice 20) ---------------------------------------
+    mov rdi, COL_MENUBG
+    call set_fg
+    xor rsi, rsi
+    xor rdx, rdx
+    mov rcx, WIN_W
+    mov r8, MENU_H
+    call fill_rect
+    mov rdi, r12
+    lea rsi, [reqbuf]
+    call send_req
+    call draw_menu_bar
 
     ; teal rule under the heading
     mov rdi, COL_RULE
@@ -1364,6 +1411,243 @@ draw_line_coloured:
     pop r13
     pop rbp
     pop rbx
+    ret
+
+; ---------------------------------------------------------------- draw_menu_bar
+; draws the 7 menu names; the open menu gets a teal highlight behind it.
+draw_menu_bar:
+    push rbx
+    push r13
+    push r14
+    push r15
+    xor rbx, rbx                    ; menu index
+.dmb_loop:
+    cmp rbx, MENU_COUNT
+    jae .dmb_done
+    lea r13, [rel menu_xoff]
+    movzx r14, word [r13 + rbx*2]   ; x offset
+    ; highlight the open menu
+    mov rax, [rel menu_open]
+    cmp rax, rbx
+    jne .dmb_label
+    mov rdi, COL_MENUSEL
+    call set_fg
+    mov rsi, r14
+    mov rdx, 4                      ; strip band
+    mov rcx, 74                     ; rough label width
+    mov r8, MENU_H
+    call fill_rect
+    mov rdi, r12
+    lea rsi, [reqbuf]
+    call send_req
+.dmb_label:
+    mov rdi, COL_TEXT
+    call set_fg
+    lea r13, [rel menu_names]
+    mov rsi, [r13 + rbx*8]          ; name pointer
+    lea r13, [rel menu_len]
+    movzx rdx, byte [r13 + rbx]     ; length
+    mov rcx, r14
+    mov r8, MENU_Y
+    call draw_text
+    mov rdi, r12
+    lea rsi, [reqbuf]
+    call send_req
+    inc rbx
+    jmp .dmb_loop
+.dmb_done:
+    call draw_dropdown
+    pop r15
+    pop r14
+    pop r13
+    pop rbx
+    ret
+
+; ---------------------------------------------------------------- menu_hit
+; rsi = x, rdx = y. Returns eax = menu index, or -1.
+menu_hit:
+    cmp rdx, MENU_H
+    jae .mh_no
+    xor rcx, rcx
+    lea r8, [rel menu_xoff]
+.mh_loop:
+    cmp rcx, MENU_COUNT
+    jae .mh_no
+    movzx r9, word [r8 + rcx*2]     ; label x
+    cmp rsi, r9
+    jb .mh_next
+    mov r10, r9
+    add r10, 74                     ; label width
+    cmp rsi, r10
+    jb .mh_yes
+.mh_next:
+    inc rcx
+    jmp .mh_loop
+.mh_yes:
+    mov eax, ecx
+    ret
+.mh_no:
+    mov eax, -1
+    ret
+
+; ---------------------------------------------------------------- draw_dropdown
+; draws the open menu's items, if any.
+draw_dropdown:
+    push rbx
+    push r13
+    push r14
+    mov rax, [rel menu_open]
+    cmp rax, -1
+    je .dd_done
+    lea r13, [rel menu_has]
+    movzx r14, byte [r13 + rax]     ; item count
+    test r14, r14
+    jz .dd_done
+    ; background
+    mov rdi, COL_DROPBG
+    call set_fg
+    lea r13, [rel menu_xoff]
+    movzx rsi, word [r13 + rax*2]
+    mov rdx, MENU_H
+    mov rcx, 120
+    mov r8, 22
+    imul r8, r14
+    add r8, 8
+    call fill_rect
+    mov rdi, r12
+    lea rsi, [reqbuf]
+    call send_req
+    ; items
+    xor rbx, rbx
+.dd_loop:
+    cmp rbx, r14
+    jae .dd_done
+    mov rdi, COL_TEXT
+    call set_fg
+    lea r13, [rel menu_items]
+    ; find the rbx-th NUL-separated item
+    mov rcx, rbx
+    mov rsi, r13
+.dd_skip:
+    test rcx, rcx
+    jz .dd_found
+.dd_skip1:
+    cmp byte [rsi], 0
+    je .dd_skip2
+    inc rsi
+    jmp .dd_skip1
+.dd_skip2:
+    inc rsi
+    dec rcx
+    jmp .dd_skip
+.dd_found:
+    lea r13, [rel menu_items_n]
+    movzx rdx, byte [r13 + rbx]
+    lea r13, [rel menu_xoff]
+    mov rax, [rel menu_open]
+    movzx rcx, word [r13 + rax*2]
+    add rcx, 12
+    mov r8, MENU_H + 6
+    mov rax, rbx
+    imul rax, 22
+    add r8, rax
+    call draw_text
+    mov rdi, r12
+    lea rsi, [reqbuf]
+    call send_req
+    inc rbx
+    jmp .dd_loop
+.dd_done:
+    pop r14
+    pop r13
+    pop rbx
+    ret
+
+; ---------------------------------------------------------------- menu_click
+; rsi = x, rdx = y. Handles a ButtonPress: open a menu or fire an item.
+menu_click:
+    push rbx
+    push r13
+    push r14
+    ; a click on an open dropdown?
+    mov rax, [rel menu_open]
+    cmp rax, -1
+    je .mc_strip
+    lea r13, [rel menu_has]
+    movzx r14, byte [r13 + rax]
+    test r14, r14
+    jz .mc_strip
+    ; inside the dropdown box?
+    cmp rdx, MENU_H
+    jb .mc_strip
+    lea r13, [rel menu_xoff]
+    movzx rcx, word [r13 + rax*2]
+    cmp rsi, rcx
+    jb .mc_close
+    add rcx, 120
+    cmp rsi, rcx
+    jae .mc_close
+    ; which item row?
+    mov rcx, rdx
+    sub rcx, MENU_H
+    sub rcx, 6
+    js .mc_close
+    mov rax, rcx
+    xor rdx, rdx
+    mov rcx, 22
+    div rcx                          ; rax = item index
+    cmp rax, r14
+    jae .mc_close
+    ; fire the action
+    mov [rel open_act], eax
+    mov qword [rel menu_open], -1
+    pop r14
+    pop r13
+    pop rbx
+    call do_menu_action
+    ret
+.mc_close:
+    mov qword [rel menu_open], -1
+    pop r14
+    pop r13
+    pop rbx
+    ret
+.mc_strip:
+    call menu_hit
+    cmp eax, -1
+    je .mc_closed
+    mov [rel menu_open], rax
+    pop r14
+    pop r13
+    pop rbx
+    ret
+.mc_closed:
+    mov qword [rel menu_open], -1
+    pop r14
+    pop r13
+    pop rbx
+    ret
+
+; ---------------------------------------------------------------- do_menu_action
+; performs the pending dropdown action (File: Open / Save / Exit).
+do_menu_action:
+    mov eax, [rel open_act]
+    mov dword [rel open_act], -1
+    cmp eax, ACT_EXIT
+    je .dma_exit
+    cmp eax, ACT_OPEN
+    je .dma_open
+    cmp eax, ACT_SAVE
+    je .dma_save
+    ret
+.dma_exit:
+    mov dword [rel want_quit], 1
+    ret
+.dma_open:
+    mov qword [rel open_mode], 1
+    ret
+.dma_save:
+    call save_saved
     ret
 
 ; ---------------------------------------------------------------- fetch_keymap
@@ -3225,6 +3509,17 @@ _start:
     je .expose
     cmp r13, EV_KeyPress
     je .key
+    cmp r13, EV_ButtonPress
+    je .button
+    jmp .loop
+
+.button:
+    movsx rsi, word [event+24]      ; x
+    movsx rdx, word [event+26]      ; y
+    call menu_click
+    call draw_all
+    cmp dword [rel want_quit], 0
+    jne .done
     jmp .loop
 
 .key:
