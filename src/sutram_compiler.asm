@@ -21392,7 +21392,12 @@ write_pe:
 .pp_pad_go:
     mov rdi, [rel out_fd]
     lea rsi, [rel pe_pad]
+    ; Windows os_write calls WriteFile, which may clobber caller-saved
+    ; RDX. Preserve the chosen chunk length for forward progress.
+    ; Linux syscall also allows this explicit preservation.
+    push rdx
     call os_write
+    pop rdx
     sub r13, rdx
     jmp .pp_pad
 .pp_done:
