@@ -1,3 +1,33 @@
+## v131 — Sanskrit script support: `sanskrit.lang` + danda terminator (slice 21)
+
+- **The language can now be written in Devanagari Sanskrit and compiles to native machine code.**
+  Added `lang/sanskrit.lang` — the core keywords in their own script — and taught the lexer to
+  accept the **danda `।` (U+0964)** and **double danda `॥` (U+0965)** as statement terminators,
+  exactly equivalent to `;`.
+- **`sanskrit.lang`** closes a gap found in the project audit: there was a Sanskrit *book* but no
+  Sanskrit *pack* — you could write Sutram in Hindi Devanagari but not Sanskrit Devanagari. Every
+  line of the pack is a script variant of an existing core keyword; no new keyword was introduced.
+- **New example `218_sanskrit_devanagari.sm`** — a program written entirely in Devanagari with danda
+  punctuation. Verified output: `योगः = 15`.
+- **A real bug in my own first patch, caught by testing and fixed.** `is_alpha()` returns true for
+  the `0xE0` UTF-8 lead byte (it is the Devanagari start byte), so the danda was being **absorbed
+  into the preceding identifier** — `i।` lexed as one identifier and the terminator vanished. It
+  showed up only when the identifier immediately preceded the danda (`s = s + i।`); `likha(i)।`
+  worked because `)` ended the identifier first. Fixed by testing for the danda sequence both
+  before identifier collection and inside `.collect_id`.
+- **Gates:** suite **PASS=187 / NO-EXPECTATION=3**; codegen **12/12**; language packs **33/33**
+  (11 packs × 3 — the pack test now includes `sanskrit`); module graph **OK**; `proof_lib`
+  **164/164**; `proof_props` **54/54**; **`R59_FROZEN_CODEGEN_ACCEPTED 3/3`** and
+  **`R58_FROZEN_CODEGEN_ACCEPTED 8/8`** untouched. Compiler 184,248 B.
+- **No accepted golden changed** — verified by diffing the whole `tests/expect/` tree against
+  pristine main; only the new `218_*` pair was added. (The harness's `--record` also rewrites the
+  trailing newline of 40 existing `.exit` files; those were restored rather than shipped.)
+- Docs updated: `docs/LANGUAGE-REFERENCE.md` gains the danda and Devanagari sections and the
+  `sanskrit` pack column.
+- **Next:** the same device set — danda, native numerals, per-script packs — extends to the other
+  Indian scripts, since all nine share the ISCII layout and the danda is already encoded once for
+  all of them.
+
 ## v130 — ROUND-62 and ROUND-19 rewritten as HEAVY multi-workstream rounds
 
 - **Direction from the user:** give longer, heavier tasks so production moves faster — with the
