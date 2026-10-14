@@ -91,9 +91,9 @@ function Open-Window([string]$Path,[string]$Name,[string]$WorkingDirectory) {
             for($i=0;$i -lt 7;$i++){
                 $buf=New-Object System.Text.StringBuilder 256
                 [void][SutramR60Native]::GetMenuString($menu,[uint32]$i,$buf,256,0x400)
-                $name=$buf.ToString().Replace('&','')
-                Report ("R60_REAL_MENU "+$i+" "+$name)
-                if($name -ne $expected[$i]){throw ("Menu mismatch "+$i+": "+$name)}
+                $menuLabel=$buf.ToString().Replace('&','')
+                Report ("R60_REAL_MENU "+$i+" "+$menuLabel)
+                if($menuLabel -ne $expected[$i]){throw ("Menu mismatch "+$i+": "+$menuLabel)}
             }
             Report 'R60_MENU_7_OF_7_CONFIRMED via Windows user32 GetMenu/GetMenuStringW'
         }
