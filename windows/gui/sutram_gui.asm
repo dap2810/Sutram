@@ -53,6 +53,7 @@ global _start
 %define COL_STRING   0x0055996A   ; green   #6A9955
 %define COL_NUMBER   0x00E886B5   ; purple  #B586E8
 %define COL_COMMENT  0x006A6A6A   ; grey    #6A6A6A
+%define COL_FUNCTION 0x0027A2C9   ; yellow  #C9A227
 %define EM_GETEVENTMASK 0x43B
 %define EM_SETEVENTMASK 0x445
 %define SCF_ALL 4
@@ -325,6 +326,10 @@ examples_dir db 'examples\',0
 compiler_rel db 'win\sutram.exe',0
 prefix_gui db 'STG',0
 caption_editor db 'Editor',0
+; builtins: colour teal, matched the same way as keywords
+bi_words db 'likha',0,'likh',0,'likh8',0,'pad',0,'pad8',0,'dvaram',0,'band',0,\
+            'sthagita',0,'char_at',0,'char_code',0,'set_char',0,'vartani_len',0,\
+            'vartani_cmp',0,'vartani_cp',0,'nirmmita',0,'grahan',0,'shabda',0,0
 kw_words db 'mukhya',0,'likha',0,'ayojan',0,'prakriya',0,'dasham',0,'kosh',0,'kuru',0,'nishkriya',0,'yadi',0,'anyatha',0,'yavat',0,'punar',0,'satya',0,'asatya',0,'phala',0,'pratiyati',0,'grahan',0,0
 ; Import-table label expansion: function-name symbols n_* via macro.
 %unmacro IMPORTS 1
@@ -1618,6 +1623,47 @@ highlight_editor:
     call paint_range
     jmp .advance
 .kw_begin:
+    ; builtin?  (teal)
+    PTR r11,bi_words
+    mov [rbp-64],r11
+.bi_loop:
+    mov r11,[rbp-64]
+    cmp byte [r11],0
+    je .kw_begin2
+    mov [rbp-40],r11
+    mov r10,[rbp-16]
+    xor ecx,ecx
+.bi_cmp:
+    mov r11,[rbp-40]
+    movzx eax,byte [r11+rcx]
+    test eax,eax
+    jz .bi_found
+    cmp ax,[r10+rcx*2]
+    jne .bi_next
+    inc ecx
+    cmp ecx,32
+    jl .bi_cmp
+    jmp .bi_next
+.bi_found:
+    mov ax,[r10+rcx*2]
+    call is_ident_u16
+    test eax,eax
+    jnz .bi_next
+    mov [rbp-44],ecx
+    mov r10d,COL_BUILTIN
+    jmp .paint_tok
+.bi_next:
+    mov r11,[rbp-64]
+.bi_skip:
+    cmp byte [r11],0
+    je .bi_nk
+    inc r11
+    jmp .bi_skip
+.bi_nk:
+    inc r11
+    mov [rbp-64],r11
+    jmp .bi_loop
+.kw_begin2:
     PTR r11,kw_words
     mov [rbp-32],r11
 .kw_loop:
@@ -1644,7 +1690,8 @@ highlight_editor:
     test eax,eax
     jnz .kw_next
     mov [rbp-44],ecx
-    jmp .paint_keyword
+    mov r10d,COL_KEYWORD
+    jmp .paint_tok
 .native_word:
     ; Existing left-to-right lexer already excluded quoted strings/comments.
     mov ax,[r10]
@@ -1665,14 +1712,18 @@ highlight_editor:
     jz .advance
     mov [rbp-44],eax
 .paint_keyword:
+    mov r10d,COL_KEYWORD
+.paint_tok:
     ; index is measured in UTF-16 code units, including surrogate pairs.
+    mov [rbp-72],r10d
     mov rcx,[rel h_editor]
     mov edx,EM_SETSEL
     mov r8d,[rbp-24]
     mov r9d,r8d
     add r9d,[rbp-44]
     call send_message
-    mov dword [rel char_fmt+20],COL_KEYWORD
+    mov eax,[rbp-72]
+    mov dword [rel char_fmt+20],eax
     mov rcx,[rel h_editor]
     mov edx,EM_SETCHARFORMAT
     mov r8d,SCF_SELECTION
