@@ -1,0 +1,352 @@
+# Round 64 review patch for PR #22 (12 files; generated from live GitHub changed-file hunks)
+# Apply to accepted main parent c932fc6c490c5a0aab5cfdd056dcae2014d44fba
+diff --git a/docs/R64-KOSH-DIAGNOSTICS.md b/docs/R64-KOSH-DIAGNOSTICS.md
+new file mode 100644
+--- /dev/null
++++ b/docs/R64-KOSH-DIAGNOSTICS.md
+@@ -0,0 +1,65 @@
++# Sutram Round 64 — kosh-empty diagnostic names (source review)
++
++This is a source-level patch. The assistant could not run the whole NASM
++compiler or genuine Windows desktop/GUI acceptance; independent native
++tests are mandatory before merge.
++
++## Change
++
++All three operations continue to use the original shared runtime
++empty-length guard. The compiler selects an AST error string before
++emission based on builtin ID in r12:
++
++| Operation | Diagnostic |
++| --- | --- |
++| kosh_pop | Sutram Error: kosh pop from empty array (UNCHANGED) |
++| kosh_peek | Sutram Error: kosh peek from empty array |
++| kosh_dequeue | Sutram Error: kosh dequeue from empty array |
++
++The runtime trap, nonzero exit, FIFO shift, binary64 preservation, and
++peek non-mutating behavior are unchanged. No extra runtime branch is
++introduced. No accepted tests/expect goldens were modified.
++
++The R63 native harness's two diagnostic substring expectations are
++updated to match the explicit R64 semantic change. A new R64 native
++harness also asserts the unchanged legacy kosh_pop diagnostic, correct
++nonzero exit, and positive-case exact stdout.
++
++## Independent Linux reproduction
++
++    nasm -f elf64 -I. src/sutram_compiler.asm -o /tmp/sutram-r64.o
++    ld -o /tmp/sutram-r64 /tmp/sutram-r64.o
++    python3 tools/r64_source_gate.py
++    python3 tools/r64_kosh_diagnostic_acceptance.py --compiler /tmp/sutram-r64
++    python3 tools/r63_kosh_acceptance.py --compiler /tmp/sutram-r64
++    python3 tests/run_tests.py
++    python3 tools/codegen_gate.py
++    python3 tools/test_lang_packs.py
++    python3 -m unittest discover -s tests/module_graph -p 'test_*.py' -v
++    python3 tools/proof_lib.py --compiler /tmp/sutram-r64
++    python3 tools/proof_props.py --compiler /tmp/sutram-r64
++    python3 tools/r58_codegen_baseline.py
++    python3 tools/r59_codegen_baseline.py
++    python3 tools/check_workflow_triggers.py
++    python3 -m unittest discover -s tests/ci -p 'test_*.py' -v
++
++Build the accepted main parent as /tmp/sutram-before, then run:
++
++    python3 tools/r64_kosh_diagnostic_acceptance.py --compiler /tmp/sutram-r64 --before /tmp/sutram-before
++
++The default_compat.sm native binary must be byte-for-byte identical
++before/after. This is not yet an observed result.
++
++## Remaining Round 64 workstreams
++
++WS1 genuine standard-user Windows compiler, installer and screenshot:
++NOT RUN. Execute R62 staged acceptance and visually inspect screenshot.
++
++WS2 both deferred peepholes: NOT IMPLEMENTED, no instruction-count
++improvement claimed.
++
++WS3 opt-in overflow/zero-divisor trapping: NOT IMPLEMENTED; preserving
++intentional wrapping and checked/saturating arithmetic takes priority.
++
++No workflow changes, library modifications, accepted golden rewrites,
++new network access, admin rights, or GUI colour changes.
+diff --git a/src/sutram_compiler.asm b/src/sutram_compiler.asm
+--- a/src/sutram_compiler.asm
++++ b/src/sutram_compiler.asm
+@@ -290,6 +290,8 @@ r54_builtin_arity_table:
+     msg_array_oob db "Sutram Error: array index out of bounds", 10, 0
+     msg_kosh_required db "Sutram Error: kosh builtin requires a kosh variable", 10, 0
+     msg_kosh_empty db "Sutram Error: kosh pop from empty array", 10, 0
++    msg_kosh_peek_empty db "Sutram Error: kosh peek from empty array", 10, 0
++    msg_kosh_dequeue_empty db "Sutram Error: kosh dequeue from empty array", 10, 0
+     msg_kosh_param_type db "Sutram Error: kosh parameter requires matching kosh element type", 10, 0
+     msg_kosh_param_push db "Sutram Error: kosh_push on a kosh parameter is not supported", 10, 0
+ 
+@@ -12494,7 +12496,18 @@ emit_kosh_empty_check_r9:
+     call emit_u32
+     call alloc_ast
+     mov qword [rax], AST_STR
++    ; R64: choose the error text at the *compiler* emission site.
++    ; The legacy pop path still emits the exact original diagnostic.
+     lea rcx, [rel msg_kosh_empty]
++    cmp r12, BN_KOSHPEEK
++    jne .r64_not_peek
++    lea rcx, [rel msg_kosh_peek_empty]
++    jmp .r64_message_selected
++.r64_not_peek:
++    cmp r12, BN_KOSHDEQUEUE
++    jne .r64_message_selected
++    lea rcx, [rel msg_kosh_dequeue_empty]
++.r64_message_selected:
+     mov [rax+8], rcx
+     push rax
+     call alloc_ast
+diff --git a/tests/r64_check/default_compat.out b/tests/r64_check/default_compat.out
+new file mode 100644
+--- /dev/null
++++ b/tests/r64_check/default_compat.out
+@@ -0,0 +1 @@
++42
+diff --git a/tests/r64_check/default_compat.sm b/tests/r64_check/default_compat.sm
+new file mode 100644
+--- /dev/null
++++ b/tests/r64_check/default_compat.sm
+@@ -0,0 +1,4 @@
++# R64: unaffected codegen must be byte-identical before/after the change.
++mukhya() {
++    likha(42)
++}
+diff --git a/tests/r64_check/kosh_dequeue_empty.sm b/tests/r64_check/kosh_dequeue_empty.sm
+new file mode 100644
+--- /dev/null
++++ b/tests/r64_check/kosh_dequeue_empty.sm
+@@ -0,0 +1,5 @@
++# R64: empty dequeue must identify 'dequeue' and exit nonzero.
++mukhya() {
++    kosh k[1]
++    likha(kosh_dequeue(k))
++}
+diff --git a/tests/r64_check/kosh_nonempty.out b/tests/r64_check/kosh_nonempty.out
+new file mode 100644
+--- /dev/null
++++ b/tests/r64_check/kosh_nonempty.out
+@@ -0,0 +1,7 @@
++1
++2
++20
++2
++10
++20
++1
+diff --git a/tests/r64_check/kosh_nonempty.sm b/tests/r64_check/kosh_nonempty.sm
+new file mode 100644
+--- /dev/null
++++ b/tests/r64_check/kosh_nonempty.sm
+@@ -0,0 +1,11 @@
++# R64: no bounds trap, runtime semantics preserved.
++mukhya() {
++    kosh k[1]
++    likha(kosh_push(k, 10))
++    likha(kosh_push(k, 20))
++    likha(kosh_peek(k))
++    likha(kosh_len(k))
++    likha(kosh_dequeue(k))
++    likha(kosh_pop(k))
++    likha(kosh_empty(k))
++}
+diff --git a/tests/r64_check/kosh_peek_empty.sm b/tests/r64_check/kosh_peek_empty.sm
+new file mode 100644
+--- /dev/null
++++ b/tests/r64_check/kosh_peek_empty.sm
+@@ -0,0 +1,5 @@
++# R64: empty peek must identify 'peek' and exit nonzero.
++mukhya() {
++    kosh k[1]
++    likha(kosh_peek(k))
++}
+diff --git a/tests/r64_check/kosh_pop_empty.sm b/tests/r64_check/kosh_pop_empty.sm
+new file mode 100644
+--- /dev/null
++++ b/tests/r64_check/kosh_pop_empty.sm
+@@ -0,0 +1,5 @@
++# R64: legacy kosh_pop empty message MUST remain unchanged.
++mukhya() {
++    kosh k[1]
++    likha(kosh_pop(k))
++}
+diff --git a/tools/r63_kosh_acceptance.py b/tools/r63_kosh_acceptance.py
+--- a/tools/r63_kosh_acceptance.py
++++ b/tools/r63_kosh_acceptance.py
+@@ -78,8 +78,8 @@ def main() -> int:
+         )
+         completed = run([str(exe)])
+         assert completed.returncode != 0, "peeking empty kosh did not terminate with error"
+-        assert b"kosh pop from empty array" in completed.stdout, (
+-            f"missing inherited empty kosh diagnostic: {completed.stdout!r}"
++        assert b"kosh peek from empty array" in completed.stdout, (
++            f"missing R64 empty-peek diagnostic: {completed.stdout!r}"
+         )
+         print(f"R63_EMPTY_PEEK_TRAP_PASS runtime_exit={completed.returncode}")
+         passed += 1
+@@ -91,8 +91,8 @@ def main() -> int:
+         )
+         completed = run([str(exe)])
+         assert completed.returncode != 0, "dequeue empty kosh did not terminate with error"
+-        assert b"kosh pop from empty array" in completed.stdout, (
+-            f"missing inherited empty kosh diagnostic: {completed.stdout!r}"
++        assert b"kosh dequeue from empty array" in completed.stdout, (
++            f"missing R64 empty-dequeue diagnostic: {completed.stdout!r}"
+         )
+         print(f"R63_EMPTY_DEQUEUE_TRAP_PASS runtime_exit={completed.returncode}")
+         passed += 1
+diff --git a/tools/r64_kosh_diagnostic_acceptance.py b/tools/r64_kosh_diagnostic_acceptance.py
+new file mode 100644
+--- /dev/null
++++ b/tools/r64_kosh_diagnostic_acceptance.py
+@@ -0,0 +1,95 @@
++#!/usr/bin/env python3
++"""R64 native kosh diagnostic acceptance: needs real NASM-built Sutram compiler.
++
++Use:
++    python3 tools/r64_kosh_diagnostic_acceptance.py --compiler ./sutram_compiler
++Optional native byte-for-byte old/new default codegen comparison:
++    --before /path/to/pre-r64-compiler
++
++No network, no compiler installation, bounded subprocess timeouts.
++"""
++from __future__ import annotations
++
++import argparse
++from pathlib import Path
++import subprocess
++import tempfile
++
++ROOT = Path(__file__).resolve().parents[1]
++CASES = ROOT / "tests" / "r64_check"
++
++
++def execute(args: list[str], timeout: float = 12) -> subprocess.CompletedProcess[bytes]:
++    return subprocess.run(args, cwd=ROOT, capture_output=True, timeout=timeout, check=False)
++
++
++def compile_case(compiler: Path, src: Path, exe: Path) -> None:
++    result = execute([str(compiler), str(src), str(exe)])
++    assert result.returncode == 0 and exe.is_file(), (
++        f"COMPILE FAIL {src.name}: exit={result.returncode} "
++        f"stdout={result.stdout!r} stderr={result.stderr!r}"
++    )
++
++
++def test_error(compiler: Path, path: Path, stem: str, phrase: bytes) -> None:
++    exe = path / stem
++    compile_case(compiler, CASES / (stem + ".sm"), exe)
++    result = execute([str(exe)])
++    assert result.returncode != 0, f"{stem}: expected nonzero exit; got 0"
++    assert phrase in result.stdout, f"{stem}: expected {phrase!r}, got {result.stdout!r}"
++    all_messages = (
++        b"kosh pop from empty array",
++        b"kosh peek from empty array",
++        b"kosh dequeue from empty array",
++    )
++    assert sum(msg in result.stdout for msg in all_messages) == 1, (
++        f"{stem}: mixed or duplicated error messages: {result.stdout!r}"
++    )
++    print(f"R64_EMPTY_DIAGNOSTIC_PASS {stem} exit={result.returncode} "
++          f"stdout={result.stdout!r}")
++
++
++def main() -> int:
++    parser = argparse.ArgumentParser()
++    parser.add_argument("--compiler", required=True)
++    parser.add_argument("--before", default="")
++    args = parser.parse_args()
++    compiler = Path(args.compiler).resolve()
++    before = Path(args.before).resolve() if args.before else None
++    if not compiler.is_file():
++        parser.error(f"compiler missing: {compiler}")
++    if before and not before.is_file():
++        parser.error(f"before compiler missing: {before}")
++    with tempfile.TemporaryDirectory(prefix="sutram-r64-") as tmp:
++        path = Path(tmp)
++        for stem, phrase in (
++            ("kosh_pop_empty", b"kosh pop from empty array"),
++            ("kosh_peek_empty", b"kosh peek from empty array"),
++            ("kosh_dequeue_empty", b"kosh dequeue from empty array"),
++        ):
++            test_error(compiler, path, stem, phrase)
++        for stem in ("kosh_nonempty", "default_compat"):
++            exe = path / stem
++            compile_case(compiler, CASES / (stem + ".sm"), exe)
++            result = execute([str(exe)])
++            expected = (CASES / (stem + ".out")).read_bytes()
++            assert result.returncode == 0 and result.stdout == expected, (
++                f"{stem}: exit={result.returncode}, "
++                f"expected={expected!r} actual={result.stdout!r}")
++            print(f"R64_EXACT_STDOUT_PASS {stem} bytes={len(expected)}")
++        if before:
++            oldexe = path / "old-default-compat"
++            compile_case(before, CASES / "default_compat.sm", oldexe)
++            newexe = path / "default_compat"
++            assert oldexe.read_bytes() == newexe.read_bytes(), (
++                "Default non-kosh codegen changed! Do NOT rewrite accepted goldens."
++            )
++            print(f"R64_DEFAULT_BINARY_IDENTICAL_PASS bytes={newexe.stat().st_size}")
++        else:
++            print("R64_AB_CODEGEN_NOT_RUN (pass --before to compare)")
++    print("R64_KOSH_DIAGNOSTICS_ACCEPTED (native evidence only when actually run)")
++    return 0
++
++
++if __name__ == "__main__":
++    raise SystemExit(main())
+diff --git a/tools/r64_source_gate.py b/tools/r64_source_gate.py
+new file mode 100644
+--- /dev/null
++++ b/tools/r64_source_gate.py
+@@ -0,0 +1,46 @@
++#!/usr/bin/env python3
++"""R64 structural gate: source inspection only, not native execution."""
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[1]
++src = (ROOT / "src" / "sutram_compiler.asm").read_text(encoding="utf-8")
++previous = (ROOT / "tools" / "r63_kosh_acceptance.py").read_text(encoding="utf-8")
++tests = ROOT / "tests" / "r64_check"
++
++def check(label, cond):
++    if not cond:
++        raise AssertionError("R64_SOURCE_FAIL " + label)
++    print("R64_SOURCE_PASS " + label)
++
++def main():
++    check("POP_UNCHANGED", 'msg_kosh_empty db "Sutram Error: kosh pop from empty array", 10, 0' in src)
++    check("PEEK_TEXT", 'msg_kosh_peek_empty db "Sutram Error: kosh peek from empty array", 10, 0' in src)
++    check("DEQUEUE_TEXT", 'msg_kosh_dequeue_empty db "Sutram Error: kosh dequeue from empty array", 10, 0' in src)
++    helper = src.split("emit_kosh_empty_check_r9:", 1)[1].split(
++        "\n; R46 compiler-time call liveness:", 1)[0]
++    check("COMPILE_TIME_SELECTION",
++          helper.index("cmp r12, BN_KOSHPEEK") <
++          helper.index("cmp r12, BN_KOSHDEQUEUE") <
++          helper.index("mov [rax+8], rcx"))
++    check("POP_FALLBACK",
++          "lea rcx, [rel msg_kosh_empty]" in helper and
++          "jne .r64_not_peek" in helper and
++          "jne .r64_message_selected" in helper)
++    check("ONE_SHARED_RUNTIME_GUARD",
++          src.count("call emit_kosh_empty_check_r9") == 1 and
++          "cmp r12, BN_KOSHDEQUEUE\n    je .ge_koshdequeue" in src and
++          "cmp r12, BN_KOSHPEEK\n    je .ge_koshpeek_only" in src)
++    check("R63_RUNTIME_EXPECTATIONS_UPDATED",
++          'b"kosh peek from empty array"' in previous and
++          'b"kosh dequeue from empty array"' in previous)
++    for name in ("kosh_pop_empty", "kosh_peek_empty", "kosh_dequeue_empty",
++                 "kosh_nonempty", "default_compat"):
++        check("FIXTURE_" + name, (tests / (name + ".sm")).is_file())
++    check("EXPECTED_STDOUT",
++          (tests / "kosh_nonempty.out").read_text() == "1\n2\n20\n2\n10\n20\n1\n" and
++          (tests / "default_compat.out").read_text() == "42\n")
++    check("NATIVE_RUNNER", (ROOT / "tools" / "r64_kosh_diagnostic_acceptance.py").is_file())
++    print("R64_SOURCE_GATE_PASS (NOT native evidence)")
++
++if __name__ == "__main__":
++    main()
