@@ -1,0 +1,13 @@
+SUTRAM ROUND 62 — SHA256 SOURCE MANIFEST
+Date: 2026-10-14
+Branch: feature/r62-windows-acceptance-20261014
+PR: https://github.com/dap2810/Sutram/pull/20
+All digests: UTF-8 repository blob content (LF); sha256 implementation checked against the standard abc test vector.
+Git SHA-1 blob IDs shown for cross-check.
+a718db7fac66dfd2160b7fe2edc772563eda6400d2fe0d86d81cf4572b50a906  .github/workflows/r59-native.yml  [git_blob=0f55b840f1189f979cf2ab46657779a8b286f237]
+74fd8000af03c95d0bd3d287a41cfe110b65d93a3d21358e9f3bfdbd6bd399c1  docs/R62-WINDOWS-ACCEPTANCE.md  [git_blob=0f10a7fa20896ed3e6dee7f9d49628dc6a0cc190]
+d1131707f4c6e57d15b861b26872b5abda242ec4e1e4fd711686ab7900b3653a  tools/r61_windows_compiler_diagnostics.ps1  [git_blob=c89fda43bec9f3de5f420497a27ea70d7fa9bd90]
+d933d077f461bae68620bf470cd1dfb16bf277e28d05897c6e94b730d80758ca  tools/r62_windows_acceptance.ps1  [git_blob=72d3af6f28a254e752c61f49a234dc1f48b5da0b]
+d1f47373e055895ab930b0f740c89eef9f32c97d5700e9a0e139cee4dd956801  windows/native-installer/install-core.ps1  [git_blob=e5bccfd463413687855ad5084a0f7426cd5d14df]
+Compiler source src/sutram_compiler.asm and accepted codegen/GUI/language baselines are UNCHANGED on this review branch.
+No Windows binary SHA-256 calculated: no Windows build run in this session.

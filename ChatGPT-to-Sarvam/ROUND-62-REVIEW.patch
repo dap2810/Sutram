@@ -1,0 +1,409 @@
+# Sutram R62 PR #20 review patch (from GitHub per-file unified patches)
+diff --git a/.github/workflows/r59-native.yml b/.github/workflows/r59-native.yml
+--- a/.github/workflows/r59-native.yml
++++ b/.github/workflows/r59-native.yml
+@@ -1,7 +1,6 @@
+ name: R59 safe pre-emission no-op proof
++# Historic R59 workflow: manual-only under CI-NOTIFICATION-POLICY.md.
+ on:
+-  push:
+-    branches: [feature/r59-proven-noop-assignment-20261014]
+   workflow_dispatch:
+ permissions:
+   contents: read
+
+diff --git a/docs/R62-WINDOWS-ACCEPTANCE.md b/docs/R62-WINDOWS-ACCEPTANCE.md
+new file mode 100644
+--- /dev/null
++++ b/docs/R62-WINDOWS-ACCEPTANCE.md
+@@ -0,0 +1,45 @@
++# Round 62 — Windows acceptance procedure (review branch)
++
++**Scope:** Windows workstreams 1–3. This is an **unexecuted** standard-user, offline test harness. It does not certify native Windows execution, IDE colours, shell, GUI Run or the installer. Workstreams 4–5 remain **not implemented**.
++
++## Run on a genuine Windows 10/11 desktop
++
++Use a **normal non-elevated 64-bit PowerShell 5.1+** session. Clone/check out this review branch, install NASM + MinGW PE64 linker/compiler using the machine's existing approved build environment (never elevate or weaken protection for this test). From the repo root:
++
++```powershell
++powershell.exe -NoProfile -File .\tools\r62_windows_acceptance.ps1 -Stage Prepare
++# If a real pre-R61 executable is available, re-run Prepare with:
++#  -LegacyCompiler "C:\path\to\pre-r61\sutram.exe"
++```
++
++The Prepare stage calls `tools/r61_windows_compiler_diagnostics.ps1`, requiring `R61_PE_NORMAL_SIZE` and `R61_WINDOWS_COMPILE_EXECUTE_PASS` from **real** native Windows stdout, with the 64 KiB runaway-output guard and 12 s bounded processes. The optional legacy A/B prints `legacy-compile` elapsed time, exit, and observed output size; record those numbers, do not infer them. After success, it rebuilds `win/sutram.exe`, `sutram-ide-gui.exe`, and `windows/native-installer/output/Sutram-Setup-0.1.0-native-x64.exe` with the **current compiler** embedded; runs package `--self-test`; checks canonical `icons/sutram.ico` SHA; and saves `build-manifest.txt` to `%TEMP%\Sutram-R62-Windows-Acceptance`.
++
++**Stop if Prepare fails.** Do not claim R61 fixed until the generated program really executes. With a passing Prepare, run the newly built setup EXE **interactively as standard user**, choose per-user `%LOCALAPPDATA%\Programs\Sutram`, complete the wizard, and note any failure text. No UAC should appear. If installation fails, retain `%TEMP%\Sutram-Setup-*\install.log`; report the actual `ERROR:` entry and do not infer a cause.
++
++Then:
++
++```powershell
++powershell.exe -NoProfile -File .\tools\r62_windows_acceptance.ps1 -Stage Audit
++```
++
++Audit checks `HKCU\...\Uninstall\Sutram`, actual per-user install marker, real saved `install.log` and completion event, correct Start Menu `Sutram IDE.lnk` target and canonical ICO **byte hash**, byte equality of installed compiler with just-built compiler, bounded compilation of `R62_COLOUR_FIXTURE.sm`, actual generated PE stdout `R62_SHELL_AND_RUN_OK`, and creation of the installed GUI window. This is **not** an automated wizard-click test or evidence that visual colours/shell Run work.
++
++## GUI screenshot and manual acceptance
++
++In the installed GUI use **File > Open** to load `%TEMP%\Sutram-R62-Windows-Acceptance\R62_COLOUR_FIXTURE.sm`. Visually compare **orange keywords** (`mukhya`, `vitti`, `yadi`), **teal builtin** (`likha`), **green string**, **purple 123**, **grey # comment**. Check menus (File / Edit / Shell / Debug / Options / Window / Help), editor **Run** actual stdout, and `>>>` shell execution. If any fails, report the real symptom.
++
++With that actual fixture visible, capture the desktop:
++
++```powershell
++powershell.exe -NoProfile -File .\tools\r62_windows_acceptance.ps1 -Stage Screenshot -CaptureGui
++```
++
++This produces `GUI_REVIEW_REQUIRED.png` beside the logs. **Someone must actually open and visually inspect it.** Capture install wizard and Start Menu shortcut icon separately; an ICO file's hash alone is not visual confirmation. Do not assume a GitHub runner has an interactive desktop.
++
++## Preserved safety / limitations
++
++- `windows/native-installer/install-core.ps1` restores R61's **bounded 8-second pre/post compiler self-tests** that were absent from `main`, and copies the successful installation log into `%LOCALAPPDATA%\Programs\Sutram\install.log`. Failure leaves the wizard's temporary log for diagnosis.
++- `tools/r61_windows_compiler_diagnostics.ps1` is restored from the existing R61 draft branch with its original content. No assertion of fresh Windows results.
++- `.github/workflows/r59-native.yml` removes an inherited `push` trigger; all repo workflows on **this branch** remain manual-only. No new workflows created, no CI runs launched, no notification flood.
++- **No** compiler, language pack, approved golden, or GUI source code changed. No network calls, secrets, UAC elevation, HKLM writes or bypasses introduced.
++- **Round 62 workstreams 4 and 5 remain open.** Push/pop and store/reload peephole need proven emission-site safety plus instruction counts and gates; automatic overflow traps need an opt-in compatibility story and actual native before/after evidence. Neither is claimed here.
+
+diff --git a/tools/r61_windows_compiler_diagnostics.ps1 b/tools/r61_windows_compiler_diagnostics.ps1
+new file mode 100644
+--- /dev/null
++++ b/tools/r61_windows_compiler_diagnostics.ps1
+@@ -0,0 +1,123 @@
++#requires -version 5.1
++# R61: staged native compiler fault localisation, run deliberately on real Windows.
++# Usage: powershell -NoProfile -ExecutionPolicy Bypass -File tools/r61_windows_compiler_diagnostics.ps1
++# Never elevate, disable UAC, or modify user security settings.
++[CmdletBinding()]
++param(
++    [string]$ResultsDir = "",
++    [int]$TimeoutMs = 8000,
++    [string]$NasmPath = "",
++    [string]$LinkerPath = "",
++    [string]$LegacyCompiler = ""
++)
++$ErrorActionPreference = 'Stop'
++$root = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
++if (-not $ResultsDir) { $ResultsDir = Join-Path $env:TEMP ('Sutram-R61-' + [guid]::NewGuid().ToString('N')) }
++New-Item -ItemType Directory -Force -Path $ResultsDir | Out-Null
++$ResultsDir = (Resolve-Path -LiteralPath $ResultsDir).Path
++if ($TimeoutMs -lt 1000 -or $TimeoutMs -gt 60000) { throw 'TimeoutMs must be 1000..60000.' }
++if (-not $NasmPath) {
++    $n = Get-Command nasm.exe -ErrorAction SilentlyContinue
++    if (-not $n) { $n = Get-Command nasm -ErrorAction SilentlyContinue }
++    if (-not $n) { throw 'A Windows NASM is required (nasm.exe in PATH or -NasmPath).' }
++    $NasmPath = $n.Source
++}
++if (-not $LinkerPath) {
++    $ld = Get-Command ld.exe -ErrorAction SilentlyContinue
++    if (-not $ld) { throw 'A MinGW PE64 linker is required (ld.exe in PATH or -LinkerPath).' }
++    $LinkerPath = $ld.Source
++}
++$srcAsm = Join-Path $root 'src\sutram_compiler.asm'
++$fixture = Join-Path $ResultsDir 'win_native_test.sm'
++[IO.File]::WriteAllText($fixture, ("mukhya() {" + [Environment]::NewLine + '    likha("WIN_NATIVE_TEST_OK")' + [Environment]::NewLine + "}" + [Environment]::NewLine), ([Text.UTF8Encoding]::new($false)))
++function Invoke-Bounded([string]$Path, [string]$Arguments, [string]$Tag, [string]$WatchOutput = "") {
++    $out = Join-Path $ResultsDir ($Tag + '.stdout.txt')
++    $err = Join-Path $ResultsDir ($Tag + '.stderr.txt')
++    $sw = [Diagnostics.Stopwatch]::StartNew()
++    $startup = @{ FilePath=$Path; WorkingDirectory=$root; PassThru=$true; NoNewWindow=$true; RedirectStandardOutput=$out; RedirectStandardError=$err }
++    if ($Arguments) { $startup.ArgumentList = $Arguments }
++    $proc = Start-Process @startup
++    $timedOut = $false
++    $oversize = $false
++    try {
++        # Enforce size and wall-clock limits; the R60 native failure wrote
++        # more than 500 MB of zero padding in less than 12 seconds.
++        while (-not $proc.HasExited -and $sw.ElapsedMilliseconds -lt $TimeoutMs) {
++            if ($WatchOutput -and (Test-Path -LiteralPath $WatchOutput -PathType Leaf) -and
++                (Get-Item -LiteralPath $WatchOutput).Length -gt 65536) {
++                $oversize = $true
++                break
++            }
++            Start-Sleep -Milliseconds 80
++            $proc.Refresh()
++        }
++        if (-not $proc.HasExited) {
++            $timedOut = -not $oversize
++            Stop-Process -Id $proc.Id -Force -ErrorAction SilentlyContinue
++            [void]$proc.WaitForExit(3000)
++        }
++        $code = if ($oversize) { -9998 } elseif ($timedOut) { -9999 } else { $proc.ExitCode }
++    } finally { $sw.Stop(); $proc.Dispose() }
++    $stdout = if(Test-Path $out) {[IO.File]::ReadAllText($out)} else {''}
++    $stderr = if(Test-Path $err) {[IO.File]::ReadAllText($err)} else {''}
++    Write-Host ("R61_STAGE tag={0} timeout={1} oversize={2} exit={3} ms={4} stdout={5} stderr={6}" -f $Tag,$timedOut,$oversize,$code,$sw.ElapsedMilliseconds,($stdout -replace "[\r\n]+"," | "),($stderr -replace "[\r\n]+"," | "))
++    if ($oversize) { Write-Host ("R61_PE_SIZE_REGRESSION bytes=" + (Get-Item -LiteralPath $WatchOutput).Length) }
++    return [pscustomobject]@{ Tag=$Tag; TimedOut=$timedOut; Oversize=$oversize; Exit=$code; Ms=$sw.ElapsedMilliseconds; Stdout=$stdout; Stderr=$stderr }
++}
++function Compile-Native([string]$Tag, [string]$ExtraDefine = '') {
++    $obj = Join-Path $ResultsDir ($Tag + '.obj')
++    $exe = Join-Path $ResultsDir ($Tag + '.exe')
++    $params = @('-f','win64','-dWINDOWS')
++    if ($ExtraDefine) { $params += $ExtraDefine }
++    $params += @('-I.',$srcAsm,'-o',$obj)
++    Push-Location $root
++    try {
++        & $NasmPath @params
++        if ($LASTEXITCODE -ne 0) { throw "NASM failed for $Tag (exit $LASTEXITCODE)." }
++        & $LinkerPath -mi386pep --entry=_start -o $exe $obj
++        if ($LASTEXITCODE -ne 0) { throw "PE linker failed for $Tag (exit $LASTEXITCODE)." }
++    } finally { Pop-Location }
++    $header=[IO.File]::ReadAllBytes($exe)
++    if ($header.Length -lt 512 -or $header[0] -ne 77 -or $header[1] -ne 90) { throw "Not a PE file: $exe" }
++    Write-Host ("R61_BUILT tag={0} bytes={1} sha256={2}" -f $Tag, $header.Length, (Get-FileHash -LiteralPath $exe -Algorithm SHA256).Hash.ToLowerInvariant())
++    return $exe
++}
++Write-Host ("R61_ENVIRONMENT user={0} os={1} nasm={2} linker={3} workdir={4}" -f $env:USERNAME,[Environment]::OSVersion,$NasmPath,$LinkerPath,$ResultsDir)
++Write-Host ("R61_SOURCE_SHA256 compiler={0}" -f (Get-FileHash -LiteralPath $srcAsm -Algorithm SHA256).Hash.ToLowerInvariant())
++$reference = Compile-Native 'sutram-r61-fresh'
++if ($LegacyCompiler) {
++    if (-not (Test-Path -LiteralPath $LegacyCompiler -PathType Leaf)) { throw 'Specified LegacyCompiler not found.' }
++    Write-Host ("R61_LEGACY_SHA256 "+(Get-FileHash -LiteralPath $LegacyCompiler -Algorithm SHA256).Hash.ToLowerInvariant())
++    [void](Invoke-Bounded $LegacyCompiler '--version' 'legacy-version')
++    $oldOut = Join-Path $ResultsDir 'legacy_program.exe'
++    [void](Invoke-Bounded $LegacyCompiler ('"' + $fixture + '" "' + $oldOut + '"') 'legacy-compile' $oldOut)
++}
++# Probe instructions are already defined at compiler entry. No instrumentation
++# inside production code or mutation of any accepted codegen baseline.
++for ($i=0; $i -le 7; $i++) {
++    $probe = Compile-Native ("probe-" + $i) ("-DR49_WIN_DIAG_" + $i)
++    $out = Join-Path $ResultsDir ("probe-" + $i + '-program.exe')
++    [void](Invoke-Bounded $probe ('"' + $fixture + '" "' + $out + '"') ("probe-" + $i))
++}
++$ver = Invoke-Bounded $reference '--version' 'fresh-version'
++$help = Invoke-Bounded $reference '--help' 'fresh-help'
++$check = Invoke-Bounded $reference ('--check "' + $fixture + '"') 'fresh-check'
++$exe = Join-Path $ResultsDir 'fresh-program.exe'
++$compiled = Invoke-Bounded $reference ('"' + $fixture + '" "' + $exe + '"') 'fresh-compile' $exe
++$accepted = $false
++if (!$compiled.TimedOut -and !$compiled.Oversize -and $compiled.Exit -eq 0 -and (Test-Path -LiteralPath $exe -PathType Leaf)) {
++    Write-Host ("R61_PE_NORMAL_SIZE bytes=" + (Get-Item -LiteralPath $exe).Length)
++    if ((Get-Item -LiteralPath $exe).Length -gt 65536) { throw "R61 PE output unexpectedly exceeds 64 KiB" }
++    $prog = Invoke-Bounded $exe '' 'fresh-program'
++    if (!$prog.TimedOut -and !$prog.Oversize -and $prog.Exit -eq 0 -and $prog.Stdout.Trim() -eq 'WIN_NATIVE_TEST_OK') {
++        $accepted = $true
++        Write-Host 'R61_WINDOWS_COMPILE_EXECUTE_PASS'
++    } else {
++        Write-Host 'R61_WINDOWS_COMPILE_EXECUTE_FAIL: generated PE runtime failed'
++    }
++} else {
++    Write-Host 'R61_WINDOWS_COMPILE_EXECUTE_FAIL: compiler did not produce a program'
++}
++Write-Host "R61_DIAGNOSTICS_COMPLETE $ResultsDir"
++Write-Host 'Interpretation: probe 0/1/2 isolate bootstrap, probe 3 file read (exit=source byte length), probe 4 graph, 5 import expansion, 6 lexer, 7 parser. A completing probe does NOT prove downstream phases.'
++if (-not $accepted) { throw 'R61 Windows compiler/generated-runtime acceptance failed; inspect bounded stage logs.' }
+
+diff --git a/tools/r62_windows_acceptance.ps1 b/tools/r62_windows_acceptance.ps1
+new file mode 100644
+--- /dev/null
++++ b/tools/r62_windows_acceptance.ps1
+@@ -0,0 +1,134 @@
++#requires -version 5.1
++# Manual-only R62 Windows smoke acceptance. No network, elevation, or CI trigger.
++[CmdletBinding()]
++param(
++ [ValidateSet('Prepare','Audit','Screenshot')][string]$Stage='Prepare',
++ [string]$ResultsDir='',
++ [string]$LegacyCompiler='',
++ [switch]$CaptureGui
++)
++$ErrorActionPreference='Stop'
++Set-StrictMode -Version 2.0
++$root=(Resolve-Path (Join-Path $PSScriptRoot '..')).Path
++if (-not $ResultsDir) { $ResultsDir=Join-Path $env:TEMP 'Sutram-R62-Windows-Acceptance' }
++New-Item -ItemType Directory -Force -Path $ResultsDir | Out-Null
++$ResultsDir=(Resolve-Path -LiteralPath $ResultsDir).Path
++if (-not [Environment]::Is64BitOperatingSystem -or -not [Environment]::Is64BitProcess) { throw '64-bit Windows/PowerShell required.' }
++$principal=[Security.Principal.WindowsPrincipal]::new([Security.Principal.WindowsIdentity]::GetCurrent())
++if ($principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) { throw 'Use standard-user PowerShell; do not elevate.' }
++function Hash([string]$file) {
++ if (-not (Test-Path -LiteralPath $file -PathType Leaf)) { throw "Missing file: $file" }
++ return (Get-FileHash -LiteralPath $file -Algorithm SHA256).Hash.ToLowerInvariant()
++}
++$expectedIcon='b48aeb52516433c3cce51ffe436fa04355cb938aa0b5188c60fe7c02f2923ec1'
++if ((Hash (Join-Path $root 'icons\sutram.ico')) -ne $expectedIcon) { throw 'Canonical source icon hash differs.' }
++$sample=Join-Path $ResultsDir 'R62_COLOUR_FIXTURE.sm'
++$sampleText=@'
++# GREY comment
++mukhya()
++    vitti value = 123
++    yadi (value > 100) {
++        likha("R62_SHELL_AND_RUN_OK\n")
++    }
++'@
++[IO.File]::WriteAllText($sample,$sampleText + [Environment]::NewLine,([Text.UTF8Encoding]::new($false)))
++function Run-Bounded([string]$exe,[string]$arguments,[string]$tag,[string]$watched='') {
++ $out=Join-Path $ResultsDir ($tag+'.stdout.txt'); $err=Join-Path $ResultsDir ($tag+'.stderr.txt')
++ $start=@{FilePath=$exe; PassThru=$true; WorkingDirectory=$root; NoNewWindow=$true; RedirectStandardOutput=$out; RedirectStandardError=$err}
++ if ($arguments) { $start.ArgumentList=$arguments }
++ $p=Start-Process @start
++ $sw=[Diagnostics.Stopwatch]::StartNew(); $oversize=$false
++ while (-not $p.HasExited -and $sw.ElapsedMilliseconds -lt 12000) {
++   if ($watched -and (Test-Path -LiteralPath $watched -PathType Leaf) -and (Get-Item -LiteralPath $watched).Length -gt 65536) { $oversize=$true; break }
++   Start-Sleep -Milliseconds 80; $p.Refresh()
++ }
++ $timed=(-not $p.HasExited)
++ if ($timed) { Stop-Process -Id $p.Id -Force -ErrorAction SilentlyContinue; [void]$p.WaitForExit(3000) }
++ $sw.Stop(); $code=if ($timed) {-1} else {$p.ExitCode}
++ $text=if (Test-Path -LiteralPath $out) {[IO.File]::ReadAllText($out)} else {''}
++ Write-Host ("R62_NATIVE tag={0} exit={1} timeout={2} oversize={3} ms={4} stdout={5}" -f $tag,$code,$timed,$oversize,$sw.ElapsedMilliseconds,($text.Trim() -replace "[\r\n]+",' | '))
++ if ($code -ne 0 -or $oversize -or $timed) { throw "R62 $tag failed; inspect $out and $err" }
++ return $text
++}
++if ($Stage -eq 'Screenshot') {
++ if (-not $CaptureGui) { throw 'Open the fixture in the GUI, then rerun with -CaptureGui.' }
++ Add-Type -AssemblyName System.Drawing
++ Add-Type -AssemblyName System.Windows.Forms
++ $r=[Windows.Forms.Screen]::PrimaryScreen.Bounds
++ $bmp=[Drawing.Bitmap]::new($r.Width,$r.Height)
++ $g=[Drawing.Graphics]::FromImage($bmp)
++ try { $g.CopyFromScreen($r.Location,[Drawing.Point]::Empty,$r.Size)
++       $bmp.Save((Join-Path $ResultsDir 'GUI_REVIEW_REQUIRED.png'),[Drawing.Imaging.ImageFormat]::Png) }
++ finally { $g.Dispose(); $bmp.Dispose() }
++ Write-Host 'R62_SCREENSHOT_CAPTURED; MUST visually review orange/teal/green/purple/grey, menu and shell. Screenshot is not acceptance by itself.'
++ exit 0
++}
++$cli=Join-Path $root 'win\sutram.exe'
++$gui=Join-Path $root 'sutram-ide-gui.exe'
++$setup=Join-Path $root 'windows\native-installer\output\Sutram-Setup-0.1.0-native-x64.exe'
++$installed=Join-Path $env:LOCALAPPDATA 'Programs\Sutram'
++if ($Stage -eq 'Prepare') {
++ $diag=Join-Path $root 'tools\r61_windows_compiler_diagnostics.ps1'
++ $diagArgs=@('-ResultsDir',(Join-Path $ResultsDir 'r61-native'))
++ if ($LegacyCompiler) { $diagArgs+=@('-LegacyCompiler',$LegacyCompiler) }
++ & $diag @diagArgs
++ if (-not $?) { throw 'R61 CLI diagnostics did not complete.' }
++ $nasm=(Get-Command nasm.exe -ErrorAction Stop).Source
++ $ld=(Get-Command ld.exe -ErrorAction Stop).Source
++ $obj=Join-Path $ResultsDir 'sutram-r62.obj'
++ Push-Location $root
++ try {
++   & $nasm -f win64 -dWINDOWS -I. 'src\sutram_compiler.asm' -o $obj
++   if ($LASTEXITCODE -ne 0) { throw 'NASM assembly failed.' }
++   New-Item -Path (Join-Path $root 'win') -ItemType Directory -Force | Out-Null
++   & $ld -mi386pep --entry=_start -o $cli $obj
++   if ($LASTEXITCODE -ne 0) { throw 'PE link failed.' }
++ } finally { Pop-Location }
++ & (Join-Path $root 'windows\gui\build-gui.ps1')
++ if (-not $?) { throw 'GUI build failed.' }
++ & (Join-Path $root 'windows\native-installer\build-installer.ps1')
++ if (-not $?) { throw 'Installer build failed.' }
++ [void](Run-Bounded $setup '--self-test' 'installer-self-test')
++ if ((Hash (Join-Path $root 'windows\native-installer\assets\sutram.ico')) -ne $expectedIcon) { throw 'Installer icon incorrect.' }
++ $manifest=@('R62_PREPARE_PASS',('compiler_sha256='+(Hash $cli)),('gui_sha256='+(Hash $gui)),('setup_sha256='+(Hash $setup)),('icon_sha256='+$expectedIcon),('source_sha256='+(Hash (Join-Path $root 'src\sutram_compiler.asm'))))
++ [IO.File]::WriteAllLines((Join-Path $ResultsDir 'build-manifest.txt'),$manifest,([Text.UTF8Encoding]::new($false)))
++ $manifest | ForEach-Object { Write-Host $_ }
++ Write-Host "NEXT: run installer as standard user: $setup"
++ Write-Host 'After graphical wizard finishes, rerun this script with -Stage Audit.'
++ exit 0
++}
++if ($Stage -eq 'Audit') {
++ if (-not (Test-Path -LiteralPath (Join-Path $installed '.sutram-install') -PathType Leaf)) { throw 'Installed marker absent.' }
++ $reg=Get-ItemProperty -LiteralPath 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\Sutram' -ErrorAction Stop
++ if (-not [string]::Equals([IO.Path]::GetFullPath([string]$reg.InstallLocation).TrimEnd('\'),[IO.Path]::GetFullPath($installed).TrimEnd('\'),[StringComparison]::OrdinalIgnoreCase)) { throw 'HKCU uninstall path invalid.' }
++ $lnk=Join-Path ([Environment]::GetFolderPath('StartMenu')) 'Programs\Sutram\Sutram IDE.lnk'
++ if (-not (Test-Path -LiteralPath $lnk -PathType Leaf)) { throw 'Start Menu link missing.' }
++ $shell=New-Object -ComObject WScript.Shell; $sc=$shell.CreateShortcut($lnk)
++ $destGui=Join-Path $installed 'sutram-ide-gui.exe'; $icon=Join-Path $installed 'assets\sutram.ico'
++ if (-not [string]::Equals($sc.TargetPath,$destGui,[StringComparison]::OrdinalIgnoreCase)) { throw "Shortcut target mismatch: $($sc.TargetPath)" }
++ if (-not $sc.IconLocation.StartsWith($icon,[StringComparison]::OrdinalIgnoreCase)) { throw "Shortcut icon path mismatch: $($sc.IconLocation)" }
++ if ((Hash $icon) -ne $expectedIcon) { throw 'Installed icon SHA wrong.' }
++ $destCli=Join-Path $installed 'bin\sutram.exe'
++ if ((Hash $destCli) -ne (Hash $cli)) { throw 'Packaged/installed compiler does not match tested current compiler.' }
++ $log=Join-Path $installed 'install.log'
++ if (-not (Test-Path -LiteralPath $log -PathType Leaf)) { throw 'Successful installer log missing; inspect original wizard failure log under TEMP\Sutram-Setup-*.' }
++ $actualLog=[IO.File]::ReadAllText($log)
++ Copy-Item -LiteralPath $log -Destination (Join-Path $ResultsDir 'observed-install.log') -Force
++ if ($actualLog -notmatch 'Installation complete:' -or $actualLog -match 'ERROR:') { throw 'Installer log does not prove successful completion.' }
++ Write-Host "R62_INSTALL_LOG_INSPECTED $log"
++ $generated=Join-Path $ResultsDir 'r62_installed_hello.exe'
++ [void](Run-Bounded $destCli ('"'+$sample+'" "'+$generated+'"') 'installed-compile' $generated)
++ if ((Get-Item -LiteralPath $generated).Length -gt 65536) { throw 'Oversized generated PE.' }
++ $stdout=Run-Bounded $generated '' 'installed-program'
++ if ($stdout.Trim() -ne 'R62_SHELL_AND_RUN_OK') { throw "Wrong native stdout: $stdout" }
++ $p=Start-Process -FilePath $destGui -WorkingDirectory $installed -PassThru
++ $seen=$false
++ for ($i=0;$i -lt 40;$i++) {
++   Start-Sleep -Milliseconds 250; $p.Refresh()
++   if ($p.HasExited) { throw "Installed GUI exited: $($p.ExitCode)" }
++   if ($p.MainWindowHandle -ne [IntPtr]::Zero) { $seen=$true; break }
++ }
++ if (-not $seen) { throw 'Installed GUI failed to create a visible main window.' }
++ Write-Host 'R62_AUDIT_PASS: HKCU, real install log, shortcut, exact canonical ICO, byte-matched compiler, native stdout, GUI window.'
++ Write-Host "MANUAL: in installed GUI File > Open $sample; test editor Run and >>> shell, inspect five colours; capture via -Stage Screenshot -CaptureGui."
++}
+\ No newline at end of file
+
+diff --git a/windows/native-installer/install-core.ps1 b/windows/native-installer/install-core.ps1
+--- a/windows/native-installer/install-core.ps1
++++ b/windows/native-installer/install-core.ps1
+@@ -13,6 +13,36 @@ function Log([string]$Message) {
+     $stamp = [DateTime]::Now.ToString('yyyy-MM-dd HH:mm:ss')
+     Add-Content -LiteralPath $LogPath -Value ("[{0}] {1}" -f $stamp,$Message) -Encoding UTF8
+ }
++# No unbounded compiler preflights: a broken native compiler must not
++# freeze the Windows wizard forever inside WaitForSingleObject(INFINITE).
++# Keep the log in the user's TEMP directory and fail closed (no install).
++function Invoke-SutramSelfTest([string]$ExePath,[string]$Argument,[string]$Stage) {
++    $p = New-Object System.Diagnostics.Process
++    $p.StartInfo.FileName = $ExePath
++    $p.StartInfo.Arguments = $Argument
++    $p.StartInfo.UseShellExecute = $false
++    $p.StartInfo.RedirectStandardOutput = $true
++    $p.StartInfo.RedirectStandardError = $true
++    $p.StartInfo.CreateNoWindow = $true
++    try {
++        Log ("Native self-test start: " + $Stage)
++        if (-not $p.Start()) { throw ("Unable to start " + $Stage) }
++        if (-not $p.WaitForExit(8000)) {
++            try { $p.Kill() } catch {}
++            try { [void]$p.WaitForExit(2000) } catch {}
++            throw ("Native compiler timed out during " + $Stage + " after 8000 ms; installation aborted.")
++        }
++        $stdout = $p.StandardOutput.ReadToEnd()
++        $stderr = $p.StandardError.ReadToEnd()
++        Log ("Native self-test exit: " + $Stage + " code=" + $p.ExitCode)
++        if ($p.ExitCode -ne 0 -or [string]::IsNullOrWhiteSpace($stdout)) {
++            throw ("Native compiler failed " + $Stage + " code=" + $p.ExitCode + " stderr=" + $stderr.Trim())
++        }
++        return $stdout
++    } finally {
++        $p.Dispose()
++    }
++}
+ function Normalize-PathEntry([string]$Value) {
+     if ($null -eq $Value) { return '' }
+     $clean = $Value.Trim().Trim('"').TrimEnd('\')
+@@ -192,10 +222,8 @@ try {
+         if (-not (Test-Path -LiteralPath $guiTestExe -PathType Leaf)) { throw 'Payload is missing Sutram GUI.' }
+         if (-not (Test-Path -LiteralPath $guiCompiler -PathType Leaf)) { throw 'Payload is missing GUI-compatible compiler path.' }
+         if (-not (Test-Path -LiteralPath $testExe -PathType Leaf)) { throw 'Payload does not contain bin\sutram.exe.' }
+-        $v = & $testExe --version 2>&1 | Out-String
+-        if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($v)) { throw 'Packaged sutram.exe failed its pre-install version test.' }
+-        $h = & $testExe --help 2>&1 | Out-String
+-        if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($h)) { throw 'Packaged sutram.exe failed its pre-install help test.' }
++        $v = Invoke-SutramSelfTest $testExe '--version' 'pre-install --version'
++        $h = Invoke-SutramSelfTest $testExe '--help' 'pre-install --help'
+ 
+         New-Item -ItemType Directory -Force -Path $InstallDir | Out-Null
+         if (Test-Path -LiteralPath (Join-Path $InstallDir 'payload.manifest.sha256') -PathType Leaf) {
+@@ -208,8 +236,7 @@ try {
+         [IO.File]::WriteAllText($marker,'Sutram Windows installation' + [Environment]::NewLine,([Text.UTF8Encoding]::new($false)))
+ 
+         $installedExe = Join-Path $InstallDir 'bin\sutram.exe'
+-        $check = & $installedExe --version 2>&1 | Out-String
+-        if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($check)) { throw 'Installed sutram.exe failed its final validation before Windows integration.' }
++        $check = Invoke-SutramSelfTest $installedExe '--version' 'post-install --version'
+ 
+         $binDir = Join-Path $InstallDir 'bin'
+         $previousOwned = ($oldState.ContainsKey('PathOwned') -and $oldState['PathOwned'] -eq '1')
+@@ -280,6 +307,10 @@ try {
+         [IO.File]::WriteAllLines($statePath,$stateLines,([Text.UTF8Encoding]::new($false)))
+ 
+         Log ('Installation complete: ' + $InstallDir)
++        # The wizard deletes its temporary staging directory after success.
++        # Preserve the actual installer log under this user's installed tree
++        # so the Round 62 auditor can examine real installation events.
++        Copy-Item -LiteralPath $LogPath -Destination (Join-Path $InstallDir 'install.log') -Force
+     } finally {
+         Remove-Item -LiteralPath $stage -Recurse -Force -ErrorAction SilentlyContinue
+     }

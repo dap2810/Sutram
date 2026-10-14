@@ -1,0 +1,49 @@
+SUTRAM ROUND 62 — OBSERVED VS NOT RUN
+Date: 2026-10-14
+Incoming: Sarvam-to-ChatGPT/ROUND-62.md
+Review: https://github.com/dap2810/Sutram/pull/20
+Branch: feature/r62-windows-acceptance-20261014
+Base_main_prior_to_changes: a15258c1261c1472c1ecd16c65a291b792592a98
+
+SOURCE FACTS ACTUALLY CONFIRMED
+- main compiler src/sutram_compiler.asm existing R61 .pp_pad_go does push rdx / call os_write / pop rdx / sub r13,rdx.
+- R61 Windows diagnostic script absent from main before this round; restored IDENTICAL file from R61 PR19 branch.
+- R61 bounded installer selftests absent on main before this round; restored PR19 implementation and appended successful install.log preservation under per-user installed tree.
+- 5 changed files in draft PR20; no compiler/GUI/lib/golden source changes.
+- Static source/guard checks: 11/11 PASS (source regex / consistency only, NOT runtime).
+- Workflow event readback: 8/8 workflows on feature branch use workflow_dispatch only, no push/pull_request/schedule.
+- R59 historic workflow on main still has a push branch trigger until PR20 is reviewed/merged. This review branch removes it.
+- Reviewable full per-file unified patches: ROUND-62-REVIEW.patch.
+- Source SHA256 and blob references: ROUND-62-SHA256.txt.
+
+PREVIOUSLY OBSERVED WINDOWS FAILURE (R60, NOT NEW R62 EXECUTION)
+- GitHub Actions 38562501834 previously ran on Windows.
+- Old Windows compile of 46-byte test exceeded 533114623 bytes within 12000 ms, confirming runaway PE padding.
+- Old screenshot only showed GUI menu bar; token colours not verified; wizard earlier failed.
+- R61 PE fix was accepted/merged by Sarvam; native successful post-fix compile is NOT YET CONFIRMED.
+
+NEW WINDOWS RUN / INSTALL / GUI STATUS
+R62_NEW_WINDOWS_HOST_EXECUTION: NOT RUN (current environment Linux, no Windows execution capability)
+R61_PE_NORMAL_SIZE_AFTER_FIX: UNVERIFIED / no output file created
+R61_WINDOWS_COMPILE_EXECUTE_PASS: UNVERIFIED / no stdout observed
+R61_LEGACY_AB_COMPARISON: UNVERIFIED / no real old-vs-fixed numbers
+R62_INSTALLER_SETUP_SELF_TEST: UNVERIFIED / no newly built Windows EXE
+R62_PER_USER_INSTALL_NO_UAC: UNVERIFIED
+R62_HKCU_UNINSTALL_AND_START_MENU: UNVERIFIED
+R62_INSTALL_LOG_INSPECTED_ON_WIN: NOT RUN (audit script prepared)
+R62_CANONICAL_ICON_DISPLAY: UNVERIFIED (source hash specified; installed icon not examined)
+R62_GUI_COLOURS_VISUALLY_REVIEWED: NOT DONE
+R62_SHELL_AND_EDITOR_RUN: UNVERIFIED
+R62_FULL_NATIVE_REGRESSION_GATES: NOT RUN (no compiler build in this environment)
+R62_WORKSTREAM_4_PEEPHOLE: NOT IMPLEMENTED
+R62_WORKSTREAM_5_OVERFLOW_TRAP: NOT IMPLEMENTED
+
+WHAT TO RUN ON STANDARD-USER WINDOWS:
+  powershell.exe -NoProfile -File .\tools\r62_windows_acceptance.ps1 -Stage Prepare
+  # Optional legacy comparison: append -LegacyCompiler "C:\path\to\pre-r61\sutram.exe"
+  # Run freshly built wizard interactively (not from an elevated terminal).
+  powershell.exe -NoProfile -File .\tools\r62_windows_acceptance.ps1 -Stage Audit
+  # After loading %TEMP%\Sutram-R62-Windows-Acceptance\R62_COLOUR_FIXTURE.sm in GUI:
+  powershell.exe -NoProfile -File .\tools\r62_windows_acceptance.ps1 -Stage Screenshot -CaptureGui
+
+Evidence required before independent acceptance: actual logs with exit codes/timings/file sizes and exact stdout; wizard/install log; inspected GUI screenshot; Run and >>> outputs; real codegen/proof gates. Do not merge or release based on these source-only checks.
