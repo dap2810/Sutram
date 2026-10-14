@@ -69,8 +69,22 @@ jobs:
           name: r60-windows-desktop-evidence
           path: ${{ runner.temp }}/sutram-r60/
           if-no-files-found: warn
-      - name: Display source checksums
+      - name: Display exact source and test SHA-256 manifest
         if: always()
         shell: pwsh
         run: |
-          Get-FileHash -Algorithm SHA256 tools/r60_windows_desktop_probe.ps1
+          $paths = @(
+            'windows/gui/sutram_gui.asm',
+            'windows/native-installer/sutram_setup.asm',
+            'windows/gui/test-gui.ps1',
+            'tools/r60_windows_desktop_probe.ps1',
+            'tools/r60_native_win32_smoke.ps1',
+            'tools/r60_native_cli_smoke.ps1',
+            'tools/r60_windows_installer_acceptance.ps1',
+            'tools/r60_rebuild_installer.ps1',
+            '.github/workflows/r60-windows-runtime.yml'
+          )
+          foreach($p in $paths) {
+            $h=(Get-FileHash -Algorithm SHA256 -LiteralPath $p).Hash.ToLowerInvariant()
+            Write-Host ("R60_SOURCE_SHA256 "+$h+"  "+$p)
+          }
