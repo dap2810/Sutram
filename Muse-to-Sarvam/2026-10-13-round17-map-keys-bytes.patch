@@ -1,0 +1,470 @@
+diff --git a/docs/sutram-stdlib.html b/docs/sutram-stdlib.html
+index f440824..cbbd2ae 100644
+--- a/docs/sutram-stdlib.html
++++ b/docs/sutram-stdlib.html
+@@ -31,7 +31,7 @@ Do not edit by hand.</p>
+ <li><a href="#kalana"><code>kalana</code></a> — 6 functions</li>
+ <li><a href="#list"><code>list</code></a> — 21 functions</li>
+ <li><a href="#madhava"><code>madhava</code></a> — 5 functions</li>
+-<li><a href="#map"><code>map</code></a> — 11 functions</li>
++<li><a href="#map"><code>map</code></a> — 12 functions</li>
+ <li><a href="#math"><code>math</code></a> — 16 functions</li>
+ <li><a href="#num"><code>num</code></a> — 10 functions</li>
+ <li><a href="#samanvaya"><code>samanvaya</code></a> — 10 functions</li>
+@@ -198,7 +198,8 @@ Do not edit by hand.</p>
+ <tr><td><code>map_contains(m, cap, key, keyn)</code></td><td>map_contains(m, cap, key, keyn) — 1 if key is present, else 0.</td></tr>
+ <tr><td><code>map_remove(m, cap, key, keyn)</code></td><td>map_remove(m, cap, key, keyn) — delete key; 1 if removed, 0 if absent. Backward-shift deletion (Knuth 6.4R): after clearing the slot, each following live entry whose home bucket is NOT cyclically past the hole is shifted back into it, preserving every probe chain with no tombstones.</td></tr>
+ <tr><td><code>map_size(m)</code></td><td>map_size(m) — number of live entries.</td></tr>
+-<tr><td><code>map_keys(m, out)</code></td><td>map_keys(m, out) — write live keys into out in length-prefixed form [len0, b0, b1, ..., len1, b0, ...] (same shape as str_split parts). Returns the key count, which equals map_size(m).</td></tr>
++<tr><td><code>map_keys(m, out)</code></td><td>map_keys(m, out) — write live keys into out in length-prefixed form [len0, b0, b1, ..., len1, b0, ...] (same shape as str_split parts). Returns the key count, which equals map_size(m). NOTE: segments are QWORD CELLS (len in one cell, one byte per cell), kept for backward compatibility. New code should use map_keys_bytes below, which returns the same segments as packed bytes — the form every key consumer (map_put, map_contains, strb_compare) actually takes. Passing a map_keys segment straight to a byte-key consumer compiles and silently compares the wrong bytes (the R14 trap).</td></tr>
++<tr><td><code>map_keys_bytes(m, out)</code></td><td>map_keys_bytes(m, out) — R17. Same segments as map_keys, but PACKED BYTES: [len-byte, bytes..., len-byte, bytes...], one length byte followed by the key&#x27;s bytes, no terminator. Returns the key count, which equals map_size(m). Caller allocates cap * 33 bytes (each key is &lt;= 32 bytes plus 1 length byte; at most cap keys). Keys are stored as packed bytes inside the map, so this is a straight byte copy — no unpack/pack round-trip. Segments can be passed directly to map_put / map_contains / strb_compare with no repacking; that is the whole point (see map_keys note above).</td></tr>
+ </table>
+ <h2 id="math"><code>math</code></h2>
+ <p class="mod-desc">Pure integer arithmetic, written only with verified language features. Every function copies its parameters into locals before mutating them, because the compiler currently faults on assignment to a parameter.</p>
+@@ -273,7 +274,7 @@ Do not edit by hand.</p>
+ <tr><td><code>purna_prasaran(xs, n)</code></td><td>--- integer population variance (truncated toward zero; uses the truncated mean, so exact only when the mean is integral) ---</td></tr>
+ </table>
+ <h2 id="set"><code>set</code></h2>
+-<p class="mod-desc">A set IS a map (`lib/map.smlib`) with a dummy value of 1: membership is map_contains, iteration is map_keys. The set functions are thin wrappers plus the algebra (union / intersect / difference / subset) and a sorted dump (set_to_array). ELEMENTS ARE BYTE STRINGS — the same choice as `map.smlib`&#x27;s keys, for the same reason: a caller passes a literal directly (&quot;apple&quot;), with an explicit length, and the whole strb_* surface (compare, pack, unpack) works on the elements unchanged. Do NOT pass char-code (qword-cell) arrays here; see the lib/strb.smlib header for the two representations. Consequences inherited from map: keys longer than 32 bytes are truncated to 32 on every operation, consistently. CAPACITY: a set&#x27;s capacity is fixed at set_init and stored in the buffer (m[0]). Set operations that write into `out` read out&#x27;s capacity from out[0], so the caller MUST pass a set_init&#x27;d buffer with room for the result: cap + bcap for union, cap for difference, min(cap, bcap) for intersection. If `out` is too small, map_put silently drops the overflowing elements (map&#x27;s full-table behaviour) and the returned size will be smaller than the true result — size the output generously and check the returned size. `out` for union / intersect / difference must be a FRESH, EMPTY set: the operations ADD into it and return map_size(out) afterwards. set_is_subset(a, ...) with an empty `a` is 1 (vacuous truth). The 6-argument cap still applies: union / intersect / difference keep the 5-argument shape from the round brief by reading out&#x27;s capacity from out[0] instead of taking it as a sixth parameter.</p>
++<p class="mod-desc">A set IS a map (`lib/map.smlib`) with a dummy value of 1: membership is map_contains, iteration is map_keys_bytes (R17: packed-byte segments, passed straight to the byte-key map functions with no repacking). ELEMENTS ARE BYTE STRINGS — the same choice as `map.smlib`&#x27;s keys, for the same reason: a caller passes a literal directly (&quot;apple&quot;), with an explicit length, and the whole strb_* surface (compare, pack, unpack) works on the elements unchanged. Do NOT pass char-code (qword-cell) arrays here; see the lib/strb.smlib header for the two representations. Consequences inherited from map: keys longer than 32 bytes are truncated to 32 on every operation, consistently. CAPACITY: a set&#x27;s capacity is fixed at set_init and stored in the buffer (m[0]). Set operations that write into `out` read out&#x27;s capacity from out[0], so the caller MUST pass a set_init&#x27;d buffer with room for the result: cap + bcap for union, cap for difference, min(cap, bcap) for intersection. If `out` is too small, map_put silently drops the overflowing elements (map&#x27;s full-table behaviour) and the returned size will be smaller than the true result — size the output generously and check the returned size. `out` for union / intersect / difference must be a FRESH, EMPTY set: the operations ADD into it and return map_size(out) afterwards. set_is_subset(a, ...) with an empty `a` is 1 (vacuous truth). The 6-argument cap still applies: union / intersect / difference keep the 5-argument shape from the round brief by reading out&#x27;s capacity from out[0] instead of taking it as a sixth parameter.</p>
+ <table>
+ <tr><th>Function</th><th>Description</th></tr>
+ <tr><td><code>set_init(cap)</code></td><td>set_init(cap) — allocate an empty set of capacity cap (clamped to &gt;= 1).</td></tr>
+@@ -281,10 +282,10 @@ Do not edit by hand.</p>
+ <tr><td><code>set_contains(s, cap, elem, elem_n)</code></td><td>set_contains(s, cap, elem, elem_n) — 1 if elem is in the set, else 0.</td></tr>
+ <tr><td><code>set_remove(s, cap, elem, elem_n)</code></td><td>set_remove(s, cap, elem, elem_n) — remove elem; 1 if removed, 0 if absent.</td></tr>
+ <tr><td><code>set_size(s)</code></td><td>set_size(s) — number of elements.</td></tr>
+-<tr><td><code>set_union(a, cap, b, bcap, out)</code></td><td>set_union(a, cap, b, bcap, out) — add every element of a and of b into out (fresh, empty, capacity &gt;= cap + bcap). Returns set_size(out). NOTE: map_keys segments are CELLS, but map_put takes packed BYTES — each segment is repacked with strb_pack first. Passing the cell pointer straight to map_put compiles fine and silently compares the wrong bytes (the first cell&#x27;s low byte, then zeroes). That is the R12 repack trap; strb_pack is the fix.</td></tr>
+-<tr><td><code>set_intersect(a, cap, b, bcap, out)</code></td><td>set_intersect(a, cap, b, bcap, out) — add every element of a that is also in b into out (fresh, empty, capacity &gt;= min(cap, bcap)). Returns set_size(out). Segments are repacked with strb_pack before map_contains (see set_union note).</td></tr>
+-<tr><td><code>set_difference(a, cap, b, bcap, out)</code></td><td>set_difference(a, cap, b, bcap, out) — add every element of a that is NOT in b into out (fresh, empty, capacity &gt;= cap). Returns set_size(out). Segments are repacked with strb_pack before map_contains (see set_union note).</td></tr>
+-<tr><td><code>set_is_subset(a, cap, b, bcap)</code></td><td>set_is_subset(a, cap, b, bcap) — 1 if every element of a is in b, else 0. Empty a is a subset of everything. Segments are repacked with strb_pack before map_contains (see set_union note).</td></tr>
++<tr><td><code>set_union(a, cap, b, bcap, out)</code></td><td>set_union(a, cap, b, bcap, out) — add every element of a and of b into out (fresh, empty, capacity &gt;= cap + bcap). Returns set_size(out). R17: iteration is map_keys_bytes, whose packed-byte segments go straight into map_put. (Before R17 this used map_keys cell segments plus a strb_pack per segment; passing a cell segment straight to map_put compiled fine and silently compared the wrong bytes.)</td></tr>
++<tr><td><code>set_intersect(a, cap, b, bcap, out)</code></td><td>set_intersect(a, cap, b, bcap, out) — add every element of a that is also in b into out (fresh, empty, capacity &gt;= min(cap, bcap)). Returns set_size(out).</td></tr>
++<tr><td><code>set_difference(a, cap, b, bcap, out)</code></td><td>set_difference(a, cap, b, bcap, out) — add every element of a that is NOT in b into out (fresh, empty, capacity &gt;= cap). Returns set_size(out).</td></tr>
++<tr><td><code>set_is_subset(a, cap, b, bcap)</code></td><td>set_is_subset(a, cap, b, bcap) — 1 if every element of a is in b, else 0. Empty a is a subset of everything.</td></tr>
+ <tr><td><code>set_to_array(s, cap, out)</code></td><td>set_to_array(s, cap, out) — write the set&#x27;s elements into out in length-prefixed form [len0, b0, b1, ..., len1, b0, ...] (same shape as map_keys / strb_split parts), SORTED lexicographically by byte value (strb_compare), so output is deterministic regardless of insertion order or hash layout. Returns the element count.</td></tr>
+ </table>
+ <h2 id="sort"><code>sort</code></h2>
+@@ -378,6 +379,6 @@ Do not edit by hand.</p>
+ <tr><td><code>bool_to_int(b)</code></td><td></td></tr>
+ <tr><td><code>int_max()</code></td><td></td></tr>
+ </table>
+-<footer>21 modules, 230 functions. Generated from library sources.</footer>
++<footer>21 modules, 231 functions. Generated from library sources.</footer>
+ </body>
+ </html>
+diff --git a/lib/map.smlib b/lib/map.smlib
+index 6e07a92..be7b31f 100644
+--- a/lib/map.smlib
++++ b/lib/map.smlib
+@@ -238,6 +238,12 @@ prakriya map_size(m) {
+ # map_keys(m, out) — write live keys into out in length-prefixed form
+ # [len0, b0, b1, ..., len1, b0, ...] (same shape as str_split parts).
+ # Returns the key count, which equals map_size(m).
++# NOTE: segments are QWORD CELLS (len in one cell, one byte per cell),
++# kept for backward compatibility. New code should use map_keys_bytes
++# below, which returns the same segments as packed bytes — the form
++# every key consumer (map_put, map_contains, strb_compare) actually
++# takes. Passing a map_keys segment straight to a byte-key consumer
++# compiles and silently compares the wrong bytes (the R14 trap).
+ prakriya map_keys(m, out) {
+     vitti cap = m[0]
+     vitti i = 0
+@@ -262,3 +268,38 @@ prakriya map_keys(m, out) {
+     }
+     pratiyati n
+ }
++
++# map_keys_bytes(m, out) — R17. Same segments as map_keys, but PACKED
++# BYTES: [len-byte, bytes..., len-byte, bytes...], one length byte
++# followed by the key's bytes, no terminator. Returns the key count,
++# which equals map_size(m). Caller allocates cap * 33 bytes (each key
++# is <= 32 bytes plus 1 length byte; at most cap keys).
++# Keys are stored as packed bytes inside the map, so this is a straight
++# byte copy — no unpack/pack round-trip. Segments can be passed
++# directly to map_put / map_contains / strb_compare with no repacking;
++# that is the whole point (see map_keys note above).
++prakriya map_keys_bytes(m, out) {
++    vitti cap = m[0]
++    vitti i = 0
++    vitti wpos = 0
++    vitti n = 0
++    vitti kl = 0
++    vitti base = 0
++    vitti k = 0
++    yavat (i < cap) {
++        yadi (m[2 + i] == 1) {
++            kl = m[2 + cap + i]
++            base = (2 + 3 * cap) * 8 + i * 32
++            set_char(out, wpos, kl)
++            k = 0
++            yavat (k < kl) {
++                set_char(out, wpos + 1 + k, char_at(m, base + k))
++                k = k + 1
++            }
++            wpos = wpos + 1 + kl
++            n = n + 1
++        }
++        i = i + 1
++    }
++    pratiyati n
++}
+diff --git a/lib/set.smlib b/lib/set.smlib
+index 4b2d869..51cbbc5 100644
+--- a/lib/set.smlib
++++ b/lib/set.smlib
+@@ -1,9 +1,8 @@
+ # lib/set.smlib — Sutram standard library: sets (set algebra over map)
+ #
+ # A set IS a map (`lib/map.smlib`) with a dummy value of 1: membership is
+-# map_contains, iteration is map_keys. The set functions are thin
+-# wrappers plus the algebra (union / intersect / difference / subset)
+-# and a sorted dump (set_to_array).
++# map_contains, iteration is map_keys_bytes (R17: packed-byte segments,
++# passed straight to the byte-key map functions with no repacking).
+ #
+ # ELEMENTS ARE BYTE STRINGS — the same choice as `map.smlib`'s keys, for
+ # the same reason: a caller passes a literal directly ("apple"), with an
+@@ -62,34 +61,30 @@ prakriya set_size(s) {
+ 
+ # set_union(a, cap, b, bcap, out) — add every element of a and of b into
+ # out (fresh, empty, capacity >= cap + bcap). Returns set_size(out).
+-# NOTE: map_keys segments are CELLS, but map_put takes packed BYTES —
+-# each segment is repacked with strb_pack first. Passing the cell
+-# pointer straight to map_put compiles fine and silently compares the
+-# wrong bytes (the first cell's low byte, then zeroes). That is the
+-# R12 repack trap; strb_pack is the fix.
++# R17: iteration is map_keys_bytes, whose packed-byte segments go
++# straight into map_put. (Before R17 this used map_keys cell segments
++# plus a strb_pack per segment; passing a cell segment straight to
++# map_put compiled fine and silently compared the wrong bytes.)
+ prakriya set_union(a, cap, b, bcap, out) {
+     vitti ocap = out[0]
+-    vitti tmpa = nirmmita((cap * 33 + 1) * 8)
+-    vitti tmpb = nirmmita((bcap * 33 + 1) * 8)
+-    vitti buf = nirmmita(40)
+-    vitti nka = map_keys(a, tmpa)
+-    vitti nkb = map_keys(b, tmpb)
++    vitti tmpa = nirmmita(cap * 33 + 1)
++    vitti tmpb = nirmmita(bcap * 33 + 1)
++    vitti nka = map_keys_bytes(a, tmpa)
++    vitti nkb = map_keys_bytes(b, tmpb)
+     vitti pos = 0
+     vitti i = 0
+     vitti seglen = 0
+     yavat (i < nka) {
+-        seglen = tmpa[pos]
+-        strb_pack(tmpa + (pos + 1) * 8, seglen, buf)
+-        map_put(out, ocap, buf, seglen, 1)
++        seglen = char_at(tmpa, pos)
++        map_put(out, ocap, tmpa + pos + 1, seglen, 1)
+         pos = pos + 1 + seglen
+         i = i + 1
+     }
+     pos = 0
+     i = 0
+     yavat (i < nkb) {
+-        seglen = tmpb[pos]
+-        strb_pack(tmpb + (pos + 1) * 8, seglen, buf)
+-        map_put(out, ocap, buf, seglen, 1)
++        seglen = char_at(tmpb, pos)
++        map_put(out, ocap, tmpb + pos + 1, seglen, 1)
+         pos = pos + 1 + seglen
+         i = i + 1
+     }
+@@ -98,21 +93,18 @@ prakriya set_union(a, cap, b, bcap, out) {
+ 
+ # set_intersect(a, cap, b, bcap, out) — add every element of a that is
+ # also in b into out (fresh, empty, capacity >= min(cap, bcap)).
+-# Returns set_size(out). Segments are repacked with strb_pack before
+-# map_contains (see set_union note).
++# Returns set_size(out).
+ prakriya set_intersect(a, cap, b, bcap, out) {
+     vitti ocap = out[0]
+-    vitti tmpa = nirmmita((cap * 33 + 1) * 8)
+-    vitti buf = nirmmita(40)
+-    vitti nka = map_keys(a, tmpa)
++    vitti tmpa = nirmmita(cap * 33 + 1)
++    vitti nka = map_keys_bytes(a, tmpa)
+     vitti pos = 0
+     vitti i = 0
+     vitti seglen = 0
+     yavat (i < nka) {
+-        seglen = tmpa[pos]
+-        strb_pack(tmpa + (pos + 1) * 8, seglen, buf)
+-        yadi (map_contains(b, bcap, buf, seglen) == 1) {
+-            map_put(out, ocap, buf, seglen, 1)
++        seglen = char_at(tmpa, pos)
++        yadi (map_contains(b, bcap, tmpa + pos + 1, seglen) == 1) {
++            map_put(out, ocap, tmpa + pos + 1, seglen, 1)
+         }
+         pos = pos + 1 + seglen
+         i = i + 1
+@@ -122,21 +114,18 @@ prakriya set_intersect(a, cap, b, bcap, out) {
+ 
+ # set_difference(a, cap, b, bcap, out) — add every element of a that is
+ # NOT in b into out (fresh, empty, capacity >= cap). Returns
+-# set_size(out). Segments are repacked with strb_pack before
+-# map_contains (see set_union note).
++# set_size(out).
+ prakriya set_difference(a, cap, b, bcap, out) {
+     vitti ocap = out[0]
+-    vitti tmpa = nirmmita((cap * 33 + 1) * 8)
+-    vitti buf = nirmmita(40)
+-    vitti nka = map_keys(a, tmpa)
++    vitti tmpa = nirmmita(cap * 33 + 1)
++    vitti nka = map_keys_bytes(a, tmpa)
+     vitti pos = 0
+     vitti i = 0
+     vitti seglen = 0
+     yavat (i < nka) {
+-        seglen = tmpa[pos]
+-        strb_pack(tmpa + (pos + 1) * 8, seglen, buf)
+-        yadi (map_contains(b, bcap, buf, seglen) == 0) {
+-            map_put(out, ocap, buf, seglen, 1)
++        seglen = char_at(tmpa, pos)
++        yadi (map_contains(b, bcap, tmpa + pos + 1, seglen) == 0) {
++            map_put(out, ocap, tmpa + pos + 1, seglen, 1)
+         }
+         pos = pos + 1 + seglen
+         i = i + 1
+@@ -145,19 +134,16 @@ prakriya set_difference(a, cap, b, bcap, out) {
+ }
+ 
+ # set_is_subset(a, cap, b, bcap) — 1 if every element of a is in b, else
+-# 0. Empty a is a subset of everything. Segments are repacked with
+-# strb_pack before map_contains (see set_union note).
++# 0. Empty a is a subset of everything.
+ prakriya set_is_subset(a, cap, b, bcap) {
+-    vitti tmpa = nirmmita((cap * 33 + 1) * 8)
+-    vitti buf = nirmmita(40)
+-    vitti nka = map_keys(a, tmpa)
++    vitti tmpa = nirmmita(cap * 33 + 1)
++    vitti nka = map_keys_bytes(a, tmpa)
+     vitti pos = 0
+     vitti i = 0
+     vitti seglen = 0
+     yavat (i < nka) {
+-        seglen = tmpa[pos]
+-        strb_pack(tmpa + (pos + 1) * 8, seglen, buf)
+-        yadi (map_contains(b, bcap, buf, seglen) == 0) {
++        seglen = char_at(tmpa, pos)
++        yadi (map_contains(b, bcap, tmpa + pos + 1, seglen) == 0) {
+             pratiyati 0
+         }
+         pos = pos + 1 + seglen
+@@ -172,8 +158,8 @@ prakriya set_is_subset(a, cap, b, bcap) {
+ # (strb_compare), so output is deterministic regardless of insertion
+ # order or hash layout. Returns the element count.
+ prakriya set_to_array(s, cap, out) {
+-    vitti tmp = nirmmita((cap * 33 + 1) * 8)
+-    vitti nk = map_keys(s, tmp)
++    vitti tmp = nirmmita(cap * 33 + 1)
++    vitti nk = map_keys_bytes(s, tmp)
+     vitti scratch = nirmmita(cap * 32 + 1)
+     vitti ptrs = nirmmita(cap * 8)
+     vitti lens = nirmmita(cap * 8)
+@@ -185,13 +171,19 @@ prakriya set_to_array(s, cap, out) {
+     vitti woff = 0
+     vitti tp = 0
+     vitti tl = 0
+-    # pack every segment's cells into one scratch byte area, recording
++    vitti k = 0
++    # copy every byte segment into one scratch byte area, recording
+     # (byte-offset, len) pairs; strb_compare needs packed bytes.
++    # R17: segments are already bytes, so this is a plain byte copy.
+     yavat (i < nk) {
+-        seglen = tmp[pos]
++        seglen = char_at(tmp, pos)
+         ptrs[i] = woff
+         lens[i] = seglen
+-        strb_pack(tmp + (pos + 1) * 8, seglen, scratch + woff)
++        k = 0
++        yavat (k < seglen) {
++            set_char(scratch, woff + k, char_at(tmp, pos + 1 + k))
++            k = k + 1
++        }
+         woff = woff + seglen
+         pos = pos + 1 + seglen
+         i = i + 1
+diff --git a/tests/stdlib/map_keys_bytes.exit b/tests/stdlib/map_keys_bytes.exit
+new file mode 100644
+index 0000000..573541a
+--- /dev/null
++++ b/tests/stdlib/map_keys_bytes.exit
+@@ -0,0 +1 @@
++0
+diff --git a/tests/stdlib/map_keys_bytes.out b/tests/stdlib/map_keys_bytes.out
+new file mode 100644
+index 0000000..4d623ec
+--- /dev/null
++++ b/tests/stdlib/map_keys_bytes.out
+@@ -0,0 +1,10 @@
++4
++
++48
++
++found apple
++found fig
++found pear
++found abcdefghijklmnopqrstuvwxyz123456
++0
++
+diff --git a/tests/stdlib/map_keys_bytes.sm b/tests/stdlib/map_keys_bytes.sm
+new file mode 100644
+index 0000000..9aba128
+--- /dev/null
++++ b/tests/stdlib/map_keys_bytes.sm
+@@ -0,0 +1,56 @@
++ayojan map
++ayojan strb
++# seg_found(buf, nk, key, keyn) — 1 if any of the nk length-prefixed
++# byte segments in buf equals (key, keyn).
++prakriya seg_found(buf, nk, key, keyn) {
++    vitti pos = 0
++    vitti i = 0
++    vitti seglen = 0
++    yavat (i < nk) {
++        seglen = char_at(buf, pos)
++        yadi (seglen == keyn) {
++            yadi (strb_compare(buf + pos + 1, seglen, key, keyn) == 0) { pratiyati 1 }
++        }
++        pos = pos + 1 + seglen
++        i = i + 1
++    }
++    pratiyati 0
++}
++mukhya() {
++    vitti m = map_init(8)
++    map_put(m, 8, "apple", 5, 1)
++    map_put(m, 8, "fig", 3, 2)
++    map_put(m, 8, "pear", 4, 3)
++    map_put(m, 8, "abcdefghijklmnopqrstuvwxyz123456", 32, 4)
++    vitti tmp = nirmmita(8 * 33 + 1)
++    vitti nk = map_keys_bytes(m, tmp)
++    likha(nk)
++    likha("\n")
++    # total bytes: (1+5) + (1+3) + (1+4) + (1+32) = 48
++    vitti pos = 0
++    vitti i = 0
++    vitti total = 0
++    yavat (i < nk) {
++        total = total + 1 + char_at(tmp, pos)
++        pos = pos + 1 + char_at(tmp, pos)
++        i = i + 1
++    }
++    likha(total)
++    likha("\n")
++    yadi (seg_found(tmp, nk, "apple", 5) == 1) {
++        likha("found apple\n")
++    }
++    yadi (seg_found(tmp, nk, "fig", 3) == 1) {
++        likha("found fig\n")
++    }
++    yadi (seg_found(tmp, nk, "pear", 4) == 1) {
++        likha("found pear\n")
++    }
++    yadi (seg_found(tmp, nk, "abcdefghijklmnopqrstuvwxyz123456", 32) == 1) {
++        likha("found abcdefghijklmnopqrstuvwxyz123456\n")
++    }
++    # empty map: 0 keys
++    vitti m2 = map_init(4)
++    likha(map_keys_bytes(m2, tmp))
++    likha("\n")
++}
+diff --git a/tools/proof_props.py b/tools/proof_props.py
+index f9e0b3b..b2206c5 100644
+--- a/tools/proof_props.py
++++ b/tools/proof_props.py
+@@ -1979,6 +1979,83 @@ def prop_list_insert_remove(compiler, rng):
+     return ok and out == "PASS", out
+ 
+ 
++def prop_map_keys_bytes_roundtrip(compiler, rng):
++    """map_keys_bytes: every inserted key appears exactly once as a packed
++    byte segment; count == map_size; total bytes add up; 33-byte keys
++    truncate to 32; old cell-form map_keys agrees on the count"""
++    fixed = ["a", "apple", "fig", "pear",
++             "abcdefghijklmnopqrstuvwxyz123456",  # exactly 32
++             "abcdefghijklmnopqrstuvwxyz1234567"]  # 33 -> truncates to 32
++    rand_keys = ["".join(rng.choice("abcde") for _ in range(rng.randint(1, 8)))
++                 for _ in range(rng.randint(0, 6))]
++    all_keys = fixed + rand_keys
++    # distinct keys after 32-byte truncation (re-put updates, no dup)
++    seen = []
++    for k in all_keys:
++        t = k[:32]
++        if t not in seen:
++            seen.append(t)
++    cap = 32
++    lines = ["ayojan map",
++             "ayojan strb",
++             "prakriya seg_count(buf, nk, key, keyn) {",
++             "    vitti pos = 0",
++             "    vitti i = 0",
++             "    vitti seglen = 0",
++             "    vitti c = 0",
++             "    yavat (i < nk) {",
++             "        seglen = char_at(buf, pos)",
++             "        yadi (seglen == keyn) {",
++             "            yadi (strb_compare(buf + pos + 1, seglen, key, keyn) == 0) { c = c + 1 }",
++             "        }",
++             "        pos = pos + 1 + seglen",
++             "        i = i + 1",
++             "    }",
++             "    pratiyati c",
++             "}",
++             "mukhya() {",
++             f"    vitti m = map_init({cap})",
++             f"    vitti tmp = nirmmita({cap} * 33 + 1)",
++             f"    vitti cells = nirmmita(({cap} * 33 + 1) * 8)"]
++    for k in all_keys:
++        lines.append(f'    map_put(m, {cap}, "{k}", {len(k)}, 1)')
++    lines.append("    vitti nk = map_keys_bytes(m, tmp)")
++    lines.append(f"    yadi (nk != {len(seen)}) {{")
++    lines.append('        likha("FAIL keys_bytes count\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    lines.append("    yadi (nk != map_size(m)) {")
++    lines.append('        likha("FAIL keys_bytes vs size\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    lines.append("    yadi (map_keys(m, cells) != nk) {")
++    lines.append('        likha("FAIL keys_bytes vs keys count\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    for k in seen:
++        lines.append(f'    yadi (seg_count(tmp, nk, "{k}", {len(k)}) != 1) {{')
++        lines.append('        likha("FAIL keys_bytes exactly once\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++    total = sum(1 + len(k) for k in seen)
++    lines.append("    vitti pos = 0")
++    lines.append("    vitti i = 0")
++    lines.append("    vitti tot = 0")
++    lines.append("    yavat (i < nk) {")
++    lines.append("        tot = tot + 1 + char_at(tmp, pos)")
++    lines.append("        pos = pos + 1 + char_at(tmp, pos)")
++    lines.append("        i = i + 1")
++    lines.append("    }")
++    lines.append(f"    yadi (tot != {total}) {{")
++    lines.append('        likha("FAIL keys_bytes total bytes\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    lines.append('    likha("PASS\\n")')
++    lines.append("}")
++    ok, out = run_sm(compiler, "keys_bytes", "\n".join(lines))
++    return ok and out == "PASS", out
++
++
+ def main():
+     compiler = None
+     for i, a in enumerate(sys.argv):
+@@ -2038,6 +2115,7 @@ def main():
+         ("list queue FIFO", prop_list_queue_fifo),
+         ("list len tracks", prop_list_len_tracks),
+         ("list insert/remove", prop_list_insert_remove),
++        ("map keys_bytes roundtrip", prop_map_keys_bytes_roundtrip),
+     ]
+ 
+     failed = []
