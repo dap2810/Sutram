@@ -491,3 +491,78 @@ prakriya strb_count(hay, hn, needle, nn) {
     }
     pratiyati c
 }
+
+# strb_count_vowels(s, n) — count lowercase vowels (a e i o u) in the
+# first n bytes (WS1, R20). Explicit-length form of count_vowels:
+# unlike count_vowels (which scans to the NUL terminator), this stops
+# at n, so it is correct on slices. Mirrors count_vowels exactly:
+# lowercase vowels only, no uppercase.
+prakriya strb_count_vowels(s, n) {
+    vitti src = s
+    vitti cnt = n
+    vitti i = 0
+    vitti c = 0
+    vitti ch = 0
+    yavat (i < cnt) {
+        ch = char_at(src, i)
+        yadi (ch == 97 || ch == 101 || ch == 105 || ch == 111 || ch == 117) {
+            c = c + 1
+        }
+        i = i + 1
+    }
+    pratiyati c
+}
+
+# strb_count_char(s, n, code) — count occurrences of byte `code` in
+# the first n bytes (WS1, R20). Explicit-length form of count_char;
+# correct on slices. (For a substring, use strb_count.)
+prakriya strb_count_char(s, n, code) {
+    vitti src = s
+    vitti cnt = n
+    vitti cd = code
+    vitti i = 0
+    vitti c = 0
+    yavat (i < cnt) {
+        yadi (char_at(src, i) == cd) { c = c + 1 }
+        i = i + 1
+    }
+    pratiyati c
+}
+
+# strb_find_char(s, n, code) — first index of byte `code` in the first
+# n bytes, or -1 (WS1, R20). Explicit-length form of find_char.
+prakriya strb_find_char(s, n, code) {
+    vitti src = s
+    vitti cnt = n
+    vitti cd = code
+    vitti i = 0
+    yavat (i < cnt) {
+        yadi (char_at(src, i) == cd) { pratiyati i }
+        i = i + 1
+    }
+    pratiyati 0 - 1
+}
+
+# strb_is_all_digits(s, n) — 1 if all of the first n bytes are ASCII
+# digits, else 0 (WS1, R20). Explicit-length form of is_all_digits.
+# Empty (n == 0) is 0, mirroring is_all_digits.
+prakriya strb_is_all_digits(s, n) {
+    vitti src = s
+    vitti cnt = n
+    vitti i = 0
+    vitti ch = 0
+    yadi (cnt == 0) { pratiyati 0 }
+    yavat (i < cnt) {
+        ch = char_at(src, i)
+        yadi (ch < 48 || ch > 57) { pratiyati 0 }
+        i = i + 1
+    }
+    pratiyati 1
+}
+
+# strb_equals(a, an, b, bn) — 1 if the two byte strings are equal,
+# else 0 (WS1, R20). Explicit-length form of str_equals.
+prakriya strb_equals(a, an, b, bn) {
+    yadi (strb_compare(a, an, b, bn) == 0) { pratiyati 1 }
+    pratiyati 0
+}
