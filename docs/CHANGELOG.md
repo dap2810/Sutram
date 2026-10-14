@@ -1,3 +1,27 @@
+## v125 — Linux X11 GUI slice 19: per-token syntax colouring (my own stream)
+
+- **The Linux GUI now colours the editor per token**, matching the approved palette: keywords
+  **orange** #E86D11, builtins **teal** #4EC9B0, strings **green** #6A9955, numbers **purple**
+  #B586E8, comments **grey** #6A6A6A, on the existing dark canvas. Before this the whole editor was
+  drawn in one foreground colour.
+- **Implementation:** a real tokeniser in pure NASM (classify + match_tab) over the UTF-8 buffer —
+  word tables for keywords and builtins, whole-word matching, string scanning with backslash
+  escapes, # and // line comments, and digit-run number detection. draw_line_coloured walks a line
+  and emits one ChangeGC + ImageText8 pair per token.
+- **Register discipline was the real hazard.** send_req ends in syscall, which clobbers rcx and r11,
+  and r12 holds the X socket fd for the whole program. The routine keeps its state in
+  rbx/rbp/r13/r14/r15 plus a stack slot, and never touches r12.
+- **New test tools/test_x11_colour.py** (slice 19 proof): types `likha 'a' 12` at the mock X server
+  and asserts the protocol stream contains the keyword, string, number and default foregrounds.
+  **All 12 GUI tests pass.**
+- **Two of my own errors, caught by the test and owned:** (1) my first key-event builder put the
+  keycode at offset 4 instead of byte 1, so no keystrokes registered; (2) the test's protocol walker
+  omitted opcode 70 (PolyFillRect) from its whitelist and broke at the first fill, reporting only
+  one colour. Both were in the test, not the GUI — the instrumented walk showed all six colours
+  before either fix landed.
+- GUI source now 76,042 chars; binary 33,384 B (was 31,192). Compiler untouched.
+- **Open rounds unchanged:** ROUND-59 + ROUND-60 with ChatGPT, ROUND-17 with Muse.
+
 ## v124 — ChatGPT R58 (constant folding) + Muse R16 (list) verified and SYNCED
 
 - **ChatGPT R58 verified and accepted as a verified partial.** A bounded recursive integer
