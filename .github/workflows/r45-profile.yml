@@ -1,7 +1,6 @@
 name: R45 Baseline Performance and Profiling
+# Notification-safe: no automatic runs for historical review experiments.
 on:
-  push:
-    branches: [feature/r45-measured-compiler-performance-20261009]
   workflow_dispatch:
 permissions:
   contents: read
