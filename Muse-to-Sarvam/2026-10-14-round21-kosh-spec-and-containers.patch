@@ -1,0 +1,718 @@
+diff --git a/docs/KOSH-BUILTINS.md b/docs/KOSH-BUILTINS.md
+new file mode 100644
+index 0000000..fbb0940
+--- /dev/null
++++ b/docs/KOSH-BUILTINS.md
+@@ -0,0 +1,138 @@
++# Sutram — `kosh` compiler builtins: specification
++
++**Status:** specification of the builtins as merged (R63) and verified by
++execution against the compiler below. This is the user-facing spec. The
++R63 implementation handoff (`docs/R63-KOSH-BUILTINS.md`) describes the
++source-level implementation and its pre-execution claims; this document
++states the behaviour as measured from real compiled programs.
++
++**Verified against compiler:** `f52a9ad78785faa8997356200f61e06e290725079229c897a6dc55bc5ccd621b`
++(`sha256sum src/sutram_compiler.asm`), plus `tools/r63_kosh_acceptance.py`
++(9 gates: 5 exact-output programs, 2 compile errors, 2 runtime traps).
++
++## What `kosh` is
++
++`kosh name[capacity]` declares a growable array (Devanagari `कोश`);
++capacity is optional and defaults to 4. Logical length starts at 0 and
++`a[index]` reads/writes against that length. Capacity doubles on growth.
++
++Two element types exist:
++
++| Declaration | Element type | Values |
++|---|---|---|
++| `kosh v` (default) | integer (qword) | integers |
++| `kosh dasham d` | binary64 (`dasham`) | floats |
++
++`push`/`pop`/the builtins below take a **direct kosh variable** — not an
++expression, not a library-function parameter. Library functions cannot
++take a generic `kosh` parameter (no generic kosh parameter type, no
++overloading), which is why these operations are compiler builtins rather
++than library functions.
++
++## The builtins
++
++| Builtin | Arguments | Returns | Return type |
++|---|---|---|---|
++| `kosh_push(k, v)` | kosh, value | new length | integer |
++| `kosh_pop(k)` | kosh | last element, removed | element type (integer or binary64) |
++| `kosh_len(k)` | kosh | logical length | integer |
++| `kosh_cap(k)` | kosh | current capacity | integer |
++| `kosh_clear(k)` | kosh | `0` | integer |
++| `kosh_empty(k)` | kosh | `1` if length is zero, else `0` | integer |
++| `kosh_peek(k)` | kosh | last element, **not** removed | element type (integer or binary64) |
++| `kosh_enqueue(k, v)` | kosh, value | new length | integer |
++| `kosh_dequeue(k)` | kosh | first (oldest) element, removed | element type (integer or binary64) |
++
++Measured behaviour (real programs, this compiler):
++
++```
++kosh_empty(fresh)              -> 1
++kosh_push(v, 10)               -> 1   (new length; 20 -> 2, 30 -> 3)
++kosh_cap after 3 pushes        -> 4   (default capacity)
++kosh_peek(v) after [10,20,30]  -> 30  (length still 3 — nothing removed)
++kosh_enqueue(v, 40)            -> 4   (new length; alias of push)
++kosh_dequeue(v)                -> 10  (oldest first — FIFO; length 3)
++kosh_dequeue x3                -> 20, 30, 40 (FIFO order)
++after draining: len 0, cap 4 (dequeue does not shrink capacity), empty 1
++kosh_clear(empty)              -> 0; len 0, cap 4, empty 1
++push 99 after clear            -> peek 99 (reuse works)
++5 pushes -> len 5, cap 8 (grew 4 -> 8); kosh_clear -> 0, len 0, cap 8 (kept)
++dasham: push 1.5, 2.5 -> peek 2.500000, dequeue 1.500000, peek 2.500000
++dasham: kosh_enqueue(d, 9.5) -> 2 (new length); peek -> 9.500000
++```
++
++### `kosh_clear(k)` — length only, NOT erasure
++
++`kosh_clear` sets the logical length to zero and returns `0`. It does
++**not** change capacity and does **not** erase the storage cells: the old
++values remain in the backing buffer, unreachable through the API because
++all indexing is bounds-checked against the (now zero) length. Do **not**
++assume cryptographic erasure — zeroing the storage would be a separate
++feature. This is deliberately different from the library's `map_clear`,
++which zeroes the map's storage: `map_clear` closes a stale-segment hazard
++in a caller-held buffer, while a `kosh`'s storage is never directly
++exposed to the caller.
++
++### `kosh_peek(k)` — LIFO read without removal
++
++Returns the last element without removing it. The kosh's length is
++unchanged. There is no "peek front" builtin — the only front access is
++`kosh_dequeue`.
++
++### `kosh_enqueue(k, v)` — alias of `kosh_push`
++
++Appends `v` and returns the new length, with exactly `kosh_push`'s
++append/grow logic and typing rules. It exists so queue-shaped code reads
++as a queue (`enqueue`/`dequeue`) while stack-shaped code reads as a stack
++(`push`/`pop`) — same storage, two spellings.
++
++### `kosh_dequeue(k)` — FIFO removal, O(n)
++
++Removes and returns the **first (oldest)** element. Implementation shifts
++the remaining elements one slot toward the front, so dequeue is **O(n)**
++in the kosh's length. The trailing slot left by the shift is not erased
++(same length-only semantics as `kosh_clear`).
++
++### Empty `peek` / `dequeue` — diagnostic, no ok-channel
++
++Both abort with the diagnostic (note: the message says "pop" even for
++`dequeue` — that is the compiler's shared diagnostic text, not a
++documentation error):
++
++```
++Sutram Error: kosh pop from empty array
++exit 1
++```
++
++There is **no** `ok[0]` channel here, unlike the library's
++`stack_pop`/`queue_dequeue`, which return `ok[0] = 0` on empty. Code that
++must survive an empty `peek`/`dequeue` must check `kosh_empty(k)` first
++(or `kosh_len(k) == 0`).
++
++### Compile-time errors
++
++- Non-kosh argument: `Sutram Error: kosh builtin requires a kosh variable`, exit 1.
++- Wrong arity (e.g. `kosh_peek(v, 2)`, `kosh_enqueue(v)`): a parse error
++  at the call site, exit 1. The builtins have fixed arity.
++
++## `kosh` vs the library's `list` / `queue`
++
++| | `kosh` (compiler builtin) | `list` (library, `lib/list.smlib`) | `queue` (library, `lib/list.smlib`) |
++|---|---|---|---|
++| Storage | compiler-managed growable array | library qword-cell list | library ring buffer |
++| Element type | integer **or** binary64 (`kosh dasham`) | integers (qword cells) only | integers (qword cells) only |
++| Append | `kosh_push` / `kosh_enqueue` | `list_push` / `stack_push` | `queue_enqueue` |
++| Remove last | `kosh_pop` (O(1), aborts if empty) | `stack_pop` (ok-channel) | — |
++| Remove first | `kosh_dequeue` (O(n) shift, aborts if empty) | — (use `list_remove_at(l, 0)`, O(n)) | `queue_dequeue` (O(1), ok-channel) |
++| Peek | `kosh_peek` (last; aborts if empty) | `stack_peek` (ok-channel) | `queue_peek` (ok-channel) |
++| Clear | `kosh_clear` (length only, no erasure) | `list_clear` (zeroes data cells) | `queue_clear` (zeroes ring data) |
++| Empty test | `kosh_empty` | `stack_empty` / `list_len(l) == 0` | `queue_empty` |
++| Sort / min / max / sum / count | — (none) | `list_sort`, `list_min`, `list_max`, `list_sum`, `list_count` | — (none) |
++| Values flow into library functions? | **No** — no generic kosh parameter type | Yes | Yes |
++
++Which to use: `kosh` for typed arrays — especially `dasham` — and when
++compiler-managed growth is wanted. `list` for integer cell lists with the
++library analytics (`list_sort`, `list_min`, ...). `queue` for FIFO where
++O(1) dequeue matters (`kosh_dequeue` is O(n)). For FIFO over integers
++with survival on empty (ok-channel instead of abort), `queue` is the
++right choice; for FIFO over floats, `kosh` is the only choice.
+diff --git a/docs/LANGUAGE-REFERENCE.md b/docs/LANGUAGE-REFERENCE.md
+index 851e70b..b9a3a02 100644
+--- a/docs/LANGUAGE-REFERENCE.md
++++ b/docs/LANGUAGE-REFERENCE.md
+@@ -361,7 +361,17 @@ defaults to 4. Logical length starts at 0 and `a[index]` reads/writes against th
+ | `kosh_pop(k)` | remove and return the last element |
+ | `kosh_len(k)` | logical length |
+ | `kosh_cap(k)` | current capacity |
++| `kosh_clear(k)` | set logical length to 0 (storage NOT erased); returns 0 |
++| `kosh_empty(k)` | 1 if length is zero, else 0 |
++| `kosh_peek(k)` | last element, not removed |
++| `kosh_enqueue(k, v)` | append v; returns the new length (alias of push) |
++| `kosh_dequeue(k)` | remove and return the first (oldest) element — FIFO, O(n) |
++
++Full specification, measured behaviour, and the `kosh` vs `list`/`queue`
++comparison: `docs/KOSH-BUILTINS.md`.
+ 
+ Capacity doubles on growth. `kosh_pop` on an empty array prints
+-`Sutram Error: kosh pop from empty array` and exits 1. Current boundaries: integer/raw-qword
+-elements only (no typed `kosh dasham` yet), and `push`/`pop` take a direct kosh variable.
++`Sutram Error: kosh pop from empty array` and exits 1; `kosh_peek` and
++`kosh_dequeue` on an empty array abort with the same diagnostic. Element
++types: integer (`kosh v`, the default) or binary64 (`kosh dasham d`).
++`push`/`pop`/the builtins take a direct kosh variable.
+diff --git a/docs/sutram-stdlib.html b/docs/sutram-stdlib.html
+index b8d2075..3259e7d 100644
+--- a/docs/sutram-stdlib.html
++++ b/docs/sutram-stdlib.html
+@@ -26,12 +26,12 @@ Do not edit by hand.</p>
+ <li><a href="#bigint"><code>bigint</code></a> — 12 functions</li>
+ <li><a href="#chandas"><code>chandas</code></a> — 6 functions</li>
+ <li><a href="#fmt"><code>fmt</code></a> — 23 functions</li>
+-<li><a href="#ganita"><code>ganita</code></a> — 17 functions</li>
++<li><a href="#ganita"><code>ganita</code></a> — 18 functions</li>
+ <li><a href="#hash"><code>hash</code></a> — 2 functions</li>
+ <li><a href="#kalana"><code>kalana</code></a> — 6 functions</li>
+-<li><a href="#list"><code>list</code></a> — 24 functions</li>
++<li><a href="#list"><code>list</code></a> — 30 functions</li>
+ <li><a href="#madhava"><code>madhava</code></a> — 5 functions</li>
+-<li><a href="#map"><code>map</code></a> — 15 functions</li>
++<li><a href="#map"><code>map</code></a> — 16 functions</li>
+ <li><a href="#math"><code>math</code></a> — 16 functions</li>
+ <li><a href="#num"><code>num</code></a> — 10 functions</li>
+ <li><a href="#samanvaya"><code>samanvaya</code></a> — 10 functions</li>
+@@ -140,6 +140,7 @@ Do not edit by hand.</p>
+ <tr><td><code>ganita_checked_pow(a, e, ok)</code></td><td>ganita_checked_pow(a, e, ok) — a^e for e &gt;= 0 via repeated checked multiplication (WS3, R19); ok[0] 1, or 0 if e &lt; 0 (no integer power) or the result overflows (returns 0 then). 0^0 = 1 by the empty-product convention. O(e), but the loop exits early on overflow for every |a| &gt;= 2 (a^e overflows by e = 63 at the latest); only the trivial bases -1, 0, 1 run the full loop.</td></tr>
+ <tr><td><code>ganita_checked_fact(n, ok)</code></td><td>ganita_checked_fact(n, ok) — n! via repeated checked multiplication (WS3, R20); ok[0] 1, or 0 if n &lt; 0 (no integer factorial) or the result overflows (returns 0 then). 0! = 1. 20! is the largest that fits (20! = 2432902008176640000); 21! overflows.</td></tr>
+ <tr><td><code>ganita_sat_pow(a, e)</code></td><td>ganita_sat_pow(a, e) — a^e, saturating (WS3, R20): on overflow returns INT64_MAX (positive overflow) or INT64_MIN (negative overflow). e &lt; 0 returns 0 (no integer power; the saturating form has no ok channel, so 0 is the documented sentinel). 0^0 = 1. Repeated saturating multiplication. Correct because |a| &lt;= 1 never saturates, and once saturated with |a| &gt;= 2 every later true product overflows in the direction sign(r) * sign(a)^remaining — so the loop exits early with the parity of the remaining steps deciding the final bound, instead of iterating e times.</td></tr>
++<tr><td><code>ganita_sat_fact(n)</code></td><td>ganita_sat_fact(n) — n!, saturating (WS3, R21): on overflow returns INT64_MAX (factorials are positive, so saturation is always MAX). n &lt; 0 returns 0 (no integer factorial; the saturating form has no ok channel, so 0 is the documented sentinel). 0! = 1. 20! is the largest that fits; 21! saturates. Exits early once saturated (factorials only grow, so a saturated result stays saturated).</td></tr>
+ </table>
+ <h2 id="hash"><code>hash</code></h2>
+ <p class="mod-desc">FNV-1a (Fowler–Noll–Vo) 32-bit hash. Deterministic, fast, good distribution for non-cryptographic use (hash tables, checksums, dedup keys). Reference: http://www.isthe.com/chongo/tech/comp/fnv/ offset_basis = 2166136261 prime        = 16777619 for each byte b: hash = (hash XOR b) * prime  (mod 2^32) fnv1a(s, len) — FNV-1a 32-bit hash of first `len` chars of pankti `s`. Returns an unsigned 32-bit value (may print as negative via likha).</p>
+@@ -160,10 +161,10 @@ Do not edit by hand.</p>
+ <tr><td><code>bahu_mula(kosh dasham c, dasham lo, dasham hi, kosh dasham ok)</code></td><td>Bisection root of a polynomial on [lo, hi]. CONTRACT: `ok` must already contain ONE element (call kosh_push(ok, 0.0) first). A kosh&#x27;s capacity is not its length, so ok[0] is out of bounds until an element exists. Requires a sign change across the interval, which is checked and reported by returning a NaN-like sentinel of 0.0 with ok=0. ok is returned through a one-element kosh so the caller can tell success from failure.</td></tr>
+ </table>
+ <h2 id="list"><code>list</code></h2>
+-<p class="mod-desc">Representation decision — QWORD CELLS (the pankti/kosh convention), not byte strings. Reasoning: - A list is the growable analogue of pankti: same element model (one qword per element), same indexing, same literal passing (list_push(l, 42)). A byte-string list would be a string-list only, and would force every element through copy + length bookkeeping. Users with byte strings can store POINTERS (list_push(l, ptr)) — a qword list of pointers is the escape hatch, and it is the caller&#x27;s job to keep the pointed-to buffers alive. - No mixing: every element in this module is a qword. Do not pass byte-string buffers here expecting string semantics, and do not pass fmt/strb outputs as elements. - dasham elements are NOT supported. An untyped parameter truncates a dasham argument to its integer part (the R15 trap), so list_push(l, 3.7) stores 3. There is no way to store a dasham bit pattern through this API. Format floats first (fmt) if you need them as text, or keep a parallel structure. Two handle layouts (do NOT mix families on one handle): - list / stack handle: header [len, cap, data_ptr]; data is a separate cell array. The HANDLE address is stable across growth — only the data pointer inside it moves. - queue handle: header [len, cap, data_ptr, head]; a RING BUFFER (see queue_enqueue). queue_* on a list handle (or list_* on a queue handle) reads the wrong header and corrupts memory. Growth rule: when len == cap, capacity DOUBLES (cap *= 2), a new data array is allocated, elements are copied in logical order, and the header&#x27;s data pointer is updated. The old data array is NOT freed — the language has no deallocation primitive, so growth leaks the previous array (same as every other growing structure in the stdlib). Capacity never shrinks: list_clear and queue dequeue keep the allocated capacity. Allocation failure: if nirmmita returns 0 during growth, the operation returns 0 (or ok[0] = 0) and the structure is UNCHANGED. list_init returns 0 if either allocation fails. Out-of-bounds reads: list_get returns 0 for i outside [0, len). 0 is a legal stored value, so check list_len first when it matters. list_set / list_insert_at / list_remove_at return 1 ok / 0 out of bounds (or allocation failure for insert). stack_pop / stack_peek / queue_dequeue / queue_peek return the value and set ok[0] (a 1-cell pankti) to 1 on success, 0 when empty — the value alone cannot signal emptiness. All signatures stay within the 6-argument cap. --- lists --- list_init(cap) — allocate an empty list. cap clamped to &gt;= 1. Returns the list handle, or 0 on allocation failure.</p>
++<p class="mod-desc">Representation decision — QWORD CELLS (the pankti/kosh convention), not byte strings. Reasoning: - A list is the growable analogue of pankti: same element model (one qword per element), same indexing, same literal passing (list_push(l, 42)). A byte-string list would be a string-list only, and would force every element through copy + length bookkeeping. Users with byte strings can store POINTERS (list_push(l, ptr)) — a qword list of pointers is the escape hatch, and it is the caller&#x27;s job to keep the pointed-to buffers alive. - No mixing: every element in this module is a qword. Do not pass byte-string buffers here expecting string semantics, and do not pass fmt/strb outputs as elements. - dasham elements are NOT supported. An untyped parameter truncates a dasham argument to its integer part (the R15 trap), so list_push(l, 3.7) stores 3. There is no way to store a dasham bit pattern through this API. Format floats first (fmt) if you need them as text, or keep a parallel structure. Two handle layouts (do NOT mix families on one handle): - list / stack handle: header [len, cap, data_ptr]; data is a separate cell array. The HANDLE address is stable across growth — only the data pointer inside it moves. - queue handle: header [len, cap, data_ptr, head]; a RING BUFFER (see queue_enqueue). queue_* on a list handle (or list_* on a queue handle) reads the wrong header and corrupts memory. Growth rule: when len == cap, capacity DOUBLES (cap *= 2), a new data array is allocated, elements are copied in logical order, and the header&#x27;s data pointer is updated. The old data array is NOT freed — the language has no deallocation primitive, so growth leaks the previous array (same as every other growing structure in the stdlib). Capacity never shrinks: list_clear and queue dequeue keep the allocated capacity. Allocation failure: if nirmmita returns 0 during growth, the operation returns 0 (or ok[0] = 0) and the structure is UNCHANGED. list_init returns 0 if either allocation fails. Out-of-bounds reads: list_get returns 0 for i outside [0, len). 0 is a legal stored value, so check list_len first when it matters. list_set / list_insert_at / list_remove_at return 1 ok / 0 out of bounds (or allocation failure for insert). stack_pop / stack_peek / queue_dequeue / queue_peek return the value and set ok[0] (a 1-cell pankti) to 1 on success, 0 when empty — the value alone cannot signal emptiness. All signatures stay within the 6-argument cap.</p>
+ <table>
+ <tr><th>Function</th><th>Description</th></tr>
+-<tr><td><code>list_init(cap)</code></td><td></td></tr>
++<tr><td><code>list_init(cap)</code></td><td>list_init(cap) — allocate an empty list. cap clamped to &gt;= 1. Returns the list handle, or 0 on allocation failure.</td></tr>
+ <tr><td><code>list_grow(l)</code></td><td>list_grow(l) — private helper: double l&#x27;s capacity, copying the data. Returns 1 ok / 0 allocation failure (list unchanged).</td></tr>
+ <tr><td><code>list_push(l, v)</code></td><td>list_push(l, v) — append v. Returns 1 ok / 0 allocation failure.</td></tr>
+ <tr><td><code>list_get(l, i)</code></td><td>list_get(l, i) — element i, or 0 if i is out of bounds.</td></tr>
+@@ -173,6 +174,11 @@ Do not edit by hand.</p>
+ <tr><td><code>list_remove_at(l, i)</code></td><td>list_remove_at(l, i) — remove element i, shifting the rest left. Returns 1 ok / 0 out of bounds.</td></tr>
+ <tr><td><code>list_swap(l, i, j)</code></td><td>list_swap(l, i, j) — swap elements i and j (WS2, R20). Returns 1 ok / 0 if either index is out of bounds (then nothing changes). Before this, swapping meant a temp variable plus two list_set calls at every call site.</td></tr>
+ <tr><td><code>list_reverse(l)</code></td><td>list_reverse(l) — reverse the list in place (WS3, R20). Two-pointer swap, same shape as strb_reverse. Returns 1. Before this, reversing a list meant a hand-written two-index loop at every call site.</td></tr>
++<tr><td><code>list_sort(l)</code></td><td>list_sort(l) — sort the list in place, ascending (WS2, R21). Merge sort (O(n log n)) over the list&#x27;s data array. Before this, sorting a list meant `ayojan sort` plus a hand-written `merge_sort(l[2], list_len(l))` at every call site. Returns 1.</td></tr>
++<tr><td><code>list_min(l, ok)</code></td><td>list_min(l, ok) — smallest element (WS2, R21); ok[0] 1, or 0 if the list is empty (returns 0 then). Before this, the caller wrote the min loop by hand or called sort.smlib&#x27;s min_of on l[2] — which reads a stale cell on an empty list. The empty check here is the point.</td></tr>
++<tr><td><code>list_max(l, ok)</code></td><td>list_max(l, ok) — largest element (WS2, R21); ok[0] 1, or 0 if the list is empty (returns 0 then). See list_min.</td></tr>
++<tr><td><code>list_sum(l)</code></td><td>list_sum(l) — sum of the elements (WS2, R21); 0 for an empty list (well-defined, no ok channel needed). Before this, the caller wrote the sum loop by hand or called sort.smlib&#x27;s sum_of on l[2].</td></tr>
++<tr><td><code>list_count(l, v)</code></td><td>list_count(l, v) — number of occurrences of v (WS2, R21). Before this, the caller wrote the count loop by hand or called sort.smlib&#x27;s count_of on l[2].</td></tr>
+ <tr><td><code>list_clear(l)</code></td><td>list_clear(l) — empty the list, keeping the allocated capacity. R19: also ZEROES the data cells (was: len reset only). The old elements were reachable after a clear to anyone reading the data array through l[2], so a len-only reset left stale values readable — the same hazard map_clear closes. Capacity never shrinks. Returns 1.</td></tr>
+ <tr><td><code>list_contains(l, v)</code></td><td>list_contains(l, v) — 1 if any element equals v, else 0.</td></tr>
+ <tr><td><code>list_index_of(l, v)</code></td><td>list_index_of(l, v) — first index with value v, or -1 if absent.</td></tr>
+@@ -184,6 +190,7 @@ Do not edit by hand.</p>
+ <tr><td><code>queue_enqueue(q, v)</code></td><td>queue_enqueue(q, v) — append v at the tail. Returns 1 ok / 0 allocation failure.</td></tr>
+ <tr><td><code>queue_dequeue(q, ok)</code></td><td>queue_dequeue(q, ok) — remove and return the front value; sets ok[0] to 1 on success, 0 when the queue is empty (returns 0 then).</td></tr>
+ <tr><td><code>queue_peek(q, ok)</code></td><td>queue_peek(q, ok) — front value without removing it; ok[0] 1/0.</td></tr>
++<tr><td><code>queue_contains(q, v)</code></td><td>queue_contains(q, v) — 1 if v is in the queue, else 0 (WS2, R21). Scans the ring WITHOUT mutating it (no dequeue loop). Before this, the caller hand-rolled the ring scan with (head + k) % cap arithmetic at every call site — the same hazard list_contains already removed for lists.</td></tr>
+ <tr><td><code>queue_clear(q)</code></td><td>queue_clear(q) — empty the queue in place (WS2, R19): same handle, same capacity, head reset to 0, and the ring data ZEROED — the dequeued dead space held stale values readable through q[2], the same hazard map_clear/list_clear close. Capacity never shrinks. Returns 1.</td></tr>
+ <tr><td><code>queue_empty(q)</code></td><td>queue_empty(q) — 1 if the queue is empty, else 0.</td></tr>
+ <tr><td><code>queue_len(q)</code></td><td>queue_len(q) — element count.</td></tr>
+@@ -215,6 +222,7 @@ Do not edit by hand.</p>
+ <tr><td><code>map_resize(m, newcap)</code></td><td>map_resize(m, newcap) — copy the map into a fresh map of capacity newcap, rehashing every entry (WS2, R20). Returns the new handle. Returns 0 and changes nothing if newcap &lt; map_size(m) (no partial copy). The old buffer is abandoned (the library has no free — same as re-init); rebind: m = map_resize(m, 32). Capacity is clamped to &gt;= 1 by map_init. Before this, growing a fixed-capacity map meant a hand-written re-put loop over map_keys_bytes at every call site.</td></tr>
+ <tr><td><code>map_get_default(m, cap, key, keyn, def)</code></td><td>map_get_default(m, cap, key, keyn, def) — value for key, or def if absent (WS3, R19). The -1 sentinel of map_get cannot distinguish &quot;absent&quot; from &quot;stored -1&quot;; this removes the contains-check dance for callers whose default is not -1. (A caller whose default IS -1 gets exactly map_get&#x27;s behaviour.)</td></tr>
+ <tr><td><code>map_size(m)</code></td><td></td></tr>
++<tr><td><code>map_values(m, out)</code></td><td>map_values(m, out) — write the live values into out (one qword cell each), in the same slot order as map_keys / map_keys_bytes (WS2, R21). Returns the value count, which equals map_size(m). Caller allocates cap cells. Before this, collecting values meant a map_keys_bytes pass plus a map_get per key at every call site.</td></tr>
+ <tr><td><code>map_keys(m, out)</code></td><td>map_keys(m, out) — write live keys into out in length-prefixed form [len0, b0, b1, ..., len1, b0, ...] (same shape as str_split parts). Returns the key count, which equals map_size(m). NOTE: segments are QWORD CELLS (len in one cell, one byte per cell), kept for backward compatibility. New code should use map_keys_bytes below, which returns the same segments as packed bytes — the form every key consumer (map_put, map_contains, strb_compare) actually takes. Passing a map_keys segment straight to a byte-key consumer compiles and silently compares the wrong bytes (the R14 trap).</td></tr>
+ <tr><td><code>map_keys_bytes(m, out)</code></td><td>map_keys_bytes(m, out) — R17. Same segments as map_keys, but PACKED BYTES: [len-byte, bytes..., len-byte, bytes...], one length byte followed by the key&#x27;s bytes, no terminator. Returns the key count, which equals map_size(m). Caller allocates cap * 33 bytes (each key is &lt;= 32 bytes plus 1 length byte; at most cap keys). Keys are stored as packed bytes inside the map, so this is a straight byte copy — no unpack/pack round-trip. Segments can be passed directly to map_put / map_contains / strb_compare with no repacking; that is the whole point (see map_keys note above).</td></tr>
+ </table>
+@@ -408,6 +416,6 @@ Do not edit by hand.</p>
+ <tr><td><code>bool_to_int(b)</code></td><td></td></tr>
+ <tr><td><code>int_max()</code></td><td></td></tr>
+ </table>
+-<footer>21 modules, 260 functions. Generated from library sources.</footer>
++<footer>21 modules, 268 functions. Generated from library sources.</footer>
+ </body>
+ </html>
+diff --git a/lib/ganita.smlib b/lib/ganita.smlib
+index a44c8c3..b9cf5ea 100644
+--- a/lib/ganita.smlib
++++ b/lib/ganita.smlib
+@@ -438,3 +438,23 @@ prakriya ganita_sat_pow(a, e) {
+     }
+     pratiyati r
+ }
++
++# ganita_sat_fact(n) — n!, saturating (WS3, R21): on overflow returns
++# INT64_MAX (factorials are positive, so saturation is always MAX).
++# n < 0 returns 0 (no integer factorial; the saturating form has no
++# ok channel, so 0 is the documented sentinel). 0! = 1. 20! is the
++# largest that fits; 21! saturates. Exits early once saturated
++# (factorials only grow, so a saturated result stays saturated).
++prakriya ganita_sat_fact(n) {
++    vitti nn = n
++    vitti maxv = 9223372036854775807
++    vitti r = 1
++    vitti i = 2
++    yadi (nn < 0) { pratiyati 0 }
++    yavat (i <= nn) {
++        r = ganita_sat_mul(r, i)
++        yadi (r == maxv) { pratiyati maxv }
++        i = i + 1
++    }
++    pratiyati r
++}
+diff --git a/lib/list.smlib b/lib/list.smlib
+index 9d21a13..912f0fd 100644
+--- a/lib/list.smlib
++++ b/lib/list.smlib
+@@ -49,6 +49,8 @@
+ #
+ # All signatures stay within the 6-argument cap.
+ 
++ayojan sort
++
+ # --- lists ---
+ 
+ # list_init(cap) — allocate an empty list. cap clamped to >= 1.
+@@ -209,6 +211,54 @@ prakriya list_reverse(l) {
+     pratiyati 1
+ }
+ 
++# list_sort(l) — sort the list in place, ascending (WS2, R21).
++# Merge sort (O(n log n)) over the list's data array. Before this,
++# sorting a list meant `ayojan sort` plus a hand-written
++# `merge_sort(l[2], list_len(l))` at every call site. Returns 1.
++prakriya list_sort(l) {
++    merge_sort(l[2], l[0])
++    pratiyati 1
++}
++
++# list_min(l, ok) — smallest element (WS2, R21); ok[0] 1, or 0 if
++# the list is empty (returns 0 then). Before this, the caller wrote
++# the min loop by hand or called sort.smlib's min_of on l[2] — which
++# reads a stale cell on an empty list. The empty check here is the
++# point.
++prakriya list_min(l, ok) {
++    yadi (l[0] == 0) {
++        ok[0] = 0
++        pratiyati 0
++    }
++    ok[0] = 1
++    pratiyati min_of(l[2], l[0])
++}
++
++# list_max(l, ok) — largest element (WS2, R21); ok[0] 1, or 0 if
++# the list is empty (returns 0 then). See list_min.
++prakriya list_max(l, ok) {
++    yadi (l[0] == 0) {
++        ok[0] = 0
++        pratiyati 0
++    }
++    ok[0] = 1
++    pratiyati max_of(l[2], l[0])
++}
++
++# list_sum(l) — sum of the elements (WS2, R21); 0 for an empty list
++# (well-defined, no ok channel needed). Before this, the caller wrote
++# the sum loop by hand or called sort.smlib's sum_of on l[2].
++prakriya list_sum(l) {
++    pratiyati sum_of(l[2], l[0])
++}
++
++# list_count(l, v) — number of occurrences of v (WS2, R21).
++# Before this, the caller wrote the count loop by hand or called
++# sort.smlib's count_of on l[2].
++prakriya list_count(l, v) {
++    pratiyati count_of(l[2], l[0], v)
++}
++
+ # list_clear(l) — empty the list, keeping the allocated capacity.
+ # R19: also ZEROES the data cells (was: len reset only). The old
+ # elements were reachable after a clear to anyone reading the data
+@@ -392,6 +442,23 @@ prakriya queue_peek(q, ok) {
+     pratiyati d[qu[3]]
+ }
+ 
++# queue_contains(q, v) — 1 if v is in the queue, else 0 (WS2, R21).
++# Scans the ring WITHOUT mutating it (no dequeue loop). Before this,
++# the caller hand-rolled the ring scan with (head + k) % cap
++# arithmetic at every call site — the same hazard list_contains
++# already removed for lists.
++prakriya queue_contains(q, v) {
++    vitti qu = q
++    vitti val = v
++    vitti d = qu[2]
++    vitti k = 0
++    yavat (k < qu[0]) {
++        yadi (d[(qu[3] + k) % qu[1]] == val) { pratiyati 1 }
++        k = k + 1
++    }
++    pratiyati 0
++}
++
+ # queue_clear(q) — empty the queue in place (WS2, R19): same handle,
+ # same capacity, head reset to 0, and the ring data ZEROED — the
+ # dequeued dead space held stale values readable through q[2], the
+diff --git a/lib/map.smlib b/lib/map.smlib
+index 5439957..77a62ed 100644
+--- a/lib/map.smlib
++++ b/lib/map.smlib
+@@ -312,6 +312,25 @@ prakriya map_size(m) {
+     pratiyati m[1]
+ }
+ 
++# map_values(m, out) — write the live values into out (one qword cell
++# each), in the same slot order as map_keys / map_keys_bytes (WS2,
++# R21). Returns the value count, which equals map_size(m). Caller
++# allocates cap cells. Before this, collecting values meant a
++# map_keys_bytes pass plus a map_get per key at every call site.
++prakriya map_values(m, out) {
++    vitti cap = m[0]
++    vitti i = 0
++    vitti n = 0
++    yavat (i < cap) {
++        yadi (m[2 + i] == 1) {
++            out[n] = m[2 + 2 * cap + i]
++            n = n + 1
++        }
++        i = i + 1
++    }
++    pratiyati n
++}
++
+ # map_keys(m, out) — write live keys into out in length-prefixed form
+ # [len0, b0, b1, ..., len1, b0, ...] (same shape as str_split parts).
+ # Returns the key count, which equals map_size(m).
+diff --git a/tests/stdlib/containers21.exit b/tests/stdlib/containers21.exit
+new file mode 100644
+index 0000000..573541a
+--- /dev/null
++++ b/tests/stdlib/containers21.exit
+@@ -0,0 +1 @@
++0
+diff --git a/tests/stdlib/containers21.out b/tests/stdlib/containers21.out
+new file mode 100644
+index 0000000..8af5d42
+--- /dev/null
++++ b/tests/stdlib/containers21.out
+@@ -0,0 +1,47 @@
++18
++
++2
++
++0
++
++1
++
++1
++
++8
++
++1
++
++1
++
++2
++
++2
++
++5
++
++8
++
++0
++
++0
++
++0
++
++0
++
++0
++
++0
++
++1
++
++0
++
++0
++
++3
++
++25
++
++containers21-done
+diff --git a/tests/stdlib/containers21.sm b/tests/stdlib/containers21.sm
+new file mode 100644
+index 0000000..d0690bd
+--- /dev/null
++++ b/tests/stdlib/containers21.sm
+@@ -0,0 +1,69 @@
++ayojan map
++ayojan list
++mukhya() {
++    vitti ok = nirmmita(8)
++    vitti l = list_init(4)
++    list_push(l, 5)
++    list_push(l, 2)
++    list_push(l, 8)
++    list_push(l, 1)
++    list_push(l, 2)
++    likha(list_sum(l))
++    likha("\n")
++    likha(list_count(l, 2))
++    likha("\n")
++    likha(list_count(l, 9))
++    likha("\n")
++    likha(list_min(l, ok))
++    likha("\n")
++    likha(ok[0])
++    likha("\n")
++    likha(list_max(l, ok))
++    likha("\n")
++    likha(ok[0])
++    likha("\n")
++    list_sort(l)
++    likha(list_get(l, 0))
++    likha("\n")
++    likha(list_get(l, 1))
++    likha("\n")
++    likha(list_get(l, 2))
++    likha("\n")
++    likha(list_get(l, 3))
++    likha("\n")
++    likha(list_get(l, 4))
++    likha("\n")
++    vitti e = list_init(2)
++    likha(list_min(e, ok))
++    likha("\n")
++    likha(ok[0])
++    likha("\n")
++    likha(list_max(e, ok))
++    likha("\n")
++    likha(ok[0])
++    likha("\n")
++    likha(list_sum(e))
++    likha("\n")
++    likha(list_count(e, 1))
++    likha("\n")
++    vitti q = queue_init(4)
++    queue_enqueue(q, 11)
++    queue_enqueue(q, 22)
++    queue_dequeue(q, ok)
++    likha(queue_contains(q, 22))
++    likha("\n")
++    likha(queue_contains(q, 11))
++    likha("\n")
++    likha(queue_contains(q, 99))
++    likha("\n")
++    vitti m = map_init(8)
++    map_put(m, 8, "a", 1, 10)
++    map_put(m, 8, "b", 1, 20)
++    map_put(m, 8, "c", 1, 0 - 5)
++    vitti vals = nirmmita(8 * 8)
++    likha(map_values(m, vals))
++    likha("\n")
++    likha(vals[0] + vals[1] + vals[2])
++    likha("\n")
++    likha("containers21-done\n")
++}
+diff --git a/tests/stdlib/gaps21.exit b/tests/stdlib/gaps21.exit
+new file mode 100644
+index 0000000..573541a
+--- /dev/null
++++ b/tests/stdlib/gaps21.exit
+@@ -0,0 +1 @@
++0
+diff --git a/tests/stdlib/gaps21.out b/tests/stdlib/gaps21.out
+new file mode 100644
+index 0000000..cfbdaa4
+--- /dev/null
++++ b/tests/stdlib/gaps21.out
+@@ -0,0 +1,13 @@
++120
++
++2432902008176640000
++
++9223372036854775807
++
++9223372036854775807
++
++1
++
++0
++
++gaps21-done
+diff --git a/tests/stdlib/gaps21.sm b/tests/stdlib/gaps21.sm
+new file mode 100644
+index 0000000..3a5e5d6
+--- /dev/null
++++ b/tests/stdlib/gaps21.sm
+@@ -0,0 +1,16 @@
++ayojan ganita
++mukhya() {
++    likha(ganita_sat_fact(5))
++    likha("\n")
++    likha(ganita_sat_fact(20))
++    likha("\n")
++    likha(ganita_sat_fact(21))
++    likha("\n")
++    likha(ganita_sat_fact(100))
++    likha("\n")
++    likha(ganita_sat_fact(0))
++    likha("\n")
++    likha(ganita_sat_fact(0 - 1))
++    likha("\n")
++    likha("gaps21-done\n")
++}
+diff --git a/tools/proof_props.py b/tools/proof_props.py
+index 60696c3..dfcc016 100644
+--- a/tools/proof_props.py
++++ b/tools/proof_props.py
+@@ -2725,6 +2725,126 @@ def prop_gaps20(compiler, rng):
+     return ok and out == "PASS", out
+ 
+ 
++def prop_containers21(compiler, rng):
++    """list_sort/min/max/sum/count, queue_contains, map_values vs Python"""
++    lvals = [rng.randint(-100, 100) for _ in range(rng.randint(0, 8))]
++    qvals = [rng.randint(-100, 100) for _ in range(rng.randint(0, 5))]
++    pool = ["aa", "ab", "ba", "bb", "abc", "bca", "cab", "a", "b", "c"]
++    keys = rng.sample(pool, rng.randint(0, 5))
++    mvals = {k: rng.randint(-100, 100) for k in keys}
++    probe = rng.choice(qvals) if qvals and rng.random() < 0.7 else 999
++
++    def lit(v):
++        return f"(0 - {-v})" if v < 0 else str(v)
++
++    lines = ["ayojan map",
++             "ayojan list",
++             "mukhya() {",
++             "    vitti ok = nirmmita(8)",
++             "    vitti l = list_init(8)"]
++    for v in lvals:
++        lines.append(f"    list_push(l, {lit(v)})")
++    want_min = min(lvals) if lvals else 0
++    want_min_ok = 1 if lvals else 0
++    want_max = max(lvals) if lvals else 0
++    want_max_ok = 1 if lvals else 0
++    lines.append(f"    yadi (list_min(l, ok) != {lit(want_min)}) {{")
++    lines.append('        likha("FAIL list_min value\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    lines.append(f"    yadi (ok[0] != {want_min_ok}) {{")
++    lines.append('        likha("FAIL list_min ok\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    lines.append(f"    yadi (list_max(l, ok) != {lit(want_max)}) {{")
++    lines.append('        likha("FAIL list_max value\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    lines.append(f"    yadi (ok[0] != {want_max_ok}) {{")
++    lines.append('        likha("FAIL list_max ok\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    lines.append(f"    yadi (list_sum(l) != {lit(sum(lvals))}) {{")
++    lines.append('        likha("FAIL list_sum\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    probe_v = rng.choice(lvals) if lvals else 999
++    lines.append(f"    yadi (list_count(l, {lit(probe_v)}) != {lvals.count(probe_v)}) {{")
++    lines.append('        likha("FAIL list_count\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    lines.append("    list_sort(l)")
++    for idx, v in enumerate(sorted(lvals)):
++        lines.append(f"    yadi (list_get(l, {idx}) != {lit(v)}) {{")
++        lines.append('        likha("FAIL list_sort\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++    # queue_contains: dequeue one first so the ring head has moved
++    lines.append("    vitti q = queue_init(8)")
++    for v in qvals:
++        lines.append(f"    queue_enqueue(q, {lit(v)})")
++    if qvals:
++        lines.append("    queue_dequeue(q, ok)")
++    remaining = qvals[1:] if qvals else []
++    lines.append(f"    yadi (queue_contains(q, {lit(probe)}) != {1 if probe in remaining else 0}) {{")
++    lines.append('        likha("FAIL queue_contains\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    lines.append("    yadi (queue_len(q) != %d) {" % len(remaining))
++    lines.append('        likha("FAIL queue_contains len\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    # map_values: count + order-independent sum (slot order is hash order)
++    lines.append("    vitti m = map_init(8)")
++    lines.append("    vitti vals = nirmmita(8 * 8)")
++    lines.append("    vitti vsum = 0")
++    lines.append("    vitti i = 0")
++    for k in keys:
++        lines.append(f'    map_put(m, 8, "{k}", {len(k)}, {lit(mvals[k])})')
++    lines.append(f"    yadi (map_values(m, vals) != {len(keys)}) {{")
++    lines.append('        likha("FAIL map_values count\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    lines.append(f"    yavat (i < {len(keys)}) {{")
++    lines.append("        vsum = vsum + vals[i]")
++    lines.append("        i = i + 1")
++    lines.append("    }")
++    lines.append(f"    yadi (vsum != {lit(sum(mvals.values()))}) {{")
++    lines.append('        likha("FAIL map_values sum\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    lines.append('    likha("PASS\\n")')
++    lines.append("}")
++    ok, out = run_sm(compiler, "containers21", "\n".join(lines))
++    return ok and out == "PASS", out
++
++
++def prop_gaps21(compiler, rng):
++    """ganita_sat_fact vs clamped Python factorials (incl. huge n
++    for the early-exit path)"""
++    import math
++    cases = list(range(-2, 26)) + [rng.randint(0, 30), 100, 100000]
++
++    def lit(v):
++        return f"(0 - {-v})" if v < 0 else str(v)
++
++    lines = ["ayojan ganita",
++             "mukhya() {"]
++    for n in cases:
++        if n < 0:
++            want = 0
++        else:
++            want = _clamp(math.factorial(n))
++        lines.append(f"    yadi (ganita_sat_fact({lit(n)}) != {lit(want)}) {{")
++        lines.append('        likha("FAIL sat_fact\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++    lines.append('    likha("PASS\\n")')
++    lines.append("}")
++    ok, out = run_sm(compiler, "gaps21", "\n".join(lines))
++    return ok and out == "PASS", out
++
++
+ def main():
+     compiler = None
+     for i, a in enumerate(sys.argv):
+@@ -2795,6 +2915,8 @@ def main():
+         ("strb cell pairs", prop_strb_cell_pairs),
+         ("containers resize/swap", prop_containers_resize_swap),
+         ("gaps20", prop_gaps20),
++        ("containers21", prop_containers21),
++        ("gaps21", prop_gaps21),
+     ]
+ 
+     failed = []
