@@ -1,0 +1,47 @@
+R59 REAL Linux native native-code A/B evidence.
+Green run https://github.com/dap2810/Sutram/actions/runs/38559305916 ; job 115836143690
+Old compiler exact main e5dc8ac7571cfd4d2c10dfc51fce13f709e82443; new compiler from tested f430ade4ed3f0220be815802c44215c061d41e47.
+Source 360c6d9b4aef684c41ce23bc2eb3d510c00f04d0abcd8c9a843c3d6aa1b84cda.
+Ubuntu-24.04 NASM/ld ELF x86-64, real native output/exit assertions, ndisasm from program entry, 10M each for benchmark, warmup, interleaved best-of-three and median. Decoded counts include any embedded data after executable code; comparisons share same image structure.
+R59_CPU_AFFINITY 0
+R59_NATIVE tests/r59_check/self_assign_cases.sm old stdout '9\n17\n33\n44\n' elf_sha256 d45b8398c60708abde5f366fb13acbaf09f7bca784b5d66fc07ff232e38c3cb8 file_bytes 789 decoded_instruction_count 191
+R59_NATIVE tests/r59_check/self_assign_cases.sm new stdout '9\n17\n33\n44\n' elf_sha256 84ade62226a1db17bebeae806ddcb9018e350232ce783e1fbb2a5fd3d5fa1b11 file_bytes 767 decoded_instruction_count 187
+R59_NATIVE tests/r59_check/stack_self_10m.sm old stdout '123\n' elf_sha256 5b93fec8c815fe0ec710fe209c32c77b29fc280626755090683b7d82fa3c63a1 file_bytes 387 decoded_instruction_count 76
+R59_NATIVE tests/r59_check/stack_self_10m.sm new stdout '123\n' elf_sha256 d4185d67f59f46225d0ab921afbf7bcae5ed4df7429c618118de471506130d2e file_bytes 379 decoded_instruction_count 74
+R59_NATIVE tests/r59_check/global_self_10m.sm old stdout '213\n' elf_sha256 6cad6e9e1b72855349ea6cfb188a4707bea769cccf7a72b5b32939d1bd7b8f20 file_bytes 371 decoded_instruction_count 74
+R59_NATIVE tests/r59_check/global_self_10m.sm new stdout '213\n' elf_sha256 48c8687e1785681f0dbdbdfe7caf2e8eea461b6a5bf0601f2f85728120aad1ff file_bytes 357 decoded_instruction_count 72
+R59_NATIVE tests/r57_check/arithmetic_10m.sm old stdout '99999990000000\n' elf_sha256 2375b2a6d001d45350f2e8a22c95983da762ea3cf50cba616c2eeaed929a9467 file_bytes 348 decoded_instruction_count 68
+R59_NATIVE tests/r57_check/arithmetic_10m.sm new stdout '99999990000000\n' elf_sha256 2375b2a6d001d45350f2e8a22c95983da762ea3cf50cba616c2eeaed929a9467 file_bytes 348 decoded_instruction_count 68
+R59_NATIVE tests/r57_check/control_10m.sm old stdout '49999995000000\n' elf_sha256 c87ed1ac07777239e2c1693442fec5b8be76e79d6be3e25d6c9386c42595040a file_bytes 335 decoded_instruction_count 64
+R59_NATIVE tests/r57_check/control_10m.sm new stdout '49999995000000\n' elf_sha256 c87ed1ac07777239e2c1693442fec5b8be76e79d6be3e25d6c9386c42595040a file_bytes 335 decoded_instruction_count 64
+R59_NATIVE tests/r58_check/foldable_10m.sm old stdout '640000000\n' elf_sha256 e6625142c744ff0ba114eacff153e52f9b3b9585dcf98daa7e1e1a3a941363eb file_bytes 342 decoded_instruction_count 66
+R59_NATIVE tests/r58_check/foldable_10m.sm new stdout '640000000\n' elf_sha256 e6625142c744ff0ba114eacff153e52f9b3b9585dcf98daa7e1e1a3a941363eb file_bytes 342 decoded_instruction_count 66
+R59_INSTRUCTION_DELTA tests/r59_check/stack_self_10m.sm old 76 new 74 removed 2
+R59_INSTRUCTION_DELTA tests/r59_check/global_self_10m.sm old 74 new 72 removed 2
+R59_INSTRUCTION_DELTA tests/r59_check/self_assign_cases.sm old 191 new 187 removed 4
+R59_TIMING tests/r59_check/stack_self_10m.sm old_best3_ms=5.224572 new_best3_ms=4.323035 best_ratio=1.209x old_median_ms=5.231743 new_median_ms=4.323906 median_ratio=1.210x old_samples_ms [5.231983, 5.231743, 5.224572] new_samples_ms [4.323906, 4.323035, 4.361444]
+R59_TIMING tests/r59_check/global_self_10m.sm old_best3_ms=5.702827 new_best3_ms=3.479856 best_ratio=1.639x old_median_ms=5.757811 new_median_ms=3.502411 median_ratio=1.644x old_samples_ms [5.702827, 5.758902, 5.757811] new_samples_ms [3.511965, 3.502411, 3.479856]
+R59_TIMING tests/r57_check/arithmetic_10m.sm old_best3_ms=3.485645 new_best3_ms=3.488600 best_ratio=0.999x old_median_ms=3.495390 new_median_ms=3.492716 median_ratio=1.001x old_samples_ms [3.49539, 3.497854, 3.485645] new_samples_ms [3.517534, 3.492716, 3.4886]
+R59_TIMING tests/r57_check/control_10m.sm old_best3_ms=3.480137 new_best3_ms=3.481428 best_ratio=1.000x old_median_ms=3.486757 new_median_ms=3.495690 median_ratio=0.997x old_samples_ms [3.486757, 3.500799, 3.480137] new_samples_ms [3.49569, 3.481428, 3.509832]
+R59_NATIVE_ACCEPTED 6 stdout_pairs instruction_count_reductions=3
+R57_FROZEN_CODEGEN_ACCEPTED 6 / 6
+R56_GLOBAL_ACCEPTED scalar_read_write=1 shadowing=1 recursion=1 ordered_init=1 nonliteral_init=1 function_init=1 zero_default=1 global_for=1 pointer_index=1 bad_declarations=4 pe_data=1
+R55_FORWARD_ACCEPTED two_cycle=1 three_cycle=1 prototype_mismatch=1 type_mismatch=1 duplicate=1 missing=1 global_vitti_now_supported=1
+PASS=186
+R54_MUSE_ACCEPTED original=186 example_local=3 original_golden_changes=0
+  30/30 pack checks pass (10 packs x 3 keyword groups)
+Ran 18 tests in 0.006s
+R57_FROZEN_CODEGEN_ACCEPTED 6 / 6
+R58_FROZEN_CODEGEN_ACCEPTED 8 / 8
+R59_FROZEN_CODEGEN_ACCEPTED 3 / 3
+161 passed, 0 failed, 161 total
+49/49 properties hold
+[36;1mecho R59_GUI_GOLDENS_UNCHANGED[0m
+R59_GUI_GOLDENS_UNCHANGED
+
+IMPORTANT: other green run 38558457846 saw STACK self-assignment timing REGRESSION:
+  stack median old 21.820918ms, new 23.116305ms (0.944x),
+  whereas global median old 17.238770ms, new 7.805320ms (2.209x).
+No unqualified guaranteed speedup; instruction count removal and semantic equivalence robust.
+This is VERIFIED PARTIAL: only existing self-assignments x=x removed; general adjacent store/reload and cancelling PUSH/POP not implemented.
+Windows execution not part of R59; R60 separate.
