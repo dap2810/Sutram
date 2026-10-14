@@ -307,6 +307,10 @@ try {
         [IO.File]::WriteAllLines($statePath,$stateLines,([Text.UTF8Encoding]::new($false)))
 
         Log ('Installation complete: ' + $InstallDir)
+        # The wizard deletes its temporary staging directory after success.
+        # Preserve the actual installer log under this user's installed tree
+        # so the Round 62 auditor can examine real installation events.
+        Copy-Item -LiteralPath $LogPath -Destination (Join-Path $InstallDir 'install.log') -Force
     } finally {
         Remove-Item -LiteralPath $stage -Recurse -Force -ErrorAction SilentlyContinue
     }
