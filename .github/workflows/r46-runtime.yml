@@ -1,7 +1,6 @@
 name: R46 generated native-code runtime A/B
+# Manual-only historical workflow, never trigger automatically on feature pushes.
 on:
-  push:
-    branches: [feature/r46-native-generated-code-call-optimization-20261009]
   workflow_dispatch:
 permissions:
   contents: read
