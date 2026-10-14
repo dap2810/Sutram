@@ -290,6 +290,8 @@ r54_builtin_arity_table:
     msg_array_oob db "Sutram Error: array index out of bounds", 10, 0
     msg_kosh_required db "Sutram Error: kosh builtin requires a kosh variable", 10, 0
     msg_kosh_empty db "Sutram Error: kosh pop from empty array", 10, 0
+    msg_kosh_peek_empty db "Sutram Error: kosh peek from empty array", 10, 0
+    msg_kosh_dequeue_empty db "Sutram Error: kosh dequeue from empty array", 10, 0
     msg_kosh_param_type db "Sutram Error: kosh parameter requires matching kosh element type", 10, 0
     msg_kosh_param_push db "Sutram Error: kosh_push on a kosh parameter is not supported", 10, 0
 
@@ -12494,7 +12496,18 @@ emit_kosh_empty_check_r9:
     call emit_u32
     call alloc_ast
     mov qword [rax], AST_STR
+    ; R64: choose the error text at the *compiler* emission site.
+    ; The legacy pop path still emits the exact original diagnostic.
     lea rcx, [rel msg_kosh_empty]
+    cmp r12, BN_KOSHPEEK
+    jne .r64_not_peek
+    lea rcx, [rel msg_kosh_peek_empty]
+    jmp .r64_message_selected
+.r64_not_peek:
+    cmp r12, BN_KOSHDEQUEUE
+    jne .r64_message_selected
+    lea rcx, [rel msg_kosh_dequeue_empty]
+.r64_message_selected:
     mov [rax+8], rcx
     push rax
     call alloc_ast
