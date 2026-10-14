@@ -1,0 +1,87 @@
+ayojan map
+ayojan set
+ayojan strb
+ayojan ganita
+mukhya() {
+    vitti ok = nirmmita(8)
+    # map_get_default: default for absent, real value (even -1) for present
+    vitti m = map_init(8)
+    map_put(m, 8, "neg", 3, 0 - 1)
+    map_put(m, 8, "pos", 3, 42)
+    likha(map_get_default(m, 8, "neg", 3, 99))
+    likha("\n")
+    likha(map_get_default(m, 8, "pos", 3, 99))
+    likha("\n")
+    likha(map_get_default(m, 8, "absent", 6, 99))
+    likha("\n")
+    # set_equals: order-independent equality, both directions
+    vitti a = set_init(8)
+    vitti b = set_init(8)
+    vitti c = set_init(8)
+    set_add(a, 8, "x", 1)
+    set_add(a, 8, "y", 1)
+    set_add(b, 8, "y", 1)
+    set_add(b, 8, "x", 1)
+    set_add(c, 8, "x", 1)
+    likha(set_equals(a, 8, b, 8))
+    likha("\n")
+    likha(set_equals(a, 8, c, 8))
+    likha("\n")
+    likha(set_equals(c, 8, a, 8))
+    likha("\n")
+    # strb_reverse: distinct out, in place, even length — byte values
+    vitti out = nirmmita(32)
+    vitti i = 0
+    likha(strb_reverse("abcde", 5, out))
+    likha("\n")
+    yavat (i < 5) {
+        likha(char_at(out, i))
+        likha("\n")
+        i = i + 1
+    }
+    vitti buf = nirmmita(32)
+    strb_dup("hello", 5, buf)
+    likha(strb_reverse(buf, 5, buf))
+    likha("\n")
+    i = 0
+    yavat (i < 5) {
+        likha(char_at(buf, i))
+        likha("\n")
+        i = i + 1
+    }
+    # strb_count: non-overlapping (aaaa/aa = 2, not 3)
+    likha(strb_count("aaaa", 4, "aa", 2))
+    likha("\n")
+    likha(strb_count("ababab", 6, "ab", 2))
+    likha("\n")
+    likha(strb_count("hello", 5, "z", 1))
+    likha("\n")
+    likha(strb_count("hello", 5, "", 0))
+    likha("\n")
+    # ganita_checked_pow
+    likha(ganita_checked_pow(2, 10, ok))
+    likha("\n")
+    likha(ok[0])
+    likha("\n")
+    likha(ganita_checked_pow(2, 63, ok))
+    likha("\n")
+    likha(ok[0])
+    likha("\n")
+    likha(ganita_checked_pow(5, 0, ok))
+    likha("\n")
+    likha(ok[0])
+    likha("\n")
+    likha(ganita_checked_pow(0 - 2, 3, ok))
+    likha("\n")
+    likha(ok[0])
+    likha("\n")
+    likha(ganita_checked_pow(2, 0 - 1, ok))
+    likha("\n")
+    likha(ok[0])
+    likha("\n")
+    likha(ganita_checked_pow(0, 0, ok))
+    likha("\n")
+    likha(ok[0])
+    likha("\n")
+    likha("gaps-done\n")
+}
