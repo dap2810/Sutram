@@ -44,10 +44,10 @@ jobs:
           PYTHONUTF8: "1"
         run: |
           python -m unittest discover -s tests/gui -p "test_*.py" -v
-      - name: Run RichEdit UIAutomation compile-and-run smoke
+      - name: Native Win32 RichEdit compile-and-run plus shell smoke
         shell: powershell
         run: |
-          powershell.exe -NoProfile -File windows/gui/test-gui.ps1 -Exe "$env:RUNNER_TEMP\sutram-r60\idle-test\sutram-ide-gui.exe"
+          powershell.exe -NoProfile -File tools/r60_native_win32_smoke.ps1 -Exe "$env:RUNNER_TEMP\sutram-r60\idle-test\sutram-ide-gui.exe" -ResultsDir "$env:RUNNER_TEMP\sutram-r60"
       - name: Upload screenshot and exact Windows result logs
         if: always()
         uses: actions/upload-artifact@v4
