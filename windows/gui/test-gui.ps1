@@ -36,7 +36,13 @@ try {
         if ($item.Current.AutomationId -eq '201') { $edit = $item }
         if ($item.Current.AutomationId -eq '203') { $out = $item }
     }
-    if (-not $run -or -not $edit -or -not $out) { throw 'Run button, editor or output control not found' }
+    if (-not $run -or -not $edit -or -not $out) {
+        Write-Host ("R60_UIA_DESCENDANTS " + $desc.Count)
+        foreach ($item in $desc) {
+            Write-Host ("R60_UIA_CONTROL id='" + $item.Current.AutomationId + "' type='" + $item.Current.ControlType.ProgrammaticName + "' name='" + $item.Current.Name + "'")
+        }
+        throw 'Run button, editor or output control not found'
+    }
     Write-Host 'PASS editor/output/Run controls' -ForegroundColor Green
     # Prefer UIA ValuePattern for editable text; RichEdit may expose TextPattern instead.
     $pat = $null
