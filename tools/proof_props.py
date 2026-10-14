@@ -2502,6 +2502,229 @@ def prop_gaps19(compiler, rng):
     return ok and out == "PASS", out
 
 
+def prop_strb_cell_pairs(compiler, rng):
+    """strb explicit-length forms + cell str_reverse/str_count vs Python"""
+    alpha = "abcdeiouAEIOU019 "
+    s = "".join(rng.choice(alpha) for _ in range(rng.randint(0, 12)))
+    n = rng.randint(0, len(s)) if s else 0
+    code = ord(rng.choice(alpha))
+    t = "".join(rng.choice("abc") for _ in range(rng.randint(0, 8)))
+    needle = "".join(rng.choice("abc") for _ in range(rng.randint(1, 3)))
+    cells = [rng.randint(32, 122) for _ in range(rng.randint(0, 6))]
+    ncells = [rng.randint(32, 122) for _ in range(rng.randint(1, 3))]
+
+    def esc(x):
+        return x.replace("\\", "\\\\").replace('"', '\\"')
+
+    vowels = sum(1 for ch in s[:n] if ch in "aeiou")
+    want_cc = s[:n].count(chr(code))
+    want_fc = s[:n].find(chr(code))
+    want_digits = 1 if n > 0 and s[:n].isdigit() else 0
+    want_eq = 1 if s == t else 0
+    # Python non-overlapping count over cell arrays
+    cnt, pos = 0, 0
+    while True:
+        try:
+            f = cells.index(ncells[0], pos)
+        except ValueError:
+            break
+        if cells[f:f + len(ncells)] == ncells:
+            cnt += 1
+            pos = f + len(ncells)
+        else:
+            pos = f + 1
+    lines = ["ayojan strb",
+             "ayojan string",
+             "mukhya() {",
+             "    vitti out = nirmmita(64)",
+             f'    vitti src = "{esc(s)}"',
+             f'    vitti other = "{esc(t)}"',
+             f"    vitti h = nirmmita({max(len(cells), 1)} * 8)",
+             f"    vitti nd = nirmmita({len(ncells)} * 8)",
+             "    vitti i = 0"]
+    for i, c in enumerate(cells):
+        lines.append(f"    h[{i}] = {c}")
+    for i, c in enumerate(ncells):
+        lines.append(f"    nd[{i}] = {c}")
+    lines.append(f'    yadi (strb_count_vowels(src, {n}) != {vowels}) {{')
+    lines.append('        likha("FAIL count_vowels\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append(f'    yadi (strb_count_char(src, {n}, {code}) != {want_cc}) {{')
+    lines.append('        likha("FAIL count_char\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append(f'    yadi (strb_find_char(src, {n}, {code}) != {want_fc}) {{')
+    lines.append('        likha("FAIL find_char\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append(f'    yadi (strb_is_all_digits(src, {n}) != {want_digits}) {{')
+    lines.append('        likha("FAIL all_digits\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append(f'    yadi (strb_equals(src, {len(s)}, other, {len(t)}) != {want_eq}) {{')
+    lines.append('        likha("FAIL strb_equals\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append(f'    yadi (str_reverse(h, {len(cells)}, out) != {len(cells)}) {{')
+    lines.append('        likha("FAIL str_reverse ret\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    for i, c in enumerate(cells[::-1]):
+        lines.append(f"    yadi (out[{i}] != {c}) {{")
+        lines.append('        likha("FAIL str_reverse cells\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append(f"    yadi (out[{len(cells)}] != 0) {{")
+    lines.append('        likha("FAIL str_reverse term\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append(f'    yadi (str_count(h, {len(cells)}, nd, {len(ncells)}) != {cnt}) {{')
+    lines.append('        likha("FAIL str_count\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "strb_cell", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_containers_resize_swap(compiler, rng):
+    """map_resize/set_resize/list_swap/list_reverse vs Python"""
+    pool = ["aa", "ab", "ba", "bb", "abc", "bca", "cab", "a", "b", "c"]
+    keys = rng.sample(pool, 5)
+    vals = {k: rng.randint(-100, 100) for k in keys}
+    skeys = rng.sample(pool, 4)
+    lvals = [rng.randint(-100, 100) for _ in range(5)]
+    i, j = rng.randint(0, 4), rng.randint(0, 4)
+
+    def lit(v):
+        return f"(0 - {-v})" if v < 0 else str(v)
+
+    lines = ["ayojan map",
+             "ayojan set",
+             "ayojan list",
+             "mukhya() {",
+             "    vitti m = map_init(8)"]
+    for k in keys:
+        lines.append(f'    map_put(m, 8, "{k}", {len(k)}, {lit(vals[k])})')
+    lines.append("    m = map_resize(m, 32)")
+    lines.append("    yadi (m[0] != 32) {")
+    lines.append('        likha("FAIL resize cap\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append(f"    yadi (map_size(m) != {len(keys)}) {{")
+    lines.append('        likha("FAIL resize size\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    for k in keys:
+        lines.append(f'    yadi (map_get(m, 32, "{k}", {len(k)}) != {lit(vals[k])}) {{')
+        lines.append('        likha("FAIL resize get\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append("    yadi (map_resize(m, 1) != 0) {")
+    lines.append('        likha("FAIL resize small\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append(f"    yadi (map_size(m) != {len(keys)}) {{")
+    lines.append('        likha("FAIL resize small unchanged\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append("    vitti s = set_init(8)")
+    for k in skeys:
+        lines.append(f'    set_add(s, 8, "{k}", {len(k)})')
+    lines.append("    s = set_resize(s, 32)")
+    lines.append("    yadi (s[0] != 32) {")
+    lines.append('        likha("FAIL set resize cap\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    for k in skeys:
+        lines.append(f'    yadi (set_contains(s, 32, "{k}", {len(k)}) != 1) {{')
+        lines.append('        likha("FAIL set resize contains\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append("    vitti l = list_init(8)")
+    for v in lvals:
+        lines.append(f"    list_push(l, {lit(v)})")
+    lines.append(f"    yadi (list_swap(l, {i}, {j}) != 1) {{")
+    lines.append('        likha("FAIL swap ret\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    swapped = list(lvals)
+    swapped[i], swapped[j] = swapped[j], swapped[i]
+    for idx, v in enumerate(swapped):
+        lines.append(f"    yadi (list_get(l, {idx}) != {lit(v)}) {{")
+        lines.append('        likha("FAIL swap vals\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append("    yadi (list_swap(l, 0, 9) != 0) {")
+    lines.append('        likha("FAIL swap oob\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append(f"    yadi (list_get(l, 0) != {lit(swapped[0])}) {{")
+    lines.append('        likha("FAIL swap oob unchanged\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append("    list_reverse(l)")
+    for idx, v in enumerate(swapped[::-1]):
+        lines.append(f"    yadi (list_get(l, {idx}) != {lit(v)}) {{")
+        lines.append('        likha("FAIL reverse\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "resize_swap", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_gaps20(compiler, rng):
+    """ganita_checked_fact / ganita_sat_pow vs Python (incl. huge e
+    for the saturating early-exit path)"""
+    import math
+    fact_cases = list(range(-2, 26)) + [rng.randint(0, 25)]
+    pow_cases = [(2, 10), (2, 63), (2, 62), (3, 40), (3, 41),
+                 (-2, 63), (-2, 64), (-2, 65), (-3, 41), (5, 0),
+                 (0, 0), (0, 5), (1, 1000), (-1, 1001), (2, -1),
+                 (2, 1000000), (-2, 1000000), (-2, 1000001),
+                 (3, 100000), (-3, 100001),
+                 (rng.randint(-5, 5), rng.randint(0, 10))]
+
+    def lit(v):
+        return f"(0 - {-v})" if v < 0 else str(v)
+
+    lines = ["ayojan ganita",
+             "mukhya() {",
+             "    vitti ok = nirmmita(8)"]
+    for n in fact_cases:
+        if n < 0:
+            want_ok, want_val = 0, 0
+        else:
+            true = math.factorial(n)
+            want_ok = 1 if MIN64 <= true <= MAX64 else 0
+            want_val = true if want_ok else 0
+        lines.append(f"    yadi (ganita_checked_fact({lit(n)}, ok) != {lit(want_val)}) {{")
+        lines.append('        likha("FAIL fact value\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+        lines.append(f"    yadi (ok[0] != {want_ok}) {{")
+        lines.append('        likha("FAIL fact ok\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    for a, e in pow_cases:
+        if e < 0:
+            want = 0
+        else:
+            want = _clamp(a ** e)
+        lines.append(f"    yadi (ganita_sat_pow({lit(a)}, {lit(e)}) != {lit(want)}) {{")
+        lines.append('        likha("FAIL sat_pow\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "gaps20", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
 def main():
     compiler = None
     for i, a in enumerate(sys.argv):
@@ -2569,6 +2792,9 @@ def main():
         ("map_clear reuse", prop_map_clear_reuse),
         ("containers clear", prop_containers_clear),
         ("gaps19", prop_gaps19),
+        ("strb cell pairs", prop_strb_cell_pairs),
+        ("containers resize/swap", prop_containers_resize_swap),
+        ("gaps20", prop_gaps20),
     ]
 
     failed = []
