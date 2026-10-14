@@ -8,6 +8,9 @@
 # CHAKRAVALA ("the wheel") solves the quadratic indeterminate equation x^2 - N*y^2 = 1,
 # known in Europe as Pell's equation. It was the first complete method for it, and for
 # N = 61 it gives x = 1766319049, y = 226153980 - a case Europe first solved in 1657.
+#
+# CHECKED / SATURATING ARITHMETIC (R18) lives here too: ganita is the
+# arithmetic module. See the notes above ganita_checked_add.
 
 # kuttaka(a, b, c) -> x such that a*x is congruent to c (mod b).
 # Requires gcd(a, b) to divide c. Returns x (a particular solution).
@@ -121,4 +124,236 @@ prakriya brahmagupta_area(a, b, c, d) {
     vitti p = (s - a) * (s - b) * (s - c) * (s - d)
     yadi (p < 0) { pratiyati 0 }
     pratiyati ganita_isqrt(p)
+}
+
+# --- checked / saturating integer arithmetic (R18) ---
+#
+# MECHANISM (decided, with reasoning): these functions are OPT-IN.
+# The plain `+ - * / %` operators are UNCHANGED and still wrap
+# silently — changing them needs a compiler change (see the follow-on
+# proposal at the end of this section), and silently changing every
+# program's arithmetic would rewrite accepted behaviour. Instead,
+# code that must not be wrong calls a checked function and reads
+# ok[0] (the str_to_int ok-pattern: ok is a 1-cell pankti). On
+# failure the function returns 0 — never the wrapped value — so a
+# caller that forgets to check ok gets an obviously-wrong 0, not a
+# plausible-but-wrong wrapped value.
+#
+# What the operators do today (measured, R18, current compiler):
+#   + - * overflow  -> silent two's-complement wrap
+#   / % by zero     -> hardware SIGFPE: the process DIES (exit 136),
+#                      with no diagnostic naming the operation
+#   INT64_MIN / -1  -> same SIGFPE (idiv overflow)
+#   INT64_MIN % -1  -> same SIGFPE
+#   INT64_MIN * -1  -> silent wrap to INT64_MIN
+# So division is already "loud" in the sense that the process dies,
+# but undiagnosed and unrecoverable. The checked functions give the
+# diagnosed, recoverable path: ok[0] = 0 and the program continues.
+#
+# FOLLOW-ON (needs src/ changes, NOT done here): a compiler trap —
+# emit a conditional check after each arithmetic op (jo/jno on the
+# overflow flag for + - *, a zero-divisor guard before idiv) that
+# aborts with a diagnostic naming file:line and the operation. The
+# checked functions here are the library-level half of that work
+# and would stay as the explicit form even after a trap exists.
+#
+# Bounds used below: MAX = 9223372036854775807, MIN is written as
+# (0 - 9223372036854775807) - 1 (no MIN literal exists).
+
+# ganita_checked_add(a, b, ok) — a + b; ok[0] 1, or 0 on overflow
+# (returns 0 then).
+prakriya ganita_checked_add(a, b, ok) {
+    vitti x = a
+    vitti y = b
+    vitti okp = ok
+    vitti s = x + y
+    yadi (x >= 0) {
+        yadi (y >= 0) {
+            yadi (s < 0) {
+                okp[0] = 0
+                pratiyati 0
+            }
+        }
+    } anyatra {
+        yadi (y < 0) {
+            yadi (s >= 0) {
+                okp[0] = 0
+                pratiyati 0
+            }
+        }
+    }
+    okp[0] = 1
+    pratiyati s
+}
+
+# ganita_checked_sub(a, b, ok) — a - b; ok[0] 1, or 0 on overflow
+# (returns 0 then).
+prakriya ganita_checked_sub(a, b, ok) {
+    vitti x = a
+    vitti y = b
+    vitti okp = ok
+    vitti d = x - y
+    yadi (x >= 0) {
+        yadi (y < 0) {
+            yadi (d < 0) {
+                okp[0] = 0
+                pratiyati 0
+            }
+        }
+    } anyatra {
+        yadi (y >= 0) {
+            yadi (d >= 0) {
+                okp[0] = 0
+                pratiyati 0
+            }
+        }
+    }
+    okp[0] = 1
+    pratiyati d
+}
+
+# ganita_checked_mul(a, b, ok) — a * b; ok[0] 1, or 0 on overflow
+# (returns 0 then). The check is m / a == b, with the INT64_MIN * -1
+# case handled explicitly (the division itself would SIGFPE there).
+prakriya ganita_checked_mul(a, b, ok) {
+    vitti x = a
+    vitti y = b
+    vitti okp = ok
+    vitti m = 0
+    vitti minv = (0 - 9223372036854775807) - 1
+    yadi (x == 0) {
+        okp[0] = 1
+        pratiyati 0
+    }
+    yadi (y == 0) {
+        okp[0] = 1
+        pratiyati 0
+    }
+    yadi (x == minv) {
+        yadi (y == 0 - 1) {
+            okp[0] = 0
+            pratiyati 0
+        }
+    }
+    yadi (y == minv) {
+        yadi (x == 0 - 1) {
+            okp[0] = 0
+            pratiyati 0
+        }
+    }
+    m = x * y
+    yadi (m / x != y) {
+        okp[0] = 0
+        pratiyati 0
+    }
+    okp[0] = 1
+    pratiyati m
+}
+
+# ganita_checked_div(a, b, ok) — truncating a / b; ok[0] 1, or 0 on
+# division by zero or INT64_MIN / -1 (both would SIGFPE; returns 0).
+prakriya ganita_checked_div(a, b, ok) {
+    vitti x = a
+    vitti y = b
+    vitti okp = ok
+    vitti minv = (0 - 9223372036854775807) - 1
+    yadi (y == 0) {
+        okp[0] = 0
+        pratiyati 0
+    }
+    yadi (x == minv) {
+        yadi (y == 0 - 1) {
+            okp[0] = 0
+            pratiyati 0
+        }
+    }
+    okp[0] = 1
+    pratiyati x / y
+}
+
+# ganita_checked_mod(a, b, ok) — truncating a % b (remainder takes the
+# dividend's sign); ok[0] 1, or 0 on b == 0 or INT64_MIN % -1.
+prakriya ganita_checked_mod(a, b, ok) {
+    vitti x = a
+    vitti y = b
+    vitti okp = ok
+    vitti minv = (0 - 9223372036854775807) - 1
+    yadi (y == 0) {
+        okp[0] = 0
+        pratiyati 0
+    }
+    yadi (x == minv) {
+        yadi (y == 0 - 1) {
+            okp[0] = 0
+            pratiyati 0
+        }
+    }
+    okp[0] = 1
+    pratiyati x % y
+}
+
+# ganita_sat_add(a, b) — a + b, SATURATING: on overflow returns
+# INT64_MAX (positive overflow) or INT64_MIN (negative overflow).
+prakriya ganita_sat_add(a, b) {
+    vitti x = a
+    vitti y = b
+    vitti maxv = 9223372036854775807
+    vitti minv = (0 - 9223372036854775807) - 1
+    vitti s = x + y
+    yadi (x >= 0) {
+        yadi (y >= 0) {
+            yadi (s < 0) { pratiyati maxv }
+        }
+    } anyatra {
+        yadi (y < 0) {
+            yadi (s >= 0) { pratiyati minv }
+        }
+    }
+    pratiyati s
+}
+
+# ganita_sat_sub(a, b) — a - b, saturating (see ganita_sat_add).
+prakriya ganita_sat_sub(a, b) {
+    vitti x = a
+    vitti y = b
+    vitti maxv = 9223372036854775807
+    vitti minv = (0 - 9223372036854775807) - 1
+    vitti d = x - y
+    yadi (x >= 0) {
+        yadi (y < 0) {
+            yadi (d < 0) { pratiyati maxv }
+        }
+    } anyatra {
+        yadi (y >= 0) {
+            yadi (d >= 0) { pratiyati minv }
+        }
+    }
+    pratiyati d
+}
+
+# ganita_sat_mul(a, b) — a * b, saturating (see ganita_sat_add).
+# The overflow direction is the sign of the true product.
+prakriya ganita_sat_mul(a, b) {
+    vitti x = a
+    vitti y = b
+    vitti maxv = 9223372036854775807
+    vitti minv = (0 - 9223372036854775807) - 1
+    vitti m = 0
+    vitti neg = 0
+    yadi (x == 0) { pratiyati 0 }
+    yadi (y == 0) { pratiyati 0 }
+    yadi (x == minv) {
+        yadi (y == 0 - 1) { pratiyati maxv }
+    }
+    yadi (y == minv) {
+        yadi (x == 0 - 1) { pratiyati maxv }
+    }
+    m = x * y
+    yadi (m / x != y) {
+        yadi (x < 0) { neg = 1 - neg }
+        yadi (y < 0) { neg = 1 - neg }
+        yadi (neg == 1) { pratiyati minv }
+        pratiyati maxv
+    }
+    pratiyati m
 }
