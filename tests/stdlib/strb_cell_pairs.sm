@@ -1,0 +1,50 @@
+ayojan strb
+ayojan string
+mukhya() {
+    vitti hay = nirmmita(32)
+    strb_dup("hello world", 11, hay)
+    likha(strb_count_vowels(hay, 5))
+    likha("\n")
+    likha(strb_count_vowels(hay, 11))
+    likha("\n")
+    likha(strb_count_char(hay, 11, 108))
+    likha("\n")
+    likha(strb_find_char(hay, 11, 119))
+    likha("\n")
+    likha(strb_find_char(hay, 5, 119))
+    likha("\n")
+    likha(strb_is_all_digits("12345", 5))
+    likha("\n")
+    likha(strb_is_all_digits("12a45", 5))
+    likha("\n")
+    likha(strb_is_all_digits("12345", 0))
+    likha("\n")
+    likha(strb_equals("abc", 3, "abc", 3))
+    likha("\n")
+    likha(strb_equals("abc", 3, "abd", 3))
+    likha("\n")
+    vitti cells = nirmmita(6 * 8)
+    vitti out = nirmmita(6 * 8)
+    cells[0] = 104
+    cells[1] = 105
+    cells[2] = 33
+    likha(str_reverse(cells, 3, out))
+    likha("\n")
+    likha(out[0])
+    likha("\n")
+    likha(out[1])
+    likha("\n")
+    likha(out[2])
+    likha("\n")
+    vitti hc = nirmmita(6 * 8)
+    vitti nd = nirmmita(2 * 8)
+    hc[0] = 97
+    hc[1] = 97
+    hc[2] = 97
+    hc[3] = 97
+    nd[0] = 97
+    nd[1] = 97
+    likha(str_count(hc, 4, nd, 2))
+    likha("\n")
+    likha("demo1-done\n")
+}
