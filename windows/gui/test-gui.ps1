@@ -10,8 +10,9 @@ Add-Type -AssemblyName System.Windows.Forms
 $root = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
 if (-not $Exe) { $Exe = Join-Path $root 'sutram-ide-gui.exe' }
 if (-not (Test-Path $Exe)) { throw "Build first: $Exe" }
-if (-not (Test-Path (Join-Path $root 'win\sutram.exe'))) { throw 'Expected win\sutram.exe not found' }
-$proc = Start-Process -FilePath $Exe -WorkingDirectory $root -PassThru
+$exeRoot = (Resolve-Path (Split-Path -Parent $Exe)).Path
+if (-not (Test-Path (Join-Path $exeRoot 'win\sutram.exe'))) { throw 'Expected win\sutram.exe alongside the tested GUI (portable or installed)' }
+$proc = Start-Process -FilePath $Exe -WorkingDirectory $exeRoot -PassThru
 try {
     $main = $null
     for ($i=0; $i -lt 40; $i++) {
@@ -24,7 +25,7 @@ try {
         }
     }
     if (-not $main) { throw 'Window did not appear within 10 seconds' }
-    if ($main.Current.Name -ne 'Sutram - Native Windows IDE (Preview)') { throw "Wrong window title: $($main.Current.Name)" }
+    if ($main.Current.Name -ne 'Sutram Shell 1.0') { throw "Wrong window title: $($main.Current.Name)" }
     Write-Host 'PASS GUI window/title' -ForegroundColor Green
     $desc = $main.FindAll('Descendants',[System.Windows.Automation.Condition]::TrueCondition)
     $run = $null
@@ -35,7 +36,13 @@ try {
         if ($item.Current.AutomationId -eq '201') { $edit = $item }
         if ($item.Current.AutomationId -eq '203') { $out = $item }
     }
-    if (-not $run -or -not $edit -or -not $out) { throw 'Run button, editor or output control not found' }
+    if (-not $run -or -not $edit -or -not $out) {
+        Write-Host ("R60_UIA_DESCENDANTS " + $desc.Count)
+        foreach ($item in $desc) {
+            Write-Host ("R60_UIA_CONTROL id='" + $item.Current.AutomationId + "' type='" + $item.Current.ControlType.ProgrammaticName + "' name='" + $item.Current.Name + "'")
+        }
+        throw 'Run button, editor or output control not found'
+    }
     Write-Host 'PASS editor/output/Run controls' -ForegroundColor Green
     # Prefer UIA ValuePattern for editable text; RichEdit may expose TextPattern instead.
     $pat = $null
