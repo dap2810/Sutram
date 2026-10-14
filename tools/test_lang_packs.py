@@ -15,7 +15,7 @@ import io, os, subprocess, sys, tempfile
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 COMPILER = os.environ.get("SUTRAM_COMPILER") or os.path.join(ROOT, "sutram_compiler")
 LANGS = ["hindi", "bengali", "gujarati", "kannada", "malayalam",
-         "marathi", "odia", "punjabi", "tamil", "telugu"]
+         "marathi", "odia", "punjabi", "tamil", "telugu", "sanskrit"]
 
 
 def pack_words(name):
