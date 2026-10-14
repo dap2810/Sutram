@@ -1,7 +1,6 @@
 name: R51 original imported diagnostic provenance
+# Historical experiment: manual-only to prevent failure-email flood.
 on:
-  push:
-    branches: [feature/r51-origin-tracking-20261009]
   workflow_dispatch:
 permissions:
   contents: read
