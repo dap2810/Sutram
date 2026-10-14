@@ -148,6 +148,9 @@ class_button db 'BUTTON',0
 class_edit db 'EDIT',0
 class_list db 'LISTBOX',0
 class_richedit db 'RICHEDIT50W',0
+; R60: use Unicode class string with the Unicode Win32 child-creation API.
+class_richedit_w dw 82, 73, 67, 72, 69, 68, 73, 84, 53, 48, 87, 0
+example_start_w dw 109, 117, 107, 104, 121, 97, 40, 41, 92, 114, 92, 110, 32, 32, 32, 32, 108, 105, 107, 104, 97, 40, 34, 78, 97, 109, 97, 115, 116, 101, 44, 32, 83, 117, 116, 114, 97, 109, 33, 92, 92, 110, 34, 41, 92, 114, 92, 110, 0
 richedit_dll db 'Msftedit.dll',0
 user32_dll db 'user32.dll',0
 comdlg32_dll db 'comdlg32.dll',0
@@ -200,6 +203,7 @@ n_MessageBoxA db 'MessageBoxA',0
 n_RegisterClassExA db 'RegisterClassExA',0
 n_LoadCursorA db 'LoadCursorA',0
 n_CreateWindowExA db 'CreateWindowExA',0
+n_CreateWindowExW db 'CreateWindowExW',0
 n_ShowWindow db 'ShowWindow',0
 n_UpdateWindow db 'UpdateWindow',0
 n_DefWindowProcA db 'DefWindowProcA',0
@@ -264,6 +268,7 @@ user_table:
     IMPORTS RegisterClassExA
     IMPORTS LoadCursorA
     IMPORTS CreateWindowExA
+    IMPORTS CreateWindowExW
     IMPORTS ShowWindow
     IMPORTS UpdateWindow
     IMPORTS DefWindowProcA
@@ -458,6 +463,7 @@ IMPORTS MessageBoxA
 IMPORTS RegisterClassExA
 IMPORTS LoadCursorA
 IMPORTS CreateWindowExA
+IMPORTS CreateWindowExW
 IMPORTS ShowWindow
 IMPORTS UpdateWindow
 IMPORTS DefWindowProcA
@@ -947,7 +953,18 @@ create_child:
     mov rax,[rel h_instance]
     mov [rsp+80],rax
     mov qword [rsp+88],0
+    ; MSFTEDIT Unicode RichEdit requires its UTF-16 class/caption.
+    ; Keep all other Win32 controls on their original ANSI call.
+    lea r10,[rel class_richedit]
+    cmp rdx,r10
+    jne .r60_ansi_child
+    PTR rdx,class_richedit_w
+    PTR r8,example_start_w
+    API CreateWindowExW
+    jmp .r60_child_done
+.r60_ansi_child:
     API CreateWindowExA
+.r60_child_done:
     EPILOG
 
 ; SetWindowText/edit and SendMessage wrapper as Win64 internal calls.
