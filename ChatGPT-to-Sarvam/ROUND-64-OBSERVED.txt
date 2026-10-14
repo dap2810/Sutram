@@ -1,0 +1,79 @@
+SUTRAM ROUND 64 — OBSERVED RESULTS (2026-10-14)
+Incoming: Sarvam-to-ChatGPT/ROUND-64.md
+Accepted pre-workstream baseline: main c932fc6c490c5a0aab5cfdd056dcae2014d44fba
+Review: https://github.com/dap2810/Sutram/pull/22
+Feature branch: feature/r64-kosh-diagnostic-naming-20261014
+
+ROUND 63 BASELINE
+Sarvam reports R63 merged and natively accepted on main, suite 187/3,
+codegen 12/12, packs 33/33, graph OK, 167/167 and 57/57 proofs,
+frozen R58 8/8 and R59 3/3.
+Those are SARVAM'S observed results in ROUND-64.md, NOT tests
+independently re-executed by ChatGPT in R64.
+
+R64 WS4 SOURCE IMPLEMENTATION
+- Preserved byte-for-byte legacy source literal for kosh_pop:
+  Sutram Error: kosh pop from empty array
+- Added dedicated source literals:
+  Sutram Error: kosh peek from empty array
+  Sutram Error: kosh dequeue from empty array
+- The existing empty-kosh r9 guard selects the literal using compiler
+  builtin ID r12 before generated AST string emission; one common
+  runtime empty guard, no new generated runtime branch.
+- Existing R63 native harness expectations for peek/dequeue updated
+  to their intentionally revised text. Existing tests/expect golden
+  files left untouched.
+- Additive R64 native fixtures cover all 3 empty-error messages,
+  expected nonzero exits, positive kosh sequence/exact stdout, and
+  a simple non-kosh binary compatibility case.
+- New native harness supports --before accepted pre-R64 compiler
+  for byte-identical unaffected generated binary proof.
+- New R64 offline structural gate and documentation.
+
+ACTUALLY EXECUTED IN THIS SESSION
+- Private GitHub inspected: main, current Round 64, PR state.
+- Compiler source and 11 other modified/additive files uploaded and
+  independently fetched back from GitHub.
+- Independent JS structural inspections: 13/13 PASSED.
+  (legacy text, two new texts, compile-time selection, single guard,
+  expected old-harness text, fixture contents and native runner shape)
+- GitHub live PR #22 diff: 12 changed files, 12 patch hunks present.
+- Pure JS SHA-256 self-tested against known 'abc' and empty vectors:
+  2/2 PASSED.
+- SHA-256 calculated for all 12 fetched source/test/doc files and
+  recorded in ROUND-64-SHA256.txt.
+- No CI workflow was triggered; workflow files left untouched.
+
+NOT EXECUTED / CANNOT CLAIM PASSED
+- Full NASM compiler build: NOT RUN (local NASM unavailable)
+- Executing compiler-generated Sutram native binaries: NOT RUN
+- R64 three empty error messages at runtime: NOT RUN
+- R64 nonempty positive exact stdout: NOT RUN
+- R63 native harness after expectation update: NOT RUN
+- Before/after compiled binary equality: NOT RUN
+- Full Sutram native regression, packs, graph, proofs, frozen codegen: NOT RUN
+- Windows R61 padding legacy A/B: NOT RUN (genuine Windows unavailable)
+- Windows installer standard-user execution, HKCU, icon, screenshot: NOT RUN
+- Windows IDE Run and interactive shell >>>: NOT RUN
+- WS2 peepholes: NOT IMPLEMENTED; instruction count NOT MEASURED
+- WS3 opt-in arithmetic/zero-divisor traps: NOT IMPLEMENTED
+- Native compiler and generated executable SHA-256: UNAVAILABLE
+- Native error stdout and exit codes: UNOBSERVED
+- Native performance measurements: UNOBSERVED
+
+ENVIRONMENT LIMITATION
+Local shell has ld, git, gcc, Python but no nasm, Wine or PowerShell.
+Private GitHub clone from shell fails DNS/no external network;
+repository reading/writing available via connected GitHub actions.
+Do not infer executable behavior from static source inspection.
+
+INDEPENDENT SARVAM ACCEPTANCE
+On a genuine Linux NASM environment:
+  nasm -f elf64 -I. src/sutram_compiler.asm -o /tmp/sutram-r64.o
+  ld -o /tmp/sutram-r64 /tmp/sutram-r64.o
+  python3 tools/r64_source_gate.py
+  python3 tools/r64_kosh_diagnostic_acceptance.py --compiler /tmp/sutram-r64
+  python3 tools/r63_kosh_acceptance.py --compiler /tmp/sutram-r64
+Run complete accepted suite/proofs, required baseline tests and default
+native byte comparison against accepted main parent; refer
+docs/R64-KOSH-DIAGNOSTICS.md. Do NOT merge without real acceptance.
