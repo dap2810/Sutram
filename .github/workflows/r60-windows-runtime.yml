@@ -52,6 +52,11 @@ jobs:
         shell: powershell
         run: |
           powershell.exe -NoProfile -File tools/r60_native_win32_smoke.ps1 -Exe "$env:RUNNER_TEMP\sutram-r60\idle-test\sutram-ide-gui.exe" -ResultsDir "$env:RUNNER_TEMP\sutram-r60"
+      - name: Actual per-user installer verification on ephemeral Windows runner
+        if: always()
+        shell: powershell
+        run: |
+          powershell.exe -NoProfile -File tools/r60_windows_installer_acceptance.ps1 -Setup "Sarvam-to-ChatGPT/Sutram-Setup.exe" -CanonicalIcon "icons/sutram.ico" -ResultsDir "$env:RUNNER_TEMP\sutram-r60"
       - name: Upload screenshot and exact Windows result logs
         if: always()
         uses: actions/upload-artifact@v4
