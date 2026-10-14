@@ -1,3 +1,33 @@
+## v132 — ChatGPT R62 (Windows acceptance tooling) + Muse R19 (map_clear, container breadth) verified and SYNCED
+
+- **Muse R19 accepted — all four workstreams landed.** 8 new functions and 1 strengthened:
+  `map_clear` (full zero, not just the count), `set_clear`, `queue_clear`, `list_clear`
+  (strengthened to zero data cells), `map_get_default` (removes the `-1`-is-ambiguous hazard),
+  `set_equals`, `strb_reverse` (safe in place), `strb_count` (non-overlapping), and
+  `ganita_checked_pow`. Patch applied cleanly; **14/14 hashes match**; proof_lib **167/167**
+  (was 164), proof_props **57/57** (was 54), suite **187/3**; library now
+  **21 modules / 247 functions**.
+- **R19 names a real gap rather than papering over it:** the `kosh` primitives (clear/peek/empty/
+  enqueue/dequeue) **cannot be written in the library** — there is no generic `kosh` parameter type
+  and no overloading, both demonstrated by compiling test programs that fail to parse. They correctly
+  assigned those builtins to the compiler side instead of forcing a type-suffixed naming scheme that
+  would not be "same names, same semantics".
+- **ChatGPT R62 accepted as a verified partial — and it caught a real policy violation.**
+  `.github/workflows/r59-native.yml` on main still carried a **`push` trigger** on a feature branch,
+  against the CI notification policy (every other workflow is `workflow_dispatch`-only). **Fixed and
+  merged.** They also brought the R61 Windows diagnostic script and 8-second fail-closed installer
+  preflight into a review branch, added `tools/r62_windows_acceptance.ps1` (manual Prepare/Audit/
+  Screenshot stages) and `docs/R62-WINDOWS-ACCEPTANCE.md`, and hardened `install-core.ps1` with
+  bounded self-tests and a durable success log.
+- **They were honest about what is NOT done:** workstreams 1–3 are *prepared but not executed* (no
+  Windows run this round), and workstreams 4–5 (the peepholes and the overflow traps) are
+  **not implemented**. They explicitly said not to merge unexecuted code on source reasoning alone.
+  5/5 R62 hashes verified.
+- **21 files synced** (R19 library + tests + docs; R62 workflow fix + tooling + docs). Verified on main.
+- **Next:** ROUND-63 to ChatGPT (heavy — execute the Windows acceptance, then the peepholes and the
+  overflow trap, informed by the new Devanagari support). ROUND-20 to Muse (heavy — continue the
+  container/gap work and the compiler-side `kosh` builtin specification).
+
 ## v131 — Sanskrit script support: `sanskrit.lang` + danda terminator (slice 21)
 
 - **The language can now be written in Devanagari Sanskrit and compiles to native machine code.**
