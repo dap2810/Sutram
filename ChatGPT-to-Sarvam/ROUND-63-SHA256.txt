@@ -1,0 +1,19 @@
+SUTRAM ROUND 63 — SOURCE SHA256 MANIFEST
+Date 2026-10-14
+Branch feature/r63-kosh-native-builtins-20261014
+Pull request https://github.com/dap2810/Sutram/pull/21
+SHA-256 of exact UTF-8/LF GitHub file contents. Hash routine checked against standard empty and abc test vectors.
+No native code built or executed; no binary hash or native stdout implied.
+adf83c8d0ae477bf1e1368ae91f31be3c84ce66c22409ba8a4095611b6baefa5  docs/R63-KOSH-BUILTINS.md
+36ff7295a893dd15a7649830cb4ff12ebdead33265ac0269384965bc1d81ac9c  src/sutram_compiler.asm
+1121cfccd5913f0a63fec40a6ffd44ea64f9dc135c66634ba001d10bcf4302a2  tests/r63_check/indic_danda_regression.out
+374b7c2f3772bd01157290b2b3071db8650b364c8630d25ee2eb0ad451cf9029  tests/r63_check/indic_danda_regression.sm
+7c0225fe0f307b1ec98fad8d46bc60afcb25e034e18c079401017b9972d90c74  tests/r63_check/kosh_invalid_arity.sm
+43fa68a1ffc0607a831ddddffe1953b4fe34c80d7def3f34621b4877a51f39d7  tests/r63_check/kosh_invalid_non_kosh.sm
+4d2bd8917b4f338b618002c54c5ec07e654c178f7f0db0a65d26c3958a9f129d  tests/r63_check/kosh_native_core.out
+1982e8a6d87eca3348f5e3114023b32003f3214ed4ad9f9c151aa68ef0c39a6a  tests/r63_check/kosh_native_core.sm
+57ae9b1282d2eb11e1dd5233d739d2895c3757daa4941c3cc3864d6f70edc27e  tests/r63_check/kosh_native_float.out
+ba2d6a47cc267525de58b9ce3aaa8a13620403c54c09560f6dd6bdcd96786d49  tests/r63_check/kosh_native_float.sm
+a166f1cc3a1e80b8c2f534eb36f95522ce06991056ce830c526881843458807a  tests/r63_check/kosh_peek_empty.sm
+351ade73a1905e632cf2be25a9925e256b392a3987091a80a59cae4f795b30e6  tools/r63_kosh_acceptance.py
+578ced9606d1424d883cec04e4a5b851930518d671fbbc4095c8a2c4b947685a  tools/r63_source_gate.py
