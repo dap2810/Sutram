@@ -34,7 +34,9 @@ function Invoke-Bounded([string]$Path, [string]$Arguments, [string]$Tag) {
     $out = Join-Path $ResultsDir ($Tag + '.stdout.txt')
     $err = Join-Path $ResultsDir ($Tag + '.stderr.txt')
     $sw = [Diagnostics.Stopwatch]::StartNew()
-    $proc = Start-Process -FilePath $Path -ArgumentList $Arguments -WorkingDirectory $root -PassThru -NoNewWindow -RedirectStandardOutput $out -RedirectStandardError $err
+    $startup = @{ FilePath=$Path; WorkingDirectory=$root; PassThru=$true; NoNewWindow=$true; RedirectStandardOutput=$out; RedirectStandardError=$err }
+    if ($Arguments) { $startup.ArgumentList = $Arguments }
+    $proc = Start-Process @startup
     $timedOut = $false
     try {
         if (-not $proc.WaitForExit($TimeoutMs)) {
