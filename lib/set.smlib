@@ -1,9 +1,8 @@
 # lib/set.smlib — Sutram standard library: sets (set algebra over map)
 #
 # A set IS a map (`lib/map.smlib`) with a dummy value of 1: membership is
-# map_contains, iteration is map_keys. The set functions are thin
-# wrappers plus the algebra (union / intersect / difference / subset)
-# and a sorted dump (set_to_array).
+# map_contains, iteration is map_keys_bytes (R17: packed-byte segments,
+# passed straight to the byte-key map functions with no repacking).
 #
 # ELEMENTS ARE BYTE STRINGS — the same choice as `map.smlib`'s keys, for
 # the same reason: a caller passes a literal directly ("apple"), with an
@@ -62,34 +61,30 @@ prakriya set_size(s) {
 
 # set_union(a, cap, b, bcap, out) — add every element of a and of b into
 # out (fresh, empty, capacity >= cap + bcap). Returns set_size(out).
-# NOTE: map_keys segments are CELLS, but map_put takes packed BYTES —
-# each segment is repacked with strb_pack first. Passing the cell
-# pointer straight to map_put compiles fine and silently compares the
-# wrong bytes (the first cell's low byte, then zeroes). That is the
-# R12 repack trap; strb_pack is the fix.
+# R17: iteration is map_keys_bytes, whose packed-byte segments go
+# straight into map_put. (Before R17 this used map_keys cell segments
+# plus a strb_pack per segment; passing a cell segment straight to
+# map_put compiled fine and silently compared the wrong bytes.)
 prakriya set_union(a, cap, b, bcap, out) {
     vitti ocap = out[0]
-    vitti tmpa = nirmmita((cap * 33 + 1) * 8)
-    vitti tmpb = nirmmita((bcap * 33 + 1) * 8)
-    vitti buf = nirmmita(40)
-    vitti nka = map_keys(a, tmpa)
-    vitti nkb = map_keys(b, tmpb)
+    vitti tmpa = nirmmita(cap * 33 + 1)
+    vitti tmpb = nirmmita(bcap * 33 + 1)
+    vitti nka = map_keys_bytes(a, tmpa)
+    vitti nkb = map_keys_bytes(b, tmpb)
     vitti pos = 0
     vitti i = 0
     vitti seglen = 0
     yavat (i < nka) {
-        seglen = tmpa[pos]
-        strb_pack(tmpa + (pos + 1) * 8, seglen, buf)
-        map_put(out, ocap, buf, seglen, 1)
+        seglen = char_at(tmpa, pos)
+        map_put(out, ocap, tmpa + pos + 1, seglen, 1)
         pos = pos + 1 + seglen
         i = i + 1
     }
     pos = 0
     i = 0
     yavat (i < nkb) {
-        seglen = tmpb[pos]
-        strb_pack(tmpb + (pos + 1) * 8, seglen, buf)
-        map_put(out, ocap, buf, seglen, 1)
+        seglen = char_at(tmpb, pos)
+        map_put(out, ocap, tmpb + pos + 1, seglen, 1)
         pos = pos + 1 + seglen
         i = i + 1
     }
@@ -98,21 +93,18 @@ prakriya set_union(a, cap, b, bcap, out) {
 
 # set_intersect(a, cap, b, bcap, out) — add every element of a that is
 # also in b into out (fresh, empty, capacity >= min(cap, bcap)).
-# Returns set_size(out). Segments are repacked with strb_pack before
-# map_contains (see set_union note).
+# Returns set_size(out).
 prakriya set_intersect(a, cap, b, bcap, out) {
     vitti ocap = out[0]
-    vitti tmpa = nirmmita((cap * 33 + 1) * 8)
-    vitti buf = nirmmita(40)
-    vitti nka = map_keys(a, tmpa)
+    vitti tmpa = nirmmita(cap * 33 + 1)
+    vitti nka = map_keys_bytes(a, tmpa)
     vitti pos = 0
     vitti i = 0
     vitti seglen = 0
     yavat (i < nka) {
-        seglen = tmpa[pos]
-        strb_pack(tmpa + (pos + 1) * 8, seglen, buf)
-        yadi (map_contains(b, bcap, buf, seglen) == 1) {
-            map_put(out, ocap, buf, seglen, 1)
+        seglen = char_at(tmpa, pos)
+        yadi (map_contains(b, bcap, tmpa + pos + 1, seglen) == 1) {
+            map_put(out, ocap, tmpa + pos + 1, seglen, 1)
         }
         pos = pos + 1 + seglen
         i = i + 1
@@ -122,21 +114,18 @@ prakriya set_intersect(a, cap, b, bcap, out) {
 
 # set_difference(a, cap, b, bcap, out) — add every element of a that is
 # NOT in b into out (fresh, empty, capacity >= cap). Returns
-# set_size(out). Segments are repacked with strb_pack before
-# map_contains (see set_union note).
+# set_size(out).
 prakriya set_difference(a, cap, b, bcap, out) {
     vitti ocap = out[0]
-    vitti tmpa = nirmmita((cap * 33 + 1) * 8)
-    vitti buf = nirmmita(40)
-    vitti nka = map_keys(a, tmpa)
+    vitti tmpa = nirmmita(cap * 33 + 1)
+    vitti nka = map_keys_bytes(a, tmpa)
     vitti pos = 0
     vitti i = 0
     vitti seglen = 0
     yavat (i < nka) {
-        seglen = tmpa[pos]
-        strb_pack(tmpa + (pos + 1) * 8, seglen, buf)
-        yadi (map_contains(b, bcap, buf, seglen) == 0) {
-            map_put(out, ocap, buf, seglen, 1)
+        seglen = char_at(tmpa, pos)
+        yadi (map_contains(b, bcap, tmpa + pos + 1, seglen) == 0) {
+            map_put(out, ocap, tmpa + pos + 1, seglen, 1)
         }
         pos = pos + 1 + seglen
         i = i + 1
@@ -145,19 +134,16 @@ prakriya set_difference(a, cap, b, bcap, out) {
 }
 
 # set_is_subset(a, cap, b, bcap) — 1 if every element of a is in b, else
-# 0. Empty a is a subset of everything. Segments are repacked with
-# strb_pack before map_contains (see set_union note).
+# 0. Empty a is a subset of everything.
 prakriya set_is_subset(a, cap, b, bcap) {
-    vitti tmpa = nirmmita((cap * 33 + 1) * 8)
-    vitti buf = nirmmita(40)
-    vitti nka = map_keys(a, tmpa)
+    vitti tmpa = nirmmita(cap * 33 + 1)
+    vitti nka = map_keys_bytes(a, tmpa)
     vitti pos = 0
     vitti i = 0
     vitti seglen = 0
     yavat (i < nka) {
-        seglen = tmpa[pos]
-        strb_pack(tmpa + (pos + 1) * 8, seglen, buf)
-        yadi (map_contains(b, bcap, buf, seglen) == 0) {
+        seglen = char_at(tmpa, pos)
+        yadi (map_contains(b, bcap, tmpa + pos + 1, seglen) == 0) {
             pratiyati 0
         }
         pos = pos + 1 + seglen
@@ -172,8 +158,8 @@ prakriya set_is_subset(a, cap, b, bcap) {
 # (strb_compare), so output is deterministic regardless of insertion
 # order or hash layout. Returns the element count.
 prakriya set_to_array(s, cap, out) {
-    vitti tmp = nirmmita((cap * 33 + 1) * 8)
-    vitti nk = map_keys(s, tmp)
+    vitti tmp = nirmmita(cap * 33 + 1)
+    vitti nk = map_keys_bytes(s, tmp)
     vitti scratch = nirmmita(cap * 32 + 1)
     vitti ptrs = nirmmita(cap * 8)
     vitti lens = nirmmita(cap * 8)
@@ -185,13 +171,19 @@ prakriya set_to_array(s, cap, out) {
     vitti woff = 0
     vitti tp = 0
     vitti tl = 0
-    # pack every segment's cells into one scratch byte area, recording
+    vitti k = 0
+    # copy every byte segment into one scratch byte area, recording
     # (byte-offset, len) pairs; strb_compare needs packed bytes.
+    # R17: segments are already bytes, so this is a plain byte copy.
     yavat (i < nk) {
-        seglen = tmp[pos]
+        seglen = char_at(tmp, pos)
         ptrs[i] = woff
         lens[i] = seglen
-        strb_pack(tmp + (pos + 1) * 8, seglen, scratch + woff)
+        k = 0
+        yavat (k < seglen) {
+            set_char(scratch, woff + k, char_at(tmp, pos + 1 + k))
+            k = k + 1
+        }
         woff = woff + seglen
         pos = pos + 1 + seglen
         i = i + 1
