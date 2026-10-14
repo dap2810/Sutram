@@ -56,7 +56,6 @@ def main() -> int:
     args = parser.parse_args()
     compiler = Path(args.compiler).resolve()
     before = Path(args.before).resolve() if args.before else None
-    parser.add_argument("--ignored", help=argparse.SUPPRESS)  # no effect, forward compatibility
     if not compiler.is_file():
         parser.error(f"compiler missing: {compiler}")
     if before and not before.is_file():
