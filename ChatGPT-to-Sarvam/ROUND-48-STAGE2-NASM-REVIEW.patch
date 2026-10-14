@@ -1,0 +1,198 @@
+--- a/src/sutram_compiler.asm
++++ b/src/sutram_compiler.asm
+@@ -6317,15 +6317,26 @@ r48_print_parse_error:
+ ; Stop before '}' or EOF, or consume ';'; do not discard a closing brace.
+ ; Abort when a safe separator cannot be found to avoid phantom errors.
+ r48_recover_stmt:
++    ; Stage 2: start at malformed statement (not the error token).
++    ; Deep expression parsing may have already passed a safe ';' boundary.
++    ; Track delimiter depth, protect enclosing '}' and original EOF.
++    push rbx
++    push r12
++    push r13
++    push r14
+     cmp qword [rel r48_stmt_valid], 1
+     jne .r48_no
+-    mov r8, [rel r48_stmt_start]     ; first token of malformed stmt
+-    mov r9, [rel token_idx]          ; offending token
++    mov r8, [rel r48_stmt_start]
++    mov r12, [rel token_idx]
+     mov r10, [rel token_cnt]
+-    cmp r8, r9
++    cmp r8, r12
+     ja .r48_no
+-    cmp r9, r10
++    cmp r12, r10
+     jae .r48_no
++    mov r9, r8
++    xor r13d, r13d                 ; parentheses depth
++    xor r14d, r14d                 ; brackets depth
++    xor ebx, ebx                   ; braces depth
+ .r48_find:
+     cmp r9, r10
+     jae .r48_no
+@@ -6334,35 +6345,75 @@ r48_recover_stmt:
+     lea r11, [rel token_arr]
+     add r11, rax
+     cmp qword [r11], TOK_EOF
+-    je .r48_found
++    je .r48_no                     ; never remove EOF and restart
+     cmp qword [r11], TOK_DELIMITER
+     jne .r48_line
+-    cmp qword [r11+8], '}'
+-    je .r48_found
+-    cmp qword [r11+8], ';'
++    mov rax, [r11+8]
++    cmp rax, '('
++    je .r48_open_paren
++    cmp rax, ')'
++    je .r48_close_paren
++    cmp rax, '['
++    je .r48_open_bracket
++    cmp rax, ']'
++    je .r48_close_bracket
++    cmp rax, '{'
++    je .r48_open_brace
++    cmp rax, '}'
++    je .r48_close_brace
++    cmp rax, ';'
+     jne .r48_line
+-    inc r9                         ; consume statement terminator
++    test r13, r13                   ; semicolon in for(...) is not stmt end
++    jnz .r48_next
++    test r14, r14
++    jnz .r48_next
++    test rbx, rbx
++    jnz .r48_next
++    inc r9                         ; consume outer statement ';'
+     jmp .r48_found
++.r48_open_paren:
++    inc r13
++    jmp .r48_next
++.r48_close_paren:
++    test r13, r13
++    jz .r48_next
++    dec r13
++    jmp .r48_next
++.r48_open_bracket:
++    inc r14
++    jmp .r48_next
++.r48_close_bracket:
++    test r14, r14
++    jz .r48_next
++    dec r14
++    jmp .r48_next
++.r48_open_brace:
++    inc rbx
++    jmp .r48_next
++.r48_close_brace:
++    test rbx, rbx
++    jz .r48_found                  ; protect enclosing block closer
++    dec rbx
++    jmp .r48_next
+ .r48_line:
+-    cmp r9, [rel token_idx]
++    cmp r9, r12
+     jbe .r48_next
+     mov rax, [r11+24]
+     cmp rax, [rel r48_error_line]
+     jbe .r48_next
+-    ; A later physical line is a conservative resync point only if it
+-    ; starts a new keyword-led statement.
+     cmp qword [r11], TOK_KEYWORD
+     jne .r48_next
++    ; Preserve conservative fallback when the subsequent physical line
++    ; has a keyword-led statement but the delimiter is missing.
+     jmp .r48_found
+ .r48_next:
+     inc r9
+     jmp .r48_find
+ .r48_found:
+     cmp r9, r8
+     jbe .r48_no
+-    ; move token slots [end, token_cnt) over [start, ...), including EOF.
+     mov rax, r9
+-    sub rax, r8                   ; tokens to drop
++    sub rax, r8
+     mov rdx, r10
+     sub rdx, rax
+     mov [rel token_cnt], rdx
+@@ -6379,10 +6430,15 @@ r48_recover_stmt:
+     imul rcx, TOKEN_SIZE
+     cld
+     rep movsb
+-    mov rax, 1
+-    ret
++    mov eax, 1
++    jmp .r48_done
+ .r48_no:
+     xor eax, eax
++.r48_done:
++    pop r14
++    pop r13
++    pop r12
++    pop rbx
+     ret
+ 
+ ; calc_src_column(rdi = token source pointer) -> rax = 1-based display column
+@@ -8831,7 +8887,15 @@ parse_primary:
+ 
+ .pp_builtin:
+     cmp rcx, TOK_BUILTIN
+-    jne .pp_paren
++    je .pp_builtin_valid
++    ; Check mode must reject stray ';', ']', ',' and other tokens here.
++    ; The legacy fallback treated every unsupported primary as '(' and
++    ; accidentally consumed tokens in later malformed declarations.
++    ; Preserve historical non-check compilation behavior unchanged.
++    cmp qword [rel r48_mode], 0
++    jne parse_error
++    jmp .pp_paren
++.pp_builtin_valid:
+     mov rbx, [rax+16]        ; builtin id
+     call advance_tok          ; consume builtin name
+     ; expect (
+@@ -9449,15 +9513,16 @@ backpatch_calls:
+     mov [rcx + r13], eax     ; write rel32 (4 bytes)
+     jmp .bc_next
+ .bc_not_found:
+-    ; B2: unresolved user calls are a compiler error, never a rel32=0 call.
+-    ; R48 uses the token's lexer position for a stable source-level
+-    ; diagnostic; normal compilation keeps the exact legacy output.
++    ; Stage 2: in check mode report every unresolved call backpatch.
++    ; Ordinary compilation still exits on the first unresolved name.
+     cmp qword [rel r48_mode], 0
+     je .bc_old_error
+     mov rdi, r14
+     call r48_print_undefined_function
+-    mov rdi, 1
+-    call os_exit
++    inc qword [rel r48_error_count]
++    cmp qword [rel r48_error_count], 8
++    jae .bc_check_fail
++    jmp .bc_next
+ .bc_old_error:
+     lea rdi, [rel msg_undefined_func]
+     call print_str_z
+@@ -9471,11 +9536,21 @@ backpatch_calls:
+     inc r12
+     jmp .bc_loop
+ .bc_done:
++    cmp qword [rel r48_mode], 0
++    je .bc_return
++    cmp qword [rel r48_error_count], 0
++    jne .bc_check_fail
++.bc_return:
+     pop r14
+     pop r13
+     pop r12
+     pop rbx
+     ret
++.bc_check_fail:
++    lea rdi, [rel r48_msg_errors]
++    call print_str_z
++    mov rdi, 1
++    call os_exit
+ 
+ ; gen_block(rax = block node)
+ gen_block:

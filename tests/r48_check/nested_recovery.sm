@@ -1,0 +1,8 @@
+mukhya() {
+    yadi (1) {
+        vitti broken_inner = ;
+        likha(4);
+    }
+    vitti broken_outer = ;
+    likha(9);
+}
