@@ -133,6 +133,24 @@ prakriya set_difference(a, cap, b, bcap, out) {
     pratiyati map_size(out)
 }
 
+# set_clear(s) — reset the set to empty in place (WS2, R19): same
+# handle, same capacity. A set IS a map, so this is map_clear's full
+# zero (count, state, keylens, vals, key bytes) with no stale
+# elements readable afterwards. Returns 1.
+prakriya set_clear(s) {
+    pratiyati map_clear(s)
+}
+
+# set_equals(a, cap, b, bcap) — 1 if a and b hold exactly the same
+# elements, else 0 (WS3, R19). Both subset checks in one call;
+# two empty sets are equal. Before this, the caller wrote both
+# set_is_subset calls by hand.
+prakriya set_equals(a, cap, b, bcap) {
+    yadi (set_is_subset(a, cap, b, bcap) == 0) { pratiyati 0 }
+    yadi (set_is_subset(b, bcap, a, cap) == 0) { pratiyati 0 }
+    pratiyati 1
+}
+
 # set_is_subset(a, cap, b, bcap) — 1 if every element of a is in b, else
 # 0. Empty a is a subset of everything.
 prakriya set_is_subset(a, cap, b, bcap) {
