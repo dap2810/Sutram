@@ -1,0 +1,5 @@
+# Empty peek must emit the same bounds trap as empty pop, exit != 0.
+mukhya() {
+    kosh a[1]
+    likha(kosh_peek(a))
+}
