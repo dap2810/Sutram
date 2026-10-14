@@ -169,6 +169,46 @@ prakriya list_remove_at(l, i) {
     pratiyati 1
 }
 
+# list_swap(l, i, j) — swap elements i and j (WS2, R20). Returns 1
+# ok / 0 if either index is out of bounds (then nothing changes).
+# Before this, swapping meant a temp variable plus two list_set
+# calls at every call site.
+prakriya list_swap(l, i, j) {
+    vitti lst = l
+    vitti a = i
+    vitti b = j
+    vitti d = 0
+    vitti t = 0
+    yadi (a < 0) { pratiyati 0 }
+    yadi (a >= lst[0]) { pratiyati 0 }
+    yadi (b < 0) { pratiyati 0 }
+    yadi (b >= lst[0]) { pratiyati 0 }
+    d = lst[2]
+    t = d[a]
+    d[a] = d[b]
+    d[b] = t
+    pratiyati 1
+}
+
+# list_reverse(l) — reverse the list in place (WS3, R20). Two-pointer
+# swap, same shape as strb_reverse. Returns 1. Before this, reversing
+# a list meant a hand-written two-index loop at every call site.
+prakriya list_reverse(l) {
+    vitti lst = l
+    vitti d = lst[2]
+    vitti i = 0
+    vitti j = lst[0] - 1
+    vitti t = 0
+    yavat (i < j) {
+        t = d[i]
+        d[i] = d[j]
+        d[j] = t
+        i = i + 1
+        j = j - 1
+    }
+    pratiyati 1
+}
+
 # list_clear(l) — empty the list, keeping the allocated capacity.
 # R19: also ZEROES the data cells (was: len reset only). The old
 # elements were reachable after a clear to anyone reading the data
