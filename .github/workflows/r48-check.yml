@@ -1,7 +1,6 @@
 name: R48 native check-mode acceptance
+# Notification-safe: no automatic runs for historical review experiments.
 on:
-  push:
-    branches: [feature/r48-check-mode-20261009]
   workflow_dispatch:
 permissions:
   contents: read
