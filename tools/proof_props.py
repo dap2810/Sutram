@@ -1979,6 +1979,83 @@ def prop_list_insert_remove(compiler, rng):
     return ok and out == "PASS", out
 
 
+def prop_map_keys_bytes_roundtrip(compiler, rng):
+    """map_keys_bytes: every inserted key appears exactly once as a packed
+    byte segment; count == map_size; total bytes add up; 33-byte keys
+    truncate to 32; old cell-form map_keys agrees on the count"""
+    fixed = ["a", "apple", "fig", "pear",
+             "abcdefghijklmnopqrstuvwxyz123456",  # exactly 32
+             "abcdefghijklmnopqrstuvwxyz1234567"]  # 33 -> truncates to 32
+    rand_keys = ["".join(rng.choice("abcde") for _ in range(rng.randint(1, 8)))
+                 for _ in range(rng.randint(0, 6))]
+    all_keys = fixed + rand_keys
+    # distinct keys after 32-byte truncation (re-put updates, no dup)
+    seen = []
+    for k in all_keys:
+        t = k[:32]
+        if t not in seen:
+            seen.append(t)
+    cap = 32
+    lines = ["ayojan map",
+             "ayojan strb",
+             "prakriya seg_count(buf, nk, key, keyn) {",
+             "    vitti pos = 0",
+             "    vitti i = 0",
+             "    vitti seglen = 0",
+             "    vitti c = 0",
+             "    yavat (i < nk) {",
+             "        seglen = char_at(buf, pos)",
+             "        yadi (seglen == keyn) {",
+             "            yadi (strb_compare(buf + pos + 1, seglen, key, keyn) == 0) { c = c + 1 }",
+             "        }",
+             "        pos = pos + 1 + seglen",
+             "        i = i + 1",
+             "    }",
+             "    pratiyati c",
+             "}",
+             "mukhya() {",
+             f"    vitti m = map_init({cap})",
+             f"    vitti tmp = nirmmita({cap} * 33 + 1)",
+             f"    vitti cells = nirmmita(({cap} * 33 + 1) * 8)"]
+    for k in all_keys:
+        lines.append(f'    map_put(m, {cap}, "{k}", {len(k)}, 1)')
+    lines.append("    vitti nk = map_keys_bytes(m, tmp)")
+    lines.append(f"    yadi (nk != {len(seen)}) {{")
+    lines.append('        likha("FAIL keys_bytes count\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append("    yadi (nk != map_size(m)) {")
+    lines.append('        likha("FAIL keys_bytes vs size\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append("    yadi (map_keys(m, cells) != nk) {")
+    lines.append('        likha("FAIL keys_bytes vs keys count\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    for k in seen:
+        lines.append(f'    yadi (seg_count(tmp, nk, "{k}", {len(k)}) != 1) {{')
+        lines.append('        likha("FAIL keys_bytes exactly once\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    total = sum(1 + len(k) for k in seen)
+    lines.append("    vitti pos = 0")
+    lines.append("    vitti i = 0")
+    lines.append("    vitti tot = 0")
+    lines.append("    yavat (i < nk) {")
+    lines.append("        tot = tot + 1 + char_at(tmp, pos)")
+    lines.append("        pos = pos + 1 + char_at(tmp, pos)")
+    lines.append("        i = i + 1")
+    lines.append("    }")
+    lines.append(f"    yadi (tot != {total}) {{")
+    lines.append('        likha("FAIL keys_bytes total bytes\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "keys_bytes", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
 def main():
     compiler = None
     for i, a in enumerate(sys.argv):
@@ -2038,6 +2115,7 @@ def main():
         ("list queue FIFO", prop_list_queue_fifo),
         ("list len tracks", prop_list_len_tracks),
         ("list insert/remove", prop_list_insert_remove),
+        ("map keys_bytes roundtrip", prop_map_keys_bytes_roundtrip),
     ]
 
     failed = []
