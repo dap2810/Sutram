@@ -1,7 +1,7 @@
 name: R49 R50 integrated native verification
+# Experimental CI is intentionally manual-only to avoid notification floods.
+# Run one full regression at a verified milestone, not at every source commit.
 on:
-  push:
-    branches: [feature/r49-r50-completion-20261009]
   workflow_dispatch:
 permissions:
   contents: read
