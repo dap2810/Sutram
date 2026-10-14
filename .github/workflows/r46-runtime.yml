@@ -1,7 +1,6 @@
 name: R46 generated native-code runtime A/B
+# Notification-safe: no automatic runs for historical review experiments.
 on:
-  push:
-    branches: [feature/r46-native-generated-code-call-optimization-20261009]
   workflow_dispatch:
 permissions:
   contents: read
