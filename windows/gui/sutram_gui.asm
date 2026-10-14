@@ -44,6 +44,15 @@ global _start
 %define EM_REPLACESEL 0xC2
 %define EM_SETREADONLY 0xCF
 %define EM_SETCHARFORMAT 0x444
+%define EM_SETBKGNDCOLOR 0x443
+; COLORREF is 0x00BBGGRR (BGR!).  Palette matches the approved mockup.
+%define COL_BG       0x001E1E1E   ; dark canvas
+%define COL_TEXT     0x00D4D4D4   ; default foreground
+%define COL_KEYWORD  0x00116DE8   ; orange  #E86D11
+%define COL_BUILTIN  0x00B0C94E   ; teal    #4EC9B0
+%define COL_STRING   0x0055996A   ; green   #6A9955
+%define COL_NUMBER   0x00E886B5   ; purple  #B586E8
+%define COL_COMMENT  0x006A6A6A   ; grey    #6A6A6A
 %define EM_GETEVENTMASK 0x43B
 %define EM_SETEVENTMASK 0x445
 %define SCF_ALL 4
@@ -1500,7 +1509,13 @@ highlight_editor:
     mov dword [rel char_fmt],60
     mov dword [rel char_fmt+4],CFM_COLOR
     mov dword [rel char_fmt+8],0
-    mov dword [rel char_fmt+20],0x202020
+    mov dword [rel char_fmt+20],COL_TEXT
+    ; dark canvas for the whole editor, matching the approved design
+    mov rcx,[rel h_editor]
+    mov edx,EM_SETBKGNDCOLOR
+    xor r8d,r8d
+    mov r9d,COL_BG
+    call send_message
     mov rcx,[rel h_editor]
     mov edx,EM_SETCHARFORMAT
     mov r8d,SCF_ALL
@@ -1541,6 +1556,68 @@ highlight_editor:
     test eax,eax
     jnz .advance
 .try_words:
+    mov al,dl
+    cmp al,'0'
+    jb .kw_begin
+    cmp al,'9'
+    ja .kw_begin
+    mov eax,[rbp-24]
+    mov [rbp-56],eax              ; number start index
+.num_loop:
+    mov r10,[rbp-16]
+    mov ax,[r10]
+    cmp ax,'0'
+    jb .num_dot
+    cmp ax,'9'
+    jbe .num_adv
+.num_dot:
+    cmp ax,'.'
+    jne .num_hex
+    ; only one '.' allowed in a decimal literal
+    mov r11,[rbp-56]
+    mov ecx,[rbp-24]
+    sub ecx,r11d
+    mov r10,[rbp-16]
+.num_dot_scan:
+    test ecx,ecx
+    jz .num_adv
+    mov ax,[r10]
+    cmp ax,'.'
+    je .num_end
+    add r10,2
+    dec ecx
+    jmp .num_dot_scan
+.num_hex:
+    ; allow hex digits a-f only when the literal starts 0x / 0X
+    mov r11,[rbp-16]
+    mov ax,[r11]
+    cmp ax,'x'
+    je .num_adv
+    cmp ax,'X'
+    je .num_adv
+    cmp ax,'a'
+    jb .num_end
+    cmp ax,'f'
+    jbe .num_adv
+    cmp ax,'A'
+    jb .num_end
+    cmp ax,'F'
+    jbe .num_adv
+    jmp .num_end
+.num_adv:
+    add qword [rbp-16],2
+    inc dword [rbp-24]
+    jmp .num_loop
+.num_end:
+    mov r8d,[rbp-56]
+    mov r9d,[rbp-24]
+    sub r9d,r8d
+    test r9d,r9d
+    jz .advance
+    mov r10d,COL_NUMBER
+    call paint_range
+    jmp .advance
+.kw_begin:
     PTR r11,kw_words
     mov [rbp-32],r11
 .kw_loop:
@@ -1595,13 +1672,13 @@ highlight_editor:
     mov r9d,r8d
     add r9d,[rbp-44]
     call send_message
-    mov dword [rel char_fmt+20],0xB56817 ; blue-ish COLORREF
+    mov dword [rel char_fmt+20],COL_KEYWORD
     mov rcx,[rel h_editor]
     mov edx,EM_SETCHARFORMAT
     mov r8d,SCF_SELECTION
     PTR r9,char_fmt
     call send_message
-    mov dword [rel char_fmt+20],0x202020
+    mov dword [rel char_fmt+20],COL_TEXT
     jmp .advance
 .kw_next:
     mov r11,[rbp-32]
@@ -1616,6 +1693,8 @@ highlight_editor:
     jmp .kw_loop
 .quoted:
     mov [rbp-48],dx
+    mov eax,[rbp-24]
+    mov [rbp-56],eax              ; string start index
     add qword [rbp-16],2
     inc dword [rbp-24]
 .quote_loop:
@@ -1640,18 +1719,36 @@ highlight_editor:
     inc dword [rbp-24]
     jmp .quote_loop
 .quote_end:
+    mov r8d,[rbp-56]
+    mov r9d,[rbp-24]
+    inc r9d                       ; include closing quote
+    sub r9d,r8d
+    mov r10d,COL_STRING
+    call paint_range
     jmp .advance
 .comment:
+    mov eax,[rbp-24]
+    mov [rbp-56],eax              ; comment start index
+.comment_loop:
     mov r10,[rbp-16]
     cmp word [r10],10
-    je .advance
+    je .comment_end
     cmp word [r10],13
-    je .advance
+    je .comment_end
     cmp word [r10],0
-    je .restore
+    je .comment_end
     add qword [rbp-16],2
     inc dword [rbp-24]
-    jmp .comment
+    jmp .comment_loop
+.comment_end:
+    mov r8d,[rbp-56]
+    mov r9d,[rbp-24]
+    sub r9d,r8d
+    test r9d,r9d
+    jz .advance
+    mov r10d,COL_COMMENT
+    call paint_range
+    jmp .advance
 .advance:
     add qword [rbp-16],2
     inc dword [rbp-24]
@@ -1664,6 +1761,28 @@ highlight_editor:
     call send_message
     mov dword [rel is_highlighting],0
 .done:
+    EPILOG
+
+; paint_range: colour editor chars [r8d, r8d+r9d). r10d = COLORREF.
+paint_range:
+    PROLOG 64
+    mov [rbp-8],r8d
+    mov [rbp-12],r9d
+    mov [rbp-16],r10d
+    mov rcx,[rel h_editor]
+    mov edx,EM_SETSEL
+    mov r8d,[rbp-8]
+    mov r9d,r8d
+    add r9d,[rbp-12]
+    call send_message
+    mov eax,[rbp-16]
+    mov dword [rel char_fmt+20],eax
+    mov rcx,[rel h_editor]
+    mov edx,EM_SETCHARFORMAT
+    mov r8d,SCF_SELECTION
+    PTR r9,char_fmt
+    call send_message
+    mov dword [rel char_fmt+20],COL_TEXT
     EPILOG
 
 ; Input AL: ASCII identifier? letters/digits/_ . eax boolean.
