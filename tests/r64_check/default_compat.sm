@@ -1,0 +1,4 @@
+# R64: unaffected codegen must be byte-identical before/after the change.
+mukhya() {
+    likha(42)
+}
