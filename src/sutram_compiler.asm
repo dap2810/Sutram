@@ -192,6 +192,9 @@ BN_KOSHPOP  equ 38   ; kosh_pop(k) -> removed value
 BN_KOSHLEN  equ 39   ; kosh_len(k) -> logical length
 BN_KOSHCAP  equ 40   ; kosh_cap(k) -> current capacity
 BN_SETCHAR  equ 41   ; R50 one-byte store into byte-packed text
+BN_KOSHCLEAR equ 42 ; R63 kosh_clear(k) -> 0; reset logical length in place
+BN_KOSHEMPTY equ 43 ; R63 kosh_empty(k) -> 1 when length=0
+BN_KOSHPEEK equ 44  ; R63 kosh_peek(k) -> last element (without popping)
 
 ; ============================================================
 ; DATA
@@ -262,6 +265,9 @@ r54_builtin_arity_table:
     db 1,1               ; 39 kosh_len
     db 1,1               ; 40 kosh_cap
     db 3,3               ; 41 set_char
+    db 1,1               ; 42 kosh_clear
+    db 1,1               ; 43 kosh_empty
+    db 1,1               ; 44 kosh_peek
 
     r48_msg_undefined db ": Sutram Error [E_UNDEFINED_FUNCTION]: unknown function '",0
     msg_err_line db 10, "Sutram Error: parse error at line ", 0
@@ -519,6 +525,9 @@ r54_builtin_arity_table:
         dq bn_koshpop,  TOK_BUILTIN, BN_KOSHPOP
         dq bn_koshlen,  TOK_BUILTIN, BN_KOSHLEN
         dq bn_koshcap,  TOK_BUILTIN, BN_KOSHCAP
+        dq bn_koshclear, TOK_BUILTIN, BN_KOSHCLEAR
+        dq bn_koshempty, TOK_BUILTIN, BN_KOSHEMPTY
+        dq bn_koshpeek, TOK_BUILTIN, BN_KOSHPEEK
         dq bn_setchar,  TOK_BUILTIN, BN_SETCHAR
     bn_table_end:
 
@@ -709,6 +718,9 @@ r54_builtin_arity_table:
     bn_koshpop  db "kosh_pop", 0
     bn_koshlen  db "kosh_len", 0
     bn_koshcap  db "kosh_cap", 0
+    bn_koshclear db "kosh_clear", 0
+    bn_koshempty db "kosh_empty", 0
+    bn_koshpeek db "kosh_peek", 0
     bn_charfr    db "char_from", 0
     bn_charup    db "char_upper", 0
     bn_charlo    db "char_lower", 0
@@ -9779,12 +9791,12 @@ parse_primary:
     pop rbx
     ret
 
-; R54: verified ABI signatures for builtin IDs 1..41.
+; R54/R63: verified ABI signatures for builtin IDs 1..44.
 ; Input rdi=id, rsi=parsed arg count, return eax=1 iff allowed.
 ; The check is before any AST argument pointer dereference in codegen.
 ; Updating a builtin ABI requires updating this table and the R54 test matrix.
 r54_builtin_arity_ok:
-    cmp rdi, 41
+    cmp rdi, 44
     ja .bad
     lea rax, [rel r54_builtin_arity_table]
     lea rax, [rax+rdi*2]
@@ -13076,8 +13088,91 @@ gen_expr:
     je .ge_call_koshlen
     cmp r12, BN_KOSHCAP
     je .ge_call_koshcap
+    cmp r12, BN_KOSHCLEAR
+    je .ge_call_koshclear
+    cmp r12, BN_KOSHEMPTY
+    je .ge_call_koshempty
+    cmp r12, BN_KOSHPEEK
+    je .ge_call_koshpop
     ; Unknown — nop
     mov dil, 0x90
+    call emit_byte
+    jmp .ge_call_done
+
+.ge_call_koshclear:
+    ; R63: clear only the kosh logical length in-place, leaving capacity
+    ; and allocation intact; element storage is unreachable via bounds checks.
+    ; The argument must be an existing typed kosh AST_VAR.
+    cmp qword [rbx+16], 1
+    jne .ge_call_kosh_bad
+    mov rax, [rbx+24]
+    cmp qword [rax], AST_VAR
+    jne .ge_call_kosh_bad
+    mov rdi, [rax+8]
+    call is_kosh_var
+    test rax, rax
+    jz .ge_call_kosh_bad
+    mov rax, [rbx+24]
+    mov rdi, [rax+8]
+    call emit_load_named_var
+    ; mov qword [rax-16],0 = 48 C7 40 F0 00 00 00 00
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    mov dil, 0x40
+    call emit_byte
+    mov dil, 0xF0
+    call emit_byte
+    xor edi, edi
+    call emit_u32
+    ; xor eax,eax = 31 C0; clear has defined return value zero.
+    mov dil, 0x31
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    jmp .ge_call_done
+
+.ge_call_koshempty:
+    ; R63: returns 1 for zero elements, 0 otherwise. No mutation.
+    cmp qword [rbx+16], 1
+    jne .ge_call_kosh_bad
+    mov rax, [rbx+24]
+    cmp qword [rax], AST_VAR
+    jne .ge_call_kosh_bad
+    mov rdi, [rax+8]
+    call is_kosh_var
+    test rax, rax
+    jz .ge_call_kosh_bad
+    mov rax, [rbx+24]
+    mov rdi, [rax+8]
+    call emit_load_named_var
+    ; mov rax,[rax-16]; test rax,rax; sete al; movzx eax,al
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x8B
+    call emit_byte
+    mov dil, 0x40
+    call emit_byte
+    mov dil, 0xF0
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x94
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0xB6
+    call emit_byte
+    mov dil, 0xC0
     call emit_byte
     jmp .ge_call_done
 
@@ -13155,6 +13250,11 @@ gen_expr:
     mov dil, 0xF0
     call emit_byte
     call emit_kosh_empty_check_r9
+    ; R63 peek shares the existing checked pop load path but must never
+    ; store a shortened length; this is compile-time selection, not a
+    ; generated conditional branch. Existing kosh_pop bytes stay unchanged.
+    cmp r12, BN_KOSHPEEK
+    je .ge_koshpeek_only
     mov dil, 0x49             ; dec r9
     call emit_byte
     mov dil, 0xFF
@@ -13169,6 +13269,16 @@ gen_expr:
     call emit_byte
     mov dil, 0xF0
     call emit_byte
+    jmp .ge_koshpop_load
+.ge_koshpeek_only:
+    ; dec r9 for index only; header [r8-16] remains untouched.
+    mov dil, 0x49
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0xC9
+    call emit_byte
+.ge_koshpop_load:
     mov dil, 0x4B             ; mov rax,[r8+r9*8]
     call emit_byte
     mov dil, 0x8B
@@ -17485,7 +17595,10 @@ expr_is_float:
     jmp .eif_done
 .eif_builtin:
     cmp qword [rbx+8], BN_KOSHPOP
+    je .eif_kosh_value
+    cmp qword [rbx+8], BN_KOSHPEEK
     jne .eif_no
+.eif_kosh_value:
     cmp qword [rbx+16], 1
     jne .eif_no
     mov rax, [rbx+24]
