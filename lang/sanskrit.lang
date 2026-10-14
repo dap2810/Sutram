@@ -1,0 +1,41 @@
+# Sutram language pack: संस्कृतम् (Sanskrit, Devanagari)
+# Format: <native word> <sanskrit keyword>
+# Usage: sutram --lang sanskrit input.sm output.bin
+#
+# The core keywords are already Sanskrit, written in Latin transliteration.
+# This pack is the same words in their own script — Devanagari — so a program
+# can be written in Devanagari and still compile to the same native machine
+# code. No new keyword is introduced; every line below is a script variant of
+# an existing core keyword.
+
+मुख्य mukhya
+वित्ति vitti
+अङ्क anka
+यदि yadi
+अन्यत्र anyatra
+यावत् yavat
+पुनरावर्तन punaravartana
+प्रतियाति pratiyati
+प्रक्रिया prakriya
+लिख likha
+पूर्ण purna
+शून्य shunya
+सूत्र sutra
+क्रम krama
+उद्देश्य uddeshya
+गुण guna
+भावना bhavana
+पङ्क्ति pankti
+सृजन srijana
+निषेध nishedha
+रचना rachana
+आयोजन ayojan
+परिग्रह parigrah
+ग्रहण grahan
+पर्यन्त to
+शब्द shabda
+दशम dasham
+कोश kosh
+कुरु kuru
+निष्क्रिय nishkriya
+सङ्ख्या sankshya
