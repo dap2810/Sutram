@@ -1,7 +1,6 @@
 name: R59 safe pre-emission no-op proof
+# Historic R59 workflow: manual-only under CI-NOTIFICATION-POLICY.md.
 on:
-  push:
-    branches: [feature/r59-proven-noop-assignment-20261014]
   workflow_dispatch:
 permissions:
   contents: read

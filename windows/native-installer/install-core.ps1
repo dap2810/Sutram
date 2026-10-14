@@ -13,6 +13,36 @@ function Log([string]$Message) {
     $stamp = [DateTime]::Now.ToString('yyyy-MM-dd HH:mm:ss')
     Add-Content -LiteralPath $LogPath -Value ("[{0}] {1}" -f $stamp,$Message) -Encoding UTF8
 }
+# No unbounded compiler preflights: a broken native compiler must not
+# freeze the Windows wizard forever inside WaitForSingleObject(INFINITE).
+# Keep the log in the user's TEMP directory and fail closed (no install).
+function Invoke-SutramSelfTest([string]$ExePath,[string]$Argument,[string]$Stage) {
+    $p = New-Object System.Diagnostics.Process
+    $p.StartInfo.FileName = $ExePath
+    $p.StartInfo.Arguments = $Argument
+    $p.StartInfo.UseShellExecute = $false
+    $p.StartInfo.RedirectStandardOutput = $true
+    $p.StartInfo.RedirectStandardError = $true
+    $p.StartInfo.CreateNoWindow = $true
+    try {
+        Log ("Native self-test start: " + $Stage)
+        if (-not $p.Start()) { throw ("Unable to start " + $Stage) }
+        if (-not $p.WaitForExit(8000)) {
+            try { $p.Kill() } catch {}
+            try { [void]$p.WaitForExit(2000) } catch {}
+            throw ("Native compiler timed out during " + $Stage + " after 8000 ms; installation aborted.")
+        }
+        $stdout = $p.StandardOutput.ReadToEnd()
+        $stderr = $p.StandardError.ReadToEnd()
+        Log ("Native self-test exit: " + $Stage + " code=" + $p.ExitCode)
+        if ($p.ExitCode -ne 0 -or [string]::IsNullOrWhiteSpace($stdout)) {
+            throw ("Native compiler failed " + $Stage + " code=" + $p.ExitCode + " stderr=" + $stderr.Trim())
+        }
+        return $stdout
+    } finally {
+        $p.Dispose()
+    }
+}
 function Normalize-PathEntry([string]$Value) {
     if ($null -eq $Value) { return '' }
     $clean = $Value.Trim().Trim('"').TrimEnd('\')
@@ -192,10 +222,8 @@ try {
         if (-not (Test-Path -LiteralPath $guiTestExe -PathType Leaf)) { throw 'Payload is missing Sutram GUI.' }
         if (-not (Test-Path -LiteralPath $guiCompiler -PathType Leaf)) { throw 'Payload is missing GUI-compatible compiler path.' }
         if (-not (Test-Path -LiteralPath $testExe -PathType Leaf)) { throw 'Payload does not contain bin\sutram.exe.' }
-        $v = & $testExe --version 2>&1 | Out-String
-        if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($v)) { throw 'Packaged sutram.exe failed its pre-install version test.' }
-        $h = & $testExe --help 2>&1 | Out-String
-        if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($h)) { throw 'Packaged sutram.exe failed its pre-install help test.' }
+        $v = Invoke-SutramSelfTest $testExe '--version' 'pre-install --version'
+        $h = Invoke-SutramSelfTest $testExe '--help' 'pre-install --help'
 
         New-Item -ItemType Directory -Force -Path $InstallDir | Out-Null
         if (Test-Path -LiteralPath (Join-Path $InstallDir 'payload.manifest.sha256') -PathType Leaf) {
@@ -208,8 +236,7 @@ try {
         [IO.File]::WriteAllText($marker,'Sutram Windows installation' + [Environment]::NewLine,([Text.UTF8Encoding]::new($false)))
 
         $installedExe = Join-Path $InstallDir 'bin\sutram.exe'
-        $check = & $installedExe --version 2>&1 | Out-String
-        if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($check)) { throw 'Installed sutram.exe failed its final validation before Windows integration.' }
+        $check = Invoke-SutramSelfTest $installedExe '--version' 'post-install --version'
 
         $binDir = Join-Path $InstallDir 'bin'
         $previousOwned = ($oldState.ContainsKey('PathOwned') -and $oldState['PathOwned'] -eq '1')
@@ -280,6 +307,10 @@ try {
         [IO.File]::WriteAllLines($statePath,$stateLines,([Text.UTF8Encoding]::new($false)))
 
         Log ('Installation complete: ' + $InstallDir)
+        # The wizard deletes its temporary staging directory after success.
+        # Preserve the actual installer log under this user's installed tree
+        # so the Round 62 auditor can examine real installation events.
+        Copy-Item -LiteralPath $LogPath -Destination (Join-Path $InstallDir 'install.log') -Force
     } finally {
         Remove-Item -LiteralPath $stage -Recurse -Force -ErrorAction SilentlyContinue
     }
