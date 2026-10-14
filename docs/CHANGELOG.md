@@ -1,30 +1,21 @@
-## v126 — ChatGPT R59 (x=x elimination) + R60 (Windows smoke) verified and SYNCED
+## v127 — Linux X11 GUI slice 20: clickable menu bar (my own stream)
 
-- **R59 accepted as a verified partial.** Proven emission-site elimination of `x=x` self-assignment
-  (no post-emission byte deletion). 9/9 hashes; builds to 184,136 B; **`R59_FROZEN_CODEGEN_ACCEPTED
-  3/3`**; **`R58_FROZEN_CODEGEN_ACCEPTED 8/8` untouched**; suite 186/3; codegen 12/12; packs 30/30;
-  graph 18/18; proofs 161/161 and 49/49; `R59_NATIVE_ACCEPTED 6` with **3 instruction-count
-  reductions**. On my runner global `g=g` measured **2.006x best / 2.186x median**; stack `x=x`
-  showed no gain; controls were noise only, matching their byte-identical claim. They correctly
-  noted `emit_reg_move_reg` already handled same-register moves rather than claiming credit.
-- **R60 is the most valuable round returned so far — two real defects I could not have found
-  without Windows.** (1) **`win\sutram.exe` HANGS**: no exit within 12 s compiling a trivial
-  program (`R60_CLI_COMPILER_TIMEOUT 12000ms`). This is a release blocker and is now ROUND-61.
-  (2) **A real ABI bug**: `GetTempPathW(nBufferLength, lpBuffer)` was called with RCX/RDX reversed,
-  crashing on Install click with `0xC0000005`. Verified their fix — both call sites now read
-  `mov ecx, MAXP` / `PTR rdx, temp_path`; their SHA matches mine exactly once normalised for CRLF
-  (they hashed on Windows, I fetch LF). **Fix merged.**
-- **R60 also verified real progress:** the GUI was rebuilt as PE64 on a real Windows runner, the
-  **7 menu names were confirmed via Win32 APIs** (File/Edit/Shell/Debug/Options/Window/Help), and
-  28/28 GUI tests passed on Windows. They explicitly did **not** visually inspect the screenshots
-  and said so rather than implying the colours and icon were confirmed — correct restraint.
-- **Sync:** 10 files (R59 compiler + tooling + fixtures + workflow; R60 installer ABI fix). Copied
-  only changed files; GUI and accepted goldens untouched. Verified on main via the tarball
-  (compiler sha `360c6d9b...`).
-- **Corrected `Sutram-Setup.exe`** rebuilt with the R60 ABI fix and delivered (578,192 B).
-- **Next:** ROUND-61 to ChatGPT — root-cause the Windows compiler hang, then close the Windows
-  acceptance loop (Run/shell stdout, per-user no-UAC install, canonical shortcut icon, screenshots
-  actually inspected). ROUND-17 to Muse remains open.
+- **The Linux GUI now has a menu bar** — File / Edit / Shell / Debug / Options / Window / Help —
+  drawn in the top strip, matching the Windows IDLE. It is **clickable**: a click opens the menu
+  (teal highlight) and draws its dropdown; File carries Open / Save / Exit, and Exit quits.
+- The GUI was **keyboard-only until now** — the event loop handled only `Expose` and `KeyPress`.
+  Slice 20 adds `ButtonPress` (opcode 4) handling with event-x/event-y hit-testing
+  (`[event+24]`/`[event+26]`).
+- **Implementation:** `draw_menu_bar`, `menu_hit` (strip hit-test), `draw_dropdown`, `menu_click`
+  (open / fire item / close) and `do_menu_action`. Save calls the existing `save_saved`; Exit sets
+  `want_quit`. Pure NASM, no new dependencies.
+- **New test `tools/test_x11_menu.py`** (slice 20 proof): clicks the File label and asserts the
+  highlight + dropdown backgrounds appear in the protocol stream, then clicks Exit and asserts the
+  process quits. **All 13 GUI tests pass.**
+- One build error caught and fixed: I referenced a non-existent `save_mode`; Ctrl-S calls
+  `save_saved` directly, so the menu Save action now does the same.
+- GUI source now ~80 KB; binary 35,000 B (was 33,384). Compiler untouched.
+- **Open rounds:** ROUND-61 with ChatGPT (Windows compiler hang), ROUND-17 with Muse.
 
 ## v125 — Linux X11 GUI slice 19: per-token syntax colouring (my own stream)
 
