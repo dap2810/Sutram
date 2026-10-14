@@ -260,6 +260,40 @@ prakriya map_clear(m) {
     pratiyati 1
 }
 
+# map_resize(m, newcap) — copy the map into a fresh map of capacity
+# newcap, rehashing every entry (WS2, R20). Returns the new handle.
+# Returns 0 and changes nothing if newcap < map_size(m) (no partial
+# copy). The old buffer is abandoned (the library has no free — same
+# as re-init); rebind: m = map_resize(m, 32). Capacity is clamped
+# to >= 1 by map_init. Before this, growing a fixed-capacity map
+# meant a hand-written re-put loop over map_keys_bytes at every
+# call site.
+prakriya map_resize(m, newcap) {
+    vitti oldcap = m[0]
+    vitti n = m[1]
+    vitti newm = 0
+    vitti nc = 0
+    vitti tmp = 0
+    vitti nk = 0
+    vitti pos = 0
+    vitti i = 0
+    vitti seglen = 0
+    vitti slot = 0
+    yadi (newcap < n) { pratiyati 0 }
+    newm = map_init(newcap)
+    nc = newm[0]
+    tmp = nirmmita(oldcap * 33 + 1)
+    nk = map_keys_bytes(m, tmp)
+    yavat (i < nk) {
+        seglen = char_at(tmp, pos)
+        slot = map_find(m, oldcap, tmp + pos + 1, seglen)
+        map_put(newm, nc, tmp + pos + 1, seglen, m[2 + 2 * oldcap + slot])
+        pos = pos + 1 + seglen
+        i = i + 1
+    }
+    pratiyati newm
+}
+
 # map_get_default(m, cap, key, keyn, def) — value for key, or def if
 # absent (WS3, R19). The -1 sentinel of map_get cannot distinguish
 # "absent" from "stored -1"; this removes the contains-check dance
