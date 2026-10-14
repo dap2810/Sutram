@@ -2056,6 +2056,167 @@ def prop_map_keys_bytes_roundtrip(compiler, rng):
     return ok and out == "PASS", out
 
 
+MIN64 = -(2 ** 63)
+MAX64 = 2 ** 63 - 1
+
+
+def _lit(v):
+    if v == MIN64:
+        return "(0 - 9223372036854775807) - 1"
+    return str(v)
+
+
+def _clamp(v):
+    return max(MIN64, min(MAX64, v))
+
+
+def _trunc_divmod(a, b):
+    q = abs(a) // abs(b)
+    if (a < 0) != (b < 0):
+        q = -q
+    return q, a - q * b
+
+
+def prop_ganita_checked_add_sub(compiler, rng):
+    """checked_add/sub ok flag + value agree with unbounded Python ints;
+    ok 0 exactly on overflow, value 0 then"""
+    cases = [(MAX64, 1), (MIN64, -1), (MAX64, -1), (MIN64, 1),
+             (MAX64, MAX64), (MIN64, MIN64), (0, 0), (MAX64, 0),
+             (MIN64, 0), (0, MIN64), (0, MAX64)]
+    for _ in range(12):
+        cases.append((rng.randint(-10 ** 6, 10 ** 6),
+                      rng.randint(-10 ** 6, 10 ** 6)))
+    for _ in range(6):
+        cases.append((MAX64 - rng.randint(0, 100), rng.randint(0, 100)))
+        cases.append((MIN64 + rng.randint(0, 100), -rng.randint(0, 100)))
+    lines = ["ayojan ganita",
+             "mukhya() {",
+             "    vitti ok = nirmmita(8)"]
+    for i, (a, b) in enumerate(cases):
+        for op, fn, tag in (("+", "ganita_checked_add", "add"),
+                            ("-", "ganita_checked_sub", "sub")):
+            true = a + b if op == "+" else a - b
+            want_ok = 1 if MIN64 <= true <= MAX64 else 0
+            want_val = true if want_ok else 0
+            lines.append(f"    vitti r{i}{tag} = {fn}({_lit(a)}, {_lit(b)}, ok)")
+            lines.append(f"    yadi (ok[0] != {want_ok}) {{")
+            lines.append(f'        likha("FAIL checked {op} ok\\n")')
+            lines.append("        pratiyati 1")
+            lines.append("    }")
+            lines.append(f"    yadi (r{i}{tag} != {_lit(want_val)}) {{")
+            lines.append(f'        likha("FAIL checked {op} value\\n")')
+            lines.append("        pratiyati 1")
+            lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "gan_checked_as", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_ganita_checked_mul(compiler, rng):
+    """checked_mul ok flag + value agree with unbounded Python ints"""
+    cases = [(MAX64, 2), (MAX64, MAX64), (MIN64, -1), (MIN64, 2),
+             (MIN64, -2), (MIN64, MIN64), (MAX64, -1), (0, MAX64),
+             (1, MIN64), (-1, MIN64), (2 ** 32, 2 ** 32),
+             (3037000500, 3037000500), (3037000499, 3037000499),
+             (0, 0), (1, 1), (-1, -1)]
+    for _ in range(12):
+        cases.append((rng.randint(-10 ** 6, 10 ** 6),
+                      rng.randint(-10 ** 6, 10 ** 6)))
+    for _ in range(4):
+        cases.append((rng.choice([2 ** rng.randint(1, 62),
+                                  -(2 ** rng.randint(1, 62))]),
+                      rng.randint(-1000, 1000)))
+    lines = ["ayojan ganita",
+             "mukhya() {",
+             "    vitti ok = nirmmita(8)"]
+    for i, (a, b) in enumerate(cases):
+        true = a * b
+        want_ok = 1 if MIN64 <= true <= MAX64 else 0
+        want_val = true if want_ok else 0
+        lines.append(f"    vitti m{i} = ganita_checked_mul({_lit(a)}, {_lit(b)}, ok)")
+        lines.append(f"    yadi (ok[0] != {want_ok}) {{")
+        lines.append('        likha("FAIL checked mul ok\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+        lines.append(f"    yadi (m{i} != {_lit(want_val)}) {{")
+        lines.append('        likha("FAIL checked mul value\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "gan_checked_mul", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_ganita_checked_divmod(compiler, rng):
+    """checked_div/mod agree with truncating Python division;
+    ok 0 exactly on b == 0 or INT64_MIN / -1"""
+    cases = [(MIN64, -1), (MIN64, 1), (MAX64, -1), (7, 0), (-7, 0),
+             (0, 0), (-7, 2), (7, -2), (-7, -2), (7, 2), (0, 5),
+             (5, 5), (MIN64, 2), (MAX64, 3)]
+    for _ in range(12):
+        cases.append((rng.randint(-10 ** 6, 10 ** 6),
+                      rng.randint(-10, 10)))
+    lines = ["ayojan ganita",
+             "mukhya() {",
+             "    vitti ok = nirmmita(8)"]
+    for i, (a, b) in enumerate(cases):
+        bad = b == 0 or (a == MIN64 and b == -1)
+        if bad:
+            want_ok, want_q, want_r = 0, 0, 0
+        else:
+            want_ok = 1
+            want_q, want_r = _trunc_divmod(a, b)
+        lines.append(f"    vitti q{i} = ganita_checked_div({_lit(a)}, {_lit(b)}, ok)")
+        lines.append(f"    yadi (ok[0] != {want_ok}) {{")
+        lines.append('        likha("FAIL checked div ok\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+        lines.append(f"    yadi (q{i} != {_lit(want_q)}) {{")
+        lines.append('        likha("FAIL checked div value\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+        lines.append(f"    vitti r{i} = ganita_checked_mod({_lit(a)}, {_lit(b)}, ok)")
+        lines.append(f"    yadi (ok[0] != {want_ok}) {{")
+        lines.append('        likha("FAIL checked mod ok\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+        lines.append(f"    yadi (r{i} != {_lit(want_r)}) {{")
+        lines.append('        likha("FAIL checked mod value\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "gan_checked_dm", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_ganita_sat(compiler, rng):
+    """sat_add/sub/mul equal Python results clamped to [MIN64, MAX64]"""
+    cases = [(MAX64, 1), (MIN64, -1), (MAX64, -1), (MIN64, 1),
+             (MAX64, MAX64), (MIN64, MIN64), (MIN64, -2),
+             (MIN64, 2), (0, 0), (2, 3)]
+    for _ in range(10):
+        cases.append((rng.randint(-10 ** 6, 10 ** 6),
+                      rng.randint(-10 ** 6, 10 ** 6)))
+    lines = ["ayojan ganita",
+             "mukhya() {"]
+    for i, (a, b) in enumerate(cases):
+        for op, fn in (("+", "ganita_sat_add"),
+                       ("-", "ganita_sat_sub"),
+                       ("*", "ganita_sat_mul")):
+            true = {"+": a + b, "-": a - b, "*": a * b}[op]
+            lines.append(f"    yadi ({fn}({_lit(a)}, {_lit(b)}) != {_lit(_clamp(true))}) {{")
+            lines.append(f'        likha("FAIL sat {op}\\n")')
+            lines.append("        pratiyati 1")
+            lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "gan_sat", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
 def main():
     compiler = None
     for i, a in enumerate(sys.argv):
@@ -2116,6 +2277,10 @@ def main():
         ("list len tracks", prop_list_len_tracks),
         ("list insert/remove", prop_list_insert_remove),
         ("map keys_bytes roundtrip", prop_map_keys_bytes_roundtrip),
+        ("ganita checked add/sub", prop_ganita_checked_add_sub),
+        ("ganita checked mul", prop_ganita_checked_mul),
+        ("ganita checked div/mod", prop_ganita_checked_divmod),
+        ("ganita saturating", prop_ganita_sat),
     ]
 
     failed = []
