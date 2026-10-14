@@ -25,7 +25,7 @@ try {
         }
     }
     if (-not $main) { throw 'Window did not appear within 10 seconds' }
-    if ($main.Current.Name -ne 'Sutram - Native Windows IDE (Preview)') { throw "Wrong window title: $($main.Current.Name)" }
+    if ($main.Current.Name -ne 'Sutram Shell 1.0') { throw "Wrong window title: $($main.Current.Name)" }
     Write-Host 'PASS GUI window/title' -ForegroundColor Green
     $desc = $main.FindAll('Descendants',[System.Windows.Automation.Condition]::TrueCondition)
     $run = $null
