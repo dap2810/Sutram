@@ -1,7 +1,8 @@
 name: R59 safe pre-emission no-op proof
+# Run only when intentionally requested. Do not launch another full
+# verification job for each small source or evidence commit: that created
+# repeated failed CI notifications while independent blockers were under review.
 on:
-  push:
-    branches: [feature/r59-proven-noop-assignment-20261014]
   workflow_dispatch:
 permissions:
   contents: read
