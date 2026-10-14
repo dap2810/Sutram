@@ -238,6 +238,12 @@ prakriya map_size(m) {
 # map_keys(m, out) — write live keys into out in length-prefixed form
 # [len0, b0, b1, ..., len1, b0, ...] (same shape as str_split parts).
 # Returns the key count, which equals map_size(m).
+# NOTE: segments are QWORD CELLS (len in one cell, one byte per cell),
+# kept for backward compatibility. New code should use map_keys_bytes
+# below, which returns the same segments as packed bytes — the form
+# every key consumer (map_put, map_contains, strb_compare) actually
+# takes. Passing a map_keys segment straight to a byte-key consumer
+# compiles and silently compares the wrong bytes (the R14 trap).
 prakriya map_keys(m, out) {
     vitti cap = m[0]
     vitti i = 0
@@ -255,6 +261,41 @@ prakriya map_keys(m, out) {
             # length overwrites it (or it trails harmlessly).
             # Cell index -> byte offset: (wpos + 1) * 8.
             strb_unpack(m + base, kl, out + (wpos + 1) * 8)
+            wpos = wpos + 1 + kl
+            n = n + 1
+        }
+        i = i + 1
+    }
+    pratiyati n
+}
+
+# map_keys_bytes(m, out) — R17. Same segments as map_keys, but PACKED
+# BYTES: [len-byte, bytes..., len-byte, bytes...], one length byte
+# followed by the key's bytes, no terminator. Returns the key count,
+# which equals map_size(m). Caller allocates cap * 33 bytes (each key
+# is <= 32 bytes plus 1 length byte; at most cap keys).
+# Keys are stored as packed bytes inside the map, so this is a straight
+# byte copy — no unpack/pack round-trip. Segments can be passed
+# directly to map_put / map_contains / strb_compare with no repacking;
+# that is the whole point (see map_keys note above).
+prakriya map_keys_bytes(m, out) {
+    vitti cap = m[0]
+    vitti i = 0
+    vitti wpos = 0
+    vitti n = 0
+    vitti kl = 0
+    vitti base = 0
+    vitti k = 0
+    yavat (i < cap) {
+        yadi (m[2 + i] == 1) {
+            kl = m[2 + cap + i]
+            base = (2 + 3 * cap) * 8 + i * 32
+            set_char(out, wpos, kl)
+            k = 0
+            yavat (k < kl) {
+                set_char(out, wpos + 1 + k, char_at(m, base + k))
+                k = k + 1
+            }
             wpos = wpos + 1 + kl
             n = n + 1
         }
