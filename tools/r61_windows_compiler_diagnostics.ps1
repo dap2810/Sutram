@@ -104,11 +104,13 @@ $help = Invoke-Bounded $reference '--help' 'fresh-help'
 $check = Invoke-Bounded $reference ('--check "' + $fixture + '"') 'fresh-check'
 $exe = Join-Path $ResultsDir 'fresh-program.exe'
 $compiled = Invoke-Bounded $reference ('"' + $fixture + '" "' + $exe + '"') 'fresh-compile' $exe
-if (!$compiled.TimedOut -and $compiled.Exit -eq 0 -and (Test-Path -LiteralPath $exe -PathType Leaf)) {
+$accepted = $false
+if (!$compiled.TimedOut -and !$compiled.Oversize -and $compiled.Exit -eq 0 -and (Test-Path -LiteralPath $exe -PathType Leaf)) {
     Write-Host ("R61_PE_NORMAL_SIZE bytes=" + (Get-Item -LiteralPath $exe).Length)
     if ((Get-Item -LiteralPath $exe).Length -gt 65536) { throw "R61 PE output unexpectedly exceeds 64 KiB" }
     $prog = Invoke-Bounded $exe '' 'fresh-program'
-    if (!$prog.TimedOut -and $prog.Exit -eq 0 -and $prog.Stdout.Contains('WIN_NATIVE_TEST_OK')) {
+    if (!$prog.TimedOut -and !$prog.Oversize -and $prog.Exit -eq 0 -and $prog.Stdout.Trim() -eq 'WIN_NATIVE_TEST_OK') {
+        $accepted = $true
         Write-Host 'R61_WINDOWS_COMPILE_EXECUTE_PASS'
     } else {
         Write-Host 'R61_WINDOWS_COMPILE_EXECUTE_FAIL: generated PE runtime failed'
@@ -118,3 +120,4 @@ if (!$compiled.TimedOut -and $compiled.Exit -eq 0 -and (Test-Path -LiteralPath $
 }
 Write-Host "R61_DIAGNOSTICS_COMPLETE $ResultsDir"
 Write-Host 'Interpretation: probe 0/1/2 isolate bootstrap, probe 3 file read (exit=source byte length), probe 4 graph, 5 import expansion, 6 lexer, 7 parser. A completing probe does NOT prove downstream phases.'
+if (-not $accepted) { throw 'R61 Windows compiler/generated-runtime acceptance failed; inspect bounded stage logs.' }
