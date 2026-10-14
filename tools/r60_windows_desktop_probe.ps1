@@ -21,6 +21,7 @@ using System.Text;
 using System.Runtime.InteropServices;
 public static class SutramR60Native {
  [DllImport("user32.dll")] public static extern IntPtr GetMenu(IntPtr hwnd);
+ [DllImport("user32.dll")] public static extern IntPtr GetDlgItem(IntPtr hwnd, int id);
  [DllImport("user32.dll")] public static extern int GetMenuItemCount(IntPtr hMenu);
  [DllImport("user32.dll", EntryPoint="GetMenuStringW", CharSet=CharSet.Unicode)]
  public static extern int GetMenuString(IntPtr hMenu, uint index, StringBuilder text, int capacity, uint flags);
@@ -105,6 +106,10 @@ function Open-Window([string]$Path,[string]$Name,[string]$WorkingDirectory) {
                 if($menuLabel -ne $expected[$i]){throw ("Menu mismatch "+$i+": "+$menuLabel)}
             }
             Report 'R60_MENU_7_OF_7_CONFIRMED via Windows user32 GetMenu/GetMenuStringW'
+            foreach($id in @(101,102,103,104,105,106,201,202,203,204,205)) {
+                $child=[SutramR60Native]::GetDlgItem($found,[int]$id)
+                Report ("R60_NATIVE_CHILD id="+$id+" hwnd="+$child.ToInt64())
+            }
         }
         [void](Capture-Desktop $Name)
     } finally {
