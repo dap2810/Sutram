@@ -1,0 +1,17 @@
+# R63 FIFO: dequeue oldest, while peek reports newest and pop is still LIFO.
+mukhya() {
+    kosh q[1]
+    likha(kosh_empty(q))
+    likha(kosh_enqueue(q, 11))
+    likha(kosh_enqueue(q, 22))
+    likha(kosh_enqueue(q, 33))
+    likha(kosh_dequeue(q))
+    likha(kosh_peek(q))
+    likha(kosh_len(q))
+    likha(kosh_dequeue(q))
+    likha(kosh_dequeue(q))
+    likha(kosh_empty(q))
+    likha(kosh_enqueue(q, 44))
+    likha(kosh_dequeue(q))
+    likha(kosh_len(q))
+}
