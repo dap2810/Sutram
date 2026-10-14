@@ -1,7 +1,6 @@
 name: R52 native builtin defects and full backwards compatibility
+# Historical experiment: manual-only to prevent failure-email flood.
 on:
-  push:
-    branches: [feature/r52-stdlib-compiler-defects-20261010]
   workflow_dispatch:
 permissions:
   contents: read
