@@ -1,7 +1,7 @@
 name: R55 mutual recursion with verified forward prototypes
+# Experimental CI is intentionally manual-only to avoid notification floods.
+# Run one full regression at a verified milestone, not at every source commit.
 on:
-  push:
-    branches: [feature/r55-forward-prototypes-20261013]
   workflow_dispatch:
 permissions:
   contents: read
