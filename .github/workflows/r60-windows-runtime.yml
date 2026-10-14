@@ -23,10 +23,29 @@ jobs:
         shell: powershell
         run: |
           powershell.exe -NoProfile -File tools/r60_windows_desktop_probe.ps1 -ResultsDir "$env:RUNNER_TEMP\sutram-r60"
-      - name: Static Windows GUI unit checks
+      - name: Static Windows GUI unit checks (UTF-8 text, not cp1252)
         shell: pwsh
+        env:
+          PYTHONUTF8: "1"
         run: |
           python -m unittest discover -s tests/gui -p "test_*.py" -v
+      - name: Run RichEdit UIAutomation compile-and-run smoke
+        shell: powershell
+        run: |
+          powershell.exe -NoProfile -File windows/gui/test-gui.ps1 -Exe "$env:RUNNER_TEMP\sutram-r60\idle-test\sutram-ide-gui.exe"
+      - name: Source-build Win64 GUI (no C framework)
+        shell: pwsh
+        run: |
+          $ErrorActionPreference='Stop'
+          if (-not (Get-Command nasm.exe -ErrorAction SilentlyContinue)) {
+            choco install nasm --no-progress -y
+            if ($LASTEXITCODE -ne 0) { throw 'Chocolatey NASM acquisition failed on ephemeral test runner.' }
+          }
+          $env:PATH = "C:\msys64\ucrt64\bin;C:\msys64\mingw64\bin;C:\ProgramData\chocolatey\bin;" + $env:PATH
+          & .\windows\gui\build-gui.ps1
+          if ($LASTEXITCODE -ne 0) { throw 'Win64 source GUI failed to assemble/link.' }
+          (Get-FileHash .\sutram-ide-gui.exe -Algorithm SHA256).Hash
+
       - name: Upload screenshot and exact Windows result logs
         if: always()
         uses: actions/upload-artifact@v4
