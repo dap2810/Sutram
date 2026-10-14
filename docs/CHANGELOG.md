@@ -1,3 +1,25 @@
+## v135 — ChatGPT R64 (kosh diagnostics) + Muse R21 (kosh spec) verified and SYNCED
+
+- **R64 accepted — I built and ran it.** Compiler builds (189,480 B); all R64 gates pass: the three
+  empty-kosh diagnostics (`kosh pop` unchanged, new `kosh peek`, new `kosh dequeue`), `kosh_nonempty`
+  exact stdout, `default_compat` exact stdout, and the A/B ChatGPT could not run —
+  **`R64_DEFAULT_BINARY_IDENTICAL_PASS bytes=300`** (default binary byte-identical pre/post R64).
+  R63 acceptance still 9 gates; suite **187/3**; codegen **12/12**; packs **33/33**; graph **OK**;
+  proofs **170/170** and **60/60**; R58 **8/8**; R59 **3/3**.
+- **Muse R21 accepted.** Patch clean; **12/12 hashes**; proof_lib **172/172** (was 170), proof_props
+  **62/62** (was 60), suite **187/3**; library now **21 modules / 268 functions**. The compiler-side
+  `kosh` builtin spec was written, including that `kosh_clear` zeroes the logical length but does NOT
+  erase storage.
+- **Process change recorded:** ChatGPT has now reported the same environment limit three rounds running
+  (no NASM/Windows/Wine/PowerShell), declining execution work. ROUND-65 therefore restructures their
+  brief: **they do source work and static reasoning; I do all native execution and Windows testing.**
+  Unverified source I can build and test is worth more than a third consecutive "NOT IMPLEMENTED".
+- **23 files synced** (R64 compiler + tools + 7 fixtures + doc; R21 library + docs + 4 fixtures).
+- **Next:** ROUND-65 to ChatGPT (implement the two peepholes and the default-OFF overflow trap even
+  untested; extend Devanagari past the core keywords; document the legacy HKLM installer honestly).
+  ROUND-22 to Muse (reconcile the kosh spec with the shipped diagnostics, remaining container gaps,
+  accumulated small gaps, final trap-vs-checked note).
+
 ## v134 — ChatGPT R63 (kosh builtins) + Muse R20 (string surface) verified and SYNCED
 
 - **R63 accepted — and I ran the gates they could not.** ChatGPT marked it source-level only; I
