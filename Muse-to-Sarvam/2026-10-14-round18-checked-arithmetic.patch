@@ -1,0 +1,692 @@
+diff --git a/docs/sutram-stdlib.html b/docs/sutram-stdlib.html
+index cbbd2ae..abddf42 100644
+--- a/docs/sutram-stdlib.html
++++ b/docs/sutram-stdlib.html
+@@ -26,7 +26,7 @@ Do not edit by hand.</p>
+ <li><a href="#bigint"><code>bigint</code></a> — 12 functions</li>
+ <li><a href="#chandas"><code>chandas</code></a> — 6 functions</li>
+ <li><a href="#fmt"><code>fmt</code></a> — 23 functions</li>
+-<li><a href="#ganita"><code>ganita</code></a> — 6 functions</li>
++<li><a href="#ganita"><code>ganita</code></a> — 14 functions</li>
+ <li><a href="#hash"><code>hash</code></a> — 2 functions</li>
+ <li><a href="#kalana"><code>kalana</code></a> — 6 functions</li>
+ <li><a href="#list"><code>list</code></a> — 21 functions</li>
+@@ -120,7 +120,7 @@ Do not edit by hand.</p>
+ <tr><td><code>fmt_sign_char(v, signch, out)</code></td><td>fmt_sign_char(v, signch, out) — `signch` (a byte value, e.g. 32 for a blank, 43 for &#x27;+&#x27;) in place of &#x27;+&#x27; for non-negative values; negatives always get &#x27;-&#x27;.</td></tr>
+ </table>
+ <h2 id="ganita"><code>ganita</code></h2>
+-<p class="mod-desc">After Aryabhata&#x27;s Kuttaka (~499 CE) and the Chakravala of Jayadeva and Bhaskara II (~1150 CE). KUTTAKA (&quot;the pulveriser&quot;) solves the linear indeterminate equation ax + by = c. It is the ancestor of the extended Euclidean algorithm. CHAKRAVALA (&quot;the wheel&quot;) solves the quadratic indeterminate equation x^2 - N*y^2 = 1, known in Europe as Pell&#x27;s equation. It was the first complete method for it, and for N = 61 it gives x = 1766319049, y = 226153980 - a case Europe first solved in 1657. kuttaka(a, b, c) -&gt; x such that a*x is congruent to c (mod b). Requires gcd(a, b) to divide c. Returns x (a particular solution).</p>
++<p class="mod-desc">After Aryabhata&#x27;s Kuttaka (~499 CE) and the Chakravala of Jayadeva and Bhaskara II (~1150 CE). KUTTAKA (&quot;the pulveriser&quot;) solves the linear indeterminate equation ax + by = c. It is the ancestor of the extended Euclidean algorithm. CHAKRAVALA (&quot;the wheel&quot;) solves the quadratic indeterminate equation x^2 - N*y^2 = 1, known in Europe as Pell&#x27;s equation. It was the first complete method for it, and for N = 61 it gives x = 1766319049, y = 226153980 - a case Europe first solved in 1657. CHECKED / SATURATING ARITHMETIC (R18) lives here too: ganita is the arithmetic module. See the notes above ganita_checked_add. kuttaka(a, b, c) -&gt; x such that a*x is congruent to c (mod b). Requires gcd(a, b) to divide c. Returns x (a particular solution).</p>
+ <table>
+ <tr><th>Function</th><th>Description</th></tr>
+ <tr><td><code>kuttaka(a, b, c)</code></td><td></td></tr>
+@@ -129,6 +129,14 @@ Do not edit by hand.</p>
+ <tr><td><code>chakravala(out, n)</code></td><td>chakravala(out, n): solves x^2 - n*y^2 = 1 for least positive x, y. Fills out[0] = x and out[1] = y.</td></tr>
+ <tr><td><code>samasa(out, a, b, c, d, n)</code></td><td>samasa(out, a, b, c, d, n): Brahmagupta&#x27;s composition law (bhavana / samasa). Given a^2 - n*b^2 = k1 and c^2 - n*d^2 = k2, composes them into a third: (a^2 - n*b^2)(c^2 - n*d^2) = (a*c + n*b*d)^2 - n*(a*d + b*c)^2 Fills out[0] = a*c + n*b*d  and  out[1] = a*d + b*c.</td></tr>
+ <tr><td><code>brahmagupta_area(a, b, c, d)</code></td><td>brahmagupta_area(a, b, c, d): Brahmagupta&#x27;s formula for the area of a cyclic quadrilateral (Brahma-sphuta-siddhanta, 628 CE):  area = sqrt((s-a)(s-b)(s-c)(s-d)),  s = (a+b+c+d)/2. With d = 0 this is Brahmagupta&#x27;s triangle (Heron&#x27;s) formula. Returns the integer part.</td></tr>
++<tr><td><code>ganita_checked_add(a, b, ok)</code></td><td>ganita_checked_add(a, b, ok) — a + b; ok[0] 1, or 0 on overflow (returns 0 then).</td></tr>
++<tr><td><code>ganita_checked_sub(a, b, ok)</code></td><td>ganita_checked_sub(a, b, ok) — a - b; ok[0] 1, or 0 on overflow (returns 0 then).</td></tr>
++<tr><td><code>ganita_checked_mul(a, b, ok)</code></td><td>ganita_checked_mul(a, b, ok) — a * b; ok[0] 1, or 0 on overflow (returns 0 then). The check is m / a == b, with the INT64_MIN * -1 case handled explicitly (the division itself would SIGFPE there).</td></tr>
++<tr><td><code>ganita_checked_div(a, b, ok)</code></td><td>ganita_checked_div(a, b, ok) — truncating a / b; ok[0] 1, or 0 on division by zero or INT64_MIN / -1 (both would SIGFPE; returns 0).</td></tr>
++<tr><td><code>ganita_checked_mod(a, b, ok)</code></td><td>ganita_checked_mod(a, b, ok) — truncating a % b (remainder takes the dividend&#x27;s sign); ok[0] 1, or 0 on b == 0 or INT64_MIN % -1.</td></tr>
++<tr><td><code>ganita_sat_add(a, b)</code></td><td>ganita_sat_add(a, b) — a + b, SATURATING: on overflow returns INT64_MAX (positive overflow) or INT64_MIN (negative overflow).</td></tr>
++<tr><td><code>ganita_sat_sub(a, b)</code></td><td>ganita_sat_sub(a, b) — a - b, saturating (see ganita_sat_add).</td></tr>
++<tr><td><code>ganita_sat_mul(a, b)</code></td><td>ganita_sat_mul(a, b) — a * b, saturating (see ganita_sat_add). The overflow direction is the sign of the true product.</td></tr>
+ </table>
+ <h2 id="hash"><code>hash</code></h2>
+ <p class="mod-desc">FNV-1a (Fowler–Noll–Vo) 32-bit hash. Deterministic, fast, good distribution for non-cryptographic use (hash tables, checksums, dedup keys). Reference: http://www.isthe.com/chongo/tech/comp/fnv/ offset_basis = 2166136261 prime        = 16777619 for each byte b: hash = (hash XOR b) * prime  (mod 2^32) fnv1a(s, len) — FNV-1a 32-bit hash of first `len` chars of pankti `s`. Returns an unsigned 32-bit value (may print as negative via likha).</p>
+@@ -379,6 +387,6 @@ Do not edit by hand.</p>
+ <tr><td><code>bool_to_int(b)</code></td><td></td></tr>
+ <tr><td><code>int_max()</code></td><td></td></tr>
+ </table>
+-<footer>21 modules, 231 functions. Generated from library sources.</footer>
++<footer>21 modules, 239 functions. Generated from library sources.</footer>
+ </body>
+ </html>
+diff --git a/lib/ganita.smlib b/lib/ganita.smlib
+index ae84373..985a087 100644
+--- a/lib/ganita.smlib
++++ b/lib/ganita.smlib
+@@ -8,6 +8,9 @@
+ # CHAKRAVALA ("the wheel") solves the quadratic indeterminate equation x^2 - N*y^2 = 1,
+ # known in Europe as Pell's equation. It was the first complete method for it, and for
+ # N = 61 it gives x = 1766319049, y = 226153980 - a case Europe first solved in 1657.
++#
++# CHECKED / SATURATING ARITHMETIC (R18) lives here too: ganita is the
++# arithmetic module. See the notes above ganita_checked_add.
+ 
+ # kuttaka(a, b, c) -> x such that a*x is congruent to c (mod b).
+ # Requires gcd(a, b) to divide c. Returns x (a particular solution).
+@@ -122,3 +125,235 @@ prakriya brahmagupta_area(a, b, c, d) {
+     yadi (p < 0) { pratiyati 0 }
+     pratiyati ganita_isqrt(p)
+ }
++
++# --- checked / saturating integer arithmetic (R18) ---
++#
++# MECHANISM (decided, with reasoning): these functions are OPT-IN.
++# The plain `+ - * / %` operators are UNCHANGED and still wrap
++# silently — changing them needs a compiler change (see the follow-on
++# proposal at the end of this section), and silently changing every
++# program's arithmetic would rewrite accepted behaviour. Instead,
++# code that must not be wrong calls a checked function and reads
++# ok[0] (the str_to_int ok-pattern: ok is a 1-cell pankti). On
++# failure the function returns 0 — never the wrapped value — so a
++# caller that forgets to check ok gets an obviously-wrong 0, not a
++# plausible-but-wrong wrapped value.
++#
++# What the operators do today (measured, R18, current compiler):
++#   + - * overflow  -> silent two's-complement wrap
++#   / % by zero     -> hardware SIGFPE: the process DIES (exit 136),
++#                      with no diagnostic naming the operation
++#   INT64_MIN / -1  -> same SIGFPE (idiv overflow)
++#   INT64_MIN % -1  -> same SIGFPE
++#   INT64_MIN * -1  -> silent wrap to INT64_MIN
++# So division is already "loud" in the sense that the process dies,
++# but undiagnosed and unrecoverable. The checked functions give the
++# diagnosed, recoverable path: ok[0] = 0 and the program continues.
++#
++# FOLLOW-ON (needs src/ changes, NOT done here): a compiler trap —
++# emit a conditional check after each arithmetic op (jo/jno on the
++# overflow flag for + - *, a zero-divisor guard before idiv) that
++# aborts with a diagnostic naming file:line and the operation. The
++# checked functions here are the library-level half of that work
++# and would stay as the explicit form even after a trap exists.
++#
++# Bounds used below: MAX = 9223372036854775807, MIN is written as
++# (0 - 9223372036854775807) - 1 (no MIN literal exists).
++
++# ganita_checked_add(a, b, ok) — a + b; ok[0] 1, or 0 on overflow
++# (returns 0 then).
++prakriya ganita_checked_add(a, b, ok) {
++    vitti x = a
++    vitti y = b
++    vitti okp = ok
++    vitti s = x + y
++    yadi (x >= 0) {
++        yadi (y >= 0) {
++            yadi (s < 0) {
++                okp[0] = 0
++                pratiyati 0
++            }
++        }
++    } anyatra {
++        yadi (y < 0) {
++            yadi (s >= 0) {
++                okp[0] = 0
++                pratiyati 0
++            }
++        }
++    }
++    okp[0] = 1
++    pratiyati s
++}
++
++# ganita_checked_sub(a, b, ok) — a - b; ok[0] 1, or 0 on overflow
++# (returns 0 then).
++prakriya ganita_checked_sub(a, b, ok) {
++    vitti x = a
++    vitti y = b
++    vitti okp = ok
++    vitti d = x - y
++    yadi (x >= 0) {
++        yadi (y < 0) {
++            yadi (d < 0) {
++                okp[0] = 0
++                pratiyati 0
++            }
++        }
++    } anyatra {
++        yadi (y >= 0) {
++            yadi (d >= 0) {
++                okp[0] = 0
++                pratiyati 0
++            }
++        }
++    }
++    okp[0] = 1
++    pratiyati d
++}
++
++# ganita_checked_mul(a, b, ok) — a * b; ok[0] 1, or 0 on overflow
++# (returns 0 then). The check is m / a == b, with the INT64_MIN * -1
++# case handled explicitly (the division itself would SIGFPE there).
++prakriya ganita_checked_mul(a, b, ok) {
++    vitti x = a
++    vitti y = b
++    vitti okp = ok
++    vitti m = 0
++    vitti minv = (0 - 9223372036854775807) - 1
++    yadi (x == 0) {
++        okp[0] = 1
++        pratiyati 0
++    }
++    yadi (y == 0) {
++        okp[0] = 1
++        pratiyati 0
++    }
++    yadi (x == minv) {
++        yadi (y == 0 - 1) {
++            okp[0] = 0
++            pratiyati 0
++        }
++    }
++    yadi (y == minv) {
++        yadi (x == 0 - 1) {
++            okp[0] = 0
++            pratiyati 0
++        }
++    }
++    m = x * y
++    yadi (m / x != y) {
++        okp[0] = 0
++        pratiyati 0
++    }
++    okp[0] = 1
++    pratiyati m
++}
++
++# ganita_checked_div(a, b, ok) — truncating a / b; ok[0] 1, or 0 on
++# division by zero or INT64_MIN / -1 (both would SIGFPE; returns 0).
++prakriya ganita_checked_div(a, b, ok) {
++    vitti x = a
++    vitti y = b
++    vitti okp = ok
++    vitti minv = (0 - 9223372036854775807) - 1
++    yadi (y == 0) {
++        okp[0] = 0
++        pratiyati 0
++    }
++    yadi (x == minv) {
++        yadi (y == 0 - 1) {
++            okp[0] = 0
++            pratiyati 0
++        }
++    }
++    okp[0] = 1
++    pratiyati x / y
++}
++
++# ganita_checked_mod(a, b, ok) — truncating a % b (remainder takes the
++# dividend's sign); ok[0] 1, or 0 on b == 0 or INT64_MIN % -1.
++prakriya ganita_checked_mod(a, b, ok) {
++    vitti x = a
++    vitti y = b
++    vitti okp = ok
++    vitti minv = (0 - 9223372036854775807) - 1
++    yadi (y == 0) {
++        okp[0] = 0
++        pratiyati 0
++    }
++    yadi (x == minv) {
++        yadi (y == 0 - 1) {
++            okp[0] = 0
++            pratiyati 0
++        }
++    }
++    okp[0] = 1
++    pratiyati x % y
++}
++
++# ganita_sat_add(a, b) — a + b, SATURATING: on overflow returns
++# INT64_MAX (positive overflow) or INT64_MIN (negative overflow).
++prakriya ganita_sat_add(a, b) {
++    vitti x = a
++    vitti y = b
++    vitti maxv = 9223372036854775807
++    vitti minv = (0 - 9223372036854775807) - 1
++    vitti s = x + y
++    yadi (x >= 0) {
++        yadi (y >= 0) {
++            yadi (s < 0) { pratiyati maxv }
++        }
++    } anyatra {
++        yadi (y < 0) {
++            yadi (s >= 0) { pratiyati minv }
++        }
++    }
++    pratiyati s
++}
++
++# ganita_sat_sub(a, b) — a - b, saturating (see ganita_sat_add).
++prakriya ganita_sat_sub(a, b) {
++    vitti x = a
++    vitti y = b
++    vitti maxv = 9223372036854775807
++    vitti minv = (0 - 9223372036854775807) - 1
++    vitti d = x - y
++    yadi (x >= 0) {
++        yadi (y < 0) {
++            yadi (d < 0) { pratiyati maxv }
++        }
++    } anyatra {
++        yadi (y >= 0) {
++            yadi (d >= 0) { pratiyati minv }
++        }
++    }
++    pratiyati d
++}
++
++# ganita_sat_mul(a, b) — a * b, saturating (see ganita_sat_add).
++# The overflow direction is the sign of the true product.
++prakriya ganita_sat_mul(a, b) {
++    vitti x = a
++    vitti y = b
++    vitti maxv = 9223372036854775807
++    vitti minv = (0 - 9223372036854775807) - 1
++    vitti m = 0
++    vitti neg = 0
++    yadi (x == 0) { pratiyati 0 }
++    yadi (y == 0) { pratiyati 0 }
++    yadi (x == minv) {
++        yadi (y == 0 - 1) { pratiyati maxv }
++    }
++    yadi (y == minv) {
++        yadi (x == 0 - 1) { pratiyati maxv }
++    }
++    m = x * y
++    yadi (m / x != y) {
++        yadi (x < 0) { neg = 1 - neg }
++        yadi (y < 0) { neg = 1 - neg }
++        yadi (neg == 1) { pratiyati minv }
++        pratiyati maxv
++    }
++    pratiyati m
++}
+diff --git a/tests/stdlib/ganita_checked.exit b/tests/stdlib/ganita_checked.exit
+new file mode 100644
+index 0000000..573541a
+--- /dev/null
++++ b/tests/stdlib/ganita_checked.exit
+@@ -0,0 +1 @@
++0
+diff --git a/tests/stdlib/ganita_checked.out b/tests/stdlib/ganita_checked.out
+new file mode 100644
+index 0000000..16a27a4
+--- /dev/null
++++ b/tests/stdlib/ganita_checked.out
+@@ -0,0 +1,51 @@
++-9223372036854775808
++
++0
++
++0
++
++5
++
++1
++
++0
++
++0
++
++0
++
++0
++
++0
++
++0
++
++42
++
++1
++
++0
++
++0
++
++0
++
++0
++
++0
++
++0
++
++-3
++
++1
++
++-1
++
++1
++
++0
++
++0
++
++continued
+diff --git a/tests/stdlib/ganita_checked.sm b/tests/stdlib/ganita_checked.sm
+new file mode 100644
+index 0000000..f02e8ad
+--- /dev/null
++++ b/tests/stdlib/ganita_checked.sm
+@@ -0,0 +1,74 @@
++ayojan ganita
++mukhya() {
++    vitti max = 9223372036854775807
++    vitti min = (0 - 9223372036854775807) - 1
++    vitti ok = nirmmita(8)
++    vitti v = 0
++    # plain + still wraps (operators unchanged); checked reports it
++    likha(max + 1)
++    likha("\n")
++    v = ganita_checked_add(max, 1, ok)
++    likha(v)
++    likha("\n")
++    likha(ok[0])
++    likha("\n")
++    v = ganita_checked_add(2, 3, ok)
++    likha(v)
++    likha("\n")
++    likha(ok[0])
++    likha("\n")
++    v = ganita_checked_sub(min, 1, ok)
++    likha(v)
++    likha("\n")
++    likha(ok[0])
++    likha("\n")
++    v = ganita_checked_sub(max, 0 - 1, ok)
++    likha(v)
++    likha("\n")
++    likha(ok[0])
++    likha("\n")
++    v = ganita_checked_mul(max, 2, ok)
++    likha(v)
++    likha("\n")
++    likha(ok[0])
++    likha("\n")
++    v = ganita_checked_mul(6, 7, ok)
++    likha(v)
++    likha("\n")
++    likha(ok[0])
++    likha("\n")
++    # the idiv edge: INT64_MIN * -1 overflows, no SIGFPE
++    v = ganita_checked_mul(min, 0 - 1, ok)
++    likha(v)
++    likha("\n")
++    likha(ok[0])
++    likha("\n")
++    # division by zero: ok 0, program continues
++    v = ganita_checked_div(7, 0, ok)
++    likha(v)
++    likha("\n")
++    likha(ok[0])
++    likha("\n")
++    # the idiv edge: INT64_MIN / -1 would SIGFPE; checked reports it
++    v = ganita_checked_div(min, 0 - 1, ok)
++    likha(v)
++    likha("\n")
++    likha(ok[0])
++    likha("\n")
++    v = ganita_checked_div(0 - 7, 2, ok)
++    likha(v)
++    likha("\n")
++    likha(ok[0])
++    likha("\n")
++    v = ganita_checked_mod(0 - 7, 2, ok)
++    likha(v)
++    likha("\n")
++    likha(ok[0])
++    likha("\n")
++    v = ganita_checked_mod(7, 0, ok)
++    likha(v)
++    likha("\n")
++    likha(ok[0])
++    likha("\n")
++    likha("continued\n")
++}
+diff --git a/tests/stdlib/ganita_sat.exit b/tests/stdlib/ganita_sat.exit
+new file mode 100644
+index 0000000..573541a
+--- /dev/null
++++ b/tests/stdlib/ganita_sat.exit
+@@ -0,0 +1 @@
++0
+diff --git a/tests/stdlib/ganita_sat.out b/tests/stdlib/ganita_sat.out
+new file mode 100644
+index 0000000..dbca28a
+--- /dev/null
++++ b/tests/stdlib/ganita_sat.out
+@@ -0,0 +1,22 @@
++9223372036854775807
++
++-9223372036854775808
++
++9223372036854775807
++
++-9223372036854775808
++
++9223372036854775807
++
++-9223372036854775808
++
++9223372036854775807
++
++9223372036854775807
++
++42
++
++5
++
++-1
++
+diff --git a/tests/stdlib/ganita_sat.sm b/tests/stdlib/ganita_sat.sm
+new file mode 100644
+index 0000000..076c62d
+--- /dev/null
++++ b/tests/stdlib/ganita_sat.sm
+@@ -0,0 +1,29 @@
++ayojan ganita
++mukhya() {
++    vitti max = 9223372036854775807
++    vitti min = (0 - 9223372036854775807) - 1
++    likha(ganita_sat_add(max, 1))
++    likha("\n")
++    likha(ganita_sat_add(min, 0 - 1))
++    likha("\n")
++    likha(ganita_sat_sub(max, 0 - 1))
++    likha("\n")
++    likha(ganita_sat_sub(min, 1))
++    likha("\n")
++    likha(ganita_sat_mul(max, 2))
++    likha("\n")
++    likha(ganita_sat_mul(min, 2))
++    likha("\n")
++    # INT64_MIN * -1 saturates to MAX (true product is +2^63)
++    likha(ganita_sat_mul(min, 0 - 1))
++    likha("\n")
++    likha(ganita_sat_mul(min, 0 - 2))
++    likha("\n")
++    # no overflow: exact values
++    likha(ganita_sat_mul(6, 7))
++    likha("\n")
++    likha(ganita_sat_add(2, 3))
++    likha("\n")
++    likha(ganita_sat_sub(2, 3))
++    likha("\n")
++}
+diff --git a/tools/proof_props.py b/tools/proof_props.py
+index b2206c5..93af25f 100644
+--- a/tools/proof_props.py
++++ b/tools/proof_props.py
+@@ -2056,6 +2056,167 @@ def prop_map_keys_bytes_roundtrip(compiler, rng):
+     return ok and out == "PASS", out
+ 
+ 
++MIN64 = -(2 ** 63)
++MAX64 = 2 ** 63 - 1
++
++
++def _lit(v):
++    if v == MIN64:
++        return "(0 - 9223372036854775807) - 1"
++    return str(v)
++
++
++def _clamp(v):
++    return max(MIN64, min(MAX64, v))
++
++
++def _trunc_divmod(a, b):
++    q = abs(a) // abs(b)
++    if (a < 0) != (b < 0):
++        q = -q
++    return q, a - q * b
++
++
++def prop_ganita_checked_add_sub(compiler, rng):
++    """checked_add/sub ok flag + value agree with unbounded Python ints;
++    ok 0 exactly on overflow, value 0 then"""
++    cases = [(MAX64, 1), (MIN64, -1), (MAX64, -1), (MIN64, 1),
++             (MAX64, MAX64), (MIN64, MIN64), (0, 0), (MAX64, 0),
++             (MIN64, 0), (0, MIN64), (0, MAX64)]
++    for _ in range(12):
++        cases.append((rng.randint(-10 ** 6, 10 ** 6),
++                      rng.randint(-10 ** 6, 10 ** 6)))
++    for _ in range(6):
++        cases.append((MAX64 - rng.randint(0, 100), rng.randint(0, 100)))
++        cases.append((MIN64 + rng.randint(0, 100), -rng.randint(0, 100)))
++    lines = ["ayojan ganita",
++             "mukhya() {",
++             "    vitti ok = nirmmita(8)"]
++    for i, (a, b) in enumerate(cases):
++        for op, fn, tag in (("+", "ganita_checked_add", "add"),
++                            ("-", "ganita_checked_sub", "sub")):
++            true = a + b if op == "+" else a - b
++            want_ok = 1 if MIN64 <= true <= MAX64 else 0
++            want_val = true if want_ok else 0
++            lines.append(f"    vitti r{i}{tag} = {fn}({_lit(a)}, {_lit(b)}, ok)")
++            lines.append(f"    yadi (ok[0] != {want_ok}) {{")
++            lines.append(f'        likha("FAIL checked {op} ok\\n")')
++            lines.append("        pratiyati 1")
++            lines.append("    }")
++            lines.append(f"    yadi (r{i}{tag} != {_lit(want_val)}) {{")
++            lines.append(f'        likha("FAIL checked {op} value\\n")')
++            lines.append("        pratiyati 1")
++            lines.append("    }")
++    lines.append('    likha("PASS\\n")')
++    lines.append("}")
++    ok, out = run_sm(compiler, "gan_checked_as", "\n".join(lines))
++    return ok and out == "PASS", out
++
++
++def prop_ganita_checked_mul(compiler, rng):
++    """checked_mul ok flag + value agree with unbounded Python ints"""
++    cases = [(MAX64, 2), (MAX64, MAX64), (MIN64, -1), (MIN64, 2),
++             (MIN64, -2), (MIN64, MIN64), (MAX64, -1), (0, MAX64),
++             (1, MIN64), (-1, MIN64), (2 ** 32, 2 ** 32),
++             (3037000500, 3037000500), (3037000499, 3037000499),
++             (0, 0), (1, 1), (-1, -1)]
++    for _ in range(12):
++        cases.append((rng.randint(-10 ** 6, 10 ** 6),
++                      rng.randint(-10 ** 6, 10 ** 6)))
++    for _ in range(4):
++        cases.append((rng.choice([2 ** rng.randint(1, 62),
++                                  -(2 ** rng.randint(1, 62))]),
++                      rng.randint(-1000, 1000)))
++    lines = ["ayojan ganita",
++             "mukhya() {",
++             "    vitti ok = nirmmita(8)"]
++    for i, (a, b) in enumerate(cases):
++        true = a * b
++        want_ok = 1 if MIN64 <= true <= MAX64 else 0
++        want_val = true if want_ok else 0
++        lines.append(f"    vitti m{i} = ganita_checked_mul({_lit(a)}, {_lit(b)}, ok)")
++        lines.append(f"    yadi (ok[0] != {want_ok}) {{")
++        lines.append('        likha("FAIL checked mul ok\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++        lines.append(f"    yadi (m{i} != {_lit(want_val)}) {{")
++        lines.append('        likha("FAIL checked mul value\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++    lines.append('    likha("PASS\\n")')
++    lines.append("}")
++    ok, out = run_sm(compiler, "gan_checked_mul", "\n".join(lines))
++    return ok and out == "PASS", out
++
++
++def prop_ganita_checked_divmod(compiler, rng):
++    """checked_div/mod agree with truncating Python division;
++    ok 0 exactly on b == 0 or INT64_MIN / -1"""
++    cases = [(MIN64, -1), (MIN64, 1), (MAX64, -1), (7, 0), (-7, 0),
++             (0, 0), (-7, 2), (7, -2), (-7, -2), (7, 2), (0, 5),
++             (5, 5), (MIN64, 2), (MAX64, 3)]
++    for _ in range(12):
++        cases.append((rng.randint(-10 ** 6, 10 ** 6),
++                      rng.randint(-10, 10)))
++    lines = ["ayojan ganita",
++             "mukhya() {",
++             "    vitti ok = nirmmita(8)"]
++    for i, (a, b) in enumerate(cases):
++        bad = b == 0 or (a == MIN64 and b == -1)
++        if bad:
++            want_ok, want_q, want_r = 0, 0, 0
++        else:
++            want_ok = 1
++            want_q, want_r = _trunc_divmod(a, b)
++        lines.append(f"    vitti q{i} = ganita_checked_div({_lit(a)}, {_lit(b)}, ok)")
++        lines.append(f"    yadi (ok[0] != {want_ok}) {{")
++        lines.append('        likha("FAIL checked div ok\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++        lines.append(f"    yadi (q{i} != {_lit(want_q)}) {{")
++        lines.append('        likha("FAIL checked div value\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++        lines.append(f"    vitti r{i} = ganita_checked_mod({_lit(a)}, {_lit(b)}, ok)")
++        lines.append(f"    yadi (ok[0] != {want_ok}) {{")
++        lines.append('        likha("FAIL checked mod ok\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++        lines.append(f"    yadi (r{i} != {_lit(want_r)}) {{")
++        lines.append('        likha("FAIL checked mod value\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++    lines.append('    likha("PASS\\n")')
++    lines.append("}")
++    ok, out = run_sm(compiler, "gan_checked_dm", "\n".join(lines))
++    return ok and out == "PASS", out
++
++
++def prop_ganita_sat(compiler, rng):
++    """sat_add/sub/mul equal Python results clamped to [MIN64, MAX64]"""
++    cases = [(MAX64, 1), (MIN64, -1), (MAX64, -1), (MIN64, 1),
++             (MAX64, MAX64), (MIN64, MIN64), (MIN64, -2),
++             (MIN64, 2), (0, 0), (2, 3)]
++    for _ in range(10):
++        cases.append((rng.randint(-10 ** 6, 10 ** 6),
++                      rng.randint(-10 ** 6, 10 ** 6)))
++    lines = ["ayojan ganita",
++             "mukhya() {"]
++    for i, (a, b) in enumerate(cases):
++        for op, fn in (("+", "ganita_sat_add"),
++                       ("-", "ganita_sat_sub"),
++                       ("*", "ganita_sat_mul")):
++            true = {"+": a + b, "-": a - b, "*": a * b}[op]
++            lines.append(f"    yadi ({fn}({_lit(a)}, {_lit(b)}) != {_lit(_clamp(true))}) {{")
++            lines.append(f'        likha("FAIL sat {op}\\n")')
++            lines.append("        pratiyati 1")
++            lines.append("    }")
++    lines.append('    likha("PASS\\n")')
++    lines.append("}")
++    ok, out = run_sm(compiler, "gan_sat", "\n".join(lines))
++    return ok and out == "PASS", out
++
++
+ def main():
+     compiler = None
+     for i, a in enumerate(sys.argv):
+@@ -2116,6 +2277,10 @@ def main():
+         ("list len tracks", prop_list_len_tracks),
+         ("list insert/remove", prop_list_insert_remove),
+         ("map keys_bytes roundtrip", prop_map_keys_bytes_roundtrip),
++        ("ganita checked add/sub", prop_ganita_checked_add_sub),
++        ("ganita checked mul", prop_ganita_checked_mul),
++        ("ganita checked div/mod", prop_ganita_checked_divmod),
++        ("ganita saturating", prop_ganita_sat),
+     ]
+ 
+     failed = []
