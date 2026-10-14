@@ -528,6 +528,7 @@ r54_builtin_arity_table:
         dq bn_koshclear, TOK_BUILTIN, BN_KOSHCLEAR
         dq bn_koshempty, TOK_BUILTIN, BN_KOSHEMPTY
         dq bn_koshpeek, TOK_BUILTIN, BN_KOSHPEEK
+        dq bn_koshenqueue, TOK_BUILTIN, BN_KOSHPUSH
         dq bn_setchar,  TOK_BUILTIN, BN_SETCHAR
     bn_table_end:
 
@@ -721,6 +722,7 @@ r54_builtin_arity_table:
     bn_koshclear db "kosh_clear", 0
     bn_koshempty db "kosh_empty", 0
     bn_koshpeek db "kosh_peek", 0
+    bn_koshenqueue db "kosh_enqueue", 0  ; FIFO append = kosh_push
     bn_charfr    db "char_from", 0
     bn_charup    db "char_upper", 0
     bn_charlo    db "char_lower", 0
