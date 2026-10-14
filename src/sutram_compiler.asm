@@ -195,6 +195,7 @@ BN_SETCHAR  equ 41   ; R50 one-byte store into byte-packed text
 BN_KOSHCLEAR equ 42 ; R63 kosh_clear(k) -> 0; reset logical length in place
 BN_KOSHEMPTY equ 43 ; R63 kosh_empty(k) -> 1 when length=0
 BN_KOSHPEEK equ 44  ; R63 kosh_peek(k) -> last element (without popping)
+BN_KOSHDEQUEUE equ 45 ; R63 kosh_dequeue(k) -> first element (FIFO)
 
 ; ============================================================
 ; DATA
@@ -268,6 +269,7 @@ r54_builtin_arity_table:
     db 1,1               ; 42 kosh_clear
     db 1,1               ; 43 kosh_empty
     db 1,1               ; 44 kosh_peek
+    db 1,1               ; 45 kosh_dequeue
 
     r48_msg_undefined db ": Sutram Error [E_UNDEFINED_FUNCTION]: unknown function '",0
     msg_err_line db 10, "Sutram Error: parse error at line ", 0
@@ -529,6 +531,7 @@ r54_builtin_arity_table:
         dq bn_koshempty, TOK_BUILTIN, BN_KOSHEMPTY
         dq bn_koshpeek, TOK_BUILTIN, BN_KOSHPEEK
         dq bn_koshenqueue, TOK_BUILTIN, BN_KOSHPUSH
+        dq bn_koshdequeue, TOK_BUILTIN, BN_KOSHDEQUEUE
         dq bn_setchar,  TOK_BUILTIN, BN_SETCHAR
     bn_table_end:
 
@@ -723,6 +726,7 @@ r54_builtin_arity_table:
     bn_koshempty db "kosh_empty", 0
     bn_koshpeek db "kosh_peek", 0
     bn_koshenqueue db "kosh_enqueue", 0  ; FIFO append = kosh_push
+    bn_koshdequeue db "kosh_dequeue", 0 ; FIFO removal of first
     bn_charfr    db "char_from", 0
     bn_charup    db "char_upper", 0
     bn_charlo    db "char_lower", 0
@@ -9793,12 +9797,12 @@ parse_primary:
     pop rbx
     ret
 
-; R54/R63: verified ABI signatures for builtin IDs 1..44.
+; R54/R63: verified ABI signatures for builtin IDs 1..45.
 ; Input rdi=id, rsi=parsed arg count, return eax=1 iff allowed.
 ; The check is before any AST argument pointer dereference in codegen.
 ; Updating a builtin ABI requires updating this table and the R54 test matrix.
 r54_builtin_arity_ok:
-    cmp rdi, 44
+    cmp rdi, 45
     ja .bad
     lea rax, [rel r54_builtin_arity_table]
     lea rax, [rax+rdi*2]
@@ -13096,6 +13100,8 @@ gen_expr:
     je .ge_call_koshempty
     cmp r12, BN_KOSHPEEK
     je .ge_call_koshpop
+    cmp r12, BN_KOSHDEQUEUE
+    je .ge_call_koshpop
     ; Unknown — nop
     mov dil, 0x90
     call emit_byte
@@ -13255,6 +13261,8 @@ gen_expr:
     ; R63 peek shares the existing checked pop load path but must never
     ; store a shortened length; this is compile-time selection, not a
     ; generated conditional branch. Existing kosh_pop bytes stay unchanged.
+    cmp r12, BN_KOSHDEQUEUE
+    je .ge_koshdequeue
     cmp r12, BN_KOSHPEEK
     je .ge_koshpeek_only
     mov dil, 0x49             ; dec r9
@@ -13288,6 +13296,69 @@ gen_expr:
     mov dil, 0x04
     call emit_byte
     mov dil, 0xC8
+    call emit_byte
+    jmp .ge_call_done
+
+.ge_koshdequeue:
+    ; FIFO remove first element. Runtime precondition r8=kosh base, r9=len>0
+    ; is established by the common checked kosh_pop/kosh_peek prologue.
+    ; The first element's raw 64 bits remain in RAX while the other qwords
+    ; shift down one slot. rep movsq copies forward (dest < source) safely.
+    ; CLD establishes the required copy direction even after user inline ASM.
+    ; mov rax,[r8]      49 8B 00
+    mov dil, 0x49
+    call emit_byte
+    mov dil, 0x8B
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    ; dec r9             49 FF C9
+    mov dil, 0x49
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0xC9
+    call emit_byte
+    ; mov [r8-16],r9    4D 89 48 F0
+    mov dil, 0x4D
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xF0
+    call emit_byte
+    ; mov rdi,r8         4C 89 C7
+    mov dil, 0x4C
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    ; lea rsi,[r8+8]    49 8D 70 08
+    mov dil, 0x49
+    call emit_byte
+    mov dil, 0x8D
+    call emit_byte
+    mov dil, 0x70
+    call emit_byte
+    mov dil, 0x08
+    call emit_byte
+    ; mov rcx,r9         4C 89 C9
+    mov dil, 0x4C
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC9
+    call emit_byte
+    ; cld; rep movsq    FC F3 48 A5 (copy len-1 qwords to the left)
+    mov dil, 0xFC
+    call emit_byte
+    mov dil, 0xF3
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xA5
     call emit_byte
     jmp .ge_call_done
 
@@ -17599,6 +17670,8 @@ expr_is_float:
     cmp qword [rbx+8], BN_KOSHPOP
     je .eif_kosh_value
     cmp qword [rbx+8], BN_KOSHPEEK
+    je .eif_kosh_value
+    cmp qword [rbx+8], BN_KOSHDEQUEUE
     jne .eif_no
 .eif_kosh_value:
     cmp qword [rbx+16], 1
