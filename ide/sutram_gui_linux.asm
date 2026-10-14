@@ -97,6 +97,7 @@
 %define COL_STR         0x6A9955        ; string   green
 %define COL_NUM         0xB586E8        ; number   purple
 %define COL_CMT         0x6A6A6A        ; comment  grey
+%define COL_DANDA       0xE86D11        ; danda    orange (statement terminator)
 ; menu bar (slice 20)
 %define MENU_Y          8              ; label baseline row
 %define MENU_H          28             ; strip height for hit-testing
@@ -1195,6 +1196,24 @@ match_tab:
 ; classify token at column r15. eax = length, edx = class
 ; (0 default, 1 kw, 2 builtin, 3 string, 4 number, 5 comment)
 classify:
+    ; slice 22: danda । / ॥ is one 3-byte UTF-8 token, not three bytes.
+    movzx rax, byte [rbx+r15]
+    cmp al, 0xE0
+    jne .c_hash
+    movzx rax, byte [rbx+r15+1]
+    cmp al, 0xA5
+    jne .c_hash
+    movzx rax, byte [rbx+r15+2]
+    cmp al, 0xA4                    ; । DANDA
+    je .c_danda
+    cmp al, 0xA5                    ; ॥ DOUBLE DANDA
+    je .c_danda
+    jmp .c_hash
+.c_danda:
+    mov eax, 3
+    mov edx, 6                      ; class 6 = danda
+    ret
+.c_hash:
     mov al, [rbx+r15]
     cmp al, '#'
     je .c_cmt
@@ -1385,8 +1404,13 @@ draw_line_coloured:
     jmp .dlc_set
 .dlc_k5:
     cmp edx, 5
-    jne .dlc_set
+    jne .dlc_k6
     mov edi, COL_CMT
+    jmp .dlc_set
+.dlc_k6:
+    cmp edx, 6
+    jne .dlc_set
+    mov edi, COL_DANDA
 .dlc_set:
     call set_fg
     mov rsi, rbx
