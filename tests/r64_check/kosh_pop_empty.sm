@@ -1,0 +1,5 @@
+# R64: legacy kosh_pop empty message MUST remain unchanged.
+mukhya() {
+    kosh k[1]
+    likha(kosh_pop(k))
+}
