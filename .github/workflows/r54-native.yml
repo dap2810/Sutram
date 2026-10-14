@@ -1,7 +1,7 @@
 name: R54 builtin arity matrix and raw bounds
+# Experimental CI is intentionally manual-only to avoid notification floods.
+# Run one full regression at a verified milestone, not at every source commit.
 on:
-  push:
-    branches: [feature/r54-builtin-arity-bounds-20261012]
   workflow_dispatch:
 permissions:
   contents: read
