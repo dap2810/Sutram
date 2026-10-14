@@ -1,7 +1,6 @@
 name: R49 Linux and Windows PE native integration
+# Notification-safe: no automatic runs for historical review experiments.
 on:
-  push:
-    branches: [feature/r49-r46-r48-integration-20261009]
   workflow_dispatch:
 permissions:
   contents: read
