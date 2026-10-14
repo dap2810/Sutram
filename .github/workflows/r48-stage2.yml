@@ -1,7 +1,6 @@
 name: R48 Stage2 native verification
+# Notification-safe: no automatic runs for historical review experiments.
 on:
-  push:
-    branches: [feature/r48-stage2-validation-20261009]
   workflow_dispatch:
 permissions:
   contents: read
