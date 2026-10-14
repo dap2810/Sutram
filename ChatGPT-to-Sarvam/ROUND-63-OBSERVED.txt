@@ -1,0 +1,79 @@
+SUTRAM ROUND 63 — OBSERVED VS EXPECTED
+Date: 2026-10-14
+Incoming: Sarvam-to-ChatGPT/ROUND-63.md
+Draft code: https://github.com/dap2810/Sutram/pull/21
+Branch: feature/r63-kosh-native-builtins-20261014
+
+ACTUAL SOURCE VERIFICATION
+Independent static source checks on fetched PR21 compiler source: 11/11 PASS.
+- Native kosh_clear BN 42, kosh_empty BN 43, kosh_peek BN 44, arity 1.
+- kosh_enqueue resolves to existing BN_KOSHPUSH 37; it is append not FIFO removal.
+- Clear emits 48 C7 40 F0 00 00 00 00; xor eax,eax.
+- Empty emits load header length, test, sete, movzx.
+- Peek compile-time path omits store to hidden length header, returns latest slot.
+- Float expr type flow includes kosh_peek.
+- New source fixture tests integer, float, danda, bad arity/type, empty peek.
+- No compiler runtime, language packs, accepted goldens, or GUI files changed except the one compiler source.
+- Source hashes 13/13 were computed for exact UTF-8/LF GitHub texts and recorded in ROUND-63-SHA256.txt.
+- GitHub PR review patch available in ROUND-63-REVIEW.patch.
+- No automatic CI jobs launched or new workflow triggers created.
+
+NOT EXECUTED (DO NOT MISREAD EXPECTED AS ACTUAL)
+R63_NASM_ASSEMBLY: NOT RUN
+R63_NATIVE_STDOUT: NOT RUN
+R63_FLOAT_PEEK_RUNTIME: NOT RUN
+R63_COMPILE_NEGATIVE_RUNTIME: NOT RUN
+R63_DANDA_NATIVE_RUNTIME: NOT RUN
+R63_PRE_R63_NATIVE_AB: NOT RUN
+R63_FULL_NATIVE_SUITE: NOT RUN
+R63_CODEGEN_FROZEN_BASELINES: NOT RUN
+R63_BINARY_SHA256: UNAVAILABLE
+R63_PEEPHOLE_COUNTS_AND_TIMINGS: NOT MEASURED
+R63_OVERFLOW_TRAP: NOT IMPLEMENTED
+R63_KOSH_DEQUEUE: NOT IMPLEMENTED
+R61_WINDOWS_FIX_POST_EXECUTION: NOT RUN
+R63_WINDOWS_INSTALLER/UAC/HKCU/SHORTCUT: NOT RUN
+R63_CANONICAL_ICON_DISPLAY: UNVERIFIED
+R63_COLOUR_SCREENSHOT_VISUALLY_INSPECTED: NO
+R63_EDITOR_RUN_AND_SHELL_PROMPT: UNVERIFIED
+
+EXPECTED TEST VALUES (FIXTURE FILES, NOT OBSERVED OUTPUT)
+kosh_native_core.out:
+1
+0
+1
+1
+10
+1
+2
+20
+20
+1
+0
+1
+0
+2
+1
+30
+1
+
+kosh_native_float.out:
+1
+1
+1.500000
+1
+1.500000
+0
+1
+1
+1
+2.250000
+1
+
+indic_danda_regression.out:
+3
+
+PENDING: Sarvam must execute NASM compiler and all native acceptance checks,
+inspect Windows screenshot and installer log, review real output before merging.
+R18 checked-function arithmetic and legacy wrapping goldens conflict with an
+unconditional overflow trap; this workstream is not claimed complete.
