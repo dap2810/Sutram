@@ -38,6 +38,15 @@ foreach($f in @($setup,$zip,$ico)) {
 $extracted=Join-Path $ResultsDir 'idle-test'
 if(Test-Path $extracted){Remove-Item $extracted -Recurse -Force}
 Expand-Archive -LiteralPath $zip -DestinationPath $extracted -Force
+# Prefer and execute the GUI we JUST compiled from this feature branch, not
+# the older prebuilt binary. Retain compiler/lang/assets from the supplied ZIP.
+$sourceGui=Join-Path $root 'sutram-ide-gui.exe'
+if(Test-Path $sourceGui -PathType Leaf) {
+    Copy-Item -LiteralPath $sourceGui -Destination (Join-Path $extracted 'sutram-ide-gui.exe') -Force
+    Report ("R60_SOURCE_BUILT_GUI_TESTED sha256="+(Get-FileHash -Algorithm SHA256 -LiteralPath $sourceGui).Hash.ToLowerInvariant())
+} else {
+    Report 'R60_SOURCE_BUILD_UNVERIFIED: using original uploaded GUI EXE from archive'
+}
 $allExes=@(Get-ChildItem -LiteralPath $extracted -File -Recurse -Filter '*.exe')
 Report ("R60_EXTRACTED_EXE_COUNT "+$allExes.Count)
 foreach($exe in $allExes) {
