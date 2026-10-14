@@ -382,3 +382,59 @@ prakriya ganita_checked_pow(a, e, ok) {
     okp[0] = 1
     pratiyati r
 }
+
+# ganita_checked_fact(n, ok) — n! via repeated checked multiplication
+# (WS3, R20); ok[0] 1, or 0 if n < 0 (no integer factorial) or the
+# result overflows (returns 0 then). 0! = 1. 20! is the largest that
+# fits (20! = 2432902008176640000); 21! overflows.
+prakriya ganita_checked_fact(n, ok) {
+    vitti nn = n
+    vitti okp = ok
+    vitti r = 1
+    vitti i = 2
+    yadi (nn < 0) {
+        okp[0] = 0
+        pratiyati 0
+    }
+    yavat (i <= nn) {
+        r = ganita_checked_mul(r, i, okp)
+        yadi (okp[0] == 0) { pratiyati 0 }
+        i = i + 1
+    }
+    okp[0] = 1
+    pratiyati r
+}
+
+# ganita_sat_pow(a, e) — a^e, saturating (WS3, R20): on overflow
+# returns INT64_MAX (positive overflow) or INT64_MIN (negative
+# overflow). e < 0 returns 0 (no integer power; the saturating form
+# has no ok channel, so 0 is the documented sentinel). 0^0 = 1.
+# Repeated saturating multiplication. Correct because |a| <= 1 never
+# saturates, and once saturated with |a| >= 2 every later true
+# product overflows in the direction sign(r) * sign(a)^remaining —
+# so the loop exits early with the parity of the remaining steps
+# deciding the final bound, instead of iterating e times.
+prakriya ganita_sat_pow(a, e) {
+    vitti base = a
+    vitti exp = e
+    vitti maxv = 9223372036854775807
+    vitti minv = (0 - 9223372036854775807) - 1
+    vitti r = 1
+    vitti i = 0
+    yadi (exp < 0) { pratiyati 0 }
+    yavat (i < exp) {
+        r = ganita_sat_mul(r, base)
+        i = i + 1
+        yadi (r == maxv) {
+            yadi (base > 0) { pratiyati maxv }
+            yadi ((exp - i) % 2 == 0) { pratiyati maxv }
+            pratiyati minv
+        }
+        yadi (r == minv) {
+            yadi (base > 0) { pratiyati minv }
+            yadi ((exp - i) % 2 == 0) { pratiyati minv }
+            pratiyati maxv
+        }
+    }
+    pratiyati r
+}
