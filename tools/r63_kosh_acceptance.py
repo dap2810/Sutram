@@ -39,7 +39,7 @@ def main() -> int:
     passed = 0
     with tempfile.TemporaryDirectory(prefix="sutram-r63-") as temporary:
         folder = Path(temporary)
-        for case in ("kosh_native_core", "kosh_native_float"):
+        for case in ("kosh_native_core", "kosh_native_float", "indic_danda_regression"):
             src = CASES / (case + ".sm")
             expect = (CASES / (case + ".out")).read_bytes()
             exe = folder / case
@@ -54,7 +54,7 @@ def main() -> int:
             )
             print(f"R63_NATIVE_STDOUT_PASS {case} exit=0 bytes={len(completed.stdout)}")
             passed += 1
-            if before:
+            if before and case != "indic_danda_regression":
                 oldexe = folder / (case + ".pre")
                 old_compile = compile_program(before, src, oldexe)
                 assert old_compile.returncode != 0, (
