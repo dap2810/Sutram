@@ -1,7 +1,7 @@
 name: R56 module globals native proof
+# Experimental CI is intentionally manual-only to avoid notification floods.
+# Run one full regression at a verified milestone, not at every source commit.
 on:
-  push:
-    branches: [feature/r56-module-global-vitti-20261013]
   workflow_dispatch:
 permissions:
   contents: read
