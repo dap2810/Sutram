@@ -361,7 +361,17 @@ defaults to 4. Logical length starts at 0 and `a[index]` reads/writes against th
 | `kosh_pop(k)` | remove and return the last element |
 | `kosh_len(k)` | logical length |
 | `kosh_cap(k)` | current capacity |
+| `kosh_clear(k)` | set logical length to 0 (storage NOT erased); returns 0 |
+| `kosh_empty(k)` | 1 if length is zero, else 0 |
+| `kosh_peek(k)` | last element, not removed |
+| `kosh_enqueue(k, v)` | append v; returns the new length (alias of push) |
+| `kosh_dequeue(k)` | remove and return the first (oldest) element — FIFO, O(n) |
+
+Full specification, measured behaviour, and the `kosh` vs `list`/`queue`
+comparison: `docs/KOSH-BUILTINS.md`.
 
 Capacity doubles on growth. `kosh_pop` on an empty array prints
-`Sutram Error: kosh pop from empty array` and exits 1. Current boundaries: integer/raw-qword
-elements only (no typed `kosh dasham` yet), and `push`/`pop` take a direct kosh variable.
+`Sutram Error: kosh pop from empty array` and exits 1; `kosh_peek` and
+`kosh_dequeue` on an empty array abort with the same diagnostic. Element
+types: integer (`kosh v`, the default) or binary64 (`kosh dasham d`).
+`push`/`pop`/the builtins take a direct kosh variable.
