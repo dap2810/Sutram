@@ -1,3 +1,31 @@
+## v126 — ChatGPT R59 (x=x elimination) + R60 (Windows smoke) verified and SYNCED
+
+- **R59 accepted as a verified partial.** Proven emission-site elimination of `x=x` self-assignment
+  (no post-emission byte deletion). 9/9 hashes; builds to 184,136 B; **`R59_FROZEN_CODEGEN_ACCEPTED
+  3/3`**; **`R58_FROZEN_CODEGEN_ACCEPTED 8/8` untouched**; suite 186/3; codegen 12/12; packs 30/30;
+  graph 18/18; proofs 161/161 and 49/49; `R59_NATIVE_ACCEPTED 6` with **3 instruction-count
+  reductions**. On my runner global `g=g` measured **2.006x best / 2.186x median**; stack `x=x`
+  showed no gain; controls were noise only, matching their byte-identical claim. They correctly
+  noted `emit_reg_move_reg` already handled same-register moves rather than claiming credit.
+- **R60 is the most valuable round returned so far — two real defects I could not have found
+  without Windows.** (1) **`win\sutram.exe` HANGS**: no exit within 12 s compiling a trivial
+  program (`R60_CLI_COMPILER_TIMEOUT 12000ms`). This is a release blocker and is now ROUND-61.
+  (2) **A real ABI bug**: `GetTempPathW(nBufferLength, lpBuffer)` was called with RCX/RDX reversed,
+  crashing on Install click with `0xC0000005`. Verified their fix — both call sites now read
+  `mov ecx, MAXP` / `PTR rdx, temp_path`; their SHA matches mine exactly once normalised for CRLF
+  (they hashed on Windows, I fetch LF). **Fix merged.**
+- **R60 also verified real progress:** the GUI was rebuilt as PE64 on a real Windows runner, the
+  **7 menu names were confirmed via Win32 APIs** (File/Edit/Shell/Debug/Options/Window/Help), and
+  28/28 GUI tests passed on Windows. They explicitly did **not** visually inspect the screenshots
+  and said so rather than implying the colours and icon were confirmed — correct restraint.
+- **Sync:** 10 files (R59 compiler + tooling + fixtures + workflow; R60 installer ABI fix). Copied
+  only changed files; GUI and accepted goldens untouched. Verified on main via the tarball
+  (compiler sha `360c6d9b...`).
+- **Corrected `Sutram-Setup.exe`** rebuilt with the R60 ABI fix and delivered (578,192 B).
+- **Next:** ROUND-61 to ChatGPT — root-cause the Windows compiler hang, then close the Windows
+  acceptance loop (Run/shell stdout, per-user no-UAC install, canonical shortcut icon, screenshots
+  actually inspected). ROUND-17 to Muse remains open.
+
 ## v125 — Linux X11 GUI slice 19: per-token syntax colouring (my own stream)
 
 - **The Linux GUI now colours the editor per token**, matching the approved palette: keywords
