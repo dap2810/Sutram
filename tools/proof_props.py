@@ -2217,6 +2217,291 @@ def prop_ganita_sat(compiler, rng):
     return ok and out == "PASS", out
 
 
+def prop_map_clear_reuse(compiler, rng):
+    """map_clear: size 0, old keys gone, whole buffer zeroed
+    (state/keylen/val/key bytes), reuse in place, clear twice no-op"""
+    pool = ["aa", "ab", "ba", "bb", "abc", "bca", "cab", "a", "b", "c"]
+    old = rng.sample(pool, 5)
+    new = rng.sample([k for k in pool if k not in old], 3)
+    old_vals = {k: rng.randint(-100, 100) for k in old}
+    new_vals = {k: rng.randint(-100, 100) for k in new}
+
+    def lit(v):
+        return f"(0 - {-v})" if v < 0 else str(v)
+
+    lines = ["ayojan map",
+             "mukhya() {",
+             "    vitti m = map_init(16)",
+             "    vitti keys = nirmmita(600)",
+             "    vitti i = 0"]
+    for k in old:
+        lines.append(f'    map_put(m, 16, "{k}", {len(k)}, {lit(old_vals[k])})')
+    lines.append("    map_clear(m)")
+    lines.append("    yadi (map_size(m) != 0) {")
+    lines.append('        likha("FAIL clear size\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    for k in old:
+        lines.append(f'    yadi (map_contains(m, 16, "{k}", {len(k)}) != 0) {{')
+        lines.append('        likha("FAIL clear contains\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append("    yadi (map_keys_bytes(m, keys) != 0) {")
+    lines.append('        likha("FAIL clear keys\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    # white-box: the whole buffer is zeroed (state/keylen/val/key bytes)
+    lines.append("    yavat (i < 16) {")
+    lines.append("        yadi (m[2 + i] != 0) {")
+    lines.append('            likha("FAIL clear state\\n")')
+    lines.append("            pratiyati 1")
+    lines.append("        }")
+    lines.append("        yadi (m[2 + 16 + i] != 0) {")
+    lines.append('            likha("FAIL clear keylen\\n")')
+    lines.append("            pratiyati 1")
+    lines.append("        }")
+    lines.append("        yadi (m[2 + 32 + i] != 0) {")
+    lines.append('            likha("FAIL clear val\\n")')
+    lines.append("            pratiyati 1")
+    lines.append("        }")
+    lines.append("        i = i + 1")
+    lines.append("    }")
+    lines.append("    i = 0")
+    lines.append("    yavat (i < 512) {")
+    lines.append("        yadi (char_at(m, 400 + i) != 0) {")
+    lines.append('            likha("FAIL clear keybytes\\n")')
+    lines.append("            pratiyati 1")
+    lines.append("        }")
+    lines.append("        i = i + 1")
+    lines.append("    }")
+    # reuse in place: new keys land, old keys stay absent
+    for k in new:
+        lines.append(f'    map_put(m, 16, "{k}", {len(k)}, {lit(new_vals[k])})')
+    lines.append(f"    yadi (map_size(m) != {len(new)}) {{")
+    lines.append('        likha("FAIL reuse size\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    for k in new:
+        lines.append(f'    yadi (map_get(m, 16, "{k}", {len(k)}) != {lit(new_vals[k])}) {{')
+        lines.append('        likha("FAIL reuse get\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    for k in old:
+        lines.append(f'    yadi (map_contains(m, 16, "{k}", {len(k)}) != 0) {{')
+        lines.append('        likha("FAIL reuse old\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    # clear twice is a no-op; clearing an empty map too
+    lines.append("    map_clear(m)")
+    lines.append("    map_clear(m)")
+    lines.append("    yadi (map_size(m) != 0) {")
+    lines.append('        likha("FAIL clear twice\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "map_clear", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_containers_clear(compiler, rng):
+    """set_clear/list_clear/queue_clear: emptied, storage zeroed,
+    reuse after clear works"""
+    pool = ["aa", "ab", "ba", "bb", "abc", "bca", "cab", "a", "b", "c"]
+    elems = rng.sample(pool, 4)
+    vals = [rng.randint(-100, 100) for _ in range(4)]
+    qvals = [rng.randint(-100, 100) for _ in range(3)]
+
+    def lit(v):
+        return f"(0 - {-v})" if v < 0 else str(v)
+
+    lines = ["ayojan set",
+             "ayojan list",
+             "mukhya() {",
+             "    vitti ok = nirmmita(8)",
+             "    vitti i = 0",
+             "    vitti s = set_init(8)"]
+    for k in elems:
+        lines.append(f'    set_add(s, 8, "{k}", {len(k)})')
+    lines.append("    set_clear(s)")
+    lines.append("    yadi (set_size(s) != 0) {")
+    lines.append('        likha("FAIL set clear size\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    for k in elems:
+        lines.append(f'    yadi (set_contains(s, 8, "{k}", {len(k)}) != 0) {{')
+        lines.append('        likha("FAIL set clear contains\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append(f'    set_add(s, 8, "{elems[0]}", {len(elems[0])})')
+    lines.append("    yadi (set_size(s) != 1) {")
+    lines.append('        likha("FAIL set reuse\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    # list: len 0, data cells zeroed, push-after works
+    lines.append("    vitti l = list_init(4)")
+    lines.append("    vitti ld = l[2]")
+    for v in vals:
+        lines.append(f"    list_push(l, {lit(v)})")
+    lines.append("    list_clear(l)")
+    lines.append("    yadi (list_len(l) != 0) {")
+    lines.append('        likha("FAIL list clear len\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append("    yavat (i < 4) {")
+    lines.append("        yadi (ld[i] != 0) {")
+    lines.append('            likha("FAIL list clear data\\n")')
+    lines.append("            pratiyati 1")
+    lines.append("        }")
+    lines.append("        i = i + 1")
+    lines.append("    }")
+    lines.append(f"    list_push(l, {lit(vals[0])})")
+    lines.append(f"    yadi (list_get(l, 0) != {lit(vals[0])}) {{")
+    lines.append('        likha("FAIL list reuse\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    # queue: len 0, dequeue ok 0, ring data zeroed, reuse works
+    lines.append("    vitti q = queue_init(4)")
+    lines.append("    vitti qd = q[2]")
+    for v in qvals:
+        lines.append(f"    queue_enqueue(q, {lit(v)})")
+    lines.append("    queue_dequeue(q, ok)")
+    lines.append("    queue_clear(q)")
+    lines.append("    yadi (queue_len(q) != 0) {")
+    lines.append('        likha("FAIL queue clear len\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append("    yadi (queue_dequeue(q, ok) != 0) {")
+    lines.append('        likha("FAIL queue clear dequeue\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append("    yadi (ok[0] != 0) {")
+    lines.append('        likha("FAIL queue clear ok\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append("    i = 0")
+    lines.append("    yavat (i < 4) {")
+    lines.append("        yadi (qd[i] != 0) {")
+    lines.append('            likha("FAIL queue clear data\\n")')
+    lines.append("            pratiyati 1")
+    lines.append("        }")
+    lines.append("        i = i + 1")
+    lines.append("    }")
+    lines.append(f"    queue_enqueue(q, {lit(qvals[0])})")
+    lines.append("    yadi (queue_dequeue(q, ok) != %s) {" % lit(qvals[0]))
+    lines.append('        likha("FAIL queue reuse\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "containers_clear", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_gaps19(compiler, rng):
+    """map_get_default / set_equals / strb_reverse / strb_count /
+    ganita_checked_pow against Python"""
+    pool = ["aa", "ab", "ba", "bb", "abc", "bca", "cab", "a", "b", "c"]
+    present = rng.sample(pool, 4)
+    absent = [k for k in pool if k not in present][:2]
+    pvals = {k: rng.choice([-1, 0, rng.randint(-100, 100)]) for k in present}
+    default = rng.choice([-1, 0, 99, rng.randint(-100, 100)])
+    set_a = set(rng.sample(pool, rng.randint(0, 5)))
+    set_b = set(rng.sample(pool, rng.randint(0, 5)))
+    alpha = "abc"
+    hay = "".join(rng.choice(alpha) for _ in range(rng.randint(0, 12)))
+    needle = "".join(rng.choice(alpha) for _ in range(rng.randint(1, 3)))
+    src = "".join(rng.choice(alpha) for _ in range(rng.randint(0, 8)))
+
+    def lit(v):
+        return f"(0 - {-v})" if v < 0 else str(v)
+
+    # Python non-overlapping count
+    cnt, pos = 0, 0
+    while True:
+        f = hay.find(needle, pos)
+        if f < 0:
+            break
+        cnt += 1
+        pos = f + len(needle)
+    pow_cases = [(2, 10), (2, 63), (2, 62), (3, 40), (10, 18), (10, 19),
+                 (-2, 3), (-2, 63), (-2, 64), (1, 1000), (0, 0), (0, 5),
+                 (5, 0), (2, -1), (-1, 100), (-1, 101),
+                 (rng.randint(-5, 5), rng.randint(0, 8))]
+    lines = ["ayojan map",
+             "ayojan set",
+             "ayojan strb",
+             "ayojan ganita",
+             "mukhya() {",
+             "    vitti ok = nirmmita(8)",
+             "    vitti m = map_init(16)"]
+    for k in present:
+        lines.append(f'    map_put(m, 16, "{k}", {len(k)}, {lit(pvals[k])})')
+    for k in present:
+        lines.append(f'    yadi (map_get_default(m, 16, "{k}", {len(k)}, {lit(default)}) != {lit(pvals[k])}) {{')
+        lines.append('        likha("FAIL get_default present\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    for k in absent:
+        lines.append(f'    yadi (map_get_default(m, 16, "{k}", {len(k)}, {lit(default)}) != {lit(default)}) {{')
+        lines.append('        likha("FAIL get_default absent\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    # set_equals vs Python set equality
+    lines.append("    vitti sa = set_init(8)")
+    lines.append("    vitti sb = set_init(8)")
+    for k in set_a:
+        lines.append(f'    set_add(sa, 8, "{k}", {len(k)})')
+    for k in set_b:
+        lines.append(f'    set_add(sb, 8, "{k}", {len(k)})')
+    want_eq = 1 if set_a == set_b else 0
+    lines.append(f"    yadi (set_equals(sa, 8, sb, 8) != {want_eq}) {{")
+    lines.append('        likha("FAIL set_equals\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    # strb_reverse: reversed bytes + terminator
+    lines.append("    vitti rout = nirmmita(32)")
+    rev = src[::-1]
+    lines.append(f'    yadi (strb_reverse("{src}", {len(src)}, rout) != {len(src)}) {{')
+    lines.append('        likha("FAIL reverse ret\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    for i, ch in enumerate(rev):
+        lines.append(f"    yadi (char_at(rout, {i}) != {ord(ch)}) {{")
+        lines.append('        likha("FAIL reverse bytes\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append(f"    yadi (char_at(rout, {len(src)}) != 0) {{")
+    lines.append('        likha("FAIL reverse term\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    # strb_count vs Python non-overlapping count
+    lines.append(f'    yadi (strb_count("{hay}", {len(hay)}, "{needle}", {len(needle)}) != {cnt}) {{')
+    lines.append('        likha("FAIL count\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    # ganita_checked_pow vs Python unbounded ints
+    for a, e in pow_cases:
+        if e < 0:
+            want_ok, want_val = 0, 0
+        else:
+            true = a ** e
+            want_ok = 1 if MIN64 <= true <= MAX64 else 0
+            want_val = true if want_ok else 0
+        lines.append(f"    yadi (ganita_checked_pow({lit(a)}, {lit(e)}, ok) != {lit(want_val)}) {{")
+        lines.append('        likha("FAIL pow value\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+        lines.append(f"    yadi (ok[0] != {want_ok}) {{")
+        lines.append('        likha("FAIL pow ok\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "gaps19", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
 def main():
     compiler = None
     for i, a in enumerate(sys.argv):
@@ -2281,6 +2566,9 @@ def main():
         ("ganita checked mul", prop_ganita_checked_mul),
         ("ganita checked div/mod", prop_ganita_checked_divmod),
         ("ganita saturating", prop_ganita_sat),
+        ("map_clear reuse", prop_map_clear_reuse),
+        ("containers clear", prop_containers_clear),
+        ("gaps19", prop_gaps19),
     ]
 
     failed = []
