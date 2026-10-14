@@ -1,3 +1,29 @@
+## v129 — ChatGPT R61 (Windows PE-padding root cause) + Muse R18 (checked arithmetic) verified and SYNCED
+
+- **R61 is the best root-cause work in the project so far.** The Windows compiler hang was not
+  blocking input: a 46-byte program produced a **533,114,623-byte** output before the 12 s kill. The
+  mechanism is `write_pe .pp_pad_go` keeping the fill chunk in **RDX**, which `WriteFile` clobbers per
+  the Win64 ABI, so the padding loop never progressed. They proved it from the real evidence (PE32+
+  headers, 1024-byte SizeOfRawData, excess zeros) and noted `.r56_pe_data_write` already used
+  `push rdx` / `pop rdx` — which is what tipped it.
+- **The fix is merged:** exactly `push rdx` / `pop rdx` around the `os_write` and nothing else. On
+  Linux it is a no-op — the build is byte-size-identical to R59 and all gates pass (186/3, 12/12,
+  30/30, proof_lib 164/164, proof_props 54/54, `R59_FROZEN_CODEGEN_ACCEPTED 3/3`). A test program
+  emits a sane 206 bytes. **Windows execution of the fix is still unverified** and is now ROUND-62.
+- **They inspected the R60 screenshots this time** and reported honestly: menus render; the editor
+  showed only `001` so the colours are not verifiable from it; the installer said "Sutram setup did
+  not complete".
+- **Muse R18 verified and accepted.** 8 new functions in `lib/ganita.smlib` — `ganita_checked_*`
+  (add/sub/mul/div/mod) and `ganita_sat_*` (add/sub/mul). Patch applied cleanly; **5/5 hashes match**;
+  proof_lib **164/164** (was 162), proof_props **54/54** (was 50), suite **186/3**; library now
+  **21 modules / 239 functions**.
+- **The mechanism choice was right:** opt-in checked functions with the operators unchanged, so no
+  accepted golden moves and no `src/` change. Failure returns **0, never the wrapped value** — a
+  caller who forgets to check gets an obviously-wrong 0, not a plausible-but-wrong number.
+- 10 files synced (R61 compiler; R18 library + tests + docs). Verified on main.
+- **Next:** ROUND-62 to ChatGPT — prove the R61 fix on real Windows, then close the installer loop.
+  ROUND-19 to Muse — `map_clear` (their last queued friction note).
+
 ## v128 — Muse R17 (map_keys_bytes) verified and SYNCED; ROUND-18 issued
 
 - **Muse R17 accepted.** Patch applied cleanly to pristine main; **6/6 hashes match**. `proof_lib`
