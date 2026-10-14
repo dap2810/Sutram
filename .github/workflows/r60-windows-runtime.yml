@@ -11,6 +11,21 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+      - name: Source-build Win64 GUI (no C framework)
+        shell: pwsh
+        run: |
+          $ErrorActionPreference='Stop'
+          if (-not (Get-Command nasm.exe -ErrorAction SilentlyContinue)) {
+            choco install nasm --no-progress -y
+            if ($LASTEXITCODE -ne 0) { throw 'Chocolatey NASM acquisition failed on ephemeral test runner.' }
+          }
+          $env:PATH = "C:\Program Files\NASM;C:\msys64\ucrt64\bin;C:\msys64\mingw64\bin;C:\ProgramData\chocolatey\bin;" + $env:PATH
+          Get-Command nasm.exe
+          Get-Command ld.exe
+          & .\windows\gui\build-gui.ps1
+          if ($LASTEXITCODE -ne 0) { throw 'Win64 source GUI failed to assemble/link.' }
+          (Get-FileHash .\sutram-ide-gui.exe -Algorithm SHA256).Hash
+
       - name: Confirm Windows host and uploaded binary hashes
         shell: pwsh
         run: |
@@ -33,19 +48,6 @@ jobs:
         shell: powershell
         run: |
           powershell.exe -NoProfile -File windows/gui/test-gui.ps1 -Exe "$env:RUNNER_TEMP\sutram-r60\idle-test\sutram-ide-gui.exe"
-      - name: Source-build Win64 GUI (no C framework)
-        shell: pwsh
-        run: |
-          $ErrorActionPreference='Stop'
-          if (-not (Get-Command nasm.exe -ErrorAction SilentlyContinue)) {
-            choco install nasm --no-progress -y
-            if ($LASTEXITCODE -ne 0) { throw 'Chocolatey NASM acquisition failed on ephemeral test runner.' }
-          }
-          $env:PATH = "C:\msys64\ucrt64\bin;C:\msys64\mingw64\bin;C:\ProgramData\chocolatey\bin;" + $env:PATH
-          & .\windows\gui\build-gui.ps1
-          if ($LASTEXITCODE -ne 0) { throw 'Win64 source GUI failed to assemble/link.' }
-          (Get-FileHash .\sutram-ide-gui.exe -Algorithm SHA256).Hash
-
       - name: Upload screenshot and exact Windows result logs
         if: always()
         uses: actions/upload-artifact@v4
