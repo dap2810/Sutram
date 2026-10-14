@@ -451,3 +451,57 @@ prakriya str_compare(a, an, b, bn) {
     yadi (xn > yn) { pratiyati 1 }
     pratiyati 0
 }
+
+# str_reverse(src, sn, out) — copy the cell array reversed into out
+# (WS1, R20). Cell-array form of strb_reverse: the same two-pointer
+# swap, so it is safe in place (src == out works). Writes a 0
+# terminator cell at out[sn]. Returns sn. sn <= 0 writes only the
+# terminator, returns 0.
+prakriya str_reverse(src, sn, out) {
+    vitti s = src
+    vitti n = sn
+    vitti dst = out
+    vitti i = 0
+    vitti j = 0
+    vitti t = 0
+    yadi (n <= 0) {
+        dst[0] = 0
+        pratiyati 0
+    }
+    i = 0
+    j = n - 1
+    yavat (i < j) {
+        t = s[i]
+        dst[i] = s[j]
+        dst[j] = t
+        i = i + 1
+        j = j - 1
+    }
+    yadi (n % 2 == 1) {
+        dst[n / 2] = s[n / 2]
+    }
+    dst[n] = 0
+    pratiyati n
+}
+
+# str_count(hay, hn, needle, nn) — count non-overlapping occurrences
+# of needle in hay, over cell arrays (WS1, R20). Cell-array form of
+# strb_count. Empty needle returns 0. (Pointer arithmetic is in
+# bytes: the suffix at cell pos is hay + pos * 8.)
+prakriya str_count(hay, hn, needle, nn) {
+    vitti h = hay
+    vitti hlen = hn
+    vitti nd = needle
+    vitti nlen = nn
+    vitti pos = 0
+    vitti c = 0
+    vitti f = 0
+    yadi (nlen == 0) { pratiyati 0 }
+    yavat (pos <= hlen - nlen) {
+        f = str_find(h + pos * 8, hlen - pos, nd, nlen)
+        yadi (f < 0) { pratiyati c }
+        c = c + 1
+        pos = pos + f + nlen
+    }
+    pratiyati c
+}
