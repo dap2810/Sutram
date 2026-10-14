@@ -29,7 +29,7 @@ if (-not $LinkerPath) {
 }
 $srcAsm = Join-Path $root 'src\sutram_compiler.asm'
 $fixture = Join-Path $ResultsDir 'win_native_test.sm'
-[IO.File]::WriteAllText($fixture, "mukhya() {\r\n    likha(`"WIN_NATIVE_TEST_OK`")\r\n}\r\n", ([Text.UTF8Encoding]::new($false)))
+[IO.File]::WriteAllText($fixture, ("mukhya() {" + [Environment]::NewLine + '    likha("WIN_NATIVE_TEST_OK")' + [Environment]::NewLine + "}" + [Environment]::NewLine), ([Text.UTF8Encoding]::new($false)))
 function Invoke-Bounded([string]$Path, [string]$Arguments, [string]$Tag) {
     $out = Join-Path $ResultsDir ($Tag + '.stdout.txt')
     $err = Join-Path $ResultsDir ($Tag + '.stderr.txt')
