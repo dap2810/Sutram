@@ -49,6 +49,8 @@
 #
 # All signatures stay within the 6-argument cap.
 
+ayojan sort
+
 # --- lists ---
 
 # list_init(cap) — allocate an empty list. cap clamped to >= 1.
@@ -207,6 +209,54 @@ prakriya list_reverse(l) {
         j = j - 1
     }
     pratiyati 1
+}
+
+# list_sort(l) — sort the list in place, ascending (WS2, R21).
+# Merge sort (O(n log n)) over the list's data array. Before this,
+# sorting a list meant `ayojan sort` plus a hand-written
+# `merge_sort(l[2], list_len(l))` at every call site. Returns 1.
+prakriya list_sort(l) {
+    merge_sort(l[2], l[0])
+    pratiyati 1
+}
+
+# list_min(l, ok) — smallest element (WS2, R21); ok[0] 1, or 0 if
+# the list is empty (returns 0 then). Before this, the caller wrote
+# the min loop by hand or called sort.smlib's min_of on l[2] — which
+# reads a stale cell on an empty list. The empty check here is the
+# point.
+prakriya list_min(l, ok) {
+    yadi (l[0] == 0) {
+        ok[0] = 0
+        pratiyati 0
+    }
+    ok[0] = 1
+    pratiyati min_of(l[2], l[0])
+}
+
+# list_max(l, ok) — largest element (WS2, R21); ok[0] 1, or 0 if
+# the list is empty (returns 0 then). See list_min.
+prakriya list_max(l, ok) {
+    yadi (l[0] == 0) {
+        ok[0] = 0
+        pratiyati 0
+    }
+    ok[0] = 1
+    pratiyati max_of(l[2], l[0])
+}
+
+# list_sum(l) — sum of the elements (WS2, R21); 0 for an empty list
+# (well-defined, no ok channel needed). Before this, the caller wrote
+# the sum loop by hand or called sort.smlib's sum_of on l[2].
+prakriya list_sum(l) {
+    pratiyati sum_of(l[2], l[0])
+}
+
+# list_count(l, v) — number of occurrences of v (WS2, R21).
+# Before this, the caller wrote the count loop by hand or called
+# sort.smlib's count_of on l[2].
+prakriya list_count(l, v) {
+    pratiyati count_of(l[2], l[0], v)
 }
 
 # list_clear(l) — empty the list, keeping the allocated capacity.
@@ -390,6 +440,23 @@ prakriya queue_peek(q, ok) {
     d = qu[2]
     okp[0] = 1
     pratiyati d[qu[3]]
+}
+
+# queue_contains(q, v) — 1 if v is in the queue, else 0 (WS2, R21).
+# Scans the ring WITHOUT mutating it (no dequeue loop). Before this,
+# the caller hand-rolled the ring scan with (head + k) % cap
+# arithmetic at every call site — the same hazard list_contains
+# already removed for lists.
+prakriya queue_contains(q, v) {
+    vitti qu = q
+    vitti val = v
+    vitti d = qu[2]
+    vitti k = 0
+    yavat (k < qu[0]) {
+        yadi (d[(qu[3] + k) % qu[1]] == val) { pratiyati 1 }
+        k = k + 1
+    }
+    pratiyati 0
 }
 
 # queue_clear(q) — empty the queue in place (WS2, R19): same handle,
