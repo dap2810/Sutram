@@ -30,7 +30,7 @@ if (-not $LinkerPath) {
 $srcAsm = Join-Path $root 'src\sutram_compiler.asm'
 $fixture = Join-Path $ResultsDir 'win_native_test.sm'
 [IO.File]::WriteAllText($fixture, ("mukhya() {" + [Environment]::NewLine + '    likha("WIN_NATIVE_TEST_OK")' + [Environment]::NewLine + "}" + [Environment]::NewLine), ([Text.UTF8Encoding]::new($false)))
-function Invoke-Bounded([string]$Path, [string]$Arguments, [string]$Tag) {
+function Invoke-Bounded([string]$Path, [string]$Arguments, [string]$Tag, [string]$WatchOutput = "") {
     $out = Join-Path $ResultsDir ($Tag + '.stdout.txt')
     $err = Join-Path $ResultsDir ($Tag + '.stderr.txt')
     $sw = [Diagnostics.Stopwatch]::StartNew()
@@ -38,18 +38,31 @@ function Invoke-Bounded([string]$Path, [string]$Arguments, [string]$Tag) {
     if ($Arguments) { $startup.ArgumentList = $Arguments }
     $proc = Start-Process @startup
     $timedOut = $false
+    $oversize = $false
     try {
-        if (-not $proc.WaitForExit($TimeoutMs)) {
-            $timedOut = $true
+        # Enforce size and wall-clock limits; the R60 native failure wrote
+        # more than 500 MB of zero padding in less than 12 seconds.
+        while (-not $proc.HasExited -and $sw.ElapsedMilliseconds -lt $TimeoutMs) {
+            if ($WatchOutput -and (Test-Path -LiteralPath $WatchOutput -PathType Leaf) -and
+                (Get-Item -LiteralPath $WatchOutput).Length -gt 65536) {
+                $oversize = $true
+                break
+            }
+            Start-Sleep -Milliseconds 80
+            $proc.Refresh()
+        }
+        if (-not $proc.HasExited) {
+            $timedOut = -not $oversize
             Stop-Process -Id $proc.Id -Force -ErrorAction SilentlyContinue
             [void]$proc.WaitForExit(3000)
         }
-        $code = if ($timedOut) { -9999 } else { $proc.ExitCode }
+        $code = if ($oversize) { -9998 } elseif ($timedOut) { -9999 } else { $proc.ExitCode }
     } finally { $sw.Stop(); $proc.Dispose() }
     $stdout = if(Test-Path $out) {[IO.File]::ReadAllText($out)} else {''}
     $stderr = if(Test-Path $err) {[IO.File]::ReadAllText($err)} else {''}
-    Write-Host ("R61_STAGE tag={0} timeout={1} exit={2} ms={3} stdout={4} stderr={5}" -f $Tag,$timedOut,$code,$sw.ElapsedMilliseconds,($stdout -replace "[\r\n]+"," | "),($stderr -replace "[\r\n]+"," | "))
-    return [pscustomobject]@{ Tag=$Tag; TimedOut=$timedOut; Exit=$code; Ms=$sw.ElapsedMilliseconds; Stdout=$stdout; Stderr=$stderr }
+    Write-Host ("R61_STAGE tag={0} timeout={1} oversize={2} exit={3} ms={4} stdout={5} stderr={6}" -f $Tag,$timedOut,$oversize,$code,$sw.ElapsedMilliseconds,($stdout -replace "[\r\n]+"," | "),($stderr -replace "[\r\n]+"," | "))
+    if ($oversize) { Write-Host ("R61_PE_SIZE_REGRESSION bytes=" + (Get-Item -LiteralPath $WatchOutput).Length) }
+    return [pscustomobject]@{ Tag=$Tag; TimedOut=$timedOut; Oversize=$oversize; Exit=$code; Ms=$sw.ElapsedMilliseconds; Stdout=$stdout; Stderr=$stderr }
 }
 function Compile-Native([string]$Tag, [string]$ExtraDefine = '') {
     $obj = Join-Path $ResultsDir ($Tag + '.obj')
@@ -76,7 +89,8 @@ if ($LegacyCompiler) {
     if (-not (Test-Path -LiteralPath $LegacyCompiler -PathType Leaf)) { throw 'Specified LegacyCompiler not found.' }
     Write-Host ("R61_LEGACY_SHA256 "+(Get-FileHash -LiteralPath $LegacyCompiler -Algorithm SHA256).Hash.ToLowerInvariant())
     [void](Invoke-Bounded $LegacyCompiler '--version' 'legacy-version')
-    [void](Invoke-Bounded $LegacyCompiler ('"' + $fixture + '" "' + (Join-Path $ResultsDir 'legacy_program.exe') + '"') 'legacy-compile')
+    $oldOut = Join-Path $ResultsDir 'legacy_program.exe'
+    [void](Invoke-Bounded $LegacyCompiler ('"' + $fixture + '" "' + $oldOut + '"') 'legacy-compile' $oldOut)
 }
 # Probe instructions are already defined at compiler entry. No instrumentation
 # inside production code or mutation of any accepted codegen baseline.
@@ -89,8 +103,10 @@ $ver = Invoke-Bounded $reference '--version' 'fresh-version'
 $help = Invoke-Bounded $reference '--help' 'fresh-help'
 $check = Invoke-Bounded $reference ('--check "' + $fixture + '"') 'fresh-check'
 $exe = Join-Path $ResultsDir 'fresh-program.exe'
-$compiled = Invoke-Bounded $reference ('"' + $fixture + '" "' + $exe + '"') 'fresh-compile'
+$compiled = Invoke-Bounded $reference ('"' + $fixture + '" "' + $exe + '"') 'fresh-compile' $exe
 if (!$compiled.TimedOut -and $compiled.Exit -eq 0 -and (Test-Path -LiteralPath $exe -PathType Leaf)) {
+    Write-Host ("R61_PE_NORMAL_SIZE bytes=" + (Get-Item -LiteralPath $exe).Length)
+    if ((Get-Item -LiteralPath $exe).Length -gt 65536) { throw "R61 PE output unexpectedly exceeds 64 KiB" }
     $prog = Invoke-Bounded $exe '' 'fresh-program'
     if (!$prog.TimedOut -and $prog.Exit -eq 0 -and $prog.Stdout.Contains('WIN_NATIVE_TEST_OK')) {
         Write-Host 'R61_WINDOWS_COMPILE_EXECUTE_PASS'
