@@ -1,0 +1,11 @@
+# R64: no bounds trap, runtime semantics preserved.
+mukhya() {
+    kosh k[1]
+    likha(kosh_push(k, 10))
+    likha(kosh_push(k, 20))
+    likha(kosh_peek(k))
+    likha(kosh_len(k))
+    likha(kosh_dequeue(k))
+    likha(kosh_pop(k))
+    likha(kosh_empty(k))
+}
