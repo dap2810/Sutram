@@ -61,7 +61,7 @@
         <div class="bar" style="height:14px"><i class="m" style="width:28%"></i></div>
         <div class="note" style="margin-top:10px">
           Up from <b>24%</b> at the last scorecard (which was taken at 136 tests / 13 modules / 87 functions).
-          Now: <b>186</b> regression tests, <b>18</b> modules, <b>176</b> functions.
+          Now: <b>187</b> regression tests, <b>21</b> modules, <b>268</b> functions.
           The mean is dragged down by five <i>structural</i> parameters — concurrency, ecosystem, security,
           interoperability, community — that sit at 0–5% and cannot move without outside people or years.
         </div>
@@ -73,7 +73,7 @@
   <p class="note">These are the high-confidence bars: each is backed by a test suite that must stay green through every change.</p>
 
   <div class="card">
-    <div class="row"><div class="lab">Compiler correctness <span class="pill">186 + 3 tests</span></div><div class="bar"><i class="g" style="width:93%"></i></div><div class="pct">93%</div></div>
+    <div class="row"><div class="lab">Compiler correctness <span class="pill">187 + 3 tests</span></div><div class="bar"><i class="g" style="width:93%"></i></div><div class="pct">93%</div></div>
     <div class="row"><div class="lab">Codegen gate (instruction ceilings)</div><div class="bar"><i class="g" style="width:100%"></i></div><div class="pct">12/12</div></div>
     <div class="row"><div class="lab">Language packs</div><div class="bar"><i class="g" style="width:100%"></i></div><div class="pct">30/30</div></div>
     <div class="row"><div class="lab">Module-graph / import semantics</div><div class="bar"><i class="g" style="width:100%"></i></div><div class="pct">18/18</div></div>
@@ -145,7 +145,7 @@
       <tr><td>11</td><td>Scalability</td><td class="n">18%</td><td class="n">22%</td><td class="n">+4</td>
         <td>The AST arena was raised 768 KB → 3 MiB because the growing library genuinely overflowed it. Ceilings are still fixed constants, not dynamic.</td></tr>
       <tr><td>12</td><td>Backward compatibility</td><td class="n">45%</td><td class="n">50%</td><td class="n">+5</td>
-        <td>A frozen keyword core plus a 186-test suite and four byte-identical reference binaries enforced through every merge. No versioned releases or migration policy.</td></tr>
+        <td>A frozen keyword core plus a 187-test suite and four byte-identical reference binaries enforced through every merge. No versioned releases or migration policy.</td></tr>
       <tr><td>13</td><td>Error handling</td><td class="n">38%</td><td class="n">52%</td><td class="n">+14</td>
         <td><b>The biggest genuine jump.</b> A real <code>--check</code> mode: located <code>file:line:column</code> diagnostics with source line and caret, bounded recovery, multiple errors accumulated in one run, and correct file attribution through two-level and namespaced imports. No exceptions, result types or pattern matching.</td></tr>
       <tr><td>14</td><td>Tooling excellence</td><td class="n">35%</td><td class="n">48%</td><td class="n">+13</td>
@@ -232,7 +232,7 @@
     <ul>
       <li><b>It is a real compiler.</b> 20,230 lines of hand-written x86-64 assembly in one file, emitting native ELF
           with no runtime, no libc, no linker script of its own — and it beats Node by 8× and Python by 167× on a loop.</li>
-      <li><b>The safety net is unusually good for a young language.</b> 186 regression tests, 12 codegen ceilings,
+      <li><b>The safety net is unusually good for a young language.</b> 187 regression tests, 12 codegen ceilings,
           30 pack checks, 18 module-graph tests, 147 library proofs, 33 properties, and four byte-identical reference
           binaries held across every single merge. Changes are verified, not hoped for.</li>
       <li><b>Diagnostics are a genuine feature now</b>, not an afterthought: located, recoverable, accumulating,
@@ -246,7 +246,7 @@
       <li><b>Nothing has ever run on real Windows</b> — the one untested platform claim.</li>
       <li><b>No concurrency, no ecosystem, no FFI, no debugger, no package manager.</b> Five parameters at 0–5%,
           all of which need people rather than code.</li>
-      <li><b>The suite is a corpus, not a proof.</b> 186 passing tests does not mean 186 correct behaviours.</li>
+      <li><b>The suite is a corpus, not a proof.</b> 187 passing tests does not mean 187 correct behaviours.</li>
     </ul>
     <h3>What would move the needle most, in order</h3>
     <ul>
@@ -260,7 +260,7 @@
   <div class="hr"></div>
   <p class="note">
     Snapshot: compiler <code>d0fe190c</code> (20,687 lines, 179,888 B binary) · IDE <code>bc2d5905</code> (2,523 lines, 17 slices) · Windows binaries build (PE32+) ·
-    19 library modules / 186 functions · 32 keywords · 10 language packs · 189 example programs · 29 docs pages ·
+    21 library modules / 268 functions · 32 keywords · 10 language packs · 189 example programs · 29 docs pages ·
     Linux ELF + Windows PE32+ (Windows unverified).
     Percentages are judgement against a mature-language yardstick, not measurements; speed figures marked
     “measured here” are real timings from this machine, everything else is an estimate and labelled as such.
