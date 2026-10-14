@@ -1,15 +1,15 @@
-# Sutram R63 GitHub PR #21 per-file unified review patches
-# Source-level review; NOT evidence of NASM assembly or native execution
+# Sutram R63 draft PR #21 all-five-builtin per-file review patch
+# Includes FIFO dequeue source and new test fixtures; NO native compiler execution proof.
 diff --git a/docs/R63-KOSH-BUILTINS.md b/docs/R63-KOSH-BUILTINS.md
 new file mode 100644
 --- /dev/null
 +++ b/docs/R63-KOSH-BUILTINS.md
-@@ -0,0 +1,60 @@
+@@ -0,0 +1,62 @@
 +# Sutram Round 63 — native typed `kosh` compiler builtins (source-level partial)
 +
 +## Scope and evidence discipline
 +
-+This review branch implements **four of five** container builtins requested by Sarvam/Muse. They are *pure NASM compiler changes*, no runtime dependency and no library edits. **Not yet compiled or executed on Windows or Linux in this ChatGPT session**; no claim of native correctness, timing improvement, release readiness, full regression gates or compiler acceptance. Preserve every existing frozen codegen baseline until verified against a built compiler; if the source legitimately changes any image, propose the new hashes separately, never overwrite accepted baselines.
++This review branch implements **five of five** container builtins requested by Sarvam/Muse. They are *pure NASM compiler changes*, no runtime dependency and no library edits. **Not yet compiled or executed on Windows or Linux in this ChatGPT session**; no claim of native correctness, timing improvement, release readiness, full regression gates or compiler acceptance. Preserve every existing frozen codegen baseline until verified against a built compiler; if the source legitimately changes any image, propose the new hashes separately, never overwrite accepted baselines.
 +
 +| Operation | Input | Result | Implementation |
 +|---|---|---|---|
@@ -17,11 +17,11 @@ new file mode 100644
 +| `kosh_empty(k)` | typed integer or float `kosh` variable | `1` if length zero, else `0` | Load header len, `test`, `sete`, `movzx` |
 +| `kosh_peek(k)` | typed integer or float `kosh` variable | Last element by value, without removing | Reuse `kosh_pop` type/bounds path but omit `[r8-16]` length store; preserve binary64 typing |
 +| `kosh_enqueue(k,value)` | typed integer or float `kosh` variable | New length | Builtin-token alias of existing `kosh_push`; append/grow logic and parameter growth restrictions unchanged |
-+| `kosh_dequeue(k)` | typed integer or float `kosh` variable | Oldest value and remove from front | **NOT IMPLEMENTED**. Existing `kosh_pop` removes the last element, so aliasing it would be semantically incorrect |
++| `kosh_dequeue(k)` | typed integer or float `kosh` variable | First (oldest) element by value | Reuse empty bounds-check; return head from `[r8]`, decrement hidden length, shift `len-1` elements one qword toward front with `cld; rep movsq`; O(n), FIFO. Binary64 return typed |
 +
 +`kosh_clear` intentionally resets the **logical length only**, not the historical qword storage: normal kosh indexing is bounds-checked against length, and the hidden allocation/header remain retained for reuse. Caller must not assume cryptographic erasure of previous values; storage zeroing would be a separate feature. `kosh_peek` on empty arrays shares the preexisting `kosh_pop` diagnostic (currently says "kosh pop from empty array") and terminates with nonzero exit. Source detects non-kosh arguments and wrong builtin arity at compilation. Float `kosh_peek` is passed through `expr_is_float` so `dasham` result representation is preserved.
 +
-+All changes are at **compiler time prior to emitting the instruction bytes**, and existing `kosh_pop` runtime instructions are not changed: the compiler dispatches to the old pop path or new peek path before writing the length store. No post-emission modification of branch or RIP offsets. The `kosh_enqueue` alias uses the original growable append implementation; `kosh_dequeue` remains queued pending an unambiguous FIFO implementation and native tests.
++All changes are at **compiler time prior to emitting the instruction bytes**, and existing `kosh_pop` runtime instructions are not changed: the compiler dispatches to the old pop path or new peek path before writing the length store. No post-emission modification of branch or RIP offsets. The `kosh_enqueue` alias uses the original growable append implementation. `kosh_dequeue` is NOT a `kosh_pop` alias: it preserves FIFO order by shifting the remaining qwords left. The generated copy instructions were independently encoded and disassembled using GNU `as --64` and `objdump` on Linux (`49 8B 00; 49 FF C9; 4D 89 48 F0; 4C 89 C7; 49 8D 70 08; 4C 89 C9; FC; F3 48 A5`). This proves the instruction bytes, NOT full native compiler or test execution.
 +
 +**Danda regression:** The source compiler's existing Devanagari `।` and `॥` lexer code remains unchanged. New `tests/r63_check/indic_danda_regression.sm` deliberately puts both danda kinds immediately after identifiers/expressions to catch the earlier `0xE0` collection bug.
 +
@@ -52,7 +52,7 @@ new file mode 100644
 +python3 -m unittest discover -s tests/ci -p 'test_*.py' -v
 +```
 +
-+Run the corresponding R55/R56/R57/R58/R59 native acceptance gates and compare emitted instructions/hashes before acceptance. The new `tools/r63_kosh_acceptance.py` runs three exact-output positive programs, two expected compile errors, one expected runtime empty-peek trap, and optional pre-R63 compiler name-rejection A/B. Tests are **provided but not executed** in this environment.
++Run the corresponding R55/R56/R57/R58/R59 native acceptance gates and compare emitted instructions/hashes before acceptance. The new `tools/r63_kosh_acceptance.py` runs five exact-output positive programs, two expected compile errors, two expected runtime empty traps (peek and dequeue), and optional pre-R63 compiler name-rejection A/B. Tests are **provided but not executed** in this environment.
 +
 +## Workstreams 1–3 not completed
 +
@@ -65,31 +65,35 @@ new file mode 100644
 +## Safety
 +
 +No elevation, admin, HKLM, credentials, OS security changes, or new network access. No workflow added; no CI triggered. Existing GUI colour values, compiler backend golden files, and Devanagari lexer kept unchanged. Source is a **draft PR only** pending Sarvam review and native A/B execution. Handoff to `ChatGPT-to-Sarvam/` is **docs-only on main**.
++
++**Still unverified:** Complete NASM compiler assembly and native stdout must be run before Sarvam accepts the five builtins. A disassembled isolated `rep movsq` instruction sequence is not a complete acceptance run. `kosh_dequeue` leaves physical storage in the now-out-of-bounds trailing slot untouched, consistent with logical `kosh_clear` semantics.
 
 diff --git a/src/sutram_compiler.asm b/src/sutram_compiler.asm
 --- a/src/sutram_compiler.asm
 +++ b/src/sutram_compiler.asm
-@@ -192,6 +192,9 @@ BN_KOSHPOP  equ 38   ; kosh_pop(k) -> removed value
+@@ -192,6 +192,10 @@ BN_KOSHPOP  equ 38   ; kosh_pop(k) -> removed value
  BN_KOSHLEN  equ 39   ; kosh_len(k) -> logical length
  BN_KOSHCAP  equ 40   ; kosh_cap(k) -> current capacity
  BN_SETCHAR  equ 41   ; R50 one-byte store into byte-packed text
 +BN_KOSHCLEAR equ 42 ; R63 kosh_clear(k) -> 0; reset logical length in place
 +BN_KOSHEMPTY equ 43 ; R63 kosh_empty(k) -> 1 when length=0
 +BN_KOSHPEEK equ 44  ; R63 kosh_peek(k) -> last element (without popping)
++BN_KOSHDEQUEUE equ 45 ; R63 kosh_dequeue(k) -> first element (FIFO)
  
  ; ============================================================
  ; DATA
-@@ -262,6 +265,9 @@ r54_builtin_arity_table:
+@@ -262,6 +266,10 @@ r54_builtin_arity_table:
      db 1,1               ; 39 kosh_len
      db 1,1               ; 40 kosh_cap
      db 3,3               ; 41 set_char
 +    db 1,1               ; 42 kosh_clear
 +    db 1,1               ; 43 kosh_empty
 +    db 1,1               ; 44 kosh_peek
++    db 1,1               ; 45 kosh_dequeue
  
      r48_msg_undefined db ": Sutram Error [E_UNDEFINED_FUNCTION]: unknown function '",0
      msg_err_line db 10, "Sutram Error: parse error at line ", 0
-@@ -519,6 +525,10 @@ r54_builtin_arity_table:
+@@ -519,6 +527,11 @@ r54_builtin_arity_table:
          dq bn_koshpop,  TOK_BUILTIN, BN_KOSHPOP
          dq bn_koshlen,  TOK_BUILTIN, BN_KOSHLEN
          dq bn_koshcap,  TOK_BUILTIN, BN_KOSHCAP
@@ -97,10 +101,11 @@ diff --git a/src/sutram_compiler.asm b/src/sutram_compiler.asm
 +        dq bn_koshempty, TOK_BUILTIN, BN_KOSHEMPTY
 +        dq bn_koshpeek, TOK_BUILTIN, BN_KOSHPEEK
 +        dq bn_koshenqueue, TOK_BUILTIN, BN_KOSHPUSH
++        dq bn_koshdequeue, TOK_BUILTIN, BN_KOSHDEQUEUE
          dq bn_setchar,  TOK_BUILTIN, BN_SETCHAR
      bn_table_end:
  
-@@ -709,6 +719,10 @@ r54_builtin_arity_table:
+@@ -709,6 +722,11 @@ r54_builtin_arity_table:
      bn_koshpop  db "kosh_pop", 0
      bn_koshlen  db "kosh_len", 0
      bn_koshcap  db "kosh_cap", 0
@@ -108,25 +113,26 @@ diff --git a/src/sutram_compiler.asm b/src/sutram_compiler.asm
 +    bn_koshempty db "kosh_empty", 0
 +    bn_koshpeek db "kosh_peek", 0
 +    bn_koshenqueue db "kosh_enqueue", 0  ; FIFO append = kosh_push
++    bn_koshdequeue db "kosh_dequeue", 0 ; FIFO removal of first
      bn_charfr    db "char_from", 0
      bn_charup    db "char_upper", 0
      bn_charlo    db "char_lower", 0
-@@ -9779,12 +9793,12 @@ parse_primary:
+@@ -9779,12 +9797,12 @@ parse_primary:
      pop rbx
      ret
  
 -; R54: verified ABI signatures for builtin IDs 1..41.
-+; R54/R63: verified ABI signatures for builtin IDs 1..44.
++; R54/R63: verified ABI signatures for builtin IDs 1..45.
  ; Input rdi=id, rsi=parsed arg count, return eax=1 iff allowed.
  ; The check is before any AST argument pointer dereference in codegen.
  ; Updating a builtin ABI requires updating this table and the R54 test matrix.
  r54_builtin_arity_ok:
 -    cmp rdi, 41
-+    cmp rdi, 44
++    cmp rdi, 45
      ja .bad
      lea rax, [rel r54_builtin_arity_table]
      lea rax, [rax+rdi*2]
-@@ -13076,11 +13090,94 @@ gen_expr:
+@@ -13076,11 +13094,96 @@ gen_expr:
      je .ge_call_koshlen
      cmp r12, BN_KOSHCAP
      je .ge_call_koshcap
@@ -135,6 +141,8 @@ diff --git a/src/sutram_compiler.asm b/src/sutram_compiler.asm
 +    cmp r12, BN_KOSHEMPTY
 +    je .ge_call_koshempty
 +    cmp r12, BN_KOSHPEEK
++    je .ge_call_koshpop
++    cmp r12, BN_KOSHDEQUEUE
 +    je .ge_call_koshpop
      ; Unknown — nop
      mov dil, 0x90
@@ -221,19 +229,21 @@ diff --git a/src/sutram_compiler.asm b/src/sutram_compiler.asm
  .ge_call_koshlen:
      cmp qword [rbx+16], 1
      jne .ge_call_kosh_bad
-@@ -13155,6 +13252,11 @@ gen_expr:
+@@ -13155,6 +13258,13 @@ gen_expr:
      mov dil, 0xF0
      call emit_byte
      call emit_kosh_empty_check_r9
 +    ; R63 peek shares the existing checked pop load path but must never
 +    ; store a shortened length; this is compile-time selection, not a
 +    ; generated conditional branch. Existing kosh_pop bytes stay unchanged.
++    cmp r12, BN_KOSHDEQUEUE
++    je .ge_koshdequeue
 +    cmp r12, BN_KOSHPEEK
 +    je .ge_koshpeek_only
      mov dil, 0x49             ; dec r9
      call emit_byte
      mov dil, 0xFF
-@@ -13169,6 +13271,16 @@ gen_expr:
+@@ -13169,6 +13279,16 @@ gen_expr:
      call emit_byte
      mov dil, 0xF0
      call emit_byte
@@ -250,12 +260,84 @@ diff --git a/src/sutram_compiler.asm b/src/sutram_compiler.asm
      mov dil, 0x4B             ; mov rax,[r8+r9*8]
      call emit_byte
      mov dil, 0x8B
-@@ -17485,7 +17597,10 @@ expr_is_float:
+@@ -13179,6 +13299,69 @@ gen_expr:
+     call emit_byte
+     jmp .ge_call_done
+ 
++.ge_koshdequeue:
++    ; FIFO remove first element. Runtime precondition r8=kosh base, r9=len>0
++    ; is established by the common checked kosh_pop/kosh_peek prologue.
++    ; The first element's raw 64 bits remain in RAX while the other qwords
++    ; shift down one slot. rep movsq copies forward (dest < source) safely.
++    ; CLD establishes the required copy direction even after user inline ASM.
++    ; mov rax,[r8]      49 8B 00
++    mov dil, 0x49
++    call emit_byte
++    mov dil, 0x8B
++    call emit_byte
++    xor edi, edi
++    call emit_byte
++    ; dec r9             49 FF C9
++    mov dil, 0x49
++    call emit_byte
++    mov dil, 0xFF
++    call emit_byte
++    mov dil, 0xC9
++    call emit_byte
++    ; mov [r8-16],r9    4D 89 48 F0
++    mov dil, 0x4D
++    call emit_byte
++    mov dil, 0x89
++    call emit_byte
++    mov dil, 0x48
++    call emit_byte
++    mov dil, 0xF0
++    call emit_byte
++    ; mov rdi,r8         4C 89 C7
++    mov dil, 0x4C
++    call emit_byte
++    mov dil, 0x89
++    call emit_byte
++    mov dil, 0xC7
++    call emit_byte
++    ; lea rsi,[r8+8]    49 8D 70 08
++    mov dil, 0x49
++    call emit_byte
++    mov dil, 0x8D
++    call emit_byte
++    mov dil, 0x70
++    call emit_byte
++    mov dil, 0x08
++    call emit_byte
++    ; mov rcx,r9         4C 89 C9
++    mov dil, 0x4C
++    call emit_byte
++    mov dil, 0x89
++    call emit_byte
++    mov dil, 0xC9
++    call emit_byte
++    ; cld; rep movsq    FC F3 48 A5 (copy len-1 qwords to the left)
++    mov dil, 0xFC
++    call emit_byte
++    mov dil, 0xF3
++    call emit_byte
++    mov dil, 0x48
++    call emit_byte
++    mov dil, 0xA5
++    call emit_byte
++    jmp .ge_call_done
++
+ .ge_call_koshpush:
+     push r13
+     push r14
+@@ -17485,7 +17668,12 @@ expr_is_float:
      jmp .eif_done
  .eif_builtin:
      cmp qword [rbx+8], BN_KOSHPOP
 +    je .eif_kosh_value
 +    cmp qword [rbx+8], BN_KOSHPEEK
++    je .eif_kosh_value
++    cmp qword [rbx+8], BN_KOSHDEQUEUE
      jne .eif_no
 +.eif_kosh_value:
      cmp qword [rbx+16], 1
@@ -280,6 +362,87 @@ new file mode 100644
 +    vitti i = 2॥
 +    s = s + i।
 +    likha(s)॥
++}
+
+diff --git a/tests/r63_check/kosh_dequeue_empty.sm b/tests/r63_check/kosh_dequeue_empty.sm
+new file mode 100644
+--- /dev/null
++++ b/tests/r63_check/kosh_dequeue_empty.sm
+@@ -0,0 +1,5 @@
++# Attempting to dequeue from an empty typed kosh must trap with exit != 0.
++mukhya() {
++    kosh q[1]
++    likha(kosh_dequeue(q))
++}
+
+diff --git a/tests/r63_check/kosh_fifo_core.out b/tests/r63_check/kosh_fifo_core.out
+new file mode 100644
+--- /dev/null
++++ b/tests/r63_check/kosh_fifo_core.out
+@@ -0,0 +1,13 @@
++1
++1
++2
++3
++11
++33
++2
++22
++33
++1
++1
++44
++0
+
+diff --git a/tests/r63_check/kosh_fifo_core.sm b/tests/r63_check/kosh_fifo_core.sm
+new file mode 100644
+--- /dev/null
++++ b/tests/r63_check/kosh_fifo_core.sm
+@@ -0,0 +1,17 @@
++# R63 FIFO: dequeue oldest, while peek reports newest and pop is still LIFO.
++mukhya() {
++    kosh q[1]
++    likha(kosh_empty(q))
++    likha(kosh_enqueue(q, 11))
++    likha(kosh_enqueue(q, 22))
++    likha(kosh_enqueue(q, 33))
++    likha(kosh_dequeue(q))
++    likha(kosh_peek(q))
++    likha(kosh_len(q))
++    likha(kosh_dequeue(q))
++    likha(kosh_dequeue(q))
++    likha(kosh_empty(q))
++    likha(kosh_enqueue(q, 44))
++    likha(kosh_dequeue(q))
++    likha(kosh_len(q))
++}
+
+diff --git a/tests/r63_check/kosh_fifo_float.out b/tests/r63_check/kosh_fifo_float.out
+new file mode 100644
+--- /dev/null
++++ b/tests/r63_check/kosh_fifo_float.out
+@@ -0,0 +1,6 @@
++1
++2
++1.250000
++2.500000
++2.500000
++1
+
+diff --git a/tests/r63_check/kosh_fifo_float.sm b/tests/r63_check/kosh_fifo_float.sm
+new file mode 100644
+--- /dev/null
++++ b/tests/r63_check/kosh_fifo_float.sm
+@@ -0,0 +1,10 @@
++# R63 floating queue preserves binary64 bits for dequeue and peek.
++mukhya() {
++    kosh dasham q[1]
++    likha(kosh_enqueue(q, 1.25))
++    likha(kosh_enqueue(q, 2.5))
++    likha(kosh_dequeue(q))
++    likha(kosh_peek(q))
++    likha(kosh_dequeue(q))
++    likha(kosh_empty(q))
 +}
 
 diff --git a/tests/r63_check/kosh_invalid_arity.sm b/tests/r63_check/kosh_invalid_arity.sm
@@ -407,7 +570,7 @@ diff --git a/tools/r63_kosh_acceptance.py b/tools/r63_kosh_acceptance.py
 new file mode 100644
 --- /dev/null
 +++ b/tools/r63_kosh_acceptance.py
-@@ -0,0 +1,91 @@
+@@ -0,0 +1,104 @@
 +#!/usr/bin/env python3
 +"""R63 native kosh A/B acceptance. Requires a built native Sutram compiler.
 +
@@ -449,7 +612,7 @@ new file mode 100644
 +    passed = 0
 +    with tempfile.TemporaryDirectory(prefix="sutram-r63-") as temporary:
 +        folder = Path(temporary)
-+        for case in ("kosh_native_core", "kosh_native_float", "indic_danda_regression"):
++        for case in ("kosh_native_core", "kosh_native_float", "kosh_fifo_core", "kosh_fifo_float", "indic_danda_regression"):
 +            src = CASES / (case + ".sm")
 +            expect = (CASES / (case + ".out")).read_bytes()
 +            exe = folder / case
@@ -493,6 +656,19 @@ new file mode 100644
 +        )
 +        print(f"R63_EMPTY_PEEK_TRAP_PASS runtime_exit={completed.returncode}")
 +        passed += 1
++        src = CASES / "kosh_dequeue_empty.sm"
++        exe = folder / "kosh_dequeue_empty"
++        compiled = compile_program(compiler, src, exe)
++        assert compiled.returncode == 0 and exe.exists(), (
++            f"dequeue empty compile failed unexpectedly: {compiled.stdout!r} {compiled.stderr!r}"
++        )
++        completed = run([str(exe)])
++        assert completed.returncode != 0, "dequeue empty kosh did not terminate with error"
++        assert b"kosh pop from empty array" in completed.stdout, (
++            f"missing inherited empty kosh diagnostic: {completed.stdout!r}"
++        )
++        print(f"R63_EMPTY_DEQUEUE_TRAP_PASS runtime_exit={completed.returncode}")
++        passed += 1
 +    print(f"R63_NATIVE_ACCEPTED {passed} gates")
 +    return 0
 +
@@ -504,7 +680,7 @@ diff --git a/tools/r63_source_gate.py b/tools/r63_source_gate.py
 new file mode 100644
 --- /dev/null
 +++ b/tools/r63_source_gate.py
-@@ -0,0 +1,66 @@
+@@ -0,0 +1,73 @@
 +#!/usr/bin/env python3
 +"""Structural R63 kosh review gate; NOT a replacement for compiling/running.
 +
@@ -532,6 +708,7 @@ new file mode 100644
 +        "CLEAR": ("BN_KOSHCLEAR", "42", "bn_koshclear", "kosh_clear"),
 +        "EMPTY": ("BN_KOSHEMPTY", "43", "bn_koshempty", "kosh_empty"),
 +        "PEEK": ("BN_KOSHPEEK", "44", "bn_koshpeek", "kosh_peek"),
++        "DEQUEUE": ("BN_KOSHDEQUEUE", "45", "bn_koshdequeue", "kosh_dequeue"),
 +    }
 +    for op, (symbol, number, label, literal) in ids.items():
 +        require(op + "_ID", re.search(r"^" + symbol + r"\s+equ\s+" + number + r"\b", COMPILER, re.M) is not None)
@@ -544,7 +721,8 @@ new file mode 100644
 +        "db 1,1               ; 42 kosh_clear",
 +        "db 1,1               ; 43 kosh_empty",
 +        "db 1,1               ; 44 kosh_peek",
-+        "r54_builtin_arity_ok:\n    cmp rdi, 44",
++        "db 1,1               ; 45 kosh_dequeue",
++        "r54_builtin_arity_ok:\n    cmp rdi, 45",
 +    )))
 +    require("TYPE_GUARDS",
 +            COMPILER.count("call is_kosh_var") >= 3 and
@@ -558,10 +736,15 @@ new file mode 100644
 +            "jmp .ge_koshpop_load" in COMPILER)
 +    require("PEEK_FLOAT_TYPE",
 +            "cmp qword [rbx+8], BN_KOSHPEEK\n    jne .eif_no" in COMPILER)
++    require("DEQUEUE_AFTER_EMPTY_GUARD", "je .ge_koshdequeue" in COMPILER and
++            "call emit_kosh_empty_check_r9" in COMPILER)
++    fifo = COMPILER.split(".ge_koshdequeue:", 1)[1].split(".ge_call_koshpush:", 1)[0]
++    require("DEQUEUE_FIFO_COPY",
++            all(x in fifo for x in ("mov rax,[r8]", "mov [r8-16],r9", "rep movsq", "0xFC", "0xF3", "0xA5")))
 +    require("EMPTY_ERROR_REUSED", "call emit_kosh_empty_check_r9" in COMPILER)
-+    for name in ("kosh_native_core", "kosh_native_float", "indic_danda_regression"):
++    for name in ("kosh_native_core", "kosh_native_float", "kosh_fifo_core", "kosh_fifo_float", "indic_danda_regression"):
 +        require("POSITIVE_" + name, all((TEST_DIR / (name + "." + ext)).is_file() for ext in ("sm", "out")))
-+    for name in ("kosh_invalid_non_kosh", "kosh_invalid_arity", "kosh_peek_empty"):
++    for name in ("kosh_invalid_non_kosh", "kosh_invalid_arity", "kosh_peek_empty", "kosh_dequeue_empty"):
 +        require("NEGATIVE_" + name, (TEST_DIR / (name + ".sm")).is_file())
 +    require("NATIVE_HARNESS", HARNESS.is_file())
 +    require("DANDA_REGRESSION",

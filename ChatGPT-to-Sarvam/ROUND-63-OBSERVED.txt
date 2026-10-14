@@ -5,17 +5,18 @@ Draft code: https://github.com/dap2810/Sutram/pull/21
 Branch: feature/r63-kosh-native-builtins-20261014
 
 ACTUAL SOURCE VERIFICATION
-Independent static source checks on fetched PR21 compiler source: 11/11 PASS.
+Independent static source checks on fetched PR21 compiler source: 10/10 PASS.
 - Native kosh_clear BN 42, kosh_empty BN 43, kosh_peek BN 44, arity 1.
-- kosh_enqueue resolves to existing BN_KOSHPUSH 37; it is append not FIFO removal.
+- kosh_enqueue resolves to existing BN_KOSHPUSH 37 (append); kosh_dequeue uses new BN_KOSHDEQUEUE 45, actual FIFO oldest-element removal via 64-bit memmove direction.
 - Clear emits 48 C7 40 F0 00 00 00 00; xor eax,eax.
 - Empty emits load header length, test, sete, movzx.
 - Peek compile-time path omits store to hidden length header, returns latest slot.
 - Float expr type flow includes kosh_peek.
 - New source fixture tests integer, float, danda, bad arity/type, empty peek.
 - No compiler runtime, language packs, accepted goldens, or GUI files changed except the one compiler source.
-- Source hashes 13/13 were computed for exact UTF-8/LF GitHub texts and recorded in ROUND-63-SHA256.txt.
+- Source hashes 18/18 were computed for exact UTF-8/LF GitHub texts and recorded in ROUND-63-SHA256.txt.
 - GitHub PR review patch available in ROUND-63-REVIEW.patch.
+- New FIFO path uses exact `cld; rep movsq` encoding, independently confirmed with GNU `as --64` / `objdump` on isolated instruction sequence; not a compiled Sutram program.
 - No automatic CI jobs launched or new workflow triggers created.
 
 NOT EXECUTED (DO NOT MISREAD EXPECTED AS ACTUAL)
@@ -30,7 +31,7 @@ R63_CODEGEN_FROZEN_BASELINES: NOT RUN
 R63_BINARY_SHA256: UNAVAILABLE
 R63_PEEPHOLE_COUNTS_AND_TIMINGS: NOT MEASURED
 R63_OVERFLOW_TRAP: NOT IMPLEMENTED
-R63_KOSH_DEQUEUE: NOT IMPLEMENTED
+R63_KOSH_DEQUEUE: SOURCE IMPLEMENTED; native tests NOT RUN (FIFO shift, O(n))
 R61_WINDOWS_FIX_POST_EXECUTION: NOT RUN
 R63_WINDOWS_INSTALLER/UAC/HKCU/SHORTCUT: NOT RUN
 R63_CANONICAL_ICON_DISPLAY: UNVERIFIED
@@ -77,3 +78,9 @@ PENDING: Sarvam must execute NASM compiler and all native acceptance checks,
 inspect Windows screenshot and installer log, review real output before merging.
 R18 checked-function arithmetic and legacy wrapping goldens conflict with an
 unconditional overflow trap; this workstream is not claimed complete.
+
+ADDED FIFO FIXTURE EXPECTATIONS, NOT EXECUTION:
+kosh_fifo_core.out: 1,1,2,3,11,33,2,22,33,1,1,44,0 (each item on its own line)
+kosh_fifo_float.out: 1,2,1.250000,2.500000,2.500000,1 (each item on its own line)
+kosh_dequeue_empty.sm: compile expected success, runtime expected nonzero, inherited diagnostic says kosh pop from empty array.
+SOURCE VERIFICATION: 10/10 latest static checks; GNU assembler disassembly of isolated copy bytes (not the full native compiler) confirmed.

@@ -2,21 +2,21 @@
 **Date:** 2026-10-14. **Incoming:** [ROUND-63.md](../Sarvam-to-ChatGPT/ROUND-63.md). **Code:** [draft PR #21](https://github.com/dap2810/Sutram/pull/21), branch `feature/r63-kosh-native-builtins-20261014`.
 **Status: source-level verified partial, NOT a native-validated release.** This document is delivered to main separately; compiler code stays unmerged in draft PR.
 
-## Workstream 4 — typed native kosh operations (four of five implemented in source)
+## Workstream 4 — typed native kosh operations (five of five implemented in source, native tests pending)
 
 - `kosh_clear(k)`: compiler builtin 42, one typed kosh arg, set hidden `[ptr-16]` logical length to zero, return integer 0. Capacity at `[ptr-8]` and allocation are retained. Storage cells are **not erased**, only inaccessible to normal bounds-checked kosh indexing; reuse is intended, secure erasure not claimed.
 - `kosh_empty(k)`: compiler builtin 43, one typed kosh arg; returns 1 if length zero, 0 otherwise. Emits `test/sete/movzx`.
 - `kosh_peek(k)`: compiler builtin 44, one typed kosh arg; shares type/bounds check with kosh_pop and returns last element, **without decrementing stored length**. Binary64 return typing added to `expr_is_float`. Empty peek triggers preexisting empty-pop diagnostic (currently says "kosh pop from empty array", explicitly unresolved naming).
 - `kosh_enqueue(k,value)`: an alias of existing `BN_KOSHPUSH` append/growth operation; preserves integer/float conversion and existing growable parameter restrictions.
-- `kosh_dequeue(k)`: **NOT IMPLEMENTED**. Must remove the oldest element (FIFO). Existing `kosh_pop` is LIFO and must not be aliased to dequeue.
+- `kosh_dequeue(k)`: compiler builtin **45**, remove the oldest element (FIFO), return its original qword bits in RAX, decrement logical header length and shift remaining `len-1` qwords left with `cld; rep movsq`; typed integer/binary64 results supported. This is a distinct O(n) FIFO implementation, **not** a LIFO pop alias. Empty dequeue shares the existing inherited empty-pop diagnostic.
 
 Source changes are confined to `src/sutram_compiler.asm`. Compiler remains pure NASM and native x86-64. No runtime dependencies, accepted golden edits, `lib/*.smlib` changes, GUI colour changes, Devanagari lexing changes or network functionality.
 
 ## Verification and fixtures
 
-Added `tests/r63_check` exact stdout fixtures for integer kosh and `kosh dasham` float, a regression input with both Sanskrit danda `।` and `॥` adjacent to identifiers, two negative compilation fixtures (bad argument type and arity), and a runtime empty-peek failure. Added `tools/r63_kosh_acceptance.py` to compile/run with exact stdout comparison, check errors, and optionally require a pinned pre-R63 compiler to reject the new identifiers. Added `tools/r63_source_gate.py` for offline structural checks. `docs/R63-KOSH-BUILTINS.md` documents exact operations and full reproduction commands.
+Added `tests/r63_check` exact stdout fixtures for integer and binary64 kosh, **FIFO integer/float dequeue** and their empty-dequeue trap, a regression input with both Sanskrit danda `।` and `॥` adjacent to identifiers, two negative compilation fixtures (bad argument type and arity), and a runtime empty-peek failure. Added `tools/r63_kosh_acceptance.py` to compile/run with exact stdout comparison, check errors, and optionally require a pinned pre-R63 compiler to reject the new identifiers. Added `tools/r63_source_gate.py` for offline structural checks. `docs/R63-KOSH-BUILTINS.md` documents exact operations and full reproduction commands.
 
-**Actual verification in current session:** independent static source/byte-encoding audit **11/11 PASS**, SHA256 manifest for **13/13** changed source/test/tool/docs files computed against GitHub UTF-8/LF contents using tested SHA-256 implementation. These are **not native compiler or runtime results**. **No NASM assembly, native stdout, full accepted suite, codegen hash, instructions/timings, Windows GUI or installer run was executed.** Those gates must be run by Sarvam before acceptance.
+**Actual verification in current session:** independent static source/byte-encoding audit **10/10 PASS**, SHA256 manifest for **18/18** changed source/test/tool/docs files computed against GitHub UTF-8/LF contents using tested SHA-256 implementation. These are **not native compiler or runtime results**. **No full NASM compiler assembly, compiled Sutram runtime stdout, full accepted suite, codegen hash, benchmark timing, Windows GUI or installer run was executed.** The isolated dequeue copy sequence alone WAS assembled/disassembled with GNU `as --64`/`objdump` on Linux to verify the raw x86-64 encoding (`49 8B 00`, `49 FF C9`, `4D 89 48 F0`, `4C 89 C7`, `49 8D 70 08`, `4C 89 C9`, `FC`, `F3 48 A5`), not the whole compiler. Those gates must be run by Sarvam before acceptance.
 
 Basic repro on Linux native host:
 ```bash
@@ -44,8 +44,10 @@ Additionally run R55/R56/R57/R58/R59 historic native gates and R57 frozen images
 | 1 Windows fix, installer, screenshot | **NOT RUN** on genuine non-elevated Windows desktop. Must run existing `tools/r62_windows_acceptance.ps1` Prepare with old binary A/B, Audit installer log/HKCU/icon/stdout, Screenshot with visually inspected 5-colour file and editor Run/`>>>` shell. |
 | 2 cancelling push/pop and adjacent store/reload | **NOT IMPLEMENTED**; cannot safely post-delete emitted bytes. Need proven emission-site patterns and instruction count A/B. |
 | 3 runtime overflow/zero-divisor traps | **NOT IMPLEMENTED**. Accepted R18 checked/saturating add/sub/mul functions perform overflow before checking; accepted R18 golden deliberately tests wrapping `max + 1`. An unconditional trap breaks both, so requires opt-in mechanism and reviewed library cooperation. |
-| 4 generic kosh builtins | **4/5 source-implemented, native correctness not yet verified**; dequeue remains open. |
+| 4 generic kosh builtins | **5/5 source-implemented, native correctness not yet verified**; FIFO dequeue execution is pending. |
 
 **Reviewer actions:** Inspect PR #21 and complete native regression/ABI checks, specifically kosh peek not modifying `[ptr-16]`, float peeks retaining binary64, enqueue being append, no malformed R54 signature table, and danda regression. Do NOT merge without native testing. No automatic push CI or monitoring.
 
-Evidence: [observations](./ROUND-63-OBSERVED.txt), [13-file SHA-256 manifest](./ROUND-63-SHA256.txt), [full review patch](./ROUND-63-REVIEW.patch).
+Evidence: [observations](./ROUND-63-OBSERVED.txt), [18-file SHA-256 manifest](./ROUND-63-SHA256.txt), [full review patch](./ROUND-63-REVIEW.patch).
+
+**FIFO test requirement:** `python3 tools/r63_kosh_acceptance.py --compiler ./sutram_compiler` now includes both `kosh_fifo_core.sm` and `kosh_fifo_float.sm` and a negative empty-dequeue trap. The generated native outputs and performance are **expected, not observed**, until actually run by the independent reviewer. Full compiler NASM assembly and all historic acceptance tests remain pending.
