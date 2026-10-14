@@ -437,3 +437,57 @@ prakriya strb_compare(a, an, b, bn) {
     yadi (xn > yn) { pratiyati 1 }
     pratiyati 0
 }
+
+# strb_reverse(src, sn, out) — copy src reversed into out (WS3, R19).
+# Two-pointer swap, so it is SAFE IN PLACE (src == out works). Writes
+# a 0 terminator at out[sn]. Returns sn. sn <= 0 writes only the
+# terminator, returns 0. Before this, reversing a byte string meant
+# a hand-written loop at every call site.
+prakriya strb_reverse(src, sn, out) {
+    vitti s = src
+    vitti n = sn
+    vitti dst = out
+    vitti i = 0
+    vitti j = 0
+    vitti t = 0
+    yadi (n <= 0) {
+        set_char(dst, 0, 0)
+        pratiyati 0
+    }
+    i = 0
+    j = n - 1
+    yavat (i < j) {
+        t = char_at(s, i)
+        set_char(dst, i, char_at(s, j))
+        set_char(dst, j, t)
+        i = i + 1
+        j = j - 1
+    }
+    yadi (n % 2 == 1) {
+        set_char(dst, n / 2, char_at(s, n / 2))
+    }
+    set_char(dst, n, 0)
+    pratiyati n
+}
+
+# strb_count(hay, hn, needle, nn) — count NON-OVERLAPPING occurrences
+# of needle in hay (WS3, R19). Empty needle returns 0 (strb_find
+# would match at 0 forever). Before this, counting meant looping
+# strb_find over successive suffixes at every call site.
+prakriya strb_count(hay, hn, needle, nn) {
+    vitti h = hay
+    vitti hlen = hn
+    vitti nd = needle
+    vitti nlen = nn
+    vitti pos = 0
+    vitti c = 0
+    vitti f = 0
+    yadi (nlen == 0) { pratiyati 0 }
+    yavat (pos <= hlen - nlen) {
+        f = strb_find(h + pos, hlen - pos, nd, nlen)
+        yadi (f < 0) { pratiyati c }
+        c = c + 1
+        pos = pos + f + nlen
+    }
+    pratiyati c
+}
