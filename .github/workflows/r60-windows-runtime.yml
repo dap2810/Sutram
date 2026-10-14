@@ -44,6 +44,10 @@ jobs:
           PYTHONUTF8: "1"
         run: |
           python -m unittest discover -s tests/gui -p "test_*.py" -v
+      - name: Independently execute CLI compiler and compiled program on Windows
+        shell: powershell
+        run: |
+          powershell.exe -NoProfile -File tools/r60_native_cli_smoke.ps1 -PortableDir "$env:RUNNER_TEMP\sutram-r60\idle-test"
       - name: Native Win32 RichEdit compile-and-run plus shell smoke
         shell: powershell
         run: |
