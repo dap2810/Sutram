@@ -1,0 +1,14 @@
+mukhya() {
+    vitti a = 0
+    vitti b = 0
+    vitti c = 0
+    vitti d = 0
+    vitti e = 0
+    vitti x = 123
+    vitti i = 0
+    yavat (i < 10000000) {
+        x = x
+        i = i + 1
+    }
+    likha(x)
+}
