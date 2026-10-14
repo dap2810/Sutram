@@ -1,7 +1,6 @@
 name: R48 native check-mode acceptance
+# Manual-only historical workflow, never trigger automatically on feature pushes.
 on:
-  push:
-    branches: [feature/r48-check-mode-20261009]
   workflow_dispatch:
 permissions:
   contents: read
