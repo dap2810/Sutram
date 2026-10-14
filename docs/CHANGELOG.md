@@ -1,3 +1,26 @@
+## v130 — ROUND-62 and ROUND-19 rewritten as HEAVY multi-workstream rounds
+
+- **Direction from the user:** give longer, heavier tasks so production moves faster — with the
+  explicit requirement that nothing introduces a security risk. Both open rounds were rewritten.
+- **ROUND-62 → ChatGPT (5 workstreams):** (1) prove the R61 fix on real Windows with a
+  legacy/fixed A/B; (2) close the installer loop end to end; (3) verify the GUI colours visually
+  from a real coloured test file; (4) finish the two R59-deferred peephole patterns (push/pop
+  cancellation, adjacent store/reload) at the emission site only; (5) the compiler-level overflow
+  trap (`jo`/`jno` after `+ - *`, zero-divisor guard before `idiv`, abort naming file:line) — the
+  `src/` half of Muse's R18 library work.
+- **ROUND-19 → Muse (4 workstreams):** (1) `map_clear` (their friction note 3); (2) container
+  breadth — audit map/kosh/list/set for the same gap, give `kosh` the stack/queue primitives, with a
+  per-container table of what changed and what deliberately did not; (3) close the accumulated small
+  library gaps across map/kosh/list/set/strb/ganita; (4) the library half of the overflow safety net,
+  composing with the trapping compiler and documenting the trap-vs-checked division of labour.
+- **Security constraints made explicit and hard** in both rounds: least privilege (no UAC/admin/HKLM,
+  no disabling OS protections), **no credentials** anywhere (placeholders only, including tests and
+  commit messages), no new network access from compiler/GUI/installer/library, and no experimental
+  workflow firing on every push. Both rounds say: if a step appears to need elevated rights, stop and
+  report instead of doing it.
+- Each workstream is independently acceptable, so a partial landing is still a win — both rounds say
+  to ship what is finished and name what is not.
+
 ## v129 — ChatGPT R61 (Windows PE-padding root cause) + Muse R18 (checked arithmetic) verified and SYNCED
 
 - **R61 is the best root-cause work in the project so far.** The Windows compiler hang was not
