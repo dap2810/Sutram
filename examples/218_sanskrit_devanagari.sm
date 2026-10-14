@@ -1,0 +1,18 @@
+# Sutram — संस्कृतम्  (Sanskrit, Devanagari script)
+#
+# The core keywords are already Sanskrit; this program writes them in their own
+# script and uses the danda । as the statement terminator.  Compile with:
+#
+#     sutram --lang sanskrit 218_sanskrit_devanagari.sm out.bin
+#
+# Every construct here is the ordinary language — only the spelling is new.
+
+मुख्य()
+    वित्ति योग = 0।
+    वित्ति इ = 1।
+    यावत् (इ <= 5) {
+        योग = योग + इ।
+        इ = इ + 1।
+    }
+    लिख("योगः = ")।
+    लिख(योग)।
