@@ -673,8 +673,11 @@ do_uninstall:
     call dirname
 
     ; scratch dir for the script and the log
-    PTR  rcx, temp_path
-    mov  edx, MAXP
+    ; WinAPI GetTempPathW(DWORD nBufferLength, LPWSTR lpBuffer):
+    ; RCX must be capacity, RDX must be writable UTF-16 buffer.
+    ; Earlier code swapped the arguments and crashed with 0xC0000005.
+    mov  ecx, MAXP
+    PTR  rdx, temp_path
     API  GetTempPathW
     PTR  rcx, setup_dir
     PTR  rdx, temp_path
@@ -796,8 +799,11 @@ do_uninstall:
 do_install:
     PROLOG 96
     ; 2. %TEMP%\Sutram-Setup
-    PTR  rcx, temp_path
-    mov  edx, MAXP
+    ; WinAPI GetTempPathW(DWORD nBufferLength, LPWSTR lpBuffer):
+    ; RCX must be capacity, RDX must be writable UTF-16 buffer.
+    ; Earlier code swapped the arguments and crashed with 0xC0000005.
+    mov  ecx, MAXP
+    PTR  rdx, temp_path
     API  GetTempPathW
     PTR  rcx, setup_dir
     PTR  rdx, temp_path
