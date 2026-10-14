@@ -181,12 +181,21 @@ section .data
 ; 0 means "no printable character".
 ; ---- token word tables (NUL-separated, empty entry terminates) ------------
 kw_tab:
+    ; Devanagari spellings (slice 23) - same keywords, own script
+    db 0xE0,0xA4,0xAE,0xE0,0xA5,0x81,0xE0,0xA4,0x96,0xE0,0xA5,0x8D,0xE0,0xA4,0xAF,0,0
+    db 0xE0,0xA4,0xB5,0xE0,0xA4,0xBF,0xE0,0xA4,0xA4,0xE0,0xA5,0x8D,0xE0,0xA4,0xA4,0xE0,0xA4,0xBF,0,0
+    db 0xE0,0xA4,0x85,0xE0,0xA4,0x99,0xE0,0xA5,0x8D,0xE0,0xA4,0x95,0,0
+    db 0xE0,0xA4,0xAF,0xE0,0xA4,0xA6,0xE0,0xA4,0xBF,0,0
+    db 0xE0,0xA4,0xAF,0xE0,0xA4,0xBE,0xE0,0xA4,0xB5,0xE0,0xA4,0xA4,0xE0,0xA5,0x8D,0,0
+    db 0xE0,0xA4,0xB2,0xE0,0xA4,0xBF,0xE0,0xA4,0x96,0,0
     db 'mukhya',0,'vitti',0,'anka',0,'yadi',0,'anyatra',0,'yavat',0
     db 'punaravartana',0,'pratiyati',0,'prakriya',0,'likha',0,'purna',0
     db 'shunya',0,'sutra',0,'krama',0,'uddeshya',0,'guna',0,'pankti',0
     db 'srijana',0,'rachana',0,'ayojan',0,'grahan',0,'dasham',0,'kosh',0
     db 'kuru',0,'shabda',0,'parigrah',0,0
 bi_tab:
+    ; Devanagari spellings (slice 23)
+    db 0xE0,0xA4,0xA6,0xE0,0xA5,0x8D,0xE0,0xA4,0xB5,0xE0,0xA4,0xBE,0xE0,0xA4,0xB0,0xE0,0xA4,0xAE,0,0
     db 'dvaram',0,'band',0,'sthagita',0,'char_at',0,'char_code',0
     db 'set_char',0,'vartani_len',0,'vartani_cmp',0,'vartani_cp',0
     db 'nirmmita',0,'likh',0,'likh8',0,'pad',0,'pad8',0,0
@@ -1128,6 +1137,10 @@ draw_editor:
 ; ------------------------------------------------------------- tokeniser
 ; al -> eax=1 if [A-Za-z0-9_]
 is_word_char:
+    ; slice 23: accept the Indic UTF-8 lead byte 0xE0 (U+0900-U+0DFF covers
+    ; Devanagari and the other eight Indic scripts), as the compiler's is_alpha does.
+    cmp al, 0xE0
+    je .yw
     cmp al, '_'
     je .yw
     cmp al, '0'
@@ -1334,6 +1347,20 @@ classify:
     cmp r10, r13
     jae .c_w_done
     mov al, [rbx+r10]
+    cmp al, 0xE0
+    jne .c_w_one
+    ; slice 23: a 3-byte Indic sequence is one unit, bounded by the line end
+    lea r11, [r9+3]
+    mov r10, r15
+    add r10, r11
+    cmp r10, r13
+    jbe .c_w_three
+    mov r11, r13
+    sub r11, r15
+.c_w_three:
+    mov r9, r11
+    jmp .c_w_loop
+.c_w_one:
     call is_word_char
     test eax, eax
     jz .c_w_done
