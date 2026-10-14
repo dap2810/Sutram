@@ -1,7 +1,6 @@
 name: R49 R50 integrated native verification
+# Manual-only historical workflow, never trigger automatically on feature pushes.
 on:
-  push:
-    branches: [feature/r49-r50-completion-20261009]
   workflow_dispatch:
 permissions:
   contents: read
