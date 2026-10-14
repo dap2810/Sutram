@@ -1,0 +1,18 @@
+vitti g = 17
+mukhya() {
+    vitti x = 9
+    x = x
+    likha(x)
+    g = g
+    likha(g)
+    vitti a = 0
+    vitti b = 0
+    vitti c = 0
+    vitti d = 0
+    vitti e = 0
+    vitti stackvar = 33
+    stackvar = stackvar
+    likha(stackvar)
+    stackvar = 44
+    likha(stackvar)
+}
