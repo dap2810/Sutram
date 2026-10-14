@@ -1,0 +1,15 @@
+# Ensure kosh_peek retains binary64 type and clear does not free capacity.
+mukhya() {
+    kosh dasham v[1]
+    likha(kosh_empty(v))
+    likha(kosh_enqueue(v, 1.5))
+    likha(kosh_peek(v))
+    likha(kosh_len(v))
+    likha(kosh_peek(v))
+    likha(kosh_clear(v))
+    likha(kosh_empty(v))
+    likha(kosh_cap(v))
+    likha(kosh_push(v, 2.25))
+    likha(kosh_peek(v))
+    likha(kosh_len(v))
+}
