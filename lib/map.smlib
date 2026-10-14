@@ -230,7 +230,50 @@ prakriya map_remove(m, cap, key, keyn) {
     pratiyati 1
 }
 
-# map_size(m) — number of live entries.
+# map_clear(m) — reset the map to empty IN PLACE (WS1, R19): same
+# handle, same capacity, no leak, no re-allocation. Capacity is read
+# from m[0]; no cap parameter, so a mismatched cap cannot corrupt
+# the map. FULL ZERO, not a count reset: the count, every state
+# flag, every keylen, every val, and every key byte are set to 0.
+# After map_clear the buffer is indistinguishable from a freshly
+# zeroed map. Merely resetting the count would leave the old keys
+# readable through the key region to anyone holding the handle —
+# the stale-segment hazard this closes. Returns 1.
+prakriya map_clear(m) {
+    vitti cap = m[0]
+    vitti i = 0
+    vitti base = 0
+    vitti k = 0
+    m[1] = 0
+    yavat (i < cap) {
+        m[2 + i] = 0
+        m[2 + cap + i] = 0
+        m[2 + 2 * cap + i] = 0
+        base = (2 + 3 * cap) * 8 + i * 32
+        k = 0
+        yavat (k < 32) {
+            set_char(m, base + k, 0)
+            k = k + 1
+        }
+        i = i + 1
+    }
+    pratiyati 1
+}
+
+# map_get_default(m, cap, key, keyn, def) — value for key, or def if
+# absent (WS3, R19). The -1 sentinel of map_get cannot distinguish
+# "absent" from "stored -1"; this removes the contains-check dance
+# for callers whose default is not -1. (A caller whose default IS
+# -1 gets exactly map_get's behaviour.)
+prakriya map_get_default(m, cap, key, keyn, def) {
+    vitti kn = keyn
+    vitti slot = 0
+    yadi (kn > 32) { kn = 32 }
+    slot = map_find(m, cap, key, kn)
+    yadi (slot < 0) { pratiyati def }
+    pratiyati m[2 + 2 * cap + slot]
+}
+
 prakriya map_size(m) {
     pratiyati m[1]
 }
