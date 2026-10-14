@@ -170,8 +170,18 @@ prakriya list_remove_at(l, i) {
 }
 
 # list_clear(l) — empty the list, keeping the allocated capacity.
+# R19: also ZEROES the data cells (was: len reset only). The old
+# elements were reachable after a clear to anyone reading the data
+# array through l[2], so a len-only reset left stale values readable
+# — the same hazard map_clear closes. Capacity never shrinks.
 # Returns 1.
 prakriya list_clear(l) {
+    vitti d = l[2]
+    vitti i = 0
+    yavat (i < l[1]) {
+        d[i] = 0
+        i = i + 1
+    }
     l[0] = 0
     pratiyati 1
 }
@@ -340,6 +350,23 @@ prakriya queue_peek(q, ok) {
     d = qu[2]
     okp[0] = 1
     pratiyati d[qu[3]]
+}
+
+# queue_clear(q) — empty the queue in place (WS2, R19): same handle,
+# same capacity, head reset to 0, and the ring data ZEROED — the
+# dequeued dead space held stale values readable through q[2], the
+# same hazard map_clear/list_clear close. Capacity never shrinks.
+# Returns 1.
+prakriya queue_clear(q) {
+    vitti d = q[2]
+    vitti i = 0
+    yavat (i < q[1]) {
+        d[i] = 0
+        i = i + 1
+    }
+    q[0] = 0
+    q[3] = 0
+    pratiyati 1
 }
 
 # queue_empty(q) — 1 if the queue is empty, else 0.
