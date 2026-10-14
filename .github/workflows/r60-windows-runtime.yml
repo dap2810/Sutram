@@ -1,7 +1,8 @@
 name: R60 genuine Windows desktop probe (no installer side-effects)
+# Run only when intentionally requested. Do not launch another full
+# verification job for each small source or evidence commit: that created
+# repeated failed CI notifications while independent blockers were under review.
 on:
-  push:
-    branches: [feature/r60-windows-smoke-20261014]
   workflow_dispatch:
 permissions:
   contents: read
