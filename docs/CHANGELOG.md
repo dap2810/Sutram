@@ -1,3 +1,19 @@
+## v128 — Muse R17 (map_keys_bytes) verified and SYNCED; ROUND-18 issued
+
+- **Muse R17 accepted.** Patch applied cleanly to pristine main; **6/6 hashes match**. `proof_lib`
+  **162/162** (was 161), `proof_props` **50/50** (was 49), suite **PASS=186 / NO-EXPECTATION=3**,
+  `gen_stdlib_ref.py` reproduces **21 modules / 231 functions** exactly.
+- **The decision was the right one:** they **added** `map_keys_bytes` and kept `map_keys` unchanged,
+  because changing the meaning would silently break its consumers — the very bug class the round
+  removes. Their before/after table (size correct, keys corrupted) is the evidence that mattered.
+- All five `set.smlib` call sites migrated; the `strb_pack` round-trip deleted; temp buffers shrink
+  from cells to bytes. `set_to_array`'s output contract kept, so its golden is byte-identical.
+  `examples/215_r12_wordfreq.sm` correctly left alone (different dance, out of scope).
+- 7 files synced. Verified on main.
+- **ROUND-18 issued to Muse:** make integer overflow **loud** instead of silently wrapping (their own
+  friction note 4) — same correctness shape as the `map_keys` bug. `map_clear` stays queued behind it.
+- **Still open:** ROUND-61 with ChatGPT (Windows compiler hang).
+
 ## v127 — Linux X11 GUI slice 20: clickable menu bar (my own stream)
 
 - **The Linux GUI now has a menu bar** — File / Edit / Shell / Debug / Options / Window / Help —
