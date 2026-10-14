@@ -1,0 +1,5 @@
+# R64: empty peek must identify 'peek' and exit nonzero.
+mukhya() {
+    kosh k[1]
+    likha(kosh_peek(k))
+}
