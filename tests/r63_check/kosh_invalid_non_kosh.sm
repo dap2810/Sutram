@@ -1,0 +1,5 @@
+# Compiler rejects passing a normal scalar to kosh_clear.
+mukhya() {
+    vitti a = 5
+    likha(kosh_clear(a))
+}
