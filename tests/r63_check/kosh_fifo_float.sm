@@ -1,0 +1,10 @@
+# R63 floating queue preserves binary64 bits for dequeue and peek.
+mukhya() {
+    kosh dasham q[1]
+    likha(kosh_enqueue(q, 1.25))
+    likha(kosh_enqueue(q, 2.5))
+    likha(kosh_dequeue(q))
+    likha(kosh_peek(q))
+    likha(kosh_dequeue(q))
+    likha(kosh_empty(q))
+}
