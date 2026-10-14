@@ -14,7 +14,7 @@ if (-not $ResultsDir) { $ResultsDir=Join-Path $env:TEMP 'Sutram-R62-Windows-Acce
 New-Item -ItemType Directory -Force -Path $ResultsDir | Out-Null
 $ResultsDir=(Resolve-Path -LiteralPath $ResultsDir).Path
 if (-not [Environment]::Is64BitOperatingSystem -or -not [Environment]::Is64BitProcess) { throw '64-bit Windows/PowerShell required.' }
-$principal=New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+$principal=[Security.Principal.WindowsPrincipal]::new([Security.Principal.WindowsIdentity]::GetCurrent())
 if ($principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) { throw 'Use standard-user PowerShell; do not elevate.' }
 function Hash([string]$file) {
  if (-not (Test-Path -LiteralPath $file -PathType Leaf)) { throw "Missing file: $file" }
@@ -32,9 +32,11 @@ mukhya()
     }
 '@
 [IO.File]::WriteAllText($sample,$sampleText + [Environment]::NewLine,([Text.UTF8Encoding]::new($false)))
-function Run-Bounded([string]$exe,[string]$args,[string]$tag,[string]$watched='') {
+function Run-Bounded([string]$exe,[string]$arguments,[string]$tag,[string]$watched='') {
  $out=Join-Path $ResultsDir ($tag+'.stdout.txt'); $err=Join-Path $ResultsDir ($tag+'.stderr.txt')
- $p=Start-Process -FilePath $exe -ArgumentList $args -PassThru -WorkingDirectory $root -NoNewWindow -RedirectStandardOutput $out -RedirectStandardError $err
+ $start=@{FilePath=$exe; PassThru=$true; WorkingDirectory=$root; NoNewWindow=$true; RedirectStandardOutput=$out; RedirectStandardError=$err}
+ if ($arguments) { $start.ArgumentList=$arguments }
+ $p=Start-Process @start
  $sw=[Diagnostics.Stopwatch]::StartNew(); $oversize=$false
  while (-not $p.HasExited -and $sw.ElapsedMilliseconds -lt 12000) {
    if ($watched -and (Test-Path -LiteralPath $watched -PathType Leaf) -and (Get-Item -LiteralPath $watched).Length -gt 65536) { $oversize=$true; break }
@@ -53,7 +55,7 @@ if ($Stage -eq 'Screenshot') {
  Add-Type -AssemblyName System.Drawing
  Add-Type -AssemblyName System.Windows.Forms
  $r=[Windows.Forms.Screen]::PrimaryScreen.Bounds
- $bmp=New-Object Drawing.Bitmap($r.Width,$r.Height)
+ $bmp=[Drawing.Bitmap]::new($r.Width,$r.Height)
  $g=[Drawing.Graphics]::FromImage($bmp)
  try { $g.CopyFromScreen($r.Location,[Drawing.Point]::Empty,$r.Size)
        $bmp.Save((Join-Path $ResultsDir 'GUI_REVIEW_REQUIRED.png'),[Drawing.Imaging.ImageFormat]::Png) }
