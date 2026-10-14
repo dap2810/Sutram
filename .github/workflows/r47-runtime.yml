@@ -1,7 +1,6 @@
 name: R47 generated native-code runtime A/B
+# Notification-safe: no automatic runs for historical review experiments.
 on:
-  push:
-    branches: [feature/r47-scaled-index-load-native-20261009]
   workflow_dispatch:
 permissions:
   contents: read
