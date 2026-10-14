@@ -10,8 +10,9 @@ Add-Type -AssemblyName System.Windows.Forms
 $root = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
 if (-not $Exe) { $Exe = Join-Path $root 'sutram-ide-gui.exe' }
 if (-not (Test-Path $Exe)) { throw "Build first: $Exe" }
-if (-not (Test-Path (Join-Path $root 'win\sutram.exe'))) { throw 'Expected win\sutram.exe not found' }
-$proc = Start-Process -FilePath $Exe -WorkingDirectory $root -PassThru
+$exeRoot = (Resolve-Path (Split-Path -Parent $Exe)).Path
+if (-not (Test-Path (Join-Path $exeRoot 'win\sutram.exe'))) { throw 'Expected win\sutram.exe alongside the tested GUI (portable or installed)' }
+$proc = Start-Process -FilePath $Exe -WorkingDirectory $exeRoot -PassThru
 try {
     $main = $null
     for ($i=0; $i -lt 40; $i++) {
