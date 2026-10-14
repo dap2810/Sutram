@@ -1,7 +1,7 @@
 name: R54 builtin arity matrix and raw bounds
+# Manual-only experiment: no email flood on each push.
+# Start at a deliberate milestone using workflow_dispatch.
 on:
-  push:
-    branches: [feature/r54-builtin-arity-bounds-20261012]
   workflow_dispatch:
 permissions:
   contents: read

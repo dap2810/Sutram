@@ -1,7 +1,7 @@
 name: R56 module globals native proof
+# Manual-only experiment: no email flood on each push.
+# Start at a deliberate milestone using workflow_dispatch.
 on:
-  push:
-    branches: [feature/r56-module-global-vitti-20261013]
   workflow_dispatch:
 permissions:
   contents: read

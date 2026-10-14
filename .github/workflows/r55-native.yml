@@ -1,7 +1,7 @@
 name: R55 mutual recursion with verified forward prototypes
+# Manual-only experiment: no email flood on each push.
+# Start at a deliberate milestone using workflow_dispatch.
 on:
-  push:
-    branches: [feature/r55-forward-prototypes-20261013]
   workflow_dispatch:
 permissions:
   contents: read

@@ -1,7 +1,7 @@
 name: R53 consolidated R51 provenance and R52 builtin fixes
+# Manual-only experiment: no email flood on each push.
+# Start at a deliberate milestone using workflow_dispatch.
 on:
-  push:
-    branches: [feature/r53-consolidated-r51-r52-20261010]
   workflow_dispatch:
 permissions:
   contents: read

@@ -1,7 +1,7 @@
 name: R57 native register expression optimization
+# Manual-only experiment: no email flood on each push.
+# Start at a deliberate milestone using workflow_dispatch.
 on:
-  push:
-    branches: [feature/r57-register-expression-tree-20261013]
   workflow_dispatch:
 permissions:
   contents: read
