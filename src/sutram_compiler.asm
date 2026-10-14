@@ -5771,6 +5771,23 @@ lex:
     cmp al, '#'
     je .skip_comment
 
+    ; ---- slice 21: danda । / double danda ॥ as statement terminators ----
+    ; MUST run before the is_alpha test: is_alpha claims the 0xE0 lead byte,
+    ; so a danda would otherwise be absorbed into an identifier. Both forms
+    ; are 3-byte UTF-8 (E0 A5 A4 / E0 A5 A5) and emit the same token as ';'.
+    movzx rax, byte [r13]
+    cmp al, 0xE0
+    jne .not_danda
+    movzx rax, byte [r13+1]
+    cmp al, 0xA5
+    jne .not_danda
+    movzx rax, byte [r13+2]
+    cmp al, 0xA4                    ; । DANDA
+    je .emit_danda
+    cmp al, 0xA5                    ; ॥ DOUBLE DANDA
+    je .emit_danda
+.not_danda:
+
     ; Identifier/keyword?
     movzx rax, byte [r13]
     mov rdi, rax
@@ -5783,6 +5800,21 @@ lex:
 .collect_id:
     cmp r13, r14
     jae .id_done
+    ; ---- slice 21: a danda terminates an identifier, it does not extend it.
+    ; is_alpha claims the 0xE0 lead byte, so without this check 'i।' would be
+    ; lexed as a single identifier and the terminator would disappear.
+    movzx rax, byte [r13]
+    cmp al, 0xE0
+    jne .cid_alpha
+    movzx rax, byte [r13+1]
+    cmp al, 0xA5
+    jne .cid_alpha
+    movzx rax, byte [r13+2]
+    cmp al, 0xA4                    ; । DANDA
+    je .id_done
+    cmp al, 0xA5                    ; ॥ DOUBLE DANDA
+    je .id_done
+.cid_alpha:
     movzx rax, byte [r13]
     mov rdi, rax
     call is_alpha
@@ -6262,6 +6294,19 @@ lex:
     mov rax, [rel cur_line]
     mov [r15+24], rax
     mov [r15+32], r12          ; exact source position for column/snippet diagnostics
+    add r15, TOKEN_SIZE
+    inc qword [rel token_cnt]
+    jmp .lex_loop
+
+.emit_danda:
+    add r13, 3
+    mov r8, ';'                     ; same token as a semicolon
+    mov qword [r15], TOK_DELIMITER
+    mov [r15+8], r8
+    mov qword [r15+16], 0
+    mov rax, [rel cur_line]
+    mov [r15+24], rax
+    mov [r15+32], r12
     add r15, TOKEN_SIZE
     inc qword [rel token_cnt]
     jmp .lex_loop
