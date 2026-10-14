@@ -438,3 +438,23 @@ prakriya ganita_sat_pow(a, e) {
     }
     pratiyati r
 }
+
+# ganita_sat_fact(n) — n!, saturating (WS3, R21): on overflow returns
+# INT64_MAX (factorials are positive, so saturation is always MAX).
+# n < 0 returns 0 (no integer factorial; the saturating form has no
+# ok channel, so 0 is the documented sentinel). 0! = 1. 20! is the
+# largest that fits; 21! saturates. Exits early once saturated
+# (factorials only grow, so a saturated result stays saturated).
+prakriya ganita_sat_fact(n) {
+    vitti nn = n
+    vitti maxv = 9223372036854775807
+    vitti r = 1
+    vitti i = 2
+    yadi (nn < 0) { pratiyati 0 }
+    yavat (i <= nn) {
+        r = ganita_sat_mul(r, i)
+        yadi (r == maxv) { pratiyati maxv }
+        i = i + 1
+    }
+    pratiyati r
+}
