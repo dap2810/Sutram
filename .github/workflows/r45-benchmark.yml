@@ -1,8 +1,6 @@
 name: R45 native benchmark and profiler
+# Notification-safe: no automatic runs for historical review experiments.
 on:
-  push:
-    branches:
-      - feature/r45-measured-compile-performance-20261009
   workflow_dispatch:
 permissions:
   contents: read
