@@ -1,0 +1,7 @@
+# R63 preserve Unicode danda as a statement delimiter next to identifier.
+mukhya() {
+    vitti s = 1।
+    vitti i = 2॥
+    s = s + i।
+    likha(s)॥
+}
