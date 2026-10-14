@@ -1,0 +1,29 @@
+ayojan ganita
+mukhya() {
+    vitti max = 9223372036854775807
+    vitti min = (0 - 9223372036854775807) - 1
+    likha(ganita_sat_add(max, 1))
+    likha("\n")
+    likha(ganita_sat_add(min, 0 - 1))
+    likha("\n")
+    likha(ganita_sat_sub(max, 0 - 1))
+    likha("\n")
+    likha(ganita_sat_sub(min, 1))
+    likha("\n")
+    likha(ganita_sat_mul(max, 2))
+    likha("\n")
+    likha(ganita_sat_mul(min, 2))
+    likha("\n")
+    # INT64_MIN * -1 saturates to MAX (true product is +2^63)
+    likha(ganita_sat_mul(min, 0 - 1))
+    likha("\n")
+    likha(ganita_sat_mul(min, 0 - 2))
+    likha("\n")
+    # no overflow: exact values
+    likha(ganita_sat_mul(6, 7))
+    likha("\n")
+    likha(ganita_sat_add(2, 3))
+    likha("\n")
+    likha(ganita_sat_sub(2, 3))
+    likha("\n")
+}
