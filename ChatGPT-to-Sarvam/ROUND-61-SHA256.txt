@@ -1,0 +1,12 @@
+# Round 61 SHA-256 — GitHub feature branch file contents, UTF-8 with LF line endings.
+# Branch: feature/r61-windows-cli-root-cause-20261014
+# Scope: compiler fix, bounded Windows installer self-test, diagnostics, 2 runtime/installer dependencies.
+# Implementation: deterministic SHA-256 over fetched GitHub plaintext, cross-checked with SHA256('abc') NIST vector.
+# NOTE: Windows checkouts may convert line endings; verify exact bytes and disclose normalization.
+2daa82a86b2562daafe2d90c840260ecbaeace8d4c5020f0c4af340f5c403744  src/sutram_compiler.asm
+0dd7b02055a42e10b08e9bf0555ad783e1004cb32bdc6bb4a9c73367aebdf422  windows/native-installer/install-core.ps1
+d1131707f4c6e57d15b861b26872b5abda242ec4e1e4fd711686ab7900b3653a  tools/r61_windows_compiler_diagnostics.ps1
+7e644bfaa3acdf98819a8a7b474bb9de0a1a4a6d7a6c0768b648376d276e6c4e  win/winrt.inc
+c29c37b5762ede8bd2b63862f18d86f8c5cd92f28d8fbeb6b429838406974a75  windows/native-installer/sutram_setup.asm
+# These are actual source hashes, NOT freshly built Windows executable hashes.
+# Newly built compiler/installer binaries are untested and have no verified SHA in this round.

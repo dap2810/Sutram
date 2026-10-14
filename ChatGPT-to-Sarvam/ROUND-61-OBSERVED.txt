@@ -1,0 +1,63 @@
+SUTRAM ROUND 61 — VERIFIED OBSERVATIONS VS PENDING TESTS
+Date 2026-10-14
+SCOPE: incoming Sarvam-to-ChatGPT/ROUND-61.md
+PR: https://github.com/dap2810/Sutram/pull/19
+SOURCE_BRANCH: feature/r61-windows-cli-root-cause-20261014
+STATUS: Source-level PE-padding fix proposed; NO post-fix Windows binary executed or released.
+
+=== EXISTING INDEPENDENT WINDOWS ARTIFACT: FACTUAL OBSERVATIONS ===
+R60_REAL_WIN_RUN https://github.com/dap2810/Sutram/actions/runs/38562501834
+R60_ARTIFACT r60-windows-desktop-evidence
+R60_ARTIFACT_ID 11892492523
+R60_FIXTURE_NAME idle-test/r60_cli_test.sm
+R60_FIXTURE_LENGTH 46 bytes
+R60_FIXTURE_PROGRAM mukhya() { likha("WIN_NATIVE_TEST_OK") }
+R60_RESULT_PATH idle-test/r60_cli_test.exe
+R60_OUTPUT_SIZE 533114623 bytes (509 MiB, approx; oversized)
+R60_EXPECTED_PE_SIZE approx 1536 bytes based on PE header (512+1024; see actual section data below)
+R60_OUTPUT_FORMAT PE32+ executable
+R60_HEADER_SECTION_COUNT 1
+R60_HEADER_TEXT_RAWSIZE 1024
+R60_HEADER_TEXT_POINTERTORAWDATA 512
+R60_TAIL sampled trailing data zeros at 4,096; 1,000,000; 100,000,000 bytes and end
+R60_COMPILER_STDOUT empty
+R60_COMPILER_STDERR empty
+R60_CLI_TIMEOUT 12000ms; compiler killed
+R60_PRIMARY_FAILURE huge output caused by PE writer continuing past file alignment, not merely no stdout
+
+=== SOURCE-LEVEL CAUSALITY ===
+Before, write_pe .pp_pad_go:
+  mov rdi, [rel out_fd]
+  lea rsi, [rel pe_pad]
+  call os_write
+  sub r13, rdx
+  jmp .pp_pad
+win/winrt.inc os_write invokes Win64 WriteFile which is permitted to clobber RDX.
+R56 .r56_pe_data_write already saves/restores RDX correctly.
+After, proposed .pp_pad_go saves chosen chunk with push rdx before call, pop rdx after.
+No generated-code golden files touched. Windows native confirmation is pending.
+
+=== INSPECTED R60 TRUE SCREENSHOT IMAGES ===
+IDE.png: visible Sutram Shell 1.0, File/Edit/Shell/Debug/Options/Window/Help menu. Editor shows '001', not full syntax token corpus. No Run/stdout or shell proof. Colours unverified.
+SETUP_PRE_INSTALL.png: real graphical wizard renders with Install/Cancel and "Ready to install."
+SETUP_POST_INSTALL.png: after Install click, real failure dialog "Sutram setup did not complete." No successful installation.
+Installed ICO appearance: UNVERIFIED (no installed shortcut or GUI to inspect).
+Canonical source icon SHA recorded from R60: b48aeb52516433c3cce51ffe436fa04355cb938aa0b5188c60fe7c02f2923ec1.
+
+=== R61 NEW CODE ===
+src/sutram_compiler.asm: save/restore volatile RDX around Windows PE pad call.
+tools/r61_windows_compiler_diagnostics.ps1: fresh-build Windows compiler + staged DIAG_0..7 and real stdout acceptance, 64 KiB oversize kill, 8s test limit, optional old compiler A/B; fail on incorrect result.
+windows/native-installer/install-core.ps1: three unbounded compiler version/help invocations replaced with bounded 8s native self-tests, abort/log on error.
+AGENTS.md / CI notification safeguard honored: no new/modified GitHub Actions and no new native CI run triggered.
+Actual source SHA256: see ROUND-61-SHA256.txt.
+Static diff and source/hash inspection completed. No claim of NASM/PE link or Win64 runtime executing the patched binary in this round.
+
+=== BLOCKERS / HONEST ACCEPTANCE ===
+PENDING native Windows rebuild of compiler and generated PE with 64 KiB guard
+PENDING exact stdout WIN_NATIVE_TEST_OK, exit 0, completion within bounded time
+PENDING source-built IDE Run and interactive >>> stdout
+PENDING installer payload rebuilt with corrected compiler and full no-UAC per-user successful install
+PENDING installed shortcut and canonical ICO visual check
+PENDING screenshot of approved syntax colour mapping inspected visually
+PENDING Linux proof/regression suite and codegen frozen baseline verification for this patch
+Do not mark R61 COMPLETE or Windows release-ready from source reasoning alone.
