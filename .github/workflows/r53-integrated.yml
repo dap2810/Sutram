@@ -1,7 +1,7 @@
 name: R53 consolidated R51 provenance and R52 builtin fixes
+# Experimental CI is intentionally manual-only to avoid notification floods.
+# Run one full regression at a verified milestone, not at every source commit.
 on:
-  push:
-    branches: [feature/r53-consolidated-r51-r52-20261010]
   workflow_dispatch:
 permissions:
   contents: read
