@@ -1,0 +1,9 @@
+vitti g = 213
+mukhya() {
+    vitti i = 0
+    yavat (i < 10000000) {
+        g = g
+        i = i + 1
+    }
+    likha(g)
+}

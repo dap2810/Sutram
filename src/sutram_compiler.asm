@@ -10950,6 +10950,18 @@ gen_stmt:
     ret
 
 .gs_assign:
+    ; R59 pre-emission peephole: an existing scalar's x=x has a side-effect-
+    ; free AST_VAR RHS, so evaluating x and writing it back cannot alter
+    ; memory/register state. Skip BOTH load and store before any code bytes
+    ; or relocation patches are produced. Do not auto-allocate an undeclared
+    ; name, preserve every other expression on the validated old path.
+    mov rdi,rbx
+    call r59_skip_existing_self_assign
+    test rax,rax
+    jz .r59_assign_live
+    pop rbx
+    ret
+.r59_assign_live:
     ; [AST_ASSIGN][target_ptr][value_ptr]
     ; R56: resolve a module global only if the current scope has no local
     ; parameter/declaration with the same name. Bypass every fast store path.
@@ -20117,6 +20129,60 @@ lookup_var:
     ; Auto-allocate
     mov rdi, rbx
     call alloc_var
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; ============================================================
+; R59: exact self-assignment no-op test, BEFORE emitted bytes exist.
+; rdi=AST_ASSIGN -> eax=1 only if both operands are equal AST_VAR
+; and name is already a local or module global. No compiler storage writes.
+; This intentionally does NOT claim to optimize arbitrary store/reload.
+; ============================================================
+r59_skip_existing_self_assign:
+    push rbx
+    push r12
+    push r13
+    mov rbx,rdi
+    mov rax,[rbx+8]
+    cmp qword [rax],AST_VAR
+    jne .r59_no
+    mov r12,[rax+8]
+    mov rax,[rbx+16]
+    cmp qword [rax],AST_VAR
+    jne .r59_no
+    mov rdi,r12
+    mov rsi,[rax+8]
+    call strcmp
+    test rax,rax
+    jnz .r59_no
+    ; Search existing locals without calling lookup_var (auto-allocates).
+    xor r13,r13
+.r59_local_loop:
+    cmp r13,[rel var_cnt]
+    jae .r59_global
+    lea rdx,[rel var_table]
+    mov rcx,r13
+    shl rcx,4
+    mov rdi,[rdx+rcx]
+    mov rsi,r12
+    call strcmp
+    test rax,rax
+    jz .r59_yes
+    inc r13
+    jmp .r59_local_loop
+.r59_global:
+    mov rdi,r12
+    call r56_global_index
+    test rax,rax
+    jnz .r59_yes
+.r59_no:
+    xor eax,eax
+    jmp .r59_done
+.r59_yes:
+    mov eax,1
+.r59_done:
     pop r13
     pop r12
     pop rbx

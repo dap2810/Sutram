@@ -1,0 +1,5 @@
+# R59 proposed frozen native-ELF SHA256 hashes from green native CI 38558185471
+# Old R57/R58 baseline files are not modified.
+d4185d67f59f46225d0ab921afbf7bcae5ed4df7429c618118de471506130d2e  tests/r59_check/stack_self_10m.sm
+48c8687e1785681f0dbdbdfe7caf2e8eea461b6a5bf0601f2f85728120aad1ff  tests/r59_check/global_self_10m.sm
+84ade62226a1db17bebeae806ddcb9018e350232ce783e1fbb2a5fd3d5fa1b11  tests/r59_check/self_assign_cases.sm
