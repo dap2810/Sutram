@@ -26,21 +26,21 @@ Do not edit by hand.</p>
 <li><a href="#bigint"><code>bigint</code></a> — 12 functions</li>
 <li><a href="#chandas"><code>chandas</code></a> — 6 functions</li>
 <li><a href="#fmt"><code>fmt</code></a> — 23 functions</li>
-<li><a href="#ganita"><code>ganita</code></a> — 15 functions</li>
+<li><a href="#ganita"><code>ganita</code></a> — 17 functions</li>
 <li><a href="#hash"><code>hash</code></a> — 2 functions</li>
 <li><a href="#kalana"><code>kalana</code></a> — 6 functions</li>
-<li><a href="#list"><code>list</code></a> — 22 functions</li>
+<li><a href="#list"><code>list</code></a> — 24 functions</li>
 <li><a href="#madhava"><code>madhava</code></a> — 5 functions</li>
-<li><a href="#map"><code>map</code></a> — 14 functions</li>
+<li><a href="#map"><code>map</code></a> — 15 functions</li>
 <li><a href="#math"><code>math</code></a> — 16 functions</li>
 <li><a href="#num"><code>num</code></a> — 10 functions</li>
 <li><a href="#samanvaya"><code>samanvaya</code></a> — 10 functions</li>
 <li><a href="#sankhyiki"><code>sankhyiki</code></a> — 16 functions</li>
-<li><a href="#set"><code>set</code></a> — 12 functions</li>
+<li><a href="#set"><code>set</code></a> — 13 functions</li>
 <li><a href="#sort"><code>sort</code></a> — 14 functions</li>
-<li><a href="#strb"><code>strb</code></a> — 17 functions</li>
+<li><a href="#strb"><code>strb</code></a> — 22 functions</li>
 <li><a href="#strconv"><code>strconv</code></a> — 5 functions</li>
-<li><a href="#string"><code>string</code></a> — 25 functions</li>
+<li><a href="#string"><code>string</code></a> — 27 functions</li>
 <li><a href="#util"><code>util</code></a> — 7 functions</li>
 </ul>
 <h2 id="array"><code>array</code></h2>
@@ -138,6 +138,8 @@ Do not edit by hand.</p>
 <tr><td><code>ganita_sat_sub(a, b)</code></td><td>ganita_sat_sub(a, b) — a - b, saturating (see ganita_sat_add).</td></tr>
 <tr><td><code>ganita_sat_mul(a, b)</code></td><td>ganita_sat_mul(a, b) — a * b, saturating (see ganita_sat_add). The overflow direction is the sign of the true product.</td></tr>
 <tr><td><code>ganita_checked_pow(a, e, ok)</code></td><td>ganita_checked_pow(a, e, ok) — a^e for e &gt;= 0 via repeated checked multiplication (WS3, R19); ok[0] 1, or 0 if e &lt; 0 (no integer power) or the result overflows (returns 0 then). 0^0 = 1 by the empty-product convention. O(e), but the loop exits early on overflow for every |a| &gt;= 2 (a^e overflows by e = 63 at the latest); only the trivial bases -1, 0, 1 run the full loop.</td></tr>
+<tr><td><code>ganita_checked_fact(n, ok)</code></td><td>ganita_checked_fact(n, ok) — n! via repeated checked multiplication (WS3, R20); ok[0] 1, or 0 if n &lt; 0 (no integer factorial) or the result overflows (returns 0 then). 0! = 1. 20! is the largest that fits (20! = 2432902008176640000); 21! overflows.</td></tr>
+<tr><td><code>ganita_sat_pow(a, e)</code></td><td>ganita_sat_pow(a, e) — a^e, saturating (WS3, R20): on overflow returns INT64_MAX (positive overflow) or INT64_MIN (negative overflow). e &lt; 0 returns 0 (no integer power; the saturating form has no ok channel, so 0 is the documented sentinel). 0^0 = 1. Repeated saturating multiplication. Correct because |a| &lt;= 1 never saturates, and once saturated with |a| &gt;= 2 every later true product overflows in the direction sign(r) * sign(a)^remaining — so the loop exits early with the parity of the remaining steps deciding the final bound, instead of iterating e times.</td></tr>
 </table>
 <h2 id="hash"><code>hash</code></h2>
 <p class="mod-desc">FNV-1a (Fowler–Noll–Vo) 32-bit hash. Deterministic, fast, good distribution for non-cryptographic use (hash tables, checksums, dedup keys). Reference: http://www.isthe.com/chongo/tech/comp/fnv/ offset_basis = 2166136261 prime        = 16777619 for each byte b: hash = (hash XOR b) * prime  (mod 2^32) fnv1a(s, len) — FNV-1a 32-bit hash of first `len` chars of pankti `s`. Returns an unsigned 32-bit value (may print as negative via likha).</p>
@@ -169,6 +171,8 @@ Do not edit by hand.</p>
 <tr><td><code>list_len(l)</code></td><td>list_len(l) — element count.</td></tr>
 <tr><td><code>list_insert_at(l, i, v)</code></td><td>list_insert_at(l, i, v) — insert v before index i (i == len appends). Returns 1 ok / 0 out of bounds or allocation failure.</td></tr>
 <tr><td><code>list_remove_at(l, i)</code></td><td>list_remove_at(l, i) — remove element i, shifting the rest left. Returns 1 ok / 0 out of bounds.</td></tr>
+<tr><td><code>list_swap(l, i, j)</code></td><td>list_swap(l, i, j) — swap elements i and j (WS2, R20). Returns 1 ok / 0 if either index is out of bounds (then nothing changes). Before this, swapping meant a temp variable plus two list_set calls at every call site.</td></tr>
+<tr><td><code>list_reverse(l)</code></td><td>list_reverse(l) — reverse the list in place (WS3, R20). Two-pointer swap, same shape as strb_reverse. Returns 1. Before this, reversing a list meant a hand-written two-index loop at every call site.</td></tr>
 <tr><td><code>list_clear(l)</code></td><td>list_clear(l) — empty the list, keeping the allocated capacity. R19: also ZEROES the data cells (was: len reset only). The old elements were reachable after a clear to anyone reading the data array through l[2], so a len-only reset left stale values readable — the same hazard map_clear closes. Capacity never shrinks. Returns 1.</td></tr>
 <tr><td><code>list_contains(l, v)</code></td><td>list_contains(l, v) — 1 if any element equals v, else 0.</td></tr>
 <tr><td><code>list_index_of(l, v)</code></td><td>list_index_of(l, v) — first index with value v, or -1 if absent.</td></tr>
@@ -208,6 +212,7 @@ Do not edit by hand.</p>
 <tr><td><code>map_contains(m, cap, key, keyn)</code></td><td>map_contains(m, cap, key, keyn) — 1 if key is present, else 0.</td></tr>
 <tr><td><code>map_remove(m, cap, key, keyn)</code></td><td>map_remove(m, cap, key, keyn) — delete key; 1 if removed, 0 if absent. Backward-shift deletion (Knuth 6.4R): after clearing the slot, each following live entry whose home bucket is NOT cyclically past the hole is shifted back into it, preserving every probe chain with no tombstones.</td></tr>
 <tr><td><code>map_clear(m)</code></td><td>map_clear(m) — reset the map to empty IN PLACE (WS1, R19): same handle, same capacity, no leak, no re-allocation. Capacity is read from m[0]; no cap parameter, so a mismatched cap cannot corrupt the map. FULL ZERO, not a count reset: the count, every state flag, every keylen, every val, and every key byte are set to 0. After map_clear the buffer is indistinguishable from a freshly zeroed map. Merely resetting the count would leave the old keys readable through the key region to anyone holding the handle — the stale-segment hazard this closes. Returns 1.</td></tr>
+<tr><td><code>map_resize(m, newcap)</code></td><td>map_resize(m, newcap) — copy the map into a fresh map of capacity newcap, rehashing every entry (WS2, R20). Returns the new handle. Returns 0 and changes nothing if newcap &lt; map_size(m) (no partial copy). The old buffer is abandoned (the library has no free — same as re-init); rebind: m = map_resize(m, 32). Capacity is clamped to &gt;= 1 by map_init. Before this, growing a fixed-capacity map meant a hand-written re-put loop over map_keys_bytes at every call site.</td></tr>
 <tr><td><code>map_get_default(m, cap, key, keyn, def)</code></td><td>map_get_default(m, cap, key, keyn, def) — value for key, or def if absent (WS3, R19). The -1 sentinel of map_get cannot distinguish &quot;absent&quot; from &quot;stored -1&quot;; this removes the contains-check dance for callers whose default is not -1. (A caller whose default IS -1 gets exactly map_get&#x27;s behaviour.)</td></tr>
 <tr><td><code>map_size(m)</code></td><td></td></tr>
 <tr><td><code>map_keys(m, out)</code></td><td>map_keys(m, out) — write live keys into out in length-prefixed form [len0, b0, b1, ..., len1, b0, ...] (same shape as str_split parts). Returns the key count, which equals map_size(m). NOTE: segments are QWORD CELLS (len in one cell, one byte per cell), kept for backward compatibility. New code should use map_keys_bytes below, which returns the same segments as packed bytes — the form every key consumer (map_put, map_contains, strb_compare) actually takes. Passing a map_keys segment straight to a byte-key consumer compiles and silently compares the wrong bytes (the R14 trap).</td></tr>
@@ -297,6 +302,7 @@ Do not edit by hand.</p>
 <tr><td><code>set_union(a, cap, b, bcap, out)</code></td><td>set_union(a, cap, b, bcap, out) — add every element of a and of b into out (fresh, empty, capacity &gt;= cap + bcap). Returns set_size(out). R17: iteration is map_keys_bytes, whose packed-byte segments go straight into map_put. (Before R17 this used map_keys cell segments plus a strb_pack per segment; passing a cell segment straight to map_put compiled fine and silently compared the wrong bytes.)</td></tr>
 <tr><td><code>set_intersect(a, cap, b, bcap, out)</code></td><td>set_intersect(a, cap, b, bcap, out) — add every element of a that is also in b into out (fresh, empty, capacity &gt;= min(cap, bcap)). Returns set_size(out).</td></tr>
 <tr><td><code>set_difference(a, cap, b, bcap, out)</code></td><td>set_difference(a, cap, b, bcap, out) — add every element of a that is NOT in b into out (fresh, empty, capacity &gt;= cap). Returns set_size(out).</td></tr>
+<tr><td><code>set_resize(s, newcap)</code></td><td>set_resize(s, newcap) — copy the set into a fresh set of capacity newcap (WS2, R20). A set IS a map, so this is map_resize&#x27;s copy with the same all-or-nothing rule: returns the new handle, or 0 if newcap &lt; set_size(s). Rebind: s = set_resize(s, 32).</td></tr>
 <tr><td><code>set_clear(s)</code></td><td>set_clear(s) — reset the set to empty in place (WS2, R19): same handle, same capacity. A set IS a map, so this is map_clear&#x27;s full zero (count, state, keylens, vals, key bytes) with no stale elements readable afterwards. Returns 1.</td></tr>
 <tr><td><code>set_equals(a, cap, b, bcap)</code></td><td>set_equals(a, cap, b, bcap) — 1 if a and b hold exactly the same elements, else 0 (WS3, R19). Both subset checks in one call; two empty sets are equal. Before this, the caller wrote both set_is_subset calls by hand.</td></tr>
 <tr><td><code>set_is_subset(a, cap, b, bcap)</code></td><td>set_is_subset(a, cap, b, bcap) — 1 if every element of a is in b, else 0. Empty a is a subset of everything.</td></tr>
@@ -342,6 +348,11 @@ Do not edit by hand.</p>
 <tr><td><code>strb_compare(a, an, b, bn)</code></td><td>strb_compare(a, an, b, bn) — -1 / 0 / 1 (lexicographic by byte value).</td></tr>
 <tr><td><code>strb_reverse(src, sn, out)</code></td><td>strb_reverse(src, sn, out) — copy src reversed into out (WS3, R19). Two-pointer swap, so it is SAFE IN PLACE (src == out works). Writes a 0 terminator at out[sn]. Returns sn. sn &lt;= 0 writes only the terminator, returns 0. Before this, reversing a byte string meant a hand-written loop at every call site.</td></tr>
 <tr><td><code>strb_count(hay, hn, needle, nn)</code></td><td>strb_count(hay, hn, needle, nn) — count NON-OVERLAPPING occurrences of needle in hay (WS3, R19). Empty needle returns 0 (strb_find would match at 0 forever). Before this, counting meant looping strb_find over successive suffixes at every call site.</td></tr>
+<tr><td><code>strb_count_vowels(s, n)</code></td><td>strb_count_vowels(s, n) — count lowercase vowels (a e i o u) in the first n bytes (WS1, R20). Explicit-length form of count_vowels: unlike count_vowels (which scans to the NUL terminator), this stops at n, so it is correct on slices. Mirrors count_vowels exactly: lowercase vowels only, no uppercase.</td></tr>
+<tr><td><code>strb_count_char(s, n, code)</code></td><td>strb_count_char(s, n, code) — count occurrences of byte `code` in the first n bytes (WS1, R20). Explicit-length form of count_char; correct on slices. (For a substring, use strb_count.)</td></tr>
+<tr><td><code>strb_find_char(s, n, code)</code></td><td>strb_find_char(s, n, code) — first index of byte `code` in the first n bytes, or -1 (WS1, R20). Explicit-length form of find_char.</td></tr>
+<tr><td><code>strb_is_all_digits(s, n)</code></td><td>strb_is_all_digits(s, n) — 1 if all of the first n bytes are ASCII digits, else 0 (WS1, R20). Explicit-length form of is_all_digits. Empty (n == 0) is 0, mirroring is_all_digits.</td></tr>
+<tr><td><code>strb_equals(a, an, b, bn)</code></td><td>strb_equals(a, an, b, bn) — 1 if the two byte strings are equal, else 0 (WS1, R20). Explicit-length form of str_equals.</td></tr>
 </table>
 <h2 id="strconv"><code>strconv</code></h2>
 <p class="mod-desc">Renders integers as decimal (or base-2/8/16) digit characters into a buffer, and parses them back. Buffers are pankti of integer character codes (not byte-packed strings — see ROUND-08 Part B: Sutram has no byte-write primitive, so we use cell arrays of char codes, the same idiom as lib/baseconv.smlib). All functions handle: zero, negative numbers (decimal only), empty input. int_to_str(n, out) — write decimal representation of int n into pankti out as character codes. Returns the character count (excluding terminator). out[ count ] is set to 0 as a terminator. Caller allocates &gt;= 22 cells.</p>
@@ -382,6 +393,8 @@ Do not edit by hand.</p>
 <tr><td><code>str_starts(src, sn, pre, pn)</code></td><td>str_starts(src, sn, pre, pn) / str_ends — 0/1.</td></tr>
 <tr><td><code>str_ends(src, sn, suf, sn2)</code></td><td></td></tr>
 <tr><td><code>str_compare(a, an, b, bn)</code></td><td>str_compare(a, an, b, bn) — -1 / 0 / 1 (lexicographic by char code).</td></tr>
+<tr><td><code>str_reverse(src, sn, out)</code></td><td>str_reverse(src, sn, out) — copy the cell array reversed into out (WS1, R20). Cell-array form of strb_reverse: the same two-pointer swap, so it is safe in place (src == out works). Writes a 0 terminator cell at out[sn]. Returns sn. sn &lt;= 0 writes only the terminator, returns 0.</td></tr>
+<tr><td><code>str_count(hay, hn, needle, nn)</code></td><td>str_count(hay, hn, needle, nn) — count non-overlapping occurrences of needle in hay, over cell arrays (WS1, R20). Cell-array form of strb_count. Empty needle returns 0. (Pointer arithmetic is in bytes: the suffix at cell pos is hay + pos * 8.)</td></tr>
 </table>
 <h2 id="util"><code>util</code></h2>
 <p class="mod-desc">Sutram Utility Library - util.smlib General-purpose utility functions Usage: ayojan util</p>
@@ -395,6 +408,6 @@ Do not edit by hand.</p>
 <tr><td><code>bool_to_int(b)</code></td><td></td></tr>
 <tr><td><code>int_max()</code></td><td></td></tr>
 </table>
-<footer>21 modules, 247 functions. Generated from library sources.</footer>
+<footer>21 modules, 260 functions. Generated from library sources.</footer>
 </body>
 </html>
