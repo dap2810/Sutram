@@ -1,0 +1,12 @@
+# R60 Windows source/test SHA256 (REAL Windows GitHub Actions run 38562501834, last step)
+# Build reference: https://github.com/dap2810/Sutram/actions/runs/38562501834
+# Verify from repo root with PowerShell: Get-FileHash -Algorithm SHA256 <path>
+7cb3fc7d9659c95127630a000fe73665006528d4186c766a2fd9b1258c23cc09  windows/gui/sutram_gui.asm
+9ebfd6970f082ecfa7aa36a4378e43b89ba44ec3c08576d7429f416852997806  windows/native-installer/sutram_setup.asm
+f7f0237d60041ce0578c58c73e71b3ed6b5c9a6f77ff6f1b39839b1eef605fac  windows/gui/test-gui.ps1
+ea8975d446b085e85fc01b0c257dd0624ae42dbfc355b76378605f55a895f3cc  tools/r60_windows_desktop_probe.ps1
+f140678a68329d7ced7552df65979b0de58cca8f0ea6f38ab6ea6ea7605c7dde  tools/r60_native_win32_smoke.ps1
+48843e8b59388c4209cc3b8693f020d4c04f07ee839eee17885fd5ba2ccffcb1  tools/r60_native_cli_smoke.ps1
+7dc25892e9ec9480cd9aa5eddec608e8b0ea4eaa0ad4b65e9361d86f7c823160  tools/r60_windows_installer_acceptance.ps1
+9ead73f9c3c95a7eb2408e70fb70d7ba948d8b88177e3a59c33931974cc28db1  tools/r60_rebuild_installer.ps1
+76d6dce6bded2b23652fdf04b8887cd1e3eca4f5737c285302e0ef5696308227  .github/workflows/r60-windows-runtime.yml
