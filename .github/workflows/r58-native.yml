@@ -1,7 +1,7 @@
 name: R58 constant-folding native proof
+# Experimental CI is intentionally manual-only to avoid notification floods.
+# Run one full regression at a verified milestone, not at every source commit.
 on:
-  push:
-    branches: [feature/r58-folding-strength-peephole-20261013]
   workflow_dispatch:
 permissions:
   contents: read
