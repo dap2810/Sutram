@@ -2725,6 +2725,126 @@ def prop_gaps20(compiler, rng):
     return ok and out == "PASS", out
 
 
+def prop_containers21(compiler, rng):
+    """list_sort/min/max/sum/count, queue_contains, map_values vs Python"""
+    lvals = [rng.randint(-100, 100) for _ in range(rng.randint(0, 8))]
+    qvals = [rng.randint(-100, 100) for _ in range(rng.randint(0, 5))]
+    pool = ["aa", "ab", "ba", "bb", "abc", "bca", "cab", "a", "b", "c"]
+    keys = rng.sample(pool, rng.randint(0, 5))
+    mvals = {k: rng.randint(-100, 100) for k in keys}
+    probe = rng.choice(qvals) if qvals and rng.random() < 0.7 else 999
+
+    def lit(v):
+        return f"(0 - {-v})" if v < 0 else str(v)
+
+    lines = ["ayojan map",
+             "ayojan list",
+             "mukhya() {",
+             "    vitti ok = nirmmita(8)",
+             "    vitti l = list_init(8)"]
+    for v in lvals:
+        lines.append(f"    list_push(l, {lit(v)})")
+    want_min = min(lvals) if lvals else 0
+    want_min_ok = 1 if lvals else 0
+    want_max = max(lvals) if lvals else 0
+    want_max_ok = 1 if lvals else 0
+    lines.append(f"    yadi (list_min(l, ok) != {lit(want_min)}) {{")
+    lines.append('        likha("FAIL list_min value\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append(f"    yadi (ok[0] != {want_min_ok}) {{")
+    lines.append('        likha("FAIL list_min ok\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append(f"    yadi (list_max(l, ok) != {lit(want_max)}) {{")
+    lines.append('        likha("FAIL list_max value\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append(f"    yadi (ok[0] != {want_max_ok}) {{")
+    lines.append('        likha("FAIL list_max ok\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append(f"    yadi (list_sum(l) != {lit(sum(lvals))}) {{")
+    lines.append('        likha("FAIL list_sum\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    probe_v = rng.choice(lvals) if lvals else 999
+    lines.append(f"    yadi (list_count(l, {lit(probe_v)}) != {lvals.count(probe_v)}) {{")
+    lines.append('        likha("FAIL list_count\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append("    list_sort(l)")
+    for idx, v in enumerate(sorted(lvals)):
+        lines.append(f"    yadi (list_get(l, {idx}) != {lit(v)}) {{")
+        lines.append('        likha("FAIL list_sort\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    # queue_contains: dequeue one first so the ring head has moved
+    lines.append("    vitti q = queue_init(8)")
+    for v in qvals:
+        lines.append(f"    queue_enqueue(q, {lit(v)})")
+    if qvals:
+        lines.append("    queue_dequeue(q, ok)")
+    remaining = qvals[1:] if qvals else []
+    lines.append(f"    yadi (queue_contains(q, {lit(probe)}) != {1 if probe in remaining else 0}) {{")
+    lines.append('        likha("FAIL queue_contains\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append("    yadi (queue_len(q) != %d) {" % len(remaining))
+    lines.append('        likha("FAIL queue_contains len\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    # map_values: count + order-independent sum (slot order is hash order)
+    lines.append("    vitti m = map_init(8)")
+    lines.append("    vitti vals = nirmmita(8 * 8)")
+    lines.append("    vitti vsum = 0")
+    lines.append("    vitti i = 0")
+    for k in keys:
+        lines.append(f'    map_put(m, 8, "{k}", {len(k)}, {lit(mvals[k])})')
+    lines.append(f"    yadi (map_values(m, vals) != {len(keys)}) {{")
+    lines.append('        likha("FAIL map_values count\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append(f"    yavat (i < {len(keys)}) {{")
+    lines.append("        vsum = vsum + vals[i]")
+    lines.append("        i = i + 1")
+    lines.append("    }")
+    lines.append(f"    yadi (vsum != {lit(sum(mvals.values()))}) {{")
+    lines.append('        likha("FAIL map_values sum\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "containers21", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_gaps21(compiler, rng):
+    """ganita_sat_fact vs clamped Python factorials (incl. huge n
+    for the early-exit path)"""
+    import math
+    cases = list(range(-2, 26)) + [rng.randint(0, 30), 100, 100000]
+
+    def lit(v):
+        return f"(0 - {-v})" if v < 0 else str(v)
+
+    lines = ["ayojan ganita",
+             "mukhya() {"]
+    for n in cases:
+        if n < 0:
+            want = 0
+        else:
+            want = _clamp(math.factorial(n))
+        lines.append(f"    yadi (ganita_sat_fact({lit(n)}) != {lit(want)}) {{")
+        lines.append('        likha("FAIL sat_fact\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "gaps21", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
 def main():
     compiler = None
     for i, a in enumerate(sys.argv):
@@ -2795,6 +2915,8 @@ def main():
         ("strb cell pairs", prop_strb_cell_pairs),
         ("containers resize/swap", prop_containers_resize_swap),
         ("gaps20", prop_gaps20),
+        ("containers21", prop_containers21),
+        ("gaps21", prop_gaps21),
     ]
 
     failed = []
