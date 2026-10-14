@@ -22,7 +22,7 @@ foreach($file in $files) {
 [IO.File]::WriteAllLines($manifest,$lines.ToArray(),([Text.UTF8Encoding]::new($false)))
 Write-Host ("R60_PAYLOAD_MANIFEST source_files="+$files.Count+" path="+$manifest)
 $zip=Join-Path $work 'payload.zip'
-Compress-Archive -LiteralPath (Join-Path $portable '*') -DestinationPath $zip -CompressionLevel Optimal -Force
+Compress-Archive -Path (Join-Path $portable '*') -DestinationPath $zip -CompressionLevel Optimal -Force
 Copy-Item -LiteralPath (Join-Path $root 'windows\native-installer\install-core.ps1') -Destination (Join-Path $work 'install-core.ps1') -Force
 Copy-Item -LiteralPath (Join-Path $root 'windows\native-installer\uninstall-core.ps1') -Destination (Join-Path $work 'uninstall-core.ps1') -Force
 Copy-Item -LiteralPath (Join-Path $root 'icons\sutram.ico') -Destination (Join-Path $work 'sutram.ico') -Force
