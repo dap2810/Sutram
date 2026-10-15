@@ -32,14 +32,14 @@ Do not edit by hand.</p>
 <li><a href="#list"><code>list</code></a> — 34 functions</li>
 <li><a href="#madhava"><code>madhava</code></a> — 5 functions</li>
 <li><a href="#map"><code>map</code></a> — 17 functions</li>
-<li><a href="#math"><code>math</code></a> — 16 functions</li>
+<li><a href="#math"><code>math</code></a> — 18 functions</li>
 <li><a href="#num"><code>num</code></a> — 10 functions</li>
 <li><a href="#samanvaya"><code>samanvaya</code></a> — 10 functions</li>
 <li><a href="#sankhyiki"><code>sankhyiki</code></a> — 16 functions</li>
 <li><a href="#set"><code>set</code></a> — 14 functions</li>
 <li><a href="#sort"><code>sort</code></a> — 14 functions</li>
 <li><a href="#strb"><code>strb</code></a> — 22 functions</li>
-<li><a href="#strconv"><code>strconv</code></a> — 5 functions</li>
+<li><a href="#strconv"><code>strconv</code></a> — 6 functions</li>
 <li><a href="#string"><code>string</code></a> — 27 functions</li>
 <li><a href="#util"><code>util</code></a> — 7 functions</li>
 </ul>
@@ -92,7 +92,7 @@ Do not edit by hand.</p>
 <tr><td><code>meru_pankti(a, n)</code></td><td></td></tr>
 </table>
 <h2 id="fmt"><code>fmt</code></h2>
-<p class="mod-desc">Number and string formatting on BYTE strings (packed bytes, explicit lengths, `strb` idiom): every function writes packed bytes into `out` with a 0 terminator and returns the byte count. This is the modern idiom; the older `lib/strconv.smlib` works on CELL arrays (pankti of char codes) and has no width/alignment/grouping/fixed-decimal/sign surface — fmt is the formatting module, strconv is the conversion module. Do not mix the representations: fmt outputs are bytes (read with char_at), strconv outputs are cells (read with [i]). Defaults, stated once here and at each function: - Bases: no prefix unless the _pre / flags form is used. - Grouping: fmt_group defaults to INDIAN grouping (12,34,567). - Rounding: fmt_fixed rounds HALF AWAY FROM ZERO (2.5 -&gt; 3, -2.5 -&gt; -3). - Centre padding: the extra pad byte goes RIGHT. - INT64_MIN (-2^63) is excluded from the integer formatters: negating it overflows, as in strconv. Every other int64 value works. - fmt_fixed is exact while |x| * 10^places &lt; 2^52; beyond that the +0.5 rounding step is below float precision. |x| * 10^places must fit in int64. places is clamped to 0..9. All signatures stay within the 6-argument cap. --- integer digits (private helper) --- fmt_digits(v, out) — write the decimal digits of |v| (no sign) into out as packed bytes. Returns the digit count. Internal; the public formatters below build on it.</p>
+<p class="mod-desc">Number and string formatting on BYTE strings (packed bytes, explicit lengths, `strb` idiom): every function writes packed bytes into `out` with a 0 terminator and returns the byte count. This is the modern idiom; the older `lib/strconv.smlib` works on CELL arrays (pankti of char codes) and has no width/alignment/grouping/fixed-decimal/sign surface — fmt is the formatting module, strconv is the conversion module. Do not mix the representations: fmt outputs are bytes (read with char_at), strconv outputs are cells (read with [i]). Defaults, stated once here and at each function: - Bases: no prefix unless the _pre / flags form is used. - Grouping: fmt_group defaults to INDIAN grouping (12,34,567). - Rounding: fmt_fixed rounds HALF AWAY FROM ZERO (2.5 -&gt; 3, -2.5 -&gt; -3). - Centre padding: the extra pad byte goes RIGHT. - INT64_MIN (-2^63) is handled: |MIN| = 2^63 does not fit in int64, so the digit writers split it (hi/lo) instead of negating it. Every int64 value works. - fmt_fixed is exact while |x| * 10^places &lt; 2^52; beyond that the +0.5 rounding step is below float precision. |x| * 10^places must fit in int64. places is clamped to 0..9. All signatures stay within the 6-argument cap. --- integer digits (private helper) --- fmt_digits(v, out) — write the decimal digits of |v| (no sign) into out as packed bytes. Returns the digit count. Internal; the public formatters below build on it.</p>
 <table>
 <tr><th>Function</th><th>Description</th></tr>
 <tr><td><code>fmt_digits(v, out)</code></td><td></td></tr>
@@ -255,6 +255,8 @@ Do not edit by hand.</p>
 <tr><td><code>triple(n)</code></td><td></td></tr>
 <tr><td><code>inc(n)</code></td><td></td></tr>
 <tr><td><code>bit_count(n)</code></td><td></td></tr>
+<tr><td><code>math_rand(state)</code></td><td>math_rand(state): Knuth MMIX LCG — state = state * 6364136223846793005 + 1442695040888963407 (mod 2^64, plain wrapping arithmetic). `state` is a 1-cell array holding the seed; it is updated in place and the new state is returned. The full 64-bit state is returned (it may be negative); use abs_val or a modulo to map it to a range. Any seed works, including 0. Deterministic: the same seed always yields the same sequence. There is no entropy source in the language, so the caller owns the seed.</td></tr>
+<tr><td><code>math_clamp(v, lo, hi)</code></td><td>math_clamp(v, lo, hi): lo if v &lt; lo, hi if v &gt; hi, else v. Requires lo &lt;= hi (if lo &gt; hi, returns lo — the first branch wins).</td></tr>
 </table>
 <h2 id="num"><code>num</code></h2>
 <p class="mod-desc">Parameters are copied into locals before mutation (compiler fault workaround).</p>
@@ -381,6 +383,7 @@ Do not edit by hand.</p>
 <tr><td><code>int_to_base_str(n, base, out)</code></td><td>int_to_base_str(n, base, out) — write n in `base` (2/8/10/16) into out as character codes (0-9, a-f). Returns count. No sign handling; n &gt;= 0.</td></tr>
 <tr><td><code>str_to_int_base(buf, n, base, ok)</code></td><td>str_to_int_base(buf, n, base, ok) — parse first n char codes of buf in `base` (2/8/10/16). Sets ok[0]. Returns value.</td></tr>
 <tr><td><code>pad_left(out, count, width, fill)</code></td><td>pad_left(out, count, width, fill) — left-pad the `count` character codes in pankti `out` to `width` using fill character code `fill`, in place. Returns the new count (width if width &gt; count, else count). Caller must allocate &gt;= width cells.</td></tr>
+<tr><td><code>str_to_float(buf, n, ok)</code></td><td>str_to_float(buf, n, ok): parse a decimal float from a byte string. Grammar: [-] digits [. digits] [(e|E) [-] digits]; at least one digit in the integer or fraction part. No leading/trailing whitespace, no &#x27;+&#x27;, no &quot;inf&quot;/&quot;nan&quot; — those are ok = 0 (same conventions as str_to_int). On success ok[0] = 1 and the dasham value is returned. On malformed input or overflow (|value| &gt; ~1.8e308) ok[0] = 0 and the return is 0.0. Extreme underflow returns 0.0 with ok[0] = 1 (as strtod does). Mantissa is accumulated in int64 (up to 18 significant digits); further digits only move the decimal exponent.</td></tr>
 </table>
 <h2 id="string"><code>string</code></h2>
 <p class="mod-desc">Built on `vartani_len` and `char_at`, both verified to honour their arguments. R52 audit: `char_code(s, i)` already honours i in the compiler; a one-argument `char_code(s)` remains a compatible alias for the first byte. This library continues to call `char_at(s, i)` as before, without changing its API. ASCII only for the character predicates; multi-byte UTF-8 is not split. SLICE-BOUNDARY RULES (WS4, R23 audit): the older byte-string functions below (str_len, count_vowels, count_char, find_char, is_all_digits, str_equals) scan to the NUL terminator and are WRONG on slices — a slice has no terminator at its end. Use the explicit-length strb_* forms on slices. str_replace&#x27;s repl is 0-terminated; see the strb.smlib header for why and for the strb_dup workaround. The (s, i) char predicates take no length: the caller keeps i in bounds.</p>
@@ -426,6 +429,6 @@ Do not edit by hand.</p>
 <tr><td><code>bool_to_int(b)</code></td><td></td></tr>
 <tr><td><code>int_max()</code></td><td></td></tr>
 </table>
-<footer>21 modules, 278 functions. Generated from library sources.</footer>
+<footer>21 modules, 281 functions. Generated from library sources.</footer>
 </body>
 </html>
