@@ -370,8 +370,8 @@ defaults to 4. Logical length starts at 0 and `a[index]` reads/writes against th
 Full specification, measured behaviour, and the `kosh` vs `list`/`queue`
 comparison: `docs/KOSH-BUILTINS.md`.
 
-Capacity doubles on growth. `kosh_pop` on an empty array prints
-`Sutram Error: kosh pop from empty array` and exits 1; `kosh_peek` and
-`kosh_dequeue` on an empty array abort with the same diagnostic. Element
-types: integer (`kosh v`, the default) or binary64 (`kosh dasham d`).
-`push`/`pop`/the builtins take a direct kosh variable.
+Capacity doubles on growth. Empty `kosh_pop` / `kosh_peek` / `kosh_dequeue`
+abort with their own diagnostics — `kosh pop from empty array`,
+`kosh peek from empty array`, `kosh dequeue from empty array` — and exit
+1. Element types: integer (`kosh v`, the default) or binary64
+(`kosh dasham d`). `push`/`pop`/the builtins take a direct kosh variable.
