@@ -1,0 +1,25 @@
+ayojan strb
+ayojan string
+mukhya() {
+    likha(strb_find_char("hello world", 5, 119))
+    likha("\n")
+    likha(find_char("hello world", 119))
+    likha("\n")
+    likha(strb_count_vowels("hello world", 5))
+    likha("\n")
+    likha(count_vowels("hello world"))
+    likha("\n")
+    likha(strb_is_all_digits("123abc", 3))
+    likha("\n")
+    likha(is_all_digits("123abc"))
+    likha("\n")
+    vitti out = nirmmita(64)
+    vitti slice = nirmmita(16)
+    vitti base = "hello world"
+    strb_dup(base + 6, 5, slice)
+    likha(strb_replace("aaa bbb aaa", 11, "aaa", 3, slice, out))
+    likha("\n")
+    likha(strb_equals(out, 15, "world bbb world", 15))
+    likha("\n")
+    likha("slices23-done\n")
+}
