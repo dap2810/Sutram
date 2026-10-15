@@ -25,6 +25,7 @@ LANG = {
     "38_native_hindi": "hindi",
     "39_native_tamil": "tamil",
     "218_sanskrit_devanagari": "sanskrit",
+    "219_sanskrit_kosh_aliases": "sanskrit",
 }
 # examples that read from stdin (fed exactly this)
 STDIN = {
