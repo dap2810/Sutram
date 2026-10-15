@@ -1,0 +1,26 @@
+# Sutram Round 65 finishing source SHA-256 manifest
+# Date: 2026-10-15
+# Pinned finishing commit: 17470db137ae41c4eaab6bc2fa00fd416a6446f1
+# Scope: exactly FOUR finishing files available locally and verified by Git blob readback.
+# Hash method: Python hashlib.sha256 over exact UTF-8/LF bytes.
+# This is NOT an 18-file/all-project manifest and NOT native binary evidence.
+
+d6ca6b3d7741dd6718321ff9685fb7caef3bd0862ff399cdf773f67e67e8b69b  tools/r65_prepare_review.py
+b74865acd7bfd8ac8cfe58e5125e9f464e0054fe64af50bd5aa2cd29024cb135  tools/r65_finish_acceptance.py
+a421ef216f1fc3c577160c11a2812dbd1016a722609b21e7668673f00846cc65  tests/r65_finish/test_prepare_review.py
+ff4a94707c3c026e1044e381346359a2b849fd39deca0432158b162bab0a7c30  docs/R65-FINISH-REVIEW.md
+
+# Independently matched Git blob identities (SHA-1 Git object IDs, NOT SHA-256):
+# c94e632bbea91ffd318f8ff28507141554f6047e  tools/r65_prepare_review.py  (14481 bytes)
+# 3a30a7986d47d0dd499686072ebc6f180a6ca738  tools/r65_finish_acceptance.py  (6303 bytes)
+# f0c67f1f9fbe271120995a7746ae5ad8c5dfce89  tests/r65_finish/test_prepare_review.py  (5463 bytes)
+# 98185e0e7fd131ceb0595c542044e896834aef4b  docs/R65-FINISH-REVIEW.md  (7169 bytes)
+
+# Required input compiler identity:
+# a14172c172ce7d1d714ca4efa0fb5bbdc67b5657  src/sutram_compiler.asm
+# This compiler Git blob was read from PR #23's recovered draft.
+# Its full SHA-256 was not computed in this continuation; the interrupted
+# previous-session all-source hash operation is not claimed successful.
+# The staging tool prints a genuine SHA-256 of its complete corrected output
+# when Sarvam actually runs it. Recompute a full source manifest after review
+# and integration; do not relabel these four records as complete-project coverage.
