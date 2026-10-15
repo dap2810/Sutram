@@ -10629,6 +10629,11 @@ backpatch_calls:
 
 ; gen_block(rax = block node)
 gen_block:
+%ifdef SUTRAM_R65_PEEPHOLES
+    ; No cross-block or cross-function RAX lifetime assumptions.
+    mov qword [rel r65_last_store_name],0
+    mov qword [rel r65_candidate_name],0
+%endif
 %ifdef SUTRAM_EXPERIMENTAL_XMM_CACHE
     ; Basic-block entry: do not trust cached XMM values across jumps/merges.
     call xmm_cache_barrier
@@ -10657,6 +10662,10 @@ gen_block:
     inc r13
     jmp .gb_loop
 .gb_done:
+%ifdef SUTRAM_R65_PEEPHOLES
+    mov qword [rel r65_last_store_name],0
+    mov qword [rel r65_candidate_name],0
+%endif
 %ifdef SUTRAM_EXPERIMENTAL_XMM_CACHE
     call xmm_cache_barrier
 %endif
@@ -10885,12 +10894,14 @@ gen_stmt:
     ; PERF2/PERF3: when an integer scalar will occupy one of the first five
     ; register slots, build simple literals/copies/var-binops directly in the
     ; destination register.  Unsupported forms leave allocation untouched.
+%ifndef SUTRAM_R65_TRAP_INT
     mov rdi, rbx
     call try_emit_int_decl_reg
     test rax, rax
     jz .gs_decl_not_fast
     pop rbx
     ret
+%endif
 .gs_decl_not_fast:
     cmp qword [rbx+32], 2
     je .gs_decl_kosh
