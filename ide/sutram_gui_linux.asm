@@ -212,14 +212,34 @@ menu_name_6 db 'Help',0
 menu_names dq menu_name_0, menu_name_1, menu_name_2, menu_name_3, menu_name_4, menu_name_5, menu_name_6
 menu_len   db 4,4,5,5,7,6,4
 menu_xoff  dw 300,352,410,478,548,632,712
-; dropdown items: 0=Open 1=Save 2=Exit   (per menu, only some have items)
-menu_items db 'Open',0,'Save',0,'Exit',0
-menu_items_n db 4,4,4
-menu_has   db 3,0,0,0,0,0,0          ; item count per menu (only File for now)
-; dropdown item actions
+colour_on  dq 1                       ; slice 26: syntax colouring starts ON
 %define ACT_OPEN 0
 %define ACT_SAVE 1
 %define ACT_EXIT 2
+%define ACT_UNDO 3
+%define ACT_CUT 4
+%define ACT_COPY 5
+%define ACT_PASTE 6
+%define ACT_SELALL 7
+%define ACT_RUN 8
+%define ACT_FIND 9
+%define ACT_COLOUR 10
+%define ACT_CLROUT 11
+%define ACT_ABOUT 12
+; dropdown items: one flat NUL-separated table; menu_item_start indexes into it
+menu_items db 'Open',0,'Save',0,'Exit',0
+           db 'Undo',0,'Cut',0,'Copy',0,'Paste',0,'Select All',0
+           db 'Run',0,'Find',0,'Colour',0,'Clear Output',0,'About',0
+menu_items_n db 4,4,4, 4,3,4,5,10, 3,4, 6,12, 5
+menu_has   db 3,5,1,1,1,1,1          ; slice 26: all seven menus populated
+menu_item_start db 0,3,8,9,10,11,12
+menu_item_act   db ACT_OPEN,ACT_SAVE,ACT_EXIT
+                db ACT_UNDO,ACT_CUT,ACT_COPY,ACT_PASTE,ACT_SELALL
+                db ACT_RUN, ACT_FIND, ACT_COLOUR, ACT_CLROUT, ACT_ABOUT
+about_text db 'Sutram Shell 1.0 - a Sanskrit-keyword language',10
+           db 'one hand-written NASM compiler, native machine code, no runtime.',10
+about_len  equ $ - about_text
+; dropdown item actions are defined above
 open_act  dd -1                      ; pending action, -1 = none
 
 section .bss
@@ -1479,6 +1499,11 @@ draw_line_coloured:
     jne .dlc_set
     mov edi, COL_DANDA
 .dlc_set:
+    ; slice 26: Options > Colour can turn the palette off
+    cmp qword [rel colour_on], 0
+    jne .dlc_go
+    mov edi, COL_TEXT
+.dlc_go:
     call set_fg
     ; slice 24: advance the visual column once per grapheme cluster
     lea rdi, [rbx+r15]
@@ -1569,11 +1594,22 @@ menu_hit:
 .mh_loop:
     cmp rcx, MENU_COUNT
     jae .mh_no
-    movzx r9, word [r8 + rcx*2]     ; label x
+    movzx r9, word [r8 + rcx*2]     ; this label's x
     cmp rsi, r9
     jb .mh_next
+    ; slice 28: the right edge is the NEXT label's x, not a fixed width --
+    ; a fixed 74px overlaps the neighbour (spacing is as little as 52px), so
+    ; clicking the left of a label used to hit the previous menu.
+    mov r10, rcx
+    inc r10
+    cmp r10, MENU_COUNT
+    jae .mh_last
+    movzx r10, word [r8 + r10*2]    ; next label's x = this one's right edge
+    jmp .mh_edge
+.mh_last:
     mov r10, r9
-    add r10, 74                     ; label width
+    add r10, 74                     ; last label keeps the full width
+.mh_edge:
     cmp rsi, r10
     jb .mh_yes
 .mh_next:
@@ -1592,18 +1628,19 @@ draw_dropdown:
     push rbx
     push r13
     push r14
-    mov rax, [rel menu_open]
-    cmp rax, -1
-    je .dd_done
+    push r15
+    mov r15, [rel menu_open]        ; slice 27: menu index, kept in r15 --
+    cmp r15, -1                     ; set_fg clobbers rax, so rax must not be used
+    je .dd_done                     ; for anything after the set_fg call.
     lea r13, [rel menu_has]
-    movzx r14, byte [r13 + rax]     ; item count
+    movzx r14, byte [r13 + r15]     ; item count
     test r14, r14
     jz .dd_done
     ; background
     mov rdi, COL_DROPBG
     call set_fg
     lea r13, [rel menu_xoff]
-    movzx rsi, word [r13 + rax*2]
+    movzx rsi, word [r13 + r15*2]   ; slice 27: x from r15, not the clobbered rax
     mov rdx, MENU_H
     mov rcx, 120
     mov r8, 22
@@ -1621,8 +1658,10 @@ draw_dropdown:
     mov rdi, COL_TEXT
     call set_fg
     lea r13, [rel menu_items]
-    ; find the rbx-th NUL-separated item
-    mov rcx, rbx
+    ; slice 26: begin at this menu's first item (r15 = menu index)
+    lea rsi, [rel menu_item_start]
+    movzx rcx, byte [rsi + r15]
+    add rcx, rbx
     mov rsi, r13
 .dd_skip:
     test rcx, rcx
@@ -1654,6 +1693,7 @@ draw_dropdown:
     inc rbx
     jmp .dd_loop
 .dd_done:
+    pop r15
     pop r14
     pop r13
     pop rbx
@@ -1694,7 +1734,13 @@ menu_click:
     div rcx                          ; rax = item index
     cmp rax, r14
     jae .mc_close
-    ; fire the action
+    ; slice 26: local item index -> global index -> action
+    mov r13, [rel menu_open]
+    lea r14, [rel menu_item_start]
+    movzx rcx, byte [r14 + r13]
+    add rax, rcx
+    lea r14, [rel menu_item_act]
+    movzx eax, byte [r14 + rax]
     mov [rel open_act], eax
     mov qword [rel menu_open], -1
     pop r14
@@ -1729,12 +1775,35 @@ menu_click:
 do_menu_action:
     mov eax, [rel open_act]
     mov dword [rel open_act], -1
+    cmp eax, -1
+    je .dma_ret
     cmp eax, ACT_EXIT
     je .dma_exit
     cmp eax, ACT_OPEN
     je .dma_open
     cmp eax, ACT_SAVE
     je .dma_save
+    cmp eax, ACT_UNDO
+    je .dma_undo
+    cmp eax, ACT_CUT
+    je .dma_cut
+    cmp eax, ACT_COPY
+    je .dma_copy
+    cmp eax, ACT_PASTE
+    je .dma_paste
+    cmp eax, ACT_SELALL
+    je .dma_selall
+    cmp eax, ACT_RUN
+    je .dma_run
+    cmp eax, ACT_FIND
+    je .dma_find
+    cmp eax, ACT_COLOUR
+    je .dma_colour
+    cmp eax, ACT_CLROUT
+    je .dma_clrout
+    cmp eax, ACT_ABOUT
+    je .dma_about
+.dma_ret:
     ret
 .dma_exit:
     mov dword [rel want_quit], 1
@@ -1744,6 +1813,81 @@ do_menu_action:
     ret
 .dma_save:
     call save_saved
+    ret
+.dma_undo:
+    call undo_restore
+    ret
+.dma_copy:
+    call sel_lo
+    mov rdi, rax
+    call sel_hi
+    mov rsi, rax
+    cmp rdi, rsi
+    jne .dma_copy_go
+    call clip_line_bounds
+.dma_copy_go:
+    call clip_copy
+    call sel_clear
+    ret
+.dma_cut:
+    call sel_lo
+    mov rdi, rax
+    call sel_hi
+    mov rsi, rax
+    cmp rdi, rsi
+    jne .dma_cut_go
+    call clip_line_bounds
+    cmp rsi, [rel ed_len]
+    jae .dma_cut_go
+    inc rsi
+.dma_cut_go:
+    push rdi
+    push rsi
+    call clip_copy
+    pop rsi
+    pop rdi
+    call ed_delete_range
+    call sel_clear
+    ret
+.dma_paste:
+    call clip_paste
+    ret
+.dma_selall:
+    mov qword [rel sel_anchor], 0
+    mov rax, [rel ed_len]
+    mov [rel ed_cursor], rax
+    ret
+.dma_run:
+    call do_run
+    ret
+.dma_find:
+    mov qword [rel find_mode], 1
+    mov qword [rel find_len], 0
+    ret
+.dma_colour:
+    xor qword [rel colour_on], 1
+    ret
+.dma_clrout:
+    mov qword [rel out_nlines], 0
+    mov qword [rel out_top], 0
+    ret
+.dma_about:
+    lea rsi, [rel about_text]
+    lea rdi, [rel run_out]
+    mov rcx, about_len
+.dma_ab_cp:
+    test rcx, rcx
+    jz .dma_ab_done
+    mov al, [rsi]
+    mov [rdi], al
+    inc rsi
+    inc rdi
+    dec rcx
+    jmp .dma_ab_cp
+.dma_ab_done:
+    mov qword [rel run_out_len], about_len
+    call split_lines
+    mov qword [rel out_top], 0
     ret
 
 ; ---------------------------------------------------------------- fetch_keymap
