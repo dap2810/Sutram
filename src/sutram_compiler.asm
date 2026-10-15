@@ -830,6 +830,12 @@ section .bss
     var_table   resb VAR_TABLE_CAP * 16 ; [name_ptr(8)][offset(8)]
     var_cnt     resq 1
     stack_dep   resq 1
+    ; R65: compiler-only preceding assignment value still live in generated RAX.
+    ; Enabled only with -DSUTRAM_R65_PEEPHOLES=1. Never deletes emitted bytes.
+%ifdef SUTRAM_R65_PEEPHOLES
+    r65_last_store_name resq 1
+    r65_candidate_name resq 1
+%endif
     array_vars  resq 256        ; T8b: pankti names in current generated-function scope
     array_var_cnt resq 1
     kosh_vars   resq KOSH_VAR_CAP ; T18 growable-array names in current generated-function scope
@@ -10575,6 +10581,13 @@ gen_block:
 gen_stmt:
     push rbx
     mov rbx, rax
+%ifdef SUTRAM_R65_PEEPHOLES
+    ; Consume the one-statement RAX value token. Every statement first
+    ; invalidates it; only the immediate next scalar assignment may reuse it.
+    mov rax,[rel r65_last_store_name]
+    mov [rel r65_candidate_name],rax
+    mov qword [rel r65_last_store_name],0
+%endif
     mov rax, [rbx]            ; node type
 %ifdef SUTRAM_EXPERIMENTAL_XMM_CACHE
     ; Conservative statement barrier. Only simple scalar assignments can
@@ -11105,8 +11118,26 @@ gen_stmt:
     mov rdi, [rbx+16]
     call expr_is_float
     push rax                  ; source float flag
+%ifdef SUTRAM_R65_PEEPHOLES
+    ; R65: no intervening generated instruction since prior generic local
+    ; scalar store, and RHS is exactly that variable: RAX still has the bits.
+    mov rax,[rbx+16]
+    cmp qword [rax],AST_VAR
+    jne .r65_emit_rhs
+    mov rdi,[rel r65_candidate_name]
+    test rdi,rdi
+    jz .r65_emit_rhs
+    mov rsi,[rax+8]
+    call strcmp
+    test rax,rax
+    jz .r65_rhs_done
+.r65_emit_rhs:
+%endif
     mov rax, [rbx+16]
     call gen_expr             ; runtime result in RAX
+%ifdef SUTRAM_R65_PEEPHOLES
+.r65_rhs_done:
+%endif
     pop rcx                   ; source flag
     pop rdx                   ; target flag
     test rdx, rdx
@@ -11131,6 +11162,11 @@ gen_stmt:
     ; Register: emit mov reg, rax
     mov rdi, rax
     call emit_store_reg
+%ifdef SUTRAM_R65_PEEPHOLES
+    mov rax,[rbx+8]
+    mov rax,[rax+8]
+    mov [rel r65_last_store_name],rax
+%endif
     pop rbx
     ret
 .gs_assign_stack:
@@ -11146,6 +11182,11 @@ gen_stmt:
     call emit_byte
     mov edi, r12d
     call emit_byte
+%ifdef SUTRAM_R65_PEEPHOLES
+    mov rax,[rbx+8]
+    mov rax,[rax+8]
+    mov [rel r65_last_store_name],rax
+%endif
     pop r12
     pop rbx
     ret
