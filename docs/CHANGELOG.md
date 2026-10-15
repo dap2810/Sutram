@@ -1,3 +1,37 @@
+## v143 — ChatGPT R65 verified and SYNCED (peepholes, integer traps, Devanagari aliases)
+
+- **R65 accepted — and it is the most substantial compiler round in a while.** ChatGPT shipped it
+  through a checksum-guarded **staging tool** (`tools/r65_prepare_review.py`) rather than editing the
+  compiler directly, and correctly refused to merge an unprepared file. I ran the tool, built and
+  tested the result.
+- **The staging tool works as specified.** It rejects source drift (I had to fetch the compiler at the
+  draft commit `4f1dec7c`, blob `a14172c1...`); it produced a staged source of blob `caee7373...` and
+  reported **`default_source_projection_identical: true`**.
+- **Four configurations build** — default 189,480 B, peepholes 190,032 B, trap 190,896 B, combined
+  191,440 B.
+- **All gates green on the default staged compiler:** suite **187/3**; codegen **12/12**; packs
+  **33/33**; graph **OK**; proof_lib **175/175**; proof_props **65/65**; R58 **8/8**; R59 **3/3**;
+  R63 **9 gates**; R64 diagnostics accepted.
+- **The peephole is real and measured:** `R65_PEEPHOLE_DIFFERENT_CODE_PASS before=563 after=560` —
+  three bytes smaller with identical stdout.
+- **The trap is real and measured:** default wraps silently, while trap mode fires
+  `Sutram Error [E_INTEGER_TRAP] <file>:<line>: ...` for **all five** cases — addition, subtraction,
+  multiplication, division by zero, and remainder by zero. **Default output is byte-identical to the
+  accepted parent** (`R65_DEFAULT_BINARY_IDENTITY_PASS bytes=879`).
+- **The filename truncation is fixed:** a long UTF-8 path including Devanagari is now printed in full
+  with the correct line number.
+- **Devanagari surface extended:** `lang/sanskrit.lang` gains 18 native aliases for existing builtins
+  (49 pack entries total) and fixes the original `sankshya` typo to the recognised `sankhya`; new
+  example `219_sanskrit_kosh_aliases.sm` prints its golden exactly.
+- **A gap I had to close:** the harness had no `LANG` entry for example 219, so it compile-failed until
+  I added `"219_sanskrit_kosh_aliases": "sanskrit"`. The suite is clean now (`NO-EXPECTATION=4`,
+  the r65_check fixtures being example-local).
+- **28 files synced** (compiler, lang pack, example, 4 tools, 4 docs, the r65_finish test, 10
+  r65_check fixtures, and the harness entry). Verified on main by blob.
+- **A note on this session:** the multi-file sync calls kept being truncated, so several pushes
+  reported success without landing. I caught it every time by verifying against the API rather than
+  trusting the call, and re-pushed in small batches.
+
 ## v142 — Linux X11 GUI slice 25: caret x in grapheme clusters (my own stream)
 
 - Slice 24 made text advance once per **cluster**, but the caret still used the **byte index**
