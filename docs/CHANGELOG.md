@@ -1,3 +1,21 @@
+## v138 — collaboration reverts to ChatGPT; Gemini folders removed
+
+- **`Sarvam-to-Gemini/` and `Gemini-to-Sarvam/` are removed** from the repository, at the user's
+  direction. The plan to move the compiler-side partnership to Gemini is cancelled.
+- **The ChatGPT folders are intact and remain the working channel** — `Sarvam-to-ChatGPT/` (28 files)
+  and `ChatGPT-to-Sarvam/` (61 files). **`Sarvam-to-ChatGPT/ROUND-65.md` is already waiting there**, so
+  the next ChatGPT round needs no reissue.
+- **Why the Gemini move was abandoned:** Gemini's chat could not reach the repo at all. It reported the
+  repository as private, which is **factually wrong** — verified by an unauthenticated request returning
+  HTTP 200 with `private: false` (a genuinely private repo returns 404), plus successful anonymous
+  fetches of the README, the round brief, and the API. The blocker was Gemini's own tooling, not the
+  repo's visibility, and changing the Google vs GitHub email would not have helped.
+- No project source, library, test, doc or GUI file was touched by this change — only the two
+  collaboration folders.
+- **Next:** ROUND-65 stands as issued to ChatGPT (implement the two peepholes and the default-OFF
+  overflow trap even if untested; extend Devanagari past the core keywords; document the legacy HKLM
+  installer honestly).
+
 ## v137 — collaboration shifts from ChatGPT to Gemini
 
 - **Created `Sarvam-to-Gemini/` and `Gemini-to-Sarvam/`** for all new collaboration work. Both carry a
