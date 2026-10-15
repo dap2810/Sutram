@@ -110,7 +110,8 @@
 ; ---- editor ---------------------------------------------------------------
 %define ED_CAP          8192            ; editor buffer capacity
 %define LINE_H          16
-%define ED_TEXT_X       (PANE_X + 8)
+%define ED_GUTTER       34              ; slice 32: line-number gutter width
+%define ED_TEXT_X       (PANE_X + 8 + ED_GUTTER)
 %define ED_TEXT_Y       (ED_Y + 30)
 %define ED_LINES_MAX    23              ; visible lines in the pane
 %define ED_VISIBLE      ED_LINES_MAX    ; lines visible before scrolling
@@ -141,6 +142,7 @@
 %define MASK_SHIFT      0x0001          ; ShiftMask bit in the event state
 %define CLIP_CAP        4096            ; internal clipboard capacity
 %define COL_SEL         0x2B4A6B        ; selection highlight
+%define COL_GUTTER      0x5A6A7A        ; slice 32: line numbers (dim)
 ; ---- slice 17: open / new ----------------------------------------------
 %define KC_CTRL_O       32              ; 'o' keycode -> open a file
 %define KC_CTRL_N       57              ; 'n' keycode -> new buffer
@@ -307,6 +309,7 @@ section .bss
     find_len    resq 1
     find_buf    resb FIND_CAP
     want_quit   resd 1
+    num_buf     resb 24             ; slice 32: decimal scratch for the gutter
     ; slice 30: a filename given on the command line
     startup_path resb OPEN_CAP
     startup_open resq 1
@@ -1033,6 +1036,39 @@ ed_caret_y:
 
 ; ---------------------------------------------------------------- draw_editor
 ; Repaint the editor pane background and its text, then the caret.
+; ---------------------------------------------------------------- u_to_a
+; slice 32: unsigned int -> decimal ASCII. rdi = value, rsi = dest buffer.
+; Returns the digit count in rax. Clobbers rax/rcx/rdx/rsi/rdi/r9/r10 only, so the
+; draw_editor registers (rbx, r12-r15) survive.
+u_to_a:
+    mov  rax, rdi
+    mov  r9, rsi                    ; dest
+    mov  r10, 10
+    xor  rcx, rcx                   ; digit count
+    test rax, rax
+    jnz  .d
+    mov  byte [rsi], '0'
+    mov  rax, 1
+    ret
+.d:
+    xor  rdx, rdx
+    div  r10                        ; rax = quotient, rdx = remainder
+    add  dl, '0'
+    push rdx
+    inc  rcx
+    test rax, rax
+    jnz  .d
+    mov  rsi, r9
+.e:
+    pop  rdx
+    mov  [rsi], dl
+    inc  rsi
+    dec  rcx
+    jnz  .e
+    mov  rax, rsi
+    sub  rax, r9                    ; length
+    ret
+
 draw_editor:
     push rbx
     push r12
@@ -1078,6 +1114,29 @@ draw_editor:
     sub  rax, [rel ed_top]          ; display row
     cmp  rax, ED_VISIBLE
     jae  .after                     ; below the visible window: stop
+
+    ; ---- slice 32: the gutter line number ------------------------------
+    mov  rax, r13
+    inc  rax                        ; 1-based
+    mov  rdi, rax
+    lea  rsi, [rel num_buf]
+    call u_to_a                     ; rax = digit count
+    mov  r9, rax                    ; set_fg clobbers rax AND rdx; r9 survives
+    mov  rdi, COL_GUTTER
+    call set_fg
+    mov  rdx, r9                    ; the digit count
+    lea  rsi, [rel num_buf]
+    mov  rcx, PANE_X + 8
+    mov  r8,  r13
+    sub  r8,  [rel ed_top]
+    imul r8,  LINE_H
+    add  r8,  ED_TEXT_Y
+    call draw_text
+    mov  rdi, r12
+    lea  rsi, [reqbuf]
+    call send_req
+    mov  rdi, COL_TEXT
+    call set_fg
 
     ; ---- slice 16: selection highlight, painted under the text --------
     cmp  qword [rel sel_anchor], 0
