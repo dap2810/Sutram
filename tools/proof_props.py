@@ -3043,6 +3043,221 @@ def prop_slices23(compiler, rng):
     return ok and out == "PASS", out
 
 
+def prop_invariants24_containers(compiler, rng):
+    """R23 cross-function invariants: binary_search agrees with find
+    on a sorted list; queue_to_array does not mutate (same read twice,
+    and dequeue afterwards still yields the first element)."""
+    lvals = [rng.randint(-50, 50) for _ in range(rng.randint(0, 9))]
+    qvals = [rng.randint(-50, 50) for _ in range(rng.randint(0, 6))]
+
+    def lit(v):
+        return f"(0 - {-v})" if v < 0 else str(v)
+
+    lines = ["ayojan list",
+             "mukhya() {",
+             "    vitti l = list_init(16)",
+             "    vitti ok = nirmmita(8)"]
+    for v in lvals:
+        lines.append(f"    list_push(l, {lit(v)})")
+    lines.append("    list_sort(l)")
+    for _ in range(3):
+        probe = rng.choice(lvals) if lvals and rng.random() < 0.7 else 999
+        lines.append(f"    yadi (list_binary_search(l, {lit(probe)}) != list_find(l, {lit(probe)})) {{")
+        lines.append('        likha("FAIL binary_search != find\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append("    vitti q = queue_init(8)")
+    lines.append("    vitti a1 = nirmmita(8 * 8)")
+    lines.append("    vitti a2 = nirmmita(8 * 8)")
+    for v in qvals:
+        lines.append(f"    queue_enqueue(q, {lit(v)})")
+    lines.append("    yadi (queue_to_array(q, a1) != queue_to_array(q, a2)) {")
+    lines.append('        likha("FAIL to_array count\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append(f"    vitti i = 0")
+    lines.append(f"    yavat (i < {len(qvals)}) {{")
+    lines.append("        yadi (a1[i] != a2[i]) {")
+    lines.append('            likha("FAIL to_array repeat\\n")')
+    lines.append("            pratiyati 1")
+    lines.append("        }")
+    lines.append("        i = i + 1")
+    lines.append("    }")
+    if qvals:
+        lines.append("    yadi (queue_dequeue(q, ok) != a1[0]) {")
+        lines.append('        likha("FAIL to_array mutated\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+        lines.append(f"    yadi (queue_len(q) != {len(qvals) - 1}) {{")
+        lines.append('        likha("FAIL to_array len\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "invariants24_containers", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_invariants24_merge_symdiff(compiler, rng):
+    """R23 cross-function invariants: map_merge is associative
+    (src-wins), set_sym_diff is symmetric, sym_diff with itself is
+    empty, sym_diff with empty is identity."""
+    pool = ["aa", "ab", "ba", "bb", "abc", "bca", "cab", "a", "b", "c"]
+    akeys = rng.sample(pool, rng.randint(0, 3))
+    bkeys = rng.sample(pool, rng.randint(0, 3))
+    ckeys = rng.sample(pool, rng.randint(0, 3))
+    avals = {k: rng.randint(-50, 50) for k in akeys}
+    bvals = {k: rng.randint(-50, 50) for k in bkeys}
+    cvals = {k: rng.randint(-50, 50) for k in ckeys}
+
+    def lit(v):
+        return f"(0 - {-v})" if v < 0 else str(v)
+
+    merged = dict(avals)
+    merged.update(bvals)
+    merged.update(cvals)
+    lines = ["ayojan map",
+             "ayojan set",
+             "mukhya() {"]
+    # three maps a, b, c; merge both associations and compare
+    for name, vals in (("a", avals), ("b", bvals), ("c", cvals)):
+        lines.append(f"    vitti {name} = map_init(8)")
+        for k, v in vals.items():
+            lines.append(f'    map_put({name}, 8, "{k}", {len(k)}, {lit(v)})')
+    lines.append("    vitti m1 = map_init(16)")
+    lines.append("    vitti m2 = map_init(16)")
+    lines.append("    vitti tmp = map_init(16)")
+    lines.append("    vitti tmp2 = map_init(16)")
+    lines.append("    map_merge(tmp, 16, a, 8)")
+    lines.append("    map_merge(tmp, 16, b, 8)")
+    lines.append("    map_merge(m1, 16, tmp, 16)")
+    lines.append("    map_merge(m1, 16, c, 8)")
+    lines.append("    map_merge(tmp2, 16, b, 8)")
+    lines.append("    map_merge(tmp2, 16, c, 8)")
+    lines.append("    map_merge(m2, 16, a, 8)")
+    lines.append("    map_merge(m2, 16, tmp2, 16)")
+    lines.append(f"    yadi (map_size(m1) != {len(merged)}) {{")
+    lines.append('        likha("FAIL merge assoc size\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append("    yadi (map_size(m1) != map_size(m2)) {")
+    lines.append('        likha("FAIL merge assoc size2\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    for k, v in merged.items():
+        lines.append(f'    yadi (map_get(m1, 16, "{k}", {len(k)}) != map_get(m2, 16, "{k}", {len(k)})) {{')
+        lines.append('        likha("FAIL merge assoc value\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+        lines.append(f'    yadi (map_get(m1, 16, "{k}", {len(k)}) != {lit(v)}) {{')
+        lines.append('        likha("FAIL merge src-wins\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    # symmetric difference: symmetric, self-empty, identity-with-empty
+    for name, keys in (("x", akeys), ("y", bkeys)):
+        lines.append(f"    vitti {name} = set_init(8)")
+        for k in keys:
+            lines.append(f'    set_add({name}, 8, "{k}", {len(k)})')
+    lines.append("    vitti o1 = set_init(16)")
+    lines.append("    vitti o2 = set_init(16)")
+    lines.append("    vitti o3 = set_init(16)")
+    lines.append("    vitti o4 = set_init(16)")
+    lines.append("    vitti e = set_init(8)")
+    lines.append("    set_sym_diff(x, 8, y, 8, o1)")
+    lines.append("    set_sym_diff(y, 8, x, 8, o2)")
+    lines.append("    set_sym_diff(x, 8, x, 8, o3)")
+    lines.append("    set_sym_diff(x, 8, e, 8, o4)")
+    lines.append("    yadi (set_size(o1) != set_size(o2)) {")
+    lines.append('        likha("FAIL sym_diff symmetric size\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    sym = set(akeys) ^ set(bkeys)
+    for k in sym:
+        lines.append(f'    yadi (set_contains(o2, 16, "{k}", {len(k)}) != 1) {{')
+        lines.append('        likha("FAIL sym_diff symmetric member\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append("    yadi (set_size(o3) != 0) {")
+    lines.append('        likha("FAIL sym_diff self\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append(f"    yadi (set_size(o4) != {len(set(akeys))}) {{")
+    lines.append('        likha("FAIL sym_diff identity size\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    for k in akeys:
+        lines.append(f'    yadi (set_contains(o4, 16, "{k}", {len(k)}) != 1) {{')
+        lines.append('        likha("FAIL sym_diff identity member\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "invariants24_merge_symdiff", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_safety24(compiler, rng):
+    """ganita_sat_div/sat_mod/checked_abs/sat_abs vs Python (incl.
+    MIN/-1, division by zero, abs(MIN))."""
+    import random as _random
+    maxv = 2**63 - 1
+    minv = -(2**63)
+    pairs = []
+    for _ in range(6):
+        a = rng.choice([rng.randint(-100, 100), maxv, minv, 0, 1, -1])
+        b = rng.choice([rng.randint(-10, 10), maxv, minv, 0, 1, -1])
+        pairs.append((a, b))
+    singles = [rng.randint(-100, 100) for _ in range(3)] + [maxv, minv, 0]
+
+    def lit(v):
+        return f"(0 - {-v})" if v < 0 else str(v)
+
+    def trunc_div(a, b):
+        q = abs(a) // abs(b)
+        return q if (a < 0) == (b < 0) else -q
+
+    lines = ["ayojan ganita",
+             "mukhya() {",
+             "    vitti ok = nirmmita(8)"]
+    for a, b in pairs:
+        if b == 0:
+            want_div, want_mod = 0, 0
+        elif a == minv and b == -1:
+            want_div, want_mod = maxv, 0
+        else:
+            want_div = trunc_div(a, b)
+            want_mod = a - trunc_div(a, b) * b
+        lines.append(f"    yadi (ganita_sat_div({lit(a)}, {lit(b)}) != {lit(want_div)}) {{")
+        lines.append('        likha("FAIL sat_div\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+        lines.append(f"    yadi (ganita_sat_mod({lit(a)}, {lit(b)}) != {lit(want_mod)}) {{")
+        lines.append('        likha("FAIL sat_mod\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    for a in singles:
+        if a == minv:
+            want_cabs, want_cok, want_sabs = 0, 0, maxv
+        else:
+            want_cabs, want_cok, want_sabs = abs(a), 1, abs(a)
+        lines.append(f"    yadi (ganita_checked_abs({lit(a)}, ok) != {lit(want_cabs)}) {{")
+        lines.append('        likha("FAIL checked_abs value\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+        lines.append(f"    yadi (ok[0] != {want_cok}) {{")
+        lines.append('        likha("FAIL checked_abs ok\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+        lines.append(f"    yadi (ganita_sat_abs({lit(a)}) != {lit(want_sabs)}) {{")
+        lines.append('        likha("FAIL sat_abs\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "safety24", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
 def main():
     compiler = None
     for i, a in enumerate(sys.argv):
@@ -3118,6 +3333,9 @@ def main():
         ("containers23", prop_containers23),
         ("gaps23", prop_gaps23),
         ("slices23", prop_slices23),
+        ("invariants24 containers", prop_invariants24_containers),
+        ("invariants24 merge/symdiff", prop_invariants24_merge_symdiff),
+        ("safety24", prop_safety24),
     ]
 
     failed = []
