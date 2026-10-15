@@ -1,0 +1,27 @@
+# Sutram Round 70 — complete source-review SHA-256 manifest
+# Delivery date: 2026-10-15
+# Source commit: 61e7507b44f2687f3b7ff20f9acb5ef29df85db2
+# Pinned base: dde0613ca16f3e41345b1b1055733151780ef9d7
+# Scope: all 13 additive source/test/document files, 76500 bytes.
+# Python hashlib over exact local UTF-8/LF bytes. All local Git blob IDs
+# reproduced uploaded Git tree 4266c599b1a62237c8468826a54926c4d33dd3f5.
+# NOT compiled-program hashes or evidence of native corpus acceptance.
+
+c00b3ba4902a5202c3c578779629b60a909fdf85aff9e498a9801104168b72b2  docs/FREESTANDING.md
+c260a531a601d5db7c3df8b28de3fe05a85d3ac98e8538831cb829391030d521  docs/MEMORY-MODEL.md
+dde51e498a891a5e15858b0c71e17610e9108f74c5803de4ae719d6f7a8602ff  docs/NEGATIVE-CORPUS.md
+d45c4df33d1ee73ae224c49f004faffab31894512350eaabce4e9c199e613b6c  docs/SPECIFICATION.md
+abc0027ae004084829dca71b3e3987175d73ab2f3ffad405c30ff38178e5528f  tests/negative/r70/cases/bad_arity.sm
+5e93ea75f18b257e66423e048fc80d72918f96a0f328c5f75afa46b8bd59b2c5  tests/negative/r70/cases/bad_type.sm
+e06dbad0ea27c80f636180c5a97925ec32f061e17de72a56cf0b636b2b0c06d1  tests/negative/r70/cases/malformed_literal.sm.hex
+80845a8fb7ec41f225ef46d42b30698ac5d297b6df9473891326ca5872521605  tests/negative/r70/cases/misplaced_keyword.sm
+4eaec3f63bb084e4ac4dcaa885b0fb41452d7040c8a45c465cb20ce5344dae2e  tests/negative/r70/cases/unknown_identifier.sm
+c84b053c9c633248e68022267ca9221759fcb85acd894d636b4ad784f7530306  tests/negative/r70/cases/unterminated_string.sm
+bf4a431a8f274ef9b2add5fb71e5ee8091add4e0a83952a45647c58b81d038f3  tests/negative/r70/manifest.json
+f0ecfefa682e15c7656ed9b4d91de949997819b85237e69a44e03b691e27fa12  tests/r70/test_negative_corpus.py
+1884610725d0dfac16581d4aee87ee2b37c8b705b89cbdaef4340cd13d903171  tools/r70_negative_corpus.py
+
+# Unchanged inherited compiler Git blob (not a newly staged compiler):
+# 64ea028a5ccf56117c132a7efd0673cbe2df3fc6  src/sutram_compiler.asm
+# Unchanged R68 diagnostic entry:
+# 42389aaf73179726d91e23359aee2199734036e1  src/r68_compiler_entry.asm
