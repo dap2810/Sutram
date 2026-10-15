@@ -32,3 +32,23 @@
 કોશ kosh
 કરો kuru
 નિષ્ક્રિય nishkriya
+
+# R66: complete existing vector keyword and explicit container aliases.
+સંખ્યા sankhya
+પંક્તિલંબાઈ pankti_len
+કોશઉમેરો kosh_push
+કોશકાઢો kosh_pop
+કોશલંબાઈ kosh_len
+કોશક્ષમતા kosh_cap
+કોશસાફ kosh_clear
+કોશખાલી kosh_empty
+કોશછેલ્લું kosh_peek
+કોશજોડો kosh_enqueue
+કોશપહેલું kosh_dequeue
+
+# U+0AF0 is Gujarati's abbreviation sign, not U+0970 or a decimal dot.
+# Exact aliases only; existing core spellings above remain unchanged.
+ચ૰ vitti
+લ૰ likha
+ફ૰ prakriya
+પા૰ pratiyati

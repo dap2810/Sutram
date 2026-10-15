@@ -1,0 +1,13 @@
+# Strings/comments retain their original UTF-8. Numeric script is pack-independent.
+mukhya() {
+    likha(०१२३४५६७८९)
+    likha(૦૧૨૩૪૫૬૭૮૯)
+    likha(१२3૪)
+    likha(१२.५)
+    likha(-૭.૨૫)
+    likha(५ + ૪)
+    likha(0x2A)
+    vitti n२ = ७
+    likha(n२)
+    likha("०૧॰૰\n")
+}

@@ -21,3 +21,21 @@ The legacy file explicitly contains `InstallDirRegKey HKLM`, `RequestExecutionLe
 The supported installer is documented at `windows/native-installer/README.md`, with concrete mutation code in `windows/native-installer/install-core.ps1` and matching uninstall script. It installs under the current user, uses HKCU, and avoids admin. The R62 PowerShell harness remains the Windows acceptance procedure; source inspection and packaging do **not** prove successful installation or icon/GUI display.
 
 **Do not follow legacy WSL/admin guidance from `windows/WINDOWS-README.md` for the current supported native installer.** That document refers to an older path and is not an instruction to elevate, change security policies, or edit system settings. No installer executable, security control, or registry entry was changed by Round 65.
+
+## Round 66 shipping-path clarification (source-only)
+
+This remains the single consolidated installer comparison, rather than a second
+contradictory table. At main `9921cbf175b2fb7983e45305fdec963380532452`,
+`windows/native-installer/build-installer.ps1` computes its package path as
+`windows/native-installer/output/Sutram-Setup-0.1.0-native-x64.exe`.
+That is the native/per-user builder documented as the supported route, not the
+admin NSIS script. This source finding does not identify the bytes of any
+already-distributed `Sutram-Setup.exe` or prove that it was freshly rebuilt.
+
+A pre-existing wrapper discrepancy was observed: `windows/build-windows-setup.ps1`
+still invokes `.\windows-installer-native\build-installer.ps1` and looks for
+output under that old folder name, whereas the checked builder is under
+`windows/native-installer/`. Its final status message also mentions a transitional
+ELF backend. Do not present that wrapper as verified current packaging evidence.
+Sarvam should reconcile the wrapper in a separately reviewed build-path change.
+R66 is documentation-only for installers, so no script was executed or altered.
