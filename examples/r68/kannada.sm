@@ -1,0 +1,7 @@
+# R68 kannada: paired expected output; not a claimed native run.
+ಮುಖ್ಯ() {
+    ಚರ ಮೊತ್ತ = ೦೧೨೩೪೫೬೭೮೯।
+    ಬರೆ(ಮೊತ್ತ)॥
+    ದಶಮ ಅಂಶ = ೨.೫।
+    ಬರೆ(ಅಂಶ)।
+}

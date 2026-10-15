@@ -1,0 +1,6 @@
+mukhya() {
+    nishkriya("50 90 58")
+    nishkriya("54 5C")
+    nishkriya("50 59")
+    likha(73)
+}

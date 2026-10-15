@@ -32,3 +32,7 @@
 ಕೋಶ kosh
 ಮಾಡು kuru
 ನಿಷ್ಕ್ರಿಯ nishkriya
+
+# R68: decimal digits U+0CE6..U+0CEF; ASCII dot remains the decimal point.
+# Shared U+0964/U+0965 still terminate statements. Existing words preserved.
+# No dedicated abbreviation character adopted for this script; none invented.

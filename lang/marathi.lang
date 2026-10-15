@@ -32,3 +32,11 @@
 कोश kosh
 करा kuru
 निष्क्रिय nishkriya
+
+# R68: decimal digits U+0966..U+096F; ASCII dot remains the decimal point.
+# Shared U+0964/U+0965 still terminate statements. Existing words preserved.
+# Exact U+0970 abbreviation aliases; no prefix matching.
+मु॰ mukhya
+च॰ vitti
+लि॰ likha
+द॰ dasham

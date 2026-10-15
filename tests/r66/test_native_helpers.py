@@ -152,8 +152,8 @@ const unsigned char* test_cluster(const unsigned char* p, const unsigned char* e
     def expect_clusters(self, s, expected):
         self.assertEqual(self.cluster_bytes(s.encode()), [x.encode() for x in expected])
 
-    def test_all_50_decimal_digits(self):
-        for zero, width in ((48, 1), (0x0966, 3), (0x0AE6, 3), (0x09E6, 3), (0x0A66, 3)):
+    def test_all_90_decimal_digits(self):
+        for zero, width in ((48, 1), (0x0966, 3), (0x0AE6, 3), (0x09E6, 3), (0x0A66, 3), (0x0B66, 3), (0x0BE6, 3), (0x0C66, 3), (0x0CE6, 3)):
             for i in range(10):
                 with self.subTest(zero=zero, digit=i):
                     self.assertEqual(self.digit(chr(zero + i).encode()), (i, width))
@@ -166,7 +166,7 @@ const unsigned char* test_cluster(const unsigned char* p, const unsigned char* e
         for second in range(256):
             for third in range(256):
                 data = bytes((0xE0, second, third))
-                wanted = (third - 0xA6, 3) if second in (0xA5, 0xAB, 0xA7, 0xA9) and 0xA6 <= third <= 0xAF else (-1, 0)
+                wanted = (third - 0xA6, 3) if second in (0xA5, 0xAB, 0xA7, 0xA9, 0xAD, 0xAF, 0xB1, 0xB3) and 0xA6 <= third <= 0xAF else (-1, 0)
                 self.assertEqual(self.digit(data), wanted)
 
     def test_empty_and_truncated_digits(self):

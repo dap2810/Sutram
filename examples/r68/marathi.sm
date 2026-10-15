@@ -1,0 +1,7 @@
+# R68 marathi: paired expected output; not a claimed native run.
+मु॰() {
+    च॰ बेरीज = ०१२३४५६७८९।
+    लि॰(बेरीज)॥
+    द॰ अंश = २.५।
+    लि॰(अंश)।
+}

@@ -71,20 +71,20 @@ Win64 program, and compiled programs are real Windows executables (PE32+).
     sutram.exe examples\01_hello.sm hello.exe
     hello.exe
 
-Install with the wizard (`Sutram-Setup.exe`), or unzip the portable folder and
-run `sutram.exe` from it, or run `install.bat` to add it to PATH.
-The output name picks the target: `.exe` -> Windows, `.bin` -> Linux.
-
-Full guide: **docs/WINDOWS-SETUP.md** (install, usage, troubleshooting,
-Linux-vs-Windows differences, feature status).
+Use the verified native per-user wizard or a coherent portable directory.
+The maintained artifact routes, legacy-installer warning and wrapper discrepancy
+are in **[Installation routes](docs/INSTALLATION-ROUTES.md)**.
+For compile/run commands, see **[Windows usage](docs/WINDOWS-SETUP.md)**.
 
 ### Linux
 
     ./sutram_compiler examples/01_hello.sm hello.bin
     ./hello.bin
 
-`install.sh` installs it for the current user. `sutram-ide` is a terminal IDE
-with syntax highlighting, and Ctrl-R to run.
+See **[Installation routes](docs/INSTALLATION-ROUTES.md)** for the reviewed Linux
+source/run path. The formerly advertised root `install.sh` is absent from this
+pinned checkout; do not treat that old instruction as an available installer.
+The terminal IDE and Linux X11 GUI are separate from the Windows GUI.
 
 ## Writing in your own language
 
@@ -99,7 +99,7 @@ native word to its Sanskrit keyword, so anyone can add or correct one:
 
 Only NASM and a linker are needed — nothing else.
 
-    nasm -f elf64 src/sutram_compiler.asm -o sutram.o
+    nasm -f elf64 -I. src/sutram_compiler.asm -o sutram.o
     ld -o sutram_compiler sutram.o
 
 Windows target:

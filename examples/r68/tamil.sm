@@ -1,0 +1,7 @@
+# R68 tamil: paired expected output; not a claimed native run.
+முதன்மை() {
+    மாறி தொகை = ௦௧௨௩௪௫௬௭௮௯।
+    எழுது(தொகை)॥
+    தசம அளவு = ௨.௫।
+    எழுது(அளவு)।
+}
