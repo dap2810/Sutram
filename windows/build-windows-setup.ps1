@@ -3,52 +3,41 @@ Set-StrictMode -Version 2.0
 $Root = Split-Path -Parent $MyInvocation.MyCommand.Path
 Push-Location $Root
 try {
-    Write-Host '[0/3] Preflight checks...' -ForegroundColor Cyan
-    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File '.\preflight-windows.ps1'
-    $stageCode = $LASTEXITCODE
-    if ($stageCode -ne 0) { throw "Preflight failed with exit code $stageCode." }
-
-    Write-Host ''
-    Write-Host '[1/3] Building and smoke-testing native Sutram compiler host...' -ForegroundColor Cyan
-    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File '.\build-windows-native.ps1'
-    $stageCode = $LASTEXITCODE
-    if ($stageCode -ne 0) { throw "Native compiler build or smoke test failed with exit code $stageCode." }
-
-    Write-Host ''
-    Write-Host '[2/3] Building native Win32 wizard setup...' -ForegroundColor Cyan
-    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File '.\windows-installer-native\build-installer.ps1'
-    $stageCode = $LASTEXITCODE
-    if ($stageCode -ne 0) { throw "Native installer build failed with exit code $stageCode." }
-
-    Write-Host ''
-    Write-Host '[3/3] Final release verification...' -ForegroundColor Cyan
-    $setup = '.\windows-installer-native\output\Sutram-Setup-0.1.0-native-x64.exe'
-    if (-not (Test-Path -LiteralPath $setup -PathType Leaf)) { throw "Setup file was not produced: $setup" }
-    $resolvedSetup = (Resolve-Path -LiteralPath $setup).Path
-    $bytes = [IO.File]::ReadAllBytes($resolvedSetup)
-    if ($bytes.Length -lt 4096 -or $bytes[0] -ne 0x4D -or $bytes[1] -ne 0x5A) { throw 'Setup output is not a valid Windows executable.' }
-    $peOffset = [BitConverter]::ToInt32($bytes,0x3C)
-    if ($peOffset -lt 0 -or ($peOffset + 26) -ge $bytes.Length) { throw 'Setup PE header offset is invalid.' }
-    if ($bytes[$peOffset] -ne 0x50 -or $bytes[$peOffset + 1] -ne 0x45) { throw 'Setup PE signature is invalid.' }
-    if ([BitConverter]::ToUInt16($bytes,$peOffset + 4) -ne 0x8664) { throw 'Setup output is not an x64 PE executable.' }
-    if ([BitConverter]::ToUInt16($bytes,$peOffset + 24) -ne 0x20B) { throw 'Setup output is not PE32+.' }
-
-    $selfTest = Start-Process -FilePath $resolvedSetup -ArgumentList '--self-test' -Wait -PassThru
-    if ($selfTest.ExitCode -ne 0) { throw "Final setup resource self-test failed with exit code $($selfTest.ExitCode)." }
-
-    $hash = (Get-FileHash -Algorithm SHA256 -LiteralPath $resolvedSetup).Hash
+    Write-Host '[0/4] Preflight checks...'
+    & powershell.exe -NoProfile -File '.\preflight-windows.ps1'
+    if ($LASTEXITCODE -ne 0) { throw "Preflight failed ($LASTEXITCODE)." }
+    Write-Host '[1/4] Building native compiler...'
+    & powershell.exe -NoProfile -File '.\build-windows-native.ps1'
+    if ($LASTEXITCODE -ne 0) { throw "Native compiler build failed ($LASTEXITCODE)." }
+    Write-Host '[2/4] Building GUI with linked cluster helper...'
+    & powershell.exe -NoProfile -File '.\gui\build-gui.ps1'
+    if ($LASTEXITCODE -ne 0) { throw "GUI build failed ($LASTEXITCODE)." }
+    Write-Host '[3/4] Building supported per-user native installer...'
+    & powershell.exe -NoProfile -File '.\native-installer\build-installer.ps1'
+    if ($LASTEXITCODE -ne 0) { throw "Native installer build failed ($LASTEXITCODE)." }
+    Write-Host '[4/4] Verifying package...'
+    $setup = Join-Path $Root 'native-installer\output\Sutram-Setup-0.1.0-native-x64.exe'
+    if (-not (Test-Path -LiteralPath $setup -PathType Leaf)) { throw "Setup missing: $setup" }
+    $bytes = [IO.File]::ReadAllBytes($setup)
+    if ($bytes.Length -lt 4096 -or $bytes[0] -ne 0x4d -or $bytes[1] -ne 0x5a) { throw 'Invalid MZ output.' }
+    $pe = [BitConverter]::ToInt32($bytes,0x3c)
+    if ($pe -lt 0 -or ($pe + 26) -gt $bytes.Length -or
+        $bytes[$pe] -ne 0x50 -or $bytes[$pe+1] -ne 0x45 -or
+        [BitConverter]::ToUInt16($bytes,$pe+4) -ne 0x8664 -or
+        [BitConverter]::ToUInt16($bytes,$pe+24) -ne 0x20b) { throw 'Invalid PE32+ AMD64 package.' }
+    $p = Start-Process -FilePath $setup -ArgumentList '--self-test' -PassThru
+    try {
+        if (-not $p.WaitForExit(15000)) {
+            try { $p.Kill() } catch {}
+            throw 'Setup resource self-test timed out after 15 seconds.'
+        }
+        if ($p.ExitCode -ne 0) { throw "Setup resource self-test failed ($($p.ExitCode))." }
+    } finally { $p.Dispose() }
+    $hash = (Get-FileHash -Algorithm SHA256 -LiteralPath $setup).Hash
     $releaseCopy = Join-Path $Root 'Sutram-Setup.exe'
-    Copy-Item -LiteralPath $resolvedSetup -Destination $releaseCopy -Force
-    $releaseHash = (Get-FileHash -Algorithm SHA256 -LiteralPath $releaseCopy).Hash
-    if ($releaseHash -ne $hash) { throw 'Release-copy SHA-256 verification failed.' }
-    Write-Host ''
-    Write-Host 'BUILD PASSED ALL WINDOWS RELEASE CHECKS.' -ForegroundColor Green
-    Write-Host ("Setup : {0}" -f $resolvedSetup) -ForegroundColor Green
-    Write-Host ("Release copy: {0}" -f $releaseCopy) -ForegroundColor Green
-    Write-Host ("SHA256: {0}" -f $hash) -ForegroundColor Green
-    Write-Host 'Installer: native 64-bit Win32 wizard; no windres, IExpress, or Inno Setup dependency.' -ForegroundColor Green
-    Write-Host 'End-user runtime: no NASM, MinGW, Visual Studio, WSL, or Linux required.' -ForegroundColor Green
-    Write-Host 'Compiler status: native Windows compiler host; generated Sutram programs still use the transitional ELF backend.' -ForegroundColor Yellow
-} finally {
-    Pop-Location
-}
+    Copy-Item -LiteralPath $setup -Destination $releaseCopy -Force
+    if ((Get-FileHash -Algorithm SHA256 -LiteralPath $releaseCopy).Hash -ne $hash) { throw 'Release-copy hash mismatch.' }
+    Write-Host "Package format and resource checks passed: $releaseCopy"
+    Write-Host "SHA256: $hash"
+    Write-Host 'This is not GUI/installer acceptance. Perform the standard-user Windows checklist and inspect the log/screenshots.'
+} finally { Pop-Location }
