@@ -1,0 +1,7 @@
+# R68 hindi: paired expected output; not a claimed native run.
+मु॰() {
+    च॰ योगफल = ०१२३४५६७८९।
+    लि॰(योगफल)॥
+    द॰ अंश = २.५।
+    लि॰(अंश)।
+}
