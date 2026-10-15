@@ -1,0 +1,56 @@
+SUTRAM ROUND 70 — OBSERVED EVIDENCE
+Delivery/check date: 2026-10-15
+Incoming heading: 2026-10-16, retained as source metadata
+Source commit: 61e7507b44f2687f3b7ff20f9acb5ef29df85db2
+Base: dde0613ca16f3e41345b1b1055733151780ef9d7
+Draft PR: https://github.com/dap2810/Sutram/pull/28
+
+ACTUALLY RUN (Linux, Python 3.13.5)
+python3 -m unittest discover -s tests/r70 -p 'test_*.py' -v
+Result: Ran 36 tests in 0.061s; OK.
+These are corpus/runner UNIT TESTS. Compiler subprocess responses in native-flow
+scenarios are MOCKED. No Sutram compiler is executed by these unit tests.
+
+python3 -m py_compile tools/r70_negative_corpus.py tests/r70/test_negative_corpus.py
+Exit 0; both Python files passed syntax checks.
+
+python3 tools/r70_negative_corpus.py --validate-only
+Exit 0; six categories validated. JSON explicitly says:
+  native_status: NOT_RUN
+  compiler_executed: false
+  production_source_pins: NOT_CHECKED
+
+IDENTITY CHECKS
+Two copied case sources and corresponding exact diagnostic bytes matched the
+existing Git object IDs from the repository:
+  c23974fb8af3771d4b934bd1fa8dbba4b319d2ef type-mismatch source
+  f6fcef15de39699df57d9348f325ef5a68a36e74 type-mismatch golden
+  74bc96e32c8921623cdaac3ec441e8fbf9f26c4c unknown-function source
+  eedd77bcd0d555a9ef02b998302e55748a4b7726 unknown-function golden
+Original examples and tests/expect files were not edited.
+
+13 local delivery file Git blob IDs reproduced complete uploaded Git tree
+4266c599b1a62237c8468826a54926c4d33dd3f5 exactly. All paths/content identities
+matched; the check created no additional commit and changed no branch.
+SHA256 manifest covers all 13 additive files, 76500 exact local bytes.
+
+COMPILER INPUT/OUTPUT
+Input source: 64ea028a5ccf56117c132a7efd0673cbe2df3fc6 (545722 bytes).
+Branch output: SAME INHERITED SOURCE BLOB; no replacement staged source produced.
+R68 entry remains 42389aaf73179726d91e23359aee2199734036e1 (713 bytes).
+No compiler/executable hash or new native behavior is invented.
+
+NOT RUN / NOT CLAIMED
+- Actual six-category native rejection run (including positive controls).
+- Complete compiler assembly/link, generated Sutram programs or full regressions.
+- Full allocator/reclamation audit or runtime leak measurement.
+- Ownership/borrow implementation, kernel boot, emulator or freestanding proof.
+- Windows GUI/open-close/rendering, installer execution or registry changes.
+- Any automatic CI job, background monitor or unreviewed merge.
+Four new diagnostic expectations remain pending native confirmation; two other
+cases borrow existing goldens, which were not rerun in this review.
+
+RAW LOGS
+Companion source supplement includes evidence/unit-tests.txt and
+ evidence/corpus_validation.json plus source-identities.json. These logs must
+not be relabelled as native compiler acceptance.
