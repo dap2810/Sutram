@@ -1,0 +1,1683 @@
+diff --git a/docs/PROPERTY-NET.md b/docs/PROPERTY-NET.md
+new file mode 100644
+index 0000000..b4a7bda
+--- /dev/null
++++ b/docs/PROPERTY-NET.md
+@@ -0,0 +1,102 @@
++# The property suite as a regression net
++
++`tools/proof_props.py` holds **72 properties** (69 at the start of Round 26,
++plus `safety26 interaction`, `breadth26`, and `min26` added this round). For each one,
++this file states in one line **what would have to break for it to fail**.
++Method (R26 WS2): every property's assertion was read, and the four most
++suspicious ones (`fnv1a_deterministic`, `fnv1a_avalanche`, `map_collision`,
++`map_keys_count`) were read line by line.
++
++## Verdict
++
++**All 72 are genuine, falsifiable tests. None removed.** Every property
++compares its subject against an independent oracle (Python arithmetic, a
++second implementation, or an invariant the function itself must uphold),
++so each has a concrete failure mode. Two caveats are recorded below; neither
++makes its property vacuous.
++
++- **Caveat 1 — `hash fnv1a avalanche`:** the name overpromises. It checks
++  five fixed pairs hash differently (a constant or input-ignoring hash
++  fails), not a statistical avalanche measurement. Kept as a
++  distinctness check; a real avalanche test would need bit-flip statistics.
++- **Caveat 2 — `string split/join`, `strb split/join`:** both skip the
++  trailing-separator edge (documented in the code: it yields an extra empty
++  segment). The round-trip is tested everywhere else. Kept; the edge is a
++  known documented limitation, not a hole in the net.
++
++## The net, property by property
++
++| # | Property | What would have to break for it to fail |
++|---|---|---|
++| 1 | bigint add/sub inverse | `bigint_add` or `bigint_sub` miscomputing, so add-then-sub does not restore `b` |
++| 2 | bigint mul distributes over add | `bigint_mul` or `bigint_add` wrong, so `a*(b+c) != a*b + a*c` |
++| 3 | bigint from_int/to_int roundtrip | `bigint_from_int` or `bigint_to_int` losing bits or misplacing limbs |
++| 4 | bigint divmod reconstruct | `bigint_divmod` wrong quotient/remainder, so `q*b + r != a` or `r >= b` |
++| 5 | math gcd divides | `gcd` returning a non-divisor of `a` or `b` |
++| 6 | math gcd*lcm == a*b | `gcd` or `lcm` wrong, so the identity fails |
++| 7 | hash fnv1a deterministic | `fnv1a` reading uninitialized state or randomness, so two calls differ |
++| 8 | hash fnv1a empty == basis | `fnv1a` wrong offset basis or hashing the empty string as non-empty |
++| 9 | hash fnv1a avalanche | `fnv1a` constant or input-ignoring, so two distinct strings collide (see caveat 1) |
++| 10 | sort output ordered | `insertion_sort`/`merge_sort` leaving the output unordered |
++| 11 | sort permutation | the two sorts disagreeing, so one of them drops/duplicates an element |
++| 12 | sort idempotent | a sort disturbing already-sorted input |
++| 13 | sort edge cases | empty/single-element arrays crashing or returning the wrong length |
++| 14 | baseconv roundtrip | `bigint_to_digits`/`bigint_from_digits` losing digits for some base |
++| 15 | strconv roundtrip | `int_to_str`/`str_to_int` disagreeing on some value (incl. negatives, 0) |
++| 16 | strconv base roundtrip | `int_to_base_str`/`str_to_int_base` disagreeing for base 2/8/10/16 |
++| 17 | strconv pad_left | `pad_left` changing the digits, misplacing the fill, or returning the wrong length |
++| 18 | string find vs python | `str_find` disagreeing with Python `str.find` (incl. absent needle) |
++| 19 | string replace | `str_replace` disagreeing with Python `str.replace`, or `find` still finding the old text |
++| 20 | string split/join | `str_split`/`str_join` not round-tripping (see caveat 2) |
++| 21 | string trim/case | `str_trim`/`str_upper`/`str_lower` disagreeing with Python strip/upper/lower |
++| 22 | strb find vs python | `strb_find` disagreeing with Python `str.find` on byte strings |
++| 23 | strb replace | `strb_replace` disagreeing with Python `str.replace` |
++| 24 | strb split/join | `strb_split`/`strb_join` not round-tripping (see caveat 2) |
++| 25 | strb trim/case | `strb_trim`/`strb_upper`/`strb_lower` disagreeing with Python |
++| 26 | map put/get roundtrip | `map_put`/`map_get` losing a stored value |
++| 27 | map update | re-putting a key changing size or keeping the old value |
++| 28 | map delete | `map_remove` leaving the key present, size wrong, or disturbing other keys |
++| 29 | map collision survival | linear probing losing an entry when three keys share a bucket |
++| 30 | map keys count | `map_keys` returning the wrong count or wrong total byte length |
++| 31 | strb pack/unpack roundtrip | `strb_pack`/`strb_unpack` losing or reordering bytes in either direction |
++| 32 | strb dup | `strb_dup` copying the wrong bytes or mishandling empty input |
++| 33 | sankhyiki purna int stats | `purna_*` stats disagreeing with Python (incl. trunc division, negatives, empty) |
++| 34 | set add/contains/remove | `set_add`/`set_contains`/`set_remove` disagreeing on membership |
++| 35 | set add idempotent | `set_add` of a present element changing the size |
++| 36 | set union commutative | `set_union` depending on argument order (size or sorted content) |
++| 37 | set intersect self/empty | intersect-with-self not equalling the set, or intersect-with-empty non-empty |
++| 38 | set difference | `set_difference` keeping an element of `b` or disagreeing with Python |
++| 39 | set subset | `set_subset` violating reflexivity, empty-subset, or antisymmetry |
++| 40 | fmt int base roundtrip | `fmt_int_base` rendering a value its own parser misreads, or bad bases accepted |
++| 41 | fmt pad content | padding changing the non-pad content or returning the wrong length |
++| 42 | fmt group digits | grouping changing the digits or disagreeing with Python grouping |
++| 43 | fmt fixed decimals | `fmt_fixed` rounding differently from Python half-away-from-zero |
++| 44 | fmt signed | `fmt_signed`/`fmt_sign_char` disagreeing with Python on sign or digits |
++| 45 | list push/get | `list_push`/`list_get` losing a value, incl. past initial capacity |
++| 46 | list stack LIFO | stack pops not in reverse push order, peek mutating, or empty pop/peek not failing |
++| 47 | list queue FIFO | queue dequeues out of order, peek mutating, or empty dequeue/peek not failing |
++| 48 | list len tracks | `list_len` drifting from the true count across push/insert/remove/clear |
++| 49 | list insert/remove | insert/remove shifting the wrong elements (full contents vs Python list) |
++| 50 | map keys_bytes roundtrip | `map_keys_bytes` dropping/duplicating a key, miscounting bytes, or mishandling 33-byte truncation |
++| 51 | ganita checked add/sub | `checked_add`/`checked_sub` returning the wrong value or wrong `ok` vs unbounded Python |
++| 52 | ganita checked mul | `checked_mul` returning the wrong value or wrong `ok` vs unbounded Python |
++| 53 | ganita checked div/mod | `checked_div`/`checked_mod` disagreeing with truncating Python division, or wrong `ok` on div-by-zero / `MIN/-1` |
++| 54 | ganita saturating | `sat_add`/`sat_sub`/`sat_mul` disagreeing with Python results clamped to `[MIN64, MAX64]` |
++| 55 | map_clear reuse | `map_clear` not zeroing state/key bytes, leaving old keys, or failing reuse |
++| 56 | containers clear | `set_clear`/`list_clear`/`queue_clear` not zeroing storage or failing reuse |
++| 57 | gaps19 | `map_get_default`, `set_equals`, `strb_reverse`, `strb_count`, or `ganita_checked_pow` disagreeing with Python |
++| 58 | strb cell pairs | explicit-length `strb_*` forms or cell `str_reverse`/`str_count` disagreeing with Python |
++| 59 | containers resize/swap | `map_resize`/`set_resize`/`list_swap`/`list_reverse` disagreeing with Python |
++| 60 | gaps20 | `ganita_checked_fact`/`ganita_sat_pow` disagreeing with Python (incl. huge-exponent early exit) |
++| 61 | containers21 | `list_sort`/`min`/`max`/`sum`/`count`, `queue_contains`, or `map_values` disagreeing with Python |
++| 62 | gaps21 | `ganita_sat_fact` disagreeing with clamped Python factorials (incl. huge-n early exit) |
++| 63 | containers23 | `list_find`/`is_sorted`/`binary_search` or `queue_to_array` disagreeing with Python |
++| 64 | gaps23 | `map_merge`/`set_sym_diff` disagreeing with Python (incl. partial merge on full destination) |
++| 65 | slices23 | explicit-length `strb_*` on slices disagreeing with Python slices, or the NUL forms not seeing past the slice end |
++| 66 | invariants24 containers | `binary_search` disagreeing with `find` on a sorted list, or `queue_to_array` mutating the queue |
++| 67 | invariants24 merge/symdiff | `map_merge` not associative with src-wins, or `set_sym_diff` not symmetric / not empty with itself / not identity with empty |
++| 68 | safety24 | `sat_div`/`sat_mod`/`checked_abs`/`sat_abs` disagreeing with Python (incl. `MIN/-1`, div-by-zero, `abs(MIN)`) |
++| 69 | safety25 oracle | any of the 16 checked/saturating functions violating the contract (failure → 0 + `ok` 0, overflow → clamp, success exact) |
++| 70 | safety26 interaction | sat and checked disagreeing on the success path, sat not the clamp on overflow / 0 on invalid input, or a saturating function wrapping |
++| 71 | breadth26 | `math_rand` non-deterministic or off the LCG sequence, `math_clamp` off Python, or `str_to_float` off Python `float()` beyond 1e-9 relative |
++| 72 | min26 | `int_to_str(MIN)` not "-9223372036854775808", `fmt_digits_base` mishandling negatives, or `fmt_int_base`/`fmt_int_flags` wrong on MIN in some base |
+diff --git a/docs/sutram-stdlib.html b/docs/sutram-stdlib.html
+index b5c0773..73a5334 100644
+--- a/docs/sutram-stdlib.html
++++ b/docs/sutram-stdlib.html
+@@ -32,14 +32,14 @@ Do not edit by hand.</p>
+ <li><a href="#list"><code>list</code></a> — 34 functions</li>
+ <li><a href="#madhava"><code>madhava</code></a> — 5 functions</li>
+ <li><a href="#map"><code>map</code></a> — 17 functions</li>
+-<li><a href="#math"><code>math</code></a> — 16 functions</li>
++<li><a href="#math"><code>math</code></a> — 18 functions</li>
+ <li><a href="#num"><code>num</code></a> — 10 functions</li>
+ <li><a href="#samanvaya"><code>samanvaya</code></a> — 10 functions</li>
+ <li><a href="#sankhyiki"><code>sankhyiki</code></a> — 16 functions</li>
+ <li><a href="#set"><code>set</code></a> — 14 functions</li>
+ <li><a href="#sort"><code>sort</code></a> — 14 functions</li>
+ <li><a href="#strb"><code>strb</code></a> — 22 functions</li>
+-<li><a href="#strconv"><code>strconv</code></a> — 5 functions</li>
++<li><a href="#strconv"><code>strconv</code></a> — 6 functions</li>
+ <li><a href="#string"><code>string</code></a> — 27 functions</li>
+ <li><a href="#util"><code>util</code></a> — 7 functions</li>
+ </ul>
+@@ -92,7 +92,7 @@ Do not edit by hand.</p>
+ <tr><td><code>meru_pankti(a, n)</code></td><td></td></tr>
+ </table>
+ <h2 id="fmt"><code>fmt</code></h2>
+-<p class="mod-desc">Number and string formatting on BYTE strings (packed bytes, explicit lengths, `strb` idiom): every function writes packed bytes into `out` with a 0 terminator and returns the byte count. This is the modern idiom; the older `lib/strconv.smlib` works on CELL arrays (pankti of char codes) and has no width/alignment/grouping/fixed-decimal/sign surface — fmt is the formatting module, strconv is the conversion module. Do not mix the representations: fmt outputs are bytes (read with char_at), strconv outputs are cells (read with [i]). Defaults, stated once here and at each function: - Bases: no prefix unless the _pre / flags form is used. - Grouping: fmt_group defaults to INDIAN grouping (12,34,567). - Rounding: fmt_fixed rounds HALF AWAY FROM ZERO (2.5 -&gt; 3, -2.5 -&gt; -3). - Centre padding: the extra pad byte goes RIGHT. - INT64_MIN (-2^63) is excluded from the integer formatters: negating it overflows, as in strconv. Every other int64 value works. - fmt_fixed is exact while |x| * 10^places &lt; 2^52; beyond that the +0.5 rounding step is below float precision. |x| * 10^places must fit in int64. places is clamped to 0..9. All signatures stay within the 6-argument cap. --- integer digits (private helper) --- fmt_digits(v, out) — write the decimal digits of |v| (no sign) into out as packed bytes. Returns the digit count. Internal; the public formatters below build on it.</p>
++<p class="mod-desc">Number and string formatting on BYTE strings (packed bytes, explicit lengths, `strb` idiom): every function writes packed bytes into `out` with a 0 terminator and returns the byte count. This is the modern idiom; the older `lib/strconv.smlib` works on CELL arrays (pankti of char codes) and has no width/alignment/grouping/fixed-decimal/sign surface — fmt is the formatting module, strconv is the conversion module. Do not mix the representations: fmt outputs are bytes (read with char_at), strconv outputs are cells (read with [i]). Defaults, stated once here and at each function: - Bases: no prefix unless the _pre / flags form is used. - Grouping: fmt_group defaults to INDIAN grouping (12,34,567). - Rounding: fmt_fixed rounds HALF AWAY FROM ZERO (2.5 -&gt; 3, -2.5 -&gt; -3). - Centre padding: the extra pad byte goes RIGHT. - INT64_MIN (-2^63) is handled: |MIN| = 2^63 does not fit in int64, so the digit writers split it (hi/lo) instead of negating it. Every int64 value works. - fmt_fixed is exact while |x| * 10^places &lt; 2^52; beyond that the +0.5 rounding step is below float precision. |x| * 10^places must fit in int64. places is clamped to 0..9. All signatures stay within the 6-argument cap. --- integer digits (private helper) --- fmt_digits(v, out) — write the decimal digits of |v| (no sign) into out as packed bytes. Returns the digit count. Internal; the public formatters below build on it.</p>
+ <table>
+ <tr><th>Function</th><th>Description</th></tr>
+ <tr><td><code>fmt_digits(v, out)</code></td><td></td></tr>
+@@ -255,6 +255,8 @@ Do not edit by hand.</p>
+ <tr><td><code>triple(n)</code></td><td></td></tr>
+ <tr><td><code>inc(n)</code></td><td></td></tr>
+ <tr><td><code>bit_count(n)</code></td><td></td></tr>
++<tr><td><code>math_rand(state)</code></td><td>math_rand(state): Knuth MMIX LCG — state = state * 6364136223846793005 + 1442695040888963407 (mod 2^64, plain wrapping arithmetic). `state` is a 1-cell array holding the seed; it is updated in place and the new state is returned. The full 64-bit state is returned (it may be negative); use abs_val or a modulo to map it to a range. Any seed works, including 0. Deterministic: the same seed always yields the same sequence. There is no entropy source in the language, so the caller owns the seed.</td></tr>
++<tr><td><code>math_clamp(v, lo, hi)</code></td><td>math_clamp(v, lo, hi): lo if v &lt; lo, hi if v &gt; hi, else v. Requires lo &lt;= hi (if lo &gt; hi, returns lo — the first branch wins).</td></tr>
+ </table>
+ <h2 id="num"><code>num</code></h2>
+ <p class="mod-desc">Parameters are copied into locals before mutation (compiler fault workaround).</p>
+@@ -381,6 +383,7 @@ Do not edit by hand.</p>
+ <tr><td><code>int_to_base_str(n, base, out)</code></td><td>int_to_base_str(n, base, out) — write n in `base` (2/8/10/16) into out as character codes (0-9, a-f). Returns count. No sign handling; n &gt;= 0.</td></tr>
+ <tr><td><code>str_to_int_base(buf, n, base, ok)</code></td><td>str_to_int_base(buf, n, base, ok) — parse first n char codes of buf in `base` (2/8/10/16). Sets ok[0]. Returns value.</td></tr>
+ <tr><td><code>pad_left(out, count, width, fill)</code></td><td>pad_left(out, count, width, fill) — left-pad the `count` character codes in pankti `out` to `width` using fill character code `fill`, in place. Returns the new count (width if width &gt; count, else count). Caller must allocate &gt;= width cells.</td></tr>
++<tr><td><code>str_to_float(buf, n, ok)</code></td><td>str_to_float(buf, n, ok): parse a decimal float from a byte string. Grammar: [-] digits [. digits] [(e|E) [-] digits]; at least one digit in the integer or fraction part. No leading/trailing whitespace, no &#x27;+&#x27;, no &quot;inf&quot;/&quot;nan&quot; — those are ok = 0 (same conventions as str_to_int). On success ok[0] = 1 and the dasham value is returned. On malformed input or overflow (|value| &gt; ~1.8e308) ok[0] = 0 and the return is 0.0. Extreme underflow returns 0.0 with ok[0] = 1 (as strtod does). Mantissa is accumulated in int64 (up to 18 significant digits); further digits only move the decimal exponent.</td></tr>
+ </table>
+ <h2 id="string"><code>string</code></h2>
+ <p class="mod-desc">Built on `vartani_len` and `char_at`, both verified to honour their arguments. R52 audit: `char_code(s, i)` already honours i in the compiler; a one-argument `char_code(s)` remains a compatible alias for the first byte. This library continues to call `char_at(s, i)` as before, without changing its API. ASCII only for the character predicates; multi-byte UTF-8 is not split. SLICE-BOUNDARY RULES (WS4, R23 audit): the older byte-string functions below (str_len, count_vowels, count_char, find_char, is_all_digits, str_equals) scan to the NUL terminator and are WRONG on slices — a slice has no terminator at its end. Use the explicit-length strb_* forms on slices. str_replace&#x27;s repl is 0-terminated; see the strb.smlib header for why and for the strb_dup workaround. The (s, i) char predicates take no length: the caller keeps i in bounds.</p>
+@@ -426,6 +429,6 @@ Do not edit by hand.</p>
+ <tr><td><code>bool_to_int(b)</code></td><td></td></tr>
+ <tr><td><code>int_max()</code></td><td></td></tr>
+ </table>
+-<footer>21 modules, 278 functions. Generated from library sources.</footer>
++<footer>21 modules, 281 functions. Generated from library sources.</footer>
+ </body>
+ </html>
+diff --git a/lib/fmt.smlib b/lib/fmt.smlib
+index e9e07b0..ef32286 100644
+--- a/lib/fmt.smlib
++++ b/lib/fmt.smlib
+@@ -14,8 +14,9 @@
+ #   - Grouping: fmt_group defaults to INDIAN grouping (12,34,567).
+ #   - Rounding: fmt_fixed rounds HALF AWAY FROM ZERO (2.5 -> 3, -2.5 -> -3).
+ #   - Centre padding: the extra pad byte goes RIGHT.
+-#   - INT64_MIN (-2^63) is excluded from the integer formatters: negating
+-#     it overflows, as in strconv. Every other int64 value works.
++#   - INT64_MIN (-2^63) is handled: |MIN| = 2^63 does not fit in
++#     int64, so the digit writers split it (hi/lo) instead of
++#     negating it. Every int64 value works.
+ #   - fmt_fixed is exact while |x| * 10^places < 2^52; beyond that the
+ #     +0.5 rounding step is below float precision. |x| * 10^places must
+ #     fit in int64. places is clamped to 0..9.
+@@ -37,6 +38,14 @@ prakriya fmt_digits(v, out) {
+         set_char(dst, 1, 0)
+         pratiyati 1
+     }
++    yadi (val < 0) {
++        yadi (val == (0 - 9223372036854775807) - 1) {
++            # |MIN| = 2^63 does not fit in int64; fmt_digits_base
++            # handles it (hi/lo split), so delegate for this one value.
++            pratiyati fmt_digits_base(val, 10, 0, dst)
++        }
++        val = 0 - val
++    }
+     yavat (val > 0) {
+         rev[rlen] = (val % 10) + 48
+         rlen = rlen + 1
+@@ -78,6 +87,28 @@ prakriya fmt_digits_base(v, base, upper, out) {
+         set_char(dst, 1, 0)
+         pratiyati 1
+     }
++    yadi (val < 0) {
++        yadi (val == (0 - 9223372036854775807) - 1) {
++            # |MIN| = 2^63 does not fit in int64. Split it: |MIN| =
++            # hi * b + lo with hi = -(MIN / b), lo = -(MIN % b),
++            # both fitting. Convert hi, then append the lo digit.
++            vitti hi = 0 - (val / b)
++            vitti lo = 0 - (val % b)
++            vitti hn = fmt_digits_base(hi, b, up, dst)
++            yadi (lo < 10) {
++                set_char(dst, hn, lo + 48)
++            } anyatra {
++                yadi (up == 1) {
++                    set_char(dst, hn, lo + 55)
++                } anyatra {
++                    set_char(dst, hn, lo + 87)
++                }
++            }
++            set_char(dst, hn + 1, 0)
++            pratiyati hn + 1
++        }
++        val = 0 - val
++    }
+     yavat (val > 0) {
+         d = val % b
+         yadi (d < 10) {
+diff --git a/lib/math.smlib b/lib/math.smlib
+index 7dd028e..496bc81 100644
+--- a/lib/math.smlib
++++ b/lib/math.smlib
+@@ -108,3 +108,28 @@ prakriya bit_count(n) {
+     }
+     pratiyati c
+ }
++
++# math_rand(state): Knuth MMIX LCG — state = state * 6364136223846793005
++# + 1442695040888963407 (mod 2^64, plain wrapping arithmetic). `state`
++# is a 1-cell array holding the seed; it is updated in place and the new
++# state is returned. The full 64-bit state is returned (it may be
++# negative); use abs_val or a modulo to map it to a range. Any seed
++# works, including 0. Deterministic: the same seed always yields the
++# same sequence. There is no entropy source in the language, so the
++# caller owns the seed.
++prakriya math_rand(state) {
++    vitti s = state
++    s[0] = s[0] * 6364136223846793005 + 1442695040888963407
++    pratiyati s[0]
++}
++
++# math_clamp(v, lo, hi): lo if v < lo, hi if v > hi, else v.
++# Requires lo <= hi (if lo > hi, returns lo — the first branch wins).
++prakriya math_clamp(v, lo, hi) {
++    vitti x = v
++    vitti a = lo
++    vitti b = hi
++    yadi (x < a) { pratiyati a }
++    yadi (x > b) { pratiyati b }
++    pratiyati x
++}
+diff --git a/lib/strconv.smlib b/lib/strconv.smlib
+index 7e79098..5cc65ad 100644
+--- a/lib/strconv.smlib
++++ b/lib/strconv.smlib
+@@ -13,6 +13,33 @@
+ prakriya int_to_str(n, out) {
+     vitti val = n
+     vitti dst = out
++    yadi (val == (0 - 9223372036854775807) - 1) {
++        # MIN: |MIN| = 2^63 does not fit in int64, so the negation
++        # below would wrap and the digit loop would emit just "-".
++        # Write "-9223372036854775808" directly.
++        dst[0] = 45
++        dst[1] = 57
++        dst[2] = 50
++        dst[3] = 50
++        dst[4] = 51
++        dst[5] = 51
++        dst[6] = 55
++        dst[7] = 50
++        dst[8] = 48
++        dst[9] = 51
++        dst[10] = 54
++        dst[11] = 56
++        dst[12] = 53
++        dst[13] = 52
++        dst[14] = 55
++        dst[15] = 55
++        dst[16] = 53
++        dst[17] = 56
++        dst[18] = 48
++        dst[19] = 56
++        dst[20] = 0
++        pratiyati 20
++    }
+     vitti neg = 0
+     yadi (val < 0) {
+         neg = 1
+@@ -78,6 +105,23 @@ prakriya str_to_int(buf, n, ok) {
+             okp[0] = 0
+             pratiyati 0
+         }
++        yadi (val > 922337203685477580) {
++            okp[0] = 0
++            pratiyati 0
++        }
++        yadi (val == 922337203685477580) {
++            yadi (neg == 1) {
++                yadi ((c - 48) > 8) {
++                    okp[0] = 0
++                    pratiyati 0
++                }
++            } anyatra {
++                yadi ((c - 48) > 7) {
++                    okp[0] = 0
++                    pratiyati 0
++                }
++            }
++        }
+         val = val * 10 + (c - 48)
+         p = p + 1
+     }
+@@ -151,6 +195,16 @@ prakriya str_to_int_base(buf, n, base, ok) {
+             okp[0] = 0
+             pratiyati 0
+         }
++        yadi (val > 9223372036854775807 / b) {
++            okp[0] = 0
++            pratiyati 0
++        }
++        yadi (val == 9223372036854775807 / b) {
++            yadi (d > 9223372036854775807 - val * b) {
++                okp[0] = 0
++                pratiyati 0
++            }
++        }
+         val = val * b + d
+         p = p + 1
+     }
+@@ -183,3 +237,173 @@ prakriya pad_left(out, count, width, fill) {
+     dst[w] = 0
+     pratiyati w
+ }
++
++# str_to_float(buf, n, ok): parse a decimal float from a byte string.
++# Grammar: [-] digits [. digits] [(e|E) [-] digits]; at least one digit
++# in the integer or fraction part. No leading/trailing whitespace, no
++# '+', no "inf"/"nan" — those are ok = 0 (same conventions as
++# str_to_int). On success ok[0] = 1 and the dasham value is returned.
++# On malformed input or overflow (|value| > ~1.8e308) ok[0] = 0 and the
++# return is 0.0. Extreme underflow returns 0.0 with ok[0] = 1 (as
++# strtod does). Mantissa is accumulated in int64 (up to 18 significant
++# digits); further digits only move the decimal exponent.
++prakriya str_to_float(buf, n, ok) {
++    vitti src = buf
++    vitti cnt = n
++    vitti okp = ok
++    okp[0] = 1
++    yadi (cnt == 0) {
++        okp[0] = 0
++        pratiyati 0.0
++    }
++    vitti neg = 0
++    vitti p = 0
++    yadi (src[0] == 45) {
++        neg = 1
++        p = 1
++        yadi (cnt == 1) {
++            okp[0] = 0
++            pratiyati 0.0
++        }
++    }
++    vitti mant = 0
++    vitti ndig = 0
++    vitti exp10 = 0
++    vitti seen = 0
++    vitti done = 0
++    yavat ((p < cnt) && (done == 0)) {
++        vitti c1 = src[p]
++        yadi ((c1 == 46) || (c1 == 101) || (c1 == 69)) {
++            done = 1
++        } anyatra {
++            yadi (c1 < 48) {
++                okp[0] = 0
++                pratiyati 0.0
++            }
++            yadi (c1 > 57) {
++                okp[0] = 0
++                pratiyati 0.0
++            }
++            yadi (ndig < 18) {
++                mant = mant * 10 + (c1 - 48)
++                ndig = ndig + 1
++            } anyatra {
++                exp10 = exp10 + 1
++            }
++            seen = seen + 1
++            p = p + 1
++        }
++    }
++    yadi (p < cnt) {
++        yadi (src[p] == 46) {
++            p = p + 1
++            done = 0
++            yavat ((p < cnt) && (done == 0)) {
++                vitti c2 = src[p]
++                yadi ((c2 == 101) || (c2 == 69)) {
++                    done = 1
++                } anyatra {
++                    yadi (c2 < 48) {
++                        okp[0] = 0
++                        pratiyati 0.0
++                    }
++                    yadi (c2 > 57) {
++                        okp[0] = 0
++                        pratiyati 0.0
++                    }
++                    yadi (ndig < 18) {
++                        mant = mant * 10 + (c2 - 48)
++                        ndig = ndig + 1
++                        exp10 = exp10 - 1
++                    }
++                    seen = seen + 1
++                    p = p + 1
++                }
++            }
++        }
++    }
++    yadi (seen == 0) {
++        okp[0] = 0
++        pratiyati 0.0
++    }
++    yadi (p < cnt) {
++        yadi (src[p] == 101) {
++            p = p + 1
++        } anyatra {
++            yadi (src[p] == 69) {
++                p = p + 1
++            } anyatra {
++                okp[0] = 0
++                pratiyati 0.0
++            }
++        }
++        vitti eneg = 0
++        yadi (p < cnt) {
++            yadi (src[p] == 45) {
++                eneg = 1
++                p = p + 1
++            }
++        }
++        yadi (p >= cnt) {
++            okp[0] = 0
++            pratiyati 0.0
++        }
++        vitti e = 0
++        vitti eseen = 0
++        yavat (p < cnt) {
++            vitti c3 = src[p]
++            yadi (c3 < 48) {
++                okp[0] = 0
++                pratiyati 0.0
++            }
++            yadi (c3 > 57) {
++                okp[0] = 0
++                pratiyati 0.0
++            }
++            yadi (e < 1000) {
++                e = e * 10 + (c3 - 48)
++            }
++            eseen = eseen + 1
++            p = p + 1
++        }
++        yadi (eseen == 0) {
++            okp[0] = 0
++            pratiyati 0.0
++        }
++        yadi (eneg == 1) {
++            exp10 = exp10 - e
++        } anyatra {
++            exp10 = exp10 + e
++        }
++    }
++    yadi (p != cnt) {
++        okp[0] = 0
++        pratiyati 0.0
++    }
++    yadi (mant == 0) {
++        pratiyati 0.0
++    }
++    yadi (exp10 > 308) {
++        okp[0] = 0
++        pratiyati 0.0
++    }
++    yadi (exp10 < -308) {
++        pratiyati 0.0
++    }
++    dasham val = mant
++    yadi (exp10 > 0) {
++        vitti k = 0
++        yavat (k < exp10) {
++            val = val * 10.0
++            k = k + 1
++        }
++    } anyatra {
++        vitti k2 = 0
++        yavat (k2 < (0 - exp10)) {
++            val = val / 10.0
++            k2 = k2 + 1
++        }
++    }
++    yadi (neg == 1) { val = 0.0 - val }
++    pratiyati val
++}
+diff --git a/tests/stdlib/breadth26.exit b/tests/stdlib/breadth26.exit
+new file mode 100644
+index 0000000..573541a
+--- /dev/null
++++ b/tests/stdlib/breadth26.exit
+@@ -0,0 +1 @@
++0
+diff --git a/tests/stdlib/breadth26.out b/tests/stdlib/breadth26.out
+new file mode 100644
+index 0000000..5ab5c5c
+--- /dev/null
++++ b/tests/stdlib/breadth26.out
+@@ -0,0 +1,55 @@
++7806831264735756412
++
++-9049835345590740197
++
++-6486624265480721906
++
++7806831264735756412
++
++-9049835345590740197
++
++-6486624265480721906
++
++1442695040888963407
++
++5
++
++0
++
++10
++
++0
++
++10
++
++5
++
++3.141590
++
++1
++
++-0.020000
++
++1
++
++0.500000
++
++1
++
++100000.000000
++
++1
++
++0.000000
++
++0
++
++0.000000
++
++0
++
++0.000000
++
++1
++
++breadth26-done
+diff --git a/tests/stdlib/breadth26.sm b/tests/stdlib/breadth26.sm
+new file mode 100644
+index 0000000..011be10
+--- /dev/null
++++ b/tests/stdlib/breadth26.sm
+@@ -0,0 +1,96 @@
++ayojan math
++ayojan strconv
++mukhya() {
++    vitti st = nirmmita(8)
++    vitti st2 = nirmmita(8)
++    st[0] = 1
++    st2[0] = 1
++    likha(math_rand(st))
++    likha("\n")
++    likha(math_rand(st))
++    likha("\n")
++    likha(math_rand(st))
++    likha("\n")
++    likha(math_rand(st2))
++    likha("\n")
++    likha(math_rand(st2))
++    likha("\n")
++    likha(math_rand(st2))
++    likha("\n")
++    st[0] = 0
++    likha(math_rand(st))
++    likha("\n")
++    likha(math_clamp(5, 0, 10))
++    likha("\n")
++    likha(math_clamp(0 - 5, 0, 10))
++    likha("\n")
++    likha(math_clamp(15, 0, 10))
++    likha("\n")
++    likha(math_clamp(0, 0, 10))
++    likha("\n")
++    likha(math_clamp(10, 0, 10))
++    likha("\n")
++    likha(math_clamp(5, 5, 5))
++    likha("\n")
++    vitti ok = nirmmita(8)
++    vitti buf = nirmmita(32 * 8)
++    buf[0] = 51
++    buf[1] = 46
++    buf[2] = 49
++    buf[3] = 52
++    buf[4] = 49
++    buf[5] = 53
++    buf[6] = 57
++    likha(str_to_float(buf, 7, ok))
++    likha("\n")
++    likha(ok[0])
++    likha("\n")
++    buf[0] = 45
++    buf[1] = 50
++    buf[2] = 101
++    buf[3] = 45
++    buf[4] = 50
++    likha(str_to_float(buf, 5, ok))
++    likha("\n")
++    likha(ok[0])
++    likha("\n")
++    buf[0] = 46
++    buf[1] = 53
++    likha(str_to_float(buf, 2, ok))
++    likha("\n")
++    likha(ok[0])
++    likha("\n")
++    buf[0] = 49
++    buf[1] = 101
++    buf[2] = 53
++    likha(str_to_float(buf, 3, ok))
++    likha("\n")
++    likha(ok[0])
++    likha("\n")
++    buf[0] = 49
++    buf[1] = 120
++    likha(str_to_float(buf, 2, ok))
++    likha("\n")
++    likha(ok[0])
++    likha("\n")
++    buf[0] = 49
++    buf[1] = 101
++    buf[2] = 52
++    buf[3] = 48
++    buf[4] = 48
++    likha(str_to_float(buf, 5, ok))
++    likha("\n")
++    likha(ok[0])
++    likha("\n")
++    buf[0] = 49
++    buf[1] = 101
++    buf[2] = 45
++    buf[3] = 57
++    buf[4] = 57
++    buf[5] = 57
++    likha(str_to_float(buf, 6, ok))
++    likha("\n")
++    likha(ok[0])
++    likha("\n")
++    likha("breadth26-done\n")
++}
+diff --git a/tests/stdlib/fmt_min.exit b/tests/stdlib/fmt_min.exit
+new file mode 100644
+index 0000000..573541a
+--- /dev/null
++++ b/tests/stdlib/fmt_min.exit
+@@ -0,0 +1 @@
++0
+diff --git a/tests/stdlib/fmt_min.out b/tests/stdlib/fmt_min.out
+new file mode 100644
+index 0000000..e13a890
+--- /dev/null
++++ b/tests/stdlib/fmt_min.out
+@@ -0,0 +1,171 @@
++20
++
++45
++
++57
++
++50
++
++50
++
++51
++
++51
++
++55
++
++50
++
++48
++
++51
++
++54
++
++56
++
++53
++
++52
++
++55
++
++55
++
++53
++
++56
++
++48
++
++56
++
++17
++
++45
++
++56
++
++48
++
++48
++
++48
++
++48
++
++48
++
++48
++
++48
++
++48
++
++48
++
++48
++
++48
++
++48
++
++48
++
++48
++
++48
++
++19
++
++45
++
++48
++
++120
++
++56
++
++48
++
++48
++
++48
++
++48
++
++48
++
++48
++
++48
++
++48
++
++48
++
++48
++
++48
++
++48
++
++48
++
++48
++
++48
++
++1
++
++53
++
++19
++
++57
++
++50
++
++50
++
++51
++
++51
++
++55
++
++50
++
++48
++
++51
++
++54
++
++56
++
++53
++
++52
++
++55
++
++55
++
++53
++
++56
++
++48
++
++56
++
++65
++
++45
++
++49
++
++48
++
++fmt-min-done
+diff --git a/tests/stdlib/fmt_min.sm b/tests/stdlib/fmt_min.sm
+new file mode 100644
+index 0000000..dbb8ed2
+--- /dev/null
++++ b/tests/stdlib/fmt_min.sm
+@@ -0,0 +1,56 @@
++ayojan fmt
++mukhya() {
++    vitti out = nirmmita(80 * 8)
++    vitti minv = (0 - 9223372036854775807) - 1
++    vitti n = fmt_int_base(minv, 10, out)
++    likha(n)
++    likha("\n")
++    vitti i = 0
++    yavat (i < n) {
++        likha(char_at(out, i))
++        likha("\n")
++        i = i + 1
++    }
++    vitti m = fmt_int_base(minv, 16, out)
++    likha(m)
++    likha("\n")
++    i = 0
++    yavat (i < m) {
++        likha(char_at(out, i))
++        likha("\n")
++        i = i + 1
++    }
++    vitti k = fmt_int_flags(minv, 16, 1, out)
++    likha(k)
++    likha("\n")
++    i = 0
++    yavat (i < k) {
++        likha(char_at(out, i))
++        likha("\n")
++        i = i + 1
++    }
++    vitti d = fmt_digits_base(0 - 5, 10, 0, out)
++    likha(d)
++    likha("\n")
++    likha(char_at(out, 0))
++    likha("\n")
++    vitti g = fmt_digits(minv, out)
++    likha(g)
++    likha("\n")
++    i = 0
++    yavat (i < g) {
++        likha(char_at(out, i))
++        likha("\n")
++        i = i + 1
++    }
++    vitti b = fmt_int_base(minv, 2, out)
++    likha(b)
++    likha("\n")
++    likha(char_at(out, 0))
++    likha("\n")
++    likha(char_at(out, 1))
++    likha("\n")
++    likha(char_at(out, 64))
++    likha("\n")
++    likha("fmt-min-done\n")
++}
+diff --git a/tests/stdlib/strconv_overflow.exit b/tests/stdlib/strconv_overflow.exit
+new file mode 100644
+index 0000000..573541a
+--- /dev/null
++++ b/tests/stdlib/strconv_overflow.exit
+@@ -0,0 +1 @@
++0
+diff --git a/tests/stdlib/strconv_overflow.out b/tests/stdlib/strconv_overflow.out
+new file mode 100644
+index 0000000..d8b06ec
+--- /dev/null
++++ b/tests/stdlib/strconv_overflow.out
+@@ -0,0 +1,45 @@
++0
++
++0
++
++9223372036854775807
++
++1
++
++0
++
++0
++
++-9223372036854775808
++
++1
++
++0
++
++0
++
++0
++
++0
++
++9223372036854775807
++
++1
++
++20
++
++1
++
++3
++
++1
++
++4
++
++1
++
++1
++
++1
++
++strconv-overflow-done
+diff --git a/tests/stdlib/strconv_overflow.sm b/tests/stdlib/strconv_overflow.sm
+new file mode 100644
+index 0000000..d6ad9a1
+--- /dev/null
++++ b/tests/stdlib/strconv_overflow.sm
+@@ -0,0 +1,297 @@
++ayojan strconv
++mukhya() {
++    vitti ok = nirmmita(8)
++    vitti buf = nirmmita(32 * 8)
++    buf[0] = 57
++    buf[1] = 57
++    buf[2] = 57
++    buf[3] = 57
++    buf[4] = 57
++    buf[5] = 57
++    buf[6] = 57
++    buf[7] = 57
++    buf[8] = 57
++    buf[9] = 57
++    buf[10] = 57
++    buf[11] = 57
++    buf[12] = 57
++    buf[13] = 57
++    buf[14] = 57
++    buf[15] = 57
++    buf[16] = 57
++    buf[17] = 57
++    buf[18] = 57
++    buf[19] = 57
++    likha(str_to_int(buf, 20, ok))
++    likha("\n")
++    likha(ok[0])
++    likha("\n")
++    buf[0] = 57
++    buf[1] = 50
++    buf[2] = 50
++    buf[3] = 51
++    buf[4] = 51
++    buf[5] = 55
++    buf[6] = 50
++    buf[7] = 48
++    buf[8] = 51
++    buf[9] = 54
++    buf[10] = 56
++    buf[11] = 53
++    buf[12] = 52
++    buf[13] = 55
++    buf[14] = 55
++    buf[15] = 53
++    buf[16] = 56
++    buf[17] = 48
++    buf[18] = 55
++    likha(str_to_int(buf, 19, ok))
++    likha("\n")
++    likha(ok[0])
++    likha("\n")
++    buf[0] = 57
++    buf[1] = 50
++    buf[2] = 50
++    buf[3] = 51
++    buf[4] = 51
++    buf[5] = 55
++    buf[6] = 50
++    buf[7] = 48
++    buf[8] = 51
++    buf[9] = 54
++    buf[10] = 56
++    buf[11] = 53
++    buf[12] = 52
++    buf[13] = 55
++    buf[14] = 55
++    buf[15] = 53
++    buf[16] = 56
++    buf[17] = 48
++    buf[18] = 56
++    likha(str_to_int(buf, 19, ok))
++    likha("\n")
++    likha(ok[0])
++    likha("\n")
++    buf[0] = 45
++    buf[1] = 57
++    buf[2] = 50
++    buf[3] = 50
++    buf[4] = 51
++    buf[5] = 51
++    buf[6] = 55
++    buf[7] = 50
++    buf[8] = 48
++    buf[9] = 51
++    buf[10] = 54
++    buf[11] = 56
++    buf[12] = 53
++    buf[13] = 52
++    buf[14] = 55
++    buf[15] = 55
++    buf[16] = 53
++    buf[17] = 56
++    buf[18] = 48
++    buf[19] = 56
++    likha(str_to_int(buf, 20, ok))
++    likha("\n")
++    likha(ok[0])
++    likha("\n")
++    buf[0] = 45
++    buf[1] = 57
++    buf[2] = 50
++    buf[3] = 50
++    buf[4] = 51
++    buf[5] = 51
++    buf[6] = 55
++    buf[7] = 50
++    buf[8] = 48
++    buf[9] = 51
++    buf[10] = 54
++    buf[11] = 56
++    buf[12] = 53
++    buf[13] = 52
++    buf[14] = 55
++    buf[15] = 55
++    buf[16] = 53
++    buf[17] = 56
++    buf[18] = 48
++    buf[19] = 57
++    likha(str_to_int(buf, 20, ok))
++    likha("\n")
++    likha(ok[0])
++    likha("\n")
++    buf[0] = 102
++    buf[1] = 102
++    buf[2] = 102
++    buf[3] = 102
++    buf[4] = 102
++    buf[5] = 102
++    buf[6] = 102
++    buf[7] = 102
++    buf[8] = 102
++    buf[9] = 102
++    buf[10] = 102
++    buf[11] = 102
++    buf[12] = 102
++    buf[13] = 102
++    buf[14] = 102
++    buf[15] = 102
++    buf[16] = 102
++    likha(str_to_int_base(buf, 17, 16, ok))
++    likha("\n")
++    likha(ok[0])
++    likha("\n")
++    buf[0] = 55
++    buf[1] = 102
++    buf[2] = 102
++    buf[3] = 102
++    buf[4] = 102
++    buf[5] = 102
++    buf[6] = 102
++    buf[7] = 102
++    buf[8] = 102
++    buf[9] = 102
++    buf[10] = 102
++    buf[11] = 102
++    buf[12] = 102
++    buf[13] = 102
++    buf[14] = 102
++    buf[15] = 102
++    likha(str_to_int_base(buf, 16, 16, ok))
++    likha("\n")
++    likha(ok[0])
++    likha("\n")
++    vitti n0 = int_to_str(((0 - 9223372036854775807) - 1), buf)
++    likha(n0)
++    likha("\n")
++    yadi (buf[0] != 45) {
++        likha("MISMATCH\n")
++        pratiyati 1
++    }
++    yadi (buf[1] != 57) {
++        likha("MISMATCH\n")
++        pratiyati 1
++    }
++    yadi (buf[2] != 50) {
++        likha("MISMATCH\n")
++        pratiyati 1
++    }
++    yadi (buf[3] != 50) {
++        likha("MISMATCH\n")
++        pratiyati 1
++    }
++    yadi (buf[4] != 51) {
++        likha("MISMATCH\n")
++        pratiyati 1
++    }
++    yadi (buf[5] != 51) {
++        likha("MISMATCH\n")
++        pratiyati 1
++    }
++    yadi (buf[6] != 55) {
++        likha("MISMATCH\n")
++        pratiyati 1
++    }
++    yadi (buf[7] != 50) {
++        likha("MISMATCH\n")
++        pratiyati 1
++    }
++    yadi (buf[8] != 48) {
++        likha("MISMATCH\n")
++        pratiyati 1
++    }
++    yadi (buf[9] != 51) {
++        likha("MISMATCH\n")
++        pratiyati 1
++    }
++    yadi (buf[10] != 54) {
++        likha("MISMATCH\n")
++        pratiyati 1
++    }
++    yadi (buf[11] != 56) {
++        likha("MISMATCH\n")
++        pratiyati 1
++    }
++    yadi (buf[12] != 53) {
++        likha("MISMATCH\n")
++        pratiyati 1
++    }
++    yadi (buf[13] != 52) {
++        likha("MISMATCH\n")
++        pratiyati 1
++    }
++    yadi (buf[14] != 55) {
++        likha("MISMATCH\n")
++        pratiyati 1
++    }
++    yadi (buf[15] != 55) {
++        likha("MISMATCH\n")
++        pratiyati 1
++    }
++    yadi (buf[16] != 53) {
++        likha("MISMATCH\n")
++        pratiyati 1
++    }
++    yadi (buf[17] != 56) {
++        likha("MISMATCH\n")
++        pratiyati 1
++    }
++    yadi (buf[18] != 48) {
++        likha("MISMATCH\n")
++        pratiyati 1
++    }
++    yadi (buf[19] != 56) {
++        likha("MISMATCH\n")
++        pratiyati 1
++    }
++    likha(1)
++    likha("\n")
++    vitti n1 = int_to_str(123, buf)
++    likha(n1)
++    likha("\n")
++    yadi (buf[0] != 49) {
++        likha("MISMATCH\n")
++        pratiyati 1
++    }
++    yadi (buf[1] != 50) {
++        likha("MISMATCH\n")
++        pratiyati 1
++    }
++    yadi (buf[2] != 51) {
++        likha("MISMATCH\n")
++        pratiyati 1
++    }
++    likha(1)
++    likha("\n")
++    vitti n2 = int_to_str((0 - 456), buf)
++    likha(n2)
++    likha("\n")
++    yadi (buf[0] != 45) {
++        likha("MISMATCH\n")
++        pratiyati 1
++    }
++    yadi (buf[1] != 52) {
++        likha("MISMATCH\n")
++        pratiyati 1
++    }
++    yadi (buf[2] != 53) {
++        likha("MISMATCH\n")
++        pratiyati 1
++    }
++    yadi (buf[3] != 54) {
++        likha("MISMATCH\n")
++        pratiyati 1
++    }
++    likha(1)
++    likha("\n")
++    vitti n3 = int_to_str(0, buf)
++    likha(n3)
++    likha("\n")
++    yadi (buf[0] != 48) {
++        likha("MISMATCH\n")
++        pratiyati 1
++    }
++    likha(1)
++    likha("\n")
++    likha("strconv-overflow-done\n")
++}
+\ No newline at end of file
+diff --git a/tools/proof_props.py b/tools/proof_props.py
+index 9112e52..b47de73 100644
+--- a/tools/proof_props.py
++++ b/tools/proof_props.py
+@@ -3407,6 +3407,381 @@ def prop_safety25(compiler, rng):
+     return True, "PASS"
+ 
+ 
++def prop_safety26(compiler, rng):
++    """WS1 (R26): checked/saturating INTERACTION — for every op, sat
++    and checked agree on the success path, and on the failure path sat
++    is the clamp (overflow) or 0 (invalid input); saturating never
++    wraps for any input. Randomized battery (fixed seed), split into
++    three programs to stay under the per-block statement limit."""
++    import math
++    maxv = 2**63 - 1
++    minv = -(2**63)
++    edges = [0, 1, -1, 2, -2, 5, -5, 100, -100, maxv, minv,
++             maxv - 1, minv + 1, 3037000500, -3037000500]
++
++    def lit(v):
++        return "maxv" if v == maxv else ("minv" if v == minv else
++                                         (f"(0 - {-v})" if v < 0 else str(v)))
++
++    def trunc_div(a, b):
++        q = abs(a) // abs(b)
++        return q if (a < 0) == (b < 0) else -q
++
++    def trunc_mod(a, b):
++        return a - trunc_div(a, b) * b
++
++    def clamp(true):
++        return maxv if true > maxv else (minv if true < minv else true)
++
++    def overflows(true):
++        return true > maxv or true < minv
++
++    parts = {"a1": [], "a2": [], "b": [], "c": []}
++    # Unique variable names per call: re-declaring `vitti cv` in one
++    # block is a compiler bug (later reads see the FIRST value).
++    cnt = [0]
++
++    def fresh():
++        cnt[0] += 1
++        return cnt[0]
++    for p in parts.values():
++        p += ["ayojan ganita",
++              "mukhya() {",
++              "    vitti ok = nirmmita(8)",
++              "    vitti minv = (0 - 9223372036854775807) - 1",
++              "    vitti maxv = 9223372036854775807"]
++
++    def fail(lines, msg):
++        lines.append(f'        likha("FAIL {msg}\\n")')
++        lines.append("        pratiyati 1")
++
++    def agree_binop(lines, cf, sf, a, b, true, invalid):
++        """checked cf vs saturating sf on (a,b): true = exact result,
++        invalid = True if the input itself is invalid (div/mod by
++        zero, MIN/-1 for div is overflow not invalid)."""
++        n = fresh()
++        lines.append(f"    vitti cv{n} = {cf}({lit(a)}, {lit(b)}, ok)")
++        lines.append(f"    vitti cok{n} = ok[0]")
++        lines.append(f"    vitti sv{n} = {sf}({lit(a)}, {lit(b)})")
++        lines.append(f"    yadi (cok{n} == 1) {{")
++        lines.append(f"        yadi (sv{n} != cv{n}) {{")
++        fail(lines, f"{cf}/{sf} agree success")
++        lines.append("        }")
++        lines.append("    } anyatra {")
++        if invalid:
++            lines.append(f"        yadi (sv{n} != 0) {{")
++            fail(lines, f"{cf}/{sf} invalid -> 0")
++            lines.append("        }")
++        else:
++            lines.append(f"        yadi (sv{n} != {lit(clamp(true))}) {{")
++            fail(lines, f"{cf}/{sf} overflow -> clamp")
++            lines.append("        }")
++        lines.append("    }")
++
++    # --- parts a1/a2: add/sub/mul, then div/mod; random + edge pairs
++    la1 = parts["a1"]
++    la2 = parts["a2"]
++    pairs = [(rng.choice(edges), rng.choice(edges)) for _ in range(6)]
++    pairs += [(rng.randint(-10**12, 10**12), rng.randint(-10**12, 10**12))
++              for _ in range(6)]
++    pairs += [(maxv, 1), (minv, -1), (minv, 1), (maxv, -1),
++              (3037000500, 3037000500), (2**32, 2**32), (5, 0), (0, 0)]
++    for a, b in pairs:
++        agree_binop(la1, "ganita_checked_add", "ganita_sat_add",
++                    a, b, a + b, False)
++        agree_binop(la1, "ganita_checked_sub", "ganita_sat_sub",
++                    a, b, a - b, False)
++        agree_binop(la1, "ganita_checked_mul", "ganita_sat_mul",
++                    a, b, a * b, False)
++    for a, b in pairs:
++        if b == 0:
++            agree_binop(la2, "ganita_checked_div", "ganita_sat_div",
++                        a, b, 0, True)
++            agree_binop(la2, "ganita_checked_mod", "ganita_sat_mod",
++                        a, b, 0, True)
++        elif a == minv and b == -1:
++            # div: overflow -> MAX; mod: exact 0 (guarded, not overflow)
++            la2.append("    vitti cvd = ganita_checked_div(minv, 0 - 1, ok)")
++            la2.append("    yadi (ok[0] != 0) {")
++            fail(la2, "checked_div MIN/-1 ok")
++            la2.append("    }")
++            la2.append("    yadi (ganita_sat_div(minv, 0 - 1) != maxv) {")
++            fail(la2, "sat_div MIN/-1 clamp")
++            la2.append("    }")
++            la2.append("    vitti cvm = ganita_checked_mod(minv, 0 - 1, ok)")
++            la2.append("    yadi (ok[0] != 0) {")
++            fail(la2, "checked_mod MIN/-1 ok")
++            la2.append("    }")
++            la2.append("    yadi (ganita_sat_mod(minv, 0 - 1) != 0) {")
++            fail(la2, "sat_mod MIN/-1 exact 0")
++            la2.append("    }")
++        else:
++            agree_binop(la2, "ganita_checked_div", "ganita_sat_div",
++                        a, b, trunc_div(a, b), False)
++            agree_binop(la2, "ganita_checked_mod", "ganita_sat_mod",
++                        a, b, trunc_mod(a, b), False)
++    # --- part b: pow/fact
++    lb = parts["b"]
++    pow_cases = [(rng.choice(edges), rng.randint(0, 70)) for _ in range(6)]
++    pow_cases += [(2, 62), (2, 63), (-2, 63), (-2, 64), (3, 40),
++                  (10, 19), (0, 0), (2, -1), (-3, -2)]
++    for a, e in pow_cases:
++        n = fresh()
++        lb.append(f"    vitti cv{n} = ganita_checked_pow({lit(a)}, {lit(e)}, ok)")
++        lb.append(f"    vitti cok{n} = ok[0]")
++        lb.append(f"    vitti sv{n} = ganita_sat_pow({lit(a)}, {lit(e)})")
++        if e < 0:
++            lb.append(f"    yadi (cok{n} != 0) {{")
++            fail(lb, "checked_pow neg ok")
++            lb.append("    }")
++            lb.append(f"    yadi (sv{n} != 0) {{")
++            fail(lb, "sat_pow neg -> 0")
++            lb.append("    }")
++        else:
++            true = a ** e
++            lb.append(f"    yadi (cok{n} == 1) {{")
++            lb.append(f"        yadi (sv{n} != cv{n}) {{")
++            fail(lb, "pow agree success")
++            lb.append("        }")
++            lb.append("    } anyatra {")
++            lb.append(f"        yadi (sv{n} != {lit(clamp(true))}) {{")
++            fail(lb, "pow overflow -> clamp")
++            lb.append("        }")
++            lb.append("    }")
++    for n in [rng.randint(-2, 30) for _ in range(6)] + [-1, 0, 20, 21, 25]:
++        n = fresh()
++        lb.append(f"    vitti cv{n} = ganita_checked_fact({lit(n)}, ok)")
++        lb.append(f"    vitti cok{n} = ok[0]")
++        lb.append(f"    vitti sv{n} = ganita_sat_fact({lit(n)})")
++        if n < 0:
++            lb.append(f"    yadi (cok{n} != 0) {{")
++            fail(lb, "checked_fact neg ok")
++            lb.append("    }")
++            lb.append(f"    yadi (sv{n} != 0) {{")
++            fail(lb, "sat_fact neg -> 0")
++            lb.append("    }")
++        else:
++            true = math.factorial(n)
++            lb.append(f"    yadi (cok{n} == 1) {{")
++            lb.append(f"        yadi (sv{n} != cv{n}) {{")
++            fail(lb, "fact agree success")
++            lb.append("        }")
++            lb.append("    } anyatra {")
++            lb.append(f"        yadi (sv{n} != {lit(clamp(true))}) {{")
++            fail(lb, "fact overflow -> clamp")
++            lb.append("        }")
++            lb.append("    }")
++    # --- part c: abs + never-wrap spot checks
++    lc = parts["c"]
++    for a in [rng.randint(-2**63, 2**63 - 1) for _ in range(8)] + [minv, maxv, 0]:
++        n = fresh()
++        lc.append(f"    vitti cv{n} = ganita_checked_abs({lit(a)}, ok)")
++        lc.append(f"    vitti cok{n} = ok[0]")
++        lc.append(f"    vitti sv{n} = ganita_sat_abs({lit(a)})")
++        if a == minv:
++            lc.append(f"    yadi (cok{n} != 0) {{")
++            fail(lc, "checked_abs MIN ok")
++            lc.append("    }")
++            lc.append(f"    yadi (sv{n} != maxv) {{")
++            fail(lc, "sat_abs MIN clamp")
++            lc.append("    }")
++        else:
++            lc.append(f"    yadi (cok{n} != 1) {{")
++            fail(lc, "checked_abs ok")
++            lc.append("    }")
++            lc.append(f"    yadi (sv{n} != cv{n}) {{")
++            fail(lc, "abs agree success")
++            lc.append("    }")
++    for expr, want in [("ganita_sat_add(maxv, 1)", "maxv"),
++                       ("ganita_sat_sub(minv, 1)", "minv"),
++                       ("ganita_sat_mul(maxv, maxv)", "maxv"),
++                       ("ganita_sat_mul(minv, minv)", "maxv"),
++                       ("ganita_sat_pow(0 - 2, 65)", "minv"),
++                       ("ganita_sat_fact(30)", "maxv")]:
++        lc.append(f"    yadi ({expr} != {want}) {{")
++        fail(lc, f"{expr} never wraps")
++        lc.append("    }")
++    for key, lines in parts.items():
++        lines.append('    likha("PASS\\n")')
++        lines.append("}")
++        ok, out = run_sm(compiler, f"safety26{key}", "\n".join(lines))
++        if not (ok and out == "PASS"):
++            return False, out
++    return True, "PASS"
++
++
++def prop_breadth26(compiler, rng):
++    """R26 WS4: math_rand determinism + known LCG values, math_clamp
++    vs Python, str_to_float vs Python float() (relative 1e-9)."""
++    import math as _math
++    part1 = ["ayojan math", "ayojan strconv", "mukhya() {",
++             "    vitti ok = nirmmita(8)",
++             "    vitti s1 = nirmmita(8)",
++             "    vitti s2 = nirmmita(8)",
++             "    s1[0] = 12345",
++             "    s2[0] = 12345"]
++    part2 = ["ayojan strconv", "mukhya() {",
++             "    vitti ok = nirmmita(8)",
++             "    vitti buf = nirmmita(32 * 8)"]
++    lines = part1
++
++    def fail(msg):
++        lines.append(f'        likha("FAIL {msg}\\n")')
++        lines.append("        pratiyati 1")
++
++    # rand: same seed -> identical sequences; seed 0 -> first is the
++    # LCG increment constant.
++    for i in range(4):
++        lines.append(f"    yadi (math_rand(s1) != math_rand(s2)) {{")
++        fail("rand determinism")
++        lines.append("    }")
++    lines.append("    vitti s0 = nirmmita(8)")
++    lines.append("    s0[0] = 0")
++    lines.append("    yadi (math_rand(s0) != 1442695040888963407) {")
++    fail("rand seed0")
++    lines.append("    }")
++    # clamp vs Python
++    for v, lo, hi in [(5, 0, 10), (-5, 0, 10), (15, 0, 10), (0, 0, 10),
++                      (10, 0, 10), (7, 7, 7), (-100, -10, -1)]:
++        want = min(max(v, lo), hi)
++        lines.append(f"    yadi (math_clamp({v}, {lo}, {hi}) != {want}) {{")
++        fail("clamp")
++        lines.append("    }")
++    # float parse vs Python, tolerance 1e-9 relative
++    lines.append("    vitti buf = nirmmita(32 * 8)")
++    for ci, s in enumerate(["0", "1", "-1", "3.14159", "0.5", "2.5", "-0.02",
++              "100000", "123456.789", "1e10", "1.5e-5", ".5", "12.",
++              "-2e-2", "0.000001"]):
++        want = float(s)
++        for j, ch in enumerate(s):
++            lines.append(f"    buf[{j}] = {ord(ch)}")
++        lines.append(f"    vitti f{ci} = str_to_float(buf, {len(s)}, ok)")
++        lines.append("    yadi (ok[0] != 1) {")
++        fail(f"float ok {s}")
++        lines.append("    }")
++        if want == 0.0:
++            lines.append(f"    yadi (f{ci} != 0.0) {{")
++            fail(f"float zero {s}")
++            lines.append("    }")
++        else:
++            wlit = repr(want) if "e" not in repr(want) else f"{want:.15f}"
++            lines.append(f"    vitti want{ci} = {wlit}")
++            lines.append(f"    vitti diff{ci} = f{ci} - want{ci}")
++            lines.append(f"    yadi (diff{ci} < 0.0) {{ diff{ci} = 0.0 - diff{ci} }}")
++            lines.append(f"    vitti lim{ci} = want{ci}")
++            lines.append(f"    yadi (lim{ci} < 0.0) {{ lim{ci} = 0.0 - lim{ci} }}")
++            lines.append(f"    lim{ci} = lim{ci} * 0.000000001")
++            lines.append(f"    yadi (diff{ci} > lim{ci}) {{")
++            fail(f"float value {s}")
++            lines.append("    }")
++    lines.append('    likha("PASS\\n")')
++    lines.append("}")
++    lines = part2
++    # invalid inputs -> ok 0
++    for ii, s in enumerate(["", "1x", "1e", "1e+", ".", "e5", "1.2.3", "+1", " 1",
++              "inf", "nan", "1e400"]):
++        for j, ch in enumerate(s):
++            lines.append(f"    buf[{j}] = {ord(ch)}")
++        lines.append(f"    vitti f{ci} = str_to_float(buf, {len(s)}, ok)")
++        lines.append("    yadi (ok[0] != 0) {")
++        fail(f"float invalid {s or 'empty'}")
++        lines.append("    }")
++    # underflow -> 0.0, ok 1
++    lines.append('    buf[0] = 49')
++    lines.append('    buf[1] = 101')
++    lines.append('    buf[2] = 45')
++    lines.append('    buf[3] = 57')
++    lines.append('    buf[4] = 57')
++    lines.append('    buf[5] = 57')
++    lines.append('    vitti fu = str_to_float(buf, 6, ok)')
++    lines.append("    yadi (ok[0] != 1) {")
++    fail("float underflow ok")
++    lines.append("    }")
++    lines.append("    yadi (fu != 0.0) {")
++    fail("float underflow value")
++    lines.append("    }")
++    lines.append('    likha("PASS\\n")')
++    lines.append("}")
++    for key, prog in (("b26a", part1), ("b26b", part2)):
++        ok, out = run_sm(compiler, key, "\n".join(prog))
++        if not (ok and out == "PASS"):
++            return False, out
++    return True, "PASS"
++
++
++def _base_repr(n, b):
++    digits = "0123456789abcdefghijklmnopqrstuvwxyz"
++    if n == 0:
++        return "0"
++    out = ""
++    while n > 0:
++        out = digits[n % b] + out
++        n //= b
++    return out
++
++
++def prop_min26(compiler, rng):
++    """R26 WS3: INT64_MIN fixes — int_to_str(MIN), fmt_digits_base
++    negatives, fmt_int_base/fmt_int_flags(MIN) vs Python."""
++    lines = ["ayojan strconv", "ayojan fmt", "mukhya() {",
++             "    vitti ok = nirmmita(8)",
++             "    vitti buf = nirmmita(32 * 8)",
++             "    vitti out = nirmmita(80 * 8)",
++             "    vitti minv = (0 - 9223372036854775807) - 1"]
++
++    def fail(msg):
++        lines.append(f'        likha("FAIL {msg}\\n")')
++        lines.append("        pratiyati 1")
++
++    # int_to_str(MIN) == "-9223372036854775808", and round-trips
++    lines.append("    vitti n0 = int_to_str(minv, buf)")
++    lines.append("    yadi (n0 != 20) {")
++    fail("int_to_str MIN len")
++    lines.append("    }")
++    for j, ch in enumerate("-9223372036854775808"):
++        lines.append(f"    yadi (buf[{j}] != {ord(ch)}) {{")
++        fail("int_to_str MIN chars")
++        lines.append("    }")
++    lines.append("    yadi (str_to_int(buf, n0, ok) != minv) {")
++    fail("int_to_str MIN roundtrip")
++    lines.append("    }")
++    lines.append("    yadi (ok[0] != 1) {")
++    fail("int_to_str MIN roundtrip ok")
++    lines.append("    }")
++    # fmt_digits_base(-5) == "5"
++    lines.append("    yadi (fmt_digits_base(0 - 5, 10, 0, out) != 1) {")
++    fail("fmt_digits_base neg len")
++    lines.append("    }")
++    lines.append("    yadi (char_at(out, 0) != 53) {")
++    fail("fmt_digits_base neg char")
++    lines.append("    }")
++    # fmt_int_base(MIN) vs Python in several bases
++    for ci, b in enumerate([2, 8, 10, 16, 36]):
++        want = "-" + _base_repr(2**63, b)
++        lines.append(f"    vitti nb{ci} = fmt_int_base(minv, {b}, out)")
++        lines.append(f"    yadi (nb{ci} != {len(want)}) {{")
++        fail(f"fmt_int_base MIN base {b} len")
++        lines.append("    }")
++        for j, ch in enumerate(want):
++            lines.append(f"    yadi (char_at(out, {j}) != {ord(ch)}) {{")
++            fail(f"fmt_int_base MIN base {b} char {j}")
++            lines.append("    }")
++    # fmt_int_flags(MIN, 16, prefix) == "-0x8000000000000000"
++    want = "-0x8000000000000000"
++    lines.append("    vitti nf = fmt_int_flags(minv, 16, 1, out)")
++    lines.append(f"    yadi (nf != {len(want)}) {{")
++    fail("fmt_int_flags MIN len")
++    lines.append("    }")
++    for j, ch in enumerate(want):
++        lines.append(f"    yadi (char_at(out, {j}) != {ord(ch)}) {{")
++        fail("fmt_int_flags MIN chars")
++        lines.append("    }")
++    lines.append('    likha("PASS\\n")')
++    lines.append("}")
++    ok, out = run_sm(compiler, "min26", "\n".join(lines))
++    return ok and out == "PASS", out
++
++
+ def main():
+     compiler = None
+     for i, a in enumerate(sys.argv):
+@@ -3486,6 +3861,9 @@ def main():
+         ("invariants24 merge/symdiff", prop_invariants24_merge_symdiff),
+         ("safety24", prop_safety24),
+         ("safety25 oracle", prop_safety25),
++        ("safety26 interaction", prop_safety26),
++        ("breadth26", prop_breadth26),
++        ("min26", prop_min26),
+     ]
+ 
+     failed = []
