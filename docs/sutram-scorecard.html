@@ -45,15 +45,15 @@
   <h1>Progress scorecard</h1>
   <p class="sub">Seventeen parameters that describe a mature language &mdash; measured against where Sutram stands, and how far each has moved.</p>
   <div class="meta">
-    Compiler SHA c814a854 &middot; suite 178/178 &middot; 12 library modules (103 functions) &middot; 32 keywords<br>
-    178 examples &middot; 10 language packs &middot; 21 docs pages &middot; Linux ELF + Windows PE32+ &middot; IDE
+    Compiler SHA 64ea028a &middot; suite 187/187 &middot; 21 library modules (278 functions) &middot; 32 keywords<br>
+    216 examples &middot; 11 language packs &middot; 22 docs pages &middot; Linux ELF + Windows PE32+ &middot; IDE
   </div>
 
   <h2>Where we are</h2>
   <div class="kpis">
     <div class="kpi"><b class="c-green">24%</b><span>mean across 17 parameters (was 16%)</span></div>
     <div class="kpi"><b class="c-green">+7 pts</b><span>gained this stretch</span></div>
-    <div class="kpi"><b class="c-blue">178/178</b><span>tests passing</span></div>
+    <div class="kpi"><b class="c-blue">187</b><span>tests passing</span></div>
     <div class="kpi"><b class="c-violet">4.9&times;</b><span>best measured speedup (PERF1)</span></div>
   </div>
   <p>The mean rose from <strong>16% to 24%</strong> &mdash; a
@@ -107,7 +107,7 @@
         <td class="n">15%</td>
         <td class="n"><b>32%</b><br><span class="bar"><i class="f-mid" style="width:32%"></i></span></td>
         <td class="n up">+17</td>
-        <td class="note">12 modules with code, 103 functions (three more are comment-only sketches) &mdash; including heritage modules (Piṅgala's chandas, Āryabhaṭa/Bhāskara's ganita, the Kerala school's madhava), a statistics module, numerical methods and linear algebra. Still no collections beyond kosh/pankti, no I/O breadth.</td>
+        <td class="note">21 modules with code, 278 functions &mdash; including heritage modules (Piṅgala's chandas, Āryabhaṭa/Bhāskara's ganita, the Kerala school's madhava), a statistics module, numerical methods and linear algebra. Still no collections beyond kosh/pankti, no I/O breadth.</td>
       </tr>
       <tr>
         <td class="n">06</td>
@@ -155,7 +155,7 @@
         <td class="n">10%</td>
         <td class="n"><b>18%</b><br><span class="bar"><i class="f-low" style="width:18%"></i></span></td>
         <td class="n up">+8</td>
-        <td class="note">Growable arrays (<code>kosh</code>) with doubling growth, a 768 KB AST heap, and 12 modules combining in one program. Ceilings are still fixed constants rather than dynamic.</td>
+        <td class="note">Growable arrays (<code>kosh</code>) with doubling growth, a 768 KB AST heap, and 21 modules combining in one program. Ceilings are still fixed constants rather than dynamic.</td>
       </tr>
       <tr>
         <td class="n">12</td>
@@ -234,7 +234,7 @@
     <li><strong>Tests:</strong> 136 passing, including a deterministic codegen gate (3/3) that asserts instruction ceilings and loop shape.</li>
     <li><strong>Compiler:</strong> 14,986 lines of NASM, 359 KB source, building both a Linux ELF and a Windows PE32+ from the same file.</li>
     <li><strong>IDE:</strong> 1,339 lines of NASM, 18 KB binary, verified through a pseudo-terminal harness.</li>
-    <li><strong>Language:</strong> 28 keywords, 136 example programs, 10 language packs.</li>
+    <li><strong>Language:</strong> 28 keywords, 216 example programs, 11 language packs.</li>
     <li><strong>Performance:</strong> hot loop 13 &rarr; 5 instructions; loop_sum 66.96 &rarr; 13.3 ms (4.9&times;); PERF2 added a further ~5% on loop-heavy code.</li>
     <li><strong>Known open bugs:</strong> none outstanding &mdash; B8, B9, B10, B11 all fixed and regression-tested.</li>
   </ul>
