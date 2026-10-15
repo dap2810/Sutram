@@ -28,6 +28,23 @@
 # 0 terminator via set_char; the caller allocates generously. Empty needle
 # matches at 0; "not found" is -1. All signatures stay within the
 # compiler's 6-argument cap (repl is 0-terminated, its length derived).
+#
+# SLICE-BOUNDARY RULES (WS4, R23 audit): a slice is a (pointer, length)
+# pair into a larger buffer, with NO terminator at the slice end.
+#   - Every strb_* function takes an explicit length and stops at it:
+#     strb_find_char("hello world", 5, 'w') is -1. The NUL-terminated
+#     forms (find_char, count_char, count_vowels, is_all_digits,
+#     str_equals) scan to the terminator, so they are WRONG on slices.
+#     Never pass a slice to them.
+#   - strb_len / str_len / vartani_len scan to the terminator: they
+#     cannot be used on slices at all. A slice carries its length.
+#   - strb_replace / str_replace's repl is 0-terminated (its length
+#     is derived), so repl cannot be a slice. To use a slice as repl,
+#     strb_dup it into a terminated buffer first. An explicit-length
+#     repl form would need 7 arguments, over the compiler's
+#     6-argument cap, so the terminated form stays.
+#   - The (s, i) char predicates take no length: the caller must
+#     keep i in bounds; they read char_at(s, i) unconditionally.
 # strb_split/strb_join use the same length-prefixed segment format as
 # str_split/str_join (R9): [len0, b0, b1, ..., len1, b0, ...], one byte
 # value per cell.
@@ -137,7 +154,9 @@ prakriya strb_contains(hay, hn, needle, nn) {
 
 # strb_replace(src, sn, find, fn, repl, out) — copy src to out, replacing
 # every (non-overlapping) occurrence of find with repl. repl is
-# 0-terminated (its length is derived, so a literal works). Returns the
+# 0-terminated (its length is derived, so a literal works) — repl
+# cannot be a slice; strb_dup a slice into a terminated buffer first
+# (see header, slice-boundary rules). Returns the
 # new byte count. Empty find: copy verbatim. Caller allocates generously.
 prakriya strb_replace(src, sn, find, fn, repl, out) {
     vitti s = src
