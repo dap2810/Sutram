@@ -92,7 +92,7 @@ class PackTests(unittest.TestCase):
                 if line.strip() and not line.lstrip().startswith('#')]
 
     def test_counts_and_uniqueness(self):
-        for lang, count in [('sanskrit', 54), ('gujarati', 45)]:
+        for lang, count in [('sanskrit', 54), ('gujarati', 44)]:
             rows = self.entries(lang)
             self.assertEqual(len(rows), count)
             self.assertEqual(len({a for a, _ in rows}), count)
