@@ -59,14 +59,14 @@
   <div class="card">
     <div class="big">
       <div>
-        <div class="bignum">48<small>%</small></div>
+        <div class="bignum">52<small>%</small></div>
         <div class="note">toward a complete <b>v1.0</b><br>(mean of 11 workstreams)</div>
       </div>
       <div style="flex:1;min-width:300px">
-        <div class="bar" style="height:14px"><i class="m" style="width:48%"></i></div>
+        <div class="bar" style="height:14px"><i class="m" style="width:52%"></i></div>
         <div class="note" style="margin-top:10px">
           Two different numbers, both true, and worth keeping apart:<br>
-          <b>48%</b> — how far the <i>planned build</i> is from a shippable v1.0 (this page).<br>
+          <b>52%</b> — how far the <i>planned build</i> is from a shippable v1.0 (this page).<br>
           <b>28%</b> — how mature the language is against C/Rust/Python on a 17-axis yardstick (previous report).<br>
           The gap is the point: the build is more than half assembled, but a young language is still a young language.
         </div>
@@ -80,16 +80,16 @@
     <table>
       <thead><tr><th>#</th><th>Finish-line condition</th><th class="n">Now</th></tr></thead>
       <tbody>
-        <tr><td>1</td><td>One pure-NASM compiler source emits correct native binaries for Linux <i>and</i> Windows</td><td class="n part">85%</td></tr>
+        <tr><td>1</td><td>One pure-NASM compiler source emits correct native binaries for Linux <i>and</i> Windows</td><td class="n part">88%</td></tr>
         <tr><td>2</td><td>A generated Windows binary has actually <b>run</b> on real Windows</td><td class="n todo">0%</td></tr>
         <tr><td>3</td><td>The compiler optimises: register-based expressions, LICM, constant folding, peephole</td><td class="n todo">15%</td></tr>
         <tr><td>4</td><td>The language surface is settled: globals, generics or templates, first-class functions, error values</td><td class="n part">60%</td></tr>
-        <tr><td>5</td><td>The standard library covers everyday work: collections, text, formatting, files, time, math</td><td class="n part">50%</td></tr>
+        <tr><td>5</td><td>The standard library covers everyday work: collections, text, formatting, files, time, math</td><td class="n part">62%</td></tr>
         <tr><td>6</td><td>Diagnostics are complete across every error family, with recovery</td><td class="n part">60%</td></tr>
-        <tr><td>7</td><td>The IDE is a tool someone would choose: edit, run, debug, format, clipboard, file picker</td><td class="n part">55%</td></tr>
+        <tr><td>7</td><td>The IDE is a tool someone would choose: edit, run, debug, format, clipboard, file picker</td><td class="n part">58%</td></tr>
         <tr><td>8</td><td>Installers work on Linux and Windows; releases are versioned and reproducible</td><td class="n part">38%</td></tr>
         <tr><td>9</td><td>Verification is broad enough to trust: fuzzing, adversarial corpora, cross-platform CI</td><td class="n part">85%</td></tr>
-        <tr><td>10</td><td>Documentation and books are accurate and current for the shipped version</td><td class="n part">70%</td></tr>
+        <tr><td>10</td><td>Documentation and books are accurate and current for the shipped version</td><td class="n part">72%</td></tr>
         <tr><td>11</td><td>Concurrency exists at all (threads or async)</td><td class="n todo">0%</td></tr>
       </tbody>
     </table>
@@ -262,22 +262,21 @@
   <p class="note">The live board. Three streams run in parallel; each is verified before it touches <code>main</code>.</p>
   <table>
     <thead><tr><th>Owner</th><th>Task</th><th>Workstream</th><th>State</th></tr></thead>
-    <tbody>
-      <tr>
+    <tbody>      <tr>
         <td><b>ChatGPT</b></td>
-        <td><b>ROUND-57</b> — register-based expression evaluator (the 5.4&times; arithmetic gap)</td>
-        <td>B · Optimiser</td>
-        <td><span class="pill live">issued, in progress</span></td>
+        <td><b>ROUND-67</b> — resolve the Gujarati keyword collision; the next two Indic scripts; link the Windows cluster iterator; the general push/pop peephole; finish the installer doc</td>
+        <td>C · Language surface / B · Optimiser</td>
+        <td><span class="pill live">issued</span></td>
       </tr>
       <tr>
         <td><b>Muse</b></td>
-        <td><b>ROUND-15</b> — <code>lib/fmt.smlib</code> formatting module</td>
-        <td>D · Standard library</td>
-        <td><span class="pill live">issued, in progress</span></td>
+        <td><b>ROUND-25</b> — prove the checked/saturating contract rather than assert it; execute the string/byte parity table; accumulated gaps; property expansion</td>
+        <td>D · Standard library / H · Verification</td>
+        <td><span class="pill live">issued</span></td>
       </tr>
       <tr>
         <td><b>Sarvam</b> (me)</td>
-        <td><b>GUI slice 18</b> — a graphical directory browser, then find-and-replace<br><span class="pill">slice 17 open/new: done, verified</span></td>
+        <td><b>GUI slice 30</b> — the next editor surface; docs kept current every round<br><span class="pill">slice 29: done, verified</span></td>
         <td>F · IDE &amp; dev tooling</td>
         <td><span class="pill mine">mine, next up</span></td>
       </tr>
@@ -287,7 +286,12 @@
         <td>H · Verification &amp; QA</td>
         <td><span class="pill">continuous</span></td>
       </tr>
-    </tbody>
+      <tr>
+        <td><b>Dhruv</b></td>
+        <td><b>One verified Windows run</b> — the acceptance has never been executed by anyone</td>
+        <td>G · Cross-platform</td>
+        <td><span class="pill">waiting on you</span></td>
+      </tr></tbody>
   </table>
 
   <h3>Recently closed</h3>
@@ -302,29 +306,17 @@
   <h2>4 · Critical path — what to do in what order</h2>
   <div class="card">
     <p class="note" style="margin-top:0">Ordered by what unblocks the most, not by what is easiest.</p>
-    <table>
-      <thead><tr><th class="n">#</th><th>Next step</th><th>Why it is here</th><th class="n">Effort</th></tr></thead>
-      <tbody>
-        <tr><td class="n">1</td><td><b>Register-based expression evaluator</b></td>
-            <td>Closes most of the measured 5.4× arithmetic gap. Contained, measurable, and the compiler is otherwise feature-complete enough to stop hiding behind missing features.</td><td class="n">large</td></tr>
-        <tr><td class="n">2</td><td><b>Module-level globals</b> (in flight)</td>
-            <td>Removes the state-threading that makes every non-trivial program awkward. Already designed.</td><td class="n">medium</td></tr>
-        <tr><td class="n">3</td><td><b>One verified Windows run</b></td>
-            <td>Turns the project’s biggest unverified claim into a fact. Needs a Windows machine, not code.</td><td class="n">small*</td></tr>
-        <tr><td class="n">4</td><td><b>Optimiser, part 2</b>: LICM, constant folding, peephole</td>
-            <td>Only worth starting once the expression evaluator is register-based — otherwise it optimises a stack machine.</td><td class="n">large</td></tr>
-        <tr><td class="n">5</td><td><b>Library breadth</b>: formatting, file I/O, lists, time</td>
-            <td>The 45% bar is the one most within reach, and it is what a user feels first.</td><td class="n">medium</td></tr>
-        <tr><td class="n">6</td><td><b>IDE: file picker, replace</b> (clipboard done in slice 16)</td>
-            <td>Cheap, visible, and makes the IDE usable for real editing rather than demos.</td><td class="n">small</td></tr>
-        <tr><td class="n">7</td><td><b>Debugger</b></td>
-            <td>The biggest remaining tooling gap; needs the diagnostics work to be finished first.</td><td class="n">large</td></tr>
-        <tr><td class="n">8</td><td><b>Versioned releases + package manager</b></td>
-            <td>Makes the project distributable rather than a zip collection.</td><td class="n">medium</td></tr>
-        <tr><td class="n">9</td><td><b>Concurrency</b></td>
-            <td>Last, deliberately. Expensive and furthest from the core goal.</td><td class="n">very large</td></tr>
-      </tbody>
-    </table>
+  <table>
+    <thead><tr><th>#</th><th>Next step</th><th>Why it is here</th><th>Effort</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>One verified Windows run</td><td>Turns the project's biggest unverified claim into a measurement. The only gate nothing has ever passed.</td><td>small*</td></tr>
+      <tr><td>2</td><td>Resolve the Gujarati pack collision</td><td>R66 is merged except one file; the pack reserves a word an accepted test uses as a variable.</td><td>small</td></tr>
+      <tr><td>3</td><td>Finish the Indic roll-out</td><td>Sanskrit and Gujarati carry the device set; the rest are mechanical from that template.</td><td>medium</td></tr>
+      <tr><td>4</td><td>Register-based expression evaluator</td><td>Closes most of the measured arithmetic gap.</td><td>large</td></tr>
+      <tr><td>5</td><td>Concurrency, or an explicit decision against it</td><td>0% does not fill itself, and v1.0 has to say something.</td><td>large</td></tr>
+      <tr><td>6</td><td>A release and a package story</td><td>Ecosystem at 5% will hold v1.0 back more than any compiler gap.</td><td>medium</td></tr>
+    </tbody>
+  </table>
     <p class="note">* small in code, but it requires a Windows machine and a least-privilege account — that is the real blocker, and it has been open for many rounds.</p>
   </div>
 
