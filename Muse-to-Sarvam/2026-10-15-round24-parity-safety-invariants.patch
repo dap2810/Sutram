@@ -1,0 +1,642 @@
+diff --git a/docs/OVERFLOW-SAFETY.md b/docs/OVERFLOW-SAFETY.md
+new file mode 100644
+index 0000000..ab5b6fa
+--- /dev/null
++++ b/docs/OVERFLOW-SAFETY.md
+@@ -0,0 +1,110 @@
++# Sutram — overflow safety net: the library half, consolidated
++
++**Status:** the complete checked/saturating surface as shipped (WS4, R24).
++The compiler half is the R65 trap (below). This document states the
++library's contract: what each function returns on failure, and which
++form to use when.
++
++## The three forms
++
++| Form | On overflow | On invalid input | How it reports |
++|---|---|---|---|
++| Plain operators (`+ - * / %`) | wrap silently (two's-complement) | `/` / `%` by zero: hardware SIGFPE (crash) | nothing — no signal at all |
++| `ganita_checked_*` | returns **0**, `ok[0] = 0` | returns **0**, `ok[0] = 0` | `ok` — a 1-cell `pankti` the caller passes in |
++| `ganita_sat_*` | **clamps** to `INT64_MAX` / `INT64_MIN` | returns **0** (sentinel) | nothing — the return value itself |
++
++The rule for the checked family: **0 on failure, never the wrapped
++value.** The rule for the saturating family: **clamp on overflow, 0 on
++invalid input.** Neither family ever returns a wrapped result.
++
++"Invalid input" means: negative exponent (`pow`), negative argument
++(`fact`), division/modulo by zero. Overflow means: the true result does
++not fit in signed 64 bits.
++
++## The complete surface
++
++### Checked (R18, R19, R20) — survive the overflow
++
++| Function | Failure cases → `0`, `ok[0] = 0` |
++|---|---|
++| `ganita_checked_add(a, b, ok)` | overflow |
++| `ganita_checked_sub(a, b, ok)` | overflow |
++| `ganita_checked_mul(a, b, ok)` | overflow (incl. `MIN * -1`) |
++| `ganita_checked_div(a, b, ok)` | `b == 0`; `MIN / -1` (would SIGFPE) |
++| `ganita_checked_mod(a, b, ok)` | `b == 0`; `MIN % -1` (would SIGFPE) |
++| `ganita_checked_pow(a, e, ok)` | `e < 0`; overflow |
++| `ganita_checked_fact(n, ok)` | `n < 0`; overflow (`21!` overflows) |
++| `ganita_checked_abs(a, ok)` | `abs(MIN)` overflows |
++
++On success, `ok[0] = 1` and the return is the exact result.
++`0! = 1`, `0^0 = 1` (empty-product convention).
++
++### Saturating (R18, R20, R21, R24) — clamp to the bounds
++
++| Function | Overflow → clamp | Invalid input → `0` |
++|---|---|---|
++| `ganita_sat_add(a, b)` | `MAX` / `MIN` by sign | — (no invalid input) |
++| `ganita_sat_sub(a, b)` | `MAX` / `MIN` by sign | — |
++| `ganita_sat_mul(a, b)` | `MAX` / `MIN` by sign of the true product | — |
++| `ganita_sat_div(a, b)` | `MIN / -1` → `MAX` | `b == 0` → `0` |
++| `ganita_sat_mod(a, b)` | — (remainder never overflows) | `b == 0` → `0`; `MIN % -1` → `0` (also the exact result) |
++| `ganita_sat_pow(a, e)` | `MAX` / `MIN` (parity of remaining steps decides for negative bases) | `e < 0` → `0` |
++| `ganita_sat_fact(n)` | `21!` and up → `MAX` (factorials are positive) | `n < 0` → `0` |
++| `ganita_sat_abs(a)` | `abs(MIN)` → `MAX` | — |
++
++Notes: `sat_mod` has no saturation case — it exists so the `sat_*`
++family has a `mod` companion with the same `b == 0 → 0` sentinel as
++`sat_div`. `MIN % -1` is guarded because the hardware operation traps
++(the quotient overflows) even though the mathematical remainder is 0.
++`sat_fact`/`sat_pow` exit early once saturated.
++
++## Which form to use
++
++- **The program must survive an overflow** (check, handle, continue):
++  `ganita_checked_*`. Check `ok[0]`; on 0, the return is 0, not a
++  result — do not use it as a value.
++- **Clamping is the correct semantics** (bounded counters, sensor
++  readings, accumulators that must stay in range): `ganita_sat_*`.
++  No `ok` channel; the return is always usable.
++- **Any overflow is a bug** (the program is wrong if it overflows):
++  the compiler trap (below), **not** a library function.
++- **Wrapping is the intended semantics** (hashing, bit tricks, RNG):
++  plain operators. Say so in a comment — a reader otherwise assumes a
++  checked form was forgotten.
++
++## The compiler half: the R65 trap
++
++The trap is a **build-time** compiler configuration, default **OFF**:
++
++```
++nasm -DSUTRAM_R65_TRAP_INT=1 -f elf64 -I. src/sutram_compiler.asm
++```
++
++The default build wraps silently (byte-identical output to the accepted
++parent). The trap build aborts with
++`Sutram Error [E_INTEGER_TRAP] <file>:<line>: ...` on add/sub/mul
++overflow and on division/remainder by zero. (R65 measured, CHANGELOG
++v143.)
++
++## Composition: checked/saturating code under a trapping compiler
++
++Two classes, and the distinction matters:
++
++- **Guard-first functions compose cleanly.** `ganita_checked_div`,
++  `ganita_checked_mod`, `ganita_sat_div`, `ganita_sat_mod`,
++  `ganita_checked_abs`, `ganita_sat_abs` test their failure cases
++  **before** executing the operation, so they never execute a trapping
++  operation. They behave identically under a trap build and a default
++  build.
++- **Perform-then-check functions do NOT compose.** `ganita_checked_add`
++  / `sub` / `mul` / `pow` / `fact` and `ganita_sat_add` / `sub` /
++  `mul` / `pow` / `fact` execute the overflowing operation and check
++  afterwards. Under a trap build, the operation aborts before the check
++  runs, so `ok[0] = 0` / the clamp is never reached. Making them
++  trap-safe needs the **pre-check rewrite** (compare operands before
++  operating; R19 sketches) — described-and-left, still open.
++
++Practical rule: with the trap on, use the guard-first functions, or
++accept that a perform-then-check call aborts instead of returning
++`ok = 0`. With the trap off (the default), all library functions behave
++exactly as specified above, and the accepted R18 goldens are untouched.
+diff --git a/docs/STRING-BYTE-PARITY.md b/docs/STRING-BYTE-PARITY.md
+new file mode 100644
+index 0000000..46b81d3
+--- /dev/null
++++ b/docs/STRING-BYTE-PARITY.md
+@@ -0,0 +1,83 @@
++# Sutram — `str_*` vs `strb_*`: the complete parity table
++
++**Status:** the full cell-array vs byte-string surface as shipped
++(WS1, R24). Every `str_*` beside its `strb_*` counterpart, with the
++verdict for each row: `added` (this round or an earlier one),
++`deliberately not`, or `cannot (compiler-side)`.
++
++## The two representations
++
++| | Cell array (`str_*`) | Byte string (`strb_*`) |
++|---|---|---|
++| Element | one qword cell per char code, `h[i]` (8-byte stride) | one byte per char, `char_at(s, i)` (1-byte stride) |
++| Length | explicit `n` (source of truth) | explicit `n` (source of truth) |
++| Output | `0` terminator cell at `out[n]` | `0` terminator byte at `out[n]` |
++
++Do NOT mix them: `h[i]` on a byte string reads 8 bytes at once, and
++`char_at` on a cell array reads one byte of a qword cell.
++
++## The table
++
++| # | Cell-array form (`lib/string.smlib`) | Byte form (`lib/strb.smlib`) | Verdict |
++|---|---|---|---|
++| 1 | `str_len(s)` — NUL-terminated | `strb_len(s)` — NUL-terminated | both exist; both scan to the terminator, neither is usable on a slice |
++| 2 | `char_code_at(s, i)` — byte read | — | `deliberately not` — `char_at` IS the byte accessor |
++| 3 | `is_digit_char(s, i)` | — | `deliberately not` — representation-independent (`char_at` reads bytes either way) |
++| 4 | `is_upper_char(s, i)` | — | `deliberately not` — same |
++| 5 | `is_lower_char(s, i)` | — | `deliberately not` — same |
++| 6 | `is_letter_char(s, i)` | — | `deliberately not` — same |
++| 7 | `is_space_char(s, i)` | — | `deliberately not` — same |
++| 8 | `count_vowels(s)` — NUL-terminated | `strb_count_vowels(s, n)` — explicit | `added` (R20) — explicit form is correct on slices |
++| 9 | `count_char(s, code)` — NUL-terminated | `strb_count_char(s, n, code)` — explicit | `added` (R20) |
++| 10 | `find_char(s, code)` — NUL-terminated | `strb_find_char(s, n, code)` — explicit | `added` (R20) |
++| 11 | `is_all_digits(s)` — NUL-terminated | `strb_is_all_digits(s, n)` — explicit | `added` (R20) |
++| 12 | `upper_code(c)` — code → code | — | `deliberately not` — representation-independent |
++| 13 | `lower_code(c)` — code → code | — | `deliberately not` — same |
++| 14 | `str_equals(a, b)` — NUL-terminated | `strb_equals(a, an, b, bn)` — explicit | `added` (R20) |
++| 15 | `str_find(hay, hn, needle, nn)` | `strb_find(hay, hn, needle, nn)` | both explicit (R9 / R10) |
++| 16 | `str_contains(...)` | `strb_contains(...)` | both explicit (R9 / R10) |
++| 17 | `str_replace(src, sn, find, fn, repl, out)` — `repl` 0-terminated | `strb_replace(src, sn, find, fn, repl, out)` — `repl` 0-terminated | `cannot (compiler-side)` — see repl rule below |
++| 18 | `str_split(...)` | `strb_split(...)` | both explicit (R9 / R10) |
++| 19 | `str_join(...)` | `strb_join(...)` | both explicit (R9 / R10) |
++| 20 | `str_trim(...)` | `strb_trim(...)` | both explicit (R9 / R10); both strip ASCII space (32) only |
++| 21 | `str_upper(...)` | `strb_upper(...)` | both explicit (R9 / R10) |
++| 22 | `str_lower(...)` | `strb_lower(...)` | both explicit (R9 / R10) |
++| 23 | `str_starts(...)` | `strb_starts(...)` | both explicit (R9 / R10) |
++| 24 | `str_ends(...)` | `strb_ends(...)` | both explicit (R9 / R10) |
++| 25 | `str_compare(...)` | `strb_compare(...)` | both explicit (R9 / R10) |
++| 26 | `str_reverse(...)` | `strb_reverse(...)` | both explicit (R19 / R20); both safe in place |
++| 27 | `str_count(...)` | `strb_count(...)` | both explicit (R19 / R20); both count non-overlapping occurrences |
++| 28 | — | `strb_pack(cells, n, out)` | `deliberately not` — no cell-array analogue (identity) |
++| 29 | — | `strb_unpack(bytes, n, out)` | `deliberately not` — same |
++| 30 | — | `strb_dup(src, n, out)` | `deliberately not` — same; also the slice-as-repl workaround (below) |
++
++## The three rules that stay open
++
++**The repl rule — `cannot (compiler-side)`.** Both `*_replace` forms
++take `repl` as a 0-terminated string (its length is derived), so `repl`
++cannot be a slice. An explicit-length `repl` form would need 7
++arguments, over the compiler's 6-argument cap. Workaround: `strb_dup`
++the slice into a terminated buffer first, then pass it (proven by the
++R23 `slices23` golden). Note the same rule means a `repl` containing an
++interior NUL byte is truncated at that byte.
++
++**The length-function rule.** `str_len` / `strb_len` / `vartani_len`
++scan to the terminator: they cannot be used on slices at all. A slice
++carries its length — that IS the length.
++
++**The `(s, i)` predicate rule.** The char predicates take no length:
++the caller must keep `i` in bounds; they read `char_at(s, i)`
++unconditionally.
++
++## Slice-boundary rules (summary)
++
++A slice is a (pointer, length) pair into a larger buffer, with NO
++terminator at the slice end. Every `strb_*` function takes an explicit
++length and stops at it: `strb_find_char("hello world", 5, 'w')` is -1.
++The NUL-terminated forms (`find_char`, `count_char`, `count_vowels`,
++`is_all_digits`, `str_equals`) scan to the terminator, so they are
++WRONG on slices — never pass a slice to them. The same rules are stated
++in the `lib/strb.smlib` and `lib/string.smlib` headers (R23 WS4 audit).
++One compiler-side finding from that audit: a string literal plus an
++offset does NOT advance the pointer (`char_at("hello world" + 6, 0)`
++is `'h'`), so slice pointers must come from variables.
+diff --git a/docs/sutram-stdlib.html b/docs/sutram-stdlib.html
+index 0dacc9c..b5c0773 100644
+--- a/docs/sutram-stdlib.html
++++ b/docs/sutram-stdlib.html
+@@ -26,7 +26,7 @@ Do not edit by hand.</p>
+ <li><a href="#bigint"><code>bigint</code></a> — 12 functions</li>
+ <li><a href="#chandas"><code>chandas</code></a> — 6 functions</li>
+ <li><a href="#fmt"><code>fmt</code></a> — 23 functions</li>
+-<li><a href="#ganita"><code>ganita</code></a> — 18 functions</li>
++<li><a href="#ganita"><code>ganita</code></a> — 22 functions</li>
+ <li><a href="#hash"><code>hash</code></a> — 2 functions</li>
+ <li><a href="#kalana"><code>kalana</code></a> — 6 functions</li>
+ <li><a href="#list"><code>list</code></a> — 34 functions</li>
+@@ -140,6 +140,10 @@ Do not edit by hand.</p>
+ <tr><td><code>ganita_checked_pow(a, e, ok)</code></td><td>ganita_checked_pow(a, e, ok) — a^e for e &gt;= 0 via repeated checked multiplication (WS3, R19); ok[0] 1, or 0 if e &lt; 0 (no integer power) or the result overflows (returns 0 then). 0^0 = 1 by the empty-product convention. O(e), but the loop exits early on overflow for every |a| &gt;= 2 (a^e overflows by e = 63 at the latest); only the trivial bases -1, 0, 1 run the full loop.</td></tr>
+ <tr><td><code>ganita_checked_fact(n, ok)</code></td><td>ganita_checked_fact(n, ok) — n! via repeated checked multiplication (WS3, R20); ok[0] 1, or 0 if n &lt; 0 (no integer factorial) or the result overflows (returns 0 then). 0! = 1. 20! is the largest that fits (20! = 2432902008176640000); 21! overflows.</td></tr>
+ <tr><td><code>ganita_sat_pow(a, e)</code></td><td>ganita_sat_pow(a, e) — a^e, saturating (WS3, R20): on overflow returns INT64_MAX (positive overflow) or INT64_MIN (negative overflow). e &lt; 0 returns 0 (no integer power; the saturating form has no ok channel, so 0 is the documented sentinel). 0^0 = 1. Repeated saturating multiplication. Correct because |a| &lt;= 1 never saturates, and once saturated with |a| &gt;= 2 every later true product overflows in the direction sign(r) * sign(a)^remaining — so the loop exits early with the parity of the remaining steps deciding the final bound, instead of iterating e times.</td></tr>
++<tr><td><code>ganita_sat_div(a, b)</code></td><td>ganita_sat_div(a, b) — truncating a / b, saturating (WS4, R24): the sat_* companion of ganita_checked_div. INT64_MIN / -1 saturates to INT64_MAX (the true quotient 2^63 does not fit); b == 0 returns 0 (the saturating form has no ok channel, so 0 is the documented sentinel — same as sat_pow/sat_fact on invalid input). Guards both cases before dividing, so it never executes a trapping operation under a trapping compiler.</td></tr>
++<tr><td><code>ganita_sat_mod(a, b)</code></td><td>ganita_sat_mod(a, b) — truncating a % b (WS4, R24). Remainder never overflows mathematically (INT64_MIN % -1 is exactly 0), but the hardware operation still traps on MIN % -1 (same SIGFPE as MIN / -1), so this guards that case and returns 0 — which is also the exact result. b == 0 returns 0 (same sentinel as sat_div). Guards before operating, so it never executes a trapping operation.</td></tr>
++<tr><td><code>ganita_checked_abs(a, ok)</code></td><td>ganita_checked_abs(a, ok) — |a| (WS4, R24); ok[0] 1, or 0 on abs(INT64_MIN), which overflows (returns 0 then). The unary overflow the checked family did not cover: plain ganita_abs(MIN) silently wraps to MIN.</td></tr>
++<tr><td><code>ganita_sat_abs(a)</code></td><td>ganita_sat_abs(a) — |a|, saturating (WS4, R24): abs(INT64_MIN) saturates to INT64_MAX.</td></tr>
+ <tr><td><code>ganita_sat_fact(n)</code></td><td>ganita_sat_fact(n) — n!, saturating (WS3, R21): on overflow returns INT64_MAX (factorials are positive, so saturation is always MAX). n &lt; 0 returns 0 (no integer factorial; the saturating form has no ok channel, so 0 is the documented sentinel). 0! = 1. 20! is the largest that fits; 21! saturates. Exits early once saturated (factorials only grow, so a saturated result stays saturated).</td></tr>
+ </table>
+ <h2 id="hash"><code>hash</code></h2>
+@@ -422,6 +426,6 @@ Do not edit by hand.</p>
+ <tr><td><code>bool_to_int(b)</code></td><td></td></tr>
+ <tr><td><code>int_max()</code></td><td></td></tr>
+ </table>
+-<footer>21 modules, 274 functions. Generated from library sources.</footer>
++<footer>21 modules, 278 functions. Generated from library sources.</footer>
+ </body>
+ </html>
+diff --git a/lib/ganita.smlib b/lib/ganita.smlib
+index b9cf5ea..50306f6 100644
+--- a/lib/ganita.smlib
++++ b/lib/ganita.smlib
+@@ -439,6 +439,70 @@ prakriya ganita_sat_pow(a, e) {
+     pratiyati r
+ }
+ 
++# ganita_sat_div(a, b) — truncating a / b, saturating (WS4, R24): the
++# sat_* companion of ganita_checked_div. INT64_MIN / -1 saturates to
++# INT64_MAX (the true quotient 2^63 does not fit); b == 0 returns 0
++# (the saturating form has no ok channel, so 0 is the documented
++# sentinel — same as sat_pow/sat_fact on invalid input). Guards both
++# cases before dividing, so it never executes a trapping operation
++# under a trapping compiler.
++prakriya ganita_sat_div(a, b) {
++    vitti x = a
++    vitti y = b
++    vitti maxv = 9223372036854775807
++    vitti minv = (0 - 9223372036854775807) - 1
++    yadi (y == 0) { pratiyati 0 }
++    yadi (x == minv) {
++        yadi (y == 0 - 1) { pratiyati maxv }
++    }
++    pratiyati x / y
++}
++
++# ganita_sat_mod(a, b) — truncating a % b (WS4, R24). Remainder never
++# overflows mathematically (INT64_MIN % -1 is exactly 0), but the
++# hardware operation still traps on MIN % -1 (same SIGFPE as MIN / -1),
++# so this guards that case and returns 0 — which is also the exact
++# result. b == 0 returns 0 (same sentinel as sat_div). Guards before
++# operating, so it never executes a trapping operation.
++prakriya ganita_sat_mod(a, b) {
++    vitti x = a
++    vitti y = b
++    vitti minv = (0 - 9223372036854775807) - 1
++    yadi (y == 0) { pratiyati 0 }
++    yadi (x == minv) {
++        yadi (y == 0 - 1) { pratiyati 0 }
++    }
++    pratiyati x % y
++}
++
++# ganita_checked_abs(a, ok) — |a| (WS4, R24); ok[0] 1, or 0 on
++# abs(INT64_MIN), which overflows (returns 0 then). The unary overflow
++# the checked family did not cover: plain ganita_abs(MIN) silently
++# wraps to MIN.
++prakriya ganita_checked_abs(a, ok) {
++    vitti x = a
++    vitti okp = ok
++    vitti minv = (0 - 9223372036854775807) - 1
++    yadi (x == minv) {
++        okp[0] = 0
++        pratiyati 0
++    }
++    okp[0] = 1
++    yadi (x < 0) { pratiyati 0 - x }
++    pratiyati x
++}
++
++# ganita_sat_abs(a) — |a|, saturating (WS4, R24):
++# abs(INT64_MIN) saturates to INT64_MAX.
++prakriya ganita_sat_abs(a) {
++    vitti x = a
++    vitti maxv = 9223372036854775807
++    vitti minv = (0 - 9223372036854775807) - 1
++    yadi (x == minv) { pratiyati maxv }
++    yadi (x < 0) { pratiyati 0 - x }
++    pratiyati x
++}
++
+ # ganita_sat_fact(n) — n!, saturating (WS3, R21): on overflow returns
+ # INT64_MAX (factorials are positive, so saturation is always MAX).
+ # n < 0 returns 0 (no integer factorial; the saturating form has no
+diff --git a/tests/stdlib/safety24.exit b/tests/stdlib/safety24.exit
+new file mode 100644
+index 0000000..573541a
+--- /dev/null
++++ b/tests/stdlib/safety24.exit
+@@ -0,0 +1 @@
++0
+diff --git a/tests/stdlib/safety24.out b/tests/stdlib/safety24.out
+new file mode 100644
+index 0000000..970e413
+--- /dev/null
++++ b/tests/stdlib/safety24.out
+@@ -0,0 +1,35 @@
++3
++
++-3
++
++9223372036854775807
++
++0
++
++1
++
++-1
++
++0
++
++0
++
++5
++
++1
++
++5
++
++1
++
++0
++
++0
++
++5
++
++5
++
++9223372036854775807
++
++safety-done
+diff --git a/tests/stdlib/safety24.sm b/tests/stdlib/safety24.sm
+new file mode 100644
+index 0000000..e5332ef
+--- /dev/null
++++ b/tests/stdlib/safety24.sm
+@@ -0,0 +1,40 @@
++ayojan ganita
++mukhya() {
++    vitti ok = nirmmita(8)
++    vitti minv = (0 - 9223372036854775807) - 1
++    likha(ganita_sat_div(7, 2))
++    likha("\n")
++    likha(ganita_sat_div(0 - 7, 2))
++    likha("\n")
++    likha(ganita_sat_div(minv, 0 - 1))
++    likha("\n")
++    likha(ganita_sat_div(5, 0))
++    likha("\n")
++    likha(ganita_sat_mod(7, 3))
++    likha("\n")
++    likha(ganita_sat_mod(0 - 7, 3))
++    likha("\n")
++    likha(ganita_sat_mod(minv, 0 - 1))
++    likha("\n")
++    likha(ganita_sat_mod(5, 0))
++    likha("\n")
++    likha(ganita_checked_abs(5, ok))
++    likha("\n")
++    likha(ok[0])
++    likha("\n")
++    likha(ganita_checked_abs(0 - 5, ok))
++    likha("\n")
++    likha(ok[0])
++    likha("\n")
++    likha(ganita_checked_abs(minv, ok))
++    likha("\n")
++    likha(ok[0])
++    likha("\n")
++    likha(ganita_sat_abs(5))
++    likha("\n")
++    likha(ganita_sat_abs(0 - 5))
++    likha("\n")
++    likha(ganita_sat_abs(minv))
++    likha("\n")
++    likha("safety-done\n")
++}
+diff --git a/tools/proof_props.py b/tools/proof_props.py
+index 52ee731..12b2da5 100644
+--- a/tools/proof_props.py
++++ b/tools/proof_props.py
+@@ -3043,6 +3043,221 @@ def prop_slices23(compiler, rng):
+     return ok and out == "PASS", out
+ 
+ 
++def prop_invariants24_containers(compiler, rng):
++    """R23 cross-function invariants: binary_search agrees with find
++    on a sorted list; queue_to_array does not mutate (same read twice,
++    and dequeue afterwards still yields the first element)."""
++    lvals = [rng.randint(-50, 50) for _ in range(rng.randint(0, 9))]
++    qvals = [rng.randint(-50, 50) for _ in range(rng.randint(0, 6))]
++
++    def lit(v):
++        return f"(0 - {-v})" if v < 0 else str(v)
++
++    lines = ["ayojan list",
++             "mukhya() {",
++             "    vitti l = list_init(16)",
++             "    vitti ok = nirmmita(8)"]
++    for v in lvals:
++        lines.append(f"    list_push(l, {lit(v)})")
++    lines.append("    list_sort(l)")
++    for _ in range(3):
++        probe = rng.choice(lvals) if lvals and rng.random() < 0.7 else 999
++        lines.append(f"    yadi (list_binary_search(l, {lit(probe)}) != list_find(l, {lit(probe)})) {{")
++        lines.append('        likha("FAIL binary_search != find\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++    lines.append("    vitti q = queue_init(8)")
++    lines.append("    vitti a1 = nirmmita(8 * 8)")
++    lines.append("    vitti a2 = nirmmita(8 * 8)")
++    for v in qvals:
++        lines.append(f"    queue_enqueue(q, {lit(v)})")
++    lines.append("    yadi (queue_to_array(q, a1) != queue_to_array(q, a2)) {")
++    lines.append('        likha("FAIL to_array count\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    lines.append(f"    vitti i = 0")
++    lines.append(f"    yavat (i < {len(qvals)}) {{")
++    lines.append("        yadi (a1[i] != a2[i]) {")
++    lines.append('            likha("FAIL to_array repeat\\n")')
++    lines.append("            pratiyati 1")
++    lines.append("        }")
++    lines.append("        i = i + 1")
++    lines.append("    }")
++    if qvals:
++        lines.append("    yadi (queue_dequeue(q, ok) != a1[0]) {")
++        lines.append('        likha("FAIL to_array mutated\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++        lines.append(f"    yadi (queue_len(q) != {len(qvals) - 1}) {{")
++        lines.append('        likha("FAIL to_array len\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++    lines.append('    likha("PASS\\n")')
++    lines.append("}")
++    ok, out = run_sm(compiler, "invariants24_containers", "\n".join(lines))
++    return ok and out == "PASS", out
++
++
++def prop_invariants24_merge_symdiff(compiler, rng):
++    """R23 cross-function invariants: map_merge is associative
++    (src-wins), set_sym_diff is symmetric, sym_diff with itself is
++    empty, sym_diff with empty is identity."""
++    pool = ["aa", "ab", "ba", "bb", "abc", "bca", "cab", "a", "b", "c"]
++    akeys = rng.sample(pool, rng.randint(0, 3))
++    bkeys = rng.sample(pool, rng.randint(0, 3))
++    ckeys = rng.sample(pool, rng.randint(0, 3))
++    avals = {k: rng.randint(-50, 50) for k in akeys}
++    bvals = {k: rng.randint(-50, 50) for k in bkeys}
++    cvals = {k: rng.randint(-50, 50) for k in ckeys}
++
++    def lit(v):
++        return f"(0 - {-v})" if v < 0 else str(v)
++
++    merged = dict(avals)
++    merged.update(bvals)
++    merged.update(cvals)
++    lines = ["ayojan map",
++             "ayojan set",
++             "mukhya() {"]
++    # three maps a, b, c; merge both associations and compare
++    for name, vals in (("a", avals), ("b", bvals), ("c", cvals)):
++        lines.append(f"    vitti {name} = map_init(8)")
++        for k, v in vals.items():
++            lines.append(f'    map_put({name}, 8, "{k}", {len(k)}, {lit(v)})')
++    lines.append("    vitti m1 = map_init(16)")
++    lines.append("    vitti m2 = map_init(16)")
++    lines.append("    vitti tmp = map_init(16)")
++    lines.append("    vitti tmp2 = map_init(16)")
++    lines.append("    map_merge(tmp, 16, a, 8)")
++    lines.append("    map_merge(tmp, 16, b, 8)")
++    lines.append("    map_merge(m1, 16, tmp, 16)")
++    lines.append("    map_merge(m1, 16, c, 8)")
++    lines.append("    map_merge(tmp2, 16, b, 8)")
++    lines.append("    map_merge(tmp2, 16, c, 8)")
++    lines.append("    map_merge(m2, 16, a, 8)")
++    lines.append("    map_merge(m2, 16, tmp2, 16)")
++    lines.append(f"    yadi (map_size(m1) != {len(merged)}) {{")
++    lines.append('        likha("FAIL merge assoc size\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    lines.append("    yadi (map_size(m1) != map_size(m2)) {")
++    lines.append('        likha("FAIL merge assoc size2\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    for k, v in merged.items():
++        lines.append(f'    yadi (map_get(m1, 16, "{k}", {len(k)}) != map_get(m2, 16, "{k}", {len(k)})) {{')
++        lines.append('        likha("FAIL merge assoc value\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++        lines.append(f'    yadi (map_get(m1, 16, "{k}", {len(k)}) != {lit(v)}) {{')
++        lines.append('        likha("FAIL merge src-wins\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++    # symmetric difference: symmetric, self-empty, identity-with-empty
++    for name, keys in (("x", akeys), ("y", bkeys)):
++        lines.append(f"    vitti {name} = set_init(8)")
++        for k in keys:
++            lines.append(f'    set_add({name}, 8, "{k}", {len(k)})')
++    lines.append("    vitti o1 = set_init(16)")
++    lines.append("    vitti o2 = set_init(16)")
++    lines.append("    vitti o3 = set_init(16)")
++    lines.append("    vitti o4 = set_init(16)")
++    lines.append("    vitti e = set_init(8)")
++    lines.append("    set_sym_diff(x, 8, y, 8, o1)")
++    lines.append("    set_sym_diff(y, 8, x, 8, o2)")
++    lines.append("    set_sym_diff(x, 8, x, 8, o3)")
++    lines.append("    set_sym_diff(x, 8, e, 8, o4)")
++    lines.append("    yadi (set_size(o1) != set_size(o2)) {")
++    lines.append('        likha("FAIL sym_diff symmetric size\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    sym = set(akeys) ^ set(bkeys)
++    for k in sym:
++        lines.append(f'    yadi (set_contains(o2, 16, "{k}", {len(k)}) != 1) {{')
++        lines.append('        likha("FAIL sym_diff symmetric member\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++    lines.append("    yadi (set_size(o3) != 0) {")
++    lines.append('        likha("FAIL sym_diff self\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    lines.append(f"    yadi (set_size(o4) != {len(set(akeys))}) {{")
++    lines.append('        likha("FAIL sym_diff identity size\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    for k in akeys:
++        lines.append(f'    yadi (set_contains(o4, 16, "{k}", {len(k)}) != 1) {{')
++        lines.append('        likha("FAIL sym_diff identity member\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++    lines.append('    likha("PASS\\n")')
++    lines.append("}")
++    ok, out = run_sm(compiler, "invariants24_merge_symdiff", "\n".join(lines))
++    return ok and out == "PASS", out
++
++
++def prop_safety24(compiler, rng):
++    """ganita_sat_div/sat_mod/checked_abs/sat_abs vs Python (incl.
++    MIN/-1, division by zero, abs(MIN))."""
++    import random as _random
++    maxv = 2**63 - 1
++    minv = -(2**63)
++    pairs = []
++    for _ in range(6):
++        a = rng.choice([rng.randint(-100, 100), maxv, minv, 0, 1, -1])
++        b = rng.choice([rng.randint(-10, 10), maxv, minv, 0, 1, -1])
++        pairs.append((a, b))
++    singles = [rng.randint(-100, 100) for _ in range(3)] + [maxv, minv, 0]
++
++    def lit(v):
++        return f"(0 - {-v})" if v < 0 else str(v)
++
++    def trunc_div(a, b):
++        q = abs(a) // abs(b)
++        return q if (a < 0) == (b < 0) else -q
++
++    lines = ["ayojan ganita",
++             "mukhya() {",
++             "    vitti ok = nirmmita(8)"]
++    for a, b in pairs:
++        if b == 0:
++            want_div, want_mod = 0, 0
++        elif a == minv and b == -1:
++            want_div, want_mod = maxv, 0
++        else:
++            want_div = trunc_div(a, b)
++            want_mod = a - trunc_div(a, b) * b
++        lines.append(f"    yadi (ganita_sat_div({lit(a)}, {lit(b)}) != {lit(want_div)}) {{")
++        lines.append('        likha("FAIL sat_div\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++        lines.append(f"    yadi (ganita_sat_mod({lit(a)}, {lit(b)}) != {lit(want_mod)}) {{")
++        lines.append('        likha("FAIL sat_mod\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++    for a in singles:
++        if a == minv:
++            want_cabs, want_cok, want_sabs = 0, 0, maxv
++        else:
++            want_cabs, want_cok, want_sabs = abs(a), 1, abs(a)
++        lines.append(f"    yadi (ganita_checked_abs({lit(a)}, ok) != {lit(want_cabs)}) {{")
++        lines.append('        likha("FAIL checked_abs value\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++        lines.append(f"    yadi (ok[0] != {want_cok}) {{")
++        lines.append('        likha("FAIL checked_abs ok\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++        lines.append(f"    yadi (ganita_sat_abs({lit(a)}) != {lit(want_sabs)}) {{")
++        lines.append('        likha("FAIL sat_abs\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++    lines.append('    likha("PASS\\n")')
++    lines.append("}")
++    ok, out = run_sm(compiler, "safety24", "\n".join(lines))
++    return ok and out == "PASS", out
++
++
+ def main():
+     compiler = None
+     for i, a in enumerate(sys.argv):
+@@ -3118,6 +3333,9 @@ def main():
+         ("containers23", prop_containers23),
+         ("gaps23", prop_gaps23),
+         ("slices23", prop_slices23),
++        ("invariants24 containers", prop_invariants24_containers),
++        ("invariants24 merge/symdiff", prop_invariants24_merge_symdiff),
++        ("safety24", prop_safety24),
+     ]
+ 
+     failed = []
