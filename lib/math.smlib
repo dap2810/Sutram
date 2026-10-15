@@ -108,3 +108,28 @@ prakriya bit_count(n) {
     }
     pratiyati c
 }
+
+# math_rand(state): Knuth MMIX LCG — state = state * 6364136223846793005
+# + 1442695040888963407 (mod 2^64, plain wrapping arithmetic). `state`
+# is a 1-cell array holding the seed; it is updated in place and the new
+# state is returned. The full 64-bit state is returned (it may be
+# negative); use abs_val or a modulo to map it to a range. Any seed
+# works, including 0. Deterministic: the same seed always yields the
+# same sequence. There is no entropy source in the language, so the
+# caller owns the seed.
+prakriya math_rand(state) {
+    vitti s = state
+    s[0] = s[0] * 6364136223846793005 + 1442695040888963407
+    pratiyati s[0]
+}
+
+# math_clamp(v, lo, hi): lo if v < lo, hi if v > hi, else v.
+# Requires lo <= hi (if lo > hi, returns lo — the first branch wins).
+prakriya math_clamp(v, lo, hi) {
+    vitti x = v
+    vitti a = lo
+    vitti b = hi
+    yadi (x < a) { pratiyati a }
+    yadi (x > b) { pratiyati b }
+    pratiyati x
+}
