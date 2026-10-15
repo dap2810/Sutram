@@ -1,4 +1,5 @@
 ; R66 lexer helpers. Pure NASM; no OS calls or new runtime dependencies.
+; R67 adds Bengali (U+09E6..09EF) and Gurmukhi (U+0A66..0A6F).
 ; Decimal recognition is lexical, independent of the active keyword pack.
 ; Input RDI=current source byte, RSI=exclusive source end (valid ordered range).
 ; r66_decimal_digit_at: RAX=0..9, EDX=1 or 3; otherwise RAX=-1, EDX=0.
@@ -32,6 +33,10 @@ r66_decimal_digit_at:
     cmp byte [rdi+1], 0xA5    ; U+0966..096F (Devanagari)
     je .last
     cmp byte [rdi+1], 0xAB    ; U+0AE6..0AEF (Gujarati)
+    je .last
+    cmp byte [rdi+1], 0xA7    ; U+09E6..09EF (Bengali)
+    je .last
+    cmp byte [rdi+1], 0xA9    ; U+0A66..0A6F (Gurmukhi)
     jne .bad
 .last:
     movzx eax, byte [rdi+2]
