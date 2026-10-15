@@ -1,0 +1,15 @@
+# Direct one-argument transfer and consecutive scalar store/load.
+prakriya identity(x) { pratiyati x }
+mukhya() {
+    vitti a = 1
+    vitti b = 2
+    vitti c = 3
+    vitti d = 4
+    vitti e = 5
+    vitti f = 6
+    vitti g = 7
+    f = 42 / a
+    g = f
+    likha(g)
+    likha(identity(g))
+}
