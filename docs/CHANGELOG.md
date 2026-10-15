@@ -1,3 +1,15 @@
+## v142 — Linux X11 GUI slice 25: caret x in grapheme clusters (my own stream)
+
+- Slice 24 made text advance once per **cluster**, but the caret still used the **byte index**
+  (`ed_caret_x` counted bytes), so the caret sat too far right on any Devanagari line. This closes that
+  inconsistency.
+- `ed_caret_x` now finds the line start (scan back to the last newline) and then **counts clusters**
+  from there to the cursor: a 3-byte Indic sequence counts as one, an ASCII byte as one. The caller's
+  `imul rax, 8` therefore yields the same column the renderer used.
+- GUI source ~85.6 KB; binary **35,632 B**; **all 13 GUI tests pass**. Compiler untouched.
+- Honest caveat: this aligns the caret with the **advance**; the glyph shapes themselves still need a
+  font-level shaper (ChatGPT's WS5 in ROUND-66). The Linux half is what is provable here.
+
 ## v141 — Muse R23 verified and SYNCED (containers, string surface, kosh spec)
 
 - **R23 accepted — all five workstreams landed.** Patch clean; **14/14 hashes**; proof_lib **175/175**
