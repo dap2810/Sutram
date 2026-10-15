@@ -1,0 +1,93 @@
+SUTRAM ROUND 65 — OBSERVED EVIDENCE, FINISHING CONTINUATION
+Date: 2026-10-15
+PR: https://github.com/dap2810/Sutram/pull/23
+Recovered draft: 4f1dec7c77b611539a34bcbbebbcb2de3df639e8
+Finishing source commit: 17470db137ae41c4eaab6bc2fa00fd416a6446f1
+Input compiler Git blob: a14172c172ce7d1d714ca4efa0fb5bbdc67b5657
+
+DELIVERY BOUNDARY
+The raw compiler on the branch is the recovered draft, not a silently
+integrated final compiler. tools/r65_prepare_review.py supplies checksum-
+guarded finishing source corrections and writes a separate staged source.
+Its full-file preparation still has to run on Sarvam's checkout.
+Do NOT merge the unprepared compiler.
+
+ACTUAL EXECUTION IN THIS CONTINUATION
+Command:
+  python -m unittest discover -s tests/r65_finish -p 'test_*.py' -v
+Observed result:
+  Ran 18 tests in 0.004s
+  OK
+These are Python transformations on captured-anchor fixtures, NOT the
+complete compiler, a NASM assembly, or generated Sutram program execution.
+
+Passing test names:
+  test_conditional_balance_errors
+  test_default_source_projection_unchanged
+  test_direct_entry_is_explicit
+  test_duplicate_anchor_fails
+  test_full_filename_no_95_byte_truncation
+  test_idiv_overflow_separate_from_zero
+  test_input_git_identity
+  test_literals_use_rel32_skip
+  test_missing_anchor_fails
+  test_missing_second_store_fails
+  test_operator_lines_saved_before_advance
+  test_push_default_is_initialized
+  test_reapplication_fails_closed
+  test_safe_constant_folding_has_guard_not_blanket_return
+  test_store_reuse_requires_equal_emission_offset
+  test_unmatched_source_is_rejected
+  test_unrelated_conditionals_preserved
+  test_writer_does_not_overwrite
+
+Command:
+  python -m py_compile tools/r65_prepare_review.py tools/r65_finish_acceptance.py tests/r65_finish/test_prepare_review.py
+Observed: successful exit, no syntax errors in these three Python files.
+
+HASH / UPLOAD VERIFICATION
+- Four finishing files exist at the finishing source commit.
+- GitHub-reported Git blob IDs matched hashes computed from local bytes.
+- Four actual source SHA-256 values computed with Python hashlib.
+- Manifest scope is ONLY those four finishing files.
+- The old full 18-file source SHA-256 attempt was interrupted; no success
+  result or fabricated compiler SHA-256 is asserted for it.
+- The complete raw compiler is identified by its real Git blob above.
+- A staged compiler SHA-256 is printed by the preparation tool only on
+  a successful future whole-file preparation.
+
+SOURCE REVIEW FINDINGS, NOT NATIVE OBSERVATIONS
+1. Statement calls did not initialize the helper's new R8 push-skip input.
+2. Store/reload metadata lacked a matching emitted-code-end check.
+3. cur_tok did not update lexer's cur_line; arithmetic metadata used it.
+4. Blanket fold_const suppression also removed safe/string folding.
+5. Fatal output truncated full paths to 95 bytes.
+6. Nonzero divisor alone did not guard INT64_MIN/-1 IDIV overflow.
+Corresponding exact source transformations are supplied in the staging tool.
+
+NOT RUN / NOT CLAIMED
+- Complete-file preparation using the production compiler: NOT RUN locally.
+- NASM default/peephole/trap/combined builds: NOT RUN.
+- New native acceptance runner: NOT RUN against a Sutram compiler.
+- Generated stdout or exit codes from these new native cases: UNOBSERVED.
+- Before/after native instruction counts, timings, speed improvement: NOT MEASURED.
+- Default compiled binary identity: NOT RUN in R65 finishing continuation.
+- Full regression suite, language packs, graph, library/property proofs,
+  frozen codegen with the finishing staged compiler: NOT RUN.
+- Windows compiler, installer, IDE, shell, icon and screenshot: NOT RUN.
+- No CI or automation/background monitor launched.
+
+REMAINING SOURCE SCOPE
+- General same-register push/pop cancellation was not implemented. The
+  implemented transfer is push RAX/pop RDI coalescing for one argument.
+- Imported original-file provenance, unary/compound/synthesized operator
+  metadata and signed-literal edge cases require further review.
+- The old r65_source_gate.py describes raw-draft metadata, not staged code.
+- Original 18-file REVIEW.patch is historical; use complete PR #23 diff
+  or the pinned git diff command in ROUND-65-HANDOFF.md.
+
+SARVAM NEXT ACTION
+Read docs/R65-FINISH-REVIEW.md. Run preparation on the pinned compiler,
+review the generated patch, build four modes, run both native runners,
+check accepted goldens and full regressions, integrate corrections into
+the feature branch, rehash/retest that integrated commit, then decide merge.
