@@ -952,15 +952,33 @@ ed_caret_x:
     push rbx
     lea  rbx, [rel ed_buf]
     mov  rcx, [rel ed_cursor]
+    ; slice 25: find the start of this line (last newline before the cursor)
+    mov  rdx, rcx
+.ec_ls:
+    test rdx, rdx
+    jz   .ec_ls_done
+    cmp  byte [rbx + rdx - 1], 10
+    je   .ec_ls_done
+    dec  rdx
+    jmp  .ec_ls
+.ec_ls_done:
+    ; count grapheme clusters from the line start to the cursor, so the caret
+    ; matches the cluster-based text advance from slice 24
     xor  rax, rax
-.loop:
-    test rcx, rcx
-    jz   .done
-    dec  rcx
-    cmp  byte [rbx + rcx], 10
-    je   .done
+    mov  r8, rdx
+.ec_cc:
+    cmp  r8, rcx
+    jae  .done
+    movzx r9d, byte [rbx + r8]
+    cmp  r9b, 0xE0
+    jne  .ec_one
+    add  r8, 3
     inc  rax
-    jmp  .loop
+    jmp  .ec_cc
+.ec_one:
+    inc  r8
+    inc  rax
+    jmp  .ec_cc
 .done:
     pop  rbx
     ret
