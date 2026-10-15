@@ -30,10 +30,18 @@ def run(cmd: list[str]) -> subprocess.CompletedProcess[bytes]:
     return subprocess.run(cmd, cwd=ROOT, capture_output=True, timeout=12, check=False)
 
 
+def require_fresh_output(output: Path) -> None:
+    # A stale file (including a dangling symlink) must never satisfy a build check.
+    # Refuse rather than deleting anything the caller may own.
+    if output.exists() or output.is_symlink():
+        raise AssertionError(f'acceptance output already exists: {output}')
+
+
 def compile_program(compiler: Path, src: Path, output: Path, lang: str | None = None) -> None:
+    require_fresh_output(output)
     cmd = [str(compiler)] + (['--lang', lang] if lang else []) + [str(src), str(output)]
     completed = run(cmd)
-    if completed.returncode or not output.is_file():
+    if completed.returncode or not output.is_file() or output.is_symlink():
         raise AssertionError(f'compile failed {src.name}: exit={completed.returncode}, '
                              f'stdout={completed.stdout!r}, stderr={completed.stderr!r}')
 
@@ -49,6 +57,19 @@ def exact_case(compiler: Path, source: Path, output: Path, expected: bytes, lang
             'sha256': hashlib.sha256(output.read_bytes()).hexdigest()}
 
 
+def rejected_case(compiler: Path, source: Path, output: Path,
+                  diagnostic: bytes = b'E_UTF8') -> dict:
+    """A diagnosed compiler rejection must not leave any executable output."""
+    require_fresh_output(output)
+    failed = run([str(compiler), str(source), str(output)])
+    if failed.returncode != 1 or diagnostic not in failed.stdout + failed.stderr:
+        raise AssertionError(f'UTF8 rejection failed: exit={failed.returncode}, '
+                             f'output={failed.stdout!r} {failed.stderr!r}')
+    if output.exists() or output.is_symlink():
+        raise AssertionError(f'compiler rejection created output: {output}')
+    return {'case': source.name, 'status': 'PASS', 'exit': 1, 'output_created': False}
+
+
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--compiler', type=Path, required=True)
@@ -59,6 +80,8 @@ def main() -> int:
     for path in (compiler, reference):
         if path is not None and not path.is_file():
             p.error(f'missing compiler: {path}')
+    if reference is not None and compiler.samefile(reference):
+        p.error('--reference must be an independently built compiler, not the same file')
     results = []
     with tempfile.TemporaryDirectory(prefix='sutram-r66-') as tmp:
         work = Path(tmp)
@@ -94,11 +117,7 @@ def main() -> int:
         for i, tail in enumerate((b'\xe0', b'\xe0\xa5', b'\xe0\xab', b'\xe0\x9f\xbf')):
             bad = work / f'truncated_{i}.sm'
             bad.write_bytes(b'mukhya() { vitti ' + tail)
-            failed = run([str(compiler), str(bad), str(work / f'bad_{i}.bin')])
-            if failed.returncode != 1 or b'E_UTF8' not in failed.stdout + failed.stderr:
-                raise AssertionError(f'UTF8 rejection failed: exit={failed.returncode}, '
-                                     f'output={failed.stdout!r} {failed.stderr!r}')
-            results.append({'case': f'malformed Indic {i}', 'status': 'PASS', 'exit': 1})
+            results.append(rejected_case(compiler, bad, work / f'bad_{i}.bin'))
     print(json.dumps({'scope': 'R66 full compiler native acceptance', 'results': results},
                      indent=2, ensure_ascii=False))
     print('R66_NATIVE_CASES_PASSED; inspect NOT RUN entries separately')
