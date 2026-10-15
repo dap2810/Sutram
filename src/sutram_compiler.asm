@@ -12762,6 +12762,15 @@ gen_expr:
     mov rdi, [rbx+8]
     xor esi, esi
     mov rdx, [rbx+24]
+%ifdef SUTRAM_R65_PEEPHOLES
+    ; Exactly one argument: no runtime instruction occurs between value
+    ; evaluation and its transfer into RDI. Omit the push/pop pair.
+    xor r8d,r8d
+    cmp r14,1
+    jne .r65_one_arg_flag_ready
+    mov r8d,1
+.r65_one_arg_flag_ready:
+%endif
     call gen_typed_call_arg
     cmp r14, 2
     jb .ge_fc_pop1
@@ -12769,6 +12778,9 @@ gen_expr:
     mov rdi, [rbx+8]
     mov esi, 1
     mov rdx, [rbx+32]
+%ifdef SUTRAM_R65_PEEPHOLES
+    xor r8d,r8d
+%endif
     call gen_typed_call_arg
     cmp r14, 3
     jb .ge_fc_pop2
@@ -12776,6 +12788,9 @@ gen_expr:
     mov rdi, [rbx+8]
     mov esi, 2
     mov rdx, [rbx+40]
+%ifdef SUTRAM_R65_PEEPHOLES
+    xor r8d,r8d
+%endif
     call gen_typed_call_arg
     cmp r14, 4
     jb .ge_fc_pop3
@@ -12783,6 +12798,9 @@ gen_expr:
     mov rdi, [rbx+8]
     mov esi, 3
     mov rdx, [rbx+48]
+%ifdef SUTRAM_R65_PEEPHOLES
+    xor r8d,r8d
+%endif
     call gen_typed_call_arg
     cmp r14, 5
     jb .ge_fc_pop4
@@ -12790,6 +12808,9 @@ gen_expr:
     mov rdi, [rbx+8]
     mov esi, 4
     mov rdx, [rbx+56]
+%ifdef SUTRAM_R65_PEEPHOLES
+    xor r8d,r8d
+%endif
     call gen_typed_call_arg
     cmp r14, 6
     jb .ge_fc_pop5
@@ -12797,6 +12818,9 @@ gen_expr:
     mov rdi, [rbx+8]
     mov esi, 5
     mov rdx, [rbx+64]
+%ifdef SUTRAM_R65_PEEPHOLES
+    xor r8d,r8d
+%endif
     call gen_typed_call_arg
     ; Pop 6: arg5->r9, arg4->r8, arg3->rcx, arg2->rdx, arg1->rsi, arg0->rdi
     mov dil, 0x41
@@ -12855,8 +12879,19 @@ gen_expr:
     call emit_byte
     jmp .ge_fc_call
 .ge_fc_pop1:
+%ifdef SUTRAM_R65_PEEPHOLES
+    ; Call value is still in runtime RAX; mov rdi,rax is 3 bytes,
+    ; versus a redundant push rax + pop rdi (2) but avoids stack writes.
+    mov dil,0x48
+    call emit_byte
+    mov dil,0x89
+    call emit_byte
+    mov dil,0xC7
+    call emit_byte
+%else
     mov dil, 0x5F            ; pop rdi
     call emit_byte
+%endif
 .ge_fc_call:
     call r46_live_callee_saved_vars
     mov r15, rax
@@ -18255,6 +18290,10 @@ gen_typed_call_arg:
     push r12
     push r13
     push r14
+%ifdef SUTRAM_R65_PEEPHOLES
+    push r15
+    mov r15,r8               ; one-arg direct-to-RDI transfer requested
+%endif
     mov rbx, rdi
     mov r12, rsi
     mov r13, rdx
@@ -18298,14 +18337,25 @@ gen_typed_call_arg:
     mov rax, r13
     call gen_expr
 .gtca_push:
+%ifdef SUTRAM_R65_PEEPHOLES
+    test r15,r15
+    jnz .r65_skip_arg_push
+%endif
     mov dil, 0x50            ; runtime push rax
     call emit_byte
+%ifdef SUTRAM_R65_PEEPHOLES
+.r65_skip_arg_push:
+    pop r15
+%endif
     pop r14
     pop r13
     pop r12
     pop rbx
     ret
 .gtca_kosh_type_fail:
+%ifdef SUTRAM_R65_PEEPHOLES
+    pop r15
+%endif
     pop r14
     pop r13
     pop r12
