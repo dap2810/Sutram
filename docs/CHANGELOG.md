@@ -1,3 +1,20 @@
+## v144 — Linux X11 GUI slices 26-28: all seven menus, and two real bugs found
+
+- **The menu bar was a facade: `menu_has db 3,0,0,0,0,0,0` left six of the seven menus empty** and
+  only Open/Save/Exit did anything, though the GUI already had undo, cut/copy/paste, select-all, run,
+  find and a clipboard. **Slice 26** wires them all up — File, Edit (5 items), Shell, Debug, Options,
+  Window, Help; 13 items — plus a syntax-colour toggle and an About banner.
+- **Slice 27 fixed a real pre-existing bug the new test caught.** `draw_dropdown` read `menu_open`
+  into `rax`, then called `set_fg` — which does `mov rax, [gc]`, destroying it — before using `rax`
+  for the dropdown's x. **Every dropdown drew at menu 0's x.** The index is now held in `r15`.
+- **Slice 28 fixed a second real bug.** `menu_xoff` spacing is as little as 52px but `menu_hit`
+  treated each label as 74px wide, so **the hit regions overlapped** and clicking the left of a label
+  hit the *previous* menu — x=352 (Edit) opened File. Each region now ends where the next begins.
+- **New test `tools/test_x11_menus_all.py`** clicks all seven labels and requires each dropdown at its
+  own x with height `8 + 22*items`. It surfaced both bugs; all seven now pass.
+- GUI source ~86 KB; binary **36,896 B**; **14/14 GUI tests pass** (was 13). Compiler untouched.
+- Both bugs were **pre-existing**, not introduced here — the old menu test only exercised File.
+
 ## v143 — ChatGPT R65 verified and SYNCED (peepholes, integer traps, Devanagari aliases)
 
 - **R65 accepted — and it is the most substantial compiler round in a while.** ChatGPT shipped it
