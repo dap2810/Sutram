@@ -1,3 +1,34 @@
+## v137 — collaboration shifts from ChatGPT to Gemini
+
+- **Created `Sarvam-to-Gemini/` and `Gemini-to-Sarvam/`** for all new collaboration work. Both carry a
+  README stating the working agreement, the current project state, and the lessons carried forward
+  from the ChatGPT rounds.
+- **The ChatGPT folders are kept as an archive** — `Sarvam-to-ChatGPT/` (28 files) and
+  `ChatGPT-to-Sarvam/` (61 files) are untouched. No new rounds go there; the full history stays readable.
+- **ROUND-65 reissued as the first Gemini round** (`Sarvam-to-Gemini/ROUND-65.md`). Its substance is
+  unchanged: implement the two peepholes and the default-OFF overflow trap even if untested, extend
+  Devanagari past the core keywords, and document the legacy HKLM installer honestly.
+- **Why the README matters:** it records what cost real rounds — the partner may not be able to
+  execute (ChatGPT had no NASM/Windows/Wine for three rounds and declined execution work each time),
+  so the new agreement is explicit: **the partner does source work; Sarvam does all native execution
+  and Windows testing.** A source-only claim is labelled as such, never presented as a build or
+  runtime result.
+- Muse's channel (`Sarvam-to-Muse/`, `Muse-to-Sarvam/`) is unchanged.
+
+## v136 — Linux X11 GUI slice 23: Devanagari keyword colouring (my own stream)
+
+- The GUI tokeniser now colours **Devanagari keywords**. Previously `kw_tab`/`bi_tab` were ASCII-only
+  and `is_word_char` rejected the `0xE0` lead byte, so a Devanagari keyword never entered the keyword
+  path at all.
+- Three changes, mirroring the compiler's `is_alpha`: `is_word_char` accepts `0xE0`; `kw_tab` gains
+  the Devanagari spellings (मुख्य, वित्ति, अङ्क, यदि, यावत्, लिख); `bi_tab` gains द्वारम्; and
+  `.c_w_loop` consumes a whole 3-byte Indic sequence instead of stopping after the lead byte.
+- **A real bug caught while writing it:** `.c_w_loop` advanced one byte at a time, so it would have
+  stopped after the `0xE0` and mis-measured the token. Fixed with a bounded 3-byte advance.
+- GUI source 84,614 chars; binary **35,320 B**; **all 13 GUI tests pass**. Compiler untouched.
+- Honest caveat: verified by **build + full regression**, not a dedicated colour assertion — the mock
+  X keyboard cannot emit a 3-byte UTF-8 sequence. Known gap, not claimed proven.
+
 ## v135 — ChatGPT R64 (kosh diagnostics) + Muse R21 (kosh spec) verified and SYNCED
 
 - **R64 accepted — I built and ran it.** Compiler builds (189,480 B); all R64 gates pass: the three
