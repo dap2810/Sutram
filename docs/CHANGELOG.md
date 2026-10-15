@@ -1,3 +1,30 @@
+## v152 — the ninth paradigm, a live status page, and a wrong number corrected
+
+- **A new paradigm added to the charter: `Multilingual and native-script programming` (09).** The charter
+  had listed this only as a *capability*. It is a paradigm, and the reason is precise: **every other
+  language on the list can be described without naming a natural language; Sutram cannot.** Sanskrit is
+  the keyword core and the library is built on the Indian mathematical tradition, so the language's
+  identity and its grammar are the same decision. Section A now holds **nine paradigms**; section B holds
+  eleven capabilities; **20 requirements total.** The old capability item was retitled
+  *Language packs and the multilingual toolchain* so it describes the **mechanism** (packs, file
+  selection, Unicode rules) rather than duplicating the paradigm.
+- **Charter status now 3 implemented · 12 partial · 5 not started** (multilingual moves into the
+  implemented column). The page's own tally table was re-checked against its cards and matches.
+- **New page `sutram-project-status.html` — "How the Project Is Doing".** Every figure on it was measured
+  by building the compiler and running the gates in this session: 187 tests · 180 library proofs ·
+  72 property proofs · 33/33 packs · 12/12 codegen · 16/16 GUI · 11 packs · 21 modules / 281 functions ·
+  202 examples · 22 doc pages · 1,782 files · CHANGELOG v151. It also carries a plain list of **the three
+  things the project must not claim** — memory safety, Windows support, performance superiority — each
+  with the reason.
+- **A real error of mine, found by measuring instead of trusting my own earlier note.** The docs said
+  **216 worked examples**. The actual count is **202** `.sm` files under `examples/` (191 top level plus
+  11 nested). I had written 216 in an earlier round without counting. Corrected in `README.md`,
+  `PROJECT-OVERVIEW.md`, `sutram-scorecard.html` and `sutram-completion-roadmap.html`. This is the same
+  failure mode as the `.legend` bug and the stale counts: **a number I had previously "fixed" was still
+  wrong, and only a fresh count caught it.**
+- Also confirmed: the raw tarball served a stale tree showing v150 while the API confirmed v151 was on
+  main — the recurring stale-fetch trap, caught again by checking the API rather than the download.
+
 ## v151 — the design charter: what Sutram is being built to be
 
 - **`docs/sutram-design-parameters.html` is new** — the project's written design charter. It states the
