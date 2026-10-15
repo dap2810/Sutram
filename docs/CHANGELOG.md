@@ -1,3 +1,17 @@
+## v140 — Linux X11 GUI slice 24: grapheme-cluster advance (Devanagari stops running away)
+
+- **The real Devanagari rendering fix on the Linux side.** The GUI drew text at `x = byte_index * 8`,
+  so a 3-byte Devanagari sequence advanced **24px instead of 8px** and a line of Devanagari ran off to
+  the right. Now the **byte index** (used to slice the text) is separated from a **visual column** that
+  advances once per **grapheme cluster**: an ASCII byte is one cluster, a 3-byte Indic sequence is one.
+- New `count_clusters(ptr, len)`: scans for the `0xE0` lead byte and counts a 3-byte run as a single
+  cluster. `draw_line_coloured` keeps the running visual column at `[rsp+8]` and computes
+  `x = visual_col * 8 + x0`, while still advancing the byte index by the token length.
+- GUI source 84,628 -> ~85 KB; binary **35,504 B**; **all 13 GUI tests pass**. Compiler untouched.
+- Honest caveat: this fixes the **advance**, not the glyph shapes. True Devanagari shaping (matras,
+  conjuncts, the shirorekha) needs a font-level shaper, which is still outstanding — and it is the
+  Windows side's WS5 in ROUND-66. The Linux fix is the half that is provable here.
+
 ## v139 — main health-check, a sync gap fixed, and the two big rounds issued
 
 - **Fixed a real gap I introduced in the R21 sync: `tests/stdlib/containers21.exit` and
