@@ -1,3 +1,29 @@
+## v145 — ChatGPT R66 (Indic devices) + Muse R24 (parity, safety) verified and SYNCED
+
+- **R66 verified by running it.** Delivered through the same checksum-guarded staging pattern as R65:
+  `tools/r66_prepare_review.py` took the accepted compiler (blob `caee7373...`, matching main exactly)
+  and produced a staged source of blob `e1a67674...` with **8 anchors applied**. All four configurations
+  build — default **190,144 B** (up from R65's 189,480, for the new numerals), peepholes 190,696,
+  trap 191,560, combined 192,104. **16/16 R66 unit tests pass.** Suite **187/4**; codegen **12/12**;
+  packs **33/33**; graph **OK**; proof_lib **176/176**; proof_props **68/68**; R58 **8/8**; R59 **3/3**.
+- **R66 adds:** native Devanagari/Gujarati digit readers, exact abbreviation aliases, the Sanskrit pack
+  grows 49 -> 54 entries, the Gujarati pack 30 -> 45, and a Windows cluster-iterator object + plan.
+- **A real defect found in R66's Gujarati pack — and NOT synced.** The branch reserves **`સંખ્યા`
+  (sankhya)** as a keyword, but the accepted test `37_native_gujarati` uses that exact word as a
+  **variable name** (`ચલ સંખ્યા = 7`, three uses). Reserving it makes the test fail to compile:
+  `પંક્તિ 3:8 નજીક ટોકન 'સંખ્યા'`. I confirmed this is not an R66 compiler regression — it fails on
+  the pre-R66 compiler too, and only when the branch's pack is present. **`lang/gujarati.lang` is
+  therefore held back**; main keeps its working pack, and the suite stays green. This is the one part
+  of R66 that is not merged.
+- **Muse R24 verified and synced.** Patch clean; **8/8 hashes**; proof_lib **176/176** (was 175),
+  proof_props **68/68** (was 65), suite **187/4**; library now **21 modules / 278 functions**. Four new
+  functions (`ganita_sat_div`, `ganita_sat_mod`, `ganita_checked_abs`, `ganita_sat_abs`), the complete
+  30-row `str_*`/`strb_*` parity table, the consolidated `docs/OVERFLOW-SAFETY.md`, and the container
+  surface declared complete.
+- **A note on the sync:** several PUT calls reported success without landing (the `ganita.smlib` push
+  took four attempts). I verified every file against the GitHub API rather than trusting the call —
+  the tarball and the raw CDN both served stale copies at different points this session.
+
 ## v144 — Linux X11 GUI slices 26-28: all seven menus, and two real bugs found
 
 - **The menu bar was a facade: `menu_has db 3,0,0,0,0,0,0` left six of the seven menus empty** and
