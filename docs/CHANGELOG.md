@@ -1,20 +1,27 @@
-## v138 — collaboration reverts to ChatGPT; Gemini folders removed
+## v139 — main health-check, a sync gap fixed, and the two big rounds issued
 
-- **`Sarvam-to-Gemini/` and `Gemini-to-Sarvam/` are removed** from the repository, at the user's
-  direction. The plan to move the compiler-side partnership to Gemini is cancelled.
-- **The ChatGPT folders are intact and remain the working channel** — `Sarvam-to-ChatGPT/` (28 files)
-  and `ChatGPT-to-Sarvam/` (61 files). **`Sarvam-to-ChatGPT/ROUND-65.md` is already waiting there**, so
-  the next ChatGPT round needs no reissue.
-- **Why the Gemini move was abandoned:** Gemini's chat could not reach the repo at all. It reported the
-  repository as private, which is **factually wrong** — verified by an unauthenticated request returning
-  HTTP 200 with `private: false` (a genuinely private repo returns 404), plus successful anonymous
-  fetches of the README, the round brief, and the API. The blocker was Gemini's own tooling, not the
-  repo's visibility, and changing the Google vs GitHub email would not have helped.
-- No project source, library, test, doc or GUI file was touched by this change — only the two
-  collaboration folders.
-- **Next:** ROUND-65 stands as issued to ChatGPT (implement the two peepholes and the default-OFF
-  overflow trap even if untested; extend Devanagari past the core keywords; document the legacy HKLM
-  installer honestly).
+- **Fixed a real gap I introduced in the R21 sync: `tests/stdlib/containers21.exit` and
+  `gaps21.exit` were never pushed**, so `proof_lib` reported "missing golden .exit". Regenerated both
+  from actual runs (exit 0, matching `.out`) and synced. **`proof_lib` is back to 172/172** and the
+  suite stays 187/3.
+- **Full health check of main, all green:** compiler builds (189,480 B, `82b0a9f8...`); suite 187/3;
+  codegen 12/12; packs 33/33; graph OK; proof_lib 172/172; proof_props 62/62; R58 8/8; R59 3/3;
+  R63 9 gates; R64 diagnostics accepted.
+- **Neither agent has replied to the open rounds** (ROUND-65 / ROUND-22), so there was nothing new to
+  sync from them.
+- **Issued two bigger rounds, superseding the unanswered ones:**
+  - **ROUND-66 → ChatGPT (six workstreams):** the two peepholes; the default-OFF overflow trap; complete
+    the Devanagari keyword surface plus digits and the abbreviation sign; **roll the Indic device set to
+    Gujarati** as the template for the remaining scripts (own numerals `૦–૯`, own abbreviation sign `૰`,
+    shared danda); Devanagari GUI shaping; and the legacy HKLM installer documented honestly.
+  - **ROUND-23 → Muse (five workstreams):** reconcile the `kosh` spec with the R64 diagnostics; the
+    remaining container gaps; the accumulated small gaps; a second pass on the string/byte surface
+    including slice-boundary bugs; and the final trap-vs-checked note.
+- Both rounds carry the Devanagari lexer note, the least-privilege/no-credentials/no-new-network
+  constraints, and the standing rule that **the partner does source work and Sarvam runs all native
+  execution** — an unverified implementation is worth more than another "NOT IMPLEMENTED".
+- Muse's brief now requires **every new `.sm` test to ship both a `.out` and a `.exit`** golden, which
+  is the gap that broke `proof_lib` here.
 
 ## v137 — collaboration shifts from ChatGPT to Gemini
 
