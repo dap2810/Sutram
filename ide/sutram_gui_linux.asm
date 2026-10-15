@@ -307,6 +307,9 @@ section .bss
     find_len    resq 1
     find_buf    resb FIND_CAP
     want_quit   resd 1
+    ; slice 30: a filename given on the command line
+    startup_path resb OPEN_CAP
+    startup_open resq 1
     ; ---- slice 16: selection + internal clipboard ----
     sel_anchor  resq 1               ; selection anchor; -1 when there is none
     clip_buf    resb CLIP_CAP        ; internal clipboard bytes
@@ -857,6 +860,10 @@ draw_all:
     lea rsi, [reqbuf]
     call send_req
     call draw_output
+
+    ; slice 31: repaint the editor text. Without this an Expose (or the first
+    ; paint after startup) leaves the editor blank until the user types.
+    call draw_editor
 
     cmp qword [rel br_mode], 0
     je  .notbr
@@ -3719,6 +3726,30 @@ handle_key:
 
 ; ---------------------------------------------------------------- _start
 _start:
+    ; slice 30: remember argv[1], if one was given. Do this FIRST -- every call
+    ; below pushes, so the initial [rsp] is only valid here.
+    mov rax, [rsp]                  ; argc
+    cmp rax, 2
+    jl .no_arg
+    mov rsi, [rsp+16]               ; argv[1]
+    test rsi, rsi
+    jz .no_arg
+    lea rdi, [rel startup_path]
+    mov rcx, OPEN_CAP - 1
+.sa_cp:
+    mov al, [rsi]
+    test al, al
+    jz .sa_done
+    mov [rdi], al
+    inc rsi
+    inc rdi
+    dec rcx
+    jnz .sa_cp
+.sa_done:
+    mov byte [rdi], 0
+    mov qword [rel startup_open], 1
+.no_arg:
+
     call connect_x
     cmp rax, -1
     je .nox
@@ -3761,6 +3792,27 @@ _start:
     ; ---- keyboard mapping (slice 4) --------------------------------------
     mov rdi, r12
     call fetch_keymap
+
+    ; slice 30: open the file named on the command line, now that the window
+    ; and GC exist. The first Expose event then paints it.
+    cmp qword [rel startup_open], 0
+    je .no_startup
+    lea rsi, [rel startup_path]
+    lea rdi, [rel open_buf]
+    xor rcx, rcx
+.su_cp:
+    mov al, [rsi]
+    test al, al
+    jz .su_done
+    mov [rdi], al
+    inc rsi
+    inc rdi
+    inc rcx
+    jmp .su_cp
+.su_done:
+    mov [rel open_len], rcx
+    call open_do
+.no_startup:
 
     lea rsi, [msg_ok]
     call write_z
