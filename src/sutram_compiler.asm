@@ -11208,6 +11208,12 @@ gen_stmt:
     test rax, rax
     jz .gs_assign_generic
 %endif
+%ifdef SUTRAM_R65_TRAP_INT
+    ; The optional safety mode bypasses all integer assignment fast paths.
+    ; Continue through the generic value emitter, never fall through to
+    ; the fast-path "done" return without generating an assignment.
+    jmp .gs_assign_generic
+%endif
 .gs_assign_fast_done:
     pop rbx
     ret
