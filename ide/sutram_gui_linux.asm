@@ -1387,6 +1387,27 @@ classify:
 
 ; draw one line with per-token colours.
 ; rsi=line ptr, rdx=len, rcx=x0, r8=y.  Preserves r12 (the X fd).
+; slice 24: count grapheme clusters. An ASCII byte is one cluster; a 3-byte
+; Indic sequence (lead 0xE0) is one cluster, not three. rdi=ptr rsi=len -> rax.
+count_clusters:
+    xor rax, rax
+    xor rcx, rcx
+.cc_loop:
+    cmp rcx, rsi
+    jae .cc_done
+    movzx edx, byte [rdi+rcx]
+    cmp dl, 0xE0
+    jne .cc_one
+    add rcx, 3
+    inc rax
+    jmp .cc_loop
+.cc_one:
+    inc rcx
+    inc rax
+    jmp .cc_loop
+.cc_done:
+    ret
+
 draw_line_coloured:
     push rbx
     push rbp
@@ -1398,7 +1419,8 @@ draw_line_coloured:
     mov r13, rdx                    ; line length
     mov rbp, rcx                    ; x0
     mov r14, r8                     ; y
-    xor r15, r15                    ; column
+    xor r15, r15                    ; BYTE index into the line
+    mov qword [rsp+8], 0            ; slice 24: VISUAL column (clusters)
 .dlc_loop:
     cmp r15, r13
     jae .dlc_done
@@ -1440,11 +1462,16 @@ draw_line_coloured:
     mov edi, COL_DANDA
 .dlc_set:
     call set_fg
-    mov rsi, rbx
-    add rsi, r15
-    mov rcx, r15
+    ; slice 24: advance the visual column once per grapheme cluster
+    lea rdi, [rbx+r15]
+    mov rsi, [rsp]
+    call count_clusters
+    mov rcx, [rsp+8]                ; visual column BEFORE this token
+    add [rsp+8], rax                ; advance for the next token
     imul rcx, 8
     add rcx, rbp
+    mov rsi, rbx
+    add rsi, r15
     mov r8, r14
     mov rdx, [rsp]
     call draw_text
