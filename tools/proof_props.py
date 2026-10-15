@@ -3407,6 +3407,381 @@ def prop_safety25(compiler, rng):
     return True, "PASS"
 
 
+def prop_safety26(compiler, rng):
+    """WS1 (R26): checked/saturating INTERACTION — for every op, sat
+    and checked agree on the success path, and on the failure path sat
+    is the clamp (overflow) or 0 (invalid input); saturating never
+    wraps for any input. Randomized battery (fixed seed), split into
+    three programs to stay under the per-block statement limit."""
+    import math
+    maxv = 2**63 - 1
+    minv = -(2**63)
+    edges = [0, 1, -1, 2, -2, 5, -5, 100, -100, maxv, minv,
+             maxv - 1, minv + 1, 3037000500, -3037000500]
+
+    def lit(v):
+        return "maxv" if v == maxv else ("minv" if v == minv else
+                                         (f"(0 - {-v})" if v < 0 else str(v)))
+
+    def trunc_div(a, b):
+        q = abs(a) // abs(b)
+        return q if (a < 0) == (b < 0) else -q
+
+    def trunc_mod(a, b):
+        return a - trunc_div(a, b) * b
+
+    def clamp(true):
+        return maxv if true > maxv else (minv if true < minv else true)
+
+    def overflows(true):
+        return true > maxv or true < minv
+
+    parts = {"a1": [], "a2": [], "b": [], "c": []}
+    # Unique variable names per call: re-declaring `vitti cv` in one
+    # block is a compiler bug (later reads see the FIRST value).
+    cnt = [0]
+
+    def fresh():
+        cnt[0] += 1
+        return cnt[0]
+    for p in parts.values():
+        p += ["ayojan ganita",
+              "mukhya() {",
+              "    vitti ok = nirmmita(8)",
+              "    vitti minv = (0 - 9223372036854775807) - 1",
+              "    vitti maxv = 9223372036854775807"]
+
+    def fail(lines, msg):
+        lines.append(f'        likha("FAIL {msg}\\n")')
+        lines.append("        pratiyati 1")
+
+    def agree_binop(lines, cf, sf, a, b, true, invalid):
+        """checked cf vs saturating sf on (a,b): true = exact result,
+        invalid = True if the input itself is invalid (div/mod by
+        zero, MIN/-1 for div is overflow not invalid)."""
+        n = fresh()
+        lines.append(f"    vitti cv{n} = {cf}({lit(a)}, {lit(b)}, ok)")
+        lines.append(f"    vitti cok{n} = ok[0]")
+        lines.append(f"    vitti sv{n} = {sf}({lit(a)}, {lit(b)})")
+        lines.append(f"    yadi (cok{n} == 1) {{")
+        lines.append(f"        yadi (sv{n} != cv{n}) {{")
+        fail(lines, f"{cf}/{sf} agree success")
+        lines.append("        }")
+        lines.append("    } anyatra {")
+        if invalid:
+            lines.append(f"        yadi (sv{n} != 0) {{")
+            fail(lines, f"{cf}/{sf} invalid -> 0")
+            lines.append("        }")
+        else:
+            lines.append(f"        yadi (sv{n} != {lit(clamp(true))}) {{")
+            fail(lines, f"{cf}/{sf} overflow -> clamp")
+            lines.append("        }")
+        lines.append("    }")
+
+    # --- parts a1/a2: add/sub/mul, then div/mod; random + edge pairs
+    la1 = parts["a1"]
+    la2 = parts["a2"]
+    pairs = [(rng.choice(edges), rng.choice(edges)) for _ in range(6)]
+    pairs += [(rng.randint(-10**12, 10**12), rng.randint(-10**12, 10**12))
+              for _ in range(6)]
+    pairs += [(maxv, 1), (minv, -1), (minv, 1), (maxv, -1),
+              (3037000500, 3037000500), (2**32, 2**32), (5, 0), (0, 0)]
+    for a, b in pairs:
+        agree_binop(la1, "ganita_checked_add", "ganita_sat_add",
+                    a, b, a + b, False)
+        agree_binop(la1, "ganita_checked_sub", "ganita_sat_sub",
+                    a, b, a - b, False)
+        agree_binop(la1, "ganita_checked_mul", "ganita_sat_mul",
+                    a, b, a * b, False)
+    for a, b in pairs:
+        if b == 0:
+            agree_binop(la2, "ganita_checked_div", "ganita_sat_div",
+                        a, b, 0, True)
+            agree_binop(la2, "ganita_checked_mod", "ganita_sat_mod",
+                        a, b, 0, True)
+        elif a == minv and b == -1:
+            # div: overflow -> MAX; mod: exact 0 (guarded, not overflow)
+            la2.append("    vitti cvd = ganita_checked_div(minv, 0 - 1, ok)")
+            la2.append("    yadi (ok[0] != 0) {")
+            fail(la2, "checked_div MIN/-1 ok")
+            la2.append("    }")
+            la2.append("    yadi (ganita_sat_div(minv, 0 - 1) != maxv) {")
+            fail(la2, "sat_div MIN/-1 clamp")
+            la2.append("    }")
+            la2.append("    vitti cvm = ganita_checked_mod(minv, 0 - 1, ok)")
+            la2.append("    yadi (ok[0] != 0) {")
+            fail(la2, "checked_mod MIN/-1 ok")
+            la2.append("    }")
+            la2.append("    yadi (ganita_sat_mod(minv, 0 - 1) != 0) {")
+            fail(la2, "sat_mod MIN/-1 exact 0")
+            la2.append("    }")
+        else:
+            agree_binop(la2, "ganita_checked_div", "ganita_sat_div",
+                        a, b, trunc_div(a, b), False)
+            agree_binop(la2, "ganita_checked_mod", "ganita_sat_mod",
+                        a, b, trunc_mod(a, b), False)
+    # --- part b: pow/fact
+    lb = parts["b"]
+    pow_cases = [(rng.choice(edges), rng.randint(0, 70)) for _ in range(6)]
+    pow_cases += [(2, 62), (2, 63), (-2, 63), (-2, 64), (3, 40),
+                  (10, 19), (0, 0), (2, -1), (-3, -2)]
+    for a, e in pow_cases:
+        n = fresh()
+        lb.append(f"    vitti cv{n} = ganita_checked_pow({lit(a)}, {lit(e)}, ok)")
+        lb.append(f"    vitti cok{n} = ok[0]")
+        lb.append(f"    vitti sv{n} = ganita_sat_pow({lit(a)}, {lit(e)})")
+        if e < 0:
+            lb.append(f"    yadi (cok{n} != 0) {{")
+            fail(lb, "checked_pow neg ok")
+            lb.append("    }")
+            lb.append(f"    yadi (sv{n} != 0) {{")
+            fail(lb, "sat_pow neg -> 0")
+            lb.append("    }")
+        else:
+            true = a ** e
+            lb.append(f"    yadi (cok{n} == 1) {{")
+            lb.append(f"        yadi (sv{n} != cv{n}) {{")
+            fail(lb, "pow agree success")
+            lb.append("        }")
+            lb.append("    } anyatra {")
+            lb.append(f"        yadi (sv{n} != {lit(clamp(true))}) {{")
+            fail(lb, "pow overflow -> clamp")
+            lb.append("        }")
+            lb.append("    }")
+    for n in [rng.randint(-2, 30) for _ in range(6)] + [-1, 0, 20, 21, 25]:
+        n = fresh()
+        lb.append(f"    vitti cv{n} = ganita_checked_fact({lit(n)}, ok)")
+        lb.append(f"    vitti cok{n} = ok[0]")
+        lb.append(f"    vitti sv{n} = ganita_sat_fact({lit(n)})")
+        if n < 0:
+            lb.append(f"    yadi (cok{n} != 0) {{")
+            fail(lb, "checked_fact neg ok")
+            lb.append("    }")
+            lb.append(f"    yadi (sv{n} != 0) {{")
+            fail(lb, "sat_fact neg -> 0")
+            lb.append("    }")
+        else:
+            true = math.factorial(n)
+            lb.append(f"    yadi (cok{n} == 1) {{")
+            lb.append(f"        yadi (sv{n} != cv{n}) {{")
+            fail(lb, "fact agree success")
+            lb.append("        }")
+            lb.append("    } anyatra {")
+            lb.append(f"        yadi (sv{n} != {lit(clamp(true))}) {{")
+            fail(lb, "fact overflow -> clamp")
+            lb.append("        }")
+            lb.append("    }")
+    # --- part c: abs + never-wrap spot checks
+    lc = parts["c"]
+    for a in [rng.randint(-2**63, 2**63 - 1) for _ in range(8)] + [minv, maxv, 0]:
+        n = fresh()
+        lc.append(f"    vitti cv{n} = ganita_checked_abs({lit(a)}, ok)")
+        lc.append(f"    vitti cok{n} = ok[0]")
+        lc.append(f"    vitti sv{n} = ganita_sat_abs({lit(a)})")
+        if a == minv:
+            lc.append(f"    yadi (cok{n} != 0) {{")
+            fail(lc, "checked_abs MIN ok")
+            lc.append("    }")
+            lc.append(f"    yadi (sv{n} != maxv) {{")
+            fail(lc, "sat_abs MIN clamp")
+            lc.append("    }")
+        else:
+            lc.append(f"    yadi (cok{n} != 1) {{")
+            fail(lc, "checked_abs ok")
+            lc.append("    }")
+            lc.append(f"    yadi (sv{n} != cv{n}) {{")
+            fail(lc, "abs agree success")
+            lc.append("    }")
+    for expr, want in [("ganita_sat_add(maxv, 1)", "maxv"),
+                       ("ganita_sat_sub(minv, 1)", "minv"),
+                       ("ganita_sat_mul(maxv, maxv)", "maxv"),
+                       ("ganita_sat_mul(minv, minv)", "maxv"),
+                       ("ganita_sat_pow(0 - 2, 65)", "minv"),
+                       ("ganita_sat_fact(30)", "maxv")]:
+        lc.append(f"    yadi ({expr} != {want}) {{")
+        fail(lc, f"{expr} never wraps")
+        lc.append("    }")
+    for key, lines in parts.items():
+        lines.append('    likha("PASS\\n")')
+        lines.append("}")
+        ok, out = run_sm(compiler, f"safety26{key}", "\n".join(lines))
+        if not (ok and out == "PASS"):
+            return False, out
+    return True, "PASS"
+
+
+def prop_breadth26(compiler, rng):
+    """R26 WS4: math_rand determinism + known LCG values, math_clamp
+    vs Python, str_to_float vs Python float() (relative 1e-9)."""
+    import math as _math
+    part1 = ["ayojan math", "ayojan strconv", "mukhya() {",
+             "    vitti ok = nirmmita(8)",
+             "    vitti s1 = nirmmita(8)",
+             "    vitti s2 = nirmmita(8)",
+             "    s1[0] = 12345",
+             "    s2[0] = 12345"]
+    part2 = ["ayojan strconv", "mukhya() {",
+             "    vitti ok = nirmmita(8)",
+             "    vitti buf = nirmmita(32 * 8)"]
+    lines = part1
+
+    def fail(msg):
+        lines.append(f'        likha("FAIL {msg}\\n")')
+        lines.append("        pratiyati 1")
+
+    # rand: same seed -> identical sequences; seed 0 -> first is the
+    # LCG increment constant.
+    for i in range(4):
+        lines.append(f"    yadi (math_rand(s1) != math_rand(s2)) {{")
+        fail("rand determinism")
+        lines.append("    }")
+    lines.append("    vitti s0 = nirmmita(8)")
+    lines.append("    s0[0] = 0")
+    lines.append("    yadi (math_rand(s0) != 1442695040888963407) {")
+    fail("rand seed0")
+    lines.append("    }")
+    # clamp vs Python
+    for v, lo, hi in [(5, 0, 10), (-5, 0, 10), (15, 0, 10), (0, 0, 10),
+                      (10, 0, 10), (7, 7, 7), (-100, -10, -1)]:
+        want = min(max(v, lo), hi)
+        lines.append(f"    yadi (math_clamp({v}, {lo}, {hi}) != {want}) {{")
+        fail("clamp")
+        lines.append("    }")
+    # float parse vs Python, tolerance 1e-9 relative
+    lines.append("    vitti buf = nirmmita(32 * 8)")
+    for ci, s in enumerate(["0", "1", "-1", "3.14159", "0.5", "2.5", "-0.02",
+              "100000", "123456.789", "1e10", "1.5e-5", ".5", "12.",
+              "-2e-2", "0.000001"]):
+        want = float(s)
+        for j, ch in enumerate(s):
+            lines.append(f"    buf[{j}] = {ord(ch)}")
+        lines.append(f"    vitti f{ci} = str_to_float(buf, {len(s)}, ok)")
+        lines.append("    yadi (ok[0] != 1) {")
+        fail(f"float ok {s}")
+        lines.append("    }")
+        if want == 0.0:
+            lines.append(f"    yadi (f{ci} != 0.0) {{")
+            fail(f"float zero {s}")
+            lines.append("    }")
+        else:
+            wlit = repr(want) if "e" not in repr(want) else f"{want:.15f}"
+            lines.append(f"    vitti want{ci} = {wlit}")
+            lines.append(f"    vitti diff{ci} = f{ci} - want{ci}")
+            lines.append(f"    yadi (diff{ci} < 0.0) {{ diff{ci} = 0.0 - diff{ci} }}")
+            lines.append(f"    vitti lim{ci} = want{ci}")
+            lines.append(f"    yadi (lim{ci} < 0.0) {{ lim{ci} = 0.0 - lim{ci} }}")
+            lines.append(f"    lim{ci} = lim{ci} * 0.000000001")
+            lines.append(f"    yadi (diff{ci} > lim{ci}) {{")
+            fail(f"float value {s}")
+            lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    lines = part2
+    # invalid inputs -> ok 0
+    for ii, s in enumerate(["", "1x", "1e", "1e+", ".", "e5", "1.2.3", "+1", " 1",
+              "inf", "nan", "1e400"]):
+        for j, ch in enumerate(s):
+            lines.append(f"    buf[{j}] = {ord(ch)}")
+        lines.append(f"    vitti f{ci} = str_to_float(buf, {len(s)}, ok)")
+        lines.append("    yadi (ok[0] != 0) {")
+        fail(f"float invalid {s or 'empty'}")
+        lines.append("    }")
+    # underflow -> 0.0, ok 1
+    lines.append('    buf[0] = 49')
+    lines.append('    buf[1] = 101')
+    lines.append('    buf[2] = 45')
+    lines.append('    buf[3] = 57')
+    lines.append('    buf[4] = 57')
+    lines.append('    buf[5] = 57')
+    lines.append('    vitti fu = str_to_float(buf, 6, ok)')
+    lines.append("    yadi (ok[0] != 1) {")
+    fail("float underflow ok")
+    lines.append("    }")
+    lines.append("    yadi (fu != 0.0) {")
+    fail("float underflow value")
+    lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    for key, prog in (("b26a", part1), ("b26b", part2)):
+        ok, out = run_sm(compiler, key, "\n".join(prog))
+        if not (ok and out == "PASS"):
+            return False, out
+    return True, "PASS"
+
+
+def _base_repr(n, b):
+    digits = "0123456789abcdefghijklmnopqrstuvwxyz"
+    if n == 0:
+        return "0"
+    out = ""
+    while n > 0:
+        out = digits[n % b] + out
+        n //= b
+    return out
+
+
+def prop_min26(compiler, rng):
+    """R26 WS3: INT64_MIN fixes — int_to_str(MIN), fmt_digits_base
+    negatives, fmt_int_base/fmt_int_flags(MIN) vs Python."""
+    lines = ["ayojan strconv", "ayojan fmt", "mukhya() {",
+             "    vitti ok = nirmmita(8)",
+             "    vitti buf = nirmmita(32 * 8)",
+             "    vitti out = nirmmita(80 * 8)",
+             "    vitti minv = (0 - 9223372036854775807) - 1"]
+
+    def fail(msg):
+        lines.append(f'        likha("FAIL {msg}\\n")')
+        lines.append("        pratiyati 1")
+
+    # int_to_str(MIN) == "-9223372036854775808", and round-trips
+    lines.append("    vitti n0 = int_to_str(minv, buf)")
+    lines.append("    yadi (n0 != 20) {")
+    fail("int_to_str MIN len")
+    lines.append("    }")
+    for j, ch in enumerate("-9223372036854775808"):
+        lines.append(f"    yadi (buf[{j}] != {ord(ch)}) {{")
+        fail("int_to_str MIN chars")
+        lines.append("    }")
+    lines.append("    yadi (str_to_int(buf, n0, ok) != minv) {")
+    fail("int_to_str MIN roundtrip")
+    lines.append("    }")
+    lines.append("    yadi (ok[0] != 1) {")
+    fail("int_to_str MIN roundtrip ok")
+    lines.append("    }")
+    # fmt_digits_base(-5) == "5"
+    lines.append("    yadi (fmt_digits_base(0 - 5, 10, 0, out) != 1) {")
+    fail("fmt_digits_base neg len")
+    lines.append("    }")
+    lines.append("    yadi (char_at(out, 0) != 53) {")
+    fail("fmt_digits_base neg char")
+    lines.append("    }")
+    # fmt_int_base(MIN) vs Python in several bases
+    for ci, b in enumerate([2, 8, 10, 16, 36]):
+        want = "-" + _base_repr(2**63, b)
+        lines.append(f"    vitti nb{ci} = fmt_int_base(minv, {b}, out)")
+        lines.append(f"    yadi (nb{ci} != {len(want)}) {{")
+        fail(f"fmt_int_base MIN base {b} len")
+        lines.append("    }")
+        for j, ch in enumerate(want):
+            lines.append(f"    yadi (char_at(out, {j}) != {ord(ch)}) {{")
+            fail(f"fmt_int_base MIN base {b} char {j}")
+            lines.append("    }")
+    # fmt_int_flags(MIN, 16, prefix) == "-0x8000000000000000"
+    want = "-0x8000000000000000"
+    lines.append("    vitti nf = fmt_int_flags(minv, 16, 1, out)")
+    lines.append(f"    yadi (nf != {len(want)}) {{")
+    fail("fmt_int_flags MIN len")
+    lines.append("    }")
+    for j, ch in enumerate(want):
+        lines.append(f"    yadi (char_at(out, {j}) != {ord(ch)}) {{")
+        fail("fmt_int_flags MIN chars")
+        lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "min26", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
 def main():
     compiler = None
     for i, a in enumerate(sys.argv):
@@ -3486,6 +3861,9 @@ def main():
         ("invariants24 merge/symdiff", prop_invariants24_merge_symdiff),
         ("safety24", prop_safety24),
         ("safety25 oracle", prop_safety25),
+        ("safety26 interaction", prop_safety26),
+        ("breadth26", prop_breadth26),
+        ("min26", prop_min26),
     ]
 
     failed = []
