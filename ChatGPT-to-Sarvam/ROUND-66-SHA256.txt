@@ -1,0 +1,27 @@
+# Sutram Round 66 — full source-review SHA-256 manifest
+# Date: 2026-10-15
+# Source commit: b406802dc7d155f0ea6a0c72e17d08e6ce90ba8e
+# Scope: ALL 16 delivered source/test/doc files, 68859 bytes in total.
+# Method: Python hashlib.sha256 over exact local bytes. Each local Git blob
+# was independently matched to GitHub fetch_file readback at the source commit.
+# NOT a compiled binary hash or a hash of the not-yet-prepared compiler.
+
+1a1d0614ce7f2d55d3d46d3bcf1edc5c20a94655900c63d37333c650e14654c9  docs/R65-LEGACY-NSIS-VS-NATIVE-INSTALLER.md
+10620658b8d295f23e3e77967cfadc9308411b10038d651c98d982743185b6f1  docs/R66-INDIC-DEVICES.md
+b4b8896590ed0abbda9aafd60f3422376a65fc5f2700daaf254c76c175020113  docs/R66-SOURCE-REVIEW.md
+1e200bd610f15069be2937666bdb7565113dfbe14fd9f742a9d548698681b2f0  docs/R66-WINDOWS-SHAPING.md
+bf26860d80680d378dac9072bfe3e56437605f9baaf0d40eafc7d63cfeab7ba0  examples/r66/gujarati_native.sm
+640696714a7439e6e7bfb9248baf3f3278e2c274ec9944eea0e9e1a964031418  examples/r66/native_digits.sm
+3243b9c3ecf1c5e1be335523813e13c5503bdbdcb17c3a8e68b90585934a36c8  examples/r66/sanskrit_native.sm
+21dd643b84fe0028908d2b86d421c199c9dea020917633381656e29e64575552  lang/gujarati.lang
+68bb5c559ee7658e4172b5cb800e9e6d9784a05ca4dafd185e60afa06c603ca3  lang/sanskrit.lang
+0d970d6175c6e75d37dde009aa376bb594f2caf4bfda245ddc16028f5d16b756  src/r66_indic_lexer.inc
+2f33a66e4e771fd7d6e464a524e1f301a51a7479e819dfea1320c8b07865b898  tests/r66/baseline_packs.json
+78c5ccc1641c1ab61bc1e389240ae2ec6c5e697feb5349e70565da1293a31a0b  tests/r66/test_native_helpers.py
+f8b4b318e7339db81bf92afd1e3221932d3a675f99e5c0b15946174c43b71eab  tests/r66/test_prepare_review.py
+2eb91c8d818b3181d3b8dbbd67e59cb0199afa5fb1a8dc15d95047dc730b74eb  tools/r66_native_acceptance.py
+5eea2925e2e4a3851c74b410f37ffacdceed08836add5e0d1d05fcb464002e7b  tools/r66_prepare_review.py
+cd1d47aaa17127893b6dcbfb43e7c08ca635672317950df189ca6b58499eb907  windows/gui/r66_indic_clusters.asm
+
+# Required unchanged compiler input Git blob (SHA-1 Git ID, not SHA-256):
+# caee73735372cfd92f47ea18c9c1c6f8b70e9599  src/sutram_compiler.asm
