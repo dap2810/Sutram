@@ -54,7 +54,7 @@ UAC elevation, no HKLM, no services, no disabling of OS security), and
 | `src/sutram_compiler.asm` | **the entire compiler**, one file, ~15k lines |
 | `lib/` | standard library — 21 modules with code, 278 functions (`.smlib`) |
 | `lang/` | 11 language packs, one per Indian language |
-| `examples/` | 216 programs, each with expected output and exit code |
+| `examples/` | 202 programs, each with expected output and exit code |
 | `tests/` | regression suite, golden files, per-host expectations |
 | `tools/` | benchmarks, codegen gates, protocol tests, verification helpers |
 | `docs/` | reference, guides, and generated HTML pages |
@@ -135,7 +135,7 @@ Loaded with `sutram --lang tamil` or `SUTRAM_LANG=tamil`.
 | Regression suite | **186/186** |
 | Code-generation gates | **12/12** |
 | Language packs | **33/33** |
-| Examples | 216 |
+| Examples | 202 |
 | Library modules | 21 with code (278 functions) |
 | Books | 6 editions, kept in step with the language |
 
