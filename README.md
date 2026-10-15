@@ -50,12 +50,12 @@ Semicolons and braces are optional. The full reference is in
 
 ## What is in this release
 
-- **178 worked examples** in `examples/`, each with expected output and exit code
-- **12 standard-library modules with code** in `lib/`, 103 functions between
+- **216 worked examples** in `examples/`, each with expected output and exit code
+- **21 standard-library modules with code** in `lib/`, 278 functions between
   them — mathematics, sorting, strings, statistics, calculus, matrix work, and
   heritage modules built on classical Indian mathematics. Three further files
   (`array`, `io`, `net`) are comment-only design sketches, not working modules
-- **10 language packs** in `lang/` — Hindi, Bengali, Gujarati, Kannada,
+- **11 language packs** in `lang/` — Sanskrit, Hindi, Bengali, Gujarati, Kannada,
   Malayalam, Marathi, Odia, Punjabi, Tamil, Telugu
 - **Six book editions** in `books/` — English, Hindi, Sanskrit, Tamil, Telugu,
   Gujarati
@@ -127,7 +127,7 @@ Windows target:
 
 Sutram is roughly **85% of the way to a solid compiler** and around **50% of
 the way to a practical general-purpose language**. The current suite is
-178/178 with 12/12 code-generation shape gates.
+187 pass (4 no-expectation) with 12/12 code-generation shape gates.
 
 Known limits, stated plainly rather than buried:
 
