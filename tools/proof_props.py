@@ -3258,6 +3258,155 @@ def prop_safety24(compiler, rng):
     return ok and out == "PASS", out
 
 
+def prop_safety25(compiler, rng):
+    """WS1+WS4: every ganita_checked_*/ganita_sat_* against an
+    independent Python-oracle implementation of the contract, plus
+    the R24 invariants: sat and checked agree on the success path,
+    sat_abs/checked_abs agree for non-MIN, saturating never wraps."""
+    import math
+    maxv = 2**63 - 1
+    minv = -(2**63)
+    edges = [0, 1, -1, 2, -2, 3, -3, 5, -5, 7, -7, 100, -100,
+             3037000499, 3037000500, -3037000500, maxv, minv,
+             maxv - 1, minv + 1]
+
+    def lit(v):
+        return "maxv" if v == maxv else ("minv" if v == minv else
+                                         (f"(0 - {-v})" if v < 0 else str(v)))
+
+    def trunc_div(a, b):
+        q = abs(a) // abs(b)
+        return q if (a < 0) == (b < 0) else -q
+
+    def trunc_mod(a, b):
+        return a - trunc_div(a, b) * b
+
+    def clamp(true):
+        return maxv if true > maxv else (minv if true < minv else true)
+
+    def overflows(true):
+        return true > maxv or true < minv
+
+    # The checks are split into four programs: one mukhya() block holds
+    # at most a few hundred statements ("too many statements in block"
+    # otherwise). Each part must print PASS.
+    parts = {"a": [], "b": [], "c": [], "d": []}
+    for p in parts.values():
+        p += ["ayojan ganita",
+              "mukhya() {",
+              "    vitti ok = nirmmita(8)",
+              "    vitti minv = (0 - 9223372036854775807) - 1",
+              "    vitti maxv = 9223372036854775807"]
+
+    def fail(lines, msg):
+        lines.append(f'        likha("FAIL {msg}\\n")')
+        lines.append("        pratiyati 1")
+
+    def check_checked(lines, fname, args, want_val, want_ok):
+        argstr = ", ".join(lit(a) for a in args)
+        lines.append(f"    yadi ({fname}({argstr}, ok) != {lit(want_val)}) {{")
+        fail(lines, f"{fname} value")
+        lines.append("    }")
+        lines.append(f"    yadi (ok[0] != {want_ok}) {{")
+        fail(lines, f"{fname} ok")
+        lines.append("    }")
+
+    def check_sat(lines, fname, args, want_val):
+        argstr = ", ".join(lit(a) for a in args)
+        lines.append(f"    yadi ({fname}({argstr}) != {lit(want_val)}) {{")
+        fail(lines, f"{fname}")
+        lines.append("    }")
+
+    # --- part a: binary add/sub/mul
+    la = parts["a"]
+    pairs = [(rng.choice(edges), rng.choice(edges)) for _ in range(8)]
+    pairs += [(maxv, 1), (minv, -1), (minv, 1), (maxv, -1),
+              (3037000500, 3037000500), (3037000499, 3037000499),
+              (-3037000500, 3037000500), (2**32, 2**32)]
+    for a, b in pairs:
+        for fname, op in (("ganita_checked_add", lambda a, b: a + b),
+                          ("ganita_checked_sub", lambda a, b: a - b),
+                          ("ganita_checked_mul", lambda a, b: a * b)):
+            true = op(a, b)
+            if overflows(true):
+                check_checked(la, fname, (a, b), 0, 0)
+            else:
+                check_checked(la, fname, (a, b), true, 1)
+        for fname, op in (("ganita_sat_add", lambda a, b: a + b),
+                          ("ganita_sat_sub", lambda a, b: a - b),
+                          ("ganita_sat_mul", lambda a, b: a * b)):
+            check_sat(la, fname, (a, b), clamp(op(a, b)))
+    # --- part b: div/mod + WS4 sat/checked agreement
+    lb = parts["b"]
+    for a, b in pairs:
+        if b == 0 or (a == minv and b == -1):
+            check_checked(lb, "ganita_checked_div", (a, b), 0, 0)
+            check_checked(lb, "ganita_checked_mod", (a, b), 0, 0)
+            check_sat(lb, "ganita_sat_div", (a, b), 0 if b == 0 else maxv)
+            check_sat(lb, "ganita_sat_mod", (a, b), 0)
+        else:
+            check_checked(lb, "ganita_checked_div", (a, b), trunc_div(a, b), 1)
+            check_checked(lb, "ganita_checked_mod", (a, b), trunc_mod(a, b), 1)
+            check_sat(lb, "ganita_sat_div", (a, b), trunc_div(a, b))
+            check_sat(lb, "ganita_sat_mod", (a, b), trunc_mod(a, b))
+            lb.append(f"    yadi (ganita_sat_div({lit(a)}, {lit(b)}) != ganita_checked_div({lit(a)}, {lit(b)}, ok)) {{")
+            fail(lb, "sat/checked div agree")
+            lb.append("    }")
+            lb.append(f"    yadi (ganita_sat_mod({lit(a)}, {lit(b)}) != ganita_checked_mod({lit(a)}, {lit(b)}, ok)) {{")
+            fail(lb, "sat/checked mod agree")
+            lb.append("    }")
+    # --- part c: pow/fact
+    lc = parts["c"]
+    pow_cases = [(2, 62), (2, 63), (-2, 63), (-2, 64), (3, 40), (10, 18),
+                 (10, 19), (0, 0), (0, 5), (5, 0), (-1, 100), (-1, 101),
+                 (2, -1), (rng.choice(edges), rng.randint(0, 5))]
+    for a, e in pow_cases:
+        if e < 0:
+            check_checked(lc, "ganita_checked_pow", (a, e), 0, 0)
+            check_sat(lc, "ganita_sat_pow", (a, e), 0)
+        else:
+            true = a ** e
+            if overflows(true):
+                check_checked(lc, "ganita_checked_pow", (a, e), 0, 0)
+            else:
+                check_checked(lc, "ganita_checked_pow", (a, e), true, 1)
+            check_sat(lc, "ganita_sat_pow", (a, e), clamp(true))
+    for n in [-1, 0, 1, 5, 20, 21, 25]:
+        true = math.factorial(n) if n >= 0 else None
+        if n < 0 or overflows(true):
+            check_checked(lc, "ganita_checked_fact", (n,), 0, 0)
+        else:
+            check_checked(lc, "ganita_checked_fact", (n,), true, 1)
+        check_sat(lc, "ganita_sat_fact", (n,), 0 if n < 0 else clamp(true))
+    # --- part d: abs + WS4 abs agreement + never-wrap
+    ld = parts["d"]
+    for a in [0, 1, -1, 5, -5, 100, -100, maxv, minv, minv + 1]:
+        if a == minv:
+            check_checked(ld, "ganita_checked_abs", (a,), 0, 0)
+            check_sat(ld, "ganita_sat_abs", (a,), maxv)
+        else:
+            check_checked(ld, "ganita_checked_abs", (a,), abs(a), 1)
+            check_sat(ld, "ganita_sat_abs", (a,), abs(a))
+            ld.append(f"    yadi (ganita_sat_abs({lit(a)}) != ganita_checked_abs({lit(a)}, ok)) {{")
+            fail(ld, "sat/checked abs agree")
+            ld.append("    }")
+    for expr, want in [("ganita_sat_add(maxv, 1)", "maxv"),
+                       ("ganita_sat_sub(minv, 1)", "minv"),
+                       ("ganita_sat_mul(maxv, 2)", "maxv"),
+                       ("ganita_sat_mul(minv, 2)", "minv"),
+                       ("ganita_sat_pow(2, 63)", "maxv")]:
+        ld.append(f"    yadi ({expr} != {want}) {{")
+        fail(ld, f"{expr} never wraps")
+        ld.append("    }")
+    for key, lines in parts.items():
+        lines.append('    likha("PASS\\n")')
+        lines.append("}")
+        ok, out = run_sm(compiler, f"safety25{key}", "\n".join(lines))
+        if not (ok and out == "PASS"):
+            return False, out
+    return True, "PASS"
+
+
 def main():
     compiler = None
     for i, a in enumerate(sys.argv):
@@ -3336,6 +3485,7 @@ def main():
         ("invariants24 containers", prop_invariants24_containers),
         ("invariants24 merge/symdiff", prop_invariants24_merge_symdiff),
         ("safety24", prop_safety24),
+        ("safety25 oracle", prop_safety25),
     ]
 
     failed = []
