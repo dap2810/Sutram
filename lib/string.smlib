@@ -5,6 +5,14 @@
 # `char_code(s)` remains a compatible alias for the first byte. This library
 # continues to call `char_at(s, i)` as before, without changing its API.
 # ASCII only for the character predicates; multi-byte UTF-8 is not split.
+#
+# SLICE-BOUNDARY RULES (WS4, R23 audit): the older byte-string functions
+# below (str_len, count_vowels, count_char, find_char, is_all_digits,
+# str_equals) scan to the NUL terminator and are WRONG on slices — a
+# slice has no terminator at its end. Use the explicit-length strb_*
+# forms on slices. str_replace's repl is 0-terminated; see the
+# strb.smlib header for why and for the strb_dup workaround. The
+# (s, i) char predicates take no length: the caller keeps i in bounds.
 
 prakriya str_len(s)
     pratiyati vartani_len(s)
@@ -156,7 +164,9 @@ prakriya str_contains(hay, hn, needle, nn) {
 
 # str_replace(src, sn, find, fn, repl, out) — copy src to out,
 # replacing every (non-overlapping) occurrence of find with repl.
-# repl is 0-terminated (its length is derived). Returns the new count.
+# repl is 0-terminated (its length is derived) — repl cannot be a
+# slice; copy the slice into a terminated cell array first (see
+# strb.smlib header, slice-boundary rules). Returns the new count.
 # Caller allocates generously.
 prakriya str_replace(src, sn, find, fn, repl, out) {
     vitti s = src
