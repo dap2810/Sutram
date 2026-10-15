@@ -1,3 +1,19 @@
+## v150 — Linux X11 GUI slice 32: line numbers in the editor gutter (my own stream)
+
+- **The editor had no line numbers at all.** This adds a gutter: the text column shifts right by 34px and
+  each visible line draws its 1-based number in a dim colour. The number is drawn **before** the
+  empty-line check, so blank lines are numbered too. A small `u_to_a` helper converts the number to
+  decimal (the GUI had no int-to-ASCII routine).
+- **My own test caught two bugs I introduced, both the same shape.** `set_fg` clobbers **both** `rax`
+  and `rdx` — the first attempt set the string length in `rdx` *before* calling `set_fg`, so the numbers
+  painted with length 16 and were padded with 15 NULs; the second attempt kept the length in `rax`,
+  which `set_fg` also destroys. Fixed by holding the length in `r9`, which `set_fg` leaves alone.
+  **This is the "check the check" lesson in its most literal form: the bug was in my own new code, and
+  only running it against the protocol stream revealed it.**
+- **New test `tools/test_x11_line_numbers.py`** opens a multi-line file, sends an Expose, and requires
+  the numbers 1..N in the painted `ImageText8` stream at the gutter x. **GUI suite now 16/16** (was 15).
+- GUI source ~92 KB; binary **37,464 B**. Compiler untouched (`7650d5db...`).
+
 ## v149 — ChatGPT R68 + Muse R26 verified and SYNCED
 
 - **R68 verified by running it.** Its preparation tool checks the inherited compiler (blob
