@@ -31,6 +31,11 @@ def main():
     check("ADJACENT_STORE_RELOAD",
           "r65_last_store_name" in s and
           ".r65_rhs_done:" in s)
+    check("TRAP_MODE_GENERIC_ASSIGNMENT_REACHABLE",
+          "%ifdef SUTRAM_R65_TRAP_INT\n    ; The optional safety mode bypasses all integer assignment fast paths." in s
+          and "jmp .gs_assign_generic\n%endif\n.gs_assign_fast_done:" in s)
+    check("TRAP_MODE_INTEGER_DECLARATION_GUARDED",
+          "%ifndef SUTRAM_R65_TRAP_INT\n    mov rdi, rbx\n    call try_emit_int_decl_reg" in s)
     check("ONE_ARG_STACK_TRANSFER",
           ".r65_skip_arg_push:" in s and
           "cmp r14,1" in s and
