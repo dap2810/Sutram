@@ -259,6 +259,28 @@ prakriya list_count(l, v) {
     pratiyati count_of(l[2], l[0], v)
 }
 
+# list_find(l, v) — first index of v, or -1 (WS2, R23). List-shaped
+# form of sort.smlib's find_linear; before, the caller called
+# find_linear(l[2], list_len(l), v) by hand.
+prakriya list_find(l, v) {
+    pratiyati find_linear(l[2], l[0], v)
+}
+
+# list_is_sorted(l) — 1 if the elements are in non-decreasing order,
+# else 0; empty and single-element lists are sorted (WS2, R23).
+# List-shaped form of sort.smlib's is_sorted.
+prakriya list_is_sorted(l) {
+    pratiyati is_sorted(l[2], l[0])
+}
+
+# list_binary_search(l, v) — index of v in a SORTED list, or -1
+# (WS2, R23). List-shaped form of sort.smlib's binary_search. The
+# caller must sort first (list_sort); on an unsorted list the result
+# is undefined, exactly as with binary_search.
+prakriya list_binary_search(l, v) {
+    pratiyati binary_search(l[2], l[0], v)
+}
+
 # list_clear(l) — empty the list, keeping the allocated capacity.
 # R19: also ZEROES the data cells (was: len reset only). The old
 # elements were reachable after a clear to anyone reading the data
@@ -440,6 +462,23 @@ prakriya queue_peek(q, ok) {
     d = qu[2]
     okp[0] = 1
     pratiyati d[qu[3]]
+}
+
+# queue_to_array(q, out) — write the queue's elements into out in
+# logical (FIFO) order, one qword cell each, WITHOUT mutating the
+# queue (WS2, R23). Returns queue_len(q). Caller allocates cap cells.
+# Before, reading a queue non-destructively meant a hand-rolled ring
+# scan with (head + k) % cap arithmetic at every call site, or
+# dequeuing everything (which destroys the queue).
+prakriya queue_to_array(q, out) {
+    vitti qu = q
+    vitti d = qu[2]
+    vitti k = 0
+    yavat (k < qu[0]) {
+        out[k] = d[(qu[3] + k) % qu[1]]
+        k = k + 1
+    }
+    pratiyati qu[0]
 }
 
 # queue_contains(q, v) — 1 if v is in the queue, else 0 (WS2, R21).
