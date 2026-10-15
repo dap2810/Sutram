@@ -1,3 +1,15 @@
+## v146 — Linux X11 GUI slice 29: native Indic digits in the tokeniser (my own stream)
+
+- R66 taught the compiler to read Devanagari (U+0966-096F) and Gujarati (U+0AE6-0AEF) numerals, but the
+  GUI tokeniser still only recognised ASCII 0-9, so an Indic digit was not coloured as a number.
+- Both ranges are the same 3-byte shape - E0 A5 A6..AF and E0 AB A6..AF - so one check covers both.
+  classify now routes them to the number path, and the number loop consumes a whole 3-byte digit
+  instead of stopping at the lead byte.
+- GUI source ~87 KB; binary 37,024 B; 14/14 GUI tests pass. Compiler untouched.
+- Honest caveat: verified by build + full regression, not a dedicated colour assertion - the mock X
+  keyboard cannot emit a 3-byte sequence, so there is no protocol-level proof of the number colour yet.
+  Recorded as a known gap, same as slices 22-23.
+
 ## v145 — ChatGPT R66 (Indic devices) + Muse R24 (parity, safety) verified and SYNCED
 
 - **R66 verified by running it.** Delivered through the same checksum-guarded staging pattern as R65:
