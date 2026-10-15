@@ -1,3 +1,34 @@
+## v147 — ChatGPT R67 + Muse R25 verified and SYNCED; R66 compiler gap CORRECTED
+
+**A correction first.** v145 claimed R66 was "SYNCED". That was wrong in one important respect:
+R66's *tools, packs and docs* were synced, but **its compiler was never integrated** — main's
+`src/sutram_compiler.asm` stayed at the R65 prepared source (`caee7373...`), so the compiler could not
+actually read Devanagari digits. **ChatGPT caught this in R67** and reported it as a discrepancy rather
+than working around it. R67's preparation recipe chains R66's recipe, so integrating R67 fixed it.
+
+- **R67 verified by running it.** `tools/r67_prepare_compiler.py` took the observed compiler
+  (`caee7373...`, matching main exactly), chained R66's eight-anchor recipe and added the two R67
+  anchors, producing staged source **`64ea028a...` (545,722 B)**. It builds in all five modes: default
+  **190,144 B**, peepholes 190,696, trap 191,560, combined 192,104, and pure-pairs 190,712.
+  **R67 unit tests 20 pass (9 skipped — the Windows-helper ones); R66's inherited 33 pass (17 skipped).**
+- **The Gujarati collision is RESOLVED.** R67 chose option (b): omit the `સંખ્યા` reservation. With its
+  pack, the accepted test `37_native_gujarati` compiles again (`OK: compiled 456 bytes`) and the `.sm`
+  and `.out` are unchanged. **All gates green with the R67 compiler and packs:** suite **187/4**,
+  codegen **12/12**, packs **33/33**, graph **OK**, proof_lib **176/176**, proof_props **68/68**.
+- **R67 also adds** Bengali and Punjabi (Gurmukhi) native digit recognition with their own abbreviation
+  aliases and paired examples, a linked Windows cluster counter (source only — never run on Windows),
+  and an opt-in pure `push`/`pop` pair matcher (`SUTRAM_R67_PURE_STACK_PAIRS=1`, default OFF).
+- **Muse R25 verified and synced.** Its patch conflicted on `proof_props.py` **because I had already
+  restored that file** — Muse independently found the same R24 sync gap I did. Recovered Muse's final
+  file by reversing the R24 patch and re-applying R25: **proof_props 69/69** (was 68), **proof_lib
+  177/177** (was 176), suite **187/4**. Adds the `safety25` oracle over all 16 checked/saturating
+  functions, the parity-table coverage audit (all 30 rows covered), and a small-gap sweep.
+- **Now integrated on main:** compiler `64ea028a...` (545,722 B), `src/r66_indic_lexer.inc`,
+  `src/r67_stack_pair.inc`, the R67 tooling and tests, the Gujarati/Bengali/Punjabi packs, the Windows
+  GUI cluster sources, and both example pairs.
+- **Still unrun, unchanged:** the Windows acceptance. R67's Windows cluster work is source-only and
+  specifically not shaping, not UAX #29, and not a caret replacement.
+
 ## v146 — Linux X11 GUI slice 29: native Indic digits in the tokeniser (my own stream)
 
 - R66 taught the compiler to read Devanagari (U+0966-096F) and Gujarati (U+0AE6-0AEF) numerals, but the
