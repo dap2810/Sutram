@@ -312,6 +312,35 @@ prakriya map_size(m) {
     pratiyati m[1]
 }
 
+# map_merge(dst, dcap, src, scap) — copy every entry of src into dst;
+# src's values overwrite dst's on key conflict (WS3, R23). Returns the
+# number of entries merged. If dst fills up, merging stops early and
+# the return is less than map_size(src) — check map_size(dst)
+# afterwards to detect a partial merge. Before, merging meant a
+# map_keys_bytes pass plus a map_get + map_put per key at every call
+# site. (map_get's -1 sentinel is not a hazard here: the keys come
+# from map_keys_bytes, so every key is known to exist.)
+prakriya map_merge(dst, dcap, src, scap) {
+    vitti tmp = nirmmita(scap * 33 + 1)
+    vitti nk = map_keys_bytes(src, tmp)
+    vitti pos = 0
+    vitti i = 0
+    vitti seglen = 0
+    vitti merged = 0
+    vitti v = 0
+    yavat (i < nk) {
+        seglen = char_at(tmp, pos)
+        v = map_get(src, scap, tmp + pos + 1, seglen)
+        yadi (map_put(dst, dcap, tmp + pos + 1, seglen, v) == 0) {
+            pratiyati merged
+        }
+        merged = merged + 1
+        pos = pos + 1 + seglen
+        i = i + 1
+    }
+    pratiyati merged
+}
+
 # map_values(m, out) — write the live values into out (one qword cell
 # each), in the same slot order as map_keys / map_keys_bytes (WS2,
 # R21). Returns the value count, which equals map_size(m). Caller
