@@ -1,0 +1,68 @@
+[
+  {
+    "text": "",
+    "expected_scoped_count": 0,
+    "expected_title": "Sutram Shell 1.0 | scoped clusters: 0",
+    "evidence": "isolated helper expectation; Windows observation pending"
+  },
+  {
+    "text": "abc",
+    "expected_scoped_count": 3,
+    "expected_title": "Sutram Shell 1.0 | scoped clusters: 3",
+    "evidence": "isolated helper expectation; Windows observation pending"
+  },
+  {
+    "text": "कि",
+    "expected_scoped_count": 1,
+    "expected_title": "Sutram Shell 1.0 | scoped clusters: 1",
+    "evidence": "isolated helper expectation; Windows observation pending"
+  },
+  {
+    "text": "क्ष",
+    "expected_scoped_count": 1,
+    "expected_title": "Sutram Shell 1.0 | scoped clusters: 1",
+    "evidence": "isolated helper expectation; Windows observation pending"
+  },
+  {
+    "text": "કિ",
+    "expected_scoped_count": 1,
+    "expected_title": "Sutram Shell 1.0 | scoped clusters: 1",
+    "evidence": "isolated helper expectation; Windows observation pending"
+  },
+  {
+    "text": "ક્ષ",
+    "expected_scoped_count": 1,
+    "expected_title": "Sutram Shell 1.0 | scoped clusters: 1",
+    "evidence": "isolated helper expectation; Windows observation pending"
+  },
+  {
+    "text": "abc कि",
+    "expected_scoped_count": 5,
+    "expected_title": "Sutram Shell 1.0 | scoped clusters: 5",
+    "evidence": "isolated helper expectation; Windows observation pending"
+  },
+  {
+    "text": "a\r\nb",
+    "expected_scoped_count": 3,
+    "expected_title": "Sutram Shell 1.0 | scoped clusters: 3",
+    "evidence": "isolated helper expectation; Windows observation pending"
+  },
+  {
+    "text": "😀",
+    "expected_scoped_count": 1,
+    "expected_title": "Sutram Shell 1.0 | scoped clusters: 1",
+    "evidence": "isolated helper expectation; Windows observation pending"
+  },
+  {
+    "text": "কি",
+    "expected_scoped_count": 2,
+    "expected_title": "Sutram Shell 1.0 | scoped clusters: 2",
+    "evidence": "isolated helper expectation; Windows observation pending"
+  },
+  {
+    "text": "கி",
+    "expected_scoped_count": 2,
+    "expected_title": "Sutram Shell 1.0 | scoped clusters: 2",
+    "evidence": "isolated helper expectation; Windows observation pending"
+  }
+]
