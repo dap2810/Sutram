@@ -92,11 +92,16 @@ class PackTests(unittest.TestCase):
                 if line.strip() and not line.lstrip().startswith('#')]
 
     def test_counts_and_uniqueness(self):
-        for lang, count in [('sanskrit', 54), ('gujarati', 45)]:
+        # R67 omitted the colliding Gujarati reservation; keep its 44-entry contract.
+        for lang, count in [('sanskrit', 54), ('gujarati', 44)]:
             rows = self.entries(lang)
             self.assertEqual(len(rows), count)
             self.assertEqual(len({a for a, _ in rows}), count)
             self.assertTrue(all(len(a.encode()) < 64 and len(b.encode()) < 64 for a, b in rows))
+
+    def test_gujarati_collision_stays_unreserved(self):
+        # Accepted example 37 uses this spelling as a variable, not a type.
+        self.assertNotIn('સંખ્યા', dict(self.entries('gujarati')))
 
     def test_explicit_abbreviations(self):
         s, g = dict(self.entries('sanskrit')), dict(self.entries('gujarati'))

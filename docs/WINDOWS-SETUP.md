@@ -9,30 +9,37 @@ and troubleshooting.
 
 ## 1. What you need
 
-Nothing, for the normal case. The installer and the compiler are self-contained.
-NASM is only needed if you want to *build the compiler from source*; it is not
-needed to install or use Sutram.
+End users of an accepted prebuilt package need no compiler toolchain.
+Building the compiler source requires NASM and a compatible linker.
+Installer tooling and Windows acceptance are separate; read
+**INSTALLATION-ROUTES.md** before choosing a packaging route.
 
 ---
 
 ## 2. Install
 
-### Method A — wizard installer (recommended)
+### Method A — per-user wizard (requires release acceptance)
 
-1. Get `Sutram-Setup.exe`.
-2. Double-click it. The wizard asks for a destination folder
-   (default `C:\Program Files\Sutram`) and whether to add Sutram to `PATH`.
-3. Finish. `sutram` is then available from any Command Prompt or PowerShell.
+1. Use an independently verified `Sutram-Setup.exe`, not an arbitrary legacy build.
+2. The supported contract is `%LOCALAPPDATA%\Programs\Sutram`, with user-only
+   PATH changes and no elevation. Stop if the package asks for administrator access.
+3. After a successful installation and PATH selection, open a new terminal.
 
-The installer also offers a Start Menu entry, an optional Desktop shortcut,
-registers Sutram in **Apps & Features**, and installs a matching uninstaller.
+This describes the required installer behavior, not a Windows run performed
+by the clean-source audit. Known source-build blockers are recorded in
+**INSTALLATION-ROUTES.md**.
+
+Release acceptance must check the per-user Start Menu entry, optional Desktop
+shortcut, HKCU **Apps & Features** entry, and matching uninstaller.
 
 ### Method B — portable folder (no installation)
 
-1. Unzip `sutram-windows-native.zip` anywhere (e.g. `C:\Sutram`).
-2. Open a terminal in that folder.
-3. Run `install.bat` once if you want it added to `PATH` — or just use
-   `sutram.exe` directly from that folder.
+1. Unzip a verified portable Windows package into a folder you own.
+2. Open a terminal in the extracted compiler folder.
+3. Run `sutram.exe` directly; adding it to PATH is not required.
+
+The repository contains `windows/install.bat`; it is not a root-level script
+and is not an accepted workaround for an unverified installer.
 
 Keep the folder together: the language packs live in `lang\` beside `sutram.exe`.
 
@@ -45,8 +52,11 @@ nasm -f win64 -dWINDOWS -I. src\sutram_compiler.asm -o sutram.obj
 ld -mi386pep --entry=_start -o sutram.exe sutram.obj
 ```
 
-To build the **installer** as well (Windows host with MinGW GCC + PowerShell):
-`BUILD-WINDOWS-SETUP.cmd` — see `windows/` and `windows/native-installer/`.
+The installer sources are under `windows/native-installer/`. The legacy
+`windows/BUILD-WINDOWS-SETUP.cmd` chain is not a verified build route in the
+clean snapshot: its wrapper and preflight still expect an older directory
+layout. Do not bypass the preflight or regenerate hashes merely to silence
+it. See **INSTALLATION-ROUTES.md** for the integration gate.
 
 ---
 
@@ -103,7 +113,7 @@ Nothing else needs to be installed to run a Sutram-made `.exe`.
 | The program runs but prints nothing | Old builds marked the section read-only, so the runtime faulted while resolving `kernel32` | Use this build (the section is writable and the runtime realigns the stack). |
 | `sutram` is not recognised | `PATH` not updated | Open a **new** terminal, or run `sutram.exe` with its full path. |
 | Language pack not found | `lang\` is not next to the compiler / not in the profile folder | Run from the Sutram folder, or install packs to `%USERPROFILE%\.local\share\sutram\lang\`. |
-| Antivirus flags the fresh `.exe` | New, unsigned binary | Allow it; the compiler is a plain PE with no imports. |
+| Antivirus or policy blocks the `.exe` | The cause must be investigated; an unsigned binary is not automatically safe | Keep protection enabled. Record the exact alert and package hash, verify provenance with the maintainer, and stop pending review. Do not bypass the block. |
 | Paths with spaces or non-Latin characters fail | Shell quoting | Quote the paths: `sutram.exe "C:\My Files\a.sm" "C:\out\a.exe"`. |
 
 ---
@@ -116,22 +126,22 @@ Nothing else needs to be installed to run a Sutram-made `.exe`.
 | Output format | ELF (`.bin`) | PE (`.exe`) |
 | Output selection | name ending `.bin` | name ending `.exe` |
 | Language-pack search | `lang/`, then `$HOME/.local/share/sutram/lang/` | `lang\`, then `%USERPROFILE%\.local\share\sutram\lang\` |
-| Install | one-line script (`install.sh`) | wizard installer or portable folder |
-| Status | fully working | compiler + printing/arithmetic/control flow/functions working; see below |
+| Install | source build/direct execution; no root install script in this checkout | accepted per-user wizard or portable package; see INSTALLATION-ROUTES.md |
+| Status | maintainer-reported Linux gates; see root README | implementation status below is not complete real-Windows acceptance |
 
-Both targets come from the **same single compiler source**, so the language and
-its behaviour are identical.
+Both targets come from the **same primary compiler source**, but platform
+backends and system operations still require independent execution tests.
 
 ---
 
 ## 7. Windows feature status
 
-Working: compiling, printing strings and numbers (`likha`, `shabda`),
+Reported as implemented: compiling, printing strings and numbers (`likha`, `shabda`),
 arithmetic, variables, `yadi`/`anyatra`, `yavat`, `punaravartana`,
 `krama`/`uddeshya`, functions with up to 6 arguments, recursion, early returns,
 block comments, language packs, error diagnostics, exit codes.
 
-Keyboard input (`grahan`) works on Windows: the generated `.exe` reads through
+The Windows keyboard-input (`grahan`) implementation reads through
 the embedded runtime (`ReadFile`) instead of a Linux system call. Arrays
 (`pankti`) and structs (`rachana`) allocate through `VirtualAlloc`. Arrays and
 structs still need a confirming run on a real Windows machine.
@@ -146,7 +156,7 @@ machine.
 
 - The compiler is one pure-NASM source; no C, no Python, no runtime dependency.
 - Sanskrit keywords are the language core; Devanagari spellings are accepted
-  aliases; every Indian language has a pack of native keyword words.
+  aliases; bundled language packs provide additional native keyword words.
 - Generated programs are native machine code, not interpreted.
 - The end user needs no toolchain at all.
 - The installer is a *packaging* tool. (The reference installer happens to be

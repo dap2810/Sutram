@@ -24,8 +24,8 @@ compiler itself is a single assembly source file.
 
 Every widely used language asks an Indian programmer to think in English
 keywords. Sutram does not. The keyword set is Sanskrit — the source language
-of most Indian technical vocabulary — and every other Indian language is
-supported through a **language pack**, so you can write in Tamil, Bengali,
+of most Indian technical vocabulary — and additional Indian languages are
+supported through **language packs**, so you can write in Tamil, Bengali,
 Telugu or Gujarati using that language's own technical words.
 
 The name means *thread* — one thread running through many languages.
@@ -50,14 +50,15 @@ Semicolons and braces are optional. The full reference is in
 
 ## What is in this release
 
-- **216 worked examples** in `examples/`, each with expected output and exit code
+- **Worked examples** in `examples/`, with regression expectations in the test
+  corpus. Cases without an accepted expectation are not counted as passing tests
 - **21 standard-library modules with code** in `lib/`, 278 functions between
   them — mathematics, sorting, strings, statistics, calculus, matrix work, and
   heritage modules built on classical Indian mathematics. Three further files
   (`array`, `io`, `net`) are comment-only design sketches, not working modules
 - **11 language packs** in `lang/` — Sanskrit, Hindi, Bengali, Gujarati, Kannada,
   Malayalam, Marathi, Odia, Punjabi, Tamil, Telugu
-- **Six book editions** in `books/` — English, Hindi, Sanskrit, Tamil, Telugu,
+- **Six book editions** at `docs/sutram-book-*.html` — English, Hindi, Sanskrit, Tamil, Telugu,
   Gujarati
 - **A GUI IDE** for Windows and a terminal IDE plus a native X11 GUI for Linux
 
@@ -71,8 +72,10 @@ Win64 program, and compiled programs are real Windows executables (PE32+).
     sutram.exe examples\01_hello.sm hello.exe
     hello.exe
 
-Install with the wizard (`Sutram-Setup.exe`), or unzip the portable folder and
-run `sutram.exe` from it, or run `install.bat` to add it to PATH.
+For an independently accepted Windows package, use its per-user wizard or
+run the portable compiler directly. Do not use a legacy installer to work
+around a blocked build. See **docs/INSTALLATION-ROUTES.md** for the source
+layout, privilege contract, and remaining release blockers.
 The output name picks the target: `.exe` -> Windows, `.bin` -> Linux.
 
 Full guide: **docs/WINDOWS-SETUP.md** (install, usage, troubleshooting,
@@ -83,8 +86,9 @@ Linux-vs-Windows differences, feature status).
     ./sutram_compiler examples/01_hello.sm hello.bin
     ./hello.bin
 
-`install.sh` installs it for the current user. `sutram-ide` is a terminal IDE
-with syntax highlighting, and Ctrl-R to run.
+This source checkout does not contain a root `install.sh`. Build below and
+run the compiler directly; do not assume a packaged installer is present.
+The IDE sources are in `ide/`. See **docs/INSTALLATION-ROUTES.md**.
 
 ## Writing in your own language
 
@@ -99,7 +103,7 @@ native word to its Sanskrit keyword, so anyone can add or correct one:
 
 Only NASM and a linker are needed — nothing else.
 
-    nasm -f elf64 src/sutram_compiler.asm -o sutram.o
+    nasm -f elf64 -I. src/sutram_compiler.asm -o sutram.o
     ld -o sutram_compiler sutram.o
 
 Windows target:
@@ -111,23 +115,25 @@ Windows target:
 
 | Path | What |
 |---|---|
-| `src/sutram_compiler.asm` | the entire compiler, one file |
+| `src/sutram_compiler.asm` | primary pure-NASM compiler source; keep its reviewed `.inc` files alongside it |
 | `lib/` | standard library (`.smlib`) |
 | `lang/` | language packs |
-| `examples/` | 178 programs with expected output |
+| `examples/` | example programs; consult the regression corpus for accepted expectations |
 | `tests/` | regression suite and golden files |
 | `tools/` | benchmarks, codegen gates, verification |
 | `docs/` | reference, guides, generated HTML |
-| `books/` | the six book editions |
+| `docs/sutram-book-*.html` | the six language editions |
 | `windows/` | Windows GUI, installer, build scripts |
 | `ide/` | terminal IDE and Linux X11 GUI |
 | `ROADMAP.md` | what is done, what is planned, what is not attempted |
 
 ## Honest status
 
-Sutram is roughly **85% of the way to a solid compiler** and around **50% of
-the way to a practical general-purpose language**. The current suite is
-187 pass (4 no-expectation) with 12/12 code-generation shape gates.
+The clean-project handoff reports a Linux baseline of **187 passing cases,
+4 no-expectation cases, and 12/12 code-generation shape gates**. These are
+maintainer-reported baseline measurements, not a Windows release certificate.
+A clean-source audit must rerun them independently; a percentage-complete
+estimate is not a substitute for those gates.
 
 Known limits, stated plainly rather than buried:
 
