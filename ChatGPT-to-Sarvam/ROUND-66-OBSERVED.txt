@@ -1,0 +1,89 @@
+SUTRAM ROUND 66 — OBSERVED EVIDENCE
+Date: 2026-10-15
+Source commit: b406802dc7d155f0ea6a0c72e17d08e6ce90ba8e
+Draft PR: https://github.com/dap2810/Sutram/pull/24
+Accepted base: 9921cbf175b2fb7983e45305fdec963380532452
+
+ACTUALLY RUN
+python -m unittest discover -s tests/r66 -p 'test_*.py' -v
+Result: 33 tests, OK (17 isolated machine-code helper tests, 16 fixture/pack tests).
+Native-helper tests use GNU as/GCC on Linux, with a Win64 calling-convention
+bridge for the cluster helper. They are not a NASM compiler or Windows GUI run.
+The exhaustive digit test contains 65,536 byte combinations; it is one test
+method, not 65,536 independently passed compiler programs.
+
+python -m py_compile tools/r66_prepare_review.py tools/r66_native_acceptance.py \
+  tests/r66/test_native_helpers.py tests/r66/test_prepare_review.py
+Result: exit 0, all four Python files valid.
+
+git apply --check ROUND-66-REVIEW.patch
+and actual application in a temporary reconstruction of the three touched
+baseline paths: PASS. All 16 resulting files matched the delivery bytes.
+This checks the complete review patch, not staging of the production compiler.
+
+GITHUB VERIFICATION
+All 16 source files were read back from the pinned source commit.
+Every Git blob ID matched the local tested bytes; SHA-256 manifest covers 16/16.
+PR remains draft. No workflows were run or changed.
+
+NOT RUN
+Complete pinned production-source preparation: NOT RUN locally.
+Full NASM compiler assembly/link: NOT RUN.
+Generated Sutram example stdout/exits: NOT RUN.
+Reference/default executable byte equality: NOT RUN.
+Complete compiler regression/proof/frozen gates: NOT RUN.
+Windows PE/helper linkage, GUI open/close/caret/shaping/screenshots: NOT RUN.
+Windows installer execution or registry changes: NOT RUN.
+General same-register push/pop cancellation: still open, not claimed delivered.
+GUI full glyph shaper and integration: not implemented in this scoped helper.
+
+REVIEW DECISIONS REQUIRED
+Approve the exact abbreviation aliases; marks are not statement terminators.
+Run staging on the pinned accepted compiler; inspect and integrate after tests.
+Preserve later main/Muse/Linux-GUI work when reconciling the branch.
+Do not convert isolated-helper results into full-release acceptance.
+
+RAW UNIT TEST LOG
+-----------------
+test_abbreviation_not_digit_or_danda (test_native_helpers.NativeHelpers.test_abbreviation_not_digit_or_danda) ... ok
+test_all_30_decimal_digits (test_native_helpers.NativeHelpers.test_all_30_decimal_digits) ... ok
+test_ascii_controls_and_crlf (test_native_helpers.NativeHelpers.test_ascii_controls_and_crlf) ... ok
+test_cross_script_link_not_joined (test_native_helpers.NativeHelpers.test_cross_script_link_not_joined) ... ok
+test_devanagari_conjuncts (test_native_helpers.NativeHelpers.test_devanagari_conjuncts) ... ok
+test_devanagari_matras_and_nukta (test_native_helpers.NativeHelpers.test_devanagari_matras_and_nukta) ... ok
+test_empty_and_truncated_digits (test_native_helpers.NativeHelpers.test_empty_and_truncated_digits) ... ok
+test_every_single_byte (test_native_helpers.NativeHelpers.test_every_single_byte) ... ok
+test_exclusive_end_no_read_into_guard_page (test_native_helpers.NativeHelpers.test_exclusive_end_no_read_into_guard_page) ... ok
+test_exhaustive_indic_second_third_bytes (test_native_helpers.NativeHelpers.test_exhaustive_indic_second_third_bytes) ... ok
+test_gujarati_matras_and_conjuncts (test_native_helpers.NativeHelpers.test_gujarati_matras_and_conjuncts) ... ok
+test_invalid_utf8_one_byte_progress (test_native_helpers.NativeHelpers.test_invalid_utf8_one_byte_progress) ... ok
+test_random_bytes_always_progress (test_native_helpers.NativeHelpers.test_random_bytes_always_progress) ... ok
+test_shared_danda_and_scalar_validation (test_native_helpers.NativeHelpers.test_shared_danda_and_scalar_validation) ... ok
+test_signs_and_digits_separate_clusters (test_native_helpers.NativeHelpers.test_signs_and_digits_separate_clusters) ... ok
+test_utf8_scalar_widths (test_native_helpers.NativeHelpers.test_utf8_scalar_widths) ... ok
+test_zwnj_and_nonlinking_zwj (test_native_helpers.NativeHelpers.test_zwnj_and_nonlinking_zwj) ... ok
+test_builtin_capacity (test_prepare_review.PackTests.test_builtin_capacity) ... ok
+test_counts_and_uniqueness (test_prepare_review.PackTests.test_counts_and_uniqueness) ... ok
+test_explicit_abbreviations (test_prepare_review.PackTests.test_explicit_abbreviations) ... ok
+test_previous_keywords_preserved (test_prepare_review.PackTests.test_previous_keywords_preserved) ... ok
+test_all_eight_anchors_apply (test_prepare_review.PrepareTests.test_all_eight_anchors_apply) ... ok
+test_byte_round_trip_on_explicit_mock_blob (test_prepare_review.PrepareTests.test_byte_round_trip_on_explicit_mock_blob) ... ok
+test_each_duplicate_anchor_fails (test_prepare_review.PrepareTests.test_each_duplicate_anchor_fails) ... ok
+test_each_missing_anchor_fails (test_prepare_review.PrepareTests.test_each_missing_anchor_fails) ... ok
+test_identifier_write_pointer_preserved (test_prepare_review.PrepareTests.test_identifier_write_pointer_preserved) ... ok
+test_main_rejects_existing_outputs (test_prepare_review.PrepareTests.test_main_rejects_existing_outputs) ... usage: r66 [-h] [--source SOURCE] --output OUTPUT --patch-output PATCH_OUTPUT
+r66: error: output already exists; use new paths, never overwrite source
+ok
+test_main_rejects_overwriting_source (test_prepare_review.PrepareTests.test_main_rejects_overwriting_source) ... usage: r66 [-h] [--source SOURCE] --output OUTPUT --patch-output PATCH_OUTPUT
+r66: error: source, output and patch must be distinct paths
+ok
+test_numeric_priority_before_identifier (test_prepare_review.PrepareTests.test_numeric_priority_before_identifier) ... ok
+test_reapplication_fails (test_prepare_review.PrepareTests.test_reapplication_fails) ... ok
+test_source_not_rewritten_or_fullwidth_decimal_invented (test_prepare_review.PrepareTests.test_source_not_rewritten_or_fullwidth_decimal_invented) ... ok
+test_unrelated_text_preserved (test_prepare_review.PrepareTests.test_unrelated_text_preserved) ... ok
+test_wrong_production_blob_fails (test_prepare_review.PrepareTests.test_wrong_production_blob_fails) ... ok
+
+----------------------------------------------------------------------
+Ran 33 tests in 0.431s
+
+OK
