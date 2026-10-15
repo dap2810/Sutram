@@ -21330,7 +21330,18 @@ r65_emit_fatal:
     mov r13,rsi
     lea rdi,[rel r65_msg_prefix]
     call r65_emit_literal
+    ; The literal-output path encodes short relative jumps over its bytes.
+    ; Bound the embedded filename to the last 95 bytes to avoid overflow
+    ; when a caller supplies a very long absolute input path.
     mov rdi,[rel source_path_ptr]
+    push rdi
+    call strlen
+    pop rdi
+    cmp rax,95
+    jbe .r65_path_ready
+    add rdi,rax
+    sub rdi,95
+.r65_path_ready:
     call r65_emit_literal
     lea rdi,[rel r65_msg_colon]
     call r65_emit_literal
