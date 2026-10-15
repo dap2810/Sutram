@@ -1,3 +1,32 @@
+## v151 — the design charter: what Sutram is being built to be
+
+- **`docs/sutram-design-parameters.html` is new** — the project's written design charter. It states the
+  **19 requirements** Sutram is being built to satisfy, across the paradigms it should support (items
+  1-8) and the capabilities beyond paradigms (items 9-19), plus the charter's own implementation order.
+- **Every item carries an honest status measured against the compiler as it stands**, because the owner
+  was explicit that these are requirements, not claims. The tally: **2 implemented · 12 partial ·
+  5 not started.**
+  - **Implemented (2):** the imperative/procedural core (the language's strongest part) and multilingual
+    programming (11 packs over one canonical meaning — the project's distinctive strength).
+  - **Partial (12):** functional features, OO-by-composition, data-oriented, metaprogramming, static
+    typing, error handling, freestanding, library layers, portability, modules, tools, and
+    specification/gates. Each names its specific gap.
+  - **Not started (5):** generics, structured concurrency, event-driven/async, the memory and resource
+    model, and interoperability/FFI.
+- **The page is deliberately blunt about the two claims the project must not make.** Item 10 states
+  plainly that Sutram **does not currently claim memory safety and must not until ownership exists and
+  is tested**; item 14 states that the Windows target's **sources have never been executed** by this
+  project. The charter's closing rule is now the project's standard: *do not claim safety, portability,
+  performance superiority or OS readiness without corresponding evidence.*
+- **A real error of mine, caught by my own check:** the page's first status table said 13 partial /
+  4 not-started while the cards said 12 / 5. The table was wrong; corrected to match the cards.
+- Linked from `sutram-progress-report.html`, `sutram-completion-roadmap.html` and `README.md`.
+- **Next rounds issued toward the charter:** **ROUND-70 → ChatGPT** (a written specification of existing
+  behaviour; a negative corpus of programs that must be rejected; the memory model specified *before*
+  it is claimed; an honest gap list for freestanding) and **ROUND-28 → Muse** (mark each library module's
+  layer and *verify* the claim with a tool; state the error-handling contract and audit for violations;
+  tabulate the numeric contract; the library's honest boundary). Both rounds carry the new standard.
+
 ## v150 — Linux X11 GUI slice 32: line numbers in the editor gutter (my own stream)
 
 - **The editor had no line numbers at all.** This adds a gutter: the text column shifts right by 34px and
