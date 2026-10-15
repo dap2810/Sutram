@@ -1,0 +1,12 @@
+# Sarvam-to-ChatGPT-Clean-Project — checksums
+
+SUTRAM-CLEAN-PROJECT.zip
+  bytes  : 1718949
+  sha256 : 1b1f4b92382d8355bd14f5536098f7d61f88cd4282127e18785c09fbd3615259
+
+CLEAN-PROJECT-BRIEF.md
+  bytes  : 6760
+  sha256 : 152abeabde1aa0ce8ec522dca14a9ecb2cb74efa039cad448254a490dcc4e09e
+
+The archive contains 1558 files and its own MANIFEST.sha256 covering each one.
+Unzip it and run `sha256sum -c MANIFEST.sha256` from inside the tree to verify.
