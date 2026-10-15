@@ -2845,6 +2845,204 @@ def prop_gaps21(compiler, rng):
     return ok and out == "PASS", out
 
 
+def prop_containers23(compiler, rng):
+    """list_find/is_sorted/binary_search, queue_to_array vs Python"""
+    lvals = [rng.randint(-50, 50) for _ in range(rng.randint(0, 9))]
+    qvals = [rng.randint(-50, 50) for _ in range(rng.randint(0, 6))]
+
+    def lit(v):
+        return f"(0 - {-v})" if v < 0 else str(v)
+
+    lines = ["ayojan list",
+             "mukhya() {",
+             "    vitti l = list_init(16)"]
+    for v in lvals:
+        lines.append(f"    list_push(l, {lit(v)})")
+    probe = rng.choice(lvals) if lvals and rng.random() < 0.7 else 999
+    want_find = lvals.index(probe) if probe in lvals else -1
+    lines.append(f"    yadi (list_find(l, {lit(probe)}) != {want_find}) {{")
+    lines.append('        likha("FAIL list_find\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    want_sorted = 1 if lvals == sorted(lvals) else 0
+    lines.append(f"    yadi (list_is_sorted(l) != {want_sorted}) {{")
+    lines.append('        likha("FAIL list_is_sorted pre\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append("    list_sort(l)")
+    lines.append("    yadi (list_is_sorted(l) != 1) {")
+    lines.append('        likha("FAIL list_is_sorted post\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    want_bs = sorted(lvals).index(probe) if probe in lvals else -1
+    lines.append(f"    yadi (list_binary_search(l, {lit(probe)}) != {want_bs}) {{")
+    lines.append('        likha("FAIL list_binary_search\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    # queue_to_array: dequeue some first so the ring head has moved,
+    # then compare the non-destructive read against Python order
+    lines.append("    vitti q = queue_init(8)")
+    lines.append("    vitti arr = nirmmita(8 * 8)")
+    for v in qvals:
+        lines.append(f"    queue_enqueue(q, {lit(v)})")
+    ndq = rng.randint(0, len(qvals)) if qvals else 0
+    for _ in range(ndq):
+        lines.append("    queue_dequeue(q, nirmmita(8))")
+    remaining = qvals[ndq:]
+    lines.append(f"    yadi (queue_to_array(q, arr) != {len(remaining)}) {{")
+    lines.append('        likha("FAIL queue_to_array count\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    for idx, v in enumerate(remaining):
+        lines.append(f"    yadi (arr[{idx}] != {lit(v)}) {{")
+        lines.append('        likha("FAIL queue_to_array order\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append(f"    yadi (queue_len(q) != {len(remaining)}) {{")
+    lines.append('        likha("FAIL queue_to_array len\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "containers23", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_gaps23(compiler, rng):
+    """map_merge / set_sym_diff vs Python (incl. a partial merge when
+    the destination fills up)"""
+    pool = ["aa", "ab", "ba", "bb", "abc", "bca", "cab", "a", "b", "c"]
+    akeys = rng.sample(pool, rng.randint(0, 4))
+    bkeys = rng.sample(pool, rng.randint(0, 4))
+    avals = {k: rng.randint(-50, 50) for k in akeys}
+    bvals = {k: rng.randint(-50, 50) for k in bkeys}
+
+    def lit(v):
+        return f"(0 - {-v})" if v < 0 else str(v)
+
+    merged = dict(avals)
+    merged.update(bvals)
+    lines = ["ayojan map",
+             "ayojan set",
+             "mukhya() {",
+             "    vitti a = map_init(8)",
+             "    vitti b = map_init(8)",
+             "    vitti dst = map_init(8)"]
+    for k in akeys:
+        lines.append(f'    map_put(a, 8, "{k}", {len(k)}, {lit(avals[k])})')
+    for k in bkeys:
+        lines.append(f'    map_put(b, 8, "{k}", {len(k)}, {lit(bvals[k])})')
+    lines.append(f"    yadi (map_merge(dst, 8, a, 8) != {len(avals)}) {{")
+    lines.append('        likha("FAIL map_merge count a\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append(f"    yadi (map_merge(dst, 8, b, 8) != {len(bvals)}) {{")
+    lines.append('        likha("FAIL map_merge count b\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    for k, v in merged.items():
+        lines.append(f'    yadi (map_get(dst, 8, "{k}", {len(k)}) != {lit(v)}) {{')
+        lines.append('        likha("FAIL map_merge value\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    # partial merge: destination capacity 1 cannot hold all of b
+    if bvals:
+        lines.append("    vitti small = map_init(1)")
+        lines.append("    yadi (map_merge(small, 1, b, 8) != 1) {")
+        lines.append('        likha("FAIL map_merge partial\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+        lines.append("    yadi (map_size(small) != 1) {")
+        lines.append('        likha("FAIL map_merge partial size\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    # set symmetric difference
+    s1 = set(akeys)
+    s2 = set(bkeys)
+    sym = s1 ^ s2
+    lines.append("    vitti x = set_init(8)")
+    lines.append("    vitti y = set_init(8)")
+    lines.append("    vitti o = set_init(16)")
+    for k in akeys:
+        lines.append(f'    set_add(x, 8, "{k}", {len(k)})')
+    for k in bkeys:
+        lines.append(f'    set_add(y, 8, "{k}", {len(k)})')
+    lines.append(f"    yadi (set_sym_diff(x, 8, y, 8, o) != {len(sym)}) {{")
+    lines.append('        likha("FAIL set_sym_diff count\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    for k in sym:
+        lines.append(f'    yadi (set_contains(o, 16, "{k}", {len(k)}) != 1) {{')
+        lines.append('        likha("FAIL set_sym_diff member\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    for k in (s1 & s2):
+        lines.append(f'    yadi (set_contains(o, 16, "{k}", {len(k)}) != 0) {{')
+        lines.append('        likha("FAIL set_sym_diff excluded\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "gaps23", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_slices23(compiler, rng):
+    """Explicit-length strb_* forms on random slices vs Python slices;
+    the NUL-terminated forms see past the slice end (contrast)."""
+    import string as _string
+    alphabet = _string.ascii_lowercase + _string.digits + "   "
+    full = "".join(rng.choice(alphabet) for _ in range(rng.randint(0, 20)))
+    start = rng.randint(0, len(full)) if full else 0
+    slen = rng.randint(0, len(full) - start) if full else 0
+    sl = full[start:start + slen]
+    code = rng.choice([ord("a"), ord(" "), ord("0"), ord("z")])
+
+    def cstr(s):
+        return '"' + s.replace("\\", "\\\\").replace('"', '\\"') + '"'
+
+    lines = ["ayojan strb",
+             "ayojan string",
+             "mukhya() {",
+             f"    vitti base = {cstr(full)}"]
+    lines.append(f"    yadi (strb_find_char(base + {start}, {slen}, {code}) != {sl.find(chr(code))}) {{")
+    lines.append('        likha("FAIL strb_find_char slice\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append(f"    yadi (strb_count_char(base + {start}, {slen}, {code}) != {sl.count(chr(code))}) {{")
+    lines.append('        likha("FAIL strb_count_char slice\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    want_vowels = sum(1 for ch in sl if ch in "aeiou")
+    lines.append(f"    yadi (strb_count_vowels(base + {start}, {slen}) != {want_vowels}) {{")
+    lines.append('        likha("FAIL strb_count_vowels slice\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    want_digits = 1 if slen > 0 and all(ch.isdigit() for ch in sl) else 0
+    lines.append(f"    yadi (strb_is_all_digits(base + {start}, {slen}) != {want_digits}) {{")
+    lines.append('        likha("FAIL strb_is_all_digits slice\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    # slice repl workaround: dup the slice, use it as repl
+    # ("ab" with "b" replaced by the slice = "a" + slice)
+    lines.append("    vitti tmp = nirmmita(64)")
+    lines.append("    vitti out = nirmmita(64)")
+    lines.append(f"    strb_dup(base + {start}, {slen}, tmp)")
+    want_repl = "a" + sl
+    lines.append(f"    yadi (strb_replace(\"ab\", 2, \"b\", 1, tmp, out) != {len(want_repl)}) {{")
+    lines.append('        likha("FAIL slice repl len\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append(f"    yadi (strb_equals(out, {len(want_repl)}, {cstr(want_repl)}, {len(want_repl)}) != 1) {{")
+    lines.append('        likha("FAIL slice repl content\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "slices23", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
 def main():
     compiler = None
     for i, a in enumerate(sys.argv):
@@ -2917,6 +3115,9 @@ def main():
         ("gaps20", prop_gaps20),
         ("containers21", prop_containers21),
         ("gaps21", prop_gaps21),
+        ("containers23", prop_containers23),
+        ("gaps23", prop_gaps23),
+        ("slices23", prop_slices23),
     ]
 
     failed = []
