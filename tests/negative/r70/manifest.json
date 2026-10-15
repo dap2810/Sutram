@@ -1,0 +1,174 @@
+{
+  "schema": 1,
+  "round": 70,
+  "snapshot": "dde0613ca16f3e41345b1b1055733151780ef9d7",
+  "profile": "Linux x86-64 R68 diagnostic entry, default language semantics; no R48 mode",
+  "status": "Corpus and runner delivered; current full-compiler run pending",
+  "input_git_blobs": {
+    "src/sutram_compiler.asm": "64ea028a5ccf56117c132a7efd0673cbe2df3fc6",
+    "src/r68_compiler_entry.asm": "42389aaf73179726d91e23359aee2199734036e1",
+    "src/r68_diagnostics.inc": "4e2ec29fe16cda9c0d5762ba340ec75694c6f23d",
+    "src/r68_unicode_helpers.inc": "69103e059634aa6b5b871ce7c06c2f4b9c742ff1",
+    "src/r66_indic_lexer.inc": "3633bd55775dc8b9bb94724ef3685976e61d9593",
+    "src/r67_stack_pair.inc": "e8472bd1cad767cf06b0c00fcf88793419362db5",
+    "lang/sanskrit.lang": "5876fae59e52b55cc11ab811a80ad4eec8ccfe83"
+  },
+  "cases": [
+    {
+      "id": "bad_type",
+      "category": "bad_type",
+      "source": "tests/negative/r70/cases/bad_type.sm",
+      "encoding": "utf8",
+      "file_sha256": "5e93ea75f18b257e66423e048fc80d72918f96a0f328c5f75afa46b8bd59b2c5",
+      "program_sha256": "5e93ea75f18b257e66423e048fc80d72918f96a0f328c5f75afa46b8bd59b2c5",
+      "expected_exit": 1,
+      "language": null,
+      "diagnostic": {
+        "match": "exact",
+        "stream": "stdout",
+        "text": "Sutram Error: kosh parameter requires matching kosh element type\n"
+      },
+      "provenance": {
+        "level": "inherited_exact_golden",
+        "source": "examples/120_t18_kosh_param_mismatch.sm",
+        "source_git_blob": "c23974fb8af3771d4b934bd1fa8dbba4b319d2ef",
+        "golden": "tests/expect/120_t18_kosh_param_mismatch.out",
+        "golden_git_blob": "f6fcef15de39699df57d9348f325ef5a68a36e74",
+        "note": "Copied program bytes match the accepted source; no old golden modified."
+      },
+      "native_status": "pending_current_run"
+    },
+    {
+      "id": "bad_arity",
+      "category": "bad_arity",
+      "source": "tests/negative/r70/cases/bad_arity.sm",
+      "encoding": "utf8",
+      "file_sha256": "abc0027ae004084829dca71b3e3987175d73ab2f3ffad405c30ff38178e5528f",
+      "program_sha256": "abc0027ae004084829dca71b3e3987175d73ab2f3ffad405c30ff38178e5528f",
+      "expected_exit": 1,
+      "language": null,
+      "diagnostic": {
+        "match": "ordered_fragments",
+        "stream": "stdout",
+        "fragments": [
+          "Sutram Error: parse error at line ",
+          "Hint: functions accept at most 6 arguments.\n"
+        ]
+      },
+      "provenance": {
+        "level": "source_derived_new_fixture",
+        "source": "src/sutram_compiler.asm",
+        "symbols": [
+          "parse_primary.pp_ic_parse",
+          "msg_err_arg_limit"
+        ],
+        "note": "The six-argument limit has an explicit error path. Full diagnostic framing and this new fixture have not been executed here."
+      },
+      "native_status": "pending_current_run"
+    },
+    {
+      "id": "unknown_identifier",
+      "category": "unknown_identifier",
+      "source": "tests/negative/r70/cases/unknown_identifier.sm",
+      "encoding": "utf8",
+      "file_sha256": "4eaec3f63bb084e4ac4dcaa885b0fb41452d7040c8a45c465cb20ce5344dae2e",
+      "program_sha256": "4eaec3f63bb084e4ac4dcaa885b0fb41452d7040c8a45c465cb20ce5344dae2e",
+      "expected_exit": 1,
+      "language": null,
+      "diagnostic": {
+        "match": "exact",
+        "stream": "stdout",
+        "text": "Sutram Error: undefined function: does_not_exist\n"
+      },
+      "provenance": {
+        "level": "inherited_exact_golden",
+        "source": "examples/69_undefined_function.sm",
+        "source_git_blob": "74bc96e32c8921623cdaac3ec441e8fbf9f26c4c",
+        "golden": "tests/expect/69_undefined_function.out",
+        "golden_git_blob": "eedd77bcd0d555a9ef02b998302e55748a4b7726",
+        "note": "This is an unknown function identifier, NOT evidence that every unknown local variable is rejected."
+      },
+      "native_status": "pending_current_run"
+    },
+    {
+      "id": "malformed_literal",
+      "category": "malformed_literal",
+      "source": "tests/negative/r70/cases/malformed_literal.sm.hex",
+      "encoding": "hex",
+      "file_sha256": "e06dbad0ea27c80f636180c5a97925ec32f061e17de72a56cf0b636b2b0c06d1",
+      "program_sha256": "058adf2bb12ea74bd25d337b119b011a0f70d42996b0a578e87a1706f61c7891",
+      "expected_exit": 1,
+      "language": null,
+      "diagnostic": {
+        "match": "exact",
+        "stream": "stdout",
+        "text": "Sutram Error [E_UTF8]: {source}:2: invalid or truncated UTF-8 in source code\n"
+      },
+      "provenance": {
+        "level": "source_derived_new_fixture",
+        "source": "src/r68_diagnostics.inc",
+        "symbols": [
+          "r68_prelex_validate",
+          "r68_report_error"
+        ],
+        "note": "Malformed Devanagari digit-shaped UTF-8 in source code. This does not test malformed ASCII hex/exponent grammar."
+      },
+      "native_status": "pending_current_run"
+    },
+    {
+      "id": "unterminated_string",
+      "category": "unterminated_string",
+      "source": "tests/negative/r70/cases/unterminated_string.sm",
+      "encoding": "utf8",
+      "file_sha256": "c84b053c9c633248e68022267ca9221759fcb85acd894d636b4ad784f7530306",
+      "program_sha256": "c84b053c9c633248e68022267ca9221759fcb85acd894d636b4ad784f7530306",
+      "expected_exit": 1,
+      "language": null,
+      "diagnostic": {
+        "match": "ordered_fragments",
+        "stream": "stdout",
+        "fragments": [
+          "Sutram Error: parse error at line ",
+          "end of file",
+          "Hint: check the keyword spelling and syntax near this spot.\n"
+        ]
+      },
+      "provenance": {
+        "level": "source_derived_new_fixture",
+        "source": "src/sutram_compiler.asm",
+        "symbols": [
+          "parse_primary",
+          "parse_error",
+          "msg_err_eof"
+        ],
+        "note": "Proposed rejection expectation for this exact source. It also lacks a parsed closing call delimiter; no universal unterminated-string rejection guarantee is inferred."
+      },
+      "native_status": "pending_current_run"
+    },
+    {
+      "id": "misplaced_keyword",
+      "category": "misplaced_keyword",
+      "source": "tests/negative/r70/cases/misplaced_keyword.sm",
+      "encoding": "utf8",
+      "file_sha256": "80845a8fb7ec41f225ef46d42b30698ac5d297b6df9473891326ca5872521605",
+      "program_sha256": "80845a8fb7ec41f225ef46d42b30698ac5d297b6df9473891326ca5872521605",
+      "expected_exit": 1,
+      "language": "sanskrit",
+      "diagnostic": {
+        "match": "exact",
+        "stream": "stdout",
+        "text": "Sutram Error [E_ABBREVIATION_VALUE]: {source}:2: abbreviation keyword is not a value: 'वि॰'\n"
+      },
+      "provenance": {
+        "level": "source_derived_new_fixture",
+        "source": "src/r68_diagnostics.inc",
+        "symbols": [
+          "r68_guard_value_start"
+        ],
+        "pack": "lang/sanskrit.lang",
+        "note": "Uses the existing exact abbreviation वि॰ -> vitti at a value position, under --lang sanskrit."
+      },
+      "native_status": "pending_current_run"
+    }
+  ]
+}
