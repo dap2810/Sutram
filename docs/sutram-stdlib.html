@@ -26,7 +26,7 @@ Do not edit by hand.</p>
 <li><a href="#bigint"><code>bigint</code></a> — 12 functions</li>
 <li><a href="#chandas"><code>chandas</code></a> — 6 functions</li>
 <li><a href="#fmt"><code>fmt</code></a> — 23 functions</li>
-<li><a href="#ganita"><code>ganita</code></a> — 18 functions</li>
+<li><a href="#ganita"><code>ganita</code></a> — 22 functions</li>
 <li><a href="#hash"><code>hash</code></a> — 2 functions</li>
 <li><a href="#kalana"><code>kalana</code></a> — 6 functions</li>
 <li><a href="#list"><code>list</code></a> — 34 functions</li>
@@ -140,6 +140,10 @@ Do not edit by hand.</p>
 <tr><td><code>ganita_checked_pow(a, e, ok)</code></td><td>ganita_checked_pow(a, e, ok) — a^e for e &gt;= 0 via repeated checked multiplication (WS3, R19); ok[0] 1, or 0 if e &lt; 0 (no integer power) or the result overflows (returns 0 then). 0^0 = 1 by the empty-product convention. O(e), but the loop exits early on overflow for every |a| &gt;= 2 (a^e overflows by e = 63 at the latest); only the trivial bases -1, 0, 1 run the full loop.</td></tr>
 <tr><td><code>ganita_checked_fact(n, ok)</code></td><td>ganita_checked_fact(n, ok) — n! via repeated checked multiplication (WS3, R20); ok[0] 1, or 0 if n &lt; 0 (no integer factorial) or the result overflows (returns 0 then). 0! = 1. 20! is the largest that fits (20! = 2432902008176640000); 21! overflows.</td></tr>
 <tr><td><code>ganita_sat_pow(a, e)</code></td><td>ganita_sat_pow(a, e) — a^e, saturating (WS3, R20): on overflow returns INT64_MAX (positive overflow) or INT64_MIN (negative overflow). e &lt; 0 returns 0 (no integer power; the saturating form has no ok channel, so 0 is the documented sentinel). 0^0 = 1. Repeated saturating multiplication. Correct because |a| &lt;= 1 never saturates, and once saturated with |a| &gt;= 2 every later true product overflows in the direction sign(r) * sign(a)^remaining — so the loop exits early with the parity of the remaining steps deciding the final bound, instead of iterating e times.</td></tr>
+<tr><td><code>ganita_sat_div(a, b)</code></td><td>ganita_sat_div(a, b) — truncating a / b, saturating (WS4, R24): the sat_* companion of ganita_checked_div. INT64_MIN / -1 saturates to INT64_MAX (the true quotient 2^63 does not fit); b == 0 returns 0 (the saturating form has no ok channel, so 0 is the documented sentinel — same as sat_pow/sat_fact on invalid input). Guards both cases before dividing, so it never executes a trapping operation under a trapping compiler.</td></tr>
+<tr><td><code>ganita_sat_mod(a, b)</code></td><td>ganita_sat_mod(a, b) — truncating a % b (WS4, R24). Remainder never overflows mathematically (INT64_MIN % -1 is exactly 0), but the hardware operation still traps on MIN % -1 (same SIGFPE as MIN / -1), so this guards that case and returns 0 — which is also the exact result. b == 0 returns 0 (same sentinel as sat_div). Guards before operating, so it never executes a trapping operation.</td></tr>
+<tr><td><code>ganita_checked_abs(a, ok)</code></td><td>ganita_checked_abs(a, ok) — |a| (WS4, R24); ok[0] 1, or 0 on abs(INT64_MIN), which overflows (returns 0 then). The unary overflow the checked family did not cover: plain ganita_abs(MIN) silently wraps to MIN.</td></tr>
+<tr><td><code>ganita_sat_abs(a)</code></td><td>ganita_sat_abs(a) — |a|, saturating (WS4, R24): abs(INT64_MIN) saturates to INT64_MAX.</td></tr>
 <tr><td><code>ganita_sat_fact(n)</code></td><td>ganita_sat_fact(n) — n!, saturating (WS3, R21): on overflow returns INT64_MAX (factorials are positive, so saturation is always MAX). n &lt; 0 returns 0 (no integer factorial; the saturating form has no ok channel, so 0 is the documented sentinel). 0! = 1. 20! is the largest that fits; 21! saturates. Exits early once saturated (factorials only grow, so a saturated result stays saturated).</td></tr>
 </table>
 <h2 id="hash"><code>hash</code></h2>
@@ -422,6 +426,6 @@ Do not edit by hand.</p>
 <tr><td><code>bool_to_int(b)</code></td><td></td></tr>
 <tr><td><code>int_max()</code></td><td></td></tr>
 </table>
-<footer>21 modules, 274 functions. Generated from library sources.</footer>
+<footer>21 modules, 278 functions. Generated from library sources.</footer>
 </body>
 </html>
