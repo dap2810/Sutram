@@ -61,3 +61,11 @@
 कोशरिक्त kosh_empty
 कोशशिखर kosh_peek
 कोशनिर्गम kosh_dequeue
+
+# R66: exact abbreviations, NOT arbitrary prefix matching or terminators.
+# U+0970 belongs to the alias spelling. Danda remains the terminator.
+वि॰ vitti
+लि॰ likha
+प्र॰ prakriya
+प॰ pratiyati
+कोशप्रवेश kosh_enqueue
