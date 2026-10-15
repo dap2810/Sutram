@@ -1,0 +1,1160 @@
+# Round 65 source review patch, PR #23, 18 files.
+# Based on accepted main as of opening PR #23 (current main may evolve).
+diff --git a/docs/R65-DEVANAGARI-SURFACE.md b/docs/R65-DEVANAGARI-SURFACE.md
+new file mode 100644
+--- /dev/null
++++ b/docs/R65-DEVANAGARI-SURFACE.md
+@@ -0,0 +1,11 @@
++# R65 Sanskrit/Devanagari alias extension
++
++The accepted `lang/sanskrit.lang` already maps 31 core keywords including `kosh`, `pankti`, `rachana`, `srijana`, `kuru`, `nishkriya`, `parigrah`, and `grahan` (grahan is a builtin in the compiler). R65 preserves those mappings rather than introducing duplicate keyword entries.
++
++R65 adds **18 aliases for existing recognised builtins** in `lang/sanskrit.lang`: printing, halt, file/byte, memory allocation, string/array length, and `kosh` operations. Each RHS has to resolve to an existing builtin ID through `lookup_builtin`; no new builtin semantics have been invented. These aliases are supported when the Sanskrit language pack is active (`--lang sanskrit` or `SUTRAM_LANG=sanskrit`). Danda and double-danda lexing remain unchanged.
++
++The string `niryat` from the incoming examples is **not** an existing recognised keyword or builtin in the checked compiler table. It was deliberately not mapped as if a native export statement already existed.
++
++Proof fixture: `examples/219_sanskrit_kosh_aliases.sm` should output the bytes in `tests/r65_check/sanskrit_kosh_aliases.out` using `sutram --lang sanskrit <fixture.sm> <executable>`, then execute the generated Linux binary. Native compilation/execution are left to Sarvam.
++
++Safety constraints: no edits to `is_alpha`, Indic UTF-8 multi-byte lexer handling, danda recognition, or accepted goldens. The new aliases must still be validated by Sarvam's language pack gate and native invocation.
+diff --git a/docs/R65-LEGACY-NSIS-VS-NATIVE-INSTALLER.md b/docs/R65-LEGACY-NSIS-VS-NATIVE-INSTALLER.md
+new file mode 100644
+--- /dev/null
++++ b/docs/R65-LEGACY-NSIS-VS-NATIVE-INSTALLER.md
+@@ -0,0 +1,23 @@
++# Round 65 — Windows installer security comparison
++
++**Source audit only (2026-10-15):** this document compares two existing implementation paths; neither was executed. Only the native, per-user installer should be presented as the supported installation route.
++
++| Concern | Legacy `windows/sutram-installer.nsi` | Supported `windows/native-installer/install-core.ps1` |
++| --- | --- | --- |
++| Elevation | `RequestExecutionLevel admin` | Runs as a standard user, no UAC requested by the supported native launcher |
++| Default destination | `$PROGRAMFILES64\Sutram` | `%LOCALAPPDATA%\Programs\Sutram` |
++| Installation metadata | Writes `HKLM\Software\Sutram` and `HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Sutram` | Writes uninstall information under **HKCU** (current user) |
++| PATH integration | `EnVar::SetHKLM`, system-wide PATH modification | User `HKCU\Environment\Path` only, optional; broadcasts environment change |
++| File associations | Writes to `HKCR\.sm` and `HKCR\Sutram.SourceFile` | Per-user associations only where configured; no HKLM writes |
++| Shortcuts | Uses default NSIS `$SMPROGRAMS` and `$DESKTOP` while elevated | Only per-user Start Menu and optional per-user Desktop shortcuts |
++| Compiler | NSIS script bundles `bin\sutram_compiler` and `sutram.cmd`; its own finish page says WSL is required | Supported native package embeds the Windows compiler `sutram.exe` and IDE; no WSL needed |
++| Integrity / failure | No equivalent manifest verification or bounded self-test visible in legacy .nsi script | Hash-checked overlay, `--self-test`, bounded 8-second compiler pre/post tests, persistent successful `install.log` |
++| Uninstall | Removes HKLM uninstall key, `HKCR` associations, system PATH, installed files/shortcuts | Current-user cleanup through `uninstall-core.ps1` / bundled native uninstaller; preserves system-wide state |
++
++## Evidence and scope
++
++The legacy file explicitly contains `InstallDirRegKey HKLM`, `RequestExecutionLevel admin`, `WriteRegStr HKLM`, `WriteRegStr HKCR`, and `EnVar::SetHKLM` in both installation and removal. It must **not** be used as a least-privilege fallback or silently re-enabled.
++
++The supported installer is documented at `windows/native-installer/README.md`, with concrete mutation code in `windows/native-installer/install-core.ps1` and matching uninstall script. It installs under the current user, uses HKCU, and avoids admin. The R62 PowerShell harness remains the Windows acceptance procedure; source inspection and packaging do **not** prove successful installation or icon/GUI display.
++
++**Do not follow legacy WSL/admin guidance from `windows/WINDOWS-README.md` for the current supported native installer.** That document refers to an older path and is not an instruction to elevate, change security policies, or edit system settings. No installer executable, security control, or registry entry was changed by Round 65.
+diff --git a/docs/R65-SOURCE-REVIEW.md b/docs/R65-SOURCE-REVIEW.md
+new file mode 100644
+--- /dev/null
++++ b/docs/R65-SOURCE-REVIEW.md
+@@ -0,0 +1,54 @@
++# Sutram Round 65 — source implementation and native review instructions
++
++**Date:** 2026-10-15. **Base:** accepted `main` commit `45ba8518a9f82bd6b481ca286b7ba8f36e6bb4d0`. **Status:** source-level implementation only; **Sarvam must assemble and run**.
++
++## Workstream 1: safe pre-emission peepholes
++
++**1A — generated argument push/pop coalescing.** Under optional compiler-build define `-DSUTRAM_R65_PEEPHOLES=1`, the exactly-one-argument function-call path avoids generating the former `push rax` then `pop rdi` pair. It instead transfers the final argument from RAX into RDI directly (`mov rdi,rax`). Nested expression evaluation takes place before this transfer; the helper saves its compiler-time flag on the stack. Other argument counts remain on the original ABI path. This removes two stack-memory instructions, replacing them with one move; it can **increase encoded bytes by one**, so compare instruction count and native performance rather than assuming smaller binaries.
++
++**1B — adjacent store/reload of the same scalar.** Under the same optional mode, a generic scalar assignment records that its written value remains in generated runtime RAX. The *immediately next* generic scalar assignment with a matching variable RHS can reuse RAX instead of reloading the just-written scalar. The token is consumed at the next statement entry, invalidated on all other paths, and reset at block entry/exit. Existing register fast paths, globals, branches, calls, arrays, and separate blocks are not directly rewritten. No emitted byte is deleted; all decisions occur before emission.
++
++A literal `push REG; pop REG` with the **same** register was not identified as a safe reachable standalone pair. Removing arbitrary inline-assembly pushes/pops would be unsound. The new single-argument transfer is instead a conservatively scoped elimination of a known generated argument-stack round trip. Sarvam should reject this optimization if the native A/B shows ABI or stack-alignment differences.
++
++**Do not claim machine-code instruction reductions until Sarvam disassembles and executes** `tests/r65_check/peephole_scalar.sm` before/after with `objdump`, including nested and typed-function argument cases.
++
++## Workstream 2: opt-in integer runtime traps
++
++The compiler-build flag `-DSUTRAM_R65_TRAP_INT=1` enables the new trap mode. **Without this flag the accepted compiler codegen is preserved**, including intentional signed wrapping, the existing R18 checked/saturating library, and R57/R58 optimizations. This is a compiler *build* mode, not a source-language/CLI option; document that distinction in any future installer/UI integration.
++
++The opt-in mode avoids the R58 codegen folding, parser `fold_const`, R57 register-tree emitter, integer fast assignments/declarations and division-by-power-of-two shortcut. Checked generic integer instructions emit:
++
++- `add/sub/imul`: `JNO` around a generated operation-specific fatal handler, executed only when OF is set.
++- `idiv` and remainder: `test rcx,rcx; JNZ` around a zero-divisor fatal handler, before the instruction.
++- The diagnostic prints `source:line` captured into the otherwise-unused AST_BINOP `+32` slot during parsing, followed by the operation; exits nonzero. The source root path is shortened to 95 trailing bytes when long to avoid unsafe short-jump literal encoding.
++
++**Open correctness boundaries requiring Sarvam testing:** all parser operator paths, negative/unary expressions, compiler-generated literal string printing in the fatal path, PE64 runtime syscall translation, `INT64_MIN/-1` signed division overflow (not explicitly guarded), arithmetic in imported files (diagnostic uses root source path), and whether the parser-recorded `cur_line` is the exact operator line. The mode currently does not supply an ordinary `sutram --trap-int` CLI toggle. Do **not** merge until the native gates pass and these limits are accepted or fixed.
++
++## Workstream 3: expanded Sanskrit pack
++
++The original `lang/sanskrit.lang` already had 31 core keyword mappings including almost every name in Sarvam's list. Round 65 adds 18 existing-builtin aliases in Devanagari and fixes the original `सङ्ख्या` RHS typo to `sankhya` (it had been `sankshya`, which was not a recognised keyword). The prior codepoint-aware lexing and danda handling are untouched. `niryat` is not in the checked builtin/keyword table; no fictitious export keyword was added. See `docs/R65-DEVANAGARI-SURFACE.md` and `examples/219_sanskrit_kosh_aliases.sm`.
++
++## Workstream 4: Windows installer security audit
++
++`docs/R65-LEGACY-NSIS-VS-NATIVE-INSTALLER.md` documents exactly how old `windows/sutram-installer.nsi` requests UAC and writes HKLM/HKCR/system PATH, versus supported `windows/native-installer/install-core.ps1` per-user HKCU and LOCALAPPDATA. Neither installer was executed or modified.
++
++## How Sarvam should test
++
++On a proper Linux NASM host, **three separate compiler builds**:
++
++```bash
++nasm -f elf64 -I. src/sutram_compiler.asm -o /tmp/r65-default.o
++ld -o /tmp/r65-default /tmp/r65-default.o
++nasm -DSUTRAM_R65_PEEPHOLES=1 -f elf64 -I. src/sutram_compiler.asm -o /tmp/r65-opt.o
++ld -o /tmp/r65-opt /tmp/r65-opt.o
++nasm -DSUTRAM_R65_TRAP_INT=1 -f elf64 -I. src/sutram_compiler.asm -o /tmp/r65-trap.o
++ld -o /tmp/r65-trap /tmp/r65-trap.o
++python3 tools/r65_source_gate.py
++python3 tools/r65_native_acceptance.py --default /tmp/r65-default --peephole /tmp/r65-opt --trap /tmp/r65-trap
++```
++
++For **default generated-code identity** also build the compiler from parent main `45ba8518a9f82bd6b481ca286b7ba8f36e6bb4d0` as a separate baseline and pass `--reference /path/to/parent/compiler`. Inspect actual disassembly, exact stdout and errors; include full accepted regression suite, language packs, module graph, proofs, historical frozen codegen, and actual Windows PE builds where feasible.
++
++Do not alter accepted goldens or `lib/*.smlib`. Do not modify existing CI triggers; existing policy allows deliberate `workflow_dispatch` only. No credentials, new runtime network calls, HKLM writes or GUI palette changes are in this branch.
++
++**This document reports source work, not proof of executable correctness.**
+diff --git a/examples/219_sanskrit_kosh_aliases.sm b/examples/219_sanskrit_kosh_aliases.sm
+new file mode 100644
+--- /dev/null
++++ b/examples/219_sanskrit_kosh_aliases.sm
+@@ -0,0 +1,8 @@
++# R65: compile with --lang sanskrit; Devanagari builtin aliases.
++मुख्य() {
++    कोश q[1]
++    लिखा(कोशपुष्(q, 7))
++    लिखा(कोशशिखर(q))
++    लिखा(कोशनिर्गम(q))
++    लिखा(कोशरिक्त(q))
++}
+diff --git a/lang/sanskrit.lang b/lang/sanskrit.lang
+--- a/lang/sanskrit.lang
++++ b/lang/sanskrit.lang
+@@ -38,4 +38,26 @@
+ कोश kosh
+ कुरु kuru
+ निष्क्रिय nishkriya
+-सङ्ख्या sankshya
++सङ्ख्या sankhya
++
++# R65: Additional native Devanagari aliases for existing compiler builtins.
++# No keyword ID or operator semantics changes. Total builtin aliases below: 18.
++# A Sanskrit word maps to the already-recognised Latin builtin name.
++लेख likh
++लिखा likha
++स्थगित sthagita
++पाद pad
++द्वारम् dvaram
++पाठ paadh
++बन्ध band
++निर्मित nirmmita
++शब्दम् shabda
++पङ्क्तिदैर्घ्य pankti_len
++कोशपुष् kosh_push
++कोशपोप् kosh_pop
++कोशदैर्घ्य kosh_len
++कोशक्षमता kosh_cap
++कोशशुद्धि kosh_clear
++कोशरिक्त kosh_empty
++कोशशिखर kosh_peek
++कोशनिर्गम kosh_dequeue
+diff --git a/src/sutram_compiler.asm b/src/sutram_compiler.asm
+--- a/src/sutram_compiler.asm
++++ b/src/sutram_compiler.asm
+@@ -100,6 +100,9 @@ FUNC_SPILL_BYTES equ 2048 ; reserved stack spill area per generated function/mai
+ ; volatile XMM2-XMM5, never XMM6-XMM15 (Windows nonvolatile).
+ 
+ 
++; R65 opt-in source mode: nasm -DSUTRAM_R65_TRAP_INT=1
++; Default build (without -D) follows the accepted wrap semantics.
++; Independent peephole mode: -DSUTRAM_R65_PEEPHOLES=1.
+ ; Operator IDs
+ OP_ADD equ 1
+ OP_SUB equ 2
+@@ -289,6 +292,15 @@ r54_builtin_arity_table:
+     msg_undefined_func db "Sutram Error: undefined function: ", 0
+     msg_array_oob db "Sutram Error: array index out of bounds", 10, 0
+     msg_kosh_required db "Sutram Error: kosh builtin requires a kosh variable", 10, 0
++%ifdef SUTRAM_R65_TRAP_INT
++    r65_msg_prefix db "Sutram Error [E_INTEGER_TRAP] ",0
++    r65_msg_colon db ":",0
++    r65_msg_add db ": signed addition overflow",10,0
++    r65_msg_sub db ": signed subtraction overflow",10,0
++    r65_msg_mul db ": signed multiplication overflow",10,0
++    r65_msg_div db ": division by zero",10,0
++    r65_msg_mod db ": remainder by zero",10,0
++%endif
+     msg_kosh_empty db "Sutram Error: kosh pop from empty array", 10, 0
+     msg_kosh_peek_empty db "Sutram Error: kosh peek from empty array", 10, 0
+     msg_kosh_dequeue_empty db "Sutram Error: kosh dequeue from empty array", 10, 0
+@@ -830,6 +842,12 @@ section .bss
+     var_table   resb VAR_TABLE_CAP * 16 ; [name_ptr(8)][offset(8)]
+     var_cnt     resq 1
+     stack_dep   resq 1
++    ; R65: compiler-only preceding assignment value still live in generated RAX.
++    ; Enabled only with -DSUTRAM_R65_PEEPHOLES=1. Never deletes emitted bytes.
++%ifdef SUTRAM_R65_PEEPHOLES
++    r65_last_store_name resq 1
++    r65_candidate_name resq 1
++%endif
+     array_vars  resq 256        ; T8b: pankti names in current generated-function scope
+     array_var_cnt resq 1
+     kosh_vars   resq KOSH_VAR_CAP ; T18 growable-array names in current generated-function scope
+@@ -8407,6 +8425,12 @@ push r12                  ; save r12 (parse_func_block uses it)
+     ; Build binop node: [AST_BINOP][op][left=target][right=NUM(1)]
+     call alloc_ast
+     mov qword [rax], AST_BINOP
++%ifdef SUTRAM_R65_TRAP_INT
++    push rcx                  ; unary-minus builder retains AST_NUM in RCX
++    mov rcx,[rel cur_line]
++    mov [rax+32],rcx          ; R65: parser-time BINOP source line
++    pop rcx
++%endif
+     mov [rax+8], r12          ; op
+     mov [rax+16], rbx         ; left = target
+     mov [rax+24], r13         ; right = 1
+@@ -8429,6 +8453,12 @@ push r12                  ; save r12 (parse_func_block uses it)
+     ; Build binop node: [AST_BINOP][op][left=target][right=rhs]
+     call alloc_ast            ; rax = binop node (rbx preserved)
+     mov qword [rax], AST_BINOP
++%ifdef SUTRAM_R65_TRAP_INT
++    push rcx                  ; unary-minus builder retains AST_NUM in RCX
++    mov rcx,[rel cur_line]
++    mov [rax+32],rcx          ; R65: parser-time BINOP source line
++    pop rcx
++%endif
+     mov [rax+8], r12          ; op
+     mov [rax+16], rbx         ; left = target
+     mov [rax+24], r13         ; right = rhs
+@@ -8555,6 +8585,12 @@ parse_lor:
+     pop r14
+     pop rbx
+     mov qword [rax], AST_BINOP
++%ifdef SUTRAM_R65_TRAP_INT
++    push rcx                  ; unary-minus builder retains AST_NUM in RCX
++    mov rcx,[rel cur_line]
++    mov [rax+32],rcx          ; R65: parser-time BINOP source line
++    pop rcx
++%endif
+     mov [rax+8], r14
+     mov [rax+16], rbx
+     mov [rax+24], r13
+@@ -8598,6 +8634,12 @@ parse_land:
+     pop r14
+     pop rbx
+     mov qword [rax], AST_BINOP
++%ifdef SUTRAM_R65_TRAP_INT
++    push rcx                  ; unary-minus builder retains AST_NUM in RCX
++    mov rcx,[rel cur_line]
++    mov [rax+32],rcx          ; R65: parser-time BINOP source line
++    pop rcx
++%endif
+     mov [rax+8], r14
+     mov [rax+16], rbx
+     mov [rax+24], r13
+@@ -8669,6 +8711,12 @@ parse_cmp:
+     pop r14
+     pop rbx
+     mov qword [rax], AST_BINOP
++%ifdef SUTRAM_R65_TRAP_INT
++    push rcx                  ; unary-minus builder retains AST_NUM in RCX
++    mov rcx,[rel cur_line]
++    mov [rax+32],rcx          ; R65: parser-time BINOP source line
++    pop rcx
++%endif
+     mov [rax+8], r14
+     mov [rax+16], rbx
+     mov [rax+24], r13
+@@ -8715,6 +8763,12 @@ parse_bitor:
+     pop r14
+     pop rbx
+     mov qword [rax], AST_BINOP
++%ifdef SUTRAM_R65_TRAP_INT
++    push rcx                  ; unary-minus builder retains AST_NUM in RCX
++    mov rcx,[rel cur_line]
++    mov [rax+32],rcx          ; R65: parser-time BINOP source line
++    pop rcx
++%endif
+     mov [rax+8], r14
+     mov [rax+16], rbx
+     mov [rax+24], r13
+@@ -8761,6 +8815,12 @@ parse_bitxor:
+     pop r14
+     pop rbx
+     mov qword [rax], AST_BINOP
++%ifdef SUTRAM_R65_TRAP_INT
++    push rcx                  ; unary-minus builder retains AST_NUM in RCX
++    mov rcx,[rel cur_line]
++    mov [rax+32],rcx          ; R65: parser-time BINOP source line
++    pop rcx
++%endif
+     mov [rax+8], r14
+     mov [rax+16], rbx
+     mov [rax+24], r13
+@@ -8807,6 +8867,12 @@ parse_bitand:
+     pop r14
+     pop rbx
+     mov qword [rax], AST_BINOP
++%ifdef SUTRAM_R65_TRAP_INT
++    push rcx                  ; unary-minus builder retains AST_NUM in RCX
++    mov rcx,[rel cur_line]
++    mov [rax+32],rcx          ; R65: parser-time BINOP source line
++    pop rcx
++%endif
+     mov [rax+8], r14
+     mov [rax+16], rbx
+     mov [rax+24], r13
+@@ -8859,6 +8925,12 @@ parse_shift:
+     pop r14
+     pop rbx
+     mov qword [rax], AST_BINOP
++%ifdef SUTRAM_R65_TRAP_INT
++    push rcx                  ; unary-minus builder retains AST_NUM in RCX
++    mov rcx,[rel cur_line]
++    mov [rax+32],rcx          ; R65: parser-time BINOP source line
++    pop rcx
++%endif
+     mov [rax+8], r14
+     mov [rax+16], rbx
+     mov [rax+24], r13
+@@ -8908,6 +8980,12 @@ parse_add:
+     pop r14
+     pop rbx
+     mov qword [rax], AST_BINOP
++%ifdef SUTRAM_R65_TRAP_INT
++    push rcx                  ; unary-minus builder retains AST_NUM in RCX
++    mov rcx,[rel cur_line]
++    mov [rax+32],rcx          ; R65: parser-time BINOP source line
++    pop rcx
++%endif
+     mov [rax+8], r14
+     mov [rax+16], rbx
+     mov [rax+24], r13
+@@ -8968,6 +9046,12 @@ parse_mul:
+     pop r14
+     pop rbx
+     mov qword [rax], AST_BINOP
++%ifdef SUTRAM_R65_TRAP_INT
++    push rcx                  ; unary-minus builder retains AST_NUM in RCX
++    mov rcx,[rel cur_line]
++    mov [rax+32],rcx          ; R65: parser-time BINOP source line
++    pop rcx
++%endif
+     mov [rax+8], r14
+     mov [rax+16], rbx
+     mov [rax+24], r13
+@@ -8987,6 +9071,11 @@ parse_mul:
+ ; fold_const(rdi = BINOP node) -> rax = folded AST_NUM or original node
+ ; If both operands are AST_NUM, compute the result at compile time
+ fold_const:
++%ifdef SUTRAM_R65_TRAP_INT
++    ; Parser literal folding could otherwise elide a runtime overflow trap.
++    mov rax,rdi
++    ret
++%endif
+     push rbx
+     push r12
+     push r13
+@@ -9258,6 +9347,12 @@ parse_primary:
+     pop rcx                   ; rcx = AST_NUM(0) (left)
+     pop rdx                   ; rdx = expr (right)
+     mov qword [rax], AST_BINOP
++%ifdef SUTRAM_R65_TRAP_INT
++    push rcx                  ; unary-minus builder retains AST_NUM in RCX
++    mov rcx,[rel cur_line]
++    mov [rax+32],rcx          ; R65: parser-time BINOP source line
++    pop rcx
++%endif
+     mov qword [rax+8], OP_SUB
+     mov [rax+16], rcx         ; left = 0
+     mov [rax+24], rdx         ; right = expr
+@@ -10534,6 +10629,11 @@ backpatch_calls:
+ 
+ ; gen_block(rax = block node)
+ gen_block:
++%ifdef SUTRAM_R65_PEEPHOLES
++    ; No cross-block or cross-function RAX lifetime assumptions.
++    mov qword [rel r65_last_store_name],0
++    mov qword [rel r65_candidate_name],0
++%endif
+ %ifdef SUTRAM_EXPERIMENTAL_XMM_CACHE
+     ; Basic-block entry: do not trust cached XMM values across jumps/merges.
+     call xmm_cache_barrier
+@@ -10562,6 +10662,10 @@ gen_block:
+     inc r13
+     jmp .gb_loop
+ .gb_done:
++%ifdef SUTRAM_R65_PEEPHOLES
++    mov qword [rel r65_last_store_name],0
++    mov qword [rel r65_candidate_name],0
++%endif
+ %ifdef SUTRAM_EXPERIMENTAL_XMM_CACHE
+     call xmm_cache_barrier
+ %endif
+@@ -10575,6 +10679,13 @@ gen_block:
+ gen_stmt:
+     push rbx
+     mov rbx, rax
++%ifdef SUTRAM_R65_PEEPHOLES
++    ; Consume the one-statement RAX value token. Every statement first
++    ; invalidates it; only the immediate next scalar assignment may reuse it.
++    mov rax,[rel r65_last_store_name]
++    mov [rel r65_candidate_name],rax
++    mov qword [rel r65_last_store_name],0
++%endif
+     mov rax, [rbx]            ; node type
+ %ifdef SUTRAM_EXPERIMENTAL_XMM_CACHE
+     ; Conservative statement barrier. Only simple scalar assignments can
+@@ -10783,12 +10894,14 @@ gen_stmt:
+     ; PERF2/PERF3: when an integer scalar will occupy one of the first five
+     ; register slots, build simple literals/copies/var-binops directly in the
+     ; destination register.  Unsupported forms leave allocation untouched.
++%ifndef SUTRAM_R65_TRAP_INT
+     mov rdi, rbx
+     call try_emit_int_decl_reg
+     test rax, rax
+     jz .gs_decl_not_fast
+     pop rbx
+     ret
++%endif
+ .gs_decl_not_fast:
+     cmp qword [rbx+32], 2
+     je .gs_decl_kosh
+@@ -11079,6 +11192,7 @@ gen_stmt:
+     call try_emit_float_reg_destination
+     test rax, rax
+     jnz .gs_assign_fast_done
++%ifndef SUTRAM_R65_TRAP_INT
+     ; PERF1: integer self-update fast path.  The first five locals live in
+     ; callee-saved registers; avoid materializing x=x+y / x=x+imm through
+     ; RAX plus a generated push/pop/xchg/store sequence when the destination
+@@ -11093,6 +11207,13 @@ gen_stmt:
+     call try_emit_int_reg_assignment
+     test rax, rax
+     jz .gs_assign_generic
++%endif
++%ifdef SUTRAM_R65_TRAP_INT
++    ; The optional safety mode bypasses all integer assignment fast paths.
++    ; Continue through the generic value emitter, never fall through to
++    ; the fast-path "done" return without generating an assignment.
++    jmp .gs_assign_generic
++%endif
+ .gs_assign_fast_done:
+     pop rbx
+     ret
+@@ -11105,8 +11226,26 @@ gen_stmt:
+     mov rdi, [rbx+16]
+     call expr_is_float
+     push rax                  ; source float flag
++%ifdef SUTRAM_R65_PEEPHOLES
++    ; R65: no intervening generated instruction since prior generic local
++    ; scalar store, and RHS is exactly that variable: RAX still has the bits.
++    mov rax,[rbx+16]
++    cmp qword [rax],AST_VAR
++    jne .r65_emit_rhs
++    mov rdi,[rel r65_candidate_name]
++    test rdi,rdi
++    jz .r65_emit_rhs
++    mov rsi,[rax+8]
++    call strcmp
++    test rax,rax
++    jz .r65_rhs_done
++.r65_emit_rhs:
++%endif
+     mov rax, [rbx+16]
+     call gen_expr             ; runtime result in RAX
++%ifdef SUTRAM_R65_PEEPHOLES
++.r65_rhs_done:
++%endif
+     pop rcx                   ; source flag
+     pop rdx                   ; target flag
+     test rdx, rdx
+@@ -11131,6 +11270,11 @@ gen_stmt:
+     ; Register: emit mov reg, rax
+     mov rdi, rax
+     call emit_store_reg
++%ifdef SUTRAM_R65_PEEPHOLES
++    mov rax,[rbx+8]
++    mov rax,[rax+8]
++    mov [rel r65_last_store_name],rax
++%endif
+     pop rbx
+     ret
+ .gs_assign_stack:
+@@ -11146,6 +11290,11 @@ gen_stmt:
+     call emit_byte
+     mov edi, r12d
+     call emit_byte
++%ifdef SUTRAM_R65_PEEPHOLES
++    mov rax,[rbx+8]
++    mov rax,[rax+8]
++    mov [rel r65_last_store_name],rax
++%endif
+     pop r12
+     pop rbx
+     ret
+@@ -12563,13 +12712,16 @@ r46_live_callee_saved_vars:
+ 
+ ; gen_expr(rax = expression node)
+ gen_expr:
+-    ; R58: fold a bounded pure integer subtree before generating native code.
+-    ; The optimizer returns the original node or a proven equivalent AST node.
+     push rbx
++%ifdef SUTRAM_R65_TRAP_INT
++    ; Do not compile-fold operands before runtime overflow checks.
++    mov rbx,rax
++%else
+     mov rdi,rax
+     xor esi,esi
+     call r58_fold_tree
+     mov rbx,rax
++%endif
+     mov rax, [rbx]            ; node type
+     cmp rax, AST_NUM
+     je .ge_num
+@@ -12616,41 +12768,65 @@ gen_expr:
+     mov rdi, [rbx+8]
+     xor esi, esi
+     mov rdx, [rbx+24]
++%ifdef SUTRAM_R65_PEEPHOLES
++    ; Exactly one argument: no runtime instruction occurs between value
++    ; evaluation and its transfer into RDI. Omit the push/pop pair.
++    xor r8d,r8d
++    cmp r14,1
++    jne .r65_one_arg_flag_ready
++    mov r8d,1
++.r65_one_arg_flag_ready:
++%endif
+     call gen_typed_call_arg
+     cmp r14, 2
+     jb .ge_fc_pop1
+     ; Arg 2
+     mov rdi, [rbx+8]
+     mov esi, 1
+     mov rdx, [rbx+32]
++%ifdef SUTRAM_R65_PEEPHOLES
++    xor r8d,r8d
++%endif
+     call gen_typed_call_arg
+     cmp r14, 3
+     jb .ge_fc_pop2
+     ; Arg 3
+     mov rdi, [rbx+8]
+     mov esi, 2
+     mov rdx, [rbx+40]
++%ifdef SUTRAM_R65_PEEPHOLES
++    xor r8d,r8d
++%endif
+     call gen_typed_call_arg
+     cmp r14, 4
+     jb .ge_fc_pop3
+     ; Arg 4
+     mov rdi, [rbx+8]
+     mov esi, 3
+     mov rdx, [rbx+48]
++%ifdef SUTRAM_R65_PEEPHOLES
++    xor r8d,r8d
++%endif
+     call gen_typed_call_arg
+     cmp r14, 5
+     jb .ge_fc_pop4
+     ; Arg 5
+     mov rdi, [rbx+8]
+     mov esi, 4
+     mov rdx, [rbx+56]
++%ifdef SUTRAM_R65_PEEPHOLES
++    xor r8d,r8d
++%endif
+     call gen_typed_call_arg
+     cmp r14, 6
+     jb .ge_fc_pop5
+     ; Arg 6
+     mov rdi, [rbx+8]
+     mov esi, 5
+     mov rdx, [rbx+64]
++%ifdef SUTRAM_R65_PEEPHOLES
++    xor r8d,r8d
++%endif
+     call gen_typed_call_arg
+     ; Pop 6: arg5->r9, arg4->r8, arg3->rcx, arg2->rdx, arg1->rsi, arg0->rdi
+     mov dil, 0x41
+@@ -12709,8 +12885,19 @@ gen_expr:
+     call emit_byte
+     jmp .ge_fc_call
+ .ge_fc_pop1:
++%ifdef SUTRAM_R65_PEEPHOLES
++    ; Call value is still in runtime RAX; mov rdi,rax is 3 bytes,
++    ; versus a redundant push rax + pop rdi (2) but avoids stack writes.
++    mov dil,0x48
++    call emit_byte
++    mov dil,0x89
++    call emit_byte
++    mov dil,0xC7
++    call emit_byte
++%else
+     mov dil, 0x5F            ; pop rdi
+     call emit_byte
++%endif
+ .ge_fc_call:
+     call r46_live_callee_saved_vars
+     mov r15, rax
+@@ -16301,12 +16488,13 @@ gen_expr:
+     call binop_needs_float
+     test rax, rax
+     jnz .ge_fbinop
+-    ; R58: signed division by an exact positive power of two, with a
+-    ; correction for negative inputs so rounding stays toward zero (IDIV).
++%ifndef SUTRAM_R65_TRAP_INT
++    ; In legacy mode retain R58 division strength reduction.
+     mov rdi,rbx
+     call r58_is_div_pow2
+     test rax,rax
+     jnz .ge_r58_div_pow2
++%endif
+     ; Logical && / || require true short-circuit evaluation. Handle them
+     ; before the generic binary path, which necessarily evaluates both sides.
+     push rbx
+@@ -16315,6 +16503,9 @@ gen_expr:
+     je .ge_binop_land_sc
+     cmp rax, OP_LOR
+     je .ge_binop_lor_sc
++%ifdef SUTRAM_R65_TRAP_INT
++    jmp .ge_binop_generic    ; checking lives in generic arithmetic
++%endif
+     ; FAST PATH: If right is AST_NUM and op is ADD/SUB, emit add/sub rax, imm8
+     mov rax, [rbx+24]        ; right operand node
+     mov rcx, [rax]           ; right node type
+@@ -16668,6 +16859,10 @@ gen_expr:
+     pop rbx
+     ret
+ .ge_binop_generic:
++%ifdef SUTRAM_R65_TRAP_INT
++    pop rbx
++    jmp .r57_old_stack_tree
++%endif
+     ; R57: preserve source-order pure integer trees in RAX/R10/R11, without
+     ; round-tripping each nested operand through runtime PUSH/POP. Register
+     ; depth is statically bounded; any unsafe shape takes the old generator.
+@@ -17201,6 +17396,10 @@ gen_expr:
+     call emit_byte
+     mov dil, 0xD1
+     call emit_byte
++%ifdef SUTRAM_R65_TRAP_INT
++    lea rdi,[rel r65_msg_mod]
++    call r65_emit_zero_guard
++%endif
+     ; cqo (sign-extend rax into rdx:rax) = 48 99
+     mov dil, 0x48
+     call emit_byte
+@@ -17360,6 +17559,10 @@ gen_expr:
+     call emit_byte
+     mov dil, 0xD0
+     call emit_byte
++%ifdef SUTRAM_R65_TRAP_INT
++    lea rdi,[rel r65_msg_add]
++    call r65_emit_overflow_guard
++%endif
+     pop rbx
+     ret
+ .ge_sub:
+@@ -17369,6 +17572,10 @@ gen_expr:
+     call emit_byte
+     mov dil, 0xD0
+     call emit_byte
++%ifdef SUTRAM_R65_TRAP_INT
++    lea rdi,[rel r65_msg_sub]
++    call r65_emit_overflow_guard
++%endif
+     pop rbx
+     ret
+ .ge_mul:
+@@ -17380,6 +17587,10 @@ gen_expr:
+     call emit_byte
+     mov dil, 0xC2
+     call emit_byte
++%ifdef SUTRAM_R65_TRAP_INT
++    lea rdi,[rel r65_msg_mul]
++    call r65_emit_overflow_guard
++%endif
+     pop rbx
+     ret
+ .ge_div:
+@@ -17390,6 +17601,10 @@ gen_expr:
+     call emit_byte
+     mov dil, 0xD1
+     call emit_byte
++%ifdef SUTRAM_R65_TRAP_INT
++    lea rdi,[rel r65_msg_div]
++    call r65_emit_zero_guard
++%endif
+     ; cqo (sign-extend) = 48 99
+     mov dil, 0x48
+     call emit_byte
+@@ -18081,6 +18296,10 @@ gen_typed_call_arg:
+     push r12
+     push r13
+     push r14
++%ifdef SUTRAM_R65_PEEPHOLES
++    push r15
++    mov r15,r8               ; one-arg direct-to-RDI transfer requested
++%endif
+     mov rbx, rdi
+     mov r12, rsi
+     mov r13, rdx
+@@ -18124,14 +18343,25 @@ gen_typed_call_arg:
+     mov rax, r13
+     call gen_expr
+ .gtca_push:
++%ifdef SUTRAM_R65_PEEPHOLES
++    test r15,r15
++    jnz .r65_skip_arg_push
++%endif
+     mov dil, 0x50            ; runtime push rax
+     call emit_byte
++%ifdef SUTRAM_R65_PEEPHOLES
++.r65_skip_arg_push:
++    pop r15
++%endif
+     pop r14
+     pop r13
+     pop r12
+     pop rbx
+     ret
+ .gtca_kosh_type_fail:
++%ifdef SUTRAM_R65_PEEPHOLES
++    pop r15
++%endif
+     pop r14
+     pop r13
+     pop r12
+@@ -21111,6 +21341,144 @@ r57_emit_op:
+     pop rbx
+     ret
+ 
++%ifdef SUTRAM_R65_TRAP_INT
++; R65 opt-in trap helpers, all decisions made before machine code emission.
++r65_emit_literal:
++    push rbx
++    mov rbx,rdi
++    call alloc_ast
++    mov qword [rax],AST_STR
++    mov [rax+8],rbx
++    push rax
++    call alloc_ast
++    pop rcx
++    mov qword [rax],AST_CALL
++    mov qword [rax+8],BN_LIKHA
++    mov qword [rax+16],1
++    mov [rax+24],rcx
++    call gen_expr
++    pop rbx
++    ret
++
++r65_emit_number:
++    push rbx
++    mov rbx,rdi
++    call alloc_ast
++    mov qword [rax],AST_NUM
++    mov [rax+8],rbx
++    push rax
++    call alloc_ast
++    pop rcx
++    mov qword [rax],AST_CALL
++    mov qword [rax+8],BN_LKHB
++    mov qword [rax+16],1
++    mov [rax+24],rcx
++    call gen_expr
++    pop rbx
++    ret
++
++r65_emit_fatal:
++    ; compiler-time inputs: rdi = operation text, rsi = BINOP source line.
++    push rbx
++    push r12
++    push r13
++    mov r12,rdi
++    mov r13,rsi
++    lea rdi,[rel r65_msg_prefix]
++    call r65_emit_literal
++    ; The literal-output path encodes short relative jumps over its bytes.
++    ; Bound the embedded filename to the last 95 bytes to avoid overflow
++    ; when a caller supplies a very long absolute input path.
++    mov rdi,[rel source_path_ptr]
++    push rdi
++    call strlen
++    pop rdi
++    cmp rax,95
++    jbe .r65_path_ready
++    add rdi,rax
++    sub rdi,95
++.r65_path_ready:
++    call r65_emit_literal
++    lea rdi,[rel r65_msg_colon]
++    call r65_emit_literal
++    mov rdi,r13
++    call r65_emit_number
++    mov rdi,r12
++    call r65_emit_literal
++    ; exit(1) through existing target-dependent syscall emitter
++    mov dil,0xB8
++    call emit_byte
++    mov edi,60
++    call emit_u32
++    mov dil,0xBF
++    call emit_byte
++    mov edi,1
++    call emit_u32
++    call emit_syscall
++    pop r13
++    pop r12
++    pop rbx
++    ret
++
++r65_emit_overflow_guard:
++    ; Immediately after arithmetic: JNO rel32 skips inline fatal path.
++    push rbx
++    push r12
++    push r13
++    mov r12,rdi
++    mov dil,0x0F
++    call emit_byte
++    mov dil,0x81
++    call emit_byte
++    mov r13,[rel code_sz]
++    xor edi,edi
++    call emit_u32
++    mov rdi,r12
++    mov rsi,[rbx+32]
++    call r65_emit_fatal
++    mov rax,[rel code_sz]
++    sub rax,r13
++    sub rax,4
++    lea rcx,[rel code_buf]
++    mov [rcx+r13],eax
++    pop r13
++    pop r12
++    pop rbx
++    ret
++
++r65_emit_zero_guard:
++    ; test rcx,rcx; jnz rel32; fatal before IDIV.
++    push rbx
++    push r12
++    push r13
++    mov r12,rdi
++    mov dil,0x48
++    call emit_byte
++    mov dil,0x85
++    call emit_byte
++    mov dil,0xC9
++    call emit_byte
++    mov dil,0x0F
++    call emit_byte
++    mov dil,0x85
++    call emit_byte
++    mov r13,[rel code_sz]
++    xor edi,edi
++    call emit_u32
++    mov rdi,r12
++    mov rsi,[rbx+32]
++    call r65_emit_fatal
++    mov rax,[rel code_sz]
++    sub rax,r13
++    sub rax,4
++    lea rcx,[rel code_buf]
++    mov [rcx+r13],eax
++    pop r13
++    pop r12
++    pop rbx
++    ret
++%endif
++
+ ; ============================================================
+ ; ELF WRITER
+ ; ============================================================
+diff --git a/tests/r65_check/overflow_safe.out b/tests/r65_check/overflow_safe.out
+new file mode 100644
+--- /dev/null
++++ b/tests/r65_check/overflow_safe.out
+@@ -0,0 +1,5 @@
++12
++6
++27
++3
++0
+diff --git a/tests/r65_check/overflow_safe.sm b/tests/r65_check/overflow_safe.sm
+new file mode 100644
+--- /dev/null
++++ b/tests/r65_check/overflow_safe.sm
+@@ -0,0 +1,9 @@
++mukhya() {
++    vitti a = 9
++    vitti b = 3
++    likha(a + b)
++    likha(a - b)
++    likha(a * b)
++    likha(a / b)
++    likha(a % b)
++}
+diff --git a/tests/r65_check/peephole_scalar.out b/tests/r65_check/peephole_scalar.out
+new file mode 100644
+--- /dev/null
++++ b/tests/r65_check/peephole_scalar.out
+@@ -0,0 +1,2 @@
++42
++42
+diff --git a/tests/r65_check/peephole_scalar.sm b/tests/r65_check/peephole_scalar.sm
+new file mode 100644
+--- /dev/null
++++ b/tests/r65_check/peephole_scalar.sm
+@@ -0,0 +1,15 @@
++# Direct one-argument transfer and consecutive scalar store/load.
++prakriya identity(x) { pratiyati x }
++mukhya() {
++    vitti a = 1
++    vitti b = 2
++    vitti c = 3
++    vitti d = 4
++    vitti e = 5
++    vitti f = 6
++    vitti g = 7
++    f = 42 / a
++    g = f
++    likha(g)
++    likha(identity(g))
++}
+diff --git a/tests/r65_check/sanskrit_kosh_aliases.out b/tests/r65_check/sanskrit_kosh_aliases.out
+new file mode 100644
+--- /dev/null
++++ b/tests/r65_check/sanskrit_kosh_aliases.out
+@@ -0,0 +1,4 @@
++1
++7
++7
++1
+diff --git a/tests/r65_check/trap_add.sm b/tests/r65_check/trap_add.sm
+new file mode 100644
+--- /dev/null
++++ b/tests/r65_check/trap_add.sm
+@@ -0,0 +1,5 @@
++mukhya() {
++    vitti a = 9223372036854775807
++    vitti b = 1
++    likha(a + b)
++}
+diff --git a/tests/r65_check/trap_div.sm b/tests/r65_check/trap_div.sm
+new file mode 100644
+--- /dev/null
++++ b/tests/r65_check/trap_div.sm
+@@ -0,0 +1,5 @@
++mukhya() {
++    vitti a = 7
++    vitti b = 0
++    likha(a / b)
++}
+diff --git a/tests/r65_check/trap_mod.sm b/tests/r65_check/trap_mod.sm
+new file mode 100644
+--- /dev/null
++++ b/tests/r65_check/trap_mod.sm
+@@ -0,0 +1,5 @@
++mukhya() {
++    vitti a = 7
++    vitti b = 0
++    likha(a % b)
++}
+diff --git a/tests/r65_check/trap_mul.sm b/tests/r65_check/trap_mul.sm
+new file mode 100644
+--- /dev/null
++++ b/tests/r65_check/trap_mul.sm
+@@ -0,0 +1,5 @@
++mukhya() {
++    vitti a = 3037000500
++    vitti b = 3037000500
++    likha(a * b)
++}
+diff --git a/tests/r65_check/trap_sub.sm b/tests/r65_check/trap_sub.sm
+new file mode 100644
+--- /dev/null
++++ b/tests/r65_check/trap_sub.sm
+@@ -0,0 +1,5 @@
++mukhya() {
++    vitti a = -9223372036854775807
++    vitti b = 2
++    likha(a - b)
++}
+diff --git a/tools/r65_native_acceptance.py b/tools/r65_native_acceptance.py
+new file mode 100644
+--- /dev/null
++++ b/tools/r65_native_acceptance.py
+@@ -0,0 +1,113 @@
++#!/usr/bin/env python3
++"""R65 native acceptance for Sarvam. NEVER substitutes static checks for execution.
++Build three compilers first:
++  nasm -f elf64 -I. src/sutram_compiler.asm -o /tmp/r65-default.o
++  ld -o /tmp/r65-default /tmp/r65-default.o
++  nasm -DSUTRAM_R65_PEEPHOLES=1 -f elf64 -I. src/sutram_compiler.asm -o /tmp/r65-opt.o
++  ld -o /tmp/r65-opt /tmp/r65-opt.o
++  nasm -DSUTRAM_R65_TRAP_INT=1 -f elf64 -I. src/sutram_compiler.asm -o /tmp/r65-trap.o
++  ld -o /tmp/r65-trap /tmp/r65-trap.o
++
++Run: python3 tools/r65_native_acceptance.py --default /tmp/r65-default --peephole /tmp/r65-opt --trap /tmp/r65-trap
++Optional --reference accepted-parent-default-compiler for default-mode machine-code identity.
++"""
++from __future__ import annotations
++import argparse
++import pathlib
++import re
++import subprocess
++import tempfile
++ROOT = pathlib.Path(__file__).resolve().parents[1]
++F = ROOT / "tests" / "r65_check"
++SRC_DEV = ROOT / "examples" / "219_sanskrit_kosh_aliases.sm"
++
++def execute(cmd, timeout=12):
++    return subprocess.run([str(x) for x in cmd], cwd=ROOT,
++                          capture_output=True, timeout=timeout, check=False)
++
++def build(compiler, src, exe, lang=None):
++    cmd = [compiler, src, exe]
++    if lang:
++        cmd = [compiler, "--lang", lang, src, exe]
++    result = execute(cmd)
++    assert result.returncode == 0 and exe.is_file(), (
++        f"COMPILE_FAIL {src} code={result.returncode} "
++        f"out={result.stdout!r} err={result.stderr!r}")
++    return exe
++
++def check_output(compiler, src, expected, exe, lang=None):
++    build(compiler, src, exe, lang=lang)
++    result = execute([exe])
++    assert result.returncode == 0 and result.stdout == expected, (
++        f"NATIVE_OUTPUT_FAIL {src}: code={result.returncode} "
++        f"expected={expected!r}, actual={result.stdout!r}, stderr={result.stderr!r}")
++    print(f"R65_NATIVE_STDOUT_PASS {src.name} bytes={len(expected)}")
++    return result
++
++def main():
++    p = argparse.ArgumentParser()
++    p.add_argument("--default", required=True)
++    p.add_argument("--peephole", required=True)
++    p.add_argument("--trap", required=True)
++    p.add_argument("--reference", default="")
++    a = p.parse_args()
++    compilers = {k: pathlib.Path(getattr(a, k)).resolve()
++                 for k in ("default", "peephole", "trap")}
++    for name, path in compilers.items():
++        assert path.is_file(), f"missing {name} compiler: {path}"
++    with tempfile.TemporaryDirectory(prefix="sutram-r65-") as temp:
++        work = pathlib.Path(temp)
++        src = F / "peephole_scalar.sm"
++        exp = (F / "peephole_scalar.out").read_bytes()
++        oldbin = work / "default-peephole"
++        optbin = work / "optimized-peephole"
++        check_output(compilers["default"], src, exp, oldbin)
++        check_output(compilers["peephole"], src, exp, optbin)
++        assert oldbin.read_bytes() != optbin.read_bytes(), (
++            "PEEPHOLE_NOT_TRIGGERED: output binaries identical")
++        print(f"R65_PEEPHOLE_DIFFERENT_CODE_PASS before={oldbin.stat().st_size} "
++              f"after={optbin.stat().st_size}")
++        if a.reference:
++            prev = pathlib.Path(a.reference).resolve()
++            old = work / "pre-r65-default"
++            cur = work / "r65-default"
++            build(prev, F / "overflow_safe.sm", old)
++            build(compilers["default"], F / "overflow_safe.sm", cur)
++            assert old.read_bytes() == cur.read_bytes(), "DEFAULT_CODEGEN_REGRESSION"
++            print(f"R65_DEFAULT_BINARY_IDENTITY_PASS bytes={cur.stat().st_size}")
++        else:
++            print("R65_DEFAULT_AB_NOT_RUN (supply --reference)")
++        safe = F / "overflow_safe.sm"
++        safe_exp = (F / "overflow_safe.out").read_bytes()
++        check_output(compilers["default"], safe, safe_exp, work / "safe-default")
++        check_output(compilers["trap"], safe, safe_exp, work / "safe-trap")
++        errors = {"trap_add": "addition overflow",
++                  "trap_sub": "subtraction overflow",
++                  "trap_mul": "multiplication overflow",
++                  "trap_div": "division by zero",
++                  "trap_mod": "remainder by zero"}
++        for stem, description in errors.items():
++            path = F / (stem + ".sm")
++            exe = work / stem
++            build(compilers["trap"], path, exe)
++            result = execute([exe])
++            assert result.returncode != 0, f"{stem} unexpectedly succeeded"
++            output = result.stdout.decode("utf-8", errors="replace")
++            # Exact diagnostic wording uses 'signed addition' etc.
++            op_fragment = {
++                "trap_add": "signed addition overflow",
++                "trap_sub": "signed subtraction overflow",
++                "trap_mul": "signed multiplication overflow",
++                "trap_div": "division by zero",
++                "trap_mod": "remainder by zero",
++            }[stem]
++            assert ("E_INTEGER_TRAP" in output and op_fragment in output
++                    and re.search(r":[1-9][0-9]*:", output)), (
++                    f"{stem} missing source:line and operation: {output!r}")
++            print(f"R65_TRAP_PASS {stem} exit={result.returncode} {output!r}")
++        check_output(compilers["default"], SRC_DEV,
++                     (F / "sanskrit_kosh_aliases.out").read_bytes(),
++                     work / "sanskrit-kosh", lang="sanskrit")
++    print("R65_NATIVE_ACCEPTANCE_PASS (only genuine run counts)")
++if __name__ == "__main__":
++    main()
+diff --git a/tools/r65_source_gate.py b/tools/r65_source_gate.py
+new file mode 100644
+--- /dev/null
++++ b/tools/r65_source_gate.py
+@@ -0,0 +1,64 @@
++#!/usr/bin/env python3
++"""Round 65 structural source gate. Not native compiler or execution evidence."""
++from pathlib import Path
++import re
++ROOT = Path(__file__).resolve().parents[1]
++s = (ROOT / "src" / "sutram_compiler.asm").read_text("utf-8")
++pack = (ROOT / "lang" / "sanskrit.lang").read_text("utf-8")
++
++def check(label, ok):
++    if not ok:
++        raise AssertionError("R65_SOURCE_FAIL " + label)
++    print("R65_SOURCE_PASS " + label)
++
++def main():
++    check("TRAP_OFF_BY_DEFAULT",
++          "SUTRAM_R65_TRAP_INT" in s and
++          "SUTRAM_R65_TRAP_INT" not in (ROOT / "AGENTS.md").read_text("utf-8"))
++    check("ALL_FIVE_INTEGER_TRAP_PATHS",
++          all(f"lea rdi,[rel r65_msg_{v}]" in s
++              for v in ("add", "sub", "mul", "div", "mod")))
++    check("JNO_AFTER_ARITH",
++          "r65_emit_overflow_guard:" in s and "mov dil,0x81" in s)
++    check("JNZ_AFTER_DIVISOR_TEST",
++          "r65_emit_zero_guard:" in s and
++          "mov dil,0xC9" in s and "mov dil,0x85" in s)
++    check("SOURCE_LINE_PARSER_METADATA",
++          s.count("mov [rax+32],rcx          ; R65: parser-time BINOP source line") == 12)
++    check("DEFAULT_FOLD_PRESERVED",
++          "r58_fold_tree" in s and
++          "%ifdef SUTRAM_R65_TRAP_INT\n    ; Parser literal folding" in s)
++    check("ADJACENT_STORE_RELOAD",
++          "r65_last_store_name" in s and
++          ".r65_rhs_done:" in s)
++    check("TRAP_MODE_GENERIC_ASSIGNMENT_REACHABLE",
++          "%ifdef SUTRAM_R65_TRAP_INT\n    ; The optional safety mode bypasses all integer assignment fast paths." in s
++          and "jmp .gs_assign_generic\n%endif\n.gs_assign_fast_done:" in s)
++    check("TRAP_MODE_INTEGER_DECLARATION_GUARDED",
++          "%ifndef SUTRAM_R65_TRAP_INT\n    mov rdi, rbx\n    call try_emit_int_decl_reg" in s)
++    check("ONE_ARG_STACK_TRANSFER",
++          ".r65_skip_arg_push:" in s and
++          "cmp r14,1" in s and
++          ".ge_fc_pop1:" in s)
++    lines = [(x.split()[0], x.split()[1]) for x in pack.splitlines()
++             if x.strip() and not x.lstrip().startswith("#")]
++    builtin_ids = re.findall(r'bn_\w+\s+db "([^"]+)"', s)
++    existing_ids = re.findall(r'kw_\w+\s+db "([^"]+)"', s)
++    unmatched = [latin for dev, latin in lines
++                 if latin not in builtin_ids and latin not in existing_ids
++                 and latin != "to"]
++    check("PACK_TARGETS_RECOGNIZED", not unmatched)
++    check("PACK_18_NEW_BUILTINS",
++          len([x for x in pack.splitlines() if x.strip() and
++               not x.lstrip().startswith("#")]) == 49)
++    check("PACK_WORD_BYTE_BOUND",
++          all(len(dev.encode("utf-8")) < 64 for dev, latin in lines))
++    check("NATIVE_FIXTURES",
++          all((ROOT / "tests" / "r65_check" / (n + ".sm")).exists()
++              for n in ("trap_add", "trap_sub", "trap_mul", "trap_div",
++                        "trap_mod", "peephole_scalar", "overflow_safe")))
++    check("LEGACY_DOC",
++          (ROOT / "docs" / "R65-LEGACY-NSIS-VS-NATIVE-INSTALLER.md").exists())
++    print("R65_SOURCE_GATE_PASS (NOT a NASM/native validation)")
++if __name__ == "__main__":
++    main()
