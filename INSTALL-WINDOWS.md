@@ -1,93 +1,63 @@
-# Installing Sutram on Windows 11
+# Installing Sutram on Windows
 
-## The quick way
+Read [the installation routes](docs/INSTALLATION-ROUTES.md) first. The current
+clean-source audit is not a release acceptance certificate for any existing
+`Sutram-Setup.exe`.
 
-Double-click **`Sutram-Setup.exe`**.
+## Supported installation contract
 
-A window opens showing what will be installed and where. Click **Install**.
+An independently accepted package must run without administrator access:
 
-That is the whole process. No administrator prompt appears, no Windows
-security setting is changed, and no reboot is needed.
-
-If the window cannot be created — for example on a session with no
-interactive desktop — the installer falls back automatically to a single
-Yes/No dialog, so it still works.
-
-**Version note:** the first build you were given had no window at all (it
-showed only a Yes/No dialog), and its entry point had a stack-alignment
-fault that could stop it running. Both are fixed in this build.
-
-## What gets installed, and where
-
-Everything goes into your own account:
-
-| Thing | Where |
+| Item | Required scope |
 |---|---|
 | Program files | `%LOCALAPPDATA%\Programs\Sutram` |
-| `sutram` on your PATH | your user PATH only |
-| Start Menu | your Start Menu, a folder called *Sutram* |
-| Desktop shortcut | optional, a *Sutram Terminal* icon |
-| Uninstall entry | `HKCU` (Settings → Apps) |
+| PATH | Current user's PATH only |
+| Start Menu and optional Desktop shortcut | Current user only |
+| Uninstall registration | HKCU, not HKLM |
 
-Nothing is written to `Program Files`, `HKLM`, or any system location. If you
-are not the only person using the PC, your install does not affect anyone else.
+Stop if an installer requests elevation or proposes a system-wide location.
+The legacy NSIS script does not satisfy this contract; it is not an alternative
+installation route. Do not change Windows security settings to run a build.
 
-## What you get
+## Portable use
 
-- **Sutram IDE** — a native Windows GUI editor with syntax highlighting,
-  including native-script keywords in all ten supported Indian scripts.
-- **Sutram Terminal** — a console where `sutram file.sm` compiles and runs.
-- The compiler itself, `bin\sutram.exe`, with **no toolchain required**.
-  You do not need NASM, Python, Visual Studio, or MinGW.
-- Language packs, the standard library, 180 examples, documentation, and the
-  six book editions.
-
-## After installing
-
-Open **Sutram Terminal** from the Start Menu and try:
-
-```
-sutram --version
-sutram examples\hello.sm
-```
-
-Or open the **Sutram IDE** and use Ctrl-R to run.
-
-## If the installer does not work
-
-The installer is a thin native launcher; the real work is done by a
-PowerShell script it carries inside itself. If the exe is blocked by your
-antivirus or by a policy, you can do the same job by hand:
-
-1. Right-click **`install-core.ps1`** in this folder and choose
-   *Run with PowerShell*.
-2. If that is blocked, open PowerShell in this folder and run:
+A verified portable package can be extracted into a folder you own. Keep its
+compiler, language packs, library and other supplied files together. Open a
+terminal in the compiler folder and invoke the compiler directly; no PATH
+change is necessary.
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\install-core.ps1 `
-    -PayloadZip .\payload.zip `
-    -InstallDir "$env:LOCALAPPDATA\Programs\Sutram" `
-    -SetupExePath .\Sutram-Setup.exe `
-    -LogPath "$env:TEMP\sutram-install.log" `
-    -AddPath -DesktopShortcut
+.\sutram.exe --version
+.\sutram.exe examples\01_hello.sm hello.exe
+.\hello.exe
 ```
 
-Both scripts are per-user and unelevated, exactly like the installer.
+The example paths above assume the package supplies `examples\` in that folder.
+For other layouts, use the actual source path. The supported compiler's `.exe`
+output is Windows PE; `.bin` output is Linux ELF.
 
-## Uninstalling
+## What to verify on Windows
 
-Settings → Apps → *Sutram* → Uninstall. Or run
-`Sutram-Uninstall.exe --uninstall` from the install folder, or use the
-Start Menu entry *Uninstall Sutram*.
+Verify the actual package's version and contents rather than relying on an old
+fixed example count. Check installation, launch, open/edit/save, compile/run,
+window close/reopen, native-script rendering, and uninstallation under a normal
+user account. Record the package hash, OS version and observed results.
 
-Your own `.sm` files are never touched, and a PATH entry you added yourself
-by hand is left alone.
+Uninstallation must preserve user-created `.sm` files and unrelated PATH
+entries. That is an acceptance requirement, not a guarantee established by
+source inspection.
 
-## Honest status
+## A blocked or failed installer
 
-The installer is a native PE32+ x86-64 Windows executable. It has been
-verified on Linux by building it, inspecting its PE header, and checking that
-the payload and both scripts are embedded byte-for-byte. It has **not** been
-run on a real Windows machine yet — this build is the first one you are
-testing. If something goes wrong, the log file named in the error dialog
-has the details, and the manual path above always works.
+Keep antivirus and execution policy enabled. Record the exact message and any
+log path shown by the application, then provide that evidence to the maintainer.
+Verify package provenance and published checksums; a matching checksum alone
+does not establish that a program is safe. Do not run an alternate script to
+bypass an antivirus or organizational-policy block.
+
+The source scripts live in `windows/native-installer/`, not alongside this
+root document. They require their matching payload and build configuration;
+they are not a guaranteed manual repair path. The older Windows build wrapper,
+preflight and integrity manifest need coordinated review before packaging.
+See [the setup guide](docs/WINDOWS-SETUP.md) for compiler usage, and the canonical
+installation-routes document for the remaining build and acceptance gates.
