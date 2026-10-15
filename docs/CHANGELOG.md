@@ -1,3 +1,20 @@
+## v148 — Linux X11 GUI slices 30-31: open a file from the command line, and a real Expose bug
+
+- **Slice 30.** `./sutram-gui prog.sm` silently ignored the argument -- `_start` never read argv. It now
+  captures `argv[1]` at entry (before any call touches the stack) and opens it once the window and GC
+  exist, so the first paint shows it.
+- **Slice 31 fixed a real pre-existing bug, found while testing slice 30.** `draw_all` paints the window,
+  both panes, the menu bar, the labels and the output pane -- **but never called `draw_editor`.** The
+  editor text was only painted on the key path, so an **Expose** (the window being uncovered, or the
+  first paint after startup) left the editor blank until the user typed. That is exactly why slice 30
+  *looked* broken: the file had loaded, and then nothing painted it.
+- **New test `tools/test_x11_argv_open.py`** launches the IDE with a file as `argv[1]`, sends an Expose,
+  and requires the file's first line in the painted `ImageText8` stream. It is what separated the two
+  bugs. **GUI suite now 15/15** (was 14).
+- GUI source ~91 KB; binary **37,328 B**. Compiler untouched (`7650d5db...`).
+- Both bugs were **pre-existing**; slice 31 in particular means any Expose had been leaving the editor
+  blank, which no existing test covered.
+
 ## v147 — ChatGPT R67 + Muse R25 verified and SYNCED; R66 compiler gap CORRECTED
 
 **A correction first.** v145 claimed R66 was "SYNCED". That was wrong in one important respect:
