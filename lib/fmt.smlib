@@ -14,8 +14,9 @@
 #   - Grouping: fmt_group defaults to INDIAN grouping (12,34,567).
 #   - Rounding: fmt_fixed rounds HALF AWAY FROM ZERO (2.5 -> 3, -2.5 -> -3).
 #   - Centre padding: the extra pad byte goes RIGHT.
-#   - INT64_MIN (-2^63) is excluded from the integer formatters: negating
-#     it overflows, as in strconv. Every other int64 value works.
+#   - INT64_MIN (-2^63) is handled: |MIN| = 2^63 does not fit in
+#     int64, so the digit writers split it (hi/lo) instead of
+#     negating it. Every int64 value works.
 #   - fmt_fixed is exact while |x| * 10^places < 2^52; beyond that the
 #     +0.5 rounding step is below float precision. |x| * 10^places must
 #     fit in int64. places is clamped to 0..9.
@@ -36,6 +37,14 @@ prakriya fmt_digits(v, out) {
         set_char(dst, 0, 48)
         set_char(dst, 1, 0)
         pratiyati 1
+    }
+    yadi (val < 0) {
+        yadi (val == (0 - 9223372036854775807) - 1) {
+            # |MIN| = 2^63 does not fit in int64; fmt_digits_base
+            # handles it (hi/lo split), so delegate for this one value.
+            pratiyati fmt_digits_base(val, 10, 0, dst)
+        }
+        val = 0 - val
     }
     yavat (val > 0) {
         rev[rlen] = (val % 10) + 48
@@ -77,6 +86,28 @@ prakriya fmt_digits_base(v, base, upper, out) {
         set_char(dst, 0, 48)
         set_char(dst, 1, 0)
         pratiyati 1
+    }
+    yadi (val < 0) {
+        yadi (val == (0 - 9223372036854775807) - 1) {
+            # |MIN| = 2^63 does not fit in int64. Split it: |MIN| =
+            # hi * b + lo with hi = -(MIN / b), lo = -(MIN % b),
+            # both fitting. Convert hi, then append the lo digit.
+            vitti hi = 0 - (val / b)
+            vitti lo = 0 - (val % b)
+            vitti hn = fmt_digits_base(hi, b, up, dst)
+            yadi (lo < 10) {
+                set_char(dst, hn, lo + 48)
+            } anyatra {
+                yadi (up == 1) {
+                    set_char(dst, hn, lo + 55)
+                } anyatra {
+                    set_char(dst, hn, lo + 87)
+                }
+            }
+            set_char(dst, hn + 1, 0)
+            pratiyati hn + 1
+        }
+        val = 0 - val
     }
     yavat (val > 0) {
         d = val % b
