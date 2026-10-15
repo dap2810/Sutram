@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sutram — Design Parameters</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --display:'Instrument Serif',Georgia,serif;
+    --body:'IBM Plex Sans',system-ui,sans-serif;
+    --mono:'IBM Plex Mono','SF Mono',Consolas,monospace;
+    --bg:#f7f6f2;--surface:#fff;--surface2:#f2f0ea;--elevated:#fffdf8;
+    --border:rgba(20,25,40,.08);--border-bright:rgba(20,25,40,.16);
+    --text:#14192b;--dim:#6b7280;--navy:#1e3a5f;--navy-dim:rgba(30,58,95,.07);
+    --gold:#b8860b;--gold-dim:rgba(184,134,11,.10);--green:#15803d;--green-dim:rgba(21,128,61,.09);
+    --red:#b91c1c;--red-dim:rgba(185,28,28,.08);
+  }
+  @media(prefers-color-scheme:dark){:root{
+    --bg:#0d1117;--surface:#161b22;--surface2:#1c232c;--elevated:#1b232e;
+    --border:rgba(255,255,255,.07);--border-bright:rgba(255,255,255,.14);
+    --text:#e6edf3;--dim:#8b949e;--navy:#7aa5d8;--navy-dim:rgba(122,165,216,.10);
+    --gold:#d4a73a;--gold-dim:rgba(212,167,58,.12);--green:#4ade80;--green-dim:rgba(74,222,128,.10);
+    --red:#f87171;--red-dim:rgba(248,113,113,.10);
+  }}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);
+    background-image:radial-gradient(ellipse at 15% 0%,var(--gold-dim) 0%,transparent 45%),
+                     radial-gradient(ellipse at 90% 100%,var(--navy-dim) 0%,transparent 45%);
+    color:var(--text);font-family:var(--body);padding:48px 32px 72px;min-height:100vh;-webkit-font-smoothing:antialiased}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+  .animate{animation:fadeUp .45s ease-out both;animation-delay:calc(var(--i,0)*.04s)}
+  @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-delay:0ms!important}}
+  .wrap{max-width:940px;margin:0 auto}
+
+  header{border-bottom:2px solid var(--border-bright);padding-bottom:26px;margin-bottom:34px}
+  .eyebrow{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;
+    color:var(--gold);display:flex;align-items:center;gap:9px;margin-bottom:14px}
+  .eyebrow::before{content:'';width:26px;height:2px;background:var(--gold)}
+  h1{font-family:var(--display);font-weight:400;font-size:54px;line-height:1.05;letter-spacing:-.5px;margin-bottom:12px}
+  h1 .deva{color:var(--navy);font-size:42px}
+  .lede{font-size:17px;line-height:1.7;color:var(--dim);max-width:720px}
+  .lede strong{color:var(--text);font-weight:600}
+
+  .charter{background:var(--elevated);border:1px solid var(--border);border-left:3px solid var(--navy);
+    border-radius:12px;padding:22px 26px;margin:26px 0 34px;font-size:15.5px;line-height:1.75}
+  .charter .lbl{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:1.4px;text-transform:uppercase;
+    color:var(--navy);display:block;margin-bottom:9px}
+  .charter em{font-style:italic;color:var(--dim)}
+
+  .honesty{background:var(--red-dim);border:1px solid var(--border);border-left:3px solid var(--red);
+    border-radius:12px;padding:18px 24px;margin-bottom:34px;font-size:15px;line-height:1.7}
+  .honesty b{color:var(--red)}
+
+  h2.sec{font-family:var(--display);font-weight:400;font-size:33px;margin:42px 0 6px}
+  .secsub{font-size:14.5px;color:var(--dim);margin-bottom:20px;max-width:720px;line-height:1.65}
+
+  .req{background:var(--elevated);border:1px solid var(--border);border-left:3px solid var(--border-bright);
+    border-radius:12px;padding:20px 24px;margin-bottom:14px;box-shadow:0 1px 3px rgba(20,25,40,.04)}
+  .req.done{border-left-color:var(--green)}
+  .req.part{border-left-color:var(--gold)}
+  .req.none{border-left-color:var(--red)}
+  .reqhead{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+  .reqhead .num{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--dim)}
+  .reqhead h3{font-family:var(--display);font-weight:400;font-size:24px;flex:1;min-width:220px}
+  .pill{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;
+    padding:3px 9px;border-radius:20px;white-space:nowrap}
+  .pill.done{background:var(--green-dim);color:var(--green);border:1px solid var(--green)}
+  .pill.part{background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold)}
+  .pill.none{background:var(--red-dim);color:var(--red);border:1px solid var(--red)}
+  .req p{font-size:14.5px;line-height:1.7;color:var(--text);margin-bottom:8px}
+  .req .aim{font-size:13.5px;line-height:1.65;color:var(--dim);border-top:1px dashed var(--border-bright);
+    padding-top:9px;margin-top:10px}
+  .req .aim b{color:var(--navy);font-weight:600}
+  .req code{font-family:var(--mono);font-size:12.5px;background:var(--surface2);padding:1px 5px;border-radius:4px}
+
+  .order{counter-reset:step;margin-top:14px}
+  .step{display:flex;gap:16px;padding:14px 0;border-bottom:1px solid var(--border)}
+  .step:last-child{border-bottom:none}
+  .step .n{counter-increment:step;font-family:var(--mono);font-size:12px;font-weight:600;color:var(--gold);
+    border:1.5px solid var(--gold);border-radius:50%;width:26px;height:26px;display:flex;align-items:center;
+    justify-content:center;flex-shrink:0}
+  .step .n::before{content:counter(step)}
+  .step .body{flex:1}
+  .step .body b{display:block;font-size:15.5px;margin-bottom:3px}
+  .step .body span{font-size:14px;color:var(--dim);line-height:1.65}
+
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px;background:var(--elevated);
+    border:1px solid var(--border);border-radius:10px;overflow:hidden}
+  th{background:var(--surface2);text-align:left;padding:10px 14px;font-family:var(--mono);font-size:11px;
+    font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--dim);border-bottom:1px solid var(--border)}
+  td{padding:10px 14px;border-bottom:1px solid var(--border);line-height:1.55}
+  tr:last-child td{border-bottom:none}
+  td.mono{font-family:var(--mono);font-size:12.5px}
+
+  footer{margin-top:52px;padding-top:22px;border-top:2px solid var(--border-bright);
+    font-family:var(--mono);font-size:11.5px;color:var(--dim);line-height:1.9}
+  footer b{color:var(--text)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="animate">
+  <div class="eyebrow">Design parameters · what Sutram is being built to be</div>
+  <h1>Sutram <span class="deva">॥ सूत्रम् ॥</span><br>Design Parameters</h1>
+  <p class="lede">A multi-paradigm, native-compiled language with an <strong>easy procedural core</strong>,
+  <strong>strong type checking</strong>, <strong>memory safety by default</strong>, and
+  <strong>explicit low-level control</strong> for operating systems. The target is Python-like ease for
+  everyday work, Rust-inspired safety, C-level hardware control, and reusable abstractions — without
+  copying every feature or every complexity of those languages.</p>
+</header>
+
+<div class="charter animate" style="--i:1">
+  <span class="lbl">The charter, as given</span>
+  <em>Develop Sutram as a multi-paradigm systems-and-application language with a small procedural core,
+  practical functional features, generics, composition-based object orientation, data-oriented
+  capabilities, and optional concurrency and metaprogramming. Prioritise easy everyday syntax, strong
+  static typing with inference, a coherent memory-safety model, explicit low-level control, freestanding
+  OS capability, modular libraries, portability, multilingual consistency, and excellent tools. Keep
+  advanced complexity optional for the programmer — not undefined in the implementation. Audit the current
+  compiler first, preserve established project constraints, and implement this in tested stages. Do not
+  claim safety, portability, performance superiority, or OS readiness without corresponding evidence.</em>
+</div>
+
+<div class="honesty animate" style="--i:2">
+  <b>Read this page as requirements, not as a description of what exists.</b>
+  Everything below is the design target. Each item carries an honest status measured against the compiler
+  as it stands today: <b>implemented</b>, <b>partial</b>, or <b>not started</b>. Where something is
+  partial, the gap is named. Nothing here should be read as a claim that Sutram already does it.
+</div>
+
+<h2 class="sec animate" style="--i:3">A · The paradigms Sutram should support</h2>
+<p class="secsub">No single paradigm delivers the whole target. Sutram needs a coherent combination —
+language rules, libraries and tools that agree with each other.</p>
+
+<div class="req done animate" style="--i:4">
+  <div class="reqhead"><span class="num">01</span><h3>Imperative and procedural programming</h3>
+    <span class="pill done">Implemented</span></div>
+  <p>Variables, conditions, loops, functions, and straightforward step-by-step programs as the easiest
+  starting point. Useful programs without first learning classes, traits, concurrency or memory
+  annotations.</p>
+  <div class="aim"><b>Aim:</b> make simple programs simple; advanced features build on this foundation
+  rather than replacing it. <b>Today:</b> this is the core of the language and its strongest part —
+  <code>mukhya</code>, <code>vitti</code>, <code>yadi</code>, <code>yavat</code>, <code>punaravartana</code>,
+  <code>prakriya</code>.</div>
+</div>
+
+<div class="req part animate" style="--i:5">
+  <div class="reqhead"><span class="num">02</span><h3>Practical functional programming</h3>
+    <span class="pill part">Partial</span></div>
+  <p>First-class functions — passed as arguments, returned, stored. Closures, immutable values, iterators,
+  pattern matching, and collection operations such as mapping and filtering. Functions that calculate
+  results without unexpectedly modifying unrelated state.</p>
+  <div class="aim"><b>Aim:</b> functional tools where they improve clarity, while ordinary loops and
+  mutable data stay available. <b>Today:</b> functions exist and can be called, but they are
+  <b>not first-class</b> — there are no function values, closures, iterators or pattern matching.</div>
+</div>
+
+<div class="req none animate" style="--i:6">
+  <div class="reqhead"><span class="num">03</span><h3>Generic programming</h3>
+    <span class="pill none">Not started</span></div>
+  <p>One collection or algorithm working with multiple types without duplicating its implementation.
+  Generic functions and structures with clear constraints — a sort should require values that can be
+  compared. Understandable constraints and error messages over elaborate template rules.</p>
+  <div class="aim"><b>Today:</b> none. Every collection in <code>lib/</code> is written against one
+  concrete cell type.</div>
+</div>
+
+<div class="req part animate" style="--i:7">
+  <div class="reqhead"><span class="num">04</span><h3>Object orientation through composition</h3>
+    <span class="pill part">Partial</span></div>
+  <p>Structures, methods, encapsulation, interfaces or traits. Larger objects built from smaller
+  components. Polymorphism, with runtime dispatch an explicit choice where practical. No deep class
+  hierarchies or multiple inheritance in the initial design.</p>
+  <div class="aim"><b>Aim:</b> structures + methods + traits + composition, not a reproduction of the C++
+  class system. <b>Today:</b> <code>rachana</code> gives plain structs. There are <b>no methods, no
+  traits and no polymorphism</b>.</div>
+</div>
+
+<div class="req part animate" style="--i:8">
+  <div class="reqhead"><span class="num">05</span><h3>Data-oriented programming</h3>
+    <span class="pill part">Partial</span></div>
+  <p>Contiguous arrays, slices, predictable layout, alignment controls, explicit allocation choices.
+  Processing large collections without every element being a separately allocated object. Vector
+  operations and SIMD later, backed by benchmarks.</p>
+  <div class="aim"><b>Aim:</b> control over how data is represented and accessed — not promising speed
+  merely because code is compiled. <b>Today:</b> <code>pankti</code> and <code>kosh</code> exist and are
+  contiguous, but there are no slices, alignment controls, SIMD or vector operations.</div>
+</div>
+
+<div class="req none animate" style="--i:9">
+  <div class="reqhead"><span class="num">06</span><h3>Structured concurrency and parallelism</h3>
+    <span class="pill none">Not started</span></div>
+  <p>Threads, tasks, channels, synchronisation primitives, cancellation. Task lifetimes tied to an owning
+  scope rather than uncontrolled background work. Convenient message passing; explicit shared mutable data.
+  Ownership and thread-safety rules designed <em>before</em> advertising safe concurrency.</p>
+  <div class="aim"><b>Today:</b> none. Note: a set of socket builtins exists in the compiler and is
+  <b>under audit</b> — they are not a concurrency model and may be retired.</div>
+</div>
+
+<div class="req none animate" style="--i:10">
+  <div class="reqhead"><span class="num">07</span><h3>Event-driven and asynchronous programming</h3>
+    <span class="pill none">Not started</span></div>
+  <p>Callbacks, events, timers, asynchronous input/output — for GUI applications, networking, servers and
+  automation. Event loops and task executors optional rather than mandatory. No application scheduler
+  required by kernel or embedded programs.</p>
+  <div class="aim"><b>Aim:</b> a small set of primitives where necessary, with most event-driven behaviour
+  in reusable libraries. <b>Today:</b> the IDE runs its own X11 event loop, but the language has no
+  event or async facility.</div>
+</div>
+
+<div class="req part animate" style="--i:11">
+  <div class="reqhead"><span class="num">08</span><h3>Controlled compile-time metaprogramming</h3>
+    <span class="pill part">Partial</span></div>
+  <p>Compile-time constants, assertions, and eventually constrained code generation — for generic
+  libraries, fixed-size data structures, serialisation and hardware descriptions. Compile-time execution
+  bounded and deterministic by default. No unrestricted textual macros; no hidden network or filesystem
+  access.</p>
+  <div class="aim"><b>Aim:</b> begin with a smaller, carefully specified subset. <b>Today:</b>
+  <code>sutra</code> gives constants and <code>ayojan</code> performs textual inclusion — which is
+  <em>not</em> the bounded, deterministic compile-time evaluation this calls for.</div>
+</div>
+
+<h2 class="sec animate" style="--i:12">B · Capabilities beyond paradigms</h2>
+<p class="secsub">Not additional paradigms — what would make the language safe, practical, portable and
+suitable for serious development.</p>
+
+<div class="req part animate" style="--i:13">
+  <div class="reqhead"><span class="num">09</span><h3>Strong static typing with inference</h3>
+    <span class="pill part">Partial</span></div>
+  <p>Types checked before execution, with obvious local types inferred. Clear type contracts at public
+  library boundaries. Integer sizes, conversions, overflow, initialisation and comparison defined
+  precisely. No silent conversions that lose information.</p>
+  <div class="aim"><b>Aim:</b> concise ordinary code whose meaning stays predictable. <b>Today:</b>
+  <code>anka</code>, <code>dasham</code>, <code>parigrah</code> and strings are typed and checked at
+  compile time; overflow behaviour is <b>documented and tested</b> (checked and saturating forms exist),
+  but inference is limited and there is no formal type-contract system.</div>
+</div>
+
+<div class="req none animate" style="--i:14">
+  <div class="reqhead"><span class="num">10</span><h3>A coherent memory and resource model</h3>
+    <span class="pill none">Not started</span></div>
+  <p>Ownership, borrowing, deterministic cleanup for memory, files, locks and other resources. Common
+  cases easy; advanced lifetime relationships only when needed. Raw pointers and unchecked operations
+  behind explicit, narrowly scoped unsafe boundaries. No tracing garbage collector for the core.</p>
+  <div class="aim"><b>Aim:</b> specify the rules <em>before</em> claiming memory safety — adding
+  ownership syntax alone is insufficient. <b>Today:</b> memory is manual. There is no ownership, no
+  borrow checking, and no <code>unsafe</code> boundary. <b>Sutram does not currently claim memory
+  safety, and must not until this exists and is tested.</b></div>
+</div>
+
+<div class="req part animate" style="--i:15">
+  <div class="reqhead"><span class="num">11</span><h3>Explicit, convenient error handling</h3>
+    <span class="pill part">Partial</span></div>
+  <p>“A value may be absent” represented explicitly. Recoverable success or failure as a result type.
+  Concise error propagation and automatic resource cleanup. Recoverable errors separated from
+  unrecoverable failures. Exhaustive handling required where appropriate.</p>
+  <div class="aim"><b>Today:</b> the checked library functions take an <code>ok</code> out-parameter and
+  return a defined value on failure rather than wrapping — a real, tested convention. There is
+  <b>no result type, no propagation operator, and no exhaustiveness checking</b>.</div>
+</div>
+
+<div class="req part animate" style="--i:16">
+  <div class="reqhead"><span class="num">12</span><h3>Genuine freestanding capability</h3>
+    <span class="pill part">Partial</span></div>
+  <p>A core library that does not assume an OS, filesystem, network or heap allocator exists. Custom entry
+  points, memory layout, sections, relocations and startup code. Explicit pointer operations, hardware
+  access, calling conventions and interrupt entry code. Carefully specified inline assembly with register
+  and memory effects. Heap allocation optional.</p>
+  <div class="aim"><b>Aim:</b> the distinction that matters is <em>running without an existing OS</em>,
+  not merely producing a native executable. <b>Today:</b> the compiler emits native ELF and PE32+ with
+  <b>no runtime and no libc</b> — a genuine head start — and <code>nishkriya</code> provides inline
+  assembly. But no documented boot path or minimal kernel has been demonstrated. <b>A small kernel that
+  boots, prints, and passes repeatable tests is the acceptance target; a full OS is a separate
+  project.</b></div>
+</div>
+
+<div class="req part animate" style="--i:17">
+  <div class="reqhead"><span class="num">13</span><h3>One language with layered libraries</h3>
+    <span class="pill part">Partial</span></div>
+  <p>Conceptual layers — <b>core</b> (no OS or allocator dependency), <b>allocation</b> (dynamic
+  collections when an allocator exists), <b>standard/application</b> (files, networking, threads). The
+  same type and safety rules across all layers. Not an unrelated “easy language” and “systems language”.</p>
+  <div class="aim"><b>Today:</b> <code>lib/</code> holds 21 modules, but the layers are not formally
+  separated — nothing marks which modules are allocator-free.</div>
+</div>
+
+<div class="req part animate" style="--i:18">
+  <div class="reqhead"><span class="num">14</span><h3>Portability designed into the compiler</h3>
+    <span class="pill part">Partial</span></div>
+  <p>Separate parsing, type checking, internal program representation, machine-code generation and OS
+  integration. Track <em>source portability</em>, <em>where the compiler runs</em>, and <em>which targets
+  it can generate for</em> separately. Reliable Windows/Linux x86-64 first, then other combinations
+  individually. Every advertised target tested.</p>
+  <div class="aim"><b>Today:</b> Linux x86-64 works and is tested. Windows x86-64 <b>sources exist and
+  have never been executed by this project</b> — the one gate nothing has passed. The one-file pure-NASM
+  constraint is preserved unless an architectural change is explicitly approved; clear internal phase
+  boundaries should be introduced <em>within</em> that implementation.</div>
+</div>
+
+<div class="req part animate" style="--i:19">
+  <div class="reqhead"><span class="num">15</span><h3>Real modules, packages and separate compilation</h3>
+    <span class="pill part">Partial</span></div>
+  <p>Namespaces, explicit imports, public/private visibility, clear dependency boundaries. Modules compiled
+  independently rather than relying only on textual inclusion. Versioned packages, dependency lockfiles,
+  offline builds, reproducible settings. Compatibility and migration rules.</p>
+  <div class="aim"><b>Aim:</b> suitable for teams and substantial codebases, not just single-file
+  examples. <b>Today:</b> <code>ayojan</code> is <b>textual inclusion</b>, and <code>niryat</code> gives
+  export visibility. There is no separate compilation, no package manager, no lockfile.</div>
+</div>
+
+<div class="req done animate" style="--i:20">
+  <div class="reqhead"><span class="num">16</span><h3>Multilingual programming without splitting the ecosystem</h3>
+    <span class="pill done">Strong</span></div>
+  <p>One canonical language meaning beneath Sanskrit and other supported keyword spellings. Versioned
+  language packs defining how each source file selects its language. Packages usable across packs without
+  translating implementations. Unicode identifier rules, normalisation, and diagnostics for suspicious or
+  ambiguous identifiers. Identifiers, strings and comments preserved when translating keyword spellings.</p>
+  <div class="aim"><b>Today:</b> this is the project's distinctive strength — <b>11 packs</b> over one
+  canonical meaning, with native-script digits and dandas, and a keyword core that is Sanskrit.
+  <b>The gap:</b> Unicode normalisation and ambiguous-identifier diagnostics are not implemented, and
+  Devanagari glyph shaping is not done at the font level.</div>
+</div>
+
+<div class="req part animate" style="--i:21">
+  <div class="reqhead"><span class="num">17</span><h3>Excellent developer tools</h3>
+    <span class="pill part">Partial</span></div>
+  <p>One consistent workflow for creating, building, running, testing, formatting and documenting
+  projects. Editor support for completion, navigation, renaming and diagnostics. Debug information, stack
+  traces, profiling, actionable error messages. Standardised formatting, layout, contribution rules.
+  Ready-to-use binaries so ordinary users need not build the compiler.</p>
+  <div class="aim"><b>Today:</b> a working IDE on Linux (16 GUI tests), a Windows installer, an
+  install-with-binaries path so end users need no toolchain, and actionable compiler diagnostics.
+  <b>Missing:</b> a formatter, language server, debugger, and stack traces.</div>
+</div>
+
+<div class="req none animate" style="--i:22">
+  <div class="reqhead"><span class="num">18</span><h3>Interoperability and a useful ecosystem</h3>
+    <span class="pill none">Not started</span></div>
+  <p>A documented C-compatible foreign-function interface first. Optional C++ wrappers and Python
+  bindings later, never mandatory for basic use. Reliable libraries for collections, text, files,
+  networking, mathematics, testing and serialisation. GUI, database, scientific and AI integrations as
+  packages rather than compiler expansion.</p>
+  <div class="aim"><b>Aim:</b> reuse existing software while growing our own ecosystem. <b>Today:</b>
+  there is no FFI. The library is self-contained and 281 functions deep, which is a foundation, not an
+  ecosystem.</div>
+</div>
+
+<div class="req part animate" style="--i:23">
+  <div class="reqhead"><span class="num">19</span><h3>A precise specification and evidence-based gates</h3>
+    <span class="pill part">Partial</span></div>
+  <p>Evaluation order, memory rules, numeric behaviour, Unicode behaviour and error semantics specified.
+  Both valid programs and invalid programs that must be rejected are tested. Regression tests, fuzzing,
+  cross-platform tests, reproducible benchmarks. Compilation time, execution speed, memory consumption
+  and executable size measured separately. Documentation, examples and feature status aligned with the
+  tested implementation. Compatibility review before changing syntax or behaviour.</p>
+  <div class="aim"><b>Aim:</b> a smaller set of dependable features over a large list of partially
+  working ones. <b>Today:</b> the gates are real and enforced — <b>187 pass / 4 no-expectation</b>,
+  codegen 12/12, packs 33/33, module graph, 180 library proofs, 72 property proofs, 16 GUI tests — and
+  there are dedicated overflow-safety and byte-parity documents. <b>Missing:</b> a formal written
+  specification, fuzzing, and cross-platform execution.</div>
+</div>
+
+<h2 class="sec animate" style="--i:24">C · The implementation order</h2>
+<p class="secsub">Design the interfaces and the safety model early, even when the implementation comes
+later.</p>
+<div class="order animate" style="--i:25">
+  <div class="step"><div class="n"></div><div class="body"><b>Stabilise the foundation</b>
+    <span>Written semantics, compiler correctness, procedural programming, type rules, diagnostics,
+    regression tests.</span></div></div>
+  <div class="step"><div class="n"></div><div class="body"><b>Make substantial programs manageable</b>
+    <span>Modules, visibility, separate compilation, resource management, error handling, core
+    libraries.</span></div></div>
+  <div class="step"><div class="n"></div><div class="body"><b>Prove systems capability</b>
+    <span>Freestanding compilation, hardware interfaces, a documented boot path, and an actually tested
+    minimal kernel.</span></div></div>
+  <div class="step"><div class="n"></div><div class="body"><b>Add reusable abstractions</b>
+    <span>Generics, traits, methods, first-class functions, closures, predictable collections.</span></div></div>
+  <div class="step"><div class="n"></div><div class="body"><b>Expand carefully</b>
+    <span>Concurrency, asynchronous libraries, additional targets, interoperability, controlled
+    metaprogramming.</span></div></div>
+</div>
+
+<h2 class="sec animate" style="--i:26">Status at a glance</h2>
+<table class="animate" style="--i:27">
+  <tr><th>Status</th><th>Count</th><th>Which</th></tr>
+  <tr><td class="mono" style="color:var(--green)">Implemented</td><td class="mono">2</td>
+    <td>01 procedural core · 16 multilingual (strong)</td></tr>
+  <tr><td class="mono" style="color:var(--gold)">Partial</td><td class="mono">12</td>
+    <td>02 functional · 04 OO/composition · 05 data-oriented · 08 metaprogramming · 09 typing ·
+    11 error handling · 12 freestanding · 13 library layers · 14 portability · 15 modules ·
+    17 tools · 19 specification &amp; gates</td></tr>
+  <tr><td class="mono" style="color:var(--red)">Not started</td><td class="mono">5</td>
+    <td>03 generics · 06 concurrency · 07 async · 10 memory &amp; resource model ·
+    18 interoperability</td></tr>
+</table>
+
+<footer class="animate" style="--i:28">
+  <b>Sutram — Design Parameters.</b> This page states the design target. It is not a description of
+  shipped behaviour.<br>
+  Status is measured against the compiler as tested: <b>187 pass / 4 no-expectation</b> · codegen 12/12 ·
+  packs 33/33 · library 180 proofs · properties 72 · GUI 16 tests.<br>
+  The constraint that does not change: Sanskrit keyword core · <code>.sm</code> · one pure-NASM compiler
+  source · native machine code · no runtime dependency · no toolchain needed by the end user.<br>
+  Do not claim safety, portability, performance superiority or OS readiness without corresponding
+  evidence.
+</footer>
+
+</div>
+</body>
+</html>
