@@ -1,0 +1,115 @@
+SUTRAM ROUND 67 — OBSERVED EVIDENCE
+Date: 2026-10-15
+Source: 25fe2bdbe13eb15e270a29626bb99c522691e1db
+Base: 76137658ddd8fe8f23810cd5b55deb98ac381248
+Draft PR: https://github.com/dap2810/Sutram/pull/25
+
+ACTUALLY RUN LOCALLY
+python -m unittest discover -s tests/r66 -p 'test_*.py' -v
+33 tests, OK; final run 0.193 seconds.
+python -m unittest discover -s tests/r67 -p 'test_*.py' -v
+20 tests, OK; final run 0.061 seconds.
+Total 53 methods: 26 isolated assembly-helper and 27 source/pack/anchor methods.
+The helper instructions run via a deliberately narrow NASM-to-GNU-as adapter
+and Linux GCC, with a Win64 calling-convention bridge. NOT a Windows run.
+Exhaustive E0/second/third byte check covers 65536 combinations within ONE method.
+All 50 supported decimal digits, mismatched registers, exact block boundaries,
+invalid/truncated UTF-8, guard pages, aliases and source hooks are covered.
+
+python -m py_compile tools/r67_prepare_compiler.py tools/r67_native_acceptance.py \
+ tests/r67/test_r67.py tests/r66/test_native_helpers.py tests/r66/test_prepare_review.py
+Exit 0; five Python files passed syntax checking.
+
+UPLOAD/HASH VERIFICATION
+All 25 changed source/test/doc Git blobs matched local tested bytes via
+fetch_file or contents/examples/r67 at the pinned source commit.
+SHA256 from Python hashlib covers 25/25 files, 74618 bytes, NOT compiler binaries.
+Accepted Gujarati source blob: aedd12d69b77f3e66610278bf24a5709f1b75a18.
+Accepted Gujarati stdout blob: 9599e58025ba07520b8d1a7ad4b21b2b3b9a102a.
+Neither artifact changed. The full suite was NOT run locally.
+
+SOURCE SYNC FINDINGS
+Pinned main reports compiler caee7373... despite changelog v145's e1a67674... claim.
+Pinned main GUI r66_indic_clusters.asm returned 404; exact reviewed blob restored.
+The R67 source staging tool needs the actually observed input; unknown drift fails.
+No claim that the incomplete sync is now globally repaired on main.
+
+NOT RUN / NOT CLAIMED
+Production compiler preparation, full NASM compiler/GUI assembly, Windows link,
+new Sutram native stdout/exits, native code identity/A-B/instruction counts,
+full compiler regression/proofs/frozen baselines, PowerShell script execution,
+Windows GUI open/close/shaping/screenshots, installer/registry execution.
+No background work or CI started; PR remains unreviewed source.
+Pair scope is pure whole-block opt-in, not unrestricted raw-ASM optimization.
+Cluster count is not shaping/UAX29/caret replacement or Bengali mark support.
+
+RAW FINAL TEST LOGS
+==================
+test_abbreviation_not_digit_or_danda (test_native_helpers.NativeHelpers.test_abbreviation_not_digit_or_danda) ... ok
+test_all_50_decimal_digits (test_native_helpers.NativeHelpers.test_all_50_decimal_digits) ... ok
+test_ascii_controls_and_crlf (test_native_helpers.NativeHelpers.test_ascii_controls_and_crlf) ... ok
+test_cross_script_link_not_joined (test_native_helpers.NativeHelpers.test_cross_script_link_not_joined) ... ok
+test_devanagari_conjuncts (test_native_helpers.NativeHelpers.test_devanagari_conjuncts) ... ok
+test_devanagari_matras_and_nukta (test_native_helpers.NativeHelpers.test_devanagari_matras_and_nukta) ... ok
+test_empty_and_truncated_digits (test_native_helpers.NativeHelpers.test_empty_and_truncated_digits) ... ok
+test_every_single_byte (test_native_helpers.NativeHelpers.test_every_single_byte) ... ok
+test_exclusive_end_no_read_into_guard_page (test_native_helpers.NativeHelpers.test_exclusive_end_no_read_into_guard_page) ... ok
+test_exhaustive_indic_second_third_bytes (test_native_helpers.NativeHelpers.test_exhaustive_indic_second_third_bytes) ... ok
+test_gujarati_matras_and_conjuncts (test_native_helpers.NativeHelpers.test_gujarati_matras_and_conjuncts) ... ok
+test_invalid_utf8_one_byte_progress (test_native_helpers.NativeHelpers.test_invalid_utf8_one_byte_progress) ... ok
+test_random_bytes_always_progress (test_native_helpers.NativeHelpers.test_random_bytes_always_progress) ... ok
+test_shared_danda_and_scalar_validation (test_native_helpers.NativeHelpers.test_shared_danda_and_scalar_validation) ... ok
+test_signs_and_digits_separate_clusters (test_native_helpers.NativeHelpers.test_signs_and_digits_separate_clusters) ... ok
+test_utf8_scalar_widths (test_native_helpers.NativeHelpers.test_utf8_scalar_widths) ... ok
+test_zwnj_and_nonlinking_zwj (test_native_helpers.NativeHelpers.test_zwnj_and_nonlinking_zwj) ... ok
+test_builtin_capacity (test_prepare_review.PackTests.test_builtin_capacity) ... ok
+test_counts_and_uniqueness (test_prepare_review.PackTests.test_counts_and_uniqueness) ... ok
+test_explicit_abbreviations (test_prepare_review.PackTests.test_explicit_abbreviations) ... ok
+test_previous_keywords_preserved (test_prepare_review.PackTests.test_previous_keywords_preserved) ... ok
+test_all_eight_anchors_apply (test_prepare_review.PrepareTests.test_all_eight_anchors_apply) ... ok
+test_byte_round_trip_on_explicit_mock_blob (test_prepare_review.PrepareTests.test_byte_round_trip_on_explicit_mock_blob) ... ok
+test_each_duplicate_anchor_fails (test_prepare_review.PrepareTests.test_each_duplicate_anchor_fails) ... ok
+test_each_missing_anchor_fails (test_prepare_review.PrepareTests.test_each_missing_anchor_fails) ... ok
+test_identifier_write_pointer_preserved (test_prepare_review.PrepareTests.test_identifier_write_pointer_preserved) ... ok
+test_main_rejects_existing_outputs (test_prepare_review.PrepareTests.test_main_rejects_existing_outputs) ... usage: r66 [-h] [--source SOURCE] --output OUTPUT --patch-output PATCH_OUTPUT
+r66: error: output already exists; use new paths, never overwrite source
+ok
+test_main_rejects_overwriting_source (test_prepare_review.PrepareTests.test_main_rejects_overwriting_source) ... usage: r66 [-h] [--source SOURCE] --output OUTPUT --patch-output PATCH_OUTPUT
+r66: error: source, output and patch must be distinct paths
+ok
+test_numeric_priority_before_identifier (test_prepare_review.PrepareTests.test_numeric_priority_before_identifier) ... ok
+test_reapplication_fails (test_prepare_review.PrepareTests.test_reapplication_fails) ... ok
+test_source_not_rewritten_or_fullwidth_decimal_invented (test_prepare_review.PrepareTests.test_source_not_rewritten_or_fullwidth_decimal_invented) ... ok
+test_unrelated_text_preserved (test_prepare_review.PrepareTests.test_unrelated_text_preserved) ... ok
+test_wrong_production_blob_fails (test_prepare_review.PrepareTests.test_wrong_production_blob_fails) ... ok
+
+----------------------------------------------------------------------
+Ran 33 tests in 0.193s
+
+OK
+
+test_all_different_register_pairs (test_r67.Helpers.test_all_different_register_pairs) ... ok
+test_all_same_register_pairs (test_r67.Helpers.test_all_same_register_pairs) ... ok
+test_cluster_counter (test_r67.Helpers.test_cluster_counter) ... ok
+test_counter_invalid_utf8_progress (test_r67.Helpers.test_counter_invalid_utf8_progress) ... ok
+test_counter_random_data_matches_iterator (test_r67.Helpers.test_counter_random_data_matches_iterator) ... ok
+test_exact_instruction_boundaries_only (test_r67.Helpers.test_exact_instruction_boundaries_only) ... ok
+test_hex_validation (test_r67.Helpers.test_hex_validation) ... ok
+test_random_hex_rejected_unless_exact (test_r67.Helpers.test_random_hex_rejected_unless_exact) ... ok
+test_truncated_input_progress (test_r67.Helpers.test_truncated_input_progress) ... ok
+test_all_previous_words_preserved (test_r67.Source.test_all_previous_words_preserved) ... ok
+test_gui_build_links_objects (test_r67.Source.test_gui_build_links_objects) ... ok
+test_gui_calls_real_counter_without_caret_override (test_r67.Source.test_gui_calls_real_counter_without_caret_override) ... ok
+test_gui_single_call_redirect (test_r67.Source.test_gui_single_call_redirect) ... ok
+test_gujarati_collision_removed (test_r67.Source.test_gujarati_collision_removed) ... ok
+test_missing_and_duplicate_anchor_rejected (test_r67.Source.test_missing_and_duplicate_anchor_rejected) ... ok
+test_new_abbreviations_exact (test_r67.Source.test_new_abbreviations_exact) ... ok
+test_reapply_and_source_drift_rejected (test_r67.Source.test_reapply_and_source_drift_rejected) ... ok
+test_staging_anchors_are_preemission (test_r67.Source.test_staging_anchors_are_preemission) ... ok
+test_standalone_examples_have_expected_pairs (test_r67.Source.test_standalone_examples_have_expected_pairs) ... ok
+test_word_and_table_capacity (test_r67.Source.test_word_and_table_capacity) ... ok
+
+----------------------------------------------------------------------
+Ran 20 tests in 0.061s
+
+OK
