@@ -1,3 +1,33 @@
+## v149 — ChatGPT R68 + Muse R26 verified and SYNCED
+
+- **R68 verified by running it.** Its preparation tool checks the inherited compiler (blob
+  `64ea028a...`, matching main exactly) plus the locked helper blobs, and produces the **entry wrapper**
+  `src/r68_compiler_entry.asm` (713 B, blob `42389aaf...`). That wrapper is a neat design: it redefines
+  the NASM `call` macro so `call lex` also runs the UTF-8 precheck and `call parse_primary` also runs the
+  abbreviation-value guard, then includes the compiler. **It builds: default 192,144 B, pure-pairs
+  192,712 B.** **R68 unit tests 24 pass (15 skipped).**
+- **All gates green with the R68 entry:** suite **187/4**, codegen **12/12**, packs **33/33**,
+  proof_lib **177/177**, proof_props **69/69**.
+- **The new diagnostics genuinely fire.** A malformed source produces exactly
+  `Sutram Error [E_UTF8]: <file>:<line>: invalid or truncated UTF-8 in source code`. The six new pack
+  examples run and match their goldens.
+- **R68 also adds** explicit Odia/Kannada/Tamil/Telugu decimal ranges (Hindi/Marathi reuse Devanagari),
+  four U+0970 aliases per Hindi/Marathi pack, a pure-pair probe with a testable 46-byte hypothesis,
+  a Windows GUI title-only counter with a 12-check manual checklist, and a consolidated
+  `docs/R68-INSTALLATION-ROUTES.md`. It correctly declined to invent an abbreviation sign for the four
+  scripts that do not have one, and noted Malayalam is outside the six-name brief rather than silently
+  declaring it done.
+- **Muse R26 verified and synced.** Patch clean; **12/12 hashes**; proof_props **72/72** (was 69),
+  proof_lib **180/180** (was 177), suite **187/4**; library now **21 modules / 281 functions**. Three new
+  functions (`math_rand`, `math_clamp`, `str_to_float`), three real bug fixes (`str_to_int` overflow
+  guards, `int_to_str(MIN)`, and the `fmt_int_base`/`fmt_int_flags` MIN cases), `docs/PROPERTY-NET.md`
+  describing what would have to break per property, and three new goldens.
+- **R26 flagged its own overlap.** It touches `tools/proof_props.py`, the same file R25 touched and the
+  same file the R24 sync once dropped — and it stated the resulting property count (72) so a sync can
+  check it directly. That is the lesson from R24 being applied deliberately.
+- **Also on main:** the two clean-project handover folders (`Sarvam-to-ChatGPT-Clean-Project/` with the
+  1.7 MB archive, and `ChatGPT-to-Sarvam-Clean/`), and the doc fixes from the previous round.
+
 ## v148 — Linux X11 GUI slices 30-31: open a file from the command line, and a real Expose bug
 
 - **Slice 30.** `./sutram-gui prog.sm` silently ignored the argument -- `_start` never read argv. It now
