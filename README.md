@@ -50,7 +50,7 @@ Semicolons and braces are optional. The full reference is in
 
 ## What is in this release
 
-- **216 worked examples** in `examples/`, each with expected output and exit code
+- **202 worked examples** in `examples/`, each with expected output and exit code
 - **21 standard-library modules with code** in `lib/`, 278 functions between
   them — mathematics, sorting, strings, statistics, calculus, matrix work, and
   heritage modules built on classical Indian mathematics. Three further files
