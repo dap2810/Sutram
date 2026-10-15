@@ -1,0 +1,5 @@
+mukhya() {
+    vitti a = -9223372036854775807
+    vitti b = 2
+    likha(a - b)
+}

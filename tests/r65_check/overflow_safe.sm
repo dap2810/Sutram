@@ -1,0 +1,9 @@
+mukhya() {
+    vitti a = 9
+    vitti b = 3
+    likha(a + b)
+    likha(a - b)
+    likha(a * b)
+    likha(a / b)
+    likha(a % b)
+}

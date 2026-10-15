@@ -38,4 +38,26 @@
 कोश kosh
 कुरु kuru
 निष्क्रिय nishkriya
-सङ्ख्या sankshya
+सङ्ख्या sankhya
+
+# R65: Additional native Devanagari aliases for existing compiler builtins.
+# No keyword ID or operator semantics changes. Total builtin aliases below: 18.
+# A Sanskrit word maps to the already-recognised Latin builtin name.
+लेख likh
+लिखा likha
+स्थगित sthagita
+पाद pad
+द्वारम् dvaram
+पाठ paadh
+बन्ध band
+निर्मित nirmmita
+शब्दम् shabda
+पङ्क्तिदैर्घ्य pankti_len
+कोशपुष् kosh_push
+कोशपोप् kosh_pop
+कोशदैर्घ्य kosh_len
+कोशक्षमता kosh_cap
+कोशशुद्धि kosh_clear
+कोशरिक्त kosh_empty
+कोशशिखर kosh_peek
+कोशनिर्गम kosh_dequeue

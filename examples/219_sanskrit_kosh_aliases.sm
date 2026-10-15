@@ -1,0 +1,8 @@
+# R65: compile with --lang sanskrit; Devanagari builtin aliases.
+मुख्य() {
+    कोश q[1]
+    लिखा(कोशपुष्(q, 7))
+    लिखा(कोशशिखर(q))
+    लिखा(कोशनिर्गम(q))
+    लिखा(कोशरिक्त(q))
+}

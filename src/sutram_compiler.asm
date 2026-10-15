@@ -100,6 +100,9 @@ FUNC_SPILL_BYTES equ 2048 ; reserved stack spill area per generated function/mai
 ; volatile XMM2-XMM5, never XMM6-XMM15 (Windows nonvolatile).
 
 
+; R65 opt-in source mode: nasm -DSUTRAM_R65_TRAP_INT=1
+; Default build (without -D) follows the accepted wrap semantics.
+; Independent peephole mode: -DSUTRAM_R65_PEEPHOLES=1.
 ; Operator IDs
 OP_ADD equ 1
 OP_SUB equ 2
@@ -289,6 +292,15 @@ r54_builtin_arity_table:
     msg_undefined_func db "Sutram Error: undefined function: ", 0
     msg_array_oob db "Sutram Error: array index out of bounds", 10, 0
     msg_kosh_required db "Sutram Error: kosh builtin requires a kosh variable", 10, 0
+%ifdef SUTRAM_R65_TRAP_INT
+    r65_msg_prefix db "Sutram Error [E_INTEGER_TRAP] ",0
+    r65_msg_colon db ":",0
+    r65_msg_add db ": signed addition overflow",10,0
+    r65_msg_sub db ": signed subtraction overflow",10,0
+    r65_msg_mul db ": signed multiplication overflow",10,0
+    r65_msg_div db ": division by zero",10,0
+    r65_msg_mod db ": remainder by zero",10,0
+%endif
     msg_kosh_empty db "Sutram Error: kosh pop from empty array", 10, 0
     msg_kosh_peek_empty db "Sutram Error: kosh peek from empty array", 10, 0
     msg_kosh_dequeue_empty db "Sutram Error: kosh dequeue from empty array", 10, 0
@@ -830,6 +842,12 @@ section .bss
     var_table   resb VAR_TABLE_CAP * 16 ; [name_ptr(8)][offset(8)]
     var_cnt     resq 1
     stack_dep   resq 1
+    ; R65: compiler-only preceding assignment value still live in generated RAX.
+    ; Enabled only with -DSUTRAM_R65_PEEPHOLES=1. Never deletes emitted bytes.
+%ifdef SUTRAM_R65_PEEPHOLES
+    r65_last_store_name resq 1
+    r65_candidate_name resq 1
+%endif
     array_vars  resq 256        ; T8b: pankti names in current generated-function scope
     array_var_cnt resq 1
     kosh_vars   resq KOSH_VAR_CAP ; T18 growable-array names in current generated-function scope
@@ -8407,6 +8425,12 @@ push r12                  ; save r12 (parse_func_block uses it)
     ; Build binop node: [AST_BINOP][op][left=target][right=NUM(1)]
     call alloc_ast
     mov qword [rax], AST_BINOP
+%ifdef SUTRAM_R65_TRAP_INT
+    push rcx                  ; unary-minus builder retains AST_NUM in RCX
+    mov rcx,[rel cur_line]
+    mov [rax+32],rcx          ; R65: parser-time BINOP source line
+    pop rcx
+%endif
     mov [rax+8], r12          ; op
     mov [rax+16], rbx         ; left = target
     mov [rax+24], r13         ; right = 1
@@ -8429,6 +8453,12 @@ push r12                  ; save r12 (parse_func_block uses it)
     ; Build binop node: [AST_BINOP][op][left=target][right=rhs]
     call alloc_ast            ; rax = binop node (rbx preserved)
     mov qword [rax], AST_BINOP
+%ifdef SUTRAM_R65_TRAP_INT
+    push rcx                  ; unary-minus builder retains AST_NUM in RCX
+    mov rcx,[rel cur_line]
+    mov [rax+32],rcx          ; R65: parser-time BINOP source line
+    pop rcx
+%endif
     mov [rax+8], r12          ; op
     mov [rax+16], rbx         ; left = target
     mov [rax+24], r13         ; right = rhs
@@ -8555,6 +8585,12 @@ parse_lor:
     pop r14
     pop rbx
     mov qword [rax], AST_BINOP
+%ifdef SUTRAM_R65_TRAP_INT
+    push rcx                  ; unary-minus builder retains AST_NUM in RCX
+    mov rcx,[rel cur_line]
+    mov [rax+32],rcx          ; R65: parser-time BINOP source line
+    pop rcx
+%endif
     mov [rax+8], r14
     mov [rax+16], rbx
     mov [rax+24], r13
@@ -8598,6 +8634,12 @@ parse_land:
     pop r14
     pop rbx
     mov qword [rax], AST_BINOP
+%ifdef SUTRAM_R65_TRAP_INT
+    push rcx                  ; unary-minus builder retains AST_NUM in RCX
+    mov rcx,[rel cur_line]
+    mov [rax+32],rcx          ; R65: parser-time BINOP source line
+    pop rcx
+%endif
     mov [rax+8], r14
     mov [rax+16], rbx
     mov [rax+24], r13
@@ -8669,6 +8711,12 @@ parse_cmp:
     pop r14
     pop rbx
     mov qword [rax], AST_BINOP
+%ifdef SUTRAM_R65_TRAP_INT
+    push rcx                  ; unary-minus builder retains AST_NUM in RCX
+    mov rcx,[rel cur_line]
+    mov [rax+32],rcx          ; R65: parser-time BINOP source line
+    pop rcx
+%endif
     mov [rax+8], r14
     mov [rax+16], rbx
     mov [rax+24], r13
@@ -8715,6 +8763,12 @@ parse_bitor:
     pop r14
     pop rbx
     mov qword [rax], AST_BINOP
+%ifdef SUTRAM_R65_TRAP_INT
+    push rcx                  ; unary-minus builder retains AST_NUM in RCX
+    mov rcx,[rel cur_line]
+    mov [rax+32],rcx          ; R65: parser-time BINOP source line
+    pop rcx
+%endif
     mov [rax+8], r14
     mov [rax+16], rbx
     mov [rax+24], r13
@@ -8761,6 +8815,12 @@ parse_bitxor:
     pop r14
     pop rbx
     mov qword [rax], AST_BINOP
+%ifdef SUTRAM_R65_TRAP_INT
+    push rcx                  ; unary-minus builder retains AST_NUM in RCX
+    mov rcx,[rel cur_line]
+    mov [rax+32],rcx          ; R65: parser-time BINOP source line
+    pop rcx
+%endif
     mov [rax+8], r14
     mov [rax+16], rbx
     mov [rax+24], r13
@@ -8807,6 +8867,12 @@ parse_bitand:
     pop r14
     pop rbx
     mov qword [rax], AST_BINOP
+%ifdef SUTRAM_R65_TRAP_INT
+    push rcx                  ; unary-minus builder retains AST_NUM in RCX
+    mov rcx,[rel cur_line]
+    mov [rax+32],rcx          ; R65: parser-time BINOP source line
+    pop rcx
+%endif
     mov [rax+8], r14
     mov [rax+16], rbx
     mov [rax+24], r13
@@ -8859,6 +8925,12 @@ parse_shift:
     pop r14
     pop rbx
     mov qword [rax], AST_BINOP
+%ifdef SUTRAM_R65_TRAP_INT
+    push rcx                  ; unary-minus builder retains AST_NUM in RCX
+    mov rcx,[rel cur_line]
+    mov [rax+32],rcx          ; R65: parser-time BINOP source line
+    pop rcx
+%endif
     mov [rax+8], r14
     mov [rax+16], rbx
     mov [rax+24], r13
@@ -8908,6 +8980,12 @@ parse_add:
     pop r14
     pop rbx
     mov qword [rax], AST_BINOP
+%ifdef SUTRAM_R65_TRAP_INT
+    push rcx                  ; unary-minus builder retains AST_NUM in RCX
+    mov rcx,[rel cur_line]
+    mov [rax+32],rcx          ; R65: parser-time BINOP source line
+    pop rcx
+%endif
     mov [rax+8], r14
     mov [rax+16], rbx
     mov [rax+24], r13
@@ -8968,6 +9046,12 @@ parse_mul:
     pop r14
     pop rbx
     mov qword [rax], AST_BINOP
+%ifdef SUTRAM_R65_TRAP_INT
+    push rcx                  ; unary-minus builder retains AST_NUM in RCX
+    mov rcx,[rel cur_line]
+    mov [rax+32],rcx          ; R65: parser-time BINOP source line
+    pop rcx
+%endif
     mov [rax+8], r14
     mov [rax+16], rbx
     mov [rax+24], r13
@@ -8987,6 +9071,11 @@ parse_mul:
 ; fold_const(rdi = BINOP node) -> rax = folded AST_NUM or original node
 ; If both operands are AST_NUM, compute the result at compile time
 fold_const:
+%ifdef SUTRAM_R65_TRAP_INT
+    ; Parser literal folding could otherwise elide a runtime overflow trap.
+    mov rax,rdi
+    ret
+%endif
     push rbx
     push r12
     push r13
@@ -9258,6 +9347,12 @@ parse_primary:
     pop rcx                   ; rcx = AST_NUM(0) (left)
     pop rdx                   ; rdx = expr (right)
     mov qword [rax], AST_BINOP
+%ifdef SUTRAM_R65_TRAP_INT
+    push rcx                  ; unary-minus builder retains AST_NUM in RCX
+    mov rcx,[rel cur_line]
+    mov [rax+32],rcx          ; R65: parser-time BINOP source line
+    pop rcx
+%endif
     mov qword [rax+8], OP_SUB
     mov [rax+16], rcx         ; left = 0
     mov [rax+24], rdx         ; right = expr
@@ -10534,6 +10629,11 @@ backpatch_calls:
 
 ; gen_block(rax = block node)
 gen_block:
+%ifdef SUTRAM_R65_PEEPHOLES
+    ; No cross-block or cross-function RAX lifetime assumptions.
+    mov qword [rel r65_last_store_name],0
+    mov qword [rel r65_candidate_name],0
+%endif
 %ifdef SUTRAM_EXPERIMENTAL_XMM_CACHE
     ; Basic-block entry: do not trust cached XMM values across jumps/merges.
     call xmm_cache_barrier
@@ -10562,6 +10662,10 @@ gen_block:
     inc r13
     jmp .gb_loop
 .gb_done:
+%ifdef SUTRAM_R65_PEEPHOLES
+    mov qword [rel r65_last_store_name],0
+    mov qword [rel r65_candidate_name],0
+%endif
 %ifdef SUTRAM_EXPERIMENTAL_XMM_CACHE
     call xmm_cache_barrier
 %endif
@@ -10575,6 +10679,13 @@ gen_block:
 gen_stmt:
     push rbx
     mov rbx, rax
+%ifdef SUTRAM_R65_PEEPHOLES
+    ; Consume the one-statement RAX value token. Every statement first
+    ; invalidates it; only the immediate next scalar assignment may reuse it.
+    mov rax,[rel r65_last_store_name]
+    mov [rel r65_candidate_name],rax
+    mov qword [rel r65_last_store_name],0
+%endif
     mov rax, [rbx]            ; node type
 %ifdef SUTRAM_EXPERIMENTAL_XMM_CACHE
     ; Conservative statement barrier. Only simple scalar assignments can
@@ -10783,12 +10894,14 @@ gen_stmt:
     ; PERF2/PERF3: when an integer scalar will occupy one of the first five
     ; register slots, build simple literals/copies/var-binops directly in the
     ; destination register.  Unsupported forms leave allocation untouched.
+%ifndef SUTRAM_R65_TRAP_INT
     mov rdi, rbx
     call try_emit_int_decl_reg
     test rax, rax
     jz .gs_decl_not_fast
     pop rbx
     ret
+%endif
 .gs_decl_not_fast:
     cmp qword [rbx+32], 2
     je .gs_decl_kosh
@@ -11079,6 +11192,7 @@ gen_stmt:
     call try_emit_float_reg_destination
     test rax, rax
     jnz .gs_assign_fast_done
+%ifndef SUTRAM_R65_TRAP_INT
     ; PERF1: integer self-update fast path.  The first five locals live in
     ; callee-saved registers; avoid materializing x=x+y / x=x+imm through
     ; RAX plus a generated push/pop/xchg/store sequence when the destination
@@ -11093,6 +11207,13 @@ gen_stmt:
     call try_emit_int_reg_assignment
     test rax, rax
     jz .gs_assign_generic
+%endif
+%ifdef SUTRAM_R65_TRAP_INT
+    ; The optional safety mode bypasses all integer assignment fast paths.
+    ; Continue through the generic value emitter, never fall through to
+    ; the fast-path "done" return without generating an assignment.
+    jmp .gs_assign_generic
+%endif
 .gs_assign_fast_done:
     pop rbx
     ret
@@ -11105,8 +11226,26 @@ gen_stmt:
     mov rdi, [rbx+16]
     call expr_is_float
     push rax                  ; source float flag
+%ifdef SUTRAM_R65_PEEPHOLES
+    ; R65: no intervening generated instruction since prior generic local
+    ; scalar store, and RHS is exactly that variable: RAX still has the bits.
+    mov rax,[rbx+16]
+    cmp qword [rax],AST_VAR
+    jne .r65_emit_rhs
+    mov rdi,[rel r65_candidate_name]
+    test rdi,rdi
+    jz .r65_emit_rhs
+    mov rsi,[rax+8]
+    call strcmp
+    test rax,rax
+    jz .r65_rhs_done
+.r65_emit_rhs:
+%endif
     mov rax, [rbx+16]
     call gen_expr             ; runtime result in RAX
+%ifdef SUTRAM_R65_PEEPHOLES
+.r65_rhs_done:
+%endif
     pop rcx                   ; source flag
     pop rdx                   ; target flag
     test rdx, rdx
@@ -11131,6 +11270,11 @@ gen_stmt:
     ; Register: emit mov reg, rax
     mov rdi, rax
     call emit_store_reg
+%ifdef SUTRAM_R65_PEEPHOLES
+    mov rax,[rbx+8]
+    mov rax,[rax+8]
+    mov [rel r65_last_store_name],rax
+%endif
     pop rbx
     ret
 .gs_assign_stack:
@@ -11146,6 +11290,11 @@ gen_stmt:
     call emit_byte
     mov edi, r12d
     call emit_byte
+%ifdef SUTRAM_R65_PEEPHOLES
+    mov rax,[rbx+8]
+    mov rax,[rax+8]
+    mov [rel r65_last_store_name],rax
+%endif
     pop r12
     pop rbx
     ret
@@ -12563,13 +12712,16 @@ r46_live_callee_saved_vars:
 
 ; gen_expr(rax = expression node)
 gen_expr:
-    ; R58: fold a bounded pure integer subtree before generating native code.
-    ; The optimizer returns the original node or a proven equivalent AST node.
     push rbx
+%ifdef SUTRAM_R65_TRAP_INT
+    ; Do not compile-fold operands before runtime overflow checks.
+    mov rbx,rax
+%else
     mov rdi,rax
     xor esi,esi
     call r58_fold_tree
     mov rbx,rax
+%endif
     mov rax, [rbx]            ; node type
     cmp rax, AST_NUM
     je .ge_num
@@ -12616,6 +12768,15 @@ gen_expr:
     mov rdi, [rbx+8]
     xor esi, esi
     mov rdx, [rbx+24]
+%ifdef SUTRAM_R65_PEEPHOLES
+    ; Exactly one argument: no runtime instruction occurs between value
+    ; evaluation and its transfer into RDI. Omit the push/pop pair.
+    xor r8d,r8d
+    cmp r14,1
+    jne .r65_one_arg_flag_ready
+    mov r8d,1
+.r65_one_arg_flag_ready:
+%endif
     call gen_typed_call_arg
     cmp r14, 2
     jb .ge_fc_pop1
@@ -12623,6 +12784,9 @@ gen_expr:
     mov rdi, [rbx+8]
     mov esi, 1
     mov rdx, [rbx+32]
+%ifdef SUTRAM_R65_PEEPHOLES
+    xor r8d,r8d
+%endif
     call gen_typed_call_arg
     cmp r14, 3
     jb .ge_fc_pop2
@@ -12630,6 +12794,9 @@ gen_expr:
     mov rdi, [rbx+8]
     mov esi, 2
     mov rdx, [rbx+40]
+%ifdef SUTRAM_R65_PEEPHOLES
+    xor r8d,r8d
+%endif
     call gen_typed_call_arg
     cmp r14, 4
     jb .ge_fc_pop3
@@ -12637,6 +12804,9 @@ gen_expr:
     mov rdi, [rbx+8]
     mov esi, 3
     mov rdx, [rbx+48]
+%ifdef SUTRAM_R65_PEEPHOLES
+    xor r8d,r8d
+%endif
     call gen_typed_call_arg
     cmp r14, 5
     jb .ge_fc_pop4
@@ -12644,6 +12814,9 @@ gen_expr:
     mov rdi, [rbx+8]
     mov esi, 4
     mov rdx, [rbx+56]
+%ifdef SUTRAM_R65_PEEPHOLES
+    xor r8d,r8d
+%endif
     call gen_typed_call_arg
     cmp r14, 6
     jb .ge_fc_pop5
@@ -12651,6 +12824,9 @@ gen_expr:
     mov rdi, [rbx+8]
     mov esi, 5
     mov rdx, [rbx+64]
+%ifdef SUTRAM_R65_PEEPHOLES
+    xor r8d,r8d
+%endif
     call gen_typed_call_arg
     ; Pop 6: arg5->r9, arg4->r8, arg3->rcx, arg2->rdx, arg1->rsi, arg0->rdi
     mov dil, 0x41
@@ -12709,8 +12885,19 @@ gen_expr:
     call emit_byte
     jmp .ge_fc_call
 .ge_fc_pop1:
+%ifdef SUTRAM_R65_PEEPHOLES
+    ; Call value is still in runtime RAX; mov rdi,rax is 3 bytes,
+    ; versus a redundant push rax + pop rdi (2) but avoids stack writes.
+    mov dil,0x48
+    call emit_byte
+    mov dil,0x89
+    call emit_byte
+    mov dil,0xC7
+    call emit_byte
+%else
     mov dil, 0x5F            ; pop rdi
     call emit_byte
+%endif
 .ge_fc_call:
     call r46_live_callee_saved_vars
     mov r15, rax
@@ -16301,12 +16488,13 @@ gen_expr:
     call binop_needs_float
     test rax, rax
     jnz .ge_fbinop
-    ; R58: signed division by an exact positive power of two, with a
-    ; correction for negative inputs so rounding stays toward zero (IDIV).
+%ifndef SUTRAM_R65_TRAP_INT
+    ; In legacy mode retain R58 division strength reduction.
     mov rdi,rbx
     call r58_is_div_pow2
     test rax,rax
     jnz .ge_r58_div_pow2
+%endif
     ; Logical && / || require true short-circuit evaluation. Handle them
     ; before the generic binary path, which necessarily evaluates both sides.
     push rbx
@@ -16315,6 +16503,9 @@ gen_expr:
     je .ge_binop_land_sc
     cmp rax, OP_LOR
     je .ge_binop_lor_sc
+%ifdef SUTRAM_R65_TRAP_INT
+    jmp .ge_binop_generic    ; checking lives in generic arithmetic
+%endif
     ; FAST PATH: If right is AST_NUM and op is ADD/SUB, emit add/sub rax, imm8
     mov rax, [rbx+24]        ; right operand node
     mov rcx, [rax]           ; right node type
@@ -16668,6 +16859,10 @@ gen_expr:
     pop rbx
     ret
 .ge_binop_generic:
+%ifdef SUTRAM_R65_TRAP_INT
+    pop rbx
+    jmp .r57_old_stack_tree
+%endif
     ; R57: preserve source-order pure integer trees in RAX/R10/R11, without
     ; round-tripping each nested operand through runtime PUSH/POP. Register
     ; depth is statically bounded; any unsafe shape takes the old generator.
@@ -17201,6 +17396,10 @@ gen_expr:
     call emit_byte
     mov dil, 0xD1
     call emit_byte
+%ifdef SUTRAM_R65_TRAP_INT
+    lea rdi,[rel r65_msg_mod]
+    call r65_emit_zero_guard
+%endif
     ; cqo (sign-extend rax into rdx:rax) = 48 99
     mov dil, 0x48
     call emit_byte
@@ -17360,6 +17559,10 @@ gen_expr:
     call emit_byte
     mov dil, 0xD0
     call emit_byte
+%ifdef SUTRAM_R65_TRAP_INT
+    lea rdi,[rel r65_msg_add]
+    call r65_emit_overflow_guard
+%endif
     pop rbx
     ret
 .ge_sub:
@@ -17369,6 +17572,10 @@ gen_expr:
     call emit_byte
     mov dil, 0xD0
     call emit_byte
+%ifdef SUTRAM_R65_TRAP_INT
+    lea rdi,[rel r65_msg_sub]
+    call r65_emit_overflow_guard
+%endif
     pop rbx
     ret
 .ge_mul:
@@ -17380,6 +17587,10 @@ gen_expr:
     call emit_byte
     mov dil, 0xC2
     call emit_byte
+%ifdef SUTRAM_R65_TRAP_INT
+    lea rdi,[rel r65_msg_mul]
+    call r65_emit_overflow_guard
+%endif
     pop rbx
     ret
 .ge_div:
@@ -17390,6 +17601,10 @@ gen_expr:
     call emit_byte
     mov dil, 0xD1
     call emit_byte
+%ifdef SUTRAM_R65_TRAP_INT
+    lea rdi,[rel r65_msg_div]
+    call r65_emit_zero_guard
+%endif
     ; cqo (sign-extend) = 48 99
     mov dil, 0x48
     call emit_byte
@@ -18081,6 +18296,10 @@ gen_typed_call_arg:
     push r12
     push r13
     push r14
+%ifdef SUTRAM_R65_PEEPHOLES
+    push r15
+    mov r15,r8               ; one-arg direct-to-RDI transfer requested
+%endif
     mov rbx, rdi
     mov r12, rsi
     mov r13, rdx
@@ -18124,14 +18343,25 @@ gen_typed_call_arg:
     mov rax, r13
     call gen_expr
 .gtca_push:
+%ifdef SUTRAM_R65_PEEPHOLES
+    test r15,r15
+    jnz .r65_skip_arg_push
+%endif
     mov dil, 0x50            ; runtime push rax
     call emit_byte
+%ifdef SUTRAM_R65_PEEPHOLES
+.r65_skip_arg_push:
+    pop r15
+%endif
     pop r14
     pop r13
     pop r12
     pop rbx
     ret
 .gtca_kosh_type_fail:
+%ifdef SUTRAM_R65_PEEPHOLES
+    pop r15
+%endif
     pop r14
     pop r13
     pop r12
@@ -21110,6 +21340,144 @@ r57_emit_op:
     pop r12
     pop rbx
     ret
+
+%ifdef SUTRAM_R65_TRAP_INT
+; R65 opt-in trap helpers, all decisions made before machine code emission.
+r65_emit_literal:
+    push rbx
+    mov rbx,rdi
+    call alloc_ast
+    mov qword [rax],AST_STR
+    mov [rax+8],rbx
+    push rax
+    call alloc_ast
+    pop rcx
+    mov qword [rax],AST_CALL
+    mov qword [rax+8],BN_LIKHA
+    mov qword [rax+16],1
+    mov [rax+24],rcx
+    call gen_expr
+    pop rbx
+    ret
+
+r65_emit_number:
+    push rbx
+    mov rbx,rdi
+    call alloc_ast
+    mov qword [rax],AST_NUM
+    mov [rax+8],rbx
+    push rax
+    call alloc_ast
+    pop rcx
+    mov qword [rax],AST_CALL
+    mov qword [rax+8],BN_LKHB
+    mov qword [rax+16],1
+    mov [rax+24],rcx
+    call gen_expr
+    pop rbx
+    ret
+
+r65_emit_fatal:
+    ; compiler-time inputs: rdi = operation text, rsi = BINOP source line.
+    push rbx
+    push r12
+    push r13
+    mov r12,rdi
+    mov r13,rsi
+    lea rdi,[rel r65_msg_prefix]
+    call r65_emit_literal
+    ; The literal-output path encodes short relative jumps over its bytes.
+    ; Bound the embedded filename to the last 95 bytes to avoid overflow
+    ; when a caller supplies a very long absolute input path.
+    mov rdi,[rel source_path_ptr]
+    push rdi
+    call strlen
+    pop rdi
+    cmp rax,95
+    jbe .r65_path_ready
+    add rdi,rax
+    sub rdi,95
+.r65_path_ready:
+    call r65_emit_literal
+    lea rdi,[rel r65_msg_colon]
+    call r65_emit_literal
+    mov rdi,r13
+    call r65_emit_number
+    mov rdi,r12
+    call r65_emit_literal
+    ; exit(1) through existing target-dependent syscall emitter
+    mov dil,0xB8
+    call emit_byte
+    mov edi,60
+    call emit_u32
+    mov dil,0xBF
+    call emit_byte
+    mov edi,1
+    call emit_u32
+    call emit_syscall
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+r65_emit_overflow_guard:
+    ; Immediately after arithmetic: JNO rel32 skips inline fatal path.
+    push rbx
+    push r12
+    push r13
+    mov r12,rdi
+    mov dil,0x0F
+    call emit_byte
+    mov dil,0x81
+    call emit_byte
+    mov r13,[rel code_sz]
+    xor edi,edi
+    call emit_u32
+    mov rdi,r12
+    mov rsi,[rbx+32]
+    call r65_emit_fatal
+    mov rax,[rel code_sz]
+    sub rax,r13
+    sub rax,4
+    lea rcx,[rel code_buf]
+    mov [rcx+r13],eax
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+r65_emit_zero_guard:
+    ; test rcx,rcx; jnz rel32; fatal before IDIV.
+    push rbx
+    push r12
+    push r13
+    mov r12,rdi
+    mov dil,0x48
+    call emit_byte
+    mov dil,0x85
+    call emit_byte
+    mov dil,0xC9
+    call emit_byte
+    mov dil,0x0F
+    call emit_byte
+    mov dil,0x85
+    call emit_byte
+    mov r13,[rel code_sz]
+    xor edi,edi
+    call emit_u32
+    mov rdi,r12
+    mov rsi,[rbx+32]
+    call r65_emit_fatal
+    mov rax,[rel code_sz]
+    sub rax,r13
+    sub rax,4
+    lea rcx,[rel code_buf]
+    mov [rcx+r13],eax
+    pop r13
+    pop r12
+    pop rbx
+    ret
+%endif
 
 ; ============================================================
 ; ELF WRITER

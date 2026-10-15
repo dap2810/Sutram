@@ -1,0 +1,5 @@
+mukhya() {
+    vitti a = 7
+    vitti b = 0
+    likha(a / b)
+}
