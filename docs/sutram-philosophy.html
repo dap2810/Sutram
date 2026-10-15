@@ -165,5 +165,19 @@
   </footer>
 
 </div>
+
+<h2>The scripts, and where they honestly stand</h2>
+<p>The keyword core is Sanskrit, and the language reads it in Devanagari as well as in Latin — with the
+danda as a statement terminator, and native numerals. That is not a transliteration layer bolted on
+afterwards; it is the same lexer, extended.</p>
+<p>What is real: Sanskrit keywords in Devanagari, the danda and double danda, native Devanagari digits,
+and IDE support through colour, cluster-aware advance and a cluster-accurate caret. Gujarati has its own
+numerals and abbreviation sign working in the compiler, but its keyword pack is held back because it
+reserves a word an accepted test uses as a variable name — a real collision, recorded rather than
+papered over.</p>
+<p>What is <em>not</em> done, and should not be claimed: true glyph shaping. Matras, conjuncts and the
+shirorekha need a font-level shaper. Counting grapheme clusters correctly is necessary and is done; it
+is not the same thing as rendering them.</p>
+
 </body>
 </html>
