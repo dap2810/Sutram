@@ -1,0 +1,62 @@
+{
+  "base_commit": "0482bf6a979fcd1a8e1a6f55412d0cc25bb7cf1f",
+  "captured_complete_files": {
+    "lang/gujarati.lang": {
+      "git_blob": "2446577e079bcc2bb7aaa3d36de670a58dd80076",
+      "sha256": "965916566b1e6f8ae8ff0cb19250dcd05e87addea84d4d32ca8677ac06f8e69e",
+      "bytes": 1525
+    },
+    "lang/sanskrit.lang": {
+      "git_blob": "5876fae59e52b55cc11ab811a80ad4eec8ccfe83",
+      "sha256": "68bb5c559ee7658e4172b5cb800e9e6d9784a05ca4dafd185e60afa06c603ca3",
+      "bytes": 2298
+    },
+    "tests/r66/baseline_packs.json": {
+      "git_blob": "a98ecbd138e75dc7bbfc797cf0fbf7e2f245f46f",
+      "sha256": "2f33a66e4e771fd7d6e464a524e1f301a51a7479e819dfea1320c8b07865b898",
+      "bytes": 2782
+    },
+    "tests/r66/test_prepare_review.py": {
+      "git_blob": "9681c953f4fa1f62ff56b0e6d4b73e5a0e3a885f",
+      "sha256": "f8b4b318e7339db81bf92afd1e3221932d3a675f99e5c0b15946174c43b71eab",
+      "bytes": 5831
+    },
+    "tools/r66_prepare_review.py": {
+      "git_blob": "09ba429b95bab8e565e4dc8061b11fbd8b6d7745",
+      "sha256": "5eea2925e2e4a3851c74b410f37ffacdceed08836add5e0d1d05fcb464002e7b",
+      "bytes": 9044
+    },
+    "tools/r66_native_acceptance.py": {
+      "git_blob": "94b8244461f4c5f08074ca286830fc56c7df9f93",
+      "sha256": "2eb91c8d818b3181d3b8dbbd67e59cb0199afa5fb1a8dc15d95047dc730b74eb",
+      "bytes": 5611
+    },
+    "README.md": {
+      "git_blob": "6183b37e6b49c6b6daf4c6670e1de6869fe54e08",
+      "sha256": "f077025fe05915fc4d1ced410727dd9a348b2dd8c5f5c80a3fd0883e69754f55",
+      "bytes": 5415
+    },
+    "docs/WINDOWS-SETUP.md": {
+      "git_blob": "92c16ce86df5a0e58ec64e8e62bec5d865d4522b",
+      "sha256": "e4ea11b65b1eee0dce694edd1d7372aee151541a880c38ecfb72fc0c5b5edab2",
+      "bytes": 6106
+    },
+    "INSTALL-WINDOWS.md": {
+      "git_blob": "3a97e052814cddc409c93e456c0bfd4722302456",
+      "sha256": "629a394aa7b8c6818fd2b60185761f738e53b6a02b4baef8ff0462250876b9b0",
+      "bytes": 3345
+    }
+  },
+  "review_commit": "3610452d2f50c479c061783ba2d9f5584c1c40b2",
+  "changed_file_git_blobs": {
+    "INSTALL-WINDOWS.md": "f41afc5496e3c29c0105bc013115cd68c4367b3a",
+    "README.md": "fd6a594ef5af2adc3be888acc86fb95bcae7fe4f",
+    "docs/INSTALLATION-ROUTES.md": "4ea84cbba50b6572a2d944ae0e6d4ea1e0bec472",
+    "docs/WINDOWS-SETUP.md": "907109ad52efd1f15002ee3a6c9f5495f992d2f4",
+    "tests/clean_project/test_acceptance_guards.py": "aca35e9bb1be9d39cc32911bdd08c10f01af8277",
+    "tests/clean_project/test_current_guides.py": "85f594c7275112645b299cbf0fd3c18238fde60b",
+    "tests/r66/test_prepare_review.py": "ad0a24521d77bb5356117163c31d2432f95283d4",
+    "tools/r66_native_acceptance.py": "6743e5454374e4ff8ca4d6b6f59d1540d6cd6440"
+  },
+  "archive_bytes_captured": false
+}

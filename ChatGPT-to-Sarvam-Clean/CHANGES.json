@@ -1,0 +1,46 @@
+{
+  "base_commit": "0482bf6a979fcd1a8e1a6f55412d0cc25bb7cf1f",
+  "review_commit": "3610452d2f50c479c061783ba2d9f5584c1c40b2",
+  "files": [
+    {
+      "path": "INSTALL-WINDOWS.md",
+      "before_git_blob": "3a97e052814cddc409c93e456c0bfd4722302456",
+      "after_sha256": "360edb9d6c58e131c796005fdab35e02cdbe0ce3d42b7f3fb0fb1affefae6dce"
+    },
+    {
+      "path": "README.md",
+      "before_git_blob": "6183b37e6b49c6b6daf4c6670e1de6869fe54e08",
+      "after_sha256": "c5a74985d5f381b4c934a85a3f8d132c2d50b1f73dd2b84fd80f3d759510f2fe"
+    },
+    {
+      "path": "docs/INSTALLATION-ROUTES.md",
+      "before_git_blob": null,
+      "after_sha256": "3503f66dfa038721e902b28a210e228a18fb3b9e25e6826c8f619e576557b8a6"
+    },
+    {
+      "path": "docs/WINDOWS-SETUP.md",
+      "before_git_blob": "92c16ce86df5a0e58ec64e8e62bec5d865d4522b",
+      "after_sha256": "fc96c934488b194749bed01413d231bbbcdf2a463c06be81df318c1107769a7f"
+    },
+    {
+      "path": "tests/clean_project/test_acceptance_guards.py",
+      "before_git_blob": null,
+      "after_sha256": "b1e92b032d57ad9e45220b432db9ee200e2c19bbda60c007201a1d2bd7b7c5f5"
+    },
+    {
+      "path": "tests/clean_project/test_current_guides.py",
+      "before_git_blob": null,
+      "after_sha256": "96cafeb36edc6950364d0b9716065be6b1d9e6cc28ee76aceceee3d75994caff"
+    },
+    {
+      "path": "tests/r66/test_prepare_review.py",
+      "before_git_blob": "9681c953f4fa1f62ff56b0e6d4b73e5a0e3a885f",
+      "after_sha256": "3fbe059f476162d2ceb5cd1ae63a9f17028c8843e6f2914905ef30f6e234da04"
+    },
+    {
+      "path": "tools/r66_native_acceptance.py",
+      "before_git_blob": "94b8244461f4c5f08074ca286830fc56c7df9f93",
+      "after_sha256": "4ec7bdb99b48f3d5b2540716a08f196d082fed2f6bb508c6a8bf3e07a3037dcf"
+    }
+  ]
+}

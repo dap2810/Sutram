@@ -1,0 +1,29 @@
+test_dangling_output_symlink_rejected_before_call (test_acceptance_guards.OutputGuardTests.test_dangling_output_symlink_rejected_before_call) ... ok
+test_directory_output_rejected_before_call (test_acceptance_guards.OutputGuardTests.test_directory_output_rejected_before_call) ... ok
+test_error_that_leaves_binary_is_rejected (test_acceptance_guards.OutputGuardTests.test_error_that_leaves_binary_is_rejected) ... ok
+test_error_that_leaves_dangling_symlink_is_rejected (test_acceptance_guards.OutputGuardTests.test_error_that_leaves_dangling_symlink_is_rejected) ... ok
+test_expected_rejection_without_output (test_acceptance_guards.OutputGuardTests.test_expected_rejection_without_output) ... ok
+test_no_output_is_not_success (test_acceptance_guards.OutputGuardTests.test_no_output_is_not_success) ... ok
+test_nonzero_compilation_is_not_success (test_acceptance_guards.OutputGuardTests.test_nonzero_compilation_is_not_success) ... ok
+test_reference_cannot_be_compiler_itself (test_acceptance_guards.OutputGuardTests.test_reference_cannot_be_compiler_itself) ... usage: r66 [-h] --compiler COMPILER [--reference REFERENCE]
+r66: error: --reference must be an independently built compiler, not the same file
+ok
+test_reference_cannot_be_hardlink_of_compiler (test_acceptance_guards.OutputGuardTests.test_reference_cannot_be_hardlink_of_compiler) ... usage: r66 [-h] --compiler COMPILER [--reference REFERENCE]
+r66: error: --reference must be an independently built compiler, not the same file
+ok
+test_rejection_refuses_preexisting_output (test_acceptance_guards.OutputGuardTests.test_rejection_refuses_preexisting_output) ... ok
+test_rejection_requires_expected_exit_and_diagnostic (test_acceptance_guards.OutputGuardTests.test_rejection_requires_expected_exit_and_diagnostic) ... ok
+test_stale_output_rejected_before_compiler_call (test_acceptance_guards.OutputGuardTests.test_stale_output_rejected_before_compiler_call) ... ok
+test_successful_fresh_output (test_acceptance_guards.OutputGuardTests.test_successful_fresh_output) ... ok
+test_symlink_created_by_compiler_is_rejected (test_acceptance_guards.OutputGuardTests.test_symlink_created_by_compiler_is_rejected) ... ok
+test_timeout_does_not_become_pass (test_acceptance_guards.OutputGuardTests.test_timeout_does_not_become_pass) ... ok
+test_archive_review_is_not_presented_as_windows_acceptance (test_current_guides.CurrentGuideTests.test_archive_review_is_not_presented_as_windows_acceptance) ... ok
+test_current_windows_guides_do_not_recommend_security_bypass (test_current_guides.CurrentGuideTests.test_current_windows_guides_do_not_recommend_security_bypass) ... ok
+test_readme_book_path_and_example_count_are_not_stale (test_current_guides.CurrentGuideTests.test_readme_book_path_and_example_count_are_not_stale) ... ok
+test_setup_does_not_prescribe_program_files_default (test_current_guides.CurrentGuideTests.test_setup_does_not_prescribe_program_files_default) ... ok
+test_six_exact_book_edition_names_documented (test_current_guides.CurrentGuideTests.test_six_exact_book_edition_names_documented) ... ok
+
+----------------------------------------------------------------------
+Ran 20 tests in 0.016s
+
+OK

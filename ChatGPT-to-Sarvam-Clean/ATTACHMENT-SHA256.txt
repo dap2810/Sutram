@@ -1,0 +1,2 @@
+# Patch-only chat attachment; not a full project or installer.
+96835a1cc050d9df04770cd90a15b8d2ec00ff183247e382c1bab655b24fb31f  SUTRAM-CLEAN-PROJECT-FIXES.zip

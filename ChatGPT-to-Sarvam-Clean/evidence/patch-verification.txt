@@ -1,0 +1,7 @@
+SCOPE: reconstructed nine-file captured source slice, NOT the full archive.
+git diff --cached --check: PASS
+git apply --check SOURCE-REVIEW.patch: PASS
+git apply SOURCE-REVIEW.patch: PASS
+All 8 changed/new file SHA-256 values match the executed work files: PASS
+All captured untouched files preserved byte-for-byte: PASS
+Excluded archive utility and dependent test absent: PASS

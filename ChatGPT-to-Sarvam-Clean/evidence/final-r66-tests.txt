@@ -1,0 +1,26 @@
+test_builtin_capacity (test_prepare_review.PackTests.test_builtin_capacity) ... ok
+test_counts_and_uniqueness (test_prepare_review.PackTests.test_counts_and_uniqueness) ... ok
+test_explicit_abbreviations (test_prepare_review.PackTests.test_explicit_abbreviations) ... ok
+test_gujarati_collision_stays_unreserved (test_prepare_review.PackTests.test_gujarati_collision_stays_unreserved) ... ok
+test_previous_keywords_preserved (test_prepare_review.PackTests.test_previous_keywords_preserved) ... ok
+test_all_eight_anchors_apply (test_prepare_review.PrepareTests.test_all_eight_anchors_apply) ... ok
+test_byte_round_trip_on_explicit_mock_blob (test_prepare_review.PrepareTests.test_byte_round_trip_on_explicit_mock_blob) ... ok
+test_each_duplicate_anchor_fails (test_prepare_review.PrepareTests.test_each_duplicate_anchor_fails) ... ok
+test_each_missing_anchor_fails (test_prepare_review.PrepareTests.test_each_missing_anchor_fails) ... ok
+test_identifier_write_pointer_preserved (test_prepare_review.PrepareTests.test_identifier_write_pointer_preserved) ... ok
+test_main_rejects_existing_outputs (test_prepare_review.PrepareTests.test_main_rejects_existing_outputs) ... usage: r66 [-h] [--source SOURCE] --output OUTPUT --patch-output PATCH_OUTPUT
+r66: error: output already exists; use new paths, never overwrite source
+ok
+test_main_rejects_overwriting_source (test_prepare_review.PrepareTests.test_main_rejects_overwriting_source) ... usage: r66 [-h] [--source SOURCE] --output OUTPUT --patch-output PATCH_OUTPUT
+r66: error: source, output and patch must be distinct paths
+ok
+test_numeric_priority_before_identifier (test_prepare_review.PrepareTests.test_numeric_priority_before_identifier) ... ok
+test_reapplication_fails (test_prepare_review.PrepareTests.test_reapplication_fails) ... ok
+test_source_not_rewritten_or_fullwidth_decimal_invented (test_prepare_review.PrepareTests.test_source_not_rewritten_or_fullwidth_decimal_invented) ... ok
+test_unrelated_text_preserved (test_prepare_review.PrepareTests.test_unrelated_text_preserved) ... ok
+test_wrong_production_blob_fails (test_prepare_review.PrepareTests.test_wrong_production_blob_fails) ... ok
+
+----------------------------------------------------------------------
+Ran 17 tests in 0.005s
+
+OK
