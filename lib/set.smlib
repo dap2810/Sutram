@@ -59,6 +59,42 @@ prakriya set_size(s) {
     pratiyati map_size(s)
 }
 
+# set_sym_diff(a, cap, b, bcap, out) — add every element that is in
+# exactly one of a, b into out (fresh, empty, capacity >= cap + bcap
+# for the worst case, disjoint sets). (a - b) union (b - a).
+# Returns set_size(out). Before, the caller wrote two
+# set_difference calls into two scratch sets plus a set_union at
+# every call site.
+prakriya set_sym_diff(a, cap, b, bcap, out) {
+    vitti ocap = out[0]
+    vitti tmpa = nirmmita(cap * 33 + 1)
+    vitti tmpb = nirmmita(bcap * 33 + 1)
+    vitti nka = map_keys_bytes(a, tmpa)
+    vitti nkb = map_keys_bytes(b, tmpb)
+    vitti pos = 0
+    vitti i = 0
+    vitti seglen = 0
+    yavat (i < nka) {
+        seglen = char_at(tmpa, pos)
+        yadi (map_contains(b, bcap, tmpa + pos + 1, seglen) == 0) {
+            map_put(out, ocap, tmpa + pos + 1, seglen, 1)
+        }
+        pos = pos + 1 + seglen
+        i = i + 1
+    }
+    pos = 0
+    i = 0
+    yavat (i < nkb) {
+        seglen = char_at(tmpb, pos)
+        yadi (map_contains(a, cap, tmpb + pos + 1, seglen) == 0) {
+            map_put(out, ocap, tmpb + pos + 1, seglen, 1)
+        }
+        pos = pos + 1 + seglen
+        i = i + 1
+    }
+    pratiyati map_size(out)
+}
+
 # set_union(a, cap, b, bcap, out) — add every element of a and of b into
 # out (fresh, empty, capacity >= cap + bcap). Returns set_size(out).
 # R17: iteration is map_keys_bytes, whose packed-byte segments go
