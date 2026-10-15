@@ -117,7 +117,7 @@ Windows target:
 | `examples/` | 178 programs with expected output |
 | `tests/` | regression suite and golden files |
 | `tools/` | benchmarks, codegen gates, verification |
-| `docs/` | reference, guides, generated HTML |
+| `docs/` | reference, guides, generated HTML — incl. **`sutram-design-parameters.html`**, the 19 design requirements with honest status |
 | `books/` | the six book editions |
 | `windows/` | Windows GUI, installer, build scripts |
 | `ide/` | terminal IDE and Linux X11 GUI |
