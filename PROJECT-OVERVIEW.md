@@ -52,9 +52,9 @@ UAC elevation, no HKLM, no services, no disabling of OS security), and
 | Path | What |
 |---|---|
 | `src/sutram_compiler.asm` | **the entire compiler**, one file, ~15k lines |
-| `lib/` | standard library — 12 modules with code, 103 functions (`.smlib`) |
-| `lang/` | 10 language packs, one per Indian language |
-| `examples/` | 178 programs, each with expected output and exit code |
+| `lib/` | standard library — 21 modules with code, 278 functions (`.smlib`) |
+| `lang/` | 11 language packs, one per Indian language |
+| `examples/` | 216 programs, each with expected output and exit code |
 | `tests/` | regression suite, golden files, per-host expectations |
 | `tools/` | benchmarks, codegen gates, protocol tests, verification helpers |
 | `docs/` | reference, guides, and generated HTML pages |
@@ -94,7 +94,7 @@ ld -mi386pep --entry=_start -o win/sutram.exe sutram.obj
 ## 5. Running the tests
 
 ```
-python3 tests/run_tests.py          # 178/178 expected
+python3 tests/run_tests.py          # 187 pass, 4 no-expectation
 python3 tools/codegen_gate.py       # 12/12 expected
 python3 tools/test_lang_packs.py    # 30/30 expected
 python3 tools/test_ide_undo.py      # 12/12 expected
@@ -134,9 +134,9 @@ Loaded with `sutram --lang tamil` or `SUTRAM_LANG=tamil`.
 | Compiler SHA-256 | `6036dd1cef3bc7f257a5fc7e5244b0a5dda8cc7b38ab78d8d2c4ff6d8b8516d2` |
 | Regression suite | **186/186** |
 | Code-generation gates | **12/12** |
-| Language packs | **30/30** |
-| Examples | 186 |
-| Library modules | 12 with code (103 functions); 3 more are comment-only sketches |
+| Language packs | **33/33** |
+| Examples | 216 |
+| Library modules | 21 with code (278 functions) |
 | Books | 6 editions, kept in step with the language |
 
 ## 8. What is proven, and what is not
