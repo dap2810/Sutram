@@ -8426,8 +8426,10 @@ push r12                  ; save r12 (parse_func_block uses it)
     call alloc_ast
     mov qword [rax], AST_BINOP
 %ifdef SUTRAM_R65_TRAP_INT
+    push rcx                  ; unary-minus builder retains AST_NUM in RCX
     mov rcx,[rel cur_line]
     mov [rax+32],rcx          ; R65: parser-time BINOP source line
+    pop rcx
 %endif
     mov [rax+8], r12          ; op
     mov [rax+16], rbx         ; left = target
@@ -8452,8 +8454,10 @@ push r12                  ; save r12 (parse_func_block uses it)
     call alloc_ast            ; rax = binop node (rbx preserved)
     mov qword [rax], AST_BINOP
 %ifdef SUTRAM_R65_TRAP_INT
+    push rcx                  ; unary-minus builder retains AST_NUM in RCX
     mov rcx,[rel cur_line]
     mov [rax+32],rcx          ; R65: parser-time BINOP source line
+    pop rcx
 %endif
     mov [rax+8], r12          ; op
     mov [rax+16], rbx         ; left = target
@@ -8582,8 +8586,10 @@ parse_lor:
     pop rbx
     mov qword [rax], AST_BINOP
 %ifdef SUTRAM_R65_TRAP_INT
+    push rcx                  ; unary-minus builder retains AST_NUM in RCX
     mov rcx,[rel cur_line]
     mov [rax+32],rcx          ; R65: parser-time BINOP source line
+    pop rcx
 %endif
     mov [rax+8], r14
     mov [rax+16], rbx
@@ -8629,8 +8635,10 @@ parse_land:
     pop rbx
     mov qword [rax], AST_BINOP
 %ifdef SUTRAM_R65_TRAP_INT
+    push rcx                  ; unary-minus builder retains AST_NUM in RCX
     mov rcx,[rel cur_line]
     mov [rax+32],rcx          ; R65: parser-time BINOP source line
+    pop rcx
 %endif
     mov [rax+8], r14
     mov [rax+16], rbx
@@ -8704,8 +8712,10 @@ parse_cmp:
     pop rbx
     mov qword [rax], AST_BINOP
 %ifdef SUTRAM_R65_TRAP_INT
+    push rcx                  ; unary-minus builder retains AST_NUM in RCX
     mov rcx,[rel cur_line]
     mov [rax+32],rcx          ; R65: parser-time BINOP source line
+    pop rcx
 %endif
     mov [rax+8], r14
     mov [rax+16], rbx
@@ -8754,8 +8764,10 @@ parse_bitor:
     pop rbx
     mov qword [rax], AST_BINOP
 %ifdef SUTRAM_R65_TRAP_INT
+    push rcx                  ; unary-minus builder retains AST_NUM in RCX
     mov rcx,[rel cur_line]
     mov [rax+32],rcx          ; R65: parser-time BINOP source line
+    pop rcx
 %endif
     mov [rax+8], r14
     mov [rax+16], rbx
@@ -8804,8 +8816,10 @@ parse_bitxor:
     pop rbx
     mov qword [rax], AST_BINOP
 %ifdef SUTRAM_R65_TRAP_INT
+    push rcx                  ; unary-minus builder retains AST_NUM in RCX
     mov rcx,[rel cur_line]
     mov [rax+32],rcx          ; R65: parser-time BINOP source line
+    pop rcx
 %endif
     mov [rax+8], r14
     mov [rax+16], rbx
@@ -8854,8 +8868,10 @@ parse_bitand:
     pop rbx
     mov qword [rax], AST_BINOP
 %ifdef SUTRAM_R65_TRAP_INT
+    push rcx                  ; unary-minus builder retains AST_NUM in RCX
     mov rcx,[rel cur_line]
     mov [rax+32],rcx          ; R65: parser-time BINOP source line
+    pop rcx
 %endif
     mov [rax+8], r14
     mov [rax+16], rbx
@@ -8910,8 +8926,10 @@ parse_shift:
     pop rbx
     mov qword [rax], AST_BINOP
 %ifdef SUTRAM_R65_TRAP_INT
+    push rcx                  ; unary-minus builder retains AST_NUM in RCX
     mov rcx,[rel cur_line]
     mov [rax+32],rcx          ; R65: parser-time BINOP source line
+    pop rcx
 %endif
     mov [rax+8], r14
     mov [rax+16], rbx
@@ -8963,8 +8981,10 @@ parse_add:
     pop rbx
     mov qword [rax], AST_BINOP
 %ifdef SUTRAM_R65_TRAP_INT
+    push rcx                  ; unary-minus builder retains AST_NUM in RCX
     mov rcx,[rel cur_line]
     mov [rax+32],rcx          ; R65: parser-time BINOP source line
+    pop rcx
 %endif
     mov [rax+8], r14
     mov [rax+16], rbx
@@ -9027,8 +9047,10 @@ parse_mul:
     pop rbx
     mov qword [rax], AST_BINOP
 %ifdef SUTRAM_R65_TRAP_INT
+    push rcx                  ; unary-minus builder retains AST_NUM in RCX
     mov rcx,[rel cur_line]
     mov [rax+32],rcx          ; R65: parser-time BINOP source line
+    pop rcx
 %endif
     mov [rax+8], r14
     mov [rax+16], rbx
@@ -9049,6 +9071,11 @@ parse_mul:
 ; fold_const(rdi = BINOP node) -> rax = folded AST_NUM or original node
 ; If both operands are AST_NUM, compute the result at compile time
 fold_const:
+%ifdef SUTRAM_R65_TRAP_INT
+    ; Parser literal folding could otherwise elide a runtime overflow trap.
+    mov rax,rdi
+    ret
+%endif
     push rbx
     push r12
     push r13
@@ -9321,8 +9348,10 @@ parse_primary:
     pop rdx                   ; rdx = expr (right)
     mov qword [rax], AST_BINOP
 %ifdef SUTRAM_R65_TRAP_INT
+    push rcx                  ; unary-minus builder retains AST_NUM in RCX
     mov rcx,[rel cur_line]
     mov [rax+32],rcx          ; R65: parser-time BINOP source line
+    pop rcx
 %endif
     mov qword [rax+8], OP_SUB
     mov [rax+16], rcx         ; left = 0
