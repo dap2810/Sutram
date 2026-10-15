@@ -224,12 +224,29 @@ language rules, libraries and tools that agree with each other.</p>
   <em>not</em> the bounded, deterministic compile-time evaluation this calls for.</div>
 </div>
 
+<div class="req done animate" style="--i:12">
+  <div class="reqhead"><span class="num">09</span><h3>Multilingual and native-script programming</h3>
+    <span class="pill done">Strong</span></div>
+  <p>One language whose meaning is fixed, spelled in many scripts. A program's behaviour must not change
+  because its keywords are written in Devanagari rather than Latin — the canonical meaning sits beneath
+  every spelling, and a library written in one pack is usable from another without translation.
+  Identifiers, strings and comments are preserved; only keyword spellings change.</p>
+  <div class="aim"><b>Why this is a paradigm, not a feature:</b> every other language on this list can be
+  described without naming a natural language. Sutram cannot. Sanskrit is the keyword core and the
+  mathematics library is built on the Indian tradition, so the language's identity and its grammar are
+  the same decision. <b>Today:</b> this is the project's strongest and most distinctive work —
+  <b>11 packs</b> over one canonical meaning, native-script digits, the danda <code>।</code> and double
+  danda <code>॥</code>, a Sanskrit-first keyword core, and six book editions. <b>The gap:</b> Unicode
+  normalisation and ambiguous-identifier diagnostics are not implemented, and Devanagari glyph shaping is
+  not done at the font level.</div>
+</div>
+
 <h2 class="sec animate" style="--i:12">B · Capabilities beyond paradigms</h2>
 <p class="secsub">Not additional paradigms — what would make the language safe, practical, portable and
 suitable for serious development.</p>
 
 <div class="req part animate" style="--i:13">
-  <div class="reqhead"><span class="num">09</span><h3>Strong static typing with inference</h3>
+  <div class="reqhead"><span class="num">10</span><h3>Strong static typing with inference</h3>
     <span class="pill part">Partial</span></div>
   <p>Types checked before execution, with obvious local types inferred. Clear type contracts at public
   library boundaries. Integer sizes, conversions, overflow, initialisation and comparison defined
@@ -241,7 +258,7 @@ suitable for serious development.</p>
 </div>
 
 <div class="req none animate" style="--i:14">
-  <div class="reqhead"><span class="num">10</span><h3>A coherent memory and resource model</h3>
+  <div class="reqhead"><span class="num">11</span><h3>A coherent memory and resource model</h3>
     <span class="pill none">Not started</span></div>
   <p>Ownership, borrowing, deterministic cleanup for memory, files, locks and other resources. Common
   cases easy; advanced lifetime relationships only when needed. Raw pointers and unchecked operations
@@ -253,7 +270,7 @@ suitable for serious development.</p>
 </div>
 
 <div class="req part animate" style="--i:15">
-  <div class="reqhead"><span class="num">11</span><h3>Explicit, convenient error handling</h3>
+  <div class="reqhead"><span class="num">12</span><h3>Explicit, convenient error handling</h3>
     <span class="pill part">Partial</span></div>
   <p>“A value may be absent” represented explicitly. Recoverable success or failure as a result type.
   Concise error propagation and automatic resource cleanup. Recoverable errors separated from
@@ -264,7 +281,7 @@ suitable for serious development.</p>
 </div>
 
 <div class="req part animate" style="--i:16">
-  <div class="reqhead"><span class="num">12</span><h3>Genuine freestanding capability</h3>
+  <div class="reqhead"><span class="num">13</span><h3>Genuine freestanding capability</h3>
     <span class="pill part">Partial</span></div>
   <p>A core library that does not assume an OS, filesystem, network or heap allocator exists. Custom entry
   points, memory layout, sections, relocations and startup code. Explicit pointer operations, hardware
@@ -279,7 +296,7 @@ suitable for serious development.</p>
 </div>
 
 <div class="req part animate" style="--i:17">
-  <div class="reqhead"><span class="num">13</span><h3>One language with layered libraries</h3>
+  <div class="reqhead"><span class="num">14</span><h3>One language with layered libraries</h3>
     <span class="pill part">Partial</span></div>
   <p>Conceptual layers — <b>core</b> (no OS or allocator dependency), <b>allocation</b> (dynamic
   collections when an allocator exists), <b>standard/application</b> (files, networking, threads). The
@@ -289,7 +306,7 @@ suitable for serious development.</p>
 </div>
 
 <div class="req part animate" style="--i:18">
-  <div class="reqhead"><span class="num">14</span><h3>Portability designed into the compiler</h3>
+  <div class="reqhead"><span class="num">15</span><h3>Portability designed into the compiler</h3>
     <span class="pill part">Partial</span></div>
   <p>Separate parsing, type checking, internal program representation, machine-code generation and OS
   integration. Track <em>source portability</em>, <em>where the compiler runs</em>, and <em>which targets
@@ -302,7 +319,7 @@ suitable for serious development.</p>
 </div>
 
 <div class="req part animate" style="--i:19">
-  <div class="reqhead"><span class="num">15</span><h3>Real modules, packages and separate compilation</h3>
+  <div class="reqhead"><span class="num">16</span><h3>Real modules, packages and separate compilation</h3>
     <span class="pill part">Partial</span></div>
   <p>Namespaces, explicit imports, public/private visibility, clear dependency boundaries. Modules compiled
   independently rather than relying only on textual inclusion. Versioned packages, dependency lockfiles,
@@ -313,7 +330,7 @@ suitable for serious development.</p>
 </div>
 
 <div class="req done animate" style="--i:20">
-  <div class="reqhead"><span class="num">16</span><h3>Multilingual programming without splitting the ecosystem</h3>
+  <div class="reqhead"><span class="num">17</span><h3>Language packs and the multilingual toolchain</h3>
     <span class="pill done">Strong</span></div>
   <p>One canonical language meaning beneath Sanskrit and other supported keyword spellings. Versioned
   language packs defining how each source file selects its language. Packages usable across packs without
@@ -326,7 +343,7 @@ suitable for serious development.</p>
 </div>
 
 <div class="req part animate" style="--i:21">
-  <div class="reqhead"><span class="num">17</span><h3>Excellent developer tools</h3>
+  <div class="reqhead"><span class="num">18</span><h3>Excellent developer tools</h3>
     <span class="pill part">Partial</span></div>
   <p>One consistent workflow for creating, building, running, testing, formatting and documenting
   projects. Editor support for completion, navigation, renaming and diagnostics. Debug information, stack
@@ -338,7 +355,7 @@ suitable for serious development.</p>
 </div>
 
 <div class="req none animate" style="--i:22">
-  <div class="reqhead"><span class="num">18</span><h3>Interoperability and a useful ecosystem</h3>
+  <div class="reqhead"><span class="num">19</span><h3>Interoperability and a useful ecosystem</h3>
     <span class="pill none">Not started</span></div>
   <p>A documented C-compatible foreign-function interface first. Optional C++ wrappers and Python
   bindings later, never mandatory for basic use. Reliable libraries for collections, text, files,
@@ -350,7 +367,7 @@ suitable for serious development.</p>
 </div>
 
 <div class="req part animate" style="--i:23">
-  <div class="reqhead"><span class="num">19</span><h3>A precise specification and evidence-based gates</h3>
+  <div class="reqhead"><span class="num">20</span><h3>A precise specification and evidence-based gates</h3>
     <span class="pill part">Partial</span></div>
   <p>Evaluation order, memory rules, numeric behaviour, Unicode behaviour and error semantics specified.
   Both valid programs and invalid programs that must be rejected are tested. Regression tests, fuzzing,
@@ -387,15 +404,16 @@ later.</p>
 <h2 class="sec animate" style="--i:26">Status at a glance</h2>
 <table class="animate" style="--i:27">
   <tr><th>Status</th><th>Count</th><th>Which</th></tr>
-  <tr><td class="mono" style="color:var(--green)">Implemented</td><td class="mono">2</td>
-    <td>01 procedural core · 16 multilingual (strong)</td></tr>
+  <tr><td class="mono" style="color:var(--green)">Implemented</td><td class="mono">3</td>
+    <td>01 procedural core · 09 multilingual &amp; native-script (strong) ·
+    17 language packs &amp; toolchain</td></tr>
   <tr><td class="mono" style="color:var(--gold)">Partial</td><td class="mono">12</td>
-    <td>02 functional · 04 OO/composition · 05 data-oriented · 08 metaprogramming · 09 typing ·
-    11 error handling · 12 freestanding · 13 library layers · 14 portability · 15 modules ·
-    17 tools · 19 specification &amp; gates</td></tr>
+    <td>02 functional · 04 OO/composition · 05 data-oriented · 08 metaprogramming · 10 typing ·
+    12 error handling · 13 freestanding · 14 library layers · 15 portability · 16 modules ·
+    18 tools · 20 specification &amp; gates</td></tr>
   <tr><td class="mono" style="color:var(--red)">Not started</td><td class="mono">5</td>
-    <td>03 generics · 06 concurrency · 07 async · 10 memory &amp; resource model ·
-    18 interoperability</td></tr>
+    <td>03 generics · 06 concurrency · 07 async · 11 memory &amp; resource model ·
+    19 interoperability</td></tr>
 </table>
 
 <footer class="animate" style="--i:28">
