@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sutram — Project Status</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --display:'Instrument Serif',Georgia,serif;--body:'IBM Plex Sans',system-ui,sans-serif;
+    --mono:'IBM Plex Mono','SF Mono',Consolas,monospace;
+    --bg:#f7f6f2;--surface:#fff;--surface2:#f2f0ea;--elevated:#fffdf8;
+    --border:rgba(20,25,40,.08);--border-bright:rgba(20,25,40,.16);
+    --text:#14192b;--dim:#6b7280;--navy:#1e3a5f;--navy-dim:rgba(30,58,95,.07);
+    --gold:#b8860b;--gold-dim:rgba(184,134,11,.10);--green:#15803d;--green-dim:rgba(21,128,61,.09);
+    --red:#b91c1c;--red-dim:rgba(185,28,28,.08);
+  }
+  @media(prefers-color-scheme:dark){:root{
+    --bg:#0d1117;--surface:#161b22;--surface2:#1c232c;--elevated:#1b232e;
+    --border:rgba(255,255,255,.07);--border-bright:rgba(255,255,255,.14);
+    --text:#e6edf3;--dim:#8b949e;--navy:#7aa5d8;--navy-dim:rgba(122,165,216,.10);
+    --gold:#d4a73a;--gold-dim:rgba(212,167,58,.12);--green:#4ade80;--green-dim:rgba(74,222,128,.10);
+    --red:#f87171;--red-dim:rgba(248,113,113,.10);
+  }}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);
+    background-image:radial-gradient(ellipse at 15% 0%,var(--gold-dim) 0%,transparent 45%),
+                     radial-gradient(ellipse at 90% 100%,var(--navy-dim) 0%,transparent 45%);
+    color:var(--text);font-family:var(--body);padding:48px 32px 72px;min-height:100vh;-webkit-font-smoothing:antialiased}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+  .animate{animation:fadeUp .45s ease-out both;animation-delay:calc(var(--i,0)*.04s)}
+  @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-delay:0ms!important}}
+  .wrap{max-width:980px;margin:0 auto}
+
+  header{border-bottom:2px solid var(--border-bright);padding-bottom:26px;margin-bottom:30px}
+  .eyebrow{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;
+    color:var(--gold);display:flex;align-items:center;gap:9px;margin-bottom:14px}
+  .eyebrow::before{content:'';width:26px;height:2px;background:var(--gold)}
+  h1{font-family:var(--display);font-weight:400;font-size:52px;line-height:1.05;letter-spacing:-.5px;margin-bottom:12px}
+  h1 .deva{color:var(--navy);font-size:40px}
+  .lede{font-size:16.5px;line-height:1.7;color:var(--dim);max-width:760px}
+  .lede strong{color:var(--text);font-weight:600}
+  .stamp{font-family:var(--mono);font-size:11.5px;color:var(--dim);margin-top:14px}
+
+  h2.sec{font-family:var(--display);font-weight:400;font-size:31px;margin:40px 0 6px}
+  .secsub{font-size:14.5px;color:var(--dim);margin-bottom:18px;max-width:760px;line-height:1.6}
+
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:20px 0 8px}
+  .kpi{background:var(--elevated);border:1px solid var(--border);border-radius:12px;padding:16px 18px;
+    box-shadow:0 1px 3px rgba(20,25,40,.04)}
+  .kpi b{display:block;font-family:var(--mono);font-size:26px;font-weight:600;color:var(--navy);line-height:1.15}
+  .kpi b.g{color:var(--green)} .kpi b.o{color:var(--gold)} .kpi b.r{color:var(--red)}
+  .kpi span{display:block;font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.7px;
+    text-transform:uppercase;color:var(--dim);margin-top:5px}
+
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px;background:var(--elevated);
+    border:1px solid var(--border);border-radius:10px;overflow:hidden}
+  th{background:var(--surface2);text-align:left;padding:10px 14px;font-family:var(--mono);font-size:11px;
+    font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--dim);border-bottom:1px solid var(--border)}
+  td{padding:10px 14px;border-bottom:1px solid var(--border);line-height:1.55;vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  td.mono{font-family:var(--mono);font-size:12.5px}
+  td.ok{color:var(--green);font-weight:600} td.warn{color:var(--gold);font-weight:600} td.bad{color:var(--red);font-weight:600}
+
+  .bar{height:9px;border-radius:6px;background:var(--surface2);overflow:hidden;margin-top:6px}
+  .bar i{display:block;height:100%;border-radius:6px}
+  .bar i.g{background:var(--green)} .bar i.o{background:var(--gold)} .bar i.r{background:var(--red)}
+
+  .note{background:var(--elevated);border:1px solid var(--border);border-left:3px solid var(--navy);
+    border-radius:12px;padding:18px 22px;margin:18px 0;font-size:14.5px;line-height:1.7}
+  .note.warn{border-left-color:var(--red);background:var(--red-dim)}
+  .note b{color:var(--navy)} .note.warn b{color:var(--red)}
+  .note ul{margin:9px 0 0 20px} .note li{margin-bottom:6px;line-height:1.6}
+
+  .rounds{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+  @media(max-width:720px){.rounds{grid-template-columns:1fr}}
+  .round{background:var(--elevated);border:1px solid var(--border);border-radius:12px;padding:18px 20px}
+  .round h4{font-family:var(--display);font-weight:400;font-size:20px;margin-bottom:4px}
+  .round .tag{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;
+    color:var(--gold);display:block;margin-bottom:10px}
+  .round p{font-size:13.5px;line-height:1.65;color:var(--dim)}
+  .round p b{color:var(--text)}
+
+  footer{margin-top:50px;padding-top:22px;border-top:2px solid var(--border-bright);
+    font-family:var(--mono);font-size:11.5px;color:var(--dim);line-height:1.9}
+  footer b{color:var(--text)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="animate">
+  <div class="eyebrow">Project status · measured, not remembered</div>
+  <h1>Sutram <span class="deva">॥ सूत्रम् ॥</span><br>How the Project Is Doing</h1>
+  <p class="lede">A programming language whose keywords are Sanskrit, compiled by <strong>one hand-written
+  NASM file</strong> to native machine code — no runtime, no C, no toolchain needed by the end user.
+  This page reports the state as <strong>built and run</strong>, not as claimed.</p>
+  <div class="stamp">Snapshot: 2026-10-16 · CHANGELOG v151 · 127 recorded versions</div>
+</header>
+
+<h2 class="sec animate" style="--i:1">The numbers, as measured</h2>
+<p class="secsub">Every figure below comes from building the compiler and running the gates, not from a
+previous report.</p>
+
+<div class="kpis animate" style="--i:2">
+  <div class="kpi"><b class="g">187</b><span>tests passing</span></div>
+  <div class="kpi"><b>180</b><span>library proofs</span></div>
+  <div class="kpi"><b>72</b><span>property proofs</span></div>
+  <div class="kpi"><b>11</b><span>language packs</span></div>
+  <div class="kpi"><b>21</b><span>library modules</span></div>
+  <div class="kpi"><b>281</b><span>library functions</span></div>
+  <div class="kpi"><b>202</b><span>example programs</span></div>
+  <div class="kpi"><b>22</b><span>doc pages</span></div>
+  <div class="kpi"><b>16</b><span>GUI tests</span></div>
+  <div class="kpi"><b>1,782</b><span>files in repo</span></div>
+</div>
+
+<h2 class="sec animate" style="--i:3">The gates, and whether they pass</h2>
+<table class="animate" style="--i:4">
+  <tr><th>Gate</th><th>What it checks</th><th>Result</th></tr>
+  <tr><td class="mono">tests/run_tests.py</td><td>the regression corpus, goldens and exit codes</td>
+    <td class="ok">187 pass · 4 no-expectation</td></tr>
+  <tr><td class="mono">codegen_gate.py</td><td>the shape of generated machine code</td>
+    <td class="ok">12 / 12</td></tr>
+  <tr><td class="mono">test_lang_packs.py</td><td>every pack, every keyword group</td>
+    <td class="ok">33 / 33</td></tr>
+  <tr><td class="mono">module_graph</td><td>the library's dependency graph</td>
+    <td class="ok">OK</td></tr>
+  <tr><td class="mono">proof_lib.py</td><td>library behaviour against stated contracts</td>
+    <td class="ok">180 / 180</td></tr>
+  <tr><td class="mono">proof_props.py</td><td>properties that must hold across inputs</td>
+    <td class="ok">72 / 72</td></tr>
+  <tr><td class="mono">test_x11_*.py</td><td>the IDE, over the real X11 protocol</td>
+    <td class="ok">16 / 16</td></tr>
+  <tr><td class="mono">r66 / r67 / r68 suites</td><td>the Indic lexer, stack pairs, diagnostics</td>
+    <td class="ok">24 pass (15 skipped)</td></tr>
+</table>
+
+<h2 class="sec animate" style="--i:5">What is built and working</h2>
+<table class="animate" style="--i:6">
+  <tr><th>Component</th><th>State</th><th>Detail</th></tr>
+  <tr><td>Compiler (Linux x86-64)</td><td class="ok">Working</td>
+    <td class="mono">545,722 B source → 190,144 B binary · native ELF, no runtime, no libc</td></tr>
+  <tr><td>Compiler (Windows x86-64)</td><td class="bad">Unverified</td>
+    <td>PE32+ sources exist. <b>Never executed by this project.</b> The one gate nothing has passed.</td></tr>
+  <tr><td>IDE</td><td class="ok">Working (Linux)</td>
+    <td class="mono">37,464 B · 7 menus, syntax colour, gutter line numbers, find, clipboard, file open</td></tr>
+  <tr><td>Language packs</td><td class="ok">Strong</td>
+    <td>Sanskrit, Hindi, Bengali, Gujarati, Kannada, Malayalam, Marathi, Odia, Punjabi, Tamil, Telugu</td></tr>
+  <tr><td>Standard library</td><td class="ok">Working</td>
+    <td class="mono">21 modules · 281 functions · checked and saturating arithmetic, collections, text, fmt</td></tr>
+  <tr><td>Installer</td><td class="warn">Source only</td>
+    <td>Ships prebuilt binaries so end users need no toolchain; installer itself untested on Windows</td></tr>
+</table>
+
+<h2 class="sec animate" style="--i:7">The design charter — where we stand</h2>
+<p class="secsub">The project now has a written charter of <b>20 requirements</b>. Status is measured
+against the compiler, not aspiration.</p>
+
+<div class="animate" style="--i:8">
+  <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:6px">
+    <div style="flex:1;min-width:190px"><span style="font-family:var(--mono);font-size:12px;color:var(--green)">Implemented · 3</span>
+      <div class="bar"><i class="g" style="width:15%"></i></div></div>
+    <div style="flex:1;min-width:190px"><span style="font-family:var(--mono);font-size:12px;color:var(--gold)">Partial · 12</span>
+      <div class="bar"><i class="o" style="width:60%"></i></div></div>
+    <div style="flex:1;min-width:190px"><span style="font-family:var(--mono);font-size:12px;color:var(--red)">Not started · 5</span>
+      <div class="bar"><i class="r" style="width:25%"></i></div></div>
+  </div>
+</div>
+
+<table class="animate" style="--i:9">
+  <tr><th>Status</th><th>Requirement</th><th>The honest gap</th></tr>
+  <tr><td class="ok">Implemented</td><td>Procedural core</td>
+    <td>The language's strongest part — variables, loops, functions, native output</td></tr>
+  <tr><td class="ok">Implemented</td><td>Multilingual &amp; native-script programming</td>
+    <td>11 packs, one canonical meaning. <b>Gap:</b> no Unicode normalisation or glyph shaping</td></tr>
+  <tr><td class="ok">Implemented</td><td>Language packs &amp; toolchain</td>
+    <td>Pack resolution works; versioning and file-level selection not formalised</td></tr>
+  <tr><td class="warn">Partial</td><td>Functional, OO, data-oriented, metaprogramming</td>
+    <td>No first-class functions, closures, methods, traits, slices, SIMD, or bounded compile-time eval</td></tr>
+  <tr><td class="warn">Partial</td><td>Typing, errors, freestanding, layers, portability, modules, tools, spec</td>
+    <td>Each is real but incomplete — the sharpest is <b>modules: <code>ayojan</code> is textual inclusion</b></td></tr>
+  <tr><td class="bad">Not started</td><td>Generics · Concurrency · Async</td>
+    <td>No generics, no threads/tasks/channels, no event or async facility</td></tr>
+  <tr><td class="bad">Not started</td><td><b>Memory &amp; resource model</b></td>
+    <td>No ownership, no borrow checking, no <code>unsafe</code> boundary. <b>Sutram does not claim memory
+    safety, and must not until this exists and is tested.</b></td></tr>
+  <tr><td class="bad">Not started</td><td>Interoperability (FFI)</td>
+    <td>No C FFI. The library is self-contained — a foundation, not an ecosystem</td></tr>
+</table>
+
+<h2 class="sec animate" style="--i:10">How the work gets done</h2>
+<p class="secsub">Sutram is built by one agent working its own stream, with two independent partners
+taking heavy rounds through the repository.</p>
+<div class="rounds animate" style="--i:11">
+  <div class="round"><span class="tag">ChatGPT · compiler &amp; systems</span>
+    <h4>Source rounds, verified before merge</h4>
+    <p>Delivers compiler work as branch sources plus a preparation tool that pins the exact input blob.
+    <b>R68</b> added an Indic lexer, a UTF-8 precheck and abbreviation-value diagnostics — verified here by
+    building the entry wrapper and firing the diagnostics. <b>ROUND-70 open:</b> write the specification,
+    a negative corpus, and the memory model <em>before</em> it is claimed.</p></div>
+  <div class="round"><span class="tag">Muse · library &amp; proofs</span>
+    <h4>Patches with a checksum block</h4>
+    <p>Delivers the standard library as patches. <b>R26</b> fixed three real numeric bugs and pushed
+    proofs to 180 / 72 — and flagged its own file overlap so the sync could be checked.
+    <b>ROUND-28 open:</b> mark each module's layer and <em>verify</em> the claim, state the error contract,
+    tabulate the numeric contract.</p></div>
+</div>
+
+<h2 class="sec animate" style="--i:12">What is open right now</h2>
+<table class="animate" style="--i:13">
+  <tr><th>Item</th><th>State</th></tr>
+  <tr><td><b>ROUND-70</b> → ChatGPT — specification, negative corpus, memory model, freestanding gap list</td><td class="warn">Issued, awaiting</td></tr>
+  <tr><td><b>ROUND-28</b> → Muse — library layers, error contract, numeric contract</td><td class="warn">Issued, awaiting</td></tr>
+  <tr><td><b>Clean-project audit</b> → ChatGPT — whole-project build, audit and fix</td><td class="warn">Issued, awaiting</td></tr>
+  <tr><td><b>Windows acceptance</b> — the one gate nobody has run</td><td class="bad">Blocked on a Windows machine</td></tr>
+  <tr><td>R66/R67 pack-count mismatch — a test asserting 45 where R67 left 44</td><td class="warn">Named, handed to the clean-project audit</td></tr>
+</table>
+
+<div class="note warn animate" style="--i:14">
+  <b>The three things this project must not claim.</b>
+  <ul>
+    <li><b>Memory safety</b> — there is no ownership model. The charter says specify the rules before
+      claiming the guarantee, and that has not happened.</li>
+    <li><b>Windows support</b> — the sources exist and are complete-looking, but no run has ever
+      produced a verified executable. "It builds and the headers are right" is not "it works".</li>
+    <li><b>Performance superiority</b> — the compiler emits native code, but no benchmark has shown it
+      faster than anything. Native output is not, by itself, a speed claim.</li>
+  </ul>
+</div>
+
+<div class="note animate" style="--i:15">
+  <b>The standard the project now holds itself to:</b> <em>a verified partial beats a claim.</em>
+  Every partner round is built and run here before it is merged, and every document that states a number
+  is checked against a measurement. Where something is untested, it is labelled untested rather than
+  left to read as done.
+</div>
+
+<footer class="animate" style="--i:16">
+  <b>Sutram — Project Status.</b> Measured 2026-10-16 by building the compiler and running every gate.<br>
+  <b>187</b> tests · <b>180</b> library proofs · <b>72</b> property proofs · <b>33/33</b> pack checks ·
+  <b>12/12</b> codegen · <b>16/16</b> GUI · <b>11</b> packs · <b>21</b> modules / <b>281</b> functions ·
+  <b>202</b> examples · <b>22</b> doc pages · CHANGELOG <b>v151</b>.<br>
+  Constraint that does not change: Sanskrit keyword core · <code>.sm</code> · one pure-NASM compiler
+  source · native machine code · no runtime dependency · no toolchain needed by the end user.
+</footer>
+
+</div>
+</body>
+</html>
