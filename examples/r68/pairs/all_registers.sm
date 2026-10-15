@@ -1,0 +1,18 @@
+mukhya() {
+    nishkriya("50 58") # rax
+    nishkriya("51 59") # rcx
+    nishkriya("52 5A") # rdx
+    nishkriya("53 5B") # rbx
+    nishkriya("55 5D") # rbp
+    nishkriya("56 5E") # rsi
+    nishkriya("57 5F") # rdi
+    nishkriya("41 50 41 58") # r8
+    nishkriya("41 51 41 59") # r9
+    nishkriya("41 52 41 5A") # r10
+    nishkriya("41 53 41 5B") # r11
+    nishkriya("41 54 41 5C") # r12
+    nishkriya("41 55 41 5D") # r13
+    nishkriya("41 56 41 5E") # r14
+    nishkriya("41 57 41 5F") # r15
+    likha(73)
+}
