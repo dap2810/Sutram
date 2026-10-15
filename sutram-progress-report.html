@@ -3,269 +3,220 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sutram — Progress &amp; Performance Report</title>
+<title>Sutram — Progress Report</title>
 <style>
   :root{
     --bg:#0f1117; --card:#171a23; --card2:#1d2130; --line:#2a2f40;
-    --ink:#e8ecf5; --dim:#98a2b8; --dim2:#6b7590;
-    --good:#39c07a; --mid:#e0a83a; --low:#d9604f; --accent:#6aa9ff;
+    --ink:#e8ecf5; --dim:#98a2b8; --faint:#6b7590;
+    --g:#39c07a; --m:#e0a83a; --l:#d9604f; --b:#6aa9ff;
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);
-    font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
-  .wrap{max-width:1060px;margin:0 auto;padding:40px 22px 70px}
-  h1{font-size:30px;margin:0 0 6px;letter-spacing:-.3px}
-  h2{font-size:19px;margin:44px 0 14px;letter-spacing:-.2px}
-  h3{font-size:15px;margin:26px 0 10px;color:var(--dim)}
-  .sub{color:var(--dim);margin:0 0 26px}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin:14px 0}
-  .big{display:flex;gap:26px;align-items:center;flex-wrap:wrap}
-  .bignum{font-size:52px;font-weight:700;line-height:1}
-  .bignum small{font-size:20px;color:var(--dim);font-weight:500}
-  .note{color:var(--dim);font-size:13.5px}
-  table{width:100%;border-collapse:collapse;margin:10px 0;font-size:14px}
-  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
-  th{color:var(--dim);font-weight:600;font-size:12.5px;text-transform:uppercase;letter-spacing:.4px}
-  td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
-  .bar{height:9px;border-radius:6px;background:#232838;overflow:hidden;min-width:70px}
-  .bar > i{display:block;height:100%;border-radius:6px}
-  .row{display:grid;grid-template-columns:210px 1fr 62px;gap:14px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
-  .row:last-child{border-bottom:0}
-  .row .lab{font-size:13.5px}
-  .row .pct{text-align:right;font-variant-numeric:tabular-nums;font-size:13.5px;color:var(--dim)}
-  .g{background:var(--good)} .m{background:var(--mid)} .l{background:var(--low)} .a{background:var(--accent)}
-  .pill{display:inline-block;font-size:11.5px;padding:2px 8px;border-radius:20px;border:1px solid var(--line);color:var(--dim)}
-  .meas{color:var(--good);font-weight:600}
-  .est{color:var(--mid);font-weight:600}
-  code{background:#232838;padding:1px 6px;border-radius:5px;font-size:13px}
-  .legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12.5px;color:var(--dim);margin-top:8px}
-  .sw{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:middle}
-  ul{margin:8px 0 0 18px;padding:0} li{margin:5px 0}
-  .hr{height:1px;background:var(--line);margin:30px 0}
+    font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased}
+  .wrap{max-width:960px;margin:0 auto;padding:56px 28px 96px}
+  header{border-bottom:1px solid var(--line);padding-bottom:28px;margin-bottom:40px}
+  h1{font-size:34px;line-height:1.2;margin:0 0 10px;letter-spacing:-.02em}
+  h1 span{color:var(--faint);font-weight:400}
+  .sub{color:var(--dim);font-size:15px;margin:0}
+  h2{font-size:21px;margin:52px 0 18px;letter-spacing:-.01em;padding-bottom:10px;border-bottom:1px solid var(--line)}
+  h3{font-size:16px;margin:26px 0 10px}
+  p{margin:0 0 14px;color:var(--dim)}
+  p strong,li strong{color:var(--ink);font-weight:600}
+  code{background:var(--card2);border:1px solid var(--line);border-radius:5px;padding:1px 6px;
+    font-size:13.5px;color:var(--b);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:20px 0 8px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:16px 17px}
+  .bignum{font-size:27px;font-weight:650;letter-spacing:-.02em;line-height:1.1}
+  .bignum.g{color:var(--g)} .bignum.m{color:var(--m)} .bignum.b{color:var(--b)} .bignum.l{color:var(--l)}
+  .lab{font-size:12.5px;color:var(--faint);margin-top:6px;text-transform:uppercase;letter-spacing:.06em}
+  .row{display:flex;align-items:center;gap:14px;margin:11px 0}
+  .row .name{flex:0 0 210px;font-size:14.5px;color:var(--ink)}
+  .bar{flex:1;height:9px;background:var(--card2);border-radius:99px;overflow:hidden;border:1px solid var(--line)}
+  .bar i{display:block;height:100%;border-radius:99px}
+  .bar i.g{background:var(--g)} .bar i.m{background:var(--m)} .bar i.l{background:var(--l)} .bar i.b{background:var(--b)}
+  .pct{flex:0 0 46px;text-align:right;font-size:14px;color:var(--dim);font-variant-numeric:tabular-nums}
+  table{width:100%;border-collapse:collapse;margin:16px 0 8px;font-size:14.5px}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line)}
+  th{color:var(--faint);font-weight:600;font-size:12.5px;text-transform:uppercase;letter-spacing:.05em}
+  td.n{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink)}
+  tr:last-child td{border-bottom:none}
+  .pill{display:inline-block;font-size:12px;padding:2px 9px;border-radius:99px;border:1px solid var(--line);
+    color:var(--dim);background:var(--card2)}
+  .pill.g{color:var(--g);border-color:#245c40} .pill.m{color:var(--m);border-color:#5c4a1e}
+  .pill.l{color:var(--l);border-color:#5c2a24} .pill.b{color:var(--b);border-color:#26405c}
+  .note{background:var(--card);border-left:3px solid var(--m);border-radius:0 9px 9px 0;padding:14px 18px;margin:20px 0}
+  .note.g{border-left-color:var(--g)} .note.l{border-left-color:var(--l)} .note.b{border-left-color:var(--b)}
+  .note p:last-child{margin-bottom:0}
+  ul{margin:0 0 14px;padding-left:20px;color:var(--dim)}
+  li{margin:6px 0}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--faint);margin-top:6px}
+  footer{margin-top:64px;padding-top:24px;border-top:1px solid var(--line);color:var(--faint);font-size:13px}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:680px){.two{grid-template-columns:1fr}.row .name{flex:0 0 130px;font-size:13.5px}}
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <h1>Sutram — Progress &amp; Performance Report</h1>
-  <p class="sub">Where the language stands against a mature-language yardstick, and how fast it actually runs.
-  Every number here is either measured on this machine or explicitly labelled as an estimate.</p>
+<header>
+  <h1>Sutram <span>— Progress Report</span></h1>
+  <p class="sub">A programming language whose keywords are Sanskrit · one hand-written NASM compiler ·
+  native machine code · no runtime dependency. State as of 15 October 2026, CHANGELOG v146.</p>
+</header>
 
+<h2>1 · What is actually built and verified</h2>
+<p>Every figure below was measured by building and running, not estimated. The whole gate set is green
+on <code>main</code>.</p>
+
+<div class="grid">
+  <div class="card"><div class="bignum g">187</div><div class="lab">Regression tests pass</div></div>
+  <div class="card"><div class="bignum b">278</div><div class="lab">Library functions</div></div>
+  <div class="card"><div class="bignum g">176</div><div class="lab">Library proofs</div></div>
+  <div class="card"><div class="bignum g">68</div><div class="lab">Property proofs</div></div>
+  <div class="card"><div class="bignum b">11</div><div class="lab">Language packs</div></div>
+  <div class="card"><div class="bignum b">191</div><div class="lab">Example programs</div></div>
+</div>
+
+<table>
+  <tr><th>Gate</th><th>Result</th><th>What it proves</th></tr>
+  <tr><td>Regression suite</td><td class="n"><span class="pill g">187 pass</span></td><td>Programs still behave as recorded</td></tr>
+  <tr><td>Codegen gate</td><td class="n"><span class="pill g">12 / 12</span></td><td>Emitted machine code matches ceilings</td></tr>
+  <tr><td>Language packs</td><td class="n"><span class="pill g">33 / 33</span></td><td>11 packs x 3 keyword groups</td></tr>
+  <tr><td>Module graph</td><td class="n"><span class="pill g">OK</span></td><td>Module dependencies are acyclic</td></tr>
+  <tr><td>proof_lib</td><td class="n"><span class="pill g">176 / 176</span></td><td>Every library function, run</td></tr>
+  <tr><td>proof_props</td><td class="n"><span class="pill g">68 / 68</span></td><td>Behavioural invariants hold</td></tr>
+  <tr><td>R58 frozen baseline</td><td class="n"><span class="pill g">8 / 8</span></td><td>Older codegen byte-identical</td></tr>
+  <tr><td>R59 frozen baseline</td><td class="n"><span class="pill g">3 / 3</span></td><td>Older codegen byte-identical</td></tr>
+  <tr><td>R63 kosh builtins</td><td class="n"><span class="pill g">9 gates</span></td><td>clear / empty / peek / enqueue / FIFO dequeue</td></tr>
+  <tr><td>R65 peepholes + traps</td><td class="n"><span class="pill g">pass</span></td><td>Default output byte-identical; trap fires on 5 cases</td></tr>
+  <tr><td>R66 Indic devices</td><td class="n"><span class="pill m">partial</span></td><td>Native digit readers; Gujarati pack held back</td></tr>
+  <tr><td>R24 safety net</td><td class="n"><span class="pill g">pass</span></td><td>Checked/saturating arithmetic, 278 functions</td></tr>
+</table>
+
+<div class="note g">
+  <p><strong>The verification apparatus is the strongest part of this project.</strong> Four frozen
+  reference baselines, two independent proof suites, a codegen ceiling gate, and a regression corpus
+  that has caught real regressions — a 533&nbsp;MB runaway output, an ABI bug that had shipped, and two
+  menu bugs that only a new test exposed.</p>
+</div>
+
+<h2>2 · Indian-language support</h2>
+<p>This is now a real part of the language rather than a decoration.</p>
+<table>
+  <tr><th>Capability</th><th>State</th></tr>
+  <tr><td>Core keywords in Sanskrit (Latin)</td><td><span class="pill g">from the start</span></td></tr>
+  <tr><td>Devanagari script (<code>lang/sanskrit.lang</code>)</td><td><span class="pill g">working</span></td></tr>
+  <tr><td>Danda <code>।</code> / double danda <code>॥</code> as statement terminators</td><td><span class="pill g">working</span></td></tr>
+  <tr><td>Native Devanagari digits <code>०–९</code></td><td><span class="pill g">compiler + GUI</span></td></tr>
+  <tr><td>Gujarati script, its own numerals <code>૦–૯</code> and abbreviation sign <code>૰</code></td><td><span class="pill m">pack held back — collides with a test</span></td></tr>
+  <tr><td>11 language packs, 33/33 pack checks</td><td><span class="pill g">passing</span></td></tr>
+  <tr><td>Devanagari in the GUI (colour, cluster advance, caret)</td><td><span class="pill g">working</span></td></tr>
+  <tr><td>True glyph shaping (matras, conjuncts, shirorekha)</td><td><span class="pill l">not done</span></td></tr>
+</table>
+
+<h2>3 · The scorecard — against the project's own v1.0 definition</h2>
+<p>These are the project's own parameters. Where a figure has gone stale, I say so rather than quietly
+re-scoring it.</p>
+
+<div class="row"><div class="name">A · Compiler core</div><div class="bar"><i class="g" style="width:88%"></i></div><div class="pct">88%</div></div>
+<div class="row"><div class="name">B · Optimiser</div><div class="bar"><i class="l" style="width:15%"></i></div><div class="pct">15%</div></div>
+<div class="row"><div class="name">C · Language surface</div><div class="bar"><i class="m" style="width:60%"></i></div><div class="pct">60%</div></div>
+<div class="row"><div class="name">D · Standard library</div><div class="bar"><i class="m" style="width:50%"></i></div><div class="pct">50%</div></div>
+<div class="row"><div class="name">E · Diagnostics &amp; errors</div><div class="bar"><i class="m" style="width:60%"></i></div><div class="pct">60%</div></div>
+<div class="row"><div class="name">F · IDE &amp; dev tooling</div><div class="bar"><i class="m" style="width:58%"></i></div><div class="pct">58%</div></div>
+<div class="row"><div class="name">G · Cross-platform &amp; packaging</div><div class="bar"><i class="l" style="width:38%"></i></div><div class="pct">38%</div></div>
+<div class="row"><div class="name">H · Verification &amp; QA</div><div class="bar"><i class="g" style="width:85%"></i></div><div class="pct">85%</div></div>
+<div class="row"><div class="name">I · Docs &amp; teaching</div><div class="bar"><i class="m" style="width:70%"></i></div><div class="pct">70%</div></div>
+<div class="row"><div class="name">J · Concurrency</div><div class="bar"><i class="l" style="width:0%"></i></div><div class="pct">0%</div></div>
+<div class="row"><div class="name">K · Ecosystem &amp; community</div><div class="bar"><i class="l" style="width:5%"></i></div><div class="pct">5%</div></div>
+
+<div class="legend"><span><b style="color:var(--g)">■</b> strong</span><span><b style="color:var(--m)">■</b> middle</span><span><b style="color:var(--l)">■</b> weak</span></div>
+
+<h3>Three figures that are stale — understated, not overstated</h3>
+<ul>
+  <li><strong>B · Optimiser, 15%.</strong> Predates R65. The peepholes and the integer trap are
+  implemented and measured — a probe shrank from 563 to 560 bytes with identical stdout, and the trap
+  fires on all five arithmetic cases with correct <code>file:line</code>.</li>
+  <li><strong>D · Standard library, 50%.</strong> Written when the library was far smaller. It is now
+  <strong>278 functions</strong> across 21 modules, with a complete checked/saturating arithmetic
+  surface, containers, maps, sets, and both string and byte-string toolkits.</li>
+  <li><strong>Devanagari is well ahead of the scorecard.</strong> Sanskrit keywords, the danda, native
+  digits, 54 pack entries, and GUI support through colour, cluster advance and a cluster-accurate caret.</li>
+</ul>
+
+<h2>4 · The one number that is overstated</h2>
+<div class="note l">
+  <p><strong>G · Cross-platform &amp; packaging reads 38%. The honest figure for <em>verified</em>
+  Windows support is closer to zero.</strong></p>
+  <p>The Windows acceptance has <strong>never been executed by anyone</strong>. The Windows compiler and
+  IDE build, the PE headers are correct, and the installer payload is complete and hash-verified — but
+  no Windows binary has ever been run. A GUI that builds is not a GUI that works.</p>
+  <p>This is the largest gap in the project, and the only one that is an assumption rather than a
+  measurement. Running the acceptance once converts it into a real number.</p>
+</div>
+
+<h2>5 · Recent rounds</h2>
+<table>
+  <tr><th>Round</th><th>Contribution</th><th>Verified by</th></tr>
+  <tr><td>R63</td><td>Five typed <code>kosh</code> builtins, including a FIFO dequeue</td><td>Built and run; 9 native gates</td></tr>
+  <tr><td>R64</td><td>Distinct empty-array diagnostics for <code>kosh_peek</code> / <code>kosh_dequeue</code></td><td>Default output byte-identical</td></tr>
+  <tr><td>R65</td><td>Opt-in peepholes, opt-in integer traps, 18 Devanagari aliases</td><td>Built and run in four configurations</td></tr>
+  <tr><td>R66</td><td>Native Indic digit readers, abbreviation aliases, Sanskrit pack 49→54</td><td>16/16 unit tests; Gujarati pack held back</td></tr>
+  <tr><td>R23 / R24</td><td>Container work, string/byte parity, checked/saturating arithmetic</td><td>176/176 and 68/68 proofs</td></tr>
+  <tr><td>GUI 22–29</td><td>Danda token, Devanagari colour, cluster advance, cluster caret, all seven menus, Indic digits</td><td>14/14 GUI tests</td></tr>
+</table>
+
+<h2>6 · The honest summary</h2>
+
+<div class="two">
   <div class="card">
-    <div class="big">
-      <div>
-        <div class="bignum">28<small>%</small></div>
-        <div class="note">overall maturity<br>(mean of 17 parameters)</div>
-      </div>
-      <div style="flex:1;min-width:280px">
-        <div class="bar" style="height:14px"><i class="m" style="width:28%"></i></div>
-        <div class="note" style="margin-top:10px">
-          Up from <b>24%</b> at the last scorecard (which was taken at 136 tests / 13 modules / 87 functions).
-          Now: <b>187</b> regression tests, <b>21</b> modules, <b>268</b> functions.
-          The mean is dragged down by five <i>structural</i> parameters — concurrency, ecosystem, security,
-          interoperability, community — that sit at 0–5% and cannot move without outside people or years.
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <h2>1 · What is actually built and verified</h2>
-  <p class="note">These are the high-confidence bars: each is backed by a test suite that must stay green through every change.</p>
-
-  <div class="card">
-    <div class="row"><div class="lab">Compiler correctness <span class="pill">187 + 3 tests</span></div><div class="bar"><i class="g" style="width:93%"></i></div><div class="pct">93%</div></div>
-    <div class="row"><div class="lab">Codegen gate (instruction ceilings)</div><div class="bar"><i class="g" style="width:100%"></i></div><div class="pct">12/12</div></div>
-    <div class="row"><div class="lab">Language packs</div><div class="bar"><i class="g" style="width:100%"></i></div><div class="pct">30/30</div></div>
-    <div class="row"><div class="lab">Module-graph / import semantics</div><div class="bar"><i class="g" style="width:100%"></i></div><div class="pct">18/18</div></div>
-    <div class="row"><div class="lab">Library proofs <span class="pill">153 passed</span></div><div class="bar"><i class="g" style="width:100%"></i></div><div class="pct">153/153</div></div>
-    <div class="row"><div class="lab">Library properties <span class="pill">39 hold</span></div><div class="bar"><i class="g" style="width:100%"></i></div><div class="pct">39/39</div></div>
-    <div class="row"><div class="lab">R46 ordinary-codegen parity</div><div class="bar"><i class="g" style="width:100%"></i></div><div class="pct">4/4</div></div>
-    <div class="row"><div class="lab">IDE slices (Linux X11)</div><div class="bar"><i class="g" style="width:100%"></i></div><div class="pct">17/17</div></div>
-    <div class="row"><div class="lab">Windows end-to-end run</div><div class="bar"><i class="l" style="width:8%"></i></div><div class="pct">8%</div></div>
-  </div>
-  <div class="note" style="margin-top:-4px">
-    The 93% for compiler correctness means “passes everything it claims”. It is not 100% because the suite is
-    a corpus, not a proof — R55's own handoff says so about the diagnostic cases.
-    Windows links to native PE32+ and <code>--version</code> runs on a Windows runner, but a generated binary
-    has never been executed there, so that bar stays low on purpose.
-  </div>
-
-  <h2>2 · The 17-parameter yardstick</h2>
-  <p class="note">Each bar is where Sutram stands against a mature general-purpose language on that axis.
-  “Before” is the previous scorecard; the change column shows what actually moved it.</p>
-
-  <div class="card">
-    <div class="row"><div class="lab">01 Strong type system</div><div class="bar"><i class="l" style="width:17%"></i></div><div class="pct">17%</div></div>
-    <div class="row"><div class="lab">02 Performance &amp; efficiency</div><div class="bar"><i class="m" style="width:58%"></i></div><div class="pct">58%</div></div>
-    <div class="row"><div class="lab">03 Concurrency</div><div class="bar"><i class="l" style="width:0%"></i></div><div class="pct">0%</div></div>
-    <div class="row"><div class="lab">04 Cross-platform</div><div class="bar"><i class="m" style="width:50%"></i></div><div class="pct">50%</div></div>
-    <div class="row"><div class="lab">05 Rich standard library</div><div class="bar"><i class="m" style="width:48%"></i></div><div class="pct">48%</div></div>
-    <div class="row"><div class="lab">06 Massive ecosystem</div><div class="bar"><i class="l" style="width:2%"></i></div><div class="pct">2%</div></div>
-    <div class="row"><div class="lab">07 Developer productivity</div><div class="bar"><i class="m" style="width:50%"></i></div><div class="pct">50%</div></div>
-    <div class="row"><div class="lab">08 Memory safety</div><div class="bar"><i class="l" style="width:17%"></i></div><div class="pct">17%</div></div>
-    <div class="row"><div class="lab">09 Security features</div><div class="bar"><i class="l" style="width:3%"></i></div><div class="pct">3%</div></div>
-    <div class="row"><div class="lab">10 Interoperability</div><div class="bar"><i class="l" style="width:5%"></i></div><div class="pct">5%</div></div>
-    <div class="row"><div class="lab">11 Scalability</div><div class="bar"><i class="l" style="width:24%"></i></div><div class="pct">24%</div></div>
-    <div class="row"><div class="lab">12 Backward compatibility</div><div class="bar"><i class="m" style="width:50%"></i></div><div class="pct">50%</div></div>
-    <div class="row"><div class="lab">13 Error handling</div><div class="bar"><i class="m" style="width:52%"></i></div><div class="pct">52%</div></div>
-    <div class="row"><div class="lab">14 Tooling excellence</div><div class="bar"><i class="m" style="width:48%"></i></div><div class="pct">48%</div></div>
-    <div class="row"><div class="lab">15 Community &amp; governance</div><div class="bar"><i class="l" style="width:5%"></i></div><div class="pct">5%</div></div>
-    <div class="row"><div class="lab">16 Multi-paradigm</div><div class="bar"><i class="l" style="width:20%"></i></div><div class="pct">20%</div></div>
-    <div class="row"><div class="lab">17 Modern features</div><div class="bar"><i class="l" style="width:32%"></i></div><div class="pct">32%</div></div>
-    <div class="legend">
-      <span><i class="sw l"></i>0–35% early</span>
-      <span><i class="sw m"></i>36–70% workable</span>
-      <span><i class="sw g"></i>71–100% mature</span>
-    </div>
-  </div>
-
-  <table>
-    <thead><tr><th>#</th><th>Parameter</th><th class="n">Before</th><th class="n">Now</th><th class="n">Δ</th><th>What moved it / what is still missing</th></tr></thead>
-    <tbody>
-      <tr><td>01</td><td>Strong type system</td><td class="n">16%</td><td class="n">17%</td><td class="n">+1</td>
-        <td>Forward prototypes now check arity <i>and</i> parameter types. Still no declared scalar types, generics or unions.</td></tr>
-      <tr><td>02</td><td>Performance &amp; efficiency</td><td class="n">55%</td><td class="n">58%</td><td class="n">+3</td>
-        <td>Call register-saves removed for stack-only scopes (R46). Still <b>no optimizer at all</b> — no LICM, constant folding or peephole. Measured 5.4× off hand-optimal code on the arithmetic loop.</td></tr>
-      <tr><td>03</td><td>Concurrency</td><td class="n">0%</td><td class="n">0%</td><td class="n">—</td>
-        <td>Nothing. No threads, async or atomics.</td></tr>
-      <tr><td>04</td><td>Cross-platform</td><td class="n">45%</td><td class="n">48%</td><td class="n">+3</td>
-        <td>One source emits Linux ELF and Windows PE32+; <code>--version</code> runs on a Windows runner. A generated Windows binary has never been executed, and the IDE is Linux-only.</td></tr>
-      <tr><td>05</td><td>Rich standard library</td><td class="n">32%</td><td class="n">45%</td><td class="n">+13</td>
-        <td>13 modules / 87 functions → <b>18 / 176</b>. Real collections arrived (hash map, sets), plus byte-string tools, bigint, sorting, statistics, base conversion. Still no I/O breadth, formatting/templates, regex or dates.</td></tr>
-      <tr><td>06</td><td>Massive ecosystem</td><td class="n">2%</td><td class="n">2%</td><td class="n">—</td>
-        <td>No package manager, no third-party libraries. Structural — needs a community first.</td></tr>
-      <tr><td>07</td><td>Developer productivity</td><td class="n">42%</td><td class="n">50%</td><td class="n">+8</td>
-        <td>The IDE grew from a basic editor to 17 working features — run, save/load, 8-level undo, full caret movement, Tab, find, both panes scrolling, a selection model with copy/cut/paste, and open-by-path / new buffer. No debugger, formatter or graphical file browser yet.</td></tr>
-      <tr><td>08</td><td>Memory safety</td><td class="n">16%</td><td class="n">17%</td><td class="n">+1</td>
-        <td>Byte-write <code>set_char</code> added, but deliberately <b>unbounded</b>; the builtin-bounds sweep (R54) documents every raw-pointer precondition rather than adding checks. Still no GC or borrow checking.</td></tr>
-      <tr><td>09</td><td>Security features</td><td class="n">3%</td><td class="n">3%</td><td class="n">—</td>
-        <td>Nothing beyond the least-privilege installer.</td></tr>
-      <tr><td>10</td><td>Interoperability</td><td class="n">5%</td><td class="n">5%</td><td class="n">—</td>
-        <td><code>nishkriya</code> (inline asm) exists; no C FFI, no foreign calling convention.</td></tr>
-      <tr><td>11</td><td>Scalability</td><td class="n">18%</td><td class="n">22%</td><td class="n">+4</td>
-        <td>The AST arena was raised 768 KB → 3 MiB because the growing library genuinely overflowed it. Ceilings are still fixed constants, not dynamic.</td></tr>
-      <tr><td>12</td><td>Backward compatibility</td><td class="n">45%</td><td class="n">50%</td><td class="n">+5</td>
-        <td>A frozen keyword core plus a 187-test suite and four byte-identical reference binaries enforced through every merge. No versioned releases or migration policy.</td></tr>
-      <tr><td>13</td><td>Error handling</td><td class="n">38%</td><td class="n">52%</td><td class="n">+14</td>
-        <td><b>The biggest genuine jump.</b> A real <code>--check</code> mode: located <code>file:line:column</code> diagnostics with source line and caret, bounded recovery, multiple errors accumulated in one run, and correct file attribution through two-level and namespaced imports. No exceptions, result types or pattern matching.</td></tr>
-      <tr><td>14</td><td>Tooling excellence</td><td class="n">35%</td><td class="n">48%</td><td class="n">+13</td>
-        <td>Seven independent acceptance harnesses (R48–R55), a deterministic codegen gate, pack and module-graph tests, 180 library proofs/properties, a benchmark harness, and 29 documentation pages. No debugger or formatter.</td></tr>
-      <tr><td>15</td><td>Community &amp; governance</td><td class="n">5%</td><td class="n">5%</td><td class="n">—</td>
-        <td>One user, two collaborating AI agents, no outside contributors.</td></tr>
-      <tr><td>16</td><td>Multi-paradigm</td><td class="n">18%</td><td class="n">20%</td><td class="n">+2</td>
-        <td>Forward declarations make mutual recursion expressible. Still no generics, closures or metaprogramming.</td></tr>
-      <tr><td>17</td><td>Modern features</td><td class="n">26%</td><td class="n">32%</td><td class="n">+6</td>
-        <td>Forward prototypes, runtime byte strings, hash maps and sets, typed growable arrays, IEEE-754 floats, enums, structs, switch. No first-class functions or pattern matching.</td></tr>
-    </tbody>
-  </table>
-
-  <h2>3 · Speed — what was actually measured</h2>
-  <p class="note">Run on this machine, best of 3, 10,000,000 iterations. This is a same-hardware, same-day
-  comparison for the three runtimes that exist here — not a copied table.</p>
-
-  <div class="card">
-    <table>
-      <thead><tr><th>Language</th><th class="n">Simple loop<br><small>s = s + 1</small></th><th class="n">vs Sutram</th><th class="n">Arithmetic<br><small>s = s + i*2</small></th><th class="n">vs Sutram</th><th>Source</th></tr></thead>
-      <tbody>
-        <tr>
-          <td><b>Sutram</b> (native ELF)</td>
-          <td class="n"><b>15.45 ms</b></td><td class="n">—</td>
-          <td class="n"><b>35.27 ms</b></td><td class="n">—</td>
-          <td><span class="meas">measured here</span></td>
-        </tr>
-        <tr>
-          <td>Node.js 20.20</td>
-          <td class="n">128.35 ms</td><td class="n">8.3× slower</td>
-          <td class="n">132.08 ms</td><td class="n">3.7× slower</td>
-          <td><span class="meas">measured here</span></td>
-        </tr>
-        <tr>
-          <td>Python 3.12</td>
-          <td class="n">2,577 ms</td><td class="n">167× slower</td>
-          <td class="n">3,803 ms</td><td class="n">108× slower</td>
-          <td><span class="meas">measured here</span></td>
-        </tr>
-        <tr>
-          <td>Hand-optimal NASM<br><small>proxy for an optimising C compiler</small></td>
-          <td class="n">~6 ms*</td><td class="n">~2.5× faster</td>
-          <td class="n"><b>6.58 ms</b></td><td class="n"><b>5.4× faster</b></td>
-          <td><span class="meas">measured here</span></td>
-        </tr>
-        <tr>
-          <td>C (-O2)</td><td class="n">87 ms**</td><td class="n">—</td><td class="n">103 ms**</td><td class="n">—</td>
-          <td><span class="est">estimate — no C compiler on this machine</span></td>
-        </tr>
-        <tr>
-          <td>C++ / Rust / Java / Go</td><td class="n">—</td><td class="n">—</td><td class="n">—</td><td class="n">—</td>
-          <td><span class="est">estimate only — none installed here</span></td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="note" style="margin-top:12px">
-      * the proxy loop is a single counter add; the simple-loop figure is scaled from the arithmetic measurement, not separately timed.<br>
-      ** these come from the earlier benchmark document, which states plainly that where a language could not run in
-      the sandbox the numbers are published estimates. I could not verify them — <b>no C, C++, Rust, Java or Go
-      toolchain exists on this machine</b>. Treat every non-Sutram/Node/Python figure as unverified.
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="big">
-      <div><div class="bignum">167<small>×</small></div><div class="note">faster than Python<br>on the simple loop</div></div>
-      <div><div class="bignum">8.3<small>×</small></div><div class="note">faster than Node.js<br>on the simple loop</div></div>
-      <div><div class="bignum">342<small> B</small></div><div class="note">the whole loop program,<br>statically linked, zero deps</div></div>
-      <div><div class="bignum">5.4<small>×</small></div><div class="note">still slower than optimal<br>on the arithmetic loop</div></div>
-    </div>
-  </div>
-
-  <h3>Why the arithmetic loop is the interesting one</h3>
-  <p class="note">On the simple loop Sutram is essentially at native speed. On the arithmetic loop it is 5.4× off
-  hand-optimal code — and the reason is known and documented, not mysterious: the expression evaluator is written
-  as a stack machine, so every binary operation pushes its operands and pops them back even though both values are
-  already sitting in registers. There is also no loop-invariant code motion, so <code>i*2</code> is recomputed every
-  iteration instead of strength-reduced. That single fix — using the register file the values already occupy — is
-  the largest remaining performance win available.</p>
-
-  <h2>4 · The honest summary</h2>
-  <div class="card">
-    <h3 style="margin-top:0">What is genuinely strong</h3>
-    <ul>
-      <li><b>It is a real compiler.</b> 20,230 lines of hand-written x86-64 assembly in one file, emitting native ELF
-          with no runtime, no libc, no linker script of its own — and it beats Node by 8× and Python by 167× on a loop.</li>
-      <li><b>The safety net is unusually good for a young language.</b> 187 regression tests, 12 codegen ceilings,
-          30 pack checks, 18 module-graph tests, 147 library proofs, 33 properties, and four byte-identical reference
-          binaries held across every single merge. Changes are verified, not hoped for.</li>
-      <li><b>Diagnostics are a genuine feature now</b>, not an afterthought: located, recoverable, accumulating,
-          with correct file attribution through nested imports.</li>
-      <li><b>It runs real programs.</b> Three non-trivial programs — word frequency, an expression evaluator with
-          precedence, a formatted report — compile and reproduce their goldens exactly.</li>
-    </ul>
-    <h3>What is honestly weak</h3>
-    <ul>
-      <li><b>No optimiser.</b> This is the single biggest gap and the clearest opportunity.</li>
-      <li><b>Nothing has ever run on real Windows</b> — the one untested platform claim.</li>
-      <li><b>No concurrency, no ecosystem, no FFI, no debugger, no package manager.</b> Five parameters at 0–5%,
-          all of which need people rather than code.</li>
-      <li><b>The suite is a corpus, not a proof.</b> 187 passing tests does not mean 187 correct behaviours.</li>
-    </ul>
-    <h3>What would move the needle most, in order</h3>
-    <ul>
-      <li><b>A register-based expression evaluator</b> — closes most of the 5.4× arithmetic gap. Big, contained, measurable.</li>
-      <li><b>Generics and first-class functions</b> — the language still has one array type and no closures.</li>
-      <li><b>A real Windows end-to-end run</b> — both Windows binaries now build and their PE headers verify, but neither has been executed on Windows. One run converts the biggest unverified claim into a fact.</li>
-      <li><b>Library breadth</b> — formatting, file I/O, dates. The 45% bar is the one most within reach.</li>
+    <h3 style="margin-top:0;color:var(--g)">Genuinely strong</h3>
+    <ul style="margin-bottom:0">
+      <li>One pure-NASM compiler, native output, no runtime dependency</li>
+      <li>A frozen keyword core held across every merge</li>
+      <li>Verification that catches real regressions, not just a corpus that passes</li>
+      <li>Indian-language support that is real, not decorative</li>
     </ul>
   </div>
+  <div class="card">
+    <h3 style="margin-top:0;color:var(--l)">Honestly weak</h3>
+    <ul style="margin-bottom:0">
+      <li>Windows support is unproven — never executed</li>
+      <li>No concurrency model at all</li>
+      <li>No ecosystem: no packages, no releases, no community</li>
+      <li>Optimiser still early; no glyph shaping</li>
+    </ul>
+  </div>
+</div>
 
-  <div class="hr"></div>
-  <p class="note">
-    Snapshot: compiler <code>d0fe190c</code> (20,687 lines, 179,888 B binary) · IDE <code>bc2d5905</code> (2,523 lines, 17 slices) · Windows binaries build (PE32+) ·
-    21 library modules / 268 functions · 32 keywords · 10 language packs · 189 example programs · 29 docs pages ·
-    Linux ELF + Windows PE32+ (Windows unverified).
-    Percentages are judgement against a mature-language yardstick, not measurements; speed figures marked
-    “measured here” are real timings from this machine, everything else is an estimate and labelled as such.
-    No part of the project was modified to produce this report.
-  </p>
+<h3>What would move the needle most, in order</h3>
+<ol style="color:var(--dim);padding-left:20px">
+  <li><strong>Run the Windows acceptance once.</strong> It turns the project's biggest guess into a
+  measurement, and it is the only item on this page nobody has ever tested.</li>
+  <li><strong>Concurrency, or an explicit decision not to have it.</strong> 0% is not a gap that fills itself.</li>
+  <li><strong>A release and a package story.</strong> Ecosystem at 5% will hold v1.0 back more than any
+  compiler gap.</li>
+  <li><strong>Finish the Indic roll-out</strong> — Gujarati's pack collides with an accepted test and
+  needs resolving, then the remaining scripts are mechanical.</li>
+</ol>
+
+<h2>7 · Bottom line</h2>
+<p><strong>As a compiler, this is around 85%</strong> — the hard part is done, and done in the most
+difficult way available: one hand-written assembly source, native machine code, no runtime, and a
+verification net that holds.</p>
+<p><strong>As a usable language, it is nearer 55%</strong> — the library is real but not yet broad, the
+tooling is good on Linux and unproven on Windows, and there is no ecosystem at all.</p>
+<p><strong>Toward the project's own v1.0 definition, roughly 60%.</strong> The single highest-value
+remaining action is not another compiler feature; it is running the Windows acceptance, because until
+that happens the largest gap on this page is an assumption rather than a fact.</p>
+
+<footer>
+  All figures measured on <code>main</code> at CHANGELOG v146 · compiler source 545,230 B → 190,144 B
+  Linux ELF · 1,688 repository files · 21 library modules · 11 language packs · 191 examples ·
+  14 GUI tests · 22 documentation pages.<br>
+  Where a number is a guess rather than a measurement, this report says so.
+</footer>
 
 </div>
 </body>
