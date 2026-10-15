@@ -6,9 +6,13 @@ R63 implementation handoff (`docs/R63-KOSH-BUILTINS.md`) describes the
 source-level implementation and its pre-execution claims; this document
 states the behaviour as measured from real compiled programs.
 
-**Verified against compiler:** `f52a9ad78785faa8997356200f61e06e290725079229c897a6dc55bc5ccd621b`
+**Verified against compiler:** `82b0a9f8fb2a6183b6f78ffdd8dec37ce4f5967c6bb3303e86cdecb41a421891`
 (`sha256sum src/sutram_compiler.asm`), plus `tools/r63_kosh_acceptance.py`
 (9 gates: 5 exact-output programs, 2 compile errors, 2 runtime traps).
+R64 renamed the empty `peek`/`dequeue` diagnostics to their own
+messages; this spec names all three accurately (R23 WS1 reconciliation).
+The R21 spec text that said peek/dequeue share pop's diagnostic is
+superseded — it was true of the R63 compiler, not of R64+.
 
 ## What `kosh` is
 
@@ -93,21 +97,22 @@ the remaining elements one slot toward the front, so dequeue is **O(n)**
 in the kosh's length. The trailing slot left by the shift is not erased
 (same length-only semantics as `kosh_clear`).
 
-### Empty `peek` / `dequeue` — diagnostic, no ok-channel
+### Empty `peek` / `dequeue` / `pop` — three distinct diagnostics, no ok-channel
 
-Both abort with the diagnostic (note: the message says "pop" even for
-`dequeue` — that is the compiler's shared diagnostic text, not a
-documentation error):
+Each of the three removal/peek builtins aborts on an empty `kosh` with
+its **own** diagnostic (R64 renamed the `peek`/`dequeue` messages; in R63
+all three printed pop's message):
 
 ```
-Sutram Error: kosh pop from empty array
-exit 1
+empty kosh_pop(k):     Sutram Error: kosh pop from empty array
+empty kosh_peek(k):    Sutram Error: kosh peek from empty array
+empty kosh_dequeue(k): Sutram Error: kosh dequeue from empty array
 ```
 
-There is **no** `ok[0]` channel here, unlike the library's
-`stack_pop`/`queue_dequeue`, which return `ok[0] = 0` on empty. Code that
-must survive an empty `peek`/`dequeue` must check `kosh_empty(k)` first
-(or `kosh_len(k) == 0`).
+All three exit 1. There is **no** `ok[0]` channel here, unlike the
+library's `stack_pop`/`queue_dequeue`, which return `ok[0] = 0` on empty.
+Code that must survive an empty `peek`/`dequeue` must check
+`kosh_empty(k)` first (or `kosh_len(k) == 0`).
 
 ### Compile-time errors
 
