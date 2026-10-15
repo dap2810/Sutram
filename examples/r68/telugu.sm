@@ -1,0 +1,7 @@
+# R68 telugu: paired expected output; not a claimed native run.
+ముఖ్యం() {
+    చరం మొత్తం = ౦౧౨౩౪౫౬౭౮౯।
+    వ్రాయు(మొత్తం)॥
+    దశమ అంశం = ౨.౫।
+    వ్రాయు(అంశం)।
+}

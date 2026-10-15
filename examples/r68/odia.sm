@@ -1,0 +1,7 @@
+# R68 odia: paired expected output; not a claimed native run.
+ମୁଖ୍ୟ() {
+    ଚଳ ମୂଲ୍ୟ = ୦୧୨୩୪୫୬୭୮୯।
+    ଲେଖ(ମୂଲ୍ୟ)॥
+    ଦଶମ ଅଂଶ = ୨.୫।
+    ଲେଖ(ଅଂଶ)।
+}
