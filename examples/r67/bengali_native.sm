@@ -1,0 +1,13 @@
+# Bengali words are inherited from the existing pack, not retranslated.
+মুখ্য() {
+    চ৽ মোট = ০।
+    চ৽ ই = ১।
+    যতক্ষণ (ই <= ৫) {
+        মোট = মোট + ই।
+        ই = ই + ১।
+    }
+    ল৽(মোট)॥
+    লিখো(১২.৫)।
+    লিখো(-৭.২৫)।
+    লিখো(০১২৩৪৫৬৭৮৯)॥
+}
