@@ -1257,9 +1257,22 @@ classify:
     movzx rax, byte [rbx+r15+2]
     cmp al, 0xA4                    ; । DANDA
     je .c_danda
-    cmp al, 0xA5                    ; ॥ DOUBLE DANDA
+    cmp al, 0xA5                    ; ॥ DOUBLE DANDA -- or a Devanagari digit
     je .c_danda
-    jmp .c_hash
+    ; slice 29: is this an Indic digit?  E0 A5 A6..AF (Devanagari 0-9)
+    ;                                    E0 AB A6..AF (Gujarati 0-9)
+    movzx rax, byte [rbx+r15+1]
+    cmp al, 0xA5
+    je .c_dig_mid
+    cmp al, 0xAB
+    jne .c_hash
+.c_dig_mid:
+    movzx rax, byte [rbx+r15+2]
+    cmp al, 0xA6
+    jb .c_hash
+    cmp al, 0xAF
+    ja .c_hash
+    jmp .c_num                      ; it is a digit -- use the number path
 .c_danda:
     mov eax, 3
     mov edx, 6                      ; class 6 = danda
@@ -1299,6 +1312,24 @@ classify:
     add r10, r9
     cmp r10, r13
     jae .c_num_done
+    mov al, [rbx+r10]
+    cmp al, 0xE0
+    jne .c_num_ascii
+    ; slice 29: an Indic digit is 3 bytes; consume it whole
+    movzx rax, byte [rbx+r10+1]
+    cmp al, 0xA5
+    je .c_num_im
+    cmp al, 0xAB
+    jne .c_num_dot
+.c_num_im:
+    movzx rax, byte [rbx+r10+2]
+    cmp al, 0xA6
+    jb .c_num_dot
+    cmp al, 0xAF
+    ja .c_num_dot
+    add r9, 3
+    jmp .c_num_loop
+.c_num_ascii:
     mov al, [rbx+r10]
     cmp al, '0'
     jb .c_num_dot
