@@ -1,0 +1,60 @@
+SUTRAM ROUND 68 — OBSERVED EVIDENCE
+Date: 2026-10-15
+Incoming heading date: 2026-10-16 (as supplied, not the execution date)
+Source: 31b9e7c96db65c23d160e60f15864fb967910454
+Base: a700bfd21a6af1c6d5efc275df1963585615ef67
+PR: https://github.com/dap2810/Sutram/pull/26
+
+ACTUALLY RUN
+python -m unittest discover -s tests/r66 -p 'test_*.py' -v
+33 methods, OK; captured final run 0.196 seconds.
+python -m unittest discover -s tests/r68 -p 'test_*.py' -v
+24 methods, OK; captured final run 0.987 seconds.
+Total 57: 32 isolated native-instruction/helper methods and 25 source/pack/mock
+preparation methods. GNU as/GCC Linux, narrow NASM syntax adapter; diagnostic
+routines use C I/O/token stubs. GUI fixture counts use a Win64 ABI bridge.
+This is NOT a NASM compilation or Windows/full Sutram execution.
+
+python -m py_compile tools/r68_prepare_review.py tools/r68_native_acceptance.py \
+ tests/r66/test_native_helpers.py tests/r68/test_r68.py
+Exit 0; all four Python files passed syntax checking.
+
+SOURCE IDENTITY
+Actual inherited compiler: 64ea028a5ccf56117c132a7efd0673cbe2df3fc6.
+Produced entry wrapper: 42389aaf73179726d91e23359aee2199734036e1, 713 bytes.
+Entry SHA256: 2c18d5958337ce55ac2f7f0c922cde99ec3fd637570606ad5d60ec1d5b584085.
+Expanded complete compiler source: NOT PRODUCED; no hash invented.
+Production-input pin preparation: NOT RUN; mock fixture tests only.
+
+UPLOAD VERIFICATION
+55 changed paths, 95636 exact local bytes hashed with Python hashlib.
+Read GitHub root/source/language trees and example directory metadata.
+Round-trip Git tree identity using ALL expected local file Git blob IDs:
+  group A: 28 non-example paths, returned 7647297b8b2fa7b0b930b20c0c6fc41db4076ed9
+  group B: 27 example paths, returned 7647297b8b2fa7b0b930b20c0c6fc41db4076ed9
+Both equal uploaded source tree. No commit or branch was changed by those
+idempotent checks. This verifies paths/content identities without claiming
+full production-source materialization or native acceptance.
+One initial hash-verification request had a mistyped short Telugu blob ID and
+was rejected with HTTP 422; the corrected split requests above passed.
+
+EXACT LIMITS
+- 90 decimal characters exercised; 65536 second/third-byte combinations occur
+  within ONE exhaustive method.
+- Expected pair saving is 46 bytes over 15 non-RSP registers; NOT MEASURED.
+- Source-code UTF8 and alias diagnostics ran as isolated helper instructions,
+  not as the complete compiler's lexer/parser or Windows OS shim.
+- Six example .out/.exit files are expectations, not observed Sutram output.
+- 11 title fixtures counted locally; 12 manual Windows tests remain blank.
+- Existing main installer wrapper remains f51f3acc..., old path/bypass flags.
+  Documentation reports it; installer code was not changed or run.
+
+NOT RUN
+Production compiler preparation, full NASM assembly/link, generated Sutram
+programs, default-byte identity, pair-mode A/B, complete suite/proofs/frozen
+gates, Windows GUI open/close/rendering/caret, OS-shim or installer execution.
+No CI/background monitor, unreviewed merge, runtime network or registry change.
+
+RAW LOGS
+Companion supplement evidence/r68_r66_tests.txt and evidence/r68_new_tests.txt
+contain the captured complete local test outputs.
