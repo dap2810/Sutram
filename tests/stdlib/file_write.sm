@@ -1,0 +1,35 @@
+ayojan file
+mukhya() {
+    vitti buf = nirmmita(64)
+    vitti i = 0
+    # write 5 bytes to a scratch path in /tmp (never the repo
+    # tree), then read them back and verify the round-trip
+    set_char(buf, 0, 83)
+    set_char(buf, 1, 117)
+    set_char(buf, 2, 116)
+    set_char(buf, 3, 114)
+    set_char(buf, 4, 97)
+    vitti w = file_write_all("/tmp/sutram_file_write_test.txt", buf, 5)
+    likha(w)
+    likha("\n")
+    vitti n = file_read_all("/tmp/sutram_file_write_test.txt", buf, 64)
+    likha(n)
+    likha("\n")
+    yavat (i < n) {
+        likha(char_at(buf, i))
+        likha("\n")
+        i = i + 1
+    }
+    # overwrite with 0 bytes: file becomes empty, returns 0
+    likha(file_write_all("/tmp/sutram_file_write_test.txt", buf, 0))
+    likha("\n")
+    likha(file_read_all("/tmp/sutram_file_write_test.txt", buf, 64))
+    likha("\n")
+    # negative count: -1, file not created/touched
+    likha(file_write_all("/tmp/sutram_file_write_test.txt", buf, 0 - 2))
+    likha("\n")
+    # unwritable path (missing directory): -1
+    likha(file_write_all("/tmp/no_such_dir_xyz/file.txt", buf, 5))
+    likha("\n")
+    likha("file-write-done\n")
+}
