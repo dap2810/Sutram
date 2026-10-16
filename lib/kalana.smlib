@@ -59,13 +59,19 @@ prakriya slope(kosh dasham xs, kosh dasham ys, i) {
     vitti n = kosh_len(xs)
     yadi (kosh_len(ys) < n) { n = kosh_len(ys) }
     yadi (n < 2) { pratiyati 0.0 }
-    yadi (i <= 0) {
-        pratiyati (ys[1] - ys[0]) / (xs[1] - xs[0])
-    }
-    yadi (i >= n - 1) {
-        pratiyati (ys[n - 1] - ys[n - 2]) / (xs[n - 1] - xs[n - 2])
-    }
-    pratiyati (ys[i + 1] - ys[i - 1]) / (xs[i + 1] - xs[i - 1])
+    # Neighbouring pair: first, last, or centred. The two
+    # sequential yadi (not yadi/anyatra) matter: for n == 2,
+    # i == 0 satisfies the first but not the second, and the
+    # centred branch would index xs[-1].
+    vitti lo = i - 1
+    vitti hi = i + 1
+    yadi (i <= 0) { lo = 0; hi = 1 }
+    yadi (i >= n - 1) { lo = n - 2; hi = n - 1 }
+    # Zero spacing (duplicate x): no slope is defined — return
+    # 0.0 instead of inf / NaN (the old code divided by zero).
+    dasham dx = xs[hi] - xs[lo]
+    yadi (dx == 0.0) { pratiyati 0.0 }
+    pratiyati (ys[hi] - ys[lo]) / dx
 }
 
 # Second derivative at an interior point (central, equally spaced assumption relaxed).
@@ -76,9 +82,15 @@ prakriya slope2(kosh dasham xs, kosh dasham ys, i) {
     yadi (i >= n - 1) { pratiyati 0.0 }
     dasham hl = xs[i] - xs[i - 1]
     dasham hr = xs[i + 1] - xs[i]
+    # Zero spacing on either side (or hl == -hr, so the mean
+    # spacing is 0): the second difference is undefined — 0.0.
+    yadi (hl == 0.0) { pratiyati 0.0 }
+    yadi (hr == 0.0) { pratiyati 0.0 }
     dasham dl = (ys[i] - ys[i - 1]) / hl
     dasham dr = (ys[i + 1] - ys[i]) / hr
-    pratiyati (dr - dl) / ((hl + hr) / 2.0)
+    dasham hm = (hl + hr) / 2.0
+    yadi (hm == 0.0) { pratiyati 0.0 }
+    pratiyati (dr - dl) / hm
 }
 
 # ---------------------------------------------------------------
