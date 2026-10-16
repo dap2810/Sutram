@@ -1,0 +1,60 @@
+SUTRAM R71 ON R69 — PUBLICATION AND PRIOR EVIDENCE, 2026-10-16
+
+PUBLICATION COMPLETED
+R69 base: cdc1bd32c8b8455d4ad3b7df906a2714a6f3354b, draft PR #29.
+R71 source: bb7910611055edc11302cc3bc58206cef7afd3d6, draft PR #30.
+Branch: review/r71-on-r69-publication-20261016.
+PR base: feature/r69-canonical-build-return-20261016 (stacked review).
+30 R71 source/test/document files: 29 additions, one specification amendment.
+No R71 code merged into main. Handoff/evidence publication is documentation only.
+
+ACTUALLY VERIFIED DURING THIS PUBLICATION
+- Original uploaded archive exists in the active runtime.
+- Archive SHA256: 41b6adb34ceffc5833679512645b7dbdd8aae3d300504c141c67685138c94561.
+- All 51 entries in the archive SHA256SUMS.txt matched extracted bytes.
+- 30 overlay files total 92541 bytes; each was hashed locally with hashlib.
+- All 30 files uploaded in their real repository paths on the R69 source tree.
+- Substituting all 30 independently calculated local Git blob IDs into the
+  uploaded tree returned the SAME tree fefd90ac3304f8f060a58df8e1ff087b0bbd7c8e.
+  This verifies all uploaded source identities; no correction was needed.
+- Draft PR #30 created with R69 as its base, 30 changed files.
+- No new compiler/helper tests were run by this publication operation.
+
+PRIOR DEVELOPMENT EVIDENCE PRESERVED FROM THE ORIGINAL PACKAGE
+The prior captured log reports:
+  python -m unittest discover -s tests/r71 -p 'test_*.py' -v
+  Ran 66 tests in 0.167s; OK.
+Breakdown: 22 machine-code token-pass, 15 machine-code linker, 29
+  developer/source/document/boot tests.
+The native helpers used a narrow GNU-as instruction-syntax bridge and GCC.
+This was NOT a full NASM build or substitute Sutram compiler.
+The linked ELF used two explicitly authored machine-code fixtures, exited 42
+  and produced no stdout/stderr. It was NOT a two-module .sm compilation.
+Boot source produced a 512-byte sector and 1474560-byte padded image with
+  signature 55 AA. Repeated build parity passed; boot execution was NOT_RUN.
+Eight Python files passed syntax checks during prior development.
+Fixture-only acceptance reported native_status NOT_RUN, compiler_executed false.
+The 30-file patch was checked/applied against a captured specification baseline,
+  not against a complete production checkout.
+The preserved prior raw test log is ROUND-71-PRIOR-TESTS.txt.
+Do not count these prior results as tests rerun during this publication.
+
+INPUT/OUTPUT IDENTITIES
+Core source input/output unchanged: 64ea028a5ccf56117c132a7efd0673cbe2df3fc6.
+Release entry unchanged: 42389aaf73179726d91e23359aee2199734036e1.
+Experimental entry: 6ba05e206556d9b18349b633ac1bda73ac89aab1, 902 bytes.
+Full source manifest: ROUND-71-SHA256.txt, 30 files.
+
+NOT RUN / NOT IMPLEMENTED / NOT CLAIMED
+- Full Sutram compiler source preparation/build/execution.
+- Full current-repository documentation migration or canonical binary parity.
+- Native .sm boundary/semantics/pack-resolution acceptance.
+- R69 full-compiler optimization A/B or a new speed measurement.
+- Production .sm object emission, import/export compiler integration or module driver.
+- Firmware/emulator boot of the supplied image or a Sutram-generated kernel.
+- Windows compiler/GUI/open-close/installer or registry execution.
+- New R69 test execution; the prior 39 tests are not added to the R71 total.
+- Code merge, automatic CI dispatch, background watcher or machine-wide change.
+
+The earlier local-only publication status in the ZIP is now superseded.
+Successful publication does not close the implementation or acceptance gaps.
