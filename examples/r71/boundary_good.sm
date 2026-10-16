@@ -1,0 +1,7 @@
+mukhya() {
+    vitti buf = nirmmita(64)
+    asurakshit {
+        likh8c(buf, 42, buf + 64)
+        likha(pad8c(buf, buf + 64))
+    }
+}

@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "source_commit": "827d13462c1e555a1174160e21a3e3f0e6768fcf",
+  "evidence_kind": "existing source and accepted expectation readback; not a new native execution",
+  "native_rerun": false,
+  "files": {
+    "examples/140_r30_index_side_effect.sm": {
+      "git_blob": "8ef32a23a8557ffc8a84bc58d9cc6428cc0e5d08",
+      "sha256": "cf3e9605523d97d712ce52564feb3b1ad9e122cadf15cf9e0a77adba8c33b15c",
+      "text": "# Index expression is effectful: the compiler must preserve evaluation order.\nprakriya mutate_index(kosh dasham arr) {\n    arr[0] = 9.0\n    pratiyati 0\n}\nprakriya read_after(kosh dasham arr) {\n    pratiyati arr[0]\n}\nmukhya() {\n    kosh dasham arr[1]\n    kosh_push(arr, 2.0)\n    dasham delta = 1.5\n    dasham out = 0.0\n    out = arr[mutate_index(arr)] + delta\n    likha(out)\n    likha(arr[0])\n    out = read_after(arr) - delta\n    likha(out)\n}\n"
+    },
+    "tests/expect/140_r30_index_side_effect.out": {
+      "git_blob": "8b474f6e0357c890a3cbb356a351a63adaa302ef",
+      "sha256": "92809bb738cdd6ae647503bcb82da0e64d52435538574c131b4a94f260a82aad",
+      "text": "10.500000\n9.000000\n7.500000\n"
+    },
+    "examples/112_t18_kosh_integer_conversion.sm": {
+      "git_blob": "d5b844a840c4602a0e82cbad7445b58be3a4f4f1",
+      "sha256": "f9427aa1b8afac0131767ceccab704b48cca03113bc07adcc875eb159839ab44",
+      "text": "# Integer kosh normalizes dasham input by truncation, matching scalar assignment semantics.\nmukhya() {\n    kosh a[1]\n    kosh_push(a, 2.9)\n    likha(a[0])\n    a[0] = 4.8\n    likha(kosh_pop(a))\n}\n"
+    },
+    "tests/expect/112_t18_kosh_integer_conversion.out": {
+      "git_blob": "da7f84740bd775747fe094def1e06a800d8e874f",
+      "sha256": "7b90b6c82d45cab1f3b5f170e4b90c5545cd08cf90f6e6c28877b72e54da852b",
+      "text": "2\n4\n"
+    }
+  }
+}
