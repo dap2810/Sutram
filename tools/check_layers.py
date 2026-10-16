@@ -8,9 +8,9 @@ Every module in lib/ carries a machine-readable marker in its header:
           import (ayojan) an alloc- or std-layer module.
   alloc — needs a heap (uses nirmmita, or imports an alloc module).
           Must not import a std-layer module.
-  std   — OS services (files, network, clocks, ...). Currently empty:
-          the library deliberately has no OS services
-          (see docs/LIBRARY-BOUNDARY.md).
+  std   — OS services (files, network, clocks, ...). The ONLY layer
+          allowed to call OS-service builtins (see OS_BUILTINS).
+          file.smlib (R30) is the first std module.
 
 The check fails on:
   - a module with no marker, or an unknown marker;
@@ -18,9 +18,9 @@ The check fails on:
   - a core module that imports an alloc/std module;
   - an alloc module that imports a std module;
   - a module missing from docs/LIBRARY-LAYERS.md.
-  - ANY module that calls an OS-service builtin (see OS_BUILTINS):
-    such a module would need to be marked std, so a call here means
-    the 0-std result is wrong and the label must move.
+  - a core/alloc module that calls an OS-service builtin (see
+    OS_BUILTINS): such a module belongs in std. A std module
+    calling one is correct, not an error.
 
 Usage: python3 tools/check_layers.py   (exit 0 = all layers honour the rules)
 """
@@ -35,6 +35,7 @@ import sys
 # needs A heap, not the OS. Raw memory ops likh/pad/likh8/pad8,
 # kosh_*, char_*, smaran_* are language features, not OS services.)
 OS_BUILTINS = ("likha", "likha_fmt", "likh", "paadh", "band",
+               "dvaram",
                "netsock", "netbind", "netlisten", "netaccept")
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -73,12 +74,14 @@ def main():
         code = strip_comments(text)
         imports = sorted(set(AYOJAN_RE.findall(code)))
         uses_alloc = bool(NIRMMITA_RE.search(code))
-        # Any OS-service builtin call means the module belongs in std.
-        for builtin in OS_BUILTINS:
-            if re.search(rf"\b{builtin}\s*\(", code):
-                errors.append(
-                    f"{mod}: marked {layer} but calls OS builtin {builtin}"
-                    " (belongs in std)")
+        # An OS-service builtin call means the module belongs in
+        # std — an error only when the module is NOT marked std.
+        if layer != "std":
+            for builtin in OS_BUILTINS:
+                if re.search(rf"\b{builtin}\s*\(", code):
+                    errors.append(
+                        f"{mod}: marked {layer} but calls OS builtin {builtin}"
+                        " (belongs in std)")
         if layer == "core":
             if uses_alloc:
                 errors.append(f"{mod}: marked core but calls nirmmita (allocator)")
