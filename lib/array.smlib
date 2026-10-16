@@ -8,7 +8,10 @@
 
 prakriya array_new(n) {
     vitti c = n
-    pratiyati nirmmita(c * 8)
+    vitti sz = c * 8
+    # A count so large the byte size overflows returns 0.
+    yadi (sz < 0) { pratiyati 0 }
+    pratiyati nirmmita(sz)
 }
 
 prakriya array_set(arr, i, val) {
