@@ -1,7 +1,9 @@
 # The property suite as a regression net
 
-`tools/proof_props.py` holds **72 properties** (69 at the start of Round 26,
-plus `safety26 interaction`, `breadth26`, and `min26` added this round). For each one,
+`tools/proof_props.py` holds **76 properties** (69 at the start of Round 26,
+plus `safety26 interaction`, `breadth26`, and `min26` added in R26,
+`safety27 cross-module` and `bigint divzero` added in R27, and
+`ok convention` and `numeric28` added in R28). For each one,
 this file states in one line **what would have to break for it to fail**.
 Method (R26 WS2): every property's assertion was read, and the four most
 suspicious ones (`fnv1a_deterministic`, `fnv1a_avalanche`, `map_collision`,
@@ -9,7 +11,7 @@ suspicious ones (`fnv1a_deterministic`, `fnv1a_avalanche`, `map_collision`,
 
 ## Verdict
 
-**All 72 are genuine, falsifiable tests. None removed.** Every property
+**All 76 are genuine, falsifiable tests. None removed.** Every property
 compares its subject against an independent oracle (Python arithmetic, a
 second implementation, or an invariant the function itself must uphold),
 so each has a concrete failure mode. Two caveats are recorded below; neither
@@ -100,3 +102,29 @@ makes its property vacuous.
 | 70 | safety26 interaction | sat and checked disagreeing on the success path, sat not the clamp on overflow / 0 on invalid input, or a saturating function wrapping |
 | 71 | breadth26 | `math_rand` non-deterministic or off the LCG sequence, `math_clamp` off Python, or `str_to_float` off Python `float()` beyond 1e-9 relative |
 | 72 | min26 | `int_to_str(MIN)` not "-9223372036854775808", `fmt_digits_base` mishandling negatives, or `fmt_int_base`/`fmt_int_flags` wrong on MIN in some base |
+| 73 | safety27 cross-module | `strconv`'s parse guards and `ganita`'s checked forms disagreeing on the same magnitude (one accepts what the other rejects), or either returning a wrapped value on overflow |
+| 74 | bigint divzero | `bigint_divmod` by zero hanging or returning anything but `q=0, r=a`, or `bigint_powmod` with mod 0 hanging or not returning the unreduced power |
+| 75 | ok convention | an `ok`-param container function failing to set `ok` on some path, or returning anything but the defined failure value `0` on empty |
+| 76 | numeric28 | `gcd`/`lcm` returning a negative, `lcm(0,0)` trapping, `power`/`fact`/`sum_to` edges wrong, `abs_val(MIN)` not wrapping, `bit_count` negative not `0`, `isqrt`/`is_prime`/`is_perfect`/`collatz` domain limits wrong |
+
+## R27: is there a property that has never failed and never could?
+
+**No.** Re-checked in R27 (WS2): every property compares its subject
+against an independent oracle, so every one has a concrete failure mode
+(the table above). "Never failed in CI" is not "could never fail" — a
+property guards against a *plausible* regression, and the plausible
+regression is the failure mode. Two pieces of evidence that the net can
+actually fail:
+
+- Four properties failed during their own development: `safety26`
+  (the re-declaration compiler bug made it report a false
+  checked/sat disagreement), `breadth26` (statement limit, then a
+  literal-format issue), `min26` (a wrong expected value in the
+  property itself), `safety27` (a wrong hex expectation in the property
+  itself). Three of those four were bugs in the property code, not the
+  library — which is still evidence the assertions are evaluated, not
+  vacuous.
+- The closest call, `hash fnv1a deterministic`, compares `fnv1a(s)`
+  against itself — but it tests determinism, and it would fail against
+  a plausible broken implementation (one reading uninitialized state
+  or a random seed). It is kept deliberately.
