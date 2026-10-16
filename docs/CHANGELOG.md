@@ -1,3 +1,22 @@
+## v155 - GUI slice 34: the editor jumps to the error line; ROUND-30 issued to Muse
+
+- **Slice 34 completes slice 33.** Slice 33 coloured the error line's gutter number red -- but if the
+  error is on line 45 and the window shows 23 lines, you still cannot see it. `ed_goto_line` walks
+  `ed_buf` counting newlines to the named line, sets `ed_cursor` there, and scrolls via
+  `ed_ensure_visible`. **After a failed compile the editor now takes you to the error.**
+- **New test `tools/test_x11_goto_line.py`** uses a 60-line buffer (only 23 fit) and a mock compiler
+  that names **line 45**. It asserts the gutter shows the top of the file **before** Ctrl-R and a window
+  containing line 45 **after** -- so the test proves a *jump*, not merely a colour. It also fails if the
+  target line was already visible, which would make the test unable to prove anything. **GUI suite now
+  18/18.**
+- **ROUND-30 issued to Muse** (five workstreams, built on what R29 proved): systematically hunt
+  defects across all 23 modules at their edges -- **crashes, hangs and wrong answers are worth more than
+  new functions**; a `kosh` growth-avoidance pattern that reduces the leak without a compiler change;
+  the result type made usable with a documented early-return pattern; the first genuinely `std` module
+  so the layer count stops being zero; and pinning what R29 could not (`sum_to`, and a test that
+  *demonstrates* the `chakravala` approximation rather than describing it).
+- GUI source ~95 KB; binary **38,040 B**. Compiler untouched.
+
 ## v154 - ChatGPT R69 + Muse R29 verified and SYNCED; ROUND-71 corrected
 
 - **Muse R29 verified and synced (25 files).** Patch applies clean, **26/26 hashes**, suite **187/4**,
