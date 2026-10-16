@@ -85,6 +85,49 @@ Notes:
   is: check `ok[0]` after every checked call; never read a checked
   return without it.
 
+## The Result type (R29 WS3) — one value instead of two cells
+
+`lib/result.smlib` (layer: core) provides a `Result`: a 2-cell
+pankti `[ok, value]` supplied by the caller. `ok` = 1 means
+success and `value` holds the answer; `ok` = 0 means failure
+and `value` is 0.
+
+| Function | Meaning |
+|---|---|
+| `result_ok(out, v)` / `result_err(out)` | Write `[1, v]` / `[0, 0]` into `out`. |
+| `result_is_ok(r)` / `result_value(r)` | Inspect. `result_value` on a failure returns 0 — check `is_ok` first. |
+| `result_value_or(r, def)` | Value if success, else `def` — both branches in one expression. |
+| `result_from_ok(out, v, ok)` | Bridge the `ok` convention into a Result. |
+| `result_checked_add/sub/mul/div/mod(out, a, b)` | The `ganita` checked operation, producing a Result. Overflow, div/mod by zero, and `MIN / -1` give failure `[0, 0]`. |
+
+The checked producers pass `out` itself as the `ok` cell to the
+`ganita` checked form, so the module allocates nothing and stays
+core.
+
+### What a Result buys over the `ok` convention
+
+- **One value carries both.** A Result can be stored, passed,
+  and returned from a function without threading a separate `ok`
+  cell through every call.
+- **Both branches in one expression** via `result_value_or`.
+- **The failure is visible in the value itself** — there is no
+  separate cell to forget to pass.
+
+### What it still cannot do without compiler support
+
+- **Nothing forces the check.** The caller can still read
+  `result_value` without calling `result_is_ok` — exactly like
+  ignoring `ok`. There is no exhaustiveness checking.
+- **No propagation operator.** The caller still branches by
+  hand; there is no `?` / `try` that returns early on failure.
+- **No chaining.** `map` / `and_then` need callbacks, which the
+  language does not have.
+- **No ownership.** A Result is a caller-owned mutable array;
+  aliasing and mutation hazards remain (see `MEMORY-MODEL.md`).
+
+Use `Result` for new checked APIs; the `ok` convention stays
+for the existing functions (do not churn them).
+
 ## Test pinning
 
 `prop_ok_convention` asserts the container half of this contract
