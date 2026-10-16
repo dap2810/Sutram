@@ -1,0 +1,34 @@
+mukhya() {
+    # Kosh growth-avoidance pattern (R30 WS2): ONE kosh, capacity
+    # reserved up front, cleared and reused across rounds. No
+    # growth ever happens, so no superseded buffer is retained.
+    kosh v[5]
+    vitti round = 0
+    vitti total = 0
+    yavat (round < 3) {
+        vitti i = 0
+        yavat (i < 5) {
+            kosh_push(v, round * 10 + i)
+            i = i + 1
+        }
+        # cap is unchanged by fill and by clear
+        likha(kosh_cap(v))
+        likha("\n")
+        likha(kosh_len(v))
+        likha("\n")
+        vitti j = 0
+        yavat (j < 5) {
+            total = total + v[j]
+            j = j + 1
+        }
+        kosh_clear(v)
+        likha(kosh_len(v))
+        likha("\n")
+        likha(kosh_cap(v))
+        likha("\n")
+        round = round + 1
+    }
+    likha(total)
+    likha("\n")
+    likha("kosh-reuse-done\n")
+}
