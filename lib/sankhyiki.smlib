@@ -78,11 +78,12 @@ prakriya prasaran(kosh dasham xs) {
 
 # --- square root, Newton's method (private to this module: distinct name so it
 #     never collides with madhava_sqrt or a user function) ---
+# 1000 iterations, as madhava_sqrt (20 gave 1279996 for sqrt(1e12)).
 prakriya sankhyiki_sqrt(dasham v) {
     yadi (v <= 0.0) { pratiyati 0.0 }
     dasham g = v
     vitti k = 0
-    yavat (k < 20) {
+    yavat (k < 1000) {
         g = (g + v / g) / 2.0
         k = k + 1
     }
