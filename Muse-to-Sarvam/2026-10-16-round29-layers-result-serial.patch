@@ -1,0 +1,1707 @@
+diff --git a/docs/ERROR-CONVENTION.md b/docs/ERROR-CONVENTION.md
+index 9b6ce04..25a761d 100644
+--- a/docs/ERROR-CONVENTION.md
++++ b/docs/ERROR-CONVENTION.md
+@@ -85,6 +85,49 @@ Notes:
+   is: check `ok[0]` after every checked call; never read a checked
+   return without it.
+ 
++## The Result type (R29 WS3) — one value instead of two cells
++
++`lib/result.smlib` (layer: core) provides a `Result`: a 2-cell
++pankti `[ok, value]` supplied by the caller. `ok` = 1 means
++success and `value` holds the answer; `ok` = 0 means failure
++and `value` is 0.
++
++| Function | Meaning |
++|---|---|
++| `result_ok(out, v)` / `result_err(out)` | Write `[1, v]` / `[0, 0]` into `out`. |
++| `result_is_ok(r)` / `result_value(r)` | Inspect. `result_value` on a failure returns 0 — check `is_ok` first. |
++| `result_value_or(r, def)` | Value if success, else `def` — both branches in one expression. |
++| `result_from_ok(out, v, ok)` | Bridge the `ok` convention into a Result. |
++| `result_checked_add/sub/mul/div/mod(out, a, b)` | The `ganita` checked operation, producing a Result. Overflow, div/mod by zero, and `MIN / -1` give failure `[0, 0]`. |
++
++The checked producers pass `out` itself as the `ok` cell to the
++`ganita` checked form, so the module allocates nothing and stays
++core.
++
++### What a Result buys over the `ok` convention
++
++- **One value carries both.** A Result can be stored, passed,
++  and returned from a function without threading a separate `ok`
++  cell through every call.
++- **Both branches in one expression** via `result_value_or`.
++- **The failure is visible in the value itself** — there is no
++  separate cell to forget to pass.
++
++### What it still cannot do without compiler support
++
++- **Nothing forces the check.** The caller can still read
++  `result_value` without calling `result_is_ok` — exactly like
++  ignoring `ok`. There is no exhaustiveness checking.
++- **No propagation operator.** The caller still branches by
++  hand; there is no `?` / `try` that returns early on failure.
++- **No chaining.** `map` / `and_then` need callbacks, which the
++  language does not have.
++- **No ownership.** A Result is a caller-owned mutable array;
++  aliasing and mutation hazards remain (see `MEMORY-MODEL.md`).
++
++Use `Result` for new checked APIs; the `ok` convention stays
++for the existing functions (do not churn them).
++
+ ## Test pinning
+ 
+ `prop_ok_convention` asserts the container half of this contract
+diff --git a/docs/LIBRARY-BOUNDARY.md b/docs/LIBRARY-BOUNDARY.md
+index 28b3bc1..5eda142 100644
+--- a/docs/LIBRARY-BOUNDARY.md
++++ b/docs/LIBRARY-BOUNDARY.md
+@@ -1,10 +1,10 @@
+ # The library's honest boundary
+ 
+-One page on what the Sutram standard library (`lib/`, 21 modules, 281
++One page on what the Sutram standard library (`lib/`, 23 modules, 297
+ functions) deliberately does **not** do, with the reason for each. A
+ stated boundary is worth more than a longer function list. This page is
+ the R27 answer; R28 extends it with the layer markers that enforce the
+-core/alloc split.
++core/alloc split; R29 adds the `Result` type and serialisation.
+ 
+ ## Deliberately not in the library
+ 
+@@ -47,10 +47,10 @@ core/alloc split.
+   source. Reason: no OS assumed. `math_rand` (R26) is a deterministic
+   PRNG with a caller-owned seed — honest about what it is.
+ - **Exceptions / panics.** No throw/catch, no stack unwinding.
+-  Reason: errors are values. The `ok` out-parameter convention (see
+-  `docs/ERROR-CONVENTION.md` in R28) is the error model; there is no
+-  result type, no propagation operator, and no exhaustiveness checking
+-  yet (charter item 12, partial).
++  Reason: errors are values. The `ok` out-parameter convention
++  and the `Result` type (see `docs/ERROR-CONVENTION.md`, R29)
++  are the error model; there is no propagation operator and no
++  exhaustiveness checking yet (charter item 12, partial).
+ - **Generics, closures, methods, traits.** No first-class functions,
+   no generic collections, no methods. Reason: the language does not
+   have them yet (charter items 02–04). Every collection in `lib/` is
+@@ -65,10 +65,13 @@ Beyond the missing features above, the library does not claim:
+ - **Memory safety.** Memory is manual; there is no ownership, no
+   borrow checking, and no unsafe boundary (charter item 11, not
+   started). A program that frees or double-uses storage is a caller
+-  bug the library cannot catch.
++  bug the library cannot catch. The `kosh` growth path retains
++  superseded buffers (a compiler-side leak, verified in R29;
++  see `MEMORY-MODEL.md` §7 and `tools/test_kosh_growth_leak.py`).
+ - **A result type.** Errors are the `ok` out-parameter convention
+-  (see `docs/ERROR-CONVENTION.md`), not a type the compiler checks.
+-  Nothing forces the caller to check `ok[0]`.
++  and, since R29, the `Result` value (see
++  `docs/ERROR-CONVENTION.md`). Nothing forces the caller to check
++  `ok[0]` or `result_is_ok` — there is no exhaustiveness checking.
+ - **Formal type contracts.** Integer sizes, conversions, overflow,
+   and comparison are defined in `docs/NUMERIC-CONTRACT.md` and
+   pinned by tests, but there is no formal type-contract system in
+@@ -77,19 +80,21 @@ Beyond the missing features above, the library does not claim:
+   and pinned by the proof suites, but there is no formal written
+   specification yet (charter item 20, partial).
+ 
+-## Layers (R28 extension)
++## Layers (R28 extension, R29 resolution)
+ 
+ The library is split into **core** (no allocator, no OS),
+-**alloc** (needs a heap), and **std** (OS services — currently
+-empty). Each module's header carries a machine-readable
+-`# layer:` marker, and `tools/check_layers.py` verifies that no
+-core module depends upward. See `docs/LIBRARY-LAYERS.md` for the
+-per-module table.
++**alloc** (needs a heap), and **std** (OS services — empty by
++verification, not by omission: no module calls any OS-service
++builtin, and the layer checker enforces it). Each module's header
++carries a machine-readable `# layer:` marker, and
++`tools/check_layers.py` verifies that no core module depends
++upward. See `docs/LIBRARY-LAYERS.md` for the per-module table.
+ 
+ Pure computation over values the caller provides: containers (`map`,
+ `set`, `list`, `queue`, `stack`), text and bytes (`string`, `strb`,
+ `str`), numbers (`math`, `ganita`, `bigint`, `strconv`, `baseconv`,
+ `fmt`, `sankhyiki`, `kalana`), hashing (`hash`), sorting (`sort`),
++serialisation (`serial`, R29), the `Result` type (`result`, R29),
+ and the safety net (`ganita_checked_*`, `ganita_sat_*`). Everything
+ in `lib/` runs on plain arithmetic and explicit caller-provided
+ storage; the layer split (core vs alloc) is marked per module in
+diff --git a/docs/LIBRARY-LAYERS.md b/docs/LIBRARY-LAYERS.md
+index 3136663..7df1ee1 100644
+--- a/docs/LIBRARY-LAYERS.md
++++ b/docs/LIBRARY-LAYERS.md
+@@ -11,7 +11,7 @@ std module. A layer claim nobody can check is decoration.
+ 
+ ```
+ $ python3 tools/check_layers.py
+-layers OK: 12 core, 9 alloc, 0 std
++layers OK: 14 core, 9 alloc, 0 std
+ ```
+ 
+ ## The table
+@@ -38,27 +38,47 @@ layers OK: 12 core, 9 alloc, 0 std
+ | `strb` | core | Byte-string ops on caller-provided buffers; no allocation. |
+ | `strconv` | alloc | Temp buffers for digit reversal. |
+ | `string` | core | Cell-array ops on caller-provided buffers; no allocation. |
++| `result` | core | Result values on caller-provided cells; the checked producers reuse `out` as the `ok` cell, so no allocation. Imports `ganita` (core). |
++| `serial` | core | Binary serialisation on caller-provided byte buffers; no allocation, no imports. |
+ | `util` | core | Pure arithmetic helpers; no allocation, no imports. |
+ 
+ ## Dependency edges
+ 
+-Only three modules import anything (`ayojan` is textual inclusion, so
++Only four modules import anything (`ayojan` is textual inclusion, so
+ the import list is the complete dependency list):
+ 
+ - `list` → `sort` (alloc → alloc: allowed)
+ - `map` → `hash` (core), `strb` (core): alloc → core is downward, allowed
+ - `set` → `map` (alloc), `strb` (core): allowed
++- `result` → `ganita` (core → core: allowed)
+ 
+-No core module imports anything, so no core module depends upward.
+-The full import graph is acyclic.
++No core module imports an alloc or std module, so no core module
++depends upward. The full import graph is acyclic.
+ 
+-## Why `std` is empty
++## Why `std` is empty (R29 WS1 resolution)
+ 
+-No module is `std` because the library deliberately has no OS
+-services — no file I/O, networking, clocks, or processes (see
+-`docs/LIBRARY-BOUNDARY.md`). If an OS-service module is ever added,
+-it must be marked `std`, and the checker will then enforce that no
+-core or alloc module imports it.
++The `0 std` result was investigated, not assumed. The question was
++whether some module that genuinely needs OS services is mis-marked
++as `alloc`. The answer is no, for two checked reasons:
++
++1. **No lib module calls any OS-service builtin.**
++   `tools/check_layers.py` now enforces this: it fails if any module
++   calls `likha` / `likha_fmt` / `likh` (console output), `paadh`
++   (console input), `band` (file handles), or `netsock` /
++   `netbind` / `netlisten` / `netaccept` (sockets). Those builtins
++   exist in the compiler, but no library module uses them. The
++   `0 std` claim is therefore checked, not asserted — a module that
++   started calling one would fail the checker until relabelled `std`.
++2. **The allocator is not an OS service.** `nirmmita` is implemented
++   with `mmap` under the hood, but an `alloc` module needs *a* heap,
++   not the OS: a freestanding heap would serve the same code. The
++   charter's `std` layer means files, networking, threads — none of
++   which any module touches. Likewise `kosh` growth (compiler-side,
++   `mmap`-backed) is allocation, not an OS service.
++
++So `0 std` is a legitimate and interesting fact: the library is
++pure computation plus caller-provided storage. It is stated here
++explicitly rather than left as a suspicious zero.
+ 
+ ## Notes
+ 
+diff --git a/docs/MEMORY-MODEL.md b/docs/MEMORY-MODEL.md
+index 72866c6..6a5bc76 100644
+--- a/docs/MEMORY-MODEL.md
++++ b/docs/MEMORY-MODEL.md
+@@ -162,7 +162,35 @@ reviewed; do not silently reinterpret a copied raw integer as an owner. Separate
+ allocator-free core operations from owning containers and OS resources without
+ creating unrelated languages with incompatible type rules.
+ 
+-## 6. Evidence required before claiming the proposal works
++## 7. R29 verification (2026-10-16): the growth leak is real and unfixable from the library side
++
++The leak described in section 2 was verified by inspection and by
++measurement, and the fix was determined to be compiler-side:
++
++- **Inspection (read-only):** the `kosh_push` growth path in
++  `src/sutram_compiler.asm` (`.ge_call_koshpush`) emits
++  `emit_nirmmita_from_rax` (`mmap`) for the new buffer, copies the
++  cells, and stores the new pointer. A grep of the whole compiler
++  source finds **no `munmap` / free emission anywhere** — the old
++  buffer's mapping is never released.
++- **No free primitive exists in the language.** The `kosh` API
++  (`kosh_push/pop/len/cap/clear/empty/peek/enqueue/dequeue`,
++  `docs/KOSH-BUILTINS.md`) has no free, and there is no general
++  `munmap` builtin. So the library cannot reclaim the buffer even
++  if it wanted to: there is no primitive to call.
++- **Measurement:** `tools/test_kosh_growth_leak.py` compiles a
++  program that pushes 8,000,000 items and measures the child's
++  peak RSS. Slope is **~15.3–15.6 bytes/item** — peak heap is ~2x
++  the live buffer, i.e. every superseded buffer is retained. A
++  fixed compiler would show ~8 bytes/item.
++- **Fix (compiler-side, `src/` work, not this round):** emit a
++  `munmap` of the old buffer in the growth path after the copy, or
++  add a free primitive and a reclamation rule. The test above is
++  expected to FAIL until that lands; it is a diagnostic, not a
++  suite gate, because RSS is machine-dependent.
++
++The leak is therefore confirmed as a compiler defect, not a
++library defect, and it is not fixable from the library side.
+ 
+ The acceptance set must include valid borrowing/moving programs and invalid
+ programs rejected for use-after-move, escaping borrows, double release and
+diff --git a/docs/NUMERIC-CONTRACT.md b/docs/NUMERIC-CONTRACT.md
+index 3ebf92f..8881cf9 100644
+--- a/docs/NUMERIC-CONTRACT.md
++++ b/docs/NUMERIC-CONTRACT.md
+@@ -31,21 +31,21 @@ marked — that gap list is as valuable as the table.
+ | `ganita_checked_abs` | `vitti` | `MIN` → `0`, `ok` 0 | itself | `ganita_sat_abs` (`MIN` → `MAX`) | `prop_safety25/26` |
+ | `ganita_abs` | `vitti` | **wraps**: `MIN` → `MIN` | `ganita_checked_abs` | `ganita_sat_abs` | `prop_numeric28` (pins the wrap) |
+ | `ganita_isqrt` | `vitti` | negative → `0`; binary search, no overflow | — | — | `prop_numeric28` (`MAX` → `3037000499`), golden `numeric_hangfix` |
+-| `kuttaka`, `chakravala`, `samasa`, `brahmagupta_area` | mixed | **wraps** (plain arithmetic; no checked forms) | — | — | goldens only (no overflow cases) — **GAP** |
++| `kuttaka`, `chakravala`, `samasa`, `brahmagupta_area` | mixed | **wraps** (plain arithmetic; no checked forms) | — | — | `prop_numeric29` pins wrapping: `kuttaka` (wrapping vs exact differ — pinned against a Python wrapping simulation), `samasa` (2^80 → 0), `brahmagupta_area` (2^64 sum → 0); `chakravala` pinned separately below |
+ 
+ ## `math` — plain arithmetic (wraps by design)
+ 
+ | Operation | Operands | Overflow / edge | Checked | Saturating | Pinned by |
+ |---|---|---|---|---|---|
+-| `sq`, `square`, `cube`, `double`, `triple`, `inc` | `vitti` | **wraps** | `ganita_checked_mul` (for products) | `ganita_sat_mul` | goldens (small values only) — **GAP** (no wrap cases) |
++| `sq`, `square`, `cube`, `double`, `triple`, `inc` | `vitti` | **wraps** | `ganita_checked_mul` (for products) | `ganita_sat_mul` | `prop_numeric29` (pins wrap cases: `sq(2^32)=0`, `square(3037000500)`, `cube(2^21)=MIN`, `double(MAX)=-2`, `triple(MAX)`, `inc(MAX)=MIN`) |
+ | `abs_val` | `vitti` | **wraps**: `MIN` → `MIN` | `ganita_checked_abs` | `ganita_sat_abs` | `prop_numeric28` (pins the wrap) |
+ | `min2`, `max2` | `vitti, vitti` | n/a | — | — | goldens |
+ | `gcd` | `vitti, vitti` | non-negative result; `gcd(0,0)=0`; `gcd(MIN,0)=MIN` (wrapping abs) | — | — | `prop_math_gcd`, `prop_math_gcd_lcm`, `prop_numeric28`, golden `math_gcd_lcm_edge` |
+ | `lcm` | `vitti, vitti` | non-negative result; `lcm(0,0)=0`; `lcm(MIN,2)=MIN` (wrapping) | — | — | `prop_math_gcd_lcm`, `prop_numeric28`, golden `math_gcd_lcm_edge` |
+-| `power` | `vitti, vitti` | **wraps**; `e <= 0` → `1` | `ganita_checked_pow` | `ganita_sat_pow` | `prop_numeric28` (edges); goldens (`2^10`, `3^0`, `5^3`) — **GAP** (no wrap case) |
+-| `fact` | `vitti` | **wraps** for `n >= 21`; `n < 2` → `1` | `ganita_checked_fact` | `ganita_sat_fact` | `prop_numeric28` (edges); goldens (`0!`, `1!`, `5!`) — **GAP** (no wrap case) |
++| `power` | `vitti, vitti` | **wraps**; `e <= 0` → `1` | `ganita_checked_pow` | `ganita_sat_pow` | `prop_numeric28` (edges); `prop_numeric29` (`power(2,63)=MIN`, `power(3,40)` wrap) |
++| `fact` | `vitti` | **wraps** for `n >= 21`; `n < 2` → `1` | `ganita_checked_fact` | `ganita_sat_fact` | `prop_numeric28` (edges); `prop_numeric29` (`fact(21)` wrap) |
+ | `is_prime` | `vitti` | n/a; `n < 2` → `0` | — | — | `prop_numeric28` (edges + `is_prime(97)`); one-off: `is_prime(9223372036854775783) = 1` (largest 63-bit prime, verified vs Python Miller-Rabin) |
+-| `sum_to` | `vitti` | **wraps** for large `n`; `n < 1` → `0` | — | — | `prop_numeric28` (edges) — **GAP** (no wrap case) |
++| `sum_to` | `vitti` | **wraps** for large `n`; `n < 1` → `0` | — | — | `prop_numeric28` (edges) — **OPEN GAP**: wrapping is defined but not pinned — pinning needs `n ≈ 4.3e9` iterations, impractical in a test |
+ | `bit_count` | `vitti` | defined for `n >= 0`; negative `n` → `0` (not two's-complement popcount) | — | — | `prop_numeric28` (pins it) |
+ | `math_rand` | 1-cell state | wraps by design (LCG) | — | — | `prop_breadth26` |
+ | `math_clamp` | `vitti, vitti, vitti` | n/a; requires `lo <= hi` (`lo > hi` → returns `lo`) | — | — | `prop_breadth26` |
+@@ -69,7 +69,7 @@ marked — that gap list is as valuable as the table.
+ | `fmt_digits` / `fmt_digits_base` | `vitti`, base | base `< 2` or `> 36` → `0` (empty); `MIN` handled | — | — | `prop_min26`, `prop_numeric28` (base limits) |
+ | `fmt_dec/hex/hex_upper/oct/bin` | `vitti` | n/a (fixed-base forms of `fmt_int_base`) | — | — | `prop_fmt_int_base_roundtrip` |
+ | `fmt_group*` / `fmt_group_int` | bytes / `vitti` | n/a; grouping is digit-preserving | — | — | `prop_fmt_group_digits`, golden `fmt_group` |
+-| `fmt_fixed` / `fmt_fixed_signed` | `dasham`, places | requires `\|x\| * 10^places` fits in int64 (documented); overflow is **not** guarded | — | — | `prop_fmt_fixed` (in-range values) — **GAP** (overflow input not pinned) |
++| `fmt_fixed` / `fmt_fixed_signed` | `dasham`, places | requires `\|x\| * 10^places` fits in int64; overflow input returns `0` (empty) — R29 guard (was a segfault: the dasham→int conversion is indefinite past 2^63) | — | — | `prop_numeric29` (overflow → 0, negative overflow → 0, largest fixed output `9223372036854774784` = 2^63 − 1024, 19 chars) |
+ | `fmt_signed` / `fmt_sign_char` | `vitti` | n/a | — | — | `prop_fmt_signed` |
+ | `fmt_pad_left/right/center` | bytes | n/a (padding) | — | — | `prop_fmt_pad_content` |
+ 
+@@ -82,24 +82,59 @@ Not in the R28 WS3 module list, but the same overflow-hang pattern
+ |---|---|---|---|
+ | `is_perfect` | `vitti` | `n < 2` → `0`; division bound (the old `d * d` loop hung near MAX) | `prop_numeric28`, golden `numeric_hangfix` |
+ | `collatz_steps` | `vitti` | `-1` means "does not reach 1": `n < 1`, or the `3x+1` step would overflow int64 (`n > 3074457345618258602` and odd) | `prop_numeric28`, golden `numeric_hangfix` |
+-| `fib` | `vitti` | **wraps** for large `n` (loop is bounded by `n`, so it terminates); `n < 2` → `n` | goldens (small values) — **GAP** (no wrap case) |
+-| `digit_count`, `digit_sum`, `reverse_num`, `is_palindrome`, `clamp`, `is_even`, `is_odd` | `vitti` | `reverse_num` **wraps** for reversals past MAX; the rest are exact | goldens — **GAP** (`reverse_num` wrap not pinned) |
++| `fib` | `vitti` | **wraps** for large `n` (loop is bounded by `n`, so it terminates); `n < 2` → `n` | — | — | `prop_numeric29` (`fib(93)` wrap) |
++| `digit_count`, `digit_sum`, `reverse_num`, `is_palindrome`, `clamp`, `is_even`, `is_odd` | `vitti` | `reverse_num` **wraps** for reversals past MAX; the rest are exact | — | — | `prop_numeric29` (`reverse_num` wrap); goldens |
+ 
+ ## Gap list (behaviour not pinned by a test)
+ 
+-1. `ganita` classical functions (`kuttaka`, `chakravala`, `samasa`,
+-   `brahmagupta_area`): wrapping on overflow is not pinned. Goldens
+-   cover small values only.
+-2. `math` plain `sq`/`square`/`cube`/`double`/`triple`/`inc`,
+-   `power`, `fact`, `sum_to`: wrapping on overflow is not pinned.
+-   Goldens cover small values only. (The checked/sat forms in
+-   `ganita` are fully pinned — use them when wrapping is not
+-   acceptable.)
+-3. `fmt_fixed`: behaviour when `|x| * 10^places` overflows int64 is
+-   documented as a requirement but not pinned by a test (no golden
+-   asserts what happens on overflow input).
+-4. `num` `fib`, `reverse_num`: wrapping on overflow is not pinned.
+-   Goldens cover small values only.
++1. `sum_to` wrapping: defined (wraps) but not pinned — pinning
++   needs `n ≈ 4.3e9` iterations, impractical in a test. **OPEN GAP.**
++
++## R29: chakravala fixes and compiler-side findings
++
++`chakravala` (Pell's equation) had two defects, both fixed in
++`lib/ganita.smlib`:
++
++- **Perfect-square input crashed** (`chakravala(4)` → SIGFPE:
++  the search divided by `|k| = 0`). Now returns the trivial
++  solution `(1, 0)` with return `1`.
++- **Large `|k|` hung.** The old scan `m = 0, 1, 2, ...` needs
++  `m ~ 2.9e9` for `n = MAX`. Now solves `b*m = -a (mod |k|)`
++  with `kuttaka` and compares the two divisible candidates
++  bracketing `sqrt(n)`. `chakravala(61)` still gives the
++  minimal `(1766319049, 226153980)`.
++- **Return contract made explicit:** `1` = solution in `out`,
++  `0` = failure (`out` untouched) — overflow in the update
++  step, no divisible `m`, or the 1000-iteration guard.
++  `chakravala(MAX)` returns `0` (its minimal solution does
++  not fit in int64) instead of hanging.
++- **Approximation:** candidates with `m > isqrt(MAX)` are
++  skipped (their `nk` would not fit). The below-`sqrt(n)`
++  candidate is always exact, so one always exists. For
++  `n > MAX/2` this can pick a suboptimal `m` — still a valid
++  divisible `m`, never a wrong answer.
++
++Three compiler-side findings (in `src/`, not fixable from the
++library side) surfaced while pinning this contract:
++
++- **Scientific-notation literals are broken.** `dasham x = 1e18`
++  parses as `1.0` (exponent dropped), and `fmt_fixed(1e18, ...)`
++  with the literal inline in a call argument segfaults.
++  `1e18` written out (`1000000000000000000.0`) works. Use full
++  decimal literals until the lexer is fixed.
++- **~29+ locals across nested blocks miscompile.** A function
++  with ~29 locals in nested blocks segfaults at runtime even
++  when the offending branch never executes (verified by
++  bisection: 28 locals fine, 29 crashes in `chakravala`).
++  The fix reuses dead variables (`g1`, `g2`, `gt`, `r`) in
++  the nested branch instead of declaring fresh locals.
++- **64 KiB expanded-source cap.** The compiler caps total
++  `ayojan`-expanded source at 65536 bytes (`IMPORT_BUF_CAP`).
++  The `gaps19` property program (which ayojans
++  `map` + `set` + `strb` + `ganita`) now sits ~130 bytes under
++  it — the chakravala rewrite had to be compacted to fit.
++  The library is growing into this cap; raising it is
++  compiler-side work.
+ 
+ None of these is a crash: the plain functions wrap deterministically,
+ and the crash/hang-class inputs (`lcm(0,0)`, `bigint_divmod` by zero,
+diff --git a/docs/sutram-stdlib.html b/docs/sutram-stdlib.html
+index adfa188..afae0d4 100644
+--- a/docs/sutram-stdlib.html
++++ b/docs/sutram-stdlib.html
+@@ -34,8 +34,10 @@ Do not edit by hand.</p>
+ <li><a href="#map"><code>map</code></a> — 17 functions</li>
+ <li><a href="#math"><code>math</code></a> — 18 functions</li>
+ <li><a href="#num"><code>num</code></a> — 10 functions</li>
++<li><a href="#result"><code>result</code></a> — 11 functions</li>
+ <li><a href="#samanvaya"><code>samanvaya</code></a> — 10 functions</li>
+ <li><a href="#sankhyiki"><code>sankhyiki</code></a> — 16 functions</li>
++<li><a href="#serial"><code>serial</code></a> — 5 functions</li>
+ <li><a href="#set"><code>set</code></a> — 14 functions</li>
+ <li><a href="#sort"><code>sort</code></a> — 14 functions</li>
+ <li><a href="#strb"><code>strb</code></a> — 22 functions</li>
+@@ -120,7 +122,7 @@ Do not edit by hand.</p>
+ <tr><td><code>fmt_sign_char(v, signch, out)</code></td><td>fmt_sign_char(v, signch, out) — `signch` (a byte value, e.g. 32 for a blank, 43 for &#x27;+&#x27;) in place of &#x27;+&#x27; for non-negative values; negatives always get &#x27;-&#x27;.</td></tr>
+ </table>
+ <h2 id="ganita"><code>ganita</code></h2>
+-<p class="mod-desc">layer: core After Aryabhata&#x27;s Kuttaka (~499 CE) and the Chakravala of Jayadeva and Bhaskara II (~1150 CE). KUTTAKA (&quot;the pulveriser&quot;) solves the linear indeterminate equation ax + by = c. It is the ancestor of the extended Euclidean algorithm. CHAKRAVALA (&quot;the wheel&quot;) solves the quadratic indeterminate equation x^2 - N*y^2 = 1, known in Europe as Pell&#x27;s equation. It was the first complete method for it, and for N = 61 it gives x = 1766319049, y = 226153980 - a case Europe first solved in 1657. CHECKED / SATURATING ARITHMETIC (R18) lives here too: ganita is the arithmetic module. See the notes above ganita_checked_add. kuttaka(a, b, c) -&gt; x such that a*x is congruent to c (mod b). Requires gcd(a, b) to divide c. Returns x (a particular solution).</p>
++<p class="mod-desc">layer: core After Aryabhata&#x27;s Kuttaka (~499 CE) and the Chakravala of Jayadeva and Bhaskara II (~1150 CE). KUTTAKA (&quot;the pulveriser&quot;) solves the linear indeterminate equation ax + by = c. It is the ancestor of the extended Euclidean algorithm. CHAKRAVALA (&quot;the wheel&quot;) solves x^2 - N*y^2 = 1 (Pell&#x27;s equation); N = 61 gives x = 1766319049, y = 226153980. CHECKED / SATURATING ARITHMETIC (R18) lives here too: ganita is the arithmetic module. See the notes above ganita_checked_add. kuttaka(a, b, c) -&gt; x such that a*x is congruent to c (mod b). Requires gcd(a, b) to divide c. Returns x (a particular solution).</p>
+ <table>
+ <tr><th>Function</th><th>Description</th></tr>
+ <tr><td><code>kuttaka(a, b, c)</code></td><td></td></tr>
+@@ -273,6 +275,22 @@ Do not edit by hand.</p>
+ <tr><td><code>is_perfect(n)</code></td><td></td></tr>
+ <tr><td><code>collatz_steps(n)</code></td><td></td></tr>
+ </table>
++<h2 id="result"><code>result</code></h2>
++<p class="mod-desc">layer: core A Result is a 2-cell pankti supplied by the caller: [ok, value]. ok = 1 means success and value holds the answer; ok = 0 means failure and value is 0. The checked functions can produce Results directly (result_checked_*), and result_from_ok bridges the older ok out-parameter convention into a Result. What this buys over the ok convention (docs/ERROR-CONVENTION.md): a single value carries both the flag and the answer, so a Result can be stored, passed, and returned from a function without threading a separate ok cell through every call, and result_value_or handles both branches in one expression. What it still cannot do without compiler support: nothing forces the caller to check result_is_ok (the value can still be read unchecked, exactly like ignoring ok); there is no propagation operator (the caller still branches by hand); and there is no chaining/map/and_then because the language has no callbacks. A Result is a caller-owned mutable array — aliasing and mutation hazards remain (no ownership model).</p>
++<table>
++<tr><th>Function</th><th>Description</th></tr>
++<tr><td><code>result_ok(out, v)</code></td><td>result_ok(out, v) — write the success Result [1, v] into out.</td></tr>
++<tr><td><code>result_err(out)</code></td><td>result_err(out) — write the failure Result [0, 0] into out.</td></tr>
++<tr><td><code>result_is_ok(r)</code></td><td>result_is_ok(r) — 1 if r is a success Result, else 0.</td></tr>
++<tr><td><code>result_value(r)</code></td><td>result_value(r) — the value of a success Result. Caller must check result_is_ok first: on a failure Result this returns 0, which is indistinguishable from a success value of 0.</td></tr>
++<tr><td><code>result_value_or(r, def)</code></td><td>result_value_or(r, def) — the value if r is success, else def. The one-expression way to handle both branches.</td></tr>
++<tr><td><code>result_from_ok(out, v, ok)</code></td><td>result_from_ok(out, v, ok) — lift the ok convention into a Result: writes [ok[0], v] into out (value 0 on failure).</td></tr>
++<tr><td><code>result_checked_add(out, a, b)</code></td><td>result_checked_add/sub/mul/div/mod(out, a, b) — the ganita checked operation, producing a Result in out instead of an ok out-parameter. On overflow (or div/mod by zero, MIN/-1) the Result is failure [0, 0].</td></tr>
++<tr><td><code>result_checked_sub(out, a, b)</code></td><td></td></tr>
++<tr><td><code>result_checked_mul(out, a, b)</code></td><td></td></tr>
++<tr><td><code>result_checked_div(out, a, b)</code></td><td></td></tr>
++<tr><td><code>result_checked_mod(out, a, b)</code></td><td></td></tr>
++</table>
+ <h2 id="samanvaya"><code>samanvaya</code></h2>
+ <p class="mod-desc">layer: core Sutram has no 2-D array type, so a matrix is a FLAT `kosh dasham` of m*n elements in row-major order, with the dimensions passed explicitly: A[i][j]  ==  a[i * n + j]        for an m x n matrix CONTRACT for output matrices: the caller must have pushed m*n elements already. A kosh&#x27;s capacity is not its length, so out[i] is out of bounds until an element exists. Functions here never `kosh_push` a parameter — the compiler rejects that, correctly, because the pointer is passed by value. Inputs are read-only. Outputs are written in place and are visible to the caller. --------------------------------------------------------------- element access helpers (flat index) --------------------------------------------------------------- identity matrix: n x n, out must hold n*n elements</p>
+ <table>
+@@ -309,6 +327,16 @@ Do not edit by hand.</p>
+ <tr><td><code>purna_vyapti(xs, n)</code></td><td>--- integer range (max - min) ---</td></tr>
+ <tr><td><code>purna_prasaran(xs, n)</code></td><td>--- integer population variance (truncated toward zero; uses the truncated mean, so exact only when the mean is integral) ---</td></tr>
+ </table>
++<h2 id="serial"><code>serial</code></h2>
++<p class="mod-desc">layer: core The library&#x27;s one new capability area: encode values into a flat byte buffer and decode them back, with bounds checking. Format: i64    — 8 bytes, little-endian, two&#x27;s complement bytes  — 8-byte little-endian length (n) followed by n payload bytes Buffers are byte strings (char_at / set_char), caller-allocated and caller-sized. Every put/get takes (buf, pos, cap): pos is the cursor, cap is the buffer size in bytes. On success the function returns the new cursor; on overrun (or a corrupt negative length when decoding) it returns -1 and the destination buffer is untouched (out_n may hold the decoded length if the length itself was readable). The caller owns the buffer and must check for -1, exactly like checking ok. put_bytes requires src and dst NOT to overlap: it writes the length header before copying the payload, so an overlapping src would be clobbered mid-copy. get_bytes requires buf and dst not to overlap for the same reason. Deliberately not here: floats (the language has no bit-cast primitive to turn a dasham into bits), varints (fixed-width is enough for this first area), and schema/versioning (the caller owns the field order; there is no header). serial_len_bytes(n) — encoded size of an n-byte payload: 8 + n.</p>
++<table>
++<tr><th>Function</th><th>Description</th></tr>
++<tr><td><code>serial_len_bytes(n)</code></td><td></td></tr>
++<tr><td><code>serial_put_i64(out, pos, cap, v)</code></td><td>serial_put_i64(out, pos, cap, v) — write v as 8 LE bytes at out+pos. Returns pos + 8, or -1 if it would overrun cap.</td></tr>
++<tr><td><code>serial_get_i64(buf, pos, cap, out)</code></td><td>serial_get_i64(buf, pos, cap, out) — read 8 LE bytes at buf+pos, write the value into out[0]. Returns pos + 8, or -1 on overrun.</td></tr>
++<tr><td><code>serial_put_bytes(out, pos, cap, src, n)</code></td><td>serial_put_bytes(out, pos, cap, src, n) — write n as an 8-byte LE length followed by n payload bytes from src. Returns the new cursor, or -1 on overrun (n &lt; 0 is also an error: -1).</td></tr>
++<tr><td><code>serial_get_bytes(buf, pos, cap, dst, out_n)</code></td><td>serial_get_bytes(buf, pos, cap, dst, out_n) — read a length-prefixed payload: length into out_n[0], payload into dst. Returns the new cursor, or -1 on overrun / negative length.</td></tr>
++</table>
+ <h2 id="set"><code>set</code></h2>
+ <p class="mod-desc">layer: alloc A set IS a map (`lib/map.smlib`) with a dummy value of 1: membership is map_contains, iteration is map_keys_bytes (R17: packed-byte segments, passed straight to the byte-key map functions with no repacking). ELEMENTS ARE BYTE STRINGS — the same choice as `map.smlib`&#x27;s keys, for the same reason: a caller passes a literal directly (&quot;apple&quot;), with an explicit length, and the whole strb_* surface (compare, pack, unpack) works on the elements unchanged. Do NOT pass char-code (qword-cell) arrays here; see the lib/strb.smlib header for the two representations. Consequences inherited from map: keys longer than 32 bytes are truncated to 32 on every operation, consistently. CAPACITY: a set&#x27;s capacity is fixed at set_init and stored in the buffer (m[0]). Set operations that write into `out` read out&#x27;s capacity from out[0], so the caller MUST pass a set_init&#x27;d buffer with room for the result: cap + bcap for union, cap for difference, min(cap, bcap) for intersection. If `out` is too small, map_put silently drops the overflowing elements (map&#x27;s full-table behaviour) and the returned size will be smaller than the true result — size the output generously and check the returned size. `out` for union / intersect / difference must be a FRESH, EMPTY set: the operations ADD into it and return map_size(out) afterwards. set_is_subset(a, ...) with an empty `a` is 1 (vacuous truth). The 6-argument cap still applies: union / intersect / difference keep the 5-argument shape from the round brief by reading out&#x27;s capacity from out[0] instead of taking it as a sixth parameter.</p>
+ <table>
+@@ -429,6 +457,6 @@ Do not edit by hand.</p>
+ <tr><td><code>bool_to_int(b)</code></td><td></td></tr>
+ <tr><td><code>int_max()</code></td><td></td></tr>
+ </table>
+-<footer>21 modules, 281 functions. Generated from library sources.</footer>
++<footer>23 modules, 297 functions. Generated from library sources.</footer>
+ </body>
+ </html>
+diff --git a/lib/fmt.smlib b/lib/fmt.smlib
+index 0cf97ec..dc67698 100644
+--- a/lib/fmt.smlib
++++ b/lib/fmt.smlib
+@@ -482,6 +482,18 @@ prakriya fmt_fixed_impl(dasham x, places, always_sign, out) {
+         mag = v
+     }
+     scaled = mag * p10f + 0.5
++    # Overflow guard: if scaled >= 2^63 the dasham->int conversion
++    # below is indefinite (x86 cvttsd2si yields MIN) and the
++    # program segfaults downstream. Return 0 with empty output
++    # instead — |x| * 10^places must fit in int64.
++    # NOTE: written as 9223372036854775807.0 (MAX) because the
++    # literal 9223372036854775808.0 overflows the int64 part of
++    # the dasham parser; as a double, MAX.0 rounds to 2^63, so
++    # this is exactly the cvttsd2si indefinite boundary.
++    yadi (scaled >= 9223372036854775807.0) {
++        set_char(dst, 0, 0)
++        pratiyati 0
++    }
+     rounded = scaled
+     intpart = rounded / p10i
+     fracpart = rounded % p10i
+diff --git a/lib/ganita.smlib b/lib/ganita.smlib
+index df48b67..bcb46cf 100644
+--- a/lib/ganita.smlib
++++ b/lib/ganita.smlib
+@@ -6,9 +6,8 @@
+ # KUTTAKA ("the pulveriser") solves the linear indeterminate equation ax + by = c.
+ # It is the ancestor of the extended Euclidean algorithm.
+ #
+-# CHAKRAVALA ("the wheel") solves the quadratic indeterminate equation x^2 - N*y^2 = 1,
+-# known in Europe as Pell's equation. It was the first complete method for it, and for
+-# N = 61 it gives x = 1766319049, y = 226153980 - a case Europe first solved in 1657.
++# CHAKRAVALA ("the wheel") solves x^2 - N*y^2 = 1 (Pell's equation); N = 61 gives
++# x = 1766319049, y = 226153980.
+ #
+ # CHECKED / SATURATING ARITHMETIC (R18) lives here too: ganita is the
+ # arithmetic module. See the notes above ganita_checked_add.
+@@ -78,37 +77,71 @@ prakriya chakravala(out, n) {
+     vitti a = ganita_isqrt(n)
+     vitti b = 1
+     vitti k = a * a - n
++    # Perfect squares (k == 0) have only the trivial (1, 0)
++    # solution; the search would divide by |k| = 0.
++    yadi (k == 0) {
++        out[0] = 1
++        out[1] = 0
++        pratiyati 1
++    }
+     vitti guard = 0
+     yavat (k != 1) {
+-        # choose m: (a + b*m) divisible by |k|, minimising |m*m - n|
++        # Pick m with (a + b*m) divisible by |k| minimising
++        # |m*m - n|. The old m = 0, 1, 2, ... scan hangs
++        # for large |k|; solve b*m = -a (mod |k|) with
++        # kuttaka, then compare the two candidates
++        # bracketing sqrt(n) (f is convex in m).
+         vitti ak = ganita_abs(k)
+-        vitti m = 0
+-        vitti best = 0 - 1
+-        vitti bestm = 0
+-        vitti found = 0
+-        yavat (found == 0) {
+-            vitti t = a + b * m
+-            vitti rem = t % ak
+-            yadi (rem == 0) {
+-                vitti d = ganita_abs(m * m - n)
+-                yadi (best < 0) {
+-                    best = d
+-                    bestm = m
+-                } anyatra {
+-                    yadi (d < best) {
+-                        best = d
+-                        bestm = m
+-                    } anyatra {
+-                        found = 1
+-                    }
++        vitti g1 = b
++        vitti g2 = ak
++        yavat (g2 != 0) {
++            vitti gt = g1 % g2
++            g1 = g2
++            g2 = gt
++        }
++        yadi (a % g1 != 0) { pratiyati 0 }
++        vitti m0 = kuttaka(b, ak, 0 - a)
++        vitti sq = ganita_isqrt(n)
++        vitti d = sq - m0
++        vitti t = d / ak
++        vitti r = d % ak
++        yadi (d < 0 && r != 0) { t = t - 1 }
++        vitti bf = 0 - 1
++        vitti bm = 0
++        vitti bn = 0
++        vitti cnt = 0
++        yavat (cnt < 2) {
++            vitti m = m0 + t * ak
++            yadi (m >= 0 && m <= 3037000499) {
++                # num = m*m - n, exact. m > isqrt(MAX)
++                # candidates are skipped; the below one
++                # is always exact, so one remains.
++                vitti num = m * m - n
++                vitti f = num
++                yadi (f < 0) { f = 0 - f }
++                yadi (bf < 0 || f < bf) {
++                    bf = f
++                    bm = m
++                    bn = num
+                 }
+             }
+-            m = m + 1
++            t = t + 1
++            cnt = cnt + 1
+         }
+-        vitti mm = bestm
+-        vitti na = (a * mm + n * b) / ak
+-        vitti nb = (a + b * mm) / ak
+-        vitti nk = (mm * mm - n) / k
++        yadi (bf < 0) { pratiyati 0 }
++        vitti mm = bm
++        # Overflow in na/nb/nk returns 0, not a wrap.
++        yadi (a != 0 && mm > 9223372036854775807 / a) { pratiyati 0 }
++        vitti amm = a * mm
++        yadi (b != 0 && n > 9223372036854775807 / b) { pratiyati 0 }
++        vitti nbp = n * b
++        yadi (amm > 9223372036854775807 - nbp) { pratiyati 0 }
++        vitti na = (amm + nbp) / ak
++        yadi (b != 0 && mm > 9223372036854775807 / b) { pratiyati 0 }
++        vitti bmm = b * mm
++        yadi (bmm > 9223372036854775807 - a) { pratiyati 0 }
++        vitti nb = (a + bmm) / ak
++        vitti nk = bn / k
+         a = na
+         b = nb
+         k = nk
+@@ -117,6 +150,7 @@ prakriya chakravala(out, n) {
+     }
+     out[0] = a
+     out[1] = b
++    pratiyati 1
+ }
+ 
+ # samasa(out, a, b, c, d, n): Brahmagupta's composition law (bhavana / samasa).
+diff --git a/lib/result.smlib b/lib/result.smlib
+new file mode 100644
+index 0000000..eff2b39
+--- /dev/null
++++ b/lib/result.smlib
+@@ -0,0 +1,147 @@
++# lib/result.smlib — Sutram standard library: Result values (R29 WS3)
++# layer: core
++#
++# A Result is a 2-cell pankti supplied by the caller: [ok, value].
++# ok = 1 means success and value holds the answer; ok = 0 means
++# failure and value is 0. The checked functions can produce Results
++# directly (result_checked_*), and result_from_ok bridges the older
++# ok out-parameter convention into a Result.
++#
++# What this buys over the ok convention (docs/ERROR-CONVENTION.md):
++# a single value carries both the flag and the answer, so a Result
++# can be stored, passed, and returned from a function without
++# threading a separate ok cell through every call, and
++# result_value_or handles both branches in one expression.
++#
++# What it still cannot do without compiler support: nothing forces
++# the caller to check result_is_ok (the value can still be read
++# unchecked, exactly like ignoring ok); there is no propagation
++# operator (the caller still branches by hand); and there is no
++# chaining/map/and_then because the language has no callbacks.
++# A Result is a caller-owned mutable array — aliasing and mutation
++# hazards remain (no ownership model).
++
++ayojan ganita
++
++# result_ok(out, v) — write the success Result [1, v] into out.
++prakriya result_ok(out, v) {
++    vitti o = out
++    o[0] = 1
++    o[1] = v
++    pratiyati 1
++}
++
++# result_err(out) — write the failure Result [0, 0] into out.
++prakriya result_err(out) {
++    vitti o = out
++    o[0] = 0
++    o[1] = 0
++    pratiyati 0
++}
++
++# result_is_ok(r) — 1 if r is a success Result, else 0.
++prakriya result_is_ok(r) {
++    pratiyati r[0]
++}
++
++# result_value(r) — the value of a success Result. Caller must
++# check result_is_ok first: on a failure Result this returns 0,
++# which is indistinguishable from a success value of 0.
++prakriya result_value(r) {
++    pratiyati r[1]
++}
++
++# result_value_or(r, def) — the value if r is success, else def.
++# The one-expression way to handle both branches.
++prakriya result_value_or(r, def) {
++    yadi (r[0] == 1) { pratiyati r[1] }
++    pratiyati def
++}
++
++# result_from_ok(out, v, ok) — lift the ok convention into a
++# Result: writes [ok[0], v] into out (value 0 on failure).
++prakriya result_from_ok(out, v, ok) {
++    vitti o = out
++    yadi (ok[0] == 1) {
++        o[0] = 1
++        o[1] = v
++    } anyatra {
++        o[0] = 0
++        o[1] = 0
++    }
++    pratiyati o[0]
++}
++
++# result_checked_add/sub/mul/div/mod(out, a, b) — the ganita
++# checked operation, producing a Result in out instead of an
++# ok out-parameter. On overflow (or div/mod by zero, MIN/-1)
++# the Result is failure [0, 0].
++prakriya result_checked_add(out, a, b) {
++    # out doubles as the ok cell: the ganita checked form writes
++    # out[0] = ok flag and returns the value. No allocation, so
++    # this module stays core.
++    vitti o = out
++    vitti v = ganita_checked_add(a, b, o)
++    yadi (o[0] == 1) {
++        o[1] = v
++    } anyatra {
++        o[1] = 0
++    }
++    pratiyati o[0]
++}
++
++prakriya result_checked_sub(out, a, b) {
++    # out doubles as the ok cell: the ganita checked form writes
++    # out[0] = ok flag and returns the value. No allocation, so
++    # this module stays core.
++    vitti o = out
++    vitti v = ganita_checked_sub(a, b, o)
++    yadi (o[0] == 1) {
++        o[1] = v
++    } anyatra {
++        o[1] = 0
++    }
++    pratiyati o[0]
++}
++
++prakriya result_checked_mul(out, a, b) {
++    # out doubles as the ok cell: the ganita checked form writes
++    # out[0] = ok flag and returns the value. No allocation, so
++    # this module stays core.
++    vitti o = out
++    vitti v = ganita_checked_mul(a, b, o)
++    yadi (o[0] == 1) {
++        o[1] = v
++    } anyatra {
++        o[1] = 0
++    }
++    pratiyati o[0]
++}
++
++prakriya result_checked_div(out, a, b) {
++    # out doubles as the ok cell: the ganita checked form writes
++    # out[0] = ok flag and returns the value. No allocation, so
++    # this module stays core.
++    vitti o = out
++    vitti v = ganita_checked_div(a, b, o)
++    yadi (o[0] == 1) {
++        o[1] = v
++    } anyatra {
++        o[1] = 0
++    }
++    pratiyati o[0]
++}
++
++prakriya result_checked_mod(out, a, b) {
++    # out doubles as the ok cell: the ganita checked form writes
++    # out[0] = ok flag and returns the value. No allocation, so
++    # this module stays core.
++    vitti o = out
++    vitti v = ganita_checked_mod(a, b, o)
++    yadi (o[0] == 1) {
++        o[1] = v
++    } anyatra {
++        o[1] = 0
++    }
++    pratiyati o[0]
++}
+diff --git a/lib/serial.smlib b/lib/serial.smlib
+new file mode 100644
+index 0000000..d0fb36d
+--- /dev/null
++++ b/lib/serial.smlib
+@@ -0,0 +1,128 @@
++# lib/serial.smlib — Sutram standard library: binary serialisation (R29 WS5)
++# layer: core
++#
++# The library's one new capability area: encode values into a flat
++# byte buffer and decode them back, with bounds checking. Format:
++#
++#   i64    — 8 bytes, little-endian, two's complement
++#   bytes  — 8-byte little-endian length (n) followed by n payload bytes
++#
++# Buffers are byte strings (char_at / set_char), caller-allocated
++# and caller-sized. Every put/get takes (buf, pos, cap): pos is the
++# cursor, cap is the buffer size in bytes. On success the function
++# returns the new cursor; on overrun (or a corrupt negative length
++# when decoding) it returns -1 and the destination buffer is
++# untouched (out_n may hold the decoded length if the length
++# itself was readable). The caller
++# owns the buffer and must check for -1, exactly like checking ok.
++#
++# put_bytes requires src and dst NOT to overlap: it writes the
++# length header before copying the payload, so an overlapping
++# src would be clobbered mid-copy. get_bytes requires buf and
++# dst not to overlap for the same reason.
++#
++# Deliberately not here: floats (the language has no bit-cast
++# primitive to turn a dasham into bits), varints (fixed-width is
++# enough for this first area), and schema/versioning (the caller
++# owns the field order; there is no header).
++
++# serial_len_bytes(n) — encoded size of an n-byte payload: 8 + n.
++prakriya serial_len_bytes(n) {
++    pratiyati 8 + n
++}
++
++# serial_put_i64(out, pos, cap, v) — write v as 8 LE bytes at
++# out+pos. Returns pos + 8, or -1 if it would overrun cap.
++prakriya serial_put_i64(out, pos, cap, v) {
++    vitti dst = out
++    vitti p = pos
++    vitti c = cap
++    vitti val = v
++    yadi (p < 0) { pratiyati 0 - 1 }
++    yadi (p + 8 > c) { pratiyati 0 - 1 }
++    vitti i = 0
++    yavat (i < 8) {
++        # Floor division: Sutram's / and % truncate toward zero,
++        # which would give a negative byte for negative val. The
++        # byte must be in [0, 255] for two's-complement LE.
++        vitti q = val / 256
++        yadi (val < 0) {
++            yadi (val % 256 != 0) { q = q - 1 }
++        }
++        set_char(dst, p + i, val - q * 256)
++        val = q
++        i = i + 1
++    }
++    pratiyati p + 8
++}
++
++# serial_get_i64(buf, pos, cap, out) — read 8 LE bytes at buf+pos,
++# write the value into out[0]. Returns pos + 8, or -1 on overrun.
++prakriya serial_get_i64(buf, pos, cap, out) {
++    vitti src = buf
++    vitti p = pos
++    vitti c = cap
++    vitti o = out
++    yadi (p < 0) { pratiyati 0 - 1 }
++    yadi (p + 8 > c) { pratiyati 0 - 1 }
++    vitti val = 0
++    vitti i = 6
++    yavat (i >= 0) {
++        val = val * 256 + char_at(src, p + i)
++        i = i - 1
++    }
++    # The top byte is signed: byte >= 128 means negative.
++    # val = top_signed * 2^56 + low, all in range, no overflow.
++    vitti top = char_at(src, p + 7)
++    yadi (top >= 128) {
++        top = top - 256
++    }
++    val = top * 72057594037927936 + val
++    o[0] = val
++    pratiyati p + 8
++}
++
++# serial_put_bytes(out, pos, cap, src, n) — write n as an 8-byte
++# LE length followed by n payload bytes from src. Returns the new
++# cursor, or -1 on overrun (n < 0 is also an error: -1).
++prakriya serial_put_bytes(out, pos, cap, src, n) {
++    vitti dst = out
++    vitti p = pos
++    vitti c = cap
++    vitti s = src
++    vitti cnt = n
++    yadi (cnt < 0) { pratiyati 0 - 1 }
++    yadi (p < 0) { pratiyati 0 - 1 }
++    yadi (p + 8 + cnt > c) { pratiyati 0 - 1 }
++    vitti p2 = serial_put_i64(dst, p, c, cnt)
++    vitti i = 0
++    yavat (i < cnt) {
++        set_char(dst, p2 + i, char_at(s, i))
++        i = i + 1
++    }
++    pratiyati p2 + cnt
++}
++
++# serial_get_bytes(buf, pos, cap, dst, out_n) — read a
++# length-prefixed payload: length into out_n[0], payload into dst.
++# Returns the new cursor, or -1 on overrun / negative length.
++prakriya serial_get_bytes(buf, pos, cap, dst, out_n) {
++    vitti src = buf
++    vitti p = pos
++    vitti c = cap
++    vitti d = dst
++    vitti on = out_n
++    # out_n doubles as the length cell for the inner read.
++    vitti p2 = serial_get_i64(src, p, c, on)
++    yadi (p2 == 0 - 1) { pratiyati 0 - 1 }
++    vitti cnt = on[0]
++    yadi (cnt < 0) { pratiyati 0 - 1 }
++    yadi (p2 + cnt > c) { pratiyati 0 - 1 }
++    vitti i = 0
++    yavat (i < cnt) {
++        set_char(d, i, char_at(src, p2 + i))
++        i = i + 1
++    }
++    on[0] = cnt
++    pratiyati p2 + cnt
++}
+diff --git a/tests/stdlib/chakravala29.exit b/tests/stdlib/chakravala29.exit
+new file mode 100644
+index 0000000..573541a
+--- /dev/null
++++ b/tests/stdlib/chakravala29.exit
+@@ -0,0 +1 @@
++0
+diff --git a/tests/stdlib/chakravala29.out b/tests/stdlib/chakravala29.out
+new file mode 100644
+index 0000000..24cde92
+--- /dev/null
++++ b/tests/stdlib/chakravala29.out
+@@ -0,0 +1,21 @@
++1
++
++1
++
++0
++
++1
++
++3
++
++2
++
++1
++
++1766319049
++
++226153980
++
++0
++
++chakravala29-done
+diff --git a/tests/stdlib/chakravala29.sm b/tests/stdlib/chakravala29.sm
+new file mode 100644
+index 0000000..1897fcc
+--- /dev/null
++++ b/tests/stdlib/chakravala29.sm
+@@ -0,0 +1,29 @@
++ayojan ganita
++mukhya() {
++    vitti out = nirmmita(8 * 8)
++    vitti r = chakravala(out, 4)
++    likha(r)
++    likha("\n")
++    likha(out[0])
++    likha("\n")
++    likha(out[1])
++    likha("\n")
++    r = chakravala(out, 2)
++    likha(r)
++    likha("\n")
++    likha(out[0])
++    likha("\n")
++    likha(out[1])
++    likha("\n")
++    r = chakravala(out, 61)
++    likha(r)
++    likha("\n")
++    likha(out[0])
++    likha("\n")
++    likha(out[1])
++    likha("\n")
++    r = chakravala(out, 9223372036854775807)
++    likha(r)
++    likha("\n")
++    likha("chakravala29-done\n")
++}
+diff --git a/tests/stdlib/numeric29.exit b/tests/stdlib/numeric29.exit
+new file mode 100644
+index 0000000..573541a
+--- /dev/null
++++ b/tests/stdlib/numeric29.exit
+@@ -0,0 +1 @@
++0
+diff --git a/tests/stdlib/numeric29.out b/tests/stdlib/numeric29.out
+new file mode 100644
+index 0000000..2eed3de
+--- /dev/null
++++ b/tests/stdlib/numeric29.out
+@@ -0,0 +1,77 @@
++2605677504891245458
++
++0
++
++0
++
++0
++
++0
++
++-9223372036709301616
++
++-9223372036854775808
++
++-9223358842708951039
++
++-2
++
++9223372036854775805
++
++-9223372036854775808
++
++-9223372036854775808
++
++-6289078614652622815
++
++-4249290049419214848
++
++-6246583658587674878
++
++-8570200862721897295
++
++0
++
++0
++
++19
++
++57
++
++50
++
++50
++
++51
++
++51
++
++55
++
++50
++
++48
++
++51
++
++54
++
++56
++
++53
++
++52
++
++55
++
++55
++
++52
++
++55
++
++56
++
++52
++
++numeric29-done
+diff --git a/tests/stdlib/numeric29.sm b/tests/stdlib/numeric29.sm
+new file mode 100644
+index 0000000..edf24d4
+--- /dev/null
++++ b/tests/stdlib/numeric29.sm
+@@ -0,0 +1,55 @@
++ayojan ganita
++ayojan math
++ayojan num
++ayojan fmt
++mukhya() {
++    likha(kuttaka(0 - 7819279541048604735, 0 - 2881118045913156764, 0 - 150))
++    likha("\n")
++    vitti out = nirmmita(8 * 8)
++    samasa(out, 1099511627776, 0, 1099511627776, 0, 0)
++    likha(out[0])
++    likha("\n")
++    likha(out[1])
++    likha("\n")
++    likha(brahmagupta_area(4611686018427387904, 4611686018427387904, 4611686018427387904, 4611686018427387904))
++    likha("\n")
++    likha(sq(4294967296))
++    likha("\n")
++    likha(square(3037000500))
++    likha("\n")
++    likha(cube(2097152))
++    likha("\n")
++    likha(cube(2097153))
++    likha("\n")
++    likha(double(9223372036854775807))
++    likha("\n")
++    likha(triple(9223372036854775807))
++    likha("\n")
++    likha(inc(9223372036854775807))
++    likha("\n")
++    likha(power(2, 63))
++    likha("\n")
++    likha(power(3, 40))
++    likha("\n")
++    likha(fact(21))
++    likha("\n")
++    likha(fib(93))
++    likha("\n")
++    likha(reverse_num(1234567890123456789))
++    likha("\n")
++    vitti buf = nirmmita(40 * 8)
++    likha(fmt_fixed(1000000000000000000.0, 2, buf))
++    likha("\n")
++    likha(fmt_fixed(0 - 1000000000000000000.0, 2, buf))
++    likha("\n")
++    vitti w = fmt_fixed(9223372036854774784.0, 0, buf)
++    likha(w)
++    likha("\n")
++    vitti i = 0
++    yavat (i < w) {
++        likha(char_at(buf, i))
++        likha("\n")
++        i = i + 1
++    }
++    likha("numeric29-done\n")
++}
+diff --git a/tests/stdlib/result29.exit b/tests/stdlib/result29.exit
+new file mode 100644
+index 0000000..573541a
+--- /dev/null
++++ b/tests/stdlib/result29.exit
+@@ -0,0 +1 @@
++0
+diff --git a/tests/stdlib/result29.out b/tests/stdlib/result29.out
+new file mode 100644
+index 0000000..ab43738
+--- /dev/null
++++ b/tests/stdlib/result29.out
+@@ -0,0 +1,47 @@
++1
++
++42
++
++42
++
++0
++
++0
++
++99
++
++1
++
++7
++
++0
++
++99
++
++1
++
++5
++
++0
++
++0
++
++0
++
++0
++
++1
++
++3
++
++0
++
++0
++
++1
++
++1
++
++0
++
++result29-done
+diff --git a/tests/stdlib/result29.sm b/tests/stdlib/result29.sm
+new file mode 100644
+index 0000000..40fd3b9
+--- /dev/null
++++ b/tests/stdlib/result29.sm
+@@ -0,0 +1,67 @@
++ayojan result
++mukhya() {
++    vitti r = nirmmita(2 * 8)
++    vitti ok = nirmmita(8)
++    result_ok(r, 42)
++    likha(result_is_ok(r))
++    likha("\n")
++    likha(result_value(r))
++    likha("\n")
++    likha(result_value_or(r, 99))
++    likha("\n")
++    result_err(r)
++    likha(result_is_ok(r))
++    likha("\n")
++    likha(result_value(r))
++    likha("\n")
++    likha(result_value_or(r, 99))
++    likha("\n")
++    ok[0] = 1
++    result_from_ok(r, 7, ok)
++    likha(result_is_ok(r))
++    likha("\n")
++    likha(result_value(r))
++    likha("\n")
++    ok[0] = 0
++    result_from_ok(r, 7, ok)
++    likha(result_is_ok(r))
++    likha("\n")
++    likha(result_value_or(r, 99))
++    likha("\n")
++    result_checked_add(r, 2, 3)
++    likha(result_is_ok(r))
++    likha("\n")
++    likha(result_value(r))
++    likha("\n")
++    result_checked_add(r, 9223372036854775807, 1)
++    likha(result_is_ok(r))
++    likha("\n")
++    likha(result_value(r))
++    likha("\n")
++    result_checked_sub(r, (0 - 9223372036854775807) - 1, 1)
++    likha(result_is_ok(r))
++    likha("\n")
++    result_checked_mul(r, 4294967296, 4294967296)
++    likha(result_is_ok(r))
++    likha("\n")
++    result_checked_div(r, 7, 2)
++    likha(result_is_ok(r))
++    likha("\n")
++    likha(result_value(r))
++    likha("\n")
++    result_checked_div(r, 1, 0)
++    likha(result_is_ok(r))
++    likha("\n")
++    result_checked_div(r, (0 - 9223372036854775807) - 1, 0 - 1)
++    likha(result_is_ok(r))
++    likha("\n")
++    result_checked_mod(r, 7, 3)
++    likha(result_is_ok(r))
++    likha("\n")
++    likha(result_value(r))
++    likha("\n")
++    result_checked_mod(r, 1, 0)
++    likha(result_is_ok(r))
++    likha("\n")
++    likha("result29-done\n")
++}
+diff --git a/tests/stdlib/serial29.exit b/tests/stdlib/serial29.exit
+new file mode 100644
+index 0000000..573541a
+--- /dev/null
++++ b/tests/stdlib/serial29.exit
+@@ -0,0 +1 @@
++0
+diff --git a/tests/stdlib/serial29.out b/tests/stdlib/serial29.out
+new file mode 100644
+index 0000000..5b34420
+--- /dev/null
++++ b/tests/stdlib/serial29.out
+@@ -0,0 +1,45 @@
++48
++
++0
++
++1
++
++-1
++
++9223372036854775807
++
++-9223372036854775808
++
++-123456789012345
++
++-1
++
++-1
++
++13
++
++13
++
++13
++
++5
++
++104
++
++101
++
++108
++
++108
++
++111
++
++8
++
++0
++
++-1
++
++-1
++
++serial29-done
+diff --git a/tests/stdlib/serial29.sm b/tests/stdlib/serial29.sm
+new file mode 100644
+index 0000000..8502252
+--- /dev/null
++++ b/tests/stdlib/serial29.sm
+@@ -0,0 +1,72 @@
++ayojan serial
++mukhya() {
++    vitti buf = nirmmita(64 * 8)
++    vitti out = nirmmita(8)
++    vitti dst = nirmmita(16 * 8)
++    vitti n = nirmmita(8)
++    vitti p = serial_put_i64(buf, 0, 64, 0)
++    p = serial_put_i64(buf, p, 64, 1)
++    p = serial_put_i64(buf, p, 64, 0 - 1)
++    p = serial_put_i64(buf, p, 64, 9223372036854775807)
++    p = serial_put_i64(buf, p, 64, (0 - 9223372036854775807) - 1)
++    p = serial_put_i64(buf, p, 64, 0 - 123456789012345)
++    likha(p)
++    likha("\n")
++    vitti q = serial_get_i64(buf, 0, 64, out)
++    likha(out[0])
++    likha("\n")
++    q = serial_get_i64(buf, 8, 64, out)
++    likha(out[0])
++    likha("\n")
++    q = serial_get_i64(buf, 16, 64, out)
++    likha(out[0])
++    likha("\n")
++    q = serial_get_i64(buf, 24, 64, out)
++    likha(out[0])
++    likha("\n")
++    q = serial_get_i64(buf, 32, 64, out)
++    likha(out[0])
++    likha("\n")
++    q = serial_get_i64(buf, 40, 64, out)
++    likha(out[0])
++    likha("\n")
++    likha(serial_put_i64(buf, 60, 64, 1))
++    likha("\n")
++    likha(serial_get_i64(buf, 60, 64, out))
++    likha("\n")
++    likha(serial_len_bytes(5))
++    likha("\n")
++    vitti src = nirmmita(16 * 8)
++    set_char(src, 0, 104)
++    set_char(src, 1, 101)
++    set_char(src, 2, 108)
++    set_char(src, 3, 108)
++    set_char(src, 4, 111)
++    p = serial_put_bytes(buf, 0, 64, src, 5)
++    likha(p)
++    likha("\n")
++    q = serial_get_bytes(buf, 0, 64, dst, n)
++    likha(q)
++    likha("\n")
++    likha(n[0])
++    likha("\n")
++    vitti i = 0
++    yavat (i < n[0]) {
++        likha(char_at(dst, i))
++        likha("\n")
++        i = i + 1
++    }
++    p = serial_put_bytes(buf, 0, 64, src, 0)
++    likha(p)
++    likha("\n")
++    q = serial_get_bytes(buf, 0, 64, dst, n)
++    likha(n[0])
++    likha("\n")
++    likha(serial_put_bytes(buf, 60, 64, src, 5))
++    likha("\n")
++    vitti bad = nirmmita(16 * 8)
++    vitti pb = serial_put_i64(bad, 0, 16, 0 - 1)
++    likha(serial_get_bytes(bad, 0, 16, dst, n))
++    likha("\n")
++    likha("serial29-done\n")
++}
+diff --git a/tools/check_layers.py b/tools/check_layers.py
+index 8dc3ab8..8deda52 100644
+--- a/tools/check_layers.py
++++ b/tools/check_layers.py
+@@ -18,6 +18,9 @@ The check fails on:
+   - a core module that imports an alloc/std module;
+   - an alloc module that imports a std module;
+   - a module missing from docs/LIBRARY-LAYERS.md.
++  - ANY module that calls an OS-service builtin (see OS_BUILTINS):
++    such a module would need to be marked std, so a call here means
++    the 0-std result is wrong and the label must move.
+ 
+ Usage: python3 tools/check_layers.py   (exit 0 = all layers honour the rules)
+ """
+@@ -25,6 +28,15 @@ import os
+ import re
+ import sys
+ 
++# Builtins that are OS services: console/file I/O and sockets. Any
++# lib module calling one of these needs a heap-independent OS, i.e.
++# it belongs in layer std. (nirmmita is the allocator, not an OS
++# service: mmap is its implementation detail, and an alloc module
++# needs A heap, not the OS. Raw memory ops likh/pad/likh8/pad8,
++# kosh_*, char_*, smaran_* are language features, not OS services.)
++OS_BUILTINS = ("likha", "likha_fmt", "likh", "paadh", "band",
++               "netsock", "netbind", "netlisten", "netaccept")
++
+ REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ LIB = os.path.join(REPO, "lib")
+ DOC = os.path.join(REPO, "docs", "LIBRARY-LAYERS.md")
+@@ -61,6 +73,12 @@ def main():
+         code = strip_comments(text)
+         imports = sorted(set(AYOJAN_RE.findall(code)))
+         uses_alloc = bool(NIRMMITA_RE.search(code))
++        # Any OS-service builtin call means the module belongs in std.
++        for builtin in OS_BUILTINS:
++            if re.search(rf"\b{builtin}\s*\(", code):
++                errors.append(
++                    f"{mod}: marked {layer} but calls OS builtin {builtin}"
++                    " (belongs in std)")
+         if layer == "core":
+             if uses_alloc:
+                 errors.append(f"{mod}: marked core but calls nirmmita (allocator)")
+diff --git a/tools/proof_props.py b/tools/proof_props.py
+index 0f2edf9..b7ae13f 100644
+--- a/tools/proof_props.py
++++ b/tools/proof_props.py
+@@ -4100,6 +4100,212 @@ def prop_numeric28(compiler, rng):
+     return ok and out == "PASS", out
+ 
+ 
++def prop_result29(compiler, rng):
++    """R29 WS3: the Result type — constructors, inspectors,
++    value_or, the ok-convention bridge, and the checked
++    producers (success, overflow, div/mod by zero, MIN/-1)."""
++    lines = ["ayojan result",
++             "mukhya() {",
++             "    vitti r = nirmmita(2 * 8)",
++             "    vitti ok = nirmmita(8)",
++             "    vitti minv = (0 - 9223372036854775807) - 1"]
++
++    def check(expr, want, msg):
++        lines.append(f"    yadi (({expr}) != ({want})) {{")
++        lines.append(f'        likha("FAIL {msg}\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++
++    # constructors + inspectors
++    lines.append("    result_ok(r, 42)")
++    check("result_is_ok(r)", 1, "ok is_ok")
++    check("result_value(r)", 42, "ok value")
++    check("result_value_or(r, 99)", 42, "ok value_or")
++    lines.append("    result_err(r)")
++    check("result_is_ok(r)", 0, "err is_ok")
++    check("result_value(r)", 0, "err value")
++    check("result_value_or(r, 99)", 99, "err value_or")
++    # from_ok bridge: value passes through on success, 0 on failure
++    lines.append("    ok[0] = 1")
++    lines.append("    result_from_ok(r, 7, ok)")
++    check("result_is_ok(r)", 1, "from_ok ok")
++    check("result_value(r)", 7, "from_ok value")
++    lines.append("    ok[0] = 0")
++    lines.append("    result_from_ok(r, 7, ok)")
++    check("result_is_ok(r)", 0, "from_ok fail")
++    check("result_value(r)", 0, "from_ok fail value")
++    # checked producers
++    lines.append("    result_checked_add(r, 2, 3)")
++    check("result_is_ok(r)", 1, "add ok")
++    check("result_value(r)", 5, "add value")
++    lines.append("    result_checked_add(r, 9223372036854775807, 1)")
++    check("result_is_ok(r)", 0, "add overflow")
++    check("result_value(r)", 0, "add overflow value")
++    lines.append("    result_checked_sub(r, minv, 1)")
++    check("result_is_ok(r)", 0, "sub overflow")
++    lines.append("    result_checked_mul(r, 4294967296, 4294967296)")
++    check("result_is_ok(r)", 0, "mul overflow")
++    lines.append("    result_checked_mul(r, 6, 7)")
++    check("result_is_ok(r)", 1, "mul ok")
++    check("result_value(r)", 42, "mul value")
++    lines.append("    result_checked_div(r, 7, 2)")
++    check("result_is_ok(r)", 1, "div ok")
++    check("result_value(r)", 3, "div value")
++    lines.append("    result_checked_div(r, 1, 0)")
++    check("result_is_ok(r)", 0, "div zero")
++    lines.append("    result_checked_div(r, minv, 0 - 1)")
++    check("result_is_ok(r)", 0, "div MIN -1")
++    lines.append("    result_checked_mod(r, 7, 3)")
++    check("result_is_ok(r)", 1, "mod ok")
++    check("result_value(r)", 1, "mod value")
++    lines.append("    result_checked_mod(r, 1, 0)")
++    check("result_is_ok(r)", 0, "mod zero")
++    lines.append('    likha("PASS\\n")')
++    lines.append("}")
++    ok, out = run_sm(compiler, "result29", "\n".join(lines))
++    return ok and out == "PASS", out
++
++
++def prop_serial29(compiler, rng):
++    """R29 WS5: serialisation — i64 roundtrips incl. MIN/MAX,
++    length-prefixed bytes roundtrip, overrun -> -1, corrupt
++    (negative) length -> -1, and len_bytes."""
++    lines = ["ayojan serial",
++             "mukhya() {",
++             "    vitti buf = nirmmita(64 * 8)",
++             "    vitti out = nirmmita(8)",
++             "    vitti dst = nirmmita(16 * 8)",
++             "    vitti n = nirmmita(8)",
++             "    vitti minv = (0 - 9223372036854775807) - 1"]
++
++    def check(expr, want, msg):
++        lines.append(f"    yadi (({expr}) != ({want})) {{")
++        lines.append(f'        likha("FAIL {msg}\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++
++    # i64 roundtrips
++    for i, v in enumerate([0, 1, -1, 9223372036854775807,
++                           "minv", -123456789012345]):
++        lines.append(f"    serial_put_i64(buf, {i * 8}, 64, {v})")
++    for i, v in enumerate([0, 1, -1, 9223372036854775807,
++                           "minv", -123456789012345]):
++        lines.append(f"    serial_get_i64(buf, {i * 8}, 64, out)")
++        check("out[0]", v, f"i64 roundtrip {v}")
++    # overrun -> -1, nothing written
++    check("serial_put_i64(buf, 60, 64, 1)", "0 - 1", "put overrun")
++    check("serial_get_i64(buf, 60, 64, out)", "0 - 1", "get overrun")
++    check("serial_put_i64(buf, 0 - 1, 64, 1)", "0 - 1", "put neg pos")
++    check("serial_len_bytes(5)", 13, "len_bytes")
++    # bytes roundtrip
++    lines.append("    vitti src = nirmmita(16 * 8)")
++    lines.append("    set_char(src, 0, 104)")
++    lines.append("    set_char(src, 1, 101)")
++    lines.append("    set_char(src, 2, 108)")
++    lines.append("    set_char(src, 3, 108)")
++    lines.append("    set_char(src, 4, 111)")
++    check("serial_put_bytes(buf, 0, 64, src, 5)", 13, "put_bytes")
++    check("serial_get_bytes(buf, 0, 64, dst, n)", 13, "get_bytes")
++    check("n[0]", 5, "get_bytes len")
++    for i, c in enumerate([104, 101, 108, 108, 111]):
++        check(f"char_at(dst, {i})", c, f"byte {i}")
++    # empty payload
++    check("serial_put_bytes(buf, 0, 64, src, 0)", 8, "put_bytes empty")
++    check("serial_get_bytes(buf, 0, 64, dst, n)", 8, "get_bytes empty")
++    check("n[0]", 0, "get_bytes empty len")
++    # overrun and negative length
++    check("serial_put_bytes(buf, 60, 64, src, 5)", "0 - 1",
++          "put_bytes overrun")
++    check("serial_put_bytes(buf, 0, 64, src, 0 - 1)", "0 - 1",
++          "put_bytes neg len")
++    lines.append("    serial_put_i64(buf, 0, 64, 0 - 1)")
++    check("serial_get_bytes(buf, 0, 64, dst, n)", "0 - 1",
++          "get_bytes neg len")
++    lines.append('    likha("PASS\\n")')
++    lines.append("}")
++    ok, out = run_sm(compiler, "serial29", "\n".join(lines))
++    return ok and out == "PASS", out
++
++
++def prop_numeric29(compiler, rng):
++    """R29 WS4: pin the numeric contract gaps — ganita classical
++    wrapping (kuttaka/samasa/brahmagupta), math plain wrapping
++    (sq/square/cube/double/triple/inc/power/fact), num fib and
++    reverse_num wrapping, fmt_fixed overflow -> 0, and the
++    chakravala fixes (perfect square, small Pell solutions,
++    MAX -> 0 instead of hanging)."""
++    lines = ["ayojan math", "ayojan ganita", "ayojan fmt", "ayojan num",
++             "mukhya() {",
++             "    vitti out = nirmmita(8 * 8)",
++             "    vitti buf = nirmmita(40 * 8)",
++             "    vitti minv = (0 - 9223372036854775807) - 1"]
++
++    def check(expr, want, msg):
++        lines.append(f"    yadi (({expr}) != ({want})) {{")
++        lines.append(f'        likha("FAIL {msg}\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++
++    # kuttaka: intermediate q*s wraps; the wrapped result is pinned
++    # against a Python wrapping simulation (exact result differs)
++    check("kuttaka(0 - 7819279541048604735, "
++          "0 - 2881118045913156764, 0 - 150)",
++          2605677504891245458, "kuttaka wrap")
++    # samasa: p*r overflows (2^80 wraps to 0)
++    lines.append("    samasa(out, 1099511627776, 0, 1099511627776, 0, 0)")
++    check("out[0]", 0, "samasa wrap 0")
++    check("out[1]", 0, "samasa wrap 1")
++    # brahmagupta_area: (a+b+c+d) overflows (2^64 wraps to 0)
++    check("brahmagupta_area(4611686018427387904, "
++          "4611686018427387904, 4611686018427387904, "
++          "4611686018427387904)", 0, "brahmagupta wrap")
++    # math plain wrapping
++    check("sq(4294967296)", 0, "sq wrap")
++    check("square(3037000500)", "0 - 9223372036709301616", "square wrap")
++    check("cube(2097152)", "minv", "cube 2^63")
++    check("cube(2097153)", "0 - 9223358842708951039", "cube wrap")
++    check("double(9223372036854775807)", "0 - 2", "double wrap")
++    check("triple(9223372036854775807)", 9223372036854775805,
++          "triple wrap")
++    check("inc(9223372036854775807)", "minv", "inc wrap")
++    check("power(2, 63)", "minv", "power wrap")
++    check("power(3, 40)", "0 - 6289078614652622815", "power 3 40 wrap")
++    check("fact(21)", "0 - 4249290049419214848", "fact 21 wrap")
++    check("fib(93)", "0 - 6246583658587674878", "fib 93 wrap")
++    check("reverse_num(1234567890123456789)",
++          "0 - 8570200862721897295", "reverse_num wrap")
++    # fmt_fixed overflow -> 0 (empty); the largest fixed output is
++    # 9223372036854774784 (2^63 - 1024), 19 chars
++    check("fmt_fixed(1000000000000000000.0, 2, buf)", 0, "fmt_fixed ovf")
++    check("fmt_fixed(0 - 1000000000000000000.0, 2, buf)", 0,
++          "fmt_fixed neg ovf")
++    check("fmt_fixed(9223372036854774784.0, 0, buf)", 19, "fmt_fixed max")
++    for i, c in enumerate("9223372036854774784"):
++        check(f"char_at(buf, {i})", ord(c), f"fmt_fixed max char {i}")
++    # chakravala: perfect square -> trivial solution, return 1
++    lines.append("    vitti r = chakravala(out, 4)")
++    check("r", 1, "chakravala 4 ret")
++    check("out[0]", 1, "chakravala 4 x")
++    check("out[1]", 0, "chakravala 4 y")
++    # small Pell solutions, verified by x^2 - n*y^2 = 1
++    for n, x, y in [(2, 3, 2), (3, 2, 1), (5, 9, 4), (13, 649, 180),
++                    (61, 1766319049, 226153980)]:
++        lines.append(f"    r = chakravala(out, {n})")
++        check("r", 1, f"chakravala {n} ret")
++        check("out[0]", x, f"chakravala {n} x")
++        check("out[1]", y, f"chakravala {n} y")
++        check(f"out[0] * out[0] - {n} * out[1] * out[1]", 1,
++              f"chakravala {n} Pell")
++    # MAX: the minimal solution does not fit in int64 — return 0
++    # (was an effective hang in the m-scan) instead of hanging
++    lines.append("    r = chakravala(out, 9223372036854775807)")
++    check("r", 0, "chakravala MAX ret")
++    lines.append('    likha("PASS\\n")')
++    lines.append("}")
++    ok, out = run_sm(compiler, "numeric29", "\n".join(lines))
++    return ok and out == "PASS", out
++
++
+ def main():
+     compiler = None
+     for i, a in enumerate(sys.argv):
+@@ -4184,6 +4390,9 @@ def main():
+         ("min26", prop_min26),
+         ("safety27 cross-module", prop_safety27),
+         ("bigint divzero", prop_bigint_divzero),
++        ("result type", prop_result29),
++        ("serialisation roundtrip", prop_serial29),
++        ("numeric contract gaps pinned", prop_numeric29),
+         ("ok convention", prop_ok_convention),
+         ("numeric28", prop_numeric28),
+     ]
+diff --git a/tools/test_kosh_growth_leak.py b/tools/test_kosh_growth_leak.py
+new file mode 100644
+index 0000000..a929c56
+--- /dev/null
++++ b/tools/test_kosh_growth_leak.py
+@@ -0,0 +1,82 @@
++#!/usr/bin/env python3
++"""Diagnose the kosh growth leak (R29 WS2).
++
++The compiler's kosh_push growth path (src/sutram_compiler.asm,
++.ge_call_koshpush) allocates a new buffer with nirmmita (mmap),
++copies the old cells, and stores the new pointer. It never releases
++(munmap) the old buffer, and the language has no free primitive, so
++repeated growth retains every superseded buffer. Peak heap is ~2x
++the live buffer: the slope of peak RSS vs pushed items is ~16
++bytes/item instead of ~8.
++
++This script measures that slope: it compiles a program that pushes
++N items into a kosh, runs it as a child, and reads the child's peak
++RSS (ru_maxrss). It asserts the slope is below 12 bytes/item — the
++leaky slope (~15.6) fails, a fixed compiler (~8) passes.
++
++This is a diagnostic, not a suite gate: RSS is machine-dependent,
++so it lives here rather than in tools/proof_lib.py. It is expected
++to FAIL until the compiler-side fix lands (munmap the old buffer
++in the growth path, src/ work).
++
++Usage: python3 tools/test_kosh_growth_leak.py
++"""
++import os
++import subprocess
++import sys
++
++REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
++COMPILER = os.path.join(REPO, "build", "sutram_compiler")
++N = 8_000_000
++SLOPE_LIMIT = 12.0  # bytes/item; leaky ~= 15.6, fixed ~= 8
++
++
++def child_rss(path):
++    pid = os.fork()
++    if pid == 0:
++        devnull = os.open(os.devnull, os.O_WRONLY)
++        os.dup2(devnull, 1)
++        os.dup2(devnull, 2)
++        os.execv(path, [path])
++        os._exit(127)
++    _, status, ru = os.wait4(pid, 0)
++    assert status == 0, f"child exit status {status}"
++    return ru.ru_maxrss  # KiB on Linux
++
++
++def measure(n):
++    src = ("mukhya() {\n"
++           "    kosh v[4]\n"
++           "    vitti i = 0\n"
++           f"    yavat (i < {n}) {{\n"
++           "        kosh_push(v, i)\n"
++           "        i = i + 1\n"
++           "    }\n"
++           "    likha(kosh_len(v))\n"
++           '    likha("\\n")\n'
++           "}\n")
++    sm = "/tmp/kosh_leak_probe.sm"
++    binary = "/tmp/kosh_leak_probe.bin"
++    open(sm, "w").write(src)
++    r = subprocess.run([COMPILER, sm, binary], capture_output=True, text=True)
++    assert "OK" in r.stdout, f"compile failed: {r.stdout}"
++    return child_rss(binary) / 1024.0  # MB
++
++
++def main():
++    base = measure(0)
++    peak = measure(N)
++    slope = (peak - base) * 1024 * 1024 / N
++    print(f"baseline peak RSS: {base:.1f} MB")
++    print(f"peak RSS after {N} pushes: {peak:.1f} MB")
++    print(f"slope: {slope:.2f} bytes/item (limit {SLOPE_LIMIT})")
++    if slope >= SLOPE_LIMIT:
++        print("FAIL: kosh growth leak present — old buffers are retained")
++        print("  (growth path mmaps a new buffer without releasing the old)")
++        return 1
++    print("PASS: kosh growth reclaims old buffers")
++    return 0
++
++
++if __name__ == "__main__":
++    sys.exit(main())
