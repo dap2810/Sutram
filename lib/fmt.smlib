@@ -481,6 +481,18 @@ prakriya fmt_fixed_impl(dasham x, places, always_sign, out) {
     } anyatra {
         mag = v
     }
+    # NaN guard: NaN is the only value with both v == 0.0 and
+    # v < 0.0 true (this language's dasham comparisons use
+    # ucomisd flags directly, so NaN == NaN is true and
+    # NaN != NaN is false — v != v does NOT detect NaN here).
+    # Without it, NaN took the neg branch (NaN < 0 is true) and
+    # the conversion produced garbage like "-9223372036...".
+    yadi (v == 0.0) {
+        yadi (v < 0.0) {
+            set_char(dst, 0, 0)
+            pratiyati 0
+        }
+    }
     scaled = mag * p10f + 0.5
     # Overflow guard: if scaled >= 2^63 the dasham->int conversion
     # below is indefinite (x86 cvttsd2si yields MIN) and the
