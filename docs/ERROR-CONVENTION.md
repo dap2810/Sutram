@@ -99,6 +99,9 @@ and `value` is 0.
 | `result_value_or(r, def)` | Value if success, else `def` — both branches in one expression. |
 | `result_from_ok(out, v, ok)` | Bridge the `ok` convention into a Result. |
 | `result_checked_add/sub/mul/div/mod(out, a, b)` | The `ganita` checked operation, producing a Result. Overflow, div/mod by zero, and `MIN / -1` give failure `[0, 0]`. |
+| `result_checked_pow(out, a, e)` | `ganita_checked_pow` as a Result (R30). Failure on `e < 0` or overflow. |
+| `result_checked_fact(out, n)` | `ganita_checked_fact` as a Result (R30). Failure on `n < 0` or overflow (21! overflows). |
+| `result_checked_abs(out, a)` | `ganita_checked_abs` as a Result (R30). Failure on `abs(MIN)`. |
 
 The checked producers pass `out` itself as the `ok` cell to the
 `ganita` checked form, so the module allocates nothing and stays
@@ -127,6 +130,42 @@ core.
 
 Use `Result` for new checked APIs; the `ok` convention stays
 for the existing functions (do not churn them).
+
+### The early-return chain (R30) — hand-written propagation
+
+There is no `?` operator, so a multi-step checked computation
+propagates failure by branching after each step: on failure, write
+the failure into `out` and return at once. The failure path is one
+branch per step, not nested conditionals. `tests/stdlib/result_chain.sm`
+demonstrates the shape:
+
+```sutram
+prakriya safe_compute(out, a, b, c) {
+    # (a + b) * c, checked; early return on the first failure.
+    vitti t = nirmmita(2 * 8)
+    result_checked_add(t, a, b)
+    yadi (result_is_ok(t) == 0) {
+        result_err(out)
+        pratiyati 0
+    }
+    result_checked_mul(out, result_value(t), c)
+    pratiyati result_is_ok(out)
+}
+```
+
+Notes on the shape:
+
+- Each step needs its own Result cell (`t` above) unless the step
+  writes directly into `out` (the last step does). Reusing one cell
+  for two live steps clobbers the first step's value.
+- The chain propagates the FIRST failure; later steps never run.
+  There is no error value to inspect — failure is always `[0, 0]`,
+  so the chain cannot say which step failed. If that matters, check
+  after each step and record it before returning.
+- This is a convention, not a guarantee: nothing stops a caller
+  from ignoring `result_is_ok` mid-chain, and there is no
+  exhaustiveness check. The chain is only as disciplined as the
+  code that writes it.
 
 ## Test pinning
 
