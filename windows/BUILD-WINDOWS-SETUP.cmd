@@ -1,19 +1,9 @@
 @echo off
 setlocal
 cd /d "%~dp0"
-echo Sutram Windows native release build
-echo ==================================
-echo.
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0build-windows-setup.ps1"
+echo Sutram standard-user native build candidate
+powershell.exe -NoProfile -NonInteractive -File "%~dp0build-windows-setup.ps1" %*
 set "RC=%ERRORLEVEL%"
-echo.
-if not "%RC%"=="0" (
-  echo BUILD FAILED with exit code %RC%.
-  echo Copy the complete output if support is needed.
-) else (
-  echo BUILD PASSED.
-  echo Installer: Sutram-Setup.exe
-)
-echo.
-pause
+if not "%RC%"=="0" echo BUILD REFUSED OR FAILED. Preserve the complete log.
+if "%RC%"=="0" echo Candidate produced; Windows GUI and install/uninstall acceptance still required.
 exit /b %RC%
