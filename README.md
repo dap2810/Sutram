@@ -104,20 +104,25 @@ native word to its Sanskrit keyword, so anyone can add or correct one:
 
 ## Building the compiler from source
 
-Only NASM and a linker are needed — nothing else.
+The shipped build entry is **`src/r68_compiler_entry.asm`**. It includes the
+primary NASM compiler plus the accepted R68 diagnostics; it is not a runtime
+wrapper. Build from the repository root. See **docs/BUILDING.md** for input-pin
+checks and the developer build helpers. Assembly uses NASM and a linker; the
+optional Unix build/report helper also uses Python 3, not the generated programs.
 
-    nasm -f elf64 -I. src/sutram_compiler.asm -o sutram.o
+    nasm -f elf64 -I. src/r68_compiler_entry.asm -o sutram.o
     ld -o sutram_compiler sutram.o
 
 Windows target:
 
-    nasm -f win64 -dWINDOWS -I. src/sutram_compiler.asm -o sutram.obj
+    nasm -f win64 -dWINDOWS -I. src/r68_compiler_entry.asm -o sutram.obj
     ld -mi386pep --entry=_start -o sutram.exe sutram.obj
 
 ## Where things are
 
 | Path | What |
 |---|---|
+| `src/r68_compiler_entry.asm` | canonical source-build entry including the R68 diagnostic hooks |
 | `src/sutram_compiler.asm` | primary pure-NASM compiler source; keep its reviewed `.inc` files alongside it |
 | `lib/` | standard library (`.smlib`) |
 | `lang/` | language packs |
