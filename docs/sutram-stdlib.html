@@ -34,8 +34,10 @@ Do not edit by hand.</p>
 <li><a href="#map"><code>map</code></a> — 17 functions</li>
 <li><a href="#math"><code>math</code></a> — 18 functions</li>
 <li><a href="#num"><code>num</code></a> — 10 functions</li>
+<li><a href="#result"><code>result</code></a> — 11 functions</li>
 <li><a href="#samanvaya"><code>samanvaya</code></a> — 10 functions</li>
 <li><a href="#sankhyiki"><code>sankhyiki</code></a> — 16 functions</li>
+<li><a href="#serial"><code>serial</code></a> — 5 functions</li>
 <li><a href="#set"><code>set</code></a> — 14 functions</li>
 <li><a href="#sort"><code>sort</code></a> — 14 functions</li>
 <li><a href="#strb"><code>strb</code></a> — 22 functions</li>
@@ -120,7 +122,7 @@ Do not edit by hand.</p>
 <tr><td><code>fmt_sign_char(v, signch, out)</code></td><td>fmt_sign_char(v, signch, out) — `signch` (a byte value, e.g. 32 for a blank, 43 for &#x27;+&#x27;) in place of &#x27;+&#x27; for non-negative values; negatives always get &#x27;-&#x27;.</td></tr>
 </table>
 <h2 id="ganita"><code>ganita</code></h2>
-<p class="mod-desc">layer: core After Aryabhata&#x27;s Kuttaka (~499 CE) and the Chakravala of Jayadeva and Bhaskara II (~1150 CE). KUTTAKA (&quot;the pulveriser&quot;) solves the linear indeterminate equation ax + by = c. It is the ancestor of the extended Euclidean algorithm. CHAKRAVALA (&quot;the wheel&quot;) solves the quadratic indeterminate equation x^2 - N*y^2 = 1, known in Europe as Pell&#x27;s equation. It was the first complete method for it, and for N = 61 it gives x = 1766319049, y = 226153980 - a case Europe first solved in 1657. CHECKED / SATURATING ARITHMETIC (R18) lives here too: ganita is the arithmetic module. See the notes above ganita_checked_add. kuttaka(a, b, c) -&gt; x such that a*x is congruent to c (mod b). Requires gcd(a, b) to divide c. Returns x (a particular solution).</p>
+<p class="mod-desc">layer: core After Aryabhata&#x27;s Kuttaka (~499 CE) and the Chakravala of Jayadeva and Bhaskara II (~1150 CE). KUTTAKA (&quot;the pulveriser&quot;) solves the linear indeterminate equation ax + by = c. It is the ancestor of the extended Euclidean algorithm. CHAKRAVALA (&quot;the wheel&quot;) solves x^2 - N*y^2 = 1 (Pell&#x27;s equation); N = 61 gives x = 1766319049, y = 226153980. CHECKED / SATURATING ARITHMETIC (R18) lives here too: ganita is the arithmetic module. See the notes above ganita_checked_add. kuttaka(a, b, c) -&gt; x such that a*x is congruent to c (mod b). Requires gcd(a, b) to divide c. Returns x (a particular solution).</p>
 <table>
 <tr><th>Function</th><th>Description</th></tr>
 <tr><td><code>kuttaka(a, b, c)</code></td><td></td></tr>
@@ -273,6 +275,22 @@ Do not edit by hand.</p>
 <tr><td><code>is_perfect(n)</code></td><td></td></tr>
 <tr><td><code>collatz_steps(n)</code></td><td></td></tr>
 </table>
+<h2 id="result"><code>result</code></h2>
+<p class="mod-desc">layer: core A Result is a 2-cell pankti supplied by the caller: [ok, value]. ok = 1 means success and value holds the answer; ok = 0 means failure and value is 0. The checked functions can produce Results directly (result_checked_*), and result_from_ok bridges the older ok out-parameter convention into a Result. What this buys over the ok convention (docs/ERROR-CONVENTION.md): a single value carries both the flag and the answer, so a Result can be stored, passed, and returned from a function without threading a separate ok cell through every call, and result_value_or handles both branches in one expression. What it still cannot do without compiler support: nothing forces the caller to check result_is_ok (the value can still be read unchecked, exactly like ignoring ok); there is no propagation operator (the caller still branches by hand); and there is no chaining/map/and_then because the language has no callbacks. A Result is a caller-owned mutable array — aliasing and mutation hazards remain (no ownership model).</p>
+<table>
+<tr><th>Function</th><th>Description</th></tr>
+<tr><td><code>result_ok(out, v)</code></td><td>result_ok(out, v) — write the success Result [1, v] into out.</td></tr>
+<tr><td><code>result_err(out)</code></td><td>result_err(out) — write the failure Result [0, 0] into out.</td></tr>
+<tr><td><code>result_is_ok(r)</code></td><td>result_is_ok(r) — 1 if r is a success Result, else 0.</td></tr>
+<tr><td><code>result_value(r)</code></td><td>result_value(r) — the value of a success Result. Caller must check result_is_ok first: on a failure Result this returns 0, which is indistinguishable from a success value of 0.</td></tr>
+<tr><td><code>result_value_or(r, def)</code></td><td>result_value_or(r, def) — the value if r is success, else def. The one-expression way to handle both branches.</td></tr>
+<tr><td><code>result_from_ok(out, v, ok)</code></td><td>result_from_ok(out, v, ok) — lift the ok convention into a Result: writes [ok[0], v] into out (value 0 on failure).</td></tr>
+<tr><td><code>result_checked_add(out, a, b)</code></td><td>result_checked_add/sub/mul/div/mod(out, a, b) — the ganita checked operation, producing a Result in out instead of an ok out-parameter. On overflow (or div/mod by zero, MIN/-1) the Result is failure [0, 0].</td></tr>
+<tr><td><code>result_checked_sub(out, a, b)</code></td><td></td></tr>
+<tr><td><code>result_checked_mul(out, a, b)</code></td><td></td></tr>
+<tr><td><code>result_checked_div(out, a, b)</code></td><td></td></tr>
+<tr><td><code>result_checked_mod(out, a, b)</code></td><td></td></tr>
+</table>
 <h2 id="samanvaya"><code>samanvaya</code></h2>
 <p class="mod-desc">layer: core Sutram has no 2-D array type, so a matrix is a FLAT `kosh dasham` of m*n elements in row-major order, with the dimensions passed explicitly: A[i][j]  ==  a[i * n + j]        for an m x n matrix CONTRACT for output matrices: the caller must have pushed m*n elements already. A kosh&#x27;s capacity is not its length, so out[i] is out of bounds until an element exists. Functions here never `kosh_push` a parameter — the compiler rejects that, correctly, because the pointer is passed by value. Inputs are read-only. Outputs are written in place and are visible to the caller. --------------------------------------------------------------- element access helpers (flat index) --------------------------------------------------------------- identity matrix: n x n, out must hold n*n elements</p>
 <table>
@@ -308,6 +326,16 @@ Do not edit by hand.</p>
 <tr><td><code>purna_adhikatama(xs, n)</code></td><td>--- integer maximum ---</td></tr>
 <tr><td><code>purna_vyapti(xs, n)</code></td><td>--- integer range (max - min) ---</td></tr>
 <tr><td><code>purna_prasaran(xs, n)</code></td><td>--- integer population variance (truncated toward zero; uses the truncated mean, so exact only when the mean is integral) ---</td></tr>
+</table>
+<h2 id="serial"><code>serial</code></h2>
+<p class="mod-desc">layer: core The library&#x27;s one new capability area: encode values into a flat byte buffer and decode them back, with bounds checking. Format: i64    — 8 bytes, little-endian, two&#x27;s complement bytes  — 8-byte little-endian length (n) followed by n payload bytes Buffers are byte strings (char_at / set_char), caller-allocated and caller-sized. Every put/get takes (buf, pos, cap): pos is the cursor, cap is the buffer size in bytes. On success the function returns the new cursor; on overrun (or a corrupt negative length when decoding) it returns -1 and the destination buffer is untouched (out_n may hold the decoded length if the length itself was readable). The caller owns the buffer and must check for -1, exactly like checking ok. put_bytes requires src and dst NOT to overlap: it writes the length header before copying the payload, so an overlapping src would be clobbered mid-copy. get_bytes requires buf and dst not to overlap for the same reason. Deliberately not here: floats (the language has no bit-cast primitive to turn a dasham into bits), varints (fixed-width is enough for this first area), and schema/versioning (the caller owns the field order; there is no header). serial_len_bytes(n) — encoded size of an n-byte payload: 8 + n.</p>
+<table>
+<tr><th>Function</th><th>Description</th></tr>
+<tr><td><code>serial_len_bytes(n)</code></td><td></td></tr>
+<tr><td><code>serial_put_i64(out, pos, cap, v)</code></td><td>serial_put_i64(out, pos, cap, v) — write v as 8 LE bytes at out+pos. Returns pos + 8, or -1 if it would overrun cap.</td></tr>
+<tr><td><code>serial_get_i64(buf, pos, cap, out)</code></td><td>serial_get_i64(buf, pos, cap, out) — read 8 LE bytes at buf+pos, write the value into out[0]. Returns pos + 8, or -1 on overrun.</td></tr>
+<tr><td><code>serial_put_bytes(out, pos, cap, src, n)</code></td><td>serial_put_bytes(out, pos, cap, src, n) — write n as an 8-byte LE length followed by n payload bytes from src. Returns the new cursor, or -1 on overrun (n &lt; 0 is also an error: -1).</td></tr>
+<tr><td><code>serial_get_bytes(buf, pos, cap, dst, out_n)</code></td><td>serial_get_bytes(buf, pos, cap, dst, out_n) — read a length-prefixed payload: length into out_n[0], payload into dst. Returns the new cursor, or -1 on overrun / negative length.</td></tr>
 </table>
 <h2 id="set"><code>set</code></h2>
 <p class="mod-desc">layer: alloc A set IS a map (`lib/map.smlib`) with a dummy value of 1: membership is map_contains, iteration is map_keys_bytes (R17: packed-byte segments, passed straight to the byte-key map functions with no repacking). ELEMENTS ARE BYTE STRINGS — the same choice as `map.smlib`&#x27;s keys, for the same reason: a caller passes a literal directly (&quot;apple&quot;), with an explicit length, and the whole strb_* surface (compare, pack, unpack) works on the elements unchanged. Do NOT pass char-code (qword-cell) arrays here; see the lib/strb.smlib header for the two representations. Consequences inherited from map: keys longer than 32 bytes are truncated to 32 on every operation, consistently. CAPACITY: a set&#x27;s capacity is fixed at set_init and stored in the buffer (m[0]). Set operations that write into `out` read out&#x27;s capacity from out[0], so the caller MUST pass a set_init&#x27;d buffer with room for the result: cap + bcap for union, cap for difference, min(cap, bcap) for intersection. If `out` is too small, map_put silently drops the overflowing elements (map&#x27;s full-table behaviour) and the returned size will be smaller than the true result — size the output generously and check the returned size. `out` for union / intersect / difference must be a FRESH, EMPTY set: the operations ADD into it and return map_size(out) afterwards. set_is_subset(a, ...) with an empty `a` is 1 (vacuous truth). The 6-argument cap still applies: union / intersect / difference keep the 5-argument shape from the round brief by reading out&#x27;s capacity from out[0] instead of taking it as a sixth parameter.</p>
@@ -429,6 +457,6 @@ Do not edit by hand.</p>
 <tr><td><code>bool_to_int(b)</code></td><td></td></tr>
 <tr><td><code>int_max()</code></td><td></td></tr>
 </table>
-<footer>21 modules, 281 functions. Generated from library sources.</footer>
+<footer>23 modules, 297 functions. Generated from library sources.</footer>
 </body>
 </html>
