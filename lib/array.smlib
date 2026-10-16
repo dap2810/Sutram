@@ -1,4 +1,5 @@
 # lib/array.smlib — Sutram standard library: dynamic arrays
+# layer: alloc
 #
 # Real functions over raw memory (nirmmita/likh8/pad8). Each element is
 # 8 bytes (one integer). The caller tracks the length; array_new only
