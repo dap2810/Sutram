@@ -144,3 +144,77 @@ The owner tests Windows himself. **Give him a plan he can follow without asking 
 Windows is supported, unless you ran it and saw it work. State your measurements, keep failures and skips
 separate from passes, and mark anything unverified as unverified. That is how this project has been built
 so far, and it is how it stays trustworthy.
+
+---
+
+## 8. How to package what you return — follow this exactly
+
+The owner uploads your zip back to me (Sarvam) and I integrate it. So the structure matters: I need to
+be able to open one file and find everything, without guessing.
+
+**Produce ONE zip, named `SUTRAM-WINDOWS-DELIVERY.zip`, laid out exactly like this:**
+
+```
+SUTRAM-WINDOWS-DELIVERY.zip
+├── START-HERE.md                  <- one page: what you built, and what you could not verify
+├── REPORT.md                      <- the full report
+├── SHA256.txt                     <- every file you changed or added
+├── TEST-PLAN.md                   <- the owner's step-by-step Windows test plan
+├── sarvam/
+│   └── INSTRUCTIONS-FOR-SARVAM.md <- what you need from me (see section 9)
+├── installer/
+│   ├── sources/                   <- the repaired wrapper, preflight, layout, manifest
+│   ├── Sutram-Setup.exe           <- the built installer, if you produced one
+│   └── BUILD.md                   <- how to rebuild it
+├── ide/
+│   ├── sources/                   <- the Windows IDE sources
+│   ├── sutram-ide.exe             <- the built IDE, if you produced one
+│   └── BUILD.md
+├── changed/                       <- every file you changed, in its repo-relative path
+└── evidence/
+    └── *.txt                      <- raw command output for everything you claim
+```
+
+Rules for this zip:
+
+- **`changed/` mirrors the repo layout.** A file at `src/foo.asm` in the repo goes at `changed/src/foo.asm`.
+  Do not flatten paths, and do not rename files.
+- **`evidence/` holds raw output**, not summaries. If you claim a command passed, the log that shows it
+  goes here. A claim without a log is not evidence.
+- **Include the built `.exe` files if you built them.** If you could not, say so in `START-HERE.md` — an
+  absent binary with an honest note is worth far more than a claimed one that does not exist.
+- **Do not include the whole repository.** Only what you changed, plus your reports and evidence. I have
+  the tree already; a second copy only makes the diff harder.
+- **`SHA256.txt` covers every file in `changed/` and both binaries.**
+
+## 9. What Sarvam needs from you — `sarvam/INSTRUCTIONS-FOR-SARVAM.md`
+
+Write me a short file saying what **you** need, so the next round is not guesswork. Specifically:
+
+1. **Anything you could not determine** from the archive. If a file was missing, a path was wrong, or a
+   build step needed something that was not there, name it exactly.
+2. **Anything that must change on my side** before your work can land — a repo layout change, a file I
+   must move, a doc I must correct, a conflict with work I have done since your snapshot.
+3. **What you need for the *next* round** to finish what this one could not — a Windows machine, a
+   specific tool, a decision from the owner.
+4. **Any defect you found but did not fix**, with the file and the reason you left it.
+5. **Your honest assessment of the Windows port.** One paragraph: what is close, what is far, and what
+   you would not claim.
+
+Write it as instructions **to me**, plainly. I will act on them.
+
+## 10. One more thing about the snapshot
+
+This archive was taken from `main` at the moment of packaging. **Work continues on `main` while you
+work** — the owner's own stream, plus rounds with Muse. So:
+
+- **Do not assume the tree you receive is still current.** If you need the latest, pull from
+  `https://github.com/dap2810/Sutram` branch `main`.
+- **When you return changes, base them on the newest `main` you can get**, and say in `START-HERE.md`
+  which commit you based on. A patch cut from a stale base has cost this project whole rounds before —
+  twice it silently reverted newer work.
+- If a file you changed has also changed on `main` since your snapshot, **flag the conflict** in
+  `sarvam/INSTRUCTIONS-FOR-SARVAM.md` rather than overwriting.
+
+That last point is not hypothetical. The previous clean-project review hit exactly this on `README.md`
+and caught it by warning about it in advance. Please do the same.
