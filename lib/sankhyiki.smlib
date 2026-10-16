@@ -1,4 +1,5 @@
 # lib/sankhyiki.smlib — Sutram standard library: सांख्यिकी (statistics)
+# layer: core
 #
 # The first library module built on typed `kosh dasham` parameters (T18).
 # Every function takes a float array by parameter and only READS it — no kosh_push,
