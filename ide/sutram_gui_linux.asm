@@ -1017,6 +1017,39 @@ ed_caret_x:
 
 ; ---------------------------------------------------------------- ed_caret_y
 ; Compute the caret's line index (0-based) -> rax.
+; ---------------------------------------------------------------- ed_goto_line
+; slice 34: put the caret at the start of 1-based line rdi, then scroll it into view.
+; Running past the end of the buffer leaves the caret at the end.
+ed_goto_line:
+    push rbx
+    push r12
+    mov  r12, rdi                   ; the target line, 1-based
+    lea  rbx, [rel ed_buf]
+    xor  rdx, rdx                   ; byte offset
+    mov  rax, 1                     ; current line
+    cmp  r12, 1
+    jbe  .set                       ; line 1 is offset 0
+.scan:
+    mov  rcx, [rel ed_len]
+    cmp  rdx, rcx
+    jae  .set                       ; end of buffer -> stop here
+    cmp  byte [rbx + rdx], 10
+    jne  .next
+    inc  rax
+    cmp  rax, r12
+    je   .set_after                 ; this newline starts the target line
+.next:
+    inc  rdx
+    jmp  .scan
+.set_after:
+    inc  rdx                        ; step past the newline
+.set:
+    mov  [rel ed_cursor], rdx
+    call ed_ensure_visible
+    pop  r12
+    pop  rbx
+    ret
+
 ed_caret_y:
     push rbx
     lea  rbx, [rel ed_buf]
@@ -2357,6 +2390,12 @@ do_run:
     call split_lines
     call parse_err_line             ; slice 33: pull the <file>:<line>: out of the diagnostic
     call out_to_bottom
+    ; slice 34: if the compiler named a line, go there so the error is on screen
+    mov  rdi, [rel err_line]
+    test rdi, rdi
+    jz   .no_jump
+    call ed_goto_line
+.no_jump:
     ; ---- if the compiler succeeded (no output, exit 0) run the binary ----
     ; The compiler prints "OK: compiled N bytes" on success; treat any
     ; non-empty output that contains "Error" as failure and stop.
