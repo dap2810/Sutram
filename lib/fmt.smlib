@@ -1,4 +1,5 @@
 # lib/fmt.smlib — Sutram standard library: formatting
+# layer: alloc
 #
 # Number and string formatting on BYTE strings (packed bytes, explicit
 # lengths, `strb` idiom): every function writes packed bytes into `out`
