@@ -1,4 +1,5 @@
 # lib/math.smlib — Sutram standard library: mathematics
+# layer: core
 #
 # Pure integer arithmetic, written only with verified language features.
 # Every function copies its parameters into locals before mutating them,
@@ -43,12 +44,25 @@ prakriya gcd(a, b) {
         y = x % y
         x = t
     }
+    # gcd is non-negative by definition. The loop above can return a
+    # negative value when the first argument is negative (e.g.
+    # gcd(-6, 4) was -2), so take the absolute value. gcd(MIN, 0)
+    # still returns MIN: |MIN| does not fit (wrapping, as abs_val).
+    yadi (x < 0) { x = 0 - x }
     pratiyati x
 }
 
 prakriya lcm(a, b) {
     vitti g = gcd(a, b)
-    pratiyati (a / g) * b
+    # gcd(0, 0) is 0; without this guard (a / g) divides by zero and
+    # the program traps (SIGFPE). lcm(0, 0) = 0 by convention.
+    yadi (g == 0) { pratiyati 0 }
+    # lcm is non-negative by definition (the product (a / g) * b can
+    # be negative when exactly one input is). lcm(MIN, 2) still
+    # returns MIN: the true value 2^63 does not fit (wrapping).
+    vitti r = (a / g) * b
+    yadi (r < 0) { r = 0 - r }
+    pratiyati r
 }
 
 prakriya power(base, e) {
@@ -72,7 +86,10 @@ prakriya is_prime(n) {
     vitti x = n
     yadi (x < 2) { pratiyati 0 }
     vitti i = 2
-    yavat (i * i <= x) {
+    # Division bound, not i * i: i * i overflows for x near MAX
+    # (the square wraps negative, the condition stays true, and
+    # the loop never terminates for a large prime).
+    yavat (i <= x / i) {
         yadi (x % i == 0) { pratiyati 0 }
         i = i + 1
     }
