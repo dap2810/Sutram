@@ -1,3 +1,39 @@
+## v156 - ChatGPT R71 (all five workstreams) and Muse R30 (51 defects) verified and synced
+
+**ChatGPT R71 - 30 files, 30/30 hashes verified at commit `bb791061`.** It delivered far more than the
+reclaim note suggested: **all five workstreams**, as documents plus source hooks.
+- **WS1 modules:** `docs/R71-MODULES.md` + `src/r71_module_link.inc`. Design and linkage only -
+  ChatGPT states plainly that **production `.sm` separate compilation remains unimplemented.**
+- **WS2 kosh reclaim:** three hooks in `.ge_call_koshpush` - capacity check before size arithmetic,
+  allocation-failure rejection before memory writes, and **`munmap` of the old mapping** after copy.
+  It **deliberately rejects kosh-push PE emission** because the inspected Windows runtime has no release
+  implementation - it refuses to pretend syscall 11 releases a VirtualAlloc buffer.
+- **WS3 memory:** `docs/R71-MEMORY-BOUNDARY.md` + `src/r71_unsafe_integration.inc`.
+- **WS4 boot:** `boot/r71/boot.asm`, `build_probe.py`, `docs/R71-BOOT-PATH.md`.
+- **WS5 spec:** `docs/R71-SPECIFICATION-EVIDENCE.md` + `examples/r71/*` (associativity, conversion,
+  evaluation order, boundary good/bad) - the "unspecified" gaps pinned by tests.
+- **It flags a real compatibility boundary:** growth invalidates old backing-store aliases, and there is
+  no borrow checker enforcing it. No general free primitive was added silently. It does not claim memory
+  safety. **No compiler execution occurred** - source and documents only.
+
+**Muse R30 - 44 files across two patches, all five workstreams, every number reproduced.**
+Suite 187/4 · proof_lib **191/191** · proof_props **86/86** · layers **14 core / 9 alloc / 1 std** ·
+stdlib **24 modules / 303 functions**. The first genuinely `std` module exists.
+- **WS1 is the round's real value: 51 defects found by executing.** 12 crashes (SIGFPE/SIGSEGV),
+  4 hangs, 6 memory-safety faults, 29 wrong answers - `div_ceil` by zero, `int_to_base_str` base 0/1,
+  `min_of`/`max_of` on empty, `fact(100000)` stack overflow, `str_split` on negative lengths,
+  `bigint_to_digits` overflowing a fixed 70-cell scratch buffer, `str_upper` writing at `dst[-1]`,
+  `madhava_atan(1)` wrong by 6e-4, `digit_count(MIN)` 1 vs 19, `str_to_float("9e308")` accepting inf.
+  It states its counting rule and lists the modules exercised, so the claim is checkable.
+- **One accepted golden was changed, and it disclosed it.** `madhava_atan.out` 0.784773 -> 0.785398,
+  because the old golden **encoded a confirmed wrong answer** (`atan(1)` is PI/4). Called out explicitly
+  rather than hidden. This is the only golden changed; all others are additive.
+- **WS2 kosh harm reduction, measured:** fresh-kosh-per-round peaks at **91.0 MB**; one reused kosh
+  **8.5 MB** - flat in round count. Honest limit stated: this caps retention at one allocation, it does
+  not reclaim it, and any kosh that does grow still leaks.
+- Two patch files because GitHub caps a single upload argument at 128 KiB (`MAX_ARG_STRLEN`) - a real
+  constraint, correctly diagnosed and split at a file boundary.
+
 ## v155 - GUI slice 34: the editor jumps to the error line; ROUND-30 issued to Muse
 
 - **Slice 34 completes slice 33.** Slice 33 coloured the error line's gutter number red -- but if the
