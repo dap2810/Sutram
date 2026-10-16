@@ -1,0 +1,147 @@
+# lib/result.smlib — Sutram standard library: Result values (R29 WS3)
+# layer: core
+#
+# A Result is a 2-cell pankti supplied by the caller: [ok, value].
+# ok = 1 means success and value holds the answer; ok = 0 means
+# failure and value is 0. The checked functions can produce Results
+# directly (result_checked_*), and result_from_ok bridges the older
+# ok out-parameter convention into a Result.
+#
+# What this buys over the ok convention (docs/ERROR-CONVENTION.md):
+# a single value carries both the flag and the answer, so a Result
+# can be stored, passed, and returned from a function without
+# threading a separate ok cell through every call, and
+# result_value_or handles both branches in one expression.
+#
+# What it still cannot do without compiler support: nothing forces
+# the caller to check result_is_ok (the value can still be read
+# unchecked, exactly like ignoring ok); there is no propagation
+# operator (the caller still branches by hand); and there is no
+# chaining/map/and_then because the language has no callbacks.
+# A Result is a caller-owned mutable array — aliasing and mutation
+# hazards remain (no ownership model).
+
+ayojan ganita
+
+# result_ok(out, v) — write the success Result [1, v] into out.
+prakriya result_ok(out, v) {
+    vitti o = out
+    o[0] = 1
+    o[1] = v
+    pratiyati 1
+}
+
+# result_err(out) — write the failure Result [0, 0] into out.
+prakriya result_err(out) {
+    vitti o = out
+    o[0] = 0
+    o[1] = 0
+    pratiyati 0
+}
+
+# result_is_ok(r) — 1 if r is a success Result, else 0.
+prakriya result_is_ok(r) {
+    pratiyati r[0]
+}
+
+# result_value(r) — the value of a success Result. Caller must
+# check result_is_ok first: on a failure Result this returns 0,
+# which is indistinguishable from a success value of 0.
+prakriya result_value(r) {
+    pratiyati r[1]
+}
+
+# result_value_or(r, def) — the value if r is success, else def.
+# The one-expression way to handle both branches.
+prakriya result_value_or(r, def) {
+    yadi (r[0] == 1) { pratiyati r[1] }
+    pratiyati def
+}
+
+# result_from_ok(out, v, ok) — lift the ok convention into a
+# Result: writes [ok[0], v] into out (value 0 on failure).
+prakriya result_from_ok(out, v, ok) {
+    vitti o = out
+    yadi (ok[0] == 1) {
+        o[0] = 1
+        o[1] = v
+    } anyatra {
+        o[0] = 0
+        o[1] = 0
+    }
+    pratiyati o[0]
+}
+
+# result_checked_add/sub/mul/div/mod(out, a, b) — the ganita
+# checked operation, producing a Result in out instead of an
+# ok out-parameter. On overflow (or div/mod by zero, MIN/-1)
+# the Result is failure [0, 0].
+prakriya result_checked_add(out, a, b) {
+    # out doubles as the ok cell: the ganita checked form writes
+    # out[0] = ok flag and returns the value. No allocation, so
+    # this module stays core.
+    vitti o = out
+    vitti v = ganita_checked_add(a, b, o)
+    yadi (o[0] == 1) {
+        o[1] = v
+    } anyatra {
+        o[1] = 0
+    }
+    pratiyati o[0]
+}
+
+prakriya result_checked_sub(out, a, b) {
+    # out doubles as the ok cell: the ganita checked form writes
+    # out[0] = ok flag and returns the value. No allocation, so
+    # this module stays core.
+    vitti o = out
+    vitti v = ganita_checked_sub(a, b, o)
+    yadi (o[0] == 1) {
+        o[1] = v
+    } anyatra {
+        o[1] = 0
+    }
+    pratiyati o[0]
+}
+
+prakriya result_checked_mul(out, a, b) {
+    # out doubles as the ok cell: the ganita checked form writes
+    # out[0] = ok flag and returns the value. No allocation, so
+    # this module stays core.
+    vitti o = out
+    vitti v = ganita_checked_mul(a, b, o)
+    yadi (o[0] == 1) {
+        o[1] = v
+    } anyatra {
+        o[1] = 0
+    }
+    pratiyati o[0]
+}
+
+prakriya result_checked_div(out, a, b) {
+    # out doubles as the ok cell: the ganita checked form writes
+    # out[0] = ok flag and returns the value. No allocation, so
+    # this module stays core.
+    vitti o = out
+    vitti v = ganita_checked_div(a, b, o)
+    yadi (o[0] == 1) {
+        o[1] = v
+    } anyatra {
+        o[1] = 0
+    }
+    pratiyati o[0]
+}
+
+prakriya result_checked_mod(out, a, b) {
+    # out doubles as the ok cell: the ganita checked form writes
+    # out[0] = ok flag and returns the value. No allocation, so
+    # this module stays core.
+    vitti o = out
+    vitti v = ganita_checked_mod(a, b, o)
+    yadi (o[0] == 1) {
+        o[1] = v
+    } anyatra {
+        o[1] = 0
+    }
+    pratiyati o[0]
+}
