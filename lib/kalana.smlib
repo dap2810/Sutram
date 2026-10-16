@@ -1,4 +1,5 @@
 # lib/kalana.smlib — Sutram standard library: कलन (numerical calculus)
+# layer: core
 #
 # Built on typed `kosh dasham` parameters (T18) and the float fast paths (F1/F2/FG1/FC1).
 # Every function READS its kosh parameters only — never `kosh_push` on a parameter, which the
