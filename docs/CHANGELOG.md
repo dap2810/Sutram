@@ -1,3 +1,30 @@
+## v153 — GUI slice 33: the IDE marks the compiler's error line; and the round briefs fixed
+
+- **Slice 33 — the IDE now shows you where the error is.** R68 gave the compiler host-side diagnostics
+  that name `<file>:<line>:`. The IDE displayed that text but did nothing with the line number. It now
+  parses the number out of the run output and paints **that line's gutter number in red**, so the eye
+  goes straight to the offending line. `parse_err_line` scans for the first `:<digits>:` run in the
+  output; no match leaves `err_line` at 0.
+- **New test `tools/test_x11_error_line.py`** runs the IDE from a temp dir with a **mock compiler**
+  beside it that prints a diagnostic naming line 2, sends Ctrl-R, then walks the X11 request stream
+  tracking SetForeground colours and asserting **line 2 is red and no other line is**. **GUI suite now
+  17/17.**
+- **My own test was wrong first, in the same way as before.** I read the SetForeground colour from byte
+  offset +4, which is the **drawable**, not the colour — so every text draw reported the GC id
+  `0x200002`. The colour is at **+12**. That is the *third* time this session I have read the wrong
+  offset out of an X11 request (ImageText8's length, ImageText8's text, now SetForeground). The lesson
+  is recorded in `PROJECT-MASTER.md` for a reason.
+- **The round briefs are fixed.** Both ChatGPT and Muse independently caught that my briefs cited
+  charter items **13/11/9** where the file has **14/12/10** — an off-by-one from before the multilingual
+  paradigm was added as item 9. My error, corrected.
+- **New rounds issued:** **ROUND-71 → ChatGPT** (five workstreams: real modules and separate
+  compilation — the biggest gap in the project; the entry wrapper as the shipped build, carried over
+  because ROUND-69 was skipped; the first memory-model implementation step; the freestanding boot path;
+  closing the specification's "unspecified" gaps) and **ROUND-29 → Muse** (five workstreams: resolve the
+  `0 std` layer result; fix the observed `kosh` growth leak; a real result type; pin the numeric
+  contract; one new library capability area).
+- GUI source ~94 KB; binary **37,792 B**. Compiler untouched.
+
 ## v152 — the ninth paradigm, a live status page, and a wrong number corrected
 
 - **A new paradigm added to the charter: `Multilingual and native-script programming` (09).** The charter
