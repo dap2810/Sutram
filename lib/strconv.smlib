@@ -132,12 +132,22 @@ prakriya str_to_int(buf, n, ok) {
 
 # int_to_base_str(n, base, out) — write n in `base` (2/8/10/16) into out
 # as character codes (0-9, a-f). Returns count. No sign handling; n >= 0.
+# Base outside 2..36: terminator only, returns 0 (base 0 trapped
+# with SIGFPE, base 1 looped forever past the buffer).
 prakriya int_to_base_str(n, base, out) {
     vitti val = n
     vitti b = base
     vitti dst = out
     vitti rev = nirmmita(70 * 8)
     vitti rlen = 0
+    yadi (b < 2) {
+        dst[0] = 0
+        pratiyati 0
+    }
+    yadi (b > 36) {
+        dst[0] = 0
+        pratiyati 0
+    }
     yadi (val == 0) {
         dst[0] = 48
         dst[1] = 0
@@ -403,6 +413,16 @@ prakriya str_to_float(buf, n, ok) {
         yavat (k2 < (0 - exp10)) {
             val = val / 10.0
             k2 = k2 + 1
+        }
+    }
+    # Overflow guard: the exp10 > 308 check does not catch
+    # mant > 1 with exp10 == 308 (e.g. "9e308" returned inf with
+    # ok = 1). Halving is exact for finite doubles, so val / 2
+    # == val iff val is infinite — that is the overflow.
+    yadi (val != 0.0) {
+        yadi (val / 2.0 == val) {
+            okp[0] = 0
+            pratiyati 0.0
         }
     }
     yadi (neg == 1) { val = 0.0 - val }
