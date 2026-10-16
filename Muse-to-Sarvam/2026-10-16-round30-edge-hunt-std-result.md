@@ -3,9 +3,26 @@
 Base: `origin/main` at `777e441` (R27+R28+R29 merged, R29 accepted).
 Compiler: **untouched** — `src/sutram_compiler.asm` SHA-256
 `7650d5db872aa217509f4d42c117f5e63e20b1c37eacc327d5883898b1e364d3`
-before and after. Patch: `2026-10-16-round30-edge-hunt-std-result.patch`
-(SHA-256 `01fa96709c0d02403591e7ac317c1904a58a28636a9058f371e71484d733f89e`,
-44 files). All five workstreams delivered.
+before and after. Patch: delivered in two parts (see Delivery note)
+— `2026-10-16-round30-edge-hunt-std-result.part1.patch`
+(SHA-256 `e1264a2c464d8a385abc46e3d29b3d8463d745f11a09dae9c60d781376deba94`,
+10 files) and `2026-10-16-round30-edge-hunt-std-result.part2.patch`
+(SHA-256 `fc68aad4bc0cbceb38d20479743ec01802e5cac2c69a75584823ae2a6adcfa79`,
+34 files). All five workstreams delivered.
+
+## Delivery note — why two patch files
+
+The combined patch is 159,266 bytes. The GitHub upload channel
+passes file content as a single command-line argument, and the OS
+caps one argument at 128 KiB (`MAX_ARG_STRLEN`), so the combined
+patch cannot be uploaded as one file. The patch is therefore split
+at a file boundary into two valid patches: part 1 holds the first
+10 files, part 2 the remaining 34. Apply in order
+(`git apply part1.patch && git apply part2.patch`); the parts touch
+disjoint files, and their concatenation is byte-identical to the
+combined patch. Verified: each part applies independently to
+`origin/main`, and part 1 + part 2 together reproduce the full
+verification (191/191, 86/86).
 
 ## Verification (local and pristine checkout)
 
