@@ -1,10 +1,10 @@
 # The library's honest boundary
 
-One page on what the Sutram standard library (`lib/`, 21 modules, 281
+One page on what the Sutram standard library (`lib/`, 23 modules, 297
 functions) deliberately does **not** do, with the reason for each. A
 stated boundary is worth more than a longer function list. This page is
 the R27 answer; R28 extends it with the layer markers that enforce the
-core/alloc split.
+core/alloc split; R29 adds the `Result` type and serialisation.
 
 ## Deliberately not in the library
 
@@ -47,10 +47,10 @@ core/alloc split.
   source. Reason: no OS assumed. `math_rand` (R26) is a deterministic
   PRNG with a caller-owned seed — honest about what it is.
 - **Exceptions / panics.** No throw/catch, no stack unwinding.
-  Reason: errors are values. The `ok` out-parameter convention (see
-  `docs/ERROR-CONVENTION.md` in R28) is the error model; there is no
-  result type, no propagation operator, and no exhaustiveness checking
-  yet (charter item 12, partial).
+  Reason: errors are values. The `ok` out-parameter convention
+  and the `Result` type (see `docs/ERROR-CONVENTION.md`, R29)
+  are the error model; there is no propagation operator and no
+  exhaustiveness checking yet (charter item 12, partial).
 - **Generics, closures, methods, traits.** No first-class functions,
   no generic collections, no methods. Reason: the language does not
   have them yet (charter items 02–04). Every collection in `lib/` is
@@ -65,10 +65,13 @@ Beyond the missing features above, the library does not claim:
 - **Memory safety.** Memory is manual; there is no ownership, no
   borrow checking, and no unsafe boundary (charter item 11, not
   started). A program that frees or double-uses storage is a caller
-  bug the library cannot catch.
+  bug the library cannot catch. The `kosh` growth path retains
+  superseded buffers (a compiler-side leak, verified in R29;
+  see `MEMORY-MODEL.md` §7 and `tools/test_kosh_growth_leak.py`).
 - **A result type.** Errors are the `ok` out-parameter convention
-  (see `docs/ERROR-CONVENTION.md`), not a type the compiler checks.
-  Nothing forces the caller to check `ok[0]`.
+  and, since R29, the `Result` value (see
+  `docs/ERROR-CONVENTION.md`). Nothing forces the caller to check
+  `ok[0]` or `result_is_ok` — there is no exhaustiveness checking.
 - **Formal type contracts.** Integer sizes, conversions, overflow,
   and comparison are defined in `docs/NUMERIC-CONTRACT.md` and
   pinned by tests, but there is no formal type-contract system in
@@ -77,19 +80,21 @@ Beyond the missing features above, the library does not claim:
   and pinned by the proof suites, but there is no formal written
   specification yet (charter item 20, partial).
 
-## Layers (R28 extension)
+## Layers (R28 extension, R29 resolution)
 
 The library is split into **core** (no allocator, no OS),
-**alloc** (needs a heap), and **std** (OS services — currently
-empty). Each module's header carries a machine-readable
-`# layer:` marker, and `tools/check_layers.py` verifies that no
-core module depends upward. See `docs/LIBRARY-LAYERS.md` for the
-per-module table.
+**alloc** (needs a heap), and **std** (OS services — empty by
+verification, not by omission: no module calls any OS-service
+builtin, and the layer checker enforces it). Each module's header
+carries a machine-readable `# layer:` marker, and
+`tools/check_layers.py` verifies that no core module depends
+upward. See `docs/LIBRARY-LAYERS.md` for the per-module table.
 
 Pure computation over values the caller provides: containers (`map`,
 `set`, `list`, `queue`, `stack`), text and bytes (`string`, `strb`,
 `str`), numbers (`math`, `ganita`, `bigint`, `strconv`, `baseconv`,
 `fmt`, `sankhyiki`, `kalana`), hashing (`hash`), sorting (`sort`),
+serialisation (`serial`, R29), the `Result` type (`result`, R29),
 and the safety net (`ganita_checked_*`, `ganita_sat_*`). Everything
 in `lib/` runs on plain arithmetic and explicit caller-provided
 storage; the layer split (core vs alloc) is marked per module in
