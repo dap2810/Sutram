@@ -54,9 +54,14 @@ prakriya matra_meru(n) {
 
 prakriya is_guru(pat, i) {
     vitti p = pat
+    vitti idx = i
+    # Index must be a bit position: negative or >= 64 has no bit
+    # (i >= 64 shifted the divisor to 0 and trapped with SIGFPE).
+    yadi (idx < 0) { pratiyati 0 }
+    yadi (idx >= 64) { pratiyati 0 }
     vitti d = 1
     vitti j = 0
-    yavat (j < i) {
+    yavat (j < idx) {
         d = d * 2
         j = j + 1
     }
@@ -66,6 +71,7 @@ prakriya is_guru(pat, i) {
 prakriya guru_count(pat) {
     vitti p = pat
     vitti c = 0
+    # Negative patterns return 0, as bit_count (R28 contract).
     yavat (p > 0) {
         c = c + (p % 2)
         p = p / 2
