@@ -1,0 +1,8 @@
+mukhya() {
+    vitti a = 2.75
+    vitti b = -2.75
+    dasham c = 2 + 0.5
+    likha(a)
+    likha(b)
+    likha(c)
+}
