@@ -162,7 +162,35 @@ reviewed; do not silently reinterpret a copied raw integer as an owner. Separate
 allocator-free core operations from owning containers and OS resources without
 creating unrelated languages with incompatible type rules.
 
-## 6. Evidence required before claiming the proposal works
+## 7. R29 verification (2026-10-16): the growth leak is real and unfixable from the library side
+
+The leak described in section 2 was verified by inspection and by
+measurement, and the fix was determined to be compiler-side:
+
+- **Inspection (read-only):** the `kosh_push` growth path in
+  `src/sutram_compiler.asm` (`.ge_call_koshpush`) emits
+  `emit_nirmmita_from_rax` (`mmap`) for the new buffer, copies the
+  cells, and stores the new pointer. A grep of the whole compiler
+  source finds **no `munmap` / free emission anywhere** — the old
+  buffer's mapping is never released.
+- **No free primitive exists in the language.** The `kosh` API
+  (`kosh_push/pop/len/cap/clear/empty/peek/enqueue/dequeue`,
+  `docs/KOSH-BUILTINS.md`) has no free, and there is no general
+  `munmap` builtin. So the library cannot reclaim the buffer even
+  if it wanted to: there is no primitive to call.
+- **Measurement:** `tools/test_kosh_growth_leak.py` compiles a
+  program that pushes 8,000,000 items and measures the child's
+  peak RSS. Slope is **~15.3–15.6 bytes/item** — peak heap is ~2x
+  the live buffer, i.e. every superseded buffer is retained. A
+  fixed compiler would show ~8 bytes/item.
+- **Fix (compiler-side, `src/` work, not this round):** emit a
+  `munmap` of the old buffer in the growth path after the copy, or
+  add a free primitive and a reclamation rule. The test above is
+  expected to FAIL until that lands; it is a diagnostic, not a
+  suite gate, because RSS is machine-dependent.
+
+The leak is therefore confirmed as a compiler defect, not a
+library defect, and it is not fixable from the library side.
 
 The acceptance set must include valid borrowing/moving programs and invalid
 programs rejected for use-after-move, escaping borrows, double release and
