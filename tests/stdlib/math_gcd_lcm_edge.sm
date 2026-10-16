@@ -1,0 +1,22 @@
+ayojan math
+mukhya() {
+    likha(gcd(0 - 6, 4))
+    likha("\n")
+    likha(gcd(6, 0 - 4))
+    likha("\n")
+    likha(gcd(0 - 6, 0 - 4))
+    likha("\n")
+    likha(gcd(0, 0))
+    likha("\n")
+    likha(lcm(0, 0))
+    likha("\n")
+    likha(lcm(0, 5))
+    likha("\n")
+    likha(lcm(6, 4))
+    likha("\n")
+    likha(lcm(0 - 6, 4))
+    likha("\n")
+    likha(lcm(6, 0 - 4))
+    likha("\n")
+    likha("math-gcd-lcm-edge-done\n")
+}
