@@ -1,4 +1,5 @@
 # lib/strconv.smlib — Sutram standard library: number <-> string conversion
+# layer: alloc
 #
 # Renders integers as decimal (or base-2/8/16) digit characters into a buffer,
 # and parses them back. Buffers are pankti of integer character codes (not
