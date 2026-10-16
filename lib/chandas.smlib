@@ -1,4 +1,5 @@
 # lib/chandas.smlib — Sutram standard library: Pingala's prosody mathematics
+# layer: core
 #
 # After Pingala's Chandahśāstra (~2nd c. BCE). Sanskrit metre is built from two
 # syllable weights — laghu (light) and guru (heavy) — so an n-syllable metre is a
