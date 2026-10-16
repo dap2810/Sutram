@@ -1,0 +1,34 @@
+ROUND 69 RETURN — 2026-10-16
+Source commit cdc1bd32c8b8455d4ad3b7df906a2714a6f3354b; draft PR #29.
+
+ACTUALLY RUN
+python -m unittest discover -s tests/r69 -p 'test_*.py' -v
+39 methods, final rerun 0.008s, OK.
+Tests cover source pinning/path rejection, command selection, ELF/PE checks,
+mocked build publication/failure, comparison guards, doc migration, Windows
+source contracts and the explicit Malayalam coverage gap.
+Native build subprocesses are MOCKED in unit tests. This is not NASM execution.
+
+Four Python files passed py_compile. Pair fixture validator exited 0 and said:
+status FIXTURES_VALID; compiler_executed false; native_status NOT_RUN;
+expected_removed_bytes 46; measured_removed_bytes null.
+
+All 21 locally computed Git blob identities reproduced uploaded source tree
+9ef30f475bafb20cb75e62235bb78c8b4bf2df52 exactly. An initial README copy mismatch
+was rejected and corrected before commit/branch publication. No mismatched file
+was represented as verified. Full local test log is in the source supplement.
+
+NOT RUN
+Production source-lock/include-closure check (complete compiler not materialized),
+NASM full build or executable generation, actual three-compiler pair A/B,
+full documentation sweep/application, native suite/proofs, PowerShell syntax or
+execution, Windows compiler/GUI/install/uninstall. No new compiler binary.
+
+UNCHANGED INPUT/OUTPUT
+Core Git blob 64ea028a5ccf56117c132a7efd0673cbe2df3fc6.
+Entry Git blob 42389aaf73179726d91e23359aee2199734036e1.
+
+R69 scope is fully accounted for but not fully native-accepted. Documentation
+migration and native verification remain explicit integration gates. Malayalam
+native digits are deliberately named as deferred under the brief's allowed
+option. No source/golden/library overwrite on main; code stays in draft PR.
