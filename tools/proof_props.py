@@ -3782,6 +3782,324 @@ def prop_min26(compiler, rng):
     return ok and out == "PASS", out
 
 
+def prop_safety27(compiler, rng):
+    """R27 WS1: cross-module safety — strconv's overflow guards and
+    ganita's checked forms agree on the same magnitudes: a string
+    that parses (ok 1) names a value the checked ops accept; a string
+    that overflows (ok 0, return 0) names a magnitude the checked ops
+    reject (also return 0). Neither silently wraps."""
+    # Two programs: the parse battery alone exceeds the per-block
+    # statement limit.
+    part1 = ["ayojan strconv", "ayojan ganita", "mukhya() {",
+             "    vitti ok = nirmmita(8)",
+             "    vitti buf = nirmmita(32 * 8)",
+             "    vitti maxv = 9223372036854775807",
+             "    vitti minv = (0 - 9223372036854775807) - 1"]
+    part3 = ["ayojan strconv", "ayojan ganita", "mukhya() {",
+             "    vitti ok = nirmmita(8)",
+             "    vitti buf = nirmmita(32 * 8)",
+             "    vitti maxv = 9223372036854775807",
+             "    vitti minv = (0 - 9223372036854775807) - 1"]
+    part2 = ["ayojan strconv", "ayojan ganita", "mukhya() {",
+             "    vitti ok = nirmmita(8)",
+             "    vitti buf = nirmmita(32 * 8)",
+             "    vitti maxv = 9223372036854775807",
+             "    vitti minv = (0 - 9223372036854775807) - 1"]
+    lines = part1
+
+    def fail(msg):
+        lines.append(f'        likha("FAIL {msg}\\n")')
+        lines.append("        pratiyati 1")
+
+    def put_str(s):
+        for j, ch in enumerate(s):
+            lines.append(f"    buf[{j}] = {ord(ch)}")
+
+    # --- fitting strings: parse ok, and checked ops accept the value
+    for fi, (s, val) in enumerate([("0", 0), ("123", 123), ("-456", -456),
+                   ("9223372036854775807", 2**63 - 1),
+                   ("-9223372036854775808", -(2**63))]):
+        put_str(s)
+        lines.append(f"    vitti pvf{fi} = str_to_int(buf, {len(s)}, ok)")
+        lines.append("    yadi (ok[0] != 1) {")
+        fail(f"parse fits {s}")
+        lines.append("    }")
+        vname = "maxv" if val == 2**63 - 1 else ("minv" if val == -(2**63) else str(val))
+        lines.append(f"    yadi (pvf{fi} != {vname}) {{")
+        fail(f"parse value {s}")
+        lines.append("    }")
+        # checked ops accept the parsed value
+        lines.append(f"    yadi (ganita_checked_add(pvf{fi}, 0, ok) != {vname}) {{")
+        fail(f"checked_add accepts {s}")
+        lines.append("    }")
+        lines.append("    yadi (ok[0] != 1) {")
+        fail(f"checked_add ok {s}")
+        lines.append("    }")
+        lines.append(f"    yadi (ganita_checked_mul(pvf{fi}, 1, ok) != {vname}) {{")
+        fail(f"checked_mul accepts {s}")
+        lines.append("    }")
+        lines.append("    yadi (ok[0] != 1) {")
+        fail(f"checked_mul ok {s}")
+        lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    lines = part2
+    # --- overflowing strings: parse fails with 0, and the checked op
+    # for the SAME magnitude also fails with 0 (neither wraps)
+    over = [("9223372036854775808",
+             "ganita_checked_add(maxv, 1, ok)"),
+            ("-9223372036854775809",
+             "ganita_checked_sub(minv, 1, ok)"),
+            ("18446744073709551616",
+             "ganita_checked_mul(4294967296, 4294967296, ok)"),
+            ("18446744073709551615", None),
+            ("99999999999999999999", None)]
+    for oi, (s, gexpr) in enumerate(over):
+        put_str(s)
+        lines.append(f"    vitti pvo{oi} = str_to_int(buf, {len(s)}, ok)")
+        lines.append("    yadi (ok[0] != 0) {")
+        fail(f"parse rejects {s}")
+        lines.append("    }")
+        lines.append(f"    yadi (pvo{oi} != 0) {{")
+        fail(f"parse returns 0 {s}")
+        lines.append("    }")
+        if gexpr:
+            lines.append(f"    yadi ({gexpr} != 0) {{")
+            fail(f"checked returns 0 {s}")
+            lines.append("    }")
+            lines.append("    yadi (ok[0] != 0) {")
+            fail(f"checked rejects {s}")
+            lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    lines = part3
+    # --- hex: same boundary in base 16
+    for hi, (s, ok_want) in enumerate([("ffffffffffffffff", 0),
+                       ("10000000000000000", 0),
+                       ("7fffffffffffffff", 1),
+                       ("8000000000000000", 0)]):
+        put_str(s)
+        lines.append(f"    vitti pvh{hi} = str_to_int_base(buf, {len(s)}, 16, ok)")
+        lines.append(f"    yadi (ok[0] != {ok_want}) {{")
+        fail(f"hex parse {s}")
+        lines.append("    }")
+        if ok_want == 0:
+            lines.append(f"    yadi (pvh{hi} != 0) {{")
+            fail(f"hex returns 0 {s}")
+            lines.append("    }")
+    # hex 2^64 boundary vs ganita: checked_mul(2^32, 2^32) also fails
+    lines.append("    yadi (ganita_checked_mul(4294967296, 4294967296, ok) != 0) {")
+    fail("checked_mul 2^64 returns 0")
+    lines.append("    }")
+    lines.append("    yadi (ok[0] != 0) {")
+    fail("checked_mul 2^64 rejects")
+    lines.append("    }")
+    # --- roundtrip: int_to_str(v) parses back, and checked accepts v
+    for ri, v in enumerate([0, 1, -1, 2**63 - 1, -(2**63)]):
+        vname = "maxv" if v == 2**63 - 1 else ("minv" if v == -(2**63) else str(v))
+        lines.append(f"    vitti rn{ri} = int_to_str({vname}, buf)")
+        lines.append(f"    yadi (str_to_int(buf, rn{ri}, ok) != {vname}) {{")
+        fail("roundtrip parse")
+        lines.append("    }")
+        lines.append("    yadi (ok[0] != 1) {")
+        fail("roundtrip ok")
+        lines.append("    }")
+        lines.append(f"    yadi (ganita_checked_add({vname}, 0, ok) != {vname}) {{")
+        fail("roundtrip checked")
+        lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    for key, prog in (("safety27a", part1), ("safety27b", part2),
+                      ("safety27c", part3)):
+        ok, out = run_sm(compiler, key, "\n".join(prog))
+        if not (ok and out == "PASS"):
+            return False, out
+    return True, "PASS"
+
+
+def prop_bigint_divzero(compiler, rng):
+    """R27 WS3: bigint_divmod and bigint_powmod by zero are defined
+    (q=0, r=a; powmod unreduced) instead of hanging."""
+    lines = ["ayojan bigint", "mukhya() {",
+             "    vitti a = nirmmita(4 * 8)",
+             "    vitti b = nirmmita(4 * 8)",
+             "    vitti q = nirmmita(4 * 8)",
+             "    vitti r = nirmmita(4 * 8)",
+             "    bigint_from_int(10, a, 4)",
+             "    bigint_from_int(0, b, 4)",
+             "    bigint_divmod(a, b, q, r, 4)",
+             "    yadi (bigint_to_int(q, 4) != 0) {",
+             '        likha("FAIL divmod zero q\\n")',
+             "        pratiyati 1",
+             "    }",
+             "    yadi (bigint_to_int(r, 4) != 10) {",
+             '        likha("FAIL divmod zero r\\n")',
+             "        pratiyati 1",
+             "    }",
+             "    bigint_from_int(2, a, 4)",
+             "    bigint_powmod(a, 10, b, r, 4)",
+             "    yadi (bigint_to_int(r, 4) != 1024) {",
+             '        likha("FAIL powmod zero mod\\n")',
+             "        pratiyati 1",
+             "    }",
+             '    likha("PASS\\n")',
+             "}"]
+    ok, out = run_sm(compiler, "bigint_divzero", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_ok_convention(compiler, rng):
+    """R28 WS2: the ok convention — every ok-param container function
+    sets ok on every path and returns a defined failure value (0)."""
+    lines = ["ayojan list", "mukhya() {",
+             "    vitti ok = nirmmita(8)",
+             "    vitti l = list_init(4)",
+             "    vitti q = queue_init(4)"]
+
+    def fail(msg):
+        lines.append(f'        likha("FAIL {msg}\\n")')
+        lines.append("        pratiyati 1")
+
+    # empty containers: return 0, ok 0
+    for call in ["stack_pop(l, ok)", "stack_peek(l, ok)",
+                 "queue_dequeue(q, ok)", "queue_peek(q, ok)",
+                 "list_min(l, ok)", "list_max(l, ok)"]:
+        lines.append(f"    yadi ({call} != 0) {{")
+        fail(f"empty {call} returns 0")
+        lines.append("    }")
+        lines.append("    yadi (ok[0] != 0) {")
+        fail(f"empty {call} ok 0")
+        lines.append("    }")
+    # non-empty: ok 1, correct value
+    lines.append("    list_push(l, 7)")
+    lines.append("    yadi (stack_pop(l, ok) != 7) {")
+    fail("stack_pop value")
+    lines.append("    }")
+    lines.append("    yadi (ok[0] != 1) {")
+    fail("stack_pop ok 1")
+    lines.append("    }")
+    lines.append("    list_push(l, 7)")
+    lines.append("    yadi (stack_peek(l, ok) != 7) {")
+    fail("stack_peek value")
+    lines.append("    }")
+    lines.append("    yadi (ok[0] != 1) {")
+    fail("stack_peek ok 1")
+    lines.append("    }")
+    lines.append("    yadi (list_min(l, ok) != 7) {")
+    fail("list_min value")
+    lines.append("    }")
+    lines.append("    yadi (ok[0] != 1) {")
+    fail("list_min ok 1")
+    lines.append("    }")
+    lines.append("    yadi (list_max(l, ok) != 7) {")
+    fail("list_max value")
+    lines.append("    }")
+    lines.append("    yadi (ok[0] != 1) {")
+    fail("list_max ok 1")
+    lines.append("    }")
+    lines.append("    queue_enqueue(q, 9)")
+    lines.append("    yadi (queue_peek(q, ok) != 9) {")
+    fail("queue_peek value")
+    lines.append("    }")
+    lines.append("    yadi (ok[0] != 1) {")
+    fail("queue_peek ok 1")
+    lines.append("    }")
+    lines.append("    yadi (queue_dequeue(q, ok) != 9) {")
+    fail("queue_dequeue value")
+    lines.append("    }")
+    lines.append("    yadi (ok[0] != 1) {")
+    fail("queue_dequeue ok 1")
+    lines.append("    }")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "ok_convention", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_numeric28(compiler, rng):
+    """R28 WS3: the numeric contract — gcd/lcm sign and zero cases,
+    math power/fact edges, wrapping abs, bit_count negatives,
+    is_prime/sum_to edges, and the documented domain limits."""
+    lines = ["ayojan math", "ayojan ganita", "ayojan fmt", "ayojan strconv",
+             "ayojan num",
+             "mukhya() {",
+             "    vitti ok = nirmmita(8)",
+             "    vitti buf = nirmmita(32 * 8)",
+             "    vitti out = nirmmita(40 * 8)",
+             "    vitti minv = (0 - 9223372036854775807) - 1"]
+
+    def check(expr, want, msg):
+        lines.append(f"    yadi (({expr}) != ({want})) {{")
+        lines.append(f'        likha("FAIL {msg}\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+
+    # gcd is non-negative; gcd(0,0) = 0
+    check("gcd(0 - 6, 4)", 2, "gcd neg first")
+    check("gcd(6, 0 - 4)", 2, "gcd neg second")
+    check("gcd(0 - 6, 0 - 4)", 2, "gcd both neg")
+    check("gcd(0, 0)", 0, "gcd 0 0")
+    check("gcd(0, 5)", 5, "gcd 0 5")
+    # lcm is non-negative; lcm(0,0) = 0 (was SIGFPE)
+    check("lcm(0, 0)", 0, "lcm 0 0")
+    check("lcm(0, 5)", 0, "lcm 0 5")
+    check("lcm(6, 4)", 12, "lcm 6 4")
+    check("lcm(0 - 6, 4)", 12, "lcm neg")
+    check("lcm(6, 0 - 4)", 12, "lcm neg2")
+    # math power/fact edges: non-positive exponent/argument -> 1
+    check("power(2, 0)", 1, "power 0")
+    check("power(2, 0 - 1)", 1, "power neg")
+    check("fact(0 - 3)", 1, "fact neg")
+    check("fact(0)", 1, "fact 0")
+    check("fact(20)", 2432902008176640000, "fact 20")
+    check("power(2, 10)", 1024, "power 2 10")
+    # plain abs wraps at MIN (checked form exists for the safe case)
+    check("abs_val(minv)", "minv", "abs_val MIN wraps")
+    check("ganita_abs(minv)", "minv", "ganita_abs MIN wraps")
+    # bit_count: defined for n >= 0; negative returns 0
+    check("bit_count(7)", 3, "bit_count 7")
+    check("bit_count(0)", 0, "bit_count 0")
+    check("bit_count(0 - 1)", 0, "bit_count neg")
+    # is_prime / sum_to edges
+    check("is_prime(0)", 0, "prime 0")
+    check("is_prime(1)", 0, "prime 1")
+    check("is_prime(2)", 1, "prime 2")
+    check("is_prime(0 - 5)", 0, "prime neg")
+    check("sum_to(0 - 3)", 0, "sum_to neg")
+    check("sum_to(10)", 55, "sum_to 10")
+    # ganita_isqrt(negative) = 0
+    check("ganita_isqrt(0 - 1)", 0, "isqrt neg")
+    check("ganita_isqrt(16)", 4, "isqrt 16")
+    # ganita_isqrt(MAX) = 3037000499 (binary search; the old
+    # (i+1)^2 loop hung here by overflow)
+    check("ganita_isqrt(9223372036854775807)", 3037000499, "isqrt MAX")
+    # is_prime: division bound (i*i overflowed near MAX)
+    check("is_prime(97)", 1, "prime 97")
+    check("is_prime(91)", 0, "prime 91")
+    # is_perfect: division bound (d*d overflowed near MAX)
+    check("is_perfect(28)", 1, "perfect 28")
+    check("is_perfect(27)", 0, "perfect 27")
+    check("is_perfect(6)", 1, "perfect 6")
+    # collatz_steps: -1 means "does not reach 1" (x < 1, or the
+    # 3x+1 step would overflow int64)
+    check("collatz_steps(27)", 111, "collatz 27")
+    check("collatz_steps(0)", "0 - 1", "collatz 0")
+    check("collatz_steps(0 - 5)", "0 - 1", "collatz neg")
+    check("collatz_steps(4611686018427387905)", "0 - 1",
+          "collatz overflow")
+    # fmt_digits_base rejects base < 2 or > 36 with 0, empty
+    check("fmt_digits_base(123, 1, 0, out)", 0, "fmt base 1")
+    check("fmt_digits_base(123, 37, 0, out)", 0, "fmt base 37")
+    check("fmt_digits_base(255, 16, 0, out)", 2, "fmt base 16")
+    # int_to_base_str requires n >= 0; negative gives 0 (empty)
+    check("int_to_base_str(0 - 5, 10, buf)", 0, "int_to_base neg")
+    check("int_to_base_str(255, 16, buf)", 2, "int_to_base 255")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "numeric28", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
 def main():
     compiler = None
     for i, a in enumerate(sys.argv):
@@ -3864,6 +4182,10 @@ def main():
         ("safety26 interaction", prop_safety26),
         ("breadth26", prop_breadth26),
         ("min26", prop_min26),
+        ("safety27 cross-module", prop_safety27),
+        ("bigint divzero", prop_bigint_divzero),
+        ("ok convention", prop_ok_convention),
+        ("numeric28", prop_numeric28),
     ]
 
     failed = []
