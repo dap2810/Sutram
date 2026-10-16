@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "base_commit": "11f41d3fcc8377dbcc1453f36a47a6122e3b1954",
+  "entry": "src/r68_compiler_entry.asm",
+  "pins": {
+    "src/sutram_compiler.asm": "64ea028a5ccf56117c132a7efd0673cbe2df3fc6",
+    "src/r66_indic_lexer.inc": "3633bd55775dc8b9bb94724ef3685976e61d9593",
+    "src/r67_stack_pair.inc": "e8472bd1cad767cf06b0c00fcf88793419362db5",
+    "src/r68_unicode_helpers.inc": "69103e059634aa6b5b871ce7c06c2f4b9c742ff1",
+    "src/r68_diagnostics.inc": "4e2ec29fe16cda9c0d5762ba340ec75694c6f23d",
+    "src/r68_compiler_entry.asm": "42389aaf73179726d91e23359aee2199734036e1",
+    "win/native_host.asm": "66e04838b79a1d1ced99b06e9051b2fecb8b1de8",
+    "win/rtblob.inc": "3cdc4f7916e08930a79e8c277539620ac46264f4",
+    "win/winapi.asm": "2c83ab01c776b987c811b67a28458243ec42a92b",
+    "win/winio.asm": "bbdd00d0c84b0778913b48b1eeaa5e99232bbc84",
+    "win/winrt.inc": "d296c62fd5afd4b820778677865a83d86b1ab613",
+    "win/winrt_blob.asm": "d556399d94cd922906a2249604a6943968fbed9d"
+  }
+}
