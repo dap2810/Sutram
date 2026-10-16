@@ -1,4 +1,5 @@
 # lib/set.smlib — Sutram standard library: sets (set algebra over map)
+# layer: alloc
 #
 # A set IS a map (`lib/map.smlib`) with a dummy value of 1: membership is
 # map_contains, iteration is map_keys_bytes (R17: packed-byte segments,
