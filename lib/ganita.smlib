@@ -6,9 +6,8 @@
 # KUTTAKA ("the pulveriser") solves the linear indeterminate equation ax + by = c.
 # It is the ancestor of the extended Euclidean algorithm.
 #
-# CHAKRAVALA ("the wheel") solves the quadratic indeterminate equation x^2 - N*y^2 = 1,
-# known in Europe as Pell's equation. It was the first complete method for it, and for
-# N = 61 it gives x = 1766319049, y = 226153980 - a case Europe first solved in 1657.
+# CHAKRAVALA ("the wheel") solves x^2 - N*y^2 = 1 (Pell's equation); N = 61 gives
+# x = 1766319049, y = 226153980.
 #
 # CHECKED / SATURATING ARITHMETIC (R18) lives here too: ganita is the
 # arithmetic module. See the notes above ganita_checked_add.
@@ -78,37 +77,71 @@ prakriya chakravala(out, n) {
     vitti a = ganita_isqrt(n)
     vitti b = 1
     vitti k = a * a - n
+    # Perfect squares (k == 0) have only the trivial (1, 0)
+    # solution; the search would divide by |k| = 0.
+    yadi (k == 0) {
+        out[0] = 1
+        out[1] = 0
+        pratiyati 1
+    }
     vitti guard = 0
     yavat (k != 1) {
-        # choose m: (a + b*m) divisible by |k|, minimising |m*m - n|
+        # Pick m with (a + b*m) divisible by |k| minimising
+        # |m*m - n|. The old m = 0, 1, 2, ... scan hangs
+        # for large |k|; solve b*m = -a (mod |k|) with
+        # kuttaka, then compare the two candidates
+        # bracketing sqrt(n) (f is convex in m).
         vitti ak = ganita_abs(k)
-        vitti m = 0
-        vitti best = 0 - 1
-        vitti bestm = 0
-        vitti found = 0
-        yavat (found == 0) {
-            vitti t = a + b * m
-            vitti rem = t % ak
-            yadi (rem == 0) {
-                vitti d = ganita_abs(m * m - n)
-                yadi (best < 0) {
-                    best = d
-                    bestm = m
-                } anyatra {
-                    yadi (d < best) {
-                        best = d
-                        bestm = m
-                    } anyatra {
-                        found = 1
-                    }
+        vitti g1 = b
+        vitti g2 = ak
+        yavat (g2 != 0) {
+            vitti gt = g1 % g2
+            g1 = g2
+            g2 = gt
+        }
+        yadi (a % g1 != 0) { pratiyati 0 }
+        vitti m0 = kuttaka(b, ak, 0 - a)
+        vitti sq = ganita_isqrt(n)
+        vitti d = sq - m0
+        vitti t = d / ak
+        vitti r = d % ak
+        yadi (d < 0 && r != 0) { t = t - 1 }
+        vitti bf = 0 - 1
+        vitti bm = 0
+        vitti bn = 0
+        vitti cnt = 0
+        yavat (cnt < 2) {
+            vitti m = m0 + t * ak
+            yadi (m >= 0 && m <= 3037000499) {
+                # num = m*m - n, exact. m > isqrt(MAX)
+                # candidates are skipped; the below one
+                # is always exact, so one remains.
+                vitti num = m * m - n
+                vitti f = num
+                yadi (f < 0) { f = 0 - f }
+                yadi (bf < 0 || f < bf) {
+                    bf = f
+                    bm = m
+                    bn = num
                 }
             }
-            m = m + 1
+            t = t + 1
+            cnt = cnt + 1
         }
-        vitti mm = bestm
-        vitti na = (a * mm + n * b) / ak
-        vitti nb = (a + b * mm) / ak
-        vitti nk = (mm * mm - n) / k
+        yadi (bf < 0) { pratiyati 0 }
+        vitti mm = bm
+        # Overflow in na/nb/nk returns 0, not a wrap.
+        yadi (a != 0 && mm > 9223372036854775807 / a) { pratiyati 0 }
+        vitti amm = a * mm
+        yadi (b != 0 && n > 9223372036854775807 / b) { pratiyati 0 }
+        vitti nbp = n * b
+        yadi (amm > 9223372036854775807 - nbp) { pratiyati 0 }
+        vitti na = (amm + nbp) / ak
+        yadi (b != 0 && mm > 9223372036854775807 / b) { pratiyati 0 }
+        vitti bmm = b * mm
+        yadi (bmm > 9223372036854775807 - a) { pratiyati 0 }
+        vitti nb = (a + bmm) / ak
+        vitti nk = bn / k
         a = na
         b = nb
         k = nk
@@ -117,6 +150,7 @@ prakriya chakravala(out, n) {
     }
     out[0] = a
     out[1] = b
+    pratiyati 1
 }
 
 # samasa(out, a, b, c, d, n): Brahmagupta's composition law (bhavana / samasa).
