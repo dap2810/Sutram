@@ -5,13 +5,11 @@
 # map_contains, iteration is map_keys_bytes (R17: packed-byte segments,
 # passed straight to the byte-key map functions with no repacking).
 #
-# ELEMENTS ARE BYTE STRINGS — the same choice as `map.smlib`'s keys, for
-# the same reason: a caller passes a literal directly ("apple"), with an
-# explicit length, and the whole strb_* surface (compare, pack, unpack)
-# works on the elements unchanged. Do NOT pass char-code (qword-cell)
-# arrays here; see the lib/strb.smlib header for the two
-# representations. Consequences inherited from map: keys longer than 32
-# bytes are truncated to 32 on every operation, consistently.
+# ELEMENTS ARE BYTE STRINGS — the same choice as `map.smlib`'s keys:
+# a caller passes a literal directly ("apple"), with an explicit
+# length. Do NOT pass char-code (qword-cell) arrays here. Inherited
+# from map: keys longer than 32 bytes are truncated to 32 on every
+# operation, consistently.
 #
 # CAPACITY: a set's capacity is fixed at set_init and stored in the
 # buffer (m[0]). Set operations that write into `out` read out's
