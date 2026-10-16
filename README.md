@@ -1,5 +1,7 @@
 # Sutram (सूत्रम्)
 
+**New to this project? Read [`PROJECT-MASTER.md`](PROJECT-MASTER.md) first** — one file covering what Sutram is, the main goal, the philosophy, the nine paradigms, the twenty design parameters, the history, and how to work on it.
+
 **A programming language whose keywords are Sanskrit, whose compiler is one
 hand-written NASM file, and whose output is native machine code with no
 runtime, no interpreter, and no toolchain for the person using it.**
