@@ -254,3 +254,48 @@ Windows execution. See [FREESTANDING.md](FREESTANDING.md).
 **Verification limit:** source/golden inspection and corpus-runner unit tests were
 performed; no complete Sutram compiler or Windows execution was performed in
 this review. Rules marked unspecified remain deliberately unspecified.
+
+
+## Round 71 evidence refinement — two narrowly specified existing cases
+
+**Added 2026-10-16. These clauses come from existing source/accepted expectation
+pairs, not from new native executions in this review.** The rest of this
+specification's distinctions between tested, observed and unspecified remain.
+
+### Effectful typed-array indexing
+
+In `examples/140_r30_index_side_effect.sm`, a typed `kosh dasham` initially holds
+2.0. `mutate_index(arr)` writes 9.0 to `arr[0]` and returns the index 0. The
+expression `arr[mutate_index(arr)] + 1.5` must produce 10.500000 in this fixture;
+the following reads print 9.000000 and 7.500000 (after subtracting 1.5).
+The accepted `tests/expect/140_r30_index_side_effect.out` pins those bytes.
+
+This establishes that **this indexed load observes the index expression's
+mutation**, rather than reading the old cell value before the index expression.
+It does not establish every ordinary binary-operand/argument order, nor prove
+that an idempotent mutation ran exactly once. Those wider rules still require
+separate tests.
+
+Source Git blob: `8ef32a23a8557ffc8a84bc58d9cc6428cc0e5d08`.
+Expected-output Git blob: `8b474f6e0357c890a3cbb356a351a63adaa302ef`.
+
+### Two positive floating-to-integer collection conversions
+
+In `examples/112_t18_kosh_integer_conversion.sm`, pushing 2.9 into an integer
+`kosh` and reading it prints 2. Assigning 4.8 to its integer cell and popping the
+cell prints 4. The accepted output is exactly `2\n4\n`.
+
+These **two positive, in-range collection conversions** are specified by the
+fixture. They do not alone specify all scalar assignments, negative/out-of-range
+conversions, NaN, infinity or a general rounding rule. The fixture's comment is
+broader than the values it tests; only the evidenced values are promoted here.
+
+Source Git blob: `d5b844a840c4602a0e82cbad7445b58be3a4f4f1`.
+Expected-output Git blob: `da7f84740bd775747fe094def1e06a800d8e874f`.
+
+The source/expected-output readback commit is
+`827d13462c1e555a1174160e21a3e3f0e6768fcf`. Exact captured bytes and their identities
+are recorded in `tests/r71/existing_semantics.json`. Checking that capture is a
+source-identity test, **not** a compiler test. No original fixture or golden was
+rewritten. See `R71-SPECIFICATION-EVIDENCE.md` for new probes whose candidate
+results must not be treated as accepted until run.
