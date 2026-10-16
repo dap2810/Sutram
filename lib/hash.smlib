@@ -1,4 +1,5 @@
 # lib/hash.smlib — Sutram standard library: checksum/hash functions
+# layer: core
 #
 # FNV-1a (Fowler–Noll–Vo) 32-bit hash. Deterministic, fast, good distribution
 # for non-cryptographic use (hash tables, checksums, dedup keys).
