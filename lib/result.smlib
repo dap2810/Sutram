@@ -20,6 +20,12 @@
 # chaining/map/and_then because the language has no callbacks.
 # A Result is a caller-owned mutable array — aliasing and mutation
 # hazards remain (no ownership model).
+#
+# The hand-written substitute for propagation is the early-return
+# chain: after each producing step, `yadi (result_is_ok(t) == 0)`
+# writes the failure into out and returns at once, so the failure
+# path is one branch per step instead of nested conditionals.
+# See docs/ERROR-CONVENTION.md and tests/stdlib/result_chain.sm.
 
 ayojan ganita
 
@@ -138,6 +144,45 @@ prakriya result_checked_mod(out, a, b) {
     # this module stays core.
     vitti o = out
     vitti v = ganita_checked_mod(a, b, o)
+    yadi (o[0] == 1) {
+        o[1] = v
+    } anyatra {
+        o[1] = 0
+    }
+    pratiyati o[0]
+}
+
+# result_checked_pow(out, a, e) — ganita_checked_pow as a Result.
+# Failure [0, 0] on e < 0 or overflow (see ganita_checked_pow).
+prakriya result_checked_pow(out, a, e) {
+    vitti o = out
+    vitti v = ganita_checked_pow(a, e, o)
+    yadi (o[0] == 1) {
+        o[1] = v
+    } anyatra {
+        o[1] = 0
+    }
+    pratiyati o[0]
+}
+
+# result_checked_fact(out, n) — ganita_checked_fact as a Result.
+# Failure [0, 0] on n < 0 or overflow (21! overflows).
+prakriya result_checked_fact(out, n) {
+    vitti o = out
+    vitti v = ganita_checked_fact(n, o)
+    yadi (o[0] == 1) {
+        o[1] = v
+    } anyatra {
+        o[1] = 0
+    }
+    pratiyati o[0]
+}
+
+# result_checked_abs(out, a) — ganita_checked_abs as a Result.
+# Failure [0, 0] on abs(MIN) (no int64 absolute value).
+prakriya result_checked_abs(out, a) {
+    vitti o = out
+    vitti v = ganita_checked_abs(a, o)
     yadi (o[0] == 1) {
         o[1] = v
     } anyatra {
