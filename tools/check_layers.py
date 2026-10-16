@@ -1,0 +1,99 @@
+#!/usr/bin/env python3
+"""Check the library layer markers (R28 WS1).
+
+Every module in lib/ carries a machine-readable marker in its header:
+    # layer: core | alloc | std
+
+  core  — no allocator, no OS. Must not call nirmmita and must not
+          import (ayojan) an alloc- or std-layer module.
+  alloc — needs a heap (uses nirmmita, or imports an alloc module).
+          Must not import a std-layer module.
+  std   — OS services (files, network, clocks, ...). Currently empty:
+          the library deliberately has no OS services
+          (see docs/LIBRARY-BOUNDARY.md).
+
+The check fails on:
+  - a module with no marker, or an unknown marker;
+  - a core module that calls nirmmita( (allocator use);
+  - a core module that imports an alloc/std module;
+  - an alloc module that imports a std module;
+  - a module missing from docs/LIBRARY-LAYERS.md.
+
+Usage: python3 tools/check_layers.py   (exit 0 = all layers honour the rules)
+"""
+import os
+import re
+import sys
+
+REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+LIB = os.path.join(REPO, "lib")
+DOC = os.path.join(REPO, "docs", "LIBRARY-LAYERS.md")
+
+LAYER_RE = re.compile(r"^\s*#\s*layer:\s*(core|alloc|std)\s*$", re.M)
+AYOJAN_RE = re.compile(r"^\s*ayojan\s+([a-z_][a-z0-9_]*)\s*$", re.M)
+NIRMMITA_RE = re.compile(r"\bnirmmita\s*\(")
+COMMENT_RE = re.compile(r"^\s*#")
+
+
+def strip_comments(text):
+    return "\n".join(
+        line for line in text.splitlines() if not COMMENT_RE.match(line))
+
+
+def main():
+    errors = []
+    layers = {}
+    for name in sorted(os.listdir(LIB)):
+        if not name.endswith(".smlib"):
+            continue
+        mod = name[: -len(".smlib")]
+        text = open(os.path.join(LIB, name), encoding="utf-8").read()
+        m = LAYER_RE.search(text)
+        if not m:
+            errors.append(f"{mod}: missing '# layer:' marker")
+            continue
+        layers[mod] = m.group(1)
+    if errors:
+        print("\n".join(errors))
+        return 1
+    for mod, layer in layers.items():
+        text = open(os.path.join(LIB, f"{mod}.smlib"), encoding="utf-8").read()
+        code = strip_comments(text)
+        imports = sorted(set(AYOJAN_RE.findall(code)))
+        uses_alloc = bool(NIRMMITA_RE.search(code))
+        if layer == "core":
+            if uses_alloc:
+                errors.append(f"{mod}: marked core but calls nirmmita (allocator)")
+            for dep in imports:
+                if dep in layers and layers[dep] in ("alloc", "std"):
+                    errors.append(
+                        f"{mod}: marked core but imports {dep} ({layers[dep]})")
+        elif layer == "alloc":
+            for dep in imports:
+                if dep in layers and layers[dep] == "std":
+                    errors.append(
+                        f"{mod}: marked alloc but imports {dep} (std)")
+        for dep in imports:
+            if dep not in layers:
+                errors.append(f"{mod}: imports unknown module {dep}")
+    try:
+        doc = open(DOC, encoding="utf-8").read()
+    except FileNotFoundError:
+        errors.append("docs/LIBRARY-LAYERS.md missing")
+        doc = ""
+    for mod in layers:
+        if mod not in doc:
+            errors.append(f"{mod}: missing from docs/LIBRARY-LAYERS.md")
+    if errors:
+        print("LAYER CHECK FAILED:")
+        print("\n".join(f"  - {e}" for e in errors))
+        return 1
+    core = sorted(m for m, l in layers.items() if l == "core")
+    alloc = sorted(m for m, l in layers.items() if l == "alloc")
+    std = sorted(m for m, l in layers.items() if l == "std")
+    print(f"layers OK: {len(core)} core, {len(alloc)} alloc, {len(std)} std")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
