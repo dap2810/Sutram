@@ -1,4 +1,5 @@
 # lib/sort.smlib — Sutram standard library: sorting and searching
+# layer: alloc
 #
 # Operates on `pankti` integer arrays, in place. Scalar arguments are copied into
 # locals before mutation; array elements are written directly.
