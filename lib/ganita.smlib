@@ -1,4 +1,5 @@
 # lib/ganita.smlib — Sutram standard library: Indian number theory
+# layer: core
 #
 # After Aryabhata's Kuttaka (~499 CE) and the Chakravala of Jayadeva and Bhaskara II (~1150 CE).
 #
@@ -44,9 +45,25 @@ prakriya kuttaka(a, b, c) {
 prakriya ganita_isqrt(n) {
     vitti x = n
     yadi (x < 0) { pratiyati 0 }
-    vitti i = 0
-    yavat ((i + 1) * (i + 1) <= x) { i = i + 1 }
-    pratiyati i
+    yadi (x < 2) { pratiyati x }
+    # Binary search with a division bound. The old loop
+    # `yavat ((i + 1) * (i + 1) <= x)` overflowed for x near MAX:
+    # (i+1)^2 wraps negative, the condition stays true, and the
+    # loop never terminates. mid <= x / mid is the same test
+    # without ever squaring.
+    vitti lo = 1
+    vitti hi = x / 2 + 1
+    vitti ans = 1
+    yavat (lo <= hi) {
+        vitti mid = lo + (hi - lo) / 2
+        yadi (mid <= x / mid) {
+            ans = mid
+            lo = mid + 1
+        } anyatra {
+            hi = mid - 1
+        }
+    }
+    pratiyati ans
 }
 
 prakriya ganita_abs(n) {
