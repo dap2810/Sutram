@@ -1,20 +1,27 @@
 # The library's honest boundary
 
-One page on what the Sutram standard library (`lib/`, 23 modules, 297
+One page on what the Sutram standard library (`lib/`, 24 modules, 303
 functions) deliberately does **not** do, with the reason for each. A
 stated boundary is worth more than a longer function list. This page is
 the R27 answer; R28 extends it with the layer markers that enforce the
-core/alloc split; R29 adds the `Result` type and serialisation.
+core/alloc split; R29 adds the `Result` type and serialisation; R30
+adds the first `std` module (`file` — the file-I/O entry below now
+points at it instead of claiming the library has none).
 
 ## Deliberately not in the library
 
-- **File I/O.** No read/write/open/close, no paths, no directories.
-  Reason: the library is pure and freestanding — it must work where
-  there is no filesystem (charter item 13, freestanding capability).
-  The compiler provides the `paadh`/`likha` builtins for the hosted
-  case; a file API belongs to an OS-specific layer, not the core
-  library. (File I/O via `lib/fileio.smlib` was deleted in R1 for
-  exactly this reason: it was a trivial rename of the builtins.)
+- **File I/O (beyond `file`).** `lib/file.smlib` (R30, layer `std`)
+  provides exactly three functions — `file_read_all`,
+  `file_write_all`, `file_exists` — over the `dvaram`/`paadh`/`likha`/
+  `band` builtins. Everything else (directories, permissions, seek,
+  append, stat, locking) is still deliberately absent: the core
+  library is pure and freestanding where there is no filesystem
+  (charter item 13), and a file API belongs to the OS-specific
+  `std` layer, not the core library. (File I/O via `lib/fileio.smlib` was deleted
+  in R1 for exactly this reason: it was a trivial rename of the
+  builtins. The R30 `file` module is not a rename — it adds the
+  open/read-loop/close and open/write-loop/close compositions with
+  a uniform -1 error contract.)
 - **Networking.** No sockets, no HTTP, no DNS. Reason: same as file
   I/O — no OS, no network stack assumed. (A set of socket builtins
   exists in the compiler and is under audit; it is not a library
@@ -83,10 +90,10 @@ Beyond the missing features above, the library does not claim:
 ## Layers (R28 extension, R29 resolution)
 
 The library is split into **core** (no allocator, no OS),
-**alloc** (needs a heap), and **std** (OS services — empty by
-verification, not by omission: no module calls any OS-service
-builtin, and the layer checker enforces it). Each module's header
-carries a machine-readable `# layer:` marker, and
+**alloc** (needs a heap), and **std** (OS services — since R30, one
+module: `file`, genuinely using the file builtins; the layer checker
+enforces that no core/alloc module calls any OS-service builtin).
+Each module's header carries a machine-readable `# layer:` marker, and
 `tools/check_layers.py` verifies that no core module depends
 upward. See `docs/LIBRARY-LAYERS.md` for the per-module table.
 
