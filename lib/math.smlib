@@ -77,9 +77,18 @@ prakriya power(base, e) {
 }
 
 prakriya fact(n) {
+    # Iterative: the recursive form overflowed the call stack at
+    # fact(100000) (SIGSEGV). Same values — multiplication
+    # commutes mod 2^64, so wrapping at n >= 21 is identical.
     vitti x = n
+    vitti r = 1
+    vitti i = 2
     yadi (x < 2) { pratiyati 1 }
-    pratiyati x * fact(x - 1)
+    yavat (i <= x) {
+        r = r * i
+        i = i + 1
+    }
+    pratiyati r
 }
 
 prakriya is_prime(n) {
@@ -97,14 +106,15 @@ prakriya is_prime(n) {
 }
 
 prakriya sum_to(n) {
+    # Closed form n*(n+1)/2 (the old loop took n iterations, so
+    # sum_to(4294967296) was ~4.3e9 iterations). Divide before
+    # multiplying, by parity: even (n/2)*(n+1), odd n*(n/2+1).
+    # The wrapping value equals the loop's (pinned: sum_to(
+    # 4294967296) == -9223372034707292160). n <= 0: 0, as the old loop.
     vitti x = n
-    vitti s = 0
-    vitti i = 1
-    yavat (i <= x) {
-        s = s + i
-        i = i + 1
-    }
-    pratiyati s
+    yadi (x <= 0) { pratiyati 0 }
+    yadi (x % 2 == 0) { pratiyati (x / 2) * (x + 1) }
+    pratiyati x * (x / 2 + 1)
 }
 
 prakriya double(n)
@@ -119,6 +129,7 @@ prakriya inc(n)
 prakriya bit_count(n) {
     vitti x = n
     vitti c = 0
+    # Negatives return 0 (R28-pinned contract: defined for n >= 0).
     yavat (x > 0) {
         c = c + (x % 2)
         x = x / 2
