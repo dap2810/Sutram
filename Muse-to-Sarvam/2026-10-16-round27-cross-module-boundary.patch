@@ -1,0 +1,461 @@
+diff --git a/docs/LIBRARY-BOUNDARY.md b/docs/LIBRARY-BOUNDARY.md
+new file mode 100644
+index 0000000..cac16b5
+--- /dev/null
++++ b/docs/LIBRARY-BOUNDARY.md
+@@ -0,0 +1,76 @@
++# The library's honest boundary
++
++One page on what the Sutram standard library (`lib/`, 21 modules, 281
++functions) deliberately does **not** do, with the reason for each. A
++stated boundary is worth more than a longer function list. This page is
++the R27 answer; R28 extends it with the layer markers that enforce the
++core/alloc split.
++
++## Deliberately not in the library
++
++- **File I/O.** No read/write/open/close, no paths, no directories.
++  Reason: the library is pure and freestanding — it must work where
++  there is no filesystem (charter item 13, freestanding capability).
++  The compiler provides the `paadh`/`likha` builtins for the hosted
++  case; a file API belongs to an OS-specific layer, not the core
++  library. (File I/O via `lib/fileio.smlib` was deleted in R1 for
++  exactly this reason: it was a trivial rename of the builtins.)
++- **Networking.** No sockets, no HTTP, no DNS. Reason: same as file
++  I/O — no OS, no network stack assumed. (A set of socket builtins
++  exists in the compiler and is under audit; it is not a library
++  surface and may be retired.)
++- **Time and clocks.** No "now", no sleep, no timers, no dates.
++  Reason: no clock assumed; time is an OS service. The one
++  time-adjacent module, `kalana`, is numerical methods (integration,
++  slopes, polynomials), not a clock.
++- **Threading and concurrency.** No threads, locks, channels, or
++  atomics. Reason: the language has no concurrency model yet
++  (charter item 06, not started). A library cannot provide safe
++  concurrency the language cannot express.
++- **Processes and environment.** No spawning, no exit codes beyond
++  `pratiyati`, no environment variables, no command-line arguments.
++  Reason: no OS assumed; process semantics belong to the host.
++- **FFI / calling foreign code.** No C interop, no dynamic loading.
++  Reason: there is no FFI yet (charter item 19, not started). The
++  library is self-contained by design.
++- **GUI and windowing.** No windows, events, or drawing. Reason: the
++  IDE has its own X11 event loop, but the language has no event or
++  async facility (charter item 07, not started).
++- **Hardware access.** No ports, interrupts, or device registers.
++  Reason: that is compiler-level (`nishkriya` inline assembly) and
++  board-specific, not library code.
++- **Garbage collection / ownership.** No GC, no borrow checker, no
++  RAII. Reason: memory is manual (charter item 11, not started).
++  The library does not claim memory safety and must not until the
++  model exists and is tested.
++- **Randomness with entropy.** No true randomness, no OS entropy
++  source. Reason: no OS assumed. `math_rand` (R26) is a deterministic
++  PRNG with a caller-owned seed — honest about what it is.
++- **Exceptions / panics.** No throw/catch, no stack unwinding.
++  Reason: errors are values. The `ok` out-parameter convention (see
++  `docs/ERROR-CONVENTION.md` in R28) is the error model; there is no
++  result type, no propagation operator, and no exhaustiveness checking
++  yet (charter item 12, partial).
++- **Generics, closures, methods, traits.** No first-class functions,
++  no generic collections, no methods. Reason: the language does not
++  have them yet (charter items 02–04). Every collection in `lib/` is
++  written against one concrete cell type. Higher-order operations
++  (`list_map`, `list_filter`) are impossible without callbacks and
++  are not faked with macros.
++
++## What the library *does* do
++
++Pure computation over values the caller provides: containers (`map`,
++`set`, `list`, `queue`, `stack`), text and bytes (`string`, `strb`,
++`str`), numbers (`math`, `ganita`, `bigint`, `strconv`, `baseconv`,
++`fmt`, `sankhyiki`, `kalana`), hashing (`hash`), sorting (`sort`),
++and the safety net (`ganita_checked_*`, `ganita_sat_*`). Everything
++in `lib/` runs on plain arithmetic and explicit caller-provided
++storage; the layer split (core vs alloc) is marked per module in
++`docs/LIBRARY-LAYERS.md` (R28).
++
++## The rule
++
++A feature is added to the library only when the language can express
++it honestly and the layer it belongs to is clear. Everything else is
++a stated boundary, not a missing feature to be padded in.
+diff --git a/docs/PROPERTY-NET.md b/docs/PROPERTY-NET.md
+index b4a7bda..48dfd7d 100644
+--- a/docs/PROPERTY-NET.md
++++ b/docs/PROPERTY-NET.md
+@@ -1,7 +1,8 @@
+ # The property suite as a regression net
+ 
+-`tools/proof_props.py` holds **72 properties** (69 at the start of Round 26,
+-plus `safety26 interaction`, `breadth26`, and `min26` added this round). For each one,
++`tools/proof_props.py` holds **74 properties** (69 at the start of Round 26,
++plus `safety26 interaction`, `breadth26`, and `min26` added in R26, and
++`safety27 cross-module` and `bigint divzero` added in R27). For each one,
+ this file states in one line **what would have to break for it to fail**.
+ Method (R26 WS2): every property's assertion was read, and the four most
+ suspicious ones (`fnv1a_deterministic`, `fnv1a_avalanche`, `map_collision`,
+@@ -9,7 +10,7 @@ suspicious ones (`fnv1a_deterministic`, `fnv1a_avalanche`, `map_collision`,
+ 
+ ## Verdict
+ 
+-**All 72 are genuine, falsifiable tests. None removed.** Every property
++**All 74 are genuine, falsifiable tests. None removed.** Every property
+ compares its subject against an independent oracle (Python arithmetic, a
+ second implementation, or an invariant the function itself must uphold),
+ so each has a concrete failure mode. Two caveats are recorded below; neither
+@@ -100,3 +101,27 @@ makes its property vacuous.
+ | 70 | safety26 interaction | sat and checked disagreeing on the success path, sat not the clamp on overflow / 0 on invalid input, or a saturating function wrapping |
+ | 71 | breadth26 | `math_rand` non-deterministic or off the LCG sequence, `math_clamp` off Python, or `str_to_float` off Python `float()` beyond 1e-9 relative |
+ | 72 | min26 | `int_to_str(MIN)` not "-9223372036854775808", `fmt_digits_base` mishandling negatives, or `fmt_int_base`/`fmt_int_flags` wrong on MIN in some base |
++| 73 | safety27 cross-module | `strconv`'s parse guards and `ganita`'s checked forms disagreeing on the same magnitude (one accepts what the other rejects), or either returning a wrapped value on overflow |
++| 74 | bigint divzero | `bigint_divmod` by zero hanging or returning anything but `q=0, r=a`, or `bigint_powmod` with mod 0 hanging or not returning the unreduced power |
++
++## R27: is there a property that has never failed and never could?
++
++**No.** Re-checked in R27 (WS2): every property compares its subject
++against an independent oracle, so every one has a concrete failure mode
++(the table above). "Never failed in CI" is not "could never fail" — a
++property guards against a *plausible* regression, and the plausible
++regression is the failure mode. Two pieces of evidence that the net can
++actually fail:
++
++- Four properties failed during their own development: `safety26`
++  (the re-declaration compiler bug made it report a false
++  checked/sat disagreement), `breadth26` (statement limit, then a
++  literal-format issue), `min26` (a wrong expected value in the
++  property itself), `safety27` (a wrong hex expectation in the property
++  itself). Three of those four were bugs in the property code, not the
++  library — which is still evidence the assertions are evaluated, not
++  vacuous.
++- The closest call, `hash fnv1a deterministic`, compares `fnv1a(s)`
++  against itself — but it tests determinism, and it would fail against
++  a plausible broken implementation (one reading uninitialized state
++  or a random seed). It is kept deliberately.
+diff --git a/docs/sutram-stdlib.html b/docs/sutram-stdlib.html
+index 73a5334..1491578 100644
+--- a/docs/sutram-stdlib.html
++++ b/docs/sutram-stdlib.html
+@@ -76,9 +76,9 @@ Do not edit by hand.</p>
+ <tr><td><code>bigint_sub(a, b, res, n)</code></td><td>bigint_sub(a, b, res, n) — res = a - b (requires a &gt;= b); returns final borrow</td></tr>
+ <tr><td><code>bigint_mul(a, b, res, n)</code></td><td>bigint_mul(a, b, res, n) — res = a * b; res must have 2n digits Returns 0 on success.</td></tr>
+ <tr><td><code>bigint_is_zero(arr, n)</code></td><td>bigint_is_zero(arr, n) — 1 if all digits are 0, else 0</td></tr>
+-<tr><td><code>bigint_divmod(a, b, q, r, n)</code></td><td>bigint_divmod(a, b, q, r, n) — q = a / b, r = a % b (a,b,q,r are n-digit) Requires b != 0. Uses long division, one decimal digit at a time.</td></tr>
+-<tr><td><code>bigint_mod_2n(num, mod, res, n)</code></td><td>bigint_mod_2n(num, mod, res, n) — res = num % mod, where num has 2n digits Helper for powmod. Uses long division.</td></tr>
+-<tr><td><code>bigint_powmod(base, exp, mod, res, n)</code></td><td>bigint_powmod(base, exp, mod, res, n) — res = base^exp mod mod exp is a plain int. Requires mod != 0. res is n-digit.</td></tr>
++<tr><td><code>bigint_divmod(a, b, q, r, n)</code></td><td>bigint_divmod(a, b, q, r, n) — q = a / b, r = a % b (a,b,q,r are n-digit) Uses long division, one decimal digit at a time. Division by zero is defined, not a hang: q = 0, r = a (so q*b + r == a still holds).</td></tr>
++<tr><td><code>bigint_mod_2n(num, mod, res, n)</code></td><td>bigint_mod_2n(num, mod, res, n) — res = num % mod, where num has 2n digits Helper for powmod. Uses long division. mod == 0 is defined, not a hang: no reduction is applied, so res is the low n digits of num.</td></tr>
++<tr><td><code>bigint_powmod(base, exp, mod, res, n)</code></td><td>bigint_powmod(base, exp, mod, res, n) — res = base^exp mod mod exp is a plain int and must be &gt;= 0 (a negative exp returns 1: the loop never runs). mod == 0 means &quot;no reduction&quot; (see bigint_mod_2n), so the result is base^exp truncated to n digits. res is n-digit.</td></tr>
+ </table>
+ <h2 id="chandas"><code>chandas</code></h2>
+ <p class="mod-desc">After Pingala&#x27;s Chandahśāstra (~2nd c. BCE). Sanskrit metre is built from two syllable weights — laghu (light) and guru (heavy) — so an n-syllable metre is a sequence of two choices: there are exactly 2^n of them. Pingala gave the doubling rule for 2^n, the Meru-prastāra (Pascal&#x27;s triangle) to count how many metres have exactly k guru syllables, and the mātrā-meru, which generates the Fibonacci numbers. A pattern is carried as an integer bitmask: bit i (LSB = first syllable) is 1 for guru, 0 for laghu. The integer value IS the pattern&#x27;s index in the prastāra.</p>
+diff --git a/lib/bigint.smlib b/lib/bigint.smlib
+index 2620951..891d37e 100644
+--- a/lib/bigint.smlib
++++ b/lib/bigint.smlib
+@@ -163,7 +163,8 @@ prakriya bigint_is_zero(arr, n) {
+ }
+ 
+ # bigint_divmod(a, b, q, r, n) — q = a / b, r = a % b (a,b,q,r are n-digit)
+-# Requires b != 0. Uses long division, one decimal digit at a time.
++# Uses long division, one decimal digit at a time. Division by zero is
++# defined, not a hang: q = 0, r = a (so q*b + r == a still holds).
+ prakriya bigint_divmod(a, b, q, r, n) {
+     vitti x = a
+     vitti y = b
+@@ -177,6 +178,17 @@ prakriya bigint_divmod(a, b, q, r, n) {
+         likh8(rr + i * 8, 0)
+         i = i + 1
+     }
++    yadi (bigint_is_zero(y, c) == 1) {
++        # b == 0: q = 0 (already), r = a. Without this guard the
++        # trial-subtraction loop below never terminates (rr >= 0
++        # always, and subtracting 0 leaves rr unchanged).
++        vitti m = 0
++        yavat (m < c) {
++            likh8(rr + m * 8, pad8(x + m * 8))
++            m = m + 1
++        }
++        pratiyati 0
++    }
+     # long division from most significant digit
+     i = c - 1
+     yavat (i >= 0) {
+@@ -214,12 +226,21 @@ prakriya bigint_divmod(a, b, q, r, n) {
+ }
+ 
+ # bigint_mod_2n(num, mod, res, n) — res = num % mod, where num has 2n digits
+-# Helper for powmod. Uses long division.
++# Helper for powmod. Uses long division. mod == 0 is defined, not a
++# hang: no reduction is applied, so res is the low n digits of num.
+ prakriya bigint_mod_2n(num, mod, res, n) {
+     vitti x = num
+     vitti m = mod
+     vitti r = res
+     vitti c = n
++    yadi (bigint_is_zero(m, c) == 1) {
++        vitti m2 = 0
++        yavat (m2 < c) {
++            likh8(r + m2 * 8, pad8(x + m2 * 8))
++            m2 = m2 + 1
++        }
++        pratiyati 0
++    }
+     vitti tr = nirmmita(c * 8)
+     bigint_zero(tr, c)
+     vitti i = c * 2 - 1
+@@ -255,7 +276,10 @@ prakriya bigint_mod_2n(num, mod, res, n) {
+ }
+ 
+ # bigint_powmod(base, exp, mod, res, n) — res = base^exp mod mod
+-# exp is a plain int. Requires mod != 0. res is n-digit.
++# exp is a plain int and must be >= 0 (a negative exp returns 1:
++# the loop never runs). mod == 0 means "no reduction" (see
++# bigint_mod_2n), so the result is base^exp truncated to n digits.
++# res is n-digit.
+ prakriya bigint_powmod(base, exp, mod, res, n) {
+     vitti b = base
+     vitti e = exp
+diff --git a/tests/stdlib/bigint_divzero.exit b/tests/stdlib/bigint_divzero.exit
+new file mode 100644
+index 0000000..573541a
+--- /dev/null
++++ b/tests/stdlib/bigint_divzero.exit
+@@ -0,0 +1 @@
++0
+diff --git a/tests/stdlib/bigint_divzero.out b/tests/stdlib/bigint_divzero.out
+new file mode 100644
+index 0000000..1efd91d
+--- /dev/null
++++ b/tests/stdlib/bigint_divzero.out
+@@ -0,0 +1,11 @@
++0
++
++10
++
++3
++
++1
++
++1024
++
++bigint-divzero-done
+diff --git a/tests/stdlib/bigint_divzero.sm b/tests/stdlib/bigint_divzero.sm
+new file mode 100644
+index 0000000..e35d541
+--- /dev/null
++++ b/tests/stdlib/bigint_divzero.sm
+@@ -0,0 +1,27 @@
++ayojan bigint
++mukhya() {
++    vitti a = nirmmita(4 * 8)
++    vitti b = nirmmita(4 * 8)
++    vitti q = nirmmita(4 * 8)
++    vitti r = nirmmita(4 * 8)
++    bigint_from_int(10, a, 4)
++    bigint_from_int(0, b, 4)
++    bigint_divmod(a, b, q, r, 4)
++    likha(bigint_to_int(q, 4))
++    likha("\n")
++    likha(bigint_to_int(r, 4))
++    likha("\n")
++    bigint_from_int(10, a, 4)
++    bigint_from_int(3, b, 4)
++    bigint_divmod(a, b, q, r, 4)
++    likha(bigint_to_int(q, 4))
++    likha("\n")
++    likha(bigint_to_int(r, 4))
++    likha("\n")
++    bigint_from_int(2, a, 4)
++    bigint_from_int(0, b, 4)
++    bigint_powmod(a, 10, b, r, 4)
++    likha(bigint_to_int(r, 4))
++    likha("\n")
++    likha("bigint-divzero-done\n")
++}
+diff --git a/tools/proof_props.py b/tools/proof_props.py
+index b47de73..e44fcca 100644
+--- a/tools/proof_props.py
++++ b/tools/proof_props.py
+@@ -3782,6 +3782,172 @@ def prop_min26(compiler, rng):
+     return ok and out == "PASS", out
+ 
+ 
++def prop_safety27(compiler, rng):
++    """R27 WS1: cross-module safety — strconv's overflow guards and
++    ganita's checked forms agree on the same magnitudes: a string
++    that parses (ok 1) names a value the checked ops accept; a string
++    that overflows (ok 0, return 0) names a magnitude the checked ops
++    reject (also return 0). Neither silently wraps."""
++    # Two programs: the parse battery alone exceeds the per-block
++    # statement limit.
++    part1 = ["ayojan strconv", "ayojan ganita", "mukhya() {",
++             "    vitti ok = nirmmita(8)",
++             "    vitti buf = nirmmita(32 * 8)",
++             "    vitti maxv = 9223372036854775807",
++             "    vitti minv = (0 - 9223372036854775807) - 1"]
++    part3 = ["ayojan strconv", "ayojan ganita", "mukhya() {",
++             "    vitti ok = nirmmita(8)",
++             "    vitti buf = nirmmita(32 * 8)",
++             "    vitti maxv = 9223372036854775807",
++             "    vitti minv = (0 - 9223372036854775807) - 1"]
++    part2 = ["ayojan strconv", "ayojan ganita", "mukhya() {",
++             "    vitti ok = nirmmita(8)",
++             "    vitti buf = nirmmita(32 * 8)",
++             "    vitti maxv = 9223372036854775807",
++             "    vitti minv = (0 - 9223372036854775807) - 1"]
++    lines = part1
++
++    def fail(msg):
++        lines.append(f'        likha("FAIL {msg}\\n")')
++        lines.append("        pratiyati 1")
++
++    def put_str(s):
++        for j, ch in enumerate(s):
++            lines.append(f"    buf[{j}] = {ord(ch)}")
++
++    # --- fitting strings: parse ok, and checked ops accept the value
++    for fi, (s, val) in enumerate([("0", 0), ("123", 123), ("-456", -456),
++                   ("9223372036854775807", 2**63 - 1),
++                   ("-9223372036854775808", -(2**63))]):
++        put_str(s)
++        lines.append(f"    vitti pvf{fi} = str_to_int(buf, {len(s)}, ok)")
++        lines.append("    yadi (ok[0] != 1) {")
++        fail(f"parse fits {s}")
++        lines.append("    }")
++        vname = "maxv" if val == 2**63 - 1 else ("minv" if val == -(2**63) else str(val))
++        lines.append(f"    yadi (pvf{fi} != {vname}) {{")
++        fail(f"parse value {s}")
++        lines.append("    }")
++        # checked ops accept the parsed value
++        lines.append(f"    yadi (ganita_checked_add(pvf{fi}, 0, ok) != {vname}) {{")
++        fail(f"checked_add accepts {s}")
++        lines.append("    }")
++        lines.append("    yadi (ok[0] != 1) {")
++        fail(f"checked_add ok {s}")
++        lines.append("    }")
++        lines.append(f"    yadi (ganita_checked_mul(pvf{fi}, 1, ok) != {vname}) {{")
++        fail(f"checked_mul accepts {s}")
++        lines.append("    }")
++        lines.append("    yadi (ok[0] != 1) {")
++        fail(f"checked_mul ok {s}")
++        lines.append("    }")
++    lines.append('    likha("PASS\\n")')
++    lines.append("}")
++    lines = part2
++    # --- overflowing strings: parse fails with 0, and the checked op
++    # for the SAME magnitude also fails with 0 (neither wraps)
++    over = [("9223372036854775808",
++             "ganita_checked_add(maxv, 1, ok)"),
++            ("-9223372036854775809",
++             "ganita_checked_sub(minv, 1, ok)"),
++            ("18446744073709551616",
++             "ganita_checked_mul(4294967296, 4294967296, ok)"),
++            ("18446744073709551615", None),
++            ("99999999999999999999", None)]
++    for oi, (s, gexpr) in enumerate(over):
++        put_str(s)
++        lines.append(f"    vitti pvo{oi} = str_to_int(buf, {len(s)}, ok)")
++        lines.append("    yadi (ok[0] != 0) {")
++        fail(f"parse rejects {s}")
++        lines.append("    }")
++        lines.append(f"    yadi (pvo{oi} != 0) {{")
++        fail(f"parse returns 0 {s}")
++        lines.append("    }")
++        if gexpr:
++            lines.append(f"    yadi ({gexpr} != 0) {{")
++            fail(f"checked returns 0 {s}")
++            lines.append("    }")
++            lines.append("    yadi (ok[0] != 0) {")
++            fail(f"checked rejects {s}")
++            lines.append("    }")
++    lines.append('    likha("PASS\\n")')
++    lines.append("}")
++    lines = part3
++    # --- hex: same boundary in base 16
++    for hi, (s, ok_want) in enumerate([("ffffffffffffffff", 0),
++                       ("10000000000000000", 0),
++                       ("7fffffffffffffff", 1),
++                       ("8000000000000000", 0)]):
++        put_str(s)
++        lines.append(f"    vitti pvh{hi} = str_to_int_base(buf, {len(s)}, 16, ok)")
++        lines.append(f"    yadi (ok[0] != {ok_want}) {{")
++        fail(f"hex parse {s}")
++        lines.append("    }")
++        if ok_want == 0:
++            lines.append(f"    yadi (pvh{hi} != 0) {{")
++            fail(f"hex returns 0 {s}")
++            lines.append("    }")
++    # hex 2^64 boundary vs ganita: checked_mul(2^32, 2^32) also fails
++    lines.append("    yadi (ganita_checked_mul(4294967296, 4294967296, ok) != 0) {")
++    fail("checked_mul 2^64 returns 0")
++    lines.append("    }")
++    lines.append("    yadi (ok[0] != 0) {")
++    fail("checked_mul 2^64 rejects")
++    lines.append("    }")
++    # --- roundtrip: int_to_str(v) parses back, and checked accepts v
++    for ri, v in enumerate([0, 1, -1, 2**63 - 1, -(2**63)]):
++        vname = "maxv" if v == 2**63 - 1 else ("minv" if v == -(2**63) else str(v))
++        lines.append(f"    vitti rn{ri} = int_to_str({vname}, buf)")
++        lines.append(f"    yadi (str_to_int(buf, rn{ri}, ok) != {vname}) {{")
++        fail("roundtrip parse")
++        lines.append("    }")
++        lines.append("    yadi (ok[0] != 1) {")
++        fail("roundtrip ok")
++        lines.append("    }")
++        lines.append(f"    yadi (ganita_checked_add({vname}, 0, ok) != {vname}) {{")
++        fail("roundtrip checked")
++        lines.append("    }")
++    lines.append('    likha("PASS\\n")')
++    lines.append("}")
++    for key, prog in (("safety27a", part1), ("safety27b", part2),
++                      ("safety27c", part3)):
++        ok, out = run_sm(compiler, key, "\n".join(prog))
++        if not (ok and out == "PASS"):
++            return False, out
++    return True, "PASS"
++
++
++def prop_bigint_divzero(compiler, rng):
++    """R27 WS3: bigint_divmod and bigint_powmod by zero are defined
++    (q=0, r=a; powmod unreduced) instead of hanging."""
++    lines = ["ayojan bigint", "mukhya() {",
++             "    vitti a = nirmmita(4 * 8)",
++             "    vitti b = nirmmita(4 * 8)",
++             "    vitti q = nirmmita(4 * 8)",
++             "    vitti r = nirmmita(4 * 8)",
++             "    bigint_from_int(10, a, 4)",
++             "    bigint_from_int(0, b, 4)",
++             "    bigint_divmod(a, b, q, r, 4)",
++             "    yadi (bigint_to_int(q, 4) != 0) {",
++             '        likha("FAIL divmod zero q\\n")',
++             "        pratiyati 1",
++             "    }",
++             "    yadi (bigint_to_int(r, 4) != 10) {",
++             '        likha("FAIL divmod zero r\\n")',
++             "        pratiyati 1",
++             "    }",
++             "    bigint_from_int(2, a, 4)",
++             "    bigint_powmod(a, 10, b, r, 4)",
++             "    yadi (bigint_to_int(r, 4) != 1024) {",
++             '        likha("FAIL powmod zero mod\\n")',
++             "        pratiyati 1",
++             "    }",
++             '    likha("PASS\\n")',
++             "}"]
++    ok, out = run_sm(compiler, "bigint_divzero", "\n".join(lines))
++    return ok and out == "PASS", out
++
++
+ def main():
+     compiler = None
+     for i, a in enumerate(sys.argv):
+@@ -3864,6 +4030,8 @@ def main():
+         ("safety26 interaction", prop_safety26),
+         ("breadth26", prop_breadth26),
+         ("min26", prop_min26),
++        ("safety27 cross-module", prop_safety27),
++        ("bigint divzero", prop_bigint_divzero),
+     ]
+ 
+     failed = []
