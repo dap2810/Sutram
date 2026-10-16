@@ -1,0 +1,37 @@
+ayojan file
+mukhya() {
+    vitti buf = nirmmita(64)
+    vitti i = 0
+    # read the committed fixture (13 bytes: "hello sutram\n")
+    vitti n = file_read_all("tests/fixtures/file_hello.txt", buf, 64)
+    likha(n)
+    likha("\n")
+    yavat (i < n) {
+        likha(char_at(buf, i))
+        likha("\n")
+        i = i + 1
+    }
+    # small cap: only the first 5 bytes
+    vitti n5 = file_read_all("tests/fixtures/file_hello.txt", buf, 5)
+    likha(n5)
+    likha("\n")
+    likha(char_at(buf, 0))
+    likha("\n")
+    likha(char_at(buf, 4))
+    likha("\n")
+    # cap 0 on an existing file: 0, no bytes
+    likha(file_read_all("tests/fixtures/file_hello.txt", buf, 0))
+    likha("\n")
+    # negative cap: -1, file not opened
+    likha(file_read_all("tests/fixtures/file_hello.txt", buf, 0 - 3))
+    likha("\n")
+    # missing file: -1
+    likha(file_read_all("tests/fixtures/no_such_file.txt", buf, 64))
+    likha("\n")
+    # exists: 1 / 0
+    likha(file_exists("tests/fixtures/file_hello.txt"))
+    likha("\n")
+    likha(file_exists("tests/fixtures/no_such_file.txt"))
+    likha("\n")
+    likha("file-read-done\n")
+}
