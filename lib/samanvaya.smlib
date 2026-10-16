@@ -1,4 +1,5 @@
 # lib/samanvaya.smlib — Sutram standard library: समन्वय (linear algebra)
+# layer: core
 #
 # Sutram has no 2-D array type, so a matrix is a FLAT `kosh dasham` of m*n elements in
 # row-major order, with the dimensions passed explicitly:
