@@ -482,6 +482,18 @@ prakriya fmt_fixed_impl(dasham x, places, always_sign, out) {
         mag = v
     }
     scaled = mag * p10f + 0.5
+    # Overflow guard: if scaled >= 2^63 the dasham->int conversion
+    # below is indefinite (x86 cvttsd2si yields MIN) and the
+    # program segfaults downstream. Return 0 with empty output
+    # instead — |x| * 10^places must fit in int64.
+    # NOTE: written as 9223372036854775807.0 (MAX) because the
+    # literal 9223372036854775808.0 overflows the int64 part of
+    # the dasham parser; as a double, MAX.0 rounds to 2^63, so
+    # this is exactly the cvttsd2si indefinite boundary.
+    yadi (scaled >= 9223372036854775807.0) {
+        set_char(dst, 0, 0)
+        pratiyati 0
+    }
     rounded = scaled
     intpart = rounded / p10i
     fracpart = rounded % p10i
