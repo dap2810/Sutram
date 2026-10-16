@@ -1,5 +1,15 @@
 # Sutram contributor/agent instructions
 
+## Read this first
+
+**`PROJECT-MASTER.md`** is the single file to read before touching anything: what Sutram is, the
+main goal, the philosophy, the nine paradigms, the twenty design parameters with honest status,
+the history, how the project is built, the hard constraints, what is *not* true yet, and how to
+work on it.
+
+Then read **`docs/sutram-design-parameters.html`** — the design charter.
+
+
 These instructions apply to every automated coding assistant working in this repository, including ChatGPT, Sarvam and additional collaborators.
 
 ## Mandatory GitHub Actions notification safeguard
