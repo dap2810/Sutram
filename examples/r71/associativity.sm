@@ -1,0 +1,6 @@
+mukhya() {
+    likha(20 - 5 - 3)
+    likha(100 / 10 / 2)
+    likha(29 % 8 % 3)
+    likha(1 << 2 + 1)
+}
