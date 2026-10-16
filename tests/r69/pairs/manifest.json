@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "origin": "Exact R68 probe inputs; no existing goldens modified",
+  "sha256": {
+    "all_registers.out": "c6ebc76be5dc1f8b433f8d6fd9bd85cd9325086038442db8614bb799fec6fd85",
+    "all_registers.sm": "8069161e821544f880cbb99d3929d502205dac70a3efb72c0207db755401ccbf",
+    "no_pairs.out": "c6ebc76be5dc1f8b433f8d6fd9bd85cd9325086038442db8614bb799fec6fd85",
+    "no_pairs.sm": "a9659d2f22fd58267a29b6355e6167c6dab476cd718790da2ef686564ccd10f4",
+    "nonmatching.sm": "0e18f90771c908a449a5c345081355a63899e4e8fa58d0983c72099467945579"
+  }
+}
