@@ -11,7 +11,7 @@ std module. A layer claim nobody can check is decoration.
 
 ```
 $ python3 tools/check_layers.py
-layers OK: 12 core, 9 alloc, 0 std
+layers OK: 14 core, 9 alloc, 0 std
 ```
 
 ## The table
@@ -38,27 +38,47 @@ layers OK: 12 core, 9 alloc, 0 std
 | `strb` | core | Byte-string ops on caller-provided buffers; no allocation. |
 | `strconv` | alloc | Temp buffers for digit reversal. |
 | `string` | core | Cell-array ops on caller-provided buffers; no allocation. |
+| `result` | core | Result values on caller-provided cells; the checked producers reuse `out` as the `ok` cell, so no allocation. Imports `ganita` (core). |
+| `serial` | core | Binary serialisation on caller-provided byte buffers; no allocation, no imports. |
 | `util` | core | Pure arithmetic helpers; no allocation, no imports. |
 
 ## Dependency edges
 
-Only three modules import anything (`ayojan` is textual inclusion, so
+Only four modules import anything (`ayojan` is textual inclusion, so
 the import list is the complete dependency list):
 
 - `list` → `sort` (alloc → alloc: allowed)
 - `map` → `hash` (core), `strb` (core): alloc → core is downward, allowed
 - `set` → `map` (alloc), `strb` (core): allowed
+- `result` → `ganita` (core → core: allowed)
 
-No core module imports anything, so no core module depends upward.
-The full import graph is acyclic.
+No core module imports an alloc or std module, so no core module
+depends upward. The full import graph is acyclic.
 
-## Why `std` is empty
+## Why `std` is empty (R29 WS1 resolution)
 
-No module is `std` because the library deliberately has no OS
-services — no file I/O, networking, clocks, or processes (see
-`docs/LIBRARY-BOUNDARY.md`). If an OS-service module is ever added,
-it must be marked `std`, and the checker will then enforce that no
-core or alloc module imports it.
+The `0 std` result was investigated, not assumed. The question was
+whether some module that genuinely needs OS services is mis-marked
+as `alloc`. The answer is no, for two checked reasons:
+
+1. **No lib module calls any OS-service builtin.**
+   `tools/check_layers.py` now enforces this: it fails if any module
+   calls `likha` / `likha_fmt` / `likh` (console output), `paadh`
+   (console input), `band` (file handles), or `netsock` /
+   `netbind` / `netlisten` / `netaccept` (sockets). Those builtins
+   exist in the compiler, but no library module uses them. The
+   `0 std` claim is therefore checked, not asserted — a module that
+   started calling one would fail the checker until relabelled `std`.
+2. **The allocator is not an OS service.** `nirmmita` is implemented
+   with `mmap` under the hood, but an `alloc` module needs *a* heap,
+   not the OS: a freestanding heap would serve the same code. The
+   charter's `std` layer means files, networking, threads — none of
+   which any module touches. Likewise `kosh` growth (compiler-side,
+   `mmap`-backed) is allocation, not an OS service.
+
+So `0 std` is a legitimate and interesting fact: the library is
+pure computation plus caller-provided storage. It is stated here
+explicitly rather than left as a suspicious zero.
 
 ## Notes
 
