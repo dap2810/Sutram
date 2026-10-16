@@ -2,22 +2,11 @@
 # layer: alloc
 #
 # Open addressing with linear probing over parallel pankti arrays.
-#
-# KEY REPRESENTATION: byte strings (the R10 strb_* surface), NOT char-code
-# arrays. Rationale: keys are usually literals ("apple"), and byte strings
-# let the caller pass a literal directly — no hand-built cell array. The
-# hash (lib/hash.smlib fnv1a, via `ayojan hash` below) is byte-based
-# (char_at), so the choice is consistent end to end. Worked example:
-#     ayojan map
-#     mukhya() {
-#         vitti m = map_init(8)
-#         map_put(m, 8, "apple", 5, 42)
-#         likha(map_get(m, 8, "apple", 5))   # 42
-#         likha("\n")
-#     }
-# This matches lib/string.smlib's header: a byte string is bytes packed
-# 1-per-byte (a literal, or a set_char-built buffer), measured with an
-# explicit length, read with char_at. Do not pass char-code arrays here.
+# KEY REPRESENTATION: byte strings (the R10 strb_* surface), NOT
+# char-code arrays: keys are usually literals ("apple"), and byte
+# strings let the caller pass a literal directly. The hash
+# (lib/hash.smlib fnv1a) is byte-based (char_at), so the choice is
+# consistent end to end. Do not pass char-code arrays here.
 #
 # Layout of the map buffer m (qword cells, except the key bytes):
 #   m[0]           capacity
@@ -47,6 +36,7 @@ ayojan strb
 
 # map_key_hash(key, keyn, cap) — home bucket of key (internal helper).
 prakriya map_key_hash(key, keyn, cap) {
+    yadi (cap < 1) { pratiyati 0 }
     vitti h = fnv1a(key, keyn)
     pratiyati h % cap
 }
@@ -89,10 +79,15 @@ prakriya map_slot_write(m, slot, cap, key, keyn, val) {
 # map_find(m, cap, key, keyn) — slot index holding key, or -1 if absent
 # (internal helper; stops at the first empty slot — valid because
 # deletion is backward-shift, so chains have no holes).
+# cap < 1 or keyn < 0: not found (cap 0 trapped with SIGFPE on
+# h % 0; negative keyn stored a negative keylen, which
+# map_keys_bytes emitted as length byte 255).
 prakriya map_find(m, cap, key, keyn) {
     vitti kn = keyn
     vitti idx = 0
     vitti start = 0
+    yadi (cap < 1) { pratiyati 0 - 1 }
+    yadi (kn < 0) { pratiyati 0 - 1 }
     yadi (kn > 32) { kn = 32 }
     idx = map_key_hash(key, kn, cap)
     start = idx
@@ -106,12 +101,19 @@ prakriya map_find(m, cap, key, keyn) {
 }
 
 # map_init(cap) — allocate and clear a map of capacity cap (clamped to >= 1).
+# Returns 0 if cap is so large the allocation size overflows (a
+# wrapped size allocated a small buffer and then wrote cap state
+# cells past it — SIGSEGV).
 prakriya map_init(cap) {
     vitti c = cap
     vitti m = 0
     vitti i = 0
+    vitti sz = 0
     yadi (c < 1) { c = 1 }
-    m = nirmmita((2 + 3 * c) * 8 + c * 32)
+    sz = (2 + 3 * c) * 8 + c * 32
+    yadi (sz < 0) { pratiyati 0 }
+    m = nirmmita(sz)
+    yadi (m == 0) { pratiyati 0 }
     m[0] = c
     m[1] = 0
     yavat (i < c) {
@@ -123,12 +125,16 @@ prakriya map_init(cap) {
 
 # map_put(m, cap, key, keyn, val) — insert or update key; returns 1 on
 # success, 0 if the table is full (then the map is unchanged). Updating an
-# existing key keeps map_size unchanged.
+# existing key keeps map_size unchanged. cap < 1 or keyn < 0:
+# returns 0 (cap 0 trapped with SIGFPE; negative keyn corrupted
+# map_keys_bytes).
 prakriya map_put(m, cap, key, keyn, val) {
     vitti kn = keyn
     vitti idx = 0
     vitti start = 0
     vitti slot = 0
+    yadi (cap < 1) { pratiyati 0 }
+    yadi (kn < 0) { pratiyati 0 }
     yadi (kn > 32) { kn = 32 }
     slot = map_find(m, cap, key, kn)
     yadi (slot >= 0) {
