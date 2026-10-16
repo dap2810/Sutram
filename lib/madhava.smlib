@@ -1,4 +1,5 @@
 # lib/madhava.smlib — Sutram standard library: the Kerala school
+# layer: core
 #
 # After Madhava of Sangamagrama (~1340-1425 CE) and the Kerala school of astronomy and
 # mathematics. Madhava gave infinite-series expansions for the sine, cosine and arctangent
