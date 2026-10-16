@@ -135,12 +135,14 @@ prakriya str_equals(a, b) {
 # ---------------------------------------------------------------------------
 
 # str_find(hay, hn, needle, nn) — index of first occurrence of needle
-# in hay, or -1. Empty needle matches at 0.
+# in hay, or -1. Empty needle matches at 0. Negative needle length
+# is invalid: -1 (the old code treated it as empty, matching at 0).
 prakriya str_find(hay, hn, needle, nn) {
     vitti h = hay
     vitti hlen = hn
     vitti nd = needle
     vitti nlen = nn
+    yadi (nlen < 0) { pratiyati 0 - 1 }
     yadi (nlen == 0) { pratiyati 0 }
     yadi (nlen > hlen) { pratiyati 0 - 1 }
     vitti i = 0
@@ -181,8 +183,9 @@ prakriya str_replace(src, sn, find, fn, repl, out) {
     yavat (r[rlen] != 0) { rlen = rlen + 1 }
     vitti wpos = 0
     vitti rpos = 0
-    yadi (flen == 0) {
-        # empty find: copy verbatim
+    yadi (flen <= 0) {
+        # empty find: copy verbatim (flen < 0 used to loop
+        # forever, rpos decreasing, writing past out — SIGSEGV).
         yavat (rpos < slen) {
             dst[wpos] = s[rpos]
             wpos = wpos + 1
@@ -239,8 +242,9 @@ prakriya str_split(src, sn, sep, sepn, parts, maxparts) {
         dst[0] = 0
         pratiyati 1
     }
-    # empty separator: one segment (the whole input)
-    yadi (splen == 0) {
+    # empty separator: one segment (the whole input). splen < 0
+    # is invalid: same result (the old code looped forever).
+    yadi (splen <= 0) {
         dst[0] = slen
         vitti ci = 0
         yavat (ci < slen) {
@@ -381,11 +385,17 @@ prakriya str_trim(src, sn, out) {
 }
 
 # str_upper(src, sn, out) / str_lower — ASCII case conversion.
+# sn < 0: empty output (the old code wrote the terminator at
+# out[-1], an out-of-bounds write before the buffer).
 prakriya str_upper(src, sn, out) {
     vitti s = src
     vitti slen = sn
     vitti dst = out
     vitti i = 0
+    yadi (slen < 0) {
+        dst[0] = 0
+        pratiyati 0
+    }
     yavat (i < slen) {
         vitti c = s[i]
         yadi (c >= 97) {
@@ -403,6 +413,10 @@ prakriya str_lower(src, sn, out) {
     vitti slen = sn
     vitti dst = out
     vitti i = 0
+    yadi (slen < 0) {
+        dst[0] = 0
+        pratiyati 0
+    }
     yavat (i < slen) {
         vitti c = s[i]
         yadi (c >= 65) {
@@ -416,11 +430,14 @@ prakriya str_lower(src, sn, out) {
 }
 
 # str_starts(src, sn, pre, pn) / str_ends — 0/1.
+# A negative prefix/suffix length is invalid: 0 (the old code
+# treated it as empty and returned 1).
 prakriya str_starts(src, sn, pre, pn) {
     vitti s = src
     vitti slen = sn
     vitti pr = pre
     vitti plen = pn
+    yadi (plen < 0) { pratiyati 0 }
     yadi (plen > slen) { pratiyati 0 }
     vitti i = 0
     yavat (i < plen) {
@@ -435,6 +452,7 @@ prakriya str_ends(src, sn, suf, sn2) {
     vitti slen = sn
     vitti sf = suf
     vitti sflen = sn2
+    yadi (sflen < 0) { pratiyati 0 }
     yadi (sflen > slen) { pratiyati 0 }
     vitti i = 0
     yavat (i < sflen) {
@@ -507,7 +525,7 @@ prakriya str_count(hay, hn, needle, nn) {
     vitti pos = 0
     vitti c = 0
     vitti f = 0
-    yadi (nlen == 0) { pratiyati 0 }
+    yadi (nlen <= 0) { pratiyati 0 }
     yavat (pos <= hlen - nlen) {
         f = str_find(h + pos * 8, hlen - pos, nd, nlen)
         yadi (f < 0) { pratiyati c }
