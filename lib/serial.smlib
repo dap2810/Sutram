@@ -1,0 +1,128 @@
+# lib/serial.smlib — Sutram standard library: binary serialisation (R29 WS5)
+# layer: core
+#
+# The library's one new capability area: encode values into a flat
+# byte buffer and decode them back, with bounds checking. Format:
+#
+#   i64    — 8 bytes, little-endian, two's complement
+#   bytes  — 8-byte little-endian length (n) followed by n payload bytes
+#
+# Buffers are byte strings (char_at / set_char), caller-allocated
+# and caller-sized. Every put/get takes (buf, pos, cap): pos is the
+# cursor, cap is the buffer size in bytes. On success the function
+# returns the new cursor; on overrun (or a corrupt negative length
+# when decoding) it returns -1 and the destination buffer is
+# untouched (out_n may hold the decoded length if the length
+# itself was readable). The caller
+# owns the buffer and must check for -1, exactly like checking ok.
+#
+# put_bytes requires src and dst NOT to overlap: it writes the
+# length header before copying the payload, so an overlapping
+# src would be clobbered mid-copy. get_bytes requires buf and
+# dst not to overlap for the same reason.
+#
+# Deliberately not here: floats (the language has no bit-cast
+# primitive to turn a dasham into bits), varints (fixed-width is
+# enough for this first area), and schema/versioning (the caller
+# owns the field order; there is no header).
+
+# serial_len_bytes(n) — encoded size of an n-byte payload: 8 + n.
+prakriya serial_len_bytes(n) {
+    pratiyati 8 + n
+}
+
+# serial_put_i64(out, pos, cap, v) — write v as 8 LE bytes at
+# out+pos. Returns pos + 8, or -1 if it would overrun cap.
+prakriya serial_put_i64(out, pos, cap, v) {
+    vitti dst = out
+    vitti p = pos
+    vitti c = cap
+    vitti val = v
+    yadi (p < 0) { pratiyati 0 - 1 }
+    yadi (p + 8 > c) { pratiyati 0 - 1 }
+    vitti i = 0
+    yavat (i < 8) {
+        # Floor division: Sutram's / and % truncate toward zero,
+        # which would give a negative byte for negative val. The
+        # byte must be in [0, 255] for two's-complement LE.
+        vitti q = val / 256
+        yadi (val < 0) {
+            yadi (val % 256 != 0) { q = q - 1 }
+        }
+        set_char(dst, p + i, val - q * 256)
+        val = q
+        i = i + 1
+    }
+    pratiyati p + 8
+}
+
+# serial_get_i64(buf, pos, cap, out) — read 8 LE bytes at buf+pos,
+# write the value into out[0]. Returns pos + 8, or -1 on overrun.
+prakriya serial_get_i64(buf, pos, cap, out) {
+    vitti src = buf
+    vitti p = pos
+    vitti c = cap
+    vitti o = out
+    yadi (p < 0) { pratiyati 0 - 1 }
+    yadi (p + 8 > c) { pratiyati 0 - 1 }
+    vitti val = 0
+    vitti i = 6
+    yavat (i >= 0) {
+        val = val * 256 + char_at(src, p + i)
+        i = i - 1
+    }
+    # The top byte is signed: byte >= 128 means negative.
+    # val = top_signed * 2^56 + low, all in range, no overflow.
+    vitti top = char_at(src, p + 7)
+    yadi (top >= 128) {
+        top = top - 256
+    }
+    val = top * 72057594037927936 + val
+    o[0] = val
+    pratiyati p + 8
+}
+
+# serial_put_bytes(out, pos, cap, src, n) — write n as an 8-byte
+# LE length followed by n payload bytes from src. Returns the new
+# cursor, or -1 on overrun (n < 0 is also an error: -1).
+prakriya serial_put_bytes(out, pos, cap, src, n) {
+    vitti dst = out
+    vitti p = pos
+    vitti c = cap
+    vitti s = src
+    vitti cnt = n
+    yadi (cnt < 0) { pratiyati 0 - 1 }
+    yadi (p < 0) { pratiyati 0 - 1 }
+    yadi (p + 8 + cnt > c) { pratiyati 0 - 1 }
+    vitti p2 = serial_put_i64(dst, p, c, cnt)
+    vitti i = 0
+    yavat (i < cnt) {
+        set_char(dst, p2 + i, char_at(s, i))
+        i = i + 1
+    }
+    pratiyati p2 + cnt
+}
+
+# serial_get_bytes(buf, pos, cap, dst, out_n) — read a
+# length-prefixed payload: length into out_n[0], payload into dst.
+# Returns the new cursor, or -1 on overrun / negative length.
+prakriya serial_get_bytes(buf, pos, cap, dst, out_n) {
+    vitti src = buf
+    vitti p = pos
+    vitti c = cap
+    vitti d = dst
+    vitti on = out_n
+    # out_n doubles as the length cell for the inner read.
+    vitti p2 = serial_get_i64(src, p, c, on)
+    yadi (p2 == 0 - 1) { pratiyati 0 - 1 }
+    vitti cnt = on[0]
+    yadi (cnt < 0) { pratiyati 0 - 1 }
+    yadi (p2 + cnt > c) { pratiyati 0 - 1 }
+    vitti i = 0
+    yavat (i < cnt) {
+        set_char(d, i, char_at(src, p2 + i))
+        i = i + 1
+    }
+    on[0] = cnt
+    pratiyati p2 + cnt
+}
