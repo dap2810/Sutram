@@ -1,0 +1,2261 @@
+diff --git a/lib/file.smlib b/lib/file.smlib
+new file mode 100644
+index 0000000..db0585b
+--- /dev/null
++++ b/lib/file.smlib
+@@ -0,0 +1,86 @@
++# lib/file.smlib — Sutram standard library: file I/O
++# layer: std
++#
++# The first std module: genuine OS services, via the file builtins
++# dvaram (open), paadh (read), likha (3-arg write), band (close).
++# A std module is the ONLY layer allowed to call OS builtins
++# (tools/check_layers.py enforces this).
++#
++# Paths are NUL-terminated byte strings: a literal works, as does
++# a set_char-built buffer with a 0 terminator. Data buffers are
++# raw byte pointers (a literal, or a set_char-built buffer) with
++# an explicit byte count — NOT qword-cell arrays.
++#
++# Errors: every function returns -1 on any OS error (open failure,
++# read/write error). file_exists returns 0/1 and never -1.
++# file_read_all / file_write_all loop until the count is met, EOF
++# (read), or an error — a single syscall is not assumed to move
++# everything. The file descriptor is always closed before returning.
++#
++# Linux flags used (the builtins are Linux syscalls; see
++# docs/R52-BUILTIN-FIXES.md): O_RDONLY = 0, O_WRONLY|O_CREAT|O_TRUNC
++# = 577 (created files get mode 0644, subject to umask).
++# No Windows-host equivalence is claimed for the flag values.
++
++# file_read_all(path, out, cap) — open path read-only, read up to
++# cap bytes into out, close. Returns the byte count read (0 for an
++# empty file, or cap == 0 on an existing file), -1 on any error.
++# cap < 0 returns -1 without opening.
++prakriya file_read_all(path, out, cap) {
++    vitti p = path
++    vitti dst = out
++    vitti c = cap
++    vitti fd = 0
++    vitti total = 0
++    yadi (c < 0) { pratiyati 0 - 1 }
++    fd = dvaram(p, 0)
++    yadi (fd < 0) { pratiyati 0 - 1 }
++    yavat (total < c) {
++        vitti n = paadh(fd, dst + total, c - total)
++        yadi (n < 0) {
++            band(fd)
++            pratiyati 0 - 1
++        }
++        yadi (n == 0) {
++            band(fd)
++            pratiyati total
++        }
++        total = total + n
++    }
++    band(fd)
++    pratiyati total
++}
++
++# file_write_all(path, data, n) — create/truncate path, write all n
++# bytes from data, close. Returns n (0 for n == 0 on a creatable
++# path), -1 on any error. n < 0 returns -1 without opening.
++prakriya file_write_all(path, data, n) {
++    vitti p = path
++    vitti src = data
++    vitti c = n
++    vitti fd = 0
++    vitti total = 0
++    yadi (c < 0) { pratiyati 0 - 1 }
++    fd = dvaram(p, 577)
++    yadi (fd < 0) { pratiyati 0 - 1 }
++    yavat (total < c) {
++        vitti w = likha(fd, src + total, c - total)
++        yadi (w <= 0) {
++            band(fd)
++            pratiyati 0 - 1
++        }
++        total = total + w
++    }
++    band(fd)
++    pratiyati total
++}
++
++# file_exists(path) — 1 if path opens read-only, 0 otherwise.
++# (Open failure covers missing file, missing directory, and
++# permission denial alike — the caller cannot distinguish them.)
++prakriya file_exists(path) {
++    vitti fd = dvaram(path, 0)
++    yadi (fd < 0) { pratiyati 0 }
++    band(fd)
++    pratiyati 1
++}
+diff --git a/lib/fmt.smlib b/lib/fmt.smlib
+index dc67698..ab3a7ba 100644
+--- a/lib/fmt.smlib
++++ b/lib/fmt.smlib
+@@ -481,6 +481,18 @@ prakriya fmt_fixed_impl(dasham x, places, always_sign, out) {
+     } anyatra {
+         mag = v
+     }
++    # NaN guard: NaN is the only value with both v == 0.0 and
++    # v < 0.0 true (this language's dasham comparisons use
++    # ucomisd flags directly, so NaN == NaN is true and
++    # NaN != NaN is false — v != v does NOT detect NaN here).
++    # Without it, NaN took the neg branch (NaN < 0 is true) and
++    # the conversion produced garbage like "-9223372036...".
++    yadi (v == 0.0) {
++        yadi (v < 0.0) {
++            set_char(dst, 0, 0)
++            pratiyati 0
++        }
++    }
+     scaled = mag * p10f + 0.5
+     # Overflow guard: if scaled >= 2^63 the dasham->int conversion
+     # below is indefinite (x86 cvttsd2si yields MIN) and the
+diff --git a/lib/kalana.smlib b/lib/kalana.smlib
+index e5658db..c5f3bde 100644
+--- a/lib/kalana.smlib
++++ b/lib/kalana.smlib
+@@ -59,13 +59,19 @@ prakriya slope(kosh dasham xs, kosh dasham ys, i) {
+     vitti n = kosh_len(xs)
+     yadi (kosh_len(ys) < n) { n = kosh_len(ys) }
+     yadi (n < 2) { pratiyati 0.0 }
+-    yadi (i <= 0) {
+-        pratiyati (ys[1] - ys[0]) / (xs[1] - xs[0])
+-    }
+-    yadi (i >= n - 1) {
+-        pratiyati (ys[n - 1] - ys[n - 2]) / (xs[n - 1] - xs[n - 2])
+-    }
+-    pratiyati (ys[i + 1] - ys[i - 1]) / (xs[i + 1] - xs[i - 1])
++    # Neighbouring pair: first, last, or centred. The two
++    # sequential yadi (not yadi/anyatra) matter: for n == 2,
++    # i == 0 satisfies the first but not the second, and the
++    # centred branch would index xs[-1].
++    vitti lo = i - 1
++    vitti hi = i + 1
++    yadi (i <= 0) { lo = 0; hi = 1 }
++    yadi (i >= n - 1) { lo = n - 2; hi = n - 1 }
++    # Zero spacing (duplicate x): no slope is defined — return
++    # 0.0 instead of inf / NaN (the old code divided by zero).
++    dasham dx = xs[hi] - xs[lo]
++    yadi (dx == 0.0) { pratiyati 0.0 }
++    pratiyati (ys[hi] - ys[lo]) / dx
+ }
+ 
+ # Second derivative at an interior point (central, equally spaced assumption relaxed).
+@@ -76,9 +82,15 @@ prakriya slope2(kosh dasham xs, kosh dasham ys, i) {
+     yadi (i >= n - 1) { pratiyati 0.0 }
+     dasham hl = xs[i] - xs[i - 1]
+     dasham hr = xs[i + 1] - xs[i]
++    # Zero spacing on either side (or hl == -hr, so the mean
++    # spacing is 0): the second difference is undefined — 0.0.
++    yadi (hl == 0.0) { pratiyati 0.0 }
++    yadi (hr == 0.0) { pratiyati 0.0 }
+     dasham dl = (ys[i] - ys[i - 1]) / hl
+     dasham dr = (ys[i + 1] - ys[i]) / hr
+-    pratiyati (dr - dl) / ((hl + hr) / 2.0)
++    dasham hm = (hl + hr) / 2.0
++    yadi (hm == 0.0) { pratiyati 0.0 }
++    pratiyati (dr - dl) / hm
+ }
+ 
+ # ---------------------------------------------------------------
+diff --git a/lib/list.smlib b/lib/list.smlib
+index 488f90f..0a195e7 100644
+--- a/lib/list.smlib
++++ b/lib/list.smlib
+@@ -1,24 +1,11 @@
+ # lib/list.smlib — Sutram standard library: dynamic lists, stacks, queues
+ # layer: alloc
+ #
+-# Representation decision — QWORD CELLS (the pankti/kosh convention),
+-# not byte strings. Reasoning:
+-#   - A list is the growable analogue of pankti: same element model
+-#     (one qword per element), same indexing, same literal passing
+-#     (list_push(l, 42)). A byte-string list would be a string-list
+-#     only, and would force every element through copy + length
+-#     bookkeeping. Users with byte strings can store POINTERS
+-#     (list_push(l, ptr)) — a qword list of pointers is the escape
+-#     hatch, and it is the caller's job to keep the pointed-to
+-#     buffers alive.
+-#   - No mixing: every element in this module is a qword. Do not
+-#     pass byte-string buffers here expecting string semantics, and
+-#     do not pass fmt/strb outputs as elements.
+-#   - dasham elements are NOT supported. An untyped parameter
+-#     truncates a dasham argument to its integer part (the R15 trap),
+-#     so list_push(l, 3.7) stores 3. There is no way to store a
+-#     dasham bit pattern through this API. Format floats first
+-#     (fmt) if you need them as text, or keep a parallel structure.
++# Elements are QWORD CELLS (the pankti/kosh convention), not byte
++# strings. Users with byte strings store POINTERS (list_push(l, ptr));
++# the caller keeps the pointed-to buffers alive. No mixing: every
++# element here is a qword. dasham elements are NOT supported — an
++# untyped parameter truncates a dasham argument to its integer part.
+ #
+ # Two handle layouts (do NOT mix families on one handle):
+ #   - list / stack handle: header [len, cap, data_ptr]; data is a
+@@ -28,13 +15,11 @@
+ #     (see queue_enqueue). queue_* on a list handle (or list_* on a
+ #     queue handle) reads the wrong header and corrupts memory.
+ #
+-# Growth rule: when len == cap, capacity DOUBLES (cap *= 2), a new
+-# data array is allocated, elements are copied in logical order,
+-# and the header's data pointer is updated. The old data array is
+-# NOT freed — the language has no deallocation primitive, so growth
+-# leaks the previous array (same as every other growing structure
+-# in the stdlib). Capacity never shrinks: list_clear and queue
+-# dequeue keep the allocated capacity.
++# Growth rule: when len == cap, capacity DOUBLES, a new data array
++# is allocated, elements are copied in logical order, and the
++# header's data pointer is updated. The old data array is NOT freed
++# — the language has no deallocation primitive, so growth leaks the
++# previous array. Capacity never shrinks.
+ #
+ # Allocation failure: if nirmmita returns 0 during growth, the
+ # operation returns 0 (or ok[0] = 0) and the structure is UNCHANGED.
+@@ -55,15 +40,20 @@ ayojan sort
+ # --- lists ---
+ 
+ # list_init(cap) — allocate an empty list. cap clamped to >= 1.
+-# Returns the list handle, or 0 on allocation failure.
++# Returns the list handle, or 0 on allocation failure — including
++# a cap so large the data size overflows (a wrapped size returned
++# a handle whose data pointer was bogus, segfaulting on push).
+ prakriya list_init(cap) {
+     vitti c = cap
+     vitti l = 0
+     vitti d = 0
++    vitti sz = 0
+     yadi (c < 1) { c = 1 }
++    sz = c * 8
++    yadi (sz < 0) { pratiyati 0 }
+     l = nirmmita(3 * 8)
+     yadi (l == 0) { pratiyati 0 }
+-    d = nirmmita(c * 8)
++    d = nirmmita(sz)
+     yadi (d == 0) { pratiyati 0 }
+     l[0] = 0
+     l[1] = c
+@@ -382,15 +372,19 @@ prakriya stack_empty(l) {
+ # The buffer only grows, never shrinks.
+ 
+ # queue_init(cap) — allocate an empty queue. cap clamped to >= 1.
+-# Returns the queue handle, or 0 on allocation failure.
++# Returns the queue handle, or 0 on allocation failure — including
++# a cap so large the data size overflows (as list_init).
+ prakriya queue_init(cap) {
+     vitti c = cap
+     vitti q = 0
+     vitti d = 0
++    vitti sz = 0
+     yadi (c < 1) { c = 1 }
++    sz = c * 8
++    yadi (sz < 0) { pratiyati 0 }
+     q = nirmmita(4 * 8)
+     yadi (q == 0) { pratiyati 0 }
+-    d = nirmmita(c * 8)
++    d = nirmmita(sz)
+     yadi (d == 0) { pratiyati 0 }
+     q[0] = 0
+     q[1] = c
+diff --git a/lib/madhava.smlib b/lib/madhava.smlib
+index f2c2ba9..57866f2 100644
+--- a/lib/madhava.smlib
++++ b/lib/madhava.smlib
+@@ -6,12 +6,16 @@
+ # functions, and from the arctangent series a rapidly converging series for pi - more than two
+ # centuries before Newton, Gregory and Leibniz. These use T12 scalar floats (dasham).
+ 
+-# square root by Newton's method (Babylonian), to float precision
++# square root by Newton's method (Babylonian), to float precision.
++# v <= 0 returns 0.0. 1000 iterations: Newton from g = v halves
++# the guess until it reaches sqrt(v) (~512 halvings for
++# v = 1.8e308); 40 iterations gave 1e288 for sqrt(1e300).
+ prakriya madhava_sqrt(dasham v) {
++    yadi (v <= 0.0) { pratiyati 0.0 }
+     dasham g = v
+     yadi (g < 1.0) { g = 1.0 }
+     vitti i = 0
+-    yavat (i < 40) {
++    yavat (i < 1000) {
+         g = (g + v / g) / 2.0
+         i = i + 1
+     }
+@@ -40,12 +44,21 @@ prakriya madhava_pi() {
+ }
+ 
+ # Madhava's sine series:  sin(x) = x - x^3/3! + x^5/5! - ...
++# Evaluated on x reduced to [-PI, PI] (k = trunc(x / 2PI), one
++# PI-adjustment). Without reduction the 16-term series was off
++# by ~1e-4 at x = 10 and inf at x = 100. Exact for |x| <= ~1e15.
+ prakriya madhava_sin(dasham x) {
+-    dasham s = x
+-    dasham t = x
++    dasham pi2 = 6.283185307179586
++    dasham pi = 3.141592653589793
++    vitti k = x / pi2
++    dasham y = x - k * pi2
++    yadi (y > pi) { y = y - pi2 }
++    yadi (y < 0.0 - pi) { y = y + pi2 }
++    dasham s = y
++    dasham t = y
+     vitti n = 1
+     yavat (n < 16) {
+-        t = 0.0 - t * x * x / ((2.0 * n) * (2.0 * n + 1.0))
++        t = 0.0 - t * y * y / ((2.0 * n) * (2.0 * n + 1.0))
+         s = s + t
+         n = n + 1
+     }
+@@ -53,12 +66,19 @@ prakriya madhava_sin(dasham x) {
+ }
+ 
+ # Madhava's cosine series:  cos(x) = 1 - x^2/2! + x^4/4! - ...
++# Same argument reduction as sin (was ~3.5e-4 off at x = 10).
+ prakriya madhava_cos(dasham x) {
++    dasham pi2 = 6.283185307179586
++    dasham pi = 3.141592653589793
++    vitti k = x / pi2
++    dasham y = x - k * pi2
++    yadi (y > pi) { y = y - pi2 }
++    yadi (y < 0.0 - pi) { y = y + pi2 }
+     dasham s = 1.0
+     dasham t = 1.0
+     vitti n = 1
+     yavat (n < 16) {
+-        t = 0.0 - t * x * x / ((2.0 * n - 1.0) * (2.0 * n))
++        t = 0.0 - t * y * y / ((2.0 * n - 1.0) * (2.0 * n))
+         s = s + t
+         n = n + 1
+     }
+@@ -66,21 +86,41 @@ prakriya madhava_cos(dasham x) {
+ }
+ 
+ # Madhava-Gregory arctangent series:  atan(x) = x - x^3/3 + x^5/5 - ...
++# The raw series converges like 1/n at |x| = 1 (atan(1) was off
++# by 6e-4) and diverges for |x| > 1. Two exact identities fix it:
++#   |x| > 1:  atan(x) = PI/2 - atan(1/x)  (one recursion)
++#   |x| <= 1: atan(x) = 2*atan(x / (1 + sqrt(1+x^2))) — the
++#     reduced argument is <= 0.42, where the series converges
++#     to float precision in ~25 terms (60 used for margin).
+ prakriya madhava_atan(dasham x) {
++    dasham ax = x
++    vitti neg = 0
++    yadi (ax < 0.0) {
++        neg = 1
++        ax = 0.0 - ax
++    }
++    yadi (ax > 1.0) {
++        dasham r = madhava_pi() / 2.0 - madhava_atan(1.0 / ax)
++        yadi (neg == 1) { pratiyati 0.0 - r }
++        pratiyati r
++    }
++    dasham y = ax / (1.0 + madhava_sqrt(1.0 + ax * ax))
+     dasham s = 0.0
+-    dasham xp = x
++    dasham yp = y
+     vitti k = 0
+     vitti sign = 1
+-    yavat (k < 400) {
+-        dasham term = xp / (2.0 * k + 1.0)
++    yavat (k < 60) {
++        dasham term = yp / (2.0 * k + 1.0)
+         yadi (sign > 0) {
+             s = s + term
+         } anyatra {
+             s = s - term
+         }
+-        xp = xp * x * x
++        yp = yp * y * y
+         sign = 0 - sign
+         k = k + 1
+     }
+-    pratiyati s
++    dasham res = 2.0 * s
++    yadi (neg == 1) { pratiyati 0.0 - res }
++    pratiyati res
+ }
+diff --git a/lib/map.smlib b/lib/map.smlib
+index dee3c3b..7b3ff06 100644
+--- a/lib/map.smlib
++++ b/lib/map.smlib
+@@ -2,22 +2,11 @@
+ # layer: alloc
+ #
+ # Open addressing with linear probing over parallel pankti arrays.
+-#
+-# KEY REPRESENTATION: byte strings (the R10 strb_* surface), NOT char-code
+-# arrays. Rationale: keys are usually literals ("apple"), and byte strings
+-# let the caller pass a literal directly — no hand-built cell array. The
+-# hash (lib/hash.smlib fnv1a, via `ayojan hash` below) is byte-based
+-# (char_at), so the choice is consistent end to end. Worked example:
+-#     ayojan map
+-#     mukhya() {
+-#         vitti m = map_init(8)
+-#         map_put(m, 8, "apple", 5, 42)
+-#         likha(map_get(m, 8, "apple", 5))   # 42
+-#         likha("\n")
+-#     }
+-# This matches lib/string.smlib's header: a byte string is bytes packed
+-# 1-per-byte (a literal, or a set_char-built buffer), measured with an
+-# explicit length, read with char_at. Do not pass char-code arrays here.
++# KEY REPRESENTATION: byte strings (the R10 strb_* surface), NOT
++# char-code arrays: keys are usually literals ("apple"), and byte
++# strings let the caller pass a literal directly. The hash
++# (lib/hash.smlib fnv1a) is byte-based (char_at), so the choice is
++# consistent end to end. Do not pass char-code arrays here.
+ #
+ # Layout of the map buffer m (qword cells, except the key bytes):
+ #   m[0]           capacity
+@@ -47,6 +36,7 @@ ayojan strb
+ 
+ # map_key_hash(key, keyn, cap) — home bucket of key (internal helper).
+ prakriya map_key_hash(key, keyn, cap) {
++    yadi (cap < 1) { pratiyati 0 }
+     vitti h = fnv1a(key, keyn)
+     pratiyati h % cap
+ }
+@@ -89,10 +79,15 @@ prakriya map_slot_write(m, slot, cap, key, keyn, val) {
+ # map_find(m, cap, key, keyn) — slot index holding key, or -1 if absent
+ # (internal helper; stops at the first empty slot — valid because
+ # deletion is backward-shift, so chains have no holes).
++# cap < 1 or keyn < 0: not found (cap 0 trapped with SIGFPE on
++# h % 0; negative keyn stored a negative keylen, which
++# map_keys_bytes emitted as length byte 255).
+ prakriya map_find(m, cap, key, keyn) {
+     vitti kn = keyn
+     vitti idx = 0
+     vitti start = 0
++    yadi (cap < 1) { pratiyati 0 - 1 }
++    yadi (kn < 0) { pratiyati 0 - 1 }
+     yadi (kn > 32) { kn = 32 }
+     idx = map_key_hash(key, kn, cap)
+     start = idx
+@@ -106,12 +101,19 @@ prakriya map_find(m, cap, key, keyn) {
+ }
+ 
+ # map_init(cap) — allocate and clear a map of capacity cap (clamped to >= 1).
++# Returns 0 if cap is so large the allocation size overflows (a
++# wrapped size allocated a small buffer and then wrote cap state
++# cells past it — SIGSEGV).
+ prakriya map_init(cap) {
+     vitti c = cap
+     vitti m = 0
+     vitti i = 0
++    vitti sz = 0
+     yadi (c < 1) { c = 1 }
+-    m = nirmmita((2 + 3 * c) * 8 + c * 32)
++    sz = (2 + 3 * c) * 8 + c * 32
++    yadi (sz < 0) { pratiyati 0 }
++    m = nirmmita(sz)
++    yadi (m == 0) { pratiyati 0 }
+     m[0] = c
+     m[1] = 0
+     yavat (i < c) {
+@@ -123,12 +125,16 @@ prakriya map_init(cap) {
+ 
+ # map_put(m, cap, key, keyn, val) — insert or update key; returns 1 on
+ # success, 0 if the table is full (then the map is unchanged). Updating an
+-# existing key keeps map_size unchanged.
++# existing key keeps map_size unchanged. cap < 1 or keyn < 0:
++# returns 0 (cap 0 trapped with SIGFPE; negative keyn corrupted
++# map_keys_bytes).
+ prakriya map_put(m, cap, key, keyn, val) {
+     vitti kn = keyn
+     vitti idx = 0
+     vitti start = 0
+     vitti slot = 0
++    yadi (cap < 1) { pratiyati 0 }
++    yadi (kn < 0) { pratiyati 0 }
+     yadi (kn > 32) { kn = 32 }
+     slot = map_find(m, cap, key, kn)
+     yadi (slot >= 0) {
+diff --git a/lib/math.smlib b/lib/math.smlib
+index b06b534..b2b3d6e 100644
+--- a/lib/math.smlib
++++ b/lib/math.smlib
+@@ -77,9 +77,18 @@ prakriya power(base, e) {
+ }
+ 
+ prakriya fact(n) {
++    # Iterative: the recursive form overflowed the call stack at
++    # fact(100000) (SIGSEGV). Same values — multiplication
++    # commutes mod 2^64, so wrapping at n >= 21 is identical.
+     vitti x = n
++    vitti r = 1
++    vitti i = 2
+     yadi (x < 2) { pratiyati 1 }
+-    pratiyati x * fact(x - 1)
++    yavat (i <= x) {
++        r = r * i
++        i = i + 1
++    }
++    pratiyati r
+ }
+ 
+ prakriya is_prime(n) {
+@@ -97,14 +106,15 @@ prakriya is_prime(n) {
+ }
+ 
+ prakriya sum_to(n) {
++    # Closed form n*(n+1)/2 (the old loop took n iterations, so
++    # sum_to(4294967296) was ~4.3e9 iterations). Divide before
++    # multiplying, by parity: even (n/2)*(n+1), odd n*(n/2+1).
++    # The wrapping value equals the loop's (pinned: sum_to(
++    # 4294967296) == -9223372034707292160). n <= 0: 0, as the old loop.
+     vitti x = n
+-    vitti s = 0
+-    vitti i = 1
+-    yavat (i <= x) {
+-        s = s + i
+-        i = i + 1
+-    }
+-    pratiyati s
++    yadi (x <= 0) { pratiyati 0 }
++    yadi (x % 2 == 0) { pratiyati (x / 2) * (x + 1) }
++    pratiyati x * (x / 2 + 1)
+ }
+ 
+ prakriya double(n)
+@@ -119,6 +129,7 @@ prakriya inc(n)
+ prakriya bit_count(n) {
+     vitti x = n
+     vitti c = 0
++    # Negatives return 0 (R28-pinned contract: defined for n >= 0).
+     yavat (x > 0) {
+         c = c + (x % 2)
+         x = x / 2
+diff --git a/lib/num.smlib b/lib/num.smlib
+index b01de35..b2c6d31 100644
+--- a/lib/num.smlib
++++ b/lib/num.smlib
+@@ -10,6 +10,9 @@ prakriya is_odd(n)
+ 
+ prakriya digit_count(n) {
+     vitti x = n
++    vitti minv = (0 - 9223372036854775807) - 1
++    # MIN: |MIN| has 19 digits, but 0 - MIN wraps to MIN.
++    yadi (x == minv) { pratiyati 19 }
+     yadi (x < 0) { x = 0 - x }
+     vitti c = 1
+     yavat (x >= 10) {
+@@ -21,6 +24,9 @@ prakriya digit_count(n) {
+ 
+ prakriya digit_sum(n) {
+     vitti x = n
++    vitti minv = (0 - 9223372036854775807) - 1
++    # MIN: digit sum of 9223372036854775808 is 89.
++    yadi (x == minv) { pratiyati 89 }
+     yadi (x < 0) { x = 0 - x }
+     vitti s = 0
+     yavat (x > 0) {
+@@ -33,6 +39,11 @@ prakriya digit_sum(n) {
+ prakriya reverse_num(n) {
+     vitti x = n
+     vitti r = 0
++    vitti minv = (0 - 9223372036854775807) - 1
++    # Negatives reverse with the sign: reverse_num(-123) = -321.
++    # MIN: reverse of 9223372036854775808, negated.
++    yadi (x == minv) { pratiyati 0 - 8085774586302733229 }
++    yadi (x < 0) { pratiyati 0 - reverse_num(0 - x) }
+     yavat (x > 0) {
+         r = r * 10 + (x % 10)
+         x = x / 10
+@@ -41,6 +52,8 @@ prakriya reverse_num(n) {
+ }
+ 
+ prakriya is_palindrome(n) {
++    # Negatives are not palindromes (the '-' is not a digit).
++    yadi (n < 0) { pratiyati 0 }
+     vitti r = reverse_num(n)
+     pratiyati r == n
+ }
+diff --git a/lib/result.smlib b/lib/result.smlib
+index eff2b39..2990fec 100644
+--- a/lib/result.smlib
++++ b/lib/result.smlib
+@@ -20,6 +20,12 @@
+ # chaining/map/and_then because the language has no callbacks.
+ # A Result is a caller-owned mutable array — aliasing and mutation
+ # hazards remain (no ownership model).
++#
++# The hand-written substitute for propagation is the early-return
++# chain: after each producing step, `yadi (result_is_ok(t) == 0)`
++# writes the failure into out and returns at once, so the failure
++# path is one branch per step instead of nested conditionals.
++# See docs/ERROR-CONVENTION.md and tests/stdlib/result_chain.sm.
+ 
+ ayojan ganita
+ 
+@@ -145,3 +151,42 @@ prakriya result_checked_mod(out, a, b) {
+     }
+     pratiyati o[0]
+ }
++
++# result_checked_pow(out, a, e) — ganita_checked_pow as a Result.
++# Failure [0, 0] on e < 0 or overflow (see ganita_checked_pow).
++prakriya result_checked_pow(out, a, e) {
++    vitti o = out
++    vitti v = ganita_checked_pow(a, e, o)
++    yadi (o[0] == 1) {
++        o[1] = v
++    } anyatra {
++        o[1] = 0
++    }
++    pratiyati o[0]
++}
++
++# result_checked_fact(out, n) — ganita_checked_fact as a Result.
++# Failure [0, 0] on n < 0 or overflow (21! overflows).
++prakriya result_checked_fact(out, n) {
++    vitti o = out
++    vitti v = ganita_checked_fact(n, o)
++    yadi (o[0] == 1) {
++        o[1] = v
++    } anyatra {
++        o[1] = 0
++    }
++    pratiyati o[0]
++}
++
++# result_checked_abs(out, a) — ganita_checked_abs as a Result.
++# Failure [0, 0] on abs(MIN) (no int64 absolute value).
++prakriya result_checked_abs(out, a) {
++    vitti o = out
++    vitti v = ganita_checked_abs(a, o)
++    yadi (o[0] == 1) {
++        o[1] = v
++    } anyatra {
++        o[1] = 0
++    }
++    pratiyati o[0]
++}
+diff --git a/lib/sankhyiki.smlib b/lib/sankhyiki.smlib
+index ccec9fc..e2fdc07 100644
+--- a/lib/sankhyiki.smlib
++++ b/lib/sankhyiki.smlib
+@@ -78,11 +78,12 @@ prakriya prasaran(kosh dasham xs) {
+ 
+ # --- square root, Newton's method (private to this module: distinct name so it
+ #     never collides with madhava_sqrt or a user function) ---
++# 1000 iterations, as madhava_sqrt (20 gave 1279996 for sqrt(1e12)).
+ prakriya sankhyiki_sqrt(dasham v) {
+     yadi (v <= 0.0) { pratiyati 0.0 }
+     dasham g = v
+     vitti k = 0
+-    yavat (k < 20) {
++    yavat (k < 1000) {
+         g = (g + v / g) / 2.0
+         k = k + 1
+     }
+diff --git a/lib/set.smlib b/lib/set.smlib
+index 65316f8..e816fed 100644
+--- a/lib/set.smlib
++++ b/lib/set.smlib
+@@ -5,13 +5,11 @@
+ # map_contains, iteration is map_keys_bytes (R17: packed-byte segments,
+ # passed straight to the byte-key map functions with no repacking).
+ #
+-# ELEMENTS ARE BYTE STRINGS — the same choice as `map.smlib`'s keys, for
+-# the same reason: a caller passes a literal directly ("apple"), with an
+-# explicit length, and the whole strb_* surface (compare, pack, unpack)
+-# works on the elements unchanged. Do NOT pass char-code (qword-cell)
+-# arrays here; see the lib/strb.smlib header for the two
+-# representations. Consequences inherited from map: keys longer than 32
+-# bytes are truncated to 32 on every operation, consistently.
++# ELEMENTS ARE BYTE STRINGS — the same choice as `map.smlib`'s keys:
++# a caller passes a literal directly ("apple"), with an explicit
++# length. Do NOT pass char-code (qword-cell) arrays here. Inherited
++# from map: keys longer than 32 bytes are truncated to 32 on every
++# operation, consistently.
+ #
+ # CAPACITY: a set's capacity is fixed at set_init and stored in the
+ # buffer (m[0]). Set operations that write into `out` read out's
+diff --git a/lib/sort.smlib b/lib/sort.smlib
+index fdb95ff..3dd9cdf 100644
+--- a/lib/sort.smlib
++++ b/lib/sort.smlib
+@@ -35,6 +35,9 @@ prakriya reverse_arr(a, n) {
+ }
+ 
+ prakriya min_of(a, n) {
++    # n <= 0: no element exists — return 0, as list_min does
++    # on an empty list (the old code read a[0] and segfaulted).
++    yadi (n <= 0) { pratiyati 0 }
+     vitti i = 1
+     vitti best = a[0]
+     yavat (i < n) {
+@@ -45,6 +48,8 @@ prakriya min_of(a, n) {
+ }
+ 
+ prakriya max_of(a, n) {
++    # n <= 0: no element exists — return 0, as min_of.
++    yadi (n <= 0) { pratiyati 0 }
+     vitti i = 1
+     vitti best = a[0]
+     yavat (i < n) {
+diff --git a/lib/strb.smlib b/lib/strb.smlib
+index e4097e9..076d37c 100644
+--- a/lib/strb.smlib
++++ b/lib/strb.smlib
+@@ -1,54 +1,32 @@
+ # lib/strb.smlib — Sutram standard library: byte-string surface
+ # layer: core
+ #
+-# The string toolkit operating on BYTE-PACKED strings — the representation
+-# of a literal and of set_char-built buffers. This is the ROUND-10 answer
+-# to the R9 gap: a programmer holding "hello world" can now use the
+-# toolkit directly, with no hand-built char-code array.
++# The string toolkit on BYTE-PACKED strings (the representation of a
++# literal and of set_char-built buffers). Own module (not inside
++# string.smlib) because the compiler has a fixed AST ceiling.
+ #
+-# THE TWO REPRESENTATIONS, side by side (kept consistent with the
+-# lib/string.smlib header so a reader can move between modules):
+-#   char-code array (lib/string.smlib R9 toolkit): qword cells, one char
+-#     code per cell, read with h[i] (8-byte stride). Idiom:
+-#     vitti h = nirmmita(6*8); h[0]=104; h[1]=105  ("hi" as cells);
+-#     str_find(h, 2, nd, 1).
+-#   byte string (this module): bytes packed 1-per-byte, read with
+-#     char_at(s, i) (1-byte stride), written with set_char(s, i, v),
+-#     measured with vartani_len(s). Idiom: strb_find("hi", 2, "i", 1) -> 1;
+-#     or vitti b = nirmmita(8); set_char(b,0,104); set_char(b,1,105);
+-#     set_char(b,2,0); strb_len(b) -> 2.
+-# Do NOT mix them: h[i] on a byte string reads 8 bytes at once, and
+-# char_at on a char-code array reads one byte of a qword cell.
++# THE TWO REPRESENTATIONS (see also lib/string.smlib):
++#   char-code array: qword cells, one char code per cell, h[i].
++#   byte string: bytes packed 1-per-byte, char_at(s, i) /
++#     set_char(s, i, v) / vartani_len(s). Do NOT mix them: h[i] on
++#     a byte string reads 8 bytes at once; char_at on a char-code
++#     array reads one byte of a qword cell.
+ #
+-# This lives in its own module (not inside string.smlib) because the
+-# compiler has a fixed AST ceiling: inlining the combined module together
+-# with the other stdlib modules exceeded it (suite tests 87/99/102).
+-# The char-code toolkit in lib/string.smlib is byte-for-byte unchanged.
++# Conventions: lengths are explicit; out-buffers get a 0 terminator;
++# the caller allocates generously. Empty needle matches at 0; "not
++# found" is -1. All signatures stay within the 6-argument cap.
+ #
+-# Conventions: lengths are explicit (source of truth); out-buffers get a
+-# 0 terminator via set_char; the caller allocates generously. Empty needle
+-# matches at 0; "not found" is -1. All signatures stay within the
+-# compiler's 6-argument cap (repl is 0-terminated, its length derived).
+-#
+-# SLICE-BOUNDARY RULES (WS4, R23 audit): a slice is a (pointer, length)
+-# pair into a larger buffer, with NO terminator at the slice end.
+-#   - Every strb_* function takes an explicit length and stops at it:
+-#     strb_find_char("hello world", 5, 'w') is -1. The NUL-terminated
+-#     forms (find_char, count_char, count_vowels, is_all_digits,
+-#     str_equals) scan to the terminator, so they are WRONG on slices.
+-#     Never pass a slice to them.
+-#   - strb_len / str_len / vartani_len scan to the terminator: they
+-#     cannot be used on slices at all. A slice carries its length.
+-#   - strb_replace / str_replace's repl is 0-terminated (its length
+-#     is derived), so repl cannot be a slice. To use a slice as repl,
+-#     strb_dup it into a terminated buffer first. An explicit-length
+-#     repl form would need 7 arguments, over the compiler's
+-#     6-argument cap, so the terminated form stays.
+-#   - The (s, i) char predicates take no length: the caller must
+-#     keep i in bounds; they read char_at(s, i) unconditionally.
+-# strb_split/strb_join use the same length-prefixed segment format as
+-# str_split/str_join (R9): [len0, b0, b1, ..., len1, b0, ...], one byte
+-# value per cell.
++# SLICE-BOUNDARY RULES (R23): a slice is (pointer, length) into a
++# larger buffer, with NO terminator at the slice end. Every strb_*
++# function takes an explicit length and stops at it. The
++# NUL-terminated forms (find_char, count_char, count_vowels,
++# is_all_digits, str_equals) scan to the terminator — WRONG on
++# slices. strb_len / str_len / vartani_len scan to the terminator
++# and cannot be used on slices. strb_replace's repl is 0-terminated
++# (length derived), so repl cannot be a slice; strb_dup it into a
++# terminated buffer first.
++# strb_split/strb_join use the length-prefixed segment format of
++# str_split/str_join (R9): [len0, b0, ..., len1, b0, ...].
+ 
+ # strb_pack(cells, n, out) — pack a qword-cell sequence (one byte value
+ # per cell, the str_split/strb_split segment format) into contiguous
+@@ -131,6 +109,7 @@ prakriya strb_find(hay, hn, needle, nn) {
+     vitti i = 0
+     vitti match = 0
+     vitti j = 0
++    yadi (nlen < 0) { pratiyati 0 - 1 }
+     yadi (nlen == 0) { pratiyati 0 }
+     yadi (nlen > hlen) { pratiyati 0 - 1 }
+     i = 0
+@@ -173,7 +152,9 @@ prakriya strb_replace(src, sn, find, fn, repl, out) {
+     vitti j = 0
+     vitti k = 0
+     yavat (char_at(r, rlen) != 0) { rlen = rlen + 1 }
+-    yadi (flen == 0) {
++    yadi (flen <= 0) {
++        # flen < 0: same verbatim copy as empty find (the old
++        # code looped forever on a negative find length).
+         yavat (rpos < slen) {
+             set_char(dst, wpos, char_at(s, rpos))
+             wpos = wpos + 1
+@@ -240,7 +221,9 @@ prakriya strb_split(src, sn, sep, sepn, parts, maxparts) {
+         dst[0] = 0
+         pratiyati 1
+     }
+-    yadi (splen == 0) {
++    yadi (splen <= 0) {
++        # splen < 0: same one-segment result as empty separator
++        # (the old code looped forever on a negative length).
+         dst[0] = slen
+         strb_unpack(s, slen, dst + 8)
+         pratiyati 1
+@@ -368,13 +351,18 @@ prakriya strb_trim(src, sn, out) {
+ }
+ 
+ # strb_upper(src, sn, out) / strb_lower — ASCII case conversion on byte
+-# strings. Returns the byte count.
++# strings. Returns the byte count. sn < 0: empty output (the old
++# code wrote the terminator at out[-1], out of bounds).
+ prakriya strb_upper(src, sn, out) {
+     vitti s = src
+     vitti slen = sn
+     vitti dst = out
+     vitti i = 0
+     vitti c = 0
++    yadi (slen < 0) {
++        set_char(dst, 0, 0)
++        pratiyati 0
++    }
+     yavat (i < slen) {
+         c = char_at(s, i)
+         yadi (c >= 97) {
+@@ -393,6 +381,10 @@ prakriya strb_lower(src, sn, out) {
+     vitti dst = out
+     vitti i = 0
+     vitti c = 0
++    yadi (slen < 0) {
++        set_char(dst, 0, 0)
++        pratiyati 0
++    }
+     yavat (i < slen) {
+         c = char_at(s, i)
+         yadi (c >= 65) {
+@@ -406,12 +398,15 @@ prakriya strb_lower(src, sn, out) {
+ }
+ 
+ # strb_starts(src, sn, pre, pn) / strb_ends — 0/1 on byte strings.
++# A negative prefix/suffix length is invalid: 0 (the old code
++# treated it as empty and returned 1).
+ prakriya strb_starts(src, sn, pre, pn) {
+     vitti s = src
+     vitti slen = sn
+     vitti pr = pre
+     vitti plen = pn
+     vitti i = 0
++    yadi (plen < 0) { pratiyati 0 }
+     yadi (plen > slen) { pratiyati 0 }
+     yavat (i < plen) {
+         yadi (char_at(s, i) != char_at(pr, i)) { pratiyati 0 }
+@@ -426,6 +421,7 @@ prakriya strb_ends(src, sn, suf, sn2) {
+     vitti sf = suf
+     vitti sflen = sn2
+     vitti i = 0
++    yadi (sflen < 0) { pratiyati 0 }
+     yadi (sflen > slen) { pratiyati 0 }
+     yavat (i < sflen) {
+         yadi (char_at(s, slen - sflen + i) != char_at(sf, i)) { pratiyati 0 }
+@@ -502,7 +498,7 @@ prakriya strb_count(hay, hn, needle, nn) {
+     vitti pos = 0
+     vitti c = 0
+     vitti f = 0
+-    yadi (nlen == 0) { pratiyati 0 }
++    yadi (nlen <= 0) { pratiyati 0 }
+     yavat (pos <= hlen - nlen) {
+         f = strb_find(h + pos, hlen - pos, nd, nlen)
+         yadi (f < 0) { pratiyati c }
+@@ -571,7 +567,7 @@ prakriya strb_is_all_digits(s, n) {
+     vitti cnt = n
+     vitti i = 0
+     vitti ch = 0
+-    yadi (cnt == 0) { pratiyati 0 }
++    yadi (cnt <= 0) { pratiyati 0 }
+     yavat (i < cnt) {
+         ch = char_at(src, i)
+         yadi (ch < 48 || ch > 57) { pratiyati 0 }
+diff --git a/lib/strconv.smlib b/lib/strconv.smlib
+index 7513b73..8003c59 100644
+--- a/lib/strconv.smlib
++++ b/lib/strconv.smlib
+@@ -132,12 +132,22 @@ prakriya str_to_int(buf, n, ok) {
+ 
+ # int_to_base_str(n, base, out) — write n in `base` (2/8/10/16) into out
+ # as character codes (0-9, a-f). Returns count. No sign handling; n >= 0.
++# Base outside 2..36: terminator only, returns 0 (base 0 trapped
++# with SIGFPE, base 1 looped forever past the buffer).
+ prakriya int_to_base_str(n, base, out) {
+     vitti val = n
+     vitti b = base
+     vitti dst = out
+     vitti rev = nirmmita(70 * 8)
+     vitti rlen = 0
++    yadi (b < 2) {
++        dst[0] = 0
++        pratiyati 0
++    }
++    yadi (b > 36) {
++        dst[0] = 0
++        pratiyati 0
++    }
+     yadi (val == 0) {
+         dst[0] = 48
+         dst[1] = 0
+@@ -405,6 +415,16 @@ prakriya str_to_float(buf, n, ok) {
+             k2 = k2 + 1
+         }
+     }
++    # Overflow guard: the exp10 > 308 check does not catch
++    # mant > 1 with exp10 == 308 (e.g. "9e308" returned inf with
++    # ok = 1). Halving is exact for finite doubles, so val / 2
++    # == val iff val is infinite — that is the overflow.
++    yadi (val != 0.0) {
++        yadi (val / 2.0 == val) {
++            okp[0] = 0
++            pratiyati 0.0
++        }
++    }
+     yadi (neg == 1) { val = 0.0 - val }
+     pratiyati val
+ }
+diff --git a/lib/string.smlib b/lib/string.smlib
+index 0d026d3..e948e53 100644
+--- a/lib/string.smlib
++++ b/lib/string.smlib
+@@ -135,12 +135,14 @@ prakriya str_equals(a, b) {
+ # ---------------------------------------------------------------------------
+ 
+ # str_find(hay, hn, needle, nn) — index of first occurrence of needle
+-# in hay, or -1. Empty needle matches at 0.
++# in hay, or -1. Empty needle matches at 0. Negative needle length
++# is invalid: -1 (the old code treated it as empty, matching at 0).
+ prakriya str_find(hay, hn, needle, nn) {
+     vitti h = hay
+     vitti hlen = hn
+     vitti nd = needle
+     vitti nlen = nn
++    yadi (nlen < 0) { pratiyati 0 - 1 }
+     yadi (nlen == 0) { pratiyati 0 }
+     yadi (nlen > hlen) { pratiyati 0 - 1 }
+     vitti i = 0
+@@ -181,8 +183,9 @@ prakriya str_replace(src, sn, find, fn, repl, out) {
+     yavat (r[rlen] != 0) { rlen = rlen + 1 }
+     vitti wpos = 0
+     vitti rpos = 0
+-    yadi (flen == 0) {
+-        # empty find: copy verbatim
++    yadi (flen <= 0) {
++        # empty find: copy verbatim (flen < 0 used to loop
++        # forever, rpos decreasing, writing past out — SIGSEGV).
+         yavat (rpos < slen) {
+             dst[wpos] = s[rpos]
+             wpos = wpos + 1
+@@ -239,8 +242,9 @@ prakriya str_split(src, sn, sep, sepn, parts, maxparts) {
+         dst[0] = 0
+         pratiyati 1
+     }
+-    # empty separator: one segment (the whole input)
+-    yadi (splen == 0) {
++    # empty separator: one segment (the whole input). splen < 0
++    # is invalid: same result (the old code looped forever).
++    yadi (splen <= 0) {
+         dst[0] = slen
+         vitti ci = 0
+         yavat (ci < slen) {
+@@ -381,11 +385,17 @@ prakriya str_trim(src, sn, out) {
+ }
+ 
+ # str_upper(src, sn, out) / str_lower — ASCII case conversion.
++# sn < 0: empty output (the old code wrote the terminator at
++# out[-1], an out-of-bounds write before the buffer).
+ prakriya str_upper(src, sn, out) {
+     vitti s = src
+     vitti slen = sn
+     vitti dst = out
+     vitti i = 0
++    yadi (slen < 0) {
++        dst[0] = 0
++        pratiyati 0
++    }
+     yavat (i < slen) {
+         vitti c = s[i]
+         yadi (c >= 97) {
+@@ -403,6 +413,10 @@ prakriya str_lower(src, sn, out) {
+     vitti slen = sn
+     vitti dst = out
+     vitti i = 0
++    yadi (slen < 0) {
++        dst[0] = 0
++        pratiyati 0
++    }
+     yavat (i < slen) {
+         vitti c = s[i]
+         yadi (c >= 65) {
+@@ -416,11 +430,14 @@ prakriya str_lower(src, sn, out) {
+ }
+ 
+ # str_starts(src, sn, pre, pn) / str_ends — 0/1.
++# A negative prefix/suffix length is invalid: 0 (the old code
++# treated it as empty and returned 1).
+ prakriya str_starts(src, sn, pre, pn) {
+     vitti s = src
+     vitti slen = sn
+     vitti pr = pre
+     vitti plen = pn
++    yadi (plen < 0) { pratiyati 0 }
+     yadi (plen > slen) { pratiyati 0 }
+     vitti i = 0
+     yavat (i < plen) {
+@@ -435,6 +452,7 @@ prakriya str_ends(src, sn, suf, sn2) {
+     vitti slen = sn
+     vitti sf = suf
+     vitti sflen = sn2
++    yadi (sflen < 0) { pratiyati 0 }
+     yadi (sflen > slen) { pratiyati 0 }
+     vitti i = 0
+     yavat (i < sflen) {
+@@ -507,7 +525,7 @@ prakriya str_count(hay, hn, needle, nn) {
+     vitti pos = 0
+     vitti c = 0
+     vitti f = 0
+-    yadi (nlen == 0) { pratiyati 0 }
++    yadi (nlen <= 0) { pratiyati 0 }
+     yavat (pos <= hlen - nlen) {
+         f = str_find(h + pos * 8, hlen - pos, nd, nlen)
+         yadi (f < 0) { pratiyati c }
+diff --git a/lib/util.smlib b/lib/util.smlib
+index 5d9c5c0..b77a77c 100644
+--- a/lib/util.smlib
++++ b/lib/util.smlib
+@@ -2,21 +2,43 @@
+ # layer: core
+ # General-purpose utility functions
+ # Usage: ayojan util
++#
++# Edge rules (R30): mod/div_ceil return 0 on a zero divisor (no
++# SIGFPE); sum_range returns 0 for end < start; div_ceil is true
++# ceiling division for every sign combination.
+ 
+ 
+ prakriya lerp(a, b, t)
+     pratiyati a + (b - a) * t / 100
+ 
+-prakriya sum_range(start, end)
++prakriya sum_range(start, end) {
++    yadi (end < start) { pratiyati 0 }
+     pratiyati (start + end) * (end - start + 1) / 2
++}
+ 
+ 
+ 
+-prakriya mod(a, b)
++prakriya mod(a, b) {
++    yadi (b == 0) { pratiyati 0 }
+     pratiyati a - (a / b) * b
+-
+-prakriya div_ceil(a, b)
+-    pratiyati (a + b - 1) / b
++}
++
++prakriya div_ceil(a, b) {
++    # Ceiling division: q = a / b (truncating), round up iff the
++    # remainder is nonzero and has the divisor's sign. The old
++    # (a + b - 1) / b was only correct for a >= 0, b > 0.
++    yadi (b == 0) { pratiyati 0 }
++    vitti q = a / b
++    vitti r = a % b
++    yadi (r != 0) {
++        yadi (r > 0) {
++            yadi (b > 0) { q = q + 1 }
++        } anyatra {
++            yadi (b < 0) { q = q + 1 }
++        }
++    }
++    pratiyati q
++}
+ 
+ prakriya sign(n)
+     pratiyati (n > 0) - (n < 0)
+diff --git a/tests/fixtures/file_hello.txt b/tests/fixtures/file_hello.txt
+new file mode 100644
+index 0000000..0583df2
+--- /dev/null
++++ b/tests/fixtures/file_hello.txt
+@@ -0,0 +1 @@
++hello sutram
+diff --git a/tests/stdlib/file_read.exit b/tests/stdlib/file_read.exit
+new file mode 100644
+index 0000000..573541a
+--- /dev/null
++++ b/tests/stdlib/file_read.exit
+@@ -0,0 +1 @@
++0
+diff --git a/tests/stdlib/file_read.out b/tests/stdlib/file_read.out
+new file mode 100644
+index 0000000..72163de
+--- /dev/null
++++ b/tests/stdlib/file_read.out
+@@ -0,0 +1,45 @@
++13
++
++104
++
++101
++
++108
++
++108
++
++111
++
++32
++
++115
++
++117
++
++116
++
++114
++
++97
++
++109
++
++10
++
++5
++
++104
++
++111
++
++0
++
++-1
++
++-1
++
++1
++
++0
++
++file-read-done
+diff --git a/tests/stdlib/file_read.sm b/tests/stdlib/file_read.sm
+new file mode 100644
+index 0000000..9605af9
+--- /dev/null
++++ b/tests/stdlib/file_read.sm
+@@ -0,0 +1,37 @@
++ayojan file
++mukhya() {
++    vitti buf = nirmmita(64)
++    vitti i = 0
++    # read the committed fixture (13 bytes: "hello sutram\n")
++    vitti n = file_read_all("tests/fixtures/file_hello.txt", buf, 64)
++    likha(n)
++    likha("\n")
++    yavat (i < n) {
++        likha(char_at(buf, i))
++        likha("\n")
++        i = i + 1
++    }
++    # small cap: only the first 5 bytes
++    vitti n5 = file_read_all("tests/fixtures/file_hello.txt", buf, 5)
++    likha(n5)
++    likha("\n")
++    likha(char_at(buf, 0))
++    likha("\n")
++    likha(char_at(buf, 4))
++    likha("\n")
++    # cap 0 on an existing file: 0, no bytes
++    likha(file_read_all("tests/fixtures/file_hello.txt", buf, 0))
++    likha("\n")
++    # negative cap: -1, file not opened
++    likha(file_read_all("tests/fixtures/file_hello.txt", buf, 0 - 3))
++    likha("\n")
++    # missing file: -1
++    likha(file_read_all("tests/fixtures/no_such_file.txt", buf, 64))
++    likha("\n")
++    # exists: 1 / 0
++    likha(file_exists("tests/fixtures/file_hello.txt"))
++    likha("\n")
++    likha(file_exists("tests/fixtures/no_such_file.txt"))
++    likha("\n")
++    likha("file-read-done\n")
++}
+diff --git a/tests/stdlib/file_write.exit b/tests/stdlib/file_write.exit
+new file mode 100644
+index 0000000..573541a
+--- /dev/null
++++ b/tests/stdlib/file_write.exit
+@@ -0,0 +1 @@
++0
+diff --git a/tests/stdlib/file_write.out b/tests/stdlib/file_write.out
+new file mode 100644
+index 0000000..64853f3
+--- /dev/null
++++ b/tests/stdlib/file_write.out
+@@ -0,0 +1,23 @@
++5
++
++5
++
++83
++
++117
++
++116
++
++114
++
++97
++
++0
++
++0
++
++-1
++
++-1
++
++file-write-done
+diff --git a/tests/stdlib/file_write.sm b/tests/stdlib/file_write.sm
+new file mode 100644
+index 0000000..af8c387
+--- /dev/null
++++ b/tests/stdlib/file_write.sm
+@@ -0,0 +1,35 @@
++ayojan file
++mukhya() {
++    vitti buf = nirmmita(64)
++    vitti i = 0
++    # write 5 bytes to a scratch path in /tmp (never the repo
++    # tree), then read them back and verify the round-trip
++    set_char(buf, 0, 83)
++    set_char(buf, 1, 117)
++    set_char(buf, 2, 116)
++    set_char(buf, 3, 114)
++    set_char(buf, 4, 97)
++    vitti w = file_write_all("/tmp/sutram_file_write_test.txt", buf, 5)
++    likha(w)
++    likha("\n")
++    vitti n = file_read_all("/tmp/sutram_file_write_test.txt", buf, 64)
++    likha(n)
++    likha("\n")
++    yavat (i < n) {
++        likha(char_at(buf, i))
++        likha("\n")
++        i = i + 1
++    }
++    # overwrite with 0 bytes: file becomes empty, returns 0
++    likha(file_write_all("/tmp/sutram_file_write_test.txt", buf, 0))
++    likha("\n")
++    likha(file_read_all("/tmp/sutram_file_write_test.txt", buf, 64))
++    likha("\n")
++    # negative count: -1, file not created/touched
++    likha(file_write_all("/tmp/sutram_file_write_test.txt", buf, 0 - 2))
++    likha("\n")
++    # unwritable path (missing directory): -1
++    likha(file_write_all("/tmp/no_such_dir_xyz/file.txt", buf, 5))
++    likha("\n")
++    likha("file-write-done\n")
++}
+diff --git a/tests/stdlib/kosh_reuse.exit b/tests/stdlib/kosh_reuse.exit
+new file mode 100644
+index 0000000..573541a
+--- /dev/null
++++ b/tests/stdlib/kosh_reuse.exit
+@@ -0,0 +1 @@
++0
+diff --git a/tests/stdlib/kosh_reuse.out b/tests/stdlib/kosh_reuse.out
+new file mode 100644
+index 0000000..0be4a21
+--- /dev/null
++++ b/tests/stdlib/kosh_reuse.out
+@@ -0,0 +1,27 @@
++5
++
++5
++
++0
++
++5
++
++5
++
++5
++
++0
++
++5
++
++5
++
++5
++
++0
++
++5
++
++180
++
++kosh-reuse-done
+diff --git a/tests/stdlib/kosh_reuse.sm b/tests/stdlib/kosh_reuse.sm
+new file mode 100644
+index 0000000..6fc065a
+--- /dev/null
++++ b/tests/stdlib/kosh_reuse.sm
+@@ -0,0 +1,34 @@
++mukhya() {
++    # Kosh growth-avoidance pattern (R30 WS2): ONE kosh, capacity
++    # reserved up front, cleared and reused across rounds. No
++    # growth ever happens, so no superseded buffer is retained.
++    kosh v[5]
++    vitti round = 0
++    vitti total = 0
++    yavat (round < 3) {
++        vitti i = 0
++        yavat (i < 5) {
++            kosh_push(v, round * 10 + i)
++            i = i + 1
++        }
++        # cap is unchanged by fill and by clear
++        likha(kosh_cap(v))
++        likha("\n")
++        likha(kosh_len(v))
++        likha("\n")
++        vitti j = 0
++        yavat (j < 5) {
++            total = total + v[j]
++            j = j + 1
++        }
++        kosh_clear(v)
++        likha(kosh_len(v))
++        likha("\n")
++        likha(kosh_cap(v))
++        likha("\n")
++        round = round + 1
++    }
++    likha(total)
++    likha("\n")
++    likha("kosh-reuse-done\n")
++}
+diff --git a/tests/stdlib/madhava_madhava_atan.out b/tests/stdlib/madhava_madhava_atan.out
+index 6bbd8bf..7a278d3 100644
+--- a/tests/stdlib/madhava_madhava_atan.out
++++ b/tests/stdlib/madhava_madhava_atan.out
+@@ -2,5 +2,5 @@
+ 
+ 0.463648
+ 
+-0.784773
++0.785398
+ 
+diff --git a/tests/stdlib/result_chain.exit b/tests/stdlib/result_chain.exit
+new file mode 100644
+index 0000000..573541a
+--- /dev/null
++++ b/tests/stdlib/result_chain.exit
+@@ -0,0 +1 @@
++0
+diff --git a/tests/stdlib/result_chain.out b/tests/stdlib/result_chain.out
+new file mode 100644
+index 0000000..f4c15b3
+--- /dev/null
++++ b/tests/stdlib/result_chain.out
+@@ -0,0 +1,49 @@
++1
++
++1024
++
++0
++
++0
++
++0
++
++1
++
++2432902008176640000
++
++0
++
++0
++
++1
++
++5
++
++0
++
++1
++
++90
++
++0
++
++0
++
++0
++
++0
++
++1
++
++40320
++
++0
++
++0
++
++0
++
++0
++
++result-chain-done
+diff --git a/tests/stdlib/result_chain.sm b/tests/stdlib/result_chain.sm
+new file mode 100644
+index 0000000..1868e8a
+--- /dev/null
++++ b/tests/stdlib/result_chain.sm
+@@ -0,0 +1,83 @@
++ayojan result
++# Early-return chain (R30 WS3): multi-step checked computation
++# that propagates the first failure by returning at once.
++prakriya safe_compute(out, a, b, c) {
++    # (a + b) * c, checked; early return on the first failure.
++    vitti t = nirmmita(2 * 8)
++    result_checked_add(t, a, b)
++    yadi (result_is_ok(t) == 0) {
++        result_err(out)
++        pratiyati 0
++    }
++    result_checked_mul(out, result_value(t), c)
++    pratiyati result_is_ok(out)
++}
++
++prakriya safe_pow_fact(out, a, e) {
++    # fact(pow(a, e)), checked; early return on the first failure.
++    vitti t = nirmmita(2 * 8)
++    result_checked_pow(t, a, e)
++    yadi (result_is_ok(t) == 0) {
++        result_err(out)
++        pratiyati 0
++    }
++    result_checked_fact(out, result_value(t))
++    pratiyati result_is_ok(out)
++}
++
++mukhya() {
++    vitti r = nirmmita(2 * 8)
++    vitti minv = (0 - 9223372036854775807) - 1
++    # new producers
++    likha(result_checked_pow(r, 2, 10))
++    likha("\n")
++    likha(result_value(r))
++    likha("\n")
++    likha(result_checked_pow(r, 2, 63))
++    likha("\n")
++    likha(result_is_ok(r))
++    likha("\n")
++    likha(result_checked_pow(r, 2, 0 - 1))
++    likha("\n")
++    likha(result_checked_fact(r, 20))
++    likha("\n")
++    likha(result_value(r))
++    likha("\n")
++    likha(result_checked_fact(r, 21))
++    likha("\n")
++    likha(result_checked_fact(r, 0 - 1))
++    likha("\n")
++    likha(result_checked_abs(r, 0 - 5))
++    likha("\n")
++    likha(result_value(r))
++    likha("\n")
++    likha(result_checked_abs(r, minv))
++    likha("\n")
++    # add -> mul chain: success, add-fail, mul-fail
++    likha(safe_compute(r, 10, 20, 3))
++    likha("\n")
++    likha(result_value(r))
++    likha("\n")
++    likha(safe_compute(r, 9223372036854775807, 1, 3))
++    likha("\n")
++    likha(result_is_ok(r))
++    likha("\n")
++    likha(safe_compute(r, 10, 20, 4611686018427387904))
++    likha("\n")
++    likha(result_is_ok(r))
++    likha("\n")
++    # pow -> fact chain: success, pow-fail, fact-fail
++    likha(safe_pow_fact(r, 2, 3))
++    likha("\n")
++    likha(result_value(r))
++    likha("\n")
++    likha(safe_pow_fact(r, 2, 63))
++    likha("\n")
++    likha(result_is_ok(r))
++    likha("\n")
++    likha(safe_pow_fact(r, 3, 5))
++    likha("\n")
++    likha(result_is_ok(r))
++    likha("\n")
++    likha("result-chain-done\n")
++}
+diff --git a/tools/chakravala_model.py b/tools/chakravala_model.py
+new file mode 100644
+index 0000000..b134c50
+--- /dev/null
++++ b/tools/chakravala_model.py
+@@ -0,0 +1,104 @@
++#!/usr/bin/env python3
++"""Python model of the R29 chakravala candidate selection (R30 WS5).
++
++Models lib/ganita.smlib chakravala's per-step candidate choice:
++given (a, b, k) with a^2 - n*b^2 = k, pick m with (a + b*m) divisible
++by |k| minimising |m^2 - n|. The code solves b*m = -a (mod |k|) with
++kuttaka, then compares the two candidates bracketing sqrt(n). A
++candidate with m > isqrt(MAX) is SKIPPED, because m*m would overflow
++int64 and |m^2 - n| cannot even be evaluated.
++
++Usage:
++    python3 tools/chakravala_model.py [n]
++With no argument, analyses the documented R30 case
++n = 9223372030926249006, where the below-sqrt candidate is valid but
++suboptimal: the above-sqrt candidate is strictly better, but its
++square overflows int64, so the code picks the worse one and the
++iteration ultimately returns 0.
++
++With an argument, prints the first-step candidate table for that n.
++"""
++import math
++import sys
++
++MAXV = 2**63 - 1
++ISQ = math.isqrt(MAXV)  # 3037000499
++
++# The documented R30 case (first step, n > MAX/2).
++DOC_N = 9223372030926249006
++
++
++def kuttaka(a, b, c):
++    """One solution of a*x = c (mod b); None if unsolvable."""
++    g = math.gcd(a, b)
++    if c % g != 0:
++        return None
++    a1, b1, c1 = a // g, b // g, c // g
++    inv = pow(a1, -1, b1)
++    return (inv * c1) % b1
++
++
++def first_step(n):
++    """First chakravala step for n. Returns a dict, or None if n is
++    a perfect square (trivial solution) or the step is impossible."""
++    a = math.isqrt(n)
++    b = 1
++    k = a * a - n
++    if k == 0:
++        return None
++    ak = abs(k)
++    if a % math.gcd(b, ak) != 0:
++        return None
++    m0 = kuttaka(b, ak, -a)
++    sq = math.isqrt(n)
++    d = sq - m0
++    t = d // ak
++    if d < 0 and d % ak != 0:
++        t -= 1
++    cands = []
++    for _ in range(2):
++        m = m0 + t * ak
++        valid = (a + b * m) % ak == 0
++        fits = m * m <= MAXV
++        cands.append({
++            "m": m,
++            "valid": valid,
++            "fits_int64": fits,
++            "score": abs(m * m - n),
++        })
++        t += 1
++    # Code rule: keep candidates with 0 <= m <= isqrt(MAX), pick min score.
++    kept = [c for c in cands if 0 <= c["m"] <= ISQ]
++    picked = min(kept, key=lambda c: c["score"]) if kept else None
++    return {"a": a, "b": b, "k": k, "ak": ak, "sq": sq,
++            "candidates": cands, "picked": picked}
++
++
++def main():
++    n = int(sys.argv[1]) if len(sys.argv) > 1 else DOC_N
++    print(f"n = {n}")
++    print(f"MAX = {MAXV}, MAX/2 = {MAXV // 2}, n > MAX/2: {n > MAXV // 2}")
++    print(f"isqrt(MAX) = {ISQ}")
++    st = first_step(n)
++    if st is None:
++        print("perfect square or impossible first step")
++        return 0
++    print(f"first step: a = {st['a']}, b = {st['b']}, k = {st['k']}, "
++          f"|k| = {st['ak']}, isqrt(n) = {st['sq']}")
++    for c in st["candidates"]:
++        tag = ""
++        if st["picked"] is not None and c["m"] == st["picked"]["m"]:
++            tag = "  <-- picked by the code"
++        print(f"  m = {c['m']}: (a + b*m) % |k| == 0: {c['valid']}, "
++              f"m*m <= MAX: {c['fits_int64']}, |m*m - n| = {c['score']}{tag}")
++    lo, hi = st["candidates"]
++    if (hi["score"] < lo["score"] and not hi["fits_int64"]
++            and hi["m"] > ISQ and lo["m"] <= ISQ):
++        print("LIMITATION DEMONSTRATED: the above-sqrt candidate is "
++              "strictly better, but m > isqrt(MAX), so m*m overflows "
++              "int64 and the code must pick the worse below-sqrt one.")
++    return 0
++
++
++if __name__ == "__main__":
++    sys.exit(main())
+diff --git a/tools/check_layers.py b/tools/check_layers.py
+index 8deda52..a8fa814 100644
+--- a/tools/check_layers.py
++++ b/tools/check_layers.py
+@@ -8,9 +8,9 @@ Every module in lib/ carries a machine-readable marker in its header:
+           import (ayojan) an alloc- or std-layer module.
+   alloc — needs a heap (uses nirmmita, or imports an alloc module).
+           Must not import a std-layer module.
+-  std   — OS services (files, network, clocks, ...). Currently empty:
+-          the library deliberately has no OS services
+-          (see docs/LIBRARY-BOUNDARY.md).
++  std   — OS services (files, network, clocks, ...). The ONLY layer
++          allowed to call OS-service builtins (see OS_BUILTINS).
++          file.smlib (R30) is the first std module.
+ 
+ The check fails on:
+   - a module with no marker, or an unknown marker;
+@@ -18,9 +18,9 @@ The check fails on:
+   - a core module that imports an alloc/std module;
+   - an alloc module that imports a std module;
+   - a module missing from docs/LIBRARY-LAYERS.md.
+-  - ANY module that calls an OS-service builtin (see OS_BUILTINS):
+-    such a module would need to be marked std, so a call here means
+-    the 0-std result is wrong and the label must move.
++  - a core/alloc module that calls an OS-service builtin (see
++    OS_BUILTINS): such a module belongs in std. A std module
++    calling one is correct, not an error.
+ 
+ Usage: python3 tools/check_layers.py   (exit 0 = all layers honour the rules)
+ """
+@@ -35,6 +35,7 @@ import sys
+ # needs A heap, not the OS. Raw memory ops likh/pad/likh8/pad8,
+ # kosh_*, char_*, smaran_* are language features, not OS services.)
+ OS_BUILTINS = ("likha", "likha_fmt", "likh", "paadh", "band",
++               "dvaram",
+                "netsock", "netbind", "netlisten", "netaccept")
+ 
+ REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+@@ -73,12 +74,14 @@ def main():
+         code = strip_comments(text)
+         imports = sorted(set(AYOJAN_RE.findall(code)))
+         uses_alloc = bool(NIRMMITA_RE.search(code))
+-        # Any OS-service builtin call means the module belongs in std.
+-        for builtin in OS_BUILTINS:
+-            if re.search(rf"\b{builtin}\s*\(", code):
+-                errors.append(
+-                    f"{mod}: marked {layer} but calls OS builtin {builtin}"
+-                    " (belongs in std)")
++        # An OS-service builtin call means the module belongs in
++        # std — an error only when the module is NOT marked std.
++        if layer != "std":
++            for builtin in OS_BUILTINS:
++                if re.search(rf"\b{builtin}\s*\(", code):
++                    errors.append(
++                        f"{mod}: marked {layer} but calls OS builtin {builtin}"
++                        " (belongs in std)")
+         if layer == "core":
+             if uses_alloc:
+                 errors.append(f"{mod}: marked core but calls nirmmita (allocator)")
+diff --git a/tools/kosh_reuse_measure.py b/tools/kosh_reuse_measure.py
+new file mode 100644
+index 0000000..791603e
+--- /dev/null
++++ b/tools/kosh_reuse_measure.py
+@@ -0,0 +1,124 @@
++#!/usr/bin/env python3
++"""Measure the kosh growth-avoidance pattern (R30 WS2).
++
++The compiler-side leak (R29): kosh_push growth allocates a new buffer,
++copies, and never releases the old one. The language has no free
++primitive, so repeated growth retains every superseded buffer.
++
++Two patterns, same work (R rounds x N pushes, same values):
++
++  A. fresh + grow (leaky): each round declares a fresh `kosh v[4]`
++     and pushes N items. Growth doubles from 4 to N, retaining ~2x
++     the final buffer per round — O(R x N) retained.
++  B. reserve + reuse (harm reduction): ONE `kosh v[N]` declared up
++     front with the full capacity, each round fills it to N and
++     `kosh_clear`s it. No growth ever happens, so no superseded
++     buffer exists — O(N) retained, one allocation.
++
++This is harm reduction, NOT a fix: pattern B still retains its one
++allocation for the process lifetime (there is no free), and the
++growth path still leaks for any kosh that does grow. What it buys
++is a cap: retention stops growing with the number of rounds.
++
++This is a diagnostic, not a suite gate: RSS is machine-dependent,
++so it lives here rather than in tools/proof_lib.py.
++
++Usage: python3 tools/kosh_reuse_measure.py
++"""
++import os
++import subprocess
++import sys
++
++REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
++COMPILER = os.path.join(REPO, "build", "sutram_compiler")
++ROUNDS = 50
++N = 100_000
++
++
++def child_rss(path):
++    pid = os.fork()
++    if pid == 0:
++        devnull = os.open(os.devnull, os.O_WRONLY)
++        os.dup2(devnull, 1)
++        os.dup2(devnull, 2)
++        os.execv(path, [path])
++        os._exit(127)
++    _, status, ru = os.wait4(pid, 0)
++    assert status == 0, f"child exit status {status}"
++    return ru.ru_maxrss  # KiB on Linux
++
++
++def measure(name, src):
++    sm = f"/tmp/kosh_reuse_{name}.sm"
++    binary = sm + ".bin"
++    open(sm, "w").write(src)
++    r = subprocess.run([COMPILER, sm, binary], capture_output=True, text=True)
++    assert "OK" in r.stdout, f"compile failed: {r.stdout}"
++    rss = child_rss(binary) / 1024.0  # MB
++    os.remove(sm)
++    os.remove(binary)
++    return rss
++
++
++def pattern_fresh_grow():
++    # Fresh kosh per round, grown from cap 4 to N.
++    return ("mukhya() {\n"
++            "    vitti round = 0\n"
++            "    vitti total = 0\n"
++            "    yavat (round < %d) {\n"
++            "        kosh v[4]\n"
++            "        vitti i = 0\n"
++            "        yavat (i < %d) {\n"
++            "            kosh_push(v, i)\n"
++            "            i = i + 1\n"
++            "        }\n"
++            "        total = total + kosh_len(v)\n"
++            "        kosh_clear(v)\n"
++            "        round = round + 1\n"
++            "    }\n"
++            "    likha(total)\n"
++            '    likha("\\n")\n'
++            "}\n" % (ROUNDS, N))
++
++
++def pattern_reserve_reuse():
++    # One kosh, capacity reserved up front, cleared and reused.
++    return ("mukhya() {\n"
++            "    kosh v[%d]\n"
++            "    vitti round = 0\n"
++            "    vitti total = 0\n"
++            "    yavat (round < %d) {\n"
++            "        vitti i = 0\n"
++            "        yavat (i < %d) {\n"
++            "            kosh_push(v, i)\n"
++            "            i = i + 1\n"
++            "        }\n"
++            "        total = total + kosh_len(v)\n"
++            "        kosh_clear(v)\n"
++            "        round = round + 1\n"
++            "    }\n"
++            "    likha(total)\n"
++            '    likha("\\n")\n'
++            "}\n" % (N, ROUNDS, N))
++
++
++def main():
++    base = measure("base", "mukhya() {\n    likha(0)\n    likha(\"\\n\")\n}\n")
++    fresh = measure("fresh", pattern_fresh_grow())
++    reuse = measure("reuse", pattern_reserve_reuse())
++    print(f"baseline peak RSS: {base:.1f} MB")
++    print(f"A. fresh + grow:   {fresh:.1f} MB "
++          f"(+{fresh - base:.1f} MB over baseline)")
++    print(f"B. reserve + reuse: {reuse:.1f} MB "
++          f"(+{reuse - base:.1f} MB over baseline)")
++    print(f"work: {ROUNDS} rounds x {N} pushes "
++          f"({ROUNDS * N} pushes each)")
++    if fresh - base > 2 * max(reuse - base, 1.0):
++        print("RESULT: reserve + reuse retains far less than fresh + grow")
++        return 0
++    print("RESULT: no clear difference (unexpected — re-run on this machine)")
++    return 1
++
++
++if __name__ == "__main__":
++    sys.exit(main())
+diff --git a/tools/proof_props.py b/tools/proof_props.py
+index b7ae13f..4b63028 100644
+--- a/tools/proof_props.py
++++ b/tools/proof_props.py
+@@ -4306,6 +4306,433 @@ def prop_numeric29(compiler, rng):
+     return ok and out == "PASS", out
+ 
+ 
++def prop_edge30_int(compiler, rng):
++    """R30 WS1: integer edge pins — util zero-divisor/ceiling,
++    num MIN/negative, math fact/sum_to, chandas is_guru bounds."""
++    lines = ["ayojan util", "ayojan num", "ayojan math", "ayojan chandas",
++             "mukhya() {",
++             "    vitti minv = (0 - 9223372036854775807) - 1"]
++
++    def check(expr, want, msg):
++        lines.append(f"    yadi (({expr}) != ({want})) {{")
++        lines.append(f'        likha("FAIL {msg}\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++
++    # util: zero divisor -> 0 (was SIGFPE); true ceiling division
++    check("mod(5, 0)", 0, "mod 5 0")
++    check("mod(0, 0)", 0, "mod 0 0")
++    check("div_ceil(5, 0)", 0, "div_ceil 5 0")
++    check("div_ceil(7, 2)", 4, "div_ceil 7 2")
++    check("div_ceil(7, 0 - 2)", "0 - 3", "div_ceil 7 -2")
++    check("div_ceil(5, 0 - 3)", "0 - 1", "div_ceil 5 -3")
++    check("div_ceil(0 - 7, 2)", "0 - 3", "div_ceil -7 2")
++    check("div_ceil(0 - 7, 0 - 2)", 4, "div_ceil -7 -2")
++    check("div_ceil(6, 3)", 2, "div_ceil exact")
++    check("sum_range(3, 1)", 0, "sum_range empty")
++    # num: MIN magnitude, negatives
++    check("digit_count(minv)", 19, "digit_count MIN")
++    check("digit_count(0 - 123)", 3, "digit_count neg")
++    check("digit_sum(minv)", 89, "digit_sum MIN")
++    check("digit_sum(0 - 123)", 6, "digit_sum neg")
++    check("reverse_num(0 - 123)", "0 - 321", "reverse_num neg")
++    check("reverse_num(minv)", "0 - 8085774586302733229",
++          "reverse_num MIN")
++    check("is_palindrome(0 - 121)", 0, "is_palindrome neg")
++    check("is_palindrome(121)", 1, "is_palindrome 121")
++    # math: fact iterative (no stack exhaustion), sum_to closed form
++    check("fact(21)", "0 - 4249290049419214848", "fact 21 wrap")
++    fact100k = 1
++    for i in range(2, 100001):
++        fact100k = (fact100k * i) & ((1 << 64) - 1)
++    if fact100k >= (1 << 63):
++        fact100k -= (1 << 64)
++    check("fact(100000)", fact100k, "fact 100000")
++    check("sum_to(10)", 55, "sum_to 10")
++    check("sum_to(0)", 0, "sum_to 0")
++    check("sum_to(0 - 5)", 0, "sum_to neg")
++    check("sum_to(4294967295)", 9223372034707292160, "sum_to 2^32-1")
++    check("sum_to(4294967296)", "0 - 9223372034707292160",
++          "sum_to 2^32 wrap")
++    # chandas: out-of-range bit index -> 0 (was SIGFPE at 64)
++    check("is_guru(5, 64)", 0, "is_guru 64")
++    check("is_guru(5, 0 - 1)", 0, "is_guru -1")
++    check("is_guru(5, 0)", 1, "is_guru bit 0")
++    check("is_guru(5, 2)", 1, "is_guru bit 2")
++    check("is_guru(5, 63)", 0, "is_guru bit 63")
++    lines.append('    likha("PASS\\n")')
++    lines.append("}")
++    ok, out = run_sm(compiler, "edge30_int", "\n".join(lines))
++    return ok and out == "PASS", out
++
++
++def prop_edge30_text(compiler, rng):
++    """R30 WS1: negative-length text edges — string/strb return
++    the documented empty/invalid result, never corrupt or hang."""
++    lines = ["ayojan string", "ayojan strb",
++             "mukhya() {",
++             "    vitti s = nirmmita(8 * 8)",
++             "    vitti out = nirmmita(8 * 8)",
++             "    vitti parts = nirmmita(16 * 8)",
++             "    vitti b = nirmmita(32)",
++             "    vitti bout = nirmmita(32)",
++             "    vitti bparts = nirmmita(16 * 8)"]
++    lines.append("    s[0] = 104")
++    lines.append("    s[1] = 105")
++    lines.append("    set_char(b, 0, 104)")
++    lines.append("    set_char(b, 1, 105)")
++    lines.append("    set_char(b, 2, 0)")
++
++    def check(expr, want, msg):
++        lines.append(f"    yadi (({expr}) != ({want})) {{")
++        lines.append(f'        likha("FAIL {msg}\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++
++    # char-code (string) surface: negative length -> empty/invalid
++    check("str_upper(s, 0 - 1, out)", 0, "str_upper neg len")
++    check("out[0]", 0, "str_upper neg len term")
++    check("str_lower(s, 0 - 1, out)", 0, "str_lower neg len")
++    check("out[0]", 0, "str_lower neg len term")
++    check("str_replace(s, 2, s, 0 - 1, s, out)", 2,
++          "str_replace neg find")
++    check("str_split(s, 2, s, 0 - 1, parts)", 1, "str_split neg sep")
++    check("str_count(s, 2, s, 0 - 1)", 0, "str_count neg needle")
++    check("str_find(s, 2, s, 0 - 1)", "0 - 1", "str_find neg needle")
++    check("str_starts(s, 2, s, 0 - 1)", 0, "str_starts neg pre")
++    check("str_ends(s, 2, s, 0 - 1)", 0, "str_ends neg suf")
++    # byte-string (strb) surface: same contract
++    check("strb_upper(b, 0 - 1, bout)", 0, "strb_upper neg len")
++    check("char_at(bout, 0)", 0, "strb_upper neg len term")
++    check("strb_lower(b, 0 - 1, bout)", 0, "strb_lower neg len")
++    check("char_at(bout, 0)", 0, "strb_lower neg len term")
++    check("strb_replace(b, 2, b, 0 - 1, b, bout)", 2,
++          "strb_replace neg find")
++    check("strb_split(b, 2, b, 0 - 1, bparts, 8)", 1,
++          "strb_split neg sep")
++    check("strb_count(b, 2, b, 0 - 1)", 0, "strb_count neg needle")
++    check("strb_find(b, 2, b, 0 - 1)", "0 - 1", "strb_find neg needle")
++    check("strb_starts(b, 2, b, 0 - 1)", 0, "strb_starts neg pre")
++    check("strb_ends(b, 2, b, 0 - 1)", 0, "strb_ends neg suf")
++    check("strb_is_all_digits(b, 0 - 1)", 0, "strb_is_all_digits neg")
++    lines.append('    likha("PASS\\n")')
++    lines.append("}")
++    ok, out = run_sm(compiler, "edge30_text", "\n".join(lines))
++    return ok and out == "PASS", out
++
++
++def prop_edge30_conv(compiler, rng):
++    """R30 WS1: conversion/base edges — strconv base validation,
++    baseconv sizing + base validation, bigint MIN magnitude."""
++    lines = ["ayojan strconv", "ayojan baseconv", "ayojan bigint",
++             "mukhya() {",
++             "    vitti out = nirmmita(128 * 8)",
++             "    vitti arr = nirmmita(32 * 8)",
++             "    vitti zero = nirmmita(32 * 8)",
++             "    vitti minv = (0 - 9223372036854775807) - 1"]
++
++    def check(expr, want, msg):
++        lines.append(f"    yadi (({expr}) != ({want})) {{")
++        lines.append(f'        likha("FAIL {msg}\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++
++    # int_to_base_str: base outside 2..36 -> 0 (was SIGFPE / SIGSEGV)
++    check("int_to_base_str(10, 0, out)", 0, "base 0")
++    check("int_to_base_str(10, 1, out)", 0, "base 1")
++    check("int_to_base_str(10, 0 - 2, out)", 0, "base -2")
++    check("int_to_base_str(10, 37, out)", 0, "base 37")
++    check("int_to_base_str(255, 16, out)", 2, "base 16 ok")
++    # bigint_to_digits / from_digits: base outside 2..16 -> 0
++    check("bigint_to_digits(arr, 30, 0, out)", 0, "todigits base 0")
++    check("bigint_to_digits(arr, 30, 1, out)", 0, "todigits base 1")
++    check("bigint_from_digits(arr, 3, 0, arr, 30)", 0,
++          "fromdigits base 0")
++    check("bigint_from_digits(arr, 3, 17, arr, 30)", 0,
++          "fromdigits base 17")
++    # baseconv sizing: 10^30 - 1 in base 2 is 100 digits, all 0/1.
++    # Build it as thirty 9s in base 10, then render in base 2.
++    # (src and dst must differ: from_digits reads src while
++    # writing dst, so in-place parsing clobbers unread digits.)
++    lines.append("    vitti digs = nirmmita(32 * 8)")
++    lines.append("    vitti i = 0")
++    lines.append("    yavat (i < 30) {")
++    lines.append("        digs[i] = 9")
++    lines.append("        i = i + 1")
++    lines.append("    }")
++    lines.append("    bigint_from_digits(digs, 30, 10, arr, 30)")
++    lines.append("    vitti cnt = bigint_to_digits(arr, 30, 2, out)")
++    check("cnt", 100, "10^30-1 base2 count")
++    check("out[0]", 1, "10^30-1 base2 msb")
++    lines.append("    i = 0")
++    lines.append("    yavat (i < cnt) {")
++    lines.append("        yadi (out[i] > 1) {")
++    lines.append('            likha("FAIL base2 digit range\\n")')
++    lines.append("            pratiyati 1")
++    lines.append("        }")
++    lines.append("        i = i + 1")
++    lines.append("    }")
++    # bigint_from_int(MIN): digits are the exact magnitude 0..9
++    lines.append("    bigint_zero(zero, 19)")
++    check("bigint_from_int(minv, arr, 19)", 1, "from_int MIN ret")
++    lines.append("    i = 0")
++    lines.append("    yavat (i < 19) {")
++    lines.append("        yadi (arr[i] < 0) {")
++    lines.append('            likha("FAIL MIN digit neg\\n")')
++    lines.append("            pratiyati 1")
++    lines.append("        }")
++    lines.append("        yadi (arr[i] > 9) {")
++    lines.append('            likha("FAIL MIN digit range\\n")')
++    lines.append("            pratiyati 1")
++    lines.append("        }")
++    lines.append("        i = i + 1")
++    lines.append("    }")
++    check("arr[0]", 8, "MIN digit 0")
++    check("arr[18]", 9, "MIN digit 18")
++    check("bigint_cmp(arr, zero, 19)", 1, "MIN magnitude > 0")
++    check("bigint_to_int(arr, 19)", "minv", "MIN to_int wraps")
++    check("bigint_from_int(minv, arr, 18)", 0, "from_int MIN trunc")
++    lines.append('    likha("PASS\\n")')
++    lines.append("}")
++    ok, out = run_sm(compiler, "edge30_conv", "\n".join(lines))
++    return ok and out == "PASS", out
++
++
++def prop_edge30_cont(compiler, rng):
++    """R30 WS1: container edges — empty sort extrema, huge
++    capacities, zero/negative map capacity and key length."""
++    # Program 1: sort + array (small closure).
++    lines = ["ayojan sort", "ayojan array",
++             "mukhya() {",
++             "    vitti a = nirmmita(4 * 8)"]
++
++    def check1(expr, want, msg):
++        lines.append(f"    yadi (({expr}) != ({want})) {{")
++        lines.append(f'        likha("FAIL {msg}\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++
++    check1("min_of(a, 0)", 0, "min_of empty")
++    check1("max_of(a, 0)", 0, "max_of empty")
++    check1("min_of(a, 0 - 3)", 0, "min_of neg n")
++    check1("max_of(a, 0 - 3)", 0, "max_of neg n")
++    check1("array_new(1152921504606846976)", 0, "array_new huge")
++    check1("array_new(0 - 1)", 0, "array_new neg")
++    lines.append('    likha("PASS\\n")')
++    lines.append("}")
++    ok1, out1 = run_sm(compiler, "edge30_cont1", "\n".join(lines))
++    if not (ok1 and out1 == "PASS"):
++        return False, out1
++    # Program 2: map + list (larger closure, kept separate).
++    lines = ["ayojan map", "ayojan list",
++             "mukhya() {",
++             "    vitti m = map_init(8)",
++             "    vitti k = nirmmita(8)"]
++    lines.append("    set_char(k, 0, 120)")
++
++    def check2(expr, want, msg):
++        lines.append(f"    yadi (({expr}) != ({want})) {{")
++        lines.append(f'        likha("FAIL {msg}\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++
++    check2("map_init(1152921504606846976)", 0, "map_init huge")
++    check2("list_init(1152921504606846976)", 0, "list_init huge")
++    check2("map_put(m, 0, k, 1, 42)", 0, "map_put cap 0")
++    check2("map_put(m, 8, k, 0 - 1, 42)", 0, "map_put neg keyn")
++    check2("map_find(m, 0, k, 1)", "0 - 1", "map_find cap 0")
++    check2("map_find(m, 8, k, 0 - 1)", "0 - 1", "map_find neg keyn")
++    check2("map_get(m, 0, k, 1)", "0 - 1", "map_get cap 0")
++    check2("map_contains(m, 0, k, 1)", 0, "map_contains cap 0")
++    lines.append('    likha("PASS\\n")')
++    lines.append("}")
++    ok2, out2 = run_sm(compiler, "edge30_cont2", "\n".join(lines))
++    return ok2 and out2 == "PASS", out2
++
++
++def prop_edge30_float(compiler, rng):
++    """R30 WS1: float edges — madhava/sankhyiki sqrt, sin/cos
++    argument reduction, atan identities, fmt NaN, str_to_float
++    overflow, kalana zero-spacing."""
++    lines = ["ayojan madhava", "ayojan sankhyiki", "ayojan fmt",
++             "ayojan strconv", "ayojan kalana",
++             "mukhya() {",
++             "    vitti buf = nirmmita(40 * 8)",
++             "    vitti ok = nirmmita(8)",
++             "    kosh dasham xs[3]",
++             "    kosh dasham ys[3]"]
++
++    def check(expr, want, msg):
++        lines.append(f"    yadi (({expr}) != ({want})) {{")
++        lines.append(f'        likha("FAIL {msg}\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++
++    # madhava_sqrt: negative -> 0, 1e12 -> 1e6 exactly
++    check("madhava_sqrt(0 - 4.0)", "0.0", "sqrt -4")
++    check("madhava_sqrt(1000000000000.0)", "1000000.0", "sqrt 1e12")
++    check("sankhyiki_sqrt(1000000000000.0)", "1000000.0",
++          "sankhyiki sqrt 1e12")
++    # madhava_sqrt(1e300): square the result, ratio to 1e300 ~ 1
++    lines.append("    dasham e10 = 10000000000.0")
++    lines.append("    dasham e100 = e10 * e10 * e10 * e10 * e10")
++    lines.append("    e100 = e100 * e10 * e10 * e10 * e10 * e10")
++    lines.append("    dasham e300 = e100 * e100 * e100")
++    lines.append("    dasham r300 = madhava_sqrt(e300)")
++    lines.append("    dasham ratio = r300 * r300 / e300")
++    lines.append("    yadi (ratio < 0.999999) {")
++    lines.append('        likha("FAIL sqrt 1e300 low\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    lines.append("    yadi (ratio > 1.000001) {")
++    lines.append('        likha("FAIL sqrt 1e300 high\\n")')
++    lines.append("        pratiyati 1")
++    lines.append("    }")
++    # sin/cos with argument reduction, scaled by 1e6 and truncated
++    # to vitti (the check compares vitti to vitti: a dasham !=
++    # vitti comparison does not promote, so compare after the
++    # converting assignment).
++    lines.append("    vitti s100 = madhava_sin(100.0) * 1000000.0")
++    lines.append("    vitti c100 = madhava_cos(100.0) * 1000000.0")
++    lines.append("    vitti s10 = madhava_sin(10.0) * 1000000.0")
++    lines.append("    vitti c10 = madhava_cos(10.0) * 1000000.0")
++    check("s100", "0 - 506365", "sin 100 scaled")
++    check("c100", 862318, "cos 100 scaled")
++    check("s10", "0 - 544021", "sin 10 scaled")
++    check("c10", "0 - 839071", "cos 10 scaled")
++    # atan via halving + reciprocal, scaled by 1e6
++    lines.append("    vitti a1 = madhava_atan(1.0) * 1000000.0")
++    lines.append("    vitti a2 = madhava_atan(2.0) * 1000000.0")
++    lines.append("    vitti a10 = madhava_atan(10.0) * 1000000.0")
++    lines.append("    vitti an1 = madhava_atan(0 - 1.0) * 1000000.0")
++    check("a1", 785398, "atan 1 scaled")
++    check("a2", 1107148, "atan 2 scaled")
++    check("a10", 1471127, "atan 10 scaled")
++    check("an1", "0 - 785398", "atan -1 scaled")
++    # fmt_fixed NaN -> 0 (empty)
++    lines.append("    dasham nan = 0.0 / 0.0")
++    check("fmt_fixed(nan, 2, buf)", 0, "fmt_fixed NaN")
++    # str_to_float overflow: 9e308 and 2e308 exceed max double.
++    # NOTE: str_to_float reads a qword-CELL array (src[p]), not a
++    # byte-packed buffer — write cells, not set_char bytes.
++    for s, want, msg in [("9e308", 0, "9e308 overflow"),
++                         ("2e308", 0, "2e308 overflow"),
++                         ("1.7e308", 1, "1.7e308 ok")]:
++        for i, ch in enumerate(s):
++            lines.append(f"    buf[{i}] = {ord(ch)}")
++        lines.append(f"    vitti f = str_to_float(buf, {len(s)}, ok)")
++        check("ok[0]", want, msg)
++    # kalana: duplicate x -> slope/slope2 0.0 (was inf/blank)
++    lines.append("    kosh_push(xs, 1.0)")
++    lines.append("    kosh_push(xs, 1.0)")
++    lines.append("    kosh_push(xs, 2.0)")
++    lines.append("    kosh_push(ys, 3.0)")
++    lines.append("    kosh_push(ys, 5.0)")
++    lines.append("    kosh_push(ys, 7.0)")
++    check("slope(xs, ys, 0)", "0.0", "slope dup x")
++    check("slope2(xs, ys, 1)", "0.0", "slope2 dup x")
++    lines.append('    likha("PASS\\n")')
++    lines.append("}")
++    ok, out = run_sm(compiler, "edge30_float", "\n".join(lines))
++    return ok and out == "PASS", out
++
++
++def prop_chakravala30(compiler, rng):
++    """R30 WS5: the chakravala isqrt(MAX) candidate limitation, pinned.
++    For n = 9223372030926249006 (> MAX/2) the first step's
++    below-sqrt candidate m1 = 3037000496 is valid (|m1^2 - n| =
++    18222002990) but suboptimal: the above-sqrt candidate m2 =
++    3037000501 is strictly better (|m2^2 - n| = 12148001995),
++    yet m2 > isqrt(MAX), so m2*m2 overflows int64 and the code
++    cannot even evaluate it. It picks m1, and the iteration
++    ultimately returns 0. See tools/chakravala_model.py, which
++    reproduces the candidate table exactly."""
++    lines = ["ayojan ganita",
++             "mukhya() {",
++             "    vitti out = nirmmita(8 * 8)",
++             "    vitti r = chakravala(out, 9223372030926249006)",
++             "    yadi (r != 0) {",
++             '        likha("FAIL chakravala limit ret\\n")',
++             "        pratiyati 1",
++             "    }",
++             "    yadi (out[0] != 0) {",
++             '        likha("FAIL chakravala limit out0\\n")',
++             "        pratiyati 1",
++             "    }",
++             "    yadi (out[1] != 0) {",
++             '        likha("FAIL chakravala limit out1\\n")',
++             "        pratiyati 1",
++             "    }",
++             '    likha("PASS\\n")',
++             "}"]
++    ok, out = run_sm(compiler, "chakravala30", "\n".join(lines))
++    return ok and out == "PASS", out
++
++
++def prop_result30(compiler, rng):
++    """R30 WS3: the three new Result producers (pow/fact/abs) and
++    the early-return chain: a failing step stops the chain, later
++    steps never run, and the failure propagates to out."""
++    lines = ["ayojan result",
++             "mukhya() {",
++             "    vitti r = nirmmita(2 * 8)",
++             "    vitti t = nirmmita(2 * 8)",
++             "    vitti minv = (0 - 9223372036854775807) - 1"]
++
++    def check(expr, want, msg):
++        lines.append(f"    yadi (({expr}) != ({want})) {{")
++        lines.append(f'        likha("FAIL {msg}\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++
++    # new producers: success and failure values
++    check("result_checked_pow(r, 2, 10)", 1, "pow ok")
++    check("result_value(r)", 1024, "pow value")
++    check("result_checked_pow(r, 2, 63)", 0, "pow overflow")
++    check("result_is_ok(r)", 0, "pow overflow ok")
++    check("result_checked_pow(r, 2, 0 - 1)", 0, "pow neg exp")
++    check("result_checked_fact(r, 20)", 1, "fact 20 ok")
++    check("result_value(r)", 2432902008176640000, "fact 20 value")
++    check("result_checked_fact(r, 21)", 0, "fact 21 overflow")
++    check("result_checked_fact(r, 0 - 1)", 0, "fact neg")
++    check("result_checked_abs(r, 0 - 5)", 1, "abs ok")
++    check("result_value(r)", 5, "abs value")
++    check("result_checked_abs(r, minv)", 0, "abs MIN")
++    # early-return chain, inline: (a + b) * c with a failing add.
++    # The mul step must not run: t keeps the add's failure, and
++    # out must be the propagated failure, not a mul result.
++    lines.append("    result_checked_add(t, 9223372036854775807, 1)")
++    lines.append("    yadi (result_is_ok(t) == 0) {")
++    lines.append("        result_err(r)")
++    lines.append("    } anyatra {")
++    lines.append("        result_checked_mul(r, result_value(t), 3)")
++    lines.append("    }")
++    check("result_is_ok(r)", 0, "chain add-fail propagates")
++    check("result_value(r)", 0, "chain add-fail value")
++    # chain with a succeeding add and a failing mul
++    lines.append("    result_checked_add(t, 10, 20)")
++    lines.append("    yadi (result_is_ok(t) == 0) {")
++    lines.append("        result_err(r)")
++    lines.append("    } anyatra {")
++    lines.append("        result_checked_mul(r, result_value(t), "
++                 "4611686018427387904)")
++    lines.append("    }")
++    check("result_is_ok(r)", 0, "chain mul-fail propagates")
++    # chain fully succeeding
++    lines.append("    result_checked_add(t, 10, 20)")
++    lines.append("    yadi (result_is_ok(t) == 0) {")
++    lines.append("        result_err(r)")
++    lines.append("    } anyatra {")
++    lines.append("        result_checked_mul(r, result_value(t), 3)")
++    lines.append("    }")
++    check("result_is_ok(r)", 1, "chain success ok")
++    check("result_value(r)", 90, "chain success value")
++    lines.append('    likha("PASS\\n")')
++    lines.append("}")
++    ok, out = run_sm(compiler, "result30", "\n".join(lines))
++    return ok and out == "PASS", out
++
++
+ def main():
+     compiler = None
+     for i, a in enumerate(sys.argv):
+@@ -4393,6 +4820,13 @@ def main():
+         ("result type", prop_result29),
+         ("serialisation roundtrip", prop_serial29),
+         ("numeric contract gaps pinned", prop_numeric29),
++        ("edge30 int", prop_edge30_int),
++        ("edge30 text", prop_edge30_text),
++        ("edge30 conversion", prop_edge30_conv),
++        ("edge30 containers", prop_edge30_cont),
++        ("edge30 float", prop_edge30_float),
++        ("chakravala isqrt(MAX) limit", prop_chakravala30),
++        ("result producers + chain", prop_result30),
+         ("ok convention", prop_ok_convention),
+         ("numeric28", prop_numeric28),
+     ]
