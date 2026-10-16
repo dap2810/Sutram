@@ -143,6 +143,7 @@
 %define CLIP_CAP        4096            ; internal clipboard capacity
 %define COL_SEL         0x2B4A6B        ; selection highlight
 %define COL_GUTTER      0x5A6A7A        ; slice 32: line numbers (dim)
+%define COL_ERR         0xE05C5C        ; slice 33: the error line number (red)
 ; ---- slice 17: open / new ----------------------------------------------
 %define KC_CTRL_O       32              ; 'o' keycode -> open a file
 %define KC_CTRL_N       57              ; 'n' keycode -> new buffer
@@ -310,6 +311,7 @@ section .bss
     find_buf    resb FIND_CAP
     want_quit   resd 1
     num_buf     resb 24             ; slice 32: decimal scratch for the gutter
+    err_line    resq 1              ; slice 33: 1-based error line from the compiler, 0 = none
     ; slice 30: a filename given on the command line
     startup_path resb OPEN_CAP
     startup_open resq 1
@@ -1122,7 +1124,14 @@ draw_editor:
     lea  rsi, [rel num_buf]
     call u_to_a                     ; rax = digit count
     mov  r9, rax                    ; set_fg clobbers rax AND rdx; r9 survives
+    ; slice 33: the error line's number is red
     mov  rdi, COL_GUTTER
+    mov  rax, r13
+    inc  rax                        ; 1-based, matching err_line
+    cmp  rax, [rel err_line]
+    jne  .gut_col
+    mov  rdi, COL_ERR
+.gut_col:
     call set_fg
     mov  rdx, r9                    ; the digit count
     lea  rsi, [rel num_buf]
@@ -2279,9 +2288,54 @@ split_lines:
 ; ---------------------------------------------------------------- do_run
 ; Ctrl-R: save the buffer, compile it, and if that succeeds run the result.
 ; Output (compiler messages, then program output) lands in the output pane.
+; ---------------------------------------------------------------- parse_err_line
+; slice 33: find the first `:<digits>:` run in run_out and store the number in
+; err_line. Leaves err_line at 0 when there is no such run. Clobbers rax/rcx/rdx/rsi/rdi.
+parse_err_line:
+    mov  qword [rel err_line], 0
+    lea  rsi, [rel run_out]
+    mov  rcx, [rel run_out_len]
+    test rcx, rcx
+    jz   .none
+.scan:
+    cmp  rcx, 3                     ; need at least ':' d ':'
+    jb   .none
+    cmp  byte [rsi], ':'
+    jne  .next
+    movzx rax, byte [rsi+1]
+    sub  rax, '0'
+    cmp  rax, 9
+    ja   .next                      ; ':' not followed by a digit
+    ; accumulate digits
+    xor  rdx, rdx                   ; value
+    xor  rdi, rdi                   ; digits seen
+.dig:
+    movzx rax, byte [rsi+1+rdi]
+    sub  rax, '0'
+    cmp  rax, 9
+    ja   .enddig
+    imul rdx, rdx, 10
+    add  rdx, rax
+    inc  rdi
+    jmp  .dig
+.enddig:
+    cmp  byte [rsi+1+rdi], ':'
+    jne  .next                      ; digits not closed by ':'
+    test rdx, rdx
+    jz   .next                      ; line 0 is not a line
+    mov  [rel err_line], rdx
+    ret
+.next:
+    inc  rsi
+    dec  rcx
+    jmp  .scan
+.none:
+    ret
+
 do_run:
     push rbx
     mov qword [rel run_out_len], 0
+    mov qword [rel err_line], 0     ; slice 33: no error line until the compiler says so
     call save_buffer
     cmp rax, 0
     jl .done
@@ -2301,6 +2355,7 @@ do_run:
     call exec_capture
     mov byte [rel run_out+4095], 0    ; NUL-terminate without overrunning the buffer
     call split_lines
+    call parse_err_line             ; slice 33: pull the <file>:<line>: out of the diagnostic
     call out_to_bottom
     ; ---- if the compiler succeeded (no output, exit 0) run the binary ----
     ; The compiler prints "OK: compiled N bytes" on success; treat any
