@@ -11,7 +11,7 @@ std module. A layer claim nobody can check is decoration.
 
 ```
 $ python3 tools/check_layers.py
-layers OK: 14 core, 9 alloc, 0 std
+layers OK: 14 core, 9 alloc, 1 std
 ```
 
 ## The table
@@ -22,6 +22,7 @@ layers OK: 14 core, 9 alloc, 0 std
 | `baseconv` | alloc | Temp buffers (`nirmmita`) for digit reversal. |
 | `bigint` | alloc | Temp buffers in `bigint_mod_2n` / `bigint_powmod`. |
 | `chandas` | core | Pure arithmetic on caller values; no allocation, no imports. |
+| `file` | std | Genuine OS services: `dvaram`/`paadh`/`likha`/`band` (open/read/write/close). The only module allowed to call OS builtins. |
 | `fmt` | alloc | Temp buffers for digit reversal and `fmt_group_int`. |
 | `ganita` | core | Pure checked/saturating arithmetic; `ok` arrays are caller-provided. |
 | `hash` | core | Pure FNV-1a arithmetic; no allocation. |
@@ -55,30 +56,30 @@ the import list is the complete dependency list):
 No core module imports an alloc or std module, so no core module
 depends upward. The full import graph is acyclic.
 
-## Why `std` is empty (R29 WS1 resolution)
+## Why `std` was empty until R30, and what changed
 
-The `0 std` result was investigated, not assumed. The question was
+The `0 std` result was investigated in R29, not assumed. The question was
 whether some module that genuinely needs OS services is mis-marked
-as `alloc`. The answer is no, for two checked reasons:
+as `alloc`. The answer was no, for two checked reasons:
 
-1. **No lib module calls any OS-service builtin.**
-   `tools/check_layers.py` now enforces this: it fails if any module
-   calls `likha` / `likha_fmt` / `likh` (console output), `paadh`
-   (console input), `band` (file handles), or `netsock` /
-   `netbind` / `netlisten` / `netaccept` (sockets). Those builtins
-   exist in the compiler, but no library module uses them. The
-   `0 std` claim is therefore checked, not asserted — a module that
-   started calling one would fail the checker until relabelled `std`.
+1. **No lib module called any OS-service builtin.**
+   `tools/check_layers.py` enforces this: it fails if any core/alloc
+   module calls `likha` / `likha_fmt` / `likh` (console output),
+   `paadh` (console input), `band` (file handles), `dvaram` (open),
+   or `netsock` / `netbind` / `netlisten` / `netaccept` (sockets).
+   A module that starts calling one fails the checker until relabelled
+   `std`. A module already marked `std` calling one is correct.
 2. **The allocator is not an OS service.** `nirmmita` is implemented
    with `mmap` under the hood, but an `alloc` module needs *a* heap,
    not the OS: a freestanding heap would serve the same code. The
    charter's `std` layer means files, networking, threads — none of
-   which any module touches. Likewise `kosh` growth (compiler-side,
+   which any module touched. Likewise `kosh` growth (compiler-side,
    `mmap`-backed) is allocation, not an OS service.
 
-So `0 std` is a legitimate and interesting fact: the library is
-pure computation plus caller-provided storage. It is stated here
-explicitly rather than left as a suspicious zero.
+R30 adds the first genuine `std` module, `file` (open/read/write/close
+via `dvaram`/`paadh`/`likha`/`band`). The `0 std` fact became `1 std`
+because a module now genuinely uses OS services — not because the
+old classification was wrong.
 
 ## Notes
 
