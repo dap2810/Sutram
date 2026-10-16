@@ -1,4 +1,5 @@
 # lib/num.smlib — Sutram standard library: integer utilities
+# layer: core
 # Parameters are copied into locals before mutation (compiler fault workaround).
 
 prakriya is_even(n)
@@ -73,7 +74,10 @@ prakriya is_perfect(n) {
     yadi (x < 2) { pratiyati 0 }
     vitti s = 1
     vitti d = 2
-    yavat (d * d <= x) {
+    # Division bound, not d * d: d * d overflows for x near MAX
+    # (the square wraps negative, the condition stays true, and
+    # the loop never terminates).
+    yavat (d <= x / d) {
         yadi (x % d == 0) {
             s = s + d
             yadi (d != x / d) { s = s + (x / d) }
@@ -86,8 +90,17 @@ prakriya is_perfect(n) {
 prakriya collatz_steps(n) {
     vitti x = n
     vitti c = 0
+    # No Collatz sequence starting at x < 1 reaches 1 (0 stays 0,
+    # negatives cycle), so -1 means "does not reach 1". The same
+    # sentinel covers the 3x+1 overflow: 3x+1 overflows int64 when
+    # x > (MAX-1)/3 = 3074457345618258602, and the wrapped value
+    # would cycle forever instead of reaching 1.
+    yadi (x < 1) { pratiyati 0 - 1 }
     yavat (x != 1) {
-        yadi (x % 2 == 0) { x = x / 2 } anyatra { x = 3 * x + 1 }
+        yadi (x % 2 == 0) { x = x / 2 } anyatra {
+            yadi (x > 3074457345618258602) { pratiyati 0 - 1 }
+            x = 3 * x + 1
+        }
         c = c + 1
     }
     pratiyati c
