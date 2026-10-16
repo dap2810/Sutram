@@ -23,11 +23,19 @@ prakriya bigint_zero(arr, n) {
 
 # bigint_from_int(val, arr, n) — convert int to digit array (LSB first)
 # Returns 1 if val fit in n digits, 0 if truncated.
+# MIN: |MIN| does not fit in int64, so plain negation wraps and
+# emits negative digits. Convert MAX and add 1 instead.
 prakriya bigint_from_int(val, arr, n) {
     vitti v = val
     vitti a = arr
     vitti c = n
     vitti i = 0
+    vitti minv = (0 - 9223372036854775807) - 1
+    vitti ismin = 0
+    yadi (v == minv) {
+        ismin = 1
+        v = 9223372036854775807
+    }
     yadi (v < 0) { v = 0 - v }
     yavat (i < c) {
         likh8(a + i * 8, v % 10)
@@ -35,6 +43,24 @@ prakriya bigint_from_int(val, arr, n) {
         i = i + 1
     }
     yadi (v > 0) { pratiyati 0 }
+    yadi (ismin == 1) {
+        # add 1 to the digit array: |MIN| = MAX + 1
+        vitti carry = 1
+        vitti j = 0
+        yavat (j < c) {
+            yadi (carry == 1) {
+                vitti d = pad8(a + j * 8) + 1
+                yadi (d == 10) {
+                    likh8(a + j * 8, 0)
+                } anyatra {
+                    likh8(a + j * 8, d)
+                    carry = 0
+                }
+            }
+            j = j + 1
+        }
+        yadi (carry == 1) { pratiyati 0 }
+    }
     pratiyati 1
 }
 
