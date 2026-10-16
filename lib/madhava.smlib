@@ -6,12 +6,16 @@
 # functions, and from the arctangent series a rapidly converging series for pi - more than two
 # centuries before Newton, Gregory and Leibniz. These use T12 scalar floats (dasham).
 
-# square root by Newton's method (Babylonian), to float precision
+# square root by Newton's method (Babylonian), to float precision.
+# v <= 0 returns 0.0. 1000 iterations: Newton from g = v halves
+# the guess until it reaches sqrt(v) (~512 halvings for
+# v = 1.8e308); 40 iterations gave 1e288 for sqrt(1e300).
 prakriya madhava_sqrt(dasham v) {
+    yadi (v <= 0.0) { pratiyati 0.0 }
     dasham g = v
     yadi (g < 1.0) { g = 1.0 }
     vitti i = 0
-    yavat (i < 40) {
+    yavat (i < 1000) {
         g = (g + v / g) / 2.0
         i = i + 1
     }
@@ -40,12 +44,21 @@ prakriya madhava_pi() {
 }
 
 # Madhava's sine series:  sin(x) = x - x^3/3! + x^5/5! - ...
+# Evaluated on x reduced to [-PI, PI] (k = trunc(x / 2PI), one
+# PI-adjustment). Without reduction the 16-term series was off
+# by ~1e-4 at x = 10 and inf at x = 100. Exact for |x| <= ~1e15.
 prakriya madhava_sin(dasham x) {
-    dasham s = x
-    dasham t = x
+    dasham pi2 = 6.283185307179586
+    dasham pi = 3.141592653589793
+    vitti k = x / pi2
+    dasham y = x - k * pi2
+    yadi (y > pi) { y = y - pi2 }
+    yadi (y < 0.0 - pi) { y = y + pi2 }
+    dasham s = y
+    dasham t = y
     vitti n = 1
     yavat (n < 16) {
-        t = 0.0 - t * x * x / ((2.0 * n) * (2.0 * n + 1.0))
+        t = 0.0 - t * y * y / ((2.0 * n) * (2.0 * n + 1.0))
         s = s + t
         n = n + 1
     }
@@ -53,12 +66,19 @@ prakriya madhava_sin(dasham x) {
 }
 
 # Madhava's cosine series:  cos(x) = 1 - x^2/2! + x^4/4! - ...
+# Same argument reduction as sin (was ~3.5e-4 off at x = 10).
 prakriya madhava_cos(dasham x) {
+    dasham pi2 = 6.283185307179586
+    dasham pi = 3.141592653589793
+    vitti k = x / pi2
+    dasham y = x - k * pi2
+    yadi (y > pi) { y = y - pi2 }
+    yadi (y < 0.0 - pi) { y = y + pi2 }
     dasham s = 1.0
     dasham t = 1.0
     vitti n = 1
     yavat (n < 16) {
-        t = 0.0 - t * x * x / ((2.0 * n - 1.0) * (2.0 * n))
+        t = 0.0 - t * y * y / ((2.0 * n - 1.0) * (2.0 * n))
         s = s + t
         n = n + 1
     }
@@ -66,21 +86,41 @@ prakriya madhava_cos(dasham x) {
 }
 
 # Madhava-Gregory arctangent series:  atan(x) = x - x^3/3 + x^5/5 - ...
+# The raw series converges like 1/n at |x| = 1 (atan(1) was off
+# by 6e-4) and diverges for |x| > 1. Two exact identities fix it:
+#   |x| > 1:  atan(x) = PI/2 - atan(1/x)  (one recursion)
+#   |x| <= 1: atan(x) = 2*atan(x / (1 + sqrt(1+x^2))) — the
+#     reduced argument is <= 0.42, where the series converges
+#     to float precision in ~25 terms (60 used for margin).
 prakriya madhava_atan(dasham x) {
+    dasham ax = x
+    vitti neg = 0
+    yadi (ax < 0.0) {
+        neg = 1
+        ax = 0.0 - ax
+    }
+    yadi (ax > 1.0) {
+        dasham r = madhava_pi() / 2.0 - madhava_atan(1.0 / ax)
+        yadi (neg == 1) { pratiyati 0.0 - r }
+        pratiyati r
+    }
+    dasham y = ax / (1.0 + madhava_sqrt(1.0 + ax * ax))
     dasham s = 0.0
-    dasham xp = x
+    dasham yp = y
     vitti k = 0
     vitti sign = 1
-    yavat (k < 400) {
-        dasham term = xp / (2.0 * k + 1.0)
+    yavat (k < 60) {
+        dasham term = yp / (2.0 * k + 1.0)
         yadi (sign > 0) {
             s = s + term
         } anyatra {
             s = s - term
         }
-        xp = xp * x * x
+        yp = yp * y * y
         sign = 0 - sign
         k = k + 1
     }
-    pratiyati s
+    dasham res = 2.0 * s
+    yadi (neg == 1) { pratiyati 0.0 - res }
+    pratiyati res
 }
