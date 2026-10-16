@@ -1,4 +1,5 @@
 # lib/map.smlib — Sutram standard library: associative map (hash table)
+# layer: alloc
 #
 # Open addressing with linear probing over parallel pankti arrays.
 #
