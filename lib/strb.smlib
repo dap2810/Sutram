@@ -1,4 +1,5 @@
 # lib/strb.smlib — Sutram standard library: byte-string surface
+# layer: core
 #
 # The string toolkit operating on BYTE-PACKED strings — the representation
 # of a literal and of set_char-built buffers. This is the ROUND-10 answer
