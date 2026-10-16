@@ -1,4 +1,5 @@
 # lib/list.smlib — Sutram standard library: dynamic lists, stacks, queues
+# layer: alloc
 #
 # Representation decision — QWORD CELLS (the pankti/kosh convention),
 # not byte strings. Reasoning:
