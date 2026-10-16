@@ -10,6 +10,9 @@ prakriya is_odd(n)
 
 prakriya digit_count(n) {
     vitti x = n
+    vitti minv = (0 - 9223372036854775807) - 1
+    # MIN: |MIN| has 19 digits, but 0 - MIN wraps to MIN.
+    yadi (x == minv) { pratiyati 19 }
     yadi (x < 0) { x = 0 - x }
     vitti c = 1
     yavat (x >= 10) {
@@ -21,6 +24,9 @@ prakriya digit_count(n) {
 
 prakriya digit_sum(n) {
     vitti x = n
+    vitti minv = (0 - 9223372036854775807) - 1
+    # MIN: digit sum of 9223372036854775808 is 89.
+    yadi (x == minv) { pratiyati 89 }
     yadi (x < 0) { x = 0 - x }
     vitti s = 0
     yavat (x > 0) {
@@ -33,6 +39,11 @@ prakriya digit_sum(n) {
 prakriya reverse_num(n) {
     vitti x = n
     vitti r = 0
+    vitti minv = (0 - 9223372036854775807) - 1
+    # Negatives reverse with the sign: reverse_num(-123) = -321.
+    # MIN: reverse of 9223372036854775808, negated.
+    yadi (x == minv) { pratiyati 0 - 8085774586302733229 }
+    yadi (x < 0) { pratiyati 0 - reverse_num(0 - x) }
     yavat (x > 0) {
         r = r * 10 + (x % 10)
         x = x / 10
@@ -41,6 +52,8 @@ prakriya reverse_num(n) {
 }
 
 prakriya is_palindrome(n) {
+    # Negatives are not palindromes (the '-' is not a digit).
+    yadi (n < 0) { pratiyati 0 }
     vitti r = reverse_num(n)
     pratiyati r == n
 }
