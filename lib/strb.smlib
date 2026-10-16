@@ -1,54 +1,32 @@
 # lib/strb.smlib — Sutram standard library: byte-string surface
 # layer: core
 #
-# The string toolkit operating on BYTE-PACKED strings — the representation
-# of a literal and of set_char-built buffers. This is the ROUND-10 answer
-# to the R9 gap: a programmer holding "hello world" can now use the
-# toolkit directly, with no hand-built char-code array.
+# The string toolkit on BYTE-PACKED strings (the representation of a
+# literal and of set_char-built buffers). Own module (not inside
+# string.smlib) because the compiler has a fixed AST ceiling.
 #
-# THE TWO REPRESENTATIONS, side by side (kept consistent with the
-# lib/string.smlib header so a reader can move between modules):
-#   char-code array (lib/string.smlib R9 toolkit): qword cells, one char
-#     code per cell, read with h[i] (8-byte stride). Idiom:
-#     vitti h = nirmmita(6*8); h[0]=104; h[1]=105  ("hi" as cells);
-#     str_find(h, 2, nd, 1).
-#   byte string (this module): bytes packed 1-per-byte, read with
-#     char_at(s, i) (1-byte stride), written with set_char(s, i, v),
-#     measured with vartani_len(s). Idiom: strb_find("hi", 2, "i", 1) -> 1;
-#     or vitti b = nirmmita(8); set_char(b,0,104); set_char(b,1,105);
-#     set_char(b,2,0); strb_len(b) -> 2.
-# Do NOT mix them: h[i] on a byte string reads 8 bytes at once, and
-# char_at on a char-code array reads one byte of a qword cell.
+# THE TWO REPRESENTATIONS (see also lib/string.smlib):
+#   char-code array: qword cells, one char code per cell, h[i].
+#   byte string: bytes packed 1-per-byte, char_at(s, i) /
+#     set_char(s, i, v) / vartani_len(s). Do NOT mix them: h[i] on
+#     a byte string reads 8 bytes at once; char_at on a char-code
+#     array reads one byte of a qword cell.
 #
-# This lives in its own module (not inside string.smlib) because the
-# compiler has a fixed AST ceiling: inlining the combined module together
-# with the other stdlib modules exceeded it (suite tests 87/99/102).
-# The char-code toolkit in lib/string.smlib is byte-for-byte unchanged.
+# Conventions: lengths are explicit; out-buffers get a 0 terminator;
+# the caller allocates generously. Empty needle matches at 0; "not
+# found" is -1. All signatures stay within the 6-argument cap.
 #
-# Conventions: lengths are explicit (source of truth); out-buffers get a
-# 0 terminator via set_char; the caller allocates generously. Empty needle
-# matches at 0; "not found" is -1. All signatures stay within the
-# compiler's 6-argument cap (repl is 0-terminated, its length derived).
-#
-# SLICE-BOUNDARY RULES (WS4, R23 audit): a slice is a (pointer, length)
-# pair into a larger buffer, with NO terminator at the slice end.
-#   - Every strb_* function takes an explicit length and stops at it:
-#     strb_find_char("hello world", 5, 'w') is -1. The NUL-terminated
-#     forms (find_char, count_char, count_vowels, is_all_digits,
-#     str_equals) scan to the terminator, so they are WRONG on slices.
-#     Never pass a slice to them.
-#   - strb_len / str_len / vartani_len scan to the terminator: they
-#     cannot be used on slices at all. A slice carries its length.
-#   - strb_replace / str_replace's repl is 0-terminated (its length
-#     is derived), so repl cannot be a slice. To use a slice as repl,
-#     strb_dup it into a terminated buffer first. An explicit-length
-#     repl form would need 7 arguments, over the compiler's
-#     6-argument cap, so the terminated form stays.
-#   - The (s, i) char predicates take no length: the caller must
-#     keep i in bounds; they read char_at(s, i) unconditionally.
-# strb_split/strb_join use the same length-prefixed segment format as
-# str_split/str_join (R9): [len0, b0, b1, ..., len1, b0, ...], one byte
-# value per cell.
+# SLICE-BOUNDARY RULES (R23): a slice is (pointer, length) into a
+# larger buffer, with NO terminator at the slice end. Every strb_*
+# function takes an explicit length and stops at it. The
+# NUL-terminated forms (find_char, count_char, count_vowels,
+# is_all_digits, str_equals) scan to the terminator — WRONG on
+# slices. strb_len / str_len / vartani_len scan to the terminator
+# and cannot be used on slices. strb_replace's repl is 0-terminated
+# (length derived), so repl cannot be a slice; strb_dup it into a
+# terminated buffer first.
+# strb_split/strb_join use the length-prefixed segment format of
+# str_split/str_join (R9): [len0, b0, ..., len1, b0, ...].
 
 # strb_pack(cells, n, out) — pack a qword-cell sequence (one byte value
 # per cell, the str_split/strb_split segment format) into contiguous
@@ -131,6 +109,7 @@ prakriya strb_find(hay, hn, needle, nn) {
     vitti i = 0
     vitti match = 0
     vitti j = 0
+    yadi (nlen < 0) { pratiyati 0 - 1 }
     yadi (nlen == 0) { pratiyati 0 }
     yadi (nlen > hlen) { pratiyati 0 - 1 }
     i = 0
@@ -173,7 +152,9 @@ prakriya strb_replace(src, sn, find, fn, repl, out) {
     vitti j = 0
     vitti k = 0
     yavat (char_at(r, rlen) != 0) { rlen = rlen + 1 }
-    yadi (flen == 0) {
+    yadi (flen <= 0) {
+        # flen < 0: same verbatim copy as empty find (the old
+        # code looped forever on a negative find length).
         yavat (rpos < slen) {
             set_char(dst, wpos, char_at(s, rpos))
             wpos = wpos + 1
@@ -240,7 +221,9 @@ prakriya strb_split(src, sn, sep, sepn, parts, maxparts) {
         dst[0] = 0
         pratiyati 1
     }
-    yadi (splen == 0) {
+    yadi (splen <= 0) {
+        # splen < 0: same one-segment result as empty separator
+        # (the old code looped forever on a negative length).
         dst[0] = slen
         strb_unpack(s, slen, dst + 8)
         pratiyati 1
@@ -368,13 +351,18 @@ prakriya strb_trim(src, sn, out) {
 }
 
 # strb_upper(src, sn, out) / strb_lower — ASCII case conversion on byte
-# strings. Returns the byte count.
+# strings. Returns the byte count. sn < 0: empty output (the old
+# code wrote the terminator at out[-1], out of bounds).
 prakriya strb_upper(src, sn, out) {
     vitti s = src
     vitti slen = sn
     vitti dst = out
     vitti i = 0
     vitti c = 0
+    yadi (slen < 0) {
+        set_char(dst, 0, 0)
+        pratiyati 0
+    }
     yavat (i < slen) {
         c = char_at(s, i)
         yadi (c >= 97) {
@@ -393,6 +381,10 @@ prakriya strb_lower(src, sn, out) {
     vitti dst = out
     vitti i = 0
     vitti c = 0
+    yadi (slen < 0) {
+        set_char(dst, 0, 0)
+        pratiyati 0
+    }
     yavat (i < slen) {
         c = char_at(s, i)
         yadi (c >= 65) {
@@ -406,12 +398,15 @@ prakriya strb_lower(src, sn, out) {
 }
 
 # strb_starts(src, sn, pre, pn) / strb_ends — 0/1 on byte strings.
+# A negative prefix/suffix length is invalid: 0 (the old code
+# treated it as empty and returned 1).
 prakriya strb_starts(src, sn, pre, pn) {
     vitti s = src
     vitti slen = sn
     vitti pr = pre
     vitti plen = pn
     vitti i = 0
+    yadi (plen < 0) { pratiyati 0 }
     yadi (plen > slen) { pratiyati 0 }
     yavat (i < plen) {
         yadi (char_at(s, i) != char_at(pr, i)) { pratiyati 0 }
@@ -426,6 +421,7 @@ prakriya strb_ends(src, sn, suf, sn2) {
     vitti sf = suf
     vitti sflen = sn2
     vitti i = 0
+    yadi (sflen < 0) { pratiyati 0 }
     yadi (sflen > slen) { pratiyati 0 }
     yavat (i < sflen) {
         yadi (char_at(s, slen - sflen + i) != char_at(sf, i)) { pratiyati 0 }
@@ -502,7 +498,7 @@ prakriya strb_count(hay, hn, needle, nn) {
     vitti pos = 0
     vitti c = 0
     vitti f = 0
-    yadi (nlen == 0) { pratiyati 0 }
+    yadi (nlen <= 0) { pratiyati 0 }
     yavat (pos <= hlen - nlen) {
         f = strb_find(h + pos, hlen - pos, nd, nlen)
         yadi (f < 0) { pratiyati c }
@@ -571,7 +567,7 @@ prakriya strb_is_all_digits(s, n) {
     vitti cnt = n
     vitti i = 0
     vitti ch = 0
-    yadi (cnt == 0) { pratiyati 0 }
+    yadi (cnt <= 0) { pratiyati 0 }
     yavat (i < cnt) {
         ch = char_at(src, i)
         yadi (ch < 48 || ch > 57) { pratiyati 0 }
