@@ -4100,6 +4100,212 @@ def prop_numeric28(compiler, rng):
     return ok and out == "PASS", out
 
 
+def prop_result29(compiler, rng):
+    """R29 WS3: the Result type — constructors, inspectors,
+    value_or, the ok-convention bridge, and the checked
+    producers (success, overflow, div/mod by zero, MIN/-1)."""
+    lines = ["ayojan result",
+             "mukhya() {",
+             "    vitti r = nirmmita(2 * 8)",
+             "    vitti ok = nirmmita(8)",
+             "    vitti minv = (0 - 9223372036854775807) - 1"]
+
+    def check(expr, want, msg):
+        lines.append(f"    yadi (({expr}) != ({want})) {{")
+        lines.append(f'        likha("FAIL {msg}\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+
+    # constructors + inspectors
+    lines.append("    result_ok(r, 42)")
+    check("result_is_ok(r)", 1, "ok is_ok")
+    check("result_value(r)", 42, "ok value")
+    check("result_value_or(r, 99)", 42, "ok value_or")
+    lines.append("    result_err(r)")
+    check("result_is_ok(r)", 0, "err is_ok")
+    check("result_value(r)", 0, "err value")
+    check("result_value_or(r, 99)", 99, "err value_or")
+    # from_ok bridge: value passes through on success, 0 on failure
+    lines.append("    ok[0] = 1")
+    lines.append("    result_from_ok(r, 7, ok)")
+    check("result_is_ok(r)", 1, "from_ok ok")
+    check("result_value(r)", 7, "from_ok value")
+    lines.append("    ok[0] = 0")
+    lines.append("    result_from_ok(r, 7, ok)")
+    check("result_is_ok(r)", 0, "from_ok fail")
+    check("result_value(r)", 0, "from_ok fail value")
+    # checked producers
+    lines.append("    result_checked_add(r, 2, 3)")
+    check("result_is_ok(r)", 1, "add ok")
+    check("result_value(r)", 5, "add value")
+    lines.append("    result_checked_add(r, 9223372036854775807, 1)")
+    check("result_is_ok(r)", 0, "add overflow")
+    check("result_value(r)", 0, "add overflow value")
+    lines.append("    result_checked_sub(r, minv, 1)")
+    check("result_is_ok(r)", 0, "sub overflow")
+    lines.append("    result_checked_mul(r, 4294967296, 4294967296)")
+    check("result_is_ok(r)", 0, "mul overflow")
+    lines.append("    result_checked_mul(r, 6, 7)")
+    check("result_is_ok(r)", 1, "mul ok")
+    check("result_value(r)", 42, "mul value")
+    lines.append("    result_checked_div(r, 7, 2)")
+    check("result_is_ok(r)", 1, "div ok")
+    check("result_value(r)", 3, "div value")
+    lines.append("    result_checked_div(r, 1, 0)")
+    check("result_is_ok(r)", 0, "div zero")
+    lines.append("    result_checked_div(r, minv, 0 - 1)")
+    check("result_is_ok(r)", 0, "div MIN -1")
+    lines.append("    result_checked_mod(r, 7, 3)")
+    check("result_is_ok(r)", 1, "mod ok")
+    check("result_value(r)", 1, "mod value")
+    lines.append("    result_checked_mod(r, 1, 0)")
+    check("result_is_ok(r)", 0, "mod zero")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "result29", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_serial29(compiler, rng):
+    """R29 WS5: serialisation — i64 roundtrips incl. MIN/MAX,
+    length-prefixed bytes roundtrip, overrun -> -1, corrupt
+    (negative) length -> -1, and len_bytes."""
+    lines = ["ayojan serial",
+             "mukhya() {",
+             "    vitti buf = nirmmita(64 * 8)",
+             "    vitti out = nirmmita(8)",
+             "    vitti dst = nirmmita(16 * 8)",
+             "    vitti n = nirmmita(8)",
+             "    vitti minv = (0 - 9223372036854775807) - 1"]
+
+    def check(expr, want, msg):
+        lines.append(f"    yadi (({expr}) != ({want})) {{")
+        lines.append(f'        likha("FAIL {msg}\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+
+    # i64 roundtrips
+    for i, v in enumerate([0, 1, -1, 9223372036854775807,
+                           "minv", -123456789012345]):
+        lines.append(f"    serial_put_i64(buf, {i * 8}, 64, {v})")
+    for i, v in enumerate([0, 1, -1, 9223372036854775807,
+                           "minv", -123456789012345]):
+        lines.append(f"    serial_get_i64(buf, {i * 8}, 64, out)")
+        check("out[0]", v, f"i64 roundtrip {v}")
+    # overrun -> -1, nothing written
+    check("serial_put_i64(buf, 60, 64, 1)", "0 - 1", "put overrun")
+    check("serial_get_i64(buf, 60, 64, out)", "0 - 1", "get overrun")
+    check("serial_put_i64(buf, 0 - 1, 64, 1)", "0 - 1", "put neg pos")
+    check("serial_len_bytes(5)", 13, "len_bytes")
+    # bytes roundtrip
+    lines.append("    vitti src = nirmmita(16 * 8)")
+    lines.append("    set_char(src, 0, 104)")
+    lines.append("    set_char(src, 1, 101)")
+    lines.append("    set_char(src, 2, 108)")
+    lines.append("    set_char(src, 3, 108)")
+    lines.append("    set_char(src, 4, 111)")
+    check("serial_put_bytes(buf, 0, 64, src, 5)", 13, "put_bytes")
+    check("serial_get_bytes(buf, 0, 64, dst, n)", 13, "get_bytes")
+    check("n[0]", 5, "get_bytes len")
+    for i, c in enumerate([104, 101, 108, 108, 111]):
+        check(f"char_at(dst, {i})", c, f"byte {i}")
+    # empty payload
+    check("serial_put_bytes(buf, 0, 64, src, 0)", 8, "put_bytes empty")
+    check("serial_get_bytes(buf, 0, 64, dst, n)", 8, "get_bytes empty")
+    check("n[0]", 0, "get_bytes empty len")
+    # overrun and negative length
+    check("serial_put_bytes(buf, 60, 64, src, 5)", "0 - 1",
+          "put_bytes overrun")
+    check("serial_put_bytes(buf, 0, 64, src, 0 - 1)", "0 - 1",
+          "put_bytes neg len")
+    lines.append("    serial_put_i64(buf, 0, 64, 0 - 1)")
+    check("serial_get_bytes(buf, 0, 64, dst, n)", "0 - 1",
+          "get_bytes neg len")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "serial29", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_numeric29(compiler, rng):
+    """R29 WS4: pin the numeric contract gaps — ganita classical
+    wrapping (kuttaka/samasa/brahmagupta), math plain wrapping
+    (sq/square/cube/double/triple/inc/power/fact), num fib and
+    reverse_num wrapping, fmt_fixed overflow -> 0, and the
+    chakravala fixes (perfect square, small Pell solutions,
+    MAX -> 0 instead of hanging)."""
+    lines = ["ayojan math", "ayojan ganita", "ayojan fmt", "ayojan num",
+             "mukhya() {",
+             "    vitti out = nirmmita(8 * 8)",
+             "    vitti buf = nirmmita(40 * 8)",
+             "    vitti minv = (0 - 9223372036854775807) - 1"]
+
+    def check(expr, want, msg):
+        lines.append(f"    yadi (({expr}) != ({want})) {{")
+        lines.append(f'        likha("FAIL {msg}\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+
+    # kuttaka: intermediate q*s wraps; the wrapped result is pinned
+    # against a Python wrapping simulation (exact result differs)
+    check("kuttaka(0 - 7819279541048604735, "
+          "0 - 2881118045913156764, 0 - 150)",
+          2605677504891245458, "kuttaka wrap")
+    # samasa: p*r overflows (2^80 wraps to 0)
+    lines.append("    samasa(out, 1099511627776, 0, 1099511627776, 0, 0)")
+    check("out[0]", 0, "samasa wrap 0")
+    check("out[1]", 0, "samasa wrap 1")
+    # brahmagupta_area: (a+b+c+d) overflows (2^64 wraps to 0)
+    check("brahmagupta_area(4611686018427387904, "
+          "4611686018427387904, 4611686018427387904, "
+          "4611686018427387904)", 0, "brahmagupta wrap")
+    # math plain wrapping
+    check("sq(4294967296)", 0, "sq wrap")
+    check("square(3037000500)", "0 - 9223372036709301616", "square wrap")
+    check("cube(2097152)", "minv", "cube 2^63")
+    check("cube(2097153)", "0 - 9223358842708951039", "cube wrap")
+    check("double(9223372036854775807)", "0 - 2", "double wrap")
+    check("triple(9223372036854775807)", 9223372036854775805,
+          "triple wrap")
+    check("inc(9223372036854775807)", "minv", "inc wrap")
+    check("power(2, 63)", "minv", "power wrap")
+    check("power(3, 40)", "0 - 6289078614652622815", "power 3 40 wrap")
+    check("fact(21)", "0 - 4249290049419214848", "fact 21 wrap")
+    check("fib(93)", "0 - 6246583658587674878", "fib 93 wrap")
+    check("reverse_num(1234567890123456789)",
+          "0 - 8570200862721897295", "reverse_num wrap")
+    # fmt_fixed overflow -> 0 (empty); the largest fixed output is
+    # 9223372036854774784 (2^63 - 1024), 19 chars
+    check("fmt_fixed(1000000000000000000.0, 2, buf)", 0, "fmt_fixed ovf")
+    check("fmt_fixed(0 - 1000000000000000000.0, 2, buf)", 0,
+          "fmt_fixed neg ovf")
+    check("fmt_fixed(9223372036854774784.0, 0, buf)", 19, "fmt_fixed max")
+    for i, c in enumerate("9223372036854774784"):
+        check(f"char_at(buf, {i})", ord(c), f"fmt_fixed max char {i}")
+    # chakravala: perfect square -> trivial solution, return 1
+    lines.append("    vitti r = chakravala(out, 4)")
+    check("r", 1, "chakravala 4 ret")
+    check("out[0]", 1, "chakravala 4 x")
+    check("out[1]", 0, "chakravala 4 y")
+    # small Pell solutions, verified by x^2 - n*y^2 = 1
+    for n, x, y in [(2, 3, 2), (3, 2, 1), (5, 9, 4), (13, 649, 180),
+                    (61, 1766319049, 226153980)]:
+        lines.append(f"    r = chakravala(out, {n})")
+        check("r", 1, f"chakravala {n} ret")
+        check("out[0]", x, f"chakravala {n} x")
+        check("out[1]", y, f"chakravala {n} y")
+        check(f"out[0] * out[0] - {n} * out[1] * out[1]", 1,
+              f"chakravala {n} Pell")
+    # MAX: the minimal solution does not fit in int64 — return 0
+    # (was an effective hang in the m-scan) instead of hanging
+    lines.append("    r = chakravala(out, 9223372036854775807)")
+    check("r", 0, "chakravala MAX ret")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "numeric29", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
 def main():
     compiler = None
     for i, a in enumerate(sys.argv):
@@ -4184,6 +4390,9 @@ def main():
         ("min26", prop_min26),
         ("safety27 cross-module", prop_safety27),
         ("bigint divzero", prop_bigint_divzero),
+        ("result type", prop_result29),
+        ("serialisation roundtrip", prop_serial29),
+        ("numeric contract gaps pinned", prop_numeric29),
         ("ok convention", prop_ok_convention),
         ("numeric28", prop_numeric28),
     ]
