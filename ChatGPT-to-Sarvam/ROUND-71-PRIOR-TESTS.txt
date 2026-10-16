@@ -1,0 +1,77 @@
+PROVENANCE: prior development log from evidence/all-tests.txt inside the original
+Sutram_R71_On_R69_Source_Review_2026-10-16.zip. This log is preserved during
+publication; these tests were NOT rerun in the publication operation. Helper and
+developer tests only, not full Sutram/Windows/boot acceptance.
+
+--- ORIGINAL LOG ---
+test_document_drift_refused (test_delivery_tools.DocumentationMigration.test_document_drift_refused) ... ok
+test_inventory_drift_refused (test_delivery_tools.DocumentationMigration.test_inventory_drift_refused) ... ok
+test_migrator_drift_refused (test_delivery_tools.DocumentationMigration.test_migrator_drift_refused) ... ok
+test_multiline_powershell_command (test_delivery_tools.DocumentationMigration.test_multiline_powershell_command) ... ok
+test_multiline_shell_command (test_delivery_tools.DocumentationMigration.test_multiline_shell_command) ... ok
+test_plan_apply_and_verify (test_delivery_tools.DocumentationMigration.test_plan_apply_and_verify) ... ok
+test_plan_does_not_edit (test_delivery_tools.DocumentationMigration.test_plan_does_not_edit) ... ok
+test_prose_source_reference_not_rewritten (test_delivery_tools.DocumentationMigration.test_prose_source_reference_not_rewritten) ... ok
+test_untracked_docs_not_claimed_migrated (test_delivery_tools.DocumentationMigration.test_untracked_docs_not_claimed_migrated) ... ok
+test_windows_single_line_command (test_delivery_tools.DocumentationMigration.test_windows_single_line_command) ... ok
+test_boot_image_size_and_signature (test_delivery_tools.SourceTools.test_boot_image_size_and_signature) ... ok
+test_boot_overwrite_refused (test_delivery_tools.SourceTools.test_boot_overwrite_refused) ... ok
+test_boot_rebuild_exact (test_delivery_tools.SourceTools.test_boot_rebuild_exact) ... ok
+test_colon_path_refused (test_delivery_tools.SourceTools.test_colon_path_refused) ... ok
+test_core_override_in_extension_lock_refused (test_delivery_tools.SourceTools.test_core_override_in_extension_lock_refused) ... ok
+test_default_canonical_entry_unchanged (test_delivery_tools.SourceTools.test_default_canonical_entry_unchanged) ... ok
+test_empty_pins_refused (test_delivery_tools.SourceTools.test_empty_pins_refused) ... ok
+test_entry_preserves_diagnostics (test_delivery_tools.SourceTools.test_entry_preserves_diagnostics) ... ok
+test_existing_semantics_capture_hashes (test_delivery_tools.SourceTools.test_existing_semantics_capture_hashes) ... ok
+test_git_blob_reference_vector (test_delivery_tools.SourceTools.test_git_blob_reference_vector) ... ok
+test_invalid_pin_refused (test_delivery_tools.SourceTools.test_invalid_pin_refused) ... ok
+test_missing_extension_lock_refused (test_delivery_tools.SourceTools.test_missing_extension_lock_refused) ... ok
+test_missing_input_refused (test_delivery_tools.SourceTools.test_missing_input_refused) ... ok
+test_parent_path_refused (test_delivery_tools.SourceTools.test_parent_path_refused) ... ok
+test_production_extension_pins (test_delivery_tools.SourceTools.test_production_extension_pins) ... ok
+test_reviewed_lock_matches_embedded_pins (test_delivery_tools.SourceTools.test_reviewed_lock_matches_embedded_pins) ... ok
+test_source_drift_refused (test_delivery_tools.SourceTools.test_source_drift_refused) ... ok
+test_symlink_input_refused (test_delivery_tools.SourceTools.test_symlink_input_refused) ... ok
+test_wrong_lock_schema_refused (test_delivery_tools.SourceTools.test_wrong_lock_schema_refused) ... ok
+test_arity_mismatch (test_linker.NativeLinker.test_arity_mismatch) ... ok
+test_backward_rel32 (test_linker.NativeLinker.test_backward_rel32) ... ok
+test_bad_opcode (test_linker.NativeLinker.test_bad_opcode) ... ok
+test_bounds (test_linker.NativeLinker.test_bounds) ... ok
+test_duplicate_rejected_not_first_wins (test_linker.NativeLinker.test_duplicate_rejected_not_first_wins) ... ok
+test_forward_rel32 (test_linker.NativeLinker.test_forward_rel32) ... ok
+test_invalid_metadata (test_linker.NativeLinker.test_invalid_metadata) ... ok
+test_missing_export (test_linker.NativeLinker.test_missing_export) ... ok
+test_missing_module (test_linker.NativeLinker.test_missing_module) ... ok
+test_no_concatenation_collision (test_linker.NativeLinker.test_no_concatenation_collision) ... ok
+test_private_export_refused (test_linker.NativeLinker.test_private_export_refused) ... ok
+test_rel32_overflow (test_linker.NativeLinker.test_rel32_overflow) ... ok
+test_same_leaf_in_two_namespaces (test_linker.NativeLinker.test_same_leaf_in_two_namespaces) ... ok
+test_two_fixture_units_link_and_execute (test_linker.NativeLinker.test_two_fixture_units_link_and_execute) ... ok
+test_utf8_names_are_exact_bytes (test_linker.NativeLinker.test_utf8_names_are_exact_bytes) ... ok
+test_boundary_ends_at_its_brace (test_unsafe.UnsafePass.test_boundary_ends_at_its_brace) ... ok
+test_boundary_lowers_to_true_if_and_keeps_braces (test_unsafe.UnsafePass.test_boundary_lowers_to_true_if_and_keeps_braces) ... ok
+test_depth_boundary (test_unsafe.UnsafePass.test_depth_boundary) ... ok
+test_each_canonical_raw_builtin_inside_boundary (test_unsafe.UnsafePass.test_each_canonical_raw_builtin_inside_boundary) ... ok
+test_each_canonical_raw_builtin_rejected (test_unsafe.UnsafePass.test_each_canonical_raw_builtin_rejected) ... ok
+test_exact_capacity (test_unsafe.UnsafePass.test_exact_capacity) ... ok
+test_expansion_capacity_checked_before_mutation (test_unsafe.UnsafePass.test_expansion_capacity_checked_before_mutation) ... ok
+test_function_definition_inside_boundary_rejected (test_unsafe.UnsafePass.test_function_definition_inside_boundary_rejected) ... ok
+test_inline_assembly_inside_boundary (test_unsafe.UnsafePass.test_inline_assembly_inside_boundary) ... ok
+test_inline_assembly_requires_boundary (test_unsafe.UnsafePass.test_inline_assembly_requires_boundary) ... ok
+test_invalid_capacity (test_unsafe.UnsafePass.test_invalid_capacity) ... ok
+test_many_boundaries (test_unsafe.UnsafePass.test_many_boundaries) ... ok
+test_missing_open_brace (test_unsafe.UnsafePass.test_missing_open_brace) ... ok
+test_nested_boundary (test_unsafe.UnsafePass.test_nested_boundary) ... ok
+test_nonmarker_identifiers (test_unsafe.UnsafePass.test_nonmarker_identifiers) ... ok
+test_ordinary_inner_block_does_not_end_boundary (test_unsafe.UnsafePass.test_ordinary_inner_block_does_not_end_boundary) ... ok
+test_other_builtins_are_not_advertised_checked (test_unsafe.UnsafePass.test_other_builtins_are_not_advertised_checked) ... ok
+test_plain_program_unchanged (test_unsafe.UnsafePass.test_plain_program_unchanged) ... ok
+test_seeded_balanced_inputs (test_unsafe.UnsafePass.test_seeded_balanced_inputs) ... ok
+test_string_is_not_marker (test_unsafe.UnsafePass.test_string_is_not_marker) ... ok
+test_top_level_marker_rejected (test_unsafe.UnsafePass.test_top_level_marker_rejected) ... ok
+test_unbalanced_braces (test_unsafe.UnsafePass.test_unbalanced_braces) ... ok
+
+----------------------------------------------------------------------
+Ran 66 tests in 0.167s
+
+OK
