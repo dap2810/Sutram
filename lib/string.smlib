@@ -1,4 +1,5 @@
 # lib/string.smlib — Sutram standard library: strings
+# layer: core
 #
 # Built on `vartani_len` and `char_at`, both verified to honour their arguments.
 # R52 audit: `char_code(s, i)` already honours i in the compiler; a one-argument
