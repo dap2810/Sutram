@@ -4306,6 +4306,433 @@ def prop_numeric29(compiler, rng):
     return ok and out == "PASS", out
 
 
+def prop_edge30_int(compiler, rng):
+    """R30 WS1: integer edge pins — util zero-divisor/ceiling,
+    num MIN/negative, math fact/sum_to, chandas is_guru bounds."""
+    lines = ["ayojan util", "ayojan num", "ayojan math", "ayojan chandas",
+             "mukhya() {",
+             "    vitti minv = (0 - 9223372036854775807) - 1"]
+
+    def check(expr, want, msg):
+        lines.append(f"    yadi (({expr}) != ({want})) {{")
+        lines.append(f'        likha("FAIL {msg}\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+
+    # util: zero divisor -> 0 (was SIGFPE); true ceiling division
+    check("mod(5, 0)", 0, "mod 5 0")
+    check("mod(0, 0)", 0, "mod 0 0")
+    check("div_ceil(5, 0)", 0, "div_ceil 5 0")
+    check("div_ceil(7, 2)", 4, "div_ceil 7 2")
+    check("div_ceil(7, 0 - 2)", "0 - 3", "div_ceil 7 -2")
+    check("div_ceil(5, 0 - 3)", "0 - 1", "div_ceil 5 -3")
+    check("div_ceil(0 - 7, 2)", "0 - 3", "div_ceil -7 2")
+    check("div_ceil(0 - 7, 0 - 2)", 4, "div_ceil -7 -2")
+    check("div_ceil(6, 3)", 2, "div_ceil exact")
+    check("sum_range(3, 1)", 0, "sum_range empty")
+    # num: MIN magnitude, negatives
+    check("digit_count(minv)", 19, "digit_count MIN")
+    check("digit_count(0 - 123)", 3, "digit_count neg")
+    check("digit_sum(minv)", 89, "digit_sum MIN")
+    check("digit_sum(0 - 123)", 6, "digit_sum neg")
+    check("reverse_num(0 - 123)", "0 - 321", "reverse_num neg")
+    check("reverse_num(minv)", "0 - 8085774586302733229",
+          "reverse_num MIN")
+    check("is_palindrome(0 - 121)", 0, "is_palindrome neg")
+    check("is_palindrome(121)", 1, "is_palindrome 121")
+    # math: fact iterative (no stack exhaustion), sum_to closed form
+    check("fact(21)", "0 - 4249290049419214848", "fact 21 wrap")
+    fact100k = 1
+    for i in range(2, 100001):
+        fact100k = (fact100k * i) & ((1 << 64) - 1)
+    if fact100k >= (1 << 63):
+        fact100k -= (1 << 64)
+    check("fact(100000)", fact100k, "fact 100000")
+    check("sum_to(10)", 55, "sum_to 10")
+    check("sum_to(0)", 0, "sum_to 0")
+    check("sum_to(0 - 5)", 0, "sum_to neg")
+    check("sum_to(4294967295)", 9223372034707292160, "sum_to 2^32-1")
+    check("sum_to(4294967296)", "0 - 9223372034707292160",
+          "sum_to 2^32 wrap")
+    # chandas: out-of-range bit index -> 0 (was SIGFPE at 64)
+    check("is_guru(5, 64)", 0, "is_guru 64")
+    check("is_guru(5, 0 - 1)", 0, "is_guru -1")
+    check("is_guru(5, 0)", 1, "is_guru bit 0")
+    check("is_guru(5, 2)", 1, "is_guru bit 2")
+    check("is_guru(5, 63)", 0, "is_guru bit 63")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "edge30_int", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_edge30_text(compiler, rng):
+    """R30 WS1: negative-length text edges — string/strb return
+    the documented empty/invalid result, never corrupt or hang."""
+    lines = ["ayojan string", "ayojan strb",
+             "mukhya() {",
+             "    vitti s = nirmmita(8 * 8)",
+             "    vitti out = nirmmita(8 * 8)",
+             "    vitti parts = nirmmita(16 * 8)",
+             "    vitti b = nirmmita(32)",
+             "    vitti bout = nirmmita(32)",
+             "    vitti bparts = nirmmita(16 * 8)"]
+    lines.append("    s[0] = 104")
+    lines.append("    s[1] = 105")
+    lines.append("    set_char(b, 0, 104)")
+    lines.append("    set_char(b, 1, 105)")
+    lines.append("    set_char(b, 2, 0)")
+
+    def check(expr, want, msg):
+        lines.append(f"    yadi (({expr}) != ({want})) {{")
+        lines.append(f'        likha("FAIL {msg}\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+
+    # char-code (string) surface: negative length -> empty/invalid
+    check("str_upper(s, 0 - 1, out)", 0, "str_upper neg len")
+    check("out[0]", 0, "str_upper neg len term")
+    check("str_lower(s, 0 - 1, out)", 0, "str_lower neg len")
+    check("out[0]", 0, "str_lower neg len term")
+    check("str_replace(s, 2, s, 0 - 1, s, out)", 2,
+          "str_replace neg find")
+    check("str_split(s, 2, s, 0 - 1, parts)", 1, "str_split neg sep")
+    check("str_count(s, 2, s, 0 - 1)", 0, "str_count neg needle")
+    check("str_find(s, 2, s, 0 - 1)", "0 - 1", "str_find neg needle")
+    check("str_starts(s, 2, s, 0 - 1)", 0, "str_starts neg pre")
+    check("str_ends(s, 2, s, 0 - 1)", 0, "str_ends neg suf")
+    # byte-string (strb) surface: same contract
+    check("strb_upper(b, 0 - 1, bout)", 0, "strb_upper neg len")
+    check("char_at(bout, 0)", 0, "strb_upper neg len term")
+    check("strb_lower(b, 0 - 1, bout)", 0, "strb_lower neg len")
+    check("char_at(bout, 0)", 0, "strb_lower neg len term")
+    check("strb_replace(b, 2, b, 0 - 1, b, bout)", 2,
+          "strb_replace neg find")
+    check("strb_split(b, 2, b, 0 - 1, bparts, 8)", 1,
+          "strb_split neg sep")
+    check("strb_count(b, 2, b, 0 - 1)", 0, "strb_count neg needle")
+    check("strb_find(b, 2, b, 0 - 1)", "0 - 1", "strb_find neg needle")
+    check("strb_starts(b, 2, b, 0 - 1)", 0, "strb_starts neg pre")
+    check("strb_ends(b, 2, b, 0 - 1)", 0, "strb_ends neg suf")
+    check("strb_is_all_digits(b, 0 - 1)", 0, "strb_is_all_digits neg")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "edge30_text", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_edge30_conv(compiler, rng):
+    """R30 WS1: conversion/base edges — strconv base validation,
+    baseconv sizing + base validation, bigint MIN magnitude."""
+    lines = ["ayojan strconv", "ayojan baseconv", "ayojan bigint",
+             "mukhya() {",
+             "    vitti out = nirmmita(128 * 8)",
+             "    vitti arr = nirmmita(32 * 8)",
+             "    vitti zero = nirmmita(32 * 8)",
+             "    vitti minv = (0 - 9223372036854775807) - 1"]
+
+    def check(expr, want, msg):
+        lines.append(f"    yadi (({expr}) != ({want})) {{")
+        lines.append(f'        likha("FAIL {msg}\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+
+    # int_to_base_str: base outside 2..36 -> 0 (was SIGFPE / SIGSEGV)
+    check("int_to_base_str(10, 0, out)", 0, "base 0")
+    check("int_to_base_str(10, 1, out)", 0, "base 1")
+    check("int_to_base_str(10, 0 - 2, out)", 0, "base -2")
+    check("int_to_base_str(10, 37, out)", 0, "base 37")
+    check("int_to_base_str(255, 16, out)", 2, "base 16 ok")
+    # bigint_to_digits / from_digits: base outside 2..16 -> 0
+    check("bigint_to_digits(arr, 30, 0, out)", 0, "todigits base 0")
+    check("bigint_to_digits(arr, 30, 1, out)", 0, "todigits base 1")
+    check("bigint_from_digits(arr, 3, 0, arr, 30)", 0,
+          "fromdigits base 0")
+    check("bigint_from_digits(arr, 3, 17, arr, 30)", 0,
+          "fromdigits base 17")
+    # baseconv sizing: 10^30 - 1 in base 2 is 100 digits, all 0/1.
+    # Build it as thirty 9s in base 10, then render in base 2.
+    # (src and dst must differ: from_digits reads src while
+    # writing dst, so in-place parsing clobbers unread digits.)
+    lines.append("    vitti digs = nirmmita(32 * 8)")
+    lines.append("    vitti i = 0")
+    lines.append("    yavat (i < 30) {")
+    lines.append("        digs[i] = 9")
+    lines.append("        i = i + 1")
+    lines.append("    }")
+    lines.append("    bigint_from_digits(digs, 30, 10, arr, 30)")
+    lines.append("    vitti cnt = bigint_to_digits(arr, 30, 2, out)")
+    check("cnt", 100, "10^30-1 base2 count")
+    check("out[0]", 1, "10^30-1 base2 msb")
+    lines.append("    i = 0")
+    lines.append("    yavat (i < cnt) {")
+    lines.append("        yadi (out[i] > 1) {")
+    lines.append('            likha("FAIL base2 digit range\\n")')
+    lines.append("            pratiyati 1")
+    lines.append("        }")
+    lines.append("        i = i + 1")
+    lines.append("    }")
+    # bigint_from_int(MIN): digits are the exact magnitude 0..9
+    lines.append("    bigint_zero(zero, 19)")
+    check("bigint_from_int(minv, arr, 19)", 1, "from_int MIN ret")
+    lines.append("    i = 0")
+    lines.append("    yavat (i < 19) {")
+    lines.append("        yadi (arr[i] < 0) {")
+    lines.append('            likha("FAIL MIN digit neg\\n")')
+    lines.append("            pratiyati 1")
+    lines.append("        }")
+    lines.append("        yadi (arr[i] > 9) {")
+    lines.append('            likha("FAIL MIN digit range\\n")')
+    lines.append("            pratiyati 1")
+    lines.append("        }")
+    lines.append("        i = i + 1")
+    lines.append("    }")
+    check("arr[0]", 8, "MIN digit 0")
+    check("arr[18]", 9, "MIN digit 18")
+    check("bigint_cmp(arr, zero, 19)", 1, "MIN magnitude > 0")
+    check("bigint_to_int(arr, 19)", "minv", "MIN to_int wraps")
+    check("bigint_from_int(minv, arr, 18)", 0, "from_int MIN trunc")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "edge30_conv", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_edge30_cont(compiler, rng):
+    """R30 WS1: container edges — empty sort extrema, huge
+    capacities, zero/negative map capacity and key length."""
+    # Program 1: sort + array (small closure).
+    lines = ["ayojan sort", "ayojan array",
+             "mukhya() {",
+             "    vitti a = nirmmita(4 * 8)"]
+
+    def check1(expr, want, msg):
+        lines.append(f"    yadi (({expr}) != ({want})) {{")
+        lines.append(f'        likha("FAIL {msg}\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+
+    check1("min_of(a, 0)", 0, "min_of empty")
+    check1("max_of(a, 0)", 0, "max_of empty")
+    check1("min_of(a, 0 - 3)", 0, "min_of neg n")
+    check1("max_of(a, 0 - 3)", 0, "max_of neg n")
+    check1("array_new(1152921504606846976)", 0, "array_new huge")
+    check1("array_new(0 - 1)", 0, "array_new neg")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok1, out1 = run_sm(compiler, "edge30_cont1", "\n".join(lines))
+    if not (ok1 and out1 == "PASS"):
+        return False, out1
+    # Program 2: map + list (larger closure, kept separate).
+    lines = ["ayojan map", "ayojan list",
+             "mukhya() {",
+             "    vitti m = map_init(8)",
+             "    vitti k = nirmmita(8)"]
+    lines.append("    set_char(k, 0, 120)")
+
+    def check2(expr, want, msg):
+        lines.append(f"    yadi (({expr}) != ({want})) {{")
+        lines.append(f'        likha("FAIL {msg}\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+
+    check2("map_init(1152921504606846976)", 0, "map_init huge")
+    check2("list_init(1152921504606846976)", 0, "list_init huge")
+    check2("map_put(m, 0, k, 1, 42)", 0, "map_put cap 0")
+    check2("map_put(m, 8, k, 0 - 1, 42)", 0, "map_put neg keyn")
+    check2("map_find(m, 0, k, 1)", "0 - 1", "map_find cap 0")
+    check2("map_find(m, 8, k, 0 - 1)", "0 - 1", "map_find neg keyn")
+    check2("map_get(m, 0, k, 1)", "0 - 1", "map_get cap 0")
+    check2("map_contains(m, 0, k, 1)", 0, "map_contains cap 0")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok2, out2 = run_sm(compiler, "edge30_cont2", "\n".join(lines))
+    return ok2 and out2 == "PASS", out2
+
+
+def prop_edge30_float(compiler, rng):
+    """R30 WS1: float edges — madhava/sankhyiki sqrt, sin/cos
+    argument reduction, atan identities, fmt NaN, str_to_float
+    overflow, kalana zero-spacing."""
+    lines = ["ayojan madhava", "ayojan sankhyiki", "ayojan fmt",
+             "ayojan strconv", "ayojan kalana",
+             "mukhya() {",
+             "    vitti buf = nirmmita(40 * 8)",
+             "    vitti ok = nirmmita(8)",
+             "    kosh dasham xs[3]",
+             "    kosh dasham ys[3]"]
+
+    def check(expr, want, msg):
+        lines.append(f"    yadi (({expr}) != ({want})) {{")
+        lines.append(f'        likha("FAIL {msg}\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+
+    # madhava_sqrt: negative -> 0, 1e12 -> 1e6 exactly
+    check("madhava_sqrt(0 - 4.0)", "0.0", "sqrt -4")
+    check("madhava_sqrt(1000000000000.0)", "1000000.0", "sqrt 1e12")
+    check("sankhyiki_sqrt(1000000000000.0)", "1000000.0",
+          "sankhyiki sqrt 1e12")
+    # madhava_sqrt(1e300): square the result, ratio to 1e300 ~ 1
+    lines.append("    dasham e10 = 10000000000.0")
+    lines.append("    dasham e100 = e10 * e10 * e10 * e10 * e10")
+    lines.append("    e100 = e100 * e10 * e10 * e10 * e10 * e10")
+    lines.append("    dasham e300 = e100 * e100 * e100")
+    lines.append("    dasham r300 = madhava_sqrt(e300)")
+    lines.append("    dasham ratio = r300 * r300 / e300")
+    lines.append("    yadi (ratio < 0.999999) {")
+    lines.append('        likha("FAIL sqrt 1e300 low\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    lines.append("    yadi (ratio > 1.000001) {")
+    lines.append('        likha("FAIL sqrt 1e300 high\\n")')
+    lines.append("        pratiyati 1")
+    lines.append("    }")
+    # sin/cos with argument reduction, scaled by 1e6 and truncated
+    # to vitti (the check compares vitti to vitti: a dasham !=
+    # vitti comparison does not promote, so compare after the
+    # converting assignment).
+    lines.append("    vitti s100 = madhava_sin(100.0) * 1000000.0")
+    lines.append("    vitti c100 = madhava_cos(100.0) * 1000000.0")
+    lines.append("    vitti s10 = madhava_sin(10.0) * 1000000.0")
+    lines.append("    vitti c10 = madhava_cos(10.0) * 1000000.0")
+    check("s100", "0 - 506365", "sin 100 scaled")
+    check("c100", 862318, "cos 100 scaled")
+    check("s10", "0 - 544021", "sin 10 scaled")
+    check("c10", "0 - 839071", "cos 10 scaled")
+    # atan via halving + reciprocal, scaled by 1e6
+    lines.append("    vitti a1 = madhava_atan(1.0) * 1000000.0")
+    lines.append("    vitti a2 = madhava_atan(2.0) * 1000000.0")
+    lines.append("    vitti a10 = madhava_atan(10.0) * 1000000.0")
+    lines.append("    vitti an1 = madhava_atan(0 - 1.0) * 1000000.0")
+    check("a1", 785398, "atan 1 scaled")
+    check("a2", 1107148, "atan 2 scaled")
+    check("a10", 1471127, "atan 10 scaled")
+    check("an1", "0 - 785398", "atan -1 scaled")
+    # fmt_fixed NaN -> 0 (empty)
+    lines.append("    dasham nan = 0.0 / 0.0")
+    check("fmt_fixed(nan, 2, buf)", 0, "fmt_fixed NaN")
+    # str_to_float overflow: 9e308 and 2e308 exceed max double.
+    # NOTE: str_to_float reads a qword-CELL array (src[p]), not a
+    # byte-packed buffer — write cells, not set_char bytes.
+    for s, want, msg in [("9e308", 0, "9e308 overflow"),
+                         ("2e308", 0, "2e308 overflow"),
+                         ("1.7e308", 1, "1.7e308 ok")]:
+        for i, ch in enumerate(s):
+            lines.append(f"    buf[{i}] = {ord(ch)}")
+        lines.append(f"    vitti f = str_to_float(buf, {len(s)}, ok)")
+        check("ok[0]", want, msg)
+    # kalana: duplicate x -> slope/slope2 0.0 (was inf/blank)
+    lines.append("    kosh_push(xs, 1.0)")
+    lines.append("    kosh_push(xs, 1.0)")
+    lines.append("    kosh_push(xs, 2.0)")
+    lines.append("    kosh_push(ys, 3.0)")
+    lines.append("    kosh_push(ys, 5.0)")
+    lines.append("    kosh_push(ys, 7.0)")
+    check("slope(xs, ys, 0)", "0.0", "slope dup x")
+    check("slope2(xs, ys, 1)", "0.0", "slope2 dup x")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "edge30_float", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_chakravala30(compiler, rng):
+    """R30 WS5: the chakravala isqrt(MAX) candidate limitation, pinned.
+    For n = 9223372030926249006 (> MAX/2) the first step's
+    below-sqrt candidate m1 = 3037000496 is valid (|m1^2 - n| =
+    18222002990) but suboptimal: the above-sqrt candidate m2 =
+    3037000501 is strictly better (|m2^2 - n| = 12148001995),
+    yet m2 > isqrt(MAX), so m2*m2 overflows int64 and the code
+    cannot even evaluate it. It picks m1, and the iteration
+    ultimately returns 0. See tools/chakravala_model.py, which
+    reproduces the candidate table exactly."""
+    lines = ["ayojan ganita",
+             "mukhya() {",
+             "    vitti out = nirmmita(8 * 8)",
+             "    vitti r = chakravala(out, 9223372030926249006)",
+             "    yadi (r != 0) {",
+             '        likha("FAIL chakravala limit ret\\n")',
+             "        pratiyati 1",
+             "    }",
+             "    yadi (out[0] != 0) {",
+             '        likha("FAIL chakravala limit out0\\n")',
+             "        pratiyati 1",
+             "    }",
+             "    yadi (out[1] != 0) {",
+             '        likha("FAIL chakravala limit out1\\n")',
+             "        pratiyati 1",
+             "    }",
+             '    likha("PASS\\n")',
+             "}"]
+    ok, out = run_sm(compiler, "chakravala30", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
+def prop_result30(compiler, rng):
+    """R30 WS3: the three new Result producers (pow/fact/abs) and
+    the early-return chain: a failing step stops the chain, later
+    steps never run, and the failure propagates to out."""
+    lines = ["ayojan result",
+             "mukhya() {",
+             "    vitti r = nirmmita(2 * 8)",
+             "    vitti t = nirmmita(2 * 8)",
+             "    vitti minv = (0 - 9223372036854775807) - 1"]
+
+    def check(expr, want, msg):
+        lines.append(f"    yadi (({expr}) != ({want})) {{")
+        lines.append(f'        likha("FAIL {msg}\\n")')
+        lines.append("        pratiyati 1")
+        lines.append("    }")
+
+    # new producers: success and failure values
+    check("result_checked_pow(r, 2, 10)", 1, "pow ok")
+    check("result_value(r)", 1024, "pow value")
+    check("result_checked_pow(r, 2, 63)", 0, "pow overflow")
+    check("result_is_ok(r)", 0, "pow overflow ok")
+    check("result_checked_pow(r, 2, 0 - 1)", 0, "pow neg exp")
+    check("result_checked_fact(r, 20)", 1, "fact 20 ok")
+    check("result_value(r)", 2432902008176640000, "fact 20 value")
+    check("result_checked_fact(r, 21)", 0, "fact 21 overflow")
+    check("result_checked_fact(r, 0 - 1)", 0, "fact neg")
+    check("result_checked_abs(r, 0 - 5)", 1, "abs ok")
+    check("result_value(r)", 5, "abs value")
+    check("result_checked_abs(r, minv)", 0, "abs MIN")
+    # early-return chain, inline: (a + b) * c with a failing add.
+    # The mul step must not run: t keeps the add's failure, and
+    # out must be the propagated failure, not a mul result.
+    lines.append("    result_checked_add(t, 9223372036854775807, 1)")
+    lines.append("    yadi (result_is_ok(t) == 0) {")
+    lines.append("        result_err(r)")
+    lines.append("    } anyatra {")
+    lines.append("        result_checked_mul(r, result_value(t), 3)")
+    lines.append("    }")
+    check("result_is_ok(r)", 0, "chain add-fail propagates")
+    check("result_value(r)", 0, "chain add-fail value")
+    # chain with a succeeding add and a failing mul
+    lines.append("    result_checked_add(t, 10, 20)")
+    lines.append("    yadi (result_is_ok(t) == 0) {")
+    lines.append("        result_err(r)")
+    lines.append("    } anyatra {")
+    lines.append("        result_checked_mul(r, result_value(t), "
+                 "4611686018427387904)")
+    lines.append("    }")
+    check("result_is_ok(r)", 0, "chain mul-fail propagates")
+    # chain fully succeeding
+    lines.append("    result_checked_add(t, 10, 20)")
+    lines.append("    yadi (result_is_ok(t) == 0) {")
+    lines.append("        result_err(r)")
+    lines.append("    } anyatra {")
+    lines.append("        result_checked_mul(r, result_value(t), 3)")
+    lines.append("    }")
+    check("result_is_ok(r)", 1, "chain success ok")
+    check("result_value(r)", 90, "chain success value")
+    lines.append('    likha("PASS\\n")')
+    lines.append("}")
+    ok, out = run_sm(compiler, "result30", "\n".join(lines))
+    return ok and out == "PASS", out
+
+
 def main():
     compiler = None
     for i, a in enumerate(sys.argv):
@@ -4393,6 +4820,13 @@ def main():
         ("result type", prop_result29),
         ("serialisation roundtrip", prop_serial29),
         ("numeric contract gaps pinned", prop_numeric29),
+        ("edge30 int", prop_edge30_int),
+        ("edge30 text", prop_edge30_text),
+        ("edge30 conversion", prop_edge30_conv),
+        ("edge30 containers", prop_edge30_cont),
+        ("edge30 float", prop_edge30_float),
+        ("chakravala isqrt(MAX) limit", prop_chakravala30),
+        ("result producers + chain", prop_result30),
         ("ok convention", prop_ok_convention),
         ("numeric28", prop_numeric28),
     ]
