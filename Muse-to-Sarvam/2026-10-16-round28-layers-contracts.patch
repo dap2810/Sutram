@@ -1,0 +1,1210 @@
+--- /dev/null
++++ b/docs/ERROR-CONVENTION.md
+@@ -0,0 +1,95 @@
++# The error convention, stated
++
++Charter item 12 (explicit, convenient error handling) is partial:
++the checked library functions take an `ok` out-parameter and return a
++defined value on failure rather than wrapping — a real, tested
++convention. There is no result type, no propagation operator, and no
++exhaustiveness checking. This page states the convention as it exists
++today, audits every function that follows it, and names what is not
++covered.
++
++## The contract
++
++1. **The `ok` parameter is a 1-cell `pankti` (integer array) supplied
++   by the caller.** The function writes `ok[0] = 1` on success and
++   `ok[0] = 0` on failure, on **every** return path.
++2. **On failure the function returns a defined value, never a
++   wrapped one.** For integer functions the failure value is `0`;
++   for `str_to_float` and `bahu_mula` it is `0.0`.
++3. **The caller must check `ok[0]` before trusting the return.**
++   A return of `0` with `ok[0] = 0` means "failed"; a return of `0`
++   with `ok[0] = 1` means "the answer really is zero".
++4. **The caller owns the `ok` cell.** It is not allocated by the
++   function; the function only writes `ok[0]`. (The cell may be
++   shared across calls, but it is overwritten by each call.)
++5. **Saturating functions do not take `ok`.** `ganita_sat_*` always
++   succeeds by clamping, so there is nothing to report. Plain
++   functions (e.g. `math`'s `power`) wrap silently — that is their
++   documented contract; use the checked form when wrapping is not
++   acceptable.
++
++## The audit (R28 WS2)
++
++Every function with an `ok` parameter was read line by line. **No
++violations found**: all 18 set `ok` on every return path and return a
++defined failure value.
++
++| Function | Module | Failure value | Failure cases |
++|---|---|---|---|
++| `ganita_checked_add` | ganita | `0` | signed overflow |
++| `ganita_checked_sub` | ganita | `0` | signed overflow |
++| `ganita_checked_mul` | ganita | `0` | signed overflow, incl. `MIN * -1` |
++| `ganita_checked_div` | ganita | `0` | divisor 0; `MIN / -1` |
++| `ganita_checked_mod` | ganita | `0` | divisor 0; `MIN % -1` |
++| `ganita_checked_pow` | ganita | `0` | negative exponent; overflow |
++| `ganita_checked_fact` | ganita | `0` | negative `n`; overflow |
++| `ganita_checked_abs` | ganita | `0` | `MIN` (no positive form) |
++| `str_to_int` | strconv | `0` | empty, malformed, overflow (R26 guard) |
++| `str_to_int_base` | strconv | `0` | empty, bad digit, digit ≥ base, overflow |
++| `str_to_float` | strconv | `0.0` | empty, malformed, overflow (`> ~1.8e308`) |
++| `list_min` / `list_max` | list | `0` | empty list |
++| `stack_pop` / `stack_peek` | list | `0` | empty stack |
++| `queue_dequeue` / `queue_peek` | list | `0` | empty queue |
++| `bahu_mula` | kalana | `0.0` | no sign change on `[lo, hi]` |
++
++Notes:
++
++- `bahu_mula` is the one exception to "integer `ok`": its `ok` is a
++  `kosh dasham` (float array) holding `1.0` / `0.0`, because its
++  result is `dasham`. Same shape, float cell.
++- `str_to_float` returns `0.0` with `ok` **1** in two success cases:
++  the input really is zero (`"0"`, `"0e999"`), and extreme underflow
++  (`"1e-999"`, as `strtod`). Both are correct values, not failures.
++- `ganita_checked_pow` / `ganita_checked_fact` propagate the inner
++  `ganita_checked_mul` failure: the loop returns `0` with `ok` 0 as
++  soon as a multiplication overflows.
++
++## What is NOT covered by `ok`
++
++- **Sentinels.** Some functions signal "absent" with a documented
++  return value instead of `ok`: `map_get` returns `-1` for a missing
++  key (use `map_contains` to disambiguate; `map_get_default` takes an
++  explicit default), `str_find` / `strb_find` / `strb_find_char`
++  return `-1` for not found, `list_remove_at` returns `1` ok / `0`
++  out of bounds, `map_remove` / `set_remove` return `1` removed /
++  `0` absent.
++- **Defined total functions.** `bigint_divmod(a, 0)` returns
++  `q = 0, r = a`; `bigint_mod_2n(num, 0)` applies no reduction;
++  `lcm(0, 0)` is `0`; `ganita_isqrt` of a negative is `0`;
++  `fmt_digits_base` with base outside 2–36 returns `0` (empty).
++  These take no `ok` because they never fail — their edge behaviour
++  is defined in the function comment and in
++  `docs/NUMERIC-CONTRACT.md`.
++- **No result type, no propagation, no exhaustiveness.** The
++  charter names these as missing. Until they exist, the discipline
++  is: check `ok[0]` after every checked call; never read a checked
++  return without it.
++
++## Test pinning
++
++`prop_ok_convention` asserts the container half of this contract
++(empty → return 0 + `ok` 0; non-empty → `ok` 1 + correct value for
++`stack_pop`/`stack_peek`/`queue_dequeue`/`queue_peek`/`list_min`/
++`list_max`). The `ganita` and `strconv` halves are pinned by
++`prop_ganita_checked_*`, `prop_ganita_sat`, `prop_safety25`,
++`prop_safety26`, `prop_safety27`, and `prop_breadth26`.
+--- a/docs/LIBRARY-BOUNDARY.md
++++ b/docs/LIBRARY-BOUNDARY.md
+@@ -58,7 +58,33 @@
+   (`list_map`, `list_filter`) are impossible without callbacks and
+   are not faked with macros.
+ 
+-## What the library *does* do
++## What the library does *not* promise (R28 extension)
++
++Beyond the missing features above, the library does not claim:
++
++- **Memory safety.** Memory is manual; there is no ownership, no
++  borrow checking, and no unsafe boundary (charter item 11, not
++  started). A program that frees or double-uses storage is a caller
++  bug the library cannot catch.
++- **A result type.** Errors are the `ok` out-parameter convention
++  (see `docs/ERROR-CONVENTION.md`), not a type the compiler checks.
++  Nothing forces the caller to check `ok[0]`.
++- **Formal type contracts.** Integer sizes, conversions, overflow,
++  and comparison are defined in `docs/NUMERIC-CONTRACT.md` and
++  pinned by tests, but there is no formal type-contract system in
++  the compiler (charter item 10, partial).
++- **A formal specification.** Behaviour is defined in these docs
++  and pinned by the proof suites, but there is no formal written
++  specification yet (charter item 20, partial).
++
++## Layers (R28 extension)
++
++The library is split into **core** (no allocator, no OS),
++**alloc** (needs a heap), and **std** (OS services — currently
++empty). Each module's header carries a machine-readable
++`# layer:` marker, and `tools/check_layers.py` verifies that no
++core module depends upward. See `docs/LIBRARY-LAYERS.md` for the
++per-module table.
+ 
+ Pure computation over values the caller provides: containers (`map`,
+ `set`, `list`, `queue`, `stack`), text and bytes (`string`, `strb`,
+--- /dev/null
++++ b/docs/LIBRARY-LAYERS.md
+@@ -0,0 +1,72 @@
++# Library layers
++
++Charter item 14 (one language with layered libraries): **core** (no OS
++or allocator dependency) · **alloc** (needs a heap) · **std** (OS
++services). This page marks every module in `lib/` with its layer and
++the reason. The marker is machine-readable — each module's header
++carries `# layer: core|alloc|std` — and `tools/check_layers.py`
++verifies the claim: a core module must not call `nirmmita` and must
++not import an alloc/std module; an alloc module must not import a
++std module. A layer claim nobody can check is decoration.
++
++```
++$ python3 tools/check_layers.py
++layers OK: 12 core, 9 alloc, 0 std
++```
++
++## The table
++
++| Module | Layer | Reason |
++|---|---|---|
++| `array` | alloc | `array_new` allocates; every array is heap storage. |
++| `baseconv` | alloc | Temp buffers (`nirmmita`) for digit reversal. |
++| `bigint` | alloc | Temp buffers in `bigint_mod_2n` / `bigint_powmod`. |
++| `chandas` | core | Pure arithmetic on caller values; no allocation, no imports. |
++| `fmt` | alloc | Temp buffers for digit reversal and `fmt_group_int`. |
++| `ganita` | core | Pure checked/saturating arithmetic; `ok` arrays are caller-provided. |
++| `hash` | core | Pure FNV-1a arithmetic; no allocation. |
++| `kalana` | core | Numerical methods on caller arrays; `kosh_len` only, no allocation. |
++| `list` | alloc | `list_new` allocates. Imports `sort` (alloc). |
++| `madhava` | core | Pure series arithmetic; no allocation, no imports. |
++| `map` | alloc | Table allocation. Imports `hash` + `strb` (both core). |
++| `math` | core | Pure arithmetic; no allocation, no imports. |
++| `num` | core | Pure arithmetic; no allocation, no imports. |
++| `samanvaya` | core | Pure arithmetic on caller arrays; `kosh_len` only. |
++| `sankhyiki` | core | Statistics on caller arrays; `kosh_len` only. |
++| `set` | alloc | Table allocation. Imports `map` (alloc) + `strb` (core). |
++| `sort` | alloc | Merge-sort temp buffer. |
++| `strb` | core | Byte-string ops on caller-provided buffers; no allocation. |
++| `strconv` | alloc | Temp buffers for digit reversal. |
++| `string` | core | Cell-array ops on caller-provided buffers; no allocation. |
++| `util` | core | Pure arithmetic helpers; no allocation, no imports. |
++
++## Dependency edges
++
++Only three modules import anything (`ayojan` is textual inclusion, so
++the import list is the complete dependency list):
++
++- `list` → `sort` (alloc → alloc: allowed)
++- `map` → `hash` (core), `strb` (core): alloc → core is downward, allowed
++- `set` → `map` (alloc), `strb` (core): allowed
++
++No core module imports anything, so no core module depends upward.
++The full import graph is acyclic.
++
++## Why `std` is empty
++
++No module is `std` because the library deliberately has no OS
++services — no file I/O, networking, clocks, or processes (see
++`docs/LIBRARY-BOUNDARY.md`). If an OS-service module is ever added,
++it must be marked `std`, and the checker will then enforce that no
++core or alloc module imports it.
++
++## Notes
++
++- `kosh_len` (used by `kalana`, `samanvaya`, `sankhyiki`) is a
++  language builtin for array length, not an allocator or OS service;
++  it does not change a module's layer.
++- `nirmmita` is the allocator. A module that calls it — even only
++  for a temporary buffer (`fmt`, `strconv`, `bigint`, `baseconv`) —
++  is `alloc`, because it cannot run without a heap.
++- The layer split is about *dependencies*, not importance: `ganita`
++  is core and is the safety-critical module.
+--- /dev/null
++++ b/docs/NUMERIC-CONTRACT.md
+@@ -0,0 +1,108 @@
++# The numeric contract, tabulated
++
++Charter item 10 (strong static typing) requires integer sizes,
++conversions, overflow, initialisation and comparison to be defined
++precisely. This page tabulates, for each numeric operation across
++`ganita`, `math`, `fmt` and `strconv`: the operand types, the
++behaviour on overflow, and whether a checked and/or saturating form
++exists. Operations whose behaviour is **not** pinned by a test are
++marked — that gap list is as valuable as the table.
++
++## Ground rules (whole library)
++
++- Integers are signed 64-bit (`vitti`): range
++  `[-9223372036854775808, 9223372036854775807]` (`MIN`, `MAX`).
++- Plain arithmetic (`+`, `-`, `*`, `/`, `%`) wraps silently on
++  overflow, as in C. Division by zero traps (SIGFPE) at the hardware
++  level — library functions must never let it happen (see `lcm`).
++- `dasham` is the float type. `str_to_float` overflows only past
++  `~1.8e308`.
++- "Pinned" means a property or golden asserts the stated behaviour.
++  Property names are `tools/proof_props.py` entries unless noted.
++
++## `ganita` — checked and saturating arithmetic (R18)
++
++| Operation | Operands | Overflow | Checked | Saturating | Pinned by |
++|---|---|---|---|---|---|
++| `ganita_checked_add/sub/mul` | `vitti, vitti` | returns `0`, `ok` 0 | itself | `ganita_sat_add/sub/mul` | `prop_ganita_checked_add_sub`, `prop_ganita_checked_mul`, `prop_safety25/26/27` |
++| `ganita_checked_div/mod` | `vitti, vitti` | divisor 0 or `MIN / -1` → `0`, `ok` 0 | itself | `ganita_sat_div/mod` (`MIN/-1` → `MAX` / `0`) | `prop_ganita_checked_divmod`, `prop_safety25/26` |
++| `ganita_checked_pow` | `vitti, vitti` | negative exp or overflow → `0`, `ok` 0 | itself | `ganita_sat_pow` (clamp) | `prop_safety25/26` |
++| `ganita_checked_fact` | `vitti` | negative `n` or overflow → `0`, `ok` 0 | itself | `ganita_sat_fact` (clamp) | `prop_safety25/26` |
++| `ganita_checked_abs` | `vitti` | `MIN` → `0`, `ok` 0 | itself | `ganita_sat_abs` (`MIN` → `MAX`) | `prop_safety25/26` |
++| `ganita_abs` | `vitti` | **wraps**: `MIN` → `MIN` | `ganita_checked_abs` | `ganita_sat_abs` | `prop_numeric28` (pins the wrap) |
++| `ganita_isqrt` | `vitti` | negative → `0`; binary search, no overflow | — | — | `prop_numeric28` (`MAX` → `3037000499`), golden `numeric_hangfix` |
++| `kuttaka`, `chakravala`, `samasa`, `brahmagupta_area` | mixed | **wraps** (plain arithmetic; no checked forms) | — | — | goldens only (no overflow cases) — **GAP** |
++
++## `math` — plain arithmetic (wraps by design)
++
++| Operation | Operands | Overflow / edge | Checked | Saturating | Pinned by |
++|---|---|---|---|---|---|
++| `sq`, `square`, `cube`, `double`, `triple`, `inc` | `vitti` | **wraps** | `ganita_checked_mul` (for products) | `ganita_sat_mul` | goldens (small values only) — **GAP** (no wrap cases) |
++| `abs_val` | `vitti` | **wraps**: `MIN` → `MIN` | `ganita_checked_abs` | `ganita_sat_abs` | `prop_numeric28` (pins the wrap) |
++| `min2`, `max2` | `vitti, vitti` | n/a | — | — | goldens |
++| `gcd` | `vitti, vitti` | non-negative result; `gcd(0,0)=0`; `gcd(MIN,0)=MIN` (wrapping abs) | — | — | `prop_math_gcd`, `prop_math_gcd_lcm`, `prop_numeric28`, golden `math_gcd_lcm_edge` |
++| `lcm` | `vitti, vitti` | non-negative result; `lcm(0,0)=0`; `lcm(MIN,2)=MIN` (wrapping) | — | — | `prop_math_gcd_lcm`, `prop_numeric28`, golden `math_gcd_lcm_edge` |
++| `power` | `vitti, vitti` | **wraps**; `e <= 0` → `1` | `ganita_checked_pow` | `ganita_sat_pow` | `prop_numeric28` (edges); goldens (`2^10`, `3^0`, `5^3`) — **GAP** (no wrap case) |
++| `fact` | `vitti` | **wraps** for `n >= 21`; `n < 2` → `1` | `ganita_checked_fact` | `ganita_sat_fact` | `prop_numeric28` (edges); goldens (`0!`, `1!`, `5!`) — **GAP** (no wrap case) |
++| `is_prime` | `vitti` | n/a; `n < 2` → `0` | — | — | `prop_numeric28` (edges + `is_prime(97)`); one-off: `is_prime(9223372036854775783) = 1` (largest 63-bit prime, verified vs Python Miller-Rabin) |
++| `sum_to` | `vitti` | **wraps** for large `n`; `n < 1` → `0` | — | — | `prop_numeric28` (edges) — **GAP** (no wrap case) |
++| `bit_count` | `vitti` | defined for `n >= 0`; negative `n` → `0` (not two's-complement popcount) | — | — | `prop_numeric28` (pins it) |
++| `math_rand` | 1-cell state | wraps by design (LCG) | — | — | `prop_breadth26` |
++| `math_clamp` | `vitti, vitti, vitti` | n/a; requires `lo <= hi` (`lo > hi` → returns `lo`) | — | — | `prop_breadth26` |
++
++## `strconv` — conversions
++
++| Operation | Operands | Overflow / edge | Checked | Saturating | Pinned by |
++|---|---|---|---|---|---|
++| `str_to_int` | bytes, `vitti` | malformed/overflow → `0`, `ok` 0 (R26 guard) | itself (`ok`) | — (use `ganita_sat_*` on the parsed value) | `prop_strconv_roundtrip`, `prop_safety27`, golden `strconv_overflow` |
++| `str_to_int_base` | bytes, `vitti`, base | bad digit, digit ≥ base, overflow → `0`, `ok` 0 | itself (`ok`) | — | `prop_strconv_base_roundtrip`, `prop_safety27`, golden `strconv_overflow` |
++| `str_to_float` | bytes, `vitti` | malformed/overflow → `0.0`, `ok` 0; underflow → `0.0`, `ok` 1 | itself (`ok`) | — | `prop_breadth26` |
++| `int_to_str` | `vitti` | n/a; `MIN` → `"-9223372036854775808"` (R26 fix) | — | — | `prop_min26`, `prop_safety27`, golden `strconv_overflow` |
++| `int_to_base_str` | `vitti`, base | requires `n >= 0`; negative → `0` (empty) | — | — | `prop_numeric28` (pins it) |
++| `pad_left` | bytes | n/a (padding) | — | — | `prop_strconv_pad_left` |
++
++## `fmt` — formatting
++
++| Operation | Operands | Overflow / edge | Checked | Saturating | Pinned by |
++|---|---|---|---|---|---|
++| `fmt_int_base` / `fmt_int_flags` | `vitti`, base | n/a; `MIN` handled (R26 fix) | — | — | `prop_fmt_int_base_roundtrip`, `prop_min26` |
++| `fmt_digits` / `fmt_digits_base` | `vitti`, base | base `< 2` or `> 36` → `0` (empty); `MIN` handled | — | — | `prop_min26`, `prop_numeric28` (base limits) |
++| `fmt_dec/hex/hex_upper/oct/bin` | `vitti` | n/a (fixed-base forms of `fmt_int_base`) | — | — | `prop_fmt_int_base_roundtrip` |
++| `fmt_group*` / `fmt_group_int` | bytes / `vitti` | n/a; grouping is digit-preserving | — | — | `prop_fmt_group_digits`, golden `fmt_group` |
++| `fmt_fixed` / `fmt_fixed_signed` | `dasham`, places | requires `\|x\| * 10^places` fits in int64 (documented); overflow is **not** guarded | — | — | `prop_fmt_fixed` (in-range values) — **GAP** (overflow input not pinned) |
++| `fmt_signed` / `fmt_sign_char` | `vitti` | n/a | — | — | `prop_fmt_signed` |
++| `fmt_pad_left/right/center` | bytes | n/a (padding) | — | — | `prop_fmt_pad_content` |
++
++## `num` — found by the same sweep (R28)
++
++Not in the R28 WS3 module list, but the same overflow-hang pattern
++(`d * d <= x`) was found there by grep and fixed in this round.
++
++| Operation | Operands | Overflow / edge | Pinned by |
++|---|---|---|---|
++| `is_perfect` | `vitti` | `n < 2` → `0`; division bound (the old `d * d` loop hung near MAX) | `prop_numeric28`, golden `numeric_hangfix` |
++| `collatz_steps` | `vitti` | `-1` means "does not reach 1": `n < 1`, or the `3x+1` step would overflow int64 (`n > 3074457345618258602` and odd) | `prop_numeric28`, golden `numeric_hangfix` |
++| `fib` | `vitti` | **wraps** for large `n` (loop is bounded by `n`, so it terminates); `n < 2` → `n` | goldens (small values) — **GAP** (no wrap case) |
++| `digit_count`, `digit_sum`, `reverse_num`, `is_palindrome`, `clamp`, `is_even`, `is_odd` | `vitti` | `reverse_num` **wraps** for reversals past MAX; the rest are exact | goldens — **GAP** (`reverse_num` wrap not pinned) |
++
++## Gap list (behaviour not pinned by a test)
++
++1. `ganita` classical functions (`kuttaka`, `chakravala`, `samasa`,
++   `brahmagupta_area`): wrapping on overflow is not pinned. Goldens
++   cover small values only.
++2. `math` plain `sq`/`square`/`cube`/`double`/`triple`/`inc`,
++   `power`, `fact`, `sum_to`: wrapping on overflow is not pinned.
++   Goldens cover small values only. (The checked/sat forms in
++   `ganita` are fully pinned — use them when wrapping is not
++   acceptable.)
++3. `fmt_fixed`: behaviour when `|x| * 10^places` overflows int64 is
++   documented as a requirement but not pinned by a test (no golden
++   asserts what happens on overflow input).
++4. `num` `fib`, `reverse_num`: wrapping on overflow is not pinned.
++   Goldens cover small values only.
++
++None of these is a crash: the plain functions wrap deterministically,
++and the crash/hang-class inputs (`lcm(0,0)`, `bigint_divmod` by zero,
++`ganita_isqrt`/`is_prime`/`is_perfect` near MAX, `collatz_steps`
++overflow) were fixed in R27/R28 and are pinned. The gaps are
++contract coverage, not defects.
+--- a/docs/PROPERTY-NET.md
++++ b/docs/PROPERTY-NET.md
+@@ -1,8 +1,9 @@
+ # The property suite as a regression net
+ 
+-`tools/proof_props.py` holds **74 properties** (69 at the start of Round 26,
+-plus `safety26 interaction`, `breadth26`, and `min26` added in R26, and
+-`safety27 cross-module` and `bigint divzero` added in R27). For each one,
++`tools/proof_props.py` holds **76 properties** (69 at the start of Round 26,
++plus `safety26 interaction`, `breadth26`, and `min26` added in R26,
++`safety27 cross-module` and `bigint divzero` added in R27, and
++`ok convention` and `numeric28` added in R28). For each one,
+ this file states in one line **what would have to break for it to fail**.
+ Method (R26 WS2): every property's assertion was read, and the four most
+ suspicious ones (`fnv1a_deterministic`, `fnv1a_avalanche`, `map_collision`,
+@@ -10,7 +11,7 @@
+ 
+ ## Verdict
+ 
+-**All 74 are genuine, falsifiable tests. None removed.** Every property
++**All 76 are genuine, falsifiable tests. None removed.** Every property
+ compares its subject against an independent oracle (Python arithmetic, a
+ second implementation, or an invariant the function itself must uphold),
+ so each has a concrete failure mode. Two caveats are recorded below; neither
+@@ -103,6 +104,8 @@
+ | 72 | min26 | `int_to_str(MIN)` not "-9223372036854775808", `fmt_digits_base` mishandling negatives, or `fmt_int_base`/`fmt_int_flags` wrong on MIN in some base |
+ | 73 | safety27 cross-module | `strconv`'s parse guards and `ganita`'s checked forms disagreeing on the same magnitude (one accepts what the other rejects), or either returning a wrapped value on overflow |
+ | 74 | bigint divzero | `bigint_divmod` by zero hanging or returning anything but `q=0, r=a`, or `bigint_powmod` with mod 0 hanging or not returning the unreduced power |
++| 75 | ok convention | an `ok`-param container function failing to set `ok` on some path, or returning anything but the defined failure value `0` on empty |
++| 76 | numeric28 | `gcd`/`lcm` returning a negative, `lcm(0,0)` trapping, `power`/`fact`/`sum_to` edges wrong, `abs_val(MIN)` not wrapping, `bit_count` negative not `0`, `isqrt`/`is_prime`/`is_perfect`/`collatz` domain limits wrong |
+ 
+ ## R27: is there a property that has never failed and never could?
+ 
+--- a/docs/sutram-stdlib.html
++++ b/docs/sutram-stdlib.html
+@@ -44,7 +44,7 @@
+ <li><a href="#util"><code>util</code></a> — 7 functions</li>
+ </ul>
+ <h2 id="array"><code>array</code></h2>
+-<p class="mod-desc">Real functions over raw memory (nirmmita/likh8/pad8). Each element is 8 bytes (one integer). The caller tracks the length; array_new only allocates. Safe variants take the element count and return 0 / do nothing on out-of-bounds access.</p>
++<p class="mod-desc">layer: alloc Real functions over raw memory (nirmmita/likh8/pad8). Each element is 8 bytes (one integer). The caller tracks the length; array_new only allocates. Safe variants take the element count and return 0 / do nothing on out-of-bounds access.</p>
+ <table>
+ <tr><th>Function</th><th>Description</th></tr>
+ <tr><td><code>array_new(n)</code></td><td></td></tr>
+@@ -57,14 +57,14 @@
+ <tr><td><code>array_get_safe(arr, i, n)</code></td><td></td></tr>
+ </table>
+ <h2 id="baseconv"><code>baseconv</code></h2>
+-<p class="mod-desc">Convert between base-10 bigint digit arrays and digit-value arrays in base 2, 8, 10, 16. The intermediate is a pankti of integer digit values (0..15), most significant first — not a byte string, to avoid packing issues. Round-trip property: from_digits(to_digits(x, b), b) == x for every base. bigint_to_digits(x, n, base, out) — render n-digit bigint x in `base` into pankti `out` as digit values (MSB first). Returns digit count. Caller allocates out with &gt;= 70 cells.</p>
++<p class="mod-desc">layer: alloc Convert between base-10 bigint digit arrays and digit-value arrays in base 2, 8, 10, 16. The intermediate is a pankti of integer digit values (0..15), most significant first — not a byte string, to avoid packing issues. Round-trip property: from_digits(to_digits(x, b), b) == x for every base. bigint_to_digits(x, n, base, out) — render n-digit bigint x in `base` into pankti `out` as digit values (MSB first). Returns digit count. Caller allocates out with &gt;= 70 cells.</p>
+ <table>
+ <tr><th>Function</th><th>Description</th></tr>
+ <tr><td><code>bigint_to_digits(x, n, base, out)</code></td><td></td></tr>
+ <tr><td><code>bigint_from_digits(d, count, base, x, n)</code></td><td>bigint_from_digits(d, count, base, x, n) — parse `count` digit values from pankti `d` (MSB first) in `base` into n-digit bigint x. Returns 1 on success, 0 if a digit &gt;= base.</td></tr>
+ </table>
+ <h2 id="bigint"><code>bigint</code></h2>
+-<p class="mod-desc">Arbitrary-precision integers as arrays of base-10 digits (0-9), least-significant digit first. All arrays are fixed size n; the caller allocates via nirmmita(n * 8) and tracks the size. Convention: bigint_mul requires res to have 2n digits (product of two n-digit numbers can need 2n digits). All other functions use n-digit arrays. Digits must be 0-9; behavior is undefined for out-of-range digits. bigint_zero(arr, n) — set all n digits to 0</p>
++<p class="mod-desc">layer: alloc Arbitrary-precision integers as arrays of base-10 digits (0-9), least-significant digit first. All arrays are fixed size n; the caller allocates via nirmmita(n * 8) and tracks the size. Convention: bigint_mul requires res to have 2n digits (product of two n-digit numbers can need 2n digits). All other functions use n-digit arrays. Digits must be 0-9; behavior is undefined for out-of-range digits. bigint_zero(arr, n) — set all n digits to 0</p>
+ <table>
+ <tr><th>Function</th><th>Description</th></tr>
+ <tr><td><code>bigint_zero(arr, n)</code></td><td></td></tr>
+@@ -81,7 +81,7 @@
+ <tr><td><code>bigint_powmod(base, exp, mod, res, n)</code></td><td>bigint_powmod(base, exp, mod, res, n) — res = base^exp mod mod exp is a plain int and must be &gt;= 0 (a negative exp returns 1: the loop never runs). mod == 0 means &quot;no reduction&quot; (see bigint_mod_2n), so the result is base^exp truncated to n digits. res is n-digit.</td></tr>
+ </table>
+ <h2 id="chandas"><code>chandas</code></h2>
+-<p class="mod-desc">After Pingala&#x27;s Chandahśāstra (~2nd c. BCE). Sanskrit metre is built from two syllable weights — laghu (light) and guru (heavy) — so an n-syllable metre is a sequence of two choices: there are exactly 2^n of them. Pingala gave the doubling rule for 2^n, the Meru-prastāra (Pascal&#x27;s triangle) to count how many metres have exactly k guru syllables, and the mātrā-meru, which generates the Fibonacci numbers. A pattern is carried as an integer bitmask: bit i (LSB = first syllable) is 1 for guru, 0 for laghu. The integer value IS the pattern&#x27;s index in the prastāra.</p>
++<p class="mod-desc">layer: core After Pingala&#x27;s Chandahśāstra (~2nd c. BCE). Sanskrit metre is built from two syllable weights — laghu (light) and guru (heavy) — so an n-syllable metre is a sequence of two choices: there are exactly 2^n of them. Pingala gave the doubling rule for 2^n, the Meru-prastāra (Pascal&#x27;s triangle) to count how many metres have exactly k guru syllables, and the mātrā-meru, which generates the Fibonacci numbers. A pattern is carried as an integer bitmask: bit i (LSB = first syllable) is 1 for guru, 0 for laghu. The integer value IS the pattern&#x27;s index in the prastāra.</p>
+ <table>
+ <tr><th>Function</th><th>Description</th></tr>
+ <tr><td><code>dviguna(n)</code></td><td></td></tr>
+@@ -92,7 +92,7 @@
+ <tr><td><code>meru_pankti(a, n)</code></td><td></td></tr>
+ </table>
+ <h2 id="fmt"><code>fmt</code></h2>
+-<p class="mod-desc">Number and string formatting on BYTE strings (packed bytes, explicit lengths, `strb` idiom): every function writes packed bytes into `out` with a 0 terminator and returns the byte count. This is the modern idiom; the older `lib/strconv.smlib` works on CELL arrays (pankti of char codes) and has no width/alignment/grouping/fixed-decimal/sign surface — fmt is the formatting module, strconv is the conversion module. Do not mix the representations: fmt outputs are bytes (read with char_at), strconv outputs are cells (read with [i]). Defaults, stated once here and at each function: - Bases: no prefix unless the _pre / flags form is used. - Grouping: fmt_group defaults to INDIAN grouping (12,34,567). - Rounding: fmt_fixed rounds HALF AWAY FROM ZERO (2.5 -&gt; 3, -2.5 -&gt; -3). - Centre padding: the extra pad byte goes RIGHT. - INT64_MIN (-2^63) is handled: |MIN| = 2^63 does not fit in int64, so the digit writers split it (hi/lo) instead of negating it. Every int64 value works. - fmt_fixed is exact while |x| * 10^places &lt; 2^52; beyond that the +0.5 rounding step is below float precision. |x| * 10^places must fit in int64. places is clamped to 0..9. All signatures stay within the 6-argument cap. --- integer digits (private helper) --- fmt_digits(v, out) — write the decimal digits of |v| (no sign) into out as packed bytes. Returns the digit count. Internal; the public formatters below build on it.</p>
++<p class="mod-desc">layer: alloc Number and string formatting on BYTE strings (packed bytes, explicit lengths, `strb` idiom): every function writes packed bytes into `out` with a 0 terminator and returns the byte count. This is the modern idiom; the older `lib/strconv.smlib` works on CELL arrays (pankti of char codes) and has no width/alignment/grouping/fixed-decimal/sign surface — fmt is the formatting module, strconv is the conversion module. Do not mix the representations: fmt outputs are bytes (read with char_at), strconv outputs are cells (read with [i]). Defaults, stated once here and at each function: - Bases: no prefix unless the _pre / flags form is used. - Grouping: fmt_group defaults to INDIAN grouping (12,34,567). - Rounding: fmt_fixed rounds HALF AWAY FROM ZERO (2.5 -&gt; 3, -2.5 -&gt; -3). - Centre padding: the extra pad byte goes RIGHT. - INT64_MIN (-2^63) is handled: |MIN| = 2^63 does not fit in int64, so the digit writers split it (hi/lo) instead of negating it. Every int64 value works. - fmt_fixed is exact while |x| * 10^places &lt; 2^52; beyond that the +0.5 rounding step is below float precision. |x| * 10^places must fit in int64. places is clamped to 0..9. All signatures stay within the 6-argument cap. --- integer digits (private helper) --- fmt_digits(v, out) — write the decimal digits of |v| (no sign) into out as packed bytes. Returns the digit count. Internal; the public formatters below build on it.</p>
+ <table>
+ <tr><th>Function</th><th>Description</th></tr>
+ <tr><td><code>fmt_digits(v, out)</code></td><td></td></tr>
+@@ -120,7 +120,7 @@
+ <tr><td><code>fmt_sign_char(v, signch, out)</code></td><td>fmt_sign_char(v, signch, out) — `signch` (a byte value, e.g. 32 for a blank, 43 for &#x27;+&#x27;) in place of &#x27;+&#x27; for non-negative values; negatives always get &#x27;-&#x27;.</td></tr>
+ </table>
+ <h2 id="ganita"><code>ganita</code></h2>
+-<p class="mod-desc">After Aryabhata&#x27;s Kuttaka (~499 CE) and the Chakravala of Jayadeva and Bhaskara II (~1150 CE). KUTTAKA (&quot;the pulveriser&quot;) solves the linear indeterminate equation ax + by = c. It is the ancestor of the extended Euclidean algorithm. CHAKRAVALA (&quot;the wheel&quot;) solves the quadratic indeterminate equation x^2 - N*y^2 = 1, known in Europe as Pell&#x27;s equation. It was the first complete method for it, and for N = 61 it gives x = 1766319049, y = 226153980 - a case Europe first solved in 1657. CHECKED / SATURATING ARITHMETIC (R18) lives here too: ganita is the arithmetic module. See the notes above ganita_checked_add. kuttaka(a, b, c) -&gt; x such that a*x is congruent to c (mod b). Requires gcd(a, b) to divide c. Returns x (a particular solution).</p>
++<p class="mod-desc">layer: core After Aryabhata&#x27;s Kuttaka (~499 CE) and the Chakravala of Jayadeva and Bhaskara II (~1150 CE). KUTTAKA (&quot;the pulveriser&quot;) solves the linear indeterminate equation ax + by = c. It is the ancestor of the extended Euclidean algorithm. CHAKRAVALA (&quot;the wheel&quot;) solves the quadratic indeterminate equation x^2 - N*y^2 = 1, known in Europe as Pell&#x27;s equation. It was the first complete method for it, and for N = 61 it gives x = 1766319049, y = 226153980 - a case Europe first solved in 1657. CHECKED / SATURATING ARITHMETIC (R18) lives here too: ganita is the arithmetic module. See the notes above ganita_checked_add. kuttaka(a, b, c) -&gt; x such that a*x is congruent to c (mod b). Requires gcd(a, b) to divide c. Returns x (a particular solution).</p>
+ <table>
+ <tr><th>Function</th><th>Description</th></tr>
+ <tr><td><code>kuttaka(a, b, c)</code></td><td></td></tr>
+@@ -147,14 +147,14 @@
+ <tr><td><code>ganita_sat_fact(n)</code></td><td>ganita_sat_fact(n) — n!, saturating (WS3, R21): on overflow returns INT64_MAX (factorials are positive, so saturation is always MAX). n &lt; 0 returns 0 (no integer factorial; the saturating form has no ok channel, so 0 is the documented sentinel). 0! = 1. 20! is the largest that fits; 21! saturates. Exits early once saturated (factorials only grow, so a saturated result stays saturated).</td></tr>
+ </table>
+ <h2 id="hash"><code>hash</code></h2>
+-<p class="mod-desc">FNV-1a (Fowler–Noll–Vo) 32-bit hash. Deterministic, fast, good distribution for non-cryptographic use (hash tables, checksums, dedup keys). Reference: http://www.isthe.com/chongo/tech/comp/fnv/ offset_basis = 2166136261 prime        = 16777619 for each byte b: hash = (hash XOR b) * prime  (mod 2^32) fnv1a(s, len) — FNV-1a 32-bit hash of first `len` chars of pankti `s`. Returns an unsigned 32-bit value (may print as negative via likha).</p>
++<p class="mod-desc">layer: core FNV-1a (Fowler–Noll–Vo) 32-bit hash. Deterministic, fast, good distribution for non-cryptographic use (hash tables, checksums, dedup keys). Reference: http://www.isthe.com/chongo/tech/comp/fnv/ offset_basis = 2166136261 prime        = 16777619 for each byte b: hash = (hash XOR b) * prime  (mod 2^32) fnv1a(s, len) — FNV-1a 32-bit hash of first `len` chars of pankti `s`. Returns an unsigned 32-bit value (may print as negative via likha).</p>
+ <table>
+ <tr><th>Function</th><th>Description</th></tr>
+ <tr><td><code>fnv1a(s, len)</code></td><td></td></tr>
+ <tr><td><code>fnv1a_str(s)</code></td><td>fnv1a_str(s) — FNV-1a of NUL-terminated pankti `s` (uses vartani_len).</td></tr>
+ </table>
+ <h2 id="kalana"><code>kalana</code></h2>
+-<p class="mod-desc">Built on typed `kosh dasham` parameters (T18) and the float fast paths (F1/F2/FG1/FC1). Every function READS its kosh parameters only — never `kosh_push` on a parameter, which the compiler deliberately rejects because the pointer is passed by value. Sutram has no first-class functions, so anything that would take a callback instead takes either SAMPLES (for integration/differentiation) or POLYNOMIAL COEFFICIENTS (for root finding). Coefficients are in ascending order: c[0] + c[1]*x + c[2]*x^2 + ... --------------------------------------------------------------- Integration over sampled data --------------------------------------------------------------- Trapezoidal rule. xs and ys are sample points and values; uses the shorter length.</p>
++<p class="mod-desc">layer: core Built on typed `kosh dasham` parameters (T18) and the float fast paths (F1/F2/FG1/FC1). Every function READS its kosh parameters only — never `kosh_push` on a parameter, which the compiler deliberately rejects because the pointer is passed by value. Sutram has no first-class functions, so anything that would take a callback instead takes either SAMPLES (for integration/differentiation) or POLYNOMIAL COEFFICIENTS (for root finding). Coefficients are in ascending order: c[0] + c[1]*x + c[2]*x^2 + ... --------------------------------------------------------------- Integration over sampled data --------------------------------------------------------------- Trapezoidal rule. xs and ys are sample points and values; uses the shorter length.</p>
+ <table>
+ <tr><th>Function</th><th>Description</th></tr>
+ <tr><td><code>trapezoid(kosh dasham xs, kosh dasham ys)</code></td><td></td></tr>
+@@ -165,7 +165,7 @@
+ <tr><td><code>bahu_mula(kosh dasham c, dasham lo, dasham hi, kosh dasham ok)</code></td><td>Bisection root of a polynomial on [lo, hi]. CONTRACT: `ok` must already contain ONE element (call kosh_push(ok, 0.0) first). A kosh&#x27;s capacity is not its length, so ok[0] is out of bounds until an element exists. Requires a sign change across the interval, which is checked and reported by returning a NaN-like sentinel of 0.0 with ok=0. ok is returned through a one-element kosh so the caller can tell success from failure.</td></tr>
+ </table>
+ <h2 id="list"><code>list</code></h2>
+-<p class="mod-desc">Representation decision — QWORD CELLS (the pankti/kosh convention), not byte strings. Reasoning: - A list is the growable analogue of pankti: same element model (one qword per element), same indexing, same literal passing (list_push(l, 42)). A byte-string list would be a string-list only, and would force every element through copy + length bookkeeping. Users with byte strings can store POINTERS (list_push(l, ptr)) — a qword list of pointers is the escape hatch, and it is the caller&#x27;s job to keep the pointed-to buffers alive. - No mixing: every element in this module is a qword. Do not pass byte-string buffers here expecting string semantics, and do not pass fmt/strb outputs as elements. - dasham elements are NOT supported. An untyped parameter truncates a dasham argument to its integer part (the R15 trap), so list_push(l, 3.7) stores 3. There is no way to store a dasham bit pattern through this API. Format floats first (fmt) if you need them as text, or keep a parallel structure. Two handle layouts (do NOT mix families on one handle): - list / stack handle: header [len, cap, data_ptr]; data is a separate cell array. The HANDLE address is stable across growth — only the data pointer inside it moves. - queue handle: header [len, cap, data_ptr, head]; a RING BUFFER (see queue_enqueue). queue_* on a list handle (or list_* on a queue handle) reads the wrong header and corrupts memory. Growth rule: when len == cap, capacity DOUBLES (cap *= 2), a new data array is allocated, elements are copied in logical order, and the header&#x27;s data pointer is updated. The old data array is NOT freed — the language has no deallocation primitive, so growth leaks the previous array (same as every other growing structure in the stdlib). Capacity never shrinks: list_clear and queue dequeue keep the allocated capacity. Allocation failure: if nirmmita returns 0 during growth, the operation returns 0 (or ok[0] = 0) and the structure is UNCHANGED. list_init returns 0 if either allocation fails. Out-of-bounds reads: list_get returns 0 for i outside [0, len). 0 is a legal stored value, so check list_len first when it matters. list_set / list_insert_at / list_remove_at return 1 ok / 0 out of bounds (or allocation failure for insert). stack_pop / stack_peek / queue_dequeue / queue_peek return the value and set ok[0] (a 1-cell pankti) to 1 on success, 0 when empty — the value alone cannot signal emptiness. All signatures stay within the 6-argument cap.</p>
++<p class="mod-desc">layer: alloc Representation decision — QWORD CELLS (the pankti/kosh convention), not byte strings. Reasoning: - A list is the growable analogue of pankti: same element model (one qword per element), same indexing, same literal passing (list_push(l, 42)). A byte-string list would be a string-list only, and would force every element through copy + length bookkeeping. Users with byte strings can store POINTERS (list_push(l, ptr)) — a qword list of pointers is the escape hatch, and it is the caller&#x27;s job to keep the pointed-to buffers alive. - No mixing: every element in this module is a qword. Do not pass byte-string buffers here expecting string semantics, and do not pass fmt/strb outputs as elements. - dasham elements are NOT supported. An untyped parameter truncates a dasham argument to its integer part (the R15 trap), so list_push(l, 3.7) stores 3. There is no way to store a dasham bit pattern through this API. Format floats first (fmt) if you need them as text, or keep a parallel structure. Two handle layouts (do NOT mix families on one handle): - list / stack handle: header [len, cap, data_ptr]; data is a separate cell array. The HANDLE address is stable across growth — only the data pointer inside it moves. - queue handle: header [len, cap, data_ptr, head]; a RING BUFFER (see queue_enqueue). queue_* on a list handle (or list_* on a queue handle) reads the wrong header and corrupts memory. Growth rule: when len == cap, capacity DOUBLES (cap *= 2), a new data array is allocated, elements are copied in logical order, and the header&#x27;s data pointer is updated. The old data array is NOT freed — the language has no deallocation primitive, so growth leaks the previous array (same as every other growing structure in the stdlib). Capacity never shrinks: list_clear and queue dequeue keep the allocated capacity. Allocation failure: if nirmmita returns 0 during growth, the operation returns 0 (or ok[0] = 0) and the structure is UNCHANGED. list_init returns 0 if either allocation fails. Out-of-bounds reads: list_get returns 0 for i outside [0, len). 0 is a legal stored value, so check list_len first when it matters. list_set / list_insert_at / list_remove_at return 1 ok / 0 out of bounds (or allocation failure for insert). stack_pop / stack_peek / queue_dequeue / queue_peek return the value and set ok[0] (a 1-cell pankti) to 1 on success, 0 when empty — the value alone cannot signal emptiness. All signatures stay within the 6-argument cap.</p>
+ <table>
+ <tr><th>Function</th><th>Description</th></tr>
+ <tr><td><code>list_init(cap)</code></td><td>list_init(cap) — allocate an empty list. cap clamped to &gt;= 1. Returns the list handle, or 0 on allocation failure.</td></tr>
+@@ -204,7 +204,7 @@
+ <tr><td><code>queue_len(q)</code></td><td>queue_len(q) — element count.</td></tr>
+ </table>
+ <h2 id="madhava"><code>madhava</code></h2>
+-<p class="mod-desc">After Madhava of Sangamagrama (~1340-1425 CE) and the Kerala school of astronomy and mathematics. Madhava gave infinite-series expansions for the sine, cosine and arctangent functions, and from the arctangent series a rapidly converging series for pi - more than two centuries before Newton, Gregory and Leibniz. These use T12 scalar floats (dasham). square root by Newton&#x27;s method (Babylonian), to float precision</p>
++<p class="mod-desc">layer: core After Madhava of Sangamagrama (~1340-1425 CE) and the Kerala school of astronomy and mathematics. Madhava gave infinite-series expansions for the sine, cosine and arctangent functions, and from the arctangent series a rapidly converging series for pi - more than two centuries before Newton, Gregory and Leibniz. These use T12 scalar floats (dasham). square root by Newton&#x27;s method (Babylonian), to float precision</p>
+ <table>
+ <tr><th>Function</th><th>Description</th></tr>
+ <tr><td><code>madhava_sqrt(dasham v)</code></td><td></td></tr>
+@@ -214,7 +214,7 @@
+ <tr><td><code>madhava_atan(dasham x)</code></td><td>Madhava-Gregory arctangent series:  atan(x) = x - x^3/3 + x^5/5 - ...</td></tr>
+ </table>
+ <h2 id="map"><code>map</code></h2>
+-<p class="mod-desc">Open addressing with linear probing over parallel pankti arrays. KEY REPRESENTATION: byte strings (the R10 strb_* surface), NOT char-code arrays. Rationale: keys are usually literals (&quot;apple&quot;), and byte strings let the caller pass a literal directly — no hand-built cell array. The hash (lib/hash.smlib fnv1a, via `ayojan hash` below) is byte-based (char_at), so the choice is consistent end to end. Worked example: ayojan map mukhya() { vitti m = map_init(8) map_put(m, 8, &quot;apple&quot;, 5, 42) likha(map_get(m, 8, &quot;apple&quot;, 5))   # 42 likha(&quot;\n&quot;) } This matches lib/string.smlib&#x27;s header: a byte string is bytes packed 1-per-byte (a literal, or a set_char-built buffer), measured with an explicit length, read with char_at. Do not pass char-code arrays here. Layout of the map buffer m (qword cells, except the key bytes): m[0]           capacity m[1]           live entry count m[2+i]         state[i]   (0 = empty, 1 = live), i in 0..cap-1 m[2+cap+i]     keylen[i] m[2+2*cap+i]   val[i] key bytes: byte region at byte offset (2+3*cap)*8, KEY_MAX bytes/slot. KEY_MAX = 32: keys longer than 32 bytes are truncated to 32, consistently on put/get/contains/remove (documented; excluded from the properties). cap must be &gt;= 1 (clamped). Probing wraps modulo cap. DELETION is backward-shift (Knuth 6.4R): the freed slot is filled by shifting later probe-chain entries back toward their home bucket, so there is no &quot;deleted&quot; state and no tombstones — a lookup stops at the first empty slot and never misses a live entry. ABSENT SENTINEL: map_get returns -1 (0-1) for a missing key. Values are programmer-managed integers; do not store -1 as a value unless you disambiguate with map_contains first. FULL TABLE: map_put returns 0 and changes nothing.</p>
++<p class="mod-desc">layer: alloc Open addressing with linear probing over parallel pankti arrays. KEY REPRESENTATION: byte strings (the R10 strb_* surface), NOT char-code arrays. Rationale: keys are usually literals (&quot;apple&quot;), and byte strings let the caller pass a literal directly — no hand-built cell array. The hash (lib/hash.smlib fnv1a, via `ayojan hash` below) is byte-based (char_at), so the choice is consistent end to end. Worked example: ayojan map mukhya() { vitti m = map_init(8) map_put(m, 8, &quot;apple&quot;, 5, 42) likha(map_get(m, 8, &quot;apple&quot;, 5))   # 42 likha(&quot;\n&quot;) } This matches lib/string.smlib&#x27;s header: a byte string is bytes packed 1-per-byte (a literal, or a set_char-built buffer), measured with an explicit length, read with char_at. Do not pass char-code arrays here. Layout of the map buffer m (qword cells, except the key bytes): m[0]           capacity m[1]           live entry count m[2+i]         state[i]   (0 = empty, 1 = live), i in 0..cap-1 m[2+cap+i]     keylen[i] m[2+2*cap+i]   val[i] key bytes: byte region at byte offset (2+3*cap)*8, KEY_MAX bytes/slot. KEY_MAX = 32: keys longer than 32 bytes are truncated to 32, consistently on put/get/contains/remove (documented; excluded from the properties). cap must be &gt;= 1 (clamped). Probing wraps modulo cap. DELETION is backward-shift (Knuth 6.4R): the freed slot is filled by shifting later probe-chain entries back toward their home bucket, so there is no &quot;deleted&quot; state and no tombstones — a lookup stops at the first empty slot and never misses a live entry. ABSENT SENTINEL: map_get returns -1 (0-1) for a missing key. Values are programmer-managed integers; do not store -1 as a value unless you disambiguate with map_contains first. FULL TABLE: map_put returns 0 and changes nothing.</p>
+ <table>
+ <tr><th>Function</th><th>Description</th></tr>
+ <tr><td><code>map_key_hash(key, keyn, cap)</code></td><td>map_key_hash(key, keyn, cap) — home bucket of key (internal helper).</td></tr>
+@@ -236,7 +236,7 @@
+ <tr><td><code>map_keys_bytes(m, out)</code></td><td>map_keys_bytes(m, out) — R17. Same segments as map_keys, but PACKED BYTES: [len-byte, bytes..., len-byte, bytes...], one length byte followed by the key&#x27;s bytes, no terminator. Returns the key count, which equals map_size(m). Caller allocates cap * 33 bytes (each key is &lt;= 32 bytes plus 1 length byte; at most cap keys). Keys are stored as packed bytes inside the map, so this is a straight byte copy — no unpack/pack round-trip. Segments can be passed directly to map_put / map_contains / strb_compare with no repacking; that is the whole point (see map_keys note above).</td></tr>
+ </table>
+ <h2 id="math"><code>math</code></h2>
+-<p class="mod-desc">Pure integer arithmetic, written only with verified language features. Every function copies its parameters into locals before mutating them, because the compiler currently faults on assignment to a parameter.</p>
++<p class="mod-desc">layer: core Pure integer arithmetic, written only with verified language features. Every function copies its parameters into locals before mutating them, because the compiler currently faults on assignment to a parameter.</p>
+ <table>
+ <tr><th>Function</th><th>Description</th></tr>
+ <tr><td><code>sq(n)</code></td><td></td></tr>
+@@ -259,7 +259,7 @@
+ <tr><td><code>math_clamp(v, lo, hi)</code></td><td>math_clamp(v, lo, hi): lo if v &lt; lo, hi if v &gt; hi, else v. Requires lo &lt;= hi (if lo &gt; hi, returns lo — the first branch wins).</td></tr>
+ </table>
+ <h2 id="num"><code>num</code></h2>
+-<p class="mod-desc">Parameters are copied into locals before mutation (compiler fault workaround).</p>
++<p class="mod-desc">layer: core Parameters are copied into locals before mutation (compiler fault workaround).</p>
+ <table>
+ <tr><th>Function</th><th>Description</th></tr>
+ <tr><td><code>is_even(n)</code></td><td></td></tr>
+@@ -274,7 +274,7 @@
+ <tr><td><code>collatz_steps(n)</code></td><td></td></tr>
+ </table>
+ <h2 id="samanvaya"><code>samanvaya</code></h2>
+-<p class="mod-desc">Sutram has no 2-D array type, so a matrix is a FLAT `kosh dasham` of m*n elements in row-major order, with the dimensions passed explicitly: A[i][j]  ==  a[i * n + j]        for an m x n matrix CONTRACT for output matrices: the caller must have pushed m*n elements already. A kosh&#x27;s capacity is not its length, so out[i] is out of bounds until an element exists. Functions here never `kosh_push` a parameter — the compiler rejects that, correctly, because the pointer is passed by value. Inputs are read-only. Outputs are written in place and are visible to the caller. --------------------------------------------------------------- element access helpers (flat index) --------------------------------------------------------------- identity matrix: n x n, out must hold n*n elements</p>
++<p class="mod-desc">layer: core Sutram has no 2-D array type, so a matrix is a FLAT `kosh dasham` of m*n elements in row-major order, with the dimensions passed explicitly: A[i][j]  ==  a[i * n + j]        for an m x n matrix CONTRACT for output matrices: the caller must have pushed m*n elements already. A kosh&#x27;s capacity is not its length, so out[i] is out of bounds until an element exists. Functions here never `kosh_push` a parameter — the compiler rejects that, correctly, because the pointer is passed by value. Inputs are read-only. Outputs are written in place and are visible to the caller. --------------------------------------------------------------- element access helpers (flat index) --------------------------------------------------------------- identity matrix: n x n, out must hold n*n elements</p>
+ <table>
+ <tr><th>Function</th><th>Description</th></tr>
+ <tr><td><code>pehchan(n, kosh dasham out)</code></td><td></td></tr>
+@@ -289,7 +289,7 @@
+ <tr><td><code>rekha_manak(kosh dasham a, m, n)</code></td><td>largest absolute row sum (a cheap norm, useful for conditioning checks)</td></tr>
+ </table>
+ <h2 id="sankhyiki"><code>sankhyiki</code></h2>
+-<p class="mod-desc">The first library module built on typed `kosh dasham` parameters (T18). Every function takes a float array by parameter and only READS it — no kosh_push, because pushing to a kosh parameter is deliberately rejected by the compiler (the pointer is passed by value; growth would leave the caller with a stale pointer). Float arrays are the natural input here: statistics over integers would silently truncate. Use `kosh dasham` on the caller&#x27;s side. Convention: variance and standard deviation are the POPULATION forms (divide by n). Multiply by n/(n-1) if you need the sample forms. --- sum ---</p>
++<p class="mod-desc">layer: core The first library module built on typed `kosh dasham` parameters (T18). Every function takes a float array by parameter and only READS it — no kosh_push, because pushing to a kosh parameter is deliberately rejected by the compiler (the pointer is passed by value; growth would leave the caller with a stale pointer). Float arrays are the natural input here: statistics over integers would silently truncate. Use `kosh dasham` on the caller&#x27;s side. Convention: variance and standard deviation are the POPULATION forms (divide by n). Multiply by n/(n-1) if you need the sample forms. --- sum ---</p>
+ <table>
+ <tr><th>Function</th><th>Description</th></tr>
+ <tr><td><code>yoga(kosh dasham xs)</code></td><td></td></tr>
+@@ -310,7 +310,7 @@
+ <tr><td><code>purna_prasaran(xs, n)</code></td><td>--- integer population variance (truncated toward zero; uses the truncated mean, so exact only when the mean is integral) ---</td></tr>
+ </table>
+ <h2 id="set"><code>set</code></h2>
+-<p class="mod-desc">A set IS a map (`lib/map.smlib`) with a dummy value of 1: membership is map_contains, iteration is map_keys_bytes (R17: packed-byte segments, passed straight to the byte-key map functions with no repacking). ELEMENTS ARE BYTE STRINGS — the same choice as `map.smlib`&#x27;s keys, for the same reason: a caller passes a literal directly (&quot;apple&quot;), with an explicit length, and the whole strb_* surface (compare, pack, unpack) works on the elements unchanged. Do NOT pass char-code (qword-cell) arrays here; see the lib/strb.smlib header for the two representations. Consequences inherited from map: keys longer than 32 bytes are truncated to 32 on every operation, consistently. CAPACITY: a set&#x27;s capacity is fixed at set_init and stored in the buffer (m[0]). Set operations that write into `out` read out&#x27;s capacity from out[0], so the caller MUST pass a set_init&#x27;d buffer with room for the result: cap + bcap for union, cap for difference, min(cap, bcap) for intersection. If `out` is too small, map_put silently drops the overflowing elements (map&#x27;s full-table behaviour) and the returned size will be smaller than the true result — size the output generously and check the returned size. `out` for union / intersect / difference must be a FRESH, EMPTY set: the operations ADD into it and return map_size(out) afterwards. set_is_subset(a, ...) with an empty `a` is 1 (vacuous truth). The 6-argument cap still applies: union / intersect / difference keep the 5-argument shape from the round brief by reading out&#x27;s capacity from out[0] instead of taking it as a sixth parameter.</p>
++<p class="mod-desc">layer: alloc A set IS a map (`lib/map.smlib`) with a dummy value of 1: membership is map_contains, iteration is map_keys_bytes (R17: packed-byte segments, passed straight to the byte-key map functions with no repacking). ELEMENTS ARE BYTE STRINGS — the same choice as `map.smlib`&#x27;s keys, for the same reason: a caller passes a literal directly (&quot;apple&quot;), with an explicit length, and the whole strb_* surface (compare, pack, unpack) works on the elements unchanged. Do NOT pass char-code (qword-cell) arrays here; see the lib/strb.smlib header for the two representations. Consequences inherited from map: keys longer than 32 bytes are truncated to 32 on every operation, consistently. CAPACITY: a set&#x27;s capacity is fixed at set_init and stored in the buffer (m[0]). Set operations that write into `out` read out&#x27;s capacity from out[0], so the caller MUST pass a set_init&#x27;d buffer with room for the result: cap + bcap for union, cap for difference, min(cap, bcap) for intersection. If `out` is too small, map_put silently drops the overflowing elements (map&#x27;s full-table behaviour) and the returned size will be smaller than the true result — size the output generously and check the returned size. `out` for union / intersect / difference must be a FRESH, EMPTY set: the operations ADD into it and return map_size(out) afterwards. set_is_subset(a, ...) with an empty `a` is 1 (vacuous truth). The 6-argument cap still applies: union / intersect / difference keep the 5-argument shape from the round brief by reading out&#x27;s capacity from out[0] instead of taking it as a sixth parameter.</p>
+ <table>
+ <tr><th>Function</th><th>Description</th></tr>
+ <tr><td><code>set_init(cap)</code></td><td>set_init(cap) — allocate an empty set of capacity cap (clamped to &gt;= 1).</td></tr>
+@@ -329,7 +329,7 @@
+ <tr><td><code>set_to_array(s, cap, out)</code></td><td>set_to_array(s, cap, out) — write the set&#x27;s elements into out in length-prefixed form [len0, b0, b1, ..., len1, b0, ...] (same shape as map_keys / strb_split parts), SORTED lexicographically by byte value (strb_compare), so output is deterministic regardless of insertion order or hash layout. Returns the element count.</td></tr>
+ </table>
+ <h2 id="sort"><code>sort</code></h2>
+-<p class="mod-desc">Operates on `pankti` integer arrays, in place. Scalar arguments are copied into locals before mutation; array elements are written directly.</p>
++<p class="mod-desc">layer: alloc Operates on `pankti` integer arrays, in place. Scalar arguments are copied into locals before mutation; array elements are written directly.</p>
+ <table>
+ <tr><th>Function</th><th>Description</th></tr>
+ <tr><td><code>swap(a, i, j)</code></td><td></td></tr>
+@@ -348,7 +348,7 @@
+ <tr><td><code>merge_sort(a, n)</code></td><td></td></tr>
+ </table>
+ <h2 id="strb"><code>strb</code></h2>
+-<p class="mod-desc">The string toolkit operating on BYTE-PACKED strings — the representation of a literal and of set_char-built buffers. This is the ROUND-10 answer to the R9 gap: a programmer holding &quot;hello world&quot; can now use the toolkit directly, with no hand-built char-code array. THE TWO REPRESENTATIONS, side by side (kept consistent with the char-code array (lib/string.smlib R9 toolkit): qword cells, one char code per cell, read with h[i] (8-byte stride). Idiom: vitti h = nirmmita(6*8); h[0]=104; h[1]=105  (&quot;hi&quot; as cells); str_find(h, 2, nd, 1). byte string (this module): bytes packed 1-per-byte, read with char_at(s, i) (1-byte stride), written with set_char(s, i, v), measured with vartani_len(s). Idiom: strb_find(&quot;hi&quot;, 2, &quot;i&quot;, 1) -&gt; 1; or vitti b = nirmmita(8); set_char(b,0,104); set_char(b,1,105); set_char(b,2,0); strb_len(b) -&gt; 2. Do NOT mix them: h[i] on a byte string reads 8 bytes at once, and char_at on a char-code array reads one byte of a qword cell. This lives in its own module (not inside string.smlib) because the compiler has a fixed AST ceiling: inlining the combined module together with the other stdlib modules exceeded it (suite tests 87/99/102). The char-code toolkit in lib/string.smlib is byte-for-byte unchanged. Conventions: lengths are explicit (source of truth); out-buffers get a 0 terminator via set_char; the caller allocates generously. Empty needle matches at 0; &quot;not found&quot; is -1. All signatures stay within the compiler&#x27;s 6-argument cap (repl is 0-terminated, its length derived). SLICE-BOUNDARY RULES (WS4, R23 audit): a slice is a (pointer, length) pair into a larger buffer, with NO terminator at the slice end. - Every strb_* function takes an explicit length and stops at it: strb_find_char(&quot;hello world&quot;, 5, &#x27;w&#x27;) is -1. The NUL-terminated forms (find_char, count_char, count_vowels, is_all_digits, str_equals) scan to the terminator, so they are WRONG on slices. Never pass a slice to them. - strb_len / str_len / vartani_len scan to the terminator: they cannot be used on slices at all. A slice carries its length. - strb_replace / str_replace&#x27;s repl is 0-terminated (its length is derived), so repl cannot be a slice. To use a slice as repl, strb_dup it into a terminated buffer first. An explicit-length repl form would need 7 arguments, over the compiler&#x27;s 6-argument cap, so the terminated form stays. - The (s, i) char predicates take no length: the caller must keep i in bounds; they read char_at(s, i) unconditionally. strb_split/strb_join use the same length-prefixed segment format as str_split/str_join (R9): [len0, b0, b1, ..., len1, b0, ...], one byte value per cell. strb_pack(cells, n, out) — pack a qword-cell sequence (one byte value per cell, the str_split/strb_split segment format) into contiguous bytes. Writes a 0 terminator at out[n]. Returns n. This is the boundary helper: hand-written repack loops (one per call site, each a chance to get the stride wrong) become one call. n &lt;= 0 writes only the terminator and returns 0. POINTER ARITHMETIC IS IN BYTES: to pack starting at cell i of a cell array, pass cells + i*8, not cells + i.</p>
++<p class="mod-desc">layer: core The string toolkit operating on BYTE-PACKED strings — the representation of a literal and of set_char-built buffers. This is the ROUND-10 answer to the R9 gap: a programmer holding &quot;hello world&quot; can now use the toolkit directly, with no hand-built char-code array. THE TWO REPRESENTATIONS, side by side (kept consistent with the char-code array (lib/string.smlib R9 toolkit): qword cells, one char code per cell, read with h[i] (8-byte stride). Idiom: vitti h = nirmmita(6*8); h[0]=104; h[1]=105  (&quot;hi&quot; as cells); str_find(h, 2, nd, 1). byte string (this module): bytes packed 1-per-byte, read with char_at(s, i) (1-byte stride), written with set_char(s, i, v), measured with vartani_len(s). Idiom: strb_find(&quot;hi&quot;, 2, &quot;i&quot;, 1) -&gt; 1; or vitti b = nirmmita(8); set_char(b,0,104); set_char(b,1,105); set_char(b,2,0); strb_len(b) -&gt; 2. Do NOT mix them: h[i] on a byte string reads 8 bytes at once, and char_at on a char-code array reads one byte of a qword cell. This lives in its own module (not inside string.smlib) because the compiler has a fixed AST ceiling: inlining the combined module together with the other stdlib modules exceeded it (suite tests 87/99/102). The char-code toolkit in lib/string.smlib is byte-for-byte unchanged. Conventions: lengths are explicit (source of truth); out-buffers get a 0 terminator via set_char; the caller allocates generously. Empty needle matches at 0; &quot;not found&quot; is -1. All signatures stay within the compiler&#x27;s 6-argument cap (repl is 0-terminated, its length derived). SLICE-BOUNDARY RULES (WS4, R23 audit): a slice is a (pointer, length) pair into a larger buffer, with NO terminator at the slice end. - Every strb_* function takes an explicit length and stops at it: strb_find_char(&quot;hello world&quot;, 5, &#x27;w&#x27;) is -1. The NUL-terminated forms (find_char, count_char, count_vowels, is_all_digits, str_equals) scan to the terminator, so they are WRONG on slices. Never pass a slice to them. - strb_len / str_len / vartani_len scan to the terminator: they cannot be used on slices at all. A slice carries its length. - strb_replace / str_replace&#x27;s repl is 0-terminated (its length is derived), so repl cannot be a slice. To use a slice as repl, strb_dup it into a terminated buffer first. An explicit-length repl form would need 7 arguments, over the compiler&#x27;s 6-argument cap, so the terminated form stays. - The (s, i) char predicates take no length: the caller must keep i in bounds; they read char_at(s, i) unconditionally. strb_split/strb_join use the same length-prefixed segment format as str_split/str_join (R9): [len0, b0, b1, ..., len1, b0, ...], one byte value per cell. strb_pack(cells, n, out) — pack a qword-cell sequence (one byte value per cell, the str_split/strb_split segment format) into contiguous bytes. Writes a 0 terminator at out[n]. Returns n. This is the boundary helper: hand-written repack loops (one per call site, each a chance to get the stride wrong) become one call. n &lt;= 0 writes only the terminator and returns 0. POINTER ARITHMETIC IS IN BYTES: to pack starting at cell i of a cell array, pass cells + i*8, not cells + i.</p>
+ <table>
+ <tr><th>Function</th><th>Description</th></tr>
+ <tr><td><code>strb_pack(cells, n, out)</code></td><td></td></tr>
+@@ -375,7 +375,7 @@
+ <tr><td><code>strb_equals(a, an, b, bn)</code></td><td>strb_equals(a, an, b, bn) — 1 if the two byte strings are equal, else 0 (WS1, R20). Explicit-length form of str_equals.</td></tr>
+ </table>
+ <h2 id="strconv"><code>strconv</code></h2>
+-<p class="mod-desc">Renders integers as decimal (or base-2/8/16) digit characters into a buffer, and parses them back. Buffers are pankti of integer character codes (not byte-packed strings — see ROUND-08 Part B: Sutram has no byte-write primitive, so we use cell arrays of char codes, the same idiom as lib/baseconv.smlib). All functions handle: zero, negative numbers (decimal only), empty input. int_to_str(n, out) — write decimal representation of int n into pankti out as character codes. Returns the character count (excluding terminator). out[ count ] is set to 0 as a terminator. Caller allocates &gt;= 22 cells.</p>
++<p class="mod-desc">layer: alloc Renders integers as decimal (or base-2/8/16) digit characters into a buffer, and parses them back. Buffers are pankti of integer character codes (not byte-packed strings — see ROUND-08 Part B: Sutram has no byte-write primitive, so we use cell arrays of char codes, the same idiom as lib/baseconv.smlib). All functions handle: zero, negative numbers (decimal only), empty input. int_to_str(n, out) — write decimal representation of int n into pankti out as character codes. Returns the character count (excluding terminator). out[ count ] is set to 0 as a terminator. Caller allocates &gt;= 22 cells.</p>
+ <table>
+ <tr><th>Function</th><th>Description</th></tr>
+ <tr><td><code>int_to_str(n, out)</code></td><td></td></tr>
+@@ -386,7 +386,7 @@
+ <tr><td><code>str_to_float(buf, n, ok)</code></td><td>str_to_float(buf, n, ok): parse a decimal float from a byte string. Grammar: [-] digits [. digits] [(e|E) [-] digits]; at least one digit in the integer or fraction part. No leading/trailing whitespace, no &#x27;+&#x27;, no &quot;inf&quot;/&quot;nan&quot; — those are ok = 0 (same conventions as str_to_int). On success ok[0] = 1 and the dasham value is returned. On malformed input or overflow (|value| &gt; ~1.8e308) ok[0] = 0 and the return is 0.0. Extreme underflow returns 0.0 with ok[0] = 1 (as strtod does). Mantissa is accumulated in int64 (up to 18 significant digits); further digits only move the decimal exponent.</td></tr>
+ </table>
+ <h2 id="string"><code>string</code></h2>
+-<p class="mod-desc">Built on `vartani_len` and `char_at`, both verified to honour their arguments. R52 audit: `char_code(s, i)` already honours i in the compiler; a one-argument `char_code(s)` remains a compatible alias for the first byte. This library continues to call `char_at(s, i)` as before, without changing its API. ASCII only for the character predicates; multi-byte UTF-8 is not split. SLICE-BOUNDARY RULES (WS4, R23 audit): the older byte-string functions below (str_len, count_vowels, count_char, find_char, is_all_digits, str_equals) scan to the NUL terminator and are WRONG on slices — a slice has no terminator at its end. Use the explicit-length strb_* forms on slices. str_replace&#x27;s repl is 0-terminated; see the strb.smlib header for why and for the strb_dup workaround. The (s, i) char predicates take no length: the caller keeps i in bounds.</p>
++<p class="mod-desc">layer: core Built on `vartani_len` and `char_at`, both verified to honour their arguments. R52 audit: `char_code(s, i)` already honours i in the compiler; a one-argument `char_code(s)` remains a compatible alias for the first byte. This library continues to call `char_at(s, i)` as before, without changing its API. ASCII only for the character predicates; multi-byte UTF-8 is not split. SLICE-BOUNDARY RULES (WS4, R23 audit): the older byte-string functions below (str_len, count_vowels, count_char, find_char, is_all_digits, str_equals) scan to the NUL terminator and are WRONG on slices — a slice has no terminator at its end. Use the explicit-length strb_* forms on slices. str_replace&#x27;s repl is 0-terminated; see the strb.smlib header for why and for the strb_dup workaround. The (s, i) char predicates take no length: the caller keeps i in bounds.</p>
+ <table>
+ <tr><th>Function</th><th>Description</th></tr>
+ <tr><td><code>str_len(s)</code></td><td></td></tr>
+@@ -418,7 +418,7 @@
+ <tr><td><code>str_count(hay, hn, needle, nn)</code></td><td>str_count(hay, hn, needle, nn) — count non-overlapping occurrences of needle in hay, over cell arrays (WS1, R20). Cell-array form of strb_count. Empty needle returns 0. (Pointer arithmetic is in bytes: the suffix at cell pos is hay + pos * 8.)</td></tr>
+ </table>
+ <h2 id="util"><code>util</code></h2>
+-<p class="mod-desc">Sutram Utility Library - util.smlib General-purpose utility functions Usage: ayojan util</p>
++<p class="mod-desc">Sutram Utility Library - util.smlib layer: core General-purpose utility functions Usage: ayojan util</p>
+ <table>
+ <tr><th>Function</th><th>Description</th></tr>
+ <tr><td><code>lerp(a, b, t)</code></td><td></td></tr>
+--- a/lib/array.smlib
++++ b/lib/array.smlib
+@@ -1,4 +1,5 @@
+ # lib/array.smlib — Sutram standard library: dynamic arrays
++# layer: alloc
+ #
+ # Real functions over raw memory (nirmmita/likh8/pad8). Each element is
+ # 8 bytes (one integer). The caller tracks the length; array_new only
+--- a/lib/baseconv.smlib
++++ b/lib/baseconv.smlib
+@@ -1,4 +1,5 @@
+ # lib/baseconv.smlib — Sutram standard library: base conversion
++# layer: alloc
+ #
+ # Convert between base-10 bigint digit arrays and digit-value arrays in
+ # base 2, 8, 10, 16. The intermediate is a pankti of integer digit values
+--- a/lib/bigint.smlib
++++ b/lib/bigint.smlib
+@@ -1,4 +1,5 @@
+ # lib/bigint.smlib — Sutram standard library: big integers
++# layer: alloc
+ #
+ # Arbitrary-precision integers as arrays of base-10 digits (0-9),
+ # least-significant digit first. All arrays are fixed size n; the caller
+--- a/lib/chandas.smlib
++++ b/lib/chandas.smlib
+@@ -1,4 +1,5 @@
+ # lib/chandas.smlib — Sutram standard library: Pingala's prosody mathematics
++# layer: core
+ #
+ # After Pingala's Chandahśāstra (~2nd c. BCE). Sanskrit metre is built from two
+ # syllable weights — laghu (light) and guru (heavy) — so an n-syllable metre is a
+--- a/lib/fmt.smlib
++++ b/lib/fmt.smlib
+@@ -1,4 +1,5 @@
+ # lib/fmt.smlib — Sutram standard library: formatting
++# layer: alloc
+ #
+ # Number and string formatting on BYTE strings (packed bytes, explicit
+ # lengths, `strb` idiom): every function writes packed bytes into `out`
+--- a/lib/ganita.smlib
++++ b/lib/ganita.smlib
+@@ -1,4 +1,5 @@
+ # lib/ganita.smlib — Sutram standard library: Indian number theory
++# layer: core
+ #
+ # After Aryabhata's Kuttaka (~499 CE) and the Chakravala of Jayadeva and Bhaskara II (~1150 CE).
+ #
+@@ -44,9 +45,25 @@
+ prakriya ganita_isqrt(n) {
+     vitti x = n
+     yadi (x < 0) { pratiyati 0 }
+-    vitti i = 0
+-    yavat ((i + 1) * (i + 1) <= x) { i = i + 1 }
+-    pratiyati i
++    yadi (x < 2) { pratiyati x }
++    # Binary search with a division bound. The old loop
++    # `yavat ((i + 1) * (i + 1) <= x)` overflowed for x near MAX:
++    # (i+1)^2 wraps negative, the condition stays true, and the
++    # loop never terminates. mid <= x / mid is the same test
++    # without ever squaring.
++    vitti lo = 1
++    vitti hi = x / 2 + 1
++    vitti ans = 1
++    yavat (lo <= hi) {
++        vitti mid = lo + (hi - lo) / 2
++        yadi (mid <= x / mid) {
++            ans = mid
++            lo = mid + 1
++        } anyatra {
++            hi = mid - 1
++        }
++    }
++    pratiyati ans
+ }
+ 
+ prakriya ganita_abs(n) {
+--- a/lib/hash.smlib
++++ b/lib/hash.smlib
+@@ -1,4 +1,5 @@
+ # lib/hash.smlib — Sutram standard library: checksum/hash functions
++# layer: core
+ #
+ # FNV-1a (Fowler–Noll–Vo) 32-bit hash. Deterministic, fast, good distribution
+ # for non-cryptographic use (hash tables, checksums, dedup keys).
+--- a/lib/kalana.smlib
++++ b/lib/kalana.smlib
+@@ -1,4 +1,5 @@
+ # lib/kalana.smlib — Sutram standard library: कलन (numerical calculus)
++# layer: core
+ #
+ # Built on typed `kosh dasham` parameters (T18) and the float fast paths (F1/F2/FG1/FC1).
+ # Every function READS its kosh parameters only — never `kosh_push` on a parameter, which the
+--- a/lib/list.smlib
++++ b/lib/list.smlib
+@@ -1,4 +1,5 @@
+ # lib/list.smlib — Sutram standard library: dynamic lists, stacks, queues
++# layer: alloc
+ #
+ # Representation decision — QWORD CELLS (the pankti/kosh convention),
+ # not byte strings. Reasoning:
+--- a/lib/madhava.smlib
++++ b/lib/madhava.smlib
+@@ -1,4 +1,5 @@
+ # lib/madhava.smlib — Sutram standard library: the Kerala school
++# layer: core
+ #
+ # After Madhava of Sangamagrama (~1340-1425 CE) and the Kerala school of astronomy and
+ # mathematics. Madhava gave infinite-series expansions for the sine, cosine and arctangent
+--- a/lib/map.smlib
++++ b/lib/map.smlib
+@@ -1,4 +1,5 @@
+ # lib/map.smlib — Sutram standard library: associative map (hash table)
++# layer: alloc
+ #
+ # Open addressing with linear probing over parallel pankti arrays.
+ #
+--- a/lib/math.smlib
++++ b/lib/math.smlib
+@@ -1,4 +1,5 @@
+ # lib/math.smlib — Sutram standard library: mathematics
++# layer: core
+ #
+ # Pure integer arithmetic, written only with verified language features.
+ # Every function copies its parameters into locals before mutating them,
+@@ -43,12 +44,25 @@
+         y = x % y
+         x = t
+     }
++    # gcd is non-negative by definition. The loop above can return a
++    # negative value when the first argument is negative (e.g.
++    # gcd(-6, 4) was -2), so take the absolute value. gcd(MIN, 0)
++    # still returns MIN: |MIN| does not fit (wrapping, as abs_val).
++    yadi (x < 0) { x = 0 - x }
+     pratiyati x
+ }
+ 
+ prakriya lcm(a, b) {
+     vitti g = gcd(a, b)
+-    pratiyati (a / g) * b
++    # gcd(0, 0) is 0; without this guard (a / g) divides by zero and
++    # the program traps (SIGFPE). lcm(0, 0) = 0 by convention.
++    yadi (g == 0) { pratiyati 0 }
++    # lcm is non-negative by definition (the product (a / g) * b can
++    # be negative when exactly one input is). lcm(MIN, 2) still
++    # returns MIN: the true value 2^63 does not fit (wrapping).
++    vitti r = (a / g) * b
++    yadi (r < 0) { r = 0 - r }
++    pratiyati r
+ }
+ 
+ prakriya power(base, e) {
+@@ -72,7 +86,10 @@
+     vitti x = n
+     yadi (x < 2) { pratiyati 0 }
+     vitti i = 2
+-    yavat (i * i <= x) {
++    # Division bound, not i * i: i * i overflows for x near MAX
++    # (the square wraps negative, the condition stays true, and
++    # the loop never terminates for a large prime).
++    yavat (i <= x / i) {
+         yadi (x % i == 0) { pratiyati 0 }
+         i = i + 1
+     }
+--- a/lib/num.smlib
++++ b/lib/num.smlib
+@@ -1,4 +1,5 @@
+ # lib/num.smlib — Sutram standard library: integer utilities
++# layer: core
+ # Parameters are copied into locals before mutation (compiler fault workaround).
+ 
+ prakriya is_even(n)
+@@ -73,7 +74,10 @@
+     yadi (x < 2) { pratiyati 0 }
+     vitti s = 1
+     vitti d = 2
+-    yavat (d * d <= x) {
++    # Division bound, not d * d: d * d overflows for x near MAX
++    # (the square wraps negative, the condition stays true, and
++    # the loop never terminates).
++    yavat (d <= x / d) {
+         yadi (x % d == 0) {
+             s = s + d
+             yadi (d != x / d) { s = s + (x / d) }
+@@ -86,8 +90,17 @@
+ prakriya collatz_steps(n) {
+     vitti x = n
+     vitti c = 0
++    # No Collatz sequence starting at x < 1 reaches 1 (0 stays 0,
++    # negatives cycle), so -1 means "does not reach 1". The same
++    # sentinel covers the 3x+1 overflow: 3x+1 overflows int64 when
++    # x > (MAX-1)/3 = 3074457345618258602, and the wrapped value
++    # would cycle forever instead of reaching 1.
++    yadi (x < 1) { pratiyati 0 - 1 }
+     yavat (x != 1) {
+-        yadi (x % 2 == 0) { x = x / 2 } anyatra { x = 3 * x + 1 }
++        yadi (x % 2 == 0) { x = x / 2 } anyatra {
++            yadi (x > 3074457345618258602) { pratiyati 0 - 1 }
++            x = 3 * x + 1
++        }
+         c = c + 1
+     }
+     pratiyati c
+--- a/lib/samanvaya.smlib
++++ b/lib/samanvaya.smlib
+@@ -1,4 +1,5 @@
+ # lib/samanvaya.smlib — Sutram standard library: समन्वय (linear algebra)
++# layer: core
+ #
+ # Sutram has no 2-D array type, so a matrix is a FLAT `kosh dasham` of m*n elements in
+ # row-major order, with the dimensions passed explicitly:
+--- a/lib/sankhyiki.smlib
++++ b/lib/sankhyiki.smlib
+@@ -1,4 +1,5 @@
+ # lib/sankhyiki.smlib — Sutram standard library: सांख्यिकी (statistics)
++# layer: core
+ #
+ # The first library module built on typed `kosh dasham` parameters (T18).
+ # Every function takes a float array by parameter and only READS it — no kosh_push,
+--- a/lib/set.smlib
++++ b/lib/set.smlib
+@@ -1,4 +1,5 @@
+ # lib/set.smlib — Sutram standard library: sets (set algebra over map)
++# layer: alloc
+ #
+ # A set IS a map (`lib/map.smlib`) with a dummy value of 1: membership is
+ # map_contains, iteration is map_keys_bytes (R17: packed-byte segments,
+--- a/lib/sort.smlib
++++ b/lib/sort.smlib
+@@ -1,4 +1,5 @@
+ # lib/sort.smlib — Sutram standard library: sorting and searching
++# layer: alloc
+ #
+ # Operates on `pankti` integer arrays, in place. Scalar arguments are copied into
+ # locals before mutation; array elements are written directly.
+--- a/lib/strb.smlib
++++ b/lib/strb.smlib
+@@ -1,4 +1,5 @@
+ # lib/strb.smlib — Sutram standard library: byte-string surface
++# layer: core
+ #
+ # The string toolkit operating on BYTE-PACKED strings — the representation
+ # of a literal and of set_char-built buffers. This is the ROUND-10 answer
+--- a/lib/strconv.smlib
++++ b/lib/strconv.smlib
+@@ -1,4 +1,5 @@
+ # lib/strconv.smlib — Sutram standard library: number <-> string conversion
++# layer: alloc
+ #
+ # Renders integers as decimal (or base-2/8/16) digit characters into a buffer,
+ # and parses them back. Buffers are pankti of integer character codes (not
+--- a/lib/string.smlib
++++ b/lib/string.smlib
+@@ -1,4 +1,5 @@
+ # lib/string.smlib — Sutram standard library: strings
++# layer: core
+ #
+ # Built on `vartani_len` and `char_at`, both verified to honour their arguments.
+ # R52 audit: `char_code(s, i)` already honours i in the compiler; a one-argument
+--- a/lib/util.smlib
++++ b/lib/util.smlib
+@@ -1,4 +1,5 @@
+ # Sutram Utility Library - util.smlib
++# layer: core
+ # General-purpose utility functions
+ # Usage: ayojan util
+ 
+--- /dev/null
++++ b/tests/stdlib/math_gcd_lcm_edge.exit
+@@ -0,0 +1 @@
++0
+--- /dev/null
++++ b/tests/stdlib/math_gcd_lcm_edge.out
+@@ -0,0 +1,19 @@
++2
++
++2
++
++2
++
++0
++
++0
++
++0
++
++12
++
++12
++
++12
++
++math-gcd-lcm-edge-done
+--- /dev/null
++++ b/tests/stdlib/math_gcd_lcm_edge.sm
+@@ -0,0 +1,22 @@
++ayojan math
++mukhya() {
++    likha(gcd(0 - 6, 4))
++    likha("\n")
++    likha(gcd(6, 0 - 4))
++    likha("\n")
++    likha(gcd(0 - 6, 0 - 4))
++    likha("\n")
++    likha(gcd(0, 0))
++    likha("\n")
++    likha(lcm(0, 0))
++    likha("\n")
++    likha(lcm(0, 5))
++    likha("\n")
++    likha(lcm(6, 4))
++    likha("\n")
++    likha(lcm(0 - 6, 4))
++    likha("\n")
++    likha(lcm(6, 0 - 4))
++    likha("\n")
++    likha("math-gcd-lcm-edge-done\n")
++}
+--- /dev/null
++++ b/tests/stdlib/numeric_hangfix.exit
+@@ -0,0 +1 @@
++0
+--- /dev/null
++++ b/tests/stdlib/numeric_hangfix.out
+@@ -0,0 +1,31 @@
++3037000499
++
++5
++
++5
++
++0
++
++1
++
++1
++
++0
++
++1
++
++1
++
++0
++
++1
++
++111
++
++-1
++
++-1
++
++-1
++
++numeric-hangfix-done
+--- /dev/null
++++ b/tests/stdlib/numeric_hangfix.sm
+@@ -0,0 +1,36 @@
++ayojan ganita
++ayojan math
++ayojan num
++mukhya() {
++    likha(ganita_isqrt(9223372036854775807))
++    likha("\n")
++    likha(ganita_isqrt(25))
++    likha("\n")
++    likha(ganita_isqrt(26))
++    likha("\n")
++    likha(ganita_isqrt(0))
++    likha("\n")
++    likha(ganita_isqrt(1))
++    likha("\n")
++    likha(is_prime(97))
++    likha("\n")
++    likha(is_prime(91))
++    likha("\n")
++    likha(is_prime(2))
++    likha("\n")
++    likha(is_perfect(28))
++    likha("\n")
++    likha(is_perfect(27))
++    likha("\n")
++    likha(is_perfect(6))
++    likha("\n")
++    likha(collatz_steps(27))
++    likha("\n")
++    likha(collatz_steps(0))
++    likha("\n")
++    likha(collatz_steps(0 - 5))
++    likha("\n")
++    likha(collatz_steps(4611686018427387905))
++    likha("\n")
++    likha("numeric-hangfix-done\n")
++}
+--- /dev/null
++++ b/tools/check_layers.py
+@@ -0,0 +1,99 @@
++#!/usr/bin/env python3
++"""Check the library layer markers (R28 WS1).
++
++Every module in lib/ carries a machine-readable marker in its header:
++    # layer: core | alloc | std
++
++  core  — no allocator, no OS. Must not call nirmmita and must not
++          import (ayojan) an alloc- or std-layer module.
++  alloc — needs a heap (uses nirmmita, or imports an alloc module).
++          Must not import a std-layer module.
++  std   — OS services (files, network, clocks, ...). Currently empty:
++          the library deliberately has no OS services
++          (see docs/LIBRARY-BOUNDARY.md).
++
++The check fails on:
++  - a module with no marker, or an unknown marker;
++  - a core module that calls nirmmita( (allocator use);
++  - a core module that imports an alloc/std module;
++  - an alloc module that imports a std module;
++  - a module missing from docs/LIBRARY-LAYERS.md.
++
++Usage: python3 tools/check_layers.py   (exit 0 = all layers honour the rules)
++"""
++import os
++import re
++import sys
++
++REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
++LIB = os.path.join(REPO, "lib")
++DOC = os.path.join(REPO, "docs", "LIBRARY-LAYERS.md")
++
++LAYER_RE = re.compile(r"^\s*#\s*layer:\s*(core|alloc|std)\s*$", re.M)
++AYOJAN_RE = re.compile(r"^\s*ayojan\s+([a-z_][a-z0-9_]*)\s*$", re.M)
++NIRMMITA_RE = re.compile(r"\bnirmmita\s*\(")
++COMMENT_RE = re.compile(r"^\s*#")
++
++
++def strip_comments(text):
++    return "\n".join(
++        line for line in text.splitlines() if not COMMENT_RE.match(line))
++
++
++def main():
++    errors = []
++    layers = {}
++    for name in sorted(os.listdir(LIB)):
++        if not name.endswith(".smlib"):
++            continue
++        mod = name[: -len(".smlib")]
++        text = open(os.path.join(LIB, name), encoding="utf-8").read()
++        m = LAYER_RE.search(text)
++        if not m:
++            errors.append(f"{mod}: missing '# layer:' marker")
++            continue
++        layers[mod] = m.group(1)
++    if errors:
++        print("\n".join(errors))
++        return 1
++    for mod, layer in layers.items():
++        text = open(os.path.join(LIB, f"{mod}.smlib"), encoding="utf-8").read()
++        code = strip_comments(text)
++        imports = sorted(set(AYOJAN_RE.findall(code)))
++        uses_alloc = bool(NIRMMITA_RE.search(code))
++        if layer == "core":
++            if uses_alloc:
++                errors.append(f"{mod}: marked core but calls nirmmita (allocator)")
++            for dep in imports:
++                if dep in layers and layers[dep] in ("alloc", "std"):
++                    errors.append(
++                        f"{mod}: marked core but imports {dep} ({layers[dep]})")
++        elif layer == "alloc":
++            for dep in imports:
++                if dep in layers and layers[dep] == "std":
++                    errors.append(
++                        f"{mod}: marked alloc but imports {dep} (std)")
++        for dep in imports:
++            if dep not in layers:
++                errors.append(f"{mod}: imports unknown module {dep}")
++    try:
++        doc = open(DOC, encoding="utf-8").read()
++    except FileNotFoundError:
++        errors.append("docs/LIBRARY-LAYERS.md missing")
++        doc = ""
++    for mod in layers:
++        if mod not in doc:
++            errors.append(f"{mod}: missing from docs/LIBRARY-LAYERS.md")
++    if errors:
++        print("LAYER CHECK FAILED:")
++        print("\n".join(f"  - {e}" for e in errors))
++        return 1
++    core = sorted(m for m, l in layers.items() if l == "core")
++    alloc = sorted(m for m, l in layers.items() if l == "alloc")
++    std = sorted(m for m, l in layers.items() if l == "std")
++    print(f"layers OK: {len(core)} core, {len(alloc)} alloc, {len(std)} std")
++    return 0
++
++
++if __name__ == "__main__":
++    sys.exit(main())
+--- a/tools/proof_props.py
++++ b/tools/proof_props.py
+@@ -3948,6 +3948,158 @@
+     return ok and out == "PASS", out
+ 
+ 
++def prop_ok_convention(compiler, rng):
++    """R28 WS2: the ok convention — every ok-param container function
++    sets ok on every path and returns a defined failure value (0)."""
++    lines = ["ayojan list", "mukhya() {",
++             "    vitti ok = nirmmita(8)",
++             "    vitti l = list_init(4)",
++             "    vitti q = queue_init(4)"]
++
++    def fail(msg):
++        lines.append(f'        likha("FAIL {msg}\\n")')
++        lines.append("        pratiyati 1")
++
++    # empty containers: return 0, ok 0
++    for call in ["stack_pop(l, ok)", "stack_peek(l, ok)",
++                 "queue_dequeue(q, ok)", "queue_peek(q, ok)",
++                 "list_min(l, ok)", "list_max(l, ok)"]:
++        lines.append(f"    yadi ({call} != 0) {{")
++        fail(f"empty {call} returns 0")
++        lines.append("    }")
++        lines.append("    yadi (ok[0] != 0) {")
++        fail(f"empty {call} ok 0")
++        lines.append("    }")
++    # non-empty: ok 1, correct value
++    lines.append("    list_push(l, 7)")
++    lines.append("    yadi (stack_pop(l, ok) != 7) {")
++    fail("stack_pop value")
++    lines.append("    }")
++    lines.append("    yadi (ok[0] != 1) {")
++    fail("stack_pop ok 1")
++    lines.append("    }")
++    lines.append("    list_push(l, 7)")
++    lines.append("    yadi (stack_peek(l, ok) != 7) {")
++    fail("stack_peek value")
++    lines.append("    }")
++    lines.append("    yadi (ok[0] != 1) {")
++    fail("stack_peek ok 1")
++    lines.append("    }")
++    lines.append("    yadi (list_min(l, ok) != 7) {")
++    fail("list_min value")
++    lines.append("    }")
++    lines.append("    yadi (ok[0] != 1) {")
++    fail("list_min ok 1")
++    lines.append("    }")
++    lines.append("    yadi (list_max(l, ok) != 7) {")
++    fail("list_max value")
++    lines.append("    }")
++    lines.append("    yadi (ok[0] != 1) {")
++    fail("list_max ok 1")
++    lines.append("    }")
++    lines.append("    queue_enqueue(q, 9)")
++    lines.append("    yadi (queue_peek(q, ok) != 9) {")
++    fail("queue_peek value")
++    lines.append("    }")
++    lines.append("    yadi (ok[0] != 1) {")
++    fail("queue_peek ok 1")
++    lines.append("    }")
++    lines.append("    yadi (queue_dequeue(q, ok) != 9) {")
++    fail("queue_dequeue value")
++    lines.append("    }")
++    lines.append("    yadi (ok[0] != 1) {")
++    fail("queue_dequeue ok 1")
++    lines.append("    }")
++    lines.append('    likha("PASS\\n")')
++    lines.append("}")
++    ok, out = run_sm(compiler, "ok_convention", "\n".join(lines))
++    return ok and out == "PASS", out
++
++
++def prop_numeric28(compiler, rng):
++    """R28 WS3: the numeric contract — gcd/lcm sign and zero cases,
++    math power/fact edges, wrapping abs, bit_count negatives,
++    is_prime/sum_to edges, and the documented domain limits."""
++    lines = ["ayojan math", "ayojan ganita", "ayojan fmt", "ayojan strconv",
++             "ayojan num",
++             "mukhya() {",
++             "    vitti ok = nirmmita(8)",
++             "    vitti buf = nirmmita(32 * 8)",
++             "    vitti out = nirmmita(40 * 8)",
++             "    vitti minv = (0 - 9223372036854775807) - 1"]
++
++    def check(expr, want, msg):
++        lines.append(f"    yadi (({expr}) != ({want})) {{")
++        lines.append(f'        likha("FAIL {msg}\\n")')
++        lines.append("        pratiyati 1")
++        lines.append("    }")
++
++    # gcd is non-negative; gcd(0,0) = 0
++    check("gcd(0 - 6, 4)", 2, "gcd neg first")
++    check("gcd(6, 0 - 4)", 2, "gcd neg second")
++    check("gcd(0 - 6, 0 - 4)", 2, "gcd both neg")
++    check("gcd(0, 0)", 0, "gcd 0 0")
++    check("gcd(0, 5)", 5, "gcd 0 5")
++    # lcm is non-negative; lcm(0,0) = 0 (was SIGFPE)
++    check("lcm(0, 0)", 0, "lcm 0 0")
++    check("lcm(0, 5)", 0, "lcm 0 5")
++    check("lcm(6, 4)", 12, "lcm 6 4")
++    check("lcm(0 - 6, 4)", 12, "lcm neg")
++    check("lcm(6, 0 - 4)", 12, "lcm neg2")
++    # math power/fact edges: non-positive exponent/argument -> 1
++    check("power(2, 0)", 1, "power 0")
++    check("power(2, 0 - 1)", 1, "power neg")
++    check("fact(0 - 3)", 1, "fact neg")
++    check("fact(0)", 1, "fact 0")
++    check("fact(20)", 2432902008176640000, "fact 20")
++    check("power(2, 10)", 1024, "power 2 10")
++    # plain abs wraps at MIN (checked form exists for the safe case)
++    check("abs_val(minv)", "minv", "abs_val MIN wraps")
++    check("ganita_abs(minv)", "minv", "ganita_abs MIN wraps")
++    # bit_count: defined for n >= 0; negative returns 0
++    check("bit_count(7)", 3, "bit_count 7")
++    check("bit_count(0)", 0, "bit_count 0")
++    check("bit_count(0 - 1)", 0, "bit_count neg")
++    # is_prime / sum_to edges
++    check("is_prime(0)", 0, "prime 0")
++    check("is_prime(1)", 0, "prime 1")
++    check("is_prime(2)", 1, "prime 2")
++    check("is_prime(0 - 5)", 0, "prime neg")
++    check("sum_to(0 - 3)", 0, "sum_to neg")
++    check("sum_to(10)", 55, "sum_to 10")
++    # ganita_isqrt(negative) = 0
++    check("ganita_isqrt(0 - 1)", 0, "isqrt neg")
++    check("ganita_isqrt(16)", 4, "isqrt 16")
++    # ganita_isqrt(MAX) = 3037000499 (binary search; the old
++    # (i+1)^2 loop hung here by overflow)
++    check("ganita_isqrt(9223372036854775807)", 3037000499, "isqrt MAX")
++    # is_prime: division bound (i*i overflowed near MAX)
++    check("is_prime(97)", 1, "prime 97")
++    check("is_prime(91)", 0, "prime 91")
++    # is_perfect: division bound (d*d overflowed near MAX)
++    check("is_perfect(28)", 1, "perfect 28")
++    check("is_perfect(27)", 0, "perfect 27")
++    check("is_perfect(6)", 1, "perfect 6")
++    # collatz_steps: -1 means "does not reach 1" (x < 1, or the
++    # 3x+1 step would overflow int64)
++    check("collatz_steps(27)", 111, "collatz 27")
++    check("collatz_steps(0)", "0 - 1", "collatz 0")
++    check("collatz_steps(0 - 5)", "0 - 1", "collatz neg")
++    check("collatz_steps(4611686018427387905)", "0 - 1",
++          "collatz overflow")
++    # fmt_digits_base rejects base < 2 or > 36 with 0, empty
++    check("fmt_digits_base(123, 1, 0, out)", 0, "fmt base 1")
++    check("fmt_digits_base(123, 37, 0, out)", 0, "fmt base 37")
++    check("fmt_digits_base(255, 16, 0, out)", 2, "fmt base 16")
++    # int_to_base_str requires n >= 0; negative gives 0 (empty)
++    check("int_to_base_str(0 - 5, 10, buf)", 0, "int_to_base neg")
++    check("int_to_base_str(255, 16, buf)", 2, "int_to_base 255")
++    lines.append('    likha("PASS\\n")')
++    lines.append("}")
++    ok, out = run_sm(compiler, "numeric28", "\n".join(lines))
++    return ok and out == "PASS", out
++
++
+ def main():
+     compiler = None
+     for i, a in enumerate(sys.argv):
+@@ -4032,6 +4184,8 @@
+         ("min26", prop_min26),
+         ("safety27 cross-module", prop_safety27),
+         ("bigint divzero", prop_bigint_divzero),
++        ("ok convention", prop_ok_convention),
++        ("numeric28", prop_numeric28),
+     ]
+ 
+     failed = []
