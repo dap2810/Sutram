@@ -1,24 +1,11 @@
 # lib/list.smlib — Sutram standard library: dynamic lists, stacks, queues
 # layer: alloc
 #
-# Representation decision — QWORD CELLS (the pankti/kosh convention),
-# not byte strings. Reasoning:
-#   - A list is the growable analogue of pankti: same element model
-#     (one qword per element), same indexing, same literal passing
-#     (list_push(l, 42)). A byte-string list would be a string-list
-#     only, and would force every element through copy + length
-#     bookkeeping. Users with byte strings can store POINTERS
-#     (list_push(l, ptr)) — a qword list of pointers is the escape
-#     hatch, and it is the caller's job to keep the pointed-to
-#     buffers alive.
-#   - No mixing: every element in this module is a qword. Do not
-#     pass byte-string buffers here expecting string semantics, and
-#     do not pass fmt/strb outputs as elements.
-#   - dasham elements are NOT supported. An untyped parameter
-#     truncates a dasham argument to its integer part (the R15 trap),
-#     so list_push(l, 3.7) stores 3. There is no way to store a
-#     dasham bit pattern through this API. Format floats first
-#     (fmt) if you need them as text, or keep a parallel structure.
+# Elements are QWORD CELLS (the pankti/kosh convention), not byte
+# strings. Users with byte strings store POINTERS (list_push(l, ptr));
+# the caller keeps the pointed-to buffers alive. No mixing: every
+# element here is a qword. dasham elements are NOT supported — an
+# untyped parameter truncates a dasham argument to its integer part.
 #
 # Two handle layouts (do NOT mix families on one handle):
 #   - list / stack handle: header [len, cap, data_ptr]; data is a
@@ -28,13 +15,11 @@
 #     (see queue_enqueue). queue_* on a list handle (or list_* on a
 #     queue handle) reads the wrong header and corrupts memory.
 #
-# Growth rule: when len == cap, capacity DOUBLES (cap *= 2), a new
-# data array is allocated, elements are copied in logical order,
-# and the header's data pointer is updated. The old data array is
-# NOT freed — the language has no deallocation primitive, so growth
-# leaks the previous array (same as every other growing structure
-# in the stdlib). Capacity never shrinks: list_clear and queue
-# dequeue keep the allocated capacity.
+# Growth rule: when len == cap, capacity DOUBLES, a new data array
+# is allocated, elements are copied in logical order, and the
+# header's data pointer is updated. The old data array is NOT freed
+# — the language has no deallocation primitive, so growth leaks the
+# previous array. Capacity never shrinks.
 #
 # Allocation failure: if nirmmita returns 0 during growth, the
 # operation returns 0 (or ok[0] = 0) and the structure is UNCHANGED.
@@ -55,15 +40,20 @@ ayojan sort
 # --- lists ---
 
 # list_init(cap) — allocate an empty list. cap clamped to >= 1.
-# Returns the list handle, or 0 on allocation failure.
+# Returns the list handle, or 0 on allocation failure — including
+# a cap so large the data size overflows (a wrapped size returned
+# a handle whose data pointer was bogus, segfaulting on push).
 prakriya list_init(cap) {
     vitti c = cap
     vitti l = 0
     vitti d = 0
+    vitti sz = 0
     yadi (c < 1) { c = 1 }
+    sz = c * 8
+    yadi (sz < 0) { pratiyati 0 }
     l = nirmmita(3 * 8)
     yadi (l == 0) { pratiyati 0 }
-    d = nirmmita(c * 8)
+    d = nirmmita(sz)
     yadi (d == 0) { pratiyati 0 }
     l[0] = 0
     l[1] = c
@@ -382,15 +372,19 @@ prakriya stack_empty(l) {
 # The buffer only grows, never shrinks.
 
 # queue_init(cap) — allocate an empty queue. cap clamped to >= 1.
-# Returns the queue handle, or 0 on allocation failure.
+# Returns the queue handle, or 0 on allocation failure — including
+# a cap so large the data size overflows (as list_init).
 prakriya queue_init(cap) {
     vitti c = cap
     vitti q = 0
     vitti d = 0
+    vitti sz = 0
     yadi (c < 1) { c = 1 }
+    sz = c * 8
+    yadi (sz < 0) { pratiyati 0 }
     q = nirmmita(4 * 8)
     yadi (q == 0) { pratiyati 0 }
-    d = nirmmita(c * 8)
+    d = nirmmita(sz)
     yadi (d == 0) { pratiyati 0 }
     q[0] = 0
     q[1] = c
