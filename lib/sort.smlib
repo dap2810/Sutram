@@ -35,6 +35,9 @@ prakriya reverse_arr(a, n) {
 }
 
 prakriya min_of(a, n) {
+    # n <= 0: no element exists — return 0, as list_min does
+    # on an empty list (the old code read a[0] and segfaulted).
+    yadi (n <= 0) { pratiyati 0 }
     vitti i = 1
     vitti best = a[0]
     yavat (i < n) {
@@ -45,6 +48,8 @@ prakriya min_of(a, n) {
 }
 
 prakriya max_of(a, n) {
+    # n <= 0: no element exists — return 0, as min_of.
+    yadi (n <= 0) { pratiyati 0 }
     vitti i = 1
     vitti best = a[0]
     yavat (i < n) {
