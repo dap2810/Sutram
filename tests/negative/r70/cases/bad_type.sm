@@ -1,0 +1,10 @@
+# A raw/integer kosh must not be reinterpreted as a binary64 kosh parameter.
+prakriya first(kosh dasham a) {
+    pratiyati a[0]
+}
+
+mukhya() {
+    kosh raw[1]
+    kosh_push(raw, 7)
+    likha(first(raw))
+}
