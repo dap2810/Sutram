@@ -1,0 +1,49 @@
+R71 REVISED WS2 — OBSERVED EVIDENCE, 2026-10-16
+Source commit: b08c74630d3f7aa460acceb5eb6864a9a4fd822a
+Parent: bb7910611055edc11302cc3bc58206cef7afd3d6
+Review: PR #30, review/r71-on-r69-publication-20261016
+
+ACTUALLY RUN, NON-ELEVATED TEST PROCESS
+uid=1000; Linux 6.18.44 x86-64; Python 3.13.5; GCC 14.2.0/GNU as.
+python3 -m unittest discover -s tests/r71_reclaim -p 'test_*.py' -v
+Ran 44 tests in 0.153s; OK.
+Breakdown: 19 native-payload methods, 18 source preparation methods,
+7 acceptance-tool methods. Source scaffolds / compiler process mocks are
+explicit in the test source. Native unmapping is NOT mocked.
+
+python3 -m py_compile tools/r71_reclaim_prepare.py \
+ tools/r71_reclaim_acceptance.py tests/r71_reclaim/test_reclaim.py
+Exit 0; three syntax checks passed.
+
+ADDITIONAL REAL KERNEL PROBE (ISOLATED PAYLOAD, NOT SUTRAM)
+Initial capacity 4, 16 growth steps, raw-integer cell patterns:
+  released old mappings: 16
+  old-page unmapping checks passed: 527
+  final live bytes before TEST-OWNED cleanup: 2097168
+  exit 0; stdout JSON; stderr empty; uid 1000.
+Initial capacity 3, 10 growth steps, raw binary64 cell patterns:
+  released 10; old-page checks 14; final live bytes 24592; exit 0.
+Initial capacity 510, 4 growth steps:
+  released 4; old-page checks 15; final live bytes 65296; exit 0.
+The raw JSON is ROUND-71-RECLAIM-PROBE.json. Counts are page checks across
+successive mappings, not a unique physical-page count or RSS measurement.
+Test probe SHA256: b020503b497eca608c5ed24e33b2ef04f6d4ff232d04dd584a744a8f53881473
+Probe size: 17072 bytes. This is a GCC/GNU-as TEST executable, not Sutram.
+
+SOURCE / UPLOAD CHECKS
+All 13 additive source/test/doc files: 48273 bytes, SHA256 manifest complete.
+All locally computed Git blob IDs reproduced uploaded tree
+6b5d9e81aa6ed702722f99dbcb4640c3209aa41c exactly.
+New helper blob e9a6f5d02f2b4c98343de6f85c3442ab8890d59a, 3680 bytes.
+Core input AND unchanged branch core: 64ea028a5ccf56117c132a7efd0673cbe2df3fc6.
+R68 entry unchanged: 42389aaf73179726d91e23359aee2199734036e1.
+Whole staged compiler output: NOT PRODUCED; no hash invented.
+
+NOT RUN / NOT CLAIMED
+Complete production-input staging; NASM compiler assembly/link;
+generated Sutram fixture execution; process VmSize A/B in the native runner;
+full regression/proof/codegen/pack suites; Windows VirtualFree/GUI/installer;
+firmware boot; production .sm separate compilation; borrow/ownership proof.
+Existing 66 R71 helper tests were NOT rerun or included in the 44-test total.
+Runtime tests validate only the copied instruction payload and its test driver.
+No production memory-safety, kernel-readiness or cross-platform guarantee.

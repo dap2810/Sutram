@@ -1,0 +1,49 @@
+test_barrier_eof_is_failure (test_reclaim.AcceptanceToolTests.test_barrier_eof_is_failure) ... ok
+test_barrier_line_length_is_bounded (test_reclaim.AcceptanceToolTests.test_barrier_line_length_is_bounded) ... ok
+test_predicate_not_python_assert (test_reclaim.AcceptanceToolTests.test_predicate_not_python_assert) ... ok
+test_stale_executable_rejected_before_compilation (test_reclaim.AcceptanceToolTests.test_stale_executable_rejected_before_compilation) ... ok
+test_success_exit_without_executable_is_not_a_pass (test_reclaim.AcceptanceToolTests.test_success_exit_without_executable_is_not_a_pass) ... ok
+test_symlink_compiler_output_is_not_a_pass (test_reclaim.AcceptanceToolTests.test_symlink_compiler_output_is_not_a_pass) ... ok
+test_vm_size_units_are_explicit (test_reclaim.AcceptanceToolTests.test_vm_size_units_are_explicit) ... ok
+test_capacity_overflow_rejected (test_reclaim.NativePayloadTests.test_capacity_overflow_rejected) ... ok
+test_corrupt_length_over_capacity_rejected (test_reclaim.NativePayloadTests.test_corrupt_length_over_capacity_rejected) ... ok
+test_default_capacity (test_reclaim.NativePayloadTests.test_default_capacity) ... ok
+test_exact_page_allocation (test_reclaim.NativePayloadTests.test_exact_page_allocation) ... ok
+test_growth_guard_preserves_rax (test_reclaim.NativePayloadTests.test_growth_guard_preserves_rax) ... ok
+test_growth_on_nonfull_header_rejected (test_reclaim.NativePayloadTests.test_growth_on_nonfull_header_rejected) ... ok
+test_largest_safe_capacity (test_reclaim.NativePayloadTests.test_largest_safe_capacity) ... ok
+test_linux_raw_error_returns_rejected (test_reclaim.NativePayloadTests.test_linux_raw_error_returns_rejected) ... ok
+test_many_growths_release_old_pages (test_reclaim.NativePayloadTests.test_many_growths_release_old_pages) ... ok
+test_multiple_mapping_pages (test_reclaim.NativePayloadTests.test_multiple_mapping_pages) ... ok
+test_non_power_two_capacity (test_reclaim.NativePayloadTests.test_non_power_two_capacity) ... ok
+test_nonerror_return_passes_without_modification (test_reclaim.NativePayloadTests.test_nonerror_return_passes_without_modification) ... ok
+test_null_allocation_rejected (test_reclaim.NativePayloadTests.test_null_allocation_rejected) ... ok
+test_one_capacity_multiple_growths (test_reclaim.NativePayloadTests.test_one_capacity_multiple_growths) ... ok
+test_page_boundary_plus_qword (test_reclaim.NativePayloadTests.test_page_boundary_plus_qword) ... ok
+test_raw_binary64_including_nan_payloads (test_reclaim.NativePayloadTests.test_raw_binary64_including_nan_payloads) ... ok
+test_real_munmap_failure_is_not_silent (test_reclaim.NativePayloadTests.test_real_munmap_failure_is_not_silent) ... ok
+test_repeated_independent_processes (test_reclaim.NativePayloadTests.test_repeated_independent_processes) ... ok
+test_zero_capacity_header_mapping (test_reclaim.NativePayloadTests.test_zero_capacity_header_mapping) ... ok
+test_already_patched_refused (test_reclaim.PreparationTests.test_already_patched_refused) ... ok
+test_crlf_refused (test_reclaim.PreparationTests.test_crlf_refused) ... ok
+test_drifting_input_refused (test_reclaim.PreparationTests.test_drifting_input_refused) ... ok
+test_duplicate_anchor_refused (test_reclaim.PreparationTests.test_duplicate_anchor_refused) ... ok
+test_duplicate_scope_refused (test_reclaim.PreparationTests.test_duplicate_scope_refused) ... ok
+test_existing_stage_refused (test_reclaim.PreparationTests.test_existing_stage_refused) ... ok
+test_helper_hash_is_reviewed (test_reclaim.PreparationTests.test_helper_hash_is_reviewed) ... ok
+test_missing_anchor_refused (test_reclaim.PreparationTests.test_missing_anchor_refused) ... ok
+test_mock_stage_reports_exact_generated_hash (test_reclaim.PreparationTests.test_mock_stage_reports_exact_generated_hash) ... ok
+test_nul_refused (test_reclaim.PreparationTests.test_nul_refused) ... ok
+test_patch_does_not_mutate_input (test_reclaim.PreparationTests.test_patch_does_not_mutate_input) ... ok
+test_path_escape_refused (test_reclaim.PreparationTests.test_path_escape_refused) ... ok
+test_payloads_have_internal_branch_targets (test_reclaim.PreparationTests.test_payloads_have_internal_branch_targets) ... ok
+test_pe_scope_fails_closed_in_source (test_reclaim.PreparationTests.test_pe_scope_fails_closed_in_source) ... ok
+test_reversed_scope_refused (test_reclaim.PreparationTests.test_reversed_scope_refused) ... ok
+test_symlink_input_refused (test_reclaim.PreparationTests.test_symlink_input_refused) ... ok
+test_three_hooks_in_order (test_reclaim.PreparationTests.test_three_hooks_in_order) ... ok
+test_unknown_full_core_fails_before_output (test_reclaim.PreparationTests.test_unknown_full_core_fails_before_output) ... ok
+
+----------------------------------------------------------------------
+Ran 44 tests in 0.153s
+
+OK

@@ -1,5 +1,22 @@
 # Round 71 — returned to Sarvam alongside Round 69
 
+## Latest follow-up: revised kosh-reclamation workstream, 2026-10-16
+
+**Read [ROUND-71-RECLAIM-HANDOFF.md](ROUND-71-RECLAIM-HANDOFF.md) first.**
+Sarvam revised ROUND-71.md: the R69 return is acknowledged, and WS2 now concerns
+the compiler's kosh growth leak rather than the old build-path task.
+
+The same draft PR #30 now includes 13 additional source/test/document files
+(commit `b08c74630d3f7aa460acceb5eb6864a9a4fd822a`, 43 total changed paths on R69).
+The staged Linux reclamation payload passed 44 local helper/developer tests;
+full production compiler staging/build, generated Sutram A/B and Windows
+reclamation are still pending. No new free builtin or memory-safety guarantee
+was introduced. The new handoff, observed results, raw test/probe logs and
+13-file checksum manifest are on main. The original record below remains
+historical; its 30-file count and source head refer to the initial publication.
+
+---
+
 **Published 2026-10-16. The previously local Round 71 source review is now on GitHub.**
 This supersedes the earlier ZIP/handoff statements that publication was unavailable.
 It does **not** change the implementation's partial status or turn prior helper tests into full compiler acceptance.
