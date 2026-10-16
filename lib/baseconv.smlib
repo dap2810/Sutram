@@ -9,12 +9,16 @@
 
 # bigint_to_digits(x, n, base, out) — render n-digit bigint x in `base`
 # into pankti `out` as digit values (MSB first). Returns digit count.
-# Caller allocates out with >= 70 cells.
+# Caller allocates out with >= 4*n cells (70 cells sufficed for
+# n <= 21 in base 2; n >= 22 overflowed the internal buffer).
+# Base outside 2..16: returns 0 (base 0 trapped with SIGFPE).
 prakriya bigint_to_digits(x, n, base, out) {
     vitti src = x
     vitti c = n
     vitti b = base
     vitti dst = out
+    yadi (b < 2) { pratiyati 0 }
+    yadi (b > 16) { pratiyati 0 }
     vitti w = nirmmita(c * 8)
     vitti i = 0
     yavat (i < c) {
@@ -25,7 +29,9 @@ prakriya bigint_to_digits(x, n, base, out) {
         dst[0] = 0
         pratiyati 1
     }
-    vitti rev = nirmmita(70 * 8)
+    # rev holds the digits LSB-first: base 2 needs ceil(n*log2(10))
+    # = ceil(3.33*n) cells; 4*n is safe for every base.
+    vitti rev = nirmmita(c * 4 * 8)
     vitti rlen = 0
     vitti cont = 1
     yavat (cont == 1) {
@@ -54,13 +60,17 @@ prakriya bigint_to_digits(x, n, base, out) {
 
 # bigint_from_digits(d, count, base, x, n) — parse `count` digit values
 # from pankti `d` (MSB first) in `base` into n-digit bigint x.
-# Returns 1 on success, 0 if a digit >= base.
+# Returns 1 on success, 0 if a digit >= base. Base outside 2..16
+# returns 0 (the old code accepted any base, so base 0/1/negative
+# silently mis-parsed).
 prakriya bigint_from_digits(d, count, base, x, n) {
     vitti src = d
     vitti cnt = count
     vitti b = base
     vitti dst = x
     vitti c = n
+    yadi (b < 2) { pratiyati 0 }
+    yadi (b > 16) { pratiyati 0 }
     bigint_zero(dst, c)
     vitti p = 0
     yavat (p < cnt) {
