@@ -1,3 +1,25 @@
+## v154 - ChatGPT R69 + Muse R29 verified and SYNCED; ROUND-71 corrected
+
+- **Muse R29 verified and synced (25 files).** Patch applies clean, **26/26 hashes**, suite **187/4**,
+  proof_lib **187/187**, proof_props **79/79**, layers **14 core / 9 alloc / 0 std**, library now
+  **23 modules / 297 functions**. All four new goldens pass on the real compiler.
+- **R29 resolved the `0 std` question properly - by investigating, not relabelling.** The answer is that
+  `0 std` is legitimate: no `lib` module calls an OS-service builtin. And `check_layers.py` now
+  **enforces** it - I tested the negative case myself by inserting a `likha` call into the core `math`
+  module, and it failed with exactly `math: marked core but calls OS builtin likha (belongs in std)`.
+- **R29 found two more real defects and fixed both.** `fmt_fixed(1e18, 2)` was a SEGFAULT (exit 139);
+  `chakravala` crashed with SIGFPE on perfect-square input and HUNG for large `|k|`. Both fixed;
+  `chakravala(61)` still returns the minimal `(1766319049, 226153980)`.
+- **The `kosh` growth leak is confirmed a LANGUAGE defect, not a library one.** The compiler's growth
+  path emits `mmap` for the new buffer and never a `munmap` anywhere, and no free primitive exists in the
+  language at all. Measured ~15.3 bytes leaked per item.
+- **ChatGPT R69 verified and synced (21 files, 21/21 hashes).** It closed the build-path trap: README and
+  the locked build tools now select `src/r68_compiler_entry.asm`. It also replaced the installer wrapper
+  with the canonical compiler path, payload hashes and no policy-bypass arguments, and added
+  `docs/INDIC-COVERAGE.md` naming all 11 packs with Malayalam numerals explicitly deferred.
+- **A correction of mine, in ROUND-71.** An earlier draft told ChatGPT it had skipped ROUND-69. It had
+  not. The brief is corrected and the error withdrawn; workstream 2 is now the `kosh` leak fix.
+
 ## v153 — GUI slice 33: the IDE marks the compiler's error line; and the round briefs fixed
 
 - **Slice 33 — the IDE now shows you where the error is.** R68 gave the compiler host-side diagnostics
