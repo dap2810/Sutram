@@ -1,18 +1,18 @@
-ayojan sort
+yoj shreni
 mukhya() {
-    pankti a[4]
+    mala a[4]
     a[0] = 1
     a[1] = 2
     a[2] = 3
     a[3] = 4
-    reverse_arr(a, 4)
-    punaravartana i = 0 to 3 {
+    viparyay_mala(a, 4)
+    chakra i = 0 tak 3 {
         likha(a[i])
     }
     likha("\n")
-    pankti b[1]
+    mala b[1]
     b[0] = 7
-    reverse_arr(b, 1)
+    viparyay_mala(b, 1)
     likha(b[0])
     likha("\n")
 }
