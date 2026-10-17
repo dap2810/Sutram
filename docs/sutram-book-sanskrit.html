@@ -71,7 +71,7 @@ pre .k, code .k { font-weight: 700; }
 <h2>संस्कृत-कूटशब्दः्स्। नेटिव्-मशीन्-कोड्। सर्वाः भाषाः बध्नाति एकं सूत्रम्।</h2>
 <div class="badge">संस्कृत-संस्करणम्</div>
 </div>
-<div class="toc"><h2>विषयसूचिः</h2><ol><li><a href="#ch1">सूत्रम् किम्? <span class="en-gloss">(What is Sutram?)</span></a></li><li><a href="#ch2">भवतः प्रथमः क्रमादेशः <span class="en-gloss">(Your first program)</span></a></li><li><a href="#ch3">चराणि च स्थिराङ्काः <span class="en-gloss">(Variables and constants)</span></a></li><li><a href="#ch4">संक्रियाः पूर्वता च <span class="en-gloss">(Operators and precedence)</span></a></li><li><a href="#ch5">निर्णयः: <span class="k" data-tip="अर्थः: if">yadi</span> / <span class="k" data-tip="अर्थः: else">anyatra</span> <span class="en-gloss">(Decisions (if / else))</span></a></li><li><a href="#ch6">पाशाः: <span class="k" data-tip="अर्थः: for">punaravartana</span>, <span class="k" data-tip="अर्थः: while">yavat</span>, <span class="k" data-tip="अर्थः: break">krama</span>, <span class="k" data-tip="अर्थः: continue">uddeshya</span> <span class="en-gloss">(Loops)</span></a></li><li><a href="#ch7">फलनानि: <span class="k" data-tip="अर्थः: function">prakriya</span> <span class="en-gloss">(Functions)</span></a></li><li><a href="#ch8">पङ्क्तयः: <span class="k" data-tip="अर्थः: array">pankti</span> <span class="en-gloss">(Arrays)</span></a></li><li><a href="#ch9">गणनानि स्थिराङ्काः च — <span class="k" data-tip="अर्थः: enum">srijana</span>, <span class="k" data-tip="अर्थः: constant">sutra</span> <span class="en-gloss">(Enums and constants)</span></a></li><li><a href="#ch10">सूत्रम्-कवचम् (REPL) <span class="en-gloss">(The Sutram shell (REPL))</span></a></li><li><a href="#ch11">भाषा-संकुलम्: स्वभाषायां क्रमादेशः <span class="en-gloss">(Language packs)</span></a></li><li><a href="#ch12">दोषाः दोषसुधारः च <span class="en-gloss">(Errors and debugging)</span></a></li><li><a href="#ch13">सम्पूर्णः सन्दर्भः <span class="en-gloss">(Complete reference)</span></a></li>
+<div class="toc"><h2>विषयसूचिः</h2><ol><li><a href="#ch1">सूत्रम् किम्? <span class="en-gloss">(What is Sutram?)</span></a></li><li><a href="#ch2">भवतः प्रथमः क्रमादेशः <span class="en-gloss">(Your first program)</span></a></li><li><a href="#ch3">चराणि च स्थिराङ्काः <span class="en-gloss">(Variables and constants)</span></a></li><li><a href="#ch4">संक्रियाः पूर्वता च <span class="en-gloss">(Operators and precedence)</span></a></li><li><a href="#ch5">निर्णयः: <span class="k" data-tip="अर्थः: if">yadi</span> / <span class="k" data-tip="अर्थः: else">anya</span> <span class="en-gloss">(Decisions (if / else))</span></a></li><li><a href="#ch6">पाशाः: <span class="k" data-tip="अर्थः: for">chakra</span>, <span class="k" data-tip="अर्थः: while">yavat</span>, <span class="k" data-tip="अर्थः: break">krama</span>, <span class="k" data-tip="अर्थः: continue">agrim</span> <span class="en-gloss">(Loops)</span></a></li><li><a href="#ch7">फलनानि: <span class="k" data-tip="अर्थः: function">prakriya</span> <span class="en-gloss">(Functions)</span></a></li><li><a href="#ch8">पङ्क्तयः: <span class="k" data-tip="अर्थः: mala">mala</span> <span class="en-gloss">(Arrays)</span></a></li><li><a href="#ch9">गणनानि स्थिराङ्काः च — <span class="k" data-tip="अर्थः: enum">ganana</span>, <span class="k" data-tip="अर्थः: constant">sutra</span> <span class="en-gloss">(Enums and constants)</span></a></li><li><a href="#ch10">सूत्रम्-कवचम् (REPL) <span class="en-gloss">(The Sutram shell (REPL))</span></a></li><li><a href="#ch11">भाषा-संकुलम्: स्वभाषायां क्रमादेशः <span class="en-gloss">(Language packs)</span></a></li><li><a href="#ch12">दोषाः दोषसुधारः च <span class="en-gloss">(Errors and debugging)</span></a></li><li><a href="#ch13">सम्पूर्णः सन्दर्भः <span class="en-gloss">(Complete reference)</span></a></li>
 <li><a href="#ch14">नूतनाः विशेषताः <span class="en-gloss">(New features)</span></a></li>
 <li><a href="#ch15">पारिभाषिकशब्दकोशः <span class="en-gloss">(Technical glossary)</span></a></li>
 <li><a href="#ch16">धातवः — मूलानि <span class="en-gloss">(Sanskrit roots)</span></a></li>
@@ -138,15 +138,15 @@ $ ./namaste.bin
 <div class="note">पूर्वता (न्यूनात् अधिकं): <code>||</code> → <code>&&</code> → तुलना →
 <code>+ - & | ^</code> → <code>* / %</code>। सन्देहे कोष्ठकानि लिखतु — वेगः न ह्रियते।</div>
 </div>
-<div class="ch" id="ch5"><h2>5. निर्णयः: <span class="k" data-tip="अर्थः: if">yadi</span> / <span class="k" data-tip="अर्थः: else">anyatra</span> <span class="en-gloss">(Decisions (if / else))</span></h2>
-<p><code><span class="k" data-tip="अर्थः: if">yadi</span></code> शर्तः सत्ये सति ब्लॉकं चालयति; <code><span class="k" data-tip="अर्थः: else">anyatra</span></code> अन्यथा।</p>
+<div class="ch" id="ch5"><h2>5. निर्णयः: <span class="k" data-tip="अर्थः: if">yadi</span> / <span class="k" data-tip="अर्थः: else">anya</span> <span class="en-gloss">(Decisions (if / else))</span></h2>
+<p><code><span class="k" data-tip="अर्थः: if">yadi</span></code> शर्तः सत्ये सति ब्लॉकं चालयति; <code><span class="k" data-tip="अर्थः: else">anya</span></code> अन्यथा।</p>
 <pre><code><span class="k" data-tip="अर्थः: main">mukhya</span>()
     <span class="k" data-tip="अर्थः: variable">vitti</span> mulya = 0
     <span class="k" data-tip="अर्थः: if">yadi</span> (mulya > 0) {
         <span class="k" data-tip="अर्थः: print">likha</span>("Positive\n")
     } <span class="k" data-tip="अर्थः: if">yadi</span> (mulya &lt; 0) {
         likha("Negative\n")
-    } anyatra {
+    } anya {
         likha("Zero\n")
     }</code></pre>
 <p>एकस्य मूल्यस्य बहु-स्थिति-तुलनायै <code><span class="k" data-tip="अर्थः: multiply (*)">guna</span></code> + <code><span class="k" data-tip="अर्थः: condition">bhavana</span></code> उपयुज्यताम्:</p>
@@ -156,24 +156,24 @@ $ ./namaste.bin
         <span class="k" data-tip="अर्थः: condition">bhavana</span> 1: { <span class="k" data-tip="अर्थः: print">likha</span>("Somvaar\n") }
         <span class="k" data-tip="अर्थः: condition">bhavana</span> 2: { <span class="k" data-tip="अर्थः: print">likha</span>("Mangalvaar\n") }
         <span class="k" data-tip="अर्थः: condition">bhavana</span> 3: { <span class="k" data-tip="अर्थः: print">likha</span>("Budhvaar\n") }
-        <span class="k" data-tip="अर्थः: else">anyatra</span>: { <span class="k" data-tip="अर्थः: print">likha</span>("Anyo divaah\n") }
+        <span class="k" data-tip="अर्थः: else">anya</span>: { <span class="k" data-tip="अर्थः: print">likha</span>("Anyo divaah\n") }
     }</code></pre>
 </div>
-<div class="ch" id="ch6"><h2>6. पाशाः: <span class="k" data-tip="अर्थः: for">punaravartana</span>, <span class="k" data-tip="अर्थः: while">yavat</span>, <span class="k" data-tip="अर्थः: break">krama</span>, <span class="k" data-tip="अर्थः: continue">uddeshya</span> <span class="en-gloss">(Loops)</span></h2>
-<p><code><span class="k" data-tip="अर्थः: for">punaravartana</span></code> (पुनरावृत्तिः) गणना-पाशः — "i = a तः b पर्यन्तम्":</p>
+<div class="ch" id="ch6"><h2>6. पाशाः: <span class="k" data-tip="अर्थः: for">chakra</span>, <span class="k" data-tip="अर्थः: while">yavat</span>, <span class="k" data-tip="अर्थः: break">krama</span>, <span class="k" data-tip="अर्थः: continue">agrim</span> <span class="en-gloss">(Loops)</span></h2>
+<p><code><span class="k" data-tip="अर्थः: for">chakra</span></code> (पुनरावृत्तिः) गणना-पाशः — "i = a तः b पर्यन्तम्":</p>
 <pre><code><span class="k" data-tip="अर्थः: main">mukhya</span>()
-    <span class="k" data-tip="अर्थः: for">punaravartana</span> i = 1 <span class="k" data-tip="अर्थः: range-to">to</span> 5 {
+    <span class="k" data-tip="अर्थः: for">chakra</span> i = 1 <span class="k" data-tip="अर्थः: range-to">to</span> 5 {
         <span class="k" data-tip="अर्थः: print">likha</span>(i)
         <span class="k" data-tip="अर्थः: print">likha</span>(" ")   <span class="cm">// 1 2 3 4 5</span>
     }
     <span class="k" data-tip="अर्थः: print">likha</span>("\n")</code></pre>
 <p><code><span class="k" data-tip="अर्थः: while">yavat</span></code> (यावत्) while-पाशः। <code><span class="k" data-tip="अर्थः: break">krama</span></code> पाशं भिनत्ति;
-<code><span class="k" data-tip="अर्थः: continue">uddeshya</span></code> अग्रिमं चरणं प्रति गच्छति:</p>
+<code><span class="k" data-tip="अर्थः: continue">agrim</span></code> अग्रिमं चरणं प्रति गच्छति:</p>
 <pre><code><span class="k" data-tip="अर्थः: main">mukhya</span>()
     <span class="k" data-tip="अर्थः: variable">vitti</span> yogam = 0
-    <span class="k" data-tip="अर्थः: for">punaravartana</span> i = 1 <span class="k" data-tip="अर्थः: range-to">to</span> 100 {
+    <span class="k" data-tip="अर्थः: for">chakra</span> i = 1 <span class="k" data-tip="अर्थः: range-to">to</span> 100 {
         <span class="k" data-tip="अर्थः: if">yadi</span> (i > 10) { <span class="k" data-tip="अर्थः: break">krama</span> }
-        <span class="k" data-tip="अर्थः: if">yadi</span> (i % 2 == 0) { <span class="k" data-tip="अर्थः: continue">uddeshya</span> }
+        <span class="k" data-tip="अर्थः: if">yadi</span> (i % 2 == 0) { <span class="k" data-tip="अर्थः: continue">agrim</span> }
         yogam = yogam + i
     }
     <span class="k" data-tip="अर्थः: print">likha</span>(yogam)     <span class="cm">// 25</span>
@@ -181,9 +181,9 @@ $ ./namaste.bin
 </div>
 <div class="ch" id="ch7"><h2>7. फलनानि: <span class="k" data-tip="अर्थः: function">prakriya</span> <span class="en-gloss">(Functions)</span></h2>
 <p><code><span class="k" data-tip="अर्थः: function">prakriya</span></code> (प्रक्रिया) नामकं ब्लॉकं यत् षट् यावत् तर्कान् गृह्णाति,
-<code><span class="k" data-tip="अर्थः: return">pratiyati</span></code>-द्वारा मूल्यं प्रत्यागच्छति:</p>
+<code><span class="k" data-tip="अर्थः: return">prati</span></code>-द्वारा मूल्यं प्रत्यागच्छति:</p>
 <pre><code><span class="k" data-tip="अर्थः: function">prakriya</span> vishalya(mulya)
-    <span class="k" data-tip="अर्थः: return">pratiyati</span> mulya * mulya
+    <span class="k" data-tip="अर्थः: return">prati</span> mulya * mulya
 
 <span class="k" data-tip="अर्थः: main">mukhya</span>()
     <span class="k" data-tip="अर्थः: variable">vitti</span> phalam = vishalya(7)
@@ -191,32 +191,32 @@ $ ./namaste.bin
     <span class="k" data-tip="अर्थः: print">likha</span>("\n")</code></pre>
 <p>फलनानि स्वयम् एव आह्वयितुं शक्नुवन्ति — पुनरावृत्तिः प्रत्यक्षतः कार्यं करोति:</p>
 <pre><code><span class="k" data-tip="अर्थः: function">prakriya</span> fib(n) {
-    <span class="k" data-tip="अर्थः: if">yadi</span> (n &lt; 2) { pratiyati n }
-    pratiyati fib(n - 1) + fib(n - 2)
+    <span class="k" data-tip="अर्थः: if">yadi</span> (n &lt; 2) { prati n }
+    prati fib(n - 1) + fib(n - 2)
 }
 
 mukhya()
     likha(fib(10))     <span class="cm">// 55</span>
     <span class="k" data-tip="अर्थः: print">likha</span>("\n")</code></pre>
 </div>
-<div class="ch" id="ch8"><h2>8. पङ्क्तयः: <span class="k" data-tip="अर्थः: array">pankti</span> <span class="en-gloss">(Arrays)</span></h2>
-<p><i>पङ्क्तिः</i> अर्थः "श्रेणिः" — वस्तूनां एका रेखा। <code><span class="k" data-tip="अर्थः: array">pankti</span></code> इत्यनेन पङ्क्तिः निर्माति:
-<code><span class="k" data-tip="अर्थः: array">pankti</span> tarika[5]</code> पञ्च 64-बिट्-स्थानानि ददाति:</p>
+<div class="ch" id="ch8"><h2>8. पङ्क्तयः: <span class="k" data-tip="अर्थः: mala">mala</span> <span class="en-gloss">(Arrays)</span></h2>
+<p><i>पङ्क्तिः</i> अर्थः "श्रेणिः" — वस्तूनां एका रेखा। <code><span class="k" data-tip="अर्थः: mala">mala</span></code> इत्यनेन पङ्क्तिः निर्माति:
+<code><span class="k" data-tip="अर्थः: mala">mala</span> tarika[5]</code> पञ्च 64-बिट्-स्थानानि ददाति:</p>
 <pre><code><span class="k" data-tip="अर्थः: main">mukhya</span>()
-    <span class="k" data-tip="अर्थः: array">pankti</span> tarika[5]
-    <span class="k" data-tip="अर्थः: for">punaravartana</span> i = 0 <span class="k" data-tip="अर्थः: range-to">to</span> 5 {
+    <span class="k" data-tip="अर्थः: mala">mala</span> tarika[5]
+    <span class="k" data-tip="अर्थः: for">chakra</span> i = 0 <span class="k" data-tip="अर्थः: range-to">to</span> 5 {
         tarika[i] = i * i
     }
     <span class="k" data-tip="अर्थः: print">likha</span>(tarika[4])     <span class="cm">// 16</span>
     <span class="k" data-tip="अर्थः: print">likha</span>("\n")</code></pre>
 <p><code>arr[i]</code> सरलतया पॉइन्टर्-द्वारा पठति-लिखति — एकः मशीन्-निर्देशः, C-वेगः।</p>
 </div>
-<div class="ch" id="ch9"><h2>9. गणनानि स्थिराङ्काः च — <span class="k" data-tip="अर्थः: enum">srijana</span>, <span class="k" data-tip="अर्थः: constant">sutra</span> <span class="en-gloss">(Enums and constants)</span></h2>
-<p><code><span class="k" data-tip="अर्थः: enum">srijana</span></code> (सृजनम्) नामकानि पूर्णाङ्क-स्थिराङ्कानि निर्माति — एकं enum:</p>
+<div class="ch" id="ch9"><h2>9. गणनानि स्थिराङ्काः च — <span class="k" data-tip="अर्थः: enum">ganana</span>, <span class="k" data-tip="अर्थः: constant">sutra</span> <span class="en-gloss">(Enums and constants)</span></h2>
+<p><code><span class="k" data-tip="अर्थः: enum">ganana</span></code> (सृजनम्) नामकानि पूर्णाङ्क-स्थिराङ्कानि निर्माति — एकं enum:</p>
 <pre><code><span class="k" data-tip="अर्थः: main">mukhya</span>()
-    srijana LAAL = 1
-    srijana HARA = 2
-    srijana NEELA = 3
+    ganana LAAL = 1
+    ganana HARA = 2
+    ganana NEELA = 3
     <span class="k" data-tip="अर्थः: variable">vitti</span> mera_ranga = HARA
     <span class="k" data-tip="अर्थः: multiply (*)">guna</span> (mera_ranga) {
         <span class="k" data-tip="अर्थः: condition">bhavana</span> 1: { <span class="k" data-tip="अर्थः: print">likha</span>("Red\n") }
@@ -277,24 +277,24 @@ Hint: check the keyword spelling and syntax near this spot.
 <tr><td><code><span class="k" data-tip="अर्थः: main">mukhya</span>()</code></td><td>main() — program entry</td></tr>
 <tr><td><code><span class="k" data-tip="अर्थः: variable">vitti</span></code></td><td>variable declaration</td></tr>
 <tr><td><code><span class="k" data-tip="अर्थः: integer">anka</span></code></td><td>integer type</td></tr>
-<tr><td><code><span class="k" data-tip="अर्थः: array">pankti</span></code></td><td>array (a row)</td></tr>
-<tr><td><code><span class="k" data-tip="अर्थः: boolean">parigrah</span></code></td><td>boolean type</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: mala">mala</span></code></td><td>mala (a row)</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: boolean">satya</span></code></td><td>boolean type</td></tr>
 <tr><td><code>sankhya</code></td><td>4×64-bit vector type</td></tr>
 <tr><td><code><span class="k" data-tip="अर्थः: constant">sutra</span></code></td><td>constant</td></tr>
-<tr><td><code><span class="k" data-tip="अर्थः: if">yadi</span> ... <span class="k" data-tip="अर्थः: else">anyatra</span></code></td><td>if ... else</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: if">yadi</span> ... <span class="k" data-tip="अर्थः: else">anya</span></code></td><td>if ... else</td></tr>
 <tr><td><code><span class="k" data-tip="अर्थः: multiply (*)">guna</span> / <span class="k" data-tip="अर्थः: condition">bhavana</span></code></td><td>switch / case</td></tr>
-<tr><td><code><span class="k" data-tip="अर्थः: for">punaravartana</span> i = a <span class="k" data-tip="अर्थः: range-to">to</span> b</code></td><td>for loop</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: for">chakra</span> i = a <span class="k" data-tip="अर्थः: range-to">to</span> b</code></td><td>for loop</td></tr>
 <tr><td><code><span class="k" data-tip="अर्थः: while">yavat</span></code></td><td>while loop</td></tr>
-<tr><td><code><span class="k" data-tip="अर्थः: break">krama</span> / <span class="k" data-tip="अर्थः: continue">uddeshya</span></code></td><td>break / continue</td></tr>
-<tr><td><code><span class="k" data-tip="अर्थः: function">prakriya</span> / <span class="k" data-tip="अर्थः: return">pratiyati</span></code></td><td>function / return</td></tr>
-<tr><td><code><span class="k" data-tip="अर्थः: enum">srijana</span></code></td><td>enum</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: break">krama</span> / <span class="k" data-tip="अर्थः: continue">agrim</span></code></td><td>break / continue</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: function">prakriya</span> / <span class="k" data-tip="अर्थः: return">prati</span></code></td><td>function / return</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: enum">ganana</span></code></td><td>enum</td></tr>
 <tr><td><code><span class="k" data-tip="अर्थः: struct">rachana</span></code></td><td>struct</td></tr>
-<tr><td><code><span class="k" data-tip="अर्थः: include">ayojan</span></code></td><td>import</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: include">yoj</span></code></td><td>import</td></tr>
 <tr><td><code><span class="k" data-tip="अर्थः: print">likha</span></code></td><td>print</td></tr>
 <tr><td><code>nirmmita</code></td><td>allocate memory</td></tr>
 <tr><td><code><span class="k" data-tip="अर्थः: true">purna</span> / <span class="k" data-tip="अर्थः: false / null">shunya</span></code></td><td>true / false</td></tr>
-<tr><td><code><span class="k" data-tip="अर्थः: negation (-)">nishedha</span></code></td><td>assert</td></tr>
-<tr><td><code><span class="k" data-tip="अर्थः: inline assembly">nishkriya</span></code></td><td>इनलाइन यन्त्रकोडः</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: negation (-)">abhava</span></code></td><td>assert</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: inline assembly">yantra</span></code></td><td>इनलाइन यन्त्रकोडः</td></tr>
 <tr><td><code><span class="k" data-tip="अर्थः: print (no newline)">lkhb</span></code></td><td>नवीनपङ्क्तिं विना मुद्रणम्</td></tr>
 <tr><td><code><span class="k" data-tip="अर्थः: input">grahan</span></code></td><td>निवेशपठनम् (EOF इत्यत्र -1)</td></tr>
 <tr><td><code># / //</code></td><td>टिप्पन्यः</td></tr>
@@ -337,23 +337,23 @@ n--      <span class="cm"># n = 5</span></code></pre>
 
 <h3><span class="k" data-tip="अर्थः: print (no newline)">lkhb</span>() — नवीनपङ्क्तिं विना मुद्रणम्</h3>
 <p><code><span class="k" data-tip="अर्थः: print">likha</span>()</code> संख्यायाः अनन्तरं नवीनपङ्क्तिं ददाति; <code><span class="k" data-tip="अर्थः: print (no newline)">lkhb</span>()</code> न ददाति — सारणीनिर्माणाय:</p>
-<pre><code><span class="k" data-tip="अर्थः: for">punaravartana</span> i = 1 <span class="k" data-tip="अर्थः: range-to">to</span> 5 {
+<pre><code><span class="k" data-tip="अर्थः: for">chakra</span> i = 1 <span class="k" data-tip="अर्थः: range-to">to</span> 5 {
     <span class="k" data-tip="अर्थः: print (no newline)">lkhb</span>(i)
     <span class="k" data-tip="अर्थः: print">likha</span>(" ")
 }</code></pre>
 
 <h3>अवरोही पुनरावृत्तिः (Descending Loops)</h3>
 <p>प्रारम्भिकमूल्यम् अन्तिमात् मूल्यात् बृहत्तरं भवति चेत्, गणना स्वतः अवरोहति:</p>
-<pre><code><span class="k" data-tip="अर्थः: for">punaravartana</span> i = 5 <span class="k" data-tip="अर्थः: range-to">to</span> 1 {
+<pre><code><span class="k" data-tip="अर्थः: for">chakra</span> i = 5 <span class="k" data-tip="अर्थः: range-to">to</span> 1 {
     <span class="k" data-tip="अर्थः: print (no newline)">lkhb</span>(i)
     <span class="k" data-tip="अर्थः: print">likha</span>(" ")
 }    <span class="cm"># फलम्: 5 4 3 2 1</span></code></pre>
 
-<h3><span class="k" data-tip="अर्थः: inline assembly">nishkriya</span>() — इनलाइन यन्त्रकोडः</h3>
+<h3><span class="k" data-tip="अर्थः: inline assembly">yantra</span>() — इनलाइन यन्त्रकोडः</h3>
 <p>कच्चे x86-64 बैट्स् सर्वथा सोद्यत्नं उत्पन्ने कोडे स्थाप्यन्ते:</p>
-<pre><code><span class="k" data-tip="अर्थः: inline assembly">nishkriya</span>("B8 3C 00 00 00")  <span class="cm"># mov eax, 60</span>
-<span class="k" data-tip="अर्थः: inline assembly">nishkriya</span>("BF 2A 00 00 00")  <span class="cm"># mov edi, 42</span>
-<span class="k" data-tip="अर्थः: inline assembly">nishkriya</span>("0F 05")            <span class="cm"># syscall → exit(42)</span></code></pre>
+<pre><code><span class="k" data-tip="अर्थः: inline assembly">yantra</span>("B8 3C 00 00 00")  <span class="cm"># mov eax, 60</span>
+<span class="k" data-tip="अर्थः: inline assembly">yantra</span>("BF 2A 00 00 00")  <span class="cm"># mov edi, 42</span>
+<span class="k" data-tip="अर्थः: inline assembly">yantra</span>("0F 05")            <span class="cm"># syscall → exit(42)</span></code></pre>
 
 <h3><span class="k" data-tip="अर्थः: input">grahan</span>() तथा निवेशस्य अन्तः</h3>
 <p>निवेशः समाप्तः चेत् <code><span class="k" data-tip="अर्थः: input">grahan</span>()</code> इदानीं <code>-1</code> प्रयच्छति, येन क्रमादेशः शुद्धतया निवृत्तः भवितुम् अर्हति:</p>
@@ -366,8 +366,8 @@ n--      <span class="cm"># n = 5</span></code></pre>
 
 
 <h3>v29 – v41</h3>
-<p>अस्मात् संस्करणात् परं Sutram इत्यस्मिन् त्रयाणां operands-युक्तः operator, do-while loop, array length तथा bounds checking, षट्-arguments-युक्तानि functions, तथा च एका standard library योजिता अस्ति। इदानीं out-of-range array index इत्यनेन विना कोलाहलं data corruption न भवति, अपि तु साक्षात् स्पष्टः error आगच्छति। Windows programs मध्ये keyboard input अपि सम्यक् कार्यं करोति। अधः दत्तं प्रत्येकं उदाहरणं project इत्यस्य स्वस्य test suite द्वारा परीक्षितम् अस्ति।</p>
-<pre><code>ayojan math
+<p>अस्मात् संस्करणात् परं Sutram इत्यस्मिन् त्रयाणां operands-युक्तः operator, do-while loop, mala length तथा bounds checking, षट्-arguments-युक्तानि functions, तथा च एका standard library योजिता अस्ति। इदानीं out-of-range mala index इत्यनेन विना कोलाहलं data corruption न भवति, अपि तु साक्षात् स्पष्टः error आगच्छति। Windows programs मध्ये keyboard input अपि सम्यक् कार्यं करोति। अधः दत्तं प्रत्येकं उदाहरणं project इत्यस्य स्वस्य test suite द्वारा परीक्षितम् अस्ति।</p>
+<pre><code>yoj ganit
 
 mukhya()
     likha(mahattam(48, 36))
@@ -378,20 +378,20 @@ mukhya()
         i = i + 1
     } yavat (i &lt; 3)
     likha(i)
-    pankti a[3]
+    mala a[3]
     likha(pankti_len(a))
 </code></pre>
 
 <h3>The standard library</h3>
-<p>Sutram एकां लघ्वीं मानक-पुस्तकालयं प्रेषयति यं भवान् <code>ayojan</code> इत्यनेन आनयति। सङ्कलनकाले सः विभागः भवतः कार्यक्रमे अन्तर्लिखितः भवति, अतः कापि रनटाइम-आश्रयता नास्ति - पुस्तकालयस्य सङ्केतः भवतः बाइनरी-अङ्गत्वेन भवति। अद्यत्वे द्वादश विभागाः सन्ति, पूर्णा सूची च <code>docs/sutram-stdlib.html</code> इत्यत्र अस्ति।</p>
+<p>Sutram एकां लघ्वीं मानक-पुस्तकालयं प्रेषयति यं भवान् <code>yoj</code> इत्यनेन आनयति। सङ्कलनकाले सः विभागः भवतः कार्यक्रमे अन्तर्लिखितः भवति, अतः कापि रनटाइम-आश्रयता नास्ति - पुस्तकालयस्य सङ्केतः भवतः बाइनरी-अङ्गत्वेन भवति। अद्यत्वे द्वादश विभागाः सन्ति, पूर्णा सूची च <code>docs/sutram-stdlib.html</code> इत्यत्र अस्ति।</p>
 <table>
 <tr><th>module</th><th>include with</th><th>functions</th></tr>
-<tr><td><code>math</code></td><td><code>ayojan math</code></td><td>15 functions &mdash; <code>varg</code> <code>vargit</code> <code>ghan</code> <code>dvigun</code> <code>trigun</code> <code>vardh</code> <code>nirapeksh_mulya</code> <code>laghu2</code> <code>adhik2</code> <code>mahattam</code> <code>laghuttam</code> <code>ghat</code> <code>kramgun</code> <code>asti_abhajya</code> <code>yog_tak</code></td></tr>
-<tr><td><code>num</code></td><td><code>ayojan num</code></td><td>10 functions &mdash; <code>asti_yugm</code> <code>asti_visham</code> <code>ank_gan</code> <code>ank_yog</code> <code>viparyay_ank</code> <code>asti_vilom</code> <code>seemit</code> <code>fib</code> <code>asti_sampurna</code> <code>collatz_charan</code></td></tr>
-<tr><td><code>sort</code></td><td><code>ayojan sort</code></td><td>11 functions &mdash; <code>vinimay</code> <code>budbud_shreni</code> <code>shankh_shreni</code> <code>viparyay_mala</code> <code>laghu</code> <code>adhik</code> <code>yog</code> <code>anwesh_sarak</code> <code>gan</code> <code>asti_sorted</code> <code>dwi_anwesh</code></td></tr>
-<tr><td><code>string</code></td><td><code>ayojan string</code></td><td>13 functions &mdash; <code>varna_maap</code> <code>akshar_sanket</code> <code>asti_ank_akshar</code> <code>asti_unnat_akshar</code> <code>asti_avanat_akshar</code> <code>asti_akshar_akshar</code> <code>asti_avakash_akshar</code> <code>gan_swar</code> <code>gan_akshar</code> <code>anwesh_akshar</code> <code>asti_sarv_ank</code> <code>unnat_sanket</code> <code>avanat_sanket</code></td></tr>
+<tr><td><code>ganit</code></td><td><code>yoj ganit</code></td><td>15 functions &mdash; <code>varg</code> <code>vargit</code> <code>ghan</code> <code>dvigun</code> <code>trigun</code> <code>vardh</code> <code>nirapeksh_mulya</code> <code>laghu2</code> <code>adhik2</code> <code>mahattam</code> <code>laghuttam</code> <code>ghat</code> <code>kramgun</code> <code>asti_abhajya</code> <code>yog_tak</code></td></tr>
+<tr><td><code>ank</code></td><td><code>yoj ank</code></td><td>10 functions &mdash; <code>asti_yugm</code> <code>asti_visham</code> <code>ank_gan</code> <code>ank_yog</code> <code>viparyay_ank</code> <code>asti_vilom</code> <code>seemit</code> <code>fib</code> <code>asti_sampurna</code> <code>collatz_charan</code></td></tr>
+<tr><td><code>shreni</code></td><td><code>yoj shreni</code></td><td>11 functions &mdash; <code>vinimay</code> <code>budbud_shreni</code> <code>shankh_shreni</code> <code>viparyay_mala</code> <code>laghu</code> <code>adhik</code> <code>yog</code> <code>anwesh_sarak</code> <code>gan</code> <code>asti_sorted</code> <code>dwi_anwesh</code></td></tr>
+<tr><td><code>varna</code></td><td><code>yoj varna</code></td><td>13 functions &mdash; <code>varna_maap</code> <code>akshar_sanket</code> <code>asti_ank_akshar</code> <code>asti_unnat_akshar</code> <code>asti_avanat_akshar</code> <code>asti_akshar_akshar</code> <code>asti_avakash_akshar</code> <code>gan_swar</code> <code>gan_akshar</code> <code>anwesh_akshar</code> <code>asti_sarv_ank</code> <code>unnat_sanket</code> <code>avanat_sanket</code></td></tr>
 </table>
-<pre><code>ayojan math
+<pre><code>yoj ganit
 
 mukhya()
     likha(mahattam(48, 36))
@@ -422,7 +422,7 @@ mukhya()
 
 <p><b>Loop → पुनरावृत्तिः</b> — पुनः पुनः आवर्तते (पुनः चलति) इति; बन्धसदृशा संरचना।</p>
 
-<p><b>Array → पङ्क्तिः</b> — पङ्क्तिबद्धानां मूल्यानां समूहः। सूत्रम्-भाषायामेव अस्य कूटशब्दः <code><span class="k" data-tip="अर्थः: array">pankti</span></code> अस्ति।</p>
+<p><b>Array → पङ्क्तिः</b> — पङ्क्तिबद्धानां मूल्यानां समूहः। सूत्रम्-भाषायामेव अस्य कूटशब्दः <code><span class="k" data-tip="अर्थः: mala">mala</span></code> अस्ति।</p>
 
 <p><b>Memory → स्मृतिः</b> — यत्र सूचनाः संगृह्यन्ते; "मेमोरी" इति केवलं श्रुतिलिपिः, अर्थं न ब्रूते।</p>
 
@@ -447,16 +447,16 @@ mukhya()
 <tr><td><code><span class="k" data-tip="अर्थः: variable">vitti</span></code></td><td>वित् (जानाति)</td><td>ज्ञानम् धारयति</td></tr>
 <tr><td><code><span class="k" data-tip="अर्थः: integer">anka</span></code></td><td>अङ्कः</td><td>संख्याचिह्नम्</td></tr>
 <tr><td><code><span class="k" data-tip="अर्थः: if">yadi</span></code></td><td>यदि</td><td>चेत्</td></tr>
-<tr><td><code><span class="k" data-tip="अर्थः: else">anyatra</span></code></td><td>अन्यत्र</td><td>अन्यस्मिन् स्थाने</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: else">anya</span></code></td><td>अन्यत्र</td><td>अन्यस्मिन् स्थाने</td></tr>
 <tr><td><code><span class="k" data-tip="अर्थः: while">yavat</span></code></td><td>यावत्</td><td>यावत्पर्यन्तम्</td></tr>
-<tr><td><code><span class="k" data-tip="अर्थः: for">punaravartana</span></code></td><td>पुनः + आवर्तनम्</td><td>पुनः पुनः आवर्तते</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: for">chakra</span></code></td><td>पुनः + आवर्तनम्</td><td>पुनः पुनः आवर्तते</td></tr>
 <tr><td><code><span class="k" data-tip="अर्थः: break">krama</span></code></td><td>क्रमः</td><td>अनुक्रमः, वरीयता</td></tr>
 <tr><td><code><span class="k" data-tip="अर्थः: function">prakriya</span></code></td><td>प्रक्रिया</td><td>कार्यविधिः</td></tr>
 <tr><td><code><span class="k" data-tip="अर्थः: true">purna</span></code></td><td>पूर्णः</td><td>सम्पूर्णः</td></tr>
 <tr><td><code><span class="k" data-tip="अर्थः: false / null">shunya</span></code></td><td>शून्यम्</td><td>रिक्तम् — अरबी-मार्गेण आङ्ग्लस्य "zero" इति अभवत्!</td></tr>
 <tr><td><code><span class="k" data-tip="अर्थः: print">likha</span></code></td><td>लिख् (लिखति)</td><td>लेखनम्</td></tr>
 <tr><td><code><span class="k" data-tip="अर्थः: input">grahan</span></code></td><td>ग्रहणम्</td><td>स्वीकरणम्</td></tr>
-<tr><td><code><span class="k" data-tip="अर्थः: array">pankti</span></code></td><td>पङ्क्तिः</td><td>श्रेणिः, कतिपयः वस्तुनः एकस्मिन् रेखायाम्</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: mala">mala</span></code></td><td>पङ्क्तिः</td><td>श्रेणिः, कतिपयः वस्तुनः एकस्मिन् रेखायाम्</td></tr>
 <tr><td><code><span class="k" data-tip="अर्थः: constant">sutra</span></code></td><td>सूत्रम्</td><td>दारः — येन सर्वाः भाषाः सम्बद्धाः</td></tr>
 </table>
 </div>
@@ -602,10 +602,10 @@ Sutram → Uninstall</b>। अनुस्थापकः केवलं स�
 
 <h3>17.15 विण्डोज़े अद्यापि शेषम्</h3>
 <p>अधुना कार्यन्ति: संकलनम्, <code>likha</code> तथा <code>shabda</code>, गणितम्,
-चराः, <code>yadi</code>/<code>anyatra</code>, <code>yavat</code>,
-<code>punaravartana</code>, <code>krama</code>/<code>uddeshya</code>, त्रिपर्यन्ताः
+चराः, <code>yadi</code>/<code>anya</code>, <code>yavat</code>,
+<code>chakra</code>, <code>krama</code>/<code>agrim</code>, त्रिपर्यन्ताः
 फलनाः, पुनरावृत्तिः, शीघ्रं प्रत्यागमनम्, खण्ड-टिप्पण्यः, भाषा-सञ्चयाः, दोष-सन्देशाः।</p>
-<p>विण्डोज्-आगमनम् (<code>grahan</code>) इदानीं कार्यं करोति: निर्मितः <code>.exe</code> लिनक्स-सिस्टम्-कॉल इत्यस्य स्थाने एम्बेडेड्-रन्टाइम् (<code>ReadFile</code>) माध्यमेन पठति। पङ्क्तिः (<code>pankti</code>) रचना (<code>rachana</code>) च <code>VirtualAlloc</code> माध्यमेन स्मृतिं गृह्णीतः। अद्यापि पोर्ट् न कृतम्: नेटवर्क बिल्टिन्स्। अन्तर्क्रियात्मकं REPL कार्यान्वितम् अस्ति तथा च वास्तविक-विण्डोज्-यन्त्रे परीक्षणस्य प्रतीक्षां करोति।</p>
+<p>विण्डोज्-आगमनम् (<code>grahan</code>) इदानीं कार्यं करोति: निर्मितः <code>.exe</code> लिनक्स-सिस्टम्-कॉल इत्यस्य स्थाने एम्बेडेड्-रन्टाइम् (<code>ReadFile</code>) माध्यमेन पठति। पङ्क्तिः (<code>mala</code>) रचना (<code>rachana</code>) च <code>VirtualAlloc</code> माध्यमेन स्मृतिं गृह्णीतः। अद्यापि पोर्ट् न कृतम्: नेटवर्क बिल्टिन्स्। अन्तर्क्रियात्मकं REPL कार्यान्वितम् अस्ति तथा च वास्तविक-विण्डोज्-यन्त्रे परीक्षणस्य प्रतीक्षां करोति।</p>
 
 <h3>17.16 दर्शनम् — अपरिवर्तितम्</h3>
 <p>संकलकः एक एव शुद्ध-NASM-स्रोतः तिष्ठति, यत्र C, पाइथन् वा रनटाइम्-आश्रयः नास्ति;
@@ -667,12 +667,12 @@ Sutram → Uninstall</b>। अनुस्थापकः केवलं स�
         s = s + xs[i]
         i = i + 1
     }
-    <span class="kw">pratiyati</span> s / <span class="kw">kosh_len</span>(xs)
+    <span class="kw">prati</span> s / <span class="kw">kosh_len</span>(xs)
 }</pre>
   <h3>Using the library</h3>
-<pre><span class="kw">ayojan</span> sankhyiki
-<span class="kw">ayojan</span> kalana
-<span class="kw">ayojan</span> samanvaya</pre>
+<pre><span class="kw">yoj</span> sankhyiki
+<span class="kw">yoj</span> kalana
+<span class="kw">yoj</span> samanvaya</pre>
 </div>
 <div class="footer">सूत्रम् — the complete thread · संस्कृत-संस्करणम् · v1.0</div>
 </div>
