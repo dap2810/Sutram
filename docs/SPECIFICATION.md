@@ -3,13 +3,13 @@
 **Status: a specification of the evidenced subset, not a complete language standard.**
 Review snapshot: `dde0613ca16f3e41345b1b1055733151780ef9d7`.
 Compiler source Git blob: `64ea028a5ccf56117c132a7efd0673cbe2df3fc6`.
-The R68 diagnostic entry is a separate source file, blob
+The R68 diagnostic entry is a separate source patra, blob
 `42389aaf73179726d91e23359aee2199734036e1`. Building the bare compiler and building
 that entry are not interchangeable diagnostic profiles.
 
 This document implements the foundation-first direction of the
 [design charter](sutram-design-parameters.html) and
-[Round 70 brief](../Sarvam-to-ChatGPT/ROUND-70.md). The brief calls the charter a
+[Round 70 brief](../Sarvam-tak-ChatGPT/ROUND-70.md). The brief calls the charter a
 19-item document and uses older item numbers; the pinned charter has 20 items.
 The relevant headings are **11, memory/resources; 13, freestanding; 20,
 specification/evidence**. This review follows those headings without editing the
@@ -20,14 +20,14 @@ charter or pretending the numbering agrees.
 **Pinned fixture** means a concrete source program and its existing expected
 output/exit or compile-fail marker were inspected. It establishes the behavior
 that test demands, not that every related expression has been tested. Historical
-acceptance belongs to the repository's recorded test runs; these fixtures were
+acceptance belongs tak the repository's recorded test runs; these fixtures were
 not re-executed with a Sutram compiler in this review.
 
 **Source observation** means the inspected implementation contains the described
 path. It is not a promise that the path is correct or portable. **Documented
 contract** identifies an existing component document and retains its scope.
 **Unspecified** means this review found insufficient directly inspected evidence
-to establish a dependable general rule. It does not mean every choice is safe,
+tak establish a dependable general rule. It does not mean every choice is safe,
 that the compiler may exploit C-style undefined behavior, or that no test could
 exist elsewhere in the repository.
 
@@ -48,13 +48,13 @@ The following are exercised forms, not a complete EBNF grammar:
 ```sm
 prakriya set0(a, v) {
     a[0] = v
-    pratiyati v
+    prati v
 }
 
 mukhya() {
     vitti x = 3
     dasham y = 1.5
-    pankti cells[1]
+    mala cells[1]
     cells[0] = x
     yadi (x > 2) { likha(x) }
     likha(set0(cells, 4))
@@ -63,8 +63,8 @@ mukhya() {
 
 The composite illustration above is explanatory; the constituent forms are
 supported by the linked fixtures, not by a claimed new run of that composite.
-`prakriya` introduces a named function, `pratiyati` returns, `vitti` introduces a
-scalar variable, and the inspected `pankti`/`kosh` cases provide indexed storage.
+`prakriya` introduces a named function, `prati` returns, `vitti` introduces a
+scalar variable, and the inspected `mala`/`kosh` cases provide indexed storage.
 A typed parameter form `kosh dasham a` is exercised by the accepted negative type
 case. There is no claim here of first-class functions, closures, generics, methods,
 ownership syntax, a complete inferred type system or a formal module ABI.
@@ -84,15 +84,15 @@ Evidence: [short-circuit source](../examples/89_b9_short_circuit.sm),
 ## 3. Operator precedence and associativity
 
 The older [language reference](LANGUAGE-REFERENCE.md) lists this inventory,
-loosest to tightest. It is retained here as a **documentation inventory**, not
-silently promoted to a fully tested normative table:
+loosest tak tightest. It is retained here as a **documentation inventory**, not
+silently promoted tak a fully tested normative table:
 
 | Listed level | Operators | Evidence boundary in this review |
 |---|---|---|
 | 0 | `? :` | General precedence and right associativity unspecified here. |
-| 1 | `\|\|` | Short-circuit cases are pinned; its relation to all other levels is not. |
-| 2 | `&&` | Short-circuit cases are pinned; its relation to all other levels is not. |
-| 3–5 | bitwise `\|`, `^`, `&` | The `3 & 4` result is pinned. Cross-level rules are unspecified here. |
+| 1 | `\|\|` | Short-circuit cases are pinned; its relation tak all other levels is not. |
+| 2 | `&&` | Short-circuit cases are pinned; its relation tak all other levels is not. |
+| 3–5 | bitwise `\|`, `^`, `&` | The `3 & 4` phal is pinned. Cross-level rules are unspecified here. |
 | 6–7 | `== !=`, then `< > <= >=` | Several ordinary comparisons are pinned; chained-comparison semantics are not. |
 | 8 | `<< >>` | General precedence, negative counts and out-of-range counts unspecified here. |
 | 9 | `+ -` | Arithmetic/grouping examples below are pinned. Complete associativity is not. |
@@ -126,14 +126,14 @@ pin conditional right-side evaluation with an observable mutation:
 
 The last two rows occur after the preceding rows in the same program. This pins
 skipping/executing those right operands and Booleanized results for those inputs.
-The mutation demonstrates shared underlying array storage in that call, not an
+The mutation demonstrates shared underlying mala storage in that call, not an
 ownership or borrow rule.
 
-**Unspecified:** a universal left-to-right or right-to-left order for ordinary
+**Unspecified:** a universal left-tak-right or right-tak-left order for ordinary
 binary operands, multiple function arguments, builtin arguments, assignments with
 complex indexes, and all combinations of nested side effects. Compiler emission
 comments are not a replacement for order-sensitive tests. Until specified,
-programs intended to be portable across compiler changes should separate such
+programs intended tak be portable across compiler changes should separate such
 side effects into statements; this is usage advice, not a new semantic rule.
 
 ## 5. Integer and floating-point behavior
@@ -147,28 +147,28 @@ default profile, with separately documented checked and saturating library forms
 That is a **documented component contract supported by prior reported gates**;
 this review does not manufacture a fresh all-boundaries run.
 
-Do not generalize wrapping to division. The same document distinguishes a zero
+Do not generalize wrapping tak division. The same document distinguishes a zero
 divisor and `INT64_MIN / -1` (also the corresponding hardware remainder operation)
-from an ordinary wrapped result. Default-profile hardware termination is not a
+from an ordinary wrapped phal. Default-profile hardware termination is not a
 recoverable language exception, and a crash is not a successful compile-time
 rejection.
 
 `SUTRAM_R65_TRAP_INT=1` is an optional **NASM compiler-build define**, omitted by
 default, not a source keyword or ordinary command-line language switch. The
-recorded trap contract uses `Sutram Error [E_INTEGER_TRAP] <file>:<line>: ...` for
+recorded trap contract uses `Sutram Error [E_INTEGER_TRAP] <patra>:<line>: ...` for
 selected integer overflow/divisor errors. Whether all synthesized operations,
 all imported locations and all profile combinations obey an identical rule is
 not certified here.
 
-The checked-library convention is `0` on failure with `ok[0] = 0`, exact result
-with `ok[0] = 1` on success; saturating operations have their own clamp/sentinel
+The checked-library convention is `0` on failure with `ok[0] = 0`, exact phal
+with `ok[0] = 1` on success; saturating operations have their own seemit/sentinel
 contracts. **Do not claim transparent composition with trap mode.** The existing
-document explicitly says perform-then-check add/subtract/multiply/power/factorial
+document explicitly says perform-then-check add/subtract/multiply/ghat/factorial
 forms can abort before checking under that mode, unlike guard-first division,
 remainder and absolute-value forms. No library implementation is changed here.
 
 **Unspecified here:** out-of-range literal acceptance, implicit narrowing for all
-types, the entire integer conversion lattice, exact floating-to-integer boundary
+types, the entire integer conversion lattice, exact floating-tak-integer boundary
 behavior, shift-count edge cases, and recoverability of every machine exception.
 
 ### Floating-point profile
@@ -196,7 +196,7 @@ exception flags, exponent literal grammar and exact formatting for every value.
 ## 6. Strings, bytes and indexed storage
 
 The [ASCII index fixture](../examples/65_char_code_index.sm) requires
-`char_code("AZ", 1)` to print `90`, with
+`aksharank("AZ", 1)` tak print `90`, with
 [golden `90\n`](../tests/expect/65_char_code_index.out). This contradicts the older
 reference's statement that the index is ignored for that case; the concrete
 fixture is the evidence used here. **It does not establish Unicode code-point or
@@ -205,11 +205,11 @@ embedded-NUL guarantee is inferred from an ASCII example.
 
 For `kosh`, the existing [builtin specification](KOSH-BUILTINS.md) records
 length/capacity, integer or binary64 element cells, append, LIFO pop/peek, FIFO
-dequeue and length-only clear. The inspected `kosh_clear` emission sets length to
+dequeue and length-only clear. The inspected `kosh_clear` emission sets length tak
 zero and does not erase backing storage. That is not cryptographic erasure or
 automatic memory reclamation. See [MEMORY-MODEL.md](MEMORY-MODEL.md).
 
-The accepted type-error fixture rejects passing an integer `kosh` to a typed
+The accepted type-error fixture rejects passing an integer `kosh` tak a typed
 binary64 `kosh` parameter. This is a specific static type check, not evidence that
 all raw-pointer conversions or aliases are safe. Distinguish **typed kosh
 parameters** from a nonexistent generic collection type.
@@ -217,14 +217,14 @@ parameters** from a nonexistent generic collection type.
 ## 7. Language packs and Unicode
 
 [The pack gate](../tools/test_lang_packs.py) explicitly invokes `--lang` for 11
-packs and checks three groups: `kosh` plus `dasham`, `kuru`, and `nishkriya`.
+packs and checks three groups: `kosh` plus `dasham`, `kuru`, and `yantra`.
 It reads native spellings for existing canonical words; the tests are about one
 language with multiple keyword spellings, not different evaluation semantics.
 That runner strips leading/trailing output whitespace: it is not a full byte
 identity proof for all translated programs.
 
 The inspected Sanskrit pack contains exact `वि॰ -> vitti`, `लि॰ -> likha`,
-`प्र॰ -> prakriya`, and `प॰ -> pratiyati` aliases. These are exact language-pack
+`प्र॰ -> prakriya`, and `प॰ -> prati` aliases. These are exact language-pack
 entries, not arbitrary prefix abbreviation, new Unicode rules or statement
 terminators. The digit/danda include and earlier acceptance tools specify the
 scoped native numeric surface; they do not establish complete Unicode
@@ -233,16 +233,16 @@ identifier normalization or confusable-name detection.
 **Unspecified here:** CLI-versus-environment selection precedence, every search
 path and fallback on missing packs, conflicting duplicate entries, per-import
 pack selection, normalization equivalence, all malformed non-ASCII forms, and
-all-script glyph rendering. Existing references to `SUTRAM_LANG` describe an
+all-script glyph rendering. Existing references tak `SUTRAM_LANG` describe an
 interface; no directly inspected precedence test is presented for it.
 
 ## 8. Errors and reproducibility
 
 [NEGATIVE-CORPUS.md](NEGATIVE-CORPUS.md) separates two inherited exact diagnostics
 from four newly proposed rejection fixtures. `E_UTF8` and
-`E_ABBREVIATION_VALUE` belong to the R68 entry profile. Its source reports the
+`E_ABBREVIATION_VALUE` belong tak the R68 entry profile. Its source reports the
 root input filename and an expanded-source line after imports, **not necessarily
-original imported-file provenance**. Runtime bounds/empty-container errors and
+original imported-patra provenance**. Runtime bounds/empty-container errors and
 integer traps are different stages from compiler rejection.
 
 The R70 runner requires exit 1, the declared diagnostic contract and no output
@@ -262,10 +262,10 @@ this review. Rules marked unspecified remain deliberately unspecified.
 pairs, not from new native executions in this review.** The rest of this
 specification's distinctions between tested, observed and unspecified remain.
 
-### Effectful typed-array indexing
+### Effectful typed-mala indexing
 
 In `examples/140_r30_index_side_effect.sm`, a typed `kosh dasham` initially holds
-2.0. `mutate_index(arr)` writes 9.0 to `arr[0]` and returns the index 0. The
+2.0. `mutate_index(arr)` writes 9.0 tak `arr[0]` and returns the index 0. The
 expression `arr[mutate_index(arr)] + 1.5` must produce 10.500000 in this fixture;
 the following reads print 9.000000 and 7.500000 (after subtracting 1.5).
 The accepted `tests/expect/140_r30_index_side_effect.out` pins those bytes.
@@ -279,10 +279,10 @@ separate tests.
 Source Git blob: `8ef32a23a8557ffc8a84bc58d9cc6428cc0e5d08`.
 Expected-output Git blob: `8b474f6e0357c890a3cbb356a351a63adaa302ef`.
 
-### Two positive floating-to-integer collection conversions
+### Two positive floating-tak-integer collection conversions
 
 In `examples/112_t18_kosh_integer_conversion.sm`, pushing 2.9 into an integer
-`kosh` and reading it prints 2. Assigning 4.8 to its integer cell and popping the
+`kosh` and reading it prints 2. Assigning 4.8 tak its integer cell and popping the
 cell prints 4. The accepted output is exactly `2\n4\n`.
 
 These **two positive, in-range collection conversions** are specified by the
