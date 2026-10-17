@@ -1,9 +1,9 @@
-ayojan util
+yoj sadhan
 mukhya() {
-    likha(sign(5))
+    likha(util_chinha(5))
     likha("\n")
-    likha(sign(-5))
+    likha(util_chinha(-5))
     likha("\n")
-    likha(sign(0))
+    likha(util_chinha(0))
     likha("\n")
 }
