@@ -16,7 +16,7 @@ leaky pravan (~15.6) fails, a fixed compiler (~8) passes.
 
 This is a diagnostic, not a suite gate: RSS is machine-dependent,
 so it lives here rather than in tools/proof_lib.py. It is expected
-tak FAIL until the compiler-side fix lands (munmap the old buffer
+to FAIL until the compiler-side fix lands (munmap the old buffer
 in the growth path, src/ work).
 
 Usage: python3 tools/test_kosh_growth_leak.py
