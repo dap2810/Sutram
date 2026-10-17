@@ -19,7 +19,7 @@ prakriya bsort(a, n) {
 }
 
 mukhya() {
-    pankti a[4]
+    mala a[4]
     a[0] = 4
     a[1] = 3
     a[2] = 2
