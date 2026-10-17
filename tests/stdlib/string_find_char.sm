@@ -1,11 +1,11 @@
-ayojan string
+yoj varna
 mukhya() {
-    likha(find_char("hello", 108))
+    likha(anwesh_akshar("hello", 108))
     likha("\n")
-    likha(find_char("hello", 104))
+    likha(anwesh_akshar("hello", 104))
     likha("\n")
-    likha(find_char("hello", 111))
+    likha(anwesh_akshar("hello", 111))
     likha("\n")
-    likha(find_char("hello", 122))
+    likha(anwesh_akshar("hello", 122))
     likha("\n")
 }
