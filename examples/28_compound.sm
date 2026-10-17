@@ -27,17 +27,17 @@ mukhya()
     likha("\n")
     likha("\nSum 1 to 10 using += :\n")
     vitti total = 0
-    punaravartana i = 1 to 10 {
+    chakra i = 1 tak 10 {
         total += i
     }
     likha("Total: ")
     likha(total)
     likha("\n")
     likha("\nFactorial of 5 using *= :\n")
-    vitti fact = 1
-    punaravartana n = 1 to 5 {
-        fact *= n
+    vitti kramgun = 1
+    chakra n = 1 tak 5 {
+        kramgun *= n
     }
     likha("5! = ")
-    likha(fact)
+    likha(kramgun)
     likha("\n")
