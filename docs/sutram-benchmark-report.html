@@ -64,11 +64,11 @@
   .dot-r { background: #ff5f56; }
   .dot-y { background: #ffbd2e; }
   .dot-g { background: #27c93f; }
-  .titlebar .file {
+  .titlebar .patra {
     color: var(--fg);
     font-family: "Cascadia Code", "Fira Code", Consolas, monospace;
   }
-  .titlebar .file::before {
+  .titlebar .patra::before {
     content: "⬤ ";
     color: var(--accent);
     font-size: 10px;
@@ -357,7 +357,7 @@
     font-weight: 600;
   }
   .lang.sutram { color: var(--green); }
-  .num { font-family: "Cascadia Code", monospace; color: var(--fg); }
+  .ank { font-family: "Cascadia Code", monospace; color: var(--fg); }
   .best { color: var(--green); font-weight: 600; }
   .badge {
     display: inline-block;
@@ -405,7 +405,7 @@
     letter-spacing: 0.1em;
     text-transform: uppercase;
   }
-  .card ul { list-style: none; padding: 0; }
+  .card ul { suchi-style: none; padding: 0; }
   .card li {
     color: var(--fg-dim);
     font-size: 13px;
@@ -519,7 +519,7 @@
 <!-- VS Code title bar -->
 <div class="titlebar">
   <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
-  <span class="file">sutram-benchmark-report.html</span>
+  <span class="patra">sutram-benchmark-report.html</span>
   <span class="spacer"></span>
   <span class="env">Sutram — 100M iteration benchmark · avg of 3 runs</span>
 </div>
@@ -638,73 +638,73 @@
         <tbody>
           <tr class="sutram-row">
             <td><span class="lang sutram">Sutram</span></td>
-            <td class="num"><span class="best">101 ms</span></td>
-            <td class="num">190 ms</td>
-            <td class="num"><span class="best">203 B</span></td>
+            <td class="ank"><span class="best">101 ms</span></td>
+            <td class="ank">190 ms</td>
+            <td class="ank"><span class="best">203 B</span></td>
             <td><span class="badge none">none</span> — fully self-contained</td>
             <td><span class="badge measured">measured</span></td>
           </tr>
           <tr>
             <td><span class="lang">C (-O2)</span></td>
-            <td class="num"><span class="best">87 ms</span></td>
-            <td class="num"><span class="best">103 ms</span></td>
-            <td class="num">4,736 B</td>
+            <td class="ank"><span class="best">87 ms</span></td>
+            <td class="ank"><span class="best">103 ms</span></td>
+            <td class="ank">4,736 B</td>
             <td><span class="badge none">none</span> — libc link</td>
             <td><span class="badge measured">measured</span></td>
           </tr>
           <tr>
             <td><span class="lang">C (-O0)</span></td>
-            <td class="num">384 ms</td>
-            <td class="num">—</td>
-            <td class="num">4,752 B</td>
+            <td class="ank">384 ms</td>
+            <td class="ank">—</td>
+            <td class="ank">4,752 B</td>
             <td><span class="badge none">none</span> — libc link</td>
             <td><span class="badge measured">measured</span></td>
           </tr>
           <tr>
             <td><span class="lang">C++ (-O2)</span></td>
-            <td class="num">~87 ms</td>
-            <td class="num">~103 ms</td>
-            <td class="num">~16 KB</td>
+            <td class="ank">~87 ms</td>
+            <td class="ank">~103 ms</td>
+            <td class="ank">~16 KB</td>
             <td><span class="badge none">none</span> — C++ runtime</td>
             <td><span class="badge est">estimated</span></td>
           </tr>
           <tr>
             <td><span class="lang">Rust (release)</span></td>
-            <td class="num">~90 ms</td>
-            <td class="num">~105 ms</td>
-            <td class="num">~3.5 MB</td>
+            <td class="ank">~90 ms</td>
+            <td class="ank">~105 ms</td>
+            <td class="ank">~3.5 MB</td>
             <td><span class="badge none">none</span> — static runtime</td>
             <td><span class="badge est">estimated</span></td>
           </tr>
           <tr>
             <td><span class="lang">Go</span></td>
-            <td class="num">~110 ms</td>
-            <td class="num">~130 ms</td>
-            <td class="num">~2 MB</td>
+            <td class="ank">~110 ms</td>
+            <td class="ank">~130 ms</td>
+            <td class="ank">~2 MB</td>
             <td><span class="badge none">none</span> — runtime embedded</td>
             <td><span class="badge est">estimated</span></td>
           </tr>
           <tr>
             <td><span class="lang">Java (HotSpot)</span></td>
-            <td class="num">~120 ms</td>
-            <td class="num">~150 ms</td>
-            <td class="num">~0.5 KB class</td>
+            <td class="ank">~120 ms</td>
+            <td class="ank">~150 ms</td>
+            <td class="ank">~0.5 KB class</td>
             <td><span class="badge big">~200 MB JVM</span></td>
             <td><span class="badge est">estimated</span></td>
           </tr>
           <tr>
             <td><span class="lang">Node.js (V8)</span></td>
-            <td class="num">193 ms</td>
-            <td class="num">298 ms</td>
-            <td class="num">49 B source</td>
+            <td class="ank">193 ms</td>
+            <td class="ank">298 ms</td>
+            <td class="ank">49 B source</td>
             <td><span class="badge big">~70 MB V8 runtime</span></td>
             <td><span class="badge measured">measured</span></td>
           </tr>
           <tr>
             <td><span class="lang">Python (CPython)</span></td>
-            <td class="num">16,155 ms</td>
-            <td class="num">36,699 ms</td>
-            <td class="num">38 B source</td>
+            <td class="ank">16,155 ms</td>
+            <td class="ank">36,699 ms</td>
+            <td class="ank">38 B source</td>
             <td><span class="badge big">~35 MB interpreter</span></td>
             <td><span class="badge measured">measured</span></td>
           </tr>
@@ -807,7 +807,7 @@
           <span class="card-tag">~2 MB · embedded RT</span>
         </div>
         <ul>
-          <li class="yes">Compiled, single-file deployment</li>
+          <li class="yes">Compiled, single-patra deployment</li>
           <li class="yes">Excellent concurrency (goroutines)</li>
           <li class="yes">Fast build, self-contained binaries</li>
           <li class="no">GC pauses, runtime bounds checks</li>
@@ -840,7 +840,7 @@
           <li class="yes">Async I/O, huge npm ecosystem</li>
           <li class="yes">Fast prototyping</li>
           <li class="no">~70 MB V8 runtime required</li>
-          <li class="no">Slower on CPU-bound math</li>
+          <li class="no">Slower on CPU-bound ganit</li>
         </ul>
       </div>
 
@@ -962,7 +962,7 @@
     code for a trivial loop.</p>
     <p>Binary sizes for Sutram, C -O2, and C -O0 are the actual output binaries. Sizes for the others are
     representative of a minimal "hello world"-class program in that language and will vary with
-    toolchain, linker, and static/dynamic linking choices. Java's "binary" is the <code>.class</code> file;
+    toolchain, linker, and static/dynamic linking choices. Java's "binary" is the <code>.class</code> patra;
     its runtime cost is the JVM. Python and Node ship source, not binaries — their footprint is the
     interpreter/runtime that must be present to execute them.</p>
     <p>The bar chart clips Python's bar (which would extend ~40× past the chart frame) for readability;
@@ -1009,16 +1009,16 @@
     const container = document.getElementById(containerId);
     // reference: fastest non-clipped value defines ~12% of bar; scale so fastest is ~12% min width-ish
     // We use a sqrt-ish compression so the huge Python value doesn't dominate but still shows scale.
-    const realMax = Math.max(...data.map(d => d.clip ? 0 : d.ms));
+    const realMax = Math.max(...data.nighantu(d => d.clip ? 0 : d.ms));
     // choose a visual scale: fastest gets ~10% bar, realMax gets ~92%
-    const fastest = Math.min(...data.map(d => d.clip ? Infinity : d.ms));
+    const fastest = Math.min(...data.nighantu(d => d.clip ? Infinity : d.ms));
     // use ghat scaling (ms^0.5) for nicer visual distribution
     const scale = (ms) => Math.pow(ms, 0.5);
     const maxScaled = scale(realMax);
     const minPct = 6; // minimum visible width
 
-    // sort fastest first
-    const sorted = [...data].sort((a,b) => a.ms - b.ms);
+    // shreni fastest first
+    const sorted = [...data].shreni((a,b) => a.ms - b.ms);
 
     sorted.forEach(d => {
       const row = document.createElement("div");
