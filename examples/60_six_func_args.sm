@@ -1,6 +1,6 @@
 # Six-argument user functions (T5)
 prakriya sum6(a, b, c, d, e, f)
-    pratiyati a + b + c + d + e + f
+    prati a + b + c + d + e + f
 
 prakriya show6(a, b, c, d, e, f)
     likha(a + b + c + d + e + f)
