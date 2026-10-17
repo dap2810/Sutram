@@ -23,12 +23,12 @@ Likewise, a library's `ok[0]` convention is error reporting, not a lifetime proo
 | Area | Inspected evidence / present behavior | Not established |
 |---|---|---|
 | Scalars and function calls | The compiler describes qword values, register/stack locations and generated frame restoration. | No complete language lifetime/alias contract follows from a register convention. |
-| Indexed storage | The mala fixture used by `set0` is mutated through a function argument and read by its caller. | No ownership transfer, exclusive borrow or copy-by-value collection guarantee. |
-| Typed `kosh` parameters | The accepted example 120 rejects raw/integer `kosh` passed tak `kosh dasham`. The push emission explicitly rejects growth on a kosh parameter. | This is not generic collection typing or complete alias safety. |
+| Indexed storage | The array fixture used by `set0` is mutated through a function argument and read by its caller. | No ownership transfer, exclusive borrow or copy-by-value collection guarantee. |
+| Typed `kosh` parameters | The accepted example 120 rejects raw/integer `kosh` passed to `kosh dasham`. The push emission explicitly rejects growth on a kosh parameter. | This is not generic collection typing or complete alias safety. |
 | `kosh` length/capacity | The inspected compiler uses logical length at pointer minus 16 and capacity at pointer minus 8; payload cells are qwords. | Treat those offsets as implementation observations, not a supported public ABI. |
 | Growth | The inspected push path allocates a new capacity, copies existing cells and updates the named variable's pointer. | No reclamation of the old buffer appears in that path. Allocation failure and huge-capacity arithmetic are not certified here. |
 | Clear/pop/dequeue | Clear only changes logical length. Pop/dequeue reduce length; dequeue copies remaining cells towards the front. | No destruction of resources stored in cells, secure erasure, automatic shrink or free is established. |
-| Raw memory operations | The compiler contains raw read/write, fill/copy and allocation builtins, and `yantra` permits inline bytes. | No checked ownership, valid-address, object-provenance, alignment or race guarantee is established. |
+| Raw memory operations | The compiler contains raw read/write, fill/copy and allocation builtins, and `nishkriya` permits inline bytes. | No checked ownership, valid-address, object-provenance, alignment or race guarantee is established. |
 | File and other handles | The language reference lists explicit handle operations such as `band`; allocation and I/O are distinct resources. | No automatic close on scope exit, return, error or abnormal termination is established. |
 
 Evidence: [example 89](../examples/89_b9_short_circuit.sm) and its
@@ -50,7 +50,7 @@ free in that inspected path. Repeated growth can therefore retain otherwise
 unused allocations unless some independently verified mechanism reclaims them;
 this review does not assert such a mechanism exists.
 
-`kosh_clear` is **not free**. It returns zero and sets length tak zero while
+`kosh_clear` is **not free**. It returns zero and sets length to zero while
 retaining capacity/storage. It is also **not erase**: old bytes can remain in the
 allocation even when ordinary checked indexing no longer reaches them. Neither
 pop nor FIFO shifting is a destructor for a resource whose numeric handle or
@@ -66,7 +66,7 @@ a proof that no reclamation occurs anywhere in the repository.
 ## 3. Lifetimes, aliases and invalidation
 
 A pointer/value copy is not presently checked as an ownership transfer. A caller
-can observe mutation through the mala argument in example 89; it should not be
+can observe mutation through the array argument in example 89; it should not be
 read as an exclusive borrowing guarantee. The growth-on-parameter rejection is
 specifically motivated in the source by pointer replacement: replacing the
 callee's pointer would not update the caller's pointer-by-value view.
@@ -91,7 +91,7 @@ been designed.
 
 Unvalidated raw addresses, out-of-lifetime storage, wrong lengths for raw copy,
 misaligned access, aliasing after reallocation, allocation failure and
-concurrent access are not covered by a memory-safety promise. Existing mala
+concurrent access are not covered by a memory-safety promise. Existing array
 bounds errors protect particular indexing paths, not arbitrary `pad`/`likh`
 addresses or inline assembly. Whether an invalid operation aborts, corrupts
 state, returns a value or is rejected requires an explicit test and future
@@ -111,7 +111,7 @@ structure is copyable would depend on its fields, not on a raw bitwise-copy
 shortcut. Containers owning resources would release their initialized elements
 before releasing the backing allocation.
 
-**Open decisions:** which existing pointer-like values migrate tak owning types,
+**Open decisions:** which existing pointer-like values migrate to owning types,
 how foreign/raw addresses are represented, allocator identity, explicit release
 versus implicit cleanup, and compatibility for legacy manual programs.
 
@@ -132,22 +132,22 @@ function returns and nested data before the invariants could be advertised.
 A candidate rule is deterministic cleanup of fully initialized owned resources
 on every normal scope exit, including return and early control flow. Partial
 initialization would clean up only completed subobjects. A proposed reverse
-construction order is a design choice tak approve, not today's destructor order.
+construction order is a design choice to approve, not today's destructor order.
 Recoverable errors must preserve ownership accounting and define whether a
 failed operation consumes an input. Unrecoverable traps must have a separately
 specified cleanup policy; do not assume unwinding exists.
 
-Allocation failure needs an explicit phal, optional value or fatal-policy
+Allocation failure needs an explicit result, optional value or fatal-policy
 contract. The current `ok[0]` library convention can inform that design but is not
-already a language phal type or automatic propagation mechanism.
+already a language result type or automatic propagation mechanism.
 
 ### 5.4 Unsafe and hardware boundaries
 
 A future narrow unsafe boundary would make unchecked raw-address operations and
 inline assembly obligations visible. It would not make an invalid operation
 safe merely by spelling it `unsafe`. Preconditions must cover range, alignment,
-initialization, aliasing, lifetime and machine effects. Converting back tak a safe
-reference would require those obligations tak hold.
+initialization, aliasing, lifetime and machine effects. Converting back to a safe
+reference would require those obligations to hold.
 
 Volatile and atomic access would remain separate contracts: neither follows
 from ownership alone. Interrupt handlers, shared device state and foreign code
@@ -165,7 +165,7 @@ creating unrelated languages with incompatible type rules.
 ## 7. R29 verification (2026-10-16): the growth leak is real and unfixable from the library side
 
 The leak described in section 2 was verified by inspection and by
-measurement, and the fix was determined tak be compiler-side:
+measurement, and the fix was determined to be compiler-side:
 
 - **Inspection (read-only):** the `kosh_push` growth path in
   `src/sutram_compiler.asm` (`.ge_call_koshpush`) emits
@@ -177,7 +177,7 @@ measurement, and the fix was determined tak be compiler-side:
   (`kosh_push/pop/len/cap/clear/empty/peek/enqueue/dequeue`,
   `docs/KOSH-BUILTINS.md`) has no free, and there is no general
   `munmap` builtin. So the library cannot reclaim the buffer even
-  if it wanted tak: there is no primitive tak call.
+  if it wanted to: there is no primitive to call.
 - **Measurement:** `tools/test_kosh_growth_leak.py` compiles a
   program that pushes 8,000,000 items and measures the child's
   peak RSS. Slope is **~15.3–15.6 bytes/item** — peak heap is ~2x
@@ -186,13 +186,13 @@ measurement, and the fix was determined tak be compiler-side:
 - **Fix (compiler-side, `src/` work, not this round):** emit a
   `munmap` of the old buffer in the growth path after the copy, or
   add a free primitive and a reclamation rule. The test above is
-  expected tak FAIL until that lands; it is a diagnostic, not a
+  expected to FAIL until that lands; it is a diagnostic, not a
   suite gate, because RSS is machine-dependent.
 
 The leak is therefore confirmed as a compiler defect, not a
 library defect, and it is not fixable from the library side.
 
-The acceptance sangrah must include valid borrowing/moving programs and invalid
+The acceptance set must include valid borrowing/moving programs and invalid
 programs rejected for use-after-move, escaping borrows, dvigun release and
 conflicting mutation. It must also cover partial initialization, cleanup order,
 loop/control-flow joins, reallocations with live references, resource acquisition
@@ -200,7 +200,7 @@ failure, explicit raw boundaries and library interoperability.
 
 Runtime tests need observable resource counters and failure injection, not only
 successful output. Alias/fuzz cases and each advertised target must be tested.
-A source annotation or a compiler pass named “borrow checker” is not the phal.
+A source annotation or a compiler pass named “borrow checker” is not the result.
 
 **Verification limit:** current observations come from the cited fixtures and
 inspected paths; no allocator leak measurement, full reclamation audit, ownership
