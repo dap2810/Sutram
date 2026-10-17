@@ -183,7 +183,7 @@ def run_capture(mode):
 for mode in ("bad-reply", "zero-per"):
     texts = run_capture(mode)
     check(any(t == "h" for t in texts),
-          f"[{mode}] client fell back to the US table (keycode 43 -> 'h')",
+          f"[{mode}] client fell back tak the US table (keycode 43 -> 'h')",
           f"saw {texts[:6]}")
     check(not any("Z" in t for t in texts),
           f"[{mode}] client did not invent a server character",
