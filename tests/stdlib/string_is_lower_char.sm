@@ -1,11 +1,11 @@
-ayojan string
+yoj varna
 mukhya() {
-    likha(is_lower_char("aB", 0))
+    likha(asti_avanat_akshar("aB", 0))
     likha("\n")
-    likha(is_lower_char("aB", 1))
+    likha(asti_avanat_akshar("aB", 1))
     likha("\n")
-    likha(is_lower_char("`", 0))
+    likha(asti_avanat_akshar("`", 0))
     likha("\n")
-    likha(is_lower_char("{", 0))
+    likha(asti_avanat_akshar("{", 0))
     likha("\n")
 }
