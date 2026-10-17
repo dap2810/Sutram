@@ -1,9 +1,9 @@
-ayojan strconv
+yoj vakyank
 mukhya() {
     vitti buf = nirmmita(10 * 8)
-    # pad "42" to width 5 with '0'
-    int_to_str(42, buf)
-    vitti n1 = pad_left(buf, 2, 5, 48)
+    # pad "42" tak width 5 with '0'
+    ank_tak_varna(42, buf)
+    vitti n1 = pad_vam(buf, 2, 5, 48)
     likha(n1)
     likha("\n")
     vitti i = 0
@@ -13,8 +13,8 @@ mukhya() {
         i = i + 1
     }
     # width <= count: no-op
-    int_to_str(12345, buf)
-    vitti n2 = pad_left(buf, 5, 3, 48)
+    ank_tak_varna(12345, buf)
+    vitti n2 = pad_vam(buf, 5, 3, 48)
     likha(n2)
     likha("\n")
 }
