@@ -1,5 +1,5 @@
-ayojan math
+yoj ganit
 
 mukhya() {
-    likha(sq(9))
+    likha(varg(9))
 }
