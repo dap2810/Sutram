@@ -3,7 +3,7 @@
 #   transpose of [[1,2,3],[4,5,6]] = [[1,4],[2,5],[3,6]]
 #   trace([[1,2],[3,4]]) = 5 ; det = -2
 #   det([[6,1,1],[4,-2,5],[2,8,7]]) = -306
-ayojan samanvaya
+yoj samanvaya
 
 mukhya() {
     kosh dasham a[4]
@@ -21,7 +21,7 @@ mukhya() {
     kosh dasham c[4]
     vitti z = 0
     yavat (z < 4) { kosh_push(c, 0.0); z = z + 1 }
-    likha(mat_gunana(a, b, 2, 2, 2, c))
+    likha(matrika_gunana(a, b, 2, 2, 2, c))
     likha(c[0])
     likha(c[1])
     likha(c[2])
