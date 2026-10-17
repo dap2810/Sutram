@@ -1,11 +1,11 @@
-ayojan math
+yoj ganit
 mukhya() {
-    likha(bit_count(7))
+    likha(bit_gan(7))
     likha("\n")
-    likha(bit_count(8))
+    likha(bit_gan(8))
     likha("\n")
-    likha(bit_count(0))
+    likha(bit_gan(0))
     likha("\n")
-    likha(bit_count(15))
+    likha(bit_gan(15))
     likha("\n")
 }
