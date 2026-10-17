@@ -36,7 +36,7 @@ shortcut, HKCU **Apps & Features** entry, and matching uninstaller.
 
 1. Unzip a verified portable Windows package into a folder you own.
 2. Open a terminal in the extracted compiler folder.
-3. Run `sutram.exe` directly; adding it tak PATH is not required.
+3. Run `sutram.exe` directly; adding it to PATH is not required.
 
 The repository contains `windows/install.bat`; it is not a root-level script
 and is not an accepted workaround for an unverified installer.
@@ -55,7 +55,7 @@ ld -mi386pep --entry=_start -o sutram.exe sutram.obj
 The installer sources are under `windows/native-installer/`. The legacy
 `windows/BUILD-WINDOWS-SETUP.cmd` chain is not a verified build route in the
 clean snapshot: its wrapper and preflight still expect an older directory
-layout. Do not bypass the preflight or regenerate hashes merely tak silence
+layout. Do not bypass the preflight or regenerate hashes merely to silence
 it. See **INSTALLATION-ROUTES.md** for the integration gate.
 
 ---
@@ -84,7 +84,7 @@ sutram.exe --lang gujarati prog.sm out.exe        compile with a language pack
 sutram.exe -i                                     interactive shell (REPL)
 ```
 
-Language packs are looked up as `lang\<name>.lang` relative tak the current
+Language packs are looked up as `lang\<name>.lang` relative to the current
 folder, or in `%USERPROFILE%\.local\share\sutram\lang\`.
 
 ---
@@ -101,7 +101,7 @@ The runtime finds `kernel32` at startup by walking the process environment
 block and reading its export table — so the generated program has **no import
 table and no external dependencies**. It translates the compiler's standard
 output/input/exit operations into `WriteFile`, `ReadFile` and `ExitProcess`.
-Nothing else needs tak be installed tak run a Sutram-made `.exe`.
+Nothing else needs to be installed to run a Sutram-made `.exe`.
 
 ---
 
@@ -109,11 +109,11 @@ Nothing else needs tak be installed tak run a Sutram-made `.exe`.
 
 | Symptom | Cause | Fix |
 |---|---|---|
-| "Unsupported 16-Bit Application" or "not a valid Win32 application" | The patra is an ELF binary, not PE — i.e. it was produced by a build whose PE backend is missing | Recompile with this build (`.exe` output). Verify the first two bytes are `4D 5A` (MZ). |
+| "Unsupported 16-Bit Application" or "not a valid Win32 application" | The file is an ELF binary, not PE — i.e. it was produced by a build whose PE backend is missing | Recompile with this build (`.exe` output). Verify the first two bytes are `4D 5A` (MZ). |
 | The program runs but prints nothing | Old builds marked the section read-only, so the runtime faulted while resolving `kernel32` | Use this build (the section is writable and the runtime realigns the stack). |
 | `sutram` is not recognised | `PATH` not updated | Open a **new** terminal, or run `sutram.exe` with its full path. |
-| Language pack not found | `lang\` is not next tak the compiler / not in the profile folder | Run from the Sutram folder, or install packs tak `%USERPROFILE%\.local\share\sutram\lang\`. |
-| Antivirus or policy blocks the `.exe` | The cause must be investigated; an unsigned binary is not automatically safe | Keep protection enabled. Record the exact alert and package gudh, verify provenance with the maintainer, and stop pending review. Do not bypass the block. |
+| Language pack not found | `lang\` is not next to the compiler / not in the profile folder | Run from the Sutram folder, or install packs to `%USERPROFILE%\.local\share\sutram\lang\`. |
+| Antivirus or policy blocks the `.exe` | The cause must be investigated; an unsigned binary is not automatically safe | Keep protection enabled. Record the exact alert and package hash, verify provenance with the maintainer, and stop pending review. Do not bypass the block. |
 | Paths with spaces or non-Latin characters fail | Shell quoting | Quote the paths: `sutram.exe "C:\My Files\a.sm" "C:\out\a.exe"`. |
 
 ---
@@ -137,16 +137,16 @@ backends and system operations still require independent execution tests.
 ## 7. Windows feature status
 
 Reported as implemented: compiling, printing strings and numbers (`likha`, `shabda`),
-arithmetic, variables, `yadi`/`anya`, `yavat`, `chakra`,
-`krama`/`agrim`, functions with up tak 6 arguments, recursion, early returns,
+arithmetic, variables, `yadi`/`anyatra`, `yavat`, `punaravartana`,
+`krama`/`uddeshya`, functions with up to 6 arguments, recursion, early returns,
 block comments, language packs, error diagnostics, exit codes.
 
 The Windows keyboard-input (`grahan`) implementation reads through
 the embedded runtime (`ReadFile`) instead of a Linux system call. Arrays
-(`mala`) and structs (`rachana`) allocate through `VirtualAlloc`. Arrays and
+(`pankti`) and structs (`rachana`) allocate through `VirtualAlloc`. Arrays and
 structs still need a confirming run on a real Windows machine.
 
-Not yet ported tak Windows: the network builtins. The interactive REPL is
+Not yet ported to Windows: the network builtins. The interactive REPL is
 implemented (via `CreateProcessA`) and is awaiting a check on a real Windows
 machine.
 
@@ -159,6 +159,6 @@ machine.
   aliases; bundled language packs provide additional native keyword words.
 - Generated programs are native machine code, not interpreted.
 - The end user needs no toolchain at all.
-- The installer is a *packaging* tool. (The reference installer happens tak be
+- The installer is a *packaging* tool. (The reference installer happens to be
   written in C + PowerShell — that is build-time packaging only; it is not part
   of the language, the compiler, or the programs Sutram produces.)
