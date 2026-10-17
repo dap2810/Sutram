@@ -1,22 +1,22 @@
-ayojan sort
+yoj shreni
 mukhya() {
-    pankti a[3]
+    mala a[3]
     a[0] = 3
     a[1] = 1
     a[2] = 2
-    bubble_sort(a, 3)
-    punaravartana i = 0 to 2 {
+    budbud_shreni(a, 3)
+    chakra i = 0 tak 2 {
         likha(a[i])
     }
     likha("\n")
-    pankti b[5]
+    mala b[5]
     b[0] = 5
     b[1] = 4
     b[2] = 3
     b[3] = 2
     b[4] = 1
-    bubble_sort(b, 5)
-    punaravartana j = 0 to 4 {
+    budbud_shreni(b, 5)
+    chakra j = 0 tak 4 {
         likha(b[j])
     }
     likha("\n")
