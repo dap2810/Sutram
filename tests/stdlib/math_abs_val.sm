@@ -1,9 +1,9 @@
-ayojan math
+yoj ganit
 mukhya() {
-    likha(abs_val(-5))
+    likha(nirapeksh_mulya(-5))
     likha("\n")
-    likha(abs_val(5))
+    likha(nirapeksh_mulya(5))
     likha("\n")
-    likha(abs_val(0))
+    likha(nirapeksh_mulya(0))
     likha("\n")
 }
