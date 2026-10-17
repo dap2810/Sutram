@@ -1,0 +1,92 @@
+# lib/baseconv.smlib — Sutram standard library: base conversion
+# layer: alloc
+#
+# Convert between base-10 bigint digit arrays and digit-value arrays in
+# base 2, 8, 10, 16. The intermediate is a pankti of integer digit values
+# (0..15), most significant first — not a byte string, to avoid packing issues.
+#
+# Round-trip property: from_digits(to_digits(x, b), b) == x for every base.
+
+# brihat_ank_tak(x, n, base, out) — render n-digit bigint x in `base`
+# into pankti `out` as digit values (MSB first). Returns digit count.
+# Caller allocates out with >= 4*n cells (70 cells sufficed for
+# n <= 21 in base 2; n >= 22 overflowed the internal buffer).
+# Base outside 2..16: returns 0 (base 0 trapped with SIGFPE).
+prakriya brihat_ank_tak(x, n, base, out) {
+    vitti src = x
+    vitti c = n
+    vitti b = base
+    vitti dst = out
+    yadi (b < 2) { prati 0 }
+    yadi (b > 16) { prati 0 }
+    vitti w = nirmmita(c * 8)
+    vitti i = 0
+    yavat (i < c) {
+        w[i] = src[i]
+        i = i + 1
+    }
+    yadi (brihat_asti_shunyank(w, c) == 1) {
+        dst[0] = 0
+        prati 1
+    }
+    # rev holds the digits LSB-first: base 2 needs ceil(n*log2(10))
+    # = ceil(3.33*n) cells; 4*n is safe for every base.
+    vitti rev = nirmmita(c * 4 * 8)
+    vitti rlen = 0
+    vitti cont = 1
+    yavat (cont == 1) {
+        yadi (brihat_asti_shunyank(w, c) == 1) {
+            cont = 0
+        } anya {
+            vitti rem = 0
+            vitti k = c - 1
+            yavat (k >= 0) {
+                vitti cur = rem * 10 + w[k]
+                w[k] = cur / b
+                rem = cur % b
+                k = k - 1
+            }
+            rev[rlen] = rem
+            rlen = rlen + 1
+        }
+    }
+    vitti p = 0
+    yavat (p < rlen) {
+        dst[p] = rev[rlen - 1 - p]
+        p = p + 1
+    }
+    prati rlen
+}
+
+# brihat_ank_se(d, count, base, x, n) — parse `count` digit values
+# from pankti `d` (MSB first) in `base` into n-digit bigint x.
+# Returns 1 on success, 0 if a digit >= base. Base outside 2..16
+# returns 0 (the old code accepted any base, so base 0/1/negative
+# silently mis-parsed).
+prakriya brihat_ank_se(d, count, base, x, n) {
+    vitti src = d
+    vitti cnt = count
+    vitti b = base
+    vitti dst = x
+    vitti c = n
+    yadi (b < 2) { prati 0 }
+    yadi (b > 16) { prati 0 }
+    brihat_shunyank(dst, c)
+    vitti p = 0
+    yavat (p < cnt) {
+        vitti dv = src[p]
+        yadi (dv < 0) { prati 0 }
+        yadi (dv >= b) { prati 0 }
+        # dst = dst * b + dv
+        vitti carry = dv
+        vitti k = 0
+        yavat (k < c) {
+            vitti cur = dst[k] * b + carry
+            dst[k] = cur % 10
+            carry = cur / 10
+            k = k + 1
+        }
+        p = p + 1
+    }
+    prati 1
+}
