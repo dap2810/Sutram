@@ -1,8 +1,8 @@
 vitti calls = 0
 prakriya recurse(n) {
     calls = calls + 1
-    yadi (n <= 0) { pratiyati calls }
-    pratiyati recurse(n - 1)
+    yadi (n <= 0) { prati calls }
+    prati recurse(n - 1)
 }
 mukhya() {
     likha(recurse(4))
