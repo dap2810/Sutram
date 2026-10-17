@@ -3,7 +3,7 @@ mukhya()
     vitti sum = 0
     yavat (i < 5) {
         i = i + 1
-        yadi (i == 2) { uddeshya }
+        yadi (i == 2) { agrim }
         yadi (i == 5) { krama }
         sum = sum + i
     }
@@ -16,18 +16,18 @@ mukhya()
     likha(" ")
 
     vitti asc = 0
-    punaravartana a = 1 to 3 { asc = asc + a }
+    chakra a = 1 tak 3 { asc = asc + a }
     likha(asc)
     likha(" ")
 
     vitti desc = 0
-    punaravartana d = 3 to 1 { desc = desc + d }
+    chakra d = 3 tak 1 { desc = desc + d }
     likha(desc)
     likha(" ")
 
     vitti f = 0
-    punaravartana j = 1 to 5 {
-        yadi (j == 2) { uddeshya }
+    chakra j = 1 tak 5 {
+        yadi (j == 2) { agrim }
         yadi (j == 4) { krama }
         f = f + j
     }
@@ -37,6 +37,6 @@ mukhya()
     vitti lo = 5
     vitti hi = 3
     vitti empty = 0
-    punaravartana k = lo to hi { empty = empty + 1 }
+    chakra k = lo tak hi { empty = empty + 1 }
     likha(empty)
     likha("\n")
