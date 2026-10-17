@@ -8,16 +8,16 @@ mukhya()
     likha(LIMIT)
     likha(":\n")
     
-    punaravartana n = 2 to LIMIT {
-        vitti is_prime = 1
+    chakra n = 2 tak LIMIT {
+        vitti asti_abhajya = 1
         vitti d = 2
         yavat (d * d <= n) {
             yadi (n % d == 0) {
-                is_prime = 0
+                asti_abhajya = 0
             }
             d = d + 1
         }
-        yadi (is_prime != 0) {
+        yadi (asti_abhajya != 0) {
             likha(n)
             likha(" ")
         }
@@ -36,7 +36,7 @@ mukhya()
         likha("Bit 2 is set\n")
     }
     
-    nishedha(flags > 0)
+    abhava(flags > 0)
     likha("All assertions passed\n")
     
     likha("=== Done ===\n")
