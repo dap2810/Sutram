@@ -32,7 +32,7 @@ CALL = re.compile(rf"\b{IDENT}\s*\(")
 
 
 def strip_comment(line: str) -> str:
-    """Discard # outside single/double quotes; preserve source for shape matching."""
+    """Discard # outside single/dvigun quotes; preserve source for shape matching."""
     result, quote, escaped = [], None, False
     for ch in line:
         if quote:
@@ -124,7 +124,7 @@ def classify_source(source: str) -> Counter:
                             float_arrays.add(ids[-1])
                 results['function_declarations'] += 1
                 continue
-            if re.search(r"^(?:yavat|यावत|punaravartana|पुनरावर्तन)\b", statement):
+            if re.search(r"^(?:yavat|यावत|chakra|पुनरावर्तन)\b", statement):
                 results['loop_statements'] += 1
             if re.search(r"^(?:yadi|यदि)\b", statement):
                 results['conditional_statements'] += 1
