@@ -31,7 +31,7 @@ mukhya()
     likha("\n")
     
     vitti x = 42
-    nishedha(x > 0)
+    abhava(x > 0)
     likha("Assert passed\n")
     
     likha("=== Done ===\n")
