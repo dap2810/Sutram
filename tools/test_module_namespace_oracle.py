@@ -7,7 +7,7 @@ from pathlib import Path
 import re, subprocess, tempfile, sys
 ROOT=Path(__file__).resolve().parents[1]
 DEF=re.compile(r'^\s*(?:prakriya|प्रक्रिया)\s+([^\W\d]\w*)\s*\(',re.MULTILINE)
-IMPORT=re.compile(r'^\s*ayojan\s+(\w+)(?:@(\w+))?\s*$',re.MULTILINE)
+IMPORT=re.compile(r'^\s*yoj\s+(\w+)(?:@(\w+))?\s*$',re.MULTILINE)
 def rewrite_module(text,alias):
     defined=set(DEF.findall(text))
     out=[];i=0;quoted=False;comment=False;escape=False
@@ -36,8 +36,8 @@ def rewrite_module(text,alias):
     return ''.join(out)
 def expand(text):
     def resolve(m):
-        mod,alias=m.group(1),m.group(2)
-        source=(ROOT/'examples'/'lib'/f'{mod}.smlib').read_text()
+        shesh,alias=m.group(1),m.group(2)
+        source=(ROOT/'examples'/'lib'/f'{shesh}.smlib').read_text()
         return rewrite_module(source,alias) if alias else source
     return IMPORT.sub(resolve,text)
 def main():
