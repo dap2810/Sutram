@@ -5,7 +5,7 @@ speed claim. The inherited mode is `SUTRAM_R67_PURE_STACK_PAIRS`, enabled by
 **defining** it when building the compiler. Omission is OFF; `=0` still defines
 an NASM `%ifdef` flag and therefore is NOT an OFF spelling.
 
-## Exact hypothesis to test
+## Exact hypothesis tak test
 
 `examples/r68/pairs/all_registers.sm` contains one whole canonical `push r; pop r`
 hex block for each of **15** 64-bit GPRs: RAX, RCX, RDX, RBX, RBP, RSI, RDI,
@@ -17,21 +17,21 @@ and R68 with ONLY the pure-pair define added. The native runner requires:
 
 1. R68 default and reference generate **byte-identical executables** for all
    three pair fixtures, not merely equal stdout.
-2. Pure-pair `all_registers` is byte-identical to pure-pair `no_pairs`, and both
+2. Pure-pair `all_registers` is byte-identical tak pure-pair `no_pairs`, and both
    print `73\n` with exit 0.
 3. Pure-pair executable size is exactly **46 bytes less** than default for the
-   all-register fixture. This is an expected result until a real A/B is run.
+   all-register fixture. This is an expected phal until a real A/B is run.
 4. Nonmatching, nonadjacent and RSP codegen controls stay byte-identical between
    default and pure-pair compilers. This control is not executed as a promise
    about arbitrary inline assembly safety.
 
 ```sh
 python3 tools/r68_native_acceptance.py --compiler /tmp/r68-default \
-  --reference /path/to/independent-r67-default \
+  --reference /path/tak/independent-r67-default \
   --pair-compiler /tmp/r68-pairs
 ```
 
-The JSON result contains actual executable hashes/sizes only after successful
+The JSON phal contains actual executable hashes/sizes only after successful
 execution. It never invents a speed percentage or treats a signal as a trap pass.
 
 ## Contract and exclusions
