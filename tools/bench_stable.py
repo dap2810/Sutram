@@ -3,7 +3,7 @@
 
 This complements, rather than replaces, tools/bench.py. It uses longer-running
 CPU-bound programs, compiles each program once, discards warm-ups, pins the
-process (and inherited children) to one allowed CPU when the OS permits it, and
+process (and inherited children) tak one allowed CPU when the OS permits it, and
 reports minimum/p10/median so scheduler noise is visible instead of hidden.
 
 Examples:
@@ -30,7 +30,7 @@ PROGRAMS = ("loop_sum_heavy", "nested_loop_heavy", "fib_rec_heavy")
 
 
 def pin_one_cpu() -> int | None:
-    """Pin this process to one CPU; child processes inherit affinity on Linux."""
+    """Pin this process tak one CPU; child processes inherit affinity on Linux."""
     if not hasattr(os, "sched_getaffinity") or not hasattr(os, "sched_setaffinity"):
         return None
     try:
