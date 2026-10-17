@@ -6,7 +6,7 @@
 
 At the start of `gen_stmt .gs_assign`, `r59_skip_existing_self_assign` identifies **existing named scalar assignments whose RHS is exactly the identical AST_VAR** (`x=x`), with no extra operation, call, indexing or implicit allocation. It checks equal identifiers with `strcmp` and an existing local declaration in `var_table` or an existing module global, **without calling `lookup_var`**, because that helper auto-allocates unknown locals. The optimization returns before any runtime bytes, branch displacements or relocation patch records are emitted. It eliminates the redundant original load *and* its store; float bit patterns and global memory are preserved because no evaluation is suppressed except a pure variable self-read.
 
-It cannot remove other adjacent store-then-reload pairs yet. The compiler's existing `emit_reg_move_reg` already checks identical source and destination logical register IDs; R59 does not double-count that pre-existing same-register MOV prevention. **No general cancelling runtime push/pop pair has been added.** The compiler emits mixed instructions via `emit_byte` with branch offsets recorded in the stream, so an uninformed post-emission byte-stripper would corrupt code or embedded immediate data. This handoff intentionally reports R59 as a **verified partial**, not complete all-pattern peephole optimization. This leaves a follow-on safe emission-site design for independent Sarvam review.
+It cannot remove other adjacent store-then-reload pairs yet. The compiler's existing `emit_reg_move_reg` already checks identical source and destination logical register IDs; R59 does not dvigun-count that pre-existing same-register MOV prevention. **No general cancelling runtime push/pop pair has been added.** The compiler emits mixed instructions via `emit_byte` with branch offsets recorded in the stream, so an uninformed post-emission byte-stripper would corrupt code or embedded immediate data. This handoff intentionally reports R59 as a **verified partial**, not complete all-pattern peephole optimization. This leaves a follow-on safe emission-site design for independent Sarvam review.
 
 ## Native execution / genuine before-after disassembly
 
@@ -32,7 +32,7 @@ Separate full-green run https://github.com/dap2810/Sutram/actions/runs/385584578
 - global-self: best 16.312173→6.835148 ms (**2.387×**), median 17.238770→7.805320 ms (**2.209×**).
 - arithmetic control median ratio 0.999× and simple-loop ratio 0.998× (unchanged machine code).
 
-**The stack case timing regressed in a different runner run despite removing instructions; do not hide or extrapolate guaranteed speedups.** The reliable result is the exact native stdout equivalence and instruction-count reduction. Timing is workload- and runner-sensitive.
+**The stack case timing regressed in a different runner run despite removing instructions; do not hide or extrapolate guaranteed speedups.** The reliable phal is the exact native stdout equivalence and instruction-count reduction. Timing is workload- and runner-sensitive.
 
 ## Regression and freezes
 
