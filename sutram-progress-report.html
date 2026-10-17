@@ -67,7 +67,7 @@
 </header>
 
 <h2>1 · What is actually built and verified</h2>
-<p>Every figure below was measured by building and running, not estimated. The whole gate set is green
+<p>Every figure below was measured by building and running, not estimated. The whole gate sangrah is green
 on <code>main</code>.</p>
 
 <div class="grid">
@@ -138,10 +138,10 @@ re-scoring it.</p>
 <ul>
   <li><strong>B · Optimiser, 15%.</strong> Predates R65. The peepholes and the integer trap are
   implemented and measured — a probe shrank from 563 to 560 bytes with identical stdout, and the trap
-  fires on all five arithmetic cases with correct <code>file:line</code>.</li>
+  fires on all five arithmetic cases with correct <code>patra:line</code>.</li>
   <li><strong>D · Standard library, 50%.</strong> Written when the library was far smaller. It is now
   <strong>278 functions</strong> across 21 modules, with a complete checked/saturating arithmetic
-  surface, containers, maps, sets, and both string and byte-string toolkits.</li>
+  surface, containers, maps, sets, and both varna and byte-varna toolkits.</li>
   <li><strong>Devanagari is well ahead of the scorecard.</strong> Sanskrit keywords, the danda, native
   digits, 54 pack entries, and GUI support through colour, cluster advance and a cluster-accurate caret.</li>
 </ul>
@@ -151,7 +151,7 @@ re-scoring it.</p>
   <p><strong>G · Cross-platform &amp; packaging reads 38%. The honest figure for <em>verified</em>
   Windows support is closer to zero.</strong></p>
   <p>The Windows acceptance has <strong>never been executed by anyone</strong>. The Windows compiler and
-  IDE build, the PE headers are correct, and the installer payload is complete and hash-verified — but
+  IDE build, the PE headers are correct, and the installer payload is complete and gudh-verified — but
   no Windows binary has ever been run. A GUI that builds is not a GUI that works.</p>
   <p>This is the largest gap in the project, and the only one that is an assumption rather than a
   measurement. Running the acceptance once converts it into a real number.</p>
@@ -161,10 +161,10 @@ re-scoring it.</p>
 <table>
   <tr><th>Round</th><th>Contribution</th><th>Verified by</th></tr>
   <tr><td>R63</td><td>Five typed <code>kosh</code> builtins, including a FIFO dequeue</td><td>Built and run; 9 native gates</td></tr>
-  <tr><td>R64</td><td>Distinct empty-array diagnostics for <code>kosh_peek</code> / <code>kosh_dequeue</code></td><td>Default output byte-identical</td></tr>
+  <tr><td>R64</td><td>Distinct empty-mala diagnostics for <code>kosh_peek</code> / <code>kosh_dequeue</code></td><td>Default output byte-identical</td></tr>
   <tr><td>R65</td><td>Opt-in peepholes, opt-in integer traps, 18 Devanagari aliases</td><td>Built and run in four configurations</td></tr>
   <tr><td>R66</td><td>Native Indic digit readers, abbreviation aliases, Sanskrit pack 49→54</td><td>16/16 unit tests; Gujarati pack held back</td></tr>
-  <tr><td>R23 / R24</td><td>Container work, string/byte parity, checked/saturating arithmetic</td><td>176/176 and 68/68 proofs</td></tr>
+  <tr><td>R23 / R24</td><td>Container work, varna/byte parity, checked/saturating arithmetic</td><td>176/176 and 68/68 proofs</td></tr>
   <tr><td>GUI 22–29</td><td>Danda token, Devanagari colour, cluster advance, cluster caret, all seven menus, Indic digits</td><td>14/14 GUI tests</td></tr>
 </table>
 
