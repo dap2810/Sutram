@@ -10,7 +10,7 @@ mukhya()
         }
         yadi (guess < secret) {
             likha("Too low! Try again: ")
-        } anyatra yadi (guess > secret) {
+        } anya yadi (guess > secret) {
             likha("Too high! Try again: ")
         }
     }
