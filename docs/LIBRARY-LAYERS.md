@@ -18,54 +18,54 @@ layers OK: 14 core, 9 alloc, 1 std
 
 | Module | Layer | Reason |
 |---|---|---|
-| `mala` | alloc | `mala_nava` allocates; every mala is heap storage. |
-| `aadhar` | alloc | Temp buffers (`nirmmita`) for digit reversal. |
-| `brihat` | alloc | Temp buffers in `brihat_shesh` / `brihat_ghatmod`. |
+| `array` | alloc | `mala_nava` allocates; every array is heap storage. |
+| `baseconv` | alloc | Temp buffers (`nirmmita`) for digit reversal. |
+| `bigint` | alloc | Temp buffers in `brihat_shesh` / `brihat_ghatmod`. |
 | `chandas` | core | Pure arithmetic on caller values; no allocation, no imports. |
-| `patra` | std | Genuine OS services: `dvaram`/`paadh`/`likha`/`band` (open/read/write/close). The only module allowed tak call OS builtins. |
-| `roop` | alloc | Temp buffers for digit reversal and `roop_varg_ank`. |
+| `file` | std | Genuine OS services: `dvaram`/`paadh`/`likha`/`band` (open/read/write/close). The only module allowed to call OS builtins. |
+| `fmt` | alloc | Temp buffers for digit reversal and `roop_varg_ank`. |
 | `ganita` | core | Pure checked/saturating arithmetic; `ok` arrays are caller-provided. |
-| `gudh` | core | Pure FNV-1a arithmetic; no allocation. |
+| `hash` | core | Pure FNV-1a arithmetic; no allocation. |
 | `kalana` | core | Numerical methods on caller arrays; `kosh_len` only, no allocation. |
-| `suchi` | alloc | `list_new` allocates. Imports `shreni` (alloc). |
+| `list` | alloc | `list_new` allocates. Imports `sort` (alloc). |
 | `madhava` | core | Pure series arithmetic; no allocation, no imports. |
-| `nighantu` | alloc | Table allocation. Imports `gudh` + `khand` (both core). |
-| `ganit` | core | Pure arithmetic; no allocation, no imports. |
-| `ank` | core | Pure arithmetic; no allocation, no imports. |
+| `map` | alloc | Table allocation. Imports `hash` + `strb` (both core). |
+| `math` | core | Pure arithmetic; no allocation, no imports. |
+| `num` | core | Pure arithmetic; no allocation, no imports. |
 | `samanvaya` | core | Pure arithmetic on caller arrays; `kosh_len` only. |
 | `sankhyiki` | core | Statistics on caller arrays; `kosh_len` only. |
-| `sangrah` | alloc | Table allocation. Imports `nighantu` (alloc) + `khand` (core). |
-| `shreni` | alloc | Merge-shreni temp buffer. |
-| `khand` | core | Byte-varna ops on caller-provided buffers; no allocation. |
-| `vakyank` | alloc | Temp buffers for digit reversal. |
-| `varna` | core | Cell-mala ops on caller-provided buffers; no allocation. |
-| `phal` | core | Result values on caller-provided cells; the checked producers reuse `out` as the `ok` cell, so no allocation. Imports `ganita` (core). |
-| `anukram` | core | Binary serialisation on caller-provided byte buffers; no allocation, no imports. |
-| `sadhan` | core | Pure arithmetic helpers; no allocation, no imports. |
+| `set` | alloc | Table allocation. Imports `map` (alloc) + `strb` (core). |
+| `sort` | alloc | Merge-sort temp buffer. |
+| `strb` | core | Byte-string ops on caller-provided buffers; no allocation. |
+| `strconv` | alloc | Temp buffers for digit reversal. |
+| `string` | core | Cell-array ops on caller-provided buffers; no allocation. |
+| `result` | core | Result values on caller-provided cells; the checked producers reuse `out` as the `ok` cell, so no allocation. Imports `ganita` (core). |
+| `serial` | core | Binary serialisation on caller-provided byte buffers; no allocation, no imports. |
+| `util` | core | Pure arithmetic helpers; no allocation, no imports. |
 
 ## Dependency edges
 
-Only four modules import anything (`yoj` is textual inclusion, so
-the import suchi is the complete dependency suchi):
+Only four modules import anything (`ayojan` is textual inclusion, so
+the import list is the complete dependency list):
 
-- `suchi` → `shreni` (alloc → alloc: allowed)
-- `nighantu` → `gudh` (core), `khand` (core): alloc → core is downward, allowed
-- `sangrah` → `nighantu` (alloc), `khand` (core): allowed
-- `phal` → `ganita` (core → core: allowed)
+- `list` → `sort` (alloc → alloc: allowed)
+- `map` → `hash` (core), `strb` (core): alloc → core is downward, allowed
+- `set` → `map` (alloc), `strb` (core): allowed
+- `result` → `ganita` (core → core: allowed)
 
 No core module imports an alloc or std module, so no core module
 depends upward. The full import graph is acyclic.
 
 ## Why `std` was empty until R30, and what changed
 
-The `0 std` phal was investigated in R29, not assumed. The question was
+The `0 std` result was investigated in R29, not assumed. The question was
 whether some module that genuinely needs OS services is mis-marked
 as `alloc`. The answer was no, for two checked reasons:
 
 1. **No lib module called any OS-service builtin.**
    `tools/check_layers.py` enforces this: it fails if any core/alloc
    module calls `likha` / `likha_fmt` / `likh` (console output),
-   `paadh` (console input), `band` (patra handles), `dvaram` (open),
+   `paadh` (console input), `band` (file handles), `dvaram` (open),
    or `netsock` / `netbind` / `netlisten` / `netaccept` (sockets).
    A module that starts calling one fails the checker until relabelled
    `std`. A module already marked `std` calling one is correct.
@@ -76,7 +76,7 @@ as `alloc`. The answer was no, for two checked reasons:
    which any module touched. Likewise `kosh` growth (compiler-side,
    `mmap`-backed) is allocation, not an OS service.
 
-R30 adds the first genuine `std` module, `patra` (open/read/write/close
+R30 adds the first genuine `std` module, `file` (open/read/write/close
 via `dvaram`/`paadh`/`likha`/`band`). The `0 std` kramgun became `1 std`
 because a module now genuinely uses OS services — not because the
 old classification was wrong.
@@ -84,10 +84,10 @@ old classification was wrong.
 ## Notes
 
 - `kosh_len` (used by `kalana`, `samanvaya`, `sankhyiki`) is a
-  language builtin for mala length, not an allocator or OS service;
+  language builtin for array length, not an allocator or OS service;
   it does not change a module's layer.
 - `nirmmita` is the allocator. A module that calls it — even only
-  for a temporary buffer (`roop`, `vakyank`, `brihat`, `aadhar`) —
+  for a temporary buffer (`fmt`, `strconv`, `bigint`, `baseconv`) —
   is `alloc`, because it cannot run without a heap.
 - The layer split is about *dependencies*, not importance: `ganita`
   is core and is the safety-critical module.
