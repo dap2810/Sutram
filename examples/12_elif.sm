@@ -1,4 +1,4 @@
-# Elif (anyatra yadi) example
+# Elif (anya yadi) example
 # Shows else-if chains
 
 mukhya()
@@ -8,13 +8,13 @@ mukhya()
     
     yadi (score >= 90) {
         likha("Grade: A\n")
-    } anyatra yadi (score >= 80) {
+    } anya yadi (score >= 80) {
         likha("Grade: B\n")
-    } anyatra yadi (score >= 70) {
+    } anya yadi (score >= 70) {
         likha("Grade: C\n")
-    } anyatra yadi (score >= 60) {
+    } anya yadi (score >= 60) {
         likha("Grade: D\n")
-    } anyatra {
+    } anya {
         likha("Grade: F\n")
     }
     
@@ -22,9 +22,9 @@ mukhya()
     vitti x = 15
     yadi (x > 20) {
         likha("x is big\n")
-    } anyatra yadi (x > 10) {
+    } anya yadi (x > 10) {
         likha("x is medium\n")
-    } anyatra {
+    } anya {
         likha("x is small\n")
     }
     
