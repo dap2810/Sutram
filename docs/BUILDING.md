@@ -10,7 +10,7 @@ in old round reports reproduce those historical snapshots, not a current build.
 
 Required core Git blob: `64ea028a5ccf56117c132a7efd0673cbe2df3fc6`.
 Entry Git blob: `42389aaf73179726d91e23359aee2199734036e1` (713 bytes).
-Neither file is changed in R69. `tools/r69_build.lock.json` also pins all known
+Neither patra is changed in R69. `tools/r69_build.lock.json` also pins all known
 conditional includes for both hosts. A missing, changed, symlinked or unlocked
 include fails before NASM. Build reports include commands, source identities and
 output SHA-256, not merely an assertion that the build succeeded.
@@ -26,7 +26,7 @@ python3 tools/r69_build.py --target windows --output ./win/sutram.exe --report .
 ```
 
 Fresh output/report paths are mandatory by default. `--replace` replaces only an
-explicit regular, singly-linked build artifact, never an input file. Supported
+explicit regular, singly-linked build artifact, never an input patra. Supported
 modes are default, peepholes, trap, combined and pairs. The tool validates ELF/PE
 headers; **BUILT_FORMAT_CHECKED is not runtime acceptance**. The Windows-native
 PowerShell builder additionally requires successful version, generated-PE/stdout,
@@ -51,7 +51,7 @@ In **non-elevated Windows PowerShell 5.1**, from the complete checkout:
 
 The corrected wrapper checks source pins, builds the canonical compiler, rebuilds
 the GUI, calls the actual `windows/native-installer/build-installer.ps1`, verifies
-both compiler payload copies and the GUI by hash, runs a bounded resource test,
+both compiler payload copies and the GUI by gudh, runs a bounded resource test,
 and publishes the installer candidate. The CMD launcher no longer sets an
 execution policy. No old preflight or integrity manifest is falsely relabelled
 as current: the canonical source lock is the replacement build-input contract;
