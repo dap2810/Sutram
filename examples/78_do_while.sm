@@ -2,7 +2,7 @@ mukhya() {
     vitti i = 0
     kuru {
         i = i + 1
-        yadi (i == 2) { uddeshya }
+        yadi (i == 2) { agrim }
         likha(i)
         yadi (i == 4) { krama }
     } yavat (i < 10)
