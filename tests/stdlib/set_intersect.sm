@@ -1,39 +1,39 @@
-ayojan set
-ayojan strb
+yoj sangrah
+yoj khand
 mukhya() {
-    vitti a = set_init(16)
-    set_add(a, 16, "apple", 5)
-    set_add(a, 16, "pear", 4)
-    set_add(a, 16, "fig", 3)
-    vitti b = set_init(16)
-    set_add(b, 16, "fig", 3)
-    set_add(b, 16, "pear", 4)
-    set_add(b, 16, "plum", 4)
-    vitti inter = set_init(16)
-    likha(set_intersect(a, 16, b, 16, inter))
+    vitti a = rakh_srij(16)
+    rakh_yuj(a, 16, "apple", 5)
+    rakh_yuj(a, 16, "pear", 4)
+    rakh_yuj(a, 16, "fig", 3)
+    vitti b = rakh_srij(16)
+    rakh_yuj(b, 16, "fig", 3)
+    rakh_yuj(b, 16, "pear", 4)
+    rakh_yuj(b, 16, "plum", 4)
+    vitti inter = rakh_srij(16)
+    likha(rakh_sampat(a, 16, b, 16, inter))
     likha("\n")
     # sorted dump: fig, pear
     vitti arr = nirmmita(64 * 8)
     vitti buf = nirmmita(64)
-    vitti n = set_to_array(inter, 16, arr)
+    vitti n = rakh_tak_mala(inter, 16, arr)
     vitti pos = 0
     vitti i = 0
     vitti sl = 0
     yavat (i < n) {
         sl = arr[pos]
-        strb_pack(arr + (pos + 1) * 8, sl, buf)
+        khand_bandh(arr + (pos + 1) * 8, sl, buf)
         likha(1, buf, sl)
         likha("\n")
         pos = pos + 1 + sl
         i = i + 1
     }
-    # intersect with an empty set: empty
-    vitti e = set_init(16)
-    vitti inter2 = set_init(16)
-    likha(set_intersect(a, 16, e, 16, inter2))
+    # intersect with an empty sangrah: empty
+    vitti e = rakh_srij(16)
+    vitti inter2 = rakh_srij(16)
+    likha(rakh_sampat(a, 16, e, 16, inter2))
     likha("\n")
-    # intersect with itself: the whole set
-    vitti inter3 = set_init(16)
-    likha(set_intersect(a, 16, a, 16, inter3))
+    # intersect with itself: the whole sangrah
+    vitti inter3 = rakh_srij(16)
+    likha(rakh_sampat(a, 16, a, 16, inter3))
     likha("\n")
 }
