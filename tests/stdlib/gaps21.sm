@@ -1,16 +1,16 @@
-ayojan ganita
+yoj ganita
 mukhya() {
-    likha(ganita_sat_fact(5))
+    likha(ganita_paripurna_kramgun(5))
     likha("\n")
-    likha(ganita_sat_fact(20))
+    likha(ganita_paripurna_kramgun(20))
     likha("\n")
-    likha(ganita_sat_fact(21))
+    likha(ganita_paripurna_kramgun(21))
     likha("\n")
-    likha(ganita_sat_fact(100))
+    likha(ganita_paripurna_kramgun(100))
     likha("\n")
-    likha(ganita_sat_fact(0))
+    likha(ganita_paripurna_kramgun(0))
     likha("\n")
-    likha(ganita_sat_fact(0 - 1))
+    likha(ganita_paripurna_kramgun(0 - 1))
     likha("\n")
     likha("gaps21-done\n")
 }
