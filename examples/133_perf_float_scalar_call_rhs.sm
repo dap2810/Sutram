@@ -2,10 +2,10 @@
 # operation whose RHS is a function call. The caller-local scalar must
 # survive the function call; all four operator orders must be preserved.
 prakriya double_of(dasham x) {
-    pratiyati x * 2.0
+    prati x * 2.0
 }
 prakriya half_of(dasham x) {
-    pratiyati x / 2.0
+    prati x / 2.0
 }
 mukhya() {
     dasham s = 10.0
