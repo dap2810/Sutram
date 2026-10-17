@@ -1,9 +1,9 @@
-ayojan math
+yoj ganit
 mukhya() {
-    likha(sum_to(10))
+    likha(yog_tak(10))
     likha("\n")
-    likha(sum_to(0))
+    likha(yog_tak(0))
     likha("\n")
-    likha(sum_to(1))
+    likha(yog_tak(1))
     likha("\n")
 }
