@@ -9,7 +9,7 @@ wrappers. The branch is still unmerged as of this review.
 
 The ordinary release entry remains **`src/r68_compiler_entry.asm`**. R69's Linux
 and Windows builders select it explicitly. It includes the original compiler
-and the accepted UTF-8/abbreviation diagnostics. The original core patra remains
+and the accepted UTF-8/abbreviation diagnostics. The original core file remains
 an implementation input, not the recommended standalone release build command.
 No new compiler backend or runtime dependency is introduced.
 
@@ -38,10 +38,10 @@ Historical handoffs, CHANGELOG and per-round reports remain snapshot evidence,
 not current release instructions. Untracked documents and non-UTF-8 documents are outside this tracked UTF-8
 sweep and must be reviewed separately. The plan is documentation-only; it does
 not build the compiler or certify the installer. Concurrent changes must be
-reconciled; no multi-patra transactional editing guarantee is claimed.
+reconciled; no multi-file transactional editing guarantee is claimed.
 
 **This full production-repository sweep has not been run/applied here.** The local
-unit tests applied real patches only tak a temporary git fixture. Do not report
+unit tests applied real patches only to a temporary git fixture. Do not report
 all project guides as already migrated before the three commands above succeed.
 
 ## Native build and profile acceptance
@@ -65,7 +65,7 @@ R65 modes and the R69 pair A/B runner remain additional acceptance gates.
 Required inherited core blob: `64ea028a5ccf56117c132a7efd0673cbe2df3fc6`.
 Required canonical entry blob: `42389aaf73179726d91e23359aee2199734036e1`.
 Produced R71 entry blob: `6ba05e206556d9b18349b633ac1bda73ac89aab1` (902 bytes).
-The core is not rewritten; there is no new expanded-core or compiler-binary gudh.
+The core is not rewritten; there is no new expanded-core or compiler-binary hash.
 
 ## Windows
 
