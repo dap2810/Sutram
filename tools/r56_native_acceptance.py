@@ -74,7 +74,7 @@ def validate_pe(path):
         if secs[1][2] <= target < secs[1][2]+secs[1][1]:
             targets.append(target)
     assert len(targets)>=4 and set(targets)=={secs[1][2]}, (
-        "RIP relocations must resolve tak writable global slot",targets,secs)
+        "RIP relocations must resolve to writable global slot",targets,secs)
     print("R56_PE_RIP_DATA_PATCH count",len(targets),"rva",hex(secs[1][2]),flush=True)
     print("R56_PE_STRUCT",secs,flush=True)
 def check():
