@@ -1,0 +1,625 @@
+# lib/fmt.smlib — Sutram standard library: formatting
+# layer: alloc
+#
+# Number and string formatting on BYTE strings (packed bytes, explicit
+# lengths, `strb` idiom): every function writes packed bytes into `out`
+# with a 0 terminator and returns the byte count. This is the modern
+# idiom; the older `lib/strconv.smlib` works on CELL arrays (pankti of
+# char codes) and has no width/alignment/grouping/fixed-decimal/util_chinha
+# surface — fmt is the formatting module, strconv is the conversion
+# module. Do not mix the representations: fmt outputs are bytes
+# (read with char_at), strconv outputs are cells (read with [i]).
+#
+# Defaults, stated once here and at each function:
+#   - Bases: no prefix unless the _pre / flags form is used.
+#   - Grouping: roop_varg defaults to INDIAN grouping (12,34,567).
+#   - Rounding: roop_sthir rounds HALF AWAY FROM ZERO (2.5 -> 3, -2.5 -> -3).
+#   - Centre padding: the extra pad byte goes RIGHT.
+#   - INT64_MIN (-2^63) is handled: |MIN| = 2^63 does not fit in
+#     int64, so the digit writers split it (hi/lo) instead of
+#     negating it. Every int64 value works.
+#   - roop_sthir is exact while |x| * 10^places < 2^52; beyond that the
+#     +0.5 rounding step is below float precision. |x| * 10^places must
+#     fit in int64. places is clamped to 0..9.
+#
+# All signatures stay within the 6-argument cap.
+
+# --- integer digits (private helper) ---
+# roop_ank(v, out) — write the decimal digits of |v| (no util_chinha) into
+# out as packed bytes. Returns the digit count. Internal; the public
+# formatters below build on it.
+prakriya roop_ank(v, out) {
+    vitti val = v
+    vitti dst = out
+    vitti rev = nirmmita(22 * 8)
+    vitti rlen = 0
+    vitti i = 0
+    yadi (val == 0) {
+        akshar_rakh(dst, 0, 48)
+        akshar_rakh(dst, 1, 0)
+        prati 1
+    }
+    yadi (val < 0) {
+        yadi (val == (0 - 9223372036854775807) - 1) {
+            # |MIN| = 2^63 does not fit in int64; roop_ank_aadhar
+            # handles it (hi/lo split), so delegate for this one value.
+            prati roop_ank_aadhar(val, 10, 0, dst)
+        }
+        val = 0 - val
+    }
+    yavat (val > 0) {
+        rev[rlen] = (val % 10) + 48
+        rlen = rlen + 1
+        val = val / 10
+    }
+    i = 0
+    yavat (i < rlen) {
+        akshar_rakh(dst, i, rev[rlen - 1 - i])
+        i = i + 1
+    }
+    akshar_rakh(dst, rlen, 0)
+    prati rlen
+}
+
+# --- integer digits in a base (private helper) ---
+# roop_ank_aadhar(v, base, upper, out) — write |v| in `base` (2..36)
+# into out as packed bytes, no util_chinha, no prefix. `upper` 1 -> A-F/A-Z.
+# Base outside 2..36 writes only the terminator and returns 0.
+prakriya roop_ank_aadhar(v, base, upper, out) {
+    vitti val = v
+    vitti b = base
+    vitti up = upper
+    vitti dst = out
+    vitti rev = nirmmita(70 * 8)
+    vitti rlen = 0
+    vitti i = 0
+    vitti d = 0
+    vitti ch = 0
+    yadi (b < 2) {
+        akshar_rakh(dst, 0, 0)
+        prati 0
+    }
+    yadi (b > 36) {
+        akshar_rakh(dst, 0, 0)
+        prati 0
+    }
+    yadi (val == 0) {
+        akshar_rakh(dst, 0, 48)
+        akshar_rakh(dst, 1, 0)
+        prati 1
+    }
+    yadi (val < 0) {
+        yadi (val == (0 - 9223372036854775807) - 1) {
+            # |MIN| = 2^63 does not fit in int64. Split it: |MIN| =
+            # hi * b + lo with hi = -(MIN / b), lo = -(MIN % b),
+            # both fitting. Convert hi, then append the lo digit.
+            vitti hi = 0 - (val / b)
+            vitti lo = 0 - (val % b)
+            vitti hn = roop_ank_aadhar(hi, b, up, dst)
+            yadi (lo < 10) {
+                akshar_rakh(dst, hn, lo + 48)
+            } anya {
+                yadi (up == 1) {
+                    akshar_rakh(dst, hn, lo + 55)
+                } anya {
+                    akshar_rakh(dst, hn, lo + 87)
+                }
+            }
+            akshar_rakh(dst, hn + 1, 0)
+            prati hn + 1
+        }
+        val = 0 - val
+    }
+    yavat (val > 0) {
+        d = val % b
+        yadi (d < 10) {
+            ch = d + 48
+        } anya {
+            yadi (up == 1) {
+                ch = d + 55
+            } anya {
+                ch = d + 87
+            }
+        }
+        rev[rlen] = ch
+        rlen = rlen + 1
+        val = val / b
+    }
+    i = 0
+    yavat (i < rlen) {
+        akshar_rakh(dst, i, rev[rlen - 1 - i])
+        i = i + 1
+    }
+    akshar_rakh(dst, rlen, 0)
+    prati rlen
+}
+
+# roop_ank_aadhar2(v, base, out) — write v in `base` (2..36), lowercase
+# digits, '-' for negatives, no prefix. Returns the byte count.
+# Base outside 2..36: terminator only, returns 0. Digits are written
+# directly at dst + neg, so the util_chinha just fills position 0.
+prakriya roop_ank_aadhar2(v, base, out) {
+    vitti val = v
+    vitti dst = out
+    vitti neg = 0
+    vitti n = 0
+    yadi (val < 0) {
+        neg = 1
+        val = 0 - val
+    }
+    n = roop_ank_aadhar(val, base, 0, dst + neg)
+    yadi (n == 0) {
+        akshar_rakh(dst, 0, 0)
+        prati 0
+    }
+    yadi (neg == 1) {
+        akshar_rakh(dst, 0, 45)
+    }
+    prati n + neg
+}
+
+# roop_ank_dhvaj(v, base, flags, out) — roop_ank_aadhar2 plus flags:
+# bit 0 (1) = prefix: "0b" / "0o" / "0x" for bases 2 / 8 / 16
+# (no prefix for other bases, including 10); bit 1 (2) = uppercase
+# hex digits (the prefix itself stays lowercase). Returns byte count.
+prakriya roop_ank_dhvaj(v, base, flags, out) {
+    vitti val = v
+    vitti b = base
+    vitti fl = flags
+    vitti dst = out
+    vitti neg = 0
+    vitti pre = 0
+    vitti up = 0
+    vitti n = 0
+    vitti i = 0
+    yadi (val < 0) {
+        neg = 1
+        val = 0 - val
+    }
+    yadi (fl % 2 == 1) {
+        yadi (b == 2) { pre = 2 }
+        yadi (b == 8) { pre = 2 }
+        yadi (b == 16) { pre = 2 }
+    }
+    yadi ((fl / 2) % 2 == 1) { up = 1 }
+    n = roop_ank_aadhar(val, b, up, dst + neg + pre)
+    yadi (n == 0) {
+        akshar_rakh(dst, 0, 0)
+        prati 0
+    }
+    # digits already sit at [neg+pre, ...); fill in util_chinha + prefix.
+    yadi (neg == 1) { akshar_rakh(dst, 0, 45) }
+    yadi (pre == 2) {
+        akshar_rakh(dst, neg, 48)
+        yadi (b == 2) { akshar_rakh(dst, neg + 1, 98) }
+        yadi (b == 8) { akshar_rakh(dst, neg + 1, 111) }
+        yadi (b == 16) { akshar_rakh(dst, neg + 1, 120) }
+    }
+    prati neg + pre + n
+}
+
+# roop_dash(v, out) — decimal, no prefix. roop_shodash / roop_shodash_unnat /
+# roop_asht / roop_dwi — base 16 (lower / upper), 8, 2, no prefix.
+prakriya roop_dash(v, out) {
+    prati roop_ank_aadhar2(v, 10, out)
+}
+
+prakriya roop_shodash(v, out) {
+    prati roop_ank_aadhar2(v, 16, out)
+}
+
+prakriya roop_shodash_unnat(v, out) {
+    prati roop_ank_dhvaj(v, 16, 2, out)
+}
+
+prakriya roop_asht(v, out) {
+    prati roop_ank_aadhar2(v, 8, out)
+}
+
+prakriya roop_dwi(v, out) {
+    prati roop_ank_aadhar2(v, 2, out)
+}
+
+# roop_ank_pre(v, base, upper, out) — any base with its prefix
+# ("0b"/"0o"/"0x" for 2/8/16; none for other bases). `upper` 1 ->
+# uppercase digits, prefix stays lowercase.
+prakriya roop_ank_pre(v, base, upper, out) {
+    vitti fl = 1
+    yadi (upper == 1) { fl = 3 }
+    prati roop_ank_dhvaj(v, base, fl, out)
+}
+
+# --- padding / alignment ---
+# roop_pad_vam(src, sn, width, padbyte, out) — pad on the LEFT with
+# `padbyte` (32 space, 48 '0') to `width`. width <= sn: copy unchanged.
+prakriya roop_pad_vam(src, sn, width, padbyte, out) {
+    vitti s = src
+    vitti cnt = sn
+    vitti w = width
+    vitti f = padbyte
+    vitti dst = out
+    vitti npad = 0
+    vitti i = 0
+    yadi (w <= cnt) {
+        i = 0
+        yavat (i < cnt) {
+            akshar_rakh(dst, i, akshar(s, i))
+            i = i + 1
+        }
+        akshar_rakh(dst, cnt, 0)
+        prati cnt
+    }
+    npad = w - cnt
+    i = 0
+    yavat (i < npad) {
+        akshar_rakh(dst, i, f)
+        i = i + 1
+    }
+    i = 0
+    yavat (i < cnt) {
+        akshar_rakh(dst, npad + i, akshar(s, i))
+        i = i + 1
+    }
+    akshar_rakh(dst, w, 0)
+    prati w
+}
+
+# roop_pad_dakshin(src, sn, width, padbyte, out) — pad on the RIGHT.
+prakriya roop_pad_dakshin(src, sn, width, padbyte, out) {
+    vitti s = src
+    vitti cnt = sn
+    vitti w = width
+    vitti f = padbyte
+    vitti dst = out
+    vitti npad = 0
+    vitti i = 0
+    yadi (w <= cnt) {
+        i = 0
+        yavat (i < cnt) {
+            akshar_rakh(dst, i, akshar(s, i))
+            i = i + 1
+        }
+        akshar_rakh(dst, cnt, 0)
+        prati cnt
+    }
+    npad = w - cnt
+    i = 0
+    yavat (i < cnt) {
+        akshar_rakh(dst, i, akshar(s, i))
+        i = i + 1
+    }
+    i = 0
+    yavat (i < npad) {
+        akshar_rakh(dst, cnt + i, f)
+        i = i + 1
+    }
+    akshar_rakh(dst, w, 0)
+    prati w
+}
+
+# roop_pad_madhya(src, sn, width, padbyte, out) — npad on BOTH sides;
+# when width-sn is odd, the extra npad byte goes RIGHT.
+prakriya roop_pad_madhya(src, sn, width, padbyte, out) {
+    vitti s = src
+    vitti cnt = sn
+    vitti w = width
+    vitti f = padbyte
+    vitti dst = out
+    vitti npad = 0
+    vitti left = 0
+    vitti i = 0
+    yadi (w <= cnt) {
+        i = 0
+        yavat (i < cnt) {
+            akshar_rakh(dst, i, akshar(s, i))
+            i = i + 1
+        }
+        akshar_rakh(dst, cnt, 0)
+        prati cnt
+    }
+    npad = w - cnt
+    left = npad / 2
+    i = 0
+    yavat (i < left) {
+        akshar_rakh(dst, i, f)
+        i = i + 1
+    }
+    i = 0
+    yavat (i < cnt) {
+        akshar_rakh(dst, left + i, akshar(s, i))
+        i = i + 1
+    }
+    i = 0
+    yavat (i < npad - left) {
+        akshar_rakh(dst, left + cnt + i, f)
+        i = i + 1
+    }
+    akshar_rakh(dst, w, 0)
+    prati w
+}
+
+# --- thousands grouping (private helper) ---
+# roop_varg_mool(src, sn, step, out) — group the integer part of a digit
+# string. step 2 = Indian (3, then 2s: 12,34,567), step 3 = international
+# (3s: 1,234,567). A leading '-' or '+' is kept as a util_chinha; a '.' splits
+# off a fraction, copied verbatim. Empty input copies to empty.
+prakriya roop_varg_mool(src, sn, step, out) {
+    vitti s = src
+    vitti cnt = sn
+    vitti st = step
+    vitti dst = out
+    vitti start = 0
+    vitti dot = 0
+    vitti wpos = 0
+    vitti i = 0
+    vitti k = 0
+    vitti rem = 0
+    yadi (cnt == 0) {
+        akshar_rakh(dst, 0, 0)
+        prati 0
+    }
+    yadi (akshar(s, 0) == 45) { start = 1 }
+    yadi (akshar(s, 0) == 43) { start = 1 }
+    dot = cnt
+    i = start
+    yavat (i < cnt) {
+        yadi (akshar(s, i) == 46) {
+            dot = i
+            i = cnt
+        } anya {
+            i = i + 1
+        }
+    }
+    # copy the util_chinha, if any
+    yadi (start == 1) {
+        akshar_rakh(dst, 0, akshar(s, 0))
+        wpos = 1
+    }
+    # emit the integer part with ',' separators. A comma goes after
+    # digit i iff rem (digits after i) marks a group boundary:
+    # international: rem % 3 == 0; Indian: rem == 3, or rem > 3 with
+    # (rem - 3) % 2 == 0 (rightmost group is 3, then 2s).
+    i = start
+    yavat (i < dot) {
+        akshar_rakh(dst, wpos, akshar(s, i))
+        wpos = wpos + 1
+        rem = dot - i - 1
+        yadi (rem > 0) {
+            yadi (st == 3) {
+                yadi (rem % 3 == 0) {
+                    akshar_rakh(dst, wpos, 44)
+                    wpos = wpos + 1
+                }
+            } anya {
+                yadi (rem == 3) {
+                    akshar_rakh(dst, wpos, 44)
+                    wpos = wpos + 1
+                } anya {
+                    yadi (rem > 3) {
+                        yadi ((rem - 3) % 2 == 0) {
+                            akshar_rakh(dst, wpos, 44)
+                            wpos = wpos + 1
+                        }
+                    }
+                }
+            }
+        }
+        i = i + 1
+    }
+    # copy the fraction (including the '.') verbatim
+    k = dot
+    yavat (k < cnt) {
+        akshar_rakh(dst, wpos, akshar(s, k))
+        wpos = wpos + 1
+        k = k + 1
+    }
+    akshar_rakh(dst, wpos, 0)
+    prati wpos
+}
+
+# roop_varg_bharatiya(src, sn, out) — 1234567 -> 12,34,567.
+prakriya roop_varg_bharatiya(src, sn, out) {
+    prati roop_varg_mool(src, sn, 2, out)
+}
+
+# roop_varg_vishwa(src, sn, out) — 1234567 -> 1,234,567.
+prakriya roop_varg_vishwa(src, sn, out) {
+    prati roop_varg_mool(src, sn, 3, out)
+}
+
+# roop_varg(src, sn, out) — DEFAULT grouping: Indian (12,34,567).
+# The default is Indian because the audience is Indian.
+prakriya roop_varg(src, sn, out) {
+    prati roop_varg_bharatiya(src, sn, out)
+}
+
+# roop_varg_ank(v, indian, out) — format integer v, then group it.
+# `indian` 1 -> Indian grouping, 0 -> international.
+prakriya roop_varg_ank(v, indian, out) {
+    vitti tmp = nirmmita(32)
+    vitti n = roop_ank_aadhar2(v, 10, tmp)
+    yadi (indian == 1) {
+        prati roop_varg_bharatiya(tmp, n, out)
+    }
+    prati roop_varg_vishwa(tmp, n, out)
+}
+
+# --- fixed decimals (private helper) ---
+# roop_sthir_mool(dasham x, places, always_sign, out) — |x| rounded HALF AWAY
+# FROM ZERO to `places` digits after '.', exactly `places` digits
+# emitted (zero-padded). places clamped to 0..9. `always_sign` 1 emits
+# '+' for non-negative values. places 0 emits no '.'.
+prakriya roop_sthir_mool(dasham x, places, always_sign, out) {
+    dasham v = x
+    vitti pl = places
+    vitti asign = always_sign
+    vitti dst = out
+    dasham p10f = 1.0
+    vitti p10i = 1
+    vitti i = 0
+    vitti neg = 0
+    dasham mag = 0.0
+    dasham scaled = 0.0
+    vitti rounded = 0
+    vitti intpart = 0
+    vitti fracpart = 0
+    vitti wpos = 0
+    vitti ndig = 0
+    vitti rev = nirmmita(22 * 8)
+    vitti rlen = 0
+    vitti k = 0
+    yadi (pl < 0) { pl = 0 }
+    yadi (pl > 9) { pl = 9 }
+    yavat (i < pl) {
+        p10f = p10f * 10.0
+        p10i = p10i * 10
+        i = i + 1
+    }
+    yadi (v < 0.0) {
+        neg = 1
+        mag = 0.0 - v
+    } anya {
+        mag = v
+    }
+    # NaN guard: NaN is the only value with both v == 0.0 and
+    # v < 0.0 true (this language's dasham comparisons use
+    # ucomisd flags directly, so NaN == NaN is true and
+    # NaN != NaN is false — v != v does NOT detect NaN here).
+    # Without it, NaN took the neg branch (NaN < 0 is true) and
+    # the conversion produced garbage like "-9223372036...".
+    yadi (v == 0.0) {
+        yadi (v < 0.0) {
+            akshar_rakh(dst, 0, 0)
+            prati 0
+        }
+    }
+    scaled = mag * p10f + 0.5
+    # Overflow guard: if scaled >= 2^63 the dasham->int conversion
+    # below is indefinite (x86 cvttsd2si yields MIN) and the
+    # program segfaults downstream. Return 0 with empty output
+    # instead — |x| * 10^places must fit in int64.
+    # NOTE: written as 9223372036854775807.0 (MAX) because the
+    # literal 9223372036854775808.0 overflows the int64 part of
+    # the dasham parser; as a dvigun, MAX.0 rounds to 2^63, so
+    # this is exactly the cvttsd2si indefinite boundary.
+    yadi (scaled >= 9223372036854775807.0) {
+        akshar_rakh(dst, 0, 0)
+        prati 0
+    }
+    rounded = scaled
+    intpart = rounded / p10i
+    fracpart = rounded % p10i
+    # util_chinha
+    yadi (neg == 1) {
+        akshar_rakh(dst, 0, 45)
+        wpos = 1
+    } anya {
+        yadi (asign == 1) {
+            akshar_rakh(dst, 0, 43)
+            wpos = 1
+        }
+    }
+    # integer part
+    ndig = roop_ank(intpart, dst + wpos)
+    wpos = wpos + ndig
+    # fraction part, zero-padded to exactly pl digits
+    yadi (pl > 0) {
+        akshar_rakh(dst, wpos, 46)
+        wpos = wpos + 1
+        rlen = 0
+        yadi (fracpart == 0) {
+            rev[0] = 48
+            rlen = 1
+        } anya {
+            yavat (fracpart > 0) {
+                rev[rlen] = (fracpart % 10) + 48
+                rlen = rlen + 1
+                fracpart = fracpart / 10
+            }
+        }
+        k = 0
+        yavat (k < pl - rlen) {
+            akshar_rakh(dst, wpos, 48)
+            wpos = wpos + 1
+            k = k + 1
+        }
+        k = 0
+        yavat (k < rlen) {
+            akshar_rakh(dst, wpos, rev[rlen - 1 - k])
+            wpos = wpos + 1
+            k = k + 1
+        }
+    }
+    akshar_rakh(dst, wpos, 0)
+    prati wpos
+}
+
+# roop_sthir(dasham x, places, out) — fixed decimals, '-' for negatives only.
+# 3.14159 at 2 places -> "3.14". Rounding: half away from zero.
+prakriya roop_sthir(dasham x, places, out) {
+    prati roop_sthir_mool(x, places, 0, out)
+}
+
+# roop_sthir_chinhit(dasham x, places, out) — fixed decimals, always a util_chinha:
+# "+3.14" / "-3.14".
+prakriya roop_sthir_chinhit(dasham x, places, out) {
+    prati roop_sthir_mool(x, places, 1, out)
+}
+
+# --- signed formatting ---
+# roop_chinhit(v, out) — always a util_chinha: "+42" / "-42" / "+0".
+prakriya roop_chinhit(v, out) {
+    vitti val = v
+    vitti dst = out
+    vitti tmp = nirmmita(32)
+    vitti n = 0
+    vitti i = 0
+    n = roop_ank_aadhar2(val, 10, tmp)
+    yadi (val < 0) {
+        i = 0
+        yavat (i < n) {
+            akshar_rakh(dst, i, akshar(tmp, i))
+            i = i + 1
+        }
+        akshar_rakh(dst, n, 0)
+        prati n
+    }
+    akshar_rakh(dst, 0, 43)
+    i = 0
+    yavat (i < n) {
+        akshar_rakh(dst, i + 1, akshar(tmp, i))
+        i = i + 1
+    }
+    akshar_rakh(dst, n + 1, 0)
+    prati n + 1
+}
+
+# roop_sign_akshar(v, signch, out) — `signch` (a byte value, e.g. 32 for a
+# blank, 43 for '+') in place of '+' for non-negative values; negatives
+# always get '-'.
+prakriya roop_sign_akshar(v, signch, out) {
+    vitti val = v
+    vitti sc = signch
+    vitti dst = out
+    vitti tmp = nirmmita(32)
+    vitti n = 0
+    vitti i = 0
+    n = roop_ank_aadhar2(val, 10, tmp)
+    yadi (val < 0) {
+        i = 0
+        yavat (i < n) {
+            akshar_rakh(dst, i, akshar(tmp, i))
+            i = i + 1
+        }
+        akshar_rakh(dst, n, 0)
+        prati n
+    }
+    akshar_rakh(dst, 0, sc)
+    i = 0
+    yavat (i < n) {
+        akshar_rakh(dst, i + 1, akshar(tmp, i))
+        i = i + 1
+    }
+    akshar_rakh(dst, n + 1, 0)
+    prati n + 1
+}
