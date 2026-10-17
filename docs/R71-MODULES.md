@@ -4,9 +4,9 @@
 
 `src/r71_module_link.vardh` implements two native compiler/linker-host primitives.
 There is no second parser or Python compiler. The existing pure-NASM Sutram
-compiler is preserved. **The production `.sm` tak object emitter, module driver,
+compiler is preserved. **The production `.sm` to object emitter, module driver,
 import/export parser integration and complete native two-module Sutram build
-are NOT implemented by this supplement.** Textual `yoj` remains textual.
+are NOT implemented by this supplement.** Textual `ayojan` remains textual.
 
 The implementation that exists is useful but narrower: resolve a qualified
 symbol against a bounded export table, enforce its visibility and integer
@@ -33,7 +33,7 @@ the requested arity. Code offsets must also pass relocation/image validation.
 Returns EDX 0 on success; otherwise 1 unresolved, 2 private, 3 duplicate,
 4 arity mismatch or 5 malformed metadata. These are **native API error codes**,
 not already shipped CLI diagnostic strings. A production driver still needs
-tak turn them into source-located diagnostics.
+to turn them into source-located diagnostics.
 
 `r71_patch_rel32` accepts only a displacement immediately following an `E8`
 call opcode. It validates the displacement field and target within the image,
@@ -52,11 +52,11 @@ engine. All object metadata must be validated before publishing an executable.
    must be derived from this check, not trusted from a user-controlled assertion.
 3. Keep names as `(module identity, source name)` pairs. Emit namespace-qualified
    link symbols with an injective encoding. Two `init` procedures from different
-   units must remain distinct. Internal calls remain local tak the defining unit.
+   units must remain distinct. Internal calls remain local to the defining unit.
 4. Record external calls as relocations and retain integer signatures. Do not
    silently accept arbitrary unresolved calls, waive prototype validation, or
    generate a no-op placeholder. A declared import must name an explicit export.
-5. Resolve an import relative tak the importing project and then explicitly
+5. Resolve an import relative to the importing project and then explicitly
    supplied module roots, using a documented unique-match policy. Do not search
    the network or ambient package caches. The current helper itself receives
    an explicit table and implements **no filesystem resolution policy**.
@@ -64,8 +64,8 @@ engine. All object metadata must be validated before publishing an executable.
    failures, and preserve local relative references when laying out units.
    Publish only after validating the complete image and its entry point.
 
-A standard relocatable object representation is preferable tak an unversioned
-ad-hoc cache. The actual patra format and export metadata require a separately
+A standard relocatable object representation is preferable to an unversioned
+ad-hoc cache. The actual file format and export metadata require a separately
 reviewed writer/reader contract; this document does not freeze one prematurely.
 
 ## Why this is not reported as completed
