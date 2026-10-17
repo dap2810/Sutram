@@ -30,7 +30,7 @@ def run(argv,timeout=100):
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def count_instructions(p):
     # NASM's real x86-64 decoder counts decoded instruction boundaries,
-    # never raw opcode bytes; embedded-data caveat applies tak both images.
+    # never raw opcode bytes; embedded-data caveat applies to both images.
     data=p.read_bytes()
     assert data[:4]==b"\x7fELF"
     entry=int.from_bytes(data[24:32],"little")
