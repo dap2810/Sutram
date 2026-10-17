@@ -29,7 +29,7 @@ NEW = OLD + """%ifdef SUTRAM_R67_PURE_STACK_PAIRS
 """
 INCLUDE_OLD = "gen_code:\n"
 INCLUDE_NEW = """%ifdef SUTRAM_R67_PURE_STACK_PAIRS
-%include "src/r67_stack_pair.inc"
+%include "src/r67_stack_pair.vardh"
 %endif
 
 gen_code:
