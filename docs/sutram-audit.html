@@ -104,7 +104,7 @@
 
   <div class="find find--crit animate" style="--i:3">
     <h3>B10 — the break/continue patch buffer overflows at 64 <span class="sev sev--crit">critical</span></h3>
-    <p>The <code>break_patch_positions</code> and <code>continue_patch_positions</code> buffers are <code>resb 512</code> — 64 eight-byte entries — with <strong>no capacity check</strong>. A loop containing 64 <code>krama</code> (break) or <code>uddeshya</code> (continue) statements writes past the end and corrupts adjacent compiler state.</p>
+    <p>The <code>break_patch_positions</code> and <code>continue_patch_positions</code> buffers are <code>resb 512</code> — 64 eight-byte entries — with <strong>no capacity check</strong>. A loop containing 64 <code>krama</code> (break) or <code>agrim</code> (continue) statements writes past the end and corrupts adjacent compiler state.</p>
     <p>It fails <strong>silently</strong>, surfacing as a misleading parser error rather than a capacity message — the same signature as B8:</p>
     <pre>63 breaks: OK, correct output (63)
 64 breaks: Sutram Error: parse error at line 69:5 near token '}'</pre>
@@ -113,9 +113,9 @@
 
   <div class="find find--crit animate" style="--i:4">
     <h3>Deep nesting fails with a misleading error <span class="sev sev--crit">critical</span></h3>
-    <p>~100 nested blocks compile; ~150 fail — and again the message is misleading (<code>parse error … near token 'end of file'</code>), which points at a depth/stack buffer being overrun rather than a clean "too deep" diagnostic.</p>
+    <p>~100 nested blocks compile; ~150 fail — and again the message is misleading (<code>parse error … near token 'end of patra'</code>), which points at a depth/stack buffer being overrun rather than a clean "too deep" diagnostic.</p>
     <pre>100 deep: OK, 1580 bytes
-150 deep: Sutram Error: parse error at line 186:211 near token 'end of file'</pre>
+150 deep: Sutram Error: parse error at line 186:211 near token 'end of patra'</pre>
     <p>Lower severity in practice (nobody nests 150 deep by hand), but it is the same class: an unbounded structure reporting a parse error instead of a capacity error.</p>
   </div>
 
@@ -124,14 +124,14 @@
     <h3>B11 — nested block bodies cap at 64 statements <span class="sev sev--crit">critical</span></h3>
     <p>Found while re-testing the B10 fix. A <code>yadi</code> or <code>yavat</code> body with more than
     <strong>64 statements</strong> fails with the same misleading <code>parse error near '}'</code> — the
-    parser's per-block statement list has a fixed 64-entry capacity and <strong>no guard</strong>. The
+    parser's per-block statement suchi has a fixed 64-entry capacity and <strong>no guard</strong>. The
     function body is not capped the same way (200 statements compile fine), and no named capacity
     constant exists for block statement lists.</p>
     <pre>yavat body, 64 stmts: OK
 yavat body, 65 stmts: Sutram Error: parse error near token '}'
 
 mukhya body, 200 stmts: OK   (function bodies are not capped)</pre>
-    <p><strong>Fix:</strong> give the per-block statement list a named cap and a clean failure, exactly as
+    <p><strong>Fix:</strong> give the per-block statement suchi a named cap and a clean failure, exactly as
     B10 got. This is more likely to bite real code than B10 — a loop body of 65 statements is ordinary.</p>
   </div>
 
@@ -139,7 +139,7 @@ mukhya body, 200 stmts: OK   (function bodies are not capped)</pre>
 
   <div class="find animate" style="--i:6">
     <h3>Arrays are unchecked — the library trusts its length argument <span class="sev sev--med">medium</span></h3>
-    <p>Every array function takes an explicit <code>n</code> and indexes without bounds-checking (<code>a[i]</code>, <code>a[j]</code>, <code>a[mid]</code>). Passing an <code>n</code> larger than the array reads and writes out of bounds — a crash or silent corruption, not a diagnostic. This is inherent to the no-runtime design, so the honest fix is <strong>documentation plus optionally bounds-checked helpers</strong> (<code>*_safe</code> variants), not a global runtime check.</p>
+    <p>Every mala function takes an explicit <code>n</code> and indexes without bounds-checking (<code>a[i]</code>, <code>a[j]</code>, <code>a[mid]</code>). Passing an <code>n</code> larger than the mala reads and writes out of bounds — a crash or silent corruption, not a diagnostic. This is inherent to the no-runtime design, so the honest fix is <strong>documentation plus optionally bounds-checked helpers</strong> (<code>*_safe</code> variants), not a global runtime check.</p>
   </div>
 
   <div class="find animate" style="--i:7">
@@ -149,14 +149,14 @@ mukhya body, 200 stmts: OK   (function bodies are not capped)</pre>
 
   <div class="find animate" style="--i:8">
     <h3>Three library modules are documentation-only stubs <span class="sev sev--med">medium</span></h3>
-    <p><code>array</code>, <code>io</code> and <code>net</code> define zero functions — importing them does nothing. Either fill them or mark them clearly as reference-only so users are not misled.</p>
+    <p><code>mala</code>, <code>io</code> and <code>net</code> define zero functions — importing them does nothing. Either fill them or mark them clearly as reference-only so users are not misled.</p>
   </div>
 
   <div class="sec animate" style="--i:9">What held up under attack</div>
 
   <div class="find find--ok animate" style="--i:10">
     <h3>Guarded buffers, no secrets, least-privilege installer <span class="sev sev--ok">pass</span></h3>
-    <p>The main arenas — token array, AST heap, string pool, import buffer, parameter arena, function table, patch list, function definitions — all have named capacity constants and clean-failure guards. A large program (8,000 statements) and 24 module imports compiled without corruption. <strong>No credentials, keys or tokens appear anywhere in the source.</strong> The Windows installer is per-user with a self-enforcing build gate that rejects UAC/HKLM/machine-PATH if they ever return.</p>
+    <p>The main arenas — token mala, AST heap, varna pool, import buffer, parameter arena, function table, patch suchi, function definitions — all have named capacity constants and clean-failure guards. A large program (8,000 statements) and 24 module imports compiled without corruption. <strong>No credentials, keys or tokens appear anywhere in the source.</strong> The Windows installer is per-user with a self-enforcing build gate that rejects UAC/HKLM/machine-PATH if they ever return.</p>
   </div>
 
   <div class="sec animate" style="--i:11">Buffer status</div>
