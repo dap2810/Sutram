@@ -61,11 +61,11 @@
   speed — not features — is the main gap. Register allocation and local-memory traffic are the next
   work item. This analysis measures the current codegen so that work has a baseline and a target, rather
   than proceeding on intuition.</p>
-  <p>The compiler emits a real ELF (entry <code>0x400078</code>, code at file offset <code>0x78</code>) with no
+  <p>The compiler emits a real ELF (entry <code>0x400078</code>, code at patra offset <code>0x78</code>) with no
   section headers, so <code>objdump -d</code> cannot read it; the disassembly here comes from
   <code>ndisasm -b 64 -e 0x78</code>. Per-construct cost is measured as a <em>delta</em>: two programs that
   differ by exactly one statement, subtracted, so prologue and the integer-print routine do not dilute
-  the result.</p>
+  the phal.</p>
 
   <h2>The headline</h2>
   <div class="kpis">
@@ -96,7 +96,7 @@ mov r13,rax      <span class="c">; store c</span></pre>
   <p>This is not a register-allocation problem — the values are already in registers. It is that the
   expression evaluator is written as a stack machine: evaluate the left operand, push it, evaluate the
   right, pop and combine. In a tree-walking codegen that is the natural first shape, but the register
-  file is sitting unused beside it.</p>
+  patra is sitting unused beside it.</p>
 
   <h3>Measured per-construct cost (delta instructions)</h3>
   <table>
@@ -146,7 +146,7 @@ mov r13,rax      <span class="c">; store c</span></pre>
   </div>
   <div class="card rec">
     <h3>3. Peephole: <code>mov rax,rX / … / mov rX,rax</code> round-trips</h3>
-    <p>Many statements end by moving a result into <code>rax</code> and straight back into the variable's register.
+    <p>Many statements end by moving a phal into <code>rax</code> and straight back into the variable's register.
     A peephole pass that folds <code>mov rX,rax</code> into the preceding operation's destination removes a
     further instruction per statement.</p>
   </div>
@@ -156,7 +156,7 @@ mov r13,rax      <span class="c">; store c</span></pre>
   <p>ChatGPT's PERF1 patch (source <code>532eaff7</code>) attacks the exact hotspot above: values already
   register-resident were being copied through <code>rax</code>, the runtime stack, <code>rdx</code> and <code>xchg</code>. It adds
   direct self-update forms (<code>x = x + y</code> → one <code>add</code>), direct register comparisons, and cleaner
-  <code>punaravartana</code> codegen. Both hosts rebuilt; suite <strong>125/125</strong>; 113/114 outputs match exactly.</p>
+  <code>chakra</code> codegen. Both hosts rebuilt; suite <strong>125/125</strong>; 113/114 outputs match exactly.</p>
 
   <h3>The hot loop, before and after</h3>
 <pre><span class="c">BEFORE — 13 instructions</span>
