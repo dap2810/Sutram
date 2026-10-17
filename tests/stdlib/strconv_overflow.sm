@@ -1,4 +1,4 @@
-ayojan strconv
+yoj vakyank
 mukhya() {
     vitti ok = nirmmita(8)
     vitti buf = nirmmita(32 * 8)
@@ -22,7 +22,7 @@ mukhya() {
     buf[17] = 57
     buf[18] = 57
     buf[19] = 57
-    likha(str_to_int(buf, 20, ok))
+    likha(varna_tak_ank(buf, 20, ok))
     likha("\n")
     likha(ok[0])
     likha("\n")
@@ -45,7 +45,7 @@ mukhya() {
     buf[16] = 56
     buf[17] = 48
     buf[18] = 55
-    likha(str_to_int(buf, 19, ok))
+    likha(varna_tak_ank(buf, 19, ok))
     likha("\n")
     likha(ok[0])
     likha("\n")
@@ -68,7 +68,7 @@ mukhya() {
     buf[16] = 56
     buf[17] = 48
     buf[18] = 56
-    likha(str_to_int(buf, 19, ok))
+    likha(varna_tak_ank(buf, 19, ok))
     likha("\n")
     likha(ok[0])
     likha("\n")
@@ -92,7 +92,7 @@ mukhya() {
     buf[17] = 56
     buf[18] = 48
     buf[19] = 56
-    likha(str_to_int(buf, 20, ok))
+    likha(varna_tak_ank(buf, 20, ok))
     likha("\n")
     likha(ok[0])
     likha("\n")
@@ -116,7 +116,7 @@ mukhya() {
     buf[17] = 56
     buf[18] = 48
     buf[19] = 57
-    likha(str_to_int(buf, 20, ok))
+    likha(varna_tak_ank(buf, 20, ok))
     likha("\n")
     likha(ok[0])
     likha("\n")
@@ -137,7 +137,7 @@ mukhya() {
     buf[14] = 102
     buf[15] = 102
     buf[16] = 102
-    likha(str_to_int_base(buf, 17, 16, ok))
+    likha(varna_tak_ank_aadhar(buf, 17, 16, ok))
     likha("\n")
     likha(ok[0])
     likha("\n")
@@ -157,139 +157,139 @@ mukhya() {
     buf[13] = 102
     buf[14] = 102
     buf[15] = 102
-    likha(str_to_int_base(buf, 16, 16, ok))
+    likha(varna_tak_ank_aadhar(buf, 16, 16, ok))
     likha("\n")
     likha(ok[0])
     likha("\n")
-    vitti n0 = int_to_str(((0 - 9223372036854775807) - 1), buf)
+    vitti n0 = ank_tak_varna(((0 - 9223372036854775807) - 1), buf)
     likha(n0)
     likha("\n")
     yadi (buf[0] != 45) {
         likha("MISMATCH\n")
-        pratiyati 1
+        prati 1
     }
     yadi (buf[1] != 57) {
         likha("MISMATCH\n")
-        pratiyati 1
+        prati 1
     }
     yadi (buf[2] != 50) {
         likha("MISMATCH\n")
-        pratiyati 1
+        prati 1
     }
     yadi (buf[3] != 50) {
         likha("MISMATCH\n")
-        pratiyati 1
+        prati 1
     }
     yadi (buf[4] != 51) {
         likha("MISMATCH\n")
-        pratiyati 1
+        prati 1
     }
     yadi (buf[5] != 51) {
         likha("MISMATCH\n")
-        pratiyati 1
+        prati 1
     }
     yadi (buf[6] != 55) {
         likha("MISMATCH\n")
-        pratiyati 1
+        prati 1
     }
     yadi (buf[7] != 50) {
         likha("MISMATCH\n")
-        pratiyati 1
+        prati 1
     }
     yadi (buf[8] != 48) {
         likha("MISMATCH\n")
-        pratiyati 1
+        prati 1
     }
     yadi (buf[9] != 51) {
         likha("MISMATCH\n")
-        pratiyati 1
+        prati 1
     }
     yadi (buf[10] != 54) {
         likha("MISMATCH\n")
-        pratiyati 1
+        prati 1
     }
     yadi (buf[11] != 56) {
         likha("MISMATCH\n")
-        pratiyati 1
+        prati 1
     }
     yadi (buf[12] != 53) {
         likha("MISMATCH\n")
-        pratiyati 1
+        prati 1
     }
     yadi (buf[13] != 52) {
         likha("MISMATCH\n")
-        pratiyati 1
+        prati 1
     }
     yadi (buf[14] != 55) {
         likha("MISMATCH\n")
-        pratiyati 1
+        prati 1
     }
     yadi (buf[15] != 55) {
         likha("MISMATCH\n")
-        pratiyati 1
+        prati 1
     }
     yadi (buf[16] != 53) {
         likha("MISMATCH\n")
-        pratiyati 1
+        prati 1
     }
     yadi (buf[17] != 56) {
         likha("MISMATCH\n")
-        pratiyati 1
+        prati 1
     }
     yadi (buf[18] != 48) {
         likha("MISMATCH\n")
-        pratiyati 1
+        prati 1
     }
     yadi (buf[19] != 56) {
         likha("MISMATCH\n")
-        pratiyati 1
+        prati 1
     }
     likha(1)
     likha("\n")
-    vitti n1 = int_to_str(123, buf)
+    vitti n1 = ank_tak_varna(123, buf)
     likha(n1)
     likha("\n")
     yadi (buf[0] != 49) {
         likha("MISMATCH\n")
-        pratiyati 1
+        prati 1
     }
     yadi (buf[1] != 50) {
         likha("MISMATCH\n")
-        pratiyati 1
+        prati 1
     }
     yadi (buf[2] != 51) {
         likha("MISMATCH\n")
-        pratiyati 1
+        prati 1
     }
     likha(1)
     likha("\n")
-    vitti n2 = int_to_str((0 - 456), buf)
+    vitti n2 = ank_tak_varna((0 - 456), buf)
     likha(n2)
     likha("\n")
     yadi (buf[0] != 45) {
         likha("MISMATCH\n")
-        pratiyati 1
+        prati 1
     }
     yadi (buf[1] != 52) {
         likha("MISMATCH\n")
-        pratiyati 1
+        prati 1
     }
     yadi (buf[2] != 53) {
         likha("MISMATCH\n")
-        pratiyati 1
+        prati 1
     }
     yadi (buf[3] != 54) {
         likha("MISMATCH\n")
-        pratiyati 1
+        prati 1
     }
     likha(1)
     likha("\n")
-    vitti n3 = int_to_str(0, buf)
+    vitti n3 = ank_tak_varna(0, buf)
     likha(n3)
     likha("\n")
     yadi (buf[0] != 48) {
         likha("MISMATCH\n")
-        pratiyati 1
+        prati 1
     }
     likha(1)
     likha("\n")
