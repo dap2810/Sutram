@@ -1,13 +1,13 @@
 prakriya first() {
-    pankti a[2]
+    mala a[2]
     a[1] = 10
-    pratiyati pankti_len(a) + a[1]
+    prati pankti_len(a) + a[1]
 }
 
 prakriya second() {
-    pankti a[4]
+    mala a[4]
     a[3] = 20
-    pratiyati pankti_len(a) + a[3]
+    prati pankti_len(a) + a[3]
 }
 
 mukhya() {
