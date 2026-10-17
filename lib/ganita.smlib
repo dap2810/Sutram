@@ -10,10 +10,10 @@
 # x = 1766319049, y = 226153980.
 #
 # CHECKED / SATURATING ARITHMETIC (R18) lives here too: ganita is the
-# arithmetic module. See the notes above ganita_checked_add.
+# arithmetic module. See the notes above ganita_janchit_yuj.
 
-# kuttaka(a, b, c) -> x such that a*x is congruent to c (mod b).
-# Requires gcd(a, b) to divide c. Returns x (a particular solution).
+# kuttaka(a, b, c) -> x such that a*x is congruent to c (shesh b).
+# Requires mahattam(a, b) to divide c. Returns x (a particular solution).
 prakriya kuttaka(a, b, c) {
     vitti old_r = a
     vitti r = b
@@ -28,7 +28,7 @@ prakriya kuttaka(a, b, c) {
         old_s = s
         s = tmp
     }
-    yadi (old_r == 0) { pratiyati 0 }
+    yadi (old_r == 0) { prati 0 }
     vitti mult = c / old_r
     vitti res = old_s * mult
     vitti bb = b
@@ -37,14 +37,14 @@ prakriya kuttaka(a, b, c) {
         res = res % bb
         yadi (res < 0) { res = res + bb }
     }
-    pratiyati res
+    prati res
 }
 
-# integer square root (floor)
-prakriya ganita_isqrt(n) {
+# integer vargit root (floor)
+prakriya ganita_vargmool(n) {
     vitti x = n
-    yadi (x < 0) { pratiyati 0 }
-    yadi (x < 2) { pratiyati x }
+    yadi (x < 0) { prati 0 }
+    yadi (x < 2) { prati x }
     # Binary search with a division bound. The old loop
     # `yavat ((i + 1) * (i + 1) <= x)` overflowed for x near MAX:
     # (i+1)^2 wraps negative, the condition stays true, and the
@@ -58,23 +58,23 @@ prakriya ganita_isqrt(n) {
         yadi (mid <= x / mid) {
             ans = mid
             lo = mid + 1
-        } anyatra {
+        } anya {
             hi = mid - 1
         }
     }
-    pratiyati ans
+    prati ans
 }
 
-prakriya ganita_abs(n) {
+prakriya ganita_nirapeksh(n) {
     vitti x = n
-    yadi (x < 0) { pratiyati 0 - x }
-    pratiyati x
+    yadi (x < 0) { prati 0 - x }
+    prati x
 }
 
 # chakravala(out, n): solves x^2 - n*y^2 = 1 for least positive x, y.
 # Fills out[0] = x and out[1] = y.
 prakriya chakravala(out, n) {
-    vitti a = ganita_isqrt(n)
+    vitti a = ganita_vargmool(n)
     vitti b = 1
     vitti k = a * a - n
     # Perfect squares (k == 0) have only the trivial (1, 0)
@@ -82,16 +82,16 @@ prakriya chakravala(out, n) {
     yadi (k == 0) {
         out[0] = 1
         out[1] = 0
-        pratiyati 1
+        prati 1
     }
     vitti guard = 0
     yavat (k != 1) {
         # Pick m with (a + b*m) divisible by |k| minimising
         # |m*m - n|. The old m = 0, 1, 2, ... scan hangs
-        # for large |k|; solve b*m = -a (mod |k|) with
+        # for large |k|; solve b*m = -a (shesh |k|) with
         # kuttaka, then compare the two candidates
         # bracketing sqrt(n) (f is convex in m).
-        vitti ak = ganita_abs(k)
+        vitti ak = ganita_nirapeksh(k)
         vitti g1 = b
         vitti g2 = ak
         yavat (g2 != 0) {
@@ -99,10 +99,10 @@ prakriya chakravala(out, n) {
             g1 = g2
             g2 = gt
         }
-        yadi (a % g1 != 0) { pratiyati 0 }
+        yadi (a % g1 != 0) { prati 0 }
         vitti m0 = kuttaka(b, ak, 0 - a)
-        vitti sq = ganita_isqrt(n)
-        vitti d = sq - m0
+        vitti varg = ganita_vargmool(n)
+        vitti d = varg - m0
         vitti t = d / ak
         vitti r = d % ak
         yadi (d < 0 && r != 0) { t = t - 1 }
@@ -116,41 +116,41 @@ prakriya chakravala(out, n) {
                 # num = m*m - n, exact. m > isqrt(MAX)
                 # candidates are skipped; the below one
                 # is always exact, so one remains.
-                vitti num = m * m - n
-                vitti f = num
+                vitti ank = m * m - n
+                vitti f = ank
                 yadi (f < 0) { f = 0 - f }
                 yadi (bf < 0 || f < bf) {
                     bf = f
                     bm = m
-                    bn = num
+                    bn = ank
                 }
             }
             t = t + 1
             cnt = cnt + 1
         }
-        yadi (bf < 0) { pratiyati 0 }
+        yadi (bf < 0) { prati 0 }
         vitti mm = bm
         # Overflow in na/nb/nk returns 0, not a wrap.
-        yadi (a != 0 && mm > 9223372036854775807 / a) { pratiyati 0 }
+        yadi (a != 0 && mm > 9223372036854775807 / a) { prati 0 }
         vitti amm = a * mm
-        yadi (b != 0 && n > 9223372036854775807 / b) { pratiyati 0 }
+        yadi (b != 0 && n > 9223372036854775807 / b) { prati 0 }
         vitti nbp = n * b
-        yadi (amm > 9223372036854775807 - nbp) { pratiyati 0 }
+        yadi (amm > 9223372036854775807 - nbp) { prati 0 }
         vitti na = (amm + nbp) / ak
-        yadi (b != 0 && mm > 9223372036854775807 / b) { pratiyati 0 }
+        yadi (b != 0 && mm > 9223372036854775807 / b) { prati 0 }
         vitti bmm = b * mm
-        yadi (bmm > 9223372036854775807 - a) { pratiyati 0 }
+        yadi (bmm > 9223372036854775807 - a) { prati 0 }
         vitti nb = (a + bmm) / ak
         vitti nk = bn / k
         a = na
         b = nb
         k = nk
         guard = guard + 1
-        yadi (guard > 1000) { pratiyati 0 }
+        yadi (guard > 1000) { prati 0 }
     }
     out[0] = a
     out[1] = b
-    pratiyati 1
+    prati 1
 }
 
 # samasa(out, a, b, c, d, n): Brahmagupta's composition law (bhavana / samasa).
@@ -167,14 +167,14 @@ prakriya samasa(out, a, b, c, d, n) {
     out[1] = p * s + q * r
 }
 
-# brahmagupta_area(a, b, c, d): Brahmagupta's formula for the area of a cyclic quadrilateral
+# brahmagupta_kshetr(a, b, c, d): Brahmagupta's formula for the area of a cyclic quadrilateral
 # (Brahma-sphuta-siddhanta, 628 CE):  area = sqrt((s-a)(s-b)(s-c)(s-d)),  s = (a+b+c+d)/2.
 # With d = 0 this is Brahmagupta's triangle (Heron's) formula. Returns the integer part.
-prakriya brahmagupta_area(a, b, c, d) {
+prakriya brahmagupta_kshetr(a, b, c, d) {
     vitti s = (a + b + c + d) / 2
     vitti p = (s - a) * (s - b) * (s - c) * (s - d)
-    yadi (p < 0) { pratiyati 0 }
-    pratiyati ganita_isqrt(p)
+    yadi (p < 0) { prati 0 }
+    prati ganita_vargmool(p)
 }
 
 # --- checked / saturating integer arithmetic (R18) ---
@@ -185,7 +185,7 @@ prakriya brahmagupta_area(a, b, c, d) {
 # proposal at the end of this section), and silently changing every
 # program's arithmetic would rewrite accepted behaviour. Instead,
 # code that must not be wrong calls a checked function and reads
-# ok[0] (the str_to_int ok-pattern: ok is a 1-cell pankti). On
+# ok[0] (the varna_tak_ank ok-pattern: ok is a 1-cell pankti). On
 # failure the function returns 0 — never the wrapped value — so a
 # caller that forgets to check ok gets an obviously-wrong 0, not a
 # plausible-but-wrong wrapped value.
@@ -211,9 +211,9 @@ prakriya brahmagupta_area(a, b, c, d) {
 # Bounds used below: MAX = 9223372036854775807, MIN is written as
 # (0 - 9223372036854775807) - 1 (no MIN literal exists).
 
-# ganita_checked_add(a, b, ok) — a + b; ok[0] 1, or 0 on overflow
+# ganita_janchit_yuj(a, b, ok) — a + b; ok[0] 1, or 0 on overflow
 # (returns 0 then).
-prakriya ganita_checked_add(a, b, ok) {
+prakriya ganita_janchit_yuj(a, b, ok) {
     vitti x = a
     vitti y = b
     vitti okp = ok
@@ -222,24 +222,24 @@ prakriya ganita_checked_add(a, b, ok) {
         yadi (y >= 0) {
             yadi (s < 0) {
                 okp[0] = 0
-                pratiyati 0
+                prati 0
             }
         }
-    } anyatra {
+    } anya {
         yadi (y < 0) {
             yadi (s >= 0) {
                 okp[0] = 0
-                pratiyati 0
+                prati 0
             }
         }
     }
     okp[0] = 1
-    pratiyati s
+    prati s
 }
 
-# ganita_checked_sub(a, b, ok) — a - b; ok[0] 1, or 0 on overflow
+# ganita_janchit_nyun(a, b, ok) — a - b; ok[0] 1, or 0 on overflow
 # (returns 0 then).
-prakriya ganita_checked_sub(a, b, ok) {
+prakriya ganita_janchit_nyun(a, b, ok) {
     vitti x = a
     vitti y = b
     vitti okp = ok
@@ -248,25 +248,25 @@ prakriya ganita_checked_sub(a, b, ok) {
         yadi (y < 0) {
             yadi (d < 0) {
                 okp[0] = 0
-                pratiyati 0
+                prati 0
             }
         }
-    } anyatra {
+    } anya {
         yadi (y >= 0) {
             yadi (d >= 0) {
                 okp[0] = 0
-                pratiyati 0
+                prati 0
             }
         }
     }
     okp[0] = 1
-    pratiyati d
+    prati d
 }
 
-# ganita_checked_mul(a, b, ok) — a * b; ok[0] 1, or 0 on overflow
+# ganita_janchit_gun(a, b, ok) — a * b; ok[0] 1, or 0 on overflow
 # (returns 0 then). The check is m / a == b, with the INT64_MIN * -1
 # case handled explicitly (the division itself would SIGFPE there).
-prakriya ganita_checked_mul(a, b, ok) {
+prakriya ganita_janchit_gun(a, b, ok) {
     vitti x = a
     vitti y = b
     vitti okp = ok
@@ -274,78 +274,78 @@ prakriya ganita_checked_mul(a, b, ok) {
     vitti minv = (0 - 9223372036854775807) - 1
     yadi (x == 0) {
         okp[0] = 1
-        pratiyati 0
+        prati 0
     }
     yadi (y == 0) {
         okp[0] = 1
-        pratiyati 0
+        prati 0
     }
     yadi (x == minv) {
         yadi (y == 0 - 1) {
             okp[0] = 0
-            pratiyati 0
+            prati 0
         }
     }
     yadi (y == minv) {
         yadi (x == 0 - 1) {
             okp[0] = 0
-            pratiyati 0
+            prati 0
         }
     }
     m = x * y
     yadi (m / x != y) {
         okp[0] = 0
-        pratiyati 0
+        prati 0
     }
     okp[0] = 1
-    pratiyati m
+    prati m
 }
 
-# ganita_checked_div(a, b, ok) — truncating a / b; ok[0] 1, or 0 on
+# ganita_janchit_bhaj(a, b, ok) — truncating a / b; ok[0] 1, or 0 on
 # division by zero or INT64_MIN / -1 (both would SIGFPE; returns 0).
-prakriya ganita_checked_div(a, b, ok) {
+prakriya ganita_janchit_bhaj(a, b, ok) {
     vitti x = a
     vitti y = b
     vitti okp = ok
     vitti minv = (0 - 9223372036854775807) - 1
     yadi (y == 0) {
         okp[0] = 0
-        pratiyati 0
+        prati 0
     }
     yadi (x == minv) {
         yadi (y == 0 - 1) {
             okp[0] = 0
-            pratiyati 0
+            prati 0
         }
     }
     okp[0] = 1
-    pratiyati x / y
+    prati x / y
 }
 
-# ganita_checked_mod(a, b, ok) — truncating a % b (remainder takes the
-# dividend's sign); ok[0] 1, or 0 on b == 0 or INT64_MIN % -1.
-prakriya ganita_checked_mod(a, b, ok) {
+# ganita_janchit_shesh(a, b, ok) — truncating a % b (remainder takes the
+# dividend's util_chinha); ok[0] 1, or 0 on b == 0 or INT64_MIN % -1.
+prakriya ganita_janchit_shesh(a, b, ok) {
     vitti x = a
     vitti y = b
     vitti okp = ok
     vitti minv = (0 - 9223372036854775807) - 1
     yadi (y == 0) {
         okp[0] = 0
-        pratiyati 0
+        prati 0
     }
     yadi (x == minv) {
         yadi (y == 0 - 1) {
             okp[0] = 0
-            pratiyati 0
+            prati 0
         }
     }
     okp[0] = 1
-    pratiyati x % y
+    prati x % y
 }
 
-# ganita_sat_add(a, b) — a + b, SATURATING: on overflow returns
+# ganita_paripurna_yuj(a, b) — a + b, SATURATING: on overflow returns
 # INT64_MAX (positive overflow) or INT64_MIN (negative overflow).
-prakriya ganita_sat_add(a, b) {
+prakriya ganita_paripurna_yuj(a, b) {
     vitti x = a
     vitti y = b
     vitti maxv = 9223372036854775807
@@ -353,18 +353,18 @@ prakriya ganita_sat_add(a, b) {
     vitti s = x + y
     yadi (x >= 0) {
         yadi (y >= 0) {
-            yadi (s < 0) { pratiyati maxv }
+            yadi (s < 0) { prati maxv }
         }
-    } anyatra {
+    } anya {
         yadi (y < 0) {
-            yadi (s >= 0) { pratiyati minv }
+            yadi (s >= 0) { prati minv }
         }
     }
-    pratiyati s
+    prati s
 }
 
-# ganita_sat_sub(a, b) — a - b, saturating (see ganita_sat_add).
-prakriya ganita_sat_sub(a, b) {
+# ganita_paripurna_nyun(a, b) — a - b, saturating (see ganita_paripurna_yuj).
+prakriya ganita_paripurna_nyun(a, b) {
     vitti x = a
     vitti y = b
     vitti maxv = 9223372036854775807
@@ -372,50 +372,50 @@ prakriya ganita_sat_sub(a, b) {
     vitti d = x - y
     yadi (x >= 0) {
         yadi (y < 0) {
-            yadi (d < 0) { pratiyati maxv }
+            yadi (d < 0) { prati maxv }
         }
-    } anyatra {
+    } anya {
         yadi (y >= 0) {
-            yadi (d >= 0) { pratiyati minv }
+            yadi (d >= 0) { prati minv }
         }
     }
-    pratiyati d
+    prati d
 }
 
-# ganita_sat_mul(a, b) — a * b, saturating (see ganita_sat_add).
-# The overflow direction is the sign of the true product.
-prakriya ganita_sat_mul(a, b) {
+# ganita_paripurna_gun(a, b) — a * b, saturating (see ganita_paripurna_yuj).
+# The overflow direction is the util_chinha of the true product.
+prakriya ganita_paripurna_gun(a, b) {
     vitti x = a
     vitti y = b
     vitti maxv = 9223372036854775807
     vitti minv = (0 - 9223372036854775807) - 1
     vitti m = 0
     vitti neg = 0
-    yadi (x == 0) { pratiyati 0 }
-    yadi (y == 0) { pratiyati 0 }
+    yadi (x == 0) { prati 0 }
+    yadi (y == 0) { prati 0 }
     yadi (x == minv) {
-        yadi (y == 0 - 1) { pratiyati maxv }
+        yadi (y == 0 - 1) { prati maxv }
     }
     yadi (y == minv) {
-        yadi (x == 0 - 1) { pratiyati maxv }
+        yadi (x == 0 - 1) { prati maxv }
     }
     m = x * y
     yadi (m / x != y) {
         yadi (x < 0) { neg = 1 - neg }
         yadi (y < 0) { neg = 1 - neg }
-        yadi (neg == 1) { pratiyati minv }
-        pratiyati maxv
+        yadi (neg == 1) { prati minv }
+        prati maxv
     }
-    pratiyati m
+    prati m
 }
 
-# ganita_checked_pow(a, e, ok) — a^e for e >= 0 via repeated
+# ganita_janchit_ghat(a, e, ok) — a^e for e >= 0 via repeated
 # checked multiplication (WS3, R19); ok[0] 1, or 0 if e < 0 (no
-# integer power) or the result overflows (returns 0 then). 0^0 = 1
+# integer ghat) or the result overflows (returns 0 then). 0^0 = 1
 # by the empty-product convention. O(e), but the loop exits early
 # on overflow for every |a| >= 2 (a^e overflows by e = 63 at the
 # latest); only the trivial bases -1, 0, 1 run the full loop.
-prakriya ganita_checked_pow(a, e, ok) {
+prakriya ganita_janchit_ghat(a, e, ok) {
     vitti base = a
     vitti exp = e
     vitti okp = ok
@@ -423,153 +423,153 @@ prakriya ganita_checked_pow(a, e, ok) {
     vitti i = 0
     yadi (exp < 0) {
         okp[0] = 0
-        pratiyati 0
+        prati 0
     }
     yavat (i < exp) {
-        r = ganita_checked_mul(r, base, okp)
-        yadi (okp[0] == 0) { pratiyati 0 }
+        r = ganita_janchit_gun(r, base, okp)
+        yadi (okp[0] == 0) { prati 0 }
         i = i + 1
     }
     okp[0] = 1
-    pratiyati r
+    prati r
 }
 
-# ganita_checked_fact(n, ok) — n! via repeated checked multiplication
+# ganita_janchit_kramgun(n, ok) — n! via repeated checked multiplication
 # (WS3, R20); ok[0] 1, or 0 if n < 0 (no integer factorial) or the
 # result overflows (returns 0 then). 0! = 1. 20! is the largest that
 # fits (20! = 2432902008176640000); 21! overflows.
-prakriya ganita_checked_fact(n, ok) {
+prakriya ganita_janchit_kramgun(n, ok) {
     vitti nn = n
     vitti okp = ok
     vitti r = 1
     vitti i = 2
     yadi (nn < 0) {
         okp[0] = 0
-        pratiyati 0
+        prati 0
     }
     yavat (i <= nn) {
-        r = ganita_checked_mul(r, i, okp)
-        yadi (okp[0] == 0) { pratiyati 0 }
+        r = ganita_janchit_gun(r, i, okp)
+        yadi (okp[0] == 0) { prati 0 }
         i = i + 1
     }
     okp[0] = 1
-    pratiyati r
+    prati r
 }
 
-# ganita_sat_pow(a, e) — a^e, saturating (WS3, R20): on overflow
+# ganita_paripurna_ghat(a, e) — a^e, saturating (WS3, R20): on overflow
 # returns INT64_MAX (positive overflow) or INT64_MIN (negative
-# overflow). e < 0 returns 0 (no integer power; the saturating form
+# overflow). e < 0 returns 0 (no integer ghat; the saturating form
 # has no ok channel, so 0 is the documented sentinel). 0^0 = 1.
 # Repeated saturating multiplication. Correct because |a| <= 1 never
 # saturates, and once saturated with |a| >= 2 every later true
-# product overflows in the direction sign(r) * sign(a)^remaining —
+# product overflows in the direction util_chinha(r) * util_chinha(a)^remaining —
 # so the loop exits early with the parity of the remaining steps
 # deciding the final bound, instead of iterating e times.
-prakriya ganita_sat_pow(a, e) {
+prakriya ganita_paripurna_ghat(a, e) {
     vitti base = a
     vitti exp = e
     vitti maxv = 9223372036854775807
     vitti minv = (0 - 9223372036854775807) - 1
     vitti r = 1
     vitti i = 0
-    yadi (exp < 0) { pratiyati 0 }
+    yadi (exp < 0) { prati 0 }
     yavat (i < exp) {
-        r = ganita_sat_mul(r, base)
+        r = ganita_paripurna_gun(r, base)
         i = i + 1
         yadi (r == maxv) {
-            yadi (base > 0) { pratiyati maxv }
-            yadi ((exp - i) % 2 == 0) { pratiyati maxv }
-            pratiyati minv
+            yadi (base > 0) { prati maxv }
+            yadi ((exp - i) % 2 == 0) { prati maxv }
+            prati minv
         }
         yadi (r == minv) {
-            yadi (base > 0) { pratiyati minv }
-            yadi ((exp - i) % 2 == 0) { pratiyati minv }
-            pratiyati maxv
+            yadi (base > 0) { prati minv }
+            yadi ((exp - i) % 2 == 0) { prati minv }
+            prati maxv
         }
     }
-    pratiyati r
+    prati r
 }
 
-# ganita_sat_div(a, b) — truncating a / b, saturating (WS4, R24): the
-# sat_* companion of ganita_checked_div. INT64_MIN / -1 saturates to
+# ganita_paripurna_bhaj(a, b) — truncating a / b, saturating (WS4, R24): the
+# sat_* companion of ganita_janchit_bhaj. INT64_MIN / -1 saturates to
 # INT64_MAX (the true quotient 2^63 does not fit); b == 0 returns 0
 # (the saturating form has no ok channel, so 0 is the documented
 # sentinel — same as sat_pow/sat_fact on invalid input). Guards both
 # cases before dividing, so it never executes a trapping operation
 # under a trapping compiler.
-prakriya ganita_sat_div(a, b) {
+prakriya ganita_paripurna_bhaj(a, b) {
     vitti x = a
     vitti y = b
     vitti maxv = 9223372036854775807
     vitti minv = (0 - 9223372036854775807) - 1
-    yadi (y == 0) { pratiyati 0 }
+    yadi (y == 0) { prati 0 }
     yadi (x == minv) {
-        yadi (y == 0 - 1) { pratiyati maxv }
+        yadi (y == 0 - 1) { prati maxv }
     }
-    pratiyati x / y
+    prati x / y
 }
 
-# ganita_sat_mod(a, b) — truncating a % b (WS4, R24). Remainder never
+# ganita_paripurna_shesh(a, b) — truncating a % b (WS4, R24). Remainder never
 # overflows mathematically (INT64_MIN % -1 is exactly 0), but the
 # hardware operation still traps on MIN % -1 (same SIGFPE as MIN / -1),
 # so this guards that case and returns 0 — which is also the exact
 # result. b == 0 returns 0 (same sentinel as sat_div). Guards before
 # operating, so it never executes a trapping operation.
-prakriya ganita_sat_mod(a, b) {
+prakriya ganita_paripurna_shesh(a, b) {
     vitti x = a
     vitti y = b
     vitti minv = (0 - 9223372036854775807) - 1
-    yadi (y == 0) { pratiyati 0 }
+    yadi (y == 0) { prati 0 }
     yadi (x == minv) {
-        yadi (y == 0 - 1) { pratiyati 0 }
+        yadi (y == 0 - 1) { prati 0 }
     }
-    pratiyati x % y
+    prati x % y
 }
 
-# ganita_checked_abs(a, ok) — |a| (WS4, R24); ok[0] 1, or 0 on
+# ganita_janchit_nirapeksh(a, ok) — |a| (WS4, R24); ok[0] 1, or 0 on
 # abs(INT64_MIN), which overflows (returns 0 then). The unary overflow
-# the checked family did not cover: plain ganita_abs(MIN) silently
+# the checked family did not cover: plain ganita_nirapeksh(MIN) silently
 # wraps to MIN.
-prakriya ganita_checked_abs(a, ok) {
+prakriya ganita_janchit_nirapeksh(a, ok) {
     vitti x = a
     vitti okp = ok
     vitti minv = (0 - 9223372036854775807) - 1
     yadi (x == minv) {
         okp[0] = 0
-        pratiyati 0
+        prati 0
     }
     okp[0] = 1
-    yadi (x < 0) { pratiyati 0 - x }
-    pratiyati x
+    yadi (x < 0) { prati 0 - x }
+    prati x
 }
 
-# ganita_sat_abs(a) — |a|, saturating (WS4, R24):
+# ganita_paripurna_nirapeksh(a) — |a|, saturating (WS4, R24):
 # abs(INT64_MIN) saturates to INT64_MAX.
-prakriya ganita_sat_abs(a) {
+prakriya ganita_paripurna_nirapeksh(a) {
     vitti x = a
     vitti maxv = 9223372036854775807
     vitti minv = (0 - 9223372036854775807) - 1
-    yadi (x == minv) { pratiyati maxv }
-    yadi (x < 0) { pratiyati 0 - x }
-    pratiyati x
+    yadi (x == minv) { prati maxv }
+    yadi (x < 0) { prati 0 - x }
+    prati x
 }
 
-# ganita_sat_fact(n) — n!, saturating (WS3, R21): on overflow returns
+# ganita_paripurna_kramgun(n) — n!, saturating (WS3, R21): on overflow returns
 # INT64_MAX (factorials are positive, so saturation is always MAX).
 # n < 0 returns 0 (no integer factorial; the saturating form has no
 # ok channel, so 0 is the documented sentinel). 0! = 1. 20! is the
 # largest that fits; 21! saturates. Exits early once saturated
 # (factorials only grow, so a saturated result stays saturated).
-prakriya ganita_sat_fact(n) {
+prakriya ganita_paripurna_kramgun(n) {
     vitti nn = n
     vitti maxv = 9223372036854775807
     vitti r = 1
     vitti i = 2
-    yadi (nn < 0) { pratiyati 0 }
+    yadi (nn < 0) { prati 0 }
     yavat (i <= nn) {
-        r = ganita_sat_mul(r, i)
-        yadi (r == maxv) { pratiyati maxv }
+        r = ganita_paripurna_gun(r, i)
+        yadi (r == maxv) { prati maxv }
         i = i + 1
     }
-    pratiyati r
+    prati r
 }
