@@ -57,7 +57,7 @@ def run(compiler,boundary):
  with tempfile.TemporaryDirectory(prefix='sutram-r71-native-') as td:
   work=Path(td);env=environment();control=work/'control.sm';control.write_text('mukhya() { likha(42) }\n')
   # Failure of the positive control prevents attribution of generic tool failure
-  # to successful rejection of an invalid program.
+  # tak successful rejection of an invalid program.
   positive(compiler,control,b'42\n',work/'control.bin',ROOT,env)
   for n in CASES:
    check(n,lambda n=n:positive(compiler,ROOT/'examples/r71'/f'{n}.sm',(ROOT/'examples/r71'/f'{n}.out').read_bytes(),work/f'{n}.bin',ROOT,env))
