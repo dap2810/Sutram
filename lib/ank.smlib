@@ -1,0 +1,120 @@
+# lib/num.smlib — Sutram standard library: integer utilities
+# layer: core
+# Parameters are copied into locals before mutation (compiler fault workaround).
+
+prakriya asti_yugm(n)
+    prati (n % 2) == 0
+
+prakriya asti_visham(n)
+    prati (n % 2) != 0
+
+prakriya ank_gan(n) {
+    vitti x = n
+    vitti minv = (0 - 9223372036854775807) - 1
+    # MIN: |MIN| has 19 digits, but 0 - MIN wraps to MIN.
+    yadi (x == minv) { prati 19 }
+    yadi (x < 0) { x = 0 - x }
+    vitti c = 1
+    yavat (x >= 10) {
+        x = x / 10
+        c = c + 1
+    }
+    prati c
+}
+
+prakriya ank_yog(n) {
+    vitti x = n
+    vitti minv = (0 - 9223372036854775807) - 1
+    # MIN: digit sum of 9223372036854775808 is 89.
+    yadi (x == minv) { prati 89 }
+    yadi (x < 0) { x = 0 - x }
+    vitti s = 0
+    yavat (x > 0) {
+        s = s + (x % 10)
+        x = x / 10
+    }
+    prati s
+}
+
+prakriya viparyay_ank(n) {
+    vitti x = n
+    vitti r = 0
+    vitti minv = (0 - 9223372036854775807) - 1
+    # Negatives reverse with the util_chinha: viparyay_ank(-123) = -321.
+    # MIN: reverse of 9223372036854775808, negated.
+    yadi (x == minv) { prati 0 - 8085774586302733229 }
+    yadi (x < 0) { prati 0 - viparyay_ank(0 - x) }
+    yavat (x > 0) {
+        r = r * 10 + (x % 10)
+        x = x / 10
+    }
+    prati r
+}
+
+prakriya asti_vilom(n) {
+    # Negatives are not palindromes (the '-' is not a digit).
+    yadi (n < 0) { prati 0 }
+    vitti r = viparyay_ank(n)
+    prati r == n
+}
+
+prakriya seemit(n, lo, hi) {
+    vitti x = n
+    vitti a = lo
+    vitti b = hi
+    yadi (x < a) { prati a }
+    yadi (x > b) { prati b }
+    prati x
+}
+
+prakriya fib(n) {
+    vitti x = n
+    yadi (x < 2) { prati x }
+    vitti a = 0
+    vitti b = 1
+    vitti i = 2
+    yavat (i <= x) {
+        vitti t = a + b
+        a = b
+        b = t
+        i = i + 1
+    }
+    prati b
+}
+
+prakriya asti_sampurna(n) {
+    vitti x = n
+    yadi (x < 2) { prati 0 }
+    vitti s = 1
+    vitti d = 2
+    # Division bound, not d * d: d * d overflows for x near MAX
+    # (the vargit wraps negative, the condition stays true, and
+    # the loop never terminates).
+    yavat (d <= x / d) {
+        yadi (x % d == 0) {
+            s = s + d
+            yadi (d != x / d) { s = s + (x / d) }
+        }
+        d = d + 1
+    }
+    prati s == x
+}
+
+prakriya collatz_charan(n) {
+    vitti x = n
+    vitti c = 0
+    # No Collatz sequence starting at x < 1 reaches 1 (0 stays 0,
+    # negatives cycle), so -1 means "does not reach 1". The same
+    # sentinel covers the 3x+1 overflow: 3x+1 overflows int64 when
+    # x > (MAX-1)/3 = 3074457345618258602, and the wrapped value
+    # would cycle forever instead of reaching 1.
+    yadi (x < 1) { prati 0 - 1 }
+    yavat (x != 1) {
+        yadi (x % 2 == 0) { x = x / 2 } anya {
+            yadi (x > 3074457345618258602) { prati 0 - 1 }
+            x = 3 * x + 1
+        }
+        c = c + 1
+    }
+    prati c
+}
