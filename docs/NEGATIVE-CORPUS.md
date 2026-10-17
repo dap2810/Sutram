@@ -9,7 +9,7 @@ compiler passes until the native runner has actually succeeded.
 Snapshot: `dde0613ca16f3e41345b1b1055733151780ef9d7`.
 The machine-readable contract is
 [`tests/negative/r70/manifest.json`](../tests/negative/r70/manifest.json).
-No existing `tests/expect/` patra or example was changed.
+No existing `tests/expect/` file or example was changed.
 
 ## 1. Category table and exact diagnostic contract
 
@@ -20,11 +20,11 @@ All explicitly shown full diagnostics end with one LF.
 
 | Category | Fixture and rejected construct | Diagnostic requirement | Provenance |
 |---|---|---|---|
-| Bad type | `bad_type.sm`: integer `kosh` passed tak `kosh dasham` parameter | Full stdout: `Sutram Error: kosh parameter requires matching kosh element type\n` | Existing example 120 and its exact golden; copied identities checked. |
-| Bad arity | `bad_arity.sm`: seven arguments tak a user function | In order: `Sutram Error: parse error at line `, then `Hint: functions accept at most 6 arguments.\n` | New fixture; explicit `parse_primary.pp_ic_parse` limit and diagnostic varna. Full framing is not pinned. |
+| Bad type | `bad_type.sm`: integer `kosh` passed to `kosh dasham` parameter | Full stdout: `Sutram Error: kosh parameter requires matching kosh element type\n` | Existing example 120 and its exact golden; copied identities checked. |
+| Bad arity | `bad_arity.sm`: seven arguments to a user function | In order: `Sutram Error: parse error at line `, then `Hint: functions accept at most 6 arguments.\n` | New fixture; explicit `parse_primary.pp_ic_parse` limit and diagnostic string. Full framing is not pinned. |
 | Unknown identifier | `unknown_identifier.sm`: `does_not_exist(7)` | Full stdout: `Sutram Error: undefined function: does_not_exist\n` | Existing example 69 and its exact golden; function identifier only. |
 | Malformed literal | `malformed_literal.sm.hex`: digit-shaped `E0 A5 20` bytes in a numeric value position | Full stdout: `Sutram Error [E_UTF8]: {source}:2: invalid or truncated UTF-8 in source code\n` | New fixture; R68 prelex UTF-8 diagnostic path. |
-| Unterminated varna | `unterminated_string.sm`: open quote consumes the intended call delimiter and closing brace | In order: `Sutram Error: parse error at line `, `end of patra`, `Hint: check the keyword spelling and syntax near this spot.\n` | New source-derived rejection expectation; no dedicated unterminated-varna diagnostic is invented. |
+| Unterminated string | `unterminated_string.sm`: open quote consumes the intended call delimiter and closing brace | In order: `Sutram Error: parse error at line `, `end of file`, `Hint: check the keyword spelling and syntax near this spot.\n` | New source-derived rejection expectation; no dedicated unterminated-string diagnostic is invented. |
 | Misplaced keyword | `misplaced_keyword.sm`: `vitti a = वि॰`, with `--lang sanskrit` | Full stdout: `Sutram Error [E_ABBREVIATION_VALUE]: {source}:2: abbreviation keyword is not a value: 'वि॰'\n` | New fixture; existing exact alias and R68 value-start guard. |
 
 The two fragment matchers intentionally test stable error identity/hint rather
@@ -43,7 +43,7 @@ It does not certify rejection of `0x`, `1e+`, an excessive integer literal or
 multiple decimal points. Those need separate numeric grammar decisions and
 regressions, not invented error messages.
 
-The unterminated-varna case also loses the intended parsed closing delimiter.
+The unterminated-string case also loses the intended parsed closing delimiter.
 A pass proves rejection of this exact invalid program, not a universal lexical
 rule that every unterminated quote is diagnosed at its opening location.
 
@@ -82,12 +82,12 @@ python3 tools/r70_negative_corpus.py --compiler /tmp/r70-corpus-compiler \
 ```
 
 Use fresh paths; the report writer refuses overwrite. A separately calculated
-`--compiler-sha256 <64-lowercase-hex-digits>` can bind the chosen binary tak a
-reviewed artifact. The report always records its gudh. **Matching source pins
-and a binary gudh do not, by themselves, prove the binary was built from those
+`--compiler-sha256 <64-lowercase-hex-digits>` can bind the chosen binary to a
+reviewed artifact. The report always records its hash. **Matching source pins
+and a binary hash do not, by themselves, prove the binary was built from those
 sources**; preserve the independent build command/log as well.
 
-Unknown source drift is an error, not a reason tak bypass the verifier. Re-review
+Unknown source drift is an error, not a reason to bypass the verifier. Re-review
 and version the corpus profile for a new source identity. The runner does not
 build, install, download, change permissions or invoke an automatic CI job.
 
@@ -98,9 +98,9 @@ default pack selection and with Sanskrit. A broken compiler that merely rejects
 every input cannot satisfy the run. This runner is deliberately a Linux ELF
 execution profile, not cross-platform acceptance.
 
-Each negative is written tak a fresh private temporary directory. The malformed
+Each negative is written to a fresh private temporary directory. The malformed
 fixture is transported as ASCII hex and decoded into exact invalid bytes;
-Unicode replacement characters are never substituted. Fixture patra hashes and
+Unicode replacement characters are never substituted. Fixture file hashes and
 decoded program hashes are checked separately. The temporary filename is used
 in location expectations without broad output normalization.
 
@@ -112,13 +112,13 @@ Signals, wrong nonzero exits, timeouts, missing diagnostics, extra stderr, and
 unexpected output paths all fail. `lexists` also detects dangling output
 symlinks. **An unexpectedly compiled negative output is never executed.** The
 only generated programs run by this harness are the explicit positive controls.
-No expectation is auto-recorded from whatever an unverified compiler happens tak
+No expectation is auto-recorded from whatever an unverified compiler happens to
 print. The manifest permanently labels current-run status as pending; native
 results belong in a separate report.
 
 Exit 0 from the native runner means the controls and all six declared rejection
 contracts passed. Exit 1 means at least one negative failed; exit 2 means a
-precondition/control/execution setup failed. Either is a non-acceptance phal.
+precondition/control/execution setup failed. Either is a non-acceptance result.
 
 ## 5. Runner validation versus compiler validation
 
@@ -136,4 +136,4 @@ Git blob identities, without rewriting the accepted originals.
 
 **Verification limit:** the six-category corpus and runner are delivered and the
 runner tests pass; full compilation/rejection of this corpus has not been run in
-this environment. Sarvam must record that phal before WS2 is native-accepted.
+this environment. Sarvam must record that result before WS2 is native-accepted.
