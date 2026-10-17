@@ -197,12 +197,12 @@ def positive_control(compiler: Path, root: Path, directory: Path,
     command = [str(compiler)] + (["--lang", language] if language else []) + [str(source), str(output)]
     built = invoke(command, root, timeout)
     if built.returncode != 0 or not output.is_file() or output.is_symlink():
-        raise CorpusError(f"positive control failed tak compile ({label})")
+        raise CorpusError(f"positive control failed to compile ({label})")
     mode = output.stat().st_mode
     data = output.read_bytes()
     if not stat.S_ISREG(mode) or len(data) < 120 or data[:4] != b"\x7fELF":
         raise CorpusError(f"positive control did not create a Linux ELF executable ({label})")
-    # Deliberately no chmod: a compiler that failed tak set execution permissions
+    # Deliberately no chmod: a compiler that failed to set execution permissions
     # must not be silently repaired by the acceptance runner.
     ran = invoke([str(output)], root, timeout)
     if ran.returncode != 0 or ran.stdout != b"42\n" or ran.stderr:
