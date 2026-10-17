@@ -384,7 +384,7 @@ n--      <span class="cm"># n = 5</span></code></pre>
 <pre><code>ayojan math
 
 mukhya()
-    likha(gcd(48, 36))
+    likha(mahattam(48, 36))
     vitti n = 7
     likha(n &gt; 5 ? 100 : 200)
     vitti i = 0
@@ -400,19 +400,19 @@ mukhya()
 <p>Sutram ஒரு சிறிய ஸ்டாண்டர்ட் லைப்ரரியை வழங்குகிறது, அதை நீங்கள் <code>ayojan</code> மூலம் சேர்த்துக்கொள்ளலாம். இந்த மாட்யூல் கம்பைல் செய்யும்போதே உங்கள் ப்ரோக்ராமில் இன்லைன் செய்யப்படுவதால், ரன்டைம் டிபென்டன்சி எதுவும் இல்லை - லைப்ரரி கோட் உங்கள் பைனரியின் ஒரு பகுதியாகவே மாறிவிடும். இன்று பன்னிரண்டு மாட்யூல்கள் கிடைக்கின்றன; முழுப் பட்டியல் <code>docs/sutram-stdlib.html</code>-இல் உள்ளது.</p>
 <table>
 <tr><th>module</th><th>include with</th><th>functions</th></tr>
-<tr><td><code>math</code></td><td><code>ayojan math</code></td><td>15 functions &mdash; <code>sq</code> <code>square</code> <code>cube</code> <code>double</code> <code>triple</code> <code>inc</code> <code>abs_val</code> <code>min2</code> <code>max2</code> <code>gcd</code> <code>lcm</code> <code>power</code> <code>fact</code> <code>is_prime</code> <code>sum_to</code></td></tr>
-<tr><td><code>num</code></td><td><code>ayojan num</code></td><td>10 functions &mdash; <code>is_even</code> <code>is_odd</code> <code>digit_count</code> <code>digit_sum</code> <code>reverse_num</code> <code>is_palindrome</code> <code>clamp</code> <code>fib</code> <code>is_perfect</code> <code>collatz_steps</code></td></tr>
-<tr><td><code>sort</code></td><td><code>ayojan sort</code></td><td>11 functions &mdash; <code>swap</code> <code>bubble_sort</code> <code>shell_sort</code> <code>reverse_arr</code> <code>min_of</code> <code>max_of</code> <code>sum_of</code> <code>find_linear</code> <code>count_of</code> <code>is_sorted</code> <code>binary_search</code></td></tr>
-<tr><td><code>string</code></td><td><code>ayojan string</code></td><td>13 functions &mdash; <code>str_len</code> <code>char_code_at</code> <code>is_digit_char</code> <code>is_upper_char</code> <code>is_lower_char</code> <code>is_letter_char</code> <code>is_space_char</code> <code>count_vowels</code> <code>count_char</code> <code>find_char</code> <code>is_all_digits</code> <code>upper_code</code> <code>lower_code</code></td></tr>
+<tr><td><code>math</code></td><td><code>ayojan math</code></td><td>15 functions &mdash; <code>varg</code> <code>vargit</code> <code>ghan</code> <code>dvigun</code> <code>trigun</code> <code>vardh</code> <code>nirapeksh_mulya</code> <code>laghu2</code> <code>adhik2</code> <code>mahattam</code> <code>laghuttam</code> <code>ghat</code> <code>kramgun</code> <code>asti_abhajya</code> <code>yog_tak</code></td></tr>
+<tr><td><code>num</code></td><td><code>ayojan num</code></td><td>10 functions &mdash; <code>asti_yugm</code> <code>asti_visham</code> <code>ank_gan</code> <code>ank_yog</code> <code>viparyay_ank</code> <code>asti_vilom</code> <code>seemit</code> <code>fib</code> <code>asti_sampurna</code> <code>collatz_charan</code></td></tr>
+<tr><td><code>sort</code></td><td><code>ayojan sort</code></td><td>11 functions &mdash; <code>vinimay</code> <code>budbud_shreni</code> <code>shankh_shreni</code> <code>viparyay_mala</code> <code>laghu</code> <code>adhik</code> <code>yog</code> <code>anwesh_sarak</code> <code>gan</code> <code>asti_sorted</code> <code>dwi_anwesh</code></td></tr>
+<tr><td><code>string</code></td><td><code>ayojan string</code></td><td>13 functions &mdash; <code>varna_maap</code> <code>akshar_sanket</code> <code>asti_ank_akshar</code> <code>asti_unnat_akshar</code> <code>asti_avanat_akshar</code> <code>asti_akshar_akshar</code> <code>asti_avakash_akshar</code> <code>gan_swar</code> <code>gan_akshar</code> <code>anwesh_akshar</code> <code>asti_sarv_ank</code> <code>unnat_sanket</code> <code>avanat_sanket</code></td></tr>
 </table>
 <pre><code>ayojan math
 
 mukhya()
-    likha(gcd(48, 36))
+    likha(mahattam(48, 36))
     likha(" ")
-    likha(fact(5))
+    likha(kramgun(5))
     likha(" ")
-    likha(is_prime(97))
+    likha(asti_abhajya(97))
     likha("\n")
 </code></pre>
 <p><i>Note: a program can currently include at most two modules &mdash; a compiler limit that is being fixed.</i></p>
@@ -652,7 +652,7 @@ Uninstall</b>. நீக்கி தான் நிறுவிய கோப�
   <p>ஒரு function-க்கு ஒரு குறிப்பிட்ட வகையான argument தேவைப்படலாம், compiler அதைச் சரிபார்க்கும்.</p>
   <p>Typed float array ஒரு pointer ஆக அனுப்பப்படுகிறது, எனவே indexed writes caller-க்குத் தெரியும் — ஒரு function உங்களுக்காக ஒரு array-ஐ நிரப்ப முடியும். ஆனால் அதை வளர்க்க (growing) அனுமதி இல்லை: ஒரு parameter-இல் kosh_push-ஐ அழைப்பது நிராகரிக்கப்படும். ஏனெனில் pointer by value ஆக அனுப்பப்படுகிறது, caller-க்கு ஒரு பழைய pointer மட்டுமே கிடைக்கும். இது ஒரு பாதுகாப்பு அம்சம், விடுபட்ட feature அல்ல.</p>
   <h3>Standard library</h3>
-  <p>Compiler-உடன் பதினைந்து modules வருகின்றன. ayojan மூலம் ஒன்றைப் import செய்யவும். அவை arithmetic மற்றும் number theory; sorting மற்றும் text; Pingala-வின் prosody; Aryabhata மற்றும் Bhaskara-வின் கணிதம்; pi, sine, cosine மற்றும் square root-க்கான Kerala school-இன் series; statistics; numerical calculus — integration, derivatives மற்றும் polynomial roots; matrices மற்றும் determinants-உடன் linear algebra; மற்றும் file reading மற்றும் writing ஆகியவற்றை உள்ளடக்கியது.</p>
+  <p>Compiler-உடன் பதினைந்து modules வருகின்றன. ayojan மூலம் ஒன்றைப் import செய்யவும். அவை arithmetic மற்றும் number theory; sorting மற்றும் text; Pingala-வின் prosody; Aryabhata மற்றும் Bhaskara-வின் கணிதம்; pi, sine, cosine மற்றும் vargit root-க்கான Kerala school-இன் series; statistics; numerical calculus — integration, derivatives மற்றும் polynomial roots; matrices மற்றும் determinants-உடன் linear algebra; மற்றும் file reading மற்றும் writing ஆகியவற்றை உள்ளடக்கியது.</p>
   <div class="try"><b>Try it:</b> heritage modules உண்மையான கணிதத்தைக் கணக்கிடுகின்றன — 61-இன் chakravala, x squared minus 61 y squared equals 1 என்பதற்கான மிகச்சிறிய தீர்வை வழங்குகிறது, அது x = 1766319049, y = 226153980. இது 7-ஆம் நூற்றாண்டு முறை, சரியான பதிலுடன் சரிபார்க்கப்பட்டது.</div>
   <h3>Sutram IDE</h3>
   <p>மொழியுடன் install செய்யப்படுகிறது. இது ஒரு native program — Python இல்லை, interpreter இல்லை. line numbers மற்றும் syntax highlighting கொண்ட code editor இதில் உள்ளது; நீங்கள் எழுதியதை compile செய்து run செய்ய Ctrl-R; example programs-ஐ ஒவ்வொன்றாகப் பார்க்க Ctrl-E; interactive shell-க்கு Ctrl-T, இதில் நீங்கள் ஒரு statement-ஐ type செய்து Enter-ஐ அழுத்தி அது run ஆவதைப் பார்க்கலாம். session முந்தைய வரிகளை நினைவில் வைத்துக்கொள்வதால், நீங்கள் படிப்படியாக ஒரு program-ஐ உருவாக்கலாம்; save செய்ய Ctrl-S, load செய்ய Ctrl-L, quit செய்ய Ctrl-Q.</p>
