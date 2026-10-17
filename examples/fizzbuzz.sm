@@ -7,13 +7,13 @@ mukhya()
         yadi (mod3 == 0) {
             yadi (mod5 == 0) {
                 likha("FizzBuzz\n")
-            } anyatra {
+            } anya {
                 likha("Fizz\n")
             }
-        } anyatra {
+        } anya {
             yadi (mod5 == 0) {
                 likha("Buzz\n")
-            } anyatra {
+            } anya {
                 likha(i)
                 likha("\n")
             }
