@@ -1,15 +1,15 @@
-ayojan strb
+yoj khand
 mukhya() {
-    # ROUND-10 bridge: a literal flows through the byte-string toolkit
-    # with no hand-built array. "foo bar foo" -> "baz bar baz".
+    # ROUND-10 bridge: a literal flows through the byte-varna toolkit
+    # with no hand-built mala. "foo bar foo" -> "baz bar baz".
     vitti out = nirmmita(32)
-    vitti n = strb_replace("foo bar foo", 11, "foo", 3, "baz", out)
+    vitti n = khand_pratisthap("foo bar foo", 11, "foo", 3, "baz", out)
     likha(n)
     likha("\n")
-    # print the result back character by character via char_at
+    # print the phal back character by character via akshar
     vitti i = 0
     yavat (i < n) {
-        likha(char_at(out, i))
+        likha(akshar(out, i))
         likha("\n")
         i = i + 1
     }
