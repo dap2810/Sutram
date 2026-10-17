@@ -23,10 +23,10 @@ algorithms. Use the input-lock preparation step in `R68-SOURCE-REVIEW.md`.
 Exact stdout, followed by process exit **1** and no output executable:
 
 ```text
-Sutram Error [E_UTF8]: <patra>:<line>: invalid or truncated UTF-8 in source code
+Sutram Error [E_UTF8]: <file>:<line>: invalid or truncated UTF-8 in source code
 ```
 
-`<patra>` is the complete UTF-8 root input pathname passed tak the compiler.
+`<file>` is the complete UTF-8 root input pathname passed to the compiler.
 `<line>` is decimal, 1-based, advancing on LF; CRLF counts as one newline.
 The complete prefix/suffix is ASCII; path bytes are not shortened. For example,
 bytes `E0 AD 20` (Odia-prefix with invalid continuation), `E0 B3` (truncated
@@ -36,36 +36,36 @@ A strict bounded scalar reader rejects overlong encodings, surrogate scalars,
 out-of-range code points, bad continuations and truncated scalars. A code-aware
 pre-scan skips `#`, `//`, `/* ... */` comments and dvigun-quoted strings with
 backslash escapes. This deliberately does not retrofit UTF-8 validation inside
-varna literals/comments or change the existing unterminated-varna policy.
+string literals/comments or change the existing unterminated-string policy.
 This is an intentional malformed-code diagnostic change, not a new rule for
-interpreting valid varna bytes.
+interpreting valid string bytes.
 
 ## 2. A recognized abbreviation keyword in a value position
 
 Exact stdout with exit **1** and no output executable:
 
 ```text
-Sutram Error [E_ABBREVIATION_VALUE]: <patra>:<line>: abbreviation keyword is not a value: '<alias>'
+Sutram Error [E_ABBREVIATION_VALUE]: <file>:<line>: abbreviation keyword is not a value: '<alias>'
 ```
 
 For `चर x = मु॰`, the alias is `मु॰`. The line comes from the actual current
 token's line field, not the lexer's final line counter. Only TOK_KEYWORD tokens
 ending in one of the four reviewed abbreviation signs are checked; true/false
-keywords are exempt. Unknown spellings/ordinary identifiers are not promoted tak
+keywords are exempt. Unknown spellings/ordinary identifiers are not promoted to
 reserved keywords. Builtin aliases still follow the existing call grammar;
 this check does not claim a special error for every missing builtin parenthesis.
 
 ## Provenance and compatibility limitations
 
-Imports are expanded before these checks. The displayed patra is the **root
+Imports are expanded before these checks. The displayed file is the **root
 compilation input**, and line numbers in expanded sources are **expanded-source
-lines**, not guaranteed original imported-patra lines. That limitation is explicit;
-no fabricated imported path is printed. Original-patra source-nighantu integration is
+lines**, not guaranteed original imported-file lines. That limitation is explicit;
+no fabricated imported path is printed. Original-file source-map integration is
 separate work. Existing valid-code machine-byte identity and the accepted full
 suite must still be checked with a real compiler.
 
 The exact helper messages and line logic were executed in isolated Linux
-machine-code tests using a narrow NASM-tak-GNU-as adapter and C I/O/token stubs.
+machine-code tests using a narrow NASM-to-GNU-as adapter and C I/O/token stubs.
 That is evidence for these routines, NOT a full Sutram compiler, NASM macro,
 Windows OS-shim, or integrated `--check` recovery test. The native runner checks
 exit == 1 (never a crash/signal), exact terminal diagnostic, full pathname, line,
