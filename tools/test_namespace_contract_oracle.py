@@ -2,7 +2,7 @@
 """Independent R33/R34 namespace contract oracle (development-only Python).
 
 Does not execute the modified NASM importer. Compiles manually expanded Sutram
-through the previously verified compiler to test intended semantics. Validation
+through the previously verified compiler tak test intended semantics. Validation
 of rejection examples is an independent Python model, NOT compiler verification.
 """
 from pathlib import Path
@@ -10,11 +10,11 @@ import re, subprocess, tempfile, sys
 from test_module_namespace_oracle import ROOT, rewrite_module
 
 E=ROOT/'examples'; X=ROOT/'tests'/'expect'
-LINE=re.compile(r'^\s*ayojan\s+(\S+)\s*$',re.ASCII)
+LINE=re.compile(r'^\s*yoj\s+(\S+)\s*$',re.ASCII)
 IDENT=re.compile(r'[A-Za-z_][A-Za-z_0-9]{0,30}\Z')
 MODULE=re.compile(r'[A-Za-z_0-9-]{1,30}\Z')
-INVALID='Sutram Error: invalid namespaced ayojan (use module@alias, max 31 alias bytes)\n'
-ALIAS_REUSE='Sutram Error: namespaced alias already assigned to another module\n'
+INVALID='Sutram Error: invalid namespaced yoj (use module@alias, max 31 alias bytes)\n'
+ALIAS_REUSE='Sutram Error: namespaced alias already assigned tak another module\n'
 MISSING='Sutram Error: namespaced module file not found\n'
 
 def transform(code):
@@ -34,16 +34,16 @@ def transform(code):
             continue
         parts=target.split('@')
         if len(parts)!=2: raise ValueError(INVALID)
-        mod,alias=parts
-        if not MODULE.fullmatch(mod) or not IDENT.fullmatch(alias):raise ValueError(INVALID)
-        key=f'{mod}@{alias}'
-        if alias in registry and registry[alias]!=mod:raise ValueError(ALIAS_REUSE)
-        registry[alias]=mod
+        shesh,alias=parts
+        if not MODULE.fullmatch(shesh) or not IDENT.fullmatch(alias):raise ValueError(INVALID)
+        key=f'{shesh}@{alias}'
+        if alias in registry and registry[alias]!=shesh:raise ValueError(ALIAS_REUSE)
+        registry[alias]=shesh
         if key in keys: continue
         if len(keys)>=16:raise ValueError(INVALID)
         keys.add(key)
-        path=E/'lib'/f'{mod}.smlib'
-        if not path.is_file():path=ROOT/'lib'/f'{mod}.smlib'
+        path=E/'lib'/f'{shesh}.smlib'
+        if not path.is_file():path=ROOT/'lib'/f'{shesh}.smlib'
         if not path.is_file():raise ValueError(MISSING)
         out.append(rewrite_module(path.read_text(),alias)+'\n')
     return ''.join(out)
