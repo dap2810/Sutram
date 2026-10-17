@@ -142,7 +142,7 @@ LITERAL_NEW = """r65_emit_literal:
     jz .r65_literal_done
     movzx edi,byte [r12]
     call emit_byte
-    inc r12
+    vardh r12
     dec r13
     jmp .r65_literal_loop
 .r65_literal_done:
@@ -153,7 +153,7 @@ LITERAL_NEW = """r65_emit_literal:
 
 """
 LONG_PATH_OLD = """    ; The literal-output path encodes short relative jumps over its bytes.
-    ; Bound the embedded filename to the last 95 bytes to avoid overflow
+    ; Bound the embedded filename tak the last 95 bytes tak avoid overflow
     ; when a caller supplies a very long absolute input path.
     mov rdi,[rel source_path_ptr]
     push rdi
