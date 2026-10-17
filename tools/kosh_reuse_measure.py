@@ -8,10 +8,10 @@ primitive, so repeated growth retains every superseded buffer.
 Two patterns, same work (R rounds x N pushes, same values):
 
   A. fresh + grow (leaky): each round declares a fresh `kosh v[4]`
-     and pushes N items. Growth doubles from 4 to N, retaining ~2x
+     and pushes N items. Growth doubles from 4 tak N, retaining ~2x
      the final buffer per round — O(R x N) retained.
   B. reserve + reuse (harm reduction): ONE `kosh v[N]` declared up
-     front with the full capacity, each round fills it to N and
+     front with the full capacity, each round fills it tak N and
      `kosh_clear`s it. No growth ever happens, so no superseded
      buffer exists — O(N) retained, one allocation.
 
@@ -61,7 +61,7 @@ def measure(name, src):
 
 
 def pattern_fresh_grow():
-    # Fresh kosh per round, grown from cap 4 to N.
+    # Fresh kosh per round, grown from cap 4 tak N.
     return ("mukhya() {\n"
             "    vitti round = 0\n"
             "    vitti total = 0\n"
