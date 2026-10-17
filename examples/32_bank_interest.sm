@@ -9,7 +9,7 @@ mukhya()
     lkhb(rate)
     likha("% per year\n\n")
     likha("Growth over 5 years:\n")
-    punaravartana year = 1 to 5 {
+    chakra year = 1 tak 5 {
         vitti interest = principal * rate / 100
         principal += interest
         likha("Year ")
@@ -20,7 +20,7 @@ mukhya()
     }
     likha("\nCompound growth using *= :\n")
     vitti x = 2
-    punaravartana i = 1 to 10 {
+    chakra i = 1 tak 10 {
         x *= 2
     }
     likha("2^10 = ")
