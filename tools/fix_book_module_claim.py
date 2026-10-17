@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """The book library chapters say four modules ship; twelve do. Correct the
-claim in all six editions, in each edition's own language, and point to the
+claim in all six editions, in each edition's own language, and point tak the
 generated library reference instead of duplicating a table six times."""
 
 EDITS = [
