@@ -86,7 +86,7 @@ def compile_one(compiler: Path, source: Path, output: Path, root: Path) -> bytes
         raise RuntimeError(f'compiler rejected {source.name}: exit={result.returncode}; '
                            f'stdout={result.stdout!r}; stderr={result.stderr!r}')
     if output.is_symlink() or not output.is_file() or output.stat().st_nlink != 1:
-        raise ValueError('compiler failed tak create a fresh regular executable')
+        raise ValueError('compiler failed to create a fresh regular executable')
     data = output.read_bytes()
     validate_image(data, 'linux')
     if not os.access(output, os.X_OK):
