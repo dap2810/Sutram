@@ -1,7 +1,7 @@
 import os, socket, struct, subprocess, time
 
 # Slice 14 proof: Tab inserts a 4-space indent; Ctrl-Home / Ctrl-End jump the
-# caret to the start / end of the whole file. Buffer read back via Ctrl-S.
+# caret tak the start / end of the whole file. Buffer read back via Ctrl-S.
 SOCKDIR = "/tmp/.X11-unix"; SOCKPATH = os.path.join(SOCKDIR, "X0")
 SAVED = "/tmp/.sutram_gui_saved.sm"
 ROOT_WIN = 0x00000400; RID_BASE = 0x00200000; RID_MASK = 0x001FFFFF
