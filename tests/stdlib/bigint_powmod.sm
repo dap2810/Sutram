@@ -1,30 +1,30 @@
-ayojan bigint
+yoj brihat
 mukhya() {
     vitti base = nirmmita(8 * 8)
-    vitti mod = nirmmita(8 * 8)
+    vitti shesh = nirmmita(8 * 8)
     vitti res = nirmmita(8 * 8)
-    # 2^10 mod 1000 = 24
-    bigint_from_int(2, base, 8)
-    bigint_from_int(1000, mod, 8)
-    bigint_powmod(base, 10, mod, res, 8)
-    likha(bigint_to_int(res, 8))
+    # 2^10 shesh 1000 = 24
+    brihat_ank_se_int(2, base, 8)
+    brihat_ank_se_int(1000, shesh, 8)
+    brihat_ghatmod(base, 10, shesh, res, 8)
+    likha(brihat_ank_tak_int(res, 8))
     likha("\n")
-    # 3^5 mod 100 = 43
-    bigint_from_int(3, base, 8)
-    bigint_from_int(100, mod, 8)
-    bigint_powmod(base, 5, mod, res, 8)
-    likha(bigint_to_int(res, 8))
+    # 3^5 shesh 100 = 43
+    brihat_ank_se_int(3, base, 8)
+    brihat_ank_se_int(100, shesh, 8)
+    brihat_ghatmod(base, 5, shesh, res, 8)
+    likha(brihat_ank_tak_int(res, 8))
     likha("\n")
-    # x^0 mod m = 1
-    bigint_from_int(7, base, 8)
-    bigint_from_int(100, mod, 8)
-    bigint_powmod(base, 0, mod, res, 8)
-    likha(bigint_to_int(res, 8))
+    # x^0 shesh m = 1
+    brihat_ank_se_int(7, base, 8)
+    brihat_ank_se_int(100, shesh, 8)
+    brihat_ghatmod(base, 0, shesh, res, 8)
+    likha(brihat_ank_tak_int(res, 8))
     likha("\n")
-    # 5^3 mod 13 = 8 (125 mod 13)
-    bigint_from_int(5, base, 8)
-    bigint_from_int(13, mod, 8)
-    bigint_powmod(base, 3, mod, res, 8)
-    likha(bigint_to_int(res, 8))
+    # 5^3 shesh 13 = 8 (125 shesh 13)
+    brihat_ank_se_int(5, base, 8)
+    brihat_ank_se_int(13, shesh, 8)
+    brihat_ghatmod(base, 3, shesh, res, 8)
+    likha(brihat_ank_tak_int(res, 8))
     likha("\n")
 }
