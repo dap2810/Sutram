@@ -14,7 +14,7 @@ mukhya()
     likha("4. If-else: ")
     yadi (a > b) {
         likha("true\n")
-    } anyatra {
+    } anya {
         likha("false\n")
     }
     likha("5. Memory: ")
@@ -26,7 +26,7 @@ mukhya()
     likha(vartani_len("Sutram"))
     likha("\n")
     likha("7. Char ops: ")
-    likha(char_at("Hello", 0))
+    likha(akshar("Hello", 0))
     likha("\n")
     likha("8. Format: ")
     likha_fmt("x=", 42)
