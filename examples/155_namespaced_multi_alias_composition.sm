@@ -1,7 +1,7 @@
 # Same names in different modules; all calls must stay disambiguated.
-ayojan r33_alpha@alpha
-ayojan r33_beta@beta
-ayojan r33_alpha@gamma
+yoj r33_alpha@alpha
+yoj r33_beta@beta
+yoj r33_alpha@gamma
 mukhya() {
     likha(alpha__clash())
     likha(beta__clash())
