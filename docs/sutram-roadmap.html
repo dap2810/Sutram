@@ -57,7 +57,7 @@ tr:last-child td{border-bottom:none}
   <h3>The guardrails — these do not change</h3>
   <ul>
     <li>Sanskrit keyword core; Latin transliteration primary, Devanagari optional</li>
-    <li><code>.sm</code> file extension</li>
+    <li><code>.sm</code> patra extension</li>
     <li><strong>one hand-written pure-NASM compiler source</strong> — no C, no Python, no runtime dependency</li>
     <li>programs compile to <strong>native machine code</strong>, never interpreted</li>
     <li>the end user needs <strong>no toolchain</strong> — the installer ships a prebuilt binary</li>
@@ -76,7 +76,7 @@ tr:last-child td{border-bottom:none}
   <ul>
     <li><strong>Freestanding.</strong> No libc, no runtime, no interpreter — raw machine code with
     nothing underneath it but syscalls. The correct starting shape for kernel code.</li>
-    <li><strong>Inline assembly.</strong> <code>nishkriya</code> makes any instruction reachable from
+    <li><strong>Inline assembly.</strong> <code>yantra</code> makes any instruction reachable from
     Sutram source today.</li>
     <li><strong>A flat binary with a known entry point</strong> — close to the shape a bootloader wants.</li>
     <li><strong>PE32+ output already exists</strong> (used for the Windows build). A UEFI application
@@ -128,7 +128,7 @@ tr:last-child td{border-bottom:none}
     <tr><th>Item</th><th>Status</th><th>Note</th></tr>
     <tr><td>Undo in the IDE</td><td><span class="planned">Planned</span></td><td>Editor comfort; the one obvious missing editor feature</td></tr>
     <tr><td>Verify on a real Windows machine</td><td><span class="planned">Planned</span></td><td>The largest untested area; the Windows build has never been run on Windows</td></tr>
-    <tr><td>Module system for <code>ayojan</code></td><td><span class="planned">Planned</span></td><td>Today it inlines textually, so all library functions share one global namespace</td></tr>
+    <tr><td>Module system for <code>yoj</code></td><td><span class="planned">Planned</span></td><td>Today it inlines textually, so all library functions share one global namespace</td></tr>
     <tr><td>Windows build of the IDE</td><td><span class="planned">Planned</span></td><td>The IDE is Linux-only today; Windows users have the interactive shell</td></tr>
     <tr><td>XMM register residency (Stage 2)</td><td><span class="explore">Exploratory</span></td><td>Stage 1 was implemented and measured slightly slower, so the flag stays off</td></tr>
     <tr><td>A standard-library package format</td><td><span class="explore">Exploratory</span></td><td>Would follow the module system</td></tr>
