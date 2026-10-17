@@ -1,9 +1,9 @@
-ayojan num
+yoj ank
 mukhya() {
-    likha(is_even(4))
+    likha(asti_yugm(4))
     likha("\n")
-    likha(is_even(7))
+    likha(asti_yugm(7))
     likha("\n")
-    likha(is_even(0))
+    likha(asti_yugm(0))
     likha("\n")
 }
