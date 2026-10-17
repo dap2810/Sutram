@@ -1,13 +1,13 @@
-ayojan sort
+yoj shreni
 mukhya() {
-    pankti a[5]
+    mala a[5]
     a[0] = 1
     a[1] = 3
     a[2] = 5
     a[3] = 7
     a[4] = 9
-    likha(binary_search(a, 5, 7))
+    likha(dwi_anwesh(a, 5, 7))
     likha("\n")
-    likha(binary_search(a, 5, 4))
+    likha(dwi_anwesh(a, 5, 4))
     likha("\n")
 }
