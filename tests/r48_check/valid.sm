@@ -1,4 +1,4 @@
 mukhya() {
-    vitti result = 7
-    likha(result)
+    vitti phal = 7
+    likha(phal)
 }
