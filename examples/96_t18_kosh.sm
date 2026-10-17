@@ -1,4 +1,4 @@
-# T18 growable array: growth, indexing, assignment, pop, len/cap.
+# T18 growable mala: growth, indexing, assignment, pop, len/cap.
 mukhya() {
     kosh a[1]
     likha(kosh_len(a))
