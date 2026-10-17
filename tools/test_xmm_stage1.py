@@ -31,13 +31,13 @@ HOT=r'''mukhya() {
     dasham b = 0.5
     dasham c = 1.0
     dasham d = 3.0
-    nishkriya("0F 0B 66 90 0F 0B")
+    yantra("0F 0B 66 90 0F 0B")
     a = a + b
     a = a + b
     a = a + b
     c = a * b
     d = c - b
-    nishkriya("0F 0B 67 90 0F 0B")
+    yantra("0F 0B 67 90 0F 0B")
     likha(a)
     likha(d)
 }
