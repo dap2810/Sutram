@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sutram — Standard Library Reference</title>
+<style>
+  :root{--ink:#1b1917;--mid:#5c554d;--faint:#8b8278;--rule:#e4ded5;--paper:#fbf9f5;
+        --card:#fff;--tint:#f4f0e9;--accent:#b8531a;--ok:#1f7a4d;--alloc:#2b6b8f;--std:#8a3fa0}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans",sans-serif}
+  .wrap{max-width:1020px;margin:0 auto;padding:52px 26px 90px}
+  header{border-bottom:3px solid var(--ink);padding-bottom:22px}
+  .kicker{font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:700}
+  h1{font-size:37px;margin:10px 0 6px;letter-spacing:-.02em}
+  h1 small{display:block;font-size:16px;font-weight:400;color:var(--mid);margin-top:7px}
+  h2{font-size:22px;margin:48px 0 10px;letter-spacing:-.01em}
+  p{max-width:78ch}
+  .lede{color:var(--mid)}
+  .grid{display:grid;gap:13px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin:22px 0}
+  .stat{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:14px 16px}
+  .stat .v{font-size:27px;font-weight:700;line-height:1.15}
+  .stat .l{font-size:12.5px;color:var(--mid);margin-top:3px}
+  nav{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:16px 18px;margin:22px 0;font-size:14px;line-height:2}
+  nav a{color:var(--accent);text-decoration:none;font-weight:600}
+  nav a:hover{text-decoration:underline}
+  pre{background:#1e1c1a;color:#e8e2d8;padding:16px 18px;border-radius:9px;overflow-x:auto;
+    font:13.5px/1.7 ui-monospace,SFMono-Regular,Menlo,monospace}
+  pre .k{color:#e8965a;font-weight:600}
+  pre .s{color:#8fbf7a}
+  pre .c{color:#7d7568}
+  .shesh{background:var(--card);border:1px solid var(--rule);border-radius:10px;
+    padding:18px 20px;margin:16px 0;break-inside:avoid}
+  .shesh h3{margin:0 0 6px;font-size:18.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .lay{font-size:11px;font-weight:700;padding:2.5px 9px;border-radius:20px;vertical-align:middle;margin-left:7px}
+  .lay-core{background:#e8f5ee;color:var(--ok)}
+  .lay-alloc{background:#e6f0f6;color:var(--alloc)}
+  .lay-std{background:#f4e8f7;color:var(--std)}
+  .cnt{font-size:12px;color:var(--faint);font-weight:400;margin-left:8px}
+  .what{margin:4px 0 3px;color:var(--mid);font-size:14.5px}
+  .laynote{margin:0 0 12px;color:var(--faint);font-size:13px}
+  table.fns{width:100%;border-collapse:collapse;font-size:14px}
+  td{padding:6px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+  tr:last-child td{border-bottom:0}
+  .sig{width:44%;white-space:nowrap}
+  .sig code{background:var(--tint);padding:2px 7px;border-radius:5px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13.5px;color:#7a3d12}
+  .doc{color:var(--mid)}
+  pre.ex{margin:12px 0 2px;font-size:13px}
+  .dim{color:var(--rule)}
+  .note{background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--accent);
+    border-radius:8px;padding:16px 18px;margin:18px 0}
+  .note h4{margin:0 0 8px;font-size:15.5px}
+  .note ul{margin:6px 0 0;padding-left:20px}
+  .note li{margin-bottom:5px}
+  footer{margin-top:60px;padding-top:20px;border-top:2px solid var(--rule);font-size:13.5px;color:var(--mid)}
+</style></head><body><div class="wrap">
+
+<header>
+  <div class="kicker">Reference</div>
+  <h1>Sutram — Standard Library
+    <small>24 modules · 303 functions · every signature taken from the source</small></h1>
+</header>
+
+<div class="grid">
+  <div class="stat"><div class="v">24</div><div class="l">modules</div></div>
+  <div class="stat"><div class="v">303</div><div class="l">functions</div></div>
+  <div class="stat"><div class="v">14</div><div class="l">core modules</div></div>
+  <div class="stat"><div class="v">9</div><div class="l">alloc modules</div></div>
+  <div class="stat"><div class="v">1</div><div class="l">std module</div></div>
+</div>
+
+<h2>How to use the library</h2>
+<p>Every module is a patra in <code>lib/</code> ending in <code>.smlib</code>. You pull one into your
+program with <code>yoj</code>, naming it without the extension:</p>
+
+<pre><span class="c">; bring in the maths module</span>
+<span class="k">yoj</span> ganit
+
+<span class="k">mukhya</span>()
+    <span class="k">vitti</span> g = mahattam(48, 18)
+    likha(g)
+<span class="k">samapt</span></pre>
+
+<p><code>yoj</code> is <b>textual inclusion</b> — the compiler pastes the module's source into your
+program at that point. That has three consequences worth knowing:</p>
+<div class="note">
+  <h4>What that means in practice</h4>
+  <ul>
+    <li><b>Include a module once.</b> Including it twice defines its functions twice and the compiler
+        will refuse. Pull in only what you use.</li>
+    <li><b>Only functions, no namespaces.</b> A function is called by its bare name, so two modules
+        defining the same name would collide.</li>
+    <li><b>Resolution order:</b> the source patra's own directory, then the compiler's directory, then
+        the working directory.</li>
+  </ul>
+</div>
+
+<h2>A worked example</h2>
+<pre><span class="c">; checked arithmetic, digit work, and text</span>
+<span class="k">yoj</span> ganita
+<span class="k">yoj</span> ank
+<span class="k">yoj</span> varna
+
+<span class="k">mukhya</span>()
+    <span class="k">vitti</span> ok[1]
+    <span class="c">; add, reporting overflow instead of wrapping</span>
+    <span class="k">vitti</span> total = ganita_janchit_yuj(9223372036854775807, 1, ok)
+    <span class="k">yadi</span> ok[0] == 0
+        likha(<span class="s">"overflow — the phal is not the wrapped value"</span>)
+    <span class="k">samapt</span>
+
+    <span class="c">; digit work</span>
+    likha(ank_gan(12345))       <span class="c">; 5</span>
+    likha(ank_yog(12345))         <span class="c">; 15</span>
+    likha(viparyay_ank(12345))       <span class="c">; 54321</span>
+<span class="k">samapt</span></pre>
+
+<h2>The three layers</h2>
+<p>Every module declares what it touches, and a checker enforces the claim on every build:</p>
+<div class="note">
+  <ul>
+    <li><span class="lay lay-core">core</span> — pure computation. No heap, no OS. Safe anywhere,
+        including a freestanding program.</li>
+    <li><span class="lay lay-alloc">alloc</span> — needs a heap, still no OS service.</li>
+    <li><span class="lay lay-std">std</span> — talks to the operating system. Only <code>patra</code>
+        does today.</li>
+  </ul>
+  <p style="margin:9px 0 0;font-size:13.5px;color:var(--mid)">The checker fails the build if a module
+  marked <code>core</code> calls an OS builtin — so a layer label is a kramgun the toolchain verifies,
+  not a comment.</p>
+</div>
+
+<h2>The modules</h2>
+<nav><a href="#ganit">ganit</a> · <a href="#ank">ank</a> · <a href="#ganita">ganita</a> · <a href="#madhava">madhava</a> · <a href="#chandas">chandas</a> · <a href="#sankhyiki">sankhyiki</a> · <a href="#kalana">kalana</a> · <a href="#brihat">brihat</a> · <a href="#aadhar">aadhar</a> · <a href="#vakyank">vakyank</a> · <a href="#roop">roop</a> · <a href="#varna">varna</a> · <a href="#khand">khand</a> · <a href="#sadhan">sadhan</a> · <a href="#mala">mala</a> · <a href="#suchi">suchi</a> · <a href="#nighantu">nighantu</a> · <a href="#sangrah">sangrah</a> · <a href="#shreni">shreni</a> · <a href="#gudh">gudh</a> · <a href="#samanvaya">samanvaya</a> · <a href="#anukram">anukram</a> · <a href="#phal">phal</a> · <a href="#patra">patra</a></nav>
+
+
+  <section class="shesh" id="ganit">
+    <h3>ganit <span class="lay lay-core">core</span> <span class="cnt">18 functions</span></h3>
+    <p class="what">Arithmetic and number theory — squares, mahattam, laghuttam, factorials, primes.</p>
+    <p class="laynote">Pure computation. Touches no OS service and allocates nothing.</p>
+    <table class="fns"><tbody>
+      <tr><td class="sig"><code>varg(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>vargit(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>ghan(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>nirapeksh_mulya(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>laghu2(a, b)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>adhik2(a, b)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>mahattam(a, b)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>laghuttam(a, b)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>ghat(base, e)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>kramgun(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>asti_abhajya(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>yog_tak(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>dvigun(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>trigun(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>vardh(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>bit_gan(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>ganit_yadricch(state)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>ganit_seemit(v, lo, hi)</code></td><td class="doc">Requires lo &lt;= hi (if lo &gt; hi, returns lo — the first branch wins).</td></tr>
+    </tbody></table>
+    <pre class="ex">yoj ganit
+mukhya()
+    likha(mahattam(48, 18))        ; 6
+    likha(laghuttam(4, 6))          ; 12
+    likha(kramgun(5))            ; 120
+samapt</pre>
+  </section>
+  <section class="shesh" id="ank">
+    <h3>ank <span class="lay lay-core">core</span> <span class="cnt">10 functions</span></h3>
+    <p class="what">Digit-level integer work — counting digits, digit sums, reversing, palindromes, Fibonacci.</p>
+    <p class="laynote">Pure computation. Touches no OS service and allocates nothing.</p>
+    <table class="fns"><tbody>
+      <tr><td class="sig"><code>asti_yugm(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>asti_visham(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>ank_gan(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>ank_yog(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>viparyay_ank(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>asti_vilom(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>seemit(n, lo, hi)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>fib(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>asti_sampurna(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>collatz_charan(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+    </tbody></table>
+    <pre class="ex">yoj ank
+mukhya()
+    likha(ank_gan(12345))  ; 5
+    likha(ank_yog(12345))    ; 15
+    likha(viparyay_ank(12345))  ; 54321
+samapt</pre>
+  </section>
+  <section class="shesh" id="ganita">
+    <h3>ganita <span class="lay lay-core">core</span> <span class="cnt">22 functions</span></h3>
+    <p class="what">The checked-arithmetic core: every operation that can overflow has a checked and a saturating form.</p>
+    <p class="laynote">Pure computation. Touches no OS service and allocates nothing.</p>
+    <table class="fns"><tbody>
+      <tr><td class="sig"><code>kuttaka(a, b, c)</code></td><td class="doc">Requires mahattam(a, b) to divide c. Returns x (a particular solution).</td></tr>
+      <tr><td class="sig"><code>ganita_vargmool(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>ganita_nirapeksh(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>chakravala(out, n)</code></td><td class="doc">Fills out[0] = x and out[1] = y.</td></tr>
+      <tr><td class="sig"><code>samasa(out, a, b, c, d, n)</code></td><td class="doc">Given a^2 - n*b^2 = k1 and c^2 - n*d^2 = k2, composes them into a third:</td></tr>
+      <tr><td class="sig"><code>brahmagupta_kshetr(a, b, c, d)</code></td><td class="doc">With d = 0 this is Brahmagupta&#x27;s triangle (Heron&#x27;s) formula. Returns the integer part.</td></tr>
+      <tr><td class="sig"><code>ganita_janchit_yuj(a, b, ok)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>ganita_janchit_nyun(a, b, ok)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>ganita_janchit_gun(a, b, ok)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>ganita_janchit_bhaj(a, b, ok)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>ganita_janchit_shesh(a, b, ok)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>ganita_paripurna_yuj(a, b)</code></td><td class="doc">INT64_MAX (positive overflow) or INT64_MIN (negative overflow).</td></tr>
+      <tr><td class="sig"><code>ganita_paripurna_nyun(a, b)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>ganita_paripurna_gun(a, b)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>ganita_janchit_ghat(a, e, ok)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>ganita_janchit_kramgun(n, ok)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>ganita_paripurna_ghat(a, e)</code></td><td class="doc">Repeated saturating multiplication. Correct because |a| &lt;= 1 never</td></tr>
+      <tr><td class="sig"><code>ganita_paripurna_bhaj(a, b)</code></td><td class="doc">INT64_MAX (the true quotient 2^63 does not fit); b == 0 returns 0</td></tr>
+      <tr><td class="sig"><code>ganita_paripurna_shesh(a, b)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>ganita_janchit_nirapeksh(a, ok)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>ganita_paripurna_nirapeksh(a)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>ganita_paripurna_kramgun(n)</code></td><td class="doc">INT64_MAX (factorials are positive, so saturation is always MAX).</td></tr>
+    </tbody></table>
+    <pre class="ex">yoj ganita
+mukhya()
+    vitti ok[1]
+    vitti r = ganita_janchit_yuj(9223372036854775807, 1, ok)
+    yadi ok[0] == 0
+        likha(&quot;overflow&quot;)      ; r is 0, NOT the wrapped value
+    samapt
+samapt</pre>
+  </section>
+  <section class="shesh" id="madhava">
+    <h3>madhava <span class="lay lay-core">core</span> <span class="cnt">5 functions</span></h3>
+    <p class="what">Floating-point mathematics in the Kerala tradition — vargit root, sine, cosine, arctangent, π.</p>
+    <p class="laynote">Pure computation. Touches no OS service and allocates nothing.</p>
+    <table class="fns"><tbody>
+      <tr><td class="sig"><code>madhava_vargmool(dasham v)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>madhava_pi()</code></td><td class="doc">Madhava&#x27;s fast series for pi:  pi = sqrt(12) * sum (-1)^k / ((2k+1) * 3^k)</td></tr>
+      <tr><td class="sig"><code>madhava_sin(dasham x)</code></td><td class="doc">Madhava&#x27;s sine series:  sin(x) = x - x^3/3! + x^5/5! - ...</td></tr>
+      <tr><td class="sig"><code>madhava_cos(dasham x)</code></td><td class="doc">Madhava&#x27;s cosine series:  cos(x) = 1 - x^2/2! + x^4/4! - ...</td></tr>
+      <tr><td class="sig"><code>madhava_atan(dasham x)</code></td><td class="doc">Madhava-Gregory arctangent series:  atan(x) = x - x^3/3 + x^5/5 - ...</td></tr>
+    </tbody></table>
+    <pre class="ex">yoj madhava
+mukhya()
+    likha(madhava_vargmool(16))    ; 4.0
+    likha(madhava_pi())        ; 3.14159...
+samapt</pre>
+  </section>
+  <section class="shesh" id="chandas">
+    <h3>chandas <span class="lay lay-core">core</span> <span class="cnt">6 functions</span></h3>
+    <p class="what">Prosody — Sanskrit metre. Syllable weight, gaṇa patterns and the Meru-prastāra.</p>
+    <p class="laynote">Pure computation. Touches no OS service and allocates nothing.</p>
+    <table class="fns"><tbody>
+      <tr><td class="sig"><code>dviguna(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>meru(n, k)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>matra_meru(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>asti_guru(pat, i)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>guru_gan(pat)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>meru_pankti(a, n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+    </tbody></table>
+    <pre class="ex">yoj chandas
+mukhya()
+    ; syllable weight and the Meru-prastara
+    likha(asti_guru(2, 4))
+samapt</pre>
+  </section>
+  <section class="shesh" id="sankhyiki">
+    <h3>sankhyiki <span class="lay lay-core">core</span> <span class="cnt">16 functions</span></h3>
+    <p class="what">Statistics — sums, means, medians, variance, min and max over a series.</p>
+    <p class="laynote">Pure computation. Touches no OS service and allocates nothing.</p>
+    <table class="fns"><tbody>
+      <tr><td class="sig"><code>yoga(kosh dasham xs)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>madhya(kosh dasham xs)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>laghutama(kosh dasham xs)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>adhikatama(kosh dasham xs)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>vyapti(kosh dasham xs)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>prasaran(kosh dasham xs)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>sankhyiki_vargmool(dasham v)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>vichalan(kosh dasham xs)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>bindu(kosh dasham a, kosh dasham b)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>manak(kosh dasham a)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>purna_yoga(xs, n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>purna_madhya(xs, n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>purna_laghutama(xs, n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>purna_adhikatama(xs, n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>purna_vyapti(xs, n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>purna_prasaran(xs, n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+    </tbody></table>
+    <pre class="ex">yoj sankhyiki
+mukhya()
+    vitti xs[5]
+    xs[0]=3  xs[1]=1  xs[2]=4  xs[3]=1  xs[4]=5
+    likha(purna_madhya(xs, 5))
+samapt</pre>
+  </section>
+  <section class="shesh" id="kalana">
+    <h3>kalana <span class="lay lay-core">core</span> <span class="cnt">6 functions</span></h3>
+    <p class="what">Calculus, numerically — slopes between samples and simple integration.</p>
+    <p class="laynote">Pure computation. Touches no OS service and allocates nothing.</p>
+    <table class="fns"><tbody>
+      <tr><td class="sig"><code>kalana_trapiz(kosh dasham xs, kosh dasham ys)</code></td><td class="doc">Trapezoidal rule. xs and ys are sample points and values; uses the shorter length.</td></tr>
+      <tr><td class="sig"><code>simpson(kosh dasham xs, kosh dasham ys)</code></td><td class="doc">Simpson&#x27;s 1/3 rule over equally spaced samples. Needs an odd number of points</td></tr>
+      <tr><td class="sig"><code>pravan(kosh dasham xs, kosh dasham ys, i)</code></td><td class="doc">Central difference at interior point i; one-sided at the ends.</td></tr>
+      <tr><td class="sig"><code>pravan2(kosh dasham xs, kosh dasham ys, i)</code></td><td class="doc">Second derivative at an interior point (central, equally spaced assumption relaxed).</td></tr>
+      <tr><td class="sig"><code>bahu_ganana(kosh dasham c, dasham x)</code></td><td class="doc">Horner evaluation: c[0] + c[1]x + c[2]x^2 + ...</td></tr>
+      <tr><td class="sig"><code>bahu_mula(kosh dasham c, dasham lo, dasham hi, kosh dasham ok)</code></td><td class="doc">Bisection root of a polynomial on [lo, hi].</td></tr>
+    </tbody></table>
+    <pre class="ex">yoj kalana
+mukhya()
+    vitti ys[3]
+    ys[0]=0  ys[1]=10  ys[2]=20
+    likha(pravan(xs, ys, 1))
+samapt</pre>
+  </section>
+  <section class="shesh" id="brihat">
+    <h3>brihat <span class="lay lay-alloc">alloc</span> <span class="cnt">12 functions</span></h3>
+    <p class="what">Arbitrary-width integers held as digit arrays, for values past 64 bits.</p>
+    <p class="laynote">Needs a heap. Still touches no OS service.</p>
+    <table class="fns"><tbody>
+      <tr><td class="sig"><code>brihat_shunyank(arr, n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>brihat_ank_se_int(val, arr, n)</code></td><td class="doc">Returns 1 if val fit in n digits, 0 if truncated.</td></tr>
+      <tr><td class="sig"><code>brihat_ank_tak_int(arr, n)</code></td><td class="doc">Only correct if the value fits in an int.</td></tr>
+      <tr><td class="sig"><code>brihat_pratilip(dst, src, n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>brihat_tul(a, b, n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>brihat_yuj(a, b, res, n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>brihat_nyun(a, b, res, n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>brihat_gun(a, b, res, n)</code></td><td class="doc">Returns 0 on success.</td></tr>
+      <tr><td class="sig"><code>brihat_asti_shunyank(arr, n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>brihat_bhajshesh(a, b, q, r, n)</code></td><td class="doc">Uses long division, one decimal digit at a time. Division by zero is</td></tr>
+      <tr><td class="sig"><code>brihat_shesh(ank, shesh, res, n)</code></td><td class="doc">Helper for powmod. Uses long division. shesh == 0 is defined, not a</td></tr>
+      <tr><td class="sig"><code>brihat_ghatmod(base, exp, shesh, res, n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+    </tbody></table>
+    <pre class="ex">yoj brihat
+mukhya()
+    vitti a[40]
+    vitti b[40]
+    vitti out[80]
+    brihat_ank_se_int(123456789, a)
+    brihat_ank_se_int(987654321, b)
+    brihat_gun(a, b, out)
+samapt</pre>
+  </section>
+  <section class="shesh" id="aadhar">
+    <h3>aadhar <span class="lay lay-alloc">alloc</span> <span class="cnt">2 functions</span></h3>
+    <p class="what">Conversion between number bases and digit arrays.</p>
+    <p class="laynote">Needs a heap. Still touches no OS service.</p>
+    <table class="fns"><tbody>
+      <tr><td class="sig"><code>brihat_ank_tak(x, n, base, out)</code></td><td class="doc">Caller allocates out with &gt;= 4*n cells (70 cells sufficed for</td></tr>
+      <tr><td class="sig"><code>brihat_ank_se(d, count, base, x, n)</code></td><td class="doc">Returns 1 on success, 0 if a digit &gt;= base. Base outside 2..16</td></tr>
+    </tbody></table>
+    <pre class="ex">yoj aadhar
+mukhya()
+    vitti d[64]
+    likha(brihat_ank_tak(255, 16, d))   ; 255 in base 16
+samapt</pre>
+  </section>
+  <section class="shesh" id="vakyank">
+    <h3>vakyank <span class="lay lay-alloc">alloc</span> <span class="cnt">6 functions</span></h3>
+    <p class="what">Text to number and number to text, with overflow reported rather than wrapped.</p>
+    <p class="laynote">Needs a heap. Still touches no OS service.</p>
+    <table class="fns"><tbody>
+      <tr><td class="sig"><code>ank_tak_varna(n, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>varna_tak_ank(buf, n, ok)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>ank_tak_aadhar_varna(n, base, out)</code></td><td class="doc">Base outside 2..36: terminator only, returns 0 (base 0 trapped</td></tr>
+      <tr><td class="sig"><code>varna_tak_ank_aadhar(buf, n, base, ok)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>pad_vam(out, count, width, fill)</code></td><td class="doc">Returns the new count (width if width &gt; count, else count).</td></tr>
+      <tr><td class="sig"><code>varna_tak_dashm(buf, n, ok)</code></td><td class="doc">Grammar: [-] digits [. digits] [(e|E) [-] digits]; at least one digit</td></tr>
+    </tbody></table>
+    <pre class="ex">yoj vakyank
+mukhya()
+    vitti ok[1]
+    vitti n = varna_tak_ank(&quot;12345&quot;, ok)
+    yadi ok[0] == 0
+        likha(&quot;not a number&quot;)
+    samapt
+samapt</pre>
+  </section>
+  <section class="shesh" id="roop">
+    <h3>roop <span class="lay lay-alloc">alloc</span> <span class="cnt">23 functions</span></h3>
+    <p class="what">Formatting numbers as text — fixed width, padding, hexadecimal, binary.</p>
+    <p class="laynote">Needs a heap. Still touches no OS service.</p>
+    <table class="fns"><tbody>
+      <tr><td class="sig"><code>roop_ank(v, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>roop_ank_aadhar(v, base, upper, out)</code></td><td class="doc">Base outside 2..36 writes only the terminator and returns 0.</td></tr>
+      <tr><td class="sig"><code>roop_ank_aadhar2(v, base, out)</code></td><td class="doc">Base outside 2..36: terminator only, returns 0. Digits are written</td></tr>
+      <tr><td class="sig"><code>roop_ank_dhvaj(v, base, flags, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>roop_dash(v, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>roop_shodash(v, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>roop_shodash_unnat(v, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>roop_asht(v, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>roop_dwi(v, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>roop_ank_pre(v, base, upper, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>roop_pad_vam(src, sn, width, padbyte, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>roop_pad_dakshin(src, sn, width, padbyte, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>roop_pad_madhya(src, sn, width, padbyte, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>roop_varg_mool(src, sn, step, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>roop_varg_bharatiya(src, sn, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>roop_varg_vishwa(src, sn, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>roop_varg(src, sn, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>roop_varg_ank(v, indian, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>roop_sthir_mool(dasham x, places, always_sign, out)</code></td><td class="doc">FROM ZERO to `places` digits after &#x27;.&#x27;, exactly `places` digits</td></tr>
+      <tr><td class="sig"><code>roop_sthir(dasham x, places, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>roop_sthir_chinhit(dasham x, places, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>roop_chinhit(v, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>roop_sign_akshar(v, signch, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+    </tbody></table>
+    <pre class="ex">yoj roop
+mukhya()
+    vitti buf[64]
+    likha(roop_dash(42, buf))
+samapt</pre>
+  </section>
+  <section class="shesh" id="varna">
+    <h3>varna <span class="lay lay-core">core</span> <span class="cnt">27 functions</span></h3>
+    <p class="what">Text handling over byte strings — length, search, case, trimming, splitting.</p>
+    <p class="laynote">Pure computation. Touches no OS service and allocates nothing.</p>
+    <table class="fns"><tbody>
+      <tr><td class="sig"><code>varna_maap(s)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>akshar_sanket(s, i)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>asti_ank_akshar(s, i)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>asti_unnat_akshar(s, i)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>asti_avanat_akshar(s, i)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>asti_akshar_akshar(s, i)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>asti_avakash_akshar(s, i)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>gan_swar(s)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>gan_akshar(s, code)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>anwesh_akshar(s, code)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>asti_sarv_ank(s)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>unnat_sanket(c)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>avanat_sanket(c)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>varna_sam(a, b)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>varna_anwesh(hay, hn, needle, nn)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>varna_antah(hay, hn, needle, nn)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>varna_pratisthap(src, sn, find, fn, repl, out)</code></td><td class="doc">Caller allocates generously.</td></tr>
+      <tr><td class="sig"><code>varna_bhed(src, sn, sep, sepn, parts, maxparts)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>varna_yuj(parts, count, sep, sepn, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>varna_chhid(src, sn, out)</code></td><td class="doc">Returns new count.</td></tr>
+      <tr><td class="sig"><code>varna_unnat(src, sn, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>varna_avanat(src, sn, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>varna_aadi(src, sn, pre, pn)</code></td><td class="doc">A negative prefix/suffix length is invalid: 0 (the old code</td></tr>
+      <tr><td class="sig"><code>varna_ant(src, sn, suf, sn2)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>varna_tul(a, an, b, bn)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>varna_viparyay(src, sn, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>varna_gan(hay, hn, needle, nn)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+    </tbody></table>
+    <pre class="ex">yoj varna
+mukhya()
+    likha(varna_maap(&quot;hello&quot;))          ; 5
+    likha(gan_swar(&quot;hello&quot;))     ; 2
+samapt</pre>
+  </section>
+  <section class="shesh" id="khand">
+    <h3>khand <span class="lay lay-core">core</span> <span class="cnt">22 functions</span></h3>
+    <p class="what">The byte-buffer text surface. The same operations as varna, over a buffer you own.</p>
+    <p class="laynote">Pure computation. Touches no OS service and allocates nothing.</p>
+    <table class="fns"><tbody>
+      <tr><td class="sig"><code>khand_bandh(cells, n, out)</code></td><td class="doc">POINTER ARITHMETIC IS IN BYTES: to pack starting at cell i of a cell</td></tr>
+      <tr><td class="sig"><code>khand_mukt(bytes, n, out)</code></td><td class="doc">POINTER ARITHMETIC IS IN BYTES: to unpack into cell i of a cell</td></tr>
+      <tr><td class="sig"><code>khand_pratilip(src, n, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>khand_maap(s)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>khand_anwesh(hay, hn, needle, nn)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>khand_antah(hay, hn, needle, nn)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>khand_pratisthap(src, sn, find, fn, repl, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>khand_bhed(src, sn, sep, sepn, parts, maxparts)</code></td><td class="doc">Same length-prefixed segment format as varna_bhed (R9): parts holds</td></tr>
+      <tr><td class="sig"><code>khand_yuj(parts, count, sep, sepn, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>khand_chhid(src, sn, out)</code></td><td class="doc">Returns the new byte count.</td></tr>
+      <tr><td class="sig"><code>khand_unnat(src, sn, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>khand_avanat(src, sn, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>khand_aadi(src, sn, pre, pn)</code></td><td class="doc">A negative prefix/suffix length is invalid: 0 (the old code</td></tr>
+      <tr><td class="sig"><code>khand_ant(src, sn, suf, sn2)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>khand_tul(a, an, b, bn)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>khand_viparyay(src, sn, out)</code></td><td class="doc">Two-pointer vinimay, so it is SAFE IN PLACE (src == out works). Writes</td></tr>
+      <tr><td class="sig"><code>khand_gan(hay, hn, needle, nn)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>khand_gan_swar(s, n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>khand_gan_akshar(s, n, code)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>khand_anwesh_akshar(s, n, code)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>khand_asti_sarv_ank(s, n)</code></td><td class="doc">Empty (n == 0) is 0, mirroring asti_sarv_ank.</td></tr>
+      <tr><td class="sig"><code>khand_sam(a, an, b, bn)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+    </tbody></table>
+    <pre class="ex">yoj khand
+mukhya()
+    vitti buf[64]
+    ; the byte-buffer surface: you own the buffer
+    likha(khand_maap(buf, 64))
+samapt</pre>
+  </section>
+  <section class="shesh" id="sadhan">
+    <h3>sadhan <span class="lay lay-core">core</span> <span class="cnt">7 functions</span></h3>
+    <p class="what">Small helpers that fit nowhere else — ceiling division, clamping, swapping.</p>
+    <p class="laynote">Pure computation. Touches no OS service and allocates nothing.</p>
+    <table class="fns"><tbody>
+      <tr><td class="sig"><code>antargam(a, b, t)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>yog_seema(start, end)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>shesh(a, b)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>bhaj_urdhva(a, b)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>util_chinha(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>satya_tak_ank(b)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>ank_adhik()</code></td><td class="doc"><span class=dim>—</span></td></tr>
+    </tbody></table>
+    <pre class="ex">yoj sadhan
+mukhya()
+    likha(bhaj_urdhva(7, 2))    ; 4, and 0 on a zero divisor
+samapt</pre>
+  </section>
+  <section class="shesh" id="mala">
+    <h3>mala <span class="lay lay-alloc">alloc</span> <span class="cnt">8 functions</span></h3>
+    <p class="what">Fixed-capacity contiguous storage — the `mala`.</p>
+    <p class="laynote">Needs a heap. Still touches no OS service.</p>
+    <table class="fns"><tbody>
+      <tr><td class="sig"><code>mala_nava(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>mala_sangrah(arr, i, val)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>mala_grah(arr, i)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>mala_purn(arr, val, n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>mala_pratilip(dst, src, n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>mala_yog(arr, n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>mala_sangrah_surakshit(arr, i, val, n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>mala_grah_surakshit(arr, i, n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+    </tbody></table>
+    <pre class="ex">yoj mala
+mukhya()
+    vitti a[10]
+    mala_sangrah(a, 0, 99)
+    likha(mala_grah(a, 0))
+samapt</pre>
+  </section>
+  <section class="shesh" id="suchi">
+    <h3>suchi <span class="lay lay-alloc">alloc</span> <span class="cnt">34 functions</span></h3>
+    <p class="what">A growable ordered suchi with insert and remove anywhere.</p>
+    <p class="laynote">Needs a heap. Still touches no OS service.</p>
+    <table class="fns"><tbody>
+      <tr><td class="sig"><code>suchi_srij(cap)</code></td><td class="doc">Returns the suchi handle, or 0 on allocation failure — including</td></tr>
+      <tr><td class="sig"><code>suchi_vardh(l)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>suchi_khip(l, v)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>suchi_grah(l, i)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>suchi_sangrah(l, i, v)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>suchi_maap(l)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>suchi_nivesh(l, i, v)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>suchi_apanay(l, i)</code></td><td class="doc">Returns 1 ok / 0 out of bounds.</td></tr>
+      <tr><td class="sig"><code>suchi_vinimay(l, i, j)</code></td><td class="doc">Before this, swapping meant a temp variable plus two suchi_sangrah</td></tr>
+      <tr><td class="sig"><code>suchi_viparyay(l)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>suchi_shreni(l)</code></td><td class="doc">Merge shreni (O(n log n)) over the suchi&#x27;s data mala. Before this,</td></tr>
+      <tr><td class="sig"><code>suchi_laghu(l, ok)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>suchi_adhik(l, ok)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>suchi_yog(l)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>suchi_gan(l, v)</code></td><td class="doc">Before this, the caller wrote the count loop by hand or called</td></tr>
+      <tr><td class="sig"><code>suchi_anwesh(l, v)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>suchi_asti_sorted(l)</code></td><td class="doc">List-shaped form of shreni.smlib&#x27;s asti_sorted.</td></tr>
+      <tr><td class="sig"><code>suchi_dwi_anwesh(l, v)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>suchi_rikta(l)</code></td><td class="doc">R19: also ZEROES the data cells (was: len reset only). The old</td></tr>
+      <tr><td class="sig"><code>suchi_antah(l, v)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>suchi_kramank(l, v)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>chay_khip(l, v)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>chay_apanay(l, ok)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>chay_avalok(l, ok)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>chay_rikta(l)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>avali_srij(cap)</code></td><td class="doc">Returns the queue handle, or 0 on allocation failure — including</td></tr>
+      <tr><td class="sig"><code>avali_pravesh(q, v)</code></td><td class="doc">Returns 1 ok / 0 allocation failure.</td></tr>
+      <tr><td class="sig"><code>avali_nishkas(q, ok)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>avali_avalok(q, ok)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>avali_tak_mala(q, out)</code></td><td class="doc">Before, reading a queue non-destructively meant a hand-rolled ring</td></tr>
+      <tr><td class="sig"><code>avali_antah(q, v)</code></td><td class="doc">Scans the ring WITHOUT mutating it (no dequeue loop). Before this,</td></tr>
+      <tr><td class="sig"><code>avali_rikta(q)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>avali_shunya(q)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>avali_maap(q)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+    </tbody></table>
+    <pre class="ex">yoj suchi
+mukhya()
+    vitti l[32]
+    vitti n = 0
+    suchi_srij(l, 32)
+    suchi_khip(l, n, 7)
+samapt</pre>
+  </section>
+  <section class="shesh" id="nighantu">
+    <h3>nighantu <span class="lay lay-alloc">alloc</span> <span class="cnt">17 functions</span></h3>
+    <p class="what">A key-to-value nighantu with byte-varna keys.</p>
+    <p class="laynote">Needs a heap. Still touches no OS service.</p>
+    <table class="fns"><tbody>
+      <tr><td class="sig"><code>nighantu_kunji_gudh(key, keyn, cap)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>nighantu_kunji_sam(m, slot, cap, key, keyn)</code></td><td class="doc">Reworked in R13 to use khand_tul instead of a hand-rolled loop.</td></tr>
+      <tr><td class="sig"><code>nighantu_koshtha_likh(m, slot, cap, key, keyn, val)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>nighantu_anwesh(m, cap, key, keyn)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>nighantu_srij(cap)</code></td><td class="doc">Returns 0 if cap is so large the allocation size overflows (a</td></tr>
+      <tr><td class="sig"><code>nighantu_khip(m, cap, key, keyn, val)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>nighantu_grah(m, cap, key, keyn)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>nighantu_antah(m, cap, key, keyn)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>nighantu_apanay(m, cap, key, keyn)</code></td><td class="doc">Backward-shift deletion (Knuth 6.4R): after clearing the slot, each</td></tr>
+      <tr><td class="sig"><code>nighantu_rikta(m)</code></td><td class="doc">After nighantu_rikta the buffer is indistinguishable from a freshly</td></tr>
+      <tr><td class="sig"><code>nighantu_vardh(m, newcap)</code></td><td class="doc">Returns 0 and changes nothing if newcap &lt; nighantu_maap(m) (no partial</td></tr>
+      <tr><td class="sig"><code>nighantu_grah_mool(m, cap, key, keyn, def)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>nighantu_maap(m)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>nighantu_mil(dst, dcap, src, scap)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>nighantu_mulya(m, out)</code></td><td class="doc">R21). Returns the value count, which equals nighantu_maap(m). Caller</td></tr>
+      <tr><td class="sig"><code>nighantu_kunjika(m, out)</code></td><td class="doc">Returns the key count, which equals nighantu_maap(m).</td></tr>
+      <tr><td class="sig"><code>nighantu_kunjika_ashtak(m, out)</code></td><td class="doc">BYTES: [len-byte, bytes..., len-byte, bytes...], one length byte</td></tr>
+    </tbody></table>
+    <pre class="ex">yoj nighantu
+mukhya()
+    vitti m[64]
+    nighantu_srij(m, 8)
+    nighantu_khip(m, &quot;key&quot;, 4, 42)
+samapt</pre>
+  </section>
+  <section class="shesh" id="sangrah">
+    <h3>sangrah <span class="lay lay-alloc">alloc</span> <span class="cnt">14 functions</span></h3>
+    <p class="what">A collection with no duplicates and the usual sangrah algebra.</p>
+    <p class="laynote">Needs a heap. Still touches no OS service.</p>
+    <table class="fns"><tbody>
+      <tr><td class="sig"><code>rakh_srij(cap)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>rakh_yuj(s, cap, elem, elem_n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>rakh_antah(s, cap, elem, elem_n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>rakh_apanay(s, cap, elem, elem_n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>rakh_maap(s)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>rakh_samroop_diff(a, cap, b, bcap, out)</code></td><td class="doc">Returns rakh_maap(out). Before, the caller wrote two</td></tr>
+      <tr><td class="sig"><code>rakh_sangam(a, cap, b, bcap, out)</code></td><td class="doc">R17: iteration is nighantu_kunjika_ashtak, whose packed-byte segments go</td></tr>
+      <tr><td class="sig"><code>rakh_sampat(a, cap, b, bcap, out)</code></td><td class="doc">Returns rakh_maap(out).</td></tr>
+      <tr><td class="sig"><code>rakh_bhed(a, cap, b, bcap, out)</code></td><td class="doc">NOT in b into out (fresh, empty, capacity &gt;= cap). Returns</td></tr>
+      <tr><td class="sig"><code>rakh_vardh(s, newcap)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>rakh_rikta(s)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>rakh_sam(a, cap, b, bcap)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>rakh_asti_upasamuh(a, cap, b, bcap)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>rakh_tak_mala(s, cap, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+    </tbody></table>
+    <pre class="ex">yoj sangrah
+mukhya()
+    vitti s[64]
+    rakh_srij(s, 16)
+samapt</pre>
+  </section>
+  <section class="shesh" id="shreni">
+    <h3>shreni <span class="lay lay-alloc">alloc</span> <span class="cnt">14 functions</span></h3>
+    <p class="what">Ordering — insertion, merge and quick sorts, plus min and max of a series.</p>
+    <p class="laynote">Needs a heap. Still touches no OS service.</p>
+    <table class="fns"><tbody>
+      <tr><td class="sig"><code>vinimay(a, i, j)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>budbud_shreni(a, n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>viparyay_mala(a, n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>laghu(a, n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>adhik(a, n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>yog(a, n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>anwesh_sarak(a, n, target)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>gan(a, n, target)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>asti_sorted(a, n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>dwi_anwesh(a, n, target)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>shankh_shreni(a, n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>nivesh_shreni(a, n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>mil_shreni_punar(a, tmp, lo, hi)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>mil_shreni(a, n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+    </tbody></table>
+    <pre class="ex">yoj shreni
+mukhya()
+    vitti a[5]
+    a[0]=5  a[1]=2  a[2]=9  a[3]=1  a[4]=7
+    nivesh_shreni(a, 5)
+    likha(a[0])              ; 1
+samapt</pre>
+  </section>
+  <section class="shesh" id="gudh">
+    <h3>gudh <span class="lay lay-core">core</span> <span class="cnt">2 functions</span></h3>
+    <p class="what">Non-cryptographic hashing for nighantu buckets.</p>
+    <p class="laynote">Pure computation. Touches no OS service and allocates nothing.</p>
+    <table class="fns"><tbody>
+      <tr><td class="sig"><code>fnv1a(s, len)</code></td><td class="doc">Returns an unsigned 32-bit value (may print as negative via likha).</td></tr>
+      <tr><td class="sig"><code>fnv1a_varna(s)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+    </tbody></table>
+    <pre class="ex">yoj gudh
+mukhya()
+    likha(fnv1a(&quot;abc&quot;, 3))
+samapt</pre>
+  </section>
+  <section class="shesh" id="samanvaya">
+    <h3>samanvaya <span class="lay lay-core">core</span> <span class="cnt">10 functions</span></h3>
+    <p class="what">Coordination — joining, grouping and aligning collections.</p>
+    <p class="laynote">Pure computation. Touches no OS service and allocates nothing.</p>
+    <table class="fns"><tbody>
+      <tr><td class="sig"><code>pehchan(n, kosh dasham out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>vivartana(kosh dasham a, m, n, kosh dasham out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>matrika_yoga(kosh dasham a, kosh dasham b, m, n, kosh dasham out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>skalar(kosh dasham a, dasham c, m, n, kosh dasham out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>matrika_gunana(kosh dasham a, kosh dasham b, m, n, p, kosh dasham out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>nishan(kosh dasham a, n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>nirnaya2(kosh dasham a)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>nirnaya3(kosh dasham a)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>sadish_yoga(kosh dasham u, kosh dasham v)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>rekha_manak(kosh dasham a, m, n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+    </tbody></table>
+    <pre class="ex">yoj samanvaya
+mukhya()
+    ; joining, grouping and aligning collections
+samapt</pre>
+  </section>
+  <section class="shesh" id="anukram">
+    <h3>anukram <span class="lay lay-core">core</span> <span class="cnt">5 functions</span></h3>
+    <p class="what">Turning values into a byte stream and reading them back.</p>
+    <p class="laynote">Pure computation. Touches no OS service and allocates nothing.</p>
+    <table class="fns"><tbody>
+      <tr><td class="sig"><code>anukram_maap_ashtak(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>anukram_khip_i64(out, pos, cap, v)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>anukram_grah_i64(buf, pos, cap, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>anukram_khip_ashtak(out, pos, cap, src, n)</code></td><td class="doc">LE length followed by n payload bytes from src. Returns the new</td></tr>
+      <tr><td class="sig"><code>anukram_grah_ashtak(buf, pos, cap, dst, out_n)</code></td><td class="doc">Returns the new cursor, or -1 on overrun / negative length.</td></tr>
+    </tbody></table>
+    <pre class="ex">yoj anukram
+mukhya()
+    vitti buf[64]
+    vitti n = 0
+    ; write a value into a byte stream, read it back
+samapt</pre>
+  </section>
+  <section class="shesh" id="phal">
+    <h3>phal <span class="lay lay-core">core</span> <span class="cnt">14 functions</span></h3>
+    <p class="what">A success-or-failure value that carries the answer, replacing a bare ok flag.</p>
+    <p class="laynote">Pure computation. Touches no OS service and allocates nothing.</p>
+    <table class="fns"><tbody>
+      <tr><td class="sig"><code>phal_siddhi(out, v)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>phal_dosh(out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>phal_asti_siddhi(r)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>phal_mulya(r)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>phal_mulya_va(r, def)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>phal_se_siddhi(out, v, ok)</code></td><td class="doc">Result: writes [ok[0], v] into out (value 0 on failure).</td></tr>
+      <tr><td class="sig"><code>phal_janchit_yuj(out, a, b)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>phal_janchit_nyun(out, a, b)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>phal_janchit_gun(out, a, b)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>phal_janchit_bhaj(out, a, b)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>phal_janchit_shesh(out, a, b)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>phal_janchit_ghat(out, a, e)</code></td><td class="doc">Failure [0, 0] on e &lt; 0 or overflow (see ganita_janchit_ghat).</td></tr>
+      <tr><td class="sig"><code>phal_janchit_kramgun(out, n)</code></td><td class="doc">Failure [0, 0] on n &lt; 0 or overflow (21! overflows).</td></tr>
+      <tr><td class="sig"><code>phal_janchit_nirapeksh(out, a)</code></td><td class="doc">Failure [0, 0] on abs(MIN) (no int64 absolute value).</td></tr>
+    </tbody></table>
+    <pre class="ex">yoj phal
+mukhya()
+    vitti r[2]
+    vitti ok[1]
+    phal_se_siddhi(ganita_janchit_yuj(1, 2, ok), ok, r)
+    yadi phal_asti_siddhi(r) == 1
+        likha(phal_mulya(r))
+    samapt
+samapt</pre>
+  </section>
+  <section class="shesh" id="patra">
+    <h3>patra <span class="lay lay-std">std</span> <span class="cnt">3 functions</span></h3>
+    <p class="what">The one module that talks to the operating system — opening, reading and writing files.</p>
+    <p class="laynote">Talks to the operating system.</p>
+    <table class="fns"><tbody>
+      <tr><td class="sig"><code>patra_path_sarv(path, out, cap)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>patra_likh_sarv(path, data, n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>patra_asti(path)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+    </tbody></table>
+    <pre class="ex">yoj patra
+mukhya()
+    ; the only module that talks to the OS
+    likha(patra_asti(&quot;notes.txt&quot;))   ; 1 if it is there
+samapt</pre>
+  </section>
+
+<h2>Two things to know before you rely on any of it</h2>
+<div class="note">
+  <ul>
+    <li><b>Checked forms return 0 on failure, never the wrapped value.</b> For any operation that can
+        overflow, use the <code>ganita_checked_*</code> form and read the <code>ok</code> cell. The
+        plain operators <code>+ - * / %</code> still wrap silently, and division by zero faults unless
+        the trap build is enabled.</li>
+    <li><b>The whole library is verified by execution.</b> 191 proof checks and 86 property checks run
+        against it on every build, and the most recent audit exercised all 24 modules at their edges —
+        finding and fixing 51 defects. That does not make it correct; it means the obvious failures have
+        been found and the rest are labelled.</li>
+  </ul>
+</div>
+
+<footer>
+  <p><b>Sutram standard library</b> — 303 functions across 24 modules.
+  Every signature on this page was read from the module source, not transcribed by hand.</p>
+  <p style="margin-top:9px">Source: <code>lib/*.smlib</code> on the project repository. Layer labels are
+  verified by <code>tools/check_layers.py</code> on every build.</p>
+</footer>
+
+</div></body></html>
