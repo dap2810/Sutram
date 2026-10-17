@@ -1,0 +1,163 @@
+# lib/math.smlib — Sutram standard library: mathematics
+# layer: core
+#
+# Pure integer arithmetic, written only with verified language features.
+# Every function copies its parameters into locals before mutating them,
+# because the compiler currently faults on assignment to a parameter.
+
+prakriya varg(n)
+    prati n * n
+
+prakriya vargit(n)
+    prati n * n
+
+prakriya ghan(n)
+    prati n * n * n
+
+prakriya nirapeksh_mulya(n) {
+    vitti x = n
+    yadi (x < 0) {
+        x = 0 - x
+    }
+    prati x
+}
+
+prakriya laghu2(a, b) {
+    vitti x = a
+    vitti y = b
+    yadi (x < y) { prati x }
+    prati y
+}
+
+prakriya adhik2(a, b) {
+    vitti x = a
+    vitti y = b
+    yadi (x > y) { prati x }
+    prati y
+}
+
+prakriya mahattam(a, b) {
+    vitti x = a
+    vitti y = b
+    yavat (y != 0) {
+        vitti t = y
+        y = x % y
+        x = t
+    }
+    # mahattam is non-negative by definition. The loop above can return a
+    # negative value when the first argument is negative (e.g.
+    # mahattam(-6, 4) was -2), so take the absolute value. mahattam(MIN, 0)
+    # still returns MIN: |MIN| does not fit (wrapping, as nirapeksh_mulya).
+    yadi (x < 0) { x = 0 - x }
+    prati x
+}
+
+prakriya laghuttam(a, b) {
+    vitti g = mahattam(a, b)
+    # mahattam(0, 0) is 0; without this guard (a / g) divides by zero and
+    # the program traps (SIGFPE). laghuttam(0, 0) = 0 by convention.
+    yadi (g == 0) { prati 0 }
+    # laghuttam is non-negative by definition (the product (a / g) * b can
+    # be negative when exactly one input is). laghuttam(MIN, 2) still
+    # returns MIN: the true value 2^63 does not fit (wrapping).
+    vitti r = (a / g) * b
+    yadi (r < 0) { r = 0 - r }
+    prati r
+}
+
+prakriya ghat(base, e) {
+    vitti b = base
+    vitti n = e
+    vitti r = 1
+    yavat (n > 0) {
+        r = r * b
+        n = n - 1
+    }
+    prati r
+}
+
+prakriya kramgun(n) {
+    # Iterative: the recursive form overflowed the call stack at
+    # kramgun(100000) (SIGSEGV). Same values — multiplication
+    # commutes shesh 2^64, so wrapping at n >= 21 is identical.
+    vitti x = n
+    vitti r = 1
+    vitti i = 2
+    yadi (x < 2) { prati 1 }
+    yavat (i <= x) {
+        r = r * i
+        i = i + 1
+    }
+    prati r
+}
+
+prakriya asti_abhajya(n) {
+    vitti x = n
+    yadi (x < 2) { prati 0 }
+    vitti i = 2
+    # Division bound, not i * i: i * i overflows for x near MAX
+    # (the vargit wraps negative, the condition stays true, and
+    # the loop never terminates for a large prime).
+    yavat (i <= x / i) {
+        yadi (x % i == 0) { prati 0 }
+        i = i + 1
+    }
+    prati 1
+}
+
+prakriya yog_tak(n) {
+    # Closed form n*(n+1)/2 (the old loop took n iterations, so
+    # yog_tak(4294967296) was ~4.3e9 iterations). Divide before
+    # multiplying, by parity: even (n/2)*(n+1), odd n*(n/2+1).
+    # The wrapping value equals the loop's (pinned: yog_tak(
+    # 4294967296) == -9223372034707292160). n <= 0: 0, as the old loop.
+    vitti x = n
+    yadi (x <= 0) { prati 0 }
+    yadi (x % 2 == 0) { prati (x / 2) * (x + 1) }
+    prati x * (x / 2 + 1)
+}
+
+prakriya dvigun(n)
+    prati n * 2
+
+prakriya trigun(n)
+    prati n * 3
+
+prakriya vardh(n)
+    prati n + 1
+
+prakriya bit_gan(n) {
+    vitti x = n
+    vitti c = 0
+    # Negatives return 0 (R28-pinned contract: defined for n >= 0).
+    yavat (x > 0) {
+        c = c + (x % 2)
+        x = x / 2
+    }
+    prati c
+}
+
+# ganit_yadricch(state): Knuth MMIX LCG — state = state * 6364136223846793005
+# + 1442695040888963407 (shesh 2^64, plain wrapping arithmetic). `state`
+# is a 1-cell array holding the seed; it is updated in place and the new
+# state is returned. The full 64-bit state is returned (it may be
+# negative); use nirapeksh_mulya or a modulo to map it to a range. Any seed
+# works, including 0. Deterministic: the same seed always yields the
+# same sequence. There is no entropy source in the language, so the
+# caller owns the seed.
+prakriya ganit_yadricch(state) {
+    vitti s = state
+    s[0] = s[0] * 6364136223846793005 + 1442695040888963407
+    prati s[0]
+}
+
+# ganit_seemit(v, lo, hi): lo if v < lo, hi if v > hi, else v.
+# Requires lo <= hi (if lo > hi, returns lo — the first branch wins).
+prakriya ganit_seemit(v, lo, hi) {
+    vitti x = v
+    vitti a = lo
+    vitti b = hi
+    yadi (x < a) { prati a }
+    yadi (x > b) { prati b }
+    prati x
+}
