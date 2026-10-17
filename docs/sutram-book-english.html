@@ -65,13 +65,13 @@ pre .k, code .k { font-weight: 700; }
 <svg viewBox="0 0 128 128" width="96" height="96" role="img" aria-label="Sutram" style="margin-bottom:20px"><circle cx="64" cy="64" r="60" fill="#1a4a5c"/><circle cx="64" cy="64" r="59" fill="none" stroke="#e86d11" stroke-width="3.5"/><path d="M44 30 C84 42 44 86 84 98" fill="none" stroke="#e86d11" stroke-width="10.5" stroke-linecap="round"/></svg>
 <div class="dev">॥ सूत्रम् ॥</div>
 <h1>The Sutram Book</h1>
-<div id="preface" style="margin:18px 0 30px;padding:18px 22px;border-left:3px solid #b8860b;background:rgba(184,134,11,0.07);border-radius:8px;line-height:1.7"><b>Preface.</b> Sutram is a programming language whose keywords are Sanskrit &mdash; not as decoration, but as a design commitment. Its name, <b>सूत्रम्</b>, means <i>sūtra</i>: the terse rule-form of Pāṇini's <i>Aṣṭādhyāyī</i>, the world's first formal grammar. Its standard library implements the Indian mathematical tradition directly &mdash; Pingala's binary and the Meru-prastāra, Āryabhaṭa's kuṭṭaka, Bhāskara's chakravala. And the compiler itself is self-sufficient: one hand-written assembly file producing native machine code, with no runtime and no toolchain required of you. This book teaches the language from the beginning. Every example is real code that compiles and runs, and every claim about the language is one you can check.</div>
+<div id="preface" style="margin:18px 0 30px;padding:18px 22px;border-left:3px solid #b8860b;background:rgba(184,134,11,0.07);border-radius:8px;line-height:1.7"><b>Preface.</b> Sutram is a programming language whose keywords are Sanskrit &mdash; not as decoration, but as a design commitment. Its name, <b>सूत्रम्</b>, means <i>sūtra</i>: the terse rule-form of Pāṇini's <i>Aṣṭādhyāyī</i>, the world's first formal grammar. Its standard library implements the Indian mathematical tradition directly &mdash; Pingala's binary and the Meru-prastāra, Āryabhaṭa's kuṭṭaka, Bhāskara's chakravala. And the compiler itself is self-sufficient: one hand-written assembly patra producing native machine code, with no runtime and no toolchain required of you. This book teaches the language from the beginning. Every example is real code that compiles and runs, and every claim about the language is one you can check.</div>
 
 <div class="legend">💡 <b>How to read:</b> hover any saffron dotted-underlined word (in text or code) to see its meaning instantly. On mobile, tap-and-hold. Printed pages: every chapter ends with a quick-reference table.</div>
 <h2>Sanskrit keywords. Native machine code. One thread through every language.</h2>
 <div class="badge">ENGLISH EDITION</div>
 </div>
-<div class="toc"><h2>Contents</h2><ol><li><a href="#ch1">What is Sutram?</a></li><li><a href="#ch2">Your First Program</a></li><li><a href="#ch3">Variables and Constants</a></li><li><a href="#ch4">Operators and Precedence</a></li><li><a href="#ch5">Making Decisions: <span class="k" data-tip="if">yadi</span> / <span class="k" data-tip="else">anyatra</span></a></li><li><a href="#ch6">Loops: <span class="k" data-tip="for">punaravartana</span>, <span class="k" data-tip="while">yavat</span>, <span class="k" data-tip="break">krama</span>, <span class="k" data-tip="continue">uddeshya</span></a></li><li><a href="#ch7">Functions: <span class="k" data-tip="function">prakriya</span></a></li><li><a href="#ch8">Arrays: <span class="k" data-tip="array">pankti</span></a></li><li><a href="#ch9">Enums and Constants: <span class="k" data-tip="enum">srijana</span>, <span class="k" data-tip="constant">sutra</span></a></li><li><a href="#ch10">The Sutram Shell (REPL)</a></li><li><a href="#ch11">Language Packs: Program in Your Language</a></li><li><a href="#ch12">Errors and Debugging</a></li><li><a href="#ch13">Complete Reference</a></li>
+<div class="toc"><h2>Contents</h2><ol><li><a href="#ch1">What is Sutram?</a></li><li><a href="#ch2">Your First Program</a></li><li><a href="#ch3">Variables and Constants</a></li><li><a href="#ch4">Operators and Precedence</a></li><li><a href="#ch5">Making Decisions: <span class="k" data-tip="if">yadi</span> / <span class="k" data-tip="else">anya</span></a></li><li><a href="#ch6">Loops: <span class="k" data-tip="for">chakra</span>, <span class="k" data-tip="while">yavat</span>, <span class="k" data-tip="break">krama</span>, <span class="k" data-tip="continue">agrim</span></a></li><li><a href="#ch7">Functions: <span class="k" data-tip="function">prakriya</span></a></li><li><a href="#ch8">Arrays: <span class="k" data-tip="mala">mala</span></a></li><li><a href="#ch9">Enums and Constants: <span class="k" data-tip="enum">ganana</span>, <span class="k" data-tip="constant">sutra</span></a></li><li><a href="#ch10">The Sutram Shell (REPL)</a></li><li><a href="#ch11">Language Packs: Program in Your Language</a></li><li><a href="#ch12">Errors and Debugging</a></li><li><a href="#ch13">Complete Reference</a></li>
 <li><a href="#ch14">New Features</a></li>
 <li><a href="#ch15">Technical Glossary</a></li>
 <li><a href="#ch16">Sanskrit Roots</a></li>
@@ -85,7 +85,7 @@ machine, and no runtime library between your program and the metal.</p>
 <p>Why learn Sutram?</p>
 <p><b>1. Simplicity of Python, speed of C.</b> You write readable code with clean Sanskrit keywords;
 the compiler produces a tiny native binary that runs as fast as hand-written assembly.</p>
-<p><b>2. You see everything.</b> Because the compiler is one readable assembly file (~9000 lines),
+<p><b>2. You see everything.</b> Because the compiler is one readable assembly patra (~9000 lines),
 you can study how a real compiler works: lexer → parser → code generator → ELF writer. Sutram is
 itself a compiler-writing tool — you can build the compiler for your next language in Sutram.</p>
 <p><b>3. Your language, your words.</b> With language packs you can write every keyword in Hindi,
@@ -124,7 +124,7 @@ automatically. More variables spill to the stack. You never manage memory for si
 <code>x = x + 5</code>. Variables are mutable; <code><span class="k" data-tip="constant">sutra</span></code> constants are folded at compile time.</div>
 </div>
 <div class="ch" id="ch4"><h2>4. Operators and Precedence</h2>
-<p>Sutram has the full operator set you expect, with standard mathematical precedence:</p>
+<p>Sutram has the full operator sangrah you expect, with standard mathematical precedence:</p>
 
 <table>
 <tr><th>Operator</th><th>Meaning</th><th>Example</th></tr>
@@ -148,8 +148,8 @@ automatically. More variables spill to the stack. You never manage memory for si
 comparisons → <code>+ - & | ^</code> → <code>* / %</code>. Use parentheses when in doubt —
 they cost zero performance.</div>
 </div>
-<div class="ch" id="ch5"><h2>5. Making Decisions: <span class="k" data-tip="if">yadi</span> / <span class="k" data-tip="else">anyatra</span></h2>
-<p><code><span class="k" data-tip="if">yadi</span></code> (if) runs a block when a condition is true; <code><span class="k" data-tip="else">anyatra</span></code> (else) runs
+<div class="ch" id="ch5"><h2>5. Making Decisions: <span class="k" data-tip="if">yadi</span> / <span class="k" data-tip="else">anya</span></h2>
+<p><code><span class="k" data-tip="if">yadi</span></code> (if) runs a block when a condition is true; <code><span class="k" data-tip="else">anya</span></code> (else) runs
 otherwise. Chain conditions with repeated <code><span class="k" data-tip="if">yadi</span></code>:</p>
 <pre><code><span class="k" data-tip="main">mukhya</span>()
     <span class="k" data-tip="variable">vitti</span> mulya = 0
@@ -157,7 +157,7 @@ otherwise. Chain conditions with repeated <code><span class="k" data-tip="if">ya
         <span class="k" data-tip="print">likha</span>("Positive\n")
     } <span class="k" data-tip="if">yadi</span> (mulya &lt; 0) {
         likha("Negative\n")
-    } anyatra {
+    } anya {
         likha("Zero\n")
     }</code></pre>
 <p>For comparing one value against many cases, use <code><span class="k" data-tip="multiply (*)">guna</span></code> (quality / switch) with
@@ -168,37 +168,37 @@ otherwise. Chain conditions with repeated <code><span class="k" data-tip="if">ya
         <span class="k" data-tip="condition">bhavana</span> 1: { <span class="k" data-tip="print">likha</span>("Somvaar\n") }
         <span class="k" data-tip="condition">bhavana</span> 2: { <span class="k" data-tip="print">likha</span>("Mangalvaar\n") }
         <span class="k" data-tip="condition">bhavana</span> 3: { <span class="k" data-tip="print">likha</span>("Budhvaar\n") }
-        <span class="k" data-tip="else">anyatra</span>: { <span class="k" data-tip="print">likha</span>("Anyo divaah\n") }
+        <span class="k" data-tip="else">anya</span>: { <span class="k" data-tip="print">likha</span>("Anyo divaah\n") }
     }</code></pre>
 </div>
-<div class="ch" id="ch6"><h2>6. Loops: <span class="k" data-tip="for">punaravartana</span>, <span class="k" data-tip="while">yavat</span>, <span class="k" data-tip="break">krama</span>, <span class="k" data-tip="continue">uddeshya</span></h2>
-<p><code><span class="k" data-tip="for">punaravartana</span></code> (repetition) is the counting loop — it means "for i = a <span class="k" data-tip="range-to">to</span> b":</p>
+<div class="ch" id="ch6"><h2>6. Loops: <span class="k" data-tip="for">chakra</span>, <span class="k" data-tip="while">yavat</span>, <span class="k" data-tip="break">krama</span>, <span class="k" data-tip="continue">agrim</span></h2>
+<p><code><span class="k" data-tip="for">chakra</span></code> (repetition) is the counting loop — it means "for i = a <span class="k" data-tip="range-to">to</span> b":</p>
 <pre><code><span class="k" data-tip="main">mukhya</span>()
-    <span class="k" data-tip="for">punaravartana</span> i = 1 <span class="k" data-tip="range-to">to</span> 5 {
+    <span class="k" data-tip="for">chakra</span> i = 1 <span class="k" data-tip="range-to">to</span> 5 {
         <span class="k" data-tip="print">likha</span>(i)
         <span class="k" data-tip="print">likha</span>(" ")   <span class="cm">// 1 2 3 4 5</span>
     }
     <span class="k" data-tip="print">likha</span>("\n")</code></pre>
 <p><code><span class="k" data-tip="while">yavat</span></code> (as long as) is the while loop. <code><span class="k" data-tip="break">krama</span></code> (order/sequence — break)
-exits the loop; <code><span class="k" data-tip="continue">uddeshya</span></code> (aim — continue) skips <span class="k" data-tip="range-to">to</span> the next round:</p>
+exits the loop; <code><span class="k" data-tip="continue">agrim</span></code> (aim — continue) skips <span class="k" data-tip="range-to">to</span> the next round:</p>
 <pre><code><span class="k" data-tip="main">mukhya</span>()
     <span class="k" data-tip="variable">vitti</span> yogam = 0
-    <span class="k" data-tip="for">punaravartana</span> i = 1 <span class="k" data-tip="range-to">to</span> 100 {
+    <span class="k" data-tip="for">chakra</span> i = 1 <span class="k" data-tip="range-to">to</span> 100 {
         <span class="k" data-tip="if">yadi</span> (i > 10) { <span class="k" data-tip="break">krama</span> }
-        <span class="k" data-tip="if">yadi</span> (i % 2 == 0) { <span class="k" data-tip="continue">uddeshya</span> }
+        <span class="k" data-tip="if">yadi</span> (i % 2 == 0) { <span class="k" data-tip="continue">agrim</span> }
         yogam = yogam + i
     }
     <span class="k" data-tip="print">likha</span>(yogam)     <span class="cm">// 25</span>
     <span class="k" data-tip="print">likha</span>("\n")</code></pre>
 <div class="try"><b>This program sums the odd numbers from 1 <span class="k" data-tip="range-to">to</span> 10:</b> when <code>i > 10</code>,
-<code><span class="k" data-tip="break">krama</span></code> stops the loop; when <code>i</code> is even, <code><span class="k" data-tip="continue">uddeshya</span></code> skips it.
+<code><span class="k" data-tip="break">krama</span></code> stops the loop; when <code>i</code> is even, <code><span class="k" data-tip="continue">agrim</span></code> skips it.
 The answer is 25.</div>
 </div>
 <div class="ch" id="ch7"><h2>7. Functions: <span class="k" data-tip="function">prakriya</span></h2>
 <p>A <code><span class="k" data-tip="function">prakriya</span></code> (a process / procedure) is a named block that takes up <span class="k" data-tip="range-to">to</span> three
-arguments and returns a value with <code><span class="k" data-tip="return">pratiyati</span></code>:</p>
+arguments and returns a value with <code><span class="k" data-tip="return">prati</span></code>:</p>
 <pre><code><span class="k" data-tip="function">prakriya</span> vishalya(mulya)
-    <span class="k" data-tip="return">pratiyati</span> mulya * mulya
+    <span class="k" data-tip="return">prati</span> mulya * mulya
 
 <span class="k" data-tip="main">mukhya</span>()
     <span class="k" data-tip="variable">vitti</span> phalam = vishalya(7)
@@ -206,36 +206,36 @@ arguments and returns a value with <code><span class="k" data-tip="return">prati
     <span class="k" data-tip="print">likha</span>("\n")</code></pre>
 <p>Functions can call themselves — recursion works out of the box:</p>
 <pre><code><span class="k" data-tip="function">prakriya</span> fib(n) {
-    <span class="k" data-tip="if">yadi</span> (n &lt; 2) { pratiyati n }
-    pratiyati fib(n - 1) + fib(n - 2)
+    <span class="k" data-tip="if">yadi</span> (n &lt; 2) { prati n }
+    prati fib(n - 1) + fib(n - 2)
 }
 
 mukhya()
     likha(fib(10))     <span class="cm">// 55</span>
     <span class="k" data-tip="print">likha</span>("\n")</code></pre>
 </div>
-<div class="ch" id="ch8"><h2>8. Arrays: <span class="k" data-tip="array">pankti</span></h2>
-<p><i>Pankti</i> (पङ्क्ति) is Sanskrit for "a row" — a line of things. Declare an array with
-<code><span class="k" data-tip="array">pankti</span></code> and a size in brackets; <code><span class="k" data-tip="array">pankti</span> tarika[5]</code> allocates five
+<div class="ch" id="ch8"><h2>8. Arrays: <span class="k" data-tip="mala">mala</span></h2>
+<p><i>Pankti</i> (पङ्क्ति) is Sanskrit for "a row" — a line of things. Declare an mala with
+<code><span class="k" data-tip="mala">mala</span></code> and a size in brackets; <code><span class="k" data-tip="mala">mala</span> tarika[5]</code> allocates five
 64-bit slots and gives you the pointer:</p>
 <pre><code><span class="k" data-tip="main">mukhya</span>()
-    <span class="k" data-tip="array">pankti</span> tarika[5]
-    <span class="k" data-tip="for">punaravartana</span> i = 0 <span class="k" data-tip="range-to">to</span> 5 {
+    <span class="k" data-tip="mala">mala</span> tarika[5]
+    <span class="k" data-tip="for">chakra</span> i = 0 <span class="k" data-tip="range-to">to</span> 5 {
         tarika[i] = i * i
     }
     <span class="k" data-tip="print">likha</span>(tarika[4])     <span class="cm">// 16</span>
     <span class="k" data-tip="print">likha</span>("\n")</code></pre>
 <p>Indexing with <code>arr[i]</code> reads and writes directly through the pointer — one machine
 instruction, no bounds checks, C speed.</p>
-<div class="note">The older spelling <code><span class="k" data-tip="variable">vitti</span> tarika[5]</code> also works — <code><span class="k" data-tip="array">pankti</span></code>
+<div class="note">The older spelling <code><span class="k" data-tip="variable">vitti</span> tarika[5]</code> also works — <code><span class="k" data-tip="mala">mala</span></code>
 is the Sanskrit-correct way <span class="k" data-tip="range-to">to</span> say it.</div>
 </div>
-<div class="ch" id="ch9"><h2>9. Enums and Constants: <span class="k" data-tip="enum">srijana</span>, <span class="k" data-tip="constant">sutra</span></h2>
-<p><code><span class="k" data-tip="enum">srijana</span></code> (creation) defines named integer constants — an enum:</p>
+<div class="ch" id="ch9"><h2>9. Enums and Constants: <span class="k" data-tip="enum">ganana</span>, <span class="k" data-tip="constant">sutra</span></h2>
+<p><code><span class="k" data-tip="enum">ganana</span></code> (creation) defines named integer constants — an enum:</p>
 <pre><code><span class="k" data-tip="main">mukhya</span>()
-    srijana LAAL = 1
-    srijana HARA = 2
-    srijana NEELA = 3
+    ganana LAAL = 1
+    ganana HARA = 2
+    ganana NEELA = 3
     <span class="k" data-tip="variable">vitti</span> mera_ranga = HARA
     <span class="k" data-tip="multiply (*)">guna</span> (mera_ranga) {
         <span class="k" data-tip="condition">bhavana</span> 1: { <span class="k" data-tip="print">likha</span>("Red\n") }
@@ -258,7 +258,7 @@ OK: compiled 260 bytes
 7
 <span class="k" data-tip="constant">sutra</span>> nirgat</code></pre>
 <p>Every line you type is added <span class="k" data-tip="range-to">to</span> a growing session program, compiled, and run instantly.
-Variables persist between lines — <code>x</code> set on one line is there on the next.</p>
+Variables persist between lines — <code>x</code> sangrah on one line is there on the next.</p>
 <div class="try"><b>Shell commands:</b> <code>sahayata</code> (help) · <code>sarvam</code>
 (show the whole session) · <code>nirgat</code> (exit)</div>
 </div>
@@ -270,14 +270,14 @@ Variables persist between lines — <code>x</code> set on one line is there on t
 <tr><td><code><span class="k" data-tip="main">मुख्य</span></code></td><td><code><span class="k" data-tip="main">મુખ્ય</span></code></td><td>main</td><td><code><span class="k" data-tip="main">முதன்மை</span></code></td><td><code><span class="k" data-tip="main">ముఖ్యం</span></code></td><td><code><span class="k" data-tip="main">mukhya</span></code></td></tr>
 <tr><td><code><span class="k" data-tip="variable">चर</span></code></td><td><code><span class="k" data-tip="variable">ચલ</span></code></td><td>variable</td><td><code><span class="k" data-tip="variable">மாறி</span></code></td><td><code><span class="k" data-tip="variable">చరం</span></code></td><td><code><span class="k" data-tip="variable">vitti</span></code></td></tr>
 <tr><td><code><span class="k" data-tip="if">यदि</span></code></td><td><code><span class="k" data-tip="if">જો</span></code></td><td>if</td><td><code><span class="k" data-tip="if">எனில்</span></code></td><td><code><span class="k" data-tip="if">ఒకవేళ</span></code></td><td><code><span class="k" data-tip="if">yadi</span></code></td></tr>
-<tr><td><code><span class="k" data-tip="else">अन्यथा</span></code></td><td><code><span class="k" data-tip="else">નહિંતર</span></code></td><td>else</td><td><code><span class="k" data-tip="else">இல்லையெனில்</span></code></td><td><code><span class="k" data-tip="else">లేకపోతే</span></code></td><td><code><span class="k" data-tip="else">anyatra</span></code></td></tr>
+<tr><td><code><span class="k" data-tip="else">अन्यथा</span></code></td><td><code><span class="k" data-tip="else">નહિંતર</span></code></td><td>else</td><td><code><span class="k" data-tip="else">இல்லையெனில்</span></code></td><td><code><span class="k" data-tip="else">లేకపోతే</span></code></td><td><code><span class="k" data-tip="else">anya</span></code></td></tr>
 <tr><td><code><span class="k" data-tip="while">जबतक</span></code></td><td><code><span class="k" data-tip="while">જ્યાંસુધી</span></code></td><td>while</td><td><code><span class="k" data-tip="while">வரை</span></code></td><td><code><span class="k" data-tip="while">ఎంతవరకు</span></code></td><td><code><span class="k" data-tip="while">yavat</span></code></td></tr>
-<tr><td><code><span class="k" data-tip="for">पुनरावृत्ति</span> 1 <span class="k" data-tip="range-to">से</span> 5</code></td><td><code><span class="k" data-tip="for">પુનરાવર્તન</span> 1 <span class="k" data-tip="range-to">થી</span> 5</code></td><td>for 1 <span class="k" data-tip="range-to">to</span> 5</td><td><code><span class="k" data-tip="for">மீண்டும்</span> 1 <span class="k" data-tip="range-to">முதல்</span> 5</code></td><td><code><span class="k" data-tip="for">పునరావృతం</span> 1 <span class="k" data-tip="range-to">నుండి</span> 5</code></td><td><code><span class="k" data-tip="for">punaravartana</span> ... <span class="k" data-tip="range-to">to</span></code></td></tr>
+<tr><td><code><span class="k" data-tip="for">पुनरावृत्ति</span> 1 <span class="k" data-tip="range-to">से</span> 5</code></td><td><code><span class="k" data-tip="for">પુનરાવર્તન</span> 1 <span class="k" data-tip="range-to">થી</span> 5</code></td><td>for 1 <span class="k" data-tip="range-to">to</span> 5</td><td><code><span class="k" data-tip="for">மீண்டும்</span> 1 <span class="k" data-tip="range-to">முதல்</span> 5</code></td><td><code><span class="k" data-tip="for">పునరావృతం</span> 1 <span class="k" data-tip="range-to">నుండి</span> 5</code></td><td><code><span class="k" data-tip="for">chakra</span> ... <span class="k" data-tip="range-to">to</span></code></td></tr>
 <tr><td><code><span class="k" data-tip="function">फलन</span></code></td><td><code><span class="k" data-tip="function">કાર્ય</span> / <span class="k" data-tip="function">ફલન</span></code></td><td>function</td><td><code><span class="k" data-tip="function">செயல்</span> / <span class="k" data-tip="function">சார்பு</span></code></td><td><code><span class="k" data-tip="function">క్రియ</span> / <span class="k" data-tip="function">ప్రమేయం</span></code></td><td><code><span class="k" data-tip="function">prakriya</span></code></td></tr>
 <tr><td><code><span class="k" data-tip="print">लिखो</span></code></td><td><code><span class="k" data-tip="print">લખો</span></code></td><td>print</td><td><code><span class="k" data-tip="print">எழுது</span></code></td><td><code><span class="k" data-tip="print">వ్రాయు</span></code></td><td><code><span class="k" data-tip="print">likha</span></code></td></tr>
 <tr><td><code><span class="k" data-tip="input">पढ़ो</span></code></td><td><code><span class="k" data-tip="input">વાંચો</span></code></td><td>input</td><td><code><span class="k" data-tip="input">படி</span></code></td><td><code><span class="k" data-tip="input">చదువు</span></code></td><td><code><span class="k" data-tip="input">grahan</span></code></td></tr>
 <tr><td><code><span class="k" data-tip="break">क्रम</span></code></td><td><code><span class="k" data-tip="break">ક્રમ</span></code></td><td>break</td><td><code><span class="k" data-tip="break">வரிசை</span></code></td><td><code><span class="k" data-tip="break">క్రమం</span></code></td><td><code><span class="k" data-tip="break">krama</span></code></td></tr>
-<tr><td><code><span class="k" data-tip="array">पंक्ति</span></code></td><td><code><span class="k" data-tip="array">પંક્તિ</span></code></td><td>array</td><td><code><span class="k" data-tip="array">வரிசைப்பட</span></code></td><td><code><span class="k" data-tip="array">పంక్తి</span></code></td><td><code><span class="k" data-tip="array">pankti</span></code></td></tr>
+<tr><td><code><span class="k" data-tip="mala">पंक्ति</span></code></td><td><code><span class="k" data-tip="mala">પંક્તિ</span></code></td><td>mala</td><td><code><span class="k" data-tip="mala">வரிசைப்பட</span></code></td><td><code><span class="k" data-tip="mala">పంక్తి</span></code></td><td><code><span class="k" data-tip="mala">mala</span></code></td></tr>
 <tr><td><code><span class="k" data-tip="true">सत्य</span> / <span class="k" data-tip="false / null">असत्य</span></code></td><td><code><span class="k" data-tip="true">સાચું</span> / <span class="k" data-tip="false / null">ખોટું</span></code></td><td>true / false</td><td><code><span class="k" data-tip="true">மெய்</span> / <span class="k" data-tip="false / null">பொய்</span></code></td><td><code><span class="k" data-tip="true">నిజం</span> / <span class="k" data-tip="false / null">అబద్ధం</span></code></td><td><code><span class="k" data-tip="true">purna</span> / <span class="k" data-tip="false / null">shunya</span></code></td></tr>
 </table>
 
@@ -313,24 +313,24 @@ instantly without leaving your flow.</div>
 <tr><td><code><span class="k" data-tip="main">mukhya</span>()</code></td><td>main() — program entry</td></tr>
 <tr><td><code><span class="k" data-tip="variable">vitti</span></code></td><td>variable declaration</td></tr>
 <tr><td><code><span class="k" data-tip="integer">anka</span></code></td><td>integer type</td></tr>
-<tr><td><code><span class="k" data-tip="array">pankti</span></code></td><td>array (a row)</td></tr>
-<tr><td><code><span class="k" data-tip="boolean">parigrah</span></code></td><td>boolean type</td></tr>
+<tr><td><code><span class="k" data-tip="mala">mala</span></code></td><td>mala (a row)</td></tr>
+<tr><td><code><span class="k" data-tip="boolean">satya</span></code></td><td>boolean type</td></tr>
 <tr><td><code>sankhya</code></td><td>4×64-bit vector type</td></tr>
 <tr><td><code><span class="k" data-tip="constant">sutra</span></code></td><td>constant</td></tr>
-<tr><td><code><span class="k" data-tip="if">yadi</span> ... <span class="k" data-tip="else">anyatra</span></code></td><td>if ... else</td></tr>
+<tr><td><code><span class="k" data-tip="if">yadi</span> ... <span class="k" data-tip="else">anya</span></code></td><td>if ... else</td></tr>
 <tr><td><code><span class="k" data-tip="multiply (*)">guna</span> / <span class="k" data-tip="condition">bhavana</span></code></td><td>switch / case</td></tr>
-<tr><td><code><span class="k" data-tip="for">punaravartana</span> i = a <span class="k" data-tip="range-to">to</span> b</code></td><td>for loop</td></tr>
+<tr><td><code><span class="k" data-tip="for">chakra</span> i = a <span class="k" data-tip="range-to">to</span> b</code></td><td>for loop</td></tr>
 <tr><td><code><span class="k" data-tip="while">yavat</span></code></td><td>while loop</td></tr>
-<tr><td><code><span class="k" data-tip="break">krama</span> / <span class="k" data-tip="continue">uddeshya</span></code></td><td>break / continue</td></tr>
-<tr><td><code><span class="k" data-tip="function">prakriya</span> / <span class="k" data-tip="return">pratiyati</span></code></td><td>function / return</td></tr>
-<tr><td><code><span class="k" data-tip="enum">srijana</span></code></td><td>enum</td></tr>
+<tr><td><code><span class="k" data-tip="break">krama</span> / <span class="k" data-tip="continue">agrim</span></code></td><td>break / continue</td></tr>
+<tr><td><code><span class="k" data-tip="function">prakriya</span> / <span class="k" data-tip="return">prati</span></code></td><td>function / return</td></tr>
+<tr><td><code><span class="k" data-tip="enum">ganana</span></code></td><td>enum</td></tr>
 <tr><td><code><span class="k" data-tip="struct">rachana</span></code></td><td>struct</td></tr>
-<tr><td><code><span class="k" data-tip="include">ayojan</span></code></td><td>import</td></tr>
+<tr><td><code><span class="k" data-tip="include">yoj</span></code></td><td>import</td></tr>
 <tr><td><code><span class="k" data-tip="print">likha</span></code></td><td>print</td></tr>
 <tr><td><code>nirmmita</code></td><td>allocate memory</td></tr>
 <tr><td><code><span class="k" data-tip="true">purna</span> / <span class="k" data-tip="false / null">shunya</span></code></td><td>true / false</td></tr>
-<tr><td><code><span class="k" data-tip="negation (-)">nishedha</span></code></td><td>assert</td></tr>
-<tr><td><code><span class="k" data-tip="inline assembly">nishkriya</span></code></td><td>inline machine code</td></tr>
+<tr><td><code><span class="k" data-tip="negation (-)">abhava</span></code></td><td>assert</td></tr>
+<tr><td><code><span class="k" data-tip="inline assembly">yantra</span></code></td><td>inline machine code</td></tr>
 <tr><td><code><span class="k" data-tip="print (no newline)">lkhb</span></code></td><td>print without newline</td></tr>
 <tr><td><code><span class="k" data-tip="input">grahan</span></code></td><td>read input (-1 on EOF)</td></tr>
 <tr><td><code># / //</code></td><td>comments</td></tr>
@@ -351,8 +351,8 @@ in an afternoon.</p>
 <h2>14. New Features: v22</h2>
 
 <h3>Comments</h3>
-<p>Two styles — <code>#</code> (hash) and <code>//</code> (dvigun slash). The compiler ignores them completely.</p>
-<pre><code># this is a hash comment
+<p>Two styles — <code>#</code> (gudh) and <code>//</code> (dvigun slash). The compiler ignores them completely.</p>
+<pre><code># this is a gudh comment
 <span class="k" data-tip="variable">vitti</span> x = 10  # works after code too
 // this is a slash comment
 <span class="k" data-tip="print">likha</span>(x)</code></pre>
@@ -378,22 +378,22 @@ n--      <span class="cm"># n = 5</span></code></pre>
 
 <h3><span class="k" data-tip="print (no newline)">lkhb</span>() — print without newline</h3>
 <p><code><span class="k" data-tip="print">likha</span>()</code> adds a newline after a number; <code><span class="k" data-tip="print (no newline)">lkhb</span>()</code> does not — ideal for tables:</p>
-<pre><code><span class="k" data-tip="for">punaravartana</span> i = 1 <span class="k" data-tip="range-to">to</span> 5 {
+<pre><code><span class="k" data-tip="for">chakra</span> i = 1 <span class="k" data-tip="range-to">to</span> 5 {
     <span class="k" data-tip="print (no newline)">lkhb</span>(i)
     <span class="k" data-tip="print">likha</span>(" ")
 }</code></pre>
 
 <h3>Descending Loops</h3>
 <p>If the start value is greater than the end value, the loop counts down automatically:</p>
-<pre><code><span class="k" data-tip="for">punaravartana</span> i = 5 <span class="k" data-tip="range-to">to</span> 1 {
+<pre><code><span class="k" data-tip="for">chakra</span> i = 5 <span class="k" data-tip="range-to">to</span> 1 {
     <span class="k" data-tip="print (no newline)">lkhb</span>(i)
     <span class="k" data-tip="print">likha</span>(" ")
 }    <span class="cm"># output: 5 4 3 2 1</span></code></pre>
 
-<h3><span class="k" data-tip="inline assembly">nishkriya</span>() — inline machine code</h3>
-<pre><code><span class="k" data-tip="inline assembly">nishkriya</span>("B8 3C 00 00 00")  <span class="cm"># mov eax, 60</span>
-<span class="k" data-tip="inline assembly">nishkriya</span>("BF 2A 00 00 00")  <span class="cm"># mov edi, 42</span>
-<span class="k" data-tip="inline assembly">nishkriya</span>("0F 05")            <span class="cm"># syscall → exit(42)</span></code></pre>
+<h3><span class="k" data-tip="inline assembly">yantra</span>() — inline machine code</h3>
+<pre><code><span class="k" data-tip="inline assembly">yantra</span>("B8 3C 00 00 00")  <span class="cm"># mov eax, 60</span>
+<span class="k" data-tip="inline assembly">yantra</span>("BF 2A 00 00 00")  <span class="cm"># mov edi, 42</span>
+<span class="k" data-tip="inline assembly">yantra</span>("0F 05")            <span class="cm"># syscall → exit(42)</span></code></pre>
 
 <h3><span class="k" data-tip="input">grahan</span>() and end of input</h3>
 <p>When input ends, <code><span class="k" data-tip="input">grahan</span>()</code> now returns <code>-1</code>, so programs can exit cleanly:</p>
@@ -406,8 +406,8 @@ n--      <span class="cm"># n = 5</span></code></pre>
 
 
 <h3>v29 – v41</h3>
-<p>Since this edition was written, Sutram has gained a ternary operator, a do-while loop, array length and bounds checking, functions with up to six arguments, and a standard library. An out-of-range array index is now a clean error instead of silent corruption, and keyboard input works in Windows programs. Every example below is checked by the project's own test suite.</p>
-<pre><code>ayojan math
+<p>Since this edition was written, Sutram has gained a ternary operator, a do-while loop, mala length and bounds checking, functions with up to six arguments, and a standard library. An out-of-range mala index is now a clean error instead of silent corruption, and keyboard input works in Windows programs. Every example below is checked by the project's own test suite.</p>
+<pre><code>yoj ganit
 
 mukhya()
     likha(mahattam(48, 36))
@@ -418,20 +418,20 @@ mukhya()
         i = i + 1
     } yavat (i &lt; 3)
     likha(i)
-    pankti a[3]
+    mala a[3]
     likha(pankti_len(a))
 </code></pre>
 
 <h3>The standard library</h3>
-<p>Sutram ships a small standard library that you pull in with <code>ayojan</code>. The module is inlined into your program at compile time, so there is no runtime dependency &mdash; the library code becomes part of your binary. Twelve modules ship today, and the full list is in <code>docs/sutram-stdlib.html</code>.</p>
+<p>Sutram ships a small standard library that you pull in with <code>yoj</code>. The module is inlined into your program at compile time, so there is no runtime dependency &mdash; the library code becomes part of your binary. Twelve modules ship today, and the full suchi is in <code>docs/sutram-stdlib.html</code>.</p>
 <table>
 <tr><th>module</th><th>include with</th><th>functions</th></tr>
-<tr><td><code>math</code></td><td><code>ayojan math</code></td><td>15 functions &mdash; <code>varg</code> <code>vargit</code> <code>ghan</code> <code>dvigun</code> <code>trigun</code> <code>vardh</code> <code>nirapeksh_mulya</code> <code>laghu2</code> <code>adhik2</code> <code>mahattam</code> <code>laghuttam</code> <code>ghat</code> <code>kramgun</code> <code>asti_abhajya</code> <code>yog_tak</code></td></tr>
-<tr><td><code>num</code></td><td><code>ayojan num</code></td><td>10 functions &mdash; <code>asti_yugm</code> <code>asti_visham</code> <code>ank_gan</code> <code>ank_yog</code> <code>viparyay_ank</code> <code>asti_vilom</code> <code>seemit</code> <code>fib</code> <code>asti_sampurna</code> <code>collatz_charan</code></td></tr>
-<tr><td><code>sort</code></td><td><code>ayojan sort</code></td><td>11 functions &mdash; <code>vinimay</code> <code>budbud_shreni</code> <code>shankh_shreni</code> <code>viparyay_mala</code> <code>laghu</code> <code>adhik</code> <code>yog</code> <code>anwesh_sarak</code> <code>gan</code> <code>asti_sorted</code> <code>dwi_anwesh</code></td></tr>
-<tr><td><code>string</code></td><td><code>ayojan string</code></td><td>13 functions &mdash; <code>varna_maap</code> <code>akshar_sanket</code> <code>asti_ank_akshar</code> <code>asti_unnat_akshar</code> <code>asti_avanat_akshar</code> <code>asti_akshar_akshar</code> <code>asti_avakash_akshar</code> <code>gan_swar</code> <code>gan_akshar</code> <code>anwesh_akshar</code> <code>asti_sarv_ank</code> <code>unnat_sanket</code> <code>avanat_sanket</code></td></tr>
+<tr><td><code>ganit</code></td><td><code>yoj ganit</code></td><td>15 functions &mdash; <code>varg</code> <code>vargit</code> <code>ghan</code> <code>dvigun</code> <code>trigun</code> <code>vardh</code> <code>nirapeksh_mulya</code> <code>laghu2</code> <code>adhik2</code> <code>mahattam</code> <code>laghuttam</code> <code>ghat</code> <code>kramgun</code> <code>asti_abhajya</code> <code>yog_tak</code></td></tr>
+<tr><td><code>ank</code></td><td><code>yoj ank</code></td><td>10 functions &mdash; <code>asti_yugm</code> <code>asti_visham</code> <code>ank_gan</code> <code>ank_yog</code> <code>viparyay_ank</code> <code>asti_vilom</code> <code>seemit</code> <code>fib</code> <code>asti_sampurna</code> <code>collatz_charan</code></td></tr>
+<tr><td><code>shreni</code></td><td><code>yoj shreni</code></td><td>11 functions &mdash; <code>vinimay</code> <code>budbud_shreni</code> <code>shankh_shreni</code> <code>viparyay_mala</code> <code>laghu</code> <code>adhik</code> <code>yog</code> <code>anwesh_sarak</code> <code>gan</code> <code>asti_sorted</code> <code>dwi_anwesh</code></td></tr>
+<tr><td><code>varna</code></td><td><code>yoj varna</code></td><td>13 functions &mdash; <code>varna_maap</code> <code>akshar_sanket</code> <code>asti_ank_akshar</code> <code>asti_unnat_akshar</code> <code>asti_avanat_akshar</code> <code>asti_akshar_akshar</code> <code>asti_avakash_akshar</code> <code>gan_swar</code> <code>gan_akshar</code> <code>anwesh_akshar</code> <code>asti_sarv_ank</code> <code>unnat_sanket</code> <code>avanat_sanket</code></td></tr>
 </table>
-<pre><code>ayojan math
+<pre><code>yoj ganit
 
 mukhya()
     likha(mahattam(48, 36))
@@ -456,7 +456,7 @@ mukhya()
 <tr><td>Constant</td><td>स्थिरांक</td><td>अचलम्</td><td>స్థిరరాశి</td><td>மாறிலி</td><td><span class="k" data-tip="constant">અચલ</span></td></tr>
 <tr><td>Function</td><td><span class="k" data-tip="function">फलन</span></td><td>फलकम्</td><td><span class="k" data-tip="function">ప్రమేయం</span></td><td><span class="k" data-tip="function">சார்பு</span></td><td><span class="k" data-tip="function">ફલન</span></td></tr>
 <tr><td>Loop</td><td>पाश</td><td>पुनरावृत्तिः</td><td>పునరావృత్తి</td><td><span class="k" data-tip="for">மடக்கு</span></td><td>પુનરાવૃત્તિ</td></tr>
-<tr><td>Array</td><td>सारणी</td><td>पङ्क्तिः</td><td><span class="k" data-tip="array">వరుస</span></td><td><span class="k" data-tip="break">வரிசை</span></td><td>સારણી</td></tr>
+<tr><td>Array</td><td>सारणी</td><td>पङ्क्तिः</td><td><span class="k" data-tip="mala">వరుస</span></td><td><span class="k" data-tip="break">வரிசை</span></td><td>સારણી</td></tr>
 <tr><td>Memory</td><td>स्मृति</td><td>स्मृतिः</td><td>జ్ఞాపకశక్తి</td><td>நினைவகம்</td><td>સ્મૃતિ</td></tr>
 <tr><td>Machine code</td><td>यंत्र-कोड</td><td>यन्त्रकोडः</td><td>యంత్ర కోడ్</td><td>இயந்திர மொழி</td><td>યંત્ર-કોડ</td></tr>
 <tr><td>String</td><td>सूत्र</td><td>सूत्रम्</td><td>తీగ</td><td>சரம்</td><td>સૂત્ર</td></tr>
@@ -478,16 +478,16 @@ mukhya()
 <tr><td><code><span class="k" data-tip="variable">vitti</span></code></td><td>knowledge (वित् = <span class="k" data-tip="range-to">to</span> know)</td><td>Hindi विद्वान</td></tr>
 <tr><td><code><span class="k" data-tip="integer">anka</span></code></td><td>digit, mark</td><td>Hindi <span class="k" data-tip="integer">अंक</span>, Telugu అంకె, Gujarati <span class="k" data-tip="integer">અંક</span></td></tr>
 <tr><td><code><span class="k" data-tip="if">yadi</span></code></td><td>if</td><td>Hindi <span class="k" data-tip="if">यदि</span></td></tr>
-<tr><td><code><span class="k" data-tip="else">anyatra</span></code></td><td>elsewhere</td><td>Hindi <span class="k" data-tip="else">अन्यथा</span> (related)</td></tr>
+<tr><td><code><span class="k" data-tip="else">anya</span></code></td><td>elsewhere</td><td>Hindi <span class="k" data-tip="else">अन्यथा</span> (related)</td></tr>
 <tr><td><code><span class="k" data-tip="while">yavat</span></code></td><td>as long as</td><td>poetic Hindi यावत</td></tr>
-<tr><td><code><span class="k" data-tip="for">punaravartana</span></code></td><td>repetition, coming again</td><td>Hindi <span class="k" data-tip="for">पुनरावृत्ति</span>, Gujarati <span class="k" data-tip="for">પુનરાવર્તન</span></td></tr>
+<tr><td><code><span class="k" data-tip="for">chakra</span></code></td><td>repetition, coming again</td><td>Hindi <span class="k" data-tip="for">पुनरावृत्ति</span>, Gujarati <span class="k" data-tip="for">પુનરાવર્તન</span></td></tr>
 <tr><td><code><span class="k" data-tip="break">krama</span></code></td><td>order, sequence</td><td>Hindi <span class="k" data-tip="break">क्रम</span>, Tamil கிரமம், Telugu <span class="k" data-tip="break">క్రమం</span></td></tr>
 <tr><td><code><span class="k" data-tip="function">prakriya</span></code></td><td>process</td><td>Hindi प्रक्रिया, Telugu <span class="k" data-tip="function">ప్రక్రియ</span>, Gujarati પ્રક્રિયા</td></tr>
 <tr><td><code><span class="k" data-tip="true">purna</span></code></td><td>full, complete</td><td>Hindi पूर्ण, Tamil <span class="k" data-tip="true">பூரணம்</span>, Telugu పూర్ణం</td></tr>
 <tr><td><code><span class="k" data-tip="false / null">shunya</span></code></td><td>empty, void</td><td><b>śūnya → Arabic ṣifr → English zero</b>; Tamil பூஜ்யம், Telugu సున్నా</td></tr>
 <tr><td><code><span class="k" data-tip="print">likha</span></code></td><td><span class="k" data-tip="range-to">to</span> write</td><td>Hindi लिखना, Gujarati લખવું, Telugu <span class="k" data-tip="print">లేఖ</span></td></tr>
 <tr><td><code><span class="k" data-tip="input">grahan</span></code></td><td>receiving, grasping</td><td>Hindi ग्रहण, Telugu గ్రహించడం</td></tr>
-<tr><td><code><span class="k" data-tip="array">pankti</span></code></td><td>row, line</td><td>Hindi <span class="k" data-tip="array">पंक्ति</span>, Telugu <span class="k" data-tip="array">పంక్తి</span>, Gujarati <span class="k" data-tip="array">પંક્તિ</span></td></tr>
+<tr><td><code><span class="k" data-tip="mala">mala</span></code></td><td>row, line</td><td>Hindi <span class="k" data-tip="mala">पंक्ति</span>, Telugu <span class="k" data-tip="mala">పంక్తి</span>, Gujarati <span class="k" data-tip="mala">પંક્તિ</span></td></tr>
 <tr><td><code><span class="k" data-tip="constant">sutra</span></code></td><td>thread</td><td>Hindi सूत्र, Tamil <span class="k" data-tip="constant">சூத்திரம்</span>, Telugu సూత్రం — and the name of this very language</td></tr>
 </table>
 </div>
@@ -546,15 +546,15 @@ ld -mi386pep --entry=_start -o sutram.exe sutram.obj
 scripts are in <code>windows\</code> (run <code>BUILD-WINDOWS-SETUP.cmd</code>).</p>
 
 <h3>17.6 Understanding PATH</h3>
-<p><b>PATH</b> is the list of folders Windows searches when you type a command. If
+<p><b>PATH</b> is the suchi of folders Windows searches when you type a command. If
 Sutram's folder is on PATH, you can type <code>sutram</code> from anywhere; otherwise
 you must type the full path or be in the folder.</p>
 <p>To check: open a <b>new</b> terminal and run <code>sutram --version</code>. If it prints the
-version, PATH is set. If not, either re-run the installer with the PATH option, or
+version, PATH is sangrah. If not, either re-run the installer with the PATH option, or
 run <code>sutram.exe</code> from the folder that contains it.</p>
 
 <h3>17.7 Your first Windows program</h3>
-<p>Create a file <code>namaste.sm</code>:</p>
+<p>Create a patra <code>namaste.sm</code>:</p>
 <pre><code># my first Windows program
 mukhya()
     likha("Namaste, Windows!")
@@ -607,7 +607,7 @@ Unicode folder names work; the compiler opens files with the Windows API.</p>
 <h3>17.12 Troubleshooting</h3>
 <table>
 <tr><th>Symptom</th><th>Cause</th><th>Fix</th></tr>
-<tr><td>“Unsupported 16-Bit Application” / “not a valid Win32 application”</td><td>the file is a Linux ELF binary, not PE</td><td>compile with a <code>.exe</code> name; the first two bytes must be <code>4D 5A</code></td></tr>
+<tr><td>“Unsupported 16-Bit Application” / “not a valid Win32 application”</td><td>the patra is a Linux ELF binary, not PE</td><td>compile with a <code>.exe</code> name; the first two bytes must be <code>4D 5A</code></td></tr>
 <tr><td>runs but prints nothing</td><td>an older build whose section was read-only, so the runtime faulted</td><td>use this build</td></tr>
 <tr><td><code>sutram</code> is not recognised</td><td>PATH not refreshed</td><td>open a <b>new</b> terminal, or use the full path</td></tr>
 <tr><td>language pack not found</td><td><code>lang\</code> is not next to the compiler</td><td>run from the Sutram folder, or install packs to the profile folder</td></tr>
@@ -636,10 +636,10 @@ you created yourself.</p>
 
 <h3>17.15 Still to come on Windows</h3>
 <p>Working now: compiling, <code>likha</code> and <code>shabda</code>, arithmetic, variables,
-<code>yadi</code>/<code>anyatra</code>, <code>yavat</code>, <code>punaravartana</code>,
-<code>krama</code>/<code>uddeshya</code>, functions with up to six arguments, recursion,
+<code>yadi</code>/<code>anya</code>, <code>yavat</code>, <code>chakra</code>,
+<code>krama</code>/<code>agrim</code>, functions with up to six arguments, recursion,
 early returns, block comments, language packs, diagnostics.</p>
-<p>Keyboard input (<code>grahan</code>) now works on Windows: the generated <code>.exe</code> reads through the embedded runtime (<code>ReadFile</code>) instead of a Linux system call. Arrays (<code>pankti</code>) and structs (<code>rachana</code>) allocate through <code>VirtualAlloc</code>. Still not ported: the network builtins. The interactive REPL is implemented and awaiting a check on a real Windows machine.</p>
+<p>Keyboard input (<code>grahan</code>) now works on Windows: the generated <code>.exe</code> reads through the embedded runtime (<code>ReadFile</code>) instead of a Linux system call. Arrays (<code>mala</code>) and structs (<code>rachana</code>) allocate through <code>VirtualAlloc</code>. Still not ported: the network builtins. The interactive REPL is implemented and awaiting a check on a real Windows machine.</p>
 
 <h3>17.16 Philosophy, unchanged</h3>
 <p>The compiler stays one pure-NASM source with no C, Python or runtime dependency;
@@ -665,7 +665,7 @@ toolchain. The installer is only packaging — it is not part of the language.</
   infers that from what they return.</p>
 
   <h3>Growable arrays — <code>kosh</code> / कोश</h3>
-  <p>An ordinary array (<span class="kw">pankti</span>) is fixed in size. A <span class="kw">kosh</span>
+  <p>An ordinary mala (<span class="kw">mala</span>) is fixed in size. A <span class="kw">kosh</span>
   grows: it starts at a small capacity and doubles as needed.</p>
 <pre><span class="kw">kosh</span> xs[4]              <span class="cm"># capacity 4, length 0</span>
 <span class="kw">kosh_push</span>(xs, 10)
@@ -694,20 +694,20 @@ toolchain. The installer is only packaging — it is not part of the language.</
         s = s + xs[i]
         i = i + 1
     }
-    <span class="kw">pratiyati</span> s / <span class="kw">kosh_len</span>(xs)
+    <span class="kw">prati</span> s / <span class="kw">kosh_len</span>(xs)
 }</pre>
   <p>A <code>kosh dasham</code> is passed as a pointer, so <strong>indexed writes are visible to the
-  caller</strong> — a function can fill an array for you. But growing it is not allowed: calling
+  caller</strong> — a function can fill an mala for you. But growing it is not allowed: calling
   <code>kosh_push</code> on a parameter is refused with a named error, because the pointer is passed by
   value and the caller would be left holding a stale one. This is a deliberate safety boundary, not a
   missing feature.</p>
 
   <h3>The standard library</h3>
-  <p>Fifteen modules ship with the compiler. Import one with <span class="kw">ayojan</span>.</p>
+  <p>Fifteen modules ship with the compiler. Import one with <span class="kw">yoj</span>.</p>
   <table>
     <tr><th>Module</th><th>What it gives you</th></tr>
-    <tr><td><code>math</code>, <code>num</code>, <code>util</code></td><td>arithmetic, number theory, small helpers</td></tr>
-    <tr><td><code>sort</code>, <code>string</code></td><td>sorting, text handling</td></tr>
+    <tr><td><code>ganit</code>, <code>ank</code>, <code>sadhan</code></td><td>arithmetic, number theory, small helpers</td></tr>
+    <tr><td><code>shreni</code>, <code>varna</code></td><td>sorting, text handling</td></tr>
     <tr><td><code>chandas</code></td><td>Piṅgala's prosody — metre, Meru-prastāra</td></tr>
     <tr><td><code>ganita</code></td><td>Āryabhaṭa and Bhāskara — mahattam, kuṭṭaka, cakravāla</td></tr>
     <tr><td><code>madhava</code></td><td>the Kerala school — π, sin, cos, atan, sqrt</td></tr>
