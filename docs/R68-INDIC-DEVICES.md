@@ -1,10 +1,10 @@
 # R68 Indic device registry — six requested language packs
 
-This implements the six names in `Sarvam-to-ChatGPT/ROUND-68.md`: **Odia,
+This implements the six names in `Sarvam-tak-ChatGPT/ROUND-68.md`: **Odia,
 Kannada, Marathi, Tamil, Telugu, Hindi**. Language and script are not synonymous:
 Hindi and Marathi reuse Devanagari. No old pack word is removed or renamed.
 
-| Language pack | Decimal digits | Dedicated abbreviation sign adopted here |
+| Language pack | Decimal digits | Dedicated abbreviation util_chinha adopted here |
 |---|---|---|
 | Odia | U+0B66–U+0B6F, `୦୧୨୩୪୫୬୭୮୯` | None; no new abbreviation aliases |
 | Kannada | U+0CE6–U+0CEF, `೦೧೨೩೪೫೬೭೮೯` | None; no new abbreviation aliases |
@@ -22,7 +22,7 @@ Do not repurpose Oriya Isshar, Telugu Tuumu, vowel marks, or Tamil number signs.
 
 Hindi/Marathi add exactly `मु॰ → mukhya`, `च॰ → vitti`, `लि॰ → likha`,
 `द॰ → dasham`. These are Sutram design choices, not Unicode-defined keyword
-semantics. The whole alias must match; the sign is not arbitrary prefix
+semantics. The whole alias must match; the util_chinha is not arbitrary prefix
 expansion. Other four packs change documentation only; their exact old words
 are preserved. `tests/r68/baseline_packs.json` records verified prior bytes/IDs.
 
