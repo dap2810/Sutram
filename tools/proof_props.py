@@ -277,7 +277,7 @@ def prop_hash_fnv1a_empty(compiler, rng):
 
 def prop_hash_fnv1a_avalanche(compiler, rng):
     """Different strings hash differently (for these test cases)"""
-    # fixed pairs known tak differ
+    # fixed pairs known to differ
     pairs = [("hello", "hellp"), ("abc", "abd"), ("test", "Test"),
              ("", "a"), ("xyz", "xy")]
     lines = ["yoj gudh", "mukhya() {"]
@@ -907,7 +907,7 @@ def prop_map_delete(compiler, rng):
 
 
 def prop_map_collision(compiler, rng):
-    """keys hashing tak the same bucket are all still retrievable"""
+    """keys hashing to the same bucket are all still retrievable"""
     cands = []
     while len(cands) < 40:
         cands.append("".join(chr(rng.randint(97, 102))
@@ -1400,7 +1400,7 @@ def prop_set_subset(compiler, rng):
 
 def _fmt_half_away(x, places):
     """Python mirror of roop_sthir: half away from zero, float arithmetic
-    identical tak the Sutram side (magnitude * 10**places + 0.5, floor)."""
+    identical to the Sutram side (magnitude * 10**places + 0.5, floor)."""
     import math
     places = max(0, min(9, places))
     p10 = 10.0 ** places
@@ -1982,10 +1982,10 @@ def prop_list_insert_remove(compiler, rng):
 def prop_map_keys_bytes_roundtrip(compiler, rng):
     """nighantu_kunjika_ashtak: every inserted key appears exactly once as a packed
     byte segment; count == nighantu_maap; total bytes add up; 33-byte keys
-    truncate tak 32; old cell-form nighantu_kunjika agrees on the count"""
+    truncate to 32; old cell-form nighantu_kunjika agrees on the count"""
     fixed = ["a", "apple", "fig", "pear",
              "abcdefghijklmnopqrstuvwxyz123456",  # exactly 32
-             "abcdefghijklmnopqrstuvwxyz1234567"]  # 33 -> truncates tak 32
+             "abcdefghijklmnopqrstuvwxyz1234567"]  # 33 -> truncates to 32
     rand_keys = ["".join(rng.choice("abcde") for _ in range(rng.randint(1, 8)))
                  for _ in range(rng.randint(0, 6))]
     all_keys = fixed + rand_keys
@@ -2193,7 +2193,7 @@ def prop_ganita_checked_divmod(compiler, rng):
 
 
 def prop_ganita_sat(compiler, rng):
-    """sat_add/sub/mul equal Python results clamped tak [MIN64, MAX64]"""
+    """sat_add/sub/mul equal Python results clamped to [MIN64, MAX64]"""
     cases = [(MAX64, 1), (MIN64, -1), (MAX64, -1), (MIN64, 1),
              (MAX64, MAX64), (MIN64, MIN64), (MIN64, -2),
              (MIN64, 2), (0, 0), (2, 3)]
@@ -3412,7 +3412,7 @@ def prop_safety26(compiler, rng):
     and checked agree on the success path, and on the failure path sat
     is the seemit (overflow) or 0 (invalid input); saturating never
     wraps for any input. Randomized battery (fixed seed), split into
-    three programs tak stay under the per-block statement limit."""
+    three programs to stay under the per-block statement limit."""
     import math
     maxv = 2**63 - 1
     minv = -(2**63)
@@ -4251,11 +4251,11 @@ def prop_numeric29(compiler, rng):
     check("kuttaka(0 - 7819279541048604735, "
           "0 - 2881118045913156764, 0 - 150)",
           2605677504891245458, "kuttaka wrap")
-    # samasa: p*r overflows (2^80 wraps tak 0)
+    # samasa: p*r overflows (2^80 wraps to 0)
     lines.append("    samasa(out, 1099511627776, 0, 1099511627776, 0, 0)")
     check("out[0]", 0, "samasa wrap 0")
     check("out[1]", 0, "samasa wrap 1")
-    # brahmagupta_kshetr: (a+b+c+d) overflows (2^64 wraps tak 0)
+    # brahmagupta_kshetr: (a+b+c+d) overflows (2^64 wraps to 0)
     check("brahmagupta_kshetr(4611686018427387904, "
           "4611686018427387904, 4611686018427387904, "
           "4611686018427387904)", 0, "brahmagupta wrap")
@@ -4573,7 +4573,7 @@ def prop_edge30_float(compiler, rng):
     check("madhava_vargmool(1000000000000.0)", "1000000.0", "sqrt 1e12")
     check("sankhyiki_vargmool(1000000000000.0)", "1000000.0",
           "sankhyiki sqrt 1e12")
-    # madhava_vargmool(1e300): vargit the result, ratio tak 1e300 ~ 1
+    # madhava_vargmool(1e300): vargit the result, ratio to 1e300 ~ 1
     lines.append("    dasham e10 = 10000000000.0")
     lines.append("    dasham e100 = e10 * e10 * e10 * e10 * e10")
     lines.append("    e100 = e100 * e10 * e10 * e10 * e10 * e10")
@@ -4589,7 +4589,7 @@ def prop_edge30_float(compiler, rng):
     lines.append("        prati 1")
     lines.append("    }")
     # sin/cos with argument reduction, scaled by 1e6 and truncated
-    # tak vitti (the check compares vitti tak vitti: a dasham !=
+    # to vitti (the check compares vitti to vitti: a dasham !=
     # vitti comparison does not promote, so compare after the
     # converting assignment).
     lines.append("    vitti s100 = madhava_sin(100.0) * 1000000.0")
@@ -4672,7 +4672,7 @@ def prop_chakravala30(compiler, rng):
 def prop_result30(compiler, rng):
     """R30 WS3: the three new Result producers (pow/kramgun/abs) and
     the early-return chain: a failing step stops the chain, later
-    steps never run, and the failure propagates tak out."""
+    steps never run, and the failure propagates to out."""
     lines = ["yoj phal",
              "mukhya() {",
              "    vitti r = nirmmita(2 * 8)",
