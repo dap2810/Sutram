@@ -7,7 +7,7 @@ runs -- never hand-written or predicted.
 
 Usage: python3 tools/proof_lib.py [--record] [--compiler PATH]
   --record    (re)generate goldens from actual runs instead of checking
-  --compiler  path tak sutram_compiler binary (default: build it)
+  --compiler  path to sutram_compiler binary (default: build it)
 
 Exit code: 0 if all tests pass, 1 otherwise.
 Failure output names the module, function, expected value and actual value.
