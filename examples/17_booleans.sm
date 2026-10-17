@@ -1,12 +1,12 @@
 # Boolean type and logical operators
-# parigrah = bool (possession/holding)
+# satya = bool (possession/holding)
 # purna = true (complete/full)
 # shunya = false (void/empty)
 # && = logical AND, || = logical OR
 
 mukhya()
-    parigrah is_ready = purna
-    parigrah is_done = shunya
+    satya is_ready = purna
+    satya is_done = shunya
     
     likha("=== Booleans & Logic ===\n")
     
