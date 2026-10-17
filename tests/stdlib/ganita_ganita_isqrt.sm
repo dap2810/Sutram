@@ -1,11 +1,11 @@
-ayojan ganita
+yoj ganita
 mukhya() {
-    likha(ganita_isqrt(16))
+    likha(ganita_vargmool(16))
     likha("\n")
-    likha(ganita_isqrt(15))
+    likha(ganita_vargmool(15))
     likha("\n")
-    likha(ganita_isqrt(0))
+    likha(ganita_vargmool(0))
     likha("\n")
-    likha(ganita_isqrt(100))
+    likha(ganita_vargmool(100))
     likha("\n")
 }
