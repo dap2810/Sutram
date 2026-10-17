@@ -666,26 +666,26 @@ r54_builtin_arity_table:
     kw_anka      db "anka", 0
     kw_yadi      db "yadi", 0
     kw_yavat     db "yavat", 0
-    kw_pratiyati db "pratiyati", 0
+    kw_pratiyati db "prati", 0
     kw_sankhya   db "sankhya", 0
-    kw_anyatra  db "anyatra", 0
+    kw_anyatra  db "anya", 0
     kw_prakriya db "prakriya", 0
-    kw_ayojan  db "ayojan", 0
+    kw_ayojan  db "yoj", 0
     kw_rachana db "rachana", 0
-    kw_punaravartana db "punaravartana", 0
-    kw_to_str   db "to", 0
+    kw_punaravartana db "chakra", 0
+    kw_to_str   db "tak", 0
     kw_sutra    db "sutra", 0
-    kw_nishedha db "nishedha", 0
+    kw_nishedha db "abhava", 0
     kw_krama    db "krama", 0
-    kw_uddeshya db "uddeshya", 0
+    kw_uddeshya db "agrim", 0
     kw_purna    db "purna", 0
     kw_shunya   db "shunya", 0
-    kw_parigrah db "parigrah", 0
-    kw_srijana  db "srijana", 0
+    kw_parigrah db "satya", 0
+    kw_srijana  db "ganana", 0
     kw_guna     db "guna", 0
     kw_bhavana  db "bhavana", 0
-    kw_pankti   db "pankti", 0
-    kw_nishkriya db "nishkriya", 0
+    kw_pankti   db "mala", 0
+    kw_nishkriya db "yantra", 0
     kw_kuru      db "kuru", 0
     kw_dasham    db "dasham", 0
     kw_kosh      db "kosh", 0
@@ -730,9 +730,9 @@ r54_builtin_arity_table:
     bn_vecmul    db "sankhya_gunan", 0
     bn_vecdot    db "sankhya_dot", 0
     bn_lkfmt     db "likha_fmt", 0
-    bn_charat    db "char_at", 0
-    bn_setchar   db "set_char", 0
-    bn_charcd    db "char_code", 0
+    bn_charat    db "akshar", 0
+    bn_setchar   db "akshar_rakh", 0
+    bn_charcd    db "aksharank", 0
     bn_panktilen db "pankti_len", 0
     bn_koshpush db "kosh_push", 0
     bn_koshpop  db "kosh_pop", 0
@@ -2444,14 +2444,24 @@ expand_imports_pass:
     ; Check for "ayojan" at current pos
     lea rsi, [rel source_buf]
     add rsi, r12
-    ; Compare 6 bytes: a(61) y(79) o(6F) j(6A) a(61) n(6E)
-    cmp dword [rsi], 0x6A6F7961    ; "ayoj" in LE = 6A 6F 79 61
+    ; Compare 3 bytes: y(79) o(6F) j(6A)  -- keyword is now "yoj"
+    cmp word [rsi], 0x6F79
     jne .ei_copy
-    movzx eax, word [rsi+4]
-    cmp ax, 0x6E61                   ; "an" in LE = 6E 61
+    movzx eax, byte [rsi+2]
+    cmp al, 0x6A
     jne .ei_copy
-    ; Found "ayojan" - skip it and module name
-    add r12, 6
+    movzx eax, byte [rsi+3]
+    cmp eax, 32
+    je  .ei_yoj_ok
+    cmp eax, 10
+    je  .ei_yoj_ok
+    cmp eax, 9
+    je  .ei_yoj_ok
+    cmp eax, 13
+    je  .ei_yoj_ok
+    jmp .ei_copy
+.ei_yoj_ok:
+    add r12, 3
     ; Skip spaces/newlines
 .ei_skip_sp:
     cmp r12, r13
@@ -2939,7 +2949,7 @@ mg_arrow:     db " -> ", 0
 mg_colon:     db ":", 0
 mg_w_niryat:   db "niryat", 0
 mg_w_prakriya: db "prakriya", 0
-mg_w_ayojan:   db "ayojan", 0
+mg_w_ayojan:   db "yoj", 0
 ; Devanagari प्रक्रिया (27 bytes), same as kw_dev_prakriya
 mg_w_devprak:  db 0xE0,0xA4,0xAA,0xE0,0xA5,0x8D,0xE0,0xA4,0xB0,0xE0,0xA4,0x95,0xE0,0xA5,0x8D,0xE0,0xA4,0xB0,0xE0,0xA4,0xBF,0xE0,0xA4,0xAF,0xE0,0xA4,0xBE,0
 
@@ -3692,7 +3702,7 @@ mg_parse_ayojan:
     push r9
     push rcx
     mov r8, r12
-    add r8, 6
+    add r8, 3                     ; keyword is now "yoj" (3 bytes)
 .pa_ws:
     cmp r8, rdx
     jae .pa_bail
@@ -7917,12 +7927,15 @@ parse_stmt:
     mov rcx, [rax]
     cmp rcx, TOK_IDENT
     jne .ps_for_check_kw
-    ; Check if it's literally 'to' (2 bytes: 't','o',0)
+    ; Check if it's literally 'tak' (3 bytes: 't','a','k',0)
     mov rdi, [rax+8]
     movzx ecx, word [rdi]
-    cmp ecx, 0x6F74       ; 'to' in LE = 0x6F74
+    cmp ecx, 0x6174
     jne .ps_for_lang_to
     movzx ecx, byte [rdi+2]
+    cmp ecx, 0x6B
+    jne .ps_for_lang_to
+    movzx ecx, byte [rdi+3]
     test ecx, ecx
     jnz .ps_for_lang_to
     jmp .ps_for_got_to
