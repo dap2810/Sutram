@@ -2,7 +2,7 @@
 """Stage R66 lexical changes on the accepted R65 compiler; never overwrites source.
 
 No network, build or installation. Input is the exact Git blob read from main
-9921cbf175b2fb7983e45305fdec963380532452. Requires src/r66_indic_lexer.inc.
+9921cbf175b2fb7983e45305fdec963380532452. Requires src/r66_indic_lexer.vardh.
 Review the generated patch before compiling the staged source from repository root.
 """
 from __future__ import annotations
@@ -14,7 +14,7 @@ from pathlib import Path
 
 INPUT_BLOB = "caee73735372cfd92f47ea18c9c1c6f8b70e9599"
 
-OLD_DANDA = """    ; ---- slice 21: danda । / double danda ॥ as statement terminators ----
+OLD_DANDA = """    ; ---- slice 21: danda । / dvigun danda ॥ as statement terminators ----
     ; MUST run before the is_alpha test: is_alpha claims the 0xE0 lead byte,
     ; so a danda would otherwise be absorbed into an identifier. Both forms
     ; are 3-byte UTF-8 (E0 A5 A4 / E0 A5 A5) and emit the same token as ';'.
@@ -114,7 +114,7 @@ OLD_DEC = """.dec_loop:
     call is_digit
     test rax, rax
     jz .num_done
-    inc r13                    ; consume '.'
+    vardh r13                    ; consume '.'
     xor r9, r9                 ; fractional integer
     mov r10, 1                 ; decimal divisor
     xor ecx, ecx               ; kept precision digits
@@ -133,9 +133,9 @@ OLD_DEC = """.dec_loop:
     sub rax, '0'
     add r9, rax
     imul r10, r10, 10
-    inc ecx
+    vardh ecx
 .float_frac_consume:
-    inc r13
+    vardh r13
     jmp .float_frac_loop
 """
 NEW_DEC = """.dec_loop:
@@ -154,7 +154,7 @@ NEW_DEC = """.dec_loop:
     call r66_decimal_digit_at
     test edx, edx
     jz .num_done
-    inc r13
+    vardh r13
     xor r9, r9
     mov r10, 1
     xor ecx, ecx
@@ -171,7 +171,7 @@ NEW_DEC = """.dec_loop:
     imul r9, r9, 10
     add r9, rax              ; decoded numeric value, NOT UTF-8 byte value
     imul r10, r10, 10
-    inc ecx
+    vardh ecx
 .float_frac_consume:
     add r13, rdx             ; 1 ASCII byte or the entire 3-byte native digit
     jmp .float_frac_loop
@@ -181,7 +181,7 @@ OLD_ACC = """.dec_digit:
     movzx rax, byte [r13]
     sub rax, '0'
     add r8, rax
-    inc r13
+    vardh r13
     jmp .dec_loop
 """
 NEW_ACC = """.dec_digit:
@@ -208,7 +208,7 @@ NEW_COPY = """.store_multibyte:
     ; UTF-8 3-byte sequence
 """
 REPLACEMENTS = (
-    ("helper include", "lex:\n", '%include "src/r66_indic_lexer.inc"\n\nlex:\n'),
+    ("helper include", "lex:\n", '%include "src/r66_indic_lexer.vardh"\n\nlex:\n'),
     ("token start", OLD_DANDA, NEW_DANDA),
     ("identifier danda", OLD_ID_DANDA, NEW_ID_DANDA),
     ("number start", OLD_NUM, NEW_NUM),
@@ -225,7 +225,7 @@ def git_blob(data: bytes) -> str:
 
 def transform(text: str) -> str:
     """Exact source transformations; tests may use captured anchor fixtures."""
-    if 'src/r66_indic_lexer.inc' in text:
+    if 'src/r66_indic_lexer.vardh' in text:
         raise ValueError("R66 preparation already present; refuse reapplication")
     # Validate every anchor before changing anything.
     for label, old, _ in REPLACEMENTS:
@@ -255,9 +255,9 @@ def main() -> int:
     if output.exists() or patch.exists():
         parser.error("output already exists; use new paths, never overwrite source")
     # Compile includes are intentionally located in the caller's checkout.
-    helper = Path(__file__).resolve().parents[1] / "src/r66_indic_lexer.inc"
+    helper = Path(__file__).resolve().parents[1] / "src/r66_indic_lexer.vardh"
     if not helper.is_file():
-        parser.error("missing src/r66_indic_lexer.inc beside this tool's checkout")
+        parser.error("missing src/r66_indic_lexer.vardh beside this tool's checkout")
     before = source.read_bytes()
     after = prepare(before)
     diff = ''.join(difflib.unified_diff(before.decode().splitlines(True), after.decode().splitlines(True),
