@@ -52,7 +52,7 @@ prakriya foo(kosh dasham xs) {
   yavat (i < 5) { s = s + xs[i] }
   i = i + 2147483648
   yadi (i > 0) { s = s + 1.5 }
-  pratiyati s
+  prati s
 }
 '''
         c = classify_source(src)
