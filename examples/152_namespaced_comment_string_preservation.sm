@@ -1,4 +1,4 @@
-ayojan r33_alpha@unit
+yoj r33_alpha@unit
 mukhya() {
     # The token clash() in this comment must remain untouched.
     likha("clash() must not be renamed inside this string")
