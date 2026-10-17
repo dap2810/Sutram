@@ -1,43 +1,43 @@
-ayojan fmt
+yoj roop
 mukhya() {
     vitti out = nirmmita(128)
     vitti n = 0
-    n = fmt_group_indian("1234567", 7, out)
+    n = roop_varg_bharatiya("1234567", 7, out)
     likha(1, out, n)
     likha("\n")
-    n = fmt_group_intl("1234567", 7, out)
+    n = roop_varg_vishwa("1234567", 7, out)
     likha(1, out, n)
     likha("\n")
     # default grouping is Indian
-    n = fmt_group("123456", 6, out)
+    n = roop_varg("123456", 6, out)
     likha(1, out, n)
     likha("\n")
     # negative + decimal fraction copied verbatim
-    n = fmt_group_indian("-1234567.89", 11, out)
+    n = roop_varg_bharatiya("-1234567.89", 11, out)
     likha(1, out, n)
     likha("\n")
-    n = fmt_group_intl("-1234567.89", 11, out)
+    n = roop_varg_vishwa("-1234567.89", 11, out)
     likha(1, out, n)
     likha("\n")
     # short inputs: no commas
-    n = fmt_group_indian("123", 3, out)
+    n = roop_varg_bharatiya("123", 3, out)
     likha(1, out, n)
     likha("\n")
-    n = fmt_group_intl("12", 2, out)
+    n = roop_varg_vishwa("12", 2, out)
     likha(1, out, n)
     likha("\n")
     # empty input
-    n = fmt_group_indian("", 0, out)
+    n = roop_varg_bharatiya("", 0, out)
     likha(n)
     likha("\n")
     # integer convenience: Indian + international
-    n = fmt_group_int(0 - 1234567, 1, out)
+    n = roop_varg_ank(0 - 1234567, 1, out)
     likha(1, out, n)
     likha("\n")
-    n = fmt_group_int(1234567, 0, out)
+    n = roop_varg_ank(1234567, 0, out)
     likha(1, out, n)
     likha("\n")
-    n = fmt_group_int(999, 1, out)
+    n = roop_varg_ank(999, 1, out)
     likha(1, out, n)
     likha("\n")
 }
