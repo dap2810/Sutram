@@ -1,25 +1,25 @@
-ayojan fmt
+yoj roop
 mukhya() {
     vitti out = nirmmita(128)
     vitti n = 0
-    n = fmt_signed(42, out)
+    n = roop_chinhit(42, out)
     likha(1, out, n)
     likha("\n")
-    n = fmt_signed(0 - 42, out)
+    n = roop_chinhit(0 - 42, out)
     likha(1, out, n)
     likha("\n")
-    n = fmt_signed(0, out)
+    n = roop_chinhit(0, out)
     likha(1, out, n)
     likha("\n")
-    # caller-chosen sign char: blank for non-negative
-    n = fmt_sign_char(42, 32, out)
+    # caller-chosen util_chinha char: blank for non-negative
+    n = roop_sign_akshar(42, 32, out)
     likha(1, out, n)
     likha("\n")
-    n = fmt_sign_char(0 - 42, 32, out)
+    n = roop_sign_akshar(0 - 42, 32, out)
     likha(1, out, n)
     likha("\n")
-    # caller-chosen sign char: '*' for non-negative
-    n = fmt_sign_char(7, 42, out)
+    # caller-chosen util_chinha char: '*' for non-negative
+    n = roop_sign_akshar(7, 42, out)
     likha(1, out, n)
     likha("\n")
 }
