@@ -1,4 +1,4 @@
-ayojan sort
+yoj shreni
 mukhya() {
     vitti a = nirmmita(8 * 8)
     a[0] = 5
@@ -9,7 +9,7 @@ mukhya() {
     a[5] = 3
     a[6] = 7
     a[7] = 4
-    insertion_sort(a, 8)
+    nivesh_shreni(a, 8)
     vitti i = 0
     yavat (i < 8) {
         likha(a[i])
