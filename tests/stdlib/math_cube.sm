@@ -1,9 +1,9 @@
-ayojan math
+yoj ganit
 mukhya() {
-    likha(cube(3))
+    likha(ghan(3))
     likha("\n")
-    likha(cube(-2))
+    likha(ghan(-2))
     likha("\n")
-    likha(cube(0))
+    likha(ghan(0))
     likha("\n")
 }
