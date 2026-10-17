@@ -1,3 +1,48 @@
+## v157 - THE RENAME: every English word in the language is now Sanskrit
+
+The vocabulary frozen in A0 is now applied across the whole project. **All gates green.**
+
+| Gate | Before | After |
+|---|---|---|
+| regression suite | 187 / 4 | **187 / 4** |
+| language packs | 33 / 33 | **33 / 33** |
+| library proofs | 191 / 191 | **191 / 191** |
+| property proofs | 86 / 86 | **86 / 86** |
+| layers | 14 core / 9 alloc / 1 std | **14 core / 9 alloc / 1 std** |
+| stdlib | 24 modules / 303 functions | **24 modules / 303 functions** |
+
+**What changed**
+- **18 modules renamed** - `sort`->`shreni`, `list`->`suchi`, `map`->`nighantu`, `set`->`sangrah`,
+  `array`->`mala`, `string`->`varna`, `file`->`patra`, `hash`->`gudh`, `result`->`phal`, `fmt`->`roop`,
+  `util`->`sadhan`, `serial`->`anukram`, `bigint`->`brihat`, `num`->`ank`, `strconv`->`vakyank`,
+  `baseconv`->`aadhar`, `strb`->`khand`, `math`->`ganit`. Six kept: `ganita`, `chandas`, `madhava`,
+  `kalana`, `sankhyiki`, `samanvaya` - already Sanskrit.
+- **264 of 303 function names renamed** - `str_split`->`varna_bhed`, `list_push`->`suchi_khip`,
+  `fmt_dec`->`roop_dash`, `bigint_mul`->`brihat_gun`. 39 kept: `kuttaka`, `chakravala`, `samasa`,
+  `brahmagupta`, `fib`, `fnv1a`, `simpson` - proper names and mathematical terms, not English words.
+- **Keywords:** `pankti`->`mala`, `punaravartana`->`chakra`, `pratiyati`->`prati`, `uddeshya`->`agrim`,
+  `anyatra`->`anya`, `nishedha`->`abhava`, `parigrah`->`satya`, `nishkriya`->`yantra`, `ayojan`->`yoj`,
+  `srijana`->`ganana`, and **`to`->`tak`** - the last English keyword is gone.
+- **Builtins:** `char_at`->`akshar`, `char_code`->`aksharank`, `set_char`->`akshar_rakh`.
+- **11 language packs updated** so every native word maps to the new Sanskrit keyword.
+- 446 files in the language tree, plus 107 tool/doc files, plus 18 module files moved.
+
+**Four defects found by testing, not by reading** - and all four were in the compiler's *hardcoded* paths,
+invisible to a string rename:
+1. The module expander compared **raw bytes** (`cmp dword [rsi], 0x6A6F7961` = "ayoj"), not the `db` string.
+2. The for-range parser did the same for `to` (`cmp ecx, 0x6F74`).
+3. The module-graph parser had `add r8, 6` hardcoded to the keyword's old length.
+4. **`na` collided with a variable name** - the vocabulary was corrected to `abhava`, which is why the
+   frozen document and the code differ on that one word.
+
+**Two errors of my own, caught before they shipped:** the first rename pass would have rewritten **740
+occurrences of English prose inside comments** (`to`, `list`, `count` as ordinary words), and an early
+tools pass renamed Python's own builtins (`set`->`sangrah`), breaking the test scripts. Both fixed by
+making the rename string- and comment-aware.
+
+**A warning that stands:** this is a **breaking change**. Any `.sm` program written before v157 no longer
+compiles - the words changed. A compatibility alias layer was not built; that remains a decision.
+
 ## v156 - ChatGPT R71 (all five workstreams) and Muse R30 (51 defects) verified and synced
 
 **ChatGPT R71 - 30 files, 30/30 hashes verified at commit `bb791061`.** It delivered far more than the
