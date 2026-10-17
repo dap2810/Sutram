@@ -1,10 +1,10 @@
 vitti global_value = 3
-prakriya inc() {
+prakriya vardh() {
     global_value = global_value + 1
-    pratiyati global_value
+    prati global_value
 }
 mukhya() {
-    likha(global_value + inc())
+    likha(global_value + vardh())
     likha(global_value)
     likha((20 / 4) + (3 % 2))
 }
