@@ -1,20 +1,20 @@
-# For loop (punaravartana) example
-# punaravartana = "repetition/iteration"
+# For loop (chakra) example
+# chakra = "repetition/iteration"
 
 mukhya()
     likha("=== For Loop Demo ===\n")
     
-    # Count 0 to 5
+    # Count 0 tak 5
     likha("Count: ")
-    punaravartana i = 0 to 5 {
+    chakra i = 0 tak 5 {
         likha(i)
         likha(" ")
     }
     likha("\n")
     
-    # Sum 1 to 10
+    # Sum 1 tak 10
     vitti sum = 0
-    punaravartana j = 1 to 10 {
+    chakra j = 1 tak 10 {
         sum = sum + j
     }
     likha("Sum 1-10 = ")
@@ -23,7 +23,7 @@ mukhya()
     
     # Multiplication table for 3
     likha("Table of 3:\n")
-    punaravartana k = 1 to 5 {
+    chakra k = 1 tak 5 {
         likha("3 x ")
         likha(k)
         likha(" = ")
