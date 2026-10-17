@@ -1,11 +1,11 @@
-ayojan string
+yoj varna
 mukhya() {
-    likha(count_vowels("hello"))
+    likha(gan_swar("hello"))
     likha("\n")
-    likha(count_vowels(""))
+    likha(gan_swar(""))
     likha("\n")
-    likha(count_vowels("aeiou"))
+    likha(gan_swar("aeiou"))
     likha("\n")
-    likha(count_vowels("xyz"))
+    likha(gan_swar("xyz"))
     likha("\n")
 }
