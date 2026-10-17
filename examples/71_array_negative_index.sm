@@ -1,5 +1,5 @@
 mukhya() {
-    pankti a[3]
+    mala a[3]
     a[-1] = 99
     likha(999)
 }
