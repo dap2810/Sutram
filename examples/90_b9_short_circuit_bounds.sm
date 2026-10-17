@@ -1,5 +1,5 @@
 mukhya() {
-    pankti a[2]
+    mala a[2]
     a[0] = 11
     a[1] = 22
     vitti i = 2
