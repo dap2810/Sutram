@@ -1,0 +1,330 @@
+# lib/bigint.smlib — Sutram standard library: big integers
+# layer: alloc
+#
+# Arbitrary-precision integers as arrays of base-10 digits (0-9),
+# least-significant digit first. All arrays are fixed size n; the caller
+# allocates via nirmmita(n * 8) and tracks the size.
+#
+# Convention: brihat_gun requires res to have 2n digits (product of two
+# n-digit numbers can need 2n digits). All other functions use n-digit arrays.
+# Digits must be 0-9; behavior is undefined for out-of-range digits.
+
+# brihat_shunyank(arr, n) — set all n digits to 0
+prakriya brihat_shunyank(arr, n) {
+    vitti a = arr
+    vitti c = n
+    vitti i = 0
+    yavat (i < c) {
+        likh8(a + i * 8, 0)
+        i = i + 1
+    }
+    prati 0
+}
+
+# brihat_ank_se_int(val, arr, n) — convert int to digit array (LSB first)
+# Returns 1 if val fit in n digits, 0 if truncated.
+# MIN: |MIN| does not fit in int64, so plain negation wraps and
+# emits negative digits. Convert MAX and add 1 instead.
+prakriya brihat_ank_se_int(val, arr, n) {
+    vitti v = val
+    vitti a = arr
+    vitti c = n
+    vitti i = 0
+    vitti minv = (0 - 9223372036854775807) - 1
+    vitti ismin = 0
+    yadi (v == minv) {
+        ismin = 1
+        v = 9223372036854775807
+    }
+    yadi (v < 0) { v = 0 - v }
+    yavat (i < c) {
+        likh8(a + i * 8, v % 10)
+        v = v / 10
+        i = i + 1
+    }
+    yadi (v > 0) { prati 0 }
+    yadi (ismin == 1) {
+        # add 1 to the digit array: |MIN| = MAX + 1
+        vitti carry = 1
+        vitti j = 0
+        yavat (j < c) {
+            yadi (carry == 1) {
+                vitti d = pad8(a + j * 8) + 1
+                yadi (d == 10) {
+                    likh8(a + j * 8, 0)
+                } anya {
+                    likh8(a + j * 8, d)
+                    carry = 0
+                }
+            }
+            j = j + 1
+        }
+        yadi (carry == 1) { prati 0 }
+    }
+    prati 1
+}
+
+# brihat_ank_tak_int(arr, n) — convert digit array back to int (for verification)
+# Only correct if the value fits in an int.
+prakriya brihat_ank_tak_int(arr, n) {
+    vitti a = arr
+    vitti c = n
+    vitti r = 0
+    vitti i = c - 1
+    yavat (i >= 0) {
+        r = r * 10 + pad8(a + i * 8)
+        i = i - 1
+    }
+    prati r
+}
+
+# brihat_pratilip(dst, src, n) — copy n digits
+prakriya brihat_pratilip(dst, src, n) {
+    vitti d = dst
+    vitti s = src
+    vitti c = n
+    vitti i = 0
+    yavat (i < c) {
+        likh8(d + i * 8, pad8(s + i * 8))
+        i = i + 1
+    }
+    prati 0
+}
+
+# brihat_tul(a, b, n) — compare: 1 if a > b, -1 if a < b, 0 if equal
+prakriya brihat_tul(a, b, n) {
+    vitti x = a
+    vitti y = b
+    vitti c = n
+    vitti i = c - 1
+    yavat (i >= 0) {
+        vitti dx = pad8(x + i * 8)
+        vitti dy = pad8(y + i * 8)
+        yadi (dx > dy) { prati 1 }
+        yadi (dx < dy) { prati -1 }
+        i = i - 1
+    }
+    prati 0
+}
+
+# brihat_yuj(a, b, res, n) — res = a + b; returns final carry (0 or 1)
+prakriya brihat_yuj(a, b, res, n) {
+    vitti x = a
+    vitti y = b
+    vitti r = res
+    vitti c = n
+    vitti carry = 0
+    vitti i = 0
+    yavat (i < c) {
+        vitti s = pad8(x + i * 8) + pad8(y + i * 8) + carry
+        likh8(r + i * 8, s % 10)
+        carry = s / 10
+        i = i + 1
+    }
+    prati carry
+}
+
+# brihat_nyun(a, b, res, n) — res = a - b (requires a >= b); returns final borrow
+prakriya brihat_nyun(a, b, res, n) {
+    vitti x = a
+    vitti y = b
+    vitti r = res
+    vitti c = n
+    vitti borrow = 0
+    vitti i = 0
+    yavat (i < c) {
+        vitti d = pad8(x + i * 8) - pad8(y + i * 8) - borrow
+        yadi (d < 0) {
+            likh8(r + i * 8, d + 10)
+            borrow = 1
+        }
+        anya {
+            likh8(r + i * 8, d)
+            borrow = 0
+        }
+        i = i + 1
+    }
+    prati borrow
+}
+
+# brihat_gun(a, b, res, n) — res = a * b; res must have 2n digits
+# Returns 0 on success.
+prakriya brihat_gun(a, b, res, n) {
+    vitti x = a
+    vitti y = b
+    vitti r = res
+    vitti c = n
+    # zero the 2n-digit result
+    vitti i = 0
+    yavat (i < c * 2) {
+        likh8(r + i * 8, 0)
+        i = i + 1
+    }
+    # schoolbook multiplication
+    i = 0
+    yavat (i < c) {
+        vitti carry = 0
+        vitti j = 0
+        yavat (j < c) {
+            vitti p = pad8(x + i * 8) * pad8(y + j * 8) + pad8(r + (i + j) * 8) + carry
+            likh8(r + (i + j) * 8, p % 10)
+            carry = p / 10
+            j = j + 1
+        }
+        likh8(r + (i + c) * 8, pad8(r + (i + c) * 8) + carry)
+        i = i + 1
+    }
+    prati 0
+}
+
+# brihat_asti_shunyank(arr, n) — 1 if all digits are 0, else 0
+prakriya brihat_asti_shunyank(arr, n) {
+    vitti a = arr
+    vitti c = n
+    vitti i = 0
+    yavat (i < c) {
+        yadi (pad8(a + i * 8) != 0) { prati 0 }
+        i = i + 1
+    }
+    prati 1
+}
+
+# brihat_bhajshesh(a, b, q, r, n) — q = a / b, r = a % b (a,b,q,r are n-digit)
+# Uses long division, one decimal digit at a time. Division by zero is
+# defined, not a hang: q = 0, r = a (so q*b + r == a still holds).
+prakriya brihat_bhajshesh(a, b, q, r, n) {
+    vitti x = a
+    vitti y = b
+    vitti qq = q
+    vitti rr = r
+    vitti c = n
+    # zero q and r
+    vitti i = 0
+    yavat (i < c) {
+        likh8(qq + i * 8, 0)
+        likh8(rr + i * 8, 0)
+        i = i + 1
+    }
+    yadi (brihat_asti_shunyank(y, c) == 1) {
+        # b == 0: q = 0 (already), r = a. Without this guard the
+        # trial-subtraction loop below never terminates (rr >= 0
+        # always, and subtracting 0 leaves rr unchanged).
+        vitti m = 0
+        yavat (m < c) {
+            likh8(rr + m * 8, pad8(x + m * 8))
+            m = m + 1
+        }
+        prati 0
+    }
+    # long division from most significant digit
+    i = c - 1
+    yavat (i >= 0) {
+        # r = r * 10 + a[i]: shift r left by one decimal digit
+        vitti j = c - 1
+        yavat (j > 0) {
+            likh8(rr + j * 8, pad8(rr + (j - 1) * 8))
+            j = j - 1
+        }
+        likh8(rr, pad8(x + i * 8))
+        # q[i] = r / b (0-9), r = r % b — by trial subtraction
+        vitti qd = 0
+        yavat (brihat_tul(rr, y, c) >= 0) {
+            # r = r - b (in place)
+            vitti borrow = 0
+            vitti k = 0
+            yavat (k < c) {
+                vitti d = pad8(rr + k * 8) - pad8(y + k * 8) - borrow
+                yadi (d < 0) {
+                    likh8(rr + k * 8, d + 10)
+                    borrow = 1
+                }
+                anya {
+                    likh8(rr + k * 8, d)
+                    borrow = 0
+                }
+                k = k + 1
+            }
+            qd = qd + 1
+        }
+        likh8(qq + i * 8, qd)
+        i = i - 1
+    }
+    prati 0
+}
+
+# brihat_shesh(num, shesh, res, n) — res = num % shesh, where num has 2n digits
+# Helper for powmod. Uses long division. shesh == 0 is defined, not a
+# hang: no reduction is applied, so res is the low n digits of num.
+prakriya brihat_shesh(ank, shesh, res, n) {
+    vitti x = ank
+    vitti m = shesh
+    vitti r = res
+    vitti c = n
+    yadi (brihat_asti_shunyank(m, c) == 1) {
+        vitti m2 = 0
+        yavat (m2 < c) {
+            likh8(r + m2 * 8, pad8(x + m2 * 8))
+            m2 = m2 + 1
+        }
+        prati 0
+    }
+    vitti tr = nirmmita(c * 8)
+    brihat_shunyank(tr, c)
+    vitti i = c * 2 - 1
+    yavat (i >= 0) {
+        # tr = tr * 10 + x[i]
+        vitti j = c - 1
+        yavat (j > 0) {
+            likh8(tr + j * 8, pad8(tr + (j - 1) * 8))
+            j = j - 1
+        }
+        likh8(tr, pad8(x + i * 8))
+        # while tr >= m: tr -= m
+        yavat (brihat_tul(tr, m, c) >= 0) {
+            vitti bw = 0
+            vitti k = 0
+            yavat (k < c) {
+                vitti d = pad8(tr + k * 8) - pad8(m + k * 8) - bw
+                yadi (d < 0) {
+                    likh8(tr + k * 8, d + 10)
+                    bw = 1
+                }
+                anya {
+                    likh8(tr + k * 8, d)
+                    bw = 0
+                }
+                k = k + 1
+            }
+        }
+        i = i - 1
+    }
+    brihat_pratilip(r, tr, c)
+    prati 0
+}
+
+# brihat_ghatmod(base, exp, shesh, res, n) — res = base^exp shesh shesh
+# exp is a plain int and must be >= 0 (a negative exp returns 1:
+# the loop never runs). shesh == 0 means "no reduction" (see
+# brihat_shesh), so the result is base^exp truncated to n digits.
+# res is n-digit.
+prakriya brihat_ghatmod(base, exp, shesh, res, n) {
+    vitti b = base
+    vitti e = exp
+    vitti m = shesh
+    vitti r = res
+    vitti c = n
+    vitti t1 = nirmmita(c * 2 * 8)
+    vitti bcur = nirmmita(c * 8)
+    brihat_ank_se_int(1, r, c)
+    brihat_pratilip(bcur, b, c)
+    yavat (e > 0) {
+        yadi (e % 2 == 1) {
+            brihat_gun(r, bcur, t1, c)
+            brihat_shesh(t1, m, r, c)
+        }
+        brihat_gun(bcur, bcur, t1, c)
+        brihat_shesh(t1, m, bcur, c)
+        e = e / 2
+    }
+    prati 0
+}
