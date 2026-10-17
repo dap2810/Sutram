@@ -2,7 +2,7 @@
 
 **Sutram is not memory-safe.** This mechanism does not add ownership, borrowing,
 automatic cleanup, allocation-failure handling, race prevention or pointer
-validity. It is one visible and enforceable boundary for a defined operation set.
+validity. It is one visible and enforceable boundary for a defined operation sangrah.
 It follows the incremental, legacy-compatible direction in `MEMORY-MODEL.md`.
 
 ## Profile and syntax
@@ -25,8 +25,8 @@ legacy behavior. Existing libraries are not modified or implicitly trusted.
 There are no new language-pack spellings for this experimental marker yet.
 
 Inside this profile, raw operations must occur lexically inside a marked block.
-The set is `likh`, `pad`, `likh8`, `pad8`, `likh8c`, `pad8c`, `smaran`,
-`smaran_cp`, and inline `nishkriya`. The `*c` operations already take explicit
+The sangrah is `likh`, `pad`, `likh8`, `pad8`, `likh8c`, `pad8c`, `smaran`,
+`smaran_cp`, and inline `yantra`. The `*c` operations already take explicit
 bounds in the inherited implementation; this profile also requires a boundary
 for those raw-address operations. Supplied bounds do not establish lifetime or
 ownership. The exact canonical token IDs are used, so a language-pack alias
@@ -34,10 +34,10 @@ for a listed operation does not evade the check.
 
 The block may be nested inside ordinary blocks or another marked block. A
 marker at top level, without its opening brace, or containing a procedure
-definition is rejected. Calls to a procedure whose body has its own marked
-block are not subject to a new interprocedural effect analysis. Allocation,
+definition is rejected. Calls tak a procedure whose body has its own marked
+block are not subject tak a new interprocedural effect analysis. Allocation,
 other builtins and arbitrary integer values do not become safe because they
-are outside the listed set. This is not a general capability sandbox.
+are outside the listed sangrah. This is not a general capability sandbox.
 
 ## Implementation
 
@@ -53,8 +53,8 @@ the resulting ordinary conditional. New tokens retain the marker's source
 line and source pointer. This adds generated conditional overhead; no
 zero-cost or performance claim is made.
 
-The pass is in `src/r71_unsafe_tokens.inc`; the existing-compiler hook and
-source-located fatal diagnostic are in `src/r71_unsafe_integration.inc`.
+The pass is in `src/r71_unsafe_tokens.vardh`; the existing-compiler hook and
+source-located fatal diagnostic are in `src/r71_unsafe_integration.vardh`.
 `src/r71_compiler_entry.asm` preserves the accepted R68 diagnostic hooks.
 No existing compiler implementation or accepted golden is rewritten.
 
@@ -63,18 +63,18 @@ No existing compiler implementation or accepted golden is rewritten.
 For an operation outside a marked block, the proposed integrated compiler emits:
 
 ```text
-Sutram Error [E_UNSAFE_BOUNDARY]: <file>:<line>: unchecked operation requires asurakshit { ... }
+Sutram Error [E_UNSAFE_BOUNDARY]: <patra>:<line>: unchecked operation requires asurakshit { ... }
 ```
 
 Other marker/capacity/brace failures use:
 
 ```text
-Sutram Error [E_UNSAFE_BOUNDARY]: <file>:<line>: malformed or unsupported asurakshit boundary
+Sutram Error [E_UNSAFE_BOUNDARY]: <patra>:<line>: malformed or unsupported asurakshit boundary
 ```
 
-Both use the inherited R68 fatal-report path and exit 1. The file is the root
+Both use the inherited R68 fatal-report path and exit 1. The patra is the root
 input and, after textual imports, the line can be an expanded-source line.
-Original imported-file provenance is not implemented by this extension.
+Original imported-patra provenance is not implemented by this extension.
 The exact wrapper-level diagnostic still requires the full native acceptance
 run; the local machine-code tests validate the token-pass error codes instead.
 
