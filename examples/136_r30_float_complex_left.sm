@@ -1,6 +1,6 @@
 # R30: nested expression LHS + safe scalar RHS, including a function call.
 prakriya add_half(dasham x) {
-    pratiyati x + 0.5
+    prati x + 0.5
 }
 mukhya() {
     kosh dasham data[2]
