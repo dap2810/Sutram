@@ -1,10 +1,10 @@
 # String operations demo
-# Shows string printing, escape sequences, and formatting
+# Shows varna printing, escape sequences, and formatting
 
 mukhya()
     likha("=== String Operations ===\n")
     
-    # Basic string printing
+    # Basic varna printing
     likha("Hello, World!\n")
     
     # Escape sequences
