@@ -1,13 +1,13 @@
-ayojan math
+yoj ganit
 mukhya() {
-    likha(is_prime(17))
+    likha(asti_abhajya(17))
     likha("\n")
-    likha(is_prime(15))
+    likha(asti_abhajya(15))
     likha("\n")
-    likha(is_prime(2))
+    likha(asti_abhajya(2))
     likha("\n")
-    likha(is_prime(1))
+    likha(asti_abhajya(1))
     likha("\n")
-    likha(is_prime(0))
+    likha(asti_abhajya(0))
     likha("\n")
 }
