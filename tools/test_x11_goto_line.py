@@ -1,6 +1,6 @@
 import os, socket, struct, subprocess, sys, tempfile, shutil
 
-# Slice 34 proof: after a failed compile the editor JUMPS tak the error line.
+# Slice 34 proof: after a failed compile the editor JUMPS to the error line.
 #
 # The buffer is 60 lines but only 23 fit. The mock compiler names line 45. Before the
 # run the gutter shows the top of the file (1..); after Ctrl-R it must show a window
