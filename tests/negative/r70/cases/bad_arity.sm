@@ -1,4 +1,4 @@
-prakriya six(a, b, c, d, e, f) { pratiyati a }
+prakriya six(a, b, c, d, e, f) { prati a }
 mukhya() {
     likha(six(1, 2, 3, 4, 5, 6, 7))
 }
