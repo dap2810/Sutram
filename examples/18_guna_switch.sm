@@ -7,6 +7,6 @@ mukhya()
         bhavana 3: { likha("Wednesday\n") }
         bhavana 4: { likha("Thursday\n") }
         bhavana 5: { likha("Friday\n") }
-        anyatra: { likha("Weekend\n") }
+        anya: { likha("Weekend\n") }
     }
     likha("=== Done ===\n")
