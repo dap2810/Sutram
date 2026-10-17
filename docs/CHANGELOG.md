@@ -32,6 +32,45 @@ order - reliable baseline and examples, then precise diagnostics, then resource 
 then measured usability. K**araka argument roles are moved to later research**, after the deterministic core
 is stable - more conservative than my earlier position, and correct.
 
+## v157 - THE RENAME: every English word in the language is now Sanskrit
+
+The vocabulary frozen in A0 is applied across the whole project. **All gates green.**
+
+| Gate | Before | After |
+|---|---|---|
+| regression suite | 187 / 4 | **187 / 4** |
+| language packs | 33 / 33 | **33 / 33** |
+| library proofs | 191 / 191 | **191 / 191** |
+| property proofs | 86 / 86 | **86 / 86** |
+| layers | 14 core / 9 alloc / 1 std | **14 core / 9 alloc / 1 std** |
+| stdlib | 24 modules / 303 functions | **24 modules / 303 functions** |
+
+**What changed**
+- **18 modules renamed** - `sort`->`shreni`, `list`->`suchi`, `map`->`nighantu`, `set`->`sangrah`,
+  `array`->`mala`, `string`->`varna`, `file`->`patra`, `hash`->`gudh`, `result`->`phal`, `fmt`->`roop`,
+  `util`->`sadhan`, `serial`->`anukram`, `bigint`->`brihat`, `num`->`ank`, `strconv`->`vakyank`,
+  `baseconv`->`aadhar`, `strb`->`khand`, `math`->`ganit`. Six kept: `ganita`, `chandas`, `madhava`,
+  `kalana`, `sankhyiki`, `samanvaya`.
+- **264 of 303 function names renamed** - `str_split`->`varna_bhed`, `list_push`->`suchi_khip`,
+  `fmt_dec`->`roop_dash`, `bigint_mul`->`brihat_gun`. 39 kept: `kuttaka`, `chakravala`, `samasa`,
+  `brahmagupta`, `fib`, `fnv1a`, `simpson` - proper names and mathematical terms.
+- **Keywords:** `pankti`->`mala`, `punaravartana`->`chakra`, `pratiyati`->`prati`, `uddeshya`->`agrim`,
+  `anyatra`->`anya`, `nishedha`->`abhava`, `parigrah`->`satya`, `nishkriya`->`yantra`, `ayojan`->`yoj`,
+  `srijana`->`ganana`, and **`to`->`tak`** - the last English keyword is gone.
+- **Builtins:** `char_at`->`akshar`, `char_code`->`aksharank`, `set_char`->`akshar_rakh`.
+- **11 language packs updated**; 446 files in the language tree, 107 tool/doc files, 18 modules moved.
+
+**Four defects found by testing, not reading** - all four in the compiler's *hardcoded* paths, invisible to a
+string rename: the module expander compared raw bytes (`cmp dword [rsi], 0x6A6F7961` = "ayoj"); the
+for-range parser did the same for `to`; the module-graph parser had the keyword length `6` hardcoded; and
+**`na` collided with a variable name**, so the vocabulary was corrected to `abhava`.
+
+**Two errors of my own, caught before shipping:** the first pass would have rewritten 740 occurrences of
+English prose inside comments, and an early tools pass renamed Python's own builtins (`set`->`sangrah`).
+
+**This is a breaking change.** Any `.sm` program written before v157 no longer compiles. No compatibility
+alias layer was built.
+
 ## v156 - ChatGPT R71 (all five workstreams) and Muse R30 (51 defects) verified and synced
 
 **ChatGPT R71 - 30 files, 30/30 hashes verified at commit `bb791061`.** It delivered far more than the
