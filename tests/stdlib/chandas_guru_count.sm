@@ -1,9 +1,9 @@
-ayojan chandas
+yoj chandas
 mukhya() {
-    likha(guru_count(0))
+    likha(guru_gan(0))
     likha("\n")
-    likha(guru_count(7))
+    likha(guru_gan(7))
     likha("\n")
-    likha(guru_count(8))
+    likha(guru_gan(8))
     likha("\n")
 }
