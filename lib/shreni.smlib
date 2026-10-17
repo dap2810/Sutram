@@ -1,0 +1,215 @@
+# lib/sort.smlib — Sutram standard library: sorting and searching
+# layer: alloc
+#
+# Operates on `pankti` integer arrays, in place. Scalar arguments are copied into
+# locals before mutation; array elements are written directly.
+
+prakriya vinimay(a, i, j) {
+    vitti t = a[i]
+    a[i] = a[j]
+    a[j] = t
+}
+
+prakriya budbud_shreni(a, n) {
+    vitti i = 0
+    yavat (i < n) {
+        vitti j = 0
+        yavat (j < n - 1 - i) {
+            yadi (a[j] > a[j + 1]) {
+                vinimay(a, j, j + 1)
+            }
+            j = j + 1
+        }
+        i = i + 1
+    }
+}
+
+prakriya viparyay_mala(a, n) {
+    vitti i = 0
+    vitti j = n - 1
+    yavat (i < j) {
+        vinimay(a, i, j)
+        i = i + 1
+        j = j - 1
+    }
+}
+
+prakriya laghu(a, n) {
+    # n <= 0: no element exists — return 0, as suchi_laghu does
+    # on an empty list (the old code read a[0] and segfaulted).
+    yadi (n <= 0) { prati 0 }
+    vitti i = 1
+    vitti best = a[0]
+    yavat (i < n) {
+        yadi (a[i] < best) { best = a[i] }
+        i = i + 1
+    }
+    prati best
+}
+
+prakriya adhik(a, n) {
+    # n <= 0: no element exists — return 0, as laghu.
+    yadi (n <= 0) { prati 0 }
+    vitti i = 1
+    vitti best = a[0]
+    yavat (i < n) {
+        yadi (a[i] > best) { best = a[i] }
+        i = i + 1
+    }
+    prati best
+}
+
+prakriya yog(a, n) {
+    vitti i = 0
+    vitti s = 0
+    yavat (i < n) {
+        s = s + a[i]
+        i = i + 1
+    }
+    prati s
+}
+
+prakriya anwesh_sarak(a, n, target) {
+    vitti i = 0
+    yavat (i < n) {
+        yadi (a[i] == target) { prati i }
+        i = i + 1
+    }
+    prati 0 - 1
+}
+
+prakriya gan(a, n, target) {
+    vitti i = 0
+    vitti c = 0
+    yavat (i < n) {
+        yadi (a[i] == target) { c = c + 1 }
+        i = i + 1
+    }
+    prati c
+}
+
+prakriya asti_sorted(a, n) {
+    vitti i = 0
+    yavat (i < n - 1) {
+        yadi (a[i] > a[i + 1]) { prati 0 }
+        i = i + 1
+    }
+    prati 1
+}
+
+prakriya dwi_anwesh(a, n, target) {
+    vitti lo = 0
+    vitti hi = n - 1
+    yavat (lo <= hi) {
+        vitti mid = (lo + hi) / 2
+        yadi (a[mid] == target) { prati mid }
+        yadi (a[mid] < target) { lo = mid + 1 } anya { hi = mid - 1 }
+    }
+    prati 0 - 1
+}
+
+prakriya shankh_shreni(a, n) {
+    vitti gap = n / 2
+    yavat (gap > 0) {
+        vitti i = gap
+        yavat (i < n) {
+            vitti temp = a[i]
+            vitti j = i
+            vitti go = 1
+            yavat (go == 1) {
+                yadi (j >= gap) {
+                    yadi (a[j - gap] > temp) {
+                        a[j] = a[j - gap]
+                        j = j - gap
+                    } anya {
+                        go = 0
+                    }
+                } anya {
+                    go = 0
+                }
+            }
+            a[j] = temp
+            i = i + 1
+        }
+        gap = gap / 2
+    }
+}
+
+prakriya nivesh_shreni(a, n) {
+    vitti arr = a
+    vitti len = n
+    vitti i = 1
+    yavat (i < len) {
+        vitti key = arr[i]
+        vitti j = i - 1
+        vitti done = 0
+        yavat (done == 0) {
+            yadi (j < 0) {
+                done = 1
+            } anya {
+                yadi (arr[j] > key) {
+                    arr[j + 1] = arr[j]
+                    j = j - 1
+                } anya {
+                    done = 1
+                }
+            }
+        }
+        arr[j + 1] = key
+        i = i + 1
+    }
+}
+
+# mil_shreni(a, n) — top-down merge sort using a temp buffer.
+prakriya mil_shreni_punar(a, tmp, lo, hi) {
+    yadi (hi - lo < 2) { prati 0 }
+    vitti mid = (lo + hi) / 2
+    mil_shreni_punar(a, tmp, lo, mid)
+    mil_shreni_punar(a, tmp, mid, hi)
+    # merge a[lo:mid] and a[mid:hi] into tmp[lo:hi], copy back
+    vitti i = lo
+    vitti j = mid
+    vitti k = lo
+    vitti done = 0
+    yavat (done == 0) {
+        vitti iex = 0
+        yadi (i >= mid) { iex = 1 }
+        vitti jex = 0
+        yadi (j >= hi) { jex = 1 }
+        yadi (iex == 1) {
+            yadi (jex == 1) {
+                done = 1
+            } anya {
+                tmp[k] = a[j]
+                j = j + 1
+                k = k + 1
+            }
+        } anya {
+            yadi (jex == 1) {
+                tmp[k] = a[i]
+                i = i + 1
+                k = k + 1
+            } anya {
+                yadi (a[j] < a[i]) {
+                    tmp[k] = a[j]
+                    j = j + 1
+                } anya {
+                    tmp[k] = a[i]
+                    i = i + 1
+                }
+                k = k + 1
+            }
+        }
+    }
+    vitti c = lo
+    yavat (c < hi) {
+        a[c] = tmp[c]
+        c = c + 1
+    }
+    prati 0
+}
+
+prakriya mil_shreni(a, n) {
+    vitti tmp = nirmmita(n * 8)
+    mil_shreni_punar(a, tmp, 0, n)
+}
