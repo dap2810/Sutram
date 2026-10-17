@@ -1,16 +1,16 @@
-ayojan array
+yoj mala
 mukhya() {
-    vitti a = array_new(4)
+    vitti a = mala_nava(4)
     yadi (a > 0) {
         likha(1)
-    } anyatra {
+    } anya {
         likha(0)
     }
     likha("\n")
-    vitti b = array_new(1)
+    vitti b = mala_nava(1)
     yadi (b > 0) {
         likha(1)
-    } anyatra {
+    } anya {
         likha(0)
     }
     likha("\n")
