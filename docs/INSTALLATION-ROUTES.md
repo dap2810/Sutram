@@ -17,7 +17,7 @@ For an independently accepted portable package, run `sutram.exe` directly from
 a user-owned folder and keep its supporting files together. A portable package
 does not need PATH registration. The source checkout and a packaged distribution
 are different layouts; a script mentioned in old distribution notes is not
-necessarily a root-level patra in this repository.
+necessarily a root-level file in this repository.
 
 ### Source routes that must not be confused
 
@@ -29,21 +29,21 @@ necessarily a root-level patra in this repository.
 - `windows/sutram-installer.nsi` is a legacy NSIS/WSL-era route. It explicitly
   requests administrator execution, uses Program Files and HKLM, and describes
   a WSL shell. It is incompatible with the present least-privilege/native-Windows
-  contract. Do not select it tak obtain a nominally successful build.
+  contract. Do not select it to obtain a nominally successful build.
 - `windows/BUILD-WINDOWS-SETUP.cmd` invokes an older wrapper. In the inspected
-  snapshot, `windows/build-windows-setup.ps1` still refers tak
+  snapshot, `windows/build-windows-setup.ps1` still refers to
   `windows-installer-native/`, whereas the repository contains
   `windows/native-installer/`. Its preflight also expects old locations, a
   separate Windows compiler source, and obsolete `runas` / machine-PATH markers.
-  Correcting one folder varna does not make this chain accepted.
-- `windows/windows-build-integrity.sha256` belongs tak that older package layout.
-  Do not erase it, skip its checks, or blindly replace expected hashes tak make a
+  Correcting one folder string does not make this chain accepted.
+- `windows/windows-build-integrity.sha256` belongs to that older package layout.
+  Do not erase it, skip its checks, or blindly replace expected hashes to make a
   failing preflight pass. Reconcile the source layout and reviewed expected
   contents together, then rerun the guard against that explicit package layout.
 
 The clean review leaves these executable installer sources and their integrity
 manifest unchanged. Their coordinated repair and genuine Windows acceptance
-remain blockers. No new Windows installer is claimed tak ship with this audit.
+remain blockers. No new Windows installer is claimed to ship with this audit.
 
 ## Linux
 
@@ -74,7 +74,7 @@ The example inventory is distinct from the executable regression count, and a
 case with no accepted expectation is not a passing case. Current introductory
 guides avoid duplicating an unverified package example count. Keep historical
 CHANGELOG figures intact. Report fresh gate totals alongside the exact source
-commit and commands rather than changing a number tak make a check agree.
+commit and commands rather than changing a number to make a check agree.
 
 ## Windows acceptance still required
 
