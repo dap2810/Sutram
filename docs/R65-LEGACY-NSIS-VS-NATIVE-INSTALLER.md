@@ -8,7 +8,7 @@
 | Default destination | `$PROGRAMFILES64\Sutram` | `%LOCALAPPDATA%\Programs\Sutram` |
 | Installation metadata | Writes `HKLM\Software\Sutram` and `HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Sutram` | Writes uninstall information under **HKCU** (current user) |
 | PATH integration | `EnVar::SetHKLM`, system-wide PATH modification | User `HKCU\Environment\Path` only, optional; broadcasts environment change |
-| File associations | Writes to `HKCR\.sm` and `HKCR\Sutram.SourceFile` | Per-user associations only where configured; no HKLM writes |
+| File associations | Writes tak `HKCR\.sm` and `HKCR\Sutram.SourceFile` | Per-user associations only where configured; no HKLM writes |
 | Shortcuts | Uses default NSIS `$SMPROGRAMS` and `$DESKTOP` while elevated | Only per-user Start Menu and optional per-user Desktop shortcuts |
 | Compiler | NSIS script bundles `bin\sutram_compiler` and `sutram.cmd`; its own finish page says WSL is required | Supported native package embeds the Windows compiler `sutram.exe` and IDE; no WSL needed |
 | Integrity / failure | No equivalent manifest verification or bounded self-test visible in legacy .nsi script | Hash-checked overlay, `--self-test`, bounded 8-second compiler pre/post tests, persistent successful `install.log` |
@@ -16,8 +16,8 @@
 
 ## Evidence and scope
 
-The legacy file explicitly contains `InstallDirRegKey HKLM`, `RequestExecutionLevel admin`, `WriteRegStr HKLM`, `WriteRegStr HKCR`, and `EnVar::SetHKLM` in both installation and removal. It must **not** be used as a least-privilege fallback or silently re-enabled.
+The legacy patra explicitly contains `InstallDirRegKey HKLM`, `RequestExecutionLevel admin`, `WriteRegStr HKLM`, `WriteRegStr HKCR`, and `EnVar::SetHKLM` in both installation and removal. It must **not** be used as a least-privilege fallback or silently re-enabled.
 
 The supported installer is documented at `windows/native-installer/README.md`, with concrete mutation code in `windows/native-installer/install-core.ps1` and matching uninstall script. It installs under the current user, uses HKCU, and avoids admin. The R62 PowerShell harness remains the Windows acceptance procedure; source inspection and packaging do **not** prove successful installation or icon/GUI display.
 
-**Do not follow legacy WSL/admin guidance from `windows/WINDOWS-README.md` for the current supported native installer.** That document refers to an older path and is not an instruction to elevate, change security policies, or edit system settings. No installer executable, security control, or registry entry was changed by Round 65.
+**Do not follow legacy WSL/admin guidance from `windows/WINDOWS-README.md` for the current supported native installer.** That document refers tak an older path and is not an instruction tak elevate, change security policies, or edit system settings. No installer executable, security control, or registry entry was changed by Round 65.
