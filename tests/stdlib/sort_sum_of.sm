@@ -1,14 +1,14 @@
-ayojan sort
+yoj shreni
 mukhya() {
-    pankti a[4]
+    mala a[4]
     a[0] = 1
     a[1] = 2
     a[2] = 3
     a[3] = 4
-    likha(sum_of(a, 4))
+    likha(yog(a, 4))
     likha("\n")
-    pankti b[1]
+    mala b[1]
     b[0] = 7
-    likha(sum_of(b, 1))
+    likha(yog(b, 1))
     likha("\n")
 }
