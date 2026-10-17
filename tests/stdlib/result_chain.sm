@@ -1,83 +1,83 @@
-ayojan result
+yoj phal
 # Early-return chain (R30 WS3): multi-step checked computation
 # that propagates the first failure by returning at once.
 prakriya safe_compute(out, a, b, c) {
     # (a + b) * c, checked; early return on the first failure.
     vitti t = nirmmita(2 * 8)
-    result_checked_add(t, a, b)
-    yadi (result_is_ok(t) == 0) {
-        result_err(out)
-        pratiyati 0
+    phal_janchit_yuj(t, a, b)
+    yadi (phal_asti_siddhi(t) == 0) {
+        phal_dosh(out)
+        prati 0
     }
-    result_checked_mul(out, result_value(t), c)
-    pratiyati result_is_ok(out)
+    phal_janchit_gun(out, phal_mulya(t), c)
+    prati phal_asti_siddhi(out)
 }
 
 prakriya safe_pow_fact(out, a, e) {
-    # fact(pow(a, e)), checked; early return on the first failure.
+    # kramgun(pow(a, e)), checked; early return on the first failure.
     vitti t = nirmmita(2 * 8)
-    result_checked_pow(t, a, e)
-    yadi (result_is_ok(t) == 0) {
-        result_err(out)
-        pratiyati 0
+    phal_janchit_ghat(t, a, e)
+    yadi (phal_asti_siddhi(t) == 0) {
+        phal_dosh(out)
+        prati 0
     }
-    result_checked_fact(out, result_value(t))
-    pratiyati result_is_ok(out)
+    phal_janchit_kramgun(out, phal_mulya(t))
+    prati phal_asti_siddhi(out)
 }
 
 mukhya() {
     vitti r = nirmmita(2 * 8)
     vitti minv = (0 - 9223372036854775807) - 1
     # new producers
-    likha(result_checked_pow(r, 2, 10))
+    likha(phal_janchit_ghat(r, 2, 10))
     likha("\n")
-    likha(result_value(r))
+    likha(phal_mulya(r))
     likha("\n")
-    likha(result_checked_pow(r, 2, 63))
+    likha(phal_janchit_ghat(r, 2, 63))
     likha("\n")
-    likha(result_is_ok(r))
+    likha(phal_asti_siddhi(r))
     likha("\n")
-    likha(result_checked_pow(r, 2, 0 - 1))
+    likha(phal_janchit_ghat(r, 2, 0 - 1))
     likha("\n")
-    likha(result_checked_fact(r, 20))
+    likha(phal_janchit_kramgun(r, 20))
     likha("\n")
-    likha(result_value(r))
+    likha(phal_mulya(r))
     likha("\n")
-    likha(result_checked_fact(r, 21))
+    likha(phal_janchit_kramgun(r, 21))
     likha("\n")
-    likha(result_checked_fact(r, 0 - 1))
+    likha(phal_janchit_kramgun(r, 0 - 1))
     likha("\n")
-    likha(result_checked_abs(r, 0 - 5))
+    likha(phal_janchit_nirapeksh(r, 0 - 5))
     likha("\n")
-    likha(result_value(r))
+    likha(phal_mulya(r))
     likha("\n")
-    likha(result_checked_abs(r, minv))
+    likha(phal_janchit_nirapeksh(r, minv))
     likha("\n")
     # add -> mul chain: success, add-fail, mul-fail
     likha(safe_compute(r, 10, 20, 3))
     likha("\n")
-    likha(result_value(r))
+    likha(phal_mulya(r))
     likha("\n")
     likha(safe_compute(r, 9223372036854775807, 1, 3))
     likha("\n")
-    likha(result_is_ok(r))
+    likha(phal_asti_siddhi(r))
     likha("\n")
     likha(safe_compute(r, 10, 20, 4611686018427387904))
     likha("\n")
-    likha(result_is_ok(r))
+    likha(phal_asti_siddhi(r))
     likha("\n")
-    # pow -> fact chain: success, pow-fail, fact-fail
+    # pow -> kramgun chain: success, pow-fail, kramgun-fail
     likha(safe_pow_fact(r, 2, 3))
     likha("\n")
-    likha(result_value(r))
+    likha(phal_mulya(r))
     likha("\n")
     likha(safe_pow_fact(r, 2, 63))
     likha("\n")
-    likha(result_is_ok(r))
+    likha(phal_asti_siddhi(r))
     likha("\n")
     likha(safe_pow_fact(r, 3, 5))
     likha("\n")
-    likha(result_is_ok(r))
+    likha(phal_asti_siddhi(r))
     likha("\n")
     likha("result-chain-done\n")
 }
