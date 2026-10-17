@@ -1,5 +1,5 @@
-ayojan util
+yoj sadhan
 mukhya() {
-    likha(int_max())
+    likha(ank_adhik())
     likha("\n")
 }
