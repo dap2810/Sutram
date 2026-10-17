@@ -4,16 +4,16 @@ prakriya stage_two(n);
 prakriya stage_three(n);
 
 prakriya stage_three(n) {
-    yadi (n <= 0) { pratiyati 0 }
-    pratiyati 1 + stage_one(n - 1)
+    yadi (n <= 0) { prati 0 }
+    prati 1 + stage_one(n - 1)
 }
 prakriya stage_two(n) {
-    yadi (n <= 0) { pratiyati 0 }
-    pratiyati 1 + stage_three(n - 1)
+    yadi (n <= 0) { prati 0 }
+    prati 1 + stage_three(n - 1)
 }
 prakriya stage_one(n) {
-    yadi (n <= 0) { pratiyati 0 }
-    pratiyati 1 + stage_two(n - 1)
+    yadi (n <= 0) { prati 0 }
+    prati 1 + stage_two(n - 1)
 }
 mukhya() {
     likha(stage_one(15))
