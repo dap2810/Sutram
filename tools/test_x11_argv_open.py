@@ -3,7 +3,7 @@ import os, socket, struct, subprocess, sys, time, tempfile
 # Slice 30 proof: `sutram-gui <file>` opens that file.
 #  1. write a .sm with a distinctive first line
 #  2. launch the GUI with it as argv[1]
-#  3. require the first Expose's ImageText8 stream to contain that line
+#  3. require the first Expose's ImageText8 stream tak contain that line
 SOCKDIR = "/tmp/.X11-unix"; SOCKPATH = os.path.join(SOCKDIR, "X0")
 ROOT_WIN = 0x00000400; RID_BASE = 0x00200000; RID_MASK = 0x001FFFFF
 MARK = "argv_marker_line_zz"
