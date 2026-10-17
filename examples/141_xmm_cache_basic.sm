@@ -1,4 +1,4 @@
-# Within one straight-line block, four dasham values map to XMM2..XMM5.
+# Within one straight-line block, four dasham values nighantu tak XMM2..XMM5.
 mukhya() {
     dasham a = 2.0
     dasham b = 0.5
