@@ -63,7 +63,7 @@
   .req.part{border-left-color:var(--gold)}
   .req.none{border-left-color:var(--red)}
   .reqhead{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:8px}
-  .reqhead .num{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--dim)}
+  .reqhead .ank{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--dim)}
   .reqhead h3{font-family:var(--display);font-weight:400;font-size:24px;flex:1;min-width:220px}
   .pill{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;
     padding:3px 9px;border-radius:20px;white-space:nowrap}
@@ -137,19 +137,19 @@
 language rules, libraries and tools that agree with each other.</p>
 
 <div class="req done animate" style="--i:4">
-  <div class="reqhead"><span class="num">01</span><h3>Imperative and procedural programming</h3>
+  <div class="reqhead"><span class="ank">01</span><h3>Imperative and procedural programming</h3>
     <span class="pill done">Implemented</span></div>
   <p>Variables, conditions, loops, functions, and straightforward step-by-step programs as the easiest
   starting point. Useful programs without first learning classes, traits, concurrency or memory
   annotations.</p>
   <div class="aim"><b>Aim:</b> make simple programs simple; advanced features build on this foundation
   rather than replacing it. <b>Today:</b> this is the core of the language and its strongest part —
-  <code>mukhya</code>, <code>vitti</code>, <code>yadi</code>, <code>yavat</code>, <code>punaravartana</code>,
+  <code>mukhya</code>, <code>vitti</code>, <code>yadi</code>, <code>yavat</code>, <code>chakra</code>,
   <code>prakriya</code>.</div>
 </div>
 
 <div class="req part animate" style="--i:5">
-  <div class="reqhead"><span class="num">02</span><h3>Practical functional programming</h3>
+  <div class="reqhead"><span class="ank">02</span><h3>Practical functional programming</h3>
     <span class="pill part">Partial</span></div>
   <p>First-class functions — passed as arguments, returned, stored. Closures, immutable values, iterators,
   pattern matching, and collection operations such as mapping and filtering. Functions that calculate
@@ -160,17 +160,17 @@ language rules, libraries and tools that agree with each other.</p>
 </div>
 
 <div class="req none animate" style="--i:6">
-  <div class="reqhead"><span class="num">03</span><h3>Generic programming</h3>
+  <div class="reqhead"><span class="ank">03</span><h3>Generic programming</h3>
     <span class="pill none">Not started</span></div>
   <p>One collection or algorithm working with multiple types without duplicating its implementation.
-  Generic functions and structures with clear constraints — a sort should require values that can be
+  Generic functions and structures with clear constraints — a shreni should require values that can be
   compared. Understandable constraints and error messages over elaborate template rules.</p>
   <div class="aim"><b>Today:</b> none. Every collection in <code>lib/</code> is written against one
   concrete cell type.</div>
 </div>
 
 <div class="req part animate" style="--i:7">
-  <div class="reqhead"><span class="num">04</span><h3>Object orientation through composition</h3>
+  <div class="reqhead"><span class="ank">04</span><h3>Object orientation through composition</h3>
     <span class="pill part">Partial</span></div>
   <p>Structures, methods, encapsulation, interfaces or traits. Larger objects built from smaller
   components. Polymorphism, with runtime dispatch an explicit choice where practical. No deep class
@@ -181,57 +181,57 @@ language rules, libraries and tools that agree with each other.</p>
 </div>
 
 <div class="req part animate" style="--i:8">
-  <div class="reqhead"><span class="num">05</span><h3>Data-oriented programming</h3>
+  <div class="reqhead"><span class="ank">05</span><h3>Data-oriented programming</h3>
     <span class="pill part">Partial</span></div>
   <p>Contiguous arrays, slices, predictable layout, alignment controls, explicit allocation choices.
   Processing large collections without every element being a separately allocated object. Vector
   operations and SIMD later, backed by benchmarks.</p>
   <div class="aim"><b>Aim:</b> control over how data is represented and accessed — not promising speed
-  merely because code is compiled. <b>Today:</b> <code>pankti</code> and <code>kosh</code> exist and are
+  merely because code is compiled. <b>Today:</b> <code>mala</code> and <code>kosh</code> exist and are
   contiguous, but there are no slices, alignment controls, SIMD or vector operations.</div>
 </div>
 
 <div class="req none animate" style="--i:9">
-  <div class="reqhead"><span class="num">06</span><h3>Structured concurrency and parallelism</h3>
+  <div class="reqhead"><span class="ank">06</span><h3>Structured concurrency and parallelism</h3>
     <span class="pill none">Not started</span></div>
   <p>Threads, tasks, channels, synchronisation primitives, cancellation. Task lifetimes tied to an owning
   scope rather than uncontrolled background work. Convenient message passing; explicit shared mutable data.
   Ownership and thread-safety rules designed <em>before</em> advertising safe concurrency.</p>
-  <div class="aim"><b>Today:</b> none. Note: a set of socket builtins exists in the compiler and is
+  <div class="aim"><b>Today:</b> none. Note: a sangrah of socket builtins exists in the compiler and is
   <b>under audit</b> — they are not a concurrency model and may be retired.</div>
 </div>
 
 <div class="req none animate" style="--i:10">
-  <div class="reqhead"><span class="num">07</span><h3>Event-driven and asynchronous programming</h3>
+  <div class="reqhead"><span class="ank">07</span><h3>Event-driven and asynchronous programming</h3>
     <span class="pill none">Not started</span></div>
   <p>Callbacks, events, timers, asynchronous input/output — for GUI applications, networking, servers and
   automation. Event loops and task executors optional rather than mandatory. No application scheduler
   required by kernel or embedded programs.</p>
-  <div class="aim"><b>Aim:</b> a small set of primitives where necessary, with most event-driven behaviour
+  <div class="aim"><b>Aim:</b> a small sangrah of primitives where necessary, with most event-driven behaviour
   in reusable libraries. <b>Today:</b> the IDE runs its own X11 event loop, but the language has no
   event or async facility.</div>
 </div>
 
 <div class="req part animate" style="--i:11">
-  <div class="reqhead"><span class="num">08</span><h3>Controlled compile-time metaprogramming</h3>
+  <div class="reqhead"><span class="ank">08</span><h3>Controlled compile-time metaprogramming</h3>
     <span class="pill part">Partial</span></div>
   <p>Compile-time constants, assertions, and eventually constrained code generation — for generic
   libraries, fixed-size data structures, serialisation and hardware descriptions. Compile-time execution
   bounded and deterministic by default. No unrestricted textual macros; no hidden network or filesystem
   access.</p>
   <div class="aim"><b>Aim:</b> begin with a smaller, carefully specified subset. <b>Today:</b>
-  <code>sutra</code> gives constants and <code>ayojan</code> performs textual inclusion — which is
+  <code>sutra</code> gives constants and <code>yoj</code> performs textual inclusion — which is
   <em>not</em> the bounded, deterministic compile-time evaluation this calls for.</div>
 </div>
 
 <div class="req done animate" style="--i:12">
-  <div class="reqhead"><span class="num">09</span><h3>Multilingual and native-script programming</h3>
+  <div class="reqhead"><span class="ank">09</span><h3>Multilingual and native-script programming</h3>
     <span class="pill done">Strong</span></div>
   <p>One language whose meaning is fixed, spelled in many scripts. A program's behaviour must not change
   because its keywords are written in Devanagari rather than Latin — the canonical meaning sits beneath
   every spelling, and a library written in one pack is usable from another without translation.
   Identifiers, strings and comments are preserved; only keyword spellings change.</p>
-  <div class="aim"><b>Why this is a paradigm, not a feature:</b> every other language on this list can be
+  <div class="aim"><b>Why this is a paradigm, not a feature:</b> every other language on this suchi can be
   described without naming a natural language. Sutram cannot. Sanskrit is the keyword core and the
   mathematics library is built on the Indian tradition, so the language's identity and its grammar are
   the same decision. <b>Today:</b> this is the project's strongest and most distinctive work —
@@ -246,19 +246,19 @@ language rules, libraries and tools that agree with each other.</p>
 suitable for serious development.</p>
 
 <div class="req part animate" style="--i:13">
-  <div class="reqhead"><span class="num">10</span><h3>Strong static typing with inference</h3>
+  <div class="reqhead"><span class="ank">10</span><h3>Strong static typing with inference</h3>
     <span class="pill part">Partial</span></div>
   <p>Types checked before execution, with obvious local types inferred. Clear type contracts at public
   library boundaries. Integer sizes, conversions, overflow, initialisation and comparison defined
   precisely. No silent conversions that lose information.</p>
   <div class="aim"><b>Aim:</b> concise ordinary code whose meaning stays predictable. <b>Today:</b>
-  <code>anka</code>, <code>dasham</code>, <code>parigrah</code> and strings are typed and checked at
+  <code>anka</code>, <code>dasham</code>, <code>satya</code> and strings are typed and checked at
   compile time; overflow behaviour is <b>documented and tested</b> (checked and saturating forms exist),
   but inference is limited and there is no formal type-contract system.</div>
 </div>
 
 <div class="req none animate" style="--i:14">
-  <div class="reqhead"><span class="num">11</span><h3>A coherent memory and resource model</h3>
+  <div class="reqhead"><span class="ank">11</span><h3>A coherent memory and resource model</h3>
     <span class="pill none">Not started</span></div>
   <p>Ownership, borrowing, deterministic cleanup for memory, files, locks and other resources. Common
   cases easy; advanced lifetime relationships only when needed. Raw pointers and unchecked operations
@@ -270,18 +270,18 @@ suitable for serious development.</p>
 </div>
 
 <div class="req part animate" style="--i:15">
-  <div class="reqhead"><span class="num">12</span><h3>Explicit, convenient error handling</h3>
+  <div class="reqhead"><span class="ank">12</span><h3>Explicit, convenient error handling</h3>
     <span class="pill part">Partial</span></div>
-  <p>“A value may be absent” represented explicitly. Recoverable success or failure as a result type.
+  <p>“A value may be absent” represented explicitly. Recoverable success or failure as a phal type.
   Concise error propagation and automatic resource cleanup. Recoverable errors separated from
   unrecoverable failures. Exhaustive handling required where appropriate.</p>
   <div class="aim"><b>Today:</b> the checked library functions take an <code>ok</code> out-parameter and
   return a defined value on failure rather than wrapping — a real, tested convention. There is
-  <b>no result type, no propagation operator, and no exhaustiveness checking</b>.</div>
+  <b>no phal type, no propagation operator, and no exhaustiveness checking</b>.</div>
 </div>
 
 <div class="req part animate" style="--i:16">
-  <div class="reqhead"><span class="num">13</span><h3>Genuine freestanding capability</h3>
+  <div class="reqhead"><span class="ank">13</span><h3>Genuine freestanding capability</h3>
     <span class="pill part">Partial</span></div>
   <p>A core library that does not assume an OS, filesystem, network or heap allocator exists. Custom entry
   points, memory layout, sections, relocations and startup code. Explicit pointer operations, hardware
@@ -289,14 +289,14 @@ suitable for serious development.</p>
   and memory effects. Heap allocation optional.</p>
   <div class="aim"><b>Aim:</b> the distinction that matters is <em>running without an existing OS</em>,
   not merely producing a native executable. <b>Today:</b> the compiler emits native ELF and PE32+ with
-  <b>no runtime and no libc</b> — a genuine head start — and <code>nishkriya</code> provides inline
+  <b>no runtime and no libc</b> — a genuine head start — and <code>yantra</code> provides inline
   assembly. But no documented boot path or minimal kernel has been demonstrated. <b>A small kernel that
   boots, prints, and passes repeatable tests is the acceptance target; a full OS is a separate
   project.</b></div>
 </div>
 
 <div class="req part animate" style="--i:17">
-  <div class="reqhead"><span class="num">14</span><h3>One language with layered libraries</h3>
+  <div class="reqhead"><span class="ank">14</span><h3>One language with layered libraries</h3>
     <span class="pill part">Partial</span></div>
   <p>Conceptual layers — <b>core</b> (no OS or allocator dependency), <b>allocation</b> (dynamic
   collections when an allocator exists), <b>standard/application</b> (files, networking, threads). The
@@ -306,34 +306,34 @@ suitable for serious development.</p>
 </div>
 
 <div class="req part animate" style="--i:18">
-  <div class="reqhead"><span class="num">15</span><h3>Portability designed into the compiler</h3>
+  <div class="reqhead"><span class="ank">15</span><h3>Portability designed into the compiler</h3>
     <span class="pill part">Partial</span></div>
   <p>Separate parsing, type checking, internal program representation, machine-code generation and OS
   integration. Track <em>source portability</em>, <em>where the compiler runs</em>, and <em>which targets
   it can generate for</em> separately. Reliable Windows/Linux x86-64 first, then other combinations
   individually. Every advertised target tested.</p>
   <div class="aim"><b>Today:</b> Linux x86-64 works and is tested. Windows x86-64 <b>sources exist and
-  have never been executed by this project</b> — the one gate nothing has passed. The one-file pure-NASM
+  have never been executed by this project</b> — the one gate nothing has passed. The one-patra pure-NASM
   constraint is preserved unless an architectural change is explicitly approved; clear internal phase
   boundaries should be introduced <em>within</em> that implementation.</div>
 </div>
 
 <div class="req part animate" style="--i:19">
-  <div class="reqhead"><span class="num">16</span><h3>Real modules, packages and separate compilation</h3>
+  <div class="reqhead"><span class="ank">16</span><h3>Real modules, packages and separate compilation</h3>
     <span class="pill part">Partial</span></div>
   <p>Namespaces, explicit imports, public/private visibility, clear dependency boundaries. Modules compiled
   independently rather than relying only on textual inclusion. Versioned packages, dependency lockfiles,
   offline builds, reproducible settings. Compatibility and migration rules.</p>
-  <div class="aim"><b>Aim:</b> suitable for teams and substantial codebases, not just single-file
-  examples. <b>Today:</b> <code>ayojan</code> is <b>textual inclusion</b>, and <code>niryat</code> gives
+  <div class="aim"><b>Aim:</b> suitable for teams and substantial codebases, not just single-patra
+  examples. <b>Today:</b> <code>yoj</code> is <b>textual inclusion</b>, and <code>niryat</code> gives
   export visibility. There is no separate compilation, no package manager, no lockfile.</div>
 </div>
 
 <div class="req done animate" style="--i:20">
-  <div class="reqhead"><span class="num">17</span><h3>Language packs and the multilingual toolchain</h3>
+  <div class="reqhead"><span class="ank">17</span><h3>Language packs and the multilingual toolchain</h3>
     <span class="pill done">Strong</span></div>
   <p>One canonical language meaning beneath Sanskrit and other supported keyword spellings. Versioned
-  language packs defining how each source file selects its language. Packages usable across packs without
+  language packs defining how each source patra selects its language. Packages usable across packs without
   translating implementations. Unicode identifier rules, normalisation, and diagnostics for suspicious or
   ambiguous identifiers. Identifiers, strings and comments preserved when translating keyword spellings.</p>
   <div class="aim"><b>Today:</b> this is the project's distinctive strength — <b>11 packs</b> over one
@@ -343,7 +343,7 @@ suitable for serious development.</p>
 </div>
 
 <div class="req part animate" style="--i:21">
-  <div class="reqhead"><span class="num">18</span><h3>Excellent developer tools</h3>
+  <div class="reqhead"><span class="ank">18</span><h3>Excellent developer tools</h3>
     <span class="pill part">Partial</span></div>
   <p>One consistent workflow for creating, building, running, testing, formatting and documenting
   projects. Editor support for completion, navigation, renaming and diagnostics. Debug information, stack
@@ -355,7 +355,7 @@ suitable for serious development.</p>
 </div>
 
 <div class="req none animate" style="--i:22">
-  <div class="reqhead"><span class="num">19</span><h3>Interoperability and a useful ecosystem</h3>
+  <div class="reqhead"><span class="ank">19</span><h3>Interoperability and a useful ecosystem</h3>
     <span class="pill none">Not started</span></div>
   <p>A documented C-compatible foreign-function interface first. Optional C++ wrappers and Python
   bindings later, never mandatory for basic use. Reliable libraries for collections, text, files,
@@ -367,14 +367,14 @@ suitable for serious development.</p>
 </div>
 
 <div class="req part animate" style="--i:23">
-  <div class="reqhead"><span class="num">20</span><h3>A precise specification and evidence-based gates</h3>
+  <div class="reqhead"><span class="ank">20</span><h3>A precise specification and evidence-based gates</h3>
     <span class="pill part">Partial</span></div>
   <p>Evaluation order, memory rules, numeric behaviour, Unicode behaviour and error semantics specified.
   Both valid programs and invalid programs that must be rejected are tested. Regression tests, fuzzing,
   cross-platform tests, reproducible benchmarks. Compilation time, execution speed, memory consumption
   and executable size measured separately. Documentation, examples and feature status aligned with the
   tested implementation. Compatibility review before changing syntax or behaviour.</p>
-  <div class="aim"><b>Aim:</b> a smaller set of dependable features over a large list of partially
+  <div class="aim"><b>Aim:</b> a smaller sangrah of dependable features over a large suchi of partially
   working ones. <b>Today:</b> the gates are real and enforced — <b>187 pass / 4 no-expectation</b>,
   codegen 12/12, packs 33/33, module graph, 180 library proofs, 72 property proofs, 16 GUI tests — and
   there are dedicated overflow-safety and byte-parity documents. <b>Missing:</b> a formal written
