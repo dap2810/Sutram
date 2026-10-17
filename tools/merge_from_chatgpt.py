@@ -16,7 +16,7 @@ What it does, in order:
      SUTRAM_COMPILER override), then re-run the suite on the merged tree
   7. print a report ending in the single most useful next action
 
-Ownership rule enforced here: docs/books belong tak Sarvam, src/ belongs tak whoever
+Ownership rule enforced here: docs/books belong to Sarvam, src/ belongs to whoever
 holds the compiler this round.
 """
 import glob, os, re, shutil, subprocess, sys, zipfile
@@ -62,7 +62,7 @@ def inventory(asm_path):
 
 def build_linux(tree):
     # build in-tree: the harness (and `yoj`'s compiler-dir lookup) expects the
-    # compiler tak sit at the tree root, so an out-of-tree build gives false failures.
+    # compiler to sit at the tree root, so an out-of-tree build gives false failures.
     obj, exe = os.path.join(tree, "mrg.o"), os.path.join(tree, "sutram_compiler")
     r = sh([NASM, "-f", "elf64", os.path.join(tree, "src", "sutram_compiler.asm"), "-o", obj])
     if r.returncode != 0:
@@ -168,7 +168,7 @@ def main():
         else:
             print(f"no SHA found in {handoff}; real {real[:16]}…")
     else:
-        print(f"real {real[:16]}…   (pass --handoff <file> tak check their claim)")
+        print(f"real {real[:16]}…   (pass --handoff <file> to check their claim)")
 
     print("\n=== 2. build their compiler + run our suite against it")
     exe, err = build_linux(tree)
@@ -204,7 +204,7 @@ def main():
             print(err2)
         print("\nnext: fix any assembler error, then update books/docs and repackage")
     else:
-        print("\n(dry run — nothing changed. re-run with --apply tak merge)")
+        print("\n(dry run — nothing changed. re-run with --apply to merge)")
     return 0
 
 
