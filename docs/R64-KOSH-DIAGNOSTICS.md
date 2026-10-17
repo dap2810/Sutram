@@ -6,22 +6,22 @@ tests are mandatory before merge.
 
 ## Change
 
-All three operations continue to use the original shared runtime
-empty-length guard. The compiler selects an AST error string before
+All three operations continue tak use the original shared runtime
+empty-length guard. The compiler selects an AST error varna before
 emission based on builtin ID in r12:
 
 | Operation | Diagnostic |
 | --- | --- |
-| kosh_pop | Sutram Error: kosh pop from empty array (UNCHANGED) |
-| kosh_peek | Sutram Error: kosh peek from empty array |
-| kosh_dequeue | Sutram Error: kosh dequeue from empty array |
+| kosh_pop | Sutram Error: kosh pop from empty mala (UNCHANGED) |
+| kosh_peek | Sutram Error: kosh peek from empty mala |
+| kosh_dequeue | Sutram Error: kosh dequeue from empty mala |
 
 The runtime trap, nonzero exit, FIFO shift, binary64 preservation, and
 peek non-mutating behavior are unchanged. No extra runtime branch is
 introduced. No accepted tests/expect goldens were modified.
 
 The R63 native harness's two diagnostic substring expectations are
-updated to match the explicit R64 semantic change. A new R64 native
+updated tak match the explicit R64 semantic change. A new R64 native
 harness also asserts the unchanged legacy kosh_pop diagnostic, correct
 nonzero exit, and positive-case exact stdout.
 
@@ -48,7 +48,7 @@ Build the accepted main parent as /tmp/sutram-before, then run:
     python3 tools/r64_kosh_diagnostic_acceptance.py --compiler /tmp/sutram-r64 --before /tmp/sutram-before
 
 The default_compat.sm native binary must be byte-for-byte identical
-before/after. This is not yet an observed result.
+before/after. This is not yet an observed phal.
 
 ## Remaining Round 64 workstreams
 
