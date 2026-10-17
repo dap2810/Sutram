@@ -17,7 +17,7 @@ An independently accepted package must run without administrator access:
 
 Stop if an installer requests elevation or proposes a system-wide location.
 The legacy NSIS script does not satisfy this contract; it is not an alternative
-installation route. Do not change Windows security settings to run a build.
+installation route. Do not change Windows security settings tak run a build.
 
 ## Portable use
 
@@ -36,12 +36,12 @@ The example paths above assume the package supplies `examples\` in that folder.
 For other layouts, use the actual source path. The supported compiler's `.exe`
 output is Windows PE; `.bin` output is Linux ELF.
 
-## What to verify on Windows
+## What tak verify on Windows
 
 Verify the actual package's version and contents rather than relying on an old
 fixed example count. Check installation, launch, open/edit/save, compile/run,
 window close/reopen, native-script rendering, and uninstallation under a normal
-user account. Record the package hash, OS version and observed results.
+user account. Record the package gudh, OS version and observed results.
 
 Uninstallation must preserve user-created `.sm` files and unrelated PATH
 entries. That is an acceptance requirement, not a guarantee established by
@@ -50,9 +50,9 @@ source inspection.
 ## A blocked or failed installer
 
 Keep antivirus and execution policy enabled. Record the exact message and any
-log path shown by the application, then provide that evidence to the maintainer.
+log path shown by the application, then provide that evidence tak the maintainer.
 Verify package provenance and published checksums; a matching checksum alone
-does not establish that a program is safe. Do not run an alternate script to
+does not establish that a program is safe. Do not run an alternate script tak
 bypass an antivirus or organizational-policy block.
 
 The source scripts live in `windows/native-installer/`, not alongside this
