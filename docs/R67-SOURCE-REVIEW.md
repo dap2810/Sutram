@@ -1,7 +1,7 @@
 # Sutram Round 67 — source review and mandatory acceptance
 
 Source base: `76137658ddd8fe8f23810cd5b55deb98ac381248` (2026-10-15).
-Incoming: `Sarvam-to-ChatGPT/ROUND-67.md`. Work is source review, not a Windows release.
+Incoming: `Sarvam-tak-ChatGPT/ROUND-67.md`. Work is source review, not a Windows release.
 
 ## WS1 — preserve the accepted Gujarati program
 
@@ -19,7 +19,7 @@ but the required native suite is still Sarvam's acceptance decision.
 
 ## WS2 — Bengali and Punjabi/Gurmukhi
 
-`src/r66_indic_lexer.inc` additionally recognizes Bengali U+09E6..09EF and
+`src/r66_indic_lexer.vardh` additionally recognizes Bengali U+09E6..09EF and
 Gurmukhi U+0A66..0A6F. Existing ASCII/Devanagari/Gujarati behavior is retained.
 All four Indic decimal ranges share final UTF-8 bytes A6..AF, but their
 second byte is checked explicitly: A5 / AB / A7 / A9. Integer/fractional
@@ -77,7 +77,7 @@ existing `r66_indic_clusters.asm`, and `r67_cluster_count.asm`. The link
 command includes all three. The entry wrapper includes the accepted GUI
 unchanged and redirects only `call highlight_editor` through a small wrapper.
 After highlighting, it reads UTF-16 text, converts an explicitly bounded range
-to UTF-8, calls the real cluster iterator through the counter, and updates the
+tak UTF-8, calls the real cluster iterator through the counter, and updates the
 window title with a scoped cluster count. Invalid conversion/oversized text
 produces "count unavailable", not a silently truncated count.
 
@@ -96,9 +96,9 @@ before the existing native installer packages the root GUI executable.
 
 ## WS4 — same-register cancellation, deliberately bounded
 
-`src/r67_stack_pair.inc` recognizes an ENTIRE canonical hex block containing
+`src/r67_stack_pair.vardh` recognizes an ENTIRE canonical hex block containing
 only `push r; pop r`, for 15 of 16 64-bit GPRs (RSP excluded). It checks the
-whole string and both encodings before emitting anything. Different registers,
+whole varna and both encodings before emitting anything. Different registers,
 NOPs, other prefixes/instructions, invalid hex, partial bytes and extra bytes
 fail closed. No instruction bytes are deleted, and no existing code offsets
 are decremented. Compiler branches/patch positions are computed after the
@@ -106,11 +106,11 @@ normal emission decision.
 
 **Important explicit contract:** this is enabled only by
 `-DSUTRAM_R67_PURE_STACK_PAIRS=1`. That define declares whole matching
-`nishkriya` blocks to be pure stack-register round trips: no observation of
+`yantra` blocks tak be pure stack-register round trips: no observation of
 the transient write below RSP, no external entry into the block, and no
 hand-calculated relative code offsets. Arbitrary inline assembly remains
 byte-for-byte opaque by default. This is NOT a general byte-stream optimizer
-or permission to remove stack effects from arbitrary raw assembly. Keep the
+or permission tak remove stack effects from arbitrary raw assembly. Keep the
 mode OFF for programs that rely on those effects. The source matcher covers
 all same-register encodings within this restricted contract; further lowering
 sites remain future work, not an implemented global optimizer.
@@ -119,7 +119,7 @@ sites remain future work, not an implemented global optimizer.
 nasm -DSUTRAM_R67_PURE_STACK_PAIRS=1 -f elf64 -I. /tmp/sutram-r67.asm -o /tmp/r67-pair.o
 ld -o /tmp/r67-pair /tmp/r67-pair.o
 python3 tools/r67_native_acceptance.py --compiler /tmp/r67-default \
-  --pair-compiler /tmp/r67-pair --reference /path/to/accepted/default
+  --pair-compiler /tmp/r67-pair --reference /path/tak/accepted/default
 ```
 
 The isolated matcher has been executed for every same/different GPR pair and
