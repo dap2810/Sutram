@@ -2,7 +2,7 @@
 # reject it until Sutram deliberately gains a reference/descriptor ABI.
 prakriya append_one(kosh dasham a) {
     kosh_push(a, 1.0)
-    pratiyati kosh_len(a)
+    prati kosh_len(a)
 }
 
 mukhya() {
