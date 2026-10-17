@@ -1,15 +1,15 @@
-ayojan bigint
+yoj brihat
 mukhya() {
     vitti a = nirmmita(8 * 8)
-    bigint_zero(a, 8)
-    likha(bigint_is_zero(a, 8))
+    brihat_shunyank(a, 8)
+    likha(brihat_asti_shunyank(a, 8))
     likha("\n")
-    bigint_from_int(1, a, 8)
-    likha(bigint_is_zero(a, 8))
+    brihat_ank_se_int(1, a, 8)
+    likha(brihat_asti_shunyank(a, 8))
     likha("\n")
-    # only high digit set
-    bigint_zero(a, 8)
+    # only high digit sangrah
+    brihat_shunyank(a, 8)
     likh8(a + 7 * 8, 1)
-    likha(bigint_is_zero(a, 8))
+    likha(brihat_asti_shunyank(a, 8))
     likha("\n")
 }
