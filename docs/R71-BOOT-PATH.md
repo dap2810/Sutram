@@ -19,13 +19,13 @@ workstream, not a freestanding Sutram implementation or a completed kernel.
 
 ## Entry and layout
 
-The BIOS loads the boot sector at physical 0x7C00. DS/ES/SS are initialized tak
+The BIOS loads the boot sector at physical 0x7C00. DS/ES/SS are initialized to
 zero; the stack starts at 0x7C00 and grows below the sector. All message addresses
-are linked tak the 0x7C00 origin. The code and message fit before byte 510. There
+are linked to the 0x7C00 origin. The code and message fit before byte 510. There
 is no second stage, relocation loader, filesystem, allocator or libc.
 
 The BIOS video call uses 16-bit firmware. This is not the future x86-64 kernel
-ABI. A 64-bit Sutram kernel additionally needs a tested transition tak long mode,
+ABI. A 64-bit Sutram kernel additionally needs a tested transition to long mode,
 page tables/startup, a suitable native object/flat-output path, interrupt rules,
 and non-firmware output once those modes are entered. These remain open.
 
@@ -52,14 +52,14 @@ an installed Windows executable.
 Use an already installed QEMU in a normal user session. Example:
 
 ```sh
-qemu-system-i386 -drive patra=boot.img,format=raw,if=floppy,readonly=on -boot a -nic none -snapshot -no-reboot
+qemu-system-i386 -drive file=boot.img,format=raw,if=floppy,readonly=on -boot a -nic none -snapshot -no-reboot
 ```
 
-Use only the supplied image patra, never a real block device. No administrator
+Use only the supplied image file, never a real block device. No administrator
 permission is required by this procedure. The expected observation is the exact
 message on the virtual display followed by no further progress. Record the
 QEMU/firmware versions, image SHA-256, command and a screenshot. The expected
-message is a test criterion, **not an observed phal in this delivery**.
+message is a test criterion, **not an observed result in this delivery**.
 
 Windows GUI testing, a Linux process returning a value, or the boot signature
 alone would not satisfy this emulator acceptance gate.
