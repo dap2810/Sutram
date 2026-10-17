@@ -4,7 +4,7 @@ mukhya()
     likha("Calling greet()...\n")
     greet()
     likha("Calling math()...\n")
-    math()
+    ganit()
     likha("Calling answer()...\n")
     vitti x = answer()
     likha("answer() = ")
@@ -15,8 +15,8 @@ mukhya()
 prakriya greet()
     likha("  Namaste from greet()!\n")
 
-prakriya math()
+prakriya ganit()
     likha("  10 + 32 = 42\n")
 
 prakriya answer()
-    pratiyati 42
+    prati 42
