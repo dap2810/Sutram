@@ -1,8 +1,8 @@
 mukhya()
     vitti sum = 0
-    punaravartana i = 1 to 20 {
+    chakra i = 1 tak 20 {
         yadi (i > 10) { krama }
-        yadi (i % 2 == 0) { uddeshya }
+        yadi (i % 2 == 0) { agrim }
         sum = sum + i
     }
     likha("Sum of odd numbers 1-10: ")
