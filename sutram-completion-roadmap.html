@@ -85,9 +85,9 @@
         <tr><td>2</td><td>A generated Windows binary has actually <b>run</b> on real Windows</td><td class="n todo">0%</td></tr>
         <tr><td>3</td><td>The compiler optimises: register-based expressions, LICM, constant folding, peephole</td><td class="n todo">15%</td></tr>
         <tr><td>4</td><td>The language surface is settled: globals, generics or templates, first-class functions, error values</td><td class="n part">60%</td></tr>
-        <tr><td>5</td><td>The standard library covers everyday work: collections, text, formatting, files, time, math</td><td class="n part">62%</td></tr>
+        <tr><td>5</td><td>The standard library covers everyday work: collections, text, formatting, files, time, ganit</td><td class="n part">62%</td></tr>
         <tr><td>6</td><td>Diagnostics are complete across every error family, with recovery</td><td class="n part">60%</td></tr>
-        <tr><td>7</td><td>The IDE is a tool someone would choose: edit, run, debug, format, clipboard, file picker</td><td class="n part">58%</td></tr>
+        <tr><td>7</td><td>The IDE is a tool someone would choose: edit, run, debug, format, clipboard, patra picker</td><td class="n part">58%</td></tr>
         <tr><td>8</td><td>Installers work on Linux and Windows; releases are versioned and reproducible</td><td class="n part">38%</td></tr>
         <tr><td>9</td><td>Verification is broad enough to trust: fuzzing, adversarial corpora, cross-platform CI</td><td class="n part">85%</td></tr>
         <tr><td>10</td><td>Documentation and books are accurate and current for the shipped version</td><td class="n part">72%</td></tr>
@@ -120,14 +120,14 @@
 
   <div class="ws">
     <h3>A · Compiler core — 88%</h3>
-    <p class="note">20,230 lines of hand-written x86-64 assembly in one file; emits native ELF, links PE32+.</p>
+    <p class="note">20,230 lines of hand-written x86-64 assembly in one patra; emits native ELF, links PE32+.</p>
     <ul>
       <li class="done">✔ Lexer, parser, AST, codegen, ELF writer, 32 keywords, 11 language packs</li>
       <li class="done">✔ Arrays, <code>kosh</code> growable arrays, structs, enums, switch, floats, byte strings</li>
       <li class="done">✔ 186 regression tests + 12 codegen ceilings held through every change</li>
       <li class="todo">✗ <b>PE end-to-end</b>: a Windows binary that actually runs (blocked on a Windows machine)</li>
       <li class="todo">✗ Namespaced modules / real import semantics beyond inlining</li>
-      <li class="todo">✗ `char_code`/arity guards extended to the last few legacy builtins</li>
+      <li class="todo">✗ `aksharank`/arity guards extended to the last few legacy builtins</li>
     </ul>
   </div>
 
@@ -149,9 +149,9 @@
     <ul>
       <li class="done">✔ Functions, parameters, returns, recursion, forward prototypes (mutual recursion works)</li>
       <li class="done">✔ <b>Module-level globals</b> — done and verified as R56: shared storage, local shadowing, ordered once-only initialisers, PE <code>.data</code></li>
-      <li class="todo">✗ Generics / templates (one array type, not many)</li>
+      <li class="todo">✗ Generics / templates (one mala type, not many)</li>
       <li class="todo">✗ First-class functions, closures, lambdas</li>
-      <li class="todo">✗ Error values / exceptions / <code>result</code> types</li>
+      <li class="todo">✗ Error values / exceptions / <code>phal</code> types</li>
       <li class="todo">✗ Pattern matching, destructuring</li>
       <li class="todo">✗ Declared scalar types, unions, type aliases</li>
     </ul>
@@ -161,11 +161,11 @@
     <h3>D · Standard library — 50%</h3>
     <p class="note">19 modules, 186 functions, 153 proofs, 39 properties. Strong in data structures and maths; thin in everyday text and I/O.</p>
     <ul>
-      <li class="done">✔ <code>map</code>, <code>set</code>, <code>strb</code> (byte strings), <code>string</code>, <code>sort</code>, <code>bigint</code>, <code>hash</code>, <code>math</code>, <code>sankhyiki</code> (stats), <code>baseconv</code>, <code>strconv</code>, <code>array</code>, <code>util</code>, heritage modules</li>
-      <li class="done">✔ <b>Sets</b> — <code>lib/set.smlib</code>, done and verified as R14: union, intersect, difference, subset, sorted to_array</li>
+      <li class="done">✔ <code>nighantu</code>, <code>sangrah</code>, <code>khand</code> (byte strings), <code>varna</code>, <code>shreni</code>, <code>brihat</code>, <code>gudh</code>, <code>ganit</code>, <code>sankhyiki</code> (stats), <code>aadhar</code>, <code>vakyank</code>, <code>mala</code>, <code>sadhan</code>, heritage modules</li>
+      <li class="done">✔ <b>Sets</b> — <code>lib/sangrah.smlib</code>, done and verified as R14: union, intersect, difference, subset, sorted to_array</li>
       <li class="todo">✗ Lists / queues / stacks built on <code>kosh</code></li>
       <li class="todo">✗ Formatting and templates (printf-style, or interpolation)</li>
-      <li class="todo">✗ File I/O breadth (read whole file, line iteration, directories)</li>
+      <li class="todo">✗ File I/O breadth (read whole patra, line iteration, directories)</li>
       <li class="todo">✗ Time and dates</li>
       <li class="todo">✗ JSON / CSV / simple serialisation</li>
       <li class="todo">✗ Regex or even glob matching</li>
@@ -176,8 +176,8 @@
   <div class="ws">
     <h3>E · Diagnostics &amp; errors — 60%</h3>
     <ul>
-      <li class="done">✔ <code>--check</code> mode: located <code>file:line:column</code>, source line + caret, bounded recovery</li>
-      <li class="done">✔ Multiple errors accumulated in one run; correct file attribution through nested and namespaced imports</li>
+      <li class="done">✔ <code>--check</code> mode: located <code>patra:line:column</code>, source line + caret, bounded recovery</li>
+      <li class="done">✔ Multiple errors accumulated in one run; correct patra attribution through nested and namespaced imports</li>
       <li class="todo">✗ Every remaining diagnostic family carries a location</li>
       <li class="todo">✗ Windows <code>--check</code> verified</li>
       <li class="todo">✗ Warnings (unused variable, unreachable code, shadowing)</li>
@@ -193,9 +193,9 @@
       <li class="done">✔ Edit, compile-and-run, save/load, 8-level undo, four arrows, Home/End, Tab, Ctrl-Home/End, find, both panes scrolling</li>
       <li class="done">✔ <b>Clipboard</b> — selection model (Shift+arrows/Home/End), Ctrl-A / Ctrl-C / Ctrl-X / Ctrl-V, whole-line copy and cut, selection highlight, Escape clears before quitting</li>
       <li class="done">✔ Slice 16 verified: 8 clipboard checks read the buffer back through the real Ctrl-S save path, with a negative control against the slice-15 binary</li>
-      <li class="done">✔ <b>Open / new</b> — Ctrl-O opens any file by path, Ctrl-N starts a new buffer (slice 17)</li>
+      <li class="done">✔ <b>Open / new</b> — Ctrl-O opens any patra by path, Ctrl-N starts a new buffer (slice 17)</li>
       <li class="done">✔ Fixed a pre-existing defect: the editor repaint overpainted the prompt strip, so the find prompt had never actually been visible</li>
-      <li class="done">✔ Open any file by path (<b>Ctrl-O</b>) and new buffer (<b>Ctrl-N</b>) — slice 17; a graphical directory browser is still to come</li>
+      <li class="done">✔ Open any patra by path (<b>Ctrl-O</b>) and new buffer (<b>Ctrl-N</b>) — slice 17; a graphical directory browser is still to come</li>
       <li class="todo">✗ Find-and-replace</li>
       <li class="todo">✗ Syntax highlighting and bracket matching</li>
       <li class="todo">✗ <b>Debugger</b> (breakpoints, step, inspect) — the biggest tooling gap</li>
@@ -271,7 +271,7 @@
       </tr>
       <tr>
         <td><b>Muse</b></td>
-        <td><b>ROUND-25</b> — prove the checked/saturating contract rather than assert it; execute the string/byte parity table; accumulated gaps; property expansion</td>
+        <td><b>ROUND-25</b> — prove the checked/saturating contract rather than assert it; execute the varna/byte parity table; accumulated gaps; property expansion</td>
         <td>D · Standard library / H · Verification</td>
         <td><span class="pill live">issued</span></td>
       </tr>
@@ -297,7 +297,7 @@
 
   <h3>Recently closed</h3>
   <p class="note">
-    R56 module-level globals · R14 <code>set.smlib</code> (19 modules / 186 functions) · R55 forward prototypes ·
+    R56 module-level globals · R14 <code>sangrah.smlib</code> (19 modules / 186 functions) · R55 forward prototypes ·
     R54 builtin arity sweep · R13 pack/unpack + integer statistics · R51/R52 diagnostics and defect fixes ·
     GUI slices 13–17 (editor scrolling, Tab, Ctrl-Home/End, find, selection + clipboard, open/new) ·
     both Windows binaries now build · every document moved to the new thread logo, icon assets added to the tree.
@@ -311,8 +311,8 @@
     <thead><tr><th>#</th><th>Next step</th><th>Why it is here</th><th>Effort</th></tr></thead>
     <tbody>
       <tr><td>1</td><td>One verified Windows run</td><td>Turns the project's biggest unverified claim into a measurement. The only gate nothing has ever passed.</td><td>small*</td></tr>
-      <tr><td>2</td><td>Resolve the Gujarati pack collision</td><td>R66 is merged except one file; the pack reserves a word an accepted test uses as a variable.</td><td>small</td></tr>
-      <tr><td>3</td><td>Finish the Indic roll-out</td><td>Sanskrit and Gujarati carry the device set; the rest are mechanical from that template.</td><td>medium</td></tr>
+      <tr><td>2</td><td>Resolve the Gujarati pack collision</td><td>R66 is merged except one patra; the pack reserves a word an accepted test uses as a variable.</td><td>small</td></tr>
+      <tr><td>3</td><td>Finish the Indic roll-out</td><td>Sanskrit and Gujarati carry the device sangrah; the rest are mechanical from that template.</td><td>medium</td></tr>
       <tr><td>4</td><td>Register-based expression evaluator</td><td>Closes most of the measured arithmetic gap.</td><td>large</td></tr>
       <tr><td>5</td><td>Concurrency, or an explicit decision against it</td><td>0% does not fill itself, and v1.0 has to say something.</td><td>large</td></tr>
       <tr><td>6</td><td>A release and a package story</td><td>Ecosystem at 5% will hold v1.0 back more than any compiler gap.</td><td>medium</td></tr>
