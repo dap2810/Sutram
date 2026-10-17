@@ -1,0 +1,85 @@
+# lib/array.smlib — Sutram standard library: dynamic arrays
+# layer: alloc
+#
+# Real functions over raw memory (nirmmita/likh8/pad8). Each element is
+# 8 bytes (one integer). The caller tracks the length; mala_nava only
+# allocates. Safe variants take the element count and return 0 / do
+# nothing on out-of-bounds access.
+
+prakriya mala_nava(n) {
+    vitti c = n
+    vitti sz = c * 8
+    # A count so large the byte size overflows returns 0.
+    yadi (sz < 0) { prati 0 }
+    prati nirmmita(sz)
+}
+
+prakriya mala_sangrah(arr, i, val) {
+    vitti a = arr
+    vitti j = i
+    vitti v = val
+    likh8(a + j * 8, v)
+    prati 0
+}
+
+prakriya mala_grah(arr, i) {
+    vitti a = arr
+    vitti j = i
+    prati pad8(a + j * 8)
+}
+
+prakriya mala_purn(arr, val, n) {
+    vitti a = arr
+    vitti v = val
+    vitti c = n
+    vitti j = 0
+    yavat (j < c) {
+        likh8(a + j * 8, v)
+        j = j + 1
+    }
+    prati 0
+}
+
+prakriya mala_pratilip(dst, src, n) {
+    vitti d = dst
+    vitti s = src
+    vitti c = n
+    vitti j = 0
+    yavat (j < c) {
+        likh8(d + j * 8, pad8(s + j * 8))
+        j = j + 1
+    }
+    prati 0
+}
+
+prakriya mala_yog(arr, n) {
+    vitti a = arr
+    vitti c = n
+    vitti s = 0
+    vitti j = 0
+    yavat (j < c) {
+        s = s + pad8(a + j * 8)
+        j = j + 1
+    }
+    prati s
+}
+
+prakriya mala_sangrah_surakshit(arr, i, val, n) {
+    vitti a = arr
+    vitti j = i
+    vitti v = val
+    vitti c = n
+    yadi (j < 0) { prati 0 }
+    yadi (j >= c) { prati 0 }
+    likh8(a + j * 8, v)
+    prati 1
+}
+
+prakriya mala_grah_surakshit(arr, i, n) {
+    vitti a = arr
+    vitti j = i
+    vitti c = n
+    yadi (j < 0) { prati 0 }
+    yadi (j >= c) { prati 0 }
+    prati pad8(a + j * 8)
+}
