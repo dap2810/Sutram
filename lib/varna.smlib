@@ -1,0 +1,536 @@
+# lib/string.smlib — Sutram standard library: strings
+# layer: core
+#
+# Built on `vartani_len` and `char_at`, both verified to honour their arguments.
+# R52 audit: `char_code(s, i)` already honours i in the compiler; a one-argument
+# `char_code(s)` remains a compatible alias for the first byte. This library
+# continues to call `char_at(s, i)` as before, without changing its API.
+# ASCII only for the character predicates; multi-byte UTF-8 is not split.
+#
+# SLICE-BOUNDARY RULES (WS4, R23 audit): the older byte-string functions
+# below (varna_maap, gan_swar, gan_akshar, anwesh_akshar, asti_sarv_ank,
+# varna_sam) scan to the NUL terminator and are WRONG on slices — a
+# slice has no terminator at its end. Use the explicit-length strb_*
+# forms on slices. varna_pratisthap's repl is 0-terminated; see the
+# strb.smlib header for why and for the khand_pratilip workaround. The
+# (s, i) char predicates take no length: the caller keeps i in bounds.
+
+prakriya varna_maap(s)
+    prati vartani_len(s)
+
+prakriya akshar_sanket(s, i)
+    prati akshar(s, i)
+
+prakriya asti_ank_akshar(s, i) {
+    vitti c = akshar(s, i)
+    yadi (c >= 48 && c <= 57) { prati 1 }
+    prati 0
+}
+
+prakriya asti_unnat_akshar(s, i) {
+    vitti c = akshar(s, i)
+    yadi (c >= 65 && c <= 90) { prati 1 }
+    prati 0
+}
+
+prakriya asti_avanat_akshar(s, i) {
+    vitti c = akshar(s, i)
+    yadi (c >= 97 && c <= 122) { prati 1 }
+    prati 0
+}
+
+prakriya asti_akshar_akshar(s, i) {
+    vitti c = akshar(s, i)
+    yadi (c >= 65 && c <= 90) { prati 1 }
+    yadi (c >= 97 && c <= 122) { prati 1 }
+    prati 0
+}
+
+prakriya asti_avakash_akshar(s, i) {
+    vitti c = akshar(s, i)
+    prati c == 32
+}
+
+prakriya gan_swar(s) {
+    vitti n = vartani_len(s)
+    vitti i = 0
+    vitti c = 0
+    yavat (i < n) {
+        vitti ch = akshar(s, i)
+        yadi (ch == 97 || ch == 101 || ch == 105 || ch == 111 || ch == 117) {
+            c = c + 1
+        }
+        i = i + 1
+    }
+    prati c
+}
+
+prakriya gan_akshar(s, code) {
+    vitti n = vartani_len(s)
+    vitti i = 0
+    vitti c = 0
+    yavat (i < n) {
+        yadi (akshar(s, i) == code) { c = c + 1 }
+        i = i + 1
+    }
+    prati c
+}
+
+prakriya anwesh_akshar(s, code) {
+    vitti n = vartani_len(s)
+    vitti i = 0
+    yavat (i < n) {
+        yadi (akshar(s, i) == code) { prati i }
+        i = i + 1
+    }
+    prati 0 - 1
+}
+
+prakriya asti_sarv_ank(s) {
+    vitti n = vartani_len(s)
+    yadi (n == 0) { prati 0 }
+    vitti i = 0
+    yavat (i < n) {
+        yadi (asti_ank_akshar(s, i) == 0) { prati 0 }
+        i = i + 1
+    }
+    prati 1
+}
+
+prakriya unnat_sanket(c) {
+    vitti x = c
+    yadi (x >= 97 && x <= 122) { x = x - 32 }
+    prati x
+}
+
+prakriya avanat_sanket(c) {
+    vitti x = c
+    yadi (x >= 65 && x <= 90) { x = x + 32 }
+    prati x
+}
+
+prakriya varna_sam(a, b) {
+    vitti na = vartani_len(a)
+    vitti nb = vartani_len(b)
+    yadi (na != nb) { prati 0 }
+    vitti i = 0
+    yavat (i < na) {
+        yadi (akshar(a, i) != akshar(b, i)) { prati 0 }
+        i = i + 1
+    }
+    prati 1
+}
+
+# ---------------------------------------------------------------------------
+# Text toolkit (ROUND-09): operates on char-code arrays.
+#
+# REPRESENTATION: a "string" here is a pankti of integer character codes
+# (e.g. 104 for 'h'), NOT a byte-packed string literal. This is the idiom
+# established in R7 (baseconv) and R8 (strconv). R50 added byte-write
+# set_char(buf,i,value), but these older functions deliberately keep the
+# established qword cell-array format (see width_repro fixture).
+# Functions take an explicit length; out-buffers get a 0 terminator but the
+# length is the source of truth. The older byte-string functions above
+# (varna_maap, anwesh_akshar, etc.) are unchanged.
+# ---------------------------------------------------------------------------
+
+# varna_anwesh(hay, hn, needle, nn) — index of first occurrence of needle
+# in hay, or -1. Empty needle matches at 0. Negative needle length
+# is invalid: -1 (the old code treated it as empty, matching at 0).
+prakriya varna_anwesh(hay, hn, needle, nn) {
+    vitti h = hay
+    vitti hlen = hn
+    vitti nd = needle
+    vitti nlen = nn
+    yadi (nlen < 0) { prati 0 - 1 }
+    yadi (nlen == 0) { prati 0 }
+    yadi (nlen > hlen) { prati 0 - 1 }
+    vitti i = 0
+    yavat (i <= hlen - nlen) {
+        vitti match = 1
+        vitti j = 0
+        yavat (j < nlen) {
+            yadi (h[i + j] != nd[j]) { match = 0 }
+            j = j + 1
+        }
+        yadi (match == 1) { prati i }
+        i = i + 1
+    }
+    prati 0 - 1
+}
+
+# varna_antah(hay, hn, needle, nn) — 1 if needle occurs in hay, else 0.
+prakriya varna_antah(hay, hn, needle, nn) {
+    yadi (varna_anwesh(hay, hn, needle, nn) >= 0) { prati 1 }
+    prati 0
+}
+
+# varna_pratisthap(src, sn, find, fn, repl, out) — copy src to out,
+# replacing every (non-overlapping) occurrence of find with repl.
+# repl is 0-terminated (its length is derived) — repl cannot be a
+# slice; copy the slice into a terminated cell array first (see
+# strb.smlib header, slice-boundary rules). Returns the new count.
+# Caller allocates generously.
+prakriya varna_pratisthap(src, sn, find, fn, repl, out) {
+    vitti s = src
+    vitti slen = sn
+    vitti f = find
+    vitti flen = fn
+    vitti r = repl
+    vitti dst = out
+    # measure repl (0-terminated)
+    vitti rlen = 0
+    yavat (r[rlen] != 0) { rlen = rlen + 1 }
+    vitti wpos = 0
+    vitti rpos = 0
+    yadi (flen <= 0) {
+        # empty find: copy verbatim (flen < 0 used to loop
+        # forever, rpos decreasing, writing past out — SIGSEGV).
+        yavat (rpos < slen) {
+            dst[wpos] = s[rpos]
+            wpos = wpos + 1
+            rpos = rpos + 1
+        }
+        dst[wpos] = 0
+        prati wpos
+    }
+    yavat (rpos < slen) {
+        # check for find at rpos
+        vitti match = 1
+        yadi (rpos + flen > slen) {
+            match = 0
+        } anya {
+            vitti j = 0
+            yavat (j < flen) {
+                yadi (s[rpos + j] != f[j]) { match = 0 }
+                j = j + 1
+            }
+        }
+        yadi (match == 1) {
+            vitti k = 0
+            yavat (k < rlen) {
+                dst[wpos] = r[k]
+                wpos = wpos + 1
+                k = k + 1
+            }
+            rpos = rpos + flen
+        } anya {
+            dst[wpos] = s[rpos]
+            wpos = wpos + 1
+            rpos = rpos + 1
+        }
+    }
+    dst[wpos] = 0
+    prati wpos
+}
+
+# varna_bhed(src, sn, sep, sepn, parts, maxparts) — split src on sep.
+# parts is a flat buffer holding length-prefixed segments:
+#   [len0, c0, c1, ..., len1, c0, ...]
+# To recover segment i: walk from parts[0], skipping (1 + len) cells per
+# segment; the length is at the segment's start. Returns segment count
+# (capped at maxparts). Empty separator: no split (one segment).
+prakriya varna_bhed(src, sn, sep, sepn, parts, maxparts) {
+    vitti s = src
+    vitti slen = sn
+    vitti sp = sep
+    vitti splen = sepn
+    vitti dst = parts
+    vitti maxp = maxparts
+    # empty input: one empty segment
+    yadi (slen == 0) {
+        dst[0] = 0
+        prati 1
+    }
+    # empty separator: one segment (the whole input). splen < 0
+    # is invalid: same result (the old code looped forever).
+    yadi (splen <= 0) {
+        dst[0] = slen
+        vitti ci = 0
+        yavat (ci < slen) {
+            dst[1 + ci] = s[ci]
+            ci = ci + 1
+        }
+        prati 1
+    }
+    vitti nseg = 0
+    vitti wpos = 0
+    vitti segstart = 0
+    vitti rpos = 0
+    vitti done = 0
+    vitti fpos = 0
+    vitti si = 0
+    vitti sj = 0
+    vitti smatch = 0
+    vitti segend = 0
+    vitti seglen = 0
+    vitti sk = 0
+    yavat (done == 0) {
+        # find sep at or after rpos
+        fpos = 0 - 1
+        si = rpos
+        yavat (si + splen <= slen) {
+            smatch = 1
+            sj = 0
+            yavat (sj < splen) {
+                yadi (s[si + sj] != sp[sj]) { smatch = 0 }
+                sj = sj + 1
+            }
+            yadi (smatch == 1) {
+                fpos = si
+                si = slen
+            } anya {
+                si = si + 1
+            }
+        }
+        segend = slen
+        yadi (fpos >= 0) { segend = fpos }
+        yadi (nseg < maxp) {
+            seglen = segend - segstart
+            dst[wpos] = seglen
+            wpos = wpos + 1
+            sk = segstart
+            yavat (sk < segend) {
+                dst[wpos] = s[sk]
+                wpos = wpos + 1
+                sk = sk + 1
+            }
+            nseg = nseg + 1
+        }
+        yadi (fpos < 0) {
+            done = 1
+        } anya {
+            segstart = fpos + splen
+            rpos = segstart
+            yadi (rpos >= slen) {
+                yadi (nseg < maxp) {
+                    dst[wpos] = 0
+                    nseg = nseg + 1
+                }
+                done = 1
+            }
+        }
+    }
+    prati nseg
+}
+
+# varna_yuj(parts, count, sep, sepn, out) — inverse of varna_bhed for the
+# length-prefixed format. Joins `count` segments with sep. Returns new count.
+prakriya varna_yuj(parts, count, sep, sepn, out) {
+    vitti p = parts
+    vitti cnt = count
+    vitti sp = sep
+    vitti splen = sepn
+    vitti dst = out
+    vitti rpos = 0
+    vitti wpos = 0
+    vitti si = 0
+    yavat (si < cnt) {
+        vitti seglen = p[rpos]
+        rpos = rpos + 1
+        vitti k = 0
+        yavat (k < seglen) {
+            dst[wpos] = p[rpos]
+            wpos = wpos + 1
+            rpos = rpos + 1
+            k = k + 1
+        }
+        yadi (si < cnt - 1) {
+            vitti q = 0
+            yavat (q < splen) {
+                dst[wpos] = sp[q]
+                wpos = wpos + 1
+                q = q + 1
+            }
+        }
+        si = si + 1
+    }
+    dst[wpos] = 0
+    prati wpos
+}
+
+# varna_chhid(src, sn, out) — strip leading/trailing ASCII spaces (32).
+# Returns new count.
+prakriya varna_chhid(src, sn, out) {
+    vitti s = src
+    vitti slen = sn
+    vitti dst = out
+    vitti lo = 0
+    vitti go = 1
+    yavat (go == 1) {
+        yadi (lo >= slen) {
+            go = 0
+        } anya {
+            yadi (s[lo] == 32) { lo = lo + 1 } anya { go = 0 }
+        }
+    }
+    vitti hi = slen
+    vitti go2 = 1
+    yavat (go2 == 1) {
+        yadi (hi <= lo) {
+            go2 = 0
+        } anya {
+            yadi (s[hi - 1] == 32) { hi = hi - 1 } anya { go2 = 0 }
+        }
+    }
+    vitti wpos = 0
+    vitti k = lo
+    yavat (k < hi) {
+        dst[wpos] = s[k]
+        wpos = wpos + 1
+        k = k + 1
+    }
+    dst[wpos] = 0
+    prati wpos
+}
+
+# varna_unnat(src, sn, out) / varna_avanat — ASCII case conversion.
+# sn < 0: empty output (the old code wrote the terminator at
+# out[-1], an out-of-bounds write before the buffer).
+prakriya varna_unnat(src, sn, out) {
+    vitti s = src
+    vitti slen = sn
+    vitti dst = out
+    vitti i = 0
+    yadi (slen < 0) {
+        dst[0] = 0
+        prati 0
+    }
+    yavat (i < slen) {
+        vitti c = s[i]
+        yadi (c >= 97) {
+            yadi (c <= 122) { c = c - 32 }
+        }
+        dst[i] = c
+        i = i + 1
+    }
+    dst[slen] = 0
+    prati slen
+}
+
+prakriya varna_avanat(src, sn, out) {
+    vitti s = src
+    vitti slen = sn
+    vitti dst = out
+    vitti i = 0
+    yadi (slen < 0) {
+        dst[0] = 0
+        prati 0
+    }
+    yavat (i < slen) {
+        vitti c = s[i]
+        yadi (c >= 65) {
+            yadi (c <= 90) { c = c + 32 }
+        }
+        dst[i] = c
+        i = i + 1
+    }
+    dst[slen] = 0
+    prati slen
+}
+
+# varna_aadi(src, sn, pre, pn) / varna_ant — 0/1.
+# A negative prefix/suffix length is invalid: 0 (the old code
+# treated it as empty and returned 1).
+prakriya varna_aadi(src, sn, pre, pn) {
+    vitti s = src
+    vitti slen = sn
+    vitti pr = pre
+    vitti plen = pn
+    yadi (plen < 0) { prati 0 }
+    yadi (plen > slen) { prati 0 }
+    vitti i = 0
+    yavat (i < plen) {
+        yadi (s[i] != pr[i]) { prati 0 }
+        i = i + 1
+    }
+    prati 1
+}
+
+prakriya varna_ant(src, sn, suf, sn2) {
+    vitti s = src
+    vitti slen = sn
+    vitti sf = suf
+    vitti sflen = sn2
+    yadi (sflen < 0) { prati 0 }
+    yadi (sflen > slen) { prati 0 }
+    vitti i = 0
+    yavat (i < sflen) {
+        yadi (s[slen - sflen + i] != sf[i]) { prati 0 }
+        i = i + 1
+    }
+    prati 1
+}
+
+# varna_tul(a, an, b, bn) — -1 / 0 / 1 (lexicographic by char code).
+prakriya varna_tul(a, an, b, bn) {
+    vitti x = a
+    vitti xn = an
+    vitti y = b
+    vitti yn = bn
+    vitti i = 0
+    vitti n = xn
+    yadi (yn < n) { n = yn }
+    yavat (i < n) {
+        yadi (x[i] < y[i]) { prati 0 - 1 }
+        yadi (x[i] > y[i]) { prati 1 }
+        i = i + 1
+    }
+    yadi (xn < yn) { prati 0 - 1 }
+    yadi (xn > yn) { prati 1 }
+    prati 0
+}
+
+# varna_viparyay(src, sn, out) — copy the cell array reversed into out
+# (WS1, R20). Cell-array form of khand_viparyay: the same two-pointer
+# vinimay, so it is safe in place (src == out works). Writes a 0
+# terminator cell at out[sn]. Returns sn. sn <= 0 writes only the
+# terminator, returns 0.
+prakriya varna_viparyay(src, sn, out) {
+    vitti s = src
+    vitti n = sn
+    vitti dst = out
+    vitti i = 0
+    vitti j = 0
+    vitti t = 0
+    yadi (n <= 0) {
+        dst[0] = 0
+        prati 0
+    }
+    i = 0
+    j = n - 1
+    yavat (i < j) {
+        t = s[i]
+        dst[i] = s[j]
+        dst[j] = t
+        i = i + 1
+        j = j - 1
+    }
+    yadi (n % 2 == 1) {
+        dst[n / 2] = s[n / 2]
+    }
+    dst[n] = 0
+    prati n
+}
+
+# varna_gan(hay, hn, needle, nn) — count non-overlapping occurrences
+# of needle in hay, over cell arrays (WS1, R20). Cell-array form of
+# khand_gan. Empty needle returns 0. (Pointer arithmetic is in
+# bytes: the suffix at cell pos is hay + pos * 8.)
+prakriya varna_gan(hay, hn, needle, nn) {
+    vitti h = hay
+    vitti hlen = hn
+    vitti nd = needle
+    vitti nlen = nn
+    vitti pos = 0
+    vitti c = 0
+    vitti f = 0
+    yadi (nlen <= 0) { prati 0 }
+    yavat (pos <= hlen - nlen) {
+        f = varna_anwesh(h + pos * 8, hlen - pos, nd, nlen)
+        yadi (f < 0) { prati c }
+        c = c + 1
+        pos = pos + f + nlen
+    }
+    prati c
+}
