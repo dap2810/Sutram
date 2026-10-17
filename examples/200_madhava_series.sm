@@ -12,16 +12,16 @@ mukhya()
     dasham sum = 0.0
     dasham p3 = 1.0
     vitti k = 0
-    vitti sign = 1
+    vitti util_chinha = 1
     yavat (k < 30) {
         dasham term = 1.0 / ((2.0 * k + 1.0) * p3)
-        yadi (sign > 0) {
+        yadi (util_chinha > 0) {
             sum = sum + term
-        } anyatra {
+        } anya {
             sum = sum - term
         }
         p3 = p3 * 3.0
-        sign = 0 - sign
+        util_chinha = 0 - util_chinha
         k = k + 1
     }
     likha("pi  = ")
