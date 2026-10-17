@@ -1,6 +1,6 @@
 import os, socket, struct, subprocess, sys, time
 
-# Slice 12 proof: Home moves the caret tak the start of the line, End tak the end.
+# Slice 12 proof: Home moves the caret to the start of the line, End to the end.
 # Type "ab", Return, "cde"; Home then X inserts at the line start; End then Y
 # appends at the line end. Read the buffer back via Ctrl-S. No display needed.
 SOCKDIR = "/tmp/.X11-unix"; SOCKPATH = os.path.join(SOCKDIR, "X0")
@@ -85,7 +85,7 @@ print("buffer after Home/x + End/y:", repr(got))
 ok = got == "ab\nxcdey"
 print("HOME/END correct:", ok)
 # also: Home on the FIRST line must reach index 0
-key(111)                    # Up tak line 1
+key(111)                    # Up to line 1
 key(107)                    # End -> end of line 1 (col 2)
 key(53)                     # x
 key(102)                    # Home -> index 0
