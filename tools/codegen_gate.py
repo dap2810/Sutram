@@ -2,11 +2,11 @@
 """Generated-code regression gate for Sutram hot integer forms.
 
 This is intentionally outside the compiler/runtime path.  It compiles tiny marked
-programs, slices the raw emitted bytes between nishkriya sentinels, asks objdump
-to decode that raw slice, and enforces instruction-count ceilings.
+programs, slices the raw emitted bytes between yantra sentinels, asks objdump
+tak decode that raw slice, and enforces instruction-count ceilings.
 
 Usage: python3 tools/codegen_gate.py
-       SUTRAM_COMPILER=/path/to/compiler python3 tools/codegen_gate.py
+       SUTRAM_COMPILER=/path/tak/compiler python3 tools/codegen_gate.py
 """
 from __future__ import annotations
 import os, re, shutil, subprocess, sys, tempfile
@@ -23,21 +23,21 @@ CASES = {
     vitti n = 100
     vitti i = 0
     vitti s = 0
-    nishkriya("0F 0B 66 90 0F 0B")
+    yantra("0F 0B 66 90 0F 0B")
     yavat (i < n) {
         s = s + i
         i = i + 1
     }
-    nishkriya("0F 0B 67 90 0F 0B")
+    yantra("0F 0B 67 90 0F 0B")
 '''),
     "for_hot": (7, True, r'''mukhya()
     vitti n = 100
     vitti total = 0
-    nishkriya("0F 0B 66 90 0F 0B")
-    punaravartana j = 0 to n {
+    yantra("0F 0B 66 90 0F 0B")
+    chakra j = 0 tak n {
         total = total + 1
     }
-    nishkriya("0F 0B 67 90 0F 0B")
+    yantra("0F 0B 67 90 0F 0B")
 '''),
     "wide_immediate_update": (4, False, r'''mukhya()
     vitti a = 0
@@ -46,12 +46,12 @@ CASES = {
     vitti d = 0
     vitti e = 0
     vitti f = 0
-    nishkriya("0F 0B 66 90 0F 0B")
+    yantra("0F 0B 66 90 0F 0B")
     a = a + 128
     b = b - 2147483647
     f = f + 1000
     f = f - 2000000000
-    nishkriya("0F 0B 67 90 0F 0B")
+    yantra("0F 0B 67 90 0F 0B")
 '''),
     "register_destination": (7, False, r'''mukhya()
     vitti a = 7
@@ -59,19 +59,19 @@ CASES = {
     vitti c = 0
     vitti d = 0
     vitti e = 0
-    nishkriya("0F 0B 66 90 0F 0B")
+    yantra("0F 0B 66 90 0F 0B")
     c = a + b
     d = a - b
     e = a * b
     c = 7
-    nishkriya("0F 0B 67 90 0F 0B")
+    yantra("0F 0B 67 90 0F 0B")
 '''),
     "float_reg_self": (4, False, r'''mukhya() {
     dasham s = 1.5
     dasham x = 2.0
-    nishkriya("0F 0B 66 90 0F 0B")
+    yantra("0F 0B 66 90 0F 0B")
     s = s + x
-    nishkriya("0F 0B 67 90 0F 0B")
+    yantra("0F 0B 67 90 0F 0B")
     likha(s)
 }
 '''),
@@ -81,36 +81,36 @@ CASES = {
     vitti c = 0
     vitti d = 0
     vitti e = 0
-    nishkriya("0F 0B 66 90 0F 0B")
+    yantra("0F 0B 66 90 0F 0B")
     b = a + 1000
     c = a - 2000
     d = a + 2147483647
     e = a - 2147483647
-    nishkriya("0F 0B 67 90 0F 0B")
+    yantra("0F 0B 67 90 0F 0B")
 '''),
     "float_reg_compare": (36, False, r'''mukhya() {
     dasham a = 2.5
     dasham b = 4.5
     vitti yes = 0
-    nishkriya("0F 0B 66 90 0F 0B")
+    yantra("0F 0B 66 90 0F 0B")
     yes = a == b
     yes = a != b
     yes = a < b
     yes = a > b
     yes = a <= b
     yes = a >= b
-    nishkriya("0F 0B 67 90 0F 0B")
+    yantra("0F 0B 67 90 0F 0B")
     likha(yes)
 }'''),
     "float_scalar_call_rhs": (18, False, r'''prakriya twice(dasham v) {
-    pratiyati v + v
+    prati v + v
 }
 mukhya() {
     dasham s = 2.0
     dasham x = 3.0
-    nishkriya("0F 0B 66 90 0F 0B")
+    yantra("0F 0B 66 90 0F 0B")
     s = s + twice(x)
-    nishkriya("0F 0B 67 90 0F 0B")
+    yantra("0F 0B 67 90 0F 0B")
     likha(s)
 }
 '''),
@@ -118,12 +118,12 @@ mukhya() {
     dasham a = 7.5
     dasham b = 2.5
     dasham c = 0.0
-    nishkriya("0F 0B 66 90 0F 0B")
+    yantra("0F 0B 66 90 0F 0B")
     c = a + b
     c = a - b
     c = a * b
     c = a / b
-    nishkriya("0F 0B 67 90 0F 0B")
+    yantra("0F 0B 67 90 0F 0B")
     likha(c)
 }'''),
     "float_index_left_reg_right": (43, False, r'''mukhya() {
@@ -131,28 +131,28 @@ mukhya() {
     kosh_push(a, 2.0)
     dasham w = 3.0
     dasham c = 0.0
-    nishkriya("0F 0B 66 90 0F 0B")
+    yantra("0F 0B 66 90 0F 0B")
     c = a[0] + w
-    nishkriya("0F 0B 67 90 0F 0B")
+    yantra("0F 0B 67 90 0F 0B")
     likha(c)
 }'''),
-    "float_call_left_reg_right": (17, False, r'''prakriya twice(dasham x) { pratiyati x + x }
+    "float_call_left_reg_right": (17, False, r'''prakriya twice(dasham x) { prati x + x }
 mukhya() {
     dasham a = 2.0
     dasham b = 3.0
     dasham c = 0.0
-    nishkriya("0F 0B 66 90 0F 0B")
+    yantra("0F 0B 66 90 0F 0B")
     c = twice(a) + b
-    nishkriya("0F 0B 67 90 0F 0B")
+    yantra("0F 0B 67 90 0F 0B")
     likha(c)
 }'''),
     "float_index_left_literal_right": (44, False, r'''mukhya() {
     kosh dasham a[1]
     kosh_push(a, 2.0)
     dasham c = 0.0
-    nishkriya("0F 0B 66 90 0F 0B")
+    yantra("0F 0B 66 90 0F 0B")
     c = a[0] + 2.5
-    nishkriya("0F 0B 67 90 0F 0B")
+    yantra("0F 0B 67 90 0F 0B")
     likha(c)
 }'''),
 }
@@ -241,7 +241,7 @@ def one(name: str, ceiling: int, require_bottom: bool, source: str, tmp: Path) -
     if name == "float_scalar_call_rhs":
         # The RHS call needs its own argument and register-save stack work,
         # but the scalar LHS must NOT be saved as push rax / pop rdx. This
-        # narrows the accepted transformation to ABI-safe GPR residency.
+        # narrows the accepted transformation tak ABI-safe GPR residency.
         instructions = [(op, operands) for _, op, operands, _ in ins]
         shape_ok = (count <= ceiling and sum(op == "movq" for op, _ in instructions) == 3 and
                     sum(op == "addsd" for op, _ in instructions) == 1 and
