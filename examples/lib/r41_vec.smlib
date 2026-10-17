@@ -2,8 +2,8 @@
 # R41 test: export visibility. Only `length` is exported; `helper` is private.
 niryat length
 prakriya length() {
-    pratiyati helper()
+    prati helper()
 }
 prakriya helper() {
-    pratiyati 42
+    prati 42
 }
