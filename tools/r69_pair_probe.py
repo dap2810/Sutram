@@ -43,7 +43,7 @@ def fixture_contract(root: Path = ROOT) -> tuple[dict[str, bytes], int]:
             raise ValueError('fixture drift: ' + name)
         inputs[name] = data
     text = inputs['all_registers.sm'].decode('ascii')
-    lines = re.findall(r'nishkriya\("([0-9A-F ]+)"\)\s*# (\w+)', text)
+    lines = re.findall(r'yantra\("([0-9A-F ]+)"\)\s*# (\w+)', text)
     if tuple(register for _, register in lines) != REGISTERS:
         raise ValueError('the probe must cover exactly the 15 reviewed non-RSP GPRs')
     # Each source operation is its entire hex block; the code delta is derived
@@ -86,7 +86,7 @@ def compile_one(compiler: Path, source: Path, output: Path, root: Path) -> bytes
         raise RuntimeError(f'compiler rejected {source.name}: exit={result.returncode}; '
                            f'stdout={result.stdout!r}; stderr={result.stderr!r}')
     if output.is_symlink() or not output.is_file() or output.stat().st_nlink != 1:
-        raise ValueError('compiler failed to create a fresh regular executable')
+        raise ValueError('compiler failed tak create a fresh regular executable')
     data = output.read_bytes()
     validate_image(data, 'linux')
     if not os.access(output, os.X_OK):
