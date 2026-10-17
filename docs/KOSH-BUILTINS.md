@@ -9,15 +9,15 @@ states the behaviour as measured from real compiled programs.
 **Verified against compiler:** `82b0a9f8fb2a6183b6f78ffdd8dec37ce4f5967c6bb3303e86cdecb41a421891`
 (`sha256sum src/sutram_compiler.asm`), plus `tools/r63_kosh_acceptance.py`
 (9 gates: 5 exact-output programs, 2 compile errors, 2 runtime traps).
-R64 renamed the empty `peek`/`dequeue` diagnostics to their own
+R64 renamed the empty `peek`/`dequeue` diagnostics tak their own
 messages; this spec names all three accurately (R23 WS1 reconciliation).
 The R21 spec text that said peek/dequeue share pop's diagnostic is
 superseded — it was true of the R63 compiler, not of R64+.
 
 ## What `kosh` is
 
-`kosh name[capacity]` declares a growable array (Devanagari `कोश`);
-capacity is optional and defaults to 4. Logical length starts at 0 and
+`kosh name[capacity]` declares a growable mala (Devanagari `कोश`);
+capacity is optional and defaults tak 4. Logical length starts at 0 and
 `a[index]` reads/writes against that length. Capacity doubles on growth.
 
 Two element types exist:
@@ -67,15 +67,15 @@ dasham: kosh_enqueue(d, 9.5) -> 2 (new length); peek -> 9.500000
 
 ### `kosh_clear(k)` — length only, NOT erasure
 
-`kosh_clear` sets the logical length to zero and returns `0`. It does
+`kosh_clear` sets the logical length tak zero and returns `0`. It does
 **not** change capacity and does **not** erase the storage cells: the old
 values remain in the backing buffer, unreachable through the API because
 all indexing is bounds-checked against the (now zero) length. Do **not**
 assume cryptographic erasure — zeroing the storage would be a separate
-feature. This is deliberately different from the library's `map_clear`,
-which zeroes the map's storage: `map_clear` closes a stale-segment hazard
+feature. This is deliberately different from the library's `nighantu_rikta`,
+which zeroes the nighantu's storage: `nighantu_rikta` closes a stale-segment hazard
 in a caller-held buffer, while a `kosh`'s storage is never directly
-exposed to the caller.
+exposed tak the caller.
 
 ### `kosh_peek(k)` — LIFO read without removal
 
@@ -104,13 +104,13 @@ its **own** diagnostic (R64 renamed the `peek`/`dequeue` messages; in R63
 all three printed pop's message):
 
 ```
-empty kosh_pop(k):     Sutram Error: kosh pop from empty array
-empty kosh_peek(k):    Sutram Error: kosh peek from empty array
-empty kosh_dequeue(k): Sutram Error: kosh dequeue from empty array
+empty kosh_pop(k):     Sutram Error: kosh pop from empty mala
+empty kosh_peek(k):    Sutram Error: kosh peek from empty mala
+empty kosh_dequeue(k): Sutram Error: kosh dequeue from empty mala
 ```
 
 All three exit 1. There is **no** `ok[0]` channel here, unlike the
-library's `stack_pop`/`queue_dequeue`, which return `ok[0] = 0` on empty.
+library's `chay_apanay`/`avali_nishkas`, which return `ok[0] = 0` on empty.
 Code that must survive an empty `peek`/`dequeue` must check
 `kosh_empty(k)` first (or `kosh_len(k) == 0`).
 
@@ -120,24 +120,24 @@ Code that must survive an empty `peek`/`dequeue` must check
 - Wrong arity (e.g. `kosh_peek(v, 2)`, `kosh_enqueue(v)`): a parse error
   at the call site, exit 1. The builtins have fixed arity.
 
-## `kosh` vs the library's `list` / `queue`
+## `kosh` vs the library's `suchi` / `queue`
 
-| | `kosh` (compiler builtin) | `list` (library, `lib/list.smlib`) | `queue` (library, `lib/list.smlib`) |
+| | `kosh` (compiler builtin) | `suchi` (library, `lib/suchi.smlib`) | `queue` (library, `lib/suchi.smlib`) |
 |---|---|---|---|
-| Storage | compiler-managed growable array | library qword-cell list | library ring buffer |
+| Storage | compiler-managed growable mala | library qword-cell suchi | library ring buffer |
 | Element type | integer **or** binary64 (`kosh dasham`) | integers (qword cells) only | integers (qword cells) only |
-| Append | `kosh_push` / `kosh_enqueue` | `list_push` / `stack_push` | `queue_enqueue` |
-| Remove last | `kosh_pop` (O(1), aborts if empty) | `stack_pop` (ok-channel) | — |
-| Remove first | `kosh_dequeue` (O(n) shift, aborts if empty) | — (use `list_remove_at(l, 0)`, O(n)) | `queue_dequeue` (O(1), ok-channel) |
-| Peek | `kosh_peek` (last; aborts if empty) | `stack_peek` (ok-channel) | `queue_peek` (ok-channel) |
-| Clear | `kosh_clear` (length only, no erasure) | `list_clear` (zeroes data cells) | `queue_clear` (zeroes ring data) |
-| Empty test | `kosh_empty` | `stack_empty` / `list_len(l) == 0` | `queue_empty` |
-| Sort / min / max / sum / count | — (none) | `list_sort`, `list_min`, `list_max`, `list_sum`, `list_count` | — (none) |
+| Append | `kosh_push` / `kosh_enqueue` | `suchi_khip` / `chay_khip` | `avali_pravesh` |
+| Remove last | `kosh_pop` (O(1), aborts if empty) | `chay_apanay` (ok-channel) | — |
+| Remove first | `kosh_dequeue` (O(n) shift, aborts if empty) | — (use `suchi_apanay(l, 0)`, O(n)) | `avali_nishkas` (O(1), ok-channel) |
+| Peek | `kosh_peek` (last; aborts if empty) | `chay_avalok` (ok-channel) | `avali_avalok` (ok-channel) |
+| Clear | `kosh_clear` (length only, no erasure) | `suchi_rikta` (zeroes data cells) | `avali_rikta` (zeroes ring data) |
+| Empty test | `kosh_empty` | `chay_rikta` / `suchi_maap(l) == 0` | `avali_shunya` |
+| Sort / min / max / sum / count | — (none) | `suchi_shreni`, `suchi_laghu`, `suchi_adhik`, `suchi_yog`, `suchi_gan` | — (none) |
 | Values flow into library functions? | **No** — no generic kosh parameter type | Yes | Yes |
 
-Which to use: `kosh` for typed arrays — especially `dasham` — and when
-compiler-managed growth is wanted. `list` for integer cell lists with the
-library analytics (`list_sort`, `list_min`, ...). `queue` for FIFO where
+Which tak use: `kosh` for typed arrays — especially `dasham` — and when
+compiler-managed growth is wanted. `suchi` for integer cell lists with the
+library analytics (`suchi_shreni`, `suchi_laghu`, ...). `queue` for FIFO where
 O(1) dequeue matters (`kosh_dequeue` is O(n)). For FIFO over integers
 with survival on empty (ok-channel instead of abort), `queue` is the
 right choice; for FIFO over floats, `kosh` is the only choice.
