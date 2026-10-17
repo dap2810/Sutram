@@ -1,3 +1,30 @@
+## v160 - the IDE speaks Sanskrit; a tools-prose bug of mine fixed
+
+**ROUND-72 issued to ChatGPT** with a brief project update and five workstreams, mapped to the seven gates:
+one reproducible baseline, the integrated `kosh` reclamation, **real separate compilation**, **Windows
+executed**, and an audit for further hardcoded keyword constants. It opens with the full vocabulary table,
+because ChatGPT's R71 patch was cut before the rename and will not apply.
+
+**GUI slice 35 - the IDE interface is now Sanskrit.** Every user-facing label was English: File/Edit/Shell/
+Debug/Options/Window/Help, all thirteen dropdown items, the pane labels, the prompts and the About text.
+That mattered: the language is now fully Sanskrit, so a learner who knows no English could not use the IDE.
+Menu names and items are now `patra`, `sampad`, `khol`, `dosh`, `vikalp`, `gavaksh`, `sahay`, with
+`khol`/`sanchay`/`nishkas`, `punah`/`chhid`/`pratilip`/`sanyoj`/`sarvagrah`, `chal`/`anwesh`/`ranga`/
+`phal_rikta`/`parichay`. **The byte lengths AND the x-offsets both had to be recomputed** - the menu bar
+draws each name at a fixed offset, so changing the strings without the offsets would have overlapped them.
+
+**A bug of mine, found while doing it.** The v157 rename had applied the keyword `to`->`tak` **inside the
+tools' English prose** - 48 occurrences, including a broken path (`/path/tak/verified`), `End-tak-end`, and
+`check("connected tak X" in out, ...)` in the X11 protocol test. That last one is why the protocol test was
+failing: **the GUI was correct and the test was broken.** All 48 reverted to `to`, with the one legitimate
+Sutram for-range (`chakra j = 0 tak n {`) preserved. This is the third place the same mistake appeared -
+docs, then HTML, then tools - because `to` is an ordinary English word that also happens to be a keyword.
+
+**Two tests updated** to the new labels and offsets: `test_x11_menus_all.py` (`NAMES` and `MENU_X`).
+
+**All gates green after the change:** suite 187/4, codegen 12/12, packs 33/33, proof_lib 191/191,
+proof_props 86/86, layers 14 core / 9 alloc / 1 std, **GUI 18/18**.
+
 ## v159 - the documentation sync the rename had missed
 
 The rename (v157) and the doc corrections (v158) reached the code and the core markdown, but **not the HTML
