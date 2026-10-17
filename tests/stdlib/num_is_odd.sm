@@ -1,9 +1,9 @@
-ayojan num
+yoj ank
 mukhya() {
-    likha(is_odd(4))
+    likha(asti_visham(4))
     likha("\n")
-    likha(is_odd(7))
+    likha(asti_visham(7))
     likha("\n")
-    likha(is_odd(0))
+    likha(asti_visham(0))
     likha("\n")
 }
