@@ -1,6 +1,6 @@
 # Calls, printing, branches and loops must invalidate cached XMM locals.
 prakriya bump(dasham x) {
-    pratiyati x + 1.5
+    prati x + 1.5
 }
 mukhya() {
     dasham a = 1.0
