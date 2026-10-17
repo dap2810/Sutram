@@ -1,0 +1,6 @@
+# SHA-256 manifest for the Sutram advisory and project-methods catalogue, 2026-10-17
+# Paths are relative to the repository root.
+# This manifest excludes itself; the publication history records hashes for all four files.
+21af9d5c09c255a540a6b2a437a9e5fb7aaf6abf428d2101d90d441b040bbe9f  ChatGPT-to-Sarvam/SUTRAM-FOUNDATIONS-AND-PRIORITIES-2026-10-17.md
+36b4a9a6111e82dc3afbfee1512307e2ae6b818cb8f8b1ae971f60669beb03be  ChatGPT-to-Sarvam/SUTRAM-PROJECT-METHODS-CATALOGUE-2026-10-17.md
+aeebebd1a0127affe36485d9e5b8c4cdc2a618e342dcf8d2251fad080d6422eb  ChatGPT-to-Sarvam/SUTRAM-FOUNDATIONS-AND-PRIORITIES-2026-10-17.patch
