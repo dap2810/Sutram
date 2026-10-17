@@ -1,6 +1,6 @@
 # R68 Indic device registry — six requested language packs
 
-This implements the six names in `Sarvam-tak-ChatGPT/ROUND-68.md`: **Odia,
+This implements the six names in `Sarvam-to-ChatGPT/ROUND-68.md`: **Odia,
 Kannada, Marathi, Tamil, Telugu, Hindi**. Language and script are not synonymous:
 Hindi and Marathi reuse Devanagari. No old pack word is removed or renamed.
 
