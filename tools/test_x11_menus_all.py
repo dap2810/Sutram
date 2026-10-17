@@ -6,9 +6,9 @@ import os, socket, struct, subprocess, sys, time
 SOCKDIR = "/tmp/.X11-unix"; SOCKPATH = os.path.join(SOCKDIR, "X0")
 ROOT_WIN = 0x00000400; RID_BASE = 0x00200000; RID_MASK = 0x001FFFFF
 MENU_H = 28; DROP_W = 120; ROW_H = 22
-MENU_X = [300, 352, 410, 478, 548, 632, 712]
+MENU_X = [300, 370, 450, 510, 570, 650, 740]
 MENU_N = [3, 5, 1, 1, 1, 1, 1]          # File..Help item counts
-NAMES = ["File", "Edit", "Shell", "Debug", "Options", "Window", "Help"]
+NAMES = ["patra", "sampad", "khol", "dosh", "vikalp", "gavaksh", "sahay"]
 
 
 def build_setup():
