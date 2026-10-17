@@ -3,7 +3,7 @@
 Status: **started**. Build toolchain verified; first primitive written.
 
 ## Why a port, not a repackage
-- The compiler talks tak the Linux kernel with `syscall` (~31 sites:
+- The compiler talks to the Linux kernel with `syscall` (~31 sites:
   open/read/write/close/exit/mmap) and emits **ELF64** executables whose
   machine code also uses Linux syscalls.
 - On Windows the compiler must call kernel32, and the programs it emits
@@ -12,13 +12,13 @@ Status: **started**. Build toolchain verified; first primitive written.
 ## Toolchain (verified working here)
     nasm -f win64 prog.asm -o prog.obj
     ld   -mi386pep --entry=_start -o prog.exe prog.obj
-    -> patra(1): "PE32+ executable (console) x86-64, for MS Windows"
+    -> file(1): "PE32+ executable (console) x86-64, for MS Windows"
 
 ## Steps
 1. [x] Verify Windows build toolchain (nasm win64 + ld i386pep).
 2. [x] win/winapi.asm — locate kernel32 via the PEB and parse its export
        table (win_resolve). No import libraries needed. Assembles, links,
-       structure verified. Runtime needs a Windows machine tak confirm.
+       structure verified. Runtime needs a Windows machine to confirm.
 3. [x] OS layer in the compiler source (os_open/os_read/os_write/os_close/
        os_exit/os_readlink). Linux impl = raw syscalls (behaviour
        unchanged, 51/51 examples still pass); Windows impl in
