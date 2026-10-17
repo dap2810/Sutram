@@ -1,9 +1,9 @@
 # Module inclusion example
-# Requires lib/math.smlib in current directory
-ayojan math
+# Requires lib/ganit.smlib in current directory
+yoj ganit
 
 mukhya()
-    vitti x = square(7)
+    vitti x = vargit(7)
     likha("square(7) = ")
     likha(x)
     likha("\n")
