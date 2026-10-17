@@ -1,7 +1,7 @@
 import os, socket, struct, subprocess, time
 
 # Slice 15 proof: Ctrl-F opens a find prompt, Enter searches (wrapping) and moves
-# the caret tak the hit, Esc cancels without moving it. Buffer read back via Ctrl-S.
+# the caret to the hit, Esc cancels without moving it. Buffer read back via Ctrl-S.
 SOCKDIR = "/tmp/.X11-unix"; SOCKPATH = os.path.join(SOCKDIR, "X0")
 SAVED = "/tmp/.sutram_gui_saved.sm"
 ROOT_WIN = 0x00000400; RID_BASE = 0x00200000; RID_MASK = 0x001FFFFF
