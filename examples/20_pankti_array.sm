@@ -1,9 +1,9 @@
 mukhya()
-    pankti nums[6]   # 0..5 inclusive in the loops below
-    punaravartana i = 0 to 5 {
+    mala nums[6]   # 0..5 inclusive in the loops below
+    chakra i = 0 tak 5 {
         nums[i] = i * i
     }
-    punaravartana j = 0 to 5 {
+    chakra j = 0 tak 5 {
         likha(nums[j])
         likha(" ")
     }
