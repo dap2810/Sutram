@@ -1,4 +1,4 @@
-ayojan ganita
+yoj ganita
 mukhya() {
     vitti out = nirmmita(8 * 8)
     vitti r = chakravala(out, 4)
