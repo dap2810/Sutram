@@ -2,11 +2,11 @@
 prakriya average(kosh dasham a) {
     dasham total = a[0] + a[1] + a[2]
     a[1] = 4.0
-    pratiyati total / kosh_len(a)
+    prati total / kosh_len(a)
 }
 
 prakriya raw_total(kosh a) {
-    pratiyati a[0] + a[1] + kosh_len(a)
+    prati a[0] + a[1] + kosh_len(a)
 }
 
 mukhya() {
