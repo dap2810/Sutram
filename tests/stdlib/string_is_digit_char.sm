@@ -1,13 +1,13 @@
-ayojan string
+yoj varna
 mukhya() {
-    likha(is_digit_char("a5b", 1))
+    likha(asti_ank_akshar("a5b", 1))
     likha("\n")
-    likha(is_digit_char("a5b", 0))
+    likha(asti_ank_akshar("a5b", 0))
     likha("\n")
-    likha(is_digit_char("09", 0))
+    likha(asti_ank_akshar("09", 0))
     likha("\n")
-    likha(is_digit_char("/", 0))
+    likha(asti_ank_akshar("/", 0))
     likha("\n")
-    likha(is_digit_char(":", 0))
+    likha(asti_ank_akshar(":", 0))
     likha("\n")
 }
