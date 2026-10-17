@@ -1,7 +1,7 @@
 # Runtime benchmark: multiple stack-only nested function boundaries.
-prakriya leaf(x) { pratiyati x + 1 }
-prakriya mid(x) { pratiyati leaf(x) }
-prakriya outer(x) { pratiyati mid(x) }
+prakriya leaf(x) { prati x + 1 }
+prakriya mid(x) { prati leaf(x) }
+prakriya outer(x) { prati mid(x) }
 mukhya() {
     vitti i = 0
     vitti sum = 0
