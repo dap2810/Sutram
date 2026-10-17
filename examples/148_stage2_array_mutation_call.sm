@@ -2,7 +2,7 @@
 # Never reorder reads across the call or make assumptions about its effects.
 prakriya bump_element(kosh dasham xs) {
     xs[0] = xs[0] + 1.0
-    pratiyati xs[0]
+    prati xs[0]
 }
 mukhya() {
     kosh dasham xs[1]
