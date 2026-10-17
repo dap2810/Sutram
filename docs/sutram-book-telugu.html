@@ -412,7 +412,7 @@ n--      <span class="cm"># n = 5</span></code></pre>
 <pre><code>ayojan math
 
 mukhya()
-    likha(gcd(48, 36))
+    likha(mahattam(48, 36))
     vitti n = 7
     likha(n &gt; 5 ? 100 : 200)
     vitti i = 0
@@ -428,19 +428,19 @@ mukhya()
 <p>Sutram ఒక చిన్న స్టాండర్డ్ లైబ్రరీని పంపుతుంది, దాన్ని మీరు <code>ayojan</code> తో పుల్ ఇన్ చేస్తారు. ఈ మాడ్యూల్ కంపైల్ టైమ్‌లో మీ ప్రోగ్రామ్‌లో ఇన్‌లైన్ చేయబడుతుంది, కాబట్టి రన్‌టైమ్ డిపెండెన్సీ ఉండదు - లైబ్రరీ కోడ్ మీ బైనరీలో భాగంగా మారుతుంది. ఈరోజు పన్నెండు మాడ్యూల్స్ అందుబాటులో ఉన్నాయి; పూర్తి జాబితా <code>docs/sutram-stdlib.html</code> లో ఉంది.</p>
 <table>
 <tr><th>module</th><th>include with</th><th>functions</th></tr>
-<tr><td><code>math</code></td><td><code>ayojan math</code></td><td>15 functions &mdash; <code>sq</code> <code>square</code> <code>cube</code> <code>double</code> <code>triple</code> <code>inc</code> <code>abs_val</code> <code>min2</code> <code>max2</code> <code>gcd</code> <code>lcm</code> <code>power</code> <code>fact</code> <code>is_prime</code> <code>sum_to</code></td></tr>
-<tr><td><code>num</code></td><td><code>ayojan num</code></td><td>10 functions &mdash; <code>is_even</code> <code>is_odd</code> <code>digit_count</code> <code>digit_sum</code> <code>reverse_num</code> <code>is_palindrome</code> <code>clamp</code> <code>fib</code> <code>is_perfect</code> <code>collatz_steps</code></td></tr>
-<tr><td><code>sort</code></td><td><code>ayojan sort</code></td><td>11 functions &mdash; <code>swap</code> <code>bubble_sort</code> <code>shell_sort</code> <code>reverse_arr</code> <code>min_of</code> <code>max_of</code> <code>sum_of</code> <code>find_linear</code> <code>count_of</code> <code>is_sorted</code> <code>binary_search</code></td></tr>
-<tr><td><code>string</code></td><td><code>ayojan string</code></td><td>13 functions &mdash; <code>str_len</code> <code>char_code_at</code> <code>is_digit_char</code> <code>is_upper_char</code> <code>is_lower_char</code> <code>is_letter_char</code> <code>is_space_char</code> <code>count_vowels</code> <code>count_char</code> <code>find_char</code> <code>is_all_digits</code> <code>upper_code</code> <code>lower_code</code></td></tr>
+<tr><td><code>math</code></td><td><code>ayojan math</code></td><td>15 functions &mdash; <code>varg</code> <code>vargit</code> <code>ghan</code> <code>dvigun</code> <code>trigun</code> <code>vardh</code> <code>nirapeksh_mulya</code> <code>laghu2</code> <code>adhik2</code> <code>mahattam</code> <code>laghuttam</code> <code>ghat</code> <code>kramgun</code> <code>asti_abhajya</code> <code>yog_tak</code></td></tr>
+<tr><td><code>num</code></td><td><code>ayojan num</code></td><td>10 functions &mdash; <code>asti_yugm</code> <code>asti_visham</code> <code>ank_gan</code> <code>ank_yog</code> <code>viparyay_ank</code> <code>asti_vilom</code> <code>seemit</code> <code>fib</code> <code>asti_sampurna</code> <code>collatz_charan</code></td></tr>
+<tr><td><code>sort</code></td><td><code>ayojan sort</code></td><td>11 functions &mdash; <code>vinimay</code> <code>budbud_shreni</code> <code>shankh_shreni</code> <code>viparyay_mala</code> <code>laghu</code> <code>adhik</code> <code>yog</code> <code>anwesh_sarak</code> <code>gan</code> <code>asti_sorted</code> <code>dwi_anwesh</code></td></tr>
+<tr><td><code>string</code></td><td><code>ayojan string</code></td><td>13 functions &mdash; <code>varna_maap</code> <code>akshar_sanket</code> <code>asti_ank_akshar</code> <code>asti_unnat_akshar</code> <code>asti_avanat_akshar</code> <code>asti_akshar_akshar</code> <code>asti_avakash_akshar</code> <code>gan_swar</code> <code>gan_akshar</code> <code>anwesh_akshar</code> <code>asti_sarv_ank</code> <code>unnat_sanket</code> <code>avanat_sanket</code></td></tr>
 </table>
 <pre><code>ayojan math
 
 mukhya()
-    likha(gcd(48, 36))
+    likha(mahattam(48, 36))
     likha(" ")
-    likha(fact(5))
+    likha(kramgun(5))
     likha(" ")
-    likha(is_prime(97))
+    likha(asti_abhajya(97))
     likha("\n")
 </code></pre>
 <p><i>Note: a program can currently include at most two modules &mdash; a compiler limit that is being fixed.</i></p>
@@ -675,7 +675,7 @@ Uninstall</b>. అన్‌ఇన్‌స్టాలర్ తాను ఇన
   <p>ఒక ఫంక్షన్‌కు ఒక నిర్దిష్ట రకమైన ఆర్గ్యుమెంట్ అవసరం కావచ్చు, మరియు కంపైలర్ దాన్ని చెక్ చేస్తుంది.</p>
   <p>టైప్డ్ ఫ్లోట్ అర్రే పాయింటర్‌గా పాస్ చేయబడుతుంది, కాబట్టి ఇండెక్స్డ్ రైట్స్ కాలర్‌కు కనిపిస్తాయి — ఒక ఫంక్షన్ మీ కోసం అర్రేను నింపగలదు. కానీ దాన్ని పెంచడానికి అనుమతించబడదు: పారామీటర్‌పై kosh_push ని కాల్ చేయడం నేమ్డ్ ఎర్రర్‌తో తిరస్కరించబడుతుంది, ఎందుకంటే పాయింటర్ బై వాల్యూగా పాస్ చేయబడుతుంది మరియు కాలర్ పాత పాయింటర్‌తో మిగిలిపోతాడు. ఇది ఉద్దేశపూర్వకమైన భద్రతా సరిహద్దు, మిస్సయిన ఫీచర్ కాదు.</p>
   <h3>The standard library</h3>
-  <p>కంపైలర్‌తో పాటు పదిహేను మాడ్యూల్స్ వస్తాయి. ayojan తో ఒకదాన్ని ఇంపోర్ట్ చేయండి. అవి అంకగణితం మరియు నంబర్ థియరీ; సార్టింగ్ మరియు టెక్స్ట్; Pingala's prosody; Aryabhata మరియు Bhaskara ల గణితం; pi, sine, cosine మరియు square root కోసం Kerala school's series; గణాంకాలు; న్యూమరికల్ క్యాలిక్యులస్ — integration, derivatives మరియు polynomial roots; matrices మరియు determinants తో linear algebra; మరియు ఫైల్ రీడింగ్ మరియు రైటింగ్‌ను కవర్ చేస్తాయి.</p>
+  <p>కంపైలర్‌తో పాటు పదిహేను మాడ్యూల్స్ వస్తాయి. ayojan తో ఒకదాన్ని ఇంపోర్ట్ చేయండి. అవి అంకగణితం మరియు నంబర్ థియరీ; సార్టింగ్ మరియు టెక్స్ట్; Pingala's prosody; Aryabhata మరియు Bhaskara ల గణితం; pi, sine, cosine మరియు vargit root కోసం Kerala school's series; గణాంకాలు; న్యూమరికల్ క్యాలిక్యులస్ — integration, derivatives మరియు polynomial roots; matrices మరియు determinants తో linear algebra; మరియు ఫైల్ రీడింగ్ మరియు రైటింగ్‌ను కవర్ చేస్తాయి.</p>
   <div class="try"><b>Try it:</b> హెరిటేజ్ మాడ్యూల్స్ నిజమైన గణితాన్ని లెక్కిస్తాయి — 61 యొక్క chakravala x squared minus 61 y squared equals 1 కు అతిచిన్న పరిష్కారాన్ని రిటర్న్ చేస్తుంది, అది x = 1766319049, y = 226153980. ఇది 7వ శతాబ్దపు పద్ధతి, సరైన సమాధానంతో సరిచూడబడింది.</div>
   <h3>The Sutram IDE</h3>
   <p>భాషతో పాటు ఇన్‌స్టాల్ అవుతుంది. లైన్ నంబర్లు మరియు సింటాక్స్ హైలైటింగ్‌తో కూడిన కోడ్ ఎడిటర్ ఉన్న ఒకే ఒక నేటివ్ ప్రోగ్రామ్ — Python లేదు, ఇంటర్‌ప్రెటర్ లేదు — మీరు రాసిన దాన్ని కంపైల్ చేసి రన్ చేయడానికి Ctrl-R, అవుట్‌పుట్ కింద చూపబడుతుంది; ఉదాహరణ ప్రోగ్రామ్‌లను ఒక్కొక్కటిగా బ్రౌజ్ చేయడానికి Ctrl-E; మీరు స్టేట్‌మెంట్ టైప్ చేసి, ఎంటర్ నొక్కి, అది రన్ అవ్వడం చూసే ఇంటరాక్టివ్ షెల్ కోసం Ctrl-T, ఇక్కడ సెషన్ మునుపటి లైన్‌లను గుర్తుంచుకుంటుంది కాబట్టి మీరు ఒక్కో అడుగు వేస్తూ ఏదైనా నిర్మించవచ్చు; మరియు సేవ్ చేయడానికి Ctrl-S, లోడ్ చేయడానికి Ctrl-L, క్విట్ చేయడానికి Ctrl-Q.</p>
