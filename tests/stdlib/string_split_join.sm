@@ -1,4 +1,4 @@
-ayojan string
+yoj varna
 mukhya() {
     vitti src = nirmmita(10 * 8)
     src[0] = 97
@@ -9,11 +9,11 @@ mukhya() {
     vitti sep = nirmmita(2 * 8)
     sep[0] = 44
     vitti parts = nirmmita(20 * 8)
-    vitti nc = str_split(src, 5, sep, 1, parts, 10)
+    vitti nc = varna_bhed(src, 5, sep, 1, parts, 10)
     likha(nc)
     likha("\n")
     vitti jout = nirmmita(10 * 8)
-    vitti jn = str_join(parts, nc, sep, 1, jout)
+    vitti jn = varna_yuj(parts, nc, sep, 1, jout)
     likha(jn)
     likha("\n")
     vitti i = 0
