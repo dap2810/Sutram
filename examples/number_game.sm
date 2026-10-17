@@ -8,10 +8,10 @@ mukhya()
     likha("\n")
     yadi (guess == secret) {
         likha("Correct!\n")
-    } anyatra {
+    } anya {
         yadi (guess > secret) {
             likha("Too high!\n")
-        } anyatra {
+        } anya {
             likha("Too low!\n")
         }
         likha("The answer was: ")
