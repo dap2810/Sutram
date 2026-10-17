@@ -1,11 +1,11 @@
-ayojan string
+yoj varna
 mukhya() {
-    likha(str_equals("hello", "hello"))
+    likha(varna_sam("hello", "hello"))
     likha("\n")
-    likha(str_equals("hello", "hell"))
+    likha(varna_sam("hello", "hell"))
     likha("\n")
-    likha(str_equals("hello", "hallo"))
+    likha(varna_sam("hello", "hallo"))
     likha("\n")
-    likha(str_equals("", ""))
+    likha(varna_sam("", ""))
     likha("\n")
 }
