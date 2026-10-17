@@ -1,12 +1,12 @@
-ayojan array
+yoj mala
 mukhya() {
-    vitti a = array_new(3)
-    likha(array_set(a, 0, 10))
+    vitti a = mala_nava(3)
+    likha(mala_sangrah(a, 0, 10))
     likha("\n")
-    likha(array_set(a, 2, 30))
+    likha(mala_sangrah(a, 2, 30))
     likha("\n")
-    likha(array_get(a, 0))
+    likha(mala_grah(a, 0))
     likha("\n")
-    likha(array_get(a, 2))
+    likha(mala_grah(a, 2))
     likha("\n")
 }
