@@ -2,5 +2,5 @@ prakriya semantic_failures() {
     likha(missing_sem_one(1));
     likha(missing_sem_two(2));
     likha(missing_sem_three(3));
-    pratiyati 0;
+    prati 0;
 }
