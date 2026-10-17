@@ -1,4 +1,4 @@
 vitti a = 8
 vitti b = double_value(a) + 1
-prakriya double_value(x) { pratiyati x * 2 }
+prakriya double_value(x) { prati x * 2 }
 mukhya() { likha(b) likha(double_value(3)) }
