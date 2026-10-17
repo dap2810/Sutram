@@ -1,4 +1,4 @@
-ayojan kalana
+yoj kalana
 mukhya() {
     kosh dasham xs[3]
     kosh dasham ys[3]
@@ -8,10 +8,10 @@ mukhya() {
     kosh_push(ys, 0.0)
     kosh_push(ys, 1.0)
     kosh_push(ys, 4.0)
-    likha(slope(xs, ys, 1))
+    likha(pravan(xs, ys, 1))
     likha("\n")
-    likha(slope(xs, ys, 0))
+    likha(pravan(xs, ys, 0))
     likha("\n")
-    likha(slope(xs, ys, 2))
+    likha(pravan(xs, ys, 2))
     likha("\n")
 }
