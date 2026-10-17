@@ -3,22 +3,22 @@
 **Status:** the complete checked/saturating surface as shipped (WS4, R24).
 The compiler half is the R65 trap (below). This document states the
 library's contract: what each function returns on failure, and which
-form tak use when.
+form to use when.
 
 ## The three forms
 
 | Form | On overflow | On invalid input | How it reports |
 |---|---|---|---|
 | Plain operators (`+ - * / %`) | wrap silently (two's-complement) | `/` / `%` by zero: hardware SIGFPE (crash) | nothing — no signal at all |
-| `ganita_checked_*` | returns **0**, `ok[0] = 0` | returns **0**, `ok[0] = 0` | `ok` — a 1-cell `mala` the caller passes in |
-| `ganita_sat_*` | **clamps** tak `INT64_MAX` / `INT64_MIN` | returns **0** (sentinel) | nothing — the return value itself |
+| `ganita_checked_*` | returns **0**, `ok[0] = 0` | returns **0**, `ok[0] = 0` | `ok` — a 1-cell `pankti` the caller passes in |
+| `ganita_sat_*` | **clamps** to `INT64_MAX` / `INT64_MIN` | returns **0** (sentinel) | nothing — the return value itself |
 
 The rule for the checked family: **0 on failure, never the wrapped
 value.** The rule for the saturating family: **seemit on overflow, 0 on
-invalid input.** Neither family ever returns a wrapped phal.
+invalid input.** Neither family ever returns a wrapped result.
 
 "Invalid input" means: negative exponent (`pow`), negative argument
-(`kramgun`), division/modulo by zero. Overflow means: the true phal does
+(`kramgun`), division/modulo by zero. Overflow means: the true result does
 not fit in signed 64 bits.
 
 ## The complete surface
@@ -36,10 +36,10 @@ not fit in signed 64 bits.
 | `ganita_janchit_kramgun(n, ok)` | `n < 0`; overflow (`21!` overflows) |
 | `ganita_janchit_nirapeksh(a, ok)` | `abs(MIN)` overflows |
 
-On success, `ok[0] = 1` and the return is the exact phal.
+On success, `ok[0] = 1` and the return is the exact result.
 `0! = 1`, `0^0 = 1` (empty-product convention).
 
-### Saturating (R18, R20, R21, R24) — seemit tak the bounds
+### Saturating (R18, R20, R21, R24) — seemit to the bounds
 
 | Function | Overflow → seemit | Invalid input → `0` |
 |---|---|---|
@@ -47,7 +47,7 @@ On success, `ok[0] = 1` and the return is the exact phal.
 | `ganita_paripurna_nyun(a, b)` | `MAX` / `MIN` by util_chinha | — |
 | `ganita_paripurna_gun(a, b)` | `MAX` / `MIN` by util_chinha of the true product | — |
 | `ganita_paripurna_bhaj(a, b)` | `MIN / -1` → `MAX` | `b == 0` → `0` |
-| `ganita_paripurna_shesh(a, b)` | — (remainder never overflows) | `b == 0` → `0`; `MIN % -1` → `0` (also the exact phal) |
+| `ganita_paripurna_shesh(a, b)` | — (remainder never overflows) | `b == 0` → `0`; `MIN % -1` → `0` (also the exact result) |
 | `ganita_paripurna_ghat(a, e)` | `MAX` / `MIN` (parity of remaining steps decides for negative bases) | `e < 0` → `0` |
 | `ganita_paripurna_kramgun(n)` | `21!` and up → `MAX` (factorials are positive) | `n < 0` → `0` |
 | `ganita_paripurna_nirapeksh(a)` | `abs(MIN)` → `MAX` | — |
@@ -58,11 +58,11 @@ family has a `shesh` companion with the same `b == 0 → 0` sentinel as
 (the quotient overflows) even though the mathematical remainder is 0.
 `sat_fact`/`sat_pow` exit early once saturated.
 
-## Which form tak use
+## Which form to use
 
 - **The program must survive an overflow** (check, handle, continue):
   `ganita_checked_*`. Check `ok[0]`; on 0, the return is 0, not a
-  phal — do not use it as a value.
+  result — do not use it as a value.
 - **Clamping is the correct semantics** (bounded counters, sensor
   readings, accumulators that must stay in range): `ganita_sat_*`.
   No `ok` channel; the return is always usable.
@@ -80,9 +80,9 @@ The trap is a **build-time** compiler configuration, default **OFF**:
 nasm -DSUTRAM_R65_TRAP_INT=1 -f elf64 -I. src/sutram_compiler.asm
 ```
 
-The default build wraps silently (byte-identical output tak the accepted
+The default build wraps silently (byte-identical output to the accepted
 parent). The trap build aborts with
-`Sutram Error [E_INTEGER_TRAP] <patra>:<line>: ...` on add/sub/mul
+`Sutram Error [E_INTEGER_TRAP] <file>:<line>: ...` on add/sub/mul
 overflow and on division/remainder by zero. (R65 measured, CHANGELOG
 v143.)
 
