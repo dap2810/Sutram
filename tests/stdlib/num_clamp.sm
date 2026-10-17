@@ -1,9 +1,9 @@
-ayojan num
+yoj ank
 mukhya() {
-    likha(clamp(5,1,10))
+    likha(seemit(5,1,10))
     likha("\n")
-    likha(clamp(-5,1,10))
+    likha(seemit(-5,1,10))
     likha("\n")
-    likha(clamp(15,1,10))
+    likha(seemit(15,1,10))
     likha("\n")
 }
