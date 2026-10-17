@@ -1,6 +1,6 @@
-# The Kerala school as a library (ayojan madhava)
-# Madhava's series: pi, sine, cosine, arctangent - and Newton's square root.
-ayojan madhava
+# The Kerala school as a library (yoj madhava)
+# Madhava's series: pi, sine, cosine, arctangent - and Newton's vargit root.
+yoj madhava
 
 mukhya()
     likha("pi     = ")
@@ -16,5 +16,5 @@ mukhya()
     likha(madhava_atan(0.5))
     likha("\n")
     likha("sqrt 2 = ")
-    likha(madhava_sqrt(2.0))
+    likha(madhava_vargmool(2.0))
     likha("\n")
