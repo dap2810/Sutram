@@ -16,7 +16,7 @@ mukhya()
     likha(c)
     likha(d)
     likha(e)
-    # The large literals cannot use sign-extending imm32 arithmetic.
+    # The large literals cannot use util_chinha-extending imm32 arithmetic.
     b = a + 2147483648
     c = a - 4294967295
     likha(b)
