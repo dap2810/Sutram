@@ -53,7 +53,7 @@ def main():
                 if reg==4: continue
                 raw=bytes((0x50+reg,0x58+reg)) if reg<8 else bytes((0x41,0x50+reg-8,0x41,0x58+reg-8))
                 src=work/f'pair{reg}.sm'
-                src.write_text('mukhya() { nishkriya("'+raw.hex(' ')+'") likha(42) }\n')
+                src.write_text('mukhya() { yantra("'+raw.hex(' ')+'") likha(42) }\n')
                 rb,before=compile_run(comp,src,work/f'b{reg}')
                 ra,after=compile_run(a.pair_compiler.resolve(),src,work/f'a{reg}')
                 if rb.returncode!=0 or ra.returncode!=0 or rb.stdout!=b'42\n' or ra.stdout!=rb.stdout: raise AssertionError(f'pair semantics failed reg={reg}')
@@ -61,7 +61,7 @@ def main():
                 rows.append({'case':f'same register {reg}','status':'PASS','bytes_removed':len(raw)})
             for hexdata in ('50 90 58','54 5c','50 59'):
                 # Negative cases execute only when balanced and valid; compare bytes otherwise.
-                src=work/'nonmatch.sm';src.write_text('mukhya() { nishkriya("'+hexdata+'") likha(42) }\n')
+                src=work/'nonmatch.sm';src.write_text('mukhya() { yantra("'+hexdata+'") likha(42) }\n')
                 # Different-register pair may clobber RCX but remains stack balanced.
                 rb,before=compile_run(comp,src,work/'nonmatch_before')
                 ra,after=compile_run(a.pair_compiler.resolve(),src,work/'nonmatch_after')
