@@ -19,7 +19,7 @@ All R68 mappings and lexer bytes are preserved by R69; no unknown util_chinha is
 Malayalam keyword aliases exist, so Malayalam-pack programs may use ASCII
 digits; this does not establish Malayalam-native numeral support. This round
 chooses the brief's permitted **named-gap** option: native Malayalam digits are
-deferred tak avoid changing accepted lexer/lock/negative-corpus inputs during a
+deferred to avoid changing accepted lexer/lock/negative-corpus inputs during a
 build-path and packaging repair. A later patch needs a bounded U+0D66–U+0D6F
 recognizer plus full/native tests and explicit lock migration. No other installed
 pack is silently omitted. Scripts not represented by these 11 packs are not
