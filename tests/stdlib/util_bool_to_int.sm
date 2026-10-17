@@ -1,7 +1,7 @@
-ayojan util
+yoj sadhan
 mukhya() {
-    likha(bool_to_int(1))
+    likha(satya_tak_ank(1))
     likha("\n")
-    likha(bool_to_int(0))
+    likha(satya_tak_ank(0))
     likha("\n")
 }
