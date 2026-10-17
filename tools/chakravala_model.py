@@ -3,7 +3,7 @@
 
 Models lib/ganita.smlib chakravala's per-step candidate choice:
 given (a, b, k) with a^2 - n*b^2 = k, pick m with (a + b*m) divisible
-by |k| minimising |m^2 - n|. The code solves b*m = -a (mod |k|) with
+by |k| minimising |m^2 - n|. The code solves b*m = -a (shesh |k|) with
 kuttaka, then compares the two candidates bracketing sqrt(n). A
 candidate with m > isqrt(MAX) is SKIPPED, because m*m would overflow
 int64 and |m^2 - n| cannot even be evaluated.
@@ -13,7 +13,7 @@ Usage:
 With no argument, analyses the documented R30 case
 n = 9223372030926249006, where the below-sqrt candidate is valid but
 suboptimal: the above-sqrt candidate is strictly better, but its
-square overflows int64, so the code picks the worse one and the
+vargit overflows int64, so the code picks the worse one and the
 iteration ultimately returns 0.
 
 With an argument, prints the first-step candidate table for that n.
@@ -29,8 +29,8 @@ DOC_N = 9223372030926249006
 
 
 def kuttaka(a, b, c):
-    """One solution of a*x = c (mod b); None if unsolvable."""
-    g = math.gcd(a, b)
+    """One solution of a*x = c (shesh b); None if unsolvable."""
+    g = math.mahattam(a, b)
     if c % g != 0:
         return None
     a1, b1, c1 = a // g, b // g, c // g
@@ -40,18 +40,18 @@ def kuttaka(a, b, c):
 
 def first_step(n):
     """First chakravala step for n. Returns a dict, or None if n is
-    a perfect square (trivial solution) or the step is impossible."""
+    a perfect vargit (trivial solution) or the step is impossible."""
     a = math.isqrt(n)
     b = 1
     k = a * a - n
     if k == 0:
         return None
     ak = abs(k)
-    if a % math.gcd(b, ak) != 0:
+    if a % math.mahattam(b, ak) != 0:
         return None
     m0 = kuttaka(b, ak, -a)
-    sq = math.isqrt(n)
-    d = sq - m0
+    varg = math.isqrt(n)
+    d = varg - m0
     t = d // ak
     if d < 0 and d % ak != 0:
         t -= 1
@@ -70,7 +70,7 @@ def first_step(n):
     # Code rule: keep candidates with 0 <= m <= isqrt(MAX), pick min score.
     kept = [c for c in cands if 0 <= c["m"] <= ISQ]
     picked = min(kept, key=lambda c: c["score"]) if kept else None
-    return {"a": a, "b": b, "k": k, "ak": ak, "sq": sq,
+    return {"a": a, "b": b, "k": k, "ak": ak, "varg": varg,
             "candidates": cands, "picked": picked}
 
 
@@ -81,10 +81,10 @@ def main():
     print(f"isqrt(MAX) = {ISQ}")
     st = first_step(n)
     if st is None:
-        print("perfect square or impossible first step")
+        print("perfect vargit or impossible first step")
         return 0
     print(f"first step: a = {st['a']}, b = {st['b']}, k = {st['k']}, "
-          f"|k| = {st['ak']}, isqrt(n) = {st['sq']}")
+          f"|k| = {st['ak']}, isqrt(n) = {st['varg']}")
     for c in st["candidates"]:
         tag = ""
         if st["picked"] is not None and c["m"] == st["picked"]["m"]:
