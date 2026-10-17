@@ -110,7 +110,7 @@ class GraphReference:
                 key = alias or module
                 if key in self.import_map and self.import_map[key] != module:
                     raise GraphDiagnostic('E_IMPORT_ALIAS', entry, num,
-                                          f'import {key!r} refers tak two different modules')
+                                          f'import {key!r} refers to two different modules')
                 self.import_map[key] = module
                 self.visit(module, entry, num)
         # Opt-in modern entries cannot accept two unqualified exports with same name.
@@ -130,5 +130,5 @@ class GraphReference:
         m = self.modules[module]
         if function not in m.exported:
             raise GraphDiagnostic('E_PRIVATE_SYMBOL', importer, line,
-                                  f'{module}.{function} is private; add niryat {function} tak export it')
+                                  f'{module}.{function} is private; add niryat {function} to export it')
         return True
