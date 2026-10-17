@@ -1,7 +1,7 @@
-# Statistics library over a typed float array (kosh dasham).
+# Statistics library over a typed float mala (kosh dasham).
 # Textbook dataset [2,4,4,4,5,5,7,9]: mean 5, population variance 4,
 # population stddev 2, min 2, max 9, range 7, sum 40.
-ayojan sankhyiki
+yoj sankhyiki
 
 mukhya() {
     kosh dasham xs[4]
