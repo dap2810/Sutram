@@ -1,11 +1,11 @@
-# Representative end-to-end numerical application, not an isolated micro-kernel.
+# Representative end-tak-end numerical application, not an isolated micro-kernel.
 # Includes two real library modules and typed kosh parameter chains.
-ayojan sankhyiki
-ayojan madhava
+yoj sankhyiki
+yoj madhava
 
 prakriya measure(kosh dasham values) {
     # 5 + 4 + 2 = 11 for the textbook dataset.
-    pratiyati madhya(values) + prasaran(values) + vichalan(values)
+    prati madhya(values) + prasaran(values) + vichalan(values)
 }
 
 mukhya() {
@@ -26,7 +26,7 @@ mukhya() {
     kosh_push(v, 1)
     kosh_push(v, 2)
 
-    # Repeated full statistical pipelines: array traversals, nested function
+    # Repeated full statistical pipelines: mala traversals, nested function
     # calls, floating-point arithmetic, Newton sqrt, branches and loops.
     dasham total = 0.0
     vitti i = 0
