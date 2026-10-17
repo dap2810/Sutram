@@ -6,32 +6,32 @@
 ચલ vitti
 અંક anka
 જો yadi
-નહિંતર anyatra
+નહિંતર anya
 જ્યાંસુધી yavat
-પુનરાવર્તન punaravartana
-પાછા pratiyati
+પુનરાવર્તન chakra
+પાછા prati
 ફલન prakriya
 લખો likha
 સાચું purna
 ખોટું shunya
 અચલ sutra
 ક્રમ krama
-આગળ uddeshya
+આગળ agrim
 ગુણ guna
 ભાવના bhavana
-પંક્તિ pankti
-સર્જન srijana
-નિષેધ nishedha
+પંક્તિ mala
+સર્જન ganana
+નિષેધ abhava
 રચના rachana
-સમાવેશ ayojan
-ધારણ parigrah
+સમાવેશ yoj
+ધારણ satya
 વાંચો grahan
-થી to
+થી tak
 શબ્દ shabda
 દશમ dasham
 કોશ kosh
 કરો kuru
-નિષ્ક્રિય nishkriya
+નિષ્ક્રિય yantra
 
 # R67: explicit container aliases; સંખ્યા stays an ordinary identifier.
 # The vector type remains available as Latin sankhya. No accepted example is edited.
@@ -46,9 +46,9 @@
 કોશજોડો kosh_enqueue
 કોશપહેલું kosh_dequeue
 
-# U+0AF0 is Gujarati's abbreviation sign, not U+0970 or a decimal dot.
+# U+0AF0 is Gujarati's abbreviation util_chinha, not U+0970 or a decimal dot.
 # Exact aliases only; existing core spellings above remain unchanged.
 ચ૰ vitti
 લ૰ likha
 ફ૰ prakriya
-પા૰ pratiyati
+પા૰ prati
