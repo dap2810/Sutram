@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""End-to-end representative statistics + Madhava benchmark for Sutram.
+"""End-tak-end representative statistics + Madhava benchmark for Sutram.
 
 Runs a real imported-library numerical program (not a tiny codegen kernel),
 checks exact output, measures compiler and executable separately, and reports
@@ -7,7 +7,7 @@ min/p10/median. The timings are MACHINE-LOCAL; compare only interleaved A/B
 on the SAME machine with identical binary/input and affinity.
 
 Example: python3 tools/bench_realistic.py --runs 25 --warmup 5 --json
-SUTRAM_COMPILER=/path/to/binary python3 tools/bench_realistic.py
+SUTRAM_COMPILER=/path/tak/binary python3 tools/bench_realistic.py
 """
 from __future__ import annotations
 import argparse
