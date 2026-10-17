@@ -1,56 +1,56 @@
-ayojan fmt
+yoj roop
 mukhya() {
     vitti out = nirmmita(80 * 8)
     vitti minv = (0 - 9223372036854775807) - 1
-    vitti n = fmt_int_base(minv, 10, out)
+    vitti n = roop_ank_aadhar2(minv, 10, out)
     likha(n)
     likha("\n")
     vitti i = 0
     yavat (i < n) {
-        likha(char_at(out, i))
+        likha(akshar(out, i))
         likha("\n")
         i = i + 1
     }
-    vitti m = fmt_int_base(minv, 16, out)
+    vitti m = roop_ank_aadhar2(minv, 16, out)
     likha(m)
     likha("\n")
     i = 0
     yavat (i < m) {
-        likha(char_at(out, i))
+        likha(akshar(out, i))
         likha("\n")
         i = i + 1
     }
-    vitti k = fmt_int_flags(minv, 16, 1, out)
+    vitti k = roop_ank_dhvaj(minv, 16, 1, out)
     likha(k)
     likha("\n")
     i = 0
     yavat (i < k) {
-        likha(char_at(out, i))
+        likha(akshar(out, i))
         likha("\n")
         i = i + 1
     }
-    vitti d = fmt_digits_base(0 - 5, 10, 0, out)
+    vitti d = roop_ank_aadhar(0 - 5, 10, 0, out)
     likha(d)
     likha("\n")
-    likha(char_at(out, 0))
+    likha(akshar(out, 0))
     likha("\n")
-    vitti g = fmt_digits(minv, out)
+    vitti g = roop_ank(minv, out)
     likha(g)
     likha("\n")
     i = 0
     yavat (i < g) {
-        likha(char_at(out, i))
+        likha(akshar(out, i))
         likha("\n")
         i = i + 1
     }
-    vitti b = fmt_int_base(minv, 2, out)
+    vitti b = roop_ank_aadhar2(minv, 2, out)
     likha(b)
     likha("\n")
-    likha(char_at(out, 0))
+    likha(akshar(out, 0))
     likha("\n")
-    likha(char_at(out, 1))
+    likha(akshar(out, 1))
     likha("\n")
-    likha(char_at(out, 64))
+    likha(akshar(out, 64))
     likha("\n")
     likha("fmt-min-done\n")
 }
