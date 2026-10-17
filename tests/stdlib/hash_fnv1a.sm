@@ -1,10 +1,10 @@
-ayojan hash
+yoj gudh
 mukhya() {
-    likha(fnv1a_str("hello"))
+    likha(fnv1a_varna("hello"))
     likha("\n")
-    likha(fnv1a_str("a"))
+    likha(fnv1a_varna("a"))
     likha("\n")
-    likha(fnv1a_str(""))
+    likha(fnv1a_varna(""))
     likha("\n")
     likha(fnv1a("hello world", 5))
     likha("\n")
