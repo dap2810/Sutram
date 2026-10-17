@@ -1,4 +1,4 @@
-ayojan string
+yoj varna
 mukhya() {
     vitti hay = nirmmita(12 * 8)
     hay[0] = 104
@@ -18,17 +18,17 @@ mukhya() {
     nd[2] = 114
     nd[3] = 108
     nd[4] = 100
-    likha(str_find(hay, 11, nd, 5))
+    likha(varna_anwesh(hay, 11, nd, 5))
     likha("\n")
-    likha(str_contains(hay, 11, nd, 5))
+    likha(varna_antah(hay, 11, nd, 5))
     likha("\n")
     # absent needle
     nd[0] = 122
-    likha(str_find(hay, 11, nd, 5))
+    likha(varna_anwesh(hay, 11, nd, 5))
     likha("\n")
-    likha(str_contains(hay, 11, nd, 5))
+    likha(varna_antah(hay, 11, nd, 5))
     likha("\n")
     # empty needle
-    likha(str_find(hay, 11, nd, 0))
+    likha(varna_anwesh(hay, 11, nd, 0))
     likha("\n")
 }
