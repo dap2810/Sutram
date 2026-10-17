@@ -1,9 +1,9 @@
-ayojan util
+yoj sadhan
 mukhya() {
-    likha(div_ceil(7,3))
+    likha(bhaj_urdhva(7,3))
     likha("\n")
-    likha(div_ceil(9,3))
+    likha(bhaj_urdhva(9,3))
     likha("\n")
-    likha(div_ceil(10,3))
+    likha(bhaj_urdhva(10,3))
     likha("\n")
 }
