@@ -1,0 +1,86 @@
+# lib/file.smlib — Sutram standard library: file I/O
+# layer: std
+#
+# The first std module: genuine OS services, via the file builtins
+# dvaram (open), paadh (read), likha (3-arg write), band (close).
+# A std module is the ONLY layer allowed to call OS builtins
+# (tools/check_layers.py enforces this).
+#
+# Paths are NUL-terminated byte strings: a literal works, as does
+# a set_char-built buffer with a 0 terminator. Data buffers are
+# raw byte pointers (a literal, or a set_char-built buffer) with
+# an explicit byte count — NOT qword-cell arrays.
+#
+# Errors: every function returns -1 on any OS error (open failure,
+# read/write error). patra_asti returns 0/1 and never -1.
+# patra_path_sarv / patra_likh_sarv loop until the count is met, EOF
+# (read), or an error — a single syscall is not assumed to move
+# everything. The file descriptor is always closed before returning.
+#
+# Linux flags used (the builtins are Linux syscalls; see
+# docs/R52-BUILTIN-FIXES.md): O_RDONLY = 0, O_WRONLY|O_CREAT|O_TRUNC
+# = 577 (created files get mode 0644, subject to umask).
+# No Windows-host equivalence is claimed for the flag values.
+
+# patra_path_sarv(path, out, cap) — open path read-only, read up to
+# cap bytes into out, close. Returns the byte count read (0 for an
+# empty file, or cap == 0 on an existing file), -1 on any error.
+# cap < 0 returns -1 without opening.
+prakriya patra_path_sarv(path, out, cap) {
+    vitti p = path
+    vitti dst = out
+    vitti c = cap
+    vitti fd = 0
+    vitti total = 0
+    yadi (c < 0) { prati 0 - 1 }
+    fd = dvaram(p, 0)
+    yadi (fd < 0) { prati 0 - 1 }
+    yavat (total < c) {
+        vitti n = paadh(fd, dst + total, c - total)
+        yadi (n < 0) {
+            band(fd)
+            prati 0 - 1
+        }
+        yadi (n == 0) {
+            band(fd)
+            prati total
+        }
+        total = total + n
+    }
+    band(fd)
+    prati total
+}
+
+# patra_likh_sarv(path, data, n) — create/truncate path, write all n
+# bytes from data, close. Returns n (0 for n == 0 on a creatable
+# path), -1 on any error. n < 0 returns -1 without opening.
+prakriya patra_likh_sarv(path, data, n) {
+    vitti p = path
+    vitti src = data
+    vitti c = n
+    vitti fd = 0
+    vitti total = 0
+    yadi (c < 0) { prati 0 - 1 }
+    fd = dvaram(p, 577)
+    yadi (fd < 0) { prati 0 - 1 }
+    yavat (total < c) {
+        vitti w = likha(fd, src + total, c - total)
+        yadi (w <= 0) {
+            band(fd)
+            prati 0 - 1
+        }
+        total = total + w
+    }
+    band(fd)
+    prati total
+}
+
+# patra_asti(path) — 1 if path opens read-only, 0 otherwise.
+# (Open failure covers missing file, missing directory, and
+# permission denial alike — the caller cannot distinguish them.)
+prakriya patra_asti(path) {
+    vitti fd = dvaram(path, 0)
+    yadi (fd < 0) { prati 0 }
+    band(fd)
+    prati 1
+}
