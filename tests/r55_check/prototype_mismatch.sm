@@ -1,3 +1,3 @@
 prakriya alpha(n);
-prakriya alpha(n, k) { pratiyati n + k }
+prakriya alpha(n, k) { prati n + k }
 mukhya() { likha(alpha(10)) }
