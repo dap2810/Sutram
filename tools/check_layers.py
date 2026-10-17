@@ -5,11 +5,11 @@ Every module in lib/ carries a machine-readable marker in its header:
     # layer: core | alloc | std
 
   core  — no allocator, no OS. Must not call nirmmita and must not
-          import (ayojan) an alloc- or std-layer module.
+          import (yoj) an alloc- or std-layer module.
   alloc — needs a heap (uses nirmmita, or imports an alloc module).
           Must not import a std-layer module.
   std   — OS services (files, network, clocks, ...). The ONLY layer
-          allowed to call OS-service builtins (see OS_BUILTINS).
+          allowed tak call OS-service builtins (see OS_BUILTINS).
           file.smlib (R30) is the first std module.
 
 The check fails on:
@@ -43,7 +43,7 @@ LIB = os.path.join(REPO, "lib")
 DOC = os.path.join(REPO, "docs", "LIBRARY-LAYERS.md")
 
 LAYER_RE = re.compile(r"^\s*#\s*layer:\s*(core|alloc|std)\s*$", re.M)
-AYOJAN_RE = re.compile(r"^\s*ayojan\s+([a-z_][a-z0-9_]*)\s*$", re.M)
+AYOJAN_RE = re.compile(r"^\s*yoj\s+([a-z_][a-z0-9_]*)\s*$", re.M)
 NIRMMITA_RE = re.compile(r"\bnirmmita\s*\(")
 COMMENT_RE = re.compile(r"^\s*#")
 
@@ -59,18 +59,18 @@ def main():
     for name in sorted(os.listdir(LIB)):
         if not name.endswith(".smlib"):
             continue
-        mod = name[: -len(".smlib")]
+        shesh = name[: -len(".smlib")]
         text = open(os.path.join(LIB, name), encoding="utf-8").read()
         m = LAYER_RE.search(text)
         if not m:
-            errors.append(f"{mod}: missing '# layer:' marker")
+            errors.append(f"{shesh}: missing '# layer:' marker")
             continue
-        layers[mod] = m.group(1)
+        layers[shesh] = m.group(1)
     if errors:
         print("\n".join(errors))
         return 1
-    for mod, layer in layers.items():
-        text = open(os.path.join(LIB, f"{mod}.smlib"), encoding="utf-8").read()
+    for shesh, layer in layers.items():
+        text = open(os.path.join(LIB, f"{shesh}.smlib"), encoding="utf-8").read()
         code = strip_comments(text)
         imports = sorted(set(AYOJAN_RE.findall(code)))
         uses_alloc = bool(NIRMMITA_RE.search(code))
@@ -80,31 +80,31 @@ def main():
             for builtin in OS_BUILTINS:
                 if re.search(rf"\b{builtin}\s*\(", code):
                     errors.append(
-                        f"{mod}: marked {layer} but calls OS builtin {builtin}"
+                        f"{shesh}: marked {layer} but calls OS builtin {builtin}"
                         " (belongs in std)")
         if layer == "core":
             if uses_alloc:
-                errors.append(f"{mod}: marked core but calls nirmmita (allocator)")
+                errors.append(f"{shesh}: marked core but calls nirmmita (allocator)")
             for dep in imports:
                 if dep in layers and layers[dep] in ("alloc", "std"):
                     errors.append(
-                        f"{mod}: marked core but imports {dep} ({layers[dep]})")
+                        f"{shesh}: marked core but imports {dep} ({layers[dep]})")
         elif layer == "alloc":
             for dep in imports:
                 if dep in layers and layers[dep] == "std":
                     errors.append(
-                        f"{mod}: marked alloc but imports {dep} (std)")
+                        f"{shesh}: marked alloc but imports {dep} (std)")
         for dep in imports:
             if dep not in layers:
-                errors.append(f"{mod}: imports unknown module {dep}")
+                errors.append(f"{shesh}: imports unknown module {dep}")
     try:
         doc = open(DOC, encoding="utf-8").read()
     except FileNotFoundError:
         errors.append("docs/LIBRARY-LAYERS.md missing")
         doc = ""
-    for mod in layers:
-        if mod not in doc:
-            errors.append(f"{mod}: missing from docs/LIBRARY-LAYERS.md")
+    for shesh in layers:
+        if shesh not in doc:
+            errors.append(f"{shesh}: missing from docs/LIBRARY-LAYERS.md")
     if errors:
         print("LAYER CHECK FAILED:")
         print("\n".join(f"  - {e}" for e in errors))
