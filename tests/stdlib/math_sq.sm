@@ -1,7 +1,7 @@
-ayojan math
+yoj ganit
 mukhya() {
-    likha(sq(7))
+    likha(varg(7))
     likha("\n")
-    likha(sq(0))
+    likha(varg(0))
     likha("\n")
 }
