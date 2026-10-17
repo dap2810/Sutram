@@ -1,7 +1,7 @@
 import os, socket, struct, subprocess, sys, time
 
 # Slice 5 proof: Ctrl-R must save the buffer, invoke the compiler, and draw the
-# captured output in the output pane. Uses a mock compiler next tak the GUI so
+# captured output in the output pane. Uses a mock compiler next to the GUI so
 # /proc/self/exe resolution finds it — no display needed.
 SOCKDIR="/tmp/.X11-unix"; SOCKPATH=os.path.join(SOCKDIR,"X0")
 ROOT_WIN=0x00000400; RID_BASE=0x00200000; RID_MASK=0x001FFFFF
