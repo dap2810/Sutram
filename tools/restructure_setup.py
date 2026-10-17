@@ -19,7 +19,7 @@ work = lines[a:b]
 
 # Re-indent is unnecessary; rename local labels so they live in do_install.
 work = [l.replace(".failed", ".dfail").replace(".nopowershell", ".dnopw") for l in work]
-# The work block ends with `jz .dnopw`; after that it falls through tak the
+# The work block ends with `jz .dnopw`; after that it falls through to the
 # CreateProcess success path, so append wait + status return.
 work_tail = [
     "",
@@ -61,13 +61,13 @@ del lines[r:r2]
 
 # ---- 3. Replace the confirm-and-go with a GUI dispatch ---------------------
 c = find("; 1. Confirm.")
-# the confirm block runs tak the line after `jne  .quit`
+# the confirm block runs to the line after `jne  .quit`
 end = c
 while "jne  .quit" not in lines[end]:
     end += 1
 end += 1
 dispatch = [
-    "    ; Prefer the graphical installer window; fall back tak a dialog if",
+    "    ; Prefer the graphical installer window; fall back to a dialog if",
     "    ; the window cannot be created (no interactive desktop, policy).",
     "    call create_window",
     "    test eax, eax",
