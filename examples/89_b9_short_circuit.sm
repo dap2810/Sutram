@@ -1,10 +1,10 @@
 prakriya set0(a, v) {
     a[0] = v
-    pratiyati v
+    prati v
 }
 
 mukhya() {
-    pankti a[1]
+    mala a[1]
     a[0] = 10
 
     likha(0 && set0(a, 20))
