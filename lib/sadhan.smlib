@@ -1,0 +1,50 @@
+# Sutram Utility Library - util.smlib
+# layer: core
+# General-purpose utility functions
+# Usage: ayojan util
+#
+# Edge rules (R30): shesh/bhaj_urdhva return 0 on a zero divisor (no
+# SIGFPE); yog_seema returns 0 for end < start; bhaj_urdhva is true
+# ceiling division for every util_chinha combination.
+
+
+prakriya antargam(a, b, t)
+    prati a + (b - a) * t / 100
+
+prakriya yog_seema(start, end) {
+    yadi (end < start) { prati 0 }
+    prati (start + end) * (end - start + 1) / 2
+}
+
+
+
+prakriya shesh(a, b) {
+    yadi (b == 0) { prati 0 }
+    prati a - (a / b) * b
+}
+
+prakriya bhaj_urdhva(a, b) {
+    # Ceiling division: q = a / b (truncating), round up iff the
+    # remainder is nonzero and has the divisor's util_chinha. The old
+    # (a + b - 1) / b was only correct for a >= 0, b > 0.
+    yadi (b == 0) { prati 0 }
+    vitti q = a / b
+    vitti r = a % b
+    yadi (r != 0) {
+        yadi (r > 0) {
+            yadi (b > 0) { q = q + 1 }
+        } anya {
+            yadi (b < 0) { q = q + 1 }
+        }
+    }
+    prati q
+}
+
+prakriya util_chinha(n)
+    prati (n > 0) - (n < 0)
+
+prakriya satya_tak_ank(b)
+    prati b * 1
+
+prakriya ank_adhik()
+    prati 9223372036854775807
