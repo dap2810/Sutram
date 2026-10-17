@@ -1,0 +1,192 @@
+# lib/result.smlib — Sutram standard library: Result values (R29 WS3)
+# layer: core
+#
+# A Result is a 2-cell pankti supplied by the caller: [ok, value].
+# ok = 1 means success and value holds the answer; ok = 0 means
+# failure and value is 0. The checked functions can produce Results
+# directly (result_checked_*), and phal_se_siddhi bridges the older
+# ok out-parameter convention into a Result.
+#
+# What this buys over the ok convention (docs/ERROR-CONVENTION.md):
+# a single value carries both the flag and the answer, so a Result
+# can be stored, passed, and returned from a function without
+# threading a separate ok cell through every call, and
+# phal_mulya_va handles both branches in one expression.
+#
+# What it still cannot do without compiler support: nothing forces
+# the caller to check phal_asti_siddhi (the value can still be read
+# unchecked, exactly like ignoring ok); there is no propagation
+# operator (the caller still branches by hand); and there is no
+# chaining/map/and_then because the language has no callbacks.
+# A Result is a caller-owned mutable array — aliasing and mutation
+# hazards remain (no ownership model).
+#
+# The hand-written substitute for propagation is the early-return
+# chain: after each producing step, `yadi (phal_asti_siddhi(t) == 0)`
+# writes the failure into out and returns at once, so the failure
+# path is one branch per step instead of nested conditionals.
+# See docs/ERROR-CONVENTION.md and tests/stdlib/result_chain.sm.
+
+yoj ganita
+
+# phal_siddhi(out, v) — write the success Result [1, v] into out.
+prakriya phal_siddhi(out, v) {
+    vitti o = out
+    o[0] = 1
+    o[1] = v
+    prati 1
+}
+
+# phal_dosh(out) — write the failure Result [0, 0] into out.
+prakriya phal_dosh(out) {
+    vitti o = out
+    o[0] = 0
+    o[1] = 0
+    prati 0
+}
+
+# phal_asti_siddhi(r) — 1 if r is a success Result, else 0.
+prakriya phal_asti_siddhi(r) {
+    prati r[0]
+}
+
+# phal_mulya(r) — the value of a success Result. Caller must
+# check phal_asti_siddhi first: on a failure Result this returns 0,
+# which is indistinguishable from a success value of 0.
+prakriya phal_mulya(r) {
+    prati r[1]
+}
+
+# phal_mulya_va(r, def) — the value if r is success, else def.
+# The one-expression way to handle both branches.
+prakriya phal_mulya_va(r, def) {
+    yadi (r[0] == 1) { prati r[1] }
+    prati def
+}
+
+# phal_se_siddhi(out, v, ok) — lift the ok convention into a
+# Result: writes [ok[0], v] into out (value 0 on failure).
+prakriya phal_se_siddhi(out, v, ok) {
+    vitti o = out
+    yadi (ok[0] == 1) {
+        o[0] = 1
+        o[1] = v
+    } anya {
+        o[0] = 0
+        o[1] = 0
+    }
+    prati o[0]
+}
+
+# phal_janchit_yuj/sub/mul/div/shesh(out, a, b) — the ganita
+# checked operation, producing a Result in out instead of an
+# ok out-parameter. On overflow (or div/shesh by zero, MIN/-1)
+# the Result is failure [0, 0].
+prakriya phal_janchit_yuj(out, a, b) {
+    # out doubles as the ok cell: the ganita checked form writes
+    # out[0] = ok flag and returns the value. No allocation, so
+    # this module stays core.
+    vitti o = out
+    vitti v = ganita_janchit_yuj(a, b, o)
+    yadi (o[0] == 1) {
+        o[1] = v
+    } anya {
+        o[1] = 0
+    }
+    prati o[0]
+}
+
+prakriya phal_janchit_nyun(out, a, b) {
+    # out doubles as the ok cell: the ganita checked form writes
+    # out[0] = ok flag and returns the value. No allocation, so
+    # this module stays core.
+    vitti o = out
+    vitti v = ganita_janchit_nyun(a, b, o)
+    yadi (o[0] == 1) {
+        o[1] = v
+    } anya {
+        o[1] = 0
+    }
+    prati o[0]
+}
+
+prakriya phal_janchit_gun(out, a, b) {
+    # out doubles as the ok cell: the ganita checked form writes
+    # out[0] = ok flag and returns the value. No allocation, so
+    # this module stays core.
+    vitti o = out
+    vitti v = ganita_janchit_gun(a, b, o)
+    yadi (o[0] == 1) {
+        o[1] = v
+    } anya {
+        o[1] = 0
+    }
+    prati o[0]
+}
+
+prakriya phal_janchit_bhaj(out, a, b) {
+    # out doubles as the ok cell: the ganita checked form writes
+    # out[0] = ok flag and returns the value. No allocation, so
+    # this module stays core.
+    vitti o = out
+    vitti v = ganita_janchit_bhaj(a, b, o)
+    yadi (o[0] == 1) {
+        o[1] = v
+    } anya {
+        o[1] = 0
+    }
+    prati o[0]
+}
+
+prakriya phal_janchit_shesh(out, a, b) {
+    # out doubles as the ok cell: the ganita checked form writes
+    # out[0] = ok flag and returns the value. No allocation, so
+    # this module stays core.
+    vitti o = out
+    vitti v = ganita_janchit_shesh(a, b, o)
+    yadi (o[0] == 1) {
+        o[1] = v
+    } anya {
+        o[1] = 0
+    }
+    prati o[0]
+}
+
+# phal_janchit_ghat(out, a, e) — ganita_janchit_ghat as a Result.
+# Failure [0, 0] on e < 0 or overflow (see ganita_janchit_ghat).
+prakriya phal_janchit_ghat(out, a, e) {
+    vitti o = out
+    vitti v = ganita_janchit_ghat(a, e, o)
+    yadi (o[0] == 1) {
+        o[1] = v
+    } anya {
+        o[1] = 0
+    }
+    prati o[0]
+}
+
+# phal_janchit_kramgun(out, n) — ganita_janchit_kramgun as a Result.
+# Failure [0, 0] on n < 0 or overflow (21! overflows).
+prakriya phal_janchit_kramgun(out, n) {
+    vitti o = out
+    vitti v = ganita_janchit_kramgun(n, o)
+    yadi (o[0] == 1) {
+        o[1] = v
+    } anya {
+        o[1] = 0
+    }
+    prati o[0]
+}
+
+# phal_janchit_nirapeksh(out, a) — ganita_janchit_nirapeksh as a Result.
+# Failure [0, 0] on abs(MIN) (no int64 absolute value).
+prakriya phal_janchit_nirapeksh(out, a) {
+    vitti o = out
+    vitti v = ganita_janchit_nirapeksh(a, o)
+    yadi (o[0] == 1) {
+        o[1] = v
+    } anya {
+        o[1] = 0
+    }
+    prati o[0]
+}
