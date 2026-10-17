@@ -15,7 +15,7 @@
   infers that from what they return.</p>
 
   <h3>Growable arrays — <code>kosh</code> / कोश</h3>
-  <p>An ordinary array (<span class="kw">pankti</span>) is fixed in size. A <span class="kw">kosh</span>
+  <p>An ordinary mala (<span class="kw">mala</span>) is fixed in size. A <span class="kw">kosh</span>
   grows: it starts at a small capacity and doubles as needed.</p>
 <pre><span class="kw">kosh</span> xs[4]              <span class="cm"># capacity 4, length 0</span>
 <span class="kw">kosh_push</span>(xs, 10)
@@ -44,20 +44,20 @@
         s = s + xs[i]
         i = i + 1
     }
-    <span class="kw">pratiyati</span> s / <span class="kw">kosh_len</span>(xs)
+    <span class="kw">prati</span> s / <span class="kw">kosh_len</span>(xs)
 }</pre>
   <p>A <code>kosh dasham</code> is passed as a pointer, so <strong>indexed writes are visible to the
-  caller</strong> — a function can fill an array for you. But growing it is not allowed: calling
+  caller</strong> — a function can fill an mala for you. But growing it is not allowed: calling
   <code>kosh_push</code> on a parameter is refused with a named error, because the pointer is passed by
   value and the caller would be left holding a stale one. This is a deliberate safety boundary, not a
   missing feature.</p>
 
   <h3>The standard library</h3>
-  <p>Fifteen modules ship with the compiler. Import one with <span class="kw">ayojan</span>.</p>
+  <p>Fifteen modules ship with the compiler. Import one with <span class="kw">yoj</span>.</p>
   <table>
     <tr><th>Module</th><th>What it gives you</th></tr>
-    <tr><td><code>math</code>, <code>num</code>, <code>util</code></td><td>arithmetic, number theory, small helpers</td></tr>
-    <tr><td><code>sort</code>, <code>string</code></td><td>sorting, text handling</td></tr>
+    <tr><td><code>ganit</code>, <code>ank</code>, <code>sadhan</code></td><td>arithmetic, number theory, small helpers</td></tr>
+    <tr><td><code>shreni</code>, <code>varna</code></td><td>sorting, text handling</td></tr>
     <tr><td><code>chandas</code></td><td>Piṅgala's prosody — metre, Meru-prastāra</td></tr>
     <tr><td><code>ganita</code></td><td>Āryabhaṭa and Bhāskara — mahattam, kuṭṭaka, cakravāla</td></tr>
     <tr><td><code>madhava</code></td><td>the Kerala school — π, sin, cos, atan, sqrt</td></tr>
