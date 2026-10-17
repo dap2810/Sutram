@@ -1,7 +1,7 @@
-ayojan ganita
-ayojan math
-ayojan num
-ayojan fmt
+yoj ganita
+yoj ganit
+yoj ank
+yoj roop
 mukhya() {
     likha(kuttaka(0 - 7819279541048604735, 0 - 2881118045913156764, 0 - 150))
     likha("\n")
@@ -11,43 +11,43 @@ mukhya() {
     likha("\n")
     likha(out[1])
     likha("\n")
-    likha(brahmagupta_area(4611686018427387904, 4611686018427387904, 4611686018427387904, 4611686018427387904))
+    likha(brahmagupta_kshetr(4611686018427387904, 4611686018427387904, 4611686018427387904, 4611686018427387904))
     likha("\n")
-    likha(sq(4294967296))
+    likha(varg(4294967296))
     likha("\n")
-    likha(square(3037000500))
+    likha(vargit(3037000500))
     likha("\n")
-    likha(cube(2097152))
+    likha(ghan(2097152))
     likha("\n")
-    likha(cube(2097153))
+    likha(ghan(2097153))
     likha("\n")
-    likha(double(9223372036854775807))
+    likha(dvigun(9223372036854775807))
     likha("\n")
-    likha(triple(9223372036854775807))
+    likha(trigun(9223372036854775807))
     likha("\n")
-    likha(inc(9223372036854775807))
+    likha(vardh(9223372036854775807))
     likha("\n")
-    likha(power(2, 63))
+    likha(ghat(2, 63))
     likha("\n")
-    likha(power(3, 40))
+    likha(ghat(3, 40))
     likha("\n")
-    likha(fact(21))
+    likha(kramgun(21))
     likha("\n")
     likha(fib(93))
     likha("\n")
-    likha(reverse_num(1234567890123456789))
+    likha(viparyay_ank(1234567890123456789))
     likha("\n")
     vitti buf = nirmmita(40 * 8)
-    likha(fmt_fixed(1000000000000000000.0, 2, buf))
+    likha(roop_sthir(1000000000000000000.0, 2, buf))
     likha("\n")
-    likha(fmt_fixed(0 - 1000000000000000000.0, 2, buf))
+    likha(roop_sthir(0 - 1000000000000000000.0, 2, buf))
     likha("\n")
-    vitti w = fmt_fixed(9223372036854774784.0, 0, buf)
+    vitti w = roop_sthir(9223372036854774784.0, 0, buf)
     likha(w)
     likha("\n")
     vitti i = 0
     yavat (i < w) {
-        likha(char_at(buf, i))
+        likha(akshar(buf, i))
         likha("\n")
         i = i + 1
     }
