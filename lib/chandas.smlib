@@ -18,14 +18,14 @@ prakriya dviguna(n) {
         r = r * 2
         i = i + 1
     }
-    pratiyati r
+    prati r
 }
 
 prakriya meru(n, k) {
     vitti top = n
     vitti r = k
-    yadi (r < 0) { pratiyati 0 }
-    yadi (r > top) { pratiyati 0 }
+    yadi (r < 0) { prati 0 }
+    yadi (r > top) { prati 0 }
     yadi (r > top - r) { r = top - r }
     vitti res = 1
     vitti i = 1
@@ -33,13 +33,13 @@ prakriya meru(n, k) {
         res = res * (top - r + i) / i
         i = i + 1
     }
-    pratiyati res
+    prati res
 }
 
 prakriya matra_meru(n) {
     vitti x = n
-    yadi (x <= 0) { pratiyati 0 }
-    yadi (x == 1) { pratiyati 1 }
+    yadi (x <= 0) { prati 0 }
+    yadi (x == 1) { prati 1 }
     vitti a = 0
     vitti b = 1
     vitti i = 2
@@ -49,34 +49,34 @@ prakriya matra_meru(n) {
         b = c
         i = i + 1
     }
-    pratiyati b
+    prati b
 }
 
-prakriya is_guru(pat, i) {
+prakriya asti_guru(pat, i) {
     vitti p = pat
     vitti idx = i
     # Index must be a bit position: negative or >= 64 has no bit
     # (i >= 64 shifted the divisor to 0 and trapped with SIGFPE).
-    yadi (idx < 0) { pratiyati 0 }
-    yadi (idx >= 64) { pratiyati 0 }
+    yadi (idx < 0) { prati 0 }
+    yadi (idx >= 64) { prati 0 }
     vitti d = 1
     vitti j = 0
     yavat (j < idx) {
         d = d * 2
         j = j + 1
     }
-    pratiyati (p / d) % 2
+    prati (p / d) % 2
 }
 
-prakriya guru_count(pat) {
+prakriya guru_gan(pat) {
     vitti p = pat
     vitti c = 0
-    # Negative patterns return 0, as bit_count (R28 contract).
+    # Negative patterns return 0, as bit_gan (R28 contract).
     yavat (p > 0) {
         c = c + (p % 2)
         p = p / 2
     }
-    pratiyati c
+    prati c
 }
 
 prakriya meru_pankti(a, n) {
