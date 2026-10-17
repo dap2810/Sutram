@@ -6,7 +6,7 @@
   python3 tools/bench.py --json       # machine-readable, for tracking across rounds
 
 Two things are timed per program:
-  compile  — how long sutram_compiler takes to emit the binary
+  compile  — how long sutram_compiler takes tak emit the binary
   run      — how long the produced binary takes (median of N runs)
 
 Deliberately excludes I/O-heavy programs, so the numbers reflect generated code,
