@@ -6,7 +6,7 @@ so this does not check that the words are *present* -- it compiles a real
 program written in each pack's own native words and runs it.
 
 Covers the four keywords that were missing from every pack until v81:
-kosh (growable arrays), dasham (floats), kuru (do-while), nishkriya (inline asm).
+kosh (growable arrays), dasham (floats), kuru (do-while), yantra (inline asm).
 
 Run: python3 tools/test_lang_packs.py
 """
@@ -64,11 +64,11 @@ CASES = [
                 f"    }} {w['yavat']} (i < 3)\n"
                 f"}}\n"),
      "1\n2\n3", 0),
-    ("nishkriya (inline asm)",
+    ("yantra (inline asm)",
      lambda w: (f"{w['mukhya']}() {{\n"
-                f"    {w['nishkriya']}(\"B8 3C 00 00 00\")\n"
-                f"    {w['nishkriya']}(\"BF 2A 00 00 00\")\n"
-                f"    {w['nishkriya']}(\"0F 05\")\n"
+                f"    {w['yantra']}(\"B8 3C 00 00 00\")\n"
+                f"    {w['yantra']}(\"BF 2A 00 00 00\")\n"
+                f"    {w['yantra']}(\"0F 05\")\n"
                 f"}}\n"),
      "", 42),
 ]
@@ -79,7 +79,7 @@ if __name__ == "__main__":
         w = pack_words(lang)
         for name, build, want_out, want_exit in CASES:
             missing = [k for k in ("mukhya", "kosh", "dasham", "likha", "yavat",
-                                   "kuru", "nishkriya") if k not in w]
+                                   "kuru", "yantra") if k not in w]
             if missing:
                 print(f"  FAIL  {lang:10s} {name:24s} pack missing {missing}")
                 fails += 1
