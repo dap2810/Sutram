@@ -1,34 +1,34 @@
-ayojan strb
-ayojan string
+yoj khand
+yoj varna
 mukhya() {
     vitti hay = nirmmita(32)
-    strb_dup("hello world", 11, hay)
-    likha(strb_count_vowels(hay, 5))
+    khand_pratilip("hello world", 11, hay)
+    likha(khand_gan_swar(hay, 5))
     likha("\n")
-    likha(strb_count_vowels(hay, 11))
+    likha(khand_gan_swar(hay, 11))
     likha("\n")
-    likha(strb_count_char(hay, 11, 108))
+    likha(khand_gan_akshar(hay, 11, 108))
     likha("\n")
-    likha(strb_find_char(hay, 11, 119))
+    likha(khand_anwesh_akshar(hay, 11, 119))
     likha("\n")
-    likha(strb_find_char(hay, 5, 119))
+    likha(khand_anwesh_akshar(hay, 5, 119))
     likha("\n")
-    likha(strb_is_all_digits("12345", 5))
+    likha(khand_asti_sarv_ank("12345", 5))
     likha("\n")
-    likha(strb_is_all_digits("12a45", 5))
+    likha(khand_asti_sarv_ank("12a45", 5))
     likha("\n")
-    likha(strb_is_all_digits("12345", 0))
+    likha(khand_asti_sarv_ank("12345", 0))
     likha("\n")
-    likha(strb_equals("abc", 3, "abc", 3))
+    likha(khand_sam("abc", 3, "abc", 3))
     likha("\n")
-    likha(strb_equals("abc", 3, "abd", 3))
+    likha(khand_sam("abc", 3, "abd", 3))
     likha("\n")
     vitti cells = nirmmita(6 * 8)
     vitti out = nirmmita(6 * 8)
     cells[0] = 104
     cells[1] = 105
     cells[2] = 33
-    likha(str_reverse(cells, 3, out))
+    likha(varna_viparyay(cells, 3, out))
     likha("\n")
     likha(out[0])
     likha("\n")
@@ -44,7 +44,7 @@ mukhya() {
     hc[3] = 97
     nd[0] = 97
     nd[1] = 97
-    likha(str_count(hc, 4, nd, 2))
+    likha(varna_gan(hc, 4, nd, 2))
     likha("\n")
     likha("demo1-done\n")
 }
