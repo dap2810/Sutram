@@ -1,39 +1,39 @@
-ayojan set
-ayojan strb
+yoj sangrah
+yoj khand
 mukhya() {
-    vitti a = set_init(16)
-    set_add(a, 16, "apple", 5)
-    set_add(a, 16, "pear", 4)
-    set_add(a, 16, "fig", 3)
-    vitti b = set_init(16)
-    set_add(b, 16, "fig", 3)
-    set_add(b, 16, "pear", 4)
-    set_add(b, 16, "plum", 4)
-    vitti diff = set_init(16)
-    likha(set_difference(a, 16, b, 16, diff))
+    vitti a = rakh_srij(16)
+    rakh_yuj(a, 16, "apple", 5)
+    rakh_yuj(a, 16, "pear", 4)
+    rakh_yuj(a, 16, "fig", 3)
+    vitti b = rakh_srij(16)
+    rakh_yuj(b, 16, "fig", 3)
+    rakh_yuj(b, 16, "pear", 4)
+    rakh_yuj(b, 16, "plum", 4)
+    vitti diff = rakh_srij(16)
+    likha(rakh_bhed(a, 16, b, 16, diff))
     likha("\n")
     # only apple survives
     vitti arr = nirmmita(64 * 8)
     vitti buf = nirmmita(64)
-    vitti n = set_to_array(diff, 16, arr)
+    vitti n = rakh_tak_mala(diff, 16, arr)
     vitti pos = 0
     vitti i = 0
     vitti sl = 0
     yavat (i < n) {
         sl = arr[pos]
-        strb_pack(arr + (pos + 1) * 8, sl, buf)
+        khand_bandh(arr + (pos + 1) * 8, sl, buf)
         likha(1, buf, sl)
         likha("\n")
         pos = pos + 1 + sl
         i = i + 1
     }
-    # difference with an empty set: all of a
-    vitti e = set_init(16)
-    vitti diff2 = set_init(16)
-    likha(set_difference(a, 16, e, 16, diff2))
+    # difference with an empty sangrah: all of a
+    vitti e = rakh_srij(16)
+    vitti diff2 = rakh_srij(16)
+    likha(rakh_bhed(a, 16, e, 16, diff2))
     likha("\n")
     # difference with itself: empty
-    vitti diff3 = set_init(16)
-    likha(set_difference(a, 16, a, 16, diff3))
+    vitti diff3 = rakh_srij(16)
+    likha(rakh_bhed(a, 16, a, 16, diff3))
     likha("\n")
 }
