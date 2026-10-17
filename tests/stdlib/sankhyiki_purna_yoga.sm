@@ -1,19 +1,19 @@
-ayojan sankhyiki
+yoj sankhyiki
 mukhya() {
-    pankti a[4]
+    mala a[4]
     a[0] = 1
     a[1] = 2
     a[2] = 3
     a[3] = 4
     likha(purna_yoga(a, 4))
     likha("\n")
-    pankti b[2]
+    mala b[2]
     b[0] = 0 - 5
     b[1] = 3
     likha(purna_yoga(b, 2))
     likha("\n")
     # single element
-    pankti c[1]
+    mala c[1]
     c[0] = 42
     likha(purna_yoga(c, 1))
     likha("\n")
