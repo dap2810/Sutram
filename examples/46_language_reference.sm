@@ -6,19 +6,19 @@ mukhya()
 
     yadi (count > 2) {              # if / else if / else
         likha("big")
-    } anyatra yadi (count == 2) {
+    } anya yadi (count == 2) {
         likha("two")
-    } anyatra {
+    } anya {
         likha("small")
     }
 
-    punaravartana i = 1 to 5 {      # for (ascending)
-        yadi (i == 3) { uddeshya }   # continue
+    chakra i = 1 tak 5 {      # for (ascending)
+        yadi (i == 3) { agrim }   # continue
         yadi (i == 5) { krama }      # break
         likha(i)
     }
 
-    punaravartana j = 5 to 1 {      # for (descending)
+    chakra j = 5 tak 1 {      # for (descending)
         likha(j)
     }
 
@@ -30,13 +30,13 @@ mukhya()
     likha(joda(3, 4))               # function call
     likha("x = ", k)                # two-argument print
     vitti s = "hello"
-    shabda(s)                       # print a string variable
+    shabda(s)                       # print a varna variable
     vitti n = grahan()              # read a number
 
-prakriya joda(a, b)                 # function (up to 3 arguments)
-    pratiyati a + b                 # return
+prakriya joda(a, b)                 # function (up tak 3 arguments)
+    prati a + b                 # return
 
 prakriya fib(n) {                   # braces are required for a body of >1 statement
-    yadi (n < 2) { pratiyati n }
-    pratiyati fib(n - 1) + fib(n - 2)
+    yadi (n < 2) { prati n }
+    prati fib(n - 1) + fib(n - 2)
 }
