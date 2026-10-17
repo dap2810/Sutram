@@ -11,19 +11,19 @@ prakriya madhava_pi(terms) {
     dasham sum = 0.0
     dasham p3 = 1.0
     vitti k = 0
-    vitti sign = 1
+    vitti util_chinha = 1
     yavat (k < terms) {
         dasham term = 1.0 / ((2.0 * k + 1.0) * p3)
-        yadi (sign > 0) {
+        yadi (util_chinha > 0) {
             sum = sum + term
-        } anyatra {
+        } anya {
             sum = sum - term
         }
         p3 = p3 * 3.0
-        sign = 0 - sign
+        util_chinha = 0 - util_chinha
         k = k + 1
     }
-    pratiyati root12 * sum
+    prati root12 * sum
 }
 
 prakriya madhava_sin(dasham x, terms) {
@@ -35,7 +35,7 @@ prakriya madhava_sin(dasham x, terms) {
         s = s + t
         n = n + 1
     }
-    pratiyati s
+    prati s
 }
 
 prakriya madhava_cos(दशम x, terms) {
@@ -47,7 +47,7 @@ prakriya madhava_cos(दशम x, terms) {
         s = s + t
         n = n + 1
     }
-    pratiyati s
+    prati s
 }
 
 mukhya() {
