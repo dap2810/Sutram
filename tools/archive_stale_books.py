@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Replace superseded book editions with a short archive pointer tak the
+"""Replace superseded book editions with a short archive pointer to the
 current editions.  Nothing is deleted from the project history; the old
 files remain in the saved artifact archive.  This keeps any existing link
 or bookmark working while removing content that had drifted."""
