@@ -44,5 +44,5 @@ def main(path):
         print('PASS native flattened diamond reference: output 17\\n7\\n')
         print('PASS shared dependency appears once, deterministic import order d,b,c,a')
 if __name__=='__main__':
-    if len(sys.argv)!=2:raise SystemExit('pass path tak previously compiled Sutram native compiler')
+    if len(sys.argv)!=2:raise SystemExit('pass path to previously compiled Sutram native compiler')
     main(sys.argv[1])
