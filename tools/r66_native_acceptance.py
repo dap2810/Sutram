@@ -90,7 +90,7 @@ def main() -> int:
                                      ('gujarati_native.sm', 'gujarati', EXPECTED_PACK)):
             results.append(exact_case(compiler, EXAMPLES / name, work / (name + '.bin'), expected, lang))
         # Equivalent numeric spellings must preserve native behavior. Do not
-        # rewrite string/comment bytes in the product compiler tak achieve this.
+        # rewrite string/comment bytes in the product compiler to achieve this.
         source = (EXAMPLES / 'native_digits.sm').read_text('utf-8')
         # Deliberately only alter digit tokens in this generated control, leaving
         # n२ and the quoted UTF-8 string unchanged (their bytes matter separately).
