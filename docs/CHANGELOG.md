@@ -1,3 +1,37 @@
+## v158 - ChatGPT's advisory read, verified, and acted on
+
+ChatGPT uploaded two advisory documents (2026-10-17) at the owner's request: `SUTRAM-FOUNDATIONS-AND-PRIORITIES`
+and `SUTRAM-PROJECT-METHODS-CATALOGUE`. **They are the strongest contribution to the project so far, and
+they caught three real errors in my own documents.** I verified each claim before accepting it.
+
+**The three errors, all mine, all confirmed:**
+
+1. **`PROJECT-MASTER.md` used `samapt`** as a block terminator and defined it as a keyword. **It is not in
+   the compiler at all** - zero occurrences. Blocks use `{ }`. I had published a code sample in the project's
+   own master document that the compiler would reject. Replaced with a sample I actually compiled - it
+   prints `5 4 3 2 1`.
+2. **The master taught the wrong build path** - the bare `src/sutram_compiler.asm`, while `docs/BUILDING.md`
+   states `src/r68_compiler_entry.asm` is the only supported entry. Corrected.
+3. **The counts disagreed across documents** - README said 278 functions, the master said 21 modules, the
+   reference said 49. Corrected everywhere to the measured **24 modules / 303 functions**, with proofs
+   191/191, properties 86/86, layers 14 core / 9 alloc / 1 std, 207 examples, 18 GUI tests.
+
+**A fourth defect, of my own making, found while fixing the above.** The v157 rename had rewritten
+**English prose inside the markdown docs** - "How to work on this project" had become "How **tak** work on
+this project", and "Read this file" had become "Read this **patra**". The rename was made string- and
+comment-aware for code but not for prose. **All 79 documentation files were restored from the pristine tree
+and re-renamed with function names only** (unique identifiers, never English words). Prose is clean again.
+
+**The seven gates are now the project's stated development order**, recorded as section 10 of
+`PROJECT-MASTER.md`: reproducible baseline, integrated `kosh` reclamation, real separate compilation,
+executed semantics, unsafe boundary, verified Windows, freestanding demonstration. Each names the
+observation that makes it true - no gate is satisfied by a document or a claim.
+
+**Adopted from the catalogue** (32 Sanskrit-related projects catalogued with evidence status): the priority
+order - reliable baseline and examples, then precise diagnostics, then resource lifetime, then real modules,
+then measured usability. K**araka argument roles are moved to later research**, after the deterministic core
+is stable - more conservative than my earlier position, and correct.
+
 ## v156 - ChatGPT R71 (all five workstreams) and Muse R30 (51 defects) verified and synced
 
 **ChatGPT R71 - 30 files, 30/30 hashes verified at commit `bb791061`.** It delivered far more than the
