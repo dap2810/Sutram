@@ -1,6 +1,6 @@
 # Runtime benchmark: repeated dasham function calls and float accumulation.
-prakriya float_leaf(dasham x) { pratiyati x + 1.5 }
-prakriya float_bridge(dasham x) { pratiyati float_leaf(x) }
+prakriya float_leaf(dasham x) { prati x + 1.5 }
+prakriya float_bridge(dasham x) { prati float_leaf(x) }
 mukhya() {
     vitti i = 0
     dasham sum = 0.0
