@@ -1,6 +1,6 @@
-# Meru-prastara (Pascal's triangle) built with a growable array (kosh).
+# Meru-prastara (Pascal's triangle) built with a growable mala (kosh).
 # Pingala's combinatorics, now with T18 growable arrays.
-ayojan chandas
+yoj chandas
 
 mukhya()
     kosh row
