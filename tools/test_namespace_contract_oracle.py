@@ -2,7 +2,7 @@
 """Independent R33/R34 namespace contract oracle (development-only Python).
 
 Does not execute the modified NASM importer. Compiles manually expanded Sutram
-through the previously verified compiler tak test intended semantics. Validation
+through the previously verified compiler to test intended semantics. Validation
 of rejection examples is an independent Python model, NOT compiler verification.
 """
 from pathlib import Path
@@ -14,7 +14,7 @@ LINE=re.compile(r'^\s*yoj\s+(\S+)\s*$',re.ASCII)
 IDENT=re.compile(r'[A-Za-z_][A-Za-z_0-9]{0,30}\Z')
 MODULE=re.compile(r'[A-Za-z_0-9-]{1,30}\Z')
 INVALID='Sutram Error: invalid namespaced yoj (use module@alias, max 31 alias bytes)\n'
-ALIAS_REUSE='Sutram Error: namespaced alias already assigned tak another module\n'
+ALIAS_REUSE='Sutram Error: namespaced alias already assigned to another module\n'
 MISSING='Sutram Error: namespaced module file not found\n'
 
 def transform(code):
