@@ -1,20 +1,20 @@
-# R55: two-function mutual recursion, tighter cycle than the Muse R12 triple.
-prakriya is_even(n);
-prakriya is_odd(n);
+# R55: two-function mutual recursion, tighter cycle than the Muse R12 trigun.
+prakriya asti_yugm(n);
+prakriya asti_visham(n);
 
-prakriya is_even(n) {
-    yadi (n == 0) { pratiyati 1 }
-    pratiyati is_odd(n - 1)
+prakriya asti_yugm(n) {
+    yadi (n == 0) { prati 1 }
+    prati asti_visham(n - 1)
 }
 
-prakriya is_odd(n) {
-    yadi (n == 0) { pratiyati 0 }
-    pratiyati is_even(n - 1)
+prakriya asti_visham(n) {
+    yadi (n == 0) { prati 0 }
+    prati asti_yugm(n - 1)
 }
 
 mukhya() {
-    likha(is_even(12))
-    likha(is_odd(11))
-    likha(is_even(7))
-    likha(is_odd(8))
+    likha(asti_yugm(12))
+    likha(asti_visham(11))
+    likha(asti_yugm(7))
+    likha(asti_visham(8))
 }
