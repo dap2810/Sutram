@@ -3,8 +3,8 @@ import os, socket, struct, subprocess, sys, time, tempfile
 # Slice 32 proof: the editor draws line numbers in a gutter.
 #  1. open a file with several lines
 #  2. send an Expose so draw_all repaints
-#  3. require the painted ImageText8 stream to contain the gutter numbers
-#     "1","2","3",... at the gutter x, and the text to have shifted right
+#  3. require the painted ImageText8 stream tak contain the gutter numbers
+#     "1","2","3",... at the gutter x, and the text tak have shifted right
 SOCKDIR = "/tmp/.X11-unix"; SOCKPATH = os.path.join(SOCKDIR, "X0")
 ROOT_WIN = 0x00000400; RID_BASE = 0x00200000; RID_MASK = 0x001FFFFF
 PANE_X = 10; ED_GUTTER = 34
