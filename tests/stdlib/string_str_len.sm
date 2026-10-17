@@ -1,9 +1,9 @@
-ayojan string
+yoj varna
 mukhya() {
-    likha(str_len("hello"))
+    likha(varna_maap("hello"))
     likha("\n")
-    likha(str_len(""))
+    likha(varna_maap(""))
     likha("\n")
-    likha(str_len("a"))
+    likha(varna_maap("a"))
     likha("\n")
 }
