@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ACCEPTANCE ONLY: benchmark a NASM-rebuilt R40 compiler against verified R39.
 
-Usage: python3 tools/bench_r40_module_acceptance.py /path/tak/verified /path/tak/new
+Usage: python3 tools/bench_r40_module_acceptance.py /path/to/verified /path/to/new
 No Python is used by Sutram-generated programs or the production compiler.
 """
 from pathlib import Path
