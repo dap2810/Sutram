@@ -1,9 +1,9 @@
-ayojan string
+yoj varna
 mukhya() {
-    likha(is_all_digits("12345"))
+    likha(asti_sarv_ank("12345"))
     likha("\n")
-    likha(is_all_digits("12a45"))
+    likha(asti_sarv_ank("12a45"))
     likha("\n")
-    likha(is_all_digits(""))
+    likha(asti_sarv_ank(""))
     likha("\n")
 }
