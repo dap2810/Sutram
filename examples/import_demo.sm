@@ -1,6 +1,6 @@
-# Library import demo — Python-style with ayojan
-ayojan math
-ayojan string
+# Library import demo — Python-style with yoj
+yoj ganit
+yoj varna
 
 mukhya()
     likha("=== Library Import Demo ===\n")
