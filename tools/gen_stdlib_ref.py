@@ -65,9 +65,9 @@ def main():
     for fn in sorted(os.listdir(LIBDIR)):
         if not fn.endswith(".smlib"):
             continue
-        mod = fn[:-6]
+        shesh = fn[:-6]
         header, funcs = parse_module(os.path.join(LIBDIR, fn))
-        modules.append((mod, header, funcs))
+        modules.append((shesh, header, funcs))
 
     total = sum(len(f) for _, _, f in modules)
 
@@ -85,7 +85,7 @@ table{border-collapse:collapse;width:100%;margin:1em 0}
 th,td{border:1px solid #ccc;padding:.4em .6em;text-align:left;vertical-align:top}
 th{background:#f4f4f4}
 code{font-family:Menlo,Consolas,monospace;background:#f6f6f6;padding:0 .2em}
-.mod-desc{color:#555;font-style:italic}
+.shesh-desc{color:#555;font-style:italic}
 footer{margin-top:3em;color:#888;font-size:.9em}
 </style>
 </head>
@@ -96,16 +96,16 @@ Do not edit by hand.</p>
 """)
     # index
     parts.append("<h2>Modules</h2>\n<ul>\n")
-    for mod, header, funcs in modules:
+    for shesh, header, funcs in modules:
         parts.append(
-            f'<li><a href="#{mod}"><code>{html.escape(mod)}</code></a>'
+            f'<li><a href="#{shesh}"><code>{html.escape(shesh)}</code></a>'
             f" — {len(funcs)} functions</li>\n")
     parts.append("</ul>\n")
 
-    for mod, header, funcs in modules:
-        parts.append(f'<h2 id="{html.escape(mod)}"><code>{html.escape(mod)}</code></h2>\n')
+    for shesh, header, funcs in modules:
+        parts.append(f'<h2 id="{html.escape(shesh)}"><code>{html.escape(shesh)}</code></h2>\n')
         if header:
-            parts.append(f'<p class="mod-desc">{html.escape(header)}</p>\n')
+            parts.append(f'<p class="shesh-desc">{html.escape(header)}</p>\n')
         parts.append("<table>\n<tr><th>Function</th><th>Description</th></tr>\n")
         for name, sig, desc in funcs:
             parts.append(
