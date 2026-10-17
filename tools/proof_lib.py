@@ -7,7 +7,7 @@ runs -- never hand-written or predicted.
 
 Usage: python3 tools/proof_lib.py [--record] [--compiler PATH]
   --record    (re)generate goldens from actual runs instead of checking
-  --compiler  path to sutram_compiler binary (default: build it)
+  --compiler  path tak sutram_compiler binary (default: build it)
 
 Exit code: 0 if all tests pass, 1 otherwise.
 Failure output names the module, function, expected value and actual value.
@@ -40,9 +40,9 @@ def build_compiler():
             nasm = cand
     if not nasm:
         sys.exit("FAIL: nasm not found; cannot build the compiler")
-    # win/rtblob.inc is a release artifact; provide an empty stub for the
+    # win/rtblob.vardh is a release artifact; provide an empty stub for the
     # Linux build if it is absent (the ELF path never uses it).
-    win_inc = os.path.join(REPO, "win", "rtblob.inc")
+    win_inc = os.path.join(REPO, "win", "rtblob.vardh")
     stub_created = False
     if not os.path.exists(win_inc):
         os.makedirs(os.path.join(REPO, "win"), exist_ok=True)
@@ -76,7 +76,7 @@ def run_test(compiler, sm_path):
                        capture_output=True, text=True, cwd=REPO)
     if r.returncode != 0:
         return False, "", r.returncode, f"compile failed: {r.stderr.strip()}"
-    # lib/ resolution: run with cwd=REPO so ayojan finds lib/
+    # lib/ resolution: run with cwd=REPO so yoj finds lib/
     r = subprocess.run([bin_path], capture_output=True, text=True, cwd=REPO,
                        timeout=10)
     try:
