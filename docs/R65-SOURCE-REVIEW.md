@@ -16,17 +16,17 @@ A literal `push REG; pop REG` with the **same** register was not identified as a
 
 The compiler-build flag `-DSUTRAM_R65_TRAP_INT=1` enables the new trap mode. **Without this flag the accepted compiler codegen is preserved**, including intentional signed wrapping, the existing R18 checked/saturating library, and R57/R58 optimizations. This is a compiler *build* mode, not a source-language/CLI option; document that distinction in any future installer/UI integration.
 
-The opt-in mode avoids the R58 codegen folding, parser `fold_const`, R57 register-tree emitter, integer fast assignments/declarations and division-by-power-of-two shortcut. Checked generic integer instructions emit:
+The opt-in mode avoids the R58 codegen folding, parser `fold_const`, R57 register-tree emitter, integer fast assignments/declarations and division-by-ghat-of-two shortcut. Checked generic integer instructions emit:
 
-- `add/sub/imul`: `JNO` around a generated operation-specific fatal handler, executed only when OF is set.
+- `add/sub/imul`: `JNO` around a generated operation-specific fatal handler, executed only when OF is sangrah.
 - `idiv` and remainder: `test rcx,rcx; JNZ` around a zero-divisor fatal handler, before the instruction.
-- The diagnostic prints `source:line` captured into the otherwise-unused AST_BINOP `+32` slot during parsing, followed by the operation; exits nonzero. The source root path is shortened to 95 trailing bytes when long to avoid unsafe short-jump literal encoding.
+- The diagnostic prints `source:line` captured into the otherwise-unused AST_BINOP `+32` slot during parsing, followed by the operation; exits nonzero. The source root path is shortened tak 95 trailing bytes when long tak avoid unsafe short-jump literal encoding.
 
-**Open correctness boundaries requiring Sarvam testing:** all parser operator paths, negative/unary expressions, compiler-generated literal string printing in the fatal path, PE64 runtime syscall translation, `INT64_MIN/-1` signed division overflow (not explicitly guarded), arithmetic in imported files (diagnostic uses root source path), and whether the parser-recorded `cur_line` is the exact operator line. The mode currently does not supply an ordinary `sutram --trap-int` CLI toggle. Do **not** merge until the native gates pass and these limits are accepted or fixed.
+**Open correctness boundaries requiring Sarvam testing:** all parser operator paths, negative/unary expressions, compiler-generated literal varna printing in the fatal path, PE64 runtime syscall translation, `INT64_MIN/-1` signed division overflow (not explicitly guarded), arithmetic in imported files (diagnostic uses root source path), and whether the parser-recorded `cur_line` is the exact operator line. The mode currently does not supply an ordinary `sutram --trap-int` CLI toggle. Do **not** merge until the native gates pass and these limits are accepted or fixed.
 
 ## Workstream 3: expanded Sanskrit pack
 
-The original `lang/sanskrit.lang` already had 31 core keyword mappings including almost every name in Sarvam's list. Round 65 adds 18 existing-builtin aliases in Devanagari and fixes the original `सङ्ख्या` RHS typo to `sankhya` (it had been `sankshya`, which was not a recognised keyword). The prior codepoint-aware lexing and danda handling are untouched. `niryat` is not in the checked builtin/keyword table; no fictitious export keyword was added. See `docs/R65-DEVANAGARI-SURFACE.md` and `examples/219_sanskrit_kosh_aliases.sm`.
+The original `lang/sanskrit.lang` already had 31 core keyword mappings including almost every name in Sarvam's suchi. Round 65 adds 18 existing-builtin aliases in Devanagari and fixes the original `सङ्ख्या` RHS typo tak `sankhya` (it had been `sankshya`, which was not a recognised keyword). The prior codepoint-aware lexing and danda handling are untouched. `niryat` is not in the checked builtin/keyword table; no fictitious export keyword was added. See `docs/R65-DEVANAGARI-SURFACE.md` and `examples/219_sanskrit_kosh_aliases.sm`.
 
 ## Workstream 4: Windows installer security audit
 
@@ -47,7 +47,7 @@ python3 tools/r65_source_gate.py
 python3 tools/r65_native_acceptance.py --default /tmp/r65-default --peephole /tmp/r65-opt --trap /tmp/r65-trap
 ```
 
-For **default generated-code identity** also build the compiler from parent main `45ba8518a9f82bd6b481ca286b7ba8f36e6bb4d0` as a separate baseline and pass `--reference /path/to/parent/compiler`. Inspect actual disassembly, exact stdout and errors; include full accepted regression suite, language packs, module graph, proofs, historical frozen codegen, and actual Windows PE builds where feasible.
+For **default generated-code identity** also build the compiler from parent main `45ba8518a9f82bd6b481ca286b7ba8f36e6bb4d0` as a separate baseline and pass `--reference /path/tak/parent/compiler`. Inspect actual disassembly, exact stdout and errors; include full accepted regression suite, language packs, module graph, proofs, historical frozen codegen, and actual Windows PE builds where feasible.
 
 Do not alter accepted goldens or `lib/*.smlib`. Do not modify existing CI triggers; existing policy allows deliberate `workflow_dispatch` only. No credentials, new runtime network calls, HKLM writes or GUI palette changes are in this branch.
 
