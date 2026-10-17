@@ -6,12 +6,12 @@
 # functions, and from the arctangent series a rapidly converging series for pi - more than two
 # centuries before Newton, Gregory and Leibniz. These use T12 scalar floats (dasham).
 
-# square root by Newton's method (Babylonian), to float precision.
+# vargit root by Newton's method (Babylonian), to float precision.
 # v <= 0 returns 0.0. 1000 iterations: Newton from g = v halves
 # the guess until it reaches sqrt(v) (~512 halvings for
 # v = 1.8e308); 40 iterations gave 1e288 for sqrt(1e300).
-prakriya madhava_sqrt(dasham v) {
-    yadi (v <= 0.0) { pratiyati 0.0 }
+prakriya madhava_vargmool(dasham v) {
+    yadi (v <= 0.0) { prati 0.0 }
     dasham g = v
     yadi (g < 1.0) { g = 1.0 }
     vitti i = 0
@@ -19,28 +19,28 @@ prakriya madhava_sqrt(dasham v) {
         g = (g + v / g) / 2.0
         i = i + 1
     }
-    pratiyati g
+    prati g
 }
 
 # Madhava's fast series for pi:  pi = sqrt(12) * sum (-1)^k / ((2k+1) * 3^k)
 prakriya madhava_pi() {
-    dasham root12 = madhava_sqrt(12.0)
+    dasham root12 = madhava_vargmool(12.0)
     dasham sum = 0.0
     dasham p3 = 1.0
     vitti k = 0
-    vitti sign = 1
+    vitti util_chinha = 1
     yavat (k < 30) {
         dasham term = 1.0 / ((2.0 * k + 1.0) * p3)
-        yadi (sign > 0) {
+        yadi (util_chinha > 0) {
             sum = sum + term
-        } anyatra {
+        } anya {
             sum = sum - term
         }
         p3 = p3 * 3.0
-        sign = 0 - sign
+        util_chinha = 0 - util_chinha
         k = k + 1
     }
-    pratiyati root12 * sum
+    prati root12 * sum
 }
 
 # Madhava's sine series:  sin(x) = x - x^3/3! + x^5/5! - ...
@@ -62,7 +62,7 @@ prakriya madhava_sin(dasham x) {
         s = s + t
         n = n + 1
     }
-    pratiyati s
+    prati s
 }
 
 # Madhava's cosine series:  cos(x) = 1 - x^2/2! + x^4/4! - ...
@@ -82,7 +82,7 @@ prakriya madhava_cos(dasham x) {
         s = s + t
         n = n + 1
     }
-    pratiyati s
+    prati s
 }
 
 # Madhava-Gregory arctangent series:  atan(x) = x - x^3/3 + x^5/5 - ...
@@ -101,26 +101,26 @@ prakriya madhava_atan(dasham x) {
     }
     yadi (ax > 1.0) {
         dasham r = madhava_pi() / 2.0 - madhava_atan(1.0 / ax)
-        yadi (neg == 1) { pratiyati 0.0 - r }
-        pratiyati r
+        yadi (neg == 1) { prati 0.0 - r }
+        prati r
     }
-    dasham y = ax / (1.0 + madhava_sqrt(1.0 + ax * ax))
+    dasham y = ax / (1.0 + madhava_vargmool(1.0 + ax * ax))
     dasham s = 0.0
     dasham yp = y
     vitti k = 0
-    vitti sign = 1
+    vitti util_chinha = 1
     yavat (k < 60) {
         dasham term = yp / (2.0 * k + 1.0)
-        yadi (sign > 0) {
+        yadi (util_chinha > 0) {
             s = s + term
-        } anyatra {
+        } anya {
             s = s - term
         }
         yp = yp * y * y
-        sign = 0 - sign
+        util_chinha = 0 - util_chinha
         k = k + 1
     }
     dasham res = 2.0 * s
-    yadi (neg == 1) { pratiyati 0.0 - res }
-    pratiyati res
+    yadi (neg == 1) { prati 0.0 - res }
+    prati res
 }
