@@ -1,4 +1,4 @@
-# R63 preserve Unicode danda as a statement delimiter next to identifier.
+# R63 preserve Unicode danda as a statement delimiter next tak identifier.
 mukhya() {
     vitti s = 1।
     vitti i = 2॥
