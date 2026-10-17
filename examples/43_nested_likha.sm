@@ -1,12 +1,12 @@
 # 43 — multi-argument likha + nested calls (v29)
 prakriya joda(a, b) {
-    pratiyati a + b
+    prati a + b
 }
 prakriya gunana(a, b) {
-    pratiyati a * b
+    prati a * b
 }
 prakriya varga(n) {
-    pratiyati gunana(n, n)
+    prati gunana(n, n)
 }
 mukhya()
     likha("2 + 3 = ", joda(2, 3))
