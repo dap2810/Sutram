@@ -2,7 +2,7 @@
 rachana Person = { age, score }
 
 prakriya double_it(n)
-    pratiyati n * 2
+    prati n * 2
 
 mukhya()
     likha("=== Sutram Demo ===\n")
