@@ -25,14 +25,14 @@ prakriya pehchan(n, kosh dasham out) {
         yavat (j < n) {
             yadi (i == j) {
                 out[i * n + j] = 1.0
-            } anyatra {
+            } anya {
                 out[i * n + j] = 0.0
             }
             j = j + 1
         }
         i = i + 1
     }
-    pratiyati n * n
+    prati n * n
 }
 
 # transpose: a is m x n, out must hold n*m elements
@@ -46,17 +46,17 @@ prakriya vivartana(kosh dasham a, m, n, kosh dasham out) {
         }
         i = i + 1
     }
-    pratiyati m * n
+    prati m * n
 }
 
 # element-wise sum: a and b are m x n, out must hold m*n elements
-prakriya mat_yoga(kosh dasham a, kosh dasham b, m, n, kosh dasham out) {
+prakriya matrika_yoga(kosh dasham a, kosh dasham b, m, n, kosh dasham out) {
     vitti k = 0
     yavat (k < m * n) {
         out[k] = a[k] + b[k]
         k = k + 1
     }
-    pratiyati m * n
+    prati m * n
 }
 
 # scalar multiple: out must hold m*n elements
@@ -66,11 +66,11 @@ prakriya skalar(kosh dasham a, dasham c, m, n, kosh dasham out) {
         out[k] = a[k] * c
         k = k + 1
     }
-    pratiyati m * n
+    prati m * n
 }
 
 # matrix product: a is m x n, b is n x p, out must hold m*p elements
-prakriya mat_gunana(kosh dasham a, kosh dasham b, m, n, p, kosh dasham out) {
+prakriya matrika_gunana(kosh dasham a, kosh dasham b, m, n, p, kosh dasham out) {
     vitti i = 0
     yavat (i < m) {
         vitti j = 0
@@ -86,7 +86,7 @@ prakriya mat_gunana(kosh dasham a, kosh dasham b, m, n, p, kosh dasham out) {
         }
         i = i + 1
     }
-    pratiyati m * p
+    prati m * p
 }
 
 # trace of an n x n matrix
@@ -97,12 +97,12 @@ prakriya nishan(kosh dasham a, n) {
         t = t + a[i * n + i]
         i = i + 1
     }
-    pratiyati t
+    prati t
 }
 
 # determinant of a 2 x 2 matrix (a holds 4 elements)
 prakriya nirnaya2(kosh dasham a) {
-    pratiyati a[0] * a[3] - a[1] * a[2]
+    prati a[0] * a[3] - a[1] * a[2]
 }
 
 # determinant of a 3 x 3 matrix (a holds 9 elements), by cofactor expansion
@@ -110,7 +110,7 @@ prakriya nirnaya3(kosh dasham a) {
     dasham t1 = a[0] * (a[4] * a[8] - a[5] * a[7])
     dasham t2 = a[1] * (a[3] * a[8] - a[5] * a[6])
     dasham t3 = a[2] * (a[3] * a[7] - a[4] * a[6])
-    pratiyati t1 - t2 + t3
+    prati t1 - t2 + t3
 }
 
 # dot product of two flat vectors (row i of a with column j of b) — convenience
@@ -123,7 +123,7 @@ prakriya sadish_yoga(kosh dasham u, kosh dasham v) {
         s = s + u[i] * v[i]
         i = i + 1
     }
-    pratiyati s
+    prati s
 }
 
 # largest absolute row sum (a cheap norm, useful for conditioning checks)
@@ -142,5 +142,5 @@ prakriya rekha_manak(kosh dasham a, m, n) {
         yadi (row > best) { best = row }
         i = i + 1
     }
-    pratiyati best
+    prati best
 }
