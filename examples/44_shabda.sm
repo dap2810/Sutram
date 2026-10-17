@@ -1,8 +1,8 @@
-# 44 — shabda(): print a string variable (v29)
-# likha() prints numbers (and string literals); shabda() prints a
-# NUL-terminated string held in a variable.
+# 44 — shabda(): print a varna variable (v29)
+# likha() prints numbers (and varna literals); shabda() prints a
+# NUL-terminated varna held in a variable.
 prakriya abhivadana(name) {
-    pratiyati name
+    prati name
 }
 mukhya()
     vitti greeting = "Namaste!"
