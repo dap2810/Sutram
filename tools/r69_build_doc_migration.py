@@ -28,7 +28,7 @@ def migrate(data: bytes) -> bytes:
 def current_document(name: str) -> bool:
     p=Path(name)
     if p.suffix.lower() not in ('.md','.html','.txt'):return False
-    if any(x.startswith(('Sarvam-to-','ChatGPT-to-','Muse-to-')) for x in p.parts):return False
+    if any(x.startswith(('Sarvam-tak-','ChatGPT-tak-','Muse-tak-')) for x in p.parts):return False
     if p.name=='CHANGELOG.md' or re.match(r'ROUND-\d+',p.name):return False
     if re.match(r'R\d+[-_]',p.name):return False  # immutable per-round design reports
     return True
