@@ -1,9 +1,9 @@
-ayojan math
+yoj ganit
 mukhya() {
-    likha(power(2,10))
+    likha(ghat(2,10))
     likha("\n")
-    likha(power(3,0))
+    likha(ghat(3,0))
     likha("\n")
-    likha(power(5,3))
+    likha(ghat(5,3))
     likha("\n")
 }
