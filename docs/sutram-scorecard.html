@@ -107,7 +107,7 @@
         <td class="n">15%</td>
         <td class="n"><b>32%</b><br><span class="bar"><i class="f-mid" style="width:32%"></i></span></td>
         <td class="n up">+17</td>
-        <td class="note">21 modules with code, 278 functions &mdash; including heritage modules (Piṅgala's chandas, Āryabhaṭa/Bhāskara's ganita, the Kerala school's madhava), a statistics module, numerical methods and linear algebra. Still no collections beyond kosh/pankti, no I/O breadth.</td>
+        <td class="note">21 modules with code, 278 functions &mdash; including heritage modules (Piṅgala's chandas, Āryabhaṭa/Bhāskara's ganita, the Kerala school's madhava), a statistics module, numerical methods and linear algebra. Still no collections beyond kosh/mala, no I/O breadth.</td>
       </tr>
       <tr>
         <td class="n">06</td>
@@ -147,7 +147,7 @@
         <td class="n">5%</td>
         <td class="n"><b>5%</b><br><span class="bar"><i class="f-low" style="width:5%"></i></span></td>
         <td class="n flat">&mdash;</td>
-        <td class="note"><code>nishkriya</code> (inline asm) exists, but there is no C FFI and no calling convention for foreign code.</td>
+        <td class="note"><code>yantra</code> (inline asm) exists, but there is no C FFI and no calling convention for foreign code.</td>
       </tr>
       <tr>
         <td class="n">11</td>
@@ -171,7 +171,7 @@
         <td class="n">30%</td>
         <td class="n"><b>38%</b><br><span class="bar"><i class="f-mid" style="width:38%"></i></span></td>
         <td class="n up">+8</td>
-        <td class="note">Located diagnostics with hints, and the memory-corruption bugs now surface as named errors instead of misleading parse failures. No exceptions, result types or pattern matching.</td>
+        <td class="note">Located diagnostics with hints, and the memory-corruption bugs now surface as named errors instead of misleading parse failures. No exceptions, phal types or pattern matching.</td>
       </tr>
       <tr>
         <td class="n">14</td>
@@ -222,7 +222,7 @@
     pretending. Better to keep them honest and visible.</p>
   </div>
   <div class="card">
-    <p><strong>The honest ceiling.</strong> A language whose compiler is one hand-written NASM file
+    <p><strong>The honest ceiling.</strong> A language whose compiler is one hand-written NASM patra
     with no runtime will never score well on ecosystem or interop &mdash; those assume a large
     surrounding world. What it <em>can</em> do is score well on performance, tooling, self-sufficiency
     and the honesty of its error messages. That is the column to compete in, and the last stretch
@@ -232,7 +232,7 @@
   <h2>Measured state, for the record</h2>
   <ul>
     <li><strong>Tests:</strong> 136 passing, including a deterministic codegen gate (3/3) that asserts instruction ceilings and loop shape.</li>
-    <li><strong>Compiler:</strong> 14,986 lines of NASM, 359 KB source, building both a Linux ELF and a Windows PE32+ from the same file.</li>
+    <li><strong>Compiler:</strong> 14,986 lines of NASM, 359 KB source, building both a Linux ELF and a Windows PE32+ from the same patra.</li>
     <li><strong>IDE:</strong> 1,339 lines of NASM, 18 KB binary, verified through a pseudo-terminal harness.</li>
     <li><strong>Language:</strong> 28 keywords, 202 example programs, 11 language packs.</li>
     <li><strong>Performance:</strong> hot loop 13 &rarr; 5 instructions; loop_sum 66.96 &rarr; 13.3 ms (4.9&times;); PERF2 added a further ~5% on loop-heavy code.</li>
