@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Reverse-apply a single-file unified diff to reconstruct the pre-patch source."""
+"""Reverse-apply a single-file unified diff tak reconstruct the pre-patch source."""
 import sys
 
 src_path, patch_path, out_path = sys.argv[1], sys.argv[2], sys.argv[3]
