@@ -44,9 +44,9 @@ sutram-ide examples/01_hello.sm</pre>
   <table>
     <tr><th>Key</th><th>Action</th></tr>
     <tr><td><kbd>Ctrl-R</kbd></td><td>Run — compile and execute the buffer; output appears in the pane below</td></tr>
-    <tr><td><kbd>Ctrl-S</kbd></td><td>Save to the current file</td></tr>
+    <tr><td><kbd>Ctrl-S</kbd></td><td>Save to the current patra</td></tr>
     <tr><td><kbd>Ctrl-Z</kbd></td><td>Undo — step back one edit, up to 4096 edits deep</td></tr>
-    <tr><td><kbd>Ctrl-L</kbd></td><td>Load a file (prompts on the status line)</td></tr>
+    <tr><td><kbd>Ctrl-L</kbd></td><td>Load a patra (prompts on the status line)</td></tr>
     <tr><td><kbd>Ctrl-T</kbd></td><td>Open the interactive <strong>shell pane</strong> — type a statement, press Enter, see it run; the session accumulates</td></tr>
     <tr><td><kbd>Ctrl-E</kbd></td><td>Browse examples — each press loads the next <code>examples/*.sm</code>, wrapping at the end</td></tr>
     <tr><td><kbd>Ctrl-Q</kbd></td><td>Quit</td></tr>
@@ -59,16 +59,16 @@ sutram-ide examples/01_hello.sm</pre>
  rows 2..R-6      your code, with line numbers and syntax highlighting
  row R-5          Output
  rows R-4..R-1    what your program printed
- row R            file name, modified marker, key hints</pre>
+ row R            patra name, modified marker, key hints</pre>
 
   <h2>Syntax highlighting</h2>
   <p>Keywords in magenta, strings in green, numbers in cyan, comments in grey — for the
-  <em>current</em> keyword set, including the newer additions (<code>kosh</code>, <code>dasham</code>,
-  <code>guna</code>, <code>bhavana</code>, <code>rachana</code>, <code>ayojan</code>, <code>kuru</code>,
-  <code>pankti</code>).</p>
+  <em>current</em> keyword sangrah, including the newer additions (<code>kosh</code>, <code>dasham</code>,
+  <code>guna</code>, <code>bhavana</code>, <code>rachana</code>, <code>yoj</code>, <code>kuru</code>,
+  <code>mala</code>).</p>
 
   <h2>How Run works</h2>
-  <p>The buffer is written to a temporary <code>.sm</code> file, the compiler is invoked on it, and the
+  <p>The buffer is written to a temporary <code>.sm</code> patra, the compiler is invoked on it, and the
   resulting program is executed — both their output captured into the pane. The compiler is located
   in this order, so the IDE works whether you launch it from the source tree or from the app menu:</p>
   <ol>
