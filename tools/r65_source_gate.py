@@ -17,7 +17,7 @@ def main():
           "SUTRAM_R65_TRAP_INT" not in (ROOT / "AGENTS.md").read_text("utf-8"))
     check("ALL_FIVE_INTEGER_TRAP_PATHS",
           all(f"lea rdi,[rel r65_msg_{v}]" in s
-              for v in ("add", "sub", "mul", "div", "mod")))
+              for v in ("add", "sub", "mul", "div", "shesh")))
     check("JNO_AFTER_ARITH",
           "r65_emit_overflow_guard:" in s and "mov dil,0x81" in s)
     check("JNZ_AFTER_DIVISOR_TEST",
@@ -46,7 +46,7 @@ def main():
     existing_ids = re.findall(r'kw_\w+\s+db "([^"]+)"', s)
     unmatched = [latin for dev, latin in lines
                  if latin not in builtin_ids and latin not in existing_ids
-                 and latin != "to"]
+                 and latin != "tak"]
     check("PACK_TARGETS_RECOGNIZED", not unmatched)
     check("PACK_18_NEW_BUILTINS",
           len([x for x in pack.splitlines() if x.strip() and
