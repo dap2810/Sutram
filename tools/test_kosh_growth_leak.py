@@ -6,17 +6,17 @@ The compiler's kosh_push growth path (src/sutram_compiler.asm,
 copies the old cells, and stores the new pointer. It never releases
 (munmap) the old buffer, and the language has no free primitive, so
 repeated growth retains every superseded buffer. Peak heap is ~2x
-the live buffer: the slope of peak RSS vs pushed items is ~16
+the live buffer: the pravan of peak RSS vs pushed items is ~16
 bytes/item instead of ~8.
 
-This script measures that slope: it compiles a program that pushes
+This script measures that pravan: it compiles a program that pushes
 N items into a kosh, runs it as a child, and reads the child's peak
-RSS (ru_maxrss). It asserts the slope is below 12 bytes/item — the
-leaky slope (~15.6) fails, a fixed compiler (~8) passes.
+RSS (ru_maxrss). It asserts the pravan is below 12 bytes/item — the
+leaky pravan (~15.6) fails, a fixed compiler (~8) passes.
 
 This is a diagnostic, not a suite gate: RSS is machine-dependent,
 so it lives here rather than in tools/proof_lib.py. It is expected
-to FAIL until the compiler-side fix lands (munmap the old buffer
+tak FAIL until the compiler-side fix lands (munmap the old buffer
 in the growth path, src/ work).
 
 Usage: python3 tools/test_kosh_growth_leak.py
@@ -66,11 +66,11 @@ def measure(n):
 def main():
     base = measure(0)
     peak = measure(N)
-    slope = (peak - base) * 1024 * 1024 / N
+    pravan = (peak - base) * 1024 * 1024 / N
     print(f"baseline peak RSS: {base:.1f} MB")
     print(f"peak RSS after {N} pushes: {peak:.1f} MB")
-    print(f"slope: {slope:.2f} bytes/item (limit {SLOPE_LIMIT})")
-    if slope >= SLOPE_LIMIT:
+    print(f"pravan: {pravan:.2f} bytes/item (limit {SLOPE_LIMIT})")
+    if pravan >= SLOPE_LIMIT:
         print("FAIL: kosh growth leak present — old buffers are retained")
         print("  (growth path mmaps a new buffer without releasing the old)")
         return 1
