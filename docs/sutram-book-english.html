@@ -351,7 +351,7 @@ in an afternoon.</p>
 <h2>14. New Features: v22</h2>
 
 <h3>Comments</h3>
-<p>Two styles — <code>#</code> (hash) and <code>//</code> (double slash). The compiler ignores them completely.</p>
+<p>Two styles — <code>#</code> (hash) and <code>//</code> (dvigun slash). The compiler ignores them completely.</p>
 <pre><code># this is a hash comment
 <span class="k" data-tip="variable">vitti</span> x = 10  # works after code too
 // this is a slash comment
@@ -410,7 +410,7 @@ n--      <span class="cm"># n = 5</span></code></pre>
 <pre><code>ayojan math
 
 mukhya()
-    likha(gcd(48, 36))
+    likha(mahattam(48, 36))
     vitti n = 7
     likha(n &gt; 5 ? 100 : 200)
     vitti i = 0
@@ -426,19 +426,19 @@ mukhya()
 <p>Sutram ships a small standard library that you pull in with <code>ayojan</code>. The module is inlined into your program at compile time, so there is no runtime dependency &mdash; the library code becomes part of your binary. Twelve modules ship today, and the full list is in <code>docs/sutram-stdlib.html</code>.</p>
 <table>
 <tr><th>module</th><th>include with</th><th>functions</th></tr>
-<tr><td><code>math</code></td><td><code>ayojan math</code></td><td>15 functions &mdash; <code>sq</code> <code>square</code> <code>cube</code> <code>double</code> <code>triple</code> <code>inc</code> <code>abs_val</code> <code>min2</code> <code>max2</code> <code>gcd</code> <code>lcm</code> <code>power</code> <code>fact</code> <code>is_prime</code> <code>sum_to</code></td></tr>
-<tr><td><code>num</code></td><td><code>ayojan num</code></td><td>10 functions &mdash; <code>is_even</code> <code>is_odd</code> <code>digit_count</code> <code>digit_sum</code> <code>reverse_num</code> <code>is_palindrome</code> <code>clamp</code> <code>fib</code> <code>is_perfect</code> <code>collatz_steps</code></td></tr>
-<tr><td><code>sort</code></td><td><code>ayojan sort</code></td><td>11 functions &mdash; <code>swap</code> <code>bubble_sort</code> <code>shell_sort</code> <code>reverse_arr</code> <code>min_of</code> <code>max_of</code> <code>sum_of</code> <code>find_linear</code> <code>count_of</code> <code>is_sorted</code> <code>binary_search</code></td></tr>
-<tr><td><code>string</code></td><td><code>ayojan string</code></td><td>13 functions &mdash; <code>str_len</code> <code>char_code_at</code> <code>is_digit_char</code> <code>is_upper_char</code> <code>is_lower_char</code> <code>is_letter_char</code> <code>is_space_char</code> <code>count_vowels</code> <code>count_char</code> <code>find_char</code> <code>is_all_digits</code> <code>upper_code</code> <code>lower_code</code></td></tr>
+<tr><td><code>math</code></td><td><code>ayojan math</code></td><td>15 functions &mdash; <code>varg</code> <code>vargit</code> <code>ghan</code> <code>dvigun</code> <code>trigun</code> <code>vardh</code> <code>nirapeksh_mulya</code> <code>laghu2</code> <code>adhik2</code> <code>mahattam</code> <code>laghuttam</code> <code>ghat</code> <code>kramgun</code> <code>asti_abhajya</code> <code>yog_tak</code></td></tr>
+<tr><td><code>num</code></td><td><code>ayojan num</code></td><td>10 functions &mdash; <code>asti_yugm</code> <code>asti_visham</code> <code>ank_gan</code> <code>ank_yog</code> <code>viparyay_ank</code> <code>asti_vilom</code> <code>seemit</code> <code>fib</code> <code>asti_sampurna</code> <code>collatz_charan</code></td></tr>
+<tr><td><code>sort</code></td><td><code>ayojan sort</code></td><td>11 functions &mdash; <code>vinimay</code> <code>budbud_shreni</code> <code>shankh_shreni</code> <code>viparyay_mala</code> <code>laghu</code> <code>adhik</code> <code>yog</code> <code>anwesh_sarak</code> <code>gan</code> <code>asti_sorted</code> <code>dwi_anwesh</code></td></tr>
+<tr><td><code>string</code></td><td><code>ayojan string</code></td><td>13 functions &mdash; <code>varna_maap</code> <code>akshar_sanket</code> <code>asti_ank_akshar</code> <code>asti_unnat_akshar</code> <code>asti_avanat_akshar</code> <code>asti_akshar_akshar</code> <code>asti_avakash_akshar</code> <code>gan_swar</code> <code>gan_akshar</code> <code>anwesh_akshar</code> <code>asti_sarv_ank</code> <code>unnat_sanket</code> <code>avanat_sanket</code></td></tr>
 </table>
 <pre><code>ayojan math
 
 mukhya()
-    likha(gcd(48, 36))
+    likha(mahattam(48, 36))
     likha(" ")
-    likha(fact(5))
+    likha(kramgun(5))
     likha(" ")
-    likha(is_prime(97))
+    likha(asti_abhajya(97))
     likha("\n")
 </code></pre>
 <p><i>Note: a program can currently include at most two modules &mdash; a compiler limit that is being fixed.</i></p>
@@ -613,7 +613,7 @@ Unicode folder names work; the compiler opens files with the Windows API.</p>
 <tr><td>language pack not found</td><td><code>lang\</code> is not next to the compiler</td><td>run from the Sutram folder, or install packs to the profile folder</td></tr>
 <tr><td>SmartScreen blocks the installer</td><td>new, unsigned program</td><td><i>More info</i> → <i>Run anyway</i></td></tr>
 <tr><td>antivirus flags a fresh <code>.exe</code></td><td>new binary, no signature</td><td>allow it; it is a plain PE with no imports</td></tr>
-<tr><td>nothing happens on double-click of a compiled program</td><td>it is a console program; it needs a terminal</td><td>run it from Command Prompt or PowerShell</td></tr>
+<tr><td>nothing happens on dvigun-click of a compiled program</td><td>it is a console program; it needs a terminal</td><td>run it from Command Prompt or PowerShell</td></tr>
 <tr><td>a compile error scrolls away</td><td>console closed too fast</td><td>run from a terminal, or add <code>pause</code> in a .bat</td></tr>
 </table>
 
@@ -709,10 +709,10 @@ toolchain. The installer is only packaging — it is not part of the language.</
     <tr><td><code>math</code>, <code>num</code>, <code>util</code></td><td>arithmetic, number theory, small helpers</td></tr>
     <tr><td><code>sort</code>, <code>string</code></td><td>sorting, text handling</td></tr>
     <tr><td><code>chandas</code></td><td>Piṅgala's prosody — metre, Meru-prastāra</td></tr>
-    <tr><td><code>ganita</code></td><td>Āryabhaṭa and Bhāskara — gcd, kuṭṭaka, cakravāla</td></tr>
+    <tr><td><code>ganita</code></td><td>Āryabhaṭa and Bhāskara — mahattam, kuṭṭaka, cakravāla</td></tr>
     <tr><td><code>madhava</code></td><td>the Kerala school — π, sin, cos, atan, sqrt</td></tr>
     <tr><td><code>sankhyiki</code></td><td>statistics — mean, variance, standard deviation, dot product, norm</td></tr>
-    <tr><td><code>kalana</code></td><td>numerical calculus — trapezoid, Simpson, derivatives, polynomial roots</td></tr>
+    <tr><td><code>kalana</code></td><td>numerical calculus — kalana_trapiz, Simpson, derivatives, polynomial roots</td></tr>
     <tr><td><code>samanvaya</code></td><td>linear algebra — matrix product, transpose, determinant, trace</td></tr>
     <tr><td><code>fileio</code></td><td>reading and writing files</td></tr>
   </table>
