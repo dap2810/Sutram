@@ -15,9 +15,9 @@ import tempfile
 ROOT = Path(__file__).resolve().parents[1]
 
 POSITIVE = {
-    "statement_and_expression_args": ('''prakriya identity(x) { pratiyati x }
-prakriya show(x) { likha(x) pratiyati x }
-prakriya pair(a,b) { likha(a + b) pratiyati a + b }
+    "statement_and_expression_args": ('''prakriya identity(x) { prati x }
+prakriya show(x) { likha(x) prati x }
+prakriya pair(a,b) { likha(a + b) prati a + b }
 mukhya() {
     show(identity(7))
     pair(identity(3), identity(4))
