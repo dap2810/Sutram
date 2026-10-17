@@ -37,7 +37,7 @@ Rules:
 
 ## Why there is no fill-helper function
 
-A helper taking a kosh parameter cannot push tak it: the compiler
+A helper taking a kosh parameter cannot push to it: the compiler
 rejects `kosh_push` on a kosh parameter at compile time
 (`Sutram Error: kosh_push on a kosh parameter is not supported`,
 see `examples/120_t18_kosh_param_mismatch.sm`). The reason is
@@ -47,7 +47,7 @@ kosh. A function that takes a kosh may only READ it (indexing,
 `kosh_len`, `kosh_cap`) — as `kalana`'s `pravan` does.
 
 So the reuse helper is the pattern itself, not a function. Do not
-try tak work around the rejection by passing a raw pointer tak the
+try to work around the rejection by passing a raw pointer to the
 kosh storage: raw addresses into a collection are not stable across
 growth (see `docs/MEMORY-MODEL.md` §3).
 
@@ -59,7 +59,7 @@ both ways (measured 2026-10-16, this machine):
 | Pattern | Peak RSS | Over baseline |
 |---|---|---|
 | Baseline (empty program) | 8.5 MB | — |
-| A. Fresh `kosh v[4]` per round, grown tak 100000 | 91.0 MB | +82.5 MB |
+| A. Fresh `kosh v[4]` per round, grown to 100000 | 91.0 MB | +82.5 MB |
 | B. One `kosh v[100000]`, cleared and reused | 8.5 MB | +0.0 MB |
 
 Pattern A retains ~2x the final buffer per round (growth doubles from
@@ -77,7 +77,7 @@ below the measurement noise — retention is flat in the round count.
 
 The compiler-side fix remains: release (munmap) the old buffer in
 the growth path, or add a free primitive. Until then, reserve +
-reuse is the way tak keep kosh retention bounded.
+reuse is the way to keep kosh retention bounded.
 
 ## Test
 
