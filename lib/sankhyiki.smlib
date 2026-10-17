@@ -20,51 +20,51 @@ prakriya yoga(kosh dasham xs) {
         s = s + xs[i]
         i = i + 1
     }
-    pratiyati s
+    prati s
 }
 
 # --- arithmetic mean ---
 prakriya madhya(kosh dasham xs) {
     vitti n = kosh_len(xs)
-    yadi (n == 0) { pratiyati 0.0 }
-    pratiyati yoga(xs) / n
+    yadi (n == 0) { prati 0.0 }
+    prati yoga(xs) / n
 }
 
 # --- minimum ---
 prakriya laghutama(kosh dasham xs) {
     vitti n = kosh_len(xs)
-    yadi (n == 0) { pratiyati 0.0 }
+    yadi (n == 0) { prati 0.0 }
     dasham m = xs[0]
     vitti i = 1
     yavat (i < n) {
         yadi (xs[i] < m) { m = xs[i] }
         i = i + 1
     }
-    pratiyati m
+    prati m
 }
 
 # --- maximum ---
 prakriya adhikatama(kosh dasham xs) {
     vitti n = kosh_len(xs)
-    yadi (n == 0) { pratiyati 0.0 }
+    yadi (n == 0) { prati 0.0 }
     dasham m = xs[0]
     vitti i = 1
     yavat (i < n) {
         yadi (xs[i] > m) { m = xs[i] }
         i = i + 1
     }
-    pratiyati m
+    prati m
 }
 
 # --- range (max - min) ---
 prakriya vyapti(kosh dasham xs) {
-    pratiyati adhikatama(xs) - laghutama(xs)
+    prati adhikatama(xs) - laghutama(xs)
 }
 
 # --- population variance (प्रसरण) ---
 prakriya prasaran(kosh dasham xs) {
     vitti n = kosh_len(xs)
-    yadi (n == 0) { pratiyati 0.0 }
+    yadi (n == 0) { prati 0.0 }
     dasham m = madhya(xs)
     dasham acc = 0.0
     vitti i = 0
@@ -73,26 +73,26 @@ prakriya prasaran(kosh dasham xs) {
         acc = acc + d * d
         i = i + 1
     }
-    pratiyati acc / n
+    prati acc / n
 }
 
-# --- square root, Newton's method (private to this module: distinct name so it
-#     never collides with madhava_sqrt or a user function) ---
-# 1000 iterations, as madhava_sqrt (20 gave 1279996 for sqrt(1e12)).
-prakriya sankhyiki_sqrt(dasham v) {
-    yadi (v <= 0.0) { pratiyati 0.0 }
+# --- vargit root, Newton's method (private to this module: distinct name so it
+#     never collides with madhava_vargmool or a user function) ---
+# 1000 iterations, as madhava_vargmool (20 gave 1279996 for sqrt(1e12)).
+prakriya sankhyiki_vargmool(dasham v) {
+    yadi (v <= 0.0) { prati 0.0 }
     dasham g = v
     vitti k = 0
     yavat (k < 1000) {
         g = (g + v / g) / 2.0
         k = k + 1
     }
-    pratiyati g
+    prati g
 }
 
 # --- population standard deviation (मानक विचलन) ---
 prakriya vichalan(kosh dasham xs) {
-    pratiyati sankhyiki_sqrt(prasaran(xs))
+    prati sankhyiki_vargmool(prasaran(xs))
 }
 
 # --- dot product of two float arrays (बिंदु गुणनफल) ---
@@ -107,12 +107,12 @@ prakriya bindu(kosh dasham a, kosh dasham b) {
         s = s + a[i] * b[i]
         i = i + 1
     }
-    pratiyati s
+    prati s
 }
 
 # --- Euclidean norm (magnitude) of a vector ---
 prakriya manak(kosh dasham a) {
-    pratiyati sankhyiki_sqrt(bindu(a, a))
+    prati sankhyiki_vargmool(bindu(a, a))
 }
 
 # ---------------------------------------------------------------------------
@@ -135,45 +135,45 @@ prakriya purna_yoga(xs, n) {
         s = s + xs[i]
         i = i + 1
     }
-    pratiyati s
+    prati s
 }
 
 # --- integer mean (truncated toward zero) ---
 prakriya purna_madhya(xs, n) {
-    yadi (n <= 0) { pratiyati 0 }
-    pratiyati purna_yoga(xs, n) / n
+    yadi (n <= 0) { prati 0 }
+    prati purna_yoga(xs, n) / n
 }
 
 # --- integer minimum ---
 prakriya purna_laghutama(xs, n) {
     vitti m = 0
     vitti i = 1
-    yadi (n <= 0) { pratiyati 0 }
+    yadi (n <= 0) { prati 0 }
     m = xs[0]
     yavat (i < n) {
         yadi (xs[i] < m) { m = xs[i] }
         i = i + 1
     }
-    pratiyati m
+    prati m
 }
 
 # --- integer maximum ---
 prakriya purna_adhikatama(xs, n) {
     vitti m = 0
     vitti i = 1
-    yadi (n <= 0) { pratiyati 0 }
+    yadi (n <= 0) { prati 0 }
     m = xs[0]
     yavat (i < n) {
         yadi (xs[i] > m) { m = xs[i] }
         i = i + 1
     }
-    pratiyati m
+    prati m
 }
 
 # --- integer range (max - min) ---
 prakriya purna_vyapti(xs, n) {
-    yadi (n <= 0) { pratiyati 0 }
-    pratiyati purna_adhikatama(xs, n) - purna_laghutama(xs, n)
+    yadi (n <= 0) { prati 0 }
+    prati purna_adhikatama(xs, n) - purna_laghutama(xs, n)
 }
 
 # --- integer population variance (truncated toward zero; uses the
@@ -183,12 +183,12 @@ prakriya purna_prasaran(xs, n) {
     vitti acc = 0
     vitti i = 0
     vitti d = 0
-    yadi (n <= 0) { pratiyati 0 }
+    yadi (n <= 0) { prati 0 }
     m = purna_madhya(xs, n)
     yavat (i < n) {
         d = xs[i] - m
         acc = acc + d * d
         i = i + 1
     }
-    pratiyati acc / n
+    prati acc / n
 }
