@@ -2,27 +2,27 @@
 # inference, integer promotion at calls, mixed returns, and float->int assignment.
 
 prakriya wrapper(dasham x) {
-    pratiyati twice(x)
+    prati twice(x)
 }
 
 prakriya twice(dasham x) {
-    pratiyati x * 2
+    prati x * 2
 }
 
 prakriya blend(dasham a, दशम b) {
-    pratiyati (a + b) / 2.0
+    prati (a + b) / 2.0
 }
 
 prakriya mixed(flag) {
     yadi (flag) {
-        pratiyati 1.25
+        prati 1.25
     }
-    pratiyati 2
+    prati 2
 }
 
-# Mixed ternary branches must normalize to the inferred float return type.
+# Mixed ternary branches must normalize tak the inferred float return type.
 prakriya choose(flag) {
-    pratiyati flag ? 1.5 : 2
+    prati flag ? 1.5 : 2
 }
 
 mukhya() {
