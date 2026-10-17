@@ -1,0 +1,437 @@
+# lib/map.smlib — Sutram standard library: associative map (hash table)
+# layer: alloc
+#
+# Open addressing with linear probing over parallel pankti arrays.
+# KEY REPRESENTATION: byte strings (the R10 strb_* surface), NOT
+# char-code arrays: keys are usually literals ("apple"), and byte
+# strings let the caller pass a literal directly. The hash
+# (lib/hash.smlib fnv1a) is byte-based (char_at), so the choice is
+# consistent end to end. Do not pass char-code arrays here.
+#
+# Layout of the map buffer m (qword cells, except the key bytes):
+#   m[0]           capacity
+#   m[1]           live entry count
+#   m[2+i]         state[i]   (0 = empty, 1 = live), i in 0..cap-1
+#   m[2+cap+i]     keylen[i]
+#   m[2+2*cap+i]   val[i]
+#   key bytes: byte region at byte offset (2+3*cap)*8, KEY_MAX bytes/slot.
+#
+# KEY_MAX = 32: keys longer than 32 bytes are truncated to 32, consistently
+# on put/get/contains/remove (documented; excluded from the properties).
+# cap must be >= 1 (clamped). Probing wraps modulo cap.
+#
+# DELETION is backward-shift (Knuth 6.4R): the freed slot is filled by
+# shifting later probe-chain entries back toward their home bucket, so
+# there is no "deleted" state and no tombstones — a lookup stops at the
+# first empty slot and never misses a live entry.
+#
+# ABSENT SENTINEL: nighantu_grah returns -1 (0-1) for a missing key. Values are
+# programmer-managed integers; do not store -1 as a value unless you
+# disambiguate with nighantu_antah first.
+#
+# FULL TABLE: nighantu_khip returns 0 and changes nothing.
+
+yoj gudh
+yoj khand
+
+# nighantu_kunji_gudh(key, keyn, cap) — home bucket of key (internal helper).
+prakriya nighantu_kunji_gudh(key, keyn, cap) {
+    yadi (cap < 1) { prati 0 }
+    vitti h = fnv1a(key, keyn)
+    prati h % cap
+}
+
+# nighantu_kunji_sam(m, slot, cap, key, keyn) — 1 if slot's key equals (key,keyn)
+# (internal helper; keyn already truncated by the caller).
+# Reworked in R13 to use khand_tul instead of a hand-rolled loop.
+prakriya nighantu_kunji_sam(m, slot, cap, key, keyn) {
+    vitti base = 0
+    vitti kl = m[2 + cap + slot]
+    yadi (kl != keyn) { prati 0 }
+    base = (2 + 3 * cap) * 8 + slot * 32
+    yadi (khand_tul(m + base, kl, key, keyn) == 0) { prati 1 }
+    prati 0
+}
+
+# nighantu_koshtha_likh(m, slot, cap, key, keyn, val) — store key+val at slot and
+# mark it live (internal helper; keyn already truncated by the caller).
+# NOTE: this deliberately does NOT use khand_pratilip for the key copy:
+# khand_pratilip writes a 0 terminator at out[keyn], which for a full 32-byte
+# key would land on the NEXT slot's first key byte. The explicit loop
+# plus zero-fill stays exactly inside this slot.
+prakriya nighantu_koshtha_likh(m, slot, cap, key, keyn, val) {
+    vitti i = 0
+    vitti base = (2 + 3 * cap) * 8 + slot * 32
+    m[2 + slot] = 1
+    m[2 + cap + slot] = keyn
+    m[2 + 2 * cap + slot] = val
+    yavat (i < keyn) {
+        akshar_rakh(m, base + i, akshar(key, i))
+        i = i + 1
+    }
+    yavat (i < 32) {
+        akshar_rakh(m, base + i, 0)
+        i = i + 1
+    }
+    prati 1
+}
+
+# nighantu_anwesh(m, cap, key, keyn) — slot index holding key, or -1 if absent
+# (internal helper; stops at the first empty slot — valid because
+# deletion is backward-shift, so chains have no holes).
+# cap < 1 or keyn < 0: not found (cap 0 trapped with SIGFPE on
+# h % 0; negative keyn stored a negative keylen, which
+# nighantu_kunjika_ashtak emitted as length byte 255).
+prakriya nighantu_anwesh(m, cap, key, keyn) {
+    vitti kn = keyn
+    vitti idx = 0
+    vitti start = 0
+    yadi (cap < 1) { prati 0 - 1 }
+    yadi (kn < 0) { prati 0 - 1 }
+    yadi (kn > 32) { kn = 32 }
+    idx = nighantu_kunji_gudh(key, kn, cap)
+    start = idx
+    yavat (m[2 + idx] == 1) {
+        yadi (nighantu_kunji_sam(m, idx, cap, key, kn) == 1) { prati idx }
+        idx = idx + 1
+        yadi (idx >= cap) { idx = 0 }
+        yadi (idx == start) { prati 0 - 1 }
+    }
+    prati 0 - 1
+}
+
+# nighantu_srij(cap) — allocate and clear a map of capacity cap (clamped to >= 1).
+# Returns 0 if cap is so large the allocation size overflows (a
+# wrapped size allocated a small buffer and then wrote cap state
+# cells past it — SIGSEGV).
+prakriya nighantu_srij(cap) {
+    vitti c = cap
+    vitti m = 0
+    vitti i = 0
+    vitti sz = 0
+    yadi (c < 1) { c = 1 }
+    sz = (2 + 3 * c) * 8 + c * 32
+    yadi (sz < 0) { prati 0 }
+    m = nirmmita(sz)
+    yadi (m == 0) { prati 0 }
+    m[0] = c
+    m[1] = 0
+    yavat (i < c) {
+        m[2 + i] = 0
+        i = i + 1
+    }
+    prati m
+}
+
+# nighantu_khip(m, cap, key, keyn, val) — insert or update key; returns 1 on
+# success, 0 if the table is full (then the map is unchanged). Updating an
+# existing key keeps nighantu_maap unchanged. cap < 1 or keyn < 0:
+# returns 0 (cap 0 trapped with SIGFPE; negative keyn corrupted
+# nighantu_kunjika_ashtak).
+prakriya nighantu_khip(m, cap, key, keyn, val) {
+    vitti kn = keyn
+    vitti idx = 0
+    vitti start = 0
+    vitti slot = 0
+    yadi (cap < 1) { prati 0 }
+    yadi (kn < 0) { prati 0 }
+    yadi (kn > 32) { kn = 32 }
+    slot = nighantu_anwesh(m, cap, key, kn)
+    yadi (slot >= 0) {
+        m[2 + 2 * cap + slot] = val
+        prati 1
+    }
+    idx = nighantu_kunji_gudh(key, kn, cap)
+    start = idx
+    yavat (m[2 + idx] == 1) {
+        idx = idx + 1
+        yadi (idx >= cap) { idx = 0 }
+        yadi (idx == start) { prati 0 }
+    }
+    nighantu_koshtha_likh(m, idx, cap, key, kn, val)
+    m[1] = m[1] + 1
+    prati 1
+}
+
+# nighantu_grah(m, cap, key, keyn) — value stored for key, or -1 if absent
+# (documented sentinel; use nighantu_antah to disambiguate).
+prakriya nighantu_grah(m, cap, key, keyn) {
+    vitti kn = keyn
+    vitti slot = 0
+    yadi (kn > 32) { kn = 32 }
+    slot = nighantu_anwesh(m, cap, key, kn)
+    yadi (slot < 0) { prati 0 - 1 }
+    prati m[2 + 2 * cap + slot]
+}
+
+# nighantu_antah(m, cap, key, keyn) — 1 if key is present, else 0.
+prakriya nighantu_antah(m, cap, key, keyn) {
+    vitti kn = keyn
+    yadi (kn > 32) { kn = 32 }
+    yadi (nighantu_anwesh(m, cap, key, kn) < 0) { prati 0 }
+    prati 1
+}
+
+# nighantu_apanay(m, cap, key, keyn) — delete key; 1 if removed, 0 if absent.
+# Backward-shift deletion (Knuth 6.4R): after clearing the slot, each
+# following live entry whose home bucket is NOT cyclically past the hole
+# is shifted back into it, preserving every probe chain with no
+# tombstones.
+prakriya nighantu_apanay(m, cap, key, keyn) {
+    vitti kn = keyn
+    vitti pos = 0
+    vitti i = 0
+    vitti j = 0
+    vitti r = 0
+    vitti can_move = 0
+    vitti k = 0
+    vitti base_i = 0
+    vitti base_j = 0
+    vitti keyaddr = 0
+    vitti kl = 0
+    yadi (kn > 32) { kn = 32 }
+    pos = nighantu_anwesh(m, cap, key, kn)
+    yadi (pos < 0) { prati 0 }
+    m[2 + pos] = 0
+    m[1] = m[1] - 1
+    i = pos
+    j = pos + 1
+    yadi (j >= cap) { j = 0 }
+    yavat (m[2 + j] == 1) {
+        kl = m[2 + cap + j]
+        base_j = (2 + 3 * cap) * 8 + j * 32
+        keyaddr = m + base_j
+        r = fnv1a(keyaddr, kl) % cap
+        # the entry at j may move into the hole at i iff i lies on the
+        # clockwise path from its home bucket r to j
+        can_move = 0
+        yadi (r <= j) {
+            yadi (r <= i) {
+                yadi (i <= j) { can_move = 1 }
+            }
+        } anya {
+            yadi (i >= r) {
+                can_move = 1
+            } anya {
+                yadi (i <= j) { can_move = 1 }
+            }
+        }
+        yadi (can_move == 1) {
+            base_i = (2 + 3 * cap) * 8 + i * 32
+            m[2 + i] = 1
+            m[2 + cap + i] = kl
+            m[2 + 2 * cap + i] = m[2 + 2 * cap + j]
+            # NOTE: not khand_pratilip — its terminator at out[32] would land
+            # on the next slot's first key byte.
+            k = 0
+            yavat (k < 32) {
+                akshar_rakh(m, base_i + k, akshar(m, base_j + k))
+                k = k + 1
+            }
+            m[2 + j] = 0
+            i = j
+        }
+        j = j + 1
+        yadi (j >= cap) { j = 0 }
+    }
+    prati 1
+}
+
+# nighantu_rikta(m) — reset the map to empty IN PLACE (WS1, R19): same
+# handle, same capacity, no leak, no re-allocation. Capacity is read
+# from m[0]; no cap parameter, so a mismatched cap cannot corrupt
+# the map. FULL ZERO, not a count reset: the count, every state
+# flag, every keylen, every val, and every key byte are set to 0.
+# After nighantu_rikta the buffer is indistinguishable from a freshly
+# zeroed map. Merely resetting the count would leave the old keys
+# readable through the key region to anyone holding the handle —
+# the stale-segment hazard this closes. Returns 1.
+prakriya nighantu_rikta(m) {
+    vitti cap = m[0]
+    vitti i = 0
+    vitti base = 0
+    vitti k = 0
+    m[1] = 0
+    yavat (i < cap) {
+        m[2 + i] = 0
+        m[2 + cap + i] = 0
+        m[2 + 2 * cap + i] = 0
+        base = (2 + 3 * cap) * 8 + i * 32
+        k = 0
+        yavat (k < 32) {
+            akshar_rakh(m, base + k, 0)
+            k = k + 1
+        }
+        i = i + 1
+    }
+    prati 1
+}
+
+# nighantu_vardh(m, newcap) — copy the map into a fresh map of capacity
+# newcap, rehashing every entry (WS2, R20). Returns the new handle.
+# Returns 0 and changes nothing if newcap < nighantu_maap(m) (no partial
+# copy). The old buffer is abandoned (the library has no free — same
+# as re-init); rebind: m = nighantu_vardh(m, 32). Capacity is clamped
+# to >= 1 by nighantu_srij. Before this, growing a fixed-capacity map
+# meant a hand-written re-put loop over nighantu_kunjika_ashtak at every
+# call site.
+prakriya nighantu_vardh(m, newcap) {
+    vitti oldcap = m[0]
+    vitti n = m[1]
+    vitti newm = 0
+    vitti nc = 0
+    vitti tmp = 0
+    vitti nk = 0
+    vitti pos = 0
+    vitti i = 0
+    vitti seglen = 0
+    vitti slot = 0
+    yadi (newcap < n) { prati 0 }
+    newm = nighantu_srij(newcap)
+    nc = newm[0]
+    tmp = nirmmita(oldcap * 33 + 1)
+    nk = nighantu_kunjika_ashtak(m, tmp)
+    yavat (i < nk) {
+        seglen = akshar(tmp, pos)
+        slot = nighantu_anwesh(m, oldcap, tmp + pos + 1, seglen)
+        nighantu_khip(newm, nc, tmp + pos + 1, seglen, m[2 + 2 * oldcap + slot])
+        pos = pos + 1 + seglen
+        i = i + 1
+    }
+    prati newm
+}
+
+# nighantu_grah_mool(m, cap, key, keyn, def) — value for key, or def if
+# absent (WS3, R19). The -1 sentinel of nighantu_grah cannot distinguish
+# "absent" from "stored -1"; this removes the contains-check dance
+# for callers whose default is not -1. (A caller whose default IS
+# -1 gets exactly nighantu_grah's behaviour.)
+prakriya nighantu_grah_mool(m, cap, key, keyn, def) {
+    vitti kn = keyn
+    vitti slot = 0
+    yadi (kn > 32) { kn = 32 }
+    slot = nighantu_anwesh(m, cap, key, kn)
+    yadi (slot < 0) { prati def }
+    prati m[2 + 2 * cap + slot]
+}
+
+prakriya nighantu_maap(m) {
+    prati m[1]
+}
+
+# nighantu_mil(dst, dcap, src, scap) — copy every entry of src into dst;
+# src's values overwrite dst's on key conflict (WS3, R23). Returns the
+# number of entries merged. If dst fills up, merging stops early and
+# the return is less than nighantu_maap(src) — check nighantu_maap(dst)
+# afterwards to detect a partial merge. Before, merging meant a
+# nighantu_kunjika_ashtak pass plus a nighantu_grah + nighantu_khip per key at every call
+# site. (nighantu_grah's -1 sentinel is not a hazard here: the keys come
+# from nighantu_kunjika_ashtak, so every key is known to exist.)
+prakriya nighantu_mil(dst, dcap, src, scap) {
+    vitti tmp = nirmmita(scap * 33 + 1)
+    vitti nk = nighantu_kunjika_ashtak(src, tmp)
+    vitti pos = 0
+    vitti i = 0
+    vitti seglen = 0
+    vitti merged = 0
+    vitti v = 0
+    yavat (i < nk) {
+        seglen = akshar(tmp, pos)
+        v = nighantu_grah(src, scap, tmp + pos + 1, seglen)
+        yadi (nighantu_khip(dst, dcap, tmp + pos + 1, seglen, v) == 0) {
+            prati merged
+        }
+        merged = merged + 1
+        pos = pos + 1 + seglen
+        i = i + 1
+    }
+    prati merged
+}
+
+# nighantu_mulya(m, out) — write the live values into out (one qword cell
+# each), in the same slot order as nighantu_kunjika / nighantu_kunjika_ashtak (WS2,
+# R21). Returns the value count, which equals nighantu_maap(m). Caller
+# allocates cap cells. Before this, collecting values meant a
+# nighantu_kunjika_ashtak pass plus a nighantu_grah per key at every call site.
+prakriya nighantu_mulya(m, out) {
+    vitti cap = m[0]
+    vitti i = 0
+    vitti n = 0
+    yavat (i < cap) {
+        yadi (m[2 + i] == 1) {
+            out[n] = m[2 + 2 * cap + i]
+            n = n + 1
+        }
+        i = i + 1
+    }
+    prati n
+}
+
+# nighantu_kunjika(m, out) — write live keys into out in length-prefixed form
+# [len0, b0, b1, ..., len1, b0, ...] (same shape as varna_bhed parts).
+# Returns the key count, which equals nighantu_maap(m).
+# NOTE: segments are QWORD CELLS (len in one cell, one byte per cell),
+# kept for backward compatibility. New code should use nighantu_kunjika_ashtak
+# below, which returns the same segments as packed bytes — the form
+# every key consumer (nighantu_khip, nighantu_antah, khand_tul) actually
+# takes. Passing a nighantu_kunjika segment straight to a byte-key consumer
+# compiles and silently compares the wrong bytes (the R14 trap).
+prakriya nighantu_kunjika(m, out) {
+    vitti cap = m[0]
+    vitti i = 0
+    vitti wpos = 0
+    vitti n = 0
+    vitti kl = 0
+    vitti base = 0
+    vitti k = 0
+    yavat (i < cap) {
+        yadi (m[2 + i] == 1) {
+            kl = m[2 + cap + i]
+            base = (2 + 3 * cap) * 8 + i * 32
+            out[wpos] = kl
+            # unpack writes a 0 cell at out[wpos+1+kl]; the next key's
+            # length overwrites it (or it trails harmlessly).
+            # Cell index -> byte offset: (wpos + 1) * 8.
+            khand_mukt(m + base, kl, out + (wpos + 1) * 8)
+            wpos = wpos + 1 + kl
+            n = n + 1
+        }
+        i = i + 1
+    }
+    prati n
+}
+
+# nighantu_kunjika_ashtak(m, out) — R17. Same segments as nighantu_kunjika, but PACKED
+# BYTES: [len-byte, bytes..., len-byte, bytes...], one length byte
+# followed by the key's bytes, no terminator. Returns the key count,
+# which equals nighantu_maap(m). Caller allocates cap * 33 bytes (each key
+# is <= 32 bytes plus 1 length byte; at most cap keys).
+# Keys are stored as packed bytes inside the map, so this is a straight
+# byte copy — no unpack/pack round-trip. Segments can be passed
+# directly to nighantu_khip / nighantu_antah / khand_tul with no repacking;
+# that is the whole point (see nighantu_kunjika note above).
+prakriya nighantu_kunjika_ashtak(m, out) {
+    vitti cap = m[0]
+    vitti i = 0
+    vitti wpos = 0
+    vitti n = 0
+    vitti kl = 0
+    vitti base = 0
+    vitti k = 0
+    yavat (i < cap) {
+        yadi (m[2 + i] == 1) {
+            kl = m[2 + cap + i]
+            base = (2 + 3 * cap) * 8 + i * 32
+            akshar_rakh(out, wpos, kl)
+            k = 0
+            yavat (k < kl) {
+                akshar_rakh(out, wpos + 1 + k, akshar(m, base + k))
+                k = k + 1
+            }
+            wpos = wpos + 1 + kl
+            n = n + 1
+        }
+        i = i + 1
+    }
+    prati n
+}
