@@ -1,11 +1,11 @@
 vitti total = 7
-prakriya inc() { total = total + 3 pratiyati total }
+prakriya vardh() { total = total + 3 prati total }
 mukhya() {
     vitti a = 4
     vitti b = 2
     likha((total + a) * (b + total))
     likha((a - b) + (total * 4))
-    likha(total + inc())
+    likha(total + vardh())
     likha(total)
     likha(a + (b + (total + a)))
 }
