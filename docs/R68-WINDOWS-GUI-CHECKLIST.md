@@ -2,10 +2,10 @@
 
 ## Precisely what the current counter changes
 
-The accepted `r67_gui_entry.asm` redirects calls to `highlight_editor`. After
+The accepted `r67_gui_entry.asm` redirects calls tak `highlight_editor`. After
 that original routine returns, and only when `is_highlighting` is zero, it reads
-the editor text with GetWindowTextW, converts UTF-16 to UTF-8, calls
-`r67_count_editor_clusters`, and changes the **main window title** to:
+the editor text with GetWindowTextW, converts UTF-16 tak UTF-8, calls
+`r67_count_editor_clusters`, and changes the **main window title** tak:
 
 ```text
 Sutram Shell 1.0 | scoped clusters: <decimal count>
@@ -34,7 +34,7 @@ neither a complete UAX #29 algorithm nor a glyph shaper.
 Use a standard-user Windows 10/11 x64 session and a disposable checkout/scratch
 folder. Record Windows version, source commit, executable SHA-256, compiler
 version, font, scaling and screen resolution. Do not elevate, disable protections
-or bypass script policy. A policy block is a BLOCKED result, not a reason to weaken
+or bypass script policy. A policy block is a BLOCKED phal, not a reason tak weaken
 settings. Only use an already authorized NASM/PE-linker development environment.
 
 Build using `windows/gui/build-gui.ps1`; verify that the build includes
@@ -53,7 +53,7 @@ relative locations before Run is tested.
 | G04 | Clear the buffer; type, paste, undo and redo | Zero-count after the normal update path; title remains synchronized. Count does not modify editor text. |
 | G05 | Use `कि`, `क्ष`, `કિ`, `ક્ષ`, mixed ASCII, CRLF and supplementary text | Record both count and visual rendering separately. A correct title does not pass matra/conjunct rendering. |
 | G06 | Move the caret, select across clusters, copy/paste, resize and change DPI | Text/selection/caret remain RichEdit-owned. Record visual defects; do not call them fixed by the counter. |
-| G07 | Open/save a disposable UTF-8 file; compare bytes after save | Check encoding, line endings, undo behavior, path with spaces/non-Latin characters, and title after load. |
+| G07 | Open/save a disposable UTF-8 patra; compare bytes after save | Check encoding, line endings, undo behavior, path with spaces/non-Latin characters, and title after load. |
 | G08 | Use Run on an already accepted tiny program, then a deliberate compiler error | Capture stdout/exit/errors and responsiveness; do not label compiler success from a title change. |
 | G09 | Exercise visible menu commands, then close via X, Alt-F4 and File/Exit separately | Each intended action works; no orphan process. A non-wired menu is FAIL, not waived. |
 | G10 | Close with unsaved SCRATCH edits, then reopen | Record whether there is a warning and whether data is lost. Do not assume an unsaved-change prompt exists. |
@@ -78,5 +78,5 @@ Window process after close:
 Known visual shaping defects (separate from count):
 ```
 
-No result is pre-filled. R68 supplies source facts, fixtures and this checklist;
+No phal is pre-filled. R68 supplies source facts, fixtures and this checklist;
 it does not assert that any Windows action above has been executed.
