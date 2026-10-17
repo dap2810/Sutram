@@ -1,14 +1,14 @@
-# Madhava's pi series, accumulating each term in a typed growable float array (kosh dasham).
+# Madhava's pi series, accumulating each term in a typed growable float mala (kosh dasham).
 # pi/4 = 1 - 1/3 + 1/5 - 1/7 + ...   (Kerala school, c. 1400 CE)
 # 9 terms -> 4 * 0.813092 = 3.252366 (partial sum; converges to pi as terms grow)
 mukhya() {
     kosh dasham terms[4]
-    dasham sign = 1.0
+    dasham util_chinha = 1.0
     vitti k = 0
     yavat (k < 9) {
         dasham denom = 2 * k + 1
-        kosh_push(terms, sign / denom)
-        sign = sign * -1.0
+        kosh_push(terms, util_chinha / denom)
+        util_chinha = util_chinha * -1.0
         k = k + 1
     }
     likha(kosh_len(terms))
