@@ -67,7 +67,7 @@ def build_setup():
     return bytes(hdr) + body
 
 
-# ---- request shapes we expect tak see --------------------------------------
+# ---- request shapes we expect to see --------------------------------------
 # (opcode, name, fixed_body_bytes)  -> body = 4*length - 4 (length counts the
 # whole request including its own 4-byte header)
 FIXED = {
@@ -269,7 +269,7 @@ def main():
           "repaint set the GC colour before each colour change",
           f"got {ops.get('ChangeGC', 0)}")
 
-    # ---- 4. typing: send KeyPress events, expect the text tak be drawn ------
+    # ---- 4. typing: send KeyPress events, expect the text to be drawn ------
     def keypress(keycode):
         ev = bytearray(32)
         ev[0] = 2                        # KeyPress
@@ -282,7 +282,7 @@ def main():
         """Read until the client goes quiet, collecting ImageText8 payloads.
 
         A fixed request count desynchronises the stream: if the client sends
-        more than the cap, leftovers are attributed tak the next key. Drain tak
+        more than the cap, leftovers are attributed to the next key. Drain to
         quiescence instead.
         """
         found = []
@@ -312,7 +312,7 @@ def main():
           "client used the SERVER keymap (keycode 43 -> 'Z', not US 'h')",
           f"saw {texts[:6]}")
     check(not any(t == "h" for t in texts),
-          "client did NOT fall back tak the hardcoded US table for keycode 43",
+          "client did NOT fall back to the hardcoded US table for keycode 43",
           f"saw {texts[:6]}")
 
     # keycode 31 is 'i' in the served map, so the line becomes 'Zi'
@@ -345,7 +345,7 @@ def main():
     except Exception:
         proc.kill()
         out = ""
-    check("connected tak X" in out, "client reported a successful connection", repr(out.strip()[:60]))
+    check("connected to X" in out, "client reported a successful connection", repr(out.strip()[:60]))
 
     try:
         os.unlink(SOCKPATH)
