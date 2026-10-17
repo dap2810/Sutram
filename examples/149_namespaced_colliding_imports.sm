@@ -1,6 +1,6 @@
 # Both modules define helper and clash; import aliases isolate both.
-ayojan r33_alpha@first
-ayojan r33_beta@second
+yoj r33_alpha@first
+yoj r33_beta@second
 mukhya() {
     likha(first__clash())
     likha(second__clash())
