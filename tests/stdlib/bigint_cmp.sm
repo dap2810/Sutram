@@ -1,18 +1,18 @@
-ayojan bigint
+yoj brihat
 mukhya() {
     vitti a = nirmmita(8 * 8)
     vitti b = nirmmita(8 * 8)
-    bigint_from_int(100, a, 8)
-    bigint_from_int(200, b, 8)
-    likha(bigint_cmp(a, b, 8))
+    brihat_ank_se_int(100, a, 8)
+    brihat_ank_se_int(200, b, 8)
+    likha(brihat_tul(a, b, 8))
     likha("\n")
-    likha(bigint_cmp(b, a, 8))
+    likha(brihat_tul(b, a, 8))
     likha("\n")
-    likha(bigint_cmp(a, a, 8))
+    likha(brihat_tul(a, a, 8))
     likha("\n")
     # 1000 > 999 despite fewer digits in b
-    bigint_from_int(1000, a, 8)
-    bigint_from_int(999, b, 8)
-    likha(bigint_cmp(a, b, 8))
+    brihat_ank_se_int(1000, a, 8)
+    brihat_ank_se_int(999, b, 8)
+    likha(brihat_tul(a, b, 8))
     likha("\n")
 }
