@@ -1,17 +1,17 @@
-# Standard library: sorting and searching (ayojan sort)
-ayojan sort
+# Standard library: sorting and searching (yoj shreni)
+yoj shreni
 
 mukhya()
-    pankti a[6]
+    mala a[6]
     a[0] = 5
     a[1] = 2
     a[2] = 9
     a[3] = 1
     a[4] = 7
     a[5] = 3
-    likha(is_sorted(a, 6))
+    likha(asti_sorted(a, 6))
     likha("\n")
-    bubble_sort(a, 6)
+    budbud_shreni(a, 6)
     vitti i = 0
     yavat (i < 6) {
         likha(a[i])
@@ -19,20 +19,20 @@ mukhya()
         i = i + 1
     }
     likha("\n")
-    likha(is_sorted(a, 6))
+    likha(asti_sorted(a, 6))
     likha("\n")
-    likha(binary_search(a, 6, 7))
+    likha(dwi_anwesh(a, 6, 7))
     likha("\n")
-    likha(min_of(a, 6))
+    likha(laghu(a, 6))
     likha(" ")
-    likha(max_of(a, 6))
+    likha(adhik(a, 6))
     likha(" ")
-    likha(sum_of(a, 6))
+    likha(yog(a, 6))
     likha("\n")
-    likha(find_linear(a, 6, 9))
+    likha(anwesh_sarak(a, 6, 9))
     likha(" ")
-    likha(count_of(a, 6, 5))
+    likha(gan(a, 6, 5))
     likha("\n")
-    reverse_arr(a, 6)
+    viparyay_mala(a, 6)
     likha(a[0])
     likha("\n")
