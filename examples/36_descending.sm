@@ -1,20 +1,20 @@
 mukhya()
     likha("Countdown: ")
-    punaravartana i = 5 to 1 {
+    chakra i = 5 tak 1 {
         lkhb(i)
         likha(" ")
     }
     likha("\n")
 
     likha("Rocket launch: ")
-    punaravartana t = 10 to 1 {
+    chakra t = 10 tak 1 {
         lkhb(t)
         likha(" ")
     }
     likha("Lift off!\n")
 
     likha("Descending times table (9x): ")
-    punaravartana n = 9 to 1 {
+    chakra n = 9 tak 1 {
         lkhb(9 * n)
         likha(" ")
     }
