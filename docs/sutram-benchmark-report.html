@@ -1012,7 +1012,7 @@
     const realMax = Math.max(...data.map(d => d.clip ? 0 : d.ms));
     // choose a visual scale: fastest gets ~10% bar, realMax gets ~92%
     const fastest = Math.min(...data.map(d => d.clip ? Infinity : d.ms));
-    // use power scaling (ms^0.5) for nicer visual distribution
+    // use ghat scaling (ms^0.5) for nicer visual distribution
     const scale = (ms) => Math.pow(ms, 0.5);
     const maxScaled = scale(realMax);
     const minPct = 6; // minimum visible width
