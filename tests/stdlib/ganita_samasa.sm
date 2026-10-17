@@ -1,6 +1,6 @@
-ayojan ganita
+yoj ganita
 mukhya() {
-    pankti out[2]
+    mala out[2]
     samasa(out, 1, 1, 2, 1, 2)
     likha(out[0])
     likha("\n")
