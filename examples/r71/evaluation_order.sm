@@ -1,12 +1,12 @@
 prakriya stamp(a, v) {
     a[0] = a[0] * 10 + v
-    pratiyati v
+    prati v
 }
 prakriya collect(a, b, c) {
-    pratiyati a * 100 + b * 10 + c
+    prati a * 100 + b * 10 + c
 }
 mukhya() {
-    pankti a[1]
+    mala a[1]
     a[0] = 0
     likha(stamp(a, 1) + stamp(a, 2) * stamp(a, 3))
     likha(a[0])
