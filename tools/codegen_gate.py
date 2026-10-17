@@ -3,10 +3,10 @@
 
 This is intentionally outside the compiler/runtime path.  It compiles tiny marked
 programs, slices the raw emitted bytes between yantra sentinels, asks objdump
-tak decode that raw slice, and enforces instruction-count ceilings.
+to decode that raw slice, and enforces instruction-count ceilings.
 
 Usage: python3 tools/codegen_gate.py
-       SUTRAM_COMPILER=/path/tak/compiler python3 tools/codegen_gate.py
+       SUTRAM_COMPILER=/path/to/compiler python3 tools/codegen_gate.py
 """
 from __future__ import annotations
 import os, re, shutil, subprocess, sys, tempfile
@@ -241,7 +241,7 @@ def one(name: str, ceiling: int, require_bottom: bool, source: str, tmp: Path) -
     if name == "float_scalar_call_rhs":
         # The RHS call needs its own argument and register-save stack work,
         # but the scalar LHS must NOT be saved as push rax / pop rdx. This
-        # narrows the accepted transformation tak ABI-safe GPR residency.
+        # narrows the accepted transformation to ABI-safe GPR residency.
         instructions = [(op, operands) for _, op, operands, _ in ins]
         shape_ok = (count <= ceiling and sum(op == "movq" for op, _ in instructions) == 3 and
                     sum(op == "addsd" for op, _ in instructions) == 1 and
