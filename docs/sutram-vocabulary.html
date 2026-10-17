@@ -1,0 +1,441 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sutram — Frozen Vocabulary</title><style>
+ :root{--ink:#1b1917;--mid:#5c554d;--faint:#8b8278;--rule:#e4ded5;--paper:#fbf9f5;
+  --card:#fff;--tint:#f4f0e9;--accent:#b8531a;--ok:#1f7a4d}
+ *{box-sizing:border-box}
+ body{margin:0;background:var(--paper);color:var(--ink);
+  font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans",sans-serif}
+ .wrap{max-width:1020px;margin:0 auto;padding:52px 26px 90px}
+ header{border-bottom:3px solid var(--ink);padding-bottom:22px}
+ .kicker{font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:700}
+ h1{font-size:37px;margin:10px 0 6px;letter-spacing:-.02em}
+ h1 small{display:block;font-size:16px;font-weight:400;color:var(--mid);margin-top:7px}
+ h2{font-size:22px;margin:46px 0 10px}
+ p{max-width:80ch} .lede{color:var(--mid)}
+ .grid{display:grid;gap:13px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin:20px 0}
+ .stat{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:14px 16px}
+ .stat .v{font-size:26px;font-weight:700} .stat .l{font-size:12.5px;color:var(--mid);margin-top:3px}
+ table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+ th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+ th{font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--faint);border-bottom:2px solid var(--rule)}
+ code{background:var(--tint);padding:1.5px 6px;border-radius:4px;font-size:13px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+ td b{color:#7a3d12} .keep{color:var(--faint)}
+ .shesh{background:var(--card);border:1px solid var(--rule);border-radius:9px;padding:14px 16px;margin:12px 0;break-inside:avoid}
+ .shesh h3{margin:0 0 6px;font-size:16px;font-family:ui-monospace,Menlo,monospace}
+ .cnt{font-size:12px;color:var(--faint);font-weight:400;margin-left:6px}
+ .note{background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--accent);
+  border-radius:8px;padding:15px 18px;margin:16px 0}
+ .note ul{margin:6px 0 0;padding-left:20px} .note li{margin-bottom:5px}
+ .ok{background:#e8f5ee;color:var(--ok);font-weight:700;padding:2px 9px;border-radius:20px;font-size:12px}
+ footer{margin-top:56px;padding-top:20px;border-top:2px solid var(--rule);font-size:13.5px;color:var(--mid)}
+</style></head><body><div class="wrap">
+<header><div class="kicker">Frozen Vocabulary · A0</div>
+<h1>Sutram — the Sanskrit vocabulary
+<small>The single source of truth. Every English word, its Sanskrit replacement, and the collision check.</small></h1></header>
+
+<div class="grid">
+ <div class="stat"><div class="v">303</div><div class="l">functions rendered</div></div>
+ <div class="stat"><div class="v">264</div><div class="l">renamed</div></div>
+ <div class="stat"><div class="v">23</div><div class="l">modules</div></div>
+ <div class="stat"><div class="v">14</div><div class="l">keyword changes</div></div>
+ <div class="stat"><div class="v">0</div><div class="l">collisions</div></div>
+</div>
+
+<h2>The rule</h2>
+<p>Two tests, both must pass: <b>easy to remember</b> and <b>easy to type</b> — short, no diacritics,
+no heavy clusters. Accuracy never wins over usability. If a word is correct but hard to type, it loses.</p>
+<p>The aim: someone who reads and writes an Indian language but <b>knows no English at all</b> must be
+able to learn and use this language. Sanskrit is canonical; the 11 packs render each word into Hindi,
+Marathi, Gujarati, Bengali, Punjabi, Odia, Tamil, Telugu, Kannada and Malayalam.</p>
+
+<h2>Modules</h2>
+<table><thead><tr><th>English</th><th>Sanskrit</th><th>Devanagari</th><th>Meaning</th></tr></thead>
+<tbody><tr><td><code>shreni</code></td><td><b>shreni</b></td><td>श्रेणी</td><td>row, order</td></tr>
+<tr><td><code>suchi</code></td><td><b>suchi</b></td><td>सूची</td><td>suchi</td></tr>
+<tr><td><code>nighantu</code></td><td><b>nighantu</b></td><td>निघण्टु</td><td>glossary</td></tr>
+<tr><td><code>sangrah</code></td><td><b>sangrah</b></td><td>संग्रह</td><td>collection</td></tr>
+<tr><td><code>mala</code></td><td><b>mala</b></td><td>माला</td><td>garland, row</td></tr>
+<tr><td><code>varna</code></td><td><b>varna</b></td><td>वर्ण</td><td>letters</td></tr>
+<tr><td><code>patra</code></td><td><b>patra</b></td><td>पत्र</td><td>sheet, document</td></tr>
+<tr><td><code>gudh</code></td><td><b>gudh</b></td><td>गूढ</td><td>hidden</td></tr>
+<tr><td><code>phal</code></td><td><b>phal</b></td><td>फल</td><td>fruit, outcome</td></tr>
+<tr><td><code>roop</code></td><td><b>roop</b></td><td>रूप</td><td>form</td></tr>
+<tr><td><code>sadhan</code></td><td><b>sadhan</b></td><td>साधन</td><td>means, tool</td></tr>
+<tr><td><code>anukram</code></td><td><b>anukram</b></td><td>अनुक्रम</td><td>sequence</td></tr>
+<tr><td><code>brihat</code></td><td><b>brihat</b></td><td>बृहत्</td><td>large</td></tr>
+<tr><td><code>ank</code></td><td><b>ank</b></td><td>अङ्क</td><td>digit</td></tr>
+<tr><td><code>vakyank</code></td><td><b>vakyank</b></td><td>वाक्याङ्क</td><td>text-number</td></tr>
+<tr><td><code>aadhar</code></td><td><b>aadhar</b></td><td>आधार</td><td>base</td></tr>
+<tr><td><code>khand</code></td><td><b>khand</b></td><td>खण्ड</td><td>block</td></tr>
+<tr><td><code>ganit</code></td><td><b>ganit</b></td><td>गणित</td><td>kept — already correct</td></tr>
+<tr><td><code>chandas</code></td><td><b>chandas</b></td><td>छन्दस्</td><td>kept</td></tr>
+<tr><td><code>madhava</code></td><td><b>madhava</b></td><td>माधव</td><td>kept</td></tr>
+<tr><td><code>kalana</code></td><td><b>kalana</b></td><td>कलन</td><td>kept</td></tr>
+<tr><td><code>sankhyiki</code></td><td><b>sankhyiki</b></td><td>सांख्यिकी</td><td>kept</td></tr>
+<tr><td><code>samanvaya</code></td><td><b>samanvaya</b></td><td>समन्वय</td><td>kept</td></tr></tbody></table>
+
+<h2>Keywords, builtins, range</h2>
+<table><thead><tr><th>Concept</th><th>Was</th><th>Becomes</th><th>Devanagari</th></tr></thead>
+<tbody><tr><td><code>mala</code></td><td><code>mala</code></td><td><b>mala</b></td><td>माला</td></tr>
+<tr><td><code>for</code></td><td><code>chakra</code></td><td><b>chakra</b></td><td>चक्र</td></tr>
+<tr><td><code>return</code></td><td><code>prati</code></td><td><b>prati</b></td><td>प्रति</td></tr>
+<tr><td><code>continue</code></td><td><code>agrim</code></td><td><b>agrim</b></td><td>अग्रिम</td></tr>
+<tr><td><code>else</code></td><td><code>anya</code></td><td><b>anya</b></td><td>अन्य</td></tr>
+<tr><td><code>negation</code></td><td><code>abhava</code></td><td><b>abhava</b></td><td>अभाव</td></tr>
+<tr><td><code>boolean</code></td><td><code>satya</code></td><td><b>satya</b></td><td>सत्य</td></tr>
+<tr><td><code>inline asm</code></td><td><code>yantra</code></td><td><b>yantra</b></td><td>यन्त्र</td></tr>
+<tr><td><code>include</code></td><td><code>yoj</code></td><td><b>yoj</b></td><td>योज्</td></tr>
+<tr><td><code>enum</code></td><td><code>ganana</code></td><td><b>ganana</b></td><td>गणना</td></tr>
+<tr><td><code>range 'to'</code></td><td><code>to</code></td><td><b>tak</b></td><td>तक</td></tr>
+<tr><td><code>akshar</code></td><td><code>akshar</code></td><td><b>akshar</b></td><td>अक्षर</td></tr>
+<tr><td><code>aksharank</code></td><td><code>aksharank</code></td><td><b>aksharank</b></td><td>अक्षराङ्क</td></tr>
+<tr><td><code>akshar_rakh</code></td><td><code>akshar_rakh</code></td><td><b>akshar_rakh</b></td><td>अक्षररख</td></tr></tbody></table>
+<p><b>Kept unchanged</b> — already Sanskrit and distinctive: <code>mukhya</code> · <code>vitti</code> · <code>anka</code> · <code>yadi</code> · <code>yavat</code> · <code>purna</code> · <code>shunya</code> · <code>sutra</code> · <code>krama</code> · <code>guna</code> · <code>bhavana</code> · <code>likha</code> · <code>grahan</code> · <code>shabda</code> · <code>dasham</code> · <code>kosh</code> · <code>kuru</code> · <code>prakriya</code> · <code>rachana</code></p>
+
+<h2>Error codes and CLI flags</h2>
+<table><thead><tr><th>Was</th><th>Becomes</th><th>Devanagari</th></tr></thead><tbody><tr><td><code>E_PARSE</code></td><td><b>E_VYAKARAN</b></td><td>व्याकरण</td></tr>
+<tr><td><code>E_UTF8</code></td><td><b>E_LIPI</b></td><td>लिपि</td></tr>
+<tr><td><code>E_UNDEFINED_FUNCTION</code></td><td><b>E_AGYAT</b></td><td>अज्ञात</td></tr>
+<tr><td><code>E_MODULE_CYCLE</code></td><td><b>E_CHAKRA</b></td><td>चक्र</td></tr>
+<tr><td><code>E_UNSAFE_BOUNDARY</code></td><td><b>E_SEEMA</b></td><td>सीमा</td></tr>
+<tr><td><code>E_INTEGER_TRAP</code></td><td><b>E_ANK_DOSH</b></td><td>अङ्कदोष</td></tr></tbody></table>
+<table><thead><tr><th>Was</th><th>Becomes</th><th>Devanagari</th></tr></thead><tbody><tr><td><code>--check</code></td><td><b>--janch</b></td><td>जाँच</td></tr>
+<tr><td><code>--lang</code></td><td><b>--bhasha</b></td><td>भाषा</td></tr>
+<tr><td><code>--version</code></td><td><b>--sanskaran</b></td><td>संस्करण</td></tr></tbody></table>
+
+<h2>The collision check <span class="ok">CLEAN</span></h2>
+<div class="note"><ul>
+<li>Checked every rendered name against all <b>78 reserved words</b> (keywords + builtins + modules) — <b>0 clashes</b>.</li>
+<li>Checked that no two functions render to the same name — <b>0 duplicates</b>.</li>
+<li>One English token maps to exactly one Sanskrit word, so the vocabulary is consistent.</li>
+<li><b>6 duplicates were found and fixed</b> — <code>_impl</code> variants that now drop the suffix, and
+<code>avali_rikta</code>/<code>avali_shunya</code>, which are genuinely two different operations.</li>
+<li>Synonyms that <i>should</i> share a word do so deliberately: <code>byte</code>/<code>bytes</code>,
+<code>copy</code>/<code>dup</code>, <code>push</code>/<code>put</code>, <code>find</code>/<code>search</code>.</li>
+</ul></div>
+
+<h2>All 303 function names</h2>
+<p class="lede">Grey = unchanged (already Sanskrit or a proper name). Dark = renamed.
+Proper names stay: <code>fnv1a</code>, <code>simpson</code>, <code>fib</code>, <code>kuttaka</code>,
+<code>chakravala</code>, <code>samasa</code>, <code>brahmagupta</code> — those are people's names and
+mathematical terms, not English words.</p>
+<section class="shesh"><h3>mala <span class="cnt">8</span></h3>
+<table class="fns"><tbody><tr><td><code>mala_pratilip</code></td><td><b>mala_pratilip</b></td></tr>
+<tr><td><code>mala_purn</code></td><td><b>mala_purn</b></td></tr>
+<tr><td><code>mala_grah</code></td><td><b>mala_grah</b></td></tr>
+<tr><td><code>mala_grah_surakshit</code></td><td><b>mala_grah_surakshit</b></td></tr>
+<tr><td><code>mala_nava</code></td><td><b>mala_nava</b></td></tr>
+<tr><td><code>mala_sangrah</code></td><td><b>mala_sangrah</b></td></tr>
+<tr><td><code>mala_sangrah_surakshit</code></td><td><b>mala_sangrah_surakshit</b></td></tr>
+<tr><td><code>mala_yog</code></td><td><b>mala_yog</b></td></tr></tbody></table></section><section class="shesh"><h3>aadhar <span class="cnt">2</span></h3>
+<table class="fns"><tbody><tr><td><code>brihat_ank_se</code></td><td><b>brihat_ank_se</b></td></tr>
+<tr><td><code>brihat_ank_tak</code></td><td><b>brihat_ank_tak</b></td></tr></tbody></table></section><section class="shesh"><h3>brihat <span class="cnt">12</span></h3>
+<table class="fns"><tbody><tr><td><code>brihat_yuj</code></td><td><b>brihat_yuj</b></td></tr>
+<tr><td><code>brihat_tul</code></td><td><b>brihat_tul</b></td></tr>
+<tr><td><code>brihat_pratilip</code></td><td><b>brihat_pratilip</b></td></tr>
+<tr><td><code>brihat_bhajshesh</code></td><td><b>brihat_bhajshesh</b></td></tr>
+<tr><td><code>brihat_ank_se_int</code></td><td><b>brihat_ank_se_int</b></td></tr>
+<tr><td><code>brihat_asti_shunyank</code></td><td><b>brihat_asti_shunyank</b></td></tr>
+<tr><td><code>brihat_shesh</code></td><td><b>brihat_shesh</b></td></tr>
+<tr><td><code>brihat_gun</code></td><td><b>brihat_gun</b></td></tr>
+<tr><td><code>brihat_ghatmod</code></td><td><b>brihat_ghatmod</b></td></tr>
+<tr><td><code>brihat_nyun</code></td><td><b>brihat_nyun</b></td></tr>
+<tr><td><code>brihat_ank_tak_int</code></td><td><b>brihat_ank_tak_int</b></td></tr>
+<tr><td><code>brihat_shunyank</code></td><td><b>brihat_shunyank</b></td></tr></tbody></table></section><section class="shesh"><h3>chandas <span class="cnt">6</span></h3>
+<table class="fns"><tbody><tr><td><code>dviguna</code></td><td><span class=keep>dviguna</span></td></tr>
+<tr><td><code>guru_gan</code></td><td><b>guru_gan</b></td></tr>
+<tr><td><code>asti_guru</code></td><td><b>asti_guru</b></td></tr>
+<tr><td><code>matra_meru</code></td><td><span class=keep>matra_meru</span></td></tr>
+<tr><td><code>meru</code></td><td><span class=keep>meru</span></td></tr>
+<tr><td><code>meru_pankti</code></td><td><span class=keep>meru_pankti</span></td></tr></tbody></table></section><section class="shesh"><h3>patra <span class="cnt">3</span></h3>
+<table class="fns"><tbody><tr><td><code>patra_asti</code></td><td><b>patra_asti</b></td></tr>
+<tr><td><code>patra_path_sarv</code></td><td><b>patra_path_sarv</b></td></tr>
+<tr><td><code>patra_likh_sarv</code></td><td><b>patra_likh_sarv</b></td></tr></tbody></table></section><section class="shesh"><h3>roop <span class="cnt">23</span></h3>
+<table class="fns"><tbody><tr><td><code>roop_dwi</code></td><td><b>roop_dwi</b></td></tr>
+<tr><td><code>roop_dash</code></td><td><b>roop_dash</b></td></tr>
+<tr><td><code>roop_ank</code></td><td><b>roop_ank</b></td></tr>
+<tr><td><code>roop_ank_aadhar</code></td><td><b>roop_ank_aadhar</b></td></tr>
+<tr><td><code>roop_sthir</code></td><td><b>roop_sthir</b></td></tr>
+<tr><td><code>roop_sthir_mool</code></td><td><b>roop_sthir_mool</b></td></tr>
+<tr><td><code>roop_sthir_chinhit</code></td><td><b>roop_sthir_chinhit</b></td></tr>
+<tr><td><code>roop_varg</code></td><td><b>roop_varg</b></td></tr>
+<tr><td><code>roop_varg_mool</code></td><td><b>roop_varg_mool</b></td></tr>
+<tr><td><code>roop_varg_bharatiya</code></td><td><b>roop_varg_bharatiya</b></td></tr>
+<tr><td><code>roop_varg_ank</code></td><td><b>roop_varg_ank</b></td></tr>
+<tr><td><code>roop_varg_vishwa</code></td><td><b>roop_varg_vishwa</b></td></tr>
+<tr><td><code>roop_shodash</code></td><td><b>roop_shodash</b></td></tr>
+<tr><td><code>roop_shodash_unnat</code></td><td><b>roop_shodash_unnat</b></td></tr>
+<tr><td><code>roop_ank_aadhar2</code></td><td><b>roop_ank_aadhar2</b></td></tr>
+<tr><td><code>roop_ank_dhvaj</code></td><td><b>roop_ank_dhvaj</b></td></tr>
+<tr><td><code>roop_ank_pre</code></td><td><b>roop_ank_pre</b></td></tr>
+<tr><td><code>roop_asht</code></td><td><b>roop_asht</b></td></tr>
+<tr><td><code>roop_pad_madhya</code></td><td><b>roop_pad_madhya</b></td></tr>
+<tr><td><code>roop_pad_vam</code></td><td><b>roop_pad_vam</b></td></tr>
+<tr><td><code>roop_pad_dakshin</code></td><td><b>roop_pad_dakshin</b></td></tr>
+<tr><td><code>roop_sign_akshar</code></td><td><b>roop_sign_akshar</b></td></tr>
+<tr><td><code>roop_chinhit</code></td><td><b>roop_chinhit</b></td></tr></tbody></table></section><section class="shesh"><h3>ganita <span class="cnt">22</span></h3>
+<table class="fns"><tbody><tr><td><code>brahmagupta_kshetr</code></td><td><b>brahmagupta_kshetr</b></td></tr>
+<tr><td><code>chakravala</code></td><td><span class=keep>chakravala</span></td></tr>
+<tr><td><code>ganita_nirapeksh</code></td><td><b>ganita_nirapeksh</b></td></tr>
+<tr><td><code>ganita_janchit_nirapeksh</code></td><td><b>ganita_janchit_nirapeksh</b></td></tr>
+<tr><td><code>ganita_janchit_yuj</code></td><td><b>ganita_janchit_yuj</b></td></tr>
+<tr><td><code>ganita_janchit_bhaj</code></td><td><b>ganita_janchit_bhaj</b></td></tr>
+<tr><td><code>ganita_janchit_kramgun</code></td><td><b>ganita_janchit_kramgun</b></td></tr>
+<tr><td><code>ganita_janchit_shesh</code></td><td><b>ganita_janchit_shesh</b></td></tr>
+<tr><td><code>ganita_janchit_gun</code></td><td><b>ganita_janchit_gun</b></td></tr>
+<tr><td><code>ganita_janchit_ghat</code></td><td><b>ganita_janchit_ghat</b></td></tr>
+<tr><td><code>ganita_janchit_nyun</code></td><td><b>ganita_janchit_nyun</b></td></tr>
+<tr><td><code>ganita_vargmool</code></td><td><b>ganita_vargmool</b></td></tr>
+<tr><td><code>ganita_paripurna_nirapeksh</code></td><td><b>ganita_paripurna_nirapeksh</b></td></tr>
+<tr><td><code>ganita_paripurna_yuj</code></td><td><b>ganita_paripurna_yuj</b></td></tr>
+<tr><td><code>ganita_paripurna_bhaj</code></td><td><b>ganita_paripurna_bhaj</b></td></tr>
+<tr><td><code>ganita_paripurna_kramgun</code></td><td><b>ganita_paripurna_kramgun</b></td></tr>
+<tr><td><code>ganita_paripurna_shesh</code></td><td><b>ganita_paripurna_shesh</b></td></tr>
+<tr><td><code>ganita_paripurna_gun</code></td><td><b>ganita_paripurna_gun</b></td></tr>
+<tr><td><code>ganita_paripurna_ghat</code></td><td><b>ganita_paripurna_ghat</b></td></tr>
+<tr><td><code>ganita_paripurna_nyun</code></td><td><b>ganita_paripurna_nyun</b></td></tr>
+<tr><td><code>kuttaka</code></td><td><span class=keep>kuttaka</span></td></tr>
+<tr><td><code>samasa</code></td><td><span class=keep>samasa</span></td></tr></tbody></table></section><section class="shesh"><h3>gudh <span class="cnt">2</span></h3>
+<table class="fns"><tbody><tr><td><code>fnv1a</code></td><td><span class=keep>fnv1a</span></td></tr>
+<tr><td><code>fnv1a_varna</code></td><td><b>fnv1a_varna</b></td></tr></tbody></table></section><section class="shesh"><h3>kalana <span class="cnt">6</span></h3>
+<table class="fns"><tbody><tr><td><code>bahu_ganana</code></td><td><span class=keep>bahu_ganana</span></td></tr>
+<tr><td><code>bahu_mula</code></td><td><span class=keep>bahu_mula</span></td></tr>
+<tr><td><code>simpson</code></td><td><span class=keep>simpson</span></td></tr>
+<tr><td><code>pravan</code></td><td><b>pravan</b></td></tr>
+<tr><td><code>pravan2</code></td><td><b>pravan2</b></td></tr>
+<tr><td><code>kalana_trapiz</code></td><td><b>kalana_trapiz</b></td></tr></tbody></table></section><section class="shesh"><h3>suchi <span class="cnt">34</span></h3>
+<table class="fns"><tbody><tr><td><code>suchi_dwi_anwesh</code></td><td><b>suchi_dwi_anwesh</b></td></tr>
+<tr><td><code>suchi_rikta</code></td><td><b>suchi_rikta</b></td></tr>
+<tr><td><code>suchi_antah</code></td><td><b>suchi_antah</b></td></tr>
+<tr><td><code>suchi_gan</code></td><td><b>suchi_gan</b></td></tr>
+<tr><td><code>suchi_anwesh</code></td><td><b>suchi_anwesh</b></td></tr>
+<tr><td><code>suchi_grah</code></td><td><b>suchi_grah</b></td></tr>
+<tr><td><code>suchi_vardh</code></td><td><b>suchi_vardh</b></td></tr>
+<tr><td><code>suchi_kramank</code></td><td><b>suchi_kramank</b></td></tr>
+<tr><td><code>suchi_srij</code></td><td><b>suchi_srij</b></td></tr>
+<tr><td><code>suchi_nivesh</code></td><td><b>suchi_nivesh</b></td></tr>
+<tr><td><code>suchi_asti_sorted</code></td><td><b>suchi_asti_sorted</b></td></tr>
+<tr><td><code>suchi_maap</code></td><td><b>suchi_maap</b></td></tr>
+<tr><td><code>suchi_adhik</code></td><td><b>suchi_adhik</b></td></tr>
+<tr><td><code>suchi_laghu</code></td><td><b>suchi_laghu</b></td></tr>
+<tr><td><code>suchi_khip</code></td><td><b>suchi_khip</b></td></tr>
+<tr><td><code>suchi_apanay</code></td><td><b>suchi_apanay</b></td></tr>
+<tr><td><code>suchi_viparyay</code></td><td><b>suchi_viparyay</b></td></tr>
+<tr><td><code>suchi_sangrah</code></td><td><b>suchi_sangrah</b></td></tr>
+<tr><td><code>suchi_shreni</code></td><td><b>suchi_shreni</b></td></tr>
+<tr><td><code>suchi_yog</code></td><td><b>suchi_yog</b></td></tr>
+<tr><td><code>suchi_vinimay</code></td><td><b>suchi_vinimay</b></td></tr>
+<tr><td><code>avali_rikta</code></td><td><b>avali_rikta</b></td></tr>
+<tr><td><code>avali_antah</code></td><td><b>avali_antah</b></td></tr>
+<tr><td><code>avali_nishkas</code></td><td><b>avali_nishkas</b></td></tr>
+<tr><td><code>avali_shunya</code></td><td><b>avali_shunya</b></td></tr>
+<tr><td><code>avali_pravesh</code></td><td><b>avali_pravesh</b></td></tr>
+<tr><td><code>avali_srij</code></td><td><b>avali_srij</b></td></tr>
+<tr><td><code>avali_maap</code></td><td><b>avali_maap</b></td></tr>
+<tr><td><code>avali_avalok</code></td><td><b>avali_avalok</b></td></tr>
+<tr><td><code>avali_tak_mala</code></td><td><b>avali_tak_mala</b></td></tr>
+<tr><td><code>chay_rikta</code></td><td><b>chay_rikta</b></td></tr>
+<tr><td><code>chay_avalok</code></td><td><b>chay_avalok</b></td></tr>
+<tr><td><code>chay_apanay</code></td><td><b>chay_apanay</b></td></tr>
+<tr><td><code>chay_khip</code></td><td><b>chay_khip</b></td></tr></tbody></table></section><section class="shesh"><h3>madhava <span class="cnt">5</span></h3>
+<table class="fns"><tbody><tr><td><code>madhava_atan</code></td><td><span class=keep>madhava_atan</span></td></tr>
+<tr><td><code>madhava_cos</code></td><td><span class=keep>madhava_cos</span></td></tr>
+<tr><td><code>madhava_pi</code></td><td><span class=keep>madhava_pi</span></td></tr>
+<tr><td><code>madhava_sin</code></td><td><span class=keep>madhava_sin</span></td></tr>
+<tr><td><code>madhava_vargmool</code></td><td><b>madhava_vargmool</b></td></tr></tbody></table></section><section class="shesh"><h3>nighantu <span class="cnt">17</span></h3>
+<table class="fns"><tbody><tr><td><code>nighantu_rikta</code></td><td><b>nighantu_rikta</b></td></tr>
+<tr><td><code>nighantu_antah</code></td><td><b>nighantu_antah</b></td></tr>
+<tr><td><code>nighantu_anwesh</code></td><td><b>nighantu_anwesh</b></td></tr>
+<tr><td><code>nighantu_grah</code></td><td><b>nighantu_grah</b></td></tr>
+<tr><td><code>nighantu_grah_mool</code></td><td><b>nighantu_grah_mool</b></td></tr>
+<tr><td><code>nighantu_srij</code></td><td><b>nighantu_srij</b></td></tr>
+<tr><td><code>nighantu_kunji_sam</code></td><td><b>nighantu_kunji_sam</b></td></tr>
+<tr><td><code>nighantu_kunji_gudh</code></td><td><b>nighantu_kunji_gudh</b></td></tr>
+<tr><td><code>nighantu_kunjika</code></td><td><b>nighantu_kunjika</b></td></tr>
+<tr><td><code>nighantu_kunjika_ashtak</code></td><td><b>nighantu_kunjika_ashtak</b></td></tr>
+<tr><td><code>nighantu_mil</code></td><td><b>nighantu_mil</b></td></tr>
+<tr><td><code>nighantu_khip</code></td><td><b>nighantu_khip</b></td></tr>
+<tr><td><code>nighantu_apanay</code></td><td><b>nighantu_apanay</b></td></tr>
+<tr><td><code>nighantu_vardh</code></td><td><b>nighantu_vardh</b></td></tr>
+<tr><td><code>nighantu_maap</code></td><td><b>nighantu_maap</b></td></tr>
+<tr><td><code>nighantu_koshtha_likh</code></td><td><b>nighantu_koshtha_likh</b></td></tr>
+<tr><td><code>nighantu_mulya</code></td><td><b>nighantu_mulya</b></td></tr></tbody></table></section><section class="shesh"><h3>ganit <span class="cnt">18</span></h3>
+<table class="fns"><tbody><tr><td><code>nirapeksh_mulya</code></td><td><b>nirapeksh_mulya</b></td></tr>
+<tr><td><code>bit_gan</code></td><td><b>bit_gan</b></td></tr>
+<tr><td><code>ghan</code></td><td><b>ghan</b></td></tr>
+<tr><td><code>dvigun</code></td><td><b>dvigun</b></td></tr>
+<tr><td><code>kramgun</code></td><td><b>kramgun</b></td></tr>
+<tr><td><code>mahattam</code></td><td><b>mahattam</b></td></tr>
+<tr><td><code>vardh</code></td><td><b>vardh</b></td></tr>
+<tr><td><code>asti_abhajya</code></td><td><b>asti_abhajya</b></td></tr>
+<tr><td><code>laghuttam</code></td><td><b>laghuttam</b></td></tr>
+<tr><td><code>ganit_seemit</code></td><td><b>ganit_seemit</b></td></tr>
+<tr><td><code>ganit_yadricch</code></td><td><b>ganit_yadricch</b></td></tr>
+<tr><td><code>adhik2</code></td><td><b>adhik2</b></td></tr>
+<tr><td><code>laghu2</code></td><td><b>laghu2</b></td></tr>
+<tr><td><code>ghat</code></td><td><b>ghat</b></td></tr>
+<tr><td><code>varg</code></td><td><b>varg</b></td></tr>
+<tr><td><code>vargit</code></td><td><b>vargit</b></td></tr>
+<tr><td><code>yog_tak</code></td><td><b>yog_tak</b></td></tr>
+<tr><td><code>trigun</code></td><td><b>trigun</b></td></tr></tbody></table></section><section class="shesh"><h3>ank <span class="cnt">10</span></h3>
+<table class="fns"><tbody><tr><td><code>seemit</code></td><td><b>seemit</b></td></tr>
+<tr><td><code>collatz_charan</code></td><td><b>collatz_charan</b></td></tr>
+<tr><td><code>ank_gan</code></td><td><b>ank_gan</b></td></tr>
+<tr><td><code>ank_yog</code></td><td><b>ank_yog</b></td></tr>
+<tr><td><code>fib</code></td><td><span class=keep>fib</span></td></tr>
+<tr><td><code>asti_yugm</code></td><td><b>asti_yugm</b></td></tr>
+<tr><td><code>asti_visham</code></td><td><b>asti_visham</b></td></tr>
+<tr><td><code>asti_vilom</code></td><td><b>asti_vilom</b></td></tr>
+<tr><td><code>asti_sampurna</code></td><td><b>asti_sampurna</b></td></tr>
+<tr><td><code>viparyay_ank</code></td><td><b>viparyay_ank</b></td></tr></tbody></table></section><section class="shesh"><h3>phal <span class="cnt">14</span></h3>
+<table class="fns"><tbody><tr><td><code>phal_janchit_nirapeksh</code></td><td><b>phal_janchit_nirapeksh</b></td></tr>
+<tr><td><code>phal_janchit_yuj</code></td><td><b>phal_janchit_yuj</b></td></tr>
+<tr><td><code>phal_janchit_bhaj</code></td><td><b>phal_janchit_bhaj</b></td></tr>
+<tr><td><code>phal_janchit_kramgun</code></td><td><b>phal_janchit_kramgun</b></td></tr>
+<tr><td><code>phal_janchit_shesh</code></td><td><b>phal_janchit_shesh</b></td></tr>
+<tr><td><code>phal_janchit_gun</code></td><td><b>phal_janchit_gun</b></td></tr>
+<tr><td><code>phal_janchit_ghat</code></td><td><b>phal_janchit_ghat</b></td></tr>
+<tr><td><code>phal_janchit_nyun</code></td><td><b>phal_janchit_nyun</b></td></tr>
+<tr><td><code>phal_dosh</code></td><td><b>phal_dosh</b></td></tr>
+<tr><td><code>phal_se_siddhi</code></td><td><b>phal_se_siddhi</b></td></tr>
+<tr><td><code>phal_asti_siddhi</code></td><td><b>phal_asti_siddhi</b></td></tr>
+<tr><td><code>phal_siddhi</code></td><td><b>phal_siddhi</b></td></tr>
+<tr><td><code>phal_mulya</code></td><td><b>phal_mulya</b></td></tr>
+<tr><td><code>phal_mulya_va</code></td><td><b>phal_mulya_va</b></td></tr></tbody></table></section><section class="shesh"><h3>samanvaya <span class="cnt">10</span></h3>
+<table class="fns"><tbody><tr><td><code>matrika_gunana</code></td><td><b>matrika_gunana</b></td></tr>
+<tr><td><code>matrika_yoga</code></td><td><b>matrika_yoga</b></td></tr>
+<tr><td><code>nirnaya2</code></td><td><span class=keep>nirnaya2</span></td></tr>
+<tr><td><code>nirnaya3</code></td><td><span class=keep>nirnaya3</span></td></tr>
+<tr><td><code>nishan</code></td><td><span class=keep>nishan</span></td></tr>
+<tr><td><code>pehchan</code></td><td><span class=keep>pehchan</span></td></tr>
+<tr><td><code>rekha_manak</code></td><td><span class=keep>rekha_manak</span></td></tr>
+<tr><td><code>sadish_yoga</code></td><td><span class=keep>sadish_yoga</span></td></tr>
+<tr><td><code>skalar</code></td><td><span class=keep>skalar</span></td></tr>
+<tr><td><code>vivartana</code></td><td><span class=keep>vivartana</span></td></tr></tbody></table></section><section class="shesh"><h3>sankhyiki <span class="cnt">16</span></h3>
+<table class="fns"><tbody><tr><td><code>adhikatama</code></td><td><span class=keep>adhikatama</span></td></tr>
+<tr><td><code>bindu</code></td><td><span class=keep>bindu</span></td></tr>
+<tr><td><code>laghutama</code></td><td><span class=keep>laghutama</span></td></tr>
+<tr><td><code>madhya</code></td><td><span class=keep>madhya</span></td></tr>
+<tr><td><code>manak</code></td><td><span class=keep>manak</span></td></tr>
+<tr><td><code>prasaran</code></td><td><span class=keep>prasaran</span></td></tr>
+<tr><td><code>purna_adhikatama</code></td><td><span class=keep>purna_adhikatama</span></td></tr>
+<tr><td><code>purna_laghutama</code></td><td><span class=keep>purna_laghutama</span></td></tr>
+<tr><td><code>purna_madhya</code></td><td><span class=keep>purna_madhya</span></td></tr>
+<tr><td><code>purna_prasaran</code></td><td><span class=keep>purna_prasaran</span></td></tr>
+<tr><td><code>purna_vyapti</code></td><td><span class=keep>purna_vyapti</span></td></tr>
+<tr><td><code>purna_yoga</code></td><td><span class=keep>purna_yoga</span></td></tr>
+<tr><td><code>sankhyiki_vargmool</code></td><td><b>sankhyiki_vargmool</b></td></tr>
+<tr><td><code>vichalan</code></td><td><span class=keep>vichalan</span></td></tr>
+<tr><td><code>vyapti</code></td><td><span class=keep>vyapti</span></td></tr>
+<tr><td><code>yoga</code></td><td><span class=keep>yoga</span></td></tr></tbody></table></section><section class="shesh"><h3>anukram <span class="cnt">5</span></h3>
+<table class="fns"><tbody><tr><td><code>anukram_grah_ashtak</code></td><td><b>anukram_grah_ashtak</b></td></tr>
+<tr><td><code>anukram_grah_i64</code></td><td><b>anukram_grah_i64</b></td></tr>
+<tr><td><code>anukram_maap_ashtak</code></td><td><b>anukram_maap_ashtak</b></td></tr>
+<tr><td><code>anukram_khip_ashtak</code></td><td><b>anukram_khip_ashtak</b></td></tr>
+<tr><td><code>anukram_khip_i64</code></td><td><b>anukram_khip_i64</b></td></tr></tbody></table></section><section class="shesh"><h3>sangrah <span class="cnt">14</span></h3>
+<table class="fns"><tbody><tr><td><code>rakh_yuj</code></td><td><b>rakh_yuj</b></td></tr>
+<tr><td><code>rakh_rikta</code></td><td><b>rakh_rikta</b></td></tr>
+<tr><td><code>rakh_antah</code></td><td><b>rakh_antah</b></td></tr>
+<tr><td><code>rakh_bhed</code></td><td><b>rakh_bhed</b></td></tr>
+<tr><td><code>rakh_sam</code></td><td><b>rakh_sam</b></td></tr>
+<tr><td><code>rakh_srij</code></td><td><b>rakh_srij</b></td></tr>
+<tr><td><code>rakh_sampat</code></td><td><b>rakh_sampat</b></td></tr>
+<tr><td><code>rakh_asti_upasamuh</code></td><td><b>rakh_asti_upasamuh</b></td></tr>
+<tr><td><code>rakh_apanay</code></td><td><b>rakh_apanay</b></td></tr>
+<tr><td><code>rakh_vardh</code></td><td><b>rakh_vardh</b></td></tr>
+<tr><td><code>rakh_maap</code></td><td><b>rakh_maap</b></td></tr>
+<tr><td><code>rakh_samroop_diff</code></td><td><b>rakh_samroop_diff</b></td></tr>
+<tr><td><code>rakh_tak_mala</code></td><td><b>rakh_tak_mala</b></td></tr>
+<tr><td><code>rakh_sangam</code></td><td><b>rakh_sangam</b></td></tr></tbody></table></section><section class="shesh"><h3>shreni <span class="cnt">14</span></h3>
+<table class="fns"><tbody><tr><td><code>dwi_anwesh</code></td><td><b>dwi_anwesh</b></td></tr>
+<tr><td><code>budbud_shreni</code></td><td><b>budbud_shreni</b></td></tr>
+<tr><td><code>gan</code></td><td><b>gan</b></td></tr>
+<tr><td><code>anwesh_sarak</code></td><td><b>anwesh_sarak</b></td></tr>
+<tr><td><code>nivesh_shreni</code></td><td><b>nivesh_shreni</b></td></tr>
+<tr><td><code>asti_sorted</code></td><td><b>asti_sorted</b></td></tr>
+<tr><td><code>adhik</code></td><td><b>adhik</b></td></tr>
+<tr><td><code>mil_shreni</code></td><td><b>mil_shreni</b></td></tr>
+<tr><td><code>mil_shreni_punar</code></td><td><b>mil_shreni_punar</b></td></tr>
+<tr><td><code>laghu</code></td><td><b>laghu</b></td></tr>
+<tr><td><code>viparyay_mala</code></td><td><b>viparyay_mala</b></td></tr>
+<tr><td><code>shankh_shreni</code></td><td><b>shankh_shreni</b></td></tr>
+<tr><td><code>yog</code></td><td><b>yog</b></td></tr>
+<tr><td><code>vinimay</code></td><td><b>vinimay</b></td></tr></tbody></table></section><section class="shesh"><h3>khand <span class="cnt">22</span></h3>
+<table class="fns"><tbody><tr><td><code>khand_tul</code></td><td><b>khand_tul</b></td></tr>
+<tr><td><code>khand_antah</code></td><td><b>khand_antah</b></td></tr>
+<tr><td><code>khand_gan</code></td><td><b>khand_gan</b></td></tr>
+<tr><td><code>khand_gan_akshar</code></td><td><b>khand_gan_akshar</b></td></tr>
+<tr><td><code>khand_gan_swar</code></td><td><b>khand_gan_swar</b></td></tr>
+<tr><td><code>khand_pratilip</code></td><td><b>khand_pratilip</b></td></tr>
+<tr><td><code>khand_ant</code></td><td><b>khand_ant</b></td></tr>
+<tr><td><code>khand_sam</code></td><td><b>khand_sam</b></td></tr>
+<tr><td><code>khand_anwesh</code></td><td><b>khand_anwesh</b></td></tr>
+<tr><td><code>khand_anwesh_akshar</code></td><td><b>khand_anwesh_akshar</b></td></tr>
+<tr><td><code>khand_asti_sarv_ank</code></td><td><b>khand_asti_sarv_ank</b></td></tr>
+<tr><td><code>khand_yuj</code></td><td><b>khand_yuj</b></td></tr>
+<tr><td><code>khand_maap</code></td><td><b>khand_maap</b></td></tr>
+<tr><td><code>khand_avanat</code></td><td><b>khand_avanat</b></td></tr>
+<tr><td><code>khand_bandh</code></td><td><b>khand_bandh</b></td></tr>
+<tr><td><code>khand_pratisthap</code></td><td><b>khand_pratisthap</b></td></tr>
+<tr><td><code>khand_viparyay</code></td><td><b>khand_viparyay</b></td></tr>
+<tr><td><code>khand_bhed</code></td><td><b>khand_bhed</b></td></tr>
+<tr><td><code>khand_aadi</code></td><td><b>khand_aadi</b></td></tr>
+<tr><td><code>khand_chhid</code></td><td><b>khand_chhid</b></td></tr>
+<tr><td><code>khand_mukt</code></td><td><b>khand_mukt</b></td></tr>
+<tr><td><code>khand_unnat</code></td><td><b>khand_unnat</b></td></tr></tbody></table></section><section class="shesh"><h3>vakyank <span class="cnt">6</span></h3>
+<table class="fns"><tbody><tr><td><code>ank_tak_aadhar_varna</code></td><td><b>ank_tak_aadhar_varna</b></td></tr>
+<tr><td><code>ank_tak_varna</code></td><td><b>ank_tak_varna</b></td></tr>
+<tr><td><code>pad_vam</code></td><td><b>pad_vam</b></td></tr>
+<tr><td><code>varna_tak_dashm</code></td><td><b>varna_tak_dashm</b></td></tr>
+<tr><td><code>varna_tak_ank</code></td><td><b>varna_tak_ank</b></td></tr>
+<tr><td><code>varna_tak_ank_aadhar</code></td><td><b>varna_tak_ank_aadhar</b></td></tr></tbody></table></section><section class="shesh"><h3>varna <span class="cnt">27</span></h3>
+<table class="fns"><tbody><tr><td><code>akshar_sanket</code></td><td><b>akshar_sanket</b></td></tr>
+<tr><td><code>gan_akshar</code></td><td><b>gan_akshar</b></td></tr>
+<tr><td><code>gan_swar</code></td><td><b>gan_swar</b></td></tr>
+<tr><td><code>anwesh_akshar</code></td><td><b>anwesh_akshar</b></td></tr>
+<tr><td><code>asti_sarv_ank</code></td><td><b>asti_sarv_ank</b></td></tr>
+<tr><td><code>asti_ank_akshar</code></td><td><b>asti_ank_akshar</b></td></tr>
+<tr><td><code>asti_akshar_akshar</code></td><td><b>asti_akshar_akshar</b></td></tr>
+<tr><td><code>asti_avanat_akshar</code></td><td><b>asti_avanat_akshar</b></td></tr>
+<tr><td><code>asti_avakash_akshar</code></td><td><b>asti_avakash_akshar</b></td></tr>
+<tr><td><code>asti_unnat_akshar</code></td><td><b>asti_unnat_akshar</b></td></tr>
+<tr><td><code>avanat_sanket</code></td><td><b>avanat_sanket</b></td></tr>
+<tr><td><code>varna_tul</code></td><td><b>varna_tul</b></td></tr>
+<tr><td><code>varna_antah</code></td><td><b>varna_antah</b></td></tr>
+<tr><td><code>varna_gan</code></td><td><b>varna_gan</b></td></tr>
+<tr><td><code>varna_ant</code></td><td><b>varna_ant</b></td></tr>
+<tr><td><code>varna_sam</code></td><td><b>varna_sam</b></td></tr>
+<tr><td><code>varna_anwesh</code></td><td><b>varna_anwesh</b></td></tr>
+<tr><td><code>varna_yuj</code></td><td><b>varna_yuj</b></td></tr>
+<tr><td><code>varna_maap</code></td><td><b>varna_maap</b></td></tr>
+<tr><td><code>varna_avanat</code></td><td><b>varna_avanat</b></td></tr>
+<tr><td><code>varna_pratisthap</code></td><td><b>varna_pratisthap</b></td></tr>
+<tr><td><code>varna_viparyay</code></td><td><b>varna_viparyay</b></td></tr>
+<tr><td><code>varna_bhed</code></td><td><b>varna_bhed</b></td></tr>
+<tr><td><code>varna_aadi</code></td><td><b>varna_aadi</b></td></tr>
+<tr><td><code>varna_chhid</code></td><td><b>varna_chhid</b></td></tr>
+<tr><td><code>varna_unnat</code></td><td><b>varna_unnat</b></td></tr>
+<tr><td><code>unnat_sanket</code></td><td><b>unnat_sanket</b></td></tr></tbody></table></section><section class="shesh"><h3>sadhan <span class="cnt">7</span></h3>
+<table class="fns"><tbody><tr><td><code>satya_tak_ank</code></td><td><b>satya_tak_ank</b></td></tr>
+<tr><td><code>bhaj_urdhva</code></td><td><b>bhaj_urdhva</b></td></tr>
+<tr><td><code>ank_adhik</code></td><td><b>ank_adhik</b></td></tr>
+<tr><td><code>antargam</code></td><td><b>antargam</b></td></tr>
+<tr><td><code>shesh</code></td><td><b>shesh</b></td></tr>
+<tr><td><code>util_chinha</code></td><td><b>util_chinha</b></td></tr>
+<tr><td><code>yog_seema</code></td><td><b>yog_seema</b></td></tr></tbody></table></section>
+
+<h2>What this does not yet cover</h2>
+<div class="note"><ul>
+<li><b>The 11 packs are not updated.</b> This document fixes the Sanskrit; rendering into the other
+ten languages is A1.</li>
+<li><b>It is a breaking change.</b> 207 examples, every golden test and the six books carry the old names.</li>
+<li><b>Staging matters.</b> Modules and packs first, function names next, keywords last — keywords break
+every program ever written.</li>
+<li><b>Migration is undecided.</b> Either a compatibility alias layer or a one-time conversion sweep.</li>
+</ul></div>
+
+<footer><p><b>Sutram frozen vocabulary</b> — 303 functions across 23 modules, 264 renamed,
+0 collisions. Built from the real library source, not transcribed.</p></footer>
+</div></body></html>
