@@ -1,4 +1,4 @@
-ayojan samanvaya
+yoj samanvaya
 mukhya() {
     kosh dasham a[4]
     kosh_push(a, 1.0)
@@ -15,7 +15,7 @@ mukhya() {
     kosh_push(out, 0.0)
     kosh_push(out, 0.0)
     kosh_push(out, 0.0)
-    likha(mat_gunana(a, b, 2, 2, 2, out))
+    likha(matrika_gunana(a, b, 2, 2, 2, out))
     likha("\n")
     likha(out[0])
     likha("\n")
