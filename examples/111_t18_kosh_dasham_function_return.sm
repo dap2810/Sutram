@@ -2,13 +2,13 @@
 prakriya last_value() {
     kosh dasham values[1]
     kosh_push(values, 2.5)
-    pratiyati kosh_pop(values)
+    prati kosh_pop(values)
 }
 
 prakriya indexed_value() {
     kosh dasham values[1]
     kosh_push(values, 1.25)
-    pratiyati values[0]
+    prati values[0]
 }
 
 mukhya() {
