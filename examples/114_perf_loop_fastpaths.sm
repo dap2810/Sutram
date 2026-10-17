@@ -8,7 +8,7 @@ mukhya()
         i = i + 1
     }
     likha(s)
-    punaravartana j = 0 to n {
+    chakra j = 0 tak n {
         s = s + 1
     }
     likha(s)
