@@ -1,10 +1,10 @@
 # Index expression is effectful: the compiler must preserve evaluation order.
 prakriya mutate_index(kosh dasham arr) {
     arr[0] = 9.0
-    pratiyati 0
+    prati 0
 }
 prakriya read_after(kosh dasham arr) {
-    pratiyati arr[0]
+    prati arr[0]
 }
 mukhya() {
     kosh dasham arr[1]
