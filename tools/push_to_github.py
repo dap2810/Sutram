@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Push the Sutram tree tak GitHub in bounded batches, tracking progress on disk.
+"""Push the Sutram tree to GitHub in bounded batches, tracking progress on disk.
 
 Usage: python3 tools/push_to_github.py <batch_index> <batch_size>
 
-Progress is appended tak /scratch/work/.gh-pushed so a later batch skips files
+Progress is appended to /scratch/work/.gh-pushed so a later batch skips files
 already uploaded and a timeout never loses track.
 """
 import asyncio, os, sys, json
