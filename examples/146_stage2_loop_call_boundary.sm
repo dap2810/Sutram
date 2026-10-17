@@ -1,7 +1,7 @@
 # Stage 2 acceptance: a loop crosses repeated prakriya calls, then reuses floats.
 # A caller's XMM2-5 cache must never trust call-clobbered volatile registers.
 prakriya scale(dasham x) {
-    pratiyati x * 1.25
+    prati x * 1.25
 }
 mukhya() {
     dasham a = 1.0
