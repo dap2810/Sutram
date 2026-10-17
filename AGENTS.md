@@ -2,15 +2,15 @@
 
 ## Read this first
 
-**`PROJECT-MASTER.md`** is the single patra tak read before touching anything: what Sutram is, the
+**`PROJECT-MASTER.md`** is the single file to read before touching anything: what Sutram is, the
 main goal, the philosophy, the nine paradigms, the twenty design parameters with honest status,
-the history, how the project is built, the hard constraints, what is *not* true yet, and how tak
+the history, how the project is built, the hard constraints, what is *not* true yet, and how to
 work on it.
 
 Then read **`docs/sutram-design-parameters.html`** — the design charter.
 
 
-These instructions apply tak every automated coding assistant working in this repository, including ChatGPT, Sarvam and additional collaborators.
+These instructions apply to every automated coding assistant working in this repository, including ChatGPT, Sarvam and additional collaborators.
 
 ## Mandatory GitHub Actions notification safeguard
 
@@ -21,7 +21,7 @@ These instructions apply tak every automated coding assistant working in this re
 
 ## Sutram handoff and source discipline
 
-- Only check `Sarvam-tak-ChatGPT/` when the user requests a folder check or starts work. Do not sangrah up background watching without explicit instruction.
+- Only check `Sarvam-to-ChatGPT/` when the user requests a folder check or starts work. Do not set up background watching without explicit instruction.
 - Preserve the pure NASM compiler, native outputs, existing frozen baselines and agreed regression gates. Test what you claim, report failures and timing variance.
-- Keep unapproved code changes in review branches/draft PRs. Put instructions and verified logs in `ChatGPT-tak-Sarvam/` on `main` as documentation-only commits, pending Sarvam's independent acceptance.
+- Keep unapproved code changes in review branches/draft PRs. Put instructions and verified logs in `ChatGPT-to-Sarvam/` on `main` as documentation-only commits, pending Sarvam's independent acceptance.
 - On Windows testing, do not claim that the IDE, installer, shell or canonical icon is accepted based on PE-structure validation alone. Use real native execution and screenshots where available.
