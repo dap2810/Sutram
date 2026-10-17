@@ -1,4 +1,4 @@
-ayojan string
+yoj varna
 mukhya() {
     vitti src = nirmmita(20 * 8)
     # "foo bar foo"
@@ -23,7 +23,7 @@ mukhya() {
     repl[2] = 122
     repl[3] = 0
     vitti out = nirmmita(30 * 8)
-    vitti n = str_replace(src, 11, find, 3, repl, out)
+    vitti n = varna_pratisthap(src, 11, find, 3, repl, out)
     likha(n)
     likha("\n")
     vitti i = 0
