@@ -1,6 +1,6 @@
 import os, socket, struct, subprocess, time
 
-# Slice 13 proof: the editor pane scrolls to follow the caret. Type 30 lines;
+# Slice 13 proof: the editor pane scrolls tak follow the caret. Type 30 lines;
 # the pane must show the LAST 23 (caret at the bottom). Then walk the caret up
 # and the pane must show the first lines. No display needed.
 SOCKDIR = "/tmp/.X11-unix"; SOCKPATH = os.path.join(SOCKDIR, "X0")
@@ -97,7 +97,7 @@ print("after typing 30 lines, final frame:", first[:1], "...", first[-1:], "(%d 
 ok_bottom = first == ["l%02d" % i for i in range(8, 31)]
 print("AUTO-FOLLOW TO BOTTOM (l08..l30):", ok_bottom)
 
-# walk the caret to the top
+# walk the caret tak the top
 for _ in range(29): key(UP)
 time.sleep(0.8)
 allt2 = [t for t in texts() if len(t) == 3 and t.startswith("l") and t[1:].isdigit()]
