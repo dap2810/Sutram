@@ -1,11 +1,11 @@
-ayojan num
+yoj ank
 mukhya() {
-    likha(is_perfect(6))
+    likha(asti_sampurna(6))
     likha("\n")
-    likha(is_perfect(28))
+    likha(asti_sampurna(28))
     likha("\n")
-    likha(is_perfect(12))
+    likha(asti_sampurna(12))
     likha("\n")
-    likha(is_perfect(1))
+    likha(asti_sampurna(1))
     likha("\n")
 }
