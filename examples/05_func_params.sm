@@ -1,9 +1,9 @@
 # Function with parameters
 prakriya add(a, b)
-    pratiyati a + b
+    prati a + b
 
 prakriya mul3(a, b, c)
-    pratiyati a * b * c
+    prati a * b * c
 
 mukhya()
     vitti x = add(10, 32)
