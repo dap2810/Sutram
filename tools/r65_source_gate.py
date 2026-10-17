@@ -46,7 +46,7 @@ def main():
     existing_ids = re.findall(r'kw_\w+\s+db "([^"]+)"', s)
     unmatched = [latin for dev, latin in lines
                  if latin not in builtin_ids and latin not in existing_ids
-                 and latin != "tak"]
+                 and latin != "to"]
     check("PACK_TARGETS_RECOGNIZED", not unmatched)
     check("PACK_18_NEW_BUILTINS",
           len([x for x in pack.splitlines() if x.strip() and
