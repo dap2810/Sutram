@@ -1,9 +1,9 @@
-ayojan madhava
+yoj madhava
 mukhya() {
-    likha(madhava_sqrt(16.0))
+    likha(madhava_vargmool(16.0))
     likha("\n")
-    likha(madhava_sqrt(2.0))
+    likha(madhava_vargmool(2.0))
     likha("\n")
-    likha(madhava_sqrt(0.25))
+    likha(madhava_vargmool(0.25))
     likha("\n")
 }
