@@ -19,7 +19,7 @@ mukhya()
     likha("\n")
     likha("\nCounting with ++:\n")
     vitti count = 0
-    punaravartana i = 1 to 5 {
+    chakra i = 1 tak 5 {
         count++
     }
     likha("count = ")
@@ -27,11 +27,11 @@ mukhya()
     likha("\n")
     likha("\nSquares table with ++:\n")
     vitti n = 1
-    punaravartana i = 1 to 5 {
-        vitti sq = n * n
+    chakra i = 1 tak 5 {
+        vitti varg = n * n
         lkhb(n)
         likha(" squared = ")
-        lkhb(sq)
+        lkhb(varg)
         likha("\n")
         n++
     }
