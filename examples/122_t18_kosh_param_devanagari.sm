@@ -1,6 +1,6 @@
 # Devanagari type aliases are first-class in function parameter syntax.
 prakriya first(कोश दशम a) {
-    pratiyati a[0]
+    prati a[0]
 }
 
 mukhya() {
