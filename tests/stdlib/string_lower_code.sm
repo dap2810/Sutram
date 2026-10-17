@@ -1,9 +1,9 @@
-ayojan string
+yoj varna
 mukhya() {
-    likha(lower_code(65))
+    likha(avanat_sanket(65))
     likha("\n")
-    likha(lower_code(97))
+    likha(avanat_sanket(97))
     likha("\n")
-    likha(lower_code(48))
+    likha(avanat_sanket(48))
     likha("\n")
 }
