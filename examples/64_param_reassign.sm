@@ -1,6 +1,6 @@
 prakriya bump(a) {
     a = a + 1
-    pratiyati a
+    prati a
 }
 
 mukhya() {
