@@ -1,11 +1,11 @@
-# R12 program 1: word frequency — strb_split + map + sort together.
-# Splits an embedded passage, counts words with a hash map, prints
+# R12 program 1: word frequency — khand_bhed + nighantu + shreni together.
+# Splits an embedded passage, counts words with a gudh nighantu, prints
 # counts in alphabetical order.
-# R13: the hand-written repack loop is now one strb_pack call.
-ayojan strb
-ayojan map
+# R13: the hand-written repack loop is now one khand_bandh call.
+yoj khand
+yoj nighantu
 
-# Bubble-sort an array of (ptr,len) pairs by string content.
+# Bubble-shreni an mala of (ptr,len) pairs by varna content.
 prakriya sort_keys(ptrs, lens, n) {
     vitti a = ptrs
     vitti b = lens
@@ -17,7 +17,7 @@ prakriya sort_keys(ptrs, lens, n) {
     yavat (i < c - 1) {
         j = 0
         yavat (j < c - 1 - i) {
-            yadi (strb_compare(a[j], b[j], a[j + 1], b[j + 1]) > 0) {
+            yadi (khand_tul(a[j], b[j], a[j + 1], b[j + 1]) > 0) {
                 tp = a[j]
                 a[j] = a[j + 1]
                 a[j + 1] = tp
@@ -29,16 +29,16 @@ prakriya sort_keys(ptrs, lens, n) {
         }
         i = i + 1
     }
-    pratiyati 0
+    prati 0
 }
 
 mukhya() {
     vitti text = "the quick brown fox jumps over the lazy dog the fox"
-    vitti tlen = strb_len(text)
+    vitti tlen = khand_maap(text)
     vitti parts = nirmmita(512 * 8)
-    vitti nseg = strb_split(text, tlen, " ", 1, parts, 64)
-    vitti m = map_init(32)
-    # track unique words: strb_pack moves each word's bytes into a
+    vitti nseg = khand_bhed(text, tlen, " ", 1, parts, 64)
+    vitti m = nighantu_srij(32)
+    # track unique words: khand_bandh moves each word's bytes into a
     # contiguous buffer (segments store bytes as qword cells)
     vitti uptrs = nirmmita(64 * 8)
     vitti ulens = nirmmita(64 * 8)
@@ -54,16 +54,16 @@ mukhya() {
         wlen = parts[pos]
         # pack wlen bytes from qword cells into wbuf+wpos (R13: was a
         # hand-written repack loop; cell index -> byte offset (pos+1)*8)
-        strb_pack(parts + (pos + 1) * 8, wlen, wbuf + wpos)
-        cur = map_get(m, 32, wbuf + wpos, wlen)
+        khand_bandh(parts + (pos + 1) * 8, wlen, wbuf + wpos)
+        cur = nighantu_grah(m, 32, wbuf + wpos, wlen)
         yadi (cur < 0) {
-            map_put(m, 32, wbuf + wpos, wlen, 1)
+            nighantu_khip(m, 32, wbuf + wpos, wlen, 1)
             uptrs[nuniq] = wbuf + wpos
             ulens[nuniq] = wlen
             nuniq = nuniq + 1
             wpos = wpos + wlen
-        } anyatra {
-            map_put(m, 32, wbuf + wpos, wlen, cur + 1)
+        } anya {
+            nighantu_khip(m, 32, wbuf + wpos, wlen, cur + 1)
         }
         pos = pos + 1 + wlen
         i = i + 1
@@ -72,10 +72,10 @@ mukhya() {
     vitti tmp = nirmmita(64)
     i = 0
     yavat (i < nuniq) {
-        # uptrs[i] already points to packed bytes; print directly
+        # uptrs[i] already points tak packed bytes; print directly
         likha(1, uptrs[i], ulens[i])
         likha(": ")
-        likha(map_get(m, 32, uptrs[i], ulens[i]))
+        likha(nighantu_grah(m, 32, uptrs[i], ulens[i]))
         likha("\n")
         i = i + 1
     }
