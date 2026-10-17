@@ -1,37 +1,37 @@
-ayojan file
+yoj patra
 mukhya() {
     vitti buf = nirmmita(64)
     vitti i = 0
     # read the committed fixture (13 bytes: "hello sutram\n")
-    vitti n = file_read_all("tests/fixtures/file_hello.txt", buf, 64)
+    vitti n = patra_path_sarv("tests/fixtures/file_hello.txt", buf, 64)
     likha(n)
     likha("\n")
     yavat (i < n) {
-        likha(char_at(buf, i))
+        likha(akshar(buf, i))
         likha("\n")
         i = i + 1
     }
     # small cap: only the first 5 bytes
-    vitti n5 = file_read_all("tests/fixtures/file_hello.txt", buf, 5)
+    vitti n5 = patra_path_sarv("tests/fixtures/file_hello.txt", buf, 5)
     likha(n5)
     likha("\n")
-    likha(char_at(buf, 0))
+    likha(akshar(buf, 0))
     likha("\n")
-    likha(char_at(buf, 4))
+    likha(akshar(buf, 4))
     likha("\n")
-    # cap 0 on an existing file: 0, no bytes
-    likha(file_read_all("tests/fixtures/file_hello.txt", buf, 0))
+    # cap 0 on an existing patra: 0, no bytes
+    likha(patra_path_sarv("tests/fixtures/file_hello.txt", buf, 0))
     likha("\n")
-    # negative cap: -1, file not opened
-    likha(file_read_all("tests/fixtures/file_hello.txt", buf, 0 - 3))
+    # negative cap: -1, patra not opened
+    likha(patra_path_sarv("tests/fixtures/file_hello.txt", buf, 0 - 3))
     likha("\n")
-    # missing file: -1
-    likha(file_read_all("tests/fixtures/no_such_file.txt", buf, 64))
+    # missing patra: -1
+    likha(patra_path_sarv("tests/fixtures/no_such_file.txt", buf, 64))
     likha("\n")
     # exists: 1 / 0
-    likha(file_exists("tests/fixtures/file_hello.txt"))
+    likha(patra_asti("tests/fixtures/file_hello.txt"))
     likha("\n")
-    likha(file_exists("tests/fixtures/no_such_file.txt"))
+    likha(patra_asti("tests/fixtures/no_such_file.txt"))
     likha("\n")
     likha("file-read-done\n")
 }
