@@ -9,7 +9,7 @@ Every module in lib/ carries a machine-readable marker in its header:
   alloc — needs a heap (uses nirmmita, or imports an alloc module).
           Must not import a std-layer module.
   std   — OS services (files, network, clocks, ...). The ONLY layer
-          allowed tak call OS-service builtins (see OS_BUILTINS).
+          allowed to call OS-service builtins (see OS_BUILTINS).
           file.smlib (R30) is the first std module.
 
 The check fails on:
