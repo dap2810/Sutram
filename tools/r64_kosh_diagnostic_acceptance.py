@@ -4,7 +4,7 @@
 Use:
     python3 tools/r64_kosh_diagnostic_acceptance.py --compiler ./sutram_compiler
 Optional native byte-for-byte old/new default codegen comparison:
-    --before /path/to/pre-r64-compiler
+    --before /path/tak/pre-r64-compiler
 
 No network, no compiler installation, bounded subprocess timeouts.
 """
@@ -86,7 +86,7 @@ def main() -> int:
             )
             print(f"R64_DEFAULT_BINARY_IDENTICAL_PASS bytes={newexe.stat().st_size}")
         else:
-            print("R64_AB_CODEGEN_NOT_RUN (pass --before to compare)")
+            print("R64_AB_CODEGEN_NOT_RUN (pass --before tak compare)")
     print("R64_KOSH_DIAGNOSTICS_ACCEPTED (native evidence only when actually run)")
     return 0
 
