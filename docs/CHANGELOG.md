@@ -1,3 +1,29 @@
+## v159 - the documentation sync the rename had missed
+
+The rename (v157) and the doc corrections (v158) reached the code and the core markdown, but **not the HTML
+documents**. An audit of main found the gap: 9 documents still carried the old names and 2 deliverables had
+never been pushed at all.
+
+**Found stale and fixed (23 HTML documents, 1,322 replacements):**
+- `docs/sutram-keyword-words.html`, `docs/sutram-stdlib.html`, `docs/sutram-design-parameters.html`,
+  `docs/sutram-project-status.html`, `docs/sutram-scorecard.html`, `docs/sutram-roadmap.html`
+- **the books** - English, Hindi, Sanskrit, Tamil, Telugu, Gujarati
+
+**Found missing and added:**
+- `docs/sutram-vocabulary.html` - the frozen vocabulary from A0 (36,804 B)
+- `docs/sutram-stdlib-reference.html` - the 24-module / 303-function reference (60,605 B)
+
+**How the HTML was renamed safely.** The Sanskrit keywords are safe to replace in prose - they are not
+English words, so `pankti`, `ayojan`, `nishedha` only ever appear as code. The single exception is **`to`**,
+which is an ordinary English word, so it was **excluded from the HTML pass** to avoid corrupting prose the
+way v157 did. Module and function names are unique identifiers and were applied freely.
+
+**Final audit of main: 0 stale references across all 16 checked documents.**
+
+The lesson, recorded: the rename was applied to the *tree* but the audit that would have caught the HTML
+gap did not exist until the owner asked. **A rename is not done until an audit proves no old name survives
+anywhere** - not just where the tests look.
+
 ## v158 - ChatGPT's advisory read, verified, and acted on
 
 ChatGPT uploaded two advisory documents (2026-10-17) at the owner's request: `SUTRAM-FOUNDATIONS-AND-PRIORITIES`
