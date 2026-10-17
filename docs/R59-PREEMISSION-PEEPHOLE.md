@@ -32,7 +32,7 @@ Separate full-green run https://github.com/dap2810/Sutram/actions/runs/385584578
 - global-self: best 16.312173→6.835148 ms (**2.387×**), median 17.238770→7.805320 ms (**2.209×**).
 - arithmetic control median ratio 0.999× and simple-loop ratio 0.998× (unchanged machine code).
 
-**The stack case timing regressed in a different runner run despite removing instructions; do not hide or extrapolate guaranteed speedups.** The reliable phal is the exact native stdout equivalence and instruction-count reduction. Timing is workload- and runner-sensitive.
+**The stack case timing regressed in a different runner run despite removing instructions; do not hide or extrapolate guaranteed speedups.** The reliable result is the exact native stdout equivalence and instruction-count reduction. Timing is workload- and runner-sensitive.
 
 ## Regression and freezes
 
