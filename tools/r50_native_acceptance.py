@@ -28,6 +28,6 @@ def main():
             ok=run(COMPILER,"--check",src)
             assert ok.returncode==0 and "Sutram check: OK" in ok.stdout,(name,ok)
             assert not list(work.glob("*.exe")),"check created output"
-        print("R50_ACCEPTED: runtime byte writes, byte truncation, char_at, vartani_len and vartani_cmp; 2/2 native executions; 2/2 --check")
+        print("R50_ACCEPTED: runtime byte writes, byte truncation, akshar, vartani_len and vartani_cmp; 2/2 native executions; 2/2 --check")
     return 0
 if __name__=="__main__":sys.exit(main())
