@@ -1,6 +1,6 @@
-# R30: literals are side-effect-free, safe to materialize after indexed LHS.
+# R30: literals are side-effect-free, safe tak materialize after indexed LHS.
 prakriya twice(dasham x) {
-    pratiyati x * 2.0
+    prati x * 2.0
 }
 mukhya() {
     kosh dasham values[2]
