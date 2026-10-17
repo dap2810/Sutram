@@ -1,36 +1,36 @@
-ayojan math
-ayojan strconv
+yoj ganit
+yoj vakyank
 mukhya() {
     vitti st = nirmmita(8)
     vitti st2 = nirmmita(8)
     st[0] = 1
     st2[0] = 1
-    likha(math_rand(st))
+    likha(ganit_yadricch(st))
     likha("\n")
-    likha(math_rand(st))
+    likha(ganit_yadricch(st))
     likha("\n")
-    likha(math_rand(st))
+    likha(ganit_yadricch(st))
     likha("\n")
-    likha(math_rand(st2))
+    likha(ganit_yadricch(st2))
     likha("\n")
-    likha(math_rand(st2))
+    likha(ganit_yadricch(st2))
     likha("\n")
-    likha(math_rand(st2))
+    likha(ganit_yadricch(st2))
     likha("\n")
     st[0] = 0
-    likha(math_rand(st))
+    likha(ganit_yadricch(st))
     likha("\n")
-    likha(math_clamp(5, 0, 10))
+    likha(ganit_seemit(5, 0, 10))
     likha("\n")
-    likha(math_clamp(0 - 5, 0, 10))
+    likha(ganit_seemit(0 - 5, 0, 10))
     likha("\n")
-    likha(math_clamp(15, 0, 10))
+    likha(ganit_seemit(15, 0, 10))
     likha("\n")
-    likha(math_clamp(0, 0, 10))
+    likha(ganit_seemit(0, 0, 10))
     likha("\n")
-    likha(math_clamp(10, 0, 10))
+    likha(ganit_seemit(10, 0, 10))
     likha("\n")
-    likha(math_clamp(5, 5, 5))
+    likha(ganit_seemit(5, 5, 5))
     likha("\n")
     vitti ok = nirmmita(8)
     vitti buf = nirmmita(32 * 8)
@@ -41,7 +41,7 @@ mukhya() {
     buf[4] = 49
     buf[5] = 53
     buf[6] = 57
-    likha(str_to_float(buf, 7, ok))
+    likha(varna_tak_dashm(buf, 7, ok))
     likha("\n")
     likha(ok[0])
     likha("\n")
@@ -50,26 +50,26 @@ mukhya() {
     buf[2] = 101
     buf[3] = 45
     buf[4] = 50
-    likha(str_to_float(buf, 5, ok))
+    likha(varna_tak_dashm(buf, 5, ok))
     likha("\n")
     likha(ok[0])
     likha("\n")
     buf[0] = 46
     buf[1] = 53
-    likha(str_to_float(buf, 2, ok))
+    likha(varna_tak_dashm(buf, 2, ok))
     likha("\n")
     likha(ok[0])
     likha("\n")
     buf[0] = 49
     buf[1] = 101
     buf[2] = 53
-    likha(str_to_float(buf, 3, ok))
+    likha(varna_tak_dashm(buf, 3, ok))
     likha("\n")
     likha(ok[0])
     likha("\n")
     buf[0] = 49
     buf[1] = 120
-    likha(str_to_float(buf, 2, ok))
+    likha(varna_tak_dashm(buf, 2, ok))
     likha("\n")
     likha(ok[0])
     likha("\n")
@@ -78,7 +78,7 @@ mukhya() {
     buf[2] = 52
     buf[3] = 48
     buf[4] = 48
-    likha(str_to_float(buf, 5, ok))
+    likha(varna_tak_dashm(buf, 5, ok))
     likha("\n")
     likha(ok[0])
     likha("\n")
@@ -88,7 +88,7 @@ mukhya() {
     buf[3] = 57
     buf[4] = 57
     buf[5] = 57
-    likha(str_to_float(buf, 6, ok))
+    likha(varna_tak_dashm(buf, 6, ok))
     likha("\n")
     likha(ok[0])
     likha("\n")
