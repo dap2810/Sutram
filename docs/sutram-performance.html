@@ -124,8 +124,8 @@ mov r13,rax      <span class="c">; store c</span></pre>
     <ul>
       <li><strong>Register allocation works.</strong> Variables live in <code>rbx</code>/<code>r12</code>–<code>r15</code>; 16 simultaneous
       variables do not spill.</li>
-      <li><strong>Loop conditionals are cheap.</strong> <code>i = i + 1</code> compiles to <code>mov rax,rbx / inc rax / mov rbx,rax</code>
-      — an <code>inc</code> is already used rather than <code>add</code>.</li>
+      <li><strong>Loop conditionals are cheap.</strong> <code>i = i + 1</code> compiles to <code>mov rax,rbx / vardh rax / mov rbx,rax</code>
+      — an <code>vardh</code> is already used rather than <code>add</code>.</li>
       <li><strong>No hidden calls.</strong> Arithmetic is inline; there is no runtime to call into.</li>
     </ul>
   </div>
@@ -170,7 +170,7 @@ xchg rdx,rax     <span class="hot">; /</span>
 add rax,rdx
 mov r12,rax
 mov rax,rbx
-inc rax
+vardh rax
 mov rbx,rax
 jmp 0x25
 
@@ -178,9 +178,9 @@ jmp 0x25
 cmp rax,byte +0x64
 jnl near 0x3d
 add r12,rbx      <span class="ok">; s = s + i   — one instruction</span>
-inc rbx          <span class="ok">; i = i + 1   — one instruction</span>
+vardh rbx          <span class="ok">; i = i + 1   — one instruction</span>
 jmp 0x25</pre>
-  <p><code>s = s + i</code> is now a single <code>add r12,rbx</code>, and <code>i = i + 1</code> a single <code>inc rbx</code>. The loop body
+  <p><code>s = s + i</code> is now a single <code>add r12,rbx</code>, and <code>i = i + 1</code> a single <code>vardh rbx</code>. The loop body
   drops from <strong>13 to 5 instructions</strong>.</p>
 
   <h3>Wall-clock, same machine, median of 25 runs</h3>
@@ -200,15 +200,15 @@ jmp 0x25</pre>
   <p>The inner body shrank as promised, but the loop still carries <strong>two branches per iteration</strong>:</p>
 <pre>0x43  cmp r14,rbx
 0x46  jg  near 0x57   <span class="hot">; forward conditional (exit)</span>
-0x4c  inc r12
-0x4f  inc r14
+0x4c  vardh r12
+0x4f  vardh r14
 0x52  jmp 0x43        <span class="hot">; backward unconditional</span></pre>
   <p>Once the body is only two instructions, the branch pair dominates. A <strong>test-at-bottom</strong> loop form —
   an initial jump into the test, then a single backward conditional at the end — would halve the branches
   per iteration:</p>
 <pre>        jmp test
-top:    inc r12
-        inc r14
+top:    vardh r12
+        vardh r14
 test:   cmp r14,rbx
         jl  top        <span class="ok">; one branch per iteration, not two</span></pre>
   <p>That is the natural PERF2 candidate for loop-bound code, alongside the general <code>c = a + b</code>
