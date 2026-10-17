@@ -1,7 +1,7 @@
 vitti counter = 0
 prakriya bump() {
     counter = counter + 1
-    pratiyati counter
+    prati counter
 }
 mukhya() {
     likha(bump() + 0)
