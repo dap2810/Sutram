@@ -8,14 +8,14 @@ The [design charter](sutram-design-parameters.html), under **Genuine freestandin
 capability** (item 13 in the pinned charter), sets a concrete target: a small
 kernel that boots through a documented path, produces observable output and
 passes repeatable tests. Native application output alone does not meet it.
-Round 70 explicitly requests this gap suchi, not implementation of a kernel.
+Round 70 explicitly requests this gap list, not implementation of a kernel.
 
 ## 1. What exists and what that evidence means
 
 The project emits native x86-64 ELF/PE program images and avoids a separately
 installed language runtime or libc dependency for ordinary generated programs.
 The inspected compiler nonetheless has OS-specific behavior: `emit_syscall`
-selects output appropriate tak the target, PE code uses embedded support and
+selects output appropriate to the target, PE code uses embedded support and
 Windows services, and normal code generation sets up an application frame and
 exits as a process. **“No external runtime dependency” is not “no generated
 support code,” “no OS services,” or “runs after reset.”**
@@ -32,14 +32,14 @@ format, linker-script interface or bootloader relocation contract. The
 [language specification](SPECIFICATION.md) and [memory inventory](MEMORY-MODEL.md)
 retain the limits of the current type and raw-memory guarantees.
 
-## 2. Precise gap suchi
+## 2. Precise gap list
 
 | Capability | Existing foothold | Missing contract/implementation | Required evidence before a claim |
 |---|---|---|---|
 | Boot path | Native executable emission. | Select and document a firmware/loader protocol and image format; identify exactly who loads, relocates and enters it. | Reproducible boot command and checked handoff state for the selected protocol. |
 | Entry point | `mukhya()` application entry and generated prologue. | A freestanding entry with declared initial machine state, parameter ABI and no assumed process startup. | Verify entry address, stack pointer/alignment and handoff parameters. |
 | Startup | Application frame setup and target support. | Establish stack, clear required zero-initialized memory, initialize globals deliberately and avoid implicit host exit. | Startup tests for BSS/data/global state and a controlled non-returning end state. |
-| Sections and memory layout | Fixed image/header code and compiler-managed storage layout. | Explicit sections, flags, alignment, virtual/load addresses and a reproducible memory nighantu. | Inspect image layout and prove load-time placement/nonoverlap. |
+| Sections and memory layout | Fixed image/header code and compiler-managed storage layout. | Explicit sections, flags, alignment, virtual/load addresses and a reproducible memory map. | Inspect image layout and prove load-time placement/nonoverlap. |
 | Relocations | Internal references/call backpatching. | Specify absolute vs relative references, loader relocation responsibilities and unsupported fixups; independent objects if required. | Link/load at documented addresses and reject unsupported relocation kinds. |
 | Calling conventions | Compiler's current application call conventions. | A supported ABI for startup, external low-level routines and preserved machine state. | Register/stack preservation tests at every boundary, not just ordinary function output. |
 | No implicit OS reliance | No mandatory language interpreter/libc. | Identify and exclude syscalls, Windows API shims, filesystem/input/process services and implicit OS allocation from the freestanding profile. | Image/dependency audit plus boot execution without those facilities. |
@@ -47,7 +47,7 @@ retain the limits of the current type and raw-memory guarantees.
 | Volatile access | Raw memory operations and inline bytes. | Language-level observable device-access semantics, access width/order and optimizer constraints. | Tests proving necessary accesses are neither removed nor merged improperly. |
 | Atomics and barriers | Native instruction escape hatch. | Atomicity, ordering, fences and synchronization semantics; unsupported operations must be explicit. | Target-specific concurrency/litmus evidence before advertising a memory model. |
 | Interrupt/exception entry | Raw bytes can be expressed. | Entry stubs, saved state, stack selection, return instruction, nesting policy and fault reporting. | Repeatable injected interrupts/faults with correct return or controlled failure. |
-| Inline assembly effects | `yantra` emits supplied bytes. | Declared register/flag/memory effects and interaction with optimized generated code. | Clobber/constraint tests; no optimization assumptions inferred from unannotated bytes. |
+| Inline assembly effects | `nishkriya` emits supplied bytes. | Declared register/flag/memory effects and interaction with optimized generated code. | Clobber/constraint tests; no optimization assumptions inferred from unannotated bytes. |
 | Core libraries | Existing `.smlib` source inclusion. | A documented allocator-free and OS-free subset with dependencies audited transitively. | Link/use only that subset in the boot image; no claim based on module names. |
 | Observable output | Application printing exists. | A specified early-output mechanism available under the chosen boot environment. | A repeatable output marker captured by the test environment. |
 | Failure behavior | Compiler errors and application runtime traps. | Freestanding panic/fault behavior with no reliance on a host process exit or unwinder. | Deliberate failure test yielding observable output and bounded termination/halt detection. |
@@ -69,7 +69,7 @@ capture method.
 
 The proof should not require a full scheduler, filesystem, user mode, network
 stack, generics, ownership implementation or a complete OS. Conversely, omitting
-those features does not remove the need tak specify entry state, memory layout and
+those features does not remove the need to specify entry state, memory layout and
 observable output. An emulator or loader that supplies hidden process-like
 services must be described as part of the contract, not silently counted as bare
 hardware capability.
@@ -90,7 +90,7 @@ axes and must be reported separately.
 
 The existing optional pure-stack-pair mode has an explicit restricted contract
 about transient stack effects and raw offsets. That optimization is not a
-freestanding correctness proof, and its assumptions must not be exported tak
+freestanding correctness proof, and its assumptions must not be exported to
 interrupt code without a separate design.
 
 **Verification limit:** this is a source- and document-grounded assessment. No
