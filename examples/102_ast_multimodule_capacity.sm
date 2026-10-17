@@ -1,11 +1,11 @@
 # Regression for the old 192 KiB AST ceiling: all real function modules together.
-ayojan math
-ayojan num
-ayojan sort
-ayojan string
-ayojan chandas
-ayojan ganita
-ayojan madhava
+yoj ganit
+yoj ank
+yoj shreni
+yoj varna
+yoj chandas
+yoj ganita
+yoj madhava
 
 mukhya() {
     likha(1)
