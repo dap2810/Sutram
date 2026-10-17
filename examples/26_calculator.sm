@@ -24,14 +24,14 @@ mukhya()
         likha(a / b)
         likha("\nRemainder: ")
         likha(a % b)
-    } anyatra {
+    } anya {
         likha("\nCannot divide by zero!\n")
     }
     likha("\n")
     yadi (a > b) {
         likha("First is greater\n")
-    } anyatra yadi (b > a) {
+    } anya yadi (b > a) {
         likha("Second is greater\n")
-    } anyatra {
+    } anya {
         likha("Both are equal\n")
     }
