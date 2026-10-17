@@ -1,4 +1,4 @@
-ayojan num
+yoj ank
 mukhya() {
     likha(fib(10))
     likha("\n")
