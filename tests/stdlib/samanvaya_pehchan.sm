@@ -1,4 +1,4 @@
-ayojan samanvaya
+yoj samanvaya
 mukhya() {
     kosh dasham out[4]
     kosh_push(out, 0.0)
