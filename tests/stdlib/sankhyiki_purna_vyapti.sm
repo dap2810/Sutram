@@ -1,17 +1,17 @@
-ayojan sankhyiki
+yoj sankhyiki
 mukhya() {
-    pankti a[3]
+    mala a[3]
     a[0] = 3
     a[1] = 1
     a[2] = 2
     likha(purna_vyapti(a, 3))
     likha("\n")
-    pankti b[2]
+    mala b[2]
     b[0] = 0 - 5
     b[1] = 5
     likha(purna_vyapti(b, 2))
     likha("\n")
-    pankti c[1]
+    mala c[1]
     c[0] = 9
     likha(purna_vyapti(c, 1))
     likha("\n")
