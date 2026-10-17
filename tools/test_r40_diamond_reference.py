@@ -19,13 +19,13 @@ def flatten():
         text=(LIB/(name+'.smlib')).read_text()
         kept=[]
         for line in text.splitlines(keepends=True):
-            m=re.fullmatch(r'\s*ayojan\s+([A-Za-z][A-Za-z0-9_]*)\s*',line)
+            m=re.fullmatch(r'\s*yoj\s+([A-Za-z][A-Za-z0-9_]*)\s*',line)
             if m:visit(m.group(1))
             else:kept.append(line)
         blocks.append(''.join(kept)+'\n')
     visit('r40_a')
     main=(ROOT/'examples/163_r40_transitive_diamond.sm').read_text()
-    main=re.sub(r'^ayojan r40_a\s*\n','',main)
+    main=re.sub(r'^yoj r40_a\s*\n','',main)
     return ''.join(blocks)+main,seen
 
 
@@ -44,5 +44,5 @@ def main(path):
         print('PASS native flattened diamond reference: output 17\\n7\\n')
         print('PASS shared dependency appears once, deterministic import order d,b,c,a')
 if __name__=='__main__':
-    if len(sys.argv)!=2:raise SystemExit('pass path to previously compiled Sutram native compiler')
+    if len(sys.argv)!=2:raise SystemExit('pass path tak previously compiled Sutram native compiler')
     main(sys.argv[1])
