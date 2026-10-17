@@ -205,16 +205,16 @@ bi_tab:
 
 ; ---- menu bar data (slice 20) ----------------------------------------------
 ; 7 names, their x offsets in the strip, and their byte lengths.
-menu_name_0 db 'File',0
-menu_name_1 db 'Edit',0
-menu_name_2 db 'Shell',0
-menu_name_3 db 'Debug',0
-menu_name_4 db 'Options',0
-menu_name_5 db 'Window',0
-menu_name_6 db 'Help',0
+menu_name_0 db 'patra',0
+menu_name_1 db 'sampad',0
+menu_name_2 db 'khol',0
+menu_name_3 db 'dosh',0
+menu_name_4 db 'vikalp',0
+menu_name_5 db 'gavaksh',0
+menu_name_6 db 'sahay',0
 menu_names dq menu_name_0, menu_name_1, menu_name_2, menu_name_3, menu_name_4, menu_name_5, menu_name_6
-menu_len   db 4,4,5,5,7,6,4
-menu_xoff  dw 300,352,410,478,548,632,712
+menu_len   db 5,6,4,4,6,7,5
+menu_xoff  dw 300,370,450,510,570,650,740
 colour_on  dq 1                       ; slice 26: syntax colouring starts ON
 %define ACT_OPEN 0
 %define ACT_SAVE 1
@@ -230,17 +230,15 @@ colour_on  dq 1                       ; slice 26: syntax colouring starts ON
 %define ACT_CLROUT 11
 %define ACT_ABOUT 12
 ; dropdown items: one flat NUL-separated table; menu_item_start indexes into it
-menu_items db 'Open',0,'Save',0,'Exit',0
-           db 'Undo',0,'Cut',0,'Copy',0,'Paste',0,'Select All',0
-           db 'Run',0,'Find',0,'Colour',0,'Clear Output',0,'About',0
-menu_items_n db 4,4,4, 4,3,4,5,10, 3,4, 6,12, 5
+menu_items db 'khol',0,'sanchay',0,'nishkas',0,'punah',0,'chhid',0,'pratilip',0,'sanyoj',0,'sarvagrah',0,'chal',0,'anwesh',0,'ranga',0,'phal_rikta',0,'parichay',0
+menu_items_n db 4,7,7,5,5,8,6,9,4,6,5,10,8
 menu_has   db 3,5,1,1,1,1,1          ; slice 26: all seven menus populated
 menu_item_start db 0,3,8,9,10,11,12
 menu_item_act   db ACT_OPEN,ACT_SAVE,ACT_EXIT
                 db ACT_UNDO,ACT_CUT,ACT_COPY,ACT_PASTE,ACT_SELALL
                 db ACT_RUN, ACT_FIND, ACT_COLOUR, ACT_CLROUT, ACT_ABOUT
-about_text db 'Sutram Shell 1.0 - a Sanskrit-keyword language',10
-           db 'one hand-written NASM compiler, native machine code, no runtime.',10
+about_text db 'Sutram khol 1.0 - samskrita-mukhya bhasha',10
+           db 'eka NASM sankalanak, deshiya yantra-code, na koi runtime.',10
 about_len  equ $ - about_text
 ; dropdown item actions are defined above
 open_act  dd -1                      ; pending action, -1 = none
@@ -352,18 +350,18 @@ section .data
                 db 0, 0
     handshake_len equ $ - handshake
 
-    txt_title   db "Sutram IDE"
+    txt_title   db "Sutram sampadak"
     txt_title_n equ $ - txt_title
-    txt_editor  db "Editor"
+    txt_editor  db "sampadak"
     txt_editor_n equ $ - txt_editor
-    txt_output  db "Output"
+    txt_output  db "nirgat"
     txt_output_n equ $ - txt_output
-    txt_hint    db "Ctrl-R run  Ctrl-S save  Ctrl-O open  Ctrl-N new  Ctrl-C/X/V clip"
-    txt_find    db "Find: "
+    txt_hint    db "Ctrl-R chal  Ctrl-S sanchay  Ctrl-O khol  Ctrl-N nava  Ctrl-C/X/V lip"
+    txt_find    db "anwesh: "
     txt_find_n  equ $ - txt_find
-    txt_open    db "Open: "
+    txt_open    db "khol: "
     txt_open_n  equ $ - txt_open
-    txt_browse  db "Browse: "
+    txt_browse  db "darsh: "
     txt_browse_n equ $ - txt_browse
     br_dot      db ".", 0
     br_dotdot   db "..", 0
