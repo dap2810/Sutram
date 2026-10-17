@@ -1,7 +1,7 @@
-ayojan math
-prakriya sq(n) {
-    pratiyati n
+yoj ganit
+prakriya varg(n) {
+    prati n
 }
 mukhya() {
-    likha(sq(5))
+    likha(varg(5))
 }
