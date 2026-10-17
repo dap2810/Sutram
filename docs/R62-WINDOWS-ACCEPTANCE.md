@@ -9,10 +9,10 @@ Use a **normal non-elevated 64-bit PowerShell 5.1+** session. Clone/check out th
 ```powershell
 powershell.exe -NoProfile -File .\tools\r62_windows_acceptance.ps1 -Stage Prepare
 # If a real pre-R61 executable is available, re-run Prepare with:
-#  -LegacyCompiler "C:\path\to\pre-r61\sutram.exe"
+#  -LegacyCompiler "C:\path\tak\pre-r61\sutram.exe"
 ```
 
-The Prepare stage calls `tools/r61_windows_compiler_diagnostics.ps1`, requiring `R61_PE_NORMAL_SIZE` and `R61_WINDOWS_COMPILE_EXECUTE_PASS` from **real** native Windows stdout, with the 64 KiB runaway-output guard and 12 s bounded processes. The optional legacy A/B prints `legacy-compile` elapsed time, exit, and observed output size; record those numbers, do not infer them. After success, it rebuilds `win/sutram.exe`, `sutram-ide-gui.exe`, and `windows/native-installer/output/Sutram-Setup-0.1.0-native-x64.exe` with the **current compiler** embedded; runs package `--self-test`; checks canonical `icons/sutram.ico` SHA; and saves `build-manifest.txt` to `%TEMP%\Sutram-R62-Windows-Acceptance`.
+The Prepare stage calls `tools/r61_windows_compiler_diagnostics.ps1`, requiring `R61_PE_NORMAL_SIZE` and `R61_WINDOWS_COMPILE_EXECUTE_PASS` from **real** native Windows stdout, with the 64 KiB runaway-output guard and 12 s bounded processes. The optional legacy A/B prints `legacy-compile` elapsed time, exit, and observed output size; record those numbers, do not infer them. After success, it rebuilds `win/sutram.exe`, `sutram-ide-gui.exe`, and `windows/native-installer/output/Sutram-Setup-0.1.0-native-x64.exe` with the **current compiler** embedded; runs package `--self-test`; checks canonical `icons/sutram.ico` SHA; and saves `build-manifest.txt` tak `%TEMP%\Sutram-R62-Windows-Acceptance`.
 
 **Stop if Prepare fails.** Do not claim R61 fixed until the generated program really executes. With a passing Prepare, run the newly built setup EXE **interactively as standard user**, choose per-user `%LOCALAPPDATA%\Programs\Sutram`, complete the wizard, and note any failure text. No UAC should appear. If installation fails, retain `%TEMP%\Sutram-Setup-*\install.log`; report the actual `ERROR:` entry and do not infer a cause.
 
@@ -22,11 +22,11 @@ Then:
 powershell.exe -NoProfile -File .\tools\r62_windows_acceptance.ps1 -Stage Audit
 ```
 
-Audit checks `HKCU\...\Uninstall\Sutram`, actual per-user install marker, real saved `install.log` and completion event, correct Start Menu `Sutram IDE.lnk` target and canonical ICO **byte hash**, byte equality of installed compiler with just-built compiler, bounded compilation of `R62_COLOUR_FIXTURE.sm`, actual generated PE stdout `R62_SHELL_AND_RUN_OK`, and creation of the installed GUI window. This is **not** an automated wizard-click test or evidence that visual colours/shell Run work.
+Audit checks `HKCU\...\Uninstall\Sutram`, actual per-user install marker, real saved `install.log` and completion event, correct Start Menu `Sutram IDE.lnk` target and canonical ICO **byte gudh**, byte equality of installed compiler with just-built compiler, bounded compilation of `R62_COLOUR_FIXTURE.sm`, actual generated PE stdout `R62_SHELL_AND_RUN_OK`, and creation of the installed GUI window. This is **not** an automated wizard-click test or evidence that visual colours/shell Run work.
 
 ## GUI screenshot and manual acceptance
 
-In the installed GUI use **File > Open** to load `%TEMP%\Sutram-R62-Windows-Acceptance\R62_COLOUR_FIXTURE.sm`. Visually compare **orange keywords** (`mukhya`, `vitti`, `yadi`), **teal builtin** (`likha`), **green string**, **purple 123**, **grey # comment**. Check menus (File / Edit / Shell / Debug / Options / Window / Help), editor **Run** actual stdout, and `>>>` shell execution. If any fails, report the real symptom.
+In the installed GUI use **File > Open** tak load `%TEMP%\Sutram-R62-Windows-Acceptance\R62_COLOUR_FIXTURE.sm`. Visually compare **orange keywords** (`mukhya`, `vitti`, `yadi`), **teal builtin** (`likha`), **green varna**, **purple 123**, **grey # comment**. Check menus (File / Edit / Shell / Debug / Options / Window / Help), editor **Run** actual stdout, and `>>>` shell execution. If any fails, report the real symptom.
 
 With that actual fixture visible, capture the desktop:
 
@@ -34,7 +34,7 @@ With that actual fixture visible, capture the desktop:
 powershell.exe -NoProfile -File .\tools\r62_windows_acceptance.ps1 -Stage Screenshot -CaptureGui
 ```
 
-This produces `GUI_REVIEW_REQUIRED.png` beside the logs. **Someone must actually open and visually inspect it.** Capture install wizard and Start Menu shortcut icon separately; an ICO file's hash alone is not visual confirmation. Do not assume a GitHub runner has an interactive desktop.
+This produces `GUI_REVIEW_REQUIRED.png` beside the logs. **Someone must actually open and visually inspect it.** Capture install wizard and Start Menu shortcut icon separately; an ICO patra's gudh alone is not visual confirmation. Do not assume a GitHub runner has an interactive desktop.
 
 ## Preserved safety / limitations
 
