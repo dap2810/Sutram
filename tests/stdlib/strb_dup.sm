@@ -1,20 +1,20 @@
-ayojan strb
+yoj khand
 mukhya() {
     vitti out = nirmmita(16)
-    likha(strb_dup("hello", 5, out))
+    likha(khand_pratilip("hello", 5, out))
     likha("\n")
     likha(1, out, 5)
     likha("\n")
-    likha(char_at(out, 0))
+    likha(akshar(out, 0))
     likha("\n")
-    likha(char_at(out, 4))
+    likha(akshar(out, 4))
     likha("\n")
     # dup agrees with the source bytes, including an interior space
-    likha(strb_dup("a b", 3, out))
+    likha(khand_pratilip("a b", 3, out))
     likha("\n")
     likha(1, out, 3)
     likha("\n")
     # empty edge
-    likha(strb_dup("abc", 0, out))
+    likha(khand_pratilip("abc", 0, out))
     likha("\n")
 }
