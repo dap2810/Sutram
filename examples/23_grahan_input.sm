@@ -12,6 +12,6 @@ mukhya()
         likha("First is bigger\n")
     } yadi (b > a) {
         likha("Second is bigger\n")
-    } anyatra {
+    } anya {
         likha("They are equal\n")
     }
