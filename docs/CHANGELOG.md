@@ -1,3 +1,35 @@
+## v161 - full project audit: cruft removed, stale names and counts fixed, help text Sanskrit
+
+A whole-repo audit after the rename. **Five classes of defect found, all fixed. All gates green.**
+
+**1. User-facing compiler text was stale and English.** The builtin error messages still said
+`char_at`, `char_code`, `set_char` - but those builtins are `akshar`, `aksharank`, `akshar_rakh`, so a user
+typing the new name wrongly was told about the old one. The shell **help text** still showed
+`punaravartana i = 0 to 5` and `pankti arr[5]`, and the namespace error still said `ayojan`. All 12
+strings corrected, and the help/banner text is now Sanskrit - `Aadesh`, `chakra i = 0 tak 5`, `mala arr[5]`,
+`Sutram khol sahay`.
+
+**2. The version string was stale.** It read **`Sutram 1.0 (v29)`** - about 130 versions behind. Now `v160`.
+
+**3. Stale names in 19 live documents** (363 replacements): `LANGUAGE-REFERENCE.md`, `SPECIFICATION.md`,
+`MEMORY-MODEL.md`, `NUMERIC-CONTRACT.md`, `ERROR-CONVENTION.md`, `PROPERTY-NET.md`, `EDGE-COVERAGE-30.md`
+and others. **The CHANGELOG and the `R*` round records were deliberately left alone** - they are historical
+and changing them would falsify the record.
+
+**4. Stale counts.** `PROJECT-OVERVIEW.md` said 21 modules / 278 functions; `LANGUAGE-REFERENCE.md` said
+49 functions across four modules. Corrected to the measured **24 modules / 303 functions**, and one
+over-correction of mine fixed (the "four modules" line was about the library table, now six).
+
+**5. Cruft.** Removed `.write-probe` (6 bytes of test residue, referenced nowhere) and added it to
+`.gitignore`. **`compiler/` and `win/` were checked and kept** - they look stale but are referenced by live
+tools (`r69_build.py`, `build_payload.py`, `proof_lib.py`).
+
+**Six goldens updated** for the corrected namespace message, which had dropped the suite to 181 until they
+were reconciled.
+
+**Checked and clean:** no committed build artifacts (`*.o`, `*.obj`, `*.bin`), no `__pycache__`, one
+compiler source, one documented entry.
+
 ## v156 - ChatGPT R71 (all five workstreams) and Muse R30 (51 defects) verified and synced
 
 **ChatGPT R71 - 30 files, 30/30 hashes verified at commit `bb791061`.** It delivered far more than the
