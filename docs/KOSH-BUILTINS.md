@@ -16,7 +16,7 @@ superseded — it was true of the R63 compiler, not of R64+.
 
 ## What `kosh` is
 
-`kosh name[capacity]` declares a growable array (Devanagari `कोश`);
+`kosh name[capacity]` declares a growable mala (Devanagari `कोश`);
 capacity is optional and defaults to 4. Logical length starts at 0 and
 `a[index]` reads/writes against that length. Capacity doubles on growth.
 
@@ -73,7 +73,7 @@ values remain in the backing buffer, unreachable through the API because
 all indexing is bounds-checked against the (now zero) length. Do **not**
 assume cryptographic erasure — zeroing the storage would be a separate
 feature. This is deliberately different from the library's `nighantu_rikta`,
-which zeroes the map's storage: `nighantu_rikta` closes a stale-segment hazard
+which zeroes the nighantu's storage: `nighantu_rikta` closes a stale-segment hazard
 in a caller-held buffer, while a `kosh`'s storage is never directly
 exposed to the caller.
 
@@ -104,9 +104,9 @@ its **own** diagnostic (R64 renamed the `peek`/`dequeue` messages; in R63
 all three printed pop's message):
 
 ```
-empty kosh_pop(k):     Sutram Error: kosh pop from empty array
-empty kosh_peek(k):    Sutram Error: kosh peek from empty array
-empty kosh_dequeue(k): Sutram Error: kosh dequeue from empty array
+empty kosh_pop(k):     Sutram Error: kosh pop from empty mala
+empty kosh_peek(k):    Sutram Error: kosh peek from empty mala
+empty kosh_dequeue(k): Sutram Error: kosh dequeue from empty mala
 ```
 
 All three exit 1. There is **no** `ok[0]` channel here, unlike the
@@ -120,11 +120,11 @@ Code that must survive an empty `peek`/`dequeue` must check
 - Wrong arity (e.g. `kosh_peek(v, 2)`, `kosh_enqueue(v)`): a parse error
   at the call site, exit 1. The builtins have fixed arity.
 
-## `kosh` vs the library's `list` / `queue`
+## `kosh` vs the library's `suchi` / `queue`
 
-| | `kosh` (compiler builtin) | `list` (library, `lib/list.smlib`) | `queue` (library, `lib/list.smlib`) |
+| | `kosh` (compiler builtin) | `suchi` (library, `lib/suchi.smlib`) | `queue` (library, `lib/suchi.smlib`) |
 |---|---|---|---|
-| Storage | compiler-managed growable array | library qword-cell list | library ring buffer |
+| Storage | compiler-managed growable mala | library qword-cell suchi | library ring buffer |
 | Element type | integer **or** binary64 (`kosh dasham`) | integers (qword cells) only | integers (qword cells) only |
 | Append | `kosh_push` / `kosh_enqueue` | `suchi_khip` / `chay_khip` | `avali_pravesh` |
 | Remove last | `kosh_pop` (O(1), aborts if empty) | `chay_apanay` (ok-channel) | — |
@@ -136,7 +136,7 @@ Code that must survive an empty `peek`/`dequeue` must check
 | Values flow into library functions? | **No** — no generic kosh parameter type | Yes | Yes |
 
 Which to use: `kosh` for typed arrays — especially `dasham` — and when
-compiler-managed growth is wanted. `list` for integer cell lists with the
+compiler-managed growth is wanted. `suchi` for integer cell lists with the
 library analytics (`suchi_shreni`, `suchi_laghu`, ...). `queue` for FIFO where
 O(1) dequeue matters (`kosh_dequeue` is O(n)). For FIFO over integers
 with survival on empty (ok-channel instead of abort), `queue` is the
