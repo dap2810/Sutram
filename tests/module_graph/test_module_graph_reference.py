@@ -18,19 +18,19 @@ class GraphContract(unittest.TestCase):
         self.module('d','prakriya shared() { prati 2 }\n')
         self.module('b','yoj d\nprakriya one() { prati shared() }\n')
         self.module('c','yoj d\nprakriya two() { prati shared() }\n')
-        self.module('a','yoj b\nayojan c\nprakriya top() { prati one()+two() }\n')
+        self.module('a','yoj b\nyoj c\nprakriya top() { prati one()+two() }\n')
     def test_diamond_one_visit(self):
         self.diamond()
         self.assertEqual(self.g.analyze(self.entry('yoj a\n')),['d','b','c','a'])
     def test_diamond_repeated_direct_import_one_visit(self):
         self.diamond()
-        self.assertEqual(self.g.analyze(self.entry('yoj a\nayojan d\nayojan a\n')),['d','b','c','a'])
+        self.assertEqual(self.g.analyze(self.entry('yoj a\nyoj d\nyoj a\n')),['d','b','c','a'])
     def test_deterministic_sibling_order(self):
         self.diamond()
-        self.module('a','yoj c\nayojan b\nprakriya top() { prati 0 }\n')
+        self.module('a','yoj c\nyoj b\nprakriya top() { prati 0 }\n')
         self.assertEqual(self.g.analyze(self.entry('yoj a\n')),['d','c','b','a'])
     def test_missing_diagnostic_has_file_and_line(self):
-        entry=self.entry('# comment\nayojan missing\n')
+        entry=self.entry('# comment\nyoj missing\n')
         with self.assertRaises(GraphDiagnostic) as cm:self.g.analyze(entry)
         self.assertEqual(cm.exception.kind,'E_MODULE_MISSING')
         self.assertEqual(cm.exception.line,2)
@@ -60,15 +60,15 @@ class GraphContract(unittest.TestCase):
     def test_unqualified_conflict_in_modern_mode(self):
         self.module('m','# sutram-module-v1\nniryat same\nprakriya same() { prati 1 }\n')
         self.module('n','# sutram-module-v1\nniryat same\nprakriya same() { prati 2 }\n')
-        with self.assertRaises(GraphDiagnostic) as cm:self.g.analyze(self.entry('# sutram-module-v1\nayojan m\nayojan n\n'))
+        with self.assertRaises(GraphDiagnostic) as cm:self.g.analyze(self.entry('# sutram-module-v1\nyoj m\nyoj n\n'))
         self.assertEqual(cm.exception.kind,'E_EXPORT_COLLISION')
     def test_qualified_collision_is_safe(self):
         self.module('m','# sutram-module-v1\nniryat same\nprakriya same() { prati 1 }\n')
         self.module('n','# sutram-module-v1\nniryat same\nprakriya same() { prati 2 }\n')
-        self.assertEqual(self.g.analyze(self.entry('# sutram-module-v1\nayojan m@left\nayojan n@right\n')),['m','n'])
+        self.assertEqual(self.g.analyze(self.entry('# sutram-module-v1\nyoj m@left\nyoj n@right\n')),['m','n'])
     def test_alias_conflict_diagnostic(self):
         self.module('m','prakriya f() { prati 1 }\n');self.module('n','prakriya f() { prati 2 }\n')
-        with self.assertRaises(GraphDiagnostic) as cm:self.g.analyze(self.entry('yoj m@x\nayojan n@x\n'))
+        with self.assertRaises(GraphDiagnostic) as cm:self.g.analyze(self.entry('yoj m@x\nyoj n@x\n'))
         self.assertEqual(cm.exception.kind,'E_IMPORT_ALIAS')
     def test_legacy_export_compatibility(self):
         self.module('m','prakriya public() { prati 1 }\nprakriya internal() { prati 2 }\n')
