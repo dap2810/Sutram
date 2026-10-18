@@ -205,25 +205,25 @@ BN_KOSHDEQUEUE equ 45 ; R63 kosh_dequeue(k) -> first element (FIFO)
 ; ============================================================
 section .data
 str_dot_exe  db ".exe", 0
-    msg_usage    db "Sutram — the complete thread", 10
+    msg_usage    db "Sutram - sampurna sutra", 10
                   db "Usage:", 10
                   db "  sutram <input.sm> <output.bin>          compile", 10
                   db "  sutram --check <input.sm>               parse/check, no output binary", 10
                   db "  sutram --lang <pack> <in.sm> <out.bin>  with language pack", 10
                   db "  sutram -i                               interactive shell", 10
                   db "  sutram --version                        version info", 10, 0
-    msg_version  db "Sutram 1.0 (v29) — the complete thread", 10
-                  db "Sanskrit-keyword language -> x86-64 machine code", 10, 0
+    msg_version  db "Sutram 1.0 (v160) - sampurna sutra", 10
+                  db "Samskrita-mukhya bhasha -> x86-64 yantra-code", 10, 0
     r48_flag db "--check",0
     r48_msg_near db ": Sutram Error [E_PARSE]: near '",0
     r48_msg_end db "'",10,0
-    r48_msg_ok db "Sutram check: OK (no output binary)",10,0
-    r48_msg_errors db "Sutram check: errors found; no output binary",10,0
+    r48_msg_ok db "Sutram janch: OK (nirgat binary nahi)",10,0
+    r48_msg_errors db "Sutram janch: dosh mile; nirgat binary nahi",10,0
     r48_msg_eof db "<EOF>",0
-    r50_msg_setchar_arity db "Sutram Error: set_char requires exactly 3 arguments",10,0
+    r50_msg_setchar_arity db "Sutram Error: akshar_rakh requires exactly 3 arguments",10,0
     r52_msg_dvaram_arity db "Sutram Error: dvaram requires 2 or 3 arguments",10,0
-    r52_msg_charat_arity db "Sutram Error: char_at requires exactly 2 arguments",10,0
-    r52_msg_charcode_arity db "Sutram Error: char_code requires 1 or 2 arguments",10,0
+    r52_msg_charat_arity db "Sutram Error: akshar requires exactly 2 arguments",10,0
+    r52_msg_charcode_arity db "Sutram Error: aksharank requires 1 or 2 arguments",10,0
     r54_msg_arity db "Sutram Error: builtin argument count does not match signature",10,0
     ; R54 builtin signature min,max in declaration ID order.
 r54_builtin_arity_table:
@@ -279,15 +279,15 @@ r54_builtin_arity_table:
     msg_err_near db " near token '", 0
     msg_err_end  db "'", 10, 0
     msg_err_eof  db "end of file", 0
-    msg_err_hint db "Hint: check the keyword spelling and syntax near this spot.", 10, 0
+    msg_err_hint db "Sanket: is sthan par shabd aur vyakaran dekho.", 10, 0
     msg_err_colon db ":", 0
     msg_diag_indent db "  ", 0
     msg_diag_space db " ", 0
     msg_diag_tab db 9, 0
     msg_diag_nl db 10, 0
     msg_diag_caret db "^", 10, 0
-    msg_err_arg_limit db "Hint: functions accept at most 6 arguments.", 10, 0
-    msg_err_duplicate_func db "Hint: duplicate function definition (module/program name collision).", 10, 0
+    msg_err_arg_limit db "Sanket: prakriya adhiktam 6 tark lete hain.", 10, 0
+    msg_err_duplicate_func db "Sanket: dohri prakriya paribhasha (naam takkar).", 10, 0
     msg_duplicate_func db "Sutram Error: duplicate function definition: ", 0
     msg_undefined_func db "Sutram Error: undefined function: ", 0
     msg_array_oob db "Sutram Error: array index out of bounds", 10, 0
@@ -399,8 +399,8 @@ r54_builtin_arity_table:
 
     cur_lang_id dq 0
                   db "      Run 'sutram -i' and type 'sahayata' for help.", 10, 0
-    msg_lang_ok  db "Language pack loaded: ", 0
-    msg_lang_fail db "Warning: language pack not found: ", 0
+    msg_lang_ok  db "Bhasha pak load hua: ", 0
+    msg_lang_fail db "Chetavani: bhasha pak nahi mila: ", 0
     msg_nl       db 10, 0
     str_flag_i   db "-i", 0
     str_flag_shell db "--shell", 0
@@ -433,19 +433,19 @@ r54_builtin_arity_table:
     str_help1    db "sahayata", 0
     str_help2    db "help", 0
     str_sarvam   db "sarvam", 0
-    msg_shell_banner db "Sutram Shell v1.0 — the complete thread", 10
-                      db "Type a Sutram statement and press Enter. It runs instantly.", 10
-                      db "Commands: sahayata (help) | nirgat (exit) | sarvam (show session)", 10, 10, 0
+    msg_shell_banner db "Sutram khol v1.0 - sampurna sutra", 10
+                      db "Sutram kathan likho aur Enter dabao. Turant chalega.", 10
+                      db "Aadesh: sahayata (sahay) | nirgat (nikas) | sarvam (dekho)", 10, 10, 0
     msg_shell_prompt db "sutra> ", 0
-    msg_shell_bye db "Namaste! Session ended.", 10, 0
-    msg_shell_help db "Sutram Shell help:", 10
-                     db `  likha("Namaste\n")            print text`, 10
-                     db "  vitti x = 5             declare variable", 10
-                     db "  likha(x + 3)            print expression", 10
-                     db "  punaravartana i = 0 to 5 { likha(i) }   loops", 10
-                     db "  pankti arr[5]           declare array", 10
-                     db "  sarvam                  show full session program", 10
-                     db "  nirgat                  exit the shell", 10, 0
+    msg_shell_bye db "Namaste! Satra samapt.", 10, 0
+    msg_shell_help db "Sutram khol sahay:", 10
+                     db `  likha("Namaste\n")            likha paath`, 10
+                     db "  vitti x = 5             char ghoshan", 10
+                     db "  likha(x + 3)            vyakti likha", 10
+                     db "  chakra i = 0 tak 5 { likha(i) }   aavartan", 10
+                     db "  mala arr[5]             mala ghoshan", 10
+                     db "  sarvam                  pura karyakram dekho", 10
+                     db "  nirgat                  khol se nikal", 10, 0
     repl_prog_hdr db "mukhya() {", 10, 0
     repl_prog_ftr db 10, "}", 10, 0
     msg_open_err  db "Error: cannot open input file", 10, 0
@@ -755,7 +755,7 @@ r54_builtin_arity_table:
     bn_lkhb      db "lkhb", 0
     bn_shabda    db "shabda", 0
 
-    msg_namespace_error db "Sutram Error: invalid namespaced ayojan (use module@alias, max 31 alias bytes)", 10, 0
+    msg_namespace_error db "Sutram Error: invalid namespaced yoj (use module@alias, max 31 alias bytes)", 10, 0
     msg_namespace_module_missing db "Sutram Error: namespaced module file not found", 10, 0
     msg_namespace_alias_reuse db "Sutram Error: namespaced alias already assigned to another module", 10, 0
     r51_alias_conflict db ": Sutram Error [E_MODULE_ALIAS_REUSE]: namespaced alias already assigned to another module",10,0
@@ -2940,7 +2940,7 @@ mg_w_sutra:    db "sutra", 0
 mg_e_depth:   db "Sutram Error [E_MODULE_DEPTH]: import depth exceeded", 10, 0
 r51_colon_space: db ": ", 0
 mg_e_valias1: db "Sutram Error [E_MODULE_V1_ALIAS]: v1 module '", 0
-mg_e_valias2: db "' must be imported with an alias: ayojan ", 0
+mg_e_valias2: db "' must be imported with an alias: yoj ", 0
 mg_e_valias3: db "@alias", 10, 0
 mg_e_limit:   db "Sutram Error [E_MODULE_LIMIT]: too many modules or imports", 10, 0
 mg_root_name: db "__root__", 0
