@@ -1,0 +1,6 @@
+# R2-WS1a golden: a deliberate syntax error compiled with --lang hindi must
+# print the Hindi diagnostic as real Devanagari (not double-encoded bytes).
+# This file is expected to FAIL to compile.
+mukhya() {
+    vitti x = 
+}

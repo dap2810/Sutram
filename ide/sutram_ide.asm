@@ -139,37 +139,39 @@ section .data
     s_tmp_out    db "/tmp/.sutram_ide.out", 0
 
     ; keyword table
+    ; R2-WS2b: the 28 keywords of src/sutram_compiler.asm kw_table (v157+)
+    ; plus the three print/read builtins the highlighter has always coloured.
     kw_count     dq 31
     kw_0  db "mukhya",0
     kw_1  db "vitti",0
     kw_2  db "anka",0
     kw_3  db "yadi",0
-    kw_4  db "anyatra",0
+    kw_4  db "anya",0
     kw_5  db "yavat",0
-    kw_6  db "punaravartana",0
-    kw_7  db "pratiyati",0
+    kw_6  db "chakra",0
+    kw_7  db "prati",0
     kw_8  db "prakriya",0
     kw_9  db "likha",0
     kw_10 db "purna",0
     kw_11 db "shunya",0
     kw_12 db "sutra",0
     kw_13 db "krama",0
-    kw_14 db "uddeshya",0
+    kw_14 db "agrim",0
     kw_15 db "guna",0
     kw_16 db "bhavana",0
-    kw_17 db "pankti",0
-    kw_18 db "srijana",0
-    kw_19 db "nishedha",0
+    kw_17 db "mala",0
+    kw_18 db "ganana",0
+    kw_19 db "abhava",0
     kw_20 db "rachana",0
-    kw_21 db "ayojan",0
-    kw_22 db "parigrah",0
+    kw_21 db "yoj",0
+    kw_22 db "satya",0
     kw_23 db "grahan",0
-    kw_24 db "to",0
+    kw_24 db "tak",0
     kw_25 db "shabda",0
     kw_26 db "dasham",0
     kw_27 db "kosh",0
     kw_28 db "kuru",0
-    kw_29 db "nishkriya",0
+    kw_29 db "yantra",0
     kw_30 db "sankhya",0
     kw_ptrs:
     dq kw_0, kw_1, kw_2, kw_3, kw_4, kw_5, kw_6, kw_7, kw_8, kw_9
