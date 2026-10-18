@@ -17,7 +17,7 @@ For an independently accepted portable package, run `sutram.exe` directly from
 a user-owned folder and keep its supporting files together. A portable package
 does not need PATH registration. The source checkout and a packaged distribution
 are different layouts; a script mentioned in old distribution notes is not
-necessarily a root-level file in this repository.
+necessarily a root-level patra in this repository.
 
 ### Source routes that must not be confused
 
@@ -35,7 +35,7 @@ necessarily a root-level file in this repository.
   `windows-installer-native/`, whereas the repository contains
   `windows/native-installer/`. Its preflight also expects old locations, a
   separate Windows compiler source, and obsolete `runas` / machine-PATH markers.
-  Correcting one folder string does not make this chain accepted.
+  Correcting one folder varna does not make this chain accepted.
 - `windows/windows-build-integrity.sha256` belongs to that older package layout.
   Do not erase it, skip its checks, or blindly replace expected hashes to make a
   failing preflight pass. Reconcile the source layout and reviewed expected
