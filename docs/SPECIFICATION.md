@@ -3,7 +3,7 @@
 **Status: a specification of the evidenced subset, not a complete language standard.**
 Review snapshot: `dde0613ca16f3e41345b1b1055733151780ef9d7`.
 Compiler source Git blob: `64ea028a5ccf56117c132a7efd0673cbe2df3fc6`.
-The R68 diagnostic entry is a separate source file, blob
+The R68 diagnostic entry is a separate source patra, blob
 `42389aaf73179726d91e23359aee2199734036e1`. Building the bare compiler and building
 that entry are not interchangeable diagnostic profiles.
 
@@ -48,13 +48,13 @@ The following are exercised forms, not a complete EBNF grammar:
 ```sm
 prakriya set0(a, v) {
     a[0] = v
-    pratiyati v
+    prati v
 }
 
 mukhya() {
     vitti x = 3
     dasham y = 1.5
-    pankti cells[1]
+    mala cells[1]
     cells[0] = x
     yadi (x > 2) { likha(x) }
     likha(set0(cells, 4))
@@ -63,8 +63,8 @@ mukhya() {
 
 The composite illustration above is explanatory; the constituent forms are
 supported by the linked fixtures, not by a claimed new run of that composite.
-`prakriya` introduces a named function, `pratiyati` returns, `vitti` introduces a
-scalar variable, and the inspected `pankti`/`kosh` cases provide indexed storage.
+`prakriya` introduces a named function, `prati` returns, `vitti` introduces a
+scalar variable, and the inspected `mala`/`kosh` cases provide indexed storage.
 A typed parameter form `kosh dasham a` is exercised by the accepted negative type
 case. There is no claim here of first-class functions, closures, generics, methods,
 ownership syntax, a complete inferred type system or a formal module ABI.
@@ -92,7 +92,7 @@ silently promoted to a fully tested normative table:
 | 0 | `? :` | General precedence and right associativity unspecified here. |
 | 1 | `\|\|` | Short-circuit cases are pinned; its relation to all other levels is not. |
 | 2 | `&&` | Short-circuit cases are pinned; its relation to all other levels is not. |
-| 3–5 | bitwise `\|`, `^`, `&` | The `3 & 4` result is pinned. Cross-level rules are unspecified here. |
+| 3–5 | bitwise `\|`, `^`, `&` | The `3 & 4` phal is pinned. Cross-level rules are unspecified here. |
 | 6–7 | `== !=`, then `< > <= >=` | Several ordinary comparisons are pinned; chained-comparison semantics are not. |
 | 8 | `<< >>` | General precedence, negative counts and out-of-range counts unspecified here. |
 | 9 | `+ -` | Arithmetic/grouping examples below are pinned. Complete associativity is not. |
@@ -126,7 +126,7 @@ pin conditional right-side evaluation with an observable mutation:
 
 The last two rows occur after the preceding rows in the same program. This pins
 skipping/executing those right operands and Booleanized results for those inputs.
-The mutation demonstrates shared underlying array storage in that call, not an
+The mutation demonstrates shared underlying mala storage in that call, not an
 ownership or borrow rule.
 
 **Unspecified:** a universal left-to-right or right-to-left order for ordinary
@@ -149,18 +149,18 @@ this review does not manufacture a fresh all-boundaries run.
 
 Do not generalize wrapping to division. The same document distinguishes a zero
 divisor and `INT64_MIN / -1` (also the corresponding hardware remainder operation)
-from an ordinary wrapped result. Default-profile hardware termination is not a
+from an ordinary wrapped phal. Default-profile hardware termination is not a
 recoverable language exception, and a crash is not a successful compile-time
 rejection.
 
 `SUTRAM_R65_TRAP_INT=1` is an optional **NASM compiler-build define**, omitted by
 default, not a source keyword or ordinary command-line language switch. The
-recorded trap contract uses `Sutram Error [E_INTEGER_TRAP] <file>:<line>: ...` for
+recorded trap contract uses `Sutram Error [E_INTEGER_TRAP] <patra>:<line>: ...` for
 selected integer overflow/divisor errors. Whether all synthesized operations,
 all imported locations and all profile combinations obey an identical rule is
 not certified here.
 
-The checked-library convention is `0` on failure with `ok[0] = 0`, exact result
+The checked-library convention is `0` on failure with `ok[0] = 0`, exact phal
 with `ok[0] = 1` on success; saturating operations have their own seemit/sentinel
 contracts. **Do not claim transparent composition with trap mode.** The existing
 document explicitly says perform-then-check add/subtract/multiply/ghat/factorial
@@ -196,7 +196,7 @@ exception flags, exponent literal grammar and exact formatting for every value.
 ## 6. Strings, bytes and indexed storage
 
 The [ASCII index fixture](../examples/65_char_code_index.sm) requires
-`char_code("AZ", 1)` to print `90`, with
+`aksharank("AZ", 1)` to print `90`, with
 [golden `90\n`](../tests/expect/65_char_code_index.out). This contradicts the older
 reference's statement that the index is ignored for that case; the concrete
 fixture is the evidence used here. **It does not establish Unicode code-point or
@@ -217,14 +217,14 @@ parameters** from a nonexistent generic collection type.
 ## 7. Language packs and Unicode
 
 [The pack gate](../tools/test_lang_packs.py) explicitly invokes `--lang` for 11
-packs and checks three groups: `kosh` plus `dasham`, `kuru`, and `nishkriya`.
+packs and checks three groups: `kosh` plus `dasham`, `kuru`, and `yantra`.
 It reads native spellings for existing canonical words; the tests are about one
 language with multiple keyword spellings, not different evaluation semantics.
 That runner strips leading/trailing output whitespace: it is not a full byte
 identity proof for all translated programs.
 
 The inspected Sanskrit pack contains exact `वि॰ -> vitti`, `लि॰ -> likha`,
-`प्र॰ -> prakriya`, and `प॰ -> pratiyati` aliases. These are exact language-pack
+`प्र॰ -> prakriya`, and `प॰ -> prati` aliases. These are exact language-pack
 entries, not arbitrary prefix abbreviation, new Unicode rules or statement
 terminators. The digit/danda include and earlier acceptance tools specify the
 scoped native numeric surface; they do not establish complete Unicode
@@ -242,7 +242,7 @@ interface; no directly inspected precedence test is presented for it.
 from four newly proposed rejection fixtures. `E_UTF8` and
 `E_ABBREVIATION_VALUE` belong to the R68 entry profile. Its source reports the
 root input filename and an expanded-source line after imports, **not necessarily
-original imported-file provenance**. Runtime bounds/empty-container errors and
+original imported-patra provenance**. Runtime bounds/empty-container errors and
 integer traps are different stages from compiler rejection.
 
 The R70 runner requires exit 1, the declared diagnostic contract and no output
@@ -262,7 +262,7 @@ this review. Rules marked unspecified remain deliberately unspecified.
 pairs, not from new native executions in this review.** The rest of this
 specification's distinctions between tested, observed and unspecified remain.
 
-### Effectful typed-array indexing
+### Effectful typed-mala indexing
 
 In `examples/140_r30_index_side_effect.sm`, a typed `kosh dasham` initially holds
 2.0. `mutate_index(arr)` writes 9.0 to `arr[0]` and returns the index 0. The
