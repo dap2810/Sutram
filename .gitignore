@@ -13,3 +13,4 @@ ret/
 inbox/
 *.zip
 payload.manifest.sha256
+.write-probe
