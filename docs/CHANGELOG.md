@@ -1,3 +1,36 @@
+## v166 - REGRESSION FIXED (v164 reverted 27 compiler strings); Claude's ROUND-01 arrived
+
+**Claude's first delivery included `00-READ-FIRST-v164-REGRESSION.md`, and it was right.** My v164 commit
+uploaded `src/sutram_compiler.asm` from a **stale working copy**, silently reverting **27 string lines** to
+their pre-rename English and old keywords. On main:
+
+- `--version` said **`Sutram 1.0 (v29)`** - about 130 versions behind
+- the builtin error messages said **`char_at`/`char_code`/`set_char`** - builtins that no longer exist
+- the shell help taught **`punaravartana i = 0 to 5`** - which does not compile
+- the banners, hints and `--check` summary were back to English
+- **the suite was 181 PASS / 6 FAIL, not 187**
+
+**All 27 strings restored.** Verified by building from the authoritative file: `--version` reads
+`Sutram 1.0 (v160) - sampurna sutra`, and **suite 187/4, packs 33/33, proof_lib 191/191, proof_props 86/86,
+layers 14/9/1**.
+
+**This is the same mistake that clobbered the CHANGELOG twice: I uploaded a working copy instead of reading
+the current file first.** It is the most serious defect I have caused in this project - the changelog said
+"suite still 187" while main was at 181. **The rule from now on: never upload a file without reading the
+current version from main first.**
+
+**Claude's other findings** (five workstream documents, verified separately):
+- **The diagnostics inventory**: 80 visible strings, **67 still English**. Four real defects found - all 50
+  pack-localized strings are **double-UTF-8-encoded** (users see mojibake), **a missing input file exits 0**,
+  `--check` cannot combine with `--lang`, and **normal-mode line numbers are wrong whenever a module is
+  imported**.
+- **One stale constant**: `r49_print_module_location` still searches for `ayojan`, so every module-graph
+  error prints column `?`.
+- **The terminal IDE `ide/sutram_ide.asm` is still stale** (v163 fixed only the X11 GUI), and
+  `tests/module_graph` is 6/18 on main.
+- **15 code samples compiled**, 13 pass; `LANGUAGE-REFERENCE.md` still uses `to`.
+- **A real 214-line program** using five library modules - compiles, runs, byte-identical from two cwds.
+
 ## v165 - the books' code samples tested; the loop keyword was still `to`
 
 **I compiled every code sample in all nine book editions.** The English book's three for-loop samples used
