@@ -1,3 +1,26 @@
+## v163 - the IDE's syntax highlighter was still colouring the old keywords
+
+Found while working my own stream. The GUI's keyword table - what the editor colours as a keyword - still
+held **eight old spellings**: `anyatra`, `punaravartana`, `pratiyati`, `uddeshya`, `pankti`, `srijana`,
+`ayojan`, `parigrah`. So the IDE **coloured words that no longer compile, and left the real keywords
+uncoloured** - `chakra`, `mala`, `yoj`, `agrim`, `satya` and the rest were plain text.
+
+That is a user-visible defect the test suite could not catch: the GUI tests check that the editor draws and
+responds, not which words it colours.
+
+**Fixed:** the table now carries the current vocabulary - `anya`, `chakra`, `prati`, `agrim`, `mala`,
+`ganana`, `yoj`, `satya`, `abhava`, `yantra`, `tak`, `bhavana`. Verified that every keyword in a
+representative program (`mukhya`, `vitti`, `chakra`, `tak`, `likha`, `yadi`, `anya`) is present.
+
+**The six Devanagari rows needed no change** - they hold `mukhya`, `vitti`, `anka`, `yadi`, `yavat`,
+`likha`, all keywords that survived the rename. Checked rather than assumed.
+
+**GUI suite 18/18.**
+
+**This is the fifth place the rename's tail has surfaced** - code, comments, HTML, prose, and now the
+IDE's own keyword table. Each was found by a different means, and none by the gates. The lesson: after a
+rename, **every table that lists the names must be audited, not just every file that uses them.**
+
 ## v162 - the Claude channel opens; prose the rename had corrupted is repaired
 
 **Two new channels created**, as the owner asked: **`Sarvam-to-Claude/`** (the brief) and
