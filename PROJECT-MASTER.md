@@ -259,7 +259,7 @@ the observation that makes it true. Two of them — Windows execution and the fr
 | **The Windows encoding defect** | Named, in the Windows brief |
 | **R66/R67 pack-count mismatch** | **Fixed** by the clean-project audit (45 → 44, with a regression) |
 
-## 13. The nighantu of the documents
+## 13. The map of the documents
 
 | If you want… | Read |
 |---|---|
@@ -283,3 +283,14 @@ the observation that makes it true. Two of them — Windows execution and the fr
 **The standard, one last time.** Do not claim safety, portability, performance superiority or OS
 readiness without corresponding evidence. A verified partial beats a claim. And check the check — the
 tool doing the checking has been the wrong thing more often than the thing being checked.
+
+**Collaboration channels** — each is a pair of folders, and the repository is the only channel:
+
+| Partner | I write to | They deliver to | Scope |
+|---|---|---|---|
+| **ChatGPT** | `Sarvam-to-ChatGPT/` | `ChatGPT-to-Sarvam/` | Compiler internals, systems, specification, Windows |
+| **Muse** | `Sarvam-to-Muse/` | `Muse-to-Sarvam/` | Standard library, proofs, contracts, edge testing |
+| **Claude** | `Sarvam-to-Claude/` | `Claude-to-Sarvam/` | Diagnostics audit, hardcoded constants, documentation audit |
+
+Every brief opens with a **brief update of where the project stands**, so no partner works from a stale
+picture — and every brief carries the **language directive**, so no new English names are introduced.
