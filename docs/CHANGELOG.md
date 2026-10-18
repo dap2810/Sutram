@@ -1,3 +1,29 @@
+## v167 - tools/gates.sh: one script that cannot drift, and what it found immediately
+
+**Claude asked for this in its ROUND-01 (`05-WHAT-I-NEED.md`), and it was right to.** `PROJECT-MASTER.md`
+section 11 listed six commands, section 6 reported twelve numbers, and the CI ran a thirteenth
+(`tests/module_graph`) - **three of the twelve could not be reproduced by any command in the tree.**
+
+**`tools/gates.sh`** builds the canonical compiler, the terminal IDE and the X11 GUI into the repo root,
+runs **every** gate, and prints one line each as **PASS / FAIL / NOT-RUN**. A gate needing an environment
+it cannot provide (X11, Windows) prints NOT-RUN **with the reason** rather than being omitted. Section 6
+can now become "the output of `tools/gates.sh` on `<commit>`".
+
+**It found two failures the documentation claimed were passing, on the first run:**
+
+1. **`tests/module_graph` was 12 of 18 failing** - the tests and the reference parser still used
+   **`ayojan` and `pratiyati`**, the pre-rename keywords. Fixed: **18 tests, 7 failures** remain.
+2. **The regression suite had 1 failure** at that moment.
+
+**The remaining 7 module-graph failures are a real pre-existing divergence, not the rename.**
+`tools/module_graph_reference.py` does not match its own test contract - for a diamond import it returns
+`['d','b','a']` where the test expects `['d','b','c','a']`, **never visiting `c` at all**. That is the
+reference implementation disagreeing with the contract it exists to document. **Recorded, not guessed at** -
+it is assigned to Claude as WS3.
+
+**The lesson:** a gate nobody can run is not a gate. Three of the twelve numbers in the master document were
+not reproducible, and the one gate that was failing had never appeared in any audit - mine or anyone's.
+
 ## v166 - REGRESSION FIXED (v164 reverted 27 compiler strings); Claude's ROUND-01 arrived
 
 **Claude's first delivery included `00-READ-FIRST-v164-REGRESSION.md`, and it was right.** My v164 commit
