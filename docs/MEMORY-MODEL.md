@@ -23,7 +23,7 @@ Likewise, a library's `ok[0]` convention is error reporting, not a lifetime proo
 | Area | Inspected evidence / present behavior | Not established |
 |---|---|---|
 | Scalars and function calls | The compiler describes qword values, register/stack locations and generated frame restoration. | No complete language lifetime/alias contract follows from a register convention. |
-| Indexed storage | The mala fixture used by `set0` is mutated through a function argument and read by its caller. | No ownership transfer, exclusive borrow or copy-by-value collection guarantee. |
+| Indexed storage | The array fixture used by `set0` is mutated through a function argument and read by its caller. | No ownership transfer, exclusive borrow or copy-by-value collection guarantee. |
 | Typed `kosh` parameters | The accepted example 120 rejects raw/integer `kosh` passed to `kosh dasham`. The push emission explicitly rejects growth on a kosh parameter. | This is not generic collection typing or complete alias safety. |
 | `kosh` length/capacity | The inspected compiler uses logical length at pointer minus 16 and capacity at pointer minus 8; payload cells are qwords. | Treat those offsets as implementation observations, not a supported public ABI. |
 | Growth | The inspected push path allocates a new capacity, copies existing cells and updates the named variable's pointer. | No reclamation of the old buffer appears in that path. Allocation failure and huge-capacity arithmetic are not certified here. |
@@ -66,7 +66,7 @@ a proof that no reclamation occurs anywhere in the repository.
 ## 3. Lifetimes, aliases and invalidation
 
 A pointer/value copy is not presently checked as an ownership transfer. A caller
-can observe mutation through the mala argument in example 89; it should not be
+can observe mutation through the array argument in example 89; it should not be
 read as an exclusive borrowing guarantee. The growth-on-parameter rejection is
 specifically motivated in the source by pointer replacement: replacing the
 callee's pointer would not update the caller's pointer-by-value view.
