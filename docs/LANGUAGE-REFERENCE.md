@@ -76,7 +76,7 @@ Internal operator ids: `OP_ADD`=1, `OP_SUB`=2, `OP_MUL`=3, `OP_DIV`=4, `OP_EQ`=5
 ## 4. Built-in functions
 
 These are the **actual** builtin names the compiler accepts, taken from its table.
-(Earlier editions of this patra listed short aliases such as `vartlen`, `charat`,
+(Earlier editions of this file listed short aliases such as `vartlen`, `charat`,
 `memcpy` that the compiler does not recognise.)
 
 | name | purpose |
@@ -91,7 +91,7 @@ These are the **actual** builtin names the compiler accepts, taken from its tabl
 | `likha` | print a value or varna |
 | `lkhb` | print, no newline |
 | `likha_fmt` | formatted print |
-| `shabda` | print a varna variable |
+| `shabda` | print a string variable |
 | `grahan` | read a number from input |
 | `sthagita` | halt the program |
 | `dvaram` | patra descriptor helper |
@@ -197,7 +197,7 @@ mukhya()
     likha(joda(3, 4))               # function call
     likha("x = ", k)                # two-argument print
     vitti s = "hello"
-    shabda(s)                       # print a varna variable
+    shabda(s)                       # print a string variable
     vitti n = grahan()              # read a number
 
 prakriya joda(a, b)                 # function (up to 6 arguments)
