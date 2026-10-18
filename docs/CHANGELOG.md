@@ -1,3 +1,30 @@
+## v168 - three more errors of mine, caught by Claude; two wrong claims corrected
+
+Claude's ROUND-02 found **three errors of mine**, all verified and fixed.
+
+**1. My v167 module_graph fix was incomplete - and my changelog claim about it was WRONG.** I wrote that the
+seven remaining failures were *"a real pre-existing divergence"* in `tools/module_graph_reference.py`. **That
+was not correct.** The seven stale names were **still `ayojan`**, sitting after a **literal `\n` escape** in
+the Python source - so the character before them was the letter `n`, which my lookbehind
+`(?<![A-Za-z0-9_])` rejected. Fixed with a `\n`-aware pass. **`tests/module_graph` is now 18/18.** The
+tests were stale; the model was fine. **I asserted a cause I had not verified, and Claude proved it wrong.**
+
+**2. My `tools/gates.sh` reported the suite as FAIL on every run.** `tests/run_tests.py` **exits non-zero
+even when every test passes**, and my script judged each gate by its exit code. Fixed: the exit code is no
+longer consulted; each gate's result is parsed from its output. Also fixed the X11 detection - it checked for
+a socket the tests create themselves, so it now checks for the socket directory.
+
+**`tools/gates.sh` now reads: 9 PASS, 0 FAIL, 1 NOT-RUN** (Windows only, which cannot run here and has never
+been run anywhere).
+
+**3. The `--version` number.** Recorded by Claude as still open; it is on the list.
+
+**Claude's ROUND-02 delivery is on branch `claude/round-02`, draft PR #31** - all four defects fixed
+(50 pack strings re-encoded with bytes before/after, exit 1 on a missing file, `--check` with `--lang`, and
+correct line numbers on imports), the `r49` constant, the terminal IDE, module_graph, and **83 diagnostic
+strings translated with 28 goldens re-recorded**. Its gates on the branch: **suite 188/4** (187 plus one new
+golden), module_graph 18/18, everything else green. **To be verified and merged next.**
+
 ## v167 - tools/gates.sh: one script that cannot drift, and what it found immediately
 
 **Claude asked for this in its ROUND-01 (`05-WHAT-I-NEED.md`), and it was right to.** `PROJECT-MASTER.md`
