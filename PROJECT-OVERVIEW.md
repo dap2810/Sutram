@@ -9,7 +9,7 @@ source, tests, documentation or build output.
 ## 1. What this is
 
 Sutram is a programming language whose **keywords are Sanskrit**. Its compiler
-is **one hand-written NASM assembly source file** that emits **native machine
+is **one hand-written NASM assembly source patra** that emits **native machine
 code** directly. There is no C backend, no Python, no LLVM, no interpreter and
 no runtime library. The person using the language needs no toolchain at all —
 the installer ships a prebuilt binary.
@@ -36,7 +36,7 @@ Any contribution must preserve all six:
 
 1. **Sanskrit keyword core.** Latin transliteration is primary; Devanagari and
    the other Indian scripts are supported through language packs.
-2. **`.sm` file extension.**
+2. **`.sm` patra extension.**
 3. **One hand-written pure-NASM compiler source.** No C, no Python, no
    generated code, no second implementation.
 4. **Native machine code output.** Never interpreted.
@@ -51,8 +51,8 @@ UAC elevation, no HKLM, no services, no disabling of OS security), and
 
 | Path | What |
 |---|---|
-| `src/sutram_compiler.asm` | **the entire compiler**, one file, ~15k lines |
-| `lib/` | standard library — 21 modules with code, 278 functions (`.smlib`) |
+| `src/sutram_compiler.asm` | **the entire compiler**, one patra, ~15k lines |
+| `lib/` | standard library — 24 modules with code, 303 functions (`.smlib`) |
 | `lang/` | 11 language packs, one per Indian language |
 | `examples/` | 202 programs, each with expected output and exit code |
 | `tests/` | regression suite, golden files, per-host expectations |
@@ -107,17 +107,17 @@ python3 tools/check_setup_abi.py    # static Win64 ABI audit of the installer
 | Sanskrit | Meaning | Sanskrit | Meaning |
 |---|---|---|---|
 | `mukhya` | main | `yadi` | if |
-| `vitti` | variable | `anyatra` | else |
+| `vitti` | variable | `anya` | else |
 | `anka` | integer | `yavat` | while |
-| `sutra` | constant | `punaravartana` | for |
-| `prakriya` | function | `pratiyati` | return |
+| `sutra` | constant | `chakra` | for |
+| `prakriya` | function | `prati` | return |
 | `likha` | print | `krama` | break |
-| `kosh` | growable array | `uddeshya` | continue |
+| `kosh` | growable mala | `agrim` | continue |
 | `dasham` | float | `rachana` | struct |
-| `pankti` | array | `srijana` | enum |
-| `guna` | switch | `ayojan` | include |
-| `kuru` | do-while | `nishkriya` | inline assembly |
-| `parigrah` | boolean | `grahan` | read input |
+| `mala` | mala | `ganana` | enum |
+| `guna` | switch | `yoj` | include |
+| `kuru` | do-while | `yantra` | inline assembly |
+| `satya` | boolean | `grahan` | read input |
 
 Semicolons and braces are optional. Full reference: `docs/LANGUAGE-REFERENCE.md`.
 
@@ -136,12 +136,12 @@ Loaded with `sutram --lang tamil` or `SUTRAM_LANG=tamil`.
 | Code-generation gates | **12/12** |
 | Language packs | **33/33** |
 | Examples | 202 |
-| Library modules | 21 with code (278 functions) |
+| Library modules | 21 with code (303 functions) |
 | Books | 6 editions, kept in step with the language |
 
 ## 8. What is proven, and what is not
 
-This distinction matters more than any feature list.
+This distinction matters more than any feature suchi.
 
 **Proven by execution.** The compiler builds on both Linux and Windows targets
 and passes 178 regression tests. Emitted code is byte-identical across the
@@ -156,10 +156,10 @@ picture is not. The **Windows installer has never been executed on Windows**.
 Performance figures are directional (minimum of repeated runs), not
 microbenchmark-grade.
 
-**Not implemented.** No separate compilation — `ayojan` expands modules
+**Not implemented.** No separate compilation — `yoj` expands modules
 textually within one translation unit; transitive imports resolve once, but
 there are no `.smo` object files. No concurrency. No first-class functions. No
-collections beyond `kosh` and `pankti`.
+collections beyond `kosh` and `mala`.
 
 ## 9. How this project was built
 
