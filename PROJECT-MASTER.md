@@ -4,7 +4,7 @@
 Last updated: 2026-10-16 · CHANGELOG v152 · 129 recorded versions
 Repo: `https://github.com/dap2810/Sutram` (public, owner `dap2810`, branch `main`)
 
-If you are an AI or a person about to work on this project, **read this patra first, then
+If you are an AI or a person about to work on this project, **read this file first, then
 `docs/sutram-design-parameters.html`.** Between them you will know what the project is, what it is
 trying to be, what has been done, and the rules it holds itself to.
 
@@ -227,7 +227,7 @@ the observation that makes it true. Two of them — Windows execution and the fr
 
 ## 11. How to work on this project
 
-1. **Read this patra, then `docs/sutram-design-parameters.html`.**
+1. **Read this file, then `docs/sutram-design-parameters.html`.**
 2. **Build it first.** NASM and a linker are all you need:
    ```sh
    nasm -f elf64 -I. src/r68_compiler_entry.asm -o /tmp/c.o && ld -o sutram_compiler /tmp/c.o
