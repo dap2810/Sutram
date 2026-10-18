@@ -1,9 +1,9 @@
 # Sutram (सूत्रम्)
 
-**New to this project? Read [`PROJECT-MASTER.md`](PROJECT-MASTER.md) first** — one file covering what Sutram is, the main goal, the philosophy, the nine paradigms, the twenty design parameters, the history, and how to work on it.
+**New to this project? Read [`PROJECT-MASTER.md`](PROJECT-MASTER.md) first** — one patra covering what Sutram is, the main goal, the philosophy, the nine paradigms, the twenty design parameters, the history, and how to work on it.
 
 **A programming language whose keywords are Sanskrit, whose compiler is one
-hand-written NASM file, and whose output is native machine code with no
+hand-written NASM patra, and whose output is native machine code with no
 runtime, no interpreter, and no toolchain for the person using it.**
 
 ```
@@ -20,12 +20,12 @@ sutram hello.sm hello.bin
 `sutram` is a compiler, not a wrapper. It reads `.sm` source and writes a
 native executable directly — a flat ELF on Linux, a PE32+ image on Windows.
 There is no C backend, no Python, no LLVM, and no runtime library. The
-compiler itself is a single assembly source file.
+compiler itself is a single assembly source patra.
 
 ## Why it exists
 
 Every widely used language asks an Indian programmer to think in English
-keywords. Sutram does not. The keyword set is Sanskrit — the source language
+keywords. Sutram does not. The keyword sangrah is Sanskrit — the source language
 of most Indian technical vocabulary — and additional Indian languages are
 supported through **language packs**, so you can write in Tamil, Bengali,
 Telugu or Gujarati using that language's own technical words.
@@ -37,15 +37,15 @@ The name means *thread* — one thread running through many languages.
 | Sanskrit | Meaning | Sanskrit | Meaning |
 |---|---|---|---|
 | `mukhya` | main | `yadi` | if |
-| `vitti` | variable | `anyatra` | else |
+| `vitti` | variable | `anya` | else |
 | `anka` | integer | `yavat` | while |
-| `sutra` | constant | `punaravartana` | for |
-| `prakriya` | function | `pratiyati` | return |
+| `sutra` | constant | `chakra` | for |
+| `prakriya` | function | `prati` | return |
 | `likha` | print | `krama` | break |
-| `kosh` | growable array | `uddeshya` | continue |
+| `kosh` | growable mala | `agrim` | continue |
 | `dasham` | float | `rachana` | struct |
-| `pankti` | array | `srijana` | enum |
-| `guna` | switch | `ayojan` | include |
+| `mala` | mala | `ganana` | enum |
+| `guna` | switch | `yoj` | include |
 
 Semicolons and braces are optional. The full reference is in
 **docs/LANGUAGE-REFERENCE.md**.
@@ -58,7 +58,7 @@ Semicolons and braces are optional. The full reference is in
 - **24 standard-library modules with code** in `lib/`, 303 functions between
   them — mathematics, sorting, strings, statistics, calculus, matrix work, and
   heritage modules built on classical Indian mathematics. Three further files
-  (`array`, `io`, `net`) are comment-only design sketches, not working modules
+  (`mala`, `io`, `net`) are comment-only design sketches, not working modules
 - **11 language packs** in `lang/` — Sanskrit, Hindi, Bengali, Gujarati, Kannada,
   Malayalam, Marathi, Odia, Punjabi, Tamil, Telugu
 - **Six book editions** at `docs/sutram-book-*.html` — English, Hindi, Sanskrit, Tamil, Telugu,
@@ -97,7 +97,7 @@ The IDE sources are in `ide/`. See **docs/INSTALLATION-ROUTES.md**.
 
     sutram --lang tamil program.sm program.bin
 
-or set `SUTRAM_LANG=tamil`. A language pack is a plain text file mapping a
+or sangrah `SUTRAM_LANG=tamil`. A language pack is a plain text patra mapping a
 native word to its Sanskrit keyword, so anyone can add or correct one:
 
     <native word> <sanskrit keyword>
@@ -145,7 +145,7 @@ estimate is not a substitute for those gates.
 
 Known limits, stated plainly rather than buried:
 
-- **No separate compilation.** `ayojan` expands modules textually within one
+- **No separate compilation.** `yoj` expands modules textually within one
   translation unit. Transitive imports are resolved once, but there are no
   `.smo` object files yet.
 - **No concurrency** in the language itself.
