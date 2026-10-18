@@ -312,65 +312,65 @@ r54_builtin_arity_table:
     ; ===== Localized error messages (v27) =====
     ; Index: 0=default 1=bengali 2=gujarati 3=hindi 4=kannada 5=malayalam
     ;        6=marathi 7=odia 8=punjabi 9=tamil 10=telugu
-    err_line_bn db 10, "à¦¸à§à¦¤à§à¦°à¦®à§ à¦¤à§à¦°à§à¦à¦¿: à¦ªà¦à¦à§à¦¤à¦¿ ", 0
-    err_near_bn db " à¦à¦° à¦à¦¾à¦à§ à¦à§à¦à§à¦¨ '", 0
-    err_eof_bn  db "à¦«à¦¾à¦à¦²à§à¦° à¦¶à§à¦·", 0
-    err_hint_bn db "à¦ªà¦°à¦¾à¦®à¦°à§à¦¶: à¦à¦ à¦¸à§à¦¥à¦¾à¦¨à§à¦° à¦à¦¾à¦à§ à¦à§à¦à¦¶à¦¬à§à¦¦à§à¦° à¦¬à¦¾à¦¨à¦¾à¦¨ à¦ à¦¸à¦¿à¦¨à§à¦à§à¦¯à¦¾à¦à§à¦¸ à¦ªà¦°à§à¦à§à¦·à¦¾ à¦à¦°à§à¦¨à¥¤", 10, 0
-    open_err_bn db "à¦¤à§à¦°à§à¦à¦¿: à¦à¦¨à¦ªà§à¦ à¦«à¦¾à¦à¦² à¦à§à¦²à¦¾ à¦¯à¦¾à¦à§à¦à§ à¦¨à¦¾", 10, 0
+    err_line_bn db 10, "সূত্রম্ ত্রুটি: পংক্তি ", 0
+    err_near_bn db " এর কাছে টোকেন '", 0
+    err_eof_bn  db "ফাইলের শেষ", 0
+    err_hint_bn db "পরামর্শ: এই স্থানের কাছে কূটশব্দের বানান ও সিন্ট্যাক্স পরীক্ষা করুন।", 10, 0
+    open_err_bn db "ত্রুটি: ইনপুট ফাইল খোলা যাচ্ছে না", 10, 0
 
-    err_line_gu db 10, "àª¸à«àª¤à«àª°àª®à« àª­à«àª²: àªªàªàªà«àª¤àª¿ ", 0
-    err_near_gu db " àª¨àªà«àª àªà«àªàª¨ '", 0
-    err_eof_gu  db "àª«àª¾àªàª²àª¨à« àªàªàª¤", 0
-    err_hint_gu db "àª¸àªàªà«àª¤: àª àª¸à«àª¥àª³àª¨à« àª¨àªà«àª àªà«àªàª¶àª¬à«àª¦àª¨à« àªà«àª¡àª£à« àªàª¨à« àªµàª¾àªà«àª¯àª°àªàª¨àª¾ àªàªàª¾àª¸à«.", 10, 0
-    open_err_gu db "àª­à«àª²: àªàª¨àªªàªàª àª«àª¾àªàª² àªà«àª²à« àª¶àªà« àª¨àª¹à«àª", 10, 0
+    err_line_gu db 10, "સૂત્રમ્ ભૂલ: પંક્તિ ", 0
+    err_near_gu db " નજીક ટોકન '", 0
+    err_eof_gu  db "ફાઇલનો અંત", 0
+    err_hint_gu db "સંકેત: આ સ્થળની નજીક કૂટશબ્દની જોડણી અને વાક્યરચના ચકાસો.", 10, 0
+    open_err_gu db "ભૂલ: ઇનપઁટ ફાઇલ ખૂલી શકી નહીં", 10, 0
 
-    err_line_hi db 10, "à¤¸à¥à¤¤à¥à¤°à¤®à¥ à¤¤à¥à¤°à¥à¤à¤¿: à¤ªà¤à¤à¥à¤¤à¤¿ ", 0
-    err_near_hi db " à¤à¥ à¤ªà¤¾à¤¸ à¤à¥à¤à¤¨ '", 0
-    err_eof_hi  db "à¤«à¤¼à¤¾à¤à¤² à¤à¤¾ à¤à¤à¤¤", 0
-    err_hint_hi db "à¤¸à¤à¤à¥à¤¤: à¤à¤¸ à¤¸à¥à¤¥à¤¾à¤¨ à¤à¥ à¤ªà¤¾à¤¸ à¤à¥à¤à¤¶à¤¬à¥à¤¦ à¤à¥ à¤µà¤°à¥à¤¤à¤¨à¥ à¤à¤° à¤µà¤¾à¤à¥à¤¯-à¤°à¤à¤¨à¤¾ à¤à¤¾à¤à¤à¥à¤à¥¤", 10, 0
-    open_err_hi db "à¤¤à¥à¤°à¥à¤à¤¿: à¤à¤¨à¤ªà¥à¤ à¤«à¤¼à¤¾à¤à¤² à¤¨à¤¹à¥à¤ à¤à¥à¤²à¥", 10, 0
+    err_line_hi db 10, "सूत्रम् त्रुटि: पंक्ति ", 0
+    err_near_hi db " के पास टोकन '", 0
+    err_eof_hi  db "फ़ाइल का अंत", 0
+    err_hint_hi db "संकेत: इस स्थान के पास कूटशब्द की वर्तनी और वाक्य-रचना जाँचें।", 10, 0
+    open_err_hi db "त्रुटि: इनपुट फ़ाइल नहीं खुली", 10, 0
 
-    err_line_kn db 10, "à²¸à³à²¤à³à²°à²®à³ à²¦à³à²·: à²¸à²¾à²²à³ ", 0
-    err_near_kn db " à²¬à²³à²¿ à²à³à²à²¨à³ '", 0
-    err_eof_kn  db "à²à²¡à²¤à²¦ à²à²à²¤à³à²¯", 0
-    err_hint_kn db "à²¸à³à²à²¨à³: à² à²¸à³à²¥à²³à²¦ à²¬à²³à²¿ à²à³à²µà²°à³à²¡à³ à²à²¾à²à³à²£à²¿ à²®à²¤à³à²¤à³ à²¸à²¿à²à²à³à²¯à²¾à²à³à²¸à³ à²ªà²°à²¿à²¶à³à²²à²¿à²¸à²¿.", 10, 0
-    open_err_kn db "à²¦à³à²·: à²à²¨à³âà²ªà³à²à³ à²à²¡à²¤ à²¤à³à²°à³à²¯à²²à²¾à²à³à²¤à³à²¤à²¿à²²à³à²²", 10, 0
+    err_line_kn db 10, "ಸೂತ್ರಮ್ ದೋಷ: ಸಾಲು ", 0
+    err_near_kn db " ಬಳಿ ಟೋಕನ್ '", 0
+    err_eof_kn  db "ಕಡತದ ಅಂತ್ಯ", 0
+    err_hint_kn db "ಸೂಚನೆ: ಈ ಸ್ಥಳದ ಬಳಿ ಕೀವರ್ಡ್ ಕಾಗುಣಿ ಮತ್ತು ಸಿಂಟ್ಯಾಕ್ಸ್ ಪರಿಶೀಲಿಸಿ.", 10, 0
+    open_err_kn db "ದೋಷ: ಇನ್‌ಪುಟ್ ಕಡತ ತೆರೆಯಲಾಗುತ್ತಿಲ್ಲ", 10, 0
 
-    err_line_ml db 10, "à´¸àµà´¤àµà´°à´ à´ªà´¿à´¶à´àµ: à´µà´°à´¿ ", 0
-    err_near_ml db " à´¨àµà´±àµà´±àµ à´à´àµà´¤àµà´¤àµ à´àµà´àµà´à´£àµ '", 0
-    err_eof_ml  db "à´«à´¯à´²à´¿à´¨àµà´±àµ à´à´µà´¸à´¾à´¨à´", 0
-    err_hint_ml db "à´¸àµà´à´¨: à´ à´¸àµà´¥à´²à´¤àµà´¤à´¿à´¨à´àµà´¤àµà´¤àµ à´àµà´µàµà´¡àµ à´à´àµà´·à´°à´µà´¿à´¨àµà´¯à´¾à´¸à´µàµà´ à´µà´¾à´àµà´àµà´¯à´à´à´¨à´¯àµà´ à´ªà´°à´¿à´¶àµà´§à´¿à´àµà´àµà´.", 10, 0
-    open_err_ml db "à´ªà´¿à´¶à´àµ: à´àµ»à´ªàµà´àµà´àµ à´«à´¯àµ½ à´¤àµà´±à´àµà´à´¾à´¨à´¾à´¯à´¿à´²àµà´²", 10, 0
+    err_line_ml db 10, "സൂത്രം പിശക്: വരി ", 0
+    err_near_ml db " ന്റ്റെ അടുത്ത് ടോക്കണ് '", 0
+    err_eof_ml  db "ഫയലിന്റെ അവസാനം", 0
+    err_hint_ml db "സൂചന: ഈ സ്ഥലത്തിനടുത്ത് കീവേഡ് അക്ഷരവിന്യാസവും വാക്ക്യഘടനയും പരിശോധിക്കുക.", 10, 0
+    open_err_ml db "പിശക്: ഇൻപുട്ട് ഫയൽ തുറക്കാനായില്ല", 10, 0
 
-    err_line_mr db 10, "à¤¸à¥à¤¤à¥à¤°à¤®à¥ à¤¤à¥à¤°à¥à¤à¥: à¤à¤³ ", 0
-    err_near_mr db " à¤à¥à¤¯à¤¾ à¤à¤µà¤³ à¤à¥à¤à¤¨ '", 0
-    err_eof_mr  db "à¤«à¤¾à¤à¤²à¤à¤¾ à¤¶à¥à¤µà¤", 0
-    err_hint_mr db "à¤¸à¥à¤à¤¨à¤¾: à¤¯à¤¾ à¤à¤¾à¤à¥ à¤à¥à¤à¤¶à¤¬à¥à¤¦à¤¾à¤à¥ à¤¶à¥à¤¦à¥à¤§à¤²à¥à¤à¤¨ à¤à¤£à¤¿ à¤µà¤¾à¤à¥à¤¯à¤°à¤à¤¨à¤¾ à¤¤à¤ªà¤¾à¤¸à¤¾.", 10, 0
-    open_err_mr db "à¤¤à¥à¤°à¥à¤à¥: à¤à¤¨à¤ªà¥à¤ à¤«à¤¾à¤à¤² à¤à¤à¤¡à¤¤à¤¾ à¤à¤²à¥ à¤¨à¤¾à¤¹à¥", 10, 0
+    err_line_mr db 10, "सूत्रम् त्रुटी: ओळ ", 0
+    err_near_mr db " च्या जवळ टोकन '", 0
+    err_eof_mr  db "फाइलचा शेवट", 0
+    err_hint_mr db "सूचना: या जागी कूटशब्दाची शुद्धलेखन आणि वाक्यरचना तपासा.", 10, 0
+    open_err_mr db "त्रुटी: इनपुट फाइल उघडता आली नाही", 10, 0
 
-    err_line_or db 10, "à¬¸à­à¬¤à­à¬°à¬®à­ à¬¤à­à¬°à­à¬à¬¿: à¬§à¬¾à¬¡à¬¼à¬¿ ", 0
-    err_near_or db " à¬ªà¬¾à¬à¬°à­ à¬à­à¬à­à¬¨à­ '", 0
-    err_eof_or  db "à¬«à¬¾à¬à¬²à¬° à¬¶à­à¬·", 0
-    err_hint_or db "à¬¸à­à¬à¬¨à¬¾: à¬à¬¹à¬¿ à¬¸à­à¬¥à¬¾à¬¨ à¬ªà¬¾à¬à¬°à­ à¬à­à¬µà¬¾à¬°à­à¬¡à­à¬° à¬¬à¬¨à¬¾à¬¨ à¬ à¬¸à¬¿à¬£à­à¬à¬¾à¬à­à¬¸ à¬¯à¬¾à¬à­à¬ à¬à¬°à¬¨à­à¬¤à­à¥¤", 10, 0
-    open_err_or db "à¬¤à­à¬°à­à¬à¬¿: à¬à¬¨à¬ªà­à¬à­ à¬«à¬¾à¬à¬²à­ à¬à­à¬²à¬¿à¬¹à­à¬²à¬¾ à¬¨à¬¾à¬¹à¬¿à¬", 10, 0
+    err_line_or db 10, "ସୂତ୍ରମ୍ ତ୍ରୁଟି: ଧାଡ଼ି ", 0
+    err_near_or db " ପାଖରେ ଟୋକେନ୍ '", 0
+    err_eof_or  db "ଫାଇଲର ଶେଷ", 0
+    err_hint_or db "ସୂଚନା: ଏହି ସ୍ଥାନ ପାଖରେ କୀଵାର୍ଡ୍ର ବନାନ ଓ ସିଣ୍ଟାକ୍ସ ଯାଞ୍ଚ କରନ୍ତୁ।", 10, 0
+    open_err_or db "ତ୍ରୁଟି: ଇନପୁଟ୍ ଫାଇଲ୍ ଖୋଲିହେଲା ନାହିଁ", 10, 0
 
-    err_line_pa db 10, "à¨¸à©à¨¤à¨°à¨®à© à¨à¨²à¨¤à©: à¨²à¨¾à¨à¨¨ ", 0
-    err_near_pa db " à¨¦à© à¨¨à©à©à© à¨à©à¨à¨¨ '", 0
-    err_eof_pa  db "à¨«à¨¾à¨à¨² à¨¦à¨¾ à¨à©°à¨¤", 0
-    err_hint_pa db "à¨¸à©°à¨à©à¨¤: à¨à¨¸ à¨¥à¨¾à¨ à¨¦à© à¨¨à©à©à© à¨à©à¨à¨¸à¨¼à¨¬à¨¦ à¨¦à© à¨¸à¨ªà©à¨²à¨¿à©°à¨ à¨à¨¤à© à¨¸à©°à¨à©à¨à¨¸ à¨à¨¾à¨à¨à©à¥¤", 10, 0
-    open_err_pa db "à¨à¨²à¨¤à©: à¨à¨¨à¨ªà©à¨ à¨«à¨¾à¨à¨² à¨¨à¨¹à©à¨ à¨à©à©±à¨²à©à¨¹à©", 10, 0
+    err_line_pa db 10, "ਸੂਤਰਮ੍ ਗਲਤੀ: ਲਾਈਨ ", 0
+    err_near_pa db " ਦੇ ਨੇੜੇ ਟੋਕਨ '", 0
+    err_eof_pa  db "ਫਾਈਲ ਦਾ ਅੰਤ", 0
+    err_hint_pa db "ਸੰਕੇਤ: ਇਸ ਥਾਂ ਦੇ ਨੇੜੇ ਕੂਟਸ਼ਬਦ ਦੀ ਸਪੈਲਿੰਗ ਅਤੇ ਸੰਟੈਕਸ ਜਾਂਚੋ।", 10, 0
+    open_err_pa db "ਗਲਤੀ: ਇਨਪੁਟ ਫਾਈਲ ਨਹੀਂ ਖੁੱਲ੍ਹੀ", 10, 0
 
-    err_line_ta db 10, "à®à¯à®¤à¯à®¤à®¿à®°à®®à¯ à®ªà®¿à®´à¯: à®µà®°à®¿ ", 0
-    err_near_ta db " à®à®°à¯à®à®¿à®²à¯ à®à¯à®à¯à®à®©à¯ '", 0
-    err_eof_ta  db "à®à¯à®ªà¯à®ªà®¿à®©à¯ à®®à¯à®à®¿à®µà¯", 0
-    err_hint_ta db "à®à¯à®±à®¿àªªà¯: à®à®¨à¯à®¤ à®à®à®¤à¯à®¤à®¿à®©à¯ à®à®°à¯à®à®¿à®²à¯ à®à¯à®±à®¿à®à¯à®à¯à®²à¯à®²à®¿à®©à¯ à®®à¯à®´à®¿à®¯à¯à®®à¯ à®¤à¯à®à®°à®¿à®¯à®²à¯à®à¯ à®à®°à®¿àªªà®¾à®°à¯à®à¯à®à®µà¯à®®à¯.", 10, 0
-    open_err_ta db "à®ªà®¿à®´à¯: à®à®³à¯à®³à¯à®à¯à®à¯à®à¯ à®à¯àªªà¯àªªà¯ à®¤à®¿à®±à®à¯à® à®®à¯à®à®¿à®¯à®µà®¿à®²à¯à®²à¯", 10, 0
+    err_line_ta db 10, "சூத்திரம் பிழை: வரி ", 0
+    err_near_ta db " அருகில் டோக்கன் '", 0
+    err_eof_ta  db "கோப்பின் முடிவு", 0
+    err_hint_ta db "குறிப்பு: இந்த இடத்தின் அருகில் குறிச்சொல்லின் மொழியும் தொடரியலைச் சரிபார்க்கவும்.", 10, 0
+    open_err_ta db "பிழை: உள்ளீட்டுக் கோப்பை திறக்க முடியவில்லை", 10, 0
 
-    err_line_te db 10, "à°¸à±à°¤à±à°°à°®à± à°¦à±à°·à°: à°µà°°à±à°¸ ", 0
-    err_near_te db " à°¦à°à±à°à°° à°à±à°à±à°¨à± '", 0
-    err_eof_te  db "à°¦à°¸à±à°¤à±à°°à° à°®à±à°à°¿à°à°ªà±", 0
-    err_hint_te db "à°¸à±à°à°¨: à° à°¸à±à°¥à°²à° à°¦à°à±à°à°° à°à±à°²à°à°ªà°¦ à°µà°°à±à°£à°¨, à°¸à°¿à°à°à°¾à°à±à°¸à± à°¤à°¨à°¿à°à± à°à±à°¯à°à°¡à°¿.", 10, 0
-    open_err_te db "à°¦à±à°·à°: à°à°¨à±âà°ªà±à°à± à°¦à°¸à±à°¤à±à°°à° à°¤à±à°°à°µà°¬à°¡à°²à±à°¦à±", 10, 0
+    err_line_te db 10, "సూత్రమ్ దోషం: వరుస ", 0
+    err_near_te db " దగ్గర టోకెన్ '", 0
+    err_eof_te  db "దస్త్రం ముగింపు", 0
+    err_hint_te db "సూచన: ఈ స్థలం దగ్గర కీలకపద వర్ణన, సింటాక్స్ తనిఖీ చేయండి.", 10, 0
+    open_err_te db "దోషం: ఇన్‌పుట్ దస్త్రం తెరవబడలేదు", 10, 0
 
     ; Language id 0 = default (existing English strings)
     tbl_err_line:
@@ -1906,6 +1906,21 @@ _start:
     cmp rax, 3
     jl .usage
     mov qword [rel r48_mode], 1
+    ; R2-WS1c: --check --lang <pack> <input.sm> is accepted too
+    mov rdi, R49_ARG(24)
+    lea rsi, [rel str_flag_lang]
+    call strcmp
+    test rax, rax
+    jnz .check_plain
+    mov rax, R49_ARG(0)
+    cmp rax, 5
+    jl .usage
+    mov rdi, R49_ARG(32)           ; argv[3] = pack name
+    call try_load_lang
+    mov rax, R49_ARG(40)           ; argv[4] = input
+    mov R49_ARG(16), rax
+    jmp .args_ok
+.check_plain:
     mov rax, R49_ARG(24)
     mov R49_ARG(16), rax           ; normalize input argument for normal I/O
     call maybe_load_env_lang
@@ -1929,6 +1944,18 @@ _start:
     jl .usage
     mov rdi, R49_ARG(24)           ; argv[2] = pack name
     call try_load_lang
+    ; R2-WS1c: --lang <pack> --check <input.sm> is accepted too
+    mov rdi, R49_ARG(32)
+    lea rsi, [rel r48_flag]
+    call strcmp
+    test rax, rax
+    jnz .lang_compile
+    mov qword [rel r48_mode], 1
+    mov rax, R49_ARG(40)           ; argv[4] = input
+    mov R49_ARG(16), rax
+    mov R49_ARG(24), rax
+    jmp .args_ok
+.lang_compile:
     ; rewrite argv[1]/argv[2] to point at input/output
     mov rax, R49_ARG(32)           ; argv[3] = input
     mov R49_ARG(16), rax
@@ -1954,10 +1981,8 @@ _start:
     ret
 %endif
 
-    cmp qword [rel r48_mode],0
-    je .r51_not_check
+    ; R2-WS1d: origin map kept in every mode (was --check only)
     call r51_init_map
-.r51_not_check:
     ; R41: opt-in module-v1 graph preflight runs BEFORE destructive expansion.
     ; The legacy import and generated-code path is byte-for-byte unchanged.
     call graph_preflight_v1   ; R44 single graph traversal (dispatch to merged Muse DFS)
@@ -2759,8 +2784,7 @@ expand_imports_pass:
     test rax, rax
     js .ei_missing_module
 .ei_opened:
-    cmp qword [rel r48_mode],0
-    je .r51_open_ready
+    ; R2-WS1d: the origin map is kept in every mode (was --check only)
     push rax
     call r51_register_module
     mov [rel r51_current_path],rax
@@ -2788,8 +2812,7 @@ expand_imports_pass:
     test rax, rax
     js .ei_close_only
     add r14,rax
-    cmp qword [rel r48_mode],0
-    je .r51_read_ready
+    ; R2-WS1d: origin map kept in every mode
     push rax
     call r51_stamp_legacy
     pop rax
@@ -2818,8 +2841,7 @@ expand_imports_pass:
     test rax,rax
     js .ei_close_only
     mov [rel ns_raw_len],rax
-    cmp qword [rel r48_mode],0
-    je .r51_raw_ready
+    ; R2-WS1d: origin map kept in every mode
     call r51_init_raw_map
 .r51_raw_ready:
     cmp rax,r10
@@ -2896,8 +2918,7 @@ expand_imports_pass:
     mov rcx, r14
     rep movsb
     mov [rel source_len],r14
-    cmp qword [rel r48_mode],0
-    je .r51_map_ready
+    ; R2-WS1d: origin map kept in every mode
     call r51_finish_origin_pass
 .r51_map_ready:
     ; Reset str_ptr
@@ -5542,8 +5563,7 @@ r51_init_map:
     ret
 
 r51_copy_origin:
-    cmp qword [rel r48_mode],0
-    je .done
+    ; R2-WS1d: origin map kept in every mode
     push rcx
     push rdx
     lea rcx,[rel r51_src_file]
@@ -5640,8 +5660,7 @@ r51_init_raw_map:
 
 
 r51_raw_copy_position:
-    cmp qword [rel r48_mode],0
-    je .done
+    ; R2-WS1d: origin map kept in every mode
     push rdx
     push rcx
     lea rdx,[rel r51_raw_map]
@@ -5653,8 +5672,7 @@ r51_raw_copy_position:
     ret
 
 r51_mark_namespaced:
-    cmp qword [rel r48_mode],0
-    je .done
+    ; R2-WS1d: origin map kept in every mode
     push rcx
     push rdx
     mov rcx,[rel r51_current_path]
@@ -5671,8 +5689,7 @@ r51_mark_namespaced:
     ret
 
 r51_mark_newline:
-    cmp qword [rel r48_mode],0
-    je .done
+    ; R2-WS1d: origin map kept in every mode
     push rcx
     push rdx
     mov rcx,[rel r51_current_path]
@@ -5732,7 +5749,8 @@ read_file:
     call pick_lang_str
     mov rdi, rax
     call print_str_z
-    jmp do_exit
+    mov rdi, 1                 ; R2-WS1b: a missing input file is a failure, not exit 0
+    call os_exit
 .opened:
     mov rbx, rax               ; fd
     mov rdi, rbx
@@ -6760,6 +6778,30 @@ parse_error:
     call pick_lang_str
     mov rdi, rax
     call print_str_z
+    ; R2-WS1d: report the line/column of the ORIGINAL file (the origin map
+    ; is now kept in normal mode too), so `yoj` no longer shifts the number.
+    mov rdi, [rbx+32]        ; exact token source pointer
+    call r51_origin_line_col
+    test rax, rax
+    jz .pe_expanded_loc
+    push rdx
+    push rax
+    ; an error inside an imported module names that file: "<module>:L:C"
+    cmp rcx, [rel source_path_ptr]
+    je .pe_main_file
+    mov rdi, rcx
+    call graph_print_file
+    lea rdi, [rel msg_err_colon]
+    call print_str_z
+.pe_main_file:
+    pop rax
+    call mg_print_uint
+    lea rdi, [rel msg_err_colon]
+    call print_str_z
+    pop rax
+    call mg_print_uint
+    jmp .pe_loc_done
+.pe_expanded_loc:
     mov rdi, [rbx+24]       ; line number (stored by lexer)
     lea rsi, [rel num_buf]
     call itoa
@@ -6774,6 +6816,7 @@ parse_error:
     call itoa
     mov rdi, rax
     call print_str_z
+.pe_loc_done:
     lea rdi, [rel tbl_err_near]
     call pick_lang_str
     mov rdi, rax
@@ -6927,6 +6970,79 @@ r51_print_origin:
     lea rdi,[rel r51_unknown_origin]
     call print_str_z
 .done:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; R2-WS1d: r51_origin_line_col(rdi = pointer into source_buf)
+;   -> rax = 1-based line in the ORIGINAL file the byte came from,
+;      rdx = 1-based UTF-8 display column; rax = 0 if the original file
+;      cannot be re-read (caller falls back to expanded-buffer numbers).
+; Same scan as r51_print_origin, without printing; used by the normal-mode
+; parse_error so that a program with `yoj` reports its own line numbers.
+r51_origin_line_col:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    lea rax,[rel source_buf]
+    sub rdi,rax
+    cmp rdi,IMPORT_BUF_CAP
+    jb .olc_index_ok
+    xor edi,edi
+.olc_index_ok:
+    lea rax,[rel r51_src_file]
+    mov r13,[rax+rdi*8]
+    test r13,r13
+    jnz .olc_path_ok
+    mov r13,[rel source_path_ptr]
+.olc_path_ok:
+    lea rax,[rel r51_src_off]
+    mov r14d,[rax+rdi*4]
+    mov rdi,r13
+    call mg_read_file
+    test rax,rax
+    js .olc_missing
+    mov r15,rax
+    cmp r14,r15
+    jbe .olc_offset_ok
+    mov r14,r15
+.olc_offset_ok:
+    lea rbx,[rel mg_buf]
+    xor ecx,ecx
+    mov r12d,1             ; original line
+    mov r15d,1             ; original UTF-8 display column
+.olc_scan:
+    cmp rcx,r14
+    jae .olc_done
+    movzx eax,byte [rbx+rcx]
+    cmp al,10
+    jne .olc_not_newline
+    inc r12
+    mov r15d,1
+    jmp .olc_next
+.olc_not_newline:
+    and al,0xC0
+    cmp al,0x80
+    je .olc_next
+    inc r15
+.olc_next:
+    inc rcx
+    jmp .olc_scan
+.olc_done:
+    mov rax,r12
+    mov rdx,r15
+    mov rcx,r13            ; rcx = origin file path (compare with source_path_ptr)
+    jmp .olc_ret
+.olc_missing:
+    xor eax,eax
+    xor edx,edx
+    xor ecx,ecx
+.olc_ret:
     pop r15
     pop r14
     pop r13
