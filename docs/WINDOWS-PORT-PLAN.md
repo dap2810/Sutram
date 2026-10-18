@@ -12,7 +12,7 @@ Status: **started**. Build toolchain verified; first primitive written.
 ## Toolchain (verified working here)
     nasm -f win64 prog.asm -o prog.obj
     ld   -mi386pep --entry=_start -o prog.exe prog.obj
-    -> file(1): "PE32+ executable (console) x86-64, for MS Windows"
+    -> patra(1): "PE32+ executable (console) x86-64, for MS Windows"
 
 ## Steps
 1. [x] Verify Windows build toolchain (nasm win64 + ld i386pep).
