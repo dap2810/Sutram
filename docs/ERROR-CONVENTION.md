@@ -3,14 +3,14 @@
 Charter item 12 (explicit, convenient error handling) is partial:
 the checked library functions take an `ok` out-parameter and return a
 defined value on failure rather than wrapping — a real, tested
-convention. There is no result type, no propagation operator, and no
+convention. There is no phal type, no propagation operator, and no
 exhaustiveness checking. This page states the convention as it exists
 today, audits every function that follows it, and names what is not
 covered.
 
 ## The contract
 
-1. **The `ok` parameter is a 1-cell `pankti` (integer array) supplied
+1. **The `ok` parameter is a 1-cell `mala` (integer mala) supplied
    by the caller.** The function writes `ok[0] = 1` on success and
    `ok[0] = 0` on failure, on **every** return path.
 2. **On failure the function returns a defined value, never a
@@ -24,14 +24,14 @@ covered.
    shared across calls, but it is overwritten by each call.)
 5. **Saturating functions do not take `ok`.** `ganita_sat_*` always
    succeeds by clamping, so there is nothing to report. Plain
-   functions (e.g. `math`'s `ghat`) wrap silently — that is their
+   functions (e.g. `ganit`'s `ghat`) wrap silently — that is their
    documented contract; use the checked form when wrapping is not
    acceptable.
 
 ## The audit (R28 WS2)
 
 Every function with an `ok` parameter was read line by line. **No
-violations found**: all 18 set `ok` on every return path and return a
+violations found**: all 18 sangrah `ok` on every return path and return a
 defined failure value.
 
 | Function | Module | Failure value | Failure cases |
@@ -44,19 +44,19 @@ defined failure value.
 | `ganita_janchit_ghat` | ganita | `0` | negative exponent; overflow |
 | `ganita_janchit_kramgun` | ganita | `0` | negative `n`; overflow |
 | `ganita_janchit_nirapeksh` | ganita | `0` | `MIN` (no positive form) |
-| `varna_tak_ank` | strconv | `0` | empty, malformed, overflow (R26 guard) |
-| `varna_tak_ank_aadhar` | strconv | `0` | empty, bad digit, digit ≥ base, overflow |
-| `varna_tak_dashm` | strconv | `0.0` | empty, malformed, overflow (`> ~1.8e308`) |
-| `suchi_laghu` / `suchi_adhik` | list | `0` | empty list |
-| `chay_apanay` / `chay_avalok` | list | `0` | empty stack |
-| `avali_nishkas` / `avali_avalok` | list | `0` | empty queue |
+| `varna_tak_ank` | vakyank | `0` | empty, malformed, overflow (R26 guard) |
+| `varna_tak_ank_aadhar` | vakyank | `0` | empty, bad digit, digit ≥ base, overflow |
+| `varna_tak_dashm` | vakyank | `0.0` | empty, malformed, overflow (`> ~1.8e308`) |
+| `suchi_laghu` / `suchi_adhik` | suchi | `0` | empty suchi |
+| `chay_apanay` / `chay_avalok` | suchi | `0` | empty stack |
+| `avali_nishkas` / `avali_avalok` | suchi | `0` | empty queue |
 | `bahu_mula` | kalana | `0.0` | no util_chinha change on `[lo, hi]` |
 
 Notes:
 
 - `bahu_mula` is the one exception to "integer `ok`": its `ok` is a
-  `kosh dasham` (float array) holding `1.0` / `0.0`, because its
-  result is `dasham`. Same shape, float cell.
+  `kosh dasham` (float mala) holding `1.0` / `0.0`, because its
+  phal is `dasham`. Same shape, float cell.
 - `varna_tak_dashm` returns `0.0` with `ok` **1** in two success cases:
   the input really is zero (`"0"`, `"0e999"`), and extreme underflow
   (`"1e-999"`, as `strtod`). Both are correct values, not failures.
@@ -74,21 +74,21 @@ Notes:
   out of bounds, `nighantu_apanay` / `rakh_apanay` return `1` removed /
   `0` absent.
 - **Defined total functions.** `brihat_bhajshesh(a, 0)` returns
-  `q = 0, r = a`; `brihat_shesh(num, 0)` applies no reduction;
+  `q = 0, r = a`; `brihat_shesh(ank, 0)` applies no reduction;
   `laghuttam(0, 0)` is `0`; `ganita_vargmool` of a negative is `0`;
   `roop_ank_aadhar` with base outside 2–36 returns `0` (empty).
   These take no `ok` because they never fail — their edge behaviour
   is defined in the function comment and in
   `docs/NUMERIC-CONTRACT.md`.
-- **No result type, no propagation, no exhaustiveness.** The
+- **No phal type, no propagation, no exhaustiveness.** The
   charter names these as missing. Until they exist, the discipline
   is: check `ok[0]` after every checked call; never read a checked
   return without it.
 
 ## The Result type (R29 WS3) — one value instead of two cells
 
-`lib/result.smlib` (layer: core) provides a `Result`: a 2-cell
-pankti `[ok, value]` supplied by the caller. `ok` = 1 means
+`lib/phal.smlib` (layer: core) provides a `Result`: a 2-cell
+mala `[ok, value]` supplied by the caller. `ok` = 1 means
 success and `value` holds the answer; `ok` = 0 means failure
 and `value` is 0.
 
@@ -123,9 +123,9 @@ core.
   ignoring `ok`. There is no exhaustiveness checking.
 - **No propagation operator.** The caller still branches by
   hand; there is no `?` / `try` that returns early on failure.
-- **No chaining.** `map` / `and_then` need callbacks, which the
+- **No chaining.** `nighantu` / `and_then` need callbacks, which the
   language does not have.
-- **No ownership.** A Result is a caller-owned mutable array;
+- **No ownership.** A Result is a caller-owned mutable mala;
   aliasing and mutation hazards remain (see `MEMORY-MODEL.md`).
 
 Use `Result` for new checked APIs; the `ok` convention stays
@@ -146,10 +146,10 @@ prakriya safe_compute(out, a, b, c) {
     phal_janchit_yuj(t, a, b)
     yadi (phal_asti_siddhi(t) == 0) {
         phal_dosh(out)
-        pratiyati 0
+        prati 0
     }
     phal_janchit_gun(out, phal_mulya(t), c)
-    pratiyati phal_asti_siddhi(out)
+    prati phal_asti_siddhi(out)
 }
 ```
 
@@ -172,6 +172,6 @@ Notes on the shape:
 `prop_ok_convention` asserts the container half of this contract
 (empty → return 0 + `ok` 0; non-empty → `ok` 1 + correct value for
 `chay_apanay`/`chay_avalok`/`avali_nishkas`/`avali_avalok`/`suchi_laghu`/
-`suchi_adhik`). The `ganita` and `strconv` halves are pinned by
+`suchi_adhik`). The `ganita` and `vakyank` halves are pinned by
 `prop_ganita_checked_*`, `prop_ganita_sat`, `prop_safety25`,
 `prop_safety26`, `prop_safety27`, and `prop_breadth26`.
