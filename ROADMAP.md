@@ -23,7 +23,7 @@ accidentally design against something we intend to do later.
 Whatever is added, these hold:
 
 - Sanskrit keyword core, with Latin transliteration primary and Devanagari optional
-- `.sm` file extension
+- `.sm` patra extension
 - **one hand-written pure-NASM compiler source**, no C, no Python, no runtime dependency
 - programs compile to **native machine code**, never interpreted
 - the end user needs **no toolchain** — the installer ships a prebuilt binary
@@ -44,7 +44,7 @@ rather than fundamental, and this section records exactly what stands in the way
 
 - **Freestanding.** No libc, no runtime, no interpreter — raw machine code with nothing underneath
   it but syscalls. That is the correct starting shape for kernel code.
-- **`nishkriya` inline assembly.** Any instruction is reachable from Sutram source today.
+- **`yantra` inline assembly.** Any instruction is reachable from Sutram source today.
 - **A flat binary with a known entry point.** This is close to the shape a bootloader wants to load.
 - **PE32+ output already exists** (used for the Windows build). A UEFI application is a PE32+
   image — so the output machinery for something that boots on real hardware is partly in place.
@@ -100,7 +100,7 @@ is exactly the kind of claim this project does not make.
 |---|---|---|
 | Undo in the IDE | Planned | Editor comfort; the one obvious missing editor feature |
 | Verify on a real Windows machine | Planned | The largest untested area; the Windows build has never been run on Windows |
-| Module system for `ayojan` | Planned | Today it inlines textually, so all library functions share one global namespace |
+| Module system for `yoj` | Planned | Today it inlines textually, so all library functions share one global namespace |
 | Windows build of the IDE | Planned | The IDE is Linux-only today; Windows users have the interactive shell |
 | XMM register residency (Stage 2) | Exploratory | Stage 1 was implemented and measured slightly slower, so the flag stays off |
 | A real standard-library package format | Exploratory | Would follow the module system |
