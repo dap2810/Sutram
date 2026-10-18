@@ -86,7 +86,7 @@ tested.
 | 8 | **Controlled compile-time metaprogramming** — bounded, deterministic | Partial — `sutra` consts; `yoj` is textual include |
 | 9 | **Multilingual and native-script programming** | **Implemented** — 11 packs over one canonical meaning |
 
-**Why multilingual is a paradigm and not a feature:** every other language on the suchi can be described
+**Why multilingual is a paradigm and not a feature:** every other language on the list can be described
 without naming a natural language. Sutram cannot.
 
 ## 5. The parameters — twenty requirements
