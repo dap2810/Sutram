@@ -95,7 +95,7 @@ These are the **actual** builtin names the compiler accepts, taken from its tabl
 | `grahan` | read a number from input |
 | `sthagita` | halt the program |
 | `dvaram` | patra descriptor helper |
-| `paadh` | open a patra |
+| `paadh` | open a file |
 | `band` | close a handle |
 | `nirmmita` | allocate memory |
 | `smaran` | fill memory |
