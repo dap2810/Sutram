@@ -2271,21 +2271,41 @@ r49_print_module_location:
 .r49_on_line:
     mov r15, r9             ; byte start of original physical line
 .r49_findword:
+    ; R2-WS2a: the import keyword is "yoj" (3 bytes) since v157; this scan
+    ; still looked for the 6-byte "ayojan" and therefore printed '?'.
     mov rax,r9
-    add rax,6
+    add rax,3
     cmp rax,r14
     ja .r49_symbol_search
     cmp byte [rbx+r9],10
     je .r49_symbol_search
-    cmp dword [rbx+r9], 0x6A6F7961 ; "ayoj"
-    je .r49_check_ayoj
+    cmp word [rbx+r9], 0x6F79        ; "yo"
+    jne .r49_try_niryat
+    cmp byte [rbx+r9+2], 0x6A        ; "j"
+    jne .r49_try_niryat
+    ; whole word: end of file, or whitespace after "yoj"
+    mov rax,r9
+    add rax,3
+    cmp rax,r14
+    jae .r49_word_found
+    movzx eax, byte [rbx+r9+3]
+    cmp al, ' '
+    je .r49_word_found
+    cmp al, 9
+    je .r49_word_found
+    cmp al, 13
+    je .r49_word_found
+    cmp al, 10
+    je .r49_word_found
+    jmp .r49_nextword
+.r49_try_niryat:
+    mov rax,r9
+    add rax,6
+    cmp rax,r14
+    ja .r49_nextword
     cmp dword [rbx+r9],0x7972696E  ; "niry" from niryat
     jne .r49_nextword
     cmp word [rbx+r9+4],0x7461     ; "at"
-    je .r49_word_found
-    jmp .r49_nextword
-.r49_check_ayoj:
-    cmp word [rbx+r9+4], 0x6E61     ; "an"
     je .r49_word_found
     jmp .r49_nextword
 .r49_word_found:
