@@ -1,0 +1,214 @@
+# ankatalika.sm — a class marks ledger (अङ्क-तालिका)
+#
+# A real, small program rather than a test fixture: it keeps one class's
+# marks, ranks the students, prints a formatted report with grade bands,
+# a histogram, the class statistics to two decimals, and the term's fee
+# total in Indian digit grouping (lakh/crore).
+#
+# Library modules used (five):
+#   sankhyiki  — madhya / vichalan / laghutama / adhikatama over kosh dasham
+#   suchi      — dynamic list, suchi_shreni (merge sort), suchi_yog
+#   roop       — roop_sthir (fixed decimals), roop_varg_ank (Indian grouping),
+#                roop_pad_vam (right-align in a column)
+#   ganit      — adhik2 / laghu2 (max/min of two), ghat (power)
+#   ank        — asti_yugm
+#
+# Compile and run (from the repository root, compiler built per PROJECT-MASTER §11):
+#   ./sutram_compiler Claude-to-Sarvam/04-ankatalika.sm /tmp/ankatalika.bin && /tmp/ankatalika.bin
+#
+# Expected output: Claude-to-Sarvam/04-ankatalika.expected.txt
+
+yoj sankhyiki
+yoj suchi
+yoj roop
+yoj ganit
+yoj ank
+
+# ---------------------------------------------------------------------------
+# helpers
+# ---------------------------------------------------------------------------
+
+# shreni_akshar(m) — grade shr for a mark out of 100.
+#   >= 90  -> 65 'A'     >= 75 -> 66 'B'     >= 60 -> 67 'C'
+#   >= 40  -> 68 'D'     otherwise 70 'F'
+prakriya shreni_akshar(m) {
+    yadi (m >= 90) { prati 65 }
+    yadi (m >= 75) { prati 66 }
+    yadi (m >= 60) { prati 67 }
+    yadi (m >= 40) { prati 68 }
+    prati 70
+}
+
+# likh_akshar(code) — print one ASCII byte, no newline.
+prakriya likh_akshar(code) {
+    vitti b = nirmmita(1)
+    likh8c(b, code, b + 1)
+    likha(1, b, 1)
+    prati 1
+}
+
+# likh_dand(n, code) — print `code` n times (a histogram bar).
+prakriya likh_dand(n, code) {
+    vitti i = 0
+    yavat (i < n) {
+        likh_akshar(code)
+        i = i + 1
+    }
+    prati n
+}
+
+# likh_ank_vam(v, width) — print integer v right-aligned in `width` columns.
+prakriya likh_ank_vam(v, width) {
+    vitti d = nirmmita(32)
+    vitti out = nirmmita(64)
+    vitti n = roop_varg_ank(v, 0, d)        # plain digits (international grouping off below 1000)
+    vitti m = roop_pad_vam(d, n, width, 32, out)
+    likha(1, out, m)
+    prati m
+}
+
+# likh_dasham_2(x) — print a float with exactly two decimals, no newline.
+prakriya likh_dasham_2(dasham x) {
+    vitti out = nirmmita(64)
+    vitti n = roop_sthir(x, 2, out)
+    likha(1, out, n)
+    prati n
+}
+
+# likh_rupaye(v) — print an amount with Indian grouping: 12,34,567
+prakriya likh_rupaye(v) {
+    vitti out = nirmmita(64)
+    vitti n = roop_varg_ank(v, 1, out)
+    likha("Rs ")
+    likha(1, out, n)
+    prati n
+}
+
+# madhyama(l) — median of a sorted list (integer average of the two middle
+# cells when the length is even).
+prakriya madhyama(l) {
+    vitti n = suchi_maap(l)
+    yadi (n == 0) { prati 0 }
+    yadi (asti_yugm(n) == 1) {
+        prati (suchi_grah(l, n / 2 - 1) + suchi_grah(l, n / 2)) / 2
+    }
+    prati suchi_grah(l, n / 2)
+}
+
+# ---------------------------------------------------------------------------
+# the report
+# ---------------------------------------------------------------------------
+
+mukhya() {
+    # One class, nine students. Names are printed from a fixed table of
+    # literals; marks live in a growable kosh (integers) and a dasham kosh
+    # (for sankhyiki, which is typed on kosh dasham).
+    kosh marks[16]
+    kosh dasham fmarks[16]
+    kosh_push(marks, 91)   kosh_push(fmarks, 91)
+    kosh_push(marks, 67)   kosh_push(fmarks, 67)
+    kosh_push(marks, 78)   kosh_push(fmarks, 78)
+    kosh_push(marks, 34)   kosh_push(fmarks, 34)
+    kosh_push(marks, 88)   kosh_push(fmarks, 88)
+    kosh_push(marks, 59)   kosh_push(fmarks, 59)
+    kosh_push(marks, 95)   kosh_push(fmarks, 95)
+    kosh_push(marks, 72)   kosh_push(fmarks, 72)
+    kosh_push(marks, 45)   kosh_push(fmarks, 45)
+
+    vitti n = kosh_len(marks)
+    sutra FEE = 137250        # per-student term fee, in rupees
+
+    likha("=== Anka-talika: kaksha 10, varshik pariksha ===\n")
+    likha("Vidyarthi: ", n)
+
+    # --- 1. the ledger, one row per student ------------------------------
+    likha("\nKramank  Anka  Shreni  Dand\n")
+    vitti i = 0
+    yavat (i < n) {
+        vitti m = marks[i]
+        likh_ank_vam(i + 1, 7)
+        likh_ank_vam(m, 6)
+        likha("  ")
+        likh_akshar(shreni_akshar(m))
+        likha("       ")
+        likh_dand(m / 10, 35)          # '#' per ten marks
+        likha("\n")
+        i = i + 1
+    }
+
+    # --- 2. sorted copy, ranks and median --------------------------------
+    vitti sorted = suchi_srij(n)
+    i = 0
+    yavat (i < n) {
+        suchi_khip(sorted, marks[i])
+        i = i + 1
+    }
+    suchi_shreni(sorted)
+
+    likha("\nKram (uttam se nimn): ")
+    i = n - 1
+    yavat (i >= 0) {
+        lkhb(suchi_grah(sorted, i))
+        yadi (i > 0) { likha(", ") }
+        i = i - 1
+    }
+    likha("\n")
+    likha("Madhyama (median): ", madhyama(sorted))
+    likha("Yog (total):       ", suchi_yog(sorted))
+
+    # --- 3. statistics to two decimals -----------------------------------
+    likha("Madhya (mean):     ")
+    likh_dasham_2(madhya(fmarks))
+    likha("\n")
+    likha("Vichalan (std):    ")
+    likh_dasham_2(vichalan(fmarks))
+    likha("\n")
+    likha("Nyuntam / Uchchtam: ")
+    likh_dasham_2(laghutama(fmarks))
+    likha(" / ")
+    likh_dasham_2(adhikatama(fmarks))
+    likha("\n")
+    likha("Prasar (range):    ", adhik2(marks[0], marks[6]) - laghu2(marks[3], marks[8]))
+
+    # --- 4. grade histogram ----------------------------------------------
+    likha("\nShreni-vitaran:\n")
+    vitti shr = 65
+    yavat (shr <= 70) {
+        yadi (shr != 69) {
+            vitti count = 0
+            i = 0
+            yavat (i < n) {
+                yadi (shreni_akshar(marks[i]) == shr) { count = count + 1 }
+                i = i + 1
+            }
+            likha("  ")
+            likh_akshar(shr)
+            likha(" ")
+            likh_dand(count, 42)       # '*' per student
+            likha("  (")
+            lkhb(count)
+            likha(")\n")
+        }
+        shr = shr + 1
+    }
+
+    # --- 5. pass rate and fees -------------------------------------------
+    vitti uttirna = 0
+    i = 0
+    yavat (i < n) {
+        yadi (marks[i] >= 40) { uttirna = uttirna + 1 }
+        i = i + 1
+    }
+    likha("\nUttirna (pass): ", uttirna)
+    likha("Uttirna pratishat: ", uttirna * 100 / n)
+
+    likha("Shulk prati vidyarthi: ")
+    likh_rupaye(FEE)
+    likha("\n")
+    likha("Kaksha shulk yog:      ")
+    likh_rupaye(FEE * n)
+    likha("\n")
+    likha("Das varsh ka anuman:   ")
+    likh_rupaye(FEE * n * ghat(2, 3) + FEE * n * 2)   # 10x via (2^3 + 2)
+    likha("\n")
+}

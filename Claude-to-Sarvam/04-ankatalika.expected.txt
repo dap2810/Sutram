@@ -1,0 +1,34 @@
+=== Anka-talika: kaksha 10, varshik pariksha ===
+Vidyarthi: 9
+
+Kramank  Anka  Shreni  Dand
+      1    91  A       #########
+      2    67  C       ######
+      3    78  B       #######
+      4    34  F       ###
+      5    88  B       ########
+      6    59  D       #####
+      7    95  A       #########
+      8    72  C       #######
+      9    45  D       ####
+
+Kram (uttam se nimn): 95, 91, 88, 78, 72, 67, 59, 45, 34
+Madhyama (median): 72
+Yog (total):       629
+Madhya (mean):     69.89
+Vichalan (std):    19.75
+Nyuntam / Uchchtam: 34.00 / 95.00
+Prasar (range):    61
+
+Shreni-vitaran:
+  A **  (2)
+  B **  (2)
+  C **  (2)
+  D **  (2)
+  F *  (1)
+
+Uttirna (pass): 8
+Uttirna pratishat: 88
+Shulk prati vidyarthi: Rs 1,37,250
+Kaksha shulk yog:      Rs 12,35,250
+Das varsh ka anuman:   Rs 1,23,52,500
