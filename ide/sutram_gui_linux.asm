@@ -191,11 +191,12 @@ kw_tab:
     db 0xE0,0xA4,0xAF,0xE0,0xA4,0xA6,0xE0,0xA4,0xBF,0,0
     db 0xE0,0xA4,0xAF,0xE0,0xA4,0xBE,0xE0,0xA4,0xB5,0xE0,0xA4,0xA4,0xE0,0xA5,0x8D,0,0
     db 0xE0,0xA4,0xB2,0xE0,0xA4,0xBF,0xE0,0xA4,0x96,0,0
-    db 'mukhya',0,'vitti',0,'anka',0,'yadi',0,'anyatra',0,'yavat',0
-    db 'punaravartana',0,'pratiyati',0,'prakriya',0,'likha',0,'purna',0
-    db 'shunya',0,'sutra',0,'krama',0,'uddeshya',0,'guna',0,'pankti',0
-    db 'srijana',0,'rachana',0,'ayojan',0,'grahan',0,'dasham',0,'kosh',0
-    db 'kuru',0,'shabda',0,'parigrah',0,0
+    db 'mukhya',0,'vitti',0,'anka',0,'yadi',0,'anya',0,'yavat',0
+    db 'chakra',0,'prati',0,'prakriya',0,'likha',0,'purna',0
+    db 'shunya',0,'sutra',0,'krama',0,'agrim',0,'guna',0,'mala',0
+    db 'ganana',0,'rachana',0,'yoj',0,'grahan',0,'dasham',0,'kosh',0
+    db 'kuru',0,'shabda',0,'satya',0,'abhava',0,'yantra',0,'tak',0
+    db 'bhavana',0,0
 bi_tab:
     ; Devanagari spellings (slice 23)
     db 0xE0,0xA4,0xA6,0xE0,0xA5,0x8D,0xE0,0xA4,0xB5,0xE0,0xA4,0xBE,0xE0,0xA4,0xB0,0xE0,0xA4,0xAE,0,0
