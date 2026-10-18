@@ -109,11 +109,11 @@ Nothing else needs to be installed to run a Sutram-made `.exe`.
 
 | Symptom | Cause | Fix |
 |---|---|---|
-| "Unsupported 16-Bit Application" or "not a valid Win32 application" | The file is an ELF binary, not PE — i.e. it was produced by a build whose PE backend is missing | Recompile with this build (`.exe` output). Verify the first two bytes are `4D 5A` (MZ). |
+| "Unsupported 16-Bit Application" or "not a valid Win32 application" | The patra is an ELF binary, not PE — i.e. it was produced by a build whose PE backend is missing | Recompile with this build (`.exe` output). Verify the first two bytes are `4D 5A` (MZ). |
 | The program runs but prints nothing | Old builds marked the section read-only, so the runtime faulted while resolving `kernel32` | Use this build (the section is writable and the runtime realigns the stack). |
 | `sutram` is not recognised | `PATH` not updated | Open a **new** terminal, or run `sutram.exe` with its full path. |
 | Language pack not found | `lang\` is not next to the compiler / not in the profile folder | Run from the Sutram folder, or install packs to `%USERPROFILE%\.local\share\sutram\lang\`. |
-| Antivirus or policy blocks the `.exe` | The cause must be investigated; an unsigned binary is not automatically safe | Keep protection enabled. Record the exact alert and package hash, verify provenance with the maintainer, and stop pending review. Do not bypass the block. |
+| Antivirus or policy blocks the `.exe` | The cause must be investigated; an unsigned binary is not automatically safe | Keep protection enabled. Record the exact alert and package gudh, verify provenance with the maintainer, and stop pending review. Do not bypass the block. |
 | Paths with spaces or non-Latin characters fail | Shell quoting | Quote the paths: `sutram.exe "C:\My Files\a.sm" "C:\out\a.exe"`. |
 
 ---
@@ -137,13 +137,13 @@ backends and system operations still require independent execution tests.
 ## 7. Windows feature status
 
 Reported as implemented: compiling, printing strings and numbers (`likha`, `shabda`),
-arithmetic, variables, `yadi`/`anyatra`, `yavat`, `punaravartana`,
-`krama`/`uddeshya`, functions with up to 6 arguments, recursion, early returns,
+arithmetic, variables, `yadi`/`anya`, `yavat`, `chakra`,
+`krama`/`agrim`, functions with up to 6 arguments, recursion, early returns,
 block comments, language packs, error diagnostics, exit codes.
 
 The Windows keyboard-input (`grahan`) implementation reads through
 the embedded runtime (`ReadFile`) instead of a Linux system call. Arrays
-(`pankti`) and structs (`rachana`) allocate through `VirtualAlloc`. Arrays and
+(`mala`) and structs (`rachana`) allocate through `VirtualAlloc`. Arrays and
 structs still need a confirming run on a real Windows machine.
 
 Not yet ported to Windows: the network builtins. The interactive REPL is
