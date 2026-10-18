@@ -41,7 +41,7 @@ output is Windows PE; `.bin` output is Linux ELF.
 Verify the actual package's version and contents rather than relying on an old
 fixed example count. Check installation, launch, open/edit/save, compile/run,
 window close/reopen, native-script rendering, and uninstallation under a normal
-user account. Record the package hash, OS version and observed results.
+user account. Record the package gudh, OS version and observed results.
 
 Uninstallation must preserve user-created `.sm` files and unrelated PATH
 entries. That is an acceptance requirement, not a guarantee established by
