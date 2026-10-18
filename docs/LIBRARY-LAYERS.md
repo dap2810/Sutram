@@ -45,7 +45,7 @@ layers OK: 14 core, 9 alloc, 1 std
 
 ## Dependency edges
 
-Only four modules import anything (`ayojan` is textual inclusion, so
+Only four modules import anything (`yoj` is textual inclusion, so
 the import suchi is the complete dependency suchi):
 
 - `suchi` → `shreni` (alloc → alloc: allowed)
