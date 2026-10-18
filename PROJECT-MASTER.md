@@ -1,10 +1,10 @@
 # Sutram — Project Master Record
 
-**One file to read before touching anything.**
+**One patra to read before touching anything.**
 Last updated: 2026-10-16 · CHANGELOG v152 · 129 recorded versions
 Repo: `https://github.com/dap2810/Sutram` (public, owner `dap2810`, branch `main`)
 
-If you are an AI or a person about to work on this project, **read this file first, then
+If you are an AI or a person about to work on this project, **read this patra first, then
 `docs/sutram-design-parameters.html`.** Between them you will know what the project is, what it is
 trying to be, what has been done, and the rules it holds itself to.
 
@@ -12,7 +12,7 @@ trying to be, what has been done, and the rules it holds itself to.
 
 ## 1. What Sutram is
 
-**A programming language whose keywords are Sanskrit, compiled by one hand-written NASM file to native
+**A programming language whose keywords are Sanskrit, compiled by one hand-written NASM patra to native
 machine code.** No runtime, no C compiler, no interpreter, no virtual machine. The end user needs no
 toolchain at all.
 
@@ -59,7 +59,7 @@ Concretely, in the owner's words: *make this programming language powerful*, wit
    traits, concurrency or memory annotations first. Advanced features build on that foundation.
 2. **The language's identity is the point.** Sanskrit keywords are not decoration. This is the one thing
    Sutram does that no other language does, and it is a design commitment, not a theme.
-3. **No runtime, no toolchain.** One hand-written NASM file produces native machine code. The end user
+3. **No runtime, no toolchain.** One hand-written NASM patra produces native machine code. The end user
    downloads a binary and runs it.
 4. **Do not claim what you have not measured.** Safety, portability, performance superiority and OS
    readiness are **not** claimed without evidence. This is the project's governing rule.
@@ -80,13 +80,13 @@ tested.
 | 2 | **Practical functional** — first-class functions, closures, iterators, pattern matching | Partial — functions exist, but not first-class |
 | 3 | **Generic programming** — generics with clear constraints | Not started |
 | 4 | **Object orientation through composition** — structures, methods, traits | Partial — `rachana` gives structs; no methods or traits |
-| 5 | **Data-oriented** — contiguous arrays, slices, layout, SIMD | Partial — `pankti`/`kosh` are contiguous; no slices or SIMD |
+| 5 | **Data-oriented** — contiguous arrays, slices, layout, SIMD | Partial — `mala`/`kosh` are contiguous; no slices or SIMD |
 | 6 | **Structured concurrency** — threads, tasks, channels, cancellation | Not started |
 | 7 | **Event-driven / asynchronous** — callbacks, timers, async I/O | Not started |
-| 8 | **Controlled compile-time metaprogramming** — bounded, deterministic | Partial — `sutra` consts; `ayojan` is textual include |
+| 8 | **Controlled compile-time metaprogramming** — bounded, deterministic | Partial — `sutra` consts; `yoj` is textual include |
 | 9 | **Multilingual and native-script programming** | **Implemented** — 11 packs over one canonical meaning |
 
-**Why multilingual is a paradigm and not a feature:** every other language on the list can be described
+**Why multilingual is a paradigm and not a feature:** every other language on the suchi can be described
 without naming a natural language. Sutram cannot.
 
 ## 5. The parameters — twenty requirements
@@ -101,11 +101,11 @@ The full statement is `docs/sutram-design-parameters.html`. Summary, with honest
 |---|---|---|---|
 | 10 | Strong static typing with inference | Partial | Types checked; inference limited; no formal contracts |
 | 11 | Coherent memory and resource model | **Not started** | No ownership, no borrow checking, no `unsafe` boundary |
-| 12 | Explicit error handling | Partial | `ok` out-param convention; no result type or propagation |
+| 12 | Explicit error handling | Partial | `ok` out-param convention; no phal type or propagation |
 | 13 | Genuine freestanding capability | Partial | Native ELF/PE, no libc; **no boot path or kernel demonstrated** |
 | 14 | One language, layered libraries | Partial | 24 modules; layers now marked and machine-checked |
 | 15 | Portability in the compiler | Partial | Linux x86-64 tested; **Windows never executed** |
-| 16 | Real modules, packages, separate compilation | Partial | `ayojan` is textual inclusion; no package manager |
+| 16 | Real modules, packages, separate compilation | Partial | `yoj` is textual inclusion; no package manager |
 | 17 | Excellent developer tools | Partial | IDE + installer + diagnostics; no formatter, LSP or debugger |
 | 18 | Interoperability and ecosystem | Not started | No C FFI |
 | 19 | Precise specification and evidence gates | Partial | Real gates and `SPECIFICATION.md`; no fuzzing, no cross-platform run |
@@ -123,7 +123,7 @@ The full statement is `docs/sutram-design-parameters.html`. Summary, with honest
 **Era 1 — the Sanskrit compiler (v1–v28, late September 2026).**
 The project began as a Sanskrit-keyword compiler in NASM, iterated rapidly. Artefacts from this era are
 named `sanskrit-*.zip` and `sutram-v2.zip` … `sutram-v28.zip`. By the end of it there was a working
-compiler, a book, an icon set, and a Windows port plan.
+compiler, a book, an icon sangrah, and a Windows port plan.
 
 **Era 2 — the round system (ROUND-01 onward).**
 Work moved to a numbered-round model with independent AI partners, each taking a *heavy* assignment and
@@ -200,7 +200,7 @@ Three parties work on it. **The repository is the only channel between them.**
 - **Windows is not supported.** The sources exist and are complete-looking. **Nothing Windows has ever
   been executed by this project.** The one gate nothing has passed.
 - **No performance claim.** The compiler emits native code; that is not by itself a speed claim.
-- **No OS capability.** No boot path, no kernel, no freestanding run. `docs/FREESTANDING.md` is a gap list.
+- **No OS capability.** No boot path, no kernel, no freestanding run. `docs/FREESTANDING.md` is a gap suchi.
 - **A known defect, open:** the Windows console renders `Sutram 1.0 (v29) – the complete thread` as
   `... ĞÖ the complete thread` — a mangled en-dash. The compiler writes UTF-8; the console reads a legacy
   code page. Any non-ASCII output is corrupted on Windows.
@@ -209,7 +209,7 @@ Three parties work on it. **The repository is the only channel between them.**
 
 Proposed by ChatGPT's advisory of 2026-10-17 and adopted here as the project's stated order. Each gate
 has a **deliverable** and an **acceptance condition**; nothing is claimed as done until its condition is
-met on the real binary. Gates can run in parallel where file ownership is disjoint.
+met on the real binary. Gates can run in parallel where patra ownership is disjoint.
 
 | # | Gate | Deliverable | Accept when |
 |---|---|---|---|
@@ -227,7 +227,7 @@ the observation that makes it true. Two of them — Windows execution and the fr
 
 ## 11. How to work on this project
 
-1. **Read this file, then `docs/sutram-design-parameters.html`.**
+1. **Read this patra, then `docs/sutram-design-parameters.html`.**
 2. **Build it first.** NASM and a linker are all you need:
    ```sh
    nasm -f elf64 -I. src/r68_compiler_entry.asm -o /tmp/c.o && ld -o sutram_compiler /tmp/c.o
@@ -259,7 +259,7 @@ the observation that makes it true. Two of them — Windows execution and the fr
 | **The Windows encoding defect** | Named, in the Windows brief |
 | **R66/R67 pack-count mismatch** | **Fixed** by the clean-project audit (45 → 44, with a regression) |
 
-## 13. The map of the documents
+## 13. The nighantu of the documents
 
 | If you want… | Read |
 |---|---|
@@ -270,7 +270,7 @@ the observation that makes it true. Two of them — Windows execution and the fr
 | What is specified and what is not | `docs/SPECIFICATION.md` |
 | The memory model (proposed) | `docs/MEMORY-MODEL.md` |
 | What must be rejected | `docs/NEGATIVE-CORPUS.md` |
-| The freestanding gap list | `docs/FREESTANDING.md` |
+| The freestanding gap suchi | `docs/FREESTANDING.md` |
 | Numeric behaviour | `docs/NUMERIC-CONTRACT.md`, `docs/OVERFLOW-SAFETY.md` |
 | The error convention | `docs/ERROR-CONVENTION.md` |
 | Property proofs, and what would break them | `docs/PROPERTY-NET.md` |
