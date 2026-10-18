@@ -1,3 +1,26 @@
+## v165 - the books' code samples tested; the loop keyword was still `to`
+
+**I compiled every code sample in all nine book editions.** The English book's three for-loop samples used
+`chakra i = 1 to 5` - the rename changed `chakra` but **`to` was deliberately excluded from the HTML pass**
+to avoid corrupting English prose, so the loop keyword in the code samples was never updated and **those
+samples did not compile.** Fixed inside the `<code>` regions only: 7 `range-to` tokens corrected to `tak`.
+
+**The prose was preserved, and that matters.** The English book contains the sentence *"the very word that
+travelled through Arabic `to` become English zero"* - and the highlighter had marked that prose `to` as a
+keyword. **Replacing blindly would have turned a sentence about etymology into nonsense.** The fix therefore
+operates only inside `<code>` elements, and the prose `to` was verified intact afterwards.
+
+**The other eight editions use native-script keywords** in their samples (Gujarati, Hindi, Sanskrit, Tamil,
+Telugu), so they need their language pack loaded to compile - `--lang gujarati` and so on. Tested without the
+pack they fail, as expected. **That is correct behaviour, not a defect**, and it is recorded so nobody
+"fixes" it later.
+
+**One apparent failure is also not a defect:** the block beginning `prakriya mean(kosh dasham xs)` is a
+**function fragment**, not a program - it has no `mukhya()`, so it cannot compile standalone.
+
+**This is the sixth place the rename's tail surfaced** - code, comments, HTML, prose, keyword tables, and now
+teaching material. The books are the project's front door and nobody had ever compiled their samples.
+
 ## v164 - applying the lesson: every table that lists keywords, audited
 
 v163 found the IDE's highlighter was colouring the old keywords. **The lesson from that is to sweep every
