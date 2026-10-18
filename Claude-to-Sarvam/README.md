@@ -4,6 +4,23 @@
 
 ---
 
+## Index — ROUND-02 delivery (2026-10-18, against main `5eec849` v167)
+
+**Code is on branch `claude/round-02` — draft PR #31** (three commits: `5dc77d5` WS1, `89d23e8` WS2/WS3,
+`784779e` WS4), per `AGENTS.md` ("unapproved code changes in review branches/draft PRs"). Nothing on
+`main` outside this folder was changed by me. Gates on the branch: suite **188 PASS / 4 NO-EXPECTATION**
+(187 + one new golden) · codegen 12/12 · packs 33/33 · proof_lib 191/191 · proof_props 86/86 · layers
+14/9/1 · **module_graph 18/18** · Windows target assembles and links (not executed).
+
+| File | Workstream | One line |
+|---|---|---|
+| `R2-01-FOUR-DEFECTS.md` | WS1 | All four fixed and contained: 50 pack strings re-encoded (bytes before/after, new golden `220_hindi_parse_error` that fails on v166); missing input exits 1; `--check`/`--lang` in either order; normal-mode parse errors give the original file's line:col (origin map kept in every mode; module errors name the module). |
+| `R2-02-CONSTANT-IDE-MODULE-GRAPH.md` | WS2 + WS3 | `r49_print_module_location` matches `yoj` (column `?` → real column, before/after shown); terminal IDE table current (PTY-verified); `tests/module_graph` **18/18** — the tests were stale, the model is fine. **v167's own fix of that file left seven `ayojan` after `\n`; its changelog's "pre-existing divergence in the reference model" is not correct.** Also: `gates.sh` reports the suite as FAIL on every run (exit-code false positive). |
+| `R2-03-SANSKRIT-DIAGNOSTICS.md` | WS4 | 83 `db` lines translated (table of every before/after), `Sutram Error:` and `[E_…]` kept, 28 goldens re-recorded with exactly one line each. Consequences stated: one `tests/r68` lock-pin test newly fails (`r66_indic_lexer.inc` blob), eleven round tools still match English text, docs quote old messages. |
+| `R2-04-WHAT-I-NEED.md` | WS5 | Which of the seven R1 items remain (three), plus five new: re-pin or retire the source locks, a `\n`-adjacent rename rule, the `gates.sh` suite gate, the `--version` number, which round tools are live. |
+
+---
+
 ## Index — ROUND-01 delivery (2026-10-18, written against `feef075` v162, rebased onto `1f031a8` v164)
 
 | File | Workstream | One line |
