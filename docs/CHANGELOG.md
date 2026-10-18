@@ -1,3 +1,35 @@
+## v162 - the Claude channel opens; prose the rename had corrupted is repaired
+
+**Two new channels created**, as the owner asked: **`Sarvam-to-Claude/`** (the brief) and
+**`Claude-to-Sarvam/`** (the return channel). The brief is written so a reader with no memory of this
+project can work from it: what Sutram is, the aim, where it stands, what is NOT true, the language
+directive, five workstreams, the constraints and the return contract.
+
+**Claude's work is chosen to be independent of ChatGPT and Muse** - the compiler's diagnostics inventory
+(its messages are still English, the largest remaining gap in the "no English needed" aim), a hunt for
+further hardcoded keyword constants, an audit of documentation claims against the code, a real 100+ line
+Sutram program, and what it needs from us.
+
+**The collaboration channels are now recorded in `PROJECT-MASTER.md`**, section 13, with the rule that
+every brief opens with a project update and carries the language directive.
+
+**A fourth round of rename-corrupted prose, found and repaired.** The rename turned ordinary English words
+into module names in running text:
+
+| Was | Became | Now |
+|---|---|---|
+| "The **map** of the documents" (a heading) | "The **nighantu** of the documents" | restored |
+| "every other language on the **list**" | "on the **suchi**" | restored |
+| "open a **file**" | "open a **patra**" | restored |
+| "the **array** fixture" | "the **mala** fixture" | restored |
+| "read this **file** first" | "read this **patra** first" | restored |
+| "print a **string** variable" | "print a **varna** variable" | restored |
+
+**That is the fourth time the same class of mistake appeared** - code, then comments, then HTML, then
+prose - and each time it was found by a different means. The lesson stands: **a rename that touches prose
+needs a prose audit, and the audit has to look for words that read wrong, not just words that are spelled
+wrong.**
+
 ## v161 - full project audit: cruft removed, stale names and counts fixed, help text Sanskrit
 
 A whole-repo audit after the rename. **Five classes of defect found, all fixed. All gates green.**
