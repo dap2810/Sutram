@@ -206,25 +206,25 @@ BN_KOSHDEQUEUE equ 45 ; R63 kosh_dequeue(k) -> first element (FIFO)
 section .data
 str_dot_exe  db ".exe", 0
     msg_usage    db "Sutram - sampurna sutra", 10
-                  db "Usage:", 10
-                  db "  sutram <input.sm> <output.bin>          compile", 10
-                  db "  sutram --check <input.sm>               parse/check, no output binary", 10
-                  db "  sutram --lang <pack> <in.sm> <out.bin>  with language pack", 10
-                  db "  sutram -i                               interactive shell", 10
-                  db "  sutram --version                        version info", 10, 0
+                  db "Prayog:", 10
+                  db "  sutram <nivesh.sm> <nirgat.bin>         sankalan", 10
+                  db "  sutram --check <nivesh.sm>              janch matra, nirgat nahi", 10
+                  db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha pak sahit", 10
+                  db "  sutram -i                               khol (samvad)", 10
+                  db "  sutram --version                        sanskaran", 10, 0
     msg_version  db "Sutram 1.0 (v160) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-code", 10, 0
     r48_flag db "--check",0
-    r48_msg_near db ": Sutram Error [E_PARSE]: near '",0
+    r48_msg_near db ": Sutram Error [E_PARSE]: shabd '",0
     r48_msg_end db "'",10,0
     r48_msg_ok db "Sutram janch: OK (nirgat binary nahi)",10,0
     r48_msg_errors db "Sutram janch: dosh mile; nirgat binary nahi",10,0
-    r48_msg_eof db "<EOF>",0
-    r50_msg_setchar_arity db "Sutram Error: akshar_rakh requires exactly 3 arguments",10,0
-    r52_msg_dvaram_arity db "Sutram Error: dvaram requires 2 or 3 arguments",10,0
-    r52_msg_charat_arity db "Sutram Error: akshar requires exactly 2 arguments",10,0
-    r52_msg_charcode_arity db "Sutram Error: aksharank requires 1 or 2 arguments",10,0
-    r54_msg_arity db "Sutram Error: builtin argument count does not match signature",10,0
+    r48_msg_eof db "<patra-ant>",0
+    r50_msg_setchar_arity db "Sutram Error: akshar_rakh: 3 tark avashyak",10,0
+    r52_msg_dvaram_arity db "Sutram Error: dvaram: 2 va 3 tark avashyak",10,0
+    r52_msg_charat_arity db "Sutram Error: akshar: 2 tark avashyak",10,0
+    r52_msg_charcode_arity db "Sutram Error: aksharank: 1 va 2 tark avashyak",10,0
+    r54_msg_arity db "Sutram Error: tark sankhya hastakshar se bhinn",10,0
     ; R54 builtin signature min,max in declaration ID order.
 r54_builtin_arity_table:
     db 0,0               ; 0 reserved0
@@ -274,11 +274,11 @@ r54_builtin_arity_table:
     db 1,1               ; 44 kosh_peek
     db 1,1               ; 45 kosh_dequeue
 
-    r48_msg_undefined db ": Sutram Error [E_UNDEFINED_FUNCTION]: unknown function '",0
-    msg_err_line db 10, "Sutram Error: parse error at line ", 0
-    msg_err_near db " near token '", 0
+    r48_msg_undefined db ": Sutram Error [E_UNDEFINED_FUNCTION]: agyat prakriya '",0
+    msg_err_line db 10, "Sutram Error: vyakaran dosh, pankti ", 0
+    msg_err_near db ", shabd '", 0
     msg_err_end  db "'", 10, 0
-    msg_err_eof  db "end of file", 0
+    msg_err_eof  db "patra-ant", 0
     msg_err_hint db "Sanket: is sthan par shabd aur vyakaran dekho.", 10, 0
     msg_err_colon db ":", 0
     msg_diag_indent db "  ", 0
@@ -288,26 +288,26 @@ r54_builtin_arity_table:
     msg_diag_caret db "^", 10, 0
     msg_err_arg_limit db "Sanket: prakriya adhiktam 6 tark lete hain.", 10, 0
     msg_err_duplicate_func db "Sanket: dohri prakriya paribhasha (naam takkar).", 10, 0
-    msg_duplicate_func db "Sutram Error: duplicate function definition: ", 0
-    msg_undefined_func db "Sutram Error: undefined function: ", 0
-    msg_array_oob db "Sutram Error: array index out of bounds", 10, 0
-    msg_kosh_required db "Sutram Error: kosh builtin requires a kosh variable", 10, 0
+    msg_duplicate_func db "Sutram Error: punah prakriya paribhasha: ", 0
+    msg_undefined_func db "Sutram Error: agyat prakriya: ", 0
+    msg_array_oob db "Sutram Error: mala ank seema atikram", 10, 0
+    msg_kosh_required db "Sutram Error: kosh prakriya hetu kosh-vitti avashyak", 10, 0
 %ifdef SUTRAM_R65_TRAP_INT
     r65_msg_prefix db "Sutram Error [E_INTEGER_TRAP] ",0
     r65_msg_colon db ":",0
-    r65_msg_add db ": signed addition overflow",10,0
-    r65_msg_sub db ": signed subtraction overflow",10,0
-    r65_msg_mul db ": signed multiplication overflow",10,0
-    r65_msg_div db ": division by zero",10,0
-    r65_msg_mod db ": remainder by zero",10,0
-    r65_msg_div_overflow db ": signed division overflow",10,0
-    r65_msg_mod_overflow db ": signed remainder overflow",10,0
+    r65_msg_add db ": yog atipravah",10,0
+    r65_msg_sub db ": nyun atipravah",10,0
+    r65_msg_mul db ": gun atipravah",10,0
+    r65_msg_div db ": shunya se bhajan",10,0
+    r65_msg_mod db ": shunya se shesh",10,0
+    r65_msg_div_overflow db ": bhajan atipravah",10,0
+    r65_msg_mod_overflow db ": shesh atipravah",10,0
 %endif
-    msg_kosh_empty db "Sutram Error: kosh pop from empty array", 10, 0
-    msg_kosh_peek_empty db "Sutram Error: kosh peek from empty array", 10, 0
-    msg_kosh_dequeue_empty db "Sutram Error: kosh dequeue from empty array", 10, 0
-    msg_kosh_param_type db "Sutram Error: kosh parameter requires matching kosh element type", 10, 0
-    msg_kosh_param_push db "Sutram Error: kosh_push on a kosh parameter is not supported", 10, 0
+    msg_kosh_empty db "Sutram Error: rikta kosh se kosh_pop", 10, 0
+    msg_kosh_peek_empty db "Sutram Error: rikta kosh se kosh_peek", 10, 0
+    msg_kosh_dequeue_empty db "Sutram Error: rikta kosh se kosh_dequeue", 10, 0
+    msg_kosh_param_type db "Sutram Error: kosh tark: tatv prakar bhinn", 10, 0
+    msg_kosh_param_push db "Sutram Error: kosh tark par kosh_push asamarthit", 10, 0
 
     ; ===== Localized error messages (v27) =====
     ; Index: 0=default 1=bengali 2=gujarati 3=hindi 4=kannada 5=malayalam
@@ -399,7 +399,7 @@ r54_builtin_arity_table:
 
     cur_lang_id dq 0
                   db "      Run 'sutram -i' and type 'sahayata' for help.", 10, 0
-    msg_lang_ok  db "Bhasha pak load hua: ", 0
+    msg_lang_ok  db "Bhasha pak prapt: ", 0
     msg_lang_fail db "Chetavani: bhasha pak nahi mila: ", 0
     msg_nl       db 10, 0
     str_flag_i   db "-i", 0
@@ -448,10 +448,10 @@ r54_builtin_arity_table:
                      db "  nirgat                  khol se nikal", 10, 0
     repl_prog_hdr db "mukhya() {", 10, 0
     repl_prog_ftr db 10, "}", 10, 0
-    msg_open_err  db "Error: cannot open input file", 10, 0
-    msg_parse_err db "Error: parse error at token ", 0
-    msg_ok        db "OK: compiled ", 0
-    msg_bytes     db " bytes", 10, 0
+    msg_open_err  db "Sutram Error: nivesh patra aprapt", 10, 0
+    msg_parse_err db "Error: parse error at token ", 0   ; unreferenced (R1-WS1 F8)
+    msg_ok        db "Siddh: ", 0
+    msg_bytes     db " byte sankalit", 10, 0
     dbg_pfb       db 0
     lk_no_nl      dq 0
     for_descend  dq 0      ; 1 = descending for-loop
@@ -755,12 +755,12 @@ r54_builtin_arity_table:
     bn_lkhb      db "lkhb", 0
     bn_shabda    db "shabda", 0
 
-    msg_namespace_error db "Sutram Error: invalid namespaced yoj (use module@alias, max 31 alias bytes)", 10, 0
-    msg_namespace_module_missing db "Sutram Error: namespaced module file not found", 10, 0
-    msg_namespace_alias_reuse db "Sutram Error: namespaced alias already assigned to another module", 10, 0
-    r51_alias_conflict db ": Sutram Error [E_MODULE_ALIAS_REUSE]: namespaced alias already assigned to another module",10,0
-    msg_namespace_func_limit db "Sutram Error: namespaced module has too many or oversized function names", 10, 0
-    msg_import_overflow db "Sutram Error: expanded module source too large", 10, 0
+    msg_namespace_error db "Sutram Error: ashuddh yoj (roop: module@upanaam, upanaam 31 byte tak)", 10, 0
+    msg_namespace_module_missing db "Sutram Error: module patra aprapt", 10, 0
+    msg_namespace_alias_reuse db "Sutram Error: upanaam purv-niyukt (anya module)", 10, 0
+    r51_alias_conflict db ": Sutram Error [E_MODULE_ALIAS_REUSE]: upanaam purv-niyukt (anya module)",10,0
+    msg_namespace_func_limit db "Sutram Error: module prakriya-naam seema atikram", 10, 0
+    msg_import_overflow db "Sutram Error: vistarit srot seema atikram", 10, 0
     graph_v1_header db '# sutram-module-v1', 0
     graph_msg_cycle db 'E_MODULE_CYCLE', 0
     graph_msg_missing db 'E_MODULE_MISSING', 0
@@ -773,30 +773,30 @@ r54_builtin_arity_table:
     r49_unknown_column db "?", 0
     r51_unknown_origin db ":?:?",0
     graph_nl db 10,0
-    graph_cycle_prefix db 'dependency cycle: ',0
-    graph_missing_prefix db 'cannot open import ',0
-    graph_limit_prefix db 'too many modules or oversized module',0
-    graph_invalid_prefix db 'invalid module name',0
-    msg_ast_overflow db "Sutram Error: AST capacity exceeded", 10, 0
-    msg_func_params_overflow db "Sutram Error: function parameter table capacity exceeded", 10, 0
-    msg_var_table_overflow db "Sutram Error: variable table capacity exceeded", 10, 0
-    msg_func_table_overflow db "Sutram Error: function table capacity exceeded", 10, 0
-    msg_patch_overflow db "Sutram Error: call patch table capacity exceeded", 10, 0
-    msg_func_defs_overflow db "Sutram Error: function definition table capacity exceeded", 10, 0
-    msg_break_patch_overflow db "Sutram Error: too many break statements in active loops", 10, 0
-    msg_continue_patch_overflow db "Sutram Error: too many continue statements in active loops", 10, 0
-    msg_code_overflow db "Sutram Error: generated code capacity exceeded", 10, 0
-    msg_rachana_overflow db "Sutram Error: rachana table capacity exceeded", 10, 0
-    msg_rachana_fields_overflow db "Sutram Error: too many fields in rachana", 10, 0
-    msg_block_nesting_overflow db "Sutram Error: block nesting capacity exceeded", 10, 0
-    msg_block_stmt_overflow db "Sutram Error: too many statements in block", 10, 0
-    r55_msg_proto_duplicate db "Sutram Error: duplicate prakriya forward declaration",10,0
-    r55_msg_proto_missing db "Sutram Error: prakriya forward declaration has no definition",10,0
-    r55_msg_proto_signature db "Sutram Error: prakriya prototype signature (arity/type) differs from definition",10,0
-    r55_msg_proto_capacity db "Sutram Error: too many prakriya prototypes",10,0
-    r56_msg_global_capacity db "Sutram Error: too many module-level vitti variables",10,0
-    r56_msg_global_duplicate db "Sutram Error: duplicate module-level vitti name",10,0
-    r56_msg_patch_capacity db "Sutram Error: too many global data references",10,0
+    graph_cycle_prefix db 'yoj chakra: ',0
+    graph_missing_prefix db 'yoj patra aprapt: ',0
+    graph_limit_prefix db 'module/yoj seema atikram',0
+    graph_invalid_prefix db 'ashuddh module naam',0
+    msg_ast_overflow db "Sutram Error: AST seema atikram", 10, 0
+    msg_func_params_overflow db "Sutram Error: prakriya tark-suchi seema atikram", 10, 0
+    msg_var_table_overflow db "Sutram Error: vitti-suchi seema atikram", 10, 0
+    msg_func_table_overflow db "Sutram Error: prakriya-suchi seema atikram", 10, 0
+    msg_patch_overflow db "Sutram Error: aahvan-suchi seema atikram", 10, 0
+    msg_func_defs_overflow db "Sutram Error: prakriya paribhasha-suchi seema atikram", 10, 0
+    msg_break_patch_overflow db "Sutram Error: chakra me krama seema atikram", 10, 0
+    msg_continue_patch_overflow db "Sutram Error: chakra me agrim seema atikram", 10, 0
+    msg_code_overflow db "Sutram Error: yantra-code seema atikram", 10, 0
+    msg_rachana_overflow db "Sutram Error: rachana-suchi seema atikram", 10, 0
+    msg_rachana_fields_overflow db "Sutram Error: rachana kshetra seema atikram", 10, 0
+    msg_block_nesting_overflow db "Sutram Error: khand gahrai seema atikram", 10, 0
+    msg_block_stmt_overflow db "Sutram Error: khand kathan seema atikram", 10, 0
+    r55_msg_proto_duplicate db "Sutram Error: punah prakriya purv-ghoshana",10,0
+    r55_msg_proto_missing db "Sutram Error: prakriya purv-ghoshana paribhasha-rahit",10,0
+    r55_msg_proto_signature db "Sutram Error: prakriya purv-ghoshana va paribhasha bhinn (tark/prakar)",10,0
+    r55_msg_proto_capacity db "Sutram Error: prakriya purv-ghoshana seema atikram",10,0
+    r56_msg_global_capacity db "Sutram Error: module-star vitti seema atikram",10,0
+    r56_msg_global_duplicate db "Sutram Error: punah module-star vitti naam",10,0
+    r56_msg_patch_capacity db "Sutram Error: sarvatrik data sandarbh seema atikram",10,0
 
 section .bss
     source_buf  resb 65536
@@ -2964,26 +2964,26 @@ expand_imports_pass:
 ; ============================================================
 
 section .data
-mg_e_cycle:   db "Sutram Error [E_MODULE_CYCLE]: cyclic import: ", 0
+mg_e_cycle:   db "Sutram Error [E_MODULE_CYCLE]: yoj chakra: ", 0
 mg_e_noexp1:  db "Sutram Error [E_MODULE_NOT_EXPORTED]: '", 0
-mg_e_noexp2:  db "' is not exported by module '", 0
-mg_e_noexp3:  db "'", 10, 0
-mg_e_dupexp1: db "Sutram Error [E_MODULE_DUP_EXPORT]: duplicate export '", 0
-mg_e_dupexp2: db "' in module '", 0
+mg_e_noexp2:  db "' module '", 0
+mg_e_noexp3:  db "' se aniryat", 10, 0
+mg_e_dupexp1: db "Sutram Error [E_MODULE_DUP_EXPORT]: punah niryat '", 0
+mg_e_dupexp2: db "', module '", 0
 mg_e_dupexp3: db "'", 10, 0
-mg_e_undef1:  db "Sutram Error [E_EXPORT_UNDEFINED]: export '", 0
-mg_e_undef2:  db "' has no matching definition in module '", 0
+mg_e_undef1:  db "Sutram Error [E_EXPORT_UNDEFINED]: niryat '", 0
+mg_e_undef2:  db "' paribhasha-rahit, module '", 0
 mg_e_undef3:  db "'", 10, 0
-mg_e_unknown1: db "Sutram Error [E_EXPORT_UNDEFINED]: unknown qualified symbol '", 0
-mg_e_unknown2: db "' in module '", 0
+mg_e_unknown1: db "Sutram Error [E_EXPORT_UNDEFINED]: agyat sanket '", 0
+mg_e_unknown2: db "', module '", 0
 mg_e_unknown3: db "'", 10, 0
 mg_w_sutra:    db "sutra", 0
-mg_e_depth:   db "Sutram Error [E_MODULE_DEPTH]: import depth exceeded", 10, 0
+mg_e_depth:   db "Sutram Error [E_MODULE_DEPTH]: yoj gahrai seema atikram", 10, 0
 r51_colon_space: db ": ", 0
 mg_e_valias1: db "Sutram Error [E_MODULE_V1_ALIAS]: v1 module '", 0
-mg_e_valias2: db "' must be imported with an alias: yoj ", 0
-mg_e_valias3: db "@alias", 10, 0
-mg_e_limit:   db "Sutram Error [E_MODULE_LIMIT]: too many modules or imports", 10, 0
+mg_e_valias2: db "' upanaam avashyak: yoj ", 0
+mg_e_valias3: db "@upanaam", 10, 0
+mg_e_limit:   db "Sutram Error [E_MODULE_LIMIT]: module/yoj seema atikram", 10, 0
 mg_root_name: db "__root__", 0
 mg_v1_mark:   db "sutram-module-v1", 0
 mg_arrow:     db " -> ", 0
