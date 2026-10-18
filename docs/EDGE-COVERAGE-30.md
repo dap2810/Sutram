@@ -1,41 +1,41 @@
 # R30 WS1 edge-coverage ledger — all 23 modules
 
 Systematic edge-driven defect hunt across every module in `lib/`
-(excluding `file`, which did not exist until WS4 of this round).
+(excluding `patra`, which did not exist until WS4 of this round).
 Probe classes per export: normal values, zero, negative, `MIN` /
 `MAX`, empty (length 0 / count 0), huge (capacity / exponent /
 magnitude), and invalid (bad base, negative length, out-of-range
 index). A defect is listed with the exact probe that exposed it and
 the fix. "Clean" means every probe in the classes above returned the
-documented (or, where the contract was silent, the sane) result.
+documented (or, where the contract was silent, the sane) phal.
 
 Fixes are pinned by `prop_edge30_int`, `prop_edge30_text`,
 `prop_edge30_conv`, `prop_edge30_cont`, `prop_edge30_float` in
 `tools/proof_props.py`, plus the corrected `madhava_atan` golden.
 Two investigated behaviours were deliberately KEPT (see `chandas`,
-`math`): they are pinned by an earlier round's contract.
+`ganit`): they are pinned by an earlier round's contract.
 
 ## Defects found and fixed (51, counted per function)
 
-### `array` (8 exports) — 1 fixed
+### `mala` (8 exports) — 1 fixed
 - `mala_nava(2^60)`: byte-size overflow returned a bogus pointer.
   Fixed: `sz < 0` returns 0.
 - Others clean: safe access, bounds, zero/negative counts.
 
-### `baseconv` (2 exports) — 3 fixed
+### `aadhar` (2 exports) — 3 fixed
 - `brihat_ank_tak` base 0 → SIGFPE; base 1 → SIGSEGV (infinite
   loop writing past the buffer). Fixed: base outside 2..16 returns 0.
-- `brihat_ank_tak` on a 30-digit all-9 bigint in base 2 returned
+- `brihat_ank_tak` on a 30-digit all-9 brihat in base 2 returned
   100 digits into a fixed 70-cell `rev` — heap overflow. Fixed:
   `rev` sized `4*n` cells (base 2 needs `ceil(3.33*n)`), caller
   rule updated to `>= 4*n`.
 - `brihat_ank_se` base 0/1/negative silently mis-parsed.
   Fixed: base outside 2..16 returns 0.
 
-### `bigint` (12 exports) — 1 fixed
+### `brihat` (12 exports) — 1 fixed
 - `brihat_ank_se_int(MIN)`: negation wrapped, emitting negative
   digits (`-8`, …, `-9`), violating "digits must be 0-9". Fixed:
-  convert `MAX`, then add 1 to the digit array (magnitude
+  convert `MAX`, then add 1 to the digit mala (magnitude
   9223372036854775808, all digits 0-9).
 - Others clean, incl. `brihat_bhajshesh` / `mod_2n` by zero (R27),
   `powmod`, `cmp`, `is_zero`, round-trips.
@@ -48,7 +48,7 @@ Two investigated behaviours were deliberately KEPT (see `chandas`,
   `bit_gan`'s R28-pinned contract (defined for `n >= 0`).
 - Others clean: pattern classification, metre checks.
 
-### `fmt` (23 exports) — 1 fixed
+### `roop` (23 exports) — 1 fixed
 - `roop_sthir(NaN, …)`: returned garbage (`-9223372036…`).
   Fixed: NaN guard via the dvigun comparison `v == 0.0` AND
   `v < 0.0` (the only value satisfying both). Note: this
@@ -70,7 +70,7 @@ Two investigated behaviours were deliberately KEPT (see `chandas`,
 - `ganita_checked_*` / `ganita_sat_*` FROZEN, untouched.
   Others clean.
 
-### `hash` (2 exports) — clean
+### `gudh` (2 exports) — clean
 - `fnv1a` returns unsigned 32-bit values as documented; earlier
   "mismatches" were oracle representation mistakes.
 
@@ -80,11 +80,11 @@ Two investigated behaviours were deliberately KEPT (see `chandas`,
   side, or `hl == -hr`) returns 0.0.
 - Others clean: kalana_trapiz, Simpson, `bahu_ganana`, empty cases.
 
-### `list` (34 exports) — 2 fixed
+### `suchi` (34 exports) — 2 fixed
 - `suchi_srij(2^60)`: returned a handle whose data pointer was
   bogus (size overflow); first `suchi_khip` segfaulted. Fixed:
   overflow → 0. Same guard added to `avali_srij`.
-- Others clean: push/get/set/insert/remove, stack, queue
+- Others clean: push/get/sangrah/insert/remove, stack, queue
   wrap/growth, clear/reuse, min/max, vinimay/reverse.
 
 ### `madhava` (5 exports) — 5 fixed
@@ -102,7 +102,7 @@ Two investigated behaviours were deliberately KEPT (see `chandas`,
   Fixed: argument reduction to `[-PI, PI]` (exact to ~1e15).
 - `madhava_pi` clean.
 
-### `map` (17 exports) — 3 fixed
+### `nighantu` (17 exports) — 3 fixed
 - `nighantu_srij(2^60)`: allocation-size overflow → SIGSEGV writing
   past a small buffer. Fixed: overflow → 0 (plus null check).
 - `nighantu_khip` / `nighantu_anwesh` with caller `cap = 0`: SIGFPE (`h % 0`).
@@ -113,7 +113,7 @@ Two investigated behaviours were deliberately KEPT (see `chandas`,
 - Others clean: full-table, removal (backward-shift), update,
   `nighantu_kunjika` / `nighantu_kunjika_ashtak` FROZEN, untouched.
 
-### `math` (18 exports) — 2 fixed, 1 kept
+### `ganit` (18 exports) — 2 fixed, 1 kept
 - `kramgun(100000)`: SIGSEGV (recursive call-stack exhaustion).
   Fixed: iterative loop. Same values (multiplication commutes
   shesh 2^64); `kramgun(21)` wrap unchanged.
@@ -123,7 +123,7 @@ Two investigated behaviours were deliberately KEPT (see `chandas`,
 - Others clean: wrapping `varg`/`ghan`/`ghat`/`fib` (R29-pinned),
   `asti_abhajya` (R28), `seemit`, `rand`.
 
-### `num` (10 exports) — 4 fixed
+### `ank` (10 exports) — 4 fixed
 - `ank_gan(MIN)` → 1, `ank_yog(MIN)` → 0 (wrapped
   negation). Fixed: explicit MIN cases (19, 89).
 - `viparyay_ank(-123)` → 0, `viparyay_ank(MIN)` → 0 (loop only
@@ -132,7 +132,7 @@ Two investigated behaviours were deliberately KEPT (see `chandas`,
   negatives now 0 (was 1 for `-121`).
 - Others clean: `fib`, `mahattam`/`laghuttam` (R28), `isqrt`, `collatz`.
 
-### `result` (11 exports before WS3) — WS3 additions
+### `phal` (11 exports before WS3) — WS3 additions
 - Added `phal_janchit_ghat` / `phal_janchit_kramgun` /
   `phal_janchit_nirapeksh` (14 exports now) + documented/tested
   early-return chain. See WS3.
@@ -149,21 +149,21 @@ Two investigated behaviours were deliberately KEPT (see `chandas`,
 - Others clean; integer-overflow results are deterministic
   wrapping under the current contract.
 
-### `serial` (5 exports) — clean
+### `anukram` (5 exports) — clean
 - LE i64 + length-prefixed bytes, bounds-checked, `-1` on
   overrun (R29). Round-trips pass.
 
-### `set` (14 exports) — clean
+### `sangrah` (14 exports) — clean
 - All operations pass with fresh outputs (the documented
-  contract). Reusing a non-empty output set is caller error,
+  contract). Reusing a non-empty output sangrah is caller error,
   not a defect — re-verified.
 
-### `sort` (14 exports) — 2 fixed
+### `shreni` (14 exports) — 2 fixed
 - `laghu(…, 0)` / `adhik(…, 0)`: SIGSEGV reading `a[0]` on an
   empty buffer. Fixed: `n <= 0` returns 0 (as `suchi_laghu` does).
-- Others clean: sort, merge, vinimay, reverse, binary search.
+- Others clean: shreni, merge, vinimay, reverse, binary search.
 
-### `strb` (22 exports) — 9 fixed
+### `khand` (22 exports) — 9 fixed
 - `khand_unnat` / `khand_avanat` with `sn = -1`: wrote the
   terminator at `out[-1]`, corrupting the byte before `dst`.
   Fixed: empty output, return 0.
@@ -179,7 +179,7 @@ Two investigated behaviours were deliberately KEPT (see `chandas`,
 - Others clean: pack/unpack, dup, trim, join, compare, reverse,
   count/vowels/char, anwesh_akshar, equals.
 
-### `strconv` (6 exports) — 2 fixed
+### `vakyank` (6 exports) — 2 fixed
 - `ank_tak_aadhar_varna(10, 0, …)`: SIGFPE. Base 1: SIGSEGV
   (infinite loop past the buffer). Base `-2`: returned `"0"`.
   Fixed: base outside 2..36 → terminator only, return 0.
@@ -190,8 +190,8 @@ Two investigated behaviours were deliberately KEPT (see `chandas`,
 - Others clean: `ank_tak_varna`, `varna_tak_ank` (overflow → 0),
   `float_to_str`, base rendering.
 
-### `string` (27 exports) — 8 fixed
-- Eight negative-length defects, mirroring `strb`'s (strb has one
+### `varna` (27 exports) — 8 fixed
+- Eight negative-length defects, mirroring `khand`'s (khand has one
 more: `khand_asti_sarv_ank`), same fixes:
   `varna_unnat` / `varna_avanat` (`sn = -1` overwrote `dst[-1]`),
   `varna_pratisthap` (SIGSEGV), `varna_bhed` (hang), `varna_gan`
@@ -200,7 +200,7 @@ more: `khand_asti_sarv_ank`), same fixes:
 - Others clean: find/replace/split/join/trim/upper/lower/
   starts/ends/compare, `varna_sam`, vowels, digits.
 
-### `util` (7 exports) — 4 fixed
+### `sadhan` (7 exports) — 4 fixed
 - `shesh(5, 0)` / `shesh(0, 0)`: SIGFPE. Fixed: return 0 on a zero
   divisor (same sentinel as `ganita_paripurna_bhaj`).
 - `bhaj_urdhva(5, 0)` / `bhaj_urdhva(0, 0)`: SIGFPE. Fixed: return 0.
@@ -215,34 +215,34 @@ more: `khand_asti_sarv_ank`), same fixes:
 
 - 23 modules, 297 exports (pre-round) exercised.
 - 51 function-level defects fixed, counted per function (a defect
-  affecting both `string` and `strb` counts twice, once per
+  affecting both `varna` and `khand` counts twice, once per
   surface; the hunt's working count of 31 grouped the
-  string/strb mirrors and paired functions like min/max and
+  varna/khand mirrors and paired functions like min/max and
   sin/cos). Breakdown:
-  - 12 crashes (SIGFPE / SIGSEGV): `util.shesh`, `util.bhaj_urdhva`,
-    `strconv.ank_tak_aadhar_varna`, `baseconv.brihat_ank_tak`,
-    `sort.laghu`, `sort.adhik`, `map.nighantu_srij`,
-    `list.suchi_srij`, `math.kramgun`, `chandas.asti_guru`,
-    `string.varna_pratisthap`, `strb.khand_pratisthap`.
-  - 4 hangs: `string.varna_bhed`, `strb.khand_bhed`,
-    `string.varna_gan`, `strb.khand_gan` (negative lengths).
-  - 6 memory-safety: `baseconv.brihat_ank_tak` (70-cell `rev`
-    overflow), `string.varna_unnat`, `string.varna_avanat`,
-    `strb.khand_unnat`, `strb.khand_avanat` (out-of-bounds write
-    at `dst[-1]`), `map` negative key length (keylen corruption).
+  - 12 crashes (SIGFPE / SIGSEGV): `sadhan.shesh`, `sadhan.bhaj_urdhva`,
+    `vakyank.ank_tak_aadhar_varna`, `aadhar.brihat_ank_tak`,
+    `shreni.laghu`, `shreni.adhik`, `nighantu.nighantu_srij`,
+    `suchi.suchi_srij`, `ganit.kramgun`, `chandas.asti_guru`,
+    `varna.varna_pratisthap`, `khand.khand_pratisthap`.
+  - 4 hangs: `varna.varna_bhed`, `khand.khand_bhed`,
+    `varna.varna_gan`, `khand.khand_gan` (negative lengths).
+  - 6 memory-safety: `aadhar.brihat_ank_tak` (70-cell `rev`
+    overflow), `varna.varna_unnat`, `varna.varna_avanat`,
+    `khand.khand_unnat`, `khand.khand_avanat` (out-of-bounds write
+    at `dst[-1]`), `nighantu` negative key length (keylen corruption).
   - 29 wrong answers / wrong behaviour: the remaining fixes,
-    incl. `util.bhaj_urdhva` negative-divisor formula,
-    `util.yog_seema` empty range, `num` MIN/negative cases (4),
-    `fmt` NaN, `kalana` zero-spacing (2), `list.avali_srij` /
-    `array.mala_nava` overflow (bogus handle / pointer),
-    `map` zero capacity, `math.yog_tak` (loop unusable at scale),
+    incl. `sadhan.bhaj_urdhva` negative-divisor formula,
+    `sadhan.yog_seema` empty range, `ank` MIN/negative cases (4),
+    `roop` NaN, `kalana` zero-spacing (2), `suchi.avali_srij` /
+    `mala.mala_nava` overflow (bogus handle / pointer),
+    `nighantu` zero capacity, `ganit.yog_tak` (loop unusable at scale),
     `madhava` sqrt/atan/sin/cos (5), `sankhyiki_vargmool`,
-    `baseconv.brihat_ank_se` base, `brihat_ank_se_int(MIN)`,
-    `strconv.varna_tak_dashm` overflow, `string`/`strb` negative
+    `aadhar.brihat_ank_se` base, `brihat_ank_se_int(MIN)`,
+    `vakyank.varna_tak_dashm` overflow, `varna`/`khand` negative
     length returns (7).
 - 2 behaviours investigated and deliberately kept
   (`bit_gan` / `guru_gan` negatives → 0, R28 contract).
-- 2 non-defects re-verified as contract (set fresh-output rule;
+- 2 non-defects re-verified as contract (sangrah fresh-output rule;
   `sankhyiki` integer wrapping).
 - Frozen surfaces untouched: `nighantu_kunjika` / `nighantu_kunjika_ashtak`,
   `ganita_checked_*` / `ganita_sat_*`, R19–R29 additions
@@ -254,7 +254,7 @@ The fixes added code to 17 modules. Programs near the 64 KiB
 expanded-source ceiling (`containers_clear`, `gaps19`,
 `containers_resize_swap` properties) exceeded it, so this round
 also trimmed the module-header rationale essays in
-`strb` / `list` / `map` / `set` (5.8 KB of comments removed, 3.7 KB
+`khand` / `suchi` / `nighantu` / `sangrah` (5.8 KB of comments removed, 3.7 KB
 of shorter comments added, net −2.1 KB; per-function docs untouched;
 full rationale lives in the round reports and `docs/`). The hot
 closure now sits below its pre-round size, restoring margin.
