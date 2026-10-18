@@ -174,7 +174,7 @@ otherwise. Chain conditions with repeated <code><span class="k" data-tip="if">ya
 <div class="ch" id="ch6"><h2>6. Loops: <span class="k" data-tip="for">chakra</span>, <span class="k" data-tip="while">yavat</span>, <span class="k" data-tip="break">krama</span>, <span class="k" data-tip="continue">agrim</span></h2>
 <p><code><span class="k" data-tip="for">chakra</span></code> (repetition) is the counting loop — it means "for i = a <span class="k" data-tip="range-to">to</span> b":</p>
 <pre><code><span class="k" data-tip="main">mukhya</span>()
-    <span class="k" data-tip="for">chakra</span> i = 1 <span class="k" data-tip="range-to">to</span> 5 {
+    <span class="k" data-tip="for">chakra</span> i = 1 <span class="k" data-tip="range-to">tak</span> 5 {
         <span class="k" data-tip="print">likha</span>(i)
         <span class="k" data-tip="print">likha</span>(" ")   <span class="cm">// 1 2 3 4 5</span>
     }
@@ -183,7 +183,7 @@ otherwise. Chain conditions with repeated <code><span class="k" data-tip="if">ya
 exits the loop; <code><span class="k" data-tip="continue">agrim</span></code> (aim — continue) skips <span class="k" data-tip="range-to">to</span> the next round:</p>
 <pre><code><span class="k" data-tip="main">mukhya</span>()
     <span class="k" data-tip="variable">vitti</span> yogam = 0
-    <span class="k" data-tip="for">chakra</span> i = 1 <span class="k" data-tip="range-to">to</span> 100 {
+    <span class="k" data-tip="for">chakra</span> i = 1 <span class="k" data-tip="range-to">tak</span> 100 {
         <span class="k" data-tip="if">yadi</span> (i > 10) { <span class="k" data-tip="break">krama</span> }
         <span class="k" data-tip="if">yadi</span> (i % 2 == 0) { <span class="k" data-tip="continue">agrim</span> }
         yogam = yogam + i
@@ -220,7 +220,7 @@ mukhya()
 64-bit slots and gives you the pointer:</p>
 <pre><code><span class="k" data-tip="main">mukhya</span>()
     <span class="k" data-tip="mala">mala</span> tarika[5]
-    <span class="k" data-tip="for">chakra</span> i = 0 <span class="k" data-tip="range-to">to</span> 5 {
+    <span class="k" data-tip="for">chakra</span> i = 0 <span class="k" data-tip="range-to">tak</span> 5 {
         tarika[i] = i * i
     }
     <span class="k" data-tip="print">likha</span>(tarika[4])     <span class="cm">// 16</span>
@@ -272,7 +272,7 @@ Variables persist between lines — <code>x</code> sangrah on one line is there 
 <tr><td><code><span class="k" data-tip="if">यदि</span></code></td><td><code><span class="k" data-tip="if">જો</span></code></td><td>if</td><td><code><span class="k" data-tip="if">எனில்</span></code></td><td><code><span class="k" data-tip="if">ఒకవేళ</span></code></td><td><code><span class="k" data-tip="if">yadi</span></code></td></tr>
 <tr><td><code><span class="k" data-tip="else">अन्यथा</span></code></td><td><code><span class="k" data-tip="else">નહિંતર</span></code></td><td>else</td><td><code><span class="k" data-tip="else">இல்லையெனில்</span></code></td><td><code><span class="k" data-tip="else">లేకపోతే</span></code></td><td><code><span class="k" data-tip="else">anya</span></code></td></tr>
 <tr><td><code><span class="k" data-tip="while">जबतक</span></code></td><td><code><span class="k" data-tip="while">જ્યાંસુધી</span></code></td><td>while</td><td><code><span class="k" data-tip="while">வரை</span></code></td><td><code><span class="k" data-tip="while">ఎంతవరకు</span></code></td><td><code><span class="k" data-tip="while">yavat</span></code></td></tr>
-<tr><td><code><span class="k" data-tip="for">पुनरावृत्ति</span> 1 <span class="k" data-tip="range-to">से</span> 5</code></td><td><code><span class="k" data-tip="for">પુનરાવર્તન</span> 1 <span class="k" data-tip="range-to">થી</span> 5</code></td><td>for 1 <span class="k" data-tip="range-to">to</span> 5</td><td><code><span class="k" data-tip="for">மீண்டும்</span> 1 <span class="k" data-tip="range-to">முதல்</span> 5</code></td><td><code><span class="k" data-tip="for">పునరావృతం</span> 1 <span class="k" data-tip="range-to">నుండి</span> 5</code></td><td><code><span class="k" data-tip="for">chakra</span> ... <span class="k" data-tip="range-to">to</span></code></td></tr>
+<tr><td><code><span class="k" data-tip="for">पुनरावृत्ति</span> 1 <span class="k" data-tip="range-to">से</span> 5</code></td><td><code><span class="k" data-tip="for">પુનરાવર્તન</span> 1 <span class="k" data-tip="range-to">થી</span> 5</code></td><td>for 1 <span class="k" data-tip="range-to">to</span> 5</td><td><code><span class="k" data-tip="for">மீண்டும்</span> 1 <span class="k" data-tip="range-to">முதல்</span> 5</code></td><td><code><span class="k" data-tip="for">పునరావృతం</span> 1 <span class="k" data-tip="range-to">నుండి</span> 5</code></td><td><code><span class="k" data-tip="for">chakra</span> ... <span class="k" data-tip="range-to">tak</span></code></td></tr>
 <tr><td><code><span class="k" data-tip="function">फलन</span></code></td><td><code><span class="k" data-tip="function">કાર્ય</span> / <span class="k" data-tip="function">ફલન</span></code></td><td>function</td><td><code><span class="k" data-tip="function">செயல்</span> / <span class="k" data-tip="function">சார்பு</span></code></td><td><code><span class="k" data-tip="function">క్రియ</span> / <span class="k" data-tip="function">ప్రమేయం</span></code></td><td><code><span class="k" data-tip="function">prakriya</span></code></td></tr>
 <tr><td><code><span class="k" data-tip="print">लिखो</span></code></td><td><code><span class="k" data-tip="print">લખો</span></code></td><td>print</td><td><code><span class="k" data-tip="print">எழுது</span></code></td><td><code><span class="k" data-tip="print">వ్రాయు</span></code></td><td><code><span class="k" data-tip="print">likha</span></code></td></tr>
 <tr><td><code><span class="k" data-tip="input">पढ़ो</span></code></td><td><code><span class="k" data-tip="input">વાંચો</span></code></td><td>input</td><td><code><span class="k" data-tip="input">படி</span></code></td><td><code><span class="k" data-tip="input">చదువు</span></code></td><td><code><span class="k" data-tip="input">grahan</span></code></td></tr>
@@ -319,7 +319,7 @@ instantly without leaving your flow.</div>
 <tr><td><code><span class="k" data-tip="constant">sutra</span></code></td><td>constant</td></tr>
 <tr><td><code><span class="k" data-tip="if">yadi</span> ... <span class="k" data-tip="else">anya</span></code></td><td>if ... else</td></tr>
 <tr><td><code><span class="k" data-tip="multiply (*)">guna</span> / <span class="k" data-tip="condition">bhavana</span></code></td><td>switch / case</td></tr>
-<tr><td><code><span class="k" data-tip="for">chakra</span> i = a <span class="k" data-tip="range-to">to</span> b</code></td><td>for loop</td></tr>
+<tr><td><code><span class="k" data-tip="for">chakra</span> i = a <span class="k" data-tip="range-to">tak</span> b</code></td><td>for loop</td></tr>
 <tr><td><code><span class="k" data-tip="while">yavat</span></code></td><td>while loop</td></tr>
 <tr><td><code><span class="k" data-tip="break">krama</span> / <span class="k" data-tip="continue">agrim</span></code></td><td>break / continue</td></tr>
 <tr><td><code><span class="k" data-tip="function">prakriya</span> / <span class="k" data-tip="return">prati</span></code></td><td>function / return</td></tr>
@@ -378,14 +378,14 @@ n--      <span class="cm"># n = 5</span></code></pre>
 
 <h3><span class="k" data-tip="print (no newline)">lkhb</span>() — print without newline</h3>
 <p><code><span class="k" data-tip="print">likha</span>()</code> adds a newline after a number; <code><span class="k" data-tip="print (no newline)">lkhb</span>()</code> does not — ideal for tables:</p>
-<pre><code><span class="k" data-tip="for">chakra</span> i = 1 <span class="k" data-tip="range-to">to</span> 5 {
+<pre><code><span class="k" data-tip="for">chakra</span> i = 1 <span class="k" data-tip="range-to">tak</span> 5 {
     <span class="k" data-tip="print (no newline)">lkhb</span>(i)
     <span class="k" data-tip="print">likha</span>(" ")
 }</code></pre>
 
 <h3>Descending Loops</h3>
 <p>If the start value is greater than the end value, the loop counts down automatically:</p>
-<pre><code><span class="k" data-tip="for">chakra</span> i = 5 <span class="k" data-tip="range-to">to</span> 1 {
+<pre><code><span class="k" data-tip="for">chakra</span> i = 5 <span class="k" data-tip="range-to">tak</span> 1 {
     <span class="k" data-tip="print (no newline)">lkhb</span>(i)
     <span class="k" data-tip="print">likha</span>(" ")
 }    <span class="cm"># output: 5 4 3 2 1</span></code></pre>
