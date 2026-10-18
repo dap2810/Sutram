@@ -30,6 +30,81 @@ were reconciled.
 **Checked and clean:** no committed build artifacts (`*.o`, `*.obj`, `*.bin`), no `__pycache__`, one
 compiler source, one documented entry.
 
+## v157 - THE RENAME: every English word in the language is now Sanskrit
+
+The vocabulary frozen in A0 is applied across the whole project. **All gates green.**
+
+- **18 modules renamed** - `sort`->`shreni`, `list`->`suchi`, `map`->`nighantu`, `set`->`sangrah`,
+  `array`->`mala`, `string`->`varna`, `file`->`patra`, `hash`->`gudh`, `result`->`phal`, `fmt`->`roop`,
+  `util`->`sadhan`, `serial`->`anukram`, `bigint`->`brihat`, `num`->`ank`, `strconv`->`vakyank`,
+  `baseconv`->`aadhar`, `strb`->`khand`, `math`->`ganit`.
+- **264 of 303 function names renamed.** 39 kept - proper names and mathematical terms.
+- **Keywords:** `pankti`->`mala`, `punaravartana`->`chakra`, `pratiyati`->`prati`, `uddeshya`->`agrim`,
+  `anyatra`->`anya`, `nishedha`->`abhava`, `parigrah`->`satya`, `nishkriya`->`yantra`, `ayojan`->`yoj`,
+  `srijana`->`ganana`, and **`to`->`tak`** - the last English keyword is gone.
+- **Builtins:** `char_at`->`akshar`, `char_code`->`aksharank`, `set_char`->`akshar_rakh`.
+- **11 packs updated**; 446 files in the language tree, 107 tool/doc files, 18 modules moved.
+
+**Four defects found by testing, not reading** - all in the compiler's hardcoded paths, invisible to a string
+rename: the module expander compared raw bytes, the range parser did the same for `to`, the module-graph
+parser had the keyword length `6` hardcoded, and **`na` collided with a variable name** (corrected to
+`abhava`).
+
+**This is a breaking change.** Programs written before v157 do not compile.
+
+## v158 - ChatGPT's advisory read, verified, and acted on
+
+ChatGPT uploaded `SUTRAM-FOUNDATIONS-AND-PRIORITIES` and `SUTRAM-PROJECT-METHODS-CATALOGUE`. **They caught
+three real errors in my own documents.** I verified each before accepting it.
+
+1. **`PROJECT-MASTER.md` used `samapt`** as a block terminator. **It is not in the compiler at all.**
+   Replaced with a sample I actually compiled - it prints `5 4 3 2 1`.
+2. **The master taught the wrong build path** - the bare source, not `src/r68_compiler_entry.asm`.
+3. **The counts disagreed** - README 278 functions, master 21 modules, reference 49. Corrected everywhere.
+
+**A fourth defect, of my own making:** the v157 rename had rewritten English prose in the markdown docs -
+"How to work on this project" had become "How tak work on this project". All 79 documentation files were
+restored from the pristine tree and re-renamed with function names only.
+
+**The seven gates are now section 10 of `PROJECT-MASTER.md`**, the project's stated development order.
+
+## v159 - the documentation sync the rename had missed
+
+The rename (v157) and the doc corrections (v158) reached the code and the core markdown, but not the HTML
+documents. An audit of main found 9 documents still carrying old names and 2 deliverables never pushed.
+
+**Fixed (23 HTML documents, 1,322 replacements):** `sutram-keyword-words.html`, `sutram-stdlib.html`,
+`sutram-design-parameters.html`, `sutram-project-status.html`, `sutram-scorecard.html`,
+`sutram-roadmap.html`, and the six books.
+
+**Added:** `docs/sutram-vocabulary.html` and `docs/sutram-stdlib-reference.html`.
+
+**How the HTML was renamed safely:** the Sanskrit keywords are safe in prose; **`to` was excluded** because
+it is an ordinary English word. Final audit: 0 stale references across 16 documents.
+
+**The lesson:** a rename is not done until an audit proves no old name survives anywhere - not just where
+the tests look.
+
+## v160 - the IDE speaks Sanskrit; a tools-prose bug of mine fixed
+
+**ROUND-72 issued to ChatGPT** with a brief project update and five workstreams, mapped to the seven gates:
+one reproducible baseline, the integrated `kosh` reclamation, real separate compilation, Windows executed,
+and an audit for further hardcoded keyword constants. It opens with the full vocabulary table, because
+ChatGPT's R71 patch was cut before the rename and will not apply.
+
+**GUI slice 35 - the IDE interface is now Sanskrit.** File/Edit/Shell/Debug/Options/Window/Help and all
+thirteen dropdown items are now `patra`, `sampad`, `khol`, `dosh`, `vikalp`, `gavaksh`, `sahay`, with
+`khol`/`sanchay`/`nishkas`, `punah`/`chhid`/`pratilip`/`sanyoj`/`sarvagrah`, `chal`/`anwesh`/`ranga`/
+`phal_rikta`/`parichay`. **The byte lengths AND the x-offsets both had to be recomputed.**
+
+**A bug of mine, found while doing it.** The v157 rename had applied `to`->`tak` inside the tools' English
+prose - 48 occurrences, including `/path/tak/verified`, `End-tak-end`, and `check("connected tak X" in out,
+...)` in the X11 protocol test. That last one is why the protocol test was failing: **the GUI was correct
+and the test was broken.** All reverted, with the one legitimate Sutram for-range preserved.
+
+**All gates green:** suite 187/4, codegen 12/12, packs 33/33, proof_lib 191/191, proof_props 86/86,
+layers 14/9/1, GUI 18/18.
+
 ## v156 - ChatGPT R71 (all five workstreams) and Muse R30 (51 defects) verified and synced
 
 **ChatGPT R71 - 30 files, 30/30 hashes verified at commit `bb791061`.** It delivered far more than the
