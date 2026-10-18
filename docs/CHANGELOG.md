@@ -1,3 +1,29 @@
+## v164 - applying the lesson: every table that lists keywords, audited
+
+v163 found the IDE's highlighter was colouring the old keywords. **The lesson from that is to sweep every
+table that lists the names, not just every file that uses them.** Doing so found three more.
+
+**Fixed - the compiler's own token comments.** The `KW_*` constants still described the old keywords:
+`; nishedha = assert/guard`, `; pankti = array`, `; srijana = enum`, `; nishkriya = inline assembly`.
+These are comments, so they break nothing - but they are the documentation a reader of the compiler sees
+first, and they named words that no longer exist. Corrected to `abhava`, `mala`, `ganana`, `yantra`,
+`agrim`, `satya`. Suite still 187.
+
+**Found and NOT fixed - the Windows GUI's keyword table.** `windows/gui/sutram_gui.asm` carries
+`kw_words` with a vocabulary that has drifted much further than the rename:
+`ayojan`, `nishkriya`, `pratiyati`, and also `anyatha`, `punar`, `phala`, `asatya` - names that were never
+in the current language (`anyatra`, `punaravartana`, `phal`, `shunya`). **This is ChatGPT's territory and
+the divergence predates the rename**, so correcting it needs a real look rather than a substitution. It is
+recorded here rather than guessed at. **The Windows IDE would colour the wrong words.**
+
+**Found - there are two Linux IDEs.** `ide/sutram_gui_linux.asm` (X11 GUI, 18/18 tests, the one I have been
+building) and `ide/sutram_ide.asm` (a full-screen terminal editor, 32 KB, referenced by
+`PROJECT-OVERVIEW.md`). Both are live and both are described as *the* IDE. That needs a decision, not a
+fix.
+
+**The pattern, now five times:** code, comments, HTML, prose, keyword tables. **After a rename, every list
+of names must be audited** - the gates test behaviour, and a table of names is not behaviour.
+
 ## v163 - the IDE's syntax highlighter was still colouring the old keywords
 
 Found while working my own stream. The GUI's keyword table - what the editor colours as a keyword - still
