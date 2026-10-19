@@ -1,0 +1,4 @@
+222_old_keyword_name.sm:8:25: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'uddeshya'
+          yadi (i == 2) { uddeshya }
+                          ^
+Sanket: 'uddeshya' purana kunjishabd (v157 se purv); navin: 'agrim'
