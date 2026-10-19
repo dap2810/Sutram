@@ -4,6 +4,70 @@
 
 ---
 
+## Index — ROUND-03 delivery (2026-10-19, against main `85d6c5f` v169)
+
+**Code is on branch `claude/round-03`** (four code commits: `2182583` WS1 · `decb0afe` WS2 · `6f13c93e`
+docs · `494e1b21` WS4), kept off `main` per `AGENTS.md`. Nothing on `main` outside this folder was changed by me.
+
+**Gates on the branch** (`sh tools/gates.sh`):
+- suite **189 PASS / 4 NO-EXPECTATION** (188 + new golden `221_eof_location`)
+- codegen 12/12 · packs 33/33 · proof_lib 191/191 · proof_props 86/86 · layers 14/9/1 · stdlib PASS · module graph PASS
+- X11 **17/18** — `test_x11_edscroll.py` times out identically on the v169 and `feef075` GUIs (pre-existing, not investigated)
+- Windows NOT-RUN
+
+**Also now passing on the branch:** R70 negative corpus **6/6, native_status PASS** · `r69_build.py`
+accepts main · `tests/r66` 22 · `r67` 17 · `r68` 19 · `r69` 39 OK · 23 round tools exit 0.
+
+**Read first — two findings bigger than the brief:**
+1. **Two pre-v157 keywords miscompile silently.** `pratiyati` (old `return`) and `uddeshya` (old
+   `continue`) compile with no error, because an undefined name reads as 0. `f(5)` returns **2** instead
+   of 1, and the loop skips nothing. Verified by hand. Described, not fixed: it is a language decision
+   (R3-04 §0).
+2. **The X11 GUI has coloured no Latin keyword since 14 October.** The Devanagari rows ended `,0,0`,
+   which `match_tab` reads as end-of-table, so v163's keyword update never took effect.
+   `test_x11_colour.py` could not see it. **Fixed, and the test strengthened.** The new test fails on the
+   old GUI and passes now (R3-04 §4).
+
+| File | Workstream | One line |
+|---|---|---|
+| `R3-01-SOURCE-LOCKS.md` | WS1 | Five lock families, not two. **Re-pinned** the build-input and corpus contracts, each re-pinned only after the drift was verified: `r69_build` lock + its constant, the R70 corpus (fixtures changed by the rename only; expectations moved to the R2 strings), the r69 pair fixtures, the r66/r67 pack baselines (mapped through the rename table). **Retired** the R65/R66/R67/R68 staging tools: they can only ever apply a finished patch to a vanished blob, and r66's had `vardh` for the x86 `inc`. **Left alone** the R71 lock: an open ChatGPT review; re-pinning would claim a review nobody did. Also repaired 15 live helper tests that sat behind a broken C stub, and **fixed a regression of mine**: since R2, an unterminated string reported line **1:1** (EOF origin lookup). |
+| `R3-02-ROUND-TOOLS.md` | WS2 | All 31 round tools **run**, not grepped, against the current and v166 compilers. 14 pass. **9 failed only on English text → repaired, each re-run to exit 0** (7 broken by my R2, 2 earlier). **9 are structurally dead → retired** (A/B against pre-v157 compilers, frozen hashes/counts, source-shape greps, fixtures never committed). The 8 round workflows fail by construction (each asserts `tests/expect/` unchanged since its round), so I **retired them for one manual `gates.yml`**. **Also corrects my own R2 "eleven tools" list**, which was a grep: 4 of 11 were right. |
+| `R3-03-DOCS-AND-MESSAGES.md` | WS3 | Every doc quote of a compiler message, corrected from messages **actually triggered**. Includes the six books' transcripts, re-taken from the compiler with each book's own program; they showed a help line the compiler never prints. `LANGUAGE-REFERENCE.md` sample 007 compiles again. **ROUND-01 claims on v169:** not one audited doc had been edited since R1; 1 claim became true, 6 went newly stale. The branch makes 5 more true; the remaining stale numbers are listed, not changed. |
+| `R3-04-HIDDEN-OLD-NAMES.md` | WS4 | 296 old names (264 functions derived from v156, not typed). **The `\n` class reaches nowhere else on main: 0 hits, with the detector proven on v167.** The same *kind* of miss reaches much further, so I list 16 boundaries: HTML spans (25 book blocks that did not compile — fixed), a NUL in a byte table (the GUI — fixed), printed code labels (4 examples — fixed), slash lists, wildcards, file headers, hex bytes, dict keys. Fixed where they are Sarvam's; reported with file:line where they are Muse's or ChatGPT's. |
+
+**One rule I bent, stated so you can decide:** `AGENTS.md` says "preserve … existing frozen baselines".
+`r57_codegen_baseline.py` is one, and I retired it with the R57 tools. Its frozen hash is of a fixture the
+rename changed, so it can only fail. You asked for retire-or-repair calls in this brief, and the change
+is on a review branch. If you would rather keep frozen baselines even when dead, restore that one file
+with `git checkout 85d6c5f -- tools/r57_codegen_baseline.py`.
+
+**Housekeeping:**
+- `tools/gates.sh` rebuilds into the repo root, so every run leaves the tracked `sutram_compiler`
+  modified, and rewrites `docs/sutram-stdlib.html` in a different order from the committed one. The
+  committed `sutram_compiler` is mode 100644 (not executable). On main it matches a fresh build of
+  main's `src/` except for one linker symbol (`__bss_start`); after this branch's compiler change it is
+  stale. **I did not commit a rebuilt binary**, so please rebuild it at merge, as
+  in R2.
+- No `__pycache__` is committed this time (checked: `git diff --cached --name-only | grep -c pycache` → 0).
+- Draft PR #31 (ROUND-02) is still open. Its content is on main, so it can be closed.
+
+## What I need this round
+
+1. **The §0 decision in R3-04**: an undefined-variable error (right, structural) or a narrow
+   old-keyword guard (contained). Until then, any pre-v157 program using `pratiyati` or `uddeshya` gives
+   wrong answers silently.
+2. **The Devanagari-spelling decision** (R1-WS2 §3.2, still open). It is now the only rename leftover
+   that no sweep can reach: the compiled-in aliases are hex bytes.
+3. **Re-pin at acceptance.** The locks went stale because nobody re-pinned at v157 or at the R2 merge.
+   `tools/r69_build.lock.json` now carries the rule in its `repinned` field. One line in your merge
+   checklist would keep it true.
+4. **Whether `gates.sh` should own the numbers in `PROJECT-MASTER.md` §6 and in README/OVERVIEW.** Most
+   of the stale ROUND-01 claims are counts that drift every round (R3-03 §5).
+5. From R2, still open: one diagnostics shape (stdout vs stderr; `file:L:C:` vs `pankti L:C`), the
+   reserved-word hint, and one place for library signatures.
+
+---
+
 ## Index — ROUND-02 delivery (2026-10-18, against main `5eec849` v167)
 
 **Code is on branch `claude/round-02` — draft PR #31** (three commits: `5dc77d5` WS1, `89d23e8` WS2/WS3,
