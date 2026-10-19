@@ -3682,7 +3682,9 @@ def prop_breadth26(compiler, rng):
               "inf", "nan", "1e400"]):
         for j, ch in enumerate(s):
             lines.append(f"    buf[{j}] = {ord(ch)}")
-        lines.append(f"    vitti f{ci} = varna_tak_dashm(buf, {len(s)}, ok)")
+        # R7: one name per call (was f{ci} with ci left over from the loop above, the
+        # same name declared 12 times; since R7 that is E_DUPLICATE_NAME)
+        lines.append(f"    vitti fbad{ii} = varna_tak_dashm(buf, {len(s)}, ok)")
         lines.append("    yadi (ok[0] != 0) {")
         fail(f"float invalid {s or 'empty'}")
         lines.append("    }")
@@ -4396,7 +4398,7 @@ def prop_edge30_text(compiler, rng):
     check("out[0]", 0, "varna_avanat neg len term")
     check("varna_pratisthap(s, 2, s, 0 - 1, s, out)", 2,
           "varna_pratisthap neg find")
-    check("varna_bhed(s, 2, s, 0 - 1, parts)", 1, "varna_bhed neg sep")
+    check("varna_bhed(s, 2, s, 0 - 1, parts, 8)", 1, "varna_bhed neg sep")  # R7: maxparts was missing (E_ARITY)
     check("varna_gan(s, 2, s, 0 - 1)", 0, "varna_gan neg needle")
     check("varna_anwesh(s, 2, s, 0 - 1)", "0 - 1", "varna_anwesh neg needle")
     check("varna_aadi(s, 2, s, 0 - 1)", 0, "varna_aadi neg pre")
@@ -4615,12 +4617,13 @@ def prop_edge30_float(compiler, rng):
     # varna_tak_dashm overflow: 9e308 and 2e308 exceed max dvigun.
     # NOTE: varna_tak_dashm reads a qword-CELL array (src[p]), not a
     # byte-packed buffer — write cells, not akshar_rakh bytes.
-    for s, want, msg in [("9e308", 0, "9e308 overflow"),
+    for n, (s, want, msg) in enumerate([("9e308", 0, "9e308 overflow"),
                          ("2e308", 0, "2e308 overflow"),
-                         ("1.7e308", 1, "1.7e308 ok")]:
+                         ("1.7e308", 1, "1.7e308 ok")]):
         for i, ch in enumerate(s):
             lines.append(f"    buf[{i}] = {ord(ch)}")
-        lines.append(f"    vitti f = varna_tak_dashm(buf, {len(s)}, ok)")
+        # R7: one name per call (was `vitti f` three times; E_DUPLICATE_NAME since R7)
+        lines.append(f"    vitti fbig{n} = varna_tak_dashm(buf, {len(s)}, ok)")
         check("ok[0]", want, msg)
     # kalana: duplicate x -> pravan/pravan2 0.0 (was inf/blank)
     lines.append("    kosh_push(xs, 1.0)")
