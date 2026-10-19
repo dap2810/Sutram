@@ -1,24 +1,31 @@
-# Sutram Native Windows Installer
+# Native Windows installer review build
 
-The setup wizard is a native 64-bit Win32 executable built with MinGW GCC only. The release path deliberately avoids resource-compiler dependencies (`windres`), IExpress, and Inno Setup.
+Build from project root with `powershell -NoProfile -File windows/build-windows-setup.ps1`.
+NASM and GNU ld with PE support are developer prerequisites. No tool is installed automatically.
+The active launcher is `sutram_wizard.asm`, linked with kernel32 and bcrypt system import libraries.
+The legacy C launcher, `sutram_setup.asm`, and NSIS recipe are not used.
 
-After the base PE executable is linked, the build appends:
-- `payload.zip` containing Sutram, languages, examples, docs, and payload hashes
-- `install-core.ps1`
-- `uninstall-core.ps1`
-- the Sutram icon
-- a fixed package footer containing offsets, sizes, and SHA-256 hashes
+The wrapper checks the repo-relative source manifest, builds the R68 compiler and
+R67 GUI entrypoints, stages an explicit payload, and embeds the ZIP, two PowerShell
+scripts and license with SHA-256 values. `Sutram-Setup.exe --self-test` verifies
+those parts without extraction or installation. Hashes detect corruption, not publisher authenticity.
 
-`--self-test` validates all four appended package parts against the footer before release. The installer validates them again before extraction.
+Payload layout: bin/sutram.exe, win/sutram.exe, sutram-ide-gui.exe, assets/sutram.ico,
+LICENSE.txt, README.md, lang/, lib/, examples/, docs/. Both compiler directories
+also contain lang/ and lib/ so command-line compilation works from another directory.
+The GUI expects win/sutram.exe relative to its executable directory.
 
-The PowerShell scripts use Windows PowerShell 5.1 built into supported Windows 10/11 systems; end users do not install PowerShell, MinGW, NASM, Visual Studio, `windres`, Inno Setup, IExpress, WSL, or Linux.
+The guided NASM wizard targets the current user's Programs directory. The scripts
+manage user PATH, HKCU registration, .sm association and user shortcuts. Existing
+.sm defaults are preserved. Ownership records and content hashes protect user
+files during upgrades/uninstall. Install and uninstall integration are still
+unverified; see the delivery REPORT and TEST-PLAN before accepting a release.
 
-Wizard pages:
-1. Welcome
-2. License acceptance
-3. Install directory and Windows integration options
-4. Ready to install
-5. Progress
-6. Finish / launch Sutram Terminal
+The scripts require Windows PowerShell 5.1 and obey the current execution policy.
+Unsigned scripts will be blocked on Restricted/AllSigned configurations. This is
+an unresolved release blocker for the zero-configuration promise. Do not change
+security policy to run this review build. End users need no NASM, linker or Python.
 
-The installer is deliberately **per-user and least-privilege**. It never requests UAC elevation: Sutram installs under `%LOCALAPPDATA%\Programs\Sutram`, registers uninstall metadata under `HKCU`, updates only the current user's `PATH`, and creates only current-user Start Menu/Desktop shortcuts. `--self-test` remains elevation-free and validates the hash-protected package overlay.
+Developer-only verification: install-core.ps1 accepts -VerifyOnly. It extracts to
+TEMP, checks every payload hash and starts compiler --version/--help, then exits
+before creating an installation or changing Windows integration.
