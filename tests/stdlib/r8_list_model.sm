@@ -1,0 +1,58 @@
+# R8: suchi (list) and avali (queue) against a model. 500 operations each,
+# starting from capacity 1, so every growth path runs and the queue's ring
+# wraps. After every operation the result is printed; after the run, the
+# whole list and the queue in FIFO order. The expectation comes from a plain
+# Python list / deque driven by the same generator.
+yoj ganit
+yoj suchi
+mukhya() {
+    vitti st = nirmmita(8)
+    st[0] = 7
+    vitti ok = nirmmita(8)
+    vitti l = suchi_srij(1)
+    vitti step = 0
+    yavat (step < 500) {
+        vitti r = ganit_yadricch(st) % 1000003
+        yadi (r < 0) { r = 0 - r }
+        vitti op = r % 6
+        vitti i = (r / 6) % (suchi_maap(l) + 2) - 1
+        yadi (op <= 1) { likha(suchi_khip(l, step)) }
+        yadi (op == 2) { likha(suchi_nivesh(l, i, step)) }
+        yadi (op == 3) { likha(suchi_apanay(l, i)) }
+        yadi (op == 4) { likha(suchi_grah(l, i)) }
+        yadi (op == 5) { likha(suchi_vinimay(l, i, (r / 7) % (suchi_maap(l) + 1))) }
+        step = step + 1
+    }
+    likha(suchi_maap(l))
+    vitti j = 0
+    yavat (j < suchi_maap(l)) {
+        likha(suchi_grah(l, j))
+        j = j + 1
+    }
+    vitti q = avali_srij(1)
+    step = 0
+    yavat (step < 500) {
+        vitti r2 = ganit_yadricch(st) % 1000003
+        yadi (r2 < 0) { r2 = 0 - r2 }
+        vitti op2 = r2 % 5
+        yadi (op2 <= 1) { likha(avali_pravesh(q, step)) }
+        yadi (op2 == 2) {
+            likha(avali_nishkas(q, ok))
+            likha(ok[0])
+        }
+        yadi (op2 == 3) {
+            likha(avali_avalok(q, ok))
+            likha(ok[0])
+        }
+        yadi (op2 == 4) { likha(avali_antah(q, step - 3)) }
+        step = step + 1
+    }
+    likha(avali_maap(q))
+    vitti out = nirmmita((avali_maap(q) + 1) * 8)
+    likha(avali_tak_mala(q, out))
+    j = 0
+    yavat (j < avali_maap(q)) {
+        likha(out[j])
+        j = j + 1
+    }
+}

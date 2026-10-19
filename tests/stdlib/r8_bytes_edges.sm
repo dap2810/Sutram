@@ -1,0 +1,27 @@
+# R8: khand byte-string functions at their boundaries (the byte twins of
+# r8_text_edges.sm): a match at position 0, an empty prefix / suffix, a
+# prefix as long as the text, and case conversion at A Z a z and just outside.
+yoj khand
+mukhya() {
+    likha(khand_antah("abc", 3, "ab", 2))
+    likha(khand_antah("abc", 3, "bd", 2))
+    likha(khand_aadi("abc", 3, "abc", 3))
+    likha(khand_aadi("abc", 3, "", 0))
+    likha(khand_aadi("ab", 2, "abc", 3))
+    likha(khand_ant("abc", 3, "abc", 3))
+    likha(khand_ant("abc", 3, "", 0))
+    likha(khand_ant("bc", 2, "abc", 3))
+    vitti out = nirmmita(16)
+    likha(khand_unnat("`az{@AZ[", 8, out))
+    vitti i = 0
+    yavat (i < 8) {
+        likha(akshar(out, i))
+        i = i + 1
+    }
+    likha(khand_avanat("`az{@AZ[", 8, out))
+    i = 0
+    yavat (i < 8) {
+        likha(akshar(out, i))
+        i = i + 1
+    }
+}

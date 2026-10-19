@@ -1,0 +1,27 @@
+# R8: nighantu against a model. 600 operations (insert / delete / get) on a
+# map of capacity 7 with 12 possible keys, so the table fills, probe chains
+# wrap past the end, and backward-shift deletion moves entries. Every result
+# is printed; the expectation comes from a plain dictionary with a size limit
+# (a key that is absent cannot be added while 7 keys are stored).
+yoj ganit
+yoj nighantu
+mukhya() {
+    vitti st = nirmmita(8)
+    st[0] = 20261019
+    vitti m = nighantu_srij(7)
+    vitti kb = nirmmita(8)
+    vitti step = 0
+    yavat (step < 600) {
+        vitti r = ganit_yadricch(st) % 1000003
+        yadi (r < 0) { r = 0 - r }
+        vitti k = r % 12
+        vitti op = (r / 12) % 3
+        akshar_rakh(kb, 0, 97 + k)
+        akshar_rakh(kb, 1, 48 + k % 3)
+        yadi (op == 0) { likha(nighantu_khip(m, 7, kb, 2, step)) }
+        yadi (op == 1) { likha(nighantu_apanay(m, 7, kb, 2)) }
+        yadi (op == 2) { likha(nighantu_grah(m, 7, kb, 2)) }
+        step = step + 1
+    }
+    likha(nighantu_maap(m))
+}

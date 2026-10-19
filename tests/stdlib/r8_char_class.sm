@@ -1,0 +1,17 @@
+# R8: varna character tests at the edges of each range, and the
+# terminator-aware searches. "/09:@AZ[`az{" holds, in order, the codes just
+# outside and at both ends of 0-9, A-Z and a-z.
+yoj varna
+mukhya() {
+    vitti s = "/09:@AZ[`az{"
+    vitti i = 0
+    yavat (i < 12) {
+        likha(asti_ank_akshar(s, i) * 1000 + asti_unnat_akshar(s, i) * 100 + asti_avanat_akshar(s, i) * 10 + asti_akshar_akshar(s, i))
+        i = i + 1
+    }
+    # code 0 is the terminator, not a character of the text
+    likha(gan_akshar(s, 0))
+    likha(anwesh_akshar(s, 0))
+    likha(gan_akshar(s, 122))
+    likha(anwesh_akshar(s, 123))
+}

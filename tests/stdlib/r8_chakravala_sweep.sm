@@ -1,0 +1,29 @@
+# R8: chakravala(out, n) for every n from 2 to 99 that is not a square.
+# Each line: n, the return flag, x, y. The expectation is the least solution
+# of x^2 - n*y^2 = 1, computed independently (continued fractions), or flag 0
+# where x does not fit in 64 bits.
+# chakravala is called through the wrapper cw, which reads nothing after the
+# call: chakravala has 29 variables, and on v183 a function with more than 21
+# overwrites its caller's saved registers (Claude-to-Sarvam/R8-01, finding F1).
+# Called directly from this loop, it corrupts `out` and the program crashes.
+# When F1 is fixed, the wrapper can go; the expectation stays the same.
+yoj ganita
+prakriya cw(out, n) {
+    prati chakravala(out, n)
+}
+mukhya() {
+    vitti out = nirmmita(2 * 8)
+    vitti c = nirmmita(8)
+    c[0] = 2
+    yavat (c[0] < 100) {
+        yadi (ganita_vargmool(c[0]) * ganita_vargmool(c[0]) != c[0]) {
+            out[0] = 0
+            out[1] = 0
+            likha(c[0])
+            likha(cw(out, c[0]))
+            likha(out[0])
+            likha(out[1])
+        }
+        c[0] = c[0] + 1
+    }
+}

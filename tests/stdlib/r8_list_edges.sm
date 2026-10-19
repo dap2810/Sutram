@@ -1,0 +1,23 @@
+# R8: suchi bounds at exactly the length, with a stale value in the slot
+# just past it (left there by suchi_apanay of the last element).
+yoj suchi
+mukhya() {
+    vitti l = suchi_srij(4)
+    suchi_khip(l, 10)
+    suchi_khip(l, 20)
+    suchi_khip(l, 30)
+    suchi_khip(l, 40)
+    likha(suchi_apanay(l, 3))
+    likha(suchi_maap(l))
+    likha(suchi_grah(l, 3))
+    likha(suchi_sangrah(l, 3, 99))
+    likha(suchi_vinimay(l, 0, 3))
+    likha(suchi_vinimay(l, 3, 0))
+    likha(suchi_apanay(l, 3))
+    likha(suchi_maap(l))
+    likha(suchi_grah(l, 0))
+    likha(suchi_grah(l, 2))
+    # index 0 is a valid index of a non-empty list
+    likha(suchi_sangrah(l, 0, 5))
+    likha(suchi_grah(l, 0))
+}
