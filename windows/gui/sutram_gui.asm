@@ -182,41 +182,42 @@ global _start
 section .data
 app_class db 'SutramNativeGUIWindow',0
 app_title db 'Sutram sampadak',0
-; R73: every visible word is Sanskrit (Latin transliteration, the project's
-; canonical form; the same tokens the Linux X11 IDE uses). UTF-16 for Unicode APIs.
+; R73 made every visible word Sanskrit. R5 (owner's decision, ROUND-05): menus, buttons,
+; the find label, the two Help dialogs and the messages that name a control are English.
+; The status line and the output messages stay as R73 left them. UTF-16 for Unicode APIs.
 align 2
 app_class_w:    dw __utf16__("SutramNativeGUIWindow"),0
 app_title_w:    dw __utf16__("Sutram sampadak"),0
 title_suffix_w: dw __utf16__(" - Sutram sampadak"),0
-title_new_w:    dw __utf16__("nava patra"),0
+title_new_w:    dw __utf16__("Untitled"),0
 title_mod_w:    dw __utf16__(" *"),0
-mn_patra:       dw __utf16__("patra"),0
-mn_sampad:      dw __utf16__("sampad"),0
-mn_chal:        dw __utf16__("chal"),0
-mn_bhasha:      dw __utf16__("bhasha"),0
-mn_sahay:       dw __utf16__("sahay"),0
-mi_nava:        dw __utf16__("nava"),9,__utf16__("Ctrl+N"),0
-mi_khol:        dw __utf16__("khol..."),9,__utf16__("Ctrl+O"),0
-mi_sanchay:     dw __utf16__("sanchay"),9,__utf16__("Ctrl+S"),0
-mi_saveas:      dw __utf16__("nava naam se sanchay..."),0
-mi_nishkas:     dw __utf16__("nishkas"),0
-mi_punah:       dw __utf16__("punah"),9,__utf16__("Ctrl+Z"),0
-mi_chhid:       dw __utf16__("chhid"),9,__utf16__("Ctrl+X"),0
-mi_pratilip:    dw __utf16__("pratilip"),9,__utf16__("Ctrl+C"),0
-mi_sanyoj:      dw __utf16__("sanyoj"),9,__utf16__("Ctrl+V"),0
-mi_sarvagrah:   dw __utf16__("sarvagrah"),9,__utf16__("Ctrl+A"),0
-mi_anwesh:      dw __utf16__("anwesh..."),9,__utf16__("Ctrl+F"),0
-mi_anwesh_agrim: dw __utf16__("agrim anwesh"),9,__utf16__("F3"),0
-mi_antar:       dw __utf16__("antar (4 sthan)"),9,__utf16__("Tab"),0
-mi_antar_hatao: dw __utf16__("antar hatao"),9,__utf16__("Shift+Tab"),0
-mi_chal:        dw __utf16__("chal"),9,__utf16__("F5"),0
-mi_presh:       dw __utf16__("presh (kosh pankti)"),9,__utf16__("Enter"),0
-mi_phal_rikta:  dw __utf16__("phal_rikta"),0
-mi_swayam:      dw __utf16__("swayam (lipi se pahchan)"),0
-mi_mool:        dw __utf16__("mool (Latin shabda)"),0
+mn_patra:       dw __utf16__("File"),0
+mn_sampad:      dw __utf16__("Edit"),0
+mn_chal:        dw __utf16__("Shell"),0
+mn_bhasha:      dw __utf16__("Language"),0
+mn_sahay:       dw __utf16__("Help"),0
+mi_nava:        dw __utf16__("New"),9,__utf16__("Ctrl+N"),0
+mi_khol:        dw __utf16__("Open..."),9,__utf16__("Ctrl+O"),0
+mi_sanchay:     dw __utf16__("Save"),9,__utf16__("Ctrl+S"),0
+mi_saveas:      dw __utf16__("Save As..."),0
+mi_nishkas:     dw __utf16__("Exit"),0
+mi_punah:       dw __utf16__("Undo"),9,__utf16__("Ctrl+Z"),0
+mi_chhid:       dw __utf16__("Cut"),9,__utf16__("Ctrl+X"),0
+mi_pratilip:    dw __utf16__("Copy"),9,__utf16__("Ctrl+C"),0
+mi_sanyoj:      dw __utf16__("Paste"),9,__utf16__("Ctrl+V"),0
+mi_sarvagrah:   dw __utf16__("Select All"),9,__utf16__("Ctrl+A"),0
+mi_anwesh:      dw __utf16__("Find..."),9,__utf16__("Ctrl+F"),0
+mi_anwesh_agrim: dw __utf16__("Find Next"),9,__utf16__("F3"),0
+mi_antar:       dw __utf16__("Indent (4 spaces)"),9,__utf16__("Tab"),0
+mi_antar_hatao: dw __utf16__("Dedent"),9,__utf16__("Shift+Tab"),0
+mi_chal:        dw __utf16__("Run module"),9,__utf16__("F5"),0
+mi_presh:       dw __utf16__("Send (shell line)"),9,__utf16__("Enter"),0
+mi_phal_rikta:  dw __utf16__("Clear shell"),0
+mi_swayam:      dw __utf16__("Auto (detect script)"),0
+mi_mool:        dw __utf16__("Core (Latin keywords)"),0
 mi_sanskrit:    dw __utf16__("sanskrit  "),0x0938,0x0902,0x0938,0x094D,0x0915,0x0943,0x0924,0x092E,0x094D,0
-mi_kunji:       dw __utf16__("kunji (shortcut)"),0
-mi_parichay:    dw __utf16__("parichay"),0
+mi_kunji:       dw __utf16__("Shortcut keys"),0
+mi_parichay:    dw __utf16__("About Sutram"),0
 st_pankti_w:    dw __utf16__("pankti "),0
 st_stambh_w:    dw __utf16__("   stambh "),0
 st_bhasha_w:    dw __utf16__("   |   bhasha: "),0
@@ -233,10 +234,10 @@ lang_flag_w:    dw __utf16__(" --lang sanskrit"),0
 space_quote_w:  dw ' ','"',0
 indent4_w:      dw __utf16__("    "),0
 empty_w:        dw 0
-msg_unsaved_w:  dw __utf16__("patra parivartit hai. sanchay karein?"),0
-about_w:        dw __utf16__("Sutram sampadak (Windows)"),13,10,__utf16__("Samskrita-mukhya bhasha -> x86-64 yantra-code."),13,10,13,10,__utf16__("sampadak ka karyakram chal (F5) se sankalit hokar chalta hai."),13,10,__utf16__("Devanagari karyakram ke liye bhasha > swayam ya sanskrit chunein."),13,10,__utf16__("patra UTF-8 hain. presh itihas ko punah chalata hai."),0
-keys_w:         dw __utf16__("F5 / Ctrl+R  chal"),13,10,__utf16__("Ctrl+N  nava     Ctrl+O  khol     Ctrl+S  sanchay"),13,10,__utf16__("Tab  antar (4 sthan)     Shift+Tab  antar hatao"),13,10,__utf16__("Enter  nayi pankti, pichhli pankti ka antar; '{' ke baad +4"),13,10,__utf16__("}  rikta pankti par antar -4"),13,10,__utf16__("Ctrl+F  anwesh     F3  agrim anwesh"),13,10,__utf16__("Ctrl+Z  punah    Ctrl+X/C/V  chhid/pratilip/sanyoj    Ctrl+A  sarvagrah"),0
-find_label_w:   dw __utf16__("anwesh:"),0
+msg_unsaved_w:  dw __utf16__("The file has changed. Save it?"),0
+about_w:        dw __utf16__("Sutram sampadak (Windows)"),13,10,__utf16__("Sanskrit-keyword language -> x86-64 machine code."),13,10,13,10,__utf16__("Shell > Run module (F5) compiles and runs the editor's program."),13,10,__utf16__("For a Devanagari program choose Language > Auto or sanskrit."),13,10,__utf16__("Files are UTF-8. Send replays the shell history."),0
+keys_w:         dw __utf16__("F5 / Ctrl+R  Run module"),13,10,__utf16__("Ctrl+N  New     Ctrl+O  Open     Ctrl+S  Save"),13,10,__utf16__("Tab  Indent (4 spaces)     Shift+Tab  Dedent"),13,10,__utf16__("Enter  new line, keeps the indent; +4 after '{'"),13,10,__utf16__("}  on an empty line: indent -4"),13,10,__utf16__("Ctrl+F  Find     F3  Find Next"),13,10,__utf16__("Ctrl+Z  Undo    Ctrl+X/C/V  Cut/Copy/Paste    Ctrl+A  Select All"),0
+find_label_w:   dw __utf16__("Find:"),0
 class_button db 'BUTTON',0
 class_edit db 'EDIT',0
 class_static db 'STATIC',0
@@ -410,25 +411,25 @@ comdlg_table:
     IMPORTS GetSaveFileNameW
     dq 0,0
 
-; R4: the toolbar buttons use the same Sanskrit words as the menus they
-; duplicate (chal, khol, sanchay, presh, phal_rikta); udaharan = example.
-label_run db 'chal',0
-label_open db 'khol',0
-label_save db 'sanchay',0
-label_example db 'udaharan khol',0
-label_send db 'presh',0
-label_clear db 'phal_rikta',0
+; R5: the owner's decision (ROUND-05): the interface labels are English.
+; Buttons are the 13/18 Oct words, menus follow the 13 Oct build where it had one.
+label_run db 'Run',0
+label_open db 'Open',0
+label_save db 'Save',0
+label_example db 'Load example',0
+label_send db 'Send',0
+label_clear db 'Clear shell',0
 label_output db 'sankalan / chalan ka phal',0
 label_shell db '>>>',0
 label_examples db 'udaharan (do baar click)',0
 err_init db 'Windows API load nahi hui. sampadak shuru nahi ho saka.',0
 err_title db 'Sutram sampadak',0
-msg_ready db 'sajja. chal (F5) sampadak ka karyakram sankalit karke chalata hai.',13,10,0
+msg_ready db 'Ready. Run (F5) compiles and runs the program in the editor.',13,10,0
 msg_compile_failed db '[sankalan asaphal]',13,10,0
 msg_run_failed db '[karyakram asamanya roop se samapt]',13,10,0
 msg_file_failed db '[patra padhne/likhne me asaphal]',13,10,0
 msg_input_large db '[patra bahut bada; sampadak seema 64 KiB]',13,10,0
-msg_shell_limit db '[presh itihas seema; phal_rikta karein]',13,10,0
+msg_shell_limit db '[shell history is full; use Clear shell]',13,10,0
 msg_timeout db '[prakriya 10 sekand se adhik; samapt ki gayi]',13,10,0
 msg_missing_compiler db '[win\sutram.exe nahi mila: pahle sankalak banayein]',13,10,0
 msg_missing_lang db '[deshi shabda-pak anupalabdh: lang\*.lang dekhein; Latin shabda kaam karte hain]',13,10,0
