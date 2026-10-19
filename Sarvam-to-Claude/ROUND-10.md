@@ -35,6 +35,37 @@ note, Step 8, the RETIRED installer header, the stdlib fix, the changelog) becau
 
 ### WS1 — F1: fix it *(everything else waits)*
 
+**UPDATED with the owner's own Windows measurements. The bug is worse than first described.**
+
+**Confirmed by three independent methods** — Claude's repro, my Linux threshold test, and **the owner
+running it on real Windows**:
+
+| Local variables in a CALLED function | Linux | Windows (owner) |
+|---|---|---|
+| 18, 20, 22, **30** | correct | **correct — printed `7`** |
+| **34** | not tested | **compiles, then NO OUTPUT** |
+| 38, 40 | **SEGFAULT (exit 139)** | **compiles, then NO OUTPUT** |
+
+**So the boundary is between 30 and 34, not 38.** A function with **31-34 variables** already crashes —
+**that is a moderately complex function, not an extreme one**, and a beginner writing real code would reach
+it.
+
+**And the failure mode is the worst kind.** The compiler prints `Siddh: 526 byte sankalit` — **it reports
+SUCCESS** — and the program then produces nothing. **A user would assume their own logic was wrong and
+rewrite working code for hours before suspecting the compiler.** For a language whose purpose is to teach
+beginners, that is the most damaging failure there is.
+
+**Deliver:**
+- the fix, with a test that fails on v191 and passes after
+- **the real threshold, pinned** — test 31, 32, 33, 34 and well past them; **the fix must hold at any
+  number, not at 35**
+- **the root cause in two sentences**, so the next reader does not have to rediscover it
+- **whether Linux and Windows share one bug or two** — my Linux run crashed at 38 and the owner's Windows
+  run crashed at 34. **If the threshold differs by platform, say so; it may be a stack-size issue rather
+  than a codegen one.**
+
+**If the fix needs the compiler restructured, stop and say so with what it would take.** Do not restructure.
+
 **A valid program with 38 local variables segfaults. A language that crashes on valid input is not
 usable**, so this is now ahead of everything else on the road to v1.0.
 
