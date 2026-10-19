@@ -13,9 +13,9 @@ E=ROOT/'examples'; X=ROOT/'tests'/'expect'
 LINE=re.compile(r'^\s*yoj\s+(\S+)\s*$',re.ASCII)
 IDENT=re.compile(r'[A-Za-z_][A-Za-z_0-9]{0,30}\Z')
 MODULE=re.compile(r'[A-Za-z_0-9-]{1,30}\Z')
-INVALID='Sutram Error: invalid namespaced yoj (use module@alias, max 31 alias bytes)\n'
-ALIAS_REUSE='Sutram Error: namespaced alias already assigned to another module\n'
-MISSING='Sutram Error: namespaced module file not found\n'
+INVALID='Sutram Error: ashuddh yoj (roop: module@upanaam, upanaam 31 byte tak)\n'
+ALIAS_REUSE='Sutram Error: upanaam purv-niyukt (anya module)\n'
+MISSING='Sutram Error: module patra aprapt\n'
 
 def transform(code):
     registry={}; keys=set(); out=[]

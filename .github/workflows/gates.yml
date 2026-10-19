@@ -1,0 +1,33 @@
+name: Sutram gates (manual)
+# Replaces the per-round r49..r59 workflows (retired in ROUND-03: each asserted
+# that tests/expect/ was unchanged since its own round, or ran an A/B against a
+# pre-v157 compiler, so every one of them failed by construction).
+# Manual-only under docs/CI-NOTIFICATION-POLICY.md. Run once per accepted milestone.
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  gates:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Acquire NASM without root installation
+        run: |
+          cd "$RUNNER_TEMP"
+          apt download nasm
+          mkdir -p nasm-tools
+          for p in ./*.deb; do dpkg-deb -x "$p" nasm-tools; done
+          echo "$RUNNER_TEMP/nasm-tools/usr/bin" >> "$GITHUB_PATH"
+      - name: tools/gates.sh (PASS / FAIL / NOT-RUN per gate)
+        run: sh tools/gates.sh | tee gates.txt
+      - name: Fail the job if any gate failed
+        run: |
+          grep -E '^  FAIL +[0-9]+' gates.txt
+          grep -qE '^  FAIL +0$' gates.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sutram-gates
+          path: gates.txt
