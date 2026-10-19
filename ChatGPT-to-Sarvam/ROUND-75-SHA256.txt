@@ -1,0 +1,19 @@
+# Sutram R75 — identity manifest; exact scope matters
+# GitHub review branch: review/r75-kosh-reclamation-stage-20261019
+# PR https://github.com/dap2810/Sutram/pull/39
+# GIT BLOB SHA-1 — verified by reading back branch files (NOT local SHA256):
+8ca842d79331f3959044b0e1b75e0d1b0ea292eb  tools/r75_reclaim_prepare.py
+e9a6f5d02f2b4c98343de6f85c3442ab8890d59a  src/r75_kosh_reclaim.inc
+e6e19452bfca9dce860fd0176061362d0e7ad62a  tools/r75_kosh_checkpoint.py
+2be24a2a329eaea3cd2a0cb9fd3f044ec0f06085  tests/r75/test_reclaim_tools.py
+
+# SHA-256 — LOCAL tool sources (different independently developed implementation,
+# not byte-identical copies of the above GitHub branch, and not compiler binaries):
+1b1f24b4ae3dd6f3ef3c1ccc4226a1dd650ad82a9f5fd4e5094853bd6f16449d  local/tools/r75_kosh_prepare.py
+e6e952e39c8cdf5e68bdf92fe8524b3c4a54ef69013a23148fe026eb72d36baf  local/tools/r75_kosh_measure.py
+b9d8bc30dc72be55bd2785db6de8506be0450408ec596647740f92dc99c544d3  local/tests/r75/test_r75_prepare.py
+d0a636ede78f3eeacc24f7a02f4054ece75324527853a80f0788205a2382f0dd  local/tests/r75/test_r75_measure.py
+c86d38139ceed168abd458191881c23d830bc228e70f46548dd2b8c079779ad3  local/R75-LOCAL-TEST-LOG.txt
+
+# Actual compiler executable SHA256: NOT PRODUCED / NOT_RUN.
+# Actual generated Sutram test binary SHA256: NOT PRODUCED / NOT_RUN.
