@@ -51,11 +51,8 @@ echo
 
 # ---------------------------------------------------------------- the gates
 run_gate() {                      # name, then the command
-  # NOTE: do not judge a gate by its exit code. tests/run_tests.py exits non-zero
-  # even when every test passes, so the exit code is parsed out of the output instead.
-  # Claude caught this as a false positive on every run.
   name=$1; shift
-  out=$("$@" 2>&1)
+  out=$("$@" 2>&1) || { bad "$name" "$(printf '%s' "$out" | tail -1 | cut -c1-60)"; return; }
   printf '%s' "$out" > /tmp/g_out.$$
   case "$name" in
     "regression suite")
@@ -83,7 +80,7 @@ run_gate "stdlib inventory"  python3 tools/gen_stdlib_ref.py
 run_gate "module graph"      python3 -m unittest discover -s tests/module_graph -p 'test_*.py'
 
 # the GUI needs an X server; say so rather than omitting it
-if [ -n "${DISPLAY:-}" ] || [ -d /tmp/.X11-unix ]; then
+if [ -n "${DISPLAY:-}" ] || [ -S /tmp/.X11-unix/X0 ]; then
   n=0; f=0
   for t in tools/test_x11_*.py; do
     SUTRAM_GUI="$PWD/sutram-gui" python3 "$t" >/dev/null 2>&1 && n=$((n+1)) || f=$((f+1))
