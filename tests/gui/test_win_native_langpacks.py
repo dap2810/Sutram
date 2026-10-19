@@ -115,7 +115,7 @@ class NativeLanguagePackContract(unittest.TestCase):
         self.assertEqual(reference_lex('मुख्य; எழுது; mukhya',native),['मुख्य','எழுது','mukhya'])
 
     def test_installer_includes_lang_directory_and_missing_pack_warning(self):
-        self.assertRegex(BUILD,r"\('lang','examples','docs'\)")
+        self.assertRegex(BUILD,r"\('lang','lib','examples','docs'\)")
         self.assertIn('msg_missing_lang db',ASM)
         self.assertIn('msg_partial_lang db',ASM)
         self.assertIn('native_pack_errors',ASM)
