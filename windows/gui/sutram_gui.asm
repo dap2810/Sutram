@@ -410,14 +410,14 @@ comdlg_table:
     IMPORTS GetSaveFileNameW
     dq 0,0
 
-; The toolbar buttons stay English at the owner's request (2026-10-18); the
-; menus, status line and messages are Sanskrit.
-label_run db 'Run',0
-label_open db 'Open',0
-label_save db 'Save',0
-label_example db 'Load example',0
-label_send db 'Send',0
-label_clear db 'Clear shell',0
+; R4: the toolbar buttons use the same Sanskrit words as the menus they
+; duplicate (chal, khol, sanchay, presh, phal_rikta); udaharan = example.
+label_run db 'chal',0
+label_open db 'khol',0
+label_save db 'sanchay',0
+label_example db 'udaharan khol',0
+label_send db 'presh',0
+label_clear db 'phal_rikta',0
 label_output db 'sankalan / chalan ka phal',0
 label_shell db '>>>',0
 label_examples db 'udaharan (do baar click)',0
@@ -514,6 +514,7 @@ is_lineupdating resd 1
 is_shellrunning resd 1
 last_shell_out resd 1
 last_exit_code resd 1
+last_fail_stage resd 1   ; R4: 1 compile, 2 run, 3 temp file (set by compile_run)
 current_file resb 1040
 editor_utf16 resw 65536
 output_utf16 resw 32768
@@ -2924,19 +2925,37 @@ spawn_capture:
 .end:
     EPILOG
 
+; R4: rcx = the message for the stage compile_run last failed in.
+; Before R4 the editor said "program ended abnormally" for a compile error and
+; the shell said "compile failed" for a runtime error.
+stage_fail_message:
+    PTR rcx,msg_run_failed
+    cmp dword [rel last_fail_stage],1
+    jne .not_compile
+    PTR rcx,msg_compile_failed
+.not_compile:
+    cmp dword [rel last_fail_stage],3
+    jne .done
+    PTR rcx,msg_file_failed
+.done:
+    ret
+
 ; Compiler+run; rcx -> Sutram source; output_buffer captures only the
 ; *last* subprocess (compiler error OR program stdout/stderr).
 compile_run:
     PROLOG 80
     mov [rbp-8],rcx
+    mov dword [rel last_fail_stage],3
     call write_temp
     test eax,eax
     jz .failed
+    mov dword [rel last_fail_stage],1    ; R4: a failure from here on is the compiler's
     call compose_compile
     PTR rcx,command_line
     call spawn_capture
     test eax,eax
     jz .failed
+    mov dword [rel last_fail_stage],2    ; R4: ... and from here on the program's
     PTR r10,command_line
     mov word [r10],'"'
     mov word [r10+2],0
@@ -2984,7 +3003,7 @@ run_editor:
 .printed:
     cmp dword [rbp-4],0
     jne .end
-    PTR rcx,msg_run_failed
+    call stage_fail_message      ; R4: rcx = compile / run / file message
     call output_append
     jmp .end
 .failed_unicode:
@@ -3110,7 +3129,7 @@ shell_submit:
 .error:
     PTR rcx,output_buffer
     call output_append
-    PTR rcx,msg_compile_failed
+    call stage_fail_message      ; R4: was always "sankalan asaphal", even for a runtime failure
     call output_append
     jmp .endreset
 .limit:

@@ -1,0 +1,6 @@
+# R4 golden: a mistyped name (`totl`) is a compile error at its own line and
+# column. Before R4 it compiled, was read as 0, and printed 0.
+mukhya() {
+    vitti total = 3
+    likha(totl)
+}

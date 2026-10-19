@@ -1,0 +1,11 @@
+# R4 golden: `uddeshya` was the keyword for `continue` before v157. It is no
+# longer a keyword, so it is a name, and a name that was never declared is a
+# compile error. Before R4 this program compiled and printed 0 1 2 3 4 -- the
+# `continue` silently did nothing. Expected to FAIL to compile, with a hint
+# naming the new keyword.
+mukhya() {
+    chakra i = 0 tak 4 {
+        yadi (i == 2) { uddeshya }
+        likha(i)
+    }
+}
