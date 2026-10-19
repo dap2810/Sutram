@@ -1,0 +1,48 @@
+Script started on 2026-10-19 14:08:58-04:00 [COMMAND="/usr/lib/wine/wine64 powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'Z:/tmp/claude-0/-home-claude/6889af70-4aa6-567a-b665-1e4ff0074842/scratchpad/r6/acceptroot_r7/tools/accept-windows.ps1' -OutDir 'Z:/tmp/claude-0/-home-claude/6889af70-4aa6-567a-b665-1e4ff0074842/scratchpad/r6/R7-committed' " <not executed on terminal>]
+Sutram Windows acceptance  env=Wine  build=19043.  PS=7.2.24  elevated=True
+NOT-RUN  runner-not-elevated                Wine has no UAC and reports every pr
+ocess as administrator; least privilege can only be shown on Windows
+SHA256   73fabd7146db294741a917f5fd748cdeeeb5b33e6cb2b2b672cc29984df8db48  setup
+  (Z:\tmp\claude-0\-home-claude\6889af70-4aa6-567a-b665-1e4ff0074842\scratchpad\
+r6\acceptroot_r7\Sutram-Setup.exe)
+SHA256   b6e2bb342e75600a3e67b9263a27725f15494384804edbfa4c72234ec8b93b1b  repo-
+compiler win\sutram.exe  (Z:\tmp\claude-0\-home-claude\6889af70-4aa6-567a-b665-1
+e4ff0074842\scratchpad\r6\acceptroot_r7\win\sutram.exe)
+SHA256   b6e2bb342e75600a3e67b9263a27725f15494384804edbfa4c72234ec8b93b1b  repo-
+compiler sutram.exe  (Z:\tmp\claude-0\-home-claude\6889af70-4aa6-567a-b665-1e4ff
+0074842\scratchpad\r6\acceptroot_r7\sutram.exe)
+SHA256   528a4ee0cf421279f77a95240b244b880d572acfd40f2e2c0254ed7a52f0d4e7  repo-
+ide sutram-ide-gui.exe  (Z:\tmp\claude-0\-home-claude\6889af70-4aa6-567a-b665-1e
+4ff0074842\scratchpad\r6\acceptroot_r7\sutram-ide-gui.exe)
+PASS     setup-hash-file                    matches the committed hash file
+PASS     setup-self-test                    embedded SHA-256 self-test exit 0
+FAIL     install-wizard                     outcome=dialog: Sutram setup did not
+ complete. Check the install log in %TEMP% (unique STM folder) for details.; scr
+eenshots: wizard-welcome.png, wizard-license.png, wizard-location.png, wizard-co
+mponents.png, wizard-ready.png
+NOT-RUN  install-no-elevation-prompt        Wine has no UAC; this check means so
+mething only on Windows
+NOT-RUN  install-footprint                  install did not complete
+PASS     devanagari-cli                     repository build; expects the line ?
+??? = 15
+PASS     ide-launches                       repository build; screenshot ide-sta
+rt.png
+NOT-RUN  ide-menus-english                  Wine keeps menus per process, so ano
+ther process cannot read them; this check needs Windows
+PASS     ide-buttons-english                mismatched ids:
+PASS     devanagari-ide                     expects ???? = 15; screenshot ide-de
+vanagari.png
+PASS     tab-indent                         four spaces, no tab character; a sel
+ection moves right by four
+PASS     shift-tab-dedent                   menu path only
+NOT-RUN  shift-tab-keyboard                 a real Shift+Tab needs the keyboard 
+state, i.e. SendInput into the foreground window; rerun with -Keyboard and do no
+t touch the mouse/keyboard while it runs
+PASS     unsaved-guard                      screenshot ide-unsaved-guard.png
+NOT-RUN  uninstall-removes-install          nothing was installed by this run
+VERDICT  FAIL (Wine only - NOT Windows acceptance)   required: 9 PASS / 1 FAIL /
+ 5 NOT-RUN
+LOG      Z:\tmp\claude-0\-home-claude\6889af70-4aa6-567a-b665-1e4ff0074842\scrat
+chpad\r6\R7-committed\accept-windows.json
+LOG-SHA256 336e090c6945b434e0feff2645ab8bd870550eebe1f39159e759f6cf21bce45f
+Script done on 2026-10-19 14:09:24-04:00 [COMMAND_EXIT_CODE="1"]

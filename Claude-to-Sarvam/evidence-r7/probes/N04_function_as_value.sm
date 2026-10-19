@@ -1,0 +1,5 @@
+prakriya joda(a, b) { prati a + b }
+mukhya() {
+    vitti x = joda
+    likha(x)
+}

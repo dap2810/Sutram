@@ -1,0 +1,27 @@
+diff --git a/windows/native-installer/install-core.ps1 b/windows/native-installer/install-core.ps1
+index 03c83f36..e34e8426 100644
+--- a/windows/native-installer/install-core.ps1
++++ b/windows/native-installer/install-core.ps1
+@@ -208,7 +208,7 @@ function New-Shortcut([string]$Path,[string]$Target,[string]$Arguments,[string]$
+     $sc.TargetPath = $Target
+     if ($Arguments) { $sc.Arguments = $Arguments }
+     if ($WorkingDir) { $sc.WorkingDirectory = $WorkingDir }
+-    if ($Icon) { $sc.IconLocation = $Icon }
++    if ($Icon) { $sc.IconLocation = $Icon + ",0" }   # WINE HARNESS ONLY (scratch): Wine needs path,index
+     $sc.Save()
+ }
+ 
+diff --git a/windows/native-installer/uninstall-core.ps1 b/windows/native-installer/uninstall-core.ps1
+index 3c57efb4..9e58d4e7 100644
+--- a/windows/native-installer/uninstall-core.ps1
++++ b/windows/native-installer/uninstall-core.ps1
+@@ -143,7 +143,8 @@ try {
+         if ($state.ContainsKey('OwnedShortcuts') -and $encoded -in ($state['OwnedShortcuts'] -split ',') -and (Test-Path -LiteralPath $link -PathType Leaf)) {
+             $shell=New-Object -ComObject WScript.Shell
+             $sc=$shell.CreateShortcut($link)
+-            if ($sc.TargetPath.StartsWith($InstallDir+'\',[StringComparison]::OrdinalIgnoreCase) -or
++            # WINE HARNESS ONLY (scratch): Wine's WScript.Shell returns a null TargetPath for an existing .lnk
++            if (-not $sc.TargetPath -or $sc.TargetPath.StartsWith($InstallDir+'\',[StringComparison]::OrdinalIgnoreCase) -or
+                 ($shortcut -eq 'Sutram Terminal.lnk' -and $sc.Arguments.Contains($InstallDir))) {
+                 Remove-Item -LiteralPath $link -Force
+             }

@@ -1,0 +1,31 @@
+$ python3 -m unittest discover -s tests/r66
+Ran 22 tests in 0.463s
+OK
+$ python3 -m unittest discover -s tests/r67
+Ran 17 tests in 0.073s
+OK
+$ python3 -m unittest discover -s tests/r68
+Ran 19 tests in 0.254s
+OK
+$ python3 -m unittest discover -s tests/r69
+FAIL: test_native_diagnostics_gate (test_build_and_probe.DocsAndWindows.test_native_diagnostics_gate)
+FAIL: test_staged_payload_hash_gate (test_build_and_probe.DocsAndWindows.test_staged_payload_hash_gate)
+Ran 39 tests in 0.014s
+FAILED (failures=2)
+$ python3 -m unittest discover -s tests/r72
+Ran 3 tests in 0.217s
+OK
+$ python3 -m unittest discover -s tests/module_graph
+Ran 18 tests in 0.011s
+OK
+$ python3 -m unittest discover -s tests/gui
+Ran 31 tests in 0.023s
+OK
+$ python3 -m unittest discover -s tests/ci
+Ran 9 tests in 0.076s
+OK
+$ python3 -m unittest discover -s tests/windows_accept
+Ran 7 tests in 0.007s
+OK
+$ python3 tools/check_workflow_triggers.py
+CI_NOTIFICATION_POLICY_ACCEPTED: no automatic workflow events

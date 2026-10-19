@@ -1,0 +1,10 @@
+227_assign_undeclared wine-exit=1 expected-exit=1 | 227_assign_undeclared.sm:6:5: Sutram Error [E_UNDEFINED_NAME]: agyat n
+228_block_scope wine-exit=1 expected-exit=1 | 228_block_scope.sm:6:11: Sutram Error [E_UNDEFINED_NAME]: agyat naam '
+229_loop_var_scope wine-exit=1 expected-exit=1 | 229_loop_var_scope.sm:5:11: Sutram Error [E_UNDEFINED_NAME]: agyat naa
+230_redeclare_after_block wine-exit=0 expected-exit=0 | Siddh: 673 byte sankalit
+231_duplicate_name wine-exit=1 expected-exit=1 | 231_duplicate_name.sm:6:11: Sutram Error [E_DUPLICATE_NAME]: punah gho
+232_arity wine-exit=1 expected-exit=1 | 232_arity.sm:5:11: Sutram Error [E_ARITY]: 'f' ko 1 tark diye; hastaks
+233_missing_module wine-exit=1 expected-exit=1 | Sutram Error [E_MODULE_MISSING]: yoj patra aprapt: ganitt
+234_ambiguous_field wine-exit=1 expected-exit=1 | 234_ambiguous_field.sm:8:7: Sutram Error [E_AMBIGUOUS_FIELD]: kshetra 
+235_duplicate_field wine-exit=1 expected-exit=1 | 235_duplicate_field.sm:3:18: Sutram Error [E_DUPLICATE_NAME]: punah gh
+7 2 0 1 2 (expected: 7 2 0 1 2 )

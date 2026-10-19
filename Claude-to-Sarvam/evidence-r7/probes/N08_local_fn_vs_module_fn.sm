@@ -1,0 +1,5 @@
+yoj ganit
+prakriya varg(n) { prati 999 }
+mukhya() {
+    likha(varg(3))
+}

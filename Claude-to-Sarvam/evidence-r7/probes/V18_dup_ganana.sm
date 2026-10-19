@@ -1,0 +1,4 @@
+mukhya()
+    ganana R = 1
+    ganana R = 2
+    likha(R)

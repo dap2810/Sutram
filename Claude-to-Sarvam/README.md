@@ -4,6 +4,55 @@
 
 ---
 
+## Index — ROUND-07 delivery (2026-10-19, against main `05d8bdc8` v180)
+
+**Code is on branch `claude/round-07` — draft PR #40.** Commits:
+
+| Commit | What |
+|---|---|
+| `5bd1acdf` | WS1: compiler, 9 goldens, re-pin |
+| `bedf2705` | three `proof_props` generator bugs the new checks found |
+| `3ef7d33f` | WS3: every committed binary rebuilt; `tools/cross_build_windows.py` |
+
+On `main` only this folder changes, in a documentation-only commit.
+
+**Read first:**
+
+1. **Every name-resolution path now errors on a wrong name.** A 50-probe inventory covered variables,
+   assignment targets, blocks, loops, parameters, constants, fields, arrays, functions, arity, modules,
+   aliases and builtins (R7-01).
+   - Nine more silent cases are now errors, including both owner decisions.
+   - **Block scope was measured first with the real compiler: 0 programs rely on the old behaviour.**
+2. **Block scope exposed a codegen bug already on main.** `vitti x = 1 … vitti x = 2` kept 1, because the
+   second slot was never read. Re-declaring a visible name is now an error, and re-declaring after its
+   block reuses the slot.
+3. **The checks found real bugs in the tests:** a 5-argument call to a 6-parameter function, and a name
+   declared 12 times by a stale loop index (`tools/proof_props.py`).
+4. **The committed binaries now match the source and can be reproduced on Linux** (`--check` → REPRODUCED).
+   Hashes are in R7-03.
+5. **Merge order:** ChatGPT's R75 prepare step pins the v180 compiler blob that this branch changes
+   (R7-04 §1).
+
+| File | Workstream | One line |
+|---|---|---|
+| `R7-01-NAME-RESOLUTION.md` | WS1 / Step 1 | The inventory: 34 rows, v180 vs. the branch. The precise block-scope measurement, the codegen bug it exposed, the diagnostics, and the non-name silent cases left for a decision. Suite **203 / 4**; all 9 new goldens fail on v180. |
+| `R7-02-DIAGNOSTICS-DECISION.md` | WS2 / Step 2 | The decision table, counted from the tree: 90 + 22 strings, 41 goldens, 4 R70 cases, 16 tool files, 18 docs (about 255 lines). Five options; recommended: **D now, E as translations arrive**. Not changed. |
+| `R7-03-REBUILT-BINARIES.md` | WS3 | All seven committed binaries rebuilt, with SHA-256 for each. Reproducible Windows cross-build. Their log: under Wine, committed 9/1/5 (the Wine-only `IconLocation` issue) and harness 12/0/3. |
+| `R7-04-WHAT-I-NEED.md` | WS4 | 2 answered. 11 still open, led by the R75 merge order. 3 small new decisions (the words, loop-variable scope, the non-name cases). |
+| `evidence-r7/` | all | `probes/` (50 programs), `logs/` (probe results on v180 and on the branch, the per-change tree audit, gates, the cross-build report), `wine-committed/` and `wine-harness/` (gate logs, screenshots, checker output) |
+
+**Gates on the branch (Linux):**
+
+- `gates.sh`: PASS 8 / FAIL 1 / NOT-RUN 1
+  - suite 203 / 4
+  - FAIL: the X11 `edscroll` timeout, pre-existing in this container
+- proof_lib 191 · proof_props 86 · packs 33 · codegen 12 · R70 6/6
+- `r69_build` SOURCE_PINS_CHECKED · `tests/*` OK except `r69` 2 FAIL (ChatGPT's scripts)
+
+**Not verified:** Windows. The Windows gate ran under Wine only.
+
+---
+
 ## Index — ROUND-06 delivery (2026-10-19, against main `04aa7bb3` v176)
 
 **Code is on branch `claude/round-06` — draft PR #38.** One commit, `452aa523`:

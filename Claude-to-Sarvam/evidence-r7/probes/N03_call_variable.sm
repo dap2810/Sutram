@@ -1,0 +1,4 @@
+mukhya() {
+    vitti f = 1
+    likha(f(2))
+}

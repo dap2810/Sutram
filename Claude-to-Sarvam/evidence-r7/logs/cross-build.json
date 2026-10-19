@@ -1,0 +1,21 @@
+{
+  "tool": "tools/cross_build_windows.py",
+  "git_commit": "bedf27059e624530f9d13016c0d0a29e5716a635",
+  "source_dirty": false,
+  "nasm": "NASM version 2.16.01",
+  "ld": "GNU ld (GNU Binutils) 2.41.90.20240122",
+  "outputs": {
+    "win/sutram.exe": "b6e2bb342e75600a3e67b9263a27725f15494384804edbfa4c72234ec8b93b1b",
+    "sutram.exe": "b6e2bb342e75600a3e67b9263a27725f15494384804edbfa4c72234ec8b93b1b",
+    "sutram-ide-gui.exe": "528a4ee0cf421279f77a95240b244b880d572acfd40f2e2c0254ed7a52f0d4e7",
+    "Sutram-Setup.exe": "73fabd7146db294741a917f5fd748cdeeeb5b33e6cb2b2b672cc29984df8db48"
+  },
+  "payload_zip_sha256": "243d95afbd5dfb9bc99f5f8547868cdd243713f2a78f38c41cd31aa194406331",
+  "payload_files": 457,
+  "not_run_here": [
+    "sutram.exe --version",
+    "hello.exe",
+    "Sutram-Setup.exe --self-test",
+    "everything in tools/accept-windows.ps1"
+  ]
+}

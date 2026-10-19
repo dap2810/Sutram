@@ -1,0 +1,50 @@
+A03_index_scalar | COMPILES | runs: (exit 0)
+A04_kosh_push_scalar | ERROR(1) | Sutram Error: kosh prakriya hetu kosh-vitti avashyak
+A05_mala_typo | ERROR(1) | A05_mala_typo.sm:4:11: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'numz'
+F04_struct_name_typo | ERROR(1) | F04_struct_name_typo.sm:3:15: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'Pointt'
+F05_field_on_scalar_known_field | COMPILES | runs: (exit 0)
+F06_dup_field | ERROR(1) | F06_dup_field.sm:1:18: Sutram Error [E_DUPLICATE_NAME]: punah ghoshana 'x'
+F07_field_in_other_struct | COMPILES | runs: 2 (exit 0)
+F08_same_field_two_structs | ERROR(1) | F08_same_field_two_structs.sm:5:7: Sutram Error [E_AMBIGUOUS_FIELD]: kshetra 'x'
+F09_shared_prefix_ok | COMPILES | runs: 1 2 (exit 0)
+L01_kosh_undecl_push | ERROR(1) | L01_kosh_undecl_push.sm:2:15: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'kk'
+L02_lenfn_undecl | ERROR(1) | L02_lenfn_undecl.sm:2:20: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'kk'
+M01_missing_module | ERROR(1) | Sutram Error [E_MODULE_MISSING]: yoj patra aprapt: nahi_hai
+M02_unknown_alias | ERROR(1) | Sutram Error: agyat prakriya: h__varg
+M03_module_func_typo | ERROR(1) | Sutram Error: agyat prakriya: vargg
+M04_alias_func_typo | ERROR(1) | Sutram Error: agyat prakriya: g__vargg
+M05_yoj_twice | COMPILES | runs: 9 (exit 0)
+N01_undef_function | ERROR(1) | Sutram Error: agyat prakriya: jodaa
+N02_builtin_typo | ERROR(1) | Sutram Error: agyat prakriya: likhaa
+N03_call_variable | ERROR(1) | Sutram Error: agyat prakriya: f
+N04_function_as_value | ERROR(1) | N04_function_as_value.sm:3:15: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'joda'
+N05_dup_function | ERROR(1) | Sutram Error: punah prakriya paribhasha: f
+N06_arity | ERROR(1) | N06_arity.sm:3:11: Sutram Error [E_ARITY]: 'f' ko 2 tark diye; hastakshar me 1
+N07_builtin_shadowed_by_var | ERROR(1) | Sutram Error: vyakaran dosh, pankti 2:11, shabd 'likha'
+N08_local_fn_vs_module_fn | ERROR(1) | Sutram Error: punah prakriya paribhasha: varg
+N09_fn_and_global_same | COMPILES | runs: 1 5 (exit 0)
+N10_too_few_args | ERROR(1) | N10_too_few_args.sm:3:11: Sutram Error [E_ARITY]: 'f' ko 1 tark diye; hastakshar me 2
+P02_unknown_pack | COMPILES | runs: 1 (exit 0)
+S01_shabda_undecl | ERROR(1) | S01_shabda_undecl.sm:2:12: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'sss'
+V02_assign_undeclared | ERROR(1) | V02_assign_undeclared.sm:3:5: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'totl'
+V04_block_decl_after | ERROR(1) | V04_block_decl_after.sm:4:11: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'b'
+V05_loopvar_after | ERROR(1) | V05_loopvar_after.sm:3:11: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'i'
+V10_global_init_undef | ERROR(1) | V10_global_init_undef.sm:1:11: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'zzq'
+V11_sutra_typo | ERROR(1) | V11_sutra_typo.sm:3:11: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'MAXX'
+V12_sutra_assign | COMPILES | runs: 5 (exit 0)
+V13_ganana_typo | ERROR(1) | V13_ganana_typo.sm:3:11: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'REDD'
+V14_case_label_name | ERROR(1) | V14_case_label_name.sm:5:17: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'REDD'
+V15_redeclare | ERROR(1) | V15_redeclare.sm:3:11: Sutram Error [E_DUPLICATE_NAME]: punah ghoshana 'x'
+V16_dup_param | ERROR(1) | V16_dup_param.sm:1:15: Sutram Error [E_DUPLICATE_NAME]: punah ghoshana 'a'
+V17_dup_sutra | ERROR(1) | V17_dup_sutra.sm:3:11: Sutram Error [E_DUPLICATE_NAME]: punah ghoshana 'K'
+V18_dup_ganana | ERROR(1) | V18_dup_ganana.sm:3:12: Sutram Error [E_DUPLICATE_NAME]: punah ghoshana 'R'
+V19_dup_case | COMPILES | runs: a(exit 0)
+V20_dup_global | ERROR(1) | V20_dup_global.sm:2:7: Sutram Error [E_DUPLICATE_NAME]: punah ghoshana 'g'
+V21_continue_outside_loop | COMPILES | runs: 1 2 (exit 0)
+V22_local_shadows_global | COMPILES | runs: 2 (exit 0)
+V23_param_shadows_global | COMPILES | runs: 7 1 (exit 0)
+V24_redecl_after_block | COMPILES | runs: 2 (exit 0)
+V25_redecl_loops | COMPILES | runs: 0 1 5 6 (exit 0)
+V26_redecl_value | ERROR(1) | V26_redecl_value.sm:4:11: Sutram Error [E_DUPLICATE_NAME]: punah ghoshana 'x'
+V27_decl_in_loop | COMPILES | runs: 0 10 20 30 (exit 0)
+V28_decl_in_fn | COMPILES | runs: 4 9 (exit 0)

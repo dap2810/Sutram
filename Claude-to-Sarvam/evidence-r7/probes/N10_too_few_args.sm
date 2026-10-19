@@ -1,0 +1,4 @@
+prakriya f(a, b) { prati a + b }
+mukhya() {
+    likha(f(1))
+}

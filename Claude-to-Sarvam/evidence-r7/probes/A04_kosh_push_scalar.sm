@@ -1,0 +1,5 @@
+mukhya() {
+    vitti n = 3
+    kosh_push(n, 1)
+    likha(5)
+}

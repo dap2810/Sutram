@@ -1,0 +1,7 @@
+rachana A = { ax, ay }
+rachana B = { bx, by }
+mukhya()
+    vitti a = nirmmita(16)
+    a.ax = 1
+    a.ay = 2
+    likha(a.by)

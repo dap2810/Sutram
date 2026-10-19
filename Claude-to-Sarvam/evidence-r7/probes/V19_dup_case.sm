@@ -1,0 +1,7 @@
+mukhya()
+    vitti c = 1
+    guna (c) {
+        bhavana 1: { likha("a") }
+        bhavana 1: { likha("b") }
+        anya: { likha("o") }
+    }

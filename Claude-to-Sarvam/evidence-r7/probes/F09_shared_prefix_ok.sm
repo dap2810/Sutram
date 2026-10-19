@@ -1,0 +1,8 @@
+rachana A = { x, y }
+rachana B = { x, z }
+mukhya()
+    vitti b = nirmmita(16)
+    b.x = 1
+    b.z = 2
+    likha(b.x)
+    likha(b.z)

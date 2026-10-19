@@ -1,0 +1,32 @@
+environment: Wine  windows Windows 10 Pro None build 19043.None  PowerShell 7.2.24  elevated=True  commit=None
+verdict in log: FAIL (Wine only - NOT Windows acceptance)
+  NOT-RUN  runner-not-elevated            [Wine]  Wine has no UAC and reports every process as administrator; least privilege can only be shown on Windows
+  PASS     setup-hash-file                [Wine]  matches the committed hash file
+  PASS     setup-self-test                [Wine]  embedded SHA-256 self-test exit 0
+  FAIL     install-wizard                 [Wine]  outcome=dialog: Sutram setup did not complete. Check the install log in %TEMP% (unique STM folder) for details.; screenshots: wizard-welcome.png, wiza
+  NOT-RUN  install-no-elevation-prompt    [Wine]  Wine has no UAC; this check means something only on Windows
+  NOT-RUN  install-footprint              [Wine]  install did not complete
+  PASS     devanagari-cli                 [Wine]  repository build; expects the line योगः = 15
+  PASS     ide-launches                   [Wine]  repository build; screenshot ide-start.png
+  NOT-RUN  ide-menus-english              [Wine]  Wine keeps menus per process, so another process cannot read them; this check needs Windows
+  PASS     ide-buttons-english            [Wine]  mismatched ids: 
+  PASS     devanagari-ide                 [Wine]  expects योगः = 15; screenshot ide-devanagari.png
+  PASS     tab-indent                     [Wine]  four spaces, no tab character; a selection moves right by four
+  PASS     shift-tab-dedent               [Wine]  menu path only
+  NOT-RUN  shift-tab-keyboard             [Wine] (advisory)  a real Shift+Tab needs the keyboard state, i.e. SendInput into the foreground window; rerun with -Keyboard and do not touch the mouse/keybo
+  PASS     unsaved-guard                  [Wine]  screenshot ide-unsaved-guard.png
+  NOT-RUN  uninstall-removes-install      [Wine]  nothing was installed by this run
+binaries:
+  Sutram-Setup.exe: 73fabd7146db294741a917f5fd748cdeeeb5b33e6cb2b2b672cc29984df8db48  MATCHES this tree
+  win/sutram.exe: b6e2bb342e75600a3e67b9263a27725f15494384804edbfa4c72234ec8b93b1b  MATCHES this tree
+  sutram.exe: b6e2bb342e75600a3e67b9263a27725f15494384804edbfa4c72234ec8b93b1b  MATCHES this tree
+  sutram-ide-gui.exe: 528a4ee0cf421279f77a95240b244b880d572acfd40f2e2c0254ed7a52f0d4e7  MATCHES this tree
+NOT ACCEPTED as Windows acceptance of this tree:
+  - the run was under Wine, not Windows
+  - the run was elevated: least privilege is not shown
+  - required check NOT-RUN: runner-not-elevated
+  - required check FAILed: install-wizard
+  - required check NOT-RUN: install-no-elevation-prompt
+  - required check NOT-RUN: install-footprint
+  - required check NOT-RUN: ide-menus-english
+  - required check NOT-RUN: uninstall-removes-install

@@ -1,0 +1,5 @@
+vitti g = 1
+vitti g = 2
+mukhya() {
+    likha(g)
+}

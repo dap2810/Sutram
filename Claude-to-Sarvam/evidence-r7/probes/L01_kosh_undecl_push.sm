@@ -1,0 +1,4 @@
+mukhya() {
+    kosh_push(kk, 1)
+    likha(5)
+}
