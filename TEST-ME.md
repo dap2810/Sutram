@@ -7,10 +7,10 @@ the same steps can be repeated on any machine.
 
 1. **Double-click `Sutram-Setup.exe`** — as a **normal user**. **No administrator prompt should appear.**
 2. **Start Menu → Sutram → Sutram IDE.**
-3. **udaharan khol → `218_sanskrit_devanagari.sm` → F5 (chal).**
+3. **Load example → `218_sanskrit_devanagari.sm` → F5 (Run).**
    Expect: **`योगः = 15`** in Devanagari, and **`bhasha: swayam (sanskrit)`** in the status line.
 4. Try **Tab / Shift+Tab**, **Enter after `{`**, typing **`}`** on a blank indented line, and **Ctrl+F**.
-5. **`sahay` → `kunji`** shows all keys. Close with unsaved edits → a **Yes / No / Cancel** question.
+5. **Help → Shortcut keys** shows all keys. Close with unsaved edits → a **Yes / No / Cancel** question.
 
 **Uninstall:** Start Menu → Sutram → Uninstall Sutram, or Settings → Apps.
 
