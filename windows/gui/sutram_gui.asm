@@ -1,10 +1,9 @@
 ; Sutram Windows GUI IDE — experimental native Win64 proof-of-implementation
 ; Pure NASM -> Win64 PE, Win32 API and MSFTEDIT RichEdit (Windows system DLL).
 ; NO C/C++/Python or GUI framework in executable. Standard-user only.
-; Build: nasm -f win64 windows/gui/sutram_gui.asm -o sutram_gui.obj
-;        ld -mi386pep --subsystem windows --entry=_start -o sutram-ide-gui.exe sutram_gui.obj
-; Placement: project root alongside win\sutram.exe and examples\*.sm.
-; Native language-pack highlighting source-stage; Windows runtime is UNVERIFIED.
+; Build: powershell -NoProfile -File windows/gui/build-gui.ps1 (R67 entrypoint).
+; Placement: project root alongside win/sutram.exe and examples/.
+; Native execution evidence is included in the Windows delivery review.
 
 bits 64
 default rel
@@ -110,6 +109,59 @@ global _start
 %define MAX_NATIVE_KEYWORDS 384
 %define NATIVE_KEYWORD_UNITS 64
 %define MAX_LANG_FILE 8191
+; ---- R73: Sanskrit interface, editor keys, status line, language packs ----
+%define WM_NOTIFY 0x4E
+%define WM_CTLCOLOREDIT 0x133
+%define WM_CTLCOLORLISTBOX 0x134
+%define WM_CTLCOLORSTATIC 0x138
+%define WM_CUT 0x300
+%define WM_COPY 0x301
+%define WM_PASTE 0x302
+%define VK_TAB 9
+%define VK_SHIFT 0x10
+%define VK_F3 0x72
+%define EM_LINEFROMCHAR 0xC9
+%define EM_LINEINDEX 0xBB
+%define EM_GETLINE 0xC4
+%define EM_UNDO 0xC7
+%define EM_EXSETSEL 0x437
+%define EM_FINDTEXTEXW 0x47C
+%define ENM_CHANGE 1
+%define ENM_SELCHANGE 0x80000
+%define EN_SELCHANGE 0x702
+%define FR_DOWN 1
+%define MF_SEPARATOR 0x800
+%define MF_BYCOMMAND 0
+%define MB_YESNOCANCEL 3
+%define MB_ICONQUESTION 0x20
+%define IDCANCEL 2
+%define IDYES 6
+%define IDNO 7
+%define LR_SHARED 0x8000
+%define ID_STATUS 206
+%define ID_FIND 207
+%define ID_FINDLABEL 208
+%define MID_NEW 2004
+%define MID_SAVEAS 2005
+%define MID_SEND 2012
+%define MID_KEYS 2021
+%define MID_UNDO 2030
+%define MID_CUT 2031
+%define MID_COPY 2032
+%define MID_PASTE 2033
+%define MID_SELALL 2034
+%define MID_FIND 2036
+%define MID_FINDNEXT 2037
+%define MID_INDENT 2038
+%define MID_UNINDENT 2039
+%define MID_LANG_AUTO 2040
+%define MID_LANG_CORE 2041
+%define MID_LANG_SANSKRIT 2042
+%define LANG_AUTO 0
+%define LANG_CORE 1
+%define LANG_SANSKRIT 2
+%define COL_GUTTER 0x00858585
+%define COL_STATUS 0x00B5D8A8
 
 %macro PROLOG 1
     push rbp
@@ -129,23 +181,65 @@ global _start
 
 section .data
 app_class db 'SutramNativeGUIWindow',0
-app_title db 'Sutram Shell 1.0',0
-m_file   db 'File',0
-m_edit   db 'Edit',0
-m_shell  db 'Shell',0
-m_debug  db 'Debug',0
-m_opts   db 'Options',0
-m_window db 'Window',0
-m_help   db 'Help',0
-i_open   db 'Open...',0
-i_save   db 'Save',0
-i_exit   db 'Exit',0
-i_run    db 'Run module',0
-i_clear  db 'Clear shell',0
-i_about  db 'About Sutram',0
-about_text db 'Sutram Shell 1.0',13,10,'Sanskrit-keyword language -> x86-64 machine code.',13,10,13,10,'Type a statement at the >>> prompt and press Enter.',0
+app_title db 'Sutram sampadak',0
+; R73: every visible word is Sanskrit (Latin transliteration, the project's
+; canonical form; the same tokens the Linux X11 IDE uses). UTF-16 for Unicode APIs.
+align 2
+app_class_w:    dw __utf16__("SutramNativeGUIWindow"),0
+app_title_w:    dw __utf16__("Sutram sampadak"),0
+title_suffix_w: dw __utf16__(" - Sutram sampadak"),0
+title_new_w:    dw __utf16__("nava patra"),0
+title_mod_w:    dw __utf16__(" *"),0
+mn_patra:       dw __utf16__("patra"),0
+mn_sampad:      dw __utf16__("sampad"),0
+mn_chal:        dw __utf16__("chal"),0
+mn_bhasha:      dw __utf16__("bhasha"),0
+mn_sahay:       dw __utf16__("sahay"),0
+mi_nava:        dw __utf16__("nava"),9,__utf16__("Ctrl+N"),0
+mi_khol:        dw __utf16__("khol..."),9,__utf16__("Ctrl+O"),0
+mi_sanchay:     dw __utf16__("sanchay"),9,__utf16__("Ctrl+S"),0
+mi_saveas:      dw __utf16__("nava naam se sanchay..."),0
+mi_nishkas:     dw __utf16__("nishkas"),0
+mi_punah:       dw __utf16__("punah"),9,__utf16__("Ctrl+Z"),0
+mi_chhid:       dw __utf16__("chhid"),9,__utf16__("Ctrl+X"),0
+mi_pratilip:    dw __utf16__("pratilip"),9,__utf16__("Ctrl+C"),0
+mi_sanyoj:      dw __utf16__("sanyoj"),9,__utf16__("Ctrl+V"),0
+mi_sarvagrah:   dw __utf16__("sarvagrah"),9,__utf16__("Ctrl+A"),0
+mi_anwesh:      dw __utf16__("anwesh..."),9,__utf16__("Ctrl+F"),0
+mi_anwesh_agrim: dw __utf16__("agrim anwesh"),9,__utf16__("F3"),0
+mi_antar:       dw __utf16__("antar (4 sthan)"),9,__utf16__("Tab"),0
+mi_antar_hatao: dw __utf16__("antar hatao"),9,__utf16__("Shift+Tab"),0
+mi_chal:        dw __utf16__("chal"),9,__utf16__("F5"),0
+mi_presh:       dw __utf16__("presh (kosh pankti)"),9,__utf16__("Enter"),0
+mi_phal_rikta:  dw __utf16__("phal_rikta"),0
+mi_swayam:      dw __utf16__("swayam (lipi se pahchan)"),0
+mi_mool:        dw __utf16__("mool (Latin shabda)"),0
+mi_sanskrit:    dw __utf16__("sanskrit  "),0x0938,0x0902,0x0938,0x094D,0x0915,0x0943,0x0924,0x092E,0x094D,0
+mi_kunji:       dw __utf16__("kunji (shortcut)"),0
+mi_parichay:    dw __utf16__("parichay"),0
+st_pankti_w:    dw __utf16__("pankti "),0
+st_stambh_w:    dw __utf16__("   stambh "),0
+st_bhasha_w:    dw __utf16__("   |   bhasha: "),0
+st_akshara_w:   dw __utf16__("   |   akshara: "),0
+st_sep_w:       dw __utf16__("   |   "),0
+st_sanchit_w:   dw __utf16__("sanchit"),0
+st_asanchit_w:  dw __utf16__("asanchit *"),0
+st_notfound_w:  dw __utf16__("anwesh: nahi mila"),0
+lang_swayam_w:  dw __utf16__("swayam"),0
+lang_swayam_sk_w: dw __utf16__("swayam (sanskrit)"),0
+lang_mool_w:    dw __utf16__("mool"),0
+lang_sanskrit_w: dw __utf16__("sanskrit"),0
+lang_flag_w:    dw __utf16__(" --lang sanskrit"),0
+space_quote_w:  dw ' ','"',0
+indent4_w:      dw __utf16__("    "),0
+empty_w:        dw 0
+msg_unsaved_w:  dw __utf16__("patra parivartit hai. sanchay karein?"),0
+about_w:        dw __utf16__("Sutram sampadak (Windows)"),13,10,__utf16__("Samskrita-mukhya bhasha -> x86-64 yantra-code."),13,10,13,10,__utf16__("sampadak ka karyakram chal (F5) se sankalit hokar chalta hai."),13,10,__utf16__("Devanagari karyakram ke liye bhasha > swayam ya sanskrit chunein."),13,10,__utf16__("patra UTF-8 hain. presh itihas ko punah chalata hai."),0
+keys_w:         dw __utf16__("F5 / Ctrl+R  chal"),13,10,__utf16__("Ctrl+N  nava     Ctrl+O  khol     Ctrl+S  sanchay"),13,10,__utf16__("Tab  antar (4 sthan)     Shift+Tab  antar hatao"),13,10,__utf16__("Enter  nayi pankti, pichhli pankti ka antar; '{' ke baad +4"),13,10,__utf16__("}  rikta pankti par antar -4"),13,10,__utf16__("Ctrl+F  anwesh     F3  agrim anwesh"),13,10,__utf16__("Ctrl+Z  punah    Ctrl+X/C/V  chhid/pratilip/sanyoj    Ctrl+A  sarvagrah"),0
+find_label_w:   dw __utf16__("anwesh:"),0
 class_button db 'BUTTON',0
 class_edit db 'EDIT',0
+class_static db 'STATIC',0
 class_list db 'LISTBOX',0
 class_richedit db 'RICHEDIT50W',0
 richedit_dll db 'Msftedit.dll',0
@@ -219,6 +313,18 @@ n_GetClientRect db 'GetClientRect',0
 n_GetStockObject db 'GetStockObject',0
 n_GetOpenFileNameA db 'GetOpenFileNameA',0
 n_GetSaveFileNameA db 'GetSaveFileNameA',0
+; R73: Unicode window class/loop (Devanagari typing), Unicode menus, status
+n_RegisterClassExW db 'RegisterClassExW',0
+n_CreateWindowExW db 'CreateWindowExW',0
+n_DefWindowProcW db 'DefWindowProcW',0
+n_GetMessageW db 'GetMessageW',0
+n_DispatchMessageW db 'DispatchMessageW',0
+n_SetWindowLongPtrW db 'SetWindowLongPtrW',0
+n_CallWindowProcW db 'CallWindowProcW',0
+n_AppendMenuW db 'AppendMenuW',0
+n_CheckMenuRadioItem db 'CheckMenuRadioItem',0
+n_MessageBoxW db 'MessageBoxW',0
+n_SetFocus db 'SetFocus',0
 
 ; DLL lookup table: pairs of name pointer + slot address, zero terminated.
 %macro IMPORTS 1
@@ -285,6 +391,17 @@ user_table:
     IMPORTS CreateMenu
     IMPORTS CreatePopupMenu
     IMPORTS AppendMenuA
+    IMPORTS RegisterClassExW
+    IMPORTS CreateWindowExW
+    IMPORTS DefWindowProcW
+    IMPORTS GetMessageW
+    IMPORTS DispatchMessageW
+    IMPORTS SetWindowLongPtrW
+    IMPORTS CallWindowProcW
+    IMPORTS AppendMenuW
+    IMPORTS CheckMenuRadioItem
+    IMPORTS MessageBoxW
+    IMPORTS SetFocus
     dq 0,0
 comdlg_table:
     IMPORTS GetOpenFileNameA
@@ -293,34 +410,37 @@ comdlg_table:
     IMPORTS GetSaveFileNameW
     dq 0,0
 
+; The toolbar buttons stay English at the owner's request (2026-10-18); the
+; menus, status line and messages are Sanskrit.
 label_run db 'Run',0
 label_open db 'Open',0
 label_save db 'Save',0
 label_example db 'Load example',0
 label_send db 'Send',0
 label_clear db 'Clear shell',0
-label_output db 'Compile / run output',0
+label_output db 'sankalan / chalan ka phal',0
 label_shell db '>>>',0
-label_examples db 'Examples (double click)',0
-err_init db 'Windows APIs could not be loaded. IDE cannot start.',0
-err_title db 'Sutram IDE',0
-msg_ready db 'Ready. Run compiles the editor buffer.',13,10,0
-msg_compile_failed db '[compiler failed]',13,10,0
-msg_run_failed db '[program exited abnormally]',13,10,0
-msg_file_failed db '[unable to read/write file]',13,10,0
-msg_input_large db '[file too large; editor limit 64 KiB]',13,10,0
-msg_shell_limit db '[shell history limit reached; clear shell]',13,10,0
-msg_timeout db '[process exceeded 10 seconds; terminated]',13,10,0
-msg_missing_compiler db '[missing win\sutram.exe: compile native compiler first]',13,10,0
-msg_missing_lang db '[native keyword packs unavailable: check lang\*.lang; Latin keywords still work]',13,10,0
-msg_partial_lang db '[some native keyword packs missing or invalid: check lang\*.lang]',13,10,0
-msg_pipe_fail db '[process or pipe creation failed]',13,10,0
-msg_more_output db '[output truncated at 32 KiB]',13,10,0
+label_examples db 'udaharan (do baar click)',0
+err_init db 'Windows API load nahi hui. sampadak shuru nahi ho saka.',0
+err_title db 'Sutram sampadak',0
+msg_ready db 'sajja. chal (F5) sampadak ka karyakram sankalit karke chalata hai.',13,10,0
+msg_compile_failed db '[sankalan asaphal]',13,10,0
+msg_run_failed db '[karyakram asamanya roop se samapt]',13,10,0
+msg_file_failed db '[patra padhne/likhne me asaphal]',13,10,0
+msg_input_large db '[patra bahut bada; sampadak seema 64 KiB]',13,10,0
+msg_shell_limit db '[presh itihas seema; phal_rikta karein]',13,10,0
+msg_timeout db '[prakriya 10 sekand se adhik; samapt ki gayi]',13,10,0
+msg_missing_compiler db '[win\sutram.exe nahi mila: pahle sankalak banayein]',13,10,0
+msg_missing_lang db '[deshi shabda-pak anupalabdh: lang\*.lang dekhein; Latin shabda kaam karte hain]',13,10,0
+msg_partial_lang db '[kuchh shabda-pak anupalabdh ya ashuddh: lang\*.lang dekhein]',13,10,0
+msg_pipe_fail db '[prakriya ya pipe nirman asaphal]',13,10,0
+msg_more_output db '[phal 32 KiB par kata]',13,10,0
 prefix_s db 'mukhya()',13,10,0
 indent_s db '    ',0
 newline db 13,10,0
-file_filter db 'Sutram files (*.sm)',0,'*.sm',0,'All files (*.*)',0,'*.*',0,0
-file_filter_w: dw 83,117,116,114,97,109,32,102,105,108,101,115,32,40,42,46,115,109,41,0,42,46,115,109,0,65,108,108,32,102,105,108,101,115,32,40,42,46,42,41,0,42,46,42,0,0
+file_filter db 'Sutram patra (*.sm)',0,'*.sm',0,'sabhi patra (*.*)',0,'*.*',0,0
+align 2
+file_filter_w: dw __utf16__("Sutram patra (*.sm)"),0,__utf16__("*.sm"),0,__utf16__("sabhi patra (*.*)"),0,__utf16__("*.*"),0,0
 examples_glob db 'examples\*.sm',0
 examples_dir db 'examples\',0
 compiler_rel db 'win\sutram.exe',0
@@ -334,7 +454,7 @@ kw_words db 'mukhya',0,'likha',0,'ayojan',0,'prakriya',0,'dasham',0,'kosh',0,'ku
 ; Import-table label expansion: function-name symbols n_* via macro.
 %unmacro IMPORTS 1
 %macro IMPORTS 1
-p_%1: dq 0
+p_%1: resq 1
 %endmacro
 
 compiler_rel_w: dw 119,105,110,92,115,117,116,114,97,109,46,101,120,101,0
@@ -361,7 +481,9 @@ kw_pack_odia_w: dw 108,97,110,103,92,111,100,105,97,46,108,97,110,103,0
 kw_pack_punjabi_w: dw 108,97,110,103,92,112,117,110,106,97,98,105,46,108,97,110,103,0
 kw_pack_tamil_w: dw 108,97,110,103,92,116,97,109,105,108,46,108,97,110,103,0
 kw_pack_telugu_w: dw 108,97,110,103,92,116,101,108,117,103,117,46,108,97,110,103,0
-kw_pack_paths: dq kw_pack_bengali_w,kw_pack_gujarati_w,kw_pack_hindi_w,kw_pack_kannada_w,kw_pack_malayalam_w,kw_pack_marathi_w,kw_pack_odia_w,kw_pack_punjabi_w,kw_pack_tamil_w,kw_pack_telugu_w,0
+; R73: the Sanskrit (Devanagari) pack is loaded too, so Devanagari Sanskrit keywords colour.
+kw_pack_sanskrit_w: dw __utf16__("lang\sanskrit.lang"),0
+kw_pack_paths: dq kw_pack_sanskrit_w,kw_pack_bengali_w,kw_pack_gujarati_w,kw_pack_hindi_w,kw_pack_kannada_w,kw_pack_malayalam_w,kw_pack_marathi_w,kw_pack_odia_w,kw_pack_punjabi_w,kw_pack_tamil_w,kw_pack_telugu_w,0
 section .bss
 h_kernel resq 1
 h_user resq 1
@@ -428,6 +550,28 @@ sa_struct resb 24
 pipe_rd resq 1
 pipe_wr resq 1
 process_start resq 1
+; R73 state
+h_status resq 1
+h_find resq 1
+h_find_label resq 1
+h_menu_bhasha resq 1
+old_editor_proc resq 1
+old_find_proc resq 1
+bg_brush resq 1
+is_modified resd 1
+is_loading resd 1
+lang_mode resd 1
+use_pack resd 1
+last_pack resd 1
+cluster_count resd 1
+title_utf16 resw 1200
+status_utf16 resw 512
+line_utf16 resw 4096
+find_utf16 resw 512
+indent_buf resw 160
+num_scratch resw 24
+findtext resb 32
+sel_pos resd 2
 
 ; Function pointers
 IMPORTS LoadLibraryA
@@ -495,6 +639,17 @@ IMPORTS GetSaveFileNameW
 IMPORTS CreateFileW
 IMPORTS SendMessageW
 IMPORTS LoadImageW
+IMPORTS RegisterClassExW
+IMPORTS CreateWindowExW
+IMPORTS DefWindowProcW
+IMPORTS GetMessageW
+IMPORTS DispatchMessageW
+IMPORTS SetWindowLongPtrW
+IMPORTS CallWindowProcW
+IMPORTS AppendMenuW
+IMPORTS CheckMenuRadioItem
+IMPORTS MessageBoxW
+IMPORTS SetFocus
 section .text
 
 ; Implementation note: all calls into Win64 APIs reserve 32 bytes of shadow
@@ -508,6 +663,7 @@ _start:
     call init_apis
     test eax,eax
     jz .quit
+    call read_startup_file
     call init_paths
     call load_native_keyword_packs
     call gui_loop
@@ -524,16 +680,10 @@ _start:
 ; are bypassed or disabled. Caller resolves only explicit Windows system DLLs.
 init_apis:
     PROLOG 64
-    PTR rdi,n_LoadLibraryA
-    call win_resolve
+    mov rax,[rel __imp_LoadLibraryA]
     mov [rel p_LoadLibraryA],rax
-    test rax,rax
-    jz .fail
-    PTR rdi,n_GetProcAddress
-    call win_resolve
+    mov rax,[rel __imp_GetProcAddress]
     mov [rel p_GetProcAddress],rax
-    test rax,rax
-    jz .fail
     PTR rcx,name_ker32
     API LoadLibraryA
     mov [rel h_kernel],rax
@@ -770,6 +920,30 @@ gui_loop:
     mov edx,32512                  ; IDC_ARROW system cursor
     API LoadCursorA
     mov [rbp-8],rax
+    ; R73: one dark brush for the window background, gutter, shell, list and status.
+    mov ecx,COL_BG
+    call qword [rel __imp_CreateSolidBrush]
+    mov [rel bg_brush],rax
+    mov dword [rel cluster_count],-1
+    mov dword [rel lang_mode],LANG_AUTO
+    ; R73: the icon comes from the executable's own resource (r73_icon.inc);
+    ; a resource-less build falls back to the icon file in set_project_icon.
+    mov rcx,[rel h_instance]
+    mov edx,1
+    mov r8d,IMAGE_ICON
+    mov r9d,32
+    mov qword [rsp+32],32
+    mov qword [rsp+40],LR_SHARED
+    API LoadImageW
+    mov [rbp-16],rax               ; big icon or 0
+    mov rcx,[rel h_instance]
+    mov edx,1
+    mov r8d,IMAGE_ICON
+    mov r9d,16
+    mov qword [rsp+32],16
+    mov qword [rsp+40],LR_SHARED
+    API LoadImageW
+    mov [rbp-24],rax               ; small icon or 0
     PTR r10,wc_struct
     mov dword [r10],80
     mov dword [r10+4],3          ; CS_HREDRAW | CS_VREDRAW
@@ -777,19 +951,26 @@ gui_loop:
     mov [r10+8],r11
     mov r11,[rel h_instance]
     mov [r10+24],r11
+    mov r11,[rbp-16]
+    mov [r10+32],r11               ; hIcon
     mov r11,[rbp-8]
     mov [r10+40],r11               ; hCursor
-    mov qword [r10+48],6         ; COLOR_WINDOW+1
-    PTR r11,app_class
+    mov r11,[rel bg_brush]
+    mov [r10+48],r11               ; hbrBackground: dark canvas
+    PTR r11,app_class_w
     mov [r10+64],r11
+    mov r11,[rbp-24]
+    mov [r10+72],r11               ; hIconSm
     mov rcx,r10
-    API RegisterClassExA
+    ; Unicode class + Unicode message loop: typed Devanagari reaches the
+    ; RichEdit as UTF-16 instead of being squeezed through the ANSI code page.
+    API RegisterClassExW
     test ax,ax
     jz .end
     call build_menu
     xor ecx,ecx
-    PTR rdx,app_class
-    PTR r8,app_title
+    PTR rdx,app_class_w
+    PTR r8,app_title_w
     mov r9d,WS_OVERLAPPEDWINDOW | WS_VISIBLE
     mov qword [rsp+32],100
     mov qword [rsp+40],50
@@ -801,7 +982,7 @@ gui_loop:
     mov rax,[rel h_instance]
     mov [rsp+80],rax
     mov qword [rsp+88],0
-    API CreateWindowExA
+    API CreateWindowExW
     mov [rel h_main],rax
     test rax,rax
     jz .end
@@ -810,115 +991,114 @@ gui_loop:
     API ShowWindow
     mov rcx,[rel h_main]
     API UpdateWindow
+    cmp word [rel current_file],0
+    je .fresh
+    PTR rcx,current_file
+    call load_file
+.fresh:
+    call set_lang_check
+    call update_title
+    call update_status
 .msg:
     PTR rcx,msg_struct
     xor edx,edx
     xor r8d,r8d
     xor r9d,r9d
-    API GetMessageA
+    API GetMessageW
     test eax,eax
     jle .end
+    call handle_shortcut
+    test eax,eax
+    jnz .msg
     PTR rcx,msg_struct
     API TranslateMessage
     PTR rcx,msg_struct
-    API DispatchMessageA
+    API DispatchMessageW
     jmp .msg
 .end:
     EPILOG
 
 ; ---- build_menu: an IDLE-style menu bar, stored in h_menu ----------------
+; R73: Sanskrit menu bar (patra / sampad / chal / bhasha / sahay), Unicode items.
+%macro MENUITEM 2
+    mov rcx,[rbp-8]
+    mov edx,MF_STRING
+    mov r8d,%1
+    PTR r9,%2
+    API AppendMenuW
+%endmacro
+%macro MENUSEP 0
+    mov rcx,[rbp-8]
+    mov edx,MF_SEPARATOR
+    xor r8d,r8d
+    xor r9d,r9d
+    API AppendMenuW
+%endmacro
+%macro MENUPOPUP 1
+    mov rcx,[rel h_menu]
+    mov edx,MF_POPUP
+    mov r8,[rbp-8]
+    PTR r9,%1
+    API AppendMenuW
+%endmacro
 build_menu:
     PROLOG 64
     API CreateMenu
     mov [rel h_menu],rax
     test rax,rax
     jz .bm_done
-    ; --- File ---
+    ; --- patra ---
     API CreatePopupMenu
     mov [rbp-8],rax
-    mov rcx,rax
-    mov edx,MF_STRING
-    mov r8d,MID_OPEN
-    PTR r9,i_open
-    API AppendMenuA
-    mov rcx,[rbp-8]
-    mov edx,MF_STRING
-    mov r8d,MID_SAVE
-    PTR r9,i_save
-    API AppendMenuA
-    mov rcx,[rbp-8]
-    mov edx,MF_STRING
-    mov r8d,MID_EXIT
-    PTR r9,i_exit
-    API AppendMenuA
-    mov rcx,[rel h_menu]
-    mov edx,MF_POPUP
-    mov r8,[rbp-8]
-    PTR r9,m_file
-    API AppendMenuA
-    ; --- Edit ---
+    MENUITEM MID_NEW,mi_nava
+    MENUITEM MID_OPEN,mi_khol
+    MENUITEM MID_SAVE,mi_sanchay
+    MENUITEM MID_SAVEAS,mi_saveas
+    MENUSEP
+    MENUITEM MID_EXIT,mi_nishkas
+    MENUPOPUP mn_patra
+    ; --- sampad ---
     API CreatePopupMenu
     mov [rbp-8],rax
-    mov rcx,[rel h_menu]
-    mov edx,MF_POPUP
-    mov r8,[rbp-8]
-    PTR r9,m_edit
-    API AppendMenuA
-    ; --- Shell ---
+    MENUITEM MID_UNDO,mi_punah
+    MENUSEP
+    MENUITEM MID_CUT,mi_chhid
+    MENUITEM MID_COPY,mi_pratilip
+    MENUITEM MID_PASTE,mi_sanyoj
+    MENUITEM MID_SELALL,mi_sarvagrah
+    MENUSEP
+    MENUITEM MID_FIND,mi_anwesh
+    MENUITEM MID_FINDNEXT,mi_anwesh_agrim
+    MENUSEP
+    MENUITEM MID_INDENT,mi_antar
+    MENUITEM MID_UNINDENT,mi_antar_hatao
+    MENUPOPUP mn_sampad
+    ; --- chal ---
     API CreatePopupMenu
     mov [rbp-8],rax
-    mov rcx,rax
-    mov edx,MF_STRING
-    mov r8d,MID_RUN
-    PTR r9,i_run
-    API AppendMenuA
-    mov rcx,[rbp-8]
-    mov edx,MF_STRING
-    mov r8d,MID_CLEAR
-    PTR r9,i_clear
-    API AppendMenuA
-    mov rcx,[rel h_menu]
-    mov edx,MF_POPUP
-    mov r8,[rbp-8]
-    PTR r9,m_shell
-    API AppendMenuA
-    ; --- Debug / Options / Window (popups, no items yet) ---
+    MENUITEM MID_RUN,mi_chal
+    MENUITEM MID_SEND,mi_presh
+    MENUITEM MID_CLEAR,mi_phal_rikta
+    MENUPOPUP mn_chal
+    ; --- bhasha (language pack used by chal) ---
     API CreatePopupMenu
     mov [rbp-8],rax
-    mov rcx,[rel h_menu]
-    mov edx,MF_POPUP
-    mov r8,[rbp-8]
-    PTR r9,m_debug
-    API AppendMenuA
+    mov [rel h_menu_bhasha],rax
+    MENUITEM MID_LANG_AUTO,mi_swayam
+    MENUITEM MID_LANG_CORE,mi_mool
+    MENUITEM MID_LANG_SANSKRIT,mi_sanskrit
+    MENUPOPUP mn_bhasha
+    ; --- sahay ---
     API CreatePopupMenu
     mov [rbp-8],rax
-    mov rcx,[rel h_menu]
-    mov edx,MF_POPUP
-    mov r8,[rbp-8]
-    PTR r9,m_opts
-    API AppendMenuA
-    API CreatePopupMenu
-    mov [rbp-8],rax
-    mov rcx,[rel h_menu]
-    mov edx,MF_POPUP
-    mov r8,[rbp-8]
-    PTR r9,m_window
-    API AppendMenuA
-    ; --- Help ---
-    API CreatePopupMenu
-    mov [rbp-8],rax
-    mov rcx,rax
-    mov edx,MF_STRING
-    mov r8d,MID_ABOUT
-    PTR r9,i_about
-    API AppendMenuA
-    mov rcx,[rel h_menu]
-    mov edx,MF_POPUP
-    mov r8,[rbp-8]
-    PTR r9,m_help
-    API AppendMenuA
+    MENUITEM MID_KEYS,mi_kunji
+    MENUITEM MID_ABOUT,mi_parichay
+    MENUPOPUP mn_sahay
 .bm_done:
     EPILOG
+%unmacro MENUITEM 2
+%unmacro MENUSEP 0
+%unmacro MENUPOPUP 1
 
 ; Create child controls. rcx=class,rdx=caption,r8=style,r9=id,
 ; extra x,y,w,h passed via caller's stack frame [rsp+32,...].
@@ -968,11 +1148,48 @@ wnd_proc:
     je .resize
     cmp edx,WM_COMMAND
     je .command
+    cmp edx,WM_NOTIFY
+    je .notify
+    cmp edx,WM_CTLCOLORSTATIC
+    je .ctlcolor
+    cmp edx,WM_CTLCOLOREDIT
+    je .ctlcolor
+    cmp edx,WM_CTLCOLORLISTBOX
+    je .ctlcolor
     cmp edx,WM_CLOSE
     je .close
     cmp edx,WM_DESTROY
     je .destroy
     jmp .def
+.notify:
+    ; NMHDR: hwndFrom +0, idFrom +8, code +16. Caret moves refresh the status line.
+    mov r10,[rbp-32]
+    cmp qword [r10+8],ID_EDITOR
+    jne .donezero
+    cmp dword [r10+16],EN_SELCHANGE
+    jne .donezero
+    call update_status
+    jmp .donezero
+.ctlcolor:
+    ; wParam = HDC, lParam = child. Dark canvas everywhere; grey gutter digits.
+    mov rcx,[rbp-24]
+    mov edx,COL_TEXT
+    mov rax,[rbp-32]
+    cmp rax,[rel h_gutter]
+    jne .ctl_status
+    mov edx,COL_GUTTER
+    jmp .ctl_text
+.ctl_status:
+    cmp rax,[rel h_status]
+    jne .ctl_text
+    mov edx,COL_STATUS
+.ctl_text:
+    call qword [rel __imp_SetTextColor]
+    mov rcx,[rbp-24]
+    mov edx,COL_BG
+    call qword [rel __imp_SetBkColor]
+    mov rax,[rel bg_brush]
+    jmp .done
 .create:
     mov r10,[rbp-8]
     mov [rel h_main],r10
@@ -1001,7 +1218,61 @@ wnd_proc:
     jmp .done
 .command:
     mov r10,[rbp-24]
-    movzx ecx,r10w
+    movzx ecx,r10w               ; control / menu id
+    shr r10,16                   ; notification code
+    cmp ecx,200
+    jb .action
+    cmp ecx,300
+    jb .ctl_notify
+.action:
+    ; R73: a button acts only on BN_CLICKED (0); menus also send 0. A focus
+    ; notification (Tab onto a button) must never run or open anything.
+    test r10d,r10d
+    jnz .donezero
+    cmp ecx,MID_RUN
+    je .run
+    cmp ecx,MID_OPEN
+    je .open
+    cmp ecx,MID_SAVE
+    je .save
+    cmp ecx,MID_SAVEAS
+    je .saveas
+    cmp ecx,MID_NEW
+    je .new
+    cmp ecx,MID_EXIT
+    je .close
+    cmp ecx,MID_CLEAR
+    je .clear
+    cmp ecx,MID_SEND
+    je .shell
+    cmp ecx,MID_ABOUT
+    je .about
+    cmp ecx,MID_KEYS
+    je .keys
+    cmp ecx,MID_UNDO
+    je .undo
+    cmp ecx,MID_CUT
+    je .cut
+    cmp ecx,MID_COPY
+    je .copy
+    cmp ecx,MID_PASTE
+    je .paste
+    cmp ecx,MID_SELALL
+    je .selall
+    cmp ecx,MID_FIND
+    je .find
+    cmp ecx,MID_FINDNEXT
+    je .findnext
+    cmp ecx,MID_INDENT
+    je .indent
+    cmp ecx,MID_UNINDENT
+    je .unindent
+    cmp ecx,MID_LANG_AUTO
+    je .lang
+    cmp ecx,MID_LANG_CORE
+    je .lang
+    cmp ecx,MID_LANG_SANSKRIT
+    je .lang
     cmp ecx,ID_RUN
     je .run
     cmp ecx,ID_OPEN
@@ -1014,61 +1285,141 @@ wnd_proc:
     je .shell
     cmp ecx,ID_CLEAR
     je .clear
+    jmp .donezero
+.ctl_notify:
     cmp ecx,ID_EDITOR
     je .edit_changed
     cmp ecx,ID_LIST
     je .list_changed
-    xor eax,eax
-    jmp .done
+    jmp .donezero
+.about:
+    mov rcx,[rel h_main]
+    PTR rdx,about_w
+    PTR r8,app_title_w
+    xor r9d,r9d
+    API MessageBoxW
+    jmp .donezero
+.keys:
+    mov rcx,[rel h_main]
+    PTR rdx,keys_w
+    PTR r8,app_title_w
+    xor r9d,r9d
+    API MessageBoxW
+    jmp .donezero
 .run:
     call run_editor
-    xor eax,eax
-    jmp .done
+    jmp .donezero
 .open:
     call open_dialog
-    xor eax,eax
-    jmp .done
+    jmp .donezero
 .save:
+    call save_current
+    jmp .donezero
+.saveas:
     call save_dialog
-    xor eax,eax
-    jmp .done
+    jmp .donezero
+.new:
+    call new_file
+    jmp .donezero
 .example:
     call load_example
-    xor eax,eax
-    jmp .done
+    jmp .donezero
 .shell:
     call shell_submit
-    xor eax,eax
-    jmp .done
+    jmp .donezero
 .clear:
     mov byte [rel shell_history],0
     mov dword [rel last_shell_out],0
     mov rcx,[rel h_output]
     PTR rdx,msg_ready
     API SetWindowTextA
-    xor eax,eax
-    jmp .done
+    jmp .donezero
+.undo:
+    mov rcx,[rel h_editor]
+    mov edx,EM_UNDO
+    xor r8d,r8d
+    xor r9d,r9d
+    call send_message
+    jmp .donezero
+.cut:
+    mov rcx,[rel h_editor]
+    mov edx,WM_CUT
+    xor r8d,r8d
+    xor r9d,r9d
+    call send_message
+    jmp .donezero
+.copy:
+    mov rcx,[rel h_editor]
+    mov edx,WM_COPY
+    xor r8d,r8d
+    xor r9d,r9d
+    call send_message
+    jmp .donezero
+.paste:
+    mov rcx,[rel h_editor]
+    mov edx,WM_PASTE
+    xor r8d,r8d
+    xor r9d,r9d
+    call send_message
+    jmp .donezero
+.selall:
+    mov rcx,[rel h_editor]
+    mov edx,EM_SETSEL
+    xor r8d,r8d
+    mov r9d,-1
+    call send_message
+    mov rcx,[rel h_editor]
+    API SetFocus
+    jmp .donezero
+.find:
+    call focus_find
+    jmp .donezero
+.findnext:
+    call find_next
+    jmp .donezero
+.indent:
+    call editor_indent
+    mov rcx,[rel h_editor]
+    API SetFocus
+    jmp .donezero
+.unindent:
+    call editor_unindent
+    mov rcx,[rel h_editor]
+    API SetFocus
+    jmp .donezero
+.lang:
+    sub ecx,MID_LANG_AUTO
+    mov [rel lang_mode],ecx
+    call set_lang_check
+    call update_status
+    jmp .donezero
 .edit_changed:
-    mov r10,[rbp-24]
-    shr r10,16
     cmp r10d,EN_CHANGE
     jne .donezero
     cmp dword [rel is_highlighting],0
     jne .donezero
     call update_lines
     call highlight_editor
+    cmp dword [rel is_loading],0
+    jne .donezero
+    cmp dword [rel is_modified],0
+    jne .edit_status
+    mov dword [rel is_modified],1
+    call update_title
+.edit_status:
+    call update_status
 .donezero:
     xor eax,eax
     jmp .done
 .list_changed:
-    mov r10,[rbp-24]
-    shr r10,16
     cmp r10d,LBN_DBLCLK
     jne .donezero
     call load_example
-    xor eax,eax
-    jmp .done
+    jmp .donezero
 .close:
+    call confirm_discard
+    test eax,eax
+    jz .donezero
     mov rcx,[rbp-8]
     API DestroyWindow
     xor eax,eax
@@ -1087,13 +1438,24 @@ wnd_proc:
     mov rdx,[rbp-16]
     mov r8,[rbp-24]
     mov r9,[rbp-32]
-    API DefWindowProcA
+    API DefWindowProcW
 .done:
     EPILOG
 
 
 set_project_icon:
     PROLOG 96
+    ; R73: resource icon first (same image Explorer and the taskbar show),
+    ; then the icon file beside the executable, then the installed assets copy.
+    mov rcx,[rel h_instance]
+    mov edx,1
+    mov r8d,IMAGE_ICON
+    xor r9d,r9d
+    mov qword [rsp+32],0
+    mov qword [rsp+40],LR_DEFAULTSIZE|LR_SHARED
+    API LoadImageW
+    test rax,rax
+    jnz .apply
     xor ecx,ecx
     PTR rdx,gui_icon_w
     mov r8d,IMAGE_ICON
@@ -1148,28 +1510,51 @@ create_controls:
     CHILD class_button,label_example,WS_CHILD|WS_VISIBLE,ID_EXAMPLE,326,8,125,27,h_btn_example
     CHILD class_button,label_send,WS_CHILD|WS_VISIBLE,ID_SEND,458,8,75,27,h_btn_send
     CHILD class_button,label_clear,WS_CHILD|WS_VISIBLE,ID_CLEAR,539,8,120,27,h_btn_clear
-    CHILD class_edit,empty_text,WS_CHILD|WS_VISIBLE|WS_BORDER|ES_MULTILINE|ES_READONLY|WS_VSCROLL,ID_GUTTER,10,45,50,420,h_gutter
+    CHILD class_edit,empty_text,WS_CHILD|WS_VISIBLE|WS_BORDER|ES_MULTILINE|ES_READONLY|ES_AUTOHSCROLL,ID_GUTTER,10,45,50,420,h_gutter
     CHILD class_richedit,example_start,WS_CHILD|WS_VISIBLE|WS_BORDER|ES_MULTILINE|ES_AUTOVSCROLL|ES_WANTRETURN|WS_VSCROLL,ID_EDITOR,62,45,780,420,h_editor
     CHILD class_list,empty_text,WS_CHILD|WS_VISIBLE|WS_BORDER|WS_VSCROLL|LBS_NOTIFY,ID_LIST,848,45,290,420,h_examples
-    CHILD class_edit,msg_ready,WS_CHILD|WS_VISIBLE|WS_BORDER|ES_MULTILINE|ES_AUTOVSCROLL|ES_READONLY|WS_VSCROLL,ID_OUTPUT,10,500,1120,145,h_output
+    CHILD class_richedit,msg_ready,WS_CHILD|WS_VISIBLE|WS_BORDER|ES_MULTILINE|ES_AUTOVSCROLL|ES_READONLY|WS_VSCROLL,ID_OUTPUT,10,500,1120,145,h_output
     CHILD class_edit,empty_text,WS_CHILD|WS_VISIBLE|WS_BORDER|ES_AUTOHSCROLL,ID_SHELL,10,659,1120,30,h_shell
+    ; R73: find box in the toolbar and a status line along the bottom.
+    CHILD class_static,empty_text,WS_CHILD|WS_VISIBLE,ID_FINDLABEL,672,13,62,22,h_find_label
+    CHILD class_edit,empty_text,WS_CHILD|WS_VISIBLE|WS_BORDER|ES_AUTOHSCROLL,ID_FIND,736,8,200,27,h_find
+    CHILD class_static,empty_text,WS_CHILD|WS_VISIBLE,ID_STATUS,10,700,1120,22,h_status
 %unmacro CHILD 9
-    ; RichEdit enables EN_CHANGE notifications for syntax/line refresh.
+    mov rcx,[rel h_find_label]
+    PTR rdx,find_label_w
+    API SetWindowTextW
+    ; RichEdit: EN_CHANGE for syntax/line refresh, EN_SELCHANGE for the status line.
     mov rcx,[rel h_editor]
     mov edx,EM_SETEVENTMASK
     xor r8d,r8d
-    mov r9d,1                    ; ENM_CHANGE
+    mov r9d,ENM_CHANGE|ENM_SELCHANGE
     call send_message
     ; Shell Enter key invokes compilation, while default EDIT procedure
-    ; continues to handle non-Enter keys normally.
+    ; continues to handle non-Enter keys normally. Unicode subclassing keeps
+    ; typed Devanagari intact (an ANSI subclass would convert WM_CHAR).
     mov rcx,[rel h_shell]
     mov edx,GWLP_WNDPROC
     PTR r8,shell_proc
-    API SetWindowLongPtrA
+    API SetWindowLongPtrW
     mov [rel old_shell_proc],rax
+    ; Editor keys: Tab / Shift+Tab indent, Enter auto-indents, '}' dedents.
+    mov rcx,[rel h_editor]
+    mov edx,GWLP_WNDPROC
+    PTR r8,editor_proc
+    API SetWindowLongPtrW
+    mov [rel old_editor_proc],rax
+    ; Find box: Enter searches forward from the caret.
+    mov rcx,[rel h_find]
+    mov edx,GWLP_WNDPROC
+    PTR r8,find_proc
+    API SetWindowLongPtrW
+    mov [rel old_find_proc],rax
+    call apply_readable_fonts
     call fill_examples
     call update_lines
     call highlight_editor
+    ; R73: the sample program is not an edit; a fresh window starts clean.
+    mov dword [rel is_modified],0
     EPILOG
 
 ; Layout uses available client space; output and shell remain beneath editor.
@@ -1194,7 +1579,7 @@ layout_controls:
     jge .tall
     mov eax,420
 .tall:
-    sub eax,250
+    sub eax,276                 ; R73: 26 px reserved for the status line
     mov [rbp-16],eax            ; editor height
     mov eax,[rbp-12]
     sub eax,300
@@ -1204,10 +1589,9 @@ layout_controls:
     mov edx,8
     mov r8d,42
     mov r9d,45
-    mov qword [rsp+32],48
     mov eax,[rbp-16]
-    mov [rsp+40],rax
-    mov qword [rsp+48],1
+    mov [rsp+32],rax
+    mov qword [rsp+40],1
     API MoveWindow
     mov rcx,[rel h_editor]
     mov edx,58
@@ -1215,9 +1599,8 @@ layout_controls:
     mov r9d,[rbp-20]
     sub r9d,48
     mov eax,[rbp-16]
-    mov [rsp+40],rax
-    mov qword [rsp+32],0
-    mov qword [rsp+48],1
+    mov [rsp+32],rax
+    mov qword [rsp+40],1
     API MoveWindow
     mov rcx,[rel h_examples]
     mov edx,[rbp-20]
@@ -1225,9 +1608,8 @@ layout_controls:
     mov r8d,42
     mov r9d,280
     mov eax,[rbp-16]
-    mov [rsp+40],rax
-    mov qword [rsp+32],280
-    mov qword [rsp+48],1
+    mov [rsp+32],rax
+    mov qword [rsp+40],1
     API MoveWindow
     mov rcx,[rel h_output]
     mov edx,8
@@ -1247,6 +1629,17 @@ layout_controls:
     mov r9d,[rbp-12]
     sub r9d,24
     mov qword [rsp+32],27
+    mov qword [rsp+40],1
+    API MoveWindow
+    ; R73: status line under the shell, full width.
+    mov rcx,[rel h_status]
+    mov edx,10
+    mov eax,[rbp-16]
+    add eax,241
+    mov r8d,eax
+    mov r9d,[rbp-12]
+    sub r9d,28
+    mov qword [rsp+32],22
     mov qword [rsp+40],1
     API MoveWindow
     EPILOG
@@ -1505,6 +1898,24 @@ highlight_editor:
     mov r8d,65536
     API GetWindowTextW
     mov [rbp-8],eax
+    ; WM_GETTEXT expands paragraph breaks to CRLF, while RichEdit character
+    ; positions count one CR. Compact the scanner copy to the same units.
+    PTR r10,editor_utf16
+    mov r11,r10
+.compact_lines:
+    mov ax,[r10]
+    mov [r11],ax
+    test ax,ax
+    jz .compact_done
+    add r10,2
+    add r11,2
+    cmp ax,13
+    jne .compact_lines
+    cmp word [r10],10
+    jne .compact_lines
+    add r10,2
+    jmp .compact_lines
+.compact_done:
     ; Save selection: don't move user's cursor while recoloring.
     mov rcx,[rel h_editor]
     mov edx,EM_GETSEL
@@ -1538,6 +1949,10 @@ highlight_editor:
     je .quoted
     cmp dx,39
     je .quoted
+    cmp dx,0x0964
+    je .danda
+    cmp dx,0x0965
+    je .danda
     cmp dx,'#'
     je .comment
     cmp dx,'/'
@@ -1669,7 +2084,7 @@ highlight_editor:
 .kw_loop:
     mov r11,[rbp-32]
     cmp byte [r11],0
-    je .advance
+    je .function_word
     mov [rbp-40],r11
     mov r10,[rbp-16]
     xor ecx,ecx
@@ -1691,6 +2106,36 @@ highlight_editor:
     jnz .kw_next
     mov [rbp-44],ecx
     mov r10d,COL_KEYWORD
+    jmp .paint_tok
+.danda:
+    mov dword [rbp-44],1
+    mov r10d,0x00E6D45C
+    jmp .paint_tok
+.function_word:
+    mov r11,[rbp-16]
+    xor ecx,ecx
+.function_scan:
+    mov ax,[r11+rcx*2]
+    call is_ident_u16
+    test eax,eax
+    jz .function_end
+    inc ecx
+    jmp .function_scan
+.function_end:
+    mov [rbp-44],ecx
+.function_space:
+    mov ax,[r11+rcx*2]
+    cmp ax,' '
+    je .function_next
+    cmp ax,9
+    jne .function_check
+.function_next:
+    inc ecx
+    jmp .function_space
+.function_check:
+    cmp ax,'('
+    jne .advance
+    mov r10d,COL_FUNCTION
     jmp .paint_tok
 .native_word:
     ; Existing left-to-right lexer already excluded quoted strings/comments.
@@ -1948,6 +2393,9 @@ editor_set_utf8:
 ; File dialogs (Win32 common dialogs, not third party).
 open_dialog:
     PROLOG 96
+    call confirm_discard         ; R73: never drop unsaved work silently
+    test eax,eax
+    jz .end
     call dialog_common
     PTR rcx,ofn_struct
     API GetOpenFileNameW
@@ -1957,6 +2405,7 @@ open_dialog:
     call load_file
 .end:
     EPILOG
+; eax = 1 when the patra was written, 0 when cancelled or failed
 save_dialog:
     PROLOG 96
     call dialog_common
@@ -1969,6 +2418,18 @@ save_dialog:
     PTR rcx,current_file
     call save_file
 .end:
+    EPILOG
+; sanchay: write to the current patra, or ask for a name when there is none
+save_current:
+    PROLOG 48
+    cmp word [rel current_file],0
+    je .ask
+    PTR rcx,current_file
+    call save_file
+    jmp .done
+.ask:
+    call save_dialog
+.done:
     EPILOG
 
 dialog_common:
@@ -2016,10 +2477,16 @@ load_file:
     jae .too_big
     PTR r10,file_buffer
     mov byte [r10+rcx],0
+    mov dword [rel is_loading],1
     PTR rcx,file_buffer
     call editor_set_utf8
+    mov dword [rel is_loading],0
     test eax,eax
     jz .fail
+    ; R73: a freshly loaded patra is clean; the title and status say so.
+    mov dword [rel is_modified],0
+    call update_title
+    call update_status
     mov eax,1
     jmp .end
 .too_big:
@@ -2067,6 +2534,13 @@ save_file:
     cmp eax,[rel bytes_count]
     sete al
     movzx eax,al
+    test eax,eax
+    jz .done
+    ; R73: saved -> clean
+    mov dword [rel is_modified],0
+    call update_title
+    call update_status
+    mov eax,1
     jmp .done
 .fail:
     xor eax,eax
@@ -2236,7 +2710,17 @@ compose_compile:
     PTR rdx,compiler_path
     call wide_command_concat
     PTR rcx,command_line
-    PTR rdx,quote_space_quote_w
+    PTR rdx,quote_only_w
+    call wide_command_concat
+    ; R73: "<compiler>" [ --lang sanskrit] "<source>" "<binary>"
+    cmp dword [rel use_pack],0
+    je .no_pack
+    PTR rcx,command_line
+    PTR rdx,lang_flag_w
+    call wide_command_concat
+.no_pack:
+    PTR rcx,command_line
+    PTR rdx,space_quote_w
     call wide_command_concat
     PTR rcx,command_line
     PTR rdx,temp_path
@@ -2475,6 +2959,11 @@ run_editor:
     call editor_read_utf8
     test eax,eax
     jz .failed_unicode
+    ; R73: choose the language pack for this run (bhasha menu / Devanagari detection)
+    PTR rcx,editor_utf16
+    call detect_devanagari
+    mov ecx,eax
+    call select_pack
     PTR rcx,edit_buffer
     call compile_run
     mov [rbp-4],eax
@@ -2502,6 +2991,7 @@ run_editor:
     PTR rcx,msg_file_failed
     call output_append
 .end:
+    call update_status           ; R73: shows which pack this run used
     EPILOG
 
 shell_proc:
@@ -2531,7 +3021,7 @@ shell_proc:
     mov r9,[rbp-24]
     mov rax,[rbp-32]
     mov [rsp+32],rax
-    API CallWindowProcA
+    API CallWindowProcW
 .done:
     EPILOG
 
@@ -2578,6 +3068,11 @@ shell_submit:
     call string_length
     cmp eax,32700
     jae .limit
+    ; R73: the replayed source may hold Devanagari from earlier lines too
+    PTR rcx,file_buffer
+    call detect_devanagari_utf8
+    mov ecx,eax
+    call select_pack
     PTR rcx,file_buffer
     call compile_run
     test eax,eax
@@ -2722,3 +3217,966 @@ quote_space_quote db '" "',0
 quote_only db '"',0
 empty_text db 0
 example_start db 'mukhya()',13,10,'    likha("Namaste, Sutram!\n")',13,10,0
+
+extern __imp_LoadLibraryA, __imp_GetProcAddress
+
+extern __imp_GetCommandLineW, __imp_CommandLineToArgvW, __imp_LocalFree
+extern __imp_GetFullPathNameW, __imp_GetKeyState
+section .data
+delivery_about_text: db 'Sutram Native IDE',13,10,'F5 / Ctrl+R: Run   Ctrl+O: Open   Ctrl+S: Save',13,10,'Files are UTF-8. Shell submissions replay session history.',0
+section .text
+read_startup_file:
+    PROLOG 80
+    call qword [rel __imp_GetCommandLineW]
+    mov rcx,rax
+    lea rdx,[rbp-16]
+    call qword [rel __imp_CommandLineToArgvW]
+    test rax,rax
+    jz .done
+    mov [rbp-8],rax
+    cmp dword [rbp-16],2
+    jne .free
+    mov rcx,[rax+8]
+    mov edx,520
+    PTR r8,current_file
+    xor r9d,r9d
+    call qword [rel __imp_GetFullPathNameW]
+    test eax,eax
+    jz .invalid
+    cmp eax,520
+    jb .free
+.invalid:
+    mov word [rel current_file],0
+.free:
+    mov rcx,[rbp-8]
+    call qword [rel __imp_LocalFree]
+.done:
+    EPILOG
+handle_shortcut:
+    PROLOG 48
+    cmp dword [rel msg_struct+8],WM_KEYDOWN
+    jne .no
+    cmp dword [rel msg_struct+16],0x74
+    je .run
+    cmp dword [rel msg_struct+16],VK_F3
+    je .findnext
+    mov ecx,0x11
+    call qword [rel __imp_GetKeyState]
+    test ax,0x8000
+    jz .no
+    mov eax,[rel msg_struct+16]
+    cmp eax,'R'
+    je .run
+    cmp eax,'O'
+    je .open
+    cmp eax,'S'
+    je .save
+    cmp eax,'N'
+    je .new
+    cmp eax,'F'
+    je .find
+.no:
+    xor eax,eax
+    EPILOG
+.run:
+    call run_editor
+    jmp .yes
+.open:
+    call open_dialog
+    jmp .yes
+.save:
+    call save_current
+    jmp .yes
+.new:
+    call new_file
+    jmp .yes
+.find:
+    call focus_find
+    jmp .yes
+.findnext:
+    call find_next
+.yes:
+    mov eax,1
+    EPILOG
+
+; ============================================================================
+; R73 — editor keys, status line, title, find, language pack, new patra.
+; Every routine keeps the Win64 ABI: 16-byte aligned frames, 32-byte shadow.
+; ============================================================================
+extern __imp_CreateSolidBrush, __imp_SetTextColor, __imp_SetBkColor
+section .text
+
+; --- editor subclass: Tab / Shift+Tab, Enter auto-indent, '}' dedent ----------
+editor_proc:
+    PROLOG 96
+    mov [rbp-8],rcx
+    mov [rbp-16],rdx
+    mov [rbp-24],r8
+    mov [rbp-32],r9
+    cmp edx,WM_KEYDOWN
+    je .keydown
+    cmp edx,WM_CHAR
+    je .char
+    jmp .def
+.keydown:
+    cmp r8d,VK_TAB
+    je .tab
+    cmp r8d,VK_RETURN
+    je .enter
+    jmp .def
+.tab:
+    mov ecx,VK_SHIFT
+    call qword [rel __imp_GetKeyState]
+    test ax,0x8000
+    jnz .unindent
+    call editor_indent
+    jmp .eat
+.unindent:
+    call editor_unindent
+    jmp .eat
+.enter:
+    call editor_newline
+    jmp .eat
+.char:
+    cmp r8d,9
+    je .eat                      ; already handled on WM_KEYDOWN
+    cmp r8d,13
+    je .eat
+    cmp r8d,10
+    je .eat
+    cmp r8d,'}'
+    jne .def
+    call editor_close_brace
+    test eax,eax
+    jnz .eat
+    jmp .def
+.eat:
+    xor eax,eax
+    jmp .done
+.def:
+    mov rcx,[rel old_editor_proc]
+    mov rdx,[rbp-8]
+    mov r8,[rbp-16]
+    mov r9,[rbp-24]
+    mov rax,[rbp-32]
+    mov [rsp+32],rax
+    API CallWindowProcW
+.done:
+    EPILOG
+
+; --- find box subclass: Enter = agrim anwesh ---------------------------------
+find_proc:
+    PROLOG 96
+    mov [rbp-8],rcx
+    mov [rbp-16],rdx
+    mov [rbp-24],r8
+    mov [rbp-32],r9
+    cmp edx,WM_KEYDOWN
+    je .key
+    cmp edx,WM_CHAR
+    jne .def
+    cmp r8d,13
+    je .eat
+    jmp .def
+.key:
+    cmp r8d,VK_RETURN
+    jne .def
+    call find_next
+.eat:
+    xor eax,eax
+    jmp .done
+.def:
+    mov rcx,[rel old_find_proc]
+    mov rdx,[rbp-8]
+    mov r8,[rbp-16]
+    mov r9,[rbp-24]
+    mov rax,[rbp-32]
+    mov [rsp+32],rax
+    API CallWindowProcW
+.done:
+    EPILOG
+
+; --- selection -> [rbp-4] first line, [rbp-8] last line (caller frame) --------
+; Shared helper: fills ch_start/ch_end and returns eax=first line, edx=last line.
+; If the selection ends at column 0 of the last line, that line is excluded.
+selection_lines:
+    PROLOG 64
+    mov rcx,[rel h_editor]
+    mov edx,EM_GETSEL
+    PTR r8,ch_start
+    PTR r9,ch_end
+    call send_message
+    mov rcx,[rel h_editor]
+    mov edx,EM_LINEFROMCHAR
+    mov r8d,[rel ch_start]
+    xor r9d,r9d
+    call send_message
+    mov [rbp-4],eax
+    mov rcx,[rel h_editor]
+    mov edx,EM_LINEFROMCHAR
+    mov r8d,[rel ch_end]
+    xor r9d,r9d
+    call send_message
+    mov [rbp-8],eax
+    cmp eax,[rbp-4]
+    je .ret
+    mov rcx,[rel h_editor]
+    mov edx,EM_LINEINDEX
+    mov r8d,[rbp-8]
+    xor r9d,r9d
+    call send_message
+    cmp eax,[rel ch_end]
+    jne .ret
+    dec dword [rbp-8]
+.ret:
+    mov eax,[rbp-4]
+    mov edx,[rbp-8]
+    EPILOG
+
+; Tab: four spaces at the caret, or in front of every selected line.
+editor_indent:
+    PROLOG 64
+    call selection_lines
+    mov [rbp-4],eax
+    mov [rbp-8],edx
+    mov ecx,[rel ch_end]
+    mov [rbp-20],ecx             ; private copy: each insert re-highlights and reuses ch_*
+    cmp ecx,[rel ch_start]
+    je .single
+    cmp eax,edx
+    je .single
+    mov [rbp-12],edx
+.loop:
+    mov rcx,[rel h_editor]
+    mov edx,EM_LINEINDEX
+    mov r8d,[rbp-12]
+    xor r9d,r9d
+    call send_message
+    mov rcx,[rel h_editor]
+    mov edx,EM_SETSEL
+    mov r8d,eax
+    mov r9d,eax
+    call send_message
+    mov rcx,[rel h_editor]
+    mov edx,EM_REPLACESEL
+    mov r8d,1
+    PTR r9,indent4_w
+    API SendMessageW
+    dec dword [rbp-12]
+    mov eax,[rbp-12]
+    cmp eax,[rbp-4]
+    jge .loop
+    mov rcx,[rel h_editor]
+    mov edx,EM_LINEINDEX
+    mov r8d,[rbp-4]
+    xor r9d,r9d
+    call send_message
+    mov [rbp-16],eax
+    mov eax,[rbp-8]
+    sub eax,[rbp-4]
+    inc eax
+    shl eax,2
+    add eax,[rbp-20]
+    mov rcx,[rel h_editor]
+    mov edx,EM_SETSEL
+    mov r8d,[rbp-16]
+    mov r9d,eax
+    call send_message
+    jmp .done
+.single:
+    mov rcx,[rel h_editor]
+    mov edx,EM_REPLACESEL
+    mov r8d,1
+    PTR r9,indent4_w
+    API SendMessageW
+.done:
+    EPILOG
+
+; Shift+Tab: remove up to four leading spaces from each selected line.
+editor_unindent:
+    PROLOG 80
+    call selection_lines
+    mov [rbp-4],eax
+    mov [rbp-8],edx
+    mov eax,[rel ch_start]
+    mov [rbp-20],eax
+    mov eax,[rel ch_end]
+    mov [rbp-24],eax
+    mov dword [rbp-28],0         ; spaces removed in total
+    mov eax,[rbp-8]
+    mov [rbp-12],eax
+.loop:
+    mov rcx,[rel h_editor]
+    mov edx,EM_LINEINDEX
+    mov r8d,[rbp-12]
+    xor r9d,r9d
+    call send_message
+    mov [rbp-16],eax             ; line start
+    PTR r10,line_utf16
+    mov word [r10],8
+    mov rcx,[rel h_editor]
+    mov edx,EM_GETLINE
+    mov r8d,[rbp-12]
+    PTR r9,line_utf16
+    API SendMessageW
+    xor ecx,ecx
+.count:
+    cmp ecx,eax
+    jae .counted
+    cmp ecx,4
+    jae .counted
+    PTR r10,line_utf16
+    cmp word [r10+rcx*2],' '
+    jne .counted
+    inc ecx
+    jmp .count
+.counted:
+    test ecx,ecx
+    jz .next
+    mov [rbp-32],ecx
+    mov r8d,[rbp-16]
+    mov r9d,r8d
+    add r9d,ecx
+    mov rcx,[rel h_editor]
+    mov edx,EM_SETSEL
+    call send_message
+    mov rcx,[rel h_editor]
+    mov edx,EM_REPLACESEL
+    mov r8d,1
+    PTR r9,empty_w
+    API SendMessageW
+    mov eax,[rbp-32]
+    add [rbp-28],eax
+.next:
+    dec dword [rbp-12]
+    mov eax,[rbp-12]
+    cmp eax,[rbp-4]
+    jge .loop
+    mov rcx,[rel h_editor]
+    mov edx,EM_LINEINDEX
+    mov r8d,[rbp-4]
+    xor r9d,r9d
+    call send_message
+    mov [rbp-16],eax             ; first line start
+    mov eax,[rbp-20]
+    cmp eax,[rbp-24]
+    jne .block
+    sub eax,[rbp-28]
+    cmp eax,[rbp-16]
+    jge .caret
+    mov eax,[rbp-16]
+.caret:
+    mov r8d,eax
+    mov r9d,eax
+    jmp .setsel
+.block:
+    mov r8d,[rbp-16]
+    mov eax,[rbp-24]
+    sub eax,[rbp-28]
+    mov r9d,eax
+.setsel:
+    mov rcx,[rel h_editor]
+    mov edx,EM_SETSEL
+    call send_message
+    EPILOG
+
+; Enter: new line with the current line's indentation, +4 after a '{'.
+editor_newline:
+    PROLOG 96
+    mov rcx,[rel h_editor]
+    mov edx,EM_GETSEL
+    PTR r8,ch_start
+    PTR r9,ch_end
+    call send_message
+    mov rcx,[rel h_editor]
+    mov edx,EM_LINEFROMCHAR
+    mov r8d,[rel ch_start]
+    xor r9d,r9d
+    call send_message
+    mov [rbp-4],eax
+    mov rcx,[rel h_editor]
+    mov edx,EM_LINEINDEX
+    mov r8d,eax
+    xor r9d,r9d
+    call send_message
+    mov [rbp-8],eax
+    PTR r10,line_utf16
+    mov word [r10],4000
+    mov rcx,[rel h_editor]
+    mov edx,EM_GETLINE
+    mov r8d,[rbp-4]
+    PTR r9,line_utf16
+    API SendMessageW
+    mov ecx,[rel ch_start]
+    sub ecx,[rbp-8]
+    cmp ecx,eax
+    jbe .lim
+    mov ecx,eax
+.lim:
+    mov [rbp-16],ecx             ; code units before the caret
+    xor ecx,ecx
+.lead:
+    cmp ecx,[rbp-16]
+    jae .leaded
+    PTR r10,line_utf16
+    cmp word [r10+rcx*2],' '
+    jne .leaded
+    inc ecx
+    jmp .lead
+.leaded:
+    cmp ecx,120
+    jbe .ok
+    mov ecx,120
+.ok:
+    mov [rbp-20],ecx             ; indentation to copy
+    mov ecx,[rbp-16]
+.back:
+    test ecx,ecx
+    jz .compose
+    dec ecx
+    PTR r10,line_utf16
+    movzx eax,word [r10+rcx*2]
+    cmp ax,' '
+    je .back
+    cmp ax,9
+    je .back
+    cmp ax,'{'
+    jne .compose
+    add dword [rbp-20],4
+.compose:
+    PTR r10,indent_buf
+    mov word [r10],13
+    add r10,2
+    mov ecx,[rbp-20]
+.fill:
+    test ecx,ecx
+    jz .term
+    mov word [r10],' '
+    add r10,2
+    dec ecx
+    jmp .fill
+.term:
+    mov word [r10],0
+    mov rcx,[rel h_editor]
+    mov edx,EM_REPLACESEL
+    mov r8d,1
+    PTR r9,indent_buf
+    API SendMessageW
+    EPILOG
+
+; '}' typed on a whitespace-only line: pull it back by four. eax=1 if handled.
+editor_close_brace:
+    PROLOG 80
+    mov rcx,[rel h_editor]
+    mov edx,EM_GETSEL
+    PTR r8,ch_start
+    PTR r9,ch_end
+    call send_message
+    mov eax,[rel ch_start]
+    cmp eax,[rel ch_end]
+    jne .no
+    mov rcx,[rel h_editor]
+    mov edx,EM_LINEFROMCHAR
+    mov r8d,[rel ch_start]
+    xor r9d,r9d
+    call send_message
+    mov [rbp-4],eax
+    mov rcx,[rel h_editor]
+    mov edx,EM_LINEINDEX
+    mov r8d,eax
+    xor r9d,r9d
+    call send_message
+    mov [rbp-8],eax
+    mov ecx,[rel ch_start]
+    sub ecx,eax
+    cmp ecx,4
+    jb .no
+    mov [rbp-12],ecx
+    PTR r10,line_utf16
+    mov word [r10],4000
+    mov rcx,[rel h_editor]
+    mov edx,EM_GETLINE
+    mov r8d,[rbp-4]
+    PTR r9,line_utf16
+    API SendMessageW
+    cmp eax,[rbp-12]
+    jb .no
+    xor ecx,ecx
+.scan:
+    cmp ecx,[rbp-12]
+    jae .dedent
+    PTR r10,line_utf16
+    cmp word [r10+rcx*2],' '
+    jne .no
+    inc ecx
+    jmp .scan
+.dedent:
+    mov r8d,[rel ch_start]
+    sub r8d,4
+    mov r9d,[rel ch_start]
+    mov rcx,[rel h_editor]
+    mov edx,EM_SETSEL
+    call send_message
+    PTR r10,indent_buf
+    mov word [r10],'}'
+    mov word [r10+2],0
+    mov rcx,[rel h_editor]
+    mov edx,EM_REPLACESEL
+    mov r8d,1
+    PTR r9,indent_buf
+    API SendMessageW
+    mov eax,1
+    jmp .done
+.no:
+    xor eax,eax
+.done:
+    EPILOG
+
+; --- title: "<patra>[ *] - Sutram sampadak" --------------------------------
+wide_basename:
+    mov rax,rcx
+    mov r10,rcx
+.scan:
+    movzx edx,word [r10]
+    test dx,dx
+    jz .done
+    add r10,2
+    cmp dx,'\'
+    je .mark
+    cmp dx,'/'
+    jne .scan
+.mark:
+    mov rax,r10
+    jmp .scan
+.done:
+    ret
+
+update_title:
+    PROLOG 48
+    cmp word [rel current_file],0
+    je .fresh
+    PTR rcx,current_file
+    call wide_basename
+    mov rcx,rax
+    PTR rdx,title_utf16
+    call wide_string_copy
+    jmp .mod
+.fresh:
+    PTR rcx,title_new_w
+    PTR rdx,title_utf16
+    call wide_string_copy
+.mod:
+    cmp dword [rel is_modified],0
+    je .suffix
+    PTR rcx,title_utf16
+    PTR rdx,title_mod_w
+    call wide_string_concat
+.suffix:
+    PTR rcx,title_utf16
+    PTR rdx,title_suffix_w
+    call wide_string_concat
+    mov rcx,[rel h_main]
+    test rcx,rcx
+    jz .done
+    PTR rdx,title_utf16
+    API SetWindowTextW
+.done:
+    EPILOG
+
+; --- status line: pankti / stambh / bhasha / akshara / sanchit ---------------
+; rcx = unsigned value, rdx = UTF-16 destination; returns rax -> terminating NUL
+utoa16:
+    mov r9,rdx
+    mov eax,ecx
+    PTR r8,num_scratch+46
+    mov word [r8],0
+    mov r11d,10
+.digit:
+    xor edx,edx
+    div r11d
+    add dl,'0'
+    sub r8,2
+    mov [r8],dx
+    test eax,eax
+    jnz .digit
+.copy:
+    mov ax,[r8]
+    mov [r9],ax
+    test ax,ax
+    jz .done
+    add r8,2
+    add r9,2
+    jmp .copy
+.done:
+    mov rax,r9
+    ret
+
+; rcx = value, rdx = UTF-16 buffer: append the decimal digits
+wide_append_num:
+    push rbx
+    sub rsp,16
+    mov rbx,rdx
+    mov r8,rcx
+    mov rcx,rbx
+    call wide_string_length
+    lea rdx,[rbx+rax*2]
+    mov rcx,r8
+    call utoa16
+    add rsp,16
+    pop rbx
+    ret
+
+lang_mode_name:
+    mov eax,[rel lang_mode]
+    cmp eax,LANG_CORE
+    je .core
+    cmp eax,LANG_SANSKRIT
+    je .sanskrit
+    cmp dword [rel last_pack],0
+    jne .auto_sk
+    PTR rax,lang_swayam_w
+    ret
+.auto_sk:
+    PTR rax,lang_swayam_sk_w
+    ret
+.core:
+    PTR rax,lang_mool_w
+    ret
+.sanskrit:
+    PTR rax,lang_sanskrit_w
+    ret
+
+update_status:
+    PROLOG 64
+    cmp qword [rel h_status],0
+    je .done
+    cmp qword [rel h_editor],0
+    je .done
+    ; The highlighter moves the selection once per token; those are not caret
+    ; moves, and ch_start/ch_end belong to it while it runs. Private copies here.
+    cmp dword [rel is_highlighting],0
+    jne .done
+    mov rcx,[rel h_editor]
+    mov edx,EM_GETSEL
+    PTR r8,sel_pos
+    PTR r9,sel_pos+4
+    call send_message
+    mov rcx,[rel h_editor]
+    mov edx,EM_LINEFROMCHAR
+    mov r8d,[rel sel_pos]
+    xor r9d,r9d
+    call send_message
+    mov [rbp-4],eax
+    mov rcx,[rel h_editor]
+    mov edx,EM_LINEINDEX
+    mov r8d,eax
+    xor r9d,r9d
+    call send_message
+    mov ecx,[rel sel_pos]
+    sub ecx,eax
+    inc ecx
+    mov [rbp-8],ecx
+    PTR rcx,st_pankti_w
+    PTR rdx,status_utf16
+    call wide_string_copy
+    mov ecx,[rbp-4]
+    inc ecx
+    PTR rdx,status_utf16
+    call wide_append_num
+    PTR rcx,status_utf16
+    PTR rdx,st_stambh_w
+    call wide_string_concat
+    mov ecx,[rbp-8]
+    PTR rdx,status_utf16
+    call wide_append_num
+    PTR rcx,status_utf16
+    PTR rdx,st_bhasha_w
+    call wide_string_concat
+    call lang_mode_name
+    PTR rcx,status_utf16
+    mov rdx,rax
+    call wide_string_concat
+    cmp dword [rel cluster_count],-1
+    je .state
+    PTR rcx,status_utf16
+    PTR rdx,st_akshara_w
+    call wide_string_concat
+    mov ecx,[rel cluster_count]
+    PTR rdx,status_utf16
+    call wide_append_num
+.state:
+    PTR rcx,status_utf16
+    PTR rdx,st_sep_w
+    call wide_string_concat
+    cmp dword [rel is_modified],0
+    je .clean
+    PTR rdx,st_asanchit_w
+    jmp .write
+.clean:
+    PTR rdx,st_sanchit_w
+.write:
+    PTR rcx,status_utf16
+    call wide_string_concat
+    mov rcx,[rel h_status]
+    PTR rdx,status_utf16
+    API SetWindowTextW
+.done:
+    EPILOG
+
+; --- anwesh: find forward from the caret, wrapping once ---------------------
+focus_find:
+    PROLOG 48
+    mov rcx,[rel h_find]
+    mov edx,EM_SETSEL
+    xor r8d,r8d
+    mov r9d,-1
+    call send_message
+    mov rcx,[rel h_find]
+    API SetFocus
+    EPILOG
+
+find_next:
+    PROLOG 96
+    mov rcx,[rel h_find]
+    PTR rdx,find_utf16
+    mov r8d,512
+    API GetWindowTextW
+    test eax,eax
+    jz .done
+    mov rcx,[rel h_editor]
+    mov edx,EM_GETSEL
+    PTR r8,ch_start
+    PTR r9,ch_end
+    call send_message
+    PTR r10,findtext
+    mov eax,[rel ch_end]
+    mov [r10],eax                ; chrg.cpMin
+    mov dword [r10+4],-1         ; chrg.cpMax
+    PTR rax,find_utf16
+    mov [r10+8],rax              ; lpstrText
+    mov rcx,[rel h_editor]
+    mov edx,EM_FINDTEXTEXW
+    mov r8d,FR_DOWN
+    mov r9,r10
+    API SendMessageW
+    cmp eax,-1
+    jne .found
+    PTR r10,findtext
+    mov dword [r10],0
+    mov dword [r10+4],-1
+    mov rcx,[rel h_editor]
+    mov edx,EM_FINDTEXTEXW
+    mov r8d,FR_DOWN
+    mov r9,r10
+    API SendMessageW
+    cmp eax,-1
+    je .notfound
+.found:
+    PTR r10,findtext
+    lea r9,[r10+16]              ; chrgText
+    mov rcx,[rel h_editor]
+    mov edx,EM_EXSETSEL
+    xor r8d,r8d
+    API SendMessageW
+    mov rcx,[rel h_editor]
+    API SetFocus
+    jmp .done
+.notfound:
+    mov rcx,[rel h_status]
+    PTR rdx,st_notfound_w
+    API SetWindowTextW
+.done:
+    EPILOG
+
+; --- language pack selection ------------------------------------------------
+; rcx = UTF-16 text; eax=1 when any Devanagari code unit (U+0900..U+097F) occurs
+detect_devanagari:
+    xor eax,eax
+.scan:
+    movzx edx,word [rcx]
+    test dx,dx
+    jz .done
+    add rcx,2
+    cmp dx,0x0900
+    jb .scan
+    cmp dx,0x097F
+    ja .scan
+    mov eax,1
+.done:
+    ret
+
+; rcx = UTF-8 text; eax=1 when a Devanagari sequence (E0 A4..A5 xx) occurs
+detect_devanagari_utf8:
+    xor eax,eax
+.scan:
+    movzx edx,byte [rcx]
+    test dl,dl
+    jz .done
+    inc rcx
+    cmp dl,0xE0
+    jne .scan
+    movzx edx,byte [rcx]
+    cmp dl,0xA4
+    je .yes
+    cmp dl,0xA5
+    jne .scan
+.yes:
+    mov eax,1
+.done:
+    ret
+
+; ecx = detection result; applies the bhasha menu choice to use_pack
+select_pack:
+    mov eax,[rel lang_mode]
+    cmp eax,LANG_CORE
+    je .none
+    cmp eax,LANG_SANSKRIT
+    je .sanskrit
+    mov [rel use_pack],ecx
+    mov [rel last_pack],ecx
+    ret
+.none:
+    mov dword [rel use_pack],0
+    ret
+.sanskrit:
+    mov dword [rel use_pack],1
+    ret
+
+set_lang_check:
+    PROLOG 48
+    mov rcx,[rel h_menu_bhasha]
+    test rcx,rcx
+    jz .done
+    mov edx,MID_LANG_AUTO
+    mov r8d,MID_LANG_SANSKRIT
+    mov r9d,[rel lang_mode]
+    add r9d,MID_LANG_AUTO
+    mov qword [rsp+32],MF_BYCOMMAND
+    API CheckMenuRadioItem
+.done:
+    EPILOG
+
+; --- unsaved work guard and nava patra -------------------------------------
+; eax=1: proceed (clean, saved on request, or discarded); eax=0: cancelled
+confirm_discard:
+    PROLOG 48
+    cmp dword [rel is_modified],0
+    je .yes
+    mov rcx,[rel h_main]
+    PTR rdx,msg_unsaved_w
+    PTR r8,app_title_w
+    mov r9d,MB_YESNOCANCEL|MB_ICONQUESTION
+    API MessageBoxW
+    cmp eax,IDYES
+    je .save
+    cmp eax,IDNO
+    je .yes
+    xor eax,eax
+    jmp .done
+.save:
+    call save_current
+    test eax,eax
+    jz .done
+.yes:
+    mov eax,1
+.done:
+    EPILOG
+
+new_file:
+    PROLOG 48
+    call confirm_discard
+    test eax,eax
+    jz .done
+    mov dword [rel is_loading],1
+    mov rcx,[rel h_editor]
+    PTR rdx,empty_w
+    API SetWindowTextW
+    mov dword [rel is_loading],0
+    mov word [rel current_file],0
+    mov dword [rel is_modified],0
+    call update_title
+    call update_status
+    mov rcx,[rel h_editor]
+    API SetFocus
+.done:
+    EPILOG
+
+extern __imp_CreateFontW
+section .data
+font_code: dw 'C','o','n','s','o','l','a','s',0
+font_ui: dw 'S','e','g','o','e',' ','U','I',0
+ui_font_controls: dq h_btn_run,h_btn_open,h_btn_save,h_btn_example,h_btn_send,h_btn_clear,h_find_label,h_status,0
+code_font_controls: dq h_editor,h_gutter,h_output,h_shell,h_examples,h_find,0
+section .text
+make_readable_font:
+    PROLOG 128
+    mov [rbp-8],rdx
+    xor edx,edx
+    xor r8d,r8d
+    xor r9d,r9d
+    mov qword [rsp+32],400
+    mov qword [rsp+40],0
+    mov qword [rsp+48],0
+    mov qword [rsp+56],0
+    mov qword [rsp+64],1
+    mov qword [rsp+72],0
+    mov qword [rsp+80],0
+    mov qword [rsp+88],5
+    mov qword [rsp+96],0
+    mov rax,[rbp-8]
+    mov [rsp+104],rax
+    call qword [rel __imp_CreateFontW]
+    EPILOG
+apply_readable_fonts:
+    PROLOG 96
+    mov ecx,-18
+    PTR rdx,font_code
+    call make_readable_font
+    mov [rbp-8],rax
+    PTR rax,code_font_controls
+    mov [rbp-16],rax
+    call .apply
+    mov ecx,-16
+    PTR rdx,font_ui
+    call make_readable_font
+    mov [rbp-8],rax
+    PTR rax,ui_font_controls
+    mov [rbp-16],rax
+    call .apply
+    mov rcx,[rel h_output]
+    mov edx,EM_SETBKGNDCOLOR
+    xor r8d,r8d
+    mov r9d,COL_BG
+    API SendMessageW
+    mov dword [rel char_fmt],60
+    mov dword [rel char_fmt+4],CFM_COLOR
+    mov dword [rel char_fmt+20],0x00B5D8A8
+    mov rcx,[rel h_output]
+    mov edx,EM_SETCHARFORMAT
+    mov r8d,SCF_ALL
+    PTR r9,char_fmt
+    API SendMessageW
+    EPILOG
+.apply:
+    ; This helper shares the caller frame; adjust shadow space for nested call.
+    sub rsp,40
+.next:
+    mov r10,[rbp-16]
+    mov r10,[r10]
+    test r10,r10
+    jz .done
+    mov rcx,[r10]
+    mov edx,WM_SETFONT
+    mov r8,[rbp-8]
+    mov r9d,1
+    API SendMessageW
+    add qword [rbp-16],8
+    jmp .next
+.done:
+    add rsp,40
+    ret
+
+; R73: icon resource (RT_GROUP_ICON 1 + RT_ICON 1..N) generated by build-gui.ps1
+%ifdef R73_ICON
+%include "r73_icon.inc"
+%endif
