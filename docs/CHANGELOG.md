@@ -1,3 +1,50 @@
+## v185 - Claude ROUND-08 merged: the library gap list, and F1
+
+### Step 5 has its number
+
+**212 of the 303 library functions are closed; 91 are open.** That is the number that did not exist
+yesterday. This round closed 43.
+
+**And Claude refused the easy measure.** Its first pass found that **every one of the 303 functions now has
+a proof that fails when its whole body is broken** - which sounds complete and is **too weak to mean
+anything.** So it re-measured with **1,119 mutants shaped like real bugs** - off-by-one results and moved
+boundaries - and killed **781 -> 862**. **A proof that only fails when the entire body is deleted is not a
+proof; it is a smoke test.** That distinction is the most valuable thing in the round.
+
+### F1 - a claim I could not reproduce, and will not accept either way
+
+**Claude reports: a function with more than 21 variables silently computes wrong values, on main, in both
+the Linux and Windows compilers.** Stack slots past the 16th are encoded with a one-byte displacement and
+land in the caller's frame; `chakravala` corrupts its caller.
+
+**I tested it four ways and every one gave the correct answer:** 26 variables in `mukhya` (sum 325 - right);
+a caller with 23 variables calling a function (1007 - right); a 40-variable caller calling a function
+(152 - right); and a plain call (1007 - right).
+
+**So I am recording it as UNREPRODUCED, not as false.** It is either a narrower trigger than the shape I
+tried, or it is a false positive - and **I cannot tell which without Claude's exact program.** That is the
+next round's first task: **the reproduction, as a file, with the command and the observed output.** Until
+then it does not go in the changelog as a defect and it does not get "fixed".
+
+**This is the rule working in both directions.** Claude has caught eleven of my errors by checking; the same
+check applies to its findings.
+
+### Also from R8
+
+- **Five smaller findings F2-F6**, including `nirmmita` returning `-errno` (so "0 on failure" checks never
+  fire), `guna` re-evaluating its value per case, and non-executable committed binaries.
+- **14 new proofs**, each expectation computed independently.
+- **The diagnostics decision is unchanged and still the owner's.** Recommended: **D now, E as translations
+  arrive** - D costs one message table and 90 lookups with no golden or doc changes; E is D plus 900
+  translations.
+
+### ChatGPT ROUND-76
+
+**Native `kosh` A/B: NOT_RUN** - no compiler executable available in its session and NASM absent.
+**It says so plainly and explicitly did not invent the mapping counts.** 14/14 lock pins still match; 9/9
+structural checks pass on the growth region. **An honest NOT-RUN is worth more than a fabricated
+measurement, and this one is labelled correctly.**
+
 ## v184 - the version string was stale; found by asking what a Windows user sees first
 
 **The owner asked what must be ready before he tests on Windows - "I will check version, I will run the
