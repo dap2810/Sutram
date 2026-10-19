@@ -101,8 +101,8 @@
   "b = 0 (congruence modulo 0); the witness also breaks the stated precondition gcd(a, b) | c"
  ],
  "mala.mala_nava C1:<-><=": [
-  "FINDING",
-  "mala_nava(0) returns -22, not a usable block: nirmmita(0) returns -EINVAL (R8-01 finding F2). The mutant returns 0"
+  "EQUIVALENT",
+  "since R9 (F2) nirmmita(0) returns 0, which is what the mutant returns; before R9 mala_nava(0) was -22 (finding F2)"
  ],
  "ganita.chakravala C7:<-><=": [
   "LIKELY-EQ",
@@ -127,5 +127,69 @@
  "khand.khand_viparyay C1:<=-><": [
   "EQUIVALENT",
   "sn = 0: the swap loop does nothing, the terminator lands at out[0], and 0 is returned either way"
+ ],
+ "brihat.brihat_ank_se_int C6:<-><=": [
+  "EQUIVALENT",
+  "the carry loop only writes while carry is 1; adding 1 to MAX's digits stops at the lowest digit (7 -> 8), so the extra pass at j = n writes nothing"
+ ],
+ "khand.khand_pratilip C1:<=-><": [
+  "EQUIVALENT",
+  "n = 0 skips the loop and writes the same terminator at out[0]"
+ ],
+ "khand.khand_pratilip C2:<-><=": [
+  "EQUIVALENT",
+  "the extra pass writes out[n], which the terminator then overwrites; it reads one source byte past n but nothing depends on it"
+ ],
+ "khand.khand_bandh C2:<-><=": [
+  "EQUIVALENT",
+  "as khand_pratilip C2: out[n] is overwritten by the terminator"
+ ],
+ "khand.khand_mukt C2:<-><=": [
+  "EQUIVALENT",
+  "as khand_pratilip C2: out[n] is overwritten by the terminator cell"
+ ],
+ "varna.gan_swar C1:<-><=": [
+  "EQUIVALENT",
+  "the extra pass reads the terminator (0), which is not a vowel"
+ ],
+ "suchi.avali_pravesh C3:<-><=": [
+  "EQUIVALENT",
+  "the extra cell copied into the new block is at the tail, which the new value overwrites at once"
+ ],
+ "suchi.suchi_apanay C3:<-><=": [
+  "LIKELY-EQ",
+  "the extra pass copies d[len] into d[len - 1], which is past the new length; d[len] is read one cell past the length (past the block only when the list is full). Nothing reads either cell"
+ ],
+ "anukram.anukram_khip_i64 C4:<-><=": [
+  "EQUIVALENT",
+  "val = 0: 0 % 256 is 0, so the floor correction does nothing either way"
+ ],
+ "brihat.brihat_shunyank R": [
+  "NO-CONTRACT",
+  "the return value is not documented (always 0); a proof of it would pin an implementation detail"
+ ],
+ "brihat.brihat_pratilip R": [
+  "NO-CONTRACT",
+  "as brihat_shunyank R"
+ ],
+ "brihat.brihat_bhajshesh R": [
+  "NO-CONTRACT",
+  "the return value is not documented; q and r are the results and are checked"
+ ],
+ "brihat.brihat_shesh R": [
+  "NO-CONTRACT",
+  "the return value is not documented; res is the result"
+ ],
+ "brihat.brihat_ghatmod R": [
+  "NO-CONTRACT",
+  "the return value is not documented; res is the result"
+ ],
+ "varna.varna_sam C2:<-><=": [
+  "EQUIVALENT",
+  "the extra pass compares the two terminators, both 0"
+ ],
+ "anukram.anukram_grah_i64 C4:>=->>": [
+  "EQUIVALENT",
+  "top byte 128 is the only input that differs: 128 * 2^56 wraps to -2^63, which is what -128 * 2^56 gives (checked by r9_guard_cells.sm with MIN)"
  ]
 }

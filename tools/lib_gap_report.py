@@ -22,6 +22,7 @@ Every surviving mutant gets exactly one verdict:
 A hand verdict in tools/lib_gap_reviewed.json, with its argument, overrides the rules. It may also be
   OUT-OF-CONTRACT  only inputs the function does not promise anything for tell them apart
   FINDING          the witness exposes a defect in the real function (named in the R8 notes)
+  NO-CONTRACT      only an undocumented return value differs; proving it would pin an implementation detail
 
 A function is OPEN while it has a GAP, OVERRUN, REVIEW or FINDING survivor.
 
