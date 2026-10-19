@@ -1,0 +1,49 @@
+# R9 (F3): guna evaluates its value once, however many bhavana it tests.
+# Before R9, guna (f()) called f once per case compared: 3 times here.
+vitti calls = 0
+prakriya f() {
+    calls = calls + 1
+    prati 3
+}
+prakriya g(n) {
+    guna (n * 2) {
+        bhavana 2: { prati 20 }
+        bhavana 4: { prati 40 }
+        anya: { prati 0 }
+    }
+    prati 0
+}
+mukhya() {
+    guna (f()) {
+        bhavana 1: { likha(10) }
+        bhavana 2: { likha(20) }
+        bhavana 3: { likha(30) }
+        anya: { likha(40) }
+    }
+    likha(calls)
+    # nested, in a loop, and a value that matches nothing
+    vitti i = 0
+    yavat (i < 3) {
+        guna (i + 1) {
+            bhavana 1: {
+                guna (f() - 2) {
+                    bhavana 1: { likha(100) }
+                    anya: { likha(101) }
+                }
+            }
+            bhavana 2: { likha(200) }
+            anya: { likha(300) }
+        }
+        i = i + 1
+    }
+    likha(calls)
+    likha(g(1))
+    likha(g(2))
+    likha(g(5))
+    # a plain variable is unchanged
+    vitti v = 2
+    guna (v) {
+        bhavana 2: { likha(2) }
+        anya: { likha(0) }
+    }
+}
