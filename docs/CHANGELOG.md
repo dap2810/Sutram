@@ -1,3 +1,29 @@
+## v195 - the benchmark set extended: four call-overhead programs is not a language benchmark
+
+**Found while working Step 7's follow-up. `benchmarks/` held four programs, all `r46_hotcall_*`** - they
+measured **call overhead** and nothing else. **A set like that cannot support a performance claim about the
+language**, only about function calls - and the project's rule is that performance is measured, not assumed.
+
+**Four added, each verified to compile and produce the right answer:**
+
+| Benchmark | What it exercises | Verified output |
+|---|---|---|
+| `bench_loop.sm` | a tight integer loop - the shape every language is compared on | **50000005000000** |
+| `bench_arith.sm` | multiply, divide, modulo in a loop | 98768 |
+| `bench_nested.sm` | nested loops with a conditional - branch and loop overhead | **1333333** |
+| `bench_fib.sm` | recursive calls - the cost of a call | **196418** |
+
+**`bench_nested` is worth noting:** my own predicted answer was 1334667 and the real answer is **1333333** -
+exactly one third of the 4,000,000 pairs, which is obviously right. **My guess was wrong and the program was
+right.** That is the fourth time a predicted value of mine has been wrong while the code was correct, and it
+is why the project's rule is to run things rather than reason about them.
+
+**And one syntax finding:** a multi-statement function needs braces. `prakriya fib(n)` followed by an `yadi`
+block on the next line fails; `prakriya fib(n) { ... }` works. The single-statement form is only valid for a
+one-line body. **Worth documenting, because the books show both forms.**
+
+**`gates.sh` now reports 8 benchmarks instead of 4**, still 0 failed.
+
 ## v194 - both partners on F1, split so they cannot collide
 
 **Claude fixes it; ChatGPT diagnoses it.** Two AIs editing the same 570 KB assembly file is how you get a
