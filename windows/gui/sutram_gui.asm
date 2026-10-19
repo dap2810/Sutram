@@ -269,9 +269,38 @@ space_quote_w:  dw ' ','"',0
 indent4_w:      dw __utf16__("    "),0
 empty_w:        dw 0
 msg_unsaved_w:  dw __utf16__("The file has changed. Save it?"),0
-about_w:        dw __utf16__("Sutram sampadak (Windows)"),13,10,__utf16__("Sanskrit-keyword language -> x86-64 machine code."),13,10,13,10,__utf16__("Shell > Run module (F5) compiles and runs the editor's program."),13,10,__utf16__("For a Devanagari program choose Language > Auto or sanskrit."),13,10,__utf16__("Files are UTF-8. Send replays the shell history."),0
+about_w:        dw __utf16__("Sutram sampadak (Windows)"),13,10,__utf16__("Sanskrit-keyword language -> x86-64 machine code."),13,10,13,10,__utf16__("Shell > Run module (F5) compiles and runs the editor's program."),13,10,__utf16__("Language lists every pack; Run passes --lang <pack>."),13,10,__utf16__("Ctrl+T: type Latin on any keyboard, get the pack's script."),13,10,__utf16__("Files are UTF-8. Send replays the shell history."),0
 keys_w:         dw __utf16__("F5 / Ctrl+R  Run module"),13,10,__utf16__("Ctrl+N  New     Ctrl+O  Open     Ctrl+S  Save"),13,10,__utf16__("Tab  Indent (4 spaces)     Shift+Tab  Dedent"),13,10,__utf16__("Enter  new line, keeps the indent; +4 after '{'"),13,10,__utf16__("}  on an empty line: indent -4"),13,10,__utf16__("Ctrl+F  Find     F3  Find Next"),13,10,__utf16__("Ctrl+T  type Latin, get the language's script (mukhya -> मुख्य)"),13,10,__utf16__("Ctrl+Z  Undo    Ctrl+X/C/V  Cut/Copy/Paste    Ctrl+A  Select All"),0
 find_label_w:   dw __utf16__("Find:"),0
+; R9 (WS8): the ANSI half of the same table, moved here from the import tables so
+; every word the main window shows is in one place: the UTF-16 strings above
+; (menus, status line, dialogs) and the ANSI strings below (buttons, output pane).
+; R5: the owner's decision (ROUND-05): the interface labels are English.
+; Buttons are the 13/18 Oct words, menus follow the 13 Oct build where it had one.
+label_run db 'Run',0
+label_open db 'Open',0
+label_save db 'Save',0
+label_example db 'Load example',0
+label_send db 'Send',0
+label_clear db 'Clear shell',0
+label_output db 'sankalan / chalan ka phal',0
+label_shell db '>>>',0
+label_examples db 'udaharan (do baar click)',0
+err_init db 'Windows API load nahi hui. sampadak shuru nahi ho saka.',0
+err_title db 'Sutram sampadak',0
+msg_ready db 'Ready. Run (F5) compiles and runs the program in the editor.',13,10,0
+msg_compile_failed db '[sankalan asaphal]',13,10,0
+msg_run_failed db '[karyakram asamanya roop se samapt]',13,10,0
+msg_file_failed db '[patra padhne/likhne me asaphal]',13,10,0
+msg_input_large db '[patra bahut bada; sampadak seema 64 KiB]',13,10,0
+msg_shell_limit db '[shell history is full; use Clear shell]',13,10,0
+msg_timeout db '[prakriya 10 sekand se adhik; samapt ki gayi]',13,10,0
+msg_missing_compiler db '[win\sutram.exe nahi mila: pahle sankalak banayein]',13,10,0
+msg_missing_lang db '[deshi shabda-pak anupalabdh: lang\*.lang dekhein; Latin shabda kaam karte hain]',13,10,0
+msg_partial_lang db '[kuchh shabda-pak anupalabdh ya ashuddh: lang\*.lang dekhein]',13,10,0
+msg_pipe_fail db '[prakriya ya pipe nirman asaphal]',13,10,0
+msg_more_output db '[phal 32 KiB par kata]',13,10,0
+align 8                          ; R9: keep what follows where it was aligned before the move
 class_button db 'BUTTON',0
 class_edit db 'EDIT',0
 class_static db 'STATIC',0
@@ -445,31 +474,6 @@ comdlg_table:
     IMPORTS GetSaveFileNameW
     dq 0,0
 
-; R5: the owner's decision (ROUND-05): the interface labels are English.
-; Buttons are the 13/18 Oct words, menus follow the 13 Oct build where it had one.
-label_run db 'Run',0
-label_open db 'Open',0
-label_save db 'Save',0
-label_example db 'Load example',0
-label_send db 'Send',0
-label_clear db 'Clear shell',0
-label_output db 'sankalan / chalan ka phal',0
-label_shell db '>>>',0
-label_examples db 'udaharan (do baar click)',0
-err_init db 'Windows API load nahi hui. sampadak shuru nahi ho saka.',0
-err_title db 'Sutram sampadak',0
-msg_ready db 'Ready. Run (F5) compiles and runs the program in the editor.',13,10,0
-msg_compile_failed db '[sankalan asaphal]',13,10,0
-msg_run_failed db '[karyakram asamanya roop se samapt]',13,10,0
-msg_file_failed db '[patra padhne/likhne me asaphal]',13,10,0
-msg_input_large db '[patra bahut bada; sampadak seema 64 KiB]',13,10,0
-msg_shell_limit db '[shell history is full; use Clear shell]',13,10,0
-msg_timeout db '[prakriya 10 sekand se adhik; samapt ki gayi]',13,10,0
-msg_missing_compiler db '[win\sutram.exe nahi mila: pahle sankalak banayein]',13,10,0
-msg_missing_lang db '[deshi shabda-pak anupalabdh: lang\*.lang dekhein; Latin shabda kaam karte hain]',13,10,0
-msg_partial_lang db '[kuchh shabda-pak anupalabdh ya ashuddh: lang\*.lang dekhein]',13,10,0
-msg_pipe_fail db '[prakriya ya pipe nirman asaphal]',13,10,0
-msg_more_output db '[phal 32 KiB par kata]',13,10,0
 prefix_s db 'mukhya()',13,10,0
 indent_s db '    ',0
 newline db 13,10,0
@@ -3349,8 +3353,7 @@ extern __imp_LoadLibraryA, __imp_GetProcAddress
 
 extern __imp_GetCommandLineW, __imp_CommandLineToArgvW, __imp_LocalFree
 extern __imp_GetFullPathNameW, __imp_GetKeyState
-section .data
-delivery_about_text: db 'Sutram Native IDE',13,10,'F5 / Ctrl+R: Run   Ctrl+O: Open   Ctrl+S: Save',13,10,'Files are UTF-8. Shell submissions replay session history.',0
+; R9: delivery_about_text removed: never referenced (the About box uses about_w).
 section .text
 read_startup_file:
     PROLOG 80
