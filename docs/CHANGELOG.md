@@ -1,3 +1,44 @@
+## v176 - ROUND-06 to Claude and ROUND-74 to ChatGPT; Windows becomes a gate
+
+**The owner asked for Windows-side evidence I can actually check, and both rounds now carry it.**
+
+### ROUND-06 (Claude) - the main work is `tools/accept-windows.ps1`
+
+**The problem it solves:** Windows is the only gate that cannot be closed from my side. I can verify a binary
+is a valid PE32+, that its hashes match, that the source is correct, and that it cross-builds - but **I cannot
+run it.** So every Windows claim rests on a written report, and **a report is not verifiable; the files are.**
+
+**The ask: one script anyone can run - Claude, the owner, or ChatGPT - that prints a machine-readable log.**
+Then Windows stops being a one-off narrative and becomes a gate like the others: repeatable and diffable.
+
+**It must emit:** the **SHA-256 of each binary it tests** (this binds the evidence to a specific artefact and
+is what makes the rest checkable); the Windows build and **whether the process was elevated** (so the
+least-privilege constraint is confirmed, not taken on trust); per-check PASS/FAIL/NOT-RUN as JSON; and the
+exact command and raw output for each.
+
+**And it must say which checks ran on Windows and which were Wine only.** Wine renders layout; it is not
+Windows acceptance, and that distinction has to stay visible.
+
+### ROUND-74 (ChatGPT)
+
+Three rounds in, its reporting is the best on the project but every workstream is still NOT-RUN. **The ask
+this round is one PASS:**
+
+- **WS1: finish the baseline.** It reports 12/12 blob identities but **no NASM build was performed** - a
+  baseline that has never produced a compiler is not a baseline. Deliver a clean build and its SHA-256,
+  twice, to show determinism.
+- **WS2: apply the `kosh` reclamation and RUN it**, with a before/after mapping count.
+- **WS3: separate compilation** - the smallest working two-module link, even if it is two functions.
+- **WS4: the repository-wide keyword audit** (it did the compiler file, 22,808 lines; the repo is NOT_RUN).
+
+### Both rounds open with a memory update
+
+The rename table, the new gate script, the undefined-name change and its v175 extension, the Sanskrit
+diagnostics, the English interface - so neither works from a stale picture.
+
+**One warning carried into both:** main moved while they worked. Claude's branch was six files behind v174,
+and ChatGPT's pins were cut before R5. **Read the current file before changing it.**
+
 ## v175 - Claude ROUND-05 merged: the interface is English
 
 **Verified before merging** - rebuilt from the branch, `gates.sh` **9 PASS / 0 FAIL / 1 NOT-RUN**:
