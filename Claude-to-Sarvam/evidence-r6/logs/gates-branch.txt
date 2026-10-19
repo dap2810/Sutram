@@ -1,0 +1,25 @@
+Sutram gates — 2026-10-19T15:51Z
+
+  build: compiler              ok  (193816 B)
+  build: terminal IDE          ok  (24584 B)
+  build: X11 GUI               ok  (38080 B)
+
+  regression suite (NO-EXPECTATION=4 PASS=194 ) PASS
+  codegen shapes (12/12)       PASS
+  language packs (33/33)       PASS
+  library proofs (191 passed, 0 failed, 191 total) PASS
+  property proofs (86/86)      PASS
+  layer check (14 core, 9 alloc, 1 std) PASS
+  stdlib inventory (Wrote /home/claude/sutram/docs/sutram-stdlib.html: 24 modules, 303 functions) PASS
+  module graph                 PASS
+  X11 GUI protocol             FAIL   1 of 18 failed
+  Windows execution            NOT-RUN cannot run here - never executed by anyone (Gate 6)
+
+  ------------------------------------------
+  PASS                         8
+  FAIL                         1
+  NOT-RUN                      1
+
+  PASS, FAIL and NOT-RUN are separate on purpose.
+  A count that hides its own skips is worse than no count.
+gates exit=1
