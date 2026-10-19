@@ -27,7 +27,7 @@ This preview has known limitations below; a failing mandatory item is a release 
 4. **Run/compile/output**: Restore the exact two-line program from Step 2, click **Run**. The output pane contains `GUI_OK` on its own line (the program's stdout), without a console window or UAC. **FAIL** for compiler error, missing output, or hang beyond 10 seconds.
 5. **Examples browser**: In the examples list double-click `01_hello.sm`, then click **Run**. The editor is replaced with the example and output contains exactly `Namaste, Sutram!` followed by a newline (without compiler errors). **FAIL** if item missing or file not loaded.
 6. **Shell Enter**: Click the shell text field. Enter `likha("ONE\n")` and press **Enter**. The output pane receives `ONE` once. Enter `likha("TWO\n")` and press Enter. It receives `TWO` once, without another visible `ONE`. This shell *recompiles/replays history*, so it is intended for deterministic statements, not irreversible side effects. **FAIL** if Enter is inserted as a newline, no output, or duplicated visible output.
-7. **Shell button**: Enter `likha("THREE\n")`, click **Send**, and verify `THREE` appears once. Click **Clear shell**, then enter `likha("FRESH\n")`; verify history reset and new output `FRESH`.
+7. **Shell button**: Enter `likha("THREE\n")`, click **presh**, and verify `THREE` appears once. Click **phal_rikta**, then enter `likha("FRESH\n")`; verify history reset and new output `FRESH`.
 8. **Save**: Replace editor with the two-line `GUI_OK` program. Click **Save**, save as `%TEMP%\sutram-gui-roundtrip.sm`. Confirm the file exists and is nonempty; open it with Notepad and verify both lines are exact. **FAIL** if Save does nothing or modifies the text.
 9. **Load**: Replace editor contents with `mukhya()`, then click **Open**, select `%TEMP%\sutram-gui-roundtrip.sm`. The exact earlier text returns; Run still prints `GUI_OK`. **FAIL** if text missing or output differs.
 10. **Resize**: Resize window to 1200x850, then 850x600. The editor, examples list, output, and shell remain accessible; no child is entirely hidden. **FAIL** if layout unusable or pane becomes unclickable.
@@ -191,7 +191,7 @@ standard user; `tools/test_windows_gui.py` runs 30 native checks (16 earlier + 1
 the freshly built executable.** The original "NOT assembled or executed on Windows" status above
 is history, kept for the record. Every visible word is now Sanskrit (Latin transliteration, the
 same tokens as `ide/sutram_gui_linux.asm`): menus `patra sampad chal bhasha sahay`, buttons
-the six toolbar buttons keep their English labels (`Run Open Save Load example Send Clear shell`) at the owner's request, status `pankti / stambh / bhasha / akshara /
+the six toolbar buttons use the menus' Sanskrit words (`chal khol sanchay udaharan khol presh phal_rikta`; English until R4), status `pankti / stambh / bhasha / akshara /
 sanchit`. Unicode/Devanagari/UTF-8 typing goes through a Unicode window class and message loop.
 
 20. **Sanskrit labels** — launch; EXPECT the title `nava patra - Sutram sampadak` (or the opened
