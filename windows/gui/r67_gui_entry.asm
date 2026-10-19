@@ -2,6 +2,8 @@
 ; NASM permits instruction-name macros; recursion inhibition emits real CALL.
 ; Other direct/indirect CALL operands pass through verbatim. No source rewrite.
 ; Link the original R66 cluster object and R67 count object (build-gui.ps1).
+; R73: the cluster count now feeds the status line (akshara: N) instead of
+; overwriting the window title, which the editor owns (patra name, * marker).
 %macro call 1
     %ifidni %1,highlight_editor
         call r67_highlight_and_clusters
@@ -14,9 +16,9 @@
 
 extern r67_count_editor_clusters
 section .data
-r67_title: db 'Sutram Shell 1.0 | scoped clusters: '
+r67_title: db 'Sutram IDE',0
 r67_title_digits: times 24 db 0
-r67_unavailable: db 'Sutram Shell 1.0 | cluster count unavailable',0
+r67_unavailable: db 'Sutram IDE',0
 section .bss
 r67_editor_wide: resw 65536
 r67_editor_utf8: resb 196608
@@ -66,36 +68,14 @@ r67_refresh_cluster_title:
     call r67_count_editor_clusters
     cmp rax,-1
     je .unavailable
-    jmp .format
+    mov [rel cluster_count],eax
+    jmp .show
 .zero:
-    xor eax,eax
-.format:
-    ; Count <=65535, bounded decimal text; no external formatting dependency.
-    lea r8,[rel r67_decimal+23]
-    mov byte [r8],0
-    mov r10d,10
-.digit:
-    xor edx,edx
-    div r10
-    add dl,48
-    dec r8
-    mov [r8],dl
-    test rax,rax
-    jnz .digit
-    lea r9,[rel r67_title_digits]
-.copy:
-    mov al,[r8]
-    mov [r9],al
-    inc r8
-    inc r9
-    test al,al
-    jnz .copy
-    lea rdx,[rel r67_title]
-    jmp .set_title
+    mov dword [rel cluster_count],0
+    jmp .show
 .unavailable:
-    lea rdx,[rel r67_unavailable]
-.set_title:
-    mov rcx,[rel h_main]
-    API SetWindowTextA
+    mov dword [rel cluster_count],-1
+.show:
+    call update_status
 .done:
     EPILOG
