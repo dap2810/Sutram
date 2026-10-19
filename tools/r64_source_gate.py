@@ -13,9 +13,9 @@ def check(label, cond):
     print("R64_SOURCE_PASS " + label)
 
 def main():
-    check("POP_UNCHANGED", 'msg_kosh_empty db "Sutram Error: kosh pop from empty array", 10, 0' in src)
-    check("PEEK_TEXT", 'msg_kosh_peek_empty db "Sutram Error: kosh peek from empty array", 10, 0' in src)
-    check("DEQUEUE_TEXT", 'msg_kosh_dequeue_empty db "Sutram Error: kosh dequeue from empty array", 10, 0' in src)
+    check("POP_UNCHANGED", 'msg_kosh_empty db "Sutram Error: rikta kosh se kosh_pop", 10, 0' in src)
+    check("PEEK_TEXT", 'msg_kosh_peek_empty db "Sutram Error: rikta kosh se kosh_peek", 10, 0' in src)
+    check("DEQUEUE_TEXT", 'msg_kosh_dequeue_empty db "Sutram Error: rikta kosh se kosh_dequeue", 10, 0' in src)
     helper = src.split("emit_kosh_empty_check_r9:", 1)[1].split(
         "\n; R46 compiler-time call liveness:", 1)[0]
     check("COMPILE_TIME_SELECTION",
@@ -31,8 +31,8 @@ def main():
           "cmp r12, BN_KOSHDEQUEUE\n    je .ge_koshdequeue" in src and
           "cmp r12, BN_KOSHPEEK\n    je .ge_koshpeek_only" in src)
     check("R63_RUNTIME_EXPECTATIONS_UPDATED",
-          'b"kosh peek from empty array"' in previous and
-          'b"kosh dequeue from empty array"' in previous)
+          'b"rikta kosh se kosh_peek"' in previous and
+          'b"rikta kosh se kosh_dequeue"' in previous)
     for name in ("kosh_pop_empty", "kosh_peek_empty", "kosh_dequeue_empty",
                  "kosh_nonempty", "default_compat"):
         check("FIXTURE_" + name, (tests / (name + ".sm")).is_file())
