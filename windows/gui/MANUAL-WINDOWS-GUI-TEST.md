@@ -182,3 +182,45 @@ verified without compiling**. Every expected colour is the same blue used for `m
 **Status:** These tests have been *written*, not executed on Windows in ChatGPT's
 Linux environment. Record Windows build version, GUI SHA, manual PASS/FAIL per
 step, and screenshots before declaring release acceptance.
+
+
+## Round 73 (Claude): Sanskrit interface, editor keys, status line, bhasha pack, icon
+
+**Status of Round 73 source: assembled, linked and executed on Windows 11 build 26300 as a
+standard user; `tools/test_windows_gui.py` runs 30 native checks (16 earlier + 14 new) against
+the freshly built executable.** The original "NOT assembled or executed on Windows" status above
+is history, kept for the record. Every visible word is now Sanskrit (Latin transliteration, the
+same tokens as `ide/sutram_gui_linux.asm`): menus `patra sampad chal bhasha sahay`, buttons
+the six toolbar buttons keep their English labels (`Run Open Save Load example Send Clear shell`) at the owner's request, status `pankti / stambh / bhasha / akshara /
+sanchit`. Unicode/Devanagari/UTF-8 typing goes through a Unicode window class and message loop.
+
+20. **Sanskrit labels** — launch; EXPECT the title `nava patra - Sutram sampadak` (or the opened
+    patra's name), the five Sanskrit menus, the six English buttons, and a status line
+    `pankti 1   stambh 1   |   bhasha: swayam   |   ...   |   sanchit`. FAIL: an English menu or status word, or a non-English button.
+21. **Tab / Shift+Tab** — on an empty line press Tab: four spaces appear, no tab character.
+    Select three lines, press Tab: every line moves right by four; Shift+Tab moves them back.
+    `sampad > antar` and `antar hatao` do the same. FAIL: focus leaves the editor, a tab
+    character is inserted, or lines other than the selected ones change.
+22. **Enter auto-indent** — type `mukhya() {` and press Enter: the new line starts with four
+    spaces. Type `likha(1)`, Enter: the next line keeps four spaces. Type `}` on that blank
+    indented line: it pulls back to column 1. FAIL: a bare newline, lost characters, or a `}`
+    that is placed anywhere except the end of the dedented line.
+23. **bhasha > swayam (Devanagari)** — `udaharan khol` on `218_sanskrit_devanagari.sm`, press
+    F5. EXPECT `योगः = 15` in the output pane and `bhasha: swayam (sanskrit)` in the status line.
+    Then `bhasha > mool` and F5: EXPECT a compiler error naming the Devanagari word (no pack).
+    `bhasha > sanskrit` and F5: EXPECT `योगः = 15` again. FAIL: the swayam run needs a manual
+    pack choice, or the mool run silently succeeds.
+24. **Typed Devanagari** — with a Hindi/Sanskrit keyboard layout or IME, type `लिख("नमस्ते")।`
+    into the editor and the shell line. EXPECT the glyphs exactly as typed, keyword colour on
+    `लिख`, and the shell output `नमस्ते` after Enter. FAIL: `?` or mojibake anywhere.
+25. **Unsaved guard** — edit, then `patra > nava`, `khol`, or close the window. EXPECT the
+    question `patra parivartit hai. sanchay karein?` with Yes/No/Cancel; Yes saves (asking for
+    a name when there is none), No discards, Cancel keeps the editor. The title carries ` *`
+    while unsaved and drops it after `sanchay`. FAIL: work lost without the question.
+26. **anwesh** — Ctrl+F focuses the `anwesh:` box; type a word, Enter or F3 selects the next
+    match from the caret and wraps once; a miss writes `anwesh: nahi mila` in the status line.
+27. **Icon** — Explorer, the taskbar and the title bar all show the thread icon from
+    `icons/sutram.ico`; `ExtractIconEx` reports one icon group in the executable. FAIL: the
+    generic executable icon anywhere.
+28. **Focus does not act** — Tab from the editor onto the `chal` button must only move focus;
+    nothing compiles until the button is pressed. FAIL: a run or dialog on focus alone.
