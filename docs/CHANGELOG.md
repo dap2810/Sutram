@@ -1,3 +1,34 @@
+## v189 - both rounds consolidated, same numbers, everything in one file each
+
+**The owner asked that the round numbers stay the same and that every requirement we have agreed be added
+into them, so one file each is the whole story. Done - ROUND-09 (Claude) and ROUND-77 (ChatGPT) are now
+complete briefs, and each opens by saying so: "if it is not in this file, it is not in scope."**
+
+### ROUND-09 (Claude) - eight workstreams
+
+1. **F1's reproduction** - the exact `.sm`, command and pasted output. I could not reproduce it in four
+   attempts; a file settles it in five minutes.
+2. **Step 5** - the 91 open library functions.
+3. **F2-F6** - the smaller findings, `nirmmita` returning `-errno` first.
+4. **The diagnostics decision** - the owner's; restate, do not act.
+5. **The IDE font** - it asks for `Consolas`, which covers none of the eleven scripts.
+6. **A transliteration mode** - type `mukhya`, get `मुख्य`.
+7. **The installer font check.**
+8. **Keep the interface cheap to change** - the owner is testing now, so his findings arrive as fixes.
+
+### ROUND-77 (ChatGPT) - six workstreams
+
+1. **The `kosh` A/B** - with three routes to get a compiler into its session, including asking me for one.
+2. **Separate compilation** - the smallest working link, or the smallest failing case.
+3. **The repository-wide keyword audit.**
+4. **The installer's stale payload** - an installed copy reports v160 while the project is at v188. **The
+   owner will see this first.**
+5. **A failed install leaves a half-install a retry refuses.**
+6. **The installer font check.**
+
+**Both briefs now name the owner-visible items first**, because he is testing Windows himself and those are
+what he will hit.
+
 ## v188 - both rounds updated: the fonts, and how to type on an English keyboard
 
 **The owner asked a question that only surfaces when someone actually sits down to type: "the keyboard I am
