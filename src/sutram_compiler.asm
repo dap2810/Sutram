@@ -941,7 +941,7 @@ section .bss
     lang_builtin_table resb 768 ; runtime builtin aliases (24 x 32)
     lang_builtin_cnt resq 1  ; number of loaded builtin aliases
     lang_entry_type resq 1   ; scratch: 1=keyword, 0=builtin
-    lang_path_buf resb 256   ; scratch for building paths
+    lang_path_buf resb 512   ; scratch for building paths
     ; REPL support
     repl_line   resb 512     ; one input line
     repl_session resb 8192   ; accumulated program lines
@@ -984,16 +984,23 @@ section .text
 ; get_self_path: remember the compiler path for REPL child launches.
 get_self_path:
 %ifdef WINDOWS
-    ; win_build_argv has already constructed a Linux-like argv array and put
-    ; its address in orig_rsp.  Copy argv[0] instead of relying on /proc.
-    mov rax, [rel orig_rsp]
-    test rax, rax
-    jz .gsp_done
-    mov rsi, [rax+8]
-    test rsi, rsi
-    jz .gsp_done
-    lea rdi, [rel repl_self]
-    call str_copy
+    push rbx
+    mov rbx,rsp
+    and rsp,-16
+    sub rsp,32
+    xor ecx,ecx
+    lea rdx,[rel repl_self]
+    mov r8d,256
+    call qword [rel p_modulepath]
+    mov rsp,rbx
+    pop rbx
+    test eax,eax
+    jz .gsp_bad
+    cmp eax,256
+    jb .gsp_done
+.gsp_bad:
+    mov edi,2
+    call os_exit
 %else
     lea rdi, [rel str_procself]
     lea rsi, [rel repl_self]
@@ -1099,6 +1106,16 @@ try_load_lang:
     push rbx
     push r12
     mov r12, rdi                ; save pack name
+    ; Pack names must fit lang_loaded_name (63 bytes plus NUL).
+    xor ecx,ecx
+.tll_name_bound:
+    cmp byte [r12+rcx],0
+    je .tll_name_ok
+    inc ecx
+    cmp ecx,64
+    jb .tll_name_bound
+    jmp .tll_fail
+.tll_name_ok:
     ; remember the pack name for the REPL child processes
     lea rdi, [rel lang_loaded_name]
     mov rsi, r12
@@ -1117,6 +1134,42 @@ try_load_lang:
     call load_lang_file
     test rax, rax
     jnz .tll_ok
+%ifdef WINDOWS
+    ; Portable/install layout keeps language packs beside the executable.
+    lea rsi,[rel repl_self]
+    xor ecx,ecx
+    xor r8d,r8d
+.tll_dir_scan:
+    mov al,[rsi+rcx]
+    test al,al
+    jz .tll_dir_copy
+    cmp al,'/'
+    je .tll_dir_mark
+    cmp al,92
+    jne .tll_dir_next
+.tll_dir_mark:
+    lea r8,[rcx+1]
+.tll_dir_next:
+    inc ecx
+    jmp .tll_dir_scan
+.tll_dir_copy:
+    lea rdi,[rel lang_path_buf]
+    mov rcx,r8
+    rep movsb
+    mov byte [rdi],0
+    lea rsi,[rel str_lp1]
+    call str_copy
+    lea rdi,[rel lang_path_buf]
+    mov rsi,r12
+    call str_append
+    lea rdi,[rel lang_path_buf]
+    lea rsi,[rel str_lp2]
+    call str_append
+    lea rdi,[rel lang_path_buf]
+    call load_lang_file
+    test rax,rax
+    jnz .tll_ok
+%endif
     ; path 2: $HOME/.local/share/sutram/lang/<name>.lang
     lea rdi, [rel str_envhome]
     call env_get_value
@@ -12339,7 +12392,11 @@ gen_stmt:
     ; jnz +12 (skip exit, continue)
     mov dil, 0x75
     call emit_byte
-    mov dil, 0x0C
+    mov dil,0x0C
+    cmp qword [rel target_pe],0
+    je .assert_skip_ready
+    add dil,3
+.assert_skip_ready:
     call emit_byte
     ; mov eax, 60 (sys_exit)
     mov dil, 0xB8
@@ -14588,7 +14645,11 @@ gen_expr:
     ; jns +28 (skip negation code) = 79 1C
     mov dil, 0x79
     call emit_byte
-    mov dil, 0x1C
+    mov dil,0x1C
+    cmp qword [rel target_pe],0
+    je .print_sign_skip_ready
+    add dil,3 ; PE call rel32 is 5 bytes; Linux syscall is 2.
+.print_sign_skip_ready:
     call emit_byte
     ; neg r8 = 49 F7 D8
     mov dil, 0x49
@@ -22207,6 +22268,8 @@ lookup_builtin:
     pop rbx
     ret
 
+%include "win/pe_layout.inc"
+%include "win/pe_imports.inc"
 %include "win/rtblob.inc"   ; embedded Win64 runtime bytes
 
 ; ============================================================
@@ -22258,10 +22321,7 @@ write_pe:
     ; PE signature + COFF
     mov dword [rdi+0x40], 0x00004550
     mov word [rdi+0x44], 0x8664
-    mov word [rdi+0x46], 1
-    cmp qword [rel r56_global_count],0
-    je .r56_pe_single_section
-    mov word [rdi+0x46],2
+    mov word [rdi+0x46],2 ; RX code and RW data/imports
 .r56_pe_single_section:
     mov word [rdi+0x54], 0xF0
     mov word [rdi+0x56], 0x0022
@@ -22307,8 +22367,7 @@ write_pe:
     mov [rdi+0x158], eax
     mov dword [rdi+0x15C], 0x200
     mov dword [rdi+0x16C], 0x60000020
-    cmp qword [rel r56_global_count],0
-    je .r56_pe_no_data_header
+
     ; Separate initialized RW data section (not RWX text): 128*8 <= 4096.
     ; RVA = 0x1000 + round_up(.text virtual size, 0x1000).
     mov rax, r12
@@ -22320,8 +22379,7 @@ write_pe:
     mov [rdi+0x90], eax       ; SizeOfImage
     mov dword [rdi+0x170], 0x7461642E  ; '.dat'
     mov word [rdi+0x174], 0x0061       ; 'a', NUL
-    mov rax, [rel r56_global_count]
-    shl rax, 3
+    mov eax,RT_DATA_BYTES
     mov [rdi+0x178], eax      ; .data virtual size
     add rax, 0x1FF
     and rax, -0x200
@@ -22331,6 +22389,15 @@ write_pe:
     add eax,0x200
     mov [rdi+0x184], eax      ; .data raw pointer after .text
     mov dword [rdi+0x194],0xC0000040  ; initialized, read/write
+    mov eax,[rdi+0x17c]
+    add eax,RT_GLOBAL_BYTES
+    mov [rdi+0xd0],eax
+    mov dword [rdi+0xd4],40
+    add eax,RT_IAT_OFF
+    mov [rdi+0x128],eax
+    mov dword [rdi+0x12c],88
+    sub eax,RT_IAT_OFF
+    call pe_prepare_imports
 .r56_pe_no_data_header:
     ; --- write headers ---
     mov rdi, [rel out_fd]
@@ -22394,15 +22461,10 @@ write_pe:
 .pp_done:
     ; R56: physically write zero-initialized .data raw bytes after .text pad.
     ; PE's section loader makes these independent writable qwords.
-    cmp qword [rel r56_global_count],0
-    je .r56_pe_close
-    mov r12,[rel r56_global_count]
-    shl r12,3
-    add r12,0x1FF
-    and r12,-0x200
+    mov r12,RT_GLOBAL_BYTES
 .r56_pe_data_loop:
     test r12,r12
-    jz .r56_pe_close
+    jz .pe_write_imports
     mov rdx,r12
     cmp rdx,0x100
     jbe .r56_pe_data_write
@@ -22415,6 +22477,11 @@ write_pe:
     pop rdx
     sub r12,rdx
     jmp .r56_pe_data_loop
+.pe_write_imports:
+    mov rdi,[rel out_fd]
+    lea rsi,[rel pe_import_output]
+    mov edx,RT_IMPORT_BYTES
+    call os_write
 .r56_pe_close:
     mov rdi, [rel out_fd]
     call os_close
