@@ -1,0 +1,20 @@
+# R9 (F2): an allocation that fails returns 0, as nirmmita and every
+# library constructor promise. Before R9, Linux returned -errno (-22 for 0
+# bytes, -12 when out of memory), so `== 0` checks never fired and
+# suchi_srij handed back a list whose data pointer was -12.
+yoj mala
+yoj suchi
+yoj nighantu
+mukhya() {
+    likha(nirmmita(0))
+    likha(nirmmita(1152921504606846976))
+    likha(mala_nava(0))
+    likha(suchi_srij(144115188075855872))
+    likha(avali_srij(144115188075855872))
+    likha(nighantu_srij(28823037615171174))
+    # a normal allocation still works
+    vitti l = suchi_srij(4)
+    likha(l > 0)
+    likha(suchi_khip(l, 9))
+    likha(suchi_grah(l, 0))
+}
