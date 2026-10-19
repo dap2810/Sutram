@@ -1,0 +1,4 @@
+235_duplicate_field.sm:3:18: Sutram Error [E_DUPLICATE_NAME]: punah ghoshana 'x'
+  rachana P = { x, x }
+                   ^
+Sanket: 'x' is rachana me pahle se hai
