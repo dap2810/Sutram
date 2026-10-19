@@ -1,0 +1,7 @@
+# R5 golden: a field that no rachana declares is a compile error. Before R5 the
+# compiler silently used offset 0, so p.w read p.x and this printed 10.
+rachana Point = { x, y, z }
+mukhya()
+    vitti p = nirmmita(24)
+    p.x = 10
+    likha(p.w)
