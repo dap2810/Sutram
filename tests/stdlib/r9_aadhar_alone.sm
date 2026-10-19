@@ -1,0 +1,15 @@
+# R9 (F5): lib/aadhar compiles when it is the only module imported.
+# Before R9 it failed with "agyat prakriya: brihat_asti_shunyank".
+# 255 as a 3-digit bigint (digits LSB first: 5 5 2) in base 16 is ff.
+yoj aadhar
+mukhya() {
+    vitti x = nirmmita(3 * 8)
+    x[0] = 5
+    x[1] = 5
+    x[2] = 2
+    vitti out = nirmmita(12 * 8)
+    vitti n = brihat_ank_tak(x, 3, 16, out)
+    likha(n)
+    likha(out[0])
+    likha(out[1])
+}
