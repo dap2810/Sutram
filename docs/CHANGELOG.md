@@ -1,3 +1,45 @@
+## v190 - Step 8: the security and least-privilege audit. One real violation, found and retired.
+
+**A static audit of the shipped tooling** - network calls, elevation requests, registry writes, credentials -
+with a file and a line for every finding, in `SECURITY-AUDIT.md`.
+
+### The one real violation: `windows/sutram-installer.nsi` writes HKLM
+
+**Six writes to the machine-wide registry**, including the uninstall entry. **Writing HKLM requires
+administrator rights, which is exactly what the owner ruled out.**
+
+**It is superseded** - the shipped installer is the native per-user one - **but it was still in the tree and
+still referenced.** Marked **RETIRED - DO NOT USE, DO NOT SHIP** at the top of the file, with the reason, and
+kept as history rather than deleted. **I did not delete it without the owner's say-so.**
+
+**This is the same finding I raised in an earlier audit and did not act on. It should not survive another.**
+
+### Two things that turned out to be good news
+
+**The `RunAs` my first scan flagged is a GUARD, not a violation.** `preflight-windows.ps1` **refuses to build
+an installer** containing `-Verb RunAs`, `RelaunchElevated`, `HKLM:`, `::LocalMachine` or
+`ExecutionPolicy Bypass`. **The least-privilege constraint is enforced by code, not promised in a document.**
+
+**And the native installer is genuinely per-user** - seven HKCU writes, no machine-wide state.
+
+### Checked and clean
+
+No credentials anywhere in shipped code (the word `token` in the Linux GUI is a **lexer token**, not a
+credential). No HTTP client - no `winhttp`, `wininet`, `InternetOpen`, `curl` or `ws2_32` in the compiler, IDE
+or installer.
+
+### One thing that is a decision, not a defect
+
+**The language ships `net*` builtins** - `socket`, `bind`, `listen`, `accept`. That is normal for a systems
+language and **surprising for one aimed at first-time programmers.** The layer check already forbids `core`
+modules from using them, but **no test in the tree opens a socket.** Recommendation: keep them, document them,
+and say so in `PROJECT-MASTER.md` section 9 rather than letting a learner find out by accident.
+
+### What the audit cannot show
+
+**It is a static scan of the source - it shows what the code says it does, not what the built binary does.**
+The owner's own install remains the only check of that.
+
 ## v189 - both rounds consolidated, same numbers, everything in one file each
 
 **The owner asked that the round numbers stay the same and that every requirement we have agreed be added
