@@ -4,7 +4,8 @@ param(
     [Parameter(Mandatory=$true)][string]$SetupExePath,
     [Parameter(Mandatory=$true)][string]$LogPath,
     [switch]$AddPath,
-    [switch]$DesktopShortcut
+    [switch]$DesktopShortcut,
+    [switch]$VerifyOnly
 )
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version 2.0
@@ -27,13 +28,15 @@ function Invoke-SutramSelfTest([string]$ExePath,[string]$Argument,[string]$Stage
     try {
         Log ("Native self-test start: " + $Stage)
         if (-not $p.Start()) { throw ("Unable to start " + $Stage) }
+        $outTask=$p.StandardOutput.ReadToEndAsync()
+        $errTask=$p.StandardError.ReadToEndAsync()
         if (-not $p.WaitForExit(8000)) {
             try { $p.Kill() } catch {}
             try { [void]$p.WaitForExit(2000) } catch {}
             throw ("Native compiler timed out during " + $Stage + " after 8000 ms; installation aborted.")
         }
-        $stdout = $p.StandardOutput.ReadToEnd()
-        $stderr = $p.StandardError.ReadToEnd()
+        $stdout = $outTask.Result
+        $stderr = $errTask.Result
         Log ("Native self-test exit: " + $Stage + " code=" + $p.ExitCode)
         if ($p.ExitCode -ne 0 -or [string]::IsNullOrWhiteSpace($stdout)) {
             throw ("Native compiler failed " + $Stage + " code=" + $p.ExitCode + " stderr=" + $stderr.Trim())
@@ -111,16 +114,47 @@ function Test-SutramMarker([string]$Path) {
         return [string]::Equals($text,'Sutram Windows installation',[StringComparison]::Ordinal)
     } catch { return $false }
 }
+function Assert-NoReparsePath([string]$Path) {
+    $walk=[IO.Path]::GetFullPath($Path)
+    while ($walk) {
+        if (Test-Path -LiteralPath $walk) {
+            if ((Get-Item -LiteralPath $walk -Force).Attributes -band [IO.FileAttributes]::ReparsePoint) {
+                throw "Refusing a reparse-point path: $walk"
+            }
+        }
+        $parent=[IO.Path]::GetDirectoryName($walk)
+        if ($parent -eq $walk) { break }
+        $walk=$parent
+    }
+}
 function Remove-ManifestFiles([string]$Root,[string]$Manifest) {
     if (-not (Test-Path -LiteralPath $Manifest -PathType Leaf)) { return }
     $rootFull = [IO.Path]::GetFullPath($Root).TrimEnd('\')
+    Assert-NoReparsePath $rootFull
     $dirs = New-Object System.Collections.Generic.List[string]
     foreach ($line in Get-Content -LiteralPath $Manifest) {
-        if ($line -notmatch '^[0-9a-fA-F]{64} \*(.+)$') { continue }
-        $rel = $Matches[1]
+        if ($line -notmatch '^([0-9a-fA-F]{64}) \*(.+)$') { throw 'Invalid installed manifest.' }
+        $expectedHash = $Matches[1]
+        $rel = $Matches[2]
         $target = [IO.Path]::GetFullPath((Join-Path $rootFull $rel))
         if (-not $target.StartsWith($rootFull + '\',[StringComparison]::OrdinalIgnoreCase)) { throw "Unsafe manifest path: $rel" }
-        Remove-Item -LiteralPath $target -Force -ErrorAction SilentlyContinue
+        $walk = $target
+        while ($walk -and $walk.StartsWith($rootFull + '\',[StringComparison]::OrdinalIgnoreCase)) {
+            if (Test-Path -LiteralPath $walk) {
+                if ((Get-Item -LiteralPath $walk -Force).Attributes -band [IO.FileAttributes]::ReparsePoint) {
+                    throw "Refusing a reparse-point path: $walk"
+                }
+            }
+            $walk = [IO.Path]::GetDirectoryName($walk)
+        }
+        if (Test-Path -LiteralPath $target -PathType Leaf) {
+            $actualHash=(Get-FileHash -LiteralPath $target -Algorithm SHA256).Hash
+            if ($actualHash -ne $expectedHash) {
+                Log ("Preserved user-modified package file: " + $target)
+                continue
+            }
+            Remove-Item -LiteralPath $target -Force
+        }
         $dir = [IO.Path]::GetDirectoryName($target)
         while ($dir -and $dir.StartsWith($rootFull + '\',[StringComparison]::OrdinalIgnoreCase)) {
             if (-not $dirs.Contains($dir)) { $dirs.Add($dir) }
@@ -159,8 +193,17 @@ function Verify-Payload([string]$Stage) {
         if (-not $expectedFiles.ContainsKey($rel)) { throw "Unmanifested payload file found: $rel" }
     }
 }
+$script:ownedShortcuts = New-Object Collections.Generic.List[string]
 function New-Shortcut([string]$Path,[string]$Target,[string]$Arguments,[string]$WorkingDir,[string]$Icon) {
     $shell = New-Object -ComObject WScript.Shell
+    if (Test-Path -LiteralPath $Path -PathType Leaf) {
+        $encoded=[Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($Path))
+        if (-not $oldState.ContainsKey('OwnedShortcuts') -or $encoded -notin ($oldState['OwnedShortcuts'] -split ',')) {
+            Log ('Preserved pre-existing user shortcut: '+$Path)
+            return
+        }
+    }
+    $script:ownedShortcuts.Add([Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($Path)))
     $sc = $shell.CreateShortcut($Path)
     $sc.TargetPath = $Target
     if ($Arguments) { $sc.Arguments = $Arguments }
@@ -178,6 +221,7 @@ try {
     if (-not (Test-Path -LiteralPath $SetupExePath -PathType Leaf)) { throw 'Setup executable path is invalid.' }
 
     $InstallDir = [IO.Path]::GetFullPath($InstallDir).TrimEnd('\')
+    Assert-NoReparsePath $InstallDir
     if (-not $env:LOCALAPPDATA) { throw 'LOCALAPPDATA is unavailable for this user.' }
     $userProgramsRoot = [IO.Path]::GetFullPath((Join-Path $env:LOCALAPPDATA 'Programs')).TrimEnd('\')
     if (-not $InstallDir.StartsWith($userProgramsRoot + '\',[StringComparison]::OrdinalIgnoreCase)) {
@@ -210,6 +254,23 @@ try {
         if ($first -and -not (Test-SutramMarker $marker)) { throw "The selected folder is not empty and is not an existing Sutram installation: $InstallDir" }
     }
 
+    # Check ownership conflicts before creating or changing an installation.
+    $classCommand='HKCU:\Software\Classes\Sutram.Source\shell\open\command'
+    $wantedCommand='"'+(Join-Path $InstallDir 'sutram-ide-gui.exe')+'" "%1"'
+    if (Test-Path -LiteralPath $classCommand) {
+        $currentCommand=(Get-Item -LiteralPath $classCommand).GetValue('')
+        if ($currentCommand -and $currentCommand -ne $wantedCommand) { throw 'A conflicting Sutram.Source registration exists.' }
+    }
+    if (Test-SutramMarker $marker) {
+        if (-not (Test-Path -LiteralPath (Join-Path $InstallDir 'payload.manifest.sha256') -PathType Leaf) -or
+            -not $oldState.ContainsKey('UninstallerSHA256')) { throw 'Existing installation ownership metadata is incomplete.' }
+        $oldUninstaller=Join-Path $InstallDir 'Sutram-Uninstall.exe'
+        if ((Test-Path -LiteralPath $oldUninstaller -PathType Leaf) -and
+            (Get-FileHash -LiteralPath $oldUninstaller -Algorithm SHA256).Hash -ne $oldState['UninstallerSHA256']) {
+            throw 'The existing uninstaller has been modified; refusing to overwrite it.'
+        }
+    }
+
     $stage = Join-Path $env:TEMP ('Sutram-Payload-' + [guid]::NewGuid().ToString('N'))
     New-Item -ItemType Directory -Force -Path $stage | Out-Null
     try {
@@ -225,6 +286,33 @@ try {
         $v = Invoke-SutramSelfTest $testExe '--version' 'pre-install --version'
         $h = Invoke-SutramSelfTest $testExe '--help' 'pre-install --help'
 
+        if ($VerifyOnly) {
+            Log 'VERIFY ONLY PASS: payload hashes and compiler checks; installation not performed.'
+            exit 0
+        }
+        # Refuse an upgrade that would replace user edits or newly conflicting files.
+        $previousManifest = Join-Path $InstallDir 'payload.manifest.sha256'
+        if (Test-Path -LiteralPath $previousManifest -PathType Leaf) {
+            $previousFiles=@{}
+            foreach ($line in [IO.File]::ReadAllLines($previousManifest)) {
+                if ($line -notmatch '^([0-9a-fA-F]{64}) \*(.+)$') { throw 'Invalid previous manifest.' }
+                $previousFiles[$Matches[2]]=$Matches[1]
+            }
+            foreach ($file in Get-ChildItem -LiteralPath $stage -File -Recurse) {
+                $relative=$file.FullName.Substring($stage.Length+1)
+                if ($relative -eq 'payload.manifest.sha256') { continue }
+                $target=Join-Path $InstallDir $relative
+                if (Test-Path -LiteralPath $target -PathType Leaf) {
+                    if (-not $previousFiles.ContainsKey($relative) -or
+                        (Get-FileHash -LiteralPath $target -Algorithm SHA256).Hash -ne $previousFiles[$relative]) {
+                        throw ("Upgrade would overwrite a user file; preserve it elsewhere first: " + $target)
+                    }
+                }
+            }
+        }
+        foreach ($file in Get-ChildItem -LiteralPath $stage -File -Recurse) {
+            Assert-NoReparsePath (Join-Path $InstallDir $file.FullName.Substring($stage.Length+1))
+        }
         New-Item -ItemType Directory -Force -Path $InstallDir | Out-Null
         if (Test-Path -LiteralPath (Join-Path $InstallDir 'payload.manifest.sha256') -PathType Leaf) {
             Log 'Removing files owned by the previous Sutram payload.'
@@ -267,15 +355,15 @@ try {
         $doc = Join-Path $InstallDir 'docs\sutram-book-english.html'
         if (Test-Path -LiteralPath $doc) { New-Shortcut (Join-Path $startMenu 'Sutram Documentation.lnk') $doc '' $InstallDir $icon }
         New-Shortcut (Join-Path $startMenu 'Uninstall Sutram.lnk') (Join-Path $InstallDir 'Sutram-Uninstall.exe') '--uninstall' $InstallDir $icon
-        $desktopLink = Join-Path ([Environment]::GetFolderPath('DesktopDirectory')) 'Sutram Terminal.lnk'
+        $desktopLink = Join-Path ([Environment]::GetFolderPath('DesktopDirectory')) 'Sutram IDE.lnk'
         $previousDesktopOwned = (($oldState.ContainsKey('DesktopOwned') -and $oldState['DesktopOwned'] -eq '1') -or ($oldState.ContainsKey('DesktopShortcut') -and $oldState['DesktopShortcut'] -eq '1'))
         $desktopOwned = $previousDesktopOwned
         if ($DesktopShortcut) {
             if ((Test-Path -LiteralPath $desktopLink -PathType Leaf) -and -not $previousDesktopOwned) {
-                Log 'A pre-existing user desktop shortcut named Sutram Terminal.lnk was preserved.'
+                Log 'A pre-existing user desktop shortcut named Sutram IDE.lnk was preserved.'
                 $desktopOwned = $false
             } else {
-                New-Shortcut $desktopLink $env:ComSpec $terminalArgs $env:USERPROFILE $icon
+                New-Shortcut $desktopLink $guiInstalled '' $InstallDir $icon
                 $desktopOwned = $true
             }
         } elseif ($previousDesktopOwned) {
@@ -285,6 +373,27 @@ try {
             $desktopOwned = $false
         }
 
+        $classKey='HKCU:\Software\Classes\Sutram.Source'
+        $extKey='HKCU:\Software\Classes\.sm'
+        $commandKey=Join-Path $classKey 'shell\open\command'
+        $openCommand='"' + $guiInstalled + '" "%1"'
+        if (Test-Path -LiteralPath $commandKey) {
+            $existing=(Get-Item -LiteralPath $commandKey).GetValue('')
+            if ($existing -and $existing -ne $openCommand) { throw 'A conflicting Sutram.Source registration exists.' }
+        }
+        [void](New-Item -Path $commandKey -Force)
+        Set-Item -LiteralPath $commandKey -Value $openCommand
+        [void](New-Item -Path (Join-Path $classKey 'DefaultIcon') -Force)
+        Set-Item -LiteralPath (Join-Path $classKey 'DefaultIcon') -Value $icon
+        [void](New-Item -Path $extKey -Force)
+        $existingDefault=(Get-Item -LiteralPath $extKey).GetValue('')
+        $associationOwned=($oldState.ContainsKey('AssociationOwned') -and $oldState['AssociationOwned'] -eq '1')
+        if (-not $existingDefault) {
+            Set-Item -LiteralPath $extKey -Value 'Sutram.Source'
+            $associationOwned=$true
+        }
+        [void](New-Item -Path (Join-Path $extKey 'OpenWithProgids') -Force)
+        [void](New-ItemProperty -Path (Join-Path $extKey 'OpenWithProgids') -Name 'Sutram.Source' -Value '' -PropertyType String -Force)
         New-Item -Path $unKey -Force | Out-Null
         New-ItemProperty -Path $unKey -Name DisplayName -Value 'Sutram' -PropertyType String -Force | Out-Null
         New-ItemProperty -Path $unKey -Name DisplayVersion -Value '0.1.0' -PropertyType String -Force | Out-Null
@@ -301,8 +410,11 @@ try {
         if ($desktopOwned) { $desktopOwnedValue = '1' }
         $stateLines = @(
             'Version=0.1.0',
+            ('OwnedShortcuts=' + ($script:ownedShortcuts.ToArray() -join ',')),
             ('PathOwned=' + $pathOwnedValue),
-            ('DesktopOwned=' + $desktopOwnedValue)
+            ('DesktopOwned=' + $desktopOwnedValue),
+            ('AssociationOwned=' + [int]$associationOwned),
+            ('UninstallerSHA256=' + (Get-FileHash -LiteralPath $SetupExePath -Algorithm SHA256).Hash)
         )
         [IO.File]::WriteAllLines($statePath,$stateLines,([Text.UTF8Encoding]::new($false)))
 
@@ -311,8 +423,12 @@ try {
         # Preserve the actual installer log under this user's installed tree
         # so the Round 62 auditor can examine real installation events.
         Copy-Item -LiteralPath $LogPath -Destination (Join-Path $InstallDir 'install.log') -Force
+        Add-Content -LiteralPath $statePath -Encoding UTF8 -Value ('InstallLogSHA256='+(Get-FileHash -LiteralPath (Join-Path $InstallDir 'install.log') -Algorithm SHA256).Hash)
     } finally {
-        Remove-Item -LiteralPath $stage -Recurse -Force -ErrorAction SilentlyContinue
+        $stageFull=[IO.Path]::GetFullPath($stage)
+        $tempFull=[IO.Path]::GetFullPath($env:TEMP).TrimEnd('\')
+        if (-not $stageFull.StartsWith($tempFull+'\Sutram-Payload-',[StringComparison]::OrdinalIgnoreCase)) { throw 'Unsafe stage cleanup path.' }
+        Remove-Item -LiteralPath $stageFull -Recurse -Force -ErrorAction SilentlyContinue
     }
     exit 0
 } catch {
