@@ -1,0 +1,9 @@
+# Mixed integer arithmetic in a loop: multiply, divide, modulo, shifts.
+mukhya()
+    vitti acc = 1
+    vitti i = 1
+    yavat (i <= 2000000) {
+        acc = (acc * 3 + i) % 1000003
+        i = i + 1
+    }
+    likha(acc)
