@@ -33,8 +33,8 @@ change is necessary.
 ```
 
 The example paths above assume the package supplies `examples\` in that folder.
-For other layouts, use the actual source path. The supported compiler's `.exe`
-output is Windows PE; `.bin` output is Linux ELF.
+For other layouts, use the actual source path. A Windows-built compiler emits PE for either extension; use `.exe` for convenient
+Windows shell execution. A Linux-built compiler selects PE for `.exe`, ELF otherwise.
 
 ## What to verify on Windows
 
@@ -57,7 +57,7 @@ bypass an antivirus or organizational-policy block.
 
 The source scripts live in `windows/native-installer/`, not alongside this
 root document. They require their matching payload and build configuration;
-they are not a guaranteed manual repair path. The older Windows build wrapper,
-preflight and integrity manifest need coordinated review before packaging.
+they are not a guaranteed manual repair path. The coordinated NASM build wrapper,
+preflight and source manifest are repaired in the Windows delivery review.
 See [the setup guide](docs/WINDOWS-SETUP.md) for compiler usage, and the canonical
 installation-routes document for the remaining build and acceptance gates.
