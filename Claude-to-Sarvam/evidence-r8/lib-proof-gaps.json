@@ -1,0 +1,6585 @@
+[
+ {
+  "module": "aadhar",
+  "name": "brihat_ank_tak",
+  "params": "x, n, base, out",
+  "doc": "brihat_ank_tak(x, n, base, out) — render n-digit bigint x in `base` into pankti `out` as digit values (MSB first). Returns digit count. Caller allocates out with >= 4*n cells (70 cells sufficed for n <= 21 in base 2; n >= 22 overflowed the internal buffer). Base outside 2..16: returns 0 (base 0 trapped with SIGFPE).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": false,
+  "detected_by": [
+   "tests/stdlib/baseconv_roundtrip.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/baseconv_roundtrip.sm",
+   "proof_props: baseconv roundtrip",
+   "proof_props: edge30 conversion"
+  ],
+  "named_count": 3,
+  "mutants_total": 9,
+  "mutants_killed": 8,
+  "survivors": [
+   "C3:<-><=@L24"
+  ]
+ },
+ {
+  "module": "aadhar",
+  "name": "brihat_ank_se",
+  "params": "d, count, base, x, n",
+  "doc": "brihat_ank_se(d, count, base, x, n) — parse `count` digit values from pankti `d` (MSB first) in `base` into n-digit bigint x. Returns 1 on success, 0 if a digit >= base. Base outside 2..16 returns 0 (the old code accepted any base, so base 0/1/negative silently mis-parsed).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": false,
+  "detected_by": [
+   "tests/stdlib/baseconv_roundtrip.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/baseconv_roundtrip.sm",
+   "proof_props: baseconv roundtrip",
+   "proof_props: edge30 conversion"
+  ],
+  "named_count": 3,
+  "mutants_total": 7,
+  "mutants_killed": 5,
+  "survivors": [
+   "C5:>=->>@L79",
+   "C6:<-><=@L83"
+  ]
+ },
+ {
+  "module": "ank",
+  "name": "asti_yugm",
+  "params": "n",
+  "doc": "",
+  "braceless": true,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/num_is_even.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/num_is_even.sm",
+   "examples/62_stdlib_num.sm",
+   "examples/86_b8_multi_modules.sm"
+  ],
+  "named_count": 3,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "ank",
+  "name": "asti_visham",
+  "params": "n",
+  "doc": "",
+  "braceless": true,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/num_is_odd.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/num_is_odd.sm",
+   "examples/62_stdlib_num.sm"
+  ],
+  "named_count": 2,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "ank",
+  "name": "ank_gan",
+  "params": "n",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/num_digit_count.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/num_digit_count.sm",
+   "tests/stdlib/r8_number_edges.sm",
+   "examples/62_stdlib_num.sm"
+  ],
+  "named_count": 4,
+  "mutants_total": 4,
+  "mutants_killed": 3,
+  "survivors": [
+   "C2:<-><=@L16"
+  ]
+ },
+ {
+  "module": "ank",
+  "name": "ank_yog",
+  "params": "n",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/num_digit_sum.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/num_digit_sum.sm",
+   "examples/62_stdlib_num.sm",
+   "proof_props: edge30 int"
+  ],
+  "named_count": 3,
+  "mutants_total": 4,
+  "mutants_killed": 3,
+  "survivors": [
+   "C2:<-><=@L30"
+  ]
+ },
+ {
+  "module": "ank",
+  "name": "viparyay_ank",
+  "params": "n",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/num_reverse_num.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/num_reverse_num.sm",
+   "tests/stdlib/numeric29.sm",
+   "tests/stdlib/r8_number_edges.sm"
+  ],
+  "named_count": 6,
+  "mutants_total": 4,
+  "mutants_killed": 4,
+  "survivors": []
+ },
+ {
+  "module": "ank",
+  "name": "asti_vilom",
+  "params": "n",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/num_is_palindrome.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/num_is_palindrome.sm",
+   "tests/stdlib/r8_number_edges.sm",
+   "examples/62_stdlib_num.sm"
+  ],
+  "named_count": 4,
+  "mutants_total": 3,
+  "mutants_killed": 3,
+  "survivors": []
+ },
+ {
+  "module": "ank",
+  "name": "seemit",
+  "params": "n, lo, hi",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/num_clamp.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/num_clamp.sm",
+   "examples/62_stdlib_num.sm"
+  ],
+  "named_count": 2,
+  "mutants_total": 3,
+  "mutants_killed": 1,
+  "survivors": [
+   "C1:<-><=@L65",
+   "C2:>->>=@L66"
+  ]
+ },
+ {
+  "module": "ank",
+  "name": "fib",
+  "params": "n",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/num_fib.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/num_fib.sm",
+   "tests/stdlib/numeric29.sm",
+   "examples/81_stdlib_num2.sm"
+  ],
+  "named_count": 4,
+  "mutants_total": 3,
+  "mutants_killed": 3,
+  "survivors": []
+ },
+ {
+  "module": "ank",
+  "name": "asti_sampurna",
+  "params": "n",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/num_is_perfect.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/num_is_perfect.sm",
+   "tests/stdlib/numeric_hangfix.sm",
+   "examples/81_stdlib_num2.sm"
+  ],
+  "named_count": 4,
+  "mutants_total": 6,
+  "mutants_killed": 4,
+  "survivors": [
+   "C1:<-><=@L87",
+   "C2:<=-><@L93"
+  ]
+ },
+ {
+  "module": "ank",
+  "name": "collatz_charan",
+  "params": "n",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/num_collatz_steps.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/num_collatz_steps.sm",
+   "tests/stdlib/numeric_hangfix.sm",
+   "examples/81_stdlib_num2.sm"
+  ],
+  "named_count": 4,
+  "mutants_total": 5,
+  "mutants_killed": 4,
+  "survivors": [
+   "C4:>->>=@L114"
+  ]
+ },
+ {
+  "module": "anukram",
+  "name": "anukram_maap_ashtak",
+  "params": "n",
+  "doc": "anukram_maap_ashtak(n) — encoded size of an n-byte payload: 8 + n.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/serial29.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/serial29.sm",
+   "proof_props: serialisation roundtrip"
+  ],
+  "named_count": 2,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "anukram",
+  "name": "anukram_khip_i64",
+  "params": "out, pos, cap, v",
+  "doc": "anukram_khip_i64(out, pos, cap, v) — write v as 8 LE bytes at out+pos. Returns pos + 8, or -1 if it would overrun cap.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/serial29.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/serial29.sm",
+   "proof_props: serialisation roundtrip"
+  ],
+  "named_count": 2,
+  "mutants_total": 6,
+  "mutants_killed": 3,
+  "survivors": [
+   "C2:>->>=@L42",
+   "C3:<-><=@L44",
+   "C4:<-><=@L49"
+  ]
+ },
+ {
+  "module": "anukram",
+  "name": "anukram_grah_i64",
+  "params": "buf, pos, cap, out",
+  "doc": "anukram_grah_i64(buf, pos, cap, out) — read 8 LE bytes at buf+pos, write the value into out[0]. Returns pos + 8, or -1 on overrun.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/serial29.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/serial29.sm",
+   "proof_props: serialisation roundtrip"
+  ],
+  "named_count": 2,
+  "mutants_total": 5,
+  "mutants_killed": 3,
+  "survivors": [
+   "C2:>->>=@L67",
+   "C4:>=->>@L77"
+  ]
+ },
+ {
+  "module": "anukram",
+  "name": "anukram_khip_ashtak",
+  "params": "out, pos, cap, src, n",
+  "doc": "anukram_khip_ashtak(out, pos, cap, src, n) — write n as an 8-byte LE length followed by n payload bytes from src. Returns the new cursor, or -1 on overrun (n < 0 is also an error: -1).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/serial29.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/serial29.sm",
+   "proof_props: serialisation roundtrip"
+  ],
+  "named_count": 2,
+  "mutants_total": 5,
+  "mutants_killed": 3,
+  "survivors": [
+   "C3:>->>=@L96",
+   "C4:<-><=@L99"
+  ]
+ },
+ {
+  "module": "anukram",
+  "name": "anukram_grah_ashtak",
+  "params": "buf, pos, cap, dst, out_n",
+  "doc": "anukram_grah_ashtak(buf, pos, cap, dst, out_n) — read a length-prefixed payload: length into out_n[0], payload into dst. Returns the new cursor, or -1 on overrun / negative length.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/serial29.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/serial29.sm",
+   "proof_props: serialisation roundtrip"
+  ],
+  "named_count": 2,
+  "mutants_total": 5,
+  "mutants_killed": 3,
+  "survivors": [
+   "C3:>->>=@L120",
+   "C4:<-><=@L122"
+  ]
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_shunyank",
+  "params": "arr, n",
+  "doc": "brihat_shunyank(arr, n) — set all n digits to 0",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/bigint_zero.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/bigint_copy.sm",
+   "tests/stdlib/bigint_is_zero.sm",
+   "tests/stdlib/bigint_zero.sm"
+  ],
+  "named_count": 4,
+  "mutants_total": 2,
+  "mutants_killed": 0,
+  "survivors": [
+   "R",
+   "C1:<-><=@L17"
+  ]
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_ank_se_int",
+  "params": "val, arr, n",
+  "doc": "brihat_ank_se_int(val, arr, n) — convert int to digit array (LSB first) Returns 1 if val fit in n digits, 0 if truncated. MIN: |MIN| does not fit in int64, so plain negation wraps and emits negative digits. Convert MAX and add 1 instead.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/baseconv_roundtrip.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/baseconv_roundtrip.sm",
+   "tests/stdlib/bigint_add.sm",
+   "tests/stdlib/bigint_cmp.sm"
+  ],
+  "named_count": 20,
+  "mutants_total": 10,
+  "mutants_killed": 8,
+  "survivors": [
+   "C2:<-><=@L39",
+   "C6:<-><=@L50"
+  ]
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_ank_tak_int",
+  "params": "arr, n",
+  "doc": "brihat_ank_tak_int(arr, n) — convert digit array back to int (for verification) Only correct if the value fits in an int.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/baseconv_roundtrip.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/baseconv_roundtrip.sm",
+   "tests/stdlib/bigint_add.sm",
+   "tests/stdlib/bigint_copy.sm"
+  ],
+  "named_count": 14,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_pratilip",
+  "params": "dst, src, n",
+  "doc": "brihat_pratilip(dst, src, n) — copy n digits",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/bigint_copy.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/bigint_copy.sm"
+  ],
+  "named_count": 1,
+  "mutants_total": 2,
+  "mutants_killed": 0,
+  "survivors": [
+   "R",
+   "C1:<-><=@L87"
+  ]
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_tul",
+  "params": "a, b, n",
+  "doc": "brihat_tul(a, b, n) — compare: 1 if a > b, -1 if a < b, 0 if equal",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/bigint_cmp.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/bigint_cmp.sm",
+   "tests/stdlib/bigint_copy.sm",
+   "proof_props: bigint add/sub inverse"
+  ],
+  "named_count": 7,
+  "mutants_total": 4,
+  "mutants_killed": 4,
+  "survivors": []
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_yuj",
+  "params": "a, b, res, n",
+  "doc": "brihat_yuj(a, b, res, n) — res = a + b; returns final carry (0 or 1)",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/bigint_add.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/bigint_add.sm",
+   "proof_props: bigint add/sub inverse",
+   "proof_props: bigint mul distributes over add"
+  ],
+  "named_count": 4,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_nyun",
+  "params": "a, b, res, n",
+  "doc": "brihat_nyun(a, b, res, n) — res = a - b (requires a >= b); returns final borrow",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/bigint_sub.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/bigint_sub.sm",
+   "proof_props: bigint add/sub inverse"
+  ],
+  "named_count": 2,
+  "mutants_total": 3,
+  "mutants_killed": 2,
+  "survivors": [
+   "C1:<-><=@L135"
+  ]
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_gun",
+  "params": "a, b, res, n",
+  "doc": "brihat_gun(a, b, res, n) — res = a * b; res must have 2n digits Returns 0 on success.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/bigint_mul.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/bigint_mul.sm",
+   "proof_props: bigint mul distributes over add",
+   "proof_props: bigint divmod reconstruct"
+  ],
+  "named_count": 3,
+  "mutants_total": 4,
+  "mutants_killed": 0,
+  "survivors": [
+   "R",
+   "C1:<-><=@L159",
+   "C2:<-><=@L165",
+   "C3:<-><=@L168"
+  ]
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_asti_shunyank",
+  "params": "arr, n",
+  "doc": "brihat_asti_shunyank(arr, n) — 1 if all digits are 0, else 0",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/bigint_is_zero.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/bigint_is_zero.sm",
+   "tests/stdlib/bigint_mul.sm",
+   "tests/stdlib/bigint_zero.sm"
+  ],
+  "named_count": 3,
+  "mutants_total": 3,
+  "mutants_killed": 2,
+  "survivors": [
+   "C1:<-><=@L185"
+  ]
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_bhajshesh",
+  "params": "a, b, q, r, n",
+  "doc": "brihat_bhajshesh(a, b, q, r, n) — q = a / b, r = a % b (a,b,q,r are n-digit) Uses long division, one decimal digit at a time. Division by zero is defined, not a hang: q = 0, r = a (so q*b + r == a still holds).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/bigint_divmod.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/bigint_divmod.sm",
+   "tests/stdlib/bigint_divzero.sm",
+   "proof_props: bigint divmod reconstruct"
+  ],
+  "named_count": 4,
+  "mutants_total": 9,
+  "mutants_killed": 5,
+  "survivors": [
+   "R",
+   "C1:<-><=@L203",
+   "C3:<-><=@L213",
+   "C7:<-><=@L235"
+  ]
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_shesh",
+  "params": "ank, shesh, res, n",
+  "doc": "brihat_shesh(num, shesh, res, n) — res = num % shesh, where num has 2n digits Helper for powmod. Uses long division. shesh == 0 is defined, not a hang: no reduction is applied, so res is the low n digits of num.",
+  "braceless": false,
+  "status": "PROVEN-INDIRECT",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/bigint_divzero.sm"
+  ],
+  "named_by": [],
+  "named_count": 0,
+  "mutants_total": 8,
+  "mutants_killed": 4,
+  "survivors": [
+   "R",
+   "C2:<-><=@L265",
+   "C5:>=->>@L283",
+   "C6:<-><=@L286"
+  ]
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_ghatmod",
+  "params": "base, exp, shesh, res, n",
+  "doc": "brihat_ghatmod(base, exp, shesh, res, n) — res = base^exp shesh shesh exp is a plain int and must be >= 0 (a negative exp returns 1: the loop never runs). shesh == 0 means \"no reduction\" (see brihat_shesh), so the result is base^exp truncated to n digits. res is n-digit.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/bigint_divzero.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/bigint_divzero.sm",
+   "tests/stdlib/bigint_powmod.sm",
+   "proof_props: bigint divzero"
+  ],
+  "named_count": 3,
+  "mutants_total": 3,
+  "mutants_killed": 2,
+  "survivors": [
+   "R"
+  ]
+ },
+ {
+  "module": "chandas",
+  "name": "dviguna",
+  "params": "n",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/chandas_dviguna.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/chandas_dviguna.sm",
+   "examples/88_pingala_chandas.sm"
+  ],
+  "named_count": 2,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "chandas",
+  "name": "meru",
+  "params": "n, k",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/chandas_meru.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/chandas_meru.sm",
+   "examples/203_meru_with_kosh.sm",
+   "examples/88_pingala_chandas.sm"
+  ],
+  "named_count": 3,
+  "mutants_total": 5,
+  "mutants_killed": 4,
+  "survivors": [
+   "C3:>->>=@L29"
+  ]
+ },
+ {
+  "module": "chandas",
+  "name": "matra_meru",
+  "params": "n",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/chandas_matra_meru.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/chandas_matra_meru.sm",
+   "tests/stdlib/r8_number_edges.sm",
+   "examples/88_pingala_chandas.sm"
+  ],
+  "named_count": 3,
+  "mutants_total": 4,
+  "mutants_killed": 4,
+  "survivors": []
+ },
+ {
+  "module": "chandas",
+  "name": "asti_guru",
+  "params": "pat, i",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/chandas_is_guru.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/chandas_is_guru.sm",
+   "examples/88_pingala_chandas.sm",
+   "proof_props: edge30 int"
+  ],
+  "named_count": 3,
+  "mutants_total": 4,
+  "mutants_killed": 4,
+  "survivors": []
+ },
+ {
+  "module": "chandas",
+  "name": "guru_gan",
+  "params": "pat",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/chandas_guru_count.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/chandas_guru_count.sm",
+   "examples/88_pingala_chandas.sm"
+  ],
+  "named_count": 2,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "chandas",
+  "name": "meru_pankti",
+  "params": "a, n",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/chandas_meru_pankti.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/chandas_meru_pankti.sm"
+  ],
+  "named_count": 1,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "ganit",
+  "name": "varg",
+  "params": "n",
+  "doc": "",
+  "braceless": true,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/math_sq.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/math_sq.sm",
+   "tests/stdlib/numeric29.sm",
+   "examples/61_stdlib_math.sm"
+  ],
+  "named_count": 7,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "ganit",
+  "name": "vargit",
+  "params": "n",
+  "doc": "",
+  "braceless": true,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/math_square.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/math_square.sm",
+   "tests/stdlib/numeric29.sm",
+   "examples/07_module.sm"
+  ],
+  "named_count": 5,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "ganit",
+  "name": "ghan",
+  "params": "n",
+  "doc": "",
+  "braceless": true,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/math_cube.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/math_cube.sm",
+   "tests/stdlib/numeric29.sm",
+   "proof_props: numeric contract gaps pinned"
+  ],
+  "named_count": 3,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "ganit",
+  "name": "nirapeksh_mulya",
+  "params": "n",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/math_abs_val.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/math_abs_val.sm",
+   "examples/61_stdlib_math.sm",
+   "proof_props: numeric28"
+  ],
+  "named_count": 3,
+  "mutants_total": 2,
+  "mutants_killed": 1,
+  "survivors": [
+   "C1:<-><=@L19"
+  ]
+ },
+ {
+  "module": "ganit",
+  "name": "laghu2",
+  "params": "a, b",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/math_min2.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/math_min2.sm",
+   "examples/61_stdlib_math.sm"
+  ],
+  "named_count": 2,
+  "mutants_total": 2,
+  "mutants_killed": 1,
+  "survivors": [
+   "C1:<-><=@L28"
+  ]
+ },
+ {
+  "module": "ganit",
+  "name": "adhik2",
+  "params": "a, b",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/math_max2.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/math_max2.sm",
+   "examples/61_stdlib_math.sm"
+  ],
+  "named_count": 2,
+  "mutants_total": 2,
+  "mutants_killed": 1,
+  "survivors": [
+   "C1:>->>=@L35"
+  ]
+ },
+ {
+  "module": "ganit",
+  "name": "mahattam",
+  "params": "a, b",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/math_gcd.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/math_gcd.sm",
+   "tests/stdlib/math_gcd_lcm_edge.sm",
+   "examples/61_stdlib_math.sm"
+  ],
+  "named_count": 6,
+  "mutants_total": 3,
+  "mutants_killed": 2,
+  "survivors": [
+   "C2:<-><=@L51"
+  ]
+ },
+ {
+  "module": "ganit",
+  "name": "laghuttam",
+  "params": "a, b",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/math_gcd_lcm_edge.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/math_gcd_lcm_edge.sm",
+   "tests/stdlib/math_lcm.sm",
+   "examples/61_stdlib_math.sm"
+  ],
+  "named_count": 5,
+  "mutants_total": 3,
+  "mutants_killed": 2,
+  "survivors": [
+   "C2:<-><=@L64"
+  ]
+ },
+ {
+  "module": "ganit",
+  "name": "ghat",
+  "params": "base, e",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/math_power.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/math_power.sm",
+   "tests/stdlib/numeric29.sm",
+   "examples/61_stdlib_math.sm"
+  ],
+  "named_count": 5,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "ganit",
+  "name": "kramgun",
+  "params": "n",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/math_fact.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/math_fact.sm",
+   "tests/stdlib/numeric29.sm",
+   "tests/stdlib/r8_number_edges.sm"
+  ],
+  "named_count": 7,
+  "mutants_total": 3,
+  "mutants_killed": 3,
+  "survivors": []
+ },
+ {
+  "module": "ganit",
+  "name": "asti_abhajya",
+  "params": "n",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/math_is_prime.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/math_is_prime.sm",
+   "tests/stdlib/numeric_hangfix.sm",
+   "tests/stdlib/r8_number_edges.sm"
+  ],
+  "named_count": 5,
+  "mutants_total": 4,
+  "mutants_killed": 4,
+  "survivors": []
+ },
+ {
+  "module": "ganit",
+  "name": "yog_tak",
+  "params": "n",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/math_sum_to.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/math_sum_to.sm",
+   "examples/61_stdlib_math.sm",
+   "proof_props: edge30 int"
+  ],
+  "named_count": 4,
+  "mutants_total": 3,
+  "mutants_killed": 2,
+  "survivors": [
+   "C1:<=-><@L115"
+  ]
+ },
+ {
+  "module": "ganit",
+  "name": "dvigun",
+  "params": "n",
+  "doc": "",
+  "braceless": true,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/math_double.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/math_double.sm",
+   "tests/stdlib/numeric29.sm",
+   "examples/10_mathlib.sm"
+  ],
+  "named_count": 4,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "ganit",
+  "name": "trigun",
+  "params": "n",
+  "doc": "",
+  "braceless": true,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/math_triple.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/math_triple.sm",
+   "tests/stdlib/numeric29.sm",
+   "examples/10_mathlib.sm"
+  ],
+  "named_count": 4,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "ganit",
+  "name": "vardh",
+  "params": "n",
+  "doc": "",
+  "braceless": true,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/math_inc.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/math_inc.sm",
+   "tests/stdlib/numeric29.sm",
+   "examples/10_mathlib.sm"
+  ],
+  "named_count": 4,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "ganit",
+  "name": "bit_gan",
+  "params": "n",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/math_bit_count.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/math_bit_count.sm",
+   "proof_props: numeric28"
+  ],
+  "named_count": 2,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "ganit",
+  "name": "ganit_yadricch",
+  "params": "state",
+  "doc": "ganit_yadricch(state): Knuth MMIX LCG — state = state * 6364136223846793005 + 1442695040888963407 (shesh 2^64, plain wrapping arithmetic). `state` is a 1-cell array holding the seed; it is updated in place and the new state is returned. The full 64-bit state is returned (it may be negative); use nirapeksh_mulya or a modulo to map it to a range. Any seed works, including 0. Deterministic: the same seed always yields the same sequence. There is no entropy source in the language, so the caller owns the seed.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/breadth26.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/breadth26.sm",
+   "tests/stdlib/r8_list_model.sm",
+   "tests/stdlib/r8_map_model.sm"
+  ],
+  "named_count": 5,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "ganit",
+  "name": "ganit_seemit",
+  "params": "v, lo, hi",
+  "doc": "ganit_seemit(v, lo, hi): lo if v < lo, hi if v > hi, else v. Requires lo <= hi (if lo > hi, returns lo — the first branch wins).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/breadth26.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/breadth26.sm",
+   "proof_props: breadth26"
+  ],
+  "named_count": 2,
+  "mutants_total": 3,
+  "mutants_killed": 1,
+  "survivors": [
+   "C1:<-><=@L160",
+   "C2:>->>=@L161"
+  ]
+ },
+ {
+  "module": "ganita",
+  "name": "kuttaka",
+  "params": "a, b, c",
+  "doc": "kuttaka(a, b, c) -> x such that a*x is congruent to c (shesh b). Requires mahattam(a, b) to divide c. Returns x (a particular solution).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/ganita_kuttaka.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/ganita_kuttaka.sm",
+   "tests/stdlib/numeric29.sm",
+   "tests/stdlib/r8_number_edges.sm"
+  ],
+  "named_count": 5,
+  "mutants_total": 6,
+  "mutants_killed": 4,
+  "survivors": [
+   "C3:<-><=@L35",
+   "C4:>->>=@L36"
+  ]
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_vargmool",
+  "params": "n",
+  "doc": "integer vargit root (floor)",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/ganita_ganita_isqrt.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/ganita_ganita_isqrt.sm",
+   "tests/stdlib/numeric_hangfix.sm",
+   "tests/stdlib/r8_chakravala_sweep.sm"
+  ],
+  "named_count": 5,
+  "mutants_total": 5,
+  "mutants_killed": 4,
+  "survivors": [
+   "C1:<-><=@L46"
+  ]
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_nirapeksh",
+  "params": "n",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/ganita_ganita_abs.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/ganita_ganita_abs.sm",
+   "proof_props: numeric28"
+  ],
+  "named_count": 2,
+  "mutants_total": 2,
+  "mutants_killed": 1,
+  "survivors": [
+   "C1:<-><=@L70"
+  ]
+ },
+ {
+  "module": "ganita",
+  "name": "chakravala",
+  "params": "out, n",
+  "doc": "chakravala(out, n): solves x^2 - n*y^2 = 1 for least positive x, y. Fills out[0] = x and out[1] = y.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/chakravala29.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/chakravala29.sm",
+   "tests/stdlib/ganita_chakravala.sm",
+   "tests/stdlib/r8_chakravala_sweep.sm"
+  ],
+  "named_count": 6,
+  "mutants_total": 13,
+  "mutants_killed": 5,
+  "survivors": [
+   "C5:<-><=@L108",
+   "C6:!=->==@L108",
+   "C7:<-><=@L113",
+   "C8:>=->>@L115",
+   "C9:<=-><@L115",
+   "C10:<-><=@L121",
+   "C11:<-><=@L122",
+   "C12:<-><=@L122"
+  ]
+ },
+ {
+  "module": "ganita",
+  "name": "samasa",
+  "params": "out, a, b, c, d, n",
+  "doc": "samasa(out, a, b, c, d, n): Brahmagupta's composition law (bhavana / samasa). Given a^2 - n*b^2 = k1 and c^2 - n*d^2 = k2, composes them into a third: (a^2 - n*b^2)(c^2 - n*d^2) = (a*c + n*b*d)^2 - n*(a*d + b*c)^2 Fills out[0] = a*c + n*b*d  and  out[1] = a*d + b*c.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/ganita_samasa.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/ganita_samasa.sm",
+   "tests/stdlib/numeric29.sm",
+   "examples/91_indian_number_theory.sm"
+  ],
+  "named_count": 4,
+  "mutants_total": 0,
+  "mutants_killed": 0,
+  "survivors": []
+ },
+ {
+  "module": "ganita",
+  "name": "brahmagupta_kshetr",
+  "params": "a, b, c, d",
+  "doc": "brahmagupta_kshetr(a, b, c, d): Brahmagupta's formula for the area of a cyclic quadrilateral (Brahma-sphuta-siddhanta, 628 CE):  area = sqrt((s-a)(s-b)(s-c)(s-d)),  s = (a+b+c+d)/2. With d = 0 this is Brahmagupta's triangle (Heron's) formula. Returns the integer part.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/ganita_brahmagupta_area.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/ganita_brahmagupta_area.sm",
+   "tests/stdlib/numeric29.sm",
+   "examples/202_brahmagupta_area.sm"
+  ],
+  "named_count": 4,
+  "mutants_total": 2,
+  "mutants_killed": 1,
+  "survivors": [
+   "C1:<-><=@L176"
+  ]
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_janchit_yuj",
+  "params": "a, b, ok",
+  "doc": "ganita_janchit_yuj(a, b, ok) — a + b; ok[0] 1, or 0 on overflow (returns 0 then).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/ganita_checked.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/ganita_checked.sm",
+   "tests/stdlib/safety25.sm",
+   "proof_props: ganita checked add/sub"
+  ],
+  "named_count": 6,
+  "mutants_total": 6,
+  "mutants_killed": 3,
+  "survivors": [
+   "C1:>=->>@L221",
+   "C2:>=->>@L222",
+   "C4:<-><=@L229"
+  ]
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_janchit_nyun",
+  "params": "a, b, ok",
+  "doc": "ganita_janchit_nyun(a, b, ok) — a - b; ok[0] 1, or 0 on overflow (returns 0 then).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/ganita_checked.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/ganita_checked.sm",
+   "tests/stdlib/safety25.sm",
+   "proof_props: ganita checked add/sub"
+  ],
+  "named_count": 6,
+  "mutants_total": 6,
+  "mutants_killed": 2,
+  "survivors": [
+   "C2:<-><=@L248",
+   "C3:<-><=@L249",
+   "C4:>=->>@L255",
+   "C5:>=->>@L256"
+  ]
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_janchit_gun",
+  "params": "a, b, ok",
+  "doc": "ganita_janchit_gun(a, b, ok) — a * b; ok[0] 1, or 0 on overflow (returns 0 then). The check is m / a == b, with the INT64_MIN * -1 case handled explicitly (the division itself would SIGFPE there).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/ganita_checked.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/ganita_checked.sm",
+   "tests/stdlib/safety25.sm",
+   "proof_props: ganita checked mul"
+  ],
+  "named_count": 6,
+  "mutants_total": 8,
+  "mutants_killed": 8,
+  "survivors": []
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_janchit_bhaj",
+  "params": "a, b, ok",
+  "doc": "ganita_janchit_bhaj(a, b, ok) — truncating a / b; ok[0] 1, or 0 on division by zero or INT64_MIN / -1 (both would SIGFPE; returns 0).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/ganita_checked.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/ganita_checked.sm",
+   "tests/stdlib/safety25.sm",
+   "proof_props: ganita checked div/shesh"
+  ],
+  "named_count": 5,
+  "mutants_total": 4,
+  "mutants_killed": 4,
+  "survivors": []
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_janchit_shesh",
+  "params": "a, b, ok",
+  "doc": "ganita_janchit_shesh(a, b, ok) — truncating a % b (remainder takes the dividend's util_chinha); ok[0] 1, or 0 on b == 0 or INT64_MIN % -1.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/ganita_checked.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/ganita_checked.sm",
+   "tests/stdlib/safety25.sm",
+   "proof_props: ganita checked div/shesh"
+  ],
+  "named_count": 5,
+  "mutants_total": 4,
+  "mutants_killed": 4,
+  "survivors": []
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_yuj",
+  "params": "a, b",
+  "doc": "ganita_paripurna_yuj(a, b) — a + b, SATURATING: on overflow returns INT64_MAX (positive overflow) or INT64_MIN (negative overflow).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/ganita_sat.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/ganita_sat.sm",
+   "tests/stdlib/safety25.sm",
+   "proof_props: ganita saturating"
+  ],
+  "named_count": 5,
+  "mutants_total": 6,
+  "mutants_killed": 3,
+  "survivors": [
+   "C1:>=->>@L354",
+   "C2:>=->>@L355",
+   "C4:<-><=@L359"
+  ]
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_nyun",
+  "params": "a, b",
+  "doc": "ganita_paripurna_nyun(a, b) — a - b, saturating (see ganita_paripurna_yuj).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/ganita_sat.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/ganita_sat.sm",
+   "tests/stdlib/safety25.sm",
+   "proof_props: ganita saturating"
+  ],
+  "named_count": 5,
+  "mutants_total": 6,
+  "mutants_killed": 2,
+  "survivors": [
+   "C2:<-><=@L374",
+   "C3:<-><=@L375",
+   "C4:>=->>@L378",
+   "C5:>=->>@L379"
+  ]
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_gun",
+  "params": "a, b",
+  "doc": "ganita_paripurna_gun(a, b) — a * b, saturating (see ganita_paripurna_yuj). The overflow direction is the util_chinha of the true product.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/ganita_sat.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/ganita_sat.sm",
+   "tests/stdlib/safety25.sm",
+   "proof_props: ganita saturating"
+  ],
+  "named_count": 5,
+  "mutants_total": 11,
+  "mutants_killed": 8,
+  "survivors": [
+   "C6:==->!=@L400",
+   "C8:<-><=@L404",
+   "C9:<-><=@L405"
+  ]
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_janchit_ghat",
+  "params": "a, e, ok",
+  "doc": "ganita_janchit_ghat(a, e, ok) — a^e for e >= 0 via repeated checked multiplication (WS3, R19); ok[0] 1, or 0 if e < 0 (no integer ghat) or the result overflows (returns 0 then). 0^0 = 1 by the empty-product convention. O(e), but the loop exits early on overflow for every |a| >= 2 (a^e overflows by e = 63 at the latest); only the trivial bases -1, 0, 1 run the full loop.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/gaps19.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/gaps19.sm",
+   "tests/stdlib/safety25.sm",
+   "proof_props: gaps19"
+  ],
+  "named_count": 5,
+  "mutants_total": 4,
+  "mutants_killed": 4,
+  "survivors": []
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_janchit_kramgun",
+  "params": "n, ok",
+  "doc": "ganita_janchit_kramgun(n, ok) — n! via repeated checked multiplication (WS3, R20); ok[0] 1, or 0 if n < 0 (no integer factorial) or the result overflows (returns 0 then). 0! = 1. 20! is the largest that fits (20! = 2432902008176640000); 21! overflows.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/gaps20.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/gaps20.sm",
+   "tests/stdlib/safety25.sm",
+   "proof_props: gaps20"
+  ],
+  "named_count": 5,
+  "mutants_total": 4,
+  "mutants_killed": 4,
+  "survivors": []
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_ghat",
+  "params": "a, e",
+  "doc": "ganita_paripurna_ghat(a, e) — a^e, saturating (WS3, R20): on overflow returns INT64_MAX (positive overflow) or INT64_MIN (negative overflow). e < 0 returns 0 (no integer ghat; the saturating form has no ok channel, so 0 is the documented sentinel). 0^0 = 1. Repeated saturating multiplication. Correct because |a| <= 1 never saturates, and once saturated with |a| >= 2 every later true product overflows in the direction util_chinha(r) * util_chinha(a)^remaining — so the loop exits early with the parity of the remaining steps deciding the final bound, instead of iterating e times.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/gaps20.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/gaps20.sm",
+   "tests/stdlib/safety25.sm",
+   "proof_props: gaps20"
+  ],
+  "named_count": 5,
+  "mutants_total": 9,
+  "mutants_killed": 7,
+  "survivors": [
+   "C4:>->>=@L480",
+   "C7:>->>=@L485"
+  ]
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_bhaj",
+  "params": "a, b",
+  "doc": "ganita_paripurna_bhaj(a, b) — truncating a / b, saturating (WS4, R24): the sat_* companion of ganita_janchit_bhaj. INT64_MIN / -1 saturates to INT64_MAX (the true quotient 2^63 does not fit); b == 0 returns 0 (the saturating form has no ok channel, so 0 is the documented sentinel — same as sat_pow/sat_fact on invalid input). Guards both cases before dividing, so it never executes a trapping operation under a trapping compiler.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/safety24.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/safety24.sm",
+   "tests/stdlib/safety25.sm",
+   "proof_props: safety24"
+  ],
+  "named_count": 5,
+  "mutants_total": 4,
+  "mutants_killed": 4,
+  "survivors": []
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_shesh",
+  "params": "a, b",
+  "doc": "ganita_paripurna_shesh(a, b) — truncating a % b (WS4, R24). Remainder never overflows mathematically (INT64_MIN % -1 is exactly 0), but the hardware operation still traps on MIN % -1 (same SIGFPE as MIN / -1), so this guards that case and returns 0 — which is also the exact result. b == 0 returns 0 (same sentinel as sat_div). Guards before operating, so it never executes a trapping operation.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/safety24.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/safety24.sm",
+   "tests/stdlib/safety25.sm",
+   "proof_props: safety24"
+  ],
+  "named_count": 5,
+  "mutants_total": 4,
+  "mutants_killed": 4,
+  "survivors": []
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_janchit_nirapeksh",
+  "params": "a, ok",
+  "doc": "ganita_janchit_nirapeksh(a, ok) — |a| (WS4, R24); ok[0] 1, or 0 on abs(INT64_MIN), which overflows (returns 0 then). The unary overflow the checked family did not cover: plain ganita_nirapeksh(MIN) silently wraps to MIN.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/safety24.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/safety24.sm",
+   "tests/stdlib/safety25.sm",
+   "proof_props: safety24"
+  ],
+  "named_count": 5,
+  "mutants_total": 3,
+  "mutants_killed": 2,
+  "survivors": [
+   "C2:<-><=@L542"
+  ]
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_nirapeksh",
+  "params": "a",
+  "doc": "ganita_paripurna_nirapeksh(a) — |a|, saturating (WS4, R24): abs(INT64_MIN) saturates to INT64_MAX.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/safety24.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/safety24.sm",
+   "tests/stdlib/safety25.sm",
+   "proof_props: safety24"
+  ],
+  "named_count": 5,
+  "mutants_total": 3,
+  "mutants_killed": 2,
+  "survivors": [
+   "C2:<-><=@L553"
+  ]
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_kramgun",
+  "params": "n",
+  "doc": "ganita_paripurna_kramgun(n) — n!, saturating (WS3, R21): on overflow returns INT64_MAX (factorials are positive, so saturation is always MAX). n < 0 returns 0 (no integer factorial; the saturating form has no ok channel, so 0 is the documented sentinel). 0! = 1. 20! is the largest that fits; 21! saturates. Exits early once saturated (factorials only grow, so a saturated result stays saturated).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/gaps21.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/gaps21.sm",
+   "tests/stdlib/safety25.sm",
+   "proof_props: gaps21"
+  ],
+  "named_count": 5,
+  "mutants_total": 4,
+  "mutants_killed": 4,
+  "survivors": []
+ },
+ {
+  "module": "gudh",
+  "name": "fnv1a",
+  "params": "s, len",
+  "doc": "fnv1a(s, len) — FNV-1a 32-bit hash of first `len` chars of pankti `s`. Returns an unsigned 32-bit value (may print as negative via likha).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/hash_fnv1a.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/hash_fnv1a.sm"
+  ],
+  "named_count": 1,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "gudh",
+  "name": "fnv1a_varna",
+  "params": "s",
+  "doc": "fnv1a_varna(s) — FNV-1a of NUL-terminated pankti `s` (uses vartani_len).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/hash_fnv1a.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/hash_fnv1a.sm",
+   "proof_props: hash fnv1a deterministic",
+   "proof_props: hash fnv1a empty == basis"
+  ],
+  "named_count": 4,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "kalana",
+  "name": "kalana_trapiz",
+  "params": "kosh dasham xs, kosh dasham ys",
+  "doc": "Trapezoidal rule. xs and ys are sample points and values; uses the shorter length.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/kalana_trapezoid.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/kalana_trapezoid.sm",
+   "examples/208_kalana.sm"
+  ],
+  "named_count": 2,
+  "mutants_total": 4,
+  "mutants_killed": 3,
+  "survivors": [
+   "C1:<-><=@L19"
+  ]
+ },
+ {
+  "module": "kalana",
+  "name": "simpson",
+  "params": "kosh dasham xs, kosh dasham ys",
+  "doc": "Simpson's 1/3 rule over equally spaced samples. Needs an odd number of points (an even number of intervals); if there are fewer it falls back to the kalana_trapiz.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/kalana_simpson.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/kalana_simpson.sm",
+   "examples/208_kalana.sm"
+  ],
+  "named_count": 2,
+  "mutants_total": 6,
+  "mutants_killed": 5,
+  "survivors": [
+   "C1:<-><=@L35"
+  ]
+ },
+ {
+  "module": "kalana",
+  "name": "pravan",
+  "params": "kosh dasham xs, kosh dasham ys, i",
+  "doc": "Central difference at interior point i; one-sided at the ends.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/kalana_slope.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/kalana_slope.sm",
+   "examples/208_kalana.sm",
+   "proof_props: edge30 float"
+  ],
+  "named_count": 3,
+  "mutants_total": 6,
+  "mutants_killed": 4,
+  "survivors": [
+   "C1:<-><=@L60",
+   "C2:<-><=@L61"
+  ]
+ },
+ {
+  "module": "kalana",
+  "name": "pravan2",
+  "params": "kosh dasham xs, kosh dasham ys, i",
+  "doc": "Second derivative at an interior point (central, equally spaced assumption relaxed).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/kalana_slope2.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/kalana_slope2.sm",
+   "examples/208_kalana.sm",
+   "proof_props: edge30 float"
+  ],
+  "named_count": 3,
+  "mutants_total": 7,
+  "mutants_killed": 5,
+  "survivors": [
+   "C1:<-><=@L80",
+   "C3:>=->>@L82"
+  ]
+ },
+ {
+  "module": "kalana",
+  "name": "bahu_ganana",
+  "params": "kosh dasham c, dasham x",
+  "doc": "Horner evaluation: c[0] + c[1]x + c[2]x^2 + ...",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/kalana_bahu_ganana.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/kalana_bahu_ganana.sm",
+   "examples/208_kalana.sm"
+  ],
+  "named_count": 2,
+  "mutants_total": 3,
+  "mutants_killed": 3,
+  "survivors": []
+ },
+ {
+  "module": "kalana",
+  "name": "bahu_mula",
+  "params": "kosh dasham c, dasham lo, dasham hi, kosh dasham ok",
+  "doc": "Bisection root of a polynomial on [lo, hi]. CONTRACT: `ok` must already contain ONE element (call kosh_push(ok, 0.0) first). A kosh's capacity is not its length, so ok[0] is out of bounds until an element exists. Requires a util_chinha change across the interval, which is checked and reported by returning a NaN-like sentinel of 0.0 with ok=0. ok is returned through a one-element kosh so the caller can tell success from failure.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/kalana_bahu_mula.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/kalana_bahu_mula.sm",
+   "examples/208_kalana.sm"
+  ],
+  "named_count": 2,
+  "mutants_total": 11,
+  "mutants_killed": 6,
+  "survivors": [
+   "C3:<-><=@L124",
+   "C5:<-><=@L124",
+   "C6:<-><=@L128",
+   "C8:<-><=@L132",
+   "C10:<-><=@L132"
+  ]
+ },
+ {
+  "module": "khand",
+  "name": "khand_bandh",
+  "params": "cells, n, out",
+  "doc": "khand_bandh(cells, n, out) — pack a qword-cell sequence (one byte value per cell, the varna_bhed/khand_bhed segment format) into contiguous bytes. Writes a 0 terminator at out[n]. Returns n. This is the boundary helper: hand-written repack loops (one per call site, each a chance to get the stride wrong) become one call. n <= 0 writes only the terminator and returns 0. POINTER ARITHMETIC IS IN BYTES: to pack starting at cell i of a cell array, pass cells + i*8, not cells + i.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/set_difference.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/set_difference.sm",
+   "tests/stdlib/set_intersect.sm",
+   "tests/stdlib/set_to_array.sm"
+  ],
+  "named_count": 6,
+  "mutants_total": 3,
+  "mutants_killed": 1,
+  "survivors": [
+   "C1:<=-><@L44",
+   "C2:<-><=@L48"
+  ]
+ },
+ {
+  "module": "khand",
+  "name": "khand_mukt",
+  "params": "bytes, n, out",
+  "doc": "khand_mukt(bytes, n, out) — the inverse: expand n contiguous bytes into qword cells (one byte value per cell). Writes a 0 terminator cell at out[n]. Returns n. n <= 0 writes only the terminator, returns 0. POINTER ARITHMETIC IS IN BYTES: to unpack into cell i of a cell array, pass out + i*8, not out + i.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/strb_pack_unpack.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/strb_pack_unpack.sm",
+   "proof_props: strb pack/unpack roundtrip"
+  ],
+  "named_count": 2,
+  "mutants_total": 3,
+  "mutants_killed": 1,
+  "survivors": [
+   "C1:<=-><@L66",
+   "C2:<-><=@L70"
+  ]
+ },
+ {
+  "module": "khand",
+  "name": "khand_pratilip",
+  "params": "src, n, out",
+  "doc": "khand_pratilip(src, n, out) — copy n bytes verbatim (\"make me a real byte string from this\"). Writes a 0 terminator at out[n]. Returns n. n <= 0 writes only the terminator, returns 0.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/gaps19.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/gaps19.sm",
+   "tests/stdlib/slices23.sm",
+   "tests/stdlib/strb_cell_pairs.sm"
+  ],
+  "named_count": 6,
+  "mutants_total": 3,
+  "mutants_killed": 1,
+  "survivors": [
+   "C1:<=-><@L86",
+   "C2:<-><=@L90"
+  ]
+ },
+ {
+  "module": "khand",
+  "name": "khand_maap",
+  "params": "s",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/string_strb_find.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/string_strb_find.sm"
+  ],
+  "named_count": 1,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "khand",
+  "name": "khand_anwesh",
+  "params": "hay, hn, needle, nn",
+  "doc": "khand_anwesh(hay, hn, needle, nn) — byte index of first occurrence of needle in hay, or -1. Empty needle matches at 0.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/string_strb_find.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/string_strb_find.sm",
+   "proof_props: strb find vs python",
+   "proof_props: edge30 text"
+  ],
+  "named_count": 3,
+  "mutants_total": 8,
+  "mutants_killed": 8,
+  "survivors": []
+ },
+ {
+  "module": "khand",
+  "name": "khand_antah",
+  "params": "hay, hn, needle, nn",
+  "doc": "khand_antah(hay, hn, needle, nn) — 1 if needle occurs in hay, else 0.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/r8_bytes_edges.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/r8_bytes_edges.sm",
+   "tests/stdlib/string_strb_find.sm"
+  ],
+  "named_count": 2,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "khand",
+  "name": "khand_pratisthap",
+  "params": "src, sn, find, fn, repl, out",
+  "doc": "khand_pratisthap(src, sn, find, fn, repl, out) — copy src to out, replacing every (non-overlapping) occurrence of find with repl. repl is 0-terminated (its length is derived, so a literal works) — repl cannot be a slice; khand_pratilip a slice into a terminated buffer first (see header, slice-boundary rules). Returns the new byte count. Empty find: copy verbatim. Caller allocates generously.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/slices23.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/slices23.sm",
+   "tests/stdlib/string_strb_bridge.sm",
+   "proof_props: strb replace"
+  ],
+  "named_count": 5,
+  "mutants_total": 10,
+  "mutants_killed": 9,
+  "survivors": [
+   "C2:<=-><@L155"
+  ]
+ },
+ {
+  "module": "khand",
+  "name": "khand_bhed",
+  "params": "src, sn, sep, sepn, parts, maxparts",
+  "doc": "khand_bhed(src, sn, sep, sepn, parts, maxparts) — split src on sep. Same length-prefixed segment format as varna_bhed (R9): parts holds [len0, b0, b1, ..., len1, b0, ...]; cells hold one byte value each. Returns the segment count (capped at maxparts). Empty separator: no split (one segment). Empty input: one empty segment.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/r8_split_model.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/r8_split_model.sm",
+   "tests/stdlib/string_strb_split_join.sm",
+   "proof_props: strb split/join"
+  ],
+  "named_count": 4,
+  "mutants_total": 13,
+  "mutants_killed": 12,
+  "survivors": [
+   "C11:>=->>@L266"
+  ]
+ },
+ {
+  "module": "khand",
+  "name": "khand_yuj",
+  "params": "parts, count, sep, sepn, out",
+  "doc": "khand_yuj(parts, count, sep, sepn, out) — inverse of khand_bhed for the length-prefixed format. Joins `count` segments with sep into a byte string. Returns the new byte count.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/string_strb_split_join.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/string_strb_split_join.sm",
+   "proof_props: strb split/join"
+  ],
+  "named_count": 2,
+  "mutants_total": 4,
+  "mutants_killed": 3,
+  "survivors": [
+   "C1:<-><=@L293"
+  ]
+ },
+ {
+  "module": "khand",
+  "name": "khand_chhid",
+  "params": "src, sn, out",
+  "doc": "khand_chhid(src, sn, out) — strip leading/trailing ASCII spaces (32). Returns the new byte count.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/string_strb_trim_case.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/string_strb_trim_case.sm",
+   "proof_props: strb trim/case"
+  ],
+  "named_count": 2,
+  "mutants_total": 8,
+  "mutants_killed": 6,
+  "survivors": [
+   "C2:>=->>@L329",
+   "C5:<=-><@L337"
+  ]
+ },
+ {
+  "module": "khand",
+  "name": "khand_unnat",
+  "params": "src, sn, out",
+  "doc": "khand_unnat(src, sn, out) / khand_avanat — ASCII case conversion on byte strings. Returns the byte count. sn < 0: empty output (the old code wrote the terminator at out[-1], out of bounds).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/r8_bytes_edges.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/r8_bytes_edges.sm",
+   "tests/stdlib/string_strb_trim_case.sm",
+   "proof_props: strb trim/case"
+  ],
+  "named_count": 4,
+  "mutants_total": 5,
+  "mutants_killed": 3,
+  "survivors": [
+   "C1:<-><=@L362",
+   "C2:<-><=@L366"
+  ]
+ },
+ {
+  "module": "khand",
+  "name": "khand_avanat",
+  "params": "src, sn, out",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/r8_bytes_edges.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/r8_bytes_edges.sm",
+   "tests/stdlib/string_strb_trim_case.sm",
+   "proof_props: strb trim/case"
+  ],
+  "named_count": 4,
+  "mutants_total": 5,
+  "mutants_killed": 3,
+  "survivors": [
+   "C1:<-><=@L384",
+   "C2:<-><=@L388"
+  ]
+ },
+ {
+  "module": "khand",
+  "name": "khand_aadi",
+  "params": "src, sn, pre, pn",
+  "doc": "khand_aadi(src, sn, pre, pn) / khand_ant — 0/1 on byte strings. A negative prefix/suffix length is invalid: 0 (the old code treated it as empty and returned 1).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/r8_bytes_edges.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/r8_bytes_edges.sm",
+   "tests/stdlib/string_strb_starts_compare.sm",
+   "proof_props: edge30 text"
+  ],
+  "named_count": 3,
+  "mutants_total": 5,
+  "mutants_killed": 5,
+  "survivors": []
+ },
+ {
+  "module": "khand",
+  "name": "khand_ant",
+  "params": "src, sn, suf, sn2",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/r8_bytes_edges.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/r8_bytes_edges.sm",
+   "tests/stdlib/string_strb_starts_compare.sm",
+   "proof_props: edge30 text"
+  ],
+  "named_count": 3,
+  "mutants_total": 5,
+  "mutants_killed": 4,
+  "survivors": [
+   "C3:<-><=@L426"
+  ]
+ },
+ {
+  "module": "khand",
+  "name": "khand_tul",
+  "params": "a, an, b, bn",
+  "doc": "khand_tul(a, an, b, bn) — -1 / 0 / 1 (lexicographic by byte value).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/map_keys_bytes.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/map_keys_bytes.sm",
+   "tests/stdlib/string_strb_split_join.sm",
+   "tests/stdlib/string_strb_starts_compare.sm"
+  ],
+  "named_count": 5,
+  "mutants_total": 7,
+  "mutants_killed": 6,
+  "survivors": [
+   "C1:<-><=@L444"
+  ]
+ },
+ {
+  "module": "khand",
+  "name": "khand_viparyay",
+  "params": "src, sn, out",
+  "doc": "khand_viparyay(src, sn, out) — copy src reversed into out (WS3, R19). Two-pointer vinimay, so it is SAFE IN PLACE (src == out works). Writes a 0 terminator at out[sn]. Returns sn. sn <= 0 writes only the terminator, returns 0. Before this, reversing a byte string meant a hand-written loop at every call site.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/gaps19.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/gaps19.sm",
+   "proof_props: gaps19"
+  ],
+  "named_count": 2,
+  "mutants_total": 4,
+  "mutants_killed": 2,
+  "survivors": [
+   "C1:<=-><@L469",
+   "C2:<-><=@L475"
+  ]
+ },
+ {
+  "module": "khand",
+  "name": "khand_gan",
+  "params": "hay, hn, needle, nn",
+  "doc": "khand_gan(hay, hn, needle, nn) — count NON-OVERLAPPING occurrences of needle in hay (WS3, R19). Empty needle returns 0 (khand_anwesh would match at 0 forever). Before this, counting meant looping khand_anwesh over successive suffixes at every call site.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/gaps19.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/gaps19.sm",
+   "proof_props: gaps19",
+   "proof_props: edge30 text"
+  ],
+  "named_count": 3,
+  "mutants_total": 4,
+  "mutants_killed": 4,
+  "survivors": []
+ },
+ {
+  "module": "khand",
+  "name": "khand_gan_swar",
+  "params": "s, n",
+  "doc": "khand_gan_swar(s, n) — count lowercase vowels (a e i o u) in the first n bytes (WS1, R20). Explicit-length form of gan_swar: unlike gan_swar (which scans to the NUL terminator), this stops at n, so it is correct on slices. Mirrors gan_swar exactly: lowercase vowels only, no uppercase.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/slices23.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/slices23.sm",
+   "tests/stdlib/strb_cell_pairs.sm",
+   "proof_props: strb cell pairs"
+  ],
+  "named_count": 4,
+  "mutants_total": 7,
+  "mutants_killed": 7,
+  "survivors": []
+ },
+ {
+  "module": "khand",
+  "name": "khand_gan_akshar",
+  "params": "s, n, code",
+  "doc": "khand_gan_akshar(s, n, code) — count occurrences of byte `code` in the first n bytes (WS1, R20). Explicit-length form of gan_akshar; correct on slices. (For a substring, use khand_gan.)",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/strb_cell_pairs.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/strb_cell_pairs.sm",
+   "proof_props: strb cell pairs",
+   "proof_props: slices23"
+  ],
+  "named_count": 3,
+  "mutants_total": 3,
+  "mutants_killed": 2,
+  "survivors": [
+   "C1:<-><=@L541"
+  ]
+ },
+ {
+  "module": "khand",
+  "name": "khand_anwesh_akshar",
+  "params": "s, n, code",
+  "doc": "khand_anwesh_akshar(s, n, code) — first index of byte `code` in the first n bytes, or -1 (WS1, R20). Explicit-length form of anwesh_akshar.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/slices23.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/slices23.sm",
+   "tests/stdlib/strb_cell_pairs.sm",
+   "proof_props: strb cell pairs"
+  ],
+  "named_count": 4,
+  "mutants_total": 3,
+  "mutants_killed": 2,
+  "survivors": [
+   "C1:<-><=@L555"
+  ]
+ },
+ {
+  "module": "khand",
+  "name": "khand_asti_sarv_ank",
+  "params": "s, n",
+  "doc": "khand_asti_sarv_ank(s, n) — 1 if all of the first n bytes are ASCII digits, else 0 (WS1, R20). Explicit-length form of asti_sarv_ank. Empty (n == 0) is 0, mirroring asti_sarv_ank.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/slices23.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/slices23.sm",
+   "tests/stdlib/strb_cell_pairs.sm",
+   "proof_props: strb cell pairs"
+  ],
+  "named_count": 5,
+  "mutants_total": 5,
+  "mutants_killed": 3,
+  "survivors": [
+   "C3:<-><=@L573",
+   "C4:>->>=@L573"
+  ]
+ },
+ {
+  "module": "khand",
+  "name": "khand_sam",
+  "params": "a, an, b, bn",
+  "doc": "khand_sam(a, an, b, bn) — 1 if the two byte strings are equal, else 0 (WS1, R20). Explicit-length form of varna_sam.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/slices23.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/slices23.sm",
+   "tests/stdlib/strb_cell_pairs.sm",
+   "proof_props: strb cell pairs"
+  ],
+  "named_count": 4,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_vargmool",
+  "params": "dasham v",
+  "doc": "vargit root by Newton's method (Babylonian), to float precision. v <= 0 returns 0.0. 1000 iterations: Newton from g = v halves the guess until it reaches sqrt(v) (~512 halvings for v = 1.8e308); 40 iterations gave 1e288 for sqrt(1e300).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/madhava_madhava_sqrt.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/madhava_madhava_sqrt.sm",
+   "examples/201_madhava_library.sm",
+   "proof_props: edge30 float"
+  ],
+  "named_count": 3,
+  "mutants_total": 4,
+  "mutants_killed": 1,
+  "survivors": [
+   "C1:<=-><@L14",
+   "C2:<-><=@L16",
+   "C3:<-><=@L18"
+  ]
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_pi",
+  "params": "",
+  "doc": "Madhava's fast series for pi:  pi = sqrt(12) * sum (-1)^k / ((2k+1) * 3^k)",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/madhava_madhava_pi.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/madhava_madhava_pi.sm",
+   "examples/126_numeric_pipeline.sm",
+   "examples/201_madhava_library.sm"
+  ],
+  "named_count": 3,
+  "mutants_total": 3,
+  "mutants_killed": 1,
+  "survivors": [
+   "C1:<-><=@L32",
+   "C2:>->>=@L34"
+  ]
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_sin",
+  "params": "dasham x",
+  "doc": "Madhava's sine series:  sin(x) = x - x^3/3! + x^5/5! - ... Evaluated on x reduced to [-PI, PI] (k = trunc(x / 2PI), one PI-adjustment). Without reduction the 16-term series was off by ~1e-4 at x = 10 and inf at x = 100. Exact for |x| <= ~1e15.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/madhava_madhava_sin.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/madhava_madhava_sin.sm",
+   "examples/201_madhava_library.sm",
+   "proof_props: edge30 float"
+  ],
+  "named_count": 3,
+  "mutants_total": 4,
+  "mutants_killed": 1,
+  "survivors": [
+   "C1:>->>=@L55",
+   "C2:<-><=@L56",
+   "C3:<-><=@L60"
+  ]
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_cos",
+  "params": "dasham x",
+  "doc": "Madhava's cosine series:  cos(x) = 1 - x^2/2! + x^4/4! - ... Same argument reduction as sin (was ~3.5e-4 off at x = 10).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/madhava_madhava_cos.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/madhava_madhava_cos.sm",
+   "examples/201_madhava_library.sm",
+   "proof_props: edge30 float"
+  ],
+  "named_count": 3,
+  "mutants_total": 4,
+  "mutants_killed": 1,
+  "survivors": [
+   "C1:>->>=@L75",
+   "C2:<-><=@L76",
+   "C3:<-><=@L80"
+  ]
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_atan",
+  "params": "dasham x",
+  "doc": "Madhava-Gregory arctangent series:  atan(x) = x - x^3/3 + x^5/5 - ... The raw series converges like 1/n at |x| = 1 (atan(1) was off by 6e-4) and diverges for |x| > 1. Two exact identities fix it: |x| > 1:  atan(x) = PI/2 - atan(1/x)  (one recursion) |x| <= 1: atan(x) = 2*atan(x / (1 + sqrt(1+x^2))) — the reduced argument is <= 0.42, where the series converges to float precision in ~25 terms (60 used for margin).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/madhava_madhava_atan.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/madhava_madhava_atan.sm",
+   "examples/201_madhava_library.sm",
+   "proof_props: edge30 float"
+  ],
+  "named_count": 3,
+  "mutants_total": 7,
+  "mutants_killed": 4,
+  "survivors": [
+   "C1:<-><=@L98",
+   "C4:<-><=@L112",
+   "C5:>->>=@L114"
+  ]
+ },
+ {
+  "module": "mala",
+  "name": "mala_nava",
+  "params": "n",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/array_array_copy.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/array_array_copy.sm",
+   "tests/stdlib/array_array_fill.sm",
+   "tests/stdlib/array_array_get.sm"
+  ],
+  "named_count": 9,
+  "mutants_total": 2,
+  "mutants_killed": 1,
+  "survivors": [
+   "C1:<-><=@L13"
+  ]
+ },
+ {
+  "module": "mala",
+  "name": "mala_sangrah",
+  "params": "arr, i, val",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/array_array_copy.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/array_array_copy.sm",
+   "tests/stdlib/array_array_get.sm",
+   "tests/stdlib/array_array_get_safe.sm"
+  ],
+  "named_count": 5,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "mala",
+  "name": "mala_grah",
+  "params": "arr, i",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/array_array_copy.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/array_array_copy.sm",
+   "tests/stdlib/array_array_fill.sm",
+   "tests/stdlib/array_array_get.sm"
+  ],
+  "named_count": 5,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "mala",
+  "name": "mala_purn",
+  "params": "arr, val, n",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/array_array_fill.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/array_array_fill.sm",
+   "tests/stdlib/array_array_sum.sm"
+  ],
+  "named_count": 2,
+  "mutants_total": 2,
+  "mutants_killed": 1,
+  "survivors": [
+   "C1:<-><=@L36"
+  ]
+ },
+ {
+  "module": "mala",
+  "name": "mala_pratilip",
+  "params": "dst, src, n",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/array_array_copy.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/array_array_copy.sm"
+  ],
+  "named_count": 1,
+  "mutants_total": 2,
+  "mutants_killed": 1,
+  "survivors": [
+   "C1:<-><=@L48"
+  ]
+ },
+ {
+  "module": "mala",
+  "name": "mala_yog",
+  "params": "arr, n",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/array_array_sum.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/array_array_sum.sm"
+  ],
+  "named_count": 1,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "mala",
+  "name": "mala_sangrah_surakshit",
+  "params": "arr, i, val, n",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/array_array_set_safe.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/array_array_set_safe.sm"
+  ],
+  "named_count": 1,
+  "mutants_total": 3,
+  "mutants_killed": 3,
+  "survivors": []
+ },
+ {
+  "module": "mala",
+  "name": "mala_grah_surakshit",
+  "params": "arr, i, n",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/array_array_get_safe.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/array_array_get_safe.sm"
+  ],
+  "named_count": 1,
+  "mutants_total": 3,
+  "mutants_killed": 2,
+  "survivors": [
+   "C2:>=->>@L83"
+  ]
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_kunji_gudh",
+  "params": "key, keyn, cap",
+  "doc": "nighantu_kunji_gudh(key, keyn, cap) — home bucket of key (internal helper).",
+  "braceless": false,
+  "status": "PROVEN-INDIRECT",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/containers20.sm"
+  ],
+  "named_by": [],
+  "named_count": 0,
+  "mutants_total": 2,
+  "mutants_killed": 1,
+  "survivors": [
+   "C1:<-><=@L39"
+  ]
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_kunji_sam",
+  "params": "m, slot, cap, key, keyn",
+  "doc": "nighantu_kunji_sam(m, slot, cap, key, keyn) — 1 if slot's key equals (key,keyn) (internal helper; keyn already truncated by the caller). Reworked in R13 to use khand_tul instead of a hand-rolled loop.",
+  "braceless": false,
+  "status": "PROVEN-INDIRECT",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/containers20.sm"
+  ],
+  "named_by": [],
+  "named_count": 0,
+  "mutants_total": 3,
+  "mutants_killed": 3,
+  "survivors": []
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_koshtha_likh",
+  "params": "m, slot, cap, key, keyn, val",
+  "doc": "nighantu_koshtha_likh(m, slot, cap, key, keyn, val) — store key+val at slot and mark it live (internal helper; keyn already truncated by the caller). NOTE: this deliberately does NOT use khand_pratilip for the key copy: khand_pratilip writes a 0 terminator at out[keyn], which for a full 32-byte key would land on the NEXT slot's first key byte. The explicit loop plus zero-fill stays exactly inside this slot.",
+  "braceless": false,
+  "status": "PROVEN-INDIRECT",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/containers20.sm"
+  ],
+  "named_by": [],
+  "named_count": 0,
+  "mutants_total": 3,
+  "mutants_killed": 1,
+  "survivors": [
+   "R",
+   "C1:<-><=@L68"
+  ]
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_anwesh",
+  "params": "m, cap, key, keyn",
+  "doc": "nighantu_anwesh(m, cap, key, keyn) — slot index holding key, or -1 if absent (internal helper; stops at the first empty slot — valid because deletion is backward-shift, so chains have no holes). cap < 1 or keyn < 0: not found (cap 0 trapped with SIGFPE on h % 0; negative keyn stored a negative keylen, which nighantu_kunjika_ashtak emitted as length byte 255).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/containers20.sm"
+  ],
+  "named_by": [
+   "proof_props: edge30 containers"
+  ],
+  "named_count": 1,
+  "mutants_total": 8,
+  "mutants_killed": 6,
+  "survivors": [
+   "C1:<-><=@L89",
+   "C3:>->>=@L91"
+  ]
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_srij",
+  "params": "cap",
+  "doc": "nighantu_srij(cap) — allocate and clear a map of capacity cap (clamped to >= 1). Returns 0 if cap is so large the allocation size overflows (a wrapped size allocated a small buffer and then wrote cap state cells past it — SIGSEGV).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/containers20.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/containers20.sm",
+   "tests/stdlib/containers21.sm",
+   "tests/stdlib/gaps19.sm"
+  ],
+  "named_count": 23,
+  "mutants_total": 5,
+  "mutants_killed": 2,
+  "survivors": [
+   "C1:<-><=@L112",
+   "C2:<-><=@L114",
+   "C4:<-><=@L119"
+  ]
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_khip",
+  "params": "m, cap, key, keyn, val",
+  "doc": "nighantu_khip(m, cap, key, keyn, val) — insert or update key; returns 1 on success, 0 if the table is full (then the map is unchanged). Updating an existing key keeps nighantu_maap unchanged. cap < 1 or keyn < 0: returns 0 (cap 0 trapped with SIGFPE; negative keyn corrupted nighantu_kunjika_ashtak).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/containers20.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/containers20.sm",
+   "tests/stdlib/containers21.sm",
+   "tests/stdlib/gaps19.sm"
+  ],
+  "named_count": 23,
+  "mutants_total": 8,
+  "mutants_killed": 7,
+  "survivors": [
+   "C3:>->>=@L138"
+  ]
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_grah",
+  "params": "m, cap, key, keyn",
+  "doc": "nighantu_grah(m, cap, key, keyn) — value stored for key, or -1 if absent (documented sentinel; use nighantu_antah to disambiguate).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/containers20.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/containers20.sm",
+   "tests/stdlib/gaps23.sm",
+   "tests/stdlib/map_basic.sm"
+  ],
+  "named_count": 16,
+  "mutants_total": 3,
+  "mutants_killed": 2,
+  "survivors": [
+   "C1:>->>=@L161"
+  ]
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_antah",
+  "params": "m, cap, key, keyn",
+  "doc": "nighantu_antah(m, cap, key, keyn) — 1 if key is present, else 0.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/map_basic.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/map_basic.sm",
+   "tests/stdlib/map_clear.sm",
+   "tests/stdlib/map_remove.sm"
+  ],
+  "named_count": 6,
+  "mutants_total": 3,
+  "mutants_killed": 2,
+  "survivors": [
+   "C1:>->>=@L170"
+  ]
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_apanay",
+  "params": "m, cap, key, keyn",
+  "doc": "nighantu_apanay(m, cap, key, keyn) — delete key; 1 if removed, 0 if absent. Backward-shift deletion (Knuth 6.4R): after clearing the slot, each following live entry whose home bucket is NOT cyclically past the hole is shifted back into it, preserving every probe chain with no tombstones.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/map_remove.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/map_remove.sm",
+   "tests/stdlib/r8_map_model.sm",
+   "proof_props: map delete"
+  ],
+  "named_count": 3,
+  "mutants_total": 13,
+  "mutants_killed": 9,
+  "survivors": [
+   "C1:>->>=@L192",
+   "C7:<=-><@L210",
+   "C9:<=-><@L216",
+   "C12:>=->>@L235"
+  ]
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_rikta",
+  "params": "m",
+  "doc": "nighantu_rikta(m) — reset the map to empty IN PLACE (WS1, R19): same handle, same capacity, no leak, no re-allocation. Capacity is read from m[0]; no cap parameter, so a mismatched cap cannot corrupt the map. FULL ZERO, not a count reset: the count, every state flag, every keylen, every val, and every key byte are set to 0. After nighantu_rikta the buffer is indistinguishable from a freshly zeroed map. Merely resetting the count would leave the old keys readable through the key region to anyone holding the handle — the stale-segment hazard this closes. Returns 1.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/map_clear.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/map_clear.sm",
+   "proof_props: nighantu_rikta reuse"
+  ],
+  "named_count": 2,
+  "mutants_total": 3,
+  "mutants_killed": 0,
+  "survivors": [
+   "R",
+   "C1:<-><=@L255",
+   "C2:<-><=@L261"
+  ]
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_vardh",
+  "params": "m, newcap",
+  "doc": "nighantu_vardh(m, newcap) — copy the map into a fresh map of capacity newcap, rehashing every entry (WS2, R20). Returns the new handle. Returns 0 and changes nothing if newcap < nighantu_maap(m) (no partial copy). The old buffer is abandoned (the library has no free — same as re-init); rebind: m = nighantu_vardh(m, 32). Capacity is clamped to >= 1 by nighantu_srij. Before this, growing a fixed-capacity map meant a hand-written re-put loop over nighantu_kunjika_ashtak at every call site.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/containers20.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/containers20.sm",
+   "proof_props: containers resize/vinimay"
+  ],
+  "named_count": 2,
+  "mutants_total": 3,
+  "mutants_killed": 2,
+  "survivors": [
+   "C1:<-><=@L289"
+  ]
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_grah_mool",
+  "params": "m, cap, key, keyn, def",
+  "doc": "nighantu_grah_mool(m, cap, key, keyn, def) — value for key, or def if absent (WS3, R19). The -1 sentinel of nighantu_grah cannot distinguish \"absent\" from \"stored -1\"; this removes the contains-check dance for callers whose default is not -1. (A caller whose default IS -1 gets exactly nighantu_grah's behaviour.)",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/gaps19.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/gaps19.sm",
+   "proof_props: gaps19"
+  ],
+  "named_count": 2,
+  "mutants_total": 3,
+  "mutants_killed": 1,
+  "survivors": [
+   "C1:>->>=@L312",
+   "C2:<-><=@L314"
+  ]
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_maap",
+  "params": "m",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/containers20.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/containers20.sm",
+   "tests/stdlib/gaps23.sm",
+   "tests/stdlib/map_basic.sm"
+  ],
+  "named_count": 16,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_mil",
+  "params": "dst, dcap, src, scap",
+  "doc": "nighantu_mil(dst, dcap, src, scap) — copy every entry of src into dst; src's values overwrite dst's on key conflict (WS3, R23). Returns the number of entries merged. If dst fills up, merging stops early and the return is less than nighantu_maap(src) — check nighantu_maap(dst) afterwards to detect a partial merge. Before, merging meant a nighantu_kunjika_ashtak pass plus a nighantu_grah + nighantu_khip per key at every call site. (nighantu_grah's -1 sentinel is not a hazard here: the keys come from nighantu_kunjika_ashtak, so every key is known to exist.)",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/gaps23.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/gaps23.sm",
+   "proof_props: gaps23",
+   "proof_props: invariants24 merge/symdiff"
+  ],
+  "named_count": 3,
+  "mutants_total": 3,
+  "mutants_killed": 3,
+  "survivors": []
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_mulya",
+  "params": "m, out",
+  "doc": "nighantu_mulya(m, out) — write the live values into out (one qword cell each), in the same slot order as nighantu_kunjika / nighantu_kunjika_ashtak (WS2, R21). Returns the value count, which equals nighantu_maap(m). Caller allocates cap cells. Before this, collecting values meant a nighantu_kunjika_ashtak pass plus a nighantu_grah per key at every call site.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/containers21.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/containers21.sm",
+   "proof_props: containers21"
+  ],
+  "named_count": 2,
+  "mutants_total": 3,
+  "mutants_killed": 2,
+  "survivors": [
+   "C1:<-><=@L360"
+  ]
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_kunjika",
+  "params": "m, out",
+  "doc": "nighantu_kunjika(m, out) — write live keys into out in length-prefixed form [len0, b0, b1, ..., len1, b0, ...] (same shape as varna_bhed parts). Returns the key count, which equals nighantu_maap(m). NOTE: segments are QWORD CELLS (len in one cell, one byte per cell), kept for backward compatibility. New code should use nighantu_kunjika_ashtak below, which returns the same segments as packed bytes — the form every key consumer (nighantu_khip, nighantu_antah, khand_tul) actually takes. Passing a nighantu_kunjika segment straight to a byte-key consumer compiles and silently compares the wrong bytes (the R14 trap).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/map_remove.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/map_remove.sm",
+   "proof_props: map keys count",
+   "proof_props: map keys_bytes roundtrip"
+  ],
+  "named_count": 3,
+  "mutants_total": 3,
+  "mutants_killed": 2,
+  "survivors": [
+   "C1:<-><=@L387"
+  ]
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_kunjika_ashtak",
+  "params": "m, out",
+  "doc": "nighantu_kunjika_ashtak(m, out) — R17. Same segments as nighantu_kunjika, but PACKED BYTES: [len-byte, bytes..., len-byte, bytes...], one length byte followed by the key's bytes, no terminator. Returns the key count, which equals nighantu_maap(m). Caller allocates cap * 33 bytes (each key is <= 32 bytes plus 1 length byte; at most cap keys). Keys are stored as packed bytes inside the map, so this is a straight byte copy — no unpack/pack round-trip. Segments can be passed directly to nighantu_khip / nighantu_antah / khand_tul with no repacking; that is the whole point (see nighantu_kunjika note above).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/map_clear.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/map_clear.sm",
+   "tests/stdlib/map_keys_bytes.sm",
+   "tests/stdlib/r8_map_edges.sm"
+  ],
+  "named_count": 5,
+  "mutants_total": 4,
+  "mutants_killed": 4,
+  "survivors": []
+ },
+ {
+  "module": "patra",
+  "name": "patra_path_sarv",
+  "params": "path, out, cap",
+  "doc": "patra_path_sarv(path, out, cap) — open path read-only, read up to cap bytes into out, close. Returns the byte count read (0 for an empty file, or cap == 0 on an existing file), -1 on any error. cap < 0 returns -1 without opening.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/file_read.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/file_read.sm",
+   "tests/stdlib/file_write.sm"
+  ],
+  "named_count": 2,
+  "mutants_total": 6,
+  "mutants_killed": 4,
+  "survivors": [
+   "C2:<-><=@L37",
+   "C3:<-><=@L38"
+  ]
+ },
+ {
+  "module": "patra",
+  "name": "patra_likh_sarv",
+  "params": "path, data, n",
+  "doc": "patra_likh_sarv(path, data, n) — create/truncate path, write all n bytes from data, close. Returns n (0 for n == 0 on a creatable path), -1 on any error. n < 0 returns -1 without opening.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/file_write.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/file_write.sm"
+  ],
+  "named_count": 1,
+  "mutants_total": 5,
+  "mutants_killed": 3,
+  "survivors": [
+   "C2:<-><=@L65",
+   "C4:<=-><@L68"
+  ]
+ },
+ {
+  "module": "patra",
+  "name": "patra_asti",
+  "params": "path",
+  "doc": "patra_asti(path) — 1 if path opens read-only, 0 otherwise. (Open failure covers missing file, missing directory, and permission denial alike — the caller cannot distinguish them.)",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/file_read.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/file_read.sm"
+  ],
+  "named_count": 1,
+  "mutants_total": 2,
+  "mutants_killed": 1,
+  "survivors": [
+   "C1:<-><=@L83"
+  ]
+ },
+ {
+  "module": "phal",
+  "name": "phal_siddhi",
+  "params": "out, v",
+  "doc": "phal_siddhi(out, v) — write the success Result [1, v] into out.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/r8_result_flags.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/r8_result_flags.sm",
+   "tests/stdlib/result29.sm",
+   "proof_props: result type"
+  ],
+  "named_count": 3,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "phal",
+  "name": "phal_dosh",
+  "params": "out",
+  "doc": "phal_dosh(out) — write the failure Result [0, 0] into out.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/r8_result_flags.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/r8_result_flags.sm",
+   "tests/stdlib/result29.sm",
+   "tests/stdlib/result_chain.sm"
+  ],
+  "named_count": 5,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "phal",
+  "name": "phal_asti_siddhi",
+  "params": "r",
+  "doc": "phal_asti_siddhi(r) — 1 if r is a success Result, else 0.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/result29.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/result29.sm",
+   "tests/stdlib/result_chain.sm",
+   "proof_props: result type"
+  ],
+  "named_count": 4,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "phal",
+  "name": "phal_mulya",
+  "params": "r",
+  "doc": "phal_mulya(r) — the value of a success Result. Caller must check phal_asti_siddhi first: on a failure Result this returns 0, which is indistinguishable from a success value of 0.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/result29.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/result29.sm",
+   "tests/stdlib/result_chain.sm",
+   "proof_props: result type"
+  ],
+  "named_count": 4,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "phal",
+  "name": "phal_mulya_va",
+  "params": "r, def",
+  "doc": "phal_mulya_va(r, def) — the value if r is success, else def. The one-expression way to handle both branches.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/result29.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/result29.sm",
+   "proof_props: result type"
+  ],
+  "named_count": 2,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "phal",
+  "name": "phal_se_siddhi",
+  "params": "out, v, ok",
+  "doc": "phal_se_siddhi(out, v, ok) — lift the ok convention into a Result: writes [ok[0], v] into out (value 0 on failure).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/r8_result_flags.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/r8_result_flags.sm",
+   "tests/stdlib/result29.sm",
+   "proof_props: result type"
+  ],
+  "named_count": 3,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "phal",
+  "name": "phal_janchit_yuj",
+  "params": "out, a, b",
+  "doc": "phal_janchit_yuj/sub/mul/div/shesh(out, a, b) — the ganita checked operation, producing a Result in out instead of an ok out-parameter. On overflow (or div/shesh by zero, MIN/-1) the Result is failure [0, 0].",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/r8_result_flags.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/r8_result_flags.sm",
+   "tests/stdlib/result29.sm",
+   "tests/stdlib/result_chain.sm"
+  ],
+  "named_count": 5,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "phal",
+  "name": "phal_janchit_nyun",
+  "params": "out, a, b",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/r8_result_flags.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/r8_result_flags.sm",
+   "tests/stdlib/result29.sm",
+   "proof_props: result type"
+  ],
+  "named_count": 3,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "phal",
+  "name": "phal_janchit_gun",
+  "params": "out, a, b",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/r8_result_flags.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/r8_result_flags.sm",
+   "tests/stdlib/result29.sm",
+   "tests/stdlib/result_chain.sm"
+  ],
+  "named_count": 5,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "phal",
+  "name": "phal_janchit_bhaj",
+  "params": "out, a, b",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/r8_result_flags.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/r8_result_flags.sm",
+   "tests/stdlib/result29.sm",
+   "proof_props: result type"
+  ],
+  "named_count": 3,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "phal",
+  "name": "phal_janchit_shesh",
+  "params": "out, a, b",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/r8_result_flags.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/r8_result_flags.sm",
+   "tests/stdlib/result29.sm",
+   "proof_props: result type"
+  ],
+  "named_count": 3,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "phal",
+  "name": "phal_janchit_ghat",
+  "params": "out, a, e",
+  "doc": "phal_janchit_ghat(out, a, e) — ganita_janchit_ghat as a Result. Failure [0, 0] on e < 0 or overflow (see ganita_janchit_ghat).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/result_chain.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/result_chain.sm",
+   "proof_props: result producers + chain"
+  ],
+  "named_count": 2,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "phal",
+  "name": "phal_janchit_kramgun",
+  "params": "out, n",
+  "doc": "phal_janchit_kramgun(out, n) — ganita_janchit_kramgun as a Result. Failure [0, 0] on n < 0 or overflow (21! overflows).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/result_chain.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/result_chain.sm",
+   "proof_props: result producers + chain"
+  ],
+  "named_count": 2,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "phal",
+  "name": "phal_janchit_nirapeksh",
+  "params": "out, a",
+  "doc": "phal_janchit_nirapeksh(out, a) — ganita_janchit_nirapeksh as a Result. Failure [0, 0] on abs(MIN) (no int64 absolute value).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/result_chain.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/result_chain.sm",
+   "proof_props: result producers + chain"
+  ],
+  "named_count": 2,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank",
+  "params": "v, out",
+  "doc": "--- integer digits (private helper) --- roop_ank(v, out) — write the decimal digits of |v| (no util_chinha) into out as packed bytes. Returns the digit count. Internal; the public formatters below build on it.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/fmt_min.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/fmt_min.sm"
+  ],
+  "named_count": 1,
+  "mutants_total": 6,
+  "mutants_killed": 5,
+  "survivors": [
+   "C2:<-><=@L42"
+  ]
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank_aadhar",
+  "params": "v, base, upper, out",
+  "doc": "--- integer digits in a base (private helper) --- roop_ank_aadhar(v, base, upper, out) — write |v| in `base` (2..36) into out as packed bytes, no util_chinha, no prefix. `upper` 1 -> A-F/A-Z. Base outside 2..36 writes only the terminator and returns 0.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/fmt_min.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/fmt_min.sm",
+   "proof_props: min26",
+   "proof_props: numeric28"
+  ],
+  "named_count": 3,
+  "mutants_total": 12,
+  "mutants_killed": 9,
+  "survivors": [
+   "C4:<-><=@L91",
+   "C6:<-><=@L99",
+   "C7:==->!=@L102"
+  ]
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank_aadhar2",
+  "params": "v, base, out",
+  "doc": "roop_ank_aadhar2(v, base, out) — write v in `base` (2..36), lowercase digits, '-' for negatives, no prefix. Returns the byte count. Base outside 2..36: terminator only, returns 0. Digits are written directly at dst + neg, so the util_chinha just fills position 0.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/fmt_int_base.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/fmt_int_base.sm",
+   "tests/stdlib/fmt_min.sm",
+   "proof_props: fmt int base roundtrip"
+  ],
+  "named_count": 4,
+  "mutants_total": 4,
+  "mutants_killed": 4,
+  "survivors": []
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank_dhvaj",
+  "params": "v, base, flags, out",
+  "doc": "roop_ank_dhvaj(v, base, flags, out) — roop_ank_aadhar2 plus flags: bit 0 (1) = prefix: \"0b\" / \"0o\" / \"0x\" for bases 2 / 8 / 16 (no prefix for other bases, including 10); bit 1 (2) = uppercase hex digits (the prefix itself stays lowercase). Returns byte count.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/fmt_int_base.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/fmt_int_base.sm",
+   "tests/stdlib/fmt_min.sm",
+   "proof_props: fmt int base roundtrip"
+  ],
+  "named_count": 4,
+  "mutants_total": 13,
+  "mutants_killed": 12,
+  "survivors": [
+   "C1:<-><=@L175"
+  ]
+ },
+ {
+  "module": "roop",
+  "name": "roop_dash",
+  "params": "v, out",
+  "doc": "roop_dash(v, out) — decimal, no prefix. roop_shodash / roop_shodash_unnat / roop_asht / roop_dwi — base 16 (lower / upper), 8, 2, no prefix.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/fmt_int_base.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/fmt_int_base.sm",
+   "tests/stdlib/fmt_pad.sm"
+  ],
+  "named_count": 2,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "roop",
+  "name": "roop_shodash",
+  "params": "v, out",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/fmt_int_base.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/fmt_int_base.sm"
+  ],
+  "named_count": 1,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "roop",
+  "name": "roop_shodash_unnat",
+  "params": "v, out",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/fmt_int_base.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/fmt_int_base.sm"
+  ],
+  "named_count": 1,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "roop",
+  "name": "roop_asht",
+  "params": "v, out",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/fmt_int_base.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/fmt_int_base.sm"
+  ],
+  "named_count": 1,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "roop",
+  "name": "roop_dwi",
+  "params": "v, out",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/fmt_int_base.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/fmt_int_base.sm"
+  ],
+  "named_count": 1,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank_pre",
+  "params": "v, base, upper, out",
+  "doc": "roop_ank_pre(v, base, upper, out) — any base with its prefix (\"0b\"/\"0o\"/\"0x\" for 2/8/16; none for other bases). `upper` 1 -> uppercase digits, prefix stays lowercase.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/fmt_int_base.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/fmt_int_base.sm",
+   "proof_props: fmt int base roundtrip"
+  ],
+  "named_count": 2,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_vam",
+  "params": "src, sn, width, padbyte, out",
+  "doc": "--- padding / alignment --- roop_pad_vam(src, sn, width, padbyte, out) — pad on the LEFT with `padbyte` (32 space, 48 '0') to `width`. width <= sn: copy unchanged.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/fmt_pad.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/fmt_pad.sm",
+   "proof_props: fmt pad content"
+  ],
+  "named_count": 2,
+  "mutants_total": 5,
+  "mutants_killed": 1,
+  "survivors": [
+   "C1:<=-><@L243",
+   "C2:<-><=@L245",
+   "C3:<-><=@L254",
+   "C4:<-><=@L259"
+  ]
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_dakshin",
+  "params": "src, sn, width, padbyte, out",
+  "doc": "roop_pad_dakshin(src, sn, width, padbyte, out) — pad on the RIGHT.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/fmt_pad.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/fmt_pad.sm",
+   "proof_props: fmt pad content"
+  ],
+  "named_count": 2,
+  "mutants_total": 5,
+  "mutants_killed": 1,
+  "survivors": [
+   "C1:<=-><@L276",
+   "C2:<-><=@L278",
+   "C3:<-><=@L287",
+   "C4:<-><=@L292"
+  ]
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_madhya",
+  "params": "src, sn, width, padbyte, out",
+  "doc": "roop_pad_madhya(src, sn, width, padbyte, out) — npad on BOTH sides; when width-sn is odd, the extra npad byte goes RIGHT.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/fmt_pad.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/fmt_pad.sm",
+   "proof_props: fmt pad content"
+  ],
+  "named_count": 2,
+  "mutants_total": 6,
+  "mutants_killed": 1,
+  "survivors": [
+   "C1:<=-><@L311",
+   "C2:<-><=@L313",
+   "C3:<-><=@L323",
+   "C4:<-><=@L328",
+   "C5:<-><=@L333"
+  ]
+ },
+ {
+  "module": "roop",
+  "name": "roop_varg_mool",
+  "params": "src, sn, step, out",
+  "doc": "--- thousands grouping (private helper) --- roop_varg_mool(src, sn, step, out) — group the integer part of a digit string. step 2 = Indian (3, then 2s: 12,34,567), step 3 = international (3s: 1,234,567). A leading '-' or '+' is kept as a util_chinha; a '.' splits off a fraction, copied verbatim. Empty input copies to empty.",
+  "braceless": false,
+  "status": "PROVEN-INDIRECT",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/fmt_group.sm"
+  ],
+  "named_by": [],
+  "named_count": 0,
+  "mutants_total": 13,
+  "mutants_killed": 11,
+  "survivors": [
+   "C4:<-><=@L365",
+   "C12:>->>=@L398"
+  ]
+ },
+ {
+  "module": "roop",
+  "name": "roop_varg_bharatiya",
+  "params": "src, sn, out",
+  "doc": "roop_varg_bharatiya(src, sn, out) — 1234567 -> 12,34,567.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/fmt_group.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/fmt_group.sm",
+   "proof_props: fmt group digits"
+  ],
+  "named_count": 2,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "roop",
+  "name": "roop_varg_vishwa",
+  "params": "src, sn, out",
+  "doc": "roop_varg_vishwa(src, sn, out) — 1234567 -> 1,234,567.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/fmt_group.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/fmt_group.sm",
+   "proof_props: fmt group digits"
+  ],
+  "named_count": 2,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "roop",
+  "name": "roop_varg",
+  "params": "src, sn, out",
+  "doc": "roop_varg(src, sn, out) — DEFAULT grouping: Indian (12,34,567). The default is Indian because the audience is Indian.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/fmt_group.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/fmt_group.sm"
+  ],
+  "named_count": 1,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "roop",
+  "name": "roop_varg_ank",
+  "params": "v, indian, out",
+  "doc": "roop_varg_ank(v, indian, out) — format integer v, then group it. `indian` 1 -> Indian grouping, 0 -> international.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/fmt_group.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/fmt_group.sm",
+   "proof_props: fmt group digits"
+  ],
+  "named_count": 2,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "roop",
+  "name": "roop_sthir_mool",
+  "params": "dasham x, places, always_sign, out",
+  "doc": "--- fixed decimals (private helper) --- roop_sthir_mool(dasham x, places, always_sign, out) — |x| rounded HALF AWAY FROM ZERO to `places` digits after '.', exactly `places` digits emitted (zero-padded). places clamped to 0..9. `always_sign` 1 emits '+' for non-negative values. places 0 emits no '.'.",
+  "braceless": false,
+  "status": "PROVEN-INDIRECT",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/fmt_fixed.sm"
+  ],
+  "named_by": [],
+  "named_count": 0,
+  "mutants_total": 13,
+  "mutants_killed": 10,
+  "survivors": [
+   "C1:<-><=@L471",
+   "C2:>->>=@L472",
+   "C7:>=->>@L505"
+  ]
+ },
+ {
+  "module": "roop",
+  "name": "roop_sthir",
+  "params": "dasham x, places, out",
+  "doc": "roop_sthir(dasham x, places, out) — fixed decimals, '-' for negatives only. 3.14159 at 2 places -> \"3.14\". Rounding: half away from zero.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/fmt_fixed.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/fmt_fixed.sm",
+   "tests/stdlib/numeric29.sm",
+   "proof_props: fmt fixed decimals"
+  ],
+  "named_count": 5,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "roop",
+  "name": "roop_sthir_chinhit",
+  "params": "dasham x, places, out",
+  "doc": "roop_sthir_chinhit(dasham x, places, out) — fixed decimals, always a util_chinha: \"+3.14\" / \"-3.14\".",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/fmt_fixed.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/fmt_fixed.sm",
+   "proof_props: fmt fixed decimals"
+  ],
+  "named_count": 2,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "roop",
+  "name": "roop_chinhit",
+  "params": "v, out",
+  "doc": "--- signed formatting --- roop_chinhit(v, out) — always a util_chinha: \"+42\" / \"-42\" / \"+0\".",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/fmt_signed.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/fmt_signed.sm",
+   "proof_props: fmt signed"
+  ],
+  "named_count": 2,
+  "mutants_total": 4,
+  "mutants_killed": 2,
+  "survivors": [
+   "C2:<-><=@L580",
+   "C3:<-><=@L589"
+  ]
+ },
+ {
+  "module": "roop",
+  "name": "roop_sign_akshar",
+  "params": "v, signch, out",
+  "doc": "roop_sign_akshar(v, signch, out) — `signch` (a byte value, e.g. 32 for a blank, 43 for '+') in place of '+' for non-negative values; negatives always get '-'.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/fmt_signed.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/fmt_signed.sm",
+   "proof_props: fmt signed"
+  ],
+  "named_count": 2,
+  "mutants_total": 4,
+  "mutants_killed": 2,
+  "survivors": [
+   "C2:<-><=@L610",
+   "C3:<-><=@L619"
+  ]
+ },
+ {
+  "module": "sadhan",
+  "name": "antargam",
+  "params": "a, b, t",
+  "doc": "",
+  "braceless": true,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/util_lerp.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/util_lerp.sm"
+  ],
+  "named_count": 1,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "sadhan",
+  "name": "yog_seema",
+  "params": "start, end",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/util_sum_range.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/util_sum_range.sm",
+   "proof_props: edge30 int"
+  ],
+  "named_count": 2,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "sadhan",
+  "name": "shesh",
+  "params": "a, b",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/util_mod.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/util_mod.sm",
+   "proof_props: edge30 int"
+  ],
+  "named_count": 2,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "sadhan",
+  "name": "bhaj_urdhva",
+  "params": "a, b",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/util_div_ceil.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/util_div_ceil.sm",
+   "proof_props: edge30 int"
+  ],
+  "named_count": 2,
+  "mutants_total": 6,
+  "mutants_killed": 3,
+  "survivors": [
+   "C3:>->>=@L34",
+   "C4:>->>=@L35",
+   "C5:<-><=@L37"
+  ]
+ },
+ {
+  "module": "sadhan",
+  "name": "util_chinha",
+  "params": "n",
+  "doc": "",
+  "braceless": true,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/util_sign.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/util_sign.sm"
+  ],
+  "named_count": 1,
+  "mutants_total": 3,
+  "mutants_killed": 3,
+  "survivors": []
+ },
+ {
+  "module": "sadhan",
+  "name": "satya_tak_ank",
+  "params": "b",
+  "doc": "",
+  "braceless": true,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/util_bool_to_int.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/util_bool_to_int.sm"
+  ],
+  "named_count": 1,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "sadhan",
+  "name": "ank_adhik",
+  "params": "",
+  "doc": "",
+  "braceless": true,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/util_int_max.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/util_int_max.sm"
+  ],
+  "named_count": 1,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "samanvaya",
+  "name": "pehchan",
+  "params": "n, kosh dasham out",
+  "doc": "identity matrix: n x n, out must hold n*n elements",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/samanvaya_pehchan.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/samanvaya_pehchan.sm",
+   "examples/209_samanvaya.sm"
+  ],
+  "named_count": 2,
+  "mutants_total": 4,
+  "mutants_killed": 4,
+  "survivors": []
+ },
+ {
+  "module": "samanvaya",
+  "name": "vivartana",
+  "params": "kosh dasham a, m, n, kosh dasham out",
+  "doc": "transpose: a is m x n, out must hold n*m elements",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/samanvaya_vivartana.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/samanvaya_vivartana.sm",
+   "examples/209_samanvaya.sm"
+  ],
+  "named_count": 2,
+  "mutants_total": 3,
+  "mutants_killed": 3,
+  "survivors": []
+ },
+ {
+  "module": "samanvaya",
+  "name": "matrika_yoga",
+  "params": "kosh dasham a, kosh dasham b, m, n, kosh dasham out",
+  "doc": "element-wise sum: a and b are m x n, out must hold m*n elements",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/samanvaya_mat_yoga.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/samanvaya_mat_yoga.sm"
+  ],
+  "named_count": 1,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "samanvaya",
+  "name": "skalar",
+  "params": "kosh dasham a, dasham c, m, n, kosh dasham out",
+  "doc": "scalar multiple: out must hold m*n elements",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/samanvaya_skalar.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/samanvaya_skalar.sm"
+  ],
+  "named_count": 1,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "samanvaya",
+  "name": "matrika_gunana",
+  "params": "kosh dasham a, kosh dasham b, m, n, p, kosh dasham out",
+  "doc": "matrix product: a is m x n, b is n x p, out must hold m*p elements",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/samanvaya_mat_gunana.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/samanvaya_mat_gunana.sm",
+   "examples/209_samanvaya.sm"
+  ],
+  "named_count": 2,
+  "mutants_total": 4,
+  "mutants_killed": 4,
+  "survivors": []
+ },
+ {
+  "module": "samanvaya",
+  "name": "nishan",
+  "params": "kosh dasham a, n",
+  "doc": "trace of an n x n matrix",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/samanvaya_nishan.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/samanvaya_nishan.sm",
+   "examples/209_samanvaya.sm"
+  ],
+  "named_count": 2,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "samanvaya",
+  "name": "nirnaya2",
+  "params": "kosh dasham a",
+  "doc": "determinant of a 2 x 2 matrix (a holds 4 elements)",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/samanvaya_nirnaya2.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/samanvaya_nirnaya2.sm",
+   "examples/209_samanvaya.sm"
+  ],
+  "named_count": 2,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "samanvaya",
+  "name": "nirnaya3",
+  "params": "kosh dasham a",
+  "doc": "determinant of a 3 x 3 matrix (a holds 9 elements), by cofactor expansion",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/samanvaya_nirnaya3.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/samanvaya_nirnaya3.sm",
+   "examples/209_samanvaya.sm"
+  ],
+  "named_count": 2,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "samanvaya",
+  "name": "sadish_yoga",
+  "params": "kosh dasham u, kosh dasham v",
+  "doc": "dot product of two flat vectors (row i of a with column j of b) — convenience",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/samanvaya_sadish_yoga.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/samanvaya_sadish_yoga.sm"
+  ],
+  "named_count": 1,
+  "mutants_total": 3,
+  "mutants_killed": 2,
+  "survivors": [
+   "C1:<-><=@L119"
+  ]
+ },
+ {
+  "module": "samanvaya",
+  "name": "rekha_manak",
+  "params": "kosh dasham a, m, n",
+  "doc": "largest absolute row sum (a cheap norm, useful for conditioning checks)",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/samanvaya_rekha_manak.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/samanvaya_rekha_manak.sm",
+   "examples/209_samanvaya.sm"
+  ],
+  "named_count": 2,
+  "mutants_total": 5,
+  "mutants_killed": 3,
+  "survivors": [
+   "C3:<-><=@L138",
+   "C4:>->>=@L142"
+  ]
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_srij",
+  "params": "cap",
+  "doc": "rakh_srij(cap) — allocate an empty set of capacity cap (clamped to >= 1).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/containers20.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/containers20.sm",
+   "tests/stdlib/containers_clear.sm",
+   "tests/stdlib/gaps19.sm"
+  ],
+  "named_count": 21,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_yuj",
+  "params": "s, cap, elem, elem_n",
+  "doc": "rakh_yuj(s, cap, elem, elem_n) — add elem; 1 on success, 0 if the set is full (then the set is unchanged). Adding an existing element keeps rakh_maap unchanged (idempotent).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/containers20.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/containers20.sm",
+   "tests/stdlib/containers_clear.sm",
+   "tests/stdlib/gaps19.sm"
+  ],
+  "named_count": 21,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_antah",
+  "params": "s, cap, elem, elem_n",
+  "doc": "rakh_antah(s, cap, elem, elem_n) — 1 if elem is in the set, else 0.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/containers20.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/containers20.sm",
+   "tests/stdlib/containers_clear.sm",
+   "tests/stdlib/gaps23.sm"
+  ],
+  "named_count": 10,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_apanay",
+  "params": "s, cap, elem, elem_n",
+  "doc": "rakh_apanay(s, cap, elem, elem_n) — remove elem; 1 if removed, 0 if absent.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/set_basic.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/set_basic.sm",
+   "proof_props: set add/contains/remove"
+  ],
+  "named_count": 2,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_maap",
+  "params": "s",
+  "doc": "rakh_maap(s) — number of elements.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/containers_clear.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/containers_clear.sm",
+   "tests/stdlib/set_basic.sm",
+   "proof_props: set add/contains/remove"
+  ],
+  "named_count": 8,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_samroop_diff",
+  "params": "a, cap, b, bcap, out",
+  "doc": "rakh_samroop_diff(a, cap, b, bcap, out) — add every element that is in exactly one of a, b into out (fresh, empty, capacity >= cap + bcap for the worst case, disjoint sets). (a - b) union (b - a). Returns rakh_maap(out). Before, the caller wrote two rakh_bhed calls into two scratch sets plus a rakh_sangam at every call site.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/gaps23.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/gaps23.sm",
+   "proof_props: gaps23",
+   "proof_props: invariants24 merge/symdiff"
+  ],
+  "named_count": 3,
+  "mutants_total": 5,
+  "mutants_killed": 5,
+  "survivors": []
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_sangam",
+  "params": "a, cap, b, bcap, out",
+  "doc": "rakh_sangam(a, cap, b, bcap, out) — add every element of a and of b into out (fresh, empty, capacity >= cap + bcap). Returns rakh_maap(out). R17: iteration is nighantu_kunjika_ashtak, whose packed-byte segments go straight into nighantu_khip. (Before R17 this used nighantu_kunjika cell segments plus a khand_bandh per segment; passing a cell segment straight to nighantu_khip compiled fine and silently compared the wrong bytes.)",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/set_union.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/set_union.sm",
+   "proof_props: set union commutative"
+  ],
+  "named_count": 2,
+  "mutants_total": 3,
+  "mutants_killed": 3,
+  "survivors": []
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_sampat",
+  "params": "a, cap, b, bcap, out",
+  "doc": "rakh_sampat(a, cap, b, bcap, out) — add every element of a that is also in b into out (fresh, empty, capacity >= min(cap, bcap)). Returns rakh_maap(out).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/set_intersect.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/set_intersect.sm",
+   "proof_props: set intersect self/empty"
+  ],
+  "named_count": 2,
+  "mutants_total": 3,
+  "mutants_killed": 2,
+  "survivors": [
+   "C1:<-><=@L139"
+  ]
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_bhed",
+  "params": "a, cap, b, bcap, out",
+  "doc": "rakh_bhed(a, cap, b, bcap, out) — add every element of a that is NOT in b into out (fresh, empty, capacity >= cap). Returns rakh_maap(out).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/set_difference.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/set_difference.sm",
+   "proof_props: set difference"
+  ],
+  "named_count": 2,
+  "mutants_total": 3,
+  "mutants_killed": 3,
+  "survivors": []
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_vardh",
+  "params": "s, newcap",
+  "doc": "rakh_vardh(s, newcap) — copy the set into a fresh set of capacity newcap (WS2, R20). A set IS a map, so this is nighantu_vardh's copy with the same all-or-nothing rule: returns the new handle, or 0 if newcap < rakh_maap(s). Rebind: s = rakh_vardh(s, 32).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/containers20.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/containers20.sm",
+   "proof_props: containers resize/vinimay"
+  ],
+  "named_count": 2,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_rikta",
+  "params": "s",
+  "doc": "rakh_rikta(s) — reset the set to empty in place (WS2, R19): same handle, same capacity. A set IS a map, so this is nighantu_rikta's full zero (count, state, keylens, vals, key bytes) with no stale elements readable afterwards. Returns 1.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/containers_clear.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/containers_clear.sm",
+   "proof_props: containers clear"
+  ],
+  "named_count": 2,
+  "mutants_total": 1,
+  "mutants_killed": 0,
+  "survivors": [
+   "R"
+  ]
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_sam",
+  "params": "a, cap, b, bcap",
+  "doc": "rakh_sam(a, cap, b, bcap) — 1 if a and b hold exactly the same elements, else 0 (WS3, R19). Both subset checks in one call; two empty sets are equal. Before this, the caller wrote both rakh_asti_upasamuh calls by hand.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/gaps19.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/gaps19.sm",
+   "proof_props: gaps19"
+  ],
+  "named_count": 2,
+  "mutants_total": 3,
+  "mutants_killed": 3,
+  "survivors": []
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_asti_upasamuh",
+  "params": "a, cap, b, bcap",
+  "doc": "rakh_asti_upasamuh(a, cap, b, bcap) — 1 if every element of a is in b, else 0. Empty a is a subset of everything.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/set_subset.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/set_subset.sm",
+   "proof_props: set subset"
+  ],
+  "named_count": 2,
+  "mutants_total": 3,
+  "mutants_killed": 3,
+  "survivors": []
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_tak_mala",
+  "params": "s, cap, out",
+  "doc": "rakh_tak_mala(s, cap, out) — write the set's elements into out in length-prefixed form [len0, b0, b1, ..., len1, b0, ...] (same shape as nighantu_kunjika / khand_bhed parts), SORTED lexicographically by byte value (khand_tul), so output is deterministic regardless of insertion order or hash layout. Returns the element count.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/set_difference.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/set_difference.sm",
+   "tests/stdlib/set_intersect.sm",
+   "tests/stdlib/set_to_array.sm"
+  ],
+  "named_count": 8,
+  "mutants_total": 7,
+  "mutants_killed": 2,
+  "survivors": [
+   "C1:<-><=@L239",
+   "C2:<-><=@L244",
+   "C3:<-><=@L254",
+   "C5:>->>=@L257",
+   "C6:<-><=@L273"
+  ]
+ },
+ {
+  "module": "sankhyiki",
+  "name": "yoga",
+  "params": "kosh dasham xs",
+  "doc": "--- sum ---",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/sankhyiki_yoga.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/sankhyiki_yoga.sm",
+   "examples/206_sankhyiki.sm"
+  ],
+  "named_count": 2,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "sankhyiki",
+  "name": "madhya",
+  "params": "kosh dasham xs",
+  "doc": "--- arithmetic mean ---",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/sankhyiki_madhya.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/sankhyiki_madhya.sm",
+   "examples/126_numeric_pipeline.sm",
+   "examples/206_sankhyiki.sm"
+  ],
+  "named_count": 3,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "sankhyiki",
+  "name": "laghutama",
+  "params": "kosh dasham xs",
+  "doc": "--- minimum ---",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/sankhyiki_laghutama.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/sankhyiki_laghutama.sm",
+   "examples/206_sankhyiki.sm"
+  ],
+  "named_count": 2,
+  "mutants_total": 4,
+  "mutants_killed": 3,
+  "survivors": [
+   "C3:<-><=@L40"
+  ]
+ },
+ {
+  "module": "sankhyiki",
+  "name": "adhikatama",
+  "params": "kosh dasham xs",
+  "doc": "--- maximum ---",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/sankhyiki_adhikatama.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/sankhyiki_adhikatama.sm",
+   "examples/206_sankhyiki.sm"
+  ],
+  "named_count": 2,
+  "mutants_total": 4,
+  "mutants_killed": 3,
+  "survivors": [
+   "C3:>->>=@L53"
+  ]
+ },
+ {
+  "module": "sankhyiki",
+  "name": "vyapti",
+  "params": "kosh dasham xs",
+  "doc": "--- range (max - min) ---",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/sankhyiki_vyapti.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/sankhyiki_vyapti.sm",
+   "examples/206_sankhyiki.sm"
+  ],
+  "named_count": 2,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "sankhyiki",
+  "name": "prasaran",
+  "params": "kosh dasham xs",
+  "doc": "--- population variance (प्रसरण) ---",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/sankhyiki_prasaran.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/sankhyiki_prasaran.sm",
+   "examples/126_numeric_pipeline.sm",
+   "examples/206_sankhyiki.sm"
+  ],
+  "named_count": 3,
+  "mutants_total": 3,
+  "mutants_killed": 3,
+  "survivors": []
+ },
+ {
+  "module": "sankhyiki",
+  "name": "sankhyiki_vargmool",
+  "params": "dasham v",
+  "doc": "--- vargit root, Newton's method (private to this module: distinct name so it never collides with madhava_vargmool or a user function) --- 1000 iterations, as madhava_vargmool (20 gave 1279996 for sqrt(1e12)).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/sankhyiki_sankhyiki_sqrt.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/sankhyiki_sankhyiki_sqrt.sm",
+   "proof_props: edge30 float"
+  ],
+  "named_count": 2,
+  "mutants_total": 3,
+  "mutants_killed": 2,
+  "survivors": [
+   "C2:<-><=@L86"
+  ]
+ },
+ {
+  "module": "sankhyiki",
+  "name": "vichalan",
+  "params": "kosh dasham xs",
+  "doc": "--- population standard deviation (मानक विचलन) ---",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/sankhyiki_vichalan.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/sankhyiki_vichalan.sm",
+   "examples/126_numeric_pipeline.sm",
+   "examples/206_sankhyiki.sm"
+  ],
+  "named_count": 3,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "sankhyiki",
+  "name": "bindu",
+  "params": "kosh dasham a, kosh dasham b",
+  "doc": "--- dot product of two float arrays (बिंदु गुणनफल) ---",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/sankhyiki_bindu.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/sankhyiki_bindu.sm",
+   "examples/126_numeric_pipeline.sm",
+   "examples/207_sankhyiki_vector.sm"
+  ],
+  "named_count": 3,
+  "mutants_total": 3,
+  "mutants_killed": 2,
+  "survivors": [
+   "C1:<-><=@L103"
+  ]
+ },
+ {
+  "module": "sankhyiki",
+  "name": "manak",
+  "params": "kosh dasham a",
+  "doc": "--- Euclidean norm (magnitude) of a vector ---",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/sankhyiki_manak.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/sankhyiki_manak.sm",
+   "examples/126_numeric_pipeline.sm",
+   "examples/207_sankhyiki_vector.sm"
+  ],
+  "named_count": 3,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "sankhyiki",
+  "name": "purna_yoga",
+  "params": "xs, n",
+  "doc": "--- integer sum ---",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/sankhyiki_purna_yoga.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/sankhyiki_purna_yoga.sm",
+   "proof_props: sankhyiki purna int stats"
+  ],
+  "named_count": 2,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "sankhyiki",
+  "name": "purna_madhya",
+  "params": "xs, n",
+  "doc": "--- integer mean (truncated toward zero) ---",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/sankhyiki_purna_madhya.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/sankhyiki_purna_madhya.sm",
+   "proof_props: sankhyiki purna int stats"
+  ],
+  "named_count": 2,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "sankhyiki",
+  "name": "purna_laghutama",
+  "params": "xs, n",
+  "doc": "--- integer minimum ---",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/sankhyiki_purna_laghutama.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/sankhyiki_purna_laghutama.sm",
+   "proof_props: sankhyiki purna int stats"
+  ],
+  "named_count": 2,
+  "mutants_total": 4,
+  "mutants_killed": 3,
+  "survivors": [
+   "C3:<-><=@L154"
+  ]
+ },
+ {
+  "module": "sankhyiki",
+  "name": "purna_adhikatama",
+  "params": "xs, n",
+  "doc": "--- integer maximum ---",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/sankhyiki_purna_adhikatama.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/sankhyiki_purna_adhikatama.sm",
+   "proof_props: sankhyiki purna int stats"
+  ],
+  "named_count": 2,
+  "mutants_total": 4,
+  "mutants_killed": 3,
+  "survivors": [
+   "C3:>->>=@L167"
+  ]
+ },
+ {
+  "module": "sankhyiki",
+  "name": "purna_vyapti",
+  "params": "xs, n",
+  "doc": "--- integer range (max - min) ---",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/sankhyiki_purna_vyapti.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/sankhyiki_purna_vyapti.sm",
+   "proof_props: sankhyiki purna int stats"
+  ],
+  "named_count": 2,
+  "mutants_total": 2,
+  "mutants_killed": 1,
+  "survivors": [
+   "C1:<=-><@L175"
+  ]
+ },
+ {
+  "module": "sankhyiki",
+  "name": "purna_prasaran",
+  "params": "xs, n",
+  "doc": "--- integer population variance (truncated toward zero; uses the truncated mean, so exact only when the mean is integral) ---",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/sankhyiki_purna_prasaran.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/sankhyiki_purna_prasaran.sm",
+   "proof_props: sankhyiki purna int stats"
+  ],
+  "named_count": 2,
+  "mutants_total": 3,
+  "mutants_killed": 3,
+  "survivors": []
+ },
+ {
+  "module": "shreni",
+  "name": "vinimay",
+  "params": "a, i, j",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/sort_swap.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/sort_swap.sm",
+   "proof_props: containers resize/vinimay"
+  ],
+  "named_count": 2,
+  "mutants_total": 0,
+  "mutants_killed": 0,
+  "survivors": []
+ },
+ {
+  "module": "shreni",
+  "name": "budbud_shreni",
+  "params": "a, n",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/sort_bubble_sort.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/sort_bubble_sort.sm",
+   "examples/83_stdlib_sort.sm",
+   "examples/85_stdlib_shellsort.sm"
+  ],
+  "named_count": 3,
+  "mutants_total": 3,
+  "mutants_killed": 1,
+  "survivors": [
+   "C1:<-><=@L15",
+   "C3:>->>=@L18"
+  ]
+ },
+ {
+  "module": "shreni",
+  "name": "viparyay_mala",
+  "params": "a, n",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/sort_reverse_arr.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/sort_reverse_arr.sm",
+   "examples/83_stdlib_sort.sm"
+  ],
+  "named_count": 2,
+  "mutants_total": 1,
+  "mutants_killed": 0,
+  "survivors": [
+   "C1:<-><=@L30"
+  ]
+ },
+ {
+  "module": "shreni",
+  "name": "laghu",
+  "params": "a, n",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/r8_array_guard.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/r8_array_guard.sm",
+   "tests/stdlib/sort_min_of.sm",
+   "examples/83_stdlib_sort.sm"
+  ],
+  "named_count": 4,
+  "mutants_total": 4,
+  "mutants_killed": 3,
+  "survivors": [
+   "C3:<-><=@L44"
+  ]
+ },
+ {
+  "module": "shreni",
+  "name": "adhik",
+  "params": "a, n",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/r8_array_guard.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/r8_array_guard.sm",
+   "tests/stdlib/sort_max_of.sm",
+   "examples/83_stdlib_sort.sm"
+  ],
+  "named_count": 4,
+  "mutants_total": 4,
+  "mutants_killed": 3,
+  "survivors": [
+   "C3:>->>=@L56"
+  ]
+ },
+ {
+  "module": "shreni",
+  "name": "yog",
+  "params": "a, n",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/r8_array_guard.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/r8_array_guard.sm",
+   "tests/stdlib/sort_sum_of.sm",
+   "examples/83_stdlib_sort.sm"
+  ],
+  "named_count": 3,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "shreni",
+  "name": "anwesh_sarak",
+  "params": "a, n, target",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/r8_array_guard.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/r8_array_guard.sm",
+   "tests/stdlib/sort_find_linear.sm",
+   "examples/83_stdlib_sort.sm"
+  ],
+  "named_count": 3,
+  "mutants_total": 3,
+  "mutants_killed": 3,
+  "survivors": []
+ },
+ {
+  "module": "shreni",
+  "name": "gan",
+  "params": "a, n, target",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/r8_array_guard.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/r8_array_guard.sm",
+   "tests/stdlib/sort_count_of.sm",
+   "examples/83_stdlib_sort.sm"
+  ],
+  "named_count": 3,
+  "mutants_total": 3,
+  "mutants_killed": 3,
+  "survivors": []
+ },
+ {
+  "module": "shreni",
+  "name": "asti_sorted",
+  "params": "a, n",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/sort_is_sorted.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/sort_is_sorted.sm",
+   "examples/83_stdlib_sort.sm",
+   "examples/85_stdlib_shellsort.sm"
+  ],
+  "named_count": 4,
+  "mutants_total": 3,
+  "mutants_killed": 3,
+  "survivors": []
+ },
+ {
+  "module": "shreni",
+  "name": "dwi_anwesh",
+  "params": "a, n, target",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/sort_binary_search.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/sort_binary_search.sm",
+   "examples/83_stdlib_sort.sm",
+   "proof_props: invariants24 containers"
+  ],
+  "named_count": 3,
+  "mutants_total": 4,
+  "mutants_killed": 3,
+  "survivors": [
+   "C3:<-><=@L106"
+  ]
+ },
+ {
+  "module": "shreni",
+  "name": "shankh_shreni",
+  "params": "a, n",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/sort_shell_sort.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/sort_shell_sort.sm",
+   "examples/85_stdlib_shellsort.sm"
+  ],
+  "named_count": 2,
+  "mutants_total": 5,
+  "mutants_killed": 4,
+  "survivors": [
+   "C5:>->>=@L121"
+  ]
+ },
+ {
+  "module": "shreni",
+  "name": "nivesh_shreni",
+  "params": "a, n",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/sort_insertion.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/sort_insertion.sm",
+   "proof_props: sort output ordered",
+   "proof_props: sort permutation"
+  ],
+  "named_count": 5,
+  "mutants_total": 4,
+  "mutants_killed": 3,
+  "survivors": [
+   "C4:>->>=@L150"
+  ]
+ },
+ {
+  "module": "shreni",
+  "name": "mil_shreni_punar",
+  "params": "a, tmp, lo, hi",
+  "doc": "mil_shreni(a, n) — top-down merge sort using a temp buffer.",
+  "braceless": false,
+  "status": "PROVEN-INDIRECT",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/containers21.sm"
+  ],
+  "named_by": [],
+  "named_count": 0,
+  "mutants_total": 10,
+  "mutants_killed": 8,
+  "survivors": [
+   "R",
+   "C8:<-><=@L193"
+  ]
+ },
+ {
+  "module": "shreni",
+  "name": "mil_shreni",
+  "params": "a, n",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/sort_merge.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/sort_merge.sm",
+   "proof_props: sort output ordered",
+   "proof_props: sort permutation"
+  ],
+  "named_count": 4,
+  "mutants_total": 0,
+  "mutants_killed": 0,
+  "survivors": []
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_srij",
+  "params": "cap",
+  "doc": "suchi_srij(cap) — allocate an empty list. cap clamped to >= 1. Returns the list handle, or 0 on allocation failure — including a cap so large the data size overflows (a wrapped size returned a handle whose data pointer was bogus, segfaulting on push).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/containers20.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/containers20.sm",
+   "tests/stdlib/containers21.sm",
+   "tests/stdlib/containers23.sm"
+  ],
+  "named_count": 20,
+  "mutants_total": 5,
+  "mutants_killed": 3,
+  "survivors": [
+   "C1:<-><=@L51",
+   "C2:<-><=@L53"
+  ]
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_vardh",
+  "params": "l",
+  "doc": "suchi_vardh(l) — private helper: dvigun l's capacity, copying the data. Returns 1 ok / 0 allocation failure (list unchanged).",
+  "braceless": false,
+  "status": "PROVEN-INDIRECT",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/r8_list_growth.sm"
+  ],
+  "named_by": [],
+  "named_count": 0,
+  "mutants_total": 3,
+  "mutants_killed": 1,
+  "survivors": [
+   "R",
+   "C2:<-><=@L73"
+  ]
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_khip",
+  "params": "l, v",
+  "doc": "suchi_khip(l, v) — append v. Returns 1 ok / 0 allocation failure.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/containers20.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/containers20.sm",
+   "tests/stdlib/containers21.sm",
+   "tests/stdlib/containers23.sm"
+  ],
+  "named_count": 15,
+  "mutants_total": 3,
+  "mutants_killed": 3,
+  "survivors": []
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_grah",
+  "params": "l, i",
+  "doc": "suchi_grah(l, i) — element i, or 0 if i is out of bounds.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/containers20.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/containers20.sm",
+   "tests/stdlib/containers21.sm",
+   "tests/stdlib/containers_clear.sm"
+  ],
+  "named_count": 11,
+  "mutants_total": 3,
+  "mutants_killed": 3,
+  "survivors": []
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_sangrah",
+  "params": "l, i, v",
+  "doc": "suchi_sangrah(l, i, v) — set element i. Returns 1 ok / 0 out of bounds.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/list_basic.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/list_basic.sm",
+   "tests/stdlib/r8_list_edges.sm"
+  ],
+  "named_count": 2,
+  "mutants_total": 3,
+  "mutants_killed": 3,
+  "survivors": []
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_maap",
+  "params": "l",
+  "doc": "suchi_maap(l) — element count.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/containers_clear.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/containers_clear.sm",
+   "tests/stdlib/list_basic.sm",
+   "tests/stdlib/r8_list_edges.sm"
+  ],
+  "named_count": 10,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_nivesh",
+  "params": "l, i, v",
+  "doc": "suchi_nivesh(l, i, v) — insert v before index i (i == len appends). Returns 1 ok / 0 out of bounds or allocation failure.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/list_basic.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/list_basic.sm",
+   "tests/stdlib/r8_list_model.sm",
+   "proof_props: list len tracks"
+  ],
+  "named_count": 4,
+  "mutants_total": 6,
+  "mutants_killed": 6,
+  "survivors": []
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_apanay",
+  "params": "l, i",
+  "doc": "suchi_apanay(l, i) — remove element i, shifting the rest left. Returns 1 ok / 0 out of bounds.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/list_basic.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/list_basic.sm",
+   "tests/stdlib/r8_list_edges.sm",
+   "tests/stdlib/r8_list_model.sm"
+  ],
+  "named_count": 5,
+  "mutants_total": 4,
+  "mutants_killed": 3,
+  "survivors": [
+   "C3:<-><=@L157"
+  ]
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_vinimay",
+  "params": "l, i, j",
+  "doc": "suchi_vinimay(l, i, j) — vinimay elements i and j (WS2, R20). Returns 1 ok / 0 if either index is out of bounds (then nothing changes). Before this, swapping meant a temp variable plus two suchi_sangrah calls at every call site.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/containers20.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/containers20.sm",
+   "tests/stdlib/r8_list_edges.sm",
+   "tests/stdlib/r8_list_model.sm"
+  ],
+  "named_count": 4,
+  "mutants_total": 5,
+  "mutants_killed": 5,
+  "survivors": []
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_viparyay",
+  "params": "l",
+  "doc": "suchi_viparyay(l) — reverse the list in place (WS3, R20). Two-pointer vinimay, same shape as khand_viparyay. Returns 1. Before this, reversing a list meant a hand-written two-index loop at every call site.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/containers20.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/containers20.sm",
+   "proof_props: containers resize/vinimay"
+  ],
+  "named_count": 2,
+  "mutants_total": 2,
+  "mutants_killed": 0,
+  "survivors": [
+   "R",
+   "C1:<-><=@L195"
+  ]
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_shreni",
+  "params": "l",
+  "doc": "suchi_shreni(l) — sort the list in place, ascending (WS2, R21). Merge sort (O(n log n)) over the list's data array. Before this, sorting a list meant `ayojan sort` plus a hand-written `mil_shreni(l[2], suchi_maap(l))` at every call site. Returns 1.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/containers21.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/containers21.sm",
+   "tests/stdlib/containers23.sm",
+   "proof_props: containers21"
+  ],
+  "named_count": 5,
+  "mutants_total": 1,
+  "mutants_killed": 0,
+  "survivors": [
+   "R"
+  ]
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_laghu",
+  "params": "l, ok",
+  "doc": "suchi_laghu(l, ok) — smallest element (WS2, R21); ok[0] 1, or 0 if the list is empty (returns 0 then). Before this, the caller wrote the min loop by hand or called sort.smlib's laghu on l[2] — which reads a stale cell on an empty list. The empty check here is the point.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/containers21.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/containers21.sm",
+   "proof_props: containers21",
+   "proof_props: ok convention"
+  ],
+  "named_count": 3,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_adhik",
+  "params": "l, ok",
+  "doc": "suchi_adhik(l, ok) — largest element (WS2, R21); ok[0] 1, or 0 if the list is empty (returns 0 then). See suchi_laghu.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/containers21.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/containers21.sm",
+   "proof_props: containers21",
+   "proof_props: ok convention"
+  ],
+  "named_count": 3,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_yog",
+  "params": "l",
+  "doc": "suchi_yog(l) — sum of the elements (WS2, R21); 0 for an empty list (well-defined, no ok channel needed). Before this, the caller wrote the sum loop by hand or called sort.smlib's yog on l[2].",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/containers21.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/containers21.sm",
+   "proof_props: containers21"
+  ],
+  "named_count": 2,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_gan",
+  "params": "l, v",
+  "doc": "suchi_gan(l, v) — number of occurrences of v (WS2, R21). Before this, the caller wrote the count loop by hand or called sort.smlib's gan on l[2].",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/containers21.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/containers21.sm",
+   "proof_props: containers21"
+  ],
+  "named_count": 2,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_anwesh",
+  "params": "l, v",
+  "doc": "suchi_anwesh(l, v) — first index of v, or -1 (WS2, R23). List-shaped form of sort.smlib's anwesh_sarak; before, the caller called anwesh_sarak(l[2], suchi_maap(l), v) by hand.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/containers23.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/containers23.sm",
+   "proof_props: containers23",
+   "proof_props: invariants24 containers"
+  ],
+  "named_count": 3,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_asti_sorted",
+  "params": "l",
+  "doc": "suchi_asti_sorted(l) — 1 if the elements are in non-decreasing order, else 0; empty and single-element lists are sorted (WS2, R23). List-shaped form of sort.smlib's asti_sorted.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/containers23.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/containers23.sm",
+   "proof_props: containers23"
+  ],
+  "named_count": 2,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_dwi_anwesh",
+  "params": "l, v",
+  "doc": "suchi_dwi_anwesh(l, v) — index of v in a SORTED list, or -1 (WS2, R23). List-shaped form of sort.smlib's dwi_anwesh. The caller must sort first (suchi_shreni); on an unsorted list the result is undefined, exactly as with dwi_anwesh.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/containers23.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/containers23.sm",
+   "proof_props: containers23",
+   "proof_props: invariants24 containers"
+  ],
+  "named_count": 3,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_rikta",
+  "params": "l",
+  "doc": "suchi_rikta(l) — empty the list, keeping the allocated capacity. R19: also ZEROES the data cells (was: len reset only). The old elements were reachable after a clear to anyone reading the data array through l[2], so a len-only reset left stale values readable — the same hazard nighantu_rikta closes. Capacity never shrinks. Returns 1.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/containers_clear.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/containers_clear.sm",
+   "tests/stdlib/list_basic.sm",
+   "proof_props: list len tracks"
+  ],
+  "named_count": 4,
+  "mutants_total": 2,
+  "mutants_killed": 1,
+  "survivors": [
+   "C1:<-><=@L284"
+  ]
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_antah",
+  "params": "l, v",
+  "doc": "suchi_antah(l, v) — 1 if any element equals v, else 0.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/list_basic.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/list_basic.sm",
+   "proof_props: list insert/remove"
+  ],
+  "named_count": 2,
+  "mutants_total": 3,
+  "mutants_killed": 2,
+  "survivors": [
+   "C1:<-><=@L298"
+  ]
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_kramank",
+  "params": "l, v",
+  "doc": "suchi_kramank(l, v) — first index with value v, or -1 if absent.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/list_basic.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/list_basic.sm",
+   "proof_props: list insert/remove"
+  ],
+  "named_count": 2,
+  "mutants_total": 3,
+  "mutants_killed": 2,
+  "survivors": [
+   "C1:<-><=@L311"
+  ]
+ },
+ {
+  "module": "suchi",
+  "name": "chay_khip",
+  "params": "l, v",
+  "doc": "chay_khip(l, v) — push v. Returns 1 ok / 0 allocation failure.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/list_stack.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/list_stack.sm",
+   "proof_props: list stack LIFO"
+  ],
+  "named_count": 2,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "suchi",
+  "name": "chay_apanay",
+  "params": "l, ok",
+  "doc": "chay_apanay(l, ok) — pop the top value; sets ok[0] to 1 on success, 0 when the stack is empty (returns 0 then).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/list_stack.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/list_stack.sm",
+   "proof_props: list stack LIFO",
+   "proof_props: ok convention"
+  ],
+  "named_count": 3,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "suchi",
+  "name": "chay_avalok",
+  "params": "l, ok",
+  "doc": "chay_avalok(l, ok) — top value without removing it; ok[0] 1/0.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/list_stack.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/list_stack.sm",
+   "proof_props: list stack LIFO",
+   "proof_props: ok convention"
+  ],
+  "named_count": 3,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "suchi",
+  "name": "chay_rikta",
+  "params": "l",
+  "doc": "chay_rikta(l) — 1 if the stack is empty, else 0.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/list_stack.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/list_stack.sm",
+   "proof_props: list stack LIFO"
+  ],
+  "named_count": 2,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "suchi",
+  "name": "avali_srij",
+  "params": "cap",
+  "doc": "avali_srij(cap) — allocate an empty queue. cap clamped to >= 1. Returns the queue handle, or 0 on allocation failure — including a cap so large the data size overflows (as suchi_srij).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/containers21.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/containers21.sm",
+   "tests/stdlib/containers23.sm",
+   "tests/stdlib/containers_clear.sm"
+  ],
+  "named_count": 11,
+  "mutants_total": 5,
+  "mutants_killed": 3,
+  "survivors": [
+   "C1:<-><=@L382",
+   "C2:<-><=@L384"
+  ]
+ },
+ {
+  "module": "suchi",
+  "name": "avali_pravesh",
+  "params": "q, v",
+  "doc": "avali_pravesh(q, v) — append v at the tail. Returns 1 ok / 0 allocation failure.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/containers21.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/containers21.sm",
+   "tests/stdlib/containers23.sm",
+   "tests/stdlib/containers_clear.sm"
+  ],
+  "named_count": 10,
+  "mutants_total": 4,
+  "mutants_killed": 3,
+  "survivors": [
+   "C3:<-><=@L414"
+  ]
+ },
+ {
+  "module": "suchi",
+  "name": "avali_nishkas",
+  "params": "q, ok",
+  "doc": "avali_nishkas(q, ok) — remove and return the front value; sets ok[0] to 1 on success, 0 when the queue is empty (returns 0 then).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/containers21.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/containers21.sm",
+   "tests/stdlib/containers23.sm",
+   "tests/stdlib/containers_clear.sm"
+  ],
+  "named_count": 10,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "suchi",
+  "name": "avali_avalok",
+  "params": "q, ok",
+  "doc": "avali_avalok(q, ok) — front value without removing it; ok[0] 1/0.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/list_queue.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/list_queue.sm",
+   "tests/stdlib/r8_list_model.sm",
+   "proof_props: list queue FIFO"
+  ],
+  "named_count": 4,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "suchi",
+  "name": "avali_tak_mala",
+  "params": "q, out",
+  "doc": "avali_tak_mala(q, out) — write the queue's elements into out in logical (FIFO) order, one qword cell each, WITHOUT mutating the queue (WS2, R23). Returns avali_maap(q). Caller allocates cap cells. Before, reading a queue non-destructively meant a hand-rolled ring scan with (head + k) % cap arithmetic at every call site, or dequeuing everything (which destroys the queue).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/containers23.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/containers23.sm",
+   "tests/stdlib/r8_list_model.sm",
+   "proof_props: containers23"
+  ],
+  "named_count": 4,
+  "mutants_total": 2,
+  "mutants_killed": 1,
+  "survivors": [
+   "C1:<-><=@L472"
+  ]
+ },
+ {
+  "module": "suchi",
+  "name": "avali_antah",
+  "params": "q, v",
+  "doc": "avali_antah(q, v) — 1 if v is in the queue, else 0 (WS2, R21). Scans the ring WITHOUT mutating it (no dequeue loop). Before this, the caller hand-rolled the ring scan with (head + k) % cap arithmetic at every call site — the same hazard suchi_antah already removed for lists.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/containers21.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/containers21.sm",
+   "tests/stdlib/r8_list_model.sm",
+   "proof_props: containers21"
+  ],
+  "named_count": 3,
+  "mutants_total": 3,
+  "mutants_killed": 2,
+  "survivors": [
+   "C1:<-><=@L489"
+  ]
+ },
+ {
+  "module": "suchi",
+  "name": "avali_rikta",
+  "params": "q",
+  "doc": "avali_rikta(q) — empty the queue in place (WS2, R19): same handle, same capacity, head reset to 0, and the ring data ZEROED — the dequeued dead space held stale values readable through q[2], the same hazard nighantu_rikta/suchi_rikta close. Capacity never shrinks. Returns 1.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/containers_clear.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/containers_clear.sm",
+   "proof_props: containers clear"
+  ],
+  "named_count": 2,
+  "mutants_total": 2,
+  "mutants_killed": 0,
+  "survivors": [
+   "R",
+   "C1:<-><=@L504"
+  ]
+ },
+ {
+  "module": "suchi",
+  "name": "avali_shunya",
+  "params": "q",
+  "doc": "avali_shunya(q) — 1 if the queue is empty, else 0.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/list_queue.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/list_queue.sm",
+   "proof_props: list queue FIFO"
+  ],
+  "named_count": 2,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "suchi",
+  "name": "avali_maap",
+  "params": "q",
+  "doc": "avali_maap(q) — element count.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/containers23.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/containers23.sm",
+   "tests/stdlib/containers_clear.sm",
+   "tests/stdlib/list_queue.sm"
+  ],
+  "named_count": 9,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "vakyank",
+  "name": "ank_tak_varna",
+  "params": "n, out",
+  "doc": "ank_tak_varna(n, out) — write decimal representation of int n into pankti out as character codes. Returns the character count (excluding terminator). out[ count ] is set to 0 as a terminator. Caller allocates >= 22 cells.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/strconv_int_str.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/strconv_int_str.sm",
+   "tests/stdlib/strconv_overflow.sm",
+   "tests/stdlib/strconv_pad.sm"
+  ],
+  "named_count": 7,
+  "mutants_total": 7,
+  "mutants_killed": 7,
+  "survivors": []
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_ank",
+  "params": "buf, n, ok",
+  "doc": "varna_tak_ank(buf, n) — parse first n character codes of pankti buf as a decimal integer. Leading '-' negates. Returns the value; sets ok[0] to 1 on success, 0 on malformed input (ok is a 1-cell pankti).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/strconv_int_str.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/strconv_int_str.sm",
+   "tests/stdlib/strconv_overflow.sm",
+   "proof_props: strconv roundtrip"
+  ],
+  "named_count": 5,
+  "mutants_total": 13,
+  "mutants_killed": 13,
+  "survivors": []
+ },
+ {
+  "module": "vakyank",
+  "name": "ank_tak_aadhar_varna",
+  "params": "n, base, out",
+  "doc": "ank_tak_aadhar_varna(n, base, out) — write n in `base` (2/8/10/16) into out as character codes (0-9, a-f). Returns count. No util_chinha handling; n >= 0. Base outside 2..36: terminator only, returns 0 (base 0 trapped with SIGFPE, base 1 looped forever past the buffer).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/r8_base_digits.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/r8_base_digits.sm",
+   "tests/stdlib/strconv_base.sm",
+   "proof_props: strconv base roundtrip"
+  ],
+  "named_count": 5,
+  "mutants_total": 7,
+  "mutants_killed": 7,
+  "survivors": []
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_ank_aadhar",
+  "params": "buf, n, base, ok",
+  "doc": "varna_tak_ank_aadhar(buf, n, base, ok) — parse first n char codes of buf in `base` (2/8/10/16). Sets ok[0]. Returns value.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/r8_base_digits.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/r8_base_digits.sm",
+   "tests/stdlib/strconv_base.sm",
+   "tests/stdlib/strconv_overflow.sm"
+  ],
+  "named_count": 5,
+  "mutants_total": 13,
+  "mutants_killed": 13,
+  "survivors": []
+ },
+ {
+  "module": "vakyank",
+  "name": "pad_vam",
+  "params": "out, count, width, fill",
+  "doc": "pad_vam(out, count, width, fill) — left-pad the `count` character codes in pankti `out` to `width` using fill character code `fill`, in place. Returns the new count (width if width > count, else count). Caller must allocate >= width cells.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/strconv_pad.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/strconv_pad.sm",
+   "proof_props: strconv pad_vam"
+  ],
+  "named_count": 2,
+  "mutants_total": 4,
+  "mutants_killed": 3,
+  "survivors": [
+   "C1:<=-><@L234"
+  ]
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_dashm",
+  "params": "buf, n, ok",
+  "doc": "varna_tak_dashm(buf, n, ok): parse a decimal float from a byte string. Grammar: [-] digits [. digits] [(e|E) [-] digits]; at least one digit in the integer or fraction part. No leading/trailing whitespace, no '+', no \"inf\"/\"nan\" — those are ok = 0 (same conventions as varna_tak_ank). On success ok[0] = 1 and the dasham value is returned. On malformed input or overflow (|value| > ~1.8e308) ok[0] = 0 and the return is 0.0. Extreme underflow returns 0.0 with ok[0] = 1 (as strtod does). Mantissa is accumulated in int64 (up to 18 significant digits); further digits only move the decimal exponent.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/breadth26.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/breadth26.sm",
+   "proof_props: breadth26",
+   "proof_props: edge30 float"
+  ],
+  "named_count": 3,
+  "mutants_total": 13,
+  "mutants_killed": 10,
+  "survivors": [
+   "C10:>->>=@L294",
+   "C11:<-><=@L298",
+   "C12:<-><=@L308"
+  ]
+ },
+ {
+  "module": "varna",
+  "name": "varna_maap",
+  "params": "s",
+  "doc": "",
+  "braceless": true,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/string_str_len.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/string_str_len.sm",
+   "examples/63_stdlib_string.sm",
+   "examples/86_b8_multi_modules.sm"
+  ],
+  "named_count": 3,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "varna",
+  "name": "akshar_sanket",
+  "params": "s, i",
+  "doc": "",
+  "braceless": true,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/string_char_code_at.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/string_char_code_at.sm",
+   "examples/63_stdlib_string.sm"
+  ],
+  "named_count": 2,
+  "mutants_total": 1,
+  "mutants_killed": 1,
+  "survivors": []
+ },
+ {
+  "module": "varna",
+  "name": "asti_ank_akshar",
+  "params": "s, i",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/r8_char_class.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/r8_char_class.sm",
+   "tests/stdlib/string_is_digit_char.sm",
+   "examples/63_stdlib_string.sm"
+  ],
+  "named_count": 3,
+  "mutants_total": 3,
+  "mutants_killed": 3,
+  "survivors": []
+ },
+ {
+  "module": "varna",
+  "name": "asti_unnat_akshar",
+  "params": "s, i",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/r8_char_class.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/r8_char_class.sm",
+   "tests/stdlib/string_is_upper_char.sm",
+   "examples/63_stdlib_string.sm"
+  ],
+  "named_count": 3,
+  "mutants_total": 3,
+  "mutants_killed": 3,
+  "survivors": []
+ },
+ {
+  "module": "varna",
+  "name": "asti_avanat_akshar",
+  "params": "s, i",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/r8_char_class.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/r8_char_class.sm",
+   "tests/stdlib/string_is_lower_char.sm",
+   "examples/63_stdlib_string.sm"
+  ],
+  "named_count": 3,
+  "mutants_total": 3,
+  "mutants_killed": 3,
+  "survivors": []
+ },
+ {
+  "module": "varna",
+  "name": "asti_akshar_akshar",
+  "params": "s, i",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/r8_char_class.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/r8_char_class.sm",
+   "tests/stdlib/string_is_letter_char.sm",
+   "examples/63_stdlib_string.sm"
+  ],
+  "named_count": 3,
+  "mutants_total": 5,
+  "mutants_killed": 5,
+  "survivors": []
+ },
+ {
+  "module": "varna",
+  "name": "asti_avakash_akshar",
+  "params": "s, i",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/string_is_space_char.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/string_is_space_char.sm"
+  ],
+  "named_count": 1,
+  "mutants_total": 2,
+  "mutants_killed": 2,
+  "survivors": []
+ },
+ {
+  "module": "varna",
+  "name": "gan_swar",
+  "params": "s",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/slices23.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/slices23.sm",
+   "tests/stdlib/string_count_vowels.sm",
+   "examples/63_stdlib_string.sm"
+  ],
+  "named_count": 4,
+  "mutants_total": 7,
+  "mutants_killed": 6,
+  "survivors": [
+   "C1:<-><=@L58"
+  ]
+ },
+ {
+  "module": "varna",
+  "name": "gan_akshar",
+  "params": "s, code",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/r8_char_class.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/r8_char_class.sm",
+   "tests/stdlib/string_count_char.sm",
+   "examples/84_stdlib_string2.sm"
+  ],
+  "named_count": 4,
+  "mutants_total": 3,
+  "mutants_killed": 3,
+  "survivors": []
+ },
+ {
+  "module": "varna",
+  "name": "anwesh_akshar",
+  "params": "s, code",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/r8_char_class.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/r8_char_class.sm",
+   "tests/stdlib/slices23.sm",
+   "tests/stdlib/string_find_char.sm"
+  ],
+  "named_count": 5,
+  "mutants_total": 3,
+  "mutants_killed": 3,
+  "survivors": []
+ },
+ {
+  "module": "varna",
+  "name": "asti_sarv_ank",
+  "params": "s",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/slices23.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/slices23.sm",
+   "tests/stdlib/string_is_all_digits.sm",
+   "examples/84_stdlib_string2.sm"
+  ],
+  "named_count": 3,
+  "mutants_total": 4,
+  "mutants_killed": 4,
+  "survivors": []
+ },
+ {
+  "module": "varna",
+  "name": "unnat_sanket",
+  "params": "c",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/r8_number_edges.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/r8_number_edges.sm",
+   "tests/stdlib/string_upper_code.sm",
+   "examples/84_stdlib_string2.sm"
+  ],
+  "named_count": 3,
+  "mutants_total": 3,
+  "mutants_killed": 3,
+  "survivors": []
+ },
+ {
+  "module": "varna",
+  "name": "avanat_sanket",
+  "params": "c",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/r8_number_edges.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/r8_number_edges.sm",
+   "tests/stdlib/string_lower_code.sm",
+   "examples/84_stdlib_string2.sm"
+  ],
+  "named_count": 3,
+  "mutants_total": 3,
+  "mutants_killed": 3,
+  "survivors": []
+ },
+ {
+  "module": "varna",
+  "name": "varna_sam",
+  "params": "a, b",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/string_str_equals.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/string_str_equals.sm"
+  ],
+  "named_count": 1,
+  "mutants_total": 4,
+  "mutants_killed": 3,
+  "survivors": [
+   "C2:<-><=@L117"
+  ]
+ },
+ {
+  "module": "varna",
+  "name": "varna_anwesh",
+  "params": "hay, hn, needle, nn",
+  "doc": "varna_anwesh(hay, hn, needle, nn) — index of first occurrence of needle in hay, or -1. Empty needle matches at 0. Negative needle length is invalid: -1 (the old code treated it as empty, matching at 0).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/string_find.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/string_find.sm",
+   "proof_props: string find vs python",
+   "proof_props: edge30 text"
+  ],
+  "named_count": 3,
+  "mutants_total": 8,
+  "mutants_killed": 8,
+  "survivors": []
+ },
+ {
+  "module": "varna",
+  "name": "varna_antah",
+  "params": "hay, hn, needle, nn",
+  "doc": "varna_antah(hay, hn, needle, nn) — 1 if needle occurs in hay, else 0.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/string_find.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/string_find.sm"
+  ],
+  "named_count": 1,
+  "mutants_total": 2,
+  "mutants_killed": 1,
+  "survivors": [
+   "C1:>=->>@L164"
+  ]
+ },
+ {
+  "module": "varna",
+  "name": "varna_pratisthap",
+  "params": "src, sn, find, fn, repl, out",
+  "doc": "varna_pratisthap(src, sn, find, fn, repl, out) — copy src to out, replacing every (non-overlapping) occurrence of find with repl. repl is 0-terminated (its length is derived) — repl cannot be a slice; copy the slice into a terminated cell array first (see strb.smlib header, slice-boundary rules). Returns the new count. Caller allocates generously.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/string_replace.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/string_replace.sm",
+   "proof_props: string replace",
+   "proof_props: edge30 text"
+  ],
+  "named_count": 3,
+  "mutants_total": 10,
+  "mutants_killed": 9,
+  "survivors": [
+   "C2:<=-><@L186"
+  ]
+ },
+ {
+  "module": "varna",
+  "name": "varna_bhed",
+  "params": "src, sn, sep, sepn, parts, maxparts",
+  "doc": "varna_bhed(src, sn, sep, sepn, parts, maxparts) — split src on sep. parts is a flat buffer holding length-prefixed segments: [len0, c0, c1, ..., len1, c0, ...] To recover segment i: walk from parts[0], skipping (1 + len) cells per segment; the length is at the segment's start. Returns segment count (capped at maxparts). Empty separator: no split (one segment).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/r8_split_model.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/r8_split_model.sm",
+   "tests/stdlib/string_split_join.sm",
+   "proof_props: string split/join"
+  ],
+  "named_count": 4,
+  "mutants_total": 13,
+  "mutants_killed": 12,
+  "survivors": [
+   "C3:<-><=@L250"
+  ]
+ },
+ {
+  "module": "varna",
+  "name": "varna_yuj",
+  "params": "parts, count, sep, sepn, out",
+  "doc": "varna_yuj(parts, count, sep, sepn, out) — inverse of varna_bhed for the length-prefixed format. Joins `count` segments with sep. Returns new count.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/string_split_join.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/string_split_join.sm",
+   "proof_props: string split/join"
+  ],
+  "named_count": 2,
+  "mutants_total": 5,
+  "mutants_killed": 5,
+  "survivors": []
+ },
+ {
+  "module": "varna",
+  "name": "varna_chhid",
+  "params": "src, sn, out",
+  "doc": "varna_chhid(src, sn, out) — strip leading/trailing ASCII spaces (32). Returns new count.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/string_case_trim.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/string_case_trim.sm",
+   "proof_props: string trim/case"
+  ],
+  "named_count": 2,
+  "mutants_total": 8,
+  "mutants_killed": 6,
+  "survivors": [
+   "C2:>=->>@L361",
+   "C5:<=-><@L370"
+  ]
+ },
+ {
+  "module": "varna",
+  "name": "varna_unnat",
+  "params": "src, sn, out",
+  "doc": "varna_unnat(src, sn, out) / varna_avanat — ASCII case conversion. sn < 0: empty output (the old code wrote the terminator at out[-1], an out-of-bounds write before the buffer).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/r8_text_edges.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/r8_text_edges.sm",
+   "tests/stdlib/string_case_trim.sm",
+   "proof_props: string trim/case"
+  ],
+  "named_count": 4,
+  "mutants_total": 5,
+  "mutants_killed": 3,
+  "survivors": [
+   "C1:<-><=@L395",
+   "C2:<-><=@L399"
+  ]
+ },
+ {
+  "module": "varna",
+  "name": "varna_avanat",
+  "params": "src, sn, out",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/r8_text_edges.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/r8_text_edges.sm",
+   "tests/stdlib/string_case_trim.sm",
+   "proof_props: string trim/case"
+  ],
+  "named_count": 4,
+  "mutants_total": 5,
+  "mutants_killed": 3,
+  "survivors": [
+   "C1:<-><=@L416",
+   "C2:<-><=@L420"
+  ]
+ },
+ {
+  "module": "varna",
+  "name": "varna_aadi",
+  "params": "src, sn, pre, pn",
+  "doc": "varna_aadi(src, sn, pre, pn) / varna_ant — 0/1. A negative prefix/suffix length is invalid: 0 (the old code treated it as empty and returned 1).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/r8_text_edges.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/r8_text_edges.sm",
+   "tests/stdlib/string_case_trim.sm",
+   "proof_props: edge30 text"
+  ],
+  "named_count": 3,
+  "mutants_total": 5,
+  "mutants_killed": 5,
+  "survivors": []
+ },
+ {
+  "module": "varna",
+  "name": "varna_ant",
+  "params": "src, sn, suf, sn2",
+  "doc": "",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/r8_text_edges.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/r8_text_edges.sm",
+   "tests/stdlib/string_case_trim.sm",
+   "proof_props: edge30 text"
+  ],
+  "named_count": 3,
+  "mutants_total": 5,
+  "mutants_killed": 5,
+  "survivors": []
+ },
+ {
+  "module": "varna",
+  "name": "varna_tul",
+  "params": "a, an, b, bn",
+  "doc": "varna_tul(a, an, b, bn) — -1 / 0 / 1 (lexicographic by char code).",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/r8_text_edges.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/r8_text_edges.sm",
+   "tests/stdlib/string_case_trim.sm"
+  ],
+  "named_count": 2,
+  "mutants_total": 7,
+  "mutants_killed": 6,
+  "survivors": [
+   "C1:<-><=@L473"
+  ]
+ },
+ {
+  "module": "varna",
+  "name": "varna_viparyay",
+  "params": "src, sn, out",
+  "doc": "varna_viparyay(src, sn, out) — copy the cell array reversed into out (WS1, R20). Cell-array form of khand_viparyay: the same two-pointer vinimay, so it is safe in place (src == out works). Writes a 0 terminator cell at out[sn]. Returns sn. sn <= 0 writes only the terminator, returns 0.",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/strb_cell_pairs.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/strb_cell_pairs.sm",
+   "proof_props: strb cell pairs"
+  ],
+  "named_count": 2,
+  "mutants_total": 4,
+  "mutants_killed": 2,
+  "survivors": [
+   "C1:<=-><@L496",
+   "C2:<-><=@L502"
+  ]
+ },
+ {
+  "module": "varna",
+  "name": "varna_gan",
+  "params": "hay, hn, needle, nn",
+  "doc": "varna_gan(hay, hn, needle, nn) — count non-overlapping occurrences of needle in hay, over cell arrays (WS1, R20). Cell-array form of khand_gan. Empty needle returns 0. (Pointer arithmetic is in bytes: the suffix at cell pos is hay + pos * 8.)",
+  "braceless": false,
+  "status": "PROVEN",
+  "standalone": true,
+  "detected_by": [
+   "tests/stdlib/strb_cell_pairs.sm"
+  ],
+  "named_by": [
+   "tests/stdlib/strb_cell_pairs.sm",
+   "proof_props: strb cell pairs",
+   "proof_props: edge30 text"
+  ],
+  "named_count": 3,
+  "mutants_total": 4,
+  "mutants_killed": 3,
+  "survivors": [
+   "C1:<=-><@L528"
+  ]
+ }
+]

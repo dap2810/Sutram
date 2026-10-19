@@ -1,0 +1,9 @@
+mukhya() {
+    vitti x = 2
+    vitti y = 1
+    guna (x) {
+        bhavana y + 1: { likha(10) }
+        bhavana 2: { likha(20) }
+        anya: { likha(30) }
+    }
+}

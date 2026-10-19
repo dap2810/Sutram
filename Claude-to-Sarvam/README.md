@@ -4,6 +4,71 @@
 
 ---
 
+## Index — ROUND-08 delivery (2026-10-19, against main `221eee96`, v183)
+
+**The diagnostics decision (WS3), first, as asked.** It is still the owner's call and nothing has changed. The
+question is the language of the compiler's errors and of the IDE's 22 status words; the rest of the IDE is
+already English. **Recommended: D now, E as translations arrive.**
+
+- **D:** a `--sandesh en` switch, with the default unchanged; the English IDE passes it.
+  - Cost: one message table and 90 lookups.
+  - No existing golden or doc changes.
+  - About 1–2 rounds.
+- **E:** the `--lang` pack's language for every message.
+  - Cost: D plus 900 translations.
+
+**New:** none of R7-02's numbers moved. If the R8-02 checks are approved, their 3 new messages should go
+straight into D's table, so deciding D first saves writing them twice (R8-03).
+
+**Code is on branch `claude/round-08`, draft PR #42.** One commit, `dac2c1ef`: tools and tests only. On `main`
+only this folder changes, in a documentation-only commit.
+
+**Read first:**
+
+1. **The gap list is in R8-01 §1.**
+   - Every one of the 303 functions now has a proof that fails when its whole body is broken. Before: 1 had
+     none, 1 was called but never checked.
+   - **That measure is too weak**, so the list uses 1,119 mutants shaped like real bugs: off-by-one results
+     and moved boundaries.
+   - **212 functions are closed; 91 are open**, listed module by module. This round closed 43, and killed
+     781 → 862 of the mutants.
+2. **F1 — a function with more than 21 variables silently computes wrong values.** This is on main, in both
+   the Linux and Windows compilers (Windows only under Wine).
+   - Stack slots past the 16th are encoded with a one-byte displacement and land in the caller's frame.
+   - `chakravala` corrupts its caller. `1000 + varna_bhed(…)` gives 5. `mukhya` with 40 variables adds 1..10
+     to 151.
+   - **I recommend fixing it first next round** (R8-01 §2).
+3. **Five smaller findings (F2–F6):**
+   - `nirmmita` failure is `-errno`, so "0 on failure" checks never fire
+   - `guna` re-evaluates its value per case
+   - a wrong comment
+   - a missing `yoj`
+   - non-executable committed binaries
+4. **14 new proofs.** Each expectation was computed independently, in Python, and agrees with the compiled
+   run. They include models of the map, the list, the queue and split against Python's own types, and every
+   Pell equation for n < 100.
+5. **WS2:** the non-name cases are four other classes, not one. Recommended: three small errors in one step;
+   typing documented, not built (R8-02).
+
+| File | Workstream | One line |
+|---|---|---|
+| `R8-01-LIBRARY-GAP-LIST.md` | **WS1 / Step 5** | **The gap list first.** Then F1–F6, the contracts of the helpers and of the uncommented open functions, the 14 proofs, what is not proven and why, the tools, and the gates. |
+| `R8-02-NON-NAME-SILENT-CASES.md` | WS2 | 7 cases stated plainly; a top-level `sutra` assignment is lost, not applied; `guna` re-evaluates (new). Four classes, not the decided one. Cost per fix; recommendation. Nothing implemented. |
+| `R8-03-DIAGNOSTICS-DECISION.md` | WS3 | The same paragraph as above, with the R7-02 option table. Nothing changed. |
+| `R8-04-WHAT-I-NEED.md` | WS4 | 4 answered, not re-sent. 14 open, led by F1. Housekeeping: PRs #31–#33, #35, #38, #40. |
+| `evidence-r8/` | all | `lib-gap-list.md/.json` (every surviving mutant, with line, verdict and reason), `lib-gap-list-before.*`, the raw tool output, `expectations/` (the Python that computed every golden), `probes/` (F1, F2, WS2), `logs/` |
+
+**Gates on the branch (Linux):**
+
+- proof_lib **205 / 205** · proof_props 86 / 86 · suite **203 / 4** (unchanged)
+- `gates.sh`: PASS 9 / FAIL 1 / NOT-RUN 1
+  - FAIL: the X11 `edscroll` timeout, pre-existing in this container
+  - NOT-RUN: Windows
+
+**Not verified:** Windows. F1 was reproduced with the committed `win/sutram.exe` **under Wine 9.0 only**.
+
+---
+
 ## Index — ROUND-07 delivery (2026-10-19, against main `05d8bdc8` v180)
 
 **Code is on branch `claude/round-07` — draft PR #40.** Commits:

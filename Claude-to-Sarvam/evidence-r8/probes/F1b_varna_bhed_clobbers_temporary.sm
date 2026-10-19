@@ -1,0 +1,18 @@
+yoj varna
+mukhya() {
+    vitti s = nirmmita(8 * 8)
+    s[0] = 97
+    s[1] = 44
+    s[2] = 98
+    vitti sep = nirmmita(8)
+    sep[0] = 44
+    vitti parts = nirmmita(16 * 8)
+    likha(varna_bhed(s, 3, sep, 1, parts, 8))
+    likha(1000 + varna_bhed(s, 3, sep, 1, parts, 8))
+    likha(varna_bhed(s, 3, sep, 1, parts, 8) + 1000)
+    vitti a = 1
+    vitti b = 2
+    vitti c = 3
+    likha(varna_bhed(s, 3, sep, 1, parts, 8))
+    likha(a + b + c)
+}

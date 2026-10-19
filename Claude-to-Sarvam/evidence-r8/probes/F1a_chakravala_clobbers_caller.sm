@@ -1,0 +1,7 @@
+yoj ganita
+mukhya() {
+    vitti out = nirmmita(2 * 8)
+    vitti n = 2
+    vitti r = chakravala(out, n)
+    likha(n)
+}

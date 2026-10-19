@@ -1,0 +1,8 @@
+yoj mala
+mukhya() {
+    likha(nirmmita(0))
+    likha(nirmmita(0 - 8))
+    vitti a = mala_nava(0)
+    likha(a)
+    likha(nirmmita(8) > 0)
+}
