@@ -1,0 +1,89 @@
+# R10 (F1): a function may have any number of variables (up to the 256 the
+# compiler accepts). Before R10, stack slots past rbp-128 were encoded with a
+# one-byte displacement and wrapped above the frame: from 29 variables in a
+# called function the caller's variables changed, from 34 it crashed, and from
+# 38 in any function variables shared cells. Every way of using a variable is
+# exercised below, with each one placed past slot 40.
+rachana Bindu = { x, y }
+prakriya gahra(p) {
+    vitti f0 = p + 0
+    vitti f1 = p + 1
+    vitti f2 = p + 2
+    vitti f3 = p + 3
+    vitti f4 = p + 4
+    vitti f5 = p + 5
+    vitti f6 = p + 6
+    vitti f7 = p + 7
+    vitti f8 = p + 8
+    vitti f9 = p + 9
+    vitti f10 = p + 10
+    vitti f11 = p + 11
+    vitti f12 = p + 12
+    vitti f13 = p + 13
+    vitti f14 = p + 14
+    vitti f15 = p + 15
+    vitti f16 = p + 16
+    vitti f17 = p + 17
+    vitti f18 = p + 18
+    vitti f19 = p + 19
+    vitti f20 = p + 20
+    vitti f21 = p + 21
+    vitti f22 = p + 22
+    vitti f23 = p + 23
+    vitti f24 = p + 24
+    vitti f25 = p + 25
+    vitti f26 = p + 26
+    vitti f27 = p + 27
+    vitti f28 = p + 28
+    vitti f29 = p + 29
+    vitti f30 = p + 30
+    vitti f31 = p + 31
+    vitti f32 = p + 32
+    vitti f33 = p + 33
+    vitti f34 = p + 34
+    vitti f35 = p + 35
+    vitti f36 = p + 36
+    vitti f37 = p + 37
+    vitti f38 = p + 38
+    vitti f39 = p + 39
+    # past every filler: a plain local, +=, ++, a loop variable, an array,
+    # a record pointer, a float, a kosh
+    vitti t = 0
+    t += 5
+    t++
+    chakra i = 1 tak 4 {
+        t = t + i
+    }
+    vitti arr = nirmmita(3 * 8)
+    arr[0] = 100
+    arr[2] = arr[0] + 7
+    vitti b = nirmmita(16)
+    b.x = 3
+    b.y = b.x * 4
+    dasham d = 1.5
+    d = d + 0.25
+    kosh k[1]
+    kosh_push(k, 9)
+    kosh_push(k, 11)
+    likha(t)
+    likha(arr[2])
+    likha(b.y)
+    likha(d)
+    likha(k[1])
+    likha(f0 + f39)
+    prati t + f39
+}
+mukhya() {
+    vitti a = 10
+    vitti c = 30
+    vitti n = 0
+    vitti s = 0
+    yavat (n < 2) {
+        s = s + 1000 + gahra(n)
+        n = n + 1
+    }
+    likha(a)
+    likha(c)
+    likha(n)
+    likha(s)
+}
