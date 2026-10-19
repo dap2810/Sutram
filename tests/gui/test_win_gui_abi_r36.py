@@ -44,10 +44,11 @@ class Win64AbiRegressions(unittest.TestCase):
         self.assertEqual(7,len(pushes),'seven pushes preserve 16-byte alignment for nested call')
 
     def test_gui_smoke_checks_captured_stdout_not_just_window(self):
-        smoke=(ASM_PATH.parent/'test-gui.ps1').read_text(encoding='utf-8')
-        self.assertIn('GUI_AUTOTEST_OK',smoke)
-        self.assertIn("$got -notmatch 'GUI_AUTOTEST_OK'",smoke)
-        self.assertIn('Output edit has no ValuePattern',smoke)
+        smoke=(ASM_PATH.parents[2]/'tools/test_windows_gui.py').read_text(encoding='utf8')
+        self.assertIn("output=text(controls[203])",smoke)
+        self.assertIn("check('run-button','ARGV_OPEN_OK' in output",smoke)
+        self.assertIn("check('menu-run'",smoke)
+        self.assertIn("'42' in output",smoke)
 
     def test_no_runtime_compiler_or_ide_changes(self):
         root=ASM_PATH.parents[2]
