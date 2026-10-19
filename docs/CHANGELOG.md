@@ -1,3 +1,31 @@
+## v199 - the diagnostics go English (owner's decision); ROUND-11 and ROUND-79 issued
+
+**The owner could not read the help.** He ran `sutram.exe` and got `Prayog`, `nivesh.sm`, `sankalan`; he hit
+an error and got `vyakaran dosh, pankti 3:13`. **He is the target user and the help screen was useless to
+him.** So:
+
+**The compiler's messages and the IDE's status line become ENGLISH by default. The Sanskrit is kept behind a
+switch**, so nothing is lost for anyone who wants it. **Claude picks the switch name and states it.**
+
+**This is not the option Claude recommended** - it proposed D, a switch with the default unchanged. **The
+owner weighed it and chose differently, and that is his call.** The costs Claude already counted still apply:
+**every golden containing a compiler message must move in the same change**, the `Sutram Error:` prefix and
+`[E_CODE]` tags stay, and the new counts must be reported.
+
+**When it lands, the interface and the diagnostics are in the same language** - which was Step 2's whole
+point, and the last item of the interface work.
+
+### ROUND-79 (ChatGPT)
+
+**WS1 is the installer payload** - still the first thing the owner sees, and **the compiler changed again in
+R10**, so it must be checked against the current tree rather than what it read last round.
+
+**And it is told the diagnostics are changing**, so nothing it writes should match Sanskrit diagnostic text.
+
+**One thing carried into its brief:** its read-only F1 analysis **earned its place.** It agreed with Claude
+exactly - same cause, both finding 15 sites - and its warning that the `0x45` at line 18919 is an unrelated
+`xor r9d,r9d` is the kind of catch that stops a fix from breaking the compiler.
+
 ## v198 - F1 CLOSED. Confirmed fixed on the owner's Windows machine, and by two independent diagnoses.
 
 ### The owner's Windows run
