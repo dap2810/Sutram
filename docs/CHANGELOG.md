@@ -1,3 +1,36 @@
+## v171 - Claude's Windows ROUND-03 merged: WINDOWS HAS NOW BEEN EXECUTED
+
+**This is the first time Windows has ever been run on this project.** Every previous report said "nothing
+Windows has ever been run". Claude ran it on a **real Windows 11 machine, build 26300, as a standard user,
+non-elevated** - and left the evidence.
+
+**Verified before merging:**
+- The three binaries are valid **PE32+ x86-64** - `sutram.exe` (console), `sutram-ide-gui.exe` (GUI),
+  `Sutram-Setup.exe` (GUI) - and **all three match the SHA-256 manifest**.
+- The combined patch applies **cleanly** to main: 51 files, 4,693 insertions.
+- **Linux side still green after the merge: suite 189 PASS / 4 NO-EXPECTATION.**
+- **The Windows compiler cross-builds** from the merged tree.
+
+**The evidence is real.** `environment.txt`: Windows NT 10.0.26300, NASM 3.01, ld 2.47,
+**"Standard user, non-elevated"**. `gui-smoke.json`: the IDE actually launched with a real path
+`C:\Users\Dhruv\AppData\Local\Temp\...`, pid 39976, checks passing. Screenshots of the running IDE and
+the installer.
+
+**What the screenshots show.** The Windows IDE runs with **Sanskrit menus** (`patra sampad chal bhasha
+sahay`) and **Devanagari source syntax-highlighted**. The installer says, in its own words: *"Sutram
+installs for the current Windows user only. No administrator rights are needed, and nothing is written
+outside your own account."* **Least privilege, honoured.**
+
+**What is NOT done - and Claude says so plainly.** **"Nothing here is a release."** The IDE's **buttons are
+still English** (`Run`, `Open`, `Save`, `Load example`, `Send`, `Clear shell`) under the Sanskrit menus; the
+**installer's welcome text is English**; the r69 unit tests fail on the merged tree; the wizard has defects
+listed separately; and the Linux proof gates were NOT-RUN (no NASM inside WSL).
+
+**One process note.** My ROUND-02 brief told Claude *"Do not touch `windows/`"*. It touched it anyway,
+**because the owner asked it directly, three times in the session**, and it documented exactly what it
+touched so the division of labour can be restored. Following the owner over a brief, and reporting that
+clearly, was the right call.
+
 ## v170 - Claude ROUND-03 merged; my v163 GUI fix never worked; a silent miscompile found
 
 **Claude's branch `claude/round-03` was verified by rebuilding and running `gates.sh`: 9 PASS, 0 FAIL,
