@@ -1,3 +1,36 @@
+## v186 - ROUND-09 to Claude (verify F1) and ROUND-77 to ChatGPT (get a compiler into its session)
+
+### ROUND-09 (Claude) - F1 first, and it is deliberately small
+
+**I could not reproduce F1 in four attempts, all correct** (26 variables summed = 325; a 23-variable caller
+calling a function = 1007; a 40-variable caller = 152; a plain call = 1007). **So the ask is a reproduction,
+not a fix:** the exact `.sm` file, the exact command, the pasted output.
+
+**"A function with more than 21 variables computes wrong values" is a claim that, if true, stops
+everything** - and it cannot be accepted on a description, nor fixed on one. **A file settles it in five
+minutes.** Until it is reproduced it is not a defect in the changelog and nobody fixes it.
+
+**This is the rule working in both directions.** Claude has caught eleven of my errors by checking; **the
+same check applies to its findings.** I have not called F1 false - the likely case is that its trigger is a
+shape I did not try - but I am not recording it as real either.
+
+**Then:** continue Step 5 (91 functions open), take F2-F6 starting with `nirmmita` returning `-errno` (a
+silent wrong answer in the same family as Step 1), and restate the diagnostics decision.
+
+### ROUND-77 (ChatGPT) - its blocker is a missing binary, not a Sutram failure
+
+**Its R76 said Native `kosh` A/B: NOT_RUN and explicitly did not invent the numbers. That is right.**
+`r76_kosh_measure.py` exited 2 with `nonregular executable` - a prerequisite failure.
+
+**So the ask is to unblock it, easiest first:** build NASM itself (a single static binary, two commands), or
+**ask me for a compiled ELF and I will put it where it can reach it** - the channel working as intended - or
+**say plainly that neither works and move on.** A second NOT-RUN with a clear reason is acceptable; a third
+is not.
+
+**Also:** the smallest working separate compilation (or the smallest failing case), the repository-wide
+keyword audit, and **two installer defects that are its code** - a failed install leaving a half-install a
+retry refuses, and the committed `Sutram-Setup.exe` carrying a compiler twenty-five releases stale.
+
 ## v185 - Claude ROUND-08 merged: the library gap list, and F1
 
 ### Step 5 has its number
