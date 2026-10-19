@@ -1,0 +1,9 @@
+# Sutram R76 — WS4 failed installer retry: source-supported defect
+
+Current main `windows/native-installer/install-core.ps1` Git blob `03c83f3663fdebbf85fd9beae4f6704bdf3824fa` was read and its installation/exception sequence inspected.
+
+**Root cause by source control flow:** the script rejects a preexisting nonempty unmarked folder, and rejects marked installations whose ownership metadata lacks `UninstallerSHA256`. During initial installation it performs `Copy-Item` to the target tree, copies the uninstaller, and writes the `.sutram-install` marker **before** post-install compiler checks, PATH, shortcuts, registry work, and final `install-state.ini`. Its outer `catch` logs the error and exits 1. The `finally` removes the temporary extraction directory only; it does not roll back the target tree or its partially written ownership state. Failure after copying but before state finalization therefore makes a subsequent attempt hit the nonempty-folder or incomplete-metadata refusal. This is consistent with the owner/Claude reported retry problem.
+
+**What to fix:** transactional installation with a journal of exact files this fresh attempt owns, prechecks before commit where possible, atomic/ordered ownership publication and targeted rollback of only owned new files and corresponding HKCU/shortcuts on error. Preserve unknown folders, prior upgrades and user data; do not elevate or touch HKLM. Test injected failures during copy, after marker, compiler self-test, PATH, shortcut, registry and upgrade, then verify retry, uninstall and no user-data loss on real Windows 11 standard user.
+
+**Status:** static root-cause analysis PASS; Windows execution/installer fix NOT_RUN. No edits to `windows/` or installer files because Claude is actively responsible for those shared sources; this handoff requests Claude/Sarvam to implement and independently test the fix.
