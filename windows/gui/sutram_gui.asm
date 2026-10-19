@@ -447,11 +447,22 @@ examples_dir db 'examples\',0
 compiler_rel db 'win\sutram.exe',0
 prefix_gui db 'STG',0
 caption_editor db 'Editor',0
-; builtins: colour teal, matched the same way as keywords
-bi_words db 'likha',0,'likh',0,'likh8',0,'pad',0,'pad8',0,'dvaram',0,'band',0,\
-            'sthagita',0,'char_at',0,'char_code',0,'set_char',0,'vartani_len',0,\
-            'vartani_cmp',0,'vartani_cp',0,'nirmmita',0,'grahan',0,'shabda',0,0
-kw_words db 'mukhya',0,'likha',0,'ayojan',0,'prakriya',0,'dasham',0,'kosh',0,'kuru',0,'nishkriya',0,'yadi',0,'anyatha',0,'yavat',0,'punar',0,'satya',0,'asatya',0,'phala',0,'pratiyati',0,'grahan',0,0
+; builtins: colour teal, matched the same way as keywords.
+; R5: both tables are the compiler's own names (bn_* and kw_* in src/sutram_compiler.asm);
+; until R5 they held the pre-v157 names, so vitti/chakra/prati/tak/anya/agrim and the
+; renamed builtins were not coloured. tests/gui/test_win_gui_colour_tables.py keeps them equal.
+bi_words db 'likh',0,'sthagita',0,'pad',0,'dvaram',0,'paadh',0,'likha',0,'band',0,'netsock',0,\
+            'netbind',0,'netlisten',0,'netaccept',0,'nirmmita',0,'likh8',0,'pad8',0,'vartani_len',0,\
+            'vartani_cmp',0,'vartani_cat',0,'sankhya_yog',0,'sankhya_gunan',0,'sankhya_dot',0,\
+            'likha_fmt',0,'akshar',0,'akshar_rakh',0,'aksharank',0,'pankti_len',0,'kosh_push',0,\
+            'kosh_pop',0,'kosh_len',0,'kosh_cap',0,'kosh_clear',0,'kosh_empty',0,'kosh_peek',0,\
+            'kosh_enqueue',0,'kosh_dequeue',0,'char_from',0,'char_upper',0,'char_lower',0,\
+            'likh8c',0,'pad8c',0,'smaran',0,'smaran_cp',0,'vartani_cp',0,'grahan',0,'lkhb',0,\
+            'shabda',0,0
+kw_words db 'mukhya',0,'vitti',0,'anka',0,'yadi',0,'yavat',0,'prati',0,'sankhya',0,'anya',0,\
+            'prakriya',0,'yoj',0,'rachana',0,'chakra',0,'tak',0,'sutra',0,'abhava',0,'krama',0,\
+            'agrim',0,'purna',0,'shunya',0,'satya',0,'ganana',0,'guna',0,'bhavana',0,'mala',0,\
+            'yantra',0,'kuru',0,'dasham',0,'kosh',0,0
 ; Import-table label expansion: function-name symbols n_* via macro.
 %unmacro IMPORTS 1
 %macro IMPORTS 1
