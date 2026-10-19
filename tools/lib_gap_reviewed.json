@@ -1,0 +1,131 @@
+{
+ "_about": "Hand verdicts for surviving mutants that tools/lib_gap_report.py cannot decide by rule. Key: module.function mutant-tag (without @line). Each verdict states its argument; re-check it if the source line changes.",
+ "ganita.ganita_janchit_yuj C1:>=->>": [
+  "EQUIVALENT",
+  "x = 0 takes the other branch, where y < 0 gives s = y < 0: no overflow on either branch"
+ ],
+ "ganita.ganita_janchit_yuj C2:>=->>": [
+  "EQUIVALENT",
+  "y = 0: s = x, which cannot overflow"
+ ],
+ "ganita.ganita_janchit_yuj C4:<-><=": [
+  "EQUIVALENT",
+  "y = 0 with x < 0: s = x < 0, which is not flagged either way"
+ ],
+ "ganita.ganita_janchit_nyun C2:<-><=": [
+  "EQUIVALENT",
+  "y = 0: d = x, no overflow"
+ ],
+ "ganita.ganita_janchit_nyun C3:<-><=": [
+  "EQUIVALENT",
+  "x >= 0, y < 0: the true x - y is in [1, 2^64 - 1], so the wrapped d is never 0"
+ ],
+ "ganita.ganita_janchit_nyun C4:>=->>": [
+  "EQUIVALENT",
+  "y = 0: d = x, no overflow"
+ ],
+ "ganita.ganita_janchit_nyun C5:>=->>": [
+  "EQUIVALENT",
+  "x < 0, y >= 0: the true x - y is in [-2^64 + 1, -1], so the wrapped d is never 0"
+ ],
+ "khand.khand_bandh C1:<=-><": [
+  "EQUIVALENT",
+  "n = 0 skips the loop and writes the same single terminator"
+ ],
+ "khand.khand_mukt C1:<=-><": [
+  "EQUIVALENT",
+  "n = 0 skips the loop and writes the same single terminator"
+ ],
+ "ganita.chakravala C5:<-><=": [
+  "LIKELY-EQ",
+  "floor adjustment when r = 0 picks the other bracketing candidate; tests/stdlib/r8_chakravala_sweep.sm (n = 2..99) agrees"
+ ],
+ "ganita.chakravala C6:!=->==": [
+  "LIKELY-EQ",
+  "as C5; the sweep agrees"
+ ],
+ "ganita.chakravala C8:>=->>": [
+  "LIKELY-EQ",
+  "m = 0 is never the better candidate for n >= 2; the sweep agrees"
+ ],
+ "ganita.chakravala C9:<=-><": [
+  "LIKELY-EQ",
+  "m = 3037000499 needs n near 2^63; the sweep cannot reach it. Not proven"
+ ],
+ "ganita.chakravala C11:<-><=": [
+  "LIKELY-EQ",
+  "a tie between the two candidates: either gives a valid step; the sweep agrees"
+ ],
+ "ganita.chakravala C12:<-><=": [
+  "LIKELY-EQ",
+  "as C11"
+ ],
+ "suchi.suchi_vinimay C3:<-><=": [
+  "EQUIVALENT",
+  "b = 0 is in bounds for a non-empty list, and the a check already rejects an empty one"
+ ],
+ "nighantu.nighantu_apanay C7:<=-><": [
+  "EQUIVALENT",
+  "i == j cannot happen: j starts at i + 1 and stops at the empty slot"
+ ],
+ "nighantu.nighantu_apanay C9:<=-><": [
+  "EQUIVALENT",
+  "as C7"
+ ],
+ "nighantu.nighantu_apanay C12:>=->>": [
+  "GAP",
+  "j == cap reads the key-length cell of slot 0 instead of wrapping; needs a deletion whose probe chain wraps past the end with a 1-byte key in slot 0"
+ ],
+ "varna.varna_unnat C1:<-><=": [
+  "EQUIVALENT",
+  "slen = 0: the loop does nothing and dst[0] = 0 either way"
+ ],
+ "varna.varna_avanat C1:<-><=": [
+  "EQUIVALENT",
+  "as varna_unnat C1"
+ ],
+ "varna.varna_tul C1:<-><=": [
+  "EQUIVALENT",
+  "yn == n sets n to the same value"
+ ],
+ "ank.seemit C1:<-><=": [
+  "OUT-OF-CONTRACT",
+  "only lo > hi tells them apart (v = lo > hi); for lo <= hi, v = lo returns lo either way"
+ ],
+ "ganit.ganit_seemit C1:<-><=": [
+  "OUT-OF-CONTRACT",
+  "as ank.seemit. The comment says lo > hi returns lo; the code returns hi when v >= lo (R8-01 finding F4)"
+ ],
+ "ganita.kuttaka C4:>->>=": [
+  "OUT-OF-CONTRACT",
+  "b = 0 (congruence modulo 0); the witness also breaks the stated precondition gcd(a, b) | c"
+ ],
+ "mala.mala_nava C1:<-><=": [
+  "FINDING",
+  "mala_nava(0) returns -22, not a usable block: nirmmita(0) returns -EINVAL (R8-01 finding F2). The mutant returns 0"
+ ],
+ "ganita.chakravala C7:<-><=": [
+  "LIKELY-EQ",
+  "a third candidate m (t + 2) is further from sqrt(n) than the two bracketing ones, so it is never chosen; the sweep agrees"
+ ],
+ "khand.khand_chhid C2:>=->>": [
+  "EQUIVALENT",
+  "lo == sn: the mutant reads one more byte; a space moves lo past sn, which still leaves hi <= lo and an empty result"
+ ],
+ "khand.khand_chhid C5:<=-><": [
+  "EQUIVALENT",
+  "hi == lo: byte hi - 1 is a space skipped by the first loop, so hi drops below lo and the result is still empty"
+ ],
+ "khand.khand_unnat C1:<-><=": [
+  "EQUIVALENT",
+  "sn = 0: the loop does nothing and the terminator lands at out[0] either way"
+ ],
+ "khand.khand_avanat C1:<-><=": [
+  "EQUIVALENT",
+  "as khand_unnat C1"
+ ],
+ "khand.khand_viparyay C1:<=-><": [
+  "EQUIVALENT",
+  "sn = 0: the swap loop does nothing, the terminator lands at out[0], and 0 is returned either way"
+ ]
+}
