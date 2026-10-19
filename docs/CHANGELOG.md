@@ -1,3 +1,46 @@
+## v191 - F1 CONFIRMED by me: a function with 38+ variables SEGFAULTS. Claude ROUND-09 merged.
+
+### F1 is real, and it is worse than the description
+
+**Claude reproduced it and told me why my four attempts were correct: my test was the wrong shape.** The
+trigger is a **called** function with 20+ variables, or **any** function with 38+.
+
+**I reproduced it myself, and found the threshold:**
+
+| Variables in the function | Result |
+|---|---|
+| 18, 20, 22, 30 | **correct** |
+| **38, 40** | **SEGFAULT - exit 139** |
+
+**A valid program with 38 local variables crashes the compiler's output.** Not a wrong answer - a segfault.
+**This is the most serious defect found on this project**, and it was found by Claude checking its own
+finding after I could not reproduce it. **The rule worked in both directions, which is exactly what it is
+for.**
+
+**Not fixed. It is now the top item on the road to v1.0** - ahead of everything else, because a language
+that segfaults on valid input is not usable.
+
+### Claude's ROUND-09 is merged
+
+- **F2-F6 fixed**, each with a file that fails on the previous compiler. `nirmmita` returned `-errno` so
+  every "0 on failure" check missed it; `guna` re-evaluated its value per case; plus a comment, a missing
+  `yoj`, and the binaries' mode.
+- **The IDE now renders all eleven packs and TYPES them from an English keyboard.** The font is fixed -
+  Indic runs use Nirmala UI, Latin stays Consolas - **and the transliteration mode works.** That answers the
+  owner's question directly: he can type `mukhya` and get `मुख्य`.
+- **Main's locks and binaries had drifted** - the compiler pin was still R7's so `r69_build --check-only`
+  refused on main, and `win/sutram.exe` was the R7 build. Re-pinned and rebuilt.
+- **Five of its files carried my own recent changes backwards** (the sockets note, Step 8, the RETIRED
+  header, the stdlib fix, the changelog) because the branch predates them. **Excluded rather than reverted.**
+  That trap has now cost four rounds; it is caught before landing each time.
+
+### ChatGPT's ROUND-77
+
+**WS5 is a real fix:** `install-core.ps1` now distinguishes a fresh directory from an existing installation,
+and **rolls back only after a fresh install has started changing files** - removing only what it created,
+preserving unknown files, reverting PATH only if this attempt added it, and removing HKCU keys only if they
+were absent before. **A user can now retry a failed install.**
+
 ## v190 - Step 8: the security and least-privilege audit. One real violation, found and retired.
 
 **A static audit of the shipped tooling** - network calls, elevation requests, registry writes, credentials -
