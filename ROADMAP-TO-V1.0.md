@@ -33,7 +33,7 @@ Each step is placed by **what it unblocks**, not by importance.
 | **2** | **Decide and apply the diagnostics language** | Owner decides, Claude applies | Interface and diagnostics are in the same language |
 | **3** | **Make Windows a gate, then pass it** | Claude builds, **owner runs** | `tools/accept-windows.ps1` exists and every check passes on real Windows |
 | **4** | **Fix the `kosh` leak** | ChatGPT | Mapping count returns to baseline, measured before/after |
-| **5** | **Prove the library is complete** | Muse (paused) | Every module has a contract, a passing proof, and a running example |
+| **5** | **Prove the library is complete** | Claude | Every module has a contract, a passing proof, and a running example |
 | **6** | ~~Compile every code sample in every document~~ **DONE v180** | Sarvam | **89 programs across all six books and the reference compiled clean; the 6 "failures" are the books' deliberately-broken `galat.sm` error demos, which are supposed to fail** |
 | **7** | **Measure performance** | Sarvam | A benchmark gate in `gates.sh`, with the machine recorded |
 | **8** | ~~Security and least-privilege audit~~ **DONE v190** | Sarvam + Claude | **`SECURITY-AUDIT.md`** - one real violation found (the HKLM-writing `.nsi`, now RETIRED); the preflight guard and the per-user installer both verified |
@@ -84,6 +84,20 @@ partner last worked — **then names the step this round advances**, then the wo
 named per check. Nothing is accepted on the strength of a report; it is rebuilt and re-measured first.
 
 ---
+
+## F1 — the defect that reordered this list
+
+**A function with 27+ local variables gave WRONG VALUES, and from 32 it crashed.** The compiler printed
+`Siddh: ... sankalit` — it reported SUCCESS — and the program then produced nothing. **A user would rewrite
+working code for hours before suspecting the compiler.**
+
+**FIXED and verified on main** (v196): 27, 32, 38, 50, 100, 200 and 250 local variables all return the
+correct value. **Root cause:** every stack variable's `rbp` offset was emitted as a one-byte displacement, so
+slots below `rbp-128` wrapped above the frame onto the caller's saved values and the return address.
+
+**It was found by the owner running a test I had written badly, on a claim I had initially doubted, and it
+was confirmed by three independent methods.** It is now the reason the project has a rule: *a description is
+not a reproduction.*
 
 ## What is explicitly not on this list
 
