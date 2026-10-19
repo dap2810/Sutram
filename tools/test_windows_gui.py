@@ -140,7 +140,7 @@ try:
     check('compiler-error','Error' in output or 'failed' in output,output)
     # ---- R73: Sanskrit interface, editor keys, status line, bhasha pack, icon ----
     labels={i:text(controls[i]) for i in (101,102,103,104,105,106)}
-    check('button-labels',labels=={101:'Run',102:'Open',103:'Save',104:'Load example',105:'Send',106:'Clear shell'},labels)
+    check('button-labels',labels=={101:'chal',102:'khol',103:'sanchay',104:'udaharan khol',105:'presh',106:'phal_rikta'},labels)
     check('status-line',206 in controls and 'pankti' in text(controls[206]) and 'bhasha' in text(controls[206]),text(controls[206]) if 206 in controls else None)
     check('title-sanskrit','Sutram sampadak' in text(main) and ' *' in text(main),text(main))
     def set_editor(s):
