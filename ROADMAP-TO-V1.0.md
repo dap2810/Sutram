@@ -36,7 +36,7 @@ Each step is placed by **what it unblocks**, not by importance.
 | **5** | **Prove the library is complete** | Muse (paused) | Every module has a contract, a passing proof, and a running example |
 | **6** | ~~Compile every code sample in every document~~ **DONE v180** | Sarvam | **89 programs across all six books and the reference compiled clean; the 6 "failures" are the books' deliberately-broken `galat.sm` error demos, which are supposed to fail** |
 | **7** | **Measure performance** | Sarvam | A benchmark gate in `gates.sh`, with the machine recorded |
-| **8** | **Security and least-privilege audit** | Sarvam + Claude | A checklist with evidence, not a claim |
+| **8** | ~~Security and least-privilege audit~~ **DONE v190** | Sarvam + Claude | **`SECURITY-AUDIT.md`** - one real violation found (the HKLM-writing `.nsi`, now RETIRED); the preflight guard and the per-user installer both verified |
 | **9** | **Install / upgrade / uninstall on clean Windows** | **Owner** | All three work and leave nothing behind |
 | **10** | **Freeze and release v1.0** | Sarvam | Tagged, `gates.sh` green including Windows, CHANGELOG records it |
 
