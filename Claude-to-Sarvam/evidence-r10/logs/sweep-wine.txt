@@ -1,0 +1,33 @@
+# Windows target, under Wine 9.0 (not Windows). Same sweep.py: a called function with n locals + 1 parameter + s; the caller keeps a, b, c live and pushes 1000 before the call.
+## main's win/sutram.exe (b3672b50c336da65…)
+callee n=  20: OK      exit=0 got=10 20 30 1222 want=10 20 30 1222
+callee n=  26: OK      exit=0 got=10 20 30 1363 want=10 20 30 1363
+callee n=  27: WRONG   exit=0 got=10 20 30 780 want=10 20 30 1390
+callee n=  28: WRONG   exit=0 got=10 418 30 446 want=10 20 30 1418
+callee n=  29: WRONG   exit=0 got=10 29 447 475 want=10 20 30 1447
+callee n=  30: WRONG   exit=0 got=10 29 30 506 want=10 20 30 1477
+callee n=  31: WRONG   exit=0 got=10 30 30 536 want=10 20 30 1508
+callee n=  32: WRONG   exit=5 got=(nothing) want=10 20 30 1540
+callee n=  33: WRONG   exit=1 got=(nothing) want=10 20 30 1573
+callee n=  34: WRONG   exit=1 got=(nothing) want=10 20 30 1607
+callee n=  36: WRONG   exit=1 got=(nothing) want=10 20 30 1678
+callee n=  38: WRONG   exit=1 got=(nothing) want=10 20 30 1753
+callee n=  40: WRONG   exit=1 got=(nothing) want=10 20 30 1832
+callee n= 100: WRONG   exit=1 got=(nothing) want=10 20 30 6062
+callee n= 220: WRONG   exit=1 got=(nothing) want=10 20 30 25322
+## this branch's win/sutram.exe (5ca79377855bed37…)
+callee n=  20: OK      exit=0 got=10 20 30 1222 want=10 20 30 1222
+callee n=  26: OK      exit=0 got=10 20 30 1363 want=10 20 30 1363
+callee n=  27: OK      exit=0 got=10 20 30 1390 want=10 20 30 1390
+callee n=  28: OK      exit=0 got=10 20 30 1418 want=10 20 30 1418
+callee n=  29: OK      exit=0 got=10 20 30 1447 want=10 20 30 1447
+callee n=  30: OK      exit=0 got=10 20 30 1477 want=10 20 30 1477
+callee n=  31: OK      exit=0 got=10 20 30 1508 want=10 20 30 1508
+callee n=  32: OK      exit=0 got=10 20 30 1540 want=10 20 30 1540
+callee n=  33: OK      exit=0 got=10 20 30 1573 want=10 20 30 1573
+callee n=  34: OK      exit=0 got=10 20 30 1607 want=10 20 30 1607
+callee n=  36: OK      exit=0 got=10 20 30 1678 want=10 20 30 1678
+callee n=  38: OK      exit=0 got=10 20 30 1753 want=10 20 30 1753
+callee n=  40: OK      exit=0 got=10 20 30 1832 want=10 20 30 1832
+callee n= 100: OK      exit=0 got=10 20 30 6062 want=10 20 30 6062
+callee n= 220: OK      exit=0 got=10 20 30 25322 want=10 20 30 25322
