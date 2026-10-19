@@ -1,0 +1,34 @@
+$ python3 tools/r69_build.py --check-only
+    }
+  }
+}
+exit=0
+$ python3 tools/r70_negative_corpus.py --compiler <branch build> --report r70.json
+  "failed": 0,
+  "native_status": "PASS"
+}
+$ python3 -m unittest discover -s tests/r66
+Ran 22 tests in 0.279s
+OK
+$ python3 -m unittest discover -s tests/r67
+Ran 17 tests in 0.060s
+OK
+$ python3 -m unittest discover -s tests/r68
+Ran 19 tests in 0.202s
+OK
+$ python3 -m unittest discover -s tests/r69
+FAIL: test_native_diagnostics_gate (test_build_and_probe.DocsAndWindows.test_native_diagnostics_gate)
+FAIL: test_staged_payload_hash_gate (test_build_and_probe.DocsAndWindows.test_staged_payload_hash_gate)
+Ran 39 tests in 0.016s
+FAILED (failures=2)
+$ python3 -m unittest discover -s tests/module_graph
+Ran 18 tests in 0.011s
+OK
+$ python3 -m unittest discover -s tests/gui
+Ran 28 tests in 0.012s
+OK
+$ python3 -m unittest discover -s tests/ci
+Ran 9 tests in 0.004s
+OK
+$ python3 tools/check_workflow_triggers.py
+CI_NOTIFICATION_POLICY_ACCEPTED: no automatic workflow events

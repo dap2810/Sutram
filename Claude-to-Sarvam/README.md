@@ -4,6 +4,41 @@
 
 ---
 
+## Index — ROUND-04 delivery (2026-10-19, against main `6ebe973f` v172)
+
+**Code is on branch `claude/round-04` — draft PR** (commits: `33374793` WS1 · `83af6270` WS2 · `2ee5c5ac` WS3),
+kept off `main` per `AGENTS.md`. On `main` only this folder changes (documentation-only commit).
+
+**Read first:** the wizard's focus defect is worse than R3 said. One `WM_COMMAND` carrying
+`BN_SETFOCUS`, with no click, **passed the licence page while "decline" was selected and Next was disabled**.
+Five such messages reached the "installed successfully" page (R4-03 §1). It is ChatGPT's code, so it is
+reported and not fixed, as the brief asks.
+
+| File | Workstream | One line |
+|---|---|---|
+| `R4-01-UNDEFINED-NAME.md` | WS1 | **An undefined name is now a compile error**, in Sanskrit, at its own line and column. Old keywords get a hint naming the new one (`'pratiyati' purana kunjishabd …; navin: 'prati'`). Done in the parser, with no restructuring and no codegen change. No program in the tree relied on read-as-0. Suite 191 PASS / 4 NO-EXPECTATION, new goldens 222 and 223 (both FAIL on v172). Locks re-pinned, including five `win/*` inputs v171 left stale. |
+| `R4-02-WINDOWS-SANSKRIT.md` | WS2 | IDE buttons `chal khol sanchay "udaharan khol" presh phal_rikta`; 49 installer strings romanised, licence and paths untouched. Before/after screenshots under **Wine** (not Windows). Also fixed my own IDE bug: the IDE named the wrong failing stage (compile vs run). |
+| `R4-03-WIZARD-AND-R69.md` | WS3 | Wizard: focus-advance, licence mojibake and `%TEMP%` leftovers, all reproduced, all ChatGPT's, all reported. `tests/r69`: 2 FAIL, ChatGPT's scripts, reported; the old ERROR is gone. `tests/r67`: 2 FAIL caused by my R73, **fixed, 17/17** (two test assertions updated to R73's accepted behaviour, reasons stated). Every gate with PASS / FAIL / NOT-RUN. |
+| `R4-04-WHAT-I-NEED.md` | WS4 | Six earlier asks answered by v169–v172, not re-sent. Nine still open: **re-pin at acceptance** (third miss), the words (one consolidated list plus two keyword collisions), Devanagari spelling, diagnostics shape, hint and signatures, `gates.sh` counts, version number, and two new ones (bare assignment, temp file names in IDE diagnostics). |
+| `evidence-r4/` | all | `screens/` (Wine captures), `logs/` (gates, suite, WS1 before/after, Wine compiler run, unittest folders), `repro/sendfocus.asm` |
+
+**Gates on the branch:**
+- suite **191 PASS / 4 NO-EXPECTATION**
+- `gates.sh`: PASS 8 / FAIL 1 / NOT-RUN 1
+  - FAIL: X11 `test_x11_edscroll` times out. It is pre-existing: the X11 GUI binary is byte-identical to
+    main's, which fails the same way.
+  - NOT-RUN: Windows.
+- `tests/r66` 22, `r67` **17**, `r68` 19, `module_graph` 18, `gui` 28, `ci` 9 OK · `r69` 2 FAIL (ChatGPT's)
+- R70 6/6 · `r69_build` SOURCE_PINS_CHECKED · workflow triggers OK
+- The Windows compiler, GUI and wizard all cross-build.
+
+**Not verified:**
+- Nothing was run on Windows. The Windows evidence this round is Wine 9.0 on Linux: layout, text, message
+  handling and the compiler's output. It is not Windows acceptance.
+- `tools/test_windows_*.py` are NOT-RUN.
+
+---
+
 ## Index — ROUND-03 delivery (2026-10-19, against main `85d6c5f` v169)
 
 **Code is on branch `claude/round-03` — draft PR #32** (four code commits: `2182583` WS1 · `decb0afe` WS2 · `6f13c93e`

@@ -1,0 +1,83 @@
+== sc172 pratiyati.sm
+Siddh: 237 byte sankalit
+compile exit=0
+2
+run exit=0
+== sc172 phal_typo.sm
+Siddh: 378 byte sankalit
+compile exit=0
+117
+run exit=0
+== sc172 ok_cases.sm
+Siddh: 382 byte sankalit
+compile exit=0
+117
+run exit=0
+== sc4 pratiyati.sm
+pratiyati.sm:2:20: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'pratiyati'
+      yadi (n > 3) { pratiyati 1 }
+                     ^
+Sanket: 'pratiyati' purana kunjishabd (v157 se purv); navin: 'prati'
+compile exit=1
+== sc4 phal_typo.sm
+phal_typo.sm:2:19: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'phal'
+  prakriya dvi(x) { phal x * 2 + h }
+                    ^
+Sanket: prayog se purv ghoshana avashyak: vitti phal = ...
+compile exit=1
+== sc4 ok_cases.sm
+Siddh: 382 byte sankalit
+compile exit=0
+117
+run exit=0
+== sc4 --check many.sm
+many.sm:2:11: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'p'
+      likha(p)
+            ^
+Sanket: prayog se purv ghoshana avashyak: vitti p = ...
+many.sm:3:11: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'q'
+      likha(q)
+            ^
+Sanket: prayog se purv ghoshana avashyak: vitti q = ...
+many.sm:4:9: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'x'
+      x = x + 1
+          ^
+Sanket: prayog se purv ghoshana avashyak: vitti x = ...
+Sutram janch: dosh mile; nirgat binary nahi
+exit=1
+--- pratiyati.sm
+prakriya f(n) {
+    yadi (n > 3) { pratiyati 1 }
+    phal 2
+}
+mukhya() {
+    likha(f(5))
+}
+--- phal_typo.sm
+vitti g = 7
+prakriya dvi(x) { phal x * 2 + h }
+vitti h = 100
+mukhya() {
+    vitti a = 1
+    a = a + 1
+    chakra i = 0 tak 2 { a = a + i }
+    yadi (a > 0) { vitti b = a } anya { vitti b = 0 }
+    likha(dvi(a) + g)
+}
+--- ok_cases.sm
+vitti g = 7
+prakriya dvi(x) { prati x * 2 + h }
+vitti h = 100
+mukhya() {
+    vitti a = 1
+    a = a + 1
+    chakra i = 0 tak 2 { a = a + i }
+    yadi (a > 0) { vitti b = a } anya { vitti b = 0 }
+    likha(dvi(a) + g)
+}
+--- many.sm
+mukhya() {
+    likha(p)
+    likha(q)
+    x = x + 1
+}
