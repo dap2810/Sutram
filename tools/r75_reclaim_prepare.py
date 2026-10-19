@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Stage a hash-checked R75 v180-Sanskrit Linux kosh-reclamation compiler, without editing input.
+"""Stage a hash-checked R76 v183-Sanskrit Linux kosh-reclamation compiler, without editing input.
 
 This is a source preparation tool, not a replacement parser/compiler/backend.
 The stage contains the inherited NASM compiler with three call sites added and
@@ -21,7 +21,7 @@ CORE = 'src/sutram_compiler.asm'
 ENTRY = 'src/r68_compiler_entry.asm'
 PAYLOAD = 'src/r75_kosh_reclaim.inc'
 PINS = {
-    CORE: '185b7f06ad01b5b80f123b694b0025034698bd35',
+    CORE: 'cc5cfbe48ac3ea1360958cb8f203385744d094b8',
     'src/r66_indic_lexer.inc': '998b6cb75a7e11cf6d488cf84a84a2154ffdebf0',
     'src/r67_stack_pair.inc': 'e8472bd1cad767cf06b0c00fcf88793419362db5',
     'src/r68_unicode_helpers.inc': '69103e059634aa6b5b871ce7c06c2f4b9c742ff1',
@@ -164,7 +164,7 @@ def main() -> int:
     try:
         print(json.dumps(stage_sources(args.root, args.stage, args.experimental_unsafe_alias), indent=2))
     except (OSError, ValueError) as exc:
-        p.exit(2, 'R75_RECLAIM_PREPARE_REFUSED: ' + str(exc) + '\n')
+        p.exit(2, 'R76_RECLAIM_PREPARE_REFUSED: ' + str(exc) + '\n')
     return 0
 
 
