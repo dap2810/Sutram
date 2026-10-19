@@ -1,0 +1,20 @@
+== wine 224_unknown_field
+224_unknown_field.sm:7:13: Sutram Error [E_UNKNOWN_FIELD]: agyat kshetra 'w'
+      likha(p.w)
+              ^
+Sanket: 'w' kisi rachana ka kshetra nahi
+exit=0
+== wine 225_undeclared_array
+225_undeclared_array.sm:5:11: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'totl'
+      likha(totl[0])
+            ^
+Sanket: prayog se purv ghoshana avashyak: vitti totl = ...
+exit=0
+== wine 226_long_field_names
+Siddh: 463 byte sankalit
+exit=0
+1
+2
+224_unknown_field wine exit=1
+225_undeclared_array wine exit=1
+226_long_field_names wine exit=0

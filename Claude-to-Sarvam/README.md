@@ -4,6 +4,61 @@
 
 ---
 
+## Index — ROUND-05 delivery (2026-10-19, against main `c504e3c6` v173)
+
+**Code is on branch `claude/round-05` — draft PR #35.** Commits:
+
+| Commit | What |
+|---|---|
+| `70b02e8f` | English labels |
+| `a1340416` | IDE keyword colours |
+| `79928d90` | Installer text |
+| `f1025a72` | Index and field names |
+| `a7e48882` | R56 doc sample |
+
+On `main` only this folder changes, in a documentation-only commit. **Every screenshot is from Wine 9.0 on
+Linux, not Windows.**
+
+**Read first:**
+
+1. **The owner's instruction is done.** The menus are `File Edit Shell Language Help`, the buttons are
+   `Run Open Save "Load example" Send "Clear shell"`, and the installer is back to its English text. The
+   words follow the 13 Oct build where it had them.
+   - The file-list panel was **not removed.** It is in the code and in every screenshot (R5-01 §3).
+2. **Three more wrong-name cases compiled silently after R4; they are now errors.**
+   - `p.w` for an undeclared field read `p.x`.
+   - Field names longer than 8 bytes were compared on their first 8 bytes only.
+   - `a[i]` with an undeclared `a` crashed at run time.
+   - Two remaining cases are language decisions (R5-04 §2).
+3. **ChatGPT's ROUND-73 WS1 blocker is already resolved on v173** by my R4 re-pin, and this branch re-pins
+   again. Please sequence the merges (R5-03 §1).
+
+| File | Workstream | One line |
+|---|---|---|
+| `R5-01-ENGLISH-INTERFACE.md` | Part 2 | Menus, buttons, find label, Help dialogs and installer in English, with a word-by-word table and its source. Two things are kept in Sanskrit for you to confirm: the status line and the output messages. The file-list panel question is answered. A separate commit makes the editor colour the current keywords (`vitti`, `chakra`, `prati` … were drawn plain). |
+| `R5-02-STAGE-FIX-AND-TESTS.md` | WS2 | The R4 failing-stage fix still works with the English labels (editor and shell, under Wine). Every gate with PASS / FAIL / NOT-RUN **and its environment**. |
+| `R5-03-WHAT-I-NEED.md` | WS3 | v173 made 3 asks moot and they are not re-sent. 11 are open, led by the pin coordination with ChatGPT, the diagnostics language now that the interface is English, and two silent-wrong-name language decisions. |
+| `R5-04-WRONG-NAMES.md` | WS4 | All 510 `.sm` files and 70 doc samples compiled before and after: **no program changed.** One doc sample fixed (`pratiyati`). The stdlib reference page uses a non-keyword `samapt` in all 26 samples; reported, not rewritten. The compiler now rejects undeclared array/field bases and unknown fields, and compares field names in full. New goldens 224, 225 and 226. |
+| `evidence-r5/` | all | `screens/` (Wine), `logs/` (gates, unittest folders, Wine compiler run), `probes/` (the wrong-name probe programs) |
+
+**Gates on the branch:**
+
+- suite **194 PASS / 4 NO-EXPECTATION**
+- `gates.sh`: PASS 8 / FAIL 1 / NOT-RUN 1
+  - FAIL: the X11 `edscroll` timeout. The X11 GUI is byte-identical to main's and fails the same way here,
+    so this is pre-existing in my container.
+  - NOT-RUN: Windows.
+- `tests/gui` 31 · `r66` 22 · `r67` 17 · `r68` 19 · `module_graph` 18 · `ci` 9 · `r72` 3 OK
+- `r69` 2 FAIL (ChatGPT's scripts)
+- R70 6/6 · `r69_build` SOURCE_PINS_CHECKED · workflow triggers OK
+
+**Not verified:**
+
+- Nothing ran on Windows. The Windows tests are NOT-RUN.
+- No binary is committed. Rebuild `sutram_compiler` at merge.
+
+---
+
 ## Index — ROUND-04 delivery (2026-10-19, against main `6ebe973f` v172)
 
 **Code is on branch `claude/round-04` — draft PR #33** (commits: `33374793` WS1 · `83af6270` WS2 · `2ee5c5ac` WS3),
