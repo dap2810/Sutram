@@ -1,0 +1,11 @@
+== wine sutram.exe (branch) pratiyati.sm
+pratiyati.sm:2:20: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'pratiyati'
+      yadi (n > 3) { pratiyati 1 }
+                     ^
+Sanket: 'pratiyati' purana kunjishabd (v157 se purv); navin: 'prati'
+exit=1
+== wine sutram.exe ok_cases.sm
+Siddh: 380 byte sankalit
+exit=0
+117
+run exit=0

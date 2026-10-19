@@ -1,0 +1,19 @@
+(Invocation note: these were run as `compiler file.sm -o out`; the compiler has no -o flag and wrote a file literally named "-o", which was deleted. The diagnostics are unaffected.)
+== sc172 examples/222_old_keyword_name.sm
+Siddh: 232 byte sankalit
+exit=0
+== sc172 examples/223_undefined_name.sm
+Siddh: 183 byte sankalit
+exit=0
+== sc4 examples/222_old_keyword_name.sm
+222_old_keyword_name.sm:8:25: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'uddeshya'
+          yadi (i == 2) { uddeshya }
+                          ^
+Sanket: 'uddeshya' purana kunjishabd (v157 se purv); navin: 'agrim'
+exit=1
+== sc4 examples/223_undefined_name.sm
+223_undefined_name.sm:5:11: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'totl'
+      likha(totl)
+            ^
+Sanket: prayog se purv ghoshana avashyak: vitti totl = ...
+exit=1
