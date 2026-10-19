@@ -1,3 +1,35 @@
+# Native Windows IDE delivery review
+
+The R67 entrypoint and helper objects now build with NASM/GNU ld and Windows system
+import libraries. Real Windows tests exercise argv-open, button/menu Run, UTF-16
+editing, UTF-8 output, compiler errors and all seven syntax colors. A window-only
+screenshot and raw logs are in the delivery evidence. This is a tested preview,
+not full editor or installer acceptance.
+
+```powershell
+powershell -NoProfile -File windows/build-windows-native.ps1
+powershell -NoProfile -File windows/gui/build-gui.ps1
+.\sutram-ide-gui.exe examples\01_hello.sm
+python -X utf8 tools/test_windows_gui.py
+```
+
+Keep the IDE beside win/sutram.exe, lang/, lib/, examples/ and assets/. The built
+installer contains this layout. The standalone handoff IDE binary alone is not a
+portable distribution. Python and Pillow are optional developer test tools only.
+The product executable uses Windows system DLLs and has no Python/.NET dependency.
+
+File/Shell/Help menus, Run/Open/Save buttons, F5 and Ctrl-R/O/S are wired. Syntax
+colors distinguish keywords, builtins, function calls, numbers, strings, comments
+and danda. RichEdit paragraph offsets are normalized before coloring. Shell mode
+replays accumulated input; side effects can repeat. Processes run at the current
+user's privilege level and have bounded capture/time limits. Run only trusted code.
+
+Remaining manual acceptance: save/open dialogs, shortcuts, long editing sessions,
+large files, gutter scrolling, native-script composition, DPI/accessibility and
+shell behavior. No claim of feature parity or superiority to IDLE is made.
+
+## Historical source-stage notes (superseded where different)
+
 # Sutram Native Windows GUI IDE — Round 35 preview
 
 **Status: source-stage, not Windows runtime-verified.** The GUI is designed as a separate, user-mode **pure NASM** Win64 program. It uses only Windows system APIs (kernel32/user32/comdlg32/Msftedit RichEdit), avoiding Qt/.NET/C/Python dependencies in the GUI executable. Python and PowerShell are used only for *development/testing*, not by the IDE at runtime.
@@ -128,3 +160,30 @@ Dependencies for the GUI at runtime: the Windows system libraries already used
 by the GUI and installed `lang/` text files. The per-user installer already
 packages that directory. Place `lang/` next to the GUI executable for portable
 use. Do not fall back to ANSI conversion for malformed UTF-8.
+
+## Round 73 (Claude, 2026-10-18): Sanskrit interface, editor keys, bhasha pack, icon
+
+- Every visible word is Sanskrit in Latin transliteration, matching `ide/sutram_gui_linux.asm`:
+  menus `patra sampad chal bhasha sahay`; `nava khol sanchay nishkas`; `punah chhid pratilip
+  sanyoj sarvagrah anwesh antar`. The six toolbar buttons keep their English labels (`Run Open Save Load
+  example Send Clear shell`) at the owner's request.
+- The window class and message loop are Unicode (`RegisterClassExW`, `GetMessageW`,
+  `DispatchMessageW`, `SetWindowLongPtrW` subclasses), so typed Devanagari reaches the RichEdit
+  as UTF-16 instead of passing through the ANSI code page.
+- Editor keys: Tab = four spaces (block indent on a selection), Shift+Tab = unindent, Enter
+  keeps the indentation and adds four after `{`, `}` on a blank indented line dedents.
+- Status line: `pankti`, `stambh`, `bhasha`, `akshara` (grapheme clusters, from the R67 counter,
+  which no longer rewrites the title), `sanchit`/`asanchit *`. The title shows the patra name
+  and a `*` while unsaved; `nava`, `khol` and closing ask before dropping unsaved work.
+- `bhasha` menu: `swayam` (default; Devanagari in the source selects the `sanskrit` pack and
+  the compiler is run with `--lang sanskrit`), `mool` (Latin core, no pack), `sanskrit`
+  (always the pack). The other ten packs are loaded for colouring only; wiring them into this
+  menu is the next step and needs no new mechanism.
+- `anwesh:` box in the toolbar: Ctrl+F focuses it, Enter/F3 finds forward from the caret.
+- Icon: `build-gui.ps1` emits `build/windows/r73_icon.inc` (an `.rsrc` directory with
+  `RT_GROUP_ICON` 1 and the eight `RT_ICON` images, each an `incbin` slice of
+  `icons/sutram.ico`), assembled with `-dR73_ICON`; the class icon and `WM_SETICON` use it.
+- Buttons act only on `BN_CLICKED`; a focus notification never runs or opens anything.
+- `tools/test_windows_gui.py` has 14 new checks (labels, status, title, Tab, Enter, `}`,
+  block indent/unindent, Devanagari through swayam/mool/sanskrit, find, icon resource) and
+  saves `ide-sanskrit.png` next to `ide-native.png`.
