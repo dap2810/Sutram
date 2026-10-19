@@ -1,0 +1,12 @@
+# Round 73 exact UTF-8 source SHA-256 manifest
+# SHA-256 helper checked against abc and empty published test vectors.
+# Source branch: review/r73-repin-and-lexical-audit-20261019
+# Source base: 5efb592f46a7862d573f55b3a95439a35e0c9ad5
+# Scope 7 files; not a compiler executable or native gate.
+e54233fc50ac43195e10dd4651ee2090593d2bb9596dfde0a8f8dda9e6331e76  tools/r69_build.lock.json
+50985ee4428de5225013ca9c2e6df933c24c4d18485dea085850814aec7da046  src/r73_kosh_reclaim.inc
+eb5544dc4a9b9f72b5255e4a8d50b7f42c2f53bb892150be9d77d387715b65b4  tools/r73_reclaim_prepare.py
+11be9081595d5f1cf45975f0006be6dd7a3ed58f5b526eb7145ca1af0af11241  docs/R73-BASELINE.md
+523bd8b03898bed83d9d46e5c556f3f1470d49d116c57ce64990c6ffb39bc222  docs/R73-KOSH-RECLAMATION.md
+4f3ef4f848d0fe043e7fb9605d0ac21f57007941adc4f85488e92f681ed0b380  docs/R73-SEPARATE-COMPILATION.md
+7dc6a9e76df7eef88e291dea91b60d48f56deca00a3d775c0d481a4ba0392c73  docs/R73-OLD-KEYWORD-AUDIT.md
