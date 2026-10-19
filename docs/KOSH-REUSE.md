@@ -39,7 +39,7 @@ Rules:
 
 A helper taking a kosh parameter cannot push to it: the compiler
 rejects `kosh_push` on a kosh parameter at compile time
-(`Sutram Error: kosh_push on a kosh parameter is not supported`,
+(`Sutram Error: kosh tark par kosh_push asamarthit`,
 see `examples/120_t18_kosh_param_mismatch.sm`). The reason is
 sound: growth replaces the callee's pointer, which would not update
 the caller's pointer-by-value view, leaving the caller with a stale
