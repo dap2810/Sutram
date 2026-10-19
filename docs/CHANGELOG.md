@@ -1,3 +1,53 @@
+## v198 - F1 CLOSED. Confirmed fixed on the owner's Windows machine, and by two independent diagnoses.
+
+### The owner's Windows run
+
+```
+sutram.exe f1.sm f1.exe
+Siddh: 622 byte sankalit
+f1.exe
+-> 7
+```
+
+**Before the fix, the same program compiled to 562 bytes and printed nothing.** The byte count changing is
+itself the proof it is a different build: **the fixed compiler emits a larger binary because it now uses
+4-byte displacements where a 1-byte one used to overflow silently.**
+
+### Two independent root-cause analyses, agreeing exactly
+
+**Claude's, which produced the fix:** *every stack variable's `rbp` offset was emitted as a one-byte
+displacement, so slots below `rbp-128` wrapped above the frame, onto the caller's saved values and the
+return address. The fix is one helper choosing a 1- or 4-byte displacement by range, at all 15 sites.*
+
+**ChatGPT's, read-only and reached without seeing the fix:** *the allocator calculates a valid signed
+rbp-relative offset, but load/store emission unconditionally uses ModRM `0x45` (an 8-bit signed
+displacement) and truncates the offset to its low byte.*
+
+**Same cause, same site count - both found 15.** `emit_load_named_var` at 19856 and
+`emit_store_named_var` at 19886 always emit `disp8`. **Two readings of the same defect, arrived at
+separately, naming the same code.**
+
+**And ChatGPT went further than the description in one useful way** - it disassembled raw x86 to show the
+wrap, byte by byte:
+
+| offset | old encoding | result |
+|---|---|---|
+| -8 | `48 89 45 f8` | rbp-8, correct |
+| -128 | `48 89 45 80` | rbp-128, correct |
+| **-136** | `48 89 45 78` | **rbp+120 - WRONG** |
+| **-248** | `48 89 45 08` | **rbp+8 - the return address** |
+| -264 | `48 89 45 f8` | rbp-8 - a local alias |
+
+**That table is what makes the bug legible.** It also flags **15 disp8-only emitter regions** including a
+possibly unreachable one at 12647, and warns that the `0x45` byte at 18919 is an unrelated `xor r9d,r9d`
+and **must not be replaced**. **A fix that blind-replaced every `0x45` would corrupt the compiler.**
+
+### What F1 cost, and what it taught
+
+**A silent-wrong-answer bug survived every gate for months**, because **no test in the tree called a
+function with 27 local variables.** It was found by the owner running a test I had written badly, on a claim
+I had initially doubted. **The gates test what someone thought to test.**
+
 ## v197 - everything brought up to date after the F1 fix
 
 **Verified on main: F1 is fixed.** 27, 32 and 38 local variables all return the correct value - the crash you
