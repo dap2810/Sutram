@@ -1,3 +1,51 @@
+## v182 - Claude ROUND-07 merged: STEP 1 IS DONE. Every name-resolution path now errors.
+
+**This is the step that mattered most on the road to v1.0, and it is closed.**
+
+**Verified by rebuilding and running the decisions by hand:**
+
+| The wrong name | Before | Now |
+|---|---|---|
+| `totl = 10` (undeclared assignment) | silently declared a variable | `Sutram Error [E_UNDEFINED_NAME]: agyat naam 'totl'` |
+| `b` used after its block | visible | `Sutram Error [E_UNDEFINED_NAME]: agyat naam 'b'` |
+| `vitti x = 2` re-declared | kept the first value | `Sutram Error [E_DUPLICATE_NAME]: punah ghoshana 'x'` |
+
+**Suite 203 / 4** - up from 191, with nine new goldens that all fail on the previous compiler.
+
+### What Claude did that makes this a real close, not another instance
+
+**It delivered an inventory, not a fix list.** A **50-probe audit** covering variables, assignment targets,
+blocks, loops, parameters, constants, fields, arrays, functions, arity, modules, aliases and builtins -
+asking of each whether a wrong name errors or quietly succeeds. **That is what the previous three rounds
+lacked:** they each found instances, and this found the class.
+
+**Nine more silent cases are now errors**, including both owner decisions.
+
+**And it measured before it changed.** Block scope was **measured with the real compiler first: 0 programs
+rely on the old behaviour.** The change was then safe. **That is the discipline that was missing when I
+nearly converted the tree on an assumption.**
+
+### Three real bugs it found on the way
+
+1. **A codegen bug already on main:** `vitti x = 1` followed by `vitti x = 2` **kept 1**, because the second
+   slot was never read. A wrong answer, silently. Fixed.
+2. **A bug in the project's own tests:** `tools/proof_props.py` called a 6-parameter function with 5
+   arguments, and a name was declared 12 times by a stale loop index. **The tests were wrong, not the code.**
+3. **All seven committed binaries rebuilt** and reproducible on Linux, with SHA-256 for each - so the
+   repository's binaries are now the ones the source produces. **That closes the stale-binary finding.**
+
+### ChatGPT's ROUND-75
+
+The `kosh` reclamation is staged against the **current 14-pin compiler**, with a checkpoint tool that samples
+`/proc/PID/maps`, VmRSS, VmHWM and VmSize before and after growth. **It states plainly that this is not a new
+compiler and not a general-purpose `mukta` builtin** - it is a Linux-only payload. **Honest, and the
+distinction matters: whether the language needs a free primitive is still an owner decision.**
+
+### Merge order
+
+Claude's R7 changed the compiler blob that ChatGPT's R75 prepare step pins. **R7 merged first**, so
+ChatGPT's pins must be re-checked against the result before its payload is accepted.
+
 ## v181 - Step 7: the performance gate exists. The project can now be measured, not asserted.
 
 **"Performance measured, not assumed" has been a standing rule since the beginning, and until now nothing
