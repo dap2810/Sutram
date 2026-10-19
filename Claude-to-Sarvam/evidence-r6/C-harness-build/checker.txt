@@ -1,0 +1,34 @@
+environment: Wine  windows Windows 10 Pro None build 19043.None  PowerShell 7.2.24  elevated=True  commit=None
+verdict in log: PARTIAL (Wine only - NOT Windows acceptance)
+  NOT-RUN  runner-not-elevated            [Wine]  Wine has no UAC and reports every process as administrator; least privilege can only be shown on Windows
+  PASS     setup-hash-file                [Wine]  matches the committed hash file
+  PASS     setup-self-test                [Wine]  embedded SHA-256 self-test exit 0
+  PASS     install-wizard                 [Wine]  outcome=done page; screenshots: wizard-welcome.png, wizard-license.png, wizard-location.png, wizard-components.png, wizard-ready.png, wizard-done.png
+  NOT-RUN  install-no-elevation-prompt    [Wine]  Wine has no UAC; this check means something only on Windows
+  PASS     install-footprint              [Wine]  missing: 
+  PASS     devanagari-cli                 [Wine]  installed copy; expects the line योगः = 15
+  PASS     ide-launches                   [Wine]  installed copy; screenshot ide-start.png
+  NOT-RUN  ide-menus-english              [Wine]  Wine keeps menus per process, so another process cannot read them; this check needs Windows
+  PASS     ide-buttons-english            [Wine]  mismatched ids: 
+  PASS     devanagari-ide                 [Wine]  expects योगः = 15; screenshot ide-devanagari.png
+  PASS     tab-indent                     [Wine]  four spaces, no tab character; a selection moves right by four
+  PASS     shift-tab-dedent               [Wine]  four spaces removed both ways
+  PASS     unsaved-guard                  [Wine]  screenshot ide-unsaved-guard.png
+  PASS     uninstall-removes-install      [Wine]  failure box: ; not removed: 
+  PASS     uninstall-folder-gone          [Wine] (advisory)  the install folder itself (it is kept when it holds user files)
+  FAIL     temp-staging-cleaned           [Wine] (advisory)  known defect R4-03 s3; advisory only
+binaries:
+  Sutram-Setup.exe: 535ff11a725e994aacc3c3fc24723657316100a4efeb81f005e6b6fee5db8bec  MATCHES this tree
+  win/sutram.exe: 4e9a9f6021266ecae8f6e7c695e6d60d069e6ba23409fa94d10050898a850ce7  MATCHES this tree
+  sutram.exe: a534a6937d7036a1ef40f0f31771c75fbc281e4052d202074b0337cdf256d222  MATCHES this tree
+  sutram-ide-gui.exe: a1bf4b14917f9c14eceb981ce39c696d2142e666f24c8782a09b02821920375c  MATCHES this tree
+  installed bin\sutram.exe: 4e9a9f6021266ecae8f6e7c695e6d60d069e6ba23409fa94d10050898a850ce7 (installed copy; not in the tree)
+  installed win\sutram.exe: 4e9a9f6021266ecae8f6e7c695e6d60d069e6ba23409fa94d10050898a850ce7 (installed copy; not in the tree)
+  installed sutram-ide-gui.exe: a1bf4b14917f9c14eceb981ce39c696d2142e666f24c8782a09b02821920375c (installed copy; not in the tree)
+  installed Sutram-Uninstall.exe: 535ff11a725e994aacc3c3fc24723657316100a4efeb81f005e6b6fee5db8bec (installed copy; not in the tree)
+NOT ACCEPTED as Windows acceptance of this tree:
+  - the run was under Wine, not Windows
+  - the run was elevated: least privilege is not shown
+  - required check NOT-RUN: runner-not-elevated
+  - required check NOT-RUN: install-no-elevation-prompt
+  - required check NOT-RUN: ide-menus-english

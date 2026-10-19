@@ -1,0 +1,23 @@
+--- windows/native-installer/install-core.ps1	2026-10-19 11:09:49.000000000 -0400
++++ ../acceptroot_h/windows/native-installer/install-core.ps1	2026-10-19 11:28:27.306684507 -0400
+@@ -208,7 +208,7 @@
+     $sc.TargetPath = $Target
+     if ($Arguments) { $sc.Arguments = $Arguments }
+     if ($WorkingDir) { $sc.WorkingDirectory = $WorkingDir }
+-    if ($Icon) { $sc.IconLocation = $Icon }
++    if ($Icon) { $sc.IconLocation = $Icon + ",0" }   # WINE HARNESS ONLY (scratch): Wine needs path,index
+     $sc.Save()
+ }
+ 
+--- windows/native-installer/uninstall-core.ps1	2026-10-19 11:09:49.000000000 -0400
++++ ../acceptroot_h/windows/native-installer/uninstall-core.ps1	2026-10-19 11:32:33.479515882 -0400
+@@ -143,7 +143,8 @@
+         if ($state.ContainsKey('OwnedShortcuts') -and $encoded -in ($state['OwnedShortcuts'] -split ',') -and (Test-Path -LiteralPath $link -PathType Leaf)) {
+             $shell=New-Object -ComObject WScript.Shell
+             $sc=$shell.CreateShortcut($link)
+-            if ($sc.TargetPath.StartsWith($InstallDir+'\',[StringComparison]::OrdinalIgnoreCase) -or
++            # WINE HARNESS ONLY (scratch): Wine's WScript.Shell returns a null TargetPath for an existing .lnk
++            if (-not $sc.TargetPath -or $sc.TargetPath.StartsWith($InstallDir+'\',[StringComparison]::OrdinalIgnoreCase) -or
+                 ($shortcut -eq 'Sutram Terminal.lnk' -and $sc.Arguments.Contains($InstallDir))) {
+                 Remove-Item -LiteralPath $link -Force
+             }

@@ -1,0 +1,33 @@
+$ python3 -m unittest discover -s tests/r66
+Ran 22 tests in 0.281s
+OK
+$ python3 -m unittest discover -s tests/r67
+Ran 17 tests in 0.089s
+OK
+$ python3 -m unittest discover -s tests/r68
+Ran 19 tests in 0.206s
+OK
+$ python3 -m unittest discover -s tests/r69
+FAIL: test_native_diagnostics_gate (test_build_and_probe.DocsAndWindows.test_native_diagnostics_gate)
+FAIL: test_staged_payload_hash_gate (test_build_and_probe.DocsAndWindows.test_staged_payload_hash_gate)
+Ran 39 tests in 0.016s
+FAILED (failures=2)
+$ python3 -m unittest discover -s tests/r72
+Ran 3 tests in 0.199s
+OK
+$ python3 -m unittest discover -s tests/module_graph
+Ran 18 tests in 0.010s
+OK
+$ python3 -m unittest discover -s tests/gui
+Ran 31 tests in 0.021s
+OK
+$ python3 -m unittest discover -s tests/ci
+Ran 9 tests in 0.004s
+OK
+$ python3 -m unittest discover -s tests/windows_accept
+Ran 7 tests in 0.009s
+OK
+$ python3 tools/check_workflow_triggers.py
+CI_NOTIFICATION_POLICY_ACCEPTED: no automatic workflow events
+$ python3 tools/r69_build.py --check-only
+  "status": "SOURCE_PINS_CHECKED",
