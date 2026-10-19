@@ -23,6 +23,8 @@ ELF_HDR_SIZE equ 64
 PHDR_SIZE    equ 56
 HEADERS_SIZE equ 120
 TOKEN_SIZE   equ 40
+R4_SEEN_CAP  equ 8192
+R4_PEND_CAP  equ 256
 TOKEN_CAP    equ 65537      ; max one token per source byte + EOF
 STR_POOL_CAP equ 65537      ; max lexeme bytes + terminators for 64 KiB source
 IMPORT_BUF_CAP equ 65536    ; expanded source cannot exceed source_buf
@@ -275,6 +277,30 @@ r54_builtin_arity_table:
     db 1,1               ; 45 kosh_dequeue
 
     r48_msg_undefined db ": Sutram Error [E_UNDEFINED_FUNCTION]: agyat prakriya '",0
+    ; R4: a read of a name that was never declared or assigned is an error
+    ; (it used to be auto-allocated and read as 0: a wrong answer, no diagnostic).
+    r4_msg_undef db ": Sutram Error [E_UNDEFINED_NAME]: agyat naam '",0
+    r4_msg_hint_decl db "Sanket: prayog se purv ghoshana avashyak: vitti ",0
+    r4_msg_hint_decl2 db " = ...",10,0
+    r4_msg_hint_old db "Sanket: '",0
+    r4_msg_hint_old2 db "' purana kunjishabd (v157 se purv); navin: '",0
+    r4_msg_hint_old3 db "'",10,0
+    r4_old_kw:
+        dq r4_o_anyatra, kw_anyatra, r4_o_punar, kw_punaravartana, r4_o_prati, kw_pratiyati
+        dq r4_o_udd, kw_uddeshya, r4_o_pankti, kw_pankti, r4_o_srij, kw_srijana
+        dq r4_o_nish, kw_nishedha, r4_o_ayoj, kw_ayojan, r4_o_parig, kw_parigrah
+        dq r4_o_nishk, kw_nishkriya, r4_o_to, kw_to_str, 0, 0
+    r4_o_anyatra db "anyatra",0
+    r4_o_punar db "punaravartana",0
+    r4_o_prati db "pratiyati",0
+    r4_o_udd db "uddeshya",0
+    r4_o_pankti db "pankti",0
+    r4_o_srij db "srijana",0
+    r4_o_nish db "nishedha",0
+    r4_o_ayoj db "ayojan",0
+    r4_o_parig db "parigrah",0
+    r4_o_nishk db "nishkriya",0
+    r4_o_to db "to",0
     msg_err_line db 10, "Sutram Error: vyakaran dosh, pankti ", 0
     msg_err_near db ", shabd '", 0
     msg_err_end  db "'", 10, 0
@@ -825,6 +851,12 @@ section .bss
     token_arr   resb TOKEN_CAP * TOKEN_SIZE ; capacity matches 64 KiB source + EOF
     token_cnt   resq 1
     token_idx   resq 1
+    ; R4 undefined-name check: names declared so far in parse order
+    r4_seen        resq R4_SEEN_CAP
+    r4_seen_count  resq 1
+    r4_seen_base   resq 1
+    r4_pend_tok    resq R4_PEND_CAP   ; identifier token of each unresolved read
+    r4_pend_count  resq 1
     ast_heap    resb AST_HEAP_CAP
     ast_ptr     resq 1
     str_pool    resb STR_POOL_CAP ; lexer identifier/string storage for max-size source
@@ -6572,10 +6604,15 @@ parse_program:
     mov qword [rel r55_proto_count], 0
     mov qword [rel top_const_count], 0
     mov qword [rel parse_error_kind], 0
+    mov qword [rel r4_seen_count], 0   ; R4
+    mov qword [rel r4_seen_base], 0
+    mov qword [rel r4_pend_count], 0
     lea rax, [rel ast_heap]
     mov [rel ast_ptr], rax
     call parse_function
     mov [rel root_node], rax
+    call r4_resolve_pending            ; R4: undefined names are errors
+    mov rax, [rel root_node]
     ret
 
 parse_function:
@@ -6675,6 +6712,8 @@ parse_function:
     jmp .pf_top_loop
 .pf_expect_mukhya:
     call r55_validate_prototypes
+    mov qword [rel r4_seen_count], 0   ; R4: mukhya's own name scope
+    mov qword [rel r4_seen_base], 0
     ; Now expect mukhya
     call cur_tok
     mov rcx, [rax]
@@ -7229,6 +7268,192 @@ r51_print_original_context:
 ; The code generator already owns function lookup; no second parser is used.
 ; Match the exact original lexer token pointer to recover line, column,
 ; offending identifier and source/caret. No output binary is written.
+
+; ===================================================================
+; R4: an undefined name is a compile error.
+; The parser records every name a function declares, in source order
+; (AST_DECL, loop variable, parameter, assignment target). A bare-name
+; read that is not yet declared is queued; at the end of parse_program a
+; queued name that is a module-level global is accepted, anything else is
+; reported at its token with the source line and caret. Code generation
+; is unchanged.
+; ===================================================================
+
+; r4_declare(rdi = name ptr). Preserves every register.
+r4_declare:
+    push rax
+    mov rax,[rel r4_seen_count]
+    cmp rax,R4_SEEN_CAP
+    jae .full
+    push rdx
+    lea rdx,[rel r4_seen]
+    mov [rdx+rax*8],rdi
+    pop rdx
+    inc qword [rel r4_seen_count]
+.full:
+    pop rax
+    ret
+
+; r4_is_seen(rdi = name) -> rax = 1 if declared in the current function scope.
+r4_is_seen:
+    push rbx
+    push rcx
+    push rdx
+    push rsi
+    push rdi
+    push r12
+    mov r12,rdi
+    mov rbx,[rel r4_seen_count]
+.scan:
+    cmp rbx,[rel r4_seen_base]
+    jbe .no
+    dec rbx
+    lea rdx,[rel r4_seen]
+    mov rsi,[rdx+rbx*8]
+    mov rdi,r12
+    call strcmp
+    test rax,rax
+    jnz .scan
+    mov eax,1
+    jmp .out
+.no:
+    xor eax,eax
+.out:
+    pop r12
+    pop rdi
+    pop rsi
+    pop rdx
+    pop rcx
+    pop rbx
+    ret
+
+; r4_check_read(rdi = name). Called for every bare identifier read built by
+; parse_primary. The identifier token is the one just consumed. A name
+; followed by a single '=' is an assignment target: .ps_check_expr declares
+; it after its right-hand side, so `x = x + 1` on an undeclared x is still
+; reported. Preserves every register.
+r4_check_read:
+    push rax
+    push rcx
+    push rdx
+    call r4_is_seen
+    test rax,rax
+    jnz .done
+    call cur_tok
+    cmp qword [rax],TOK_OPERATOR
+    jne .queue
+    cmp qword [rax+8],'='
+    je .done
+.queue:
+    mov rax,[rel r4_pend_count]
+    cmp rax,R4_PEND_CAP
+    jae .done
+    mov rcx,[rel token_idx]
+    dec rcx                     ; the identifier token just consumed
+    imul rcx,rcx,TOKEN_SIZE
+    lea rdx,[rel token_arr]
+    add rcx,rdx
+    lea rdx,[rel r4_pend_tok]
+    mov [rdx+rax*8],rcx
+    inc qword [rel r4_pend_count]
+.done:
+    pop rdx
+    pop rcx
+    pop rax
+    ret
+
+; r4_resolve_pending: end of parse_program. Exits 1 on the first unresolved
+; read (normal mode) or after up to 8 (--check mode).
+r4_resolve_pending:
+    push rbx
+    push r12
+    push r13
+    xor r12d,r12d               ; index
+    xor r13d,r13d               ; errors printed
+.loop:
+    cmp r12,[rel r4_pend_count]
+    jae .end
+    lea rax,[rel r4_pend_tok]
+    mov rbx,[rax+r12*8]         ; token
+    mov rdi,[rbx+8]
+    call r56_global_index
+    test rax,rax
+    jnz .next                   ; a module-level global (may be declared later)
+    call r4_report
+    inc r13
+    cmp qword [rel r48_mode],0
+    je .fail
+    cmp r13,8
+    jae .fail
+.next:
+    inc r12
+    jmp .loop
+.end:
+    test r13,r13
+    jz .ok
+.fail:
+    cmp qword [rel r48_mode],0
+    je .exit
+    lea rdi,[rel r48_msg_errors]
+    call print_str_z
+.exit:
+    mov rdi,1
+    call os_exit
+.ok:
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; r4_report(rbx = identifier token)
+r4_report:
+    push rbx
+    push r12
+    mov rdi,[rbx+32]            ; source pointer of the token
+    call r51_print_origin
+    lea rdi,[rel r4_msg_undef]
+    call print_str_z
+    mov rdi,[rbx+8]
+    call print_str_z
+    lea rdi,[rel r48_msg_end]
+    call print_str_z
+    call r51_print_original_context
+    ; hint: an old (pre-v157) keyword gets its new spelling
+    lea r12,[rel r4_old_kw]
+.old:
+    mov rsi,[r12]
+    test rsi,rsi
+    jz .generic
+    mov rdi,[rbx+8]
+    call strcmp
+    test rax,rax
+    jz .is_old
+    add r12,16
+    jmp .old
+.is_old:
+    lea rdi,[rel r4_msg_hint_old]
+    call print_str_z
+    mov rdi,[rbx+8]
+    call print_str_z
+    lea rdi,[rel r4_msg_hint_old2]
+    call print_str_z
+    mov rdi,[r12+8]
+    call print_str_z
+    lea rdi,[rel r4_msg_hint_old3]
+    call print_str_z
+    jmp .out
+.generic:
+    lea rdi,[rel r4_msg_hint_decl]
+    call print_str_z
+    mov rdi,[rbx+8]
+    call print_str_z
+    lea rdi,[rel r4_msg_hint_decl2]
+    call print_str_z
+.out:
+    pop r12
+    pop rbx
+    ret
+
 r48_print_undefined_function:
     push rbx
     push r12
@@ -7731,6 +7956,10 @@ parse_stmt:
     pop rdx                   ; original size expression
     mov qword [rax], AST_DECL
     mov [rax+8], rbx          ; name
+    push rdi
+    mov rdi, rbx
+    call r4_declare          ; R4
+    pop rdi
     mov qword [rax+16], 0     ; no ordinary initializer
     mov [rax+24], rdx         ; nonzero marks array declaration + size AST
     pop rbx
@@ -7760,6 +7989,10 @@ parse_stmt:
     ; So rcx from pop is safe.
     mov qword [rax], AST_DECL
     mov [rax+8], rbx          ; name
+    push rdi
+    mov rdi, rbx
+    call r4_declare          ; R4
+    pop rdi
     mov [rax+16], rcx         ; init expr
     call maybe_semi
     pop rbx
@@ -7771,6 +8004,10 @@ parse_stmt:
     pop rbx
     mov qword [rax], AST_DECL
     mov [rax+8], rbx
+    push rdi
+    mov rdi, rbx
+    call r4_declare          ; R4
+    pop rdi
     mov qword [rax+16], 0
     call maybe_semi
     pop rbx
@@ -7822,6 +8059,10 @@ parse_stmt:
     pop rdx                  ; declaration element-type marker
     mov qword [rax], AST_DECL
     mov [rax+8], rbx
+    push rdi
+    mov rdi, rbx
+    call r4_declare          ; R4
+    pop rdi
     mov qword [rax+16], 0
     mov [rax+24], rcx
     mov [rax+32], rdx        ; 2=integer/raw kosh, 3=kosh dasham
@@ -7851,6 +8092,10 @@ parse_stmt:
     pop rcx
     mov qword [rax], AST_DECL
     mov [rax+8], rbx
+    push rdi
+    mov rdi, rbx
+    call r4_declare          ; R4
+    pop rdi
     mov [rax+16], rcx
     mov qword [rax+32], 1     ; declaration type marker: dasham
     call maybe_semi
@@ -7862,6 +8107,10 @@ parse_stmt:
     pop rbx
     mov qword [rax], AST_DECL
     mov [rax+8], rbx
+    push rdi
+    mov rdi, rbx
+    call r4_declare          ; R4
+    pop rdi
     mov qword [rax+16], 0
     mov qword [rax+32], 1
     call maybe_semi
@@ -7981,6 +8230,11 @@ parse_stmt:
     ; prakriya name(params) { body }
     push r12                 ; save r12 (parse_func_block uses it as stmt count)
     push r13                 ; save r13 (parse_func_block uses it as stmt index)
+    push qword [rel r4_seen_base]   ; R4: open the function's own name scope
+    push rax
+    mov rax, [rel r4_seen_count]
+    mov [rel r4_seen_base], rax
+    pop rax
     call advance_tok          ; consume 'prakriya'
     ; Expect function name
     call cur_tok
@@ -8061,6 +8315,10 @@ parse_stmt:
     mov rcx, [rax+8]         ; param name ptr
     lea rax, [rel func_params]
     mov [rax + r13], rcx
+    push rdi
+    mov rdi, rcx
+    call r4_declare          ; R4: parameters are declared names
+    pop rdi
     add r13, 8
     inc r12
     call advance_tok
@@ -8110,6 +8368,9 @@ parse_stmt:
     mov [rax+32], r13         ; param buffer end position
     mov qword [rax+40], 0
     mov [rel param_buf_pos], r13   ; remember cursor for the next function
+    mov rcx, [rel r4_seen_base]    ; R4: close the function's name scope
+    mov [rel r4_seen_count], rcx
+    pop qword [rel r4_seen_base]
     pop r13                  ; restore r13
     pop r12                  ; restore r12
     pop rbx
@@ -8124,6 +8385,10 @@ parse_stmt:
     cmp rcx, TOK_IDENT
     jne parse_error
     mov rbx, [rax+8]         ; var name ptr
+    push rdi
+    mov rdi, rbx
+    call r4_declare          ; R4
+    pop rdi
     call advance_tok
     ; Expect '='
     call cur_tok
@@ -8212,6 +8477,10 @@ parse_stmt:
     pop rcx
     mov qword [rax], AST_DECL
     mov [rax+8], rbx
+    push rdi
+    mov rdi, rbx
+    call r4_declare          ; R4
+    pop rdi
     mov [rax+16], rcx
     call maybe_semi
     pop rbx
@@ -8601,6 +8870,13 @@ push r12                  ; save r12 (parse_func_block uses it)
     mov qword [rax], AST_ASSIGN
     mov [rax+8], rbx          ; target
     mov [rax+16], rcx         ; value
+    cmp qword [rbx], AST_VAR  ; R4: `x = ...` declares x (after the RHS is parsed)
+    jne .r4_assign_declared
+    push rdi
+    mov rdi, [rbx+8]
+    call r4_declare
+    pop rdi
+.r4_assign_declared:
     call maybe_semi
     pop rbx
     ret
@@ -9800,6 +10076,10 @@ parse_primary:
     cmp rcx, '.'
     je .pp_ident_field
 .pp_ident_var:
+    push rdi
+    mov rdi, rbx
+    call r4_check_read        ; R4: an undeclared read is queued, then reported
+    pop rdi
     push rbx
     call alloc_ast
     pop rbx
