@@ -1,3 +1,35 @@
+## v174 - housekeeping: the master documents brought up to date
+
+Done while Claude and ChatGPT work. **No code changed** - this is the documentation catching up with the
+tree.
+
+**`PROJECT-MASTER.md` was the worst of it** - the document a reader is told to read first said
+*"Last updated: 2026-10-16, CHANGELOG v152"*. Now v173, with the gate table measured, **`tools/gates.sh`
+named as the source of that table**, and Windows marked **PARTIAL** rather than absent.
+
+**A new Era was added to the history** - *Era 4, the Sanskrit rename (v157-v173)*: 18 modules, 264 function
+names, every keyword, the diagnostics going Sanskrit in v169, and **v173 making an undefined name a compile
+error**. It records the thing worth remembering: **the rename's tail surfaced in six different places -
+code, comments, HTML, prose, keyword tables and the teaching books - and not one was found by a gate.**
+
+**Stale numbers corrected across five documents:**
+
+| Document | Was | Now |
+|---|---|---|
+| `README.md` | 202 example programs | **195** (counted) |
+| `README.md` | 187 passing cases | **191** |
+| `PROJECT-OVERVIEW.md` | 187 pass | **191** |
+| `PROJECT-OVERVIEW.md` | 21 library modules | **24** |
+| `docs/sutram-project-status.html` | 187 pass, v151 | **191 pass, v173** |
+| `docs/sutram-design-parameters.html` | 187 pass | **191** |
+| `docs/sutram-scorecard.html` | **136 pass** | **191** |
+
+**The scorecard had been 55 tests behind.** It is the document that scores the project against its own
+charter, so a stale count there is worse than a stale count anywhere else.
+
+**Checked and clean:** no `__pycache__`, no `.pyc`, no `.tmp`, no `.orig`/`.rej`, and **no pre-rename
+keyword anywhere in the three master documents.**
+
 ## v173 - Claude ROUND-04 and ChatGPT ROUND-72 merged; the owner's GUI decision
 
 **Both deliveries synced.** Claude's ROUND-04 was rebuilt and run: **gates.sh 9 PASS / 0 FAIL / 1 NOT-RUN,
