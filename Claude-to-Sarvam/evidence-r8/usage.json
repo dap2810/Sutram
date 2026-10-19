@@ -1,0 +1,1820 @@
+{
+"aadhar.brihat_ank_tak": {
+"lib": 1,
+"examples": 0,
+"tests": 4,
+"docs": 4
+},
+"aadhar.brihat_ank_se": {
+"lib": 1,
+"examples": 0,
+"tests": 1,
+"docs": 3
+},
+"ank.asti_yugm": {
+"lib": 0,
+"examples": 2,
+"tests": 8,
+"docs": 2
+},
+"ank.asti_visham": {
+"lib": 0,
+"examples": 1,
+"tests": 8,
+"docs": 2
+},
+"ank.ank_gan": {
+"lib": 0,
+"examples": 1,
+"tests": 4,
+"docs": 6
+},
+"ank.ank_yog": {
+"lib": 0,
+"examples": 1,
+"tests": 3,
+"docs": 5
+},
+"ank.viparyay_ank": {
+"lib": 3,
+"examples": 1,
+"tests": 4,
+"docs": 6
+},
+"ank.asti_vilom": {
+"lib": 0,
+"examples": 2,
+"tests": 3,
+"docs": 2
+},
+"ank.seemit": {
+"lib": 0,
+"examples": 1,
+"tests": 3,
+"docs": 2
+},
+"ank.fib": {
+"lib": 0,
+"examples": 9,
+"tests": 5,
+"docs": 32
+},
+"ank.asti_sampurna": {
+"lib": 0,
+"examples": 3,
+"tests": 7,
+"docs": 2
+},
+"ank.collatz_charan": {
+"lib": 0,
+"examples": 3,
+"tests": 7,
+"docs": 2
+},
+"anukram.anukram_maap_ashtak": {
+"lib": 1,
+"examples": 0,
+"tests": 1,
+"docs": 3
+},
+"anukram.anukram_khip_i64": {
+"lib": 2,
+"examples": 0,
+"tests": 8,
+"docs": 3
+},
+"anukram.anukram_grah_i64": {
+"lib": 2,
+"examples": 0,
+"tests": 7,
+"docs": 3
+},
+"anukram.anukram_khip_ashtak": {
+"lib": 1,
+"examples": 0,
+"tests": 3,
+"docs": 3
+},
+"anukram.anukram_grah_ashtak": {
+"lib": 1,
+"examples": 0,
+"tests": 3,
+"docs": 3
+},
+"brihat.brihat_shunyank": {
+"lib": 3,
+"examples": 0,
+"tests": 4,
+"docs": 3
+},
+"brihat.brihat_ank_se_int": {
+"lib": 2,
+"examples": 0,
+"tests": 51,
+"docs": 7
+},
+"brihat.brihat_ank_tak_int": {
+"lib": 1,
+"examples": 0,
+"tests": 32,
+"docs": 3
+},
+"brihat.brihat_pratilip": {
+"lib": 3,
+"examples": 0,
+"tests": 1,
+"docs": 3
+},
+"brihat.brihat_tul": {
+"lib": 3,
+"examples": 0,
+"tests": 5,
+"docs": 3
+},
+"brihat.brihat_yuj": {
+"lib": 1,
+"examples": 0,
+"tests": 3,
+"docs": 3
+},
+"brihat.brihat_nyun": {
+"lib": 1,
+"examples": 0,
+"tests": 3,
+"docs": 3
+},
+"brihat.brihat_gun": {
+"lib": 3,
+"examples": 0,
+"tests": 3,
+"docs": 4
+},
+"brihat.brihat_asti_shunyank": {
+"lib": 5,
+"examples": 0,
+"tests": 6,
+"docs": 3
+},
+"brihat.brihat_bhajshesh": {
+"lib": 1,
+"examples": 0,
+"tests": 5,
+"docs": 4
+},
+"brihat.brihat_shesh": {
+"lib": 3,
+"examples": 0,
+"tests": 0,
+"docs": 4
+},
+"brihat.brihat_ghatmod": {
+"lib": 1,
+"examples": 0,
+"tests": 5,
+"docs": 3
+},
+"chandas.dviguna": {
+"lib": 0,
+"examples": 2,
+"tests": 3,
+"docs": 2
+},
+"chandas.meru": {
+"lib": 1,
+"examples": 3,
+"tests": 4,
+"docs": 2
+},
+"chandas.matra_meru": {
+"lib": 0,
+"examples": 1,
+"tests": 3,
+"docs": 2
+},
+"chandas.asti_guru": {
+"lib": 0,
+"examples": 3,
+"tests": 3,
+"docs": 5
+},
+"chandas.guru_gan": {
+"lib": 0,
+"examples": 1,
+"tests": 3,
+"docs": 2
+},
+"chandas.meru_pankti": {
+"lib": 0,
+"examples": 0,
+"tests": 1,
+"docs": 1
+},
+"ganit.varg": {
+"lib": 0,
+"examples": 6,
+"tests": 3,
+"docs": 3
+},
+"ganit.vargit": {
+"lib": 0,
+"examples": 4,
+"tests": 4,
+"docs": 3
+},
+"ganit.ghan": {
+"lib": 0,
+"examples": 0,
+"tests": 5,
+"docs": 3
+},
+"ganit.nirapeksh_mulya": {
+"lib": 0,
+"examples": 1,
+"tests": 3,
+"docs": 3
+},
+"ganit.laghu2": {
+"lib": 0,
+"examples": 1,
+"tests": 4,
+"docs": 2
+},
+"ganit.adhik2": {
+"lib": 0,
+"examples": 1,
+"tests": 4,
+"docs": 2
+},
+"ganit.mahattam": {
+"lib": 5,
+"examples": 1,
+"tests": 7,
+"docs": 21
+},
+"ganit.laghuttam": {
+"lib": 2,
+"examples": 1,
+"tests": 8,
+"docs": 8
+},
+"ganit.ghat": {
+"lib": 0,
+"examples": 1,
+"tests": 5,
+"docs": 4
+},
+"ganit.kramgun": {
+"lib": 1,
+"examples": 1,
+"tests": 5,
+"docs": 14
+},
+"ganit.asti_abhajya": {
+"lib": 0,
+"examples": 1,
+"tests": 8,
+"docs": 10
+},
+"ganit.yog_tak": {
+"lib": 2,
+"examples": 1,
+"tests": 3,
+"docs": 4
+},
+"ganit.dvigun": {
+"lib": 0,
+"examples": 2,
+"tests": 4,
+"docs": 3
+},
+"ganit.trigun": {
+"lib": 0,
+"examples": 2,
+"tests": 4,
+"docs": 3
+},
+"ganit.vardh": {
+"lib": 0,
+"examples": 2,
+"tests": 8,
+"docs": 3
+},
+"ganit.bit_gan": {
+"lib": 1,
+"examples": 0,
+"tests": 4,
+"docs": 2
+},
+"ganit.ganit_yadricch": {
+"lib": 1,
+"examples": 0,
+"tests": 7,
+"docs": 3
+},
+"ganit.ganit_seemit": {
+"lib": 1,
+"examples": 0,
+"tests": 6,
+"docs": 3
+},
+"ganita.kuttaka": {
+"lib": 2,
+"examples": 3,
+"tests": 4,
+"docs": 4
+},
+"ganita.ganita_vargmool": {
+"lib": 3,
+"examples": 0,
+"tests": 9,
+"docs": 2
+},
+"ganita.ganita_nirapeksh": {
+"lib": 2,
+"examples": 0,
+"tests": 3,
+"docs": 3
+},
+"ganita.chakravala": {
+"lib": 1,
+"examples": 3,
+"tests": 6,
+"docs": 13
+},
+"ganita.samasa": {
+"lib": 1,
+"examples": 1,
+"tests": 2,
+"docs": 5
+},
+"ganita.brahmagupta_kshetr": {
+"lib": 1,
+"examples": 4,
+"tests": 3,
+"docs": 4
+},
+"ganita.ganita_janchit_yuj": {
+"lib": 2,
+"examples": 0,
+"tests": 4,
+"docs": 7
+},
+"ganita.ganita_janchit_nyun": {
+"lib": 2,
+"examples": 0,
+"tests": 4,
+"docs": 4
+},
+"ganita.ganita_janchit_gun": {
+"lib": 4,
+"examples": 0,
+"tests": 5,
+"docs": 4
+},
+"ganita.ganita_janchit_bhaj": {
+"lib": 2,
+"examples": 0,
+"tests": 6,
+"docs": 4
+},
+"ganita.ganita_janchit_shesh": {
+"lib": 2,
+"examples": 0,
+"tests": 5,
+"docs": 4
+},
+"ganita.ganita_paripurna_yuj": {
+"lib": 1,
+"examples": 0,
+"tests": 5,
+"docs": 4
+},
+"ganita.ganita_paripurna_nyun": {
+"lib": 1,
+"examples": 0,
+"tests": 5,
+"docs": 4
+},
+"ganita.ganita_paripurna_gun": {
+"lib": 3,
+"examples": 0,
+"tests": 9,
+"docs": 4
+},
+"ganita.ganita_janchit_ghat": {
+"lib": 2,
+"examples": 0,
+"tests": 8,
+"docs": 4
+},
+"ganita.ganita_janchit_kramgun": {
+"lib": 2,
+"examples": 0,
+"tests": 7,
+"docs": 4
+},
+"ganita.ganita_paripurna_ghat": {
+"lib": 1,
+"examples": 0,
+"tests": 13,
+"docs": 4
+},
+"ganita.ganita_paripurna_bhaj": {
+"lib": 1,
+"examples": 0,
+"tests": 7,
+"docs": 4
+},
+"ganita.ganita_paripurna_shesh": {
+"lib": 1,
+"examples": 0,
+"tests": 7,
+"docs": 4
+},
+"ganita.ganita_janchit_nirapeksh": {
+"lib": 2,
+"examples": 0,
+"tests": 5,
+"docs": 4
+},
+"ganita.ganita_paripurna_nirapeksh": {
+"lib": 1,
+"examples": 0,
+"tests": 5,
+"docs": 4
+},
+"ganita.ganita_paripurna_kramgun": {
+"lib": 1,
+"examples": 0,
+"tests": 8,
+"docs": 4
+},
+"gudh.fnv1a": {
+"lib": 4,
+"examples": 0,
+"tests": 1,
+"docs": 11
+},
+"gudh.fnv1a_varna": {
+"lib": 1,
+"examples": 0,
+"tests": 3,
+"docs": 3
+},
+"kalana.kalana_trapiz": {
+"lib": 1,
+"examples": 1,
+"tests": 2,
+"docs": 2
+},
+"kalana.simpson": {
+"lib": 0,
+"examples": 1,
+"tests": 2,
+"docs": 2
+},
+"kalana.pravan": {
+"lib": 0,
+"examples": 1,
+"tests": 3,
+"docs": 3
+},
+"kalana.pravan2": {
+"lib": 0,
+"examples": 1,
+"tests": 2,
+"docs": 2
+},
+"kalana.bahu_ganana": {
+"lib": 3,
+"examples": 1,
+"tests": 2,
+"docs": 2
+},
+"kalana.bahu_mula": {
+"lib": 0,
+"examples": 1,
+"tests": 2,
+"docs": 2
+},
+"khand.khand_bandh": {
+"lib": 2,
+"examples": 1,
+"tests": 7,
+"docs": 4
+},
+"khand.khand_mukt": {
+"lib": 5,
+"examples": 0,
+"tests": 3,
+"docs": 4
+},
+"khand.khand_pratilip": {
+"lib": 1,
+"examples": 0,
+"tests": 6,
+"docs": 4
+},
+"khand.khand_maap": {
+"lib": 0,
+"examples": 1,
+"tests": 2,
+"docs": 4
+},
+"khand.khand_anwesh": {
+"lib": 3,
+"examples": 0,
+"tests": 5,
+"docs": 4
+},
+"khand.khand_antah": {
+"lib": 1,
+"examples": 0,
+"tests": 2,
+"docs": 4
+},
+"khand.khand_pratisthap": {
+"lib": 1,
+"examples": 0,
+"tests": 2,
+"docs": 4
+},
+"khand.khand_bhed": {
+"lib": 1,
+"examples": 1,
+"tests": 4,
+"docs": 4
+},
+"khand.khand_yuj": {
+"lib": 1,
+"examples": 0,
+"tests": 2,
+"docs": 4
+},
+"khand.khand_chhid": {
+"lib": 1,
+"examples": 0,
+"tests": 2,
+"docs": 4
+},
+"khand.khand_unnat": {
+"lib": 1,
+"examples": 0,
+"tests": 1,
+"docs": 4
+},
+"khand.khand_avanat": {
+"lib": 0,
+"examples": 0,
+"tests": 1,
+"docs": 3
+},
+"khand.khand_aadi": {
+"lib": 1,
+"examples": 0,
+"tests": 2,
+"docs": 4
+},
+"khand.khand_ant": {
+"lib": 0,
+"examples": 0,
+"tests": 2,
+"docs": 3
+},
+"khand.khand_tul": {
+"lib": 4,
+"examples": 1,
+"tests": 11,
+"docs": 4
+},
+"khand.khand_viparyay": {
+"lib": 1,
+"examples": 0,
+"tests": 2,
+"docs": 4
+},
+"khand.khand_gan": {
+"lib": 1,
+"examples": 0,
+"tests": 4,
+"docs": 4
+},
+"khand.khand_gan_swar": {
+"lib": 1,
+"examples": 0,
+"tests": 3,
+"docs": 4
+},
+"khand.khand_gan_akshar": {
+"lib": 1,
+"examples": 0,
+"tests": 1,
+"docs": 4
+},
+"khand.khand_anwesh_akshar": {
+"lib": 1,
+"examples": 0,
+"tests": 3,
+"docs": 6
+},
+"khand.khand_asti_sarv_ank": {
+"lib": 1,
+"examples": 0,
+"tests": 4,
+"docs": 5
+},
+"khand.khand_sam": {
+"lib": 1,
+"examples": 0,
+"tests": 3,
+"docs": 4
+},
+"madhava.madhava_vargmool": {
+"lib": 3,
+"examples": 1,
+"tests": 3,
+"docs": 5
+},
+"madhava.madhava_pi": {
+"lib": 1,
+"examples": 4,
+"tests": 1,
+"docs": 4
+},
+"madhava.madhava_sin": {
+"lib": 0,
+"examples": 3,
+"tests": 3,
+"docs": 3
+},
+"madhava.madhava_cos": {
+"lib": 0,
+"examples": 3,
+"tests": 2,
+"docs": 3
+},
+"madhava.madhava_atan": {
+"lib": 1,
+"examples": 1,
+"tests": 3,
+"docs": 6
+},
+"mala.mala_nava": {
+"lib": 0,
+"examples": 0,
+"tests": 10,
+"docs": 3
+},
+"mala.mala_sangrah": {
+"lib": 0,
+"examples": 0,
+"tests": 14,
+"docs": 3
+},
+"mala.mala_grah": {
+"lib": 0,
+"examples": 0,
+"tests": 13,
+"docs": 3
+},
+"mala.mala_purn": {
+"lib": 0,
+"examples": 0,
+"tests": 3,
+"docs": 2
+},
+"mala.mala_pratilip": {
+"lib": 0,
+"examples": 0,
+"tests": 1,
+"docs": 2
+},
+"mala.mala_yog": {
+"lib": 0,
+"examples": 0,
+"tests": 3,
+"docs": 2
+},
+"mala.mala_sangrah_surakshit": {
+"lib": 0,
+"examples": 0,
+"tests": 4,
+"docs": 2
+},
+"mala.mala_grah_surakshit": {
+"lib": 0,
+"examples": 0,
+"tests": 4,
+"docs": 2
+},
+"nighantu.nighantu_kunji_gudh": {
+"lib": 3,
+"examples": 0,
+"tests": 0,
+"docs": 3
+},
+"nighantu.nighantu_kunji_sam": {
+"lib": 2,
+"examples": 0,
+"tests": 0,
+"docs": 3
+},
+"nighantu.nighantu_koshtha_likh": {
+"lib": 2,
+"examples": 0,
+"tests": 0,
+"docs": 3
+},
+"nighantu.nighantu_anwesh": {
+"lib": 7,
+"examples": 0,
+"tests": 0,
+"docs": 3
+},
+"nighantu.nighantu_srij": {
+"lib": 3,
+"examples": 1,
+"tests": 10,
+"docs": 5
+},
+"nighantu.nighantu_khip": {
+"lib": 10,
+"examples": 2,
+"tests": 25,
+"docs": 4
+},
+"nighantu.nighantu_grah": {
+"lib": 2,
+"examples": 2,
+"tests": 13,
+"docs": 3
+},
+"nighantu.nighantu_antah": {
+"lib": 7,
+"examples": 0,
+"tests": 5,
+"docs": 3
+},
+"nighantu.nighantu_apanay": {
+"lib": 2,
+"examples": 0,
+"tests": 3,
+"docs": 3
+},
+"nighantu.nighantu_rikta": {
+"lib": 2,
+"examples": 0,
+"tests": 3,
+"docs": 3
+},
+"nighantu.nighantu_vardh": {
+"lib": 3,
+"examples": 0,
+"tests": 2,
+"docs": 4
+},
+"nighantu.nighantu_grah_mool": {
+"lib": 1,
+"examples": 0,
+"tests": 3,
+"docs": 3
+},
+"nighantu.nighantu_maap": {
+"lib": 12,
+"examples": 0,
+"tests": 13,
+"docs": 12
+},
+"nighantu.nighantu_mil": {
+"lib": 1,
+"examples": 0,
+"tests": 1,
+"docs": 3
+},
+"nighantu.nighantu_mulya": {
+"lib": 1,
+"examples": 0,
+"tests": 1,
+"docs": 3
+},
+"nighantu.nighantu_kunjika": {
+"lib": 1,
+"examples": 0,
+"tests": 1,
+"docs": 3
+},
+"nighantu.nighantu_kunjika_ashtak": {
+"lib": 13,
+"examples": 0,
+"tests": 3,
+"docs": 5
+},
+"patra.patra_path_sarv": {
+"lib": 1,
+"examples": 0,
+"tests": 7,
+"docs": 3
+},
+"patra.patra_likh_sarv": {
+"lib": 1,
+"examples": 0,
+"tests": 4,
+"docs": 3
+},
+"patra.patra_asti": {
+"lib": 1,
+"examples": 0,
+"tests": 2,
+"docs": 4
+},
+"phal.phal_siddhi": {
+"lib": 1,
+"examples": 0,
+"tests": 1,
+"docs": 4
+},
+"phal.phal_dosh": {
+"lib": 1,
+"examples": 0,
+"tests": 3,
+"docs": 5
+},
+"phal.phal_asti_siddhi": {
+"lib": 3,
+"examples": 0,
+"tests": 22,
+"docs": 9
+},
+"phal.phal_mulya": {
+"lib": 1,
+"examples": 0,
+"tests": 14,
+"docs": 6
+},
+"phal.phal_mulya_va": {
+"lib": 1,
+"examples": 0,
+"tests": 3,
+"docs": 4
+},
+"phal.phal_se_siddhi": {
+"lib": 1,
+"examples": 0,
+"tests": 2,
+"docs": 5
+},
+"phal.phal_janchit_yuj": {
+"lib": 0,
+"examples": 0,
+"tests": 3,
+"docs": 3
+},
+"phal.phal_janchit_nyun": {
+"lib": 0,
+"examples": 0,
+"tests": 1,
+"docs": 2
+},
+"phal.phal_janchit_gun": {
+"lib": 0,
+"examples": 0,
+"tests": 2,
+"docs": 3
+},
+"phal.phal_janchit_bhaj": {
+"lib": 0,
+"examples": 0,
+"tests": 3,
+"docs": 2
+},
+"phal.phal_janchit_shesh": {
+"lib": 0,
+"examples": 0,
+"tests": 2,
+"docs": 2
+},
+"phal.phal_janchit_ghat": {
+"lib": 1,
+"examples": 0,
+"tests": 4,
+"docs": 4
+},
+"phal.phal_janchit_kramgun": {
+"lib": 1,
+"examples": 0,
+"tests": 4,
+"docs": 4
+},
+"phal.phal_janchit_nirapeksh": {
+"lib": 1,
+"examples": 0,
+"tests": 2,
+"docs": 4
+},
+"roop.roop_ank": {
+"lib": 2,
+"examples": 0,
+"tests": 1,
+"docs": 3
+},
+"roop.roop_ank_aadhar": {
+"lib": 5,
+"examples": 0,
+"tests": 1,
+"docs": 3
+},
+"roop.roop_ank_aadhar2": {
+"lib": 8,
+"examples": 0,
+"tests": 6,
+"docs": 3
+},
+"roop.roop_ank_dhvaj": {
+"lib": 3,
+"examples": 0,
+"tests": 2,
+"docs": 3
+},
+"roop.roop_dash": {
+"lib": 1,
+"examples": 0,
+"tests": 3,
+"docs": 4
+},
+"roop.roop_shodash": {
+"lib": 0,
+"examples": 0,
+"tests": 1,
+"docs": 2
+},
+"roop.roop_shodash_unnat": {
+"lib": 0,
+"examples": 0,
+"tests": 1,
+"docs": 2
+},
+"roop.roop_asht": {
+"lib": 0,
+"examples": 0,
+"tests": 1,
+"docs": 2
+},
+"roop.roop_dwi": {
+"lib": 0,
+"examples": 0,
+"tests": 1,
+"docs": 2
+},
+"roop.roop_ank_pre": {
+"lib": 1,
+"examples": 0,
+"tests": 4,
+"docs": 3
+},
+"roop.roop_pad_vam": {
+"lib": 1,
+"examples": 0,
+"tests": 4,
+"docs": 3
+},
+"roop.roop_pad_dakshin": {
+"lib": 1,
+"examples": 0,
+"tests": 2,
+"docs": 3
+},
+"roop.roop_pad_madhya": {
+"lib": 1,
+"examples": 0,
+"tests": 2,
+"docs": 3
+},
+"roop.roop_varg_mool": {
+"lib": 3,
+"examples": 0,
+"tests": 0,
+"docs": 3
+},
+"roop.roop_varg_bharatiya": {
+"lib": 3,
+"examples": 0,
+"tests": 4,
+"docs": 3
+},
+"roop.roop_varg_vishwa": {
+"lib": 2,
+"examples": 0,
+"tests": 3,
+"docs": 3
+},
+"roop.roop_varg": {
+"lib": 1,
+"examples": 0,
+"tests": 1,
+"docs": 3
+},
+"roop.roop_varg_ank": {
+"lib": 1,
+"examples": 0,
+"tests": 3,
+"docs": 3
+},
+"roop.roop_sthir_mool": {
+"lib": 3,
+"examples": 0,
+"tests": 0,
+"docs": 3
+},
+"roop.roop_sthir": {
+"lib": 1,
+"examples": 0,
+"tests": 10,
+"docs": 6
+},
+"roop.roop_sthir_chinhit": {
+"lib": 1,
+"examples": 0,
+"tests": 2,
+"docs": 3
+},
+"roop.roop_chinhit": {
+"lib": 1,
+"examples": 0,
+"tests": 3,
+"docs": 3
+},
+"roop.roop_sign_akshar": {
+"lib": 1,
+"examples": 0,
+"tests": 3,
+"docs": 3
+},
+"sadhan.antargam": {
+"lib": 0,
+"examples": 0,
+"tests": 3,
+"docs": 2
+},
+"sadhan.yog_seema": {
+"lib": 0,
+"examples": 0,
+"tests": 3,
+"docs": 2
+},
+"sadhan.shesh": {
+"lib": 1,
+"examples": 0,
+"tests": 3,
+"docs": 6
+},
+"sadhan.bhaj_urdhva": {
+"lib": 0,
+"examples": 0,
+"tests": 3,
+"docs": 7
+},
+"sadhan.util_chinha": {
+"lib": 2,
+"examples": 0,
+"tests": 3,
+"docs": 4
+},
+"sadhan.satya_tak_ank": {
+"lib": 0,
+"examples": 0,
+"tests": 2,
+"docs": 2
+},
+"sadhan.ank_adhik": {
+"lib": 0,
+"examples": 0,
+"tests": 1,
+"docs": 2
+},
+"samanvaya.pehchan": {
+"lib": 0,
+"examples": 1,
+"tests": 1,
+"docs": 2
+},
+"samanvaya.vivartana": {
+"lib": 0,
+"examples": 1,
+"tests": 1,
+"docs": 2
+},
+"samanvaya.matrika_yoga": {
+"lib": 0,
+"examples": 0,
+"tests": 1,
+"docs": 2
+},
+"samanvaya.skalar": {
+"lib": 0,
+"examples": 0,
+"tests": 1,
+"docs": 2
+},
+"samanvaya.matrika_gunana": {
+"lib": 0,
+"examples": 1,
+"tests": 1,
+"docs": 2
+},
+"samanvaya.nishan": {
+"lib": 0,
+"examples": 2,
+"tests": 1,
+"docs": 2
+},
+"samanvaya.nirnaya2": {
+"lib": 0,
+"examples": 1,
+"tests": 2,
+"docs": 2
+},
+"samanvaya.nirnaya3": {
+"lib": 0,
+"examples": 1,
+"tests": 2,
+"docs": 2
+},
+"samanvaya.sadish_yoga": {
+"lib": 0,
+"examples": 0,
+"tests": 1,
+"docs": 2
+},
+"samanvaya.rekha_manak": {
+"lib": 0,
+"examples": 1,
+"tests": 1,
+"docs": 2
+},
+"sangrah.rakh_srij": {
+"lib": 1,
+"examples": 0,
+"tests": 34,
+"docs": 4
+},
+"sangrah.rakh_yuj": {
+"lib": 1,
+"examples": 0,
+"tests": 47,
+"docs": 3
+},
+"sangrah.rakh_antah": {
+"lib": 1,
+"examples": 0,
+"tests": 8,
+"docs": 3
+},
+"sangrah.rakh_apanay": {
+"lib": 1,
+"examples": 0,
+"tests": 2,
+"docs": 3
+},
+"sangrah.rakh_maap": {
+"lib": 6,
+"examples": 0,
+"tests": 6,
+"docs": 10
+},
+"sangrah.rakh_samroop_diff": {
+"lib": 1,
+"examples": 0,
+"tests": 1,
+"docs": 3
+},
+"sangrah.rakh_sangam": {
+"lib": 1,
+"examples": 0,
+"tests": 2,
+"docs": 3
+},
+"sangrah.rakh_sampat": {
+"lib": 1,
+"examples": 0,
+"tests": 3,
+"docs": 3
+},
+"sangrah.rakh_bhed": {
+"lib": 1,
+"examples": 0,
+"tests": 3,
+"docs": 3
+},
+"sangrah.rakh_vardh": {
+"lib": 2,
+"examples": 0,
+"tests": 1,
+"docs": 4
+},
+"sangrah.rakh_rikta": {
+"lib": 1,
+"examples": 0,
+"tests": 1,
+"docs": 3
+},
+"sangrah.rakh_sam": {
+"lib": 1,
+"examples": 0,
+"tests": 3,
+"docs": 3
+},
+"sangrah.rakh_asti_upasamuh": {
+"lib": 4,
+"examples": 0,
+"tests": 6,
+"docs": 4
+},
+"sangrah.rakh_tak_mala": {
+"lib": 1,
+"examples": 0,
+"tests": 6,
+"docs": 3
+},
+"sankhyiki.yoga": {
+"lib": 1,
+"examples": 1,
+"tests": 2,
+"docs": 2
+},
+"sankhyiki.madhya": {
+"lib": 1,
+"examples": 4,
+"tests": 2,
+"docs": 2
+},
+"sankhyiki.laghutama": {
+"lib": 1,
+"examples": 1,
+"tests": 2,
+"docs": 2
+},
+"sankhyiki.adhikatama": {
+"lib": 1,
+"examples": 1,
+"tests": 2,
+"docs": 2
+},
+"sankhyiki.vyapti": {
+"lib": 0,
+"examples": 1,
+"tests": 2,
+"docs": 2
+},
+"sankhyiki.prasaran": {
+"lib": 1,
+"examples": 2,
+"tests": 2,
+"docs": 2
+},
+"sankhyiki.sankhyiki_vargmool": {
+"lib": 2,
+"examples": 0,
+"tests": 3,
+"docs": 3
+},
+"sankhyiki.vichalan": {
+"lib": 0,
+"examples": 2,
+"tests": 2,
+"docs": 2
+},
+"sankhyiki.bindu": {
+"lib": 1,
+"examples": 3,
+"tests": 2,
+"docs": 2
+},
+"sankhyiki.manak": {
+"lib": 0,
+"examples": 2,
+"tests": 2,
+"docs": 2
+},
+"sankhyiki.purna_yoga": {
+"lib": 1,
+"examples": 0,
+"tests": 4,
+"docs": 3
+},
+"sankhyiki.purna_madhya": {
+"lib": 1,
+"examples": 0,
+"tests": 5,
+"docs": 4
+},
+"sankhyiki.purna_laghutama": {
+"lib": 1,
+"examples": 0,
+"tests": 4,
+"docs": 3
+},
+"sankhyiki.purna_adhikatama": {
+"lib": 1,
+"examples": 0,
+"tests": 4,
+"docs": 3
+},
+"sankhyiki.purna_vyapti": {
+"lib": 0,
+"examples": 0,
+"tests": 4,
+"docs": 3
+},
+"sankhyiki.purna_prasaran": {
+"lib": 0,
+"examples": 0,
+"tests": 5,
+"docs": 3
+},
+"shreni.vinimay": {
+"lib": 2,
+"examples": 0,
+"tests": 1,
+"docs": 2
+},
+"shreni.budbud_shreni": {
+"lib": 0,
+"examples": 1,
+"tests": 2,
+"docs": 2
+},
+"shreni.viparyay_mala": {
+"lib": 0,
+"examples": 1,
+"tests": 2,
+"docs": 2
+},
+"shreni.laghu": {
+"lib": 2,
+"examples": 3,
+"tests": 2,
+"docs": 4
+},
+"shreni.adhik": {
+"lib": 1,
+"examples": 1,
+"tests": 2,
+"docs": 3
+},
+"shreni.yog": {
+"lib": 1,
+"examples": 1,
+"tests": 2,
+"docs": 4
+},
+"shreni.anwesh_sarak": {
+"lib": 2,
+"examples": 1,
+"tests": 2,
+"docs": 3
+},
+"shreni.gan": {
+"lib": 1,
+"examples": 1,
+"tests": 2,
+"docs": 2
+},
+"shreni.asti_sorted": {
+"lib": 1,
+"examples": 4,
+"tests": 2,
+"docs": 2
+},
+"shreni.dwi_anwesh": {
+"lib": 1,
+"examples": 3,
+"tests": 2,
+"docs": 2
+},
+"shreni.shankh_shreni": {
+"lib": 0,
+"examples": 1,
+"tests": 2,
+"docs": 2
+},
+"shreni.nivesh_shreni": {
+"lib": 0,
+"examples": 0,
+"tests": 1,
+"docs": 3
+},
+"shreni.mil_shreni_punar": {
+"lib": 3,
+"examples": 0,
+"tests": 0,
+"docs": 2
+},
+"shreni.mil_shreni": {
+"lib": 3,
+"examples": 0,
+"tests": 1,
+"docs": 4
+},
+"suchi.suchi_srij": {
+"lib": 1,
+"examples": 0,
+"tests": 7,
+"docs": 5
+},
+"suchi.suchi_vardh": {
+"lib": 3,
+"examples": 0,
+"tests": 0,
+"docs": 3
+},
+"suchi.suchi_khip": {
+"lib": 3,
+"examples": 0,
+"tests": 20,
+"docs": 5
+},
+"suchi.suchi_grah": {
+"lib": 1,
+"examples": 0,
+"tests": 20,
+"docs": 3
+},
+"suchi.suchi_sangrah": {
+"lib": 1,
+"examples": 0,
+"tests": 2,
+"docs": 3
+},
+"suchi.suchi_maap": {
+"lib": 3,
+"examples": 0,
+"tests": 5,
+"docs": 6
+},
+"suchi.suchi_nivesh": {
+"lib": 1,
+"examples": 0,
+"tests": 3,
+"docs": 3
+},
+"suchi.suchi_apanay": {
+"lib": 1,
+"examples": 0,
+"tests": 2,
+"docs": 4
+},
+"suchi.suchi_vinimay": {
+"lib": 1,
+"examples": 0,
+"tests": 2,
+"docs": 3
+},
+"suchi.suchi_viparyay": {
+"lib": 1,
+"examples": 0,
+"tests": 1,
+"docs": 3
+},
+"suchi.suchi_shreni": {
+"lib": 1,
+"examples": 0,
+"tests": 2,
+"docs": 3
+},
+"suchi.suchi_laghu": {
+"lib": 1,
+"examples": 0,
+"tests": 2,
+"docs": 3
+},
+"suchi.suchi_adhik": {
+"lib": 1,
+"examples": 0,
+"tests": 2,
+"docs": 3
+},
+"suchi.suchi_yog": {
+"lib": 1,
+"examples": 0,
+"tests": 2,
+"docs": 3
+},
+"suchi.suchi_gan": {
+"lib": 1,
+"examples": 0,
+"tests": 3,
+"docs": 3
+},
+"suchi.suchi_anwesh": {
+"lib": 1,
+"examples": 0,
+"tests": 2,
+"docs": 3
+},
+"suchi.suchi_asti_sorted": {
+"lib": 1,
+"examples": 0,
+"tests": 2,
+"docs": 3
+},
+"suchi.suchi_dwi_anwesh": {
+"lib": 1,
+"examples": 0,
+"tests": 2,
+"docs": 3
+},
+"suchi.suchi_rikta": {
+"lib": 1,
+"examples": 0,
+"tests": 2,
+"docs": 3
+},
+"suchi.suchi_antah": {
+"lib": 1,
+"examples": 0,
+"tests": 2,
+"docs": 3
+},
+"suchi.suchi_kramank": {
+"lib": 1,
+"examples": 0,
+"tests": 2,
+"docs": 3
+},
+"suchi.chay_khip": {
+"lib": 1,
+"examples": 0,
+"tests": 3,
+"docs": 3
+},
+"suchi.chay_apanay": {
+"lib": 1,
+"examples": 0,
+"tests": 4,
+"docs": 3
+},
+"suchi.chay_avalok": {
+"lib": 1,
+"examples": 0,
+"tests": 3,
+"docs": 3
+},
+"suchi.chay_rikta": {
+"lib": 1,
+"examples": 0,
+"tests": 2,
+"docs": 3
+},
+"suchi.avali_srij": {
+"lib": 1,
+"examples": 0,
+"tests": 4,
+"docs": 3
+},
+"suchi.avali_pravesh": {
+"lib": 1,
+"examples": 0,
+"tests": 13,
+"docs": 3
+},
+"suchi.avali_nishkas": {
+"lib": 1,
+"examples": 0,
+"tests": 10,
+"docs": 3
+},
+"suchi.avali_avalok": {
+"lib": 1,
+"examples": 0,
+"tests": 2,
+"docs": 3
+},
+"suchi.avali_tak_mala": {
+"lib": 1,
+"examples": 0,
+"tests": 1,
+"docs": 3
+},
+"suchi.avali_antah": {
+"lib": 1,
+"examples": 0,
+"tests": 3,
+"docs": 3
+},
+"suchi.avali_rikta": {
+"lib": 1,
+"examples": 0,
+"tests": 1,
+"docs": 3
+},
+"suchi.avali_shunya": {
+"lib": 1,
+"examples": 0,
+"tests": 2,
+"docs": 3
+},
+"suchi.avali_maap": {
+"lib": 2,
+"examples": 0,
+"tests": 3,
+"docs": 4
+},
+"vakyank.ank_tak_varna": {
+"lib": 1,
+"examples": 1,
+"tests": 9,
+"docs": 5
+},
+"vakyank.varna_tak_ank": {
+"lib": 1,
+"examples": 0,
+"tests": 8,
+"docs": 4
+},
+"vakyank.ank_tak_aadhar_varna": {
+"lib": 1,
+"examples": 0,
+"tests": 3,
+"docs": 4
+},
+"vakyank.varna_tak_ank_aadhar": {
+"lib": 1,
+"examples": 0,
+"tests": 6,
+"docs": 3
+},
+"vakyank.pad_vam": {
+"lib": 1,
+"examples": 1,
+"tests": 2,
+"docs": 3
+},
+"vakyank.varna_tak_dashm": {
+"lib": 1,
+"examples": 0,
+"tests": 7,
+"docs": 5
+},
+"varna.varna_maap": {
+"lib": 0,
+"examples": 2,
+"tests": 3,
+"docs": 4
+},
+"varna.akshar_sanket": {
+"lib": 0,
+"examples": 1,
+"tests": 3,
+"docs": 3
+},
+"varna.asti_ank_akshar": {
+"lib": 1,
+"examples": 2,
+"tests": 5,
+"docs": 3
+},
+"varna.asti_unnat_akshar": {
+"lib": 0,
+"examples": 1,
+"tests": 4,
+"docs": 3
+},
+"varna.asti_avanat_akshar": {
+"lib": 0,
+"examples": 1,
+"tests": 4,
+"docs": 3
+},
+"varna.asti_akshar_akshar": {
+"lib": 0,
+"examples": 2,
+"tests": 3,
+"docs": 3
+},
+"varna.asti_avakash_akshar": {
+"lib": 0,
+"examples": 0,
+"tests": 3,
+"docs": 3
+},
+"varna.gan_swar": {
+"lib": 1,
+"examples": 1,
+"tests": 5,
+"docs": 5
+},
+"varna.gan_akshar": {
+"lib": 0,
+"examples": 2,
+"tests": 3,
+"docs": 3
+},
+"varna.anwesh_akshar": {
+"lib": 0,
+"examples": 2,
+"tests": 5,
+"docs": 3
+},
+"varna.asti_sarv_ank": {
+"lib": 0,
+"examples": 3,
+"tests": 4,
+"docs": 3
+},
+"varna.unnat_sanket": {
+"lib": 0,
+"examples": 2,
+"tests": 3,
+"docs": 3
+},
+"varna.avanat_sanket": {
+"lib": 0,
+"examples": 2,
+"tests": 3,
+"docs": 3
+},
+"varna.varna_sam": {
+"lib": 0,
+"examples": 0,
+"tests": 4,
+"docs": 3
+},
+"varna.varna_anwesh": {
+"lib": 3,
+"examples": 0,
+"tests": 3,
+"docs": 5
+},
+"varna.varna_antah": {
+"lib": 1,
+"examples": 0,
+"tests": 2,
+"docs": 4
+},
+"varna.varna_pratisthap": {
+"lib": 1,
+"examples": 0,
+"tests": 1,
+"docs": 4
+},
+"varna.varna_bhed": {
+"lib": 2,
+"examples": 0,
+"tests": 1,
+"docs": 6
+},
+"varna.varna_yuj": {
+"lib": 2,
+"examples": 0,
+"tests": 1,
+"docs": 5
+},
+"varna.varna_chhid": {
+"lib": 1,
+"examples": 0,
+"tests": 1,
+"docs": 4
+},
+"varna.varna_unnat": {
+"lib": 1,
+"examples": 0,
+"tests": 1,
+"docs": 5
+},
+"varna.varna_avanat": {
+"lib": 0,
+"examples": 0,
+"tests": 1,
+"docs": 3
+},
+"varna.varna_aadi": {
+"lib": 1,
+"examples": 0,
+"tests": 1,
+"docs": 4
+},
+"varna.varna_ant": {
+"lib": 0,
+"examples": 0,
+"tests": 1,
+"docs": 3
+},
+"varna.varna_tul": {
+"lib": 1,
+"examples": 0,
+"tests": 2,
+"docs": 5
+},
+"varna.varna_viparyay": {
+"lib": 1,
+"examples": 0,
+"tests": 1,
+"docs": 4
+},
+"varna.varna_gan": {
+"lib": 1,
+"examples": 0,
+"tests": 1,
+"docs": 4
+}
+}

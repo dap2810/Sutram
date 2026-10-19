@@ -1,0 +1,8 @@
+yoj suchi
+mukhya() {
+    likha(nirmmita(8796093022208))
+    likha(nirmmita(1152921504606846976))
+    vitti l = suchi_srij(144115188075855872)
+    likha(l)
+    likha(suchi_khip(l, 5))
+}

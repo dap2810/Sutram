@@ -1,0 +1,5 @@
+sutra K = 1
+mukhya() {
+    K = 5
+    likha(K)
+}

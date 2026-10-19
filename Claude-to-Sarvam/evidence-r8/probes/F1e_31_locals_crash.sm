@@ -1,0 +1,43 @@
+prakriya g(x) {
+    prati x
+}
+prakriya cv(out, n) {
+        vitti v0 = g(0)
+        vitti v1 = g(1)
+        vitti v2 = g(2)
+        vitti v3 = g(3)
+        vitti v4 = g(4)
+        vitti v5 = g(5)
+        vitti v6 = g(6)
+        vitti v7 = g(7)
+        vitti v8 = g(8)
+        vitti v9 = g(9)
+        vitti v10 = g(10)
+        vitti v11 = g(11)
+        vitti v12 = g(12)
+        vitti v13 = g(13)
+        vitti v14 = g(14)
+        vitti v15 = g(15)
+        vitti v16 = g(16)
+        vitti v17 = g(17)
+        vitti v18 = g(18)
+        vitti v19 = g(19)
+        vitti v20 = g(20)
+        vitti v21 = g(21)
+        vitti v22 = g(22)
+        vitti v23 = g(23)
+        vitti v24 = g(24)
+        vitti v25 = g(25)
+        vitti v26 = g(26)
+        vitti v27 = g(27)
+        vitti v28 = g(28)
+        vitti v29 = g(29)
+        vitti v30 = g(30)
+    prati 1
+}
+mukhya() {
+    vitti out = nirmmita(16)
+    vitti n = 2
+    cv(out, 61)
+    likha(n)
+}

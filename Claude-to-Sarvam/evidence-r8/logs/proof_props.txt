@@ -1,0 +1,88 @@
+PASS: bigint add/sub inverse
+PASS: bigint mul distributes over add
+PASS: bigint from_int/to_int roundtrip
+PASS: bigint divmod reconstruct
+PASS: math mahattam divides
+PASS: math mahattam*laghuttam == a*b
+PASS: hash fnv1a deterministic
+PASS: hash fnv1a empty == basis
+PASS: hash fnv1a avalanche
+PASS: sort output ordered
+PASS: sort permutation
+PASS: sort idempotent
+PASS: sort edge cases
+PASS: baseconv roundtrip
+PASS: strconv roundtrip
+PASS: strconv base roundtrip
+PASS: strconv pad_vam
+PASS: string find vs python
+PASS: string replace
+PASS: string split/join
+PASS: string trim/case
+PASS: strb find vs python
+PASS: strb replace
+PASS: strb split/join
+PASS: strb trim/case
+PASS: map put/get roundtrip
+PASS: map update
+PASS: map delete
+PASS: map collision survival
+PASS: map keys count
+PASS: strb pack/unpack roundtrip
+PASS: strb dup
+PASS: sankhyiki purna int stats
+PASS: set add/contains/remove
+PASS: set add idempotent
+PASS: set union commutative
+PASS: set intersect self/empty
+PASS: set difference
+PASS: set subset
+PASS: fmt int base roundtrip
+PASS: fmt pad content
+PASS: fmt group digits
+PASS: fmt fixed decimals
+PASS: fmt signed
+PASS: list push/get
+PASS: list stack LIFO
+PASS: list queue FIFO
+PASS: list len tracks
+PASS: list insert/remove
+PASS: map keys_bytes roundtrip
+PASS: ganita checked add/sub
+PASS: ganita checked mul
+PASS: ganita checked div/shesh
+PASS: ganita saturating
+PASS: nighantu_rikta reuse
+PASS: containers clear
+PASS: gaps19
+PASS: strb cell pairs
+PASS: containers resize/vinimay
+PASS: gaps20
+PASS: containers21
+PASS: gaps21
+PASS: containers23
+PASS: gaps23
+PASS: slices23
+PASS: invariants24 containers
+PASS: invariants24 merge/symdiff
+PASS: safety24
+PASS: safety25 oracle
+PASS: safety26 interaction
+PASS: breadth26
+PASS: min26
+PASS: safety27 cross-module
+PASS: bigint divzero
+PASS: result type
+PASS: serialisation roundtrip
+PASS: numeric contract gaps pinned
+PASS: edge30 int
+PASS: edge30 text
+PASS: edge30 conversion
+PASS: edge30 containers
+PASS: edge30 float
+PASS: chakravala isqrt(MAX) limit
+PASS: result producers + chain
+PASS: ok convention
+PASS: numeric28
+
+86/86 properties hold
