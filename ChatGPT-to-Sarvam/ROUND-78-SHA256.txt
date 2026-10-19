@@ -1,0 +1,13 @@
+# R78 binary SHA-256 of actual existing GitHub bytes (not newly produced executable)
+b3672b50c336da65418de090421be12d8ce1be6a2a95f27c48b0ed124bd35a13  win/sutram.exe
+b3672b50c336da65418de090421be12d8ce1be6a2a95f27c48b0ed124bd35a13  sutram.exe
+44a88286e3904e01fe266b118ac27973834efc24a6989a9d7c2b98f1fc6423bf  sutram_compiler (Linux)
+# The SHA-256 implementation was checked with the abc published vector.
+# Git blob SHA-1 source identities (different hash family):
+5caa9b6ef260d75ddea65a44a8daed94237833cc  src/sutram_compiler.asm
+c441e401eb824ba306b9f54dd243c5ca0eebbad2  tools/r69_build.lock.json
+98606d7d234bc7a7de5fbc7089bb9603c3dcaee0  win/sutram.exe / sutram.exe
+c21119bdecd135935d38c25df49f1bb86417bfd7  sutram_compiler
+0399b72311b4c232f5b57ea7e8d5203e3a5c2b8a  Sutram-Setup.exe (stale setup binary)
+# New R78 installer payload SHA256: NOT PRODUCED (native Windows rebuild NOT_RUN)
+# New R78 kosh binary hashes: NOT PRODUCED (native staging/build NOT_RUN)
