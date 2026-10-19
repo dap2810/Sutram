@@ -1,3 +1,37 @@
+## v181 - Step 7: the performance gate exists. The project can now be measured, not asserted.
+
+**"Performance measured, not assumed" has been a standing rule since the beginning, and until now nothing
+measured anything.** `benchmarks/` held four programs, `tools/bench.py` existed, and **no gate ran either.**
+A claim with no gate is an assumption.
+
+**`tools/bench_gate.py` is now in `tools/gates.sh`.** It compiles and runs every benchmark, repeats each
+one, and reports the median wall time:
+
+```
+machine: x86_64 · Linux · 2 cpus · repeat 3
+r46_hotcall_array.sm             69.56 ms   (min 64.44 / max 81.12 ms)
+r46_hotcall_float.sm             69.02 ms   (min 68.68 / max 79.35 ms)
+r46_hotcall_nested.sm            88.12 ms   (min 86.50 / max 91.40 ms)
+r46_hotcall_stack.sm             92.25 ms   (min 83.38 / max 92.73 ms)
+4 ran, 0 failed
+```
+
+**`gates.sh` now reads: 10 PASS, 0 FAIL, 1 NOT-RUN.**
+
+**It records numbers; it does not invent a threshold, and that is deliberate.** A pass/fail line on a
+wall-clock measurement depends on the machine, the load and the governor - a fixed number would be trivially
+true on a fast box and a permanent false alarm on a slow one. **So the gate fails only when a benchmark
+cannot be built or run, and prints the numbers for the record.** That is what "measured, not assumed"
+actually requires: the measurement is real and repeatable, and the interpretation is left to a human who
+knows the machine.
+
+**One thing to note: there are only four benchmarks**, all `r46_hotcall_*`. They cover call overhead, not the
+language. **A benchmark set that does not exercise arithmetic, loops, strings, the library or memory
+allocation cannot support a performance claim about the language** - it supports a claim about call
+overhead. Extending the set is the honest next step before any number is quoted.
+
+**Step 7 is marked done on `ROADMAP-TO-V1.0.md` for the gate; the benchmark set itself is a follow-up.**
+
 ## v180 - Step 6 done: every code sample in every document compiled
 
 **The sweep that has found a real defect three times, run to completion.**
