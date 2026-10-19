@@ -338,7 +338,7 @@ static int InvokeInstallScript(void) {
     QuoteArg(exePath, qExe, 8192);
     QuoteArg(g_logPath, qLog, 8192);
     _snwprintf(cmd, 32767,
-        L"powershell.exe -NoProfile -ExecutionPolicy Bypass -File %s -PayloadZip %s -InstallDir %s -SetupExePath %s -LogPath %s%s%s",
+        L"powershell.exe -NoProfile -File %s -PayloadZip %s -InstallDir %s -SetupExePath %s -LogPath %s%s%s",
         qScript, qPayload, qDir, qExe, qLog,
         addPath ? L" -AddPath" : L"",
         desktop ? L" -DesktopShortcut" : L"");
@@ -380,7 +380,7 @@ static int InvokeUninstall(void) {
     QuoteArg(installDir, qDir, 8192);
     QuoteArg(exePath, qExe, 8192);
     QuoteArg(log, qLog, 8192);
-    _snwprintf(cmd, 32767, L"powershell.exe -NoProfile -ExecutionPolicy Bypass -File %s -InstallDir %s -SelfPath %s -LogPath %s", qScript, qDir, qExe, qLog);
+    _snwprintf(cmd, 32767, L"powershell.exe -NoProfile -File %s -InstallDir %s -SelfPath %s -LogPath %s", qScript, qDir, qExe, qLog);
     cmd[32767] = 0;
     if (!RunProcessAndWait(ps, cmd, &code)) return 25;
     DeleteFileW(script);
@@ -426,7 +426,7 @@ static void ScheduleSelfDelete(const WCHAR *selfPath, const WCHAR *installDir) {
     WriteFile(f, script, (DWORD)(wcslen(script) * sizeof(WCHAR)), &written, NULL);
     CloseHandle(f);
     QuoteArg(scriptPath, qScript, 8192);
-    _snwprintf(cmd, 11999, L"powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File %s", qScript);
+    _snwprintf(cmd, 11999, L"powershell.exe -NoProfile -WindowStyle Hidden -File %s", qScript);
     ZeroMemory(&si, sizeof(si)); ZeroMemory(&pi, sizeof(pi)); si.cb = sizeof(si);
     if (CreateProcessW(ps, cmd, NULL, NULL, FALSE, CREATE_NO_WINDOW, NULL, NULL, &si, &pi)) {
         CloseHandle(pi.hThread); CloseHandle(pi.hProcess);
