@@ -4,14 +4,15 @@
   "snapshot": "dde0613ca16f3e41345b1b1055733151780ef9d7",
   "profile": "Linux x86-64 R68 diagnostic entry, default language semantics; no R48 mode",
   "status": "Corpus and runner delivered; current full-compiler run pending",
+  "repinned": "R3 (Claude, 2026-10-19): input_git_blobs moved from the pre-v157 snapshot to claude/round-03 (v169 + the R3 EOF-location fix); bad_type and bad_arity fixture digests updated after verifying that their only change since R70 is the v157 keyword rename pratiyati->prati; diagnostic texts updated to the ROUND-02 Sanskrit strings (behaviour deliberately changed in ROUND-02 WS4). snapshot and per-case provenance are left as the original R70 record.",
   "input_git_blobs": {
-    "src/sutram_compiler.asm": "64ea028a5ccf56117c132a7efd0673cbe2df3fc6",
+    "src/sutram_compiler.asm": "ea2a1e910952120c1f1db8bac1890338af68d3e9",
     "src/r68_compiler_entry.asm": "42389aaf73179726d91e23359aee2199734036e1",
-    "src/r68_diagnostics.inc": "4e2ec29fe16cda9c0d5762ba340ec75694c6f23d",
+    "src/r68_diagnostics.inc": "a6f7bb196702626d6b7f116f32e678d9daf73eba",
     "src/r68_unicode_helpers.inc": "69103e059634aa6b5b871ce7c06c2f4b9c742ff1",
-    "src/r66_indic_lexer.inc": "3633bd55775dc8b9bb94724ef3685976e61d9593",
+    "src/r66_indic_lexer.inc": "998b6cb75a7e11cf6d488cf84a84a2154ffdebf0",
     "src/r67_stack_pair.inc": "e8472bd1cad767cf06b0c00fcf88793419362db5",
-    "lang/sanskrit.lang": "5876fae59e52b55cc11ab811a80ad4eec8ccfe83"
+    "lang/sanskrit.lang": "48fbf99a94f2f810911501860817c3fc27de95a3"
   },
   "cases": [
     {
@@ -19,14 +20,14 @@
       "category": "bad_type",
       "source": "tests/negative/r70/cases/bad_type.sm",
       "encoding": "utf8",
-      "file_sha256": "5e93ea75f18b257e66423e048fc80d72918f96a0f328c5f75afa46b8bd59b2c5",
-      "program_sha256": "5e93ea75f18b257e66423e048fc80d72918f96a0f328c5f75afa46b8bd59b2c5",
+      "file_sha256": "2f2c7abd0b6aab98d7a6f1d0073fc9a0bacca9f9c04d384b5dc3353997b03267",
+      "program_sha256": "2f2c7abd0b6aab98d7a6f1d0073fc9a0bacca9f9c04d384b5dc3353997b03267",
       "expected_exit": 1,
       "language": null,
       "diagnostic": {
         "match": "exact",
         "stream": "stdout",
-        "text": "Sutram Error: kosh parameter requires matching kosh element type\n"
+        "text": "Sutram Error: kosh tark: tatv prakar bhinn\n"
       },
       "provenance": {
         "level": "inherited_exact_golden",
@@ -43,16 +44,16 @@
       "category": "bad_arity",
       "source": "tests/negative/r70/cases/bad_arity.sm",
       "encoding": "utf8",
-      "file_sha256": "abc0027ae004084829dca71b3e3987175d73ab2f3ffad405c30ff38178e5528f",
-      "program_sha256": "abc0027ae004084829dca71b3e3987175d73ab2f3ffad405c30ff38178e5528f",
+      "file_sha256": "3a435e45e73196c603e3370b7e798b5012b05f6dfbb7fb866b56e1736e271e16",
+      "program_sha256": "3a435e45e73196c603e3370b7e798b5012b05f6dfbb7fb866b56e1736e271e16",
       "expected_exit": 1,
       "language": null,
       "diagnostic": {
         "match": "ordered_fragments",
         "stream": "stdout",
         "fragments": [
-          "Sutram Error: parse error at line ",
-          "Hint: functions accept at most 6 arguments.\n"
+          "Sutram Error: vyakaran dosh, pankti ",
+          "Sanket: prakriya adhiktam 6 tark lete hain.\n"
         ]
       },
       "provenance": {
@@ -78,7 +79,7 @@
       "diagnostic": {
         "match": "exact",
         "stream": "stdout",
-        "text": "Sutram Error: undefined function: does_not_exist\n"
+        "text": "Sutram Error: agyat prakriya: does_not_exist\n"
       },
       "provenance": {
         "level": "inherited_exact_golden",
@@ -102,7 +103,7 @@
       "diagnostic": {
         "match": "exact",
         "stream": "stdout",
-        "text": "Sutram Error [E_UTF8]: {source}:2: invalid or truncated UTF-8 in source code\n"
+        "text": "Sutram Error [E_UTF8]: {source}:2: srot me ashuddh ya khandit UTF-8\n"
       },
       "provenance": {
         "level": "source_derived_new_fixture",
@@ -128,9 +129,9 @@
         "match": "ordered_fragments",
         "stream": "stdout",
         "fragments": [
-          "Sutram Error: parse error at line ",
-          "end of file",
-          "Hint: check the keyword spelling and syntax near this spot.\n"
+          "Sutram Error: vyakaran dosh, pankti ",
+          "patra-ant",
+          "Sanket: is sthan par shabd aur vyakaran dekho.\n"
         ]
       },
       "provenance": {
@@ -157,7 +158,7 @@
       "diagnostic": {
         "match": "exact",
         "stream": "stdout",
-        "text": "Language pack loaded: sanskrit\nSutram Error [E_ABBREVIATION_VALUE]: {source}:2: abbreviation keyword is not a value: 'वि॰'\n"
+        "text": "Bhasha pak prapt: sanskrit\nSutram Error [E_ABBREVIATION_VALUE]: {source}:2: sankshep shabd mulya nahi: 'वि॰'\n"
       },
       "provenance": {
         "level": "source_derived_new_fixture",
