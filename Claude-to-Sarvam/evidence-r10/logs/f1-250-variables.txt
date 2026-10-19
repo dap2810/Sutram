@@ -1,0 +1,7 @@
+# Linux. 248 locals + 1 parameter + s = 250 variables in a called function; then 260 locals (past the existing 256-statements-per-block limit).
+n=248: want 31876 10
+  v191: (exit 139)
+  R10: 31876 10 (exit 0)
+n=260: want 34930 10
+  v191: Sutram Error: khand kathan seema atikram 
+  R10: Sutram Error: khand kathan seema atikram 

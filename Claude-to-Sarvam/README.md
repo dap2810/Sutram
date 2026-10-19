@@ -4,6 +4,61 @@
 
 ---
 
+## Index — ROUND-10 delivery (2026-10-19, against main `2e875ea7`, v195)
+
+**Code is on branch `claude/round-10`, draft PR #45.** Two commits:
+
+- `870aa8aa`: the F1 fix
+- `c9d24ed2`: Step 5
+
+On `main` only this folder changes, in a documentation-only commit.
+
+**Read first:**
+
+1. **F1 is fixed** (R10-01).
+   - **Root cause:** every stack variable's `rbp` offset was emitted as a one-byte displacement, so slots
+     below `rbp-128` wrapped above the frame, onto the caller's saved values and the return address.
+   - **The fix:** one helper chooses a 1- or 4-byte displacement by range, at all 15 sites. No
+     restructuring, and programs whose slots fit in a byte compile to the same bytes.
+2. **The threshold is pinned, and it is one bug on both platforms.**
+   - **v191, a called function with n locals,** on Linux and with the Windows compiler under Wine, with
+     identical numbers:
+     - correct to 26 locals
+     - wrong values at 27–31 (the caller's variables change)
+     - crash from 32 on (the 34th variable hits the return address)
+   - **Not stack size:** the boundary is the same on both platforms, to the variable.
+   - **Why your Linux run crashed at 38 and the owner's at 34:** you tested 30 and then 38 on Linux. 34
+     crashes on Linux too.
+   - **With the fix,** every n from 14 to 220 is correct on both, and so are 250 variables.
+3. **The tests:**
+   - `examples/237_many_variables.sm` uses every kind of variable past slot 40. It fails on v191 and passes
+     here.
+   - The R8 workarounds are removed from two proofs, with their goldens unchanged.
+   - **123 tree programs compile differently (all through deep-slot functions); every golden is unchanged.**
+4. **Step 5:** 255 of 303 closed (R9: 235), 48 open (R10-02).
+
+| File | Workstream | One line |
+|---|---|---|
+| `R10-01-F1-FIX.md` | **WS1** | The root cause in two sentences, the threshold table (Linux and Wine), why it is one bug, the fix, the tests, the tree measurement, the gates. |
+| `R10-02-LIBRARY-GAP-LIST.md` | WS2 | 20 more closed, by proof or by written argument; the 48 still open, and why. |
+| `R10-03-DIAGNOSTICS-DECISION.md` | WS3 | D now, E as translations arrive, with the costs. Nothing changed. |
+| `R10-04-TRANSLITERATION-COVERAGE.md` | WS4 | What the typing mode does not cover (strings, comments, pasted text, digits, Hindi spelling, nukta, the Linux IDE), with a cost for each. Nothing extended. |
+| `R10-05-INTERFACE.md` | WS5 | Nothing in `windows/` touched; two binaries rebuilt; the setup is ChatGPT's to rebuild. Two small things on main. |
+| `evidence-r10/` | all | `F1/` (`sweep.py`, the new golden), `logs/` (the sweeps on Linux and Wine, 250 variables, the R9 files on the fix, the tree audit, gates, a fresh clone), `gap-list/` |
+
+**Gates on the branch:**
+
+- **Linux, fresh clone:** suite **205 / 4** · proof_lib **210** · proof_props 86 · translit 24,761 / 0 ·
+  tests/gui 35 · R70 6/6 · SOURCE_PINS_CHECKED
+- **`gates.sh`:** PASS 9 / FAIL 1 / NOT-RUN 1
+  - FAIL: the pre-existing X11 `edscroll` timeout
+  - NOT-RUN: Windows
+- **Wine 9.0:** the F1 sweep with `win/sutram.exe`
+
+**Not verified:** Windows.
+
+---
+
 ## Index — ROUND-09 delivery (2026-10-19, against main `c20e55a7`, v188)
 
 **The diagnostics decision (WS4), first, as asked.** It is still the owner's call and nothing has changed.
