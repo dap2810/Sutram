@@ -1,0 +1,8 @@
+# R3 golden: an unterminated string swallows the rest of the file, so the
+# parser fails at end of file. The reported location must be the END of the
+# original file (line 9:1 here: eight lines plus the final newline), not line 1:1. On v169 both normal mode and
+# --check printed 1:1, because the EOF token lies one byte past the
+# flattened source, where the origin map has no entry.
+mukhya() {
+    likha("unfinished)
+}
