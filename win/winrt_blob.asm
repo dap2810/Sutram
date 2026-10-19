@@ -1,63 +1,30 @@
-; ---------------------------------------------------------------------------
-; winrt_blob.asm — runtime embedded in every Windows program Sutram emits
-;
-; Assembled as a FLAT binary (nasm -f bin) so its bytes are copied verbatim
-; into the generated executable. Everything is rip-relative, so it is
-; position independent.
-;
-; Provides:
-;   rt_init     — resolve kernel32, cache std handles (call once at start)
-;   rt_syscall  — emulates the Linux syscall ABI on Windows:
-;                   rax=0  read(fd,buf,len)   -> ReadFile
-;                   rax=1  write(fd,buf,len)  -> WriteFile
-;                   rax=3  close(fd)          -> CloseHandle
-;                   rax=9  mmap(addr,len,..)  -> VirtualAlloc
-;                   rax=60 exit(code)         -> ExitProcess
-;                 args in rdi/rsi/rdx, result in rax. Preserves every
-;                 register a Linux syscall preserves (only rcx/r11 clobbered).
-;
-; Build:  nasm -f bin win/winrt_blob.asm -o rtblob.bin
-; ---------------------------------------------------------------------------
-
+; Native Win64 adapter embedded in generated programs. NASM only.
+; Loader-resolved IAT in RW/non-executable .data; no writes to RX code.
 bits 64
 default rel
-
-; ---------------------------------------------------------------------------
+%include "win/pe_layout.inc"
 rt_init:
     push rbx
-    sub rsp, 32
-    lea rdi, [rel nm_getstd]
-    call rt_resolve
-    mov [rel p_getstd], rax
-    lea rdi, [rel nm_write]
-    call rt_resolve
-    mov [rel p_write], rax
-    lea rdi, [rel nm_read]
-    call rt_resolve
-    mov [rel p_read], rax
-    lea rdi, [rel nm_close]
-    call rt_resolve
-    mov [rel p_close], rax
-    lea rdi, [rel nm_alloc]
-    call rt_resolve
-    mov [rel p_alloc], rax
-    lea rdi, [rel nm_exit]
-    call rt_resolve
-    mov [rel p_exit], rax
-    mov rcx, -11                 ; STD_OUTPUT_HANDLE
-    call qword [rel p_getstd]
-    mov [rel h_out], rax
-    mov rcx, -12                 ; STD_ERROR_HANDLE
-    call qword [rel p_getstd]
-    mov [rel h_err], rax
-    mov rcx, -10                 ; STD_INPUT_HANDLE
-    call qword [rel p_getstd]
-    mov [rel h_in], rax
-    add rsp, 32
+    push rbp
+    mov rbp,rsp
+    and rsp,-16
+    sub rsp,32
+    call rt_import_base
+    call qword [rbx+RT_GetConsoleOutputCP]
+    mov [rbx+RT_ORIGINAL_CP],eax
+    mov ecx,65001
+    call qword [rbx+RT_SetConsoleOutputCP]
+    mov rsp,rbp
+    pop rbp
     pop rbx
     ret
-
-; ---------------------------------------------------------------------------
+rt_import_base:
+    ; ImageBase from PEB, then data RVA from the emitted section header.
+    mov rbx,[gs:0x60]
+    mov rbx,[rbx+0x10]
+    mov eax,[rbx+0x17c]
+    lea rbx,[rbx+rax+RT_GLOBAL_BYTES]
+    ret
 rt_syscall:
     push rbx
     push rbp
@@ -72,77 +39,144 @@ rt_syscall:
     push r13
     push r14
     push r15
-    mov r12, rax                 ; syscall number
-    mov r13, rdi                 ; arg0
-    mov r14, rsi                 ; arg1
-    mov r15, rdx                 ; arg2
-    mov rbp, rsp                 ; remember stack (after pushes)
-    and rsp, -16                 ; 16-byte align for Win64 calls
-    sub rsp, 48                  ; shadow space + 5th arg slot
-    cmp r12, 1
-    je .sc_write
-    cmp r12, 0
-    je .sc_read
-    cmp r12, 60
-    je .sc_exit
-    cmp r12, 9
-    je .sc_mmap
-    cmp r12, 3
-    je .sc_close
-    xor rax, rax
-    jmp .sc_done
-
-.sc_write:
-    mov rcx, r13
-    cmp rcx, 2
-    jne .w_out
-    mov rcx, [rel h_err]
-    jmp .w_go
-.w_out:
-    cmp rcx, 1
-    jne .w_go
-    mov rcx, [rel h_out]
-.w_go:
-    mov rdx, r14
-    mov r8, r15
-    lea r9, [rel nwritten]
-    mov qword [rsp+32], 0
-    call qword [rel p_write]
-    mov eax, [rel nwritten]
-    jmp .sc_done
-
-.sc_read:
-    mov rcx, [rel h_in]
-    mov rdx, r14
-    mov r8, r15
-    lea r9, [rel ngot]
-    mov qword [rsp+32], 0
-    call qword [rel p_read]
-    mov eax, [rel ngot]
-    jmp .sc_done
-
-.sc_exit:
-    mov rcx, r13
-    call qword [rel p_exit]
-    xor rax, rax
-    jmp .sc_done
-
-.sc_mmap:
-    mov rcx, 0                   ; lpAddress = NULL
-    mov rdx, r14                 ; length
-    mov r8, 0x3000               ; MEM_COMMIT | MEM_RESERVE
-    mov r9, 0x04                 ; PAGE_READWRITE
-    call qword [rel p_alloc]
-    jmp .sc_done
-
-.sc_close:
-    mov rcx, r13
-    call qword [rel p_close]
-    xor rax, rax
-    jmp .sc_done
-
-.sc_done:
-    mov rsp, rbp                 ; undo alignment + shadow space
+    mov r12,rax
+    mov r13,rdi
+    mov r14,rsi
+    mov r15,rdx
+    mov rbp,rsp
+    and rsp,-16
+    sub rsp,320
+    movdqu [rsp+64],xmm0
+    movdqu [rsp+80],xmm1
+    movdqu [rsp+96],xmm2
+    movdqu [rsp+112],xmm3
+    movdqu [rsp+128],xmm4
+    movdqu [rsp+144],xmm5
+    movdqu [rsp+160],xmm6
+    movdqu [rsp+176],xmm7
+    movdqu [rsp+192],xmm8
+    movdqu [rsp+208],xmm9
+    movdqu [rsp+224],xmm10
+    movdqu [rsp+240],xmm11
+    movdqu [rsp+256],xmm12
+    movdqu [rsp+272],xmm13
+    movdqu [rsp+288],xmm14
+    movdqu [rsp+304],xmm15
+    call rt_import_base
+    cmp r12,0
+    je .read
+    cmp r12,1
+    je .write
+    cmp r12,2
+    je .open
+    cmp r12,3
+    je .close
+    cmp r12,9
+    je .alloc
+    cmp r12,60
+    je .exit
+    mov rax,-38                   ; ENOSYS, never fake success.
+    jmp .done
+.write:
+    mov rcx,r13
+    cmp r13,1
+    je .stdout
+    cmp r13,2
+    jne .write_handle
+    mov ecx,-12
+    jmp .std_write
+.stdout:
+    mov ecx,-11
+.std_write:
+    call qword [rbx+RT_GetStdHandle]
+    mov rcx,rax
+.write_handle:
+    mov rdx,r14
+    mov r8,r15
+    lea r9,[rsp+56]
+    mov dword [rsp+56],0
+    mov qword [rsp+32],0
+    call qword [rbx+RT_WriteFile]
+    jmp .io_result
+.read:
+    mov rcx,r13
+    test r13,r13
+    jnz .read_handle
+    mov ecx,-10
+    call qword [rbx+RT_GetStdHandle]
+    mov rcx,rax
+.read_handle:
+    mov rdx,r14
+    mov r8,r15
+    lea r9,[rsp+56]
+    mov dword [rsp+56],0
+    mov qword [rsp+32],0
+    call qword [rbx+RT_ReadFile]
+.io_result:
+    test eax,eax
+    jz .error
+    mov eax,[rsp+56]
+    jmp .done
+.open:
+    mov rcx,r13
+    mov edx,0x80000000
+    mov eax,3
+    test r14,1
+    jz .open_args
+    mov edx,0x40000000
+    mov eax,2
+.open_args:
+    mov r8d,3
+    xor r9d,r9d
+    mov [rsp+32],rax
+    mov qword [rsp+40],0x80
+    mov qword [rsp+48],0
+    call qword [rbx+RT_CreateFileA]
+    jmp .done
+.close:
+    mov rcx,r13
+    call qword [rbx+RT_CloseHandle]
+    test eax,eax
+    jz .error
+    xor eax,eax
+    jmp .done
+.alloc:
+    xor ecx,ecx
+    mov rdx,r14
+    mov r8d,0x3000
+    mov r9d,4
+    call qword [rbx+RT_VirtualAlloc]
+    test rax,rax
+    jz .error
+    jmp .done
+.exit:
+    mov ecx,[rbx+RT_ORIGINAL_CP]
+    test ecx,ecx
+    jz .exit_ready
+    call qword [rbx+RT_SetConsoleOutputCP]
+.exit_ready:
+    mov rcx,r13
+    call qword [rbx+RT_ExitProcess]
+.error:
+    mov rax,-1
+.done:
+    movdqu xmm0,[rsp+64]
+    movdqu xmm1,[rsp+80]
+    movdqu xmm2,[rsp+96]
+    movdqu xmm3,[rsp+112]
+    movdqu xmm4,[rsp+128]
+    movdqu xmm5,[rsp+144]
+    movdqu xmm6,[rsp+160]
+    movdqu xmm7,[rsp+176]
+    movdqu xmm8,[rsp+192]
+    movdqu xmm9,[rsp+208]
+    movdqu xmm10,[rsp+224]
+    movdqu xmm11,[rsp+240]
+    movdqu xmm12,[rsp+256]
+    movdqu xmm13,[rsp+272]
+    movdqu xmm14,[rsp+288]
+    movdqu xmm15,[rsp+304]
+    mov rsp,rbp
     pop r15
     pop r14
     pop r13
@@ -157,114 +191,6 @@ rt_syscall:
     pop rbp
     pop rbx
     ret
-
-; ---------------------------------------------------------------------------
-rt_resolve:
-    push rbx
-    push r12
-    push r13
-    push r14
-    push r15
-    mov r14, rdi
-    call rt_kernel32
-    test rax, rax
-    jz .r_fail
-    mov rbx, rax
-    mov eax, [rbx+0x3C]
-    add rax, rbx
-    mov r12d, [rax+24+0x70]
-    test r12d, r12d
-    jz .r_fail
-    add r12, rbx
-    mov r13d, [r12+0x20]
-    add r13, rbx
-    mov r15d, [r12+0x18]
-    test r15d, r15d
-    jz .r_fail
-    xor rcx, rcx
-.r_loop:
-    cmp rcx, r15
-    jae .r_fail
-    mov eax, [r13 + rcx*4]
-    add rax, rbx
-    push rcx
-    push rax
-    mov rsi, rax
-    mov rdi, r14
-.r_cmp:
-    mov al, [rsi]
-    mov dl, [rdi]
-    cmp al, dl
-    jne .r_next
-    test al, al
-    jz .r_found
-    inc rsi
-    inc rdi
-    jmp .r_cmp
-.r_next:
-    pop rax
-    pop rcx
-    inc rcx
-    jmp .r_loop
-.r_found:
-    pop rax
-    pop rcx
-    mov r13d, [r12+0x24]
-    add r13, rbx
-    movzx ecx, word [r13 + rcx*2]
-    mov r13d, [r12+0x1C]
-    add r13, rbx
-    mov eax, [r13 + rcx*4]
-    add rax, rbx
-    jmp .r_done
-.r_fail:
-    xor rax, rax
-.r_done:
-    pop r15
-    pop r14
-    pop r13
-    pop r12
-    pop rbx
-    ret
-
-rt_kernel32:
-    mov rax, [gs:0x60]
-    test rax, rax
-    jz .k_fail
-    mov rax, [rax+0x18]
-    test rax, rax
-    jz .k_fail
-    mov rax, [rax+0x20]
-    test rax, rax
-    jz .k_fail
-    mov rax, [rax]
-    test rax, rax
-    jz .k_fail
-    mov rax, [rax]
-    test rax, rax
-    jz .k_fail
-    mov rax, [rax+0x20]
-    ret
-.k_fail:
-    xor rax, rax
-    ret
-
-; ---------------------------------------------------------------------------
-nm_getstd: db "GetStdHandle", 0
-nm_write:  db "WriteFile", 0
-nm_read:   db "ReadFile", 0
-nm_close:  db "CloseHandle", 0
-nm_alloc:  db "VirtualAlloc", 0
-nm_exit:   db "ExitProcess", 0
-
-p_getstd: dq 0
-p_write:  dq 0
-p_read:   dq 0
-p_close:  dq 0
-p_alloc:  dq 0
-p_exit:   dq 0
-h_out:    dq 0
-h_err:    dq 0
-h_in:     dq 0
-nwritten: dd 0
-ngot:     dd 0
+rt_end:
+db 'SUTRTV01'
+dd rt_syscall-rt_init,rt_end-rt_init
