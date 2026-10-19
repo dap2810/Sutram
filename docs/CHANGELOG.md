@@ -1,3 +1,18 @@
+## v172 - the Windows test build verified from this side; the test guide added
+
+The owner supplied the ROUND-03 binaries directly. **They are byte-identical to Claude's delivery** - same
+SHA-256 for `Sutram-Setup.exe`, `sutram.exe` and `sutram-ide-gui.exe` - so there is nothing new to merge.
+
+**Verified from this side:** all three are valid **PE32+ x86-64**; the three match Claude's manifest; and
+**`examples/218_sanskrit_devanagari.sm` compiles through the `sanskrit` pack and prints `योगः = 15`** -
+which is exactly what the test file says to expect.
+
+**NOT verified from this side:** anything requiring Windows to run - the installer, the GUI, the key
+handling and the uninstall. **This side cannot execute Windows.** Claude's evidence covers those.
+
+**`TEST-ME.md` added** - the acceptance script, with the steps and an explicit note of what was and was not
+verified here, so the boundary is not blurred.
+
 ## v171 - Claude's Windows ROUND-03 merged: WINDOWS HAS NOW BEEN EXECUTED
 
 **This is the first time Windows has ever been run on this project.** Every previous report said "nothing
