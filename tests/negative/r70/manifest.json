@@ -4,9 +4,9 @@
   "snapshot": "dde0613ca16f3e41345b1b1055733151780ef9d7",
   "profile": "Linux x86-64 R68 diagnostic entry, default language semantics; no R48 mode",
   "status": "Corpus and runner delivered; current full-compiler run pending",
-  "repinned": "R3 (Claude, 2026-10-19): input_git_blobs moved from the pre-v157 snapshot to claude/round-03 (v169 + the R3 EOF-location fix); bad_type and bad_arity fixture digests updated after verifying that their only change since R70 is the v157 keyword rename pratiyati->prati; diagnostic texts updated to the ROUND-02 Sanskrit strings (behaviour deliberately changed in ROUND-02 WS4). snapshot and per-case provenance are left as the original R70 record. R4 (Claude, 2026-10-19): compiler pin moved to the ROUND-04 undefined-name build; no fixture or expectation changed. R5 (Claude, 2026-10-19): compiler pin moved to the ROUND-05 field/index-name build; no fixture or expectation changed.",
+  "repinned": "R3 (Claude, 2026-10-19): input_git_blobs moved from the pre-v157 snapshot to claude/round-03 (v169 + the R3 EOF-location fix); bad_type and bad_arity fixture digests updated after verifying that their only change since R70 is the v157 keyword rename pratiyati->prati; diagnostic texts updated to the ROUND-02 Sanskrit strings (behaviour deliberately changed in ROUND-02 WS4). snapshot and per-case provenance are left as the original R70 record. R4 (Claude, 2026-10-19): compiler pin moved to the ROUND-04 undefined-name build; no fixture or expectation changed. R5 (Claude, 2026-10-19): compiler pin moved to the ROUND-05 field/index-name build; no fixture or expectation changed. R7 (Claude, 2026-10-19): compiler pin moved to the ROUND-07 name-resolution build; no fixture or expectation changed.",
   "input_git_blobs": {
-    "src/sutram_compiler.asm": "185b7f06ad01b5b80f123b694b0025034698bd35",
+    "src/sutram_compiler.asm": "cc5cfbe48ac3ea1360958cb8f203385744d094b8",
     "src/r68_compiler_entry.asm": "42389aaf73179726d91e23359aee2199734036e1",
     "src/r68_diagnostics.inc": "a6f7bb196702626d6b7f116f32e678d9daf73eba",
     "src/r68_unicode_helpers.inc": "69103e059634aa6b5b871ce7c06c2f4b9c742ff1",
