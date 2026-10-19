@@ -26,6 +26,36 @@ is fixed.**
 
 ## Part 2 — The work
 
+### WS0 — F1: find the ROOT CAUSE *(read-only; do not edit the compiler)*
+
+**The most serious defect on this project, now confirmed on Windows by the owner:**
+
+| Local variables in a CALLED function | Linux | Windows (owner) |
+|---|---|---|
+| 18, 20, 22, **30** | correct | **correct - printed `7`** |
+| **34** | not tested | **compiles, then NO OUTPUT** |
+| 38, 40 | **SEGFAULT (exit 139)** | **compiles, then NO OUTPUT** |
+
+**The compiler prints `Siddh: ... byte sankalit` - it reports SUCCESS - and the program then produces
+nothing.** A user would rewrite working code for hours before suspecting the compiler.
+
+**Why you, and why read-only:** Claude is fixing it, and **two of us editing the same 570 KB assembly file
+is how you get a merge nobody can untangle.** So **do not edit `src/sutram_compiler.asm`.** Read it.
+
+**Deliver:**
+1. **The exact site.** Where local variables are assigned stack slots - the function that computes the
+   offset, and the lines that encode it. **Give line numbers.**
+2. **The root cause, in two sentences.** Claude's earlier description was *"stack slots past the 16th are
+   encoded with a one-byte displacement and land in the caller's frame."* **Confirm it, correct it, or
+   replace it - with the code that proves it.**
+3. **Why Linux crashes at 38 and Windows at 34.** **This is the clue neither of us had.** If the threshold
+   differs by platform, the cause may be **stack size rather than codegen** - the frame layout, the red
+   zone, or a guard page. **Say which, and say how you would tell them apart.**
+4. **The proposed patch, as a diff in your document** - not applied. Claude applies and verifies it.
+
+**A wrong root cause costs a round. Say "I could not determine this" rather than guessing.**
+
+
 ### WS1 — the installer's stale payload *(the owner-visible item; still open)*
 
 **The committed `Sutram-Setup.exe` carries a compiler older than the `sutram.exe` beside it**, so **an
