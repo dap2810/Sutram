@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "base_commit": "85d6c5fbd230ad72e3f1d75f25c69de92dd7bf82",
-  "previous_base_commit": "11f41d3fcc8377dbcc1453f36a47a6122e3b1954",
-  "repinned": "R3 (Claude, 2026-10-19): pins moved to the accepted v169 sources plus the R3 EOF-location fix on claude/round-03. Re-pin only when Sarvam accepts a change to a pinned file; record the commit here. R4 (Claude, 2026-10-19): compiler pin ea2a1e91 -> 4b137114 for the ROUND-04 undefined-name error on claude/round-04. Also R4: win/rtblob.inc, win/winrt.inc, win/winrt_blob.asm re-pinned and win/pe_layout.inc, win/pe_imports.inc added - all changed or introduced by the v171 Windows merge, which Sarvam verified and accepted (Sarvam-to-Claude/ROUND-04.md Part 1) without re-pinning.",
+  "base_commit": "5efb592f46a7862d573f55b3a95439a35e0c9ad5",
+  "previous_base_commit": "85d6c5fbd230ad72e3f1d75f25c69de92dd7bf82",
+  "repinned": "R73 review candidate (2026-10-19): compiler advanced through Claude R04 undefined-name diagnostic, Windows includes advanced through Claude ROUND-03 native Windows execution integration. Prior pins retained by Git history and the R73 provenance report. Merge only after Sarvam builds and tests clean baseline.",
   "entry": "src/r68_compiler_entry.asm",
   "pins": {
     "src/sutram_compiler.asm": "4b137114d5b67aab0df61e356aad9af94056ae1b",
