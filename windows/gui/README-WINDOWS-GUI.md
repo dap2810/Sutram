@@ -58,7 +58,7 @@ On Windows you must **first build** `win\sutram.exe` using the existing project 
 - Native Win32 top-level window and main message loop
 - RichEdit Sutram source editor with **Latin-keyword-first** highlighting and separate numbered gutter
 - Run: save editor buffer to a unique temporary file, invoke `win\sutram.exe`, execute the newly built `.exe`, and capture stdout/stderr in a read-only output pane; child processes have a 10-second limit
-- Examples list populated from `examples\*.sm`; double-click or **Load example**
+- Examples list populated from `examples\*.sm`; double-click or **udaharan khol**
 - Common **Open** / **Save** `.sm` dialogs
 - Shell input: one statement per Enter or Send, recorded to session history. Each submission recompiles the accumulated `mukhya()` body and displays the new output suffix. This is **replay-based**, not a persistent VM; side effects may repeat.
 - Compiler and GUI remain separate; existing terminal `sutram-ide` is untouched.
@@ -165,8 +165,8 @@ use. Do not fall back to ANSI conversion for malformed UTF-8.
 
 - Every visible word is Sanskrit in Latin transliteration, matching `ide/sutram_gui_linux.asm`:
   menus `patra sampad chal bhasha sahay`; `nava khol sanchay nishkas`; `punah chhid pratilip
-  sanyoj sarvagrah anwesh antar`. The six toolbar buttons keep their English labels (`Run Open Save Load
-  example Send Clear shell`) at the owner's request.
+  sanyoj sarvagrah anwesh antar`. The six toolbar buttons use the same words
+  (`chal khol sanchay`, `udaharan khol`, `presh phal_rikta`; English until ROUND-04).
 - The window class and message loop are Unicode (`RegisterClassExW`, `GetMessageW`,
   `DispatchMessageW`, `SetWindowLongPtrW` subclasses), so typed Devanagari reaches the RichEdit
   as UTF-16 instead of passing through the ANSI code page.

@@ -314,7 +314,7 @@ ole_table:
 
 ; --- window chrome --------------------------------------------------------------------
 align 2
-wiz_title:    u16 "Sutram Setup"
+wiz_title:    u16 "Sutram sthapana"
 align 2
 cls_wiz:      u16 "SutramWizardWindow"
 align 2
@@ -329,107 +329,107 @@ align 2
 face_segoe:   u16 "Segoe UI"
 
 align 2
-btn_back:     u16 "< Back"
+btn_back:     u16 "< purva"
 align 2
-btn_next:     u16 "Next >"
+btn_next:     u16 "agrim >"
 align 2
-btn_install:  u16 "Install"
+btn_install:  u16 "sthapana"
 align 2
-btn_finish:   u16 "Finish"
+btn_finish:   u16 "samapt"
 align 2
-btn_cancel:   u16 "Cancel"
+btn_cancel:   u16 "nirast"
 align 2
-btn_browse:   u16 "Browse..."
+btn_browse:   u16 "chayan..."
 
 ; --- page titles -----------------------------------------------------------------------
 align 2
-t_welcome:  u16 "Welcome to Sutram Setup"
+t_welcome:  u16 "Sutram sthapana me svagat"
 align 2
-t_license:  u16 "License Agreement"
+t_license:  u16 "anugyapti anubandh"
 align 2
-t_dir:      u16 "Choose Install Location"
+t_dir:      u16 "sthapana sthan"
 align 2
-t_comp:     u16 "Select Components"
+t_comp:     u16 "ghatak chayan"
 align 2
-t_ready:    u16 "Ready to Install"
+t_ready:    u16 "sthapana ke liye sajja"
 align 2
-t_prog:    u16 "Installing Sutram"
+t_prog:    u16 "Sutram ki sthapana"
 align 2
-t_done:    u16 "Completing the Sutram Setup Wizard"
+t_done:    u16 "Sutram sthapana purna"
 
 ; --- page bodies --------------------------------------------------------------------------
 align 2
-b_welcome:  u16 "This wizard will install Sutram, the Sanskrit-keyword programming language, on your computer."
+b_welcome:  u16 "yah sahayak aapke sanganak par Sutram sthapit karega - Sanskrit kunjishabd vali programming bhasha."
 align 2
-b_welcome2: u16 "Sutram installs for the current Windows user only. No administrator rights are needed, and nothing is written outside your own account."
+b_welcome2: u16 "Sutram keval vartaman Windows upayokta ke liye sthapit hota hai. prashasak adhikar avashyak nahi, aur aapke khate ke bahar kuchh nahi likha jata."
 align 2
-b_welcome3: u16 "Click Next to continue."
+b_welcome3: u16 "aage badhne ke liye agrim dabaiye."
 align 2
-b_lichead:  u16 "Please read the following license agreement. You must accept the terms to continue."
+b_lichead:  u16 "anubandh padhiye. aage badhne ke liye svikar avashyak hai."
 align 2
-b_accept:   u16 "I &accept the terms of the license agreement"
+b_accept:   u16 "anugyapti anubandh ki shartein &svikar"
 align 2
-b_decline:  u16 "I do &not accept the terms of the license agreement"
+b_decline:  u16 "anugyapti anubandh ki shartein &asvikar"
 align 2
-b_dirlabel: u16 "&Install location:"
+b_dirlabel: u16 "sthapana &sthan:"
 align 2
-b_dirnote:  u16 "Setup will install Sutram in the folder below. The installer needs write access to this folder."
+b_dirnote:  u16 "Sutram neeche ke folder me sthapit hoga. is folder me likhne ka adhikar avashyak hai."
 align 2
-b_complbl:  u16 "Select the components to install:"
+b_complbl:  u16 "sthapana ke ghatak chuniye:"
 align 2
-b_ckpath:   u16 "&Add Sutram to my user PATH (recommended)"
+b_ckpath:   u16 "Sutram ko mere upayokta PATH me &jodiye (anushansit)"
 align 2
-b_ckdesk:   u16 "Create a &desktop shortcut (Sutram Terminal)"
+b_ckdesk:   u16 "&desktop par shortcut (Sutram Terminal)"
 align 2
-b_compnote: u16 "The compiler, standard library, language packs, examples and books are always installed. Start Menu shortcuts are always created."
+b_compnote: u16 "sankalak, manak pustakalaya, bhasha pak, udaharan aur pustakein sada sthapit hote hain. Start Menu shortcut sada bante hain."
 align 2
-b_ready:    u16 "Setup is ready to install Sutram on your computer."
+b_ready:    u16 "Sutram aapke sanganak par sthapana ke liye sajja hai."
 align 2
-b_ready2:   u16 "Click Install to begin the installation."
+b_ready2:   u16 "aarambh ke liye sthapana dabaiye."
 align 2
-b_proging:  u16 "Please wait while Sutram is installed..."
+b_proging:  u16 "kripaya pratiksha kijiye, Sutram sthapit ho raha hai..."
 align 2
-b_donemsg:  u16 "Sutram has been installed successfully."
+b_donemsg:  u16 "Sutram safaltapurvak sthapit ho gaya."
 align 2
-b_donemsg2: u16 "You will find Sutram IDE and Sutram Terminal in your Start Menu."
+b_donemsg2: u16 "Sutram IDE aur Sutram Terminal aapke Start Menu me milenge."
 align 2
-b_cklaunch: u16 "&Launch Sutram IDE"
+b_cklaunch: u16 "Sutram IDE &aarambh"
 
 align 2
-st_extract: u16 "Extracting package files..."
+st_extract: u16 "pak ke patra nikale ja rahe hain..."
 align 2
-st_script:  u16 "Running setup script (this can take a minute)..."
+st_script:  u16 "sthapana script chal raha hai (ek minat lag sakta hai)..."
 align 2
-st_final:   u16 "Finalizing installation..."
+st_final:   u16 "sthapana purna ho rahi hai..."
 
 ; --- summary fragments -----------------------------------------------------------------------
 align 2
-sum_dir:    u16 "Destination folder: "
+sum_dir:    u16 "lakshya folder: "
 align 2
-sum_path_y: u16 "Add to user PATH: yes"
+sum_path_y: u16 "upayokta PATH me jodna: haan"
 align 2
-sum_path_n: u16 "Add to user PATH: no"
+sum_path_n: u16 "upayokta PATH me jodna: nahi"
 align 2
-sum_desk_y: u16 "Desktop shortcut: yes"
+sum_desk_y: u16 "desktop shortcut: haan"
 align 2
-sum_desk_n: u16 "Desktop shortcut: no"
+sum_desk_n: u16 "desktop shortcut: nahi"
 align 2
 crlf:       u16 ""
 ; (crlf built at runtime as 0x0D,0x0A)
 
 ; --- messages ----------------------------------------------------------------------------------
 align 2
-msg_title:      u16 "Sutram Setup"
+msg_title:      u16 "Sutram sthapana"
 align 2
-msg_failed:    u16 "Sutram setup did not complete. Check the install log in %TEMP% (unique STM folder) for details."
+msg_failed:    u16 "Sutram sthapana purna nahi hui. vivaran ke liye %TEMP% (STM folder) me install.log dekhiye."
 align 2
-msg_nopower:   u16 "Sutram setup could not start Windows PowerShell."
+msg_nopower:   u16 "Sutram sthapana Windows PowerShell aarambh nahi kar saki."
 align 2
-msg_nodir:     u16 "Please choose an install location first."
+msg_nodir:     u16 "kripaya pahle sthapana sthan chuniye."
 align 2
-msg_uninst_done:   u16 "Sutram was removed from this user account."
+msg_uninst_done:   u16 "Sutram is upayokta khate se hata diya gaya."
 align 2
-msg_uninst_failed: u16 "Sutram could not be fully removed."
+msg_uninst_failed: u16 "Sutram poori tarah hataya nahi ja saka."
 align 2
 arg_uninstall: u16 "--uninstall"
 align 2
@@ -468,9 +468,9 @@ align 2
 ps_uninst:     u16 "powershell.exe -NoProfile -File "
 quote:         dw '"',0
 align 2
-brow_title:    u16 "Select the folder to install Sutram in"
+brow_title:    u16 "Sutram ke sthapana folder ka chayan"
 align 2
-side_footer:   u16 "SUTRAM SETUP"
+side_footer:   u16 "SUTRAM STHAPANA"
 
 ; --- sidebar: Sutram in ten scripts --------------------------------------------------------------
 ; VERIFY: transliterations below are best-effort; confirm each with a native
@@ -2317,7 +2317,7 @@ paint_sidebar:
     mov  [rax+12], ecx
     mov  rcx, [rbp-8]
     PTR  rdx, side_footer
-    mov  r8d, 12
+    mov  r8d, -1                 ; R4: NUL-terminated (was 12 = len("SUTRAM SETUP"), which cut any other text)
     PTR  r9, rc_paint
     mov  dword [rsp+32], DT_CENTER | DT_SINGLELINE | DT_VCENTER
     API  DrawTextW
@@ -2676,7 +2676,7 @@ gui_loop:
 ; ============================================================================
 section .data
 align 2
-msg_fb_ask:  u16 "Install Sutram for the current user with default options?"
+msg_fb_ask:  u16 "Sutram ko vartaman upayokta ke liye mool vikalpon se sthapit karein?"
 align 2
 msg_fb_done: u16 "Sutram installed successfully."
 
