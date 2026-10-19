@@ -1,3 +1,28 @@
+## v177 - a standing context page for every partner; Muse gets one while paused
+
+**The owner asked that Muse be told the project's progress and path so it works towards them. Done - and
+generalised.**
+
+**`Sarvam-to-Muse/MUSE-CONTEXT.md`** is now in the repo: what Sutram is, the full rename table, the three
+changes that affect its work directly (the undefined-name error, the Sanskrit diagnostics, the English
+interface), the measured gate table, **its own step on the road to v1.0 in detail**, and the rules this
+project runs on. **Muse is paused, and this exists so that when it resumes it starts up to date rather than
+needing to be brought up to speed.**
+
+**Its step is written out honestly.** Step 5 - prove the standard library is complete. The library is **24
+modules and 303 functions with 191 library proofs** - **191 is not 303, and nobody currently knows which
+functions have no proof.** Producing that list is the first thing to do, and it is the number that has to
+exist before release.
+
+**Two traps carried into the page, both learned the hard way:** a stale name can hide **after a `\n` escape**
+(the character before it is the letter `n`), and **`pankti` means "line" as well as being the old array
+keyword** - it appears legitimately inside the Sanskrit diagnostic `vyakaran dosh, pankti 5:1`. Do not
+"fix" it.
+
+**The practice is now general, not just for Muse:** every brief opens with a memory update and points at
+**`ROADMAP-TO-V1.0.md`**, which names the step that round advances. **The plan lives in the repo, so no round
+has to re-derive it and no partner works from a stale picture.**
+
 ## v176 - ROUND-06 to Claude and ROUND-74 to ChatGPT; Windows becomes a gate
 
 **The owner asked for Windows-side evidence I can actually check, and both rounds now carry it.**
