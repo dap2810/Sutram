@@ -38,9 +38,9 @@ def test_error(compiler: Path, path: Path, stem: str, phrase: bytes) -> None:
     assert result.returncode != 0, f"{stem}: expected nonzero exit; got 0"
     assert phrase in result.stdout, f"{stem}: expected {phrase!r}, got {result.stdout!r}"
     all_messages = (
-        b"kosh pop from empty array",
-        b"kosh peek from empty array",
-        b"kosh dequeue from empty array",
+        b"rikta kosh se kosh_pop",
+        b"rikta kosh se kosh_peek",
+        b"rikta kosh se kosh_dequeue",
     )
     assert sum(msg in result.stdout for msg in all_messages) == 1, (
         f"{stem}: mixed or duplicated error messages: {result.stdout!r}"
@@ -63,9 +63,9 @@ def main() -> int:
     with tempfile.TemporaryDirectory(prefix="sutram-r64-") as tmp:
         path = Path(tmp)
         for stem, phrase in (
-            ("kosh_pop_empty", b"kosh pop from empty array"),
-            ("kosh_peek_empty", b"kosh peek from empty array"),
-            ("kosh_dequeue_empty", b"kosh dequeue from empty array"),
+            ("kosh_pop_empty", b"rikta kosh se kosh_pop"),
+            ("kosh_peek_empty", b"rikta kosh se kosh_peek"),
+            ("kosh_dequeue_empty", b"rikta kosh se kosh_dequeue"),
         ):
             test_error(compiler, path, stem, phrase)
         for stem in ("kosh_nonempty", "default_compat"):
