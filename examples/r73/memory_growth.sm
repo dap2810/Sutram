@@ -1,0 +1,15 @@
+# Two input barriers let the parent measure this process's VmSize safely.
+mukhya() {
+    kosh a[1]
+    likha(1)
+    vitti ready = grahan()
+    vitti i = 0
+    yavat (i < 1048577) {
+        kosh_push(a, i)
+        i = i + 1
+    }
+    likha(kosh_cap(a))
+    likha(kosh_len(a))
+    likha(a[1048576])
+    ready = grahan()
+}
