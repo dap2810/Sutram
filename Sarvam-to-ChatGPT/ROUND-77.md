@@ -64,6 +64,24 @@ reports `v160` while the project is at v185. **Both are your installer code.**
 **Fix them, or say why they are not fixable from your side.** A user who cannot retry an install, or who
 sees a version number twenty-five releases stale, has a broken first impression.
 
+
+### WS5 — the installer should check for the fonts *(new)*
+
+**The owner asked how he is meant to type and read eleven scripts on an English (US) keyboard. Checking it
+found a gap in the installer.**
+
+**The installer does not need to INSTALL fonts** — Windows 10/11 already ships all eleven scripts
+(Devanagari, Gujarati, Bengali, Gurmukhi, Tamil, Telugu, Kannada, Malayalam, Odia) in **Nirmala UI**, which
+is built in. **Shipping `.ttf` files would be pointless.**
+
+**But it should CHECK and say so** — rather than leaving a user with empty boxes where the letters should be.
+**One check at install time, one message if a script's font is missing.** State which font you check for and
+how.
+
+**And one related item that is also yours:** the installer currently carries a compiler older than the
+`sutram.exe` beside it, so an installed copy reports `v160` while the project is at v187. **That is the
+stale-payload problem from WS4, and it is the same rebuild.**
+
 ---
 
 ## Part 3 — Constraints
