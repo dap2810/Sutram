@@ -21,7 +21,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 COMPILER = 'src/sutram_compiler.asm'
 ENTRY = 'src/r68_compiler_entry.asm'
-COMPILER_BLOB = 'ea2a1e910952120c1f1db8bac1890338af68d3e9'  # R3 re-pin; was 64ea028a (pre-v157)
+COMPILER_BLOB = '9c41189e1bf30caf1dcc3b8eadc883b11b07f12b'  # R72 v172 review; opt-in kosh reclamation source
 ENTRY_BLOB = '42389aaf73179726d91e23359aee2199734036e1'
 MODES = {
     'default': (),
@@ -29,6 +29,7 @@ MODES = {
     'trap': ('SUTRAM_R65_TRAP_INT=1',),
     'combined': ('SUTRAM_R65_PEEPHOLES=1', 'SUTRAM_R65_TRAP_INT=1'),
     'pairs': ('SUTRAM_R67_PURE_STACK_PAIRS=1',),
+    'mukti': ('SUTRAM_R72_KOSH_MUKTI=1',),
 }
 
 
