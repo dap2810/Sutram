@@ -98,7 +98,7 @@ and `value` is 0.
 | `phal_asti_siddhi(r)` / `phal_mulya(r)` | Inspect. `phal_mulya` on a failure returns 0 — check `is_ok` first. |
 | `phal_mulya_va(r, def)` | Value if success, else `def` — both branches in one expression. |
 | `phal_se_siddhi(out, v, ok)` | Bridge the `ok` convention into a Result. |
-| `phal_janchit_yuj/sub/mul/div/shesh(out, a, b)` | The `ganita` checked operation, producing a Result. Overflow, div/shesh by zero, and `MIN / -1` give failure `[0, 0]`. |
+| `phal_janchit_yuj/nyun/gun/bhaj/shesh(out, a, b)` | The `ganita` checked operation, producing a Result. Overflow, div/shesh by zero, and `MIN / -1` give failure `[0, 0]`. |
 | `phal_janchit_ghat(out, a, e)` | `ganita_janchit_ghat` as a Result (R30). Failure on `e < 0` or overflow. |
 | `phal_janchit_kramgun(out, n)` | `ganita_janchit_kramgun` as a Result (R30). Failure on `n < 0` or overflow (21! overflows). |
 | `phal_janchit_nirapeksh(out, a)` | `ganita_janchit_nirapeksh` as a Result (R30). Failure on `abs(MIN)`. |
