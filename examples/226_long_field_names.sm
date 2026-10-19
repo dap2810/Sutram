@@ -1,0 +1,10 @@
+# R5 golden: field names are compared in full. Before R5 only the first 8 bytes
+# were compared, so position_x and position_y were the same field: this printed
+# 2 and 2.
+rachana Kan = { position_x, position_y }
+mukhya()
+    vitti p = nirmmita(16)
+    p.position_x = 1
+    p.position_y = 2
+    likha(p.position_x)
+    likha(p.position_y)

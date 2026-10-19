@@ -285,6 +285,9 @@ r54_builtin_arity_table:
     r4_msg_hint_old db "Sanket: '",0
     r4_msg_hint_old2 db "' purana kunjishabd (v157 se purv); navin: '",0
     r4_msg_hint_old3 db "'",10,0
+    r5_msg_field db ": Sutram Error [E_UNKNOWN_FIELD]: agyat kshetra '",0
+    r5_msg_field_hint db "Sanket: '",0
+    r5_msg_field_hint2 db "' kisi rachana ka kshetra nahi",10,0
     r4_old_kw:
         dq r4_o_anyatra, kw_anyatra, r4_o_punar, kw_punaravartana, r4_o_prati, kw_pratiyati
         dq r4_o_udd, kw_uddeshya, r4_o_pankti, kw_pankti, r4_o_srij, kw_srijana
@@ -855,6 +858,7 @@ section .bss
     r4_seen        resq R4_SEEN_CAP
     r4_seen_count  resq 1
     r4_seen_base   resq 1
+    r5_field_tok   resq 1             ; R5: token of the field name being resolved
     r4_pend_tok    resq R4_PEND_CAP   ; identifier token of each unresolved read
     r4_pend_count  resq 1
     ast_heap    resb AST_HEAP_CAP
@@ -7454,6 +7458,27 @@ r4_report:
     pop rbx
     ret
 
+; r5_unknown_field: p.f where f is a field of no rachana. Exits 1.
+r5_unknown_field:
+    mov rbx,[rel r5_field_tok]
+    mov rdi,[rbx+32]            ; source pointer of the field token
+    call r51_print_origin
+    lea rdi,[rel r5_msg_field]
+    call print_str_z
+    mov rdi,[rbx+8]
+    call print_str_z
+    lea rdi,[rel r48_msg_end]
+    call print_str_z
+    call r51_print_original_context
+    lea rdi,[rel r5_msg_field_hint]
+    call print_str_z
+    mov rdi,[rbx+8]
+    call print_str_z
+    lea rdi,[rel r5_msg_field_hint2]
+    call print_str_z
+    mov rdi,1
+    call os_exit
+
 r48_print_undefined_function:
     push rbx
     push r12
@@ -10089,10 +10114,15 @@ parse_primary:
     ret
 .pp_ident_field:
     ; Field access: ident.field
+    push rdi
+    mov rdi, rbx
+    call r4_check_read        ; R5: the base of p.x must be declared too
+    pop rdi
     call advance_tok          ; consume '.'
     call cur_tok
     cmp qword [rax], TOK_IDENT
     jne parse_error
+    mov [rel r5_field_tok], rax   ; R5: for the unknown-field diagnostic
     mov rdx, [rax+8]         ; field name ptr
     call advance_tok          ; consume field name
     push rbx                 ; save var name
@@ -10111,62 +10141,26 @@ parse_primary:
 .pif_fields:
     cmp r11, r10
     jae .pif_next
-    ; Compare field name (simple: compare first 2 chars)
+    ; R5: compare the whole field name. Before R5 only the first 8 bytes were
+    ; compared ("more than 8 chars - assume match"), so p.position_y read p.position_x.
     mov rax, r11
     shl rax, 4
+    push r8
+    push r9
+    push r10
+    push r11
+    push rdx
     mov rdi, [r9 + 16 + rax] ; field name ptr from rachana table
-    ; Compare byte-by-byte without strcmp
-    ; rdi = table field name, rdx = search field name
-    movzx rax, byte [rdi]
-    movzx rcx, byte [rdx]
-    cmp al, cl
-    jne .pif_no_match
-    cmp al, 0
-    je .pif_found
-    movzx rax, byte [rdi+1]
-    movzx rcx, byte [rdx+1]
-    cmp al, cl
-    jne .pif_no_match
-    cmp al, 0
-    je .pif_found
-    movzx rax, byte [rdi+2]
-    movzx rcx, byte [rdx+2]
-    cmp al, cl
-    jne .pif_no_match
-    cmp al, 0
-    je .pif_found
-    movzx rax, byte [rdi+3]
-    movzx rcx, byte [rdx+3]
-    cmp al, cl
-    jne .pif_no_match
-    cmp al, 0
-    je .pif_found
-    movzx rax, byte [rdi+4]
-    movzx rcx, byte [rdx+4]
-    cmp al, cl
-    jne .pif_no_match
-    cmp al, 0
-    je .pif_found
-    movzx rax, byte [rdi+5]
-    movzx rcx, byte [rdx+5]
-    cmp al, cl
-    jne .pif_no_match
-    cmp al, 0
-    je .pif_found
-    movzx rax, byte [rdi+6]
-    movzx rcx, byte [rdx+6]
-    cmp al, cl
-    jne .pif_no_match
-    cmp al, 0
-    je .pif_found
-    movzx rax, byte [rdi+7]
-    movzx rcx, byte [rdx+7]
-    cmp al, cl
-    jne .pif_no_match
-    cmp al, 0
-    je .pif_found
-    ; More than 8 chars - assume match
-    jmp .pif_found
+    mov rsi, rdx             ; searched field name
+    call strcmp
+    pop rdx
+    pop r11
+    pop r10
+    pop r9
+    pop r8
+    test rax, rax
+    jz .pif_found
+    jmp .pif_no_match
 .pif_no_match:
     inc r11
     jmp .pif_fields
@@ -10191,6 +10185,7 @@ parse_primary:
     pop rbx
     ret
 .pif_notfound:
+    jmp r5_unknown_field      ; R5: was a silent read/write of offset 0
     pop rax                  ; discard saved field name
     pop rbx                  ; restore var name
     push rbx
@@ -10204,6 +10199,10 @@ parse_primary:
 
 .pp_ident_index:
     ; Array index: ident[expr]
+    push rdi
+    mov rdi, rbx
+    call r4_check_read        ; R5: the base of a[i] must be declared too
+    pop rdi
     call advance_tok          ; consume '['
     ; Save name ptr
     push rbx
