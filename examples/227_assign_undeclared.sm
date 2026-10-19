@@ -1,0 +1,8 @@
+# R7 golden: assigning to a name that was never declared is a compile error.
+# Before R7, `totl = 10` silently created a new variable totl, `total` kept 3,
+# and the program printed 3.
+mukhya() {
+    vitti total = 3
+    totl = 10
+    likha(total)
+}

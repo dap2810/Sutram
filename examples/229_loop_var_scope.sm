@@ -1,0 +1,6 @@
+# R7 golden: a chakra loop variable belongs to its loop. Before R7 this printed
+# 0 1 2 and then 3. A loop over a name already declared outside keeps it.
+mukhya() {
+    chakra i = 0 tak 2 { likha(i) }
+    likha(i)
+}

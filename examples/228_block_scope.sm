@@ -1,0 +1,7 @@
+# R7 golden: a vitti declared inside a block is not visible after the block.
+# Before R7 this compiled and printed 0 (the declaration never ran).
+mukhya() {
+    vitti c = 0
+    yadi (c == 1) { vitti b = 7 }
+    likha(b)
+}

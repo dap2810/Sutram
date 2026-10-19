@@ -21,7 +21,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 COMPILER = 'src/sutram_compiler.asm'
 ENTRY = 'src/r68_compiler_entry.asm'
-COMPILER_BLOB = '185b7f06ad01b5b80f123b694b0025034698bd35'  # R5 re-pin (field/index names); R4 4b137114, R3 ea2a1e91, pre-v157 64ea028a
+COMPILER_BLOB = 'cc5cfbe48ac3ea1360958cb8f203385744d094b8'  # R7 re-pin (name resolution); R5 185b7f06, R4 4b137114, R3 ea2a1e91, pre-v157 64ea028a
 ENTRY_BLOB = '42389aaf73179726d91e23359aee2199734036e1'
 MODES = {
     'default': (),

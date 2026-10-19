@@ -1,0 +1,6 @@
+# R7 golden: `yoj` of a module that does not exist is a compile error. Before R7
+# a mistyped module name compiled as long as nothing from it was called.
+yoj ganitt
+mukhya() {
+    likha(1)
+}

@@ -1,0 +1,4 @@
+227_assign_undeclared.sm:6:5: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'totl'
+      totl = 10
+      ^
+Sanket: prayog se purv ghoshana avashyak: vitti totl = ...

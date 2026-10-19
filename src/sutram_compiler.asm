@@ -25,6 +25,9 @@ HEADERS_SIZE equ 120
 TOKEN_SIZE   equ 40
 R4_SEEN_CAP  equ 8192
 R4_PEND_CAP  equ 256
+R7_CLOSED_CAP equ 1024
+R7_CALL_CAP  equ 8192
+R7_DEF_CAP   equ 2048
 TOKEN_CAP    equ 65537      ; max one token per source byte + EOF
 STR_POOL_CAP equ 65537      ; max lexeme bytes + terminators for 64 KiB source
 IMPORT_BUF_CAP equ 65536    ; expanded source cannot exceed source_buf
@@ -286,6 +289,19 @@ r54_builtin_arity_table:
     r4_msg_hint_old2 db "' purana kunjishabd (v157 se purv); navin: '",0
     r4_msg_hint_old3 db "'",10,0
     r5_msg_field db ": Sutram Error [E_UNKNOWN_FIELD]: agyat kshetra '",0
+    r7_msg_dup db ": Sutram Error [E_DUPLICATE_NAME]: punah ghoshana '",0
+    r7_msg_dup_hint db "' pahle se ghoshit hai; naya man dene ke liye: ",0
+    r7_msg_dup_hint2 db " = ...",10,0
+    r7_msg_field_amb db ": Sutram Error [E_AMBIGUOUS_FIELD]: kshetra '",0
+    r7_msg_field_amb_hint db "' do rachana me alag sthan par hai; har rachana me alag naam rakhein",10,0
+    r7_msg_field_dup_hint db "' is rachana me pahle se hai",10,0
+    r7_msg_arity db ": Sutram Error [E_ARITY]: '",0
+    r7_msg_arity2 db "' ko ",0
+    r7_msg_arity3 db " tark diye; hastakshar me ",0
+    r7_msg_arity_hint db "Sanket: utne hi tark dein jitne prakriya ki paribhasha me hain",10,0
+    r7_msg_mod_missing db "Sutram Error [E_MODULE_MISSING]: yoj patra aprapt: ",0
+    r7_msg_mod_missing2 db 10,"Sanket: lib/ me ya srot patra ke folder me naam.smlib hona chahiye",10,0
+    r7_msg_hint_block db "' ek khand { } ya chakra me ghoshit hai; uske bahar drishya nahi",10,0
     r5_msg_field_hint db "Sanket: '",0
     r5_msg_field_hint2 db "' kisi rachana ka kshetra nahi",10,0
     r4_old_kw:
@@ -859,6 +875,13 @@ section .bss
     r4_seen_count  resq 1
     r4_seen_base   resq 1
     r5_field_tok   resq 1             ; R5: token of the field name being resolved
+    r7_assign_tok  resq 1             ; R7: token of the assignment target being parsed
+    r7_closed      resq R7_CLOSED_CAP*2 ; R7: (name, token at the close) of closed names
+    r7_closed_count resq 1
+    r7_calls       resq R7_CALL_CAP*3 ; R7: (name, argc, token) of every user call
+    r7_call_count  resq 1
+    r7_defs        resq R7_DEF_CAP*2  ; R7: (name, params) of every prakriya
+    r7_def_count   resq 1
     r4_pend_tok    resq R4_PEND_CAP   ; identifier token of each unresolved read
     r4_pend_count  resq 1
     ast_heap    resb AST_HEAP_CAP
@@ -3005,7 +3028,18 @@ expand_imports_pass:
     jmp .ei_no_file
 .ei_missing_module:
     cmp qword [rel ns_active],0
-    je .ei_no_file
+    jne .ei_ns_missing
+    ; R7: a plain `yoj name` whose file exists nowhere was silently ignored,
+    ; so a mistyped module name compiled as long as nothing from it was called.
+    lea rdi,[rel r7_msg_mod_missing]
+    call print_str_z
+    lea rdi,[rel num_buf]
+    call print_str_z
+    lea rdi,[rel r7_msg_mod_missing2]
+    call print_str_z
+    mov rdi,1
+    call os_exit
+.ei_ns_missing:
     lea rdi,[rel msg_namespace_module_missing]
     call print_str_z
     mov rdi,1
@@ -6616,6 +6650,7 @@ parse_program:
     call parse_function
     mov [rel root_node], rax
     call r4_resolve_pending            ; R4: undefined names are errors
+    call r7_check_arity                ; R7: a call with the wrong number of arguments is an error
     mov rax, [rel root_node]
     ret
 
@@ -7347,7 +7382,16 @@ r4_check_read:
     cmp qword [rax],TOK_OPERATOR
     jne .queue
     cmp qword [rax+8],'='
-    je .done
+    jne .queue
+    ; R7: an assignment target. Remember its token; .ps_check_expr queues it
+    ; after the right-hand side if it is still undeclared then.
+    mov rcx,[rel token_idx]
+    dec rcx
+    imul rcx,rcx,TOKEN_SIZE
+    lea rdx,[rel token_arr]
+    add rcx,rdx
+    mov [rel r7_assign_tok],rcx
+    jmp .done
 .queue:
     mov rax,[rel r4_pend_count]
     cmp rax,R4_PEND_CAP
@@ -7361,6 +7405,375 @@ r4_check_read:
     mov [rdx+rax*8],rcx
     inc qword [rel r4_pend_count]
 .done:
+    pop rdx
+    pop rcx
+    pop rax
+    ret
+
+; r7_close_block(rdi = r4_seen_count when the block opened). Names declared
+; inside the block stop being visible after its '}'. Each is remembered in
+; r7_closed so that a later read can say it was declared in a block.
+; Preserves every register.
+r7_close_block:
+    push rax
+    push rcx
+    push rdx
+    push rsi
+    push rdi
+    mov rax,[rel r4_seen_count]
+    cmp rdi,rax
+    jae .done                   ; nothing declared (or the scope was reset inside)
+    cmp rdi,[rel r4_seen_base]
+    jb .done                    ; never pop below the current function's base
+    mov rsi,rdi
+.mark:
+    cmp rsi,rax
+    jae .trunc
+    mov rcx,[rel r7_closed_count]
+    cmp rcx,R7_CLOSED_CAP
+    jae .next
+    lea rdx,[rel r4_seen]
+    mov rdx,[rdx+rsi*8]
+    push rdi
+    lea rdi,[rel r7_closed]
+    shl rcx,4
+    mov [rdi+rcx],rdx           ; name
+    mov rdx,[rel token_idx]
+    imul rdx,rdx,TOKEN_SIZE
+    push rax
+    lea rax,[rel token_arr]
+    add rdx,rax
+    pop rax
+    mov [rdi+rcx+8],rdx         ; where the block closed
+    pop rdi
+    inc qword [rel r7_closed_count]
+.next:
+    inc rsi
+    jmp .mark
+.trunc:
+    mov [rel r4_seen_count],rdi
+.done:
+    pop rdi
+    pop rsi
+    pop rdx
+    pop rcx
+    pop rax
+    ret
+
+; r7_note_call(rbx = name, r12 = argument count, rcx = name token).
+; r7_note_def(rbx = name, r12 = parameter count). Both preserve every register.
+r7_note_call:
+    push rax
+    push rdx
+    mov rax,[rel r7_call_count]
+    cmp rax,R7_CALL_CAP
+    jae .full
+    imul rax,rax,24
+    lea rdx,[rel r7_calls]
+    mov [rdx+rax],rbx
+    mov [rdx+rax+8],r12
+    mov [rdx+rax+16],rcx
+    inc qword [rel r7_call_count]
+.full:
+    pop rdx
+    pop rax
+    ret
+r7_note_def:
+    push rax
+    push rdx
+    mov rax,[rel r7_def_count]
+    cmp rax,R7_DEF_CAP
+    jae .full
+    shl rax,4
+    lea rdx,[rel r7_defs]
+    mov [rdx+rax],rbx
+    mov [rdx+rax+8],r12
+    inc qword [rel r7_def_count]
+.full:
+    pop rdx
+    pop rax
+    ret
+
+; r7_check_arity: after the whole program is parsed. A call to a function this
+; program defines must pass exactly as many arguments as it declares; before R7
+; f(1) for f(a, b) compiled and b read whatever was in its register.
+; Calls to names with no definition are left to the undefined-function check.
+r7_check_arity:
+    push rbx
+    push r12
+    push r13
+    push r14
+    xor r12d,r12d               ; call index
+.call:
+    cmp r12,[rel r7_call_count]
+    jae .done
+    mov rax,r12
+    imul rax,rax,24
+    lea rbx,[rel r7_calls]
+    add rbx,rax                 ; rbx -> (name, argc, token)
+    xor r13d,r13d               ; def index
+.def:
+    cmp r13,[rel r7_def_count]
+    jae .next_call              ; not ours (builtin-like or undefined): skip
+    mov rax,r13
+    shl rax,4
+    lea r14,[rel r7_defs]
+    add r14,rax
+    mov rdi,[rbx]
+    mov rsi,[r14]
+    call strcmp
+    test rax,rax
+    jz .found
+    inc r13
+    jmp .def
+.found:
+    mov rax,[rbx+8]
+    cmp rax,[r14+8]
+    je .next_call
+    ; report: file:L:C: Sutram Error [E_ARITY]: 'f' ko N tark diye; hastakshar me M
+    mov rax,[rbx+16]
+    mov rdi,[rax+32]
+    call r51_print_origin
+    lea rdi,[rel r7_msg_arity]
+    call print_str_z
+    mov rdi,[rbx]
+    call print_str_z
+    lea rdi,[rel r7_msg_arity2]
+    call print_str_z
+    mov rax,[rbx+8]
+    call mg_print_uint
+    lea rdi,[rel r7_msg_arity3]
+    call print_str_z
+    mov rax,[r14+8]
+    call mg_print_uint
+    lea rdi,[rel msg_nl]
+    call print_str_z
+    call r51_print_original_context
+    lea rdi,[rel r7_msg_arity_hint]
+    call print_str_z
+    mov rdi,1
+    call os_exit
+.next_call:
+    inc r12
+    jmp .call
+.done:
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; r7_declare_new(rdi = name). A declaration of a name that is already visible
+; in this function (same block, or an enclosing one, or a parameter) is an
+; error: before R7 the second `vitti x = 2` got a fresh slot while every later
+; read still used the first, so x silently kept its old value. Preserves regs.
+r7_declare_new:
+    push rax
+    call r4_is_seen
+    test rax,rax
+    jnz .dup
+    pop rax
+    jmp r4_declare
+.dup:
+    pop rax
+    push rbx
+    push rcx
+    mov rcx,[rel token_cnt]     ; find the declaring token (pointer identity)
+    xor ebx,ebx
+.find:
+    cmp rbx,rcx
+    jae .nofind
+    mov rax,rbx
+    imul rax,rax,TOKEN_SIZE
+    push rdx
+    lea rdx,[rel token_arr]
+    add rax,rdx
+    pop rdx
+    cmp [rax+8],rdi
+    je .found
+    inc rbx
+    jmp .find
+.found:
+    mov rbx,rax
+    push rdi
+    mov rdi,[rbx+32]
+    call r51_print_origin
+    pop rdi
+    jmp .msg
+.nofind:
+    mov rbx,0
+.msg:
+    push rdi
+    lea rdi,[rel r7_msg_dup]
+    call print_str_z
+    mov rdi,[rsp]
+    call print_str_z
+    lea rdi,[rel r48_msg_end]
+    call print_str_z
+    test rbx,rbx
+    jz .nocontext
+    call r51_print_original_context
+.nocontext:
+    lea rdi,[rel r4_msg_hint_old]
+    call print_str_z
+    mov rdi,[rsp]
+    call print_str_z
+    lea rdi,[rel r7_msg_dup_hint]
+    call print_str_z
+    mov rdi,[rsp]
+    call print_str_z
+    lea rdi,[rel r7_msg_dup_hint2]
+    call print_str_z
+    mov rdi,1
+    call os_exit
+
+; r7_field_ambiguous(rdi = field name, rsi = offset found first) -> rax = 1
+; when some rachana declares the same field name at a different offset. Field
+; access has no type, so before R7 `b.x` silently used the first rachana's x.
+r7_field_ambiguous:
+    push rbx
+    push rcx
+    push rdx
+    push r8
+    push r9
+    push r10
+    push r11
+    mov rbx,rdi
+    mov r10,rsi
+    xor r8d,r8d
+.ent:
+    cmp r8,[rel rachana_cnt]
+    jae .no
+    lea r9,[rel rachana_defs]
+    mov rax,r8
+    shl rax,8
+    add r9,rax
+    xor r11d,r11d
+.fld:
+    cmp r11,[r9+8]
+    jae .next_ent
+    mov rax,r11
+    shl rax,4
+    mov rsi,[r9+16+rax]
+    mov rdi,rbx
+    push rax
+    call strcmp
+    mov rcx,rax
+    pop rax
+    test rcx,rcx
+    jnz .next_fld
+    cmp [r9+16+rax+8],r10
+    jne .yes
+.next_fld:
+    inc r11
+    jmp .fld
+.next_ent:
+    inc r8
+    jmp .ent
+.yes:
+    mov eax,1
+    jmp .out
+.no:
+    xor eax,eax
+.out:
+    pop r11
+    pop r10
+    pop r9
+    pop r8
+    pop rdx
+    pop rcx
+    pop rbx
+    ret
+
+; r7_field_dup_here(rdi = field name) -> rax = 1 when the rachana being defined
+; (entry rachana_cnt, r12 fields so far) already has this field.
+r7_field_dup_here:
+    push rcx
+    push rdx
+    push r9
+    push r11
+    lea r9,[rel rachana_defs]
+    mov rax,[rel rachana_cnt]
+    shl rax,8
+    add r9,rax
+    xor r11d,r11d
+.fld:
+    cmp r11,r12
+    jae .no
+    mov rax,r11
+    shl rax,4
+    mov rsi,[r9+16+rax]
+    push rdi
+    call strcmp
+    pop rdi
+    test rax,rax
+    jz .yes
+    inc r11
+    jmp .fld
+.yes:
+    mov eax,1
+    jmp .out
+.no:
+    xor eax,eax
+.out:
+    pop r11
+    pop r9
+    pop rdx
+    pop rcx
+    ret
+
+; Field diagnostics (exit 1): r5_field_tok is the field token.
+r7_report_ambiguous_field:
+    lea r12,[rel r7_msg_field_amb]
+    lea r13,[rel r7_msg_field_amb_hint]
+    jmp r7_report_field
+r7_report_dup_field:
+    lea r12,[rel r7_msg_dup]
+    lea r13,[rel r7_msg_field_dup_hint]
+r7_report_field:
+    mov rbx,[rel r5_field_tok]
+    mov rdi,[rbx+32]
+    call r51_print_origin
+    mov rdi,r12
+    call print_str_z
+    mov rdi,[rbx+8]
+    call print_str_z
+    lea rdi,[rel r48_msg_end]
+    call print_str_z
+    call r51_print_original_context
+    lea rdi,[rel r4_msg_hint_old]
+    call print_str_z
+    mov rdi,[rbx+8]
+    call print_str_z
+    mov rdi,r13
+    call print_str_z
+    mov rdi,1
+    call os_exit
+
+; r7_check_assign(rdi = target name). Called after the right-hand side of a
+; plain assignment. An undeclared target is queued like an undeclared read; a
+; module global declared later is accepted when the queue is resolved.
+; Preserves every register.
+r7_check_assign:
+    push rax
+    push rcx
+    push rdx
+    call r4_is_seen
+    test rax,rax
+    jnz .done
+    mov rcx,[rel r7_assign_tok]
+    test rcx,rcx
+    jz .done
+    cmp [rcx+8],rdi              ; the remembered token is this target
+    jne .done
+    mov rax,[rel r4_pend_count]
+    cmp rax,R4_PEND_CAP
+    jae .done
+    lea rdx,[rel r4_pend_tok]
+    mov [rdx+rax*8],rcx
+    inc qword [rel r4_pend_count]
+.done:
+    mov qword [rel r7_assign_tok],0
     pop rdx
     pop rcx
     pop rax
@@ -7447,6 +7860,33 @@ r4_report:
     call print_str_z
     jmp .out
 .generic:
+    ; R7: a name whose block (or loop) has closed gets its own hint
+    xor r12d,r12d
+.closed:
+    cmp r12,[rel r7_closed_count]
+    jae .plain
+    lea rax,[rel r7_closed]
+    mov rcx,r12
+    shl rcx,4
+    cmp [rax+rcx+8],rbx          ; only a block that closed before this use
+    ja .closed_next
+    mov rsi,[rax+rcx]
+    mov rdi,[rbx+8]
+    call strcmp
+    test rax,rax
+    jz .was_block
+.closed_next:
+    inc r12
+    jmp .closed
+.was_block:
+    lea rdi,[rel r4_msg_hint_old]
+    call print_str_z
+    mov rdi,[rbx+8]
+    call print_str_z
+    lea rdi,[rel r7_msg_hint_block]
+    call print_str_z
+    jmp .out
+.plain:
     lea rdi,[rel r4_msg_hint_decl]
     call print_str_z
     mov rdi,[rbx+8]
@@ -7841,6 +8281,7 @@ parse_block:
     cmp rax, BLOCK_NESTING_CAP
     jae .pblock_nesting_overflow
     inc qword [rel parse_block_depth]
+    push qword [rel r4_seen_count] ; R7: names declared in this block end with it
     call alloc_ast
     mov rbx, rax              ; block node
     call reserve_ast_block_extra
@@ -7866,6 +8307,8 @@ parse_block:
     jmp capacity_fail
 .pblock_done:
     call advance_tok          ; consume }
+    pop rdi                   ; r4_seen_count at '{'
+    call r7_close_block       ; R7: block scope
     mov [rbx+8], r12          ; statement count
     mov rax, rbx
     dec qword [rel parse_block_depth]
@@ -7983,7 +8426,7 @@ parse_stmt:
     mov [rax+8], rbx          ; name
     push rdi
     mov rdi, rbx
-    call r4_declare          ; R4
+    call r7_declare_new      ; R7: duplicate check, then R4 declare
     pop rdi
     mov qword [rax+16], 0     ; no ordinary initializer
     mov [rax+24], rdx         ; nonzero marks array declaration + size AST
@@ -8016,7 +8459,7 @@ parse_stmt:
     mov [rax+8], rbx          ; name
     push rdi
     mov rdi, rbx
-    call r4_declare          ; R4
+    call r7_declare_new      ; R7: duplicate check, then R4 declare
     pop rdi
     mov [rax+16], rcx         ; init expr
     call maybe_semi
@@ -8031,7 +8474,7 @@ parse_stmt:
     mov [rax+8], rbx
     push rdi
     mov rdi, rbx
-    call r4_declare          ; R4
+    call r7_declare_new      ; R7: duplicate check, then R4 declare
     pop rdi
     mov qword [rax+16], 0
     call maybe_semi
@@ -8086,7 +8529,7 @@ parse_stmt:
     mov [rax+8], rbx
     push rdi
     mov rdi, rbx
-    call r4_declare          ; R4
+    call r7_declare_new      ; R7: duplicate check, then R4 declare
     pop rdi
     mov qword [rax+16], 0
     mov [rax+24], rcx
@@ -8119,7 +8562,7 @@ parse_stmt:
     mov [rax+8], rbx
     push rdi
     mov rdi, rbx
-    call r4_declare          ; R4
+    call r7_declare_new      ; R7: duplicate check, then R4 declare
     pop rdi
     mov [rax+16], rcx
     mov qword [rax+32], 1     ; declaration type marker: dasham
@@ -8134,7 +8577,7 @@ parse_stmt:
     mov [rax+8], rbx
     push rdi
     mov rdi, rbx
-    call r4_declare          ; R4
+    call r7_declare_new      ; R7: duplicate check, then R4 declare
     pop rdi
     mov qword [rax+16], 0
     mov qword [rax+32], 1
@@ -8342,7 +8785,7 @@ parse_stmt:
     mov [rax + r13], rcx
     push rdi
     mov rdi, rcx
-    call r4_declare          ; R4: parameters are declared names
+    call r7_declare_new      ; R4/R7: parameters are declared names; f(a, a) is an error
     pop rdi
     add r13, 8
     inc r12
@@ -8390,6 +8833,7 @@ parse_stmt:
     mov [rax+8], rbx          ; function name
     mov [rax+16], r12         ; param count
     mov [rax+24], rcx         ; body block
+    call r7_note_def          ; R7: (rbx name, r12 params) for the arity check
     mov [rax+32], r13         ; param buffer end position
     mov qword [rax+40], 0
     mov [rel param_buf_pos], r13   ; remember cursor for the next function
@@ -8410,9 +8854,14 @@ parse_stmt:
     cmp rcx, TOK_IDENT
     jne parse_error
     mov rbx, [rax+8]         ; var name ptr
+    push qword [rel r4_seen_count] ; R7: the loop variable belongs to the loop
     push rdi
     mov rdi, rbx
+    call r4_is_seen          ; R7: `chakra i` over a visible i reuses it (stays after the loop)
+    test rax, rax
+    jnz .ps_for_reuse
     call r4_declare          ; R4
+.ps_for_reuse:
     pop rdi
     call advance_tok
     ; Expect '='
@@ -8462,6 +8911,8 @@ parse_stmt:
     push rax                  ; save end expr
     ; Parse body
     call parse_body           ; rax = body block
+    mov rdi, [rsp+16]         ; R7: r4_seen_count before the loop variable
+    call r7_close_block       ; the loop variable ends with the loop
     push rax                  ; save body
     ; Build AST_FOR node
     push rbx                  ; save var name
@@ -8470,6 +8921,7 @@ parse_stmt:
     pop rcx                   ; restore body
     pop rdx                   ; restore end expr
     pop rsi                   ; restore start expr
+    add rsp, 8                ; R7: drop the saved r4_seen_count
     mov qword [rax], AST_FOR
     mov [rax+8], rbx          ; var name
     mov [rax+16], rsi         ; start expr
@@ -8504,7 +8956,7 @@ parse_stmt:
     mov [rax+8], rbx
     push rdi
     mov rdi, rbx
-    call r4_declare          ; R4
+    call r7_declare_new      ; R7: duplicate check, then R4 declare
     pop rdi
     mov [rax+16], rcx
     call maybe_semi
@@ -8821,6 +9273,13 @@ push r12                  ; save r12 (parse_func_block uses it)
     cmp r12, RACHANA_FIELDS_CAP
     jae .pr_rachana_fields_overflow
     mov rdx, [rax+8]         ; field name ptr
+    mov [rel r5_field_tok], rax   ; R7: for the duplicate-field diagnostic
+    mov rdi, rdx
+    call r7_field_dup_here   ; R7: { x, x } is an error (the second x was unreachable)
+    test rax, rax
+    jnz r7_report_dup_field
+    mov rax, [rel r5_field_tok]
+    mov rdx, [rax+8]
     call advance_tok
     ; Store field: [rachana_entry + 16 + field_count * 16] = name, +8 = offset
     lea rax, [rel rachana_defs]
@@ -8899,7 +9358,8 @@ push r12                  ; save r12 (parse_func_block uses it)
     jne .r4_assign_declared
     push rdi
     mov rdi, [rbx+8]
-    call r4_declare
+    call r7_check_assign      ; R7: an undeclared target is an error (globals may come later)
+    call r4_declare           ; still declared, so --check reports it once, not at every use
     pop rdi
 .r4_assign_declared:
     call maybe_semi
@@ -10172,6 +10632,11 @@ parse_primary:
     mov rax, r11
     shl rax, 4
     mov rdx, [r9 + 16 + rax + 8]  ; field offset
+    mov rdi, [rsp]           ; R7: field name
+    mov rsi, rdx
+    call r7_field_ambiguous  ; another rachana has this name at another offset?
+    test rax, rax
+    jnz r7_report_ambiguous_field
     pop rax                  ; discard saved field name
     pop rbx                  ; restore var name
     push rbx
@@ -10232,6 +10697,12 @@ parse_primary:
 
 .pp_ident_call:
     ; Function call: name(args)
+    mov rax, [rel token_idx]  ; R7: the name token, for the arity diagnostic
+    dec rax
+    imul rax, rax, TOKEN_SIZE
+    lea rcx, [rel token_arr]
+    add rax, rcx
+    push rax
     call advance_tok          ; consume '('
     push r12                  ; save r12 (parse_func_block uses it)
     xor r12, r12             ; arg count
@@ -10288,7 +10759,10 @@ parse_primary:
     dec rcx
     jnz .pp_pop_f
 .pp_no_pop_f:
+    mov rcx, [rsp+8]          ; R7: name token (below the saved r12)
+    call r7_note_call         ; (rbx name, r12 argc, rcx token)
     pop r12                   ; restore r12
+    add rsp, 8                ; drop the name token
     pop rbx
     ret
 
@@ -19318,10 +19792,58 @@ emit_store_named_var:
 ; alloc_var(rdi = name ptr) → rax = location
 ; Returns: 1-5 = register (rbx, r12, r13, r14, r15)
 ;          negative = stack offset (as before)
+; r7_find_var(rdi = name) -> rax = location of an existing local of that name
+; in var_table, or 0. Never allocates. Preserves every register but rax.
+r7_find_var:
+    push rcx
+    push rdx
+    push rsi
+    push rdi
+    push r8
+    xor r8d,r8d
+.loop:
+    cmp r8,[rel var_cnt]
+    jae .none
+    mov rax,r8
+    shl rax,4
+    lea rdx,[rel var_table]
+    mov rsi,[rdx+rax]
+    mov rdi,[rsp+8]
+    call strcmp
+    test rax,rax
+    jz .hit
+    inc r8
+    jmp .loop
+.hit:
+    mov rax,r8
+    shl rax,4
+    lea rdx,[rel var_table]
+    mov rax,[rdx+rax+8]
+    jmp .out
+.none:
+    xor eax,eax
+.out:
+    pop r8
+    pop rdi
+    pop rsi
+    pop rdx
+    pop rcx
+    ret
+
 alloc_var:
     push rbx
     push r12
     mov rbx, rdi              ; name
+    ; R7: block scope lets a name be declared again after its block closed
+    ; (`yadi {vitti b = 1} ... vitti b = 2`). Reuse its slot: before R7 the new
+    ; slot was never read, because lookup_var returns the first entry.
+    call r7_find_var
+    test rax, rax
+    jz .av_new
+    pop r12
+    pop rbx
+    ret
+.av_new:
     ; Check if we have free registers (first 5 variables)
     mov rax, [rel var_cnt]
     cmp rax, 5
@@ -19378,6 +19900,12 @@ try_emit_int_decl_reg:
     jz .teidr_no
     cmp qword [rel var_cnt], 5  ; next alloc must be rbx/r12-r15
     jae .teidr_no
+    push rdi
+    mov rdi, [rbx+8]            ; R7: a re-declared name keeps its slot: not this path
+    call r7_find_var
+    pop rdi
+    test rax, rax
+    jnz .teidr_no
     ; Integer declarations fed from a float expression need the established
     ; truncating conversion path, so do not bypass it.
     mov rdi, r13

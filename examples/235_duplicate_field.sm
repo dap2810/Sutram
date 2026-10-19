@@ -1,0 +1,7 @@
+# R7 golden: a field named twice in one rachana is a compile error. Before R7
+# the second x was silently unreachable.
+rachana P = { x, x }
+mukhya()
+    vitti p = nirmmita(16)
+    p.x = 4
+    likha(p.x)
