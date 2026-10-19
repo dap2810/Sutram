@@ -1,0 +1,4 @@
+# R76: stand-alone module candidate. No top-level mukhya entry.
+prakriya joda(a, b) {
+    prati a + b
+}
