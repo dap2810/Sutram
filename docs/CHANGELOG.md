@@ -1,3 +1,23 @@
+## v192 - ROUND-10 (F1 is now the top item) and ROUND-78 (the installer payload)
+
+**F1 changes the order of everything.** A valid program with 38 local variables **segfaults the compiled
+output** - I reproduced it, and found the threshold: 30 variables is fine, 38 crashes. **A language that
+crashes on valid input is not usable, so F1 is now ahead of every other item on the road to v1.0.**
+
+**ROUND-10 (Claude)** opens with it: **fix F1, and find the real threshold** - my measurements bracket it
+between 30 and 38, so the fix must hold at any number, not at 39. Test 31, 32, 34, 36 as well as well past.
+**State the root cause in two sentences** so the next reader does not have to rediscover it. Then Step 5's 91
+functions, the diagnostics restatement, and what the transliteration mode does not cover.
+
+**ROUND-78 (ChatGPT)** is short, because only one of its items is owner-visible: **the installer's stale
+payload.** The owner is testing on Windows now and **the first thing he sees is the installed version** -
+which is wrong. `win/sutram.exe` was rebuilt by Claude this round, so it is current; the installer needs to
+package it.
+
+**One note carried into both:** the rounds say which files are whose. **The installer is ChatGPT's, the IDE
+is Claude's**, and both are told to state what they touched - because two AIs in the same file produce two
+diverging versions, and that is a merge I would rather not referee.
+
 ## v191 - F1 CONFIRMED by me: a function with 38+ variables SEGFAULTS. Claude ROUND-09 merged.
 
 ### F1 is real, and it is worse than the description
