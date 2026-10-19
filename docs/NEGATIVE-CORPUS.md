@@ -63,7 +63,7 @@ any compiler (re-pinned in ROUND-03 together with `manifest.json`):
 
 | Input | Required Git blob |
 |---|---|
-| `src/sutram_compiler.asm` | `4b137114d5b67aab0df61e356aad9af94056ae1b` |
+| `src/sutram_compiler.asm` | `185b7f06ad01b5b80f123b694b0025034698bd35` |
 | `src/r68_compiler_entry.asm` | `42389aaf73179726d91e23359aee2199734036e1` |
 | `src/r68_diagnostics.inc` | `a6f7bb196702626d6b7f116f32e678d9daf73eba` |
 | `src/r68_unicode_helpers.inc` | `69103e059634aa6b5b871ce7c06c2f4b9c742ff1` |
