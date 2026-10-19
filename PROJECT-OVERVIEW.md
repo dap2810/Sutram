@@ -94,7 +94,7 @@ ld -mi386pep --entry=_start -o win/sutram.exe sutram.obj
 ## 5. Running the tests
 
 ```
-python3 tests/run_tests.py          # 191 pass, 4 no-expectation
+python3 tests/run_tests.py          # 203 pass, 4 no-expectation
 python3 tools/codegen_gate.py       # 12/12 expected
 python3 tools/test_lang_packs.py    # 30/30 expected
 python3 tools/test_ide_undo.py      # 12/12 expected
