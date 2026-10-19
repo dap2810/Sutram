@@ -84,8 +84,8 @@ def main():
         errors = {"trap_add": "addition overflow",
                   "trap_sub": "subtraction overflow",
                   "trap_mul": "multiplication overflow",
-                  "trap_div": "division by zero",
-                  "trap_mod": "remainder by zero"}
+                  "trap_div": "shunya se bhajan",
+                  "trap_mod": "shunya se shesh"}
         for stem, description in errors.items():
             path = F / (stem + ".sm")
             exe = work / stem
@@ -95,11 +95,11 @@ def main():
             output = result.stdout.decode("utf-8", errors="replace")
             # Exact diagnostic wording uses 'signed addition' etc.
             op_fragment = {
-                "trap_add": "signed addition overflow",
-                "trap_sub": "signed subtraction overflow",
-                "trap_mul": "signed multiplication overflow",
-                "trap_div": "division by zero",
-                "trap_mod": "remainder by zero",
+                "trap_add": "yog atipravah",
+                "trap_sub": "nyun atipravah",
+                "trap_mul": "gun atipravah",
+                "trap_div": "shunya se bhajan",
+                "trap_mod": "shunya se shesh",
             }[stem]
             assert ("E_INTEGER_TRAP" in output and op_fragment in output
                     and re.search(r":[1-9][0-9]*:", output)), (
