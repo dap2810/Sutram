@@ -7,6 +7,10 @@
 #
 # Round-trip property: from_digits(to_digits(x, b), b) == x for every base.
 
+# R9 (F5): this module calls brihat_asti_shunyank and other brihat functions,
+# so it imports brihat itself; `yoj aadhar` alone used to fail.
+yoj brihat
+
 # brihat_ank_tak(x, n, base, out) — render n-digit bigint x in `base`
 # into pankti `out` as digit values (MSB first). Returns digit count.
 # Caller allocates out with >= 4*n cells (70 cells sufficed for
