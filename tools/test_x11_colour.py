@@ -71,6 +71,22 @@ def drain():
         pass
     return buf
 
+
+def text_runs(buf):
+    """(text, foreground) for every ImageText8 (76), using the GC's current foreground"""
+    fg = {}; out = []; i = 0
+    while i + 4 <= len(buf):
+        op = buf[i]; ln = struct.unpack_from("<H", buf, i + 2)[0]
+        if ln == 0 or i + 4 * ln > len(buf): break
+        if op == 56:
+            gc = struct.unpack_from("<I", buf, i + 4)[0]; mask = struct.unpack_from("<I", buf, i + 8)[0]
+            if mask & 0x0004: fg[gc] = struct.unpack_from("<I", buf, i + 12)[0]
+        if op == 76:
+            n = buf[i + 1]; gc = struct.unpack_from("<I", buf, i + 8)[0]
+            out.append((buf[i + 16:i + 16 + n].decode("latin-1"), fg.get(gc)))
+        i += 4 * ln
+    return out
+
 def parse_colours(buf):
     """walk the request stream, collect GCForeground values from ChangeGC (56)"""
     cols = []; i = 0
@@ -119,5 +135,12 @@ want = {("keyword", COL_KW), ("string", COL_STR), ("number", COL_NUM), ("default
 missing = [n for n, c in want if c not in uniq]
 if missing:
     print("FAIL: missing colours for:", missing); sys.exit(1)
+# R3: the keyword colour also appears in window chrome, so "present somewhere" did
+# not prove the WORD was coloured (kw_tab was cut short at its first Devanagari row
+# from slice 23 to R3 and no Latin keyword was highlighted). Check the run itself.
+kw_runs = [c for t, c in text_runs(buf) if t.strip() == "likha"]
+if not kw_runs or kw_runs[-1] != COL_KW:
+    print("FAIL: the keyword run 'likha' is not drawn in the keyword colour:",
+          [hex(c) if c is not None else None for c in kw_runs]); sys.exit(1)
 print("PASS: keyword/string/number/default colours all present")
 sys.exit(0)
