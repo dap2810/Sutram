@@ -220,6 +220,21 @@ Three parties work on it. **The repository is the only channel between them.**
   **A residual risk remains:** the language is fully Sanskrit, so keyword output is non-ASCII, and only the
   console path that was actually tested is known good.
 
+## 9b. The road to v1.0 — what we finish, in what order
+
+**`ROADMAP-TO-V1.0.md` is the single source of truth for what is being finished before release.** Ten
+numbered steps, each placed by what it unblocks, with an owner and a "done when" for each. **If a task is
+not on that list, it is not on the critical path.**
+
+**v1.0 is:** the procedural core correct and complete, the library usable, Windows installing and running,
+and the diagnostics in the user's language. **It is not** generics, concurrency, events, the kernel
+demonstration or separate compilation — those are v2, and each sits on a foundation this list is still
+measuring.
+
+**Step 1 is the one that matters most:** close the silent-wrong-answer class in the compiler. Three rounds
+in a row found more instances — undefined names reading 0, `p.w` reading `p.x`, an 8-byte field comparison,
+an undeclared array crashing. **That means we have been finding cases, not the cause.**
+
 ## 10. The development order — seven gates
 
 Proposed by ChatGPT's advisory of 2026-10-17 and adopted here as the project's stated order. Each gate
