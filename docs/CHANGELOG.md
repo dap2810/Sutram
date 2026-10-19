@@ -1,3 +1,40 @@
+## v175 - Claude ROUND-05 merged: the interface is English
+
+**Verified before merging** - rebuilt from the branch, `gates.sh` **9 PASS / 0 FAIL / 1 NOT-RUN**:
+
+- **The buttons are English** - `Run`, `Open`, `Save`, `Load example`, `Send`, `Clear shell`.
+- **No Sanskrit UI string remains in the Windows GUI.** `patra`, `sampad`, `bhasha`, `sahay`, `chal` are gone
+  as interface text; the old names survive only as internal identifiers (`mn_patra`), which is harmless.
+- The installer text is back to English.
+- **The owner's instruction is done.**
+
+**Two corrections to the record, both mine:**
+
+1. **I told the owner the redesign had removed the file-list panel. It had not.** It is in the source - a
+   listbox bound to the examples folder. **I read its absence from a screenshot where it must have been
+   empty, and stated a conclusion I had not checked.**
+2. **Six documents on Claude's branch carried MY v174 housekeeping backwards** - `PROJECT-MASTER.md`,
+   `PROJECT-OVERVIEW.md`, `README.md`, the CHANGELOG and three HTML docs. Claude's branch predates v174, so
+   merging them would have reverted the date, the version and the corrected gate counts. **They were
+   excluded; the branch's own doc fixes were taken.**
+
+**Claude found three more silent wrong-name cases after R4, and fixed them:**
+
+- `p.w` for an undeclared field **read `p.x`** - a wrong value, no diagnostic.
+- Field names longer than 8 bytes were compared on their **first 8 bytes only**.
+- `a[i]` with an undeclared `a` **crashed at run time**.
+
+**That is the third round in which this class of defect reached further than expected.** It is the same
+defect the owner's decision in ROUND-04 was about: a wrong name that silently succeeds.
+
+**The merge sequencing Claude warned about was real, and is resolved.** ChatGPT's WS1 blocker was already
+unblocked by Claude's R4 re-pin, and R5 re-pinned again. Merged R5 first, then re-checked ChatGPT's claim
+against the result rather than assuming: **`tools/r69_build.py` accepts the tree, and ChatGPT's baseline
+tests pass 3/3.**
+
+**Limit, stated by Claude itself: every screenshot is from Wine 9 on Linux, not Windows.** The English
+interface has not been seen on Windows; only the earlier Sanskrit build has.
+
 ## v174 - housekeeping: the master documents brought up to date
 
 Done while Claude and ChatGPT work. **No code changed** - this is the documentation catching up with the
