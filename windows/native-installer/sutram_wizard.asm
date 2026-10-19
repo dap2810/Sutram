@@ -1,11 +1,8 @@
 ; ============================================================================
 ;  Sutram-Setup-Wizard.exe — Guided Split wizard installer for Sutram (सूत्रम्)
 ;
-;  Pure NASM x86-64 Win32.  No C runtime, no toolkit, no import libraries, no
-;  external build tools beyond NASM and ld.  Builds to a PE32+ GUI-subsystem
-;  executable that resolves every Win32 entry point at runtime by walking the
-;  PEB to kernel32 and calling GetProcAddress — the same pure-NASM mechanism
-;  used by sutram_setup.asm in this directory.
+;  Pure NASM x86-64 Win32. Standard system imports bootstrap the API loader.
+;  BCrypt verifies the four embedded package parts before any extraction.
 ;
 ;  Layout: "Guided Split" — a branded left sidebar (project thread icon,
 ;  सूत्रम् dominant, the Sutram word in the ten language-pack scripts below
@@ -23,11 +20,8 @@
 ;  The transliterations of "Sutram" in the sidebar are best-effort and MUST
 ;  be verified by native speakers before release (see VERIFY note below).
 ;
-;  Build (from the repository root):
-;     nasm -f win64 windows/native-installer/sutram_wizard.asm -o wiz.obj
-;     ld -mi386pep --subsystem windows --entry=_start -o Sutram-Setup-Wizard.exe wiz.obj
-;  Requires payload.zip, install-core.ps1, uninstall-core.ps1 and LICENSE.txt
-;  in the working directory at assembly time (pulled in with incbin).
+;  Build from root: powershell -NoProfile -File windows/build-windows-setup.ps1
+;  The builder stages matching payload, scripts, license and generated hashes.
 ; ============================================================================
 
 bits 64
@@ -127,10 +121,26 @@ default rel
 
 %macro PROLOG 1
     push rbp
-    mov  rbp, rsp
-    sub  rsp, %1
+    mov rbp,rsp
+    ; Separate caller locals, saved nonvolatile registers and Win64 outgoing
+    ; arguments. Previous small frames overlapped these regions.
+    sub rsp,%1+192
+    mov [rsp+128],rbx
+    mov [rsp+136],rsi
+    mov [rsp+144],rdi
+    mov [rsp+152],r12
+    mov [rsp+160],r13
+    mov [rsp+168],r14
+    mov [rsp+176],r15
 %endmacro
 %macro EPILOG 0
+    mov rbx,[rsp+128]
+    mov rsi,[rsp+136]
+    mov rdi,[rsp+144]
+    mov r12,[rsp+152]
+    mov r13,[rsp+160]
+    mov r14,[rsp+168]
+    mov r15,[rsp+176]
     leave
     ret
 %endmacro
@@ -169,6 +179,8 @@ n_LoadLibraryA       db 'LoadLibraryA',0
 n_GetProcAddress     db 'GetProcAddress',0
 n_ExitProcess        db 'ExitProcess',0
 n_GetTempPathW       db 'GetTempPathW',0
+n_GetTempFileNameW db 'GetTempFileNameW',0
+n_DeleteFileW db 'DeleteFileW',0
 n_GetEnvironmentVariableW db 'GetEnvironmentVariableW',0
 n_GetModuleFileNameW db 'GetModuleFileNameW',0
 n_CreateDirectoryW   db 'CreateDirectoryW',0
@@ -208,6 +220,8 @@ n_GetClientRect      db 'GetClientRect',0
 n_InvalidateRect     db 'InvalidateRect',0
 n_FillRect           db 'FillRect',0
 n_LoadCursorW        db 'LoadCursorW',0
+n_LoadImageW         db 'LoadImageW',0
+n_DrawIconEx         db 'DrawIconEx',0
 ; --- gdi32 -------------------------------------------------------------------------
 n_CreateFontW        db 'CreateFontW',0
 n_SelectObject       db 'SelectObject',0
@@ -230,6 +244,8 @@ kernel_table:
     IMPORTS GetProcAddress
     IMPORTS ExitProcess
     IMPORTS GetTempPathW
+    IMPORTS GetTempFileNameW
+    IMPORTS DeleteFileW
     IMPORTS GetEnvironmentVariableW
     IMPORTS GetModuleFileNameW
     IMPORTS CreateDirectoryW
@@ -270,6 +286,9 @@ user_table:
     IMPORTS InvalidateRect
     IMPORTS FillRect
     IMPORTS LoadCursorW
+    IMPORTS LoadImageW
+    IMPORTS DrawIconEx
+    IMPORTS DrawTextW
     dq 0, 0
 gdi_table:
     IMPORTS CreateFontW
@@ -281,7 +300,6 @@ gdi_table:
     IMPORTS CreatePen
     IMPORTS Ellipse
     IMPORTS PolyBezier
-    IMPORTS DrawTextW
     dq 0, 0
 comctl_table:
     IMPORTS InitCommonControlsEx
@@ -295,90 +313,163 @@ ole_table:
     dq 0, 0
 
 ; --- window chrome --------------------------------------------------------------------
+align 2
 wiz_title:    u16 "Sutram Setup"
+align 2
 cls_wiz:      u16 "SutramWizardWindow"
+align 2
 cls_button:   u16 "BUTTON"
+align 2
 cls_static:   u16 "STATIC"
+align 2
 cls_edit:     u16 "EDIT"
+align 2
 cls_pbar:     u16 "msctls_progress32"
+align 2
 face_segoe:   u16 "Segoe UI"
 
+align 2
 btn_back:     u16 "< Back"
+align 2
 btn_next:     u16 "Next >"
+align 2
 btn_install:  u16 "Install"
+align 2
 btn_finish:   u16 "Finish"
+align 2
 btn_cancel:   u16 "Cancel"
+align 2
 btn_browse:   u16 "Browse..."
 
 ; --- page titles -----------------------------------------------------------------------
+align 2
 t_welcome:  u16 "Welcome to Sutram Setup"
+align 2
 t_license:  u16 "License Agreement"
+align 2
 t_dir:      u16 "Choose Install Location"
+align 2
 t_comp:     u16 "Select Components"
+align 2
 t_ready:    u16 "Ready to Install"
+align 2
 t_prog:    u16 "Installing Sutram"
+align 2
 t_done:    u16 "Completing the Sutram Setup Wizard"
 
 ; --- page bodies --------------------------------------------------------------------------
+align 2
 b_welcome:  u16 "This wizard will install Sutram, the Sanskrit-keyword programming language, on your computer."
+align 2
 b_welcome2: u16 "Sutram installs for the current Windows user only. No administrator rights are needed, and nothing is written outside your own account."
+align 2
 b_welcome3: u16 "Click Next to continue."
+align 2
 b_lichead:  u16 "Please read the following license agreement. You must accept the terms to continue."
+align 2
 b_accept:   u16 "I &accept the terms of the license agreement"
+align 2
 b_decline:  u16 "I do &not accept the terms of the license agreement"
+align 2
 b_dirlabel: u16 "&Install location:"
+align 2
 b_dirnote:  u16 "Setup will install Sutram in the folder below. The installer needs write access to this folder."
+align 2
 b_complbl:  u16 "Select the components to install:"
+align 2
 b_ckpath:   u16 "&Add Sutram to my user PATH (recommended)"
+align 2
 b_ckdesk:   u16 "Create a &desktop shortcut (Sutram Terminal)"
+align 2
 b_compnote: u16 "The compiler, standard library, language packs, examples and books are always installed. Start Menu shortcuts are always created."
+align 2
 b_ready:    u16 "Setup is ready to install Sutram on your computer."
+align 2
 b_ready2:   u16 "Click Install to begin the installation."
+align 2
 b_proging:  u16 "Please wait while Sutram is installed..."
+align 2
 b_donemsg:  u16 "Sutram has been installed successfully."
+align 2
 b_donemsg2: u16 "You will find Sutram IDE and Sutram Terminal in your Start Menu."
-b_cklaunch: u16 "&Launch Sutram Terminal"
+align 2
+b_cklaunch: u16 "&Launch Sutram IDE"
 
+align 2
 st_extract: u16 "Extracting package files..."
+align 2
 st_script:  u16 "Running setup script (this can take a minute)..."
+align 2
 st_final:   u16 "Finalizing installation..."
 
 ; --- summary fragments -----------------------------------------------------------------------
+align 2
 sum_dir:    u16 "Destination folder: "
+align 2
 sum_path_y: u16 "Add to user PATH: yes"
+align 2
 sum_path_n: u16 "Add to user PATH: no"
+align 2
 sum_desk_y: u16 "Desktop shortcut: yes"
+align 2
 sum_desk_n: u16 "Desktop shortcut: no"
+align 2
 crlf:       u16 ""
 ; (crlf built at runtime as 0x0D,0x0A)
 
 ; --- messages ----------------------------------------------------------------------------------
+align 2
 msg_title:      u16 "Sutram Setup"
-msg_failed:    u16 "Sutram setup did not complete. Check the install log in %TEMP%\Sutram-Setup for details."
+align 2
+msg_failed:    u16 "Sutram setup did not complete. Check the install log in %TEMP% (unique STM folder) for details."
+align 2
 msg_nopower:   u16 "Sutram setup could not start Windows PowerShell."
+align 2
 msg_nodir:     u16 "Please choose an install location first."
+align 2
 msg_uninst_done:   u16 "Sutram was removed from this user account."
+align 2
 msg_uninst_failed: u16 "Sutram could not be fully removed."
+align 2
 arg_uninstall: u16 "--uninstall"
+align 2
 env_localappdata: u16 "LOCALAPPDATA"
+align 2
 setup_subdir:  u16 "Sutram-Setup"
-fname_payload: u16 "\\payload.zip"
-fname_install: u16 "\\install-core.ps1"
-fname_uninst:  u16 "\\uninstall-core.ps1"
-fname_log:     u16 "\\install.log"
-fname_ulog:    u16 "\\uninstall.log"
-sub_programs:  u16 "\\Programs\\Sutram"
-ps_prefix:     u16 "powershell.exe -NoProfile -ExecutionPolicy Bypass -File "
+align 2
+fname_payload: u16 "\payload.zip"
+align 2
+fname_install: u16 "\install-core.ps1"
+align 2
+fname_uninst:  u16 "\uninstall-core.ps1"
+align 2
+fname_log:     u16 "\install.log"
+align 2
+fname_ulog:    u16 "\uninstall.log"
+align 2
+sub_programs:  u16 "\Programs\Sutram"
+align 2
+ps_prefix:     u16 "powershell.exe -NoProfile -File "
+align 2
 flag_payloadzip:  u16 " -PayloadZip "
+align 2
 flag_installdir:  u16 " -InstallDir "
+align 2
 flag_setupexepath: u16 " -SetupExePath "
+align 2
 flag_logpath:  u16 " -LogPath "
+align 2
 flag_addpath:  u16 " -AddPath"
+align 2
 flag_desktop:  u16 " -DesktopShortcut"
+align 2
 flag_selfpath: u16 " -SelfPath "
-ps_uninst:     u16 "powershell.exe -NoProfile -ExecutionPolicy Bypass -File "
+align 2
+ps_uninst:     u16 "powershell.exe -NoProfile -File "
 quote:         dw '"',0
+align 2
 brow_title:    u16 "Select the folder to install Sutram in"
+align 2
 side_footer:   u16 "SUTRAM SETUP"
 
 ; --- sidebar: Sutram in ten scripts --------------------------------------------------------------
@@ -424,6 +515,8 @@ p_LoadLibraryA:       resq 1
 p_GetProcAddress:     resq 1
 p_ExitProcess:        resq 1
 p_GetTempPathW:       resq 1
+p_GetTempFileNameW: resq 1
+p_DeleteFileW: resq 1
 p_GetEnvironmentVariableW: resq 1
 p_GetModuleFileNameW: resq 1
 p_CreateDirectoryW:   resq 1
@@ -462,6 +555,8 @@ p_GetClientRect:       resq 1
 p_InvalidateRect:      resq 1
 p_FillRect:            resq 1
 p_LoadCursorW:         resq 1
+p_LoadImageW:          resq 1
+p_DrawIconEx:          resq 1
 p_CreateFontW:         resq 1
 p_SelectObject:        resq 1
 p_DeleteObject:        resq 1
@@ -539,12 +634,18 @@ lic_w:       resw 4096
 sum_buf:     resw 2048
 written:     resd 1
 exit_code:   resd 1
+alignb 8
 startupinfo: resb 104
+alignb 8
 procinfo:    resb 24
+alignb 8
 wndclass:    resb 80
+alignb 8
 msg_struct:  resb 48
-paintstruct: resb 64
+alignb 8
+paintstruct: resb 72
 rc_paint:    resb 16
+alignb 8
 browseinfo:  resb 64
 dispname:    resw MAXP
 
@@ -690,17 +791,10 @@ load_one:
 ; --- resolve every entry point we use ------------------------------------------
 init_apis:
     PROLOG 64
-    PTR  rdi, n_LoadLibraryA
-    call win_resolve
-    mov  [rel p_LoadLibraryA], rax
-    test rax, rax
-    jz   .fail
-    PTR  rdi, n_GetProcAddress
-    call win_resolve
-    mov  [rel p_GetProcAddress], rax
-    test rax, rax
-    jz   .fail
-
+    mov rax,[rel __imp_LoadLibraryA]
+    mov [rel p_LoadLibraryA],rax
+    mov rax,[rel __imp_GetProcAddress]
+    mov [rel p_GetProcAddress],rax
     PTR  rdi, name_kernel32
     PTR  rsi, kernel_table
     call load_one
@@ -766,10 +860,13 @@ write_file:
     mov  eax, [rbp-28]
     test eax, eax
     jz   .fail
-    mov  eax, 1
-    jmp  .done
+    mov eax,[rel written]
+    cmp eax,[rbp-16]
+    jne .fail
+    mov eax,1
+    jmp .done
 .fail:
-    xor  eax, eax
+    xor eax,eax
 .done:
     EPILOG
 
@@ -860,7 +957,10 @@ license_to_utf16:
     PROLOG 48
     PTR  rsi, blob_license
     PTR  rdi, lic_w
-    mov  rcx, blob_license_end - blob_license
+    mov rcx,blob_license_end-blob_license
+    cmp rcx,4095
+    jbe .loop
+    mov ecx,4095
 .loop:
     test rcx, rcx
     jz   .done
@@ -879,8 +979,9 @@ post_progress:
     PROLOG 48
     mov  edx, ecx
     mov  rcx, [rel hwnd_main]
-    mov  r8d, WM_WIZ_PROGRESS
-    xor  r9d, r9d
+    mov r8d,edx
+    mov edx,WM_WIZ_PROGRESS
+    xor r9d,r9d
     API  PostMessageW
     EPILOG
 ; ============================================================================
@@ -894,17 +995,10 @@ do_install_staged:
     mov  ecx, 5
     call post_progress
 
-    ; %TEMP%\Sutram-Setup
-    PTR  rcx, temp_path
-    mov  edx, MAXP
-    API  GetTempPathW
-    PTR  rcx, setup_dir
-    PTR  rdx, temp_path
-    PTR  r8,  setup_subdir
-    call join
-    PTR  rcx, setup_dir
-    xor  edx, edx
-    API  CreateDirectoryW
+    ; %TEMP% (unique STM folder)
+    call make_unique_stage
+    test eax,eax
+    jz .temp_fail
 
     ; paths
     PTR  rcx, payload_path
@@ -960,6 +1054,7 @@ do_install_staged:
     mov  ecx, 55
     call post_progress
 
+    mov word [rel cmdline],0
     ; build the PowerShell command line
     PTR  rcx, ps_prefix
     call app
@@ -1051,6 +1146,10 @@ do_install_staged:
     mov  rcx, [rel procinfo]
     PTR  rdx, exit_code
     API  GetExitCodeProcess
+    mov rcx,[rel procinfo+8]
+    API CloseHandle
+    mov rcx,[rel procinfo]
+    API CloseHandle
     cmp  dword [rel exit_code], 0
     jne  .dfail
     mov  ecx, 100
@@ -1060,6 +1159,7 @@ do_install_staged:
 .dnopw:
     mov  eax, 2
     EPILOG
+.temp_fail:
 .dfail:
     mov  eax, 1
     EPILOG
@@ -1070,8 +1170,9 @@ install_thread:
     call do_install_staged
     mov  edx, eax              ; status -> wParam
     mov  rcx, [rel hwnd_main]
-    mov  r8d, WM_WIZ_DONE
-    xor  r9d, r9d
+    mov r8d,edx
+    mov edx,WM_WIZ_DONE
+    xor r9d,r9d
     API  PostMessageW
     xor  eax, eax
     EPILOG
@@ -1091,16 +1192,9 @@ do_uninstall:
     PTR  rcx, install_dir
     call dirname
 
-    PTR  rcx, temp_path
-    mov  edx, MAXP
-    API  GetTempPathW
-    PTR  rcx, setup_dir
-    PTR  rdx, temp_path
-    PTR  r8,  setup_subdir
-    call join
-    PTR  rcx, setup_dir
-    xor  edx, edx
-    API  CreateDirectoryW
+    call make_unique_stage
+    test eax,eax
+    jz .temp_fail
 
     PTR  rcx, uninst_ps1
     PTR  rdx, setup_dir
@@ -1178,20 +1272,12 @@ do_uninstall:
     test eax, eax
     jz   .failed
 
-    mov  rcx, [rel procinfo]
-    mov  edx, INFINITE
-    API  WaitForSingleObject
-    mov  rcx, [rel procinfo]
-    PTR  rdx, exit_code
-    API  GetExitCodeProcess
-    cmp  dword [rel exit_code], 0
-    jne  .failed
-    xor  ecx, ecx
-    PTR  rdx, msg_uninst_done
-    PTR  r8,  msg_title
-    mov  r9d, MB_OK | MB_ICONINFORMATION
-    API  MessageBoxW
-    jmp  .quit
+    mov rcx,[rel procinfo+8]
+    API CloseHandle
+    mov rcx,[rel procinfo]
+    API CloseHandle
+    jmp .quit
+.temp_fail:
 .failed:
     xor  ecx, ecx
     PTR  rdx, msg_uninst_failed
@@ -1240,11 +1326,17 @@ vis_table:
     dq 0, 0
 nl: dw 13, 10, 0
 thread_pts: dd 90,95, 92,52, 138,108, 140,64
+align 2
 cmd_term1: u16 "cmd.exe /K "
+align 2
 cmd_set:    u16 "set "
+align 2
 cmd_patheq: u16 "PATH="
-cmd_binsemi: u16 "\\bin;"
+align 2
+cmd_binsemi: u16 "\bin;"
+align 2
 cmd_pathvar: u16 "%PATH%"
+align 2
 cmd_andver: u16 " && sutram --version"
 
 section .text
@@ -1327,15 +1419,15 @@ make_control:
     mov  [rbp-16], rdx
     mov  [rbp-24], r8
     mov  [rbp-32], r9
-    mov  rax, [rbp+16]
-    mov  [rbp-40], rax
-    mov  rax, [rbp+24]
-    mov  [rbp-48], rax
-    mov  rax, [rbp+32]
-    mov  [rbp-56], rax
-    mov  rax, [rbp+40]
-    mov  [rbp-64], rax
     mov  rax, [rbp+48]
+    mov  [rbp-40], rax
+    mov  rax, [rbp+56]
+    mov  [rbp-48], rax
+    mov  rax, [rbp+64]
+    mov  [rbp-56], rax
+    mov  rax, [rbp+72]
+    mov  [rbp-64], rax
+    mov  rax, [rbp+80]
     mov  [rbp-72], rax
     xor  ecx, ecx
     mov  rdx, [rbp-8]
@@ -1393,9 +1485,9 @@ mk_static:
     mov  [rbp-16], rdx
     mov  [rbp-24], r8
     mov  [rbp-32], r9
-    mov  rax, [rbp+16]
+    mov  rax, [rbp+48]
     mov  [rbp-40], rax          ; h
-    mov  rax, [rbp+24]
+    mov  rax, [rbp+56]
     mov  [rbp-48], rax          ; slot
     xor  ecx, ecx
     PTR  rdx, cls_static
@@ -1468,10 +1560,31 @@ create_window:
     xor  ecx, ecx
     mov  edx, 32512             ; IDC_ARROW
     API  LoadCursorW
-    mov  [rax+40], rax          ; hCursor
-    mov  qword [rax+48], 1      ; hbrBackground = COLOR_WINDOW+1
-    PTR  r10, cls_wiz
-    mov  [rax+64], r10
+    PTR  r10, wndclass
+    mov  [r10+40], rax          ; hCursor
+    mov  qword [r10+48], 6      ; COLOR_WINDOW+1
+    PTR  rax, cls_wiz
+    mov  [r10+64], rax
+    ; R73: title bar / taskbar icon from the executable's own resource
+    ; (build-installer.ps1 emits r73_icon.inc from icons/sutram.ico).
+    mov  rcx, [rel h_mod]
+    mov  edx, 1                 ; MAKEINTRESOURCE(1)
+    mov  r8d, 1                 ; IMAGE_ICON
+    mov  r9d, 32
+    mov  qword [rsp+32], 32
+    mov  qword [rsp+40], 0x8000 ; LR_SHARED
+    API  LoadImageW
+    PTR  r10, wndclass
+    mov  [r10+32], rax          ; hIcon
+    mov  rcx, [rel h_mod]
+    mov  edx, 1
+    mov  r8d, 1
+    mov  r9d, 16
+    mov  qword [rsp+32], 16
+    mov  qword [rsp+40], 0x8000
+    API  LoadImageW
+    PTR  r10, wndclass
+    mov  [r10+72], rax          ; hIconSm
     PTR  rcx, wndclass
     API  RegisterClassExW
     test eax, eax
@@ -2065,12 +2178,12 @@ build_summary:
 ; ============================================================================
 paint_sidebar:
     PROLOG 160
-    PTR  rcx, hwnd_main
+    mov  rcx, [rel hwnd_main]
     PTR  rdx, paintstruct
     API  BeginPaint
     mov  [rbp-8], rax                 ; hdc
 
-    PTR  rcx, hwnd_main
+    mov  rcx, [rel hwnd_main]
     PTR  rdx, rc_paint
     API  GetClientRect
     PTR  rax, rc_paint
@@ -2084,7 +2197,30 @@ paint_sidebar:
     mov  r8, [rel br_teal]
     API  FillRect
 
-    ; icon: orange ring, dark teal disc
+    ; R73: the sidebar shows the real icon (icons/sutram.ico, embedded as a
+    ; resource), so it matches the IDE, Explorer and the title bar exactly.
+    mov  rcx, [rel h_mod]
+    mov  edx, 1                       ; MAKEINTRESOURCE(1)
+    mov  r8d, 1                       ; IMAGE_ICON
+    mov  r9d, 96
+    mov  qword [rsp+32], 96
+    mov  qword [rsp+40], 0x8000       ; LR_SHARED
+    API  LoadImageW
+    test rax, rax
+    jz   .drawn_logo
+    mov  rcx, [rbp-8]
+    mov  edx, 67
+    mov  r8d, 33
+    mov  r9, rax
+    mov  qword [rsp+32], 96
+    mov  qword [rsp+40], 96
+    mov  qword [rsp+48], 0
+    mov  qword [rsp+56], 0
+    mov  qword [rsp+64], 3            ; DI_NORMAL
+    API  DrawIconEx
+    jmp  .logo_done
+.drawn_logo:
+    ; resource-less build: the previous hand-drawn ring and thread
     mov  rcx, [rbp-8]
     mov  rdx, [rel pen_orange]
     API  SelectObject
@@ -2097,7 +2233,6 @@ paint_sidebar:
     mov  r9d, 160
     mov  dword [rsp+32], 126
     API  Ellipse
-    ; thread curve across the disc
     mov  rcx, [rbp-8]
     mov  rdx, [rel pen_cream]
     API  SelectObject
@@ -2105,6 +2240,7 @@ paint_sidebar:
     PTR  rdx, thread_pts
     mov  r8d, 4
     API  PolyBezier
+.logo_done:
 
     ; text
     mov  rcx, [rbp-8]
@@ -2186,7 +2322,7 @@ paint_sidebar:
     mov  dword [rsp+32], DT_CENTER | DT_SINGLELINE | DT_VCENTER
     API  DrawTextW
 
-    PTR  rcx, hwnd_main
+    mov  rcx, [rel hwnd_main]
     PTR  rdx, paintstruct
     API  EndPaint
     EPILOG
@@ -2225,39 +2361,15 @@ do_browse:
 ; --- launch Sutram Terminal after a successful install -------------------------------------
 launch_terminal:
     PROLOG 96
-    PTR  rcx, cmdline
-    PTR  rdx, cmd_term1
-    API  lstrcpyW
-    PTR  rcx, cmdline
-    PTR  rdx, quote
-    API  lstrcatW
-    PTR  rcx, cmdline
-    PTR  rdx, cmd_set
-    API  lstrcatW
-    PTR  rcx, cmdline
-    PTR  rdx, quote
-    API  lstrcatW
-    PTR  rcx, cmdline
-    PTR  rdx, cmd_patheq
-    API  lstrcatW
-    PTR  rcx, cmdline
-    PTR  rdx, install_dir
-    API  lstrcatW
-    PTR  rcx, cmdline
-    PTR  rdx, cmd_binsemi
-    API  lstrcatW
-    PTR  rcx, cmdline
-    PTR  rdx, cmd_pathvar
-    API  lstrcatW
-    PTR  rcx, cmdline
-    PTR  rdx, quote
-    API  lstrcatW
-    PTR  rcx, cmdline
-    PTR  rdx, cmd_andver
-    API  lstrcatW
-    PTR  rcx, cmdline
-    PTR  rdx, quote
-    API  lstrcatW
+    mov word [rel cmdline],0
+    PTR rcx,quote
+    call app
+    PTR rcx,install_dir
+    call app
+    PTR rcx,ide_suffix
+    call app
+    PTR rcx,quote
+    call app
     PTR  rdi, startupinfo
     mov  ecx, 13
     xor  eax, eax
@@ -2563,7 +2675,9 @@ gui_loop:
 ; Entry point
 ; ============================================================================
 section .data
+align 2
 msg_fb_ask:  u16 "Install Sutram for the current user with default options?"
+align 2
 msg_fb_done: u16 "Sutram installed successfully."
 
 section .text
@@ -2571,10 +2685,25 @@ _start:
     and  rsp, -16
     sub  rsp, 8
     PROLOG 96
+    call verify_embedded
+    test eax,eax
+    jnz .integrity_ok
+    mov ecx,1
+    call qword [rel __imp_ExitProcess]
+.integrity_ok:
     call init_apis
     test eax, eax
-    jz   .quit
+    jz   .api_failed
 
+    API  GetCommandLineW
+    mov rcx,rax
+    PTR rdx,arg_selftest
+    call find_w
+    test rax,rax
+    jz .not_selftest
+    xor ecx,ecx
+    API ExitProcess
+.not_selftest:
     API  GetCommandLineW
     mov  rcx, rax
     PTR  rdx, arg_uninstall
@@ -2589,52 +2718,126 @@ _start:
     test eax, eax
     jnz  .run_gui
 
-    ; ---- no interactive desktop: fall back to a single confirmation dialog ----
-    xor  ecx, ecx
-    PTR  rdx, msg_fb_ask
-    PTR  r8,  msg_title
-    mov  r9d, MB_YESNO | MB_ICONQUESTION
-    API  MessageBoxW
-    cmp  eax, IDYES
-    jne  .quit
-    PTR  rcx, env_localappdata
-    PTR  rdx, local_appdata
-    mov  r8d, MAXP
-    API  GetEnvironmentVariableW
-    PTR  rcx, install_dir
-    PTR  rdx, local_appdata
-    PTR  r8,  sub_programs
-    call join
-    mov  dword [rel opt_addpath], 1
-    mov  dword [rel opt_desktop], 0
-    call do_install_staged
-    cmp  eax, 2
-    je   .fb_nopw
-    test eax, eax
-    jnz  .fb_fail
-    xor  ecx, ecx
-    PTR  rdx, msg_fb_done
-    PTR  r8,  msg_title
-    mov  r9d, MB_OK | MB_ICONINFORMATION
-    API  MessageBoxW
-    jmp  .quit
-.fb_nopw:
-    xor  ecx, ecx
-    PTR  rdx, msg_nopower
-    PTR  r8,  msg_title
-    mov  r9d, MB_OK | MB_ICONERROR
-    API  MessageBoxW
-    jmp  .quit
-.fb_fail:
-    xor  ecx, ecx
-    PTR  rdx, msg_failed
-    PTR  r8,  msg_title
-    mov  r9d, MB_OK | MB_ICONERROR
-    API  MessageBoxW
-    jmp  .quit
+    ; Fail closed if the wizard cannot initialize; do not offer a different
+    ; one-click install path after a GUI failure.
+    call qword [rel __imp_GetLastError]
+    mov ecx,eax
+    test ecx,ecx
+    jnz .ui_fail_exit
+    mov ecx,1
+.ui_fail_exit:
+    call qword [rel __imp_ExitProcess]
 
 .run_gui:
     call gui_loop
+    jmp .quit
+.api_failed:
+    mov ecx,1
+    call qword [rel __imp_ExitProcess]
 .quit:
     xor  ecx, ecx
     API  ExitProcess
+
+extern __imp_LoadLibraryA, __imp_GetProcAddress, __imp_ExitProcess
+extern __imp_BCryptOpenAlgorithmProvider, __imp_BCryptHash, __imp_BCryptCloseAlgorithmProvider
+%include "embedded_hashes.inc"
+section .data
+align 2
+arg_selftest: u16 "--self-test"
+align 2
+alg_sha256: u16 "SHA256"
+section .text
+verify_embedded:
+    PROLOG 160
+    lea rcx,[rbp-8]
+    PTR rdx,alg_sha256
+    xor r8d,r8d
+    xor r9d,r9d
+    call qword [rel __imp_BCryptOpenAlgorithmProvider]
+    test eax,eax
+    js .failed
+    PTR rax,embedded_hash_table
+    mov [rbp-16],rax
+.next:
+    mov r10,[rbp-16]
+    cmp qword [r10],0
+    je .ok
+    mov rcx,[rbp-8]
+    xor edx,edx
+    xor r8d,r8d
+    mov r9,[r10]
+    mov rax,[r10+8]
+    mov [rsp+32],rax
+    lea rax,[rbp-64]
+    mov [rsp+40],rax
+    mov qword [rsp+48],32
+    call qword [rel __imp_BCryptHash]
+    test eax,eax
+    js .close_failed
+    mov r10,[rbp-16]
+    mov r10,[r10+16]
+    lea r11,[rbp-64]
+    xor ecx,ecx
+.compare:
+    mov al,[r10+rcx]
+    cmp al,[r11+rcx]
+    jne .close_failed
+    inc ecx
+    cmp ecx,32
+    jb .compare
+    add qword [rbp-16],24
+    jmp .next
+.ok:
+    mov rcx,[rbp-8]
+    xor edx,edx
+    call qword [rel __imp_BCryptCloseAlgorithmProvider]
+    mov eax,1
+    EPILOG
+.close_failed:
+    mov rcx,[rbp-8]
+    xor edx,edx
+    call qword [rel __imp_BCryptCloseAlgorithmProvider]
+.failed:
+    xor eax,eax
+    EPILOG
+
+section .data
+align 2
+temp_prefix: u16 "STM"
+align 2
+ide_suffix: u16 "\sutram-ide-gui.exe"
+section .text
+make_unique_stage:
+    PROLOG 64
+    mov ecx,MAXP
+    PTR rdx,temp_path
+    API GetTempPathW
+    test eax,eax
+    jz .failed
+    cmp eax,MAXP
+    jae .failed
+    PTR rcx,temp_path
+    PTR rdx,temp_prefix
+    xor r8d,r8d
+    PTR r9,setup_dir
+    API GetTempFileNameW
+    test eax,eax
+    jz .failed
+    PTR rcx,setup_dir
+    API DeleteFileW
+    test eax,eax
+    jz .failed
+    PTR rcx,setup_dir
+    xor edx,edx
+    API CreateDirectoryW
+    EPILOG
+.failed:
+    xor eax,eax
+    EPILOG
+
+extern __imp_GetLastError
+
+; R73: icon resource (RT_GROUP_ICON 1 + RT_ICON 1..N) generated by build-installer.ps1
+%ifdef R73_ICON
+%include "r73_icon.inc"
+%endif
