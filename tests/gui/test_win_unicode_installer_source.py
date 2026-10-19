@@ -49,10 +49,10 @@ class UnicodeInstallerContract(unittest.TestCase):
         self.assertIn('output_utf16 resw 32768',G)
 
     def test_installer_packages_both_gui_and_compiler_layout(self):
-        self.assertIn("Join-Path $Root 'sutram-ide-gui.exe'",B)
-        self.assertIn(r"$PayloadStage 'win\sutram.exe'",B)
-        self.assertIn("$PayloadStage 'sutram-ide-gui.exe'",B)
-        self.assertIn('Assert-Pe64 $guiExe',B)
+        self.assertIn("@('win\\sutram.exe','bin\\sutram.exe')",B)
+        self.assertIn("@('win\\sutram.exe','win\\sutram.exe')",B)
+        self.assertIn("@('sutram-ide-gui.exe','sutram-ide-gui.exe')",B)
+        self.assertIn('Assert-Pe64 $source',B)
         self.assertIn(r"$stage 'win\sutram.exe'",I)
 
     def test_installer_user_shortcut_and_app_registry(self):
@@ -68,6 +68,6 @@ class UnicodeInstallerContract(unittest.TestCase):
         self.assertIn('gui_icon_w:',G)
         self.assertIn('WM_SETICON',G)
         self.assertIn('LoadImageW',G)
-        self.assertIn(r"$Here 'assets\sutram.ico'",B)
+        self.assertIn(r"@('icons\sutram.ico','assets\sutram.ico')",B)
 
 if __name__=='__main__': unittest.main()
