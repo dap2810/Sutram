@@ -1,0 +1,47 @@
+# R8: vakyank base conversion at the digit-range edges and at the overflow edge.
+yoj vakyank
+mukhya() {
+    vitti out = nirmmita(70 * 8)
+    likha(ank_tak_aadhar_varna(10, 16, out))
+    likha(out[0])
+    likha(ank_tak_aadhar_varna(9, 16, out))
+    likha(out[0])
+    likha(ank_tak_aadhar_varna(35, 36, out))
+    likha(out[0])
+    likha(ank_tak_aadhar_varna(35, 37, out))
+    vitti ok = nirmmita(8)
+    vitti b = nirmmita(20 * 8)
+    # single digits: a f A F, and 8 in base 8 (not a digit there)
+    b[0] = 97
+    likha(varna_tak_ank_aadhar(b, 1, 16, ok))
+    likha(ok[0])
+    b[0] = 102
+    likha(varna_tak_ank_aadhar(b, 1, 16, ok))
+    b[0] = 65
+    likha(varna_tak_ank_aadhar(b, 1, 16, ok))
+    likha(ok[0])
+    b[0] = 70
+    likha(varna_tak_ank_aadhar(b, 1, 16, ok))
+    likha(ok[0])
+    b[0] = 71
+    likha(varna_tak_ank_aadhar(b, 1, 16, ok))
+    likha(ok[0])
+    b[0] = 56
+    likha(varna_tak_ank_aadhar(b, 1, 8, ok))
+    likha(ok[0])
+    b[0] = 55
+    likha(varna_tak_ank_aadhar(b, 1, 8, ok))
+    likha(ok[0])
+    # 9223372036854775807 parses; 9223372036854775808 overflows
+    vitti d = "9223372036854775807"
+    vitti i = 0
+    yavat (i < 19) {
+        b[i] = akshar(d, i)
+        i = i + 1
+    }
+    likha(varna_tak_ank_aadhar(b, 19, 10, ok))
+    likha(ok[0])
+    b[18] = 56
+    likha(varna_tak_ank_aadhar(b, 19, 10, ok))
+    likha(ok[0])
+}

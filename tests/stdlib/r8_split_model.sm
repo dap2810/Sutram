@@ -1,0 +1,79 @@
+# R8: varna_bhed (cells) and khand_bhed (bytes) against a model: 300 random
+# inputs over the alphabet {a, b, ','}, separators ",", "ab", ",," and the
+# empty one, and maxparts 0..4. For each case: the count, then each segment's
+# length and codes. The expectation is Python's str.split, truncated to
+# maxparts (an empty input is one empty segment; an empty separator, no split).
+# Both are called through a wrapper that reads nothing after the call: they
+# have 25 variables, and on v183 that overwrites the caller's stack
+# (Claude-to-Sarvam/R8-01, finding F1).
+yoj ganit
+yoj varna
+yoj khand
+prakriya vb(s, n, sp, spn, parts, maxp) {
+    prati varna_bhed(s, n, sp, spn, parts, maxp)
+}
+prakriya kb(s, n, sp, spn, parts, maxp) {
+    prati khand_bhed(s, n, sp, spn, parts, maxp)
+}
+prakriya dikha(parts, cnt) {
+    vitti w = 0
+    vitti g = 0
+    yavat (g < cnt) {
+        vitti len = parts[w]
+        likha(len)
+        vitti c = 0
+        yavat (c < len) {
+            likha(parts[w + 1 + c])
+            c = c + 1
+        }
+        w = w + 1 + len
+        g = g + 1
+    }
+    prati 0
+}
+mukhya() {
+    vitti st = nirmmita(8)
+    st[0] = 99
+    vitti s = nirmmita(12 * 8)
+    vitti sb = nirmmita(16)
+    vitti sp = nirmmita(3 * 8)
+    vitti spb = nirmmita(8)
+    vitti parts = nirmmita(40 * 8)
+    vitti step = 0
+    yavat (step < 300) {
+        vitti r = ganit_yadricch(st) % 1000003
+        yadi (r < 0) { r = 0 - r }
+        vitti n = r % 10
+        vitti kind = (r / 10) % 4
+        vitti maxp = (r / 40) % 5
+        vitti i = 0
+        yavat (i < n) {
+            vitti r2 = ganit_yadricch(st) % 1000003
+            yadi (r2 < 0) { r2 = 0 - r2 }
+            vitti ch = 97 + r2 % 3
+            yadi (ch == 99) { ch = 44 }
+            s[i] = ch
+            akshar_rakh(sb, i, ch)
+            i = i + 1
+        }
+        vitti spn = 1
+        sp[0] = 44
+        sp[1] = 44
+        yadi (kind == 1) {
+            spn = 2
+            sp[0] = 97
+            sp[1] = 98
+        }
+        yadi (kind == 2) { spn = 2 }
+        yadi (kind == 3) { spn = 0 }
+        akshar_rakh(spb, 0, sp[0])
+        akshar_rakh(spb, 1, sp[1])
+        vitti cnt = vb(s, n, sp, spn, parts, maxp)
+        likha(cnt)
+        dikha(parts, cnt)
+        cnt = kb(sb, n, spb, spn, parts, maxp)
+        likha(cnt)
+        dikha(parts, cnt)
+        step = step + 1
+    }
+}

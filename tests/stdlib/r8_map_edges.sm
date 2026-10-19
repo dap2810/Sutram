@@ -1,0 +1,19 @@
+# R8: nighantu with an empty key (keyn = 0 is a valid key; only keyn < 0 is
+# rejected), and nighantu_kunjika_ashtak must not write past the last key.
+yoj nighantu
+mukhya() {
+    vitti m = nighantu_srij(4)
+    likha(nighantu_khip(m, 4, "", 0, 7))
+    likha(nighantu_grah(m, 4, "", 0))
+    likha(nighantu_khip(m, 4, "", 0 - 1, 8))
+    likha(nighantu_maap(m))
+    vitti n = nighantu_srij(4)
+    nighantu_khip(n, 4, "ab", 2, 1)
+    vitti out = nirmmita(64)
+    akshar_rakh(out, 3, 77)
+    likha(nighantu_kunjika_ashtak(n, out))
+    likha(akshar(out, 0))
+    likha(akshar(out, 1))
+    likha(akshar(out, 2))
+    likha(akshar(out, 3))
+}

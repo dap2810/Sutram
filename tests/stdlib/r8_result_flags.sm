@@ -1,0 +1,24 @@
+# R8: the return values of the phal (Result) functions. Earlier proofs read
+# the Result cells but never the returned flag.
+yoj phal
+mukhya() {
+    vitti o = nirmmita(2 * 8)
+    vitti ok = nirmmita(8)
+    likha(phal_siddhi(o, 5))
+    likha(phal_dosh(o))
+    ok[0] = 1
+    likha(phal_se_siddhi(o, 7, ok))
+    ok[0] = 0
+    likha(phal_se_siddhi(o, 7, ok))
+    likha(phal_janchit_yuj(o, 2, 3))
+    likha(phal_janchit_yuj(o, 9223372036854775807, 1))
+    likha(phal_janchit_nyun(o, 2, 3))
+    likha(o[1])
+    likha(phal_janchit_nyun(o, (0 - 9223372036854775807) - 1, 1))
+    likha(phal_janchit_gun(o, 4, 5))
+    likha(phal_janchit_gun(o, 9223372036854775807, 2))
+    likha(phal_janchit_bhaj(o, 7, 2))
+    likha(phal_janchit_bhaj(o, 7, 0))
+    likha(phal_janchit_shesh(o, 7, 2))
+    likha(phal_janchit_shesh(o, 7, 0))
+}

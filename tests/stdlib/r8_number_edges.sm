@@ -1,0 +1,53 @@
+# R8: boundary proofs for ank / ganit / ganita / chandas / varna number helpers.
+# Each value is at a comparison boundary that an earlier proof did not reach
+# (tools/lib_proof_gaps.py --deep; witnesses from tools/lib_mutant_witness.py).
+yoj ank
+yoj ganit
+yoj ganita
+yoj chandas
+yoj varna
+mukhya() {
+    # kramgun: n! ; 2! = 2 is the first value past the `n < 2` early return
+    likha(kramgun(2))
+    likha(kramgun(3))
+    # asti_abhajya: the smallest composites with a square factor sit on `i <= n / i`
+    likha(asti_abhajya(4))
+    likha(asti_abhajya(9))
+    likha(asti_abhajya(25))
+    likha(asti_abhajya(49))
+    likha(asti_abhajya(2))
+    likha(asti_abhajya(3))
+    likha(asti_abhajya(5))
+    # ganita_vargmool: floor(sqrt(n)) at 2, 3, 4, 8, 9
+    likha(ganita_vargmool(2))
+    likha(ganita_vargmool(3))
+    likha(ganita_vargmool(4))
+    likha(ganita_vargmool(8))
+    likha(ganita_vargmool(9))
+    # kuttaka(a, b, c): x in [0, b) with a*x = c (mod b); here the answer is 0
+    likha(kuttaka(7, 2, 12))
+    likha(kuttaka(3, 7, 0))
+    likha(kuttaka(3, 7, 1))
+    # matra_meru(n): 0, 1, 1, 2, 3, 5 ...
+    likha(matra_meru(0))
+    likha(matra_meru(1))
+    likha(matra_meru(2))
+    likha(matra_meru(3))
+    # ank_gan: digit count at 9 / 10 / 100, and for a negative
+    likha(ank_gan(9))
+    likha(ank_gan(10))
+    likha(ank_gan(100))
+    likha(ank_gan(0 - 10))
+    # viparyay_ank / asti_vilom at 0
+    likha(viparyay_ank(0))
+    likha(asti_vilom(0))
+    # unnat_sanket / avanat_sanket at both ends of each letter range
+    likha(unnat_sanket(96))
+    likha(unnat_sanket(97))
+    likha(unnat_sanket(122))
+    likha(unnat_sanket(123))
+    likha(avanat_sanket(64))
+    likha(avanat_sanket(65))
+    likha(avanat_sanket(90))
+    likha(avanat_sanket(91))
+}
