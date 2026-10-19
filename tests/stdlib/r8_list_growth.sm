@@ -1,0 +1,35 @@
+# R8: suchi growth must move the data, not write past the old block.
+# Each nirmmita is its own page-aligned mapping, so writing past a small
+# block shows only after a page: 1000 pushes (8000 bytes) onto a list of
+# capacity 1. A block allocated next holds 111 in every cell and must be
+# untouched; the list must hold every value.
+yoj suchi
+mukhya() {
+    vitti l = suchi_srij(1)
+    vitti g = nirmmita(4 * 8)
+    vitti i = 0
+    yavat (i < 4) {
+        g[i] = 111
+        i = i + 1
+    }
+    i = 0
+    yavat (i < 1000) {
+        suchi_khip(l, i * 10)
+        i = i + 1
+    }
+    i = 0
+    yavat (i < 4) {
+        likha(g[i])
+        i = i + 1
+    }
+    likha(suchi_maap(l))
+    likha(suchi_grah(l, 0))
+    likha(suchi_grah(l, 999))
+    vitti sum = 0
+    i = 0
+    yavat (i < 1000) {
+        sum = sum + suchi_grah(l, i)
+        i = i + 1
+    }
+    likha(sum)
+}
