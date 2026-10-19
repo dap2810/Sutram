@@ -21,7 +21,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 COMPILER = 'src/sutram_compiler.asm'
 ENTRY = 'src/r68_compiler_entry.asm'
-COMPILER_BLOB = 'ea2a1e910952120c1f1db8bac1890338af68d3e9'  # R3 re-pin; was 64ea028a (pre-v157)
+COMPILER_BLOB = '4b137114d5b67aab0df61e356aad9af94056ae1b'  # R4 re-pin (undefined-name error); R3 was ea2a1e91, pre-v157 64ea028a
 ENTRY_BLOB = '42389aaf73179726d91e23359aee2199734036e1'
 MODES = {
     'default': (),
