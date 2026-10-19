@@ -152,7 +152,8 @@ prakriya ganit_yadricch(state) {
 }
 
 # ganit_seemit(v, lo, hi): lo if v < lo, hi if v > hi, else v.
-# Requires lo <= hi (if lo > hi, returns lo — the first branch wins).
+# Requires lo <= hi. If lo > hi: lo when v < lo, otherwise hi (R9, F4: the
+# old comment said lo always; ganit_seemit(4, 4, -2) is -2).
 prakriya ganit_seemit(v, lo, hi) {
     vitti x = v
     vitti a = lo
