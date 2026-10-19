@@ -1,3 +1,23 @@
+## v194 - both partners on F1, split so they cannot collide
+
+**Claude fixes it; ChatGPT diagnoses it.** Two AIs editing the same 570 KB assembly file is how you get a
+merge nobody can untangle, so the split is deliberate:
+
+- **Claude (ROUND-10, WS1):** apply the fix, pin the real threshold, state the root cause.
+- **ChatGPT (ROUND-78, WS0):** **read-only.** Find the exact site, confirm or replace the root cause, and
+  **propose the patch as a diff in its document - not applied.**
+
+**And one question only ChatGPT is being asked, because it is the clue neither of us had:** *why does Linux
+crash at 38 and Windows at 34?* **If the threshold differs by platform, the cause may be stack size rather
+than codegen** - the frame layout, the red zone, or a guard page. **That changes the fix**, and it is worth a
+second pair of eyes that are not also holding the patch.
+
+**Both briefs carry the owner's own measurements** - 30 correct, 34 and 38 producing nothing - because those
+are the only numbers measured on real Windows.
+
+**The rule is stated in both:** *a wrong root cause costs a round - say "I could not determine this" rather
+than guessing.*
+
 ## v193 - F1 measured on real Windows by the owner: the threshold is 30-34, not 38
 
 **The owner ran the test himself, and the bug is worse than either of us described.**
