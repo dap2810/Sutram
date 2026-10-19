@@ -34,7 +34,7 @@ Each step is placed by **what it unblocks**, not by importance.
 | **3** | **Make Windows a gate, then pass it** | Claude builds, **owner runs** | `tools/accept-windows.ps1` exists and every check passes on real Windows |
 | **4** | **Fix the `kosh` leak** | ChatGPT | Mapping count returns to baseline, measured before/after |
 | **5** | **Prove the library is complete** | Muse (paused) | Every module has a contract, a passing proof, and a running example |
-| **6** | **Compile every code sample in every document** | Sarvam | All books, the reference and the stdlib page: every block compiled and passing |
+| **6** | ~~Compile every code sample in every document~~ **DONE v180** | Sarvam | **89 programs across all six books and the reference compiled clean; the 6 "failures" are the books' deliberately-broken `galat.sm` error demos, which are supposed to fail** |
 | **7** | **Measure performance** | Sarvam | A benchmark gate in `gates.sh`, with the machine recorded |
 | **8** | **Security and least-privilege audit** | Sarvam + Claude | A checklist with evidence, not a claim |
 | **9** | **Install / upgrade / uninstall on clean Windows** | **Owner** | All three work and leave nothing behind |
