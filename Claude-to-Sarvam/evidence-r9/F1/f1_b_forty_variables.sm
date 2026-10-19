@@ -1,0 +1,53 @@
+# Expected: 55 6 7 39 40
+# v188:     151 38 39 39 40
+# 40 variables in mukhya: 35 on the stack, at rbp-8, rbp-16, ... Slot 33
+# (rbp-264) is emitted as disp8 -8, which is slot 1: v37 shares v5's cell,
+# v38 v6's and v39 v7's. (Slots 17..32 land above mukhya's frame, rbp+120
+# down to rbp+0; nothing reads that memory here, so only the wrap shows.)
+mukhya() {
+    vitti v0 = 1
+    vitti v1 = 2
+    vitti v2 = 3
+    vitti v3 = 4
+    vitti v4 = 5
+    vitti v5 = 6
+    vitti v6 = 7
+    vitti v7 = 8
+    vitti v8 = 9
+    vitti v9 = 10
+    vitti v10 = 11
+    vitti v11 = 12
+    vitti v12 = 13
+    vitti v13 = 14
+    vitti v14 = 15
+    vitti v15 = 16
+    vitti v16 = 17
+    vitti v17 = 18
+    vitti v18 = 19
+    vitti v19 = 20
+    vitti v20 = 21
+    vitti v21 = 22
+    vitti v22 = 23
+    vitti v23 = 24
+    vitti v24 = 25
+    vitti v25 = 26
+    vitti v26 = 27
+    vitti v27 = 28
+    vitti v28 = 29
+    vitti v29 = 30
+    vitti v30 = 31
+    vitti v31 = 32
+    vitti v32 = 33
+    vitti v33 = 34
+    vitti v34 = 35
+    vitti v35 = 36
+    vitti v36 = 37
+    vitti v37 = 38
+    vitti v38 = 39
+    vitti v39 = 40
+    likha(v0 + v1 + v2 + v3 + v4 + v5 + v6 + v7 + v8 + v9)
+    likha(v5)
+    likha(v6)
+    likha(v38)
+    likha(v39)
+}

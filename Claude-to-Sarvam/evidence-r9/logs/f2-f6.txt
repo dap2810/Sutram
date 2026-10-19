@@ -1,0 +1,27 @@
+# F2-F5 reproductions. Each is compiled from a checkout's root, so lib/ is that checkout's.
+# v188 = main (origin/main c20e55a7), its src built fresh; R9 = this branch's sutram_compiler. Linux.
+f2a_nirmmita_failure [v188] runs: -12 -12 139812807000064 (exit 139)
+f2a_nirmmita_failure [R9] runs: 0 0 0 no list(exit 0)
+f2b_nirmmita_zero [v188] runs: -22 -12 -22 1 (exit 0)
+f2b_nirmmita_zero [R9] runs: 0 0 0 1 (exit 0)
+f3_guna_eval [v188] runs: 30 3 (exit 0)
+f3_guna_eval [R9] runs: 30 1 (exit 0)
+f4_seemit [v188] runs: -2 (exit 0)
+f4_seemit [R9] runs: -2 (exit 0)
+f5_aadhar_alone [v188] compile error: Sutram Error: agyat prakriya: brihat_asti_shunyank 
+f5_aadhar_alone [R9] runs: 1 (exit 0)
+
+# F4 is a comment: v188 says, then R9 says
+# ganit_seemit(v, lo, hi): lo if v < lo, hi if v > hi, else v.
+# Requires lo <= hi (if lo > hi, returns lo — the first branch wins).
+# ganit_seemit(v, lo, hi): lo if v < lo, hi if v > hi, else v.
+# Requires lo <= hi. If lo > hi: lo when v < lo, otherwise hi (R9, F4: the
+# old comment said lo always; ganit_seemit(4, 4, -2) is -2).
+
+# F6: file modes (main, then the branch)
+100644 blob 2be0d4d0af41774f8189d4b71aba107c322c325c	sutram-gui
+100644 blob ae000c0207146a1c91fc9d3284ce219e076a91f9	sutram-ide
+100644 blob 0255cd60ba50b23750b1e7cffbcfe64a9ccffd65	sutram_compiler
+100755 blob 2be0d4d0af41774f8189d4b71aba107c322c325c	sutram-gui
+100755 blob ae000c0207146a1c91fc9d3284ce219e076a91f9	sutram-ide
+100755 blob c21119bdecd135935d38c25df49f1bb86417bfd7	sutram_compiler

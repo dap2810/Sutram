@@ -1,0 +1,4 @@
+yoj ganit
+mukhya() {
+    likha(ganit_seemit(4, 4, 0 - 2))
+}

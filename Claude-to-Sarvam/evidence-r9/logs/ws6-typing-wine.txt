@@ -1,0 +1,39 @@
+# Wine 9.0 on Linux (Xvfb), prefix with a stand-in font named Nirmala UI (Noto Sans Indic, merged). Not Windows.
+# IDE: sutram-ide-gui.exe 3b52f61f4e71085d… (this branch); v188 IDE: 528a4ee0cf421279…; compiler win/sutram.exe b3672b50c336da65…
+# Typed with xdotool: Language > <pack>, Ctrl+T, then: mukhya() {⏎vitti yoga = 3⏎yadi (yoga > 2) {⏎likha(yoga + 2)⏎likha("ok")⏎}⏎}, F5, Ctrl+S.
+## sanskrit: saved file
+मुख्य() {
+    वित्ति योग = 3
+    यदि (योग > 2) {
+        लिख(योग + 2)
+        लिख("ok")
+    }
+}
+## sanskrit: ./sutram_compiler --lang sanskrit (Linux): 5 ok
+## hindi: saved file
+मुख्य() {
+    चर योग = 3
+    यदि (योग > 2) {
+        लिखो(योग + 2)
+        लिखो("ok")
+    }
+}
+## hindi: ./sutram_compiler --lang hindi (Linux): 5 ok
+## tamil: saved file
+முதன்மை() {
+    மாறி யோக = 3
+    எனில் (யோக > 2) {
+        எழுது(யோக + 2)
+        எழுது("ok")
+    }
+}
+## tamil: ./sutram_compiler --lang tamil (Linux): 5 ok
+## gujarati: saved file
+મુખ્ય() {
+    ચલ યોગ = 3
+    જો (યોગ > 2) {
+        લખો(યોગ + 2)
+        લખો("ok")
+    }
+}
+## gujarati: ./sutram_compiler --lang gujarati (Linux): 5 ok

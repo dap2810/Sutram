@@ -1,0 +1,14 @@
+# f1_b compiled by B: mukhya's stack slots run rbp-8, rbp-16, ... The 17th (rbp-136, variable v21) is emitted as rbp+0x78; the 33rd (rbp-264, v37) as rbp-0x8, which is v5's slot.
+ 124:	48 89 45 90          	mov    %rax,-0x70(%rbp)
+ 12d:	48 89 45 88          	mov    %rax,-0x78(%rbp)
+ 136:	48 89 45 80          	mov    %rax,-0x80(%rbp)
+ 13f:	48 89 45 78          	mov    %rax,0x78(%rbp)
+ 148:	48 89 45 70          	mov    %rax,0x70(%rbp)
+ 151:	48 89 45 68          	mov    %rax,0x68(%rbp)
+ 15a:	48 89 45 60          	mov    %rax,0x60(%rbp)
+...
+ 1bd:	48 89 45 08          	mov    %rax,0x8(%rbp)
+ 1c6:	48 89 45 00          	mov    %rax,0x0(%rbp)
+ 1cf:	48 89 45 f8          	mov    %rax,-0x8(%rbp)
+ 1d8:	48 89 45 f0          	mov    %rax,-0x10(%rbp)
+ 1e1:	48 89 45 e8          	mov    %rax,-0x18(%rbp)

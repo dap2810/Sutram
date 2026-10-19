@@ -1,0 +1,57 @@
+# Linux. From the repository root. Two compilers, both v188:
+#   A = main's committed sutram_compiler (git show origin/main:sutram_compiler; chmod +x, see F6), sha256 219d1cf043fa7039…
+#   B = a fresh build of main's src/ (nasm -f elf64 -I. src/r68_compiler_entry.asm && ld), sha256 7790d16e7928e1a9…
+
+$ sh Claude-to-Sarvam/evidence-r9/F1/run-f1.sh <A>
+f1_a_callee_overwrites_caller
+    expected: 10 20 30 29
+    got:      10 28 29 29 
+f1_b_forty_variables
+    expected: 55 6 7 39 40
+    got:      151 38 39 39 40 
+Segmentation fault
+f1_c_return_address
+    expected: 7
+    got:      (no output)
+f1_d_chakravala_in_a_loop
+    expected: 3 2 2 1 9 4
+    got:      3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 
+f1_e_varna_bhed_temporary
+    expected: 2 1002 1002
+    got:      2 5 1002 
+
+$ sh Claude-to-Sarvam/evidence-r9/F1/run-f1.sh <B>
+f1_a_callee_overwrites_caller
+    expected: 10 20 30 29
+    got:      10 28 29 29 
+f1_b_forty_variables
+    expected: 55 6 7 39 40
+    got:      151 38 39 39 40 
+Segmentation fault
+f1_c_return_address
+    expected: 7
+    got:      (no output)
+f1_d_chakravala_in_a_loop
+    expected: 3 2 2 1 9 4
+    got:      3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 
+f1_e_varna_bhed_temporary
+    expected: 2 1002 1002
+    got:      2 5 1002 
+
+$ sh Claude-to-Sarvam/evidence-r9/F1/run-f1.sh ./sutram_compiler   # this branch: F1 is NOT fixed
+f1_a_callee_overwrites_caller
+    expected: 10 20 30 29
+    got:      10 28 29 29 
+f1_b_forty_variables
+    expected: 55 6 7 39 40
+    got:      151 38 39 39 40 
+Segmentation fault
+f1_c_return_address
+    expected: 7
+    got:      (no output)
+f1_d_chakravala_in_a_loop
+    expected: 3 2 2 1 9 4
+    got:      3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 
+f1_e_varna_bhed_temporary
+    expected: 2 1002 1002
+    got:      2 5 1002 

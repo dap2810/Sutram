@@ -1,0 +1,15 @@
+# F2-a. Expected: 0 0 0 then "no list" (an allocation that fails is 0).
+# v188:   -12 -12 <an address>, then a segmentation fault in suchi_khip: the
+#         list's data block failed (-12) but suchi_srij's `== 0` check missed it.
+yoj suchi
+mukhya() {
+    likha(nirmmita(8796093022208))
+    likha(nirmmita(1152921504606846976))
+    vitti l = suchi_srij(144115188075855872)
+    likha(l)
+    yadi (l == 0) {
+        likha("no list")
+    } anya {
+        likha(suchi_khip(l, 5))
+    }
+}

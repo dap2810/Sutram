@@ -1,0 +1,18 @@
+# Expected: 3 2 2 1 9 4
+# v188:     3 2 3 2 3 2 ... (never ends)
+# F1-d (library). Needs lib/ganita.smlib: run from the repository root.
+# chakravala has 29 variables; its slots from the 15th on overwrite
+# the copy of n that mukhya saved before the call, so n never reaches 6.
+yoj ganita
+mukhya() {
+    vitti out = nirmmita(16)
+    vitti n = 2
+    yavat (n < 6) {
+        yadi (n != 4) {
+            chakravala(out, n)
+            likha(out[0])
+            likha(out[1])
+        }
+        n = n + 1
+    }
+}

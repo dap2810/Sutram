@@ -1,0 +1,17 @@
+== HEAD 7583e8d R9 WS8: every main-window string in one table; About text names the new features  (fresh clone, Linux)
+-rwxr-xr-x
+-rwxr-xr-x
+-rwxr-xr-x
+NO-EXPECTATION=4  PASS=204
+209 passed, 0 failed, 209 total
+86/86 properties hold
+24761 cases (2251 words x 11 packs), 0 differ
+OK
+"status": "SOURCE_PINS_CHECKED"
+"passed": 6
+"native_status": "PASS"
+b3672b50c336da65418de090421be12d8ce1be6a2a95f27c48b0ed124bd35a13  win/sutram.exe  MATCH
+b3672b50c336da65418de090421be12d8ce1be6a2a95f27c48b0ed124bd35a13  sutram.exe  MATCH
+3b52f61f4e71085df8e60c54d2ec213370c6884d8b3df8b9aa7dcf891f8ea7e2  sutram-ide-gui.exe  MATCH
+f646b99ae245c5264961833ba10c2e6a97bbaf2fb31a5c4801926845e34a515c  Sutram-Setup.exe  DIFFERS (committed 73fabd7146db294741a917f5fd748cdeeeb5b33e6cb2b2b672cc29984df8db48)
+NOT REPRODUCED: 1 file(s) differ
