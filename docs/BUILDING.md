@@ -8,9 +8,9 @@ in old round reports reproduce those historical snapshots, not a current build.
 
 ## Input identity and developer commands
 
-Required core Git blob: `64ea028a5ccf56117c132a7efd0673cbe2df3fc6`.
+Required core Git blob: `ea2a1e910952120c1f1db8bac1890338af68d3e9` (re-pinned in ROUND-03; was `64ea028a…`, stale since v157).
 Entry Git blob: `42389aaf73179726d91e23359aee2199734036e1` (713 bytes).
-Neither patra is changed in R69. `tools/r69_build.lock.json` also pins all known
+Neither file is changed in R69. `tools/r69_build.lock.json` also pins all known
 conditional includes for both hosts. A missing, changed, symlinked or unlocked
 include fails before NASM. Build reports include commands, source identities and
 output SHA-256, not merely an assertion that the build succeeded.

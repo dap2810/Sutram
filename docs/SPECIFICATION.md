@@ -155,7 +155,7 @@ rejection.
 
 `SUTRAM_R65_TRAP_INT=1` is an optional **NASM compiler-build define**, omitted by
 default, not a source keyword or ordinary command-line language switch. The
-recorded trap contract uses `Sutram Error [E_INTEGER_TRAP] <patra>:<line>: ...` for
+recorded trap contract uses `Sutram Error [E_INTEGER_TRAP] <file>:<line>: ...` for
 selected integer overflow/divisor errors. Whether all synthesized operations,
 all imported locations and all profile combinations obey an identical rule is
 not certified here.

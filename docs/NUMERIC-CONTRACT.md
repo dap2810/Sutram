@@ -24,7 +24,7 @@ marked — that gap suchi is as valuable as the table.
 
 | Operation | Operands | Overflow | Checked | Saturating | Pinned by |
 |---|---|---|---|---|---|
-| `ganita_janchit_yuj/sub/mul` | `vitti, vitti` | returns `0`, `ok` 0 | itself | `ganita_paripurna_yuj/sub/mul` | `prop_ganita_checked_add_sub`, `prop_ganita_checked_mul`, `prop_safety25/26/27` |
+| `ganita_janchit_yuj/nyun/gun` | `vitti, vitti` | returns `0`, `ok` 0 | itself | `ganita_paripurna_yuj/nyun/gun` | `prop_ganita_checked_add_sub`, `prop_ganita_checked_mul`, `prop_safety25/26/27` |
 | `ganita_janchit_bhaj/shesh` | `vitti, vitti` | divisor 0 or `MIN / -1` → `0`, `ok` 0 | itself | `ganita_paripurna_bhaj/shesh` (`MIN/-1` → `MAX` / `0`) | `prop_ganita_checked_divmod`, `prop_safety25/26` |
 | `ganita_janchit_ghat` | `vitti, vitti` | negative exp or overflow → `0`, `ok` 0 | itself | `ganita_paripurna_ghat` (seemit) | `prop_safety25/26` |
 | `ganita_janchit_kramgun` | `vitti` | negative `n` or overflow → `0`, `ok` 0 | itself | `ganita_paripurna_kramgun` (seemit) | `prop_safety25/26` |
@@ -67,11 +67,11 @@ marked — that gap suchi is as valuable as the table.
 |---|---|---|---|---|---|
 | `roop_ank_aadhar2` / `roop_ank_dhvaj` | `vitti`, base | n/a; `MIN` handled (R26 fix) | — | — | `prop_fmt_int_base_roundtrip`, `prop_min26` |
 | `roop_ank` / `roop_ank_aadhar` | `vitti`, base | base `< 2` or `> 36` → `0` (empty); `MIN` handled | — | — | `prop_min26`, `prop_numeric28` (base limits) |
-| `roop_dash/hex/hex_upper/oct/bin` | `vitti` | n/a (fixed-base forms of `roop_ank_aadhar2`) | — | — | `prop_fmt_int_base_roundtrip` |
+| `roop_dash/shodash/shodash_unnat/asht/dwi` | `vitti` | n/a (fixed-base forms of `roop_ank_aadhar2`) | — | — | `prop_fmt_int_base_roundtrip` |
 | `roop_varg*` / `roop_varg_ank` | bytes / `vitti` | n/a; grouping is digit-preserving | — | — | `prop_fmt_group_digits`, golden `roop_varg` |
 | `roop_sthir` / `roop_sthir_chinhit` | `dasham`, places | requires `\|x\| * 10^places` fits in int64; overflow input returns `0` (empty) — R29 guard (was a segfault: the dasham→int conversion is indefinite past 2^63) | — | — | `prop_numeric29` (overflow → 0, negative overflow → 0, largest fixed output `9223372036854774784` = 2^63 − 1024, 19 chars) |
 | `roop_chinhit` / `roop_sign_akshar` | `vitti` | n/a | — | — | `prop_fmt_signed` |
-| `roop_pad_vam/right/center` | bytes | n/a (padding) | — | — | `prop_fmt_pad_content` |
+| `roop_pad_vam/dakshin/madhya` | bytes | n/a (padding) | — | — | `prop_fmt_pad_content` |
 
 ## `ank` — found by the same sweep (R28)
 

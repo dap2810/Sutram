@@ -79,7 +79,7 @@ pre .k, code .k { font-weight: 700; }
 </ol></div>
 <div class="ch" id="ch1"><h2>1. सूत्रम् क्या है? <span class="en-gloss">(What is Sutram?)</span></h2>
 <p><b>सूत्रम्</b> का अर्थ है <i>"धागा"</i> — जो सबको जोड़े। सूत्रम् एक क्रमादेशन भाषा है
-जिसके कूटशब्द संस्कृत <span class="k" data-tip="संस्कृत: to · range-to">से</span> आते हैं, जिसका संकलक शुद्ध असेंबली में लिखा गया है, और जो
+जिसके कूटशब्द संस्कृत <span class="k" data-tip="संस्कृत: tak · range-to">से</span> आते हैं, जिसका संकलक शुद्ध असेंबली में लिखा गया है, और जो
 सीधे x86-64 मशीन कोड में बदलती है। न कोई इंटरप्रेटर, न वर्चुअल मशीन, न कोई रनटाइम लाइब्रेरी।</p>
 <p><b>क्यों सीखें सूत्रम्?</b></p>
 <p><b>1. पायथन जैबी सरलता, C जैसी गति।</b> आप साफ-सुथरे संस्कृत कूटशब्द से पढ़ने योग्य कोड
@@ -93,20 +93,20 @@ pre .k, code .k { font-weight: 700; }
 नहीं — C संकलक भी नहीं।</div>
 </div>
 <div class="ch" id="ch2"><h2>2. आपका पहला क्रमादेश <span class="en-gloss">(Your first program)</span></h2>
-<p>हर सूत्रम् क्रमादेश <code><span class="k" data-tip="संस्कृत: mukhya · main">mukhya</span>()</code> <span class="k" data-tip="संस्कृत: to · range-to">से</span> शुरू होता है — चलने की "<span class="k" data-tip="संस्कृत: mukhya · main">मुख्य</span>" धारा।
+<p>हर सूत्रम् क्रमादेश <code><span class="k" data-tip="संस्कृत: mukhya · main">mukhya</span>()</code> <span class="k" data-tip="संस्कृत: tak · range-to">से</span> शुरू होता है — चलने की "<span class="k" data-tip="संस्कृत: mukhya · main">मुख्य</span>" धारा।
 सेमीकोलन वैकल्पिक हैं; एक कथन के लिए ब्रेस भी वैकल्पिक हैं; टिप्पणी <code>//</code> से शुरू होती है।</p>
 <pre><code><span class="k" data-tip="संस्कृत: mukhya · main">mukhya</span>()
     <span class="k" data-tip="संस्कृत: likha · print">likha</span>("Namaste, Sutram!\n")</code></pre>
 <p>इसे <code>namaste.sm</code> नाम से सेव करें, फिर कम्पाइल कर चलाएँ:</p>
 <pre><code>$ sutram namaste.sm namaste.bin
-OK: compiled 90 bytes
+Siddh: 97 byte sankalit
 $ ./namaste.bin
 <span class="out">Namaste, Sutram!</span></code></pre>
 <div class="note">संकलक एक पूर्ण, चलने योग्य ELF बाइनरी बनाता है — इस क्रमादेश के लिए मात्र
 90 बाइट। उतना ही पूरा क्रमादेश: प्रोलॉग, आपका <code><span class="k" data-tip="संस्कृत: likha · print">likha</span></code> कॉल, exit syscall।</div>
 </div>
 <div class="ch" id="ch3"><h2>3. <span class="k" data-tip="संस्कृत: vitti · variable">चर</span> और अचर <span class="en-gloss">(Variables and constants)</span></h2>
-<p><code><span class="k" data-tip="संस्कृत: vitti · variable">vitti</span></code> ("एक वृत्ति / अवस्था") <span class="k" data-tip="संस्कृत: to · range-to">से</span> चर बनाएँ। पूर्णांक के लिए <code><span class="k" data-tip="संस्कृत: anka · integer">anka</span></code>।
+<p><code><span class="k" data-tip="संस्कृत: vitti · variable">vitti</span></code> ("एक वृत्ति / अवस्था") <span class="k" data-tip="संस्कृत: tak · range-to">से</span> चर बनाएँ। पूर्णांक के लिए <code><span class="k" data-tip="संस्कृत: anka · integer">anka</span></code>।
 अचर के लिए <code><span class="k" data-tip="संस्कृत: sutra · constant">sutra</span></code>:</p>
 <pre><code><span class="k" data-tip="संस्कृत: mukhya · main">mukhya</span>()
     <span class="k" data-tip="संस्कृत: vitti · variable">vitti</span> x = 10
@@ -139,7 +139,7 @@ $ ./namaste.bin
     <span class="k" data-tip="संस्कृत: likha · print">likha</span>("\n")
     <span class="k" data-tip="संस्कृत: likha · print">likha</span>(2 & 12)         <span class="cm">// 0  (bitwise AND)</span>
     <span class="k" data-tip="संस्कृत: likha · print">likha</span>("\n")</code></pre>
-<div class="note">पूर्वता (निम्न <span class="k" data-tip="संस्कृत: to · range-to">से</span> उच्च): <code>||</code> → <code>&&</code> → तुलना →
+<div class="note">पूर्वता (निम्न <span class="k" data-tip="संस्कृत: tak · range-to">से</span> उच्च): <code>||</code> → <code>&&</code> → तुलना →
 <code>+ - & | ^</code> → <code>* / %</code>। शक हो तो कोष्ठक लगाएँ — प्रदर्शन पर कोई
 खर्च नहीं।</div>
 </div>
@@ -155,7 +155,7 @@ $ ./namaste.bin
     } anya {
         likha("Zero\n")
     }</code></pre>
-<p>एक मान की अनेक स्थितियों <span class="k" data-tip="संस्कृत: to · range-to">से</span> तुलना के लिए <code><span class="k" data-tip="संस्कृत: guna · multiply (*)">guna</span></code> (<span class="k" data-tip="संस्कृत: guna · multiply (*)">गुण</span> — switch) और
+<p>एक मान की अनेक स्थितियों <span class="k" data-tip="संस्कृत: tak · range-to">से</span> तुलना के लिए <code><span class="k" data-tip="संस्कृत: guna · multiply (*)">guna</span></code> (<span class="k" data-tip="संस्कृत: guna · multiply (*)">गुण</span> — switch) और
 <code><span class="k" data-tip="संस्कृत: bhavana · condition">bhavana</span></code> (<span class="k" data-tip="संस्कृत: bhavana · condition">भावना</span> — case) उपयोग करें:</p>
 <pre><code><span class="k" data-tip="संस्कृत: mukhya · main">mukhya</span>()
     <span class="k" data-tip="संस्कृत: vitti · variable">vitti</span> divasa = 3
@@ -167,9 +167,9 @@ $ ./namaste.bin
     }</code></pre>
 </div>
 <div class="ch" id="ch6"><h2>6. पाश: <span class="k" data-tip="संस्कृत: chakra · for">chakra</span>, <span class="k" data-tip="संस्कृत: yavat · while">yavat</span>, <span class="k" data-tip="संस्कृत: krama · break">krama</span>, <span class="k" data-tip="संस्कृत: agrim · continue">agrim</span> <span class="en-gloss">(Loops)</span></h2>
-<p><code><span class="k" data-tip="संस्कृत: chakra · for">chakra</span></code> (<span class="k" data-tip="संस्कृत: chakra · for">पुनरावृत्ति</span>) गिनती वाला पाश है — "i = a <span class="k" data-tip="संस्कृत: to · range-to">से</span> b तक":</p>
+<p><code><span class="k" data-tip="संस्कृत: chakra · for">chakra</span></code> (<span class="k" data-tip="संस्कृत: chakra · for">पुनरावृत्ति</span>) गिनती वाला पाश है — "i = a <span class="k" data-tip="संस्कृत: tak · range-to">से</span> b तक":</p>
 <pre><code><span class="k" data-tip="संस्कृत: mukhya · main">mukhya</span>()
-    <span class="k" data-tip="संस्कृत: chakra · for">chakra</span> i = 1 <span class="k" data-tip="संस्कृत: to · range-to">to</span> 5 {
+    <span class="k" data-tip="संस्कृत: chakra · for">chakra</span> i = 1 <span class="k" data-tip="संस्कृत: tak · range-to">tak</span> 5 {
         <span class="k" data-tip="संस्कृत: likha · print">likha</span>(i)
         <span class="k" data-tip="संस्कृत: likha · print">likha</span>(" ")   <span class="cm">// 1 2 3 4 5</span>
     }
@@ -178,19 +178,19 @@ $ ./namaste.bin
 <code><span class="k" data-tip="संस्कृत: agrim · continue">agrim</span></code> (उद्देश्य — continue) अगले चरण पर जाता है:</p>
 <pre><code><span class="k" data-tip="संस्कृत: mukhya · main">mukhya</span>()
     <span class="k" data-tip="संस्कृत: vitti · variable">vitti</span> yogam = 0
-    <span class="k" data-tip="संस्कृत: chakra · for">chakra</span> i = 1 <span class="k" data-tip="संस्कृत: to · range-to">to</span> 100 {
+    <span class="k" data-tip="संस्कृत: chakra · for">chakra</span> i = 1 <span class="k" data-tip="संस्कृत: tak · range-to">tak</span> 100 {
         <span class="k" data-tip="संस्कृत: yadi · if">yadi</span> (i > 10) { <span class="k" data-tip="संस्कृत: krama · break">krama</span> }
         <span class="k" data-tip="संस्कृत: yadi · if">yadi</span> (i % 2 == 0) { <span class="k" data-tip="संस्कृत: agrim · continue">agrim</span> }
         yogam = yogam + i
     }
     <span class="k" data-tip="संस्कृत: likha · print">likha</span>(yogam)     <span class="cm">// 25</span>
     <span class="k" data-tip="संस्कृत: likha · print">likha</span>("\n")</code></pre>
-<div class="try"><b>यह क्रमादेश 1 <span class="k" data-tip="संस्कृत: to · range-to">से</span> 10 तक विषम संख्याओं का योग निकालता है:</b> जब <code>i > 10</code>,
+<div class="try"><b>यह क्रमादेश 1 <span class="k" data-tip="संस्कृत: tak · range-to">से</span> 10 तक विषम संख्याओं का योग निकालता है:</b> जब <code>i > 10</code>,
 <code><span class="k" data-tip="संस्कृत: krama · break">krama</span></code> पाश रोकता है; जब <code>i</code> सम है, <code><span class="k" data-tip="संस्कृत: agrim · continue">agrim</span></code> उसे छोड़ता है। उत्तर: 25।</div>
 </div>
 <div class="ch" id="ch7"><h2>7. <span class="k" data-tip="संस्कृत: prakriya · function">फलन</span>: <span class="k" data-tip="संस्कृत: prakriya · function">prakriya</span> <span class="en-gloss">(Functions)</span></h2>
 <p><code><span class="k" data-tip="संस्कृत: prakriya · function">prakriya</span></code> (प्रक्रिया) एक नामित ब्लॉक है जो तीन तर्क तक लेता है और
-<code><span class="k" data-tip="संस्कृत: prati · return">prati</span></code> <span class="k" data-tip="संस्कृत: to · range-to">से</span> मान लौटाता है:</p>
+<code><span class="k" data-tip="संस्कृत: prati · return">prati</span></code> <span class="k" data-tip="संस्कृत: tak · range-to">से</span> मान लौटाता है:</p>
 <pre><code><span class="k" data-tip="संस्कृत: prakriya · function">prakriya</span> vishalya(mulya)
     <span class="k" data-tip="संस्कृत: prati · return">prati</span> mulya * mulya
 
@@ -209,16 +209,16 @@ mukhya()
     <span class="k" data-tip="संस्कृत: likha · print">likha</span>("\n")</code></pre>
 </div>
 <div class="ch" id="ch8"><h2>8. सारणी: <span class="k" data-tip="संस्कृत: mala · mala">mala</span> <span class="en-gloss">(Arrays)</span></h2>
-<p><i>पङ्क्ति</i> का अर्थ है "<span class="k" data-tip="संस्कृत: mala · mala">पंक्ति</span>" — चीज़ों की एक कतार। <code><span class="k" data-tip="संस्कृत: mala · mala">mala</span></code> <span class="k" data-tip="संस्कृत: to · range-to">से</span> सारणी बनाएँ:
+<p><i>पङ्क्ति</i> का अर्थ है "<span class="k" data-tip="संस्कृत: mala · mala">पंक्ति</span>" — चीज़ों की एक कतार। <code><span class="k" data-tip="संस्कृत: mala · mala">mala</span></code> <span class="k" data-tip="संस्कृत: tak · range-to">से</span> सारणी बनाएँ:
 <code><span class="k" data-tip="संस्कृत: mala · mala">mala</span> tarika[5]</code> पाँच 64-बिट स्थान देता है और पॉइंटर देता है:</p>
 <pre><code><span class="k" data-tip="संस्कृत: mukhya · main">mukhya</span>()
     <span class="k" data-tip="संस्कृत: mala · mala">mala</span> tarika[5]
-    <span class="k" data-tip="संस्कृत: chakra · for">chakra</span> i = 0 <span class="k" data-tip="संस्कृत: to · range-to">to</span> 5 {
+    <span class="k" data-tip="संस्कृत: chakra · for">chakra</span> i = 0 <span class="k" data-tip="संस्कृत: tak · range-to">tak</span> 5 {
         tarika[i] = i * i
     }
     <span class="k" data-tip="संस्कृत: likha · print">likha</span>(tarika[4])     <span class="cm">// 16</span>
     <span class="k" data-tip="संस्कृत: likha · print">likha</span>("\n")</code></pre>
-<p><code>arr[i]</code> <span class="k" data-tip="संस्कृत: to · range-to">से</span> सीधे पॉइंटर <span class="k" data-tip="संस्कृत: to · range-to">से</span> पढ़ा-लिखा जाता है — एक मशीन निर्देश, C की गति।</p>
+<p><code>arr[i]</code> <span class="k" data-tip="संस्कृत: tak · range-to">से</span> सीधे पॉइंटर <span class="k" data-tip="संस्कृत: tak · range-to">से</span> पढ़ा-लिखा जाता है — एक मशीन निर्देश, C की गति।</p>
 <div class="note">पुरानी वर्तनी <code><span class="k" data-tip="संस्कृत: vitti · variable">vitti</span> tarika[5]</code> भी चलती है — <code><span class="k" data-tip="संस्कृत: mala · mala">mala</span></code>
 संस्कृत-शुद्ध रूप है।</div>
 </div>
@@ -240,12 +240,14 @@ mukhya()
 <div class="ch" id="ch10"><h2>10. सूत्रम् कवच (REPL) <span class="en-gloss">(The Sutram shell (REPL))</span></h2>
 <p>संस्करण 1.0 में एक संवादी कवच आती है — पायथन के IDLE जैसी। चलाएँ: <code>sutram -i</code>:</p>
 <pre><code>$ sutram -i
-Sutram Shell v1.0 — the complete thread
+Sutram khol v1.0 - sampurna sutra
+Sutram kathan likho aur Enter dabao. Turant chalega.
+Aadesh: sahayata (sahay) | nirgat (nikas) | sarvam (dekho)
 
 <span class="k" data-tip="संस्कृत: sutra · constant">sutra</span>> <span class="k" data-tip="संस्कृत: vitti · variable">vitti</span> x = 21
-OK: compiled 204 bytes
+Siddh: 54 byte sankalit
 <span class="k" data-tip="संस्कृत: sutra · constant">sutra</span>> <span class="k" data-tip="संस्कृत: likha · print">likha</span>(x / 3)
-OK: compiled 260 bytes
+Siddh: 201 byte sankalit
 7
 <span class="k" data-tip="संस्कृत: sutra · constant">sutra</span>> nirgat</code></pre>
 <p>आपकी हर <span class="k" data-tip="संस्कृत: mala · mala">पंक्ति</span> एक बढ़ते सत्र-क्रमादेश में जुड़ती है, तुरंत कम्पाइल होती है और चलती है।
@@ -264,7 +266,7 @@ OK: compiled 260 bytes
 <tr><td><code><span class="k" data-tip="संस्कृत: sutra · constant">स्थिर</span></code></td><td>constant</td><td><code><span class="k" data-tip="संस्कृत: sutra · constant">sutra</span></code></td></tr>
 <tr><td><code><span class="k" data-tip="संस्कृत: yadi · if">यदि</span> ... <span class="k" data-tip="संस्कृत: anya · else">अन्यथा</span></code></td><td>if ... else</td><td><code><span class="k" data-tip="संस्कृत: yadi · if">yadi</span> ... <span class="k" data-tip="संस्कृत: anya · else">anya</span></code></td></tr>
 <tr><td><code><span class="k" data-tip="संस्कृत: yavat · while">जबतक</span></code></td><td>while</td><td><code><span class="k" data-tip="संस्कृत: yavat · while">yavat</span></code></td></tr>
-<tr><td><code><span class="k" data-tip="संस्कृत: chakra · for">पुनरावृत्ति</span> x = 1 <span class="k" data-tip="संस्कृत: to · range-to">से</span> 5</code></td><td>for x = 1 <span class="k" data-tip="संस्कृत: to · range-to">to</span> 5</td><td><code><span class="k" data-tip="संस्कृत: chakra · for">chakra</span> ... <span class="k" data-tip="संस्कृत: to · range-to">to</span></code></td></tr>
+<tr><td><code><span class="k" data-tip="संस्कृत: chakra · for">पुनरावृत्ति</span> x = 1 <span class="k" data-tip="संस्कृत: tak · range-to">से</span> 5</code></td><td>for x = 1 <span class="k" data-tip="संस्कृत: tak · range-to">to</span> 5</td><td><code><span class="k" data-tip="संस्कृत: chakra · for">chakra</span> ... <span class="k" data-tip="संस्कृत: tak · range-to">tak</span></code></td></tr>
 <tr><td><code><span class="k" data-tip="संस्कृत: prakriya · function">फलन</span></code></td><td>function</td><td><code><span class="k" data-tip="संस्कृत: prakriya · function">prakriya</span></code></td></tr>
 <tr><td><code><span class="k" data-tip="संस्कृत: prati · return">वापस</span></code></td><td>return</td><td><code><span class="k" data-tip="संस्कृत: prati · return">prati</span></code></td></tr>
 <tr><td><code><span class="k" data-tip="संस्कृत: likha · print">लिखो</span></code></td><td>print</td><td><code><span class="k" data-tip="संस्कृत: likha · print">likha</span></code></td></tr>
@@ -280,7 +282,7 @@ OK: compiled 260 bytes
 <span class="k" data-tip="संस्कृत: mukhya · main">मुख्य</span>()
     <span class="k" data-tip="संस्कृत: vitti · variable">चर</span> गिनती = 3
     <span class="k" data-tip="संस्कृत: likha · print">लिखो</span>("नमस्ते दुनिया")
-    <span class="k" data-tip="संस्कृत: chakra · for">पुनरावृत्ति</span> i = 1 <span class="k" data-tip="संस्कृत: to · range-to">से</span> 4 {
+    <span class="k" data-tip="संस्कृत: chakra · for">पुनरावृत्ति</span> i = 1 <span class="k" data-tip="संस्कृत: tak · range-to">से</span> 4 {
         <span class="k" data-tip="संस्कृत: likha · print">लिखो</span>(गिनती * i)
     }
     <span class="k" data-tip="संस्कृत: yadi · if">यदि</span> (गिनती == 3) {
@@ -289,8 +291,8 @@ OK: compiled 260 bytes
         <span class="k" data-tip="संस्कृत: likha · print">लिखो</span>("कुछ और")
     }</code></pre>
 <pre><code>$ sutram --lang hindi prog.sm prog.bin
-Language pack loaded: hindi
-OK: compiled 425 bytes
+Bhasha pak prapt: hindi
+Siddh: 415 byte sankalit
 $ ./prog.bin
 नमस्ते दुनिया3
 6
@@ -303,11 +305,18 @@ $ ./prog.bin
 
 <div class="ch" id="ch12"><h2>12. त्रुटियाँ और दोषसुधार <span class="en-gloss">(Errors and debugging)</span></h2>
 <p>सूत्रम् पार्स-त्रुटियों में <span class="k" data-tip="संस्कृत: mala · mala">पंक्ति</span>-संख्या और वह टोकन बताता है जहाँ अटका:</p>
-<pre><code>$ ./sutram_compiler galat.sm out.bin
+<pre><code>$ cat galat.sm
+mukhya() {
+    vitti x = 5
+    vitti y = (x
+    likha(x)
+}
+$ ./sutram_compiler galat.sm out.bin
 
-Sutram Error: parse error at line 4 near token '<span class="k" data-tip="संस्कृत: likha · print">likha</span>'
-Hint: check the keyword spelling and syntax near this spot.
-      Run 'sutram -i' and type 'sahayata' for help.</code></pre>
+Sutram Error: vyakaran dosh, pankti 4:5, shabd '<span class="k" data-tip="संस्कृत: likha · print">likha</span>'
+      likha(x)
+      ^
+Sanket: is sthan par shabd aur vyakaran dekho.</code></pre>
 <div class="try"><b>डिबग विधि:</b> 1. <span class="k" data-tip="संस्कृत: mala · mala">पंक्ति</span>-संख्या पढ़ें। 2. त्रुटि में नामित कूटशब्द की वर्तनी
 जाँचें। 3. वही <span class="k" data-tip="संस्कृत: mala · mala">पंक्ति</span> कवच में आज़माएँ (<code>sutram -i</code>) — त्रुटियाँ तुरंत दिखती हैं।</div>
 </div>
@@ -325,7 +334,7 @@ Hint: check the keyword spelling and syntax near this spot.
 <tr><td><code><span class="k" data-tip="संस्कृत: sutra · constant">sutra</span></code></td><td>constant</td></tr>
 <tr><td><code><span class="k" data-tip="संस्कृत: yadi · if">yadi</span> ... <span class="k" data-tip="संस्कृत: anya · else">anya</span></code></td><td>if ... else</td></tr>
 <tr><td><code><span class="k" data-tip="संस्कृत: guna · multiply (*)">guna</span> / <span class="k" data-tip="संस्कृत: bhavana · condition">bhavana</span></code></td><td>switch / case</td></tr>
-<tr><td><code><span class="k" data-tip="संस्कृत: chakra · for">chakra</span> i = a <span class="k" data-tip="संस्कृत: to · range-to">to</span> b</code></td><td>for loop</td></tr>
+<tr><td><code><span class="k" data-tip="संस्कृत: chakra · for">chakra</span> i = a <span class="k" data-tip="संस्कृत: tak · range-to">tak</span> b</code></td><td>for loop</td></tr>
 <tr><td><code><span class="k" data-tip="संस्कृत: yavat · while">yavat</span></code></td><td>while loop</td></tr>
 <tr><td><code><span class="k" data-tip="संस्कृत: krama · break">krama</span> / <span class="k" data-tip="संस्कृत: agrim · continue">agrim</span></code></td><td>break / continue</td></tr>
 <tr><td><code><span class="k" data-tip="संस्कृत: prakriya · function">prakriya</span> / <span class="k" data-tip="संस्कृत: prati · return">prati</span></code></td><td>function / return</td></tr>
@@ -380,14 +389,14 @@ n--      <span class="cm"># n = 5</span></code></pre>
 
 <h3><span class="k" data-tip="संस्कृत: lkhb · print (no newline)">lkhb</span>() — बिना नई <span class="k" data-tip="संस्कृत: mala · mala">पंक्ति</span> के मुद्रण</h3>
 <p><code><span class="k" data-tip="संस्कृत: likha · print">likha</span>()</code> संख्या के बाद नई <span class="k" data-tip="संस्कृत: mala · mala">पंक्ति</span> छोड़ता है; <code><span class="k" data-tip="संस्कृत: lkhb · print (no newline)">lkhb</span>()</code> नहीं छोड़ता — सारणी बनाने के लिए:</p>
-<pre><code><span class="k" data-tip="संस्कृत: chakra · for">chakra</span> i = 1 <span class="k" data-tip="संस्कृत: to · range-to">to</span> 5 {
+<pre><code><span class="k" data-tip="संस्कृत: chakra · for">chakra</span> i = 1 <span class="k" data-tip="संस्कृत: tak · range-to">tak</span> 5 {
     <span class="k" data-tip="संस्कृत: lkhb · print (no newline)">lkhb</span>(i)
     <span class="k" data-tip="संस्कृत: likha · print">likha</span>(" ")
 }</code></pre>
 
 <h3>घटते लूप (Descending Loops)</h3>
-<p>प्रारंभ मान अंतिम मान <span class="k" data-tip="संस्कृत: to · range-to">से</span> बड़ा हो, तो गणना स्वतः उलट जाती है:</p>
-<pre><code><span class="k" data-tip="संस्कृत: chakra · for">chakra</span> i = 5 <span class="k" data-tip="संस्कृत: to · range-to">to</span> 1 {
+<p>प्रारंभ मान अंतिम मान <span class="k" data-tip="संस्कृत: tak · range-to">से</span> बड़ा हो, तो गणना स्वतः उलट जाती है:</p>
+<pre><code><span class="k" data-tip="संस्कृत: chakra · for">chakra</span> i = 5 <span class="k" data-tip="संस्कृत: tak · range-to">tak</span> 1 {
     <span class="k" data-tip="संस्कृत: lkhb · print (no newline)">lkhb</span>(i)
     <span class="k" data-tip="संस्कृत: likha · print">likha</span>(" ")
 }    <span class="cm"># आउटपुट: 5 4 3 2 1</span></code></pre>
@@ -457,13 +466,13 @@ mukhya()
 
 <p><b>Keyword → कूटशब्द</b> — कूट (code) + शब्द। भाषा के लिए आरक्षित विशेष शब्द, जिन्हें <span class="k" data-tip="संस्कृत: vitti · variable">चर</span>-नाम के रूप में इस्तेमाल नहीं किया जा सकता।</p>
 
-<p><b>Variable → <span class="k" data-tip="संस्कृत: vitti · variable">चर</span></b> — जिसका मान चलते-चलते बदल सकता है। गणित की सदियों पुरानी परंपरा <span class="k" data-tip="संस्कृत: to · range-to">से</span> आया प्रामाणिक शब्द।</p>
+<p><b>Variable → <span class="k" data-tip="संस्कृत: vitti · variable">चर</span></b> — जिसका मान चलते-चलते बदल सकता है। गणित की सदियों पुरानी परंपरा <span class="k" data-tip="संस्कृत: tak · range-to">से</span> आया प्रामाणिक शब्द।</p>
 
 <p><b>Constant → अचर</b> — <span class="k" data-tip="संस्कृत: sutra · constant">स्थिर</span> (जो नहीं बदलता) + अंक। गणित में व्यापक प्रचलित; "अचल" भी पर्याय है।</p>
 
-<p><b>Function → <span class="k" data-tip="संस्कृत: prakriya · function">फलन</span></b> — फल (परिणाम) देने वाला: इनपुट <span class="k" data-tip="संस्कृत: to · range-to">से</span> आउटपुट का नियम। गणित और संगणक विज्ञान दोनों में प्रामाणिक।</p>
+<p><b>Function → <span class="k" data-tip="संस्कृत: prakriya · function">फलन</span></b> — फल (परिणाम) देने वाला: इनपुट <span class="k" data-tip="संस्कृत: tak · range-to">से</span> आउटपुट का नियम। गणित और संगणक विज्ञान दोनों में प्रामाणिक।</p>
 
-<p><b>Loop → पाश</b> — दोहराव वाली <span class="k" data-tip="संस्कृत: rachana · struct">संरचना</span>; धागे की आकृति <span class="k" data-tip="संस्कृत: to · range-to">से</span> नाम। "<span class="k" data-tip="संस्कृत: chakra · for">पुनरावृत्ति</span>" इसका अधिक औपचारिक विकल्प है।</p>
+<p><b>Loop → पाश</b> — दोहराव वाली <span class="k" data-tip="संस्कृत: rachana · struct">संरचना</span>; धागे की आकृति <span class="k" data-tip="संस्कृत: tak · range-to">से</span> नाम। "<span class="k" data-tip="संस्कृत: chakra · for">पुनरावृत्ति</span>" इसका अधिक औपचारिक विकल्प है।</p>
 
 <p><b>Array → सारणी</b> — पंक्तिबद्ध मानों का समूह। सूत्रम् में इसी के लिए <code><span class="k" data-tip="संस्कृत: mala · mala">mala</span></code> (<span class="k" data-tip="संस्कृत: mala · mala">पंक्ति</span>) कूटशब्द है।</p>
 
@@ -482,7 +491,7 @@ mukhya()
 
 <div class="ch" id="ch16">
 <h2>16. संस्कृत मूल: आपकी भाषा में जीवित शब्द <span class="en-gloss">(Sanskrit roots)</span></h2>
-<p>सूत्रम् का प्रत्येक कूटशब्द संस्कृत की किसी धातु <span class="k" data-tip="संस्कृत: to · range-to">से</span> आया है — और वही शब्द आपकी भाषा में आज भी जीवित है। जब आप <code><span class="k" data-tip="संस्कृत: shunya · false / null">shunya</span></code> लिखते हैं, तो आप उसी शब्द को छूते हैं जो अरबी होते हुए अंग्रेज़ी का <b>zero</b> बना।</p>
+<p>सूत्रम् का प्रत्येक कूटशब्द संस्कृत की किसी धातु <span class="k" data-tip="संस्कृत: tak · range-to">से</span> आया है — और वही शब्द आपकी भाषा में आज भी जीवित है। जब आप <code><span class="k" data-tip="संस्कृत: shunya · false / null">shunya</span></code> लिखते हैं, तो आप उसी शब्द को छूते हैं जो अरबी होते हुए अंग्रेज़ी का <b>zero</b> बना।</p>
 
 <table>
 <tr><th>कूटशब्द</th><th>संस्कृत मूल अर्थ</th><th>आपकी भाषा में</th></tr>
@@ -490,17 +499,17 @@ mukhya()
 <tr><td><code><span class="k" data-tip="संस्कृत: vitti · variable">vitti</span></code></td><td>वित् धातु = जानना, <span class="k" data-tip="संस्कृत: satya · boolean">धारण</span> करना</td><td>"विद्वान", "वेत्ता" (जानने वाला)</td></tr>
 <tr><td><code><span class="k" data-tip="संस्कृत: anka · integer">anka</span></code></td><td>अङ्क = चिह्न, संख्या</td><td>हिन्दी "<span class="k" data-tip="संस्कृत: anka · integer">अंक</span>"</td></tr>
 <tr><td><code><span class="k" data-tip="संस्कृत: yadi · if">yadi</span></code></td><td><span class="k" data-tip="संस्कृत: yadi · if">यदि</span> = <span class="k" data-tip="संस्कृत: yadi · if">यदि</span></td><td>हिन्दी में भी "<span class="k" data-tip="संस्कृत: yadi · if">यदि</span>"</td></tr>
-<tr><td><code><span class="k" data-tip="संस्कृत: anya · else">anya</span></code></td><td>अन्यत्र = अन्य स्थान पर</td><td>"<span class="k" data-tip="संस्कृत: anya · else">अन्यथा</span>" <span class="k" data-tip="संस्कृत: to · range-to">से</span> संबंधित</td></tr>
+<tr><td><code><span class="k" data-tip="संस्कृत: anya · else">anya</span></code></td><td>अन्यत्र = अन्य स्थान पर</td><td>"<span class="k" data-tip="संस्कृत: anya · else">अन्यथा</span>" <span class="k" data-tip="संस्कृत: tak · range-to">से</span> संबंधित</td></tr>
 <tr><td><code><span class="k" data-tip="संस्कृत: yavat · while">yavat</span></code></td><td>यावत् = जब तक</td><td>काव्य-हिन्दी "यावत"</td></tr>
 <tr><td><code><span class="k" data-tip="संस्कृत: chakra · for">chakra</span></code></td><td>पुनः + आवृत्ति = बार-बार आना</td><td>हिन्दी "<span class="k" data-tip="संस्कृत: chakra · for">पुनरावृत्ति</span>"</td></tr>
 <tr><td><code><span class="k" data-tip="संस्कृत: krama · break">krama</span></code></td><td><span class="k" data-tip="संस्कृत: krama · break">क्रम</span> = वरीयता, अनुक्रम</td><td>हिन्दी "<span class="k" data-tip="संस्कृत: krama · break">क्रम</span>", "क्रमशः"</td></tr>
 <tr><td><code><span class="k" data-tip="संस्कृत: prakriya · function">prakriya</span></code></td><td>प्रक्रिया = कार्य करने की रीति</td><td>हिन्दी "प्रक्रिया"</td></tr>
 <tr><td><code><span class="k" data-tip="संस्कृत: purna · true">purna</span></code></td><td>पूर्ण = पूरा</td><td>हिन्दी "पूर्ण / पूरा"</td></tr>
-<tr><td><code><span class="k" data-tip="संस्कृत: shunya · false / null">shunya</span></code></td><td>शून्य = रिक्त</td><td>"सुन्ना / शून्य" — अरबी "ṣifr" <span class="k" data-tip="संस्कृत: to · range-to">से</span> होकर अंग्रेज़ी <b>zero</b>!</td></tr>
+<tr><td><code><span class="k" data-tip="संस्कृत: shunya · false / null">shunya</span></code></td><td>शून्य = रिक्त</td><td>"सुन्ना / शून्य" — अरबी "ṣifr" <span class="k" data-tip="संस्कृत: tak · range-to">से</span> होकर अंग्रेज़ी <b>zero</b>!</td></tr>
 <tr><td><code><span class="k" data-tip="संस्कृत: likha · print">likha</span></code></td><td>लिख् धातु = लिखना</td><td>हिन्दी "लिखना"</td></tr>
 <tr><td><code><span class="k" data-tip="संस्कृत: grahan · input">grahan</span></code></td><td>ग्रहण = लेना, पकड़ना</td><td>"ग्रहण करना", ग्रहण (eclipse)</td></tr>
 <tr><td><code><span class="k" data-tip="संस्कृत: mala · mala">mala</span></code></td><td>पङ्क्ति = कतार, <span class="k" data-tip="संस्कृत: mala · mala">पंक्ति</span></td><td>हिन्दी "<span class="k" data-tip="संस्कृत: mala · mala">पंक्ति</span>"</td></tr>
-<tr><td><code><span class="k" data-tip="संस्कृत: sutra · constant">sutra</span></code></td><td>सूत्र = धागा</td><td>हिन्दी "सूत्र" — गणित के सूत्र इसी <span class="k" data-tip="संस्कृत: to · range-to">से</span></td></tr>
+<tr><td><code><span class="k" data-tip="संस्कृत: sutra · constant">sutra</span></code></td><td>सूत्र = धागा</td><td>हिन्दी "सूत्र" — गणित के सूत्र इसी <span class="k" data-tip="संस्कृत: tak · range-to">से</span></td></tr>
 </table>
 </div>
 

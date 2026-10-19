@@ -6928,6 +6928,18 @@ r51_print_origin:
     push r15
     lea rax,[rel source_buf]
     sub rdi,rax
+    ; R3: the EOF token points one byte past the flattened source, where the
+    ; origin map has no entry (it fell back to offset 0 = line 1:1). Map it
+    ; through the last real byte and step one byte past it instead.
+    xor r8d,r8d
+    mov rax,[rel source_len]
+    test rax,rax
+    jz .eof_ok
+    cmp rdi,rax
+    jb .eof_ok
+    lea rdi,[rax-1]
+    mov r8d,1
+.eof_ok:
     cmp rdi,IMPORT_BUF_CAP
     jb .index_ok
     xor edi,edi
@@ -6940,6 +6952,7 @@ r51_print_origin:
 .path_ok:
     lea rax,[rel r51_src_off]
     mov r14d,[rax+rdi*4]
+    add r14,r8
     mov [rel r51_last_off],r14
     mov rdi,r13
     call mg_read_file
@@ -7011,6 +7024,16 @@ r51_origin_line_col:
     push r15
     lea rax,[rel source_buf]
     sub rdi,rax
+    ; R3: EOF token past the flattened source -> last byte + 1 (see r51_print_origin)
+    xor r8d,r8d
+    mov rax,[rel source_len]
+    test rax,rax
+    jz .olc_eof_ok
+    cmp rdi,rax
+    jb .olc_eof_ok
+    lea rdi,[rax-1]
+    mov r8d,1
+.olc_eof_ok:
     cmp rdi,IMPORT_BUF_CAP
     jb .olc_index_ok
     xor edi,edi
@@ -7023,6 +7046,7 @@ r51_origin_line_col:
 .olc_path_ok:
     lea rax,[rel r51_src_off]
     mov r14d,[rax+rdi*4]
+    add r14,r8
     mov rdi,r13
     call mg_read_file
     test rax,rax

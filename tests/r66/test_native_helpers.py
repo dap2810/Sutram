@@ -166,7 +166,10 @@ const unsigned char* test_cluster(const unsigned char* p, const unsigned char* e
         for second in range(256):
             for third in range(256):
                 data = bytes((0xE0, second, third))
-                wanted = (third - 0xA6, 3) if second in (0xA5, 0xAB, 0xA7, 0xA9) and 0xA6 <= third <= 0xAF else (-1, 0)
+                # R66: Devanagari A5, Bengali A7, Gurmukhi A9, Gujarati AB. R68 (lang/*.lang,
+                # docs/R68-INDIC-DEVICES.md) deliberately added Odia AD, Tamil AF, Telugu B1,
+                # Kannada B3. Malayalam (B5) is still not a digit block.
+                wanted = (third - 0xA6, 3) if second in (0xA5, 0xAB, 0xA7, 0xA9, 0xAD, 0xAF, 0xB1, 0xB3) and 0xA6 <= third <= 0xAF else (-1, 0)
                 self.assertEqual(self.digit(data), wanted)
 
     def test_empty_and_truncated_digits(self):
