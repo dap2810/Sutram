@@ -1,0 +1,15 @@
+# R77 binary SHA-256 vs Git blob ids — distinct hash families
+# Independent SHA-256 JS implementation validated against abc vector.
+# Existing (NOT newly built) GitHub binary content:
+b6e2bb342e75600a3e67b9263a27725f15494384804edbfa4c72234ec8b93b1b  win/sutram.exe (v160, 186755 bytes)
+ffc2368cb82f113c4dd48842752a60e36ecd5d28a85c7783befd9296a8e061f8  sutram.exe (v182, 186755 bytes)
+219d1cf043fa7039ec9ef3e0755b720dc998a92aaf058d173184c5e8518dbbc8  sutram_compiler (v160, 201656 bytes)
+
+# Git blob SHA-1 of verified R77 review sources (NOT SHA-256):
+38524e13d9a7f9a4f83de93b365677bb35865e7b  windows/native-installer/build-installer.ps1
+e5dffd7731760d1e67070809271d12d61d0d98c0  windows/native-installer/install-core.ps1
+
+# Release status:
+# Fresh installer payload SHA-256: NOT_RUN / NO ARTIFACT.
+# Fresh installer executable SHA-256: NOT_RUN / NO ARTIFACT.
+# Native Linux kosh compiler or generated output SHA-256: NOT_RUN.
