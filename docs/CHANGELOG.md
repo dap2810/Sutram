@@ -1,3 +1,36 @@
+## v187 - the version fix was reverted by a merge; re-applied; a Windows test package built
+
+**The v184 version fix did not survive.** Main said `v160` again. **The cause is the same trap that has now
+cost this project three rounds: Claude's R8 branch was cut before v184, so merging it carried its older
+`src/sutram_compiler.asm` over my fix.** I verified it directly against the API - main read
+`Sutram 1.0 (v160)` while the project was at v185.
+
+**Re-applied and verified** - the compiler now reports `Sutram 1.0 (v182) - sampurna sutra` on both the Linux
+and Windows builds.
+
+**The lesson, stated plainly: a merge is not safe just because it applies cleanly.** A branch cut before a
+change will silently revert it, and the only defence is to **check the file after the merge, not before** -
+which is what I failed to do in v185.
+
+### A Windows test package, built for the owner to run today
+
+`sutram-windows-test.zip` - **1.4 MB**, containing:
+
+- **`sutram.exe`** - the CLI, built from today's source, reports **v182**
+- **`sutram-ide-gui.exe`** - the dark IDE, English menus and buttons
+- **`Sutram-Setup.exe`** - the installer, with its staleness stated in the README
+- **207 example programs**, **11 language packs**, **24 library modules**, the icon, `win\`
+- **`hello.sm`** and **`namaste-hindi.sm`** - the same program in Latin and Devanagari
+- **`README-TEST.md`** - the steps, with "Expect" lines to compare against
+
+**The README says plainly that the installer carries an older compiler and that the version check should use
+`sutram.exe` directly.** The owner should not have to discover that.
+
+### The division of labour, as the owner set it
+
+**Windows testing is the owner's.** So neither partner is asked to run it - **Claude and ChatGPT are for
+development speed**, and their rounds are scoped accordingly.
+
 ## v186 - ROUND-09 to Claude (verify F1) and ROUND-77 to ChatGPT (get a compiler into its session)
 
 ### ROUND-09 (Claude) - F1 first, and it is deliberately small
