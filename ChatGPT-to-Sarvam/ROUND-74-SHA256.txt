@@ -1,0 +1,13 @@
+# Round 74 exact tested file SHA256 (UTF-8 bytes)
+# Source branch: review/r74-reproducibility-audit-20261019, PR #37
+# NOT binary compiler digests
+06ec027937f2857048fa0daa554129a19cc4058908a3ff52fc9a7c7f1d061572  tools/r74_repro_build.py
+539812d6d2a601bf8291291f32f80e95545861521696e030f1e33a6056d61739  tools/r74_vocabulary_audit.py
+1381ceedf3f567bac2acdb263b5a05e6c166de5c28b78309f5ba980c717e0cca  tests/r74/test_repro_build.py
+2c1fdbf6565a36571de287d48c14ce8942f72a9f60fbad842a8713d1f72d0e11  tests/r74/test_vocab_audit.py
+
+# Git blob SHA identities independently confirmed after GitHub upload:
+# tools/r74_repro_build.py       1062d453b5bd7a88c664a12112d601140f040250
+# tools/r74_vocabulary_audit.py 9dea3edc2dbe20ced32b06efd27b7ee0cc12fa21
+# tests/r74/test_repro_build.py 259e69a4f99aded7b2af8939ac1d1bcb99c5d51f
+# tests/r74/test_vocab_audit.py 65171b9c6dd571b3b5189d94141bd12105f67b92
