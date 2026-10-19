@@ -1,7 +1,7 @@
 # Sutram — Project Master Record
 
 **One patra to read before touching anything.**
-Last updated: 2026-10-16 · CHANGELOG v152 · 129 recorded versions
+Last updated: 2026-10-19 · CHANGELOG v173 · 150 recorded versions
 Repo: `https://github.com/dap2810/Sutram` (public, owner `dap2810`, branch `main`)
 
 If you are an AI or a person about to work on this project, **read this file first, then
@@ -127,26 +127,36 @@ compiler, a book, an icon sangrah, and a Windows port plan.
 
 **Era 2 — the round system (ROUND-01 onward).**
 Work moved to a numbered-round model with independent AI partners, each taking a *heavy* assignment and
-delivering verifiable artefacts. `docs/CHANGELOG.md` records every version from v21 to v152.
+delivering verifiable artefacts. `docs/CHANGELOG.md` records every version from v21 to v173.
 
 **Era 3 — the design charter (v151–v152).**
 The owner wrote down what the language is *for*. This became `docs/sutram-design-parameters.html`
 (20 requirements, each with honest status) and `docs/sutram-project-status.html` (measured state).
 
-**Where the numbers stand now** (measured 2026-10-16):
+**Era 4 — the Sanskrit rename (v157–v173).**
+Every English word in the language was replaced: 18 modules, 264 of 303 function names, and every keyword -
+the last English keyword `to` became `tak`. **The compiler's diagnostics were still English until v169**;
+they are now Sanskrit, which was the largest remaining gap in the aim that a non-English speaker can use the
+language. **v173 made an undefined name a compile error** - before it, a mistyped keyword silently read as 0
+and gave a wrong answer with no diagnostic. **The rename's tail surfaced in six different places** - code,
+comments, HTML, prose, keyword tables and the teaching books - **and not one was found by a gate.**
+
+**Where the numbers stand now** (measured 2026-10-19). **`tools/gates.sh` prints this table** -
+build everything and run it, and its output is the truth about the tree:
 
 | Metric | Value |
 |---|---|
-| Regression suite | **187 pass, 4 no-expectation** |
+| Regression suite | **191 pass, 4 no-expectation** |
 | Code-generation shape gates | **12 / 12** |
 | Language packs | **33 / 33** checks over **11** packs |
 | Library proofs | **191 / 191** |
 | Property proofs | **86 / 86** |
-| Module graph | OK |
+| Module graph | **18 / 18** |
 | Layer check | **14 core, 9 alloc, 1 std** |
 | Standard library | **24 modules, 303 functions** |
 | Example programs | **207** |
 | GUI tests | **18 / 18** |
+| Windows execution | **PARTIAL** - installed, run, uninstalled on real Windows 11 once; not a release |
 | Negative corpus (R70) | **6 / 6, native_status PASS** |
 | Compiler source | 545,722 B → **190,144 B** binary |
 | Repository | ~1,800 files |
