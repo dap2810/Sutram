@@ -26,6 +26,7 @@ LANG = {
     "39_native_tamil": "tamil",
     "218_sanskrit_devanagari": "sanskrit",
     "219_sanskrit_kosh_aliases": "sanskrit",
+    "220_hindi_parse_error": "hindi",     # R2-WS1a: localized diagnostic bytes
 }
 # examples that read from stdin (fed exactly this)
 STDIN = {
