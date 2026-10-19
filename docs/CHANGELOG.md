@@ -1,3 +1,39 @@
+## v188 - both rounds updated: the fonts, and how to type on an English keyboard
+
+**The owner asked a question that only surfaces when someone actually sits down to type: "the keyboard I am
+using is English (US) format, so how will I type?" Checking it found two real gaps and answered a third.**
+
+### What is already fine
+
+**He does not need a special keyboard for the main workflow.** Sutram's primary design is Latin
+transliteration - verified here: `mukhya()`, `likha()`, `vitti i = 1`, `yavat (i <= 3)` compiles and runs
+with a plain English keyboard. **No IME, no keyboard switch.**
+
+**And he does not need to install fonts.** Windows 10/11 ships every script Sutram uses - Devanagari,
+Gujarati, Bengali, Gurmukhi, Tamil, Telugu, Kannada, Malayalam, Odia - in **Nirmala UI**, built in.
+Shipping `.ttf` files would be pointless.
+
+### What is broken
+
+**The Windows IDE asks for `Consolas`** - a Latin-only monospace font with **no coverage of any of the
+eleven scripts.** It renders today only because **Windows falls back per glyph.** That is exactly the kind
+of thing that looks correct in a screenshot and misbehaves under a real cursor - and those scripts are the
+entire point of the language. **Assigned to Claude: change the font to `Nirmala UI` or a fallback list that
+prefers it, and verify by rendering all eleven scripts rather than one screenshot of Devanagari.**
+
+### What is missing
+
+**A transliteration mode in the IDE** - type `mukhya`, get `मुख्य`. Today, typing in Devanagari or Gujarati
+means opening Windows Settings, adding a language, and learning a second input method. **For someone whose
+only keyboard is English (US), that is the difference between "I could use this" and "this was designed for
+me."** Assigned to Claude, scoped so that even keyword-only conversion is an acceptable first version.
+
+**And the installer should CHECK for the fonts** - not install them, just verify and say so, rather than
+leaving a user with empty boxes. Assigned to ChatGPT, whose code the installer is.
+
+**Both rounds updated. The owner is testing Windows himself, so neither partner is asked to run the
+acceptance.**
+
 ## v187 - the version fix was reverted by a merge; re-applied; a Windows test package built
 
 **The v184 version fix did not survive.** Main said `v160` again. **The cause is the same trap that has now
