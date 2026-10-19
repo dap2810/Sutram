@@ -205,9 +205,10 @@ Three parties work on it. **The repository is the only channel between them.**
   merged tree, and the Linux proof gates were NOT-RUN inside WSL. **Gate 6 is begun, not passed.**
 - **No performance claim.** The compiler emits native code; that is not by itself a speed claim.
 - **No OS capability.** No boot path, no kernel, no freestanding run. `docs/FREESTANDING.md` is a gap list.
-- **A known defect, open:** the Windows console renders `Sutram 1.0 (v29) – the complete thread` as
-  `... ĞÖ the complete thread` — a mangled en-dash. The compiler writes UTF-8; the console reads a legacy
-  code page. Any non-ASCII output is corrupted on Windows.
+- **The Windows console encoding defect is fixed** (v166). It once rendered an en-dash as `ĞÖ`; the
+  compiler's own banners are now ASCII-safe, and the non-ASCII path was exercised on a real Windows run.
+  **A residual risk remains:** the language is fully Sanskrit, so keyword output is non-ASCII, and only the
+  console path that was actually tested is known good.
 
 ## 10. The development order — seven gates
 
