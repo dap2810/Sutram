@@ -1,0 +1,4 @@
+232_arity.sm:5:11: Sutram Error [E_ARITY]: 'f' ko 1 tark diye; hastakshar me 2
+      likha(f(1))
+            ^
+Sanket: utne hi tark dein jitne prakriya ki paribhasha me hain

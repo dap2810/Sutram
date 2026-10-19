@@ -1,0 +1,4 @@
+228_block_scope.sm:6:11: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'b'
+      likha(b)
+            ^
+Sanket: 'b' ek khand { } ya chakra me ghoshit hai; uske bahar drishya nahi

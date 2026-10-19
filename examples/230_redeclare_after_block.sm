@@ -1,0 +1,13 @@
+# R7 golden: a name may be declared again once its block has closed, and the
+# new declaration is the one that is read. Before R7 this printed 7: the second
+# vitti got a fresh slot that was never read.
+mukhya() {
+    vitti c = 1
+    yadi (c == 1) { vitti b = 7
+        likha(b) }
+    vitti b = 2
+    likha(b)
+    vitti j = 10
+    chakra j = 0 tak 1 { likha(j) }
+    likha(j)
+}

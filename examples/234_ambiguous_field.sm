@@ -1,0 +1,11 @@
+# R7 golden: field access has no type, so a field name declared by two rachana
+# at different offsets is ambiguous and is a compile error. Before R7 b.x used
+# the first rachana's x (offset 0) and printed 1 2 instead of 2 1.
+rachana A = { x, y }
+rachana B = { y, x }
+mukhya()
+    vitti b = nirmmita(16)
+    b.x = 1
+    b.y = 2
+    likha(b[0])
+    likha(b[1])
