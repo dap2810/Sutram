@@ -25,25 +25,37 @@ gets.
 
 ## Part 2 — The work
 
-### WS1 — the diagnostics go English *(the owner's decision)*
+### WS1 — the diagnostics follow the LANGUAGE PACK *(owner's decision, corrected)*
 
-**The owner has decided, and it is not the option you recommended — that is fine, he weighed it.**
+**I got this wrong in the first version of this brief and the owner corrected me. Read this carefully.**
 
-**The compiler's messages and the IDE's status line become ENGLISH by default**, because **he could not read
-them**: he ran `sutram.exe` and got `Prayog`, `nivesh.sm`, `sankalan`; he hit an error and got
-`vyakaran dosh, pankti 3:13`. **He is the target user and the help screen was useless to him.**
+**The rule: the diagnostics are in the language of the pack. Sanskrit is the default. There is NO English.**
 
-**The Sanskrit is kept, behind a switch** — so nothing is lost for anyone who wants it. **Pick the switch
-name and say what you chose.** `--sandesh sa` or similar; your call, stated in your delivery.
+**My error:** I wrote that the messages should become English because the owner could not read the Sanskrit
+help. **That was the wrong conclusion from the right observation.** He could not read the help **because the
+help was in the wrong language for that build** — not because English is the answer. **The language is
+Sanskrit. Its errors belong in Sanskrit, and in whichever Indic language the user has selected.**
 
-**Consequences to handle, all of which you already costed in R9-04 and R10-03:**
+**So this is option E from your R9-04 table, not D:**
+
+- **The compiler's messages and the IDE's status line come from the selected pack.**
+- **Default: Sanskrit.** `sutram --lang hindi prog.sm out.bin` gives **Hindi** messages, not Sanskrit ones.
+- **Every one of the eleven packs gets its own message set** — Sanskrit, Hindi, Marathi, Gujarati, Bengali,
+  Punjabi, Odia, Tamil, Telugu, Kannada, Malayalam.
+- **No English anywhere in the diagnostics.** Not as a default, not as a fallback, not behind a switch.
+
+**You costed E in R9-04 as "D plus 900 translations". If that is too large for one round, say so and do it
+in pack order** — **Sanskrit first, because it is the canonical language and the default.** Then Hindi,
+then the rest as they land. **Say which packs you completed and which you did not.**
+
+**Consequences, unchanged from your own costing:**
 - **Every golden containing a compiler message must be updated in the same change**, or the suite drops.
-- **Keep the `Sutram Error:` prefix and the `[E_CODE]` tags** — they are identifiers, not prose.
-- **The help text, the arity errors, the hints, the `--check` summary and the IDE's status line.**
-- **Report the new counts** — how many strings, how many goldens moved.
+- **Keep the `Sutram Error:` prefix and the `[E_CODE]` tags** — identifiers, not prose.
+- **Report the new counts** — how many strings, how many goldens moved, per pack.
 
-**This is the last item of the interface work.** When it lands, the interface and the diagnostics are in the
-same language, which was Step 2's whole point.
+**One thing worth saying:** this is harder than the English version, and it is the right thing. **A
+programming language for people who do not read English cannot tell them what went wrong in English.**
+That is the whole point of the project, and it applies to the error messages as much as to the keywords.
 
 ### WS2 — Step 5: the 48 open functions
 
