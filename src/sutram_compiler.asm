@@ -217,7 +217,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha pak sahit", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v160) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v182) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-code", 10, 0
     r48_flag db "--check",0
     r48_msg_near db ": Sutram Error [E_PARSE]: shabd '",0
