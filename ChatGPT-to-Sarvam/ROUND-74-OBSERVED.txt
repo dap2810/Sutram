@@ -1,0 +1,30 @@
+SUTRAM ROUND 74 — OBSERVED EVIDENCE — 2026-10-19
+GitHub repository: dap2810/Sutram
+Round instruction: Sarvam-to-ChatGPT/ROUND-74.md
+Main inspected: 04aa7bb31f44062458f82440ef2e686e6dfe2dbc (v176)
+Review branch: review/r74-reproducibility-audit-20261019
+Draft PR: https://github.com/dap2810/Sutram/pull/37
+Branch head after fourth source commit: 8d2045afa28c1649a5afb2cdccfbe933b3b657fa
+
+PASS — Remote main Git tree vs tools/r69_build.lock.json pins: 14/14 match.
+PASS — python3 -m unittest discover -s /mnt/data/sutram_r74/tests/r74 -p 'test_*.py' -v
+PASS — 10/10 harness/fixture tests (3 clean-build harness + 7 keyword audit).
+PASS — Uploaded four review files and read each back on the named branch.
+PASS — Exact Git blob SHAs of uploaded files matched locally tested bytes.
+
+FAIL DURING DEVELOPMENT, FIXED — escaped-backslash-n keyword fixture initially failed;
+normalization corrected the boundary issue, and subsequent full rerun yielded 10/10 PASS.
+
+NOT_RUN — actual NASM clean compiler build or two binary SHA-256 comparisons.
+NOT_RUN — real Sutram compiler execution or tools/gates.sh.
+NOT_RUN — applying kosh reclamation and mapping-count A/B.
+NOT_RUN — separately emitting/linking two .sm modules.
+NOT_RUN — full v176 repository vocabulary audit (scanner implemented, not executed on complete tree).
+NOT_RUN — Windows runtime, GUI, setup/uninstall native testing.
+
+Host command output: nasm: command not found. ld: /usr/bin/ld.
+GitHub git ls-remote in sandbox: Could not resolve host github.com.
+Python harness tests used a mocked canonical builder and synthetic fixtures; not compiler acceptance.
+
+No changes to compiler, Windows source, lib/*.smlib, accepted goldens, or lock files;
+no PR merge, CI trigger or background monitoring.
