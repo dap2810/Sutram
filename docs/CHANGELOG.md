@@ -1,3 +1,41 @@
+## v183 - ROUND-08 to Claude (Step 5) and ROUND-76 to ChatGPT (Step 4)
+
+**Muse stays paused, so Step 5 has no owner - and it is now Claude's.** That is why ROUND-08 differs from the
+last few rounds.
+
+### ROUND-08 (Claude) - Step 5: prove the library is complete
+
+**The state of it, honestly: 24 modules and 303 functions, with 191 library proofs. 191 is not 303, and
+nobody currently knows which functions have no proof.**
+
+**The headline artefact is the gap list** - which of the 303 functions have no proof, module by module. It is
+the number that has to exist before release and it does not exist today. Then a one-line contract per
+unproven function, then proofs for as many as the round allows, starting with the ones a user is most likely
+to call.
+
+**With one instruction that matters: do not pad the count.** If a function cannot be usefully proven because
+it is a wrapper or its contract is trivial, say so and say why - **a proof that asserts nothing is worse than
+no proof, because it looks like coverage.**
+
+### ROUND-76 (ChatGPT) - Step 4, and the measurement that decides it
+
+Its R75 staged the `kosh` reclamation against the current 14-pin compiler. **Now the measurement:** the raw
+JSON from its checkpoint tool - mapping count, VmRSS, VmHWM, VmSize before and after growth, legacy vs
+reclaim, same source.
+
+**Three questions in plain words:** does it actually reclaim (a prototype that does not is a useful result,
+not a failure); is the alias-invalidation contract safe; and **does the language need a free primitive** -
+an owner decision better raised now than after v1.0.
+
+**Also:** the smallest working separate compilation (or the smallest failing case), the repository-wide
+keyword audit, and **the installer defect Claude found** - a failed install leaves a half-install a retry
+refuses, which is its code.
+
+### Merge order, again
+
+ChatGPT's R75 pins the compiler blob that Claude's R7 changed. **R7 merged first**, and ROUND-76 tells it to
+re-check its pins against current main before applying anything.
+
 ## v182 - Claude ROUND-07 merged: STEP 1 IS DONE. Every name-resolution path now errors.
 
 **This is the step that mattered most on the road to v1.0, and it is closed.**
