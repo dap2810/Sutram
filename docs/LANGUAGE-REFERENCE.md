@@ -179,13 +179,13 @@ mukhya()
         likha("small")
     }
 
-    chakra i = 1 to 5 {      # for (ascending)
+    chakra i = 1 tak 5 {      # for (ascending)
         yadi (i == 3) { agrim }   # continue
         yadi (i == 5) { krama }      # break
         likha(i)
     }
 
-    chakra j = 5 to 1 {      # for (descending)
+    chakra j = 5 tak 1 {      # for (descending)
         likha(j)
     }
 
@@ -292,7 +292,7 @@ keyword, and it compiles to the same native machine code.
 | shunya | शून्य | মিথ্যা | ખોટું | असत्य | ಸುಳ್ಳು | അസത്യം | खोटे | ମିଥ୍ୟା | ਝੂਠ | பொய் | అబద్ధం |
 | ganana | सृजन | সৃজন | સર્જન | सृजन | ಸೃಷ್ಟಿ | സൃഷ്ടി | सृजन | ସୃଷ୍ଟି | ਸਿਰਜਣ | படைப்பு | సృష్టి |
 | sutra | सूत्र | স্থির | કૂટશબ્દ | स्थिर | ಸ್ಥಿರ | സ്ഥിരം | स्थिर | ସ୍ଥିର | ਸਥਿਰ | சூத்திரம் | స్థిరం |
-| to | पर्यन्त | থেকে | થી | से | ರಿಂದ | മുതൽ | पासून | ଠାରୁ | ਤੋਂ | முதல் | నుండి |
+| tak | पर्यन्त | থেকে | થી | से | ರಿಂದ | മുതൽ | पासून | ଠାରୁ | ਤੋਂ | முதல் | నుండి |
 | agrim | उद्देश्य | এগিয়ে | આગળ | आगे | ಮುಂದುವರಿಸು | തുടരുക | पुढे | ଆଗକୁ | ਅੱਗੇ | தொடர் | కొనసాగు |
 | vitti | वित्ति | চল | ચલ | चर | ಚರ | ചരം | चल | ଚଳ | ਵੇਰੀਏਬਲ | மாறி | చరరాశి |
 | yadi | यदि | যদি | જો | यदि | ಒಂದುವೇಳೆ | എങ്കിൽ | जर | ଯଦି | ਜੇ | எனின் | ఒకవేళ |
@@ -371,7 +371,7 @@ Full specification, measured behaviour, and the `kosh` vs `suchi`/`queue`
 comparison: `docs/KOSH-BUILTINS.md`.
 
 Capacity doubles on growth. Empty `kosh_pop` / `kosh_peek` / `kosh_dequeue`
-abort with their own diagnostics — `kosh pop from empty mala`,
-`kosh peek from empty mala`, `kosh dequeue from empty mala` — and exit
+abort with their own diagnostics — `rikta kosh se kosh_pop`,
+`rikta kosh se kosh_peek`, `rikta kosh se kosh_dequeue` — and exit
 1. Element types: integer (`kosh v`, the default) or binary64
 (`kosh dasham d`). `push`/`pop`/the builtins take a direct kosh variable.
