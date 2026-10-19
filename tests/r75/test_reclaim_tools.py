@@ -44,7 +44,7 @@ class Staging(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'anchor'):
             p.patch_core(SAMPLE.replace(p.GROWTH,p.GROWTH*2),b'; helper\n')
     def test_requires_explicit_unsafe_alias_optin(self):
-        with self.assertRaisesRegex(ValueError,'opt'):
+        with self.assertRaisesRegex(ValueError,'experimental-unsafe-alias'):
             p.stage_sources(Path('/tmp'),Path('/tmp/r75-placeholder'),False)
     def test_git_blob(self):
         self.assertEqual(p.blob(b'hello\n'),'ce013625030ba8dba906f756967f9e9ca394464a')
