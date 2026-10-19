@@ -97,7 +97,7 @@ x86-64 मशीन-कोड्-रूपेण परिवर्तते। 
     <span class="k" data-tip="अर्थः: print">likha</span>("Namaste, Sutram!\n")</code></pre>
 <p>एतत् <code>namaste.sm</code> इति नाम्ना रक्षतु, ततः संकलय च प्रचालय:</p>
 <pre><code>$ sutram namaste.sm namaste.bin
-OK: compiled 90 bytes
+Siddh: 97 byte sankalit
 $ ./namaste.bin
 <span class="out">Namaste, Sutram!</span></code></pre>
 <div class="note">संकलकःः सम्पूर्णं चालनीयं ELF-बाइनरी निर्माति — अस्मै क्रमादेशःाय केवलं ९० बाइट्।</div>
@@ -162,7 +162,7 @@ $ ./namaste.bin
 <div class="ch" id="ch6"><h2>6. पाशाः: <span class="k" data-tip="अर्थः: for">chakra</span>, <span class="k" data-tip="अर्थः: while">yavat</span>, <span class="k" data-tip="अर्थः: break">krama</span>, <span class="k" data-tip="अर्थः: continue">agrim</span> <span class="en-gloss">(Loops)</span></h2>
 <p><code><span class="k" data-tip="अर्थः: for">chakra</span></code> (पुनरावृत्तिः) गणना-पाशः — "i = a तः b पर्यन्तम्":</p>
 <pre><code><span class="k" data-tip="अर्थः: main">mukhya</span>()
-    <span class="k" data-tip="अर्थः: for">chakra</span> i = 1 <span class="k" data-tip="अर्थः: range-to">to</span> 5 {
+    <span class="k" data-tip="अर्थः: for">chakra</span> i = 1 <span class="k" data-tip="अर्थः: range-to">tak</span> 5 {
         <span class="k" data-tip="अर्थः: print">likha</span>(i)
         <span class="k" data-tip="अर्थः: print">likha</span>(" ")   <span class="cm">// 1 2 3 4 5</span>
     }
@@ -171,7 +171,7 @@ $ ./namaste.bin
 <code><span class="k" data-tip="अर्थः: continue">agrim</span></code> अग्रिमं चरणं प्रति गच्छति:</p>
 <pre><code><span class="k" data-tip="अर्थः: main">mukhya</span>()
     <span class="k" data-tip="अर्थः: variable">vitti</span> yogam = 0
-    <span class="k" data-tip="अर्थः: for">chakra</span> i = 1 <span class="k" data-tip="अर्थः: range-to">to</span> 100 {
+    <span class="k" data-tip="अर्थः: for">chakra</span> i = 1 <span class="k" data-tip="अर्थः: range-to">tak</span> 100 {
         <span class="k" data-tip="अर्थः: if">yadi</span> (i > 10) { <span class="k" data-tip="अर्थः: break">krama</span> }
         <span class="k" data-tip="अर्थः: if">yadi</span> (i % 2 == 0) { <span class="k" data-tip="अर्थः: continue">agrim</span> }
         yogam = yogam + i
@@ -204,7 +204,7 @@ mukhya()
 <code><span class="k" data-tip="अर्थः: mala">mala</span> tarika[5]</code> पञ्च 64-बिट्-स्थानानि ददाति:</p>
 <pre><code><span class="k" data-tip="अर्थः: main">mukhya</span>()
     <span class="k" data-tip="अर्थः: mala">mala</span> tarika[5]
-    <span class="k" data-tip="अर्थः: for">chakra</span> i = 0 <span class="k" data-tip="अर्थः: range-to">to</span> 5 {
+    <span class="k" data-tip="अर्थः: for">chakra</span> i = 0 <span class="k" data-tip="अर्थः: range-to">tak</span> 5 {
         tarika[i] = i * i
     }
     <span class="k" data-tip="अर्थः: print">likha</span>(tarika[4])     <span class="cm">// 16</span>
@@ -227,12 +227,14 @@ mukhya()
 <div class="ch" id="ch10"><h2>10. सूत्रम्-कवचम् (REPL) <span class="en-gloss">(The Sutram shell (REPL))</span></h2>
 <p>संस्करणे १.० एकः संवादात्मकः कवचम् आगतः — पायथन-IDLE-सदृशः। प्रचालयतु: <code>sutram -i</code>:</p>
 <pre><code>$ sutram -i
-Sutram Shell v1.0 — the complete thread
+Sutram khol v1.0 - sampurna sutra
+Sutram kathan likho aur Enter dabao. Turant chalega.
+Aadesh: sahayata (sahay) | nirgat (nikas) | sarvam (dekho)
 
 <span class="k" data-tip="अर्थः: constant">sutra</span>> <span class="k" data-tip="अर्थः: variable">vitti</span> x = 21
-OK: compiled 204 bytes
+Siddh: 54 byte sankalit
 <span class="k" data-tip="अर्थः: constant">sutra</span>> <span class="k" data-tip="अर्थः: print">likha</span>(x / 3)
-OK: compiled 260 bytes
+Siddh: 201 byte sankalit
 7
 <span class="k" data-tip="अर्थः: constant">sutra</span>> nirgat</code></pre>
 <p>भवतः प्रत्येका पङ्क्तिः एके वर्धमाने सत्र-क्रमादेशःे युज्यते, तत्क्षणं संकल्य च चाल्यते।
@@ -263,11 +265,18 @@ OK: compiled 260 bytes
 
 <div class="ch" id="ch12"><h2>12. दोषाः दोषसुधारः च <span class="en-gloss">(Errors and debugging)</span></h2>
 <p>सूत्रम् पार्स्-दोषेषु पङ्क्ति-संख्यां तथा च तत् टोकन् यत्र अटकितवान् इति वदति:</p>
-<pre><code>$ ./sutram_compiler galat.sm out.bin
+<pre><code>$ cat galat.sm
+mukhya() {
+    vitti x = 5
+    vitti y = (x
+    likha(x)
+}
+$ ./sutram_compiler galat.sm out.bin
 
-Sutram Error: parse error at line 4 near token '<span class="k" data-tip="अर्थः: print">likha</span>'
-Hint: check the keyword spelling and syntax near this spot.
-      Run 'sutram -i' and type 'sahayata' for help.</code></pre>
+Sutram Error: vyakaran dosh, pankti 4:5, shabd '<span class="k" data-tip="अर्थः: print">likha</span>'
+      likha(x)
+      ^
+Sanket: is sthan par shabd aur vyakaran dekho.</code></pre>
 </div>
 <div class="ch" id="ch13"><h2>13. सम्पूर्णः सन्दर्भः <span class="en-gloss">(Complete reference)</span></h2>
 <p>सूत्रम्-भाषायाः सर्वाणि कूटशब्दः्स्, एकस्मिन् एव तालिकायाम्:</p>
@@ -283,7 +292,7 @@ Hint: check the keyword spelling and syntax near this spot.
 <tr><td><code><span class="k" data-tip="अर्थः: constant">sutra</span></code></td><td>constant</td></tr>
 <tr><td><code><span class="k" data-tip="अर्थः: if">yadi</span> ... <span class="k" data-tip="अर्थः: else">anya</span></code></td><td>if ... else</td></tr>
 <tr><td><code><span class="k" data-tip="अर्थः: multiply (*)">guna</span> / <span class="k" data-tip="अर्थः: condition">bhavana</span></code></td><td>switch / case</td></tr>
-<tr><td><code><span class="k" data-tip="अर्थः: for">chakra</span> i = a <span class="k" data-tip="अर्थः: range-to">to</span> b</code></td><td>for loop</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: for">chakra</span> i = a <span class="k" data-tip="अर्थः: range-to">tak</span> b</code></td><td>for loop</td></tr>
 <tr><td><code><span class="k" data-tip="अर्थः: while">yavat</span></code></td><td>while loop</td></tr>
 <tr><td><code><span class="k" data-tip="अर्थः: break">krama</span> / <span class="k" data-tip="अर्थः: continue">agrim</span></code></td><td>break / continue</td></tr>
 <tr><td><code><span class="k" data-tip="अर्थः: function">prakriya</span> / <span class="k" data-tip="अर्थः: return">prati</span></code></td><td>function / return</td></tr>
@@ -337,14 +346,14 @@ n--      <span class="cm"># n = 5</span></code></pre>
 
 <h3><span class="k" data-tip="अर्थः: print (no newline)">lkhb</span>() — नवीनपङ्क्तिं विना मुद्रणम्</h3>
 <p><code><span class="k" data-tip="अर्थः: print">likha</span>()</code> संख्यायाः अनन्तरं नवीनपङ्क्तिं ददाति; <code><span class="k" data-tip="अर्थः: print (no newline)">lkhb</span>()</code> न ददाति — सारणीनिर्माणाय:</p>
-<pre><code><span class="k" data-tip="अर्थः: for">chakra</span> i = 1 <span class="k" data-tip="अर्थः: range-to">to</span> 5 {
+<pre><code><span class="k" data-tip="अर्थः: for">chakra</span> i = 1 <span class="k" data-tip="अर्थः: range-to">tak</span> 5 {
     <span class="k" data-tip="अर्थः: print (no newline)">lkhb</span>(i)
     <span class="k" data-tip="अर्थः: print">likha</span>(" ")
 }</code></pre>
 
 <h3>अवरोही पुनरावृत्तिः (Descending Loops)</h3>
 <p>प्रारम्भिकमूल्यम् अन्तिमात् मूल्यात् बृहत्तरं भवति चेत्, गणना स्वतः अवरोहति:</p>
-<pre><code><span class="k" data-tip="अर्थः: for">chakra</span> i = 5 <span class="k" data-tip="अर्थः: range-to">to</span> 1 {
+<pre><code><span class="k" data-tip="अर्थः: for">chakra</span> i = 5 <span class="k" data-tip="अर्थः: range-to">tak</span> 1 {
     <span class="k" data-tip="अर्थः: print (no newline)">lkhb</span>(i)
     <span class="k" data-tip="अर्थः: print">likha</span>(" ")
 }    <span class="cm"># फलम्: 5 4 3 2 1</span></code></pre>
