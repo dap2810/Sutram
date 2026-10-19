@@ -1,3 +1,24 @@
+## v197 - everything brought up to date after the F1 fix
+
+**Verified on main: F1 is fixed.** 27, 32 and 38 local variables all return the correct value - the crash you
+found on Windows is gone from the tree.
+
+**The documents were one step behind, and are now current:**
+
+| | Was | Now |
+|---|---|---|
+| Regression suite | 203 | **205 / 4** |
+| Library proofs | 209 | **210 / 210** |
+| Library gap | 235 of 303 closed | **255 of 303** (48 open) |
+
+**And the roadmap now records F1 properly** - what it was, that it is fixed, the root cause, and how it was
+found. **Step 5's owner is corrected from "Muse (paused)" to Claude**, since Muse is paused and Claude has
+been carrying it.
+
+**The F1 section on the roadmap ends with the reason it matters more than the fix:** *it was found by the
+owner running a test I had written badly, on a claim I had initially doubted, and it was confirmed by three
+independent methods.* **That is now the project's rule: a description is not a reproduction.**
+
 ## v196 - F1 IS FIXED. Verified by me. The most serious defect on the project is closed.
 
 **I rebuilt Claude's branch and swept the variable count myself:**
