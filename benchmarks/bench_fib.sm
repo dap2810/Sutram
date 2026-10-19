@@ -1,0 +1,10 @@
+# Recursive calls - the cost of a function call, which is what the r46 set measured.
+prakriya fib(n) {
+    yadi (n < 2) {
+        prati n
+    }
+    prati fib(n - 1) + fib(n - 2)
+}
+mukhya() {
+    likha(fib(27))
+}
