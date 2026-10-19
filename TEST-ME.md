@@ -14,6 +14,36 @@ the same steps can be repeated on any machine.
 
 **Uninstall:** Start Menu → Sutram → Uninstall Sutram, or Settings → Apps.
 
+## Automated: one command, one log (ROUND-06)
+
+The steps above are also a script that prints a machine-readable log. From the folder that holds
+`Sutram-Setup.exe`, in a **normal (not administrator) PowerShell window**:
+
+```
+powershell -NoProfile -ExecutionPolicy Bypass -File tools\accept-windows.ps1
+```
+
+**What it does:**
+
+- installs for the current user, launches the installed IDE, compiles `218` and runs the IDE checks
+- closes the IDE and uninstalls
+- refuses to run over an existing Sutram installation
+
+**What it writes:** `build\windows\accept-<time>\accept-windows.json` and screenshots. **Send that folder back.**
+
+**Checking a returned log, on any machine:**
+
+```
+python3 tools/check_accept_windows_log.py <folder>/accept-windows.json
+```
+
+It says whether the log is Windows acceptance of the tree it is run in: same binaries (SHA-256),
+Windows (not Wine), not elevated, every required check PASS.
+
+**Rebuild first** (`windows\BUILD-WINDOWS-SETUP.cmd`). The committed `Sutram-Setup.exe` and
+`sutram-ide-gui.exe` are the ROUND-03 build, so the script will correctly fail them on the English-labels
+checks.
+
 ## Note
 
 `sutram-ide-gui.exe` run on its own needs `win\sutram.exe`, `lang\`, `lib\` and `examples\` beside it.
