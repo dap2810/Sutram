@@ -97,6 +97,7 @@ AST_DO_WHILE  equ 28    ; do-while stmt: [type][body][cond]
 AST_FLOAT     equ 29    ; T12 IEEE-754 binary64 bits in field1
 R56_GLOBAL_CAP equ 128
 R56_PATCH_CAP equ 16384
+R9_GUNA_CAP equ 1024        ; R9: hidden guna values per compilation
 FUNC_SPILL_BYTES equ 2048 ; reserved stack spill area per generated function/main
 ; R31 experimental, disabled by default. Enable only with NASM:
 ;   -DSUTRAM_EXPERIMENTAL_XMM_CACHE=1
@@ -828,6 +829,7 @@ r54_builtin_arity_table:
     msg_func_table_overflow db "Sutram Error: prakriya-suchi seema atikram", 10, 0
     msg_patch_overflow db "Sutram Error: aahvan-suchi seema atikram", 10, 0
     msg_func_defs_overflow db "Sutram Error: prakriya paribhasha-suchi seema atikram", 10, 0
+    msg_r9_guna_overflow db "Sutram Error: guna seema atikram (1024)", 10, 0
     msg_break_patch_overflow db "Sutram Error: chakra me krama seema atikram", 10, 0
     msg_continue_patch_overflow db "Sutram Error: chakra me agrim seema atikram", 10, 0
     msg_code_overflow db "Sutram Error: yantra-code seema atikram", 10, 0
@@ -977,6 +979,8 @@ section .bss
     graph_detail_ptr resq 1  ; only retained for portable R41 missing diagnostic
     rachana_defs resb RACHANA_CAP * 256 ; [name_ptr(8)][field_count(8)][fields...]
     rachana_cnt  resq 1
+    r9_guna_cnt resq 1
+    r9_guna_names resb R9_GUNA_CAP * 16
     break_patch_positions resq BREAK_PATCH_CAP ; positions of break jmps to backpatch
     break_patch_cnt      resq 1
     continue_patch_positions resq CONTINUE_PATCH_CAP ; positions of continue jmps to backpatch
@@ -6598,6 +6602,73 @@ reserve_ast_block_extra:
     lea rdi, [rel msg_ast_overflow]
     jmp capacity_fail
 
+; R9 (F3): rax = guna switch expression. Returns rax = the expression to
+; compare against, rdx = a hidden DECL to emit first, or 0 when the
+; expression is a plain variable or number (re-reading those is harmless).
+r9_guna_once:
+    mov rcx, [rax]
+    cmp rcx, AST_VAR
+    je .rgo_plain
+    cmp rcx, AST_NUM
+    je .rgo_plain
+    push rbx
+    push r12
+    mov r12, rax              ; the expression
+    mov rax, [rel r9_guna_cnt]
+    cmp rax, R9_GUNA_CAP
+    jae .rgo_overflow
+    inc qword [rel r9_guna_cnt]
+    lea rbx, [rel r9_guna_names]
+    shl rax, 4
+    add rbx, rax              ; 16-byte slot: "#g" + decimal + 0
+    mov rax, [rel r9_guna_cnt]
+    mov byte [rbx], '#'
+    mov byte [rbx+1], 'g'
+    lea rcx, [rbx+12]
+    mov byte [rcx], 0
+.rgo_digit:
+    dec rcx
+    xor edx, edx
+    mov r8, 10
+    div r8
+    add dl, '0'
+    mov [rcx], dl
+    test rax, rax
+    jnz .rgo_digit
+    ; shift the digits left to follow "#g"
+    lea rdx, [rbx+2]
+.rgo_move:
+    mov al, [rcx]
+    mov [rdx], al
+    inc rcx
+    inc rdx
+    test al, al
+    jnz .rgo_move
+    push rdi
+    mov rdi, rbx
+    call r7_declare_new
+    pop rdi
+    call alloc_ast            ; DECL
+    mov qword [rax], AST_DECL
+    mov [rax+8], rbx
+    mov [rax+16], r12
+    push rax
+    call alloc_ast            ; VAR
+    mov qword [rax], AST_VAR
+    mov [rax+8], rbx
+    pop rdx
+    pop r12
+    pop rbx
+    ret
+.rgo_plain:
+    xor edx, edx
+    ret
+.rgo_overflow:
+    pop r12
+    pop rbx
+    lea rdi, [rel msg_r9_guna_overflow]
+    jmp capacity_fail
+
 alloc_ast:
     push rbx
     mov rbx, [rel ast_ptr]
@@ -9023,6 +9094,12 @@ parse_stmt:
     jne parse_error
     call advance_tok          ; consume '('
     call parse_expr           ; rax = switch expression
+    ; R9 (F3): every bhavana compares against the switch expression, so an
+    ; expression with a call in it was evaluated once per case tested. Unless
+    ; it is a plain variable or number, evaluate it once into a hidden local
+    ; ("#g<n>": '#' cannot start a name in source) and switch on that.
+    call r9_guna_once         ; rax = expression to compare, rdx = DECL or 0
+    push rdx                  ; [rsp+24] = hidden DECL (or 0)
     push rax                  ; [rsp+16] = switch_expr
     push 0                    ; [rsp+8]  = first_if = NULL
     push 0                    ; [rsp+0]  = last_if = NULL
@@ -9134,6 +9211,20 @@ parse_stmt:
     call maybe_semi
     mov rax, [rsp+8]          ; first_if
     add rsp, 24               ; clean up 3 pushes
+    pop rdx                   ; R9: hidden DECL or 0
+    test rdx, rdx
+    jz .ps_guna_plain
+    ; BLOCK { DECL #g<n> = expr ; if-chain }
+    push rax
+    push rdx
+    call alloc_ast
+    pop rdx
+    pop rcx
+    mov qword [rax], AST_BLOCK
+    mov qword [rax+8], 2
+    mov [rax+16], rdx
+    mov [rax+24], rcx
+.ps_guna_plain:
     pop rbx
     ret
 
@@ -11702,6 +11793,8 @@ gen_stmt:
 %endif
     cmp rax, AST_DECL
     je .gs_decl
+    cmp rax, AST_BLOCK
+    je .gs_block
     cmp rax, AST_ASSIGN
     je .gs_assign
     cmp rax, AST_IF
@@ -13576,6 +13669,13 @@ gen_stmt:
     mov dil, 0xFF
     call emit_byte
     call emit_syscall
+    pop rbx
+    ret
+
+.gs_block:
+    ; R9: a statement-level block (the hidden-value form of guna)
+    mov rax, rbx
+    call gen_block
     pop rbx
     ret
 
@@ -18835,6 +18935,30 @@ emit_nirmmita_from_rax:
     call emit_byte
     ; syscall
     call emit_syscall
+    ; R9 (F2): mmap reports failure as -errno (-4095..-1), and nirmmita
+    ; promises 0 on failure. Map the error range to 0:
+    ;   cmp rax, -4095 = 48 3D 01 F0 FF FF ; jb +2 = 72 02 ; xor eax, eax = 31 C0
+    ; The Windows shim already returns 0, which passes through unchanged.
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x3D
+    call emit_byte
+    mov dil, 0x01
+    call emit_byte
+    mov dil, 0xF0
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0x72
+    call emit_byte
+    mov dil, 0x02
+    call emit_byte
+    mov dil, 0x31
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
     ret
 
 ; ============================================================
