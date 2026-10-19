@@ -1,0 +1,51 @@
+# Expected: 10 20 30 29
+# v188:     10 28 29 29
+# f has 31 variables (x, v0..v29). The first 5 live in registers; the rest
+# get stack slots at rbp-24, rbp-32, ... In a called function the 15th slot
+# (rbp-136, the 20th variable) is emitted with a one-byte displacement, which
+# wraps to rbp+120. Those slots are above f's frame: on the caller's stack,
+# where the caller saved its register variables before the call. When f
+# returns, the caller restores b and c from the overwritten copies.
+prakriya f(x) {
+    vitti v0 = 0
+    vitti v1 = 1
+    vitti v2 = 2
+    vitti v3 = 3
+    vitti v4 = 4
+    vitti v5 = 5
+    vitti v6 = 6
+    vitti v7 = 7
+    vitti v8 = 8
+    vitti v9 = 9
+    vitti v10 = 10
+    vitti v11 = 11
+    vitti v12 = 12
+    vitti v13 = 13
+    vitti v14 = 14
+    vitti v15 = 15
+    vitti v16 = 16
+    vitti v17 = 17
+    vitti v18 = 18
+    vitti v19 = 19
+    vitti v20 = 20
+    vitti v21 = 21
+    vitti v22 = 22
+    vitti v23 = 23
+    vitti v24 = 24
+    vitti v25 = 25
+    vitti v26 = 26
+    vitti v27 = 27
+    vitti v28 = 28
+    vitti v29 = 29
+    prati v0 + v29
+}
+mukhya() {
+    vitti a = 10
+    vitti b = 20
+    vitti c = 30
+    vitti r = f(1)
+    likha(a)
+    likha(b)
+    likha(c)
+    likha(r)
+}

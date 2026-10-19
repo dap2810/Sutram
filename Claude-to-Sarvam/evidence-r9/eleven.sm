@@ -1,0 +1,15 @@
+# R9 font check: mukhya and likha in each of the eleven packs
+# sanskrit   मुख्य  लिख  यदि
+# bengali    মুখ্য  লিখো  যদি
+# gujarati   મુખ્ય  લખો  જો
+# hindi      मुख्य  लिखो  यदि
+# kannada    ಮುಖ್ಯ  ಬರೆ  ಒಂದುವೇಳೆ
+# malayalam  പ്രധാന  എഴുതു  എങ്കിൽ
+# marathi    मुख्य  लिहा  जर
+# odia       ମୁଖ୍ୟ  ଲେଖ  ଯଦି
+# punjabi    ਮੁੱਖ  ਲਿਖੋ  ਜੇ
+# tamil      முதன்மை  எழுது  எனில்
+# telugu     ముఖ్యం  వ్రాయు  ఒకవేళ
+mukhya() {
+    likha(1)
+}

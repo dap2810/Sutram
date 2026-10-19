@@ -1,0 +1,19 @@
+# Expected: 2 1002 1002
+# v188:     2 5 1002
+# F1-e (library). Needs lib/varna.smlib: run from the repository root.
+# varna_bhed has 25 variables; it overwrites the 1000 the caller pushed while
+# evaluating `1000 + varna_bhed(...)`. The same call on the right-hand side
+# (third line) is fine, because nothing is pushed first.
+yoj varna
+mukhya() {
+    vitti s = nirmmita(8 * 8)
+    s[0] = 97
+    s[1] = 44
+    s[2] = 98
+    vitti sep = nirmmita(8)
+    sep[0] = 44
+    vitti parts = nirmmita(16 * 8)
+    likha(varna_bhed(s, 3, sep, 1, parts, 8))
+    likha(1000 + varna_bhed(s, 3, sep, 1, parts, 8))
+    likha(varna_bhed(s, 3, sep, 1, parts, 8) + 1000)
+}

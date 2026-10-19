@@ -1,0 +1,29 @@
+# windows/native-installer/check-script-fonts.ps1 under Wine 9.0 + PowerShell 7.2 (C:\pwsh72). Not Windows.
+## 1. the Wine prefix as it is (no Indic font registered)
+Devanagari (sanskrit, hindi, marathi)    MISSING
+Bengali                                  MISSING
+Gujarati                                 MISSING
+Gurmukhi (punjabi)                       MISSING
+Odia                                     MISSING
+Tamil                                    MISSING
+Telugu                                   MISSING
+Kannada                                  MISSING
+Malayalam                                MISSING
+No font was found for: Devanagari (sanskrit, hindi, marathi), Bengali, Gujarati,
+ Gurmukhi (punjabi), Odia, Tamil, Telugu, Kannada, Malayalam. Programs in those 
+scripts will show empty boxes. Windows 10 and 11 include Nirmala UI; on other sy
+stems add a font for these scripts (Settings > Personalization > Fonts, or an op
+tional language feature).
+EXIT=3
+## 2. with the registry value Windows 11 has: "Nirmala UI & Nirmala UI Semilight (TrueType)"
+Devanagari (sanskrit, hindi, marathi)    Nirmala UI
+Bengali                                  Nirmala UI
+Gujarati                                 Nirmala UI
+Gurmukhi (punjabi)                       Nirmala UI
+Odia                                     Nirmala UI
+Tamil                                    Nirmala UI
+Telugu                                   Nirmala UI
+Kannada                                  Nirmala UI
+Malayalam                                Nirmala UI
+All nine scripts of Sutram's eleven language packs are covered by Nirmala UI.
+EXIT=0

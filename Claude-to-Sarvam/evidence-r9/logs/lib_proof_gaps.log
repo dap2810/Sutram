@@ -1,0 +1,4 @@
+library: 24 modules, 303 functions
+proofs: 207 stdlib goldens, 38 example goldens that import lib, 86 properties
+PROVEN=295 PROVEN-INDIRECT=8 NAMED-NOT-CHECKED=0 UNPROVEN=0 MUTANT-DID-NOT-COMPILE=0 deep: all mutants killed=167 deep: some survive=133 deep: mutants killed=881/1119
+wrote /tmp/claude-0/-home-claude/6889af70-4aa6-567a-b665-1e4ff0074842/scratchpad/r9/final/lib-proof-gaps.json and /tmp/claude-0/-home-claude/6889af70-4aa6-567a-b665-1e4ff0074842/scratchpad/r9/final/lib-proof-gaps.md

@@ -4,6 +4,89 @@
 
 ---
 
+## Index — ROUND-09 delivery (2026-10-19, against main `c20e55a7`, v188)
+
+**The diagnostics decision (WS4), first, as asked.** It is still the owner's call and nothing has changed.
+The compiler's errors and the IDE's status words are Sanskrit; the rest of the interface is English.
+**Recommended: D now, E as translations arrive.**
+
+- **D:** a `--sandesh en` switch, with the default unchanged; the English IDE passes it.
+  - Cost: one message table and 90 lookups.
+  - About 10 new goldens; no existing golden, R70 case or doc changes.
+  - 1–2 rounds.
+- **E:** the `--lang` pack's language for every message.
+  - Cost: D plus 900 translations.
+- **B** (English only) would re-record 41 goldens, 4 R70 cases, 16 tool files and 18 docs.
+
+**New:** the IDE has one more status word (`lipi`, for the typing mode), and the compiler one more message
+(the `guna` capacity). Both would go into D's table (R9-04).
+
+**Code is on branch `claude/round-09`, draft PR #44.** Seven commits, separable (see the PR). On `main`
+only this folder changes, in a documentation-only commit.
+
+**Read first:**
+
+1. **F1 is reproduced, as files** (R9-01).
+   - `evidence-r9/F1/run-f1.sh` prints expected against actual: `10 28 29 29` for `10 20 30 29`,
+     `151 38 39 39 40` for `55 6 7 39 40`, a segfault for `7`.
+   - It reproduces on main's committed compiler, a fresh build, and `win/sutram.exe` under Wine.
+   - **My R8 description was imprecise, and that is why your four attempts were correct.** The trigger is a
+     *called* function with 20+ variables, or any function with 38+. Your attempts used a big `mukhya` or a
+     big caller. **Not fixed: yours to schedule.**
+2. **F2–F6 are fixed,** each with a file that fails on v188 (R9-03).
+   - **F2:** `nirmmita` returned `-errno`, so every "0 on failure" check missed it.
+   - **F3:** `guna` re-evaluated its value per case.
+   - **F4–F6:** a comment, a missing `yoj`, the binaries' mode.
+3. **Main's locks and binaries had drifted** (R9-03).
+   - The compiler pin was still R7's, so `r69_build --check-only` refused on main.
+   - `win/sutram.exe`, which the installer packages, was still the R7 build.
+   - The branch re-pins and rebuilds everything except `Sutram-Setup.exe`, which is ChatGPT's. **Rebuild it
+     after this merges.**
+4. **The IDE renders all eleven packs and types them from an English keyboard** (R9-05, R9-06).
+   - Indic runs use Nirmala UI, and Latin stays Consolas.
+   - The Language menu has all eleven packs, and Run passes `--lang`.
+   - Ctrl+T converts `mukhya` → मुख्य, or the pack's own keyword (`vitti` → चर in Hindi), and spells other
+     words phonetically.
+   - **Under Wine,** programs typed this way in sanskrit, hindi, tamil and gujarati compiled and printed
+     `5 ok`.
+   - **Windows: not run.**
+5. **Step 5:** 235 of 303 functions closed (R8: 212), 68 open (R9-02).
+
+| File | Workstream | One line |
+|---|---|---|
+| `R9-01-F1-REPRODUCTION.md` | **WS1** | The five files, the command, the pasted output on three compilers. The precise rule, why your attempts missed it, and the fix to schedule. |
+| `R9-02-LIBRARY-GAP-LIST.md` | WS2 | 23 more closed: by guard-cell proofs or by written argument. 68 open, listed. A new NO-CONTRACT verdict for undocumented returns. |
+| `R9-03-F2-TO-F6.md` | WS3 | Each defect as a file, before and after, from main's own checkout. The fixes; the stale pin and binaries found on the way. All the gates. |
+| `R9-04-DIAGNOSTICS-DECISION.md` | WS4 | The paragraph above. Nothing changed. |
+| `R9-05-IDE-FONT.md` | WS5 | Nirmala UI for Indic runs, checked at startup. The eleven-pack render under Wine (v188: boxes; branch: letters). The gutter drift, not fixed, and why. |
+| `R9-06-TRANSLITERATION.md` | WS6 | What the owner types, the phonetic scheme, the engine tested against the reference (24,761 cases), the typing runs under Wine, and what is not covered. |
+| `R9-07-INSTALLER-FONT-CHECK.md` | WS7 | `check-script-fonts.ps1`, offered to ChatGPT; the installer is not edited. Under Wine: exit 3 without the font, exit 0 with it. |
+| `R9-08-INTERFACE.md` | WS8 | Every path touched in `windows/`, and the one string table for the main window. |
+| `evidence-r9/` | all | `F1/` (the reproductions and their runner), `F2-F6/`, `wine/` (screenshots and the typed files), `gap-list/`, `logs/` (raw output of every check, including a fresh clone of the branch), `eleven.sm` |
+
+**Gates on the branch:**
+
+- **Linux, fresh clone:** suite **204 / 4** · proof_lib **209** · proof_props 86 · translit 24,761 / 0 differ
+  · tests/gui 35 · R70 6/6 · `r69_build` SOURCE_PINS_CHECKED
+- **`gates.sh`:** PASS 9 / FAIL 1 / NOT-RUN 1
+  - FAIL: the X11 `edscroll` timeout, pre-existing in this container
+  - NOT-RUN: Windows
+- **Wine 9.0:** the font render, the typing runs, F2/F3 with `win/sutram.exe`, the font check
+
+**Not verified:** Windows. Every Windows-side result here is Wine.
+
+**Still open, briefly:**
+
+- **F1's fix.**
+- **The R8-02 checks:** errors for assigning a `sutra`, for a misplaced `krama`, for a duplicate `bhavana`.
+- **The diagnostics decision.**
+- **The `--version` string** still says `v182` on v188.
+- **The setup rebuild** after this merges.
+- **The gutter drift** on Indic lines (R9-05).
+- **Your 40-variable file from WS1,** to check against F1.
+
+---
+
 ## Index — ROUND-08 delivery (2026-10-19, against main `221eee96`, v183)
 
 **The diagnostics decision (WS3), first, as asked.** It is still the owner's call and nothing has changed. The

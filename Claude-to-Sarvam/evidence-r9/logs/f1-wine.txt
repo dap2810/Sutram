@@ -1,0 +1,4 @@
+# win/sutram.exe from main (b6e2bb34…, the R7 build), under Wine 9.0 on Linux. Not Windows.
+f1_a_callee_overwrites_caller (Wine 9.0): 10 28 29 29 
+f1_b_forty_variables (Wine 9.0): 151 38 39 39 40 
+f1_c_return_address (Wine 9.0): 

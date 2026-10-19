@@ -1,0 +1,14 @@
+vitti calls = 0
+prakriya f() {
+    calls = calls + 1
+    prati 3
+}
+mukhya() {
+    guna (f()) {
+        bhavana 1: { likha(10) }
+        bhavana 2: { likha(20) }
+        bhavana 3: { likha(30) }
+        anya: { likha(40) }
+    }
+    likha(calls)
+}

@@ -1,0 +1,43 @@
+# Expected: 7
+# v188:     segmentation fault, no output
+# f has 34 variables. The 34th (v32) has slot rbp-248, emitted as rbp+8:
+# the return address. With 33 variables (v0..v31) it prints 7.
+prakriya f(x) {
+    vitti v0 = 0
+    vitti v1 = 1
+    vitti v2 = 2
+    vitti v3 = 3
+    vitti v4 = 4
+    vitti v5 = 5
+    vitti v6 = 6
+    vitti v7 = 7
+    vitti v8 = 8
+    vitti v9 = 9
+    vitti v10 = 10
+    vitti v11 = 11
+    vitti v12 = 12
+    vitti v13 = 13
+    vitti v14 = 14
+    vitti v15 = 15
+    vitti v16 = 16
+    vitti v17 = 17
+    vitti v18 = 18
+    vitti v19 = 19
+    vitti v20 = 20
+    vitti v21 = 21
+    vitti v22 = 22
+    vitti v23 = 23
+    vitti v24 = 24
+    vitti v25 = 25
+    vitti v26 = 26
+    vitti v27 = 27
+    vitti v28 = 28
+    vitti v29 = 29
+    vitti v30 = 30
+    vitti v31 = 31
+    vitti v32 = 32
+    prati 7
+}
+mukhya() {
+    likha(f(1))
+}
