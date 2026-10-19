@@ -58,7 +58,7 @@ On Windows you must **first build** `win\sutram.exe` using the existing project 
 - Native Win32 top-level window and main message loop
 - RichEdit Sutram source editor with **Latin-keyword-first** highlighting and separate numbered gutter
 - Run: save editor buffer to a unique temporary file, invoke `win\sutram.exe`, execute the newly built `.exe`, and capture stdout/stderr in a read-only output pane; child processes have a 10-second limit
-- Examples list populated from `examples\*.sm`; double-click or **udaharan khol**
+- Examples list populated from `examples\*.sm`; double-click or **Load example**
 - Common **Open** / **Save** `.sm` dialogs
 - Shell input: one statement per Enter or Send, recorded to session history. Each submission recompiles the accumulated `mukhya()` body and displays the new output suffix. This is **replay-based**, not a persistent VM; side effects may repeat.
 - Compiler and GUI remain separate; existing terminal `sutram-ide` is untouched.
@@ -163,6 +163,8 @@ use. Do not fall back to ANSI conversion for malformed UTF-8.
 
 ## Round 73 (Claude, 2026-10-18): Sanskrit interface, editor keys, bhasha pack, icon
 
+*Labels superseded by ROUND-05 below; everything else in this section stands.*
+
 - Every visible word is Sanskrit in Latin transliteration, matching `ide/sutram_gui_linux.asm`:
   menus `patra sampad chal bhasha sahay`; `nava khol sanchay nishkas`; `punah chhid pratilip
   sanyoj sarvagrah anwesh antar`. The six toolbar buttons use the same words
@@ -187,3 +189,15 @@ use. Do not fall back to ANSI conversion for malformed UTF-8.
 - `tools/test_windows_gui.py` has 14 new checks (labels, status, title, Tab, Enter, `}`,
   block indent/unindent, Devanagari through swayam/mool/sanskrit, find, icon resource) and
   saves `ide-sanskrit.png` next to `ide-native.png`.
+
+## ROUND-05 (Claude, 2026-10-19): English labels, by the owner's decision
+
+The owner kept this (18 October) IDE and asked for its labels in English. Changed: the menus
+`File Edit Shell Language Help` (the 13 October build's words where it had them: `File`, `Edit`,
+`Shell`, `Help`, `Open...`, `Save`, `Exit`, `Run module`, `Clear shell`, `About Sutram`), the six
+buttons `Run Open Save "Load example" Send "Clear shell"`, the `Find:` label, the two Help dialogs,
+the unsaved-file question, `Untitled` in the title, and the two output messages that name a
+control. **Unchanged:** the dark theme, line numbers, colouring, the Language menu's behaviour
+(Auto detects Devanagari and passes `--lang sanskrit`), the icon, the editor keys, and the
+status line and output messages, which stay in Sanskrit (`pankti`, `stambh`, `bhasha`,
+`akshara`, `sanchit`, `[sankalan asaphal]` …). The window title stays `Sutram sampadak`.

@@ -10,7 +10,7 @@ vitti doubled = counter * 2
 vitti unset
 prakriya add_two() {
     counter += 2
-    pratiyati counter
+    prati counter
 }
 mukhya() {
     likha(add_two())

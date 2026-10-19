@@ -1,0 +1,4 @@
+225_undeclared_array.sm:5:11: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'totl'
+      likha(totl[0])
+            ^
+Sanket: prayog se purv ghoshana avashyak: vitti totl = ...

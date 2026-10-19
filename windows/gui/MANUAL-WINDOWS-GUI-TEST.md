@@ -27,7 +27,7 @@ This preview has known limitations below; a failing mandatory item is a release 
 4. **Run/compile/output**: Restore the exact two-line program from Step 2, click **Run**. The output pane contains `GUI_OK` on its own line (the program's stdout), without a console window or UAC. **FAIL** for compiler error, missing output, or hang beyond 10 seconds.
 5. **Examples browser**: In the examples list double-click `01_hello.sm`, then click **Run**. The editor is replaced with the example and output contains exactly `Namaste, Sutram!` followed by a newline (without compiler errors). **FAIL** if item missing or file not loaded.
 6. **Shell Enter**: Click the shell text field. Enter `likha("ONE\n")` and press **Enter**. The output pane receives `ONE` once. Enter `likha("TWO\n")` and press Enter. It receives `TWO` once, without another visible `ONE`. This shell *recompiles/replays history*, so it is intended for deterministic statements, not irreversible side effects. **FAIL** if Enter is inserted as a newline, no output, or duplicated visible output.
-7. **Shell button**: Enter `likha("THREE\n")`, click **presh**, and verify `THREE` appears once. Click **phal_rikta**, then enter `likha("FRESH\n")`; verify history reset and new output `FRESH`.
+7. **Shell button**: Enter `likha("THREE\n")`, click **Send**, and verify `THREE` appears once. Click **Clear shell**, then enter `likha("FRESH\n")`; verify history reset and new output `FRESH`.
 8. **Save**: Replace editor with the two-line `GUI_OK` program. Click **Save**, save as `%TEMP%\sutram-gui-roundtrip.sm`. Confirm the file exists and is nonempty; open it with Notepad and verify both lines are exact. **FAIL** if Save does nothing or modifies the text.
 9. **Load**: Replace editor contents with `mukhya()`, then click **Open**, select `%TEMP%\sutram-gui-roundtrip.sm`. The exact earlier text returns; Run still prints `GUI_OK`. **FAIL** if text missing or output differs.
 10. **Resize**: Resize window to 1200x850, then 850x600. The editor, examples list, output, and shell remain accessible; no child is entirely hidden. **FAIL** if layout unusable or pane becomes unclickable.
@@ -194,33 +194,34 @@ same tokens as `ide/sutram_gui_linux.asm`): menus `patra sampad chal bhasha saha
 the six toolbar buttons use the menus' Sanskrit words (`chal khol sanchay udaharan khol presh phal_rikta`; English until R4), status `pankti / stambh / bhasha / akshara /
 sanchit`. Unicode/Devanagari/UTF-8 typing goes through a Unicode window class and message loop.
 
-20. **Sanskrit labels** — launch; EXPECT the title `nava patra - Sutram sampadak` (or the opened
-    patra's name), the five Sanskrit menus, the six English buttons, and a status line
-    `pankti 1   stambh 1   |   bhasha: swayam   |   ...   |   sanchit`. FAIL: an English menu or status word, or a non-English button.
+20. **Labels (R5: English)** — launch; EXPECT the title `Untitled - Sutram sampadak` (or the opened
+    file's name), the menus `File Edit Shell Language Help`, the six buttons `Run Open Save
+    "Load example" Send "Clear shell"`, and a status line
+    `pankti 1   stambh 1   |   bhasha: swayam   |   ...   |   sanchit`. FAIL: a Sanskrit menu or button word.
 21. **Tab / Shift+Tab** — on an empty line press Tab: four spaces appear, no tab character.
     Select three lines, press Tab: every line moves right by four; Shift+Tab moves them back.
-    `sampad > antar` and `antar hatao` do the same. FAIL: focus leaves the editor, a tab
+    `Edit > Indent` and `Dedent` do the same. FAIL: focus leaves the editor, a tab
     character is inserted, or lines other than the selected ones change.
 22. **Enter auto-indent** — type `mukhya() {` and press Enter: the new line starts with four
     spaces. Type `likha(1)`, Enter: the next line keeps four spaces. Type `}` on that blank
     indented line: it pulls back to column 1. FAIL: a bare newline, lost characters, or a `}`
     that is placed anywhere except the end of the dedented line.
-23. **bhasha > swayam (Devanagari)** — `udaharan khol` on `218_sanskrit_devanagari.sm`, press
+23. **Language > Auto (Devanagari)** — `Load example` on `218_sanskrit_devanagari.sm`, press
     F5. EXPECT `योगः = 15` in the output pane and `bhasha: swayam (sanskrit)` in the status line.
-    Then `bhasha > mool` and F5: EXPECT a compiler error naming the Devanagari word (no pack).
-    `bhasha > sanskrit` and F5: EXPECT `योगः = 15` again. FAIL: the swayam run needs a manual
-    pack choice, or the mool run silently succeeds.
+    Then `Language > Core` and F5: EXPECT a compiler error naming the Devanagari word (no pack).
+    `Language > sanskrit` and F5: EXPECT `योगः = 15` again. FAIL: the Auto run needs a manual
+    pack choice, or the Core run silently succeeds.
 24. **Typed Devanagari** — with a Hindi/Sanskrit keyboard layout or IME, type `लिख("नमस्ते")।`
     into the editor and the shell line. EXPECT the glyphs exactly as typed, keyword colour on
     `लिख`, and the shell output `नमस्ते` after Enter. FAIL: `?` or mojibake anywhere.
-25. **Unsaved guard** — edit, then `patra > nava`, `khol`, or close the window. EXPECT the
-    question `patra parivartit hai. sanchay karein?` with Yes/No/Cancel; Yes saves (asking for
+25. **Unsaved guard** — edit, then `File > New`, `Open`, or close the window. EXPECT the
+    question `The file has changed. Save it?` with Yes/No/Cancel; Yes saves (asking for
     a name when there is none), No discards, Cancel keeps the editor. The title carries ` *`
-    while unsaved and drops it after `sanchay`. FAIL: work lost without the question.
-26. **anwesh** — Ctrl+F focuses the `anwesh:` box; type a word, Enter or F3 selects the next
+    while unsaved and drops it after `Save`. FAIL: work lost without the question.
+26. **Find** — Ctrl+F focuses the `Find:` box; type a word, Enter or F3 selects the next
     match from the caret and wraps once; a miss writes `anwesh: nahi mila` in the status line.
 27. **Icon** — Explorer, the taskbar and the title bar all show the thread icon from
     `icons/sutram.ico`; `ExtractIconEx` reports one icon group in the executable. FAIL: the
     generic executable icon anywhere.
-28. **Focus does not act** — Tab from the editor onto the `chal` button must only move focus;
+28. **Focus does not act** — Tab from the editor onto the `Run` button must only move focus;
     nothing compiles until the button is pressed. FAIL: a run or dialog on focus alone.
