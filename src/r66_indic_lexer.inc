@@ -9,7 +9,7 @@
 
 section .data
 r66_msg_bad_utf8:
-    db "Sutram Error [E_UTF8]: invalid or truncated Indic identifier", 10, 0
+    db "Sutram Error [E_UTF8]: ashuddh ya khandit bharatiya naam", 10, 0
 section .text
 
 r66_decimal_digit_at:
