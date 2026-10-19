@@ -1,3 +1,41 @@
+## v179 - ROUND-07 to Claude and ROUND-75 to ChatGPT; both point at the roadmap
+
+**Both rounds now open with a memory update and name the step they advance on `ROADMAP-TO-V1.0.md`** - the
+practice the owner asked for, applied to every partner.
+
+### ROUND-07 (Claude) - Steps 1 and 2
+
+**Step 1: finish the silent-wrong-answer class.** Two decisions were made from its measurements:
+
+- **`totl = 10` silently declaring a variable must be an error.** It measured **0 programs in 530 rely on
+  it** - the same class as an undefined name reading 0.
+- **A block `vitti` visible after the block becomes block scope** - but **measure first**, and if more than
+  a handful of programs rely on it, report the number and stop. A scoping change must not silently break
+  working programs.
+
+**The real deliverable is an inventory, not fixes:** every name-resolution path in the compiler - variables,
+functions, fields, array indices, module aliases, builtins - saying of each whether a wrong name errors or
+quietly succeeds. **Three rounds have found more instances each time, which means we have been finding cases,
+not the cause.**
+
+**Step 2: prepare the diagnostics decision, do not make it.** The owner decides; Claude supplies the numbers.
+
+**Also: rebuild the committed Windows binaries.** The ones on main are the ROUND-03 build - the gate fails
+them on English labels.
+
+### ROUND-75 (ChatGPT) - Step 4
+
+**Its R74 is the best return it has made: 14/14 lock pins MATCH and `r74_repro_build.py` builds twice in two
+independent checkouts and fails if the ELF hashes differ. That is a reproducible baseline - the first
+workstream on this project to move from NOT-RUN to a genuine PASS.**
+
+**The main work is the `kosh` leak** - Step 4, assigned to it. It must state three things plainly: whether
+the old mapping can be released at all given **the language has no free primitive** (which may be a language
+decision for the owner), whether the alias-invalidation contract is safe, and to stop rather than restructure
+if it cannot be done.
+
+**And return raw output, not descriptions of output.**
+
 ## v178 - Claude ROUND-06 merged; a claim of mine corrected; the committed Windows binaries are stale
 
 ### Claude built the Windows gate
