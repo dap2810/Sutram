@@ -1,0 +1,75 @@
+{
+  "schema": 1,
+  "title": "R72 v172 candidate; NOT a native-accepted release",
+  "created": "2026-10-19",
+  "base_main_commit": "6fd8b1cf2b072768a9ede0677ed32983c13e9961",
+  "entry": "src/r68_compiler_entry.asm",
+  "inputs": {
+    "src/r66_indic_lexer.inc": "998b6cb75a7e11cf6d488cf84a84a2154ffdebf0",
+    "src/r67_stack_pair.inc": "e8472bd1cad767cf06b0c00fcf88793419362db5",
+    "src/r68_compiler_entry.asm": "42389aaf73179726d91e23359aee2199734036e1",
+    "src/r68_diagnostics.inc": "a6f7bb196702626d6b7f116f32e678d9daf73eba",
+    "src/r68_unicode_helpers.inc": "69103e059634aa6b5b871ce7c06c2f4b9c742ff1",
+    "src/sutram_compiler.asm": "9c41189e1bf30caf1dcc3b8eadc883b11b07f12b",
+    "win/native_host.asm": "66e04838b79a1d1ced99b06e9051b2fecb8b1de8",
+    "win/pe_imports.inc": "fc8491c6192d34058f6ac7c9a203fa335bec04cc",
+    "win/pe_layout.inc": "acf9933226a44fcb325c22cb855a806206ec69a3",
+    "win/rtblob.inc": "f855c01ed63d673c41ac0ca9bde2d99cb5654f99",
+    "win/winapi.asm": "2c83ab01c776b987c811b67a28458243ec42a92b",
+    "win/winio.asm": "bbdd00d0c84b0778913b48b1eeaa5e99232bbc84",
+    "win/winrt.inc": "9e73bd45cf0b1f2fbd0f86452d8e9fcaf5fb8b37",
+    "win/winrt_blob.asm": "69a4618028e9c6ac16af4b3a389854962227b69c"
+  },
+  "flags": {
+    "linux_default": [
+      "-f",
+      "elf64",
+      "-I.",
+      "src/r68_compiler_entry.asm"
+    ],
+    "linux_reclamation": [
+      "-DSUTRAM_R72_KOSH_MUKTI=1",
+      "-f",
+      "elf64",
+      "-I.",
+      "src/r68_compiler_entry.asm"
+    ],
+    "linux_link": [
+      "ld",
+      "-o",
+      "sutram_compiler",
+      "sutram.o"
+    ],
+    "windows_default": [
+      "-f",
+      "win64",
+      "-DWINDOWS=1",
+      "-I.",
+      "src/r68_compiler_entry.asm"
+    ]
+  },
+  "output": {
+    "linux_default": {
+      "binary_sha256": null,
+      "status": "NOT_RUN"
+    },
+    "linux_mukti": {
+      "binary_sha256": null,
+      "status": "NOT_RUN"
+    },
+    "windows_default": {
+      "binary_sha256": null,
+      "status": "NOT_RUN"
+    }
+  },
+  "build_host": "NOT_RUN_IN_THIS_REVIEW",
+  "native_acceptance": "NOT_RUN",
+  "gate_decision": "blocked until two clean builds have identical compiler binary hashes and all gates PASS",
+  "previously_observed_windows": "v171-v172 changelog reports real standard-user Windows 11 execution by Claude; these are inherited observations, not Round 72 tests",
+  "notes": [
+    "Two clean checkouts are built by tools/r72_baseline_gate.py",
+    "Mode mukti is opt-in and Linux ELF only; Windows kosh growth via this profile is rejected",
+    "Inputs include both Windows PE includes added after earlier lock",
+    "No golden updates, credentials, network calls, registry writes or automatic CI"
+  ]
+}
