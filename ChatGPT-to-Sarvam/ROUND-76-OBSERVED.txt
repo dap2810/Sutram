@@ -1,0 +1,68 @@
+SUTRAM ROUND 76 — RAW OBSERVATIONS — 2026-10-19
+Incoming Sarvam-to-ChatGPT/ROUND-76.md
+Main at source review: 2d1d884a54faf94eccfcf6a050000ee881657188 (v183)
+Core Git blob: cc5cfbe48ac3ea1360958cb8f203385744d094b8
+Release lock Git blob: 533cc61d0a1038d99c719fb2289e991aade1ada8
+
+REMOTE GIT SOURCE INTEGRITY
+14/14 pinned Git blobs match recursive main Git tree.
+Current core kosh_push 9/9 structural checks PASS; 23,335 total compiler source lines.
+No reclamation hook in accepted main compiler.
+
+CURRENT SOURCE STAGING
+Updated PR #39 tools/r75_reclaim_prepare.py accepted core pin 185b7f... -> cc5cfbe4...
+New blob after GitHub readback: 7f0111fea2a6b12a3cb85f9dd65a13a8921c3ce6.
+No production code modified.
+
+LOCAL UNIT COMMAND
+python3 -m unittest discover -s /mnt/data/sutram_r76/tests/r76 -p 'test_*.py' -v
+
+test_bad_count (test_measure.Measure.test_bad_count) ... ok
+test_invalid_elf_refused (test_measure.Measure.test_invalid_elf_refused) ... ok
+test_marker_pipe (test_measure.Measure.test_marker_pipe) ... ok
+test_proc_sample_current_process (test_measure.Measure.test_proc_sample_current_process) ... ok
+test_same_compiler_refused (test_measure.Measure.test_same_compiler_refused) ... ok
+test_source_names_and_markers (test_measure.Measure.test_source_names_and_markers) ... ok
+test_et_rel_vs_et_exec (test_modules.ObjectProbe.test_et_rel_vs_et_exec) ... ok
+test_existing_elf_exec_does_not_count_as_module (test_modules.ObjectProbe.test_existing_elf_exec_does_not_count_as_module) ... ok
+test_missing_not_object (test_modules.ObjectProbe.test_missing_not_object) ... ok
+test_refuse_same_fixture (test_modules.ObjectProbe.test_refuse_same_fixture) ... ok
+test_bad_paths_are_refused (test_stage.SourcePinTests.test_bad_paths_are_refused) ... ok
+test_duplicate_and_reapplication_refused (test_stage.SourcePinTests.test_duplicate_and_reapplication_refused) ... ok
+test_helper_injected_after_publication (test_stage.SourcePinTests.test_helper_injected_after_publication) ... ok
+test_live_r7_pin_is_current (test_stage.SourcePinTests.test_live_r7_pin_is_current) ... ok
+test_synthetic_repo_stage_real_files (test_stage.SourcePinTests.test_synthetic_repo_stage_real_files) ... ok
+----------------------------------------------------------------------
+Ran 15 tests in 0.759s
+OK
+Exit: 0
+
+Exactly FOUR module probe fixture tests from uploaded draft PR #41 passed using byte-identical source as verified by matching Git blob SHA. Eleven other tests are for locally built equivalent R76 staging/measurement source not uploaded as byte-identical GitHub files.
+
+ENVIRONMENT:
+Python 3.13.5
+command -v nasm: not installed
+command -v ld: /usr/bin/ld
+git ls-remote https://github.com/dap2810/Sutram.git HEAD: fatal: Could not resolve host: github.com
+
+REAL NATIVE MEASUREMENT PREREQUISITE FAILURE:
+python3 tools/r76_kosh_measure.py --legacy-compiler /mnt/data/sutram_r76/not-a-compiler --candidate-compiler /mnt/data/sutram_r76/not-another-compiler --items 1000000 --report /mnt/data/sutram_r76/evidence/measurement-blocker.json
+Exit 2; stdout/report:
+{
+  "status": "FAIL",
+  "reason": "nonregular executable: /mnt/data/sutram_r76/not-a-compiler"
+}
+
+REAL MODULE PROBE PREREQUISITE FAILURE:
+python3 tools/r76_module_object_probe.py --compiler /mnt/data/sutram_r76/not-a-compiler --helper /mnt/data/sutram_r76/examples/r76/module_helper.sm --main /mnt/data/sutram_r76/examples/r76/module_main.sm --report /mnt/data/sutram_r76/evidence/module-blocker.json
+Exit 2; stdout/report:
+{
+  "status": "FAIL",
+  "reason": "missing compiler or fixture"
+}
+
+Both failures mean no real compiler executable was available; neither is a Sutram behavior test.
+NO REAL pre/post mapping JSON, no compiler binary SHA-256, no actual .sm object link.
+Windows installer source analysis performed; Windows runtime/install NOT_RUN.
+Repository-wide vocabulary scan NOT_RUN; scanner remains in PR #37.
+No source merge, golden reset, recurring automation, privilege escalation or CI launched.
