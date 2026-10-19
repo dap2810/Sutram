@@ -1,0 +1,63 @@
+SUTRAM ROUND 77 — OBSERVED, 2026-10-19
+
+INCOMING
+Sarvam-to-ChatGPT/ROUND-77.md; latest incoming checked on main.
+Base at start: c20e55a741fa31bdd9f2b05c954372db39d0dfc3 (v189: rounds consolidated).
+Later main snapshot: 6bb402558711cb56ef04996cc3deddc57b5c40ae.
+
+LIVE MAIN BUILD SOURCE DRIFT — DO NOT HIDE:
+Pinned tools/r69_build.lock.json blob: 533cc61d0a1038d99c719fb2289e991aade1ada8
+Current lock expects compiler Git blob cc5cfbe48ac3ea1360958cb8f203385744d094b8.
+Latest src/sutram_compiler.asm Git blob ea5ff8085bd90fdb92d4943b32bf46e7471172f5.
+Recursive current Git tree vs pins: 13/14 MATCH, 1 MISMATCH (compiler only).
+Earlier accepted v183 snapshot checked 14/14, but that does not justify claiming
+current head 14/14. Shared source lock intentionally left untouched.
+
+EXECUTION PREREQUISITES
+command -v nasm -> NOT_FOUND
+command -v ld -> /usr/bin/ld
+command -v pwsh -> NOT_FOUND
+git ls-remote https://github.com/dap2810/Sutram.git HEAD ->
+fatal: unable to access ... Could not resolve host: github.com
+
+REPRODUCIBLE BINARY CONTENT INSPECTION VIA CONNECTED GITHUB:
+GitHub fetch_file(... encoding=base64) decoded in isolated JS; SHA-256 algorithm
+crosschecked against abc FIPS vector:
+abc -> ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad (PASS)
+win/sutram.exe: 186755 B, v160,
+SHA256 b6e2bb342e75600a3e67b9263a27725f15494384804edbfa4c72234ec8b93b1b
+sutram.exe: 186755 B, v182,
+SHA256 ffc2368cb82f113c4dd48842752a60e36ecd5d28a85c7783befd9296a8e061f8
+sutram_compiler: 201656 B, v160,
+SHA256 219d1cf043fa7039ec9ef3e0755b720dc998a92aaf058d173184c5e8518dbbc8
+Current source msg_version in NASM source = v182.
+Direct installer builder packages win/sutram.exe as both bin/sutram.exe and win/sutram.exe.
+Thus stale payload proven from actual input bytes; installed-runtime test NOT_RUN.
+
+DRAFT PR #43:
+review/r77-installer-version-retry-font-20261019.
+New files: docs/R77-INSTALLER-VERSION-GATE.md and modified
+windows/native-installer/build-installer.ps1 (Git blob 38524e13d9a7f9a4f83de93b365677bb35865e7b)
+windows/native-installer/install-core.ps1 (Git blob e5dffd7731760d1e67070809271d12d61d0d98c0).
+Read back changed text directly from GitHub. 16/16 static source assertions PASS:
+rollback fresh-only, prior-folder tracking, owned files saved before stage cleanup,
+no stale stage dependency, per-user path check, reparse guard,
+no recursive deletion of installation root, error-only rollback,
+preexisting uninstall/HKCU preservation flags, one font call, Nirmala UI lookup,
+version assertion precedes manifest/zip, both compiler copies hash verified.
+These are source invariants, NOT PowerShell parse or native lifecycle tests.
+
+VOCABULARY SAMPLE:
+First 16 current main examples/*.sm remotely fetched; 16 fetched, 0 candidate
+old keywords after masking line comments and string literals.
+Entire tracked-repository audit NOT_RUN.
+
+PASS: binary SHA-256 implementation test vector; 16/16 source invariants;
+16 example files retrieved and scanned within stated limited scope.
+FAIL: current source-lock mismatch 1/14; stale Windows payload version v160
+contradicts current source v182 and current root compiler v182.
+NOT_RUN: compiled new installer/package SHA256, Windows PowerShell syntax/run,
+install failure/retry, font presence UI, real kosh growth A/B, real two-.sm link,
+full tracked keyword scan, native suite/codegen/proofs.
+No compiler, accepted lock, library, golden, CI, installer binary, or Windows GUI
+on main modified. Draft PR #43 not merged.
