@@ -1,3 +1,27 @@
+## v200 - CORRECTION: the diagnostics stay in the language pack. No English. The owner was right.
+
+**In v199 I recorded the decision as "the diagnostics go English". That was wrong, and the owner corrected
+me. The correct decision is the one that was always right for this project:**
+
+**The diagnostics are in the language of the pack. Sanskrit is the default. There is no English anywhere.**
+
+**My error, stated plainly:** I observed that the owner could not read the Sanskrit help and concluded that
+English was the answer. **That was the wrong conclusion from a correct observation.** He could not read it
+**because that build's help was in the wrong language for him** — not because English belongs in a Sanskrit
+language. **The fix is that the messages follow the pack, so a Hindi user gets Hindi errors, a Tamil user
+gets Tamil errors, and the default is Sanskrit.**
+
+**So ROUND-11 now asks for option E, not D** — the one Claude costed as *"D plus 900 translations"*. **If
+that is too large for one round, it goes in pack order: Sanskrit first, because it is canonical and the
+default.**
+
+**And the sentence that matters is now in the brief:** *a programming language for people who do not read
+English cannot tell them what went wrong in English.* **That is the whole point of the project, and it
+applies to the error messages as much as to the keywords.**
+
+**I also told Claude plainly that this was my mistake, not a change of mind by the owner** - so it does not
+wonder why the brief moved under it.
+
 ## v199 - the diagnostics go English (owner's decision); ROUND-11 and ROUND-79 issued
 
 **The owner could not read the help.** He ran `sutram.exe` and got `Prayog`, `nivesh.sm`, `sankalan`; he hit
