@@ -1,3 +1,40 @@
+## v178 - Claude ROUND-06 merged; a claim of mine corrected; the committed Windows binaries are stale
+
+### Claude built the Windows gate
+
+`tools/accept-windows.ps1` and `tools/check_accept_windows_log.py` are merged, with tests and a `TEST-ME.md`
+section. **It records the binary SHA-256s (repo and installed), the Windows build, the elevation tokens, and
+PASS/FAIL/NOT-RUN per check as JSON.**
+
+**And it says plainly that not one check ran on Windows** - three runs, all under **Wine 9.0 on Linux**
+(A 5/4/5, B 9/1/5, C 12/0/3). **The elevation checks are NOT-RUN, because Wine has no UAC.** The gate
+becomes acceptance when the owner runs one command on Windows.
+
+### A claim of mine, corrected
+
+**In v175 I wrote "no Sanskrit UI string remains in the Windows GUI." That was wrong.** The menus and
+buttons are English - but **the status line and the IDE's ten output messages are still Sanskrit**
+(`sankalan`, `karyakram`, `asaphal`). **I grepped for the menu words and not for the output strings, and
+stated a conclusion my check did not support.** Claude found it and documented the whole layer-by-layer
+inconsistency. **That is the third time this session I have asserted a cause I had not verified.**
+
+### A real finding: the committed Windows binaries are stale
+
+**The Windows binaries committed on main are the ROUND-03 build.** Their hashes match the tree, and
+**Claude's gate fails them on English labels** - they are the Sanskrit-menu build, not the current one. Main
+also commits no `win\sutram.exe`. **So the binaries in the repository are not the binaries the source
+produces.** Recorded; the fix is to rebuild and commit them with their log.
+
+### Also
+
+- **A failed install leaves a half-install that a retry refuses** - ChatGPT's installer code, reported not
+  fixed.
+- **Two wrong-name decisions:** `totl = 10` silently declares (the same class as the others; 0 programs in
+  530 rely on it - recommend error), and a block `vitti` visible after the block (a scoping rule, not an
+  undefined name - recommend block scope). **Nothing implemented; both await the owner.**
+- **ChatGPT's ROUND-74 WS1:** **14/14 lock pins MATCH**, and `tools/r74_repro_build.py` builds twice in two
+  independent local checkouts and fails if the two ELF hashes differ. **Its first likely PASS.**
+
 ## v177 - a standing context page for every partner; Muse gets one while paused
 
 **The owner asked that Muse be told the project's progress and path so it works towards them. Done - and
