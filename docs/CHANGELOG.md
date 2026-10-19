@@ -1,3 +1,38 @@
+## v170 - Claude ROUND-03 merged; my v163 GUI fix never worked; a silent miscompile found
+
+**Claude's branch `claude/round-03` was verified by rebuilding and running `gates.sh`: 9 PASS, 0 FAIL,
+1 NOT-RUN. Suite 189/4.** Merged.
+
+### Two findings bigger than the brief
+
+**1. My v163 fix to the IDE highlighter never took effect - and Claude proved it.** The Devanagari rows in
+the keyword table end with `,0,0`, and `match_tab` reads that as **end-of-table** - so the table terminated
+before the Latin keywords, and **the X11 GUI has coloured no Latin keyword since 14 October.**
+`test_x11_colour.py` could not see it. **Claude fixed it and strengthened the test**, so it now fails on the
+old GUI and passes on the new one. **v163 claimed this was fixed. It was not.**
+
+**2. Two pre-v157 keywords miscompile SILENTLY - a language-level defect.** `pratiyati` (the old `return`)
+and `uddeshya` (the old `continue`) compile with **no error at all**, because **an undefined name reads as
+0**. I verified it by hand: a function whose body says `pratiyati 1` inside an `if` and `pratiyati 2` after it
+**returns 2 when called with 5.** The guard silently does nothing.
+
+**This is a decision, not a bug fix, and it is the most important open question in the language: should an
+undefined name be an error?** Today it silently evaluates to 0, which means a mistyped or obsolete keyword
+produces a wrong answer with no diagnostic. **Recorded for a decision; not changed.**
+
+### Also merged
+
+- **Five lock families re-pinned** (not two), each only after the drift was verified: the `r69_build` lock,
+  the R70 corpus, the r69 pair fixtures, the r66/r67 pack baselines. **Retired** the R65-R68 staging tools -
+  they could only ever apply a finished patch to a vanished blob. **Left alone** the R71 lock, because
+  re-pinning it would claim a review nobody did.
+- **All 31 round tools run, not grepped.** 9 repaired and re-run to exit 0; 9 retired as structurally dead.
+- **The docs' message quotes corrected** from messages actually triggered, including the six books.
+- **Claude corrected its own R2 claim** - the "eleven tools" list was a grep; 4 of 11 were right.
+- **And fixed a regression of its own**: since R2, an unterminated string reported line 1:1.
+
+**R70 negative corpus now 6/6 native PASS; `r69_build.py` accepts main.**
+
 ## v169 - Claude's ROUND-02 verified and merged: four user-visible defects fixed
 
 **Claude's branch `claude/round-02` was verified by rebuilding it and running every gate — not by reading
