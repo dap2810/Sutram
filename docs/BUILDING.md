@@ -8,7 +8,7 @@ in old round reports reproduce those historical snapshots, not a current build.
 
 ## Input identity and developer commands
 
-Required core Git blob: `ea2a1e910952120c1f1db8bac1890338af68d3e9` (re-pinned in ROUND-03; was `64ea028a…`, stale since v157).
+**R72 review branch candidate core blob:** `9c41189e1bf30caf1dcc3b8eadc883b11b07f12b` (base main v172: `f4fefe6ca438bf2f76f68e6742bb71e8a836ccb6`; R3 prior accepted: `ea2a1e910952120c1f1db8bac1890338af68d3e9`).
 Entry Git blob: `42389aaf73179726d91e23359aee2199734036e1` (713 bytes).
 Neither file is changed in R69. `tools/r69_build.lock.json` also pins all known
 conditional includes for both hosts. A missing, changed, symlinked or unlocked
@@ -27,7 +27,7 @@ python3 tools/r69_build.py --target windows --output ./win/sutram.exe --report .
 
 Fresh output/report paths are mandatory by default. `--replace` replaces only an
 explicit regular, singly-linked build artifact, never an input patra. Supported
-modes are default, peepholes, trap, combined and pairs. The tool validates ELF/PE
+modes are default, peepholes, trap, combined, pairs and **R72 review-only Linux `mukti`**. The tool validates ELF/PE
 headers; **BUILT_FORMAT_CHECKED is not runtime acceptance**. The Windows-native
 PowerShell builder additionally requires successful version, generated-PE/stdout,
 and malformed-UTF8 diagnostic tests before publishing its compiler candidate.
@@ -79,3 +79,15 @@ regression/codegen/pack/proof gates with the exact new compiler. Select it throu
 Record actual failures and no-expectation cases. Windows GUI open/edit/run/close,
 installation, cancellation, uninstallation and Unicode-console output remain
 separate native Windows gates.
+
+## R72 clean-checkout evidence requirement (review branch only)
+
+`tools/r72_release_manifest.json` pins fourteen source/include inputs, including the two newer Windows PE include files. The `mukti` mode compiles with `SUTRAM_R72_KOSH_MUKTI=1` and is Linux-ELF-only; by default it is OFF pending native alias/lifetime review.
+
+```sh
+python3 tools/r72_baseline_gate.py --source-only --report /tmp/r72-source.json
+python3 tools/r72_baseline_gate.py --mode default --report /tmp/r72-default.json
+python3 tools/r72_baseline_gate.py --mode mukti --report /tmp/r72-mukti.json
+```
+
+The gate clones the pinned local Git source to two independent temporary directories, builds and hashes their actual compiler outputs, compares bytes, and then runs the selected accepted suite/codegen/packs/proofs/layers/module graph/negative corpus with that exact binary. `--source-only` reports native NOT_RUN and does not produce compiler hashes. No NASM execution was available in the assistant environment: no R72 binary hash or PASS is yet claimed. The independent reviewer must reconcile accepted v172 source pins and ensure default parity before merge. Historical R69/R3 input descriptions remain historical notes, not the R72 candidate release contract.
