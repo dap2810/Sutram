@@ -1,0 +1,25 @@
+{
+  "commit": "d7d2c73a478b9fb057a6b05982745716ad279e19",
+  "entry": "src/r68_compiler_entry.asm",
+  "host": "Linux x86-64 intended (unexecuted)",
+  "target": "ELF64",
+  "flags": [
+    "-f",
+    "elf64",
+    "-I."
+  ],
+  "pins": {
+    "src/sutram_compiler.asm": "f4fefe6ca438bf2f76f68e6742bb71e8a836ccb6",
+    "src/r66_indic_lexer.inc": "998b6cb75a7e11cf6d488cf84a84a2154ffdebf0",
+    "src/r67_stack_pair.inc": "e8472bd1cad767cf06b0c00fcf88793419362db5",
+    "src/r68_unicode_helpers.inc": "69103e059634aa6b5b871ce7c06c2f4b9c742ff1",
+    "src/r68_diagnostics.inc": "a6f7bb196702626d6b7f116f32e678d9daf73eba",
+    "src/r68_compiler_entry.asm": "42389aaf73179726d91e23359aee2199734036e1",
+    "win/native_host.asm": "66e04838b79a1d1ced99b06e9051b2fecb8b1de8",
+    "win/rtblob.inc": "f855c01ed63d673c41ac0ca9bde2d99cb5654f99",
+    "win/winapi.asm": "2c83ab01c776b987c811b67a28458243ec42a92b",
+    "win/winio.asm": "bbdd00d0c84b0778913b48b1eeaa5e99232bbc84",
+    "win/winrt.inc": "9e73bd45cf0b1f2fbd0f86452d8e9fcaf5fb8b37",
+    "win/winrt_blob.asm": "69a4618028e9c6ac16af4b3a389854962227b69c"
+  }
+}
