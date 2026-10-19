@@ -1,0 +1,69 @@
+SUTRAM ROUND 78 — RAW OBSERVATIONS
+Date: 2026-10-19 (America/Toronto)
+
+Incoming: Sarvam-to-ChatGPT/ROUND-78.md
+Pinned main at start: 2e875ea729a252d537378cee6d944b1de790d0a3 (v195).
+Compiler: src/sutram_compiler.asm Git blob 5caa9b6ef260d75ddea65a44a8daed94237833cc
+Compiler source lines: 23459
+Current tools/r69_build.lock.json: 14 / 14 Git blob pins matched live v195 tree.
+No compiler source edits.
+
+F1 SOURCE IDENTITIES:
+alloc_var: line 19957
+.av_stack: 19979-19983, stack_dep += 8; neg
+gen_all_functions: 11414, initializes stack_dep at 11580-11584
+FUNC_SPILL_BYTES: 2048 (line 101)
+named stack load: 19875-19884, emits 48 8B 45 disp8
+named stack store: 19905-19914, emits 48 89 45 disp8
+Additional disp8 path candidates:
+12046 12139 12211 12388 12470 12598 12647 13094 14190 14290 14336 17601.
+Claude independent previous native experiments:
+Claude-to-Sarvam/R9-01-F1-REPRODUCTION.md
+f1_c_return_address.sm (34 variables) crashed Linux too.
+
+LOCAL GNU OBJDUMP INSTRUCTION-BYTE TEST
+python3 instruction-byte calculation stdout:
+offset    -8: old=48 89 45 f8 disp8=   -8; corrected=48 89 45 f8
+offset  -128: old=48 89 45 80 disp8= -128; corrected=48 89 45 80
+offset  -136: old=48 89 45 78 disp8= +120; corrected=48 89 85 78 ff ff ff
+offset  -248: old=48 89 45 08 disp8=   +8; corrected=48 89 85 08 ff ff ff
+offset  -264: old=48 89 45 f8 disp8=   -8; corrected=48 89 85 f8 fe ff ff
+$ objdump -D -b binary -m i386:x86-64 /tmp/r78-disp-probe.bin
+   0: 48 89 45 78           mov    %rax,0x78(%rbp)
+   4: 48 89 85 78 ff ff ff  mov    %rax,-0x88(%rbp)
+   b: 48 89 45 08           mov    %rax,0x8(%rbp)
+   f: 48 89 85 08 ff ff ff  mov    %rax,-0xf8(%rbp)
+Status: PASS for instruction decoding. Sutram compiler F1 native test NOT_RUN.
+
+LATEST BINARIES FROM CONNECTED GITHUB BASE64 BYTES (NOT NEWLY BUILT HERE)
+SHA-256 pure JS helper verified with published abc vector:
+ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad (PASS)
+win/sutram.exe: 188186 bytes, v182, SHA256
+b3672b50c336da65418de090421be12d8ce1be6a2a95f27c48b0ed124bd35a13
+sutram.exe: 188186 bytes, v182, SAME SHA256 and SAME Git blob.
+sutram_compiler: 202176 bytes, v182, SHA256
+44a88286e3904e01fe266b118ac27973834efc24a6989a9d7c2b98f1fc6423bf
+Sutram-Setup.exe Git blob 0399b72311b4c232f5b57ea7e8d5203e3a5c2b8a
+unchanged from prior R77. No new installer package produced, no fresh payload checksum.
+
+LANGUAGE PACK / LIBRARY SCAN ON V195 MAIN:
+All lang/*.lang: 11/11 retrieved, 0 former canonical-keyword matches for selected old names.
+All lib/*.smlib: 24/24 retrieved, 0 selected active obsolete identifier matches
+(quoted text and line comments masked).
+Full repo including remaining examples/tests/docs/gui NOT_RUN.
+
+NATIVE ENVIRONMENT:
+$ command -v nasm -> NONE
+$ command -v ld -> /usr/bin/ld
+$ command -v pwsh -> NONE
+$ git ls-remote https://github.com/dap2810/Sutram.git HEAD
+fatal: unable to access 'https://github.com/dap2810/Sutram.git/': Could not resolve host: github.com
+No full git checkout in working container.
+No ELF A/B kosh, no actual two-.sm ET_REL link or Windows installer runtime performed.
+
+PASS: 14/14 v195 source identity, F1 static root diagnosis, objdump x86 decode,
+binary SHA256 vector and root/Windows CLI content-match,
+35/35 selected language/library source fetches and selected keyword checks.
+NOT_RUN: native F1 compiler regression, actual newly packaged Sutram-Setup,
+kosh memory A/B, complete repository lexical sweep, two-unit native link, Windows install.
+No compiler, installer, shared lock, library, accepted golden, CI or automatic monitoring changed.
