@@ -14196,6 +14196,9 @@ gen_expr:
     mov r15, [rel code_sz]
     xor edi, edi
     call emit_u32
+%ifdef SUTRAM_R73_KOSH_VRDDHI
+    call r73_kosh_vriddhi_raksha
+%endif
     ; newcap = cap ? cap*2 : 4
     mov dil, 0x4D
     call emit_byte
@@ -14267,6 +14270,9 @@ gen_expr:
     mov dil, 0x03
     call emit_byte
     call emit_nirmmita_from_rax
+%ifdef SUTRAM_R73_KOSH_VRDDHI
+    call r73_kosh_viniyog_raksha
+%endif
     mov dil, 0x41
     call emit_byte
     mov dil, 0x5B
@@ -14363,6 +14369,9 @@ gen_expr:
     call emit_byte
     mov rdi, r13
     call emit_store_named_var
+%ifdef SUTRAM_R73_KOSH_VRDDHI
+    call r73_kosh_mukti
+%endif
     mov dil, 0x4D             ; mov r8,r10
     call emit_byte
     mov dil, 0x89
@@ -22804,4 +22813,8 @@ os_readlink:
     ret
 %else
 %include "win/winrt.inc"
+%endif
+
+%ifdef SUTRAM_R73_KOSH_VRDDHI
+%include "src/r73_kosh_vriddhi.inc"
 %endif
