@@ -102,7 +102,7 @@ comments start with <code>//</code>.</p>
     <span class="k" data-tip="print">likha</span>("Namaste, Sutram!\n")</code></pre>
 <p>Save this as <code>namaste.sm</code> (sm = Sutram), then compile and run:</p>
 <pre><code>$ sutram namaste.sm namaste.bin
-OK: compiled 90 bytes
+Siddh: 97 byte sankalit
 $ ./namaste.bin
 <span class="out">Namaste, Sutram!</span></code></pre>
 <div class="note">The compiler emits a complete, runnable ELF binary — about 90 bytes for this
@@ -249,12 +249,14 @@ compile-time constant — the compiler folds it into the generated code.</p>
 <p>Version 1.0 ships an interactive shell — like Python's IDLE, but for Sutram. Start it with
 <code>sutram -i</code>:</p>
 <pre><code>$ sutram -i
-Sutram Shell v1.0 — the complete thread
+Sutram khol v1.0 - sampurna sutra
+Sutram kathan likho aur Enter dabao. Turant chalega.
+Aadesh: sahayata (sahay) | nirgat (nikas) | sarvam (dekho)
 
 <span class="k" data-tip="constant">sutra</span>> <span class="k" data-tip="variable">vitti</span> x = 21
-OK: compiled 204 bytes
+Siddh: 54 byte sankalit
 <span class="k" data-tip="constant">sutra</span>> <span class="k" data-tip="print">likha</span>(x / 3)
-OK: compiled 260 bytes
+Siddh: 201 byte sankalit
 7
 <span class="k" data-tip="constant">sutra</span>> nirgat</code></pre>
 <p>Every line you type is added <span class="k" data-tip="range-to">to</span> a growing session program, compiled, and run instantly.
@@ -288,18 +290,25 @@ Variables persist between lines — <code>x</code> sangrah on one line is there 
         <span class="k" data-tip="print">લખો</span>(સંખ્યા * હું)
     }</code></pre>
 <pre><code>$ sutram --lang gujarati namaste.sm namaste.bin
-Language pack loaded: gujarati
-OK: compiled 466 bytes</code></pre>
+Bhasha pak prapt: gujarati
+Siddh: 228 byte sankalit</code></pre>
 <div class="note"><b>11 language packs:</b> Sanskrit, Bengali, Gujarati, Hindi, Kannada, Malayalam, Marathi, Odia, Punjabi, Tamil, Telugu. Errors also localize automatically. Don't like a word? Add your own in <code>lang/&lt;language&gt;.lang</code> — every entry is one line.</div>
 </div>
 
 <div class="ch" id="ch12"><h2>12. Errors and Debugging</h2>
 <p>Sutram reports parse errors with the line number and the exact token where it got stuck:</p>
-<pre><code>$ ./sutram_compiler galat.sm out.bin
+<pre><code>$ cat galat.sm
+mukhya() {
+    vitti x = 5
+    vitti y = (x
+    likha(x)
+}
+$ ./sutram_compiler galat.sm out.bin
 
-Sutram Error: parse error at line 4 near token '<span class="k" data-tip="print">likha</span>'
-Hint: check the keyword spelling and syntax near this spot.
-      Run 'sutram -i' and type 'sahayata' for help.</code></pre>
+Sutram Error: vyakaran dosh, pankti 4:5, shabd '<span class="k" data-tip="print">likha</span>'
+      likha(x)
+      ^
+Sanket: is sthan par shabd aur vyakaran dekho.</code></pre>
 <p>The exit code is 1 on a compile error, 0 on success — so build scripts can react.</p>
 <div class="try"><b>Debug workflow:</b> 1. Read the line number. 2. Check spelling of the keyword
 named in the error. 3. Try the same line in the shell (<code>sutram -i</code>) — errors show
@@ -610,7 +619,7 @@ Unicode folder names work; the compiler opens files with the Windows API.</p>
 <tr><td>“Unsupported 16-Bit Application” / “not a valid Win32 application”</td><td>the patra is a Linux ELF binary, not PE</td><td>compile with a <code>.exe</code> name; the first two bytes must be <code>4D 5A</code></td></tr>
 <tr><td>runs but prints nothing</td><td>an older build whose section was read-only, so the runtime faulted</td><td>use this build</td></tr>
 <tr><td><code>sutram</code> is not recognised</td><td>PATH not refreshed</td><td>open a <b>new</b> terminal, or use the full path</td></tr>
-<tr><td>language pack not found</td><td><code>lang\</code> is not next to the compiler</td><td>run from the Sutram folder, or install packs to the profile folder</td></tr>
+<tr><td>Chetavani: bhasha pak nahi mila</td><td><code>lang\</code> is not next to the compiler</td><td>run from the Sutram folder, or install packs to the profile folder</td></tr>
 <tr><td>SmartScreen blocks the installer</td><td>new, unsigned program</td><td><i>More info</i> → <i>Run anyway</i></td></tr>
 <tr><td>antivirus flags a fresh <code>.exe</code></td><td>new binary, no signature</td><td>allow it; it is a plain PE with no imports</td></tr>
 <tr><td>nothing happens on dvigun-click of a compiled program</td><td>it is a console program; it needs a terminal</td><td>run it from Command Prompt or PowerShell</td></tr>
