@@ -1,0 +1,61 @@
+SUTRAM ROUND 75 RAW OBSERVATIONS — 2026-10-19
+Incoming: Sarvam-to-ChatGPT/ROUND-75.md
+Initial main commit (v180): 05d8bdc8b461080809cdcb1187cabf22c5691001
+Later main commit (v181): c94d9369af3c8acc9a390acdedc7549b937f6bc0
+R75 review branch: review/r75-kosh-reclamation-stage-20261019
+Draft PR: https://github.com/dap2810/Sutram/pull/39
+
+1. GH API current release source lock comparison:
+{"pins":14,"pass":14,"drift":[]}
+Core blob: 185b7f06ad01b5b80f123b694b0025034698bd35
+Source lock file blob: a0656e87112c56c47aa3604854f73f9c8012e556
+
+2. GH API complete actual compiler source audit:
+{"core_blob":"185b7f06ad01b5b80f123b694b0025034698bd35","total_lines":22807,"total_chars":552604,"push_lines":292,"pass":11,"total":11,
+ "checks":{"single_start":true,"single_end":true,"ordered_scope":true,"unique_growth":true,"unique_allocate":true,"unique_publish":true,"growth_before_alloc":true,"alloc_before_publish":true,"no_reclaim_hook":true,"current_core_sha":true,"pin_count":true}}
+
+3. Local direct tests of locally developed staging and live /proc harness source:
+$ python -m unittest discover -s /mnt/data/sutram_r75/tests/r75 -p 'test_*.py' -v
+test_read_marker_from_child_without_text_buffer_deadlock ... ok
+test_refuses_identical_compilers ... ok
+test_snapshots_real_proc ... ok
+test_source_has_two_markers_and_blockers ... ok
+test_source_rejects_bad_count ... ok
+test_source_uses_sanskrit ... ok
+test_git_blob_known_vector ... ok
+test_hooks_in_correct_order ... ok
+test_refuses_anchor_order_change ... ok
+test_refuses_conflicting_lock ... ok
+test_refuses_duplicate_growth_anchor ... ok
+test_refuses_missing_helper ... ok
+test_refuses_reapplying_reclaim ... ok
+test_refuses_unsafe_source_path ... ok
+test_requires_alias_invalidation_optin ... ok
+----------------------------------------------------------------------
+Ran 15 tests in 1.142s
+OK
+
+IMPORTANT: these 15 tests exercised LOCALLY DEVELOPED equivalent tool files
+stored separately from the four code/test files in draft PR #39; do NOT claim
+PR #39's exact branch test suite passed until Sarvam runs it itself.
+
+4. Local executable tool availability:
+$ command -v nasm
+NOT_FOUND
+$ command -v ld
+/usr/bin/ld
+$ git ls-remote https://github.com/dap2810/Sutram.git HEAD
+fatal: unable to access 'https://github.com/dap2810/Sutram.git/': Could not resolve host: github.com
+
+PASS: 14/14 Git source identity comparisons
+PASS: 11/11 structural kosh anchor checks against real v180/v181 compiler source
+PASS: 15/15 separate LOCAL harness/fixture unit tests
+NOT_RUN: exact GitHub PR #39 branch unit tests
+NOT_RUN: canonical NASM build and two binary SHA256 hashes
+NOT_RUN: native generated integer/float growth
+NOT_RUN: before/after live mapping A/B comparisons with real Sutram executables
+NOT_RUN: memory alias/UAF tests; no owner-approved alias-invalidation contract
+NOT_RUN: Windows native execution or setup lifecycle
+NOT_RUN: production two-module .sm separate compilation
+NOT_RUN: full tracked-repository vocabulary audit
+No accepted source files, goldens, libraries, Windows installer files or build lock on main modified.
