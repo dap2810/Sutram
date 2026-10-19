@@ -4,6 +4,6 @@ yoj ganit
 
 mukhya()
     vitti x = vargit(7)
-    likha("square(7) = ")
+    likha("vargit(7) = ")
     likha(x)
     likha("\n")
