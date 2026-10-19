@@ -2,15 +2,11 @@
 # Each line: n, the return flag, x, y. The expectation is the least solution
 # of x^2 - n*y^2 = 1, computed independently (continued fractions), or flag 0
 # where x does not fit in 64 bits.
-# chakravala is called through the wrapper cw, which reads nothing after the
-# call: chakravala has 29 variables, and on v183 a function with more than 21
-# overwrites its caller's saved registers (Claude-to-Sarvam/R8-01, finding F1).
-# Called directly from this loop, it corrupts `out` and the program crashes.
-# When F1 is fixed, the wrapper can go; the expectation stays the same.
+# Until R10 this called chakravala through a wrapper, because chakravala has 29
+# variables and F1 made it overwrite its caller's saved registers. Since the R10
+# fix it is called directly from the loop, as a user would; on v191 this file
+# crashes.
 yoj ganita
-prakriya cw(out, n) {
-    prati chakravala(out, n)
-}
 mukhya() {
     vitti out = nirmmita(2 * 8)
     vitti c = nirmmita(8)
@@ -20,7 +16,7 @@ mukhya() {
             out[0] = 0
             out[1] = 0
             likha(c[0])
-            likha(cw(out, c[0]))
+            likha(chakravala(out, c[0]))
             likha(out[0])
             likha(out[1])
         }

@@ -191,5 +191,129 @@
  "anukram.anukram_grah_i64 C4:>=->>": [
   "EQUIVALENT",
   "top byte 128 is the only input that differs: 128 * 2^56 wraps to -2^63, which is what -128 * 2^56 gives (checked by r9_guard_cells.sm with MIN)"
+ ],
+ "roop.roop_ank C2:<-><=": [
+  "EQUIVALENT",
+  "v = 0 returns '0' before this test is reached"
+ ],
+ "roop.roop_ank_aadhar C4:<-><=": [
+  "EQUIVALENT",
+  "v = 0 returns '0' before this test is reached"
+ ],
+ "roop.roop_ank_aadhar C6:<-><=": [
+  "EQUIVALENT",
+  "lo is (2^63 mod base) on this -2^63-only path; for every base 2..36 it is never exactly 10, so < 10 and <= 10 agree (checked over all 35 bases)"
+ ],
+ "roop.roop_pad_vam C1:<=-><": [
+  "EQUIVALENT",
+  "width = length: the pad path pads 0 bytes and copies the same text, returning the same count"
+ ],
+ "roop.roop_pad_vam C2:<-><=": [
+  "EQUIVALENT",
+  "the extra pass writes out[n], which the terminator then overwrites"
+ ],
+ "roop.roop_pad_vam C3:<-><=": [
+  "EQUIVALENT",
+  "the extra pad byte lands where the copy (or, for empty text, the terminator) writes next"
+ ],
+ "roop.roop_pad_vam C4:<-><=": [
+  "EQUIVALENT",
+  "the extra pass writes out[width], which the terminator then overwrites"
+ ],
+ "roop.roop_pad_dakshin C1:<=-><": [
+  "EQUIVALENT",
+  "as roop_pad_vam C1"
+ ],
+ "roop.roop_pad_dakshin C2:<-><=": [
+  "EQUIVALENT",
+  "as roop_pad_vam C2"
+ ],
+ "roop.roop_pad_dakshin C3:<-><=": [
+  "EQUIVALENT",
+  "the extra copied byte lands where the padding (or the terminator) writes next"
+ ],
+ "roop.roop_pad_dakshin C4:<-><=": [
+  "EQUIVALENT",
+  "the extra pad byte is out[width], which the terminator overwrites"
+ ],
+ "roop.roop_pad_madhya C1:<=-><": [
+  "EQUIVALENT",
+  "as roop_pad_vam C1"
+ ],
+ "roop.roop_pad_madhya C2:<-><=": [
+  "EQUIVALENT",
+  "as roop_pad_vam C2"
+ ],
+ "roop.roop_pad_madhya C3:<-><=": [
+  "EQUIVALENT",
+  "the extra left pad byte is overwritten next by the copy, the right padding or the terminator"
+ ],
+ "roop.roop_pad_madhya C4:<-><=": [
+  "EQUIVALENT",
+  "the extra copied byte is overwritten next by the right padding or the terminator"
+ ],
+ "roop.roop_pad_madhya C5:<-><=": [
+  "EQUIVALENT",
+  "the extra right pad byte is out[width], which the terminator overwrites"
+ ],
+ "roop.roop_chinhit C2:<-><=": [
+  "EQUIVALENT",
+  "the extra pass copies tmp's terminator to out[n], which the terminator write repeats"
+ ],
+ "roop.roop_chinhit C3:<-><=": [
+  "EQUIVALENT",
+  "as C2, one place to the right"
+ ],
+ "roop.roop_sign_akshar C2:<-><=": [
+  "EQUIVALENT",
+  "as roop_chinhit C2"
+ ],
+ "roop.roop_sign_akshar C3:<-><=": [
+  "EQUIVALENT",
+  "as roop_chinhit C3"
+ ],
+ "shreni.dwi_anwesh C3:<-><=": [
+  "EQUIVALENT",
+  "a[mid] == target has already returned, so < and <= see the same values"
+ ],
+ "shreni.budbud_shreni C1:<-><=": [
+  "EQUIVALENT",
+  "the extra outer pass has an inner bound n - 1 - n < 0, so it does nothing"
+ ],
+ "shreni.budbud_shreni C3:>->>=": [
+  "EQUIVALENT",
+  "swapping two equal integers changes nothing (integers have no identity to keep stable)"
+ ],
+ "shreni.shankh_shreni C5:>->>=": [
+  "EQUIVALENT",
+  "moving an equal integer past another changes nothing"
+ ],
+ "shreni.nivesh_shreni C4:>->>=": [
+  "EQUIVALENT",
+  "as shankh_shreni C5"
+ ],
+ "shreni.mil_shreni_punar C8:<-><=": [
+  "EQUIVALENT",
+  "taking the right element on a tie of equal integers changes nothing"
+ ],
+ "shreni.viparyay_mala C1:<-><=": [
+  "EQUIVALENT",
+  "i = j swaps the middle element with itself"
+ ],
+ "suchi.suchi_viparyay C1:<-><=": [
+  "EQUIVALENT",
+  "i = j swaps the middle element with itself"
+ ],
+ "suchi.suchi_vardh R": [
+  "EQUIVALENT",
+  "its only caller, suchi_khip, tests == 0; 2 and 1 both mean success there"
+ ],
+ "suchi.suchi_vardh C2:<-><=": [
+  "LIKELY-EQ",
+  "copies one cell past the length into the new block's next free slot, which the push then writes"
+ ],
+ "shreni.mil_shreni_punar R": [
+  "NO-CONTRACT",
+  "the return value of this private recursion is not documented or used"
  ]
 }

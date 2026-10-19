@@ -11050,6 +11050,37 @@ emit_byte:
     lea rdi, [rel msg_code_overflow]
     jmp capacity_fail
 
+; R10 (F1): emit an rbp-relative ModRM byte and its displacement.
+; dil = the ModRM byte in its disp8 form (mod = 01, r/m = 101: 0x45 for rax,
+; 0x6D for /5, ...), esi = the signed displacement. A displacement in
+; -128..127 is emitted as disp8; any other as disp32 (mod = 10: ModRM + 0x40).
+; Before R10 every site emitted disp8 unconditionally, so the 17th stack slot
+; (rbp-136) became rbp+120: above the frame, onto the caller's saved
+; registers and the return address. That was F1.
+emit_rbp_modrm_disp:
+    push rbx
+    push r12
+    movzx ebx, dil
+    movsxd r12, esi
+    cmp r12, -128
+    jl .erd_wide
+    cmp r12, 127
+    jg .erd_wide
+    mov edi, ebx
+    call emit_byte
+    mov edi, r12d
+    call emit_byte
+    jmp .erd_done
+.erd_wide:
+    lea edi, [rbx + 0x40]
+    call emit_byte
+    mov edi, r12d
+    call emit_u32
+.erd_done:
+    pop r12
+    pop rbx
+    ret
+
 emit_u32:
     ; edi = 32-bit value
     push rbx
@@ -12043,10 +12074,11 @@ gen_stmt:
     call emit_byte
     mov dil, 0x89
     call emit_byte
+    push rsi                  ; R10 (F1): disp8 or disp32, by range
+    mov esi, eax
     mov dil, 0x45
-    call emit_byte
-    mov edi, eax
-    call emit_byte
+    call emit_rbp_modrm_disp
+    pop rsi
     pop rbx
     ret
 .gs_decl_kosh:
@@ -12136,10 +12168,11 @@ gen_stmt:
     call emit_byte
     mov dil, 0x89
     call emit_byte
+    push rsi                  ; R10 (F1): disp8 or disp32, by range
+    mov esi, eax
     mov dil, 0x45
-    call emit_byte
-    mov edi, eax
-    call emit_byte
+    call emit_rbp_modrm_disp
+    pop rsi
     pop rbx
     ret
 
@@ -12208,10 +12241,11 @@ gen_stmt:
     call emit_byte
     mov dil, 0x89
     call emit_byte
+    push rsi                  ; R10 (F1): disp8 or disp32, by range
+    mov esi, eax
     mov dil, 0x45
-    call emit_byte
-    mov edi, eax
-    call emit_byte
+    call emit_rbp_modrm_disp
+    pop rsi
     pop rbx
     ret
 
@@ -12385,10 +12419,11 @@ gen_stmt:
     call emit_byte
     mov dil, 0x89
     call emit_byte
+    push rsi                  ; R10 (F1): disp8 or disp32, by range
+    mov esi, r12d
     mov dil, 0x45
-    call emit_byte
-    mov edi, r12d
-    call emit_byte
+    call emit_rbp_modrm_disp
+    pop rsi
 %ifdef SUTRAM_R65_PEEPHOLES
     mov rax,[rbx+8]
     mov rax,[rax+8]
@@ -12467,10 +12502,11 @@ gen_stmt:
     call emit_byte
     mov dil, 0x8B
     call emit_byte
+    push rsi                  ; R10 (F1): disp8 or disp32, by range
+    mov esi, eax
     mov dil, 0x45
-    call emit_byte
-    mov edi, eax
-    call emit_byte
+    call emit_rbp_modrm_disp
+    pop rsi
 .gs_ai_have:
     mov dil, 0x50            ; push base address
     call emit_byte
@@ -12595,10 +12631,11 @@ gen_stmt:
     call emit_byte
     mov dil, 0x8B
     call emit_byte
+    push rsi                  ; R10 (F1): disp8 or disp32, by range
+    mov esi, eax
     mov dil, 0x45
-    call emit_byte
-    mov edi, eax
-    call emit_byte
+    call emit_rbp_modrm_disp
+    pop rsi
 .gs_af_have:
     mov dil, 0x50            ; push rax (base)
     call emit_byte
@@ -12644,11 +12681,12 @@ gen_stmt:
     call emit_byte
     mov dil, 0x89
     call emit_byte
-    mov dil, 0x45
-    call emit_byte
     pop rax
-    mov edi, eax
-    call emit_byte
+    push rsi                  ; R10 (F1): disp8 or disp32, by range
+    mov esi, eax
+    mov dil, 0x45
+    call emit_rbp_modrm_disp
+    pop rsi
     pop rbx
     ret
 
@@ -12988,10 +13026,11 @@ gen_stmt:
     call emit_byte
     mov dil, 0x89
     call emit_byte
+    push rsi                  ; R10 (F1): disp8 or disp32, by range
+    mov esi, r14d
     mov dil, 0x45
-    call emit_byte
-    mov edi, r14d
-    call emit_byte
+    call emit_rbp_modrm_disp
+    pop rsi
 
 .gf2_emit_entry_jump:
     ; Zero-iteration correctness: skip the body and test the bounds first.
@@ -13091,10 +13130,11 @@ gen_stmt:
     call emit_byte
     mov dil, 0x8B
     call emit_byte
+    push rsi                  ; R10 (F1): disp8 or disp32, by range
+    mov esi, r14d
     mov dil, 0x45
-    call emit_byte
-    mov edi, r14d
-    call emit_byte
+    call emit_rbp_modrm_disp
+    pop rsi
 .gf2_have_var:
     mov dil, 0x50
     call emit_byte
@@ -14187,10 +14227,11 @@ gen_expr:
     call emit_byte
     mov dil, 0x8B
     call emit_byte
+    push rsi                  ; R10 (F1): disp8 or disp32, by range
+    mov esi, eax
     mov dil, 0x45
-    call emit_byte
-    mov edi, eax
-    call emit_byte
+    call emit_rbp_modrm_disp
+    pop rsi
 .ge_index_have_addr:
     mov dil, 0x50            ; push rax (save base address)
     call emit_byte
@@ -14287,10 +14328,11 @@ gen_expr:
     call emit_byte
     mov dil, 0x8B
     call emit_byte
+    push rsi                  ; R10 (F1): disp8 or disp32, by range
+    mov esi, eax
     mov dil, 0x45
-    call emit_byte
-    mov edi, eax
-    call emit_byte
+    call emit_rbp_modrm_disp
+    pop rsi
 .ge_field_have:
     ; push rax (base address)
     mov dil, 0x50
@@ -14333,10 +14375,11 @@ gen_expr:
     call emit_byte
     mov dil, 0x8B
     call emit_byte
+    push rsi                  ; R10 (F1): disp8 or disp32, by range
+    mov esi, eax
     mov dil, 0x45
-    call emit_byte
-    mov edi, eax
-    call emit_byte
+    call emit_rbp_modrm_disp
+    pop rsi
     pop rbx
     ret
 
@@ -17598,10 +17641,11 @@ gen_expr:
     call emit_byte
     mov dil, 0x8B
     call emit_byte
+    push rsi                  ; R10 (F1): disp8 or disp32, by range
+    mov esi, eax
     mov dil, 0x45
-    call emit_byte
-    mov edi, eax
-    call emit_byte
+    call emit_rbp_modrm_disp
+    pop rsi
     pop rbx
     ret
 
@@ -19877,10 +19921,11 @@ emit_load_named_var:
     call emit_byte
     mov dil, 0x8B
     call emit_byte
+    push rsi                  ; R10 (F1): disp8 or disp32, by range
+    mov esi, eax
     mov dil, 0x45
-    call emit_byte
-    mov edi, eax
-    call emit_byte
+    call emit_rbp_modrm_disp
+    pop rsi
     ret
 
 emit_store_named_var:
@@ -19907,10 +19952,11 @@ emit_store_named_var:
     call emit_byte
     mov dil, 0x89
     call emit_byte
+    push rsi                  ; R10 (F1): disp8 or disp32, by range
+    mov esi, eax
     mov dil, 0x45
-    call emit_byte
-    mov edi, eax
-    call emit_byte
+    call emit_rbp_modrm_disp
+    pop rsi
     ret
 
 ; alloc_var(rdi = name ptr) → rax = location
@@ -21404,7 +21450,7 @@ emit_reg_self_update_reg:
     pop rbx
     ret
 
-; emit_stack_self_update_imm(rdi=negative disp8, rsi=OP_ADD/SUB,
+; emit_stack_self_update_imm(rdi=negative displacement (any size since R10), rsi=OP_ADD/SUB,
 ;                            rdx=non-negative imm <= signed INT32_MAX)
 ; Emits an in-place arithmetic update with an imm8 or imm32 encoding.
 emit_stack_self_update_imm:
@@ -21427,9 +21473,10 @@ emit_stack_self_update_imm:
     je .essui_modrm_ready
     mov dil, 0x6D             ; /5 SUB, [rbp+disp8]
 .essui_modrm_ready:
-    call emit_byte
-    mov dil, bl
-    call emit_byte
+    push rsi                  ; R10 (F1): disp8 or disp32, by range
+    mov esi, ebx
+    call emit_rbp_modrm_disp
+    pop rsi
     cmp r13, 127
     ja .essui_wide_immediate
     mov dil, r13b
