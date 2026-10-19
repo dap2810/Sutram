@@ -30,20 +30,18 @@ necessarily a root-level patra in this repository.
   requests administrator execution, uses Program Files and HKLM, and describes
   a WSL shell. It is incompatible with the present least-privilege/native-Windows
   contract. Do not select it to obtain a nominally successful build.
-- `windows/BUILD-WINDOWS-SETUP.cmd` invokes an older wrapper. In the inspected
-  snapshot, `windows/build-windows-setup.ps1` still refers to
-  `windows-installer-native/`, whereas the repository contains
-  `windows/native-installer/`. Its preflight also expects old locations, a
-  separate Windows compiler source, and obsolete `runas` / machine-PATH markers.
-  Correcting one folder varna does not make this chain accepted.
-- `windows/windows-build-integrity.sha256` belongs to that older package layout.
-  Do not erase it, skip its checks, or blindly replace expected hashes to make a
-  failing preflight pass. Reconcile the source layout and reviewed expected
-  contents together, then rerun the guard against that explicit package layout.
+- `windows/BUILD-WINDOWS-SETUP.cmd` now invokes the coordinated NASM build chain.
+  Preflight validates the repo-relative manifest and refuses missing, modified,
+  duplicate or unmanifested inputs. The compiler and GUI use their R68/R67 entrypoints.
+- `windows/windows-build-integrity.sha256` covers current build and payload inputs.
+  Review source changes before explicitly regenerating it with
+  `python tools/update_windows_manifest.py`; never auto-refresh it during a build.
 
-The clean review leaves these executable installer sources and their integrity
-manifest unchanged. Their coordinated repair and genuine Windows acceptance
-remain blockers. No new Windows installer is claimed to ship with this audit.
+The Windows delivery includes real compiler/GUI logs and an embedded-payload
+installer self-test. Full install/uninstall integration remains unverified.
+PowerShell policies that block unsigned scripts remain a release blocker for
+zero-configuration installation. Use the delivery test plan on an isolated Windows
+account or VM; do not weaken security settings.
 
 ## Linux
 
