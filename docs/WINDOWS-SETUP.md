@@ -45,18 +45,16 @@ Keep the folder together: the language packs live in `lang\` beside `sutram.exe`
 
 ### Method C — build from source
 
-Requires NASM and a PE-capable linker (GNU `ld`, or MSVC/lld-link).
+Requires NASM and GNU ld with PE support and Windows system import libraries.
+From project root:
 
-```
-nasm -f win64 -dWINDOWS -I. src\sutram_compiler.asm -o sutram.obj
-ld -mi386pep --entry=_start -o sutram.exe sutram.obj
+```powershell
+powershell -NoProfile -File windows/build-windows-setup.ps1
 ```
 
-The installer sources are under `windows/native-installer/`. The legacy
-`windows/BUILD-WINDOWS-SETUP.cmd` chain is not a verified build route in the
-clean snapshot: its wrapper and preflight still expect an older directory
-layout. Do not bypass the preflight or regenerate hashes merely to silence
-it. See **INSTALLATION-ROUTES.md** for the integration gate.
+This checks source integrity and builds the R68 compiler, R67 GUI and existing
+NASM wizard. It does not install anything. Review the delivery evidence and finish
+clean-machine acceptance before distributing the executable as a release.
 
 ---
 
@@ -73,8 +71,9 @@ Output:
 Namaste, Sutram!
 ```
 
-The **output extension chooses the target**: `.exe` produces a Windows PE
-executable, `.bin` produces a Linux ELF executable. Same compiler, two targets.
+A Windows-built compiler always emits Windows PE, including a `.bin` output name.
+Use `.exe` for convenient shell execution. A Linux-built compiler selects PE for
+`.exe` and ELF for other extensions.
 
 Other common commands:
 
