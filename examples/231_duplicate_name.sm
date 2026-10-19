@@ -1,0 +1,8 @@
+# R7 golden: declaring a name that is already visible is a compile error.
+# Before R7 the second `vitti x = 2` was silently lost: this printed 1 twice.
+mukhya() {
+    vitti x = 1
+    likha(x)
+    vitti x = 2
+    likha(x)
+}
