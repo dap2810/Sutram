@@ -1,5 +1,5 @@
 ; ---------------------------------------------------------------------------
-; winrt.inc — Windows implementation of the Sutram OS layer
+; winrt.inc â€” Windows implementation of the Sutram OS layer
 ;
 ; Included by the compiler when built with:  nasm -f win64 -dWINDOWS
 ; Provides os_write / os_read / os_open / os_close / os_exit / os_readlink
@@ -62,9 +62,22 @@ rt_init:
     lea rdi, [rel wn_exitprocess]
     call win_resolve
     mov [rel p_exitprocess], rax
+    lea rdi, [rel wn_modulepath]
+    call win_resolve
+    mov [rel p_modulepath], rax
     lea rdi, [rel wn_cmdline]
     call win_resolve
     mov [rel p_cmdline], rax
+    lea rdi,[rel wn_getcp]
+    call win_resolve
+    mov [rel p_getcp],rax
+    lea rdi,[rel wn_setcp]
+    call win_resolve
+    mov [rel p_setcp],rax
+    call qword [rel p_getcp]
+    mov [rel original_console_cp],eax
+    mov ecx,65001
+    call qword [rel p_setcp]
     add rsp, 40
     pop rbx
     ret
@@ -77,6 +90,11 @@ rt_init:
 
 ; --- os_write(rdi=fd, rsi=buf, rdx=len) ------------------------------------
 os_write:
+    ; Match Linux syscall register preservation across WinAPI calls.
+    push rdx
+    push r8
+    push r9
+    push r10
     push rbx
     push r12
     push r13
@@ -111,10 +129,19 @@ os_write:
     pop r13
     pop r12
     pop rbx
+    pop r10
+    pop r9
+    pop r8
+    pop rdx
     ret
 
 ; --- os_read(rdi=fd, rsi=buf, rdx=len) -> rax = bytes read -----------------
 os_read:
+    ; Match Linux syscall register preservation across WinAPI calls.
+    push rdx
+    push r8
+    push r9
+    push r10
     push rbx
     push r12
     push r13
@@ -144,10 +171,19 @@ os_read:
     pop r13
     pop r12
     pop rbx
+    pop r10
+    pop r9
+    pop r8
+    pop rdx
     ret
 
 ; --- os_open(rdi=path, rsi=flags, rdx=mode) -> rax = handle (-1 on error) --
 os_open:
+    ; Match Linux syscall register preservation across WinAPI calls.
+    push rdx
+    push r8
+    push r9
+    push r10
     push rbx
     push r14
     mov r14, rsp
@@ -174,10 +210,19 @@ os_open:
     mov rsp, r14
     pop r14
     pop rbx
+    pop r10
+    pop r9
+    pop r8
+    pop rdx
     ret
 
 ; --- os_close(rdi=handle) --------------------------------------------------
 os_close:
+    ; Match Linux syscall register preservation across WinAPI calls.
+    push rdx
+    push r8
+    push r9
+    push r10
     push rbx
     mov rbx, rsp
     and rsp, -16
@@ -186,12 +231,21 @@ os_close:
     call qword [rel p_closehandle]
     mov rsp, rbx
     pop rbx
+    pop r10
+    pop r9
+    pop r8
+    pop rdx
     ret
 
 ; --- os_exit(rdi=code) -----------------------------------------------------
 os_exit:
     and rsp, -16
     sub rsp, 32
+    mov ecx,[rel original_console_cp]
+    test ecx,ecx
+    jz .no_console
+    call qword [rel p_setcp]
+.no_console:
     mov rcx, rdi
     call qword [rel p_exitprocess]
     hlt
@@ -222,6 +276,8 @@ win_build_argv:
     je .ba_adv
     cmp al, 9
     je .ba_adv
+    cmp r15, 13
+    jae .ba_reject
     mov [r14 + 8 + r15*8], r13       ; argv[argc] = this token
     inc r15
 .ba_tok:
@@ -234,6 +290,10 @@ win_build_argv:
     je .ba_end
     cmp al, '"'
     je .ba_open
+    lea rax, [rel win_args+2047]
+    cmp r13,rax
+    jae .ba_reject
+    mov al,[r12]
     mov [r13], al
     inc r13
     inc r12
@@ -246,6 +306,10 @@ win_build_argv:
     jz .ba_end
     cmp al, '"'
     je .ba_qend
+    lea rax, [rel win_args+2047]
+    cmp r13,rax
+    jae .ba_reject
+    mov al,[r12]
     mov [r13], al
     inc r13
     inc r12
@@ -254,12 +318,18 @@ win_build_argv:
     inc r12                          ; skip closing quote
     jmp .ba_tok
 .ba_end:
+    lea rax,[rel win_args+2047]
+    cmp r13,rax
+    ja .ba_reject
     mov byte [r13], 0
     inc r13
     jmp .ba_skip
 .ba_adv:
     inc r12
     jmp .ba_skip
+.ba_reject:
+    mov edi,2
+    call os_exit
 .ba_finish:
     mov [r14], r15                   ; argc
 .ba_done:
@@ -442,6 +512,7 @@ wn_createfile:   db "CreateFileA", 0
 wn_closehandle:  db "CloseHandle", 0
 wn_virtualalloc: db "VirtualAlloc", 0
 wn_exitprocess:  db "ExitProcess", 0
+wn_modulepath: db "GetModuleFileNameA",0
 wn_cmdline:      db "GetCommandLineA", 0
 
 section .bss
@@ -455,6 +526,15 @@ p_virtualalloc: resq 1
 p_exitprocess:  resq 1
 wn_written:     resd 1
 wn_got:         resd 1
+p_modulepath: resq 1
 p_cmdline:      resq 1
 win_args:       resb 2048
 win_stack:      resq 16
+
+section .data
+wn_getcp: db "GetConsoleOutputCP",0
+wn_setcp: db "SetConsoleOutputCP",0
+section .bss
+p_getcp: resq 1
+p_setcp: resq 1
+original_console_cp: resd 1
