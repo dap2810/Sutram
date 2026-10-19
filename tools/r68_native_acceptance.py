@@ -103,13 +103,13 @@ def main() -> int:
             src = work / ('bad-' + str(i) + '.sm')
             src.write_bytes(b'mukhya() {\n    vitti x = 1\n    vitti y = ' + malformed + b'\n}\n')
             want = ('Sutram Error [E_UTF8]: ' + str(src) +
-                    ':3: invalid or truncated UTF-8 in source code\n').encode()
+                    ':3: srot me ashuddh ya khandit UTF-8\n').encode()
             require_error(a.compiler, src, work / ('bad-out-' + str(i)), want)
             print('R68_UTF8_DIAGNOSTIC_PASS', i)
         src = work / 'alias.sm'
         src.write_text('मुख्य() {\n    चर x = मु॰\n}\n', encoding='utf-8')
         want = ("Sutram Error [E_ABBREVIATION_VALUE]: " + str(src) +
-                ":2: abbreviation keyword is not a value: 'मु॰'\n").encode()
+                ":2: sankshep shabd mulya nahi: 'मु॰'\n").encode()
         require_error(a.compiler, src, work / 'alias-out', want, 'hindi')
         print('R68_ABBREVIATION_DIAGNOSTIC_PASS')
         if a.reference and a.pair_compiler:
