@@ -1,3 +1,38 @@
+## v173 - Claude ROUND-04 and ChatGPT ROUND-72 merged; the owner's GUI decision
+
+**Both deliveries synced.** Claude's ROUND-04 was rebuilt and run: **gates.sh 9 PASS / 0 FAIL / 1 NOT-RUN,
+suite 191/4** (up from 189 - two new goldens). ChatGPT's ROUND-72 was **purely additive, 5 new files, nothing
+changed** - no conflict.
+
+### The silent miscompile is fixed
+
+**Claude implemented the decision from ROUND-04: an undefined name is now a compile error.**
+
+`Sutram Error [E_UNDEFINED_NAME]: agyat naam 'nosuchname'` - in Sanskrit. And the old keyword now errors too:
+`agyat naam 'pratiyati'`. Before this, an undefined name **silently read as 0**, so a function whose body
+said `pratiyati 1` inside an `if` and `pratiyati 2` after it **returned 2 when called with 5.** The most
+dangerous failure mode a language can have - a wrong answer with no diagnostic - is gone.
+
+### The owner's decision on the Windows GUI
+
+**Keep the 18 October build** - the dark-theme IDE with line numbers and Devanagari colouring. **But the
+interface goes to English:** the menus must become English to match the English buttons, and ROUND-04's
+Sanskrit buttons and 49 installer strings revert to English. Today the interface is mixed - Sanskrit menus
+above English buttons - and the owner wants it consistent.
+
+**This runs against the "everything in Sanskrit" aim, and the owner has weighed that and chosen English for
+the interface.** The instruction is to do it, and to raise any objection in the delivery document rather
+than in the code.
+
+### Also
+
+- **ChatGPT's own headline finding is a real blocker:** its WS1 baseline is **BLOCKED by four mismatching
+  lock pins**. ROUND-73 makes unblocking it its first workstream.
+- **Muse is paused.**
+- ROUND-05 issued to Claude; ROUND-73 to ChatGPT. **Both open with a memory update** - the rename table, the
+  new gate script, the undefined-name change, the Sanskrit diagnostics, and the module-graph fix - so
+  neither works from a stale picture.
+
 ## v172 - the Windows test build verified from this side; the test guide added
 
 The owner supplied the ROUND-03 binaries directly. **They are byte-identical to Claude's delivery** - same
