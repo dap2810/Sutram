@@ -52,7 +52,7 @@ Semicolons and braces are optional. The full reference is in
 
 ## What is in this release
 
-- **202 example programs** in `examples/` — 191 numbered plus 11 from recent
+- **195 example programs** in `examples/` — 191 numbered plus 11 from recent
   rounds — with regression expectations in the test corpus. Cases without an
   accepted expectation are not counted as passing tests
 - **24 standard-library modules with code** in `lib/`, 303 functions between
@@ -137,7 +137,7 @@ Windows target:
 
 ## Honest status
 
-The clean-project handoff reports a Linux baseline of **187 passing cases,
+The clean-project handoff reports a Linux baseline of **191 passing cases,
 4 no-expectation cases, and 12/12 code-generation shape gates**. These are
 maintainer-reported baseline measurements, not a Windows release certificate.
 A clean-source audit must rerun them independently; a percentage-complete
