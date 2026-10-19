@@ -1,0 +1,8 @@
+prakriya f() {
+    vitti q = 4
+    prati q
+}
+mukhya() {
+    likha(f())
+    likha(q)
+}

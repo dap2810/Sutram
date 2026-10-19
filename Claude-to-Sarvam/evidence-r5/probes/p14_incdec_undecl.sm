@@ -1,0 +1,4 @@
+mukhya() {
+    j++
+    likha(j)
+}

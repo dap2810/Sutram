@@ -1,0 +1,4 @@
+mukhya() {
+    vitti n = 3
+    likha(n.len)
+}

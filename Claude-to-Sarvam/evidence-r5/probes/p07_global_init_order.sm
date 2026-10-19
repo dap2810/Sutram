@@ -1,0 +1,5 @@
+vitti a = b + 1
+vitti b = 5
+mukhya() {
+    likha(a)
+}
