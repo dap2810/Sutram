@@ -13,7 +13,7 @@
 ;    2. Writes three embedded artifacts to %TEMP%\Sutram-Setup:
 ;         payload.zip, install-core.ps1, uninstall-core.ps1
 ;    3. Runs install-core.ps1 through Windows PowerShell 5.1 (present on
-;       every supported Windows 10/11) with -ExecutionPolicy Bypass.
+;       every supported Windows 10/11) with.
 ;    4. Reports success or failure.
 ;
 ;  All installation work is per-user and unelevated.  Nothing requests UAC
@@ -189,7 +189,7 @@ fname_install:  u16 "\install-core.ps1"
 fname_uninst:   u16 "\uninstall-core.ps1"
 fname_log:      u16 "\install.log"
 sub_programs:   u16 "\Programs\Sutram"
-ps_prefix:      u16 "powershell.exe -NoProfile -ExecutionPolicy Bypass -File "
+ps_prefix:      u16 "powershell.exe -NoProfile -File "
 flag_payloadzip: u16 " -PayloadZip "
 flag_installdir: u16 " -InstallDir "
 flag_setupexepath: u16 " -SetupExePath "
@@ -197,7 +197,7 @@ flag_logpath:   u16 " -LogPath "
 flag_addpath:   u16 " -AddPath"
 flag_desktop:   u16 " -DesktopShortcut"
 flag_selfpath:  u16 " -SelfPath "
-ps_uninst:      u16 "powershell.exe -NoProfile -ExecutionPolicy Bypass -File "
+ps_uninst:      u16 "powershell.exe -NoProfile -File "
 fname_ulog:     u16 "\uninstall.log"
 quote:          dw '"',0
 
