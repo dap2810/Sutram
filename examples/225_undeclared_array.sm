@@ -1,0 +1,6 @@
+# R5 golden: the name in front of [ ] must be declared too. Before R5 this
+# compiled and the program crashed at run time (segmentation fault).
+mukhya() {
+    vitti total[3]
+    likha(totl[0])
+}
