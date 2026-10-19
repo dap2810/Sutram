@@ -242,7 +242,10 @@ function Check-R77IndicFont([bool]$ShowWarning) {
 $script:r77FreshInstall=$false
 $script:r77InstallTouched=$false
 $script:r77HadInstallDir=$true
-$script:r77StagingRoot=''
+$script:r77OwnedRelatives=@()
+$script:r77UninstallKeyWasPresent=$true
+$script:r77ClassKeyWasPresent=$true
+$script:r77ExtKeyWasPresent=$true
 $script:r77AddedPath=$false
 function Undo-R77FailedFreshInstall {
     if (-not $script:r77FreshInstall -or -not $script:r77InstallTouched) { return }
@@ -250,10 +253,8 @@ function Undo-R77FailedFreshInstall {
     $programs=[IO.Path]::GetFullPath((Join-Path $env:LOCALAPPDATA 'Programs')).TrimEnd('\')
     if (-not $dest.StartsWith($programs+'\',[StringComparison]::OrdinalIgnoreCase)) { throw 'Rollback refused outside user Programs.' }
     Assert-NoReparsePath $dest
-    if (-not (Test-Path -LiteralPath $script:r77StagingRoot -PathType Container)) { throw 'Verified payload stage is missing; rollback refused.' }
-    $stageFull=[IO.Path]::GetFullPath($script:r77StagingRoot).TrimEnd('\')
-    foreach ($file in Get-ChildItem -LiteralPath $stageFull -File -Recurse) {
-        $relative=$file.FullName.Substring($stageFull.Length+1)
+    if (-not (Test-Path -LiteralPath $dest -PathType Container)) { return }
+    foreach ($relative in $script:r77OwnedRelatives) {
         $target=[IO.Path]::GetFullPath((Join-Path $dest $relative))
         if (-not $target.StartsWith($dest+'\',[StringComparison]::OrdinalIgnoreCase)) { throw 'Rollback path escaped install root.' }
         Assert-NoReparsePath $target
@@ -280,6 +281,31 @@ function Undo-R77FailedFreshInstall {
                 Remove-Item -LiteralPath $shortcut -Force -ErrorAction Stop
             }
         } catch { Log ('Shortcut rollback preserved path: ' + $_.Exception.Message) }
+    }
+    # Restore only registration keys first created by this attempt.
+    $unKey='HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\Sutram'
+    if (-not $script:r77UninstallKeyWasPresent -and (Test-Path -LiteralPath $unKey)) {
+        $reg=Get-ItemProperty -LiteralPath $unKey -ErrorAction SilentlyContinue
+        if ($reg -and [string]::Equals([string]$reg.InstallLocation,$dest,[StringComparison]::OrdinalIgnoreCase)) {
+            Remove-Item -LiteralPath $unKey -Recurse -Force -ErrorAction Stop
+        }
+    }
+    $classKey='HKCU:\Software\Classes\Sutram.Source'
+    if (-not $script:r77ClassKeyWasPresent -and (Test-Path -LiteralPath $classKey)) {
+        $commandKey=Join-Path $classKey 'shell\open\command'
+        if (Test-Path -LiteralPath $commandKey) {
+            $activeCommand=[string](Get-Item -LiteralPath $commandKey).GetValue('')
+            if ($activeCommand -eq ('"'+(Join-Path $dest 'sutram-ide-gui.exe')+'" "%1"')) {
+                Remove-Item -LiteralPath $classKey -Recurse -Force -ErrorAction Stop
+            }
+        }
+    }
+    $extKey='HKCU:\Software\Classes\.sm'
+    if (-not $script:r77ExtKeyWasPresent -and (Test-Path -LiteralPath $extKey)) {
+        $default=[string](Get-Item -LiteralPath $extKey).GetValue('')
+        if ($default -eq 'Sutram.Source') {
+            Remove-Item -LiteralPath $extKey -Recurse -Force -ErrorAction Stop
+        }
     }
     $folders=Get-ChildItem -LiteralPath $dest -Directory -Recurse -ErrorAction SilentlyContinue | Sort-Object { $_.FullName.Length } -Descending
     foreach ($d in $folders) {
@@ -334,6 +360,9 @@ try {
     $marker = Join-Path $InstallDir '.sutram-install'
     $script:r77HadInstallDir = (Test-Path -LiteralPath $InstallDir -PathType Container)
     $script:r77FreshInstall = -not (Test-SutramMarker $marker)
+    $script:r77UninstallKeyWasPresent = (Test-Path -LiteralPath $unKey)
+    $script:r77ClassKeyWasPresent = (Test-Path -LiteralPath 'HKCU:\Software\Classes\Sutram.Source')
+    $script:r77ExtKeyWasPresent = (Test-Path -LiteralPath 'HKCU:\Software\Classes\.sm')
     $statePath = Join-Path $InstallDir 'install-state.ini'
     $oldState = Read-State $statePath
     if (Test-Path -LiteralPath $InstallDir -PathType Container) {
@@ -364,7 +393,7 @@ try {
         Log 'Extracting embedded payload.'
         Expand-Archive -LiteralPath $PayloadZip -DestinationPath $stage -Force
         Verify-Payload $stage
-        $script:r77StagingRoot=$stage
+        $script:r77OwnedRelatives=@(Get-ChildItem -LiteralPath $stage -File -Recurse | ForEach-Object { $_.FullName.Substring($stage.Length+1) })
         Check-R77IndicFont (-not $VerifyOnly)
         $testExe = Join-Path $stage 'bin\sutram.exe'
         $guiTestExe = Join-Path $stage 'sutram-ide-gui.exe'
