@@ -1,3 +1,49 @@
+## v196 - F1 IS FIXED. Verified by me. The most serious defect on the project is closed.
+
+**I rebuilt Claude's branch and swept the variable count myself:**
+
+| Local variables in a called function | Before | After |
+|---|---|---|
+| 26, 30, 32, 34, 38, 50, 100, 200, 250 | **crashed or gave wrong values from 27** | **all correct - `7`** |
+
+**Suite 205/4.** Nine variable counts from 26 to 250, every one correct. **The fix holds far past the
+boundary.**
+
+### The root cause, in Claude's two sentences
+
+*Every stack variable's `rbp` offset was emitted as a one-byte displacement, so slots below `rbp-128`
+wrapped above the frame, onto the caller's saved values and the return address.*
+
+**The fix is one helper that chooses a 1- or 4-byte displacement by range, at all 15 sites.** No
+restructuring - **and programs whose slots fit in a byte compile to the same bytes**, so 123 tree programs
+compile differently but **every golden is unchanged.**
+
+### And Claude corrected a theory of mine
+
+**I said the threshold might differ by platform - Linux crashing at 38 and Windows at 34 - and speculated it
+could be stack size rather than codegen. That was wrong.** Claude's answer: *"you tested 30 and then 38 on
+Linux. 34 crashes on Linux too."*
+
+**I had not tested 34 on Linux, drew a cross-platform conclusion from an untested middle, and presented it
+as the clue of the round.** The boundary is **identical on both platforms, to the variable** - correct to 26,
+wrong at 27-31, crash from 32. **One bug, one fix, one platform story.** That is the fifth time this session
+a confident inference of mine has been wrong.
+
+### What the threshold actually is
+
+**27-31 locals gives WRONG VALUES** - the caller's variables change. **From 32 it crashes** - the 34th
+variable hits the return address. **So the dangerous range is lower and wider than any of us said**: a
+function with 27 locals silently returns the wrong answer, which is worse than a crash.
+
+### Step 5 also advanced
+
+**255 of 303 library functions closed** (up from 235), **48 open.**
+
+### ChatGPT's independent diagnosis
+
+It delivered **`ROUND-78-WS0-F1-ROOT-CAUSE.md`** - the read-only analysis I asked for. **To be compared
+against Claude's root cause:** two independent readings of the same defect, one of which produced the fix.
+
 ## v195 - the benchmark set extended: four call-overhead programs is not a language benchmark
 
 **Found while working Step 7's follow-up. `benchmarks/` held four programs, all `r46_hotcall_*`** - they
