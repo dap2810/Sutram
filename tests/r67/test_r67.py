@@ -108,12 +108,16 @@ class Source(unittest.TestCase):
     def test_gui_build_links_objects(self):
         s=(ROOT/'windows/gui/build-gui.ps1').read_text()
         for name in ('r67_gui_entry.asm','r66_indic_clusters.asm','r67_cluster_count.asm'): self.assertIn(name,s)
-        self.assertIn('@objects',s);self.assertNotIn('ExecutionPolicy Bypass',s)
+        # R4: since R73 the linker goes through Invoke-BoundedProcess with an argument array, so the
+        # objects are appended ($objects) rather than splatted (@objects). Same intent: all three are linked.
+        self.assertRegex(s,r"Invoke-BoundedProcess \$linker .*\+\$objects\+");self.assertNotIn('ExecutionPolicy Bypass',s)
     def test_gui_calls_real_counter_without_caret_override(self):
         s=(ROOT/'windows/gui/r67_gui_entry.asm').read_text()
         self.assertIn('call r67_count_editor_clusters',s)
         self.assertIn('API WideCharToMultiByte',s)
-        self.assertIn('API SetWindowTextA',s)
+        # R4: since R73 the count goes to the status line (update_status), not the window title,
+        # which the editor owns (file name, * marker). The intent -- the count is shown -- is unchanged.
+        self.assertIn('call update_status',s); self.assertNotIn('API SetWindowTextA',s)
         self.assertNotIn('EM_SETSEL',s);self.assertNotIn('COL_KEYWORD',s)
     def test_gui_single_call_redirect(self):
         s=(ROOT/'windows/gui/r67_gui_entry.asm').read_text()
