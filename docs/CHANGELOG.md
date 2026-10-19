@@ -1,3 +1,28 @@
+## v193 - F1 measured on real Windows by the owner: the threshold is 30-34, not 38
+
+**The owner ran the test himself, and the bug is worse than either of us described.**
+
+| Local variables in a called function | Linux | Windows (owner) |
+|---|---|---|
+| 18, 20, 22, **30** | correct | **correct - printed `7`** |
+| **34** | not tested | **compiles, then NO OUTPUT** |
+| 38, 40 | **SEGFAULT** | **compiles, then NO OUTPUT** |
+
+**The boundary is between 30 and 34.** A function with **31-34 variables** crashes - **a moderately complex
+function, not an extreme one.**
+
+**And the compiler reports SUCCESS before it fails:** `Siddh: 526 byte sankalit`, then nothing. **A user
+would assume their own logic was wrong.** For a language built to teach beginners, that is the most damaging
+failure mode there is.
+
+**F1 is now confirmed by three independent methods** - Claude's reproduction, my Linux threshold test, and
+the owner's Windows run. **ROUND-10's brief is sharpened with the table**, and now asks the question that
+matters: **is this one bug or two?** My Linux run crashed at 38 and the owner's Windows run at 34 - **if the
+threshold differs by platform, it may be a stack-size issue rather than a codegen one**, and that changes the
+fix.
+
+**Nothing else on the road to v1.0 moves until this is fixed.**
+
 ## v192 - ROUND-10 (F1 is now the top item) and ROUND-78 (the installer payload)
 
 **F1 changes the order of everything.** A valid program with 38 local variables **segfaults the compiled
