@@ -146,10 +146,10 @@ build everything and run it, and its output is the truth about the tree:
 
 | Metric | Value |
 |---|---|
-| Regression suite | **203 pass, 4 no-expectation** |
+| Regression suite | **205 pass, 4 no-expectation** |
 | Code-generation shape gates | **12 / 12** |
 | Language packs | **33 / 33** checks over **11** packs |
-| Library proofs | **209 / 209** |
+| Library proofs | **210 / 210** |
 | Property proofs | **86 / 86** |
 | Module graph | **18 / 18** |
 | Layer check | **14 core, 9 alloc, 1 std** |
