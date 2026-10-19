@@ -1,3 +1,15 @@
+; ============================================================================
+; RETIRED - DO NOT USE, DO NOT SHIP.
+;
+; This installer writes to HKLM (the machine-wide registry) and therefore needs
+; administrator rights. The project's hard constraint is a PER-USER install with no
+; UAC prompt, so this file cannot be shipped.
+;
+; It is superseded by windows/native-installer/, which is per-user (HKCU).
+;
+; Kept only as history. Do not add it to a build. See SECURITY-AUDIT.md, finding 1.
+; ============================================================================
+
 ; ============================================================
 ; Sutram Installer for Windows — NSIS Script
 ; ============================================================
