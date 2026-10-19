@@ -1,0 +1,51 @@
+# R10 (Step 5): roop and suchi boundaries the earlier proofs did not reach.
+yoj roop
+yoj suchi
+prakriya dikha(b, n) {
+    vitti i = 0
+    yavat (i < n) {
+        likha(akshar(b, i))
+        i = i + 1
+    }
+    prati 0
+}
+mukhya() {
+    vitti out = nirmmita(96)
+    vitti minv = (0 - 9223372036854775807) - 1
+    # -2^63 in base 29: its last digit is 12, a letter, lower and upper case
+    vitti n = roop_ank_aadhar(minv, 29, 0, out)
+    likha(n)
+    likha(akshar(out, n - 1))
+    n = roop_ank_aadhar(minv, 29, 1, out)
+    likha(akshar(out, n - 1))
+    # 0 with flags: no minus sign
+    n = roop_ank_dhvaj(0, 10, 0, out)
+    likha(n)
+    dikha(out, n)
+    # suchi: a stale value sits just past the length
+    vitti l = suchi_srij(4)
+    suchi_khip(l, 1)
+    suchi_khip(l, 2)
+    suchi_khip(l, 3)
+    suchi_apanay(l, 2)
+    likha(suchi_antah(l, 3))
+    likha(suchi_kramank(l, 3))
+    likha(suchi_antah(l, 2))
+    likha(suchi_kramank(l, 2))
+    # documented returns
+    likha(suchi_viparyay(l))
+    likha(suchi_grah(l, 0))
+    likha(suchi_shreni(l))
+    likha(suchi_grah(l, 0))
+    # avali_tak_mala writes exactly maap cells: a guard after them survives
+    vitti q = avali_srij(4)
+    avali_pravesh(q, 7)
+    avali_pravesh(q, 8)
+    vitti o = nirmmita(4 * 8)
+    o[2] = 77
+    likha(avali_tak_mala(q, o))
+    likha(o[0] + o[1])
+    likha(o[2])
+    likha(avali_rikta(q))
+    likha(suchi_rikta(l))
+}
