@@ -1,0 +1,21 @@
+# Round 76 exact SHA-256 of local artifacts; NOT compiler executable digests
+6dbcfe519e658763a4fc04bc73d9ff9f32b69bad2d2a64c5b94f75c5ff57e379  local/tools/r76_kosh_measure.py
+ce869b0f38179ec5381f7498451e5dea26302d0ea869a5b9f3c8ca33f7c7dc3d  local/tools/r76_kosh_prepare.py
+178806655af0479530db3b2a04c9087215673aebfd09ea0a017e9c9de01be295  tools/r76_module_object_probe.py
+536df7a0aa390c10f87bb4cc3ee3fd9ba0d24f02adc57412e024f114cf8b0d01  local/tests/r76/test_measure.py
+d34475ae6ac0d04c0c6c5262d736196195da86031ec91da5c278b6900166173e  tests/r76/test_modules.py
+ef1e837ee95ba75e9786a028c04d6d85a662badf6b8a8bd779aa4a6e6810990f  local/tests/r76/test_stage.py
+e8a2908888ed4b2c26e2ae0f69b9ed1d281a6a2dd104d58b9a87cf7619a36910  examples/r76/module_helper.sm
+1bf641102b6818236f9f6169b6152c14880ab20b99b7a80eb692bde5a39e2e37  examples/r76/module_main.sm
+
+# Readback Git blob SHA-1 for review PR #41: these 4 files are byte-identical
+# with their locally tested counterparts:
+f5539b180cf8de6c83138530af16b11dfa68bd31  tools/r76_module_object_probe.py
+cbaa3b74430616101edaf570197c924eb96c328d  tests/r76/test_modules.py
+312aa439c71b648ba68ddfee5e492005353aff19  examples/r76/module_helper.sm
+b471a040f81051b6fea221145951f836d2c065c6  examples/r76/module_main.sm
+
+# PR #39 staging script updated to new accepted R7 core:
+7f0111fea2a6b12a3cb85f9dd65a13a8921c3ce6  tools/r75_reclaim_prepare.py (PR #39)
+# Compiler executable SHA256 NOT PRODUCED / NOT_RUN.
+# No before/after native maps JSON.
