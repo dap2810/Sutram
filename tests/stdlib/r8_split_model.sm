@@ -3,18 +3,12 @@
 # empty one, and maxparts 0..4. For each case: the count, then each segment's
 # length and codes. The expectation is Python's str.split, truncated to
 # maxparts (an empty input is one empty segment; an empty separator, no split).
-# Both are called through a wrapper that reads nothing after the call: they
-# have 25 variables, and on v183 that overwrites the caller's stack
-# (Claude-to-Sarvam/R8-01, finding F1).
+# Until R10 both were called through a wrapper (they have 25 variables, and F1
+# made them overwrite the caller's stack). Since the R10 fix they are called
+# directly.
 yoj ganit
 yoj varna
 yoj khand
-prakriya vb(s, n, sp, spn, parts, maxp) {
-    prati varna_bhed(s, n, sp, spn, parts, maxp)
-}
-prakriya kb(s, n, sp, spn, parts, maxp) {
-    prati khand_bhed(s, n, sp, spn, parts, maxp)
-}
 prakriya dikha(parts, cnt) {
     vitti w = 0
     vitti g = 0
@@ -68,10 +62,10 @@ mukhya() {
         yadi (kind == 3) { spn = 0 }
         akshar_rakh(spb, 0, sp[0])
         akshar_rakh(spb, 1, sp[1])
-        vitti cnt = vb(s, n, sp, spn, parts, maxp)
+        vitti cnt = varna_bhed(s, n, sp, spn, parts, maxp)
         likha(cnt)
         dikha(parts, cnt)
-        cnt = kb(sb, n, spb, spn, parts, maxp)
+        cnt = khand_bhed(sb, n, spb, spn, parts, maxp)
         likha(cnt)
         dikha(parts, cnt)
         step = step + 1
