@@ -1,0 +1,8 @@
+# R77 WS5 — conservative fresh-install rollback candidate
+**Root cause:** existing install-core.ps1 copies files and marker before post-install tests, shortcut/HKCU and ownership state. Catch previously logged/exit without target cleanup. Retrying a failed installation hits nonempty unmarked or incomplete-state refusal.
+
+**Draft PR #43:** install-core.ps1 now distinguishes fresh new/empty directory from existing installation; rollback runs only after fresh install has started changing files. Captures exact verified payload relative file names BEFORE internal finally deletes the temporary extraction stage (an initial review error was corrected). On fresh failure, checks LOCALAPPDATA Programs containment and reparse points, removes only staged destination paths and installer-owned marker/state/log/uninstaller, removes created empty directories, preserves unknown files. Reverts PATH only if added by this attempt, removes only tracked owned shortcuts with matching target, conditionally removes only HKCU keys absent before attempt and still pointing to this installation. Never recursively erases the user-selected install root; existing upgrades are not auto-rolled-back.
+
+**Static invariants 16/16 PASS** from GitHub branch readback. **Native PowerShell syntax, failure injection and Windows retry NOT_RUN**; no pwsh on host. Concurrent user modifications and partial rollback failures still require security review. Claude owns shared windows/ sources; PR intentionally remains DRAFT.
+
+Required native fault injection: interruption during copy, after marker, post-install self-test, PATH, shortcut, registry and upgrade; verify second attempt works and unrelated user files remain.
