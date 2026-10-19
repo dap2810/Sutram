@@ -1,0 +1,38 @@
+# R9 (Step 5): the loop-bound proofs, part 2 (one file cannot import all six modules:
+# "vistarit srot seema atikram"). Each function is given n cells (or n
+# bytes) and one more after them, a guard, holding a value that changes the
+# answer if the function reads it, or that the function must not overwrite.
+# A loop that ran once more (i <= n) fails here; every earlier proof missed it.
+yoj mala
+yoj nighantu
+yoj suchi
+mukhya() {
+    # --- mala ---
+    vitti m = nirmmita(4 * 8)
+    m[3] = 77
+    mala_purn(m, 5, 3)
+    likha(m[0] + m[1] + m[2])
+    likha(m[3])
+    vitti m2 = nirmmita(4 * 8)
+    m2[3] = 66
+    m2[2] = 8
+    mala_pratilip(m, m2, 3)
+    likha(m[3])
+    likha(mala_grah_surakshit(m, 3, 3))
+    likha(mala_grah_surakshit(m, 2, 3))
+    # --- nighantu_rikta: documented to return 1 ---
+    vitti h = nighantu_srij(4)
+    nighantu_khip(h, 4, "ab", 2, 9)
+    likha(nighantu_rikta(h))
+    likha(nighantu_maap(h))
+    # --- avali_antah: the slot after the tail holds a value that was dequeued ---
+    vitti ok = nirmmita(8)
+    vitti qq = avali_srij(4)
+    avali_pravesh(qq, 1)
+    avali_pravesh(qq, 2)
+    avali_pravesh(qq, 3)
+    avali_pravesh(qq, 4)
+    likha(avali_nishkas(qq, ok))
+    likha(avali_antah(qq, 1))
+    likha(avali_antah(qq, 4))
+}

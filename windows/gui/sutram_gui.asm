@@ -106,7 +106,7 @@ global _start
 %define OFN_EXPLORER 0x80000
 %define MAX_EDIT 65534
 %define MAX_OUTPUT 32767
-%define MAX_NATIVE_KEYWORDS 384
+%define MAX_NATIVE_KEYWORDS 512        ; R9: 384 dropped the last Telugu keywords (392 in all)
 %define NATIVE_KEYWORD_UNITS 64
 %define MAX_LANG_FILE 8191
 ; ---- R73: Sanskrit interface, editor keys, status line, language packs ----
@@ -160,6 +160,14 @@ global _start
 %define LANG_AUTO 0
 %define LANG_CORE 1
 %define LANG_SANSKRIT 2
+; R9 (WS6): the other ten packs follow Sanskrit, in kw_pack_paths order
+; (bengali .. telugu): lang_mode 3..12, menu ids 2043..2052. For lang_mode >= 2
+; the pack index is lang_mode - 2.
+%define MID_LANG_LAST 2052
+%define MID_TRANSLIT 2053
+%define CFM_FACE 0x20000000
+%define MF_CHECKED 8
+%define R9_MAX_PAIRS 768
 %define COL_GUTTER 0x00858585
 %define COL_STATUS 0x00B5D8A8
 
@@ -216,6 +224,32 @@ mi_phal_rikta:  dw __utf16__("Clear shell"),0
 mi_swayam:      dw __utf16__("Auto (detect script)"),0
 mi_mool:        dw __utf16__("Core (Latin keywords)"),0
 mi_sanskrit:    dw __utf16__("sanskrit  "),0x0938,0x0902,0x0938,0x094D,0x0915,0x0943,0x0924,0x092E,0x094D,0
+; R9 (WS6): the other ten language packs, and the typing mode
+mi_lang_bengali:   dw __utf16__("bengali  বাংলা"),0
+mi_lang_gujarati:  dw __utf16__("gujarati  ગુજરાતી"),0
+mi_lang_hindi:     dw __utf16__("hindi  हिन्दी"),0
+mi_lang_kannada:   dw __utf16__("kannada  ಕನ್ನಡ"),0
+mi_lang_malayalam: dw __utf16__("malayalam  മലയാളം"),0
+mi_lang_marathi:   dw __utf16__("marathi  मराठी"),0
+mi_lang_odia:      dw __utf16__("odia  ଓଡ଼ିଆ"),0
+mi_lang_punjabi:   dw __utf16__("punjabi  ਪੰਜਾਬੀ"),0
+mi_lang_tamil:     dw __utf16__("tamil  தமிழ்"),0
+mi_lang_telugu:    dw __utf16__("telugu  తెలుగు"),0
+mi_translit:    dw __utf16__("Type Latin, get the script"),9,__utf16__("Ctrl+T"),0
+st_lipi_w:      dw __utf16__("   |   lipi: "),0
+lang_flag_prefix_w: dw __utf16__(" --lang "),0
+; pack names, kw_pack_paths order (the --lang argument and the status line)
+pn_sanskrit_w:  dw __utf16__("sanskrit"),0
+pn_bengali_w:   dw __utf16__("bengali"),0
+pn_gujarati_w:  dw __utf16__("gujarati"),0
+pn_hindi_w:     dw __utf16__("hindi"),0
+pn_kannada_w:   dw __utf16__("kannada"),0
+pn_malayalam_w: dw __utf16__("malayalam"),0
+pn_marathi_w:   dw __utf16__("marathi"),0
+pn_odia_w:      dw __utf16__("odia"),0
+pn_punjabi_w:   dw __utf16__("punjabi"),0
+pn_tamil_w:     dw __utf16__("tamil"),0
+pn_telugu_w:    dw __utf16__("telugu"),0
 mi_kunji:       dw __utf16__("Shortcut keys"),0
 mi_parichay:    dw __utf16__("About Sutram"),0
 st_pankti_w:    dw __utf16__("pankti "),0
@@ -235,9 +269,38 @@ space_quote_w:  dw ' ','"',0
 indent4_w:      dw __utf16__("    "),0
 empty_w:        dw 0
 msg_unsaved_w:  dw __utf16__("The file has changed. Save it?"),0
-about_w:        dw __utf16__("Sutram sampadak (Windows)"),13,10,__utf16__("Sanskrit-keyword language -> x86-64 machine code."),13,10,13,10,__utf16__("Shell > Run module (F5) compiles and runs the editor's program."),13,10,__utf16__("For a Devanagari program choose Language > Auto or sanskrit."),13,10,__utf16__("Files are UTF-8. Send replays the shell history."),0
-keys_w:         dw __utf16__("F5 / Ctrl+R  Run module"),13,10,__utf16__("Ctrl+N  New     Ctrl+O  Open     Ctrl+S  Save"),13,10,__utf16__("Tab  Indent (4 spaces)     Shift+Tab  Dedent"),13,10,__utf16__("Enter  new line, keeps the indent; +4 after '{'"),13,10,__utf16__("}  on an empty line: indent -4"),13,10,__utf16__("Ctrl+F  Find     F3  Find Next"),13,10,__utf16__("Ctrl+Z  Undo    Ctrl+X/C/V  Cut/Copy/Paste    Ctrl+A  Select All"),0
+about_w:        dw __utf16__("Sutram sampadak (Windows)"),13,10,__utf16__("Sanskrit-keyword language -> x86-64 machine code."),13,10,13,10,__utf16__("Shell > Run module (F5) compiles and runs the editor's program."),13,10,__utf16__("Language lists every pack; Run passes --lang <pack>."),13,10,__utf16__("Ctrl+T: type Latin on any keyboard, get the pack's script."),13,10,__utf16__("Files are UTF-8. Send replays the shell history."),0
+keys_w:         dw __utf16__("F5 / Ctrl+R  Run module"),13,10,__utf16__("Ctrl+N  New     Ctrl+O  Open     Ctrl+S  Save"),13,10,__utf16__("Tab  Indent (4 spaces)     Shift+Tab  Dedent"),13,10,__utf16__("Enter  new line, keeps the indent; +4 after '{'"),13,10,__utf16__("}  on an empty line: indent -4"),13,10,__utf16__("Ctrl+F  Find     F3  Find Next"),13,10,__utf16__("Ctrl+T  type Latin, get the language's script (mukhya -> मुख्य)"),13,10,__utf16__("Ctrl+Z  Undo    Ctrl+X/C/V  Cut/Copy/Paste    Ctrl+A  Select All"),0
 find_label_w:   dw __utf16__("Find:"),0
+; R9 (WS8): the ANSI half of the same table, moved here from the import tables so
+; every word the main window shows is in one place: the UTF-16 strings above
+; (menus, status line, dialogs) and the ANSI strings below (buttons, output pane).
+; R5: the owner's decision (ROUND-05): the interface labels are English.
+; Buttons are the 13/18 Oct words, menus follow the 13 Oct build where it had one.
+label_run db 'Run',0
+label_open db 'Open',0
+label_save db 'Save',0
+label_example db 'Load example',0
+label_send db 'Send',0
+label_clear db 'Clear shell',0
+label_output db 'sankalan / chalan ka phal',0
+label_shell db '>>>',0
+label_examples db 'udaharan (do baar click)',0
+err_init db 'Windows API load nahi hui. sampadak shuru nahi ho saka.',0
+err_title db 'Sutram sampadak',0
+msg_ready db 'Ready. Run (F5) compiles and runs the program in the editor.',13,10,0
+msg_compile_failed db '[sankalan asaphal]',13,10,0
+msg_run_failed db '[karyakram asamanya roop se samapt]',13,10,0
+msg_file_failed db '[patra padhne/likhne me asaphal]',13,10,0
+msg_input_large db '[patra bahut bada; sampadak seema 64 KiB]',13,10,0
+msg_shell_limit db '[shell history is full; use Clear shell]',13,10,0
+msg_timeout db '[prakriya 10 sekand se adhik; samapt ki gayi]',13,10,0
+msg_missing_compiler db '[win\sutram.exe nahi mila: pahle sankalak banayein]',13,10,0
+msg_missing_lang db '[deshi shabda-pak anupalabdh: lang\*.lang dekhein; Latin shabda kaam karte hain]',13,10,0
+msg_partial_lang db '[kuchh shabda-pak anupalabdh ya ashuddh: lang\*.lang dekhein]',13,10,0
+msg_pipe_fail db '[prakriya ya pipe nirman asaphal]',13,10,0
+msg_more_output db '[phal 32 KiB par kata]',13,10,0
+align 8                          ; R9: keep what follows where it was aligned before the move
 class_button db 'BUTTON',0
 class_edit db 'EDIT',0
 class_static db 'STATIC',0
@@ -411,31 +474,6 @@ comdlg_table:
     IMPORTS GetSaveFileNameW
     dq 0,0
 
-; R5: the owner's decision (ROUND-05): the interface labels are English.
-; Buttons are the 13/18 Oct words, menus follow the 13 Oct build where it had one.
-label_run db 'Run',0
-label_open db 'Open',0
-label_save db 'Save',0
-label_example db 'Load example',0
-label_send db 'Send',0
-label_clear db 'Clear shell',0
-label_output db 'sankalan / chalan ka phal',0
-label_shell db '>>>',0
-label_examples db 'udaharan (do baar click)',0
-err_init db 'Windows API load nahi hui. sampadak shuru nahi ho saka.',0
-err_title db 'Sutram sampadak',0
-msg_ready db 'Ready. Run (F5) compiles and runs the program in the editor.',13,10,0
-msg_compile_failed db '[sankalan asaphal]',13,10,0
-msg_run_failed db '[karyakram asamanya roop se samapt]',13,10,0
-msg_file_failed db '[patra padhne/likhne me asaphal]',13,10,0
-msg_input_large db '[patra bahut bada; sampadak seema 64 KiB]',13,10,0
-msg_shell_limit db '[shell history is full; use Clear shell]',13,10,0
-msg_timeout db '[prakriya 10 sekand se adhik; samapt ki gayi]',13,10,0
-msg_missing_compiler db '[win\sutram.exe nahi mila: pahle sankalak banayein]',13,10,0
-msg_missing_lang db '[deshi shabda-pak anupalabdh: lang\*.lang dekhein; Latin shabda kaam karte hain]',13,10,0
-msg_partial_lang db '[kuchh shabda-pak anupalabdh ya ashuddh: lang\*.lang dekhein]',13,10,0
-msg_pipe_fail db '[prakriya ya pipe nirman asaphal]',13,10,0
-msg_more_output db '[phal 32 KiB par kata]',13,10,0
 prefix_s db 'mukhya()',13,10,0
 indent_s db '    ',0
 newline db 13,10,0
@@ -495,6 +533,8 @@ kw_pack_tamil_w: dw 108,97,110,103,92,116,97,109,105,108,46,108,97,110,103,0
 kw_pack_telugu_w: dw 108,97,110,103,92,116,101,108,117,103,117,46,108,97,110,103,0
 ; R73: the Sanskrit (Devanagari) pack is loaded too, so Devanagari Sanskrit keywords colour.
 kw_pack_sanskrit_w: dw __utf16__("lang\sanskrit.lang"),0
+align 8
+r9_pack_names: dq pn_sanskrit_w,pn_bengali_w,pn_gujarati_w,pn_hindi_w,pn_kannada_w,pn_malayalam_w,pn_marathi_w,pn_odia_w,pn_punjabi_w,pn_tamil_w,pn_telugu_w
 kw_pack_paths: dq kw_pack_sanskrit_w,kw_pack_bengali_w,kw_pack_gujarati_w,kw_pack_hindi_w,kw_pack_kannada_w,kw_pack_malayalam_w,kw_pack_marathi_w,kw_pack_odia_w,kw_pack_punjabi_w,kw_pack_tamil_w,kw_pack_telugu_w,0
 section .bss
 h_kernel resq 1
@@ -517,6 +557,20 @@ h_btn_clear resq 1
 old_shell_proc resq 1
 is_highlighting resd 1
 native_keyword_count resd 1
+; R9 (WS6) typing mode state and the per-pack keyword pairs
+r9_tl_on resd 1
+r9_cur_pack resd 1
+r9_pair_count resd 1
+r9_indic_ok resd 1
+r9_tmp_sel resd 2
+r9_pair_pack resb R9_MAX_PAIRS
+r9_pair_roman resb R9_MAX_PAIRS*32
+alignb 2
+r9_pair_native resw R9_MAX_PAIRS*NATIVE_KEYWORD_UNITS
+r9_line_buf resw 2052
+r9_out_w resw 512
+alignb 4
+face_fmt resb 92
 native_pack_count resd 1
 native_pack_errors resd 1
 native_keyword_storage resw MAX_NATIVE_KEYWORDS*NATIVE_KEYWORD_UNITS
@@ -1100,6 +1154,18 @@ build_menu:
     MENUITEM MID_LANG_AUTO,mi_swayam
     MENUITEM MID_LANG_CORE,mi_mool
     MENUITEM MID_LANG_SANSKRIT,mi_sanskrit
+    MENUITEM 2043,mi_lang_bengali
+    MENUITEM 2044,mi_lang_gujarati
+    MENUITEM 2045,mi_lang_hindi
+    MENUITEM 2046,mi_lang_kannada
+    MENUITEM 2047,mi_lang_malayalam
+    MENUITEM 2048,mi_lang_marathi
+    MENUITEM 2049,mi_lang_odia
+    MENUITEM 2050,mi_lang_punjabi
+    MENUITEM 2051,mi_lang_tamil
+    MENUITEM 2052,mi_lang_telugu
+    MENUSEP
+    MENUITEM MID_TRANSLIT,mi_translit
     MENUPOPUP mn_bhasha
     ; --- sahay ---
     API CreatePopupMenu
@@ -1285,7 +1351,12 @@ wnd_proc:
     cmp ecx,MID_LANG_CORE
     je .lang
     cmp ecx,MID_LANG_SANSKRIT
-    je .lang
+    jb .r9_not_lang
+    cmp ecx,MID_LANG_LAST
+    jbe .lang
+.r9_not_lang:
+    cmp ecx,MID_TRANSLIT
+    je .translit
     cmp ecx,ID_RUN
     je .run
     cmp ecx,ID_OPEN
@@ -1405,6 +1476,9 @@ wnd_proc:
     mov [rel lang_mode],ecx
     call set_lang_check
     call update_status
+    jmp .donezero
+.translit:
+    call r9_toggle_translit
     jmp .donezero
 .edit_changed:
     cmp r10d,EN_CHANGE
@@ -1563,6 +1637,7 @@ create_controls:
     API SetWindowLongPtrW
     mov [rel old_find_proc],rax
     call apply_readable_fonts
+    call r9_check_indic_font
     call fill_examples
     call update_lines
     call highlight_editor
@@ -1762,6 +1837,11 @@ load_native_keyword_packs:
     jae .missing               ; reject possibly truncated pack
     PTR rdx,native_pack_bytes
     mov byte [rdx+rax],0
+    mov rax,[rbp-8]               ; R9: pack index = slot in kw_pack_paths
+    PTR rdx,kw_pack_paths
+    sub rax,rdx
+    shr rax,3
+    mov [rel r9_cur_pack],eax
     call parse_native_keyword_pack
     inc dword [rel native_pack_count]
     jmp .advance
@@ -1811,6 +1891,7 @@ parse_native_keyword_pack:
 .end_word:
     test ecx,ecx
     jz .skip_line
+    mov [rbp-16],rcx            ; R9: first token length (the native word)
     mov byte [r11+rcx],0
     mov eax,[rel native_keyword_count]
     cmp eax,MAX_NATIVE_KEYWORDS
@@ -1823,6 +1904,14 @@ parse_native_keyword_pack:
     call utf8_to_utf16        ; strict UTF-8, no replacement code points
     test eax,eax
     jz .skip_line
+    ; R9: also keep (pack, roman keyword) -> native word for the typing mode
+    mov ecx,[rel native_keyword_count]
+    shl rcx,7
+    PTR rax,native_keyword_storage
+    add rcx,rax
+    mov rdx,[rbp-8]
+    add rdx,[rbp-16]
+    call r9_store_pair
     inc dword [rel native_keyword_count]
 .skip_line:
     mov r10,[rbp-8]
@@ -2263,6 +2352,9 @@ highlight_editor:
     inc dword [rbp-24]
     jmp .scan
 .restore:
+    mov rcx,[rel h_editor]       ; R9 (WS5): Indic runs in Nirmala UI
+    PTR rdx,editor_utf16
+    call r9_apply_script_faces
     mov rcx,[rel h_editor]
     mov edx,EM_SETSEL
     mov r8d,[rel ch_start]
@@ -2667,6 +2759,7 @@ output_append:
     mov r8d,1
     xor r9d,r9d
     call send_message
+    call r9_output_restyle
     EPILOG
 
 ; Write a generated Sutram source buffer to temporary file.
@@ -2725,11 +2818,17 @@ compose_compile:
     PTR rcx,command_line
     PTR rdx,quote_only_w
     call wide_command_concat
-    ; R73: "<compiler>" [ --lang sanskrit] "<source>" "<binary>"
+    ; R73: "<compiler>" [ --lang <pack>] "<source>" "<binary>"
     cmp dword [rel use_pack],0
     je .no_pack
     PTR rcx,command_line
-    PTR rdx,lang_flag_w
+    PTR rdx,lang_flag_prefix_w
+    call wide_command_concat
+    mov eax,[rel use_pack]
+    dec eax
+    PTR rdx,r9_pack_names
+    mov rdx,[rdx+rax*8]
+    PTR rcx,command_line
     call wide_command_concat
 .no_pack:
     PTR rcx,command_line
@@ -3013,6 +3112,7 @@ run_editor:
     PTR rdx,output_buffer
     API SetWindowTextA
 .printed:
+    call r9_output_restyle       ; R9: readable colour, Indic face
     cmp dword [rbp-4],0
     jne .end
     call stage_fail_message      ; R4: rcx = compile / run / file message
@@ -3253,8 +3353,7 @@ extern __imp_LoadLibraryA, __imp_GetProcAddress
 
 extern __imp_GetCommandLineW, __imp_CommandLineToArgvW, __imp_LocalFree
 extern __imp_GetFullPathNameW, __imp_GetKeyState
-section .data
-delivery_about_text: db 'Sutram Native IDE',13,10,'F5 / Ctrl+R: Run   Ctrl+O: Open   Ctrl+S: Save',13,10,'Files are UTF-8. Shell submissions replay session history.',0
+; R9: delivery_about_text removed: never referenced (the About box uses about_w).
 section .text
 read_startup_file:
     PROLOG 80
@@ -3306,6 +3405,8 @@ handle_shortcut:
     je .new
     cmp eax,'F'
     je .find
+    cmp eax,'T'
+    je .translit
 .no:
     xor eax,eax
     EPILOG
@@ -3326,6 +3427,9 @@ handle_shortcut:
     jmp .yes
 .findnext:
     call find_next
+    jmp .yes
+.translit:
+    call r9_toggle_translit
 .yes:
     mov eax,1
     EPILOG
@@ -3356,6 +3460,7 @@ editor_proc:
     je .enter
     jmp .def
 .tab:
+    call r9_tl_convert           ; R9: a word ends at Tab too
     mov ecx,VK_SHIFT
     call qword [rel __imp_GetKeyState]
     test ax,0x8000
@@ -3366,11 +3471,28 @@ editor_proc:
     call editor_unindent
     jmp .eat
 .enter:
+    call r9_tl_convert           ; R9: and at Enter
     call editor_newline
     jmp .eat
 .char:
     cmp r8d,9
     je .eat                      ; already handled on WM_KEYDOWN
+    ; R9 (WS6): in the typing mode, a printable character that cannot be part of
+    ; a Latin word (space, punctuation) ends the word before the caret: convert it
+    ; first, then let the character through.
+    cmp dword [rel r9_tl_on],0
+    je .r9_char_done
+    cmp r8d,32
+    jb .r9_char_done
+    cmp r8d,127
+    jae .r9_char_done
+    mov eax,r8d
+    call r9_is_word_char
+    test eax,eax
+    jnz .r9_char_done
+    call r9_tl_convert
+    mov r8,[rbp-24]
+.r9_char_done:
     cmp r8d,13
     je .eat
     cmp r8d,10
@@ -3863,6 +3985,7 @@ lang_mode_name:
     je .core
     cmp eax,LANG_SANSKRIT
     je .sanskrit
+    ja .r9_pack
     cmp dword [rel last_pack],0
     jne .auto_sk
     PTR rax,lang_swayam_w
@@ -3875,6 +3998,11 @@ lang_mode_name:
     ret
 .sanskrit:
     PTR rax,lang_sanskrit_w
+    ret
+.r9_pack:
+    sub eax,2
+    PTR rdx,r9_pack_names
+    mov rax,[rdx+rax*8]
     ret
 
 update_status:
@@ -3927,6 +4055,18 @@ update_status:
     PTR rcx,status_utf16
     mov rdx,rax
     call wide_string_concat
+    ; R9: "lipi: <pack>" while the typing mode is on
+    cmp dword [rel r9_tl_on],0
+    je .no_lipi
+    PTR rcx,status_utf16
+    PTR rdx,st_lipi_w
+    call wide_string_concat
+    call r9_tl_pack
+    PTR rdx,r9_pack_names
+    mov rdx,[rdx+rax*8]
+    PTR rcx,status_utf16
+    call wide_string_concat
+.no_lipi:
     cmp dword [rel cluster_count],-1
     je .state
     PTR rcx,status_utf16
@@ -4063,6 +4203,8 @@ select_pack:
     je .none
     cmp eax,LANG_SANSKRIT
     je .sanskrit
+    ja .r9_pack                  ; R9: one of the other ten packs
+
     mov [rel use_pack],ecx
     mov [rel last_pack],ecx
     ret
@@ -4072,6 +4214,10 @@ select_pack:
 .sanskrit:
     mov dword [rel use_pack],1
     ret
+.r9_pack:
+    dec eax                      ; use_pack = pack index + 1
+    mov [rel use_pack],eax
+    ret
 
 set_lang_check:
     PROLOG 48
@@ -4079,11 +4225,20 @@ set_lang_check:
     test rcx,rcx
     jz .done
     mov edx,MID_LANG_AUTO
-    mov r8d,MID_LANG_SANSKRIT
+    mov r8d,MID_LANG_LAST
     mov r9d,[rel lang_mode]
     add r9d,MID_LANG_AUTO
     mov qword [rsp+32],MF_BYCOMMAND
     API CheckMenuRadioItem
+    ; R9: the typing-mode tick
+    mov rcx,[rel h_menu_bhasha]
+    mov edx,MID_TRANSLIT
+    xor r8d,r8d
+    cmp dword [rel r9_tl_on],0
+    je .tl_off
+    mov r8d,MF_CHECKED
+.tl_off:
+    call qword [rel __imp_CheckMenuItem]
 .done:
     EPILOG
 
@@ -4136,6 +4291,10 @@ extern __imp_CreateFontW
 section .data
 font_code: dw 'C','o','n','s','o','l','a','s',0
 font_ui: dw 'S','e','g','o','e',' ','U','I',0
+; R9 (WS5): Consolas has no Indic glyphs. Runs of Indic text in the editor and
+; the output are given this face (it ships with Windows 10/11 and covers all
+; eleven scripts); Latin stays Consolas, so code still lines up.
+font_indic: dw 'N','i','r','m','a','l','a',' ','U','I',0
 ui_font_controls: dq h_btn_run,h_btn_open,h_btn_save,h_btn_example,h_btn_send,h_btn_clear,h_find_label,h_status,0
 code_font_controls: dq h_editor,h_gutter,h_output,h_shell,h_examples,h_find,0
 section .text
@@ -4211,3 +4370,558 @@ apply_readable_fonts:
 %ifdef R73_ICON
 %include "r73_icon.inc"
 %endif
+
+; ============================================================================
+; R9 (WS5, WS6): the Indic font for Indic runs, and the typing mode.
+; Win64 ABI throughout: PROLOG frames keep 16-byte alignment and shadow space.
+; ============================================================================
+extern __imp_GetDC, __imp_ReleaseDC, __imp_SelectObject, __imp_GetTextFaceW
+extern __imp_DeleteObject, __imp_CheckMenuItem
+
+section .bss
+r9_word resb 64
+alignb 4
+r9_col_fmt resb 60
+alignb 2
+r9_out_text resw 32770
+section .text
+
+%include "windows/gui/r9_translit.asm"
+
+; eax = UTF-16 unit -> eax = 1 when it can be part of a Latin word being typed
+; ([A-Za-z0-9_~]; '~' starts ~N and ~n). Uses only eax.
+r9_is_word_char:
+    cmp eax,'~'
+    je .yes
+    cmp eax,'_'
+    je .yes
+    cmp eax,'0'
+    jb .no
+    cmp eax,'9'
+    jbe .yes
+    cmp eax,'A'
+    jb .no
+    cmp eax,'Z'
+    jbe .yes
+    cmp eax,'a'
+    jb .no
+    cmp eax,'z'
+    jbe .yes
+.no:
+    xor eax,eax
+    ret
+.yes:
+    mov eax,1
+    ret
+
+; eax = the pack the typing mode writes in: the selected language pack, or
+; Sanskrit (Devanagari) when the language is Auto or Core.
+r9_tl_pack:
+    mov eax,[rel lang_mode]
+    cmp eax,LANG_SANSKRIT
+    jb .sk
+    sub eax,2
+    ret
+.sk:
+    xor eax,eax
+    ret
+
+r9_toggle_translit:
+    PROLOG 48
+    xor dword [rel r9_tl_on],1
+    call set_lang_check
+    call update_status
+    EPILOG
+
+; rcx = the native word just stored (UTF-16, 64 units), rdx = the rest of its
+; pack line. Stores (pack, roman keyword, native word); the first line for a
+; roman keyword wins, as in tools/translit.py.
+r9_store_pair:
+    PROLOG 48
+    mov [rbp-8],rcx
+    mov eax,[rel r9_pair_count]
+    cmp eax,R9_MAX_PAIRS
+    jae .done
+.skip:
+    mov al,[rdx]
+    cmp al,' '
+    je .adv
+    cmp al,9
+    je .adv
+    jmp .tok
+.adv:
+    inc rdx
+    jmp .skip
+.tok:
+    mov r9d,[rel r9_pair_count]
+    mov rcx,r9
+    shl rcx,5
+    PTR r10,r9_pair_roman
+    add r10,rcx                  ; this pair's roman slot
+    xor r11d,r11d
+.cp:
+    movzx eax,byte [rdx+r11]
+    cmp eax,32
+    jbe .end
+    cmp eax,127
+    jae .done
+    cmp r11d,31
+    jae .done
+    mov [r10+r11],al
+    inc r11d
+    jmp .cp
+.end:
+    test r11d,r11d
+    jz .done
+    mov byte [r10+r11],0
+    xor ecx,ecx                  ; already stored for this pack?
+.dup:
+    cmp ecx,r9d
+    jae .new
+    PTR rax,r9_pair_pack
+    movzx eax,byte [rax+rcx]
+    cmp eax,[rel r9_cur_pack]
+    jne .dnext
+    mov rax,rcx
+    shl rax,5
+    PTR rdx,r9_pair_roman
+    add rdx,rax
+    xor r8d,r8d
+.dcmp:
+    mov al,[rdx+r8]
+    cmp al,[r10+r8]
+    jne .dnext
+    test al,al
+    jz .done                     ; same word: keep the first
+    inc r8d
+    jmp .dcmp
+.dnext:
+    inc ecx
+    jmp .dup
+.new:
+    mov eax,[rel r9_cur_pack]
+    PTR rdx,r9_pair_pack
+    mov [rdx+r9],al
+    mov rax,r9
+    shl rax,7
+    PTR rdx,r9_pair_native
+    add rdx,rax
+    mov r8,[rbp-8]
+    xor ecx,ecx
+.ncp:
+    mov ax,[r8+rcx*2]
+    mov [rdx+rcx*2],ax
+    inc ecx
+    cmp ecx,NATIVE_KEYWORD_UNITS
+    jb .ncp
+    inc dword [rel r9_pair_count]
+.done:
+    EPILOG
+
+; Convert the Latin word that ends at the caret, if the typing mode is on, there
+; is no selection, and the caret is not inside a string or a comment.
+r9_tl_convert:
+    PROLOG 112
+    cmp dword [rel r9_tl_on],0
+    je .done
+    cmp qword [rel h_editor],0
+    je .done
+    mov rcx,[rel h_editor]
+    mov edx,EM_GETSEL
+    PTR r8,r9_tmp_sel
+    PTR r9,r9_tmp_sel+4
+    call send_message
+    mov eax,[rel r9_tmp_sel]
+    cmp eax,[rel r9_tmp_sel+4]
+    jne .done
+    mov [rbp-4],eax              ; caret
+    mov rcx,[rel h_editor]
+    mov edx,EM_LINEFROMCHAR
+    mov r8d,eax
+    xor r9d,r9d
+    call send_message
+    mov [rbp-8],eax              ; line
+    mov rcx,[rel h_editor]
+    mov edx,EM_LINEINDEX
+    mov r8d,eax
+    xor r9d,r9d
+    call send_message
+    mov [rbp-12],eax             ; line start
+    mov ecx,[rbp-4]
+    sub ecx,eax
+    mov [rbp-16],ecx             ; column of the caret
+    cmp ecx,0
+    jle .done
+    cmp ecx,2000
+    ja .done
+    PTR rax,r9_line_buf
+    mov word [rax],2048
+    mov rcx,[rel h_editor]
+    mov edx,EM_GETLINE
+    mov r8d,[rbp-8]
+    PTR r9,r9_line_buf
+    API SendMessageW
+    cmp eax,[rbp-16]
+    jb .done
+    ; inside a string or after a comment marker? then leave it as typed
+    PTR r10,r9_line_buf
+    xor ecx,ecx
+    xor r11d,r11d                ; open quote character, 0 = none
+.scan:
+    cmp ecx,[rbp-16]
+    jae .scanned
+    movzx eax,word [r10+rcx*2]
+    test r11d,r11d
+    jz .outside
+    cmp eax,92                   ; backslash escape inside a string
+    jne .q2
+    inc ecx
+    jmp .snext
+.q2:
+    cmp eax,r11d
+    jne .snext
+    xor r11d,r11d
+    jmp .snext
+.outside:
+    cmp eax,'"'
+    je .open
+    cmp eax,39
+    je .open
+    cmp eax,'#'
+    je .done
+    cmp eax,'/'
+    jne .snext
+    lea edx,[ecx+1]
+    cmp edx,[rbp-16]
+    jae .snext
+    cmp word [r10+rdx*2],'/'
+    je .done
+    jmp .snext
+.open:
+    mov r11d,eax
+.snext:
+    inc ecx
+    jmp .scan
+.scanned:
+    test r11d,r11d
+    jnz .done
+    ; the word: back from the caret over [A-Za-z0-9_~]
+    mov ecx,[rbp-16]
+.back:
+    test ecx,ecx
+    jz .ws
+    movzx eax,word [r10+rcx*2-2]
+    call r9_is_word_char
+    test eax,eax
+    jz .ws
+    dec ecx
+    jmp .back
+.ws:
+    mov [rbp-20],ecx             ; word start column
+    test ecx,ecx
+    jz .wok
+    movzx eax,word [r10+rcx*2-2] ; glued to a word in another script: leave it
+    cmp eax,0x0900
+    jb .wok
+    cmp eax,0x0DFF
+    jbe .done
+.wok:
+    mov eax,[rbp-16]
+    sub eax,ecx
+    mov [rbp-24],eax             ; word length
+    test eax,eax
+    jz .done
+    cmp eax,63
+    ja .done
+    movzx eax,word [r10+rcx*2]   ; must start with a letter
+    or eax,0x20
+    cmp eax,'a'
+    jb .done
+    cmp eax,'z'
+    ja .done
+    ; narrow to bytes
+    xor edx,edx
+    PTR r11,r9_word
+.narrow:
+    cmp edx,[rbp-24]
+    jae .narrowed
+    lea eax,[ecx+edx]
+    mov ax,[r10+rax*2]
+    mov [r11+rdx],al
+    inc edx
+    jmp .narrow
+.narrowed:
+    mov byte [r11+rdx],0
+    ; 1. a keyword of the pack -> the pack's own word
+    call r9_tl_pack
+    mov [rbp-28],eax
+    xor ecx,ecx
+.kw:
+    cmp ecx,[rel r9_pair_count]
+    jae .phonetic
+    PTR rax,r9_pair_pack
+    movzx eax,byte [rax+rcx]
+    cmp eax,[rbp-28]
+    jne .kwnext
+    mov rax,rcx
+    shl rax,5
+    PTR rdx,r9_pair_roman
+    add rdx,rax
+    PTR r11,r9_word
+    xor r8d,r8d
+.kwcmp:
+    mov al,[rdx+r8]
+    cmp al,[r11+r8]
+    jne .kwnext
+    test al,al
+    jz .kwfound
+    inc r8d
+    jmp .kwcmp
+.kwnext:
+    inc ecx
+    jmp .kw
+.kwfound:
+    mov rax,rcx
+    shl rax,7
+    PTR rdx,r9_pair_native
+    add rdx,rax
+    PTR r8,r9_out_w
+    xor ecx,ecx
+.kwcopy:
+    mov ax,[rdx+rcx*2]
+    mov [r8+rcx*2],ax
+    test ax,ax
+    jz .replace
+    inc ecx
+    cmp ecx,NATIVE_KEYWORD_UNITS
+    jb .kwcopy
+    jmp .done
+.phonetic:
+    ; 2. otherwise spell it in the pack's script (tools/translit.py is the reference)
+    mov [rbp-40],rsi
+    mov [rbp-48],rdi
+    PTR rsi,r9_word
+    mov ecx,[rbp-24]
+    mov edx,[rbp-28]
+    PTR rdi,r9_out_w
+    call r9_tl_phonetic
+    mov rsi,[rbp-40]
+    mov rdi,[rbp-48]
+    PTR r8,r9_out_w
+    mov word [r8+rax*2],0
+    ; unchanged (no letter converted)? then leave the text alone
+    cmp eax,[rbp-24]
+    jne .replace
+    PTR r11,r9_word
+    xor ecx,ecx
+.same:
+    cmp ecx,eax
+    jae .done
+    movzx edx,word [r8+rcx*2]
+    movzx r9d,byte [r11+rcx]
+    cmp edx,r9d
+    jne .replace
+    inc ecx
+    jmp .same
+.replace:
+    mov rcx,[rel h_editor]
+    mov edx,EM_SETSEL
+    mov r8d,[rbp-12]
+    add r8d,[rbp-20]
+    mov r9d,[rbp-4]
+    call send_message
+    mov rcx,[rel h_editor]
+    mov edx,EM_REPLACESEL
+    mov r8d,1                    ; can be undone with Ctrl+Z
+    PTR r9,r9_out_w
+    API SendMessageW
+.done:
+    EPILOG
+
+; Is the Indic face installed? Selects it into a screen DC and reads back the
+; face Windows actually chose. r9_indic_ok = 1 only on an exact match, so on a
+; system without Nirmala UI nothing is forced and Windows' own fallback stays.
+r9_check_indic_font:
+    PROLOG 96
+    mov dword [rel r9_indic_ok],0
+    xor ecx,ecx
+    call qword [rel __imp_GetDC]
+    test rax,rax
+    jz .done
+    mov [rbp-8],rax
+    mov ecx,-18
+    PTR rdx,font_indic
+    call make_readable_font
+    test rax,rax
+    jz .release
+    mov [rbp-16],rax
+    mov rcx,[rbp-8]
+    mov rdx,rax
+    call qword [rel __imp_SelectObject]
+    mov [rbp-24],rax
+    mov rcx,[rbp-8]
+    mov edx,32
+    PTR r8,r9_line_buf
+    call qword [rel __imp_GetTextFaceW]
+    PTR r10,r9_line_buf
+    PTR r11,font_indic
+    xor ecx,ecx
+.cmp:
+    mov ax,[r10+rcx*2]
+    cmp ax,[r11+rcx*2]
+    jne .restore
+    test ax,ax
+    jz .match
+    inc ecx
+    jmp .cmp
+.match:
+    mov dword [rel r9_indic_ok],1
+.restore:
+    mov rcx,[rbp-8]
+    mov rdx,[rbp-24]
+    call qword [rel __imp_SelectObject]
+    mov rcx,[rbp-16]
+    call qword [rel __imp_DeleteObject]
+.release:
+    xor ecx,ecx
+    mov rdx,[rbp-8]
+    call qword [rel __imp_ReleaseDC]
+.done:
+    EPILOG
+
+; rcx = a RichEdit window, rdx = its text as RichEdit counts it (one unit per
+; paragraph break). Everything gets the code face (Consolas); every run of Indic
+; text (U+0900..U+0DFF, ZWJ, ZWNJ) gets Nirmala UI. The caller restores the
+; selection afterwards.
+r9_apply_script_faces:
+    PROLOG 96
+    cmp dword [rel r9_indic_ok],0
+    je .done
+    mov [rbp-8],rcx
+    mov [rbp-16],rdx
+    PTR rdx,font_code
+    call .face
+    mov rcx,[rbp-8]
+    mov edx,EM_SETCHARFORMAT
+    mov r8d,SCF_ALL
+    PTR r9,face_fmt
+    API SendMessageW
+    PTR rdx,font_indic
+    call .face
+    mov dword [rbp-20],0         ; index
+    mov dword [rbp-24],-1        ; run start, -1 = not in a run
+.scan:
+    mov r10,[rbp-16]
+    mov ecx,[rbp-20]
+    movzx eax,word [r10+rcx*2]
+    test eax,eax
+    jz .last
+    cmp eax,0x200C
+    je .indic
+    cmp eax,0x200D
+    je .indic
+    cmp eax,0x0900
+    jb .other
+    cmp eax,0x0DFF
+    ja .other
+.indic:
+    cmp dword [rbp-24],-1
+    jne .next
+    mov [rbp-24],ecx
+    jmp .next
+.other:
+    cmp dword [rbp-24],-1
+    je .next
+    call .paint
+.next:
+    inc dword [rbp-20]
+    jmp .scan
+.last:
+    cmp dword [rbp-24],-1
+    je .done
+    call .paint
+.done:
+    EPILOG
+; fill face_fmt with CFM_FACE and the face at rdx (internal, no frame of its own)
+.face:
+    PTR r8,face_fmt
+    mov dword [r8],92
+    mov dword [r8+4],CFM_FACE
+    mov dword [r8+8],0
+    xor ecx,ecx
+.fcp:
+    mov ax,[rdx+rcx*2]
+    mov [r8+26+rcx*2],ax
+    test ax,ax
+    jz .fdone
+    inc ecx
+    cmp ecx,31
+    jb .fcp
+    mov word [r8+26+rcx*2],0
+.fdone:
+    ret
+; select [run start, index) and give it face_fmt (internal; aligns its own calls)
+.paint:
+    sub rsp,40
+    mov rcx,[rbp-8]
+    mov edx,EM_SETSEL
+    mov r8d,[rbp-24]
+    mov r9d,[rbp-20]
+    call send_message
+    mov rcx,[rbp-8]
+    mov edx,EM_SETCHARFORMAT
+    mov r8d,SCF_SELECTION
+    PTR r9,face_fmt
+    API SendMessageW
+    mov dword [rbp-24],-1
+    add rsp,40
+    ret
+
+; R9: after the output pane's text is replaced, RichEdit gives the new text the
+; default colour, which was dark on the dark background (seen under Wine with the
+; v188 IDE too: a run's output was nearly invisible). Re-apply the output colour
+; to all of it, and the Indic face to Indic runs, as the editor does.
+r9_output_restyle:
+    PROLOG 64
+    cmp qword [rel h_output],0
+    je .done
+    PTR r8,r9_col_fmt
+    mov dword [r8],60
+    mov dword [r8+4],CFM_COLOR
+    mov dword [r8+8],0
+    mov dword [r8+20],0x00B5D8A8
+    mov rcx,[rel h_output]
+    mov edx,EM_SETCHARFORMAT
+    mov r8d,SCF_ALL
+    PTR r9,r9_col_fmt
+    call send_message
+    mov rcx,[rel h_output]
+    PTR rdx,r9_out_text
+    mov r8d,32768
+    API GetWindowTextW
+    PTR r10,r9_out_text           ; CRLF -> one unit, as RichEdit counts
+    mov r11,r10
+.compact:
+    mov ax,[r10]
+    mov [r11],ax
+    test ax,ax
+    jz .compacted
+    add r10,2
+    add r11,2
+    cmp ax,13
+    jne .compact
+    cmp word [r10],10
+    jne .compact
+    add r10,2
+    jmp .compact
+.compacted:
+    mov rcx,[rel h_output]
+    PTR rdx,r9_out_text
+    call r9_apply_script_faces
+    mov rcx,[rel h_output]
+    mov edx,EM_SETSEL
+    mov r8d,-1
+    mov r9d,-1
+    call send_message
+.done:
+    EPILOG

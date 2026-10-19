@@ -225,3 +225,16 @@ sanchit`. Unicode/Devanagari/UTF-8 typing goes through a Unicode window class an
     generic executable icon anywhere.
 28. **Focus does not act** — Tab from the editor onto the `Run` button must only move focus;
     nothing compiles until the button is pressed. FAIL: a run or dialog on focus alone.
+29. **R9: eleven scripts render** — open `Claude-to-Sarvam/evidence-r9/eleven.sm` (mukhya and
+    likha in each of the eleven packs). EXPECT real letters on every line, in Nirmala UI, and
+    Latin code still in Consolas. FAIL: an empty box on any line. (Under Wine this passed only
+    with a stand-in font named Nirmala UI; Windows itself was not run.)
+30. **R9: every pack is a Language choice** — `Language` lists Auto, Core, sanskrit and the
+    ten other packs. Choose `hindi`, run a Hindi program (F5). EXPECT its output; the status
+    line says `bhasha: hindi`. FAIL: a name error (the run did not pass `--lang hindi`).
+31. **R9: type Latin, get the script** — choose `Language > tamil`, press Ctrl+T (the status
+    line adds `lipi: tamil`), and type `mukhya() {`, Enter, `vitti yoga = 3`, Enter,
+    `likha(yoga + 2)`, Enter, `}`. EXPECT `முதன்மை() {`, `மாறி யோக = 3`, `எழுது(யோக + 2)`:
+    a word changes when it ends (space, punctuation, Enter, Tab). F5 prints 5. Ctrl+Z undoes
+    one conversion; Ctrl+T again turns it off. Text in "strings" and after # stays Latin.
+    FAIL: a converted word inside a string, or a keyword that does not colour.
