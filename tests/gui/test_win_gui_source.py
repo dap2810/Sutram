@@ -69,13 +69,16 @@ class GuiSourceContract(unittest.TestCase):
 
     def test_powershell_build_and_automated_gui_smoke(self):
         build = (GUI_DIR/'build-gui.ps1').read_text()
-        smoke = (GUI_DIR/'test-gui.ps1').read_text()
+        smoke = (ROOT/'tools/test_windows_gui.py').read_text(encoding='utf8')
+        common = (ROOT/'windows/build-common.ps1').read_text()
         self.assertIn('nasm.exe',build)
         self.assertIn('-mi386pep',build)
-        self.assertIn('0x8664',build)
-        self.assertIn('UIAutomationClient',smoke)
-        self.assertIn('GUI_AUTOTEST_OK',smoke)
-        self.assertIn('MainWindowHandle',smoke)
+        self.assertIn('Assert-Pe64 $exe',build)
+        self.assertRegex(common,r'(0x8664|34404)')
+        self.assertIn('GetWindowThreadProcessId',smoke)
+        self.assertIn('ARGV_OPEN_OK',smoke)
+        self.assertIn('menu-run',smoke)
+        self.assertIn('SendMessageTimeoutW',smoke)
 
     def test_manual_checklist_all_mandatory_flows(self):
         doc = (GUI_DIR/'MANUAL-WINDOWS-GUI-TEST.md').read_text()
