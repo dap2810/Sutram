@@ -1,3 +1,31 @@
+## v184 - the version string was stale; found by asking what a Windows user sees first
+
+**The owner asked what must be ready before he tests on Windows - "I will check version, I will run the
+program in CMD and test it on the IDE." So I looked at the CLI as a user meets it, and found two things
+immediately.**
+
+**1. `--version` said `Sutram 1.0 (v160)`. The project is at v182.** Twenty-two versions stale. **This is
+the first thing anyone types when they install a language**, and it was wrong. Fixed - it now reads
+`Sutram 1.0 (v182)`, and both the Linux and Windows builds were rebuilt.
+
+**2. The CLI's usage text is entirely Sanskrit.** A CMD user running `sutram` with no arguments sees:
+
+```
+Sutram - sampurna sutra
+Prayog:
+  sutram <nivesh.sm> <nirgat.bin>         sankalan
+  sutram --check <nivesh.sm>              janch matra, nirgat nahi
+  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha pak sahit
+```
+
+**`Prayog`, `nivesh.sm`, `sankalan`** - a first-time user cannot read the help. **This is the same
+inconsistency as the IDE's status line, and it is the owner's decision to make, not mine.** Recorded, not
+changed.
+
+**Why this matters for the release:** the version number and the help text are the two things every user
+sees before they run anything. **A stale version number and an unreadable help screen are the first
+impression of the whole project.**
+
 ## v183 - ROUND-08 to Claude (Step 5) and ROUND-76 to ChatGPT (Step 4)
 
 **Muse stays paused, so Step 5 has no owner - and it is now Claude's.** That is why ROUND-08 differs from the
