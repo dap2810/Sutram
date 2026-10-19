@@ -41,7 +41,7 @@ TRAPS = {
     vitti b = 1
     likha(a + b)
 }
-''', 4, "signed addition overflow"),
+''', 4, "yog atipravah"),
     "multiline_line6": ('''mukhya() {
     vitti a = 9223372036854775807
     vitti b = 1
@@ -49,25 +49,25 @@ TRAPS = {
         a
         + b)
 }
-''', 6, "signed addition overflow"),
+''', 6, "yog atipravah"),
     "div_zero_line4": ('''mukhya() {
     vitti a = 7
     vitti b = 0
     likha(a / b)
 }
-''', 4, "division by zero"),
+''', 4, "shunya se bhajan"),
     "div_min_line4": ('''mukhya() {
     vitti a = -9223372036854775807
     a = a - 1
     likha(a / -1)
 }
-''', 4, "signed division overflow"),
+''', 4, "bhajan atipravah"),
     "mod_min_line4": ('''mukhya() {
     vitti a = -9223372036854775807
     a = a - 1
     likha(a % -1)
 }
-''', 4, "signed remainder overflow"),
+''', 4, "shesh atipravah"),
 }
 
 
