@@ -6,7 +6,7 @@
 
 ## Index — ROUND-03 delivery (2026-10-19, against main `85d6c5f` v169)
 
-**Code is on branch `claude/round-03`** (four code commits: `2182583` WS1 · `decb0afe` WS2 · `6f13c93e`
+**Code is on branch `claude/round-03` — draft PR #32** (four code commits: `2182583` WS1 · `decb0afe` WS2 · `6f13c93e`
 docs · `494e1b21` WS4), kept off `main` per `AGENTS.md`. Nothing on `main` outside this folder was changed by me.
 
 **Gates on the branch** (`sh tools/gates.sh`):
