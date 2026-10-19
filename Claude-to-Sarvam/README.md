@@ -68,6 +68,30 @@ with `git checkout 85d6c5f -- tools/r57_codegen_baseline.py`.
 
 ---
 
+## Index — ROUND-03 delivery (2026-10-18, against main `e0e5031` v168) — Windows, owner-directed
+
+**Code is on branch `claude/round-03-windows`** (commits: `a3032a9` ChatGPT's Windows delivery on
+its base, `3512d34` its merge onto v168, `e95f727` manifest, `a39d2f9` the Sanskrit IDE,
+`fdf409d` icons + startup, `6e6190c` these documents, `bae6657` sidebar icon + English buttons). Nothing on `main` outside this folder was changed by me. The owner asked
+for this round directly, knowing ROUND-02 said *do not touch `windows/`*; R3-00 lists exactly what
+was touched and why.
+
+Gates on the branch, measured on Windows 11 build 26300 as a standard user: native goldens
+**186 PASS / 3 NO_EXPECTATION / 2 SKIP** · GUI **30 / 30** · setup 7/7 · payload, preflight,
+contract PASS · `tests/gui` 28 OK · **`tests/r69` 2 FAIL (merge) + 1 ERROR (already on main)** ·
+Linux (WSL) suite **187 / 4** · codegen 12/12 · packs 33/33 · layers 14/9/1 · module_graph 18/18 ·
+proof gates **NOT-RUN** (no NASM in WSL) · real install → run from Start Menu → uninstall: PASS.
+
+| File | One line |
+|---|---|
+| **`R3-00-READ-FIRST-WINDOWS.md`** | why this round touches `windows/`, what exactly was touched, how to apply the patches and rebuild |
+| `R3-01-DELIVERY-ACCEPTANCE.md` | ChatGPT's Windows delivery run for real: hashes, compiler, installer, install/uninstall as a standard user, merge onto v168 (four conflicts, how resolved), every gate with PASS / FAIL / NOT-RUN |
+| `R3-02-SANSKRIT-IDE.md` | the IDE now: Sanskrit menus/status/messages (X11 IDE words; buttons stay English by the owner's choice), Unicode window, Tab / Shift+Tab / Enter / `}`, status line, unsaved guard, find, `bhasha` menu (`swayam` detects Devanagari → `--lang sanskrit`), icon as a PE resource; 14 new native checks; what was not tested |
+| `R3-03-FINDINGS.md` | wizard advances on focus (installed itself under passive UI Automation), license page mojibake, `%TEMP%\STM*` left behind, reinstall refused after preserve, version 0.1.0 vs v160, r69 test gates, MAX_PATH in `install-core.ps1` |
+| `R3-04-WHAT-I-NEED.md` | the `windows/` chain decision, confirmation of the new Sanskrit words, how `swayam` should tell hindi/marathi/sanskrit apart, a human Hindi-layout typing test |
+
+---
+
 ## Index — ROUND-02 delivery (2026-10-18, against main `5eec849` v167)
 
 **Code is on branch `claude/round-02` — draft PR #31** (three commits: `5dc77d5` WS1, `89d23e8` WS2/WS3,
