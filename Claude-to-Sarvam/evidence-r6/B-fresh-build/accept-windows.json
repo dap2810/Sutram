@@ -1,0 +1,218 @@
+{
+  "tool": "tools/accept-windows.ps1",
+  "schema": 1,
+  "verdict": "FAIL (Wine only - NOT Windows acceptance)",
+  "required_pass": 9,
+  "required_fail": 1,
+  "required_not_run": 5,
+  "environment": {
+    "environment": "Wine",
+    "wine": true,
+    "wine_version": null,
+    "windows_product": "Windows 10 Pro",
+    "windows_display_version": null,
+    "windows_build": "19043",
+    "windows_ubr": null,
+    "os_version": "Microsoft Windows NT 10.0.19043.0",
+    "architecture": "AMD64",
+    "powershell": "7.2.24",
+    "powershell_edition": "Core",
+    "elevated": true,
+    "token_elevation_type": 2,
+    "token_elevated": 1,
+    "in_administrators_role": true,
+    "script_sha256": "d290257cdc7c94dfc4e9176ef411166f2d4261a98696658cd4ca5fb137e526ba",
+    "repo_root": "Z:\\tmp\\claude-0\\-home-claude\\6889af70-4aa6-567a-b665-1e4ff0074842\\scratchpad\\r6\\acceptroot",
+    "git_commit": null,
+    "started": "2026-10-19T11:44:16-04:00"
+  },
+  "artefacts": [
+    {
+      "role": "setup",
+      "path": "Z:\\tmp\\claude-0\\-home-claude\\6889af70-4aa6-567a-b665-1e4ff0074842\\scratchpad\\r6\\acceptroot\\Sutram-Setup.exe",
+      "sha256": "4ff55139b507e033b743eadde62af8f39afc19a0cbdf97efd7d43a04601bc491",
+      "bytes": 1093003
+    },
+    {
+      "role": "repo-compiler win\\sutram.exe",
+      "path": "Z:\\tmp\\claude-0\\-home-claude\\6889af70-4aa6-567a-b665-1e4ff0074842\\scratchpad\\r6\\acceptroot\\win\\sutram.exe",
+      "sha256": "4e9a9f6021266ecae8f6e7c695e6d60d069e6ba23409fa94d10050898a850ce7",
+      "bytes": 181994
+    },
+    {
+      "role": "repo-compiler sutram.exe",
+      "path": "Z:\\tmp\\claude-0\\-home-claude\\6889af70-4aa6-567a-b665-1e4ff0074842\\scratchpad\\r6\\acceptroot\\sutram.exe",
+      "sha256": "a534a6937d7036a1ef40f0f31771c75fbc281e4052d202074b0337cdf256d222",
+      "bytes": 182760
+    },
+    {
+      "role": "repo-ide sutram-ide-gui.exe",
+      "path": "Z:\\tmp\\claude-0\\-home-claude\\6889af70-4aa6-567a-b665-1e4ff0074842\\scratchpad\\r6\\acceptroot\\sutram-ide-gui.exe",
+      "sha256": "a1bf4b14917f9c14eceb981ce39c696d2142e666f24c8782a09b02821920375c",
+      "bytes": 99004
+    }
+  ],
+  "checks": [
+    {
+      "id": "runner-not-elevated",
+      "status": "NOT-RUN",
+      "required": true,
+      "environment": "Wine",
+      "command": "GetTokenInformation(TokenElevation, TokenElevationType)",
+      "output": "TokenElevationType=2 TokenElevation=1 AdministratorsRole=True",
+      "detail": "Wine has no UAC and reports every process as administrator; least privilege can only be shown on Windows",
+      "time": "2026-10-19T11:44:16"
+    },
+    {
+      "id": "setup-hash-file",
+      "status": "PASS",
+      "required": true,
+      "environment": "Wine",
+      "command": "Get-FileHash Sutram-Setup.exe vs Sutram-Setup.sha256",
+      "output": "4ff55139b507e033b743eadde62af8f39afc19a0cbdf97efd7d43a04601bc491",
+      "detail": "matches the committed hash file",
+      "time": "2026-10-19T11:44:16"
+    },
+    {
+      "id": "setup-self-test",
+      "status": "PASS",
+      "required": true,
+      "environment": "Wine",
+      "command": "\"Z:\\tmp\\claude-0\\-home-claude\\6889af70-4aa6-567a-b665-1e4ff0074842\\scratchpad\\r6\\acceptroot\\Sutram-Setup.exe\" --self-test",
+      "output": "",
+      "detail": "embedded SHA-256 self-test exit 0",
+      "time": "2026-10-19T11:44:16"
+    },
+    {
+      "id": "install-wizard",
+      "status": "FAIL",
+      "required": true,
+      "environment": "Wine",
+      "command": "BM_CLICK Next / I accept / Next / Next / Install / Finish (launch unchecked) on the wizard this script started",
+      "output": "page: welcome\r\npage: license\r\nNext enabled before accepting: False\r\nNext enabled after accepting: True\r\npage: location\r\ninstall folder (default, unchanged): C:\\users\\root\\AppData\\Local\\Programs\\Sutram\r\npage: components\r\nadd-to-PATH checked: 1\r\ndesktop shortcut checked: 0\r\npage: ready\r\noutcome: dialog: Sutram setup did not complete. Check the install log in %TEMP% (unique STM folder) for details. after 9 s\r\ninstall.log copied from C:\\users\\root\\Temp\\STM57ab.tmp\r\n",
+      "detail": "outcome=dialog: Sutram setup did not complete. Check the install log in %TEMP% (unique STM folder) for details.; screenshots: wizard-welcome.png, wizard-license.png, wizard-location.png, wizard-components.png, wizard-ready.png",
+      "time": "2026-10-19T11:44:29"
+    },
+    {
+      "id": "install-no-elevation-prompt",
+      "status": "NOT-RUN",
+      "required": true,
+      "environment": "Wine",
+      "command": "Start-Process -FilePath \"Z:\\tmp\\claude-0\\-home-claude\\6889af70-4aa6-567a-b665-1e4ff0074842\\scratchpad\\r6\\acceptroot\\Sutram-Setup.exe\" (no RunAs verb)",
+      "output": "setup TokenElevationType=2 TokenElevation=1; consent.exe appeared during install: False",
+      "detail": "Wine has no UAC; this check means something only on Windows",
+      "time": "2026-10-19T11:44:29"
+    },
+    {
+      "id": "install-footprint",
+      "status": "NOT-RUN",
+      "required": true,
+      "environment": "Wine",
+      "command": "",
+      "output": "",
+      "detail": "install did not complete",
+      "time": "2026-10-19T11:44:29"
+    },
+    {
+      "id": "devanagari-cli",
+      "status": "PASS",
+      "required": true,
+      "environment": "Wine",
+      "command": "\"Z:\\tmp\\claude-0\\-home-claude\\6889af70-4aa6-567a-b665-1e4ff0074842\\scratchpad\\r6\\acceptroot\\win\\sutram.exe\" --lang sanskrit 218_sanskrit_devanagari.sm; run it",
+      "output": "compile exit=0\nBhasha pak prapt: sanskrit\nSiddh: 276 byte sankalit\n\nrun exit=0\nयोगः = 15\n",
+      "detail": "repository build; expects the line योगः = 15",
+      "time": "2026-10-19T11:44:29"
+    },
+    {
+      "id": "ide-launches",
+      "status": "PASS",
+      "required": true,
+      "environment": "Wine",
+      "command": "Start-Process \"Z:\\tmp\\claude-0\\-home-claude\\6889af70-4aa6-567a-b665-1e4ff0074842\\scratchpad\\r6\\acceptroot\\sutram-ide-gui.exe\" -WorkingDirectory \"Z:\\tmp\\claude-0\\-home-claude\\6889af70-4aa6-567a-b665-1e4ff0074842\\scratchpad\\r6\\acceptroot\"",
+      "output": "pid=568 title=Untitled - Sutram sampadak TokenElevation=1",
+      "detail": "repository build; screenshot ide-start.png",
+      "time": "2026-10-19T11:44:30"
+    },
+    {
+      "id": "ide-menus-english",
+      "status": "NOT-RUN",
+      "required": true,
+      "environment": "Wine",
+      "command": "GetMenu / GetMenuItemCount / GetMenuStringW(MF_BYPOSITION)",
+      "output": "HMENU=196790 count=-1",
+      "detail": "Wine keeps menus per process, so another process cannot read them; this check needs Windows",
+      "time": "2026-10-19T11:44:30"
+    },
+    {
+      "id": "ide-buttons-english",
+      "status": "PASS",
+      "required": true,
+      "environment": "Wine",
+      "command": "WM_GETTEXT on controls 101-106 and 208",
+      "output": "101=Run\n102=Open\n103=Save\n104=Load example\n105=Send\n106=Clear shell\n208=Find:",
+      "detail": "mismatched ids: ",
+      "time": "2026-10-19T11:44:30"
+    },
+    {
+      "id": "devanagari-ide",
+      "status": "PASS",
+      "required": true,
+      "environment": "Wine",
+      "command": "WM_SETTEXT editor = 218_sanskrit_devanagari.sm; WM_COMMAND Language>Auto (2040); WM_COMMAND Run module (2010); WM_GETTEXT output",
+      "output": "योगः = 15\r\n\n[status] pankti 1   stambh 1   |   bhasha: swayam (sanskrit)   |   akshara: 476   |   asanchit *",
+      "detail": "expects योगः = 15; screenshot ide-devanagari.png",
+      "time": "2026-10-19T11:44:30"
+    },
+    {
+      "id": "tab-indent",
+      "status": "PASS",
+      "required": true,
+      "environment": "Wine",
+      "command": "WM_KEYDOWN+WM_CHAR VK_TAB to the editor: once at the end of a line, once on a two-line selection",
+      "output": "caret: \"mukhya() {\\n    \"\nblock: \"mukhya() {\\n        likha(1)\\n        likha(2)\\n}\\n\"",
+      "detail": "four spaces, no tab character; a selection moves right by four",
+      "time": "2026-10-19T11:44:31"
+    },
+    {
+      "id": "shift-tab-dedent",
+      "status": "PASS",
+      "required": true,
+      "environment": "Wine",
+      "command": "Edit > Dedent (WM_COMMAND 2039), the command Shift+Tab is bound to",
+      "output": "menu: \"likha(1)\"",
+      "detail": "menu path only",
+      "time": "2026-10-19T11:44:31"
+    },
+    {
+      "id": "shift-tab-keyboard",
+      "status": "NOT-RUN",
+      "required": false,
+      "environment": "Wine",
+      "command": "",
+      "output": "",
+      "detail": "a real Shift+Tab needs the keyboard state, i.e. SendInput into the foreground window; rerun with -Keyboard and do not touch the mouse/keyboard while it runs",
+      "time": "2026-10-19T11:44:31"
+    },
+    {
+      "id": "unsaved-guard",
+      "status": "PASS",
+      "required": true,
+      "environment": "Wine",
+      "command": "WM_SETTEXT editor; WM_COMMAND File>New (2004); read the box; BM_CLICK Cancel",
+      "output": "title=Untitled * - Sutram sampadak\nbox: The file has changed. Save it?\neditor kept after Cancel: True",
+      "detail": "screenshot ide-unsaved-guard.png",
+      "time": "2026-10-19T11:44:33"
+    },
+    {
+      "id": "uninstall-removes-install",
+      "status": "NOT-RUN",
+      "required": true,
+      "environment": "Wine",
+      "command": "",
+      "output": "",
+      "detail": "nothing was installed by this run",
+      "time": "2026-10-19T11:44:37"
+    }
+  ],
+  "finished": "2026-10-19T11:44:37-04:00"
+}

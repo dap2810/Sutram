@@ -1,0 +1,45 @@
+Script started on 2026-10-19 11:36:55-04:00 [COMMAND="/usr/lib/wine/wine64 powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'Z:/tmp/claude-0/-home-claude/6889af70-4aa6-567a-b665-1e4ff0074842/scratchpad/r6/acceptroot_h/tools/accept-windows.ps1' -OutDir 'Z:/tmp/claude-0/-home-claude/6889af70-4aa6-567a-b665-1e4ff0074842/scratchpad/r6/run9-retry-after-failed' " <not executed on terminal>]
+Sutram Windows acceptance  env=Wine  build=19043.  PS=7.2.24  elevated=True
+NOT-RUN  runner-not-elevated                Wine has no UAC and reports every pr
+ocess as administrator; least privilege can only be shown on Windows
+SHA256   535ff11a725e994aacc3c3fc24723657316100a4efeb81f005e6b6fee5db8bec  setup
+  (Z:\tmp\claude-0\-home-claude\6889af70-4aa6-567a-b665-1e4ff0074842\scratchpad\
+r6\acceptroot_h\Sutram-Setup.exe)
+SHA256   4e9a9f6021266ecae8f6e7c695e6d60d069e6ba23409fa94d10050898a850ce7  repo-
+compiler win\sutram.exe  (Z:\tmp\claude-0\-home-claude\6889af70-4aa6-567a-b665-1
+e4ff0074842\scratchpad\r6\acceptroot_h\win\sutram.exe)
+SHA256   a1bf4b14917f9c14eceb981ce39c696d2142e666f24c8782a09b02821920375c  repo-
+ide sutram-ide-gui.exe  (Z:\tmp\claude-0\-home-claude\6889af70-4aa6-567a-b665-1e
+4ff0074842\scratchpad\r6\acceptroot_h\sutram-ide-gui.exe)
+PASS     setup-hash-file                    matches the committed hash file
+PASS     setup-self-test                    embedded SHA-256 self-test exit 0
+FAIL     install-wizard                     outcome=dialog: Sutram setup did not
+ complete. Check the install log in %TEMP% (unique STM folder) for details.; scr
+eenshots: wizard-welcome.png, wizard-license.png, wizard-location.png, wizard-co
+mponents.png, wizard-ready.png
+NOT-RUN  install-no-elevation-prompt        Wine has no UAC; this check means so
+mething only on Windows
+NOT-RUN  install-footprint                  install did not complete
+PASS     devanagari-cli                     repository build; expects the line ?
+??? = 15
+PASS     ide-launches                       repository build; screenshot ide-sta
+rt.png
+NOT-RUN  ide-menus-english                  Wine keeps menus per process, so ano
+ther process cannot read them; this check needs Windows
+PASS     ide-buttons-english                mismatched ids:
+PASS     devanagari-ide                     expects ???? = 15; screenshot ide-de
+vanagari.png
+PASS     tab-indent                         four spaces, no tab character; a sel
+ection moves right by four
+PASS     shift-tab-dedent                   menu path only
+NOT-RUN  shift-tab-keyboard                 a real Shift+Tab needs the keyboard 
+state, i.e. SendInput into the foreground window; rerun with -Keyboard and do no
+t touch the mouse/keyboard while it runs
+PASS     unsaved-guard                      screenshot ide-unsaved-guard.png
+NOT-RUN  uninstall-removes-install          nothing was installed by this run
+VERDICT  FAIL (Wine only - NOT Windows acceptance)   required: 9 PASS / 1 FAIL /
+ 5 NOT-RUN
+LOG      Z:\tmp\claude-0\-home-claude\6889af70-4aa6-567a-b665-1e4ff0074842\scrat
+chpad\r6\run9-retry-after-failed\accept-windows.json
+LOG-SHA256 a1d7deb13c5e61a163bff3a5ab4985e0e4a8d76117d581f8ee0104b1f1c0ff29
+Script done on 2026-10-19 11:37:09-04:00 [COMMAND_EXIT_CODE="1"]

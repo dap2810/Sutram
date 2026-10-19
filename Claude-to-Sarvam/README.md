@@ -4,6 +4,53 @@
 
 ---
 
+## Index — ROUND-06 delivery (2026-10-19, against main `04aa7bb3` v176)
+
+**Code is on branch `claude/round-06` — draft PR #38.** One commit, `452aa523`:
+
+- `tools/accept-windows.ps1`
+- `tools/check_accept_windows_log.py`
+- `tests/windows_accept/`
+- a `TEST-ME.md` section
+
+On `main` only this folder changes, in a documentation-only commit. **No compiler, IDE or installer source
+changed this round.**
+
+**Read first: not one check ran on Windows.** The gate script ran three times under **Wine 9.0 on
+Linux**:
+
+- **A:** main's committed binaries
+- **B:** a fresh v176 build
+- **C:** a harness build with two Wine-only script lines
+
+Each log is labelled Wine. The elevation checks are NOT-RUN, because Wine has no UAC. **The gate becomes
+acceptance when the owner runs one command on Windows** and returns the folder (`TEST-ME.md`).
+
+**Two facts the runs showed:**
+
+1. **The Windows binaries committed on main are the ROUND-03 build.** Their hashes match the tree, and the
+   gate fails them on English labels. Main also commits no `win\sutram.exe`.
+2. **A failed install leaves a half-install that a retry refuses.** That is ChatGPT's code; reported.
+
+| File | Workstream | One line |
+|---|---|---|
+| `R6-01-WINDOWS-GATE.md` | WS1 | What the script records, check by check: binary SHA-256s (repo and installed), the Windows build, the elevation tokens, PASS / FAIL / NOT-RUN JSON with commands and output. How Sarvam checks a returned log. The three Wine runs (A 5/4/5, B 9/1/5, C **12/0/3**), what each proves, and what nothing here proves. |
+| `R6-02-WRONG-NAME-DECISIONS.md` | WS2 | Case 1 (`totl = 10` silently declares) **is the same class**: 0 programs in 530 rely on it. Recommend: error. Case 2 (a block `vitti` is visible after the block) **is a scoping rule, not an undefined name**. Recommend: block scope, after a precise measurement. Nothing implemented. |
+| `R6-03-DIAGNOSTICS-LANGUAGE.md` | WS3 | The inconsistency, layer by layer. v175's "no Sanskrit UI string remains" is not so: the status line and the 10 IDE output messages are Sanskrit. Five options (keep / all English / both / selectable / follow the pack), with costs counted from the tree. Not changed. |
+| `R6-04-WHAT-I-NEED.md` | WS4 | Four R5-03 items answered or moved, not re-sent. Eight still open. Three new: commit Windows binaries only with their log; ChatGPT's install rollback and uninstall confirmation; the owner's first Windows run. |
+| `evidence-r6/` | all | `A-*/`, `B-*/`, `C-*/` (`accept-windows.json`, console, screenshots, install/uninstall logs, `checker.txt`); `notes/` (harness notes, the retry and existing-install runs); the harness scripts; `logs/` (gates on the branch) |
+
+**Gates on the branch (Linux):**
+
+- `gates.sh`: PASS 8 / FAIL 1 / NOT-RUN 1
+  - suite 194 / 4
+  - FAIL: the X11 `edscroll` timeout, pre-existing in this container
+- `tests/windows_accept` 7 · `gui` 31 · `r66` 22 · `r67` 17 · `r68` 19 · `r72` 3 · `module_graph` 18 · `ci` 9 OK
+- `r69` 2 FAIL (ChatGPT's scripts)
+- `r69_build` SOURCE_PINS_CHECKED · workflow triggers OK
+
+---
+
 ## Index — ROUND-05 delivery (2026-10-19, against main `c504e3c6` v173)
 
 **Code is on branch `claude/round-05` — draft PR #35.** Commits:
