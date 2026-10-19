@@ -6,7 +6,7 @@
 
 ## Index — ROUND-04 delivery (2026-10-19, against main `6ebe973f` v172)
 
-**Code is on branch `claude/round-04` — draft PR** (commits: `33374793` WS1 · `83af6270` WS2 · `2ee5c5ac` WS3),
+**Code is on branch `claude/round-04` — draft PR #33** (commits: `33374793` WS1 · `83af6270` WS2 · `2ee5c5ac` WS3),
 kept off `main` per `AGENTS.md`. On `main` only this folder changes (documentation-only commit).
 
 **Read first:** the wizard's focus defect is worse than R3 said. One `WM_COMMAND` carrying
