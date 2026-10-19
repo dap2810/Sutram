@@ -79,7 +79,7 @@ pre .k, code .k { font-weight: 700; }
 </ol></div>
 <div class="ch" id="ch1"><h2>1. సూత్రమ్ అంటే ఏమిటి? <span class="en-gloss">(What is Sutram?)</span></h2>
 <p><b>సూత్రమ్</b> అంటే "దారం" — అన్నింటినీ కలిపే దారం. సూత్రమ్ ఒక ప్రోగ్రామింగ్ భాష:
-దీని కీలకపదంలు సంస్కృతం <span class="k" data-tip="సంస్కృతం: to · range-to">నుండి</span> వచ్చాయి, దీని సంకలని స్వచ్ఛమైన అసెంబ్లీలో రాయబడింది,
+దీని కీలకపదంలు సంస్కృతం <span class="k" data-tip="సంస్కృతం: tak · range-to">నుండి</span> వచ్చాయి, దీని సంకలని స్వచ్ఛమైన అసెంబ్లీలో రాయబడింది,
 ఇది నేరుగా x86-64 మెషిన్ కోడ్‌గా మారుతుంది. ఇంటర్‌ప్రెటర్ లేదు, వర్చువల్ మెషిన్ లేదు,
 రన్‌టైమ్ లైబ్రరీ లేదు.</p>
 <p><b>ఎందుకు నేర్చుకోవాలి?</b></p>
@@ -103,7 +103,7 @@ ELF రైటర్.</p>
     <span class="k" data-tip="సంస్కృతం: likha · print">likha</span>("Namaste, Sutram!\n")</code></pre>
 <p>దీన్ని <code>namaste.sm</code> అనే పేరుతో సేవ్ చేసి, కంపైల్ చేసి రన్ చేయండి:</p>
 <pre><code>$ sutram namaste.sm namaste.bin
-OK: compiled 90 bytes
+Siddh: 97 byte sankalit
 $ ./namaste.bin
 <span class="out">Namaste, Sutram!</span></code></pre>
 <div class="note">సంకలని పూర్తి నడిచే ELF బైనరీని తయారు చేస్తుంది — ఈ కార్యక్రమం‌కు
@@ -144,7 +144,7 @@ syscall.</div>
     <span class="k" data-tip="సంస్కృతం: likha · print">likha</span>("\n")
     <span class="k" data-tip="సంస్కృతం: likha · print">likha</span>(2 & 12)         <span class="cm">// 0  (bitwise AND)</span>
     <span class="k" data-tip="సంస్కృతం: likha · print">likha</span>("\n")</code></pre>
-<div class="note">ప్రాధాన్యత (తక్కువ <span class="k" data-tip="సంస్కృతం: to · range-to">నుండి</span> ఎక్కువ): <code>||</code> → <code>&&</code> →
+<div class="note">ప్రాధాన్యత (తక్కువ <span class="k" data-tip="సంస్కృతం: tak · range-to">నుండి</span> ఎక్కువ): <code>||</code> → <code>&&</code> →
 పోలికలు → <code>+ - & | ^</code> → <code>* / %</code>. సందేహం ఉంటే బ్రాకెట్‌లు
 వాడండి — పనితీరుపై ఖర్చు లేదు.</div>
 </div>
@@ -172,9 +172,9 @@ syscall.</div>
     }</code></pre>
 </div>
 <div class="ch" id="ch6"><h2>6. పునరావృతాలు: <span class="k" data-tip="సంస్కృతం: chakra · for">chakra</span>, <span class="k" data-tip="సంస్కృతం: yavat · while">yavat</span>, <span class="k" data-tip="సంస్కృతం: krama · break">krama</span>, <span class="k" data-tip="సంస్కృతం: agrim · continue">agrim</span> <span class="en-gloss">(Loops)</span></h2>
-<p><code><span class="k" data-tip="సంస్కృతం: chakra · for">chakra</span></code> (<span class="k" data-tip="సంస్కృతం: chakra · for">పునరావృతం</span>) లెక్కించే <span class="k" data-tip="సంస్కృతం: chakra · for">పునరావృతం</span> — "i = a <span class="k" data-tip="సంస్కృతం: to · range-to">నుండి</span> b వరకు":</p>
+<p><code><span class="k" data-tip="సంస్కృతం: chakra · for">chakra</span></code> (<span class="k" data-tip="సంస్కృతం: chakra · for">పునరావృతం</span>) లెక్కించే <span class="k" data-tip="సంస్కృతం: chakra · for">పునరావృతం</span> — "i = a <span class="k" data-tip="సంస్కృతం: tak · range-to">నుండి</span> b వరకు":</p>
 <pre><code><span class="k" data-tip="సంస్కృతం: mukhya · main">mukhya</span>()
-    <span class="k" data-tip="సంస్కృతం: chakra · for">chakra</span> i = 1 <span class="k" data-tip="సంస్కృతం: to · range-to">to</span> 5 {
+    <span class="k" data-tip="సంస్కృతం: chakra · for">chakra</span> i = 1 <span class="k" data-tip="సంస్కృతం: tak · range-to">tak</span> 5 {
         <span class="k" data-tip="సంస్కృతం: likha · print">likha</span>(i)
         <span class="k" data-tip="సంస్కృతం: likha · print">likha</span>(" ")   <span class="cm">// 1 2 3 4 5</span>
     }
@@ -183,14 +183,14 @@ syscall.</div>
 <code><span class="k" data-tip="సంస్కృతం: agrim · continue">agrim</span></code> తర్వాతి రౌండ్‌కు వెళ్తుంది:</p>
 <pre><code><span class="k" data-tip="సంస్కృతం: mukhya · main">mukhya</span>()
     <span class="k" data-tip="సంస్కృతం: vitti · variable">vitti</span> yogam = 0
-    <span class="k" data-tip="సంస్కృతం: chakra · for">chakra</span> i = 1 <span class="k" data-tip="సంస్కృతం: to · range-to">to</span> 100 {
+    <span class="k" data-tip="సంస్కృతం: chakra · for">chakra</span> i = 1 <span class="k" data-tip="సంస్కృతం: tak · range-to">tak</span> 100 {
         <span class="k" data-tip="సంస్కృతం: yadi · if">yadi</span> (i > 10) { <span class="k" data-tip="సంస్కృతం: krama · break">krama</span> }
         <span class="k" data-tip="సంస్కృతం: yadi · if">yadi</span> (i % 2 == 0) { <span class="k" data-tip="సంస్కృతం: agrim · continue">agrim</span> }
         yogam = yogam + i
     }
     <span class="k" data-tip="సంస్కృతం: likha · print">likha</span>(yogam)     <span class="cm">// 25</span>
     <span class="k" data-tip="సంస్కృతం: likha · print">likha</span>("\n")</code></pre>
-<div class="try"><b>ఈ కార్యక్రమం 1 <span class="k" data-tip="సంస్కృతం: to · range-to">నుండి</span> 10 వరకు బేసి సంఖ్యల మొత్తం:</b> <code>i > 10</code>
+<div class="try"><b>ఈ కార్యక్రమం 1 <span class="k" data-tip="సంస్కృతం: tak · range-to">నుండి</span> 10 వరకు బేసి సంఖ్యల మొత్తం:</b> <code>i > 10</code>
 అయినప్పుడు <code><span class="k" data-tip="సంస్కృతం: krama · break">krama</span></code> <span class="k" data-tip="సంస్కృతం: chakra · for">పునరావృతం</span> ఆపుతుంది; <code>i</code> జత <span class="k" data-tip="సంస్కృతం: anka · integer">సంఖ్య</span> అయినప్పుడు
 <code><span class="k" data-tip="సంస్కృతం: agrim · continue">agrim</span></code> దాన్ని వదిలేస్తుంది. సమాధానం: 25.</div>
 </div>
@@ -219,7 +219,7 @@ mukhya()
 <code><span class="k" data-tip="సంస్కృతం: mala · mala">mala</span> tarika[5]</code> అంటే ఐదు 64-బిట్ స్లాట్‌లు:</p>
 <pre><code><span class="k" data-tip="సంస్కృతం: mukhya · main">mukhya</span>()
     <span class="k" data-tip="సంస్కృతం: mala · mala">mala</span> tarika[5]
-    <span class="k" data-tip="సంస్కృతం: chakra · for">chakra</span> i = 0 <span class="k" data-tip="సంస్కృతం: to · range-to">to</span> 5 {
+    <span class="k" data-tip="సంస్కృతం: chakra · for">chakra</span> i = 0 <span class="k" data-tip="సంస్కృతం: tak · range-to">tak</span> 5 {
         tarika[i] = i * i
     }
     <span class="k" data-tip="సంస్కృతం: likha · print">likha</span>(tarika[4])     <span class="cm">// 16</span>
@@ -244,12 +244,14 @@ mukhya()
 <p>సంస్కరణ 1.0‌లో ఒక ఇంటరాక్టివ్ కవచం వచ్చింది — పైథాన్ IDLE లాగా. ఇలా ప్రారంభించండి:
 <code>sutram -i</code>:</p>
 <pre><code>$ sutram -i
-Sutram Shell v1.0 — the complete thread
+Sutram khol v1.0 - sampurna sutra
+Sutram kathan likho aur Enter dabao. Turant chalega.
+Aadesh: sahayata (sahay) | nirgat (nikas) | sarvam (dekho)
 
 <span class="k" data-tip="సంస్కృతం: sutra · constant">sutra</span>> <span class="k" data-tip="సంస్కృతం: vitti · variable">vitti</span> x = 21
-OK: compiled 204 bytes
+Siddh: 54 byte sankalit
 <span class="k" data-tip="సంస్కృతం: sutra · constant">sutra</span>> <span class="k" data-tip="సంస్కృతం: likha · print">likha</span>(x / 3)
-OK: compiled 260 bytes
+Siddh: 201 byte sankalit
 7
 <span class="k" data-tip="సంస్కృతం: sutra · constant">sutra</span>> nirgat</code></pre>
 <p>మీరు టైప్ చేసిన ప్రతి లైన్ పెరుగుతున్న సెషన్ కార్యక్రమం‌లో చేరుతుంది, వెంటనే
@@ -268,7 +270,7 @@ OK: compiled 260 bytes
 <tr><td><code><span class="k" data-tip="సంస్కృతం: sutra · constant">స్థిరం</span></code></td><td>constant</td><td><code><span class="k" data-tip="సంస్కృతం: sutra · constant">sutra</span></code></td></tr>
 <tr><td><code><span class="k" data-tip="సంస్కృతం: yadi · if">ఒకవేళ</span> ... <span class="k" data-tip="సంస్కృతం: anya · else">లేకపోతే</span></code></td><td>if ... else</td><td><code><span class="k" data-tip="సంస్కృతం: yadi · if">yadi</span> ... <span class="k" data-tip="సంస్కృతం: anya · else">anya</span></code></td></tr>
 <tr><td><code><span class="k" data-tip="సంస్కృతం: yavat · while">ఎంతవరకు</span></code></td><td>while</td><td><code><span class="k" data-tip="సంస్కృతం: yavat · while">yavat</span></code></td></tr>
-<tr><td><code><span class="k" data-tip="సంస్కృతం: chakra · for">పునరావృతం</span> x = 1 <span class="k" data-tip="సంస్కృతం: to · range-to">నుండి</span> 5</code></td><td>for x = 1 <span class="k" data-tip="సంస్కృతం: to · range-to">to</span> 5</td><td><code><span class="k" data-tip="సంస్కృతం: chakra · for">chakra</span> ... <span class="k" data-tip="సంస్కృతం: to · range-to">to</span></code></td></tr>
+<tr><td><code><span class="k" data-tip="సంస్కృతం: chakra · for">పునరావృతం</span> x = 1 <span class="k" data-tip="సంస్కృతం: tak · range-to">నుండి</span> 5</code></td><td>for x = 1 <span class="k" data-tip="సంస్కృతం: tak · range-to">to</span> 5</td><td><code><span class="k" data-tip="సంస్కృతం: chakra · for">chakra</span> ... <span class="k" data-tip="సంస్కృతం: tak · range-to">tak</span></code></td></tr>
 <tr><td><code><span class="k" data-tip="సంస్కృతం: prakriya · function">క్రియ</span> / <span class="k" data-tip="సంస్కృతం: prakriya · function">ప్రమేయం</span></code></td><td>function</td><td><code><span class="k" data-tip="సంస్కృతం: prakriya · function">prakriya</span></code></td></tr>
 <tr><td><code><span class="k" data-tip="సంస్కృతం: prati · return">తిరిగి</span></code></td><td>return</td><td><code><span class="k" data-tip="సంస్కృతం: prati · return">prati</span></code></td></tr>
 <tr><td><code><span class="k" data-tip="సంస్కృతం: likha · print">వ్రాయు</span> / <span class="k" data-tip="సంస్కృతం: likha · print">లేఖ</span></code></td><td>print</td><td><code><span class="k" data-tip="సంస్కృతం: likha · print">likha</span></code></td></tr>
@@ -282,15 +284,15 @@ OK: compiled 260 bytes
 <p>ఇప్పుడు పూర్తి తెలుగు కార్యక్రమం — <b>ప్రతి పదం తెలుగులో</b>:</p>
 <pre><code><span class="k" data-tip="సంస్కృతం: mukhya · main">ముఖ్యం</span>()
     <span class="k" data-tip="సంస్కృతం: vitti · variable">చరం</span> గుణకం = 4
-    <span class="k" data-tip="సంస్కృతం: chakra · for">పునరావృతం</span> i = 1 <span class="k" data-tip="సంస్కృతం: to · range-to">నుండి</span> 3 {
+    <span class="k" data-tip="సంస్కృతం: chakra · for">పునరావృతం</span> i = 1 <span class="k" data-tip="సంస్కృతం: tak · range-to">నుండి</span> 3 {
         <span class="k" data-tip="సంస్కృతం: likha · print">వ్రాయు</span>(గుణకం * i)
     }
     <span class="k" data-tip="సంస్కృతం: yadi · if">ఒకవేళ</span> (గుణకం == 4) {
         <span class="k" data-tip="సంస్కృతం: likha · print">వ్రాయు</span>("తెలుగులో వ్రాశాను!")
     }</code></pre>
 <pre><code>$ sutram --lang telugu prog.sm prog.bin
-Language pack loaded: telugu
-OK: compiled 332 bytes
+Bhasha pak prapt: telugu
+Siddh: 322 byte sankalit
 $ ./prog.bin
 4
 8
@@ -302,11 +304,18 @@ $ ./prog.bin
 
 <div class="ch" id="ch12"><h2>12. దోషాలు మరియు దోష సవరణ <span class="en-gloss">(Errors and debugging)</span></h2>
 <p>సూత్రమ్ పార్స్ దోషంలలో లైన్ నంబర్ మరియు ఎక్కడ ఆగిపోయిందో ఆ టోకెన్ చూపుతుంది:</p>
-<pre><code>$ ./sutram_compiler galat.sm out.bin
+<pre><code>$ cat galat.sm
+mukhya() {
+    vitti x = 5
+    vitti y = (x
+    likha(x)
+}
+$ ./sutram_compiler galat.sm out.bin
 
-Sutram Error: parse error at line 4 near token '<span class="k" data-tip="సంస్కృతం: likha · print">likha</span>'
-Hint: check the keyword spelling and syntax near this spot.
-      Run 'sutram -i' and type 'sahayata' for help.</code></pre>
+Sutram Error: vyakaran dosh, pankti 4:5, shabd '<span class="k" data-tip="సంస్కృతం: likha · print">likha</span>'
+      likha(x)
+      ^
+Sanket: is sthan par shabd aur vyakaran dekho.</code></pre>
 <div class="try"><b>డీబగ్ పద్ధతి:</b> 1. లైన్ నంబర్ చదవండి. 2. దోషం‌లో పేర్కొన్న కీలకపదం
 స్పెల్లింగ్ సరిచూడండి. 3. అదే లైన్ కవచం‌లో (<code>sutram -i</code>) ప్రయత్నించండి —
 దోషాలు వెంటనే కనిపిస్తాయి.</div>
@@ -325,7 +334,7 @@ Hint: check the keyword spelling and syntax near this spot.
 <tr><td><code><span class="k" data-tip="సంస్కృతం: sutra · constant">sutra</span></code></td><td>constant</td></tr>
 <tr><td><code><span class="k" data-tip="సంస్కృతం: yadi · if">yadi</span> ... <span class="k" data-tip="సంస్కృతం: anya · else">anya</span></code></td><td>if ... else</td></tr>
 <tr><td><code><span class="k" data-tip="సంస్కృతం: guna · multiply (*)">guna</span> / <span class="k" data-tip="సంస్కృతం: bhavana · condition">bhavana</span></code></td><td>switch / case</td></tr>
-<tr><td><code><span class="k" data-tip="సంస్కృతం: chakra · for">chakra</span> i = a <span class="k" data-tip="సంస్కృతం: to · range-to">to</span> b</code></td><td>for loop</td></tr>
+<tr><td><code><span class="k" data-tip="సంస్కృతం: chakra · for">chakra</span> i = a <span class="k" data-tip="సంస్కృతం: tak · range-to">tak</span> b</code></td><td>for loop</td></tr>
 <tr><td><code><span class="k" data-tip="సంస్కృతం: yavat · while">yavat</span></code></td><td>while loop</td></tr>
 <tr><td><code><span class="k" data-tip="సంస్కృతం: krama · break">krama</span> / <span class="k" data-tip="సంస్కృతం: agrim · continue">agrim</span></code></td><td>break / continue</td></tr>
 <tr><td><code><span class="k" data-tip="సంస్కృతం: prakriya · function">prakriya</span> / <span class="k" data-tip="సంస్కృతం: prati · return">prati</span></code></td><td>function / return</td></tr>
@@ -379,14 +388,14 @@ n--      <span class="cm"># n = 5</span></code></pre>
 
 <h3><span class="k" data-tip="సంస్కృతం: lkhb · print (no newline)">lkhb</span>() — కొత్త <span class="k" data-tip="సంస్కృతం: mala · mala">వరుస</span> లేకుండా ముద్రణ</h3>
 <p><code><span class="k" data-tip="సంస్కృతం: likha · print">likha</span>()</code> <span class="k" data-tip="సంస్కృతం: anka · integer">సంఖ్య</span> తర్వాత కొత్త <span class="k" data-tip="సంస్కృతం: mala · mala">వరుస</span> ఇస్తుంది; <code><span class="k" data-tip="సంస్కృతం: lkhb · print (no newline)">lkhb</span>()</code> ఇవ్వదు — పట్టికల కోసం:</p>
-<pre><code><span class="k" data-tip="సంస్కృతం: chakra · for">chakra</span> i = 1 <span class="k" data-tip="సంస్కృతం: to · range-to">to</span> 5 {
+<pre><code><span class="k" data-tip="సంస్కృతం: chakra · for">chakra</span> i = 1 <span class="k" data-tip="సంస్కృతం: tak · range-to">tak</span> 5 {
     <span class="k" data-tip="సంస్కృతం: lkhb · print (no newline)">lkhb</span>(i)
     <span class="k" data-tip="సంస్కృతం: likha · print">likha</span>(" ")
 }</code></pre>
 
 <h3>తగ్గుతున్న పునరావృత్తులు (Descending Loops)</h3>
 <p>ప్రారంభ విలువ గరిష్ట విలువ కంటే పెద్దదైతే, లెక్క స్వయంగా తగ్గుతుంది:</p>
-<pre><code><span class="k" data-tip="సంస్కృతం: chakra · for">chakra</span> i = 5 <span class="k" data-tip="సంస్కృతం: to · range-to">to</span> 1 {
+<pre><code><span class="k" data-tip="సంస్కృతం: chakra · for">chakra</span> i = 5 <span class="k" data-tip="సంస్కృతం: tak · range-to">tak</span> 1 {
     <span class="k" data-tip="సంస్కృతం: lkhb · print (no newline)">lkhb</span>(i)
     <span class="k" data-tip="సంస్కృతం: likha · print">likha</span>(" ")
 }    <span class="cm"># ఫలితం: 5 4 3 2 1</span></code></pre>
@@ -460,7 +469,7 @@ mukhya()
 
 <p><b>Constant → స్థిరరాశి</b> — స్థిరమైన (మారని) విలువ గల రాశి; "అచరం" అనే పదం కూడా వాడుకలో ఉంది.</p>
 
-<p><b>Function → <span class="k" data-tip="సంస్కృతం: prakriya · function">ప్రమేయం</span></b> — ఇన్‌పుట్ <span class="k" data-tip="సంస్కృతం: to · range-to">నుండి</span> అవుట్‌పుట్‌కు నియమం; గణిత శాస్త్రం <span class="k" data-tip="సంస్కృతం: to · range-to">నుండి</span> వచ్చిన ప్రామాణిక పదం.</p>
+<p><b>Function → <span class="k" data-tip="సంస్కృతం: prakriya · function">ప్రమేయం</span></b> — ఇన్‌పుట్ <span class="k" data-tip="సంస్కృతం: tak · range-to">నుండి</span> అవుట్‌పుట్‌కు నియమం; గణిత శాస్త్రం <span class="k" data-tip="సంస్కృతం: tak · range-to">నుండి</span> వచ్చిన ప్రామాణిక పదం.</p>
 
 <p><b>Loop → పునరావృత్తి</b> — పునః (మళ్ళీ) + ఆవృత్తి (చుట్టం): బంధుత్వంగా మళ్ళీ మళ్ళీ నడిచే కోడ్; "<span class="k" data-tip="సంస్కృతం: chakra · for">పునరావృతం</span>"కు ప్రామాణిక తెలుగు పదం.</p>
 
@@ -481,7 +490,7 @@ mukhya()
 
 <div class="ch" id="ch16">
 <h2>16. సంస్కృత వేర్లు: మీ భాషలో బతికున్న పదాలు <span class="en-gloss">(Sanskrit roots)</span></h2>
-<p>సూత్రమ్‌లోని ప్రతి కీలకపదం సంస్కృత వేరు <span class="k" data-tip="సంస్కృతం: to · range-to">నుండి</span> వచ్చింది — అనేకం తెలుగులో నేరుగానే వాడుకలో ఉన్నాయి. మీరు <code><span class="k" data-tip="సంస్కృతం: shunya · false / null">shunya</span></code> రాసినప్పుడు, అరబి గుండా ఆంగ్ల <b>zero</b>గా మారిన అదే పదాన్ని మీరు తాకుతున్నారు.</p>
+<p>సూత్రమ్‌లోని ప్రతి కీలకపదం సంస్కృత వేరు <span class="k" data-tip="సంస్కృతం: tak · range-to">నుండి</span> వచ్చింది — అనేకం తెలుగులో నేరుగానే వాడుకలో ఉన్నాయి. మీరు <code><span class="k" data-tip="సంస్కృతం: shunya · false / null">shunya</span></code> రాసినప్పుడు, అరబి గుండా ఆంగ్ల <b>zero</b>గా మారిన అదే పదాన్ని మీరు తాకుతున్నారు.</p>
 
 <table>
 <tr><th>కీలకపదం</th><th>సంస్కృత వేరు అర్థం</th><th>మీ భాషలో</th></tr>

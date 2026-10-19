@@ -104,9 +104,9 @@ its **own** diagnostic (R64 renamed the `peek`/`dequeue` messages; in R63
 all three printed pop's message):
 
 ```
-empty kosh_pop(k):     Sutram Error: kosh pop from empty mala
-empty kosh_peek(k):    Sutram Error: kosh peek from empty mala
-empty kosh_dequeue(k): Sutram Error: kosh dequeue from empty mala
+empty kosh_pop(k):     Sutram Error: rikta kosh se kosh_pop
+empty kosh_peek(k):    Sutram Error: rikta kosh se kosh_peek
+empty kosh_dequeue(k): Sutram Error: rikta kosh se kosh_dequeue
 ```
 
 All three exit 1. There is **no** `ok[0]` channel here, unlike the
@@ -116,7 +116,7 @@ Code that must survive an empty `peek`/`dequeue` must check
 
 ### Compile-time errors
 
-- Non-kosh argument: `Sutram Error: kosh builtin requires a kosh variable`, exit 1.
+- Non-kosh argument: `Sutram Error: kosh prakriya hetu kosh-vitti avashyak`, exit 1.
 - Wrong arity (e.g. `kosh_peek(v, 2)`, `kosh_enqueue(v)`): a parse error
   at the call site, exit 1. The builtins have fixed arity.
 

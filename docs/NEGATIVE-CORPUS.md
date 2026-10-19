@@ -20,12 +20,12 @@ All explicitly shown full diagnostics end with one LF.
 
 | Category | Fixture and rejected construct | Diagnostic requirement | Provenance |
 |---|---|---|---|
-| Bad type | `bad_type.sm`: integer `kosh` passed to `kosh dasham` parameter | Full stdout: `Sutram Error: kosh parameter requires matching kosh element type\n` | Existing example 120 and its exact golden; copied identities checked. |
-| Bad arity | `bad_arity.sm`: seven arguments to a user function | In order: `Sutram Error: parse error at line `, then `Hint: functions accept at most 6 arguments.\n` | New fixture; explicit `parse_primary.pp_ic_parse` limit and diagnostic varna. Full framing is not pinned. |
-| Unknown identifier | `unknown_identifier.sm`: `does_not_exist(7)` | Full stdout: `Sutram Error: undefined function: does_not_exist\n` | Existing example 69 and its exact golden; function identifier only. |
-| Malformed literal | `malformed_literal.sm.hex`: digit-shaped `E0 A5 20` bytes in a numeric value position | Full stdout: `Sutram Error [E_UTF8]: {source}:2: invalid or truncated UTF-8 in source code\n` | New fixture; R68 prelex UTF-8 diagnostic path. |
-| Unterminated varna | `unterminated_string.sm`: open quote consumes the intended call delimiter and closing brace | In order: `Sutram Error: parse error at line `, `end of patra`, `Hint: check the keyword spelling and syntax near this spot.\n` | New source-derived rejection expectation; no dedicated unterminated-varna diagnostic is invented. |
-| Misplaced keyword | `misplaced_keyword.sm`: `vitti a = वि॰`, with `--lang sanskrit` | Full stdout: `Sutram Error [E_ABBREVIATION_VALUE]: {source}:2: abbreviation keyword is not a value: 'वि॰'\n` | New fixture; existing exact alias and R68 value-start guard. |
+| Bad type | `bad_type.sm`: integer `kosh` passed to `kosh dasham` parameter | Full stdout: `Sutram Error: kosh tark: tatv prakar bhinn\n` | Existing example 120 and its exact golden; copied identities checked. |
+| Bad arity | `bad_arity.sm`: seven arguments to a user function | In order: `Sutram Error: vyakaran dosh, pankti `, then `Sanket: prakriya adhiktam 6 tark lete hain.\n` | New fixture; explicit `parse_primary.pp_ic_parse` limit and diagnostic string. Full framing is not pinned. |
+| Unknown identifier | `unknown_identifier.sm`: `does_not_exist(7)` | Full stdout: `Sutram Error: agyat prakriya: does_not_exist\n` | Existing example 69 and its exact golden; function identifier only. |
+| Malformed literal | `malformed_literal.sm.hex`: digit-shaped `E0 A5 20` bytes in a numeric value position | Full stdout: `Sutram Error [E_UTF8]: {source}:2: srot me ashuddh ya khandit UTF-8\n` | New fixture; R68 prelex UTF-8 diagnostic path. |
+| Unterminated string | `unterminated_string.sm`: open quote consumes the intended call delimiter and closing brace | In order: `Sutram Error: vyakaran dosh, pankti `, `patra-ant`, `Sanket: is sthan par shabd aur vyakaran dekho.\n` | New source-derived rejection expectation; no dedicated unterminated-string diagnostic is invented. |
+| Misplaced keyword | `misplaced_keyword.sm`: `vitti a = वि॰`, with `--lang sanskrit` | Full stdout: `Bhasha pak prapt: sanskrit\n` then `Sutram Error [E_ABBREVIATION_VALUE]: {source}:2: sankshep shabd mulya nahi: 'वि॰'\n` | New fixture; existing exact alias and R68 value-start guard. |
 
 The two fragment matchers intentionally test stable error identity/hint rather
 than pretending the complete parse-error line, column, snippet and whitespace
@@ -59,17 +59,17 @@ mapping. The R68 messages name the root input and expanded line.
 
 Use a complete checkout containing the pinned R68 sources. The large inherited
 compiler is unchanged by R70. The runner verifies these Git blobs before invoking
-any compiler:
+any compiler (re-pinned in ROUND-03 together with `manifest.json`):
 
 | Input | Required Git blob |
 |---|---|
-| `src/sutram_compiler.asm` | `64ea028a5ccf56117c132a7efd0673cbe2df3fc6` |
+| `src/sutram_compiler.asm` | `ea2a1e910952120c1f1db8bac1890338af68d3e9` |
 | `src/r68_compiler_entry.asm` | `42389aaf73179726d91e23359aee2199734036e1` |
-| `src/r68_diagnostics.vardh` | `4e2ec29fe16cda9c0d5762ba340ec75694c6f23d` |
-| `src/r68_unicode_helpers.vardh` | `69103e059634aa6b5b871ce7c06c2f4b9c742ff1` |
-| `src/r66_indic_lexer.vardh` | `3633bd55775dc8b9bb94724ef3685976e61d9593` |
-| `src/r67_stack_pair.vardh` | `e8472bd1cad767cf06b0c00fcf88793419362db5` |
-| `lang/sanskrit.lang` | `5876fae59e52b55cc11ab811a80ad4eec8ccfe83` |
+| `src/r68_diagnostics.inc` | `a6f7bb196702626d6b7f116f32e678d9daf73eba` |
+| `src/r68_unicode_helpers.inc` | `69103e059634aa6b5b871ce7c06c2f4b9c742ff1` |
+| `src/r66_indic_lexer.inc` | `998b6cb75a7e11cf6d488cf84a84a2154ffdebf0` |
+| `src/r67_stack_pair.inc` | `e8472bd1cad767cf06b0c00fcf88793419362db5` |
+| `lang/sanskrit.lang` | `48fbf99a94f2f810911501860817c3fc27de95a3` |
 
 Build the R68 diagnostic entry, not just the bare compiler. An example on the
 reviewer's existing Linux NASM toolchain is:

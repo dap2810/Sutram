@@ -82,7 +82,7 @@ nasm -DSUTRAM_R65_TRAP_INT=1 -f elf64 -I. src/sutram_compiler.asm
 
 The default build wraps silently (byte-identical output to the accepted
 parent). The trap build aborts with
-`Sutram Error [E_INTEGER_TRAP] <patra>:<line>: ...` on add/sub/mul
+`Sutram Error [E_INTEGER_TRAP] <file>:<line>: ...` on add/sub/mul
 overflow and on division/remainder by zero. (R65 measured, CHANGELOG
 v143.)
 

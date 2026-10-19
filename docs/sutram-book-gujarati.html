@@ -92,17 +92,17 @@ x86-64 મશીન કોડ બને છે. ઇન્ટરપ્રીટ�
 ડિપેન્ડન્સી નહિ.</div>
 </div>
 <div class="ch" id="ch2"><h2>2. તમારો પહેલો કાર્યક્રમ <span class="en-gloss">(Your first program)</span></h2>
-<p>દરેક સૂત્રમ્ કાર્યક્રમ <code><span class="k" data-tip="સંસ્કૃત: mukhya · main">mukhya</span>()</code> <span class="k" data-tip="સંસ્કૃત: to · range-to">થી</span> શરૂ થાય. સેમીકોલન વૈકલ્પિક; બ્રેસ પણ
+<p>દરેક સૂત્રમ્ કાર્યક્રમ <code><span class="k" data-tip="સંસ્કૃત: mukhya · main">mukhya</span>()</code> <span class="k" data-tip="સંસ્કૃત: tak · range-to">થી</span> શરૂ થાય. સેમીકોલન વૈકલ્પિક; બ્રેસ પણ
 વૈકલ્પિક; કોમેન્ટ <code>//</code> થી.</p>
 <pre><code><span class="k" data-tip="સંસ્કૃત: mukhya · main">mukhya</span>()
     <span class="k" data-tip="સંસ્કૃત: likha · print">likha</span>("Namaste, Sutram!\n")</code></pre>
 <pre><code>$ sutram namaste.sm namaste.bin
-OK: compiled 90 bytes
+Siddh: 97 byte sankalit
 $ ./namaste.bin
 <span class="out">Namaste, Sutram!</span></code></pre>
 </div>
 <div class="ch" id="ch3"><h2>3. <span class="k" data-tip="સંસ્કૃત: vitti · variable">ચલ</span> અને <span class="k" data-tip="સંસ્કૃત: sutra · constant">અચલ</span> <span class="en-gloss">(Variables and constants)</span></h2>
-<p><code><span class="k" data-tip="સંસ્કૃત: vitti · variable">vitti</span></code> <span class="k" data-tip="સંસ્કૃત: to · range-to">થી</span> વેરિએસલ જાહેર કરો. <code><span class="k" data-tip="સંસ્કૃત: sutra · constant">sutra</span></code> થી અચલ:</p>
+<p><code><span class="k" data-tip="સંસ્કૃત: vitti · variable">vitti</span></code> <span class="k" data-tip="સંસ્કૃત: tak · range-to">થી</span> વેરિએસલ જાહેર કરો. <code><span class="k" data-tip="સંસ્કૃત: sutra · constant">sutra</span></code> થી અચલ:</p>
 <pre><code><span class="k" data-tip="સંસ્કૃત: mukhya · main">mukhya</span>()
     <span class="k" data-tip="સંસ્કૃત: vitti · variable">vitti</span> x = 10
     x = x + 5
@@ -156,21 +156,21 @@ $ ./namaste.bin
 </div>
 <div class="ch" id="ch6"><h2>6. <span class="k" data-tip="સંસ્કૃત: chakra · for">પુનરાવર્તન</span>: <span class="k" data-tip="સંસ્કૃત: chakra · for">chakra</span>, <span class="k" data-tip="સંસ્કૃત: yavat · while">yavat</span>, <span class="k" data-tip="સંસ્કૃત: krama · break">krama</span>, <span class="k" data-tip="સંસ્કૃત: agrim · continue">agrim</span> <span class="en-gloss">(Loops)</span></h2>
 <pre><code><span class="k" data-tip="સંસ્કૃત: mukhya · main">mukhya</span>()
-    <span class="k" data-tip="સંસ્કૃત: chakra · for">chakra</span> i = 1 <span class="k" data-tip="સંસ્કૃત: to · range-to">to</span> 5 {
+    <span class="k" data-tip="સંસ્કૃત: chakra · for">chakra</span> i = 1 <span class="k" data-tip="સંસ્કૃત: tak · range-to">tak</span> 5 {
         <span class="k" data-tip="સંસ્કૃત: likha · print">likha</span>(i)
         <span class="k" data-tip="સંસ્કૃત: likha · print">likha</span>(" ")   <span class="cm">// 1 2 3 4 5</span>
     }
     <span class="k" data-tip="સંસ્કૃત: likha · print">likha</span>("\n")</code></pre>
 <pre><code><span class="k" data-tip="સંસ્કૃત: mukhya · main">mukhya</span>()
     <span class="k" data-tip="સંસ્કૃત: vitti · variable">vitti</span> yogam = 0
-    <span class="k" data-tip="સંસ્કૃત: chakra · for">chakra</span> i = 1 <span class="k" data-tip="સંસ્કૃત: to · range-to">to</span> 100 {
+    <span class="k" data-tip="સંસ્કૃત: chakra · for">chakra</span> i = 1 <span class="k" data-tip="સંસ્કૃત: tak · range-to">tak</span> 100 {
         <span class="k" data-tip="સંસ્કૃત: yadi · if">yadi</span> (i > 10) { <span class="k" data-tip="સંસ્કૃત: krama · break">krama</span> }
         <span class="k" data-tip="સંસ્કૃત: yadi · if">yadi</span> (i % 2 == 0) { <span class="k" data-tip="સંસ્કૃત: agrim · continue">agrim</span> }
         yogam = yogam + i
     }
     <span class="k" data-tip="સંસ્કૃત: likha · print">likha</span>(yogam)     <span class="cm">// 25</span>
     <span class="k" data-tip="સંસ્કૃત: likha · print">likha</span>("\n")</code></pre>
-<div class="try"><b>1 <span class="k" data-tip="સંસ્કૃત: to · range-to">થી</span> 10 સુધી એકી સંખ્યાનો સરવાળો:</b> જવાબ 25.</div>
+<div class="try"><b>1 <span class="k" data-tip="સંસ્કૃત: tak · range-to">થી</span> 10 સુધી એકી સંખ્યાનો સરવાળો:</b> જવાબ 25.</div>
 </div>
 <div class="ch" id="ch7"><h2>7. <span class="k" data-tip="સંસ્કૃત: prakriya · function">ફલન</span>: <span class="k" data-tip="સંસ્કૃત: prakriya · function">prakriya</span> <span class="en-gloss">(Functions)</span></h2>
 <pre><code><span class="k" data-tip="સંસ્કૃત: prakriya · function">prakriya</span> vishalya(mulya)
@@ -191,10 +191,10 @@ mukhya()
     <span class="k" data-tip="સંસ્કૃત: likha · print">likha</span>("\n")</code></pre>
 </div>
 <div class="ch" id="ch8"><h2>8. <span class="k" data-tip="સંસ્કૃત: mala · mala">પંક્તિ</span>: <span class="k" data-tip="સંસ્કૃત: mala · mala">mala</span> <span class="en-gloss">(Arrays)</span></h2>
-<p><i><span class="k" data-tip="સંસ્કૃત: mala · mala">પંક્તિ</span></i> = "હરોળ". <code><span class="k" data-tip="સંસ્કૃત: mala · mala">mala</span></code> <span class="k" data-tip="સંસ્કૃત: to · range-to">થી</span> <span class="k" data-tip="સંસ્કૃત: mala · mala">પંક્તિ</span> જાહેર કરો:</p>
+<p><i><span class="k" data-tip="સંસ્કૃત: mala · mala">પંક્તિ</span></i> = "હરોળ". <code><span class="k" data-tip="સંસ્કૃત: mala · mala">mala</span></code> <span class="k" data-tip="સંસ્કૃત: tak · range-to">થી</span> <span class="k" data-tip="સંસ્કૃત: mala · mala">પંક્તિ</span> જાહેર કરો:</p>
 <pre><code><span class="k" data-tip="સંસ્કૃત: mukhya · main">mukhya</span>()
     <span class="k" data-tip="સંસ્કૃત: mala · mala">mala</span> tarika[5]
-    <span class="k" data-tip="સંસ્કૃત: chakra · for">chakra</span> i = 0 <span class="k" data-tip="સંસ્કૃત: to · range-to">to</span> 5 {
+    <span class="k" data-tip="સંસ્કૃત: chakra · for">chakra</span> i = 0 <span class="k" data-tip="સંસ્કૃત: tak · range-to">tak</span> 5 {
         tarika[i] = i * i
     }
     <span class="k" data-tip="સંસ્કૃત: likha · print">likha</span>(tarika[4])     <span class="cm">// 16</span>
@@ -212,12 +212,14 @@ mukhya()
 </div>
 <div class="ch" id="ch10"><h2>10. સૂત્રમ્ કવચ (REPL) <span class="en-gloss">(The Sutram shell (REPL))</span></h2>
 <pre><code>$ sutram -i
-Sutram Shell v1.0 — the complete thread
+Sutram khol v1.0 - sampurna sutra
+Sutram kathan likho aur Enter dabao. Turant chalega.
+Aadesh: sahayata (sahay) | nirgat (nikas) | sarvam (dekho)
 
 <span class="k" data-tip="સંસ્કૃત: sutra · constant">sutra</span>> <span class="k" data-tip="સંસ્કૃત: vitti · variable">vitti</span> x = 21
-OK: compiled 204 bytes
+Siddh: 54 byte sankalit
 <span class="k" data-tip="સંસ્કૃત: sutra · constant">sutra</span>> <span class="k" data-tip="સંસ્કૃત: likha · print">likha</span>(x / 3)
-OK: compiled 260 bytes
+Siddh: 201 byte sankalit
 7
 <span class="k" data-tip="સંસ્કૃત: sutra · constant">sutra</span>> nirgat</code></pre>
 <div class="try"><b>કવચ આદેશ:</b> <code>sahayata</code> (મદદ) · <code>sarvam</code>
@@ -234,7 +236,7 @@ OK: compiled 260 bytes
 <tr><td><code><span class="k" data-tip="સંસ્કૃત: sutra · constant">સ્થિર</span></code></td><td>constant</td><td><code><span class="k" data-tip="સંસ્કૃત: sutra · constant">sutra</span></code></td></tr>
 <tr><td><code><span class="k" data-tip="સંસ્કૃત: yadi · if">જો</span> ... <span class="k" data-tip="સંસ્કૃત: anya · else">નહિંતર</span></code></td><td>if ... else</td><td><code><span class="k" data-tip="સંસ્કૃત: yadi · if">yadi</span> ... <span class="k" data-tip="સંસ્કૃત: anya · else">anya</span></code></td></tr>
 <tr><td><code><span class="k" data-tip="સંસ્કૃત: yavat · while">જ્યાંસુધી</span></code></td><td>while</td><td><code><span class="k" data-tip="સંસ્કૃત: yavat · while">yavat</span></code></td></tr>
-<tr><td><code><span class="k" data-tip="સંસ્કૃત: chakra · for">પુનરાવર્તન</span> x = 1 <span class="k" data-tip="સંસ્કૃત: to · range-to">થી</span> 5</code></td><td>for x = 1 <span class="k" data-tip="સંસ્કૃત: to · range-to">to</span> 5</td><td><code><span class="k" data-tip="સંસ્કૃત: chakra · for">chakra</span> ... <span class="k" data-tip="સંસ્કૃત: to · range-to">to</span></code></td></tr>
+<tr><td><code><span class="k" data-tip="સંસ્કૃત: chakra · for">પુનરાવર્તન</span> x = 1 <span class="k" data-tip="સંસ્કૃત: tak · range-to">થી</span> 5</code></td><td>for x = 1 <span class="k" data-tip="સંસ્કૃત: tak · range-to">to</span> 5</td><td><code><span class="k" data-tip="સંસ્કૃત: chakra · for">chakra</span> ... <span class="k" data-tip="સંસ્કૃત: tak · range-to">tak</span></code></td></tr>
 <tr><td><code><span class="k" data-tip="સંસ્કૃત: prakriya · function">કાર્ય</span> / <span class="k" data-tip="સંસ્કૃત: prakriya · function">ફલન</span></code></td><td>function</td><td><code><span class="k" data-tip="સંસ્કૃત: prakriya · function">prakriya</span></code></td></tr>
 <tr><td><code><span class="k" data-tip="સંસ્કૃત: prati · return">પાછા</span></code></td><td>return</td><td><code><span class="k" data-tip="સંસ્કૃત: prati · return">prati</span></code></td></tr>
 <tr><td><code><span class="k" data-tip="સંસ્કૃત: likha · print">લખો</span></code></td><td>print</td><td><code><span class="k" data-tip="સંસ્કૃત: likha · print">likha</span></code></td></tr>
@@ -250,7 +252,7 @@ OK: compiled 260 bytes
 <span class="k" data-tip="સંસ્કૃત: mukhya · main">મુખ્ય</span>()
     <span class="k" data-tip="સંસ્કૃત: vitti · variable">ચલ</span> સંખ્યા = 7
     <span class="k" data-tip="સંસ્કૃત: likha · print">લખો</span>("ગુણાકાર કોષ્ટક:")
-    <span class="k" data-tip="સંસ્કૃત: chakra · for">પુનરાવર્તન</span> હું = 1 <span class="k" data-tip="સંસ્કૃત: to · range-to">થી</span> 5 {
+    <span class="k" data-tip="સંસ્કૃત: chakra · for">પુનરાવર્તન</span> હું = 1 <span class="k" data-tip="સંસ્કૃત: tak · range-to">થી</span> 5 {
         <span class="k" data-tip="સંસ્કૃત: likha · print">લખો</span>(સંખ્યા * હું)
     }
     <span class="k" data-tip="સંસ્કૃત: yadi · if">જો</span> (સંખ્યા > 5) {
@@ -259,8 +261,8 @@ OK: compiled 260 bytes
         <span class="k" data-tip="સંસ્કૃત: likha · print">લખો</span>("સંખ્યા નાની છે")
     }</code></pre>
 <pre><code>$ sutram --lang gujarati namaste.sm namaste.bin
-Language pack loaded: gujarati
-OK: compiled 466 bytes
+Bhasha pak prapt: gujarati
+Siddh: 456 byte sankalit
 $ ./namaste.bin
 ગુણાકાર કોષ્ટક:7
 14
@@ -273,11 +275,18 @@ $ ./namaste.bin
 </div>
 
 <div class="ch" id="ch12"><h2>12. દોષ અને દોષસુધાર <span class="en-gloss">(Errors and debugging)</span></h2>
-<pre><code>$ ./sutram_compiler galat.sm out.bin
+<pre><code>$ cat galat.sm
+mukhya() {
+    vitti x = 5
+    vitti y = (x
+    likha(x)
+}
+$ ./sutram_compiler galat.sm out.bin
 
-Sutram Error: parse error at line 4 near token '<span class="k" data-tip="સંસ્કૃત: likha · print">likha</span>'
-Hint: check the keyword spelling and syntax near this spot.
-      Run 'sutram -i' and type 'sahayata' for help.</code></pre>
+Sutram Error: vyakaran dosh, pankti 4:5, shabd '<span class="k" data-tip="સંસ્કૃત: likha · print">likha</span>'
+      likha(x)
+      ^
+Sanket: is sthan par shabd aur vyakaran dekho.</code></pre>
 </div>
 <div class="ch" id="ch13"><h2>13. સંપૂર્ણ સંદર્ભ <span class="en-gloss">(Complete reference)</span></h2>
 
@@ -292,7 +301,7 @@ Hint: check the keyword spelling and syntax near this spot.
 <tr><td><code><span class="k" data-tip="સંસ્કૃત: sutra · constant">sutra</span></code></td><td>constant</td></tr>
 <tr><td><code><span class="k" data-tip="સંસ્કૃત: yadi · if">yadi</span> ... <span class="k" data-tip="સંસ્કૃત: anya · else">anya</span></code></td><td>if ... else</td></tr>
 <tr><td><code><span class="k" data-tip="સંસ્કૃત: guna · multiply (*)">guna</span> / <span class="k" data-tip="સંસ્કૃત: bhavana · condition">bhavana</span></code></td><td>switch / case</td></tr>
-<tr><td><code><span class="k" data-tip="સંસ્કૃત: chakra · for">chakra</span> i = a <span class="k" data-tip="સંસ્કૃત: to · range-to">to</span> b</code></td><td>for loop</td></tr>
+<tr><td><code><span class="k" data-tip="સંસ્કૃત: chakra · for">chakra</span> i = a <span class="k" data-tip="સંસ્કૃત: tak · range-to">tak</span> b</code></td><td>for loop</td></tr>
 <tr><td><code><span class="k" data-tip="સંસ્કૃત: yavat · while">yavat</span></code></td><td>while loop</td></tr>
 <tr><td><code><span class="k" data-tip="સંસ્કૃત: krama · break">krama</span> / <span class="k" data-tip="સંસ્કૃત: agrim · continue">agrim</span></code></td><td>break / continue</td></tr>
 <tr><td><code><span class="k" data-tip="સંસ્કૃત: prakriya · function">prakriya</span> / <span class="k" data-tip="સંસ્કૃત: prati · return">prati</span></code></td><td>function / return</td></tr>
@@ -345,14 +354,14 @@ n--      <span class="cm"># n = 5</span></code></pre>
 
 <h3><span class="k" data-tip="સંસ્કૃત: lkhb · print (no newline)">lkhb</span>() — નવી કડી વિના છાપવું</h3>
 <p><code><span class="k" data-tip="સંસ્કૃત: likha · print">likha</span>()</code> સંખ્યા પછી નવી કડી મૂકે છે; <code><span class="k" data-tip="સંસ્કૃત: lkhb · print (no newline)">lkhb</span>()</code> નથી મૂકતું — કોષ્ટકો માટે:</p>
-<pre><code><span class="k" data-tip="સંસ્કૃત: chakra · for">chakra</span> i = 1 <span class="k" data-tip="સંસ્કૃત: to · range-to">to</span> 5 {
+<pre><code><span class="k" data-tip="સંસ્કૃત: chakra · for">chakra</span> i = 1 <span class="k" data-tip="સંસ્કૃત: tak · range-to">tak</span> 5 {
     <span class="k" data-tip="સંસ્કૃત: lkhb · print (no newline)">lkhb</span>(i)
     <span class="k" data-tip="સંસ્કૃત: likha · print">likha</span>(" ")
 }</code></pre>
 
 <h3>ઘટતા <span class="k" data-tip="સંસ્કૃત: chakra · for">પુનરાવર્તન</span> (Descending Loops)</h3>
 <p>શરૂઆતનું મૂલ્ય અંતિમ મૂલ્ય કરતાં મોટું હોય તો, ગણતરી આપોઆપ ઊતરે છે:</p>
-<pre><code><span class="k" data-tip="સંસ્કૃત: chakra · for">chakra</span> i = 5 <span class="k" data-tip="સંસ્કૃત: to · range-to">to</span> 1 {
+<pre><code><span class="k" data-tip="સંસ્કૃત: chakra · for">chakra</span> i = 5 <span class="k" data-tip="સંસ્કૃત: tak · range-to">tak</span> 1 {
     <span class="k" data-tip="સંસ્કૃત: lkhb · print (no newline)">lkhb</span>(i)
     <span class="k" data-tip="સંસ્કૃત: likha · print">likha</span>(" ")
 }    <span class="cm"># પરિણામ: 5 4 3 2 1</span></code></pre>
