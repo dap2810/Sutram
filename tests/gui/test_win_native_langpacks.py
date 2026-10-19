@@ -82,7 +82,9 @@ class NativeLanguagePackContract(unittest.TestCase):
         self.assertIn('call utf8_to_utf16',ASM)
         self.assertIn('native_keyword_storage resw MAX_NATIVE_KEYWORDS*NATIVE_KEYWORD_UNITS',ASM)
         self.assertIn('cmp ecx,254',ASM)
-        self.assertIn('MAX_NATIVE_KEYWORDS 384',ASM)
+        # R9: 384 was below the 392 entries the eleven packs have, so the last
+        # Telugu keywords were never highlighted. The capacity must hold them all.
+        self.assertIn('MAX_NATIVE_KEYWORDS 512',ASM)
         self.assertIn('MAX_LANG_FILE 8191',ASM)
 
     def test_script_lexer_scans_full_utf16_units_and_handles_boundaries(self):
@@ -134,3 +136,37 @@ class NativeLanguagePackContract(unittest.TestCase):
         self.assertTrue((ROOT/'ide/sutram_ide.asm').is_file())
 
 if __name__=='__main__': unittest.main()
+
+
+class R9PackCapacityAndTypingMode(unittest.TestCase):
+    """R9 (WS5, WS6): every pack keyword fits; the typing mode and the Indic face exist."""
+
+    def test_capacity_holds_every_pack_entry(self):
+        import re
+        total = 0
+        for f in sorted((ROOT / 'lang').glob('*.lang')):
+            total += sum(1 for l in f.read_text(encoding='utf-8').splitlines() if l.strip() and not l.lstrip().startswith('#'))
+        cap = int(re.search(r'MAX_NATIVE_KEYWORDS (\d+)', ASM).group(1))
+        self.assertGreaterEqual(cap, total)
+        pairs = int(re.search(r'R9_MAX_PAIRS (\d+)', ASM).group(1))
+        self.assertGreaterEqual(pairs, total)
+
+    def test_every_pack_is_a_language_choice_and_a_lang_argument(self):
+        for lang in PACKS:
+            self.assertIn('pn_' + lang + '_w:', ASM)
+        for mid in range(2043, 2053):
+            self.assertIn('MENUITEM %d,' % mid, ASM)
+        self.assertIn('PTR rdx,lang_flag_prefix_w', ASM)
+        self.assertIn('PTR rdx,r9_pack_names', ASM)
+
+    def test_typing_mode_is_wired(self):
+        self.assertIn("cmp eax,'T'\n    je .translit", ASM)
+        self.assertIn('%include "windows/gui/r9_translit.asm"', ASM)
+        conv = ASM[ASM.index('r9_tl_convert:'):ASM.index('r9_check_indic_font:')]
+        self.assertIn('EM_REPLACESEL', conv)
+        self.assertIn('API SendMessageW', conv)       # Unicode, not the ANSI send_message
+        self.assertIn('call r9_tl_phonetic', conv)
+
+    def test_indic_runs_get_nirmala_ui(self):
+        self.assertIn("font_indic: dw 'N','i','r','m','a','l','a',' ','U','I',0", ASM)
+        self.assertIn('call r9_apply_script_faces', ASM[ASM.index('highlight_editor:'):ASM.index('paint_range:')])
