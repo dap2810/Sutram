@@ -197,10 +197,14 @@ Three parties work on it. **The repository is the only channel between them.**
 - **Sutram does not claim memory safety.** There is no ownership model. The charter says specify the rules
   *before* claiming the guarantee, and `docs/MEMORY-MODEL.md` is that specification — not an
   implementation.
-- **Windows is not supported.** The sources exist and are complete-looking. **Nothing Windows has ever
-  been executed by this project.** The one gate nothing has passed.
+- **Windows is now EXECUTED — but not released.** On 2026-10-18 the delivery was installed, run from
+  the Start Menu and uninstalled on a **real Windows 11 machine, build 26300, as a standard user,
+  non-elevated** — the first time Windows has ever been run here. The Sanskrit IDE launches, the menus
+  are Sanskrit, and a Devanagari program compiles and prints `योगः = 15`. **But it is not a release:**
+  the IDE's buttons and the installer's own text are still English, the r69 unit tests fail on the
+  merged tree, and the Linux proof gates were NOT-RUN inside WSL. **Gate 6 is begun, not passed.**
 - **No performance claim.** The compiler emits native code; that is not by itself a speed claim.
-- **No OS capability.** No boot path, no kernel, no freestanding run. `docs/FREESTANDING.md` is a gap suchi.
+- **No OS capability.** No boot path, no kernel, no freestanding run. `docs/FREESTANDING.md` is a gap list.
 - **A known defect, open:** the Windows console renders `Sutram 1.0 (v29) – the complete thread` as
   `... ĞÖ the complete thread` — a mangled en-dash. The compiler writes UTF-8; the console reads a legacy
   code page. Any non-ASCII output is corrupted on Windows.
@@ -270,7 +274,7 @@ the observation that makes it true. Two of them — Windows execution and the fr
 | What is specified and what is not | `docs/SPECIFICATION.md` |
 | The memory model (proposed) | `docs/MEMORY-MODEL.md` |
 | What must be rejected | `docs/NEGATIVE-CORPUS.md` |
-| The freestanding gap suchi | `docs/FREESTANDING.md` |
+| The freestanding gap list | `docs/FREESTANDING.md` |
 | Numeric behaviour | `docs/NUMERIC-CONTRACT.md`, `docs/OVERFLOW-SAFETY.md` |
 | The error convention | `docs/ERROR-CONVENTION.md` |
 | Property proofs, and what would break them | `docs/PROPERTY-NET.md` |
