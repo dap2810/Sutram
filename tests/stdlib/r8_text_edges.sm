@@ -1,0 +1,47 @@
+# R8: varna text functions at their boundaries. Text is one character code per cell.
+yoj varna
+mukhya() {
+    # case conversion at a, z, A, Z and the codes just outside them (` { @ [)
+    vitti s = nirmmita(9 * 8)
+    s[0] = 96
+    s[1] = 97
+    s[2] = 122
+    s[3] = 123
+    s[4] = 64
+    s[5] = 65
+    s[6] = 90
+    s[7] = 91
+    vitti out = nirmmita(9 * 8)
+    likha(varna_unnat(s, 8, out))
+    vitti i = 0
+    yavat (i < 8) {
+        likha(out[i])
+        i = i + 1
+    }
+    likha(varna_avanat(s, 8, out))
+    i = 0
+    yavat (i < 8) {
+        likha(out[i])
+        i = i + 1
+    }
+    # x = "abX", y = "abY": equal in their first 2 cells, different in the third
+    vitti x = nirmmita(3 * 8)
+    x[0] = 97
+    x[1] = 98
+    x[2] = 88
+    vitti y = nirmmita(3 * 8)
+    y[0] = 97
+    y[1] = 98
+    y[2] = 89
+    likha(varna_aadi(x, 3, y, 2))
+    likha(varna_aadi(x, 2, y, 2))
+    likha(varna_aadi(x, 3, y, 0))
+    likha(varna_aadi(x, 2, y, 3))
+    likha(varna_ant(x, 2, y, 2))
+    likha(varna_ant(x, 3, x, 3))
+    likha(varna_ant(x, 3, y, 0))
+    likha(varna_ant(x, 2, x, 3))
+    likha(varna_tul(x, 2, y, 2))
+    likha(varna_tul(x, 3, y, 3))
+    likha(varna_tul(x, 2, y, 3))
+}
