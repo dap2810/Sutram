@@ -212,6 +212,91 @@ function New-Shortcut([string]$Path,[string]$Target,[string]$Arguments,[string]$
     $sc.Save()
 }
 
+# R77: a display-availability check only. This does NOT install fonts or keymaps.
+function Check-R77IndicFont([bool]$ShowWarning) {
+    $present=$false
+    try {
+        Add-Type -AssemblyName System.Drawing -ErrorAction Stop
+        $collection=New-Object System.Drawing.Text.InstalledFontCollection
+        foreach ($family in $collection.Families) {
+            if ([string]::Equals($family.Name,'Nirmala UI',[StringComparison]::OrdinalIgnoreCase)) { $present=$true; break }
+        }
+    } catch {
+        Log ('Indic font check unavailable: ' + $_.Exception.Message)
+        return
+    }
+    if ($present) { Log 'Indic font check: Nirmala UI installed.'; return }
+    $message='The Nirmala UI Unicode font was not detected. Some Indian scripts may show boxes. Setup will continue; install a suitable Unicode font through Windows settings.'
+    Log ('WARNING: ' + $message)
+    if ($ShowWarning) {
+        try {
+            Add-Type -AssemblyName System.Windows.Forms -ErrorAction Stop
+            [void][System.Windows.Forms.MessageBox]::Show($message,'Sutram font check',
+                [System.Windows.Forms.MessageBoxButtons]::OK,[System.Windows.Forms.MessageBoxIcon]::Warning)
+        } catch { Log ('Font warning dialog unavailable: ' + $_.Exception.Message) }
+    }
+}
+# R77: conservative rollback for an attempted FRESH installation only.
+# Never recurse-delete a user-chosen directory; remove exact staged paths,
+# preserve unknown paths, refuse reparse points, and remove empty directories.
+$script:r77FreshInstall=$false
+$script:r77InstallTouched=$false
+$script:r77HadInstallDir=$true
+$script:r77StagingRoot=''
+$script:r77AddedPath=$false
+function Undo-R77FailedFreshInstall {
+    if (-not $script:r77FreshInstall -or -not $script:r77InstallTouched) { return }
+    $dest=[IO.Path]::GetFullPath($InstallDir).TrimEnd('\')
+    $programs=[IO.Path]::GetFullPath((Join-Path $env:LOCALAPPDATA 'Programs')).TrimEnd('\')
+    if (-not $dest.StartsWith($programs+'\',[StringComparison]::OrdinalIgnoreCase)) { throw 'Rollback refused outside user Programs.' }
+    Assert-NoReparsePath $dest
+    if (-not (Test-Path -LiteralPath $script:r77StagingRoot -PathType Container)) { throw 'Verified payload stage is missing; rollback refused.' }
+    $stageFull=[IO.Path]::GetFullPath($script:r77StagingRoot).TrimEnd('\')
+    foreach ($file in Get-ChildItem -LiteralPath $stageFull -File -Recurse) {
+        $relative=$file.FullName.Substring($stageFull.Length+1)
+        $target=[IO.Path]::GetFullPath((Join-Path $dest $relative))
+        if (-not $target.StartsWith($dest+'\',[StringComparison]::OrdinalIgnoreCase)) { throw 'Rollback path escaped install root.' }
+        Assert-NoReparsePath $target
+        if (Test-Path -LiteralPath $target -PathType Leaf) {
+            Remove-Item -LiteralPath $target -Force -ErrorAction Stop
+        }
+    }
+    foreach ($name in @('Sutram-Uninstall.exe','.sutram-install','install-state.ini','install.log')) {
+        $target=Join-Path $dest $name
+        Assert-NoReparsePath $target
+        if (Test-Path -LiteralPath $target -PathType Leaf) { Remove-Item -LiteralPath $target -Force -ErrorAction Stop }
+    }
+    if ($script:r77AddedPath) {
+        [void](Set-UserPathEntry (Join-Path $dest 'bin') $false)
+    }
+    foreach ($encoded in $script:ownedShortcuts) {
+        try {
+            $shortcut=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($encoded))
+            if (-not (Test-Path -LiteralPath $shortcut -PathType Leaf)) { continue }
+            Assert-NoReparsePath $shortcut
+            $sc=(New-Object -ComObject WScript.Shell).CreateShortcut($shortcut)
+            if ($sc.TargetPath.StartsWith($dest+'\',[StringComparison]::OrdinalIgnoreCase) -or
+                (($shortcut -like '*Sutram Terminal.lnk') -and $sc.Arguments.Contains($dest))) {
+                Remove-Item -LiteralPath $shortcut -Force -ErrorAction Stop
+            }
+        } catch { Log ('Shortcut rollback preserved path: ' + $_.Exception.Message) }
+    }
+    $folders=Get-ChildItem -LiteralPath $dest -Directory -Recurse -ErrorAction SilentlyContinue | Sort-Object { $_.FullName.Length } -Descending
+    foreach ($d in $folders) {
+        try {
+            Assert-NoReparsePath $d.FullName
+            if (-not (Get-ChildItem -LiteralPath $d.FullName -Force -ErrorAction Stop | Select-Object -First 1)) {
+                Remove-Item -LiteralPath $d.FullName -Force -ErrorAction Stop
+            }
+        } catch { Log ('Preserving rollback directory: '+$d.FullName) }
+    }
+    if (-not $script:r77HadInstallDir -and
+        -not (Get-ChildItem -LiteralPath $dest -Force -ErrorAction Stop | Select-Object -First 1)) {
+        Remove-Item -LiteralPath $dest -Force -ErrorAction Stop
+    }
+    Log 'R77 fresh-install rollback: attempted files and owned shortcuts removed; unknown files preserved.'
+}
+
 try {
     [IO.File]::WriteAllText($LogPath,'Sutram Setup Log' + [Environment]::NewLine,([Text.UTF8Encoding]::new($false)))
     Log 'Starting installation.'
@@ -247,6 +332,8 @@ try {
     }
 
     $marker = Join-Path $InstallDir '.sutram-install'
+    $script:r77HadInstallDir = (Test-Path -LiteralPath $InstallDir -PathType Container)
+    $script:r77FreshInstall = -not (Test-SutramMarker $marker)
     $statePath = Join-Path $InstallDir 'install-state.ini'
     $oldState = Read-State $statePath
     if (Test-Path -LiteralPath $InstallDir -PathType Container) {
@@ -277,6 +364,8 @@ try {
         Log 'Extracting embedded payload.'
         Expand-Archive -LiteralPath $PayloadZip -DestinationPath $stage -Force
         Verify-Payload $stage
+        $script:r77StagingRoot=$stage
+        Check-R77IndicFont (-not $VerifyOnly)
         $testExe = Join-Path $stage 'bin\sutram.exe'
         $guiTestExe = Join-Path $stage 'sutram-ide-gui.exe'
         $guiCompiler = Join-Path $stage 'win\sutram.exe'
@@ -313,6 +402,7 @@ try {
         foreach ($file in Get-ChildItem -LiteralPath $stage -File -Recurse) {
             Assert-NoReparsePath (Join-Path $InstallDir $file.FullName.Substring($stage.Length+1))
         }
+        $script:r77InstallTouched=$true
         New-Item -ItemType Directory -Force -Path $InstallDir | Out-Null
         if (Test-Path -LiteralPath (Join-Path $InstallDir 'payload.manifest.sha256') -PathType Leaf) {
             Log 'Removing files owned by the previous Sutram payload.'
@@ -332,6 +422,7 @@ try {
         if ($AddPath) {
             Log 'Ensuring Sutram is present in the current user PATH.'
             $pathAddedNow = [bool](Set-UserPathEntry $binDir $true)
+            if ($script:r77FreshInstall -and $pathAddedNow) { $script:r77AddedPath=$true }
             # Own the entry only if this installer created it now or already owned it
             # from the previous Sutram installation. A pre-existing manual PATH entry
             # remains user-owned and will not be removed by uninstall.
@@ -433,5 +524,6 @@ try {
     exit 0
 } catch {
     try { Log ('ERROR: ' + $_.Exception.Message) } catch {}
+    try { Undo-R77FailedFreshInstall } catch { try { Log ('R77 rollback was incomplete: '+$_.Exception.Message) } catch {} }
     exit 1
 }
