@@ -1,0 +1,17 @@
+Each change measured against the build before it; --check over every tracked .sm (repo root, then the file folder).
+1 assignment (case 1)              files=539 {'old_fail/new_fail': 94, 'old_ok/new_fail': 2, 'old_ok/new_ok': 443}
+                                   OK before, error now: ['Claude-to-Sarvam/evidence-r5/probes/p01_assign_typo.sm', 'examples/227_assign_undeclared.sm']
+2 block scope                      files=530 {'old_fail/new_fail': 95, 'old_ok/new_fail': 1, 'old_ok/new_ok': 434}
+                                   OK before, error now: ['Claude-to-Sarvam/evidence-r5/probes/p04_branch_scope.sm']
+3 loop-variable scope              files=530 {'old_fail/new_fail': 96, 'old_ok/new_fail': 1, 'old_ok/new_ok': 433}
+                                   OK before, error now: ['Claude-to-Sarvam/evidence-r5/probes/p08_loop_var_after.sm']
+4 missing module                   files=530 {'old_fail/new_fail': 97, 'old_ok/new_fail': 1, 'old_ok/new_ok': 432}
+                                   OK before, error now: ['examples/70_module_collision.sm']
+5 arity                            files=530 {'old_fail/new_fail': 98, 'old_ok/new_ok': 432}
+                                   OK before, error now: []
+6 duplicate names + slot reuse     files=530 {'old_fail/new_fail': 98, 'old_ok/new_ok': 432}
+                                   OK before, error now: []
+7 field names                      files=530 {'old_fail/new_fail': 98, 'old_ok/new_ok': 432}
+                                   OK before, error now: []
+ALL: v180 -> branch                files=539 {'old_fail/new_fail': 94, 'old_ok/new_fail': 12, 'old_ok/new_ok': 433}
+                                   OK before, error now: ['Claude-to-Sarvam/evidence-r5/probes/p01_assign_typo.sm', 'Claude-to-Sarvam/evidence-r5/probes/p04_branch_scope.sm', 'Claude-to-Sarvam/evidence-r5/probes/p08_loop_var_after.sm', 'examples/227_assign_undeclared.sm', 'examples/228_block_scope.sm', 'examples/229_loop_var_scope.sm', 'examples/231_duplicate_name.sm', 'examples/232_arity.sm', 'examples/233_missing_module.sm', 'examples/234_ambiguous_field.sm', 'examples/235_duplicate_field.sm', 'examples/70_module_collision.sm']

@@ -1,0 +1,4 @@
+mukhya()
+    sutra MAXV = 100
+    MAXV = 5
+    likha(MAXV)

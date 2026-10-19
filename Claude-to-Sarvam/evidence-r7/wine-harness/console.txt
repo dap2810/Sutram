@@ -1,0 +1,59 @@
+Script started on 2026-10-19 14:09:46-04:00 [COMMAND="/usr/lib/wine/wine64 powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'Z:/tmp/claude-0/-home-claude/6889af70-4aa6-567a-b665-1e4ff0074842/scratchpad/r6/acceptroot_r7_h/tools/accept-windows.ps1' -OutDir 'Z:/tmp/claude-0/-home-claude/6889af70-4aa6-567a-b665-1e4ff0074842/scratchpad/r6/R7-harness' -Keyboard" <not executed on terminal>]
+Sutram Windows acceptance  env=Wine  build=19043.  PS=7.2.24  elevated=True
+NOT-RUN  runner-not-elevated                Wine has no UAC and reports every pr
+ocess as administrator; least privilege can only be shown on Windows
+SHA256   18bbac27c3811432e7d4ceef04b9b866a19f2f305d663a2f2ee2cbe4c501ccc4  setup
+  (Z:\tmp\claude-0\-home-claude\6889af70-4aa6-567a-b665-1e4ff0074842\scratchpad\
+r6\acceptroot_r7_h\Sutram-Setup.exe)
+SHA256   b6e2bb342e75600a3e67b9263a27725f15494384804edbfa4c72234ec8b93b1b  repo-
+compiler win\sutram.exe  (Z:\tmp\claude-0\-home-claude\6889af70-4aa6-567a-b665-1
+e4ff0074842\scratchpad\r6\acceptroot_r7_h\win\sutram.exe)
+SHA256   b6e2bb342e75600a3e67b9263a27725f15494384804edbfa4c72234ec8b93b1b  repo-
+compiler sutram.exe  (Z:\tmp\claude-0\-home-claude\6889af70-4aa6-567a-b665-1e4ff
+0074842\scratchpad\r6\acceptroot_r7_h\sutram.exe)
+SHA256   528a4ee0cf421279f77a95240b244b880d572acfd40f2e2c0254ed7a52f0d4e7  repo-
+ide sutram-ide-gui.exe  (Z:\tmp\claude-0\-home-claude\6889af70-4aa6-567a-b665-1e
+4ff0074842\scratchpad\r6\acceptroot_r7_h\sutram-ide-gui.exe)
+PASS     setup-hash-file                    matches the committed hash file
+PASS     setup-self-test                    embedded SHA-256 self-test exit 0
+PASS     install-wizard                     outcome=done page; screenshots: wiza
+rd-welcome.png, wizard-license.png, wizard-location.png, wizard-components.png, 
+wizard-ready.png, wizard-done.png
+NOT-RUN  install-no-elevation-prompt        Wine has no UAC; this check means so
+mething only on Windows
+SHA256   b6e2bb342e75600a3e67b9263a27725f15494384804edbfa4c72234ec8b93b1b  insta
+lled bin\sutram.exe  (C:\users\root\AppData\Local\Programs\Sutram\bin\sutram.exe
+)
+SHA256   b6e2bb342e75600a3e67b9263a27725f15494384804edbfa4c72234ec8b93b1b  insta
+lled win\sutram.exe  (C:\users\root\AppData\Local\Programs\Sutram\win\sutram.exe
+)
+SHA256   528a4ee0cf421279f77a95240b244b880d572acfd40f2e2c0254ed7a52f0d4e7  insta
+lled sutram-ide-gui.exe  (C:\users\root\AppData\Local\Programs\Sutram\sutram-ide
+-gui.exe)
+SHA256   18bbac27c3811432e7d4ceef04b9b866a19f2f305d663a2f2ee2cbe4c501ccc4  insta
+lled Sutram-Uninstall.exe  (C:\users\root\AppData\Local\Programs\Sutram\Sutram-U
+ninstall.exe)
+PASS     install-footprint                  missing:
+PASS     devanagari-cli                     installed copy; expects the line ???
+? = 15
+PASS     ide-launches                       installed copy; screenshot ide-start
+.png
+NOT-RUN  ide-menus-english                  Wine keeps menus per process, so ano
+ther process cannot read them; this check needs Windows
+PASS     ide-buttons-english                mismatched ids:
+PASS     devanagari-ide                     expects ???? = 15; screenshot ide-de
+vanagari.png
+PASS     tab-indent                         four spaces, no tab character; a sel
+ection moves right by four
+PASS     shift-tab-dedent                   four spaces removed both ways
+PASS     unsaved-guard                      screenshot ide-unsaved-guard.png
+PASS     uninstall-removes-install          failure box: ; not removed:
+PASS     uninstall-folder-gone              the install folder itself (it is kep
+t when it holds user files)
+FAIL     temp-staging-cleaned               known defect R4-03 s3; advisory only
+VERDICT  PARTIAL (Wine only - NOT Windows acceptance)   required: 12 PASS / 0 FA
+IL / 3 NOT-RUN
+LOG      Z:\tmp\claude-0\-home-claude\6889af70-4aa6-567a-b665-1e4ff0074842\scrat
+chpad\r6\R7-harness\accept-windows.json
+LOG-SHA256 e741c2f58e14e5bd713eec8917adac9c73376701cfd098be6a45d3bfc5d8f3b2
+Script done on 2026-10-19 14:10:22-04:00 [COMMAND_EXIT_CODE="0"]

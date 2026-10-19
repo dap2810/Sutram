@@ -1,0 +1,6 @@
+vitti g = 1
+prakriya f(g) { prati g }
+mukhya() {
+    likha(f(7))
+    likha(g)
+}

@@ -1,0 +1,5 @@
+rachana P = { x, x }
+mukhya()
+    vitti p = nirmmita(16)
+    p.x = 4
+    likha(p.x)

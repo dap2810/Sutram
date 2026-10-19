@@ -1,0 +1,7 @@
+mukhya()
+    ganana RED = 1
+    vitti c = 1
+    guna (c) {
+        bhavana REDD: { likha("red") }
+        anya: { likha("other") }
+    }

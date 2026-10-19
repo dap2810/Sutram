@@ -1,0 +1,6 @@
+mukhya() {
+    vitti c = 1
+    yadi (c == 1) { vitti b = 7 }
+    vitti b = 2
+    likha(b)
+}

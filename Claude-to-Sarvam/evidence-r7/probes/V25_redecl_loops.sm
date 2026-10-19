@@ -1,0 +1,4 @@
+mukhya() {
+    chakra i = 0 tak 1 { likha(i) }
+    chakra i = 5 tak 6 { likha(i) }
+}

@@ -1,0 +1,4 @@
+mukhya() {
+    vitti likha = 3
+    likha(likha)
+}
