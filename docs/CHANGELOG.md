@@ -1,3 +1,38 @@
+## v169 - Claude's ROUND-02 verified and merged: four user-visible defects fixed
+
+**Claude's branch `claude/round-02` was verified by rebuilding it and running every gate — not by reading
+its report.** Every claim held:
+
+| Gate on the branch | Result |
+|---|---|
+| Regression suite | **188 PASS / 4 NO-EXPECTATION** (187 plus one new golden) |
+| Module graph | **OK - 18/18** |
+| Code generation | 12 / 12 |
+| Language packs | 33 / 33 |
+| Library proofs | 191 / 191 |
+| Property proofs | 86 / 86 |
+| Layers | 14 core / 9 alloc / 1 std |
+| `--version` | `Sutram 1.0 (v160) - sampurna sutra` |
+
+**Four user-visible defects fixed, each verified by hand:**
+
+1. **The double-UTF-8 encoding in the language packs.** Every non-English run showed mojibake. 50 strings
+   re-encoded, with the bytes before and after recorded.
+2. **A missing input file exited 0** - a silent failure. Now **exit 1**, verified.
+3. **`--check` could not be combined with `--lang`.** Now works in **either order**, verified.
+4. **Normal-mode line numbers were wrong whenever a module was imported.** An origin map now preserves the
+   original file's position through import expansion.
+
+**And the diagnostics are now Sanskrit.** 83 `db` lines translated with the `Sutram Error:` prefix and
+`[E_...]` tags preserved as identifiers, and 28 goldens re-recorded with exactly one line each. A parse error
+now reads `Sutram Error: vyakaran dosh, pankti 5:1, shabd 'patra-ant'`.
+
+**Also merged:** the `r49_print_module_location` constant now matches `yoj` (module-graph errors printed
+column `?`), and the terminal IDE's keyword table is current.
+
+**One thing to clean:** Claude's branch committed `__pycache__` directories - three `.pyc` files were in the
+added set. **They were NOT synced.** Recorded so they do not creep in.
+
 ## v168 - three more errors of mine, caught by Claude; two wrong claims corrected
 
 Claude's ROUND-02 found **three errors of mine**, all verified and fixed.
