@@ -9,9 +9,9 @@ $build=Join-Path $ProjectRoot 'build\windows'
 # the taskbar and the title bar all show the same image (see build-common.ps1).
 Write-IconResourceInclude (Join-Path $ProjectRoot 'icons\sutram.ico') (Join-Path $build 'r73_icon.inc') 'icons/sutram.ico'
 $objects=@()
-foreach ($name in @('r67_gui_entry','r66_indic_clusters','r67_cluster_count')) {
-    $obj=Join-Path $build ($name+'.obj')
-    [void](Invoke-BoundedProcess $nasm @('-f','win64','-dR73_ICON',('-I'+$ProjectRoot.Replace('\','/')+'/'),('-I'+$build.Replace('\','/')+'/'),('windows/gui/'+$name+'.asm'),'-o',$obj) $ProjectRoot)
+foreach ($source in @('r67_gui_entry.asm','r66_indic_clusters.asm','r67_cluster_count.asm')) {
+    $obj=Join-Path $build ([IO.Path]::GetFileNameWithoutExtension($source)+'.obj')
+    [void](Invoke-BoundedProcess $nasm @('-f','win64','-dR73_ICON',('-I'+$ProjectRoot.Replace('\','/')+'/'),('-I'+$build.Replace('\','/')+'/'),('windows/gui/'+$source),'-o',$obj) $ProjectRoot)
     $objects+=$obj
 }
 $exe=Join-Path $ProjectRoot 'sutram-ide-gui.exe'
