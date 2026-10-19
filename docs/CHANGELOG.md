@@ -1,3 +1,17 @@
+## v180 - Step 6 done: every code sample in every document compiled
+
+**The sweep that has found a real defect three times, run to completion.**
+
+**89 programs compiled clean** across all six book editions and the language reference. **The 6 that "failed"
+are the books' own `galat.sm`** - *galat* means wrong, and those blocks exist to **demonstrate an error
+message**. They are supposed to fail, and they fail with the right message.
+
+**This is the check nobody had ever run end to end.** It had already caught the books' for-loop samples
+using `to` instead of `tak`, and a stale keyword in the language reference. **This time it came back clean** -
+which is the first time that sweep has returned empty, and worth recording as such.
+
+**Step 6 is marked done on `ROADMAP-TO-V1.0.md`.**
+
 ## v179 - ROUND-07 to Claude and ROUND-75 to ChatGPT; both point at the roadmap
 
 **Both rounds now open with a memory update and name the step they advance on `ROADMAP-TO-V1.0.md`** - the
