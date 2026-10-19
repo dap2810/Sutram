@@ -14,7 +14,8 @@ import tempfile
 import unittest
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT/'tools'))
-import r67_prepare_compiler as prep
+# R3: tools/r67_prepare_compiler.py was retired (it staged R67 onto a superseded
+# compiler blob); the three tests that exercised only that tool went with it.
 spec=importlib.util.spec_from_file_location('r66helpers',ROOT/'tests/r66/test_native_helpers.py')
 r66=importlib.util.module_from_spec(spec);spec.loader.exec_module(r66)
 
@@ -104,19 +105,6 @@ class Source(unittest.TestCase):
     def test_word_and_table_capacity(self):
         for lang in ('gujarati','bengali','punjabi'):
             self.assertTrue(all(len(k.encode())<64 for k in self.pack(lang)))
-    def test_staging_anchors_are_preemission(self):
-        source=prep.OLD+'    push r12\n'+prep.INCLUDE_OLD+'    ret\n'
-        result=prep.add_pair_site(source)
-        self.assertLess(result.index('call r67_is_pure_stack_pair'),result.index('    push r12'))
-        self.assertIn('%ifdef SUTRAM_R67_PURE_STACK_PAIRS',result)
-        self.assertNotIn('[rel code_sz]',result)
-    def test_missing_and_duplicate_anchor_rejected(self):
-        for source in ('',prep.OLD,prep.INCLUDE_OLD,prep.OLD*2+prep.INCLUDE_OLD,prep.OLD+prep.INCLUDE_OLD*2):
-            with self.assertRaises(ValueError): prep.add_pair_site(source)
-    def test_reapply_and_source_drift_rejected(self):
-        after=prep.add_pair_site(prep.OLD+prep.INCLUDE_OLD)
-        with self.assertRaises(ValueError): prep.add_pair_site(after)
-        with self.assertRaises(ValueError): prep.prepare(b'unreviewed source')
     def test_gui_build_links_objects(self):
         s=(ROOT/'windows/gui/build-gui.ps1').read_text()
         for name in ('r67_gui_entry.asm','r66_indic_clusters.asm','r67_cluster_count.asm'): self.assertIn(name,s)

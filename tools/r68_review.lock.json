@@ -1,8 +1,0 @@
-{
-  "src/sutram_compiler.asm": "64ea028a5ccf56117c132a7efd0673cbe2df3fc6",
-  "src/r66_indic_lexer.inc": "3633bd55775dc8b9bb94724ef3685976e61d9593",
-  "src/r67_stack_pair.inc": "e8472bd1cad767cf06b0c00fcf88793419362db5",
-  "src/r68_unicode_helpers.inc": "69103e059634aa6b5b871ce7c06c2f4b9c742ff1",
-  "src/r68_diagnostics.inc": "4e2ec29fe16cda9c0d5762ba340ec75694c6f23d",
-  "src/r68_compiler_entry.asm": "42389aaf73179726d91e23359aee2199734036e1"
-}

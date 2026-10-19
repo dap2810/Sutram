@@ -15,7 +15,8 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'tools'))
-import r68_prepare_review as prep
+# R3: tools/r68_prepare_review.py and its lock were retired (R68 is integrated on
+# main); the tests that exercised only that staging tool were removed with it.
 spec = importlib.util.spec_from_file_location('r66adapter', ROOT/'tests/r66/test_native_helpers.py')
 old = importlib.util.module_from_spec(spec); spec.loader.exec_module(old)
 
@@ -46,7 +47,7 @@ uint64_t source_len;
 const char *source_path_ptr;
 uint64_t token[5];
 void *cur_tok(void) { return token; }
-void print_str_z(const char *s) { (void)write(1,s,strlen(s)); }
+void print_str_z(const char *s) { if (write(1,s,strlen(s)) < 0) _exit(93); }
 long os_write(uint64_t fd,const void *p,uint64_t n) { return write((int)fd,p,(size_t)n); }
 void os_exit(uint64_t code) { _exit((int)code); }
 extern void r68_prelex_validate(void);
@@ -128,7 +129,7 @@ assert c.mprotect(base+4096,4096,mmap.PROT_READ|mmap.PROT_WRITE)==0
     def test_utf8_diagnostic_exact_line(self):
         r,p=self.host(b'mukhya() {\n vitti x = 1\n vitti y = \xe0\xad \n}\n')
         self.assertEqual(r.returncode,1)
-        self.assertEqual(r.stdout,f'Sutram Error [E_UTF8]: {p}:3: invalid or truncated UTF-8 in source code\n'.encode())
+        self.assertEqual(r.stdout,f'Sutram Error [E_UTF8]: {p}:3: srot me ashuddh ya khandit UTF-8\n'.encode())
     def test_orphan_continuation_is_not_ignored(self):
         r,p=self.host('mukhya() {\n vitti y = ୧'.encode()+b'\x80\n}\n')
         self.assertEqual(r.returncode,1);self.assertIn((str(p)+':2:').encode(),r.stdout)
@@ -142,12 +143,12 @@ assert c.mprotect(base+4096,4096,mmap.PROT_READ|mmap.PROT_WRITE)==0
         d=self.work/('नाम'*16)/('ಪಥ'*16);d.mkdir(parents=True,exist_ok=True)
         p=d/'bad.sm';p.write_bytes(b'\n\xe0')
         r=subprocess.run([str(self.exe),'lex',str(p)],capture_output=True,timeout=3)
-        self.assertEqual(r.stdout,f'Sutram Error [E_UTF8]: {p}:2: invalid or truncated UTF-8 in source code\n'.encode())
+        self.assertEqual(r.stdout,f'Sutram Error [E_UTF8]: {p}:2: srot me ashuddh ya khandit UTF-8\n'.encode())
         self.assertEqual(r.returncode,1)
     def test_keyword_alias_value_error_exact(self):
         r=self.value('मु॰',line=37,path='C:\\Sutram files\\नमूना.sm')
         self.assertEqual(r.returncode,1)
-        self.assertEqual(r.stdout,"Sutram Error [E_ABBREVIATION_VALUE]: C:\\Sutram files\\नमूना.sm:37: abbreviation keyword is not a value: 'मु॰'\n".encode())
+        self.assertEqual(r.stdout,"Sutram Error [E_ABBREVIATION_VALUE]: C:\\Sutram files\\नमूना.sm:37: sankshep shabd mulya nahi: 'मु॰'\n".encode())
     def test_all_reviewed_signs_report_alias(self):
         for a in ('मु॰','મુ૰','মু৽','ਮੁ੶'):
             r=self.value(a);self.assertEqual(r.returncode,1);self.assertTrue(r.stdout.endswith(("'"+a+"'\n").encode()))
@@ -159,21 +160,19 @@ assert c.mprotect(base+4096,4096,mmap.PROT_READ|mmap.PROT_WRITE)==0
         self.assertEqual(self.value('mukhya').returncode,0)
 
 class SourceTests(unittest.TestCase):
-    def test_preserve_every_existing_pack_word(self):
-        oldpacks=json.loads((ROOT/'tests/r68/baseline_packs.json').read_text())
-        for name,base in oldpacks.items():
-            now=(ROOT/'lang'/f'{name}.lang').read_text()
-            for line in base['text'].splitlines():
-                if line and not line.startswith('#'):self.assertIn(line+'\n',now)
-            self.assertEqual(prep.git_blob(base['text'].encode()),base['git_blob'])
     def test_pack_aliases_and_no_invented_signs(self):
+        # Hindi/Marathi keep the reviewed R68 abbreviations.
         for name in ('hindi','marathi'):
             s=(ROOT/'lang'/f'{name}.lang').read_text()
             for row in ('मु॰ mukhya','च॰ vitti','लि॰ likha','द॰ dasham'):self.assertIn(row,s)
+        # R68 adopted no abbreviation sign for these scripts and none may be invented.
+        # (Was: compare to a pre-v157 pack snapshot, which the keyword rename superseded.)
+        signs=('\u0970','\u0af0','\u09fd','\u0a76')   # ॰ ૰ ৽ ੶
         for name in ('odia','kannada','tamil','telugu'):
-            base=json.loads((ROOT/'tests/r68/baseline_packs.json').read_text())[name]['text']
-            get=lambda s:[x for x in s.splitlines() if x and not x.startswith('#')]
-            self.assertEqual(get((ROOT/'lang'/f'{name}.lang').read_text()),get(base))
+            body=[x for x in (ROOT/'lang'/f'{name}.lang').read_text().splitlines() if x and not x.startswith('#')]
+            self.assertTrue(body)
+            for line in body:
+                self.assertFalse(any(c in line for c in signs),(name,line))
     def test_paired_new_examples(self):
         for name in ('odia','kannada','tamil','telugu','hindi','marathi'):
             p=ROOT/'examples/r68'/name;s=p.with_suffix('.sm').read_text()
@@ -183,36 +182,13 @@ class SourceTests(unittest.TestCase):
     def test_pair_probe_exact_46_bytes(self):
         import re
         s=(ROOT/'examples/r68/pairs/all_registers.sm').read_text()
-        b=[bytes.fromhex(v) for v in re.findall(r'nishkriya\("([^"]*)"\)',s)]
+        b=[bytes.fromhex(v) for v in re.findall(r'yantra\("([^"]*)"\)',s)]
         self.assertEqual(len(b),15);self.assertEqual(sum(map(len,b)),46)
         self.assertNotIn(bytes.fromhex('54 5C'),b)
-    def test_prepare_fixture_and_no_overwrite(self):
-        with tempfile.TemporaryDirectory() as t:
-            root=Path(t);(root/'src').mkdir();(root/'src/sutram_compiler.asm').write_bytes(b'fixture, not real compiler')
-            entry=(ROOT/'src/r68_compiler_entry.asm').read_bytes();(root/'src/r68_compiler_entry.asm').write_bytes(entry)
-            pins={n:prep.git_blob((root/n).read_bytes()) for n in ('src/sutram_compiler.asm','src/r68_compiler_entry.asm')}
-            out=root/'staged.asm';report=prep.stage(root,out,pins)
-            self.assertEqual(out.read_bytes(),entry);self.assertIsNone(report['expanded_compiler_source_git_blob'])
-            with self.assertRaises(FileExistsError):prep.stage(root,out,pins)
-            with self.assertRaises(ValueError):prep.stage(root,root/'src/sutram_compiler.asm',pins)
-    def test_unknown_pin_rejected_before_output(self):
-        with tempfile.TemporaryDirectory() as t:
-            root=Path(t);(root/'src').mkdir();(root/'src/sutram_compiler.asm').write_bytes(b'not real')
-            with self.assertRaises(ValueError):prep.stage(root,root/'out',{'src/sutram_compiler.asm':prep.COMPILER_BLOB})
-            self.assertFalse((root/'out').exists())
-    def test_path_escape_rejected(self):
-        with tempfile.TemporaryDirectory() as t:
-            for n in ('../outside','/etc/passwd'):
-                with self.assertRaises(ValueError):prep.verify_inputs(Path(t),{n:'bad'})
     def test_wrapper_calls_only_compiler_host_checks(self):
         s=(ROOT/'src/r68_compiler_entry.asm').read_text()
         self.assertIn('%ifidni %1,lex',s);self.assertIn('%elifidni %1,parse_primary',s)
         self.assertIn('call r68_guard_value_start',s);self.assertIn('%unmacro call 1',s)
         self.assertNotIn('emit_byte',s)
-    def test_lock_has_real_compiler_pin(self):
-        pins=json.loads((ROOT/'tools/r68_review.lock.json').read_text())
-        self.assertEqual(pins['src/sutram_compiler.asm'],prep.COMPILER_BLOB)
-        for n,sha in pins.items():
-            if n!='src/sutram_compiler.asm':self.assertEqual(prep.git_blob((ROOT/n).read_bytes()),sha,n)
 
 if __name__=='__main__':unittest.main()
