@@ -107,3 +107,23 @@ separate compilation · the remaining language packs · a compatibility alias la
 **These are v2.** `yoj` being textual inclusion is a scalability limit, not a correctness one — a learner
 will never reach it. **Every one of these is the interesting part, and every one sits on a foundation this
 list is still measuring.**
+
+---
+
+## The three languages - a course change (2026-10-20)
+
+**The project develops THREE languages fully, not eleven.**
+
+| Tier | Packs |
+|---|---|
+| **SUPPORTED** | **Sanskrit** (the default), **Gujarati**, **Hindi** - a native speaker reviews the wording |
+| **DRAFT** | Marathi, Bengali, Punjabi, Odia, Tamil, Telugu, Kannada, Malayalam - in the tree, `--lang` works, **no speaker has read them** |
+
+**Why: "finished" means verified, and verification is the only step no AI can do.** Eleven AI-drafted packs
+means eight nobody has checked. **Three verified is a different product.**
+
+**The review order is Gujarati -> Hindi -> Sanskrit.** The owner is strongest in Gujarati and works around
+Sanskrit, so **Sanskrit is last on purpose** - he catches more after two passes.
+
+**And: the owner has only ever run `hello.sm` and the IDE, in the DEFAULT language. The other ten packs have
+never been exercised by a human at all - not once.**
