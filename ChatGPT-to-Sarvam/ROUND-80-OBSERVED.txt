@@ -1,0 +1,90 @@
+SUTRAM ROUND 80 — OBSERVED EVIDENCE — 2026-10-20
+
+Assignment: Sarvam-to-ChatGPT/ROUND-80.md
+Reviewed main snapshot: 068afb2673bd48885ec71279ac1ca7342d8d082f (v204 changelog)
+Draft review: PR #47, review/r80-source-bound-installer-20261020
+Main moved to 639c584bf8be4d540479e30f4c17dd979744ac8f when PR was opened;
+the reviewed source base remains the explicit snapshot above.
+
+Current-main installer builder read, then reproduced locally byte-for-byte:
+windows/native-installer/build-installer.ps1
+Git blob de031668ffa99abddab63787856356e4f3c5d209
+Current setup metadata: Git blob 0399b72311b4c232f5b57ea7e8d5203e3a5c2b8a.
+Its connector base64 content was empty; actual setup binary was not inspected here.
+Current source lock declares 15 inputs including src/r11_sandesh.inc.
+No full local current-source pin check or canonical compiler build was executed.
+
+LOCAL ENVIRONMENT
+Python 3.13.5; x86_64
+GNU ld (GNU Binutils for Debian) 2.44
+GNU assembler (GNU Binutils for Debian) 2.44
+$ command -v nasm || true; command -v pwsh || true
+exit 0; stdout empty
+$ git ls-remote https://github.com/dap2810/Sutram.git HEAD
+exit 128
+fatal: unable to access 'https://github.com/dap2810/Sutram.git/': Could not resolve host: github.com
+Additional raw.githubusercontent.com/api.github.com/codeload.github.com DNS checks also failed.
+No tools were installed and no GitHub Actions run was dispatched.
+
+FINAL LOCAL TEST COMMAND
+cd /mnt/data/sutram_r80
+python -m unittest discover -s tests/r80 -p 'test_*.py' -v
+
+RAW OUTPUT
+
+test_embedded_verification_precedes_publication (test_builder_contract.BuildSourceContract.test_embedded_verification_precedes_publication) ... ok
+test_fresh_canonical_build_precedes_zip (test_builder_contract.BuildSourceContract.test_fresh_canonical_build_precedes_zip) ... ok
+test_not_dependent_on_diagnostic_translation (test_builder_contract.BuildSourceContract.test_not_dependent_on_diagnostic_translation) ... ok
+test_actual_gnu_linked_pe_symbol_layout (test_payload_verify.PayloadChecks.test_actual_gnu_linked_pe_symbol_layout) ... ok
+test_build_report_compiler_hash_cannot_be_wrong (test_payload_verify.PayloadChecks.test_build_report_compiler_hash_cannot_be_wrong) ... ok
+test_case_collisions_rejected (test_payload_verify.PayloadChecks.test_case_collisions_rejected) ... ok
+test_corrupt_embedded_zip_rejected (test_payload_verify.PayloadChecks.test_corrupt_embedded_zip_rejected) ... ok
+test_file_cannot_also_be_parent_directory (test_payload_verify.PayloadChecks.test_file_cannot_also_be_parent_directory) ... ok
+test_linux_binary_does_not_count_as_windows_compiler (test_payload_verify.PayloadChecks.test_linux_binary_does_not_count_as_windows_compiler) ... ok
+test_manifest_hash_corruption_is_rejected (test_payload_verify.PayloadChecks.test_manifest_hash_corruption_is_rejected) ... ok
+test_matching_current_inputs_zip_and_pe_pass (test_payload_verify.PayloadChecks.test_matching_current_inputs_zip_and_pe_pass) ... ok
+test_missing_compiler_copy_is_rejected (test_payload_verify.PayloadChecks.test_missing_compiler_copy_is_rejected) ... ok
+test_new_diagnostic_include_pin_is_supported (test_payload_verify.PayloadChecks.test_new_diagnostic_include_pin_is_supported) ... ok
+test_old_installer_with_new_zip_appended_is_rejected (test_payload_verify.PayloadChecks.test_old_installer_with_new_zip_appended_is_rejected) ... ok
+test_preassembly_mode_does_not_claim_setup_hash (test_payload_verify.PayloadChecks.test_preassembly_mode_does_not_claim_setup_hash) ... ok
+test_report_for_previous_source_rejected_even_after_reviewed_repin (test_payload_verify.PayloadChecks.test_report_for_previous_source_rejected_even_after_reviewed_repin) ... ok
+test_same_version_different_compiler_payload_is_rejected (test_payload_verify.PayloadChecks.test_same_version_different_compiler_payload_is_rejected) ... ok
+test_second_compiler_copy_is_also_checked (test_payload_verify.PayloadChecks.test_second_compiler_copy_is_also_checked) ... ok
+test_source_and_outputs_unchanged_by_verifier (test_payload_verify.PayloadChecks.test_source_and_outputs_unchanged_by_verifier) ... ok
+test_source_change_is_rejected (test_payload_verify.PayloadChecks.test_source_change_is_rejected) ... ok
+test_stripped_pe_is_not_silently_accepted (test_payload_verify.PayloadChecks.test_stripped_pe_is_not_silently_accepted) ... ok
+test_symlink_source_rejected (test_payload_verify.PayloadChecks.test_symlink_source_rejected) ... ok
+test_unlocked_include_is_rejected (test_payload_verify.PayloadChecks.test_unlocked_include_is_rejected) ... ok
+test_unmanifested_file_is_rejected (test_payload_verify.PayloadChecks.test_unmanifested_file_is_rejected) ... ok
+test_windows_path_hazards (test_payload_verify.PayloadChecks.test_windows_path_hazards) ... ok
+test_wrong_embedded_hash_rejected (test_payload_verify.PayloadChecks.test_wrong_embedded_hash_rejected) ... ok
+test_zip_bomb_budget (test_payload_verify.PayloadChecks.test_zip_bomb_budget) ... ok
+test_zip_symlink_rejected_without_extraction (test_payload_verify.PayloadChecks.test_zip_symlink_rejected_without_extraction) ... ok
+test_zip_traversal_does_not_extract (test_payload_verify.PayloadChecks.test_zip_traversal_does_not_extract) ... ok
+
+----------------------------------------------------------------------
+Ran 29 tests in 0.083s
+
+OK
+exit 0; zero skips
+
+ADDITIONAL REAL BINUTILS FIXTURE COMMANDS
+as --64 payload.s -o payload.elf.o
+exit 0; stdout empty; stderr empty
+objcopy -O pe-x86-64 payload.elf.o payload.obj
+exit 0; stdout empty; stderr empty
+ld -mi386pep --entry=_start --subsystem windows -o setup.exe payload.obj
+exit 0; stdout empty; stderr empty
+
+Verifier resolved the fixture PE's embedded ZIP at file offset 1536, 792 bytes,
+and its hash constant matched. This PE is a fixture with a fixture ZIP, NOT the
+Sutram installer. Its test hash is intentionally not reported as a release payload hash.
+
+PASS: 26 artifact tests (including real GNU-linked fixture) and 3 builder source-order tests.
+PASS: exact Git blob agreement between four uploaded code/test files and locally tested bytes.
+NOT_RUN: PowerShell syntax/native execution; actual NASM Sutram compiler build;
+actual rebuilt Sutram-Setup.exe; installed version and install/upgrade/uninstall;
+real kosh A/B; whole-repository keyword audit; independent Sutram .sm ET_REL link.
+
+No compiler/diagnostics/IDE/library/lock/golden changes. No source merged.
+Actual new Sutram installer/payload SHA-256: NOT PRODUCED.
