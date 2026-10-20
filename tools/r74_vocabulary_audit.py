@@ -27,10 +27,10 @@ ARCHIVE_PREFIXES = ('ChatGPT-to-Sarvam/', 'Sarvam-to-ChatGPT/', 'Claude-to-Sarva
                     'ChatGPT-to-Sarvam-Clean/', 'Sarvam-to-ChatGPT-Clean-Project/')
 
 
-def mask_sm(line):
-    """Replace strings/comments with blanks while preserving identifier columns."""
+def mask_sm(line, in_block=False):
+    """Mask quoted text/comments; return (masked, block state) for multiline scans."""
     result = list(line)
-    quote, escape, block = None, False, False
+    quote, escape, block = None, False, in_block
     i = 0
     while i < len(line):
         c = line[i]
@@ -62,7 +62,7 @@ def mask_sm(line):
             quote = c
             result[i] = ' '
         i += 1
-    return ''.join(result)
+    return ''.join(result), block
 
 
 def scan(path, text):
@@ -70,13 +70,15 @@ def scan(path, text):
     kind = Path(path).suffix.lower()
     out = []
     if kind in {'.sm', '.smlib'}:
+        in_block = False
         for num, line in enumerate(text.splitlines(), 1):
-            for m in TOKENS.finditer(mask_sm(line)):
+            masked, in_block = mask_sm(line, in_block)
+            for m in TOKENS.finditer(masked):
                 out.append({'path': path, 'line': num, 'column': m.start()+1,
                             'old': m.group(), 'new': OLD[m.group()],
                             'kind': 'active_sutram', 'context': line.strip()[:130]})
             # Old to is only suspicious in an active range clause.
-            old_range = re.search(r'\bchakra\b[^#]*?\bto\b', mask_sm(line))
+            old_range = re.search(r'\bchakra\b[^#]*?\bto\b', masked)
             if old_range:
                 out.append({'path': path, 'line': num,
                             'column': old_range.end()-1, 'old': 'to', 'new': 'tak',
