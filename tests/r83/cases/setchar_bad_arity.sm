@@ -1,0 +1,4 @@
+# R83 candidate: r50_msg_setchar_arity (native execution NOT_RUN)
+mukhya() {
+    akshar_rakh("AB", 0)
+}
