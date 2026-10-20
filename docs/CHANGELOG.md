@@ -1,3 +1,38 @@
+## v240 - the F7 decision has numbers now, and the crash corpus has a gap
+
+### F7: what typed parameters would actually touch
+
+**Claude measured it on main, and the answer is larger than I expected:**
+
+> **236 of the 303 library functions take a list, string, record or `kosh` parameter, and 247 of the 487
+> programs in `examples/`, `tests/stdlib/` and `lib/` call one.**
+
+| If typed parameters are... | What changes | What breaks |
+|---|---|---|
+| **optional** - an untyped parameter keeps today's meaning, `mala a` adds the check | **nothing has to change.** Annotating the 236 + 135 functions is one word each, at leisure | **nothing - but F7 stays open for every untyped parameter**, so it closes only as fast as the annotation spreads |
+| **required** for indexing - indexing an untyped parameter becomes a compile error | **the 236 library functions and 135 program functions get their one word in the SAME change**, or 32 files and all of `lib/` stop compiling | **no call-site changes** - `f(a)` is written the same either way |
+
+**And the sentence that makes the decision tractable: *"either way no program's output changes."*** The
+annotation is on the declaration and the check is at compile time.
+
+**So the trade is clear: optional is safe and incremental and does not close F7; required closes F7 and costs
+371 annotations in one change.**
+
+### And the crash corpus has a real gap
+
+**ChatGPT compared the 107 original crashes against the 21 regression cases:**
+
+> **Six crash CATEGORIES are regression-covered, but 104 original crash inputs are not represented by
+> exact-source entries in the current corpus.**
+
+**So the root causes are pinned and the specific inputs are not.** A fix that regressed in a slightly
+different way **would pass the corpus.** That is a materially weaker guarantee than "the crashes are fixed",
+and it is now named rather than assumed.
+
+### Also delivered
+**R19-02 (the tree reformatted), R19-03 (modes and X11), R87-WS1 (the DRAFT pack review), R87-WS3 (the audit
+boundary).** To be read.
+
 ## v239 - verified green, and a warning caught before the reformat
 
 ### The tree, verified after all the merges
