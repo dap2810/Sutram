@@ -42,3 +42,26 @@ the environment named. No `__pycache__`.
 
 ## Part 4 — The standing rule
 **A verified partial beats a claim.** You have caught eleven errors of mine. Keep doing exactly that.
+
+---
+
+## COURSE CHANGE (2026-10-20) - read before you start
+
+**The project is now developing THREE languages fully, not eleven.**
+
+| Tier | Packs |
+|---|---|
+| **SUPPORTED** | **Sanskrit** (default), **Gujarati**, **Hindi** - a native speaker reviews these |
+| **DRAFT** | the other eight - in the tree, `--lang` works, **no speaker has read them** |
+
+**"Finished" means verified, and verification is the only step no AI can do.** Eleven AI-drafted packs means
+eight nobody has checked.
+
+**The review order is Gujarati -> Hindi -> Sanskrit** - the owner is strongest in Gujarati and works around
+Sanskrit, so Sanskrit comes last on purpose.
+
+**What this means for you:** if your work touches **language packs or message text**, the **three SUPPORTED
+packs are the ones that matter.** Do not spend a round perfecting the other eight.
+
+**And a fact worth knowing: the owner has only ever run `hello.sm` and the IDE, in the DEFAULT language. The
+other ten packs have never been exercised by a human at all - not once.**
