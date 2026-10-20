@@ -1,0 +1,6 @@
+Sutram 1.0 (v208) - sampurna sutra
+Samskrita-mukhya bhasha -> x86-64 yantra-bhasha
+duplicate.sm:4:11: Sutram Error [E_DUPLICATE_NAME]: punah ghoshana 'x'
+      vitti x = 2
+            ^
+Sanket: 'x' purvam eva ghoshitam; navinam manam datum: x = ...
