@@ -1,0 +1,66 @@
+SUTRAM ROUND 79 — RAW OBSERVATIONS AND COMMANDS
+Date 2026-10-19 (local America/Toronto); GitHub timestamps may show October 20 UTC.
+
+Incoming: Sarvam-to-ChatGPT/ROUND-79.md, blob ce2bc30c85e834d92f4ce089240d9ebb79675b5e.
+Current source tree sampled: d3325b13124bf80e299251eaa4a3cce7f5e924b3 (v201).
+Build lock tools/r69_build.lock.json blob f8da5ddb248a7f009f9909074b1a9b86780940c6
+Actual recursive-tree pin comparison: 14/14 match (no input drift).
+Accepted compiler blob: 5ade34ed0287609b8f5d7e4f12873b7978479ac4.
+
+Live committed binaries read via GitHub fetch_file(encoding=base64), decoded:
+win/sutram.exe 188318 bytes, blob 85415d8dfa142fccf77d7cb64661582b3dce622b, embedded v182
+sutram.exe     188318 bytes, blob 85415d8dfa142fccf77d7cb64661582b3dce622b, embedded v182
+sutram_compiler 202320 bytes, blob 432d3d9d539e02d7a20aa91c8ef4a3c67c834679, embedded v182
+Sutram-Setup.exe unchanged blob 0399b72311b4c232f5b57ea7e8d5203e3a5c2b8a; no freshly built setup.
+
+Environment (container):
+$ which nasm
+(no result)
+$ which pwsh
+(no result)
+$ which ld
+/usr/bin/ld
+$ which git
+/usr/bin/git
+$ git ls-remote https://github.com/dap2810/Sutram.git HEAD
+fatal: unable to access 'https://github.com/dap2810/Sutram.git/': Could not resolve host: github.com
+
+R79 actual GitHub write/review branch:
+review/r77-installer-version-retry-font-20261019, draft PR #43
+File windows/native-installer/install-core.ps1:
+  old review blob e5dffd7731760d1e67070809271d12d61d0d98c0
+  new review blob 0423632794d1c6f816cc219accfcd2429e897f4d (read back)
+File tests/r79/test_font_coverage_contract.py created and read back:
+  new blob 33d81b52e2887157a187d4cc84f1702f5debe489.
+PR #43 remains open/draft/unmerged, branch head 90760d5dbf94b078bf5b1f39c796071ca469de96.
+
+Direct source inspection static test results (executed against readback text):
+nine_script_rows: PASS
+all_scripts_are_exact: PASS
+eleven_unique_packs: PASS
+correct_representative_codepoints: PASS
+correct_script_pack_mapping: PASS
+actual_gdi_glyph_check: PASS
+one_install_time_call: PASS
+missing_font_reports: PASS
+clear_user_route: PASS
+failure_does_not_silently_pass: PASS
+no_download_or_ship: PASS
+no_hklm_elevation: PASS
+rollback_retained: PASS
+test_file_present: PASS
+TOTAL: 14 PASS / 0 FAIL (STATIC STRUCTURAL assertions, not PowerShell runtime)
+New tests/r79/test_font_coverage_contract.py has 10 unittest methods:
+  UPLOADED but NOT_RUN in this environment due to missing checkout.
+Native Win32 GetGlyphIndicesW, fonts present/missing behavior and Windows installer: NOT_RUN.
+Full source repo old-keyword audit: NOT_RUN.
+Real native kosh A/B and two .sm object link: NOT_RUN.
+No NASM build, new Sutram-Setup.exe nor embedded payload SHA256 generated.
+
+Important current owner decision:
+ROUND-79 text says diagnostics move to English, but docs/CHANGELOG.md v200
+CORRECTS that: messages follow pack; Sanskrit canonical default. We left diagnostics
+and IDE completely untouched.
+
+No passwords, new network access, admin, automated scheduled monitoring,
+accepted golden changes, library edits, source compiler edits, or merge.
