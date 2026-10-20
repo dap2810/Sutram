@@ -1,0 +1,5 @@
+undefined_name.sm:3:11: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'y'
+      likha(y)
+            ^
+Sanket: prayog se purv ghoshana avashyak: vitti y = ...
+[compile exit 1]
