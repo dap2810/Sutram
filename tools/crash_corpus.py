@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 """ROUND-17 WS2: the crash corpus. Inputs that once made the compiler crash.
 
-Every file in tests/negative/r17/ is an INVALID program on which the compiler
-crashed with SIGSEGV before ROUND-17 (found by tools/fuzz_robust.py, R15-02).
+Every file under tests/negative/r17/ is an INVALID program on which the compiler
+crashed with SIGSEGV before ROUND-17 (found by tools/fuzz_robust.py, R15-02):
+  R*.sm               one hand-written input per crash kind (ROUND-17)
+  r15-original/       the 102 mutation inputs exactly as the fuzzer produced them (ROUND-20)
+  r15-reduced/        the same 102, shrunk by --reduce to the bytes that still crashed
 The rule: the compiler must ERROR on invalid input, never crash. So for each
 input this runner requires
 
@@ -12,8 +15,8 @@ input this runner requires
   * no output file.
 
 The 100,000-deep nesting inputs (R6) are generated here rather than committed:
-parentheses, yadi blocks, unary minus and nested calls, each at 20,000 and 100,000
-levels, plus the same four at a depth that must COMPILE: 400 for the expressions
+parentheses (closed and unclosed), yadi blocks, unary minus and nested calls, each at
+20,000 and 100,000 levels, plus the same four at a depth that must COMPILE: 400 for the expressions
 (the parser allows 1,024 expression levels; a call or a unary minus with its
 parentheses takes two) and 100 for braces (the block limit is 128).
 
@@ -39,6 +42,8 @@ CORPUS = ROOT / 'tests/negative/r17'
 def deep(kind: str, n: int) -> bytes:
     if kind == 'parens':
         return b'mukhya() {\n    likha(' + b'(' * n + b'1' + b')' * n + b')\n}\n'
+    if kind == 'parens-unclosed':
+        return b'mukhya() {\n    likha(' + b'(' * n + b'1)\n}\n'
     if kind == 'braces':          # a bare { } is not a statement, so the blocks are yadi blocks
         return b'mukhya() {\n' + b'yadi (1) {\n' * n + b'likha(1)\n' + b'}\n' * n + b'}\n'
     if kind == 'unary-minus':
@@ -82,10 +87,11 @@ def main(argv):
     ap.add_argument('--timeout', type=float, default=20)
     a = ap.parse_args(argv)
     comp = os.path.abspath(a.compiler)
-    cases = [(p.name, p.read_bytes(), False) for p in sorted(CORPUS.glob('*.sm'))]
-    for kind in ('parens', 'braces', 'unary-minus', 'calls'):
-        ok_n = 100 if kind == 'braces' else 400
-        cases.append(('R6-%s-%d-must-compile' % (kind, ok_n), deep(kind, ok_n), True))
+    cases = [(str(p.relative_to(CORPUS)), p.read_bytes(), False) for p in sorted(CORPUS.rglob('*.sm'))]
+    for kind in ('parens', 'parens-unclosed', 'braces', 'unary-minus', 'calls'):
+        if kind != 'parens-unclosed':
+            ok_n = 100 if kind == 'braces' else 400
+            cases.append(('R6-%s-%d-must-compile' % (kind, ok_n), deep(kind, ok_n), True))
         for n in (20000, 100000):
             cases.append(('R6-%s-%d' % (kind, n), deep(kind, n), False))
     fails = 0
