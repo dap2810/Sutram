@@ -1,0 +1,6 @@
+மொழித் தொகுப்பு கிடைத்தது: tamil
+duplicate.sm:4:11: Sutram Error [E_DUPLICATE_NAME]: மீண்டும் அறிவிப்பு 'x'
+      vitti x = 2
+            ^
+குறிப்பு: 'x' ஏற்கனவே அறிவிக்கப்பட்டது; புதிய மதிப்பு தர: x = ...
+[compile exit 1]
