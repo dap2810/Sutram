@@ -1,0 +1,72 @@
+{
+ "compiler_messages": 105,
+ "ide_messages": 23,
+ "packs": {
+  "sanskrit": {
+   "compiler": 105,
+   "compiler_translated": 105,
+   "ide": 23,
+   "ide_translated": 23
+  },
+  "hindi": {
+   "compiler": 105,
+   "compiler_translated": 105,
+   "ide": 23,
+   "ide_translated": 23
+  },
+  "marathi": {
+   "compiler": 105,
+   "compiler_translated": 105,
+   "ide": 23,
+   "ide_translated": 23
+  },
+  "gujarati": {
+   "compiler": 105,
+   "compiler_translated": 105,
+   "ide": 23,
+   "ide_translated": 23
+  },
+  "bengali": {
+   "compiler": 105,
+   "compiler_translated": 105,
+   "ide": 23,
+   "ide_translated": 23
+  },
+  "punjabi": {
+   "compiler": 105,
+   "compiler_translated": 105,
+   "ide": 23,
+   "ide_translated": 23
+  },
+  "odia": {
+   "compiler": 105,
+   "compiler_translated": 105,
+   "ide": 23,
+   "ide_translated": 23
+  },
+  "tamil": {
+   "compiler": 105,
+   "compiler_translated": 105,
+   "ide": 23,
+   "ide_translated": 23
+  },
+  "telugu": {
+   "compiler": 105,
+   "compiler_translated": 105,
+   "ide": 23,
+   "ide_translated": 23
+  },
+  "kannada": {
+   "compiler": 105,
+   "compiler_translated": 105,
+   "ide": 23,
+   "ide_translated": 23
+  },
+  "malayalam": {
+   "compiler": 105,
+   "compiler_translated": 105,
+   "ide": 23,
+   "ide_translated": 23
+  }
+ }
+}

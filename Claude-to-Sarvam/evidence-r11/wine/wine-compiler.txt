@@ -1,0 +1,36 @@
+== win/sutram.exe  tests/sandesh/cases/undefined_name.sm
+undefined_name.sm:3:11: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'y'
+      likha(y)
+            ^
+Sanket: prayog se purv ghoshana avashyak: vitti y = ...
+[exit 0]
+== win/sutram.exe --lang sanskrit tests/sandesh/cases/undefined_name.sm
+भाषा-पुटः प्राप्तः: sanskrit
+undefined_name.sm:3:11: Sutram Error [E_UNDEFINED_NAME]: अज्ञातं नाम 'y'
+      likha(y)
+            ^
+सूचना: प्रयोगात् पूर्वं घोषणा आवश्यकी: वित्ति y = ...
+[exit 0]
+== win/sutram.exe --lang hindi tests/sandesh/cases/undefined_name.sm
+भाषा पैक मिला: hindi
+undefined_name.sm:3:11: Sutram Error [E_UNDEFINED_NAME]: अज्ञात नाम 'y'
+      likha(y)
+            ^
+संकेत: प्रयोग से पहले घोषणा आवश्यक है: चर y = ...
+[exit 0]
+== win/sutram.exe --lang tamil tests/sandesh/cases/undefined_name.sm
+மொழித் தொகுப்பு கிடைத்தது: tamil
+undefined_name.sm:3:11: Sutram Error [E_UNDEFINED_NAME]: அறியாத பெயர் 'y'
+      likha(y)
+            ^
+குறிப்பு: பயன்படுத்தும் முன் அறிவிப்பு தேவை: மாறி y = ...
+[exit 0]
+== win/sutram.exe  tests/sandesh/cases/oob.sm, then the program
+Siddh: 261 baait sankalit
+Sutram Error: mala ank seema atikram
+[exit 0]
+== win/sutram.exe --lang hindi tests/sandesh/cases/oob.sm, then the program
+भाषा पैक मिला: hindi
+सफल: 312 बाइट संकलित
+Sutram Error: पंक्ति सूचकांक सीमा से बाहर
+[exit 0]

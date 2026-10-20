@@ -1,0 +1,117 @@
+==== default
+undefined_name.sm:3:11: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'y'
+Sanket: prayog se purv ghoshana avashyak: vitti y = ...
+arity.sm:6:11: Sutram Error [E_ARITY]: 'f' ko 1 tark diye; hastakshar me 2
+Sanket: utne hi tark dein jitne prakriya ki paribhasha me hain
+Siddh: 244 baait sankalit
+Sutram Error: mala ank seema atikram
+==== sanskrit
+भाषा-पुटः प्राप्तः: sanskrit
+undefined_name.sm:3:11: Sutram Error [E_UNDEFINED_NAME]: अज्ञातं नाम 'y'
+सूचना: प्रयोगात् पूर्वं घोषणा आवश्यकी: वित्ति y = ...
+भाषा-पुटः प्राप्तः: sanskrit
+arity.sm:6:11: Sutram Error [E_ARITY]: 'f' इत्यस्मै 1 तर्काः दत्ताः; हस्ताक्षरे 2
+सूचना: प्रक्रियायाः परिभाषायां यावन्तः तर्काः सन्ति, तावन्तः एव ददातु
+भाषा-पुटः प्राप्तः: sanskrit
+सिद्धम्: 312 बाइट् सङ्कलिताः
+Sutram Error: पङ्क्ति-अङ्कः सीमाम् अतिक्रान्तः
+==== hindi
+भाषा पैक मिला: hindi
+undefined_name.sm:3:11: Sutram Error [E_UNDEFINED_NAME]: अज्ञात नाम 'y'
+संकेत: प्रयोग से पहले घोषणा आवश्यक है: चर y = ...
+भाषा पैक मिला: hindi
+arity.sm:6:11: Sutram Error [E_ARITY]: 'f' को 1 तर्क दिए; हस्ताक्षर में 2
+संकेत: उतने ही तर्क दें जितने फलन की परिभाषा में हैं
+भाषा पैक मिला: hindi
+सफल: 295 बाइट संकलित
+Sutram Error: पंक्ति सूचकांक सीमा से बाहर
+==== marathi
+भाषा पॅक मिळाला: marathi
+undefined_name.sm:3:11: Sutram Error [E_UNDEFINED_NAME]: अज्ञात नाव 'y'
+सूचना: वापरण्यापूर्वी घोषणा आवश्यक: चल y = ...
+भाषा पॅक मिळाला: marathi
+arity.sm:6:11: Sutram Error [E_ARITY]: 'f' ला 1 युक्तिवाद दिले; स्वाक्षरीत 2
+सूचना: कार्याच्या व्याख्येत जितके युक्तिवाद आहेत तितकेच द्या
+भाषा पॅक मिळाला: marathi
+यशस्वी: 302 बाइट संकलित
+Sutram Error: रांग निर्देशांक मर्यादेबाहेर
+==== gujarati
+ભાષા પેક મળ્યો: gujarati
+undefined_name.sm:3:11: Sutram Error [E_UNDEFINED_NAME]: અજ્ઞાત નામ 'y'
+સંકેત: ઉપયોગ પહેલાં ઘોષણા જરૂરી: ચલ y = ...
+ભાષા પેક મળ્યો: gujarati
+arity.sm:6:11: Sutram Error [E_ARITY]: 'f' ને 1 દલીલ આપી; હસ્તાક્ષરમાં 2
+સંકેત: ફલનની વ્યાખ્યામાં જેટલી દલીલ છે તેટલી જ આપો
+ભાષા પેક મળ્યો: gujarati
+સફળ: 297 બાઇટ સંકલિત
+Sutram Error: પંક્તિ અનુક્રમાંક સીમા બહાર
+==== bengali
+ভাষা প্যাক পাওয়া গেছে: bengali
+undefined_name.sm:3:11: Sutram Error [E_UNDEFINED_NAME]: অজানা নাম 'y'
+পরামর্শ: ব্যবহারের আগে ঘোষণা প্রয়োজন: চল y = ...
+ভাষা প্যাক পাওয়া গেছে: bengali
+arity.sm:6:11: Sutram Error [E_ARITY]: 'f' কে 1 যুক্তি দেওয়া হয়েছে; স্বাক্ষরে 2
+পরামর্শ: ফলনের সংজ্ঞায় যতগুলি যুক্তি আছে ঠিক ততগুলিই দিন
+ভাষা প্যাক পাওয়া গেছে: bengali
+সফল: 285 বাইট সংকলিত
+Sutram Error: পঙক্তি সূচক সীমার বাইরে
+==== punjabi
+ਭਾਸ਼ਾ ਪੈਕ ਮਿਲਿਆ: punjabi
+undefined_name.sm:3:11: Sutram Error [E_UNDEFINED_NAME]: ਅਣਜਾਣ ਨਾਮ 'y'
+ਸੰਕੇਤ: ਵਰਤੋਂ ਤੋਂ ਪਹਿਲਾਂ ਘੋਸ਼ਣਾ ਲੋੜੀਂਦੀ: ਵੇਰੀਏਬਲ y = ...
+ਭਾਸ਼ਾ ਪੈਕ ਮਿਲਿਆ: punjabi
+arity.sm:6:11: Sutram Error [E_ARITY]: 'f' ਨੂੰ 1 ਤਰਕ ਦਿੱਤੇ; ਦਸਤਖ਼ਤ ਵਿੱਚ 2
+ਸੰਕੇਤ: ਓਨੇ ਹੀ ਤਰਕ ਦਿਓ ਜਿੰਨੇ ਕਾਰਜ ਦੀ ਪਰਿਭਾਸ਼ਾ ਵਿੱਚ ਹਨ
+ਭਾਸ਼ਾ ਪੈਕ ਮਿਲਿਆ: punjabi
+ਸਫਲ: 283 ਬਾਈਟ ਸੰਕਲਿਤ
+Sutram Error: ਕਤਾਰ ਸੂਚਕ ਸੀਮਾ ਤੋਂ ਬਾਹਰ
+==== odia
+ଭାଷା ପ୍ୟାକ୍ ମିଳିଲା: odia
+undefined_name.sm:3:11: Sutram Error [E_UNDEFINED_NAME]: ଅଜଣା ନାମ 'y'
+ସୂଚନା: ବ୍ୟବହାର ପୂର୍ବରୁ ଘୋଷଣା ଆବଶ୍ୟକ: ଚଳ y = ...
+ଭାଷା ପ୍ୟାକ୍ ମିଳିଲା: odia
+arity.sm:6:11: Sutram Error [E_ARITY]: 'f' କୁ 1 ଯୁକ୍ତି ଦିଆଗଲା; ସ୍ୱାକ୍ଷରରେ 2
+ସୂଚନା: କାର୍ଯ୍ୟର ପରିଭାଷାରେ ଯେତେ ଯୁକ୍ତି ଅଛି ସେତିକି ହିଁ ଦିଅନ୍ତୁ
+ଭାଷା ପ୍ୟାକ୍ ମିଳିଲା: odia
+ସଫଳ: 282 ବାଇଟ୍ ସଂକଳିତ
+Sutram Error: ଧାଡ଼ି ସୂଚକ ସୀମା ବାହାରେ
+==== tamil
+மொழித் தொகுப்பு கிடைத்தது: tamil
+undefined_name.sm:3:11: Sutram Error [E_UNDEFINED_NAME]: அறியாத பெயர் 'y'
+குறிப்பு: பயன்படுத்தும் முன் அறிவிப்பு தேவை: மாறி y = ...
+மொழித் தொகுப்பு கிடைத்தது: tamil
+arity.sm:6:11: Sutram Error [E_ARITY]: 'f' க்கு 1 அளவுருக்கள் தரப்பட்டன; கையொப்பத்தில் 2
+குறிப்பு: செயலின் வரையறையில் உள்ள அளவுருக்களின் எண்ணிக்கையிலேயே தாருங்கள்
+மொழித் தொகுப்பு கிடைத்தது: tamil
+வெற்றி: 324 பைட் தொகுக்கப்பட்டது
+Sutram Error: வரிசைப்பட சுட்டெண் வரம்புக்கு வெளியே
+==== telugu
+భాషా ప్యాక్ దొరికింది: telugu
+undefined_name.sm:3:11: Sutram Error [E_UNDEFINED_NAME]: తెలియని పేరు 'y'
+సూచన: వాడే ముందు ప్రకటన అవసరం: చరం y = ...
+భాషా ప్యాక్ దొరికింది: telugu
+arity.sm:6:11: Sutram Error [E_ARITY]: 'f' కు 1 ప్రమాణాలు ఇచ్చారు; సంతకంలో 2
+సూచన: ప్రక్రియ నిర్వచనంలో ఎన్ని ప్రమాణాలు ఉన్నాయో అన్నే ఇవ్వండి
+భాషా ప్యాక్ దొరికింది: telugu
+విజయం: 300 బైట్లు సంకలనం
+Sutram Error: పంక్తి సూచిక పరిమితి దాటింది
+==== kannada
+ಭಾಷಾ ಪ್ಯಾಕ್ ಸಿಕ್ಕಿದೆ: kannada
+undefined_name.sm:3:11: Sutram Error [E_UNDEFINED_NAME]: ಅಜ್ಞಾತ ಹೆಸರು 'y'
+ಸೂಚನೆ: ಬಳಸುವ ಮೊದಲು ಘೋಷಣೆ ಬೇಕು: ಚರ y = ...
+ಭಾಷಾ ಪ್ಯಾಕ್ ಸಿಕ್ಕಿದೆ: kannada
+arity.sm:6:11: Sutram Error [E_ARITY]: 'f' ಗೆ 1 ಪ್ರಮಾಣಗಳನ್ನು ನೀಡಲಾಗಿದೆ; ಸಹಿಯಲ್ಲಿ 2
+ಸೂಚನೆ: ಕ್ರಿಯೆಯ ವ್ಯಾಖ್ಯಾನದಲ್ಲಿ ಎಷ್ಟು ಪ್ರಮಾಣಗಳಿವೆಯೋ ಅಷ್ಟೇ ನೀಡಿ
+ಭಾಷಾ ಪ್ಯಾಕ್ ಸಿಕ್ಕಿದೆ: kannada
+ಯಶಸ್ವಿ: 294 ಬೈಟ್ ಸಂಕಲಿತ
+Sutram Error: ಪಂಕ್ತಿ ಸೂಚ್ಯಂಕ ಮಿತಿ ಮೀರಿದೆ
+==== malayalam
+ഭാഷാ പാക്ക് കണ്ടെത്തി: malayalam
+undefined_name.sm:3:11: Sutram Error [E_UNDEFINED_NAME]: അജ്ഞാത പേര് 'y'
+സൂചന: ഉപയോഗിക്കുന്നതിന് മുമ്പ് പ്രഖ്യാപനം ആവശ്യം: ചരം y = ...
+ഭാഷാ പാക്ക് കണ്ടെത്തി: malayalam
+arity.sm:6:11: Sutram Error [E_ARITY]: 'f' ന് 1 പ്രമാണങ്ങൾ നൽകി; ഒപ്പിൽ 2
+സൂചന: ക്രിയയുടെ നിർവചനത്തിൽ എത്ര പ്രമാണങ്ങൾ ഉണ്ടോ അത്രയും നൽകുക
+ഭാഷാ പാക്ക് കണ്ടെത്തി: malayalam
+വിജയം: 297 ബൈറ്റ് സമാഹരിച്ചു
+Sutram Error: വരി സൂചിക പരിധിക്ക് പുറത്ത്

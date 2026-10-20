@@ -1,0 +1,4 @@
+binary sizes, main -> this branch (bytes)
+sutram_compiler 202320 -> 353368
+win/sutram.exe 188318 -> 335547
+sutram-ide-gui.exe 110344 -> 140948
