@@ -1,0 +1,3 @@
+# R3 golden: a call must pass as many arguments as the prakriya declares.
+# Before R7 f(1) compiled and b read whatever was in its regis.
+prakriya f(
