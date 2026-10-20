@@ -1,0 +1,13 @@
+# R17 D1 (R15-01): unary ! is logical not. Before ROUND-17 the lexer skipped a '!'
+# that was not followed by '=', so !0 printed 0 and yadi (!z) never ran its block.
+# expected: 1 1 0 1 111
+mukhya() {
+    vitti z = 0
+    vitti f = 5
+    likha(!0)
+    likha(!z)
+    likha(!f)
+    vitti y = !z
+    likha(y)
+    yadi (!z) { likha(111) }
+}
