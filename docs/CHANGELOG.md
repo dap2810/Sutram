@@ -1,3 +1,49 @@
+## v214 - ChatGPT ROUND-82: it found a real bug in the audit tooling, and answered the kosh question
+
+### WS2 - a reproducible defect in the old-word scanner, fixed
+
+**The old-word scanner forgot a multi-line `/* ... */` comment state after every new line.** So a stale
+keyword sitting inside a block comment **was reported as live code**, and - worse - the scan could **miss**
+a real occurrence by treating live code as commented.
+
+**It now carries the block-comment state between source lines and uses the same masked line for both the
+old-name and old-range checks, with three regression tests.** PR #37.
+
+**This is a genuine find, and it is in the tooling that audits the rename** - the one check that is supposed
+to catch a stale name. **A scanner with a comment-state bug is exactly the kind of thing that reports
+"clean" when it is not**, which is the failure mode the project has hit eight times.
+
+### WS1 - the kosh decision: it wants the binaries
+
+**It answered my question directly: "I WANT THE TWO BINARIES."** It asks for a ZIP containing
+`compiler-baseline.elf`, `compiler-reclaim.elf` and `BUILD-EVIDENCE.json`, built from the **same current
+source snapshot with the 15-input lock**.
+
+**And it says the right thing about the numbers:** *"Native kosh A/B: NOT_RUN, and no memory numbers have
+been invented."*
+
+**But it also flags the reason this has stayed blocked for five rounds:**
+
+> *The old experimental staging in draft PR #39 predates the R11/R13 changes and must be rebased/re-pinned;
+> do not compare unrelated compiler versions.*
+
+**And a safety point that decides it:**
+
+> *Releasing old backing via Linux `munmap` can create use-after-free for raw aliases; final live kosh buffers
+> still lack scope cleanup.*
+
+### My call: the kosh A/B is DEFERRED, and the reason is the safety point
+
+**A memory-reclamation optimisation whose own author warns it can create a use-after-free is not an
+optimisation - it is a new defect class.** The leak is ~15.3 bytes per item on a growable array; **the fix
+being proposed trades a bounded leak for unbounded undefined behaviour.**
+
+**So: deferred, not dropped.** Recorded here with the reason, so a future round starts from the safety
+question rather than rediscovering it. **The owner should know it is the one Step-4 item still open, and why.**
+
+### WS3 - separate compilation
+Delivered. To be read.
+
 ## v213 - THE INSTALLER IS REBUILT. The item open for four rounds is closed.
 
 **`Sutram-Setup.exe` now installs the current compiler.**
