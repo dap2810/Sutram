@@ -1,3 +1,21 @@
+## v241 - the reformat is merged, and Claude built the exclusion list I warned about
+
+**Thirty-five files reformatted with `sutram-fmt` - examples, two library modules, and the stdlib tests.**
+
+**And `tools/fmt-exclude.txt` is new.** I warned last round that the formatter would rewrite
+`220_hindi_parse_error.sm` - **a file that exists to be malformed** - and that `42_block_comments.sm` was also
+at risk. **Claude built an exclusion list rather than sweeping.** `42_block_comments.sm` is in the changed
+set; `220_hindi_parse_error.sm` is not.
+
+**That is the warning working.** The tool is right and the thing it touches is deliberately wrong - **and the
+exclusion is now a file in the tree rather than a note in a brief.**
+
+**The compiler and the installer are rebuilt**, so the installer carries everything to date.
+
+**One file excluded: `docs/CHANGELOG.md`.** The eighth time that trap has been caught before landing.
+
+**ChatGPT's ROUND-87 (the DRAFT pack review, the crash-gap report, the audit boundary) is delivered.**
+
 ## v240 - the F7 decision has numbers now, and the crash corpus has a gap
 
 ### F7: what typed parameters would actually touch
