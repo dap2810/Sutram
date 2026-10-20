@@ -1,0 +1,5 @@
+# R83 candidate: msg_kosh_peek_empty (native execution NOT_RUN)
+mukhya() {
+    kosh a
+    likha(kosh_peek(a))
+}
