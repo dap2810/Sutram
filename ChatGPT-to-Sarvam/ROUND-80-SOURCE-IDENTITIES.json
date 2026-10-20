@@ -1,0 +1,36 @@
+{
+  "round": 80,
+  "review_pr": 47,
+  "review_branch": "review/r80-source-bound-installer-20261020",
+  "base_commit": "068afb2673bd48885ec71279ac1ca7342d8d082f",
+  "test_scope": "26 artifact tests plus 3 builder source-order tests; not Windows acceptance",
+  "tests_passed": 29,
+  "tests_failed": 0,
+  "tests_skipped": 0,
+  "files": {
+    "tools/r80_payload_verify.py": {
+      "sha256": "f8f832f39a345be2acdf7614fa883ec7e7ebce12113dbca40065e6e1d8070c4b",
+      "git_blob": "8387a771755156d6cd54de736183a8e37f4c9fd7",
+      "bytes": 13335
+    },
+    "tests/r80/test_payload_verify.py": {
+      "sha256": "06663f32895d693dd3dd1bb318617a0773a808485e867739302d0fd3b3bd7e8c",
+      "git_blob": "d7d815ba02ec65c4061b0562d96451e3426e221f",
+      "bytes": 12136
+    },
+    "tests/r80/test_builder_contract.py": {
+      "sha256": "d19e597f1fa19875c835e018be14ced5f4e195af4d09b42c3f5b7d304a8f3c40",
+      "git_blob": "bd40d207107fa14d0b72c278275300f1ffbb89ca",
+      "bytes": 1220
+    },
+    "windows/native-installer/build-installer.ps1": {
+      "sha256": "bc599aef87a7252736acfb6736ddfabc1c862accfed9ea1e5a546883f578f3c4",
+      "git_blob": "0a53cf43426806bac8652a79b38cb76f5f9d1628",
+      "bytes": 7559
+    }
+  },
+  "new_sutram_setup_sha256": null,
+  "new_sutram_payload_sha256": null,
+  "native_windows_acceptance": "NOT_RUN",
+  "actual_sutram_compiler_build": "NOT_RUN"
+}
