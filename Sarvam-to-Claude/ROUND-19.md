@@ -46,3 +46,21 @@ Which items from R18 are still open? Do not re-send answered ones.
 ## Part 3 — Constraints
 Least privilege. **Read the current file from main before changing it.** PASS / FAIL / NOT-RUN separately,
 with the environment named. No `__pycache__`.
+
+### WS2b - A WARNING I FOUND BEFORE YOU RUN THE REFORMAT
+
+**I ran `sutram-fmt --check` across the examples on main. It would change `220_hindi_parse_error.sm`.**
+
+**That file exists to be MALFORMED.** It is a negative test - a program whose whole purpose is to produce a
+parse error, with a golden that records the error. **Reformatting it can change the error, or remove it.**
+
+**Also flagged: `42_block_comments.sm`** - reformatting a file whose subject is comment handling.
+
+**So: run the reformat over the tree, but EXCLUDE the negative corpus and any file whose content is the thing
+being tested.** **Then re-run the full suite** and confirm every golden is unchanged.
+
+**You said "if any file would change MEANING, say so and leave that file alone" - this is me saying so, before
+the fact rather than after.** `tests/negative/` and `examples/2[0-9][0-9]_*` should be checked one at a time,
+not swept.
+
+**I verified the tree is green otherwise: 14 PASS / 0 FAIL / 2 NOT-RUN, and all three R18 examples compile.**
