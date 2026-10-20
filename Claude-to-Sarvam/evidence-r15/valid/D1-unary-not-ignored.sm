@@ -1,0 +1,13 @@
+# D1: unary ! is silently ignored. The lexer skips a '!' that is not followed by '='.
+# Documented (LANGUAGE-REFERENCE.md s3, level 11) as logical not.
+# expected: 1 1 0 1 111       got (v208): 0 0 5 0 (and 111 is not printed)
+mukhya() {
+    vitti z = 0
+    vitti f = 5
+    likha(!0)
+    likha(!z)
+    likha(!f)
+    vitti y = !z
+    likha(y)
+    yadi (!z) { likha(111) }
+}

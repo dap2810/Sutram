@@ -1,0 +1,6765 @@
+[
+ {
+  "module": "aadhar",
+  "name": "brihat_ank_tak",
+  "mutant": "K:0@L25",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "aadhar",
+  "name": "brihat_ank_tak",
+  "mutant": "K:16@L25",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "aadhar",
+  "name": "brihat_ank_tak",
+  "mutant": "K:1@L32",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "aadhar",
+  "name": "brihat_ank_tak",
+  "mutant": "D@L33",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "aadhar",
+  "name": "brihat_ank_tak",
+  "mutant": "K:0@L33",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "aadhar",
+  "name": "brihat_ank_tak",
+  "mutant": "K:0@L33",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "aadhar",
+  "name": "brihat_ank_tak",
+  "mutant": "K:1@L34",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "aadhar",
+  "name": "brihat_ank_tak",
+  "mutant": "A:*@L38",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "aadhar",
+  "name": "brihat_ank_tak",
+  "mutant": "A:*@L38",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "aadhar",
+  "name": "brihat_ank_se",
+  "mutant": "K:0@L82",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ank",
+  "name": "ank_gan",
+  "mutant": "C2:<-><=@L16",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "ank",
+  "name": "ank_gan",
+  "mutant": "K:0@L16",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "ank",
+  "name": "ank_gan",
+  "mutant": "K:0@L16",
+  "result": "WITNESS",
+  "input": [
+   -9
+  ],
+  "real": "1",
+  "mutant_gives": "2"
+ },
+ {
+  "module": "ank",
+  "name": "ank_yog",
+  "mutant": "C2:<-><=@L30",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "ank",
+  "name": "ank_yog",
+  "mutant": "K:0@L30",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "ank",
+  "name": "seemit",
+  "mutant": "C1:<-><=@L65",
+  "result": "WITNESS",
+  "input": [
+   3037000499,
+   3037000499,
+   -1
+  ],
+  "real": "-1",
+  "mutant_gives": "3037000499"
+ },
+ {
+  "module": "ank",
+  "name": "seemit",
+  "mutant": "C2:>->>=@L66",
+  "result": "NO-WITNESS",
+  "inputs_tried": 600
+ },
+ {
+  "module": "ank",
+  "name": "asti_sampurna",
+  "mutant": "C1:<-><=@L87",
+  "result": "NO-WITNESS",
+  "inputs_tried": 330
+ },
+ {
+  "module": "ank",
+  "name": "asti_sampurna",
+  "mutant": "C2:<=-><@L93",
+  "result": "NO-WITNESS",
+  "inputs_tried": 330
+ },
+ {
+  "module": "ank",
+  "name": "asti_sampurna",
+  "mutant": "K:2@L87",
+  "result": "NO-WITNESS",
+  "inputs_tried": 330
+ },
+ {
+  "module": "ank",
+  "name": "asti_sampurna",
+  "mutant": "A:/@L96",
+  "result": "NO-WITNESS",
+  "inputs_tried": 330
+ },
+ {
+  "module": "ank",
+  "name": "asti_sampurna",
+  "mutant": "K:1@L98",
+  "result": "NO-WITNESS",
+  "inputs_tried": 330
+ },
+ {
+  "module": "ank",
+  "name": "collatz_charan",
+  "mutant": "C4:>->>=@L114",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "ank",
+  "name": "collatz_charan",
+  "mutant": "K:3074457345618258602@L114",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "anukram",
+  "name": "anukram_khip_i64",
+  "mutant": "C4:<-><=@L49",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "anukram",
+  "name": "anukram_khip_i64",
+  "mutant": "K:0@L49",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "anukram",
+  "name": "anukram_khip_i64",
+  "mutant": "A:-@L52",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "anukram",
+  "name": "anukram_grah_i64",
+  "mutant": "C4:>=->>@L77",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "anukram",
+  "name": "anukram_grah_i64",
+  "mutant": "A:-@L66",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "anukram",
+  "name": "anukram_grah_i64",
+  "mutant": "K:0@L66",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "anukram",
+  "name": "anukram_grah_i64",
+  "mutant": "K:1@L66",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "anukram",
+  "name": "anukram_grah_i64",
+  "mutant": "N@L77",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "anukram",
+  "name": "anukram_grah_i64",
+  "mutant": "K:128@L77",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "anukram",
+  "name": "anukram_grah_i64",
+  "mutant": "A:-@L78",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "anukram",
+  "name": "anukram_grah_i64",
+  "mutant": "D@L78",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "anukram",
+  "name": "anukram_khip_ashtak",
+  "mutant": "A:-@L95",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "anukram",
+  "name": "anukram_khip_ashtak",
+  "mutant": "K:0@L95",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "anukram",
+  "name": "anukram_khip_ashtak",
+  "mutant": "K:1@L95",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "anukram",
+  "name": "anukram_grah_ashtak",
+  "mutant": "A:-@L117",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "anukram",
+  "name": "anukram_grah_ashtak",
+  "mutant": "A:-@L117",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "anukram",
+  "name": "anukram_grah_ashtak",
+  "mutant": "K:0@L117",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "anukram",
+  "name": "anukram_grah_ashtak",
+  "mutant": "K:1@L117",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "anukram",
+  "name": "anukram_grah_ashtak",
+  "mutant": "K:0@L117",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "anukram",
+  "name": "anukram_grah_ashtak",
+  "mutant": "K:1@L117",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "anukram",
+  "name": "anukram_grah_ashtak",
+  "mutant": "A:+@L120",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "anukram",
+  "name": "anukram_grah_ashtak",
+  "mutant": "A:-@L120",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "anukram",
+  "name": "anukram_grah_ashtak",
+  "mutant": "K:0@L120",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "anukram",
+  "name": "anukram_grah_ashtak",
+  "mutant": "K:1@L120",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "anukram",
+  "name": "anukram_grah_ashtak",
+  "mutant": "K:0@L126",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "anukram",
+  "name": "anukram_grah_ashtak",
+  "mutant": "D@L126",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_ank_se_int",
+  "mutant": "C2:<-><=@L39",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_ank_se_int",
+  "mutant": "C6:<-><=@L50",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_ank_se_int",
+  "mutant": "A:-@L39",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_ank_se_int",
+  "mutant": "K:0@L39",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_ank_se_int",
+  "mutant": "A:+@L52",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_ank_se_int",
+  "mutant": "K:8@L52",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_ank_se_int",
+  "mutant": "K:10@L53",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_ank_se_int",
+  "mutant": "A:*@L54",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_ank_se_int",
+  "mutant": "A:+@L54",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_ank_se_int",
+  "mutant": "D@L54",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_ank_se_int",
+  "mutant": "K:8@L54",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_ank_se_int",
+  "mutant": "A:+@L56",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_ank_se_int",
+  "mutant": "K:8@L56",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_ank_se_int",
+  "mutant": "K:1@L60",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_ank_se_int",
+  "mutant": "K:0@L62",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_ank_se_int",
+  "mutant": "K:1@L62",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_pratilip",
+  "mutant": "R",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_pratilip",
+  "mutant": "K:0@L91",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_tul",
+  "mutant": "K:1@L99",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_gun",
+  "mutant": "A:*@L159",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_gun",
+  "mutant": "A:+@L174",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_bhajshesh",
+  "mutant": "R",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_bhajshesh",
+  "mutant": "A:+@L204",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_bhajshesh",
+  "mutant": "K:0@L217",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_shesh",
+  "mutant": "R",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_shesh",
+  "mutant": "A:*@L271",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_shesh",
+  "mutant": "K:1@L273",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_shesh",
+  "mutant": "K:1@L276",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_ghatmod",
+  "mutant": "R",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_ghatmod",
+  "mutant": "A:*@L316",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_ghatmod",
+  "mutant": "A:*@L316",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_ghatmod",
+  "mutant": "A:*@L317",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "brihat",
+  "name": "brihat_ghatmod",
+  "mutant": "K:0@L329",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "chandas",
+  "name": "meru",
+  "mutant": "C3:>->>=@L29",
+  "result": "NO-WITNESS",
+  "inputs_tried": 358
+ },
+ {
+  "module": "chandas",
+  "name": "meru",
+  "mutant": "K:0@L27",
+  "result": "WITNESS",
+  "input": [
+   -7,
+   -7
+  ],
+  "real": "0",
+  "mutant_gives": "1"
+ },
+ {
+  "module": "chandas",
+  "name": "meru",
+  "mutant": "N@L29",
+  "result": "WITNESS",
+  "input": [
+   100,
+   16
+  ],
+  "real": "192939124439967674",
+  "mutant_gives": "-89841263756067081"
+ },
+ {
+  "module": "chandas",
+  "name": "meru",
+  "mutant": "A:-@L29",
+  "result": "WITNESS",
+  "input": [
+   3037000499,
+   3037000499
+  ],
+  "real": "1",
+  "mutant_gives": "CRASH"
+ },
+ {
+  "module": "chandas",
+  "name": "matra_meru",
+  "mutant": "K:1@L42",
+  "result": "NO-WITNESS",
+  "inputs_tried": 325
+ },
+ {
+  "module": "ganit",
+  "name": "nirapeksh_mulya",
+  "mutant": "C1:<-><=@L19",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "ganit",
+  "name": "nirapeksh_mulya",
+  "mutant": "K:0@L19",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "ganit",
+  "name": "laghu2",
+  "mutant": "C1:<-><=@L28",
+  "result": "NO-WITNESS",
+  "inputs_tried": 361
+ },
+ {
+  "module": "ganit",
+  "name": "adhik2",
+  "mutant": "C1:>->>=@L35",
+  "result": "NO-WITNESS",
+  "inputs_tried": 361
+ },
+ {
+  "module": "ganit",
+  "name": "mahattam",
+  "mutant": "C2:<-><=@L51",
+  "result": "NO-WITNESS",
+  "inputs_tried": 361
+ },
+ {
+  "module": "ganit",
+  "name": "mahattam",
+  "mutant": "K:0@L51",
+  "result": "NO-WITNESS",
+  "inputs_tried": 361
+ },
+ {
+  "module": "ganit",
+  "name": "laghuttam",
+  "mutant": "C2:<-><=@L64",
+  "result": "NO-WITNESS",
+  "inputs_tried": 361
+ },
+ {
+  "module": "ganit",
+  "name": "laghuttam",
+  "mutant": "K:0@L64",
+  "result": "NO-WITNESS",
+  "inputs_tried": 361
+ },
+ {
+  "module": "ganit",
+  "name": "yog_tak",
+  "mutant": "C1:<=-><@L115",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "ganit",
+  "name": "ganit_seemit",
+  "mutant": "C1:<-><=@L161",
+  "result": "WITNESS",
+  "input": [
+   3037000499,
+   3037000499,
+   -1
+  ],
+  "real": "-1",
+  "mutant_gives": "3037000499"
+ },
+ {
+  "module": "ganit",
+  "name": "ganit_seemit",
+  "mutant": "C2:>->>=@L162",
+  "result": "NO-WITNESS",
+  "inputs_tried": 600
+ },
+ {
+  "module": "ganita",
+  "name": "kuttaka",
+  "mutant": "C3:<-><=@L35",
+  "result": "NO-WITNESS",
+  "inputs_tried": 600
+ },
+ {
+  "module": "ganita",
+  "name": "kuttaka",
+  "mutant": "C4:>->>=@L36",
+  "result": "WITNESS",
+  "input": [
+   -9223372036854775807,
+   0,
+   12
+  ],
+  "real": "0",
+  "mutant_gives": "CRASH"
+ },
+ {
+  "module": "ganita",
+  "name": "kuttaka",
+  "mutant": "K:0@L31",
+  "result": "WITNESS",
+  "input": [
+   0,
+   0,
+   4611686018427387904
+  ],
+  "real": "0",
+  "mutant_gives": "1"
+ },
+ {
+  "module": "ganita",
+  "name": "kuttaka",
+  "mutant": "K:0@L35",
+  "result": "NO-WITNESS",
+  "inputs_tried": 600
+ },
+ {
+  "module": "ganita",
+  "name": "kuttaka",
+  "mutant": "K:0@L36",
+  "result": "NO-WITNESS",
+  "inputs_tried": 600
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_vargmool",
+  "mutant": "C1:<-><=@L46",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_vargmool",
+  "mutant": "K:0@L46",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_vargmool",
+  "mutant": "K:1@L53",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_vargmool",
+  "mutant": "K:2@L54",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_vargmool",
+  "mutant": "K:1@L54",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_vargmool",
+  "mutant": "K:1@L55",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_vargmool",
+  "mutant": "K:2@L57",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_nirapeksh",
+  "mutant": "C1:<-><=@L70",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_nirapeksh",
+  "mutant": "K:0@L70",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "ganita",
+  "name": "chakravala",
+  "mutant": "C5:<-><=@L108",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "chakravala",
+  "mutant": "C6:!=->==@L108",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "chakravala",
+  "mutant": "C7:<-><=@L113",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "chakravala",
+  "mutant": "C8:>=->>@L115",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "chakravala",
+  "mutant": "C9:<=-><@L115",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "chakravala",
+  "mutant": "C10:<-><=@L121",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "chakravala",
+  "mutant": "C11:<-><=@L122",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "chakravala",
+  "mutant": "C12:<-><=@L122",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "chakravala",
+  "mutant": "C13:<-><=@L131",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "chakravala",
+  "mutant": "C14:!=->==@L134",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "chakravala",
+  "mutant": "C15:>->>=@L134",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "chakravala",
+  "mutant": "C16:!=->==@L136",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "chakravala",
+  "mutant": "C17:>->>=@L136",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "chakravala",
+  "mutant": "C18:>->>=@L138",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "chakravala",
+  "mutant": "C19:!=->==@L140",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "chakravala",
+  "mutant": "C20:>->>=@L140",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "chakravala",
+  "mutant": "C21:>->>=@L142",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "chakravala",
+  "mutant": "C22:>->>=@L149",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "chakravala",
+  "mutant": "D@L84",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "chakravala",
+  "mutant": "K:1@L84",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "chakravala",
+  "mutant": "K:0@L102",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "chakravala",
+  "mutant": "K:0@L112",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "chakravala",
+  "mutant": "K:0@L115",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "chakravala",
+  "mutant": "K:3037000499@L115",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "chakravala",
+  "mutant": "L:&&@L115",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "chakravala",
+  "mutant": "K:0@L121",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "chakravala",
+  "mutant": "K:1@L129",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "chakravala",
+  "mutant": "K:0@L131",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "chakravala",
+  "mutant": "K:0@L131",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "chakravala",
+  "mutant": "K:9223372036854775807@L142",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "chakravala",
+  "mutant": "D@L148",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "chakravala",
+  "mutant": "K:1@L148",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "brahmagupta_kshetr",
+  "mutant": "C1:<-><=@L176",
+  "result": "NO-WITNESS",
+  "inputs_tried": 600
+ },
+ {
+  "module": "ganita",
+  "name": "brahmagupta_kshetr",
+  "mutant": "K:0@L176",
+  "result": "NO-WITNESS",
+  "inputs_tried": 600
+ },
+ {
+  "module": "ganita",
+  "name": "brahmagupta_kshetr",
+  "mutant": "K:0@L176",
+  "result": "WITNESS",
+  "input": [
+   16,
+   5,
+   4,
+   1000
+  ],
+  "real": "0",
+  "mutant_gives": "1"
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_janchit_yuj",
+  "mutant": "C1:>=->>@L221",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_janchit_yuj",
+  "mutant": "C2:>=->>@L222",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_janchit_yuj",
+  "mutant": "C4:<-><=@L229",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_janchit_yuj",
+  "mutant": "K:0@L221",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_janchit_yuj",
+  "mutant": "K:0@L222",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_janchit_yuj",
+  "mutant": "K:0@L229",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_janchit_nyun",
+  "mutant": "C2:<-><=@L248",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_janchit_nyun",
+  "mutant": "C3:<-><=@L249",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_janchit_nyun",
+  "mutant": "C4:>=->>@L255",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_janchit_nyun",
+  "mutant": "C5:>=->>@L256",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_janchit_nyun",
+  "mutant": "K:0@L248",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_janchit_nyun",
+  "mutant": "K:0@L249",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_janchit_nyun",
+  "mutant": "K:0@L255",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_janchit_nyun",
+  "mutant": "K:0@L256",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_janchit_gun",
+  "mutant": "K:0@L276",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_janchit_gun",
+  "mutant": "D@L280",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_janchit_gun",
+  "mutant": "K:0@L280",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_janchit_gun",
+  "mutant": "K:1@L280",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_janchit_gun",
+  "mutant": "K:0@L284",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_janchit_gun",
+  "mutant": "K:1@L284",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_janchit_shesh",
+  "mutant": "K:0@L338",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_janchit_shesh",
+  "mutant": "D@L338",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_yuj",
+  "mutant": "C1:>=->>@L354",
+  "result": "NO-WITNESS",
+  "inputs_tried": 361
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_yuj",
+  "mutant": "C2:>=->>@L355",
+  "result": "NO-WITNESS",
+  "inputs_tried": 361
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_yuj",
+  "mutant": "C4:<-><=@L359",
+  "result": "NO-WITNESS",
+  "inputs_tried": 361
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_yuj",
+  "mutant": "K:0@L354",
+  "result": "NO-WITNESS",
+  "inputs_tried": 361
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_yuj",
+  "mutant": "K:0@L355",
+  "result": "NO-WITNESS",
+  "inputs_tried": 361
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_yuj",
+  "mutant": "K:0@L359",
+  "result": "NO-WITNESS",
+  "inputs_tried": 361
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_nyun",
+  "mutant": "C2:<-><=@L374",
+  "result": "NO-WITNESS",
+  "inputs_tried": 361
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_nyun",
+  "mutant": "C3:<-><=@L375",
+  "result": "NO-WITNESS",
+  "inputs_tried": 361
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_nyun",
+  "mutant": "C4:>=->>@L378",
+  "result": "NO-WITNESS",
+  "inputs_tried": 361
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_nyun",
+  "mutant": "C5:>=->>@L379",
+  "result": "NO-WITNESS",
+  "inputs_tried": 361
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_nyun",
+  "mutant": "K:0@L374",
+  "result": "NO-WITNESS",
+  "inputs_tried": 361
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_nyun",
+  "mutant": "K:0@L375",
+  "result": "NO-WITNESS",
+  "inputs_tried": 361
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_nyun",
+  "mutant": "K:0@L378",
+  "result": "NO-WITNESS",
+  "inputs_tried": 361
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_nyun",
+  "mutant": "K:0@L379",
+  "result": "NO-WITNESS",
+  "inputs_tried": 361
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_gun",
+  "mutant": "C6:==->!=@L400",
+  "result": "NO-WITNESS",
+  "inputs_tried": 361
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_gun",
+  "mutant": "C8:<-><=@L404",
+  "result": "NO-WITNESS",
+  "inputs_tried": 361
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_gun",
+  "mutant": "C9:<-><=@L405",
+  "result": "NO-WITNESS",
+  "inputs_tried": 361
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_gun",
+  "mutant": "K:0@L392",
+  "result": "NO-WITNESS",
+  "inputs_tried": 361
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_gun",
+  "mutant": "K:0@L397",
+  "result": "NO-WITNESS",
+  "inputs_tried": 361
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_gun",
+  "mutant": "K:1@L397",
+  "result": "NO-WITNESS",
+  "inputs_tried": 361
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_gun",
+  "mutant": "N@L400",
+  "result": "NO-WITNESS",
+  "inputs_tried": 361
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_gun",
+  "mutant": "A:-@L400",
+  "result": "NO-WITNESS",
+  "inputs_tried": 361
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_gun",
+  "mutant": "K:0@L400",
+  "result": "NO-WITNESS",
+  "inputs_tried": 361
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_gun",
+  "mutant": "K:1@L400",
+  "result": "NO-WITNESS",
+  "inputs_tried": 361
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_gun",
+  "mutant": "A:-@L404",
+  "result": "NO-WITNESS",
+  "inputs_tried": 361
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_gun",
+  "mutant": "K:0@L404",
+  "result": "NO-WITNESS",
+  "inputs_tried": 361
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_gun",
+  "mutant": "A:-@L405",
+  "result": "NO-WITNESS",
+  "inputs_tried": 361
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_gun",
+  "mutant": "K:0@L405",
+  "result": "NO-WITNESS",
+  "inputs_tried": 361
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_ghat",
+  "mutant": "C4:>->>=@L480",
+  "result": "NO-WITNESS",
+  "inputs_tried": 352
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_ghat",
+  "mutant": "C7:>->>=@L485",
+  "result": "NO-WITNESS",
+  "inputs_tried": 352
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_ghat",
+  "mutant": "K:0@L480",
+  "result": "NO-WITNESS",
+  "inputs_tried": 352
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_ghat",
+  "mutant": "A:-@L481",
+  "result": "NO-WITNESS",
+  "inputs_tried": 352
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_ghat",
+  "mutant": "K:0@L485",
+  "result": "NO-WITNESS",
+  "inputs_tried": 352
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_ghat",
+  "mutant": "A:-@L486",
+  "result": "NO-WITNESS",
+  "inputs_tried": 352
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_janchit_nirapeksh",
+  "mutant": "C2:<-><=@L542",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_janchit_nirapeksh",
+  "mutant": "K:0@L542",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_nirapeksh",
+  "mutant": "C2:<-><=@L553",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_nirapeksh",
+  "mutant": "K:0@L553",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_kramgun",
+  "mutant": "K:9223372036854775807@L565",
+  "result": "WITNESS",
+  "input": [
+   1000000000
+  ],
+  "real": "9223372036854775807",
+  "mutant_gives": "CRASH"
+ },
+ {
+  "module": "kalana",
+  "name": "kalana_trapiz",
+  "mutant": "C1:<-><=@L19",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "kalana",
+  "name": "kalana_trapiz",
+  "mutant": "N@L19",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "kalana",
+  "name": "simpson",
+  "mutant": "C1:<-><=@L35",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "kalana",
+  "name": "simpson",
+  "mutant": "N@L35",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "kalana",
+  "name": "simpson",
+  "mutant": "A:*@L38",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "kalana",
+  "name": "simpson",
+  "mutant": "A:-@L38",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "kalana",
+  "name": "simpson",
+  "mutant": "A:-@L38",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "kalana",
+  "name": "simpson",
+  "mutant": "A:/@L38",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "kalana",
+  "name": "simpson",
+  "mutant": "K:1@L38",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "kalana",
+  "name": "simpson",
+  "mutant": "K:1@L38",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "kalana",
+  "name": "simpson",
+  "mutant": "K:1@L38",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "kalana",
+  "name": "simpson",
+  "mutant": "K:1@L38",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "kalana",
+  "name": "simpson",
+  "mutant": "K:2@L38",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "kalana",
+  "name": "simpson",
+  "mutant": "A:-@L39",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "kalana",
+  "name": "pravan",
+  "mutant": "C1:<-><=@L60",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "kalana",
+  "name": "pravan",
+  "mutant": "N@L60",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "kalana",
+  "name": "pravan2",
+  "mutant": "C1:<-><=@L80",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "kalana",
+  "name": "pravan2",
+  "mutant": "N@L80",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "kalana",
+  "name": "bahu_ganana",
+  "mutant": "K:0@L103",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "kalana",
+  "name": "bahu_mula",
+  "mutant": "C3:<-><=@L124",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "kalana",
+  "name": "bahu_mula",
+  "mutant": "C5:<-><=@L124",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "kalana",
+  "name": "bahu_mula",
+  "mutant": "C8:<-><=@L132",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "kalana",
+  "name": "bahu_mula",
+  "mutant": "C10:<-><=@L132",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "kalana",
+  "name": "bahu_mula",
+  "mutant": "K:0@L122",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "kalana",
+  "name": "bahu_mula",
+  "mutant": "K:0@L123",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "kalana",
+  "name": "bahu_mula",
+  "mutant": "K:0@L124",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "kalana",
+  "name": "bahu_mula",
+  "mutant": "D@L134",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "khand",
+  "name": "khand_bandh",
+  "mutant": "C1:<=-><@L44",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_bandh",
+  "mutant": "C2:<-><=@L48",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_bandh",
+  "mutant": "K:0@L45",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_bandh",
+  "mutant": "K:0@L45",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_bandh",
+  "mutant": "D@L45",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_bandh",
+  "mutant": "K:0@L52",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_bandh",
+  "mutant": "D@L52",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_mukt",
+  "mutant": "C1:<=-><@L66",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_mukt",
+  "mutant": "C2:<-><=@L70",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_mukt",
+  "mutant": "K:0@L67",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_mukt",
+  "mutant": "K:0@L67",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_mukt",
+  "mutant": "D@L67",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_pratilip",
+  "mutant": "C1:<=-><@L86",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_pratilip",
+  "mutant": "C2:<-><=@L90",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_pratilip",
+  "mutant": "K:0@L87",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_pratilip",
+  "mutant": "D@L87",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_pratilip",
+  "mutant": "D@L94",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_anwesh",
+  "mutant": "K:0@L109",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_anwesh",
+  "mutant": "K:0@L110",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_anwesh",
+  "mutant": "K:0@L111",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_anwesh",
+  "mutant": "D@L115",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_anwesh",
+  "mutant": "A:-@L116",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_pratisthap",
+  "mutant": "K:0@L152",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_pratisthap",
+  "mutant": "K:0@L153",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_pratisthap",
+  "mutant": "D@L163",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_pratisthap",
+  "mutant": "K:0@L163",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_pratisthap",
+  "mutant": "A:+@L168",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_pratisthap",
+  "mutant": "D@L191",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_pratisthap",
+  "mutant": "K:0@L191",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_bhed",
+  "mutant": "K:0@L211",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_bhed",
+  "mutant": "K:0@L212",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_bhed",
+  "mutant": "K:0@L213",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_bhed",
+  "mutant": "K:0@L217",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_bhed",
+  "mutant": "K:0@L218",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_bhed",
+  "mutant": "K:0@L219",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_bhed",
+  "mutant": "D@L221",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_bhed",
+  "mutant": "D@L231",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_bhed",
+  "mutant": "D@L268",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_yuj",
+  "mutant": "K:0@L290",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_yuj",
+  "mutant": "K:0@L291",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_yuj",
+  "mutant": "K:0@L292",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_yuj",
+  "mutant": "K:1@L307",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_yuj",
+  "mutant": "D@L312",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_chhid",
+  "mutant": "C2:>=->>@L329",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_chhid",
+  "mutant": "C5:<=-><@L337",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_chhid",
+  "mutant": "K:0@L324",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_chhid",
+  "mutant": "K:0@L327",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_chhid",
+  "mutant": "K:0@L349",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_chhid",
+  "mutant": "D@L349",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_unnat",
+  "mutant": "C1:<-><=@L362",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_unnat",
+  "mutant": "C2:<-><=@L366",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_unnat",
+  "mutant": "K:0@L361",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_unnat",
+  "mutant": "K:0@L362",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_unnat",
+  "mutant": "K:0@L363",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_unnat",
+  "mutant": "D@L363",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_unnat",
+  "mutant": "K:0@L374",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_unnat",
+  "mutant": "D@L374",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_avanat",
+  "mutant": "C1:<-><=@L384",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_avanat",
+  "mutant": "C2:<-><=@L388",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_avanat",
+  "mutant": "K:0@L383",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_avanat",
+  "mutant": "K:0@L384",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_avanat",
+  "mutant": "K:0@L385",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_avanat",
+  "mutant": "D@L385",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_avanat",
+  "mutant": "K:0@L396",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_avanat",
+  "mutant": "D@L396",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_aadi",
+  "mutant": "K:0@L408",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_aadi",
+  "mutant": "K:1@L413",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_ant",
+  "mutant": "K:0@L423",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_ant",
+  "mutant": "K:1@L428",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_tul",
+  "mutant": "C1:<-><=@L444",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_tul",
+  "mutant": "K:0@L440",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_tul",
+  "mutant": "K:0@L441",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_tul",
+  "mutant": "K:0@L442",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_tul",
+  "mutant": "N@L444",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_viparyay",
+  "mutant": "C1:<=-><@L469",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_viparyay",
+  "mutant": "C2:<-><=@L475",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_viparyay",
+  "mutant": "K:0@L466",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_viparyay",
+  "mutant": "K:0@L467",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_viparyay",
+  "mutant": "K:0@L468",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_viparyay",
+  "mutant": "K:0@L469",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_viparyay",
+  "mutant": "K:0@L470",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_viparyay",
+  "mutant": "K:0@L470",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_viparyay",
+  "mutant": "D@L470",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_viparyay",
+  "mutant": "K:0@L471",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_viparyay",
+  "mutant": "D@L473",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_viparyay",
+  "mutant": "D@L485",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_gan",
+  "mutant": "K:0@L500",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_gan",
+  "mutant": "A:-@L502",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_gan",
+  "mutant": "A:-@L503",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_gan_swar",
+  "mutant": "K:0@L519",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_gan_swar",
+  "mutant": "K:0@L521",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_gan_swar",
+  "mutant": "K:97@L524",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_gan_swar",
+  "mutant": "K:105@L524",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_gan_swar",
+  "mutant": "K:117@L524",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_gan_akshar",
+  "mutant": "K:0@L539",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_anwesh_akshar",
+  "mutant": "K:0@L554",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_anwesh_akshar",
+  "mutant": "K:1@L557",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_asti_sarv_ank",
+  "mutant": "K:0@L569",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "khand",
+  "name": "khand_asti_sarv_ank",
+  "mutant": "K:0@L570",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_vargmool",
+  "mutant": "C1:<=-><@L14",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_vargmool",
+  "mutant": "C2:<-><=@L16",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_vargmool",
+  "mutant": "C3:<-><=@L18",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_vargmool",
+  "mutant": "N@L16",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_vargmool",
+  "mutant": "K:0@L17",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_vargmool",
+  "mutant": "K:1000@L18",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_pi",
+  "mutant": "C1:<-><=@L32",
+  "result": "NO-WITNESS",
+  "inputs_tried": 1
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_pi",
+  "mutant": "C2:>->>=@L34",
+  "result": "NO-WITNESS",
+  "inputs_tried": 1
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_pi",
+  "mutant": "K:1@L31",
+  "result": "NO-WITNESS",
+  "inputs_tried": 1
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_pi",
+  "mutant": "K:30@L32",
+  "result": "NO-WITNESS",
+  "inputs_tried": 1
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_pi",
+  "mutant": "K:0@L40",
+  "result": "NO-WITNESS",
+  "inputs_tried": 1
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_sin",
+  "mutant": "C1:>->>=@L55",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_sin",
+  "mutant": "C2:<-><=@L56",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_sin",
+  "mutant": "C3:<-><=@L60",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_sin",
+  "mutant": "N@L55",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_sin",
+  "mutant": "N@L56",
+  "result": "WITNESS",
+  "input": [
+   3
+  ],
+  "real": "0.141120",
+  "mutant_gives": "0.141111"
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_sin",
+  "mutant": "A:-@L56",
+  "result": "WITNESS",
+  "input": [
+   3
+  ],
+  "real": "0.141120",
+  "mutant_gives": "0.141111"
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_sin",
+  "mutant": "A:+@L56",
+  "result": "WITNESS",
+  "input": [
+   -18
+  ],
+  "real": "0.750987",
+  "mutant_gives": "0.770223"
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_sin",
+  "mutant": "K:16@L60",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_cos",
+  "mutant": "C1:>->>=@L75",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_cos",
+  "mutant": "C2:<-><=@L76",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_cos",
+  "mutant": "C3:<-><=@L80",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_cos",
+  "mutant": "N@L75",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_cos",
+  "mutant": "N@L76",
+  "result": "WITNESS",
+  "input": [
+   2
+  ],
+  "real": "-0.416147",
+  "mutant_gives": "-0.416148"
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_cos",
+  "mutant": "A:-@L76",
+  "result": "WITNESS",
+  "input": [
+   2
+  ],
+  "real": "-0.416147",
+  "mutant_gives": "-0.416148"
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_cos",
+  "mutant": "A:+@L76",
+  "result": "WITNESS",
+  "input": [
+   -18
+  ],
+  "real": "0.660317",
+  "mutant_gives": "0.606488"
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_cos",
+  "mutant": "K:16@L80",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_atan",
+  "mutant": "C1:<-><=@L98",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_atan",
+  "mutant": "C4:<-><=@L112",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_atan",
+  "mutant": "C5:>->>=@L114",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_atan",
+  "mutant": "N@L98",
+  "result": "WITNESS",
+  "input": [
+   -20
+  ],
+  "real": "-1.520838",
+  "mutant_gives": "-1.520817"
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_atan",
+  "mutant": "A:-@L104",
+  "result": "WITNESS",
+  "input": [
+   -20
+  ],
+  "real": "-1.520838",
+  "mutant_gives": "1.520838"
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_atan",
+  "mutant": "K:1@L104",
+  "result": "WITNESS",
+  "input": [
+   -20
+  ],
+  "real": "-1.520838",
+  "mutant_gives": "1.520838"
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_atan",
+  "mutant": "K:1@L111",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_atan",
+  "mutant": "K:60@L112",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_atan",
+  "mutant": "K:0@L120",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "mala",
+  "name": "mala_nava",
+  "mutant": "C1:<-><=@L13",
+  "result": "NO-WITNESS",
+  "inputs_tried": 27
+ },
+ {
+  "module": "mala",
+  "name": "mala_nava",
+  "mutant": "K:8@L11",
+  "result": "NO-WITNESS",
+  "inputs_tried": 27
+ },
+ {
+  "module": "mala",
+  "name": "mala_nava",
+  "mutant": "K:0@L13",
+  "result": "NO-WITNESS",
+  "inputs_tried": 27
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_kunji_gudh",
+  "mutant": "C1:<-><=@L39",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_kunji_gudh",
+  "mutant": "K:1@L39",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_kunji_gudh",
+  "mutant": "K:0@L39",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_kunji_sam",
+  "mutant": "K:0@L48",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_koshtha_likh",
+  "mutant": "R",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_koshtha_likh",
+  "mutant": "K:0@L73",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_koshtha_likh",
+  "mutant": "D@L73",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_koshtha_likh",
+  "mutant": "K:1@L74",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_koshtha_likh",
+  "mutant": "K:1@L76",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_anwesh",
+  "mutant": "C3:>->>=@L91",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_anwesh",
+  "mutant": "K:0@L87",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_anwesh",
+  "mutant": "K:0@L88",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_anwesh",
+  "mutant": "K:32@L91",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_anwesh",
+  "mutant": "K:32@L91",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_anwesh",
+  "mutant": "K:1@L98",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_anwesh",
+  "mutant": "K:1@L100",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_srij",
+  "mutant": "C1:<-><=@L112",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_srij",
+  "mutant": "C2:<-><=@L114",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_srij",
+  "mutant": "C4:<-><=@L119",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_srij",
+  "mutant": "K:0@L109",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_srij",
+  "mutant": "K:0@L110",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_srij",
+  "mutant": "K:0@L111",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_srij",
+  "mutant": "K:1@L112",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_srij",
+  "mutant": "K:1@L112",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_srij",
+  "mutant": "A:*@L113",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_srij",
+  "mutant": "A:*@L113",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_srij",
+  "mutant": "K:2@L113",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_srij",
+  "mutant": "K:8@L113",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_srij",
+  "mutant": "K:32@L113",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_srij",
+  "mutant": "K:0@L114",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_srij",
+  "mutant": "K:1@L118",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_srij",
+  "mutant": "D@L118",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_srij",
+  "mutant": "K:2@L120",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_srij",
+  "mutant": "D@L120",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_srij",
+  "mutant": "K:1@L121",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_khip",
+  "mutant": "C3:>->>=@L138",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_khip",
+  "mutant": "K:0@L133",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_khip",
+  "mutant": "K:0@L134",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_grah",
+  "mutant": "C1:>->>=@L161",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_grah",
+  "mutant": "K:0@L160",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_grah",
+  "mutant": "K:32@L161",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_grah",
+  "mutant": "K:32@L161",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_antah",
+  "mutant": "C1:>->>=@L170",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_antah",
+  "mutant": "K:32@L170",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_antah",
+  "mutant": "K:32@L170",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_apanay",
+  "mutant": "C1:>->>=@L192",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_apanay",
+  "mutant": "C7:<=-><@L210",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_apanay",
+  "mutant": "C9:<=-><@L216",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_apanay",
+  "mutant": "K:0@L186",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_apanay",
+  "mutant": "K:0@L187",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_apanay",
+  "mutant": "K:0@L188",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_apanay",
+  "mutant": "K:0@L189",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_apanay",
+  "mutant": "K:0@L191",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_rikta",
+  "mutant": "K:0@L251",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_rikta",
+  "mutant": "K:0@L252",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_rikta",
+  "mutant": "K:0@L253",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_rikta",
+  "mutant": "K:2@L256",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_rikta",
+  "mutant": "K:2@L258",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_rikta",
+  "mutant": "A:+@L262",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_vardh",
+  "mutant": "K:0@L281",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_vardh",
+  "mutant": "K:0@L282",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_vardh",
+  "mutant": "K:0@L283",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_vardh",
+  "mutant": "K:0@L284",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_vardh",
+  "mutant": "K:0@L287",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_vardh",
+  "mutant": "K:0@L288",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_vardh",
+  "mutant": "A:*@L292",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_vardh",
+  "mutant": "A:+@L292",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_grah_mool",
+  "mutant": "C1:>->>=@L312",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_grah_mool",
+  "mutant": "K:0@L311",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_grah_mool",
+  "mutant": "K:32@L312",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_grah_mool",
+  "mutant": "K:32@L312",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_mil",
+  "mutant": "A:*@L331",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_mil",
+  "mutant": "A:+@L331",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_mil",
+  "mutant": "K:0@L335",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_mil",
+  "mutant": "K:0@L337",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_kunjika",
+  "mutant": "K:0@L385",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_kunjika",
+  "mutant": "K:0@L386",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_kunjika",
+  "mutant": "A:+@L390",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_kunjika",
+  "mutant": "K:32@L390",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_kunjika_ashtak",
+  "mutant": "K:0@L418",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_kunjika_ashtak",
+  "mutant": "K:0@L419",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "nighantu",
+  "name": "nighantu_kunjika_ashtak",
+  "mutant": "K:0@L420",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "patra",
+  "name": "patra_path_sarv",
+  "mutant": "C2:<-><=@L37",
+  "result": "NO-WITNESS",
+  "inputs_tried": 600
+ },
+ {
+  "module": "patra",
+  "name": "patra_path_sarv",
+  "mutant": "C3:<-><=@L38",
+  "result": "NO-WITNESS",
+  "inputs_tried": 600
+ },
+ {
+  "module": "patra",
+  "name": "patra_path_sarv",
+  "mutant": "K:0@L33",
+  "result": "NO-WITNESS",
+  "inputs_tried": 600
+ },
+ {
+  "module": "patra",
+  "name": "patra_path_sarv",
+  "mutant": "K:0@L37",
+  "result": "NO-WITNESS",
+  "inputs_tried": 600
+ },
+ {
+  "module": "patra",
+  "name": "patra_path_sarv",
+  "mutant": "A:+@L39",
+  "result": "NO-WITNESS",
+  "inputs_tried": 600
+ },
+ {
+  "module": "patra",
+  "name": "patra_path_sarv",
+  "mutant": "A:-@L39",
+  "result": "NO-WITNESS",
+  "inputs_tried": 600
+ },
+ {
+  "module": "patra",
+  "name": "patra_path_sarv",
+  "mutant": "D@L41",
+  "result": "NO-WITNESS",
+  "inputs_tried": 600
+ },
+ {
+  "module": "patra",
+  "name": "patra_path_sarv",
+  "mutant": "A:-@L42",
+  "result": "NO-WITNESS",
+  "inputs_tried": 600
+ },
+ {
+  "module": "patra",
+  "name": "patra_path_sarv",
+  "mutant": "K:0@L42",
+  "result": "NO-WITNESS",
+  "inputs_tried": 600
+ },
+ {
+  "module": "patra",
+  "name": "patra_path_sarv",
+  "mutant": "K:1@L42",
+  "result": "NO-WITNESS",
+  "inputs_tried": 600
+ },
+ {
+  "module": "patra",
+  "name": "patra_path_sarv",
+  "mutant": "D@L45",
+  "result": "NO-WITNESS",
+  "inputs_tried": 600
+ },
+ {
+  "module": "patra",
+  "name": "patra_path_sarv",
+  "mutant": "D@L50",
+  "result": "NO-WITNESS",
+  "inputs_tried": 600
+ },
+ {
+  "module": "patra",
+  "name": "patra_likh_sarv",
+  "mutant": "C2:<-><=@L65",
+  "result": "NO-WITNESS",
+  "inputs_tried": 600
+ },
+ {
+  "module": "patra",
+  "name": "patra_likh_sarv",
+  "mutant": "C4:<=-><@L68",
+  "result": "NO-WITNESS",
+  "inputs_tried": 600
+ },
+ {
+  "module": "patra",
+  "name": "patra_likh_sarv",
+  "mutant": "K:0@L61",
+  "result": "NO-WITNESS",
+  "inputs_tried": 600
+ },
+ {
+  "module": "patra",
+  "name": "patra_likh_sarv",
+  "mutant": "K:577@L64",
+  "result": "NO-WITNESS",
+  "inputs_tried": 600
+ },
+ {
+  "module": "patra",
+  "name": "patra_likh_sarv",
+  "mutant": "K:0@L65",
+  "result": "NO-WITNESS",
+  "inputs_tried": 600
+ },
+ {
+  "module": "patra",
+  "name": "patra_likh_sarv",
+  "mutant": "A:+@L67",
+  "result": "NO-WITNESS",
+  "inputs_tried": 600
+ },
+ {
+  "module": "patra",
+  "name": "patra_likh_sarv",
+  "mutant": "A:-@L67",
+  "result": "NO-WITNESS",
+  "inputs_tried": 600
+ },
+ {
+  "module": "patra",
+  "name": "patra_likh_sarv",
+  "mutant": "K:0@L68",
+  "result": "NO-WITNESS",
+  "inputs_tried": 600
+ },
+ {
+  "module": "patra",
+  "name": "patra_likh_sarv",
+  "mutant": "D@L69",
+  "result": "NO-WITNESS",
+  "inputs_tried": 600
+ },
+ {
+  "module": "patra",
+  "name": "patra_likh_sarv",
+  "mutant": "A:-@L70",
+  "result": "NO-WITNESS",
+  "inputs_tried": 600
+ },
+ {
+  "module": "patra",
+  "name": "patra_likh_sarv",
+  "mutant": "K:0@L70",
+  "result": "NO-WITNESS",
+  "inputs_tried": 600
+ },
+ {
+  "module": "patra",
+  "name": "patra_likh_sarv",
+  "mutant": "K:1@L70",
+  "result": "NO-WITNESS",
+  "inputs_tried": 600
+ },
+ {
+  "module": "patra",
+  "name": "patra_likh_sarv",
+  "mutant": "D@L74",
+  "result": "NO-WITNESS",
+  "inputs_tried": 600
+ },
+ {
+  "module": "phal",
+  "name": "phal_janchit_nyun",
+  "mutant": "K:1@L108",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "phal",
+  "name": "phal_janchit_nyun",
+  "mutant": "K:0@L108",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "phal",
+  "name": "phal_janchit_nyun",
+  "mutant": "D@L108",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "phal",
+  "name": "phal_janchit_gun",
+  "mutant": "K:1@L122",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "phal",
+  "name": "phal_janchit_gun",
+  "mutant": "K:0@L122",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "phal",
+  "name": "phal_janchit_gun",
+  "mutant": "D@L122",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "phal",
+  "name": "phal_janchit_bhaj",
+  "mutant": "K:1@L136",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "phal",
+  "name": "phal_janchit_bhaj",
+  "mutant": "K:0@L136",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "phal",
+  "name": "phal_janchit_bhaj",
+  "mutant": "D@L136",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "phal",
+  "name": "phal_janchit_shesh",
+  "mutant": "K:1@L150",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "phal",
+  "name": "phal_janchit_shesh",
+  "mutant": "K:0@L150",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "phal",
+  "name": "phal_janchit_shesh",
+  "mutant": "D@L150",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "phal",
+  "name": "phal_janchit_shesh",
+  "mutant": "K:0@L152",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "phal",
+  "name": "phal_janchit_ghat",
+  "mutant": "K:1@L163",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "phal",
+  "name": "phal_janchit_ghat",
+  "mutant": "K:0@L163",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "phal",
+  "name": "phal_janchit_ghat",
+  "mutant": "D@L163",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "phal",
+  "name": "phal_janchit_kramgun",
+  "mutant": "K:1@L176",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "phal",
+  "name": "phal_janchit_kramgun",
+  "mutant": "K:0@L176",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "phal",
+  "name": "phal_janchit_kramgun",
+  "mutant": "D@L176",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "phal",
+  "name": "phal_janchit_nirapeksh",
+  "mutant": "K:1@L189",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "phal",
+  "name": "phal_janchit_nirapeksh",
+  "mutant": "K:0@L189",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "phal",
+  "name": "phal_janchit_nirapeksh",
+  "mutant": "D@L189",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank",
+  "mutant": "C2:<-><=@L42",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank",
+  "mutant": "A:*@L34",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank",
+  "mutant": "K:0@L36",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank",
+  "mutant": "D@L39",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank",
+  "mutant": "K:1@L39",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank",
+  "mutant": "K:0@L42",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank",
+  "mutant": "K:0@L46",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank",
+  "mutant": "A:-@L48",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank",
+  "mutant": "D@L48",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank",
+  "mutant": "D@L55",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank",
+  "mutant": "D@L60",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank",
+  "mutant": "K:0@L60",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank_aadhar",
+  "mutant": "C4:<-><=@L91",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank_aadhar",
+  "mutant": "C6:<-><=@L99",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank_aadhar",
+  "mutant": "A:*@L73",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank_aadhar",
+  "mutant": "K:0@L75",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank_aadhar",
+  "mutant": "K:0@L77",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank_aadhar",
+  "mutant": "K:0@L79",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank_aadhar",
+  "mutant": "D@L83",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank_aadhar",
+  "mutant": "K:0@L83",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank_aadhar",
+  "mutant": "K:1@L88",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank_aadhar",
+  "mutant": "A:-@L96",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank_aadhar",
+  "mutant": "K:10@L99",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank_aadhar",
+  "mutant": "D@L108",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank_aadhar",
+  "mutant": "K:1@L108",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank_aadhar",
+  "mutant": "D@L128",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank_aadhar",
+  "mutant": "K:0@L133",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank_aadhar2",
+  "mutant": "K:0@L145",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank_aadhar2",
+  "mutant": "A:-@L148",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank_aadhar2",
+  "mutant": "D@L148",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank_aadhar2",
+  "mutant": "K:0@L152",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank_aadhar2",
+  "mutant": "K:0@L152",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank_aadhar2",
+  "mutant": "D@L152",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank_dhvaj",
+  "mutant": "K:0@L173",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank_dhvaj",
+  "mutant": "K:0@L174",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank_dhvaj",
+  "mutant": "A:-@L177",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank_dhvaj",
+  "mutant": "D@L187",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank_dhvaj",
+  "mutant": "K:0@L187",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_ank_dhvaj",
+  "mutant": "K:0@L188",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_vam",
+  "mutant": "C1:<=-><@L243",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_vam",
+  "mutant": "C2:<-><=@L245",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_vam",
+  "mutant": "C3:<-><=@L254",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_vam",
+  "mutant": "C4:<-><=@L259",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_vam",
+  "mutant": "K:0@L241",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_vam",
+  "mutant": "K:0@L242",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_vam",
+  "mutant": "D@L244",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_vam",
+  "mutant": "K:0@L249",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_vam",
+  "mutant": "D@L249",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_vam",
+  "mutant": "D@L253",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_vam",
+  "mutant": "K:0@L263",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_vam",
+  "mutant": "D@L263",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_dakshin",
+  "mutant": "C1:<=-><@L276",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_dakshin",
+  "mutant": "C2:<-><=@L278",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_dakshin",
+  "mutant": "C3:<-><=@L287",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_dakshin",
+  "mutant": "C4:<-><=@L292",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_dakshin",
+  "mutant": "K:0@L274",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_dakshin",
+  "mutant": "K:0@L275",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_dakshin",
+  "mutant": "K:0@L277",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_dakshin",
+  "mutant": "D@L277",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_dakshin",
+  "mutant": "D@L279",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_dakshin",
+  "mutant": "K:1@L280",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_dakshin",
+  "mutant": "K:0@L282",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_dakshin",
+  "mutant": "D@L282",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_dakshin",
+  "mutant": "A:-@L285",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_dakshin",
+  "mutant": "D@L286",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_dakshin",
+  "mutant": "K:0@L296",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_dakshin",
+  "mutant": "D@L296",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_madhya",
+  "mutant": "C1:<=-><@L311",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_madhya",
+  "mutant": "C2:<-><=@L313",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_madhya",
+  "mutant": "C3:<-><=@L323",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_madhya",
+  "mutant": "C4:<-><=@L328",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_madhya",
+  "mutant": "C5:<-><=@L333",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_madhya",
+  "mutant": "K:0@L308",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_madhya",
+  "mutant": "K:0@L309",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_madhya",
+  "mutant": "K:0@L310",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_madhya",
+  "mutant": "D@L312",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_madhya",
+  "mutant": "K:0@L312",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_madhya",
+  "mutant": "D@L314",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_madhya",
+  "mutant": "K:1@L315",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_madhya",
+  "mutant": "D@L317",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_madhya",
+  "mutant": "K:0@L317",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_madhya",
+  "mutant": "D@L322",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_madhya",
+  "mutant": "A:-@L333",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_madhya",
+  "mutant": "D@L337",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_pad_madhya",
+  "mutant": "K:0@L337",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_varg_mool",
+  "mutant": "C4:<-><=@L365",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_varg_mool",
+  "mutant": "C12:>->>=@L398",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_varg_mool",
+  "mutant": "K:0@L352",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_varg_mool",
+  "mutant": "K:0@L358",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_varg_mool",
+  "mutant": "K:0@L358",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_varg_mool",
+  "mutant": "K:0@L362",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_varg_mool",
+  "mutant": "K:3@L398",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_varg_mool",
+  "mutant": "A:-@L399",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_sthir_mool",
+  "mutant": "C1:<-><=@L471",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_sthir_mool",
+  "mutant": "C2:>->>=@L472",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_sthir_mool",
+  "mutant": "K:0@L465",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_sthir_mool",
+  "mutant": "K:0@L506",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_sthir_mool",
+  "mutant": "D@L529",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_sthir_mool",
+  "mutant": "D@L553",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_chinhit",
+  "mutant": "C2:<-><=@L580",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_chinhit",
+  "mutant": "C3:<-><=@L589",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_chinhit",
+  "mutant": "K:0@L575",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_chinhit",
+  "mutant": "K:0@L576",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_chinhit",
+  "mutant": "D@L579",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_chinhit",
+  "mutant": "K:1@L582",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_chinhit",
+  "mutant": "K:0@L584",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_chinhit",
+  "mutant": "D@L584",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_chinhit",
+  "mutant": "D@L588",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_chinhit",
+  "mutant": "K:1@L593",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_chinhit",
+  "mutant": "K:0@L593",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_chinhit",
+  "mutant": "D@L593",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_sign_akshar",
+  "mutant": "C2:<-><=@L610",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_sign_akshar",
+  "mutant": "C3:<-><=@L619",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_sign_akshar",
+  "mutant": "K:0@L605",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_sign_akshar",
+  "mutant": "K:0@L606",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_sign_akshar",
+  "mutant": "D@L609",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_sign_akshar",
+  "mutant": "K:1@L612",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_sign_akshar",
+  "mutant": "K:0@L614",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_sign_akshar",
+  "mutant": "D@L614",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_sign_akshar",
+  "mutant": "D@L618",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_sign_akshar",
+  "mutant": "K:1@L623",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_sign_akshar",
+  "mutant": "K:0@L623",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "roop",
+  "name": "roop_sign_akshar",
+  "mutant": "D@L623",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sadhan",
+  "name": "bhaj_urdhva",
+  "mutant": "C3:>->>=@L34",
+  "result": "NO-WITNESS",
+  "inputs_tried": 361
+ },
+ {
+  "module": "sadhan",
+  "name": "bhaj_urdhva",
+  "mutant": "C4:>->>=@L35",
+  "result": "NO-WITNESS",
+  "inputs_tried": 361
+ },
+ {
+  "module": "sadhan",
+  "name": "bhaj_urdhva",
+  "mutant": "C5:<-><=@L37",
+  "result": "NO-WITNESS",
+  "inputs_tried": 361
+ },
+ {
+  "module": "sadhan",
+  "name": "bhaj_urdhva",
+  "mutant": "K:0@L35",
+  "result": "NO-WITNESS",
+  "inputs_tried": 361
+ },
+ {
+  "module": "sadhan",
+  "name": "bhaj_urdhva",
+  "mutant": "K:0@L37",
+  "result": "NO-WITNESS",
+  "inputs_tried": 361
+ },
+ {
+  "module": "sadhan",
+  "name": "util_chinha",
+  "mutant": "K:0@L44",
+  "result": "WITNESS",
+  "input": [
+   1
+  ],
+  "real": "1",
+  "mutant_gives": "0"
+ },
+ {
+  "module": "samanvaya",
+  "name": "pehchan",
+  "mutant": "A:*@L29",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "samanvaya",
+  "name": "pehchan",
+  "mutant": "D@L29",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "samanvaya",
+  "name": "matrika_yoga",
+  "mutant": "A:*@L55",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "samanvaya",
+  "name": "matrika_yoga",
+  "mutant": "A:*@L59",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "samanvaya",
+  "name": "skalar",
+  "mutant": "A:*@L65",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "samanvaya",
+  "name": "skalar",
+  "mutant": "A:*@L69",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "samanvaya",
+  "name": "matrika_gunana",
+  "mutant": "A:*@L89",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "samanvaya",
+  "name": "sadish_yoga",
+  "mutant": "C1:<-><=@L119",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "samanvaya",
+  "name": "sadish_yoga",
+  "mutant": "N@L119",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "samanvaya",
+  "name": "rekha_manak",
+  "mutant": "C3:<-><=@L138",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "samanvaya",
+  "name": "rekha_manak",
+  "mutant": "C4:>->>=@L142",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "samanvaya",
+  "name": "rekha_manak",
+  "mutant": "K:0@L132",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_yuj",
+  "mutant": "K:1@L43",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_samroop_diff",
+  "mutant": "A:*@L69",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_samroop_diff",
+  "mutant": "A:+@L69",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_samroop_diff",
+  "mutant": "A:*@L70",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_samroop_diff",
+  "mutant": "A:+@L70",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_samroop_diff",
+  "mutant": "K:0@L75",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_samroop_diff",
+  "mutant": "K:1@L79",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_samroop_diff",
+  "mutant": "K:1@L89",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_sangam",
+  "mutant": "A:*@L105",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_sangam",
+  "mutant": "A:+@L105",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_sangam",
+  "mutant": "A:*@L106",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_sangam",
+  "mutant": "A:+@L106",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_sangam",
+  "mutant": "K:0@L111",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_sangam",
+  "mutant": "K:1@L114",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_sangam",
+  "mutant": "K:0@L119",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_sangam",
+  "mutant": "K:1@L122",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_sampat",
+  "mutant": "A:*@L134",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_sampat",
+  "mutant": "A:+@L134",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_sampat",
+  "mutant": "K:0@L138",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_sampat",
+  "mutant": "K:1@L142",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_bhed",
+  "mutant": "A:*@L155",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_bhed",
+  "mutant": "A:+@L155",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_bhed",
+  "mutant": "K:0@L159",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_bhed",
+  "mutant": "K:1@L163",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_asti_upasamuh",
+  "mutant": "A:*@L200",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_asti_upasamuh",
+  "mutant": "A:+@L200",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_asti_upasamuh",
+  "mutant": "K:0@L204",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_tak_mala",
+  "mutant": "C2:<-><=@L244",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_tak_mala",
+  "mutant": "C3:<-><=@L254",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_tak_mala",
+  "mutant": "C5:>->>=@L257",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_tak_mala",
+  "mutant": "A:*@L222",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_tak_mala",
+  "mutant": "A:+@L222",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_tak_mala",
+  "mutant": "A:*@L224",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_tak_mala",
+  "mutant": "A:+@L224",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_tak_mala",
+  "mutant": "A:*@L225",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_tak_mala",
+  "mutant": "K:0@L229",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_tak_mala",
+  "mutant": "K:0@L230",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_tak_mala",
+  "mutant": "K:0@L232",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_tak_mala",
+  "mutant": "K:0@L233",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sangrah",
+  "name": "rakh_tak_mala",
+  "mutant": "K:0@L235",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sankhyiki",
+  "name": "laghutama",
+  "mutant": "C3:<-><=@L40",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "sankhyiki",
+  "name": "laghutama",
+  "mutant": "K:0@L36",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "sankhyiki",
+  "name": "laghutama",
+  "mutant": "K:1@L41",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "sankhyiki",
+  "name": "adhikatama",
+  "mutant": "C3:>->>=@L53",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "sankhyiki",
+  "name": "adhikatama",
+  "mutant": "K:0@L49",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "sankhyiki",
+  "name": "adhikatama",
+  "mutant": "K:1@L54",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "sankhyiki",
+  "name": "prasaran",
+  "mutant": "K:0@L67",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "sankhyiki",
+  "name": "sankhyiki_vargmool",
+  "mutant": "C2:<-><=@L86",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "sankhyiki",
+  "name": "sankhyiki_vargmool",
+  "mutant": "K:0@L85",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "sankhyiki",
+  "name": "sankhyiki_vargmool",
+  "mutant": "K:1000@L86",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "sankhyiki",
+  "name": "sankhyiki_vargmool",
+  "mutant": "K:1@L88",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "sankhyiki",
+  "name": "bindu",
+  "mutant": "C1:<-><=@L103",
+  "result": "NOT-TRIED",
+  "why": "no number input runs cleanly"
+ },
+ {
+  "module": "sankhyiki",
+  "name": "purna_laghutama",
+  "mutant": "C3:<-><=@L154",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sankhyiki",
+  "name": "purna_laghutama",
+  "mutant": "K:0@L149",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sankhyiki",
+  "name": "purna_adhikatama",
+  "mutant": "C3:>->>=@L167",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sankhyiki",
+  "name": "purna_adhikatama",
+  "mutant": "K:0@L162",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sankhyiki",
+  "name": "purna_vyapti",
+  "mutant": "C1:<=-><@L175",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sankhyiki",
+  "name": "purna_vyapti",
+  "mutant": "K:0@L175",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sankhyiki",
+  "name": "purna_prasaran",
+  "mutant": "K:0@L182",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sankhyiki",
+  "name": "purna_prasaran",
+  "mutant": "K:0@L185",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "sankhyiki",
+  "name": "purna_prasaran",
+  "mutant": "K:0@L186",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "shreni",
+  "name": "budbud_shreni",
+  "mutant": "C1:<-><=@L15",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "shreni",
+  "name": "budbud_shreni",
+  "mutant": "C3:>->>=@L18",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "shreni",
+  "name": "viparyay_mala",
+  "mutant": "C1:<-><=@L30",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "shreni",
+  "name": "laghu",
+  "mutant": "C3:<-><=@L44",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "shreni",
+  "name": "laghu",
+  "mutant": "K:1@L45",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "shreni",
+  "name": "adhik",
+  "mutant": "C3:>->>=@L56",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "shreni",
+  "name": "adhik",
+  "mutant": "K:1@L53",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "shreni",
+  "name": "anwesh_sarak",
+  "mutant": "K:0@L73",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "shreni",
+  "name": "asti_sorted",
+  "mutant": "K:1@L93",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "shreni",
+  "name": "asti_sorted",
+  "mutant": "K:1@L95",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "shreni",
+  "name": "dwi_anwesh",
+  "mutant": "C3:<-><=@L106",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "shreni",
+  "name": "dwi_anwesh",
+  "mutant": "K:0@L101",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "shreni",
+  "name": "dwi_anwesh",
+  "mutant": "A:-@L102",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "shreni",
+  "name": "dwi_anwesh",
+  "mutant": "K:1@L106",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "shreni",
+  "name": "shankh_shreni",
+  "mutant": "C5:>->>=@L121",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "shreni",
+  "name": "shankh_shreni",
+  "mutant": "A:/@L112",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "shreni",
+  "name": "shankh_shreni",
+  "mutant": "K:2@L112",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "shreni",
+  "name": "nivesh_shreni",
+  "mutant": "C4:>->>=@L150",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "shreni",
+  "name": "nivesh_shreni",
+  "mutant": "K:1@L148",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "shreni",
+  "name": "nivesh_shreni",
+  "mutant": "K:1@L154",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "shreni",
+  "name": "mil_shreni_punar",
+  "mutant": "R",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "shreni",
+  "name": "mil_shreni_punar",
+  "mutant": "C8:<-><=@L193",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "shreni",
+  "name": "mil_shreni_punar",
+  "mutant": "K:0@L165",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "shreni",
+  "name": "mil_shreni_punar",
+  "mutant": "K:1@L181",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "shreni",
+  "name": "mil_shreni_punar",
+  "mutant": "K:1@L184",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "shreni",
+  "name": "mil_shreni_punar",
+  "mutant": "K:0@L209",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "shreni",
+  "name": "mil_shreni",
+  "mutant": "A:*@L213",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_srij",
+  "mutant": "C1:<-><=@L51",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_srij",
+  "mutant": "C2:<-><=@L53",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_srij",
+  "mutant": "K:0@L48",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_srij",
+  "mutant": "K:0@L49",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_srij",
+  "mutant": "K:0@L50",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_srij",
+  "mutant": "K:1@L51",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_srij",
+  "mutant": "K:1@L51",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_srij",
+  "mutant": "A:*@L52",
+  "result": "WITNESS",
+  "input": [
+   3037000499
+  ],
+  "real": "0",
+  "mutant_gives": "139713393201152"
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_srij",
+  "mutant": "K:8@L52",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_srij",
+  "mutant": "K:0@L53",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_srij",
+  "mutant": "A:*@L54",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_srij",
+  "mutant": "K:0@L55",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_srij",
+  "mutant": "K:0@L55",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_srij",
+  "mutant": "K:0@L58",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_srij",
+  "mutant": "D@L58",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_vardh",
+  "mutant": "R",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_vardh",
+  "mutant": "C2:<-><=@L73",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_vardh",
+  "mutant": "A:*@L68",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_vardh",
+  "mutant": "K:2@L68",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_vardh",
+  "mutant": "A:*@L69",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_vardh",
+  "mutant": "K:0@L72",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_vardh",
+  "mutant": "K:0@L72",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_vardh",
+  "mutant": "K:0@L73",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_vardh",
+  "mutant": "K:1@L79",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_khip",
+  "mutant": "K:0@L87",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_sangrah",
+  "mutant": "K:0@L110",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_nivesh",
+  "mutant": "K:0@L128",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_nivesh",
+  "mutant": "K:0@L129",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_nivesh",
+  "mutant": "K:1@L132",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_nivesh",
+  "mutant": "K:0@L133",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_nivesh",
+  "mutant": "K:0@L136",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_apanay",
+  "mutant": "C3:<-><=@L157",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_apanay",
+  "mutant": "K:0@L151",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_apanay",
+  "mutant": "K:0@L152",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_apanay",
+  "mutant": "A:-@L157",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_apanay",
+  "mutant": "K:0@L157",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_vinimay",
+  "mutant": "K:0@L173",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_vinimay",
+  "mutant": "K:0@L174",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_vinimay",
+  "mutant": "K:0@L177",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_viparyay",
+  "mutant": "C1:<-><=@L195",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_viparyay",
+  "mutant": "K:0@L194",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_adhik",
+  "mutant": "K:0@L232",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_adhik",
+  "mutant": "D@L232",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_adhik",
+  "mutant": "K:0@L235",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_adhik",
+  "mutant": "D@L235",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_adhik",
+  "mutant": "K:0@L236",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_yog",
+  "mutant": "K:0@L243",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_gan",
+  "mutant": "K:0@L250",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_anwesh",
+  "mutant": "K:0@L257",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "chay_apanay",
+  "mutant": "K:0@L330",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "chay_apanay",
+  "mutant": "K:0@L331",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "chay_avalok",
+  "mutant": "K:0@L347",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "chay_avalok",
+  "mutant": "K:0@L349",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "chay_avalok",
+  "mutant": "D@L349",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "chay_rikta",
+  "mutant": "K:0@L360",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "avali_srij",
+  "mutant": "C1:<-><=@L382",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "avali_srij",
+  "mutant": "C2:<-><=@L384",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "avali_srij",
+  "mutant": "K:0@L379",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "avali_srij",
+  "mutant": "K:0@L380",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "avali_srij",
+  "mutant": "K:0@L381",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "avali_srij",
+  "mutant": "K:1@L382",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "avali_srij",
+  "mutant": "K:1@L382",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "avali_srij",
+  "mutant": "A:*@L383",
+  "result": "WITNESS",
+  "input": [
+   3037000499
+  ],
+  "real": "0",
+  "mutant_gives": "140028479705088"
+ },
+ {
+  "module": "suchi",
+  "name": "avali_srij",
+  "mutant": "K:8@L383",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "avali_srij",
+  "mutant": "K:0@L384",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "avali_srij",
+  "mutant": "K:0@L384",
+  "result": "WITNESS",
+  "input": [
+   9223372036854775807
+  ],
+  "real": "0",
+  "mutant_gives": "1"
+ },
+ {
+  "module": "suchi",
+  "name": "avali_srij",
+  "mutant": "A:*@L385",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "avali_srij",
+  "mutant": "K:0@L386",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "avali_srij",
+  "mutant": "K:0@L386",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "avali_srij",
+  "mutant": "K:0@L389",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "avali_srij",
+  "mutant": "D@L389",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "avali_srij",
+  "mutant": "K:3@L392",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "avali_srij",
+  "mutant": "D@L392",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "avali_pravesh",
+  "mutant": "C3:<-><=@L414",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "avali_pravesh",
+  "mutant": "K:0@L401",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "avali_pravesh",
+  "mutant": "K:0@L402",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "avali_pravesh",
+  "mutant": "K:0@L403",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "avali_pravesh",
+  "mutant": "K:0@L404",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "avali_pravesh",
+  "mutant": "K:0@L405",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "avali_pravesh",
+  "mutant": "A:*@L409",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "avali_pravesh",
+  "mutant": "K:2@L409",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "avali_pravesh",
+  "mutant": "K:0@L411",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "avali_pravesh",
+  "mutant": "K:0@L411",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "avali_pravesh",
+  "mutant": "D@L413",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "avali_pravesh",
+  "mutant": "K:0@L414",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "avali_nishkas",
+  "mutant": "K:0@L434",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "avali_nishkas",
+  "mutant": "K:0@L435",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "avali_nishkas",
+  "mutant": "K:1@L442",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "avali_avalok",
+  "mutant": "K:0@L452",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "avali_avalok",
+  "mutant": "K:0@L454",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "avali_avalok",
+  "mutant": "D@L454",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "avali_rikta",
+  "mutant": "K:3@L509",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "avali_rikta",
+  "mutant": "K:0@L509",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "avali_rikta",
+  "mutant": "D@L509",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "suchi",
+  "name": "avali_shunya",
+  "mutant": "K:0@L516",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "ank_tak_varna",
+  "mutant": "A:*@L50",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "ank_tak_varna",
+  "mutant": "K:0@L72",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_ank",
+  "mutant": "D@L94",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_ank",
+  "mutant": "K:0@L94",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_ank",
+  "mutant": "K:0@L95",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_ank",
+  "mutant": "D@L102",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_ank",
+  "mutant": "K:0@L102",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_ank",
+  "mutant": "K:0@L102",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_ank",
+  "mutant": "K:57@L105",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_ank",
+  "mutant": "K:0@L106",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_ank",
+  "mutant": "K:0@L106",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_ank",
+  "mutant": "K:922337203685477580@L109",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "ank_tak_aadhar_varna",
+  "mutant": "A:*@L141",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "ank_tak_aadhar_varna",
+  "mutant": "D@L144",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "ank_tak_aadhar_varna",
+  "mutant": "K:0@L144",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "ank_tak_aadhar_varna",
+  "mutant": "K:0@L144",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "ank_tak_aadhar_varna",
+  "mutant": "D@L148",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "ank_tak_aadhar_varna",
+  "mutant": "K:0@L148",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "ank_tak_aadhar_varna",
+  "mutant": "K:0@L148",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "ank_tak_aadhar_varna",
+  "mutant": "D@L152",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "ank_tak_aadhar_varna",
+  "mutant": "K:0@L152",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "ank_tak_aadhar_varna",
+  "mutant": "D@L153",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "ank_tak_aadhar_varna",
+  "mutant": "K:0@L153",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "ank_tak_aadhar_varna",
+  "mutant": "K:1@L153",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "ank_tak_aadhar_varna",
+  "mutant": "D@L171",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_ank_aadhar",
+  "mutant": "D@L184",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_ank_aadhar",
+  "mutant": "K:0@L184",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_ank_aadhar",
+  "mutant": "K:0@L185",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_ank_aadhar",
+  "mutant": "K:1@L191",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_ank_aadhar",
+  "mutant": "K:57@L193",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_ank_aadhar",
+  "mutant": "K:102@L196",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "pad_vam",
+  "mutant": "A:-@L237",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "pad_vam",
+  "mutant": "K:0@L248",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "pad_vam",
+  "mutant": "D@L248",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_dashm",
+  "mutant": "C20:<-><=@L325",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_dashm",
+  "mutant": "C24:==->!=@L344",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_dashm",
+  "mutant": "C25:<-><=@L352",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_dashm",
+  "mutant": "C27:>=->>@L358",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_dashm",
+  "mutant": "C31:<-><=@L374",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_dashm",
+  "mutant": "C36:>->>=@L397",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_dashm",
+  "mutant": "C37:<-><=@L401",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_dashm",
+  "mutant": "C38:>->>=@L405",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_dashm",
+  "mutant": "K:0@L276",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_dashm",
+  "mutant": "K:1@L288",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_dashm",
+  "mutant": "K:57@L294",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_dashm",
+  "mutant": "D@L302",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_dashm",
+  "mutant": "K:1@L302",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_dashm",
+  "mutant": "K:69@L314",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_dashm",
+  "mutant": "A:+@L327",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_dashm",
+  "mutant": "N@L344",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_dashm",
+  "mutant": "A:+@L345",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_dashm",
+  "mutant": "K:1000@L374",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_dashm",
+  "mutant": "D@L391",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_dashm",
+  "mutant": "K:0@L391",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "vakyank",
+  "name": "varna_tak_dashm",
+  "mutant": "A:/@L423",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "gan_swar",
+  "mutant": "C1:<-><=@L58",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "gan_akshar",
+  "mutant": "K:0@L70",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "asti_sarv_ank",
+  "mutant": "K:0@L92",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "asti_sarv_ank",
+  "mutant": "K:1@L95",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_sam",
+  "mutant": "C2:<-><=@L117",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_sam",
+  "mutant": "K:0@L116",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_anwesh",
+  "mutant": "A:-@L149",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_pratisthap",
+  "mutant": "K:0@L186",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_pratisthap",
+  "mutant": "D@L194",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_pratisthap",
+  "mutant": "A:+@L200",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_pratisthap",
+  "mutant": "D@L223",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_pratisthap",
+  "mutant": "K:0@L223",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_bhed",
+  "mutant": "C13:>=->>@L305",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_bhed",
+  "mutant": "K:0@L265",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_bhed",
+  "mutant": "K:0@L267",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_bhed",
+  "mutant": "K:1@L310",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_yuj",
+  "mutant": "K:1@L343",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_yuj",
+  "mutant": "K:0@L348",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_yuj",
+  "mutant": "D@L348",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_chhid",
+  "mutant": "C2:>=->>@L361",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_chhid",
+  "mutant": "C5:<=-><@L370",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_chhid",
+  "mutant": "K:0@L362",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_chhid",
+  "mutant": "D@L362",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_chhid",
+  "mutant": "K:0@L371",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_chhid",
+  "mutant": "D@L371",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_chhid",
+  "mutant": "K:0@L383",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_chhid",
+  "mutant": "D@L383",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_unnat",
+  "mutant": "C1:<-><=@L395",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_unnat",
+  "mutant": "C2:<-><=@L399",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_unnat",
+  "mutant": "K:0@L395",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_unnat",
+  "mutant": "K:0@L396",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_unnat",
+  "mutant": "D@L396",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_unnat",
+  "mutant": "K:0@L407",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_unnat",
+  "mutant": "D@L407",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_avanat",
+  "mutant": "C1:<-><=@L416",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_avanat",
+  "mutant": "C2:<-><=@L420",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_avanat",
+  "mutant": "K:0@L416",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_avanat",
+  "mutant": "K:0@L417",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_avanat",
+  "mutant": "D@L417",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_avanat",
+  "mutant": "K:0@L428",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_avanat",
+  "mutant": "D@L428",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_aadi",
+  "mutant": "K:0@L442",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_aadi",
+  "mutant": "K:0@L444",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_aadi",
+  "mutant": "K:1@L445",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_ant",
+  "mutant": "K:0@L457",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_ant",
+  "mutant": "K:1@L460",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_tul",
+  "mutant": "C1:<-><=@L473",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_tul",
+  "mutant": "K:0@L471",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_tul",
+  "mutant": "N@L473",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_tul",
+  "mutant": "K:1@L476",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_tul",
+  "mutant": "K:1@L477",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_tul",
+  "mutant": "K:1@L480",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_viparyay",
+  "mutant": "C1:<=-><@L496",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_viparyay",
+  "mutant": "C2:<-><=@L502",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_viparyay",
+  "mutant": "K:0@L493",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_viparyay",
+  "mutant": "K:0@L494",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_viparyay",
+  "mutant": "K:0@L495",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_viparyay",
+  "mutant": "K:0@L496",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_viparyay",
+  "mutant": "K:0@L497",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_viparyay",
+  "mutant": "K:0@L497",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_viparyay",
+  "mutant": "D@L497",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_viparyay",
+  "mutant": "K:0@L498",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_viparyay",
+  "mutant": "D@L500",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_viparyay",
+  "mutant": "D@L512",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_gan",
+  "mutant": "K:0@L527",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_gan",
+  "mutant": "K:0@L528",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_gan",
+  "mutant": "A:-@L529",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_gan",
+  "mutant": "A:-@L530",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ },
+ {
+  "module": "varna",
+  "name": "varna_gan",
+  "mutant": "A:+@L533",
+  "result": "NOT-TRIED",
+  "why": "a parameter is a list, string or record"
+ }
+]

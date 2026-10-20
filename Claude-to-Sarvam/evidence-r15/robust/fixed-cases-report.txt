@@ -1,0 +1,171 @@
+ERROR     empty                                    ERROR Sutram Error: vyakaran dosh, pankti 1:1, shabd 'patra-ant'
+ERROR     only-newlines                            ERROR Sutram Error: vyakaran dosh, pankti 1001:1, shabd 'patra-ant'
+ERROR     only-spaces                              ERROR Sutram Error: vyakaran dosh, pankti 1:2, shabd 'patra-ant'
+ERROR     only-comment                             ERROR Sutram Error: vyakaran dosh, pankti 2:1, shabd 'patra-ant'
+ERROR     only-block-comment-unclosed              ERROR Sutram Error: vyakaran dosh, pankti 3:1, shabd 'patra-ant'
+ERROR     nul-alone                                ERROR Sutram Error: vyakaran dosh, pankti 1:2, shabd 'patra-ant'
+ERROR     nul-many                                 ERROR Sutram Error: vyakaran dosh, pankti 1:2, shabd 'patra-ant'
+ERROR     nul-in-identifier                        ERROR in.sm:2:13: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'b'
+ACCEPTED  nul-in-string                            ACCEPTED Siddh: 82 baait sankalit
+ACCEPTED  nul-after-program                        ACCEPTED Siddh: 180 baait sankalit
+ERROR     unclosed-brace                           ERROR Sutram Error: vyakaran dosh, pankti 3:1, shabd 'patra-ant'
+ERROR     unclosed-brace-function                  ERROR Sutram Error: vyakaran dosh, pankti 5:1, shabd '}'
+ACCEPTED  extra-close-brace                        ACCEPTED Siddh: 180 baait sankalit
+ERROR     unclosed-paren                           ERROR Sutram Error: vyakaran dosh, pankti 4:1, shabd 'patra-ant'
+ERROR     unclosed-string                          ERROR Sutram Error: vyakaran dosh, pankti 4:1, shabd 'patra-ant'
+ERROR     unclosed-string-eof                      ERROR Sutram Error: vyakaran dosh, pankti 2:15, shabd 'patra-ant'
+ERROR     unclosed-index                           ERROR Sutram Error: vyakaran dosh, pankti 3:9, shabd '='
+ERROR     operator-at-eof                          ERROR Sutram Error: vyakaran dosh, pankti 2:18, shabd 'patra-ant'
+ERROR     keyword-only                             ERROR Sutram Error: vyakaran dosh, pankti 1:1, shabd 'yadi'
+ERROR     mukhya-only                              ERROR Sutram Error: vyakaran dosh, pankti 1:7, shabd 'patra-ant'
+ACCEPTED  mukhya-twice                             ACCEPTED Siddh: 180 baait sankalit
+ERROR     no-mukhya                                ERROR Sutram Error: vyakaran dosh, pankti 4:1, shabd 'patra-ant'
+ACCEPTED  return-in-mukhya-no-value                ACCEPTED Siddh: 78 baait sankalit
+ERROR     lone-else                                ERROR Sutram Error: vyakaran dosh, pankti 2:21, shabd '}'
+ERROR     lone-bang                                ERROR Sutram Error: vyakaran dosh, pankti 2:12, shabd ')'
+ERROR     double-minus                             ERROR Sutram Error: vyakaran dosh, pankti 4:1, shabd 'patra-ant'
+ERROR     seven-params                             ERROR Sutram Error: vyakaran dosh, pankti 1:30, shabd 'h'
+ERROR     call-100-args                            ERROR Sutram Error: vyakaran dosh, pankti 5:31, shabd '1'
+ERROR     call-undefined                           ERROR Sutram Error: agyat prakriya: nope
+ACCEPTED  recursive-type                           ACCEPTED Siddh: 180 baait sankalit
+ERROR     rachana-unclosed                         ERROR Sutram Error: vyakaran dosh, pankti 2:1, shabd 'mukhya'
+ACCEPTED  mala-zero                                ACCEPTED Siddh: 248 baait sankalit
+ACCEPTED  mala-negative                            ACCEPTED Siddh: 253 baait sankalit
+ACCEPTED  mala-huge                                ACCEPTED Siddh: 253 baait sankalit
+ACCEPTED  kosh-huge                                ACCEPTED Siddh: 269 baait sankalit
+ACCEPTED  literal-overflow                         ACCEPTED Siddh: 185 baait sankalit
+ACCEPTED  literal-10k-digits                       ACCEPTED Siddh: 185 baait sankalit
+ACCEPTED  float-literal-10k-digits                 ACCEPTED Siddh: 193 baait sankalit
+ERROR     float-exponent                           ERROR in.sm:2:17: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'e999999'
+ERROR     identifier-1MB                           ERROR Sutram Error: vyakaran dosh, pankti 1:2, shabd 'patra-ant'
+ERROR     string-1MB                               ERROR Sutram Error: vyakaran dosh, pankti 1:2, shabd 'patra-ant'
+ERROR     comment-1MB                              ERROR Sutram Error: vyakaran dosh, pankti 1:2, shabd 'patra-ant'
+ACCEPTED  parens-100                               ACCEPTED Siddh: 180 baait sankalit
+ERROR     parens-unclosed-100                      ERROR Sutram Error: vyakaran dosh, pankti 3:1, shabd '}'
+ERROR     braces-100                               ERROR Sutram Error: vyakaran dosh, pankti 3:1, shabd '}'
+ACCEPTED  yadi-nest-100                            ACCEPTED Siddh: 1580 baait sankalit
+ACCEPTED  unary-minus-100                          ACCEPTED Siddh: 180 baait sankalit
+ACCEPTED  ternary-chain-100                        ACCEPTED Siddh: 2580 baait sankalit
+ACCEPTED  sum-chain-100                            ACCEPTED Siddh: 180 baait sankalit
+ACCEPTED  statements-100                           ACCEPTED Siddh: 13149 baait sankalit
+ACCEPTED  locals-100                               ACCEPTED Siddh: 1299 baait sankalit
+ACCEPTED  called-locals-100                        ACCEPTED Siddh: 1259 baait sankalit
+ACCEPTED  functions-100                            ACCEPTED Siddh: 3280 baait sankalit
+ACCEPTED  globals-100                              ACCEPTED Siddh: 2180 baait sankalit
+ERROR     fields-100                               ERROR Sutram Error: rachana kshetra seema atikram
+ACCEPTED  call-depth-100                           ACCEPTED Siddh: 911 baait sankalit
+ACCEPTED  parens-1000                              ACCEPTED Siddh: 180 baait sankalit
+ERROR     parens-unclosed-1000                     ERROR Sutram Error: vyakaran dosh, pankti 3:1, shabd '}'
+ERROR     braces-1000                              ERROR Sutram Error: vyakaran dosh, pankti 3:1, shabd '}'
+ERROR     yadi-nest-1000                           ERROR Sutram Error: khand gahrai seema atikram
+ACCEPTED  unary-minus-1000                         ACCEPTED Siddh: 180 baait sankalit
+ACCEPTED  ternary-chain-1000                       ACCEPTED Siddh: 24180 baait sankalit
+ACCEPTED  sum-chain-1000                           ACCEPTED Siddh: 180 baait sankalit
+ERROR     statements-1000                          ERROR Sutram Error: khand kathan seema atikram
+ERROR     locals-1000                              ERROR Sutram Error: khand kathan seema atikram
+ERROR     called-locals-1000                       ERROR Sutram Error: khand kathan seema atikram
+ERROR     functions-1000                           ERROR Sutram Error: prakriya paribhasha-suchi seema atikram
+ERROR     globals-1000                             ERROR Sutram Error: ghatak-star vitti seema atikram
+ERROR     fields-1000                              ERROR Sutram Error: rachana kshetra seema atikram
+ERROR     call-depth-1000                          ERROR Sutram Error: aahvan-suchi seema atikram
+ACCEPTED  parens-10000                             ACCEPTED Siddh: 180 baait sankalit
+ERROR     parens-unclosed-10000                    ERROR Sutram Error: vyakaran dosh, pankti 3:1, shabd '}'
+ERROR     braces-10000                             ERROR Sutram Error: vyakaran dosh, pankti 3:1, shabd '}'
+ERROR     yadi-nest-10000                          ERROR Sutram Error: khand gahrai seema atikram
+ACCEPTED  unary-minus-10000                        ACCEPTED Siddh: 180 baait sankalit
+ERROR     ternary-chain-10000                      ERROR Sutram Error: vyakaran dosh, pankti 1:2, shabd 'patra-ant'
+ACCEPTED  sum-chain-10000                          ACCEPTED Siddh: 180 baait sankalit
+ERROR     statements-10000                         ERROR Sutram Error: khand kathan seema atikram
+ERROR     locals-10000                             ERROR Sutram Error: khand kathan seema atikram
+ERROR     called-locals-10000                      ERROR Sutram Error: khand kathan seema atikram
+ERROR     functions-10000                          ERROR Sutram Error: prakriya paribhasha-suchi seema atikram
+ERROR     globals-10000                            ERROR Sutram Error: ghatak-star vitti seema atikram
+ERROR     fields-10000                             ERROR Sutram Error: rachana kshetra seema atikram
+ERROR     call-depth-10000                         ERROR Sutram Error: aahvan-suchi seema atikram
+CRASH     parens-100000                            CRASH SIGSEGV
+CRASH     parens-unclosed-100000                   CRASH SIGSEGV
+CRASH     braces-100000                            CRASH SIGSEGV
+ERROR     yadi-nest-100000                         ERROR Sutram Error: khand gahrai seema atikram
+CRASH     unary-minus-100000                       CRASH SIGSEGV
+ERROR     ternary-chain-100000                     ERROR Sutram Error: vyakaran dosh, pankti 1:2, shabd 'patra-ant'
+ERROR     sum-chain-100000                         ERROR Sutram Error: vakya-vriksh seema atikram
+ERROR     statements-100000                        ERROR Sutram Error: khand kathan seema atikram
+ERROR     locals-100000                            ERROR Sutram Error: khand kathan seema atikram
+ERROR     called-locals-100000                     ERROR Sutram Error: khand kathan seema atikram
+ERROR     functions-100000                         ERROR Sutram Error: prakriya paribhasha-suchi seema atikram
+ERROR     globals-100000                           ERROR Sutram Error: ghatak-star vitti seema atikram
+ERROR     fields-100000                            ERROR Sutram Error: rachana kshetra seema atikram
+CRASH     call-depth-100000                        CRASH SIGSEGV
+ERROR     utf8-lone-continuation-in-identifier     ERROR Sutram Error [E_UTF8]: /tmp/tmpoct_tjce/in.sm:2: srote ashuddham khanditam va UTF-8
+ACCEPTED  utf8-lone-continuation-in-string         ACCEPTED Siddh: 83 baait sankalit
+ACCEPTED  utf8-lone-continuation-in-comment        ACCEPTED Siddh: 180 baait sankalit
+ERROR     utf8-lone-continuation-at-eof            ERROR Sutram Error [E_UTF8]: /tmp/tmpoct_tjce/in.sm:4: srote ashuddham khanditam va UTF-8
+ERROR     utf8-lone-continuation-in-devanagari     ERROR Sutram Error [E_UTF8]: /tmp/tmpoct_tjce/in.sm:2: srote ashuddham khanditam va UTF-8
+ERROR     utf8-ff-in-identifier                    ERROR Sutram Error [E_UTF8]: /tmp/tmpoct_tjce/in.sm:2: srote ashuddham khanditam va UTF-8
+ACCEPTED  utf8-ff-in-string                        ACCEPTED Siddh: 83 baait sankalit
+ACCEPTED  utf8-ff-in-comment                       ACCEPTED Siddh: 180 baait sankalit
+ERROR     utf8-ff-at-eof                           ERROR Sutram Error [E_UTF8]: /tmp/tmpoct_tjce/in.sm:4: srote ashuddham khanditam va UTF-8
+ERROR     utf8-ff-in-devanagari                    ERROR Sutram Error [E_UTF8]: /tmp/tmpoct_tjce/in.sm:2: srote ashuddham khanditam va UTF-8
+ERROR     utf8-fe-in-identifier                    ERROR Sutram Error [E_UTF8]: /tmp/tmpoct_tjce/in.sm:2: srote ashuddham khanditam va UTF-8
+ACCEPTED  utf8-fe-in-string                        ACCEPTED Siddh: 83 baait sankalit
+ACCEPTED  utf8-fe-in-comment                       ACCEPTED Siddh: 180 baait sankalit
+ERROR     utf8-fe-at-eof                           ERROR Sutram Error [E_UTF8]: /tmp/tmpoct_tjce/in.sm:4: srote ashuddham khanditam va UTF-8
+ERROR     utf8-fe-in-devanagari                    ERROR Sutram Error [E_UTF8]: /tmp/tmpoct_tjce/in.sm:2: srote ashuddham khanditam va UTF-8
+ERROR     utf8-truncated-2-in-identifier           ERROR Sutram Error [E_UTF8]: /tmp/tmpoct_tjce/in.sm:2: srote ashuddham khanditam va UTF-8
+ACCEPTED  utf8-truncated-2-in-string               ACCEPTED Siddh: 83 baait sankalit
+ACCEPTED  utf8-truncated-2-in-comment              ACCEPTED Siddh: 180 baait sankalit
+ERROR     utf8-truncated-2-at-eof                  ERROR Sutram Error [E_UTF8]: /tmp/tmpoct_tjce/in.sm:4: srote ashuddham khanditam va UTF-8
+ERROR     utf8-truncated-2-in-devanagari           ERROR Sutram Error [E_UTF8]: /tmp/tmpoct_tjce/in.sm:2: srote ashuddham khanditam va UTF-8
+ERROR     utf8-truncated-3-in-identifier           ERROR Sutram Error [E_UTF8]: /tmp/tmpoct_tjce/in.sm:2: srote ashuddham khanditam va UTF-8
+ACCEPTED  utf8-truncated-3-in-string               ACCEPTED Siddh: 84 baait sankalit
+ACCEPTED  utf8-truncated-3-in-comment              ACCEPTED Siddh: 180 baait sankalit
+ERROR     utf8-truncated-3-at-eof                  ERROR Sutram Error [E_UTF8]: /tmp/tmpoct_tjce/in.sm:4: srote ashuddham khanditam va UTF-8
+ERROR     utf8-truncated-3-in-devanagari           ERROR Sutram Error [E_UTF8]: /tmp/tmpoct_tjce/in.sm:2: srote ashuddham khanditam va UTF-8
+ERROR     utf8-truncated-4-in-identifier           ERROR Sutram Error [E_UTF8]: /tmp/tmpoct_tjce/in.sm:2: srote ashuddham khanditam va UTF-8
+ACCEPTED  utf8-truncated-4-in-string               ACCEPTED Siddh: 85 baait sankalit
+ACCEPTED  utf8-truncated-4-in-comment              ACCEPTED Siddh: 180 baait sankalit
+ERROR     utf8-truncated-4-at-eof                  ERROR Sutram Error [E_UTF8]: /tmp/tmpoct_tjce/in.sm:4: srote ashuddham khanditam va UTF-8
+ERROR     utf8-truncated-4-in-devanagari           ERROR Sutram Error [E_UTF8]: /tmp/tmpoct_tjce/in.sm:2: srote ashuddham khanditam va UTF-8
+ERROR     utf8-overlong-slash-in-identifier        ERROR Sutram Error [E_UTF8]: /tmp/tmpoct_tjce/in.sm:2: srote ashuddham khanditam va UTF-8
+ACCEPTED  utf8-overlong-slash-in-string            ACCEPTED Siddh: 84 baait sankalit
+ACCEPTED  utf8-overlong-slash-in-comment           ACCEPTED Siddh: 180 baait sankalit
+ERROR     utf8-overlong-slash-at-eof               ERROR Sutram Error [E_UTF8]: /tmp/tmpoct_tjce/in.sm:4: srote ashuddham khanditam va UTF-8
+ERROR     utf8-overlong-slash-in-devanagari        ERROR Sutram Error [E_UTF8]: /tmp/tmpoct_tjce/in.sm:2: srote ashuddham khanditam va UTF-8
+ERROR     utf8-overlong-nul-in-identifier          ERROR Sutram Error [E_UTF8]: /tmp/tmpoct_tjce/in.sm:2: srote ashuddham khanditam va UTF-8
+ACCEPTED  utf8-overlong-nul-in-string              ACCEPTED Siddh: 84 baait sankalit
+ACCEPTED  utf8-overlong-nul-in-comment             ACCEPTED Siddh: 180 baait sankalit
+ERROR     utf8-overlong-nul-at-eof                 ERROR Sutram Error [E_UTF8]: /tmp/tmpoct_tjce/in.sm:4: srote ashuddham khanditam va UTF-8
+ERROR     utf8-overlong-nul-in-devanagari          ERROR Sutram Error [E_UTF8]: /tmp/tmpoct_tjce/in.sm:2: srote ashuddham khanditam va UTF-8
+ERROR     utf8-surrogate-in-identifier             ERROR Sutram Error [E_UTF8]: /tmp/tmpoct_tjce/in.sm:2: srote ashuddham khanditam va UTF-8
+ACCEPTED  utf8-surrogate-in-string                 ACCEPTED Siddh: 85 baait sankalit
+ACCEPTED  utf8-surrogate-in-comment                ACCEPTED Siddh: 180 baait sankalit
+ERROR     utf8-surrogate-at-eof                    ERROR Sutram Error [E_UTF8]: /tmp/tmpoct_tjce/in.sm:4: srote ashuddham khanditam va UTF-8
+ERROR     utf8-surrogate-in-devanagari             ERROR Sutram Error [E_UTF8]: /tmp/tmpoct_tjce/in.sm:2: srote ashuddham khanditam va UTF-8
+ERROR     utf8-above-10ffff-in-identifier          ERROR Sutram Error [E_UTF8]: /tmp/tmpoct_tjce/in.sm:2: srote ashuddham khanditam va UTF-8
+ACCEPTED  utf8-above-10ffff-in-string              ACCEPTED Siddh: 86 baait sankalit
+ACCEPTED  utf8-above-10ffff-in-comment             ACCEPTED Siddh: 180 baait sankalit
+ERROR     utf8-above-10ffff-at-eof                 ERROR Sutram Error [E_UTF8]: /tmp/tmpoct_tjce/in.sm:4: srote ashuddham khanditam va UTF-8
+ERROR     utf8-above-10ffff-in-devanagari          ERROR Sutram Error [E_UTF8]: /tmp/tmpoct_tjce/in.sm:2: srote ashuddham khanditam va UTF-8
+ERROR     utf8-5-byte-in-identifier                ERROR Sutram Error [E_UTF8]: /tmp/tmpoct_tjce/in.sm:2: srote ashuddham khanditam va UTF-8
+ACCEPTED  utf8-5-byte-in-string                    ACCEPTED Siddh: 87 baait sankalit
+ACCEPTED  utf8-5-byte-in-comment                   ACCEPTED Siddh: 180 baait sankalit
+ERROR     utf8-5-byte-at-eof                       ERROR Sutram Error [E_UTF8]: /tmp/tmpoct_tjce/in.sm:4: srote ashuddham khanditam va UTF-8
+ERROR     utf8-5-byte-in-devanagari                ERROR Sutram Error [E_UTF8]: /tmp/tmpoct_tjce/in.sm:2: srote ashuddham khanditam va UTF-8
+ACCEPTED  bom                                      ACCEPTED Siddh: 180 baait sankalit
+ACCEPTED  bom-twice                                ACCEPTED Siddh: 180 baait sankalit
+ACCEPTED  cr-only                                  ACCEPTED Siddh: 180 baait sankalit
+ACCEPTED  crlf                                     ACCEPTED Siddh: 180 baait sankalit
+ERROR     utf16le                                  ERROR Sutram Error: vyakaran dosh, pankti 1:1, shabd 'm'
+ERROR     binary-random-64k                        ERROR Sutram Error [E_UTF8]: /tmp/tmpoct_tjce/in.sm:1: srote ashuddham khanditam va UTF-8
+ERROR     elf-binary-as-source                     ERROR Sutram Error [E_UTF8]: /tmp/tmpoct_tjce/in.sm:1: srote ashuddham khanditam va UTF-8
+ERROR     yoj-missing                              ERROR Sutram Error [E_MODULE_MISSING]: yoj patra aprapt: nahi_asti_module
+ERROR     yoj-empty-name                           ERROR Sutram Error [E_MODULE_MISSING]: yoj patra aprapt: mukhya()
+ERROR     yoj-path-traversal                       ERROR Sutram Error [E_MODULE_MISSING]: yoj patra aprapt: ../../etc/passwd
+ERROR     yoj-long-name                            ERROR Sutram Error: ashuddh yoj (roop: ghatak@upanaam, upanaam 31 baait tak)
+ACCEPTED  yoj-three-modules                        ACCEPTED Siddh: 6168 baait sankalit
+ERROR     yoj-eight-modules                        ERROR Sutram Error: vistarit srot seema atikram
+ACCEPTED  lang-pack-word-mix                       ACCEPTED Siddh: 180 baait sankalit
+ERROR     file-10MB-statements                     ERROR in.sm:1:1: Sutram Error [E_DUPLICATE_NAME]: punah ghoshana 'x'
+ERROR     file-50MB-statements                     ERROR in.sm:1:1: Sutram Error [E_DUPLICATE_NAME]: punah ghoshana 'x'
+ERROR     line-100MB                               ERROR Sutram Error: khand kathan seema atikram
+ERROR     line-100MB-in-mukhya                     ERROR Sutram Error: vakya-vriksh seema atikram
