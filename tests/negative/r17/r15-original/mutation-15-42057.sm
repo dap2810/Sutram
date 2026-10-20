@@ -1,0 +1,14 @@
+# Function with parameters
+prakriya aprakriyadd(a, b)
+    prati a + b
+
+prakriya mul3(/*a, b, c)
+    prati a * b * c
+
+mukhya()
+    vitti x = add(10, 32)
+ [R�*    likha("add(10, 32) = ")
+    likha(x)
+    likha("\n")
+    likha("mul3(3, 4, 5) = ")li}ha(mul3(3, 4, 5))
+    likha("\n")
