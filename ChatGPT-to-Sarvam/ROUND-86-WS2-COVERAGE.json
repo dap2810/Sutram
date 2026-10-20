@@ -1,0 +1,43 @@
+{
+  "snapshot": "64755d0f4dfdf89711f7c63ec94bc6f5917f2c95",
+  "source": "tools/crash_corpus.py",
+  "static_directory": "tests/negative/r17",
+  "classes": [
+    {
+      "kind": "R1",
+      "checkedIn": 1,
+      "generated": 0
+    },
+    {
+      "kind": "R2",
+      "checkedIn": 3,
+      "generated": 0
+    },
+    {
+      "kind": "R3",
+      "checkedIn": 2,
+      "generated": 0
+    },
+    {
+      "kind": "R4",
+      "checkedIn": 1,
+      "generated": 0
+    },
+    {
+      "kind": "R5",
+      "checkedIn": 2,
+      "generated": 0
+    },
+    {
+      "kind": "R6",
+      "checkedIn": 0,
+      "generated": 12
+    }
+  ],
+  "checked_in_total": 9,
+  "generated_total": 12,
+  "combined_total": 21,
+  "source_coverage": "ALL_6_CATEGORIES_PRESENT",
+  "native_execution_this_round": "NOT_RUN",
+  "previous_run": "Claude reports 21 passing cases on Linux; not independently repeated here"
+}
