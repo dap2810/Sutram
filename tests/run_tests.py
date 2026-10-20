@@ -15,6 +15,19 @@ import os, subprocess, sys, glob
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 COMPILER = os.environ.get("SUTRAM_COMPILER") or os.path.join(ROOT, "sutram_compiler")
+
+
+def ensure_executable(path):
+    """R13: the committed sutram_compiler must be mode 100755. A checkout that lost the
+    mode (a merge that uploads files one by one does that) used to stop the suite with
+    PermissionError; say so, and set the bit on this working copy."""
+    if os.path.isfile(path) and not os.access(path, os.X_OK):
+        os.chmod(path, os.stat(path).st_mode | 0o111)
+        print(f"NOTE: {os.path.relpath(path, ROOT)} was not executable; set +x on this copy. "
+              "The committed mode should be 100755 (git update-index --chmod=+x).")
+
+
+ensure_executable(COMPILER)
 EXAMPLES = os.path.join(ROOT, "examples")
 EXPECT = os.path.join(ROOT, "tests", "expect")
 TIMEOUT = 5
