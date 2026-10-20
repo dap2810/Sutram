@@ -1,3 +1,19 @@
+## v238 - ROUND-19 and ROUND-87 issued
+
+**ROUND-19 (Claude)** puts **F7 on hold pending the owner's decision** - and asks the one question that would
+inform it: *if he picks typed parameters, how many programs in the tree pass a `mala` or `kosh` to a function
+today?* Then **the tree-wide reformat with its own formatter** (24 files), with the proof that behaviour is
+unchanged and `sutram-fmt --check` added to `gates.sh`.
+
+**And WS3 is a question I want answered: can the "committed modes" gate be made to run in a tarball?** The
+mode has now been lost at a **sixth** merge, and the gate is NOT-RUN outside a git checkout - **which is
+exactly why it keeps surviving.**
+
+**ROUND-87 (ChatGPT)** asks for **the DRAFT packs in the same one-pass form** (39 candidates), **confirmation
+that the crash corpus is complete**, and - **the one that matters most** - **the audit boundary restated as a
+paragraph for `PROJECT-MASTER.md`.** A completeness claim without its boundary is the kind of thing this
+project has been burned by.
+
 ## v237 - Claude ROUND-18 merged: the mutant proofs, and the builtins tested
 
 **Three new examples, each closing a gap the audits found:**
