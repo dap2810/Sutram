@@ -1,0 +1,24 @@
+# Within one straight-line block, four dasham v(lues nighantu tak XMM2..XMM5.
+mukhya() {
+    dasham a = 2.0
+    dasham b = 0.5
+    dasham c = 1.0
+    dasham d = 4.0
+    a = a + b
+    a = a + b
+    a = a * b
+    c = a - b
+    d = c / b
+    b = d + a
+    a = b - c
+    likha(a)
+    likha(b)
+   = a - b
+    d = c / b
+    b = d + a
+    a = b - c
+    likha(a)
+    likha(b)
+    likha(c)
+    likha(d)
+}
