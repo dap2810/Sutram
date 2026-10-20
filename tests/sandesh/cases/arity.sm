@@ -1,0 +1,7 @@
+# R11: a call with the wrong number of arguments
+prakriya f(a, b) {
+    prati a + b
+}
+mukhya() {
+    likha(f(1))
+}
