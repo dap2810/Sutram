@@ -1,0 +1,17 @@
+# R79 GitHub Git blob SHA-1 identities (NOT SHA256)
+# Current verified main snapshot v201 d3325b13124bf80e299251eaa4a3cce7f5e924b3
+5ade34ed0287609b8f5d7e4f12873b7978479ac4  src/sutram_compiler.asm (main)
+f8da5ddb248a7f009f9909074b1a9b86780940c6  tools/r69_build.lock.json (main)
+85415d8dfa142fccf77d7cb64661582b3dce622b  win/sutram.exe (main, v182)
+85415d8dfa142fccf77d7cb64661582b3dce622b  sutram.exe (main, v182)
+432d3d9d539e02d7a20aa91c8ef4a3c67c834679  sutram_compiler (main Linux, v182)
+0399b72311b4c232f5b57ea7e8d5203e3a5c2b8a  Sutram-Setup.exe (main, old setup)
+
+# Draft PR #43 current review source after R79:
+0423632794d1c6f816cc219accfcd2429e897f4d  windows/native-installer/install-core.ps1
+33d81b52e2887157a187d4cc84f1702f5debe489  tests/r79/test_font_coverage_contract.py
+
+# SHA-256 of NEW installer payload: NOT_RUN / NOT PRODUCED
+# SHA-256 of new Sutram-Setup.exe: NOT_RUN / NOT PRODUCED
+# SHA-256 of compiled kosh experimental ELF: NOT_RUN / NOT PRODUCED
+# 14/14 source lock entries matched current remote tree.
