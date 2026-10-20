@@ -116,15 +116,15 @@ section .data
     s_semi       db ';',0
     s_H          db 'H',0
 
-    s_banner     db " Sutram IDE - the complete thread", 0
-    s_keys       db "  Ctrl-R Run  Ctrl-S Save  Ctrl-Z Undo  Ctrl-L Load  Ctrl-E Examples  Ctrl-T Shell  Ctrl-Q Quit ", 0
-    s_outtitle   db " Output", 0
-    s_modified   db " [modified]", 0
+    s_banner     db " Sutram sampadak - sampurna sutra", 0
+    s_keys       db "  Ctrl-R chal  Ctrl-S sanchay  Ctrl-Z punah  Ctrl-L khol  Ctrl-E udaharan  Ctrl-T samvad  Ctrl-Q nishkas ", 0
+    s_outtitle   db " phal", 0
+    s_modified   db " [asanchit]", 0
     s_pad6       db "      ", 0
     s_prompt     db "sutram> ", 0
     s_exdir      db "examples", 0
-    s_shellhdr   db " Shell", 0
-    s_shellhelp  db "  Enter Run  Ctrl-T Back to editor  Ctrl-Q Quit ", 0
+    s_shellhdr   db " samvad", 0
+    s_shellhelp  db "  Enter chal  Ctrl-T sampadakam prati  Ctrl-Q nishkas ", 0
     s_mukhya_br  db "mukhya() {", 10, 0
     s_close_br   db 10, "}", 10, 0
     s_exprefix   db "examples/", 0
