@@ -171,5 +171,4 @@ def main()->int:
         with args.output.open('x',encoding='utf-8') as f:f.write(content)
     return 0 if report['status']=='INVENTORY_PASS' else 2
 
-
 if __name__=='__main__':raise SystemExit(main())
