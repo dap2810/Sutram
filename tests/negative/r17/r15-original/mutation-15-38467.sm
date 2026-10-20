@@ -1,0 +1,110 @@
+vitti G1 = 9223372036854775806
+rachana S2 = { g0, g1, g2 }
+rachana S3 = { g0, g1, g2 }
+prakriya f0(q0_0, q0_1, q0_2, q0_3) {
+    vitti v4 = 40 < 16
+    vitti v5 = 42 ^ v4
+    vitti v6 = q0_3 << (1 & 63)
+    vitti v7 = 21 <= q0_3
+    vitti v8 = -1 > v5
+    vitti v9 = -G1
+    vitti v10 = q0_1 || q0_1
+    vitti v11 = v5 * G1
+    vitti v12 = q0_2 < 99
+    vitti v13 = 6
+    vitti v14 = 64
+    vitti v15 = v5 <= q0_0
+    vitti v16 = v6 || v5
+    vitti v17 = 56 > v4
+    vitti v18 = q0_2 + v13
+    vitti v19 = v10 / ((v9 & 15) + 1)
+    vitti v20 = q0_0 * 71
+    vitti v21 = (1936133776 ? q0_2 : 6887316527615182907)
+    vitti v22 = v15 | v10
+    vitti v23 = 99 | v4
+    vitti v24 = -4294967295
+    vitti v25 = 15 ^ v24
+    vitti v26 = v24 >= 5
+    vitti v27 = -8 >= v20
+    vitti v28 = q0_0 + (-19)
+    vitti v29 = v18 || v10
+    vitti v30 = -v12
+    vitti v31 = v30 < v10
+    vitti v32 = q0_3
+    vitti v33 = v28 >> (v21 & 63)
+    vitti v34 = v33
+    vitti v35 = v7
+    vitti v36 = v16
+    vitti v37 = v5 - v8
+    vitti v38 = 7363473802850911674
+    vitti v39 = v20
+    chakra i40 = -2 tak -2 {
+        vitti w41 = 0
+        yavat (w41 < 2) {
+     41 = w41 + 1
+            vitti v42 = (v13 == -1454956563 < v38) & (-6 >= v26) * (v21 % ((1880301290 & 15) + 1))
+        }
+        v38 = v28
+        vitti v43 = (q0_3 / ((q0_3 & 15) + 1) & (v21 == q0_1)) - ((v10 && 12) ^ v33)
+    }
+    yadi (34) {
+        sankhya v44 = (v39 != v31) & (v19 << (v17 & 63) | (4294967296 != v10))
+        vitti v45 = -1266208664
+    }
+    yadi ((v23 ? v15 : 98) | (19 && -9223372036854775807)) {
+        vitti v46 = -(91 << (v25 & 63)) << ((v18 ^ v9) * (v26 - 9223372036854775807) & 63)
+        mala a47[1]
+        a47[0] = (v30 ? v34 : q0_1)
+    }
+    mala a48[1]
+    a48[0] = q0_2 || v22
+    vitti v49 = (-1207346129) + (v38 - 61 ^ a48[a48[0] << (a48[0] & 63) & 0] % ((v25 & 15) + 1))
+    prati ((a48[-1208314000 & 0] ? G1 : v49) < (-1825181659) + v11) * ((v36 ? v49 : v25) * -v15)
+}
+mukhya() {
+    vitti m50 = G1 && G1
+    vitti m51 = 13 > G1
+    vitti m52 = m50 + m51
+    vitti m53 = m51 & -10
+    vitti m54 = -320945094
+    vitti m55 = m53 < 244007694
+    vitti p56 = nirmmita(24)
+    p56.g0 = G1 < m50 < (G1 ? G1 : 3)
+    p56.g1 = m53 >= (m50 >= 88)
+    p56.g2 = m55 < m50 >= 46 - m50
+    vitti m57 = f0((G1 ? G1 : 0), 22 < p56.g1, 1000163741 >> (m52 & 63), m54)
+    likha(m57)
+    yadi (m57 && f0(7, G1, m54, 50)) {
+        vitti v58 = m54
+        vitti v59 = f0((m52 ? 2143902395 : 4294967296), m50 >> (G1 & 63), m57 != m55, G1 >= m57)
+        vitti v60 = m52 || (v58 ? 75 : p56.g2) == f0(230708687, G1, m53, 11)
+        vitti v61 = -6926453507639772808
+    } anya {
+        m53 *= (-(G1 > -130529246) ? -(9 >= m53) : m53 * m50 | f0(p56.g2, m50, 3, m57))
+        vitti v62 = 76 <= (m54 <= p56.g0) <= m52
+    }
+    sankhya v63 = p56.g2
+    vitti m64 = f0(p56.g0 * (-9223372036854775807), m50, m55, m53 | 541628624)
+    likha(m64)
+    vitti v65 = (m53 ? (G1 ? m50 : G1) : p56.g2) | 12 / ((f0(m51, m55, 74, 91) & 15) + 1)
+    vitti m66 = f0(3138303649428660112 >> (-1633827055 & 63), 44 < m54, m54, m52 != v65)
+    likha(m66)
+    vitti m67 = f0((0 ? 9223372036854775806 : 31), m52 | v65, m64 != m57, f0(66, 436842698, 8, v65))
+    likha(m67)
+    likha(G1)
+    likha(m50)
+    likha(m51)
+    likha(m52)
+    likha(m53)
+    likha(m54)
+    likha(m55)
+    likha(m57)
+    likha(v63)
+    likha(m64)
+    likha(v65)
+    likha(m66)
+    likha(m67)
+    likha(p56.g0)
+    likha(p56.g1)
+    likha(p56.g2)
+}
