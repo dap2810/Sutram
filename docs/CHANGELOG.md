@@ -1,3 +1,46 @@
+## v219 - F7: a NEW segfault found while writing a benchmark. Minimal repro.
+
+**I was writing a performance benchmark and used the wrong argument type. The compiler did not tell me - it
+crashed.**
+
+```sm
+prakriya f(ok) {
+    ok[0] = 5
+    prati 1
+}
+mukhya() {
+    vitti x = 0
+    likha(f(x))
+}
+```
+```
+Siddh: ... sankalit        <- reports SUCCESS
+exit 139                   <- SEGFAULT
+```
+
+**One parameter, no locals - so it is NOT F1.** It is **indexing a parameter that is a scalar.**
+
+**And it reaches a shipped library function.** `lib/ganita.smlib`'s `ganita_janchit_yuj(a, b, ok)` indexes its
+third argument, so the obvious wrong call - passing a scalar - segfaults:
+
+```sm
+yitti ok = 0
+likha(ganita_janchit_yuj(1, 2, ok))
+```
+
+**The compiler already rejects undeclared names, unknown fields and undeclared arrays. It has the machinery.
+It is not applied to indexing a scalar.**
+
+**The failure mode is the same class as F1** - `Siddh: ... sankalit`, then the program dies - **and the user
+would not suspect the compiler.**
+
+**Recorded as F7 in `F7-SCALAR-INDEX-CRASH.md`, and added to ROUND-15 as WS4.** The robustness fuzzer is told
+this shape specifically, because **a generator of random VALID programs would not produce it** - this is a
+valid program whose type use is wrong, and the language has no check for it.
+
+**How it was found is the point: I was doing something else.** The benchmark was meant to measure the library,
+not audit it. **F1 was found by the owner doing something else too.** Neither came from a gate.
+
 ## v218 - item 9 found a real trap: likha prints a string variable as a POINTER
 
 ### The finding
