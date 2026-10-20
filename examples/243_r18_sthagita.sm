@@ -1,0 +1,9 @@
+# R18 F8: sthagita() ends the program at once, with exit status 0. Before ROUND-18 it
+# compiled to the privileged instruction hlt, and the program died with SIGSEGV
+# (exit 139). The builtin had no test (ChatGPT R85). Nothing after it runs.
+# expected: 1   then exit 0; the 2 is never printed
+mukhya() {
+    likha(1)
+    sthagita()
+    likha(2)
+}

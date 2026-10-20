@@ -219,7 +219,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v229) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v232) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r48_msg_near db ": Sutram Error [E_PARSE]: shabd '",0
@@ -9401,8 +9401,12 @@ push r12                  ; save r12 (parse_func_block uses it)
     call advance_tok
     inc qword [rel rachana_cnt]
     call maybe_semi
+    ; R18 F9: a rachana declaration is registered above and generates no code.
+    ; It used to return an AST_HALT node, so a rachana written inside a
+    ; function compiled to `hlt` and the program died there.
     call alloc_ast
-    mov qword [rax], AST_HALT
+    mov qword [rax], AST_BLOCK
+    mov qword [rax+8], 0
     pop r13                  ; restore r13
     pop r12                  ; restore r12
     pop rbx
@@ -13845,8 +13849,23 @@ gen_stmt:
     ret
 
 .gs_halt:
-    mov dil, 0xF4             ; hlt
+    ; R18 F8: sthagita() ends the program with exit status 0. It used to emit
+    ; `hlt`, a privileged instruction, so the program died with SIGSEGV.
+    ; mov eax, 60 (sys_exit) = B8 3C 00 00 00
+    mov dil, 0xB8
     call emit_byte
+    mov dil, 0x3C
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    call emit_byte
+    call emit_byte
+    ; xor edi, edi = 31 FF (status 0)
+    mov dil, 0x31
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    call emit_syscall         ; Linux: syscall; Windows: the runtime shim
     pop rbx
     ret
 

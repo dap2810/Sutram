@@ -1,0 +1,11 @@
+# R18 F9: a rachana declared inside a function. The declaration is registered and
+# generates no code. Before ROUND-18 it compiled to hlt (the same node as the old
+# sthagita) and the program died at the declaration.
+# expected: 1 5
+mukhya() {
+    likha(1)
+    rachana P = { a, b }
+    vitti p = nirmmita(16)
+    p.a = 5
+    likha(p.a)
+}
