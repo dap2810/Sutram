@@ -1,0 +1,7 @@
+# R11: a field no rachana has
+rachana P = { x }
+mukhya() {
+    vitti p = nirmmita(8)
+    p.x = 1
+    likha(p.q)
+}
