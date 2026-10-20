@@ -73,6 +73,8 @@ run_gate() {                      # name, then the command
       case "$line" in *", 0 failed"*) ok "$name ($line)";; *) bad "$name" "${line:-no summary}";; esac ;;
     "stdlib inventory") case "$(tail -1 /tmp/g_out.$$)" in *"modules"*) ok "$name ($(tail -1 /tmp/g_out.$$))";; *) bad "$name" "$(tail -1 /tmp/g_out.$$)";; esac ;;
     "version string")   case "$(tail -1 /tmp/g_out.$$)" in PASS*) ok "$name ($(tail -1 /tmp/g_out.$$ | sed 's/PASS version //'))";; *) bad "$name" "$(tail -1 /tmp/g_out.$$ | cut -c6-90)";; esac ;;
+    "operator precedence") line=$(head -1 /tmp/g_out.$$); case "$line" in *"; 0 disagree"*) ok "$name ($(echo "$line" | sed 's/;.*//'))";; *) bad "$name" "${line:-no summary}";; esac ;;
+    "crash corpus")     line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/crash corpus: //'))";; *) bad "$name" "${line:-no summary}";; esac ;;
     "pack messages")    case "$(tail -1 /tmp/g_out.$$)" in OK*) ok "$name (12 sets x 11 cases)";; *) bad "$name" "$(grep -m1 -E 'FAIL|differ|Error' /tmp/g_out.$$ | cut -c1-60)";; esac ;;
     *)                  ok "$name" ;;
   esac
@@ -88,6 +90,8 @@ run_gate "layer check"       python3 tools/check_layers.py
 run_gate "stdlib inventory"  python3 tools/gen_stdlib_ref.py
 run_gate "module graph"      python3 -m unittest discover -s tests/module_graph -p 'test_*.py'
 run_gate "pack messages"     python3 tests/sandesh/test_sandesh.py   # R11: every message in every pack
+run_gate "crash corpus"      python3 tools/crash_corpus.py --compiler ./sutram_compiler   # R17: invalid input must error, never crash
+run_gate "operator precedence" python3 tools/check_precedence.py --compiler ./sutram_compiler   # R17: the documented table, pair by pair
 run_gate "version string"    python3 tools/check_version.py --binary ./sutram_compiler   # R13: --version is the current version
 run_gate "performance"        python3 tools/bench_gate.py --compiler ./sutram_compiler --repeat 3
 
