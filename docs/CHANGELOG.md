@@ -1,3 +1,43 @@
+## v225 - THE FUZZERS FOUND BUGS. Claude R15: three defects in valid programs, 107 crashes on invalid input
+
+### The compiler fuzzer
+
+**Seed 15, 20,000 random VALID programs: all 20,000 print exactly what the reference computes** - 387,913
+output lines compared. **A clean run, and the largest single piece of evidence this project has ever had that
+the compiler is correct.**
+
+**But it found three defects first, in its first 500 programs.**
+
+- **D2, D3 and D4** were found by the fuzzer within 500 programs of seed 1.
+- **D1** was found by hand, checking the reference rules against the compiler.
+- **And with those four allowed back in, main's compiler CRASHES on 9 of 300 programs.**
+
+**So the clean 20,000-program run is clean because the generator now steers around four known defects.** That
+is stated plainly, which is what makes the number worth anything.
+
+**And the reducer is the part that makes this usable:** a **25 KB failing program shrank to 200 bytes in under
+a second**, and every step is still a valid program with a known expected output. **A 25 KB reproducer is a
+curiosity; a 200-byte one is a bug report.**
+
+### The robustness fuzzer
+
+**The compiler crashes on invalid input: 107 of the 50,171 inputs tried. All 107 fall into six kinds. None
+hangs. And none is fixed by the D2/D3 fix - each is a different defect.**
+
+**This is the answer to a question the project could not previously answer.** The compiler should **error** on
+bad input, never crash - **and 107 times it crashed instead.** The inputs include empty files, NUL bytes,
+unclosed braces and strings, nesting 100,000 deep, a 1 MB name, and malformed UTF-8.
+
+### Why this vindicates the plan's priority order
+
+**The fuzzers were item 1 because F1 and F7 both came from humans rather than gates.** F1 was found by the
+owner typing, F7 by me writing a benchmark. **Now, in one round, a machine found three defects in valid
+programs and 107 crashes on invalid input.**
+
+**That is the difference between a project that finds bugs and one that waits for a user to hit them.**
+
+**D1-D4 and the six crash kinds are now the top of the queue**, ahead of everything else on the plan.
+
 ## v224 - ChatGPT ROUND-83: the eleven packs pass the structural check, and the source is clean
 
 ### WS3 - the translation structural check: NO HARD VIOLATIONS, in any of the eleven packs
