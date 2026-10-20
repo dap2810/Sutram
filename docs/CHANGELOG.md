@@ -1,3 +1,49 @@
+## v235 - the fuzzer run now MEANS something, and the Gujarati review is nearly empty
+
+### The valid fuzzer, with NO workarounds
+
+**The workarounds were removed in R17 itself**, and the merged tool has no `--fuzz-not`, no `--include-known`
+and no `--precedence` switch.
+
+| Run | Result |
+|---|---|
+| seed 15, 20,000 programs, merged compiler | **20,000 agree, 0 fail** - 388,616 lines |
+| seed 15, 20,000, this round's compiler | **20,000 agree, 0 fail** - 388,616 lines |
+| seed 18, **50,171 hostile inputs** | **0 crashes, 0 hangs** |
+| seed 2, 300 programs, on the OLD compiler, for contrast | **178 fail** |
+
+**Counterexamples: none.** So the "20,000 passed" number is now a statement about the compiler rather than
+about the generator - **which is what I asked for and what makes it worth anything.**
+
+**And it states what a clean run does NOT cover**, which is the part most people leave out: **no floats, no
+strings, no arrays passed to functions, pure functions only (so evaluation order is untested), and no division
+by zero or out-of-range index.** **So the fuzzer proves a lot about the language's core and nothing about its
+edges** - and it says so itself.
+
+### The pack review: the three SUPPORTED packs have TWO candidates between them
+
+**ChatGPT delivered a one-pass review sheet for all 41 candidates across the eleven packs.** The count for
+the packs that matter:
+
+| Pack | Tier | Candidates |
+|---|---|---|
+| **Gujarati** | SUPPORTED | **0** |
+| **Hindi** | SUPPORTED | **2** |
+| **Sanskrit** | SUPPORTED | **0** |
+
+**So the review the owner was going to do - 128 messages per pack - is really TWO MESSAGES.** The structural
+check had already cleared everything else, and the human pass is now small enough to finish in a minute
+rather than half an hour.
+
+**That is the single most useful thing anyone has produced for the owner this stretch.** The work was never
+the reading; **it was narrowing 1,408 messages down to the two that need a person.**
+
+**And it is labelled correctly: "a human review queue, not an error list."**
+
+### Also delivered
+**R18-02 (the 15 mutant proofs), R18-03 (the builtins), R18-04 (what is open), R86-WS1 (the audit boundary),
+R86-WS2 (the crash corpus).** To be read.
+
 ## v234 - stale numbers fixed, and the "303 of 303" claim qualified
 
 ### The stale numbers
