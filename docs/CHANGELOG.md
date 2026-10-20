@@ -1,3 +1,16 @@
+## v206 - ROUND-13 and ROUND-81 issued under the three-language course
+
+**ROUND-13 (Claude)** leads with its own finding: **the committed `sutram_compiler`'s file mode breaks
+`run_tests.py` on a fresh checkout** - so a new person cloning the repo cannot run the tests. Then the 42
+Hindi-grammar messages in the default (now Sanskrit, since the default is Sanskrit throughout), **removing
+the English from both Linux IDEs**, and **applying the owner's Gujarati corrections when they arrive.**
+
+**ROUND-81 (ChatGPT)** leads with **the installer payload - third round, still open.** It is told plainly: if
+it cannot be rebuilt from its side, **say so and stop.** *A third round of silence is worse than a clear no.*
+
+**Both briefs carry the course change and the DRAFT/SUPPORTED split**, and both are told that if their work
+touches packs or message text, **the three SUPPORTED packs are what matter.**
+
 ## v205 - COURSE CHANGE: three languages get full development - Sanskrit, Gujarati, Hindi
 
 **The owner's decision, and the reasoning behind it.**
