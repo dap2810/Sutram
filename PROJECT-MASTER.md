@@ -202,6 +202,25 @@ Three parties work on it. **The repository is the only channel between them.**
 - **No antivirus or execution-policy bypass** advice, and no code requiring either.
 - **Fail closed** on unexpected input.
 
+### The language packs - three are SUPPORTED, eight are DRAFT
+
+**Decided 2026-10-20.** The project develops **three languages fully**: **Sanskrit (the default), Gujarati
+and Hindi.** A native speaker reviews those three.
+
+| Tier | Packs | Meaning |
+|---|---|---|
+| **SUPPORTED** | Sanskrit, Gujarati, Hindi | a speaker has read the message wording |
+| **DRAFT** | Marathi, Bengali, Punjabi, Odia, Tamil, Telugu, Kannada, Malayalam | in the tree, `--lang` works, **no speaker has read them** |
+
+**Why:** *"finished" means verified, and verification is the only step no AI can do.* Eleven AI-drafted packs
+means eight nobody has checked. **Three verified is a different product.**
+
+**Review order: Gujarati -> Hindi -> Sanskrit.** The owner is strongest in Gujarati and works around
+Sanskrit, so **Sanskrit is last on purpose** - he catches more after two passes than he would on the first.
+
+**And a fact to keep in mind: the owner has only ever run `hello.sm` and the IDE, in the DEFAULT language.
+The other ten packs have never been exercised by a human at all - not once.**
+
 ## 9. What is NOT true — read before claiming anything
 
 - **Sutram does not claim memory safety.** There is no ownership model. The charter says specify the rules
