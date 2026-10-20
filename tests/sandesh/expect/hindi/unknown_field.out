@@ -1,0 +1,6 @@
+भाषा पैक मिला: hindi
+unknown_field.sm:6:13: Sutram Error [E_UNKNOWN_FIELD]: अज्ञात क्षेत्र 'q'
+      likha(p.q)
+              ^
+संकेत: 'q' किसी संरचना का क्षेत्र नहीं है
+[compile exit 1]
