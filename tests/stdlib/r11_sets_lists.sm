@@ -1,0 +1,79 @@
+# R11 (Step 5): sangrah (set) and suchi/avali boundaries: the empty element, the cell
+# after the sorted output's terminator, a full 512-element set whose scratch blocks are
+# exactly a page, and page-edge canaries after a list's and a queue's grown data block.
+yoj sangrah
+yoj suchi
+mukhya() {
+    # rakh_rikta returns 1
+    vitti s0 = rakh_srij(4)
+    rakh_yuj(s0, 4, "e", 1)
+    likha(rakh_rikta(s0))
+    # rakh_sampat: a = {x}, b = {"", x}: only x is in both
+    vitti a = rakh_srij(4)
+    rakh_yuj(a, 4, "x", 1)
+    vitti b = rakh_srij(4)
+    rakh_yuj(b, 4, "", 0)
+    rakh_yuj(b, 4, "x", 1)
+    vitti o = rakh_srij(4)
+    likha(rakh_sampat(a, 4, b, 4, o))
+    # rakh_tak_mala: {"b", "a"} -> [1, a, 1, b] then one 0 cell; the cell after it is a guard
+    vitti t = rakh_srij(4)
+    rakh_yuj(t, 4, "b", 1)
+    rakh_yuj(t, 4, "a", 1)
+    vitti cells = nirmmita(8 * 16)
+    vitti i = 0
+    yavat (i < 16) {
+        cells[i] = 55
+        i = i + 1
+    }
+    likha(rakh_tak_mala(t, 4, cells))
+    likha(cells[1] * 1000 + cells[3])
+    likha(cells[4])
+    likha(cells[5])
+    # a full set of 512 elements (a..z, then Ba..Tr): lens and ptrs are exactly a page each
+    vitti big = rakh_srij(512)
+    vitti kb = nirmmita(8)
+    i = 0
+    yavat (i < 512) {
+        yadi (i < 26) {
+            akshar_rakh(kb, 0, 97 + i)
+            rakh_yuj(big, 512, kb, 1)
+        } anya {
+            akshar_rakh(kb, 0, 65 + i / 26 % 26)
+            akshar_rakh(kb, 1, 97 + i % 26)
+            rakh_yuj(big, 512, kb, 2)
+        }
+        i = i + 1
+    }
+    likha(rakh_maap(big))
+    vitti sorted = nirmmita(8 * 2048)
+    likha(rakh_tak_mala(big, 512, sorted))
+    likha(sorted[0] * 1000 + sorted[1])
+    likha(sorted[3] * 1000 + sorted[4] * 100 + sorted[5])
+    # suchi_rikta after growth to 512 cells: the canary was mapped just before the new data
+    vitti l = suchi_srij(256)
+    i = 0
+    yavat (i < 256) {
+        suchi_khip(l, i)
+        i = i + 1
+    }
+    vitti canary = nirmmita(8)
+    canary[0] = 1234567
+    suchi_khip(l, 256)
+    likha(suchi_rikta(l))
+    likha(suchi_maap(l))
+    likha(canary[0])
+    # avali_rikta, the same way
+    vitti q = avali_srij(256)
+    i = 0
+    yavat (i < 256) {
+        avali_pravesh(q, i)
+        i = i + 1
+    }
+    vitti canary2 = nirmmita(8)
+    canary2[0] = 7654321
+    avali_pravesh(q, 256)
+    likha(avali_rikta(q))
+    likha(avali_shunya(q))
+    likha(canary2[0])
+}
