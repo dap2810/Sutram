@@ -149,7 +149,7 @@ build everything and run it, and its output is the truth about the tree:
 | Regression suite | **205 pass, 4 no-expectation** |
 | Code-generation shape gates | **12 / 12** |
 | Language packs | **33 / 33** checks over **11** packs |
-| Library proofs | **210 / 210** |
+| Library proofs | **217 / 217** |
 | Property proofs | **86 / 86** |
 | Module graph | **18 / 18** |
 | Layer check | **14 core, 9 alloc, 1 std** |
@@ -234,6 +234,12 @@ The other ten packs have never been exercised by a human at all - not once.**
   merged tree, and the Linux proof gates were NOT-RUN inside WSL. **Gate 6 is begun, not passed.**
 - **No performance claim.** The compiler emits native code; that is not by itself a speed claim.
 - **No OS capability.** No boot path, no kernel, no freestanding run. `docs/FREESTANDING.md` is a gap list.
+
+- **"303 of 303" is a weaker claim than it reads.** The library has a passing proof for every function, **but
+  Claude's mutant measure leaves 818 mutants UNDECIDED** in functions that take lists, strings or records -
+  and **15 bug-shaped mutants survive every proof**, including **a sign error in `madhava_sin`, `madhava_cos`
+  and `madhava_atan` that no proof takes the lower half of the argument reduction for.** So: **proven against
+  every bug the measure has thought of, not proven correct.** See `evidence-r15/proofs/lib-mutant-score.md`.
 - **The language can open sockets.** It ships `net*` builtins (`netsock`, `netbind`, `netlisten`,
   `netaccept`). That is normal for a systems language and **surprising for one aimed at first-time
   programmers.** The layer check forbids `core` modules from using them, but **no test in the tree opens a
