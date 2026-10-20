@@ -21,10 +21,10 @@ All explicitly shown full diagnostics end with one LF.
 | Category | Fixture and rejected construct | Diagnostic requirement | Provenance |
 |---|---|---|---|
 | Bad type | `bad_type.sm`: integer `kosh` passed to `kosh dasham` parameter | Full stdout: `Sutram Error: kosh tark: tatv prakar bhinn\n` | Existing example 120 and its exact golden; copied identities checked. |
-| Bad arity | `bad_arity.sm`: seven arguments to a user function | In order: `Sutram Error: vyakaran dosh, pankti `, then `Sanket: prakriya adhiktam 6 tark lete hain.\n` | New fixture; explicit `parse_primary.pp_ic_parse` limit and diagnostic string. Full framing is not pinned. |
+| Bad arity | `bad_arity.sm`: seven arguments to a user function | In order: `Sutram Error: vyakaran dosh, pankti `, then `Sanket: prakriya adhikatamam 6 tarkan grihnati.\n` | New fixture; explicit `parse_primary.pp_ic_parse` limit and diagnostic string. Full framing is not pinned. |
 | Unknown identifier | `unknown_identifier.sm`: `does_not_exist(7)` | Full stdout: `Sutram Error: agyat prakriya: does_not_exist\n` | Existing example 69 and its exact golden; function identifier only. |
-| Malformed literal | `malformed_literal.sm.hex`: digit-shaped `E0 A5 20` bytes in a numeric value position | Full stdout: `Sutram Error [E_UTF8]: {source}:2: srot me ashuddh ya khandit UTF-8\n` | New fixture; R68 prelex UTF-8 diagnostic path. |
-| Unterminated string | `unterminated_string.sm`: open quote consumes the intended call delimiter and closing brace | In order: `Sutram Error: vyakaran dosh, pankti `, `patra-ant`, `Sanket: is sthan par shabd aur vyakaran dekho.\n` | New source-derived rejection expectation; no dedicated unterminated-string diagnostic is invented. |
+| Malformed literal | `malformed_literal.sm.hex`: digit-shaped `E0 A5 20` bytes in a numeric value position | Full stdout: `Sutram Error [E_UTF8]: {source}:2: srote ashuddham khanditam va UTF-8\n` | New fixture; R68 prelex UTF-8 diagnostic path. |
+| Unterminated string | `unterminated_string.sm`: open quote consumes the intended call delimiter and closing brace | In order: `Sutram Error: vyakaran dosh, pankti `, `patra-ant`, `Sanket: asmin sthane shabdam vyakaranam cha pashyatu.\n` | New source-derived rejection expectation; no dedicated unterminated-string diagnostic is invented. |
 | Misplaced keyword | `misplaced_keyword.sm`: `vitti a = वि॰`, with `--lang sanskrit` | Full stdout (R11: in the Sanskrit pack's language): `भाषा-पुटः प्राप्तः: sanskrit\n` then `Sutram Error [E_ABBREVIATION_VALUE]: {source}:2: संक्षेप-शब्दः मूल्यं नास्ति: 'वि॰'\n` | New fixture; existing exact alias and R68 value-start guard. |
 
 The two fragment matchers intentionally test stable error identity/hint rather
@@ -63,9 +63,9 @@ any compiler (re-pinned in ROUND-03 together with `manifest.json`):
 
 | Input | Required Git blob |
 |---|---|
-| `src/sutram_compiler.asm` | `8625095aa53027bbaf4eef29e7afe76e525d1008` |
+| `src/sutram_compiler.asm` | `d96aa571259bf22a321e74995b86aa72ac4a5210` |
 | `src/r68_compiler_entry.asm` | `42389aaf73179726d91e23359aee2199734036e1` |
-| `src/r68_diagnostics.inc` | `a6f7bb196702626d6b7f116f32e678d9daf73eba` |
+| `src/r68_diagnostics.inc` | `578dc6577b7a39f67475a2a58542664c16043278` |
 | `src/r68_unicode_helpers.inc` | `69103e059634aa6b5b871ce7c06c2f4b9c742ff1` |
 | `src/r66_indic_lexer.inc` | `998b6cb75a7e11cf6d488cf84a84a2154ffdebf0` |
 | `src/r67_stack_pair.inc` | `e8472bd1cad767cf06b0c00fcf88793419362db5` |
