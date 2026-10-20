@@ -1,0 +1,54 @@
+# R11 (Step 5): anukram, roop and vakyank boundaries: a payload that exactly fills the
+# buffer, the byte after it, the 2^63 overflow edge, padding to the same width, the
+# digit 9, nineteen significant digits, and a number slice followed by a '.'.
+yoj anukram
+yoj roop
+yoj vakyank
+mukhya() {
+    # anukram: 8-byte length + 3 bytes = 11 = cap exactly; byte 11 is a guard
+    vitti buf = nirmmita(32)
+    akshar_rakh(buf, 11, 66)
+    likha(anukram_khip_ashtak(buf, 0, 11, "abcZ", 3))
+    likha(akshar(buf, 10))
+    likha(akshar(buf, 11))
+    vitti dst = nirmmita(32)
+    akshar_rakh(dst, 3, 77)
+    vitti on = nirmmita(8)
+    likha(anukram_grah_ashtak(buf, 0, 11, dst, on))
+    likha(on[0])
+    likha(akshar(dst, 2))
+    likha(akshar(dst, 3))
+    # roop_sthir_mool at 2^63: refused, empty output
+    vitti o = nirmmita(64)
+    likha(roop_sthir_mool(9223372036854775807.0, 0, 0, o))
+    likha(akshar(o, 0))
+    # pad_vam to the same width: unchanged, and the cell after the text is untouched
+    vitti p = nirmmita(8 * 8)
+    p[0] = 49
+    p[1] = 50
+    p[2] = 51
+    p[3] = 99
+    likha(pad_vam(p, 3, 3, 32))
+    likha(p[3])
+    # varna_tak_dashm: cell arrays
+    vitti ok = nirmmita(8)
+    vitti d = nirmmita(8 * 32)
+    d[0] = 57
+    d[1] = 46
+    d[2] = 53
+    likha(varna_tak_dashm(d, 3, ok))
+    likha(ok[0])
+    vitti i = 0
+    yavat (i < 19) {
+        d[i] = 57
+        i = i + 1
+    }
+    likha(varna_tak_dashm(d, 19, ok) > 0.0)
+    likha(ok[0])
+    d[0] = 49
+    d[1] = 50
+    d[2] = 46
+    d[3] = 120
+    likha(varna_tak_dashm(d, 2, ok))
+    likha(ok[0])
+}
