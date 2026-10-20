@@ -345,7 +345,7 @@ def main():
     except Exception:
         proc.kill()
         out = ""
-    check("connected to X" in out, "client reported a successful connection", repr(out.strip()[:60]))
+    check("X-sevakena sambaddham" in out, "client reported a successful connection", repr(out.strip()[:60]))
 
     try:
         os.unlink(SOCKPATH)

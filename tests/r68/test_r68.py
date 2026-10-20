@@ -129,7 +129,7 @@ assert c.mprotect(base+4096,4096,mmap.PROT_READ|mmap.PROT_WRITE)==0
     def test_utf8_diagnostic_exact_line(self):
         r,p=self.host(b'mukhya() {\n vitti x = 1\n vitti y = \xe0\xad \n}\n')
         self.assertEqual(r.returncode,1)
-        self.assertEqual(r.stdout,f'Sutram Error [E_UTF8]: {p}:3: srot me ashuddh ya khandit UTF-8\n'.encode())
+        self.assertEqual(r.stdout,f'Sutram Error [E_UTF8]: {p}:3: srote ashuddham khanditam va UTF-8\n'.encode())
     def test_orphan_continuation_is_not_ignored(self):
         r,p=self.host('mukhya() {\n vitti y = ୧'.encode()+b'\x80\n}\n')
         self.assertEqual(r.returncode,1);self.assertIn((str(p)+':2:').encode(),r.stdout)
@@ -143,12 +143,12 @@ assert c.mprotect(base+4096,4096,mmap.PROT_READ|mmap.PROT_WRITE)==0
         d=self.work/('नाम'*16)/('ಪಥ'*16);d.mkdir(parents=True,exist_ok=True)
         p=d/'bad.sm';p.write_bytes(b'\n\xe0')
         r=subprocess.run([str(self.exe),'lex',str(p)],capture_output=True,timeout=3)
-        self.assertEqual(r.stdout,f'Sutram Error [E_UTF8]: {p}:2: srot me ashuddh ya khandit UTF-8\n'.encode())
+        self.assertEqual(r.stdout,f'Sutram Error [E_UTF8]: {p}:2: srote ashuddham khanditam va UTF-8\n'.encode())
         self.assertEqual(r.returncode,1)
     def test_keyword_alias_value_error_exact(self):
         r=self.value('मु॰',line=37,path='C:\\Sutram files\\नमूना.sm')
         self.assertEqual(r.returncode,1)
-        self.assertEqual(r.stdout,"Sutram Error [E_ABBREVIATION_VALUE]: C:\\Sutram files\\नमूना.sm:37: sankshep shabd mulya nahi: 'मु॰'\n".encode())
+        self.assertEqual(r.stdout,"Sutram Error [E_ABBREVIATION_VALUE]: C:\\Sutram files\\नमूना.sm:37: sankshep-shabdah mulyam nasti: 'मु॰'\n".encode())
     def test_all_reviewed_signs_report_alias(self):
         for a in ('मु॰','મુ૰','মু৽','ਮੁ੶'):
             r=self.value(a);self.assertEqual(r.returncode,1);self.assertTrue(r.stdout.endswith(("'"+a+"'\n").encode()))

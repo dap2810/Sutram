@@ -214,17 +214,17 @@ str_dot_exe  db ".exe", 0
     msg_usage    db "Sutram - sampurna sutra", 10
                   db "Prayog:", 10
                   db "  sutram <nivesh.sm> <nirgat.bin>         sankalan", 10
-                  db "  sutram --check <nivesh.sm>              janch matra, nirgat nahi", 10
-                  db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha pak sahit", 10
+                  db "  sutram --check <nivesh.sm>              pariksha matram, nirgatam na", 10
+                  db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v182) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v208) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r48_msg_near db ": Sutram Error [E_PARSE]: shabd '",0
     r48_msg_end db "'",10,0
-    r48_msg_ok db "Sutram janch: shuddh (nirgat patra nahi)",10,0
-    r48_msg_errors db "Sutram janch: dosh mile; nirgat patra nahi",10,0
+    r48_msg_ok db "Sutram pariksha: shuddham (nirgata-patram na rachitam)",10,0
+    r48_msg_errors db "Sutram pariksha: doshah praptah; nirgata-patram na rachitam",10,0
     r48_msg_eof db "<patra-ant>",0
     r50_msg_setchar_arity db "Sutram Error: akshar_rakh: 3 tark avashyak",10,0
     r52_msg_dvaram_arity db "Sutram Error: dvaram: 2 va 3 tark avashyak",10,0
@@ -284,27 +284,27 @@ r54_builtin_arity_table:
     ; R4: a read of a name that was never declared or assigned is an error
     ; (it used to be auto-allocated and read as 0: a wrong answer, no diagnostic).
     r4_msg_undef db ": Sutram Error [E_UNDEFINED_NAME]: agyat naam '",0
-    r4_msg_hint_decl db "Sanket: prayog se purv ghoshana avashyak: vitti ",0
+    r4_msg_hint_decl db "Sanket: prayogat purvam ghoshana avashyaki: vitti ",0
     r4_msg_hint_decl2 db " = ...",10,0
     r4_msg_hint_old db "Sanket: '",0
-    r4_msg_hint_old2 db "' purana kunjishabd (v157 se purv); navin: '",0
+    r4_msg_hint_old2 db "' puratanah kunjishabdah (v157 tah purvam); navinah: '",0
     r4_msg_hint_old3 db "'",10,0
     r5_msg_field db ": Sutram Error [E_UNKNOWN_FIELD]: agyat kshetra '",0
     r7_msg_dup db ": Sutram Error [E_DUPLICATE_NAME]: punah ghoshana '",0
-    r7_msg_dup_hint db "' pahle se ghoshit hai; naya man dene ke liye: ",0
+    r7_msg_dup_hint db "' purvam eva ghoshitam; navinam manam datum: ",0
     r7_msg_dup_hint2 db " = ...",10,0
     r7_msg_field_amb db ": Sutram Error [E_AMBIGUOUS_FIELD]: kshetra '",0
-    r7_msg_field_amb_hint db "' do rachana me alag sthan par hai; har rachana me alag naam rakhein",10,0
-    r7_msg_field_dup_hint db "' is rachana me pahle se hai",10,0
+    r7_msg_field_amb_hint db "' dvayoh rachanayoh bhinne sthane asti; pratyekasyam rachanayam bhinnam nama dadatu",10,0
+    r7_msg_field_dup_hint db "' asyam rachanayam purvam eva asti",10,0
     r7_msg_arity db ": Sutram Error [E_ARITY]: '",0
-    r7_msg_arity2 db "' ko ",0
-    r7_msg_arity3 db " tark diye; hastakshar me ",0
-    r7_msg_arity_hint db "Sanket: utne hi tark dein jitne prakriya ki paribhasha me hain",10,0
+    r7_msg_arity2 db "' ityasmai ",0
+    r7_msg_arity3 db " tarkah dattah; hastakshare ",0
+    r7_msg_arity_hint db "Sanket: prakriyayah paribhashayam yavantah tarkah santi, tavantah eva dadatu",10,0
     r7_msg_mod_missing db "Sutram Error [E_MODULE_MISSING]: yoj patra aprapt: ",0
-    r7_msg_mod_missing2 db 10,"Sanket: lib/ me ya srot patra ki nirdeshika me naam.smlib hona chahiye",10,0
-    r7_msg_hint_block db "' ek khand { } ya chakra me ghoshit hai; uske bahar drishya nahi",10,0
+    r7_msg_mod_missing2 db 10,"Sanket: naam.smlib lib/ madhye srota-patrasya nirdeshikayam va bhavet",10,0
+    r7_msg_hint_block db "' kasminshchit khande { } chakra-madhye va ghoshitam; tatah bahih na drishyate",10,0
     r5_msg_field_hint db "Sanket: '",0
-    r5_msg_field_hint2 db "' kisi rachana ka kshetra nahi",10,0
+    r5_msg_field_hint2 db "' kasyashchid api rachanayah kshetram nasti",10,0
     r4_old_kw:
         dq r4_o_anyatra, kw_anyatra, r4_o_punar, kw_punaravartana, r4_o_prati, kw_pratiyati
         dq r4_o_udd, kw_uddeshya, r4_o_pankti, kw_pankti, r4_o_srij, kw_srijana
@@ -325,15 +325,15 @@ r54_builtin_arity_table:
     msg_err_near db ", shabd '", 0
     msg_err_end  db "'", 10, 0
     msg_err_eof  db "patra-ant", 0
-    msg_err_hint db "Sanket: is sthan par shabd aur vyakaran dekho.", 10, 0
+    msg_err_hint db "Sanket: asmin sthane shabdam vyakaranam cha pashyatu.", 10, 0
     msg_err_colon db ":", 0
     msg_diag_indent db "  ", 0
     msg_diag_space db " ", 0
     msg_diag_tab db 9, 0
     msg_diag_nl db 10, 0
     msg_diag_caret db "^", 10, 0
-    msg_err_arg_limit db "Sanket: prakriya adhiktam 6 tark lete hain.", 10, 0
-    msg_err_duplicate_func db "Sanket: dohri prakriya paribhasha (naam takkar).", 10, 0
+    msg_err_arg_limit db "Sanket: prakriya adhikatamam 6 tarkan grihnati.", 10, 0
+    msg_err_duplicate_func db "Sanket: prakriyayah dvih paribhasha (nama-sangharshah).", 10, 0
     msg_duplicate_func db "Sutram Error: punah prakriya paribhasha: ", 0
     msg_undefined_func db "Sutram Error: agyat prakriya: ", 0
     msg_array_oob db "Sutram Error: mala ank seema atikram", 10, 0
@@ -344,16 +344,16 @@ r54_builtin_arity_table:
     r65_msg_add db ": yog atipravah",10,0
     r65_msg_sub db ": nyun atipravah",10,0
     r65_msg_mul db ": gun atipravah",10,0
-    r65_msg_div db ": shunya se bhajan",10,0
-    r65_msg_mod db ": shunya se shesh",10,0
+    r65_msg_div db ": shunyena bhagah",10,0
+    r65_msg_mod db ": shunyena sheshah",10,0
     r65_msg_div_overflow db ": bhajan atipravah",10,0
     r65_msg_mod_overflow db ": shesh atipravah",10,0
 %endif
-    msg_kosh_empty db "Sutram Error: rikta kosh se kosh_pop", 10, 0
-    msg_kosh_peek_empty db "Sutram Error: rikta kosh se kosh_peek", 10, 0
-    msg_kosh_dequeue_empty db "Sutram Error: rikta kosh se kosh_dequeue", 10, 0
+    msg_kosh_empty db "Sutram Error: riktat koshat kosh_pop", 10, 0
+    msg_kosh_peek_empty db "Sutram Error: riktat koshat kosh_peek", 10, 0
+    msg_kosh_dequeue_empty db "Sutram Error: riktat koshat kosh_dequeue", 10, 0
     msg_kosh_param_type db "Sutram Error: kosh tark: tatv prakar bhinn", 10, 0
-    msg_kosh_param_push db "Sutram Error: kosh tark par kosh_push asamarthit", 10, 0
+    msg_kosh_param_push db "Sutram Error: kosh-tarke kosh_push asamarthitam", 10, 0
 
     ; The v27 per-pack copies of five parse messages lived here. R11: every message
     ; now has a copy per pack, in lang/<pack>.sandesh, assembled into
@@ -377,7 +377,7 @@ r54_builtin_arity_table:
 
     cur_lang_id dq 0
     msg_lang_ok  db "Bhasha pak prapt: ", 0
-    msg_lang_fail db "Chetavani: bhasha pak nahi mila: ", 0
+    msg_lang_fail db "Chetavani: bhasha-pakah na praptah: ", 0
     msg_nl       db 10, 0
     str_flag_i   db "-i", 0
     str_flag_shell db "--shell", 0
@@ -411,18 +411,18 @@ r54_builtin_arity_table:
     str_help2    db "help", 0
     str_sarvam   db "sarvam", 0
     msg_shell_banner db "Sutram khol v1.0 - sampurna sutra", 10
-                      db "Sutram kathan likho aur Enter dabao. Turant chalega.", 10
-                      db "Aadesh: sahayata (sahay) | nirgat (nikas) | sarvam (dekho)", 10, 10, 0
+                      db "Sutram-kathanam likhatu, Enter nudatu. Sadyah chalishyati.", 10
+                      db "Aadeshah: sahayata (sahayata) | nirgat (nirgamanam) | sarvam (sarvam pashyatu)", 10, 10, 0
     msg_shell_prompt db "sutra> ", 0
     msg_shell_bye db "Namaste! Satra samapt.", 10, 0
-    msg_shell_help db "Sutram khol sahay:", 10
-                     db '  likha("Namaste\n")            likha paath', 10
-                     db "  vitti x = 5             char ghoshan", 10
-                     db "  likha(x + 3)            vyakti likha", 10
-                     db "  chakra i = 0 tak 5 { likha(i) }   aavartan", 10
-                     db "  mala arr[5]             mala ghoshan", 10
-                     db "  sarvam                  pura karyakram dekho", 10
-                     db "  nirgat                  khol se nikal", 10, 0
+    msg_shell_help db "Sutram khol sahayata:", 10
+                     db '  likha("Namaste\n")            patham likhati', 10
+                     db "  vitti x = 5             vitti-ghoshana", 10
+                     db "  likha(x + 3)            mulyam likhati", 10
+                     db "  chakra i = 0 tak 5 { likha(i) }   avartanam", 10
+                     db "  mala arr[5]             mala-ghoshana", 10
+                     db "  sarvam                  sampurnam karyakramam pashyatu", 10
+                     db "  nirgat                  kholat nirgacchatu", 10, 0
     repl_prog_hdr db "mukhya() {", 10, 0
     repl_prog_ftr db 10, "}", 10, 0
     msg_open_err  db "Sutram Error: nivesh patra aprapt", 10, 0
@@ -760,8 +760,8 @@ r54_builtin_arity_table:
     msg_patch_overflow db "Sutram Error: aahvan-suchi seema atikram", 10, 0
     msg_func_defs_overflow db "Sutram Error: prakriya paribhasha-suchi seema atikram", 10, 0
     msg_r9_guna_overflow db "Sutram Error: guna seema atikram (1024)", 10, 0
-    msg_break_patch_overflow db "Sutram Error: chakra me krama seema atikram", 10, 0
-    msg_continue_patch_overflow db "Sutram Error: chakra me agrim seema atikram", 10, 0
+    msg_break_patch_overflow db "Sutram Error: chakra-madhye krama seema atikram", 10, 0
+    msg_continue_patch_overflow db "Sutram Error: chakra-madhye agrim seema atikram", 10, 0
     msg_code_overflow db "Sutram Error: yantra-bhasha seema atikram", 10, 0
     msg_rachana_overflow db "Sutram Error: rachana-suchi seema atikram", 10, 0
     msg_rachana_fields_overflow db "Sutram Error: rachana kshetra seema atikram", 10, 0
@@ -3024,8 +3024,8 @@ expand_imports_pass:
 section .data
 mg_e_cycle:   db "Sutram Error [E_MODULE_CYCLE]: yoj chakra: ", 0
 mg_e_noexp1:  db "Sutram Error [E_MODULE_NOT_EXPORTED]: '", 0
-mg_e_noexp2:  db "' ghatak '", 0
-mg_e_noexp3:  db "' se aniryat", 10, 0
+mg_e_noexp2:  db "' ghatakat '", 0
+mg_e_noexp3:  db "' aniryatam", 10, 0
 mg_e_dupexp1: db "Sutram Error [E_MODULE_DUP_EXPORT]: punah niryat '", 0
 mg_e_dupexp2: db "', ghatak '", 0
 mg_e_dupexp3: db "'", 10, 0

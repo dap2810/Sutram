@@ -104,9 +104,9 @@ its **own** diagnostic (R64 renamed the `peek`/`dequeue` messages; in R63
 all three printed pop's message):
 
 ```
-empty kosh_pop(k):     Sutram Error: rikta kosh se kosh_pop
-empty kosh_peek(k):    Sutram Error: rikta kosh se kosh_peek
-empty kosh_dequeue(k): Sutram Error: rikta kosh se kosh_dequeue
+empty kosh_pop(k):     Sutram Error: riktat koshat kosh_pop
+empty kosh_peek(k):    Sutram Error: riktat koshat kosh_peek
+empty kosh_dequeue(k): Sutram Error: riktat koshat kosh_dequeue
 ```
 
 All three exit 1. There is **no** `ok[0]` channel here, unlike the

@@ -259,7 +259,7 @@ st_akshara_w:   dw __utf16__("   |   akshara: "),0
 st_sep_w:       dw __utf16__("   |   "),0
 st_sanchit_w:   dw __utf16__("sanchit"),0
 st_asanchit_w:  dw __utf16__("asanchit *"),0
-st_notfound_w:  dw __utf16__("anwesh: nahi mila"),0
+st_notfound_w:  dw __utf16__("anveshanam: na praptam"),0
 lang_swayam_w:  dw __utf16__("swayam"),0
 lang_swayam_sk_w: dw __utf16__("swayam (sanskrit)"),0
 lang_mool_w:    dw __utf16__("mool"),0
@@ -286,20 +286,20 @@ label_clear db 'Clear shell',0
 label_output db 'sankalan / chalan ka phal',0
 label_shell db '>>>',0
 label_examples db 'udaharan (do baar click)',0
-err_init db 'Windows ke karya-sutra prapt nahi hue. sampadak shuru nahi ho saka.',0
+err_init db 'Windows-karya-sutrani na praptani; sampadakah na arabdhah.',0
 err_title db 'Sutram sampadak',0
-msg_ready db 'Taiyar. F5: sampadak ka karyakram sankalan aur chalan.',13,10,0
+msg_ready db 'Sajjam. F5: sampadakasya karyakramasya sankalanam chalanam cha.',13,10,0
 msg_compile_failed db '[sankalan asaphal]',13,10,0
-msg_run_failed db '[karyakram asamanya roop se samapt]',13,10,0
-msg_file_failed db '[patra padhne/likhne me asaphal]',13,10,0
-msg_input_large db '[patra bahut bada; sampadak seema 64 KiB]',13,10,0
-msg_shell_limit db '[khol ka itihas purna; pahle khol rikta karein]',13,10,0
-msg_timeout db '[prakriya 10 sekand se adhik; samapt ki gayi]',13,10,0
-msg_missing_compiler db '[win\sutram.exe nahi mila: pahle sankalak banayein]',13,10,0
-msg_missing_lang db '[deshi shabda-pak anupalabdh: lang\*.lang dekhein; mool shabda kaam karte hain]',13,10,0
-msg_partial_lang db '[kuchh shabda-pak anupalabdh ya ashuddh: lang\*.lang dekhein]',13,10,0
+msg_run_failed db '[karyakramah asamanya-rupena samaptah]',13,10,0
+msg_file_failed db '[patrasya pathane lekhane va asaphalata]',13,10,0
+msg_input_large db '[patram atibrihat; sampadaka-seema 64 KiB]',13,10,0
+msg_shell_limit db '[kholasya itihasah purnah; prathamam kholam riktam karotu]',13,10,0
+msg_timeout db '[prakriya 10 kshanebhyah adhikam chalita; samapita]',13,10,0
+msg_missing_compiler db '[win\sutram.exe na praptam: prathamam sankalakam nirmatu]',13,10,0
+msg_missing_lang db '[deshiya-shabda-pakah anupalabdhah: lang\*.lang pashyatu; mula-shabdah karyam kurvanti]',13,10,0
+msg_partial_lang db '[kechana shabda-pakah anupalabdhah ashuddhah va: lang\*.lang pashyatu]',13,10,0
 msg_pipe_fail db '[prakriya ya nalika nirman asaphal]',13,10,0
-msg_more_output db '[phal 32 KiB par kata]',13,10,0
+msg_more_output db '[phalam 32 KiB sthane kartitam]',13,10,0
 align 8                          ; R9: keep what follows where it was aligned before the move
 class_button db 'BUTTON',0
 class_edit db 'EDIT',0
