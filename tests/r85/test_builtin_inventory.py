@@ -68,9 +68,11 @@ class TestInventory(unittest.TestCase):
         r=m.inspect(bad)
         self.assertEqual(r['status'],'FAIL')
     def test_accidental_internal_export_fails(self):
-        bad=COMPILER.replace('bn_table_end:', ' dq bn_netsock, TOK_BUILTIN, BN_NETSOCK\n dq kosh_vars, TOK_BUILTIN, BN_NETSOCK\nbn_table_end:')
-        # Duplicating a builtin-table entry must fail closed.
-        self.assertEqual(m.inspect(bad)['status'],'FAIL')
+        bad=COMPILER.replace('bn_table:', 'bn_fake db \"kosh_vars\", 0\nbn_table:')
+        bad=bad.replace('bn_table_end:', ' dq bn_fake, TOK_BUILTIN, BN_NETSOCK\nbn_table_end:')
+        observed=m.inspect(bad)
+        self.assertEqual(observed['status'],'FAIL')
+        self.assertTrue(any('kosh_vars' in err for err in observed['errors']))
     def test_missing_bss_declaration_fails(self):
         bad=COMPILER.replace('kosh_vars resq 256','unrelated_vars resq 256')
         self.assertEqual(m.inspect(bad)['status'],'FAIL')
