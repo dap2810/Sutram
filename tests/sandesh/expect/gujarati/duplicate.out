@@ -1,0 +1,6 @@
+ભાષા પેક મળ્યો: gujarati
+duplicate.sm:4:11: Sutram Error [E_DUPLICATE_NAME]: ફરી ઘોષણા 'x'
+      vitti x = 2
+            ^
+સંકેત: 'x' પહેલેથી ઘોષિત છે; નવું મૂલ્ય આપવા માટે: x = ...
+[compile exit 1]
