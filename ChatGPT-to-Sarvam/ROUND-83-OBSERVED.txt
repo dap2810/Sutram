@@ -1,0 +1,97 @@
+SUTRAM ROUND 83 — OBSERVED EVIDENCE / NO FABRICATED NATIVE RESULTS
+Date 2026-10-20; incoming Sarvam-to-ChatGPT/ROUND-83.md Git blob
+99f4a0e0ab9069d5b1c8b8c24f01aacd5037f7c4.
+Inspected source commit: 9bff1dd63877ac2c15ccd76a25153fe3c01ef015 (v216).
+
+TOOL ENVIRONMENT
+container.exec failed ServiceUnavailableError / ClientError.
+python.exec failed ServiceUnavailableError.
+No local full current checkout or Python/native Sutram compiler was executed.
+The actual source analyses below ran synchronously with connected GitHub file reads
+and JavaScript parsing in tool orchestration (not a shell command). Every byte
+count and classification is bound to the Git commit listed above.
+No CI job triggered; no network download outside connected GitHub sources.
+
+SOURCE-TREE METADATA AND LEXICAL SCREEN
+Git recursive tree entries: 2941.
+Git tree objects: 148; file blobs: 2793.
+Source-extension file blobs matching R74 auditor suffix set: 1504.
+Actually fetched/read: 52 of 52 selected compiler/IDE/Windows/platform
+source-suffix files under src/, win/, windows/, ide/; no read error.
+Selected exact old names: pratiyati ayojan punaravartana nishkriya
+nishedha srijana char_at char_code set_char.
+44 candidate occurrences:
+  COMMENT_ONLY: 38
+  LEGACY_RENAME_HINT_DATA: 6
+  UNRESOLVED_IN_THIS_52_FILE_SCREEN: 0
+Six intentionally retained compatibility strings at
+src/sutram_compiler.asm:314–322 under r4_old_kw.
+One comment at src/r71_unsafe_tokens.inc:121.
+All full raw snippets/locations:
+ChatGPT-to-Sarvam/ROUND-83-WS1-SOURCE-SCREEN-OBSERVED.json.
+Entire 1504 extension-selected file set: NOT_RUN; not a clean full-repo verdict.
+R74 Python scan (PR #37) has not been executed on full checkout.
+
+COMPILER DIAGNOSTIC TRACEABILITY
+Parsed tools/sandesh.py KEYS: 105 compiler message labels.
+Parsed tools/sandesh.py IDE_KEYS: 23 IDE status labels.
+Parsed lang/sanskrit.sandesh JSON rows/default comments: 128.
+Read existing golden outputs (nine cases): arity duplicate kosh_empty
+missing_module ok oob parse undefined_name unknown_field.
+All-128-row source/fixture inventory:
+  CHECKED_IN_EXPECTATION_CANDIDATE: 20 compiler labels
+  PROBE_AVAILABLE_NOT_VERIFIED: 9 compiler labels
+  NON_SOURCE_CLI_OR_SHELL: 8 labels
+  UNMAPPED_NEEDS_REPRO: 68 compiler labels
+  NON_SOURCE_IDE_MESSAGE: 23 labels
+TOTAL 128.
+Note: 20 labels were matched using literal substrings in checked-in expected
+outputs, and some fragments are generic; they are only CANDIDATES.
+Three new .sm negative probes were uploaded on draft PR #50, no goldens accepted:
+tests/r83/cases/empty_kosh_peek.sm
+tests/r83/cases/empty_kosh_dequeue.sm
+tests/r83/cases/setchar_bad_arity.sm
+Native generated binaries / exits / diagnostics: NOT_RUN.
+Raw per-label:
+ChatGPT-to-Sarvam/ROUND-83-WS2-COVERAGE-OBSERVED.json.
+
+PACK STRUCTURAL AUDIT
+GitHub fetched all 11 lang/*.sandesh packs and tools/sandesh.py CODE_WORDS:
+128 parsed JSON entries per pack = 1408 rows; zero parse errors.
+Canonical keys: Sanskrit; supported Sanskrit/Hindi/Gujarati, other 8 DRAFT.
+Independent checks performed over source texts: missing/empty keys,
+[E_...] and Sutram Error markers, name quotes, script Unicode ranges,
+Latin code-token whitelist (42 tokens), missing/extra {kw:...}/{ver},
+identical Sanskrit/other-pack text.
+HARD STRUCTURAL VIOLATIONS: 0.
+REVIEW CANDIDATES: 41 (36 extra keyword marker usages across Punjabi,
+Odia, Tamil, Telugu, Kannada and Malayalam; 5 byte-identical canonical
+strings in Hindi/Marathi). These are not automatically defects.
+No missing placeholders detected.
+Machine-readable per-pack/key raw observations:
+ChatGPT-to-Sarvam/ROUND-83-WS3-PACK-OBSERVED.json.
+Translation grammar / native compiled messages / real user UX: NOT_RUN.
+
+REVIEW BRANCH:
+review/r83-diagnostic-audits-20261020, draft PR #50.
+Uploaded 7 source/test files and read every one back from GitHub:
+  tools/r83_pack_structure.py
+  tests/r83/test_pack_structure.py
+  tools/r83_diagnostic_coverage.py
+  tests/r83/test_diagnostic_coverage.py
+  tests/r83/cases/empty_kosh_peek.sm
+  tests/r83/cases/empty_kosh_dequeue.sm
+  tests/r83/cases/setchar_bad_arity.sm
+Python unit tests in tests/r83: NOT_RUN.
+No accepted core compiler/goldens/language pack/Wins GUI/installer/lock edits,
+no PR merge, no automated workflows or monitoring.
+
+SARVAM NATIVE CHECKS REQUIRED ON COMPLETE CHECKOUT:
+python3 -m unittest discover -s tests/r83 -p 'test_*.py' -v
+python3 tools/r83_pack_structure.py --repo . --report /tmp/r83-packs.json
+python3 tools/r83_diagnostic_coverage.py --repo . --report /tmp/r83-coverage.json
+python3 tools/sandesh.py --check
+python3 -m unittest discover -s tests/r74 -p 'test_*.py' -v
+python3 tools/r74_vocabulary_audit.py --repo . --output /tmp/r83-vocabulary.json
+Native compile + real bounded execution of the 3 new negative probes;
+record exact stdout/stderr/exit and accept goldens only after independent review.
