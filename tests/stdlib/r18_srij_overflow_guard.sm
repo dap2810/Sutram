@@ -1,0 +1,14 @@
+# R18 (R15-03 witnesses): the constructors' overflow guard. A capacity whose byte
+# size would wrap must give 0, not a handle (R21's documented guard).
+yoj suchi
+mukhya() {
+    likha(suchi_srij(3037000499))
+    likha("\n")
+    likha(avali_srij(3037000499))
+    likha("\n")
+    likha(avali_srij(9223372036854775807))
+    likha("\n")
+    vitti l = suchi_srij(2)
+    likha(l != 0)
+    likha("\n")
+}
