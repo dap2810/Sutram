@@ -1,3 +1,26 @@
+## v207 - audit: the tree is clean; one finding, the version string has drifted again
+
+**Full sweep on main.** **2,753 files, no `__pycache__`, no `.pyc`, no `.tmp`, no `.orig`.** The gate numbers
+in the documents **match the measured ones** (205 pass, 205/205), and `gates.sh` reads **11 PASS / 0 FAIL /
+1 NOT-RUN.**
+
+### The one finding: `--version` says v182, and the compiler has changed twice since
+
+**v182 was set in v184.** Since then the compiler changed for **the F1 fix (v196)** and **the pack diagnostics
+(v203)** - **two real changes to the same file, and the version string did not move.**
+
+**This is the second time this has happened.** The first was the v160 staleness the owner found himself, when
+he typed `--version` as the very first thing. **The version is the first line a user reads and the last thing
+anyone remembers to update**, because it is a hand-written string with no test behind it.
+
+**Assigned to Claude in ROUND-13** - it is working the compiler this round, and a version bump means a rebuild
+and a re-sync, so it belongs with the other compiler work rather than as a separate edit from me.
+
+**And the underlying problem is worth naming: nothing fails when the version is wrong.** Every other number in
+this project is measured by a gate. **This one is typed by hand, and drifts silently.** A one-line check -
+"the version string contains the current CHANGELOG version" - would catch it, and it is the kind of thing that
+should be a gate rather than a discipline.
+
 ## v206 - ROUND-13 and ROUND-81 issued under the three-language course
 
 **ROUND-13 (Claude)** leads with its own finding: **the committed `sutram_compiler`'s file mode breaks
