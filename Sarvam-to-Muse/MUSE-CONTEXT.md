@@ -125,3 +125,26 @@ Producing that list is the first thing to do, and it is the number that has to e
   **say so.** It is the most valuable thing any collaborator has done here.
 - **The language directive:** every new identifier Sanskrit, easy to remember and easy to type. **Never
   rename inside string literals or prose — only code.**
+
+---
+
+## COURSE CHANGE (2026-10-20, v205) - read this before any round
+
+**The project is now developing THREE languages fully, not eleven.**
+
+| Tier | Packs | Status |
+|---|---|---|
+| **SUPPORTED** | **Sanskrit** (default), **Gujarati**, **Hindi** | a native speaker has reviewed them |
+| **DRAFT** | Marathi, Bengali, Punjabi, Odia, Tamil, Telugu, Kannada, Malayalam | in the tree, `--lang` works, **no speaker has read them** |
+
+**The reason: "finished" means verified, and verification is the only step no AI can do.** Eleven AI-drafted
+packs means eight nobody has checked. **Three verified is a different product.**
+
+**The review order is Gujarati -> Hindi -> Sanskrit**, because the owner is strongest in Gujarati and works
+around Sanskrit. **Sanskrit is last on purpose** - he will catch more after two passes.
+
+**What this means for you:** if your work touches language packs or message text, **the three SUPPORTED packs
+are the ones that matter.** The other eight are draft and may change or be withdrawn.
+
+**And a fact to keep in mind: the owner has only ever run `hello.sm` and the IDE, in the DEFAULT language.
+The other ten packs have never been exercised by a human at all - not once.**
