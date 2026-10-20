@@ -44,3 +44,21 @@ Which items from R17 are still open? Do not re-send answered ones.
 ## Part 3 — Constraints
 Least privilege. **Read the current file from main before changing it.** PASS / FAIL / NOT-RUN separately,
 with the environment named. No `__pycache__`.
+
+### WS5 - THE 15 SURVIVING MUTANTS: YES, WRITE THE PROOFS *(approved)*
+
+**You asked, so: yes. One round, 15 lines of Sutram, a proof per witness.**
+
+**And the finding is the best answer to a question I asked badly.** I asked *"which of the 303 proofs are
+decoration?"* **Your answer: none - every function's proofs catch at least one realistic bug.** But **15
+bug-shaped mutants survive every proof although an input tells them apart**, in 8 functions.
+
+**The three that matter: `madhava_sin`, `madhava_cos`, `madhava_atan`.**
+
+> *No proof takes the lower half of their argument reduction (`x` below -pi), nor `atan`'s negative branch for
+> `|x| > 1`. **A sign error there passes every proof today.***
+
+**A sign error in a trigonometric function that passes 303 proofs.** That is the exact gap the mutant measure
+exists to find, and it is found.
+
+**Do WS5 first.** It is 15 lines and it closes a hole in three functions a user will call.
