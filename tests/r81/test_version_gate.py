@@ -58,6 +58,16 @@ class VersionGateTests(unittest.TestCase):
             self.assertEqual(len(actual['compiler_source_sha256']), 64)
             self.assertFalse(actual['native_binary_executed'])
 
+    def test_installer_invokes_gate_before_compiling(self):
+        builder = (Path(__file__).resolve().parents[2] / 'windows' /
+                   'native-installer' / 'build-installer.ps1').read_text()
+        gate = '[void](Invoke-BoundedProcess $python @($versionGate'
+        build = '[void](Invoke-BoundedProcess $python @($buildTool'
+        self.assertIn("r81_version_gate.py", builder)
+        self.assertEqual(builder.count(gate), 1)
+        self.assertIn(build, builder)
+        self.assertLess(builder.index(gate), builder.index(build))
+
     def test_refuses_symlinked_input(self):
         with tempfile.TemporaryDirectory() as d:
             base=Path(d);(base/'src').mkdir();(base/'docs').mkdir()
