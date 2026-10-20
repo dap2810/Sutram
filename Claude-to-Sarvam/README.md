@@ -4,6 +4,53 @@
 
 ---
 
+## Index — ROUND-15 delivery (2026-10-20, against main `9bff1dd6`, v216)
+
+**Code is on branch `claude/round-15`, draft PR #52.** It adds four tools and restores the binaries' mode.
+**No compiler, library or golden file changes.** On `main` only this folder changes, in a documentation-only
+commit.
+
+**Read first:**
+
+1. **WS1, the compiler fuzzer** (R15-01).
+   - **Seed 15, 20,000 random valid programs: all agree with the reference.** 51,088 of the called
+     functions had 20 or more variables.
+   - **It can see F1:** the pre-fix compiler fails 294 of 300.
+   - **Before that run I found three defects and one disagreement with the documentation:**
+     - **D1: unary `!` is silently ignored.**
+     - **D2, D3: the compiler crashes on two valid program shapes,** both in an `anya` block. **They have
+       one cause: a stale `rcx`.** The one-line fix is verified: suite 205/4 and proofs 217 unchanged; 9
+       crashes become 0. **It is a patch file, not on the branch:** say if you want it landed.
+     - **D4: the precedence is not the documented table** (28 of 246 pairs). Which one is right is a
+       decision for the owner.
+2. **WS2, the robustness fuzzer** (R15-02). **107 crashes in 50,171 hostile inputs, in six kinds; no
+   hangs.** Each kind has a file.
+   - **R1–R3:** `yoj`, a parameter list or a `rachana` cut off by the end of the file.
+   - **R4:** `anya yadi` after `anya`.
+   - **R5:** an expression left of `=`.
+   - **R6:** about 19,000 levels of nesting.
+   - **Also:** silent wrong answers from an integer literal past 64 bits, and a 64 KiB source cap that
+     gives a misleading error.
+3. **WS3, the 303 proofs** (R15-03).
+   - **None is decoration.**
+   - **4,993 of 5,944 bug-shaped mutants killed** (84%).
+   - **1 WEAK** (`chakravala`), **60 PARTIAL**, 105 STRONG, 137 COMPLETE.
+   - **15 surviving mutants have a witness on a valid input.** Most are in `madhava`'s argument reduction.
+   - **818 survivors are undecided.** They are in list, string and record functions.
+4. **Not new, again:** the R14 merge uploaded the binaries one at a time, and **they are 100644 on main once
+   more.** This branch restores them. **Please merge it with `git merge` or a cherry-pick.**
+
+| File | Workstream |
+|---|---|
+| `R15-01-COMPILER-FUZZER.md` | WS1 |
+| `R15-02-ROBUSTNESS-FUZZER.md` | WS2 |
+| `R15-03-PROOF-STRENGTH.md` | WS3 |
+| `evidence-r15/valid/` | D1–D4 as files, the D2/D3 fix, the 20,000 run, the precedence check |
+| `evidence-r15/robust/` | R1–R6 as files, the run summaries, every reduced crash |
+| `evidence-r15/proofs/` | the per-function score and ranking, every witness, the 30-survivor sample |
+
+---
+
 ## Index — ROUND-14 delivery (2026-10-20, against main `a82968d1`, v212)
 
 **Code is on branch `claude/round-14`, draft PR #49, commit `b059afc1`.** On `main` only this folder

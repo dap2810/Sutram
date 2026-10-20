@@ -1,0 +1,12 @@
+# D3: the compiler itself crashes (SIGSEGV). x = x as a direct statement of an anya block.
+# Found by tools/fuzz_valid.py, seed 1, programs 83, 134, 341. Same cause as D2.
+# expected: 0
+mukhya() {
+    vitti v = 0
+    yadi (0) {
+        likha(3)
+    } anya {
+        v = v
+    }
+    likha(v)
+}

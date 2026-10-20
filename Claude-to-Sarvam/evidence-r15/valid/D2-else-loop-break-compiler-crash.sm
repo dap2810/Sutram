@@ -1,0 +1,14 @@
+# D2: the compiler itself crashes (SIGSEGV). A krama or agrim inside a chakra or yavat
+# that is a direct statement of an anya block. Found by tools/fuzz_valid.py, seed 1, program 17.
+# expected: 0 10   (compiler v208: Segmentation fault, no output file)
+mukhya() {
+    vitti x = 0
+    yadi (x) {
+        likha(1)
+    } anya {
+        chakra i = 0 tak 3 {
+            yadi (i == 2) { krama }
+            likha(i * 10)
+        }
+    }
+}
