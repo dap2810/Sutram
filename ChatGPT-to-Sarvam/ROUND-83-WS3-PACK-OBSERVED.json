@@ -1,0 +1,363 @@
+{
+  "source_commit": "9bff1dd63877ac2c15ccd76a25153fe3c01ef015",
+  "source": "lang/*.sandesh (all 11) + tools/sandesh.py CODE_WORDS allowlist",
+  "scope": {
+    "packs": 11,
+    "canonical_keys": 128,
+    "actual_rows": 1408
+  },
+  "native_execution": "NOT_RUN",
+  "structural_status": "PASS",
+  "hard_violation_count": 0,
+  "review_candidate_count": 41,
+  "notes": [
+    "Extra {kw:...} placeholders and identical short strings are review candidates, not automatically defects.",
+    "Latin code tokens are allowed only via the existing tools/sandesh.py CODE_WORDS whitelist; this cannot validate human translation quality.",
+    "The eight DRAFT packs are not human-verified."
+  ],
+  "per_pack": [
+    {
+      "pack": "sanskrit",
+      "tier": "SUPPORTED",
+      "blob": "6f214b0cb0ec15efae7a373678298f7919a22b8e",
+      "entries": 128,
+      "parser_errors": [],
+      "hard_violations": [],
+      "review_candidates": []
+    },
+    {
+      "pack": "hindi",
+      "tier": "SUPPORTED",
+      "blob": "bc2a8a83c1988c7be2910690ed0ebe735b96e33e",
+      "entries": 128,
+      "parser_errors": [],
+      "hard_violations": [],
+      "review_candidates": [
+        {
+          "key": "ide.st_bhasha_w",
+          "issue": "identical Sanskrit default"
+        },
+        {
+          "key": "ide.st_lipi_w",
+          "issue": "identical Sanskrit default"
+        }
+      ]
+    },
+    {
+      "pack": "gujarati",
+      "tier": "SUPPORTED",
+      "blob": "70d7a64982360d66d6baa6b02e25943795655497",
+      "entries": 128,
+      "parser_errors": [],
+      "hard_violations": [],
+      "review_candidates": []
+    },
+    {
+      "pack": "marathi",
+      "tier": "DRAFT",
+      "blob": "108dae4b912d0478eee786fbfc804a04e5525533",
+      "entries": 128,
+      "parser_errors": [],
+      "hard_violations": [],
+      "review_candidates": [
+        {
+          "key": "r4_msg_hint_old",
+          "issue": "identical Sanskrit default"
+        },
+        {
+          "key": "r5_msg_field_hint",
+          "issue": "identical Sanskrit default"
+        },
+        {
+          "key": "ide.st_bhasha_w",
+          "issue": "identical Sanskrit default"
+        }
+      ]
+    },
+    {
+      "pack": "bengali",
+      "tier": "DRAFT",
+      "blob": "dcbecf4e65cd15da5633bf015970a68d3fa0662e",
+      "entries": 128,
+      "parser_errors": [],
+      "hard_violations": [],
+      "review_candidates": []
+    },
+    {
+      "pack": "punjabi",
+      "tier": "DRAFT",
+      "blob": "6ed1567260f07ba194ab0b5dea985d6c16a0f27c",
+      "entries": 128,
+      "parser_errors": [],
+      "hard_violations": [],
+      "review_candidates": [
+        {
+          "key": "msg_kosh_required",
+          "issue": "extra placeholder",
+          "marker": "{kw:vitti}",
+          "count": 1
+        },
+        {
+          "key": "msg_shell_help",
+          "issue": "extra placeholder",
+          "marker": "{kw:vitti}",
+          "count": 1
+        },
+        {
+          "key": "msg_shell_help",
+          "issue": "extra placeholder",
+          "marker": "{kw:mala}",
+          "count": 1
+        },
+        {
+          "key": "msg_var_table_overflow",
+          "issue": "extra placeholder",
+          "marker": "{kw:vitti}",
+          "count": 1
+        },
+        {
+          "key": "r56_msg_global_capacity",
+          "issue": "extra placeholder",
+          "marker": "{kw:vitti}",
+          "count": 1
+        },
+        {
+          "key": "r56_msg_global_duplicate",
+          "issue": "extra placeholder",
+          "marker": "{kw:vitti}",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "pack": "odia",
+      "tier": "DRAFT",
+      "blob": "df2fcace2a652d98a9bcf25cfec21576759a3f91",
+      "entries": 128,
+      "parser_errors": [],
+      "hard_violations": [],
+      "review_candidates": [
+        {
+          "key": "msg_kosh_required",
+          "issue": "extra placeholder",
+          "marker": "{kw:vitti}",
+          "count": 1
+        },
+        {
+          "key": "msg_shell_help",
+          "issue": "extra placeholder",
+          "marker": "{kw:vitti}",
+          "count": 1
+        },
+        {
+          "key": "msg_shell_help",
+          "issue": "extra placeholder",
+          "marker": "{kw:mala}",
+          "count": 1
+        },
+        {
+          "key": "msg_var_table_overflow",
+          "issue": "extra placeholder",
+          "marker": "{kw:vitti}",
+          "count": 1
+        },
+        {
+          "key": "r56_msg_global_capacity",
+          "issue": "extra placeholder",
+          "marker": "{kw:vitti}",
+          "count": 1
+        },
+        {
+          "key": "r56_msg_global_duplicate",
+          "issue": "extra placeholder",
+          "marker": "{kw:vitti}",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "pack": "tamil",
+      "tier": "DRAFT",
+      "blob": "97502ad1dbacfc7389e6b7cf60faf78e12ff1c11",
+      "entries": 128,
+      "parser_errors": [],
+      "hard_violations": [],
+      "review_candidates": [
+        {
+          "key": "msg_kosh_required",
+          "issue": "extra placeholder",
+          "marker": "{kw:vitti}",
+          "count": 1
+        },
+        {
+          "key": "msg_shell_help",
+          "issue": "extra placeholder",
+          "marker": "{kw:vitti}",
+          "count": 1
+        },
+        {
+          "key": "msg_shell_help",
+          "issue": "extra placeholder",
+          "marker": "{kw:mala}",
+          "count": 1
+        },
+        {
+          "key": "msg_var_table_overflow",
+          "issue": "extra placeholder",
+          "marker": "{kw:vitti}",
+          "count": 1
+        },
+        {
+          "key": "r56_msg_global_capacity",
+          "issue": "extra placeholder",
+          "marker": "{kw:vitti}",
+          "count": 1
+        },
+        {
+          "key": "r56_msg_global_duplicate",
+          "issue": "extra placeholder",
+          "marker": "{kw:vitti}",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "pack": "telugu",
+      "tier": "DRAFT",
+      "blob": "3bdf7fec390fa11e8d8eba0c8d3f041b21893282",
+      "entries": 128,
+      "parser_errors": [],
+      "hard_violations": [],
+      "review_candidates": [
+        {
+          "key": "msg_kosh_required",
+          "issue": "extra placeholder",
+          "marker": "{kw:vitti}",
+          "count": 1
+        },
+        {
+          "key": "msg_shell_help",
+          "issue": "extra placeholder",
+          "marker": "{kw:vitti}",
+          "count": 1
+        },
+        {
+          "key": "msg_shell_help",
+          "issue": "extra placeholder",
+          "marker": "{kw:mala}",
+          "count": 1
+        },
+        {
+          "key": "msg_var_table_overflow",
+          "issue": "extra placeholder",
+          "marker": "{kw:vitti}",
+          "count": 1
+        },
+        {
+          "key": "r56_msg_global_capacity",
+          "issue": "extra placeholder",
+          "marker": "{kw:vitti}",
+          "count": 1
+        },
+        {
+          "key": "r56_msg_global_duplicate",
+          "issue": "extra placeholder",
+          "marker": "{kw:vitti}",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "pack": "kannada",
+      "tier": "DRAFT",
+      "blob": "0c123e34b7317a07450eea8420ee8ac7fde4bd74",
+      "entries": 128,
+      "parser_errors": [],
+      "hard_violations": [],
+      "review_candidates": [
+        {
+          "key": "msg_kosh_required",
+          "issue": "extra placeholder",
+          "marker": "{kw:vitti}",
+          "count": 1
+        },
+        {
+          "key": "msg_shell_help",
+          "issue": "extra placeholder",
+          "marker": "{kw:vitti}",
+          "count": 1
+        },
+        {
+          "key": "msg_shell_help",
+          "issue": "extra placeholder",
+          "marker": "{kw:mala}",
+          "count": 1
+        },
+        {
+          "key": "msg_var_table_overflow",
+          "issue": "extra placeholder",
+          "marker": "{kw:vitti}",
+          "count": 1
+        },
+        {
+          "key": "r56_msg_global_capacity",
+          "issue": "extra placeholder",
+          "marker": "{kw:vitti}",
+          "count": 1
+        },
+        {
+          "key": "r56_msg_global_duplicate",
+          "issue": "extra placeholder",
+          "marker": "{kw:vitti}",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "pack": "malayalam",
+      "tier": "DRAFT",
+      "blob": "803323fa09cb98dfd3d9ad918359ac35ff87e4aa",
+      "entries": 128,
+      "parser_errors": [],
+      "hard_violations": [],
+      "review_candidates": [
+        {
+          "key": "msg_kosh_required",
+          "issue": "extra placeholder",
+          "marker": "{kw:vitti}",
+          "count": 1
+        },
+        {
+          "key": "msg_shell_help",
+          "issue": "extra placeholder",
+          "marker": "{kw:vitti}",
+          "count": 1
+        },
+        {
+          "key": "msg_shell_help",
+          "issue": "extra placeholder",
+          "marker": "{kw:mala}",
+          "count": 1
+        },
+        {
+          "key": "msg_var_table_overflow",
+          "issue": "extra placeholder",
+          "marker": "{kw:vitti}",
+          "count": 1
+        },
+        {
+          "key": "r56_msg_global_capacity",
+          "issue": "extra placeholder",
+          "marker": "{kw:vitti}",
+          "count": 1
+        },
+        {
+          "key": "r56_msg_global_duplicate",
+          "issue": "extra placeholder",
+          "marker": "{kw:vitti}",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}
