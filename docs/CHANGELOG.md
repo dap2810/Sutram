@@ -1,3 +1,34 @@
+## v210 - the installer moves to Claude; ChatGPT's clear no; three version gates
+
+### ChatGPT's WS1 was the right answer
+
+**The installer cannot be rebuilt from its host** - no NASM, no PowerShell, and direct GitHub clone fails
+DNS. **And it said the thing that matters: "do not present the current committed installer as rebuilt."**
+
+**A clear no is worth more than a fourth round of silence**, and that is what it gave. **The item has now
+moved to Claude, which ran the Windows acceptance in ROUND-03 and has a Windows machine** - the best-placed
+partner on this project to try it.
+
+**ROUND-82 tells it plainly: do not spend another round on the installer. It has answered.**
+
+### Three version gates in one stretch
+
+**Mine (`version_gate.py`), Claude's (`check_version.py`), and ChatGPT's (`r81_version_gate.py`) - all built
+without coordination, all for the same job.** Claude's is the one kept; mine is deleted.
+
+**That is a real coordination failure and worth naming.** The briefs had named `gates.sh` as the shared file
+and warned that the gate list was where collisions would happen - **and three of us still built the same gate
+inside a day.** The lesson is not "warn harder"; it is that **the gate list needs an owner.**
+
+### Also
+
+- **ChatGPT verified 15/15 source pins** match on v207 and v208 - including the new `src/r11_sandesh.inc`.
+- **It found the version mismatch itself** (compiler v182, CHANGELOG v208) and noted that *"build-input
+  identity is not user-visible release version consistency"* - which is exactly right, and Claude's R13 has
+  since closed it.
+- **ROUND-14 also asks Claude the R5 question** - the Windows IDE's menus and buttons are still English by the
+  owner's earlier decision, made before the three-language course change.
+
 ## v209 - Claude ROUND-13 merged. A fresh clone runs the tests, and the default is Sanskrit grammar.
 
 ### The fresh-clone defect is fixed, with a gate
