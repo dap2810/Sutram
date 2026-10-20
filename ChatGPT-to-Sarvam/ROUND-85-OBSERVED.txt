@@ -1,0 +1,110 @@
+SUTRAM ROUND-85 RAW EXECUTION AND GITHUB EVIDENCE
+Date: 2026-10-20
+Incoming: Sarvam-to-ChatGPT/ROUND-85.md
+Pinned remote main: v229 75b4d77fb41350827cda938ebcc337d15000f2a3
+GitHub tree: non-truncated, tracked file blobs 2854.
+Draft source review: https://github.com/dap2810/Sutram/pull/53
+Source branch: review/r85-full-keyword-coverage-audit-20261020
+Complete remote-audit aggregate: audit/r85-summary.json in that branch.
+
+ENVIRONMENT
+$ which git python3 nasm ld readelf
+/usr/bin/git
+/opt/pyvenv/bin/python3
+/usr/bin/ld
+/usr/bin/readelf
+nasm not found.
+$ git ls-remote https://github.com/dap2810/Sutram.git HEAD
+fatal: unable to access 'https://github.com/dap2810/Sutram.git/': Could not resolve host: github.com
+
+PINNED SOURCE-AUDIT COUNTS (from 14 actual GitHub blob-fetch reports)
+tracked=2854
+source-suffix-eligible=1579
+historical-handoff-excluded=601
+live-eligible=978
+actually-read=202
+unscanned-live=776
+other-suffix-excluded=1275
+fetch-errors=0
+decoded-JS-UTF16-code-units=3793678
+legacy scan batch JSON field named "bytes" records JS String.length, NOT UTF-8 byte length.
+candidate-occurrences=38
+classified historical snapshot/design=17
+classified ordinary English comment=1
+classified diagnostic pankti ("line")=6
+classified compiler compatibility old-word/comment=14
+confirmed active obsolete keyword in scanned scope=0
+No assertion for unscanned source, goldens, archives, or binary files.
+
+COMPILER SOURCE EVIDENCE READ FROM PINNED MAIN
+src/sutram_compiler.asm:
+Line 239   db 0,0 ; 3 sthagita
+Line 245   db 0,0 ; 9 netsock
+Line 246   db 2,2 ; 10 netbind
+Line 247   db 1,1 ; 11 netlisten
+Line 248   db 1,1 ; 12 netaccept
+Line 484   dq bn_sthagita, TOK_BUILTIN, BN_STHAGITA
+Lines 490-493: network builtin table records.
+Lines 849-852: kosh_vars, kosh_var_cnt, kosh_param_vars, kosh_param_var_cnt are compiler .bss resq objects.
+Line 10885 cmp rbx, BN_STHAGITA
+Line 10886 je .pp_halt
+Line 10922 mov qword [rax], AST_HALT
+Line 13687 .gs_halt:
+Line 13688 mov dil, 0xF4 ; hlt
+Line 18868 .ge_halt:
+Line 18869 mov dil, 0xF4
+Line 15880 near netbind sockaddr field setup:
+mov dword [rsp+4], 0
+This is INADDR_ANY, NOT loopback 127.0.0.1.
+These code claims derive from source inspection, not executing emitted machine code.
+
+ACTUAL LOCALLY EXECUTED PYTHON TEST COMMAND
+$ python3 -m unittest discover -s /mnt/data/r85_work/tests/r85 -p 'test_*.py' -v
+test_accidental_internal_export_fails ... ok
+test_exact_nine_classes ... ok
+test_hlt_hazard_flag ... ok
+test_missing_bss_declaration_fails ... ok
+test_missing_builtin_dispatch_fails ... ok
+test_no_test_ever_calls_compiler ... ok
+test_wildcard_hazard_flag ... ok
+----------------------------------------------------------------------
+Ran 7 tests in 0.002s
+
+OK
+
+The synthetic mistaken test expectation initially FAILED 1/7; it was corrected to
+check a real exported internal-name regression, then the full final suite PASSED 7/7.
+The test source uploaded to GitHub matches the corrected, locally tested bytes.
+
+ACTUAL SYNTHETIC FIXTURE CLI TEST
+$ python3 tools/r85_builtin_inventory.py --repo synthetic --report synthetic/coverage.json
+CLI_EXIT=0
+STATUS PASS ROWS 9 ERRORS []
+PUBLIC:
+sthagita SOURCE_DISPATCH_TRACED
+netsock SOURCE_DISPATCH_TRACED
+netbind SOURCE_DISPATCH_TRACED
+netlisten SOURCE_DISPATCH_TRACED
+netaccept SOURCE_DISPATCH_TRACED
+PRIVATE:
+kosh_var_cnt NOT_A_SOURCE_BUILTIN
+kosh_vars NOT_A_SOURCE_BUILTIN
+kosh_param_var_cnt NOT_A_SOURCE_BUILTIN
+kosh_param_vars NOT_A_SOURCE_BUILTIN
+RISKS:
+sthagita_emits_privileged_hlt True
+netbind_sets_ipv4_address_zero_INADDR_ANY True
+network_execution NOT_RUN
+sthagita_execution NOT_RUN
+
+LOCAL <-> GITHUB EXACT GIT BLOB IDENTITIES (PASS 4/4)
+tools/r85_builtin_inventory.py = df10948ad0d00c4c3ab1679b900e368eb8e5f9fe
+tests/r85/test_builtin_inventory.py (revised) = a01c83706cf45a1a51af33fd56dd51397e9e8830
+tests/r85/compile_only/sthagita_smoke.sm = 77f6d9b76148c472fcef907d3f7282818575deeb
+tests/r85/compile_only/network_builtins.sm = a17b1524aa8a6b5a31dbbc4afcd697802f6e71d9
+
+NOT_RUN
+Real full-tree R74 git ls-files scanner (no local checkout), native Sutram compile,
+Sutram runtime execution, Windows IDE/installer acceptance, network calls or
+socket bind/accept, or executing privileged HLT code.
+NO PR merge. NO automatic CI dispatch. NO recurring monitoring.
