@@ -106,6 +106,6 @@ Copy-Item -LiteralPath $evidencePath -Destination (Join-Path $ProjectRoot 'Sutra
 Write-Host ('PAYLOAD SHA-256: '+$evidence.payload_sha256)
 Write-Host ('COMPILER SHA-256: '+$evidence.compiler_sha256)
 Write-Host ('SETUP SHA-256: '+$publishedHash)
-Write-Host ('SOURCE PINS CHECKED: '+$evidence.source_inputs.PSObject.Properties.Count)
+Write-Host ('SOURCE PINS CHECKED: '+@($evidence.source_inputs.PSObject.Properties).Count)
 Write-Host "SETUP BUILD VERIFIED: $out. Owner install/upgrade/uninstall acceptance remains separate."
 Write-Host "Payload and raw build evidence retained at $work"
