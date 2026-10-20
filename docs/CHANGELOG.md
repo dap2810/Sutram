@@ -1,3 +1,43 @@
+## v212 - full corpus sweep after four compiler changes: no regressions
+
+**The compiler has changed four times since this sweep was last run** - the F1 fix, the pack diagnostics, the
+Sanskrit-grammar default, and the fresh-clone mode fix. **So I re-ran everything.**
+
+### The result
+
+| Check | Result |
+|---|---|
+| **Example programs** | **169 compiled, 40 failed - and all 40 are BY DESIGN** |
+| **Book samples** | compile (see the note below) |
+| **Library modules** | 24 present |
+| **Language packs** | sanskrit, gujarati, hindi, tamil - all OK |
+
+**Every one of the 40 failures is either a negative-corpus test** (`223_undefined_name`, `224_unknown_field`,
+`232_arity`, `228_block_scope` and the rest - programs that exist to produce an error) **or a pack-dependent
+example** (`37_native_gujarati`, `218_sanskrit_devanagari`) that needs `--lang`. **Zero unexpected failures.**
+
+**So the four changes did not break anything**, which is what the gates said and is now confirmed against the
+whole corpus rather than the subset the gates cover.
+
+### A note on my own measurement, because it was wrong first
+
+**My first pass reported "40 examples failed and 6 book samples failed" and it looked alarming.** It was not:
+**I had not excluded the negative corpus**, so the deliberate error demos counted as failures. **The check I
+wrote was wrong before the project was.**
+
+**And the 6 book samples were my extraction, not the books.** I flagged `prakriya mean(kosh dasham xs)` as
+failing - **it compiles cleanly** (`Siddh: 212 baait sankalit`). My extractor had picked up a fragment.
+**The books were right.**
+
+**That is the fifth time this session my own tooling has been the thing at fault**, and the pattern is
+consistent: **I report the first alarming number before checking whether the check is right.**
+
+### And the sweep found one thing worth keeping
+
+**`prakriya mean(kosh dasham xs) { ... }`** - a typed parameter with a `kosh` and a `dasham` - **compiles and
+runs.** That construct appears in all four books and **nowhere else in the tree**, so this sweep is the only
+thing that exercises it. **Worth knowing it is covered by nothing but a book.**
+
 ## v211 - the version gate was too strict; the roadmap now carries the course change
 
 ### The gate FAILed on its own correctness
