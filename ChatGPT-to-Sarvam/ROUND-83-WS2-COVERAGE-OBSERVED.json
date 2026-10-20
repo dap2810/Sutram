@@ -1,0 +1,963 @@
+{
+  "snapshot_main": "9bff1dd63877ac2c15ccd76a25153fe3c01ef015",
+  "base": "tools/sandesh.py KEYS and existing tests/sandesh/expect/default/*.out plus R83 proposed probes",
+  "scope": {
+    "compiler": 105,
+    "ide": 23,
+    "total": 128,
+    "cases": 9,
+    "default_comments": 128
+  },
+  "status": "PARTIAL",
+  "native_execution": "NOT_RUN",
+  "counts": {
+    "NON_SOURCE_CLI_OR_SHELL": 8,
+    "UNMAPPED_NEEDS_REPRO": 68,
+    "PROBE_AVAILABLE_NOT_VERIFIED": 9,
+    "CHECKED_IN_EXPECTATION_CANDIDATE": 20,
+    "NON_SOURCE_IDE_MESSAGE": 23
+  },
+  "meaning": "EXPECTED candidate means literal default-message fragment occurs in a checked-in expected-output fixture; this is NOT proof of native execution here. UNMAPPED != unreachable.",
+  "entries": [
+    {
+      "key": "msg_usage",
+      "status": "NON_SOURCE_CLI_OR_SHELL",
+      "source": null,
+      "expected": [],
+      "note": "CLI invocation/help"
+    },
+    {
+      "key": "msg_version",
+      "status": "NON_SOURCE_CLI_OR_SHELL",
+      "source": null,
+      "expected": [],
+      "note": "CLI --version"
+    },
+    {
+      "key": "r48_msg_near",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "r48_msg_ok",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "r48_msg_errors",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "r48_msg_eof",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "r50_msg_setchar_arity",
+      "status": "PROBE_AVAILABLE_NOT_VERIFIED",
+      "source": "tests/r83/cases/setchar_bad_arity.sm",
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "r52_msg_dvaram_arity",
+      "status": "PROBE_AVAILABLE_NOT_VERIFIED",
+      "source": "tests/r52_check/dvaram_bad_arity.sm",
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "r52_msg_charat_arity",
+      "status": "PROBE_AVAILABLE_NOT_VERIFIED",
+      "source": "tests/r52_check/char_at_bad_arity.sm",
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "r52_msg_charcode_arity",
+      "status": "PROBE_AVAILABLE_NOT_VERIFIED",
+      "source": "tests/r52_check/char_code_bad_arity.sm",
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "r48_msg_undefined",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "r4_msg_undef",
+      "status": "CHECKED_IN_EXPECTATION_CANDIDATE",
+      "source": null,
+      "expected": [
+        "tests/sandesh/expect/default/undefined_name.out"
+      ],
+      "note": "fragment in expected stdout/stderr, not executed in this session"
+    },
+    {
+      "key": "r4_msg_hint_decl",
+      "status": "CHECKED_IN_EXPECTATION_CANDIDATE",
+      "source": null,
+      "expected": [
+        "tests/sandesh/expect/default/undefined_name.out"
+      ],
+      "note": "fragment in expected stdout/stderr, not executed in this session"
+    },
+    {
+      "key": "r4_msg_hint_old",
+      "status": "CHECKED_IN_EXPECTATION_CANDIDATE",
+      "source": null,
+      "expected": [
+        "tests/sandesh/expect/default/duplicate.out",
+        "tests/sandesh/expect/default/unknown_field.out"
+      ],
+      "note": "fragment in expected stdout/stderr, not executed in this session"
+    },
+    {
+      "key": "r4_msg_hint_old2",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "r5_msg_field",
+      "status": "CHECKED_IN_EXPECTATION_CANDIDATE",
+      "source": null,
+      "expected": [
+        "tests/sandesh/expect/default/unknown_field.out"
+      ],
+      "note": "fragment in expected stdout/stderr, not executed in this session"
+    },
+    {
+      "key": "r7_msg_dup",
+      "status": "CHECKED_IN_EXPECTATION_CANDIDATE",
+      "source": null,
+      "expected": [
+        "tests/sandesh/expect/default/duplicate.out"
+      ],
+      "note": "fragment in expected stdout/stderr, not executed in this session"
+    },
+    {
+      "key": "r7_msg_dup_hint",
+      "status": "CHECKED_IN_EXPECTATION_CANDIDATE",
+      "source": null,
+      "expected": [
+        "tests/sandesh/expect/default/duplicate.out"
+      ],
+      "note": "fragment in expected stdout/stderr, not executed in this session"
+    },
+    {
+      "key": "r7_msg_field_amb",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "r7_msg_field_amb_hint",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "r7_msg_field_dup_hint",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "r7_msg_arity2",
+      "status": "CHECKED_IN_EXPECTATION_CANDIDATE",
+      "source": null,
+      "expected": [
+        "tests/sandesh/expect/default/arity.out"
+      ],
+      "note": "fragment in expected stdout/stderr, not executed in this session"
+    },
+    {
+      "key": "r7_msg_arity3",
+      "status": "CHECKED_IN_EXPECTATION_CANDIDATE",
+      "source": null,
+      "expected": [
+        "tests/sandesh/expect/default/arity.out"
+      ],
+      "note": "fragment in expected stdout/stderr, not executed in this session"
+    },
+    {
+      "key": "r7_msg_arity_hint",
+      "status": "CHECKED_IN_EXPECTATION_CANDIDATE",
+      "source": null,
+      "expected": [
+        "tests/sandesh/expect/default/arity.out"
+      ],
+      "note": "fragment in expected stdout/stderr, not executed in this session"
+    },
+    {
+      "key": "r7_msg_mod_missing",
+      "status": "CHECKED_IN_EXPECTATION_CANDIDATE",
+      "source": null,
+      "expected": [
+        "tests/sandesh/expect/default/missing_module.out"
+      ],
+      "note": "fragment in expected stdout/stderr, not executed in this session"
+    },
+    {
+      "key": "r7_msg_mod_missing2",
+      "status": "CHECKED_IN_EXPECTATION_CANDIDATE",
+      "source": null,
+      "expected": [
+        "tests/sandesh/expect/default/missing_module.out"
+      ],
+      "note": "fragment in expected stdout/stderr, not executed in this session"
+    },
+    {
+      "key": "r7_msg_hint_block",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "r5_msg_field_hint",
+      "status": "CHECKED_IN_EXPECTATION_CANDIDATE",
+      "source": null,
+      "expected": [
+        "tests/sandesh/expect/default/duplicate.out",
+        "tests/sandesh/expect/default/unknown_field.out"
+      ],
+      "note": "fragment in expected stdout/stderr, not executed in this session"
+    },
+    {
+      "key": "r5_msg_field_hint2",
+      "status": "CHECKED_IN_EXPECTATION_CANDIDATE",
+      "source": null,
+      "expected": [
+        "tests/sandesh/expect/default/unknown_field.out"
+      ],
+      "note": "fragment in expected stdout/stderr, not executed in this session"
+    },
+    {
+      "key": "msg_err_line",
+      "status": "CHECKED_IN_EXPECTATION_CANDIDATE",
+      "source": null,
+      "expected": [
+        "tests/sandesh/expect/default/parse.out"
+      ],
+      "note": "fragment in expected stdout/stderr, not executed in this session"
+    },
+    {
+      "key": "msg_err_near",
+      "status": "CHECKED_IN_EXPECTATION_CANDIDATE",
+      "source": null,
+      "expected": [
+        "tests/sandesh/expect/default/parse.out"
+      ],
+      "note": "fragment in expected stdout/stderr, not executed in this session"
+    },
+    {
+      "key": "msg_err_eof",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "msg_err_hint",
+      "status": "CHECKED_IN_EXPECTATION_CANDIDATE",
+      "source": null,
+      "expected": [
+        "tests/sandesh/expect/default/parse.out"
+      ],
+      "note": "fragment in expected stdout/stderr, not executed in this session"
+    },
+    {
+      "key": "msg_err_arg_limit",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "msg_err_duplicate_func",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "msg_duplicate_func",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "msg_undefined_func",
+      "status": "PROBE_AVAILABLE_NOT_VERIFIED",
+      "source": "examples/69_undefined_function.sm",
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "msg_array_oob",
+      "status": "CHECKED_IN_EXPECTATION_CANDIDATE",
+      "source": null,
+      "expected": [
+        "tests/sandesh/expect/default/oob.out"
+      ],
+      "note": "fragment in expected stdout/stderr, not executed in this session"
+    },
+    {
+      "key": "msg_kosh_required",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "r65_msg_add",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "r65_msg_sub",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "r65_msg_mul",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "r65_msg_div",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "r65_msg_mod",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "r65_msg_div_overflow",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "r65_msg_mod_overflow",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "msg_kosh_empty",
+      "status": "CHECKED_IN_EXPECTATION_CANDIDATE",
+      "source": null,
+      "expected": [
+        "tests/sandesh/expect/default/kosh_empty.out"
+      ],
+      "note": "fragment in expected stdout/stderr, not executed in this session"
+    },
+    {
+      "key": "msg_kosh_peek_empty",
+      "status": "PROBE_AVAILABLE_NOT_VERIFIED",
+      "source": "tests/r83/cases/empty_kosh_peek.sm",
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "msg_kosh_dequeue_empty",
+      "status": "PROBE_AVAILABLE_NOT_VERIFIED",
+      "source": "tests/r83/cases/empty_kosh_dequeue.sm",
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "msg_kosh_param_type",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "msg_kosh_param_push",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "msg_lang_ok",
+      "status": "NON_SOURCE_CLI_OR_SHELL",
+      "source": null,
+      "expected": [],
+      "note": "language pack loader before compilation"
+    },
+    {
+      "key": "msg_lang_fail",
+      "status": "NON_SOURCE_CLI_OR_SHELL",
+      "source": null,
+      "expected": [],
+      "note": "language pack loader failure"
+    },
+    {
+      "key": "msg_shell_banner",
+      "status": "NON_SOURCE_CLI_OR_SHELL",
+      "source": null,
+      "expected": [],
+      "note": "interactive shell startup"
+    },
+    {
+      "key": "msg_shell_bye",
+      "status": "NON_SOURCE_CLI_OR_SHELL",
+      "source": null,
+      "expected": [],
+      "note": "interactive shell exit"
+    },
+    {
+      "key": "msg_shell_help",
+      "status": "NON_SOURCE_CLI_OR_SHELL",
+      "source": null,
+      "expected": [],
+      "note": "interactive shell help"
+    },
+    {
+      "key": "msg_open_err",
+      "status": "NON_SOURCE_CLI_OR_SHELL",
+      "source": null,
+      "expected": [],
+      "note": "CLI input file opening failure"
+    },
+    {
+      "key": "msg_ok",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "msg_bytes",
+      "status": "CHECKED_IN_EXPECTATION_CANDIDATE",
+      "source": null,
+      "expected": [
+        "tests/sandesh/expect/default/kosh_empty.out",
+        "tests/sandesh/expect/default/ok.out",
+        "tests/sandesh/expect/default/oob.out"
+      ],
+      "note": "fragment in expected stdout/stderr, not executed in this session"
+    },
+    {
+      "key": "msg_namespace_error",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "msg_namespace_module_missing",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "msg_namespace_alias_reuse",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "r51_alias_conflict",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "msg_namespace_func_limit",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "msg_import_overflow",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "graph_cycle_prefix",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "graph_missing_prefix",
+      "status": "CHECKED_IN_EXPECTATION_CANDIDATE",
+      "source": null,
+      "expected": [
+        "tests/sandesh/expect/default/missing_module.out"
+      ],
+      "note": "fragment in expected stdout/stderr, not executed in this session"
+    },
+    {
+      "key": "graph_invalid_prefix",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "msg_ast_overflow",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "msg_func_params_overflow",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "msg_var_table_overflow",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "msg_func_table_overflow",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "msg_patch_overflow",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "msg_func_defs_overflow",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "msg_r9_guna_overflow",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "msg_break_patch_overflow",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "msg_continue_patch_overflow",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "msg_code_overflow",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "msg_rachana_overflow",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "msg_rachana_fields_overflow",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "msg_block_nesting_overflow",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "msg_block_stmt_overflow",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "r55_msg_proto_duplicate",
+      "status": "PROBE_AVAILABLE_NOT_VERIFIED",
+      "source": "tests/r55_check/prototype_duplicate.sm",
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "r55_msg_proto_missing",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "r55_msg_proto_signature",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "r55_msg_proto_capacity",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "r56_msg_global_capacity",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "r56_msg_global_duplicate",
+      "status": "PROBE_AVAILABLE_NOT_VERIFIED",
+      "source": "tests/r56_check/duplicate_global.sm",
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "r56_msg_patch_capacity",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "mg_e_cycle",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "mg_e_noexp2",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "mg_e_noexp3",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "mg_e_dupexp1",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "mg_e_dupexp2",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "mg_e_undef1",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "mg_e_undef2",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "mg_e_unknown1",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "mg_e_unknown2",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "mg_e_depth",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "mg_e_valias1",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "mg_e_valias2",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "mg_e_limit",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "r66_msg_bad_utf8",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "r68_utf8_tail",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "r68_value_tail",
+      "status": "UNMAPPED_NEEDS_REPRO",
+      "source": null,
+      "expected": [],
+      "note": "no confirmed native execution in this session"
+    },
+    {
+      "key": "ide.st_pankti_w",
+      "status": "NON_SOURCE_IDE_MESSAGE",
+      "source": null,
+      "expected": [],
+      "note": "IDE output/status string, not triggered by a .sm program"
+    },
+    {
+      "key": "ide.st_stambh_w",
+      "status": "NON_SOURCE_IDE_MESSAGE",
+      "source": null,
+      "expected": [],
+      "note": "IDE output/status string, not triggered by a .sm program"
+    },
+    {
+      "key": "ide.st_bhasha_w",
+      "status": "NON_SOURCE_IDE_MESSAGE",
+      "source": null,
+      "expected": [],
+      "note": "IDE output/status string, not triggered by a .sm program"
+    },
+    {
+      "key": "ide.st_akshara_w",
+      "status": "NON_SOURCE_IDE_MESSAGE",
+      "source": null,
+      "expected": [],
+      "note": "IDE output/status string, not triggered by a .sm program"
+    },
+    {
+      "key": "ide.st_lipi_w",
+      "status": "NON_SOURCE_IDE_MESSAGE",
+      "source": null,
+      "expected": [],
+      "note": "IDE output/status string, not triggered by a .sm program"
+    },
+    {
+      "key": "ide.st_sanchit_w",
+      "status": "NON_SOURCE_IDE_MESSAGE",
+      "source": null,
+      "expected": [],
+      "note": "IDE output/status string, not triggered by a .sm program"
+    },
+    {
+      "key": "ide.st_asanchit_w",
+      "status": "NON_SOURCE_IDE_MESSAGE",
+      "source": null,
+      "expected": [],
+      "note": "IDE output/status string, not triggered by a .sm program"
+    },
+    {
+      "key": "ide.st_notfound_w",
+      "status": "NON_SOURCE_IDE_MESSAGE",
+      "source": null,
+      "expected": [],
+      "note": "IDE output/status string, not triggered by a .sm program"
+    },
+    {
+      "key": "ide.lang_swayam_w",
+      "status": "NON_SOURCE_IDE_MESSAGE",
+      "source": null,
+      "expected": [],
+      "note": "IDE output/status string, not triggered by a .sm program"
+    },
+    {
+      "key": "ide.lang_swayam_sk_w",
+      "status": "NON_SOURCE_IDE_MESSAGE",
+      "source": null,
+      "expected": [],
+      "note": "IDE output/status string, not triggered by a .sm program"
+    },
+    {
+      "key": "ide.lang_mool_w",
+      "status": "NON_SOURCE_IDE_MESSAGE",
+      "source": null,
+      "expected": [],
+      "note": "IDE output/status string, not triggered by a .sm program"
+    },
+    {
+      "key": "ide.msg_ready",
+      "status": "NON_SOURCE_IDE_MESSAGE",
+      "source": null,
+      "expected": [],
+      "note": "IDE output/status string, not triggered by a .sm program"
+    },
+    {
+      "key": "ide.msg_compile_failed",
+      "status": "NON_SOURCE_IDE_MESSAGE",
+      "source": null,
+      "expected": [],
+      "note": "IDE output/status string, not triggered by a .sm program"
+    },
+    {
+      "key": "ide.msg_run_failed",
+      "status": "NON_SOURCE_IDE_MESSAGE",
+      "source": null,
+      "expected": [],
+      "note": "IDE output/status string, not triggered by a .sm program"
+    },
+    {
+      "key": "ide.msg_file_failed",
+      "status": "NON_SOURCE_IDE_MESSAGE",
+      "source": null,
+      "expected": [],
+      "note": "IDE output/status string, not triggered by a .sm program"
+    },
+    {
+      "key": "ide.msg_input_large",
+      "status": "NON_SOURCE_IDE_MESSAGE",
+      "source": null,
+      "expected": [],
+      "note": "IDE output/status string, not triggered by a .sm program"
+    },
+    {
+      "key": "ide.msg_shell_limit",
+      "status": "NON_SOURCE_IDE_MESSAGE",
+      "source": null,
+      "expected": [],
+      "note": "IDE output/status string, not triggered by a .sm program"
+    },
+    {
+      "key": "ide.msg_timeout",
+      "status": "NON_SOURCE_IDE_MESSAGE",
+      "source": null,
+      "expected": [],
+      "note": "IDE output/status string, not triggered by a .sm program"
+    },
+    {
+      "key": "ide.msg_missing_compiler",
+      "status": "NON_SOURCE_IDE_MESSAGE",
+      "source": null,
+      "expected": [],
+      "note": "IDE output/status string, not triggered by a .sm program"
+    },
+    {
+      "key": "ide.msg_missing_lang",
+      "status": "NON_SOURCE_IDE_MESSAGE",
+      "source": null,
+      "expected": [],
+      "note": "IDE output/status string, not triggered by a .sm program"
+    },
+    {
+      "key": "ide.msg_partial_lang",
+      "status": "NON_SOURCE_IDE_MESSAGE",
+      "source": null,
+      "expected": [],
+      "note": "IDE output/status string, not triggered by a .sm program"
+    },
+    {
+      "key": "ide.msg_pipe_fail",
+      "status": "NON_SOURCE_IDE_MESSAGE",
+      "source": null,
+      "expected": [],
+      "note": "IDE output/status string, not triggered by a .sm program"
+    },
+    {
+      "key": "ide.msg_more_output",
+      "status": "NON_SOURCE_IDE_MESSAGE",
+      "source": null,
+      "expected": [],
+      "note": "IDE output/status string, not triggered by a .sm program"
+    }
+  ]
+}
