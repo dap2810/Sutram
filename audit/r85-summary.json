@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "status": "PARTIAL_REMOTE_SOURCE_AUDIT",
+  "tree_sha": "75b4d77fb41350827cda938ebcc337d15000f2a3",
+  "tracked_file_blobs": 2854,
+  "eligible_file_suffixes": 1579,
+  "archived_handoff_excluded": 601,
+  "live_eligible": 978,
+  "other_suffixes_excluded": 1275,
+  "distinct_file_reads": 202,
+  "read_errors": [],
+  "bytes_fetched": 3793678,
+  "unscanned_live_eligible": 776,
+  "candidate_count": 38,
+  "candidate_classification_counts": {
+    "historical_snapshot_or_design": 17,
+    "ordinary_comment": 1,
+    "diagnostic_line_not_keyword": 6,
+    "legacy_compatibility_or_comment": 14
+  },
+  "confirmed_active_obsolete_in_scanned_scope": 0,
+  "scoped_paths_with_candidates": [
+    "compiler/MODULE_NAMESPACES_R33.md",
+    "compiler/verified_snapshots/FG2_R30_verified.asm.txt",
+    "docs/LANGUAGE-REFERENCE.md",
+    "docs/sutram-book-english.html",
+    "docs/sutram-book-gujarati.html",
+    "docs/sutram-book-hindi.html",
+    "docs/sutram-book-sanskrit.html",
+    "docs/sutram-book-tamil.html",
+    "docs/sutram-book-telugu.html",
+    "src/sutram_compiler.asm"
+  ],
+  "source_reports": [
+    "audit/r85-part-001.json",
+    "audit/r85-docs-01.json",
+    "audit/r85-docs-02.json",
+    "audit/r85-docs-03.json",
+    "audit/r85-docs-04.json",
+    "audit/r85-docs-05.json",
+    "audit/r85-compiler-src-01.json",
+    "audit/r85-compiler-src-02.json",
+    "audit/r85-compiler-src-03.json",
+    "audit/r85-compiler-src-04.json",
+    "audit/r85-compiler-src-05.json",
+    "audit/r85-compiler-src-06.json",
+    "audit/r85-library-01.json",
+    "audit/r85-library-02.json"
+  ],
+  "limitations": [
+    "Not a full current-source audit; examples, tests, tools and many other eligible files remain.",
+    "Remote scan uses source-suffix/context candidate detection, not parsing/compiling all files.",
+    "Historical/handoff records and unsupported suffixes excluded with explicit counts.",
+    "Git clone failed DNS lookup; no complete working checkout or native compiler here.",
+    "No executable Sutram or network tests run."
+  ],
+  "zero_findings_means_no_defect": false
+}
