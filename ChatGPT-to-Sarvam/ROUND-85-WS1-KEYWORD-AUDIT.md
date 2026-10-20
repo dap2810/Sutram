@@ -14,12 +14,14 @@ GitHub's non-truncated recursive Git tree contains **2,854 tracked file blobs**.
 | **Actually fetched and scanned** | **202** |
 | **Not yet scanned among live eligible** | **776** |
 | Other tracked suffixes excluded (including binaries/goldens) | 1,275 |
-| Decoded source characters read | 3,793,678 |
+| Decoded JavaScript UTF-16 code units read | 3,793,678 |
 | GitHub read errors | 0 |
 | Review candidates in scanned subset | 38 |
 | Confirmed live old-syntax defects in scanned subset | 0 |
 
 The 202 read files are disjoint scopes: 16 initial sorted live files (benchmark and historical snapshot material), **all 79 eligible docs/** files (including all six teaching-book HTML files), **all 83 eligible files** under src/, win/, windows/, ide/ and lang/, and **all 24 current lib/*.smlib modules**. The old R74 source suffix set and the additional message/installer extensions were accounted for.
+
+Note: the raw batch JSON field called bytes is actually JavaScript String.length, i.e. UTF-16 code units, not UTF-8 byte count. The aggregate summary names this unit correctly.
 
 All 14 immutable remote batch reports and the aggregated machine-readable audit/r85-summary.json are stored in **draft PR #53** (https://github.com/dap2810/Sutram/pull/53), not main. Each batch includes pin, read/error counts and individual hit path/line/context. Readbacks establish the reports exist; no compiler execution is implied.
 
