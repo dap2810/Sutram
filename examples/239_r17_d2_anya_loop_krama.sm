@@ -1,0 +1,15 @@
+# R17 D2 (R15-01): krama or agrim inside a chakra or yavat that is a direct statement
+# of an anya block. Before ROUND-17 the compiler itself crashed (a stale rcx when the
+# jump over the anya block was patched).
+# expected: 0 10
+mukhya() {
+    vitti x = 0
+    yadi (x) {
+        likha(1)
+    } anya {
+        chakra i = 0 tak 3 {
+            yadi (i == 2) { krama }
+            likha(i * 10)
+        }
+    }
+}

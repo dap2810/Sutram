@@ -1,0 +1,10 @@
+# R17 D4 (R15-01): the operator precedence is the documented one (LANGUAGE-REFERENCE s3,
+# C order): comparisons bind tighter than & ^ |, and < > <= >= tighter than == !=.
+# Before ROUND-17, & ^ | bound tighter than every comparison.
+# expected: 1 0 1 0
+mukhya() {
+    likha(0 == -1 ^ 1)
+    likha(1 != 0 & 0)
+    likha(8 <= 70 & 3)
+    likha(-2 == 9 < 1)
+}

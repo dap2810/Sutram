@@ -1,0 +1,3 @@
+mukhya() {
+    yadi (1) { likha(1) } anya { likha(2) } anya yadi (1) { likha(3) }
+}
