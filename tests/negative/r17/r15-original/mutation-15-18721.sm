@@ -1,0 +1,2 @@
+# Same import/alias twice must not define functions twice.
+yoj
