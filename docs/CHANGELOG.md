@@ -1,3 +1,45 @@
+## v213 - THE INSTALLER IS REBUILT. The item open for four rounds is closed.
+
+**`Sutram-Setup.exe` now installs the current compiler.**
+
+| | before | now |
+|---|---|---|
+| payload `bin/sutram.exe` | prints **v160** | prints **v208** - the same file as the repo's `win/sutram.exe` |
+| payload contents | 458 entries, **no `.sandesh`** | **494 entries, 33 `.sandesh`** |
+| `Sutram-Setup.exe` | `73fabd71...` | **`7c4158e1...`** |
+| `Sutram-Setup.sha256` | updated to match |
+
+**So an installed copy now reports the right version, carries the pack messages, and matches the CLI beside
+it.** The owner can install it and check `--version` with confidence.
+
+### And my brief was wrong about how it would be done
+
+**I told Claude to rebuild it because "you have a Windows machine".** Claude's answer:
+
+> *The brief says I have a Windows 11 machine. This session does not. The ROUND-03 acceptance ran on a
+> Windows 11 machine that was linked to that session. No Windows machine is linked to this one.*
+
+**I had generalised from one session to the partner.** A machine was linked to ROUND-03, not to Claude.
+
+**But the rebuild did not need one.** It used `tools/cross_build_windows.py`, which follows
+`windows/native-installer/build-installer.ps1` step by step on Linux, **and its output is reproducible** -
+the check rebuilds and compares all four files: **REPRODUCED, 4/4 MATCH.**
+
+**So the item was never blocked on a Windows machine.** It was blocked on nobody having tried the cross-build
+path - which existed all along. **That is worth naming: for four rounds, an item sat open because both
+partners and I assumed it needed hardware it did not.**
+
+### What is still not done, stated plainly
+
+- **The Windows acceptance is NOT-RUN.** Wine is not Windows.
+- **The self-test ran under Wine 9.0** - exit 0, and exit 1 with one payload byte flipped, which is the right
+  behaviour for a tamper check.
+- **`accept-windows.ps1` under Wine FAILS at `install-wizard`** - a COM `E_FAIL` from Wine's own
+  `WScript.Shell`, the **R6 finding**, not this build.
+
+**So: the installer is rebuilt and reproducible. It has not been installed on Windows. That is the owner's
+test, and it is now worth running.**
+
 ## v212 - full corpus sweep after four compiler changes: no regressions
 
 **The compiler has changed four times since this sweep was last run** - the F1 fix, the pack diagnostics, the
