@@ -1,0 +1,121 @@
+SUTRAM ROUND 81 — EXECUTED LOCAL TESTS AND OBSERVATIONS — 2026-10-20
+
+Incoming: Sarvam-to-ChatGPT/ROUND-81.md.
+Main at initial review: v207 465c202f4455468c326cd3c0ad45dad98a584cf4.
+Main later advanced to v208 4b7d53122898a26733e3b67f521ad450545c5468.
+R81 review source: existing draft PR #47, branch review/r80-source-bound-installer-20261020.
+
+Actual GitHub main recursive-tree comparisons (not local compiler build):
+R11 source-lock tools/r69_build.lock.json has 15 Git blob entries.
+v207 and v208 snapshot checks: 15/15 MATCH, 0 drift.
+src/sutram_compiler.asm Git blob 8625095aa53027bbaf4eef29e7afe76e525d1008.
+Actual source message declares v182; actual docs/CHANGELOG.md first heading declares v208.
+v208 already includes tools/version_gate.py, which prints NOTE rather than FAIL when
+compiler banner lags; our packaging-only R81 guard is stricter and requires review.
+
+ENVIRONMENT:
+$ command -v nasm
+(no executable)
+$ command -v pwsh
+(no executable)
+$ command -v ld
+/usr/bin/ld
+$ git ls-remote https://github.com/dap2810/Sutram.git HEAD
+fatal: unable to access 'https://github.com/dap2810/Sutram.git/': Could not resolve host: github.com
+
+R81 CODE AND TEST FILES (exact uploaded Git blob and matching locally tested bytes):
+tools/r81_version_gate.py
+  Git blob 9f064f8ff41d64485235e7e379b3e28ac2dca27d
+  SHA256 13ef3e910ba698e671de8394da142279afad3c6d5e745fdd95ddcfcd370faa82
+tests/r81/test_version_gate.py
+  Git blob bd60cd5850af68673c0bbd78de69a6f35810ed11
+  SHA256 a0c674f8e1d5d502a8d9f25e1726596cad109986a26e8d35cbe9424a55535230
+windows/native-installer/build-installer.ps1
+  Git blob be1193627c4897e0593561125653d44a95f2faaa
+  SHA256 30efe197ea490692581878e23991b8f8f5f6a8ea72f57950e37536c368b81ec6
+
+ROUND 80 EXISTING TESTS RERUN ON R81-UPDATED BUILDER:
+$ python3 -m unittest discover -s tests/r80 -p 'test_*.py' -v
+test_embedded_verification_precedes_publication ... ok
+test_fresh_canonical_build_precedes_zip ... ok
+test_not_dependent_on_diagnostic_translation ... ok
+test_actual_gnu_linked_pe_symbol_layout ... ok
+test_build_report_compiler_hash_cannot_be_wrong ... ok
+test_case_collisions_rejected ... ok
+test_corrupt_embedded_zip_rejected ... ok
+test_file_cannot_also_be_parent_directory ... ok
+test_linux_binary_does_not_count_as_windows_compiler ... ok
+test_manifest_hash_corruption_is_rejected ... ok
+test_matching_current_inputs_zip_and_pe_pass ... ok
+test_missing_compiler_copy_is_rejected ... ok
+test_new_diagnostic_include_pin_is_supported ... ok
+test_old_installer_with_new_zip_appended_is_rejected ... ok
+test_preassembly_mode_does_not_claim_setup_hash ... ok
+test_report_for_previous_source_rejected_even_after_reviewed_repin ... ok
+test_same_version_different_compiler_payload_is_rejected ... ok
+test_second_compiler_copy_is_also_checked ... ok
+test_source_and_outputs_unchanged_by_verifier ... ok
+test_source_change_is_rejected ... ok
+test_stripped_pe_is_not_silently_accepted ... ok
+test_symlink_source_rejected ... ok
+test_unlocked_include_is_rejected ... ok
+test_unmanifested_file_is_rejected ... ok
+test_windows_path_hazards ... ok
+test_wrong_embedded_hash_rejected ... ok
+test_zip_bomb_budget ... ok
+test_zip_symlink_rejected_without_extraction ... ok
+test_zip_traversal_does_not_extract ... ok
+----------------------------------------------------------------------
+Ran 29 tests in 0.162s
+OK
+EXIT 0
+
+ROUND 81 RELEASE-BANNER GATE TESTS:
+$ python3 -m unittest discover -s tests/r81 -p 'test_*.py' -v
+test_changelog_leading_version_not_historical ... ok
+test_comments_do_not_match ... ok
+test_current_version_matches ... ok
+test_duplicate_banner_refused ... ok
+test_installer_invokes_gate_before_compiling ... ok
+test_missing_changelog_refused ... ok
+test_missing_compiler_banner_refused ... ok
+test_refuses_symlinked_input ... ok
+test_run_real_files_and_hashes ... ok
+test_sourcelines_containing_other_versions_are_ignored ... ok
+test_stale_v182_refused ... ok
+----------------------------------------------------------------------
+Ran 11 tests in 0.003s
+OK
+EXIT 0
+
+DURING DEVELOPMENT: initial rerun of Round 80 suite had one failure:
+test_not_dependent_on_diagnostic_translation rejected the text 'msg_version'
+in a NEW COMMENT (not an invocation). Replaced that comment wording with
+'assembly banner', did not modify the test, and reran BOTH complete suites:
+29 PASS and 11 PASS. No remaining failures or skipped cases.
+
+R81 CURRENT-BANNER FIDELITY REPRODUCTION (reduced local two-line fixtures
+copied from ACTUAL current GitHub version declarations, NOT whole source files):
+$ python3 tools/r81_version_gate.py --repo current_snapshot --report evidence/current-snapshot-reproduction.json
+EXIT 2
+{
+  "project_version": "v208",
+  "compiler_banner_version": "v182",
+  "status": "FAIL",
+  "reason": "STALE COMPILER VERSION: do not package an installer until the accepted NASM source is rebuilt, reviewed and re-pinned",
+  "compiler_source_sha256": "9065e2c896d36f28bd73f74b82af3759baa92b8bc5f6bd49ed407101cef7a845",
+  "changelog_sha256": "878b03b7e1e3b6bd87587a0afef3e86d069ddfa7908b446aa98760786de74181",
+  "gate": "source_release_banner_only",
+  "native_binary_executed": false
+}
+Hashes just above are SHA-256 of TWO-LINE LOCAL FIXTURE SNIPPETS only;
+do not misattribute to full GitHub NASM/changelog source.
+
+SUMMARY
+PASS: 40/40 actually executed verifier/gate unit tests; 15/15 Git source pins;
+uploaded review source blob identity equals locally tested bytes.
+EXPECTED FAIL: packaging banner mismatch v182 vs v208 (not compiler native failure).
+NOT_RUN: native Sutram compiler build, rebuild setup, actual embedded payload hash,
+Windows install/upgrade/uninstall, kosh Linux A/B, full repo keyword audit,
+two genuine independent .sm object emission/link.
+No CI workflow triggered, no source compiler or shared lock edited, no merge.
