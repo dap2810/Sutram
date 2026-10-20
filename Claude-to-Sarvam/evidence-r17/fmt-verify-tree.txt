@@ -1,0 +1,606 @@
+UNCHANGED examples/01_hello.sm
+UNCHANGED examples/02_arith.sm
+UNCHANGED examples/03_if_else.sm
+UNCHANGED examples/04_while.sm
+UNCHANGED examples/05_func_params.sm
+UNCHANGED examples/06_rachana.sm
+UNCHANGED examples/07_module.sm
+UNCHANGED examples/08_demo.sm
+UNCHANGED examples/09_comparisons.sm
+UNCHANGED examples/100_t18_kosh_bounds.sm
+UNCHANGED examples/100_t18_kosh_devanagari.sm
+UNCHANGED examples/101_t18_kosh_empty.sm
+UNCHANGED examples/102_ast_multimodule_capacity.sm
+UNCHANGED examples/103_b10_nested_break_patches.sm
+UNCHANGED examples/104_b10_nested_continue_patches.sm
+SAME-ERR examples/105_block_nesting_capacity.sm: does not compile before or after (Sutram Error: khand gahrai seema atikram)
+SAME-ERR examples/106_rachana_field_capacity.sm: does not compile before or after (Sutram Error: rachana kshetra seema atikram)
+UNCHANGED examples/107_b11_block_65_statements.sm
+SAME-ERR examples/108_b11_block_statement_capacity.sm: does not compile before or after (Sutram Error: khand kathan seema atikram)
+UNCHANGED examples/109_t18_kosh_dasham.sm
+UNCHANGED examples/10_mathlib.sm
+UNCHANGED examples/110_t18_kosh_dasham_devanagari.sm
+UNCHANGED examples/111_t18_kosh_dasham_function_return.sm
+UNCHANGED examples/112_t18_kosh_integer_conversion.sm
+UNCHANGED examples/113_perf_self_update.sm
+UNCHANGED examples/114_perf_loop_fastpaths.sm
+UNCHANGED examples/115_perf_loop_bottom.sm
+UNCHANGED examples/116_perf_reg_destination.sm
+UNCHANGED examples/117_perf_constant_literals.sm
+UNCHANGED examples/118_t18_kosh_param.sm
+UNCHANGED examples/119_t18_kosh_param_forward.sm
+OK        examples/11_forloop.sm
+SAME-ERR examples/120_t18_kosh_param_mismatch.sm: does not compile before or after (Sutram Error: kosh tark: tatv prakar bhinn)
+SAME-ERR examples/121_t18_kosh_param_push_reject.sm: does not compile before or after (Sutram Error: kosh-tarke kosh_push asamarthitam)
+UNCHANGED examples/122_t18_kosh_param_devanagari.sm
+UNCHANGED examples/123_t18_kosh_param_statement_call.sm
+UNCHANGED examples/124_perf_wide_immediate.sm
+UNCHANGED examples/125_perf_register_immediate_destination.sm
+UNCHANGED examples/126_numeric_pipeline.sm
+UNCHANGED examples/127_perf_float_self_register.sm
+UNCHANGED examples/128_perf_float_self_fallback.sm
+UNCHANGED examples/129_perf_float_destination.sm
+OK        examples/12_elif.sm
+UNCHANGED examples/130_perf_float_destination_alias.sm
+UNCHANGED examples/131_perf_float_compare_register.sm
+UNCHANGED examples/132_perf_float_compare_fallback.sm
+UNCHANGED examples/133_perf_float_scalar_call_rhs.sm
+UNCHANGED examples/134_perf_float_complex_fallback.sm
+UNCHANGED examples/135_r30_float_index_scalar.sm
+UNCHANGED examples/136_r30_float_complex_left.sm
+UNCHANGED examples/137_r30_float_literal_rhs.sm
+UNCHANGED examples/138_r30_float_comparison_index.sm
+UNCHANGED examples/139_r30_float_mixed_fallback.sm
+OK        examples/13_negatives.sm
+UNCHANGED examples/140_r30_index_side_effect.sm
+UNCHANGED examples/141_xmm_cache_basic.sm
+UNCHANGED examples/142_xmm_cache_alias.sm
+UNCHANGED examples/143_xmm_cache_barriers.sm
+UNCHANGED examples/144_xmm_cache_fallback.sm
+UNCHANGED examples/145_xmm_cache_nested_calls.sm
+UNCHANGED examples/146_stage2_loop_call_boundary.sm
+UNCHANGED examples/147_stage2_recursive_float_boundary.sm
+UNCHANGED examples/148_stage2_array_mutation_call.sm
+UNCHANGED examples/149_namespaced_colliding_imports.sm
+OK        examples/14_strings.sm
+UNCHANGED examples/150_namespaced_same_module_two_aliases.sm
+UNCHANGED examples/151_namespaced_and_legacy_import.sm
+UNCHANGED examples/152_namespaced_comment_string_preservation.sm
+UNCHANGED examples/153_namespaced_devanagari_function.sm
+UNCHANGED examples/154_namespaced_duplicate_idempotent.sm
+UNCHANGED examples/155_namespaced_multi_alias_composition.sm
+SAME-ERR examples/156_namespaced_alias_collision.sm: does not compile before or after (Sutram Error: upanaam purv-niyukt (anya ghatak))
+SAME-ERR examples/157_namespaced_missing_module.sm: does not compile before or after (Sutram Error: ghatak patra aprapt)
+SAME-ERR examples/158_namespaced_alias_digit.sm: does not compile before or after (Sutram Error: ashuddh yoj (roop: ghatak@upanaam, upanaam 31 )
+SAME-ERR examples/159_namespaced_path_traversal.sm: does not compile before or after (Sutram Error: ashuddh yoj (roop: ghatak@upanaam, upanaam 31 )
+OK        examples/15_sutra_const.sm
+SAME-ERR examples/160_namespaced_empty_alias.sm: does not compile before or after (Sutram Error: ashuddh yoj (roop: ghatak@upanaam, upanaam 31 )
+SAME-ERR examples/161_namespaced_overlong_alias.sm: does not compile before or after (Sutram Error: ashuddh yoj (roop: ghatak@upanaam, upanaam 31 )
+SAME-ERR examples/162_namespaced_import_capacity.sm: does not compile before or after (Sutram Error: ashuddh yoj (roop: ghatak@upanaam, upanaam 31 )
+UNCHANGED examples/163_r40_transitive_diamond.sm
+SAME-ERR examples/164_r41_cycle_reject.sm: does not compile before or after (r41_cycle_b.smlib:2: Sutram Error [E_MODULE_CYCLE]: yoj chak)
+SAME-ERR examples/165_r41_missing_reject.sm: does not compile before or after (.fmt-verify-0-165_r41_missing_reject.sm:2: Sutram Error [E_M)
+UNCHANGED examples/166_r41_optin_diamond.sm
+OK        examples/16_advanced.sm
+OK        examples/17_booleans.sm
+UNCHANGED examples/18_guna_switch.sm
+UNCHANGED examples/19_srijana_enum.sm
+UNCHANGED examples/200_madhava_series.sm
+UNCHANGED examples/201_madhava_library.sm
+UNCHANGED examples/202_brahmagupta_area.sm
+UNCHANGED examples/203_meru_with_kosh.sm
+SAME-ERR examples/204_b11_block_statement_capacity.sm: does not compile before or after (Sutram Error: khand kathan seema atikram)
+UNCHANGED examples/205_madhava_pi_kosh.sm
+UNCHANGED examples/206_sankhyiki.sm
+UNCHANGED examples/207_sankhyiki_vector.sm
+UNCHANGED examples/208_kalana.sm
+UNCHANGED examples/209_samanvaya.sm
+UNCHANGED examples/20_pankti_array.sm
+SAME-ERR examples/210_r41_cycle.sm: does not compile before or after (examples/lib/r41_cyc_b.smlib:2: Sutram Error [E_MODULE_CYCLE)
+UNCHANGED examples/211_r41_v1_public.sm
+SAME-ERR examples/212_r41_v1_private.sm: does not compile before or after (examples/.fmt-verify-0-212_r41_v1_private.sm:5: Sutram Error)
+SAME-ERR examples/213_r41_v1_dupexp.sm: does not compile before or after (examples/lib/r41_dup.smlib:4: Sutram Error [E_MODULE_DUP_EXP)
+SAME-ERR examples/214_r41_v1_noalias.sm: does not compile before or after (examples/.fmt-verify-0-214_r41_v1_noalias.sm:3:Sutram Error )
+UNCHANGED examples/215_r12_wordfreq.sm
+UNCHANGED examples/216_r12_expr.sm
+UNCHANGED examples/217_r12_report.sm
+UNCHANGED examples/218_sanskrit_devanagari.sm
+UNCHANGED examples/219_sanskrit_kosh_aliases.sm
+UNCHANGED examples/21_break_continue.sm
+SAME-ERR examples/220_hindi_parse_error.sm: does not compile before or after (भाषा पैक मिला: hindi)
+UNSURE   examples/221_eof_location.sm: a string runs past the end of its line (left as it is)
+SAME-ERR examples/222_old_keyword_name.sm: does not compile before or after (.fmt-verify-0-222_old_keyword_name.sm:8:25: Sutram Error [E_)
+SAME-ERR examples/223_undefined_name.sm: does not compile before or after (.fmt-verify-0-223_undefined_name.sm:5:11: Sutram Error [E_UN)
+SAME-ERR examples/224_unknown_field.sm: does not compile before or after (.fmt-verify-0-224_unknown_field.sm:7:13: Sutram Error [E_UNK)
+SAME-ERR examples/225_undeclared_array.sm: does not compile before or after (.fmt-verify-0-225_undeclared_array.sm:5:11: Sutram Error [E_)
+UNCHANGED examples/226_long_field_names.sm
+SAME-ERR examples/227_assign_undeclared.sm: does not compile before or after (.fmt-verify-0-227_assign_undeclared.sm:6:5: Sutram Error [E_)
+SAME-ERR examples/228_block_scope.sm: does not compile before or after (.fmt-verify-0-228_block_scope.sm:6:11: Sutram Error [E_UNDEF)
+SAME-ERR examples/229_loop_var_scope.sm: does not compile before or after (.fmt-verify-0-229_loop_var_scope.sm:5:11: Sutram Error [E_UN)
+UNCHANGED examples/22_precedence.sm
+UNCHANGED examples/230_redeclare_after_block.sm
+SAME-ERR examples/231_duplicate_name.sm: does not compile before or after (.fmt-verify-0-231_duplicate_name.sm:6:11: Sutram Error [E_DU)
+SAME-ERR examples/232_arity.sm: does not compile before or after (.fmt-verify-0-232_arity.sm:5:11: Sutram Error [E_ARITY]: 'f')
+SAME-ERR examples/233_missing_module.sm: does not compile before or after (Sutram Error [E_MODULE_MISSING]: yoj patra aprapt: ganitt)
+SAME-ERR examples/234_ambiguous_field.sm: does not compile before or after (.fmt-verify-0-234_ambiguous_field.sm:8:7: Sutram Error [E_AM)
+SAME-ERR examples/235_duplicate_field.sm: does not compile before or after (.fmt-verify-0-235_duplicate_field.sm:3:18: Sutram Error [E_D)
+UNCHANGED examples/236_guna_once.sm
+UNCHANGED examples/237_many_variables.sm
+UNCHANGED examples/238_r17_d1_unary_not.sm
+UNCHANGED examples/239_r17_d2_anya_loop_krama.sm
+UNCHANGED examples/23_grahan_input.sm
+UNCHANGED examples/240_r17_d3_anya_self_assign.sm
+UNCHANGED examples/241_r17_d4_precedence.sm
+UNCHANGED examples/242_r17_empty_guna.sm
+UNCHANGED examples/24_guess_game.sm
+UNCHANGED examples/25_patterns.sm
+UNCHANGED examples/26_calculator.sm
+UNCHANGED examples/27_even_odd.sm
+UNCHANGED examples/28_compound.sm
+UNCHANGED examples/29_nishkriya.sm
+UNCHANGED examples/30_lkhb.sm
+UNCHANGED examples/31_strcat.sm
+UNCHANGED examples/32_bank_interest.sm
+UNCHANGED examples/33_unit_conversion.sm
+UNCHANGED examples/34_incdec.sm
+UNCHANGED examples/35_comments.sm
+UNCHANGED examples/36_descending.sm
+UNCHANGED examples/37_native_gujarati.sm
+UNCHANGED examples/38_native_hindi.sm
+UNCHANGED examples/39_native_tamil.sm
+UNCHANGED examples/40_functions_params.sm
+UNCHANGED examples/41_recursion.sm
+OK        examples/42_block_comments.sm
+UNCHANGED examples/43_nested_likha.sm
+UNCHANGED examples/44_shabda.sm
+UNCHANGED examples/45_shifts.sm
+UNCHANGED examples/46_language_reference.sm
+UNCHANGED examples/59_windows_grahan_runtime.sm
+UNCHANGED examples/60_six_func_args.sm
+UNCHANGED examples/61_stdlib_math.sm
+UNCHANGED examples/62_stdlib_num.sm
+UNCHANGED examples/63_stdlib_string.sm
+UNCHANGED examples/64_param_reassign.sm
+UNCHANGED examples/65_char_code_index.sm
+UNCHANGED examples/66_module_dedupe.sm
+UNCHANGED examples/67_array_len_bounds.sm
+UNCHANGED examples/68_array_oob.sm
+SAME-ERR examples/69_undefined_function.sm: does not compile before or after (Sutram Error: agyat prakriya: does_not_exist)
+SAME-ERR examples/70_module_collision.sm: does not compile before or after (Sutram Error: punah prakriya paribhasha: varg)
+UNCHANGED examples/71_array_negative_index.sm
+UNCHANGED examples/72_array_variable_index.sm
+UNCHANGED examples/73_array_equal_length.sm
+UNCHANGED examples/74_array_highest_valid.sm
+UNCHANGED examples/75_array_dynamic_length.sm
+UNCHANGED examples/76_array_function_scope.sm
+UNCHANGED examples/77_ternary.sm
+UNCHANGED examples/78_do_while.sm
+UNCHANGED examples/79_ayojan_cwd.sm
+UNCHANGED examples/80_b6_nested_call_loop.sm
+UNCHANGED examples/81_stdlib_num2.sm
+UNCHANGED examples/82_b7_stack_spill.sm
+UNCHANGED examples/83_stdlib_sort.sm
+UNCHANGED examples/84_stdlib_string2.sm
+UNCHANGED examples/85_stdlib_shellsort.sm
+UNCHANGED examples/86_b8_multi_modules.sm
+UNCHANGED examples/87_b8_all_modules.sm
+UNCHANGED examples/87_b8_func_params_capacity.sm
+UNCHANGED examples/87_b8_math_sort_string.sm
+UNCHANGED examples/88_pingala_chandas.sm
+UNCHANGED examples/89_b9_short_circuit.sm
+UNCHANGED examples/90_b9_short_circuit_bounds.sm
+UNCHANGED examples/91_indian_number_theory.sm
+UNCHANGED examples/92_t12_dasham_float.sm
+UNCHANGED examples/93_t12_float_functions.sm
+UNCHANGED examples/94_t12_float_functions.sm
+UNCHANGED examples/95_t12_madhava_functions.sm
+UNCHANGED examples/96_t18_kosh.sm
+UNCHANGED examples/97_t18_kosh_devanagari.sm
+UNCHANGED examples/98_t18_kosh_empty.sm
+UNCHANGED examples/99_ast_multimodule_capacity.sm
+UNCHANGED examples/99_t18_kosh.sm
+UNCHANGED examples/array_demo.sm
+UNCHANGED examples/char_ops.sm
+UNCHANGED examples/fizzbuzz.sm
+UNCHANGED examples/format_demo.sm
+UNCHANGED examples/full_demo.sm
+UNCHANGED examples/func_demo.sm
+UNCHANGED examples/hello.sm
+UNCHANGED examples/import_demo.sm
+UNCHANGED examples/lib/r33_alpha.smlib
+UNCHANGED examples/lib/r33_beta.smlib
+UNCHANGED examples/lib/r33_devanagari.smlib
+UNCHANGED examples/lib/r40_a.smlib
+UNCHANGED examples/lib/r40_b.smlib
+UNCHANGED examples/lib/r40_c.smlib
+UNCHANGED examples/lib/r40_d.smlib
+SAME-ERR examples/lib/r41_cyc_a.smlib: does not compile before or after (/tmp/tmprphm2h2f/lib0/lib/r41_cyc_b.smlib:2: Sutram Error [E)
+SAME-ERR examples/lib/r41_cyc_b.smlib: does not compile before or after (/tmp/tmprphm2h2f/lib0/lib/r41_cyc_a.smlib:2: Sutram Error [E)
+SAME-ERR examples/lib/r41_cycle_a.smlib: does not compile before or after (/tmp/tmprphm2h2f/lib0/p.sm:1:Sutram Error [E_MODULE_V1_ALIAS)
+SAME-ERR examples/lib/r41_cycle_b.smlib: does not compile before or after (/tmp/tmprphm2h2f/lib0/p.sm:1:Sutram Error [E_MODULE_V1_ALIAS)
+SAME-ERR examples/lib/r41_dup.smlib: does not compile before or after (/tmp/tmprphm2h2f/lib0/lib/r41_dup.smlib:4: Sutram Error [E_M)
+SAME-ERR examples/lib/r41_vec.smlib: does not compile before or after (/tmp/tmprphm2h2f/lib0/p.sm:1:Sutram Error [E_MODULE_V1_ALIAS)
+UNCHANGED examples/mem_safe.sm
+UNCHANGED examples/multable.sm
+UNCHANGED examples/number_game.sm
+UNCHANGED examples/prime.sm
+SAME-ERR examples/r67/bengali_native.sm: does not compile before or after (Sutram Error: vyakaran dosh, pankti 2:1, shabd 'মুখ্য')
+SAME-ERR examples/r67/punjabi_native.sm: does not compile before or after (Sutram Error: vyakaran dosh, pankti 2:1, shabd 'ਮੁੱਖ')
+SAME-ERR examples/r68/hindi.sm: does not compile before or after (Sutram Error: vyakaran dosh, pankti 2:1, shabd 'मु॰')
+SAME-ERR examples/r68/kannada.sm: does not compile before or after (Sutram Error: vyakaran dosh, pankti 2:1, shabd 'ಮುಖ್ಯ')
+SAME-ERR examples/r68/marathi.sm: does not compile before or after (Sutram Error: vyakaran dosh, pankti 2:1, shabd 'मु॰')
+SAME-ERR examples/r68/odia.sm: does not compile before or after (Sutram Error: vyakaran dosh, pankti 2:1, shabd 'ମୁଖ୍ୟ')
+OK        examples/r68/pairs/all_registers.sm
+UNCHANGED examples/r68/pairs/no_pairs.sm
+UNCHANGED examples/r68/pairs/nonmatching.sm
+SAME-ERR examples/r68/tamil.sm: does not compile before or after (Sutram Error: vyakaran dosh, pankti 2:1, shabd 'முதன்மை')
+SAME-ERR examples/r68/telugu.sm: does not compile before or after (Sutram Error: vyakaran dosh, pankti 2:1, shabd 'ముఖ్యం')
+UNCHANGED examples/r71/associativity.sm
+UNCHANGED examples/r71/boundary_bad.sm
+SAME-ERR examples/r71/boundary_good.sm: does not compile before or after (Sutram Error: vyakaran dosh, pankti 5:9, shabd 'likha')
+UNCHANGED examples/r71/conversion.sm
+UNCHANGED examples/r71/evaluation_order.sm
+UNCHANGED examples/strength_reduction.sm
+UNCHANGED lib/aadhar.smlib
+UNCHANGED lib/ank.smlib
+UNCHANGED lib/anukram.smlib
+OK        lib/brihat.smlib
+UNCHANGED lib/chandas.smlib
+UNCHANGED lib/ganit.smlib
+UNCHANGED lib/ganita.smlib
+UNCHANGED lib/gudh.smlib
+UNCHANGED lib/kalana.smlib
+UNCHANGED lib/khand.smlib
+UNCHANGED lib/madhava.smlib
+UNCHANGED lib/mala.smlib
+UNCHANGED lib/nighantu.smlib
+UNCHANGED lib/patra.smlib
+UNCHANGED lib/phal.smlib
+UNCHANGED lib/roop.smlib
+OK        lib/sadhan.smlib
+UNCHANGED lib/samanvaya.smlib
+UNCHANGED lib/sangrah.smlib
+UNCHANGED lib/sankhyiki.smlib
+UNCHANGED lib/shreni.smlib
+UNCHANGED lib/suchi.smlib
+UNCHANGED lib/vakyank.smlib
+UNCHANGED lib/varna.smlib
+SAME-ERR tests/r44_pending/01_undefined_export/lib/calc.smlib: does not compile before or after (/tmp/tmprphm2h2f/lib0/p.sm:1:Sutram Error [E_MODULE_V1_ALIAS)
+SAME-ERR tests/r44_pending/01_undefined_export/main.sm: does not compile before or after (tests/r44_pending/01_undefined_export/lib/calc.smlib:2: Sutr)
+SAME-ERR tests/r44_pending/02_exported_constant/lib/config.smlib: does not compile before or after (/tmp/tmprphm2h2f/lib0/p.sm:1:Sutram Error [E_MODULE_V1_ALIAS)
+UNCHANGED tests/r44_pending/02_exported_constant/main.sm
+SAME-ERR tests/r44_pending/03_unknown_qualified/lib/calc.smlib: does not compile before or after (/tmp/tmprphm2h2f/lib0/p.sm:1:Sutram Error [E_MODULE_V1_ALIAS)
+SAME-ERR tests/r44_pending/03_unknown_qualified/main.sm: does not compile before or after (tests/r44_pending/03_unknown_qualified/.fmt-verify-0-main.sm)
+SAME-ERR tests/r44_pending/04_private_constant/lib/config.smlib: does not compile before or after (/tmp/tmprphm2h2f/lib0/p.sm:1:Sutram Error [E_MODULE_V1_ALIAS)
+SAME-ERR tests/r44_pending/04_private_constant/main.sm: does not compile before or after (tests/r44_pending/04_private_constant/.fmt-verify-0-main.sm:)
+SAME-ERR tests/r44_pending/05_private_function/lib/calc.smlib: does not compile before or after (/tmp/tmprphm2h2f/lib0/p.sm:1:Sutram Error [E_MODULE_V1_ALIAS)
+SAME-ERR tests/r44_pending/05_private_function/main.sm: does not compile before or after (tests/r44_pending/05_private_function/.fmt-verify-0-main.sm:)
+SAME-ERR tests/r44_pending/06_public_function/lib/calc.smlib: does not compile before or after (/tmp/tmprphm2h2f/lib0/p.sm:1:Sutram Error [E_MODULE_V1_ALIAS)
+UNCHANGED tests/r44_pending/06_public_function/main.sm
+UNCHANGED tests/r44_pending/07_legacy_import/lib/legacy.smlib
+UNCHANGED tests/r44_pending/07_legacy_import/main.sm
+SAME-ERR tests/r48_check/nested_recovery.sm: does not compile before or after (Sutram Error: vyakaran dosh, pankti 4:17, shabd ';')
+SAME-ERR tests/r48_check/semantic_unknown.sm: does not compile before or after (Sutram Error: agyat prakriya: missing_fun)
+SAME-ERR tests/r48_check/structural_three_errors.sm: does not compile before or after (Sutram Error: vyakaran dosh, pankti 4:24, shabd '=')
+SAME-ERR tests/r48_check/three_parse_errors.sm: does not compile before or after (Sutram Error: vyakaran dosh, pankti 2:11, shabd '=')
+SAME-ERR tests/r48_check/three_undefined_functions.sm: does not compile before or after (Sutram Error: agyat prakriya: missing_alpha)
+UNSURE   tests/r48_check/unclosed_block.sm: more { than } (left as it is)
+UNCHANGED tests/r48_check/valid.sm
+SAME-ERR tests/r49_check/import_bad.sm: does not compile before or after (Sutram Error: vyakaran dosh, pankti faulty_r49.smlib:3:12, s)
+SAME-ERR tests/r49_check/lib/faulty_r49.smlib: does not compile before or after (Sutram Error: vyakaran dosh, pankti faulty_r49.smlib:3:12, s)
+SAME-ERR tests/r49_check/missing_separators.sm: does not compile before or after (Sutram Error: vyakaran dosh, pankti 2:11, shabd '=')
+SAME-ERR tests/r49_check/module_missing.sm: does not compile before or after (.fmt-verify-0-module_missing.sm:2: Sutram Error [E_MODULE_MI)
+SAME-ERR tests/r49_check/nested_expressions.sm: does not compile before or after (Sutram Error: vyakaran dosh, pankti 3:16, shabd '=')
+SAME-ERR tests/r49_check/repeated_undefined.sm: does not compile before or after (Sutram Error: agyat prakriya: missing_repeat)
+SAME-ERR tests/r49_check/top_level_malformed.sm: does not compile before or after (Sutram Error: vyakaran dosh, pankti 3:13, shabd ';')
+UNCHANGED tests/r50_check/byte_truncation.sm
+UNCHANGED tests/r50_check/runtime_hi.sm
+SAME-ERR tests/r51_check/lib/broken_ns_r51.smlib: does not compile before or after (Sutram Error: vyakaran dosh, pankti broken_ns_r51.smlib:3:12)
+SAME-ERR tests/r51_check/lib/inner_r51.smlib: does not compile before or after (Sutram Error: vyakaran dosh, pankti inner_r51.smlib:3:12, sh)
+SAME-ERR tests/r51_check/lib/outer_r51.smlib: does not compile before or after (Sutram Error [E_MODULE_MISSING]: yoj patra aprapt: inner_r51)
+SAME-ERR tests/r51_check/lib/semantics_r51.smlib: does not compile before or after (Sutram Error: agyat prakriya: missing_sem_one)
+SAME-ERR tests/r51_check/missing_three.sm: does not compile before or after (.fmt-verify-0-missing_three.sm:2: Sutram Error [E_MODULE_MIS)
+SAME-ERR tests/r51_check/namespaced_root.sm: does not compile before or after (Sutram Error: vyakaran dosh, pankti broken_ns_r51.smlib:3:12)
+UNSURE   tests/r51_check/nested_braces.sm: more { than } (left as it is)
+SAME-ERR tests/r51_check/nested_root.sm: does not compile before or after (Sutram Error: vyakaran dosh, pankti inner_r51.smlib:3:12, sh)
+SAME-ERR tests/r51_check/semantic_import.sm: does not compile before or after (Sutram Error: agyat prakriya: missing_sem_one)
+SAME-ERR tests/r52_check/char_at_bad_arity.sm: does not compile before or after (Sutram Error: vyakaran dosh, pankti 2:22, shabd ')')
+SAME-ERR tests/r52_check/char_code_bad_arity.sm: does not compile before or after (Sutram Error: vyakaran dosh, pankti 2:31, shabd ')')
+UNCHANGED tests/r52_check/char_code_index.sm
+SAME-ERR tests/r52_check/dvaram_bad_arity.sm: does not compile before or after (Sutram Error: vyakaran dosh, pankti 2:46, shabd ')')
+UNCHANGED tests/r52_check/dvaram_default.sm
+UNCHANGED tests/r52_check/dvaram_explicit.sm
+SAME-ERR tests/r52_check/likh_missing_value.sm: does not compile before or after (Sutram Error: vyakaran dosh, pankti 2:11, shabd ')')
+SAME-ERR tests/r52_check/likh_no_args.sm: does not compile before or after (Sutram Error: vyakaran dosh, pankti 2:10, shabd ')')
+UNCHANGED tests/r52_check/likh_valid.sm
+SAME-ERR tests/r54_check/raw_invalid.sm: does not compile before or after (Sutram Error: vyakaran dosh, pankti 3:15, shabd ')')
+UNCHANGED tests/r54_check/raw_valid.sm
+UNCHANGED tests/r55_check/mutual_even_odd.sm
+UNCHANGED tests/r55_check/mutual_triple_reverse.sm
+SAME-ERR tests/r55_check/prototype_duplicate.sm: does not compile before or after (Sutram Error: punah prakriya purv-ghoshana)
+SAME-ERR tests/r55_check/prototype_mismatch.sm: does not compile before or after (Sutram Error: prakriya purv-ghoshana va paribhasha bhinn (ta)
+SAME-ERR tests/r55_check/prototype_missing.sm: does not compile before or after (Sutram Error: prakriya purv-ghoshana paribhasha-rahit)
+SAME-ERR tests/r55_check/prototype_type_mismatch.sm: does not compile before or after (Sutram Error: prakriya purv-ghoshana va paribhasha bhinn (ta)
+UNCHANGED tests/r55_check/without_global_gap.sm
+SAME-ERR tests/r56_check/after_main.sm: does not compile before or after (Sutram Error: vyakaran dosh, pankti 2:1, shabd 'vitti')
+SAME-ERR tests/r56_check/bad_declaration.sm: does not compile before or after (Sutram Error: vyakaran dosh, pankti 1:7, shabd '=')
+UNCHANGED tests/r56_check/compound_global.sm
+SAME-ERR tests/r56_check/duplicate_global.sm: does not compile before or after (.fmt-verify-0-duplicate_global.sm:2:7: Sutram Error [E_DUPLI)
+SAME-ERR tests/r56_check/global_array_unsupported.sm: does not compile before or after (Sutram Error: vyakaran dosh, pankti 2:1, shabd 'mukhya')
+UNCHANGED tests/r56_check/global_for.sm
+UNCHANGED tests/r56_check/global_pointer.sm
+UNCHANGED tests/r56_check/global_string_pointer.sm
+UNCHANGED tests/r56_check/initializer_calls.sm
+UNCHANGED tests/r56_check/local_shadow.sm
+UNCHANGED tests/r56_check/ordered_initializers.sm
+UNCHANGED tests/r56_check/parameter_shadow.sm
+UNCHANGED tests/r56_check/recursive_global.sm
+UNCHANGED tests/r56_check/shared_rw.sm
+UNCHANGED tests/r57_check/arithmetic_10m.sm
+UNCHANGED tests/r57_check/control_10m.sm
+UNCHANGED tests/r57_check/global_registers.sm
+UNCHANGED tests/r57_check/large_literals.sm
+UNCHANGED tests/r57_check/legacy_fallback.sm
+UNCHANGED tests/r57_check/nested_registers.sm
+UNCHANGED tests/r58_check/div_signed.sm
+UNCHANGED tests/r58_check/effectful_identity.sm
+UNCHANGED tests/r58_check/fold_nested.sm
+UNCHANGED tests/r58_check/fold_vs_dynamic_dynamic.sm
+UNCHANGED tests/r58_check/fold_vs_dynamic_folded.sm
+UNCHANGED tests/r58_check/foldable_10m.sm
+UNCHANGED tests/r59_check/global_self_10m.sm
+UNCHANGED tests/r59_check/self_assign_cases.sm
+UNCHANGED tests/r59_check/stack_self_10m.sm
+UNCHANGED tests/r63_check/indic_danda_regression.sm
+UNCHANGED tests/r63_check/kosh_dequeue_empty.sm
+UNCHANGED tests/r63_check/kosh_fifo_core.sm
+UNCHANGED tests/r63_check/kosh_fifo_float.sm
+SAME-ERR tests/r63_check/kosh_invalid_arity.sm: does not compile before or after (Sutram Error: vyakaran dosh, pankti 4:26, shabd ')')
+SAME-ERR tests/r63_check/kosh_invalid_non_kosh.sm: does not compile before or after (Sutram Error: kosh prakriya hetu kosh-vitti avashyak)
+UNCHANGED tests/r63_check/kosh_native_core.sm
+UNCHANGED tests/r63_check/kosh_native_float.sm
+UNCHANGED tests/r63_check/kosh_peek_empty.sm
+UNCHANGED tests/r64_check/default_compat.sm
+UNCHANGED tests/r64_check/kosh_dequeue_empty.sm
+UNCHANGED tests/r64_check/kosh_nonempty.sm
+UNCHANGED tests/r64_check/kosh_peek_empty.sm
+UNCHANGED tests/r64_check/kosh_pop_empty.sm
+UNCHANGED tests/r65_check/overflow_safe.sm
+UNCHANGED tests/r65_check/peephole_scalar.sm
+UNCHANGED tests/r65_check/trap_add.sm
+UNCHANGED tests/r65_check/trap_div.sm
+UNCHANGED tests/r65_check/trap_mod.sm
+UNCHANGED tests/r65_check/trap_mul.sm
+UNCHANGED tests/r65_check/trap_sub.sm
+OK        tests/r69/pairs/all_registers.sm
+UNCHANGED tests/r69/pairs/no_pairs.sm
+UNCHANGED tests/r69/pairs/nonmatching.sm
+UNCHANGED tests/r83/cases/empty_kosh_dequeue.sm
+UNCHANGED tests/r83/cases/empty_kosh_peek.sm
+SAME-ERR tests/r83/cases/setchar_bad_arity.sm: does not compile before or after (Sutram Error: vyakaran dosh, pankti 3:24, shabd ')')
+SAME-ERR tests/sandesh/cases/arity.sm: does not compile before or after (.fmt-verify-0-arity.sm:6:11: Sutram Error [E_ARITY]: 'f' ity)
+SAME-ERR tests/sandesh/cases/duplicate.sm: does not compile before or after (.fmt-verify-0-duplicate.sm:4:11: Sutram Error [E_DUPLICATE_N)
+UNCHANGED tests/sandesh/cases/kosh_empty.sm
+SAME-ERR tests/sandesh/cases/missing_module.sm: does not compile before or after (Sutram Error [E_MODULE_MISSING]: yoj patra aprapt: nahi_asti)
+UNCHANGED tests/sandesh/cases/ok.sm
+UNCHANGED tests/sandesh/cases/oob.sm
+SAME-ERR tests/sandesh/cases/parse.sm: does not compile before or after (Sutram Error: vyakaran dosh, pankti 3:11, shabd '=')
+SAME-ERR tests/sandesh/cases/undefined_name.sm: does not compile before or after (.fmt-verify-0-undefined_name.sm:3:11: Sutram Error [E_UNDEFI)
+SAME-ERR tests/sandesh/cases/unknown_field.sm: does not compile before or after (.fmt-verify-0-unknown_field.sm:6:13: Sutram Error [E_UNKNOWN)
+UNCHANGED tests/stdlib/array_array_copy.sm
+UNCHANGED tests/stdlib/array_array_fill.sm
+UNCHANGED tests/stdlib/array_array_get.sm
+UNCHANGED tests/stdlib/array_array_get_safe.sm
+UNCHANGED tests/stdlib/array_array_new.sm
+UNCHANGED tests/stdlib/array_array_set.sm
+UNCHANGED tests/stdlib/array_array_set_safe.sm
+UNCHANGED tests/stdlib/array_array_sum.sm
+UNCHANGED tests/stdlib/baseconv_roundtrip.sm
+UNCHANGED tests/stdlib/bigint_add.sm
+UNCHANGED tests/stdlib/bigint_cmp.sm
+UNCHANGED tests/stdlib/bigint_copy.sm
+UNCHANGED tests/stdlib/bigint_divmod.sm
+UNCHANGED tests/stdlib/bigint_divzero.sm
+UNCHANGED tests/stdlib/bigint_from_int.sm
+UNCHANGED tests/stdlib/bigint_is_zero.sm
+UNCHANGED tests/stdlib/bigint_mul.sm
+UNCHANGED tests/stdlib/bigint_powmod.sm
+UNCHANGED tests/stdlib/bigint_sub.sm
+UNCHANGED tests/stdlib/bigint_to_int.sm
+UNCHANGED tests/stdlib/bigint_zero.sm
+UNCHANGED tests/stdlib/breadth26.sm
+UNCHANGED tests/stdlib/chakravala29.sm
+UNCHANGED tests/stdlib/chandas_dviguna.sm
+UNCHANGED tests/stdlib/chandas_guru_count.sm
+UNCHANGED tests/stdlib/chandas_is_guru.sm
+UNCHANGED tests/stdlib/chandas_matra_meru.sm
+UNCHANGED tests/stdlib/chandas_meru.sm
+UNCHANGED tests/stdlib/chandas_meru_pankti.sm
+UNCHANGED tests/stdlib/containers20.sm
+UNCHANGED tests/stdlib/containers21.sm
+OK        tests/stdlib/containers23.sm
+UNCHANGED tests/stdlib/containers_clear.sm
+UNCHANGED tests/stdlib/file_read.sm
+UNCHANGED tests/stdlib/file_write.sm
+UNCHANGED tests/stdlib/fmt_fixed.sm
+UNCHANGED tests/stdlib/fmt_group.sm
+UNCHANGED tests/stdlib/fmt_int_base.sm
+UNCHANGED tests/stdlib/fmt_min.sm
+UNCHANGED tests/stdlib/fmt_pad.sm
+UNCHANGED tests/stdlib/fmt_signed.sm
+UNCHANGED tests/stdlib/ganita_brahmagupta_area.sm
+UNCHANGED tests/stdlib/ganita_chakravala.sm
+UNCHANGED tests/stdlib/ganita_checked.sm
+UNCHANGED tests/stdlib/ganita_ganita_abs.sm
+UNCHANGED tests/stdlib/ganita_ganita_isqrt.sm
+UNCHANGED tests/stdlib/ganita_kuttaka.sm
+UNCHANGED tests/stdlib/ganita_samasa.sm
+UNCHANGED tests/stdlib/ganita_sat.sm
+UNCHANGED tests/stdlib/gaps19.sm
+UNCHANGED tests/stdlib/gaps20.sm
+UNCHANGED tests/stdlib/gaps21.sm
+UNCHANGED tests/stdlib/gaps23.sm
+UNCHANGED tests/stdlib/hash_fnv1a.sm
+UNCHANGED tests/stdlib/kalana_bahu_ganana.sm
+UNCHANGED tests/stdlib/kalana_bahu_mula.sm
+UNCHANGED tests/stdlib/kalana_simpson.sm
+UNCHANGED tests/stdlib/kalana_slope.sm
+UNCHANGED tests/stdlib/kalana_slope2.sm
+UNCHANGED tests/stdlib/kalana_trapezoid.sm
+UNCHANGED tests/stdlib/kosh_reuse.sm
+UNCHANGED tests/stdlib/list_basic.sm
+UNCHANGED tests/stdlib/list_queue.sm
+UNCHANGED tests/stdlib/list_stack.sm
+UNCHANGED tests/stdlib/madhava_madhava_atan.sm
+UNCHANGED tests/stdlib/madhava_madhava_cos.sm
+UNCHANGED tests/stdlib/madhava_madhava_pi.sm
+UNCHANGED tests/stdlib/madhava_madhava_sin.sm
+UNCHANGED tests/stdlib/madhava_madhava_sqrt.sm
+UNCHANGED tests/stdlib/map_basic.sm
+UNCHANGED tests/stdlib/map_clear.sm
+UNCHANGED tests/stdlib/map_keys_bytes.sm
+UNCHANGED tests/stdlib/map_remove.sm
+UNCHANGED tests/stdlib/math_abs_val.sm
+UNCHANGED tests/stdlib/math_bit_count.sm
+UNCHANGED tests/stdlib/math_cube.sm
+UNCHANGED tests/stdlib/math_double.sm
+UNCHANGED tests/stdlib/math_fact.sm
+OK        tests/stdlib/math_gcd.sm
+UNCHANGED tests/stdlib/math_gcd_lcm_edge.sm
+UNCHANGED tests/stdlib/math_inc.sm
+UNCHANGED tests/stdlib/math_is_prime.sm
+OK        tests/stdlib/math_lcm.sm
+OK        tests/stdlib/math_max2.sm
+OK        tests/stdlib/math_min2.sm
+OK        tests/stdlib/math_power.sm
+UNCHANGED tests/stdlib/math_sq.sm
+UNCHANGED tests/stdlib/math_square.sm
+UNCHANGED tests/stdlib/math_sum_to.sm
+UNCHANGED tests/stdlib/math_triple.sm
+OK        tests/stdlib/num_clamp.sm
+UNCHANGED tests/stdlib/num_collatz_steps.sm
+UNCHANGED tests/stdlib/num_digit_count.sm
+UNCHANGED tests/stdlib/num_digit_sum.sm
+UNCHANGED tests/stdlib/num_fib.sm
+UNCHANGED tests/stdlib/num_is_even.sm
+UNCHANGED tests/stdlib/num_is_odd.sm
+UNCHANGED tests/stdlib/num_is_palindrome.sm
+UNCHANGED tests/stdlib/num_is_perfect.sm
+UNCHANGED tests/stdlib/num_reverse_num.sm
+UNCHANGED tests/stdlib/numeric29.sm
+UNCHANGED tests/stdlib/numeric_hangfix.sm
+UNCHANGED tests/stdlib/r10_roop_suchi_edges.sm
+UNCHANGED tests/stdlib/r11_brihat_guards.sm
+UNCHANGED tests/stdlib/r11_kalana_edges.sm
+UNCHANGED tests/stdlib/r11_khand_varna.sm
+UNCHANGED tests/stdlib/r11_misc_edges.sm
+UNCHANGED tests/stdlib/r11_nighantu_edges.sm
+UNCHANGED tests/stdlib/r11_page_edges.sm
+UNCHANGED tests/stdlib/r11_sets_lists.sm
+UNCHANGED tests/stdlib/r8_array_guard.sm
+UNCHANGED tests/stdlib/r8_base_digits.sm
+UNCHANGED tests/stdlib/r8_bytes_edges.sm
+UNCHANGED tests/stdlib/r8_chakravala_sweep.sm
+UNCHANGED tests/stdlib/r8_char_class.sm
+UNCHANGED tests/stdlib/r8_list_edges.sm
+UNCHANGED tests/stdlib/r8_list_growth.sm
+UNCHANGED tests/stdlib/r8_list_model.sm
+UNCHANGED tests/stdlib/r8_map_edges.sm
+UNCHANGED tests/stdlib/r8_map_model.sm
+UNCHANGED tests/stdlib/r8_number_edges.sm
+UNCHANGED tests/stdlib/r8_result_flags.sm
+UNCHANGED tests/stdlib/r8_split_model.sm
+UNCHANGED tests/stdlib/r8_text_edges.sm
+UNCHANGED tests/stdlib/r9_aadhar_alone.sm
+UNCHANGED tests/stdlib/r9_alloc_failure.sm
+UNCHANGED tests/stdlib/r9_guard_cells.sm
+UNCHANGED tests/stdlib/r9_guard_cells2.sm
+UNCHANGED tests/stdlib/result29.sm
+UNCHANGED tests/stdlib/result_chain.sm
+UNCHANGED tests/stdlib/safety24.sm
+UNCHANGED tests/stdlib/safety25.sm
+UNCHANGED tests/stdlib/samanvaya_mat_gunana.sm
+UNCHANGED tests/stdlib/samanvaya_mat_yoga.sm
+UNCHANGED tests/stdlib/samanvaya_nirnaya2.sm
+UNCHANGED tests/stdlib/samanvaya_nirnaya3.sm
+UNCHANGED tests/stdlib/samanvaya_nishan.sm
+UNCHANGED tests/stdlib/samanvaya_pehchan.sm
+UNCHANGED tests/stdlib/samanvaya_rekha_manak.sm
+UNCHANGED tests/stdlib/samanvaya_sadish_yoga.sm
+UNCHANGED tests/stdlib/samanvaya_skalar.sm
+UNCHANGED tests/stdlib/samanvaya_vivartana.sm
+UNCHANGED tests/stdlib/sankhyiki_adhikatama.sm
+UNCHANGED tests/stdlib/sankhyiki_bindu.sm
+UNCHANGED tests/stdlib/sankhyiki_laghutama.sm
+UNCHANGED tests/stdlib/sankhyiki_madhya.sm
+UNCHANGED tests/stdlib/sankhyiki_manak.sm
+UNCHANGED tests/stdlib/sankhyiki_prasaran.sm
+UNCHANGED tests/stdlib/sankhyiki_purna_adhikatama.sm
+UNCHANGED tests/stdlib/sankhyiki_purna_laghutama.sm
+UNCHANGED tests/stdlib/sankhyiki_purna_madhya.sm
+UNCHANGED tests/stdlib/sankhyiki_purna_prasaran.sm
+UNCHANGED tests/stdlib/sankhyiki_purna_vyapti.sm
+UNCHANGED tests/stdlib/sankhyiki_purna_yoga.sm
+UNCHANGED tests/stdlib/sankhyiki_sankhyiki_sqrt.sm
+UNCHANGED tests/stdlib/sankhyiki_vichalan.sm
+UNCHANGED tests/stdlib/sankhyiki_vyapti.sm
+UNCHANGED tests/stdlib/sankhyiki_yoga.sm
+UNCHANGED tests/stdlib/serial29.sm
+UNCHANGED tests/stdlib/set_basic.sm
+UNCHANGED tests/stdlib/set_difference.sm
+UNCHANGED tests/stdlib/set_intersect.sm
+UNCHANGED tests/stdlib/set_subset.sm
+UNCHANGED tests/stdlib/set_to_array.sm
+UNCHANGED tests/stdlib/set_union.sm
+UNCHANGED tests/stdlib/slices23.sm
+UNCHANGED tests/stdlib/sort_binary_search.sm
+UNCHANGED tests/stdlib/sort_bubble_sort.sm
+UNCHANGED tests/stdlib/sort_count_of.sm
+UNCHANGED tests/stdlib/sort_find_linear.sm
+UNCHANGED tests/stdlib/sort_insertion.sm
+UNCHANGED tests/stdlib/sort_is_sorted.sm
+UNCHANGED tests/stdlib/sort_max_of.sm
+UNCHANGED tests/stdlib/sort_merge.sm
+UNCHANGED tests/stdlib/sort_min_of.sm
+UNCHANGED tests/stdlib/sort_reverse_arr.sm
+UNCHANGED tests/stdlib/sort_shell_sort.sm
+UNCHANGED tests/stdlib/sort_sum_of.sm
+UNCHANGED tests/stdlib/sort_swap.sm
+UNCHANGED tests/stdlib/strb_cell_pairs.sm
+UNCHANGED tests/stdlib/strb_dup.sm
+UNCHANGED tests/stdlib/strb_pack_unpack.sm
+UNCHANGED tests/stdlib/strconv_base.sm
+UNCHANGED tests/stdlib/strconv_int_str.sm
+OK        tests/stdlib/strconv_overflow.sm
+UNCHANGED tests/stdlib/strconv_pad.sm
+UNCHANGED tests/stdlib/string_case_trim.sm
+UNCHANGED tests/stdlib/string_char_code_at.sm
+UNCHANGED tests/stdlib/string_count_char.sm
+UNCHANGED tests/stdlib/string_count_vowels.sm
+UNCHANGED tests/stdlib/string_find.sm
+UNCHANGED tests/stdlib/string_find_char.sm
+UNCHANGED tests/stdlib/string_is_all_digits.sm
+UNCHANGED tests/stdlib/string_is_digit_char.sm
+UNCHANGED tests/stdlib/string_is_letter_char.sm
+UNCHANGED tests/stdlib/string_is_lower_char.sm
+UNCHANGED tests/stdlib/string_is_space_char.sm
+UNCHANGED tests/stdlib/string_is_upper_char.sm
+UNCHANGED tests/stdlib/string_lower_code.sm
+UNCHANGED tests/stdlib/string_replace.sm
+UNCHANGED tests/stdlib/string_split_join.sm
+UNCHANGED tests/stdlib/string_str_equals.sm
+UNCHANGED tests/stdlib/string_str_len.sm
+UNCHANGED tests/stdlib/string_strb_bridge.sm
+UNCHANGED tests/stdlib/string_strb_find.sm
+UNCHANGED tests/stdlib/string_strb_split_join.sm
+UNCHANGED tests/stdlib/string_strb_starts_compare.sm
+UNCHANGED tests/stdlib/string_strb_trim_case.sm
+UNCHANGED tests/stdlib/string_upper_code.sm
+UNCHANGED tests/stdlib/util_bool_to_int.sm
+OK        tests/stdlib/util_div_ceil.sm
+UNCHANGED tests/stdlib/util_int_max.sm
+OK        tests/stdlib/util_lerp.sm
+OK        tests/stdlib/util_mod.sm
+UNCHANGED tests/stdlib/util_sign.sm
+OK        tests/stdlib/util_sum_range.sm
+UNCHANGED tests/stdlib/width_repro.sm

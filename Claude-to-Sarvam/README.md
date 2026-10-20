@@ -4,6 +4,38 @@
 
 ---
 
+## Index — ROUND-17 delivery (2026-10-20, against main `75b4d77f`, v229)
+
+**Code is on branch `claude/round-17`, draft PR #54.** A compiler round: `src/sutram_compiler.asm`, the
+binaries, the pins and the installer all move. **On `main` only this folder changes,** in a documentation-only
+commit.
+
+**Read first:**
+
+1. **D1–D4 are fixed** (R17-01), each with an example that fails on v226 and passes now (238–241).
+   - **D4 went the documentation's way:** the compiler now parses the documented C order. No program in the
+     tree depended on the old order. A 314-pair check is a gate.
+   - **The fuzzer's workarounds are gone, and seed 15's 20,000 programs all agree** (v226: 178 of 300 fail).
+2. **The six crash kinds are diagnostics** (R17-02). One guard in the error printer fixed three of them.
+   **`tests/negative/r17/` + `tools/crash_corpus.py` is a gate** (21 cases). **150,000 new hostile inputs:
+   0 crashes, 0 hangs.** Two more crash shapes found on the way are fixed too (`rachana P = { x,`; an empty
+   `guna`).
+3. **`sutram-fmt`** (R17-03): four spaces, K&R, C spacing. **Verified on 606 files: idempotent, and 501
+   compile to the same bytes before and after.** The tree is not reformatted; 24 files would change.
+4. **R15-03, brought forward** (R17-04): 15 witnessed misses, mostly `madhava`'s argument reduction; a proof
+   each is one round. **Open:** F7 needs a design decision (untyped parameters cannot be checked at compile
+   time); the modes were lost at a fifth merge and are restored here; `test_x11_edscroll` still fails.
+
+| File | Workstream |
+|---|---|
+| `R17-01-D1-D4-FIXED.md` | WS1 |
+| `R17-02-CRASH-KINDS-FIXED.md` | WS2 |
+| `R17-03-FORMATTER.md` | WS3 |
+| `R17-04-PROOFS-AND-OPEN.md` | WS4, and what is open |
+| `evidence-r17/` | the fuzz runs, the formatter's verification, the build report, hashes |
+
+---
+
 ## Index — ROUND-15 delivery (2026-10-20, against main `9bff1dd6`, v216)
 
 **Code is on branch `claude/round-15`, draft PR #52.** It adds four tools and restores the binaries' mode.
