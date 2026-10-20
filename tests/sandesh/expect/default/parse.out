@@ -1,0 +1,6 @@
+
+Sutram Error: vyakaran dosh, pankti 3:11, shabd '='
+      vitti = 5
+            ^
+Sanket: is sthan par shabd aur vyakaran dekho.
+[compile exit 1]

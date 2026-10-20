@@ -1,0 +1,6 @@
+ଭାଷା ପ୍ୟାକ୍ ମିଳିଲା: odia
+undefined_name.sm:3:11: Sutram Error [E_UNDEFINED_NAME]: ଅଜଣା ନାମ 'y'
+      likha(y)
+            ^
+ସୂଚନା: ବ୍ୟବହାର ପୂର୍ବରୁ ଘୋଷଣା ଆବଶ୍ୟକ: ଚଳ y = ...
+[compile exit 1]

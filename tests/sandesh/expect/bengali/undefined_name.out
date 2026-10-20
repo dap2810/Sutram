@@ -1,0 +1,6 @@
+ভাষা প্যাক পাওয়া গেছে: bengali
+undefined_name.sm:3:11: Sutram Error [E_UNDEFINED_NAME]: অজানা নাম 'y'
+      likha(y)
+            ^
+পরামর্শ: ব্যবহারের আগে ঘোষণা প্রয়োজন: চল y = ...
+[compile exit 1]

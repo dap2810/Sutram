@@ -1,0 +1,6 @@
+ભાષા પેક મળ્યો: gujarati
+undefined_name.sm:3:11: Sutram Error [E_UNDEFINED_NAME]: અજ્ઞાત નામ 'y'
+      likha(y)
+            ^
+સંકેત: ઉપયોગ પહેલાં ઘોષણા જરૂરી: ચલ y = ...
+[compile exit 1]

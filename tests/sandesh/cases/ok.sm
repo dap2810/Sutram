@@ -1,0 +1,4 @@
+# R11: a program with no error (the success line, and --check)
+mukhya() {
+    likha(1)
+}

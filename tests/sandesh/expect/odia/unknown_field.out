@@ -1,0 +1,6 @@
+ଭାଷା ପ୍ୟାକ୍ ମିଳିଲା: odia
+unknown_field.sm:6:13: Sutram Error [E_UNKNOWN_FIELD]: ଅଜଣା କ୍ଷେତ୍ର 'q'
+      likha(p.q)
+              ^
+ସୂଚନା: 'q' କୌଣସି ସଂରଚନାର କ୍ଷେତ୍ର ନୁହେଁ
+[compile exit 1]

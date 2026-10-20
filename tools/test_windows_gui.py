@@ -168,7 +168,8 @@ try:
     set_editor(deva);send(main,0x111,2010)                            # bhasha: swayam detects Devanagari
     output=text(controls[203])
     check('devanagari-swayam','योगः = 15' in output,output)
-    check('status-pack','swayam (sanskrit)' in text(controls[206]),text(controls[206]))
+    # R11: the status line follows the pack the run used: Auto found Devanagari, so Sanskrit
+    check('status-pack','स्वयम् (संस्कृतम्)' in text(controls[206]),text(controls[206]))
     send(main,0x111,2041);send(main,0x111,2010)                       # bhasha: mool -> no pack -> must fail
     output=text(controls[203])
     check('devanagari-mool-fails','योगः = 15' not in output and ('Error' in output or 'asaphal' in output),output)
@@ -179,7 +180,7 @@ try:
     set_editor('mukhya() {\r\n    likha(7)\r\n}\r\n')
     b=C.create_unicode_buffer('likha');send(controls[207],12,0,C.addressof(b))
     send(controls[201],0xB1,0,0);send(main,0x111,2037)                # sampad > agrim anwesh
-    check('find-moves-caret','pankti 2' in text(controls[206]),text(controls[206]))
+    check('find-moves-caret','पङ्क्तिः 2' in text(controls[206]),text(controls[206]))   # R11: Auto, last pack Sanskrit
     sh=C.WinDLL('shell32',use_last_error=True)
     sh.ExtractIconExW.argtypes=[W.LPCWSTR,C.c_int,C.c_void_p,C.c_void_p,W.UINT]
     check('icon-resource',sh.ExtractIconExW(str(ROOT/'sutram-ide-gui.exe'),-1,None,None,0)>=1,'ExtractIconExW count')

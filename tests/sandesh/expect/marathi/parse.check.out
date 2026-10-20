@@ -1,0 +1,6 @@
+भाषा पॅक मिळाला: marathi
+parse.sm:3:11: Sutram Error [E_PARSE]: शब्द '='
+      vitti = 5
+            ^
+सूत्रम् तपासणी: दोष आढळले; निर्गत फाइल तयार केली नाही
+[compile exit 1]

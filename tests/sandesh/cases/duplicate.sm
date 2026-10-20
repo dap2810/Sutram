@@ -1,0 +1,6 @@
+# R11: a name declared twice in one block
+mukhya() {
+    vitti x = 1
+    vitti x = 2
+    likha(x)
+}

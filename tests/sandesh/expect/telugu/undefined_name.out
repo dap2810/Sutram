@@ -1,0 +1,6 @@
+భాషా ప్యాక్ దొరికింది: telugu
+undefined_name.sm:3:11: Sutram Error [E_UNDEFINED_NAME]: తెలియని పేరు 'y'
+      likha(y)
+            ^
+సూచన: వాడే ముందు ప్రకటన అవసరం: చరం y = ...
+[compile exit 1]

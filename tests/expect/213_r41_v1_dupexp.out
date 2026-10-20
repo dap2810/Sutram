@@ -1,1 +1,1 @@
-<ROOT>/examples/lib/r41_dup.smlib:4: Sutram Error [E_MODULE_DUP_EXPORT]: punah niryat 'thing', module 'r41_dup'
+<ROOT>/examples/lib/r41_dup.smlib:4: Sutram Error [E_MODULE_DUP_EXPORT]: punah niryat 'thing', ghatak 'r41_dup'

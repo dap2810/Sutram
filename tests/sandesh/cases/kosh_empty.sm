@@ -1,0 +1,5 @@
+# R11: a run-time error: kosh_pop from an empty kosh
+mukhya() {
+    kosh a
+    likha(kosh_pop(a))
+}

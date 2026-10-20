@@ -1,0 +1,6 @@
+भाषा-पुटः प्राप्तः: sanskrit
+undefined_name.sm:3:11: Sutram Error [E_UNDEFINED_NAME]: अज्ञातं नाम 'y'
+      likha(y)
+            ^
+सूचना: प्रयोगात् पूर्वं घोषणा आवश्यकी: वित्ति y = ...
+[compile exit 1]

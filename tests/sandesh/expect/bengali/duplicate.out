@@ -1,0 +1,6 @@
+ভাষা প্যাক পাওয়া গেছে: bengali
+duplicate.sm:4:11: Sutram Error [E_DUPLICATE_NAME]: পুনরায় ঘোষণা 'x'
+      vitti x = 2
+            ^
+পরামর্শ: 'x' আগেই ঘোষিত; নতুন মান দিতে: x = ...
+[compile exit 1]

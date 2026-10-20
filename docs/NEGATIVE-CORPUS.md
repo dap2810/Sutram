@@ -25,7 +25,7 @@ All explicitly shown full diagnostics end with one LF.
 | Unknown identifier | `unknown_identifier.sm`: `does_not_exist(7)` | Full stdout: `Sutram Error: agyat prakriya: does_not_exist\n` | Existing example 69 and its exact golden; function identifier only. |
 | Malformed literal | `malformed_literal.sm.hex`: digit-shaped `E0 A5 20` bytes in a numeric value position | Full stdout: `Sutram Error [E_UTF8]: {source}:2: srot me ashuddh ya khandit UTF-8\n` | New fixture; R68 prelex UTF-8 diagnostic path. |
 | Unterminated string | `unterminated_string.sm`: open quote consumes the intended call delimiter and closing brace | In order: `Sutram Error: vyakaran dosh, pankti `, `patra-ant`, `Sanket: is sthan par shabd aur vyakaran dekho.\n` | New source-derived rejection expectation; no dedicated unterminated-string diagnostic is invented. |
-| Misplaced keyword | `misplaced_keyword.sm`: `vitti a = वि॰`, with `--lang sanskrit` | Full stdout: `Bhasha pak prapt: sanskrit\n` then `Sutram Error [E_ABBREVIATION_VALUE]: {source}:2: sankshep shabd mulya nahi: 'वि॰'\n` | New fixture; existing exact alias and R68 value-start guard. |
+| Misplaced keyword | `misplaced_keyword.sm`: `vitti a = वि॰`, with `--lang sanskrit` | Full stdout (R11: in the Sanskrit pack's language): `भाषा-पुटः प्राप्तः: sanskrit\n` then `Sutram Error [E_ABBREVIATION_VALUE]: {source}:2: संक्षेप-शब्दः मूल्यं नास्ति: 'वि॰'\n` | New fixture; existing exact alias and R68 value-start guard. |
 
 The two fragment matchers intentionally test stable error identity/hint rather
 than pretending the complete parse-error line, column, snippet and whitespace
@@ -63,7 +63,7 @@ any compiler (re-pinned in ROUND-03 together with `manifest.json`):
 
 | Input | Required Git blob |
 |---|---|
-| `src/sutram_compiler.asm` | `5ade34ed0287609b8f5d7e4f12873b7978479ac4` |
+| `src/sutram_compiler.asm` | `8625095aa53027bbaf4eef29e7afe76e525d1008` |
 | `src/r68_compiler_entry.asm` | `42389aaf73179726d91e23359aee2199734036e1` |
 | `src/r68_diagnostics.inc` | `a6f7bb196702626d6b7f116f32e678d9daf73eba` |
 | `src/r68_unicode_helpers.inc` | `69103e059634aa6b5b871ce7c06c2f4b9c742ff1` |

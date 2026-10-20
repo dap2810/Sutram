@@ -1,0 +1,6 @@
+भाषा-पुटः प्राप्तः: sanskrit
+unknown_field.sm:6:13: Sutram Error [E_UNKNOWN_FIELD]: अज्ञातं क्षेत्रम् 'q'
+      likha(p.q)
+              ^
+सूचना: 'q' कस्याश्चिदपि रचनायाः क्षेत्रं नास्ति
+[compile exit 1]

@@ -1,0 +1,6 @@
+ഭാഷാ പാക്ക് കണ്ടെത്തി: malayalam
+undefined_name.sm:3:11: Sutram Error [E_UNDEFINED_NAME]: അജ്ഞാത പേര് 'y'
+      likha(y)
+            ^
+സൂചന: ഉപയോഗിക്കുന്നതിന് മുമ്പ് പ്രഖ്യാപനം ആവശ്യം: ചരം y = ...
+[compile exit 1]

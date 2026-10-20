@@ -72,6 +72,7 @@ run_gate() {                      # name, then the command
       line=$(grep -E "[0-9]+ ran, [0-9]+ failed" /tmp/g_out.$$ | tail -1)
       case "$line" in *", 0 failed"*) ok "$name ($line)";; *) bad "$name" "${line:-no summary}";; esac ;;
     "stdlib inventory") case "$(tail -1 /tmp/g_out.$$)" in *"modules"*) ok "$name ($(tail -1 /tmp/g_out.$$))";; *) bad "$name" "$(tail -1 /tmp/g_out.$$)";; esac ;;
+    "pack messages")    case "$(tail -1 /tmp/g_out.$$)" in OK*) ok "$name (12 sets x 11 cases)";; *) bad "$name" "$(grep -m1 -E 'FAIL|differ|Error' /tmp/g_out.$$ | cut -c1-60)";; esac ;;
     *)                  ok "$name" ;;
   esac
   rm -f /tmp/g_out.$$
@@ -85,6 +86,7 @@ run_gate "property proofs"   python3 tools/proof_props.py --compiler ./sutram_co
 run_gate "layer check"       python3 tools/check_layers.py
 run_gate "stdlib inventory"  python3 tools/gen_stdlib_ref.py
 run_gate "module graph"      python3 -m unittest discover -s tests/module_graph -p 'test_*.py'
+run_gate "pack messages"     python3 tests/sandesh/test_sandesh.py   # R11: every message in every pack
 run_gate "performance"        python3 tools/bench_gate.py --compiler ./sutram_compiler --repeat 3
 
 # the GUI needs an X server; say so rather than omitting it

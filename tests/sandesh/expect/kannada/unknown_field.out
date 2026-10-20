@@ -1,0 +1,6 @@
+ಭಾಷಾ ಪ್ಯಾಕ್ ಸಿಕ್ಕಿದೆ: kannada
+unknown_field.sm:6:13: Sutram Error [E_UNKNOWN_FIELD]: ಅಜ್ಞಾತ ಕ್ಷೇತ್ರ 'q'
+      likha(p.q)
+              ^
+ಸೂಚನೆ: 'q' ಯಾವುದೇ ರಚನೆಯ ಕ್ಷೇತ್ರವಲ್ಲ
+[compile exit 1]

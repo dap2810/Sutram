@@ -1,0 +1,78 @@
+# R11 (Step 5): brihat and aadhar boundaries: guard cells after every operand, and
+# page-edge canaries for the private scratch blocks.
+yoj aadhar
+prakriya dikha(a, n) {
+    vitti s = 0
+    vitti i = n - 1
+    yavat (i >= 0) {
+        s = s * 10 + a[i]
+        i = i - 1
+    }
+    prati s
+}
+mukhya() {
+    # brihat_gun: a[3] and b[3] are guards; res holds 2n digits and res[6] is a guard
+    vitti a = nirmmita(8 * 4)
+    vitti b = nirmmita(8 * 4)
+    vitti res = nirmmita(8 * 7)
+    a[0] = 3
+    a[1] = 2
+    a[2] = 1
+    a[3] = 7
+    b[0] = 5
+    b[1] = 4
+    b[2] = 0
+    b[3] = 5
+    res[6] = 88
+    brihat_gun(a, b, res, 3)
+    likha(dikha(res, 6))
+    likha(res[6])
+    # brihat_bhajshesh: q[3], r[3] guards; a[3] = 7, b[3] = 1
+    vitti q = nirmmita(8 * 4)
+    vitti r = nirmmita(8 * 4)
+    q[3] = 77
+    r[3] = 66
+    b[0] = 2
+    b[1] = 0
+    b[2] = 0
+    b[3] = 1
+    brihat_bhajshesh(a, b, q, r, 3)
+    likha(dikha(q, 3))
+    likha(dikha(r, 3))
+    likha(q[3])
+    likha(r[3])
+    # division by zero: r = a, and r[3] is still the guard
+    vitti z = nirmmita(8 * 4)
+    brihat_bhajshesh(a, z, q, r, 3)
+    likha(dikha(r, 3))
+    likha(r[3])
+    # brihat_shesh: num = 7 exactly divisible by shesh 7 gives 0
+    vitti num = nirmmita(8 * 5)
+    vitti m = nirmmita(8 * 3)
+    vitti rs = nirmmita(8 * 3)
+    num[0] = 7
+    m[0] = 7
+    rs[2] = 66
+    brihat_shesh(num, m, rs, 2)
+    likha(dikha(rs, 2))
+    # shesh 0: res is the low n digits of num, and rs[2] is still the guard
+    num[0] = 4
+    num[1] = 3
+    num[2] = 9
+    vitti m0 = nirmmita(8 * 3)
+    brihat_shesh(num, m0, rs, 2)
+    likha(dikha(rs, 2))
+    likha(rs[2])
+    # brihat_ank_se: a digit equal to the base is refused; x[n] is a guard
+    vitti d = nirmmita(8 * 4)
+    d[0] = 1
+    d[1] = 10
+    vitti x = nirmmita(8 * 5)
+    x[4] = 77
+    likha(brihat_ank_se(d, 2, 10, x, 4))
+    d[1] = 2
+    d[2] = 3
+    likha(brihat_ank_se(d, 3, 10, x, 4))
+    likha(dikha(x, 4))
+    likha(x[4])
+}

@@ -1,0 +1,4 @@
+# R11: a name read before it is declared
+mukhya() {
+    likha(y)
+}

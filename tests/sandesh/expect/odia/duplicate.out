@@ -1,0 +1,6 @@
+ଭାଷା ପ୍ୟାକ୍ ମିଳିଲା: odia
+duplicate.sm:4:11: Sutram Error [E_DUPLICATE_NAME]: ପୁନର୍ବାର ଘୋଷଣା 'x'
+      vitti x = 2
+            ^
+ସୂଚନା: 'x' ପୂର୍ବରୁ ଘୋଷିତ; ନୂଆ ମୂଲ୍ୟ ଦେବା ପାଇଁ: x = ...
+[compile exit 1]

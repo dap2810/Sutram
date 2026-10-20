@@ -1,0 +1,6 @@
+ਭਾਸ਼ਾ ਪੈਕ ਮਿਲਿਆ: punjabi
+duplicate.sm:4:11: Sutram Error [E_DUPLICATE_NAME]: ਦੁਬਾਰਾ ਘੋਸ਼ਣਾ 'x'
+      vitti x = 2
+            ^
+ਸੰਕੇਤ: 'x' ਪਹਿਲਾਂ ਹੀ ਘੋਸ਼ਿਤ ਹੈ; ਨਵਾਂ ਮੁੱਲ ਦੇਣ ਲਈ: x = ...
+[compile exit 1]

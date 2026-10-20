@@ -219,12 +219,12 @@ str_dot_exe  db ".exe", 0
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
     msg_version  db "Sutram 1.0 (v182) - sampurna sutra", 10
-                  db "Samskrita-mukhya bhasha -> x86-64 yantra-code", 10, 0
+                  db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r48_msg_near db ": Sutram Error [E_PARSE]: shabd '",0
     r48_msg_end db "'",10,0
-    r48_msg_ok db "Sutram janch: OK (nirgat binary nahi)",10,0
-    r48_msg_errors db "Sutram janch: dosh mile; nirgat binary nahi",10,0
+    r48_msg_ok db "Sutram janch: shuddh (nirgat patra nahi)",10,0
+    r48_msg_errors db "Sutram janch: dosh mile; nirgat patra nahi",10,0
     r48_msg_eof db "<patra-ant>",0
     r50_msg_setchar_arity db "Sutram Error: akshar_rakh: 3 tark avashyak",10,0
     r52_msg_dvaram_arity db "Sutram Error: dvaram: 2 va 3 tark avashyak",10,0
@@ -301,7 +301,7 @@ r54_builtin_arity_table:
     r7_msg_arity3 db " tark diye; hastakshar me ",0
     r7_msg_arity_hint db "Sanket: utne hi tark dein jitne prakriya ki paribhasha me hain",10,0
     r7_msg_mod_missing db "Sutram Error [E_MODULE_MISSING]: yoj patra aprapt: ",0
-    r7_msg_mod_missing2 db 10,"Sanket: lib/ me ya srot patra ke folder me naam.smlib hona chahiye",10,0
+    r7_msg_mod_missing2 db 10,"Sanket: lib/ me ya srot patra ki nirdeshika me naam.smlib hona chahiye",10,0
     r7_msg_hint_block db "' ek khand { } ya chakra me ghoshit hai; uske bahar drishya nahi",10,0
     r5_msg_field_hint db "Sanket: '",0
     r5_msg_field_hint2 db "' kisi rachana ka kshetra nahi",10,0
@@ -355,83 +355,14 @@ r54_builtin_arity_table:
     msg_kosh_param_type db "Sutram Error: kosh tark: tatv prakar bhinn", 10, 0
     msg_kosh_param_push db "Sutram Error: kosh tark par kosh_push asamarthit", 10, 0
 
-    ; ===== Localized error messages (v27) =====
-    ; Index: 0=default 1=bengali 2=gujarati 3=hindi 4=kannada 5=malayalam
-    ;        6=marathi 7=odia 8=punjabi 9=tamil 10=telugu
-    err_line_bn db 10, "সূত্রম্ ত্রুটি: পংক্তি ", 0
-    err_near_bn db " এর কাছে টোকেন '", 0
-    err_eof_bn  db "ফাইলের শেষ", 0
-    err_hint_bn db "পরামর্শ: এই স্থানের কাছে কূটশব্দের বানান ও সিন্ট্যাক্স পরীক্ষা করুন।", 10, 0
-    open_err_bn db "ত্রুটি: ইনপুট ফাইল খোলা যাচ্ছে না", 10, 0
+    ; The v27 per-pack copies of five parse messages lived here. R11: every message
+    ; now has a copy per pack, in lang/<pack>.sandesh, assembled into
+    ; src/r11_sandesh.inc by tools/sandesh.py.
 
-    err_line_gu db 10, "સૂત્રમ્ ભૂલ: પંક્તિ ", 0
-    err_near_gu db " નજીક ટોકન '", 0
-    err_eof_gu  db "ફાઇલનો અંત", 0
-    err_hint_gu db "સંકેત: આ સ્થળની નજીક કૂટશબ્દની જોડણી અને વાક્યરચના ચકાસો.", 10, 0
-    open_err_gu db "ભૂલ: ઇનપઁટ ફાઇલ ખૂલી શકી નહીં", 10, 0
-
-    err_line_hi db 10, "सूत्रम् त्रुटि: पंक्ति ", 0
-    err_near_hi db " के पास टोकन '", 0
-    err_eof_hi  db "फ़ाइल का अंत", 0
-    err_hint_hi db "संकेत: इस स्थान के पास कूटशब्द की वर्तनी और वाक्य-रचना जाँचें।", 10, 0
-    open_err_hi db "त्रुटि: इनपुट फ़ाइल नहीं खुली", 10, 0
-
-    err_line_kn db 10, "ಸೂತ್ರಮ್ ದೋಷ: ಸಾಲು ", 0
-    err_near_kn db " ಬಳಿ ಟೋಕನ್ '", 0
-    err_eof_kn  db "ಕಡತದ ಅಂತ್ಯ", 0
-    err_hint_kn db "ಸೂಚನೆ: ಈ ಸ್ಥಳದ ಬಳಿ ಕೀವರ್ಡ್ ಕಾಗುಣಿ ಮತ್ತು ಸಿಂಟ್ಯಾಕ್ಸ್ ಪರಿಶೀಲಿಸಿ.", 10, 0
-    open_err_kn db "ದೋಷ: ಇನ್‌ಪುಟ್ ಕಡತ ತೆರೆಯಲಾಗುತ್ತಿಲ್ಲ", 10, 0
-
-    err_line_ml db 10, "സൂത്രം പിശക്: വരി ", 0
-    err_near_ml db " ന്റ്റെ അടുത്ത് ടോക്കണ് '", 0
-    err_eof_ml  db "ഫയലിന്റെ അവസാനം", 0
-    err_hint_ml db "സൂചന: ഈ സ്ഥലത്തിനടുത്ത് കീവേഡ് അക്ഷരവിന്യാസവും വാക്ക്യഘടനയും പരിശോധിക്കുക.", 10, 0
-    open_err_ml db "പിശക്: ഇൻപുട്ട് ഫയൽ തുറക്കാനായില്ല", 10, 0
-
-    err_line_mr db 10, "सूत्रम् त्रुटी: ओळ ", 0
-    err_near_mr db " च्या जवळ टोकन '", 0
-    err_eof_mr  db "फाइलचा शेवट", 0
-    err_hint_mr db "सूचना: या जागी कूटशब्दाची शुद्धलेखन आणि वाक्यरचना तपासा.", 10, 0
-    open_err_mr db "त्रुटी: इनपुट फाइल उघडता आली नाही", 10, 0
-
-    err_line_or db 10, "ସୂତ୍ରମ୍ ତ୍ରୁଟି: ଧାଡ଼ି ", 0
-    err_near_or db " ପାଖରେ ଟୋକେନ୍ '", 0
-    err_eof_or  db "ଫାଇଲର ଶେଷ", 0
-    err_hint_or db "ସୂଚନା: ଏହି ସ୍ଥାନ ପାଖରେ କୀଵାର୍ଡ୍ର ବନାନ ଓ ସିଣ୍ଟାକ୍ସ ଯାଞ୍ଚ କରନ୍ତୁ।", 10, 0
-    open_err_or db "ତ୍ରୁଟି: ଇନପୁଟ୍ ଫାଇଲ୍ ଖୋଲିହେଲା ନାହିଁ", 10, 0
-
-    err_line_pa db 10, "ਸੂਤਰਮ੍ ਗਲਤੀ: ਲਾਈਨ ", 0
-    err_near_pa db " ਦੇ ਨੇੜੇ ਟੋਕਨ '", 0
-    err_eof_pa  db "ਫਾਈਲ ਦਾ ਅੰਤ", 0
-    err_hint_pa db "ਸੰਕੇਤ: ਇਸ ਥਾਂ ਦੇ ਨੇੜੇ ਕੂਟਸ਼ਬਦ ਦੀ ਸਪੈਲਿੰਗ ਅਤੇ ਸੰਟੈਕਸ ਜਾਂਚੋ।", 10, 0
-    open_err_pa db "ਗਲਤੀ: ਇਨਪੁਟ ਫਾਈਲ ਨਹੀਂ ਖੁੱਲ੍ਹੀ", 10, 0
-
-    err_line_ta db 10, "சூத்திரம் பிழை: வரி ", 0
-    err_near_ta db " அருகில் டோக்கன் '", 0
-    err_eof_ta  db "கோப்பின் முடிவு", 0
-    err_hint_ta db "குறிப்பு: இந்த இடத்தின் அருகில் குறிச்சொல்லின் மொழியும் தொடரியலைச் சரிபார்க்கவும்.", 10, 0
-    open_err_ta db "பிழை: உள்ளீட்டுக் கோப்பை திறக்க முடியவில்லை", 10, 0
-
-    err_line_te db 10, "సూత్రమ్ దోషం: వరుస ", 0
-    err_near_te db " దగ్గర టోకెన్ '", 0
-    err_eof_te  db "దస్త్రం ముగింపు", 0
-    err_hint_te db "సూచన: ఈ స్థలం దగ్గర కీలకపద వర్ణన, సింటాక్స్ తనిఖీ చేయండి.", 10, 0
-    open_err_te db "దోషం: ఇన్‌పుట్ దస్త్రం తెరవబడలేదు", 10, 0
-
-    ; Language id 0 = default (existing English strings)
-    tbl_err_line:
-        dq msg_err_line, err_line_bn, err_line_gu, err_line_hi, err_line_kn, err_line_ml, err_line_mr, err_line_or, err_line_pa, err_line_ta, err_line_te
-    tbl_err_near:
-        dq msg_err_near, err_near_bn, err_near_gu, err_near_hi, err_near_kn, err_near_ml, err_near_mr, err_near_or, err_near_pa, err_near_ta, err_near_te
-    tbl_err_eof:
-        dq msg_err_eof, err_eof_bn, err_eof_gu, err_eof_hi, err_eof_kn, err_eof_ml, err_eof_mr, err_eof_or, err_eof_pa, err_eof_ta, err_eof_te
-    tbl_err_hint:
-        dq msg_err_hint, err_hint_bn, err_hint_gu, err_hint_hi, err_hint_kn, err_hint_ml, err_hint_mr, err_hint_or, err_hint_pa, err_hint_ta, err_hint_te
-    tbl_open_err:
-        dq msg_open_err, open_err_bn, open_err_gu, open_err_hi, open_err_kn, open_err_ml, open_err_mr, open_err_or, open_err_pa, open_err_ta, open_err_te
-
+    ; Language id: 0 = no --lang (the romanised default), 1..10 these packs,
+    ; 11 = sanskrit (R11: its messages are Devanagari Sanskrit).
     lang_names:
-        dq 0, ln_bn, ln_gu, ln_hi, ln_kn, ln_ml, ln_mr, ln_or, ln_pa, ln_ta, ln_te
+        dq 0, ln_bn, ln_gu, ln_hi, ln_kn, ln_ml, ln_mr, ln_or, ln_pa, ln_ta, ln_te, ln_sa
     ln_bn db "bengali", 0
     ln_gu db "gujarati", 0
     ln_hi db "hindi", 0
@@ -442,9 +373,9 @@ r54_builtin_arity_table:
     ln_pa db "punjabi", 0
     ln_ta db "tamil", 0
     ln_te db "telugu", 0
+    ln_sa db "sanskrit", 0
 
     cur_lang_id dq 0
-                  db "      Run 'sutram -i' and type 'sahayata' for help.", 10, 0
     msg_lang_ok  db "Bhasha pak prapt: ", 0
     msg_lang_fail db "Chetavani: bhasha pak nahi mila: ", 0
     msg_nl       db 10, 0
@@ -485,7 +416,7 @@ r54_builtin_arity_table:
     msg_shell_prompt db "sutra> ", 0
     msg_shell_bye db "Namaste! Satra samapt.", 10, 0
     msg_shell_help db "Sutram khol sahay:", 10
-                     db `  likha("Namaste\n")            likha paath`, 10
+                     db '  likha("Namaste\n")            likha paath', 10
                      db "  vitti x = 5             char ghoshan", 10
                      db "  likha(x + 3)            vyakti likha", 10
                      db "  chakra i = 0 tak 5 { likha(i) }   aavartan", 10
@@ -495,9 +426,8 @@ r54_builtin_arity_table:
     repl_prog_hdr db "mukhya() {", 10, 0
     repl_prog_ftr db 10, "}", 10, 0
     msg_open_err  db "Sutram Error: nivesh patra aprapt", 10, 0
-    msg_parse_err db "Error: parse error at token ", 0   ; unreferenced (R1-WS1 F8)
     msg_ok        db "Siddh: ", 0
-    msg_bytes     db " byte sankalit", 10, 0
+    msg_bytes     db " baait sankalit", 10, 0
     dbg_pfb       db 0
     lk_no_nl      dq 0
     for_descend  dq 0      ; 1 = descending for-loop
@@ -801,11 +731,11 @@ r54_builtin_arity_table:
     bn_lkhb      db "lkhb", 0
     bn_shabda    db "shabda", 0
 
-    msg_namespace_error db "Sutram Error: ashuddh yoj (roop: module@upanaam, upanaam 31 byte tak)", 10, 0
-    msg_namespace_module_missing db "Sutram Error: module patra aprapt", 10, 0
-    msg_namespace_alias_reuse db "Sutram Error: upanaam purv-niyukt (anya module)", 10, 0
-    r51_alias_conflict db ": Sutram Error [E_MODULE_ALIAS_REUSE]: upanaam purv-niyukt (anya module)",10,0
-    msg_namespace_func_limit db "Sutram Error: module prakriya-naam seema atikram", 10, 0
+    msg_namespace_error db "Sutram Error: ashuddh yoj (roop: ghatak@upanaam, upanaam 31 baait tak)", 10, 0
+    msg_namespace_module_missing db "Sutram Error: ghatak patra aprapt", 10, 0
+    msg_namespace_alias_reuse db "Sutram Error: upanaam purv-niyukt (anya ghatak)", 10, 0
+    r51_alias_conflict db ": Sutram Error [E_MODULE_ALIAS_REUSE]: upanaam purv-niyukt (anya ghatak)",10,0
+    msg_namespace_func_limit db "Sutram Error: ghatak prakriya-naam seema atikram", 10, 0
     msg_import_overflow db "Sutram Error: vistarit srot seema atikram", 10, 0
     graph_v1_header db '# sutram-module-v1', 0
     graph_msg_cycle db 'E_MODULE_CYCLE', 0
@@ -821,9 +751,9 @@ r54_builtin_arity_table:
     graph_nl db 10,0
     graph_cycle_prefix db 'yoj chakra: ',0
     graph_missing_prefix db 'yoj patra aprapt: ',0
-    graph_limit_prefix db 'module/yoj seema atikram',0
-    graph_invalid_prefix db 'ashuddh module naam',0
-    msg_ast_overflow db "Sutram Error: AST seema atikram", 10, 0
+    graph_limit_prefix db 'ghatak/yoj seema atikram',0
+    graph_invalid_prefix db 'ashuddh ghatak naam',0
+    msg_ast_overflow db "Sutram Error: vakya-vriksh seema atikram", 10, 0
     msg_func_params_overflow db "Sutram Error: prakriya tark-suchi seema atikram", 10, 0
     msg_var_table_overflow db "Sutram Error: vitti-suchi seema atikram", 10, 0
     msg_func_table_overflow db "Sutram Error: prakriya-suchi seema atikram", 10, 0
@@ -832,7 +762,7 @@ r54_builtin_arity_table:
     msg_r9_guna_overflow db "Sutram Error: guna seema atikram (1024)", 10, 0
     msg_break_patch_overflow db "Sutram Error: chakra me krama seema atikram", 10, 0
     msg_continue_patch_overflow db "Sutram Error: chakra me agrim seema atikram", 10, 0
-    msg_code_overflow db "Sutram Error: yantra-code seema atikram", 10, 0
+    msg_code_overflow db "Sutram Error: yantra-bhasha seema atikram", 10, 0
     msg_rachana_overflow db "Sutram Error: rachana-suchi seema atikram", 10, 0
     msg_rachana_fields_overflow db "Sutram Error: rachana kshetra seema atikram", 10, 0
     msg_block_nesting_overflow db "Sutram Error: khand gahrai seema atikram", 10, 0
@@ -841,10 +771,11 @@ r54_builtin_arity_table:
     r55_msg_proto_missing db "Sutram Error: prakriya purv-ghoshana paribhasha-rahit",10,0
     r55_msg_proto_signature db "Sutram Error: prakriya purv-ghoshana va paribhasha bhinn (tark/prakar)",10,0
     r55_msg_proto_capacity db "Sutram Error: prakriya purv-ghoshana seema atikram",10,0
-    r56_msg_global_capacity db "Sutram Error: module-star vitti seema atikram",10,0
-    r56_msg_global_duplicate db "Sutram Error: punah module-star vitti naam",10,0
-    r56_msg_patch_capacity db "Sutram Error: sarvatrik data sandarbh seema atikram",10,0
+    r56_msg_global_capacity db "Sutram Error: ghatak-star vitti seema atikram",10,0
+    r56_msg_global_duplicate db "Sutram Error: punah ghatak-star vitti naam",10,0
+    r56_msg_patch_capacity db "Sutram Error: sarvatrik mulya sandarbh seema atikram",10,0
 
+%include "src/r11_sandesh.inc"   ; R11: every message per pack (tools/sandesh.py writes it)
 section .bss
     source_buf  resb 65536
     source_len  resq 1
@@ -1179,6 +1110,7 @@ try_load_lang:
     jb .tll_name_bound
     jmp .tll_fail
 .tll_name_ok:
+    call set_lang_id              ; R11: messages follow the named pack, found or not
     ; remember the pack name for the REPL child processes
     lea rdi, [rel lang_loaded_name]
     mov rsi, r12
@@ -1266,7 +1198,6 @@ try_load_lang:
     pop rbx
     ret
 .tll_ok:
-    call set_lang_id              ; localize error messages by pack name
     lea rdi, [rel msg_lang_ok]
     call print_str_z
     mov rdi, r12
@@ -3093,24 +3024,24 @@ expand_imports_pass:
 section .data
 mg_e_cycle:   db "Sutram Error [E_MODULE_CYCLE]: yoj chakra: ", 0
 mg_e_noexp1:  db "Sutram Error [E_MODULE_NOT_EXPORTED]: '", 0
-mg_e_noexp2:  db "' module '", 0
+mg_e_noexp2:  db "' ghatak '", 0
 mg_e_noexp3:  db "' se aniryat", 10, 0
 mg_e_dupexp1: db "Sutram Error [E_MODULE_DUP_EXPORT]: punah niryat '", 0
-mg_e_dupexp2: db "', module '", 0
+mg_e_dupexp2: db "', ghatak '", 0
 mg_e_dupexp3: db "'", 10, 0
 mg_e_undef1:  db "Sutram Error [E_EXPORT_UNDEFINED]: niryat '", 0
-mg_e_undef2:  db "' paribhasha-rahit, module '", 0
+mg_e_undef2:  db "' paribhasha-rahit, ghatak '", 0
 mg_e_undef3:  db "'", 10, 0
 mg_e_unknown1: db "Sutram Error [E_EXPORT_UNDEFINED]: agyat sanket '", 0
-mg_e_unknown2: db "', module '", 0
+mg_e_unknown2: db "', ghatak '", 0
 mg_e_unknown3: db "'", 10, 0
 mg_w_sutra:    db "sutra", 0
 mg_e_depth:   db "Sutram Error [E_MODULE_DEPTH]: yoj gahrai seema atikram", 10, 0
 r51_colon_space: db ": ", 0
-mg_e_valias1: db "Sutram Error [E_MODULE_V1_ALIAS]: v1 module '", 0
+mg_e_valias1: db "Sutram Error [E_MODULE_V1_ALIAS]: v1 ghatak '", 0
 mg_e_valias2: db "' upanaam avashyak: yoj ", 0
 mg_e_valias3: db "@upanaam", 10, 0
-mg_e_limit:   db "Sutram Error [E_MODULE_LIMIT]: module/yoj seema atikram", 10, 0
+mg_e_limit:   db "Sutram Error [E_MODULE_LIMIT]: ghatak/yoj seema atikram", 10, 0
 mg_root_name: db "__root__", 0
 mg_v1_mark:   db "sutram-module-v1", 0
 mg_arrow:     db " -> ", 0
@@ -5892,9 +5823,7 @@ read_file:
     call os_open
     test rax, rax
     jns .opened
-    lea rdi, [rel tbl_open_err]
-    call pick_lang_str
-    mov rdi, rax
+    lea rdi, [rel msg_open_err]
     call print_str_z
     mov rdi, 1                 ; R2-WS1b: a missing input file is a failure, not exit 0
     call os_exit
@@ -6953,11 +6882,55 @@ parse_body:
     pop rbx
     ret
 
-; pick_lang_str(rdi = table of 11 string ptrs) -> rax = string for current language
-pick_lang_str:
+; R11: r11_tr(rdi = a message) -> rax = that message in the selected pack's
+; language (lang/<pack>.sandesh, assembled into r11_sandesh.inc), or rdi itself
+; when there is no --lang, the pack has no copy, or rdi is not a message (a name,
+; a number, a source line). Preserves every register except rax.
+r11_tr:
     mov rax, [rel cur_lang_id]
-    shl rax, 3
-    mov rax, [rdi + rax]
+    test rax, rax
+    jz .same
+    cmp rax, R11_NPACKS
+    jae .same
+    push rcx
+    push rdx
+    lea rdx, [rel r11_packs]
+    mov rdx, [rdx + rax*8]          ; this pack's column, parallel to r11_keys
+    test rdx, rdx
+    jz .none
+    lea rcx, [rel r11_keys]
+    xor eax, eax
+.scan:
+    cmp qword [rcx + rax*8], 0
+    je .none
+    cmp [rcx + rax*8], rdi
+    je .hit
+    inc eax
+    jmp .scan
+.hit:
+    mov rax, [rdx + rax*8]
+    test rax, rax
+    jnz .out
+.none:
+    mov rax, rdi
+.out:
+    pop rdx
+    pop rcx
+    ret
+.same:
+    mov rax, rdi
+    ret
+
+; r11_tr_rcx: the same for rcx (a message stored into the program as a string
+; literal). Preserves every register except rcx.
+r11_tr_rcx:
+    push rax
+    push rdi
+    mov rdi, rcx
+    call r11_tr
+    mov rcx, rax
+    pop rdi
+    pop rax
     ret
 
 ; set_lang_id: set cur_lang_id from the pack name held in r12
@@ -6965,7 +6938,7 @@ set_lang_id:
     push rbx
     xor rbx, rbx
 .sli_loop:
-    cmp rbx, 11
+    cmp rbx, 12
     jae .sli_done
     lea rax, [rel lang_names]
     mov rdi, [rax + rbx*8]
@@ -6996,9 +6969,7 @@ parse_error:
     imul r9, r9, TOKEN_SIZE
     add rbx, r9             ; rbx = current token (callee-saved by our ABI)
     ; Print header + line number (localized)
-    lea rdi, [rel tbl_err_line]
-    call pick_lang_str
-    mov rdi, rax
+    lea rdi, [rel msg_err_line]
     call print_str_z
     ; R2-WS1d: report the line/column of the ORIGINAL file (the origin map
     ; is now kept in normal mode too), so `yoj` no longer shifts the number.
@@ -7039,9 +7010,7 @@ parse_error:
     mov rdi, rax
     call print_str_z
 .pe_loc_done:
-    lea rdi, [rel tbl_err_near]
-    call pick_lang_str
-    mov rdi, rax
+    lea rdi, [rel msg_err_near]
     call print_str_z
     ; Print the token text based on type
     mov r9, [rbx]           ; token type
@@ -7088,9 +7057,7 @@ parse_error:
     call print_str_z
     jmp .pe_end
 .pe_eof:
-    lea rdi, [rel tbl_err_eof]
-    call pick_lang_str
-    mov rdi, rax
+    lea rdi, [rel msg_err_eof]
     call print_str_z
 .pe_end:
     lea rdi, [rel msg_err_end]
@@ -7109,9 +7076,7 @@ parse_error:
     call print_str_z
     jmp .pe_exit
 .pe_generic_hint:
-    lea rdi, [rel tbl_err_hint]
-    call pick_lang_str
-    mov rdi, rax
+    lea rdi, [rel msg_err_hint]
     call print_str_z
 .pe_exit:
     pop rbx
@@ -13766,6 +13731,7 @@ emit_array_bounds_check:
     call alloc_ast
     mov qword [rax], AST_STR
     lea rcx, [rel msg_array_oob]
+    call r11_tr_rcx               ; R11: in the --lang pack's language
     mov [rax+8], rcx
     push rax
     call alloc_ast
@@ -13825,6 +13791,7 @@ emit_kosh_empty_check_r9:
     jne .r64_message_selected
     lea rcx, [rel msg_kosh_dequeue_empty]
 .r64_message_selected:
+    call r11_tr_rcx               ; R11: in the --lang pack's language
     mov [rax+8], rcx
     push rax
     call alloc_ast
@@ -22616,6 +22583,8 @@ r65_emit_literal:
     push rbx
     push r12
     push r13
+    call r11_tr                   ; R11: a message in the --lang pack's language
+    mov rdi,rax
     mov r12,rdi
     call strlen
     mov r13,rax
@@ -23028,6 +22997,8 @@ itoa:
     ret
 
 print_str_z:
+    call r11_tr                   ; R11: a compiler message in the --lang pack's language
+    mov rdi, rax
     push rdi
     call strlen
     pop rdi
