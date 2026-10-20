@@ -1,0 +1,4 @@
+# R11: a parse error (a declaration with no name)
+mukhya() {
+    vitti = 5
+}
