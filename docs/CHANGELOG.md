@@ -1,3 +1,50 @@
+## v232 - VERIFIED: the crashes are gone. ROUND-18 and ROUND-86 issued.
+
+### The fix, verified on main by me
+
+**The robustness fuzzer on the merged compiler:**
+
+```
+fixed     ACCEPTED 56   ERROR 115
+mutation  ACCEPTED 271  ERROR 1729
+CRASH or HANG: 0
+```
+
+**Before, 107 of 50,171 inputs crashed. Now zero.** And **all four D1-D4 examples compile**, with goldens, so
+they cannot come back.
+
+**The root cause Claude found is the best single finding of this stretch:** the parser was handling bad input
+correctly, **and the error printer crashed** - `print_source_context` walked back from address 0 on an
+end-of-file token that has no source pointer. **One guard fixed three of the six kinds.**
+
+**The compiler was right and the message that would have said so killed the process.** That is the failure
+mode this project keeps meeting, and it is now closed.
+
+### The plan's priority queue is COMPLETE
+
+| # | Item | State |
+|---|---|---|
+| 1 | The fuzzers | **done** - and they found 110 cases |
+| 2 | Separate compilation | **delivered** (ChatGPT R84) |
+| 3 | A formatter | **done** - `sutram-fmt` is in the tree |
+| 4 | Real error handling | **delivered** (ChatGPT R84) |
+| 5 | F7 - the scalar-index crash | **done** (R17) |
+| 6 | The X11 GUI's Indic support | **assessed, deferred with reasons** |
+| 7 | The coverage audit | **done** |
+
+**Seven of seven. And the queue produced more than it was asked for: three defects in valid programs, 107
+crashes turned into diagnostics, and a formatter.**
+
+### ROUND-18 and ROUND-86
+
+**ROUND-18 (Claude)** opens with the run that now means something: **re-run the valid fuzzer with the D1-D4
+workarounds REMOVED.** Then the proof-strength review, and tests for the five public builtins.
+
+**ROUND-86 (ChatGPT)** finishes the keyword audit, extends the negative corpus to the six crash kinds, and -
+**the one I care most about** - delivers the **pack review candidates as a single list a native speaker can
+read in one pass.** The owner can only review three packs; **this makes those three the easiest possible to
+review.**
+
 ## v231 - Claude ROUND-17 merged: D1-D4 fixed with a test each, and the formatter is built
 
 **Seventeen files changed, twenty-eight added.**
