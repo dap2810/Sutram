@@ -1,0 +1,14 @@
+CRASH SIGSEGV  mutation-15-4987  /tmp/claude-0/-home-claude/6889af70-4aa6-567a-b665-1e4ff0074842/scratchpad/r17/rob/mutation-15-4987.sm
+CRASH SIGSEGV  mutation-15-7484  /tmp/claude-0/-home-claude/6889af70-4aa6-567a-b665-1e4ff0074842/scratchpad/r17/rob/mutation-15-7484.sm
+CRASH SIGSEGV  mutation-15-9738  /tmp/claude-0/-home-claude/6889af70-4aa6-567a-b665-1e4ff0074842/scratchpad/r17/rob/mutation-15-9738.sm
+CRASH SIGSEGV  mutation-15-10041  /tmp/claude-0/-home-claude/6889af70-4aa6-567a-b665-1e4ff0074842/scratchpad/r17/rob/mutation-15-10041.sm
+CRASH SIGSEGV  mutation-15-26180  /tmp/claude-0/-home-claude/6889af70-4aa6-567a-b665-1e4ff0074842/scratchpad/r17/rob/mutation-15-26180.sm
+CRASH SIGSEGV  mutation-15-26669  /tmp/claude-0/-home-claude/6889af70-4aa6-567a-b665-1e4ff0074842/scratchpad/r17/rob/mutation-15-26669.sm
+CRASH SIGSEGV  mutation-15-29111  /tmp/claude-0/-home-claude/6889af70-4aa6-567a-b665-1e4ff0074842/scratchpad/r17/rob/mutation-15-29111.sm
+CRASH SIGSEGV  mutation-15-37384  /tmp/claude-0/-home-claude/6889af70-4aa6-567a-b665-1e4ff0074842/scratchpad/r17/rob/mutation-15-37384.sm
+CRASH SIGSEGV  mutation-15-44928  /tmp/claude-0/-home-claude/6889af70-4aa6-567a-b665-1e4ff0074842/scratchpad/r17/rob/mutation-15-44928.sm
+CRASH SIGSEGV  mutation-15-45107  /tmp/claude-0/-home-claude/6889af70-4aa6-567a-b665-1e4ff0074842/scratchpad/r17/rob/mutation-15-45107.sm
+CRASH SIGSEGV  mutation-15-46822  /tmp/claude-0/-home-claude/6889af70-4aa6-567a-b665-1e4ff0074842/scratchpad/r17/rob/mutation-15-46822.sm
+fixed     ACCEPTED 56  ERROR 115
+mutation  ACCEPTED 6523  CRASH 11  ERROR 43466
+CRASH or HANG: 11

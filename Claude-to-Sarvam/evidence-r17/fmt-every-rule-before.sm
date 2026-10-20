@@ -1,0 +1,42 @@
+# a test of every rule
+yoj ganit
+rachana P={a,b}
+vitti G=5
+prakriya f(a,b)
+{
+    yadi(a>b)
+    {
+        prati a
+    }
+    anya
+    {
+        prati b
+    }
+}
+prakriya g(dasham x) { prati x * 2.5 }
+mukhya()
+{
+    vitti p=nirmmita(16)
+    p.a=1;p.b=2
+    vitti s="a, b  { }"
+    likha( f( p.a , p.b ) )   # pick
+    kosh k[2]
+    kosh_push(k,-1)
+    vitti i=0
+    kuru
+    {
+        i+=1
+    }
+    yavat(i<3)
+    guna (i) {
+        bhavana 3: { likha(3) }
+        anya: { likha(0) }
+    }
+    yadi (i == 3)
+        likha(1)
+    anya
+        likha(2)
+    chakra j = 0 tak 2 { yadi (j == 1) { agrim } likha(j) }
+    vitti t = i > 1 ? !i : -i
+    likha(mahattam(12,8))
+}
