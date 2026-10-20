@@ -1,0 +1,68 @@
+{
+ "sanskrit": {
+  "messages": 128,
+  "LIKELY WRONG": 1,
+  "UNSURE": 22,
+  "DRAFT": 105
+ },
+ "hindi": {
+  "messages": 128,
+  "LIKELY WRONG": 0,
+  "UNSURE": 14,
+  "DRAFT": 114
+ },
+ "marathi": {
+  "messages": 128,
+  "LIKELY WRONG": 0,
+  "UNSURE": 15,
+  "DRAFT": 113
+ },
+ "gujarati": {
+  "messages": 128,
+  "LIKELY WRONG": 0,
+  "UNSURE": 14,
+  "DRAFT": 114
+ },
+ "bengali": {
+  "messages": 128,
+  "LIKELY WRONG": 0,
+  "UNSURE": 16,
+  "DRAFT": 112
+ },
+ "punjabi": {
+  "messages": 128,
+  "LIKELY WRONG": 1,
+  "UNSURE": 13,
+  "DRAFT": 114
+ },
+ "odia": {
+  "messages": 128,
+  "LIKELY WRONG": 0,
+  "UNSURE": 15,
+  "DRAFT": 113
+ },
+ "tamil": {
+  "messages": 128,
+  "LIKELY WRONG": 0,
+  "UNSURE": 16,
+  "DRAFT": 112
+ },
+ "telugu": {
+  "messages": 128,
+  "LIKELY WRONG": 0,
+  "UNSURE": 15,
+  "DRAFT": 113
+ },
+ "kannada": {
+  "messages": 128,
+  "LIKELY WRONG": 1,
+  "UNSURE": 14,
+  "DRAFT": 113
+ },
+ "malayalam": {
+  "messages": 128,
+  "LIKELY WRONG": 0,
+  "UNSURE": 15,
+  "DRAFT": 113
+ }
+}

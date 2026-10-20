@@ -4,6 +4,54 @@
 
 ---
 
+## Index — ROUND-12 delivery (2026-10-20, against main `068afb26`, v204)
+
+**Documentation only:** no code changed, so there is no branch and no PR. This folder changes on `main`.
+
+**Read first:**
+
+1. **The wording of all eleven message sets is UNVERIFIED.** No native speaker has read them. The R11
+   checks prove the form, not the wording.
+2. **The review sheets** (R12-01, `review-r12/`):
+   - one file per pack, all 128 messages, each shown as printed, with its meaning and my doubts
+   - an empty line for the correction
+   - **1,408 messages: 3 LIKELY WRONG, 169 UNSURE, 1,236 DRAFT.** DRAFT means "no specific doubt",
+     not "correct".
+3. **The three to correct first:**
+   - Sanskrit `msg_namespace_error`: wrong gender
+   - Kannada `r7_msg_mod_missing2`: `ಕೋಶ` means both "folder" and the `kosh` keyword
+   - Punjabi `msg_shell_bye`: a religious greeting, for the owner to decide
+4. **The two decisions, each answerable in one line** (R12-02):
+   - **The default's grammar:** my R11 count was wrong. **42 messages,** not ~15, use Hindi grammar.
+     Suggested: Sanskrit grammar, after the Sanskrit review.
+   - **The Linux IDEs:** the terminal IDE is English and the X11 GUI has English console lines.
+     Suggested: remove the English now; let the terminal IDE follow the pack if needed. The X11 GUI
+     cannot draw Indic script at all, so making it follow the pack is several rounds.
+5. **Still open** (R12-03): 11 items, led by the setup rebuild and the `sutram_compiler` mode.
+   **The mode breaks `run_tests.py` on a fresh checkout,** measured.
+
+| File | Workstream | One line |
+|---|---|---|
+| `R12-01-REVIEW-SHEETS.md` | **WS1** | What a sheet holds, how to return it, the counts per pack, the three LIKELY WRONG, the doubts that run through every pack. |
+| `review-r12/<pack>.md` | WS1 | The eleven review sheets. |
+| `R12-02-TWO-DECISIONS.md` | WS2 | My correction (42, not ~15); both decisions with options, measured costs and a one-line answer. |
+| `R12-03-WHAT-IS-OPEN.md` | WS3 | 11 items still open, checked on main; the mode's effect, measured. |
+| `evidence-r12/` | all | `make_review.py` (regenerates the sheets from `lang/*.sandesh`), `gloss.py`, `flags.py`, `summary.json`, `default-hindi-grammar.json` |
+
+**Checks on main `068afb26`, Linux:**
+
+- **PASS,** with the compiler made executable:
+  - suite 205 / 4
+  - pack messages OK
+  - proof_lib 217
+  - tests/r70 OK
+- **FAIL, as checked out:** `run_tests.py` and the pack-messages test hit `PermissionError`, because of
+  the mode.
+
+**Not verified:** Windows, and the wording.
+
+---
+
 ## Index — ROUND-11 delivery (2026-10-19, against main `d3325b13`, v201)
 
 **Code is on branch `claude/round-11`, draft PR #46, commit `15fa8176`.** On `main` only this folder
