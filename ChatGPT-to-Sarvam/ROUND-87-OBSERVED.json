@@ -1,0 +1,114 @@
+{
+  "source_main_pin": "64ea953a909eb77ebe5f278691407848014b9b6f",
+  "source_evidence": {
+    "r83_pack_inventory": "ChatGPT-to-Sarvam/ROUND-83-WS3-PACK-OBSERVED.json",
+    "r15_fixed_mutations": "Claude-to-Sarvam/evidence-r15/robust/run-seed15-50000-summary.txt",
+    "r15_minimized_log": "Claude-to-Sarvam/evidence-r15/robust/mutation-crashes-reduced.txt",
+    "r17_regressions": "tools/crash_corpus.py + tests/negative/r17/"
+  },
+  "tests": [
+    {
+      "id": "R87_PACKS_EIGHT",
+      "status": "PASS",
+      "expected": 8,
+      "actual": 8
+    },
+    {
+      "id": "R87_PACK_ROWS",
+      "status": "PASS",
+      "expected": 33,
+      "actual": 33
+    },
+    {
+      "id": "R87_PACK_FLAGS",
+      "status": "PASS",
+      "expected": 39,
+      "actual": 39
+    },
+    {
+      "id": "R87_PACK_MD_VALUES",
+      "status": "PASS",
+      "expected": 33,
+      "matched": 33,
+      "missing_keys": []
+    },
+    {
+      "id": "R87_ORIGINAL_CRASH_COUNT",
+      "status": "PASS",
+      "expected": 107,
+      "actual": 107
+    },
+    {
+      "id": "R87_REDUCED_MUTATION_IDS",
+      "status": "PASS",
+      "expected": 102,
+      "unique": 102
+    },
+    {
+      "id": "R87_MISSING_EXACT_INPUTS",
+      "status": "PASS",
+      "expected": 104,
+      "actual": 104
+    },
+    {
+      "id": "R87_MASTER_PATCH_SOURCE_PROTECTED",
+      "status": "PASS",
+      "details": "Original master equals reviewed branch master after removing just one inserted paragraph; verified against GitHub blob readback before PR #56 creation."
+    },
+    {
+      "id": "R87_NATIVE_SUTRAM_COMPILER",
+      "status": "NOT_RUN",
+      "reason": "Round 87 assigned source/audit/doc tasks; no compiler execution or native-output claim"
+    },
+    {
+      "id": "R87_HUMAN_LINGUISTIC_REVIEW",
+      "status": "NOT_RUN",
+      "reason": "Language corrections require a native speaker"
+    }
+  ],
+  "uploads": [
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-87-WS1-DRAFT-PACK-REVIEW.json",
+      "blob_sha": "6ef973b892e63bc8cda2cd2f6bbbd2a9969adeb2",
+      "content_characters": 25094
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-87-WS1-DRAFT-PACK-REVIEW.md",
+      "blob_sha": "05e5ae1e0f6c1905812dde68cb80cf363b6d0a3f",
+      "content_characters": 22857
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-87-WS2-ORIGINAL-CRASH-GAPS.json",
+      "blob_sha": "bf53d71aecbb1b01c8c3d0217b8c4e93fd3b63a6",
+      "content_characters": 42742
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-87-WS2-CRASH-GAP-REPORT.md",
+      "blob_sha": "fb89e08cc8cee497b0e5d238d5b20c93fd2042d0",
+      "content_characters": 4768
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-87-WS3-MASTER-AUDIT-BOUNDARY.md",
+      "blob_sha": "6b7a1eef126db5e419e96310c175e4a247fbfc3d",
+      "content_characters": 2952
+    }
+  ],
+  "safety": {
+    "compiler_files_modified": false,
+    "language_packs_modified": false,
+    "source_locks_modified": false,
+    "golden_files_modified": false,
+    "automated_CI_started": false,
+    "PR_merged": false,
+    "continuation_automation_started": false
+  },
+  "change_request": {
+    "pr": 56,
+    "url": "https://github.com/dap2810/Sutram/pull/56",
+    "branch": "review/r87-master-audit-boundary-20261020",
+    "base_pin": "64ea953a909eb77ebe5f278691407848014b9b6f",
+    "original_blob": "d0cac6432522b2dbde1672880325aed80fa9ee86",
+    "review_blob": "409e80789c748ed5949776ba1453bdcf3efd9d0c",
+    "status": "DRAFT_OPEN_AWAITING_SARVAM"
+  }
+}
