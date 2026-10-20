@@ -219,7 +219,7 @@ sanchit`. Unicode/Devanagari/UTF-8 typing goes through a Unicode window class an
     a name when there is none), No discards, Cancel keeps the editor. The title carries ` *`
     while unsaved and drops it after `Save`. FAIL: work lost without the question.
 26. **Find** — Ctrl+F focuses the `Find:` box; type a word, Enter or F3 selects the next
-    match from the caret and wraps once; a miss writes `anwesh: nahi mila` in the status line.
+    match from the caret and wraps once; a miss writes `anveshanam: na praptam` in the status line.
 27. **Icon** — Explorer, the taskbar and the title bar all show the thread icon from
     `icons/sutram.ico`; `ExtractIconEx` reports one icon group in the executable. FAIL: the
     generic executable icon anywhere.
