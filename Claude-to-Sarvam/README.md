@@ -4,6 +4,34 @@
 
 ---
 
+## Index — ROUND-18 delivery (2026-10-20, against main `05e1d565`, v232)
+
+**Code is on branch `claude/round-18`, draft PR #55.** Two compiler emitters change, so the binaries, the
+pins and the installer move with it. **On `main` only this folder changes.**
+
+**Read first:**
+
+1. **The fuzzer re-run** (R18-01): the workarounds were already gone in R17; **seed 15's 20,000 agree on the
+   merged compiler and on this round's.** No counterexample.
+2. **The proof review** (R18-02): **no proof is decoration.** The 15 witnessed gaps now have a proof each
+   (`tests/stdlib/r18_*`): 13 mutants killed, 2 equivalent on inspection.
+3. **`sthagita` never worked** (R18-03): it compiled to `hlt`, so every call died with SIGSEGV. **Fixed (F8)**,
+   exit 0, example 243. **A `rachana` inside a function did the same (F9), fixed**, example 244. `netsock`
+   is tested; `netbind`/`netlisten` only on an invalid descriptor, because **`netbind` cannot bind loopback**
+   (it hard-codes every interface). strace of the test: no bind, no listen.
+4. **Open** (R18-04): **v232's CHANGELOG says F7 is done; it is not** (exit 139 on main today), and it needs
+   a design decision. The four executables lost their mode at a sixth merge; restored here.
+
+| File | Workstream |
+|---|---|
+| `R18-01-FUZZER-RERUN.md` | WS1 |
+| `R18-02-PROOF-STRENGTH-ACTION.md` | WS2 |
+| `R18-03-BUILTINS.md` | WS3 |
+| `R18-04-WHAT-IS-OPEN.md` | WS4 |
+| `evidence-r18/` | the two fuzz runs, the strace, the re-score, the build report, hashes |
+
+---
+
 ## Index — ROUND-17 delivery (2026-10-20, against main `75b4d77f`, v229)
 
 **Code is on branch `claude/round-17`, draft PR #54.** A compiler round: `src/sutram_compiler.asm`, the

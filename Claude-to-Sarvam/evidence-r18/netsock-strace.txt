@@ -1,0 +1,7 @@
+socket(AF_INET, SOCK_STREAM, IPPROTO_IP) = 3
+socket(AF_INET, SOCK_STREAM, IPPROTO_IP) = 4
+bind(-1, {sa_family=AF_INET, sin_port=htons(0), sin_addr=inet_addr("0.0.0.0")}, 16) = -1 EBADF (Bad file descriptor)
+listen(-1, 5)                           = -1 EBADF (Bad file descriptor)
+close(3)                                = 0
+close(4)                                = 0
++++ exited with 0 +++
