@@ -27,6 +27,26 @@ skip() { SKIP=$((SKIP+1)); line "$1" "NOT-RUN $2"; }
 echo "Sutram gates — $(date -u +%Y-%m-%dT%H:%MZ)"
 echo
 
+# R13: the committed Linux binaries must be executable, or a fresh checkout cannot run
+# them (tests/run_tests.py stopped with PermissionError). A merge that uploads files one
+# by one loses the mode; this gate says so instead of the next newcomer finding out.
+# R19: it runs FIRST, because tests/run_tests.py sets +x on a copy it finds unset
+# (with a NOTE), and the build step below rewrites the three binaries with ld, which
+# makes them executable: a check made after either would hide the loss.
+# R19: outside a git checkout (a tarball, a zip from GitHub) the gate checks the
+# files themselves instead of the index, so it never says NOT-RUN. The two
+# readings agree when the tree is the committed one; they differ only after a
+# chmod that is not yet in the index, which `git ls-files -s` would still show.
+EXES="sutram_compiler sutram-ide sutram-gui sutram-fmt"
+if command -v git >/dev/null 2>&1 && git rev-parse --git-dir >/dev/null 2>&1; then
+  m=$(git ls-files -s $EXES | awk '$1 != "100755" {print $4}' | tr '\n' ' ')
+  [ -z "$m" ] && ok "committed modes (4 x 100755, git index)" || bad "committed modes" "not 100755: $m(git update-index --chmod=+x)"
+else
+  m=""; for f in $EXES; do [ -x "$f" ] || m="$m$f "; done
+  [ -z "$m" ] && ok "committed modes (4 executable, no git: the files' own mode)" || bad "committed modes" "not executable: $m(chmod +x; in git also update-index --chmod=+x)"
+fi
+
+
 # ---------------------------------------------------------------- build
 NASM=${NASM:-nasm}
 LD=${LD:-ld}
@@ -73,6 +93,7 @@ run_gate() {                      # name, then the command
       case "$line" in *", 0 failed"*) ok "$name ($line)";; *) bad "$name" "${line:-no summary}";; esac ;;
     "stdlib inventory") case "$(tail -1 /tmp/g_out.$$)" in *"modules"*) ok "$name ($(tail -1 /tmp/g_out.$$))";; *) bad "$name" "$(tail -1 /tmp/g_out.$$)";; esac ;;
     "version string")   case "$(tail -1 /tmp/g_out.$$)" in PASS*) ok "$name ($(tail -1 /tmp/g_out.$$ | sed 's/PASS version //'))";; *) bad "$name" "$(tail -1 /tmp/g_out.$$ | cut -c6-90)";; esac ;;
+    "formatted tree")   case "$(tail -1 /tmp/g_out.$$)" in FORMATTED) ok "$name";; *) bad "$name" "$(grep -c 'would change' /tmp/g_out.$$) file(s) would change: $(grep -m1 'would change' /tmp/g_out.$$ | cut -c15-70)";; esac ;;
     "operator precedence") line=$(head -1 /tmp/g_out.$$); case "$line" in *"; 0 disagree"*) ok "$name ($(echo "$line" | sed 's/;.*//'))";; *) bad "$name" "${line:-no summary}";; esac ;;
     "crash corpus")     line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/crash corpus: //'))";; *) bad "$name" "${line:-no summary}";; esac ;;
     "pack messages")    case "$(tail -1 /tmp/g_out.$$)" in OK*) ok "$name (12 sets x 11 cases)";; *) bad "$name" "$(grep -m1 -E 'FAIL|differ|Error' /tmp/g_out.$$ | cut -c1-60)";; esac ;;
@@ -92,18 +113,9 @@ run_gate "module graph"      python3 -m unittest discover -s tests/module_graph 
 run_gate "pack messages"     python3 tests/sandesh/test_sandesh.py   # R11: every message in every pack
 run_gate "crash corpus"      python3 tools/crash_corpus.py --compiler ./sutram_compiler   # R17: invalid input must error, never crash
 run_gate "operator precedence" python3 tools/check_precedence.py --compiler ./sutram_compiler   # R17: the documented table, pair by pair
+run_gate "formatted tree"    sh -c 'python3 tools/sutram_fmt.py --check --exclude-from tools/fmt-exclude.txt examples/*.sm examples/*/*.sm examples/lib/*.smlib lib/*.smlib tests/stdlib/*.sm tests/r*/*.sm tests/r*/*/*.sm tests/r*/lib/*.smlib tests/sandesh/cases/*.sm && echo FORMATTED'   # R19: sutram-fmt would change nothing
 run_gate "version string"    python3 tools/check_version.py --binary ./sutram_compiler   # R13: --version is the current version
 run_gate "performance"        python3 tools/bench_gate.py --compiler ./sutram_compiler --repeat 3
-
-# R13: the committed Linux binaries must be executable, or a fresh checkout cannot run
-# them (tests/run_tests.py stopped with PermissionError). A merge that uploads files one
-# by one loses the mode; this gate says so instead of the next newcomer finding out.
-if command -v git >/dev/null 2>&1 && git rev-parse --git-dir >/dev/null 2>&1; then
-  m=$(git ls-files -s sutram_compiler sutram-ide sutram-gui | awk '$1 != "100755" {print $4}' | tr '\n' ' ')
-  [ -z "$m" ] && ok "committed modes (3 x 100755)" || bad "committed modes" "not 100755: $m(git update-index --chmod=+x)"
-else
-  skip "committed modes" "not a git checkout"
-fi
 
 # the GUI needs an X server; say so rather than omitting it
 if [ -n "${DISPLAY:-}" ] || [ -d /tmp/.X11-unix ]; then

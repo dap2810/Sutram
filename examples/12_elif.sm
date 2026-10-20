@@ -3,9 +3,9 @@
 
 mukhya()
     likha("=== Elif Demo ===\n")
-    
+
     vitti score = 75
-    
+
     yadi (score >= 90) {
         likha("Grade: A\n")
     } anya yadi (score >= 80) {
@@ -17,7 +17,7 @@ mukhya()
     } anya {
         likha("Grade: F\n")
     }
-    
+
     # Multiple elif with different values
     vitti x = 15
     yadi (x > 20) {
@@ -27,5 +27,5 @@ mukhya()
     } anya {
         likha("x is small\n")
     }
-    
+
     likha("=== Done ===\n")

@@ -130,4 +130,7 @@ print("3 esc-cancels:", repr(g3))
 ok3 = g3 == "z"
 results.append(ok3)
 
-print("RESULT:", all(results))
+_result = all(results)
+print("RESULT:", _result)
+# R19: the gate counts a test by its exit status; a printed False used to count as a pass.
+raise SystemExit(0 if _result else 1)

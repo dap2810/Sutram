@@ -137,8 +137,7 @@ prakriya brihat_nyun(a, b, res, n) {
         yadi (d < 0) {
             likh8(r + i * 8, d + 10)
             borrow = 1
-        }
-        anya {
+        } anya {
             likh8(r + i * 8, d)
             borrow = 0
         }
@@ -237,8 +236,7 @@ prakriya brihat_bhajshesh(a, b, q, r, n) {
                 yadi (d < 0) {
                     likh8(rr + k * 8, d + 10)
                     borrow = 1
-                }
-                anya {
+                } anya {
                     likh8(rr + k * 8, d)
                     borrow = 0
                 }
@@ -288,8 +286,7 @@ prakriya brihat_shesh(ank, shesh, res, n) {
                 yadi (d < 0) {
                     likh8(tr + k * 8, d + 10)
                     bw = 1
-                }
-                anya {
+                } anya {
                     likh8(tr + k * 8, d)
                     bw = 0
                 }

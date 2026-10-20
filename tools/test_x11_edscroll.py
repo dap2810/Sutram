@@ -1,4 +1,4 @@
-import os, socket, struct, subprocess, time
+import os, select, socket, struct, subprocess, time
 
 # Slice 13 proof: the editor pane scrolls to follow the caret. Type 30 lines;
 # the pane must show the LAST 23 (caret at the bottom). Then walk the caret up
@@ -47,13 +47,32 @@ proc = subprocess.Popen([os.environ.get("SUTRAM_GUI", "/scratch/work/sutram-gui"
                         stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
 conn, _ = srv.accept(); conn.settimeout(8)
 
+# R19: the GUI repaints after every key and writes the drawing requests back to
+# us. The test used to send all 90 keys before reading anything, so the socket
+# buffer filled, the GUI blocked on its write, our sendall blocked on its send,
+# and the test timed out (it had failed this way since before ROUND-13). Now
+# every key first drains what the GUI has written into `pending`, and rx() serves
+# reads from `pending` before the socket.
+pending = bytearray()
+
+def drain():
+    while True:
+        r, _, _ = select.select([conn], [], [], 0)
+        if not r: return
+        try: c = conn.recv(65536)
+        except BlockingIOError: return
+        if not c: return
+        pending.extend(c)
+
 def rx(n):
-    b = b""
+    b = bytearray()
     while len(b) < n:
+        if pending:
+            take = min(n - len(b), len(pending)); b += pending[:take]; del pending[:take]; continue
         c = conn.recv(n - len(b))
         if not c: break
         b += c
-    return b
+    return bytes(b)
 
 rx(12); conn.sendall(build_setup())
 def rr():
@@ -68,12 +87,16 @@ def key(kc, ctrl=False):
     ev = bytearray(32); ev[0] = 2; ev[1] = kc
     struct.pack_into("<I", ev, 4, RID_BASE | 1); struct.pack_into("<H", ev, 10, 1)
     if ctrl: struct.pack_into("<H", ev, 28, 0x0004)
+    drain()
     conn.sendall(bytes(ev)); time.sleep(0.03)
+    drain()
 
 def texts():
     out = []; old = conn.gettimeout(); conn.settimeout(0.6)
     try:
         while True:
+            if not pending:
+                drain()
             r = rr()
             if r is None: break
             hh, ll, bb = r
@@ -113,8 +136,11 @@ except FileNotFoundError: buf = "<none>"
 lines = buf.split("\n")
 ok_buf = len([x for x in lines if x]) == 30 and lines[0] == "l01" and lines[29] == "l30"
 print("BUFFER INTACT (30 lines, l01..l30):", ok_buf)
-print("RESULT:", all([ok_bottom, ok_top, ok_buf]))
+_result = all([ok_bottom, ok_top, ok_buf])
+print("RESULT:", _result)
 
 conn.close(); srv.close(); proc.terminate()
 try: proc.communicate(timeout=5)
 except Exception: proc.kill()
+# R19: the gate counts a test by its exit status; a printed False used to count as a pass.
+raise SystemExit(0 if _result else 1)

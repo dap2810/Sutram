@@ -74,3 +74,5 @@ print("OUTPUT SHOWN (compiler message drawn in the pane):", shown)
 conn.close(); srv.close(); proc.terminate()
 try: proc.communicate(timeout=5)
 except Exception: proc.kill()
+# R19: the gate counts a test by its exit status.
+raise SystemExit(0 if shown else 1)

@@ -94,8 +94,11 @@ print("after Ctrl-End,y:", repr(got3))
 ok_end = got3 == "za    by"
 print("CTRL-END -> FILE END:", ok_end)
 
-print("RESULT:", all([ok_tab, ok_home, ok_end]))
+_result = all([ok_tab, ok_home, ok_end])
+print("RESULT:", _result)
 
 conn.close(); srv.close(); proc.terminate()
 try: proc.communicate(timeout=5)
 except Exception: proc.kill()
+# R19: the gate counts a test by its exit status; a printed False used to count as a pass.
+raise SystemExit(0 if _result else 1)

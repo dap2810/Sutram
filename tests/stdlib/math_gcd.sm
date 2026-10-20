@@ -1,9 +1,9 @@
 yoj ganit
 mukhya() {
-    likha(mahattam(12,8))
+    likha(mahattam(12, 8))
     likha("\n")
-    likha(mahattam(7,5))
+    likha(mahattam(7, 5))
     likha("\n")
-    likha(mahattam(0,5))
+    likha(mahattam(0, 5))
     likha("\n")
 }
