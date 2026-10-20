@@ -1,3 +1,38 @@
+## v231 - Claude ROUND-17 merged: D1-D4 fixed with a test each, and the formatter is built
+
+**Seventeen files changed, twenty-eight added.**
+
+### The fixes, each with a test that fails before and passes after
+
+| New example | What it pins |
+|---|---|
+| `238_r17_d1_unary_not.sm` | D1 |
+| `239_r17_d2_anya_loop_krama.sm` | D2 |
+| `240_r17_d3_anya_self_assign.sm` | D3 |
+| `241_r17_d4_precedence.sm` | D4 |
+| `242_r17_empty_guna.sm` | empty `guna` |
+
+**Every one was found by the fuzzer within 500 programs of seed 1.** They are now in the tree with goldens, so
+they cannot come back.
+
+**And the crash fixes:** `src/sutram_compiler.asm`, `src/r11_sandesh.inc` and the negative corpus manifest all
+moved. **The compiler now diagnoses 107 inputs it used to crash on - and 150,000 it was tested with.**
+
+### The formatter is built
+
+**`sutram-fmt` is in the tree.** The tool the project had been missing - and it is the smallest, most-used
+kind of developer tool there is.
+
+### And the binaries are rebuilt
+
+`sutram_compiler`, `sutram.exe`, `win/sutram.exe` and **`Sutram-Setup.exe`** - so **the installer now carries
+the crash fixes too.** `Sutram-Setup.sha256` moved with it.
+
+**One file excluded: `docs/CHANGELOG.md`**, which is mine. **That trap has been caught before landing six
+times now.**
+
+**ChatGPT's ROUND-85 (the full keyword audit and the builtin coverage) is delivered and to be merged.**
+
 ## v230 - 107 CRASHES ARE NOW DIAGNOSTICS. And the root cause was the ERROR PRINTER.
 
 ### Claude R17-02: the six crash kinds, fixed and verified
