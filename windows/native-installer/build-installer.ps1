@@ -15,6 +15,11 @@ $compiler=Join-Path $work 'compiler.exe'
 $compilerReport=Join-Path $work 'compiler-build.json'
 $buildTool=Join-Path $ProjectRoot 'tools\r69_build.py'
 $verifyTool=Join-Path $ProjectRoot 'tools\r80_payload_verify.py'
+# R81: refuse to package a correctly source-pinned compiler with a stale
+# user-visible banner (current CHANGELOG version versus NASM msg_version).
+# This is a source-only preflight; no production binary is published on failure.
+$versionGate=Join-Path $ProjectRoot 'tools\r81_version_gate.py'
+[void](Invoke-BoundedProcess $python @($versionGate,'--repo',$ProjectRoot) $ProjectRoot 30000)
 [void](Invoke-BoundedProcess $python @($buildTool,'--target','windows','--output',$compiler,
     '--report',$compilerReport,'--nasm',$nasm,'--linker',$linker) $ProjectRoot 300000)
 Assert-Pe64 $compiler
