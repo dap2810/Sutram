@@ -239,7 +239,7 @@ menu_item_act   db ACT_OPEN,ACT_SAVE,ACT_EXIT
                 db ACT_UNDO,ACT_CUT,ACT_COPY,ACT_PASTE,ACT_SELALL
                 db ACT_RUN, ACT_FIND, ACT_COLOUR, ACT_CLROUT, ACT_ABOUT
 about_text db 'Sutram khol 1.0 - samskrita-mukhya bhasha',10
-           db 'eka NASM sankalanak, deshiya yantra-code, na koi runtime.',10
+           db 'ekah NASM sankalakah, deshiya yantra-bhasha, na kopi bahya-ashrayah.',10
 about_len  equ $ - about_text
 ; dropdown item actions are defined above
 open_act  dd -1                      ; pending action, -1 = none
@@ -341,7 +341,7 @@ section .data
     run_src_z    db RUN_SRC, 0
     run_bin_z    db RUN_BIN, 0
     save_z       db SAVE_PATH, 0
-    msg_run      db "Sutram GUI: run (Ctrl-R)", 10, 0
+    msg_run      db "Sutram sampadak: chalanam (Ctrl-R)", 10, 0
 
     handshake   db 0x6C, 0x00
                 dw 11
@@ -368,11 +368,11 @@ section .data
     br_dotdot   db "..", 0
     br_slash    db "/", 0
     txt_hint_n  equ $ - txt_hint
-    msg_openfail db "Sutram IDE: cannot open that file.", 10, 0
+    msg_openfail db "Sutram sampadak: tat patram na udghatitam.", 10, 0
 
-    msg_ok      db "Sutram GUI: connected to X, window created.", 10, 0
-    msg_nox     db "Sutram GUI: cannot reach an X server (no DISPLAY).", 10, 0
-    msg_hand    db "Sutram GUI: handshake failed.", 10, 0
+    msg_ok      db "Sutram sampadak: X-sevakena sambaddham, gavakshah rachitah.", 10, 0
+    msg_nox     db "Sutram sampadak: X-sevakah na praptah (DISPLAY nasti).", 10, 0
+    msg_hand    db "Sutram sampadak: X-sambandhah viphalah.", 10, 0
 
 section .text
     global _start

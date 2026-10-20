@@ -13,9 +13,9 @@ def check(label, cond):
     print("R64_SOURCE_PASS " + label)
 
 def main():
-    check("POP_UNCHANGED", 'msg_kosh_empty db "Sutram Error: rikta kosh se kosh_pop", 10, 0' in src)
-    check("PEEK_TEXT", 'msg_kosh_peek_empty db "Sutram Error: rikta kosh se kosh_peek", 10, 0' in src)
-    check("DEQUEUE_TEXT", 'msg_kosh_dequeue_empty db "Sutram Error: rikta kosh se kosh_dequeue", 10, 0' in src)
+    check("POP_UNCHANGED", 'msg_kosh_empty db "Sutram Error: riktat koshat kosh_pop", 10, 0' in src)
+    check("PEEK_TEXT", 'msg_kosh_peek_empty db "Sutram Error: riktat koshat kosh_peek", 10, 0' in src)
+    check("DEQUEUE_TEXT", 'msg_kosh_dequeue_empty db "Sutram Error: riktat koshat kosh_dequeue", 10, 0' in src)
     helper = src.split("emit_kosh_empty_check_r9:", 1)[1].split(
         "\n; R46 compiler-time call liveness:", 1)[0]
     check("COMPILE_TIME_SELECTION",

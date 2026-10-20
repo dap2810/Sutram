@@ -21,7 +21,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 COMPILER = 'src/sutram_compiler.asm'
 ENTRY = 'src/r68_compiler_entry.asm'
-COMPILER_BLOB = '8625095aa53027bbaf4eef29e7afe76e525d1008'  # R11 re-pin (messages per --lang pack; src/r11_sandesh.inc pinned with it); R10 5ade34ed re-pin (F1: rbp displacements beyond disp8 emitted as disp32); R9 5caa9b6e re-pin (nirmmita 0 on failure, guna evaluated once; v188's version-string blob ea5ff808 was never pinned); R7 cc5cfbe4, R5 185b7f06, R4 4b137114, R3 ea2a1e91, pre-v157 64ea028a
+COMPILER_BLOB = 'd96aa571259bf22a321e74995b86aa72ac4a5210'  # R13 re-pin (Sanskrit-grammar defaults, v208); R11 8625095a re-pin (messages per --lang pack; src/r11_sandesh.inc pinned with it); R10 5ade34ed re-pin (F1: rbp displacements beyond disp8 emitted as disp32); R9 5caa9b6e re-pin (nirmmita 0 on failure, guna evaluated once; v188's version-string blob ea5ff808 was never pinned); R7 cc5cfbe4, R5 185b7f06, R4 4b137114, R3 ea2a1e91, pre-v157 64ea028a
 ENTRY_BLOB = '42389aaf73179726d91e23359aee2199734036e1'
 MODES = {
     'default': (),

@@ -22,6 +22,9 @@ HERE = Path(__file__).resolve().parent
 CASES = HERE / 'cases'
 EXPECT = HERE / 'expect'
 COMPILER = os.environ.get('SUTRAM_COMPILER') or str(ROOT / 'sutram_compiler')
+if os.path.isfile(COMPILER) and not os.access(COMPILER, os.X_OK):   # R13: see tests/run_tests.py
+    os.chmod(COMPILER, os.stat(COMPILER).st_mode | 0o111)
+    print(f'NOTE: {COMPILER} was not executable; set +x on this copy (the committed mode should be 100755)')
 sys.path.insert(0, str(ROOT / 'tools'))
 import sandesh  # noqa: E402
 

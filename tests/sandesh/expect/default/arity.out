@@ -1,5 +1,5 @@
-arity.sm:6:11: Sutram Error [E_ARITY]: 'f' ko 1 tark diye; hastakshar me 2
+arity.sm:6:11: Sutram Error [E_ARITY]: 'f' ityasmai 1 tarkah dattah; hastakshare 2
       likha(f(1))
             ^
-Sanket: utne hi tark dein jitne prakriya ki paribhasha me hain
+Sanket: prakriyayah paribhashayam yavantah tarkah santi, tavantah eva dadatu
 [compile exit 1]
