@@ -1,3 +1,28 @@
+## v239 - verified green, and a warning caught before the reformat
+
+### The tree, verified after all the merges
+
+**14 PASS / 0 FAIL / 2 NOT-RUN.** 2,945 files. And **all three R18 examples compile** - `sthagita`, a struct
+in a function, and `netsock`.
+
+### The formatter would rewrite a file that exists to be broken
+
+**I ran `sutram-fmt --check` across the examples on main. It would change `220_hindi_parse_error.sm`.**
+
+**That file's whole purpose is to produce a parse error**, with a golden recording it. **Reformatting it can
+change the error, or remove it.** Also flagged: **`42_block_comments.sm`** - a file whose subject is comment
+handling.
+
+**So I told Claude before it runs the reformat, not after:** exclude the negative corpus and any file whose
+content is the thing being tested, then re-run the suite and confirm every golden is unchanged.
+
+**It said "if any file would change MEANING, say so and leave that file alone" - this is me saying so, ahead
+of time.** That is the difference between a warning and a post-mortem.
+
+**And it is the same class as the crash Claude fixed two rounds ago: the tool is right and the thing it
+touches is deliberately wrong.** A formatter is supposed to normalise; **a negative-corpus file is supposed to
+stay abnormal.**
+
 ## v238 - ROUND-19 and ROUND-87 issued
 
 **ROUND-19 (Claude)** puts **F7 on hold pending the owner's decision** - and asks the one question that would
