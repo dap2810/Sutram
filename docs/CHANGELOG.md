@@ -1,3 +1,47 @@
+## v203 - Claude ROUND-11 merged: THE DIAGNOSTICS ARE IN ALL ELEVEN PACKS. Step 5 is CLOSED.
+
+### The diagnostics follow the pack, and I verified it in four languages
+
+The same error, `likha(nosuchname)`:
+
+| Pack | The message |
+|---|---|
+| **default** | `agyat naam 'nosuchname'` |
+| **sanskrit** | `अज्ञातं नाम 'nosuchname'` |
+| **hindi** | `अज्ञात नाम 'nosuchname'` |
+| **tamil** | **`அறியாத பெயர் 'nosuchname'`** |
+
+**And the pack-loaded notice is in the pack's own script** - `भाषा-पुटः प्राप्तः` (Sanskrit),
+`भाषा पैक मिला` (Hindi), `மொழித் தொகுப்பு கிடைத்தது` (Tamil).
+
+**No English anywhere.** The one English token is `Sutram Error`, which is an identifier and stays by design.
+**128 strings x 11 packs = 1,408.** The default is romanised Sanskrit with its English words removed.
+
+**The owner's correction was right, and this is what it produced.** My first instinct - English messages -
+would have shipped a Sanskrit language that could not tell a Tamil user what went wrong in Tamil.
+
+### Goldens: 13 moved, 132 added, and nothing re-recorded to pass
+
+**13 goldens moved** - 11 default, 1 Hindi, 1 Sanskrit - **and not one accepted golden was re-recorded to
+make a test pass.** 132 new per-pack goldens and a new gate, **"pack messages"**.
+
+### Step 5 IS CLOSED: 303 of 303
+
+**From 255. The remaining 48 closed: 29 by proof, 14 by written argument, 5 by both.** 7 new proofs,
+including **page-edge canaries** for overruns of private scratch blocks. **Nothing left as GAP, OVERRUN or
+REVIEW.** **The number that did not exist two days ago now reads 303 of 303.**
+
+### And the honest caveat, which Claude states itself
+
+**The translations are drafted by Claude and need a native speaker - all eleven.** The checks prove the
+**form** - identifiers, punctuation, script, no Latin prose - **not the wording.** A Tamil speaker should
+read the Tamil messages before anyone claims they are right.
+
+### Two decisions for the owner
+
+1. **Should the romanised default use Sanskrit grammar?** About 15 messages currently use Hindi grammar.
+2. **Should the Linux IDEs follow the pack too?** The Windows IDE does.
+
 ## v202 - a language inconsistency found: `mukhya` and `prakriya` disagree about braces
 
 **Found while extending the benchmarks.** A multi-statement function body needs braces - but **only for
