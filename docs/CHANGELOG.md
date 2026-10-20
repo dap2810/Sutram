@@ -1,3 +1,37 @@
+## v217 - items 8 and 11 done: the books verified, the braces inconsistency documented
+
+### Item 8 - the book sweep, done correctly this time
+
+**84 complete programs across the four books. All 84 compile clean. Zero failures.**
+
+**My earlier report of "6 book samples failed" was my extractor, not the books** - I had flagged
+`prakriya mean(kosh dasham xs)` as failing, and it compiles. **This sweep filters for balanced braces and an
+`mukhya`, which is what a complete program looks like**, and every one passes.
+
+**So the teaching material is sound.** That is worth having measured rather than assumed, because the books
+are what a beginner actually reads.
+
+### Item 11 - the `mukhya`/`prakriya` braces inconsistency is now documented
+
+**`docs/LANGUAGE-REFERENCE.md` said only one of the two behaviours as if it were universal:**
+
+> *A brace-less function body is exactly one statement. For anything longer, wrap the body in `{ }` - a
+> brace-less multi-statement body is a parse error.*
+
+**True for `prakriya`, false for `mukhya`.** The reference now shows both, with the verified behaviour of
+each, and says plainly that **this is an inconsistency rather than a rule.**
+
+**And the consequence is stated:** **every example in every book writes `mukhya()` without braces** - 84
+programs, all compiling - **so a beginner learns the brace-less form on page one and hits the wall on their
+first `prakriya`.**
+
+**It ends with the practical advice and the open question:** *use braces for any multi-statement body - it
+works for both, and it is what the books should show. Should they be made consistent? That would be a
+language change, and it is the owner's.*
+
+**Documented, not resolved** - which is the right split, since documenting is mechanical and unifying is a
+decision.
+
 ## v216 - item 7 was a FALSE PREMISE. The typed-parameter form IS covered.
 
 **I claimed, twice, that `prakriya mean(kosh dasham xs)` - a typed parameter - "appears in all four books and
