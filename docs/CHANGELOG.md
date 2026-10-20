@@ -1,3 +1,44 @@
+## v223 - item 6 assessed: the X11 GUI needs a font-path rewrite, and I recommend NOT doing it now
+
+**I said I would start item 6. I did - by establishing what it is, which is the honest thing rather than
+beginning a rewrite I cannot finish.**
+
+### What I found
+
+**The Linux X11 GUI draws all its text with `ImageText8` and the core `fixed` font.**
+
+| Evidence | Meaning |
+|---|---|
+| `ImageText8`, 3 uses | the **8-bit** core X11 text protocol |
+| font is `fixed` | a **core font** - no Indic coverage |
+| `ldd`: *"not a dynamic executable"* | **no freetype, no fontconfig, no Xft** |
+| 16 refs to 3-byte UTF-8 lead bytes | it **counts** clusters, so it knows the bytes - **and cannot draw them** |
+
+**So the Linux GUI cannot display the language it is for.** Latin renders; Devanagari, Gujarati and Tamil
+cannot.
+
+### Why it is not a task, and why I am not starting it
+
+**Fixing it means replacing the text path:** client-side rendering (three new libraries), **glyph shaping**
+(Devanagari clusters reorder - the project has a cluster *counter*, not a shaper), and **layout** - the
+editor's column arithmetic, cursor, gutter and colouring all assume one byte is one column.
+
+**Claude said "several rounds" and it is right.**
+
+**And the judgement: it is not on the road to v1.0.**
+
+- **The Windows IDE already draws all eleven scripts** - it uses `CreateFontW` with a font that covers them.
+  **The capability exists on the platform the owner actually uses.**
+- **v1.0's definition does not require an Indic-capable X11 GUI.**
+- **And it is the kind of change that touches everything** - a font-path rewrite plus a shaper plus layout
+  arithmetic is weeks of work **with a high chance of regressing the Linux GUI that currently works.**
+
+**Recorded in `ITEM-6-X11-INDIC-ASSESSMENT.md` with the evidence, so the decision is the owner's and it is
+informed. If he wants it, it should be its own milestone rather than an item in a queue.**
+
+**The alternative - starting a rewrite and stopping halfway - would leave the Linux GUI worse than it is
+now.**
+
 ## v222 - item 7 done mechanically: the books are covered, and the BUILTINS are not
 
 **I did the audit properly this time - set difference, not a search I designed badly.**
