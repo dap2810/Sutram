@@ -1,3 +1,36 @@
+## v246 - the modes gate now RUNS, and it caught a real defect. Plus a new crash-corpus gate.
+
+### The gate I asked for works, and it immediately found something
+
+**I asked twice whether the "committed modes" gate could be made to run outside a git checkout - it was
+NOT-RUN there, which is why the mode had survived SIX merges.**
+
+**Claude made it run. And on my first run of the merged tree:**
+
+```
+committed modes   FAIL   not executable: sutram-fmt (chmod +x; in git also update-index --chmod=+x)
+```
+
+**`sutram-fmt` is not executable in the repository.** A fresh clone gets a formatter that cannot be run -
+**and the tool built to catch exactly this is the thing that caught it.**
+
+**That is the whole argument for making a gate run everywhere: a check that skips the environment where the
+problem happens is not a check.** The mode had been lost at six merges and every one of them passed.
+
+### Two new gates arrived with the work
+
+| Gate | Result |
+|---|---|
+| **crash corpus** | **227 cases, 0 failed** - the 107 crash inputs are now a permanent gate |
+| **library proofs** | **220 passed** (up from 217) |
+
+**And I ran the 102 pinned crash inputs against the current compiler myself: 0 still crash.** The fix holds,
+and it is now pinned by a gate rather than by a claim.
+
+### The tree otherwise
+
+**15 gates, 1 FAIL (the mode), 1 NOT-RUN (Windows).** 3,181 files. The FAIL is real, small, and assigned.
+
 ## v245 - ROUND-21 and ROUND-89: the queue is empty, so the work is now verification
 
 **The manual-free queue is done.** Every item on `PLAN-TO-FINISH.md` is complete or in flight, so this round is
