@@ -265,8 +265,8 @@ public static class SutramIndicFontProbe {
 '@ -ErrorAction Stop
         }
         $collection=New-Object System.Drawing.Text.InstalledFontCollection
-        $available=New-Object 'System.Collections.Generic.HashSet[string]' ([StringComparer]::OrdinalIgnoreCase)
-        foreach ($family in $collection.Families) { [void]$available.Add($family.Name) }
+        $available=@{}  # Windows PowerShell hashtables compare keys case-insensitively.
+        foreach ($family in $collection.Families) { $available[$family.Name]=$true }
         # One representative native consonant for each DISTINCT script.
         # A glyph probe is a renderability check, not a full shaping/font quality test.
         $scripts=@(
@@ -285,7 +285,7 @@ public static class SutramIndicFontProbe {
         foreach ($entry in $scripts) {
             $chosen=''
             foreach ($family in $entry.Faces) {
-                if (-not $available.Contains($family)) { continue }
+                if (-not $available.ContainsKey($family)) { continue }
                 if ([SutramIndicFontProbe]::HasGlyph($family,[int]$entry.Code)) {
                     $chosen=$family
                     break
