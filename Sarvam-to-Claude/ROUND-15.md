@@ -60,3 +60,31 @@ with the environment named. No `__pycache__`.
 
 ## Part 4 — The standing rule
 **A verified partial beats a claim.** You have caught eleven errors of mine. Keep doing exactly that.
+
+### WS4 - F7: A NEW CRASH, found while I was writing a benchmark
+
+**Read `F7-SCALAR-INDEX-CRASH.md` at the repository root. Minimal reproduction:**
+
+```sm
+prakriya f(ok) {
+    ok[0] = 5
+    prati 1
+}
+mukhya() {
+    vitti x = 0
+    likha(f(x))
+}
+```
+
+**Compiles - `Siddh: ... sankalit` - then exits 139 (SEGFAULT). One parameter, no locals, so it is NOT F1.**
+
+**Indexing a parameter that is a scalar.** The compiler already rejects undeclared names, unknown fields and
+undeclared arrays - **it has the machinery and does not apply it here.**
+
+**And it reaches a shipped function:** `lib/ganita.smlib`'s `ganita_janchit_yuj(a, b, ok)` indexes its third
+argument, so calling it with a scalar third argument segfaults.
+
+**Deliver:** the fix, and a test that fails on v218 and passes after. **And tell WS2's robustness fuzzer this
+shape** - an argument used in a way its type does not support. **A generator of random VALID programs would
+not produce it; this is a valid program whose type use is wrong.**
+
