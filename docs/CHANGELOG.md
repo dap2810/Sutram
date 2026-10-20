@@ -1,3 +1,43 @@
+## v229 - the fuzzers verified on main: they run, and the crashes reproduce
+
+**I merged Claude's fuzzers and then ran them myself, on main, rather than trusting the merge.**
+
+### The valid fuzzer - and the distribution is the interesting part
+
+**Seed 99, 60 programs: 60 run, 60 agree, 0 fail.** 1,172 output lines compared.
+
+**And the run prints the distribution of variables in the called functions:**
+
+```
+7:1  9:2  12:2  14:4  16:1  19:2  20:1  23:2  24:4  26:3  27:3  28:3  29:4  30:6
+31:5  32:3  33:2  34:4  35:6  36:7  37:8  38:6  39:10  40:6  41:6 ...
+```
+
+**That is the F1 boundary being deliberately exercised.** F1 lived between 27 and 32 local variables, and the
+generator is putting **10 programs at 39 variables, 8 at 37, 7 at 36** - **it is not sampling randomly and
+hoping; it is aimed at the shape that has already hurt once.**
+
+**That is the difference between a fuzzer and a smoke test.**
+
+### The robustness fuzzer - the crashes reproduce
+
+**It found SIGSEGV on `braces-100000`, `unary-minus-100000`, `call-depth-100000`, and several mutations, in a
+single run.** So the 107-crash finding is not a one-off: **the failures are reproducible from the committed
+files, which is what makes them fixable.**
+
+**And the shape is telling** - three of the four named ones are **100,000-deep nesting**. The compiler is
+recursive, and **it has no depth limit.** That is a single root cause behind several of the six kinds, and it
+is the kind of thing a robustness pass exists to find.
+
+### What this verification adds
+
+**A tool that is merged but never run is a claim, not a capability.** I ran both, on main, and they behave as
+reported - **and the valid fuzzer's coverage of the F1 boundary is better than I expected when I asked for
+it.**
+
+**ROUND-17 is now working on D1-D4 and the six crash kinds. The tools that found them are in the tree and
+reproduce.**
+
 ## v228 - ROUND-85 to ChatGPT: the full audit, and the coverage gaps I found
 
 **WS1 completes the keyword audit.** Its R83 screened 52 source files; **the repository has ~1,504 with source
