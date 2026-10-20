@@ -1,0 +1,10 @@
+# ROUND-18 hashes (sha256), branch claude/round-18
+4097997b0ecf5233d03acbb7696dfae6fd4c7ad18d99dbd6d16271b009f37993  sutram_compiler
+a66985b0dd0b4376f0f4367f9d6206bda8233f66d8ad650ba76b8da92ad6e064  win/sutram.exe
+a66985b0dd0b4376f0f4367f9d6206bda8233f66d8ad650ba76b8da92ad6e064  sutram.exe
+6574b21b838586f0f99084f0c421f6653a2d5d2c810fb8a51a5501deb0941dde  sutram-ide-gui.exe
+a16e3598ec28b20b558ea64225ccaa3ff7d9d35b5337a69a3f2e7982da63f0c2  Sutram-Setup.exe
+
+src/sutram_compiler.asm 4547e4737843567ad4b807dd6d9a5e06ca1cb085
+src/r11_sandesh.inc 6b88311dfcdfd54edbe704ceaf32892a7dff41cd
+# --version: Sutram 1.0 (v232) - sampurna sutra

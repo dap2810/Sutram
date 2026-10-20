@@ -1,0 +1,8 @@
+madhava    madhava_sin                  S=k  23/28   28.9s  (1 done, 29 s)
+madhava    madhava_cos                  S=k  23/28   28.7s  (1 done, 29 s)
+madhava    madhava_atan                 S=k  41/47   30.5s  (1 done, 31 s)
+sadhan     util_chinha                  S=k   6/6     0.1s  (1 done, 0 s)
+ank        ank_gan                      S=k  21/23   10.7s  (1 done, 11 s)
+ganita     ganita_paripurna_kramgun     S=k  14/15   19.5s  (1 done, 20 s)
+suchi      suchi_srij                   S=k  19/33    3.0s  (1 done, 3 s)
+suchi      avali_srij                   S=k  20/36    3.1s  (1 done, 3 s)
