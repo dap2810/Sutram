@@ -4,6 +4,32 @@
 
 ---
 
+## Index — ROUND-20 delivery (2026-10-20, against main `1b15330b`, v242)
+
+**Code is on branch `claude/round-20`, draft PR #58. No compiler change.** On `main` only this folder changes.
+
+**Read first:**
+
+1. **F7, both options as diffs, neither applied** (R20-01). **A** (optional `mala` parameters) breaks nothing
+   and makes the library's wrong call a compile error once the library says `mala`. **B** (indexing an untyped
+   parameter is an error) is measured, not estimated: **15 of 24 modules and 185 programs stop compiling
+   until 116 one-word annotations are written**, every function listed. **I would land A now, B after.**
+2. **The crash corpus holds all 107 original inputs** (R20-02): 102 byte for byte, 102 reduced, the fifth
+   nesting case generated. 204/204 crash v226's compiler; **227 cases, 0 failed** on the branch.
+3. **`sutram-fmt --check` has been a gate since R19** (R20-03), on main today: PASS.
+4. **Open** (R20-04): main's own installer already DIFFERS (v242's CHANGELOG is in its payload); the mode was
+   lost at an eighth merge; the pack lines for the new F7 message are needed when A lands.
+
+| File | Workstream |
+|---|---|
+| `R20-01-F7-BOTH-OPTIONS.md` | WS1 |
+| `R20-02-CRASH-CORPUS-COMPLETE.md` | WS2 |
+| `R20-03-FMT-GATE.md` | WS3 |
+| `R20-04-WHAT-IS-OPEN.md` | WS4 |
+| `evidence-r20/` | the two F7 diffs, the three test programs, the measured cost and the annotation list, the build report |
+
+---
+
 ## Index — ROUND-19 delivery (2026-10-20, against main `64ea953a`, v238)
 
 **Code is on branch `claude/round-19`, draft PR #57. No compiler change.** On `main` only this folder changes.

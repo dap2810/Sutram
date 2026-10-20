@@ -1,0 +1,270 @@
+--- a/src/sutram_compiler.asm	2026-10-20 13:53:50.700952170 -0400
++++ b/src/sutram_compiler.asm	2026-10-20 14:58:29.557737037 -0400
+@@ -57,6 +57,7 @@
+ PARAM_DASHAM equ 1            ; scalar IEEE-754 binary64 parameter
+ PARAM_KOSH equ 2              ; integer/raw-qword growable-array parameter
+ PARAM_KOSH_DASHAM equ 3       ; binary64 growable-array parameter
++PARAM_MALA equ 4              ; F7: an array (or any address) parameter: `prakriya f(mala a)`
+ 
+ ; Token types
+ TOK_KEYWORD   equ 1
+@@ -354,6 +355,7 @@
+     msg_kosh_peek_empty db "Sutram Error: riktat koshat kosh_peek", 10, 0
+     msg_kosh_dequeue_empty db "Sutram Error: riktat koshat kosh_dequeue", 10, 0
+     msg_kosh_param_type db "Sutram Error: kosh tark: tatv prakar bhinn", 10, 0
++    msg_mala_param_type db "Sutram Error: mala tark: sankhya datta, mala apekshita", 10, 0
+     msg_kosh_param_push db "Sutram Error: kosh-tarke kosh_push asamarthitam", 10, 0
+ 
+     ; The v27 per-pack copies of five parse messages lived here. R11: every message
+@@ -850,6 +852,10 @@
+     kosh_vars   resq KOSH_VAR_CAP ; T18 growable-array names in current generated-function scope
+     kosh_var_cnt resq 1
+     kosh_param_vars resq KOSH_PARAM_VAR_CAP ; T18: kosh parameters (growth cannot replace caller ptr)
++    scalar_vars  resq 256       ; F7: names declared with a plain number/arithmetic initialiser
++    scalar_var_cnt resq 1
++    mala_param_vars resq KOSH_PARAM_VAR_CAP ; F7: parameters declared `mala a`
++    mala_param_var_cnt resq 1
+     kosh_param_var_cnt resq 1
+     float_kosh_vars resq KOSH_VAR_CAP ; T18: kosh dasham element-type names in current scope
+     float_kosh_var_cnt resq 1
+@@ -8785,7 +8791,15 @@
+     je .ps_fd_param_dasham
+     cmp qword [rax+16], KW_KOSH
+     je .ps_fd_param_kosh
++    cmp qword [rax+16], KW_PANKTI
++    je .ps_fd_param_mala
+     jmp parse_error
++.ps_fd_param_mala:
++    mov r10d, PARAM_MALA      ; F7: `mala a` declares an address parameter
++    call advance_tok          ; consume mala / माला
++    call cur_tok
++    mov rcx, [rax]
++    jmp .ps_fd_param_name
+ .ps_fd_param_dasham:
+     mov r10d, PARAM_DASHAM
+     call advance_tok          ; consume dasham / दशम
+@@ -11270,6 +11284,8 @@
+     mov qword [rel array_var_cnt], 0
+     mov qword [rel kosh_var_cnt], 0
+     mov qword [rel kosh_param_var_cnt], 0
++    mov qword [rel scalar_var_cnt], 0
++    mov qword [rel mala_param_var_cnt], 0
+     mov qword [rel float_kosh_var_cnt], 0
+     mov qword [rel float_var_cnt], 0
+     ; Do NOT reset func_def_cnt — it may have FUNCDEF nodes from top-level parsing
+@@ -11603,6 +11619,8 @@
+     mov qword [rel array_var_cnt], 0
+     mov qword [rel kosh_var_cnt], 0
+     mov qword [rel kosh_param_var_cnt], 0
++    mov qword [rel scalar_var_cnt], 0
++    mov qword [rel mala_param_var_cnt], 0
+     mov qword [rel float_kosh_var_cnt], 0
+     mov qword [rel float_var_cnt], 0
+     mov qword [rel in_function], 1   ; we're inside a user function
+@@ -11704,6 +11722,12 @@
+     je .gaf_param_kosh
+     cmp eax, PARAM_KOSH_DASHAM
+     je .gaf_param_kosh_float
++    cmp eax, PARAM_MALA
++    je .gaf_param_mala
++    jmp .gaf_param_type_done
++.gaf_param_mala:
++    mov rdi, rsi
++    call mark_mala_param_var  ; F7: passing it on to another `mala` parameter is fine
+     jmp .gaf_param_type_done
+ .gaf_param_scalar_float:
+     mov rdi, rsi
+@@ -12144,6 +12168,22 @@
+ 
+ .gs_decl:
+     ; [AST_DECL][name_ptr][init_ptr][array_size_expr_or_0][type_marker]
++    ; F7: `vitti x = 5`, `vitti y = a + b` ... declare a value that is certainly not an
++    ; address. Remember the name, so passing it to a `mala` parameter is an error.
++    cmp qword [rbx+24], 0
++    jne .gs_decl_f7_done
++    cmp qword [rbx+32], 0
++    jne .gs_decl_f7_done
++    mov rax, [rbx+16]
++    test rax, rax
++    jz .gs_decl_f7_done
++    mov rdi, rax
++    call expr_is_known_scalar
++    test rax, rax
++    jz .gs_decl_f7_done
++    mov rdi, [rbx+8]
++    call mark_scalar_var
++.gs_decl_f7_done:
+     ; PERF2/PERF3: when an integer scalar will occupy one of the first five
+     ; register slots, build simple literals/copies/var-binops directly in the
+     ; destination register.  Unsupported forms leave allocation untouched.
+@@ -19665,6 +19705,8 @@
+     mov rsi, r12
+     call func_param_type
+     mov r14, rax             ; PARAM_* target type
++    cmp r14, PARAM_MALA
++    je .gtca_mala
+     cmp r14, PARAM_KOSH
+     jae .gtca_kosh
+     ; Scalar path: infer source scalar type then apply int<->dasham conversion.
+@@ -19716,6 +19758,23 @@
+     pop r12
+     pop rbx
+     ret
++.gtca_mala:
++    ; F7: a `mala` parameter takes an address. A number, an arithmetic result, or a
++    ; name declared with one (`vitti x = 0`) is certainly not an address: an error at
++    ; compile time instead of a crash at run time. Anything else (an array, a kosh, a
++    ; raw nirmmita pointer, another mala parameter, a call's result) is accepted.
++    mov rdi, r13
++    call expr_is_known_scalar
++    test rax, rax
++    jnz .gtca_mala_type_fail
++    mov rax, r13
++    call gen_expr
++    jmp .gtca_push
++.gtca_mala_type_fail:
++    lea rdi, [rel msg_mala_param_type]
++    call print_str_z
++    mov rdi, 1
++    call os_exit
+ .gtca_kosh_type_fail:
+ %ifdef SUTRAM_R65_PEEPHOLES
+     pop r15
+@@ -19907,6 +19966,137 @@
+     lea rdi, [rel msg_var_table_overflow]
+     jmp capacity_fail
+ 
++; F7 helpers ------------------------------------------------------------
++mark_scalar_var:
++    ; rdi = name ptr: declared with a value that is certainly not an address
++    push rbx
++    push r12
++    mov rbx, rdi
++    mov r12, [rel scalar_var_cnt]
++    cmp r12, 256
++    jae .msv_done
++    lea rcx, [rel scalar_vars]
++    mov [rcx + r12*8], rbx
++    inc qword [rel scalar_var_cnt]
++.msv_done:
++    pop r12
++    pop rbx
++    ret
++
++is_scalar_var:
++    ; rdi = name ptr -> rax = 1 if marked scalar in this function, and not since
++    ; marked as an array (a later `mala x[n]` wins)
++    push rbx
++    push r12
++    push r13
++    mov rbx, rdi
++    call is_array_var
++    test rax, rax
++    jnz .isv_no
++    xor r12, r12
++    mov r13, [rel scalar_var_cnt]
++.isv_loop:
++    cmp r12, r13
++    jae .isv_no
++    lea rcx, [rel scalar_vars]
++    mov rdi, [rcx + r12*8]
++    mov rsi, rbx
++    call strcmp
++    test rax, rax
++    jz .isv_yes
++    inc r12
++    jmp .isv_loop
++.isv_yes:
++    mov rax, 1
++    pop r13
++    pop r12
++    pop rbx
++    ret
++.isv_no:
++    xor rax, rax
++    pop r13
++    pop r12
++    pop rbx
++    ret
++
++expr_is_known_scalar:
++    ; rdi = AST node -> rax = 1 when the value is certainly not an address:
++    ; a number or float literal, a binary operation, a ternary, or a name
++    ; declared with one of those.
++    push rbx
++    mov rbx, rdi
++    mov rax, [rbx]
++    cmp rax, AST_NUM
++    je .eiks_yes
++    cmp rax, AST_FLOAT
++    je .eiks_yes
++    cmp rax, AST_BINOP
++    je .eiks_yes
++    cmp rax, AST_TERNARY
++    je .eiks_yes
++    cmp rax, AST_VAR
++    jne .eiks_no
++    mov rdi, [rbx+8]
++    call is_scalar_var
++    pop rbx
++    ret
++.eiks_yes:
++    mov rax, 1
++    pop rbx
++    ret
++.eiks_no:
++    xor rax, rax
++    pop rbx
++    ret
++
++mark_mala_param_var:
++    ; rdi = name ptr; the current generated function's `mala` parameters
++    push rbx
++    push r12
++    mov rbx, rdi
++    mov r12, [rel mala_param_var_cnt]
++    cmp r12, KOSH_PARAM_VAR_CAP
++    jae .mmpv_done
++    lea rcx, [rel mala_param_vars]
++    mov [rcx + r12*8], rbx
++    inc qword [rel mala_param_var_cnt]
++.mmpv_done:
++    pop r12
++    pop rbx
++    ret
++
++is_mala_param_var:
++    ; rdi = name ptr -> rax = 1 when it is one of this function's `mala` parameters
++    push rbx
++    push r12
++    push r13
++    mov rbx, rdi
++    xor r12, r12
++    mov r13, [rel mala_param_var_cnt]
++.impv_loop:
++    cmp r12, r13
++    jae .impv_no
++    lea rcx, [rel mala_param_vars]
++    mov rdi, [rcx + r12*8]
++    mov rsi, rbx
++    call strcmp
++    test rax, rax
++    jz .impv_yes
++    inc r12
++    jmp .impv_loop
++.impv_yes:
++    mov rax, 1
++    pop r13
++    pop r12
++    pop rbx
++    ret
++.impv_no:
++    xor rax, rax
++    pop r13
++    pop r12
++    pop rbx
++    ret
++
+ is_kosh_param_var:
+     ; rdi=name ptr -> rax=1 when this kosh is a by-value function parameter.
+     push rbx
