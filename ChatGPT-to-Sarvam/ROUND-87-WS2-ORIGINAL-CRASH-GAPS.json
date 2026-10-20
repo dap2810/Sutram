@@ -1,0 +1,1001 @@
+{
+  "schema": 1,
+  "pinned_main": "64ea953a909eb77ebe5f278691407848014b9b6f",
+  "provenance": {
+    "R15_summary_blob": "5833c6f6f6fa841359375f46be3b7ef01d956614",
+    "R15_reduced_log_blob": "a38319401ae3b5e44d6a6786f0f41c2b32cced3d",
+    "crash_corpus_blob": "a17e5676858a894f3bff472ba788a6af438a03f6",
+    "fuzz_robust_blob": "6e15c7133e9d980bcf921716df70c8fce0811e47",
+    "tracked_tree_files": 2941,
+    "tree_truncated": false
+  },
+  "reported_R15_category_breakdown_mutations": {
+    "R1": 27,
+    "R2": 40,
+    "R3": 9,
+    "R4": 5,
+    "R5": 21
+  },
+  "summary": {
+    "original_crashes": 107,
+    "fixed_input_crashes": 5,
+    "mutation_crashes": 102,
+    "missing_original_mutation_case_ids": 102,
+    "missing_fixed_input_exact_templates": 2,
+    "total_not_pinned_as_exact_R17_input_cases": 104,
+    "generated_R17_equivalent_fixed": 3,
+    "reduction_log_ids_matched": 102,
+    "individually_committed_mutation_ids": 0,
+    "original_mutation_bytes_available_in_repository_as_separate_files": false,
+    "category_level_coverage": "R1-R6 covered by existing 9 committed + 12 generated cases; category coverage is not individual-input coverage"
+  },
+  "fixed_originals": [
+    {
+      "input_id": "parens-100000",
+      "origin": "R15 fixed robustness generator",
+      "individual_committed_fixture": false,
+      "covered_by_R17_template": true,
+      "template_equivalence": "matches R17 generated equivalent by source template; NOT independently executed here",
+      "required_followup": "Retain generated test as an explicit regression"
+    },
+    {
+      "input_id": "parens-unclosed-100000",
+      "origin": "R15 fixed robustness generator",
+      "individual_committed_fixture": false,
+      "covered_by_R17_template": false,
+      "template_equivalence": "ABSENT: R17 generates only balanced parentheses",
+      "required_followup": "Add as reviewed bounded negative regression after native validation"
+    },
+    {
+      "input_id": "braces-100000",
+      "origin": "R15 fixed robustness generator",
+      "individual_committed_fixture": false,
+      "covered_by_R17_template": false,
+      "template_equivalence": "ABSENT: R17 uses nested yadi blocks instead of the original raw-brace source",
+      "required_followup": "Add as reviewed bounded negative regression after native validation"
+    },
+    {
+      "input_id": "unary-minus-100000",
+      "origin": "R15 fixed robustness generator",
+      "individual_committed_fixture": false,
+      "covered_by_R17_template": true,
+      "template_equivalence": "matches R17 generated equivalent by source template; NOT independently executed here",
+      "required_followup": "Retain generated test as an explicit regression"
+    },
+    {
+      "input_id": "call-depth-100000",
+      "origin": "R15 fixed robustness generator",
+      "individual_committed_fixture": false,
+      "covered_by_R17_template": true,
+      "template_equivalence": "matches R17 generated equivalent by source template; NOT independently executed here",
+      "required_followup": "Retain generated test as an explicit regression"
+    }
+  ],
+  "mutation_originals_not_individually_pinned": [
+    {
+      "input_id": "mutation-15-253",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 25,
+      "reduction_log_display": "vitti G prakriya f(){(2))&3))= =1)(9)k[2]((&(7))))(((3)))(0)(0)(2)vitti v>(q))(+1))=|8)((0))(v?v:q)((2)%((5)+1))(2)(2)(((8)))(((v)?(((v))):&6)))prakriya f(0)m",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-574",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 92,
+      "reduction_log_display": "mukhya()yadi(s){}anya{}anya yadi(s){}",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-1268",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 6,
+      "reduction_log_display": "yoj",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-1981",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 17,
+      "reduction_log_display": "prakriya f()prakriya f(){(0):1)(w)(|5?(2):)yadi((2))&(3)))+1))(((7)))(((2))<((v)))((q?7:8))prakriya f(",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-2101",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 19,
+      "reduction_log_display": "yoj",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-2693",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 33,
+      "reduction_log_display": "vitti G~rachana S={}prakriya f(){(0)(((4)))prakriya f(",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-3065",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 49,
+      "reduction_log_display": "yoj",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-3373",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 54,
+      "reduction_log_display": "yoj",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-4364",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 76,
+      "reduction_log_display": "prakriya s(",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-5065",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 90,
+      "reduction_log_display": "prakriya f(",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-5307",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 91,
+      "reduction_log_display": "yoj",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-6070",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 93,
+      "reduction_log_display": "yoj~ganit~yoj",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-6125",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 94,
+      "reduction_log_display": "prakriya f(",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-6489",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 95,
+      "reduction_log_display": "rachana o={",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-7460",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 96,
+      "reduction_log_display": "rachana o={",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-8325",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 97,
+      "reduction_log_display": "mukhya()mala a[3]0=9",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-8352",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 98,
+      "reduction_log_display": "mukhya()yadi(o){}anya{}anya yadi(c==2){}",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-9144",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 99,
+      "reduction_log_display": "vitti G~prakriya f(0)q",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-9452",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 100,
+      "reduction_log_display": "prakriya f(",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-9682",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 101,
+      "reduction_log_display": "rachana P={",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-9720",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 102,
+      "reduction_log_display": "mukhya()vitti d-S=7",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-10061",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 1,
+      "reduction_log_display": "yoj",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-10761",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 2,
+      "reduction_log_display": "vitti G~prakriya f(){(0)vitti v vitti v0(&5))=0}prakriya f1(q1_2){vitti v vitti v6 vitti v8 vitti v0 vitti v7 vitti w9 kuru{chakra i=3tak-1{vitti w kuru{}yavat(2)}}yavat(2)mala a95[6]yadi((q1_2?7:4)&8",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-11005",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 3,
+      "reduction_log_display": "prakriya a(",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-11196",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 4,
+      "reduction_log_display": "vitti G~vitti G1~prakriya f(",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-11999",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 5,
+      "reduction_log_display": "mukhya()dasham a dasham b likh(a!b)=a",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-12832",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 7,
+      "reduction_log_display": "prakriya f(",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-12957",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 8,
+      "reduction_log_display": "mukhya()yadi(0){}anya{}anya yadi(0){}",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-13912",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 9,
+      "reduction_log_display": "yoj",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-14386",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 10,
+      "reduction_log_display": "prakriya f(",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-15323",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 11,
+      "reduction_log_display": "prakriya a(){}mukhya()kosh dasham data[2]dasham scale dasham out(out)*t=(data[1])scale",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-15331",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 12,
+      "reduction_log_display": "prakriya b(",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-15511",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 13,
+      "reduction_log_display": "mukhya()vitti x vitti y\"\"+y=\"",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-16696",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 14,
+      "reduction_log_display": "yoj",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-17710",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 15,
+      "reduction_log_display": "mukhya()dasham a dasham b likha(b)=a",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-18721",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 16,
+      "reduction_log_display": "yoj",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-20160",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 18,
+      "reduction_log_display": "rachana o={",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-21279",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 20,
+      "reduction_log_display": "prakriya a(",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-22286",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 21,
+      "reduction_log_display": "prakriya f(",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-23437",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 22,
+      "reduction_log_display": "prakriya a(",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-24127",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 23,
+      "reduction_log_display": "yoj",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-24931",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 24,
+      "reduction_log_display": "yoj",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-25532",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 26,
+      "reduction_log_display": "prakriya p(",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-25571",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 27,
+      "reduction_log_display": "yoj",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-25786",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 28,
+      "reduction_log_display": "vitti G prakriya f(",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-26225",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 29,
+      "reduction_log_display": "prakriya s(",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-26549",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 30,
+      "reduction_log_display": "mukhya()vitti a n()likha(\"\")=a",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-26636",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 31,
+      "reduction_log_display": "rachana A={",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-26729",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 32,
+      "reduction_log_display": "prakriya r(){}mukhya()vitti w 1=(0)",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-26963",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 34,
+      "reduction_log_display": "prakriya f(",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-27046",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 35,
+      "reduction_log_display": "yoj",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-27298",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 36,
+      "reduction_log_display": "prakriya f(",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-27522",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 37,
+      "reduction_log_display": "mukhya()vitti x likha(\"\")=(x)",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-27731",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 38,
+      "reduction_log_display": "prakriya l(",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-27971",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 39,
+      "reduction_log_display": "prakriya d(",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-28363",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 40,
+      "reduction_log_display": "yoj",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-28520",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 41,
+      "reduction_log_display": "mukhya()vitti x likha(\"\")=\"",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-28969",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 42,
+      "reduction_log_display": "yoj",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-29084",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 43,
+      "reduction_log_display": "yoj",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-29170",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 44,
+      "reduction_log_display": "prakriya d(",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-29448",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 45,
+      "reduction_log_display": "rachana t={x}mukhya()vitti p~likha(p.x)=2",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-29767",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 46,
+      "reduction_log_display": "prakriya f(",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-29820",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 47,
+      "reduction_log_display": "prakriya s(",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-30524",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 48,
+      "reduction_log_display": "yoj",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-32160",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 50,
+      "reduction_log_display": "prakriya t(",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-32279",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 51,
+      "reduction_log_display": "mukhya()yadi(0){}anya{}anya yadi(0){}",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-33099",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 52,
+      "reduction_log_display": "mukhya()dasham c-1=(c)",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-33516",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 53,
+      "reduction_log_display": "prakriya f(",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-34588",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 55,
+      "reduction_log_display": "prakriya m(",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-34901",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 56,
+      "reduction_log_display": "prakriya f()yadi((7))yavat(0)yadi(7){f[(5)&1],3)prakriya f(",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-34912",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 57,
+      "reduction_log_display": "mukhya()yadi(0){}anya{}anya yadi(0){}",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-35150",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 58,
+      "reduction_log_display": "rachana S={",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-35169",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 59,
+      "reduction_log_display": "prakriya k(",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-35457",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 60,
+      "reduction_log_display": "yoj",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-36797",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 61,
+      "reduction_log_display": "mukhya()mala a[3]-a[2]=2",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-37149",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 62,
+      "reduction_log_display": "prakriya h(",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-37233",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 63,
+      "reduction_log_display": "yoj",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-37510",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 64,
+      "reduction_log_display": "vitti G~prakriya f()kuru chakra i=0tak 4yavat(w)prakriya f(){(((5)))=|8)(v?8:7)(((5)))prakriya f(5)m",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-38067",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 65,
+      "reduction_log_display": "vitti G~vitti G7~prakriya f(){k[2](((((1>(2))&5))))(3)(2)prakriya f(0)k",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-38467",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 66,
+      "reduction_log_display": "prakriya f(",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-38911",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 67,
+      "reduction_log_display": "prakriya f(",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-39435",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 68,
+      "reduction_log_display": "vitti G=7vitti G2=8prakriya f(0)G",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-40049",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 69,
+      "reduction_log_display": "prakriya f(",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-40194",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 70,
+      "reduction_log_display": "yoj",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-40347",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 71,
+      "reduction_log_display": "yoj",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-40597",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 72,
+      "reduction_log_display": "prakriya f(",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-40855",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 73,
+      "reduction_log_display": "yoj",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-42057",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 74,
+      "reduction_log_display": "prakriya l(",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-42507",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 75,
+      "reduction_log_display": "yoj",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-43640",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 77,
+      "reduction_log_display": "mukhya()vitti b likha(\"\")=(b)",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-45042",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 78,
+      "reduction_log_display": "rachana i={",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-45236",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 79,
+      "reduction_log_display": "prakriya x(){}mukhya()kosh arr[1]kosh_push(arr 2)=9",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-45494",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 80,
+      "reduction_log_display": "rachana S={",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-46768",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 81,
+      "reduction_log_display": "rachana t={",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-47085",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 82,
+      "reduction_log_display": "yoj",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-47693",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 83,
+      "reduction_log_display": "prakriya g(p){6=7}mukhya()",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-47726",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 84,
+      "reduction_log_display": "prakriya f(",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-47954",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 85,
+      "reduction_log_display": "mukhya()vitti n likha(\"\")=n",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-48253",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 86,
+      "reduction_log_display": "yoj",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-48781",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 87,
+      "reduction_log_display": "yoj",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-49077",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 88,
+      "reduction_log_display": "prakriya g(",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    },
+    {
+      "input_id": "mutation-15-49763",
+      "original_raw_bytes_stored_as_individual_test": false,
+      "individual_R17_case": false,
+      "reduction_log_line": 89,
+      "reduction_log_display": "prakriya f(",
+      "reduction_is_exact_original_input": false,
+      "action": "review minimized witness and add to regression only after native validation"
+    }
+  ],
+  "limitations": [
+    "The R15 reduced-witness text is a display artifact, not the original complete mutated byte stream; never silently treat it as byte-exact source.",
+    "The original R15 fuzzer's 102 mutation input byte streams are not committed as 102 independent tests. Identifiers are preserved and minimized witness displays are archived.",
+    "Current fuzz generator + changed example corpus might not reproduce original mutation bytes from seed alone. This audit does NOT re-run the original compiler or fuzzer.",
+    "A regression reproducing one root cause does not prove every original input shape is pinned.",
+    "Three fixed-input template equivalences are grounded in source recipes, not a new native test run."
+  ]
+}
