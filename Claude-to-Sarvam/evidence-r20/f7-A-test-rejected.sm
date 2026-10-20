@@ -1,0 +1,8 @@
+prakriya f(mala ok) {
+    ok[0] = 5
+    prati 1
+}
+mukhya() {
+    vitti x = 0
+    likha(f(x))
+}

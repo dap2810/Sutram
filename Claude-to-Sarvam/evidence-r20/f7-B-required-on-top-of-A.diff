@@ -1,0 +1,185 @@
+--- a/src/sutram_compiler.asm	2026-10-20 14:58:29.557737037 -0400
++++ b/src/sutram_compiler.asm	2026-10-20 15:00:13.380137442 -0400
+@@ -356,6 +356,7 @@
+     msg_kosh_dequeue_empty db "Sutram Error: riktat koshat kosh_dequeue", 10, 0
+     msg_kosh_param_type db "Sutram Error: kosh tark: tatv prakar bhinn", 10, 0
+     msg_mala_param_type db "Sutram Error: mala tark: sankhya datta, mala apekshita", 10, 0
++    msg_raw_param_index db "Sutram Error: anirdishta tark suchit; 'mala ' purvam likhatu: ", 0
+     msg_kosh_param_push db "Sutram Error: kosh-tarke kosh_push asamarthitam", 10, 0
+ 
+     ; The v27 per-pack copies of five parse messages lived here. R11: every message
+@@ -856,6 +857,8 @@
+     scalar_var_cnt resq 1
+     mala_param_vars resq KOSH_PARAM_VAR_CAP ; F7: parameters declared `mala a`
+     mala_param_var_cnt resq 1
++    raw_param_vars resq KOSH_PARAM_VAR_CAP ; F7 (required form): untyped parameters, which may not be indexed
++    raw_param_var_cnt resq 1
+     kosh_param_var_cnt resq 1
+     float_kosh_vars resq KOSH_VAR_CAP ; T18: kosh dasham element-type names in current scope
+     float_kosh_var_cnt resq 1
+@@ -11286,6 +11289,7 @@
+     mov qword [rel kosh_param_var_cnt], 0
+     mov qword [rel scalar_var_cnt], 0
+     mov qword [rel mala_param_var_cnt], 0
++    mov qword [rel raw_param_var_cnt], 0
+     mov qword [rel float_kosh_var_cnt], 0
+     mov qword [rel float_var_cnt], 0
+     ; Do NOT reset func_def_cnt — it may have FUNCDEF nodes from top-level parsing
+@@ -11621,6 +11625,7 @@
+     mov qword [rel kosh_param_var_cnt], 0
+     mov qword [rel scalar_var_cnt], 0
+     mov qword [rel mala_param_var_cnt], 0
++    mov qword [rel raw_param_var_cnt], 0
+     mov qword [rel float_kosh_var_cnt], 0
+     mov qword [rel float_var_cnt], 0
+     mov qword [rel in_function], 1   ; we're inside a user function
+@@ -11724,6 +11729,8 @@
+     je .gaf_param_kosh_float
+     cmp eax, PARAM_MALA
+     je .gaf_param_mala
++    mov rdi, rsi
++    call mark_raw_param_var   ; F7 (required form): an untyped parameter
+     jmp .gaf_param_type_done
+ .gaf_param_mala:
+     mov rdi, rsi
+@@ -12184,6 +12191,22 @@
+     mov rdi, [rbx+8]
+     call mark_scalar_var
+ .gs_decl_f7_done:
++    ; F7 (required form): `vitti lst = l` where l is an untyped parameter makes lst
++    ; one too, so indexing the copy is refused like indexing the parameter.
++    cmp qword [rbx+24], 0
++    jne .gs_decl_f7_alias_done
++    mov rax, [rbx+16]
++    test rax, rax
++    jz .gs_decl_f7_alias_done
++    cmp qword [rax], AST_VAR
++    jne .gs_decl_f7_alias_done
++    mov rdi, [rax+8]
++    call is_raw_param_var
++    test rax, rax
++    jz .gs_decl_f7_alias_done
++    mov rdi, [rbx+8]
++    call mark_raw_param_var
++.gs_decl_f7_alias_done:
+     ; PERF2/PERF3: when an integer scalar will occupy one of the first five
+     ; register slots, build simple literals/copies/var-binops directly in the
+     ; destination register.  Unsupported forms leave allocation untouched.
+@@ -12604,6 +12627,10 @@
+     ret
+ 
+ .gs_assign_index:
++    mov rax, [rbx+8]
++    mov rdi, [rax+8]
++    call f7_refuse_raw_param_index   ; F7 (required form): p[i] = v needs `mala p`
++
+ %ifdef SUTRAM_EXPERIMENTAL_XMM_CACHE
+     call xmm_cache_barrier
+ %endif
+@@ -14392,6 +14419,8 @@
+     ; [AST_INDEX][name_ptr][index_node]
+     ; Load variable (address), push base + runtime length, eval index, check.
+     push r12
++    mov rdi, [rbx+8]
++    call f7_refuse_raw_param_index   ; F7 (required form): p[i] needs `mala p`
+     mov rdi, [rbx+8]         ; variable name ptr
+     call r56_global_index
+     test rax, rax
+@@ -20095,6 +20124,97 @@
+     pop r13
+     pop r12
+     pop rbx
++    ret
++
++mark_raw_param_var:
++    ; rdi = name ptr; the current generated function's untyped parameters
++    push rbx
++    push r12
++    mov rbx, rdi
++    mov r12, [rel raw_param_var_cnt]
++    cmp r12, 64
++    jae .mrpv_done
++    lea rcx, [rel raw_param_vars]
++    mov [rcx + r12*8], rbx
++    inc qword [rel raw_param_var_cnt]
++.mrpv_done:
++    pop r12
++    pop rbx
++    ret
++
++is_raw_param_var:
++    ; rdi = name ptr -> rax = 1 when it is an untyped parameter of this function (or a copy of one)
++    push rbx
++    push r12
++    push r13
++    mov rbx, rdi
++    xor r12, r12
++    mov r13, [rel raw_param_var_cnt]
++.irpv_loop:
++    cmp r12, r13
++    jae .irpv_no
++    lea rcx, [rel raw_param_vars]
++    mov rdi, [rcx + r12*8]
++    mov rsi, rbx
++    call strcmp
++    test rax, rax
++    jz .irpv_yes
++    inc r12
++    jmp .irpv_loop
++.irpv_yes:
++    mov rax, 1
++    pop r13
++    pop r12
++    pop rbx
++    ret
++.irpv_no:
++    xor rax, rax
++    pop r13
++    pop r12
++    pop rbx
++    ret
++
++f7_refuse_raw_param_index:
++    ; rdi = name ptr. Indexing an untyped parameter is a compile error (the required
++    ; form of F7's fix): the function must say `mala p`. A local array or kosh of the
++    ; same name declared in the function wins, as it does for every other check.
++    push rbx
++    push r12
++    push r13
++    mov rbx, rdi
++    call is_array_var
++    test rax, rax
++    jnz .frpi_ok
++    mov rdi, rbx
++    call is_kosh_var
++    test rax, rax
++    jnz .frpi_ok
++    xor r12, r12
++    mov r13, [rel raw_param_var_cnt]
++.frpi_loop:
++    cmp r12, r13
++    jae .frpi_ok
++    lea rcx, [rel raw_param_vars]
++    mov rdi, [rcx + r12*8]
++    mov rsi, rbx
++    call strcmp
++    test rax, rax
++    jz .frpi_fail
++    inc r12
++    jmp .frpi_loop
++.frpi_fail:
++    lea rdi, [rel msg_raw_param_index]
++    call print_str_z
++    mov rdi, rbx
++    call print_str_z
++    lea rdi, [rel msg_nl]
++    call print_str_z
++    mov rdi, 1
++    call os_exit
++.frpi_ok:
++    pop r13
++    pop r12
++    pop rbx
+     ret
+ 
+ is_kosh_param_var:
