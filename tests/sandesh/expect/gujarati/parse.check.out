@@ -1,0 +1,6 @@
+ભાષા પેક મળ્યો: gujarati
+parse.sm:3:11: Sutram Error [E_PARSE]: શબ્દ '='
+      vitti = 5
+            ^
+સૂત્રમ્ ચકાસણી: દોષ મળ્યા; નિર્ગત ફાઇલ બની નથી
+[compile exit 1]
