@@ -1,0 +1,18 @@
+{
+  "snapshot": "75b4d77fb41350827cda938ebcc337d15000f2a3",
+  "part": 1,
+  "documents_total": 79,
+  "listed": 16,
+  "read": 16,
+  "bytes": 400738,
+  "errors": [],
+  "findings": [
+    {
+      "path": "docs/LANGUAGE-REFERENCE.md",
+      "line": 200,
+      "old": "string",
+      "kind": "documentation_code_review",
+      "context": " # print a string variable vitti n = grahan() "
+    }
+  ]
+}
