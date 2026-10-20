@@ -1,0 +1,598 @@
+--- examples/11_forloop.sm
++++ examples/11_forloop.sm (formatted)
+@@ -3,7 +3,7 @@
+ 
+ mukhya()
+     likha("=== For Loop Demo ===\n")
+-    
++
+     # Count 0 tak 5
+     likha("Count: ")
+     chakra i = 0 tak 5 {
+@@ -11,7 +11,7 @@
+         likha(" ")
+     }
+     likha("\n")
+-    
++
+     # Sum 1 tak 10
+     vitti sum = 0
+     chakra j = 1 tak 10 {
+@@ -20,7 +20,7 @@
+     likha("Sum 1-10 = ")
+     likha(sum)
+     likha("\n")
+-    
++
+     # Multiplication table for 3
+     likha("Table of 3:\n")
+     chakra k = 1 tak 5 {
+@@ -30,5 +30,5 @@
+         likha(3 * k)
+         likha("\n")
+     }
+-    
++
+     likha("=== Done ===\n")
+--- examples/12_elif.sm
++++ examples/12_elif.sm (formatted)
+@@ -3,9 +3,9 @@
+ 
+ mukhya()
+     likha("=== Elif Demo ===\n")
+-    
++
+     vitti score = 75
+-    
++
+     yadi (score >= 90) {
+         likha("Grade: A\n")
+     } anya yadi (score >= 80) {
+@@ -17,7 +17,7 @@
+     } anya {
+         likha("Grade: F\n")
+     }
+-    
++
+     # Multiple elif with different values
+     vitti x = 15
+     yadi (x > 20) {
+@@ -27,5 +27,5 @@
+     } anya {
+         likha("x is small\n")
+     }
+-    
++
+     likha("=== Done ===\n")
+--- examples/13_negatives.sm
++++ examples/13_negatives.sm (formatted)
+@@ -3,7 +3,7 @@
+ 
+ mukhya()
+     likha("=== Negative Numbers ===\n")
+-    
++
+     # Negative variables
+     vitti x = -5
+     vitti y = -10
+@@ -13,43 +13,43 @@
+     likha("y = ")
+     likha(y)
+     likha("\n")
+-    
++
+     # Arithmetic with negatives
+     vitti sum = x + y
+     likha("x + y = ")
+     likha(sum)
+     likha("\n")
+-    
++
+     vitti diff = x - y
+     likha("x - y = ")
+     likha(diff)
+     likha("\n")
+-    
++
+     vitti prod = x * 3
+     likha("x * 3 = ")
+     likha(prod)
+     likha("\n")
+-    
++
+     # Unary minus on expressions
+     vitti z = -3 + 10
+     likha("-3 + 10 = ")
+     likha(z)
+     likha("\n")
+-    
++
+     # Negation
+     vitti w = 0 - x
+     likha("0 - x = ")
+     likha(w)
+     likha("\n")
+-    
++
+     # Direct negative print
+     likha("-42 = ")
+     likha(-42)
+     likha("\n")
+-    
++
+     # Comparison with negatives
+     yadi (x < 0) {
+         likha("x is negative\n")
+     }
+-    
++
+     likha("=== Done ===\n")
+--- examples/14_strings.sm
++++ examples/14_strings.sm (formatted)
+@@ -3,26 +3,26 @@
+ 
+ mukhya()
+     likha("=== String Operations ===\n")
+-    
++
+     # Basic varna printing
+     likha("Hello, World!\n")
+-    
++
+     # Escape sequences
+     likha("Tab:\there\n")
+     likha("Newline:\nhere\n")
+     likha("Quote: \"hello\"\n")
+     likha("Backslash: \\\n")
+-    
++
+     # Multi-line output
+     likha("Line 1\nLine 2\nLine 3\n")
+-    
++
+     # Combining strings and numbers
+     likha("The answer is: ")
+     likha(42)
+     likha("\n")
+-    
++
+     likha("Temperature: ")
+     likha(-15)
+     likha(" degrees\n")
+-    
++
+     likha("=== Done ===\n")
+--- examples/15_sutra_const.sm
++++ examples/15_sutra_const.sm (formatted)
+@@ -3,35 +3,35 @@
+ 
+ mukhya()
+     sutra MAX_VAL = 100
+-    
++
+     likha("=== Sutra & Bitwise ===\n")
+-    
++
+     likha("MAX_VAL = ")
+     likha(MAX_VAL)
+     likha("\n")
+-    
++
+     vitti rem = 17 % 5
+     likha("17 % 5 = ")
+     likha(rem)
+     likha("\n")
+-    
++
+     vitti a = 12 & 10
+     likha("12 & 10 = ")
+     likha(a)
+     likha("\n")
+-    
++
+     vitti b = 12 | 10
+     likha("12 | 10 = ")
+     likha(b)
+     likha("\n")
+-    
++
+     vitti c = 12 ^ 10
+     likha("12 ^ 10 = ")
+     likha(c)
+     likha("\n")
+-    
++
+     vitti x = 42
+     abhava(x > 0)
+     likha("Assert passed\n")
+-    
++
+     likha("=== Done ===\n")
+--- examples/16_advanced.sm
++++ examples/16_advanced.sm (formatted)
+@@ -2,12 +2,12 @@
+ 
+ mukhya()
+     sutra LIMIT = 10
+-    
++
+     likha("=== Advanced Sutram ===\n")
+     likha("Primes up to ")
+     likha(LIMIT)
+     likha(":\n")
+-    
++
+     chakra n = 2 tak LIMIT {
+         vitti asti_abhajya = 1
+         vitti d = 2
+@@ -23,20 +23,20 @@
+         }
+     }
+     likha("\n")
+-    
++
+     vitti flags = 0
+     flags = flags | 1
+     flags = flags | 4
+     likha("Flags: ")
+     likha(flags)
+     likha("\n")
+-    
++
+     vitti check = flags & 4
+     yadi (check != 0) {
+         likha("Bit 2 is set\n")
+     }
+-    
++
+     abhava(flags > 0)
+     likha("All assertions passed\n")
+-    
++
+     likha("=== Done ===\n")
+--- examples/17_booleans.sm
++++ examples/17_booleans.sm (formatted)
+@@ -7,27 +7,27 @@
+ mukhya()
+     satya is_ready = purna
+     satya is_done = shunya
+-    
++
+     likha("=== Booleans & Logic ===\n")
+-    
++
+     likha("is_ready = ")
+     likha(is_ready)
+     likha("\n")
+-    
++
+     likha("is_done = ")
+     likha(is_done)
+     likha("\n")
+-    
++
+     # Logical AND
+     yadi (is_ready == purna && is_done == shunya) {
+         likha("Ready but not done\n")
+     }
+-    
++
+     # Logical OR
+     yadi (is_done == purna || is_ready == purna) {
+         likha("At least one condition met\n")
+     }
+-    
++
+     # Using in computation
+     vitti x = 5
+     vitti y = 10
+@@ -35,5 +35,5 @@
+     likha("both_positive = ")
+     likha(both_positive)
+     likha("\n")
+-    
++
+     likha("=== Done ===\n")
+--- examples/42_block_comments.sm
++++ examples/42_block_comments.sm (formatted)
+@@ -4,4 +4,4 @@
+ */
+ mukhya()
+     /* inline */ likha(42)
+-    likha(7) /* trailing */
++    likha(7)  /* trailing */
+--- examples/r68/pairs/all_registers.sm
++++ examples/r68/pairs/all_registers.sm (formatted)
+@@ -1,18 +1,18 @@
+ mukhya() {
+-    yantra("50 58") # rax
+-    yantra("51 59") # rcx
+-    yantra("52 5A") # rdx
+-    yantra("53 5B") # rbx
+-    yantra("55 5D") # rbp
+-    yantra("56 5E") # rsi
+-    yantra("57 5F") # rdi
+-    yantra("41 50 41 58") # r8
+-    yantra("41 51 41 59") # r9
+-    yantra("41 52 41 5A") # r10
+-    yantra("41 53 41 5B") # r11
+-    yantra("41 54 41 5C") # r12
+-    yantra("41 55 41 5D") # r13
+-    yantra("41 56 41 5E") # r14
+-    yantra("41 57 41 5F") # r15
++    yantra("50 58")  # rax
++    yantra("51 59")  # rcx
++    yantra("52 5A")  # rdx
++    yantra("53 5B")  # rbx
++    yantra("55 5D")  # rbp
++    yantra("56 5E")  # rsi
++    yantra("57 5F")  # rdi
++    yantra("41 50 41 58")  # r8
++    yantra("41 51 41 59")  # r9
++    yantra("41 52 41 5A")  # r10
++    yantra("41 53 41 5B")  # r11
++    yantra("41 54 41 5C")  # r12
++    yantra("41 55 41 5D")  # r13
++    yantra("41 56 41 5E")  # r14
++    yantra("41 57 41 5F")  # r15
+     likha(73)
+ }
+--- lib/brihat.smlib
++++ lib/brihat.smlib (formatted)
+@@ -137,8 +137,7 @@
+         yadi (d < 0) {
+             likh8(r + i * 8, d + 10)
+             borrow = 1
+-        }
+-        anya {
++        } anya {
+             likh8(r + i * 8, d)
+             borrow = 0
+         }
+@@ -237,8 +236,7 @@
+                 yadi (d < 0) {
+                     likh8(rr + k * 8, d + 10)
+                     borrow = 1
+-                }
+-                anya {
++                } anya {
+                     likh8(rr + k * 8, d)
+                     borrow = 0
+                 }
+@@ -288,8 +286,7 @@
+                 yadi (d < 0) {
+                     likh8(tr + k * 8, d + 10)
+                     bw = 1
+-                }
+-                anya {
++                } anya {
+                     likh8(tr + k * 8, d)
+                     bw = 0
+                 }
+--- lib/sadhan.smlib
++++ lib/sadhan.smlib (formatted)
+@@ -7,7 +7,6 @@
+ # SIGFPE); yog_seema returns 0 for end < start; bhaj_urdhva is true
+ # ceiling division for every util_chinha combination.
+ 
+-
+ prakriya antargam(a, b, t)
+     prati a + (b - a) * t / 100
+ 
+@@ -15,8 +14,6 @@
+     yadi (end < start) { prati 0 }
+     prati (start + end) * (end - start + 1) / 2
+ }
+-
+-
+ 
+ prakriya shesh(a, b) {
+     yadi (b == 0) { prati 0 }
+--- tests/r69/pairs/all_registers.sm
++++ tests/r69/pairs/all_registers.sm (formatted)
+@@ -1,18 +1,18 @@
+ mukhya() {
+-    yantra("50 58") # rax
+-    yantra("51 59") # rcx
+-    yantra("52 5A") # rdx
+-    yantra("53 5B") # rbx
+-    yantra("55 5D") # rbp
+-    yantra("56 5E") # rsi
+-    yantra("57 5F") # rdi
+-    yantra("41 50 41 58") # r8
+-    yantra("41 51 41 59") # r9
+-    yantra("41 52 41 5A") # r10
+-    yantra("41 53 41 5B") # r11
+-    yantra("41 54 41 5C") # r12
+-    yantra("41 55 41 5D") # r13
+-    yantra("41 56 41 5E") # r14
+-    yantra("41 57 41 5F") # r15
++    yantra("50 58")  # rax
++    yantra("51 59")  # rcx
++    yantra("52 5A")  # rdx
++    yantra("53 5B")  # rbx
++    yantra("55 5D")  # rbp
++    yantra("56 5E")  # rsi
++    yantra("57 5F")  # rdi
++    yantra("41 50 41 58")  # r8
++    yantra("41 51 41 59")  # r9
++    yantra("41 52 41 5A")  # r10
++    yantra("41 53 41 5B")  # r11
++    yantra("41 54 41 5C")  # r12
++    yantra("41 55 41 5D")  # r13
++    yantra("41 56 41 5E")  # r14
++    yantra("41 57 41 5F")  # r15
+     likha(73)
+ }
+--- tests/stdlib/containers23.sm
++++ tests/stdlib/containers23.sm (formatted)
+@@ -36,5 +36,5 @@
+     likha("\n")
+     likha(avali_maap(q))
+     likha("\n")
+-        likha("containers23-done\n")
++    likha("containers23-done\n")
+ }
+--- tests/stdlib/math_gcd.sm
++++ tests/stdlib/math_gcd.sm (formatted)
+@@ -1,9 +1,9 @@
+ yoj ganit
+ mukhya() {
+-    likha(mahattam(12,8))
++    likha(mahattam(12, 8))
+     likha("\n")
+-    likha(mahattam(7,5))
++    likha(mahattam(7, 5))
+     likha("\n")
+-    likha(mahattam(0,5))
++    likha(mahattam(0, 5))
+     likha("\n")
+ }
+--- tests/stdlib/math_lcm.sm
++++ tests/stdlib/math_lcm.sm (formatted)
+@@ -1,9 +1,9 @@
+ yoj ganit
+ mukhya() {
+-    likha(laghuttam(4,6))
++    likha(laghuttam(4, 6))
+     likha("\n")
+-    likha(laghuttam(7,5))
++    likha(laghuttam(7, 5))
+     likha("\n")
+-    likha(laghuttam(3,3))
++    likha(laghuttam(3, 3))
+     likha("\n")
+ }
+--- tests/stdlib/math_max2.sm
++++ tests/stdlib/math_max2.sm (formatted)
+@@ -1,11 +1,11 @@
+ yoj ganit
+ mukhya() {
+-    likha(adhik2(3,7))
++    likha(adhik2(3, 7))
+     likha("\n")
+-    likha(adhik2(9,2))
++    likha(adhik2(9, 2))
+     likha("\n")
+-    likha(adhik2(4,4))
++    likha(adhik2(4, 4))
+     likha("\n")
+-    likha(adhik2(-5,-1))
++    likha(adhik2(-5, -1))
+     likha("\n")
+ }
+--- tests/stdlib/math_min2.sm
++++ tests/stdlib/math_min2.sm (formatted)
+@@ -1,11 +1,11 @@
+ yoj ganit
+ mukhya() {
+-    likha(laghu2(3,7))
++    likha(laghu2(3, 7))
+     likha("\n")
+-    likha(laghu2(9,2))
++    likha(laghu2(9, 2))
+     likha("\n")
+-    likha(laghu2(4,4))
++    likha(laghu2(4, 4))
+     likha("\n")
+-    likha(laghu2(-5,-1))
++    likha(laghu2(-5, -1))
+     likha("\n")
+ }
+--- tests/stdlib/math_power.sm
++++ tests/stdlib/math_power.sm (formatted)
+@@ -1,9 +1,9 @@
+ yoj ganit
+ mukhya() {
+-    likha(ghat(2,10))
++    likha(ghat(2, 10))
+     likha("\n")
+-    likha(ghat(3,0))
++    likha(ghat(3, 0))
+     likha("\n")
+-    likha(ghat(5,3))
++    likha(ghat(5, 3))
+     likha("\n")
+ }
+--- tests/stdlib/num_clamp.sm
++++ tests/stdlib/num_clamp.sm (formatted)
+@@ -1,9 +1,9 @@
+ yoj ank
+ mukhya() {
+-    likha(seemit(5,1,10))
++    likha(seemit(5, 1, 10))
+     likha("\n")
+-    likha(seemit(-5,1,10))
++    likha(seemit(-5, 1, 10))
+     likha("\n")
+-    likha(seemit(15,1,10))
++    likha(seemit(15, 1, 10))
+     likha("\n")
+ }
+--- tests/stdlib/strconv_overflow.sm
++++ tests/stdlib/strconv_overflow.sm (formatted)
+@@ -294,4 +294,4 @@
+     likha(1)
+     likha("\n")
+     likha("strconv-overflow-done\n")
+-}+}
+--- tests/stdlib/util_div_ceil.sm
++++ tests/stdlib/util_div_ceil.sm (formatted)
+@@ -1,9 +1,9 @@
+ yoj sadhan
+ mukhya() {
+-    likha(bhaj_urdhva(7,3))
++    likha(bhaj_urdhva(7, 3))
+     likha("\n")
+-    likha(bhaj_urdhva(9,3))
++    likha(bhaj_urdhva(9, 3))
+     likha("\n")
+-    likha(bhaj_urdhva(10,3))
++    likha(bhaj_urdhva(10, 3))
+     likha("\n")
+ }
+--- tests/stdlib/util_lerp.sm
++++ tests/stdlib/util_lerp.sm (formatted)
+@@ -1,9 +1,9 @@
+ yoj sadhan
+ mukhya() {
+-    likha(antargam(0,100,50))
++    likha(antargam(0, 100, 50))
+     likha("\n")
+-    likha(antargam(10,20,0))
++    likha(antargam(10, 20, 0))
+     likha("\n")
+-    likha(antargam(10,20,100))
++    likha(antargam(10, 20, 100))
+     likha("\n")
+ }
+--- tests/stdlib/util_mod.sm
++++ tests/stdlib/util_mod.sm (formatted)
+@@ -1,9 +1,9 @@
+ yoj sadhan
+ mukhya() {
+-    likha(shesh(17,5))
++    likha(shesh(17, 5))
+     likha("\n")
+-    likha(shesh(10,3))
++    likha(shesh(10, 3))
+     likha("\n")
+-    likha(shesh(7,7))
++    likha(shesh(7, 7))
+     likha("\n")
+ }
+--- tests/stdlib/util_sum_range.sm
++++ tests/stdlib/util_sum_range.sm (formatted)
+@@ -1,9 +1,9 @@
+ yoj sadhan
+ mukhya() {
+-    likha(yog_seema(1,10))
++    likha(yog_seema(1, 10))
+     likha("\n")
+-    likha(yog_seema(5,5))
++    likha(yog_seema(5, 5))
+     likha("\n")
+-    likha(yog_seema(1,100))
++    likha(yog_seema(1, 100))
+     likha("\n")
+ }

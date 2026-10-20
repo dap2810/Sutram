@@ -1,0 +1,26 @@
+see R19-02: each of the 24 reformatted files, compiled from main (HEAD) and from the reformatted text; sha256 of the binary, first 16 hex
+examples/11_forloop.sm                        1af34c7702af3551 1af34c7702af3551 SAME
+examples/12_elif.sm                           222af27a832eb81e 222af27a832eb81e SAME
+examples/13_negatives.sm                      bd1fb7ddf44fe930 bd1fb7ddf44fe930 SAME
+examples/14_strings.sm                        eba64593c22eb674 eba64593c22eb674 SAME
+examples/15_sutra_const.sm                    7e8d7b1db4089cd5 7e8d7b1db4089cd5 SAME
+examples/16_advanced.sm                       92d665f5bd1e7544 92d665f5bd1e7544 SAME
+examples/17_booleans.sm                       bd83116bff8cba11 bd83116bff8cba11 SAME
+examples/42_block_comments.sm                 4450a1e9d8cd232e 4450a1e9d8cd232e SAME
+examples/r68/pairs/all_registers.sm           119f3b2d3a5e2f9a 119f3b2d3a5e2f9a SAME
+lib/brihat.smlib via yoj: HEAD e09a57461f4d3e8b  reformatted e09a57461f4d3e8b  SAME
+lib/sadhan.smlib via yoj: HEAD b91500c91d48a0e8  reformatted b91500c91d48a0e8  SAME
+tests/r69/pairs/all_registers.sm              119f3b2d3a5e2f9a 119f3b2d3a5e2f9a SAME
+tests/stdlib/containers23.sm                  6bbf099b093dddd5 6bbf099b093dddd5 SAME
+tests/stdlib/math_gcd.sm                      e35fe4ac7e1ae21c e35fe4ac7e1ae21c SAME
+tests/stdlib/math_lcm.sm                      f1c3177e92dc28bc f1c3177e92dc28bc SAME
+tests/stdlib/math_max2.sm                     a5896948b3cd0104 a5896948b3cd0104 SAME
+tests/stdlib/math_min2.sm                     4c2dc3d68bff2d8d 4c2dc3d68bff2d8d SAME
+tests/stdlib/math_power.sm                    71e7cc6128149a4f 71e7cc6128149a4f SAME
+tests/stdlib/num_clamp.sm                     12c457ac85889568 12c457ac85889568 SAME
+tests/stdlib/strconv_overflow.sm              d7eeedcf57e91d94 d7eeedcf57e91d94 SAME
+tests/stdlib/util_div_ceil.sm                 671ddfcce08e0b1b 671ddfcce08e0b1b SAME
+tests/stdlib/util_lerp.sm                     1001206737e69a44 1001206737e69a44 SAME
+tests/stdlib/util_mod.sm                      4fb10e7857106484 4fb10e7857106484 SAME
+tests/stdlib/util_sum_range.sm                331b87f503fdc112 331b87f503fdc112 SAME
+24 same of 24

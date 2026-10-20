@@ -1,0 +1,5 @@
+  committed modes              FAIL   not executable: sutram_compiler sutram-ide sutram-gui sutram-fmt (chmod +x; in git also update-index --chmod=+x)
+  regression suite (NO-EXPECTATION=4 PASS=213 ) PASS
+  PASS                         13
+  FAIL                         3
+  NOT-RUN                      1
