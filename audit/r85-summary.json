@@ -9,7 +9,6 @@
   "other_suffixes_excluded": 1275,
   "distinct_file_reads": 202,
   "read_errors": [],
-  "bytes_fetched": 3793678,
   "unscanned_live_eligible": 776,
   "candidate_count": 38,
   "candidate_classification_counts": {
@@ -54,5 +53,7 @@
     "Git clone failed DNS lookup; no complete working checkout or native compiler here.",
     "No executable Sutram or network tests run."
   ],
-  "zero_findings_means_no_defect": false
+  "zero_findings_means_no_defect": false,
+  "decoded_utf16_code_units_fetched": 3793678,
+  "length_metric_note": "Per-batch legacy field 'bytes' measures JavaScript string .length (UTF-16 code units), NOT encoded UTF-8 byte lengths; do not use as network traffic or input byte count."
 }
