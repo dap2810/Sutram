@@ -1,0 +1,9 @@
+# R17: an empty guna { } compiled to a null statement and the compiler crashed in
+# code generation (found by tools/fuzz_robust.py, seed 16, mutation 27873).
+# expected: 7
+mukhya() {
+    vitti n = 1
+    guna (n) {
+    }
+    likha(7)
+}
