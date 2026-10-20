@@ -250,8 +250,8 @@ compile-time constant — the compiler folds it into the generated code.</p>
 <code>sutram -i</code>:</p>
 <pre><code>$ sutram -i
 Sutram khol v1.0 - sampurna sutra
-Sutram kathan likho aur Enter dabao. Turant chalega.
-Aadesh: sahayata (sahay) | nirgat (nikas) | sarvam (dekho)
+Sutram-kathanam likhatu, Enter nudatu. Sadyah chalishyati.
+Aadeshah: sahayata (sahayata) | nirgat (nirgamanam) | sarvam (sarvam pashyatu)
 
 <span class="k" data-tip="constant">sutra</span>> <span class="k" data-tip="variable">vitti</span> x = 21
 Siddh: 54 baait sankalit
@@ -308,7 +308,7 @@ $ ./sutram_compiler galat.sm out.bin
 Sutram Error: vyakaran dosh, pankti 4:5, shabd '<span class="k" data-tip="print">likha</span>'
       likha(x)
       ^
-Sanket: is sthan par shabd aur vyakaran dekho.</code></pre>
+Sanket: asmin sthane shabdam vyakaranam cha pashyatu.</code></pre>
 <p>The exit code is 1 on a compile error, 0 on success — so build scripts can react.</p>
 <div class="try"><b>Debug workflow:</b> 1. Read the line number. 2. Check spelling of the keyword
 named in the error. 3. Try the same line in the shell (<code>sutram -i</code>) — errors show
