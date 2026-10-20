@@ -1,0 +1,87 @@
+SUTRAM R84 RAW EXECUTION RECORD
+Date: 2026-10-20
+GitHub observed at work start: main v221 9833ac0c2067b56ffc8ac772f20319206d7ea09a.
+GitHub rechecked before branch: main v224 4c8209c935389d5f2a9c54b9c98d577fe58f514d.
+Incoming: Sarvam-to-ChatGPT/ROUND-84.md (not R83).
+Review-only code branch: review/r84-phal-obligation-prototype-20261020.
+Draft PR: https://github.com/dap2810/Sutram/pull/51.
+Existing separate-compilation draft: https://github.com/dap2810/Sutram/pull/41.
+
+ENVIRONMENT
+Python 3 available. GNU as, ld, readelf available.
+nasm executable NOT FOUND.
+git ls-remote https://github.com/dap2810/Sutram.git HEAD:
+fatal: unable to access 'https://github.com/dap2810/Sutram.git/': Could not resolve host: github.com
+No complete local Sutram compiler checkout; native Sutram compiler NOT_RUN.
+
+EXECUTED WS2 UNIT SUITE
+python3 -m unittest discover -s tests/r84 -p 'test*.py' -v
+test_accept_failure_exit ... ok
+test_check_with_nested_conditional_rejected ... ok
+test_check_without_exit_rejected ... ok
+test_multiline_comment ... ok
+test_multiple_obligations ... ok
+test_no_false_hit_from_comments ... ok
+test_no_false_hit_from_string ... ok
+test_reject_realistic_ignored_division ... ok
+test_reject_unsupported_else ... ok
+test_unclosed_block_comment_rejected ... ok
+test_unsupported_inline_call_is_rejected ... ok
+test_wrong_result_cell_rejected ... ok
+----------------------------------------------------------------------
+Ran 12 tests in 0.002s
+OK
+=> 12 PASS / 0 FAIL (unit tests ONLY).
+
+ACTUAL PYTHON PROTOTYPE CLI RESULTS
+python3 tools/r84_phal_gate.py tests/r84/cases/ignored_failure.sm --json
+EXIT 1
+{"status":"REJECTED","issues":[{"line":4,"code":"E_PHAL_UNHANDLED","message":"r requires immediate failure guard"}],"compiler_test":"NOT_RUN","compiler_enforced":false}
+
+python3 tools/r84_phal_gate.py tests/r84/cases/checked_failure.sm --json
+EXIT 0
+{"status":"ACCEPTED_SUBSET_ONLY","issues":[],"compiler_test":"NOT_RUN","compiler_enforced":false}
+
+python3 -m py_compile tools/r84_phal_gate.py tests/r84/test_phal_gate.py
+EXIT 0.
+
+EXECUTED WS1 LINKER CONTROL — GNU assembler sources, NOT Sutram source
+as --64 independent_link.s -o independent_link.o
+as --64 independent_main.s -o independent_main.o
+readelf -h both objects: Type REL; Machine Advanced Micro Devices X86-64
+ld -o linked_demo independent_main.o independent_link.o
+./linked_demo
+EXIT 42 (the deliberately chosen helper value); linker PASS.
+ld -o should_not_link linked_demo independent_link.o
+EXIT 1
+STDERR:
+ld: independent_link.o: in function 'helper':
+(.text+0x0): multiple definition of 'helper'; linked_demo:(.text+0x11): first defined here
+ld: cannot use executable file 'linked_demo' as input to a link
+=> ET_EXEC-as-object rejected; this is NOT a Sutram-produced ELF file.
+
+SOURCE INSPECTION (not native Sutram execution)
+src/sutram_compiler.asm write_elf ~line 22889:
+mov word [rsp+16], 2
+=> ET_EXEC, not relocatable ET_REL=1; no demonstrated native object emission.
+src/r71_module_link.inc explicitly says production .sm -> .smo not wired.
+
+LOCAL TO GITHUB CONTENT-IDENTITY READBACK (PASS 4/4)
+tools/r84_phal_gate.py
+git blob SHA: 7920943f0de113cbd7a62856cbf0dfe05fdeac6b
+sha256: 04a4c7ad5d6d1d00fbbb466949219ffb0cbf16c54f6564968f64e04ad85f8403
+tests/r84/test_phal_gate.py
+git blob SHA: f736999094f28e8e8f1c7cdb92d05794ea032d9b
+sha256: ec2c80e4b01411adff4b99ce3c2d8d6d9d9bc2f4ed80a13a9a666d1df5782543
+tests/r84/cases/ignored_failure.sm
+git blob SHA: 86b4b59a143104f5e7e35ff4fe5725865fed0605
+tests/r84/cases/checked_failure.sm
+git blob SHA: b932b8079f5c0729560be7d56db9fd06e2bfe04f
+
+STATUS SUMMARY
+PASS: Python prototype 12/12 unit tests, 2 distinct CLI decisions, Python py_compile, 4 exact GitHub blob readbacks, GNU two-object link control.
+EXPECTED_FAILURE: GNU ld rejected an ET_EXEC executable as an input object.
+SOURCE-LEVEL CONFIRMED: compiler writer hardcodes ET_EXEC.
+NOT_RUN/BLOCKED: native Sutram two-.sm object compile/link, native proof of E_PHAL_UNHANDLED, real Windows tests.
+ZERO accepted compiler, lib, language-pack, lock or golden output edits.
+ZERO PR merges. ZERO CI launches. ZERO background monitoring.
