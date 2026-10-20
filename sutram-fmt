@@ -1,0 +1,3 @@
+#!/bin/sh
+# sutram-fmt: the Sutram source formatter. See tools/sutram_fmt.py --help.
+exec python3 -B "$(dirname "$0")/tools/sutram_fmt.py" "$@"

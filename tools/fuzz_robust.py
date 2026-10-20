@@ -216,7 +216,7 @@ def mutate(rng: random.Random, src: bytes) -> bytes:
 def seeds(rng):
     out = [p.read_bytes() for p in sorted((ROOT / 'examples').glob('*.sm'))]
     for i in range(60):
-        prog, decls, minimal, _ = fv.make(rng.randrange(1 << 30), i, False)
+        prog, decls, minimal, _ = fv.make(rng.randrange(1 << 30), i)
         out.append(fv.program_src(prog, decls, minimal).encode())
     return out
 
