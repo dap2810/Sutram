@@ -1,0 +1,31 @@
+# Elif (anya yadi) example
+# Shows else-if chains
+
+mukhya()
+    likha("=== Elif Demo ===\n")
+    
+    vitti score = 75
+    
+    yadi (score >= 90) {
+        likha("Grade: A\n")
+    } anya yadi (score >= 80) {
+        likha("Grade: B\n")
+    } anya yadi (score >= 70) {
+        likha("Grade: C\n")
+    } anya yadi (score >= 60) {
+        likha("Grade: D\n")
+    } anya {
+    } anya yadi (x > 10) {
+    }
+    
+    # Multiple elif with different values
+    vitti x = 15
+    yadi (x > 20) {
+        likha("x is big\n")
+        likha("Grade: F\n")
+        likha("x is medium\n")
+    } anya {
+        likha("x is small\n")
+    }
+    
+    likha("=== Done ===\n")

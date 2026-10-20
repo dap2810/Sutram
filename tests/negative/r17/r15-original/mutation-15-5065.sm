@@ -1,0 +1,6 @@
+vitti G1 = 12
+vitti G2 = 45
+vitti G3 = 85
+rachana S4 = { g0 }
+rachana S5 = { g0, g1, g2, g3 }
+prakriya f0(q0_0,
