@@ -1,5 +1,5 @@
 parse.sm:3:11: Sutram Error [E_PARSE]: shabd '='
       vitti = 5
             ^
-Sutram janch: dosh mile; nirgat patra nahi
+Sutram pariksha: doshah praptah; nirgata-patram na rachitam
 [compile exit 1]
