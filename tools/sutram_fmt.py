@@ -4,6 +4,7 @@
     python3 -B tools/sutram_fmt.py FILE...            # print each file formatted
     python3 -B tools/sutram_fmt.py --write FILE...    # format in place
     python3 -B tools/sutram_fmt.py --check FILE...    # exit 1 and name the files that would change
+    python3 -B tools/sutram_fmt.py --check --exclude-from tools/fmt-exclude.txt FILE...   # the gate
     python3 -B tools/sutram_fmt.py --diff FILE...     # show what would change
     python3 -B tools/sutram_fmt.py --verify FILE...   # prove: idempotent, and the same program
                                                       #   (compiles to the same bytes; --compiler C)
@@ -438,8 +439,14 @@ def main(argv):
     g.add_argument('--diff', action='store_true')
     g.add_argument('--verify', action='store_true')
     ap.add_argument('--compiler', default=str(ROOT / 'sutram_compiler'))
+    ap.add_argument('--exclude-from', metavar='FILE',
+                    help='skip the files listed there (one path per line, # comments); for the gate')
     a = ap.parse_args(argv)
     paths = [Path(f) for f in a.files]
+    if a.exclude_from:
+        skip = {l.strip() for l in Path(a.exclude_from).read_text(encoding='utf-8').split('\n')
+                if l.strip() and not l.startswith('#')}
+        paths = [p for p in paths if str(p) not in skip and p.as_posix() not in skip]
     if a.verify:
         bad = verify(paths, str(Path(a.compiler).resolve()))
         return 1 if bad else 0
