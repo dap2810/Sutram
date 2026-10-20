@@ -1,0 +1,12 @@
+Sutram Setup Log
+[2026-10-20 09:10:24] Starting installation.
+[2026-10-20 09:10:24] Extracting embedded payload.
+[2026-10-20 09:10:26] Native self-test start: pre-install --version
+[2026-10-20 09:10:27] Native self-test exit: pre-install --version code=0
+[2026-10-20 09:10:27] Native self-test start: pre-install --help
+[2026-10-20 09:10:27] Native self-test exit: pre-install --help code=0
+[2026-10-20 09:10:34] Copying Sutram files.
+[2026-10-20 09:10:36] Native self-test start: post-install --version
+[2026-10-20 09:10:36] Native self-test exit: post-install --version code=0
+[2026-10-20 09:10:36] Ensuring Sutram is present in the current user PATH.
+[2026-10-20 09:10:36] ERROR: Error HRESULT E_FAIL has been returned from a call to a COM component.
