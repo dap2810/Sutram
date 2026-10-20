@@ -141,6 +141,8 @@ language. **v173 made an undefined name a compile error** - before it, a mistype
 and gave a wrong answer with no diagnostic. **The rename's tail surfaced in six different places** - code,
 comments, HTML, prose, keyword tables and the teaching books - **and not one was found by a gate.**
 
+**Rename-audit evidence boundary (Round 85, 2026-10-20; pinned main v229 `75b4d77f`):** Of 2,854 tracked file blobs, 1,579 matched the audit's expanded source/text suffixes; 601 historical collaboration/handoff files were excluded, leaving 978 live eligible files. **Only 202 of those 978 live files were actually fetched and screened; 776 were NOT scanned**, including most active examples, tests, and tools. Another 1,275 tracked files with other suffixes (including expected outputs, JSON evidence, images, binaries, and archives) were outside this text scan. The 202 inspected files produced 38 review candidates, classified as historical snapshots/design (17), legitimate diagnostic `pankti` meaning a line (6), ordinary English in a comment (1), and compiler legacy-compatibility strings or comments (14); **no active obsolete syntax was confirmed within that limited inspected set**. This is **not** a completed whole-repository rename audit or proof of language-pack linguistic accuracy; the reviewed full-checkout scanner and native tests were **NOT_RUN** in that Round 85 environment. See `ChatGPT-to-Sarvam/ROUND-85-WS1-KEYWORD-AUDIT.md` and Round 87 handoff.
+
 **Where the numbers stand now** (measured 2026-10-19). **`tools/gates.sh` prints this table** -
 build everything and run it, and its output is the truth about the tree:
 
