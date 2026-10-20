@@ -1,3 +1,48 @@
+## v236 - CORRECTION: F7 is NOT fixed. I said it was, and it is not.
+
+**In v232's changelog I wrote a table row: "F7 - the scalar-index crash - done (R17)". That is wrong.**
+
+**Claude caught it:** *"R17-04 said so: F7 was not in ROUND-17's workstreams, and I did not touch it. I
+re-ran the minimal reproduction on main's merged compiler just now: `Siddh: 250 baait sankalit`, then exit
+139."*
+
+**So F7 is open.** It compiles, and it segfaults. I put it in a completion table without checking, **because I
+had assigned it and assumed assignment meant completion.**
+
+**That is the eighth time this stretch my own claim was wrong**, and this one is worse than the others: **the
+previous seven were tooling and measurements. This one was me reporting a defect as fixed in a status table
+the owner reads.**
+
+**Corrected: F7 is OPEN.**
+
+### And it needs a decision, which is the reason it stayed open
+
+**Claude states the real problem, and it is a language design question, not a bug:**
+
+> *Parameters are untyped, and an array is an address in a `vitti`, so **the compiler cannot tell a scalar from
+> an array at the call site.** Either a **run-time tag on values** (a change to the memory model), or **typed
+> parameters** (`mala a`, as `kosh dasham d` already is).*
+
+**So there are three options, and it is the owner's call:**
+
+1. **A run-time tag on values** - the compiler knows what each value is at run time. **A memory-model change.**
+2. **Typed parameters** - `prakriya f(mala a)`. **The syntax already exists** for `kosh dasham d`.
+3. **Leave it** - the crash stays, documented as a known limit.
+
+**Option 2 is the smallest and it uses a form the language already has.** But it is a language change and it
+is his to make.
+
+### Also from R18-04
+
+**The committed binaries' file mode was lost at a SIXTH merge** - all four executables, `sutram-fmt` included.
+**Restored again on this branch.** The "committed modes" gate exists for exactly this; it is NOT-RUN outside a
+git checkout, **which is why it keeps surviving merges that never see the gate.**
+
+### And the review sheet is delivered
+
+**`PACK-REVIEW-SHEET.md`** - all 41 candidates, one pass, 23 KB. **The three SUPPORTED packs have two
+candidates between them.**
+
 ## v235 - the fuzzer run now MEANS something, and the Gujarati review is nearly empty
 
 ### The valid fuzzer, with NO workarounds
