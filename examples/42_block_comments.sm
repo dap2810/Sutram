@@ -4,4 +4,4 @@
 */
 mukhya()
     /* inline */ likha(42)
-    likha(7) /* trailing */
+    likha(7)  /* trailing */

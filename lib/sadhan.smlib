@@ -7,7 +7,6 @@
 # SIGFPE); yog_seema returns 0 for end < start; bhaj_urdhva is true
 # ceiling division for every util_chinha combination.
 
-
 prakriya antargam(a, b, t)
     prati a + (b - a) * t / 100
 
@@ -15,8 +14,6 @@ prakriya yog_seema(start, end) {
     yadi (end < start) { prati 0 }
     prati (start + end) * (end - start + 1) / 2
 }
-
-
 
 prakriya shesh(a, b) {
     yadi (b == 0) { prati 0 }

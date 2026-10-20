@@ -45,13 +45,30 @@ proc = subprocess.Popen([os.environ.get("SUTRAM_GUI", "/scratch/work/sutram-gui"
                         stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
 conn, _ = srv.accept(); conn.settimeout(8)
 
+# R19: the GUI repaints after every key and writes to us; if nothing reads, the
+# socket fills, the GUI blocks on its write and later keys are never processed.
+# _sip() takes what has arrived into _pending without waiting; rx() and drain()
+# serve from _pending first.
+_pending = bytearray()
+def _sip():
+    import select as _sel
+    while True:
+        r, _, _ = _sel.select([conn], [], [], 0)
+        if not r: return
+        try: c = conn.recv(65536)
+        except (BlockingIOError, socket.timeout): return
+        if not c: return
+        _pending.extend(c)
+
 def rx(n):
-    b = b""
+    b = bytearray()
     while len(b) < n:
+        if _pending:
+            take = min(n - len(b), len(_pending)); b += _pending[:take]; del _pending[:take]; continue
         c = conn.recv(n - len(b))
         if not c: break
         b += c
-    return b
+    return bytes(b)
 
 rx(12); conn.sendall(build_setup())
 def rr():
@@ -64,7 +81,7 @@ h, ln, body = rr(); conn.sendall(kc_reply(body[0], body[1]))
 
 def drain(secs=0.5):
     """Return the ordered list of (opcode, full_request_bytes)."""
-    reqs = []; old = conn.gettimeout(); conn.settimeout(0.15); t = time.time()
+    reqs = []; old = conn.gettimeout(); conn.settimeout(0.15); t = time.time(); _sip()
     while time.time() - t < secs:
         try:
             r = rr()
@@ -93,7 +110,9 @@ def key(kc, ctrl=False):
     ev = bytearray(32); ev[0] = 2; ev[1] = kc
     struct.pack_into("<I", ev, 4, RID_BASE | 1); struct.pack_into("<H", ev, 10, 1)
     if ctrl: struct.pack_into("<H", ev, 28, 0x0004)
+    _sip()
     conn.sendall(bytes(ev)); time.sleep(0.05)
+    _sip()
 
 def typ(s):
     for ch in s: key(KM[ch])
@@ -118,11 +137,13 @@ key(CTRL_O, ctrl=True); time.sleep(0.1)
 typ("/tmp")
 reqs = drain()
 tl = texts(reqs)
-prompt_seen = any(t.startswith("Open:") for t in tl)
+# R19: the prompt has been "khol: " since slice 17; the test looked for "Open:" and
+# reported False, which the gate never saw because the test exited 0.
+prompt_seen = any(t.startswith("khol:") for t in tl)
 # find the index of the Open: text in request order
 idx = None
 for i, (op, raw) in enumerate(reqs):
-    if op == 76 and raw[16:16 + 5] == b"Open:":
+    if op == 76 and raw[16:16 + 5] == b"khol:":
         idx = i
 overpaint = False
 if idx is not None:
@@ -161,8 +182,11 @@ g5 = saved()
 ok5 = g5 == "keep mez"
 print("5 esc-cancels-open:", repr(g5), ok5); results.append(ok5)
 
-print("RESULT:", all(results))
+_result = all(results)
+print("RESULT:", _result)
 
 conn.close(); srv.close(); proc.terminate()
 try: proc.communicate(timeout=5)
 except Exception: proc.kill()
+# R19: the gate counts a test by its exit status; a printed False used to count as a pass.
+raise SystemExit(0 if _result else 1)

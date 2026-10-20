@@ -3,7 +3,7 @@
 
 mukhya()
     likha("=== For Loop Demo ===\n")
-    
+
     # Count 0 tak 5
     likha("Count: ")
     chakra i = 0 tak 5 {
@@ -11,7 +11,7 @@ mukhya()
         likha(" ")
     }
     likha("\n")
-    
+
     # Sum 1 tak 10
     vitti sum = 0
     chakra j = 1 tak 10 {
@@ -20,7 +20,7 @@ mukhya()
     likha("Sum 1-10 = ")
     likha(sum)
     likha("\n")
-    
+
     # Multiplication table for 3
     likha("Table of 3:\n")
     chakra k = 1 tak 5 {
@@ -30,5 +30,5 @@ mukhya()
         likha(3 * k)
         likha("\n")
     }
-    
+
     likha("=== Done ===\n")

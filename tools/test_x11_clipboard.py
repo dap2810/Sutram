@@ -44,13 +44,30 @@ proc = subprocess.Popen([os.environ.get("SUTRAM_GUI", "/scratch/work/sutram-gui"
                         stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
 conn, _ = srv.accept(); conn.settimeout(8)
 
+# R19: the GUI repaints after every key and writes to us; if nothing reads, the
+# socket fills, the GUI blocks on its write and later keys are never processed.
+# _sip() takes what has arrived into _pending without waiting; rx() and drain()
+# serve from _pending first.
+_pending = bytearray()
+def _sip():
+    import select as _sel
+    while True:
+        r, _, _ = _sel.select([conn], [], [], 0)
+        if not r: return
+        try: c = conn.recv(65536)
+        except (BlockingIOError, socket.timeout): return
+        if not c: return
+        _pending.extend(c)
+
 def rx(n):
-    b = b""
+    b = bytearray()
     while len(b) < n:
+        if _pending:
+            take = min(n - len(b), len(_pending)); b += _pending[:take]; del _pending[:take]; continue
         c = conn.recv(n - len(b))
         if not c: break
         b += c
-    return b
+    return bytes(b)
 
 rx(12); conn.sendall(build_setup())
 def rr():
@@ -62,7 +79,7 @@ for _ in range(3): rr()
 h, ln, body = rr(); conn.sendall(kc_reply(body[0], body[1]))
 
 def drain(secs=0.4):
-    conn.settimeout(0.15); buf = b""; t = time.time()
+    conn.settimeout(0.15); buf = bytes(_pending); _pending.clear(); t = time.time()
     while time.time() - t < secs:
         try:
             c = conn.recv(65536)
@@ -86,7 +103,9 @@ def key(kc, ctrl=False, shift=False):
     if ctrl: st |= 0x0004
     if shift: st |= 0x0001
     struct.pack_into("<H", ev, 28, st)
+    _sip()
     conn.sendall(bytes(ev)); time.sleep(0.05)
+    _sip()
 
 def typ(s):
     for ch in s: key(KM[ch])
@@ -164,8 +183,11 @@ g6 = saved()
 ok6 = g6 == "new"
 print("6 type-replaces-selection:", repr(g6), ok6); results.append(ok6)
 
-print("RESULT:", all(results))
+_result = all(results)
+print("RESULT:", _result)
 
 conn.close(); srv.close(); proc.terminate()
 try: proc.communicate(timeout=5)
 except Exception: proc.kill()
+# R19: the gate counts a test by its exit status; a printed False used to count as a pass.
+raise SystemExit(0 if _result else 1)

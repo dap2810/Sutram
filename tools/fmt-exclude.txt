@@ -1,0 +1,17 @@
+# sutram-fmt --check skips these (ROUND-19). Each is a deliberate parse-error
+# fixture whose test pins the diagnostic's line:column or the echoed source
+# line, so reformatting it would change what the test expects; or a file the
+# formatter refuses on purpose (an unterminated string, unbalanced braces).
+examples/220_hindi_parse_error.sm
+examples/221_eof_location.sm
+tests/r48_check/nested_recovery.sm
+tests/r48_check/structural_three_errors.sm
+tests/r48_check/three_parse_errors.sm
+tests/r48_check/unclosed_block.sm
+tests/r49_check/lib/faulty_r49.smlib
+tests/r49_check/nested_expressions.sm
+tests/r49_check/top_level_malformed.sm
+tests/r51_check/lib/broken_ns_r51.smlib
+tests/r51_check/lib/inner_r51.smlib
+tests/r51_check/nested_braces.sm
+tests/r56_check/after_main.sm

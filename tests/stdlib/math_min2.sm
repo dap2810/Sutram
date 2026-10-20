@@ -1,11 +1,11 @@
 yoj ganit
 mukhya() {
-    likha(laghu2(3,7))
+    likha(laghu2(3, 7))
     likha("\n")
-    likha(laghu2(9,2))
+    likha(laghu2(9, 2))
     likha("\n")
-    likha(laghu2(4,4))
+    likha(laghu2(4, 4))
     likha("\n")
-    likha(laghu2(-5,-1))
+    likha(laghu2(-5, -1))
     likha("\n")
 }
