@@ -1,0 +1,6 @@
+भाषा-पुटः प्राप्तः: sanskrit
+duplicate.sm:4:11: Sutram Error [E_DUPLICATE_NAME]: पुनर्घोषणा 'x'
+      vitti x = 2
+            ^
+सूचना: 'x' पूर्वमेव घोषितम्; नूतनं मानं दातुम्: x = ...
+[compile exit 1]
