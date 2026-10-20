@@ -1,3 +1,37 @@
+## v215 - all twelve autonomous items started; both partners issued
+
+**The owner asked for the work that needs NO human testing, and asked for all of it to be started now.**
+**Twelve items, split so each partner has what suits it.**
+
+### Claude - ROUND-15
+
+1. **A compiler fuzzer.** *The highest-value item on the list.* **F1 was found by the owner, by hand, because
+   no test called a function with 27 locals.** A generator of random valid programs, checking against a
+   reference, **deliberately generating the shape that found F1.**
+2. **A robustness fuzzer.** Random invalid input - the compiler must error, never crash. **A segfault on bad
+   input is a defect even though the input is wrong.**
+3. **Review the strength of all 303 proofs** with its own mutant measure. *A proof that only fails when the
+   whole body is broken is a smoke test, not a proof.* **A ranked list of the weakest, and which are
+   decoration.**
+
+### ChatGPT - ROUND-83
+
+4. **Re-run the whole-repository keyword audit with its block-comment fix.** It has never been run across the
+   repo, only the compiler file. **The scanner had the same class of flaw it hunts.**
+5. **Expand the negative corpus** - every diagnostic should have a program that triggers it, **and a message
+   no program can reach is worth knowing about.**
+6. **A structural check on all eleven translations** - script, no Latin prose, identifiers intact, no empty
+   or missing-placeholder messages. **The owner can only review three packs, so this is the only check the
+   other eight will get.**
+
+### Mine
+
+7. The test-coverage gap (`prakriya mean(kosh dasham xs)` is covered by nothing but a book), 8. the correct
+book sweep, 9. more benchmarks, 10. the performance report re-run, 11. documenting the `mukhya`/`prakriya`
+braces inconsistency, 12. and the X11 GUI's missing Indic support.
+
+**All twelve are now assigned. The owner will be told when they are done.**
+
 ## v214 - ChatGPT ROUND-82: it found a real bug in the audit tooling, and answered the kosh question
 
 ### WS2 - a reproducible defect in the old-word scanner, fixed
