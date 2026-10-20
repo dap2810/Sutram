@@ -1,0 +1,6 @@
+ഭാഷാ പാക്ക് കണ്ടെത്തി: malayalam
+parse.sm:3:11: Sutram Error [E_PARSE]: വാക്ക് '='
+      vitti = 5
+            ^
+സൂത്രം പരിശോധന: പിശകുകൾ കണ്ടെത്തി; ഫല ഫയൽ സൃഷ്ടിച്ചില്ല
+[compile exit 1]

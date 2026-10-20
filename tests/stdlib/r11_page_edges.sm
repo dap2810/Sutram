@@ -1,0 +1,38 @@
+# R11 (Step 5): page-edge canaries. nirmmita maps whole pages, and consecutive maps are
+# adjacent (the newer one just below), so a block of exactly 4096 bytes ends where the
+# block allocated just before it begins. A function that writes one cell past its own
+# 4096-byte scratch block therefore lands on the first cell of that earlier block: the
+# canary below. The real functions never write there.
+yoj aadhar
+mukhya() {
+    # brihat_ank_tak: its private copy w is nirmmita(n * 8) = 4096 bytes for n = 512
+    vitti x = nirmmita(512 * 8)
+    vitti i = 0
+    yavat (i < 512) {
+        x[i] = (i * 7 + 3) % 10
+        i = i + 1
+    }
+    vitti out = nirmmita(4 * 512 * 8)
+    vitti canary = nirmmita(8)
+    canary[0] = 1234567
+    vitti n = brihat_ank_tak(x, 512, 16, out)
+    likha(n)
+    likha(out[0] * 100 + out[1] * 10 + out[2])
+    likha(canary[0])
+    # brihat_shesh: its private remainder tr is nirmmita(n * 8) = 4096 bytes for n = 512
+    vitti num = nirmmita(1024 * 8)
+    i = 0
+    yavat (i < 1024) {
+        num[i] = (i * 3 + 1) % 10
+        i = i + 1
+    }
+    vitti m = nirmmita(512 * 8)
+    m[0] = 7
+    m[1] = 9
+    vitti rs = nirmmita(512 * 8)
+    vitti canary2 = nirmmita(8)
+    canary2[0] = 7654321
+    brihat_shesh(num, m, rs, 512)
+    likha(rs[0] + rs[1] * 10 + rs[2] * 100)
+    likha(canary2[0])
+}

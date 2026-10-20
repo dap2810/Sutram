@@ -1,0 +1,6 @@
+भाषा पॅक मिळाला: marathi
+undefined_name.sm:3:11: Sutram Error [E_UNDEFINED_NAME]: अज्ञात नाव 'y'
+      likha(y)
+            ^
+सूचना: वापरण्यापूर्वी घोषणा आवश्यक: चल y = ...
+[compile exit 1]

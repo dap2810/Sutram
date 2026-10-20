@@ -8,7 +8,11 @@ in old round reports reproduce those historical snapshots, not a current build.
 
 ## Input identity and developer commands
 
-Required core Git blob: `5ade34ed0287609b8f5d7e4f12873b7978479ac4` (re-pinned in ROUND-03; was `64ea028a…`, stale since v157).
+Required core Git blob: `8625095aa53027bbaf4eef29e7afe76e525d1008` (re-pinned in ROUND-03; was `64ea028a…`, stale since v157).
+R11: the core includes `src/r11_sandesh.inc`, every message per language pack, which is
+**generated**: edit `lang/<pack>.sandesh`, then run `python3 tools/sandesh.py --write`
+(it also writes `windows/gui/r11_ide_sandesh.inc`). `python3 tools/sandesh.py --check`
+fails when either file is stale or a pack is incomplete. The include is pinned with the core.
 Entry Git blob: `42389aaf73179726d91e23359aee2199734036e1` (713 bytes).
 Neither file is changed in R69. `tools/r69_build.lock.json` also pins all known
 conditional includes for both hosts. A missing, changed, symlinked or unlocked

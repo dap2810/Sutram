@@ -1,0 +1,6 @@
+ಭಾಷಾ ಪ್ಯಾಕ್ ಸಿಕ್ಕಿದೆ: kannada
+undefined_name.sm:3:11: Sutram Error [E_UNDEFINED_NAME]: ಅಜ್ಞಾತ ಹೆಸರು 'y'
+      likha(y)
+            ^
+ಸೂಚನೆ: ಬಳಸುವ ಮೊದಲು ಘೋಷಣೆ ಬೇಕು: ಚರ y = ...
+[compile exit 1]

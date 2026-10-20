@@ -286,19 +286,19 @@ label_clear db 'Clear shell',0
 label_output db 'sankalan / chalan ka phal',0
 label_shell db '>>>',0
 label_examples db 'udaharan (do baar click)',0
-err_init db 'Windows API load nahi hui. sampadak shuru nahi ho saka.',0
+err_init db 'Windows ke karya-sutra prapt nahi hue. sampadak shuru nahi ho saka.',0
 err_title db 'Sutram sampadak',0
-msg_ready db 'Ready. Run (F5) compiles and runs the program in the editor.',13,10,0
+msg_ready db 'Taiyar. F5: sampadak ka karyakram sankalan aur chalan.',13,10,0
 msg_compile_failed db '[sankalan asaphal]',13,10,0
 msg_run_failed db '[karyakram asamanya roop se samapt]',13,10,0
 msg_file_failed db '[patra padhne/likhne me asaphal]',13,10,0
 msg_input_large db '[patra bahut bada; sampadak seema 64 KiB]',13,10,0
-msg_shell_limit db '[shell history is full; use Clear shell]',13,10,0
+msg_shell_limit db '[khol ka itihas purna; pahle khol rikta karein]',13,10,0
 msg_timeout db '[prakriya 10 sekand se adhik; samapt ki gayi]',13,10,0
 msg_missing_compiler db '[win\sutram.exe nahi mila: pahle sankalak banayein]',13,10,0
-msg_missing_lang db '[deshi shabda-pak anupalabdh: lang\*.lang dekhein; Latin shabda kaam karte hain]',13,10,0
+msg_missing_lang db '[deshi shabda-pak anupalabdh: lang\*.lang dekhein; mool shabda kaam karte hain]',13,10,0
 msg_partial_lang db '[kuchh shabda-pak anupalabdh ya ashuddh: lang\*.lang dekhein]',13,10,0
-msg_pipe_fail db '[prakriya ya pipe nirman asaphal]',13,10,0
+msg_pipe_fail db '[prakriya ya nalika nirman asaphal]',13,10,0
 msg_more_output db '[phal 32 KiB par kata]',13,10,0
 align 8                          ; R9: keep what follows where it was aligned before the move
 class_button db 'BUTTON',0
@@ -536,6 +536,8 @@ kw_pack_sanskrit_w: dw __utf16__("lang\sanskrit.lang"),0
 align 8
 r9_pack_names: dq pn_sanskrit_w,pn_bengali_w,pn_gujarati_w,pn_hindi_w,pn_kannada_w,pn_malayalam_w,pn_marathi_w,pn_odia_w,pn_punjabi_w,pn_tamil_w,pn_telugu_w
 kw_pack_paths: dq kw_pack_sanskrit_w,kw_pack_bengali_w,kw_pack_gujarati_w,kw_pack_hindi_w,kw_pack_kannada_w,kw_pack_malayalam_w,kw_pack_marathi_w,kw_pack_odia_w,kw_pack_punjabi_w,kw_pack_tamil_w,kw_pack_telugu_w,0
+; R11 (WS1): the status line and the output-pane messages, per language pack
+%include "windows/gui/r11_ide_sandesh.inc"
 section .bss
 h_kernel resq 1
 h_user resq 1
@@ -562,6 +564,9 @@ r9_tl_on resd 1
 r9_cur_pack resd 1
 r9_pair_count resd 1
 r9_indic_ok resd 1
+r11_font_indic16 resq 1          ; R11: the status line's faces (0 = not made)
+r11_font_ui16 resq 1
+r11_font_status_now resq 1
 r9_tmp_sel resd 2
 r9_pair_pack resb R9_MAX_PAIRS
 r9_pair_roman resb R9_MAX_PAIRS*32
@@ -1415,8 +1420,10 @@ wnd_proc:
     mov byte [rel shell_history],0
     mov dword [rel last_shell_out],0
     mov rcx,[rel h_output]
-    PTR rdx,msg_ready
-    API SetWindowTextA
+    PTR rdx,empty_w
+    API SetWindowTextW
+    PTR rcx,msg_ready            ; R11: through output_append, so in the pack's language
+    call output_append
     jmp .donezero
 .undo:
     mov rcx,[rel h_editor]
@@ -1638,6 +1645,7 @@ create_controls:
     mov [rel old_find_proc],rax
     call apply_readable_fonts
     call r9_check_indic_font
+    call r11_status_font
     call fill_examples
     call update_lines
     call highlight_editor
@@ -2723,6 +2731,9 @@ load_example:
 ; rcx = nul-terminated string.
 output_append:
     PROLOG 64
+    mov rax,rcx
+    call r11_ide_tr              ; R11: an IDE message in the next run's pack language
+    mov rcx,rax
     mov [rbp-8],rcx
     mov rcx,[rel h_output]
     mov edx,EM_SETREADONLY
@@ -3979,6 +3990,68 @@ wide_append_num:
     pop rbx
     ret
 
+; R11 (WS1): rax = a status-line or output-pane string -> rax = the same string in
+; the language of the pack the next run passes with --lang: Core = the default,
+; Auto = the detected pack (0 or sanskrit), otherwise the chosen pack. The table is
+; windows/gui/r11_ide_sandesh.inc (tools/sandesh.py writes it from lang/*.sandesh).
+; Anything that is not one of those strings comes back unchanged. No API call;
+; preserves every register except rax.
+r11_ide_tr:
+    push rcx
+    push rdx
+    push r8
+    mov r8,rax
+    call r11_msg_pack
+    test ecx,ecx
+    jz .same
+    cmp ecx,11
+    ja .same
+    lea rdx,[rel r11_ide_cols]
+    mov rdx,[rdx+rcx*8]
+    lea rcx,[rel r11_ide_keys]
+    xor eax,eax
+.scan:
+    cmp qword [rcx+rax*8],0
+    je .same
+    cmp [rcx+rax*8],r8
+    je .hit
+    inc eax
+    jmp .scan
+.hit:
+    mov rax,[rdx+rax*8]
+    test rax,rax
+    jnz .out
+.same:
+    mov rax,r8
+.out:
+    pop r8
+    pop rdx
+    pop rcx
+    ret
+
+; R11: ecx = the pack the messages follow (0 = the default, 1..11 = use_pack order)
+r11_msg_pack:
+    mov ecx,[rel lang_mode]
+    cmp ecx,LANG_AUTO
+    jne .not_auto
+    mov ecx,[rel last_pack]
+    ret
+.not_auto:
+    cmp ecx,LANG_CORE
+    jne .chosen
+    xor ecx,ecx
+    ret
+.chosen:
+    dec ecx                      ; sanskrit (2) -> 1, the other ten (3..12) -> 2..11
+    ret
+
+; R11: %1 = the status-line string at label %2, in the next run's pack language
+%macro TRW 2
+    lea rax,[rel %2]
+    call r11_ide_tr
+    mov %1,rax
+%endmacro
+
 lang_mode_name:
     mov eax,[rel lang_mode]
     cmp eax,LANG_CORE
@@ -3997,11 +4070,11 @@ lang_mode_name:
     PTR rax,lang_mool_w
     ret
 .sanskrit:
-    PTR rax,lang_sanskrit_w
+    PTR rax,r11_native_sanskrit      ; R11: the language's own name, in its own script
     ret
 .r9_pack:
     sub eax,2
-    PTR rdx,r9_pack_names
+    PTR rdx,r11_pack_native_w
     mov rax,[rdx+rax*8]
     ret
 
@@ -4035,42 +4108,43 @@ update_status:
     sub ecx,eax
     inc ecx
     mov [rbp-8],ecx
-    PTR rcx,st_pankti_w
+    TRW rcx,st_pankti_w
     PTR rdx,status_utf16
     call wide_string_copy
     mov ecx,[rbp-4]
     inc ecx
     PTR rdx,status_utf16
     call wide_append_num
+    TRW rdx,st_stambh_w
     PTR rcx,status_utf16
-    PTR rdx,st_stambh_w
     call wide_string_concat
     mov ecx,[rbp-8]
     PTR rdx,status_utf16
     call wide_append_num
+    TRW rdx,st_bhasha_w
     PTR rcx,status_utf16
-    PTR rdx,st_bhasha_w
     call wide_string_concat
     call lang_mode_name
+    call r11_ide_tr              ; swayam / mool in the pack's language
     PTR rcx,status_utf16
     mov rdx,rax
     call wide_string_concat
     ; R9: "lipi: <pack>" while the typing mode is on
     cmp dword [rel r9_tl_on],0
     je .no_lipi
+    TRW rdx,st_lipi_w
     PTR rcx,status_utf16
-    PTR rdx,st_lipi_w
     call wide_string_concat
     call r9_tl_pack
-    PTR rdx,r9_pack_names
+    PTR rdx,r11_pack_native_w        ; R11: the typing script's own name
     mov rdx,[rdx+rax*8]
     PTR rcx,status_utf16
     call wide_string_concat
 .no_lipi:
     cmp dword [rel cluster_count],-1
     je .state
+    TRW rdx,st_akshara_w
     PTR rcx,status_utf16
-    PTR rdx,st_akshara_w
     call wide_string_concat
     mov ecx,[rel cluster_count]
     PTR rdx,status_utf16
@@ -4081,13 +4155,14 @@ update_status:
     call wide_string_concat
     cmp dword [rel is_modified],0
     je .clean
-    PTR rdx,st_asanchit_w
+    TRW rdx,st_asanchit_w
     jmp .write
 .clean:
-    PTR rdx,st_sanchit_w
+    TRW rdx,st_sanchit_w
 .write:
     PTR rcx,status_utf16
     call wide_string_concat
+    call r11_status_face
     mov rcx,[rel h_status]
     PTR rdx,status_utf16
     API SetWindowTextW
@@ -4153,8 +4228,9 @@ find_next:
     API SetFocus
     jmp .done
 .notfound:
+    call r11_status_face
+    TRW rdx,st_notfound_w
     mov rcx,[rel h_status]
-    PTR rdx,st_notfound_w
     API SetWindowTextW
 .done:
     EPILOG
@@ -4734,6 +4810,47 @@ r9_tl_convert:
     mov edx,EM_REPLACESEL
     mov r8d,1                    ; can be undone with Ctrl+Z
     PTR r9,r9_out_w
+    API SendMessageW
+.done:
+    EPILOG
+
+; R11 (WS1): the status line is now in the pack's language, so it needs a face
+; with every script: when Nirmala UI is installed (r9_indic_ok), the status line
+; uses it (it has Latin too). Otherwise Segoe UI stays and Windows' fallback applies.
+; (The default, romanised, keeps Segoe UI: r11_status_face switches per pack.)
+r11_status_font:
+    PROLOG 48
+    cmp dword [rel r9_indic_ok],0
+    je .done
+    mov ecx,-16
+    PTR rdx,font_indic
+    call make_readable_font
+    mov [rel r11_font_indic16],rax
+    mov ecx,-16
+    PTR rdx,font_ui
+    call make_readable_font
+    mov [rel r11_font_ui16],rax
+.done:
+    EPILOG
+
+; R11: before the status text is set, give the control the face its language needs
+r11_status_face:
+    PROLOG 48
+    mov rax,[rel r11_font_indic16]
+    test rax,rax
+    jz .done
+    call r11_msg_pack
+    test ecx,ecx
+    jnz .have
+    mov rax,[rel r11_font_ui16]
+.have:
+    cmp rax,[rel r11_font_status_now]
+    je .done
+    mov [rel r11_font_status_now],rax
+    mov rcx,[rel h_status]
+    mov edx,WM_SETFONT
+    mov r8,rax
+    mov r9d,1
     API SendMessageW
 .done:
     EPILOG

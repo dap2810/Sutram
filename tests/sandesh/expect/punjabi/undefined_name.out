@@ -1,0 +1,6 @@
+ਭਾਸ਼ਾ ਪੈਕ ਮਿਲਿਆ: punjabi
+undefined_name.sm:3:11: Sutram Error [E_UNDEFINED_NAME]: ਅਣਜਾਣ ਨਾਮ 'y'
+      likha(y)
+            ^
+ਸੰਕੇਤ: ਵਰਤੋਂ ਤੋਂ ਪਹਿਲਾਂ ਘੋਸ਼ਣਾ ਲੋੜੀਂਦੀ: ਵੇਰੀਏਬਲ y = ...
+[compile exit 1]

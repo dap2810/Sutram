@@ -1,0 +1,4 @@
+ভাষা প্যাক পাওয়া গেছে: bengali
+Sutram Error [E_MODULE_MISSING]: অন্তর্ভুক্ত ফাইল পাওয়া যায়নি: nahi_asti
+পরামর্শ: <নাম>.smlib lib/ এ অথবা উৎস ফাইলের নির্দেশিকায় থাকা উচিত
+[compile exit 1]

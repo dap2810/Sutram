@@ -1,0 +1,25 @@
+# R11 (Step 5): kalana boundaries: two samples, the last index, and a bisection over a
+# wide interval, where the 80-step limit decides the answer.
+yoj kalana
+mukhya() {
+    kosh dasham xs[3]
+    kosh_push(xs, 0.0)
+    kosh_push(xs, 2.0)
+    kosh dasham ys[3]
+    kosh_push(ys, 1.0)
+    kosh_push(ys, 5.0)
+    likha(pravan(xs, ys, 0))
+    kosh_push(xs, 3.0)
+    kosh_push(ys, 7.0)
+    likha(pravan2(xs, ys, 2))
+    likha(pravan2(xs, ys, 1))
+    kosh dasham c[2]
+    kosh_push(c, -1.0)
+    kosh_push(c, 1.0)
+    kosh dasham ok[1]
+    kosh_push(ok, 0.0)
+    dasham big = 1000000000.0 * 1000000000.0 * 1000000000.0 * 1000.0
+    dasham r = bahu_mula(c, 0.0 - big, big, ok)
+    likha(r)
+    likha(ok[0])
+}

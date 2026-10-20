@@ -1,0 +1,6 @@
+భాషా ప్యాక్ దొరికింది: telugu
+duplicate.sm:4:11: Sutram Error [E_DUPLICATE_NAME]: మళ్ళీ ప్రకటన 'x'
+      vitti x = 2
+            ^
+సూచన: 'x' ఇప్పటికే ప్రకటించబడింది; కొత్త విలువ ఇవ్వడానికి: x = ...
+[compile exit 1]

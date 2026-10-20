@@ -1,0 +1,6 @@
+மொழித் தொகுப்பு கிடைத்தது: tamil
+undefined_name.sm:3:11: Sutram Error [E_UNDEFINED_NAME]: அறியாத பெயர் 'y'
+      likha(y)
+            ^
+குறிப்பு: பயன்படுத்தும் முன் அறிவிப்பு தேவை: மாறி y = ...
+[compile exit 1]

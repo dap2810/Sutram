@@ -1,0 +1,6 @@
+மொழித் தொகுப்பு கிடைத்தது: tamil
+unknown_field.sm:6:13: Sutram Error [E_UNKNOWN_FIELD]: அறியாத புலம் 'q'
+      likha(p.q)
+              ^
+குறிப்பு: 'q' எந்த அமைப்பின் புலமும் அல்ல
+[compile exit 1]

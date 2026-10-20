@@ -1,0 +1,5 @@
+duplicate.sm:4:11: Sutram Error [E_DUPLICATE_NAME]: punah ghoshana 'x'
+      vitti x = 2
+            ^
+Sanket: 'x' pahle se ghoshit hai; naya man dene ke liye: x = ...
+[compile exit 1]

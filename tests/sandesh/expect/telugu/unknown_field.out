@@ -1,0 +1,6 @@
+భాషా ప్యాక్ దొరికింది: telugu
+unknown_field.sm:6:13: Sutram Error [E_UNKNOWN_FIELD]: తెలియని క్షేత్రం 'q'
+      likha(p.q)
+              ^
+సూచన: 'q' ఏ రచనకూ క్షేత్రం కాదు
+[compile exit 1]

@@ -1,0 +1,5 @@
+# R11: an import that is not there
+yoj nahi_asti
+mukhya() {
+    likha(1)
+}

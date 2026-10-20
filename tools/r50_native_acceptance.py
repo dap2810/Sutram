@@ -26,7 +26,7 @@ def main():
             assert exe.returncode==0,(name,"native program failed")
             assert exe.stdout==expected,(name,repr(exe.stdout),repr(expected))
             ok=run(COMPILER,"--check",src)
-            assert ok.returncode==0 and "Sutram janch: OK" in ok.stdout,(name,ok)
+            assert ok.returncode==0 and "Sutram janch: shuddh" in ok.stdout,(name,ok)
             assert not list(work.glob("*.exe")),"check created output"
         print("R50_ACCEPTED: runtime byte writes, byte truncation, akshar, vartani_len and vartani_cmp; 2/2 native executions; 2/2 --check")
     return 0

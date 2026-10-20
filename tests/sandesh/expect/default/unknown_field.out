@@ -1,0 +1,5 @@
+unknown_field.sm:6:13: Sutram Error [E_UNKNOWN_FIELD]: agyat kshetra 'q'
+      likha(p.q)
+              ^
+Sanket: 'q' kisi rachana ka kshetra nahi
+[compile exit 1]

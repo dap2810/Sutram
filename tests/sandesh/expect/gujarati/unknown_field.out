@@ -1,0 +1,6 @@
+ભાષા પેક મળ્યો: gujarati
+unknown_field.sm:6:13: Sutram Error [E_UNKNOWN_FIELD]: અજ્ઞાત ક્ષેત્ર 'q'
+      likha(p.q)
+              ^
+સંકેત: 'q' કોઈ રચનાનું ક્ષેત્ર નથી
+[compile exit 1]

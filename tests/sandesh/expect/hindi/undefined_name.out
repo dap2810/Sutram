@@ -1,0 +1,6 @@
+भाषा पैक मिला: hindi
+undefined_name.sm:3:11: Sutram Error [E_UNDEFINED_NAME]: अज्ञात नाम 'y'
+      likha(y)
+            ^
+संकेत: प्रयोग से पहले घोषणा आवश्यक है: चर y = ...
+[compile exit 1]

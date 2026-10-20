@@ -72,10 +72,6 @@
   "EQUIVALENT",
   "as C7"
  ],
- "nighantu.nighantu_apanay C12:>=->>": [
-  "GAP",
-  "j == cap reads the key-length cell of slot 0 instead of wrapping; needs a deletion whose probe chain wraps past the end with a 1-byte key in slot 0"
- ],
  "varna.varna_unnat C1:<-><=": [
   "EQUIVALENT",
   "slen = 0: the loop does nothing and dst[0] = 0 either way"
@@ -315,5 +311,113 @@
  "shreni.mil_shreni_punar R": [
   "NO-CONTRACT",
   "the return value of this private recursion is not documented or used"
+ ],
+ "kalana.kalana_trapiz C1:<-><=": [
+  "EQUIVALENT",
+  "R11 clamp: at kosh_len(ys) == n the assignment stores the value n already has (kosh_len has no side effect); the clamp rule's pattern does not match a call on the left"
+ ],
+ "kalana.simpson C1:<-><=": [
+  "EQUIVALENT",
+  "R11 clamp: at kosh_len(ys) == n the assignment stores the value n already has (kosh_len has no side effect); the clamp rule's pattern does not match a call on the left"
+ ],
+ "kalana.pravan C1:<-><=": [
+  "EQUIVALENT",
+  "R11 clamp: at kosh_len(ys) == n the assignment stores the value n already has (kosh_len has no side effect); the clamp rule's pattern does not match a call on the left"
+ ],
+ "kalana.pravan2 C1:<-><=": [
+  "EQUIVALENT",
+  "R11 clamp: at kosh_len(ys) == n the assignment stores the value n already has (kosh_len has no side effect); the clamp rule's pattern does not match a call on the left"
+ ],
+ "samanvaya.sadish_yoga C1:<-><=": [
+  "EQUIVALENT",
+  "R11 clamp: at kosh_len(v) == n the assignment stores the value n already has (kosh_len has no side effect); the clamp rule's pattern does not match a call on the left"
+ ],
+ "kalana.bahu_mula C3:<-><=": [
+  "EQUIVALENT",
+  "R11: flo == 0.0 and fhi == 0.0 return two lines earlier (NaN too: with ucomisd an unordered compare sets ZF, so NaN == 0.0 is true), so here flo is nonzero and flo < 0.0 equals flo <= 0.0"
+ ],
+ "kalana.bahu_mula C5:<-><=": [
+  "EQUIVALENT",
+  "R11: as C3, for fhi"
+ ],
+ "kalana.bahu_mula C8:<-><=": [
+  "EQUIVALENT",
+  "R11: fm == 0.0 (and NaN) returns on the line before, so fm is nonzero here"
+ ],
+ "kalana.bahu_mula C10:<-><=": [
+  "EQUIVALENT",
+  "R11: flo is the starting value (nonzero, see C3) or an earlier fm (nonzero, see C8)"
+ ],
+ "khand.khand_unnat C2:<-><=": [
+  "EQUIVALENT",
+  "R11: the extra pass i = slen writes out[slen], which the terminator store right after the loop overwrites with 0; the only other effect is a read of src[slen], one byte past the input"
+ ],
+ "khand.khand_avanat C2:<-><=": [
+  "EQUIVALENT",
+  "R11: as khand_unnat C2"
+ ],
+ "varna.varna_unnat C2:<-><=": [
+  "EQUIVALENT",
+  "R11: as khand_unnat C2, for cells: dst[slen] is overwritten by the terminator store"
+ ],
+ "varna.varna_avanat C2:<-><=": [
+  "EQUIVALENT",
+  "R11: as varna_unnat C2"
+ ],
+ "khand.khand_viparyay C2:<-><=": [
+  "EQUIVALENT",
+  "R11: the extra pass happens only at i == j (odd n, the middle byte) and stores s[mid] at dst[mid], which the odd-length store after the loop does too; for even n the loop ends at i = j + 1. In place (src == out) the same"
+ ],
+ "varna.varna_viparyay C2:<-><=": [
+  "EQUIVALENT",
+  "R11: as khand_viparyay C2"
+ ],
+ "varna.varna_viparyay C1:<=-><": [
+  "EQUIVALENT",
+  "R11: n == 0 then runs the main path: no swaps (j = -1), no middle store (0 % 2 == 0), dst[0] = 0, return 0: the same as the guarded branch"
+ ],
+ "nighantu.nighantu_kunji_gudh C1:<-><=": [
+  "EQUIVALENT",
+  "R11: cap == 1: the real function returns fnv1a(...) % 1, which is 0 for every hash, and fnv1a has no side effect"
+ ],
+ "nighantu.nighantu_koshtha_likh R": [
+  "NO-CONTRACT",
+  "R11: an internal helper; its return value is not documented and its one caller (nighantu_khip) calls it as a statement"
+ ],
+ "roop.roop_varg_mool C4:<-><=": [
+  "EQUIVALENT",
+  "R11: the extra pass i = cnt can only set dot = cnt, which is dot's starting value; it reads one byte past the input"
+ ],
+ "roop.roop_varg_mool C12:>->>=": [
+  "EQUIVALENT",
+  "R11: this test is in the anya of yadi (rem == 3), so rem != 3 and rem > 3 equals rem >= 3"
+ ],
+ "samanvaya.rekha_manak C3:<-><=": [
+  "EQUIVALENT",
+  "R11 abs-zero with a dasham literal: at e == 0.0 the mutant makes e = +0.0 where the real code may keep -0.0; row starts at +0.0 and only grows, and row + -0.0 == row + 0.0 for every such row"
+ ],
+ "sangrah.rakh_tak_mala C2:<-><=": [
+  "EQUIVALENT",
+  "R11: the extra byte copied per segment lands on the first byte of the next segment's copy, which the next pass overwrites; after the last segment it lands inside scratch (cap*32+1 bytes) past every segment, where nothing reads (khand_tul and khand_mukt read lens[i] bytes from ptrs[i])"
+ ],
+ "sangrah.rakh_tak_mala C3:<-><=": [
+  "EQUIVALENT",
+  "R11: the extra outer bubble pass i = nk - 1 has an empty inner loop (j < 0)"
+ ],
+ "sangrah.rakh_tak_mala C5:>->>=": [
+  "EQUIVALENT",
+  "R11: a set's elements are distinct stored byte strings, so khand_tul of two different elements is never 0 and no equal pair is swapped"
+ ],
+ "sankhyiki.purna_vyapti C1:<=-><": [
+  "EQUIVALENT",
+  "R11: n == 0: purna_adhikatama and purna_laghutama both return 0 for n <= 0, so the mutant returns 0 - 0 = 0, the real result"
+ ],
+ "varna.varna_chhid C2:>=->>": [
+  "EQUIVALENT",
+  "R11: at lo == slen the mutant reads s[slen] (and on while those are spaces) and may move lo further; then hi = slen <= lo and the copy loop copies nothing: empty output, return 0, as the real code. It only reads past the end"
+ ],
+ "varna.varna_chhid C5:<=-><": [
+  "EQUIVALENT",
+  "R11: at hi == lo the mutant reads s[hi - 1] once more (a leading space when lo > 0, s[-1] when slen == 0) and may lower hi below lo; the copy loop copies nothing either way"
  ]
 }

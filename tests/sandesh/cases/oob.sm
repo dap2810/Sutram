@@ -1,0 +1,6 @@
+# R11: a run-time error: an index past the end of a mala
+mukhya() {
+    mala a[3]
+    vitti i = 5
+    a[i] = 1
+}

@@ -1,0 +1,6 @@
+ಭಾಷಾ ಪ್ಯಾಕ್ ಸಿಕ್ಕಿದೆ: kannada
+duplicate.sm:4:11: Sutram Error [E_DUPLICATE_NAME]: ಮರು-ಘೋಷಣೆ 'x'
+      vitti x = 2
+            ^
+ಸೂಚನೆ: 'x' ಈಗಾಗಲೇ ಘೋಷಿತವಾಗಿದೆ; ಹೊಸ ಮೌಲ್ಯ ನೀಡಲು: x = ...
+[compile exit 1]
