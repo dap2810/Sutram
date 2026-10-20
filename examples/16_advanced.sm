@@ -2,12 +2,12 @@
 
 mukhya()
     sutra LIMIT = 10
-    
+
     likha("=== Advanced Sutram ===\n")
     likha("Primes up to ")
     likha(LIMIT)
     likha(":\n")
-    
+
     chakra n = 2 tak LIMIT {
         vitti asti_abhajya = 1
         vitti d = 2
@@ -23,20 +23,20 @@ mukhya()
         }
     }
     likha("\n")
-    
+
     vitti flags = 0
     flags = flags | 1
     flags = flags | 4
     likha("Flags: ")
     likha(flags)
     likha("\n")
-    
+
     vitti check = flags & 4
     yadi (check != 0) {
         likha("Bit 2 is set\n")
     }
-    
+
     abhava(flags > 0)
     likha("All assertions passed\n")
-    
+
     likha("=== Done ===\n")
