@@ -1,3 +1,33 @@
+## v243 - the two Hindi items are NOT errors. The three supported packs need no changes.
+
+**The owner's review was going to be 384 messages. ChatGPT narrowed it to two. And now the two turn out to be
+fine.**
+
+| # | String | What it is | The finding |
+|---|---|---|---|
+| 1 | `   |   भाषा: ` | the IDE status line's language label | **flagged only because it is byte-identical to Sanskrit.** `भाषा` is normal Hindi and clearly means *language*. **Not an error.** |
+| 2 | `   |   लिपि: ` | the IDE's script label | **Same** - identical to Sanskrit, but `लिपि` is the usual Hindi word for *script*. **Not an error.** |
+
+**And ChatGPT states the cause precisely:** *"The two original mechanical flags arose only because the short
+labels are identical in both packs, not because script or syntax validation failed. Neither is a confirmed
+mistranslation."*
+
+**That is the right distinction, and it is the one a mechanical check cannot make.** The check flagged
+*identical*, a human reads *correct*, **and the two are not the same finding.**
+
+**Its recommendation: KEEP BOTH.** And it offers longer alternatives (`चयनित भाषा`, `टाइपिंग लिपि`) only if the
+owner wants emphasis - **and notes they are longer, so the status-bar layout would need checking.**
+
+### So the three supported packs are CLEAN
+
+**Gujarati: 0 candidates. Sanskrit: 0. Hindi: 2 - both of which are fine.**
+
+**The review that was going to be three packs of 128 messages is now one line: "keep both."** And that is not
+a shortcut - **it is what happens when 1,408 strings are narrowed by a machine to the two that a machine could
+not decide.**
+
+**`HINDI-TWO-ITEMS.md` is delivered to the owner.**
+
 ## v242 - ROUND-20 and ROUND-88 issued
 
 **ROUND-20 (Claude)** tells it to **prepare both F7 options as diffs and apply neither** - *the owner decides;
