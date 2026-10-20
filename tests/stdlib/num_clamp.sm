@@ -1,9 +1,9 @@
 yoj ank
 mukhya() {
-    likha(seemit(5,1,10))
+    likha(seemit(5, 1, 10))
     likha("\n")
-    likha(seemit(-5,1,10))
+    likha(seemit(-5, 1, 10))
     likha("\n")
-    likha(seemit(15,1,10))
+    likha(seemit(15, 1, 10))
     likha("\n")
 }
