@@ -1,0 +1,6 @@
+भाषा पैक मिला: hindi
+parse.sm:3:11: Sutram Error [E_PARSE]: शब्द '='
+      vitti = 5
+            ^
+सूत्रम् जाँच: दोष मिले; निर्गत फ़ाइल नहीं बनी
+[compile exit 1]
