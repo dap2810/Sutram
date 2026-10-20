@@ -1,3 +1,27 @@
+## v234 - stale numbers fixed, and the "303 of 303" claim qualified
+
+### The stale numbers
+
+**`docs/sutram-project-status.html` was three releases behind**: it said **180 library proofs**, **187
+tests** and **72 property proofs**. The gates say **217, 205 and 86.** Fixed.
+
+**`PROJECT-MASTER.md` said 210/210 proofs** - also behind. Now 217/217.
+
+**These are the numbers a reader trusts most**, and they drift because nothing checks them. **The version gate
+catches the version string; nothing catches a KPI in an HTML page.**
+
+### And the claim that needed qualifying more than correcting
+
+**"303 of 303 library functions" is a weaker claim than it reads**, and `PROJECT-MASTER.md` now says so:
+
+> *The library has a passing proof for every function, **but Claude's mutant measure leaves 818 mutants
+> UNDECIDED** - and **15 bug-shaped mutants survive every proof**, including **a sign error in
+> `madhava_sin`, `madhava_cos` and `madhava_atan` that no proof takes the lower half of the argument
+> reduction for.** So: **proven against every bug the measure has thought of, not proven correct.***
+
+**That is the honest form of the number**, and it is the form the project should carry: **the coverage is
+real, the strength is partial, and the gap has a name.**
+
 ## v233 - a SIGN ERROR IN THE TRIGONOMETRY PASSES ALL 303 PROOFS. And no proof is decoration.
 
 ### R17-04 brought the finding forward, and it is the best answer to a bad question
