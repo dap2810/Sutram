@@ -1,3 +1,47 @@
+## v208 - a gate for the version string: the one number nobody measured
+
+**I said in v207 that "nothing fails when the version is wrong" and that it should be a gate rather than a
+discipline. It is now a gate.**
+
+**`tools/version_gate.py`, wired into `gates.sh`. `gates.sh` reads 12 PASS / 0 FAIL / 1 NOT-RUN.**
+
+**What it does:**
+- **FAIL** if the version string is missing or malformed - nothing can be checked without it
+- **FAIL** if the compiler carries more than one version string (it carries one today)
+- **PASS** if it is present and well-formed
+- **NOTE** if it lags the CHANGELOG by more than five versions
+
+**On the current tree it prints:**
+```
+compiler says: v182
+CHANGELOG top: v207
+NOTE: the version string lags the CHANGELOG by 25 versions.
+      Not a failure - the compiler may change between releases. But it is the
+      first line a user reads, and it has drifted silently twice. Bump it.
+version string present and well-formed
+```
+
+### Why a NOTE and not a FAIL
+
+**A hard failure would fire on every compiler change between releases, and a gate that cries wolf trains
+people to ignore it.** The compiler legitimately changes many times per release; the version string does not
+need to move with each one.
+
+**What matters is that the lag is VISIBLE rather than discovered by a user on install** - which is exactly how
+the owner found the v160 staleness himself, on his first command.
+
+### The pattern this closes
+
+**Every other number in this project is measured by a gate. This one was typed by hand.** It drifted to v160
+(while the project was at v182), and then to v182 (while the compiler changed twice more). **Twice is a
+pattern, not an accident.**
+
+**And it is now the second gate I have added in this stretch** - after `bench_gate.py`, which closed the same
+kind of gap for performance: a claim the project made but never measured.
+
+**`tools/gates.sh` is shared with Claude** - it was told to keep the interface cheap to change, and the gate
+list is where that matters most.
+
 ## v207 - audit: the tree is clean; one finding, the version string has drifted again
 
 **Full sweep on main.** **2,753 files, no `__pycache__`, no `.pyc`, no `.tmp`, no `.orig`.** The gate numbers
