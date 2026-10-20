@@ -15,32 +15,11 @@
       "context": "utram Error: vyakaran dosh, pankti 4:5, shabd '<span class=\"k\" data-tip=\"print\">"
     },
     {
-      "path": "docs/sutram-book-english.html",
-      "line": 341,
-      "old": "abhava",
-      "kind": "documentation_code_review",
-      "context": "\"k\" data-tip=\"negation (-)\">abhava</span></code>"
-    },
-    {
       "path": "docs/sutram-book-gujarati.html",
       "line": 286,
       "old": "pankti",
       "kind": "documentation_code_review",
       "context": "utram Error: vyakaran dosh, pankti 4:5, shabd '<span class=\"k\" data-tip=\"સંસ્કૃત"
-    },
-    {
-      "path": "docs/sutram-book-gujarati.html",
-      "line": 314,
-      "old": "abhava",
-      "kind": "documentation_code_review",
-      "context": "lass=\"k\" data-tip=\"સંસ્કૃત: abhava · negation (-)\">abhava</span></code>"
-    },
-    {
-      "path": "docs/sutram-book-gujarati.html",
-      "line": 314,
-      "old": "abhava",
-      "kind": "documentation_code_review",
-      "context": "કૃત: abhava · negation (-)\">abhava</span></code>"
     },
     {
       "path": "docs/sutram-book-hindi.html",
@@ -50,32 +29,11 @@
       "context": "utram Error: vyakaran dosh, pankti 4:5, shabd '<span class=\"k\" data-tip=\"संस्कृत"
     },
     {
-      "path": "docs/sutram-book-hindi.html",
-      "line": 347,
-      "old": "abhava",
-      "kind": "documentation_code_review",
-      "context": "lass=\"k\" data-tip=\"संस्कृत: abhava · negation (-)\">abhava</span></code>"
-    },
-    {
-      "path": "docs/sutram-book-hindi.html",
-      "line": 347,
-      "old": "abhava",
-      "kind": "documentation_code_review",
-      "context": "कृत: abhava · negation (-)\">abhava</span></code>"
-    },
-    {
       "path": "docs/sutram-book-sanskrit.html",
       "line": 276,
       "old": "pankti",
       "kind": "documentation_code_review",
       "context": "utram Error: vyakaran dosh, pankti 4:5, shabd '<span class=\"k\" data-tip=\"अर्थः: "
-    },
-    {
-      "path": "docs/sutram-book-sanskrit.html",
-      "line": 305,
-      "old": "abhava",
-      "kind": "documentation_code_review",
-      "context": "a-tip=\"अर्थः: negation (-)\">abhava</span></code>"
     },
     {
       "path": "docs/sutram-book-tamil.html",
@@ -85,39 +43,12 @@
       "context": "utram Error: vyakaran dosh, pankti 4:5, shabd '<span class=\"k\" data-tip=\"சமசுகிர"
     },
     {
-      "path": "docs/sutram-book-tamil.html",
-      "line": 320,
-      "old": "abhava",
-      "kind": "documentation_code_review",
-      "context": "=\"k\" data-tip=\"சமசுகிருதம்: abhava · negation (-)\">abhava</span></code>"
-    },
-    {
-      "path": "docs/sutram-book-tamil.html",
-      "line": 320,
-      "old": "abhava",
-      "kind": "documentation_code_review",
-      "context": "தம்: abhava · negation (-)\">abhava</span></code>"
-    },
-    {
       "path": "docs/sutram-book-telugu.html",
       "line": 315,
       "old": "pankti",
       "kind": "documentation_code_review",
       "context": "utram Error: vyakaran dosh, pankti 4:5, shabd '<span class=\"k\" data-tip=\"సంస్కృత"
-    },
-    {
-      "path": "docs/sutram-book-telugu.html",
-      "line": 347,
-      "old": "abhava",
-      "kind": "documentation_code_review",
-      "context": "ass=\"k\" data-tip=\"సంస్కృతం: abhava · negation (-)\">abhava</span></code>"
-    },
-    {
-      "path": "docs/sutram-book-telugu.html",
-      "line": 347,
-      "old": "abhava",
-      "kind": "documentation_code_review",
-      "context": "ృతం: abhava · negation (-)\">abhava</span></code>"
     }
-  ]
+  ],
+  "note": "Scanner candidate list corrected to R74's exact obsolete token set; abhava is current accepted syntax, not an obsolete token."
 }
