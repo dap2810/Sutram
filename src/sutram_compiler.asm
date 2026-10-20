@@ -46,6 +46,7 @@ CONTINUE_PATCH_CAP equ 1024   ; active continue patch entries across nested loop
 RACHANA_CAP equ 16            ; 256-byte entries in 4096-byte table
 RACHANA_FIELDS_CAP equ 15     ; 16-byte header + 15*16-byte fields = 256 bytes
 BLOCK_NESTING_CAP equ 128     ; parser recursion guard for nested blocks
+EXPR_NESTING_CAP  equ 1024    ; R17 R6: parser recursion guard for nested expressions ( ( ( ... ) ) )
 NS_FUNC_CAP equ 128         ; max exported user functions in an aliased module
 NS_FUNC_NAME_CAP equ 63    ; max function name bytes for module rewrite
 NS_ALIAS_CAP equ 31        ; ASCII alias bound, excluding terminator
@@ -218,7 +219,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v208) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v229) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r48_msg_near db ": Sutram Error [E_PARSE]: shabd '",0
@@ -922,6 +923,7 @@ section .bss
     cur_line    resq 1      ; current source line (error reporting)
     parse_error_kind resq 1 ; 0=generic, 1=too many function args, 2=duplicate function
     parse_block_depth resq 1 ; B10 audit: guarded recursive block nesting depth
+    parse_expr_depth  resq 1 ; R17 R6: nesting depth of the expression being parsed
     orig_rsp    resq 1      ; original stack ptr at _start (for envp scan)
     ; Language pack support
     lang_file_buf resb 16384 ; contents of .lang file
@@ -2060,6 +2062,7 @@ _start:
     mov qword [rel r48_stmt_valid], 0
     mov qword [rel func_def_cnt], 0
     mov qword [rel parse_block_depth], 0
+    mov qword [rel parse_expr_depth], 0
 .r48_parse_normal:
     call parse_program
 %ifdef R49_WIN_DIAG_7
@@ -6395,8 +6398,8 @@ lex:
     movzx rax, byte [r13+1]
     cmp al, '='
     je .emit_neq
-    inc r13
-    jmp .lex_loop
+    mov r8, '!'               ; R17 D1: unary not, was silently skipped
+    jmp .emit_op
 .emit_neq:
     mov r8, 0x3D21
     add r13, 2
@@ -8239,7 +8242,11 @@ print_source_context:
     lea r15, [rel source_buf]
     add r15, [rel source_len]       ; source end
     cmp r12, r15
-    jbe .psc_ptr_ok
+    jbe .psc_ptr_hi_ok
+    mov r12, r15
+.psc_ptr_hi_ok:
+    cmp r12, r13                    ; R17 R1-R3: a token with no source pointer
+    jae .psc_ptr_ok                 ; (the end of the file) is shown at the end
     mov r12, r15
 .psc_ptr_ok:
     ; Find start of the source line.
@@ -8697,6 +8704,8 @@ parse_stmt:
     mov rcx, rax              ; rcx = else-block
     mov rax, [rsp]            ; rax = if-node
     mov [rax+24], rcx         ; store else block
+    jmp .ps_if_done           ; R17 R4: one anya only. A second one used to be
+                              ; parsed below, over the first, and crashed.
 .ps_if_no_else:
     ; Check for 'anyatra' (else or elif)
     ; if-node is already on stack from push at line ~1245
@@ -8800,8 +8809,18 @@ parse_stmt:
     ; Preserve the historical permissive untyped-parameter grammar. Explicit
     ; dasham/kosh prefixes require a following identifier.
     test r10d, r10d
-    jz .ps_fd_param_name_ok
+    jz .ps_fd_param_untyped
     cmp rcx, TOK_IDENT
+    jne parse_error
+    jmp .ps_fd_param_name_ok
+.ps_fd_param_untyped:
+    ; R17 R2: a parameter is a name. The end of the file, a number, a string,
+    ; an operator or a delimiter here used to be stored as a name and crashed.
+    cmp rcx, TOK_IDENT
+    je .ps_fd_param_name_ok
+    cmp rcx, TOK_KEYWORD
+    je .ps_fd_param_name_ok
+    cmp rcx, TOK_BUILTIN
     jne parse_error
 .ps_fd_param_name_ok:
     cmp r12, 6
@@ -9175,6 +9194,12 @@ parse_stmt:
     call advance_tok          ; consume '}'
     call maybe_semi
     mov rax, [rsp+8]          ; first_if
+    test rax, rax
+    jnz .ps_guna_have_cases
+    call alloc_ast            ; R17: an empty guna { } is an empty block, not a null statement
+    mov qword [rax], AST_BLOCK
+    mov qword [rax+8], 0
+.ps_guna_have_cases:
     add rsp, 24               ; clean up 3 pushes
     pop rdx                   ; R9: hidden DECL or 0
     test rdx, rdx
@@ -9326,6 +9351,15 @@ push r12                  ; save r12 (parse_func_block uses it)
     je .pr_field_done
     jmp parse_error
 .pr_field_name:
+    ; R17 R3: a field is a name. The end of the file or a number here used to
+    ; be stored as a name and crashed.
+    cmp rcx, TOK_IDENT
+    je .pr_field_name_ok
+    cmp rcx, TOK_KEYWORD
+    je .pr_field_name_ok
+    cmp rcx, TOK_BUILTIN
+    jne parse_error
+.pr_field_name_ok:
     cmp r12, RACHANA_FIELDS_CAP
     jae .pr_rachana_fields_overflow
     mov rdx, [rax+8]         ; field name ptr
@@ -9396,6 +9430,32 @@ push r12                  ; save r12 (parse_func_block uses it)
     cmp rcx, TOK_OPERATOR
     jne .ps_expr_done
     mov rcx, [rax+8]
+    ; R17 R5: only a name, an element or a field can be assigned to. Any other
+    ; expression left of = (or += ...) used to be stored as a name and crashed.
+    mov rdx, [rbx]
+    cmp rdx, AST_VAR
+    je .ps_target_ok
+    cmp rdx, AST_INDEX
+    je .ps_target_ok
+    cmp rdx, AST_FIELD
+    je .ps_target_ok
+    cmp rcx, '='
+    je parse_error
+    cmp rcx, 0x3D2B           ; +=
+    je parse_error
+    cmp rcx, 0x3D2D           ; -=
+    je parse_error
+    cmp rcx, 0x3D2A           ; *=
+    je parse_error
+    cmp rcx, 0x3D2F           ; /=
+    je parse_error
+    cmp rcx, 0x3D25           ; %=
+    je parse_error
+    cmp rcx, 0x2B2B           ; ++
+    je parse_error
+    cmp rcx, 0x2D2D           ; --
+    je parse_error
+.ps_target_ok:
     cmp rcx, '='
     jne .ps_check_compound
     ; Assignment: rbx = parse_expr
@@ -9661,7 +9721,7 @@ parse_land:
     push r12
     push r13
     push r14
-    call parse_cmp
+    call parse_bitor          ; R17 D4: the bitwise operators bind looser than the comparisons
     mov rbx, rax              ; left
 .land_loop:
     call cur_tok
@@ -9673,7 +9733,7 @@ parse_land:
     jne .land_done
     mov r12, OP_LAND
     call advance_tok
-    call parse_cmp            ; rax = right
+    call parse_bitor          ; rax = right (R17 D4)
     mov r13, rax
     mov r14, r12
     push rbx
@@ -9703,54 +9763,34 @@ parse_land:
     pop rbx
     ret
 
-; parse_cmp() -> rax = AST node
-; Handles ==, !=, <, >, <=, >=
-parse_cmp:
+; parse_eq() -> rax = AST node   (R17 D4: the documented C order)
+; Handles == and !=; its operands are parse_rel
+parse_eq:
     push rbx
     push r12
     push r13
     push r14
-    call parse_bitor
+    call parse_rel
     mov rbx, rax              ; left
-.cmp_loop:
+.eq_loop:
     call cur_tok
     mov rcx, [rax]
     cmp rcx, TOK_OPERATOR
-    jne .cmp_done
+    jne .eq_done
     mov rcx, [rax+8]
     cmp rcx, 0x3D3D           ; ==
-    je .c_eq
+    je .e_eq
     cmp rcx, 0x3D21           ; !=
-    je .c_ne
-    cmp rcx, 0x3D3C           ; <=
-    je .c_le
-    cmp rcx, 0x3D3E           ; >=
-    je .c_ge
-    cmp rcx, '<'
-    je .c_lt
-    cmp rcx, '>'
-    je .c_gt
-    jmp .cmp_done
-.c_eq:
+    je .e_ne
+    jmp .eq_done
+.e_eq:
     mov r12, OP_EQ
-    jmp .c_do
-.c_ne:
+    jmp .e_do
+.e_ne:
     mov r12, OP_NE
-    jmp .c_do
-.c_le:
-    mov r12, OP_LE
-    jmp .c_do
-.c_ge:
-    mov r12, OP_GE
-    jmp .c_do
-.c_lt:
-    mov r12, OP_LT
-    jmp .c_do
-.c_gt:
-    mov r12, OP_GT
-.c_do:
+.e_do:
     call advance_tok
-    call parse_bitor            ; rax = right
+    call parse_rel            ; rax = right
     mov r13, rax
     mov r14, r12
     push rbx
@@ -9771,8 +9811,75 @@ parse_cmp:
     mov [rax+16], rbx
     mov [rax+24], r13
     mov rbx, rax
-    jmp .cmp_loop
-.cmp_done:
+    jmp .eq_loop
+.eq_done:
+    mov rax, rbx
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; parse_rel() -> rax = AST node   (R17 D4)
+; Handles <, >, <=, >=; its operands are parse_shift
+parse_rel:
+    push rbx
+    push r12
+    push r13
+    push r14
+    call parse_shift
+    mov rbx, rax              ; left
+.rel_loop:
+    call cur_tok
+    mov rcx, [rax]
+    cmp rcx, TOK_OPERATOR
+    jne .rel_done
+    mov rcx, [rax+8]
+    cmp rcx, 0x3D3C           ; <=
+    je .c_le
+    cmp rcx, 0x3D3E           ; >=
+    je .c_ge
+    cmp rcx, '<'
+    je .c_lt
+    cmp rcx, '>'
+    je .c_gt
+    jmp .rel_done
+.c_le:
+    mov r12, OP_LE
+    jmp .c_do
+.c_ge:
+    mov r12, OP_GE
+    jmp .c_do
+.c_lt:
+    mov r12, OP_LT
+    jmp .c_do
+.c_gt:
+    mov r12, OP_GT
+.c_do:
+    call advance_tok
+    call parse_shift          ; rax = right
+    mov r13, rax
+    mov r14, r12
+    push rbx
+    push r14
+    push r13
+    call alloc_ast
+    pop r13
+    pop r14
+    pop rbx
+    mov qword [rax], AST_BINOP
+%ifdef SUTRAM_R65_TRAP_INT
+    push rcx                  ; unary-minus builder retains AST_NUM in RCX
+    mov rcx,[rel cur_line]
+    mov [rax+32],rcx          ; R65: parser-time BINOP source line
+    pop rcx
+%endif
+    mov [rax+8], r14
+    mov [rax+16], rbx
+    mov [rax+24], r13
+    mov rbx, rax
+    jmp .rel_loop
+.rel_done:
     mov rax, rbx
     pop r14
     pop r13
@@ -9892,7 +9999,7 @@ parse_bitand:
     push r12
     push r13
     push r14
-    call parse_shift
+    call parse_eq             ; R17 D4: & binds looser than == !=
     mov rbx, rax              ; left
 .band_loop:
     call cur_tok
@@ -9906,7 +10013,7 @@ parse_bitand:
 .band_take:
     mov r12, OP_AND
     call advance_tok
-    call parse_shift               ; rax = right
+    call parse_eq             ; R17 D4               ; rax = right
     mov r13, rax
     mov r14, r12
     push rbx
@@ -10359,7 +10466,22 @@ fc_make_str:
     ret
 
 ; parse_primary() → rax = AST node
+; R17 R6: every nested expression ( (...), -x, !x, f(...) ) passes through here.
+; Unbounded nesting ran the parser out of stack at about 18,600 levels and
+; crashed; now it is a diagnostic (the block-nesting one) at EXPR_NESTING_CAP.
 parse_primary:
+    mov rax, [rel parse_expr_depth]
+    cmp rax, EXPR_NESTING_CAP
+    jae .pp_nesting_overflow
+    inc qword [rel parse_expr_depth]
+    call parse_primary_inner
+    dec qword [rel parse_expr_depth]
+    ret
+.pp_nesting_overflow:
+    lea rdi, [rel msg_block_nesting_overflow]
+    jmp capacity_fail
+
+parse_primary_inner:
     push rbx
     call cur_tok
     mov rcx, [rax]            ; token type
@@ -10372,6 +10494,8 @@ parse_primary:
     cmp rcx, TOK_OPERATOR
     jne .pp_check_kw
     mov rcx, [rax+8]
+    cmp rcx, '!'
+    je .pp_not
     cmp rcx, '-'
     jne .pp_check_delim
     ; Unary minus — consume '-' and parse the following expression
@@ -10415,6 +10539,41 @@ parse_primary:
     mov qword [rax+8], OP_SUB
     mov [rax+16], rcx         ; left = 0
     mov [rax+24], rdx         ; right = expr
+    pop rbx
+    ret
+
+.pp_not:
+    ; R17 D1: logical not. !expr is BINOP(expr == 0): 1 when expr is 0, else 0.
+    call advance_tok          ; consume '!'
+    call parse_primary        ; rax = inner expr
+    mov rcx, [rax]
+    cmp rcx, AST_NUM
+    jne .pp_not_expr
+    xor edx, edx              ; a literal: fold it
+    cmp qword [rax+8], 0
+    sete dl
+    mov [rax+8], rdx
+    pop rbx
+    ret
+.pp_not_expr:
+    push rax                  ; the expression (left)
+    call alloc_ast
+    mov qword [rax], AST_NUM
+    mov qword [rax+8], 0
+    push rax                  ; AST_NUM(0) (right)
+    call alloc_ast
+    pop rdx                   ; rdx = AST_NUM(0)
+    pop rcx                   ; rcx = expr
+    mov qword [rax], AST_BINOP
+%ifdef SUTRAM_R65_TRAP_INT
+    push rcx
+    mov rcx,[rel cur_line]
+    mov [rax+32],rcx
+    pop rcx
+%endif
+    mov qword [rax+8], OP_EQ
+    mov [rax+16], rcx         ; left = expr
+    mov [rax+24], rdx         ; right = 0
     pop rbx
     ret
 
@@ -12843,6 +13002,7 @@ gen_stmt:
     mov rax, [rel code_sz]
     sub rax, r13
     sub rax, 4
+    lea rcx, [rel code_buf]  ; R17 D2/D3: gen_block above may change rcx
     mov [rcx + r13], eax
     pop r13
     pop r12
