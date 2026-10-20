@@ -1,0 +1,6 @@
+ভাষা প্যাক পাওয়া গেছে: bengali
+unknown_field.sm:6:13: Sutram Error [E_UNKNOWN_FIELD]: অজানা ক্ষেত্র 'q'
+      likha(p.q)
+              ^
+পরামর্শ: 'q' কোনো রচনার ক্ষেত্র নয়
+[compile exit 1]
