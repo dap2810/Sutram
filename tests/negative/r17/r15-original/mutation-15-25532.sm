@@ -1,0 +1,3 @@
+# kosh_push may reallocate and replace the pointer; by-value parameters therefore
+# reject liberetely gains a reference/descriptor ABI.
+prakriya append_onnd_one(
