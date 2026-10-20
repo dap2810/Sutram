@@ -1,0 +1,333 @@
+{
+  "commit": "9bff1dd63877ac2c15ccd76a25153fe3c01ef015",
+  "scope": "52 current compiler/platform/IDE tracked files selected by path and source extension; direct retrieval of all 52 succeeded",
+  "terms": [
+    "pratiyati",
+    "ayojan",
+    "punaravartana",
+    "nishkriya",
+    "nishedha",
+    "srijana",
+    "char_at",
+    "char_code",
+    "set_char"
+  ],
+  "source_files_total": 52,
+  "source_files_screened": 52,
+  "candidate_occurrences": 44,
+  "classification_counts": {
+    "COMMENT_ONLY": 38,
+    "LEGACY_RENAME_HINT_DATA": 6
+  },
+  "note": "This is a limited nine-token lexical screening of compiler/platform/IDE files, not the complete tracked-repository semantic audit. A comment/compat classification is a mechanical hint, not final manual verification.",
+  "findings": [
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 259,
+      "term": "char_at",
+      "classification": "COMMENT_ONLY",
+      "snippet": "db 2,2               ; 23 char_at"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 260,
+      "term": "char_code",
+      "classification": "COMMENT_ONLY",
+      "snippet": "db 1,2               ; 24 char_code"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 277,
+      "term": "set_char",
+      "classification": "COMMENT_ONLY",
+      "snippet": "db 3,3               ; 41 set_char"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 314,
+      "term": "punaravartana",
+      "classification": "LEGACY_RENAME_HINT_DATA",
+      "snippet": "r4_o_punar db \"punaravartana\",0"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 315,
+      "term": "pratiyati",
+      "classification": "LEGACY_RENAME_HINT_DATA",
+      "snippet": "r4_o_prati db \"pratiyati\",0"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 318,
+      "term": "srijana",
+      "classification": "LEGACY_RENAME_HINT_DATA",
+      "snippet": "r4_o_srij db \"srijana\",0"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 319,
+      "term": "nishedha",
+      "classification": "LEGACY_RENAME_HINT_DATA",
+      "snippet": "r4_o_nish db \"nishedha\",0"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 320,
+      "term": "ayojan",
+      "classification": "LEGACY_RENAME_HINT_DATA",
+      "snippet": "r4_o_ayoj db \"ayojan\",0"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 322,
+      "term": "nishkriya",
+      "classification": "LEGACY_RENAME_HINT_DATA",
+      "snippet": "r4_o_nishk db \"nishkriya\",0"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 782,
+      "term": "ayojan",
+      "classification": "COMMENT_ONLY",
+      "snippet": "source_path_ptr resq 1      ; original input path for ayojan resolution"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 823,
+      "term": "ayojan",
+      "classification": "COMMENT_ONLY",
+      "snippet": "import_buf  resb IMPORT_BUF_CAP ; dedicated ayojan expansion buffer"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 832,
+      "term": "ayojan",
+      "classification": "COMMENT_ONLY",
+      "snippet": "module_path_buf resb 512      ; dedicated ayojan path scratch"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 904,
+      "term": "ayojan",
+      "classification": "COMMENT_ONLY",
+      "snippet": "import_names resb IMPORT_NAMES_CAP * 64 ; fixed 64-byte module-name slots for ayojan dedupe"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 2279,
+      "term": "ayojan",
+      "classification": "COMMENT_ONLY",
+      "snippet": "; R49 check-only accurate location for an ayojan module directive."
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 2281,
+      "term": "ayojan",
+      "classification": "COMMENT_ONLY",
+      "snippet": "; the actual \"ayojan\" keyword and returns an honest column.  If the original"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 2322,
+      "term": "ayojan",
+      "classification": "COMMENT_ONLY",
+      "snippet": "; still looked for the 6-byte \"ayojan\" and therefore printed '?'."
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 2371,
+      "term": "ayojan",
+      "classification": "COMMENT_ONLY",
+      "snippet": "; lines rather than an ayojan/niryat directive. Find exact original"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 2465,
+      "term": "ayojan",
+      "classification": "COMMENT_ONLY",
+      "snippet": "; MODULE IMPORT - expand ayojan directives"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 2466,
+      "term": "ayojan",
+      "classification": "COMMENT_ONLY",
+      "snippet": "; Scans source for ayojan <name> and inlines lib/<name>.smlib"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 2508,
+      "term": "ayojan",
+      "classification": "COMMENT_ONLY",
+      "snippet": "; Check for comment lines — skip them (don't look for ayojan inside)"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 2536,
+      "term": "ayojan",
+      "classification": "COMMENT_ONLY",
+      "snippet": "; Check for \"ayojan\" at current pos"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 2574,
+      "term": "ayojan",
+      "classification": "COMMENT_ONLY",
+      "snippet": "; Legacy: ayojan math. Namespaced: ayojan math@maths."
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 2828,
+      "term": "ayojan",
+      "classification": "COMMENT_ONLY",
+      "snippet": "; This makes ayojan independent of the caller's CWD while preserving the"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 5124,
+      "term": "ayojan",
+      "classification": "COMMENT_ONLY",
+      "snippet": "; ayojan module@alias  -> exported calls alias__function(...)."
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 6659,
+      "term": "ayojan",
+      "classification": "COMMENT_ONLY",
+      "snippet": "; Parse top-level declarations (rachana, ayojan, prakriya) before mukhya"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 6716,
+      "term": "ayojan",
+      "classification": "COMMENT_ONLY",
+      "snippet": "; T4: definitions imported by ayojan share the same namespace as program"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 8625,
+      "term": "nishkriya",
+      "classification": "COMMENT_ONLY",
+      "snippet": "; nishkriya(\"hex bytes\") — inline assembly"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 8626,
+      "term": "nishkriya",
+      "classification": "COMMENT_ONLY",
+      "snippet": "call advance_tok          ; consume 'nishkriya'"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 8635,
+      "term": "nishkriya",
+      "classification": "COMMENT_ONLY",
+      "snippet": "jne parse_error           ; nishkriya requires a string literal"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 8885,
+      "term": "punaravartana",
+      "classification": "COMMENT_ONLY",
+      "snippet": "; punaravartana i = start to end { body }"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 8886,
+      "term": "punaravartana",
+      "classification": "COMMENT_ONLY",
+      "snippet": "call advance_tok          ; consume 'punaravartana'"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 8912,
+      "term": "punaravartana",
+      "classification": "COMMENT_ONLY",
+      "snippet": "; Expect 'to' keyword (punaravartana uses 'to' as contextual keyword)"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 9003,
+      "term": "nishedha",
+      "classification": "COMMENT_ONLY",
+      "snippet": "; nishedha(expr)  — assert: if expr is false, exit with error"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 9004,
+      "term": "nishedha",
+      "classification": "COMMENT_ONLY",
+      "snippet": "call advance_tok          ; consume 'nishedha'"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 9256,
+      "term": "pratiyati",
+      "classification": "COMMENT_ONLY",
+      "snippet": "call advance_tok          ; consume 'pratiyati'"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 9384,
+      "term": "ayojan",
+      "classification": "COMMENT_ONLY",
+      "snippet": "; ayojan module_name — Python-style import (documentation directive)"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 12936,
+      "term": "punaravartana",
+      "classification": "COMMENT_ONLY",
+      "snippet": ";     and start > end (e.g. punaravartana i = 5 to 1) ---"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 13232,
+      "term": "nishedha",
+      "classification": "COMMENT_ONLY",
+      "snippet": "; nishedha(cond) — if cond is false, exit with error code 1"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 16572,
+      "term": "set_char",
+      "classification": "COMMENT_ONLY",
+      "snippet": "; R50 set_char(buffer, byte_index, integer_value)."
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 16576,
+      "term": "char_at",
+      "classification": "COMMENT_ONLY",
+      "snippet": "; qword-stride buf[i]=v and char_at(...) remain UNCHANGED."
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 16613,
+      "term": "char_at",
+      "classification": "COMMENT_ONLY",
+      "snippet": "; char_at(str, index) → byte at str[index] in rax"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 16647,
+      "term": "char_code",
+      "classification": "COMMENT_ONLY",
+      "snippet": "; B3: char_code(str, index) returns the indexed byte.  Keep the historical"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 16648,
+      "term": "char_code",
+      "classification": "COMMENT_ONLY",
+      "snippet": "; one-argument form as char_code(str, 0) for compatibility."
+    },
+    {
+      "path": "src/r71_unsafe_tokens.inc",
+      "line": 121,
+      "term": "nishkriya",
+      "classification": "COMMENT_ONLY",
+      "snippet": "cmp qword [rdi+16],27       ; nishkriya"
+    }
+  ]
+}
