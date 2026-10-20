@@ -14,7 +14,7 @@ def run(name):
         print("==",name,"exit",p.returncode,"==")
         print(p.stdout,p.stderr)
         assert p.returncode!=0,(name,"unexpected success")
-        assert "Sutram janch: dosh mile; nirgat binary nahi" in p.stdout,name
+        assert "Sutram janch: dosh mile; nirgat patra nahi" in p.stdout,name
         assert not list(Path(cwd).iterdir()), (name,"check created output file")
         return p.stdout
 
