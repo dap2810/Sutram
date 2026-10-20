@@ -1,0 +1,13 @@
+vitti G1 = 2136870877
+vitti G2 = -1
+vitti G3 = -13
+prakriya f0(q0_0, q0_1, q0_2, q0_3,877
+vitti G2 = -1
+vitti G3 = -13
+prakriya f0(q0_0, q0_1, q0_2, q0_3, q0_4, q0_5) {
+    vitti v4 = 8
+    vitti v5 = 77 >= q0_5
+    4
+    vitti v7 = q0_2
+    vitti v8 = (q0_4 ?v8 = (q0_4 ? v7 : ((-9223372036854775807 - 1)))
+    vitti
