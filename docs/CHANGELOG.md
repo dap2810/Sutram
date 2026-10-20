@@ -1,3 +1,19 @@
+## v226 - both rounds merged: the fuzzers are in the tree, and so are the new tests
+
+**Claude's R15 added the tools that found the bugs:** `tools/fuzz_valid.py` (random valid programs against a
+reference), `tools/fuzz_robust.py` (hostile input), `tools/fuzz_reduce.py` (**shrinks a 25 KB failure to 200
+bytes**), and `tools/lib_mutant_score.py` (the proof-strength measure).
+
+**ChatGPT's R84 added** the separate-compilation and error-handling work, plus `tests/r83/` - a diagnostic
+coverage suite, a pack structure suite, and three candidate negative programs.
+
+**Both branches touched `docs/CHANGELOG.md` and `docs/LANGUAGE-REFERENCE.md`**, which I had edited this
+stretch. **Excluded rather than reverted** - that trap has now been caught before landing five times.
+
+**The fuzzers are the most valuable tools added to this project.** They are a regression net for the exact
+class of bug that has hurt most: **F1 was found by the owner typing, F7 by me writing a benchmark, and in one
+round a machine found three defects in valid programs and 107 crashes on invalid input.**
+
 ## v225 - THE FUZZERS FOUND BUGS. Claude R15: three defects in valid programs, 107 crashes on invalid input
 
 ### The compiler fuzzer
