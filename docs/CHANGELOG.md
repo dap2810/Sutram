@@ -1,3 +1,19 @@
+## v228 - ROUND-85 to ChatGPT: the full audit, and the coverage gaps I found
+
+**WS1 completes the keyword audit.** Its R83 screened 52 source files; **the repository has ~1,504 with source
+suffixes, plus ~646 Sutram programs, plus the docs and the books.** **The audit has still never been run
+across the whole tree.**
+
+**WS2 is my `COVERAGE-AUDIT.md` findings** - `sthagita`, four `kosh_*` internals, and the four network
+builtins, **each either reached by a program or established as unreachable.** **A builtin no program can reach
+is dead code worth knowing about.**
+
+**And one instruction that matters: do not write a test that opens a real socket.** State whether a loopback
+test is safe, or say it should not be written. **A security-relevant surface should not be exercised by an
+agent on a machine nobody is watching.**
+
+**Both workstreams need no compiler, which is why they are its.**
+
 ## v227 - ROUND-17 issued: fix what the fuzzers found
 
 **D1-D4 and the six crash kinds are now the top of the queue, ahead of everything else on the plan.**
