@@ -1,0 +1,56 @@
+vitti G1 = 1612085814
+vitti G2 = -185637258
+rachana S3 = { g0, g1 }
+prakriya f0(q0_0, q0_1, q0_2, q0_3, q0_4, q0_5) {
+    vitti v4 = 100 >> (-2360254979576808874 & 63)
+    vitti v5 = v4 | q0_0
+    vitti v6 = 30 && q0_2
+    vitti v7 = 5 <= q0_3
+    vitti v8 = -v7
+    vitti v9 = 445847520 == v8
+    vitti v10 = v8 == G1
+    vitti v11 = q0_1 == q0_2
+    vitti v12 = (v4 ? q0_3 : G1)
+    vitti v13 = v8
+    vitti v14 = q0_4
+    vitti v15 = v6
+    vitti v16 = v15 & 49
+    vitti v17 = -6182487122668928928
+    vitti v18 = v14 & q0_3
+    kosh k19[4]
+    kosh_push(k19, -179850473)
+    kosh_push(k19, v17)
+    kosh_push(k19, v12)
+    kosh_push(k19, v4)
+    kosh_push(k19, q0_0 & v7 % ((v18 & 15) + 1))
+    kosh_push(k19, v11)
+    vitti v20 = (kosh_len(k19) * v8 && -7 == v14) & -(12 && q0_4)
+    vitti v21 = -v13 - (v15 ? kosh_len(k19) : 47) && G1 | q0_0 | q0_4 - v14
+    chakra i22 = -1 tak 3 {
+        chakra i23 = 0 tak 1 {
+            vitti v24 = -287439742
+        }
+        yadi (v13 << (v10 & 63)) {
+            vitti v25 = v10
+            v14 %= (31 & 15) + 1
+        }
+        yadi (96) {
+            yadi (G1 + v9 > 1284878495332158014) { krama }
+            vitti w26 = 0
+            yavat (w26 < 1) {
+                w26 = w26 + 1
+                q0_5 = (v16 == k19[3] >= q0_5) | ((G2 ? v7 : 79) == v14)
+            }
+        }
+    }
+    mala a27[1]
+    a27[0] = (v14 ? v11 : q0_4)
+    yadi (v10) {
+        vitti v28 = ((60 ? v20 : 76) || -2763104018279023540) % (((v8 && v20 ? 4620352777589532004 > a27[q0_0 << (v20 & 63) & 0] : -v18) & 15) + 1)
+    } anya {
+        vitti v29 = -(v6 | 89 ? v15 > a27[0] : v8 % ((v9 & 15) + 1))
+    }
+    q0_3 += 53
+    prati kosh_len(k19)
+}
+prakriya f1(q1_0,
