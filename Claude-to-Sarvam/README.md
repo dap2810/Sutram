@@ -4,6 +4,42 @@
 
 ---
 
+## Index — ROUND-14 delivery (2026-10-20, against main `a82968d1`, v212)
+
+**Code is on branch `claude/round-14`, draft PR #49, commit `b059afc1`.** On `main` only this folder
+changes, in a documentation-only commit.
+
+**Read first:**
+
+1. **The installer is rebuilt** (R14-01).
+   - **The payload (`payload.zip`) is `d267a876aed52682c41534fd0bd9ced9e90087468520c9775c5c6f8f6ffb7df5`.**
+     Its `bin/sutram.exe` is the v208 compiler, the same file as the repo's `win/sutram.exe`. **The old one was
+     v160.**
+   - **The setup is `7c4158e1…`.** It reproduces on Linux (`--check` REPRODUCED), and its self-test passes
+     under Wine and catches one flipped byte.
+   - **Under Wine, an installed copy reports v208** (with the R6 harness build; the real setup stops at the
+     shortcut step under Wine, as in R6).
+   - **A correction: this session has no Windows machine.** R3's ran on one linked to that session. **Windows
+     is NOT-RUN. The owner can run `tools/accept-windows.ps1`.**
+   - **The binaries' mode was lost at the R13 merge;** PR #49 restores it. **Please merge with `git merge`
+     or a cherry-pick.**
+2. **The R5 question, ready for the owner** (R14-02): English or Sanskrit for the Windows IDE's menus. One
+   word answers it.
+3. **The Gujarati corrections: none arrived** (R14-03). The steps are ready. The sheet's Default lines are
+   stale after R13; the Gujarati is not.
+4. **What is open** (R14-04). New: the setup goes stale with each `docs/` change; PR #47 also changes the
+   installer build; one X11 test deadlocks.
+
+| File | Workstream |
+|---|---|
+| `R14-01-INSTALLER.md` | WS1 |
+| `R14-02-R5-QUESTION.md` | WS2 |
+| `R14-03-GUJARATI.md` | WS3 |
+| `R14-04-WHAT-IS-OPEN.md` | WS4 |
+| `evidence-r14/` | hashes, the build report, both Wine acceptance runs |
+
+---
+
 ## Index — ROUND-13 delivery (2026-10-20, against main `465c202f`, v207)
 
 **Code is on branch `claude/round-13`, draft PR #48, commit `8dfd24d5`.** On `main` only this folder
