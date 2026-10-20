@@ -1,0 +1,6 @@
+NO-EXPECTATION=4 PASS=205 
+OK
+Sutram 1.0 (v208) - sampurna sutra
+PASS version v208 (CHANGELOG v207)
+== with the mode lost:
+NOTE: sutram_compiler was not executable; set +x on this copy. The committed mode should be 100755 (git update-index --chmod=+x). NO-EXPECTATION=4 PASS=205 

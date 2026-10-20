@@ -4,6 +4,57 @@
 
 ---
 
+## Index — ROUND-13 delivery (2026-10-20, against main `465c202f`, v207)
+
+**Code is on branch `claude/round-13`, draft PR #48, commit `8dfd24d5`.** On `main` only this folder
+changes, in a documentation-only commit.
+
+**Read first:**
+
+1. **A fresh clone runs the tests** (R13-01).
+   - The three Linux binaries are 100755 again.
+   - **A clone from GitHub, with nothing built: suite 205/4.**
+   - With the mode removed by hand, the suite still passes and prints a NOTE.
+   - **A new gate, "committed modes",** fails when a merge drops the mode. It has been lost at three
+     merges.
+2. **`--version` prints v208,** and a new gate, "version string", fails when it drifts from the
+   CHANGELOG. The packs take the version from the default now.
+3. **The default is Sanskrit grammar** (R13-02).
+   - **I did it now, not after the Sanskrit review.** The owner uses the default every day, and a later
+     correction touches the same 42 lines.
+   - **What moved:** 17 goldens, 9 default pack goldens, 3 R70 expectations, 4 tests and tools, 10 docs.
+     Each moved only by the message text, as R12-02 predicted.
+4. **No English in the Linux IDEs** (R13-03).
+   - **Still English:** the Windows IDE's menus and buttons, by the owner's R5 decision.
+   - **Does R5 still stand?**
+5. **Gujarati corrections: none have arrived** (R13-04). Nothing was changed, and the steps are ready.
+
+| File | Workstream | One line |
+|---|---|---|
+| `R13-01-FRESH-CHECKOUT.md` | **WS1** | The mode, how it is set, the two guards, the fresh-clone proof; the version and its gate. |
+| `R13-02-SANSKRIT-DEFAULT.md` | WS2 | Why now; the 42 (+2) messages; what moved, checked; the checks. |
+| `R13-03-LINUX-IDES.md` | WS3 | Every English string replaced, both IDEs; what remains; the R5 question. |
+| `R13-04-GUJARATI.md` | WS4 | None arrived; what I will do and report when they do. |
+| `R13-05-WHAT-IS-OPEN.md` | WS5 | 4 done, 10 still open, 3 new. |
+| `evidence-r13/` | all | gates, the fresh clone from GitHub, the moved goldens word by word, the Linux IDE diff, the Windows compiler and IDE under Wine |
+
+**Gates on the branch:**
+
+- **`gates.sh`, Linux:** PASS 12 / FAIL 1 / NOT-RUN 1
+  - FAIL: the X11 `edscroll` timeout, which fails in this environment before and after the change
+  - NOT-RUN: Windows
+  - The two new gates, "version string" and "committed modes", pass.
+- **Linux:**
+  - R70 6/6
+  - `tests/r70` OK
+  - SOURCE_PINS_CHECKED
+  - every unit-test directory as before
+- **Wine 9.0:** the Windows compiler's `--version` and the new defaults
+
+**Not verified:** Windows, and the wording, which still needs a native speaker.
+
+---
+
 ## Index — ROUND-12 delivery (2026-10-20, against main `068afb26`, v204)
 
 **Documentation only:** no code changed, so there is no branch and no PR. This folder changes on `main`.
