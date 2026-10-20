@@ -1,3 +1,33 @@
+## v211 - the version gate was too strict; the roadmap now carries the course change
+
+### The gate FAILed on its own correctness
+
+**Claude's `check_version.py` allowed the version to lag the CHANGELOG by only 1.** The compiler's last change
+was **v208** (R13's Sanskrit grammar), and the log is at **v210** because **my last two entries were
+documentation-only** - a merged round and an audit. **The version was correct and the gate said FAIL.**
+
+**So `gates.sh` read 11 PASS / 1 FAIL**, and the FAIL was not a defect in the project - **it was a defect in
+the gate.** That is the same class of thing the project keeps finding: **a check that is stricter than the
+truth is as misleading as one that is looser.**
+
+**Fixed: a lag is now normal.**
+- **FAIL** if the version is **AHEAD** of the CHANGELOG - which means someone bumped it with no entry to
+  explain it, and should be impossible
+- **NOTE** if it lags by more than 8 entries, so a genuine drift is still visible
+- **PASS** otherwise
+
+**Why 8 and not 1:** the compiler changes when the compiler changes, and the CHANGELOG moves for
+documentation too. **A tolerance of 1 guarantees a failure on the next doc-only entry** - which is exactly
+what happened.
+
+### And the roadmap did not carry the course change
+
+**`PROJECT-MASTER.md`, `README.md`, `PROJECT-OVERVIEW.md` and `MUSE-CONTEXT.md` all had it. The
+`ROADMAP-TO-V1.0.md` did not** - and the roadmap is the document that says what we are building. **Fixed.**
+
+**The course change is now in five places**, which is what it takes for a decision to be findable rather
+than remembered.
+
 ## v210 - the installer moves to Claude; ChatGPT's clear no; three version gates
 
 ### ChatGPT's WS1 was the right answer
