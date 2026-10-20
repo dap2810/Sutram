@@ -1,3 +1,65 @@
+## v220 - measured against its own paradigm: native, dependency-free, and fast
+
+**The owner asked how the language is performing against its parameters and paradigm. Measured, not asserted.**
+
+### The paradigm - what it produces
+
+| Property | Measured |
+|---|---|
+| hello-world binary | **300 bytes** |
+| format | **ELF 64-bit, statically linked, NO section header** |
+| dynamic libraries | **none** - `ldd` says *"not a dynamic executable"* |
+| runs | yes - prints `3` |
+
+**The design charter says: one hand-written NASM source, native x86-64 machine code, no runtime, no
+dependency, end user needs no toolchain. All four hold.**
+
+**For scale: `/bin/true` is 35,664 bytes. A Sutram binary doing real work is 342 bytes.** It is a hundred
+times smaller than the smallest standard Unix utility, **because it carries nothing it does not use.**
+
+### Performance - the same workload in three languages
+
+Sum 1..10,000,000, median of 3:
+
+| Language | Time | Relative |
+|---|---|---|
+| **Sutram (native)** | **13.1 ms** | **1.0x** |
+| Node 20 (JIT) | 147.3 ms | **11x slower** |
+| CPython 3.12 | 3,351.7 ms | **256x slower** |
+
+**And Sutram's binary is 342 bytes.** Node's runtime is tens of megabytes; CPython's interpreter alone is
+several megabytes before a single line of the user's program runs.
+
+**This is the whole point of the paradigm, and it is now measured rather than claimed:** the language
+produces a small native binary that does not carry an interpreter, a garbage collector or a runtime library,
+**and the absence of those things is visible in both the size and the time.**
+
+### The eight benchmarks, all passing
+
+| Benchmark | Median |
+|---|---|
+| bench_fib | 5.2 ms |
+| bench_loop | 11.4 ms |
+| bench_arith | 22.4 ms |
+| bench_nested | 32.9 ms |
+| r46_hotcall_array | 64.8 ms |
+| r46_hotcall_float | 65.6 ms |
+| r46_hotcall_stack | 74.9 ms |
+| r46_hotcall_nested | 85.0 ms |
+
+**8 ran, 0 failed.**
+
+### The honest limits, stated with the numbers
+
+- **C is not measured** - there is no C compiler in this environment. **So "faster than Node and Python" is
+  measured; "as fast as C" is NOT, and the project should not imply it.** A native binary that beats two
+  interpreted/JIT languages is a real result and a weaker claim than it might sound.
+- **These are microbenchmarks** - loops and calls. **They do not measure I/O, allocation, or real programs.**
+- **The `kosh` growth path leaks ~15.3 bytes per item**, and the proposed fix risks use-after-free, so it is
+  deferred. **A language with a known leak should not claim to be efficient at allocation.**
+- **Nothing here is a claim about correctness.** F1 and F7 were both silent-failure bugs found in the last
+  two days. **Speed means nothing if the answer is wrong.**
+
 ## v219 - F7: a NEW segfault found while writing a benchmark. Minimal repro.
 
 **I was writing a performance benchmark and used the wrong argument type. The compiler did not tell me - it
