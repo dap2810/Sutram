@@ -1,3 +1,46 @@
+## v230 - 107 CRASHES ARE NOW DIAGNOSTICS. And the root cause was the ERROR PRINTER.
+
+### Claude R17-02: the six crash kinds, fixed and verified
+
+**The compiler no longer crashes on any of the 107 inputs - nor on 150,000 new ones.**
+
+**And the root cause of three of the six kinds is the single best finding of this stretch:**
+
+> *The parser did stop with an error, **but the error printer crashed**: the end-of-file token has no source
+> pointer, and `print_source_context` walked back from address 0.*
+
+**The compiler was handling the bad input correctly and then crashing while trying to TELL the user about
+it.** One guard - clamping the pointer into the source - fixed three kinds at once.
+
+**That is the worst possible failure mode and the one this project keeps meeting:** the program is wrong, the
+compiler knows it is wrong, and **the message that would have said so kills the process instead.**
+
+**The others were the same shape:** an untyped parameter accepted **any token** as its name ("the historical
+permissive grammar"), so a number or a string was stored as a name and the duplicate check crashed on it.
+**Now a parameter must be a name.** Same for struct fields.
+
+**So the language got a diagnostic where it used to die - six times.**
+
+### ChatGPT R85-WS2: the builtin coverage gap is real, and now classified
+
+**Nine identifiers: five public, four compiler-only.**
+
+| Identifier | Conclusion |
+|---|---|
+| **`sthagita`** | **source-callable - a real gap** |
+| **`netsock`, `netbind`, `netlisten`** | **source-callable - real gaps** |
+| `kosh_var_cnt`, `kosh_vars`, `kosh_param_var_cnt`, `kosh_param_vars` | **compiler-only - not reachable** |
+
+**So the four `kosh_*` are internals no user can call - which closes them.** And **five public builtins have
+no test**, including three that make syscalls.
+
+**It supplied compile-only candidates and marked them NATIVE NOT_RUN** - the right labelling, since it has no
+compiler.
+
+### And R17-01, R17-03 and R17-04 are delivered
+
+**D1-D4 fixed, the formatter built, and the proof-strength review.** To be read.
+
 ## v229 - the fuzzers verified on main: they run, and the crashes reproduce
 
 **I merged Claude's fuzzers and then ran them myself, on main, rather than trusting the merge.**
