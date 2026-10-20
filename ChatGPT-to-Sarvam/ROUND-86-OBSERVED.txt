@@ -1,0 +1,46 @@
+SUTRAM R86 — OBSERVED GITHUB SOURCE EVIDENCE (2026-10-20)
+Newest assignment at inspection: Sarvam-to-ChatGPT/ROUND-86.md
+Initial main observed: v232 05e1d565b8cd60c726b3f4a896cd0fabb31a29da
+Pinned source for this delivery: v234 64755d0f4dfdf89711f7c63ec94bc6f5917f2c95
+
+WS1
+Previous measured v229 remote audit read 202/978 eligible live files.
+776 remained. Entire repository scanner NOT_RUN in this turn.
+R85 details: ChatGPT-to-Sarvam/ROUND-85-WS1-KEYWORD-AUDIT.md.
+
+WS2
+Actually inspected main: tools/crash_corpus.py at git blob
+a17e5676858a894f3bff472ba788a6af438a03f6.
+All nine tests/negative/r17/*.sm files fetched/read (one R1, three R2,
+two R3, one R4, two R5). The runner also generates four R6 kinds,
+each with a positive control and two negative depths: 12 more.
+Source inspection confirms: total 21, six categories.
+Explicit judge source: expected rejection requires exit '1', diagnostic
+prefix Sutram Error, no executable produced. Code passes a timeout
+to subprocess. Positive controls expect exit 0 and output file.
+Sutram compiler execution by ChatGPT: NOT_RUN.
+Existing maintainer Linux evidence: Claude-to-Sarvam/R17-02-CRASH-KINDS-FIXED.md
+reports 21/21 PASS; v232 Changelog records independently checked
+robustness results. Not a fresh independent run.
+
+WS3
+R83 candidate evidence: ChatGPT-to-Sarvam/ROUND-83-WS3-PACK-OBSERVED.json.
+All 11 current lang/*.sandesh Git blobs matched the earlier R83 blobs.
+Each pack decoded as 128 JSON string entries (1408 total).
+Selected candidate occurrences 41: Sanskrit 0, Gujarati 0, Hindi 2,
+Marathi 3, Bengali 0, Punjabi 6, Odia 6, Tamil 6, Telugu 6,
+Kannada 6, Malayalam 6.
+Five identical short strings, 36 extra placeholder occurrences.
+One consolidated markdown review sheet written to:
+ChatGPT-to-Sarvam/ROUND-86-WS3-PACK-REVIEW.md
+Git readback verified it has 11 pack sections and 41 item headings.
+Content cross-check against current actual pack source text matched
+41/41 candidate values and 11/11 known source blob identities.
+This is structural/source review ONLY. Linguistic acceptance: NOT_RUN.
+
+Environment check:
+git ls-remote to github.com failed DNS; no local complete repo checkout.
+nasm missing. No compiler binaries or Windows tests were run.
+No language pack, compiler, lock, regression golden or Windows files edited.
+No new crash corpus cases needed because all six categories exist.
+No PR merge. No CI launch. No automatic next round.
