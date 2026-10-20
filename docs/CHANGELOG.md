@@ -1,3 +1,43 @@
+## v233 - a SIGN ERROR IN THE TRIGONOMETRY PASSES ALL 303 PROOFS. And no proof is decoration.
+
+### R17-04 brought the finding forward, and it is the best answer to a bad question
+
+**I asked Claude "which of the 303 proofs are decoration?"** Its answer: **none.** *"Every function's proofs
+catch at least one realistic bug. So no proof needs deleting."*
+
+**But 15 bug-shaped mutants survive every proof although an input tells them apart, in 8 library functions.**
+
+**The three that matter:**
+
+> `madhava_sin`, `madhava_cos`, `madhava_atan` - **no proof takes the lower half of their argument reduction
+> (`x` below -pi), nor `atan`'s negative branch for `|x| > 1`. A sign error there passes every proof today.**
+
+**A sign error in a trigonometric function, passing 303 proofs.** That is exactly the gap the mutant measure
+exists to find - **and it is the difference between 303 proofs and 303 proofs that mean something.**
+
+**APPROVED: 15 proofs, one per witness, one round.** I told it to do WS5 first - **15 lines to close a hole
+in three functions a user will call.**
+
+### The rest of the picture, stated plainly
+
+- **1 function is WEAK** (`ganita.chakravala`, 49%) and **60 are PARTIAL**. The weakest ten are five
+  constructors whose initialisation the proofs never read.
+- **818 surviving mutants are undecided**, in functions taking lists, strings or records. A sample of 30 read
+  by hand found **3 clear misses** - `khand_gan_swar` stops counting `i` or `u`; `brihat_gun`'s top-digit
+  carry subtracted.
+
+**So the library is not "proven complete" in the strong sense.** It is proven against every bug the mutant
+measure has thought of, **and 818 mutants have not been decided either way.** **That is a materially weaker
+statement than "303 of 303", and it is the honest one.**
+
+### And the formatter is delivered and not yet applied
+
+**`tools/sutram_fmt.py` with `./sutram-fmt` as the command.** It has `--check` for a gate, `--diff` and
+`--verify`. **24 files would change, and the tree is NOT reformatted** - as I asked, that waits for its own
+round.
+
+**I verified it works myself:** `mukhya() { likha(1) }` comes back correctly indented.
+
 ## v232 - VERIFIED: the crashes are gone. ROUND-18 and ROUND-86 issued.
 
 ### The fix, verified on main by me
