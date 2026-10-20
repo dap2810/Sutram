@@ -1,3 +1,21 @@
+## v204 - ROUND-12 and ROUND-80 issued; the Windows test package rebuilt
+
+**Tested on main before packaging: 11 PASS / 0 FAIL / 1 NOT-RUN** - a new "pack messages" gate, performance
+now 8 benchmarks, the F1 fix confirmed (27 and 38 variables both return `7`), and **the diagnostics verified
+in four packs**: default `agyat naam`, hindi `अज्ञात नाम`, tamil `அறியாத பெயர்`, with the **hints translated
+too.**
+
+**ROUND-12 (Claude)** opens with the honest limit it named itself: **the translations are drafted and need a
+native speaker, all eleven.** The ask is a **review sheet per pack**, in a form a speaker can read and correct,
+**with uncertain strings marked rather than guessed at.** Then the two open decisions for the owner.
+
+**ROUND-80 (ChatGPT)** leads with **the installer payload** - still the first thing the owner sees, and **the
+compiler has changed twice since it last read the tree** (the F1 fix, then the pack diagnostics). It is told
+to check against current main rather than what it read last round.
+
+**`sutram-windows-test.zip` rebuilt** with the current binaries, `f1.sm`, `bad.sm` (the same error in four
+packs), `hello.sm` and the test list.
+
 ## v203 - Claude ROUND-11 merged: THE DIAGNOSTICS ARE IN ALL ELEVEN PACKS. Step 5 is CLOSED.
 
 ### The diagnostics follow the pack, and I verified it in four languages
