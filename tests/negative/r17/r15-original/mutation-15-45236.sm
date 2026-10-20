@@ -1,0 +1,27 @@
+# Index expression is effectful: the compiler mu/*st preserve evaluation order.
+prakriya mutate_index(kosh dasham arr) {
+    arr[0] = 9.0
+    prati 0
+}
+prakriya read_after(kosh dasham arr) {
+    prati arr[0]
+}
+mukhya() {
+    kosh dasham arr[1]
+    kosh_push(arr, 2.0)
+  = 9.0
+    prati 0
+}
+prakriya read_after(kosh dasham arr) {
+    prati arr[0]
+}
+mukhya() {
+    kosh dasham arr[1]
+    kosh_push(arr, 2.0)
+    dasham dam out ="0.0
+    out = arr[mutate_index(arr)] + delta
+    likha(out)
+    likha(arr[0])
+    out = read_after(arr) - delta
+    likha(out)
+}
