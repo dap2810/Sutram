@@ -217,7 +217,35 @@ kuru {                            # do-while (kuru ... yavat)
 ```
 
 A brace-less function body is exactly **one statement**. For anything longer,
-wrap the body in `{ }` — a brace-less multi-statement body is a parse error.
+wrap the body in `{ }`.
+
+**`prakriya` requires the braces. `mukhya` does not.** They behave differently:
+
+```sm
+mukhya()
+    vitti x = 1        # this compiles - mukhya accepts a brace-less body
+    likha(x)
+    likha(x + 1)
+```
+
+```sm
+prakriya f(n)
+    vitti x = n        # this does NOT compile - parse error
+    prati x
+```
+
+**Verified:** `mukhya()` with three brace-less statements compiles and runs; `prakriya f(n)` with
+three brace-less statements fails with `vyakaran dosh, pankti 3:5, shabd 'prati'`.
+
+**This is an inconsistency, not a rule**, and it is recorded rather than resolved. **Every example in every
+book writes `mukhya()` without braces** - 84 complete book programs, all of which compile - **so a beginner
+learns the brace-less form from the first page and then hits the wall on their first `prakriya`.**
+
+**If you are writing a function with more than one statement, always use braces.** It works for both, and it
+is what the books should show.
+
+*Open question for the owner: should `mukhya` and `prakriya` be made consistent? Documenting it is what this
+section does; unifying them would be a language change.*
 
 
 ## 7. Command line
