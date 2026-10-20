@@ -71,8 +71,8 @@ run_gate() {                      # name, then the command
       # the summary line is not the last line; look for it anywhere in the output
       line=$(grep -E "[0-9]+ ran, [0-9]+ failed" /tmp/g_out.$$ | tail -1)
       case "$line" in *", 0 failed"*) ok "$name ($line)";; *) bad "$name" "${line:-no summary}";; esac ;;
-    "version string")   case "$(tail -1 /tmp/g_out.$$)" in *"well-formed"*) ok "$name";; *) bad "$name" "$(tail -1 /tmp/g_out.$$ | cut -c1-55)";; esac ;;
     "stdlib inventory") case "$(tail -1 /tmp/g_out.$$)" in *"modules"*) ok "$name ($(tail -1 /tmp/g_out.$$))";; *) bad "$name" "$(tail -1 /tmp/g_out.$$)";; esac ;;
+    "version string")   case "$(tail -1 /tmp/g_out.$$)" in PASS*) ok "$name ($(tail -1 /tmp/g_out.$$ | sed 's/PASS version //'))";; *) bad "$name" "$(tail -1 /tmp/g_out.$$ | cut -c6-90)";; esac ;;
     "pack messages")    case "$(tail -1 /tmp/g_out.$$)" in OK*) ok "$name (12 sets x 11 cases)";; *) bad "$name" "$(grep -m1 -E 'FAIL|differ|Error' /tmp/g_out.$$ | cut -c1-60)";; esac ;;
     *)                  ok "$name" ;;
   esac
@@ -88,8 +88,18 @@ run_gate "layer check"       python3 tools/check_layers.py
 run_gate "stdlib inventory"  python3 tools/gen_stdlib_ref.py
 run_gate "module graph"      python3 -m unittest discover -s tests/module_graph -p 'test_*.py'
 run_gate "pack messages"     python3 tests/sandesh/test_sandesh.py   # R11: every message in every pack
+run_gate "version string"    python3 tools/check_version.py --binary ./sutram_compiler   # R13: --version is the current version
 run_gate "performance"        python3 tools/bench_gate.py --compiler ./sutram_compiler --repeat 3
-run_gate "version string"     python3 tools/version_gate.py
+
+# R13: the committed Linux binaries must be executable, or a fresh checkout cannot run
+# them (tests/run_tests.py stopped with PermissionError). A merge that uploads files one
+# by one loses the mode; this gate says so instead of the next newcomer finding out.
+if command -v git >/dev/null 2>&1 && git rev-parse --git-dir >/dev/null 2>&1; then
+  m=$(git ls-files -s sutram_compiler sutram-ide sutram-gui | awk '$1 != "100755" {print $4}' | tr '\n' ' ')
+  [ -z "$m" ] && ok "committed modes (3 x 100755)" || bad "committed modes" "not 100755: $m(git update-index --chmod=+x)"
+else
+  skip "committed modes" "not a git checkout"
+fi
 
 # the GUI needs an X server; say so rather than omitting it
 if [ -n "${DISPLAY:-}" ] || [ -d /tmp/.X11-unix ]; then
