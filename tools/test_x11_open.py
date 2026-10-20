@@ -149,8 +149,8 @@ typ("/tmp/nosuchfile.sm")
 key(RETURN); time.sleep(0.2)
 errs = texts(drain())
 g4 = saved()
-ok4 = g4 == "keep me" and any("cannot open" in t for t in errs)
-print("4 bad path:", repr(g4), "error-shown=", any("cannot open" in t for t in errs), ok4); results.append(ok4)
+ok4 = g4 == "keep me" and any("na udghatitam" in t for t in errs)   # R13: the message is Sanskrit
+print("4 bad path:", repr(g4), "error-shown=", any("na udghatitam" in t for t in errs), ok4); results.append(ok4)
 
 # ---- 5) Esc cancels the open prompt without loading ----------------------
 key(CTRL_O, ctrl=True); time.sleep(0.1)
