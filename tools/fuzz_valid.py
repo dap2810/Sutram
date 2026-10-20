@@ -1,0 +1,721 @@
+#!/usr/bin/env python3
+"""ROUND-15 WS1: a differential fuzzer for the Sutram compiler.
+
+It generates random VALID programs, computes the output each one must print with
+a reference interpreter written here in Python, compiles the program with the
+real compiler, runs it, and compares the two outputs line by line.
+
+The generator is aimed at the shape that hid F1 for months: a CALLED function
+with many locals (the count is drawn on purpose around 19-21, 26-28, 31-34 and
+37-39, and up to 64), called from a caller that keeps values live across the
+call. Around that it mixes nested functions, deep nested scopes with their own
+locals, loops with krama/agrim, arrays, structs (rachana), kosh, recursion,
+the ternary, compound assignment and every integer operator.
+
+The reference semantics are the documented ones (docs/NUMERIC-CONTRACT.md) and
+were checked by hand against the compiler before the fuzzer was written:
+signed 64-bit wrapping arithmetic; `/` truncates toward zero and `%` takes the
+dividend's sign; `>>` is a LOGICAL shift; comparisons and `&&`/`||` give 0/1;
+`chakra i = a tak b` is inclusive and counts down when a > b.
+
+Programs never divide by zero (every divisor is `((e & 15) + 1)`), never shift
+by more than 63, never index out of bounds, and functions have no side effects
+other than their return value, so the order in which the compiler evaluates
+operands cannot change the output.
+
+Not generated, on purpose: unary `!`, because it is a known defect found while
+writing this tool (it is silently ignored; see R15-01). `--fuzz-not` turns it
+back on.
+
+usage:
+  python3 -B tools/fuzz_valid.py --seed 1 --count 500 [--compiler ./sutram_compiler]
+                                 [--out DIR] [--keep] [--fuzz-not]
+  python3 -B tools/fuzz_valid.py --seed 1 --show 17     # print program #17 and its expected output
+
+Exit 0: every program agreed. Exit 1: at least one counterexample (saved under --out).
+"""
+from __future__ import annotations
+
+import argparse
+import os
+import random
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+
+sys.dont_write_bytecode = True
+
+M64 = (1 << 64) - 1
+MAXI = (1 << 63) - 1
+MINI = -(1 << 63)
+
+
+def wrap(x: int) -> int:
+    x &= M64
+    return x - (1 << 64) if x >> 63 else x
+
+
+def tdiv(a: int, b: int) -> int:
+    q = abs(a) // abs(b)
+    return wrap(q if (a < 0) == (b < 0) else -q)
+
+
+def tmod(a: int, b: int) -> int:
+    return wrap(a - tdiv(a, b) * b)
+
+
+class Budget(Exception):
+    pass
+
+
+class Brk(Exception):
+    pass
+
+
+class Cnt(Exception):
+    pass
+
+
+class Ret(Exception):
+    def __init__(self, v):
+        self.v = v
+
+
+# ---------------------------------------------------------------- expressions
+# ('lit', n) ('var', name) ('neg', e) ('not', e) ('bin', op, a, b) ('tern', c, a, b)
+# ('call', fname, [args]) ('arr', name, size, idx) ('fld', var, field)
+# ('kget', k, i) ('klen', k)
+
+# The documented table (docs/LANGUAGE-REFERENCE.md s3): C ordering.
+PREC_DOCUMENTED = {'||': 1, '&&': 2, '|': 3, '^': 4, '&': 5, '==': 6, '!=': 6,
+                   '<': 7, '>': 7, '<=': 7, '>=': 7, '<<': 8, '>>': 8,
+                   '+': 9, '-': 9, '*': 10, '/': 10, '%': 10}
+# What the compiler does (measured pair by pair, R15-01): the bitwise operators
+# bind TIGHTER than the comparisons, and all six comparisons share one level.
+PREC_MEASURED = {'||': 1, '&&': 2, '==': 3, '!=': 3, '<': 3, '>': 3, '<=': 3, '>=': 3,
+                 '|': 4, '^': 5, '&': 6, '<<': 8, '>>': 8,
+                 '+': 9, '-': 9, '*': 10, '/': 10, '%': 10}
+PREC = dict(PREC_MEASURED)
+
+
+def binop(op: str, a: int, b: int) -> int:
+    if op == '+': return wrap(a + b)
+    if op == '-': return wrap(a - b)
+    if op == '*': return wrap(a * b)
+    if op == '/': return tdiv(a, b)
+    if op == '%': return tmod(a, b)
+    if op == '&': return wrap(a & b)
+    if op == '|': return wrap(a | b)
+    if op == '^': return wrap(a ^ b)
+    if op == '<<': return wrap(a << (b & 63))
+    if op == '>>': return wrap((a & M64) >> (b & 63))
+    if op == '==': return int(a == b)
+    if op == '!=': return int(a != b)
+    if op == '<': return int(a < b)
+    if op == '>': return int(a > b)
+    if op == '<=': return int(a <= b)
+    if op == '>=': return int(a >= b)
+    if op == '&&': return int(a != 0 and b != 0)
+    if op == '||': return int(a != 0 or b != 0)
+    raise ValueError(op)
+
+
+def lit_src(n: int) -> str:
+    if n == MINI:
+        return '(-9223372036854775807 - 1)'
+    return str(n)
+
+
+def esrc(e, minimal: bool, parent: int = 0, right: bool = False) -> str:
+    """Source of an expression. minimal=False: every operation in parentheses.
+    minimal=True: only the parentheses the documented precedence needs."""
+    k = e[0]
+    if k == 'lit':
+        s = lit_src(e[1])
+        if e[1] < 0 and (not minimal or parent >= 9 or e[1] == MINI):
+            return '(' + s + ')'
+        return s
+    if k == 'var':
+        return e[1]
+    if k in ('neg', 'not'):
+        inner = esrc(e[1], minimal, 11)
+        if inner.startswith('-') or inner.startswith('!'):
+            inner = '(' + inner + ')'
+        return ('-' if k == 'neg' else '!') + inner
+    if k == 'bin':
+        op, a, b = e[1], e[2], e[3]
+        p = PREC[op]
+        s = esrc(a, minimal, p) + ' ' + op + ' ' + esrc(b, minimal, p, True)
+        if not minimal or p < parent or (p == parent and right):
+            return '(' + s + ')'
+        return s
+    if k == 'tern':
+        s = esrc(e[1], minimal, 1) + ' ? ' + esrc(e[2], minimal, 0) + ' : ' + esrc(e[3], minimal, 0)
+        return '(' + s + ')'
+    if k == 'call':
+        return e[1] + '(' + ', '.join(esrc(a, minimal) for a in e[2]) + ')'
+    if k == 'arr':
+        return '%s[%s]' % (e[1], esrc(e[3], minimal))
+    if k == 'fld':
+        return '%s.%s' % (e[1], e[2])
+    if k == 'kget':
+        return '%s[%d]' % (e[1], e[2])
+    if k == 'klen':
+        return 'kosh_len(%s)' % e[1]
+    raise ValueError(k)
+
+
+# ----------------------------------------------------------------- statements
+# ('decl', kw, name, e) ('set', name, op, e)  op in '=', '+=', ...
+# ('arrdecl', name, size) ('arrset', name, size, idx, e)
+# ('if', c, body, elsebody|None) ('for', v, lo, hi, body) ('while', ctr, n, body)
+# ('dowhile', ctr, n, body) ('brk', c) ('cnt', c)
+# ('snew', var, struct, fields) ('fset', var, field, e)
+# ('kdecl', k, cap) ('kpush', k, e) ('kpop', name, k)    (kpop declares name)
+# ('print', e) ('ret', e)
+
+class Gen:
+    def __init__(self, rng: random.Random, fuzz_not: bool, known: bool = False):
+        self.r = rng
+        self.fuzz_not = fuzz_not
+        self.known = known       # also generate the known compiler crash (R15-01)
+        self.n = 0
+        self.funcs = []          # (name, params, body)
+        self.structs = []        # (name, fields)
+
+    def fresh(self, p='v'):
+        self.n += 1
+        return '%s%d' % (p, self.n)
+
+    # ---- choices
+    def local_target(self) -> int:
+        r = self.r.random()
+        if r < 0.55:
+            return self.r.choice([19, 20, 21, 26, 27, 28, 31, 32, 33, 34, 37, 38, 39])
+        if r < 0.8:
+            return self.r.randint(20, 40)
+        if r < 0.9:
+            return self.r.randint(41, 64)
+        return self.r.randint(0, 12)
+
+    def literal(self) -> int:
+        r = self.r.random()
+        if r < 0.6:
+            return self.r.randint(-20, 100)
+        if r < 0.8:
+            return self.r.randint(-(1 << 31), 1 << 31)
+        if r < 0.9:
+            return self.r.choice([MAXI, MINI, MAXI - 1, MINI + 1, 1 << 32, (1 << 32) - 1, -1])
+        return self.r.randint(MINI, MAXI)
+
+    # ---- expressions over a scope
+    def expr(self, sc, depth):
+        r = self.r.random()
+        if depth <= 0 or r < 0.25:
+            return self.leaf(sc)
+        if r < 0.33:
+            return ('neg', self.expr(sc, depth - 1))
+        if self.fuzz_not and r < 0.36:
+            return ('not', self.expr(sc, depth - 1))
+        if r < 0.42:
+            return ('tern', self.expr(sc, depth - 1), self.expr(sc, depth - 1), self.expr(sc, depth - 1))
+        if r < 0.52 and sc['callable']:
+            return self.call(sc, depth - 1)
+        op = self.r.choice(list(PREC))
+        a = self.expr(sc, depth - 1)
+        b = self.expr(sc, depth - 1)
+        if op in ('/', '%'):
+            b = ('bin', '+', ('bin', '&', b, ('lit', 15)), ('lit', 1))
+        elif op in ('<<', '>>'):
+            b = ('bin', '&', b, ('lit', 63))
+        return ('bin', op, a, b)
+
+    def leaf(self, sc):
+        opts = []
+        if sc['vars']:
+            opts += ['var'] * 6
+        if sc['arrs']:
+            opts.append('arr')
+        if sc['structs']:
+            opts.append('fld')
+        if sc['koshes']:
+            opts.append('kosh')
+        opts += ['lit'] * 3
+        c = self.r.choice(opts)
+        if c == 'var':
+            return ('var', self.r.choice(sc['vars']))
+        if c == 'arr':
+            name, size = self.r.choice(sc['arrs'])
+            return ('arr', name, size, self.index(sc, size))
+        if c == 'fld':
+            var, fields = self.r.choice(sc['structs'])
+            return ('fld', var, self.r.choice(fields))
+        if c == 'kosh':
+            k, ln = self.r.choice(sc['koshes'])
+            if ln and self.r.random() < 0.7:
+                return ('kget', k, self.r.randrange(ln))
+            return ('klen', k)
+        return ('lit', self.literal())
+
+    def index(self, sc, size):
+        # sizes are powers of two, so `e & (size-1)` is always in bounds
+        if self.r.random() < 0.4 or not sc['vars']:
+            return ('lit', self.r.randrange(size))
+        return ('bin', '&', self.expr(dict(sc, callable=[]), 1), ('lit', size - 1))
+
+    def call(self, sc, depth):
+        name, params, rec = self.r.choice(sc['callable'])
+        # an argument may itself call a function: temporaries live across a call
+        args = [self.expr(sc if (depth > 0 and self.r.random() < 0.3) else dict(sc, callable=[]),
+                          min(depth, 1)) for _ in params]
+        if rec and name == sc.get('self'):   # a self-call: depth - 1
+            args[0] = ('bin', '-', ('var', sc['vars'][0]), ('lit', 1))
+        elif rec:        # bounded recursion: the depth argument stays in 0..3
+            args[0] = ('bin', '&', args[0], ('lit', 3))
+        return ('call', name, args)
+
+    # ---- statements
+    def block(self, sc, depth, n, in_loop=None, else_direct=False):
+        body = []
+        sc = dict(sc, vars=list(sc['vars']), assignable=list(sc['assignable']),
+                  arrs=list(sc['arrs']))
+        for _ in range(n):
+            body.append(self.stmt(sc, depth, in_loop, else_direct))
+        return body
+
+    def stmt(self, sc, depth, in_loop, else_direct=False):
+        # Known defect (R15-01): the compiler crashes when an `anya` block's last
+        # code-generating step leaves rcx changed: seen with `krama`/`agrim` in a
+        # chakra or yavat directly in the anya block, and with `x = x` there.
+        # Unless --include-known, neither is generated.
+        noexit = in_loop == 'noexit' or (else_direct and not self.known)
+        r = self.r.random()
+        if r < 0.22 or depth <= 0:
+            if sc['assignable'] and self.r.random() < 0.7:
+                v = self.r.choice(sc['assignable'])
+                op = self.r.choice(['=', '=', '=', '+=', '-=', '*=', '/=', '%='])
+                e = self.expr(sc, 3)
+                if e == ('var', v) and op == '=' and else_direct and not self.known:
+                    e = ('bin', '+', e, ('lit', 0))     # x = x here is the known crash
+                if op in ('/=', '%='):
+                    e = ('bin', '+', ('bin', '&', e, ('lit', 15)), ('lit', 1))
+                return ('set', v, op, e)
+            v = self.fresh()
+            st = ('decl', self.r.choice(['vitti', 'vitti', 'anka', 'sankhya']), v, self.expr(sc, 3))
+            sc['vars'].append(v); sc['assignable'].append(v)
+            return st
+        if r < 0.32 and sc['arrs']:
+            name, size = self.r.choice(sc['arrs'])
+            return ('arrset', name, size, self.index(sc, size), self.expr(sc, 3))
+        if r < 0.36 and not in_loop:
+            # not inside a loop, and every element stored before any read:
+            # the language does not promise zeroed arrays (MEMORY-MODEL.md s2)
+            name, size = self.fresh('a'), self.r.choice([1, 2, 4, 8, 16])
+            init = [self.expr(sc, 1) for _ in range(size)]
+            sc['arrs'].append((name, size))
+            return ('arrdecl', name, size, init)
+        if r < 0.52:
+            return ('if', self.expr(sc, 2), self.block(sc, depth - 1, self.r.randint(1, 4), in_loop),
+                    self.block(sc, depth - 1, self.r.randint(1, 3), in_loop, True) if self.r.random() < 0.5 else None)
+        if r < 0.62:
+            v = self.fresh('i')
+            lo, hi = self.r.randint(-3, 4), self.r.randint(-3, 4)
+            inner = dict(sc, vars=sc['vars'] + [v])
+            return ('for', v, lo, hi, self.block(inner, depth - 1, self.r.randint(1, 4), 'noexit' if noexit else 'for'))
+        if r < 0.68:
+            ctr = self.fresh('w')
+            inner = dict(sc, vars=sc['vars'] + [ctr])
+            kind = 'while' if self.r.random() < 0.6 else 'dowhile'
+            lp = 'noexit' if (in_loop == 'noexit' or (noexit and kind == 'while')) else kind
+            return (kind, ctr, self.r.randint(0, 4), self.block(inner, depth - 1, self.r.randint(1, 3), lp))
+        if r < 0.72 and in_loop and in_loop != 'noexit':
+            if in_loop == 'for' and self.r.random() < 0.5:
+                return ('cnt', self.expr(sc, 2))
+            return ('brk', self.expr(sc, 2))
+        v = self.fresh()
+        st = ('decl', 'vitti', v, self.expr(sc, 3))
+        sc['vars'].append(v); sc['assignable'].append(v)
+        return st
+
+    def top_extras(self, sc, body):
+        """Structs and kosh only at the top level of a function, so the
+        kosh length is known when an element is read."""
+        if self.structs and self.r.random() < 0.5:
+            sname, fields = self.r.choice(self.structs)
+            var = self.fresh('p')
+            body.append(('snew', var, sname, fields))
+            for f in fields:
+                body.append(('fset', var, f, self.expr(sc, 2)))
+            sc['structs'].append((var, fields))
+        if self.r.random() < 0.4:
+            k = self.fresh('k')
+            body.append(('kdecl', k, self.r.choice([1, 2, 4])))
+            n = self.r.randint(1, 6)
+            for _ in range(n):
+                body.append(('kpush', k, self.expr(sc, 2)))
+            sc['koshes'].append((k, n))
+            if self.r.random() < 0.5:
+                v = self.fresh()
+                body.append(('kpop', v, k))
+                sc['koshes'][-1] = (k, n - 1)
+                sc['vars'].append(v); sc['assignable'].append(v)
+
+    def function(self, idx):
+        name = 'f%d' % idx
+        rec = self.r.random() < 0.25
+        np_ = self.r.randint(1 if rec else 0, 6)
+        params = ['q%d_%d' % (idx, j) for j in range(np_)]
+        callable_ = [f for f in self.funcs]
+        sc = dict(vars=list(params) + [g[1] for g in self.globals],
+                  assignable=list(params[1:] if rec else params),
+                  arrs=[], structs=[], koshes=[], callable=callable_)
+        body = []
+        if rec:
+            body.append(('if', ('bin', '<=', ('var', params[0]), ('lit', 0)),
+                         [('ret', self.expr(dict(sc, callable=[]), 2))], None))
+        # the F1 shape: many locals declared up front
+        for _ in range(max(0, self.local_target() - np_)):
+            v = self.fresh()
+            body.append(('decl', 'vitti', v, self.expr(dict(sc, callable=[]), 1)))
+            sc['vars'].append(v); sc['assignable'].append(v)
+        self.top_extras(sc, body)
+        if rec:
+            sc = dict(sc, callable=callable_ + [(name, params, True)], self=name)
+        for _ in range(self.r.randint(2, 8)):
+            body.append(self.stmt(sc, 3, None))
+        body.append(('ret', self.expr(sc, 3)))
+        self.funcs.append((name, params, rec))
+        return (name, params, body)
+
+    def program(self):
+        # module globals: read anywhere, written only in mukhya, so functions stay pure
+        self.globals = [('@g', self.fresh('G'), self.literal()) for _ in range(self.r.randint(0, 3))]
+        for _ in range(self.r.randint(0, 2)):
+            self.structs.append((self.fresh('S'), ['g%d' % j for j in range(self.r.randint(1, 5))]))
+        fdefs = [self.function(i) for i in range(self.r.randint(1, 5))]
+        gn = [g[1] for g in self.globals]
+        sc = dict(vars=list(gn), assignable=list(gn), arrs=[], structs=[], koshes=[], callable=list(self.funcs))
+        body = []
+        for _ in range(self.r.randint(3, 12)):
+            v = self.fresh('m')
+            body.append(('decl', 'vitti', v, self.expr(dict(sc, callable=[]), 1)))
+            sc['vars'].append(v); sc['assignable'].append(v)
+        self.top_extras(sc, body)
+        for _ in range(self.r.randint(3, 10)):
+            if self.r.random() < 0.5:
+                e = self.call(sc, 2)
+                v = self.fresh('m')
+                body.append(('decl', 'vitti', v, e))
+                sc['vars'].append(v); sc['assignable'].append(v)
+                body.append(('print', ('var', v)))
+            else:
+                body.append(self.stmt(sc, 3, None))
+        # print every caller local afterwards: F1 showed up as a caller's
+        # value changed by the callee
+        for v in sc['vars']:
+            body.append(('print', ('var', v)))
+        for var, fields in sc['structs']:
+            for f in fields:
+                body.append(('print', ('fld', var, f)))
+        for k, ln in sc['koshes']:
+            body.append(('print', ('klen', k)))
+            for i in range(ln):
+                body.append(('print', ('kget', k, i)))
+        return fdefs, body
+
+
+# --------------------------------------------------------------------- source
+def ssrc(st, ind, minimal, out):
+    p = '    ' * ind
+    k = st[0]
+    E = lambda e: esrc(e, minimal)
+    if k == 'decl':
+        out.append('%s%s %s = %s' % (p, st[1], st[2], E(st[3])))
+    elif k == 'set':
+        out.append('%s%s %s %s' % (p, st[1], st[2], E(st[3])))
+    elif k == 'arrdecl':
+        out.append('%smala %s[%d]' % (p, st[1], st[2]))
+        for j, e in enumerate(st[3]):
+            out.append('%s%s[%d] = %s' % (p, st[1], j, E(e)))
+    elif k == 'arrset':
+        out.append('%s%s[%s] = %s' % (p, st[1], E(st[3]), E(st[4])))
+    elif k == 'if':
+        out.append('%syadi (%s) {' % (p, E(st[1])))
+        for s in st[2]: ssrc(s, ind + 1, minimal, out)
+        if st[3] is not None:
+            out.append('%s} anya {' % p)
+            for s in st[3]: ssrc(s, ind + 1, minimal, out)
+        out.append(p + '}')
+    elif k == 'for':
+        out.append('%schakra %s = %d tak %d {' % (p, st[1], st[2], st[3]))
+        for s in st[4]: ssrc(s, ind + 1, minimal, out)
+        out.append(p + '}')
+    elif k == 'while':
+        out.append('%svitti %s = 0' % (p, st[1]))
+        out.append('%syavat (%s < %d) {' % (p, st[1], st[2]))
+        out.append('%s    %s = %s + 1' % (p, st[1], st[1]))
+        for s in st[3]: ssrc(s, ind + 1, minimal, out)
+        out.append(p + '}')
+    elif k == 'dowhile':
+        out.append('%svitti %s = 0' % (p, st[1]))
+        out.append('%skuru {' % p)
+        out.append('%s    %s = %s + 1' % (p, st[1], st[1]))
+        for s in st[3]: ssrc(s, ind + 1, minimal, out)
+        out.append('%s} yavat (%s < %d)' % (p, st[1], st[2]))
+    elif k == 'brk':
+        out.append('%syadi (%s) { krama }' % (p, E(st[1])))
+    elif k == 'cnt':
+        out.append('%syadi (%s) { agrim }' % (p, E(st[1])))
+    elif k == 'snew':
+        out.append('%svitti %s = nirmmita(%d)' % (p, st[1], 8 * len(st[3])))
+    elif k == 'fset':
+        out.append('%s%s.%s = %s' % (p, st[1], st[2], E(st[3])))
+    elif k == 'kdecl':
+        out.append('%skosh %s[%d]' % (p, st[1], st[2]))
+    elif k == 'kpush':
+        out.append('%skosh_push(%s, %s)' % (p, st[1], E(st[2])))
+    elif k == 'kpop':
+        out.append('%svitti %s = kosh_pop(%s)' % (p, st[1], st[2]))
+    elif k == 'print':
+        out.append('%slikha(%s)' % (p, E(st[1])))
+    elif k == 'ret':
+        out.append('%sprati %s' % (p, E(st[1])))
+    else:
+        raise ValueError(k)
+
+
+def program_src(prog, structs, minimal, header=''):
+    fdefs, body = prog
+    out = [header] if header else []
+    for item in structs:
+        if item[0] == '@g':
+            out.append('vitti %s = %s' % (item[1], lit_src(item[2])))
+        else:
+            out.append('rachana %s = { %s }' % (item[0], ', '.join(item[1])))
+    for name, params, fbody in fdefs:
+        out.append('prakriya %s(%s) {' % (name, ', '.join(params)))
+        for s in fbody: ssrc(s, 1, minimal, out)
+        out.append('}')
+    out.append('mukhya() {')
+    for s in body: ssrc(s, 1, minimal, out)
+    out.append('}')
+    return '\n'.join(out) + '\n'
+
+
+# ------------------------------------------------------------------ reference
+class Interp:
+    def __init__(self, fdefs, budget=400000, structs=()):
+        self.f = {n: (p, b) for n, p, b in fdefs}
+        self.g = {it[1]: it[2] for it in structs if it[0] == '@g'}
+        self.steps = budget
+        self.out = []
+
+    def tick(self):
+        self.steps -= 1
+        if self.steps < 0:
+            raise Budget()
+
+    def ev(self, e, env):
+        self.tick()
+        k = e[0]
+        if k == 'lit': return e[1]
+        if k == 'var': return env[e[1]] if e[1] in env else self.g[e[1]]
+        if k == 'neg': return wrap(-self.ev(e[1], env))
+        if k == 'not': return int(self.ev(e[1], env) == 0)
+        if k == 'bin':
+            a = self.ev(e[2], env)
+            b = self.ev(e[3], env)
+            return binop(e[1], a, b)
+        if k == 'tern':
+            return self.ev(e[2], env) if self.ev(e[1], env) else self.ev(e[3], env)
+        if k == 'call':
+            args = [self.ev(a, env) for a in e[2]]
+            return self.callf(e[1], args)
+        if k == 'arr': return env[e[1]][self.ev(e[3], env)]
+        if k == 'fld': return env[e[1]][e[2]]
+        if k == 'kget': return env[e[1]][e[2]]
+        if k == 'klen': return len(env[e[1]])
+        raise ValueError(k)
+
+    def callf(self, name, args):
+        params, body = self.f[name]
+        env = dict(zip(params, args))
+        try:
+            self.run(body, env)
+        except Ret as r:
+            return r.v
+        raise RuntimeError('function fell off the end')
+
+    def run(self, body, env):
+        for st in body:
+            self.ex(st, env)
+
+    def ex(self, st, env):
+        self.tick()
+        k = st[0]
+        if k == 'decl': env[st[2]] = self.ev(st[3], env)
+        elif k == 'set':
+            v = self.ev(st[3], env)
+            op = st[2]
+            d = env if st[1] in env else self.g
+            d[st[1]] = v if op == '=' else binop(op[0], d[st[1]], v)
+        elif k == 'arrdecl': env[st[1]] = [self.ev(e, env) for e in st[3]]
+        elif k == 'arrset':
+            i = self.ev(st[3], env)
+            env[st[1]][i] = self.ev(st[4], env)
+        elif k == 'if':
+            if self.ev(st[1], env): self.run(st[2], env)
+            elif st[3] is not None: self.run(st[3], env)
+        elif k == 'for':
+            lo, hi = st[2], st[3]
+            step = 1 if hi >= lo else -1
+            for i in range(lo, hi + step, step):
+                env[st[1]] = i
+                try:
+                    self.run(st[4], env)
+                except Cnt:
+                    continue
+                except Brk:
+                    break
+        elif k in ('while', 'dowhile'):
+            env[st[1]] = 0
+            first = True
+            while (first and k == 'dowhile') or env[st[1]] < st[2]:
+                first = False
+                env[st[1]] += 1
+                try:
+                    self.run(st[3], env)
+                except Brk:
+                    break
+        elif k == 'brk':
+            if self.ev(st[1], env): raise Brk()
+        elif k == 'cnt':
+            if self.ev(st[1], env): raise Cnt()
+        elif k == 'snew': env[st[1]] = {f: 0 for f in st[3]}
+        elif k == 'fset': env[st[1]][st[2]] = self.ev(st[3], env)
+        elif k == 'kdecl': env[st[1]] = []
+        elif k == 'kpush': env[st[1]].append(self.ev(st[2], env))
+        elif k == 'kpop': env[st[1]] = env[st[2]].pop()
+        elif k == 'print': self.out.append(str(self.ev(st[1], env)))
+        elif k == 'ret': raise Ret(self.ev(st[1], env))
+        else: raise ValueError(k)
+
+
+def make(seed: int, index: int, fuzz_not: bool, known: bool = False):
+    """Program number `index` of a run seeded with `seed`: deterministic."""
+    rng = random.Random('%d:%d' % (seed, index))
+    while True:
+        g = Gen(rng, fuzz_not, known)
+        prog = g.program()
+        decls = g.globals + g.structs
+        it = Interp(prog[0], structs=decls)
+        try:
+            it.run(prog[1], {})
+        except Budget:
+            continue                      # too slow to be a useful test; draw again
+        minimal = rng.random() < 0.5
+        return prog, decls, minimal, it.out
+
+
+def shape(prog):
+    """How many variables each called function declares (counting parameters):
+    the quantity F1 depended on."""
+    def count(body):
+        n = 0
+        for st in body:
+            if st[0] in ('decl', 'kpop', 'snew'): n += 1
+            elif st[0] == 'arrdecl': n += 1
+            elif st[0] == 'kdecl': n += 1
+            elif st[0] == 'if': n += count(st[2]) + (count(st[3]) if st[3] else 0)
+            elif st[0] == 'for': n += 1 + count(st[4])
+            elif st[0] in ('while', 'dowhile'): n += 1 + count(st[3])
+        return n
+    return [len(p) + count(b) for _, p, b in prog[0]]
+
+
+def main(argv):
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--seed', type=int, default=1)
+    ap.add_argument('--count', type=int, default=200)
+    ap.add_argument('--start', type=int, default=0)
+    ap.add_argument('--compiler', default='./sutram_compiler')
+    ap.add_argument('--out', default='fuzz-valid-out')
+    ap.add_argument('--keep', action='store_true', help='save every program, not only failures')
+    ap.add_argument('--fuzz-not', action='store_true')
+    ap.add_argument('--include-known', action='store_true',
+                    help='also generate the known compiler crash: krama/agrim in a loop, or x = x, directly in an anya block')
+    ap.add_argument('--precedence', choices=['measured', 'documented'], default='measured',
+                    help='the table the minimal-parentheses printer assumes (default: what the compiler does)')
+    ap.add_argument('--show', type=int)
+    a = ap.parse_args(argv)
+    PREC.clear(); PREC.update(PREC_MEASURED if a.precedence == 'measured' else PREC_DOCUMENTED)
+
+    if a.show is not None:
+        prog, structs, minimal, exp = make(a.seed, a.show, a.fuzz_not, a.include_known)
+        sys.stdout.write(program_src(prog, structs, minimal))
+        print('# expected:', ' '.join(exp))
+        return 0
+
+    out = Path(a.out)
+    out.mkdir(parents=True, exist_ok=True)
+    comp = os.path.abspath(a.compiler)
+    fails = 0
+    hist = {}
+    lines = 0
+    with tempfile.TemporaryDirectory() as td:
+        for i in range(a.start, a.start + a.count):
+            prog, structs, minimal, exp = make(a.seed, i, a.fuzz_not, a.include_known)
+            for n in shape(prog):
+                hist[n] = hist.get(n, 0) + 1
+            hdr = '# fuzz_valid seed=%d program=%d parens=%s' % (a.seed, i, 'minimal' if minimal else 'full')
+            src = program_src(prog, structs, minimal, hdr)
+            sp, bp = Path(td, 'p.sm'), Path(td, 'p.bin')
+            sp.write_text(src, encoding='utf-8')
+            if bp.exists(): bp.unlink()
+            c = subprocess.run([comp, str(sp), str(bp)], capture_output=True, text=True, timeout=60)
+            verdict, got = 'ok', None
+            if c.returncode < 0:
+                verdict = 'COMPILER-CRASH signal %d' % -c.returncode
+                got = (c.stdout + c.stderr).strip()
+            elif c.returncode != 0 or not bp.exists():
+                verdict = 'COMPILE-ERROR'
+                got = (c.stdout + c.stderr).strip()
+            else:
+                try:
+                    rr = subprocess.run([str(bp)], capture_output=True, timeout=20)
+                    got = rr.stdout.decode('utf-8', 'replace').split()
+                    if rr.returncode < 0:
+                        verdict = 'CRASH signal %d' % -rr.returncode
+                    elif got != exp:
+                        verdict = 'WRONG-OUTPUT'
+                except subprocess.TimeoutExpired:
+                    verdict = 'HANG'
+            lines += len(exp)
+            if verdict != 'ok' or a.keep:
+                tag = 'program-%d-%d' % (a.seed, i)
+                (out / (tag + '.sm')).write_text(src, encoding='utf-8')
+                (out / (tag + '.expected')).write_text('\n'.join(exp) + '\n', encoding='utf-8')
+            if verdict != 'ok':
+                fails += 1
+                tag = 'program-%d-%d' % (a.seed, i)
+                g = got if isinstance(got, str) else '\n'.join(got or [])
+                (out / (tag + '.got')).write_text(verdict + '\n' + g + '\n', encoding='utf-8')
+                first = ''
+                if isinstance(got, list):
+                    for j, (x, y) in enumerate(zip(exp, got)):
+                        if x != y:
+                            first = ' first difference at line %d: expected %s got %s' % (j + 1, x, y); break
+                    else:
+                        if len(exp) != len(got):
+                            first = ' expected %d lines, got %d' % (len(exp), len(got))
+                print('FAIL program %d: %s%s' % (i, verdict, first), flush=True)
+    print('seed %d, programs %d..%d: %d run, %d agree, %d fail; %d output lines compared'
+          % (a.seed, a.start, a.start + a.count - 1, a.count, a.count - fails, fails, lines))
+    print('called functions by variable count (count:functions): ' +
+          ' '.join('%d:%d' % (k, hist[k]) for k in sorted(hist)))
+    return 1 if fails else 0
+
+
+if __name__ == '__main__':
+    raise SystemExit(main(sys.argv[1:]))
