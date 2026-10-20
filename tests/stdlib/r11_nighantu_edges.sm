@@ -1,0 +1,58 @@
+# R11 (Step 5): nighantu (map) boundaries: a 1-slot map, a capacity equal to the count,
+# a removal whose probe chain wraps, a 33-byte key next to a live slot, and a
+# page-edge canary after a map of exactly two pages.
+yoj nighantu
+mukhya() {
+    # a 1-slot map: the only slot is slot 0
+    vitti m = nighantu_srij(1)
+    nighantu_khip(m, 1, "a", 1, 3)
+    likha(nighantu_grah(m, 1, "a", 1))
+    likha(nighantu_grah_mool(m, 1, "a", 1, 99))
+    vitti vals = nirmmita(8 * 8)
+    likha(nighantu_mulya(m, vals))
+    likha(vals[0])
+    vitti keys = nirmmita(8 * 16)
+    likha(nighantu_kunjika(m, keys))
+    likha(keys[0] * 1000 + keys[1])
+    # nighantu_vardh to exactly the entry count succeeds
+    vitti m2 = nighantu_srij(4)
+    nighantu_khip(m2, 4, "p", 1, 1)
+    nighantu_khip(m2, 4, "q", 1, 2)
+    vitti m3 = nighantu_vardh(m2, 2)
+    likha(m3 != 0)
+    likha(nighantu_maap(m3))
+    likha(nighantu_grah(m3, 2, "q", 1))
+    # removal with a wrapping chain: "aa" and "ac" both start at slot 1 of 2;
+    # "ac" wraps to slot 0, and must move back to slot 1 when "aa" goes
+    vitti w = nighantu_srij(2)
+    nighantu_khip(w, 2, "aa", 2, 10)
+    nighantu_khip(w, 2, "ac", 2, 20)
+    nighantu_apanay(w, 2, "aa", 2)
+    likha(nighantu_grah(w, 2, "ac", 2))
+    likha(nighantu_maap(w))
+    # the shift continues past the last slot: "aa", "af", "ah" all start at slot 1 of 3,
+    # so "ah" wraps to slot 0; removing "aa" moves "af" to 1 and then "ah" to 2
+    vitti w3 = nighantu_srij(3)
+    nighantu_khip(w3, 3, "aa", 2, 10)
+    nighantu_khip(w3, 3, "af", 2, 20)
+    nighantu_khip(w3, 3, "ah", 2, 30)
+    nighantu_apanay(w3, 3, "aa", 2)
+    likha(nighantu_grah(w3, 3, "af", 2))
+    likha(nighantu_grah(w3, 3, "ah", 2))
+    # a 33-byte key (truncated to 32) in slot 0, next to "aa" in slot 1:
+    # writing it must not touch slot 1's first key byte
+    vitti k = nighantu_srij(2)
+    nighantu_khip(k, 2, "aa", 2, 5)
+    nighantu_khip(k, 2, "0123456789abcdef0123456789abcdeaZ", 33, 6)
+    likha(nighantu_grah(k, 2, "aa", 2))
+    likha(nighantu_grah(k, 2, "0123456789abcdef0123456789abcdea", 32))
+    # nighantu_rikta on a map of exactly 8192 bytes (cap 146): the canary mapped just
+    # before it starts where the map ends
+    vitti canary = nirmmita(8)
+    canary[0] = 1234567
+    vitti big = nighantu_srij(146)
+    nighantu_khip(big, 146, "z", 1, 9)
+    likha(nighantu_rikta(big))
+    likha(nighantu_maap(big))
+    likha(canary[0])
+}
