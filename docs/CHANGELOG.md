@@ -1,3 +1,27 @@
+## v245 - ROUND-21 and ROUND-89: the queue is empty, so the work is now verification
+
+**The manual-free queue is done.** Every item on `PLAN-TO-FINISH.md` is complete or in flight, so this round is
+not new features - **it is a second pair of eyes on work that is not the reviewer's own.**
+
+**That is the right use of two partners when there is nothing to build.** A project's weakest moment is when
+everyone has finished and nobody is checking.
+
+**ROUND-21 (Claude)** - **reproduce ChatGPT's structural translation check independently.** *The other eight
+packs will never have a native speaker read them, so that check is all they will get.* **If Claude finds a
+violation ChatGPT missed, that is the most valuable possible result.** Then re-run the crash-corpus tool and
+confirm the count.
+
+**ROUND-89 (ChatGPT)** - **read Claude's fuzzer evidence and check the claims against the raw output.**
+*"20,000 programs all correct" is the strongest correctness claim the project has*, and it should be read by
+someone who did not produce it. Specifically: **does the summary's line count match, and does the generator's
+variable-count distribution actually cover the F1 boundary?**
+
+**And both are told what they cannot do:** ChatGPT has no compiler, **so its check is a reading of evidence,
+not a re-run - and it must say so.**
+
+**One thing neither is asked to do: re-run the other's tests and report "pass".** That is not verification, it
+is agreement. **The ask is to check the claims against the artefacts.**
+
 ## v244 - the crash corpus is COMPLETE: 104 inputs pinned, and the two Hindi items are fine
 
 ### The crash corpus - the gap ChatGPT found is closed
