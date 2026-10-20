@@ -1,0 +1,22 @@
+Sutram Error: upanaam purv-niyukt (anya [-module)-]{+ghatak)+}
+Sutram Error: [-module-]{+ghatak+} patra aprapt
+Sutram Error: ashuddh yoj (roop: [-module@upanaam,-]{+ghatak@upanaam,+} upanaam 31 [-byte-]{+baait+} tak)
+Sutram Error: ashuddh yoj (roop: [-module@upanaam,-]{+ghatak@upanaam,+} upanaam 31 [-byte-]{+baait+} tak)
+Sutram Error: ashuddh yoj (roop: [-module@upanaam,-]{+ghatak@upanaam,+} upanaam 31 [-byte-]{+baait+} tak)
+Sutram Error: ashuddh yoj (roop: [-module@upanaam,-]{+ghatak@upanaam,+} upanaam 31 [-byte-]{+baait+} tak)
+Sutram Error: ashuddh yoj (roop: [-module@upanaam,-]{+ghatak@upanaam,+} upanaam 31 [-byte-]{+baait+} tak)
+<ROOT>/examples/212_r41_v1_private.sm:5: Sutram Error [E_MODULE_NOT_EXPORTED]: 'helper' [-module-]{+ghatak+} 'r41_vec' se aniryat
+<ROOT>/examples/lib/r41_dup.smlib:4: Sutram Error [E_MODULE_DUP_EXPORT]: punah niryat 'thing', [-module-]{+ghatak+} 'r41_dup'
+<ROOT>/examples/214_r41_v1_noalias.sm:3:Sutram Error [E_MODULE_V1_ALIAS]: v1 [-module-]{+ghatak+} 'r41_vec' upanaam avashyak: yoj r41_vec@upanaam
+[-Bhasha pak prapt:-]{+भाषा पैक मिला:+} hindi
+[-सूत्रम् त्रुटि:-]{+Sutram Error: व्याकरण दोष,+} पंक्ति [-7:1 के पास टोकन-]{+7:1, शब्द+} 'फ़ाइल का अंत'
+संकेत: इस स्थान [-के पास कूटशब्द की वर्तनी-]{+पर शब्द+} और [-वाक्य-रचना-]{+व्याकरण+} जाँचें।
+Sanket: lib/ me ya srot patra [-ke folder-]{+ki nirdeshika+} me naam.smlib hona chahiye
+  "repinned": "R3 (Claude, 2026-10-19): input_git_blobs moved from the pre-v157 snapshot to claude/round-03 (v169 + the R3 EOF-location fix); bad_type and bad_arity fixture digests updated after verifying that their only change since R70 is the v157 keyword rename pratiyati->prati; diagnostic texts updated to the ROUND-02 Sanskrit strings (behaviour deliberately changed in ROUND-02 WS4). snapshot and per-case provenance are left as the original R70 record. R4 (Claude, 2026-10-19): compiler pin moved to the ROUND-04 undefined-name build; no fixture or expectation changed. R5 (Claude, 2026-10-19): compiler pin moved to the ROUND-05 field/index-name build; no fixture or expectation changed. R7 (Claude, 2026-10-19): compiler pin moved to the ROUND-07 name-resolution build; no fixture or expectation changed. R9 (Claude, 2026-10-19): compiler pin moved to the ROUND-09 build (nirmmita returns 0 on failure; guna evaluates its value once). The v184-v188 version-string change (blob ea5ff808) had not been re-pinned, so --check-only on main already refused; no fixture or expectation changed. R10 (Claude, 2026-10-19): compiler pin moved to the ROUND-10 build (F1: stack slots beyond rbp-128 are addressed with a 32-bit displacement); no fixture or expectation [-changed.",-]{+changed. R11 (Claude, 2026-10-19): compiler pin moved to the ROUND-11 build (the messages follow the --lang pack: r11_tr looks every message up in src/r11_sandesh.inc, which tools/sandesh.py generates from lang/*.sandesh and which is now pinned too; the English words left the default messages). The R70 expectations are unchanged. R11: misplaced_keyword runs under --lang sanskrit, so its expected text is now the Sanskrit pack's (the identifiers, the location and the quoted word are unchanged). R11: bad_type's provenance blobs moved (source c23974fb -> 4e9769a8, golden f6fcef15 -> c563cad9): the owner's rename commits changed the case, its source example and its golden together (the case and the example are still byte-identical, and the expected text equals the golden); unknown_identifier's golden blob moved eedd77bc -> 1810d695 the same way (its golden changed in the ROUND-02 merge; the expected text already equals it); tests/r70 failed on main because of it.",+}
+    "src/sutram_compiler.asm": [-"5ade34ed0287609b8f5d7e4f12873b7978479ac4",-]{+"8625095aa53027bbaf4eef29e7afe76e525d1008",+}
+    "lang/sanskrit.lang": [-"48fbf99a94f2f810911501860817c3fc27de95a3"-]{+"48fbf99a94f2f810911501860817c3fc27de95a3",+}
+{+    "src/r11_sandesh.inc": "9cf005ff1c7330f77c4a29a95dcae6ff0756bab1"+}
+        "source_git_blob": [-"c23974fb8af3771d4b934bd1fa8dbba4b319d2ef",-]{+"4e9769a8d99313b83512ac47c0a05ad3b7a5478b",+}
+        "golden_git_blob": [-"f6fcef15de39699df57d9348f325ef5a68a36e74",-]{+"c563cad9a72cb790d7053ad8b332922a1ea0a68d",+}
+        "golden_git_blob": [-"eedd77bcd0d555a9ef02b998302e55748a4b7726",-]{+"1810d695b23345b4f2c35a9f59a2acbd4eda7561",+}
+        "text": [-"Bhasha pak prapt:-]{+"भाषा-पुटः प्राप्तः:+} sanskrit\nSutram Error [E_ABBREVIATION_VALUE]: {source}:2: [-sankshep shabd mulya nahi:-]{+संक्षेप-शब्दः मूल्यं नास्ति:+} 'वि॰'\n"

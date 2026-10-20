@@ -4,6 +4,65 @@
 
 ---
 
+## Index — ROUND-11 delivery (2026-10-19, against main `d3325b13`, v201)
+
+**Code is on branch `claude/round-11`, draft PR #46, commit `15fa8176`.** On `main` only this folder
+changes, in a documentation-only commit.
+
+**Read first:**
+
+1. **The diagnostics follow the pack (option E), in all eleven packs** (R11-01).
+   - **Every compiler message and the Windows IDE's status line and output messages** are in the
+     selected pack's language: **128 strings × 11 packs = 1,408.**
+   - **The default (no `--lang`)** is the romanised Sanskrit text, with its English words removed.
+     `--lang sanskrit` is Devanagari Sanskrit.
+   - **The identifiers stay:** `Sutram Error` and the `[E_CODE]` tags.
+   - **No English** anywhere: not as a default, not as a fallback.
+2. **Goldens:**
+   - **13 moved,** only by the removed words and the pack text: 11 default, 1 Hindi, 1 Sanskrit (R70).
+     **No accepted golden was re-recorded to pass a test.**
+   - **132 new per-pack goldens** and a new gate, "pack messages".
+3. **The translations are drafted by me and need a native speaker,** all eleven. The checks prove the
+   form (identifiers, punctuation, script, no Latin prose), not the wording.
+4. **Two decisions for you:**
+   - should the romanised default use Sanskrit grammar too? About 15 messages use Hindi grammar today.
+   - should the Linux IDEs follow the pack?
+5. **Step 5 is closed: 303 of 303** (R11-02).
+   - 7 new proofs, among them **page-edge canaries** for overruns of private scratch blocks
+   - 26 written verdicts
+   - nothing left as GAP, OVERRUN or REVIEW
+
+| File | Workstream | One line |
+|---|---|---|
+| `R11-01-DIAGNOSTICS-IN-THE-PACK.md` | **WS1** | What changes with the pack, the counts per pack, the default's English removed, the grammar question, the review needed, how it works, the checks. |
+| `R11-02-LIBRARY-GAP-LIST.md` | WS2 | 48 → 0 open: 29 by proof, 14 by argument, 5 by both; the canary technique; every argument listed. |
+| `R11-03-WHAT-IS-OPEN.md` | WS3 | 8 items still open from R10 (setup rebuild, `v182`, the R8-02 checks, the typing extensions, the stdlib page, the mode, the gutter, old PRs) and 7 new ones. |
+| `evidence-r11/` | all | `sandesh/` (counts, check, samples in every pack), `wine/` (the compiler and five IDE screenshots), `gap-list/`, `logs/` (gates, fresh clone, moved goldens, sizes) |
+
+**Gates on the branch:**
+
+- **Linux, fresh clone:**
+  - suite **205 / 4**
+  - proof_lib **217**
+  - proof_props 86
+  - pack messages OK
+  - translit 24,761 / 0
+  - tests/gui 35
+  - R70 6/6
+  - tests/r70 OK
+  - SOURCE_PINS_CHECKED
+- **`gates.sh`:** PASS 10 / FAIL 1 / NOT-RUN 1
+  - FAIL: the pre-existing X11 `edscroll` timeout
+  - NOT-RUN: Windows
+- **Wine 9.0:**
+  - the Windows compiler in the default, Sanskrit, Hindi and Tamil
+  - the IDE in Hindi, Tamil, Core, and Sanskrit by Auto
+
+**Not verified:** Windows. **Not touched:** `Sutram-Setup.exe` (ChatGPT's). It must be rebuilt after the
+merge.
+
+---
+
 ## Index — ROUND-10 delivery (2026-10-19, against main `2e875ea7`, v195)
 
 **Code is on branch `claude/round-10`, draft PR #45.** Two commits:

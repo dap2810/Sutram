@@ -1,0 +1,25 @@
+build: committed sutram_compiler reproduces
+sandesh: 105 compiler + 23 IDE messages x 11 packs: OK
+NO-EXPECTATION=4 PASS=205 
+217 passed, 0 failed, 217 total
+86/86 properties hold
+OK
+24761 cases (2251 words x 11 packs), 0 differ
+OK
+  "status": "SOURCE_PINS_CHECKED",
+  "passed": 6,
+  "native_status": "PASS"
+r70 OK
+r66 OK
+r67 OK
+r68 OK
+r72 OK
+module_graph OK
+ci OK
+windows_accept OK
+r65_finish OK
+f43105a6209c2537b050cd086f7d3b49d6fa8d277db802a9f61d1ecd600a6ca9  win/sutram.exe  MATCH
+f43105a6209c2537b050cd086f7d3b49d6fa8d277db802a9f61d1ecd600a6ca9  sutram.exe  MATCH
+511f9c318cc0adc67bdfa7de0f12778baef2e7ba6b39728f5343837b06db43e2  sutram-ide-gui.exe  MATCH
+1f471ba2fb672a0c65105b2d1a5ac8345b1263a5fd919561a621518475bf38a9  Sutram-Setup.exe  DIFFERS (committed 73fabd7146db294741a917f5fd748cdeeeb5b33e6cb2b2b672cc29984df8db48)
+NOT REPRODUCED: 1 file(s) differ
