@@ -30,7 +30,7 @@ class Tests(unittest.TestCase):
     def test_pack_canonical_stale(self):
         self.assertEqual(a.scan('lang/demo.lang','foo punaravartana\n')[0]['kind'],'language_pack_canonical')
     def test_escaped_code_newline(self):
-        self.assertEqual(a.scan('docs/book.html',r'<pre>x\npratiyati 4</pre>')[0]['old'],'pratiyati')
+        self.assertEqual(a.scan('docs/book.html',r'<pre>x\\npratiyati 4</pre>')[0]['old'],'pratiyati')
     def test_only_tagged_fences(self):
         self.assertEqual(a.scan('doc.md','Some ordinary prose about the array.\n'),[])
         self.assertEqual(a.scan('doc.md','```sutram\npratiyati 1\n```')[0]['old'],'pratiyati')
