@@ -15,6 +15,20 @@ class VocabularyAuditTest(unittest.TestCase):
         source = 'mukhya()\n chakra i = 1 to 2 # punaravartana\n likha("srijana")\n pratiyati 4\n'
         rows = mod.scan('examples/old.sm', source)
         self.assertEqual([r['old'] for r in rows], ['to', 'pratiyati'])
+    def test_multiline_block_comment_does_not_report_obsolete_keywords(self):
+        source = 'mukhya() {\n/*\npratiyati 2\nchakra i = 1 to 3\n*/\nprati 7\n}\n'
+        self.assertEqual(mod.scan('examples/comment.sm', source), [])
+
+    def test_old_keyword_after_block_comment_is_detected(self):
+        source = '/*\nayojan ignored\n*/\npratiyati 2\n'
+        rows = mod.scan('examples/old.sm', source)
+        self.assertEqual([row['old'] for row in rows], ['pratiyati'])
+
+    def test_block_comment_spans_lines_with_embedded_markers(self):
+        source = '/* first line\n# pratiyati 2\n// ayojan bogus\n*/ chakra i = 1 to 4\n'
+        rows = mod.scan('examples/mixed.sm', source)
+        self.assertEqual([row['old'] for row in rows], ['to'])
+
     def test_new_sanskrit_clean(self):
         self.assertEqual(mod.scan('a.smlib', 'chakra i = 1 tak 4\nprati 4\n'), [])
     def test_prose_to_not_flagged(self):
