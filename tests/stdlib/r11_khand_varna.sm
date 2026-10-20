@@ -1,0 +1,53 @@
+# R11 (Step 5): khand and varna boundaries the earlier proofs did not reach.
+yoj khand
+yoj varna
+mukhya() {
+    # khand_ant on a slice: "abc" is the first 3 bytes of "abcd"; the byte past the slice is not compared
+    likha(khand_ant("abcd", 3, "bc", 2))
+    # khand_yuj joins exactly `count` segments: the cells after them are not a segment
+    vitti parts = nirmmita(8 * 16)
+    parts[0] = 2
+    parts[1] = 97
+    parts[2] = 98
+    parts[3] = 2
+    parts[4] = 120
+    parts[5] = 121
+    vitti out = nirmmita(64)
+    likha(khand_yuj(parts, 1, ",", 1, out))
+    likha(akshar(out, 0) + akshar(out, 1) + akshar(out, 2))
+    # khand_bhed on "a,": the trailing empty segment is one 0 cell, nothing after it
+    vitti p2 = nirmmita(8 * 16)
+    vitti i = 0
+    yavat (i < 16) {
+        p2[i] = 55
+        i = i + 1
+    }
+    likha(khand_bhed("a,", 2, ",", 1, p2, 8))
+    likha(p2[0] + p2[1] * 1000)
+    likha(p2[2])
+    likha(p2[3])
+    # khand_pratisthap with an empty find copies verbatim
+    vitti o2 = nirmmita(64)
+    likha(khand_pratisthap("abc", 3, "", 0, "X", o2))
+    likha(akshar(o2, 2))
+    # varna (cell arrays): needle at index 0, empty needle, empty find, empty separator
+    vitti h = nirmmita(8 * 8)
+    h[0] = 97
+    h[1] = 98
+    h[2] = 99
+    h[3] = 120
+    vitti nd = nirmmita(8 * 4)
+    nd[0] = 97
+    likha(varna_antah(h, 3, nd, 1))
+    likha(varna_gan(h, 3, nd, 0))
+    vitti r = nirmmita(8 * 4)
+    r[0] = 88
+    vitti o3 = nirmmita(8 * 16)
+    likha(varna_pratisthap(h, 3, nd, 0, r, o3))
+    likha(o3[2])
+    vitti p3 = nirmmita(8 * 16)
+    p3[4] = 55
+    likha(varna_bhed(h, 3, nd, 0, p3, 4))
+    likha(p3[0])
+    likha(p3[4])
+}
