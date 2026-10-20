@@ -1,3 +1,39 @@
+## v202 - a language inconsistency found: `mukhya` and `prakriya` disagree about braces
+
+**Found while extending the benchmarks.** A multi-statement function body needs braces - but **only for
+`prakriya`.** `mukhya` accepts the brace-less form. Verified:
+
+| Form | Result |
+|---|---|
+| `mukhya()` brace-less, 3 statements | **compiles and runs** - output `1 2` |
+| `prakriya f(n)` brace-less, 3 statements | **parse error** - `vyakaran dosh, pankti 3:5, shabd 'prati'` |
+| `prakriya f(n) { ... }` | compiles and runs - output `1` |
+
+**And the documentation states only one of the two behaviours as if it were universal.**
+`docs/LANGUAGE-REFERENCE.md` line 219 says:
+
+> *A brace-less function body is exactly **one statement**. For anything longer, wrap the body in `{ }` - a
+> brace-less multi-statement body is a parse error.*
+
+**That is true for `prakriya` and false for `mukhya`.** The reference is not wrong about what it describes -
+it is **incomplete about which construct it describes.**
+
+**The books are not wrong.** All thirteen brace-less multi-statement bodies in the English book are
+`mukhya()`, which works. **They were compiled in Step 6 and all passed** - so the books are correct and the
+reference's rule is narrower than it reads.
+
+**This is a decision, not a bug fix**, and it is the owner's:
+
+1. **Document it** - say plainly that `mukhya` accepts a brace-less body and `prakriya` does not. **One
+   paragraph, no code change.**
+2. **Make them consistent** - either both accept it or neither does. **That is a language change** and it
+   would move programs in the tree.
+
+**Recorded, not acted on.** It is the kind of thing a beginner hits in their first ten minutes: they write
+`mukhya()` without braces because every example does, then add a second function and it stops compiling.
+
+**And it was found by running the books' own code, which is what Step 6 was for.**
+
 ## v201 - the installer must ENSURE the script fonts are present
 
 **The owner's requirement: "when I run setup or installation, it should install Sanskrit and other language
