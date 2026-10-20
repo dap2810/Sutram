@@ -1,0 +1,6 @@
+ഭാഷാ പാക്ക് കണ്ടെത്തി: malayalam
+unknown_field.sm:6:13: Sutram Error [E_UNKNOWN_FIELD]: അജ്ഞാത മണ്ഡലം 'q'
+      likha(p.q)
+              ^
+സൂചന: 'q' ഒരു ഘടനയുടെയും മണ്ഡലമല്ല
+[compile exit 1]
