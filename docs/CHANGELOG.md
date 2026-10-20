@@ -1,3 +1,37 @@
+## v209 - Claude ROUND-13 merged. A fresh clone runs the tests, and the default is Sanskrit grammar.
+
+### The fresh-clone defect is fixed, with a gate
+
+**A clone from GitHub, with nothing built: suite 205/4.** The three Linux binaries are `100755` again.
+**And a new gate, "committed modes", fails when a merge drops the mode - it had been lost at THREE merges.**
+That is the right fix: not the one file, but the thing that keeps losing it.
+
+### The default is now Sanskrit grammar throughout
+
+**The 42 messages that used Hindi grammar are Sanskrit.** Claude did it now rather than waiting for the
+Sanskrit review, reasoning that the owner uses the default every day and a later correction would touch the
+same 42 lines. **What moved: 17 goldens, 9 default pack goldens, 3 R70 expectations, 4 tests and tools, 10
+docs - each only by the message text, exactly as R12-02 predicted.**
+
+### A collision, caught before it landed
+
+**Claude and I BOTH added a version gate in the same stretch** - mine `tools/version_gate.py`, its
+`tools/check_version.py` - **and both modified `tools/gates.sh`.** Two gates for one job.
+
+**I kept Claude's and deleted mine.** Its version also bumps `--version` to **v208** and takes the version
+from the default for every pack, so it does strictly more. **Mine is gone.**
+
+**This is the first time a collision has actually happened rather than been warned about**, and it happened
+on the one file the briefs named as shared. **Worth noting: the brief said "the gate list is where that
+matters most", and it still happened.**
+
+### Two questions it raises for the owner
+
+1. **Does the R5 decision still stand?** The Windows IDE's menus and buttons are still English by the owner's
+   R5 instruction, while the Linux IDEs now have no English. **The owner chose English for the Windows
+   interface before the three-language course change - so it is worth re-asking.**
+2. **The Gujarati corrections have not arrived.** Nothing was changed; the steps are ready.
+
 ## v208 - a gate for the version string: the one number nobody measured
 
 **I said in v207 that "nothing fails when the version is wrong" and that it should be a gate rather than a
