@@ -122,7 +122,7 @@ R65_ONLY = {k for k in KEYS if k.startswith('r65_msg_')}
 # Latin words a translation may keep: code the reader types or sees in the source.
 CODE_WORDS = set('''
 Sutram Error sutram check lang version i vitti akshar_rakh dvaram akshar aksharank kosh_pop
-kosh_peek kosh_dequeue kosh_push v157 v1 v182 lib smlib sm bin UTF x86 yoj upanaam likha chakra tak
+kosh_peek kosh_dequeue kosh_push v157 v1 lib smlib sm bin UTF x86 yoj upanaam likha chakra tak
 mala arr x n sarvam nirgat sahayata Namaste Enter F5 KiB win exe
 '''.split())
 KW = re.compile(r'\{kw:([A-Za-z_][A-Za-z0-9_]*)\}')
@@ -146,9 +146,13 @@ def roman_keywords() -> set[str]:
     return {k for f in (ROOT / 'lang').glob('*.lang') for k in pack_keywords(f.stem)}
 
 
+VERSION = ['']   # R13: the compiler version, read from the default msg_version ("v208")
+
+
 def expand(pack: str, text: str) -> str:
     """{kw:likha} -> the pack's own word for likha, or likha when the pack has none."""
     kw = pack_keywords(pack)
+    text = text.replace('{ver}', VERSION[0])   # R13: one version string, in the default only
     return KW.sub(lambda m: kw.get(m.group(1), m.group(1)), text)
 # English words that left the defaults in R11; none may come back
 NOT_AGAIN = {'ok', 'binary', 'folder', 'module', 'ast', 'data', 'byte', 'bytes', 'code', 'parse',
@@ -210,6 +214,8 @@ def defaults() -> dict[str, str]:
             if line.strip() and not line.strip().startswith(';'):
                 cur = pend = None
     out = {}
+    m = re.search(r'\(v(\d+)\)', found.get('msg_version', b'').decode('utf-8', 'replace'))
+    VERSION[0] = 'v' + m.group(1) if m else ''
     for k in KEYS:
         if k not in found:
             raise SystemExit(f'sandesh: the compiler has no message labelled {k}')
@@ -264,6 +270,9 @@ LATIN = re.compile(r'[A-Za-z][A-Za-z0-9_]*')
 
 def check_entry(pack: str, key: str, text: str, default: str) -> list[str]:
     bad = []
+    if VERSION[0] and VERSION[0] in text:
+        bad.append(f'write the version as {{ver}}, not {VERSION[0]}: it is taken from the default')
+    text = text.replace('{ver}', VERSION[0])
     if TAGS.findall(text) != TAGS.findall(default):
         bad.append(f'identifiers differ: {TAGS.findall(default)} -> {TAGS.findall(text)}')
     if EDGE_L.match(text).group(0) != EDGE_L.match(default).group(0):
@@ -282,7 +291,7 @@ def check_entry(pack: str, key: str, text: str, default: str) -> list[str]:
     plain += ' ' + ' '.join(w for w in KW.findall(text) if w not in pack_keywords(pack))
     dwords = set(LATIN.findall(TAGS.sub(' ', default)))
     for w in LATIN.findall(plain):
-        if w not in CODE_WORDS and not w.startswith('E_'):
+        if w not in CODE_WORDS and not w.startswith('E_') and w != VERSION[0]:
             bad.append(f'Latin word {w!r} is not code')
         elif w not in dwords and w not in ('Sutram',) and w not in KW.findall(text):
             bad.append(f'code word {w!r} is not in the default')
