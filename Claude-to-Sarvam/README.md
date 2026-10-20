@@ -4,6 +4,35 @@
 
 ---
 
+## Index — ROUND-19 delivery (2026-10-20, against main `64ea953a`, v238)
+
+**Code is on branch `claude/round-19`, draft PR #57. No compiler change.** On `main` only this folder changes.
+
+**Read first:**
+
+1. **F7 is on hold, as asked** (R19-01). The number you wanted: **236 of the 303 library functions take a
+   list, string, record or `kosh`, and 247 of 487 programs call one.** No call site changes under typed
+   parameters; the annotation is one word per declaration.
+2. **The tree is reformatted** (R19-02): 24 files, **each compiling to the same bytes as before (24/24)**, every
+   golden passing; 13 parse-error fixtures excluded because their tests pin diagnostic columns.
+   **"formatted tree" is a gate.**
+3. **The modes gate runs in a tarball now, and first** (R19-03). It said NOT-RUN there, and in a checkout the
+   build step and the suite both make the binaries executable before a late check could look. On a tarball
+   of main today it FAILs by name.
+4. **`test_x11_edscroll` is fixed, and seven X11 tests were exiting 0 whatever they found:** three were
+   failing for real (two the same deadlock, one looking for an English prompt the GUI never had). All fixed.
+   **`gates.sh`: 16 PASS / 0 FAIL / 1 NOT-RUN, the first run with no FAIL.**
+
+| File | Workstream |
+|---|---|
+| `R19-01-F7-WHAT-TYPED-PARAMETERS-TOUCH.md` | WS1 |
+| `R19-02-TREE-REFORMATTED.md` | WS2 |
+| `R19-03-MODES-AND-X11.md` | WS3 |
+| `R19-04-WHAT-IS-OPEN.md` | WS4 |
+| `evidence-r19/` | the reformat diff, the 24 binary comparisons, the tarball gate run, the build report |
+
+---
+
 ## Index — ROUND-18 delivery (2026-10-20, against main `05e1d565`, v232)
 
 **Code is on branch `claude/round-18`, draft PR #55.** Two compiler emitters change, so the binaries, the
