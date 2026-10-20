@@ -213,29 +213,125 @@ function New-Shortcut([string]$Path,[string]$Target,[string]$Arguments,[string]$
 }
 
 # R77: a display-availability check only. This does NOT install fonts or keymaps.
-function Check-R77IndicFont([bool]$ShowWarning) {
-    $present=$false
+# R79: verify representative native-script glyphs, not merely a font family name.
+# Nine distinct writing scripts serve Sutram's eleven packs; English is NOT a pack.
+# Read-only: no redistribution of Microsoft's fonts, no elevated installs, no network.
+function Check-R79IndicFonts([bool]$ShowWarning) {
     try {
         Add-Type -AssemblyName System.Drawing -ErrorAction Stop
-        $collection=New-Object System.Drawing.Text.InstalledFontCollection
-        foreach ($family in $collection.Families) {
-            if ([string]::Equals($family.Name,'Nirmala UI',[StringComparison]::OrdinalIgnoreCase)) { $present=$true; break }
-        }
-    } catch {
-        Log ('Indic font check unavailable: ' + $_.Exception.Message)
-        return
-    }
-    if ($present) { Log 'Indic font check: Nirmala UI installed.'; return }
-    $message='The Nirmala UI Unicode font was not detected. Some Indian scripts may show boxes. Setup will continue; install a suitable Unicode font through Windows settings.'
-    Log ('WARNING: ' + $message)
-    if ($ShowWarning) {
+        if (-not ('SutramIndicFontProbe' -as [type])) {
+            Add-Type -TypeDefinition @'
+using System;
+using System.Runtime.InteropServices;
+public static class SutramIndicFontProbe {
+    [DllImport("gdi32.dll", CharSet=CharSet.Unicode, SetLastError=true)]
+    private static extern IntPtr CreateFontW(int h,int w,int esc,int orient,int weight,
+        uint italic,uint underline,uint strike,uint charset,uint outPrecision,
+        uint clipPrecision,uint quality,uint pitchFamily,string face);
+    [DllImport("gdi32.dll", SetLastError=true)]
+    private static extern IntPtr CreateCompatibleDC(IntPtr source);
+    [DllImport("gdi32.dll", SetLastError=true)]
+    private static extern IntPtr SelectObject(IntPtr dc,IntPtr obj);
+    [DllImport("gdi32.dll", SetLastError=true)]
+    private static extern bool DeleteObject(IntPtr obj);
+    [DllImport("gdi32.dll", SetLastError=true)]
+    private static extern bool DeleteDC(IntPtr dc);
+    [DllImport("gdi32.dll", CharSet=CharSet.Unicode, SetLastError=true)]
+    private static extern uint GetGlyphIndicesW(IntPtr dc,string text,int length,
+        [Out] ushort[] glyphs,uint flags);
+    public static bool HasGlyph(string family,int codepoint) {
+        IntPtr dc=IntPtr.Zero, font=IntPtr.Zero, prior=IntPtr.Zero;
         try {
-            Add-Type -AssemblyName System.Windows.Forms -ErrorAction Stop
-            [void][System.Windows.Forms.MessageBox]::Show($message,'Sutram font check',
-                [System.Windows.Forms.MessageBoxButtons]::OK,[System.Windows.Forms.MessageBoxIcon]::Warning)
-        } catch { Log ('Font warning dialog unavailable: ' + $_.Exception.Message) }
+            dc=CreateCompatibleDC(IntPtr.Zero);
+            if(dc==IntPtr.Zero) throw new InvalidOperationException("CreateCompatibleDC failed");
+            font=CreateFontW(-20,0,0,0,400,0,0,0,1,0,0,0,0,family);
+            if(font==IntPtr.Zero) throw new InvalidOperationException("CreateFontW failed");
+            prior=SelectObject(dc,font);
+            if(prior==IntPtr.Zero || prior==new IntPtr(-1))
+                throw new InvalidOperationException("SelectObject failed");
+            string text=Char.ConvertFromUtf32(codepoint);
+            ushort[] glyphs=new ushort[text.Length];
+            uint count=GetGlyphIndicesW(dc,text,text.Length,glyphs,1);
+            if(count==0xffffffffu) throw new InvalidOperationException("GetGlyphIndicesW failed");
+            for(int i=0;i<glyphs.Length;i++) if(glyphs[i]==0xffff) return false;
+            return true;
+        } finally {
+            if(prior!=IntPtr.Zero && prior!=new IntPtr(-1)) SelectObject(dc,prior);
+            if(font!=IntPtr.Zero) DeleteObject(font);
+            if(dc!=IntPtr.Zero) DeleteDC(dc);
+        }
     }
 }
+'@ -ErrorAction Stop
+        }
+        $collection=New-Object System.Drawing.Text.InstalledFontCollection
+        $available=New-Object 'System.Collections.Generic.HashSet[string]' ([StringComparer]::OrdinalIgnoreCase)
+        foreach ($family in $collection.Families) { [void]$available.Add($family.Name) }
+        # One representative native consonant for each DISTINCT script.
+        # A glyph probe is a renderability check, not a full shaping/font quality test.
+        $scripts=@(
+            @{ Script='Devanagari'; Packs='sanskrit,hindi,marathi'; Code=0x0915; Faces=@('Nirmala UI','Mangal','Noto Sans Devanagari') },
+            @{ Script='Gujarati'; Packs='gujarati'; Code=0x0A95; Faces=@('Nirmala UI','Shruti','Noto Sans Gujarati') },
+            @{ Script='Bengali'; Packs='bengali'; Code=0x0995; Faces=@('Nirmala UI','Vrinda','Noto Sans Bengali') },
+            @{ Script='Gurmukhi'; Packs='punjabi'; Code=0x0A15; Faces=@('Nirmala UI','Raavi','Noto Sans Gurmukhi') },
+            @{ Script='Odia'; Packs='odia'; Code=0x0B15; Faces=@('Nirmala UI','Kalinga','Noto Sans Oriya') },
+            @{ Script='Tamil'; Packs='tamil'; Code=0x0B95; Faces=@('Nirmala UI','Latha','Noto Sans Tamil') },
+            @{ Script='Telugu'; Packs='telugu'; Code=0x0C15; Faces=@('Nirmala UI','Gautami','Noto Sans Telugu') },
+            @{ Script='Kannada'; Packs='kannada'; Code=0x0C95; Faces=@('Nirmala UI','Tunga','Noto Sans Kannada') },
+            @{ Script='Malayalam'; Packs='malayalam'; Code=0x0D15; Faces=@('Nirmala UI','Kartika','Noto Sans Malayalam') }
+        )
+        $missing=New-Object 'System.Collections.Generic.List[string]'
+        $found=New-Object 'System.Collections.Generic.List[string]'
+        foreach ($entry in $scripts) {
+            $chosen=''
+            foreach ($family in $entry.Faces) {
+                if (-not $available.Contains($family)) { continue }
+                if ([SutramIndicFontProbe]::HasGlyph($family,[int]$entry.Code)) {
+                    $chosen=$family
+                    break
+                }
+            }
+            if ($chosen) {
+                $found.Add(($entry.Script+' ('+$entry.Packs+'): '+$chosen))
+                Log ('R79 FONT FOUND: '+$entry.Script+' packs='+$entry.Packs+' font='+$chosen)
+            } else {
+                $missing.Add(($entry.Script+' ('+$entry.Packs+')'))
+                Log ('R79 FONT MISSING: '+$entry.Script+' packs='+$entry.Packs)
+            }
+        }
+        Log ('R79 FONT SUMMARY: scripts found='+$found.Count+' missing='+$missing.Count+
+             ' installed_by_setup=0; Microsoft font files are never bundled or downloaded.')
+        if ($missing.Count -gt 0) {
+            $message=('Sutram cannot display all language scripts yet. Missing script coverage: '+
+                [string]::Join(', ',$missing.ToArray())+'. '+
+                'Open Windows Settings > Time & language > Language & region > Add a language; '+
+                'install the corresponding Windows language/font feature, then restart Sutram Setup. '+
+                'The installer cannot safely download or enable missing optional fonts without '+
+                'additional Windows permissions. No third-party or Microsoft font files were bundled.')
+            Log ('WARNING: '+$message)
+            if ($ShowWarning) {
+                Add-Type -AssemblyName System.Windows.Forms -ErrorAction Stop
+                [void][System.Windows.Forms.MessageBox]::Show($message,'Sutram script font coverage',
+                    [System.Windows.Forms.MessageBoxButtons]::OK,
+                    [System.Windows.Forms.MessageBoxIcon]::Warning)
+            }
+        }
+    } catch {
+        # A failed probe is UNKNOWN, never silently mistaken for complete coverage.
+        $msg='Sutram could not verify Indic script fonts: '+$_.Exception.Message+
+             '. Open Windows Settings > Time & language > Language & region and enable your script fonts.'
+        Log ('WARNING: '+$msg)
+        if ($ShowWarning) {
+            try {
+                Add-Type -AssemblyName System.Windows.Forms -ErrorAction Stop
+                [void][System.Windows.Forms.MessageBox]::Show($msg,'Sutram font verification',
+                    [System.Windows.Forms.MessageBoxButtons]::OK,
+                    [System.Windows.Forms.MessageBoxIcon]::Warning)
+            } catch { Log ('Font warning dialog unavailable: '+$_.Exception.Message) }
+        }
+    }
+}
+
 # R77: conservative rollback for an attempted FRESH installation only.
 # Never recurse-delete a user-chosen directory; remove exact staged paths,
 # preserve unknown paths, refuse reparse points, and remove empty directories.
@@ -394,7 +490,7 @@ try {
         Expand-Archive -LiteralPath $PayloadZip -DestinationPath $stage -Force
         Verify-Payload $stage
         $script:r77OwnedRelatives=@(Get-ChildItem -LiteralPath $stage -File -Recurse | ForEach-Object { $_.FullName.Substring($stage.Length+1) })
-        Check-R77IndicFont (-not $VerifyOnly)
+        Check-R79IndicFonts (-not $VerifyOnly)
         $testExe = Join-Path $stage 'bin\sutram.exe'
         $guiTestExe = Join-Path $stage 'sutram-ide-gui.exe'
         $guiCompiler = Join-Path $stage 'win\sutram.exe'
