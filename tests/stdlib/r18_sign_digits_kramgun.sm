@@ -1,0 +1,21 @@
+# R18 (R15-03 witnesses): util_chinha(1), ank_gan of a negative number, and the
+# saturating factorial of a large n (the early exit once saturated).
+yoj sadhan
+yoj ank
+yoj ganita
+mukhya() {
+    likha(util_chinha(1))
+    likha("\n")
+    likha(util_chinha(0 - 1))
+    likha("\n")
+    likha(util_chinha(0))
+    likha("\n")
+    likha(ank_gan(0 - 9))
+    likha("\n")
+    likha(ank_gan(0 - 1234))
+    likha("\n")
+    likha(ganita_paripurna_kramgun(1000000000))
+    likha("\n")
+    likha(ganita_paripurna_kramgun(21))
+    likha("\n")
+}
