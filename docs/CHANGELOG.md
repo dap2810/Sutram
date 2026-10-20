@@ -1,3 +1,50 @@
+## v221 - THE PLAN TO FINISH, and the manual-free priority queue issued
+
+**`PLAN-TO-FINISH.md` is on main.** The working order, who owns each item, and what "done" means.
+
+### The rule the plan follows
+
+**Finish the important things that need NO manual testing first.** The owner's time is the scarcest resource
+here, and there are exactly **two** things only he can do: **install it on Windows** (parameter 15) and **read
+the Gujarati messages.** **Everything else has an owner who is not him.**
+
+### The priority queue
+
+| # | Task | Owner |
+|---|---|---|
+| 1 | **The fuzzers** (param 19) | Claude - in flight |
+| 2 | **Separate compilation** (param 16) | ChatGPT - issued |
+| 3 | **A formatter** (param 17) | Claude - issued |
+| 4 | **Real error handling** (param 12) | ChatGPT - issued |
+| 5 | **F7 - the scalar-index crash** | Claude - issued |
+| 6 | The X11 GUI's Indic support | me |
+| 7 | The coverage audit, done properly | me |
+
+**Items 1-5 are in flight or issued now. 6-7 start as the others land.**
+
+### Held deliberately, and the reason is the charter's own words
+
+**Eight parameters are finishable without the owner** - first-class functions, methods and traits, slices and
+SIMD, compile-time metaprogramming, stronger inference, an ownership model, a boot path, a C FFI.
+
+**They are held because `PROJECT-MASTER.md` section 5 says, in the project's own words:**
+
+> *The project is at stage 1-2. Do not jump to stage 4.*
+
+**Generics, concurrency and events are explicitly v2.** Doing them now would break the sequence that has kept
+this project coherent. **A language that is procedural, multilingual and correct is worth more than one that
+is half-generic and unstable.**
+
+**With one stated exception: if the owner says to break the sequence, the memory model (param 11) is the one
+to take first**, because it changes what the language *is* rather than what it *has*.
+
+### And the honest caveat on the whole queue
+
+**None of these would be finished the way F1 was finished** - verified end-to-end on the machine it is for.
+**They would be done on Linux and unproven on Windows**, which is exactly the state the installer sat in for
+four rounds. **So they move parameters from "not started" to "partial, and partial because of Windows" - which
+is honest, and is where most of the project already sits.**
+
 ## v220 - measured against its own paradigm: native, dependency-free, and fast
 
 **The owner asked how the language is performing against its parameters and paradigm. Measured, not asserted.**
