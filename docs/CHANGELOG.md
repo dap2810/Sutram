@@ -1,3 +1,32 @@
+## v244 - the crash corpus is COMPLETE: 104 inputs pinned, and the two Hindi items are fine
+
+### The crash corpus - the gap ChatGPT found is closed
+
+**ChatGPT measured it: six crash CATEGORIES were regression-covered but 104 of the 107 original inputs were
+not pinned.** *"A fix that regressed in a slightly different way would pass the corpus."*
+
+**Claude pinned all 104** - `tests/negative/r17/r15-original/` now holds the original mutation streams as
+exact-source cases, with `tools/crash_corpus.py` to run them. **204 new files.**
+
+**So the guarantee is now "the crashes are fixed and pinned", rather than "the categories are covered".**
+
+### And the two Hindi items are NOT errors
+
+**The owner's review was 384 messages. ChatGPT narrowed it to two. Both turn out to be fine.**
+
+| # | String | Finding |
+|---|---|---|
+| 1 | `   |   भाषा: ` | flagged only because it is **byte-identical to Sanskrit**. `भाषा` is normal Hindi for *language*. **Not an error.** |
+| 2 | `   |   लिपि: ` | same - `लिपि` is the usual Hindi word for *script*. **Not an error.** |
+
+**ChatGPT's own words:** *"The two original mechanical flags arose only because the short labels are identical
+in both packs, not because script or syntax validation failed. Neither is a confirmed mistranslation."*
+
+**That is the distinction a mechanical check cannot make.** The check flagged *identical*; a human reads
+*correct*; **the two are not the same finding.**
+
+**Recommendation: KEEP BOTH. So the three supported packs are CLEAN - Gujarati 0, Sanskrit 0, Hindi 0.**
+
 ## v243 - the two Hindi items are NOT errors. The three supported packs need no changes.
 
 **The owner's review was going to be 384 messages. ChatGPT narrowed it to two. And now the two turn out to be
