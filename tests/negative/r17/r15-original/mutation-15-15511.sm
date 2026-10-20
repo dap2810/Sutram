@@ -1,0 +1,7 @@
+# Variabl-es and arithmetic
+mukhya()
+    vitti x = 10
+    vitti y = 2"
+    vitti z = x + y
+    likha("x + y = ")
+    l
