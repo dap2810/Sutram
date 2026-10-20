@@ -1,3 +1,26 @@
+## v201 - the installer must ENSURE the script fonts are present
+
+**The owner's requirement: "when I run setup or installation, it should install Sanskrit and other language
+fonts so it would be shown in that language easily."**
+
+**The detail is in the word ENSURE rather than INSTALL, and the distinction matters:**
+
+- **Windows 10/11 already ships every script Sutram uses** in `Nirmala UI` - Devanagari, Gujarati, Bengali,
+  Gurmukhi, Tamil, Telugu, Kannada, Malayalam, Odia. **On a normal modern Windows there is nothing to
+  install**, and shipping `.ttf` files would be pointless.
+- **But it is not guaranteed** - a stripped image, an older build, Windows Server, or a machine with the
+  language features removed. **There the scripts render as empty boxes, and for a language whose entire
+  purpose is those scripts, that is a total failure of the product.**
+
+**So the installer must CHECK for all eleven scripts' fonts and install or enable any that are missing -
+using the machine's own font files, not shipped copies.** `Nirmala UI` is Microsoft's and **cannot be
+redistributed**; the brief says so explicitly, and says that *"we can check and prompt, we cannot bundle"* is
+a complete answer if that is the truth.
+
+**And the boundary is stated:** the installer's job is that the fonts **exist** on the machine; the IDE's job
+is that the editor **uses** one. Claude is fixing the second - the editor asked for `Consolas`, which covers
+none of the eleven.
+
 ## v200 - CORRECTION: the diagnostics stay in the language pack. No English. The owner was right.
 
 **In v199 I recorded the decision as "the diagnostics go English". That was wrong, and the owner corrected
