@@ -7,11 +7,11 @@ section .data
 r68_utf8_prefix:
     db "Sutram Error [E_UTF8]: ",0
 r68_utf8_tail:
-    db ": srot me ashuddh ya khandit UTF-8",10,0
+    db ": srote ashuddham khanditam va UTF-8",10,0
 r68_value_prefix:
     db "Sutram Error [E_ABBREVIATION_VALUE]: ",0
 r68_value_tail:
-    db ": sankshep shabd mulya nahi: '",0
+    db ": sankshep-shabdah mulyam nasti: '",0
 r68_quote_lf:
     db 39,10,0
 r68_colon:
