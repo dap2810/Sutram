@@ -1,0 +1,4 @@
+# COMPILE-ONLY. NEVER RUN: current compiler emits privileged x86 HLT (0xF4).
+mukhya() {
+    sthagita()
+}
