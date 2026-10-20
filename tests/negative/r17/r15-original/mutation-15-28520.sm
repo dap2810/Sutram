@@ -1,0 +1,9 @@
+# Module inclusion example
+# Requires lib/ganit.smlib in current directory
+yoj ganit
+
+mukhya()
+    vimukhya()
+    vitti x = vargit(7)
+    likha("vargit(") = ")
+    l

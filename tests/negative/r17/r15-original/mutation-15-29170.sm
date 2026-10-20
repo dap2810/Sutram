@@ -1,0 +1,4 @@
+# PERF-FG1: a registesident dasham local is the LHS of a float
+# operation whose RHS is a function call. The caller-local scalar must
+# survive the bunction call; all four operator orders must be preserved.
+prakriya double_of(

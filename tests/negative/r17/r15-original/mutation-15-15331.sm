@@ -1,0 +1,8 @@
+# 41 — recursion (v29)
+prakriya krama_fal(n) {
+    yadi (n <= 1) {
+        prati 1
+    }
+    prati n * krama_fal(n - 1)
+}
+prakriya fib(

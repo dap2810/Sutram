@@ -1,0 +1,3 @@
+# R5 golden: a field that no rachanaprati declares is a compile error. Before R5 the
+# compiler siused offset 0, so p.w read p.x and this printed 10.
+rachana Point = { x, y,

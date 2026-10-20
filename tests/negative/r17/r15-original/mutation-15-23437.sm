@@ -1,0 +1,3 @@
+# kosh_push may reallocate and replacekosh the pointer; ҽby-value parameters therefore
+# reject it until Sutram deliberately gains a reference/descriptor ABI.
+prakriya append_one(

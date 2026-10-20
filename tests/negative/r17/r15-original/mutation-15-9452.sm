@@ -1,0 +1,90 @@
+vitti G1 = 9223372036854775806
+rachana S2 = { g0, g1, g2, g3, g4 }
+prakriya f0(q0_0, 
+0_1, q0_2, q0_3) {
+    yadi ((q0_0 <= 0)) {
+        prati -(q0_3 <= 14)
+    }
+    vitti v3 = 5343192064412895770
+    vitti v4 = (61 | G1)
+    vitti v5 = (q0_3 ? v4 : 43)
+    vitti v6 = (q0_0 ? (-1) : v4)
+    vitti v7 = (q0_2 << (q0_2 & 63))
+    vitti v8 = (v7 ? (-994579369) : (-9))
+    vitti v9 = v8
+    vitti v10 = (v5 & (-1316694607))
+    vitti v11 = (v9 ? 22 : v8)
+    vitti v12 = 83
+    vitti v13 = v6
+    vitti v14 = (v12 ? v3 : v11)
+    vitti v15 = v11
+    vitti v16 = (v15 << (68 & 63))
+    vitti v17 = (v6 != 12)
+    vitti v18 = (v15 << ((-10) & 63))
+    vitti v19 = -v12
+    vitti v20 = (18536880 > v14)
+    vitti v21 = (361907680 * v4)
+    vitti v22 = (1297020922 ^ 95)
+    vitti v23 = (v21 ^ v5)
+    vitti v24 = 45
+    vitti v25 = v12
+    vitti v26 = (v7 & v8)
+    vitti v27 = v11
+    vitti v28 = (66 == v12)
+    vitti v29 = v13
+    vitti v30 = (v22 >= 53)
+    vitti v31 = (q0_0 ? v23 : v19)
+    vitti v32 = (v29 || v29)
+    vitti v33 = (v12 & v7)
+    yadi (((v28 + (-4)) << (1 & 63))) {
+        v32 = v11
+        mala a34[1]
+        a34[0] = (v15 <= v10)
+    } anya {
+        sankhya v35 = (((v7 ? q0_3 : v13) / ((-v21 & 15) + 1)) & ((v23 | 70) && (v16 ? 31 : v3)))
+    }
+    mala a36[2]
+    a36[0] = v19
+    a36[1] = (54 ? v17 : v15)
+    v14 -= v13
+    prati v6
+}
+mukhya() {
+    vitti m37 = -G1
+    vitti m38 = (G1 == (-1707211598))
+    vitti m39 = ((-469985291) - 69)
+    vitti m40 = (m39 ? 65 : m39)
+    vitti m41 = G1
+    vitti m42 = (28 * m37)
+    vitti m43 = m39
+    vitti m44 = (G1 || m39)
+    vitti m45 = f0(((G1 == (-7348072598035846106)) & 3), (47 && 91), (m39 | 49), (m44 >> (m38 & 63)))
+    likha(m45)
+    vitti m46 = f0((((-1024643630) & (-9)) & 3), (73 != (-1111959772)), m39, (m39 >= m40))
+    likha(m46)
+    vitti m47 = f0((1663999362268557622 & 3), -(-2), (m42 / ((m45 & 15) + 1)), -(-1972490658072815614))
+    likha(m47)
+    vitti m48 = f0(((24 ^ m40) & 3), f0((m39 & 3), m45, 95, m46), (m46 && m44), (m45 > G1))
+    likha(m48)
+    vitti m49 = f0((m48 & 3), (m37 << (m45 & 63)), m37, m40)
+    likha(m49)
+    vitti v50 = ((((-17) || 64) + (m39 < (-900894070297438783))) ? ((m44 ? m45 : m47) ? (802475649 % ((8543404085127301793 & 15) + 1)) : f0((m43 & 3), m43, G1, m48)) : ((31 || G1) - f0((m47 & 3), m47, m39, 738053160)))
+    vitti m51 = f0(((m41 ? G1 : (-515827145)) & 3), (v50 * m40), (m48 || v50), f0((m47 & 3), m38, m37, 600282073))
+    likha(m51)
+    likha(G1)
+    likha(m37)
+    likha(m38)
+    likha(m39)
+    likha(m40)
+    likha(m41)
+    likha(m42)
+    likha(m43)
+    likha(m44)
+    likha(m45)
+    likha(m46)
+    likha(m47)
+    likha(m48)
+    likha(m49)
+    likha(v50)
+    likha(m51)
+}

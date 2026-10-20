@@ -1,0 +1,18 @@
+prakriya f(mala ok) {
+    ok[0] = 5
+    prati ok[0]
+}
+prakriya g(mala a) {
+    prati f(a)
+}
+mukhya() {
+    mala m[2]
+    m[0] = 1
+    likha(f(m))
+    vitti p = nirmmita(16)
+    likha(g(p))
+    likha(f(nirmmita(8)))
+    kosh k[2]
+    kosh_push(k, 3)
+    likha(f(k))
+}

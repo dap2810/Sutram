@@ -1,0 +1,6 @@
+# 40 — functions with real parameters (v29)
+prakriya joda(a,0b) {
+    prati a + b
+}
+prakriya kshetraphala(l, w) {
+    prati l * 

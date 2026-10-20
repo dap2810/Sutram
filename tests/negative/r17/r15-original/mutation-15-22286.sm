@@ -1,0 +1,41 @@
+vitti G1 = 46
+rachana S2 = { g0, g1, g2, g3 }
+rachana S3 = { g0, g1, g2 }
+prakriya f0(q0_0, q0_1, q0_2, q0_3) {
+    vitti v4 = q0_1
+    vitti v5 = q0_0 < 90
+    vitti v6 = v5 || q0_1
+    vitti v7 = q0_3 % ((q0_3 & 15) + 1)
+    vitti v8 = q0_1 >= G1
+    vitti v9 = q0_3
+    vitti v10 = q0_3
+    vitti p11 = nirmmita(32)
+    p11.g0 = -20 != 1812814856 && q0_0 != v6
+    p11.g1 = v10
+    p11.g2 = v9
+    p11.g3 = 97 << (q0_2 & 63) || 7715383094049754832
+    kosh k12[2]
+    kosh_push(k12, 12 % ((-1757314061 & 15) + 1) * v8)
+    kosh_push(k12, -1727792293 && v4)
+    vitti v13 = kosh_pop(k12)
+    vitti v14 = -(3 * (-1) & (k12[0] > 79))
+    vitti v15 = (30 >= k12[0] == k12[0] ^ -20) / ((v4 & 15) + 1)
+    vitti v16 = (2 ? kosh_len(k12) : v8) * (v8 ? k12[0] : v5) - q0_2
+    vitti v17 = -6 || (q0_3 && v13) * -21
+    mala a18[8]
+    a18[0] = q0_0 << (v15 & 63)
+    a18[1] = v17 | -2045144285
+    a18[2] = kosh_len(k12) == v14
+    a18[3] = k12[0] <= p11.g1
+    a18[4] = (p11.g3 ? v13 : p11.g1)
+    a18[5] = v6 | -373255370
+    a18[6] = q0_2
+    a18[7] = v15 % ((-16 & 15) + 1)
+    chakra i19 = -3 tak -2 {
+        v17 /= ((v13 <= kosh_len(k12)) & 15) + 1
+        vitti v20 = 67 <= (v9 > 49 || 6179008829693639212)
+    }
+    q0_1 = 43 / ((k12[0] & 15) + 1)
+    prati G1
+}
+prakriya f1(q1_0,

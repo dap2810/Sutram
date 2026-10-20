@@ -1,0 +1,8 @@
+# R9 (F3): guna evaluates its value once, however many bhavana it tests.
+# Before R9, guna (f()) called f once per case compared: 3 times here.
+vitti calls = 0
+prakriya f() {
+    calls = calls + 1
+    prati 3
+}
+prakriya g(
