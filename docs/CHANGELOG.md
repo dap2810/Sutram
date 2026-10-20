@@ -1,3 +1,42 @@
+## v222 - item 7 done mechanically: the books are covered, and the BUILTINS are not
+
+**I did the audit properly this time - set difference, not a search I designed badly.**
+
+### The books are covered
+
+**184 identifiers in the books, 2,380 in the tests.** 71 appear only in a book, **and every one is a sample
+name (`Somvaar`, `Mangalvaar`, `Budhvaar`), an English word in a comment, or the compiler's own output text
+(`Siddh`, `Sanket`, `baait`).** **Not one is a language construct.**
+
+**So the books teach nothing the tests do not exercise** - which is what I claimed the first time, and it is
+true, **but I had not measured it correctly when I claimed it.**
+
+### The real gap is in the builtins
+
+**Thirty builtins exist. Five are used by no test, example or benchmark:**
+
+| Builtin | Note |
+|---|---|
+| **`sthagita`** | **a user-facing builtin with no test at all** |
+| `kosh_var_cnt`, `kosh_vars` | the growable array's variable tables |
+| `kosh_param_var_cnt`, `kosh_param_vars` | its parameter variable tables |
+
+**`sthagita` is the significant one** - a builtin a user can call, and nothing exercises it. **The four
+`kosh_*` may be unreachable internals, which would be fine - but nobody has established that either way.**
+
+### And the network builtins have never been opened
+
+**`netsock`, `netbind`, `netlisten`, `netaccept` appear in the compiler and in no test.** The security audit
+recorded that the language can open sockets; **this adds that nothing has ever opened one.** **A
+security-relevant surface with zero coverage is worth naming** - not because it is wrong, but because **the
+project cannot say it works.**
+
+**`COVERAGE-AUDIT.md` records all three, each with a small, mechanical next step.**
+
+**And the honest note: the finding is real, but the route to it was wrong twice.** I claimed a gap that did
+not exist, then found a gap that does. **The mechanical method is what made the difference** - set difference
+cannot be fooled by a search I designed badly.
+
 ## v221 - THE PLAN TO FINISH, and the manual-free priority queue issued
 
 **`PLAN-TO-FINISH.md` is on main.** The working order, who owns each item, and what "done" means.
