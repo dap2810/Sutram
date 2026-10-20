@@ -11,10 +11,10 @@
 | netbind | builtin table 491, arity 2 at 246, codegen 15825; Linux bind syscall 49 | Source-callable; compile-only candidate supplied, NATIVE NOT_RUN |
 | netlisten | builtin table 492, arity 1 at 247, codegen 15969; Linux listen syscall 50 | Source-callable; compile-only candidate supplied, NATIVE NOT_RUN |
 | netaccept | builtin table 493, arity 1 at 248, codegen 16006; Linux accept syscall 43 | Source-callable; compile-only candidate supplied, NATIVE NOT_RUN |
-| kosh_var_cnt | compiler .bss declaration near line 851; used by compiler bookkeeping at 11108, 19820 etc | NOT a Sutram builtin / no lexical builtin-table entry |
-| kosh_vars | compiler .bss declaration near line 850; compiler variable-name tracking table | NOT a Sutram builtin / no lexical builtin-table entry |
-| kosh_param_var_cnt | compiler .bss declaration near line 853; compile-time typed-parameter tracking | NOT a Sutram builtin / no lexical builtin-table entry |
-| kosh_param_vars | compiler .bss declaration near line 852; compile-time parameter-name table | NOT a Sutram builtin / no lexical builtin-table entry |
+| kosh_var_cnt | compiler .bss declaration at line 850; used by compiler bookkeeping at 11108, 19820 etc | NOT a Sutram builtin / no lexical builtin-table entry |
+| kosh_vars | compiler .bss declaration at line 849; compiler variable-name tracking table | NOT a Sutram builtin / no lexical builtin-table entry |
+| kosh_param_var_cnt | compiler .bss declaration at line 852; compile-time typed-parameter tracking | NOT a Sutram builtin / no lexical builtin-table entry |
+| kosh_param_vars | compiler .bss declaration at line 851; compile-time parameter-name table | NOT a Sutram builtin / no lexical builtin-table entry |
 
 The four internal symbols are compiler memory objects whose names are not exported through the Sutram builtin token table. A user may define their own identifier with those spellings, but that does not expose the compiler's tracking state or make them user-callable builtin functions. No source-level test is appropriate for these *as builtins*. This is not a claim that no compiler program can ever cause the tables to be used internally: kosh operations DO use them during compilation.
 
