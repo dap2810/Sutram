@@ -1,3 +1,40 @@
+## v205 - COURSE CHANGE: three languages get full development - Sanskrit, Gujarati, Hindi
+
+**The owner's decision, and the reasoning behind it.**
+
+**The packs split into two tiers.** **Three are SUPPORTED: Sanskrit (the default), Gujarati, Hindi.** The
+other eight stay in the tree and the `--lang` switch keeps working for all eleven, but **they are marked
+DRAFT and no speaker has read them.** Shipping eleven AI-drafted packs means shipping eight nobody has ever
+checked; **shipping three a speaker has verified is a different product.**
+
+**Why three and not one.** *"Finished" means verified, and verification is the only step no AI can do.*
+**Sanskrit-only is not faster - it is shorter.** It reaches code-complete in a round and then stops forever,
+because neither Claude nor I can tell the owner whether the Sanskrit reads correctly. **A pack nobody can
+verify is a pack nobody can call done.**
+
+**Why not Sanskrit + Hindi.** That drops **Gujarati, the owner's strongest language**, and still leaves an
+unverifiable default. **Most of the cost, none of the best asset.**
+
+### The review ORDER is Gujarati -> Hindi -> Sanskrit, and that is deliberate
+
+**Gujarati first: it is his strongest, so he finds problems fastest and - more importantly - learns what to
+look for.** Every language has the same failure modes: a wrong gender, a term that means two things, a phrase
+that is technically correct and nobody would say. **He calibrates on the language he knows best.**
+
+**Sanskrit LAST, even though it is the default.** It is his hardest - he works around it rather than speaking
+it. **Doing it after two passes means catching more than doing it first.** Sanskrit must be *included*; it
+does not have to be *reviewed* first.
+
+### What follows
+
+- **`PROJECT-MASTER.md` will say which three packs a speaker has read.**
+- **The Punjabi religious-greeting question is PARKED**, not decided - it is in a draft pack.
+- **The 42 Hindi-grammar messages in the default become Sanskrit**, since the owner will be in Sanskrit anyway.
+- **And a fact worth recording: the owner has only ever run `hello.sm` and the IDE, in the DEFAULT language.
+  The other ten packs have never been exercised by a human at all - not once.**
+
+**Both partners and Muse are being told.**
+
 ## v204 - ROUND-12 and ROUND-80 issued; the Windows test package rebuilt
 
 **Tested on main before packaging: 11 PASS / 0 FAIL / 1 NOT-RUN** - a new "pack messages" gate, performance
