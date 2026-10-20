@@ -1,3 +1,33 @@
+## v216 - item 7 was a FALSE PREMISE. The typed-parameter form IS covered.
+
+**I claimed, twice, that `prakriya mean(kosh dasham xs)` - a typed parameter - "appears in all four books and
+nowhere else in the tree, so this sweep is the only thing that exercises it."**
+
+**That is wrong.** It is exercised by **four test files** - `tests/r63_check/kosh_fifo_float.sm`,
+`tests/r63_check/kosh_native_float.sm`, `tests/stdlib/kalana_bahu_ganana.sm` and one more - **and they
+compile.** I checked before writing a test, which is the only reason this did not become a duplicate.
+
+**How I got it wrong:** I searched for the construct in `examples/` and in the test *goldens*, found nothing,
+and concluded it was uncovered. **I did not search `tests/`.** **A negative result from a search I designed
+badly is not a negative result.**
+
+**And it is the sixth time this session my own claim has been wrong** - after the mock keymap, the "no Sanskrit
+UI string remains" claim, the "file-list panel was removed" claim, the platform-difference theory, and the
+"40 examples failed" alarm. **The pattern is identical every time: I report the first plausible answer before
+checking whether the check is right.**
+
+**So item 7 is VOID.** There is no coverage gap here. **A real coverage-gap audit would compare every construct
+the books use against every construct the tests use, mechanically** - which is not what I did, and is what I
+should have done.
+
+### What this leaves
+
+**The other five of my six items stand:** the book sweep, more benchmarks, the performance report re-run, the
+braces inconsistency documentation, and the X11 GUI's Indic support.
+
+**And the twelve are still all assigned** - Claude has the two fuzzers and the proof-strength review, ChatGPT
+has the audit re-run, the negative corpus and the structural translation check.
+
 ## v215 - all twelve autonomous items started; both partners issued
 
 **The owner asked for the work that needs NO human testing, and asked for all of it to be started now.**
