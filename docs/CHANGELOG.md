@@ -1,3 +1,19 @@
+## v227 - ROUND-17 issued: fix what the fuzzers found
+
+**D1-D4 and the six crash kinds are now the top of the queue, ahead of everything else on the plan.**
+
+**WS1: fix D1, D2, D3 and D4**, each with a file that fails on v226 and passes after - **and re-run seed 15's
+20,000 with the generator's workarounds REMOVED.** The clean run only means something once it is clean
+**without steering around known defects.**
+
+**WS2: fix the six crash kinds** - 107 of 50,171 invalid inputs crash the compiler. **It must ERROR, never
+crash**, and every one goes into the negative corpus so it cannot come back.
+
+**WS3: the formatter**, still open from R16.
+
+**One line worth keeping from the brief:** *a fuzzer that finds nothing is only meaningful if it is trying
+hard.*
+
 ## v226 - both rounds merged: the fuzzers are in the tree, and so are the new tests
 
 **Claude's R15 added the tools that found the bugs:** `tools/fuzz_valid.py` (random valid programs against a
