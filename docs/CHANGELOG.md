@@ -1,3 +1,42 @@
+## v224 - ChatGPT ROUND-83: the eleven packs pass the structural check, and the source is clean
+
+### WS3 - the translation structural check: NO HARD VIOLATIONS, in any of the eleven packs
+
+**It fetched and independently decoded all eleven `lang/<pack>.sandesh` files** - 128 keys each - and tested
+**1,408 rows** for: missing, duplicate and empty keys; out-of-script Unicode letters and combining marks;
+Latin tokens outside the documented 42-word code allowlist; preservation of `Sutram Error` and the `[E_...]`
+tags; quotes around interpolated names; and every `{kw:...}` and `{ver}` placeholder.
+
+**Result: no hard structural violations appeared under any of those checks.**
+
+**This matters more than it sounds, because the owner can only review three packs.** The other eight will
+never have a native speaker read them - **so this is the only check they will ever get, and they pass it.**
+
+**And it reports per-pack REVIEW CANDIDATES separately from violations** - Sanskrit 0, Hindi 2, Gujarati and
+the rest listed - which is the right distinction: **a candidate is something a speaker might word better, not
+something that is broken.**
+
+### WS1 - the keyword audit: clean within its scope, and honest about the scope
+
+**It fetched all 52 current source-suffix files** across `src/`, `win/`, `windows/` and `ide/` and screened
+nine high-risk old words. **44 occurrences: 38 comments and six intentional legacy-keyword hint strings** -
+the `r4_old_kw` table, which exists to tell a user their old keyword was renamed.
+
+**No untriaged active old names within that scan.** And it states the limit plainly: **the full 1,504-file
+inventory, the ~646 Sutram programs, the documentation and the books were NOT screened.** **A partial with a
+named boundary is worth more than a whole-tree claim with none.**
+
+### And the honesty that makes it usable
+
+**It labels the whole thing a "verified PARTIAL engineering handoff, not a complete whole-tree clean bill".**
+It says runtime and compiler execution were unavailable, and **Python unit tests and native compiler testing
+NOT_RUN.**
+
+**That is the fourth round in a row where it has refused to overstate.** It verified 7/7 PR files against
+GitHub readback, and it did the work it could do without a compiler.
+
+**WS2 (the negative corpus) is delivered and to be read.**
+
 ## v223 - item 6 assessed: the X11 GUI needs a font-path rewrite, and I recommend NOT doing it now
 
 **I said I would start item 6. I did - by establishing what it is, which is the honest thing rather than
