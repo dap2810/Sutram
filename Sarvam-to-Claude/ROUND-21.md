@@ -39,3 +39,23 @@ the tree is formatted and nothing keeps it that way.
 ## Part 3 — Constraints
 Least privilege. **Read the current file from main before changing it.** PASS / FAIL / NOT-RUN separately.
 No `__pycache__`.
+
+### WS4 - THE COMMITTED-MODES GATE NOW RUNS, AND IT FOUND ONE *(from my run)*
+
+**You made it run outside a git checkout, which is exactly what I asked for - and it immediately earned its
+place:**
+
+```
+committed modes   FAIL   not executable: sutram-fmt (chmod +x; in git also update-index --chmod=+x)
+```
+
+**`sutram-fmt` is not executable in the repository.** So a fresh clone gets a formatter that cannot be run -
+**and the tool that was built to catch this is now the thing that caught it.**
+
+**Fix it and say so.** And confirm the gate is in `gates.sh` permanently, **because a gate that only runs in a
+git checkout is a gate that misses the merges it exists for** - the mode had been lost at six merges before
+this one.
+
+**Also from my run: the tree is otherwise green - 15 gates, and the new `crash corpus (227 cases, 0 failed)`
+gate passes.** I ran the 102 pinned inputs against the current compiler myself: **0 still crash.** Your fix
+holds.
