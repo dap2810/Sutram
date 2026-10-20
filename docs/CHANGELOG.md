@@ -1,3 +1,26 @@
+## v237 - Claude ROUND-18 merged: the mutant proofs, and the builtins tested
+
+**Three new examples, each closing a gap the audits found:**
+
+| New example | What it closes |
+|---|---|
+| `243_r18_sthagita.sm` | **`sthagita` - a user-facing builtin that had no test at all** |
+| `244_r18_rachana_in_function.sm` | a struct declared inside a function |
+| `245_r18_netsock.sm` | **`netsock` - the first time the language's socket builtin has been exercised** |
+
+**And `tests/stdlib/r18_madhava_reduction.*`** - the proofs for the **15 surviving mutants**, including the
+**sign-error hole in `madhava_sin`, `madhava_cos` and `madhava_atan`** where no proof took the lower half of
+the argument reduction.
+
+**So the finding I approved last round is now closed with tests.** The trigonometric functions have proofs
+that take `x` below -pi and `atan`'s negative branch for `|x| > 1` - **the two places a sign error was passing
+all 303 proofs.**
+
+**And the compiler and the installer are rebuilt**, so the installer carries everything to date.
+
+**Three files excluded: `docs/CHANGELOG.md`, `PROJECT-MASTER.md` and `docs/sutram-project-status.html`** -
+all three are mine from the last two rounds. **That trap has now been caught before landing seven times.**
+
 ## v236 - CORRECTION: F7 is NOT fixed. I said it was, and it is not.
 
 **In v232's changelog I wrote a table row: "F7 - the scalar-index crash - done (R17)". That is wrong.**
