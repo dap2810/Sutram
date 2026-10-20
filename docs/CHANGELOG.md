@@ -1,3 +1,49 @@
+## v218 - item 9 found a real trap: likha prints a string variable as a POINTER
+
+### The finding
+
+```sm
+mukhya() {
+    likha("hello")        # prints:  hello
+    vitti s = "ab"
+    likha(s)              # prints:  4194454      <- the address, not the text
+    s = s + "cd"
+    likha(s)              # prints:  8388927
+}
+```
+
+**Verified on the current compiler.** A string literal prints as text; **a string variable prints as a
+number.**
+
+**This is known** - it is in the CHANGELOG ("`likha(buf)` prints the pointer, not..."). **But it is in no
+reference and in no book.**
+
+**And the books never demonstrate it:** the only `likha` calls on a variable in the English book are
+`likha(i)` and `likha(x)` - **both numeric**. **So a beginner has no model for printing a string, tries the
+obvious thing, and gets a seven-digit number with no explanation.**
+
+**Now documented in `docs/LANGUAGE-REFERENCE.md`**, with the verified behaviour, the workaround
+(`likha(1, s, n)`), and the open question - *should `likha` print a string variable as text?* **That is a
+language change and the owner's call.**
+
+### And a stale note of mine, caught by the same work
+
+**I wrote a benchmark against `ganita_checked_add`. That function does not exist.** The module exports
+`ganita_janchit_yuj`, `ganita_janchit_nyun` and others - **the Sanskrit rename passed my own notes by.** I
+was working from a vocabulary that changed and did not notice until the compiler said
+`agyat prakriya: ganita_checked_add`.
+
+**Two of my three benchmarks failed on my own stale syntax, not on the compiler.** That is the seventh time
+this session my own information was the thing at fault.
+
+### Item 9 status
+
+- **`bench_kosh`** - works: `kosh a[1]`, 100,000 pushes, correct output.
+- **string and library benchmarks** - not added yet; the string path needs the length-form and the library
+  needs the current names.
+
+**Item 9 is partially done and honestly labelled.**
+
 ## v217 - items 8 and 11 done: the books verified, the braces inconsistency documented
 
 ### Item 8 - the book sweep, done correctly this time
