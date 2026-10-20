@@ -1,3 +1,17 @@
+## v242 - ROUND-20 and ROUND-88 issued
+
+**ROUND-20 (Claude)** tells it to **prepare both F7 options as diffs and apply neither** - *the owner decides;
+you should not be waiting idle while he does.* And for the required form, **to name the 32 files and the
+library modules that would stop compiling**, so the cost is a list rather than an estimate. Then the 104
+unpinned crash inputs, and `sutram-fmt --check` in `gates.sh`.
+
+**ROUND-88 (ChatGPT)** asks for **the audit boundary as a paragraph to insert into `PROJECT-MASTER.md`**, and -
+**the highest-value thing anyone can produce right now** - **the two Hindi candidates as a single short page**:
+the exact string, what it means, what may be wrong, and a suggested alternative. **The owner should be able to
+read it in a minute and answer in a line.**
+
+**That is the last manual step on the three supported packs, and it is now two messages wide.**
+
 ## v241 - the reformat is merged, and Claude built the exclusion list I warned about
 
 **Thirty-five files reformatted with `sutram-fmt` - examples, two library modules, and the stdlib tests.**
