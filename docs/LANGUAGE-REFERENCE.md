@@ -403,3 +403,30 @@ abort with their own diagnostics — `rikta kosh se kosh_pop`,
 `rikta kosh se kosh_peek`, `rikta kosh se kosh_dequeue` — and exit
 1. Element types: integer (`kosh v`, the default) or binary64
 (`kosh dasham d`). `push`/`pop`/the builtins take a direct kosh variable.
+
+## Printing a string variable - READ THIS BEFORE YOU TRY IT
+
+**`likha` prints a string LITERAL as a string. It prints a string VARIABLE as a pointer.**
+
+```sm
+mukhya() {
+    likha("hello")        # prints:  hello
+    vitti s = "ab"
+    likha(s)              # prints:  4194454      <- the address, not the text
+    s = s + "cd"
+    likha(s)              # prints:  8388927
+}
+```
+
+**Verified on the current compiler.** `likha("hello")` gives `hello`; `likha(s)` where `s` is a variable gives
+a number.
+
+**This is a real trap and it is not a defect** - it is how the language works today, recorded in the
+CHANGELOG but until now in no reference. **A beginner writes `vitti s = "hello"` and then `likha(s)`, and gets
+a seven-digit number with no explanation.**
+
+**The workaround:** print a string with an explicit length - `likha(1, s, n)` - or print it as a literal.
+
+*Open: should `likha` print a string variable as text? That would be a language change and it is the owner's
+call. Documented here so nobody has to discover it by confusion.*
+
