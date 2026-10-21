@@ -37,13 +37,14 @@ echo
 # files themselves instead of the index, so it never says NOT-RUN. The two
 # readings agree when the tree is the committed one; they differ only after a
 # chmod that is not yet in the index, which `git ls-files -s` would still show.
-EXES="sutram_compiler sutram-ide sutram-gui sutram-fmt"
+EXES="sutram_compiler sutram-ide sutram-gui sutram-fmt sutram-link"
 if command -v git >/dev/null 2>&1 && git rev-parse --git-dir >/dev/null 2>&1; then
   m=$(git ls-files -s $EXES | awk '$1 != "100755" {print $4}' | tr '\n' ' ')
-  [ -z "$m" ] && ok "committed modes (4 x 100755, git index)" || bad "committed modes" "not 100755: $m(git update-index --chmod=+x)"
+  for f in $EXES; do git ls-files --error-unmatch "$f" >/dev/null 2>&1 || m="$m$f(not committed) "; done   # R28: a missing one is not a pass
+  [ -z "$m" ] && ok "committed modes ($(echo $EXES | wc -w) x 100755, git index)" || bad "committed modes" "not 100755: $m(git update-index --chmod=+x)"
 else
   m=""; for f in $EXES; do [ -x "$f" ] || m="$m$f "; done
-  [ -z "$m" ] && ok "committed modes (4 executable, no git: the files' own mode)" || bad "committed modes" "not executable: $m(chmod +x; in git also update-index --chmod=+x)"
+  [ -z "$m" ] && ok "committed modes ($(echo $EXES | wc -w) executable, no git: the files' own mode)" || bad "committed modes" "not executable: $m(chmod +x; in git also update-index --chmod=+x)"
 fi
 
 
@@ -65,6 +66,11 @@ $NASM -f elf64 ide/sutram_gui_linux.asm -o /tmp/g_g.o 2>/tmp/g_g.log \
   && $LD -o ./sutram-gui /tmp/g_g.o 2>>/tmp/g_g.log \
   && line "build: X11 GUI" "ok  ($(wc -c < sutram-gui) B)" \
   || bad "build: X11 GUI" "see /tmp/g_g.log"
+
+$NASM -f elf64 linker/sutram_link.asm -o /tmp/g_l.o 2>/tmp/g_l.log \
+  && $LD -o ./sutram-link /tmp/g_l.o 2>>/tmp/g_l.log \
+  && line "build: linker (R28)" "ok  ($(wc -c < sutram-link) B)" \
+  || bad "build: linker (R28)" "see /tmp/g_l.log"
 
 [ "$BUILD_FAIL" = 1 ] && { echo; echo "compiler did not build — gates not run"; exit 1; }
 echo
@@ -101,6 +107,7 @@ run_gate() {                      # name, then the command
     "R23 capabilities") line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r23 capabilities: //'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "valid fuzzer + function values") line=$(grep -E "agree" /tmp/g_out.$$ | tail -1); case "$line" in *", 0 fail;"*) ok "$name ($(echo "$line" | sed 's/.*: //; s/;.*//'))";; *) bad "$name" "${line:-no summary}";; esac ;;
     "R25 error type")   line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r25 phal: //'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
+    "R28 linker")       line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(grep -m1 'identity:' /tmp/g_out.$$ | sed 's/PASS  identity: //; s/ byte-identical.*//') identical; $(echo "$line" | sed 's/r28 link: //'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "R23 fuzzer")       line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 differ"*) ok "$name ($(echo "$line" | sed 's/fuzz_r23: //'))";; *) bad "$name" "${line:-no summary}";; esac ;;
     "pack messages")    case "$(tail -1 /tmp/g_out.$$)" in OK*) ok "$name (12 sets x 11 cases)";; *) bad "$name" "$(grep -m1 -E 'FAIL|differ|Error' /tmp/g_out.$$ | cut -c1-60)";; esac ;;
     *)                  ok "$name" ;;
@@ -121,6 +128,7 @@ run_gate "keyword packs built in" python3 tools/lang_builtin.py --check   # R22 
 run_gate "pack found without lang/" python3 tests/r22/test_lang_builtin.py --compiler ./sutram_compiler   # R22 (F8): --lang <pack> on a valid program does not warn
 run_gate "R23 capabilities"  python3 tests/r23/test_capabilities.py --compiler ./sutram_compiler   # R23: function values, methods, slices: the errors and the checks
 run_gate "R25 error type"    python3 tests/r25/test_phal.py --compiler ./sutram_compiler   # R25: siddhi, dosh, prasar: the rules and the edges
+run_gate "R28 linker"        python3 tests/r28/test_link.py --compiler ./sutram_compiler --linker ./sutram-link   # R28: --object + sutram-link = the direct compile, byte for byte; two modules; the errors
 run_gate "R23 fuzzer"        python3 tools/fuzz_r23.py --seed 23 --count 100 --compiler ./sutram_compiler --out /tmp/fuzz-r23-gate   # R23: 100 random programs against the model
 run_gate "valid fuzzer + function values" python3 tools/fuzz_valid.py --seed 24 --count 60 --capabilities --compiler ./sutram_compiler --out /tmp/fuzz-valid-gate   # R24: the main fuzzer with calls through function values
 run_gate "crash corpus"      python3 tools/crash_corpus.py --compiler ./sutram_compiler   # R17: invalid input must error, never crash

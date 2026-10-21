@@ -123,6 +123,8 @@ r25_msg_prasar_call	"Sutram Error: {kw:prasar}: ફળ-{kw:prakriya} નું �
 r25_msg_prasar_where	"Sutram Error: {kw:prasar} ફક્ત ફળ-{kw:prakriya} અથવા {kw:mukhya} માં\n"
 # "Sutram Error: yadi dosh: phal-prakriya-ahvanam apekshitam\n"
 r26_msg_handle_call	"Sutram Error: {kw:yadi} {kw:dosh}: ફળ-{kw:prakriya} નું આહ્વાન અપેક્ષિત\n"
+# "Sutram Error: vastu-patre ghatak-star vitti asamarthita\n"
+r28_msg_object_globals	"Sutram Error: વસ્તુ-ફાઇલમાં ઘટક-સ્તરનો {kw:vitti} સમર્થિત નથી\n"
 # "Bhasha pak prapt: "
 msg_lang_ok	"ભાષા પેક મળ્યો: "
 # "Chetavani: bhasha-pakah na praptah: "

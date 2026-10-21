@@ -123,6 +123,8 @@ r25_msg_prasar_call	"Sutram Error: {kw:prasar}: ଫଳ-{kw:prakriya} ର ଆହ�
 r25_msg_prasar_where	"Sutram Error: {kw:prasar} କେବଳ ଫଳ-{kw:prakriya} କିମ୍ବା {kw:mukhya} ରେ\n"
 # "Sutram Error: yadi dosh: phal-prakriya-ahvanam apekshitam\n"
 r26_msg_handle_call	"Sutram Error: {kw:yadi} {kw:dosh}: ଫଳ-{kw:prakriya} ର ଆହ୍ୱାନ ଆବଶ୍ୟକ\n"
+# "Sutram Error: vastu-patre ghatak-star vitti asamarthita\n"
+r28_msg_object_globals	"Sutram Error: ବସ୍ତୁ-ଫାଇଲରେ ଘଟକ-ସ୍ତରର {kw:vitti} ସମର୍ଥିତ ନୁହେଁ\n"
 # "Bhasha pak prapt: "
 msg_lang_ok	"ଭାଷା ପ୍ୟାକ୍ ମିଳିଲା: "
 # "Chetavani: bhasha-pakah na praptah: "

@@ -123,6 +123,8 @@ r25_msg_prasar_call	"Sutram Error: {kw:prasar}: ഫല-{kw:prakriya} വിള�
 r25_msg_prasar_where	"Sutram Error: {kw:prasar} ഫല-{kw:prakriya} യിലോ {kw:mukhya} യിലോ മാത്രം\n"
 # "Sutram Error: yadi dosh: phal-prakriya-ahvanam apekshitam\n"
 r26_msg_handle_call	"Sutram Error: {kw:yadi} {kw:dosh}: ഫല-{kw:prakriya} വിളി ആവശ്യം\n"
+# "Sutram Error: vastu-patre ghatak-star vitti asamarthita\n"
+r28_msg_object_globals	"Sutram Error: വസ്തു-ഫയലിൽ ഘടക-തല {kw:vitti} പിന്തുണയില്ല\n"
 # "Bhasha pak prapt: "
 msg_lang_ok	"ഭാഷാ പാക്ക് കണ്ടെത്തി: "
 # "Chetavani: bhasha-pakah na praptah: "

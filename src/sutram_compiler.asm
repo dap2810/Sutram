@@ -100,6 +100,8 @@ AST_FLOAT     equ 29    ; T12 IEEE-754 binary64 bits in field1
 AST_FUNCREF   equ 40    ; R23 WS1: a prakriya name as a value: [type][name_ptr]
 AST_SLICE     equ 41    ; R23 WS3: base[lo:hi]: [type][base_name][lo][hi][desc_offset]
 AST_PRASAR    equ 42    ; R25: prasar call: [type][AST_FUNCALL]
+R28_RELOC_CAP equ 4096
+%define R28_PE_PAD db 0          ; R28: one byte past the 16-byte boundary, the parity v237 had (see the template)
 AST_HANDLE    equ 43    ; R26: yadi dosh (q = call) {fail} anya {ok}: [type][name][call][fail][ok]
 R25_PHAL_CAP  equ 512
 R23_METHOD_CAP equ 256
@@ -231,9 +233,10 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v237) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v238) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
+    r28_flag_object db "--object",0
     r48_msg_near db ": Sutram Error [E_PARSE]: shabd '",0
     r48_msg_end db "'",10,0
     r48_msg_ok db "Sutram pariksha: shuddham (nirgata-patram na rachitam)",10,0
@@ -375,6 +378,7 @@ r54_builtin_arity_table:
     r25_msg_prasar_call db "Sutram Error: prasar: phal-prakriya-ahvanam apekshitam", 10, 0
     r25_msg_prasar_where db "Sutram Error: prasar kevalam phal-prakriya-madhye mukhya-madhye va", 10, 0
     r26_msg_handle_call db "Sutram Error: yadi dosh: phal-prakriya-ahvanam apekshitam", 10, 0
+    r28_msg_object_globals db "Sutram Error: vastu-patre ghatak-star vitti asamarthita", 10, 0
 
     ; The v27 per-pack copies of five parse messages lived here. R11: every message
     ; now has a copy per pack, in lang/<pack>.sandesh, assembled into
@@ -2028,6 +2032,26 @@ _start:
     call strcmp
     test rax, rax
     jz .show_version
+%ifndef WINDOWS
+    ; R28 --object <input.sm> <output.smo>: the same compile, written as an
+    ; object file for sutram-link. Linux only in this version.
+    mov rdi, R49_ARG(16)
+    lea rsi, [rel r28_flag_object]
+    call strcmp
+    test rax, rax
+    jnz .r28_not_object
+    mov rax, R49_ARG(0)
+    cmp rax, 4
+    jl .usage
+    mov qword [rel r28_object_mode], 1
+    mov rax, R49_ARG(24)           ; argv[2] = input
+    mov R49_ARG(16), rax
+    mov rax, R49_ARG(32)           ; argv[3] = output
+    mov R49_ARG(24), rax
+    call maybe_load_env_lang
+    jmp .args_ok
+.r28_not_object:
+%endif
     ; R48 --check <input.sm>: use the real lexer/parser/codegen semantic
     ; validation without ever creating the output file.
     mov rdi, R49_ARG(16)
@@ -2187,7 +2211,13 @@ _start:
 .r48_normal_write:
     ; Write output
     mov rdi, R49_ARG(24)           ; argv[2]
+    cmp qword [rel r28_object_mode], 0
+    je .r28_write_elf
+    call r28_write_object          ; R28: --object
+    jmp .r28_written
+.r28_write_elf:
     call write_elf
+.r28_written:
 
     ; Print success
     lea rdi, [rel msg_ok]
@@ -6841,6 +6871,14 @@ parse_function:
     call r55_validate_prototypes
     mov qword [rel r4_seen_count], 0   ; R4: mukhya's own name scope
     mov qword [rel r4_seen_base], 0
+    cmp qword [rel r28_object_mode], 0 ; R28: an object may be a module with no mukhya
+    je .r28_need_mukhya
+    call cur_tok
+    cmp qword [rax], TOK_EOF
+    jne .r28_need_mukhya
+    call r28_empty_mukhya
+    jmp .pf_done
+.r28_need_mukhya:
     ; Now expect mukhya
     call cur_tok
     mov rcx, [rax]
@@ -12109,6 +12147,13 @@ backpatch_calls:
     mov [rcx + r13], eax     ; write rel32 (4 bytes)
     jmp .bc_next
 .bc_not_found:
+    cmp qword [rel r28_object_mode], 0  ; R28: in an object, a hole for sutram-link
+    je .r28_bc_not_object
+    mov rdi, r13
+    mov rsi, r14
+    call r28_add_reloc
+    jmp .bc_next
+.r28_bc_not_object:
     ; Stage 2: in check mode report every unresolved call backpatch.
     ; Ordinary compilation still exits on the first unresolved name.
     cmp qword [rel r48_mode], 0
@@ -23539,6 +23584,7 @@ strcmp:
 
 %include "src/r23_capabilities.inc"
 %include "src/r25_phal.inc"
+%include "src/r28_object.inc"
 
 itoa:
     mov rax, rdi
@@ -23777,6 +23823,15 @@ lookup_builtin:
     pop rbx
     ret
 
+; R28: pin the import template's alignment. Its `align 2` entries are
+; absolute, so any change in the size of the data before it (a new message in
+; the packs) used to shift its padding and change every Windows output by a
+; byte. Aligned here, the template starts at the same parity whatever precedes
+; it, and the bytes it writes are the ones v237 wrote.
+section .data
+    align 16, db 0
+    R28_PE_PAD
+section .text
 %include "win/pe_layout.inc"
 %include "win/pe_imports.inc"
 %include "win/rtblob.inc"   ; embedded Win64 runtime bytes
