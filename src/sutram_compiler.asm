@@ -233,11 +233,13 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v240) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v241) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
     r29_flag_separate db "--separate",0
+    r32_flag_ffi db "--ffi",0
+    r32_empty db 0
     r48_msg_near db ": Sutram Error [E_PARSE]: shabd '",0
     r48_msg_end db "'",10,0
     r48_msg_ok db "Sutram pariksha: shuddham (nirgata-patram na rachitam)",10,0
@@ -380,6 +382,8 @@ r54_builtin_arity_table:
     r25_msg_prasar_where db "Sutram Error: prasar kevalam phal-prakriya-madhye mukhya-madhye va", 10, 0
     r26_msg_handle_call db "Sutram Error: yadi dosh: phal-prakriya-ahvanam apekshitam", 10, 0
     r28_msg_object_globals db "Sutram Error: vastu-patre ghatak-star vitti asamarthita", 10, 0
+    r32_msg_ffi_bad db "Sutram Error: videshi-ghoshana-patram dushtam, pankti ", 0
+    r32_msg_ffi_clash db "Sutram Error: videshi prakriya-nama anyatra api: ", 0
 
     ; The v27 per-pack copies of five parse messages lived here. R11: every message
     ; now has a copy per pack, in lang/<pack>.sandesh, assembled into
@@ -2034,6 +2038,48 @@ _start:
     test rax, rax
     jz .show_version
 %ifndef WINDOWS
+    ; R32 --ffi <decls.sffi>, then --object or --separate and their arguments:
+    ; note the sidecar, drop the two arguments, and go on as that mode. With anything else after it, it is a usage error, so the
+    ; ordinary compile can never read a sidecar.
+    mov rdi, R49_ARG(16)
+    lea rsi, [rel r32_flag_ffi]
+    call strcmp
+    test rax, rax
+    jnz .r32_not_ffi
+    mov rax, R49_ARG(0)
+    cmp rax, 6                     ; prog --ffi f.sffi --object in out
+    jl .usage
+    mov rax, R49_ARG(24)
+    mov [rel r32_ffi_path], rax
+    mov rcx, R49_ARG(0)            ; argv[i] = argv[i+2] for i = 1 .. argc-2
+    mov edx, 1
+.r32_shift:
+    lea rax, [rdx + 2]
+    cmp rax, rcx
+    ja .r32_shifted
+    mov rax, [rsp + 8 + rax*8]
+    mov [rsp + 8 + rdx*8], rax
+    inc rdx
+    jmp .r32_shift
+.r32_shifted:
+    ; the environment still starts after the OLD argv's NULL; env_get_value
+    ; finds it from argc, so the two freed slots become two empty entries
+    lea rax, [rel r32_empty]
+    mov [rsp + rcx*8], rax         ; old argv[argc-1]
+    mov [rsp + 8 + rcx*8], rax     ; old argv[argc] (its NULL moved down)
+    sub qword R49_ARG(0), 2
+    mov rdi, R49_ARG(16)
+    lea rsi, [rel r28_flag_object]
+    call strcmp
+    test rax, rax
+    jz .r32_mode_ok
+    mov rdi, R49_ARG(16)
+    lea rsi, [rel r29_flag_separate]
+    call strcmp
+    test rax, rax
+    jnz .usage
+.r32_mode_ok:                      ; the sidecar is read after parsing (r7_check_arity),
+.r32_not_ffi:                      ; once SUTRAM_LANG's pack is loaded
     ; R28 --object <input.sm> <output.smo>: the same compile, written as an
     ; object file for sutram-link. Linux only in this version.
     mov rdi, R49_ARG(16)
@@ -7713,6 +7759,11 @@ r7_check_arity:
     push r12
     push r13
     push r14
+    cmp qword [rel r32_ffi_path],0    ; R32: read the foreign declarations; a
+    je .r32_no_ffi                    ; foreign name is no prakriya's
+    call r32_load_sidecar
+    call r32_check_clashes
+.r32_no_ffi:
     xor r12d,r12d               ; call index
 .call:
     cmp r12,[rel r7_call_count]
@@ -7724,7 +7775,7 @@ r7_check_arity:
     xor r13d,r13d               ; def index
 .def:
     cmp r13,[rel r7_def_count]
-    jae .next_call              ; not ours (builtin-like or undefined): skip
+    jae .r32_foreign            ; not ours (builtin-like or undefined): skip
     mov rax,r13
     shl rax,4
     lea r14,[rel r7_defs]
@@ -7763,6 +7814,15 @@ r7_check_arity:
     call print_str_z
     mov rdi,1
     call os_exit
+.r32_foreign:
+    cmp qword [rel r32_ffi_count],0   ; R32: or a declared foreign function's
+    je .next_call
+    mov rdi,[rbx]
+    call r32_ffi_find
+    test rax,rax
+    jz .next_call
+    mov r14,rax                 ; (name, arity, symbol): [r14+8] is the arity
+    jmp .found
 .next_call:
     inc r12
     jmp .call
@@ -14672,6 +14732,16 @@ gen_expr:
     call r23_emit_indirect_call
     jmp .ge_fc_after_call
 .ge_fc_direct:
+    cmp qword [rel r32_ffi_count], 0  ; R32: a declared foreign function
+    je .r32_fc_sutram
+    mov rdi, [rbx+8]
+    call r32_ffi_find
+    test rax, rax
+    jz .r32_fc_sutram
+    mov rsi, rax
+    call r32_gen_foreign_call
+    jmp .ge_fc_after_call
+.r32_fc_sutram:
     ; Emit call rel32
     mov dil, 0xE8
     call emit_byte
@@ -23643,6 +23713,7 @@ strcmp:
 %include "src/r23_capabilities.inc"
 %include "src/r25_phal.inc"
 %include "src/r28_object.inc"
+%include "src/r32_ffi.inc"
 
 itoa:
     mov rax, rdi

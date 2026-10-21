@@ -1,0 +1,18 @@
+# ROUND-32: calls into C, declared in ffi.sffi, linked from foreign.o.
+yoj r32_ganit
+prakriya gahan(n) {
+    yadi (n == 0) {
+        prati s_rsp()
+    }
+    prati gahan(n - 1)
+}
+mukhya() {
+    likha(s_add(17, 25))
+    likha(s_mix(1, 2, 3, 4, 5, 6))
+    likha(s_neg(5) + s_add(1, 1))
+    likha(s_rsp())
+    likha(gahan(1))
+    likha(gahan(2))
+    likha(1 + s_rsp())
+    likha(dvigun(21))
+}

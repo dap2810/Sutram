@@ -1,0 +1,5 @@
+PASS  identity: 187 programs byte-identical through --object + sutram-link; 0 refused (a module-level vitti); 35 do not compile directly (compile-fail examples)
+PASS  two modules, both orders, calls in both directions
+PASS  8 linker errors and the usage line
+r28 link: 201 checks, 0 failed
+exit 0

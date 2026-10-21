@@ -1,0 +1,7 @@
+behaviour: 254 programs with modules print and exit the same, built separately; 10 namespaced, refused; 55 do not compile the ordinary way
+no modules: 145 of 145 programs in examples/ byte-identical
+once: 4 modules, every prakriya defined in exactly one object; ardha prints as dasham
+arity: a wrong call into another module is refused by --separate, with the same diagnostic
+refusals: a missing module, a namespaced yoj, usage
+r29 separate: 254 programs with modules behave the same, 145 without are byte-identical, 0 failed
+exit 0

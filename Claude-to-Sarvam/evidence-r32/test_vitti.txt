@@ -1,0 +1,5 @@
+shared state: 4 modules, one ganak; the separate build prints what the one-pass compile prints
+the same bytes: a program with a vitti, --object and linked alone, is the direct compile
+the refusal: an initialized vitti in a library object; without an initializer it is held
+r30 vitti: 8 checks, 0 failed
+exit 0

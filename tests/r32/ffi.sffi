@@ -1,0 +1,5 @@
+sutram-ffi-v1|linux-x86_64-sysv
+s_add|2|i64,i64|i64|sutram_ffi_add
+s_neg|1|i64|i64|sutram_ffi_neg
+s_mix|6|i64,i64,i64,i64,i64,i64|i64|sutram_ffi_mix
+s_rsp|0||i64|sutram_ffi_rsp

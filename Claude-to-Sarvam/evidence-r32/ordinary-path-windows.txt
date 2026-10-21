@@ -1,0 +1,3 @@
+Wine (not Windows): every example in examples/*.sm compiled by main's win/sutram.exe (v240, at 9119407d) and by this branch's (v241), byte for byte:
+  Wine: 182 identical, 40 produce no output under both, 0 differ:
+  (the 40 are compile-fail examples and the ones that need --lang; both compilers refuse them)

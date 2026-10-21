@@ -76,7 +76,7 @@ class StructureFixtures(unittest.TestCase):
         if not (root / "lang" / "sanskrit.sandesh").exists():
             self.skipTest("No complete checkout")
         report = m.run(root)
-        self.assertEqual(report["canonical_keys"], 137)   # R23: two slice messages; R24: the method hint; R25: four phal messages
+        self.assertEqual(report["canonical_keys"], 139)   # R23: two slice messages; R24: the method hint; R25: four phal messages; R32: two FFI messages
         self.assertEqual(len(report["packs"]), 11)
         self.assertEqual(report["status"], "PASS",
                          str({k: v["failures"][:3] for k, v in report["packs"].items()

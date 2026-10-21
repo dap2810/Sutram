@@ -95,6 +95,43 @@ bytes of the instruction, so it is filled with `target − (offset + 4)` like a 
   initializer**: nothing would run it. The diagnostic is `vastu-patre ghatak-star vitti asamarthita`. A `vitti`
   with no initializer is held (it starts at zero, as always).
 
+## The FFI (ROUND-32): calling a C function
+
+```
+sutram_compiler --ffi decls.sffi --object   in.sm out.smo
+sutram_compiler --ffi decls.sffi --separate in.sm out.smo [root.sm]
+sutram-elf2smo  foreign.o foreign.smo
+sutram-link     prog out.smo foreign.smo
+python3 tools/sutram_build.py --ffi decls.sffi --foreign foreign.o main.sm -o prog   # all of it
+```
+
+**The declaration is a sidecar file, not syntax** (no parser change, no keyword, no pack):
+
+```
+sutram-ffi-v1|linux-x86_64-sysv
+s_add|2|i64,i64|i64|sutram_ffi_add
+```
+
+One LF-terminated line per function: the name Sutram calls it by, its arity (0-6), the argument kinds, the
+result kind, and the foreign symbol. **Version 1 accepts `i64` arguments and an `i64` result only.** ASCII, no
+spaces, no CR, at most 8192 bytes and 64 lines. Any other line is refused with its line number.
+
+- **It is checked:** a call with the wrong number of arguments is `E_ARITY` at the call's own location, at the
+  same point as for a prakriya (after parsing, before any code), so **no object is written**.
+- **It is not a prakriya:** no body, no stub, nothing exported. A prakriya, builtin or keyword with either name
+  is an error. A call becomes a relocation carrying the **foreign** name, with the stack aligned to 16 bytes
+  around it for the C ABI (arguments in `rdi, rsi, rdx, rcx, r8, r9`, the result in `rax`, as Sutram's own calls).
+- **It is opt-in:** `--ffi` is accepted only before `--object` or `--separate`. The ordinary compile never reads
+  a sidecar.
+
+**`sutram-elf2smo`** (`linker/sutram_elf2smo.asm`, NASM) reads one ELF64 x86-64 relocatable object and writes a
+`SUTRAMO1` object with its code and one symbol per global function. **Stage 1 reads the smallest useful
+subset:** exactly one code section; **no relocations at all** (a C function that calls out is refused); no
+undefined symbols; no other loaded section except notes (no data, no read-only data, no bss, no unwind tables).
+Build the C side freestanding, for example
+`gcc -c -O2 -ffreestanding -fno-asynchronous-unwind-tables -fno-pic -fno-stack-protector f.c`.
+**`SUTRAMO1` and `sutram-link` are unchanged.**
+
 ## What version 1 does not do
 
 - **No `--lang` flag** with `--object` (`SUTRAM_LANG` works).
@@ -102,4 +139,4 @@ bytes of the instruction, so it is filled with `target − (offset + 4)` like a 
 - **With `--object`, every prakriya is exported** (including the library modules a `yoj` pulled in), so two
   objects that both `yoj` the same module define its prakriyas twice. **`--separate` (ROUND-29) is the fix:**
   a `yoj`'d module's prakriyas are not in the object that `yoj`s it.
-- **No C FFI, no archives, no package manager.** (No data relocation kind is needed for `vitti`: see above.)
+- **No archives, no package manager;** the FFI is stage 1 (above): `i64` only, and foreign code with no relocations. (No data relocation kind is needed for `vitti`: see above.)

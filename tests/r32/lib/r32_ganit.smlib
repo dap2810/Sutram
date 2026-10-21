@@ -1,0 +1,3 @@
+prakriya dvigun(x) {
+    prati s_add(x, x)
+}

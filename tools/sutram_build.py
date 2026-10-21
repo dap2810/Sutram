@@ -34,6 +34,12 @@ whose key is in DIR is reused; any other is compiled and stored under its key.
 The objects are reproducible (the same inputs give the same bytes), so a cached
 build links to exactly the executable a clean build links to.  Without --cache,
 every module is compiled, as before.
+
+ROUND-32: the FFI.  `--ffi decls.sffi` passes the checked foreign declarations to
+every module's compile (so a wrong-arity call is E_ARITY there, and a declared
+call becomes a relocation to the foreign symbol); `--foreign f.o` (repeatable) reads
+an ELF object with sutram-elf2smo and links it in.  The sidecar's bytes are part
+of every cache key.
 """
 import hashlib
 import os
@@ -120,10 +126,12 @@ def closure(graph):
     return out
 
 
-def cache_key(path, reach, compiler_digest):
+def cache_key(path, reach, compiler_digest, sidecar=b""):
     h = hashlib.sha256()
     h.update(b"sutram-build-cache-v1\0")
     h.update(compiler_digest)
+    if sidecar:
+        h.update(b"\0ffi\0" + str(len(sidecar)).encode() + b"\0" + sidecar)
     h.update(b"\0lang\0" + os.environ.get("SUTRAM_LANG", "").encode())
     for p in [path] + sorted(reach):
         with open(p, "rb") as f:
@@ -138,15 +146,25 @@ def main(argv):
     linker = os.path.join(REPO, "sutram-link")
     keep = None
     cache = None
+    ffi = None
+    foreign = []
+    elf2smo = os.path.join(REPO, "sutram-elf2smo")
     out = None
     show_graph = False
     while args and args[0].startswith("--"):
         flag = args.pop(0)
         if flag == "--graph":
             show_graph = True
-        elif flag in ("--compiler", "--linker", "--keep", "--cache") and args:
+        elif flag in ("--compiler", "--linker", "--keep", "--cache", "--ffi", "--foreign",
+                      "--elf2smo") and args:
             val = args.pop(0)
-            if flag == "--compiler":
+            if flag == "--ffi":
+                ffi = os.path.abspath(val)
+            elif flag == "--foreign":
+                foreign.append(os.path.abspath(val))
+            elif flag == "--elf2smo":
+                elf2smo = val
+            elif flag == "--compiler":
                 compiler = val
             elif flag == "--linker":
                 linker = val
@@ -162,7 +180,8 @@ def main(argv):
     elif len(args) == 1 and show_graph:
         root = args[0]
     else:
-        print("usage: sutram_build.py [--compiler C] [--linker L] [--keep DIR] [--cache DIR] main.sm -o out\n"
+        print("usage: sutram_build.py [--compiler C] [--linker L] [--keep DIR] [--cache DIR]\n"
+              "                       [--ffi decls.sffi] [--foreign f.o ...] main.sm -o out\n"
               "       sutram_build.py --graph main.sm", file=sys.stderr)
         return 2
     try:
@@ -181,6 +200,15 @@ def main(argv):
     os.makedirs(work, exist_ok=True)
     objects = []
     compiled = reused = 0
+    ffi_args = ["--ffi", ffi] if ffi else []
+    sidecar = b""
+    if ffi:
+        try:
+            with open(ffi, "rb") as f:
+                sidecar = f.read()
+        except OSError:
+            print(f"sutram-build: {ffi}: cannot read", file=sys.stderr)
+            return 1
     if cache:
         os.makedirs(cache, exist_ok=True)
         with open(compiler, "rb") as f:
@@ -189,12 +217,12 @@ def main(argv):
     for k, (path, _deps) in enumerate(graph):
         obj = os.path.join(work, f"{k:03d}-{os.path.basename(path)}.smo")
         if cache:
-            cached = os.path.join(cache, cache_key(path, reach[path], compiler_digest) + ".smo")
+            cached = os.path.join(cache, cache_key(path, reach[path], compiler_digest, sidecar) + ".smo")
             if os.path.isfile(cached):
                 reused += 1
                 objects.append(cached)
                 continue
-        r = subprocess.run([os.path.abspath(compiler), "--separate", path, os.path.abspath(obj),
+        r = subprocess.run([os.path.abspath(compiler)] + ffi_args + ["--separate", path, os.path.abspath(obj),
                             os.path.abspath(root)],
                            stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         if r.returncode != 0 or not os.path.isfile(obj):
@@ -208,6 +236,14 @@ def main(argv):
                 dst.write(src.read())
             os.replace(tmp, cached)        # a partly written object is never under its key
             obj = cached
+        objects.append(obj)
+    for k, fo in enumerate(foreign):
+        obj = os.path.join(work, f"f{k:03d}-{os.path.basename(fo)}.smo")
+        r = subprocess.run([elf2smo, fo, obj], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        if r.returncode != 0:
+            sys.stdout.write(r.stdout.decode("utf-8", "replace"))
+            print(f"sutram-build: {fo}: not linked", file=sys.stderr)
+            return 1
         objects.append(obj)
     r = subprocess.run([linker, out] + [os.path.abspath(o) for o in objects], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     if r.returncode != 0:

@@ -37,7 +37,7 @@ echo
 # files themselves instead of the index, so it never says NOT-RUN. The two
 # readings agree when the tree is the committed one; they differ only after a
 # chmod that is not yet in the index, which `git ls-files -s` would still show.
-EXES="sutram_compiler sutram-ide sutram-gui sutram-fmt sutram-link"
+EXES="sutram_compiler sutram-ide sutram-gui sutram-fmt sutram-link sutram-elf2smo"
 if command -v git >/dev/null 2>&1 && git rev-parse --git-dir >/dev/null 2>&1; then
   m=$(git ls-files -s $EXES | awk '$1 != "100755" {print $4}' | tr '\n' ' ')
   for f in $EXES; do git ls-files --error-unmatch "$f" >/dev/null 2>&1 || m="$m$f(not committed) "; done   # R28: a missing one is not a pass
@@ -71,6 +71,11 @@ $NASM -f elf64 linker/sutram_link.asm -o /tmp/g_l.o 2>/tmp/g_l.log \
   && $LD -o ./sutram-link /tmp/g_l.o 2>>/tmp/g_l.log \
   && line "build: linker (R28)" "ok  ($(wc -c < sutram-link) B)" \
   || bad "build: linker (R28)" "see /tmp/g_l.log"
+
+$NASM -f elf64 linker/sutram_elf2smo.asm -o /tmp/g_e.o 2>/tmp/g_e.log \
+  && $LD -o ./sutram-elf2smo /tmp/g_e.o 2>>/tmp/g_e.log \
+  && line "build: ELF reader (R32)" "ok  ($(wc -c < sutram-elf2smo) B)" \
+  || bad "build: ELF reader (R32)" "see /tmp/g_e.log"
 
 [ "$BUILD_FAIL" = 1 ] && { echo; echo "compiler did not build — gates not run"; exit 1; }
 echo
@@ -111,6 +116,7 @@ run_gate() {                      # name, then the command
     "R29 separate compilation") line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r29 separate: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c6-80)";; esac ;;
     "R30 module vitti") line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r30 vitti: //'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c6-80)";; esac ;;
     "R31 incremental")  line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r31 incremental: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c6-80)";; esac ;;
+    "R32 FFI")          line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r32 ffi: //'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c6-80)";; esac ;;
     "R23 fuzzer")       line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 differ"*) ok "$name ($(echo "$line" | sed 's/fuzz_r23: //'))";; *) bad "$name" "${line:-no summary}";; esac ;;
     "pack messages")    case "$(tail -1 /tmp/g_out.$$)" in OK*) ok "$name (12 sets x 11 cases)";; *) bad "$name" "$(grep -m1 -E 'FAIL|differ|Error' /tmp/g_out.$$ | cut -c1-60)";; esac ;;
     *)                  ok "$name" ;;
@@ -135,6 +141,7 @@ run_gate "R28 linker"        python3 tests/r28/test_link.py --compiler ./sutram_
 run_gate "R29 separate compilation" python3 tests/r29/test_separate.py --compiler ./sutram_compiler --linker ./sutram-link   # R29: each module compiled once, linked; behaves as the whole-program compile
 run_gate "R30 module vitti"  python3 tests/r30/test_vitti.py --compiler ./sutram_compiler --linker ./sutram-link   # R30: a module's vitti held once, in its own object
 run_gate "R31 incremental"   python3 tests/r31/test_incremental.py --compiler ./sutram_compiler --linker ./sutram-link   # R31: --cache rebuilds only what changed; the same executable as a clean build
+run_gate "R32 FFI"           python3 tests/r32/test_ffi.py --compiler ./sutram_compiler --linker ./sutram-link --elf2smo ./sutram-elf2smo   # R32: C functions, checked declarations, read from ELF
 run_gate "R23 fuzzer"        python3 tools/fuzz_r23.py --seed 23 --count 100 --compiler ./sutram_compiler --out /tmp/fuzz-r23-gate   # R23: 100 random programs against the model
 run_gate "valid fuzzer + function values" python3 tools/fuzz_valid.py --seed 24 --count 60 --capabilities --compiler ./sutram_compiler --out /tmp/fuzz-valid-gate   # R24: the main fuzzer with calls through function values
 run_gate "crash corpus"      python3 tools/crash_corpus.py --compiler ./sutram_compiler   # R17: invalid input must error, never crash

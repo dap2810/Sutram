@@ -1,0 +1,4 @@
+THE GUARD: the ordinary path, main's committed sutram_compiler (v240, at 9119407d) vs this branch (v241, with the FFI),
+every .sm in examples/, examples/*/, tests/stdlib/, tests/r*/ (recursive), Linux; stdout and exit status compared too:
+  560 programs: 471 byte-identical executables, 89 refused identically, 0 DIFFER
+  (560 = R31's 559 + tests/r32/main.sm, which the ordinary compile refuses: it does not know s_add, on both)
