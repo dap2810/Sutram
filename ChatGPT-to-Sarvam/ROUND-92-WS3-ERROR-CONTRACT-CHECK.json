@@ -1,0 +1,96 @@
+{
+  "round": 92,
+  "source_main_initial": "affb99dc2472256884846c2b3258a0fabf76bd50",
+  "source": {
+    "unchecked": {
+      "path": "ChatGPT-to-Sarvam/ROUND-91-WS3-UNHANDLED.sm",
+      "blob": "7ae4536c4da5a92ed569ff00d1e855fd767fdcdd",
+      "unchecked_value_line": 7
+    },
+    "handled": {
+      "path": "ChatGPT-to-Sarvam/ROUND-91-WS3-HANDLED.sm",
+      "blob": "863aa49b9dd9ddbe51a07506a1fd826738fe7fc4"
+    },
+    "library": {
+      "path": "lib/phal.smlib",
+      "blob": "c23ae4ae9b48aba19fb66eb22fdf44b5fff5e392"
+    },
+    "compiler": {
+      "path": "src/sutram_compiler.asm",
+      "blob": "1f6377e35897a467e2ae5781433f84d933a7886a",
+      "lex_hash_comment_at": 0
+    },
+    "regression_example": {
+      "path": "tests/stdlib/result_chain.sm",
+      "blob": "59965fa43fdee2195bc5f2e76faeeb760c0d1f67"
+    },
+    "R91_spec": {
+      "path": "ChatGPT-to-Sarvam/ROUND-91-WS3-ERROR-TYPE.md",
+      "blob": "ef37f3c336ba5869cf15f34211194dfa8143f107"
+    }
+  },
+  "status": "SOURCE_REVIEW_PASS; NATIVE_COMPILATION_NOT_RUN",
+  "checks": [
+    {
+      "name": "same_strict_marker",
+      "status": "PASS"
+    },
+    {
+      "name": "current_compiler_does_not_recognize_opt_in",
+      "status": "PASS"
+    },
+    {
+      "name": "current_compiler_ignores_hash_comments",
+      "status": "PASS"
+    },
+    {
+      "name": "current_compiler_lacks_diagnostic",
+      "status": "PASS"
+    },
+    {
+      "name": "negative_contains_producer",
+      "status": "PASS"
+    },
+    {
+      "name": "negative_extracts_without_guard",
+      "status": "PASS"
+    },
+    {
+      "name": "positive_guards_same_result",
+      "status": "PASS"
+    },
+    {
+      "name": "positive_only_extracts_after_branch",
+      "status": "PASS"
+    },
+    {
+      "name": "library_exposes_checked_division",
+      "status": "PASS"
+    },
+    {
+      "name": "library_exposes_value_extractor",
+      "status": "PASS"
+    },
+    {
+      "name": "library_exposes_status_check",
+      "status": "PASS"
+    },
+    {
+      "name": "existing_evidence_chain",
+      "status": "PASS"
+    },
+    {
+      "name": "original_design_declares_proposal",
+      "status": "PASS"
+    }
+  ],
+  "legacy_predicted": "UNHANDLED.sm currently accepted by grammar and phal.smlib convention; this exact source not compiled in this session.",
+  "future_strict_predicted": "PROPOSED E_PHAL_UNHANDLED at first unsafe read, UNHANDLED.sm line 7, with no produced binary. Current native compiler does NOT enforce this.",
+  "handled_predicted": "HANDLED.sm branches on status and unconditionally returns in failure branch before reading payload.",
+  "native_toolchain": "NOT_RUN",
+  "limitations": [
+    "The marker is a source comment ignored by the current lexer; future strict mode needs a newly reviewed opt-in parse phase.",
+    "A Python precheck in R84 draft is limited and not equivalent to native control flow or alias safety.",
+    "No actual Sutram binary in this environment; exact compilation acceptance/error messages not tested."
+  ]
+}
