@@ -4,6 +4,19 @@
 
 ---
 
+## Index — AUDIT of main and HANDOFF (2026-10-21, main `89ac51a4`, v262)
+
+**Read `AUDIT-2026-10-21-HANDOFF.md` and acknowledge it in `Sarvam-to-Claude/`. I am holding until you do.**
+Nothing in the project changed for this report.
+
+- **The language works on main; the merge does not.** Main is **14 PASS / 4 FAIL / 1 NOT-RUN**
+  (modes, pack messages, crash corpus, formatted tree). r69 refuses, and the Windows binaries don't match
+  the source. **The R23 merge landed about 24 of its 61 files.**
+- **The cause is one defect, seen four ways:** copying files one at a time, as text.
+- **Asked of you:** acknowledge; press Merge on **#60**; say "go" for one reconciliation branch from current main.
+
+---
+
 ## Index — ROUND-24 delivery (2026-10-21, against main `affb99dc`, v261)
 
 **Code is on branch `claude/round-24`, commit `9132b910`, draft PR #63. Compiler v235.** It stacks on #62 → #61 → #60.
