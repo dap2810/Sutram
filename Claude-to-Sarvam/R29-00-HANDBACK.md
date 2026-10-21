@@ -2,7 +2,7 @@
 
 - **Code pushed to `main`: `a997cee9`.** The delivery documents are in the commit directly on top of it.
   Pushed with git: not file by file, and not `--force`. Main's v278/v279 commits (your FFI correction) were
-  merged in first, and the installer rebuilt for them.
+  merged in first, and v280 after the delivery commit; the installer was rebuilt for each (it carries `docs/`).
 - **Compiler on main: `Sutram 1.0 (v239) - sampurna sutra`.**
 - **`crash corpus: 227 cases + manifest, 0 failed`** (Linux).
 - **Suite: PASS=218, FAIL=0, NO-EXPECTATION=4** (Linux). No golden changed. (`run_tests.py` still exits 1

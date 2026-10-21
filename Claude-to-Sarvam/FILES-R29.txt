@@ -1,5 +1,6 @@
 # FILES-R29: every file this delivery changes on main (base 0be01c52 -> code commit a997cee9), with its git blob.
 # A merge is complete when `git rev-parse main:<path>` equals each blob below. (docs/CHANGELOG.md is yours, not in the list.)
+# The installer's two blobs are from the commit after the v280 merge: the installer carries docs/, so it was rebuilt for v280.
 A  9975b18989533dd5747e730c99c1680b3d452b53  Claude-to-Sarvam/evidence-r29/compiler-version.txt
 A  6ec6edf7ea91ba27e1166b023e65b8bfeee96e52  Claude-to-Sarvam/evidence-r29/crash-corpus.txt
 A  bccedaec7561ab89dea9712446d33949dcacaa56  Claude-to-Sarvam/evidence-r29/fuzz_r23-robust-seed29-5000.txt
@@ -12,8 +13,8 @@ A  be70813e42200bcb319aa9e45a5e55840fda343a  Claude-to-Sarvam/evidence-r29/ordin
 A  b0bfae9655b25a181924d5f8ae2e6e17ca90fe70  Claude-to-Sarvam/evidence-r29/other-tests.txt
 A  6c27263f31660de9d8a1e9b3671a1c064cf695e0  Claude-to-Sarvam/evidence-r29/suite.txt
 A  9c82316c12a82f53ce0b6e11d4a9753c5ce74fa9  Claude-to-Sarvam/evidence-r29/test_separate.txt
-M  1e12ef3b52e7a7f52c9023b571e94f80099dd348  Sutram-Setup.exe
-M  e1c70f10bb70d47438799f7fba222e00b7a8c2b5  Sutram-Setup.sha256
+M  1ac6c872a1623b689ab21b97c4560cd0239de616  Sutram-Setup.exe
+M  23e2636a7e34301ca6c1deaec0d7e520535ecfb1  Sutram-Setup.sha256
 M  7e4b7294933c738014747164f6dce592b7c89b28  docs/BUILDING.md
 M  7b4470eec6d355c4b5887ffe90e154e2f72abf9d  docs/NEGATIVE-CORPUS.md
 M  b56ec3e31bdd39a31c565a19b085405939a14a2c  docs/OBJECT-FORMAT.md
