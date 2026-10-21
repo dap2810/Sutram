@@ -1,0 +1,27 @@
+PASS parse exact i64 signature
+PASS valid two-argument call resolves to foreign symbol
+PASS one argument is compile error -> E_ARITY
+PASS three arguments is compile error -> E_ARITY
+PASS unbound foreign name compile error -> E_FFI_UNDECLARED
+PASS header version rejected -> E_FFI_SIDECAR
+PASS target ABI rejected -> E_FFI_SIDECAR
+PASS byte order mark rejected -> E_FFI_SIDECAR
+PASS CRLF rejected -> E_FFI_SIDECAR
+PASS trailing newline required -> E_FFI_SIDECAR
+PASS extra pipe rejected -> E_FFI_SIDECAR
+PASS missing field rejected -> E_FFI_SIDECAR
+PASS whitespace in name rejected -> E_FFI_SIDECAR
+PASS symbol name too long rejected -> E_FFI_SIDECAR
+PASS zero arity with arguments rejected -> E_FFI_SIDECAR
+PASS mismatched argument kinds rejected -> E_FFI_SIDECAR
+PASS floating argument fails closed -> E_FFI_ABI_UNSUPPORTED
+PASS pointer argument fails closed -> E_FFI_ABI_UNSUPPORTED
+PASS floating return fails closed -> E_FFI_ABI_UNSUPPORTED
+PASS void return fails closed -> E_FFI_ABI_UNSUPPORTED
+PASS duplicate local rejected -> E_FFI_DUPLICATE
+PASS duplicate external rejected -> E_FFI_DUPLICATE
+PASS NUL byte rejected -> E_FFI_SIDECAR
+PASS oversized file rejected -> E_FFI_SIDECAR
+PASS malformed invalid negative arity -> E_FFI_SIDECAR
+PASS missing all entries rejected -> E_FFI_SIDECAR
+RESULT 26 PASS 0 FAIL; Python sidecar model only; native Sutram compiler NOT_RUN

@@ -1,3 +1,40 @@
+## v283 - I tried to verify separate compilation by hand and got it wrong. The suite is the check.
+
+**I ran the compiler's `--separate` flag on my own two files and it did not produce an object.** **The error
+was mine, and the shape of it is familiar:**
+
+- **`yoj util` looks for the module in the project's own `lib/` directory** - the suite uses
+  `tests/r29/proj/lib/`. **I put my module in the same directory as the program and expected `yoj` to find it.**
+- **My second attempt put the module in `lib/` but still produced no `.smo`,** and I did not find out why before
+  stopping.
+
+**And the authoritative check passes:**
+
+```
+r29 separate: 253 programs with modules behave the same, 144 without are byte-identical, 0 failed
+```
+
+**So the capability works, and my hand-rolled invocation of it did not.** **The suite has the project layout
+and I guessed at it.**
+
+**That is the fourteenth time this stretch that my own test or tool was the thing at fault** - **and the same
+lesson every time: a check I assemble myself from memory is worth less than the check that already exists.**
+
+**What I can say from what I actually ran:**
+
+| Check | Result |
+|---|---|
+| compiler on main | **v239** |
+| `tests/r29/test_separate.py` | **253 programs with modules behave the same, 144 without are byte-identical, 0 failed** |
+| the arity check | *"a wrong call into another module is refused by `--separate`, with the same diagnostic"* |
+| the refusals | *"a missing module, a namespaced `yoj`, usage"* |
+
+**The arity check line is the one that matters most** - **it is the check Claude said would have caught the 39
+programs that printed a `dasham` as an integer.** **It is in the suite, and it refuses the wrong call with the
+same diagnostic as the ordinary path.**
+
+**So: separate compilation is verified - by its own suite, not by me.**
+
 ## v282 - R96 was excellent, and ChatGPT corrected ME on the FFI - after reading my correction
 
 ### It went further than I did, and it is right
