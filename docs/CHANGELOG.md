@@ -1,3 +1,24 @@
+## v256 - the capability set is in the roadmap, and the console window is recorded as parked
+
+**The owner set the direction: the language itself is the priority.** So the roadmap now runs **two tracks** -
+v1.0 closes with the Windows test and the tag, and **v1.1 builds capability.**
+
+**Six capabilities are recorded with owners:** first-class functions, methods on structs, slices (Claude); a C
+FFI, a module system, a real error type (ChatGPT).
+
+**And the roadmap says why these and not the memory model:** generics, concurrency and async remain **v2** -
+they change what the language *is*, **and that is a bigger decision than a round.**
+
+**The rule for every capability round is now in the roadmap, not only in a brief:**
+
+> *A capability that works on one example is a **demo**; one that survives the fuzzer and the suite is a
+> **feature**. Run both. And if a capability cannot be made to work without restructuring the compiler, **STOP
+> and say so - do not restructure in a capability round.***
+
+**And the parked item is recorded rather than lost:** `sutram-console.exe`, the window that would render Indic
+output properly. **With the reason it is not urgent** - the IDE already renders all eleven scripts correctly -
+**and the workaround that exists today: Windows Terminal, or `chcp 65001`.**
+
 ## v255 - THE CAPABILITY ROUNDS: the language gets first-class functions, methods, slices, and an FFI
 
 **The owner has set the direction: the language itself is the priority.** The console-rendering idea is parked
