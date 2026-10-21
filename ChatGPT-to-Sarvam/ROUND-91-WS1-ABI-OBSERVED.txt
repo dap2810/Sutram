@@ -1,0 +1,65 @@
+SUTRAM ROUND-91 — RAW LOCAL GNU C-ABI CONTROL EVIDENCE
+Host: Linux x86-64, kernel 6.18.55; GCC 14.2.0; GNU ld 2.44
+Inputs: ChatGPT-to-Sarvam/ROUND-91-WS1-ABI-CONTROL.S
+Sutram compiler installed in this container: NO
+NASM installed in this container: NO
+
+$ gcc -c /mnt/data/sutram_round91/ffi_abi_control.S -o /mnt/data/sutram_round91/ffi_abi_control.o
+EXIT=0
+
+$ readelf -h /mnt/data/sutram_round91/ffi_abi_control.o
+Type: REL (Relocatable file)
+Machine: Advanced Micro Devices X86-64
+
+$ readelf -Ws /mnt/data/sutram_round91/ffi_abi_control.o | grep printf
+4: 0000000000000000     0 NOTYPE  GLOBAL DEFAULT  UND printf
+
+$ ld -o /mnt/data/sutram_round91/ffi_bare /mnt/data/sutram_round91/ffi_abi_control.o
+EXIT=1
+STDERR:
+ld: warning: cannot find entry symbol _start; defaulting to 0000000000401000
+ld: /mnt/data/sutram_round91/ffi_abi_control.o: in function `main':
+(.text+0x15): undefined reference to `printf'
+
+$ gcc -no-pie /mnt/data/sutram_round91/ffi_abi_control.o -o /mnt/data/sutram_round91/ffi_abi_control
+EXIT=0
+
+$ /mnt/data/sutram_round91/ffi_abi_control
+EXIT=0
+STDOUT:
+Sutram FFI ABI control: 42
+
+$ readelf -l /mnt/data/sutram_round91/ffi_abi_control | grep -A1 INTERP
+INTERP
+[Requesting program interpreter: /lib64/ld-linux-x86-64.so.2]
+
+$ readelf -d /mnt/data/sutram_round91/ffi_abi_control | grep NEEDED
+Shared library: [libc.so.6]
+
+$ gcc -static -no-pie /mnt/data/sutram_round91/ffi_abi_control.o -o /mnt/data/sutram_round91/ffi_static_control
+EXIT=0
+$ /mnt/data/sutram_round91/ffi_static_control
+EXIT=0
+STDOUT:
+Sutram FFI ABI control: 42
+
+$ stat -c%s /mnt/data/sutram_round91/ffi_abi_control
+15816
+$ stat -c%s /mnt/data/sutram_round91/ffi_static_control
+754336
+
+$ sha256sum /mnt/data/sutram_round91/ffi_abi_control.S /mnt/data/sutram_round91/ffi_abi_control.o /mnt/data/sutram_round91/ffi_abi_control /mnt/data/sutram_round91/ffi_static_control
+84d13d71c8fdc730046a2803ea61c25383decf2fecfdc00298e30ac86fe4e154  ffi_abi_control.S
+5d957c6658b3ae6f7d347b8bb8d8499803fe67a2b6b7f4f04c1577a99606d1ae  ffi_abi_control.o
+0ee76583815bbcace2be40ced794db1cf2192c5785b7b2d4f217e7dcf4160a91  ffi_abi_control
+56764cd9364b13aa81071485c93bfce5b6d12e75c8bf8dcd90c16ccecbc391c5  ffi_static_control
+
+WARNING: the successful binaries above were made using GCC/GNU assembly,
+NOT compiled or linked from a Sutram .sm program. This proves only an
+external-ABI/linker control on the host, not a working Sutram FFI.
+
+Native Sutram attempt:
+$ ./sutram_compiler --check ChatGPT-to-Sarvam/ROUND-91-WS1-PRINTF-PROBE.sm
+NOT_RUN: sutram_compiler binary and NASM absent; no stderr or exit code fabricated.
+Compiler-source backpatch_calls inspected: an undeclared printf would
+be unresolved and subject to existing undefined-function diagnosis.
