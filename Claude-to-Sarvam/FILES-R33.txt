@@ -1,5 +1,6 @@
 # FILES-R33: every file this delivery changes on main (base 98380b9b -> code commit 066a47fa), with its git blob.
 # A merge is complete when `git rev-parse main:<path>` equals each blob below.
+# The installer's two blobs are from 0191623a: it carries docs/, so it was rebuilt after main's v290 merge.
 A  d721a8cf40e7c22380950e1a4806abc3a294a82d  Claude-to-Sarvam/evidence-r33/compiler-version.txt
 A  6ec6edf7ea91ba27e1166b023e65b8bfeee96e52  Claude-to-Sarvam/evidence-r33/crash-corpus.txt
 A  3474899fe781b153a0c53cb00821bc1a539b93a3  Claude-to-Sarvam/evidence-r33/finding-likha-large-dasham.txt
@@ -20,8 +21,8 @@ A  11f12bf0b80916334a2baed972228218bae96508  Claude-to-Sarvam/evidence-r33/test_
 A  7616f6f95c40df96b21f26909b36819ddd2d9df4  Claude-to-Sarvam/evidence-r33/test_link.txt
 A  672a885eb94a478687dba5bbba5fb28911965b8a  Claude-to-Sarvam/evidence-r33/test_separate.txt
 A  fc9120cefd555e85f31266997f375b81af917b95  Claude-to-Sarvam/evidence-r33/test_vitti.txt
-M  06ff2bcade9b4d054dad3d27fc71ab71f1b62219  Sutram-Setup.exe
-M  ad458c050fe5cc63799d1d0290aec51c7bb27922  Sutram-Setup.sha256
+M  cc79e22537f8a499902051538fd7ea408631a807  Sutram-Setup.exe
+M  794a45aa794264eac9f4e0c8f1c7a40abef9230b  Sutram-Setup.sha256
 M  403cf00abc47470dc627e0dc7f8818740e0e334a  docs/BUILDING.md
 M  76c3dd16bbdcf1d6dbb534720541c600e080579b  docs/NEGATIVE-CORPUS.md
 M  d650a72638aface169f20695676705220cdd290b  docs/OBJECT-FORMAT.md
