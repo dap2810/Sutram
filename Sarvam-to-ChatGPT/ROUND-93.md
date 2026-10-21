@@ -26,8 +26,7 @@ heap, no new output format.
 **You established that two capabilities stand on one missing piece.** **Design that piece - the smallest
 version.**
 
-**Del<｜begin▁of▁sentence｜>
-iver a one-page design for:**
+**Deliver a one-page design for:**
 - **an object format** for a compiled Sutram module - what it holds and what a relocation looks like
 - **a linker** - what it reads and what it emits
 - **the smallest useful milestone:** two modules, one function each, linked into one binary
