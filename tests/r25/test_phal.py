@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""ROUND-25: the error type - siddhi, dosh, prasar - the rules and the edges.
+"""ROUND-25/26: the error type - siddhi, dosh, prasar, and the yadi dosh handler (R26) - the rules and the edges.
 
 The working program is examples/249_r25_phal.sm (golden in tests/expect, run by
 the suite). This pins each rule: a failure propagates through every level, a
@@ -61,6 +61,25 @@ CASES = [
      ('compile-fail', 'Sutram Error: prasar: phal-prakriya-ahvanam apekshitam')),
     ('prasar in a plain prakriya', F + 'prakriya h(a) {\n    prati prasar f(a)\n}\nmukhya() {\n    likha(h(1))\n}\n',
      ('compile-fail', 'Sutram Error: prasar kevalam phal-prakriya-madhye mukhya-madhye va')),
+    ('R26 handler: failure runs the first block with the code, success the anya block with the value',
+     F + 'mukhya() {\n    yadi dosh (q = f(1)) {\n        likha(100 + q)\n    } anya {\n        likha(q)\n    }\n'
+     '    yadi dosh (q = f(0)) {\n        likha(100 + q)\n    } anya {\n        likha(q)\n    }\n    likha(q)\n}\n',
+     ('out', '103\n1\n1\n', 0)),
+    ('R26 handler without anya; the name stays after it',
+     F + 'mukhya() {\n    yadi dosh (q = f(1)) {\n        likha(q)\n    }\n    likha(q + 10)\n}\n',
+     ('out', '3\n13\n', 0)),
+    ('R26 handler in a plain prakriya: recovery, the caller never sees the failure',
+     F + 'prakriya bachao(a) {\n    yadi dosh (q = f(a)) {\n        prati 0 - q\n    }\n    prati q\n}\n'
+     'mukhya() {\n    likha(bachao(0))\n    likha(bachao(5))\n}\n', ('out', '1\n-3\n', 0)),
+    ('R26 handler inside a phal-prakriya, turning a failure into a success',
+     F + 'prakriya g(a) {\n    yadi dosh (q = f(a)) {\n        prati siddhi(50)\n    }\n    prati siddhi(q)\n}\n'
+     'mukhya() {\n    likha(prasar g(1))\n    likha(prasar g(0))\n}\n', ('out', '50\n1\n', 0)),
+    ('R26 handler in a loop', F + 'mukhya() {\n    chakra i = 0 tak 2 {\n        yadi dosh (q = f(i % 2)) {\n            likha(0 - q)\n'
+     '        } anya {\n            likha(q)\n        }\n    }\n}\n', ('out', '1\n-3\n1\n', 0)),
+    ('R26 handler on a plain prakriya', 'prakriya g(a) {\n    prati a\n}\nmukhya() {\n    yadi dosh (q = g(1)) {\n        likha(q)\n    }\n}\n',
+     ('compile-fail', 'Sutram Error: yadi dosh: phal-prakriya-ahvanam apekshitam')),
+    ('R26 handler on something that is not a call', 'mukhya() {\n    yadi dosh (q = 5) {\n        likha(q)\n    }\n}\n',
+     ('compile-fail', 'Sutram Error: yadi dosh: phal-prakriya-ahvanam apekshitam')),
     ('a plain prati in a phal-prakriya',
      'prakriya k(a) {\n    yadi (a) {\n        prati dosh(1)\n    }\n    prati a\n}\nmukhya() {\n    likha(prasar k(0))\n}\n',
      ('compile-fail', 'Sutram Error: phal-prakriya: prati siddhi va dosh bhavet')),

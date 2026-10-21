@@ -100,6 +100,7 @@ AST_FLOAT     equ 29    ; T12 IEEE-754 binary64 bits in field1
 AST_FUNCREF   equ 40    ; R23 WS1: a prakriya name as a value: [type][name_ptr]
 AST_SLICE     equ 41    ; R23 WS3: base[lo:hi]: [type][base_name][lo][hi][desc_offset]
 AST_PRASAR    equ 42    ; R25: prasar call: [type][AST_FUNCALL]
+AST_HANDLE    equ 43    ; R26: yadi dosh (q = call) {fail} anya {ok}: [type][name][call][fail][ok]
 R25_PHAL_CAP  equ 512
 R23_METHOD_CAP equ 256
 R23_MCALL_CAP  equ 2048
@@ -230,7 +231,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v236) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v237) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r48_msg_near db ": Sutram Error [E_PARSE]: shabd '",0
@@ -373,6 +374,7 @@ r54_builtin_arity_table:
     r25_msg_phal_unused db "Sutram Error: phal-prakriya prasar vina ahuta", 10, 0
     r25_msg_prasar_call db "Sutram Error: prasar: phal-prakriya-ahvanam apekshitam", 10, 0
     r25_msg_prasar_where db "Sutram Error: prasar kevalam phal-prakriya-madhye mukhya-madhye va", 10, 0
+    r26_msg_handle_call db "Sutram Error: yadi dosh: phal-prakriya-ahvanam apekshitam", 10, 0
 
     ; The v27 per-pack copies of five parse messages lived here. R11: every message
     ; now has a copy per pack, in lang/<pack>.sandesh, assembled into
@@ -8747,6 +8749,15 @@ parse_stmt:
 .ps_if:
     ; Simplified — parse if(cond){block}
     call advance_tok          ; consume 'yadi'
+    call cur_tok              ; R26: yadi dosh (q = call) { ... } anya { ... }
+    cmp qword [rax], TOK_KEYWORD
+    jne .r26_not_handler
+    cmp qword [rax+16], KW_DOSH
+    jne .r26_not_handler
+    call r26_parse_handler
+    pop rbx
+    ret
+.r26_not_handler:
     ; expect (
     call cur_tok
     mov rcx, [rax+8]
@@ -12245,9 +12256,16 @@ gen_stmt:
     je .gs_assert
     cmp rax, AST_NISHKRIYA
     je .gs_nishkriya
+    cmp rax, AST_HANDLE
+    je .gs_handle
     ; Default: expression
     mov rax, rbx
     call gen_expr
+    pop rbx
+    ret
+
+.gs_handle:
+    call r26_gen_handle       ; R26: a failure caught here
     pop rbx
     ret
 

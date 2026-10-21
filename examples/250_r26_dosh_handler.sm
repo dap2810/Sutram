@@ -1,0 +1,52 @@
+# R26: catching a failure. `yadi dosh (q = f(...)) { ... } anya { ... }` calls
+# the phal-prakriya f. If it fails, the first block runs and q is the code; if
+# it succeeds, the anya block runs and q is the value. The failure goes no
+# further, so a program can recover from it - in any prakriya, or in mukhya.
+
+# 1: not a digit
+prakriya ank_mulya(c) {
+    yadi (c < 48 || c > 57) {
+        prati dosh(1)
+    }
+    prati siddhi(c - 48)
+}
+
+# the number written in s; 2: an empty string; a bad digit passes up as 1
+prakriya sankhya_padh(s) {
+    vitti n = vartani_len(s)
+    yadi (n == 0) {
+        prati dosh(2)
+    }
+    vitti t = 0
+    chakra i = 0 tak n - 1 {
+        vitti d = prasar ank_mulya(akshar(s, i))
+        t = t * 10 + d
+    }
+    prati siddhi(t)
+}
+
+# never fails: a bad number counts as the default
+prakriya padh_ya(s, mool) {
+    yadi dosh (q = sankhya_padh(s)) {
+        prati mool
+    }
+    prati q
+}
+
+mukhya() {
+    yadi dosh (x = sankhya_padh("2026")) {
+        likha("dosh ")
+        likha(x)
+    } anya {
+        likha(x + 1)
+    }
+    yadi dosh (x = sankhya_padh("20x6")) {
+        likha(1000 + x)
+    } anya {
+        likha(x)
+    }
+    yadi dosh (x = sankhya_padh("")) {
+        likha(1000 + x)
+    }
+    likha(padh_ya("42", 0) + padh_ya("4z", 100))
+}

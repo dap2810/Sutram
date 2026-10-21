@@ -524,7 +524,21 @@ mukhya() {
 - **No heap:** the value or the code travels in `rax`, the status in `rdx`.
 - Methods can be phal-prakriyas (`prasar p.ghata(4)`).
 
-**Not in this version:** a handler that catches a failure and continues (the one open decision); keeping a
+**Catching a failure (R26):** `yadi dosh (q = f(...)) { ... } anya { ... }` calls the phal-prakriya `f`.
+On failure the first block runs with `q` = the code; on success the `anya` block (optional) runs with `q` =
+the value. The failure goes no further, so recovery is possible anywhere, in any prakriya or in `mukhya`.
+`q` is declared by the handler if it is new and stays visible after it. Example: `examples/250_r26_dosh_handler.sm`.
+
+```
+prakriya padh_ya(s, mool) {          # never fails: a bad number counts as the default
+    yadi dosh (q = sankhya_padh(s)) {
+        prati mool
+    }
+    prati q
+}
+```
+
+**Not in this version:** keeping a
 result in a variable (it is consumed by `prasar` where it arrives); typed results (`phal<T>`); calling a
 phal-prakriya through a function value (the status is not checked there); `dasham` values in a result.
 

@@ -18,6 +18,8 @@ Every program has:
     and folded; the mala is printed afterwards, so a write through a slice that
     went to the wrong element shows.
 
+ROUND-26 adds the handler: a plain prakriya bachao(x) that catches one e_i's
+failure (yadi dosh (h = e_i(x)) ...), and handlers in mukhya with an anya block.
 ROUND-25 adds the error type: 2-4 phal-prakriyas e_i(x), each failing with
 dosh(code) on a condition of x, else calling an earlier one under prasar and
 returning siddhi(...); mukhya ends by calling them under prasar, so the first
@@ -242,6 +244,22 @@ class Gen:
                     return (st, y)
                 env['y'] = y
             return ('siddhi', fr(env))
+        # R26: the handler - in a plain prakriya (recovery) and in mukhya
+        hb = r.randrange(ne)
+        src[0:0] = ['prakriya bachao(x) {', '    yadi dosh (h = e%d(x)) {' % hb, '        prati 1000 + h', '    }',
+                    '    prati h', '}', '']
+        for _ in range(r.randint(1, 4)):
+            x = r.randint(-20, 20)
+            xs = x if x >= 0 else '(%d)' % x
+            if r.random() < 0.5:
+                body.append('likha(bachao(%s))' % xs)
+                st, val = ecall(hb, x)
+                say(1000 + val if st == 'dosh' else val)
+            else:
+                i = r.randrange(ne)
+                body += ['yadi dosh (h = e%d(%s)) {' % (i, xs), '    likha(0 - h)', '} anya {', '    likha(h)', '}']
+                st, val = ecall(i, x)
+                say(-val if st == 'dosh' else val)
         for _ in range(r.randint(2, 6)):
             i = r.randrange(ne)
             x = r.randint(-20, 20)
@@ -268,7 +286,8 @@ def robust(a, comp):
     for i in range(40):
         base.append(make(rng.randrange(1 << 30))[0].encode())
     extra = [b':', b'[', b']', b'.', b'vibhag ', b'[:', b':]', b'.m0(', b'prakriya Vastu.', b'chuno',
-             b'prasar ', b'siddhi(', b'dosh(', b'prati dosh(1)', b'prasar e0(1)']
+             b'prasar ', b'siddhi(', b'dosh(', b'prati dosh(1)', b'prasar e0(1)',
+             b'yadi dosh (h = e0(1)) {', b'yadi dosh (', b' anya {']
     bad = 0
     counts = {}
     out = Path(a.out); out.mkdir(parents=True, exist_ok=True)

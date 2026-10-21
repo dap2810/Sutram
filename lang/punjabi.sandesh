@@ -121,6 +121,8 @@ r25_msg_phal_unused	"Sutram Error: ਨਤੀਜਾ-{kw:prakriya} ਨੂੰ {kw:p
 r25_msg_prasar_call	"Sutram Error: {kw:prasar}: ਨਤੀਜਾ-{kw:prakriya} ਦਾ ਸੱਦਾ ਲੋੜੀਂਦਾ\n"
 # "Sutram Error: prasar kevalam phal-prakriya-madhye mukhya-madhye va\n"
 r25_msg_prasar_where	"Sutram Error: {kw:prasar} ਸਿਰਫ਼ ਨਤੀਜਾ-{kw:prakriya} ਜਾਂ {kw:mukhya} ਵਿੱਚ\n"
+# "Sutram Error: yadi dosh: phal-prakriya-ahvanam apekshitam\n"
+r26_msg_handle_call	"Sutram Error: {kw:yadi} {kw:dosh}: ਨਤੀਜਾ-{kw:prakriya} ਦਾ ਸੱਦਾ ਲੋੜੀਂਦਾ\n"
 # "Bhasha pak prapt: "
 msg_lang_ok	"ਭਾਸ਼ਾ ਪੈਕ ਮਿਲਿਆ: "
 # "Chetavani: bhasha-pakah na praptah: "

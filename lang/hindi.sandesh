@@ -121,6 +121,8 @@ r25_msg_phal_unused	"Sutram Error: फल-{kw:prakriya} को {kw:prasar} क�
 r25_msg_prasar_call	"Sutram Error: {kw:prasar}: फल-{kw:prakriya} का आह्वान अपेक्षित\n"
 # "Sutram Error: prasar kevalam phal-prakriya-madhye mukhya-madhye va\n"
 r25_msg_prasar_where	"Sutram Error: {kw:prasar} केवल फल-{kw:prakriya} या {kw:mukhya} में\n"
+# "Sutram Error: yadi dosh: phal-prakriya-ahvanam apekshitam\n"
+r26_msg_handle_call	"Sutram Error: {kw:yadi} {kw:dosh}: फल-{kw:prakriya} का आह्वान अपेक्षित\n"
 # "Bhasha pak prapt: "
 msg_lang_ok	"भाषा पैक मिला: "
 # "Chetavani: bhasha-pakah na praptah: "

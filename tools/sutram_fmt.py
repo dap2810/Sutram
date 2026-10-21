@@ -176,6 +176,7 @@ def join_tokens(toks, raw_line=''):
     """Render one logical line's tokens (no 'nl') with the spacing rules."""
     out = []
     prev = None            # the previous code token
+    prev2 = None           # R26: the one before it
     prev_unary = False     # ... and whether it was a unary - or !
     label = bool(toks) and toks[0][0] == 'word' and mean(toks[0][1]) in ('bhavana', 'anya')
     if toks and toks[0][0] == 'word' and mean(toks[0][1]) == 'yoj' and toks[0][1] == 'yoj':
@@ -211,6 +212,8 @@ def join_tokens(toks, raw_line=''):
             elif k == 'delim' and v == '(':
                 if pk == 'word':      # a call is tight; a keyword is followed by a space
                     sp = '' if pv not in KEYWORDS or mean(pv) in CALLLIKE_CORE else ' '
+                    if mean(pv) == 'dosh' and prev2 and prev2[0] == 'word' and mean(prev2[1]) == 'yadi':
+                        sp = ' '                          # R26: yadi dosh (q = f(x)), the handler
                 elif pk == 'delim' and pv in ')]':
                     sp = ''                               # f(x)(y) does not occur; keep tight
             elif k == 'delim' and v == '[':
@@ -238,6 +241,7 @@ def join_tokens(toks, raw_line=''):
             elif brackets[-1][0] == '[':
                 after_slice = True
         out.append(sp + v)
+        prev2 = prev
         prev, prev_unary, after_comment = t, unary, False
     return ''.join(out)
 

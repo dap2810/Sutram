@@ -212,3 +212,173 @@ r25_gen_prasar:
 .where_bad:
     lea rdi, [rel r25_msg_prasar_where]
     jmp capacity_fail
+
+; ------------------------------------------------------------------- R26
+; The handler: catch a failure and continue.
+;
+;   yadi dosh (q = f(...)) {      the call failed: q is the code
+;       ...
+;   } anya {                      it succeeded: q is the value
+;       ...
+;   }
+;
+; f must be a phal-prakriya. q is declared by the handler if it is new, and
+; stays visible after it. The anya part is optional. Allowed anywhere: a
+; handled failure goes no further.
+
+; r26_parse_handler: the current token is `dosh` after `yadi`.
+; -> rax = AST_HANDLE [type][name][call][fail block][ok block or 0]
+r26_parse_handler:
+    push rbx
+    push r12
+    push r13
+    call advance_tok                ; dosh
+    call cur_tok
+    cmp qword [rax], TOK_DELIMITER
+    jne parse_error
+    cmp qword [rax + 8], '('
+    jne parse_error
+    call advance_tok
+    call cur_tok
+    cmp qword [rax], TOK_IDENT
+    jne parse_error
+    mov r12, [rax + 8]              ; the name
+    call advance_tok
+    call cur_tok
+    cmp qword [rax], TOK_OPERATOR
+    jne parse_error
+    cmp qword [rax + 8], '='
+    jne parse_error
+    call advance_tok
+    call parse_expr
+    cmp qword [rax], AST_FUNCALL
+    jne .not_call
+    mov r13, rax                    ; the call
+    call cur_tok
+    cmp qword [rax], TOK_DELIMITER
+    jne parse_error
+    cmp qword [rax + 8], ')'
+    jne parse_error
+    call advance_tok
+    mov rdi, r12                    ; a new name is declared here, in this scope
+    call r4_is_seen
+    test rax, rax
+    jnz .seen
+    mov rdi, r12
+    call r4_declare
+.seen:
+    call parse_body                 ; the failure block
+    push rax
+    xor ebx, ebx                    ; no anya
+    call cur_tok
+    cmp qword [rax], TOK_KEYWORD
+    jne .build
+    cmp qword [rax + 16], KW_ANYATRA
+    jne .build
+    call advance_tok
+    call parse_body                 ; the success block
+    mov rbx, rax
+.build:
+    call alloc_ast
+    pop rcx
+    mov qword [rax], AST_HANDLE
+    mov [rax + 8], r12
+    mov [rax + 16], r13
+    mov [rax + 24], rcx
+    mov [rax + 32], rbx
+    pop r13
+    pop r12
+    pop rbx
+    ret
+.not_call:
+    lea rdi, [rel r26_msg_handle_call]
+    jmp capacity_fail
+
+; r26_emit_store_rax(rdi = name): the variable = rax. Writes only the variable.
+r26_emit_store_rax:
+    push rbx
+    mov rbx, rdi
+    call r56_global_index
+    test rax, rax
+    jz .local
+    dec rax
+    mov rdi, rax
+    call r56_emit_global_store
+    pop rbx
+    ret
+.local:
+    mov rdi, rbx
+    call lookup_var                 ; allocates it if it is new
+    test rax, rax
+    jle .stack
+    mov rdi, rax
+    call emit_store_reg
+    pop rbx
+    ret
+.stack:
+    push rax
+    R23_EMIT 0x48,0x89              ; mov [rbp+disp], rax
+    pop rax
+    push rsi
+    mov esi, eax
+    mov dil, 0x45
+    call emit_rbp_modrm_disp
+    pop rsi
+    pop rbx
+    ret
+
+; r26_gen_handle(rbx = AST_HANDLE)
+r26_gen_handle:
+    push r12
+    push r13
+    mov rax, [rbx + 16]
+    mov rdi, [rax + 8]              ; the callee
+    call r23_call_is_indirect
+    test rax, rax
+    jnz .not_phal
+    mov rax, [rbx + 16]
+    mov rdi, [rax + 8]
+    call r25_is_phal
+    test rax, rax
+    jz .not_phal
+    mov qword [rel r25_prasar_pending], 1   ; the call is handled here
+    mov rax, [rbx + 16]
+    call gen_expr                   ; rax = value or code, rdx = status
+    mov rdi, [rbx + 8]
+    call r26_emit_store_rax         ; q = rax (rdx is kept)
+    R23_EMIT 0x48,0x85,0xD2         ; test rdx, rdx
+    R23_EMIT 0x0F,0x84              ; jz success (patched)
+    mov r12, [rel code_sz]
+    xor edi, edi
+    call emit_u32
+    mov rax, [rbx + 24]
+    call gen_block                  ; the failure block
+    xor r13d, r13d
+    cmp qword [rbx + 32], 0
+    je .no_ok
+    R23_EMIT 0xE9                   ; jmp end (patched)
+    mov r13, [rel code_sz]
+    xor edi, edi
+    call emit_u32
+.no_ok:
+    mov rax, [rel code_sz]          ; success: here
+    sub rax, r12
+    sub rax, 4
+    lea rcx, [rel code_buf]
+    mov [rcx + r12], eax
+    test r13, r13
+    jz .done
+    mov rax, [rbx + 32]
+    call gen_block                  ; the success block
+    mov rax, [rel code_sz]
+    sub rax, r13
+    sub rax, 4
+    lea rcx, [rel code_buf]
+    mov [rcx + r13], eax
+.done:
+    pop r13
+    pop r12
+    ret
+.not_phal:
+    lea rdi, [rel r26_msg_handle_call]
+    jmp capacity_fail

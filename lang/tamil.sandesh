@@ -121,6 +121,8 @@ r25_msg_phal_unused	"Sutram Error: முடிவு-{kw:prakriya} {kw:prasar} 
 r25_msg_prasar_call	"Sutram Error: {kw:prasar}: முடிவு-{kw:prakriya} அழைப்பு தேவை\n"
 # "Sutram Error: prasar kevalam phal-prakriya-madhye mukhya-madhye va\n"
 r25_msg_prasar_where	"Sutram Error: {kw:prasar} முடிவு-{kw:prakriya} அல்லது {kw:mukhya} இல் மட்டும்\n"
+# "Sutram Error: yadi dosh: phal-prakriya-ahvanam apekshitam\n"
+r26_msg_handle_call	"Sutram Error: {kw:yadi} {kw:dosh}: முடிவு-{kw:prakriya} அழைப்பு தேவை\n"
 # "Bhasha pak prapt: "
 msg_lang_ok	"மொழித் தொகுப்பு கிடைத்தது: "
 # "Chetavani: bhasha-pakah na praptah: "
