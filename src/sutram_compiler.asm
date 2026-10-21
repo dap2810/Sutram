@@ -219,7 +219,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v232) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v233) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r48_msg_near db ": Sutram Error [E_PARSE]: shabd '",0
@@ -375,6 +375,7 @@ r54_builtin_arity_table:
     ln_ta db "tamil", 0
     ln_te db "telugu", 0
     ln_sa db "sanskrit", 0
+%include "src/r22_lang_builtin.inc"
 
     cur_lang_id dq 0
     msg_lang_ok  db "Bhasha pak prapt: ", 0
@@ -1171,7 +1172,7 @@ try_load_lang:
     lea rdi, [rel str_envhome]
     call env_get_value
     test rax, rax
-    jz .tll_fail
+    jz .tll_builtin
     mov rsi, rax
     lea rdi, [rel lang_path_buf]
     call str_copy
@@ -1186,6 +1187,32 @@ try_load_lang:
     call str_append
     lea rdi, [rel lang_path_buf]
     call load_lang_file
+    test rax, rax
+    jnz .tll_ok
+.tll_builtin:
+    ; R22 (F8): no .lang file on any path. The pack's messages are built in
+    ; (set_lang_id above), so its keywords are too: a name that is a pack never
+    ; reaches the warning. Only a name that is no pack at all does.
+    mov ebx, 1
+.tll_bi_next:
+    cmp ebx, 12
+    jae .tll_fail
+    lea rax, [rel lang_names]
+    mov rdi, [rax + rbx*8]
+    mov rsi, r12
+    push rbx
+    call strcmp
+    pop rbx
+    test rax, rax
+    jz .tll_bi_found
+    inc ebx
+    jmp .tll_bi_next
+.tll_bi_found:
+    lea rax, [rel lang_builtin_ptr]
+    mov rdi, [rax + rbx*8]
+    lea rax, [rel lang_builtin_len]
+    mov rsi, [rax + rbx*8]
+    call load_lang_mem
     test rax, rax
     jnz .tll_ok
 .tll_fail:
@@ -1210,6 +1237,25 @@ try_load_lang:
     pop r12
     pop rbx
     ret
+
+; load_lang_mem(rdi = data, rsi = length) -> rax = 1 loaded, 0 failed
+; R22 (F8): a built-in .lang, parsed exactly as a file is (same buffer, same parser).
+load_lang_mem:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    mov r13, rsi
+    test r13, r13
+    jle load_lang_file.llf_fail
+    cmp r13, 16384
+    ja load_lang_file.llf_fail
+    mov rsi, rdi
+    lea rdi, [rel lang_file_buf]
+    mov rcx, r13
+    rep movsb
+    jmp load_lang_file.llf_parse
 
 ; load_lang_file(rdi = path) -> rax = 1 loaded, 0 failed
 ; File format: "<native word> <sanskrit keyword>" per line, # comments
@@ -1237,6 +1283,7 @@ load_lang_file:
     call os_close
     test r13, r13
     jle .llf_fail
+.llf_parse:                      ; R22: load_lang_mem enters here with r13 = length
     ; init string pool only on first pack
     cmp qword [rel lang_kw_cnt], 0
     jne .llf_no_init
