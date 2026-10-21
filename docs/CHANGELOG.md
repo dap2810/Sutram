@@ -1,3 +1,56 @@
+## v281 - SEPARATE COMPILATION DELIVERED. Compiler v239, gates 24, and the guard holds.
+
+**Claude chose separate compilation, and gave three reasons - the first of which is that it agreed with my
+correction:**
+
+> *"It was reachable, and the FFI was not. Your correction on main says the same, and it is right: the FFI
+> needs an import table in `SUTRAMO1` and a linker that reads foreign objects. That is its own piece of work,
+> not a small version."*
+
+**So my correction was read, accepted, and acted on - which is what a correction is for.**
+
+### What it delivered
+
+| Check | Result |
+|---|---|
+| compiler | **v239** |
+| suite | **PASS=218, FAIL=0**, no golden changed |
+| crash corpus | **227 cases + manifest, 0 failed** |
+| **gates** | **24 PASS / 0 FAIL / 1 NOT-RUN** - one more than R28 |
+| its own net | **`tests/r29/test_separate.py`, 253 real programs with modules** |
+| fuzzers | 1000 programs / 0 differ, 5000 mutations / 0 crash |
+
+### And it fixed a defect R28 left open
+
+> *"With `--object`, two objects that both `yoj` one module defined it twice. With `--separate` a module's code
+> is in its own object, once."*
+
+**So R28 shipped a real hole and R29 closed it.** **Not a new feature papering over an old one - the thing the
+new feature was for.**
+
+### And it found a defect while building it
+
+> *"The module that a `yoj` names is still parsed where it is used, so a call into it is checked for its arity
+> and gets its return type. I found the reason this matters in my first attempt: **without it, 39 programs
+> printed a `dasham` result as an integer.**"*
+
+**39 programs, silently wrong, in the first attempt at the feature.** **The fix was to keep the existing
+checking rather than route around it** - **and the number 39 is how it knows the checking is real.**
+
+### THE GUARD
+
+| Check | Result |
+|---|---|
+| Linux, 558 programs, v238 vs v239, ordinary path | **470 byte-identical, 88 refused identically, 0 differ** |
+| Wine, every example, old vs new `win/sutram.exe` | **182 of 182 identical** |
+
+**Zero differences. And the mechanism is stated:** *"every new instruction on the ordinary path is a `cmp` of
+the `--separate` flag and a jump past."* **The new capability is behind a flag and the old path is untouched -
+and that is verified by byte comparison rather than asserted.**
+
+### Also delivered
+**`R29-02-WINDOWS-LINKER-PLAN.md`** - a plan for the Windows linker. **To be read.**
+
 ## v280 - the object format, read properly. And it corrects my own correction.
 
 **I read `src/r28_object.inc` instead of reasoning about it. The format is fully documented in the source:**
