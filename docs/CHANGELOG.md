@@ -1,3 +1,44 @@
+## v280 - the object format, read properly. And it corrects my own correction.
+
+**I read `src/r28_object.inc` instead of reasoning about it. The format is fully documented in the source:**
+
+```
+0   "SUTRAMO1"                  magic
+8   code_size
+16  symbol_count                prakriyas this module DEFINES
+24  relocation_count            rel32 holes this module LEAVES
+32  code                        code_size bytes; mukhya (if any) at offset 0
+    symbols:     { offset, name_length, name bytes } x symbol_count
+    relocations: { offset of the rel32, name_length, name bytes } x relocation_count
+```
+
+**And the comment that settles the FFI question:**
+
+> *"every call to a prakriya this module does not define becomes a relocation for `sutram-link` to fill."*
+
+### So my "no import table" claim was WRONG
+
+**I wrote in v278 that the object has no way to say *"I need `printf` from outside"*. It does.**
+
+**The relocations ARE the import list.** A call to any name the module does not define becomes a relocation
+naming that name. **So an object can already say it needs `printf` - the format supports it.**
+
+**What is actually missing is on the LINKER's side, and it is one sentence:**
+
+**`sutram-link` resolves every relocation from the symbol tables of the Sutram objects it was given. A name
+nobody defines is an error.** **For the FFI it must also be able to resolve a relocation from an ELF object -
+or from the system's symbols.**
+
+**So the work is: teach `sutram-link` to read ELF relocatable objects. It is not a format change at all.**
+
+**That is a smaller and more precise job than the one I described last round**, and it is the third time this
+stretch that reading the source settled a question I had answered from inference. **The first two were F1's
+threshold and the pack's two halves.**
+
+### And the spec exists
+**`docs/OBJECT-FORMAT.md` is referenced from the source.** **Whether it is complete is a separate question, and
+I have not checked it - so I am not claiming it.**
+
 ## v279 - both rounds corrected before either partner acts on my wrong premise
 
 **I added the correction to ROUND-29 and ROUND-96** - the FFI is not reachable, here is the measurement, and
