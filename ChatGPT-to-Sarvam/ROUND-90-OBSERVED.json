@@ -1,0 +1,119 @@
+{
+  "schema": 1,
+  "round": 90,
+  "source_pin": "7ec9c9b58498bb34b826ea6abbcbc5cf2e2f7ec4",
+  "status": "SOURCE_AND_DOC_AUDIT_COMPLETED; NATIVE_NOT_RUN",
+  "files_readback": [
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-90-WS1-36-PLACEHOLDERS.json",
+      "git_blob": "7e44c180e4e49faac6e143453f5353dee45ac1e7",
+      "code_units": 30728
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-90-WS4-F8-SOURCE-TRACE.json",
+      "git_blob": "ea720d07b42010cd0453c4b29184c70ea0d8f617",
+      "code_units": 12648
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-90-WS1-PLACEHOLDER-RECONCILIATION.md",
+      "git_blob": "283d542444703d68c79e59c28d927a633c00a7c1",
+      "code_units": 7302
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-90-WS4-F8-DIAGNOSIS.md",
+      "git_blob": "2169bc2025a39d87fd63a106bd0a1e018f63e299",
+      "code_units": 6846
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-90-WS2-WS3-REVIEW.md",
+      "git_blob": "97f76896905fca4b69894c8307f4c59540c8e692",
+      "code_units": 1537
+    }
+  ],
+  "checks": [
+    {
+      "name": "R90_DIFF_FLAGS_36",
+      "status": "PASS"
+    },
+    {
+      "name": "R90_DIFF_SIX_PACKS",
+      "status": "PASS"
+    },
+    {
+      "name": "R90_CURRENT_SANSKRIT_LESS",
+      "status": "PASS"
+    },
+    {
+      "name": "R90_ORIGINAL_ROMAN_COUNTS_COVER",
+      "status": "PASS"
+    },
+    {
+      "name": "R90_F8_SOURCE_LANDMARKS_16",
+      "status": "PASS"
+    },
+    {
+      "name": "R90_F8_TRACED_MAIN",
+      "status": "PASS"
+    },
+    {
+      "name": "R90_DIFF_READBACK_IN_PROSE",
+      "status": "PASS"
+    },
+    {
+      "name": "R90_F8_READBACK_IN_PROSE",
+      "status": "PASS"
+    },
+    {
+      "name": "R90_WS23_READBACK",
+      "status": "PASS"
+    }
+  ],
+  "WS1": {
+    "source_rows_verified": 36,
+    "hard_violations": 0,
+    "structural_rule_recommendation": "Original default printed-word multiplicity (Claude R21) for structural validity; R83 excess-vs-Sanskrit allowed only as optional stylistic review.",
+    "scoped_to_six_draft_packs": true
+  },
+  "WS2": {
+    "review_sheet_exists": true,
+    "draft_packs": 8,
+    "distinct_messages": 33,
+    "original_candidates": 39,
+    "format": "one-pass, grouped by pack, original text and doubt",
+    "modified": false
+  },
+  "WS3": {
+    "master_paragraph_integrated": true,
+    "first_reported_in_changelog_v250": true,
+    "source_blob": "fc949af4120bff06dbf1de66527623a2b6458659",
+    "reinsert": false,
+    "pr56_stale_draft": true
+  },
+  "WS4": {
+    "cause": "Attempt to load runtime keyword aliases lang/<name>.lang fails, but message translation is already embedded and selected.",
+    "warning_branch_both_OS": true,
+    "Windows_extra_executable_relative_search": true,
+    "actual_Linux_reproduction": "NOT_RUN",
+    "actual_windows_zip_layout": "UNKNOWN",
+    "native_alias_validation": "NOT_RUN"
+  },
+  "not_run": [
+    "Native Sutram compiler execution and Windows/Linux warning reproduction",
+    "Windows test ZIP contents/failed path/error code",
+    "Native-speaker review of draft languages",
+    "CI or source-code compiler testing"
+  ],
+  "no_mutations": [
+    "src/sutram_compiler.asm",
+    "src/r11_sandesh.inc",
+    "lang/*.lang",
+    "lang/*.sandesh",
+    "PROJECT-MASTER.md",
+    "accepted goldens",
+    "source locks",
+    "installer",
+    "compiler binaries"
+  ],
+  "no_background_automation": true,
+  "no_PR_merges": true
+}
