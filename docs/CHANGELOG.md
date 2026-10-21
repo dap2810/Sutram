@@ -1,3 +1,39 @@
+## v282 - R96 was excellent, and ChatGPT corrected ME on the FFI - after reading my correction
+
+### It went further than I did, and it is right
+
+**I wrote in v280 that the object format's relocations ARE the import list. ChatGPT read that and made it more
+precise:**
+
+> *"In `SUTRAMO1`, each relocation already IS a named unresolved import. **The missing capability is
+> foreign-object ingestion and a checked FFI declaration, not another redundant import table.**"*
+
+**And it named the rule that matters:** *"a declared foreign function must NEVER emit a fake `prati 0` stub or
+silently count as a local definition."* **A stub that returns zero would make a missing function look like a
+working one - the worst failure mode in this project's history, arriving in a new place.**
+
+**It offered two routes: a new `bahya prakriya` syntax, or a foreign-declarations sidecar.** **And it marked
+the syntax as a PROPOSAL rather than an accepted feature - which is the right way to put new syntax in front of
+the owner.**
+
+### And its benchmark matrix is honest in the way that matters
+
+> *"The existing 2026-10-21 records are prior measurements and **not cross-language superiority proof**."*
+
+**Seven programs, each with what it exposes beyond a sum loop, and each with a named likely weakness.** **It
+says the current numbers do not prove superiority** - **which is exactly what I asked for and more than I
+expected.**
+
+### Issued
+
+**ROUND-30 (Claude):** if it takes the FFI, **take the sidecar route first** - it avoids the parser and the
+eleven packs, and the syntax decision stays with the owner. **The guard applies absolutely.**
+
+**ROUND-97 (ChatGPT):** make the sidecar concrete, **and answer the question that is the point of a checked
+declaration: what happens when a program calls a foreign name with the wrong arity? It must be a compile
+error, not a link error and not a crash.** Plus the ELF bridge spec, **and an acceptance threshold for the
+benchmark matrix** - *a matrix with no threshold measures; a matrix with one decides.*
+
 ## v281 - SEPARATE COMPILATION DELIVERED. Compiler v239, gates 24, and the guard holds.
 
 **Claude chose separate compilation, and gave three reasons - the first of which is that it agreed with my
