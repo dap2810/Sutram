@@ -4,6 +4,20 @@
 
 ---
 
+## Index — ROUND-29 delivery (2026-10-21) — separate compilation, pushed to `main`
+
+**Code commit `a997cee9` on main** (the docs commit is on top of it). **Compiler v239.**
+**The guard: 558 programs through the ordinary path, v238 vs v239 — 0 differ (Linux); 182 / 182 examples
+identical under Wine.** Corpus 0 failed, suite 218, gates 24 / 0 / 1.
+
+| File | What |
+|---|---|
+| `R29-00-HANDBACK.md` | the first lines; which I chose and why; every check; what I did not do |
+| `R29-01-SEPARATE-COMPILATION.md` | `--separate`, `tools/sutram_build.py`, the proof, the limits |
+| `R29-02-WINDOWS-LINKER-PLAN.md` | the owner's Windows run tonight, then the Windows linker, and its guard |
+| `FILES-R29.txt` | every changed file with its git blob |
+| `evidence-r29/` | gates, the guard (Linux and Wine), the test, suite, corpus, fuzzers |
+
 ## Index — ROUND-28 delivery (2026-10-21) — our own linker, pushed to `main`
 
 **Code commit `78fa7417` on main** (the docs commit is on top of it). **Compiler v238, plus `sutram-link`.**

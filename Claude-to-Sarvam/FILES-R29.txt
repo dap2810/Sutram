@@ -1,0 +1,36 @@
+# FILES-R29: every file this delivery changes on main (base 0be01c52 -> code commit a997cee9), with its git blob.
+# A merge is complete when `git rev-parse main:<path>` equals each blob below. (docs/CHANGELOG.md is yours, not in the list.)
+A  9975b18989533dd5747e730c99c1680b3d452b53  Claude-to-Sarvam/evidence-r29/compiler-version.txt
+A  6ec6edf7ea91ba27e1166b023e65b8bfeee96e52  Claude-to-Sarvam/evidence-r29/crash-corpus.txt
+A  bccedaec7561ab89dea9712446d33949dcacaa56  Claude-to-Sarvam/evidence-r29/fuzz_r23-robust-seed29-5000.txt
+A  97e80d936fcac6c3172a3b3f3b83a2e976d995b3  Claude-to-Sarvam/evidence-r29/fuzz_r23-seed29-1000.txt
+A  145133711714779315acc86fff8d6d1ebe08f83d  Claude-to-Sarvam/evidence-r29/fuzz_robust-seed29-5000.txt
+A  0e77a4bc65ae12e630fbe56b9511f1ea4b88fb3d  Claude-to-Sarvam/evidence-r29/fuzz_valid-capabilities-seed29-500.txt
+A  5565fa4d500e955e8f75972a57948f6cd5155dbb  Claude-to-Sarvam/evidence-r29/gates.txt
+A  b83555b2ae8ae50527ab56cbaca361bbfb614764  Claude-to-Sarvam/evidence-r29/ordinary-path-unchanged.txt
+A  be70813e42200bcb319aa9e45a5e55840fda343a  Claude-to-Sarvam/evidence-r29/ordinary-path-windows.txt
+A  b0bfae9655b25a181924d5f8ae2e6e17ca90fe70  Claude-to-Sarvam/evidence-r29/other-tests.txt
+A  6c27263f31660de9d8a1e9b3671a1c064cf695e0  Claude-to-Sarvam/evidence-r29/suite.txt
+A  9c82316c12a82f53ce0b6e11d4a9753c5ce74fa9  Claude-to-Sarvam/evidence-r29/test_separate.txt
+M  1e12ef3b52e7a7f52c9023b571e94f80099dd348  Sutram-Setup.exe
+M  e1c70f10bb70d47438799f7fba222e00b7a8c2b5  Sutram-Setup.sha256
+M  7e4b7294933c738014747164f6dce592b7c89b28  docs/BUILDING.md
+M  7b4470eec6d355c4b5887ffe90e154e2f72abf9d  docs/NEGATIVE-CORPUS.md
+M  b56ec3e31bdd39a31c565a19b085405939a14a2c  docs/OBJECT-FORMAT.md
+M  4e9eb22f5aeb9cafcfb9a6643c0aac5f932b7e68  src/r11_sandesh.inc
+M  1bd9be53372d3eac8ec161484365f0a2edc09acc  src/r28_object.inc
+M  4aa08517546226c8440e781d2879d2454094b5c9  src/sutram_compiler.asm
+M  ddd03d3f22eeb78ef89649e3d362f58515639e5f  sutram.exe
+M  00a7e2284c004509455a548034bb49941d61a286  sutram_compiler
+M  0ad37347110216830b163961e61ee48d99d43d7b  tests/negative/r70/manifest.json
+A  be17eb5007073988e259c96d6d076fbf2277294f  tests/r29/proj/arity.sm
+A  02d8135af65c2f3e6776de8d9a261471d24d85ae  tests/r29/proj/lib/r29_dakshin.smlib
+A  caa6be924c92d60935ac401fb29bcf79ceecd257  tests/r29/proj/lib/r29_mul.smlib
+A  e2488ef7082ef8f56594c80f5643f5d63d98dfcd  tests/r29/proj/lib/r29_vam.smlib
+A  7196f4798b6d730cc5bde983640d472ce69b7571  tests/r29/proj/main.sm
+A  1a27ab3588e6a697880c86e6812f86bc9c9783f2  tests/r29/test_separate.py
+M  baa613576abe6a80235f454497c5df56838d1e9c  tools/gates.sh
+M  ae26f50ae3d1013cc9224833eabd711492e9804d  tools/r69_build.lock.json
+M  ec481be1eef58a23523460d2ba2f1e750b498e10  tools/r69_build.py
+A  6012f30424f7cfbf0c764f81cf8e3c345d1d7442  tools/sutram_build.py
+M  ddd03d3f22eeb78ef89649e3d362f58515639e5f  win/sutram.exe
