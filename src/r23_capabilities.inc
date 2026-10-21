@@ -243,8 +243,23 @@ r23_parse_method_def:
     inc r12
     jmp .find
 .unknown_rachana:
+    ; R24: unknown name 'Rachana', with a hint of its own (R4's hint says vitti)
     mov rbx, r13
-    call r4_report              ; unknown name 'Rachana'
+    mov rdi, [rbx + 32]
+    call r51_print_origin
+    lea rdi, [rel r4_msg_undef]
+    call print_str_z
+    mov rdi, [rbx + 8]
+    call print_str_z
+    lea rdi, [rel r48_msg_end]
+    call print_str_z
+    call r51_print_original_context
+    lea rdi, [rel r24_msg_method_hint]
+    call print_str_z
+    mov rdi, [rbx + 8]
+    call print_str_z
+    lea rdi, [rel r4_msg_hint_decl2]
+    call print_str_z
     mov rdi, 1
     call os_exit
 .found:

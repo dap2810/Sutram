@@ -21,7 +21,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 COMPILER = 'src/sutram_compiler.asm'
 ENTRY = 'src/r68_compiler_entry.asm'
-COMPILER_BLOB = '8648e0977270728ebe5e11b616aaeeb93993accd'  # R22 re-pin (F8: the keyword packs built in, v233; R18 blob 4547e473); R18 re-pin (sthagita exits 0, rachana in a function is a no-op, v232; R17 blob 5b144a70); R17 re-pin (D1-D4, the six crash kinds, v229; R13 blob d96aa571); R13 re-pin (Sanskrit-grammar defaults, v208); R11 8625095a re-pin (messages per --lang pack; src/r11_sandesh.inc pinned with it); R10 5ade34ed re-pin (F1: rbp displacements beyond disp8 emitted as disp32); R9 5caa9b6e re-pin (nirmmita 0 on failure, guna evaluated once; v188's version-string blob ea5ff808 was never pinned); R7 cc5cfbe4, R5 185b7f06, R4 4b137114, R3 ea2a1e91, pre-v157 64ea028a
+COMPILER_BLOB = 'b204bcc091c58d4e568b572a92c10ee411054955'  # R24 re-pin (the method hint, v235; R23 blob 1f6377e3); R23 re-pin (function values, methods, slices, v234; R22 blob 8648e097); R22 re-pin (F8: the keyword packs built in, v233; R18 blob 4547e473); R18 re-pin (sthagita exits 0, rachana in a function is a no-op, v232; R17 blob 5b144a70); R17 re-pin (D1-D4, the six crash kinds, v229; R13 blob d96aa571); R13 re-pin (Sanskrit-grammar defaults, v208); R11 8625095a re-pin (messages per --lang pack; src/r11_sandesh.inc pinned with it); R10 5ade34ed re-pin (F1: rbp displacements beyond disp8 emitted as disp32); R9 5caa9b6e re-pin (nirmmita 0 on failure, guna evaluated once; v188's version-string blob ea5ff808 was never pinned); R7 cc5cfbe4, R5 185b7f06, R4 4b137114, R3 ea2a1e91, pre-v157 64ea028a
 ENTRY_BLOB = '42389aaf73179726d91e23359aee2199734036e1'
 MODES = {
     'default': (),

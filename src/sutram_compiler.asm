@@ -225,7 +225,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v234) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v235) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r48_msg_near db ": Sutram Error [E_PARSE]: shabd '",0
@@ -363,6 +363,7 @@ r54_builtin_arity_table:
     msg_kosh_param_push db "Sutram Error: kosh-tarke kosh_push asamarthitam", 10, 0
     r23_msg_slice_base db "Sutram Error: vibhag: mala, kosh va vibhag apekshita", 10, 0
     r23_msg_slice_return db "Sutram Error: vibhag prakriyayah na pratyarpaniyah", 10, 0
+    r24_msg_method_hint db "Sanket: vidheh purvam ghoshana avashyaki: rachana ",0
 
     ; The v27 per-pack copies of five parse messages lived here. R11: every message
     ; now has a copy per pack, in lang/<pack>.sandesh, assembled into
