@@ -1,0 +1,151 @@
+{
+  "schema": 1,
+  "project": "Sutram",
+  "round": 97,
+  "date": "2026-10-21",
+  "base_main": "18dbad0a9cb732d09ace5e3d348713149db83057",
+  "project_log": "v282",
+  "native_compiler_baseline": "v239 (previously reported, NOT newly rebuilt)",
+  "assignment": "Sarvam-to-ChatGPT/ROUND-97.md",
+  "scope": "three designs + strictly separated developer-only test controls, no native compiler/linker modifications",
+  "inspected_originals": [
+    {
+      "path": "src/sutram_compiler.asm",
+      "git_blob": "4aa08517546226c8440e781d2879d2454094b5c9",
+      "evidence": "r7_note_call & r7_note_def 7666-7698; r7_check_arity 7700-7767"
+    },
+    {
+      "path": "src/r28_object.inc",
+      "git_blob": "1bd9be53372d3eac8ec161484365f0a2edc09acc",
+      "evidence": "SUTRAMO1 existing named unresolved relocation encoding"
+    },
+    {
+      "path": "linker/sutram_link.asm",
+      "git_blob": "5d5616fb559d05ce8e7390d18763205516bbc292",
+      "evidence": "NASM linker only reads SUTRAMO1 and symbol/name patches"
+    },
+    {
+      "path": "docs/OBJECT-FORMAT.md",
+      "git_blob": "b56ec3e31bdd39a31c565a19b085405939a14a2c",
+      "evidence": "the currently accepted object format"
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-96-WS1-ELF-BRIDGE-ORACLE.py",
+      "git_blob": "e35e68d141a0be43c90fb75437f24c99ce0705f2",
+      "evidence": "previous reference ELFx64 ET_REL parser; no native production status"
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-96-WS3-DEFERRED-BENCHMARK-MATRIX.md",
+      "git_blob": "81d72ef25a6a687180e399206e47f0cd2eb62ea2",
+      "evidence": "seven workload shapes, no benchmark run"
+    }
+  ],
+  "ws1_sidecar": {
+    "status": "PASS (model only)",
+    "model": "Python 3 source that parsers strict proposed .sffi ASCII grammar and simulates call-signature lookup; not linked to compiler.",
+    "script": "ChatGPT-to-Sarvam/ROUND-97-WS1-SIDECAR-ORACLE.py",
+    "raw": "ChatGPT-to-Sarvam/ROUND-97-WS1-SIDECAR-OBSERVED.txt",
+    "sample": "ChatGPT-to-Sarvam/ROUND-97-WS1-SIDECAR-SAMPLE.sffi",
+    "script_git_blob": "8fdad8063e6a664b8c5a05ba35a63bdab2b933a0",
+    "raw_git_blob": "431ccc4ec3ab32920b54d319b7f082c91c577182",
+    "sample_git_blob": "ef64cc000110c5edc1ff05ad2f60919f55788023",
+    "script_sha256": "24aa85e8cf5f95e82ad3aa730abb14143aa1dafeb977884eac4314378315a009",
+    "raw_sha256": "9cd32ec5b0f95b51c64951beede410b19f92b3678855bbc599f3b7fec612b9d3",
+    "test_command": "python3 -B ROUND-97-WS1-SIDECAR-ORACLE.py",
+    "positive_checks": 2,
+    "negative_checks": 24,
+    "total_pass": 26,
+    "total_fail": 0,
+    "wrong_arity_one": "EXPECTED_ERROR E_ARITY in model",
+    "wrong_arity_three": "EXPECTED_ERROR E_ARITY in model",
+    "actual_compiler_ffi_e_arity": "NOT_IMPLEMENTED / NOT_RUN",
+    "limits": [
+      "header and file strict LF ASCII subset",
+      "only i64 arguments and i64 result are allowed in first milestone; ptr/f64/void fail closed",
+      "source-located E_ARITY is a proposed NASM compiler hook rather than today's foreign function behavior",
+      "no fake FUNCDEF, stub, or second SUTRAMO1 import table"
+    ]
+  },
+  "ws2_elf_host": {
+    "status": "PASS (GCC/readelf host control), not a Sutram FFI test",
+    "host": "Linux x86_64",
+    "gcc": "gcc (Debian 14.2.0-19) 14.2.0",
+    "binutils": "GNU ld 2.44",
+    "positive_input": "ChatGPT-to-Sarvam/ROUND-97-WS2-FREESTANDING-C.c",
+    "negative_input": "ChatGPT-to-Sarvam/ROUND-97-WS2-NEGATIVE-C.c",
+    "raw": "ChatGPT-to-Sarvam/ROUND-97-WS2-ELF-OBSERVED.txt",
+    "positive_C_git_blob": "16d588c92ab5a174622adb413063e85a8d96ad33",
+    "negative_C_git_blob": "44e0849987a92aebb65853c8bbd3c51a503eb0d6",
+    "raw_git_blob": "ecd4135f24472f59448abf37a8fd60344d9a61d1",
+    "positive_C_sha256": "4c828314d021d92ea95ccbbcee71b00d86bc6f8ad9c5309871b5a4d604901e20",
+    "negative_C_sha256": "f7e39caf7c9123911f0220b869345052ac2835c1b88c0929f35",
+    "positive_object_sha256": "da106aa0ee55a795badf384997359813214834469c7f42f65970ea8c2a56d3c9",
+    "negative_object_sha256": "db43699676a635b46e881a4ff483710d209dc3d13e4197dd3b183b4d593b6aca",
+    "raw_sha256": "a32007b69d1a2b6c747479a331ac78b62d3c2f5e7f9015abfb8b05e0c5758be4",
+    "compile_positive_exit": 0,
+    "compile_negative_exit": 0,
+    "positive_object": {
+      "bytes": 856,
+      "e_type": 1,
+      "e_machine": 62,
+      "e_shoff": 280,
+      "e_shentsize": 64,
+      "e_shnum": 9,
+      "e_shstrndx": 8,
+      "text_offset": 64,
+      "text_bytes": 5,
+      "global_STT_FUNC": "sutram_ffi_add",
+      "func_length": 5,
+      "relocations": 0,
+      "undefined_symbols": 0
+    },
+    "negative_object": {
+      "bytes": 992,
+      "e_type": 1,
+      "e_machine": 62,
+      "e_shoff": 352,
+      "e_shentsize": 64,
+      "e_shnum": 10,
+      "relocation": {
+        "kind": "R_X86_64_PLT32",
+        "code": 4,
+        "offset": 4,
+        "addend": -4,
+        "target": "missing_helper"
+      },
+      "undefined_symbol": "missing_helper"
+    },
+    "foreign_conversion_execution": "NOT_RUN in Round 97 (Round 96 Python oracle did run)",
+    "native_nasm_ffi": "NOT_IMPLEMENTED / NOT_RUN",
+    "compile_commands": [
+      "gcc -O2 -c -ffreestanding -fno-stack-protector -fno-asynchronous-unwind-tables -fno-unwind-tables -fno-pic -fno-pie ROUND-97-WS2-FREESTANDING-C.c -o good.o",
+      "gcc -O2 -c -ffreestanding -fno-stack-protector -fno-asynchronous-unwind-tables -fno-unwind-tables -fno-pic -fno-pie ROUND-97-WS2-NEGATIVE-C.c -o negative.o",
+      "readelf -h -SW -Ws -Wr good.o",
+      "nm -u negative.o && readelf -Wr negative.o"
+    ]
+  },
+  "ws3_acceptance": {
+    "status": "DESIGN_PASS, BENCHMARK_NOT_RUN",
+    "doc": "ChatGPT-to-Sarvam/ROUND-97-WS3-BENCHMARK-ACCEPTANCE.md",
+    "workloads": 7,
+    "base_threshold": "7/7 median speedup >=1.05 vs fastest semantically comparable C/Zig compiler profile; lower bound of bootstrap paired 95pct confidence interval >1.0; 30 runs per profile and replicated on 2 hosts",
+    "stronger_all_measured_axes": [
+      "7/7 steady-state speed criterion",
+      "7/7 startup median advantage >=5% with confidence",
+      "7/7 binary disk size <= min competitor",
+      "7/7 peak RSS <= min competitor with repeatability",
+      "7/7 compile time <= fastest competitor"
+    ],
+    "met_currently": "NOT_RUN/NOT ASSESSED, no new performance results"
+  },
+  "not_run": [
+    "Native sidecar parser and E_ARITY rejection within Sutram compiler",
+    "Native Sutram code generation of correct foreign-rel32 symbol from sidecar",
+    "NASM ELF64 ET_REL reader/converter and Sutram-link on a C ELF object",
+    "Fresh canonical Sutram compiler regression/gates/fuzzer/crash suites",
+    "Owner real Windows run against current SHA",
+    "New C/Zig/Sutram seven-workload performance benchmarks"
+  ],
+  "changed_paths": "New ChatGPT-to-Sarvam design, test-only controls and handoff only; no compiler, linker, language packs, CI, tests/goldens or installers modified",
+  "upload_checks": "All emitted files will be read back from GitHub by current SHA after handoff."
+}
