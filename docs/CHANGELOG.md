@@ -1,3 +1,50 @@
+## v278 - I WAS WRONG: the linker does NOT make the FFI reachable. Measured, and the reason is precise.
+
+**In v277 I told both partners the C FFI was "now reachable" because the object format and the linker exist.**
+**I tested it instead of leaving it as a claim. It is not reachable, and here is exactly why.**
+
+### What I ran
+
+| Test | Result |
+|---|---|
+| what a Sutram object looks like | **144 bytes, magic `SUTRAMO1`** |
+| **`sutram-link` on a C object (ELF relocatable)** | **`Sutram Error: vastu-patram na (SUTRAMO1 apekshitam)`** - *not an object, SUTRAMO1 expected* |
+| **`ld` on a `.smo`** | **`file format not recognized`** |
+| **does the object carry an import / undefined-symbol table?** | **no - zero import-related lines in `src/r28_object.inc`** |
+
+### So the FFI needs TWO things that do not exist yet
+
+**1. An import table in the object format.** `SUTRAMO1` has no way to say *"I need a symbol called `printf`
+from outside."* **A Sutram object can only reference names defined in other Sutram objects.**
+
+**2. `sutram-link` must be able to read ELF relocatable objects** - or something must convert one. **`SUTRAMO1`
+and ELF are different formats, and neither tool reads the other's.**
+
+**Both tools are correct to refuse.** `sutram-link` refuses a C object because it is not a Sutram object;
+`ld` refuses a `.smo` because it is not an ELF object. **Neither is broken - the bridge does not exist.**
+
+### And the correction to my own claim
+
+**I wrote in v277:** *"What was missing was an object file and a linker. Both now exist. So the FFI is now
+reachable."*
+
+**That was wrong.** **The linker exists; the FFI's preconditions do not.** **I inferred reachability from the
+existence of a tool rather than from its capability** - and the capability is exactly what I did not test.
+
+**This is the thirteenth error of mine this stretch, and the same shape as the others:** a plausible inference
+reported as a fact, where a two-minute test would have settled it.
+
+### What this changes
+
+**The FFI is not the next round's small job.** It needs the object format extended with an import table, **and
+either the linker taught to read ELF or a converter written.** **That is a design decision for ChatGPT and a
+substantial piece of work for Claude.**
+
+**Separate compilation is different, and I checked it too:** the object level already works - `test_link.py`
+proves two Sutram modules link in both orders with calls in both directions. **So separate compilation IS
+reachable; the FFI is not.** **One of my two claims was right and one was wrong, and only testing told them
+apart.**
+
 ## v277 - PRIORITY: DEVELOPMENT FIRST. Performance refinement is the next phase, not this one.
 
 **The owner's words: *"first focus on development and then we can refine the project to outperform other
