@@ -1,0 +1,79 @@
+# R23 WS1: a function is a value. A prakriya name used as a value is the
+# function itself: it can be stored in a variable, passed as an argument and
+# returned, and a variable that holds one is called like a function.
+# The canonical use: one sort, any order, chosen by the comparator passed in.
+
+prakriya aarohi(a, b) {
+    prati a - b
+}
+
+prakriya avarohi(a, b) {
+    prati b - a
+}
+
+# even numbers first, each group in ascending order
+prakriya sama_pratham(a, b) {
+    vitti pa = a % 2
+    vitti pb = b % 2
+    yadi (pa != pb) {
+        prati pa - pb
+    }
+    prati a - b
+}
+
+# insertion sort of a slice, ordered by tulana(x, y) < 0
+prakriya shreni(vibhag s, tulana) {
+    vitti n = pankti_len(s)
+    chakra i = 1 tak n - 1 {
+        vitti v = s[i]
+        vitti j = i - 1
+        yavat (j >= 0 && tulana(s[j], v) > 0) {
+            s[j + 1] = s[j]
+            j = j - 1
+        }
+        s[j + 1] = v
+    }
+    prati 0
+}
+
+prakriya kram_chuno(k) {
+    yadi (k == 1) {
+        prati avarohi
+    }
+    yadi (k == 2) {
+        prati sama_pratham
+    }
+    prati aarohi
+}
+
+prakriya dikhao(vibhag s) {
+    chakra i = 0 tak pankti_len(s) - 1 {
+        lkhb(s[i])
+        likha(" ")
+    }
+    likha("\n")
+    prati 0
+}
+
+mukhya() {
+    mala x[8]
+    x[0] = 5
+    x[1] = 2
+    x[2] = 9
+    x[3] = 1
+    x[4] = 7
+    x[5] = 3
+    x[6] = 8
+    x[7] = 4
+    shreni(x, aarohi)
+    dikhao(x)
+    shreni(x, avarohi)
+    dikhao(x)
+    shreni(x, kram_chuno(2))
+    dikhao(x)
+    # sort only the middle four, descending
+    shreni(x[2:6], kram_chuno(1))
+    dikhao(x)
+    vitti f = aarohi
+    likha(f(10, 3))
+}
