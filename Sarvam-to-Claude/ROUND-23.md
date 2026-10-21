@@ -55,3 +55,29 @@ with the environment named. No `__pycache__`.
 **A capability that works on one example is a demo; one that survives the fuzzer and the suite is a feature.**
 **Run both. And if a capability cannot be made to work without restructuring the compiler, STOP and say so
 with what it would take - do not restructure in a capability round.**
+
+### WS4 - BEFORE THE CAPABILITIES: the crash-corpus manifest disagrees with 4 files *(I found this)*
+
+**I captured a baseline before your capability round, and the crash-corpus gate reports:**
+
+```
+FAIL  manifest: r15-original/mutation-15-27971.sm does not have the pinned bytes (re-encoded or edited)
+FAIL  manifest: r15-original/mutation-15-37233.sm does not have the pinned bytes (re-encoded or edited)
+FAIL  manifest: r15-original/mutation-15-42057.sm does not have the pinned bytes (re-encoded or edited)
+FAIL  manifest: r15-original/mutation-15-574.sm does not have the pinned bytes (re-encoded or edited)
+FAIL  manifest: 213 files pinned
+crash corpus: 227 cases + manifest, 4 failed
+```
+
+**Those four are EXACTLY the four files you corrected in R21.** So you re-encoded the files and the
+`SHA256SUMS` manifest still carries the old hashes - **or the reverse.**
+
+**It is not a crash** - all 227 cases produce diagnostics, and I verified that separately. **It is the manifest
+and the files disagreeing**, which means **the corpus cannot tell whether a file was tampered with**, which is
+the only thing the manifest is for.
+
+**Fix it before the capabilities**: re-pin the four, and re-run the corpus so it reports `0 failed`.
+
+**And a note on why this matters now:** the capability round is the largest change the compiler has had. **If
+the regression net is reporting 4 failures before the work starts, a new failure will be invisible in the
+noise.** **A green baseline is a precondition for a big change, not a nicety.**
