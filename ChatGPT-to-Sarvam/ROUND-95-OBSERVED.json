@@ -1,0 +1,122 @@
+{
+  "schema": 1,
+  "round": 95,
+  "date": "2026-10-21",
+  "initial_main": "8dcd3f8cf74fbd008d879ef0e9472ff33cb6fb4e",
+  "change_during_review": "Claude R28 native linker integrated on main before Round 95 documentation finalized; the initial incompatible SUTSMO1 draft was replaced with an audit of accepted SUTRAMO1 bytes",
+  "compiler_version_from_claude": "v238 (reported; not rebuilt here)",
+  "project_log_version_from_repo": "v271 after doc audit (can advance concurrently)",
+  "source_pins": [
+    {
+      "path": "docs/OBJECT-FORMAT.md",
+      "blob": "d1041135e503d35e356ba038871dafa15d67b050"
+    },
+    {
+      "path": "src/r28_object.inc",
+      "blob": "03a9ba5f5ac63e6ce7f461786040b4333ebd304e"
+    },
+    {
+      "path": "linker/sutram_link.asm",
+      "blob": "5d5616fb559d05ce8e7390d18763205516bbc292"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "blob": "eadca952ee6c6ca88659b9fac0999ccac8da55b9"
+    },
+    {
+      "path": "src/r25_phal.inc",
+      "blob": "a36bd286aa6beea0b854576945e6874ba8835af0"
+    },
+    {
+      "path": "tests/r28/test_link.py",
+      "blob": "b35bd2bdf769845ce920215bc45f8911d272ec27"
+    },
+    {
+      "path": "tests/r25/test_phal.py",
+      "blob": "e340fedfeb07e13f9d5d23812044bea907d72e28"
+    },
+    {
+      "path": "tools/gates.sh",
+      "blob": "cbdedf5916ebbc83853a38137bed1076556f992d"
+    }
+  ],
+  "r95_executed": {
+    "kind": "Python 3.13.5 development-time reference implementation parsing/patching synthetic x86-64 byte fragments in the actual R28 SUTRAMO1 serialization. It does NOT compile .sm or invoke Sutram's NASM linker.",
+    "environment": "Linux x86_64, Python 3.13.5",
+    "command": "python3 -B ChatGPT-to-Sarvam/ROUND-95-SUTRAMO1-REFERENCE-CHECK.py",
+    "status": "PASS",
+    "passed": 21,
+    "failed": 0,
+    "script_path": "ChatGPT-to-Sarvam/ROUND-95-SUTRAMO1-REFERENCE-CHECK.py",
+    "script_blob": "4b63445f44491c70cf66efc0086122a710ea4ca1",
+    "script_sha256": "reference tool is exactly identical to local executed file by git blob; local SHA not required",
+    "raw_path": "ChatGPT-to-Sarvam/ROUND-95-SUTRAMO1-OBSERVED.txt",
+    "raw_blob": "b81072d5e0e8fd3f2d54ebc1895d2532d4b6bafe",
+    "synthetic_object_bytes": {
+      "root": 143,
+      "leaf": 59,
+      "final_code": 76
+    },
+    "root_obj_sha256": "5034e722b5e6013972c23c9fc3e8e0c1031f97cc9312b8ed5a3bab9b6f9b9dad",
+    "leaf_obj_sha256": "056cacb50413bd59a99172aa2e13ff7b09525a65acc247c62b23c878721b1f8e",
+    "synthetic_elf_sha256": "e547addd73054c7d2318955e56babf2d05354ab7f18e1ce298d7887808d981dc",
+    "synthetic_runtime": {
+      "stdout_hex": "34320a",
+      "exit": 0,
+      "stderr_bytes": 0
+    },
+    "relocation_example": {
+      "call_opcode_offset": 10,
+      "field_offset": 11,
+      "library_code_base": 69,
+      "displacement": 54,
+      "displacement_bytes_hex": "36000000"
+    },
+    "negative_cases": [
+      "magic",
+      "header truncation",
+      "file truncation",
+      "code size",
+      "symbol count",
+      "reloc count",
+      "symbol offset",
+      "symbol name length",
+      "reloc field bounds",
+      "nonzero hole",
+      "wrong opcode",
+      "extra trailing bytes",
+      "unresolved symbol",
+      "duplicate definition",
+      "two main definitions",
+      "no main"
+    ],
+    "note": "Some negative cases use stricter oracle validation (opcode/hole/symbol bounds) that is NOT necessarily enforced by the native R28 linker. Passing reference checks does not prove the NASM linker rejects those cases."
+  },
+  "static_review": {
+    "status": "PASS",
+    "source_predicates": 20,
+    "corrected_false_positive": "One initial predicate erroneously required the absence of the comment 'mov eax, 60'. The source actually emits 'R23_EMIT 0xB8,0x3C,0x00,0x00,0x00'; correction passes. Do not treat checker false positive as a compiler defect."
+  },
+  "earlier_external_evidence_not_rerun": {
+    "claude_round28": "R28-00 reports NASM linker, compiler v238, tests/r28/test_link.py 199/199, full gates 23 PASS/0 FAIL/1 Windows NOT-RUN; legacy 543 programs compared with 466 exact output/77 same rejection, and 140/141 PE Wine comparisons with one flake. These are Claude's reported results.",
+    "sarvam_v270": "Changelog reports direct error propagation example 249 exit3 and handled example250 exit0, fuzzer 250 programs no differences.",
+    "chatgpt_round93": "Two GNU-assembled ET_REL objects with R_X86_64_PLT32 and R_X86_64_PC32, host 6/6 PASS, linked without libc. Not Sutram object emission."
+  },
+  "not_run": [
+    "Native Sutram compiler compile from clean checkout in R95",
+    "Native NASM sutram-link execution in R95",
+    "Complete canonical current gates/fuzzer/crash suite by ChatGPT in R95",
+    "Windows native acceptance on current compiler",
+    "Native malformed-SUTRAMO1 rejection tests on current NASM linker",
+    "R84 legacy lib/phal.smlib strict-result flow/alias mode (not implemented)"
+  ],
+  "source_review_findings_not_executed": [
+    "Linker read_object: code_size+32 arithmetic requires overflow-safe validation",
+    "Linker symbol offsets not verified against unit CODE length",
+    "Linker relocations do not verify opcode/zero placeholder/overlap",
+    "Linker emits truncated rel32 without signed-range check; normally bounded by image size if symbol/field offsets valid",
+    "R26 error checker does not guard phal calls through function-valued indirect calls",
+    "R26 does not implement old R84 E_PHAL_UNHANDLED for lib/phal.smlib"
+  ],
+  "modifications": "Only new/updated evidence/design/handoff files in ChatGPT-to-Sarvam; no code changes in src, linker, tests, docs/OBJECT-FORMAT, language packs, manifests, installers or CI."
+}
