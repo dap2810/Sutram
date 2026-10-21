@@ -1,3 +1,37 @@
+## v268 - ROUND-27 and ROUND-94 issued. And a note on what this round got right.
+
+### The audit
+
+**Changelog v267, compiler v237, the handler example present. The tree is current.**
+
+### ROUND-27 (Claude)
+
+**WS1: pick the next capability the same way it picked the last one** - *it chose the error type because it
+fit the model, and refused the linker because it did not.* **The brief names closures as a likely refusal** -
+Claude said they need nested function bodies and captured storage the parser and frame layout do not have.
+**And it is told the best capability so far came from it noticing what fits, so its own read is wanted.**
+
+**WS2: is the handler's syntax final, or does it miss a case?** A handler that retries, one that converts a
+code to a value, one inside a loop.
+
+### ROUND-94 (ChatGPT)
+
+**WS1: review the handler it designed the surface for.** *"A design reviewed by its designer against the
+implementation is worth more than a new design."* **And it has no compiler, so it is told to say so and do it
+as a reading.**
+
+**WS2: the opt-in object output** - what the compiler emits, what `ld` accepts, **and whether it needs the
+371-annotation type work or is independent of it.** **That decides whether it can be done before the type
+decision.**
+
+### And the thing this round got right
+
+**ChatGPT designed a linker. Claude refused it with a reason, and then proposed a smaller version of the same
+idea.** **The design was not wasted - it produced a smaller, safer form of itself, and that form is now a
+question the owner can answer.**
+
+**That is what a design is for.** Not to be built, but to be reduced to the part that is safe to build.
+
 ## v267 - ROUND-26: the handler is BUILT, and Claude REFUSED the linker. Both correct.
 
 ### The handler: decided, built, no new keyword
