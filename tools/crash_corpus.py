@@ -14,6 +14,12 @@ input this runner requires
     leading newline the diagnostic convention prints), and
   * no output file.
 
+tests/negative/r17/SHA256SUMS pins the bytes of every committed file (ROUND-21). Four of
+the original inputs hold bytes that are not valid UTF-8 (the mutator writes raw bytes), and
+a copy that reads them as text and writes them back turns those bytes into U+FFFD; one such
+copy no longer crashed the compiler it was pinned against. So the runner first checks the
+manifest and FAILs any file whose bytes differ, before running anything.
+
 The 100,000-deep nesting inputs (R6) are generated here rather than committed:
 parentheses (closed and unclosed), yadi blocks, unary minus and nested calls, each at
 20,000 and 100,000 levels, plus the same four at a depth that must COMPILE: 400 for the expressions
@@ -27,6 +33,7 @@ Exit 0 when every case holds. Prints one line per case: PASS / FAIL.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import os
 import signal
 import subprocess
@@ -81,12 +88,33 @@ def judge(code: str, stdout: bytes, produced: bool, must_compile: bool) -> str:
     return ''
 
 
+def check_manifest() -> int:
+    """Every file in SHA256SUMS has those bytes, and every *.sm is in SHA256SUMS. Returns the count of failures."""
+    want = {}
+    for line in (CORPUS / 'SHA256SUMS').read_text().splitlines():
+        h, _, rel = line.partition('  ')
+        want[rel[2:] if rel.startswith('./') else rel] = h
+    bad = 0
+    for rel, h in sorted(want.items()):
+        p = CORPUS / rel
+        if not p.exists():
+            print('FAIL  manifest: %s is missing' % rel); bad += 1
+        elif hashlib.sha256(p.read_bytes()).hexdigest() != h:
+            print('FAIL  manifest: %s does not have the pinned bytes (re-encoded or edited)' % rel); bad += 1
+    for p in sorted(CORPUS.rglob('*.sm')):
+        if str(p.relative_to(CORPUS)) not in want:
+            print('FAIL  manifest: %s is not in SHA256SUMS' % p.relative_to(CORPUS)); bad += 1
+    print('%s  manifest: %d files pinned' % ('FAIL' if bad else 'PASS', len(want)))
+    return bad
+
+
 def main(argv):
     ap = argparse.ArgumentParser()
     ap.add_argument('--compiler', default=str(ROOT / 'sutram_compiler'))
     ap.add_argument('--timeout', type=float, default=20)
     a = ap.parse_args(argv)
     comp = os.path.abspath(a.compiler)
+    fails = check_manifest()
     cases = [(str(p.relative_to(CORPUS)), p.read_bytes(), False) for p in sorted(CORPUS.rglob('*.sm'))]
     for kind in ('parens', 'parens-unclosed', 'braces', 'unary-minus', 'calls'):
         if kind != 'parens-unclosed':
@@ -94,7 +122,6 @@ def main(argv):
             cases.append(('R6-%s-%d-must-compile' % (kind, ok_n), deep(kind, ok_n), True))
         for n in (20000, 100000):
             cases.append(('R6-%s-%d' % (kind, n), deep(kind, n), False))
-    fails = 0
     with tempfile.TemporaryDirectory() as td:
         src, out = Path(td, 'in.sm'), Path(td, 'out.bin')
         for name, data, must_compile in cases:
@@ -104,7 +131,7 @@ def main(argv):
             first = stdout.lstrip(b'\n').split(b'\n')[0].decode('utf-8', 'replace')[:70]
             print('%s  %-46s %s' % ('FAIL' if why else 'PASS', name, why or first))
             fails += bool(why)
-    print('crash corpus: %d cases, %d failed' % (len(cases), fails))
+    print('crash corpus: %d cases + manifest, %d failed' % (len(cases), fails))
     return 1 if fails else 0
 
 
