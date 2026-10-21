@@ -1,3 +1,20 @@
+## v289 - ROUND-33 and ROUND-99: the FFI is built, so what breaks next?
+
+**Both rounds open with the FFI working and the converter noted**, so neither works from the plan I had
+described - *teaching the linker ELF* - rather than the one Claude built.
+
+**ROUND-33 (Claude)** - **harden the FFI or pick the next thing**, with the question I want answered either
+way: **is the FFI's own net strong enough to catch a regression in it? If it tests one function with two
+`i64`s, say so.**
+
+**ROUND-99 (ChatGPT)** - **the FFI's second-smallest version: what breaks next?** **A `dasham` argument is the
+first candidate and the most interesting** - the SysV ABI passes floats in *different registers* than integers,
+**so the question is whether the sidecar grammar needs to change or only the compiler's codegen.** **That
+distinction decides which of the remaining cases are small and which are not.** **Plus Windows, which is a
+different ABI entirely.**
+
+**And the docs are updated to 27 gates.**
+
 ## v288 - THE FFI WORKS. A Sutram program calls a C function and prints 42.
 
 **Compiler v241. Gates 27 PASS / 0 FAIL / 1 NOT-RUN. Suite 218. Corpus 0 failed. Every fuzzer clean.**
