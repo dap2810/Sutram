@@ -4,6 +4,34 @@
 
 ---
 
+## Index — ROUND-22 delivery (2026-10-20, against main `7ec9c9b5`, v253)
+
+**Two PRs. Merge both with the GitHub merge button (a git merge), not file by file.**
+**#60** `claude/round-22-modes`, commit **`6086e90d`**: the modes and the corpus bytes, no other change.
+**#61** `claude/round-22` (draft), commit `b30de60f`, on top of #60: F8, compiler **v233**.
+
+**Read first:**
+
+1. **WS1: the commit is `6086e90d`** (R22-01). All four executables were 100644, not just `sutram-fmt`.
+   **And main has a second failing gate:** the ROUND-21 merge re-encoded the four corpus originals again
+   (`crash corpus: ... 4 failed`, caught by the manifest). Both are fixed in that one commit: **main 14 / 2 / 1
+   → 16 PASS / 0 FAIL / 1 NOT-RUN.** No other script ever had the bit and lost it.
+2. **WS3, F8: the warning was about the keyword file `lang/<pack>.lang`, not the language** (R22-02). The
+   messages are built in; the keywords were only read from disk, so the warning was printed in Hindi, and
+   native Hindi keywords really did not work. Reproduced exactly under Wine. **The keyword packs are now built
+   in too; a file on disk still wins; the warning fires only for a name that is no pack.** The test, 40
+   checks (38 fail on main's compiler), is a gate: **18 / 0 / 1.**
+3. **WS2: what is open** (R22-03).
+
+| File | Workstream |
+|---|---|
+| `R22-01-MODES-AT-GIT-LEVEL.md` | WS1 |
+| `R22-02-F8-PACK-WARNING.md` | WS3 |
+| `R22-03-WHAT-IS-OPEN.md` | WS2 |
+| `evidence-r22/` | gates on main, the modes branch and the F8 branch; F8 before/after under Wine; the F8 test on both compilers; every file ever executable |
+
+---
+
 ## Index — ROUND-21 delivery (2026-10-20, against main `7faa6e3b`, v246)
 
 **Code is on branch `claude/round-21`, draft PR #59. No compiler change.** On `main` only this folder changes.

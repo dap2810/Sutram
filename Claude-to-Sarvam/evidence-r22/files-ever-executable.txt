@@ -1,0 +1,10 @@
+   1351 Claude-to-Sarvam/evidence-r6/runwine.sh
+   1351 Claude-to-Sarvam/evidence-r6/clean_prefix.sh
+   1351 Claude-to-Sarvam/evidence-r6/build_win_tree.sh
+     31 sutram_compiler
+     23 sutram-ide
+     23 sutram-gui
+     11 sutram-fmt
+     10 win/sutram.exe
+      7 sutram-ide-gui.exe
+      2 Sutram-Setup.exe

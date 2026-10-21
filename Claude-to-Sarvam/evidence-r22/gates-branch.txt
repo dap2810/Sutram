@@ -1,0 +1,33 @@
+Sutram gates — 2026-10-21T01:32Z
+
+  committed modes (4 x 100755, git index) PASS
+  build: compiler              ok  (368992 B)
+  build: terminal IDE          ok  (24592 B)
+  build: X11 GUI               ok  (38136 B)
+
+  regression suite (NO-EXPECTATION=4 PASS=213 ) PASS
+  codegen shapes (12/12)       PASS
+  language packs (33/33)       PASS
+  library proofs (220 passed, 0 failed, 220 total) PASS
+  property proofs (86/86)      PASS
+  layer check (14 core, 9 alloc, 1 std) PASS
+  stdlib inventory (Wrote /home/claude/sutram/docs/sutram-stdlib.html: 24 modules, 303 functions) PASS
+  module graph                 PASS
+  pack messages (12 sets x 11 cases) PASS
+  keyword packs built in (11, = lang/*.lang) PASS
+  pack found without lang/ (40 checks, 0 failed) PASS
+  crash corpus (227 cases + manifest, 0 failed) PASS
+  operator precedence (314 pairs tested) PASS
+  formatted tree               PASS
+  version string (v233 (CHANGELOG v253)) PASS
+  performance (  8 ran, 0 failed) PASS
+  X11 GUI protocol (18/18)     PASS
+  Windows execution            NOT-RUN cannot run here - never executed by anyone (Gate 6)
+
+  ------------------------------------------
+  PASS                         18
+  FAIL                         0
+  NOT-RUN                      1
+
+  PASS, FAIL and NOT-RUN are separate on purpose.
+  A count that hides its own skips is worse than no count.
