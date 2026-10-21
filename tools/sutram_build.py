@@ -25,7 +25,17 @@ Version 1 refuses, plainly (exit 1):
   * a module that cannot be found.
 A module's `vitti` is held once, in its own object (R30).
 Exit status: 0 linked, 1 a refusal or a compile/link error, 2 usage.
+
+ROUND-31: `--cache DIR` rebuilds only what changed.  A module's object depends on
+exactly these, so they are its key (SHA-256): the compiler's bytes, SUTRAM_LANG,
+the module's own path and bytes, and the path and bytes of every module it reaches
+through `yoj` (they are parsed in its compile, for their signatures).  An object
+whose key is in DIR is reused; any other is compiled and stored under its key.
+The objects are reproducible (the same inputs give the same bytes), so a cached
+build links to exactly the executable a clean build links to.  Without --cache,
+every module is compiled, as before.
 """
+import hashlib
 import os
 import subprocess
 import sys
@@ -94,23 +104,54 @@ def module_graph(root, compiler):
     return order
 
 
+def closure(graph):
+    """For each module path: the set of modules it reaches through yoj, itself excluded."""
+    deps = dict(graph)
+    out = {}
+    for path in deps:
+        seen, todo = set(), list(deps[path])
+        while todo:
+            d = todo.pop()
+            if d not in seen:
+                seen.add(d)
+                todo.extend(deps.get(d, []))
+        seen.discard(path)
+        out[path] = seen
+    return out
+
+
+def cache_key(path, reach, compiler_digest):
+    h = hashlib.sha256()
+    h.update(b"sutram-build-cache-v1\0")
+    h.update(compiler_digest)
+    h.update(b"\0lang\0" + os.environ.get("SUTRAM_LANG", "").encode())
+    for p in [path] + sorted(reach):
+        with open(p, "rb") as f:
+            data = f.read()
+        h.update(b"\0file\0" + p.encode() + b"\0" + str(len(data)).encode() + b"\0" + data)
+    return h.hexdigest()
+
+
 def main(argv):
     args = list(argv)
     compiler = os.path.join(REPO, "sutram_compiler")
     linker = os.path.join(REPO, "sutram-link")
     keep = None
+    cache = None
     out = None
     show_graph = False
     while args and args[0].startswith("--"):
         flag = args.pop(0)
         if flag == "--graph":
             show_graph = True
-        elif flag in ("--compiler", "--linker", "--keep") and args:
+        elif flag in ("--compiler", "--linker", "--keep", "--cache") and args:
             val = args.pop(0)
             if flag == "--compiler":
                 compiler = val
             elif flag == "--linker":
                 linker = val
+            elif flag == "--cache":
+                cache = val
             else:
                 keep = val
         else:
@@ -121,7 +162,7 @@ def main(argv):
     elif len(args) == 1 and show_graph:
         root = args[0]
     else:
-        print("usage: sutram_build.py [--compiler C] [--linker L] [--keep DIR] main.sm -o out\n"
+        print("usage: sutram_build.py [--compiler C] [--linker L] [--keep DIR] [--cache DIR] main.sm -o out\n"
               "       sutram_build.py --graph main.sm", file=sys.stderr)
         return 2
     try:
@@ -139,8 +180,20 @@ def main(argv):
     work = keep or tempfile.mkdtemp(prefix="sutram-build-")
     os.makedirs(work, exist_ok=True)
     objects = []
+    compiled = reused = 0
+    if cache:
+        os.makedirs(cache, exist_ok=True)
+        with open(compiler, "rb") as f:
+            compiler_digest = hashlib.sha256(f.read()).digest()
+        reach = closure(graph)
     for k, (path, _deps) in enumerate(graph):
         obj = os.path.join(work, f"{k:03d}-{os.path.basename(path)}.smo")
+        if cache:
+            cached = os.path.join(cache, cache_key(path, reach[path], compiler_digest) + ".smo")
+            if os.path.isfile(cached):
+                reused += 1
+                objects.append(cached)
+                continue
         r = subprocess.run([os.path.abspath(compiler), "--separate", path, os.path.abspath(obj),
                             os.path.abspath(root)],
                            stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -148,12 +201,23 @@ def main(argv):
             sys.stdout.write(r.stdout.decode("utf-8", "replace"))
             print(f"sutram-build: {path}: did not compile", file=sys.stderr)
             return 1
+        compiled += 1
+        if cache:
+            tmp = cached + f".tmp{os.getpid()}"
+            with open(obj, "rb") as src, open(tmp, "wb") as dst:
+                dst.write(src.read())
+            os.replace(tmp, cached)        # a partly written object is never under its key
+            obj = cached
         objects.append(obj)
     r = subprocess.run([linker, out] + [os.path.abspath(o) for o in objects], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     if r.returncode != 0:
         sys.stdout.write(r.stdout.decode("utf-8", "replace"))
         return 1
-    print(f"sutram-build: {len(objects)} modules, each compiled once, linked to {out}")
+    if cache:
+        print(f"sutram-build: {len(objects)} modules: {compiled} compiled, {reused} reused from the cache, "
+              f"linked to {out}")
+    else:
+        print(f"sutram-build: {len(objects)} modules, each compiled once, linked to {out}")
     return 0
 
 

@@ -1,0 +1,5 @@
+the same executable: 254 of 254 programs identical without a cache, cold and warm; the warm builds compiled nothing; across all of them the shared cache compiled 289 objects and reused 363
+only what changed: an edited module and what reaches it are recompiled, nothing else; the result is a clean build, byte for byte
+the key: another compiler, or another SUTRAM_LANG, recompiles everything
+r31 incremental: 254 programs identical clean, cold and warm, 0 failed
+exit 0

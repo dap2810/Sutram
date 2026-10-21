@@ -1,0 +1,13 @@
+WS2: what the module vitti (R30) does to the ORDINARY path. Linux.
+
+1. The guard: R29's compiler (v239, sutram_compiler at 4e317869) vs R30's (v240, on main), ordinary path, every .sm in examples/, examples/*/, tests/stdlib/, tests/r*/:
+   559 programs: 471 byte-identical executables, 88 refused identically, 0 DIFFER
+   23 of these programs declare a module-level vitti in their own file; more get one through yoj. All are in the counts above.
+
+2. The compiler binary: v239 405,824 bytes, v240 406,984 bytes (+1,160). The added code runs only in object mode, except three compare-and-branch pairs:
+   - per top-level vitti: cmp [r29_separate_mode],0 / je, before and after parsing it (2 pairs)
+   - per compile that has a vitti: cmp [r28_object_mode],0 / jne, at the start of r56_patch_global_storage (1 pair)
+   They emit nothing into the program.
+
+3. Compile time, all 559 programs, three alternating runs each (subprocess per program):
+   v239: 0.77 s, 0.62 s, 0.64 s    v240: 0.64 s, 0.73 s, 0.77 s   -> within the noise (about 1.2 ms per program for both)

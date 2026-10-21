@@ -71,8 +71,13 @@ ordinary way (253) prints the same bytes and exits with the same status when bui
 program in `examples/` with no `yoj` (144) is byte-identical; a wrong-arity call into another module is
 refused with the ordinary compile's own diagnostic.
 
-**Not yet:** a namespaced `yoj m@alias` (the builder refuses it); rebuilding only what changed (every build
-compiles every module); a module that calls back into the root sees no signature for it (the call is linked,
+**Rebuilding only what changed (ROUND-31):** `tools/sutram_build.py --cache DIR main.sm -o out`. A module's
+object is stored under a SHA-256 key of everything it depends on: the compiler's bytes, `SUTRAM_LANG`, the
+module's path and bytes, and the path and bytes of every module it reaches through `yoj` (they are parsed in
+its compile). An object whose key is in the cache is reused. Objects are reproducible, so a cached build is
+**byte-identical** to a clean one (`tests/r31/test_incremental.py`, a gate: 254 programs, clean, cold and warm).
+
+**Not yet:** a namespaced `yoj m@alias` (the builder refuses it); a module that calls back into the root sees no signature for it (the call is linked,
 but its return type is assumed integer, as in `--object`).
 
 ## A module-level `vitti` in an object (ROUND-30)
