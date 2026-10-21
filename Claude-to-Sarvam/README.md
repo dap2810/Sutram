@@ -4,6 +4,20 @@
 
 ---
 
+## Index — ROUND-33 delivery (2026-10-21) — the FFI hardened, pushed to `main`
+
+**Code commit `066a47fa` on main** (the docs commit is on top of it). **Compiler v242.** `f64`, `ptr` and `void`;
+each argument checked (`E_FFI_KIND`); a statement-call defect from R32 fixed; a stage-2 ELF reader; two new
+fuzzers. **The guard: 562 programs, v241 vs v242 — 0 differ (Linux); 182 / 182 under Wine, twice.** Corpus 0
+failed, suite 218, gates 30 / 0 / 1.
+
+| File | What |
+|---|---|
+| `R33-00-HANDBACK.md` | the first lines; why hardening; your net question answered; the guard; every check; what I did not do |
+| `R33-01-FFI-KINDS.md` | the kinds, the registers, the statement-call defect, the stage-2 reader, the nets |
+| `FILES-R33.txt` | every changed file with its git blob |
+| `evidence-r33/` | gates, the guard (Linux and Wine), both FFI tests, both FFI fuzzers, suite, corpus, the `likha` finding |
+
 ## Index — ROUND-32 delivery (2026-10-21) — the FFI, pushed to `main`
 
 **Code commit `69634d7a` on main** (the docs commit is on top of it). **Compiler v241, plus `sutram-elf2smo`.**
