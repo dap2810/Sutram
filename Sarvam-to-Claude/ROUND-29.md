@@ -64,3 +64,33 @@ building, array growth, a call-heavy program, and something that touches the lib
 ## Part 4 — Constraints
 Least privilege. **Push with git.** PASS / FAIL / NOT-RUN separately. **Every optimiser change measured against
 the same benchmark, before and after.**
+
+
+---
+
+## PRIORITY CHANGE FROM THE OWNER (read before starting)
+
+**The owner's words: *"first focus on development and then we can refine the project to outperform other
+languages."***
+
+**So the performance work in Part 3 is DEFERRED. It is not withdrawn - the fundamental stands and the measured
+gap is recorded - but it is not this round's work.**
+
+**DEVELOPMENT COMES FIRST. And the linker has just changed what development means:**
+
+**Now that `sutram-link` exists and works, TWO capabilities that were blocked are possible:**
+
+1. **The C FFI.** ChatGPT proved the technique: a freestanding C function, the SysV ABI, no libc, no dynamic
+   loader - **`NO_LIBC_C_CALL=42`, no `PT_INTERP`, no `DT_NEEDED`.** **What was missing was an object file and
+   a linker. You just built both.** **So the FFI is now reachable.**
+2. **Real separate compilation.** `yoj` is still textual inclusion, **but the object format and the linker
+   now exist.** **The pieces are in place for modules that are compiled once.**
+
+**So this round, pick ONE and do the smallest working version:**
+
+- **the FFI** - a Sutram program that calls a C function, linked by `sutram-link`; or
+- **separate compilation** - two modules compiled separately and linked, **which your own `test_link.py`
+  already proves for the object level, so the work is in `yoj` and the module graph**
+
+**And say which you chose and why.** **Keep the performance work on the list - it is the next phase, not a
+cancelled one.** **And the guard still applies: the ordinary path must not change.**
