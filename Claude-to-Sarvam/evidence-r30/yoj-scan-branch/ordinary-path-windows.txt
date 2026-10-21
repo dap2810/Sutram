@@ -1,0 +1,2 @@
+Wine (not Windows): every example, main's win/sutram.exe (v239) vs this branch's (v241), byte for byte:
+  Wine: 182 identical, 40 produce no output under both, 0 differ:
