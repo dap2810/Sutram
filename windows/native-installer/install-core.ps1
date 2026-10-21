@@ -212,6 +212,213 @@ function New-Shortcut([string]$Path,[string]$Target,[string]$Arguments,[string]$
     $sc.Save()
 }
 
+# R77: a display-availability check only. This does NOT install fonts or keymaps.
+# R79: verify representative native-script glyphs, not merely a font family name.
+# Nine distinct writing scripts serve Sutram's eleven packs; English is NOT a pack.
+# Read-only: no redistribution of Microsoft's fonts, no elevated installs, no network.
+function Check-R79IndicFonts([bool]$ShowWarning) {
+    try {
+        Add-Type -AssemblyName System.Drawing -ErrorAction Stop
+        if (-not ('SutramIndicFontProbe' -as [type])) {
+            Add-Type -TypeDefinition @'
+using System;
+using System.Runtime.InteropServices;
+public static class SutramIndicFontProbe {
+    [DllImport("gdi32.dll", CharSet=CharSet.Unicode, SetLastError=true)]
+    private static extern IntPtr CreateFontW(int h,int w,int esc,int orient,int weight,
+        uint italic,uint underline,uint strike,uint charset,uint outPrecision,
+        uint clipPrecision,uint quality,uint pitchFamily,string face);
+    [DllImport("gdi32.dll", SetLastError=true)]
+    private static extern IntPtr CreateCompatibleDC(IntPtr source);
+    [DllImport("gdi32.dll", SetLastError=true)]
+    private static extern IntPtr SelectObject(IntPtr dc,IntPtr obj);
+    [DllImport("gdi32.dll", SetLastError=true)]
+    private static extern bool DeleteObject(IntPtr obj);
+    [DllImport("gdi32.dll", SetLastError=true)]
+    private static extern bool DeleteDC(IntPtr dc);
+    [DllImport("gdi32.dll", CharSet=CharSet.Unicode, SetLastError=true)]
+    private static extern uint GetGlyphIndicesW(IntPtr dc,string text,int length,
+        [Out] ushort[] glyphs,uint flags);
+    public static bool HasGlyph(string family,int codepoint) {
+        IntPtr dc=IntPtr.Zero, font=IntPtr.Zero, prior=IntPtr.Zero;
+        try {
+            dc=CreateCompatibleDC(IntPtr.Zero);
+            if(dc==IntPtr.Zero) throw new InvalidOperationException("CreateCompatibleDC failed");
+            font=CreateFontW(-20,0,0,0,400,0,0,0,1,0,0,0,0,family);
+            if(font==IntPtr.Zero) throw new InvalidOperationException("CreateFontW failed");
+            prior=SelectObject(dc,font);
+            if(prior==IntPtr.Zero || prior==new IntPtr(-1))
+                throw new InvalidOperationException("SelectObject failed");
+            string text=Char.ConvertFromUtf32(codepoint);
+            ushort[] glyphs=new ushort[text.Length];
+            uint count=GetGlyphIndicesW(dc,text,text.Length,glyphs,1);
+            if(count==0xffffffffu) throw new InvalidOperationException("GetGlyphIndicesW failed");
+            for(int i=0;i<glyphs.Length;i++) if(glyphs[i]==0xffff) return false;
+            return true;
+        } finally {
+            if(prior!=IntPtr.Zero && prior!=new IntPtr(-1)) SelectObject(dc,prior);
+            if(font!=IntPtr.Zero) DeleteObject(font);
+            if(dc!=IntPtr.Zero) DeleteDC(dc);
+        }
+    }
+}
+'@ -ErrorAction Stop
+        }
+        $collection=New-Object System.Drawing.Text.InstalledFontCollection
+        $available=@{}  # Windows PowerShell hashtables compare keys case-insensitively.
+        foreach ($family in $collection.Families) { $available[$family.Name]=$true }
+        # One representative native consonant for each DISTINCT script.
+        # A glyph probe is a renderability check, not a full shaping/font quality test.
+        $scripts=@(
+            @{ Script='Devanagari'; Packs='sanskrit,hindi,marathi'; Code=0x0915; Faces=@('Nirmala UI','Mangal','Noto Sans Devanagari') },
+            @{ Script='Gujarati'; Packs='gujarati'; Code=0x0A95; Faces=@('Nirmala UI','Shruti','Noto Sans Gujarati') },
+            @{ Script='Bengali'; Packs='bengali'; Code=0x0995; Faces=@('Nirmala UI','Vrinda','Noto Sans Bengali') },
+            @{ Script='Gurmukhi'; Packs='punjabi'; Code=0x0A15; Faces=@('Nirmala UI','Raavi','Noto Sans Gurmukhi') },
+            @{ Script='Odia'; Packs='odia'; Code=0x0B15; Faces=@('Nirmala UI','Kalinga','Noto Sans Oriya') },
+            @{ Script='Tamil'; Packs='tamil'; Code=0x0B95; Faces=@('Nirmala UI','Latha','Noto Sans Tamil') },
+            @{ Script='Telugu'; Packs='telugu'; Code=0x0C15; Faces=@('Nirmala UI','Gautami','Noto Sans Telugu') },
+            @{ Script='Kannada'; Packs='kannada'; Code=0x0C95; Faces=@('Nirmala UI','Tunga','Noto Sans Kannada') },
+            @{ Script='Malayalam'; Packs='malayalam'; Code=0x0D15; Faces=@('Nirmala UI','Kartika','Noto Sans Malayalam') }
+        )
+        $missing=New-Object 'System.Collections.Generic.List[string]'
+        $found=New-Object 'System.Collections.Generic.List[string]'
+        foreach ($entry in $scripts) {
+            $chosen=''
+            foreach ($family in $entry.Faces) {
+                if (-not $available.ContainsKey($family)) { continue }
+                if ([SutramIndicFontProbe]::HasGlyph($family,[int]$entry.Code)) {
+                    $chosen=$family
+                    break
+                }
+            }
+            if ($chosen) {
+                $found.Add(($entry.Script+' ('+$entry.Packs+'): '+$chosen))
+                Log ('R79 FONT FOUND: '+$entry.Script+' packs='+$entry.Packs+' font='+$chosen)
+            } else {
+                $missing.Add(($entry.Script+' ('+$entry.Packs+')'))
+                Log ('R79 FONT MISSING: '+$entry.Script+' packs='+$entry.Packs)
+            }
+        }
+        Log ('R79 FONT SUMMARY: scripts found='+$found.Count+' missing='+$missing.Count+
+             ' installed_by_setup=0; Microsoft font files are never bundled or downloaded.')
+        if ($missing.Count -gt 0) {
+            $message=('Sutram cannot display all language scripts yet. Missing script coverage: '+
+                [string]::Join(', ',$missing.ToArray())+'. '+
+                'Open Windows Settings > Time & language > Language & region > Add a language; '+
+                'install the corresponding Windows language/font feature, then restart Sutram Setup. '+
+                'The installer cannot safely download or enable missing optional fonts without '+
+                'additional Windows permissions. No third-party or Microsoft font files were bundled.')
+            Log ('WARNING: '+$message)
+            if ($ShowWarning) {
+                Add-Type -AssemblyName System.Windows.Forms -ErrorAction Stop
+                [void][System.Windows.Forms.MessageBox]::Show($message,'Sutram script font coverage',
+                    [System.Windows.Forms.MessageBoxButtons]::OK,
+                    [System.Windows.Forms.MessageBoxIcon]::Warning)
+            }
+        }
+    } catch {
+        # A failed probe is UNKNOWN, never silently mistaken for complete coverage.
+        $msg='Sutram could not verify Indic script fonts: '+$_.Exception.Message+
+             '. Open Windows Settings > Time & language > Language & region and enable your script fonts.'
+        Log ('WARNING: '+$msg)
+        if ($ShowWarning) {
+            try {
+                Add-Type -AssemblyName System.Windows.Forms -ErrorAction Stop
+                [void][System.Windows.Forms.MessageBox]::Show($msg,'Sutram font verification',
+                    [System.Windows.Forms.MessageBoxButtons]::OK,
+                    [System.Windows.Forms.MessageBoxIcon]::Warning)
+            } catch { Log ('Font warning dialog unavailable: '+$_.Exception.Message) }
+        }
+    }
+}
+
+# R77: conservative rollback for an attempted FRESH installation only.
+# Never recurse-delete a user-chosen directory; remove exact staged paths,
+# preserve unknown paths, refuse reparse points, and remove empty directories.
+$script:r77FreshInstall=$false
+$script:r77InstallTouched=$false
+$script:r77HadInstallDir=$true
+$script:r77OwnedRelatives=@()
+$script:r77UninstallKeyWasPresent=$true
+$script:r77ClassKeyWasPresent=$true
+$script:r77ExtKeyWasPresent=$true
+$script:r77AddedPath=$false
+function Undo-R77FailedFreshInstall {
+    if (-not $script:r77FreshInstall -or -not $script:r77InstallTouched) { return }
+    $dest=[IO.Path]::GetFullPath($InstallDir).TrimEnd('\')
+    $programs=[IO.Path]::GetFullPath((Join-Path $env:LOCALAPPDATA 'Programs')).TrimEnd('\')
+    if (-not $dest.StartsWith($programs+'\',[StringComparison]::OrdinalIgnoreCase)) { throw 'Rollback refused outside user Programs.' }
+    Assert-NoReparsePath $dest
+    if (-not (Test-Path -LiteralPath $dest -PathType Container)) { return }
+    foreach ($relative in $script:r77OwnedRelatives) {
+        $target=[IO.Path]::GetFullPath((Join-Path $dest $relative))
+        if (-not $target.StartsWith($dest+'\',[StringComparison]::OrdinalIgnoreCase)) { throw 'Rollback path escaped install root.' }
+        Assert-NoReparsePath $target
+        if (Test-Path -LiteralPath $target -PathType Leaf) {
+            Remove-Item -LiteralPath $target -Force -ErrorAction Stop
+        }
+    }
+    foreach ($name in @('Sutram-Uninstall.exe','.sutram-install','install-state.ini','install.log')) {
+        $target=Join-Path $dest $name
+        Assert-NoReparsePath $target
+        if (Test-Path -LiteralPath $target -PathType Leaf) { Remove-Item -LiteralPath $target -Force -ErrorAction Stop }
+    }
+    if ($script:r77AddedPath) {
+        [void](Set-UserPathEntry (Join-Path $dest 'bin') $false)
+    }
+    foreach ($encoded in $script:ownedShortcuts) {
+        try {
+            $shortcut=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($encoded))
+            if (-not (Test-Path -LiteralPath $shortcut -PathType Leaf)) { continue }
+            Assert-NoReparsePath $shortcut
+            $sc=(New-Object -ComObject WScript.Shell).CreateShortcut($shortcut)
+            if ($sc.TargetPath.StartsWith($dest+'\',[StringComparison]::OrdinalIgnoreCase) -or
+                (($shortcut -like '*Sutram Terminal.lnk') -and $sc.Arguments.Contains($dest))) {
+                Remove-Item -LiteralPath $shortcut -Force -ErrorAction Stop
+            }
+        } catch { Log ('Shortcut rollback preserved path: ' + $_.Exception.Message) }
+    }
+    # Restore only registration keys first created by this attempt.
+    $unKey='HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\Sutram'
+    if (-not $script:r77UninstallKeyWasPresent -and (Test-Path -LiteralPath $unKey)) {
+        $reg=Get-ItemProperty -LiteralPath $unKey -ErrorAction SilentlyContinue
+        if ($reg -and [string]::Equals([string]$reg.InstallLocation,$dest,[StringComparison]::OrdinalIgnoreCase)) {
+            Remove-Item -LiteralPath $unKey -Recurse -Force -ErrorAction Stop
+        }
+    }
+    $classKey='HKCU:\Software\Classes\Sutram.Source'
+    if (-not $script:r77ClassKeyWasPresent -and (Test-Path -LiteralPath $classKey)) {
+        $commandKey=Join-Path $classKey 'shell\open\command'
+        if (Test-Path -LiteralPath $commandKey) {
+            $activeCommand=[string](Get-Item -LiteralPath $commandKey).GetValue('')
+            if ($activeCommand -eq ('"'+(Join-Path $dest 'sutram-ide-gui.exe')+'" "%1"')) {
+                Remove-Item -LiteralPath $classKey -Recurse -Force -ErrorAction Stop
+            }
+        }
+    }
+    $extKey='HKCU:\Software\Classes\.sm'
+    if (-not $script:r77ExtKeyWasPresent -and (Test-Path -LiteralPath $extKey)) {
+        $default=[string](Get-Item -LiteralPath $extKey).GetValue('')
+        if ($default -eq 'Sutram.Source') {
+            Remove-Item -LiteralPath $extKey -Recurse -Force -ErrorAction Stop
+        }
+    }
+    $folders=Get-ChildItem -LiteralPath $dest -Directory -Recurse -ErrorAction SilentlyContinue | Sort-Object { $_.FullName.Length } -Descending
+    foreach ($d in $folders) {
+        try {
+            Assert-NoReparsePath $d.FullName
+            if (-not (Get-ChildItem -LiteralPath $d.FullName -Force -ErrorAction Stop | Select-Object -First 1)) {
+                Remove-Item -LiteralPath $d.FullName -Force -ErrorAction Stop
+            }
+        } catch { Log ('Preserving rollback directory: '+$d.FullName) }
+    }
+    if (-not $script:r77HadInstallDir -and
+        -not (Get-ChildItem -LiteralPath $dest -Force -ErrorAction Stop | Select-Object -First 1)) {
+        Remove-Item -LiteralPath $dest -Force -ErrorAction Stop
+    }
+    Log 'R77 fresh-install rollback: attempted files and owned shortcuts removed; unknown files preserved.'
+}
+
 try {
     [IO.File]::WriteAllText($LogPath,'Sutram Setup Log' + [Environment]::NewLine,([Text.UTF8Encoding]::new($false)))
     Log 'Starting installation.'
@@ -247,6 +454,11 @@ try {
     }
 
     $marker = Join-Path $InstallDir '.sutram-install'
+    $script:r77HadInstallDir = (Test-Path -LiteralPath $InstallDir -PathType Container)
+    $script:r77FreshInstall = -not (Test-SutramMarker $marker)
+    $script:r77UninstallKeyWasPresent = (Test-Path -LiteralPath $unKey)
+    $script:r77ClassKeyWasPresent = (Test-Path -LiteralPath 'HKCU:\Software\Classes\Sutram.Source')
+    $script:r77ExtKeyWasPresent = (Test-Path -LiteralPath 'HKCU:\Software\Classes\.sm')
     $statePath = Join-Path $InstallDir 'install-state.ini'
     $oldState = Read-State $statePath
     if (Test-Path -LiteralPath $InstallDir -PathType Container) {
@@ -277,6 +489,8 @@ try {
         Log 'Extracting embedded payload.'
         Expand-Archive -LiteralPath $PayloadZip -DestinationPath $stage -Force
         Verify-Payload $stage
+        $script:r77OwnedRelatives=@(Get-ChildItem -LiteralPath $stage -File -Recurse | ForEach-Object { $_.FullName.Substring($stage.Length+1) })
+        Check-R79IndicFonts (-not $VerifyOnly)
         $testExe = Join-Path $stage 'bin\sutram.exe'
         $guiTestExe = Join-Path $stage 'sutram-ide-gui.exe'
         $guiCompiler = Join-Path $stage 'win\sutram.exe'
@@ -313,6 +527,7 @@ try {
         foreach ($file in Get-ChildItem -LiteralPath $stage -File -Recurse) {
             Assert-NoReparsePath (Join-Path $InstallDir $file.FullName.Substring($stage.Length+1))
         }
+        $script:r77InstallTouched=$true
         New-Item -ItemType Directory -Force -Path $InstallDir | Out-Null
         if (Test-Path -LiteralPath (Join-Path $InstallDir 'payload.manifest.sha256') -PathType Leaf) {
             Log 'Removing files owned by the previous Sutram payload.'
@@ -332,6 +547,7 @@ try {
         if ($AddPath) {
             Log 'Ensuring Sutram is present in the current user PATH.'
             $pathAddedNow = [bool](Set-UserPathEntry $binDir $true)
+            if ($script:r77FreshInstall -and $pathAddedNow) { $script:r77AddedPath=$true }
             # Own the entry only if this installer created it now or already owned it
             # from the previous Sutram installation. A pre-existing manual PATH entry
             # remains user-owned and will not be removed by uninstall.
@@ -433,5 +649,6 @@ try {
     exit 0
 } catch {
     try { Log ('ERROR: ' + $_.Exception.Message) } catch {}
+    try { Undo-R77FailedFreshInstall } catch { try { Log ('R77 rollback was incomplete: '+$_.Exception.Message) } catch {} }
     exit 1
 }

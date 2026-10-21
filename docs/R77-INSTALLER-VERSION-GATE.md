@@ -1,0 +1,3 @@
+# R77 review note
+
+The draft changes to `windows/native-installer/build-installer.ps1` verify the embedded `bin/sutram.exe` and `win/sutram.exe` source SHA-256 and run `win/sutram.exe --version` against `msg_version` in `src/sutram_compiler.asm`. The current committed `win/sutram.exe` still contains `v160` while the accepted source and root `sutram.exe` contain `v182`; a direct installer build must therefore **fail closed** until `windows/build-windows-setup.ps1` rebuilds the runtime and installer. This is a version gate, **not** a rebuilt installer. Validate on standard-user Windows with NASM, linker and actual `--version` before merging.

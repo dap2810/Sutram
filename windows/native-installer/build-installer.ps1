@@ -21,6 +21,27 @@ foreach ($destination in @('bin','win')) {
         Copy-Item -LiteralPath (Join-Path $ProjectRoot $folder) -Destination (Join-Path $stage $destination) -Recurse -Force
     }
 }
+# R77: require the compiler embedded by this installer to match the CURRENT
+# accepted NASM source, not an older copy left in win/ by another build.
+# The full build-windows-setup.ps1 wrapper regenerates win/sutram.exe first.
+$compilerAsm=[IO.File]::ReadAllText((Join-Path $ProjectRoot 'src\sutram_compiler.asm'))
+$sourceVersion=[regex]::Match($compilerAsm,'msg_version\s+db\s+"Sutram 1\.0 \((v[0-9]+)\)')
+if (-not $sourceVersion.Success) { throw 'Cannot determine accepted compiler version from current source; refusing an unverified payload.' }
+$expectedVersion=$sourceVersion.Groups[1].Value
+$compilerExe=Join-Path $ProjectRoot 'win\sutram.exe'
+$compilerCheck=Invoke-BoundedProcess $compilerExe @('--version') $work
+if ($compilerCheck.Stdout -notmatch ('Sutram 1\.0 \(' + [regex]::Escape($expectedVersion) + '\)')) {
+    throw ("STALE INSTALLER PAYLOAD: win/sutram.exe reports another version, expected " + $expectedVersion +
+           ". Run windows/build-windows-setup.ps1 to rebuild the compiler and installer together.")
+}
+foreach ($payloadCompiler in @('bin\sutram.exe','win\sutram.exe')) {
+    $embedded=Join-Path $stage $payloadCompiler
+    if ((Get-FileHash -LiteralPath $embedded -Algorithm SHA256).Hash -ne
+        (Get-FileHash -LiteralPath $compilerExe -Algorithm SHA256).Hash) {
+        throw ("Installer payload compiler differs from verified source binary: " + $payloadCompiler)
+    }
+}
+Write-Host ("Installer compiler payload version verified: " + $expectedVersion)
 $rows=foreach ($file in Get-ChildItem -LiteralPath $stage -File -Recurse | Sort-Object FullName) {
     (Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256).Hash.ToLowerInvariant()+' *'+$file.FullName.Substring($stage.Length+1)
 }
