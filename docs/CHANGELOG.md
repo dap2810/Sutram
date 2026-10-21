@@ -1,3 +1,40 @@
+## v263 - MY MERGE CORRUPTED FOUR FILES. Claude caught it. And the F7 decision is bigger than F7.
+
+### The error, and it is the most damaging kind
+
+**R24-01 says: *"`SHA256SUMS` holds the fuzzer's bytes. The four files on main do not. They contain U+FFFD
+(EF BF BD) where the fuzzer wrote bytes that are not valid UTF-8. They were last changed by `9c278db2` and
+its three siblings, the ROUND-20 merge."***
+
+**That is my merge.** **I read every file as UTF-8 with `errors="replace"`** - and those four files are
+**fuzzer mutations containing invalid UTF-8 by design.** **So my merge replaced their bytes with U+FFFD and I
+pushed the corruption.**
+
+**And Claude was right NOT to regenerate the manifest.** The manifest is correct; **the files are wrong.**
+Regenerating it would have made the corpus agree with corruption and hidden it for good.
+
+**The eleventh error of mine this stretch, and the worst class:** a silent content change, **in a file whose
+entire purpose is to be byte-exact.**
+
+### The sentence in R24 that matters most
+
+> *Still open, and a decision for the owner: **a type on variables.** It is the common root of method
+> dispatch, traits, checked calls through function values, and F7.*
+
+**So F7 is not an F7 decision.** It is the **type-on-variables** decision, **and it unblocks four things at
+once** - methods, traits, checked calls through function values, and the crash. **The owner should decide it
+knowing that, not as a bug fix.**
+
+### And Claude chose the error type as the next capability, with the right reasoning
+
+> *The error type fits the compiler as it is... The FFI needs a different kind of executable from the
+> compiler's output writer, which is exactly what the standing rule says to stop at.*
+
+**That is the standing rule being used as intended** - not as a brake, but as a way to pick the capability
+that does not require restructuring. **Approved.**
+
+**ROUND-25: restore the bytes first, build the error type second, put the type decision to the owner third.**
+
 ## v262 - THE THREE CAPABILITIES ARE MERGED AND WORKING. Verified by me on main.
 
 **Compiler v234. I ran all three on main rather than trusting the branch.**
