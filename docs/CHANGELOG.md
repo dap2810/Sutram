@@ -1,3 +1,41 @@
+## v290 - I verified the FFI's arity rule myself. And half of it I could not verify.
+
+**I ran the FFI pipeline rather than reading the report. Compiler v241.**
+
+### What I verified, and it is the rule that matters
+
+**The arity rule, exactly as specified:**
+
+```
+$ sutram_compiler --ffi ffi.sffi --object bad.sm bad.smo      # likha(s_add(17))
+bad.sm:1:18: Sutram Error [E_ARITY]: 's_add' ityasmai 1 tarkah dattah; hastakshare 2
+  mukhya() { likha(s_add(17)) }
+                   ^
+bad.smo written? no
+```
+
+**A source-located `E_ARITY` at the call's own column, with the counts, and NO `.smo` written.** **That is
+exactly the rule ChatGPT specified and Claude implemented, and it holds.**
+
+**And the Sutram half of the pipeline runs:** `--ffi ffi.sffi --object prog.sm prog.smo` produces a 296-byte
+object.
+
+### What I could NOT verify, and why
+
+**My Zig installation was gone** - the sandbox recycled between sessions, and the 47 MB download does not
+persist. **So I could not compile the C half (`add.c` → `add.o`) and therefore could not run
+`sutram-elf2smo` or link the result.**
+
+**So: the arity rule is verified by me; the C-to-SUTRAMO1 conversion and the final link are verified only by
+Claude's own report and its `tests/r32/test_ffi.py`.**
+
+**I am recording the boundary rather than implying I ran the whole thing.** **The distinction between "I
+verified this" and "I read that Claude verified this" is the one that has mattered most on this project.**
+
+**And it is worth noting: the sandbox losing a 47 MB toolchain between sessions is a real limit on what I can
+independently check.** **The C comparison and the C half of the FFI both depend on a download that does not
+survive.**
+
 ## v289 - ROUND-33 and ROUND-99: the FFI is built, so what breaks next?
 
 **Both rounds open with the FFI working and the converter noted**, so neither works from the plan I had
