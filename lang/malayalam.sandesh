@@ -111,6 +111,8 @@ msg_kosh_param_push	"Sutram Error: കോശ പ്രമാണത്തിൽ {
 r23_msg_slice_base	"Sutram Error: {kw:vibhag}: {kw:mala}, {kw:kosh} അല്ലെങ്കിൽ {kw:vibhag} ആവശ്യം\n"
 # "Sutram Error: vibhag prakriyayah na pratyarpaniyah\n"
 r23_msg_slice_return	"Sutram Error: {kw:vibhag} ക്രിയയിൽ നിന്ന് തിരികെ നൽകാനാവില്ല\n"
+# "Sanket: vidheh purvam ghoshana avashyaki: rachana "
+r24_msg_method_hint	"സൂചന: രീതിക്ക് മുമ്പ് പ്രഖ്യാപനം ആവശ്യം: {kw:rachana} "
 # "Bhasha pak prapt: "
 msg_lang_ok	"ഭാഷാ പാക്ക് കണ്ടെത്തി: "
 # "Chetavani: bhasha-pakah na praptah: "

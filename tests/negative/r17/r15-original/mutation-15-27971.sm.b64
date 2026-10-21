@@ -1,0 +1,2 @@
+# base64 of the fuzzer's exact bytes (not valid UTF-8); tools/crash_corpus.py decodes it
+IyBGdW5jdGlvbiB3aXRoIHBhcmFtZXRlO+6uGHJzCnByYWtyaXlhIGFkZChhLA==

@@ -111,6 +111,8 @@ msg_kosh_param_push	"Sutram Error: కోశ ప్రమాణంపై {kw:kos
 r23_msg_slice_base	"Sutram Error: {kw:vibhag}: {kw:mala}, {kw:kosh} లేదా {kw:vibhag} అవసరం\n"
 # "Sutram Error: vibhag prakriyayah na pratyarpaniyah\n"
 r23_msg_slice_return	"Sutram Error: {kw:vibhag}ను ప్రక్రియ నుండి తిరిగి ఇవ్వలేము\n"
+# "Sanket: vidheh purvam ghoshana avashyaki: rachana "
+r24_msg_method_hint	"సూచన: పద్ధతికి ముందు ప్రకటన అవసరం: {kw:rachana} "
 # "Bhasha pak prapt: "
 msg_lang_ok	"భాషా ప్యాక్ దొరికింది: "
 # "Chetavani: bhasha-pakah na praptah: "

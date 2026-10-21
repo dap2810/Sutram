@@ -111,6 +111,8 @@ msg_kosh_param_push	"Sutram Error: கோச அளவுருவில் {kw:
 r23_msg_slice_base	"Sutram Error: {kw:vibhag}: {kw:mala}, {kw:kosh} அல்லது {kw:vibhag} தேவை\n"
 # "Sutram Error: vibhag prakriyayah na pratyarpaniyah\n"
 r23_msg_slice_return	"Sutram Error: {kw:vibhag} செயல்முறையிலிருந்து திருப்பித் தர முடியாது\n"
+# "Sanket: vidheh purvam ghoshana avashyaki: rachana "
+r24_msg_method_hint	"குறிப்பு: முறைக்கு முன் அறிவிப்பு தேவை: {kw:rachana} "
 # "Bhasha pak prapt: "
 msg_lang_ok	"மொழித் தொகுப்பு கிடைத்தது: "
 # "Chetavani: bhasha-pakah na praptah: "

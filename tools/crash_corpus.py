@@ -20,6 +20,11 @@ a copy that reads them as text and writes them back turns those bytes into U+FFF
 copy no longer crashed the compiler it was pinned against. So the runner first checks the
 manifest and FAILs any file whose bytes differ, before running anything.
 
+ROUND-24: those four are stored as NAME.sm.b64 (base64 text, ASCII), so a merge that copies
+files as text cannot change them; the runner decodes them and the manifest pins the decoded
+bytes under NAME.sm, unchanged. A NAME.sm beside its NAME.sm.b64 is a stale text copy and
+FAILs; any .sm in the corpus that is not valid UTF-8 FAILs too: store it as .sm.b64.
+
 The 100,000-deep nesting inputs (R6) are generated here rather than committed:
 parentheses (closed and unclosed), yadi blocks, unary minus and nested calls, each at
 20,000 and 100,000 levels, plus the same four at a depth that must COMPILE: 400 for the expressions
@@ -33,6 +38,7 @@ Exit 0 when every case holds. Prints one line per case: PASS / FAIL.
 from __future__ import annotations
 
 import argparse
+import base64
 import hashlib
 import os
 import signal
@@ -88,22 +94,44 @@ def judge(code: str, stdout: bytes, produced: bool, must_compile: bool) -> str:
     return ''
 
 
+def corpus_inputs() -> dict:
+    """relative name -> bytes: every NAME.sm, and every NAME.sm.b64 decoded (as NAME.sm)."""
+    out = {}
+    for p in sorted(CORPUS.rglob('*.sm')):
+        out[str(p.relative_to(CORPUS))] = p.read_bytes()
+    for p in sorted(CORPUS.rglob('*.sm.b64')):
+        text = ''.join(l for l in p.read_text(encoding='ascii').splitlines() if not l.startswith('#'))
+        rel = str(p.relative_to(CORPUS))[:-4]
+        out[rel] = base64.b64decode(text)
+    return out
+
+
 def check_manifest() -> int:
-    """Every file in SHA256SUMS has those bytes, and every *.sm is in SHA256SUMS. Returns the count of failures."""
+    """Every file in SHA256SUMS has those bytes, and every input is in SHA256SUMS. Returns the count of failures."""
     want = {}
     for line in (CORPUS / 'SHA256SUMS').read_text().splitlines():
         h, _, rel = line.partition('  ')
         want[rel[2:] if rel.startswith('./') else rel] = h
     bad = 0
-    for rel, h in sorted(want.items()):
-        p = CORPUS / rel
-        if not p.exists():
-            print('FAIL  manifest: %s is missing' % rel); bad += 1
-        elif hashlib.sha256(p.read_bytes()).hexdigest() != h:
-            print('FAIL  manifest: %s does not have the pinned bytes (re-encoded or edited)' % rel); bad += 1
+    inputs = corpus_inputs()
+    for p in sorted(CORPUS.rglob('*.sm.b64')):
+        twin = p.with_name(p.name[:-4])
+        if twin.exists():
+            print('FAIL  manifest: %s is a stale text copy of %s; delete it' % (twin.relative_to(CORPUS), p.name)); bad += 1
     for p in sorted(CORPUS.rglob('*.sm')):
-        if str(p.relative_to(CORPUS)) not in want:
-            print('FAIL  manifest: %s is not in SHA256SUMS' % p.relative_to(CORPUS)); bad += 1
+        try:
+            p.read_bytes().decode('utf-8')
+        except UnicodeDecodeError:
+            print('FAIL  manifest: %s is not valid UTF-8; store it as %s.b64 (a text copy would change it)'
+                  % (p.relative_to(CORPUS), p.name)); bad += 1
+    for rel, h in sorted(want.items()):
+        if rel not in inputs:
+            print('FAIL  manifest: %s is missing' % rel); bad += 1
+        elif hashlib.sha256(inputs[rel]).hexdigest() != h:
+            print('FAIL  manifest: %s does not have the pinned bytes (re-encoded or edited)' % rel); bad += 1
+    for rel in sorted(inputs):
+        if rel not in want:
+            print('FAIL  manifest: %s is not in SHA256SUMS' % rel); bad += 1
     print('%s  manifest: %d files pinned' % ('FAIL' if bad else 'PASS', len(want)))
     return bad
 
@@ -115,7 +143,7 @@ def main(argv):
     a = ap.parse_args(argv)
     comp = os.path.abspath(a.compiler)
     fails = check_manifest()
-    cases = [(str(p.relative_to(CORPUS)), p.read_bytes(), False) for p in sorted(CORPUS.rglob('*.sm'))]
+    cases = [(rel, data, False) for rel, data in sorted(corpus_inputs().items())]
     for kind in ('parens', 'parens-unclosed', 'braces', 'unary-minus', 'calls'):
         if kind != 'parens-unclosed':
             ok_n = 100 if kind == 'braces' else 400

@@ -63,16 +63,16 @@ any compiler (re-pinned in ROUND-03 together with `manifest.json`):
 
 | Input | Required Git blob |
 |---|---|
-| `src/sutram_compiler.asm` | `1f6377e35897a467e2ae5781433f84d933a7886a` |
+| `src/sutram_compiler.asm` | `b204bcc091c58d4e568b572a92c10ee411054955` |
 | `src/r68_compiler_entry.asm` | `42389aaf73179726d91e23359aee2199734036e1` |
 | `src/r68_diagnostics.inc` | `578dc6577b7a39f67475a2a58542664c16043278` |
 | `src/r68_unicode_helpers.inc` | `69103e059634aa6b5b871ce7c06c2f4b9c742ff1` |
 | `src/r66_indic_lexer.inc` | `998b6cb75a7e11cf6d488cf84a84a2154ffdebf0` |
 | `src/r67_stack_pair.inc` | `e8472bd1cad767cf06b0c00fcf88793419362db5` |
 | `lang/sanskrit.lang` | `23f19a15b69078798c5d603881c376f9446ccdf1` |
-| `src/r11_sandesh.inc` | `555f3e913797b7ef5763d97a30839fd29275224a` |
+| `src/r11_sandesh.inc` | `96b7471676d653762ad839d2c626325709031fdf` |
 | `src/r22_lang_builtin.inc` | `3f79779ce9c06a34fd857192d3ea8b90d7d0d2d2` |
-| `src/r23_capabilities.inc` | `664964d38e894e89aac8e96c79e13a21472b646d` |
+| `src/r23_capabilities.inc` | `fb73a3609fa4207b3450f4b7beaf4af18d6d7fd5` |
 
 Build the R68 diagnostic entry, not just the bare compiler. An example on the
 reviewer's existing Linux NASM toolchain is:
