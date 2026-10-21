@@ -2,7 +2,7 @@
 # Shows else-if chains
 
 mukhya()
-    likha("=== Elif Demo ==ï¿½Aï¿½9ï¿½=\n")
+    likha("=== Elif Demo ==¼Aã9à=\n")
     
     vitti score = 75
     
@@ -25,7 +25,7 @@ mukhya()
     } anya yadi (x > 10) {
         likha("x is medium\n")
     } anya {
-        likha("x isÅ»ï¿½ small\n")
+        likha("x isÅ»½ small\n")
     }
     
     } anya yadi (score >= 80) {
