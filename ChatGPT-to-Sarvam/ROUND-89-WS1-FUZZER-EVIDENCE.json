@@ -1,0 +1,266 @@
+{
+  "schema": 1,
+  "round": 89,
+  "observed_date": "2026-10-20",
+  "scope": "Independent examination of committed evidence. No Sutram compiler executed.",
+  "sources": {
+    "tool": {
+      "path": "tools/fuzz_valid.py",
+      "git_blob": "2cb46ab1623240350b9bb2dffa342a689d066ec7"
+    },
+    "robustTool": {
+      "path": "tools/fuzz_robust.py",
+      "git_blob": "6e15c7133e9d980bcf921716df70c8fce0811e47"
+    },
+    "r15": {
+      "path": "Claude-to-Sarvam/evidence-r15/valid/run-seed15-20000.txt",
+      "git_blob": "9acf12b12886d345420ffd5778cad147d0c94355"
+    },
+    "r17": {
+      "path": "Claude-to-Sarvam/evidence-r17/fuzz-valid-seed15-20000-final.txt",
+      "git_blob": "30ee67abffdc1d83f47e1517a64fb18b84eb357c"
+    },
+    "r17_no_workarounds": {
+      "path": "Claude-to-Sarvam/evidence-r17/fuzz-valid-seed15-20000-no-workarounds.txt",
+      "git_blob": "30ee67abffdc1d83f47e1517a64fb18b84eb357c"
+    },
+    "r18": {
+      "path": "Claude-to-Sarvam/evidence-r18/fuzz-valid-seed15-20000.txt",
+      "git_blob": "30ee67abffdc1d83f47e1517a64fb18b84eb357c"
+    },
+    "robust18": {
+      "path": "Claude-to-Sarvam/evidence-r18/fuzz-robust-seed18-50000.txt",
+      "git_blob": "b688fdfb7d398bfce34b7ab4b69fe1282435ee24"
+    },
+    "round18": {
+      "path": "Claude-to-Sarvam/R18-01-FUZZER-RERUN.md",
+      "git_blob": "29883b3dbf7afad186cb27360fe7b4f288c788f1"
+    }
+  },
+  "valid": {
+    "r15": {
+      "path": "Claude-to-Sarvam/evidence-r15/valid/run-seed15-20000.txt",
+      "blob_sha": "9acf12b12886d345420ffd5778cad147d0c94355",
+      "seed": 15,
+      "program_range": [
+        0,
+        19999
+      ],
+      "runs": 20000,
+      "agreed": 20000,
+      "failed": 0,
+      "log_printed_expected_values": 387913,
+      "histogram": {
+        "function_definitions": 54763,
+        "bins": 104,
+        "ge20": 51088,
+        "ge34": 38536,
+        "range27_40": 20358,
+        "boundary": {
+          "26": 837,
+          "27": 872,
+          "28": 960,
+          "29": 1153,
+          "30": 1319,
+          "31": 1296,
+          "32": 1317,
+          "33": 1340,
+          "34": 1607,
+          "35": 1663,
+          "36": 1706,
+          "37": 1750,
+          "38": 1740,
+          "39": 1752,
+          "40": 1883
+        },
+        "min": 2,
+        "max": 107
+      }
+    },
+    "r17": {
+      "path": "Claude-to-Sarvam/evidence-r17/fuzz-valid-seed15-20000-final.txt",
+      "blob_sha": "30ee67abffdc1d83f47e1517a64fb18b84eb357c",
+      "seed": 15,
+      "program_range": [
+        0,
+        19999
+      ],
+      "runs": 20000,
+      "agreed": 20000,
+      "failed": 0,
+      "log_printed_expected_values": 388616,
+      "histogram": {
+        "function_definitions": 55186,
+        "bins": 105,
+        "ge20": 51450,
+        "ge34": 38946,
+        "range27_40": 20398,
+        "boundary": {
+          "26": 798,
+          "27": 800,
+          "28": 989,
+          "29": 1160,
+          "30": 1221,
+          "31": 1310,
+          "32": 1338,
+          "33": 1390,
+          "34": 1497,
+          "35": 1694,
+          "36": 1774,
+          "37": 1789,
+          "38": 1750,
+          "39": 1783,
+          "40": 1903
+        },
+        "min": 2,
+        "max": 113
+      }
+    },
+    "r17_no_workarounds": {
+      "path": "Claude-to-Sarvam/evidence-r17/fuzz-valid-seed15-20000-no-workarounds.txt",
+      "blob_sha": "30ee67abffdc1d83f47e1517a64fb18b84eb357c",
+      "seed": 15,
+      "program_range": [
+        0,
+        19999
+      ],
+      "runs": 20000,
+      "agreed": 20000,
+      "failed": 0,
+      "log_printed_expected_values": 388616,
+      "histogram": {
+        "function_definitions": 55186,
+        "bins": 105,
+        "ge20": 51450,
+        "ge34": 38946,
+        "range27_40": 20398,
+        "boundary": {
+          "26": 798,
+          "27": 800,
+          "28": 989,
+          "29": 1160,
+          "30": 1221,
+          "31": 1310,
+          "32": 1338,
+          "33": 1390,
+          "34": 1497,
+          "35": 1694,
+          "36": 1774,
+          "37": 1789,
+          "38": 1750,
+          "39": 1783,
+          "40": 1903
+        },
+        "min": 2,
+        "max": 113
+      }
+    },
+    "r18": {
+      "path": "Claude-to-Sarvam/evidence-r18/fuzz-valid-seed15-20000.txt",
+      "blob_sha": "30ee67abffdc1d83f47e1517a64fb18b84eb357c",
+      "seed": 15,
+      "program_range": [
+        0,
+        19999
+      ],
+      "runs": 20000,
+      "agreed": 20000,
+      "failed": 0,
+      "log_printed_expected_values": 388616,
+      "histogram": {
+        "function_definitions": 55186,
+        "bins": 105,
+        "ge20": 51450,
+        "ge34": 38946,
+        "range27_40": 20398,
+        "boundary": {
+          "26": 798,
+          "27": 800,
+          "28": 989,
+          "29": 1160,
+          "30": 1221,
+          "31": 1310,
+          "32": 1338,
+          "33": 1390,
+          "34": 1497,
+          "35": 1694,
+          "36": 1774,
+          "37": 1789,
+          "38": 1750,
+          "39": 1783,
+          "40": 1903
+        },
+        "min": 2,
+        "max": 113
+      }
+    }
+  },
+  "robust": {
+    "source": "Claude-to-Sarvam/evidence-r18/fuzz-robust-seed18-50000.txt",
+    "blob_sha": "b688fdfb7d398bfce34b7ab4b69fe1282435ee24",
+    "by_group": {
+      "fixed": {
+        "accepted": 56,
+        "error": 115,
+        "total": 171
+      },
+      "mutation": {
+        "accepted": 6880,
+        "error": 43120,
+        "total": 50000
+      }
+    },
+    "total": 50171,
+    "accepted_total": 6936,
+    "error_total": 43235,
+    "crash_or_hang": 0
+  },
+  "checks": {
+    "source_uses_whitespace_split": true,
+    "source_counts_expected_expressions": true,
+    "source_histograms_all_definitions": true,
+    "source_histograms_before_executing_compiler": true,
+    "runtime_positive_exit_not_checked": true,
+    "generator_targets_f1": true,
+    "d1d4_switches_absent": true,
+    "r17_and_r18_log_identical": true,
+    "r17_no_workarounds_identical": true,
+    "robust_171_plus_50000": true,
+    "robust_no_crash_or_hang": true,
+    "numeric_distribution_matches_r15_report": true
+  },
+  "findings": [
+    {
+      "id": "F89-01",
+      "severity": "metric_wording",
+      "finding": "The valid fuzzer records the count of expected printed values using lines += len(exp); it compares got = stdout.decode(...).split(), so output equality is whitespace-token equality, NOT strict newline or byte-for-byte equality. Zero failures remains useful numeric-output evidence, but 'output lines compared' is imprecise."
+    },
+    {
+      "id": "F89-02",
+      "severity": "coverage_overstatement",
+      "finding": "shape(prog) tallies every generated function definition using prog[0], and histogram updates before execution. It does not count confirmed dynamic calls; the 27–40-variable bins represent 20,398 generated function definitions, not 20,398 proven executed call frames."
+    },
+    {
+      "id": "F89-03",
+      "severity": "exit_validation_gap",
+      "finding": "Generated binary returncode is tested only for negative (signal) exit. A positive nonzero exit code can be classified as ok if stdout whitespace tokens equal expected; recommend requiring rr.returncode == 0."
+    },
+    {
+      "id": "F89-04",
+      "severity": "independent_rerun_provenance",
+      "finding": "R17 final, R17 no-workarounds and R18 valid summary file Git blobs are byte-identical. Identical deterministic summaries are compatible with repeated runs but do not prove distinct run executions. Neither file provides per-program transcripts to audit the 388,616 count from raw outputs."
+    },
+    {
+      "id": "F89-05",
+      "severity": "scope",
+      "finding": "The generator deliberately avoids floats, strings, side-effecting functions, division by zero, out-of-bounds indices, language packs, and Windows. The sample cannot establish universal correctness."
+    }
+  ],
+  "verdict": {
+    "reported_valid_result": "AGREE as committed aggregate report for seeded integer-only valid programs; independent rerun NOT_RUN",
+    "f1_boundary": "PRESENT in generated function-definition histogram; actual runtime called-function coverage NOT_ESTABLISHED",
+    "robustness": "Arithmetic checks agree with recorded 50,171 zero-crash/hang summary; independent rerun NOT_RUN",
+    "report_line_count": "R15 387,913; R17/R18 388,616; not reconstructed from per-case stdout files",
+    "native_compiler_testing": "NOT_RUN"
+  }
+}
