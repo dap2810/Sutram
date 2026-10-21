@@ -1,0 +1,162 @@
+{
+  "schema": 1,
+  "project": "Sutram",
+  "round": 99,
+  "date": "2026-10-21",
+  "base_main": "98380b9bd3a2a29775a65018c4172defa0b5a7c1",
+  "project_changelog": "v289",
+  "native_compiler": "v241 as reported by Claude; not rebuilt in this round",
+  "latest_assignment": "Sarvam-to-ChatGPT/ROUND-99.md",
+  "source_pins": [
+    {
+      "path": "src/r32_ffi.inc",
+      "blob": "56b83942cc87ac39f693d604a805979e4c569184"
+    },
+    {
+      "path": "tests/r32/test_ffi.py",
+      "blob": "8cdbc315ae6e7d51917f83bc416b140f1dd3e28e"
+    },
+    {
+      "path": "tests/r32/foreign.c",
+      "blob": "446e0acf0918dd09ff6797a6345f6925a1581509"
+    },
+    {
+      "path": "tests/r32/main.sm",
+      "blob": "527e89e19d4bd995d67edbcc48d8a5b03d8622a6"
+    },
+    {
+      "path": "tests/r32/ffi.sffi",
+      "blob": "6780f3452aef0da5a6f25304a75a5e0d6b5e9eda"
+    },
+    {
+      "path": "linker/sutram_elf2smo.asm",
+      "blob": "591011aaaad62d7b42ad1cb820df992499e686d6"
+    },
+    {
+      "path": "docs/OBJECT-FORMAT.md",
+      "blob": "1b87ba54f84c40d91844d39befb7b8842c0af2c1"
+    },
+    {
+      "path": "Claude-to-Sarvam/R32-00-HANDBACK.md",
+      "blob": "ebf4689e70626c467f5d65df5852cad9c55230f6"
+    }
+  ],
+  "host_abi_control": {
+    "nature": "GCC-compiled C source x86-64 ELF object with objdump/readelf + source-based assertions; NOT a native Sutram FFI call",
+    "host": "Linux x86_64",
+    "gcc": "gcc (Debian 14.2.0-19) 14.2.0",
+    "binutils": "GNU objdump (GNU Binutils for Debian) 2.44",
+    "c_path": "ChatGPT-to-Sarvam/ROUND-99-WS1-ABI-HOST-CONTROL.c",
+    "raw_path": "ChatGPT-to-Sarvam/ROUND-99-WS1-ABI-OBSERVED.txt",
+    "c_sha256": "c39c8d1a617ced6641a6a00c063307df7582e847d8c029333562aeccbb1174e0",
+    "compiled_object_sha256": "32651448ce4de28f803420922a0c2b8f309a740415000c49a316dddd00cd41fc",
+    "c_git_blob": "a918fe12ff23c9bcd5482e22edbf636cc90071a4",
+    "raw_git_blob": "7b009718ede72da52529c7782293d3ddb7ba9271",
+    "actual_build_cmd": "gcc -O2 -c -ffreestanding -fno-pic -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -fno-unwind-tables ROUND-99-WS1-ABI-HOST-CONTROL.c -o control.o",
+    "inspect_cmd": [
+      "objdump -dr --no-show-raw-insn control.o",
+      "readelf -r control.o"
+    ],
+    "result": {
+      "passed": 8,
+      "failed": 0
+    },
+    "observations": [
+      "addsd %xmm1,%xmm0 proves f64 arg/result XMM ABI",
+      "mixed f64/int uses RDI/RSI plus XMM0/XMM1 independently",
+      "pointer in RDI actually dereferenced",
+      "void function has no designated RAX return",
+      "two-field 16B integer struct passed via RDI/RSI",
+      "24B aggregate passed on stack",
+      "Microsoft x64 host-compiled ms_abi uses RCX/RDX, unlike SysV",
+      "the seven simple C functions had no ELF relocations"
+    ],
+    "checker_correction": "Initial void-body assertion incorrectly included a compiler-generated NOP padding after the RET and falsely failed. Predicate adjusted to examine instructions through RET; rerun 8/8 PASS. This is an audit/checker issue, not a C compiler defect."
+  },
+  "source_test_audit": {
+    "kind": "Direct reading and string-predicate classification of tests/r32/test_ffi.py and tests/r32/foreign.c; not execution of Sutram tests",
+    "source_review_covered_categories": 8,
+    "source_review_uncovered_categories": 10,
+    "covered": [
+      "0/1/2/6 i64 argument calls, recursion/modules/alignment",
+      "wrong-arity 1 and 3 with no output both object/separate",
+      "direct/indirect named reloc identity and symbol clashes",
+      "malformed sidecar kinds/arity/names",
+      "unsupported ELF relocation/unwind/truncation and wrong file inputs",
+      "cache invalidation when sidecar changes",
+      "opt-in only and ordinary compile refusal",
+      "Hindi bad-sidecar diagnostic"
+    ],
+    "uncovered_in_this_test": [
+      "positive 3/4/5-argument calls",
+      "positive C f64 including mixed XMM/integer ABI",
+      "positive pointer/strings with lifetime and length",
+      "positive void result and misuse-negative",
+      "struct passing and return classifications",
+      "native Windows foreign code and PE/COFF",
+      "broad malicious ELF section/header/symbol mutation fuzz",
+      "sidecar signature mismatched to actual foreign C prototype",
+      "foreign object content change under warm incremental cache",
+      "foreign pointer retention/ownership/resource cleanup"
+    ],
+    "uncovered_meaning": "Not covered by R32's specific tests; this is not an observed failure of the current compiler or linked native program.",
+    "prior_claude_report": {
+      "ffi_native_checks": "44/44 PASS on Linux",
+      "gates": "27 PASS / 0 FAIL / 1 NOT_RUN Windows",
+      "ordinary_guard": "560 programs: 471 byte-identical + 89 identically refused",
+      "suite": "218 PASS",
+      "corpus": "227 cases + manifest, 0 failed",
+      "reported_by": "Claude R32 and Sarvam v288",
+      "rerun_by_chatgpt_r99": false
+    },
+    "checker_correction": "Coverage predicate initially searched for an 'and' in the arity enumeration. Actual test description uses commas; corrected source predicate passed. No project defect."
+  },
+  "ws1_next_kind_rank": [
+    {
+      "rank": 1,
+      "kind": "ptr/string",
+      "layout_can_encode": true,
+      "native_v1_accepts": false,
+      "requires": "accepted ptr kind and lifetime/provenance/encoding/ownership rules; integer argument registers already usable"
+    },
+    {
+      "rank": 2,
+      "kind": "void",
+      "layout_can_encode": true,
+      "native_v1_accepts": false,
+      "requires": "accepted void kind, statement-only and no fabricated rax value"
+    },
+    {
+      "rank": 3,
+      "kind": "dasham/f64",
+      "layout_can_encode": true,
+      "native_v1_accepts": false,
+      "requires": "accepted f64 kind plus SysV XMM register classification and XMM0 return"
+    },
+    {
+      "rank": 4,
+      "kind": "struct by value",
+      "layout_can_encode": false,
+      "native_v1_accepts": false,
+      "requires": "new layout/type schema, SysV class/stack/return marshalling"
+    },
+    {
+      "rank": 5,
+      "kind": "Windows x64",
+      "layout_can_encode": "per-record names/arity/kinds reusable; target header must change",
+      "native_v1_accepts": false,
+      "requires": "Windows ABI register/shadow space/nonvolatile rules plus COFF/PE foreign bridge and Windows native acceptance; priority separate for Windows-first deployment"
+    }
+  ],
+  "ws2_recommendation": "Keep R32 existing 44-test FFI gate; add negative malformed ELF byte mutation and artifact absence, prototype mismatch contract, positive missing arity widths, typed ABI positives only after implementation, multi foreign file, cache invalidation for foreign .o, real Windows when supported.",
+  "ws3": "No correction: keep R97 7-of-7 benchmark threshold and R98 Gate0; no performance task executed.",
+  "not_run": [
+    "native Sutram compiler source/build this Round 99",
+    "native NASM linker sutram-elf2smo tests this Round 99",
+    "tests/r32/test_ffi.py and full gates/corpus/fuzz re-run this Round 99",
+    "new native FFI pointer/void/dasham/struct/Windows test",
+    "native Windows acceptance",
+    "new performance benchmarks"
+  ],
+  "changes": "Only new documents plus host C source/raw output and evidence under ChatGPT-to-Sarvam; no compiler/linker/goldens/CI/installer changes."
+}
