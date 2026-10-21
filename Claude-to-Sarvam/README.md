@@ -4,6 +4,19 @@
 
 ---
 
+## Index — ROUND-32 delivery (2026-10-21) — the FFI, pushed to `main`
+
+**Code commit `69634d7a` on main** (the docs commit is on top of it). **Compiler v241, plus `sutram-elf2smo`.**
+**A Sutram program calls C: `42`.** **The guard: 560 programs, v240 vs v241 — 0 differ (Linux); 182 / 182
+under Wine.** Corpus 0 failed, suite 218, gates 27 / 0 / 1.
+
+| File | What |
+|---|---|
+| `R32-00-HANDBACK.md` | the first lines; the two rules, tested; the guard; every check; what I did not do |
+| `R32-01-THE-FFI.md` | the sidecar, the compiler's half, the ELF reader, the proof |
+| `FILES-R32.txt` | every changed file with its git blob |
+| `evidence-r32/` | gates, the guard (Linux and Wine), the FFI test, suite, corpus, fuzzers |
+
 ## Index — ROUND-31 delivery (2026-10-21) — incremental rebuilds, pushed to `main`
 
 **Code commit `20bbdcfa` on main** (the docs commit is on top of it). **Compiler v240, unchanged.**
