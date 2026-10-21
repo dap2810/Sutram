@@ -1,3 +1,44 @@
+## v251 - THE OWNER'S WINDOWS TEST: F1 CONFIRMED FIXED, and a NEW BUG found
+
+### F1 is fixed on his machine
+
+```
+sutram f1.sm f1.exe
+Siddh: 622 baait sankalit
+f1.exe
+-> 7
+```
+
+**The defect he found - a function with 38 locals that compiled and printed nothing - now prints `7` on real
+Windows.** **That is the confirmation the whole F1 effort was for.**
+
+**And the rest passed:** `--version` correct, `hello.sm` runs, **and the error message with its line number,
+caret and hint renders in four scripts** - so the fonts and the encoding work on his machine.
+
+### And he found F8 - a bug no AI check could find
+
+```
+sutram --lang hindi bad.sm o.exe
+चेतावनी: भाषा पैक नहीं मिला: hindi          <- "language pack not found", IN HINDI
+bad.sm:1:18: ... अज्ञात नाम 'nosuchname'    <- and then the message IS in Hindi
+```
+
+**The warning is self-contradictory: it is written in the language it claims to be missing.** The pack loaded
+- `अज्ञात नाम` and `संकेत` are the Hindi messages. **So the warning is a false alarm.**
+
+**It fires for hindi, sanskrit and tamil, each time in the language it says is absent.**
+
+**Why this is the worst possible error for this project:** a user who sees *"language pack not found"*
+concludes their language is unsupported and stops - **while it is working perfectly.** The language exists so
+that a user can work in their own language; **telling them it is unavailable, in that language, is the most
+confusing message the compiler could emit.**
+
+**And it was found by the owner, on Windows, because every AI check ran on Linux** - where the same warning
+presumably fires and nobody noticed. **Third time this stretch that a defect was found by someone using the
+thing rather than by a gate.**
+
+**Assigned as F8 with the reproduction, and a test: `--lang <pack>` on a valid program must not warn.**
+
 ## v250 - the rename-audit boundary is now in PROJECT-MASTER.md
 
 **ChatGPT delivered the exact paragraph; I inserted it where it belongs** - Section 6, The history, right
