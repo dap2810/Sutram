@@ -18,6 +18,11 @@ Every program has:
     and folded; the mala is printed afterwards, so a write through a slice that
     went to the wrong element shows.
 
+ROUND-25 adds the error type: 2-4 phal-prakriyas e_i(x), each failing with
+dosh(code) on a condition of x, else calling an earlier one under prasar and
+returning siddhi(...); mukhya ends by calling them under prasar, so the first
+failure ends the program with its code as the exit status (checked as EXIT n).
+
 --robust mutates these programs and the three R23 examples (with the R23
 tokens `:`, `.`, `vibhag`, `[`, `]` among the insertions) and requires that the
 compiler never crashes or hangs on them (tools/fuzz_robust.py's rule).
@@ -59,6 +64,7 @@ class Gen:
     def __init__(self, seed):
         self.r = random.Random(seed)
         self.out = []          # expected output lines
+        self.exit = 0          # R25: the expected exit status
 
     # a random expression over names, as (source, evaluator)
     def expr(self, names, depth=2):
@@ -203,6 +209,48 @@ class Gen:
                 body.append('likha(%s.%s)' % (o, fl)); say(objs[o][fl])
         for i in range(n):
             body.append('likha(a[%d])' % i); say(arr[i])
+        # R25: the error type
+        ne = r.randint(2, 4)
+        efuncs = []
+        for i in range(ne):
+            m = r.choice([1, 3, 7])
+            v = r.randint(0, m)
+            code = r.randint(1, 120)
+            callee = r.randrange(i) if i and r.random() < 0.7 else None
+            lines = ['prakriya e%d(x) {' % i, '    yadi ((x & %d) == %d) {' % (m, v),
+                     '        prati dosh(%d)' % code, '    }']
+            if callee is not None:
+                arg, fa = self.expr(['x'], 1)
+                lines.append('    vitti y = prasar e%d(%s)' % (callee, arg))
+                res, fr = self.expr(['x', 'y'], 2)
+            else:
+                fa = None
+                res, fr = self.expr(['x'], 2)
+            lines += ['    prati siddhi(%s)' % res, '}', '']
+            # functions go before mukhya: insert them ahead of the rachana
+            src[0:0] = lines
+            efuncs.append((m, v, code, callee, fa, fr))
+
+        def ecall(i, x):
+            m, v, code, callee, fa, fr = efuncs[i]
+            if (x & m) == v:
+                return ('dosh', code)
+            env = {'x': x}
+            if callee is not None:
+                st, y = ecall(callee, fa(env))
+                if st == 'dosh':
+                    return (st, y)
+                env['y'] = y
+            return ('siddhi', fr(env))
+        for _ in range(r.randint(2, 6)):
+            i = r.randrange(ne)
+            x = r.randint(-20, 20)
+            body.append('likha(prasar e%d(%s))' % (i, x if x >= 0 else '(%d)' % x))
+            st, val = ecall(i, x)
+            if st == 'dosh':
+                self.exit = val & 255
+                break
+            say(val)
         src += ['mukhya() {'] + ['    ' + b for b in body] + ['}']
         return '\n'.join(src) + '\n'
 
@@ -210,7 +258,7 @@ class Gen:
 def make(seed):
     g = Gen(seed)
     s = g.program()
-    return s, [str(v) for v in g.out]
+    return s, [str(v) for v in g.out] + (['EXIT %d' % g.exit] if g.exit else [])
 
 
 def robust(a, comp):
@@ -219,7 +267,8 @@ def robust(a, comp):
     base = [p.read_bytes() for p in sorted((ROOT / 'examples').glob('24[6-8]_r23_*.sm'))]
     for i in range(40):
         base.append(make(rng.randrange(1 << 30))[0].encode())
-    extra = [b':', b'[', b']', b'.', b'vibhag ', b'[:', b':]', b'.m0(', b'prakriya Vastu.', b'chuno']
+    extra = [b':', b'[', b']', b'.', b'vibhag ', b'[:', b':]', b'.m0(', b'prakriya Vastu.', b'chuno',
+             b'prasar ', b'siddhi(', b'dosh(', b'prati dosh(1)', b'prasar e0(1)']
     bad = 0
     counts = {}
     out = Path(a.out); out.mkdir(parents=True, exist_ok=True)

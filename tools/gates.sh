@@ -100,6 +100,7 @@ run_gate() {                      # name, then the command
     "pack found without lang/") line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/lang built-in: //'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "R23 capabilities") line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r23 capabilities: //'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "valid fuzzer + function values") line=$(grep -E "agree" /tmp/g_out.$$ | tail -1); case "$line" in *", 0 fail;"*) ok "$name ($(echo "$line" | sed 's/.*: //; s/;.*//'))";; *) bad "$name" "${line:-no summary}";; esac ;;
+    "R25 error type")   line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r25 phal: //'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "R23 fuzzer")       line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 differ"*) ok "$name ($(echo "$line" | sed 's/fuzz_r23: //'))";; *) bad "$name" "${line:-no summary}";; esac ;;
     "pack messages")    case "$(tail -1 /tmp/g_out.$$)" in OK*) ok "$name (12 sets x 11 cases)";; *) bad "$name" "$(grep -m1 -E 'FAIL|differ|Error' /tmp/g_out.$$ | cut -c1-60)";; esac ;;
     *)                  ok "$name" ;;
@@ -119,6 +120,7 @@ run_gate "pack messages"     python3 tests/sandesh/test_sandesh.py   # R11: ever
 run_gate "keyword packs built in" python3 tools/lang_builtin.py --check   # R22 (F8): src/r22_lang_builtin.inc is lang/*.lang
 run_gate "pack found without lang/" python3 tests/r22/test_lang_builtin.py --compiler ./sutram_compiler   # R22 (F8): --lang <pack> on a valid program does not warn
 run_gate "R23 capabilities"  python3 tests/r23/test_capabilities.py --compiler ./sutram_compiler   # R23: function values, methods, slices: the errors and the checks
+run_gate "R25 error type"    python3 tests/r25/test_phal.py --compiler ./sutram_compiler   # R25: siddhi, dosh, prasar: the rules and the edges
 run_gate "R23 fuzzer"        python3 tools/fuzz_r23.py --seed 23 --count 100 --compiler ./sutram_compiler --out /tmp/fuzz-r23-gate   # R23: 100 random programs against the model
 run_gate "valid fuzzer + function values" python3 tools/fuzz_valid.py --seed 24 --count 60 --capabilities --compiler ./sutram_compiler --out /tmp/fuzz-valid-gate   # R24: the main fuzzer with calls through function values
 run_gate "crash corpus"      python3 tools/crash_corpus.py --compiler ./sutram_compiler   # R17: invalid input must error, never crash

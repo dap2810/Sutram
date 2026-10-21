@@ -99,6 +99,8 @@ AST_DO_WHILE  equ 28    ; do-while stmt: [type][body][cond]
 AST_FLOAT     equ 29    ; T12 IEEE-754 binary64 bits in field1
 AST_FUNCREF   equ 40    ; R23 WS1: a prakriya name as a value: [type][name_ptr]
 AST_SLICE     equ 41    ; R23 WS3: base[lo:hi]: [type][base_name][lo][hi][desc_offset]
+AST_PRASAR    equ 42    ; R25: prasar call: [type][AST_FUNCALL]
+R25_PHAL_CAP  equ 512
 R23_METHOD_CAP equ 256
 R23_MCALL_CAP  equ 2048
 R56_GLOBAL_CAP equ 128
@@ -165,6 +167,9 @@ KW_KURU      equ 29   ; kuru = do (imperative Sanskrit, for do-while)
 KW_DASHAM    equ 30   ; dasham / दशम = scalar IEEE-754 binary64
 KW_KOSH      equ 31   ; kosh / कोश = growable qword array
 KW_VIBHAG    equ 32   ; R23 WS3: vibhag / विभाग = a slice parameter
+KW_SIDDHI    equ 33   ; R25: siddhi / सिद्धि = return success
+KW_DOSH      equ 34   ; R25: dosh / दोष = return failure
+KW_PRASAR    equ 35   ; R25: prasar / प्रसार = propagate a failure
 AST_NISHKRIYA equ 26  ; inline asm statement node
 
 ; Builtin IDs
@@ -225,7 +230,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v235) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v236) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r48_msg_near db ": Sutram Error [E_PARSE]: shabd '",0
@@ -364,6 +369,10 @@ r54_builtin_arity_table:
     r23_msg_slice_base db "Sutram Error: vibhag: mala, kosh va vibhag apekshita", 10, 0
     r23_msg_slice_return db "Sutram Error: vibhag prakriyayah na pratyarpaniyah", 10, 0
     r24_msg_method_hint db "Sanket: vidheh purvam ghoshana avashyaki: rachana ",0
+    r25_msg_phal_return db "Sutram Error: phal-prakriya: prati siddhi va dosh bhavet", 10, 0
+    r25_msg_phal_unused db "Sutram Error: phal-prakriya prasar vina ahuta", 10, 0
+    r25_msg_prasar_call db "Sutram Error: prasar: phal-prakriya-ahvanam apekshitam", 10, 0
+    r25_msg_prasar_where db "Sutram Error: prasar kevalam phal-prakriya-madhye mukhya-madhye va", 10, 0
 
     ; The v27 per-pack copies of five parse messages lived here. R11: every message
     ; now has a copy per pack, in lang/<pack>.sandesh, assembled into
@@ -477,6 +486,9 @@ r54_builtin_arity_table:
         dq kw_dasham,     TOK_KEYWORD, KW_DASHAM
         dq kw_kosh,       TOK_KEYWORD, KW_KOSH
         dq kw_vibhag,     TOK_KEYWORD, KW_VIBHAG
+        dq kw_siddhi,     TOK_KEYWORD, KW_SIDDHI
+        dq kw_dosh,       TOK_KEYWORD, KW_DOSH
+        dq kw_prasar,     TOK_KEYWORD, KW_PRASAR
         ; Devanagari equivalents (optional script)
         dq kw_dev_mukhya,    TOK_KEYWORD, KW_MUKHYA
         dq kw_dev_vitti,     TOK_KEYWORD, KW_VITTI
@@ -489,6 +501,9 @@ r54_builtin_arity_table:
         dq kw_dev_dasham,    TOK_KEYWORD, KW_DASHAM
         dq kw_dev_kosh,      TOK_KEYWORD, KW_KOSH
         dq kw_dev_vibhag,    TOK_KEYWORD, KW_VIBHAG
+        dq kw_dev_siddhi,    TOK_KEYWORD, KW_SIDDHI
+        dq kw_dev_dosh,      TOK_KEYWORD, KW_DOSH
+        dq kw_dev_prasar,    TOK_KEYWORD, KW_PRASAR
     kw_table_end:
 
     ; Builtin table
@@ -679,6 +694,9 @@ r54_builtin_arity_table:
     kw_dasham    db "dasham", 0
     kw_kosh      db "kosh", 0
     kw_vibhag    db "vibhag", 0
+    kw_siddhi    db "siddhi", 0
+    kw_dosh      db "dosh", 0
+    kw_prasar    db "prasar", 0
 
     ; Devanagari keyword strings (UTF-8 encoded)
     kw_dev_mukhya    db 0xE0,0xA4,0xAE,0xE0,0xA5,0x81,0xE0,0xA4,0x96,0xE0,0xA5,0x8D,0xE0,0xA4,0xAF, 0
@@ -693,6 +711,9 @@ r54_builtin_arity_table:
     ; कोश
     kw_dev_kosh     db 0xE0,0xA4,0x95,0xE0,0xA5,0x8B,0xE0,0xA4,0xB6, 0
     kw_dev_vibhag   db 224,164,181,224,164,191,224,164,173,224,164,190,224,164,151, 0
+    kw_dev_siddhi   db 224,164,184,224,164,191,224,164,166,224,165,141,224,164,167,224,164,191, 0
+    kw_dev_dosh     db 224,164,166,224,165,139,224,164,183, 0
+    kw_dev_prasar   db 224,164,170,224,165,141,224,164,176,224,164,184,224,164,190,224,164,176, 0
             kw_dev_prakriya db 0xE0,0xA4,0xAA,0xE0,0xA5,0x8D,0xE0,0xA4,0xB0,0xE0,0xA4,0x95,0xE0,0xA5,0x8D,0xE0,0xA4,0xB0,0xE0,0xA4,0xBF,0xE0,0xA4,0xAF,0xE0,0xA4,0xBE, 0
     kw_dev_anyatra db 0xE0,0xA4,0x85,0xE0,0xA4,0xA8,0xE0,0xA5,0x8D,0xE0,0xA4,0xAF,0xE0,0xA4,0xA4,0xE0,0xA5,0x8D,0xE0,0xA4,0xB0, 0
     kw_dev_pratiyati db 0xE0,0xA4,0xAA,0xE0,0xA5,0x8D,0xE0,0xA4,0xB0,0xE0,0xA4,0xA4,0xE0,0xA5,0x8D,0xE0,0xA4,0xAF,0xE0,0xA4,0xBE,0xE0,0xA4,0xAF,0xE0,0xA4,0xA4,0xE0,0xA4,0xBF, 0
@@ -8806,6 +8827,7 @@ parse_stmt:
 
 .ps_funcdef:
     ; prakriya name(params) { body }
+    mov qword [rel r25_parse_phal], 0   ; R25
     push r12                 ; save r12 (parse_func_block uses it as stmt count)
     push r13                 ; save r13 (parse_func_block uses it as stmt index)
     push qword [rel r4_seen_base]   ; R4: open the function's own name scope
@@ -8969,6 +8991,13 @@ parse_stmt:
     mov [rax+16], r12         ; param count
     mov [rax+24], rcx         ; body block
     call r7_note_def          ; R7: (rbx name, r12 params) for the arity check
+    cmp qword [rel r25_parse_phal], 0   ; R25: it returns siddhi / dosh: a phal-prakriya
+    je .r25_not_phal_def
+    push rdi
+    mov rdi, rbx
+    call r25_mark_phal
+    pop rdi
+.r25_not_phal_def:
     mov [rax+32], r13         ; param buffer end position
     mov qword [rax+40], 0
     mov [rel param_buf_pos], r13   ; remember cursor for the next function
@@ -9359,6 +9388,43 @@ parse_stmt:
 
 .ps_return:
     call advance_tok          ; consume 'pratiyati'
+    call cur_tok              ; R25: prati siddhi(e) / prati dosh(e)
+    cmp qword [rax], TOK_KEYWORD
+    jne .r25_ret_plain
+    mov rcx, [rax+16]
+    cmp rcx, KW_SIDDHI
+    je .r25_ret_phal
+    cmp rcx, KW_DOSH
+    jne .r25_ret_plain
+.r25_ret_phal:
+    sub rcx, KW_SIDDHI - 1    ; siddhi = 1, dosh = 2
+    push rcx
+    mov qword [rel r25_parse_phal], 1
+    call advance_tok          ; consume siddhi / dosh
+    call cur_tok
+    cmp qword [rax], TOK_DELIMITER
+    jne parse_error
+    cmp qword [rax+8], '('
+    jne parse_error
+    call advance_tok
+    call parse_expr
+    push rax
+    call cur_tok
+    cmp qword [rax], TOK_DELIMITER
+    jne parse_error
+    cmp qword [rax+8], ')'
+    jne parse_error
+    call advance_tok
+    call alloc_ast
+    pop rbx                   ; the value or the code
+    pop rcx                   ; 1 siddhi, 2 dosh
+    mov qword [rax], AST_RETURN
+    mov [rax+8], rbx
+    mov [rax+16], rcx
+    call maybe_semi
+    pop rbx
+    ret
+.r25_ret_plain:
     call cur_tok
     mov rcx, [rax]
     cmp rcx, TOK_DELIMITER
@@ -10666,6 +10732,23 @@ parse_primary_inner:
     cmp rcx, TOK_KEYWORD
     jne .pp_check_delim
     mov rdx, [rax+16]        ; keyword ID (rax = token ptr from cur_tok)
+    cmp rdx, KW_PRASAR       ; R25: prasar f(...)
+    jne .r25_not_prasar
+    call advance_tok
+    call parse_primary
+    cmp qword [rax], AST_FUNCALL
+    jne .r25_prasar_not_call
+    push rax
+    call alloc_ast
+    pop rcx
+    mov qword [rax], AST_PRASAR
+    mov [rax+8], rcx
+    pop rbx
+    ret
+.r25_prasar_not_call:
+    lea rdi, [rel r25_msg_prasar_call]
+    jmp capacity_fail
+.r25_not_prasar:
     cmp rdx, KW_PURNA
     jne .pp_check_shunya
     ; purna: return AST_NUM(1)
@@ -11927,8 +12010,11 @@ gen_all_functions:
     mov edi, FUNC_SPILL_BYTES
     call emit_u32
     ; Generate function body
+    mov rax, [rbx+8]          ; R25: the prakriya being generated
+    mov [rel r25_cur_func], rax
     mov rax, [rbx+24]        ; body block node
     call gen_block
+    call r25_emit_fall_off    ; R25: the end of a phal-prakriya is siddhi(0)
     ; Emit function epilogue: lea rsp,[rbp-8]; pop rbx; pop rbp; ret
     mov dil, 0x48             ; lea rsp, [rbp-8]
     call emit_byte
@@ -12185,6 +12271,8 @@ gen_stmt:
 
 .gs_funcall:
     ; [AST_FUNCALL][name_ptr][arg_count][arg1..arg6]
+    mov rdi, [rbx+8]          ; R25: a phal-prakriya only under prasar
+    call r25_check_call
     ; Evaluate arguments and load them into the Sutram user-function registers:
     ;   rdi, rsi, rdx, rcx, r8, r9
     push r15
@@ -13923,6 +14011,7 @@ gen_stmt:
     ret
 
 .gs_return:
+    call r25_check_plain_return   ; R25: in a phal-prakriya every prati is siddhi / dosh
     mov rax, [rbx+8]         ; return expr
     test rax, rax
     jz .gs_ret_none
@@ -13966,6 +14055,7 @@ gen_stmt:
     call emit_u32
     jmp .gs_ret_epilogue       ; in main → emit sys_exit
 .gs_ret_func:
+    call r25_emit_return_status   ; R25: rdx = 0 for siddhi, 1 for dosh
     ; User function return: lea rsp,[rbp-8]; pop rbx; pop rbp; ret
     mov dil, 0x48             ; lea rsp, [rbp-8]
     call emit_byte
@@ -14010,6 +14100,7 @@ gen_stmt:
     ret
 
 .gs_ret_epilogue:
+    call r25_emit_main_dosh   ; R25: prati dosh(c) in mukhya exits with c
     ; mov rsp, rbp; pop rbp; sys_exit
     mov dil, 0x48
     call emit_byte
@@ -14264,6 +14355,8 @@ gen_expr:
     je .ge_funcref
     cmp rax, AST_SLICE
     je .ge_slice
+    cmp rax, AST_PRASAR
+    je .ge_prasar
     ; Unknown — emit nop
     mov dil, 0x90
     call emit_byte
@@ -14278,11 +14371,17 @@ gen_expr:
     call r23_gen_slice        ; R23 WS3: rax = the slice descriptor
     pop rbx
     ret
+.ge_prasar:
+    call r25_gen_prasar       ; R25: the call, then return a failure at once
+    pop rbx
+    ret
 
 .ge_funcall:
     ; [AST_FUNCALL][name_ptr][arg_count][arg1..arg6]
     ; Evaluate args left-to-right, push each result, then pop them into
     ; rdi, rsi, rdx, rcx, r8, r9 in reverse stack order.
+    mov rdi, [rbx+8]          ; R25: a phal-prakriya only under prasar
+    call r25_check_call
     push r15                  ; save compiler-time r15 for R46
     push r14                  ; save r14 (gen_block uses it)
     mov r14, [rbx+16]        ; arg count
@@ -23421,6 +23520,7 @@ strcmp:
     ret
 
 %include "src/r23_capabilities.inc"
+%include "src/r25_phal.inc"
 
 itoa:
     mov rax, rdi

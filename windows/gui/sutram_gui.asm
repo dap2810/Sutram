@@ -500,7 +500,7 @@ bi_words db 'likh',0,'sthagita',0,'pad',0,'dvaram',0,'paadh',0,'likha',0,'band',
 kw_words db 'mukhya',0,'vitti',0,'anka',0,'yadi',0,'yavat',0,'prati',0,'sankhya',0,'anya',0,\
             'prakriya',0,'yoj',0,'rachana',0,'chakra',0,'tak',0,'sutra',0,'abhava',0,'krama',0,\
             'agrim',0,'purna',0,'shunya',0,'satya',0,'ganana',0,'guna',0,'bhavana',0,'mala',0,\
-            'yantra',0,'kuru',0,'dasham',0,'kosh',0,'vibhag',0,0
+            'yantra',0,'kuru',0,'dasham',0,'kosh',0,'vibhag',0,'siddhi',0,'dosh',0,'prasar',0,0
 ; Import-table label expansion: function-name symbols n_* via macro.
 %unmacro IMPORTS 1
 %macro IMPORTS 1

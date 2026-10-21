@@ -1,0 +1,56 @@
+# R25: the error type. A prakriya that returns `siddhi(v)` (success, value v)
+# or `dosh(c)` (failure, code c) is a phal-prakriya. `prasar f(...)` calls one:
+# on success it is the value, on failure the failure is returned from here at
+# once - and from mukhya, the program ends with the code as its exit status.
+# A phal-prakriya must be called with prasar: a failure cannot be ignored.
+
+# 1: division by zero; 2: an index outside the mala
+prakriya bhaj(a, b) {
+    yadi (b == 0) {
+        prati dosh(1)
+    }
+    prati siddhi(a / b)
+}
+
+prakriya grah(vibhag s, i) {
+    yadi (i < 0 || i >= pankti_len(s)) {
+        prati dosh(2)
+    }
+    prati siddhi(s[i])
+}
+
+# s[i] / s[j]: either step can fail, and the failure passes straight up
+prakriya anupat(vibhag s, i, j) {
+    vitti a = prasar grah(s, i)
+    vitti b = prasar grah(s, j)
+    prati siddhi(prasar bhaj(a, b))
+}
+
+# the mean of s; an empty slice is a failure of its own (3)
+prakriya madhyaman(vibhag s) {
+    vitti n = pankti_len(s)
+    yadi (n == 0) {
+        prati dosh(3)
+    }
+    vitti t = 0
+    chakra i = 0 tak n - 1 {
+        t = t + s[i]
+    }
+    prati siddhi(prasar bhaj(t, n))
+}
+
+mukhya() {
+    mala x[5]
+    x[0] = 40
+    x[1] = 8
+    x[2] = 0
+    x[3] = 12
+    x[4] = 20
+    likha(prasar anupat(x, 0, 1))
+    likha(prasar anupat(x, 3, 1))
+    likha(prasar madhyaman(x))
+    likha(prasar madhyaman(x[1:4]))
+    # the empty slice: dosh(3) reaches mukhya, so the program stops with exit 3
+    likha(prasar madhyaman(x[2:2]))
+    likha(999)
+}

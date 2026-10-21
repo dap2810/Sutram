@@ -196,7 +196,7 @@ kw_tab:
     db 'shunya',0,'sutra',0,'krama',0,'agrim',0,'guna',0,'mala',0
     db 'ganana',0,'rachana',0,'yoj',0,'grahan',0,'dasham',0,'kosh',0
     db 'kuru',0,'shabda',0,'satya',0,'abhava',0,'yantra',0,'tak',0
-    db 'bhavana',0,'sankhya',0,'vibhag',0,0
+    db 'bhavana',0,'sankhya',0,'vibhag',0,'siddhi',0,'dosh',0,'prasar',0,0
 bi_tab:
     ; Devanagari spellings (slice 23)
     db 0xE0,0xA4,0xA6,0xE0,0xA5,0x8D,0xE0,0xA4,0xB5,0xE0,0xA4,0xBE,0xE0,0xA4,0xB0,0xE0,0xA4,0xAE,0

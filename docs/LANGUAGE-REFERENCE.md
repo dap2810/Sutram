@@ -49,6 +49,9 @@ language has a pack of native words (see the `lang/` table at the end).
 | `agrim` | continue |
 | `vitti` | variable |
 | `vibhag` | slice parameter (R23; §17) |
+| `siddhi` | return success: `prati siddhi(v)` (R25; §18) |
+| `dosh` | return failure: `prati dosh(code)` (R25; §18) |
+| `prasar` | call a phal-prakriya, propagating its failure (R25; §18) |
 | `yadi` | if |
 | `yavat` | while |
 
@@ -325,6 +328,9 @@ keyword, and it compiles to the same native machine code.
 | agrim | उद्देश्य | এগিয়ে | આગળ | आगे | ಮುಂದುವರಿಸು | തുടരുക | पुढे | ଆଗକୁ | ਅੱਗੇ | தொடர் | కొనసాగు |
 | vitti | वित्ति | চল | ચલ | चर | ಚರ | ചരം | चल | ଚଳ | ਵੇਰੀਏਬਲ | மாறி | చరరాశి |
 | vibhag | विभाग | বিভাগ | વિભાગ | विभाग | ವಿಭಾಗ | വിഭാഗം | विभाग | ବିଭାଗ | ਵਿਭਾਗ | பிரிவு | విభాగం |
+| siddhi | सिद्धि | সিদ্ধি | સિદ્ધિ | सिद्धि | ಸಿದ್ಧಿ | സിദ്ധി | सिद्धि | ସିଦ୍ଧି | ਸਿੱਧੀ | வெற்றி | సిద్ధి |
+| dosh | दोष | দোষ | દોષ | दोष | ದೋಷ | ദോഷം | दोष | ଦୋଷ | ਦੋਸ਼ | பிழை | దోషం |
+| prasar | प्रसार | প্রসার | પ્રસાર | प्रसार | ಪ್ರಸಾರ | പ്രസാരം | प्रसार | ପ୍ରସାର | ਪ੍ਰਸਾਰ | பரப்பு | ప్రసారం |
 | yadi | यदि | যদি | જો | यदि | ಒಂದುವೇಳೆ | എങ്കിൽ | जर | ଯଦି | ਜੇ | எனின் | ఒకవేళ |
 | yavat | यावत् | যতক্ষণ | જ્યાંસુધી | जबतक | ಯಾವವರೆಗೂ | എത്രത്തോളം | जोपर्यंत | ଯେତେବେଳେ | ਜਦੋਂਤਕ | வரை | ఎంతవరకు |
 
@@ -487,6 +493,40 @@ store it in a variable first); a checked type for function values; methods
 dispatched on the object's type, traits; slices of a `kosh dasham`; a slice that
 outlives its function; a `kosh` that grows after a slice of it was made leaves the
 slice pointing at the old storage.
+
+## 18. The error type: `siddhi`, `dosh`, `prasar` (R25)
+
+The smallest working version. Example: `examples/249_r25_phal.sm`.
+
+```
+prakriya bhaj(a, b) {
+    yadi (b == 0) {
+        prati dosh(1)            # failure, carrying the code 1
+    }
+    prati siddhi(a / b)          # success, carrying the value
+}
+prakriya ek_adhik(a, b) {
+    vitti q = prasar bhaj(a, b)  # failure: returned from here at once; success: q is the value
+    prati siddhi(q + 1)
+}
+mukhya() {
+    likha(prasar ek_adhik(10, 2))    # 6
+    likha(prasar ek_adhik(10, 0))    # the failure reaches mukhya: the program exits with status 1
+}
+```
+
+- **A prakriya with a `prati siddhi(...)` or `prati dosh(...)` is a phal-prakriya.** In one, every `prati` is
+  `siddhi` or `dosh` (a plain `prati` is a compile error), and falling off its end is `siddhi(0)`.
+- **A phal-prakriya must be called under `prasar`**, and `prasar` must be on a call of one: a failure cannot
+  be ignored, and a status is never read where none was set. Both are compile errors otherwise.
+- **`prasar` is allowed in a phal-prakriya (it propagates) and in `mukhya`**, where a failure ends the
+  program with the code as its exit status (the low 8 bits). `prati dosh(c)` in `mukhya` exits with `c`.
+- **No heap:** the value or the code travels in `rax`, the status in `rdx`.
+- Methods can be phal-prakriyas (`prasar p.ghata(4)`).
+
+**Not in this version:** a handler that catches a failure and continues (the one open decision); keeping a
+result in a variable (it is consumed by `prasar` where it arrives); typed results (`phal<T>`); calling a
+phal-prakriya through a function value (the status is not checked there); `dasham` values in a result.
 
 ## Printing a string variable - READ THIS BEFORE YOU TRY IT
 
