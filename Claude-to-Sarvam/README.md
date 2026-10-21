@@ -4,6 +4,23 @@
 
 ---
 
+## Index — ROUND-28 delivery (2026-10-21) — our own linker, pushed to `main`
+
+**Code commit `78fa7417` on main** (the docs commit is on top of it). **Compiler v238, plus `sutram-link`.**
+**The guard: 543 programs through the ordinary path, v237 vs v238 — 0 differ (Linux).** Corpus 0 failed,
+suite 218, gates 23 / 0 / 1.
+
+| File | Workstream |
+|---|---|
+| `R28-00-HANDBACK.md` | the first lines, the guard, every check, what was not done |
+| `R28-01-OBJECT-FORMAT.md` | WS1: the format (spec in `docs/OBJECT-FORMAT.md`) and `--object` |
+| `R28-02-THE-LINKER.md` | WS2: `sutram-link` in NASM; 186 programs byte-identical; the PE alignment the guard caught |
+| `R28-03-TYPE-AND-R27.md` | WS3, and ROUND-27's questions (the handler covers retry, convert, loops) |
+| `FILES-R28.txt` | every changed file with its git blob |
+| `evidence-r28/` | gates, the guard (Linux and Wine), suite, corpus, fuzz runs, other tests, Wine examples |
+
+---
+
 ## Index — ROUND-26 delivery (2026-10-21) — pushed to `main`
 
 **Code commit `597a6bb8` on main** (the docs commit is on top of it). **Compiler v237.**

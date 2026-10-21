@@ -1,0 +1,3 @@
+THE GUARD: the ordinary path (no --object), main v237 (the sutram_compiler committed at 00388c3c) vs this branch v238,
+543 programs (examples/, examples/*/, tests/stdlib/, tests/r*/), Linux:
+  466 byte-identical executables, 77 refused identically (the same diagnostic, byte for byte), 0 DIFFER

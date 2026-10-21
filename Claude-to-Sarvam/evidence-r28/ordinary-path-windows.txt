@@ -1,0 +1,11 @@
+Wine (not Windows): every example in examples/ compiled by main's win/sutram.exe (v237) and by this branch's (v238), outputs compared byte for byte.
+
+Before the fix: 0 of 31 identical. The PE import template's `align 2` padding is absolute, so the new pack
+message (data before the template) shifted every Windows output by one byte, at 150 positions in the
+import table. Functionally equivalent, but not the same bytes. Fixed: the template is now pinned
+(`align 16` + one byte, the parity v237 had, in src/sutram_compiler.asm before win/pe_layout.inc).
+
+After the fix, two full runs: 140 of 141 identical each time. The one that differed in the second run,
+examples/60_six_func_args.sm, was identical in three targeted reruns (old vs new, and old vs old),
+and on Linux. So it is a flake in the Wine run loop, not a difference in the compiler. Reported as
+seen, not as 141 of 141.
