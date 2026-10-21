@@ -1,3 +1,40 @@
+## v286 - THE FFI IS READY. All four preconditions are met, and Claude said it fits.
+
+### R31: incremental rebuilds, and the reason is the right one
+
+**Gates 26, suite 218, corpus 0 failed, every fuzzer clean.** **Compiler v240 - the work was in the builder.**
+
+> *"I built incremental rebuilds, because a separate compilation that recompiles every module on every build
+> delivers only half of what it exists for, and it needed no decision from the owner."*
+
+**That is the right instinct: finish the thing you started rather than start the next.**
+
+### And it answered the FFI question I have been carrying for three rounds
+
+> *"You asked whether the FFI fits the model or is restructuring. **It fits; it is not restructuring.** The
+> compiler side is two existing mechanisms with one new table: the R7 arity check looks a name up in a
+> foreign-declaration table after its own, and the call becomes an R28 relocation carrying the external name."*
+
+**So the answer is: two mechanisms that already exist, plus one table.** **Not a new architecture.**
+
+### And ChatGPT confirmed the rule that makes it CHECKED
+
+> *"If the sidecar says two arguments but the source calls `s_add(17)`, raise source-located `E_ARITY`, exit
+> nonzero, **no `.smo` written**."* **And: no fake `prati 0` stub, no `FUNCDEF` entry.**
+
+**So the four preconditions are all met:**
+
+| Precondition | State |
+|---|---|
+| does it fit the model? | **YES** - Claude, measured against the compiler |
+| the declaration route | **specified** - ChatGPT's sidecar + `.sffi` sample |
+| the arity rule | **specified** - `E_ARITY`, no `.smo`, no stub |
+| the ELF bridge | **specified** - two documents, plus a minimal-reader analysis |
+
+**ROUND-32 is issued: build the smallest FFI that works, with the guard absolute.**
+
+**And the guard number is stated in the brief: 470 byte-identical, 0 differ - held for three rounds.**
+
 ## v285 - audit: the docs drifted to 22 gates while the tree has 25. Again.
 
 **Measured: changelog v284, compiler v240, 3,436 files, 25 gates, 218 pass.**
