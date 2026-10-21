@@ -1,0 +1,79 @@
+PASS f64 takes XMM0+XMM1, returns XMM0
+PASS mixed positions: integers RDI/RSI independent of XMM
+PASS pointer+length: RDI/RSI; direct deref in C
+PASS void function returns no designated RAX
+PASS small integer struct in two integer regs
+PASS 24-byte struct by value passed on stack
+PASS MS x64 integer args RCX+RDX not RDI+RSI
+PASS no ELF relocations
+RESULT 8 PASS / 0 FAIL (GCC host control; Sutram native FFI: NOT_RUN)
+
+=== GCC/BINUTILS ===
+gcc (Debian 14.2.0-19) 14.2.0
+GNU objdump (GNU Binutils for Debian) 2.44
+
+=== OBJECT DISASSEMBLY ===
+/mnt/data/r99_ffi_abi_control.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000000000 <r99_f64_add>:
+   0:	addsd  %xmm1,%xmm0
+   4:	ret
+   5:	data16 cs nopw 0x0(%rax,%rax,1)
+
+0000000000000010 <r99_mixed>:
+  10:	movapd %xmm0,%xmm2
+  14:	add    %rsi,%rdi
+  17:	pxor   %xmm0,%xmm0
+  1b:	cvtsi2sd %rdi,%xmm0
+  20:	addsd  %xmm2,%xmm0
+  24:	addsd  %xmm1,%xmm0
+  28:	ret
+  29:	nopl   0x0(%rax)
+
+0000000000000030 <r99_pointer_sum>:
+  30:	test   %rsi,%rsi
+  33:	jle    50 <r99_pointer_sum+0x20>
+  35:	add    %rdi,%rsi
+  38:	xor    %eax,%eax
+  3a:	nopw   0x0(%rax,%rax,1)
+  40:	movzbl (%rdi),%edx
+  43:	add    $0x1,%rdi
+  47:	add    %rdx,%rax
+  4a:	cmp    %rsi,%rdi
+  4d:	jne    40 <r99_pointer_sum+0x10>
+  4f:	ret
+  50:	xor    %eax,%eax
+  52:	ret
+  53:	data16 cs nopw 0x0(%rax,%rax,1)
+  5e:	xchg   %ax,%ax
+
+0000000000000060 <r99_void_store>:
+  60:	mov    %rsi,(%rdi)
+  63:	ret
+  64:	data16 cs nopw 0x0(%rax,%rax,1)
+  6f:	nop
+
+0000000000000070 <r99_pair_sum>:
+  70:	lea    (%rdi,%rsi,1),%rax
+  74:	ret
+  75:	data16 cs nopw 0x0(%rax,%rax,1)
+
+0000000000000080 <r99_big_sum>:
+  80:	mov    0x10(%rsp),%rax
+  85:	add    0x8(%rsp),%rax
+  8a:	add    0x18(%rsp),%rax
+  8f:	ret
+
+0000000000000090 <r99_ms_abi_add>:
+  90:	lea    (%rcx,%rdx,1),%rax
+  94:	ret
+
+=== RELOCATIONS ===
+There are no relocations in this file.
+
+=== SHA256 INPUT/OBJECT ===
+c39c8d1a617ced6641a6a00c063307df7582e847d8c029333562aeccbb1174e0  /mnt/data/r99_ffi_abi_control.c
+32651448ce4de28f803420922a0c2b8f309a740415000c49a316dddd00cd41fc  /mnt/data/r99_ffi_abi_control.o
