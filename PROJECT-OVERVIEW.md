@@ -94,10 +94,10 @@ ld -mi386pep --entry=_start -o win/sutram.exe sutram.obj
 ## 5. Running the tests
 
 ```
-python3 tests/run_tests.py          # 205 pass, 4 no-expectation
-python3 tools/codegen_gate.py       # 12/12 expected
+python3 tests/run_tests.py          # 218 pass, 4 no-expectation
+python3 tools/codegen_gate.py       # 22/22 expected
 python3 tools/test_lang_packs.py    # 30/30 expected
-python3 tools/test_ide_undo.py      # 12/12 expected
+python3 tools/test_ide_undo.py      # 22/22 expected
 python3 tools/test_x11_protocol.py  # 31 checks, no display needed
 python3 tools/check_setup_abi.py    # static Win64 ABI audit of the installer
 ```
@@ -132,8 +132,8 @@ Loaded with `sutram --lang tamil` or `SUTRAM_LANG=tamil`.
 | | |
 |---|---|
 | Compiler SHA-256 | `6036dd1cef3bc7f257a5fc7e5244b0a5dda8cc7b38ab78d8d2c4ff6d8b8516d2` |
-| Regression suite | **186/186** |
-| Code-generation gates | **12/12** |
+| Regression suite | **220/220** |
+| Code-generation gates | **22/22** |
 | Language packs | **33/33** |
 | Examples | 202 |
 | Library modules | 24 with code (303 functions) |
