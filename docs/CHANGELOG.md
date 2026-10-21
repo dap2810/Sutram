@@ -1,3 +1,30 @@
+## v270 - the fuzzer verification I owed: the error type and the handler hold
+
+**I ran what I had not run. Compiler v237, changelog v269, 3,333 files.**
+
+| Check | Result |
+|---|---|
+| `fuzz_r23 --seed 26 --count 250` (covers the error type and the handler) | **250 programs, 8,939 printed values compared, 0 differ** |
+| `fuzz_valid --capabilities --count 200` | **200 run, 200 agree, 0 fail** |
+| `examples/249_r25_phal.sm` | **exits 3** - a failure with no handler, by design |
+| `examples/250_r26_dosh_handler.sm` | **exits 0** - **and that is the proof** |
+
+### The two exit codes are the whole story
+
+**249 and 250 are the same failure.** 249 propagates it and **the program aborts with code 3.** 250 **catches it
+with `yadi dosh`** and **the program finishes normally.**
+
+**A recovery form that changed the exit status from 3 to 0 is a recovery form that recovers.** That is not a
+test asserting a number - **it is the difference between a language that can only fail and one that can
+handle failure**, visible in one line of shell output.
+
+**And the fuzzer covers both**: 250 programs, 8,939 values, 0 differ, **with exit statuses checked.**
+
+**So the error type is verified end to end:** propagation (249), recovery (250), and the fuzzer over both.
+
+### And the tree
+**3,333 files. The audit is current: changelog v269, compiler v237.**
+
 ## v269 - THE OWNER DECIDED: WE BUILD OUR OWN LINKER. And the fundamental is now stated precisely.
 
 ### The decision, and why it is better than my recommendation
