@@ -1,0 +1,47 @@
+=== HOST / TOOLS ===
+x86_64
+gcc (Debian 14.2.0-19) 14.2.0
+GNU ld (GNU Binutils for Debian) 2.44
+=== ASSEMBLE TWO INDEPENDENT ET_REL OBJECTS ===
+root_cc_exit=0
+leaf_cc_exit=0
+  Type:                              REL (Relocatable file)
+  Machine:                           Advanced Micro Devices X86-64
+  Type:                              REL (Relocatable file)
+  Machine:                           Advanced Micro Devices X86-64
+=== UNRESOLVED RELOCATIONS IN ROOT OBJECT ===
+
+Relocation section '.rela.text' at offset 0x118 contains 2 entries:
+    Offset             Info             Type               Symbol's Value  Symbol's Name + Addend
+000000000000000f  0000000200000004 R_X86_64_PLT32         0000000000000000 sutram_r93_add - 4
+000000000000001c  0000000200000002 R_X86_64_PC32          0000000000000000 sutram_r93_add - 4
+=== LINK STATIC WITHOUT CRT/LIBC ===
+link_exit=0
+=== RUN CONTROL (EXIT 42 INTENTIONAL) ===
+runtime_exit=42
+runtime_stdout_hex=34320a
+runtime_stderr_bytes=0
+=== ELF STRUCTURE ===
+  LOAD           0x0000000000000000 0x0000000000400000 0x0000000000400000
+  LOAD           0x0000000000001000 0x0000000000401000 0x0000000000401000
+
+There is no dynamic section in this file.
+=== NEGATIVE: LINK WITHOUT LEAF OBJECT (EXPECTED FAIL) ===
+missing_link_exit=1
+ld: root.o: in function `_start':
+(.text+0xf): undefined reference to `sutram_r93_add'
+ld: (.text+0x1c): undefined reference to `sutram_r93_add'
+=== SOURCE/OBJECT HASHES ===
+c0d2a64f14ef3db79e30be622df9700e0eb49e4c237d73766886eae8e6fdefe1  ROUND-93-WS1-RELOC-ROOT.S
+6e4a34bcb9e1a0bd9d494834c03e2c1da2fc8636d75474fd80c85291c4ac16dc  ROUND-93-WS1-RELOC-LEAF.S
+740e5f9a16b3e89800538618026108a93c3de1a900c4d3edf50163e50f77b6fc  linked-two-objs
+dc152a999cb03f651e97ec75d4438e5076c5f568
+6345718f418db657c90bfd126800f0b6a8209356
+=== ASSERTIONS ===
+PASS direct_PLT32
+PASS address_PC32
+PASS output_42_newline
+PASS runtime_stderr_empty
+PASS no_dynamic_section
+PASS no_PT_INTERP
+RESULT 6 / 6
