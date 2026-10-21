@@ -1,0 +1,8 @@
+english word               caught 40 of 40
+tag dropped                caught  6 of  6
+Sutram Error dropped       caught 22 of 22
+placeholder dropped        caught  9 of  9
+trailing newline dropped   caught 28 of 28
+foreign script letter      caught 40 of 40
+row emptied                caught 40 of 40
+romanised default          caught 40 of 40

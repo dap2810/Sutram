@@ -4,6 +4,33 @@
 
 ---
 
+## Index — ROUND-21 delivery (2026-10-20, against main `7faa6e3b`, v246)
+
+**Code is on branch `claude/round-21`, draft PR #59. No compiler change.** On `main` only this folder changes.
+
+**Read first:**
+
+1. **The pack check: agree, 0 hard violations in 1,408 rows** (R21-01), by a checker written from the pack
+   files alone and shown to catch 225 of 225 planted corruptions. The same 5 identical strings; the 36
+   "extra placeholders" are six rows where the default uses one word as code and as prose — not violations.
+2. **The crash corpus: 227 cases, 0 failed — but one pinned case had stopped being one** (R21-02). The
+   per-file merge re-encoded four originals' invalid UTF-8 bytes as U+FFFD, and `mutation-15-37233` no longer
+   crashed the old compiler. Restored; `SHA256SUMS` now pins all 213 inputs and the runner checks it. All six
+   kinds represented.
+3. **`sutram-fmt --check` is in `gates.sh`** ("formatted tree", since R19). **All four executables were
+   100644 on main; fixed** — the gate is first in `gates.sh`, with and without git (R21-03).
+4. **Merge `tests/negative/r17/` byte-for-byte** (git merge or cherry-pick), which also carries the modes (R21-04).
+
+| File | Workstream |
+|---|---|
+| `R21-01-PACK-CHECK-REPRODUCED.md` | WS1 |
+| `R21-02-CRASH-CORPUS-VERIFIED.md` | WS2 |
+| `R21-03-FMT-GATE-AND-MODES.md` | WS3, WS4 |
+| `R21-04-CHECKS-AND-WHAT-IS-OPEN.md` | checks, open items |
+| `evidence-r21/` | the pack checker, its self-test and output, the corpus runs on the branch and on v226, the 102 reduced inputs by kind, the gates run |
+
+---
+
 ## Index — ROUND-20 delivery (2026-10-20, against main `1b15330b`, v242)
 
 **Code is on branch `claude/round-20`, draft PR #58. No compiler change.** On `main` only this folder changes.
