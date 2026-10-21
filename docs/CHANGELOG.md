@@ -1,3 +1,15 @@
+## v252 - F8 recorded everywhere it needs to be
+
+**F8 is now in `PROJECT-MASTER.md`'s "what is NOT true" section**, beside F7 - so anyone reading the master
+document sees both open defects before they make a claim.
+
+**And `TEST-ME.md` carries a note for the owner:** the warning is cosmetic, **it does not affect the output** -
+the program compiles and the messages are in the right language. **"Ignore the warning; report it if you see
+it."**
+
+**That distinction matters.** The owner should not stop testing because of a message that is wrong about
+itself, and he should not assume the packs are broken when they demonstrably are not.
+
 ## v251 - THE OWNER'S WINDOWS TEST: F1 CONFIRMED FIXED, and a NEW BUG found
 
 ### F1 is fixed on his machine
