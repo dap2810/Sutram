@@ -38,3 +38,27 @@ a native speaker read them.**
 ## Part 3 — Constraints
 Least privilege. **Read the current file from main before changing it.** PASS / FAIL / NOT-RUN separately.
 **Return raw output, not descriptions of output.**
+
+### WS4 - F8: FIND WHAT THE WARNING ACTUALLY CHECKS *(no compiler needed)*
+
+**The owner found this on real Windows. Read `F8-PACK-WARNING-FALSE-ALARM.md`.**
+
+```
+sutram --lang hindi bad.sm o.exe
+चेतावनी: भाषा पैक नहीं मिला: hindi          <- says the Hindi pack was NOT FOUND, in Hindi
+bad.sm:1:18: ... अज्ञात नाम 'nosuchname'    <- and then the message IS in Hindi
+```
+
+**The pack loaded - the message proves it. The warning is wrong.** It fires for hindi, sanskrit and tamil,
+**each time in the language it claims is missing.**
+
+**Deliver: read `src/sutram_compiler.asm` and `src/r11_sandesh.inc` and say exactly what the warning is
+testing, and why it fails while the messages still load.** Line numbers. **Do not edit anything** - this is a
+reading, and Claude applies the fix.
+
+**Specifically:** is it looking for a different file, a directory, or a path that differs on Windows? **And
+does it fire on Linux too, or is this Windows-specific?** **That last question decides whether every AI check
+missed it or whether it is a platform difference - and I cannot answer it without your reading.**
+
+**A false "your language is not available" message is the worst error this project could emit**, so the cause
+matters more than the fix.
