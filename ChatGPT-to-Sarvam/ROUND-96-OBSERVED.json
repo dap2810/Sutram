@@ -1,0 +1,203 @@
+{
+  "schema": 1,
+  "project": "Sutram",
+  "round": 96,
+  "date": "2026-10-21",
+  "assignment_path": "Sarvam-to-ChatGPT/ROUND-96.md",
+  "initial_live_main": "4e317869c7867ecf4ae47c007a168ef4eaf1e90d",
+  "versions_as_at_initial_read": {
+    "project_log": "v280",
+    "native_compiler": "v239"
+  },
+  "scope": "Development first: smallest freestanding C foreign-symbol bridge design; review newly integrated R29 --separate yoj behavior; seven benchmark shapes saved as deferred document. No native compiler/linker implementation.",
+  "source_pins": [
+    {
+      "path": "src/sutram_compiler.asm",
+      "git_blob": "4aa08517546226c8440e781d2879d2454094b5c9"
+    },
+    {
+      "path": "src/r28_object.inc",
+      "git_blob": "1bd9be53372d3eac8ec161484365f0a2edc09acc"
+    },
+    {
+      "path": "linker/sutram_link.asm",
+      "git_blob": "5d5616fb559d05ce8e7390d18763205516bbc292"
+    },
+    {
+      "path": "tools/sutram_build.py",
+      "git_blob": "6012f30424f7cfbf0c764f81cf8e3c345d1d7442"
+    },
+    {
+      "path": "tests/r29/test_separate.py",
+      "git_blob": "1a27ab3588e6a697880c86e6812f86bc9c9783f2"
+    },
+    {
+      "path": "docs/OBJECT-FORMAT.md",
+      "git_blob": "b56ec3e31bdd39a31c565a19b085405939a14a2c"
+    },
+    {
+      "path": "Claude-to-Sarvam/R29-00-HANDBACK.md",
+      "git_blob": "5431a502e68659c1a27d64a86239ebcf8df8bd91"
+    },
+    {
+      "path": "Claude-to-Sarvam/R29-01-SEPARATE-COMPILATION.md",
+      "git_blob": "efb32c33e090b935b4b05e6c652702386bd9d7f5"
+    }
+  ],
+  "ffi_host_control": {
+    "nature": "Genuinely compiled freestanding C ELF64 ET_REL, parsed strict no-relocations subset and generated a SUTRAMO1 object via a Python reference converter. Linked with synthetic root SUTRAMO1 and Python reference linker into ELF64; executed locally. NOT a native Sutram FFI test, not native NASM linker.",
+    "host": "Linux x86-64",
+    "cc": "GCC (Debian 14.2.0)",
+    "cc_flags": [
+      "-O2",
+      "-c",
+      "-ffreestanding",
+      "-fno-stack-protector",
+      "-fno-asynchronous-unwind-tables",
+      "-fno-unwind-tables",
+      "-fno-pic",
+      "-fno-pie"
+    ],
+    "positive_C_path": "ChatGPT-to-Sarvam/ROUND-96-WS1-FREESTANDING-C.c",
+    "negative_C_path": "ChatGPT-to-Sarvam/ROUND-96-WS1-NEGATIVE-FOREIGN-C.c",
+    "oracle_path": "ChatGPT-to-Sarvam/ROUND-96-WS1-ELF-BRIDGE-ORACLE.py",
+    "raw_path": "ChatGPT-to-Sarvam/ROUND-96-WS1-HOST-OBSERVED.txt",
+    "positive_C_git_blob": "cf4e0b2f8374c95ea828c20215dd5c0109d33097",
+    "negative_C_git_blob": "9554a59e00af207a433fbb70b799a21536e980da",
+    "oracle_git_blob": "e35e68d141a0be43c90fb75437f24c99ce0705f2",
+    "raw_git_blob": "28f12caa77d52706cdf0634890213be542199400",
+    "source_git_blob_readback_equal_to_locally_executed": true,
+    "execute": "python3 -B ROUND-96-WS1-ELF-BRIDGE-ORACLE.py (place with C files renamed r96_ffi.c and r96_ffi_bad.c as documented)",
+    "assertions_total": 6,
+    "assertions_pass": 6,
+    "assertions_fail": 0,
+    "runtime": {
+      "stdout_hex": "34320a",
+      "exit": 0,
+      "stderr_bytes": 0
+    },
+    "ELF_ET_REL": {
+      "bytes": 848,
+      "sha256": "9b4e684874c969888ed05222f4f5ea21fe4de13029a8a298f5fd70c5b46d64f8",
+      "external_undefined": 0,
+      "relocs": 0
+    },
+    "SUTRAMO1_foreign": {
+      "bytes": 67,
+      "sha256": "16a8bcc13ed938068c2e111c6d8a303a70f9b92c521160d3d9de57d096b22be6"
+    },
+    "SUTRAMO1_synthetic_root": {
+      "bytes": 153,
+      "sha256": "e3fe7d6d7d7ff926532b424023194fbe457fc715022563ff0767946b79547647"
+    },
+    "ELF_final": {
+      "bytes": 194,
+      "sha256": "263e0c977869439f054a2522d493946efda91972cf24b53d4ffd8e08cbe65b80"
+    },
+    "positive_function_text_bytes": 5,
+    "negative_controls": [
+      {
+        "label": "No foreign symbol in link",
+        "status": "EXPECTED_FAILURE",
+        "observed": "unresolved sutram_ffi_add"
+      },
+      {
+        "label": "Foreign object with unresolved helper",
+        "status": "EXPECTED_FAILURE",
+        "observed": "unsupported REL/RELA relocations"
+      }
+    ],
+    "limitations": [
+      "Only one freestanding exported STT_FUNC, pure integer/pointer ABI and no foreign relocations or additional allocated sections",
+      "Converter and linker are Python TEST ORACLES, not project NASM implementation",
+      "Synthetic root byte array, not compiled .sm",
+      "No real Windows, no libc printf, no C++ exceptions, no general ELF relocations"
+    ]
+  },
+  "builder_scanner_control": {
+    "nature": "Source-equivalent execution of tools/sutram_build.py:yoj_names copied at pinned source blob, not running native compiler",
+    "script_path": "ChatGPT-to-Sarvam/ROUND-96-WS2-BUILDER-SCANNER-PROBE.py",
+    "raw_path": "ChatGPT-to-Sarvam/ROUND-96-WS2-BUILDER-SCANNER-OBSERVED.txt",
+    "script_git_blob": "f154873d3388f4c7d8149ad9696642815b8f2a2e",
+    "raw_git_blob": "04607c2b33d1a3ed0fdad88a0e128893acf4686c",
+    "controls": [
+      {
+        "case": "real import",
+        "expected": [
+          "ganita"
+        ],
+        "observed": [
+          "ganita"
+        ],
+        "status": "PASS"
+      },
+      {
+        "case": "quoted string only",
+        "expected": [],
+        "observed": [
+          "bogus\")"
+        ],
+        "status": "FAIL"
+      },
+      {
+        "case": "hash comment only",
+        "expected": [],
+        "observed": [],
+        "status": "PASS"
+      },
+      {
+        "case": "slash comment only",
+        "expected": [],
+        "observed": [],
+        "status": "PASS"
+      }
+    ],
+    "end_to_end_native_compilation_of_the_quoted_case": "NOT_RUN",
+    "finding": "A false import is collected inside a quoted string; use canonical lexer/token-aware scanner to avoid mismatch."
+  },
+  "claude_r29_prior_reports_not_reexecuted": {
+    "compiled_version": "v239",
+    "default_path_558_programs": "470 byte-identical/88 same refusals/0 differ",
+    "Wine": "182/182 identical, Wine not native Windows",
+    "separate": "253 module-based programs matching stdout+exit; 144 no-modules byte-identical",
+    "gates": "24 PASS / 0 FAIL / 1 NOT_RUN (Windows)",
+    "crash_corpus": "227 cases + manifest, 0 failed"
+  },
+  "source_review": {
+    "result": "PASS: live R29 --separate implementation and builder reviewed",
+    "limits": [
+      "Current build compiles each owner module's code once, but imported source is still reparsed to type-check clients",
+      "Aliases module@alias unsupported by opt-in separate builder",
+      "Module-level vitti unsupported by SUTRAMO1",
+      "Global symbol-only linker lacks privacy/signature records",
+      "No incremental cache; optional Python orchestration",
+      "Module->root callbacks do not have root signature checking",
+      "Linux-only separate build",
+      "FFI foreign ELF bridge not native"
+    ],
+    "correction": "Latest v280 changelog establishes that named SUTRAMO1 relocations already are imported-symbol references. NO new import table needed for strict foreign conversion."
+  },
+  "not_run": [
+    "Actual Sutram .sm foreign declaration compilation",
+    "Actual project NASM sutram-link linking a foreign C-converted object",
+    "Native compiled .sm program executing foreign C through the full Sutram chain",
+    "Full R29 gates, fuzzers and crash suite freshly executed by ChatGPT Round 96",
+    "End-to-end builder vs ordinary compile for quoted-yoj scanner case",
+    "Real native Windows v239 tests, Windows linker, or FFI",
+    "New performance benchmarking (intentionally deferred)"
+  ],
+  "modified_code_paths": [],
+  "artifact_paths": [
+    "ChatGPT-to-Sarvam/ROUND-96-WS1-FFI-MINIMUM.md",
+    "ChatGPT-to-Sarvam/ROUND-96-WS1-FREESTANDING-C.c",
+    "ChatGPT-to-Sarvam/ROUND-96-WS1-NEGATIVE-FOREIGN-C.c",
+    "ChatGPT-to-Sarvam/ROUND-96-WS1-ELF-BRIDGE-ORACLE.py",
+    "ChatGPT-to-Sarvam/ROUND-96-WS1-HOST-OBSERVED.txt",
+    "ChatGPT-to-Sarvam/ROUND-96-WS2-SEPARATE-COMPILATION-REVIEW.md",
+    "ChatGPT-to-Sarvam/ROUND-96-WS2-BUILDER-SCANNER-PROBE.py",
+    "ChatGPT-to-Sarvam/ROUND-96-WS2-BUILDER-SCANNER-OBSERVED.txt",
+    "ChatGPT-to-Sarvam/ROUND-96-WS3-DEFERRED-BENCHMARK-MATRIX.md",
+    "ChatGPT-to-Sarvam/ROUND-96-OBSERVED.json",
+    "ChatGPT-to-Sarvam/ROUND-96-HANDOFF.md"
+  ]
+}
