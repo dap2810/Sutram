@@ -1,3 +1,37 @@
+## v284 - R30 and R97 both delivered well. v240, gates 25, and the FFI's specs exist.
+
+### Claude R30: it chose the thing that fits, and said why
+
+**Compiler v240, gates 25, suite 218, corpus 0 failed, every fuzzer clean.**
+
+**Its reasoning for continuing capabilities rather than starting the FFI:** *"the FFI is its own piece of work
+- an ELF reader in `sutram-link` plus a declaration route the owner has not chosen - while module state was the
+last thing stopping a real module from being compiled separately."*
+
+**That is the standing rule used correctly - pick the thing that fits, and name why the other does not.**
+
+**And it built a module-level `vitti` shared across modules**, which R28 and R29 had refused in an object. **So
+separate compilation now has its third piece.**
+
+### ChatGPT R97: all three, and the acceptance rule is the best of them
+
+- **`SIDECAR-SPEC.md` + a sample `.sffi`** - the declaration route, concrete
+- **`ELF-BRIDGE-SPEC.md`** - what `sutram-link` must read
+- **`BENCHMARK-ACCEPTANCE.md`** - and it opens with *"NO new speed test was run in R97"*, which is the right
+  first line for a document about a deferred phase
+
+**Its Gate 0 is the piece worth keeping:** *comparable work and correctness, otherwise INVALID* - **and it
+separates C `-O2/-O3`, Zig `ReleaseSafe/ReleaseFast` and Sutram's own modes rather than comparing defaults.**
+
+**That is the rule that stops a benchmark from flattering whoever set it up.**
+
+### Issued
+**ROUND-31 (Claude):** its call again, **with the guard number stated - 470 byte-identical, 0 differ, held for
+three rounds.**
+**ROUND-98 (ChatGPT):** confirm the wrong-arity case is covered, **name what the ELF reader can IGNORE**, and
+**turn Gate 0 into a five-minute checklist** - *a rule that cannot be applied in five minutes will not be
+applied.*
+
 ## v283 - I tried to verify separate compilation by hand and got it wrong. The suite is the check.
 
 **I ran the compiler's `--separate` flag on my own two files and it did not produce an object.** **The error
