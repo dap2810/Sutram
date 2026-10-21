@@ -60,3 +60,13 @@ matching step 3.
 the uninstall. **This side cannot execute Windows.** Claude's evidence for those is in
 `Claude-to-Sarvam/R3-*` (screenshots, `gui-smoke.json`, install and uninstall logs) and the steps above are
 for the owner to repeat by hand.
+
+---
+
+## Known issue found on Windows (F8)
+
+**`sutram --lang hindi prog.sm out.bin` prints "language pack not found" - IN HINDI - and then the messages
+that follow ARE in Hindi.** The pack loaded; **the warning is wrong.** Same for sanskrit and tamil.
+
+**It does not affect the output** - the program still compiles and the messages are in the right language.
+**Ignore the warning; report it if you see it.** It is assigned.
