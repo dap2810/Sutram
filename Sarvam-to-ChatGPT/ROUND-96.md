@@ -48,3 +48,43 @@ strength reduction, register allocation, unrolling - name which apply and which 
 
 ## Part 4 — Constraints
 Least privilege. **Return raw output, not descriptions of output.** PASS / FAIL / NOT-RUN separately.
+
+
+---
+
+## PRIORITY CHANGE FROM THE OWNER (read before starting)
+
+**The owner's words: *"first focus on development and then we can refine the project to outperform other
+languages."***
+
+**So the performance work in Part 3 is DEFERRED.** **The fundamental stands and the measured gap is recorded,
+but it is not this round's work.**
+
+**DEVELOPMENT COMES FIRST - and your own finding made it possible.**
+
+**You proved the FFI technique by measurement, and you found that genuine separate compilation needs an object
+writer and a linker.** **Claude has now built both: `sutram-link`, in NASM, and it works - 186 programs
+byte-identical through the new path.**
+
+**So the two capabilities you said were blocked are now reachable. THIS ROUND:**
+
+### WS1 - THE FFI: THE SMALLEST SUTRAM PROGRAM THAT CALLS A C FUNCTION
+
+**You proved a freestanding C function can be called with no libc and no dynamic loader.** **Now design the
+smallest Sutram-side version:** what `yoj`-style declaration a program needs to name an external function,
+**and what the object must carry so `sutram-link` can fill that hole.**
+
+**You have no compiler - a design is the deliverable, and say so.** **Claude has the compiler.**
+
+### WS2 - SEPARATE COMPILATION: WHAT `yoj` MUST BECOME
+
+**`yoj` is textual inclusion. The object format and linker now exist.** **Say what has to change in the module
+graph so a module is compiled ONCE rather than pasted - and what breaks in the existing 543 programs if it
+does.**
+
+**That last part matters most: the guard is absolute.**
+
+### WS3 - and the benchmark set: KEEP IT, but as a document, not a task
+
+**Your R96-WS1 ask still stands - design the set, name where Sutram is likely to lose - but it is a
+deliverable for the NEXT phase, not this round's work.**
