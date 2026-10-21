@@ -1,0 +1,4 @@
+# R76: must link an independently emitted helper object, not textual yoj.
+mukhya() {
+    likha(joda(17, 25))
+}
