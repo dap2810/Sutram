@@ -355,3 +355,8 @@ tool doing the checking has been the wrong thing more often than the thing being
 
 Every brief opens with a **brief update of where the project stands**, so no partner works from a stale
 picture — and every brief carries the **language directive**, so no new English names are introduced.
+
+- **F8 - the language-pack warning is a FALSE ALARM.** `sutram --lang hindi prog.sm out.bin` prints
+  **"language pack not found" IN HINDI**, and then the messages that follow ARE in Hindi. **The pack loaded;
+  the warning is wrong.** It fires for hindi, sanskrit and tamil, **each time in the language it claims to be
+  missing.** Found by the owner on real Windows. See `F8-PACK-WARNING-FALSE-ALARM.md`.
