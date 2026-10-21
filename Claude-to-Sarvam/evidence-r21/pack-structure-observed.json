@@ -1,0 +1,84 @@
+{
+ "sanskrit": {
+  "rows": 128,
+  "hard": [],
+  "review": []
+ },
+ "bengali": {
+  "rows": 128,
+  "hard": [],
+  "review": []
+ },
+ "gujarati": {
+  "rows": 128,
+  "hard": [],
+  "review": []
+ },
+ "hindi": {
+  "rows": 128,
+  "hard": [],
+  "review": [
+   [
+    "R2",
+    "ide.st_bhasha_w",
+    "byte-identical to the Sanskrit pack"
+   ],
+   [
+    "R2",
+    "ide.st_lipi_w",
+    "byte-identical to the Sanskrit pack"
+   ]
+  ]
+ },
+ "kannada": {
+  "rows": 128,
+  "hard": [],
+  "review": []
+ },
+ "malayalam": {
+  "rows": 128,
+  "hard": [],
+  "review": []
+ },
+ "marathi": {
+  "rows": 128,
+  "hard": [],
+  "review": [
+   [
+    "R2",
+    "r4_msg_hint_old",
+    "byte-identical to the Sanskrit pack"
+   ],
+   [
+    "R2",
+    "r5_msg_field_hint",
+    "byte-identical to the Sanskrit pack"
+   ],
+   [
+    "R2",
+    "ide.st_bhasha_w",
+    "byte-identical to the Sanskrit pack"
+   ]
+  ]
+ },
+ "odia": {
+  "rows": 128,
+  "hard": [],
+  "review": []
+ },
+ "punjabi": {
+  "rows": 128,
+  "hard": [],
+  "review": []
+ },
+ "tamil": {
+  "rows": 128,
+  "hard": [],
+  "review": []
+ },
+ "telugu": {
+  "rows": 128,
+  "hard": [],
+  "review": []
+ }
+}
