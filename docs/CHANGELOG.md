@@ -1,3 +1,36 @@
+## v272 - A NEW FUNDAMENTAL: be faster than C and Zig, in all aspects
+
+**The owner has set a performance fundamental.** And it is measurable, which is what makes it a fundamental
+rather than a slogan.
+
+### The measured gap, so progress is visible rather than asserted
+
+| Aspect | Sutram | C | Zig | |
+|---|---|---|---|---|
+| **Speed**, sum 1..10M | **13.30 ms** | 7.88 ms | **1.77 ms** | **1.7x slower than C, 7.5x slower than Zig** |
+| **Startup** | **3.36 ms** | 8.38 ms | 4.24 ms | **Sutram WINS** |
+| **Binary size** | **205 B** | 6,608 B | 1,729,200 B | **Sutram WINS** |
+| **Memory** | **16,128 KB** | 16,956 KB | 16,008 KB | **Sutram WINS** |
+| **Runtime needed** | **none** | libc | none | **Sutram WINS** |
+
+**Sutram already wins four of five aspects and loses the hardest one: raw speed on a loop.**
+
+### And the direction, with the part that is embarrassing
+
+**`SUTRAM_R65_PEEPHOLES` - a peephole optimiser - is already written and default-OFF.** **So part of the speed
+gap is a switch that nobody turned on.**
+
+**The order: turn on and extend the peephole optimiser; register allocation; loop optimisation (the case SIMD
+addresses); constant folding; instruction selection.**
+
+### The rule that keeps it honest
+
+**Every optimiser change is measured against the same benchmark, and the benchmark set must grow.** **One
+integer loop cannot support a claim about "all aspects"** - string, allocation and call-heavy shapes are
+needed before that claim can be made.
+
+**Both partners will be told in their next round.**
+
 ## v271 - doc audit: SIX documents were behind by ten gates and thirteen tests
 
 **I measured rather than assumed, and the drift was larger than I expected.**
