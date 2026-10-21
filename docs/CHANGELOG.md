@@ -1,3 +1,37 @@
+## v255 - THE CAPABILITY ROUNDS: the language gets first-class functions, methods, slices, and an FFI
+
+**The owner has set the direction: the language itself is the priority.** The console-rendering idea is parked
+for a future version. **So this is not a maintenance round - it is the largest capability step the project has
+taken.**
+
+### ROUND-23 (Claude) - three capabilities
+
+| Capability | Paradigm | Why it is the right next step |
+|---|---|---|
+| **First-class functions** | 2 | **A function is a name you call, not a value.** The largest capability gap in the language |
+| **Methods on structs** | 4 | `rachana` gives structs and no methods - **a struct with no methods is a record** |
+| **Slices** | 5 | **The smallest and most immediately useful** - a view into an array, so the library's functions compose |
+
+**Each is scoped to the smallest working version**, and WS1 must be proved with **a sort that takes a
+comparator as an argument** - the canonical use, and the one that makes it a feature rather than a demo.
+
+### ROUND-91 (ChatGPT) - the ecosystem
+
+| Task | Parameter | Why |
+|---|---|---|
+| **A C FFI** | 18 | **The language can produce a native binary and cannot call a C function.** The largest ecosystem gap |
+| **A module system design** | 16 | `yoj` is textual inclusion; **the design is the part only it can do** |
+| **Error handling restated** | 12 | The program that CANNOT compile under it, but compiles today - **that is the whole argument** |
+
+### The rule stated in both briefs
+
+**A capability that works on one example is a demo; one that survives the fuzzer and the suite is a feature.**
+**Run both.** And: **if a capability cannot be made to work without restructuring the compiler, STOP and say
+so - do not restructure in a capability round.**
+
+**That last instruction is deliberate.** The compiler is 23,000 lines of hand-written assembly that currently
+passes 20,000 random programs and 227 crash cases. **A capability is not worth a regression.**
+
 ## v254 - F8 EXPLAINED, and part of it was MY ERROR in the test package
 
 ### What the warning actually tests - ChatGPT found it, and it is exact
