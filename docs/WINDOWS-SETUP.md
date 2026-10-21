@@ -124,7 +124,7 @@ Nothing else needs to be installed to run a Sutram-made `.exe`.
 | Compiler binary | ELF (`sutram_compiler`) | PE (`sutram.exe`) |
 | Output format | ELF (`.bin`) | PE (`.exe`) |
 | Output selection | name ending `.bin` | name ending `.exe` |
-| Language-pack search | `lang/`, then `$HOME/.local/share/sutram/lang/` | `lang\`, then `%USERPROFILE%\.local\share\sutram\lang\` |
+| Keyword-pack search (`<pack>.lang`) | `./lang/`, then `$HOME/.local/share/sutram/lang/`, then the copy built into the compiler (R22) | `.\lang\`, then `lang\` beside `sutram.exe`, then `%HOME%\.local\share\sutram\lang\` (only when `HOME` is set; `USERPROFILE` is not read), then the copy built into the compiler (R22). A file found on disk wins; the messages are always built in. "Pack not found" means the name is no pack. |
 | Install | source build/direct execution; no root install script in this checkout | accepted per-user wizard or portable package; see INSTALLATION-ROUTES.md |
 | Status | maintainer-reported Linux gates; see root README | implementation status below is not complete real-Windows acceptance |
 

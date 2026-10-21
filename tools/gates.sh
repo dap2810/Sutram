@@ -96,6 +96,8 @@ run_gate() {                      # name, then the command
     "formatted tree")   case "$(tail -1 /tmp/g_out.$$)" in FORMATTED) ok "$name";; *) bad "$name" "$(grep -c 'would change' /tmp/g_out.$$) file(s) would change: $(grep -m1 'would change' /tmp/g_out.$$ | cut -c15-70)";; esac ;;
     "operator precedence") line=$(head -1 /tmp/g_out.$$); case "$line" in *"; 0 disagree"*) ok "$name ($(echo "$line" | sed 's/;.*//'))";; *) bad "$name" "${line:-no summary}";; esac ;;
     "crash corpus")     line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/crash corpus: //'))";; *) bad "$name" "${line:-no summary}";; esac ;;
+    "keyword packs built in") case "$(tail -1 /tmp/g_out.$$)" in "BUILT-IN PACKS CURRENT"*) ok "$name (11, = lang/*.lang)";; *) bad "$name" "$(tail -1 /tmp/g_out.$$ | cut -c1-70)";; esac ;;
+    "pack found without lang/") line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/lang built-in: //'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "pack messages")    case "$(tail -1 /tmp/g_out.$$)" in OK*) ok "$name (12 sets x 11 cases)";; *) bad "$name" "$(grep -m1 -E 'FAIL|differ|Error' /tmp/g_out.$$ | cut -c1-60)";; esac ;;
     *)                  ok "$name" ;;
   esac
@@ -111,6 +113,8 @@ run_gate "layer check"       python3 tools/check_layers.py
 run_gate "stdlib inventory"  python3 tools/gen_stdlib_ref.py
 run_gate "module graph"      python3 -m unittest discover -s tests/module_graph -p 'test_*.py'
 run_gate "pack messages"     python3 tests/sandesh/test_sandesh.py   # R11: every message in every pack
+run_gate "keyword packs built in" python3 tools/lang_builtin.py --check   # R22 (F8): src/r22_lang_builtin.inc is lang/*.lang
+run_gate "pack found without lang/" python3 tests/r22/test_lang_builtin.py --compiler ./sutram_compiler   # R22 (F8): --lang <pack> on a valid program does not warn
 run_gate "crash corpus"      python3 tools/crash_corpus.py --compiler ./sutram_compiler   # R17: invalid input must error, never crash
 run_gate "operator precedence" python3 tools/check_precedence.py --compiler ./sutram_compiler   # R17: the documented table, pair by pair
 run_gate "formatted tree"    sh -c 'python3 tools/sutram_fmt.py --check --exclude-from tools/fmt-exclude.txt examples/*.sm examples/*/*.sm examples/lib/*.smlib lib/*.smlib tests/stdlib/*.sm tests/r*/*.sm tests/r*/*/*.sm tests/r*/lib/*.smlib tests/sandesh/cases/*.sm && echo FORMATTED'   # R19: sutram-fmt would change nothing
