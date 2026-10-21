@@ -1,0 +1,56 @@
+# R23 WS3: slices. a[lo:hi] is a view of the elements lo .. hi-1 of a mala, a
+# kosh or another slice: no copy, writes go to the array. a[lo:] runs to the
+# end, a[:hi] starts at 0. A `vibhag` parameter takes a slice, or a whole mala
+# or kosh. pankti_len(s) is its length; s[i] is checked against it.
+
+prakriya yog(vibhag s) {
+    vitti t = 0
+    chakra i = 0 tak pankti_len(s) - 1 {
+        t = t + s[i]
+    }
+    prati t
+}
+
+prakriya bhar(vibhag s, v) {
+    chakra i = 0 tak pankti_len(s) - 1 {
+        s[i] = v
+    }
+    prati 0
+}
+
+# the sum of s, splitting it in halves: each call takes part of the array
+prakriya yog_vibhajya(vibhag s) {
+    vitti n = pankti_len(s)
+    yadi (n == 0) {
+        prati 0
+    }
+    yadi (n == 1) {
+        prati s[0]
+    }
+    prati yog_vibhajya(s[:n / 2]) + yog_vibhajya(s[n / 2:])
+}
+
+mukhya() {
+    mala a[10]
+    chakra i = 0 tak 9 {
+        a[i] = i + 1
+    }
+    likha(yog(a))
+    likha(yog(a[2:5]))
+    likha(yog_vibhajya(a))
+    vitti madhya = a[3:7]
+    likha(pankti_len(madhya))
+    likha(madhya[0])
+    vitti antim = madhya[2:]
+    likha(antim[1])
+    bhar(a[0:2], 0)
+    likha(yog(a))
+    antim[0] = 100
+    likha(a[5])
+    kosh k[1]
+    kosh_push(k, 10)
+    kosh_push(k, 20)
+    kosh_push(k, 30)
+    likha(yog(k[1:]))
+    likha(pankti_len(a[4:4]))
+}

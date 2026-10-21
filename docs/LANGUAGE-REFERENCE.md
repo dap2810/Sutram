@@ -48,6 +48,7 @@ language has a pack of native words (see the `lang/` table at the end).
 | `sutra` | constant |
 | `agrim` | continue |
 | `vitti` | variable |
+| `vibhag` | slice parameter (R23; §17) |
 | `yadi` | if |
 | `yavat` | while |
 
@@ -323,6 +324,7 @@ keyword, and it compiles to the same native machine code.
 | tak | पर्यन्त | থেকে | થી | से | ರಿಂದ | മുതൽ | पासून | ଠାରୁ | ਤੋਂ | முதல் | నుండి |
 | agrim | उद्देश्य | এগিয়ে | આગળ | आगे | ಮುಂದುವರಿಸು | തുടരുക | पुढे | ଆଗକୁ | ਅੱਗੇ | தொடர் | కొనసాగు |
 | vitti | वित्ति | চল | ચલ | चर | ಚರ | ചരം | चल | ଚଳ | ਵੇਰੀਏਬਲ | மாறி | చరరాశి |
+| vibhag | विभाग | বিভাগ | વિભાગ | विभाग | ವಿಭಾಗ | വിഭാഗം | विभाग | ବିଭାଗ | ਵਿਭਾਗ | பிரிவு | విభాగం |
 | yadi | यदि | যদি | જો | यदि | ಒಂದುವೇಳೆ | എങ്കിൽ | जर | ଯଦି | ਜੇ | எனின் | ఒకవేళ |
 | yavat | यावत् | যতক্ষণ | જ્યાંસુધી | जबतक | ಯಾವವರೆಗೂ | എത്രത്തോളം | जोपर्यंत | ଯେତେବେଳେ | ਜਦੋਂਤਕ | வரை | ఎంతవరకు |
 
@@ -403,6 +405,88 @@ abort with their own diagnostics — `rikta kosh se kosh_pop`,
 `rikta kosh se kosh_peek`, `rikta kosh se kosh_dequeue` — and exit
 1. Element types: integer (`kosh v`, the default) or binary64
 (`kosh dasham d`). `push`/`pop`/the builtins take a direct kosh variable.
+
+## 17. Function values, methods and slices (R23)
+
+The smallest working version of each; what is not done is listed at the end.
+Examples: `examples/246_r23_comparator_sort.sm`, `247_r23_methods.sm`, `248_r23_slices.sm`.
+
+### Function values
+
+A `prakriya` name used as a value is the function: it can be stored in a
+variable, passed as an argument, returned, kept in a `mala`, compared with `==`.
+A variable that holds one is called like a function.
+
+```
+prakriya aarohi(a, b) { prati a - b }
+prakriya shreni(vibhag s, tulana) { ... yadi (tulana(s[j], v) > 0) { ... } ... }
+shreni(x, aarohi)          # pass it
+vitti f = aarohi           # store it
+likha(f(10, 3))            # call through it: 7
+```
+
+- **A call `name(...)` calls the `prakriya` called `name` if there is one;** only
+  otherwise does it call through a variable `name`. So a parameter that has the
+  name of a function does not hide it: name such parameters differently.
+- **A call through a value is not checked:** not its number of arguments, not that
+  the value is a function. A function returning `dasham` must not be called
+  through a value (its result is read from the integer register).
+- **No closures:** a function value is a code address. Nothing is captured.
+
+### Methods
+
+`prakriya Rachana.naam(swa, ...)` declares a method of a `rachana`; `x.naam(...)`
+calls it with `x` as the first argument (`swa` is a name like any other).
+
+```
+rachana Bindu = { x, y }
+prakriya Bindu.chal(swa, dx, dy) { swa.x = swa.x + dx  swa.y = swa.y + dy  prati 0 }
+p.chal(3, 4)               # Bindu.chal(p, 3, 4)
+```
+
+- **A method is found by its name, as a field is** (variables carry no type): a
+  method name must belong to one `rachana` only. `x.naam()` with no such method is
+  `[E_UNKNOWN_FIELD]`; with two is `[E_AMBIGUOUS_FIELD]`; the wrong number of
+  arguments is `[E_ARITY]` on `Rachana.naam`.
+- The `rachana` must be declared before its methods; methods, like every
+  `prakriya`, are written before `mukhya`.
+- **No traits, interfaces or overriding.** A call `x.naam()` does not check that x
+  is a `Rachana`.
+
+### Slices
+
+`a[lo:hi]` is a view of the elements `lo .. hi-1` of a `mala`, an integer `kosh`
+or another slice. **Nothing is copied:** a write through the slice changes the
+array. `a[lo:]` runs to the end, `a[:hi]` starts at 0, `a[:]` is all of it.
+
+```
+prakriya yog(vibhag s) { ... pankti_len(s) ... s[i] ... }
+likha(yog(a[2:5]))         # elements 2, 3, 4
+vitti s = a[1:7]           # s is a slice: s[0] is a[1]
+likha(yog(a))              # a whole mala or kosh is passed as a[:]
+```
+
+- **Checked twice at run time:** when made (`0 <= lo <= hi <= length`) and when
+  indexed (`s[i]`, `s[i] = v` against the slice's own length), with the array
+  bounds diagnostic, exit 1.
+- **`vibhag` (Devanagari `विभाग`, and a word in each pack) declares a slice
+  parameter.** It takes a slice, or a whole `mala` or integer `kosh`; anything
+  else is a compile error (`vibhag: mala, kosh va vibhag apekshita`), as is
+  slicing a raw pointer (an untyped parameter, a `nirmmita` result).
+- **A variable is a slice when it is declared from one** (`vitti s = a[1:3]`,
+  `vitti t = s`) or is a `vibhag` parameter.
+- **A slice lives in the frame of the function that makes it:** returning one is a
+  compile error (`vibhag prakriyayah na pratyarpaniyah`). A slice made at one place
+  in a loop is the same slice each time round (the next iteration remakes it).
+- `pankti_len(s)` is the slice's length.
+
+### Not done in this version
+
+Closures; calling an expression directly (`t[0](x)`, `p.f(x)` through a field:
+store it in a variable first); a checked type for function values; methods
+dispatched on the object's type, traits; slices of a `kosh dasham`; a slice that
+outlives its function; a `kosh` that grows after a slice of it was made leaves the
+slice pointing at the old storage.
 
 ## Printing a string variable - READ THIS BEFORE YOU TRY IT
 

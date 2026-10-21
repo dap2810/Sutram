@@ -66,7 +66,7 @@ DELIMS = set('()[]{},;.')
 DANDA = {'।', '॥'}        # । ॥ : statement terminators, like ;
 CORE = {'mukhya', 'vitti', 'anka', 'yadi', 'yavat', 'prati', 'sankhya', 'anya', 'prakriya', 'yoj',
         'rachana', 'chakra', 'tak', 'sutra', 'abhava', 'krama', 'agrim', 'purna', 'shunya', 'satya',
-        'ganana', 'guna', 'bhavana', 'mala', 'yantra', 'kuru', 'dasham', 'kosh'}
+        'ganana', 'guna', 'bhavana', 'mala', 'yantra', 'kuru', 'dasham', 'kosh', 'vibhag'}
 CALLLIKE_CORE = {'mukhya', 'yantra', 'abhava'}     # keyword( ... ) written like a call
 TOPLEVEL_CORE = {'prakriya', 'rachana', 'yoj', 'mukhya'}
 HEADER_CORE = {'yadi', 'anya', 'yavat', 'chakra', 'kuru', 'guna', 'bhavana'}
@@ -181,6 +181,8 @@ def join_tokens(toks, raw_line=''):
     if toks and toks[0][0] == 'word' and mean(toks[0][1]) == 'yoj' and toks[0][1] == 'yoj':
         return raw_line          # a module path is kept exactly as written
     after_comment = False
+    brackets = []          # R23: one entry per open '[' / '(': [char, pending '?' count]
+    after_slice = False    # R23: the token after a slice colon a[lo:hi] is tight
     for t in toks:
         k, v = t[0], t[1]
         if k in ('comment', 'bcomment'):
@@ -219,6 +221,22 @@ def join_tokens(toks, raw_line=''):
             elif k == 'op' and v == ':' and label:
                 sp = ''
                 label = False
+            elif k == 'op' and v == ':' and brackets and brackets[-1][0] == '[' and brackets[-1][1] == 0:
+                sp = ''                                   # R23: a[lo:hi] is tight
+            elif after_slice:
+                sp = ''
+        after_slice = False
+        if k == 'delim' and v in '([':
+            brackets.append([v, 0])
+        elif k == 'delim' and v in ')]' and brackets:
+            brackets.pop()
+        elif v == '?' and brackets:
+            brackets[-1][1] += 1
+        elif k == 'op' and v == ':' and brackets:
+            if brackets[-1][1]:
+                brackets[-1][1] -= 1                      # the ':' of a ternary
+            elif brackets[-1][0] == '[':
+                after_slice = True
         out.append(sp + v)
         prev, prev_unary, after_comment = t, unary, False
     return ''.join(out)

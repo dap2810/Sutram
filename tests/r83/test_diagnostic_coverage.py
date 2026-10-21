@@ -47,9 +47,9 @@ class CoverageFixtures(unittest.TestCase):
         if not (root/'lang/sanskrit.sandesh').exists():
             self.skipTest('No source checkout')
         rows = m.run(root)
-        self.assertEqual(rows['compiler_messages'], 105)
+        self.assertEqual(rows['compiler_messages'], 107)   # R23: +r23_msg_slice_base, +r23_msg_slice_return
         self.assertEqual(rows['ide_messages'], 23)
-        self.assertEqual(rows['total_messages'], 128)
+        self.assertEqual(rows['total_messages'], 130)
         self.assertFalse(rows['counts'].get('BROKEN_PROBE_PATH'))
 
 if __name__ == '__main__':

@@ -141,7 +141,7 @@ section .data
     ; keyword table
     ; R2-WS2b: the 28 keywords of src/sutram_compiler.asm kw_table (v157+)
     ; plus the three print/read builtins the highlighter has always coloured.
-    kw_count     dq 31
+    kw_count     dq 32
     kw_0  db "mukhya",0
     kw_1  db "vitti",0
     kw_2  db "anka",0
@@ -173,10 +173,11 @@ section .data
     kw_28 db "kuru",0
     kw_29 db "yantra",0
     kw_30 db "sankhya",0
+    kw_31 db "vibhag",0      ; R23
     kw_ptrs:
     dq kw_0, kw_1, kw_2, kw_3, kw_4, kw_5, kw_6, kw_7, kw_8, kw_9
     dq kw_10, kw_11, kw_12, kw_13, kw_14, kw_15, kw_16, kw_17, kw_18, kw_19
-    dq kw_20, kw_21, kw_22, kw_23, kw_24, kw_25, kw_26, kw_27, kw_28, kw_29, kw_30
+    dq kw_20, kw_21, kw_22, kw_23, kw_24, kw_25, kw_26, kw_27, kw_28, kw_29, kw_30, kw_31
 
 ; ------------------------------------------------------------
 section .text

@@ -98,6 +98,8 @@ run_gate() {                      # name, then the command
     "crash corpus")     line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/crash corpus: //'))";; *) bad "$name" "${line:-no summary}";; esac ;;
     "keyword packs built in") case "$(tail -1 /tmp/g_out.$$)" in "BUILT-IN PACKS CURRENT"*) ok "$name (11, = lang/*.lang)";; *) bad "$name" "$(tail -1 /tmp/g_out.$$ | cut -c1-70)";; esac ;;
     "pack found without lang/") line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/lang built-in: //'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
+    "R23 capabilities") line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r23 capabilities: //'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
+    "R23 fuzzer")       line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 differ"*) ok "$name ($(echo "$line" | sed 's/fuzz_r23: //'))";; *) bad "$name" "${line:-no summary}";; esac ;;
     "pack messages")    case "$(tail -1 /tmp/g_out.$$)" in OK*) ok "$name (12 sets x 11 cases)";; *) bad "$name" "$(grep -m1 -E 'FAIL|differ|Error' /tmp/g_out.$$ | cut -c1-60)";; esac ;;
     *)                  ok "$name" ;;
   esac
@@ -115,6 +117,8 @@ run_gate "module graph"      python3 -m unittest discover -s tests/module_graph 
 run_gate "pack messages"     python3 tests/sandesh/test_sandesh.py   # R11: every message in every pack
 run_gate "keyword packs built in" python3 tools/lang_builtin.py --check   # R22 (F8): src/r22_lang_builtin.inc is lang/*.lang
 run_gate "pack found without lang/" python3 tests/r22/test_lang_builtin.py --compiler ./sutram_compiler   # R22 (F8): --lang <pack> on a valid program does not warn
+run_gate "R23 capabilities"  python3 tests/r23/test_capabilities.py --compiler ./sutram_compiler   # R23: function values, methods, slices: the errors and the checks
+run_gate "R23 fuzzer"        python3 tools/fuzz_r23.py --seed 23 --count 100 --compiler ./sutram_compiler --out /tmp/fuzz-r23-gate   # R23: 100 random programs against the model
 run_gate "crash corpus"      python3 tools/crash_corpus.py --compiler ./sutram_compiler   # R17: invalid input must error, never crash
 run_gate "operator precedence" python3 tools/check_precedence.py --compiler ./sutram_compiler   # R17: the documented table, pair by pair
 run_gate "formatted tree"    sh -c 'python3 tools/sutram_fmt.py --check --exclude-from tools/fmt-exclude.txt examples/*.sm examples/*/*.sm examples/lib/*.smlib lib/*.smlib tests/stdlib/*.sm tests/r*/*.sm tests/r*/*/*.sm tests/r*/lib/*.smlib tests/sandesh/cases/*.sm && echo FORMATTED'   # R19: sutram-fmt would change nothing

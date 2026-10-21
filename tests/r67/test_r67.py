@@ -92,13 +92,13 @@ class Source(unittest.TestCase):
     def pack(self,name):
         return dict(line.split() for line in (ROOT/f'lang/{name}.lang').read_text().splitlines() if line and not line.startswith('#'))
     def test_gujarati_collision_removed(self):
-        p=self.pack('gujarati');self.assertNotIn('સંખ્યા',p);self.assertEqual(len(p),44)
+        p=self.pack('gujarati');self.assertNotIn('સંખ્યા',p);self.assertEqual(len(p),45)  # R23: +vibhag
     def test_all_previous_words_preserved(self):
         base=json.loads((ROOT/'tests/r67/baseline_packs.json').read_text())
         for lang,words in base.items():
             for word,value in words.items(): self.assertEqual(self.pack(lang)[word],value)
     def test_new_abbreviations_exact(self):
-        for lang,sign,count in [('bengali','\u09fd',34),('punjabi','\u0a76',34)]:
+        for lang,sign,count in [('bengali','\u09fd',35),('punjabi','\u0a76',35)]:  # R23: +vibhag
             p=self.pack(lang);self.assertEqual(len(p),count)
             self.assertEqual(sum(k.endswith(sign) for k in p),4)
             self.assertNotIn(sign,p)
