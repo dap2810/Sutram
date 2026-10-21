@@ -6,15 +6,16 @@
 
 ```sutram
 # sutram-errors-v1
+# Proposed strict-result marker; currently an ordinary ignored comment.
 yoj phal
 mukhya() {
     vitti r = nirmmita(2 * 8)
     phal_janchit_bhaj(r, 10, 0)
-    likha(phal_mulya(r))   # unchecked value: failure indistinguishable from success zero
+    likha(phal_mulya(r))
 }
 ```
 
-The explanatory source comment in the saved original does not change the behavior. **Current compiler:** `src/sutram_compiler.asm:5980–5983` treats `#` as a comment; the compiler source has **no** `sutram-errors-v1` recognizer or `E_PHAL_UNHANDLED` diagnostic. **Existing library:** `lib/phal.smlib:127` defines checked division writing a caller-owned `[ok,value]`; `phal_mulya(r)` at line 56 reads `r[1]` unconditionally, with no status requirement. Dividing by zero yields failure `[0,0]`. Existing `tests/stdlib/result_chain.sm` demonstrates the explicit checking convention; it is not a native test of this exact fixture.
+The comment lines are ignored by the existing compiler. **Current compiler:** `src/sutram_compiler.asm:5980–5983` treats `#` as a comment; the compiler source has **no** `sutram-errors-v1` recognizer or `E_PHAL_UNHANDLED` diagnostic. **Existing library:** `lib/phal.smlib:127` defines checked division writing a caller-owned `[ok,value]`; `phal_mulya(r)` at line 56 reads `r[1]` unconditionally, with no status requirement. Dividing by zero yields failure `[0,0]`. Existing `tests/stdlib/result_chain.sm` demonstrates the explicit checking convention; it is not a native test of this exact fixture.
 
 **Future STRICT profile:** If the opt-in directive is approved and actually parsed, the same source **MUST NOT COMPILE**: `Sutram Error [E_PHAL_UNHANDLED]` at its unchecked extraction (proposed line 7), no emitted executable. Merely having called a checked producer does not discharge its error obligation.
 
