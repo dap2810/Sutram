@@ -1,3 +1,25 @@
+## v250 - the rename-audit boundary is now in PROJECT-MASTER.md
+
+**ChatGPT delivered the exact paragraph; I inserted it where it belongs** - Section 6, The history, right
+after the Era 4 rename paragraph and before "Where the numbers stand now".
+
+**What it says, and why it matters:**
+
+> *Of 2,854 tracked file blobs, 1,579 matched the audit's expanded source/text suffixes... leaving 978 live
+> eligible files. **Only 202 of those 978 live files were actually fetched and screened; 776 were NOT
+> scanned**, including most active examples, tests, and tools... **no active obsolete syntax was confirmed
+> within that limited inspected set**. This is **not** a completed whole-repository rename audit.*
+
+**So the completeness claim about the rename now carries its own limit, in the document that makes the claim.**
+
+**And the honest part is the direction of the error:** 776 files were NOT scanned, **including most active
+examples, tests and tools** - the places a stale name would actually matter. **The audit was strongest where it
+mattered least.**
+
+**That is the third time this project has had to say "the claim is narrower than it reads"** - after the
+library's 818 undecided mutants and the crash corpus's 104 unpinned inputs. **All three are now stated in the
+document rather than left for a reader to assume.**
+
 ## v249 - ROUND-22 and ROUND-90 issued
 
 **ROUND-22 (Claude) is one item:** make `sutram-fmt` executable **at the git level**, with the exact commands.
