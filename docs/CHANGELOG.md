@@ -1,3 +1,26 @@
+## v259 - R22 merged (v233), and the corpus re-pin was INCOMPLETE
+
+**Claude's R22 is merged. The version is v233, the F8 wording fix is in, and there is a new
+`src/r22_lang_builtin.inc` with a checker and a test.**
+
+**But the four manifest failures survive, and the reason is in R22's own file list:**
+
+**The four `.sm` files are in it. `tests/negative/r17/SHA256SUMS` is NOT.**
+
+**So the files moved and the manifest did not.** They still disagree, and the corpus still reports
+`4 failed` - **which means it cannot detect tampering, which is the only thing a manifest is for.**
+
+**Flagged to Claude as WS4b, before the capability work starts rather than after.**
+
+### And the tree now reports 16 PASS / 2 FAIL / 1 NOT-RUN
+
+**The two failures are the modes gate (`sutram-fmt`, a git attribute my merge cannot set) and this one.**
+
+**That is exactly why I captured a baseline.** The capability round is the largest change the compiler has
+had, **and a regression net already reporting two failures will hide the next one.**
+
+**A green baseline is not a nicety before a big change; it is the thing that makes the change verifiable.**
+
 ## v257 - BASELINE captured before the capability rounds, and it found 4 manifest failures
 
 **The capability round is the largest change the compiler has had, so I captured a baseline to verify it
