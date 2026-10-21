@@ -1,3 +1,18 @@
+## v253 - F8 split between the two partners
+
+**Claude fixes it; ChatGPT finds what the warning actually checks.** Two readings of one defect - **the shape
+that worked for F1**, where one partner diagnosed and the other fixed.
+
+**ChatGPT is asked the question I cannot answer without a reading:** *does the warning fire on Linux too, or
+is this Windows-specific?* **That decides whether every AI check missed it or whether it is a platform
+difference** - and the two have very different fixes.
+
+**And it is told what it must not do: edit anything.** It reads `src/sutram_compiler.asm` and
+`src/r11_sandesh.inc`, gives line numbers, and Claude applies the fix.
+
+**Both rounds now carry F8** - Claude to fix, ChatGPT to diagnose - **and both carry the sentence that says
+why it matters: a false "your language is not available" message is the worst error this project could emit.**
+
 ## v252 - F8 recorded everywhere it needs to be
 
 **F8 is now in `PROJECT-MASTER.md`'s "what is NOT true" section**, beside F7 - so anyone reading the master
