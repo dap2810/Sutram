@@ -1,3 +1,20 @@
+## v274 - ROUND-29 and ROUND-96: the performance fundamental goes to both partners
+
+**Both rounds now open with the new fundamental and the measured gap**, so neither works from an older picture.
+
+**ROUND-29 (Claude)** - **turn on the peephole optimiser and measure it.** *"`SUTRAM_R65_PEEPHOLES` is already
+written and DEFAULT-OFF. So part of the speed gap is a switch nobody turned on."* **Then measure what the loop
+actually compiles to before optimising it** - *how many loads and stores per iteration, and whether the
+accumulator lives in a register or spills.* **And grow the benchmark set**, because *one integer loop cannot
+support a claim about all aspects.*
+
+**ROUND-96 (ChatGPT)** - **design the benchmark set that would make the claim honest**, with the instruction
+that matters: **name which programs Sutram is likely to LOSE, because a set chosen to flatter the language
+proves nothing.** **And compare the generated code** - what C's optimiser does to the loop that Sutram's does
+not.
+
+**Both carry the same measured baseline**, so the numbers they work from are the ones I ran.
+
 ## v273 - THE LINKER IS BUILT. Our own, in NASM. And the guard proves nothing regressed.
 
 **Compiler v238. Gates 23 PASS / 0 FAIL / 1 NOT-RUN - up from 22.**
