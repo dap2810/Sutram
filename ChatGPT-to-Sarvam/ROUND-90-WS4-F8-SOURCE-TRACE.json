@@ -1,0 +1,494 @@
+{
+  "schema": 1,
+  "source_snapshot": "7ec9c9b58498bb34b826ea6abbcbc5cf2e2f7ec4",
+  "checks": [
+    {
+      "id": "pack_names",
+      "file": "src/sutram_compiler.asm",
+      "blob": "4547e4737843567ad4b807dd6d9a5e06ca1cb085",
+      "source_line": 365,
+      "expected": "lang_names:",
+      "observed": "PASS",
+      "raw_source": [
+        {
+          "line": 365,
+          "text": "    lang_names:"
+        },
+        {
+          "line": 380,
+          "text": "    msg_lang_ok  db \"Bhasha pak prapt: \", 0"
+        },
+        {
+          "line": 381,
+          "text": "    msg_lang_fail db \"Chetavani: bhasha-pakah na praptah: \", 0"
+        }
+      ]
+    },
+    {
+      "id": "select_before_alias",
+      "file": "src/sutram_compiler.asm",
+      "blob": "4547e4737843567ad4b807dd6d9a5e06ca1cb085",
+      "source_line": 1115,
+      "expected": "call set_lang_id",
+      "observed": "PASS",
+      "raw_source": [
+        {
+          "line": 1108,
+          "text": "    cmp byte [r12+rcx],0"
+        },
+        {
+          "line": 1111,
+          "text": "    cmp ecx,64"
+        },
+        {
+          "line": 1115,
+          "text": "    call set_lang_id              ; R11: messages follow the named pack, found or not"
+        },
+        {
+          "line": 1119,
+          "text": "    call str_copy"
+        }
+      ]
+    },
+    {
+      "id": "cwd_lang_file",
+      "file": "src/sutram_compiler.asm",
+      "blob": "4547e4737843567ad4b807dd6d9a5e06ca1cb085",
+      "source_line": 1131,
+      "expected": "call load_lang_file",
+      "observed": "PASS",
+      "raw_source": [
+        {
+          "line": 1123,
+          "text": "    call str_copy"
+        },
+        {
+          "line": 1126,
+          "text": "    call str_append"
+        },
+        {
+          "line": 1129,
+          "text": "    call str_append"
+        },
+        {
+          "line": 1131,
+          "text": "    call load_lang_file"
+        },
+        {
+          "line": 1132,
+          "text": "    test rax, rax"
+        }
+      ]
+    },
+    {
+      "id": "windows_exe_relative",
+      "file": "src/sutram_compiler.asm",
+      "blob": "4547e4737843567ad4b807dd6d9a5e06ca1cb085",
+      "source_line": 1134,
+      "expected": "%ifdef WINDOWS",
+      "observed": "PASS",
+      "raw_source": [
+        {
+          "line": 1134,
+          "text": "%ifdef WINDOWS"
+        },
+        {
+          "line": 1141,
+          "text": "    test al,al"
+        },
+        {
+          "line": 1143,
+          "text": "    cmp al,'/'"
+        },
+        {
+          "line": 1145,
+          "text": "    cmp al,92"
+        },
+        {
+          "line": 1158,
+          "text": "    call str_copy"
+        },
+        {
+          "line": 1161,
+          "text": "    call str_append"
+        },
+        {
+          "line": 1164,
+          "text": "    call str_append"
+        },
+        {
+          "line": 1166,
+          "text": "    call load_lang_file"
+        },
+        {
+          "line": 1167,
+          "text": "    test rax,rax"
+        }
+      ]
+    },
+    {
+      "id": "home_fallback",
+      "file": "src/sutram_compiler.asm",
+      "blob": "4547e4737843567ad4b807dd6d9a5e06ca1cb085",
+      "source_line": 1171,
+      "expected": "str_envhome",
+      "observed": "PASS",
+      "raw_source": [
+        {
+          "line": 1171,
+          "text": "    lea rdi, [rel str_envhome]"
+        },
+        {
+          "line": 1172,
+          "text": "    call env_get_value"
+        },
+        {
+          "line": 1173,
+          "text": "    test rax, rax"
+        },
+        {
+          "line": 1177,
+          "text": "    call str_copy"
+        },
+        {
+          "line": 1180,
+          "text": "    call str_append"
+        },
+        {
+          "line": 1183,
+          "text": "    call str_append"
+        },
+        {
+          "line": 1186,
+          "text": "    call str_append"
+        },
+        {
+          "line": 1188,
+          "text": "    call load_lang_file"
+        },
+        {
+          "line": 1189,
+          "text": "    test rax, rax"
+        }
+      ]
+    },
+    {
+      "id": "warning_conditional",
+      "file": "src/sutram_compiler.asm",
+      "blob": "4547e4737843567ad4b807dd6d9a5e06ca1cb085",
+      "source_line": 1192,
+      "expected": "msg_lang_fail",
+      "observed": "PASS",
+      "raw_source": [
+        {
+          "line": 1192,
+          "text": "    lea rdi, [rel msg_lang_fail]"
+        },
+        {
+          "line": 1193,
+          "text": "    call print_str_z"
+        },
+        {
+          "line": 1195,
+          "text": "    call print_str_z"
+        },
+        {
+          "line": 1197,
+          "text": "    call print_str_z"
+        },
+        {
+          "line": 1203,
+          "text": "    lea rdi, [rel msg_lang_ok]"
+        },
+        {
+          "line": 1204,
+          "text": "    call print_str_z"
+        },
+        {
+          "line": 1206,
+          "text": "    call print_str_z"
+        },
+        {
+          "line": 1208,
+          "text": "    call print_str_z"
+        }
+      ]
+    },
+    {
+      "id": "alias_file_loader",
+      "file": "src/sutram_compiler.asm",
+      "blob": "4547e4737843567ad4b807dd6d9a5e06ca1cb085",
+      "source_line": 1225,
+      "expected": "call os_open",
+      "observed": "PASS",
+      "raw_source": [
+        {
+          "line": 1225,
+          "text": "    call os_open"
+        },
+        {
+          "line": 1226,
+          "text": "    test rax, rax"
+        },
+        {
+          "line": 1233,
+          "text": "    call os_read"
+        },
+        {
+          "line": 1237,
+          "text": "    call os_close"
+        },
+        {
+          "line": 1238,
+          "text": "    test r13, r13"
+        },
+        {
+          "line": 1241,
+          "text": "    cmp qword [rel lang_kw_cnt], 0"
+        }
+      ]
+    },
+    {
+      "id": "loader_requires_keywords",
+      "file": "src/sutram_compiler.asm",
+      "blob": "4547e4737843567ad4b807dd6d9a5e06ca1cb085",
+      "source_line": 1401,
+      "expected": "lang_kw_cnt",
+      "observed": "PASS",
+      "raw_source": [
+        {
+          "line": 1401,
+          "text": "    cmp qword [rel lang_kw_cnt], 0"
+        }
+      ]
+    },
+    {
+      "id": "cli_invocation",
+      "file": "src/sutram_compiler.asm",
+      "blob": "4547e4737843567ad4b807dd6d9a5e06ca1cb085",
+      "source_line": 1995,
+      "expected": "call try_load_lang",
+      "observed": "PASS",
+      "raw_source": [
+        {
+          "line": 1981,
+          "text": "    call strcmp"
+        },
+        {
+          "line": 1982,
+          "text": "    test rax, rax"
+        },
+        {
+          "line": 1986,
+          "text": "    cmp rax, 3"
+        },
+        {
+          "line": 1988,
+          "text": "    call maybe_load_env_lang"
+        },
+        {
+          "line": 1992,
+          "text": "    cmp rax, 5"
+        },
+        {
+          "line": 1995,
+          "text": "    call try_load_lang"
+        },
+        {
+          "line": 1999,
+          "text": "    call strcmp"
+        },
+        {
+          "line": 2000,
+          "text": "    test rax, rax"
+        }
+      ]
+    },
+    {
+      "id": "embedded_message_dispatch",
+      "file": "src/sutram_compiler.asm",
+      "blob": "4547e4737843567ad4b807dd6d9a5e06ca1cb085",
+      "source_line": 6900,
+      "expected": "r11_packs",
+      "observed": "PASS",
+      "raw_source": [
+        {
+          "line": 6892,
+          "text": "r11_tr:"
+        },
+        {
+          "line": 6894,
+          "text": "    test rax, rax"
+        },
+        {
+          "line": 6896,
+          "text": "    cmp rax, R11_NPACKS"
+        },
+        {
+          "line": 6900,
+          "text": "    lea rdx, [rel r11_packs]"
+        },
+        {
+          "line": 6902,
+          "text": "    test rdx, rdx"
+        },
+        {
+          "line": 6907,
+          "text": "    cmp qword [rcx + rax*8], 0"
+        },
+        {
+          "line": 6909,
+          "text": "    cmp [rcx + rax*8], rdi"
+        },
+        {
+          "line": 6915,
+          "text": "    test rax, rax"
+        }
+      ]
+    },
+    {
+      "id": "language_id_mapping",
+      "file": "src/sutram_compiler.asm",
+      "blob": "4547e4737843567ad4b807dd6d9a5e06ca1cb085",
+      "source_line": 6939,
+      "expected": "cur_lang_id",
+      "observed": "PASS",
+      "raw_source": [
+        {
+          "line": 6939,
+          "text": "; set_lang_id: set cur_lang_id from the pack name held in r12"
+        },
+        {
+          "line": 6944,
+          "text": "    cmp rbx, 12"
+        },
+        {
+          "line": 6948,
+          "text": "    test rdi, rdi"
+        },
+        {
+          "line": 6952,
+          "text": "    call strcmp"
+        },
+        {
+          "line": 6954,
+          "text": "    test rax, rax"
+        },
+        {
+          "line": 6960,
+          "text": "    mov [rel cur_lang_id], rbx"
+        }
+      ]
+    },
+    {
+      "id": "print_translate",
+      "file": "src/sutram_compiler.asm",
+      "blob": "4547e4737843567ad4b807dd6d9a5e06ca1cb085",
+      "source_line": 23179,
+      "expected": "call r11_tr",
+      "observed": "PASS",
+      "raw_source": [
+        {
+          "line": 23179,
+          "text": "    call r11_tr                   ; R11: a compiler message in the --lang pack's language"
+        },
+        {
+          "line": 23182,
+          "text": "    call strlen"
+        },
+        {
+          "line": 23187,
+          "text": "    call os_write"
+        }
+      ]
+    },
+    {
+      "id": "warning_in_keys",
+      "file": "src/r11_sandesh.inc",
+      "blob": "6b88311dfcdfd54edbe704ceaf32892a7dff41cd",
+      "source_line": 74,
+      "expected": "dq msg_lang_fail",
+      "observed": "PASS",
+      "raw_source": [
+        {
+          "line": 73,
+          "text": "    dq msg_lang_ok"
+        },
+        {
+          "line": 74,
+          "text": "    dq msg_lang_fail"
+        }
+      ]
+    },
+    {
+      "id": "embedded_columns",
+      "file": "src/r11_sandesh.inc",
+      "blob": "6b88311dfcdfd54edbe704ceaf32892a7dff41cd",
+      "source_line": 132,
+      "expected": "r11_packs:",
+      "observed": "PASS",
+      "raw_source": [
+        {
+          "line": 132,
+          "text": "r11_packs:"
+        },
+        {
+          "line": 134,
+          "text": "r11_col_bengali:"
+        }
+      ]
+    },
+    {
+      "id": "windows_native_file_open",
+      "file": "win/winrt.inc",
+      "blob": "9e73bd45cf0b1f2fbd0f86452d8e9fcaf5fb8b37",
+      "source_line": 205,
+      "expected": "call qword [rel p_createfile]",
+      "observed": "PASS",
+      "raw_source": [
+        {
+          "line": 182,
+          "text": "    ; Match Linux syscall register preservation across WinAPI calls."
+        },
+        {
+          "line": 199,
+          "text": "    test rsi, rsi"
+        },
+        {
+          "line": 205,
+          "text": "    call qword [rel p_createfile]"
+        },
+        {
+          "line": 206,
+          "text": "    cmp rax, -1"
+        }
+      ]
+    },
+    {
+      "id": "gate_discards_success_stdout",
+      "file": "tools/test_lang_packs.py",
+      "blob": "3ca6f2d13982702e808e0602bda1cdb578207092",
+      "source_line": 39,
+      "expected": "if not os.path.exists(out)",
+      "observed": "PASS",
+      "raw_source": [
+        {
+          "line": 39,
+          "text": "    if not os.path.exists(out):"
+        }
+      ]
+    }
+  ],
+  "source_check_count": 16,
+  "passes": 16,
+  "native_execution": "NOT_RUN",
+  "conclusions": {
+    "warning_subject": "runtime keyword alias file lang/<pack>.lang load, not embedded message translation .sandesh",
+    "translated_warning_cause": "set_lang_id changes cur_lang_id before file load; print_str_z uses r11_tr from compiled-in r11_sandesh.inc, so a failed keyword-file load still prints selected-language messages",
+    "load_success_condition": "load_lang_file opens and reads .lang then accepts only when lang_kw_cnt > 0; failed open/empty or no recognized keyword maps to same generic warning",
+    "linux_behavior": "shared source path warns under failed file load on Linux too; standard repo-root run with .lang files present normally will not. No Linux run performed here.",
+    "windows_behavior": "Windows also attempts executable-directory lang/<pack>.lang; actual Windows package content and failing resolved path not in log, so specific physical failure remains UNDETERMINED.",
+    "automated_gate": "tools/test_lang_packs.py discards compiler stdout/stderr whenever output file exists, so warning is not asserted absent",
+    "scope": "Do not equate message localization with native-script keyword availability; no compiler changes, Windows fixes owned by Claude."
+  }
+}
