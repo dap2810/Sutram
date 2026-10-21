@@ -1,0 +1,25 @@
+# ROUND-33: the FFI's kinds - f64, ptr and void - declared in kinds.sffi, from kinds.o.
+mukhya() {
+    likha(k_half(5.0))
+    likha(k_half(7))
+    likha(k_scale(1.5, 4))
+    likha(k_mix(1, 2.0, 3, 4.0, 5, 6.0))
+    likha(k_strlen("namaste"))
+    kosh xs[4]
+    kosh_push(xs, 10)
+    kosh_push(xs, 20)
+    kosh_push(xs, 30)
+    likha(k_sum(xs, 3))
+    k_set(xs, 1, 200)
+    likha(xs[1])
+    likha(k_sum(xs, 3))
+    kosh dasham ys[2]
+    kosh_push(ys, 0.25)
+    kosh_push(ys, 0.5)
+    likha(k_fsum(ys, 2))
+    k_nothing()
+    dasham h = k_half(3.0) + 1.0
+    likha(h)
+    likha(k_trunc(9.75))
+    likha(k_half(k_scale(2.5, 4)) * 2.0)
+}

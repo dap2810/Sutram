@@ -98,7 +98,7 @@ KEYS = [
     'r65_msg_add', 'r65_msg_sub', 'r65_msg_mul', 'r65_msg_div', 'r65_msg_mod', 'r65_msg_div_overflow',
     'r65_msg_mod_overflow',
     'msg_kosh_empty', 'msg_kosh_peek_empty', 'msg_kosh_dequeue_empty', 'msg_kosh_param_type',
-    'msg_kosh_param_push', 'r23_msg_slice_base', 'r23_msg_slice_return', 'r24_msg_method_hint', 'r25_msg_phal_return', 'r25_msg_phal_unused', 'r25_msg_prasar_call', 'r25_msg_prasar_where', 'r26_msg_handle_call', 'r28_msg_object_globals', 'r32_msg_ffi_bad', 'r32_msg_ffi_clash',
+    'msg_kosh_param_push', 'r23_msg_slice_base', 'r23_msg_slice_return', 'r24_msg_method_hint', 'r25_msg_phal_return', 'r25_msg_phal_unused', 'r25_msg_prasar_call', 'r25_msg_prasar_where', 'r26_msg_handle_call', 'r28_msg_object_globals', 'r32_msg_ffi_bad', 'r32_msg_ffi_clash', 'r33_msg_ffi_kind', 'r33_msg_ffi_kind2', 'r33_msg_ffi_void',
     'msg_lang_ok', 'msg_lang_fail', 'msg_shell_banner', 'msg_shell_bye', 'msg_shell_help',
     'msg_open_err', 'msg_ok', 'msg_bytes',
     'msg_namespace_error', 'msg_namespace_module_missing', 'msg_namespace_alias_reuse',

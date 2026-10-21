@@ -1,0 +1,15 @@
+Found while fuzzing the FFI, and NOT an FFI defect: likha prints a large dasham inexactly. The ordinary path, Linux, compiler v242 (and v241):
+
+  mukhya() {
+      likha(1870271503745.0)
+      likha(160935754977.75)
+      likha(100000000.5)
+      likha(4294967296.25)
+  }
+prints:
+  1870271503744.999936
+  160935754977.750016
+  100000000.500000
+  4294967296.250000
+C's printf("%f") gives 1870271503745.000000 and 160935754977.750000 for the first two. The values are exact
+binary64 numbers; only the printing loses digits, from about 1e11 up. tools/fuzz_ffi.py keeps printed dasham below 1e8.

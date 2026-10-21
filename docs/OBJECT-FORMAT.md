@@ -113,8 +113,21 @@ s_add|2|i64,i64|i64|sutram_ffi_add
 ```
 
 One LF-terminated line per function: the name Sutram calls it by, its arity (0-6), the argument kinds, the
-result kind, and the foreign symbol. **Version 1 accepts `i64` arguments and an `i64` result only.** ASCII, no
-spaces, no CR, at most 8192 bytes and 64 lines. Any other line is refused with its line number.
+result kind, and the foreign symbol. ASCII, no spaces, no CR, at most 8192 bytes and 64 lines. Any other line is
+refused with its line number.
+
+**The kinds (ROUND-33):**
+
+| Kind | As an argument | As the result |
+|---|---|---|
+| `i64` | an integer; a `dasham`, a string or a kosh is `E_FFI_KIND` (never truncated) | an integer |
+| `f64` | a `dasham`, or an integer converted to `dasham`; a string or kosh is `E_FFI_KIND` | a `dasham` (from `xmm0`) |
+| `ptr` | a string, a kosh (the address of its elements) or an integer; a `dasham` is `E_FFI_KIND` | an integer |
+| `void` | — | none: the call is a statement; its value used anywhere is `E_FFI_KIND` |
+
+Integer and pointer arguments go to `rdi, rsi, rdx, rcx, r8, r9` in order; `f64` arguments to `xmm0..xmm5` in
+order (the System V rule: the two sequences are counted separately). A declared function may be called in an
+expression or as a statement.
 
 - **It is checked:** a call with the wrong number of arguments is `E_ARITY` at the call's own location, at the
   same point as for a prakriya (after parsing, before any code), so **no object is written**.
@@ -125,10 +138,12 @@ spaces, no CR, at most 8192 bytes and 64 lines. Any other line is refused with i
   a sidecar.
 
 **`sutram-elf2smo`** (`linker/sutram_elf2smo.asm`, NASM) reads one ELF64 x86-64 relocatable object and writes a
-`SUTRAMO1` object with its code and one symbol per global function. **Stage 1 reads the smallest useful
-subset:** exactly one code section; **no relocations at all** (a C function that calls out is refused); no
-undefined symbols; no other loaded section except notes (no data, no read-only data, no bss, no unwind tables).
-Build the C side freestanding, for example
+`SUTRAMO1` object with its code and one symbol per global function. **Stage 2 (ROUND-33)** reads what real C needs
+for numbers and strings: exactly one code section; **read-only data** (a double constant, a string literal),
+placed after the code at its alignment, at most 8; **PC-relative relocations in the code** (`R_X86_64_PC32`,
+`R_X86_64_PLT32`) to the code or that data, resolved in the converter so nothing is left for the linker. It still
+refuses: an undefined symbol (a C function that calls out), writable data, bss, unwind tables, a 16-byte constant,
+any other relocation. Build the C side freestanding, for example
 `gcc -c -O2 -ffreestanding -fno-asynchronous-unwind-tables -fno-pic -fno-stack-protector f.c`.
 **`SUTRAMO1` and `sutram-link` are unchanged.**
 
@@ -139,4 +154,4 @@ Build the C side freestanding, for example
 - **With `--object`, every prakriya is exported** (including the library modules a `yoj` pulled in), so two
   objects that both `yoj` the same module define its prakriyas twice. **`--separate` (ROUND-29) is the fix:**
   a `yoj`'d module's prakriyas are not in the object that `yoj`s it.
-- **No archives, no package manager;** the FFI is stage 1 (above): `i64` only, and foreign code with no relocations. (No data relocation kind is needed for `vitti`: see above.)
+- **No archives, no package manager;** the FFI (above) has no variadic, struct or callback functions, and foreign code may not call out. (No data relocation kind is needed for `vitti`: see above.)

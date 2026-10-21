@@ -1,0 +1,4 @@
+prakriya ardha_jod(dasham x, n) {
+    dasham h = k_half(x)
+    prati h + k_scale(h, n)
+}

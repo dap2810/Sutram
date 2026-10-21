@@ -1,0 +1,6 @@
+# ROUND-33: a foreign f64 function called from a module and from the root, built separately.
+yoj r33_ardha
+mukhya() {
+    likha(ardha_jod(3.0, 4))
+    likha(k_half(1.0))
+}

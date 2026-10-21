@@ -249,11 +249,13 @@ def main(argv):
     if r.returncode != 0:
         sys.stdout.write(r.stdout.decode("utf-8", "replace"))
         return 1
+    mods = len(objects) - len(foreign)
+    extra = f" and {len(foreign)} foreign object{'s' if len(foreign) != 1 else ''}" if foreign else ""
     if cache:
-        print(f"sutram-build: {len(objects)} modules: {compiled} compiled, {reused} reused from the cache, "
+        print(f"sutram-build: {mods} modules: {compiled} compiled, {reused} reused from the cache{extra}, "
               f"linked to {out}")
     else:
-        print(f"sutram-build: {len(objects)} modules, each compiled once, linked to {out}")
+        print(f"sutram-build: {mods} modules, each compiled once{extra}, linked to {out}")
     return 0
 
 

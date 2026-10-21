@@ -1,0 +1,10 @@
+sutram-ffi-v1|linux-x86_64-sysv
+k_half|1|f64|f64|sutram_k_half
+k_scale|2|f64,i64|f64|sutram_k_scale
+k_mix|6|i64,f64,i64,f64,i64,f64|f64|sutram_k_mix
+k_strlen|1|ptr|i64|sutram_k_strlen
+k_sum|2|ptr,i64|i64|sutram_k_sum
+k_fsum|2|ptr,i64|f64|sutram_k_fsum
+k_set|3|ptr,i64,i64|void|sutram_k_set
+k_nothing|0||void|sutram_k_nothing
+k_trunc|1|f64|i64|sutram_k_trunc

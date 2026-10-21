@@ -1,0 +1,4 @@
+THE GUARD: the ordinary path, main's committed sutram_compiler (v241, at 98380b9b) vs this branch (v242),
+every .sm in examples/, examples/*/, tests/stdlib/, tests/r*/ (recursive), Linux; stdout and exit status compared too:
+  562 programs: 471 byte-identical executables, 91 refused identically, 0 DIFFER
+  (562 = R32's 560 + tests/r33/kinds.sm and modmain.sm, FFI programs the ordinary compile refuses on both: it does not know their foreign names)

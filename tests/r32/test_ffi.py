@@ -122,9 +122,10 @@ def main(argv) -> int:
         'arity 12': HEADER + 's_add|12|i64|i64|sutram_ffi_add\n',
         'kinds short': HEADER + 's_add|2|i64|i64|sutram_ffi_add\n',
         'kinds long': HEADER + 's_add|1|i64,i64|i64|sutram_ffi_add\n',
-        'f64 (not in v1)': HEADER + 's_add|2|i64,f64|i64|sutram_ffi_add\n',
-        'ptr (not in v1)': HEADER + 's_add|1|ptr|i64|sutram_ffi_add\n',
-        'void (not in v1)': HEADER + 's_add|2|i64,i64|void|sutram_ffi_add\n',
+        # R33: f64, ptr and a void result are accepted now (tests/r33); these kinds are not
+        'an unknown kind': HEADER + 's_add|2|i64,u32|i64|sutram_ffi_add\n',
+        'void as an argument': HEADER + 's_add|1|void|i64|sutram_ffi_add\n',
+        'an unknown result': HEADER + 's_add|2|i64,i64|f32|sutram_ffi_add\n',
         'a space': HEADER + 's_add|2|i64, i64|i64|sutram_ffi_add\n',
         'a CR': HEADER + 's_add|2|i64,i64|i64|sutram_ffi_add\r\n',
         'no final LF': HEADER + 's_add|2|i64,i64|i64|sutram_ffi_add',
@@ -154,8 +155,10 @@ def main(argv) -> int:
     r = run([e2s, str(HERE / 'foreign.o'), str(t / 'f.smo')])
     check(r.returncode == 0 and table(t / 'f.smo') == (['sutram_ffi_add', 'sutram_ffi_neg', 'sutram_ffi_mix',
                                                        'sutram_ffi_rsp'], []), f'reader: {r.stdout!r}')
-    for name, want in (('negative.o', b'punahsthapanani asamarthitani'),
-                       ('foreign-unwind.o', b'sanketat anyat bhara-khandam'),
+    # R33: the stage-2 reader refuses negative.o for its undefined symbol, and the unwind
+    # tables for their relocations outside the code (R32 refused both earlier, by kind)
+    for name, want in (('negative.o', b'agyat sanket: missing_helper'),
+                       ('foreign-unwind.o', b'punahsthapanam asamarthitam'),
                        ('foreign.c', b'ELF64 x86-64 ET_REL vastu-patram na')):
         r = run([e2s, str(HERE / name), str(t / 'n.smo')])
         check(r.returncode == 1 and want in r.stdout, f'reader refuses {name}: {r.stdout!r}')

@@ -11,8 +11,8 @@
 ;   s_add|2|i64,i64|i64|sutram_ffi_add
 ;
 ; one LF-terminated line per declaration: local name | arity | argument kinds |
-; return kind | the foreign symbol. Version 1 accepts i64 arguments and an i64
-; result only. ASCII, no spaces, no CR, at most 8192 bytes and 64 declarations.
+; return kind | the foreign symbol. R33: the argument kinds are i64, f64 and
+; ptr; the result is i64, f64, ptr or void (R32 accepted i64 only). ASCII, no spaces, no CR, at most 8192 bytes and 64 declarations.
 ;
 ; What a declaration does, and what it never does:
 ;   * the sidecar is read once, after parsing (in SUTRAM_LANG's language) and
@@ -34,7 +34,9 @@ R32_FILE_CAP equ 8192
 section .bss
     r32_ffi_path  resq 1
     r32_ffi_count resq 1
-    r32_ffi_rec   resq R32_CAP*3      ; (local name, arity, foreign symbol)
+    r32_ffi_rec   resq R32_CAP*4      ; (local name, arity, foreign symbol, R33 kinds)
+    r33_kinds     resq 1
+    r33_call_nodes resq R7_CALL_CAP   ; R33: the AST_FUNCALL of each r7 call (with --ffi)
     r32_buf       resb R32_FILE_CAP + 8
     r32_len       resq 1
     r32_line      resq 1
@@ -42,7 +44,6 @@ section .bss
 section .data
     r32_header    db "sutram-ffi-v1|linux-x86_64-sysv", 10
     r32_header_len equ $ - r32_header
-    r32_i64       db "i64", 0
 
 section .text
 
@@ -216,42 +217,53 @@ r32_load_sidecar:
     cmp eax, 6
     ja .bad_pop
     mov r13, rax
-    ; the kinds: exactly arity times "i64", comma-separated (v1)
+    ; R33: the kinds: exactly arity times i64, f64 or ptr, comma-separated;
+    ; the result: i64, f64, ptr or void. One byte each in r33_kinds (0 i64,
+    ; 1 f64, 2 ptr, 3 void): bytes 0..5 the arguments, byte 6 the result.
+    mov qword [rel r33_kinds], 0
     mov rdi, r14
     xor ecx, ecx                      ; kinds seen
 .kind:
     cmp rcx, r13
     jae .kinds_end
     test rcx, rcx
-    jz .kind_i64
+    jz .kind_one
     cmp byte [rdi], ','
     jne .bad_pop
     inc rdi
-.kind_i64:
-    cmp byte [rdi], 'i'
-    jne .bad_pop
-    cmp byte [rdi + 1], '6'
-    jne .bad_pop
-    cmp byte [rdi + 2], '4'
-    jne .bad_pop
+.kind_one:
+    call r33_kind3
+    cmp eax, 2
+    ja .bad_pop
+    lea rdx, [rel r33_kinds]
+    mov [rdx + rcx], al
     add rdi, 3
     inc rcx
     jmp .kind
 .kinds_end:
     cmp byte [rdi], 0
     jne .bad_pop
-    ; the result: i64 (v1)
-    mov rdi, r15
-    lea rsi, [rel r32_i64]
-    call strcmp
-    test rax, rax
-    jnz .bad_pop
+    mov rdi, r15                      ; the result
+    cmp dword [rdi], 0x64696F76       ; "void"
+    jne .ret3
+    cmp byte [rdi + 4], 0
+    jne .bad_pop
+    mov eax, 3
+    jmp .ret_ok
+.ret3:
+    call r33_kind3
+    cmp eax, 2
+    ja .bad_pop
+    cmp byte [rdi + 3], 0
+    jne .bad_pop
+.ret_ok:
+    mov [rel r33_kinds + 6], al
     ; no name and no symbol twice
     xor r15d, r15d
 .uniq:
     cmp r15, [rel r32_ffi_count]
     jae .store
-    imul rax, r15, 24
+    imul rax, r15, 32
     lea rcx, [rel r32_ffi_rec]
     add rcx, rax
     push rcx
@@ -272,12 +284,14 @@ r32_load_sidecar:
     jmp .uniq
 .store:
     mov rax, [rel r32_ffi_count]
-    imul rax, rax, 24
+    imul rax, rax, 32
     lea rcx, [rel r32_ffi_rec]
     add rcx, rax
     mov [rcx], r12
     mov [rcx + 8], r13
     mov [rcx + 16], rbx
+    mov rax, [rel r33_kinds]
+    mov [rcx + 24], rax
     inc qword [rel r32_ffi_count]
     pop rsi
     jmp .decl
@@ -300,7 +314,7 @@ r32_ffi_find:
     xor r12d, r12d
 .l: cmp r12, [rel r32_ffi_count]
     jae .no
-    imul rax, r12, 24
+    imul rax, r12, 32
     lea rsi, [rel r32_ffi_rec]
     add rsi, rax
     push rsi
@@ -334,7 +348,7 @@ r32_check_clashes:
 .decl:
     cmp r12, [rel r32_ffi_count]
     jae .done
-    imul rbx, r12, 24
+    imul rbx, r12, 32
     lea rax, [rel r32_ffi_rec]
     add rbx, rax
     xor r13d, r13d                    ; 0: the local name, 16: the symbol
@@ -448,3 +462,271 @@ r32_gen_foreign_call:
 .overflow:
     lea rdi, [rel msg_patch_overflow]
     jmp capacity_fail
+
+; -------------------------------------------------------------------
+; ROUND-33: the FFI's kinds. A declared foreign call is generated here, with
+; each argument checked against its declared kind:
+;   i64  an integer: a dasham, a string or a kosh is an error (never truncated)
+;   f64  a dasham, or an integer converted to dasham; a string or kosh: error
+;   ptr  a string, a kosh (its elements' address) or an integer: a dasham: error
+; Integer and pointer arguments go to rdi, rsi, rdx, rcx, r8, r9 in order;
+; f64 arguments to xmm0..xmm5 in order (the System V rule: the two sequences
+; are counted separately). The result: i64/ptr in rax; f64 from xmm0, and the
+; call is a dasham to the rest of the compiler; a void call is a statement only
+; (its value used anywhere is E_FFI_KIND, never a made-up 0).
+; -------------------------------------------------------------------
+
+; r33_kind3(rdi -> 3 bytes) -> eax = 0 i64, 1 f64, 2 ptr, or 9. Preserves the rest.
+r33_kind3:
+    cmp word [rdi], 0x3669             ; "i6"
+    jne .f
+    cmp byte [rdi + 2], '4'
+    jne .no
+    xor eax, eax
+    ret
+.f: cmp word [rdi], 0x3666             ; "f6"
+    jne .p
+    cmp byte [rdi + 2], '4'
+    jne .no
+    mov eax, 1
+    ret
+.p: cmp word [rdi], 0x7470             ; "pt"
+    jne .no
+    cmp byte [rdi + 2], 'r'
+    jne .no
+    mov eax, 2
+    ret
+.no:
+    mov eax, 9
+    ret
+
+; r33_note_node(rax = the AST_FUNCALL, index = r7_call_count before it grows).
+; Called from r7_note_call only when --ffi was given. Preserves every register.
+r33_note_node:
+    push rcx
+    push rdx
+    mov rcx, [rel r7_call_count]
+    cmp rcx, R7_CALL_CAP
+    jae .done
+    lea rdx, [rel r33_call_nodes]
+    mov [rdx + rcx*8], rax
+.done:
+    pop rdx
+    pop rcx
+    ret
+
+; r33_return_is_float(rdi = name) -> rax = 1 when it is a declared foreign
+; function whose result is f64.
+r33_return_is_float:
+    call r32_ffi_find
+    test rax, rax
+    jz .no
+    cmp byte [rax + 24 + 6], 1
+    jne .no
+    mov eax, 1
+    ret
+.no:
+    xor eax, eax
+    ret
+
+; r33_kind_error(rbx = the AST_FUNCALL, r13 = the argument index): located,
+; like E_ARITY, at the call; then exit 1 (no object is written).
+r33_kind_error:
+    xor r12d, r12d
+.find:
+    cmp r12, [rel r7_call_count]
+    jae .unlocated
+    lea rax, [rel r33_call_nodes]
+    cmp [rax + r12*8], rbx
+    je .located
+    inc r12
+    jmp .find
+.located:
+    imul rax, r12, 24
+    lea rcx, [rel r7_calls]
+    mov rax, [rcx + rax + 16]         ; the name token
+    mov rdi, [rax + 32]
+    call r51_print_origin
+    lea rdi, [rel r51_colon_space]
+    call print_str_z
+.unlocated:
+    lea rdi, [rel r33_msg_ffi_kind]
+    call print_str_z
+    mov rdi, [rbx + 8]
+    call print_str_z
+    cmp r13, -1
+    je .void_value
+    lea rdi, [rel r33_msg_ffi_kind2]
+    call print_str_z
+    lea rax, [r13 + 1]
+    call mg_print_uint
+    lea rdi, [rel msg_nl]
+    call print_str_z
+    jmp .context
+.void_value:
+    lea rdi, [rel r33_msg_ffi_void]
+    call print_str_z
+.context:
+    cmp r12, [rel r7_call_count]
+    jae .exit
+    call r51_print_original_context
+.exit:
+    mov rdi, 1
+    call os_exit
+
+; r33_gen_foreign_funcall(rbx = the AST_FUNCALL, rsi = its record, rdx = 1 when
+; its value is used). A void function's value cannot be used: E_FFI_KIND.
+r33_gen_foreign_funcall:
+    push r12
+    push r13
+    push r14
+    push r15
+    mov r14, rsi
+    test rdx, rdx
+    jz .value_ok
+    cmp byte [r14 + 24 + 6], 3
+    jne .value_ok
+    mov r13, -1                       ; "argument 0": the result
+    jmp r33_kind_error
+.value_ok:
+    mov r15, [rbx + 16]               ; argc (the arity check has passed)
+    xor r13d, r13d
+.arg:
+    cmp r13, r15
+    jae .args_done
+    mov r12, [rbx + 24 + r13*8]       ; the argument
+    movzx eax, byte [r14 + 24 + r13]  ; its declared kind
+    cmp eax, 2
+    je .ptr
+    ; i64 or f64: not a string, not a kosh
+    cmp qword [r12], AST_STR
+    je .bad
+    cmp qword [r12], AST_VAR
+    jne .scalar
+    mov rdi, [r12 + 8]
+    call is_kosh_var
+    test rax, rax
+    jnz .bad
+.scalar:
+    mov rdi, r12
+    call expr_is_float
+    movzx ecx, byte [r14 + 24 + r13]
+    test ecx, ecx
+    jnz .f64
+    test rax, rax                     ; i64: a dasham is an error
+    jnz .bad
+    jmp .gen
+.f64:
+    push rax
+    mov rax, r12
+    call gen_expr
+    pop rax
+    test rax, rax
+    jnz .push
+    call emit_i64_to_f64_rax          ; an integer, as dasham
+    jmp .push
+.ptr:
+    mov rdi, r12                      ; ptr: a dasham is an error
+    call expr_is_float
+    test rax, rax
+    jnz .bad
+.gen:
+    mov rax, r12
+    call gen_expr
+.push:
+    mov dil, 0x50                     ; push rax
+    call emit_byte
+    inc r13
+    jmp .arg
+.bad:
+    jmp r33_kind_error
+.args_done:
+    ; pop them, the last first, into their registers
+    xor ecx, ecx                      ; integers before argument k
+    xor edx, edx                      ; f64s before argument k
+    xor r13d, r13d
+    lea rdi, [rel r33_slot]
+.count:
+    cmp r13, r15
+    jae .counted
+    movzx eax, byte [r14 + 24 + r13]
+    cmp eax, 1
+    je .count_f
+    mov [rdi + r13], cl
+    inc ecx
+    jmp .count_next
+.count_f:
+    lea eax, [rdx + 0x80]             ; 0x80 | xmm number
+    mov [rdi + r13], al
+    inc edx
+.count_next:
+    inc r13
+    jmp .count
+.counted:
+    mov r13, r15
+.pop:
+    test r13, r13
+    jz .call
+    dec r13
+    lea rax, [rel r33_slot]
+    movzx eax, byte [rax + r13]
+    test eax, 0x80
+    jnz .pop_xmm
+    lea rcx, [rel r33_pop_int]
+    movzx edi, word [rcx + rax*2]     ; the pop instruction, as two bytes
+    test edi, 0xFF00
+    jz .pop_one
+    push rdi
+    call emit_byte                    ; 0x41 prefix
+    pop rdi
+    shr edi, 8
+.pop_one:
+    call emit_byte
+    jmp .pop
+.pop_xmm:
+    and eax, 0x7F
+    push rax
+    mov dil, 0x58                     ; pop rax
+    call emit_byte
+    mov dil, 0x66                     ; movq xmmN, rax = 66 48 0F 6E (C0 + 8N)
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x6E
+    call emit_byte
+    pop rax
+    lea edi, [0xC0 + rax*8]
+    call emit_byte
+    jmp .pop
+.call:
+    mov rsi, r14
+    call r32_gen_foreign_call
+    movzx eax, byte [r14 + 24 + 6]
+    cmp eax, 1
+    jne .done                         ; i64, ptr: rax; void: a statement, unused
+.ret_f64:
+    mov dil, 0x66                     ; movq rax, xmm0 = 66 48 0F 7E C0
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x7E
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+.done:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    ret
+
+section .data
+    ; pop rdi, rsi, rdx, rcx, r8, r9 (a word: low byte first emitted; 0 high = one byte)
+    r33_pop_int dw 0x005F, 0x005E, 0x005A, 0x0059, 0x5841, 0x5941
+section .bss
+    r33_slot resb 8
+section .text

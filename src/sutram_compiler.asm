@@ -233,7 +233,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v241) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v242) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -384,6 +384,9 @@ r54_builtin_arity_table:
     r28_msg_object_globals db "Sutram Error: vastu-patre ghatak-star vitti asamarthita", 10, 0
     r32_msg_ffi_bad db "Sutram Error: videshi-ghoshana-patram dushtam, pankti ", 0
     r32_msg_ffi_clash db "Sutram Error: videshi prakriya-nama anyatra api: ", 0
+    r33_msg_ffi_kind db "Sutram Error [E_FFI_KIND]: videshi prakriya ", 0
+    r33_msg_ffi_kind2 db ": ghoshitat prakarat bhinnah tarkah ", 0
+    r33_msg_ffi_void db ": mulyam na pratyarpayati", 10, 0
 
     ; The v27 per-pack copies of five parse messages lived here. R11: every message
     ; now has a copy per pack, in lang/<pack>.sandesh, assembled into
@@ -7729,6 +7732,11 @@ r7_note_call:
     mov [rdx+rax],rbx
     mov [rdx+rax+8],r12
     mov [rdx+rax+16],rcx
+    cmp qword [rel r32_ffi_path],0    ; R33: with --ffi, remember the call's node
+    je .r33_no_node
+    mov rax,[rsp+8]                   ; the caller's rax: the AST_FUNCALL
+    call r33_note_node
+.r33_no_node:
     inc qword [rel r7_call_count]
 .full:
     pop rdx
@@ -12449,6 +12457,22 @@ gen_stmt:
     jmp capacity_fail
 
 .gs_funcall:
+    cmp qword [rel r32_ffi_count], 0  ; R33: a declared foreign function called
+    je .r33_gs_sutram                 ; as a statement (R32 sent it to the
+    mov rdi, [rbx+8]                  ; Sutram call, by its local name)
+    call r23_call_is_indirect
+    test rax, rax
+    jnz .r33_gs_sutram
+    mov rdi, [rbx+8]
+    call r32_ffi_find
+    test rax, rax
+    jz .r33_gs_sutram
+    mov rsi, rax
+    xor edx, edx                      ; a statement: its value is not used
+    call r33_gen_foreign_funcall
+    pop rbx
+    ret
+.r33_gs_sutram:
     ; [AST_FUNCALL][name_ptr][arg_count][arg1..arg6]
     mov rdi, [rbx+8]          ; R25: a phal-prakriya only under prasar
     call r25_check_call
@@ -14556,6 +14580,22 @@ gen_expr:
     ret
 
 .ge_funcall:
+    cmp qword [rel r32_ffi_count], 0  ; R32/R33: a declared foreign function,
+    je .r33_fc_sutram                 ; not called through a variable
+    mov rdi, [rbx+8]
+    call r23_call_is_indirect
+    test rax, rax
+    jnz .r33_fc_sutram
+    mov rdi, [rbx+8]
+    call r32_ffi_find
+    test rax, rax
+    jz .r33_fc_sutram
+    mov rsi, rax
+    mov edx, 1                        ; its value is used
+    call r33_gen_foreign_funcall
+    pop rbx
+    ret
+.r33_fc_sutram:
     ; [AST_FUNCALL][name_ptr][arg_count][arg1..arg6]
     ; Evaluate args left-to-right, push each result, then pop them into
     ; rdi, rsi, rdx, rcx, r8, r9 in reverse stack order.
@@ -14732,16 +14772,6 @@ gen_expr:
     call r23_emit_indirect_call
     jmp .ge_fc_after_call
 .ge_fc_direct:
-    cmp qword [rel r32_ffi_count], 0  ; R32: a declared foreign function
-    je .r32_fc_sutram
-    mov rdi, [rbx+8]
-    call r32_ffi_find
-    test rax, rax
-    jz .r32_fc_sutram
-    mov rsi, rax
-    call r32_gen_foreign_call
-    jmp .ge_fc_after_call
-.r32_fc_sutram:
     ; Emit call rel32
     mov dil, 0xE8
     call emit_byte
@@ -19857,6 +19887,10 @@ func_return_is_float:
     jmp .frif_done
 .frif_no:
     xor rax, rax
+    cmp qword [rel r32_ffi_count], 0   ; R33: a foreign function's f64 result
+    je .frif_done
+    mov rdi, rbx
+    call r33_return_is_float
 .frif_done:
     pop r14
     pop r13

@@ -1,0 +1,6 @@
+fuzz_elf2smo: seed 33, 20000 malformed objects: 12654 refused (no output), 7346 accepted (well formed), 0 broke the contract
+fuzz_elf2smo: seed 34, 20000 malformed objects: 12518 refused (no output), 7482 accepted (well formed), 0 broke the contract
+fuzz_elf2smo: seed 35, 20000 malformed objects: 12609 refused (no output), 7391 accepted (well formed), 0 broke the contract
+fuzz_elf2smo: seed 36, 20000 malformed objects: 12578 refused (no output), 7422 accepted (well formed), 0 broke the contract
+fuzz_elf2smo: seed 37, 20000 malformed objects: 12592 refused (no output), 7408 accepted (well formed), 0 broke the contract
+exit 0

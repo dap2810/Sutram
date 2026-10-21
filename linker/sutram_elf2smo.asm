@@ -8,12 +8,21 @@
 ; freestanding, say - and writes a SUTRAMO1 object (docs/OBJECT-FORMAT.md) that
 ; sutram-link links like any other: its code, and one symbol per function.
 ;
-; Stage 1, the smallest reader (ChatGPT ROUND-98 WS2), and nothing more:
+; Stage 2 (ROUND-33): what real C needs for numbers and strings, and no more.
 ;   * exactly one non-empty code section: PROGBITS, ALLOC|EXECINSTR, not WRITE;
-;   * no relocations at all: a non-empty SHT_RELA or SHT_REL is refused, so is
-;     an undefined symbol - a foreign function that calls out is not linked;
-;   * no other non-empty ALLOC section (data, rodata, bss, unwind tables) -
-;     except SHT_NOTE, which nothing loads or reads;
+;   * read-only data sections (PROGBITS, ALLOC, not WRITE, not EXEC; MERGE and
+;     STRINGS allowed) - a double constant, a string literal - are placed after
+;     the code, each at its alignment (at most 8: the linker lays objects end
+;     to end, so a 16-byte constant could not be kept aligned, and is refused);
+;   * relocations in the code only (SHT_RELA whose sh_info is the code section),
+;     of the two PC-relative kinds R_X86_64_PC32 and R_X86_64_PLT32, against a
+;     symbol in the code or in a placed data section: each is resolved here, as
+;     S + A - P, checked to fit in 32 bits. Nothing is left for the linker;
+;   * no undefined symbol: a foreign function that calls out is still refused
+;     (a C function must never call a Sutram prakriya, which does not keep the
+;     registers C expects kept);
+;   * no writable data, no bss, no unwind tables, no TLS, no absolute or GOT
+;     relocation, no SHT_REL - each refused - and SHT_NOTE skipped;
 ;   * every GLOBAL symbol is a default-visibility FUNC in the code section,
 ;     inside it, named [A-Za-z_][A-Za-z0-9_]* (at most 127 bytes), once;
 ;     LOCAL symbols are ignored; WEAK and anything else are refused.
@@ -26,6 +35,8 @@
 
 IN_CAP  equ 4*1024*1024
 SYM_CAP equ 256
+SEC_CAP equ 1024
+RELA_CAP equ 16
 MAGIC   equ 0x314F4D4152545553   ; "SUTRAMO1"
 
 section .data
@@ -34,7 +45,9 @@ section .data
     m_notelf db "Sutram Error: ELF64 x86-64 ET_REL vastu-patram na", 10, 0
     m_bounds db "Sutram Error: ELF-patram khanditam (seema-bahir)", 10, 0
     m_code   db "Sutram Error: ELF-patre ekam eva sanket-khandam apekshitam", 10, 0
-    m_reloc  db "Sutram Error: ELF-patre punahsthapanani asamarthitani (stage 1)", 10, 0
+    m_reloc  db "Sutram Error: ELF-patre punahsthapanam asamarthitam", 10, 0
+    m_align  db "Sutram Error: ELF-patre 8-baait-adhika samarekhanam asamarthitam", 10, 0
+    m_range  db "Sutram Error: ELF-patre punahsthapanam 32-bit-bahih", 10, 0
     m_alloc  db "Sutram Error: ELF-patre sanketat anyat bhara-khandam asamarthitam", 10, 0
     m_symtab db "Sutram Error: ELF-patre ekam eva suchi-khandam apekshitam", 10, 0
     m_undef  db "Sutram Error: ELF-patre agyat sanket: ", 0
@@ -63,6 +76,14 @@ section .bss
     syms     resq SYM_CAP*3           ; offset, name pointer, name length
     nsyms    resq 1
     hdr      resq 1
+    obuf     resb IN_CAP              ; the code, then the read-only data
+    out_sz   resq 1
+    base     resq SEC_CAP             ; each section's offset in obuf, or -1
+    rodata   resq SEC_CAP             ; the read-only data sections, in order
+    nrodata  resq 1
+    relas    resq RELA_CAP
+    nrelas   resq 1
+    sym_idx  resq 1
     numbuf   resb 32
     fd       resq 1
     outpath  resq 1
@@ -229,6 +250,8 @@ _start:
     movzx eax, word [rbx + 60]            ; e_shnum (0 would mean an extended count)
     test eax, eax
     jz .not_elf
+    cmp rax, SEC_CAP
+    ja .not_elf
     mov [rel shnum], rax
     mov rax, [rbx + 40]                   ; e_shoff
     mov [rel shoff], rax
@@ -258,8 +281,8 @@ _start:
     mov rdx, r15
     call in_range
 .sec_bounded:
-    cmp r14d, 4                           ; SHT_RELA
-    je .has_reloc
+    cmp r14d, 4                           ; SHT_RELA: checked after the sections
+    je .rela_sec
     cmp r14d, 9                           ; SHT_REL
     je .has_reloc
     cmp r14d, 2                           ; SHT_SYMTAB
@@ -272,7 +295,7 @@ _start:
     cmp r14d, 1                           ; SHT_PROGBITS
     jne .other_alloc
     test rax, 4                           ; SHF_EXECINSTR
-    jz .other_alloc
+    jz .rodata_sec
     test rax, 1                           ; SHF_WRITE
     jnz .other_alloc
     test rax, ~7                          ; no other flag (TLS, GROUP, ...)
@@ -284,9 +307,36 @@ _start:
     mov [rel code_off], rax
     mov [rel code_sz], r15
     jmp .sec_next
+.rodata_sec:                              ; read-only data: ALLOC, MERGE, STRINGS only
+    test rax, ~0x32
+    jnz .other_alloc
+    cmp qword [r13 + 48], 8               ; sh_addralign
+    ja .bad_align
+    mov rcx, [rel nrodata]
+    lea rdx, [rel rodata]
+    mov [rdx + rcx*8], r12
+    inc qword [rel nrodata]
+    jmp .sec_next
+.rela_sec:
+    cmp qword [r13 + 56], 24              ; sh_entsize, whole entries
+    jne .not_elf
+    mov rax, r15
+    xor edx, edx
+    mov ecx, 24
+    div rcx
+    test rdx, rdx
+    jnz .not_elf
+    mov rcx, [rel nrelas]
+    cmp rcx, RELA_CAP
+    jae .full
+    lea rdx, [rel relas]
+    mov [rdx + rcx*8], r12
+    inc qword [rel nrelas]
+    jmp .sec_next
 .symtab:
     cmp qword [rel sym_sz], -1
     jne .two_symtab
+    mov [rel sym_idx], r12
     cmp qword [r13 + 56], 24              ; sh_entsize
     jne .not_elf
     mov rax, r15                          ; whole entries only
@@ -321,6 +371,73 @@ _start:
     je .no_code
     cmp qword [rel sym_sz], -1
     je .no_symtab
+
+    ; ---- the layout: the code at 0, then each read-only data section
+    xor ecx, ecx
+    lea rdx, [rel base]
+.base_init:
+    cmp rcx, [rel shnum]
+    jae .base_done
+    mov qword [rdx + rcx*8], -1
+    inc rcx
+    jmp .base_init
+.base_done:
+    mov rax, [rel code_idx]
+    mov qword [rdx + rax*8], 0
+    lea rdi, [rel obuf]
+    lea rsi, [rel buf]
+    add rsi, [rel code_off]
+    mov rcx, [rel code_sz]
+    cmp rcx, IN_CAP
+    ja .full
+    rep movsb
+    mov rax, [rel code_sz]
+    mov [rel out_sz], rax
+    xor r12d, r12d
+.lay:
+    cmp r12, [rel nrodata]
+    jae .lay_done
+    lea rax, [rel rodata]
+    mov r13, [rax + r12*8]                ; its index
+    mov r14, r13
+    shl r14, 6
+    add r14, [rel shoff]
+    lea rax, [rel buf]
+    add r14, rax                          ; its header
+    mov rcx, [r14 + 48]                   ; align (0 or 1: none)
+    mov rax, [rel out_sz]
+    cmp rcx, 1
+    jbe .aligned
+    lea rax, [rax + rcx - 1]
+    neg rcx
+    and rax, rcx
+.aligned:
+    mov rcx, rax                          ; zero the padding
+    sub rcx, [rel out_sz]
+    lea rdi, [rel obuf]
+    add rdi, [rel out_sz]
+    push rax
+    xor eax, eax
+    rep stosb
+    pop rax
+    mov rdx, [r14 + 32]                   ; its size
+    mov rcx, IN_CAP
+    sub rcx, rax
+    cmp rdx, rcx
+    ja .full
+    lea rcx, [rel base]
+    mov [rcx + r13*8], rax
+    lea rdi, [rel obuf]
+    add rdi, rax
+    lea rsi, [rel buf]
+    add rsi, [r14 + 24]
+    mov rcx, rdx
+    rep movsb
+    add rax, rdx
+    mov [rel out_sz], rax
+    inc r12
+    jmp .lay
+.lay_done:
 
     ; ---- the symbols
     mov qword [rel nsyms], 0
@@ -446,6 +563,73 @@ _start:
     cmp qword [rel nsyms], 0
     je .no_func
 
+    ; ---- the relocations: in the code, PC32 or PLT32, to a placed section
+    xor r12d, r12d
+.rsec:
+    cmp r12, [rel nrelas]
+    jae .relocs_done
+    lea rax, [rel relas]
+    mov r13, [rax + r12*8]
+    shl r13, 6
+    add r13, [rel shoff]
+    lea rax, [rel buf]
+    add r13, rax                          ; the SHT_RELA header
+    mov eax, [r13 + 44]                   ; sh_info: the section it changes
+    cmp rax, [rel code_idx]
+    jne .has_reloc
+    mov eax, [r13 + 40]                   ; sh_link: our symbol table
+    cmp rax, [rel sym_idx]
+    jne .has_reloc
+    mov r14, [r13 + 24]                   ; entries
+    mov r15, [r13 + 32]
+    add r15, r14                          ; end
+.rent:
+    cmp r14, r15
+    jae .rsec_next
+    lea rbx, [rel buf]
+    add rbx, r14                          ; Elf64_Rela: offset, info, addend
+    mov eax, [rbx + 8]                    ; type
+    cmp eax, 2                            ; R_X86_64_PC32
+    je .rtype_ok
+    cmp eax, 4                            ; R_X86_64_PLT32
+    jne .has_reloc
+.rtype_ok:
+    mov rcx, [rel code_sz]                ; P + 4 inside the code
+    cmp rcx, 4
+    jb .has_reloc
+    sub rcx, 4
+    cmp [rbx], rcx
+    ja .has_reloc
+    mov eax, [rbx + 12]                   ; the symbol's index
+    imul rax, rax, 24
+    cmp rax, [rel sym_sz]
+    jae .has_reloc
+    lea rdx, [rel buf]
+    add rdx, [rel sym_off]
+    add rdx, rax                          ; Elf64_Sym
+    movzx eax, word [rdx + 6]             ; its section
+    cmp rax, [rel shnum]
+    jae .has_reloc                        ; undefined is refused above; ABS, COMMON here
+    lea rcx, [rel base]
+    mov rax, [rcx + rax*8]
+    cmp rax, -1
+    je .has_reloc                         ; a section that is not placed
+    add rax, [rdx + 8]                    ; S = base + st_value
+    add rax, [rbx + 16]                   ; + A
+    sub rax, [rbx]                        ; - P
+    movsxd rcx, eax
+    cmp rcx, rax
+    jne .bad_range
+    lea rcx, [rel obuf]
+    add rcx, [rbx]
+    mov [rcx], eax
+    add r14, 24
+    jmp .rent
+.rsec_next:
+    inc r12
+    jmp .rsec
+.relocs_done:
+
     ; ---- the Sutram object: header, code, symbols, no relocations
     mov rdi, [rel outpath]
     mov esi, 0x241                        ; O_WRONLY|O_CREAT|O_TRUNC
@@ -457,15 +641,14 @@ _start:
     mov [rel fd], rax
     mov rax, MAGIC
     call put_u64
-    mov rax, [rel code_sz]
+    mov rax, [rel out_sz]
     call put_u64
     mov rax, [rel nsyms]
     call put_u64
     xor eax, eax
     call put_u64
-    lea rsi, [rel buf]
-    add rsi, [rel code_off]
-    mov rdx, [rel code_sz]
+    lea rsi, [rel obuf]
+    mov rdx, [rel out_sz]
     call write_all
     xor r12d, r12d
 .out_sym:
@@ -493,7 +676,7 @@ _start:
     call putu
     lea rdi, [rel m_tail]
     call puts
-    mov rax, [rel code_sz]
+    mov rax, [rel out_sz]
     call putu
     lea rdi, [rel m_bytes]
     call puts
@@ -523,6 +706,14 @@ _start:
     jmp fail
 .has_reloc:
     lea rdi, [rel m_reloc]
+    xor esi, esi
+    jmp fail
+.bad_align:
+    lea rdi, [rel m_align]
+    xor esi, esi
+    jmp fail
+.bad_range:
+    lea rdi, [rel m_range]
     xor esi, esi
     jmp fail
 .other_alloc:
