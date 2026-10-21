@@ -1,0 +1,12 @@
+# sutram-errors-v1
+# Proposed strict-result marker; status guard must exit on failure.
+yoj phal
+mukhya() {
+    vitti r = nirmmita(2 * 8)
+    phal_janchit_bhaj(r, 10, 0)
+    yadi (phal_asti_siddhi(r) == 0) {
+        likha("division-failed\n")
+        prati 0
+    }
+    likha(phal_mulya(r))
+}
