@@ -1,0 +1,29 @@
+PASS root_exact_format
+PASS leaf_exact_format
+PASS magic_reject
+PASS header_truncation_reject
+PASS file_truncation_reject
+PASS code_length_reject
+PASS symbol_count_reject
+PASS reloc_count_reject
+PASS symbol_offset_reject
+PASS name_length_reject
+PASS reloc_field_bounds_reject
+PASS nonzero_hole_reject
+PASS wrong_opcode_reject
+PASS trailing_bytes_reject
+PASS missing_export_reject
+PASS duplicate_export_reject
+PASS duplicate_main_reject
+PASS no_main_reject
+PASS links_in_reverse_argument_order
+PASS call_site_disp54
+synthetic_stdout_hex 34320a
+synthetic_exit 0
+synthetic_stderr_bytes 0
+PASS synthetic_ELF_runtime_prints_42
+root_bytes 143 leaf_bytes 59 linked_CODE_bytes 76
+root_SHA256 5034e722b5e6013972c23c9fc3e8e0c1031f97cc9312b8ed5a3bab9b6f9b9dad
+leaf_SHA256 056cacb50413bd59a99172aa2e13ff7b09525a65acc247c62b23c878721b1f8e
+ELF_SHA256 e547addd73054c7d2318955e56babf2d05354ab7f18e1ce298d7887808d981dc
+RESULT 21 PASS 0 FAIL [synthetic host reference, NOT Sutram linker]
