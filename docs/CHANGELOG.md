@@ -1,3 +1,50 @@
+## v264 - ChatGPT PROVED the FFI technique by measurement, and found the common blocker
+
+### The FFI: it did not answer with a design, it answered with an experiment
+
+**Verdict: YES - an executable can call a freestanding C function with no libc and no dynamic loader.
+NO - it cannot call libc's `printf` without linking its implementation.**
+
+**And it measured that rather than arguing it.** It wrote a freestanding C function
+(`long sutram_ffi_add(long,long)`), a raw Linux entry point using the **x86-64 SysV C ABI**, compiled with
+GCC, **linked with `ld -nostdlib -static`**, and observed:
+
+```
+stdout:  NO_LIBC_C_CALL=42
+exit:    42
+size:    9,096 bytes
+PT_INTERP: none   dynamic section: none   DT_NEEDED: none
+```
+
+**And the control that makes it evidence: removing the C object makes the link FAIL with
+`undefined reference to 'sutram_ffi_add'`.** **So the call is real, and the binary has no runtime.**
+
+**That is the difference between a design and a proof.** A design says the FFI could work; **this says the
+technique works and shows the exact ELF with no interpreter and no dynamic section.**
+
+### And the finding that matters more than the FFI
+
+**WS2 asked whether the module system fits the compiler as it is. Its answer:**
+
+> *Only its source-level module graph and export surface fit. **Genuine separately compiled modules REQUIRE a
+> new object writer, relocation format and linker/driver.** This is architecture work, not a small safe
+> change.*
+
+**So the FFI and the module system need THE SAME MISSING PIECE: an object writer and a linker.**
+
+**Neither is a small change. Both are the same change.** That is worth knowing before either is started -
+**it means the linker is not a feature, it is the thing two features are standing on.**
+
+### And it corrected its own earlier design
+
+> *`# sutram-module-v1` is ALREADY active, not a new switch to invent.*
+
+**A correction to its own R91 design, found by reading the compiler.** **It read the source before defending
+its design** - which is the right order.
+
+### WS3
+**The error-contract verdict is delivered.** To be read.
+
 ## v263 - MY MERGE CORRUPTED FOUR FILES. Claude caught it. And the F7 decision is bigger than F7.
 
 ### The error, and it is the most damaging kind
