@@ -1,3 +1,49 @@
+## v260 - FIRST-CLASS FUNCTIONS WORK. And the FFI does not, which is also a result.
+
+### The capability the language was missing most
+
+**A `prakriya` name used as a value IS the function.** Claude's R23-01, compiler **v234**:
+
+```
+prakriya aarohi(a, b) { prati a - b }
+shreni(x, aarohi)        # passed
+vitti f = aarohi         # stored
+likha(f(10, 3))          # called through: 7
+prakriya kram_chuno(k) { yadi (k == 1) { prati avarohi }  prati aarohi }   # returned
+```
+
+**Stored in a variable, passed as an argument, returned from a function, kept in a `mala`, compared with
+`==`, and called through.** That is the whole of paradigm 2's first step, **and it is the largest capability
+gap the language had.**
+
+### And the proof is the one I asked for, not a demo
+
+**`examples/246_r23_comparator_sort.sm`** - one insertion sort, `shreni(vibhag s, tulana)`, **sorting the same
+array four ways by the comparator passed in:** ascending, descending, evens-first, **and descending over only
+the middle four elements - a slice.**
+
+**So slices work too** (R23-03), and they work *inside* the first-class-function proof.
+
+**And the comparator arrives three ways: from a variable, from a parameter, and from the return value of
+`kram_chuno`.** That is not a demo - **it is the feature being used the way a real program uses it.**
+
+**No existing golden changed.** The new expectations are new files.
+
+### The FFI: NOT implemented, and ChatGPT said so precisely
+
+> *Status: current Sutram C FFI NOT IMPLEMENTED; separate C-ABI control PASS; native Sutram compile NOT_RUN.*
+
+**It wrote the minimal probe - `printf("Hello from Sutram C FFI")` - established from the compiler source at
+`src/sutram_compiler.asm:11839-11858` what is expected at that point, verified the **C ABI separately** with
+GNU `as`/`ld`, **and did not invent the native error bytes it could not produce.**
+
+**"Not implemented" is a complete and useful answer.** The alternative - a plausible-looking FFI design that
+does not link - would have cost a round and produced nothing.
+
+### Also delivered
+**R23-02 (methods), R23-04 (checks and open), R91-WS2 (the module/package design), R91-WS3 (the error type).**
+To be read.
+
 ## v259 - R22 merged (v233), and the corpus re-pin was INCOMPLETE
 
 **Claude's R22 is merged. The version is v233, the F8 wording fix is in, and there is a new
