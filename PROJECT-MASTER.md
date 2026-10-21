@@ -250,6 +250,41 @@ regresses everything rather than one feature.** **The owner accepted that risk k
 absolute: every one of the 218 suite programs must still compile exactly as it does now, through the existing
 one-pass path.**
 
+
+### The performance fundamental (set 2026-10-21)
+
+**The aim: be faster than C and Zig, in all aspects.**
+
+**And it is measurable, which is what makes it a fundamental rather than a slogan.** The project's rule has always
+been *performance is measured, not assumed* - **so the gap is recorded here and moves or does not.**
+
+**Measured 2026-10-21** (Debian 12, x86-64, best of five; C via `zig cc -O2`, Zig 0.13.0 ReleaseFast):
+
+| Aspect | Sutram | C | Zig | The gap |
+|---|---|---|---|---|
+| **Speed**, sum 1..10M | **13.30 ms** | 7.88 ms | **1.77 ms** | **1.7x slower than C, 7.5x slower than Zig** |
+| **Startup**, empty program | **3.36 ms** | 8.38 ms | 4.24 ms | **Sutram WINS** |
+| **Binary size**, hello | **205 B** | 6,608 B | 1,729,200 B | **Sutram WINS** |
+| **Memory**, peak RSS | **16,128 KB** | 16,956 KB | 16,008 KB | **Sutram WINS (marginally)** |
+| **Runtime needed** | **none** | libc | none (static) | **Sutram WINS** |
+
+**So Sutram already wins four of five aspects and loses the one that is hardest: raw speed on a loop.**
+
+**What the speed gap actually is:** the compiler does not vectorise, and `SUTRAM_R65_PEEPHOLES` - a peephole
+optimiser already written - **is default-OFF.** So part of the gap is a switch, and part is real optimiser work.
+
+**The direction, in order of expected gain:**
+
+1. **Turn on and extend the peephole optimiser.** It exists; it is off.
+2. **Register allocation** - the loop may be spilling to memory between iterations.
+3. **Loop optimisation** - the tight integer loop C wins on is exactly the case SIMD addresses.
+4. **Constant folding** at compile time.
+5. **Instruction selection** - choosing a shorter instruction for the same operation.
+
+**And the rule that keeps this honest:** every change to the optimiser is measured against the same benchmark,
+**and the benchmark set must grow** - one integer loop cannot support a claim about "all aspects". **String,
+allocation and call-heavy shapes are needed before that claim can be made.**
+
 ## 9. What is NOT true — read before claiming anything
 
 - **Sutram does not claim memory safety.** There is no ownership model. The charter says specify the rules
