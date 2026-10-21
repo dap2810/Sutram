@@ -1,3 +1,51 @@
+## v291 - R33: hardening the FFI found a SILENT TRUNCATION and a broken call. Compiler v242, gates 30.
+
+**The owner asked whether the repo is current before he starts the Windows linker. It is - and Claude's R33
+landed while he was asking.**
+
+### The two defects hardening found
+
+| Defect | What it was |
+|---|---|
+| **a `dasham` passed to an `i64`** | **SILENTLY TRUNCATED** - `s_add(1.75, 2)` returned **3** |
+| **a foreign call written as a statement** | **broken outright** - sent to the Sutram call by its local name, **failed at the link** |
+
+**The first is the worst class this project has: a wrong answer with no diagnostic.** **`s_add(1.75, 2)` giving
+`3` is exactly the shape of F1 and F7 - the compiler reports success and the program is wrong.**
+
+**And Claude's reason for hardening is the right one:** *"A capability with a silent defect and a broken one is
+not finished."* **It built the smallest FFI (R32), then went back for the second-smallest - and found two
+defects on the way.**
+
+### What the FFI now covers
+
+| Case | Now |
+|---|---|
+| a `dasham` to an `i64` | **`E_FFI_KIND`** at the call, exit 1, no object |
+| a `dasham` / C `double` | **`f64`** - xmm0.. in, xmm0 out, result a `dasham` |
+| a string | **`ptr`** - a string, a kosh, or an integer; a `dasham` is `E_FFI_KIND` |
+| a pointer | **`ptr`**, tested both ways - **C reads a string and a kosh, and C WRITES into a kosh** |
+| a C function returning nothing | **`void`** - a statement; **using its value anywhere is `E_FFI_KIND`, never a made-up 0** |
+
+**That last row is the rule ChatGPT specified two rounds ago, kept exactly.** **No fake `prati 0`.**
+
+### And the FFI has its own fuzzers now
+
+- **`fuzz_ffi`**: 4 × 500 programs, **21,880 foreign calls, 0 differ**
+- **`fuzz_elf2smo`**: 5 × 20,000 **malformed** objects, **0 broke the contract**
+
+**So the ELF reader is fuzzed with hostile input, not only with good input.** **That is the difference between
+testing a parser and trusting it.**
+
+### The state, and the answer to the owner's question
+
+**Compiler v242, gates 30 PASS / 0 FAIL / 1 NOT-RUN, suite 218, corpus 0 failed, every fuzzer clean.**
+
+**And everything is on `main`:** `linker/sutram_link.asm`, `linker/sutram_elf2smo.asm`, `docs/OBJECT-FORMAT.md`,
+`sutram-link`, `sutram-elf2smo`, `tools/gates.sh`. **The owner's clone is current.**
+
+**`WINDOWS-LINKER-PLAN.md` is delivered** - the plan for what he is starting.
+
 ## v290 - I verified the FFI's arity rule myself. And half of it I could not verify.
 
 **I ran the FFI pipeline rather than reading the report. Compiler v241.**
