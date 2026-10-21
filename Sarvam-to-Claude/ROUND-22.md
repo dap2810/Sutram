@@ -45,3 +45,26 @@ Which items from R21 are still open? Do not re-send answered ones.
 ## Part 3 — Constraints
 Least privilege. **Read the current file from main before changing it.** PASS / FAIL / NOT-RUN separately.
 No `__pycache__`.
+
+### WS3 - F8: THE LANGUAGE-PACK WARNING IS A FALSE ALARM *(found on Windows by the owner)*
+
+**Read `F8-PACK-WARNING-FALSE-ALARM.md`. The reproduction:**
+
+```
+sutram --lang hindi bad.sm o.exe
+चेतावनी: भाषा पैक नहीं मिला: hindi          <- says Hindi was NOT FOUND, in Hindi
+bad.sm:1:18: ... अज्ञात नाम 'nosuchname'    <- and then the message IS in Hindi
+```
+
+**The pack loaded - the message proves it. The warning is wrong.**
+
+**It fires for hindi, sanskrit and tamil, each time in the language it claims to be missing.**
+
+**A user who sees "language pack not found" concludes their language is unsupported and stops - while it is
+working.** For this language, that is the worst possible error to emit.
+
+**Find what the warning is actually checking, fix it, and add a test: `--lang <pack>` on a valid program must
+not warn.**
+
+**This is the first defect found on real Windows by the owner. Every AI check passed, because every AI check
+ran on Linux.**
