@@ -1,3 +1,18 @@
+## v249 - ROUND-22 and ROUND-90 issued
+
+**ROUND-22 (Claude) is one item:** make `sutram-fmt` executable **at the git level**, with the exact commands.
+**I cannot do it** - a mode is a git attribute, not content, and my write tool puts content. **I pushed its
+bytes and the mode did not move.**
+
+**So it is the last thing standing between the tree and 16 gates with zero failures.** And Claude is asked to
+**check whether any other committed script has lost its mode** while it is there - the gate names one, but it
+only checks what it knows about.
+
+**ROUND-90 (ChatGPT) asks about the one rule where the two checkers disagree.** Claude flagged 0 "extra
+placeholder" candidates; ChatGPT flagged 36. **One of the two rules is wrong, and it matters** - because a
+structural check is only as good as its rule set, **and the eight draft packs will never have a native
+speaker read them.**
+
 ## v248 - Claude R21 merged, and a limit of my own tooling stated plainly
 
 **Merged:** the four corrected crash-corpus inputs, `tools/crash_corpus.py`, and
