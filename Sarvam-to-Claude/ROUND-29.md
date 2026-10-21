@@ -94,3 +94,34 @@ gap is recorded - but it is not this round's work.**
 
 **And say which you chose and why.** **Keep the performance work on the list - it is the next phase, not a
 cancelled one.** **And the guard still applies: the ordinary path must not change.**
+
+
+---
+
+## CORRECTION TO THE PRIORITY CHANGE - I WAS WRONG ABOUT THE FFI
+
+**In the priority note above I wrote that the linker makes the C FFI "reachable". I tested it. It does not,
+and the reason is precise:**
+
+| Test | Result |
+|---|---|
+| a Sutram object | **144 B, magic `SUTRAMO1`** |
+| **`sutram-link` on a C object (ELF)** | **`vastu-patram na (SUTRAMO1 apekshitam)`** |
+| **`ld` on a `.smo`** | **`file format not recognized`** |
+| **import / undefined-symbol table in the object** | **none - zero import-related lines in `r28_object.inc`** |
+
+**So the FFI needs TWO things that do not exist:**
+1. **an import table in `SUTRAMO1`** - a way for an object to say *"I need `printf` from outside"*;
+2. **`sutram-link` able to read ELF relocatable objects**, or a converter.
+
+**Both tools are correct to refuse each other. Neither is broken; the bridge does not exist.**
+
+**I inferred reachability from the existence of a tool rather than from its capability.** **That is my error,
+not yours, and I am correcting it before you spend a round on it.**
+
+**WHAT IS STILL TRUE: separate compilation IS reachable.** **Your `test_link.py` proves two Sutram modules
+link in both orders with calls in both directions** - the object level works. **The work is in the module graph
+and `yoj`, not in a new format.**
+
+**So this round, prefer separate compilation.** **If you choose the FFI, it starts with the import table - say
+so and scope it as its own piece of work rather than a small version.**
