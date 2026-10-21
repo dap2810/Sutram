@@ -359,7 +359,7 @@ the observation that makes it true. Two of them — Windows execution and the fr
 3. **Run the gates** before and after your change:
    ```sh
    python3 tests/run_tests.py                        # expect PASS=218 NO-EXPECTATION=4
-   python3 tools/codegen_gate.py ./sutram_compiler   # expect 22 PASS
+   python3 tools/codegen_gate.py ./sutram_compiler   # expect 25 PASS
    python3 tools/test_lang_packs.py ./sutram_compiler # expect 33/33
    python3 tools/proof_lib.py --compiler ./sutram_compiler     # expect 183
    python3 tools/proof_props.py --compiler ./sutram_compiler   # expect 76
