@@ -1,0 +1,6 @@
+yoj phal
+mukhya() {
+    vitti r = nirmmita(2 * 8)
+    phal_janchit_bhaj(r, 10, 0)
+    likha(phal_mulya(r)) # silently treats division failure as zero
+}

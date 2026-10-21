@@ -1,0 +1,10 @@
+yoj phal
+mukhya() {
+    vitti r = nirmmita(2 * 8)
+    phal_janchit_bhaj(r, 10, 0)
+    yadi (phal_asti_siddhi(r) == 0) {
+        likha("division failed")
+        prati 0
+    }
+    likha(phal_mulya(r))
+}
