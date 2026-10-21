@@ -4,6 +4,32 @@
 
 ---
 
+## Index — ROUND-24 delivery (2026-10-21, against main `affb99dc`, v261)
+
+**Code is on branch `claude/round-24`, commit `9132b910`, draft PR #63. Compiler v235.** It stacks on #62 → #61 → #60.
+
+**Read first:**
+
+1. **WS1: the manifest is right; the four files on main are not** (R24-01). A text merge re-encoded them,
+   and regenerating the manifest from them would pin inputs that never crashed anything. **They are now
+   base64 text, which no text copy can change.** To merge: add the four `.sm.b64` files and delete the four
+   `.sm`. I simulated that on main and the corpus went to **0 failed**. The modes need the Merge button on #60.
+2. **WS2: the net** (R24-02). Suite PASS=216, corpus 227 / 0, `fuzz_valid` 500/500, and **the new
+   `fuzz_valid --capabilities` (calls through function values) 500/500.** `fuzz_r23` 1000 / 0, fuzz_robust
+   0 crashes. **Gates 21 / 0 / 1.**
+3. **WS3** (R24-03). Methods brought forward, with the misleading hint fixed. **The next capability is the
+   error type**, scoped (`siddhi` / `dosh` / `prasar`, carried in registers, no heap); implementation next round.
+
+| File | Workstream |
+|---|---|
+| `R24-01-CORPUS-MANIFEST.md` | WS1 |
+| `R24-02-THE-NET.md` | WS2 |
+| `R24-03-METHODS-AND-NEXT.md` | WS3 |
+| `R24-04-OPEN.md` | open items |
+| `evidence-r24/` | suite, corpus, the four fuzz runs, gates, other test folders |
+
+---
+
 ## Index — ROUND-23 delivery (2026-10-21, against main `1f82b247`, v256)
 
 **Code is on branch `claude/round-23`, commit `705742c2`, draft PR #62. Compiler v234.** It stacks on #61
