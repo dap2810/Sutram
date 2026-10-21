@@ -1,3 +1,45 @@
+## v257 - BASELINE captured before the capability rounds, and it found 4 manifest failures
+
+**The capability round is the largest change the compiler has had, so I captured a baseline to verify it
+against. And the baseline was not clean.**
+
+### The baseline
+
+| Check | Result |
+|---|---|
+| suite | **PASS=213, 4 no-expectation** (up from 205) |
+| language packs | **33/33** |
+| library proofs | **220 passed** |
+| property proofs | **86/86** |
+| layers | 14 core / 9 alloc / 1 std |
+| module graph | **OK** |
+| **valid fuzzer** | **300/300 agree, 0 fail** - and the distribution covers the F1 boundary densely |
+| **crash corpus** | **227 cases, 4 FAILED** |
+
+### The four failures, and they are the four files Claude corrected in R21
+
+```
+FAIL  manifest: r15-original/mutation-15-27971.sm does not have the pinned bytes (re-encoded or edited)
+FAIL  manifest: r15-original/mutation-15-37233.sm ...
+FAIL  manifest: r15-original/mutation-15-42057.sm ...
+FAIL  manifest: r15-original/mutation-15-574.sm ...
+crash corpus: 227 cases + manifest, 4 failed
+```
+
+**Not a crash** - all 227 cases produce diagnostics, and I verified that separately earlier. **The manifest and
+the files disagree** - which means the corpus cannot detect tampering, **which is the only thing a manifest is
+for.**
+
+**Assigned to Claude before it starts the capabilities.**
+
+### Why I stopped to fix this first
+
+**A green baseline is a precondition for a big change, not a nicety.** The capability round will move the
+compiler substantially. **If the regression net reports 4 failures before the work begins, a new failure is
+invisible in the noise** - and I would not be able to tell a regression from the pre-existing state.
+
+**That is the whole reason for capturing a baseline, and it earned its place on the first try.**
+
 ## v256 - the capability set is in the roadmap, and the console window is recorded as parked
 
 **The owner set the direction: the language itself is the priority.** So the roadmap now runs **two tracks** -
