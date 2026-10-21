@@ -1,3 +1,29 @@
+## v261 - ROUND-24 and ROUND-92 issued
+
+**The honest note first: I read R23 and R91 and recorded them, but did not issue the follow-up rounds until
+asked.** That is a gap in the loop - **a delivery that is read but not followed up leaves both partners idle.**
+
+### ROUND-24 (Claude)
+
+**WS1: the corpus manifest, again.** R22 changed the four `.sm` files; `SHA256SUMS` was not in its list, so
+the files moved and the manifest did not. **Second time raised.**
+
+**WS2: verify the capabilities against the net** - **"a capability that works on one example is a demo; one
+that survives the fuzzer and the suite is a feature."** **And if the fuzzer's generator cannot express
+function values, say so.**
+
+**WS3: choose the next capability itself** - closures, the error type, or the FFI - **with the note that if it
+can make a Sutram program call `printf`, that is the largest ecosystem gain available.**
+
+### ROUND-92 (ChatGPT)
+
+**WS1 is the design question its own finding raised:** *the project has ruled out a runtime, and a normal FFI
+links libc.* **So - can a C function be called without one? If not, say so and describe the nearest
+syscall-only path.**
+
+**Plus: does the module design fit the compiler as it is, and does the error-type page contain the program
+that cannot compile under it but compiles today?**
+
 ## v260 - FIRST-CLASS FUNCTIONS WORK. And the FFI does not, which is also a result.
 
 ### The capability the language was missing most
