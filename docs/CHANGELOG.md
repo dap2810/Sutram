@@ -1,3 +1,17 @@
+## v279 - both rounds corrected before either partner acts on my wrong premise
+
+**I added the correction to ROUND-29 and ROUND-96** - the FFI is not reachable, here is the measurement, and
+**it is my error rather than a change of plan.**
+
+**And I told them what is still true:** **separate compilation IS reachable** - `test_link.py` proves two Sutram
+modules link in both orders with calls in both directions. **The work is in the module graph, not a new format.**
+
+**So both are told: prefer separate compilation; if you choose the FFI, it starts with the import table, and
+scope it as its own piece of work rather than "a small version".**
+
+**That last instruction matters.** **The FFI is not a small job, and a brief that calls it one would produce
+either a rushed design or a half-built format.**
+
 ## v278 - I WAS WRONG: the linker does NOT make the FFI reachable. Measured, and the reason is precise.
 
 **In v277 I told both partners the C FFI was "now reachable" because the object format and the linker exist.**
