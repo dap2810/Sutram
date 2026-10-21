@@ -1,0 +1,5 @@
+# R91: intentionally unsupported in today's core compiler.
+# No local function definition, no module import, and no builtin named printf.
+mukhya() {
+    printf("Hello from Sutram C FFI\n")
+}
