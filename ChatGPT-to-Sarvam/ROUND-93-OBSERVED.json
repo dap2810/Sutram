@@ -1,0 +1,233 @@
+{
+  "schema": 1,
+  "project": "Sutram",
+  "round": 93,
+  "mode": "design-only, no compiler implementation",
+  "date": "2026-10-21",
+  "base_main": "00388c3c0b3625ac475b8d6f47866e6e64373223",
+  "project_log": "v266",
+  "compiler": "v236 (reported on main; not rebuilt this round)",
+  "source_files": [
+    {
+      "path": "src/sutram_compiler.asm",
+      "git_blob": "836a6d348a0064c8f4398aef1765f38c9d2d2b35"
+    },
+    {
+      "path": "src/r23_capabilities.inc",
+      "git_blob": "fb73a3609fa4207b3450f4b7beaf4af18d6d7fd5"
+    },
+    {
+      "path": "src/r71_module_link.inc",
+      "git_blob": "ab47f41db59d94140f3036b7e7f9fa3959bd610d"
+    },
+    {
+      "path": "src/r25_phal.inc",
+      "git_blob": "229fdd17759bac9b7b781719832980686635d163"
+    },
+    {
+      "path": "tests/r71/test_linker.py",
+      "git_blob": "0bebc02dfafef0967b5f173a086fd8d2c2b35f5e"
+    },
+    {
+      "path": "examples/249_r25_phal.sm",
+      "git_blob": "43f76ac3743d55d495c06ccfbafe087e704ba01a"
+    },
+    {
+      "path": "lib/phal.smlib",
+      "git_blob": "c23ae4ae9b48aba19fb66eb22fdf44b5fff5e392"
+    }
+  ],
+  "static_review": {
+    "status": "PASS",
+    "kind": "direct inspection of full source blobs retrieved from pinned main; exact source string predicates; not native execution",
+    "checks": [
+      {
+        "id": "v1_graph_preflight_present",
+        "status": "PASS"
+      },
+      {
+        "id": "existing_niryat_export_parser",
+        "status": "PASS"
+      },
+      {
+        "id": "normal_source_import_flattens",
+        "status": "PASS"
+      },
+      {
+        "id": "normal_build_invokes_single_gen_code",
+        "status": "PASS"
+      },
+      {
+        "id": "compiled_ELF_writer_uses_ET_EXEC",
+        "status": "PASS"
+      },
+      {
+        "id": "ELF_writer_omits_section_table",
+        "status": "PASS"
+      },
+      {
+        "id": "ELF_writer_writes_code_buf",
+        "status": "PASS"
+      },
+      {
+        "id": "PE_writer_exists",
+        "status": "PASS"
+      },
+      {
+        "id": "direct_call_internal_backpatch",
+        "status": "PASS"
+      },
+      {
+        "id": "R23_function_value_RIP_patch",
+        "status": "PASS"
+      },
+      {
+        "id": "R71_native_resolver_exists",
+        "status": "PASS"
+      },
+      {
+        "id": "R71_only_E8_patch",
+        "status": "PASS"
+      },
+      {
+        "id": "R71_controls_not_Sutram_objs",
+        "status": "PASS"
+      },
+      {
+        "id": "R25_rax_rdx_tagged_status",
+        "status": "PASS"
+      },
+      {
+        "id": "R25_forces_direct_call_prasar",
+        "status": "PASS"
+      },
+      {
+        "id": "R25_mukhya_exits_on_dosh",
+        "status": "PASS"
+      },
+      {
+        "id": "R25_no_catch_implementation",
+        "status": "PASS"
+      },
+      {
+        "id": "R25_demonstrates_early_abort",
+        "status": "PASS"
+      },
+      {
+        "id": "legacy_library_result_value_unchecked",
+        "status": "PASS"
+      },
+      {
+        "id": "native_strict_result_checker_absent",
+        "status": "PASS"
+      },
+      {
+        "id": "no_native_object_CLI_yet",
+        "status": "PASS"
+      },
+      {
+        "id": "R56_globals_current_storage_finalized",
+        "status": "PASS"
+      }
+    ],
+    "pass": 22,
+    "fail": 0,
+    "checker_correction": "Initial predicate expected 'call check_module_graph' but actual source uses 'jmp check_module_graph'; corrected predicate passed. False positive was the checker, not the compiler."
+  },
+  "gnu_linux_host_control": {
+    "status": "PASS",
+    "nature": "Two independent GNU assembler ET_REL objects with one direct E8 call and one RIP-relative function-address LEA; ld linking, not Sutram .sm/.smo compilation",
+    "host": "Linux x86_64",
+    "cc": "gcc (Debian 14.2.0-19) 14.2.0",
+    "linker": "GNU ld (GNU Binutils for Debian) 2.44",
+    "input_root": "ChatGPT-to-Sarvam/ROUND-93-WS1-RELOC-ROOT.S",
+    "input_leaf": "ChatGPT-to-Sarvam/ROUND-93-WS1-RELOC-LEAF.S",
+    "root_git_blob": "dc152a999cb03f651e97ec75d4438e5076c5f568",
+    "leaf_git_blob": "6345718f418db657c90bfd126800f0b6a8209356",
+    "root_sha256": "c0d2a64f14ef3db79e30be622df9700e0eb49e4c237d73766886eae8e6fdefe1",
+    "leaf_sha256": "6e4a34bcb9e1a0bd9d494834c03e2c1da2fc8636d75474fd80c85291c4ac16dc",
+    "final_executable_sha256": "740e5f9a16b3e89800538618026108a93c3de1a900c4d3edf50163e50f77b6fc",
+    "root_relocations": [
+      {
+        "field_offset_hex": "0x0f",
+        "type": "R_X86_64_PLT32",
+        "symbol": "sutram_r93_add",
+        "addend": -4
+      },
+      {
+        "field_offset_hex": "0x1c",
+        "type": "R_X86_64_PC32",
+        "symbol": "sutram_r93_add",
+        "addend": -4
+      }
+    ],
+    "compile_root_exit": 0,
+    "compile_leaf_exit": 0,
+    "link_exit": 0,
+    "runtime_exit": 42,
+    "runtime_stdout_hex": "34320a",
+    "runtime_stderr_bytes": 0,
+    "no_PT_INTERP": true,
+    "no_dynamic_section": true,
+    "missing_leaf_link_exit": 1,
+    "missing_leaf_expected_error": "undefined reference to `sutram_r93_add'",
+    "assertions": [
+      {
+        "id": "direct_PLT32",
+        "status": "PASS"
+      },
+      {
+        "id": "address_PC32",
+        "status": "PASS"
+      },
+      {
+        "id": "output_42_newline",
+        "status": "PASS"
+      },
+      {
+        "id": "runtime_stderr_empty",
+        "status": "PASS"
+      },
+      {
+        "id": "no_dynamic_section",
+        "status": "PASS"
+      },
+      {
+        "id": "no_PT_INTERP",
+        "status": "PASS"
+      }
+    ],
+    "pass": 6,
+    "fail": 0,
+    "negative_status": "EXPECTED_FAILURE",
+    "observed_raw_file": "ChatGPT-to-Sarvam/ROUND-93-WS1-RELOC-OBSERVED.txt",
+    "reproduction_commands": [
+      "gcc -c -nostdlib -ffreestanding -o root.o ChatGPT-to-Sarvam/ROUND-93-WS1-RELOC-ROOT.S",
+      "gcc -c -nostdlib -ffreestanding -o leaf.o ChatGPT-to-Sarvam/ROUND-93-WS1-RELOC-LEAF.S",
+      "readelf -Wr root.o",
+      "ld -nostdlib -static -e _start -o linked-two-objs root.o leaf.o",
+      "./linked-two-objs  # prints 42 newline, intentionally exits 42",
+      "readelf -l linked-two-objs",
+      "readelf -d linked-two-objs",
+      "ld -nostdlib -static -e _start -o missing-linked root.o  # expected link failure"
+    ]
+  },
+  "not_run": [
+    "Native Sutram --emit-object and --link: NOT_IMPLEMENTED/NOT_RUN",
+    "Actual separately compiled .sm/.smo test: NOT_IMPLEMENTED/NOT_RUN",
+    "Native Sutram C foreign object linking: NOT_IMPLEMENTED/NOT_RUN",
+    "Native catch-handler code tests: NOT_IMPLEMENTED/NOT_RUN under R93 (Claude R26 owns implementation)",
+    "Full current Sutram regression/fuzz/crash gates: NOT_RUN in R93",
+    "Real Windows execution and acceptance: NOT_RUN in R93"
+  ],
+  "reported_previous_but_not_rerun": "Sarvam changelog v265 reports 22 PASS/0 FAIL/1 NOT-RUN Linux gates on integrated R25",
+  "modified_compiler_files": [],
+  "delivered": [
+    "ChatGPT-to-Sarvam/ROUND-93-WS1-LINKER-MINIMUM.md",
+    "ChatGPT-to-Sarvam/ROUND-93-WS1-RELOC-ROOT.S",
+    "ChatGPT-to-Sarvam/ROUND-93-WS1-RELOC-LEAF.S",
+    "ChatGPT-to-Sarvam/ROUND-93-WS1-RELOC-OBSERVED.txt",
+    "ChatGPT-to-Sarvam/ROUND-93-OBSERVED.json",
+    "ChatGPT-to-Sarvam/ROUND-93-HANDOFF.md"
+  ]
+}
