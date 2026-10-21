@@ -1,3 +1,43 @@
+## v269 - THE OWNER DECIDED: WE BUILD OUR OWN LINKER. And the fundamental is now stated precisely.
+
+### The decision, and why it is better than my recommendation
+
+**Claude refused the linker - restructuring, touching the step every program goes through - and proposed an
+opt-in object file linked by the SYSTEM's `ld`.**
+
+**The owner read that reasoning and decided anyway: build the linker, ours, in NASM.**
+
+**And his reason is better than mine.** **The project's fundamental is that it depends on no other language.**
+**Using the system's `ld` would have kept that true only by borrowing another project's tool.** **Building our
+own keeps it inside the project, written the way the compiler is written.**
+
+**He also accepted the risk knowingly** - *"I know it is tough, but we can build that."* **The risk belongs to
+the person who owns the project, and he took it.**
+
+### The fundamental, restated - and this is the important part
+
+> **A compiled Sutram program has no runtime dependency. The optional FFI links through a linker written in
+> this project; it is off by default and affects only programs that use it.**
+
+**And two rules that hold the line:**
+
+1. **The core stays dependency-free, non-negotiably.** An ordinary program still compiles to a finished binary
+   **with no linker, no `ld`, no other language.** **If the linker ever becomes required for an ordinary
+   program, the fundamental is broken and we stop.**
+2. **The FFI is opt-in.** Off by default.
+
+**So the answer to the owner's question - "does this miss our fundamental?" - is now: no, and it is stronger
+than the alternative would have been.**
+
+### Issued
+
+**ROUND-28 (Claude):** decide the object format, then **the smallest linker that links two modules into one
+binary** - in NASM, in this project. **With the guard stated absolutely: every one of the 218 suite programs
+must still compile exactly as it does now.** **And the suite, the corpus and the fuzzer run before and after.**
+
+**ROUND-95 (ChatGPT):** **its R93 linker design is now the plan rather than a proposal** - *the best outcome a
+design can have.* **It is asked to tighten the object format to byte-level so Claude can implement against it.**
+
 ## v268 - ROUND-27 and ROUND-94 issued. And a note on what this round got right.
 
 ### The audit
