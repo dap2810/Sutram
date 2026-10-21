@@ -17,8 +17,9 @@ because an inlined module's text is compiled as if it were in the root file:
   1. <root's directory>/lib/<name>.smlib
   2. <the compiler's directory>/lib/<name>.smlib
   3. <current directory>/lib/<name>.smlib
-`yoj` is found the way the compiler finds it: at any byte that is not inside a
-`#` or `//` comment, the three bytes `yoj` followed by a space, tab or newline.
+`yoj` is found the way the compiler finds it: outside a `#` or `//` comment and
+outside a string literal, the three bytes `yoj` not preceded by a letter, digit,
+`_` or a non-ASCII byte, and followed by a space, tab or newline.
 
 Version 1 refuses, plainly (exit 1):
   * a namespaced import (`yoj m@alias`), which rewrites the module's names;
@@ -41,11 +42,19 @@ def yoj_names(text: bytes):
     i, n = 0, len(text)
     while i < n:
         c = text[i]
+        if c == 0x22:                       # a string literal: nothing in it is a yoj
+            i += 1
+            while i < n and text[i] != 0x22:
+                i += 2 if text[i] == 0x5C else 1
+            i += 1
+            continue
         if c == 0x23 or (c == 0x2F and i + 1 < n and text[i + 1] == 0x2F):
             j = text.find(b"\n", i)
             i = n if j < 0 else j + 1
             continue
-        if text[i:i + 3] == b"yoj" and i + 3 < n and text[i + 3] in b" \n\t\r":
+        prev = text[i - 1] if i else 0x20
+        if (text[i:i + 3] == b"yoj" and i + 3 < n and text[i + 3] in b" \n\t\r"
+                and not (prev >= 0x80 or prev == 0x5F or chr(prev).isalnum())):
             i += 3
             while i < n and text[i] in b" \n\t\r":
                 i += 1

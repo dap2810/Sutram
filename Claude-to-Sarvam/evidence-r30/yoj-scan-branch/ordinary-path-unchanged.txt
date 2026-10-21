@@ -1,0 +1,2 @@
+THE GUARD for the proposal branch: main's R30 compiler (v240, d0527487) vs the yoj-scan build (v241), ordinary path, Linux:
+  559 programs: 471 byte-identical executables, 88 refused identically, 0 DIFFER

@@ -233,7 +233,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v240) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v241) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -2648,9 +2648,33 @@ expand_imports_pass:
     xor r12, r12              ; source pos
     mov r13, [rel source_len]
     xor r14, r14              ; output pos
+    mov qword [rel r30_ei_string], 0
 .ei_loop:
     cmp r12, r13
     jae .ei_done
+    ; R30 proposal: inside a string literal (the lexer's rule: from '"' to the
+    ; next unescaped '"', a backslash escaping one byte) nothing is a comment
+    ; or a yoj; the bytes are copied as they are.
+    mov rax, [rel r30_ei_string]
+    test rax, rax
+    jz .r30_ei_outside
+    cmp rax, 2
+    jne .r30_ei_in_string
+    mov qword [rel r30_ei_string], 1   ; the escaped byte
+    jmp .ei_copy
+.r30_ei_in_string:
+    lea rsi, [rel source_buf]
+    movzx eax, byte [rsi + r12]
+    cmp eax, '"'
+    jne .r30_ei_not_quote
+    mov qword [rel r30_ei_string], 0
+    jmp .ei_copy
+.r30_ei_not_quote:
+    cmp eax, 0x5C
+    jne .ei_copy
+    mov qword [rel r30_ei_string], 2
+    jmp .ei_copy
+.r30_ei_outside:
     ; Check for comment lines — skip them (don't look for ayojan inside)
     lea rsi, [rel source_buf]
     add rsi, r12
@@ -2682,6 +2706,11 @@ expand_imports_pass:
     ; Check for "ayojan" at current pos
     lea rsi, [rel source_buf]
     add rsi, r12
+    cmp byte [rsi], '"'        ; R30 proposal: a string literal starts
+    jne .r30_ei_no_string
+    mov qword [rel r30_ei_string], 1
+    jmp .ei_copy
+.r30_ei_no_string:
     ; Compare 3 bytes: y(79) o(6F) j(6A)  -- keyword is now "yoj"
     cmp word [rsi], 0x6F79
     jne .ei_copy
@@ -2699,6 +2728,25 @@ expand_imports_pass:
     je  .ei_yoj_ok
     jmp .ei_copy
 .ei_yoj_ok:
+    ; R30 proposal: `yoj` at the end of a longer name (sanyoj) is that name
+    test r12, r12
+    jz .r30_ei_word_start
+    lea rsi, [rel source_buf]
+    movzx eax, byte [rsi + r12 - 1]
+    cmp eax, 0x80
+    jae .ei_copy
+    cmp eax, '_'
+    je .ei_copy
+    cmp eax, '0'
+    jb .r30_ei_word_start
+    cmp eax, '9'
+    jbe .ei_copy
+    or eax, 0x20
+    cmp eax, 'a'
+    jb .r30_ei_word_start
+    cmp eax, 'z'
+    jbe .ei_copy
+.r30_ei_word_start:
     add r12, 3
     ; Skip spaces/newlines
 .ei_skip_sp:

@@ -1,0 +1,14 @@
+before (v240, main):
+FAIL '    likha("yoj bogus")' b'Sutram Error [E_MODULE_MISSING]: yoj pat' []
+FAIL '    likha("yoj ganit ")' b'' []
+FAIL '    likha("|")' b'' []
+FAIL '    likha(sanyoj + 1)' b'Sutram Error [E_MODULE_MISSING]: yoj pat' []
+PASS 'yoj ganit' b'9\n' ['ganit']
+r30 yoj scan: 5 cases, 4 failed
+after (v241, this branch):
+PASS '    likha("yoj bogus")' b'yoj bogus' []
+PASS '    likha("yoj ganit ")' b'yoj ganit ' []
+PASS '    likha("|")' b'a " yoj ganit |' []
+PASS '    likha(sanyoj + 1)' b'5\n' []
+PASS 'yoj ganit' b'9\n' ['ganit']
+r30 yoj scan: 5 cases, 0 failed

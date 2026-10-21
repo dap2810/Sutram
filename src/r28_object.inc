@@ -34,6 +34,7 @@ section .bss
     r30_gslot        resq R56_GLOBAL_CAP ; offset of global i's 8 bytes in this object's code
     r30_gnames       resb R56_GLOBAL_CAP * R30_NAME_LEN ; "vitti:<name>", its link name
     r30_data_count   resq 1             ; the globals this object holds
+    r30_ei_string    resq 1             ; expand_imports: 0 outside a string, 1 in, 2 after a backslash
     r28_no_mukhya    resq 1
     r28_relocs       resq R28_RELOC_CAP*2   ; (site, name)
     r28_reloc_count  resq 1
