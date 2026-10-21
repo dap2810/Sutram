@@ -223,6 +223,33 @@ Sanskrit, so **Sanskrit is last on purpose** - he catches more after two passes 
 **And a fact to keep in mind: the owner has only ever run `hello.sm` and the IDE, in the DEFAULT language.
 The other ten packs have never been exercised by a human at all - not once.**
 
+
+### The fundamental, restated precisely (2026-10-21)
+
+**The original wording - "no runtime dependency" - is still true and stays. This adds the precision the
+interoperability work made necessary:**
+
+> **A compiled Sutram program has no runtime dependency. The optional FFI links through a linker written in
+> this project; it is off by default and affects only programs that use it.**
+
+**Two rules that hold the line:**
+
+1. **The core stays dependency-free, and it is non-negotiable.** An ordinary Sutram program - one that does not
+   use the FFI - must still compile to a finished binary **with no linker, no `ld`, and no other language
+   involved.** **If the linker ever becomes required to compile an ordinary program, the fundamental is broken
+   and the work stops.**
+2. **The FFI is opt-in.** Sutram can emit an object file **when asked**, and **our own linker** links it. Off by
+   default.
+
+**And the linker is OURS.** On 2026-10-21 the owner decided to build it in this project, in NASM, the way the
+compiler is written. **The alternative - using the system's `ld` - would have kept the fundamental only by
+borrowing another project's tool.** **This keeps it in the project.**
+
+**The risk is named and accepted:** a linker touches the step every program goes through, **and a mistake there
+regresses everything rather than one feature.** **The owner accepted that risk knowingly.** **The guard is
+absolute: every one of the 218 suite programs must still compile exactly as it does now, through the existing
+one-pass path.**
+
 ## 9. What is NOT true — read before claiming anything
 
 - **Sutram does not claim memory safety.** There is no ownership model. The charter says specify the rules
