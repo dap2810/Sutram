@@ -1,0 +1,190 @@
+{
+  "schema": 1,
+  "round": 91,
+  "source_main_at_start": "1f82b247e4ea24323cbced27e22ddc95ad8a7d12",
+  "source_pins": {
+    "src/sutram_compiler.asm": "4547e4737843567ad4b807dd6d9a5e06ca1cb085",
+    "src/r71_module_link.inc": "ab47f41db59d94140f3036b7e7f9fa3959bd610d",
+    "lib/phal.smlib": "c23ae4ae9b48aba19fb66eb22fdf44b5fff5e392"
+  },
+  "artifacts": {
+    "ChatGPT-to-Sarvam/ROUND-91-WS1-ABI-CONTROL.S": "f815e5daa200028ea2f848e2aa9625872cad2c8f",
+    "ChatGPT-to-Sarvam/ROUND-91-WS1-PRINTF-PROBE.sm": "399e036d6e50ab2c70e3ee9f731c71554d5a6b80",
+    "ChatGPT-to-Sarvam/ROUND-91-WS1-FFI-PROBE.md": "000172e126421efc4013df4b19e2cd990a149090",
+    "ChatGPT-to-Sarvam/ROUND-91-WS1-ABI-OBSERVED.txt": "cbce2e031d5ee08c0780f7c16697a01ae8ab7960",
+    "ChatGPT-to-Sarvam/ROUND-91-WS2-MODULE-PACKAGE-DESIGN.md": "0fd817188f207279da34f8620fa5ce101fb550cd",
+    "ChatGPT-to-Sarvam/ROUND-91-WS3-UNHANDLED.sm": "7ae4536c4da5a92ed569ff00d1e855fd767fdcdd",
+    "ChatGPT-to-Sarvam/ROUND-91-WS3-HANDLED.sm": "863aa49b9dd9ddbe51a07506a1fd826738fe7fc4",
+    "ChatGPT-to-Sarvam/ROUND-91-WS3-ERROR-TYPE.md": "ef37f3c336ba5869cf15f34211194dfa8143f107"
+  },
+  "source_consistency_assertions": [
+    {
+      "id": "R91_STATIC_01",
+      "status": "PASS",
+      "description": "All eleven source and handoff files fetched from GitHub without error"
+    },
+    {
+      "id": "R91_STATIC_02",
+      "status": "PASS",
+      "description": "C ABI control file Git blob matches the file used in the local executed experiment"
+    },
+    {
+      "id": "R91_STATIC_03",
+      "status": "PASS",
+      "description": "C ABI source contains printf PLT call and SysV varargs register preparation"
+    },
+    {
+      "id": "R91_STATIC_04",
+      "status": "PASS",
+      "description": "Native Sutram printf probe contains an unresolved direct call"
+    },
+    {
+      "id": "R91_STATIC_05",
+      "status": "PASS",
+      "description": "No builtin symbol bn_printf in accepted compiler source"
+    },
+    {
+      "id": "R91_STATIC_06",
+      "status": "PASS",
+      "description": "Undefined-function path exits 1 when unresolved regular function"
+    },
+    {
+      "id": "R91_STATIC_07",
+      "status": "PASS",
+      "description": "ELF writer sets e_type=2 (ET_EXEC)"
+    },
+    {
+      "id": "R91_STATIC_08",
+      "status": "PASS",
+      "description": "ELF writer emits no section headers"
+    },
+    {
+      "id": "R91_STATIC_09",
+      "status": "PASS",
+      "description": "ELF writer emits one PT_LOAD program header"
+    },
+    {
+      "id": "R91_STATIC_10",
+      "status": "PASS",
+      "description": "R71 module linker explicitly says .sm-to-.smo production emission not wired"
+    },
+    {
+      "id": "R91_STATIC_11",
+      "status": "PASS",
+      "description": "One-page module proposal describes niryat and qualified yoj"
+    },
+    {
+      "id": "R91_STATIC_12",
+      "status": "PASS",
+      "description": "Strict-negative source has opt-in marker and unchecked result extraction"
+    },
+    {
+      "id": "R91_STATIC_13",
+      "status": "PASS",
+      "description": "Strict-positive source tests phal success flag before extraction and returns on failure"
+    },
+    {
+      "id": "R91_STATIC_14",
+      "status": "PASS",
+      "description": "Current lib/phal.smlib defines checked division and result-value extraction"
+    },
+    {
+      "id": "R91_STATIC_15",
+      "status": "PASS",
+      "description": "Proposed error type page states it is not implemented"
+    }
+  ],
+  "host": {
+    "system": "Linux x86-64 kernel 6.18.55",
+    "compiler": "gcc (Debian 14.2.0-19) 14.2.0",
+    "linker": "GNU ld 2.44",
+    "nasm": "ABSENT",
+    "sutram_compiler": "ABSENT"
+  },
+  "abi_control": {
+    "run_source_sha256": "84d13d71c8fdc730046a2803ea61c25383decf2fecfdc00298e30ac86fe4e154",
+    "object_sha256": "5d957c6658b3ae6f7d347b8bb8d8499803fe67a2b6b7f4f04c1577a99606d1ae",
+    "dynamic_output_sha256": "0ee76583815bbcace2be40ced794db1cf2192c5785b7b2d4f217e7dcf4160a91",
+    "static_output_sha256": "56764cd9364b13aa81071485c93bfce5b6d12e75c8bf8dcd90c16ccecbc391c5",
+    "gcc_assembly": {
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    "plain_ld_without_C_library": {
+      "exit_code": 1,
+      "status": "EXPECTED_FAILURE",
+      "stderr": "ld: warning: cannot find entry symbol _start; defaulting to 0000000000401000\nld: /mnt/data/sutram_round91/ffi_abi_control.o: in function `main':\n(.text+0x15): undefined reference to `printf'"
+    },
+    "gcc_dynamic_link": {
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    "dynamic_program": {
+      "exit_code": 0,
+      "stdout": "Sutram FFI ABI control: 42\n",
+      "status": "PASS",
+      "file_bytes": 15816,
+      "interpreter": "/lib64/ld-linux-x86-64.so.2",
+      "needed": [
+        "libc.so.6"
+      ]
+    },
+    "gcc_static_link": {
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    "static_program": {
+      "exit_code": 0,
+      "stdout": "Sutram FFI ABI control: 42\n",
+      "status": "PASS",
+      "file_bytes": 754336,
+      "interpreter": null,
+      "needed": []
+    },
+    "is_Sutram_produced": false
+  },
+  "tests": [
+    {
+      "item": "GNU external printf control, both dynamic and static libc modes",
+      "status": "PASS",
+      "scope": "Non-Sutram host C ABI experiment"
+    },
+    {
+      "item": "GNU ld with unresolved printf without libc",
+      "status": "EXPECTED_FAILURE",
+      "scope": "Observed linking limitation"
+    },
+    {
+      "item": "Native Sutram printf probe",
+      "status": "NOT_RUN",
+      "reason": "No Sutram native compiler executable or NASM on host"
+    },
+    {
+      "item": "Native compiler rejections for phal result handling",
+      "status": "NOT_RUN",
+      "reason": "Future opt-in feature not implemented; historical Python prototype tests separate"
+    },
+    {
+      "item": "Two independent modules .sm -> .smo -> final native program",
+      "status": "NOT_RUN",
+      "reason": "Design only, production object writer not wired"
+    },
+    {
+      "item": "Full Sutram fuzzer, 227 crash corpus and Windows checks",
+      "status": "NOT_RUN",
+      "reason": "No capability code changed; runtime not available"
+    }
+  ],
+  "notes": [
+    "The ABI experiment is GNU-assembled and GCC-linked, not emitted by Sutram.",
+    "Static libc eliminates shared libc dependency but embeds the C runtime into the executable, which changes the shipped no-runtime principle.",
+    "Plain linker failure is expected and must not be counted as a test failure of the Sutram compiler.",
+    "WS2 module system is a bounded one-page design, NOT implementation.",
+    "WS3 comments are ignored in current compiler; proposed strict profile must opt in to native static checking; typed phal<> and prasar are proposals.",
+    "Existing R84 Python gate passed its own 12/12 tests in earlier round, not re-executed now."
+  ],
+  "no_source_modifications": true,
+  "no_PR_merge": true,
+  "no_CI_dispatch": true,
+  "no_background_automation": true
+}
