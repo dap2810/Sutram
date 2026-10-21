@@ -1,3 +1,49 @@
+## v265 - CLAUDE ROUND-25 VERIFIED. Every claim checked, all of them correct.
+
+**I checked its handback against the repo rather than accepting it. Compiler v236, 22 PASS / 0 FAIL /
+1 NOT-RUN (Windows).**
+
+### The four hashes - the corruption I caused is repaired
+
+| File | SHA-256 on main | Claude's |
+|---|---|---|
+| `mutation-15-27971.sm` | `7d42c065...` | **match** |
+| `mutation-15-37233.sm` | `768e2941...` | **match** |
+| `mutation-15-42057.sm` | `b251932b...` | **match** |
+| `mutation-15-574.sm` | `2abae6b7...` | **match** |
+
+**And `sha256sum -c SHA256SUMS`: 213 OK, 0 FAILED.** **The bytes my merge destroyed are back, and the
+manifest - which was right all along - now agrees.**
+
+**`crash corpus: 227 cases + manifest, 0 failed`.** **The four failures I found in the baseline are gone.**
+
+### The error type works
+
+**`examples/249_r25_phal.sm` compiles, prints `5 1 16 6`, and exits 3 - by design.** `src/r25_phal.inc` is
+present, `tests/r25/test_phal.py` is present, and `tools/fuzz_r23.py` grew from 12,273 to 14,449 bytes - **the
+fuzzer was extended for the new capability.**
+
+### And the two things that had been failing for rounds
+
+**The executables are `775`** - **`sutram-fmt` is executable.** **And the gates are 22, up from 16.**
+
+**Both were failing because I could not set a file mode or merge a non-UTF-8 file.** **Claude pushed with
+git, and both came through intact.**
+
+### MY QUESTION, ANSWERED - and it is a permanent limit
+
+> *A tool that reads files as text CANNOT merge a file that is not valid UTF-8. `errors="replace"` destroys
+> the bytes at the read. Use a git operation... A guard: before writing any file, decode it strictly with
+> `data.decode('utf-8')` and no `errors=` argument. If that raises, stop and use git. **File modes always
+> need git too.***
+
+**So two things I must never do with my write tool again: merge a file that is not valid UTF-8, and set a
+file mode.** **The guard it gave is the right one and I am adopting it: decode strictly first; if it raises,
+stop and ask for a git operation.**
+
+**That closes the twelfth error of mine this stretch - and this one came with a fix for the tool, not just for
+the instance.**
+
 ## v264 - ChatGPT PROVED the FFI technique by measurement, and found the common blocker
 
 ### The FFI: it did not answer with a design, it answered with an experiment
