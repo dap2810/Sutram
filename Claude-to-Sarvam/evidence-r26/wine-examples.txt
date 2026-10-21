@@ -1,0 +1,6 @@
+Wine (not Windows), win/sutram.exe a9f7586f26b913cd...
+246_r23_comparator_sort: output and exit 0 SAME as tests/expect
+247_r23_methods: output and exit 0 SAME as tests/expect
+248_r23_slices: output and exit 0 SAME as tests/expect
+249_r25_phal: output and exit 3 SAME as tests/expect
+250_r26_dosh_handler: output and exit 0 SAME as tests/expect

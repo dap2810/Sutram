@@ -1,0 +1,36 @@
+# FILES-R26: every file this delivery changes on main (base 00388c3c -> code commit 597a6bb8), with its git blob.
+# A merge is complete when `git rev-parse main:<path>` equals each blob below.
+M  fd7fad61145b968231f780092090db98c5847de6  Sutram-Setup.exe
+M  ac73d94a510cd3dfba7ca06cdc80e02b362f1db8  Sutram-Setup.sha256
+M  beb4412bd9d1b0fa0614a598857c25d7b0d0f644  docs/BUILDING.md
+M  1f827e3f917393fedef908b2c7d73c9e15c6431b  docs/LANGUAGE-REFERENCE.md
+M  bdbf69b17f2f738901e2681a17884000988fad0d  docs/NEGATIVE-CORPUS.md
+A  a0b8e187ebb21d0659838dbb249c3b35413778c9  examples/250_r26_dosh_handler.sm
+M  b192775e814d623e740ae41fe402d636b0566b60  lang/bengali.sandesh
+M  bad76fbb2d446f8786f58f0ba62ee0ceb3f29059  lang/gujarati.sandesh
+M  3616f1c30c8c36ea4b006be5f47e51c20fd4cc29  lang/hindi.sandesh
+M  17ffab04437575d61811bf898f5ae46e62b79656  lang/kannada.sandesh
+M  00842d07a6dbe5713af8ec65c5ea2aa5d8fc362e  lang/malayalam.sandesh
+M  e51bdf2c30497704c99e035ef0989cde16e49be1  lang/marathi.sandesh
+M  9314ed0ef2cc04d6964ab0d8ca2f5b94a5893384  lang/odia.sandesh
+M  e608e168ac41d963a8c238a93b7b17f15bb1b857  lang/punjabi.sandesh
+M  3975c250c8c146f413a5a7ad70ed73b7515e2bcf  lang/sanskrit.sandesh
+M  35526039153043f4fcf09fd6919e316f91aac46a  lang/tamil.sandesh
+M  e97774660058768450a2dda1bd337b5becc28181  lang/telugu.sandesh
+M  4f03e66e68671e81f79cd8c8110641d3c7bb2dbc  src/r11_sandesh.inc
+M  a36bd286aa6beea0b854576945e6874ba8835af0  src/r25_phal.inc
+M  46517cdb7664befc212fac98cafbf81b700b2de3  src/sutram_compiler.asm
+M  ac9a4a861a1266b05019a0e6f1bd9161f5aeaee9  sutram.exe
+M  85d62de48c2b721bd0b6234bb06942ed848e6209  sutram_compiler
+A  c227083464fb9af8955c90d2924774ee50abb547  tests/expect/250_r26_dosh_handler.exit
+A  15ac4f5bb987520d1c30e4f32689ac23a910ec0e  tests/expect/250_r26_dosh_handler.out
+M  cf14c2a4779f2908db8bc291da93a27a71a7cb55  tests/negative/r70/manifest.json
+M  e340fedfeb07e13f9d5d23812044bea907d72e28  tests/r25/test_phal.py
+M  ffe35ea1325d683044321f4fc848122630a6a2d4  tests/r83/test_diagnostic_coverage.py
+M  7ed1a7116c252fb1a90fcd33c846d03215f52cc9  tests/r83/test_pack_structure.py
+M  eca2e77d92867a104308feab855a870b4a3481be  tools/fuzz_r23.py
+M  dbbc8bbf5b08fa19bc50247d3034bc767594c5f0  tools/r69_build.lock.json
+M  509dd98c47ba1b7da33dd3e3e2a8fca6bdf824bb  tools/r69_build.py
+M  0b27135536080c6ee5565ed1520e92371eb7c9b2  tools/sandesh.py
+M  e23b6e0ef561a72f714f1b2371b834535d4e9a07  tools/sutram_fmt.py
+M  ac9a4a861a1266b05019a0e6f1bd9161f5aeaee9  win/sutram.exe

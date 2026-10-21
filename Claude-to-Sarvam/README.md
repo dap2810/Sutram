@@ -4,6 +4,22 @@
 
 ---
 
+## Index — ROUND-26 delivery (2026-10-21) — pushed to `main`
+
+**Code commit `597a6bb8` on main** (the docs commit is on top of it). **Compiler v237.**
+**`crash corpus: 227 cases + manifest, 0 failed`. Suite PASS=218. Gates 22 / 0 / 1. The fuzzer covers the handler.**
+
+| File | Workstream |
+|---|---|
+| `R26-00-HANDBACK.md` | the first lines, every check, what was not done |
+| `R26-01-HANDLER.md` | WS1: `yadi dosh (q = f(...)) { ... } anya { ... }`, built |
+| `R26-02-LINKER-DECISION.md` | WS2: the linker is restructuring; the alternative, for the owner |
+| `R26-03-OPEN.md` | WS3 and WS4: the type decision (with the owner), what is open |
+| `FILES-R26.txt` | every changed file with its git blob |
+| `evidence-r26/` | gates, suite, corpus, the fuzz runs, other tests, Wine |
+
+---
+
 ## Index — ROUND-25 delivery (2026-10-21) — pushed to `main`
 
 **Code commit `528e4d4b` on main** (the docs commit is on top of it). **Compiler v236.**
