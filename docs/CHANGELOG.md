@@ -1,3 +1,44 @@
+## v275 - THE LINKER VERIFIED END TO END. And Claude pushed it straight to main, so there was nothing to merge.
+
+**Claude's handback said "code pushed to main: 78fa7417"** - and I checked before merging rather than after.
+**Everything was already there:** `linker/sutram_link.asm` (12,974 B), `src/r28_object.inc` (4,685 B),
+`tests/r28/test_link.py` (6,670 B), and `sutram-link` (12,392 B). **Compiler v238.**
+
+**The only thing that differed between the branch and main was the six documents I edited in v271-v272** - so
+a naive merge would have reverted my own doc audit. **Caught by diffing before copying, which is the tenth time
+that habit has paid.**
+
+### What I ran, rather than reading the report
+
+| Check | Result |
+|---|---|
+| `nasm` + `ld` build of `linker/sutram_link.asm` | **`sutram-link`, 12,392 B** |
+| `./sc --object m1.sm m1.smo` | **emits a 144-byte object** |
+| `python3 tests/r28/test_link.py` | **199 checks, 0 failed** |
+| - identity across the new path | **186 programs byte-identical, 1 refused, 0 differ** |
+| - two modules | **both orders, calls in both directions** |
+| - linker errors | **8 errors and the usage line** |
+
+**So the pipeline works: a Sutram source becomes an object, and `sutram-link` turns objects into an
+executable.** **And 186 programs produce byte-identical binaries through the new path as through the old one.**
+
+### And the guard, which is the number that matters
+
+**543 programs compiled the ordinary way, v237 vs v238: 466 byte-identical, 77 refused identically, 0 differ.**
+
+**Zero regression across the riskiest change this project has made.** **And the guard found something on its
+first run** - *"a new pack message moved the PE import template"* - **a shift the suite would never have seen.**
+
+### The arc of this one feature
+
+**ChatGPT designed a linker (R93). Claude refused it as restructuring (R26) and proposed a smaller version.
+The owner decided to build our own anyway, for a better reason: borrowing `ld` would keep the fundamental only
+by borrowing another project's tool. (R28) Claude built it in NASM, with a guard. It works, and it cost
+nothing.**
+
+**That is four rounds, three positions, and a correct outcome - because each step was argued rather than
+assumed.**
+
 ## v274 - ROUND-29 and ROUND-96: the performance fundamental goes to both partners
 
 **Both rounds now open with the new fundamental and the measured gap**, so neither works from an older picture.
