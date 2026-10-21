@@ -1,0 +1,13 @@
+tests/r34/test_link_windows.py on real Windows 11 Pro 10.0.26300 (AMD Ryzen 7 7700X), Python 3.13.11, branch claude/windows-linker at 0f27538a, not elevated
+compiler: sutram.exe e3c5b9be4a9a3a9e3f31474ea0b9fc8ba503e003d5ff93f88e2b9964590112b2
+linker:   sutram-link.exe 583a4f4b5d071c0636f065a31945961ca47036f78fe8a8d13249f1d92ce994ae
+
+PASS  identity: 182 programs byte-identical through --object + sutram-link; 0 refused (a module-level vitti); 34 do not compile directly
+PASS  two modules, both orders, calls in both directions
+PASS  10 linker errors, the usage line, and 128 vitti exactly
+PASS  vitti: in .data, shared across modules, one copy each
+PASS  separate: 252 programs with modules print and exit the same; 10 namespaced, refused; 57 do not compile directly; no modules: 145 of 145 byte-identical
+NOTE  1 not compared: the direct build prints different bytes on two runs: tests/stdlib/r18_srij_overflow_guard.sm
+PASS  once: every prakriya of tests/r29/proj in exactly one object
+r34 link (Windows): 1018 checks, 0 failed
+exit=0

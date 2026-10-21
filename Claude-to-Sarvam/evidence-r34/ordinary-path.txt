@@ -1,0 +1,15 @@
+THE GUARD: the ordinary one-pass path, main's committed compiler (v242, at c062434f) vs this branch (v243),
+every .sm in examples/, examples/*/, tests/stdlib/, tests/r*/ (recursive): the output executable's bytes, the
+compiler's stdout+stderr (output path normalised) and its exit status. Packs given with --lang for the six
+pack examples.
+
+Windows (native, real Windows 11 Pro 10.0.26300, win/sutram.exe v242 vs sutram.exe v243, CRLF checkout):
+  562 programs: 475 byte-identical executables, 87 refused identically, 0 DIFFER
+
+Linux (WSL Ubuntu, kernel 6.6.87.2-microsoft-standard-WSL2; sutram_compiler v242 vs v243; LF clone of the branch):
+  562 programs: 476 byte-identical executables, 86 refused identically, 0 DIFFER
+  (and on the CRLF working tree, before the version bump: 562 programs: 475 identical, 87 refused, 0 DIFFER)
+
+The one program whose split differs between the two Linux runs is tests/stdlib/r11_sets_lists.sm: from CRLF
+sources the Linux compiler refuses it (vistarit srot seema atikram - the CR bytes push the expanded source over
+its limit); from LF sources it compiles. v242 and v243 agree in both. Not a change of this round.

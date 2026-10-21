@@ -1,0 +1,20 @@
+The committed binaries rebuild byte for byte from the committed sources (an LF clone of claude/windows-linker
+at 0f27538a), NASM 3.01 (Windows build) + GNU ld 2.42 (Ubuntu, WSL):
+
+  nasm -f win64 -DWINDOWS=1 -I. src/r68_compiler_entry.asm ; ld -mi386pep --subsystem console --entry=_start --no-insert-timestamp
+  nasm -f elf64 -I. src/r68_compiler_entry.asm             ; ld
+  nasm -f win64 -DWINDOWS=1 -I. linker/sutram_link.asm      ; ld -mi386pep --subsystem console --entry=_start --no-insert-timestamp
+  nasm -f elf64 -I. linker/sutram_link.asm                  ; ld
+
+  SAME   sutram.exe       e3c5b9be4a9a3a9e3f31474ea0b9fc8ba503e003d5ff93f88e2b9964590112b2  (= win/sutram.exe)
+  SAME   sutram_compiler  3f498aed38532e828bc3d7239f7cc99096502f7abc4cc1922d46c138b3fd89a7
+  SAME   sutram-link.exe  583a4f4b5d071c0636f065a31945961ca47036f78fe8a8d13249f1d92ce994ae
+  SAME   sutram-link      ecad98a12d3cdd78eaf604ee4774a0ba9bb2f0357d1282af8b8fa31d62d3164d
+
+  CRLF and LF sources assemble to the same bytes.
+  tools/r69_build.py --check-only on the LF clone: SOURCE_PINS_CHECKED, exit 0. (On a CRLF checkout it refuses:
+  it hashes the raw bytes, which are not the committed blobs there. Not a change of this round.)
+
+Main's v242 rebuilt the same way from c062434f: sutram_compiler and sutram-link byte-identical to the committed
+ones; win/sutram.exe differs from the committed one only in 7 header bytes - the committed one was linked by ld
+2.41 with no timestamp (MinorLinkerVersion 41, TimeDateStamp 0) - the code is the same.
