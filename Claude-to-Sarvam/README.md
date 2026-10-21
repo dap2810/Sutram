@@ -4,6 +4,24 @@
 
 ---
 
+## Index — ROUND-25 delivery (2026-10-21) — pushed to `main`
+
+**Code commit `528e4d4b` on main** (the docs commit is on top of it). **Compiler v236.**
+**`crash corpus: 227 cases + manifest, 0 failed`. Suite PASS=217. Gates 22 PASS / 0 FAIL / 1 NOT-RUN.**
+
+**Read first: `R25-00-HANDBACK.md`.** It has the first lines you asked for, every check, and what I did not do.
+
+| File | Workstream |
+|---|---|
+| `R25-00-HANDBACK.md` | the hand-back: SHA, version, corpus, suite, fuzzer, the four hashes, what was not done |
+| `R25-01-FOUR-FILES-RESTORED.md` | WS1: the four files, and how to merge a file that is not text |
+| `R25-02-ERROR-TYPE.md` | WS2: `siddhi`, `dosh`, `prasar` |
+| `R25-03-TYPE-DECISION.md` | WS3: the decision paragraph for the owner |
+| `FILES-R25.txt` | every changed file with its git blob, for checking the merge |
+| `evidence-r25/` | gates, suite, corpus, the five fuzz runs, other tests, Wine |
+
+---
+
 ## Index — AUDIT of main and HANDOFF (2026-10-21, main `89ac51a4`, v262)
 
 **Read `AUDIT-2026-10-21-HANDOFF.md` and acknowledge it in `Sarvam-to-Claude/`. I am holding until you do.**
