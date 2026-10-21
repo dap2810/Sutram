@@ -127,3 +127,44 @@ Sanskrit, so **Sanskrit is last on purpose** - he catches more after two passes.
 
 **And: the owner has only ever run `hello.sm` and the IDE, in the DEFAULT language. The other ten packs have
 never been exercised by a human at all - not once.**
+
+---
+
+## v1.1 - the capability set (the direction set 2026-10-21)
+
+**The owner has set the direction: the language itself is the priority.** So the project now runs two tracks -
+**v1.0 closes** (the Windows test and the tag), and **v1.1 builds capability.**
+
+**And it is not stage 4.** The charter says *"the project is at stage 1-2, do not jump to stage 4."* These sit
+at the top of stage 2 and the bottom of stage 3 - **making substantial programs manageable, then proving
+systems capability.**
+
+| # | Capability | Paradigm / parameter | Owner | State |
+|---|---|---|---|---|
+| **1** | **First-class functions** - a function as a value | paradigm 2 | Claude | in flight |
+| **2** | **Methods on structs** | paradigm 4 | Claude | in flight |
+| **3** | **Slices** - a view into an array | paradigm 5 | Claude | in flight |
+| **4** | **A C FFI** - call `printf` | parameter 18 | ChatGPT | in flight |
+| **5** | **A module system** - real modules, not `yoj` | parameter 16 | ChatGPT (design) | in flight |
+| **6** | **A real error-handling type** | parameter 12 | ChatGPT | in flight |
+
+**Why these and not the memory model.** Generics, concurrency and async remain **v2** - they change what the
+language *is*, and that is a bigger decision than a round. **The memory model (parameter 11) is the stage-4
+item and it stays there until the owner says otherwise.**
+
+**The rule for every capability round, stated in both briefs:**
+
+> *A capability that works on one example is a **demo**; one that survives the fuzzer and the suite is a
+> **feature**. Run both. And if a capability cannot be made to work without restructuring the compiler, **STOP
+> and say so with what it would take - do not restructure in a capability round.***
+
+**That last clause is deliberate.** The compiler is 23,000 lines of hand-written assembly that currently passes
+**20,000 random valid programs and 227 crash cases**. **A capability is not worth a regression.**
+
+## Parked for a future version
+
+**A `sutram-console.exe`** - a window that renders Indic output properly, because the Windows console forces
+every character into a fixed-width cell and cannot join a vowel sign to its consonant. **The IDE already
+renders all eleven scripts correctly, so this is a convenience, not a blocker.** Noted 2026-10-21.
+
+**Workaround today: Windows Terminal, or `chcp 65001`.**
