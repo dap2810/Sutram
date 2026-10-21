@@ -1,3 +1,41 @@
+## v276 - the performance fundamental: a SECOND shape measured, and the gap is narrower than the loop
+
+**I added a call-heavy benchmark myself, because one integer loop cannot support a claim about "all aspects"
+- and the result is better than the loop's.**
+
+### fib(30) - recursion, 2.7 million calls, best of three
+
+| Language | Time | vs Sutram |
+|---|---|---|
+| **Zig** | **6.6 ms** | 2.6x faster |
+| **C (zig cc -O2)** | **12.8 ms** | 1.33x faster |
+| **Sutram** | **17.0 ms** | - |
+
+**So on calls, Sutram is 1.33x behind C - narrower than the 1.7x it is behind on the tight loop.**
+
+**That is worth knowing and it is not the expected direction.** A hand-written compiler usually loses more on
+function calls than on a loop, because a loop is where a good optimiser does its most visible work.
+**Sutram loses less on calls than on the loop** - which suggests its function-call path is comparatively good
+and **its loop is where the 1.7x lives.**
+
+**That points at the peephole optimiser and register allocation, not at the call convention.** **And it is a
+measurement pointing at a cause rather than a guess.**
+
+### Allocation - growing a `kosh` 200,000 times
+
+**Sutram: 9.2 ms.** **No C or Zig comparison is available** - the other two would need the same growable-array
+code written for them, and a comparison with a differently-implemented data structure would measure the
+implementation, not the language.
+
+**So this one is recorded as a Sutram baseline, not a comparison.** **The honest label matters more than a
+number in a table.**
+
+### What the set still needs
+
+**Three shapes now exist: a tight loop, recursion, and allocation.** **Still missing: string building, and
+something that touches the library.** **And the allocation shape needs a C and Zig counterpart before it can
+support a claim.**
+
 ## v275 - THE LINKER VERIFIED END TO END. And Claude pushed it straight to main, so there was nothing to merge.
 
 **Claude's handback said "code pushed to main: 78fa7417"** - and I checked before merging rather than after.
