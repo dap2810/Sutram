@@ -1,0 +1,73 @@
+# R92 — ACTUAL GNU freestanding-C ABI control (not Sutram)
+Host Linux AMD64, GNU GCC 14.2.0, GNU ld 2.44
+Source files (same bytes as executed local sources):
+  ChatGPT-to-Sarvam/ROUND-92-WS1-FREESTANDING-C.c
+  ChatGPT-to-Sarvam/ROUND-92-WS1-FREESTANDING-ENTRY.S
+
+Local commands actually run in /mnt/data/sutram_round92:
+
+gcc -O2 -c -ffreestanding -fno-builtin -fno-stack-protector -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables ffi_add.c -o ffi_add.o
+  EXIT=0
+
+gcc -c -fno-pie ffi_entry.S -o ffi_entry.o
+  EXIT=0
+
+ld -nostdlib -static -e _start -o ffi_no_libc ffi_entry.o ffi_add.o
+  EXIT=0
+
+./ffi_no_libc
+  EXIT=42 (EXPECTED; success condition)
+  STDOUT_EXACT:
+NO_LIBC_C_CALL=42
+
+readelf -h ffi_no_libc
+  Type: EXEC (Executable file)
+  Machine: Advanced Micro Devices X86-64
+
+readelf -d ffi_no_libc
+There is no dynamic section in this file.
+
+readelf -l ffi_no_libc
+  PROGRAM HEADERS: LOAD x3; GNU_STACK x1; NO INTERP
+
+nm -u ffi_add.o
+  (empty output; no undefined external symbols)
+
+nm -S ffi_add.o
+0000000000000000 0000000000000005 T sutram_ffi_add
+
+readelf -r ffi_entry.o
+  R_X86_64_PLT32 sutram_ffi_add - 4
+  R_X86_64_PC32 .rodata - 4
+
+ld -nostdlib -static -e _start -o ffi_no_c_object ffi_entry.o
+  EXIT=1 (EXPECTED LINK FAILURE)
+  STDERR_EXACT:
+ld: /mnt/data/sutram_round92/ffi_entry.o: in function `_start':
+(.text+0xf): undefined reference to `sutram_ffi_add'
+
+stat -c%s ffi_no_libc
+  9096 bytes
+
+sha256sum:
+caf9d2242031748dfba1015759a26fc47a3e704c6778c5381bed07be7d163481  ffi_add.c
+da223c7c7b961d5e7a505048b14060492f9e17a7d48daaa55725a55c02628ce7  ffi_entry.S
+cfb8252227699e255cf3fa97d8cf8f39569976176a14a08ffc46da17e4ac1306  ffi_add.o
+bf52ae3d13300dfda3ca10670affa18d0e7d4cf75e935865168aa200488175d7  ffi_entry.o
+7f60693cda2fcb43bcb0423d4cc0a372f88a3fd98ebca69def3fdb56055ecee6  ffi_no_libc
+
+LOCAL->GITHUB GIT BLOB CHECK:
+0a1be98844927f1cc1394fd3bc46cd6d16372b3c  ffi_add.c
+94c8146350575bd7437853cd02f1fe29b8679f3e  ffi_entry.S
+Readback of both GitHub versions returned precisely these blob identities.
+
+CONCLUSION:
+A freestanding compiled C function can be called without a libc runtime or
+dynamic loader, if its implementation has no unresolved support dependencies.
+This control contains pure C arithmetic and assembly Linux sys_write/sys_exit.
+The caller is GNU assembler source, NOT Sutram-emitted code. It proves the
+linker/ABI approach but NOT a working Sutram FFI.
+
+Sutram native compilation, native object emission, and Sutram execution: NOT_RUN.
+R91's libc printf control separately showed dynamic libc and static-embedded
+libc, neither provides a default libc-free implementation of actual printf.
