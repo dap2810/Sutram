@@ -1,3 +1,31 @@
+## v248 - Claude R21 merged, and a limit of my own tooling stated plainly
+
+**Merged:** the four corrected crash-corpus inputs, `tools/crash_corpus.py`, and
+`tests/negative/r17/SHA256SUMS`.
+
+### The `sutram-fmt` mode: fixed on the branch, and I cannot apply it
+
+**Claude fixed it - the file is `-rwxrwxr-x` on `claude/round-21`.** And the "committed modes" gate now
+**runs** and **fails** on main for exactly that file.
+
+**But my merge cannot set it.** A file's mode is a **git attribute, not file content**, and the write tool I
+use puts **content**. So `sutram-fmt` will stay non-executable on main however many times I re-push its bytes -
+**and I have already pushed its bytes without noticing the mode did not move.**
+
+**That is a limit of my tooling, and it is the same shape as the gate that was NOT-RUN in a tarball:** the
+thing that needs to change is invisible to the mechanism doing the changing.
+
+**So it needs a git-level operation** - `git update-index --chmod=+x sutram-fmt` on a real clone, then a push.
+**I cannot do it from here; Claude can, on its branch, or the owner can in one command.**
+
+**Until then the tree carries one red gate, and it is honest about what it is.**
+
+### What else landed
+
+**Claude's R21-01 reproduced ChatGPT's pack check with a checker written from the pack files alone** -
+sharing no code - **and found zero hard violations, as did ChatGPT, as does the project's own gate. Three
+independent readings.** And its R21-02 verified the crash corpus.
+
 ## v247 - cross-verification: THREE independent readings agree, and the fuzzer claim holds
 
 ### The translations: three readings, zero violations
