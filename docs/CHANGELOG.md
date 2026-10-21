@@ -1,3 +1,43 @@
+## v285 - audit: the docs drifted to 22 gates while the tree has 25. Again.
+
+**Measured: changelog v284, compiler v240, 3,436 files, 25 gates, 218 pass.**
+
+**The documents said 22.** **I corrected them to 22 in v271 - when 22 was right. The tree has since gone to
+25, and nothing told the documents.**
+
+### The pattern is now established and it has a name
+
+| What drifted | When | Caught by |
+|---|---|---|
+| the version string | twice | the version gate, **after I built it** |
+| the gate counts | v271 | me, measuring |
+| the gate counts | **again, now** | me, measuring |
+
+**Three drifts, two of them the same number.** **And the reason is unchanged: every number a reader trusts is
+typed by hand, and only two of them have a check.**
+
+**The honest conclusion, now with three data points: the documents are the least-verified part of this
+project, and correcting them by hand does not stop them drifting.** **A gate that reads the counts out of
+`gates.sh` and compares them to the documents would stop it - and it is the same shape as the version gate
+that already works.**
+
+**I am recording that as the fix rather than doing another manual pass.** **A third manual correction is
+evidence that the method is the problem.**
+
+### The audit itself is otherwise clean
+
+| Check | Result |
+|---|---|
+| `__pycache__` / `.pyc` | **0** |
+| `.bak` / `.orig` / `.rej` / `.tmp` | **0** |
+| stray build artifacts at root | **0** |
+| `.zip` inside the repo | **3** - a 1.7 MB project zip in a collaboration folder, and two others |
+| the old `compiler/` folder | **446 KB** - superseded by `src/` |
+
+**The three zips and the old `compiler/` folder are cleanup candidates.** **The zips are inside collaboration
+folders, so they are the partners' to remove; the `compiler/` folder is superseded and could go.** **I have not
+deleted either - the project's history has been worth more than the space every time I have checked.**
+
 ## v284 - R30 and R97 both delivered well. v240, gates 25, and the FFI's specs exist.
 
 ### Claude R30: it chose the thing that fits, and said why
