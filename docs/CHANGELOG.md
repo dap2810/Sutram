@@ -1,3 +1,36 @@
+## v271 - doc audit: SIX documents were behind by ten gates and thirteen tests
+
+**I measured rather than assumed, and the drift was larger than I expected.**
+
+| Document | Claimed | Actual |
+|---|---|---|
+| `README.md` | 12/12 gates, 191 pass | **22 gates, 218 pass** |
+| `PROJECT-MASTER.md` | 12 PASS, 205 pass, `PASS=187`, v229 | **22 gates, 218 pass, v237** |
+| `PROJECT-OVERVIEW.md` | 12/12, 186/186, 205 pass | **22 gates, 220/220 proofs, 218 pass** |
+| `docs/sutram-scorecard.html` | 191 pass, 205/205 | **218 pass, 220/220** |
+| `docs/sutram-project-status.html` | 12/12, 205 pass, 24 pass | **22 gates, 218 pass** |
+| `docs/sutram-design-parameters.html` | 12/12, 205 pass | **22 gates, 218 pass** |
+
+**All six corrected.**
+
+### And the reason this keeps happening is now obvious
+
+**The version gate catches the version string, because I built one.** **Nothing catches a KPI inside an HTML
+page** - and six documents had drifted by **ten gates and thirteen tests** without anyone noticing.
+
+**That is the third time this stretch:** the version string drifted twice, and now the gate counts. **Every
+number a reader trusts is typed by hand, and only two of them have a check.**
+
+**The honest conclusion: the documents are the least-verified part of this project.** The compiler has a
+fuzzer, the corpus has a manifest, the library has proofs - **and the documents that describe all of it are
+maintained by discipline alone.**
+
+### And one thing worth noting about the drift's direction
+
+**Every stale number was LOW.** The docs under-reported: 12 gates when there were 22, 205 tests when there were
+218. **Nobody over-reported.** **So the drift is neglect rather than exaggeration** - which is the better
+failure, and still worth fixing.
+
 ## v270 - the fuzzer verification I owed: the error type and the handler hold
 
 **I ran what I had not run. Compiler v237, changelog v269, 3,333 files.**
