@@ -1,0 +1,41 @@
+FAIL  bengali   --lang          no lang/ beside it: exit 0, warned "not found"
+FAIL  bengali   --check --lang  no lang/ beside it: exit 0, warned "not found"
+FAIL  bengali   SUTRAM_LANG     no lang/ beside it: exit 0, warned "not found"
+FAIL  gujarati  --lang          no lang/ beside it: exit 0, warned "not found"
+FAIL  gujarati  --check --lang  no lang/ beside it: exit 0, warned "not found"
+FAIL  gujarati  SUTRAM_LANG     no lang/ beside it: exit 0, warned "not found"
+FAIL  hindi     --lang          no lang/ beside it: exit 0, warned "not found"
+FAIL  hindi     --check --lang  no lang/ beside it: exit 0, warned "not found"
+FAIL  hindi     SUTRAM_LANG     no lang/ beside it: exit 0, warned "not found"
+FAIL  kannada   --lang          no lang/ beside it: exit 0, warned "not found"
+FAIL  kannada   --check --lang  no lang/ beside it: exit 0, warned "not found"
+FAIL  kannada   SUTRAM_LANG     no lang/ beside it: exit 0, warned "not found"
+FAIL  malayalam --lang          no lang/ beside it: exit 0, warned "not found"
+FAIL  malayalam --check --lang  no lang/ beside it: exit 0, warned "not found"
+FAIL  malayalam SUTRAM_LANG     no lang/ beside it: exit 0, warned "not found"
+FAIL  marathi   --lang          no lang/ beside it: exit 0, warned "not found"
+FAIL  marathi   --check --lang  no lang/ beside it: exit 0, warned "not found"
+FAIL  marathi   SUTRAM_LANG     no lang/ beside it: exit 0, warned "not found"
+FAIL  odia      --lang          no lang/ beside it: exit 0, warned "not found"
+FAIL  odia      --check --lang  no lang/ beside it: exit 0, warned "not found"
+FAIL  odia      SUTRAM_LANG     no lang/ beside it: exit 0, warned "not found"
+FAIL  punjabi   --lang          no lang/ beside it: exit 0, warned "not found"
+FAIL  punjabi   --check --lang  no lang/ beside it: exit 0, warned "not found"
+FAIL  punjabi   SUTRAM_LANG     no lang/ beside it: exit 0, warned "not found"
+FAIL  tamil     --lang          no lang/ beside it: exit 0, warned "not found"
+FAIL  tamil     --check --lang  no lang/ beside it: exit 0, warned "not found"
+FAIL  tamil     SUTRAM_LANG     no lang/ beside it: exit 0, warned "not found"
+FAIL  telugu    --lang          no lang/ beside it: exit 0, warned "not found"
+FAIL  telugu    --check --lang  no lang/ beside it: exit 0, warned "not found"
+FAIL  telugu    SUTRAM_LANG     no lang/ beside it: exit 0, warned "not found"
+FAIL  sanskrit  --lang          no lang/ beside it: exit 0, warned "not found"
+FAIL  sanskrit  --check --lang  no lang/ beside it: exit 0, warned "not found"
+FAIL  sanskrit  SUTRAM_LANG     no lang/ beside it: exit 0, warned "not found"
+FAIL  37_native_gujarati          from lang/gujarati.lang and from the built-in: DIFFER (exit 0 / 1)
+FAIL  38_native_hindi             from lang/hindi.lang and from the built-in: DIFFER (exit 0 / 1)
+FAIL  39_native_tamil             from lang/tamil.lang and from the built-in: DIFFER (exit 0 / 1)
+FAIL  218_sanskrit_devanagari     from lang/sanskrit.lang and from the built-in: DIFFER (exit 0 / 1)
+FAIL  219_sanskrit_kosh_aliases   from lang/sanskrit.lang and from the built-in: DIFFER (exit 0 / 1)
+PASS  --lang klingon (no such pack) still warns
+PASS  lang/hindi.lang on disk wins over the built-in (an extra word: exit 0 with the file, 1 without)
+lang built-in: 40 checks, 38 failed

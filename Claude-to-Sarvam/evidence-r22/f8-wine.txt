@@ -1,0 +1,76 @@
+##### main/sutram.exe  (folder holds only the exe and the .sm files: no lang\)
+> main/sutram.exe --lang hindi bad.sm o.exe
+चेतावनी: भाषा पैक नहीं मिला: hindi
+bad.sm:1:18: Sutram Error [E_UNDEFINED_NAME]: अज्ञात नाम 'nosuchname'
+  mukhya() { likha(nosuchname) }
+                   ^
+संकेत: प्रयोग से पहले घोषणा आवश्यक है: चर nosuchname = ...
+> main/sutram.exe --lang hindi good.sm o.exe
+चेतावनी: भाषा पैक नहीं मिला: hindi
+सफल: 194 बाइट संकलित
+> main/sutram.exe --lang sanskrit bad.sm o.exe
+चेतावनी: भाषा-पुटः न प्राप्तः: sanskrit
+bad.sm:1:18: Sutram Error [E_UNDEFINED_NAME]: अज्ञातं नाम 'nosuchname'
+  mukhya() { likha(nosuchname) }
+                   ^
+सूचना: प्रयोगात् पूर्वं घोषणा आवश्यकी: वित्ति nosuchname = ...
+> main/sutram.exe --lang sanskrit good.sm o.exe
+चेतावनी: भाषा-पुटः न प्राप्तः: sanskrit
+सिद्धम्: 194 बाइट् सङ्कलिताः
+> main/sutram.exe --lang tamil bad.sm o.exe
+எச்சரிக்கை: மொழித் தொகுப்பு கிடைக்கவில்லை: tamil
+bad.sm:1:18: Sutram Error [E_UNDEFINED_NAME]: அறியாத பெயர் 'nosuchname'
+  mukhya() { likha(nosuchname) }
+                   ^
+குறிப்பு: பயன்படுத்தும் முன் அறிவிப்பு தேவை: மாறி nosuchname = ...
+> main/sutram.exe --lang tamil good.sm o.exe
+எச்சரிக்கை: மொழித் தொகுப்பு கிடைக்கவில்லை: tamil
+வெற்றி: 194 பைட் தொகுக்கப்பட்டது
+> main/sutram.exe --lang hindi 38_native_hindi.sm o.exe && o.exe
+चेतावनी: भाषा पैक नहीं मिला: hindi
+
+Sutram Error: व्याकरण दोष, पंक्ति 7:5, शब्द '}'
+      }
+      ^
+संकेत: इस स्थान पर शब्द और व्याकरण जाँचें।
+> main/sutram.exe --lang klingon good.sm o.exe
+Chetavani: bhasha-pakah na praptah: klingon
+Siddh: 194 baait sankalit
+##### sutram.exe  (folder holds only the exe and the .sm files: no lang\)
+> sutram.exe --lang hindi bad.sm o.exe
+भाषा पैक मिला: hindi
+bad.sm:1:18: Sutram Error [E_UNDEFINED_NAME]: अज्ञात नाम 'nosuchname'
+  mukhya() { likha(nosuchname) }
+                   ^
+संकेत: प्रयोग से पहले घोषणा आवश्यक है: चर nosuchname = ...
+> sutram.exe --lang hindi good.sm o.exe
+भाषा पैक मिला: hindi
+सफल: 194 बाइट संकलित
+> sutram.exe --lang sanskrit bad.sm o.exe
+भाषा-पुटः प्राप्तः: sanskrit
+bad.sm:1:18: Sutram Error [E_UNDEFINED_NAME]: अज्ञातं नाम 'nosuchname'
+  mukhya() { likha(nosuchname) }
+                   ^
+सूचना: प्रयोगात् पूर्वं घोषणा आवश्यकी: वित्ति nosuchname = ...
+> sutram.exe --lang sanskrit good.sm o.exe
+भाषा-पुटः प्राप्तः: sanskrit
+सिद्धम्: 194 बाइट् सङ्कलिताः
+> sutram.exe --lang tamil bad.sm o.exe
+மொழித் தொகுப்பு கிடைத்தது: tamil
+bad.sm:1:18: Sutram Error [E_UNDEFINED_NAME]: அறியாத பெயர் 'nosuchname'
+  mukhya() { likha(nosuchname) }
+                   ^
+குறிப்பு: பயன்படுத்தும் முன் அறிவிப்பு தேவை: மாறி nosuchname = ...
+> sutram.exe --lang tamil good.sm o.exe
+மொழித் தொகுப்பு கிடைத்தது: tamil
+வெற்றி: 194 பைட் தொகுக்கப்பட்டது
+> sutram.exe --lang hindi 38_native_hindi.sm o.exe && o.exe
+भाषा पैक मिला: hindi
+सफल: 438 बाइट संकलित
+नमस्ते दुनिया3
+6
+9
+12
+> sutram.exe --lang klingon good.sm o.exe
+Chetavani: bhasha-pakah na praptah: klingon
+Siddh: 194 baait sankalit

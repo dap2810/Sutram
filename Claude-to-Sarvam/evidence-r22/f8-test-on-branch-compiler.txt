@@ -1,0 +1,41 @@
+PASS  bengali   --lang          no lang/ beside it: exit 0, no warning, "found" printed
+PASS  bengali   --check --lang  no lang/ beside it: exit 0, no warning, "found" printed
+PASS  bengali   SUTRAM_LANG     no lang/ beside it: exit 0, no warning, "found" printed
+PASS  gujarati  --lang          no lang/ beside it: exit 0, no warning, "found" printed
+PASS  gujarati  --check --lang  no lang/ beside it: exit 0, no warning, "found" printed
+PASS  gujarati  SUTRAM_LANG     no lang/ beside it: exit 0, no warning, "found" printed
+PASS  hindi     --lang          no lang/ beside it: exit 0, no warning, "found" printed
+PASS  hindi     --check --lang  no lang/ beside it: exit 0, no warning, "found" printed
+PASS  hindi     SUTRAM_LANG     no lang/ beside it: exit 0, no warning, "found" printed
+PASS  kannada   --lang          no lang/ beside it: exit 0, no warning, "found" printed
+PASS  kannada   --check --lang  no lang/ beside it: exit 0, no warning, "found" printed
+PASS  kannada   SUTRAM_LANG     no lang/ beside it: exit 0, no warning, "found" printed
+PASS  malayalam --lang          no lang/ beside it: exit 0, no warning, "found" printed
+PASS  malayalam --check --lang  no lang/ beside it: exit 0, no warning, "found" printed
+PASS  malayalam SUTRAM_LANG     no lang/ beside it: exit 0, no warning, "found" printed
+PASS  marathi   --lang          no lang/ beside it: exit 0, no warning, "found" printed
+PASS  marathi   --check --lang  no lang/ beside it: exit 0, no warning, "found" printed
+PASS  marathi   SUTRAM_LANG     no lang/ beside it: exit 0, no warning, "found" printed
+PASS  odia      --lang          no lang/ beside it: exit 0, no warning, "found" printed
+PASS  odia      --check --lang  no lang/ beside it: exit 0, no warning, "found" printed
+PASS  odia      SUTRAM_LANG     no lang/ beside it: exit 0, no warning, "found" printed
+PASS  punjabi   --lang          no lang/ beside it: exit 0, no warning, "found" printed
+PASS  punjabi   --check --lang  no lang/ beside it: exit 0, no warning, "found" printed
+PASS  punjabi   SUTRAM_LANG     no lang/ beside it: exit 0, no warning, "found" printed
+PASS  tamil     --lang          no lang/ beside it: exit 0, no warning, "found" printed
+PASS  tamil     --check --lang  no lang/ beside it: exit 0, no warning, "found" printed
+PASS  tamil     SUTRAM_LANG     no lang/ beside it: exit 0, no warning, "found" printed
+PASS  telugu    --lang          no lang/ beside it: exit 0, no warning, "found" printed
+PASS  telugu    --check --lang  no lang/ beside it: exit 0, no warning, "found" printed
+PASS  telugu    SUTRAM_LANG     no lang/ beside it: exit 0, no warning, "found" printed
+PASS  sanskrit  --lang          no lang/ beside it: exit 0, no warning, "found" printed
+PASS  sanskrit  --check --lang  no lang/ beside it: exit 0, no warning, "found" printed
+PASS  sanskrit  SUTRAM_LANG     no lang/ beside it: exit 0, no warning, "found" printed
+PASS  37_native_gujarati          from lang/gujarati.lang and from the built-in: same binary
+PASS  38_native_hindi             from lang/hindi.lang and from the built-in: same binary
+PASS  39_native_tamil             from lang/tamil.lang and from the built-in: same binary
+PASS  218_sanskrit_devanagari     from lang/sanskrit.lang and from the built-in: same binary
+PASS  219_sanskrit_kosh_aliases   from lang/sanskrit.lang and from the built-in: same binary
+PASS  --lang klingon (no such pack) still warns
+PASS  lang/hindi.lang on disk wins over the built-in (an extra word: exit 0 with the file, 1 without)
+lang built-in: 40 checks, 0 failed
