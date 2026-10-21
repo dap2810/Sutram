@@ -1,0 +1,4 @@
+yoj r29_mul
+mukhya() {
+    likha(mul(1, 2))
+}

@@ -233,10 +233,11 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v238) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v239) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
+    r29_flag_separate db "--separate",0
     r48_msg_near db ": Sutram Error [E_PARSE]: shabd '",0
     r48_msg_end db "'",10,0
     r48_msg_ok db "Sutram pariksha: shuddham (nirgata-patram na rachitam)",10,0
@@ -2051,6 +2052,34 @@ _start:
     call maybe_load_env_lang
     jmp .args_ok
 .r28_not_object:
+    ; R29 --separate <input.sm> <output.smo> [root.sm]: --object, and a prakriya that a
+    ; `yoj` brought in is parsed and checked (its arity, its return type) but
+    ; generates no code here: its calls become holes for sutram-link, so each
+    ; module's code is compiled once, in its own object
+    ; (tools/sutram_build.py walks the module graph).
+    mov rdi, R49_ARG(16)
+    lea rsi, [rel r29_flag_separate]
+    call strcmp
+    test rax, rax
+    jnz .r29_not_separate
+    mov rax, R49_ARG(0)
+    cmp rax, 4
+    jl .usage
+    mov qword [rel r28_object_mode], 1
+    mov qword [rel r29_separate_mode], 1
+    mov rax, R49_ARG(0)            ; an optional argv[4]: the program's root
+    cmp rax, 5                     ; file, from whose directory yoj looks up
+    jl .r29_no_root                ; modules, as in the whole-program compile
+    mov rax, R49_ARG(40)
+    mov [rel r29_yoj_root], rax
+.r29_no_root:
+    mov rax, R49_ARG(24)
+    mov R49_ARG(16), rax
+    mov rax, R49_ARG(32)
+    mov R49_ARG(24), rax
+    call maybe_load_env_lang
+    jmp .args_ok
+.r29_not_separate:
 %endif
     ; R48 --check <input.sm>: use the real lexer/parser/codegen semantic
     ; validation without ever creating the output file.
@@ -2945,6 +2974,10 @@ expand_imports_pass:
     ; This makes ayojan independent of the caller's CWD while preserving the
     ; historical CWD fallback.
     mov rdi, [rel source_path_ptr]
+    cmp qword [rel r29_yoj_root], 0   ; R29: --separate's root, when given
+    je .r29_root_plain
+    mov rdi, [rel r29_yoj_root]
+.r29_root_plain:
     call build_module_path_from_file
     lea rdi, [rel module_path_buf]
     xor rsi, rsi              ; O_RDONLY
@@ -6819,6 +6852,10 @@ parse_function:
     lea rdi, [rel msg_func_defs_overflow]
     jmp capacity_fail
 .pf_top_decl:
+    cmp qword [rel r29_separate_mode], 0  ; R29: where this declaration starts
+    je .r29_pd_plain
+    call r29_note_decl
+.r29_pd_plain:
     call parse_stmt          ; parse the declaration
     ; If it's a FUNCDEF, store it in func_defs for gen_all_functions
     mov rcx, [rax]          ; node type
@@ -6859,6 +6896,10 @@ parse_function:
     lea rcx, [rel func_defs]
     mov [rcx + rdx*8], rax
     inc qword [rel func_def_cnt]
+    cmp qword [rel r29_separate_mode], 0  ; R29: a prakriya a yoj brought in is
+    je .r29_store_plain                   ; known here, but its code is the
+    call r29_mark_extern                  ; module's own object's
+.r29_store_plain:
     pop rax
     jmp .pf_top_skip_store
 .pf_top_func_defs_overflow:
@@ -11881,6 +11922,14 @@ gen_all_functions:
 .gaf_loop:
     cmp r12, [rel func_def_cnt]
     jae .gaf_done
+    cmp qword [rel r29_separate_mode], 0  ; R29: no code for another module's
+    je .r29_gaf_emit                      ; prakriya; its calls become holes
+    lea rax, [rel r29_extern]
+    cmp byte [rax + r12], 0
+    je .r29_gaf_emit
+    inc r12
+    jmp .gaf_loop
+.r29_gaf_emit:
     ; Get FUNCDEF node
     lea rax, [rel func_defs]
     mov rbx, [rax + r12*8]   ; rbx = FUNCDEF node

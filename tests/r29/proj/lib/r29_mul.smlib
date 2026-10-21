@@ -1,0 +1,6 @@
+prakriya mul(x) {
+    prati x * 10
+}
+prakriya ardha(dasham x) {
+    prati x / 2.0
+}

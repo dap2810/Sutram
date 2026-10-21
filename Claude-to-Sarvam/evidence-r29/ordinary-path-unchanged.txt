@@ -1,0 +1,3 @@
+THE GUARD: the ordinary path (no --object, no --separate), main's committed sutram_compiler (v238, at 9e7ae7b9) vs this branch (v239),
+every .sm in examples/, examples/*/, tests/stdlib/, tests/r*/ (recursive), Linux; stdout and exit status compared too:
+  558 programs: 470 byte-identical executables, 88 refused identically, 0 DIFFER

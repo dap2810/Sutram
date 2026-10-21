@@ -1,0 +1,4 @@
+yoj r29_mul
+prakriya dakshin(x) {
+    prati mul(x) * 2
+}

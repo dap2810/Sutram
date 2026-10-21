@@ -47,12 +47,41 @@ sutram-link out.bin a.smo [b.smo ...]
 `--object` and linked alone; the result is **byte-identical** to the ordinary compile
 (`tests/r28/test_link.py`, a gate).
 
+## Separate compilation (ROUND-29): `--separate` and `tools/sutram_build.py`
+
+```
+python3 tools/sutram_build.py main.sm -o out        # each module compiled once, then linked
+python3 tools/sutram_build.py --graph main.sm       # print the module graph
+sutram_compiler --separate in.sm out.smo [root.sm]  # one module, by hand
+```
+
+**`--separate` is `--object` with one difference.** A prakriya that a `yoj` brought in is still read, parsed
+and checked here - so a call into another module is checked for its **arity** and gets its **return type**
+(`dasham` or not) - but it **generates no code** in this object. Its calls become relocations, and its code is
+in the object of the module that defines it, compiled once. The optional `root.sm` is the program's root file:
+`yoj` looks modules up from its directory, exactly as the whole-program compile does.
+
+**`tools/sutram_build.py`** walks the module graph from the root (the compiler's own lookup: the root's
+`lib/`, the compiler's `lib/`, the current directory's `lib/`), compiles the root and every module once with
+`--separate`, and links the objects with `sutram-link`, the root's first. **A module two others `yoj` is
+compiled once and defined once.**
+
+**The proof** (`tests/r29/test_separate.py`, a gate): every program that `yoj`s a module and compiles the
+ordinary way (253) prints the same bytes and exits with the same status when built separately; every
+program in `examples/` with no `yoj` (144) is byte-identical; a wrong-arity call into another module is
+refused with the ordinary compile's own diagnostic.
+
+**Not yet:** a namespaced `yoj m@alias` (the builder refuses it); rebuilding only what changed (every build
+compiles every module); a module that calls back into the root sees no signature for it (the call is linked,
+but its return type is assumed integer, as in `--object`).
+
 ## What version 1 does not do
 
 - **No module-level `vitti`** in an object: its storage is placed after the code by the compiler, and that
   placement would need a second kind of relocation. `--object` refuses it with a diagnostic.
 - **No `--lang` flag** with `--object` (`SUTRAM_LANG` works).
 - **Linux only.** The Windows executable has its runtime at the start of its image, so linking it needs more.
-- **Every prakriya is exported** (including the library modules a `yoj` pulled in), so two objects that both
-  `yoj` the same module define its prakriyas twice: link one copy, or `yoj` it in one object only.
+- **With `--object`, every prakriya is exported** (including the library modules a `yoj` pulled in), so two
+  objects that both `yoj` the same module define its prakriyas twice. **`--separate` (ROUND-29) is the fix:**
+  a `yoj`'d module's prakriyas are not in the object that `yoj`s it.
 - **No C FFI, no data relocations, no archives, no package manager.**

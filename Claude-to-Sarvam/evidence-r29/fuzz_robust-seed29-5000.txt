@@ -1,0 +1,4 @@
+fixed     ACCEPTED 56  ERROR 111
+mutation  ACCEPTED 671  ERROR 4329
+CRASH or HANG: 0
+exit 0

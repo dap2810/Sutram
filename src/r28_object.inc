@@ -24,6 +24,10 @@
 
 section .bss
     r28_object_mode  resq 1
+    r29_separate_mode resq 1            ; R29 --separate
+    r29_yoj_root     resq 1             ; --separate's argv[4], or 0
+    r29_decl_src     resq 1             ; source pointer of the top-level declaration
+    r29_extern       resb FUNC_DEFS_CAP ; 1: func_defs[i] came from a yoj module
     r28_no_mukhya    resq 1
     r28_relocs       resq R28_RELOC_CAP*2   ; (site, name)
     r28_reloc_count  resq 1
@@ -171,4 +175,42 @@ r28_empty_mukhya:
     call alloc_ast
     mov qword [rax], AST_BLOCK
     mov qword [rax + 8], 0
+    ret
+
+; -------------------------------------------------------------------
+; ROUND-29: separate compilation (--separate). Only that flag reaches these.
+; -------------------------------------------------------------------
+section .text
+
+; r29_note_decl: remember where the top-level declaration about to be parsed
+; starts in the flattened source. Clobbers rax, rcx.
+r29_note_decl:
+    call cur_tok
+    mov rax, [rax+32]
+    mov [rel r29_decl_src], rax
+    ret
+
+; r29_mark_extern(rdx = func_defs index): when the declaration noted by
+; r29_note_decl came from a module (its origin is not the file being
+; compiled), mark it: it is parsed and checked, but generates no code.
+r29_mark_extern:
+    push rax
+    push rcx
+    mov rax, [rel r29_decl_src]
+    lea rcx, [rel source_buf]
+    sub rax, rcx
+    jb .done
+    cmp rax, IMPORT_BUF_CAP
+    jae .done
+    lea rcx, [rel r51_src_file]
+    mov rax, [rcx + rax*8]
+    test rax, rax
+    jz .done
+    cmp rax, [rel source_path_ptr]
+    je .done
+    lea rcx, [rel r29_extern]
+    mov byte [rcx + rdx], 1
+.done:
+    pop rcx
+    pop rax
     ret

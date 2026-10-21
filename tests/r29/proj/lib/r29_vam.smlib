@@ -1,0 +1,4 @@
+yoj r29_mul
+prakriya vam(x) {
+    prati mul(x) + 1
+}

@@ -1,0 +1,13 @@
+# ROUND-29: a program in four modules. r29_vam and r29_dakshin both yoj r29_mul,
+# so the ordinary compile inlines r29_mul once; separate compilation compiles it once.
+yoj r29_vam
+yoj r29_dakshin
+mukhya() {
+    likha(vam(4))
+    likha("\n")
+    likha(dakshin(4))
+    likha("\n")
+    likha(ardha(7))
+    likha("\n")
+    prati vam(1) + dakshin(1)
+}
