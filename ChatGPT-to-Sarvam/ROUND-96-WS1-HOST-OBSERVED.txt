@@ -1,0 +1,12 @@
+CC r96_ffi.c exit 0
+CC r96_ffi_bad.c exit 0
+runtime_stdout_hex 34320a runtime_exit 0 runtime_stderr_bytes 0
+PASS missing foreign symbol EXPECTED_ERROR unresolved sutram_ffi_add
+PASS C object with undefined helper EXPECTED_ERROR unsupported REL/RELA relocations
+C_ELF bytes 848 sha256 9b4e684874c969888ed05222f4f5ea21fe4de13029a8a298f5fd70c5b46d64f8
+foreign_SMO bytes 67 sha256 16a8bcc13ed938068c2e111c6d8a303a70f9b92c521160d3d9de57d096b22be6
+root_SMO bytes 153 sha256 e3fe7d6d7d7ff926532b424023194fbe457fc715022563ff0767946b79547647
+linked_ELF bytes 194 sha256 263e0c977869439f054a2522d493946efda91972cf24b53d4ffd8e08cbe65b80
+C_TEXT bytes 5 offset 0 magic b'SUTRAMO1' root_reloc 11
+RESULT 6/6 PASS: 2 gcc builds, ELF extraction, linked runtime, 2 failure controls
+EVIDENCE_LIMIT: synthetic root + PYTHON ELF converter/link oracle; NOT Sutram .sm output or native NASM linker
