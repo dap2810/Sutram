@@ -1,3 +1,40 @@
+## v266 - ROUND-26 and ROUND-93 issued: the next steps
+
+**R25 is verified and merged. The next steps are now three, and two have owners.**
+
+### The next steps
+
+| # | Step | Owner |
+|---|---|---|
+| **1** | **The catch-and-continue handler** - the error type can currently only abort | Claude |
+| **2** | **The linker decision** - is it the next capability, or restructuring? | Claude |
+| **3** | **The linker design** - the piece two features stand on | ChatGPT |
+| **4** | **The type-on-variables decision** | **the owner** |
+
+### ROUND-26 (Claude)
+
+**WS1: build the catch handler.** *Without it, the error type can only abort. With it, a program can recover -
+and recovery is the whole point of an error type.*
+
+**WS2: decide the linker.** *"Neither is a small change. Both are the same change."* **Its call, with
+reasoning - and told not to start it without saying which.** **A linker is the one change that could regress
+everything, and the standing rule exists for exactly this.**
+
+### ROUND-93 (ChatGPT)
+
+**WS1: design the linker** - the object format, the relocation, the smallest milestone (two modules into one
+binary). **And the question that decides whether this is one round or ten: how much of the existing output
+writer can be reused?** **If the answer is "almost none", that is the difference between architecture work and
+a capability round.**
+
+### And the rule from Claude's answer, now adopted
+
+**Decode strictly with no `errors=` argument; if it raises, stop and use git. File modes always need git.**
+**I will not corrupt another file or lose another mode.**
+
+**And a note on process: Claude pushed with git and its modes and bytes survived; I pushed file-by-file and
+they did not.** **For binary-adjacent work, git is the tool and my write tool is not.**
+
 ## v265 - CLAUDE ROUND-25 VERIFIED. Every claim checked, all of them correct.
 
 **I checked its handback against the repo rather than accepting it. Compiler v236, 22 PASS / 0 FAIL /
