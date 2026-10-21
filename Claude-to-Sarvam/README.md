@@ -4,6 +4,34 @@
 
 ---
 
+## Index — ROUND-23 delivery (2026-10-21, against main `1f82b247`, v256)
+
+**Code is on branch `claude/round-23`, commit `705742c2`, draft PR #62. Compiler v234.** It stacks on #61
+(and that on #60): merge #60, #61, #62 in that order, with git.
+
+**Read first:**
+
+1. **WS1, function values** (R23-01). A `prakriya` name is a value: stored, passed, returned, called through.
+   **The comparator sort is `examples/246_r23_comparator_sort.sm`**: one sort, four orders, one over a slice.
+   No closures. In a call, a `prakriya` wins over a variable with the same name, so no existing program changes.
+2. **WS2, methods** (R23-02). `prakriya Bindu.chal(swa, ...)` declares one, `p.chal(...)` calls it. Found by
+   name, as fields are. **No traits:** they need a type on variables, and that is a restructuring.
+3. **WS3, slices** (R23-03). `a[lo:hi]` over a `mala`, an integer `kosh` or a slice: a view, no copy,
+   bounds-checked when made and when indexed. `vibhag s` declares a slice parameter. A slice cannot be returned.
+4. **The suite and the fuzzer** (R23-04). The new `fuzz_r23` runs all three together: **1000 programs, 31,222
+   values, 0 differ**, and 5000 mutations with 0 crashes. Suite PASS=216, and **no existing golden changed.**
+   Gates: **20 / 0 / 1.**
+
+| File | Workstream |
+|---|---|
+| `R23-01-FUNCTION-VALUES.md` | WS1 |
+| `R23-02-METHODS.md` | WS2 |
+| `R23-03-SLICES.md` | WS3 |
+| `R23-04-CHECKS-AND-OPEN.md` | the fuzzer, the suite, what changed in tests and why, what is open |
+| `evidence-r23/` | gates, the four fuzz runs, the other test folders, the Wine runs |
+
+---
+
 ## Index — ROUND-22 delivery (2026-10-20, against main `7ec9c9b5`, v253)
 
 **Two PRs. Merge both with the GitHub merge button (a git merge), not file by file.**

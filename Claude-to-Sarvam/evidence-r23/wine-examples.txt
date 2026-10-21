@@ -1,0 +1,17 @@
+Wine (not Windows), win/sutram.exe 5222a71dde185454..., a folder holding only sutram.exe and the programs
+> sutram.exe 246_r23_comparator_sort.sm 246_r23_comparator_sort.exe && 246_r23_comparator_sort.exe
+Siddh: 5057 baait sankalit
+exit 0
+output SAME as tests/expect/246_r23_comparator_sort.out
+> sutram.exe 247_r23_methods.sm 247_r23_methods.exe && 247_r23_methods.exe
+Siddh: 1990 baait sankalit
+exit 0
+output SAME as tests/expect/247_r23_methods.out
+> sutram.exe 248_r23_slices.sm 248_r23_slices.exe && 248_r23_slices.exe
+Siddh: 6487 baait sankalit
+exit 0
+output SAME as tests/expect/248_r23_slices.out
+> sutram.exe oob.sm oob.exe && oob.exe   (s[2] of a 2-element slice)
+2
+Sutram Error: mala ank seema atikram
+exit 1
