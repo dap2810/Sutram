@@ -20,6 +20,16 @@
 ;       relocations: { offset of the rel32, name_length, name bytes } x relocation_count
 ; A relocation's rel32 is filled with  target - (offset + 4), as a call's is.
 ; A module with no mukhya is allowed in --object mode; it exports no mukhya.
+;
+; R34: the Windows compiler (target_pe) writes the same layout under the magic
+; "SUTRAMW1": the code of a PE program, whose runtime blob sutram-link puts in
+; front of it. Its three differences are all holes, so the format needs no new
+; kind of entry:
+;   - the call to the blob's rt_init at mukhya's start is a relocation to "rt:init";
+;   - every call into the blob's rt_syscall (emit_syscall) is one to "rt:syscall";
+;   - a vitti lives in the PE's read/write .data, not after the code: its
+;     symbol's offset is in this object's data (8 bytes each), and every access,
+;     a held vitti's too, is a relocation to "vitti:<name>".
 ; ===================================================================
 
 R30_NAME_LEN equ 80
@@ -38,6 +48,9 @@ section .bss
     r28_relocs       resq R28_RELOC_CAP*2   ; (site, name)
     r28_reloc_count  resq 1
     r28_hdr          resq 4
+section .data
+    r34_rt_init      db "rt:init", 0     ; R34: the blob's entries, in a SUTRAMW1 object
+    r34_rt_syscall   db "rt:syscall", 0
 section .text
 
 ; r28_add_reloc(rdi = site of the rel32, rsi = callee name). Preserves the rest.
@@ -95,6 +108,19 @@ r28_write_object:
     push rbx
     push r12
     mov rbx, rdi
+    cmp qword [rel target_pe], 0    ; R34: a PE program's calls into the blob
+    je .r34_holes_done              ; are holes too, "rt:syscall"
+    xor r12d, r12d
+.r34_holes:
+    cmp r12, [rel blob_call_cnt]
+    jae .r34_holes_done
+    lea rax, [rel blob_calls]
+    mov rdi, [rax + r12*8]
+    lea rsi, [rel r34_rt_syscall]
+    call r28_add_reloc
+    inc r12
+    jmp .r34_holes
+.r34_holes_done:
     mov rdi, rbx
     mov rsi, 0x241                  ; O_WRONLY|O_CREAT|O_TRUNC
     mov rdx, 0o644
@@ -104,6 +130,10 @@ r28_write_object:
     mov [rel out_fd], rax
     ; header
     mov rax, 0x314F4D4152545553     ; "SUTRAMO1"
+    cmp qword [rel target_pe], 0
+    je .magic
+    mov rax, 0x31574D4152545553     ; R34: "SUTRAMW1"
+.magic:
     call r28_put_u64
     mov rax, [rel code_sz]
     call r28_put_u64
@@ -281,8 +311,10 @@ r30_mark_global_extern:
     pop rax
     ret
 
-; r30_object_globals: r56_patch_global_storage in --object / --separate mode
-; (ELF only; the Windows compiler has no object mode).
+; r30_object_globals: r56_patch_global_storage in --object / --separate mode.
+; R34: for a PE program (SUTRAMW1) a slot is an offset in the object's data,
+; not after its code, and every access is a hole: sutram-link puts the data in
+; the PE's .data section, where the one-pass compile puts it.
 r30_object_globals:
     push rbx
     push r12
@@ -290,6 +322,10 @@ r30_object_globals:
     push r14
     ; 1. names and slots; and the refusal
     mov r14, [rel code_sz]           ; the next slot
+    cmp qword [rel target_pe], 0
+    je .ng_first
+    xor r14d, r14d                   ; R34: the first 8 bytes of this object's data
+.ng_first:
     xor r12d, r12d
 .ng:
     cmp r12, [rel r56_global_count]
@@ -347,6 +383,8 @@ r30_object_globals:
     shl rcx, 4
     mov rbx, [rdx + rcx]             ; the rel32's offset
     mov r12, [rdx + rcx + 8]         ; the global's index
+    cmp qword [rel target_pe], 0     ; R34: in a PE object every access is a hole
+    jne .pt_hole
     lea rcx, [rel r30_gextern]
     cmp byte [rcx + r12], 0
     jne .pt_hole
@@ -367,7 +405,10 @@ r30_object_globals:
     inc r13
     jmp .pt
 .pt_done:
-    ; 3. the held vitti's storage, zero, after the code
+    ; 3. the held vitti's storage, zero, after the code (R34: a PE object's is
+    ; in the .data section sutram-link writes, so none here)
+    cmp qword [rel target_pe], 0
+    jne .st_done
     xor r13d, r13d
 .st:
     cmp r13, [rel r30_data_count]

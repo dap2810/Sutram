@@ -8,7 +8,7 @@ in old round reports reproduce those historical snapshots, not a current build.
 
 ## Input identity and developer commands
 
-Required core Git blob: `a7bc308b81d185eea440be7074557fbc055d8d9f` (re-pinned in ROUND-03; was `64ea028a…`, stale since v157).
+Required core Git blob: `8f1c97e6dac50e0aae98c343344011c6c57d4d0f` (re-pinned in ROUND-03; was `64ea028a…`, stale since v157).
 R11: the core includes `src/r11_sandesh.inc`, every message per language pack, which is
 **generated**: edit `lang/<pack>.sandesh`, then run `python3 tools/sandesh.py --write`
 (it also writes `windows/gui/r11_ide_sandesh.inc`). `python3 tools/sandesh.py --check`
@@ -43,6 +43,15 @@ nasm -f elf64 -I. src/r68_compiler_entry.asm -o sutram.o
 ld -o sutram_compiler sutram.o
 nasm -f win64 -DWINDOWS=1 -I. src/r68_compiler_entry.asm -o sutram.obj
 ld -mi386pep --subsystem console --entry=_start -o sutram.exe sutram.obj
+```
+
+The linker (R28; R34 for Windows) is one source built for each host. Either one links Linux objects
+(`SUTRAMO1`) to an ELF and Windows objects (`SUTRAMW1`) to a PE:
+
+```sh
+nasm -f elf64 -I. linker/sutram_link.asm -o link.o && ld -o sutram-link link.o
+nasm -f win64 -DWINDOWS=1 -I. linker/sutram_link.asm -o link.obj
+ld -mi386pep --subsystem console --entry=_start --no-insert-timestamp -o sutram-link.exe link.obj
 ```
 
 ## Windows packaging chain

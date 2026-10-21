@@ -233,7 +233,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v242) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v243) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -2083,8 +2083,10 @@ _start:
     jnz .usage
 .r32_mode_ok:                      ; the sidecar is read after parsing (r7_check_arity),
 .r32_not_ffi:                      ; once SUTRAM_LANG's pack is loaded
+%endif
     ; R28 --object <input.sm> <output.smo>: the same compile, written as an
-    ; object file for sutram-link. Linux only in this version.
+    ; object file for sutram-link. R34: the Windows compiler has it too; its
+    ; object is a SUTRAMW1 (a PE program's code), see r28_write_object.
     mov rdi, R49_ARG(16)
     lea rsi, [rel r28_flag_object]
     call strcmp
@@ -2129,7 +2131,6 @@ _start:
     call maybe_load_env_lang
     jmp .args_ok
 .r29_not_separate:
-%endif
     ; R48 --check <input.sm>: use the real lexer/parser/codegen semantic
     ; validation without ever creating the output file.
     mov rdi, R49_ARG(16)
@@ -11678,7 +11679,16 @@ gen_code:
     je .gc_no_rtinit
     mov dil, 0xE8
     call emit_byte
+    cmp qword [rel r28_object_mode], 0  ; R34: in an object, a hole for sutram-link
+    jne .r34_rtinit_hole
     mov edi, -(RT_BLOB_LEN + 5)      ; call back to the blob at image offset 0
+    call emit_u32
+    jmp .gc_no_rtinit
+.r34_rtinit_hole:
+    mov rdi, [rel code_sz]
+    lea rsi, [rel r34_rt_init]
+    call r28_add_reloc
+    xor edi, edi
     call emit_u32
 .gc_no_rtinit:
     ; Init variable table
