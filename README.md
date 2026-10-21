@@ -138,7 +138,7 @@ Windows target:
 ## Honest status
 
 The clean-project handoff reports a Linux baseline of **218 passing cases,
-4 no-expectation cases, and 25/25 code-generation shape gates**. These are
+4 no-expectation cases, and 27/27 code-generation shape gates**. These are
 maintainer-reported baseline measurements, not a Windows release certificate.
 A clean-source audit must rerun them independently; a percentage-complete
 estimate is not a substitute for those gates.
