@@ -1,3 +1,46 @@
+## v267 - ROUND-26: the handler is BUILT, and Claude REFUSED the linker. Both correct.
+
+### The handler: decided, built, no new keyword
+
+**`yadi dosh (q = f(...)) { failure: q is the code } anya { success: q is the value }`.**
+
+**There is no new keyword** - it reads as *"if failure"*. **So the error type can now recover from a failure
+anywhere, not only abort.** That is the other half of the capability, and it went in without a new word in
+the language.
+
+**Compiler v237. Suite PASS=218 (217 + `250_r26_dosh_handler`). Crash corpus 227 cases, 0 failed. Gates 22
+PASS / 0 FAIL / 1 NOT-RUN.**
+
+**And the fuzzer covers it:** `fuzz_r23 --seed 26 --count 1000` gives **1000 programs, 36,112 values, 0
+differ**; robust mode 5000 mutations, **0 crash / 0 hang.** **No existing golden changed.**
+
+### The linker: refused, and the reasoning is the best engineering judgement of this stretch
+
+> *Today the compiler does three things in one pass: it reads the whole program as source (with `yoj` pulling
+> modules in as text), resolves every call against its own function table, and writes one finished executable.
+> Every one of the R23-R26 capabilities fit inside that model.*
+>
+> *A linker breaks the model at all three points at once... **That is a second program, plus a change to how
+> the first one finishes its work. It would touch the step that every program in the suite passes through. A
+> mistake there regresses everything, not one feature**, which is exactly what the standing rule says to stop
+> at.*
+
+**That is the rule used exactly as intended** - not as a brake, but as a way to tell a capability from a
+restructuring. **Four capabilities fit the model; the linker does not.**
+
+### And it proposed the alternative instead of just refusing
+
+> *Keep the source-level `yoj` for modules, and for the FFI an **opt-in object-file output linked by the
+> system's linker**, never a linker of our own.*
+
+**So the FFI can be had WITHOUT the restructuring** - the compiler emits an object file on request, and the
+system's `ld` does the linking. **That is a small, opt-in, additive change to a step that already exists.**
+
+**It is the owner's yes or no, and it is a much better question than the one I asked.**
+
+### Still with the owner
+**The type on variables** - unblocks F7, checked calls, method dispatch and traits. **Not built.**
+
 ## v266 - ROUND-26 and ROUND-93 issued: the next steps
 
 **R25 is verified and merged. The next steps are now three, and two have owners.**
