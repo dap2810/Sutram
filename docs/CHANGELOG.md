@@ -1,3 +1,33 @@
+## v277 - PRIORITY: DEVELOPMENT FIRST. Performance refinement is the next phase, not this one.
+
+**The owner's words: *"first focus on development and then we can refine the project to outperform other
+languages."***
+
+**So the performance work is deferred, not withdrawn.** The fundamental stands, the measured gap is recorded
+in `PROJECT-MASTER.md`, **and both rounds are redirected.**
+
+### And the linker changed what "development" means
+
+**Two capabilities that were blocked are now reachable, because Claude built the object format and the
+linker:**
+
+1. **The C FFI.** ChatGPT proved the technique by measurement - a freestanding C function, SysV ABI, no libc,
+   no dynamic loader, `NO_LIBC_C_CALL=42`, no `PT_INTERP`, no `DT_NEEDED`. **What was missing was an object
+   file and a linker. Both now exist.**
+2. **Real separate compilation.** `yoj` is still textual inclusion, **but the object level already works -
+   `test_link.py` proves two modules link in both orders with calls in both directions.** **The work is in the
+   module graph.**
+
+**So Claude picks one and does the smallest working version; ChatGPT designs both from its side.**
+
+### And the guard still applies
+**The ordinary path must not change.** **543 programs, 466 byte-identical, 0 differ - that number is the
+standard now.**
+
+### One thing kept rather than dropped
+**ChatGPT's benchmark-set design still stands as a deliverable for the next phase** - *and it was asked to name
+where Sutram is likely to LOSE, because a set chosen to flatter the language proves nothing.*
+
 ## v276 - the performance fundamental: a SECOND shape measured, and the gap is narrower than the loop
 
 **I added a call-heavy benchmark myself, because one integer loop cannot support a claim about "all aspects"
