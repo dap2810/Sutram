@@ -1,19 +1,17 @@
-# Sutram ROUND-91 WS2 — Real modules and local packages (one-page design; NOT IMPLEMENTED)
+# Sutram ROUND-91 WS2 — Real modules and local packages (one-page design)
 
-**Decision:** Preserve the existing Sanskrit-keyword procedural grammar and the already working `yoj module@alias` qualified-call spelling. Add opt-in separately compiled modules, not another compiler and not a default behavior change. **This is a design only; no compiler edits.**
+**Status: DESIGN ONLY; not implemented.** Preserve Sanskrit keywords, the accepted `yoj module@alias` and `alias__function()` spelling, the handwritten NASM compiler and dependency-free output. Opt-in files use the existing R40 proposal `# sutram-module-v1`; `niryat` is **proposed** export syntax, **not** a current compiler keyword.
 
-## Proposed surface syntax: name, export, use
-
-A module is named by its canonical project-root-relative path, not by a caller-chosen alias. File `lib/hisab.smlib`:
+**Named module** — `lib/hisab.smlib` is module identity `hisab` within a canonical project root:
 
 ```sutram
 # sutram-module-v1
 niryat joda
 prakriya joda(a, b) { prati a + b }
-prakriya double(x) { prati joda(x, x) }
+prakriya helper(x) { prati x + 1 }
 ```
 
-A root file `main.sm`:
+**Consumer** — `main.sm`:
 
 ```sutram
 # sutram-module-v1
@@ -21,33 +19,12 @@ yoj hisab@h
 mukhya() { likha(h__joda(17, 25)) }
 ```
 
-**Accepted today:** `yoj ...@alias` textual inclusion with `alias__name()` calls. **Proposed/new and currently NOT accepted:** the `# sutram-module-v1` marker switching to separate-object mode, and the `niryat` export declaration. `niryat` is an existing R40/R71 design proposal, **not a current compiler keyword**. Private by default: `double` may be called inside `hisab` but `h__double()` must fail outside. The importing alias `h` affects the caller spelling, **not module identity**. Preserve all legacy `yoj` behavior in files without the opt-in marker; never silently switch every library to new semantics.
+Default visibility is **private**: `h__helper` cannot be called externally. The alias `h` belongs to the import edge, not the module identity. Existing files **without the opt-in marker** retain current textual `yoj` semantics and goldens unchanged.
 
-## Compile each module ONCE, then link
+**Compile once.** Proposed CLI (not accepted today): `sutram --object lib/hisab.smlib -o .sutram/obj/hisab.smo`; then `sutram --link main.sm .sutram/obj/hisab.smo -o app.bin`. The same NASM compiler writes one versioned, bounded `.smo` containing source/interface digests, module identity, target ABI, private/public symbols, checked integer signatures, section offsets and `E8 rel32` call relocations. Link each unit once in deterministic dependency order, resolving symbols by **(canonical module ID, exact source name)**; only after all references are satisfied emit the usual standalone ELF or PE. Initially **reject module globals/initializers and cross-unit float/kosh ABI** instead of guessing. Do not add an end-user linker/runtime requirement.
 
-Proposed developer commands (not existing CLI flags):
+**Local packages.** Proposed `sutram.package.json` in a user-owned project declares package name/version, module roots and explicit local dependency paths/content hashes. Resolve imports first relative to the importing file, then declared roots, with a unique-match rule. Canonicalize paths and fail closed on traversal, symlink escapes, duplicate/ambiguous names, unsupported metadata, cycles, private/missing symbols and arity mismatches. Three-color DFS detects cycles and deduplicates diamonds. A project-local `.sutram/obj` cache is keyed by source, transitive interface digests, compiler profile, feature flags and target; rebuild or fail on corruption. **No network registry, admin rights or ambient global caches.**
 
-```sh
-sutram --object lib/hisab.smlib -o .sutram/obj/hisab.smo
-sutram --link main.sm .sutram/obj/hisab.smo -o app.bin
-```
+**Existing substrate, not acceptance:** `src/r71_module_link.inc` has a native bounded 64-byte export-record resolver and validated `rel32` patching but explicitly says production `.sm → .smo` emission is **not wired**. The current `src/sutram_compiler.asm` resolves calls in its local function table and writes `ET_EXEC`, not relocatable `ET_REL`. Real object emission and linking therefore need reviewed compiler changes; do **not** claim that changing only `yoj` makes separate compilation work. **STOP if it requires a broad compiler restructure** (Round-91 rule).
 
-The **same handwritten NASM compiler** parses each unit and emits a versioned `.smo` relocatable object. Metadata contains magic/version, compiler/target ABI ID, source hash, canonical module ID, import interface digests, exported `name + arity + typed signature + visibility`, code/data offsets, and checked `rel32` call relocations. Include neither imported source text nor unresolved call placeholders in final output. The module's symbol key is **(canonical module ID, exact source symbol)**; do not stringify by lossy concatenation or confuse `a__b` with `a.b`. Initially allow function definitions and integer arguments/results only; **reject module globals, cross-module float/kosh records and implicit initializers** until ABI and lifetime semantics are separately approved.
-
-The linker validates object boundaries and digests, resolves visible exported symbols, enforces signatures and duplicate/private/missing diagnostics, then emits the current fixed executable ELF or PE *after all relocations are satisfied*. Internal functions may be retained as private symbols without being exported. A module graph uses tri-color DFS and rejects cycles with a path; a diamond imports a unit only once. Build order is dependencies before users and then the root `mukhya`. Do not run an initializer merely because a module was imported; an explicit opt-in initializer ABI needs its own design.
-
-## Local packages and safe resolution
-
-A package is a **user-owned local project directory** with one manifest (proposed `sutram.package.json`: name/version, module roots, explicit local dependency paths and content/interface hashes). The compiler resolves `yoj name@alias` **relative to its importer**, then declared project roots; paths are canonicalized, refuse `..` traversal, duplicate identities, invalid UTF-8, symlinks escaping project roots, ambiguous matches and unexpected metadata. **No network registry, downloads, elevated privileges, global cache or background daemon.** Cache `.smo` only under a writable project-local `.sutram/obj/`; key by source bytes + imported interface digests + target + compiler/feature version. Fail closed or rebuild on stale/corrupt cache. End users receive a native executable and still need no toolchain.
-
-## What exists and what blocks this today
-
-- `src/r71_module_link.inc` already demonstrates a bounded **64-byte in-memory symbol record** with namespace, public flag and integer arity, plus validated `E8 rel32` patching. It explicitly says production `.sm -> .smo` is **NOT wired**.
-- `src/sutram_compiler.asm:11821–11858` backpatches only internal function references, and `write_elf:23049–23125` emits **ET_EXEC, one program header, no section table**, not relocatable `ET_REL` with import/export symbols.
-- Therefore adding only a `niryat` parser keyword or changing `yoj` strings **does not implement separate compilation**. A versioned object writer/reader and link-mode driver are new compiler subsystems. **STOP if their safe integration requires a broad compiler rewrite**, per R91's capability rule.
-
-## Required acceptance before calling it a FEATURE
-
-Two independent `.sm` units must emit two real `.smo` objects and link to a native program that prints `42`; the `hisab` source must be compiled exactly once even through a diamond. Private/missing/duplicate/arity and invalid-signature imports must fail with precise `Sutram Error` and no output image. Rebuild or invalidate the object when source, ABI, import interface, or target changes. Preserve existing `yoj` goldens; test Linux and Windows native builds separately, plus compiler fuzzing and the full 227-case robustness suite. **None of these new acceptance tests were run here; implementation status: DESIGN ONLY.**
-
-**Prior basis:** `compiler/MODULE_SYSTEM_R40_DESIGN.md`, `docs/R71-MODULES.md` and `src/r71_module_link.inc`; this page is a bounded successor, not a duplicate working linker.
+**Acceptance before FEATURE:** independently compile two `.sm` units and link one executable printing `42`; a diamond must compile its shared module only once. Validate private/missing/duplicate/arity/cycle/corrupt-object failures (exit nonzero, located diagnostic, no executable), cache invalidation, Linux and Windows output, old `yoj` goldens, fuzzing and the 227-case crash suite. **All new module execution tests: NOT_RUN.** Source basis: `compiler/MODULE_SYSTEM_R40_DESIGN.md`, `docs/R71-MODULES.md` and the R71 linker include.
