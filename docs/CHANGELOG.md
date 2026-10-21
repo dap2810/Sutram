@@ -1,3 +1,58 @@
+## v288 - THE FFI WORKS. A Sutram program calls a C function and prints 42.
+
+**Compiler v241. Gates 27 PASS / 0 FAIL / 1 NOT-RUN. Suite 218. Corpus 0 failed. Every fuzzer clean.**
+
+### The whole pipeline, as Claude ran it
+
+```
+$ cat ffi.sffi
+sutram-ffi-v1|linux-x86_64-sysv
+s_add|2|i64,i64|i64|sutram_ffi_add
+
+$ sutram_compiler --ffi ffi.sffi --object prog.sm prog.smo     # likha(s_add(17, 25))
+$ sutram-elf2smo  add.o add.smo                                 # gcc -c -ffreestanding ...
+$ sutram-link     prog prog.smo add.smo && ./prog
+42
+```
+
+**A Sutram program called a C function and got the right answer.** **That is the last capability that was
+blocked by architecture, and it is done.**
+
+### And it is a CHECKED declaration, not a stub - both rules tested
+
+1. **`s_add(17)` and `s_add(17, 25, 1)` are `E_ARITY` at the call's own location (`2:11`), exit 1, and NO
+   `.smo` exists afterwards.** **And it holds with `--object` and with `--separate`.**
+2. **No stub, no `FUNCDEF`:** the declaration exports nothing, **the call is a relocation named
+   `sutram_ffi_add` - the FOREIGN name - never `s_add`.** **And a prakriya, builtin or keyword with either name
+   is an error.**
+
+**The second rule is the one that matters.** **The failure I warned about two rounds ago - a fake `prati 0`
+stub making a missing function look like a working one - cannot happen, because the declaration exports
+nothing and the call carries the foreign name.**
+
+### And the format was NOT touched
+
+| Piece | State |
+|---|---|
+| **the sidecar `*.sffi`** | **new** - ChatGPT's R97 grammar |
+| **`sutram_compiler --ffi`** | **new** - `src/r32_ffi.inc` + four hooks |
+| **`sutram-elf2smo`** | **new** - `linker/sutram_elf2smo.asm`, NASM, reads ELF64 relocatable |
+| **`SUTRAMO1` and `sutram-link`** | **UNCHANGED** |
+
+**So the ELF problem was solved by a CONVERTER rather than by teaching the linker a second format.** **The
+linker stays simple; one small program translates. That is the better design and it was not the one I
+described.**
+
+**And it is opt-in: `--ffi`.** **A program that does not use it compiles exactly as it did.**
+
+### The full arc, in five rounds
+**ChatGPT designed a linker (R93). Claude refused it as restructuring (R26) and offered a smaller form. The
+owner decided to build our own anyway - because borrowing `ld` would keep the fundamental only by borrowing
+another project's tool. Claude built it (R28). Then separate compilation (R29-R31). Then the FFI (R32), with
+ChatGPT's sidecar and ELF specs.**
+
+**Every step was argued rather than assumed, and the guard held throughout.**
+
 ## v287 - the doc-count gate, and the design flaw I hit writing it
 
 **I said a third manual correction would be evidence that the method is the problem. So I built the fix:
