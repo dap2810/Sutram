@@ -57,6 +57,7 @@ PARAM_RAW equ 0               ; untyped/integer scalar parameter
 PARAM_DASHAM equ 1            ; scalar IEEE-754 binary64 parameter
 PARAM_KOSH equ 2              ; integer/raw-qword growable-array parameter
 PARAM_KOSH_DASHAM equ 3       ; binary64 growable-array parameter
+PARAM_VIBHAG equ 4            ; R23 WS3: a slice (descriptor pointer) parameter
 
 ; Token types
 TOK_KEYWORD   equ 1
@@ -96,6 +97,10 @@ AST_ASSERT    equ 23    ; assert: [type][cond_expr][0][0][0]
 AST_TERNARY   equ 27    ; conditional expr: [type][cond][true_expr][false_expr]
 AST_DO_WHILE  equ 28    ; do-while stmt: [type][body][cond]
 AST_FLOAT     equ 29    ; T12 IEEE-754 binary64 bits in field1
+AST_FUNCREF   equ 40    ; R23 WS1: a prakriya name as a value: [type][name_ptr]
+AST_SLICE     equ 41    ; R23 WS3: base[lo:hi]: [type][base_name][lo][hi][desc_offset]
+R23_METHOD_CAP equ 256
+R23_MCALL_CAP  equ 2048
 R56_GLOBAL_CAP equ 128
 R56_PATCH_CAP equ 16384
 R9_GUNA_CAP equ 1024        ; R9: hidden guna values per compilation
@@ -159,6 +164,7 @@ KW_PANKTI    equ 28   ; mala = array (garland/row)
 KW_KURU      equ 29   ; kuru = do (imperative Sanskrit, for do-while)
 KW_DASHAM    equ 30   ; dasham / दशम = scalar IEEE-754 binary64
 KW_KOSH      equ 31   ; kosh / कोश = growable qword array
+KW_VIBHAG    equ 32   ; R23 WS3: vibhag / विभाग = a slice parameter
 AST_NISHKRIYA equ 26  ; inline asm statement node
 
 ; Builtin IDs
@@ -219,7 +225,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v233) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v234) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r48_msg_near db ": Sutram Error [E_PARSE]: shabd '",0
@@ -355,6 +361,8 @@ r54_builtin_arity_table:
     msg_kosh_dequeue_empty db "Sutram Error: riktat koshat kosh_dequeue", 10, 0
     msg_kosh_param_type db "Sutram Error: kosh tark: tatv prakar bhinn", 10, 0
     msg_kosh_param_push db "Sutram Error: kosh-tarke kosh_push asamarthitam", 10, 0
+    r23_msg_slice_base db "Sutram Error: vibhag: mala, kosh va vibhag apekshita", 10, 0
+    r23_msg_slice_return db "Sutram Error: vibhag prakriyayah na pratyarpaniyah", 10, 0
 
     ; The v27 per-pack copies of five parse messages lived here. R11: every message
     ; now has a copy per pack, in lang/<pack>.sandesh, assembled into
@@ -467,6 +475,7 @@ r54_builtin_arity_table:
         dq kw_kuru,       TOK_KEYWORD, KW_KURU
         dq kw_dasham,     TOK_KEYWORD, KW_DASHAM
         dq kw_kosh,       TOK_KEYWORD, KW_KOSH
+        dq kw_vibhag,     TOK_KEYWORD, KW_VIBHAG
         ; Devanagari equivalents (optional script)
         dq kw_dev_mukhya,    TOK_KEYWORD, KW_MUKHYA
         dq kw_dev_vitti,     TOK_KEYWORD, KW_VITTI
@@ -478,6 +487,7 @@ r54_builtin_arity_table:
         dq kw_dev_kuru,      TOK_KEYWORD, KW_KURU
         dq kw_dev_dasham,    TOK_KEYWORD, KW_DASHAM
         dq kw_dev_kosh,      TOK_KEYWORD, KW_KOSH
+        dq kw_dev_vibhag,    TOK_KEYWORD, KW_VIBHAG
     kw_table_end:
 
     ; Builtin table
@@ -667,6 +677,7 @@ r54_builtin_arity_table:
     kw_kuru      db "kuru", 0
     kw_dasham    db "dasham", 0
     kw_kosh      db "kosh", 0
+    kw_vibhag    db "vibhag", 0
 
     ; Devanagari keyword strings (UTF-8 encoded)
     kw_dev_mukhya    db 0xE0,0xA4,0xAE,0xE0,0xA5,0x81,0xE0,0xA4,0x96,0xE0,0xA5,0x8D,0xE0,0xA4,0xAF, 0
@@ -680,6 +691,7 @@ r54_builtin_arity_table:
     kw_dev_dasham   db 0xE0,0xA4,0xA6,0xE0,0xA4,0xB6,0xE0,0xA4,0xAE, 0
     ; कोश
     kw_dev_kosh     db 0xE0,0xA4,0x95,0xE0,0xA5,0x8B,0xE0,0xA4,0xB6, 0
+    kw_dev_vibhag   db 224,164,181,224,164,191,224,164,173,224,164,190,224,164,151, 0
             kw_dev_prakriya db 0xE0,0xA4,0xAA,0xE0,0xA5,0x8D,0xE0,0xA4,0xB0,0xE0,0xA4,0x95,0xE0,0xA5,0x8D,0xE0,0xA4,0xB0,0xE0,0xA4,0xBF,0xE0,0xA4,0xAF,0xE0,0xA4,0xBE, 0
     kw_dev_anyatra db 0xE0,0xA4,0x85,0xE0,0xA4,0xA8,0xE0,0xA5,0x8D,0xE0,0xA4,0xAF,0xE0,0xA4,0xA4,0xE0,0xA5,0x8D,0xE0,0xA4,0xB0, 0
     kw_dev_pratiyati db 0xE0,0xA4,0xAA,0xE0,0xA5,0x8D,0xE0,0xA4,0xB0,0xE0,0xA4,0xA4,0xE0,0xA5,0x8D,0xE0,0xA4,0xAF,0xE0,0xA4,0xBE,0xE0,0xA4,0xAF,0xE0,0xA4,0xA4,0xE0,0xA4,0xBF, 0
@@ -802,6 +814,7 @@ section .bss
     r51_ns_emit_pos resq 1
     r51_last_off resq 1
     r51_last_size resq 1
+    alignb 8                    ; R23 WS2: token pointers are even; a method call marks bit 0
     token_arr   resb TOKEN_CAP * TOKEN_SIZE ; capacity matches 64 KiB source + EOF
     token_cnt   resq 1
     token_idx   resq 1
@@ -6700,6 +6713,7 @@ parse_program:
     call parse_function
     mov [rel root_node], rax
     call r4_resolve_pending            ; R4: undefined names are errors
+    call r23_resolve_methods           ; R23 WS2: q.m(...) calls the one Rachana.m
     call r7_check_arity                ; R7: a call with the wrong number of arguments is an error
     mov rax, [rel root_node]
     ret
@@ -7882,6 +7896,9 @@ r4_resolve_pending:
     call r56_global_index
     test rax,rax
     jnz .next                   ; a module-level global (may be declared later)
+    call r23_resolve_pending_read   ; R23 WS1: a prakriya name is a value
+    test rax,rax
+    jnz .next
     call r4_report
     inc r13
     cmp qword [rel r48_mode],0
@@ -8803,6 +8820,13 @@ parse_stmt:
     jne parse_error
     mov rbx, [rax+8]         ; function name ptr
     call advance_tok
+    call cur_tok              ; R23 WS2: prakriya Rachana.method(...)
+    cmp qword [rax], TOK_DELIMITER
+    jne .r23_not_method_def
+    cmp qword [rax+8], '.'
+    jne .r23_not_method_def
+    call r23_parse_method_def ; rbx = "Rachana.method"
+.r23_not_method_def:
     ; Expect (
     call cur_tok
     mov rcx, [rax+8]
@@ -8832,7 +8856,15 @@ parse_stmt:
     je .ps_fd_param_dasham
     cmp qword [rax+16], KW_KOSH
     je .ps_fd_param_kosh
+    cmp qword [rax+16], KW_VIBHAG
+    je .ps_fd_param_vibhag
     jmp parse_error
+.ps_fd_param_vibhag:
+    mov r10d, PARAM_VIBHAG    ; R23 WS3
+    call advance_tok          ; consume vibhag / विभाग
+    call cur_tok
+    mov rcx, [rax]
+    jmp .ps_fd_param_name
 .ps_fd_param_dasham:
     mov r10d, PARAM_DASHAM
     call advance_tok          ; consume dasham / दशम
@@ -10829,13 +10861,24 @@ parse_primary_inner:
 .pp_ident_var:
     push rdi
     mov rdi, rbx
+    push qword [rel r4_pend_count]   ; R23 WS1: was this read queued as unresolved?
     call r4_check_read        ; R4: an undeclared read is queued, then reported
+    pop rcx
     pop rdi
+    push rcx
     push rbx
     call alloc_ast
     pop rbx
+    pop rcx
     mov qword [rax], AST_VAR
     mov [rax+8], rbx
+    cmp rcx, [rel r4_pend_count]
+    jae .r23_pp_not_pending
+    cmp rcx, R4_PEND_CAP
+    jae .r23_pp_not_pending
+    lea rdx, [rel r23_pend_node]
+    mov [rdx + rcx*8], rax    ; resolved at the end of the parse: a prakriya name -> AST_FUNCREF
+.r23_pp_not_pending:
     pop rbx
     ret
 .pp_ident_field:
@@ -10851,6 +10894,14 @@ parse_primary_inner:
     mov [rel r5_field_tok], rax   ; R5: for the unknown-field diagnostic
     mov rdx, [rax+8]         ; field name ptr
     call advance_tok          ; consume field name
+    push rdx                  ; R23 WS2: q.m( is a method call
+    call cur_tok
+    pop rdx
+    cmp qword [rax], TOK_DELIMITER
+    jne .r23_pif_field
+    cmp qword [rax+8], '('
+    je .r23_method_call
+.r23_pif_field:
     push rbx                 ; save var name
     push rdx                 ; save field name
     ; Search rachana entries for this field
@@ -10928,6 +10979,26 @@ parse_primary_inner:
     pop rbx
     ret
 
+.r23_method_call:
+    ; R23 WS2: q.m(args) is the call m(q, args), m resolved after the parse.
+    ; The name token is pushed with its low bit set: .pp_no_pop_f records it.
+    mov rax, [rel r5_field_tok]
+    or rax, 1
+    push rax
+    push r12                  ; save r12 (as .pp_ident_call does)
+    push rdx
+    push rbx
+    call alloc_ast
+    pop rbx
+    pop rdx
+    mov qword [rax], AST_VAR  ; the receiver is the first argument
+    mov [rax+8], rbx
+    mov rbx, rdx              ; callee: the method name for now
+    push rax
+    mov r12d, 1
+    call advance_tok          ; consume '('
+    jmp .pp_ic_args
+
 .pp_ident_index:
     ; Array index: ident[expr]
     push rdi
@@ -10937,10 +11008,55 @@ parse_primary_inner:
     call advance_tok          ; consume '['
     ; Save name ptr
     push rbx
+    call cur_tok              ; R23 WS3: a[:hi]
+    cmp qword [rax], TOK_DELIMITER
+    jne .r23_index_lo
+    cmp qword [rax+8], ':'
+    jne .r23_index_lo
+    xor eax, eax
+    jmp .r23_slice_colon
+.r23_index_lo:
     ; Parse index expression
     call parse_expr
     ; rax = index node
-    push rax                  ; save index
+    push rax
+    call cur_tok              ; R23 WS3: a[lo:hi] is a slice
+    cmp qword [rax], TOK_DELIMITER
+    jne .r23_index_plain
+    cmp qword [rax+8], ':'
+    jne .r23_index_plain
+    pop rax
+.r23_slice_colon:
+    push rax                  ; lo (0 = from the start)
+    call advance_tok          ; consume ':'
+    call cur_tok
+    cmp qword [rax], TOK_DELIMITER
+    jne .r23_slice_hi
+    cmp qword [rax+8], ']'
+    jne .r23_slice_hi
+    xor eax, eax              ; hi omitted: to the end
+    jmp .r23_slice_hi_done
+.r23_slice_hi:
+    call parse_expr
+.r23_slice_hi_done:
+    push rax
+    call cur_tok
+    cmp qword [rax], TOK_DELIMITER
+    jne parse_error
+    cmp qword [rax+8], ']'
+    jne parse_error
+    call advance_tok          ; consume ']'
+    call alloc_ast
+    pop rdx                   ; hi
+    pop rcx                   ; lo
+    pop r8                    ; base name
+    mov qword [rax], AST_SLICE
+    mov [rax+8], r8
+    mov [rax+16], rcx
+    mov [rax+24], rdx
+    pop rbx
+    ret
+.r23_index_plain:
     ; Expect ']'
     call cur_tok
     mov rcx, [rax+8]
@@ -11026,6 +11142,11 @@ parse_primary_inner:
     jnz .pp_pop_f
 .pp_no_pop_f:
     mov rcx, [rsp+8]          ; R7: name token (below the saved r12)
+    test rcx, 1
+    jz .r23_plain_call
+    and rcx, -2               ; R23 WS2: a method call, resolved after the parse
+    call r23_note_method_call
+.r23_plain_call:
     call r7_note_call         ; (rbx name, r12 argc, rcx token)
     pop r12                   ; restore r12
     add rsp, 8                ; drop the name token
@@ -11315,6 +11436,7 @@ gen_code:
     mov qword [rel var_cnt], 0
     mov qword [rel stack_dep], 0
     mov qword [rel array_var_cnt], 0
+    mov qword [rel r23_slice_var_cnt], 0
     mov qword [rel kosh_var_cnt], 0
     mov qword [rel kosh_param_var_cnt], 0
     mov qword [rel float_kosh_var_cnt], 0
@@ -11648,6 +11770,7 @@ gen_all_functions:
     mov qword [rel var_cnt], 0
     mov qword [rel stack_dep], 0
     mov qword [rel array_var_cnt], 0
+    mov qword [rel r23_slice_var_cnt], 0
     mov qword [rel kosh_var_cnt], 0
     mov qword [rel kosh_param_var_cnt], 0
     mov qword [rel float_kosh_var_cnt], 0
@@ -11751,6 +11874,10 @@ gen_all_functions:
     je .gaf_param_kosh
     cmp eax, PARAM_KOSH_DASHAM
     je .gaf_param_kosh_float
+    cmp eax, PARAM_VIBHAG
+    jne .gaf_param_type_done
+    mov rdi, rsi              ; R23 WS3: a vibhag parameter is a slice
+    call r23_mark_slice_var
     jmp .gaf_param_type_done
 .gaf_param_scalar_float:
     mov rdi, rsi
@@ -12144,6 +12271,14 @@ gen_stmt:
     mov dil, 0x57
     call emit_byte
 .gfc_saves_done:
+    mov rdi, [rbx+8]          ; R23 WS1: a call through a variable
+    call r23_call_is_indirect
+    test rax, rax
+    jz .gfc_direct
+    mov rdi, [rbx+8]
+    call r23_emit_indirect_call
+    jmp .gfc_after_call
+.gfc_direct:
     ; Emit call rel32 (E8 + 4-byte offset, patched later)
     mov dil, 0xE8
     call emit_byte
@@ -12162,6 +12297,7 @@ gen_stmt:
     inc qword [rel patch_count]
     xor edi, edi
     call emit_u32
+.gfc_after_call:
     test r15, r15
     jz .gfc_restores_done
     mov dil, 0x41             ; pop r15 = 41 5F
@@ -12191,6 +12327,8 @@ gen_stmt:
 
 .gs_decl:
     ; [AST_DECL][name_ptr][init_ptr][array_size_expr_or_0][type_marker]
+    mov rdi, rbx              ; R23 WS3: vitti s = a[lo:hi] declares a slice
+    call r23_mark_slice_decl
     ; PERF2/PERF3: when an integer scalar will occupy one of the first five
     ; register slots, build simple literals/copies/var-binops directly in the
     ; destination register.  Unsupported forms leave allocation untouched.
@@ -12683,6 +12821,14 @@ gen_stmt:
     call emit_rbp_modrm_disp
     pop rsi
 .gs_ai_have:
+    mov rax, [rbx+8]          ; R23 WS3: a slice: its elements and its length
+    mov rdi, [rax+8]
+    call r23_index_slice
+    test rax, rax
+    jz .r23_gs_ai_not_slice
+    mov r12, 3
+    jmp .gs_ai_no_len
+.r23_gs_ai_not_slice:
     mov dil, 0x50            ; push base address
     call emit_byte
     ; Fixed pankti keeps length at [ptr-8]; T18 kosh keeps logical length
@@ -13779,6 +13925,9 @@ gen_stmt:
     mov rax, [rbx+8]         ; return expr
     test rax, rax
     jz .gs_ret_none
+    mov rdi, rax              ; R23 WS3: a slice cannot outlive its frame
+    call r23_check_return
+    mov rax, [rbx+8]
     mov rdi, rax
     call expr_is_float
     push rax                  ; compile-time source type
@@ -14110,9 +14259,22 @@ gen_expr:
     je .ge_field
     cmp rax, AST_TERNARY
     je .ge_ternary
+    cmp rax, AST_FUNCREF
+    je .ge_funcref
+    cmp rax, AST_SLICE
+    je .ge_slice
     ; Unknown — emit nop
     mov dil, 0x90
     call emit_byte
+    pop rbx
+    ret
+
+.ge_funcref:
+    call r23_gen_funcref      ; R23 WS1: rax = the function's address
+    pop rbx
+    ret
+.ge_slice:
+    call r23_gen_slice        ; R23 WS3: rax = the slice descriptor
     pop rbx
     ret
 
@@ -14283,6 +14445,14 @@ gen_expr:
     mov dil, 0x57
     call emit_byte
 .ge_fc_saves_done:
+    mov rdi, [rbx+8]          ; R23 WS1: a call through a variable
+    call r23_call_is_indirect
+    test rax, rax
+    jz .ge_fc_direct
+    mov rdi, [rbx+8]
+    call r23_emit_indirect_call
+    jmp .ge_fc_after_call
+.ge_fc_direct:
     ; Emit call rel32
     mov dil, 0xE8
     call emit_byte
@@ -14300,6 +14470,7 @@ gen_expr:
     inc qword [rel patch_count]
     xor edi, edi
     call emit_u32
+.ge_fc_after_call:
     test r15, r15
     jz .ge_fc_restores_done
     mov dil, 0x41             ; pop r15
@@ -14426,6 +14597,13 @@ gen_expr:
     call emit_rbp_modrm_disp
     pop rsi
 .ge_index_have_addr:
+    mov rdi, [rbx+8]          ; R23 WS3: a slice: its elements and its length
+    call r23_index_slice
+    test rax, rax
+    jz .r23_ge_index_not_slice
+    mov r12, 3
+    jmp .ge_index_no_len
+.r23_ge_index_not_slice:
     mov dil, 0x50            ; push rax (save base address)
     call emit_byte
     mov rdi, [rbx+8]
@@ -16323,6 +16501,22 @@ gen_expr:
     ; T8b: real pankti declarations carry a hidden runtime length header.
     ; Preserve historical behavior for arbitrary/raw pointers: pankti_len(p)
     ; is 0 unless p is a pankti variable in this generated function scope.
+    mov rdi, [rbx+24]
+    call r23_expr_is_slice    ; R23 WS3: pankti_len(s), pankti_len(a[lo:hi]): the slice's length
+    test rax, rax
+    jz .r23_panktilen_not_slice
+    mov rax, [rbx+24]
+    call gen_expr
+    mov dil, 0x48             ; mov rax, [rax+8]
+    call emit_byte
+    mov dil, 0x8B
+    call emit_byte
+    mov dil, 0x40
+    call emit_byte
+    mov dil, 0x08
+    call emit_byte
+    jmp .ge_call_done
+.r23_panktilen_not_slice:
     mov rax, [rbx+24]
     cmp qword [rax], AST_VAR
     jne .ge_call_panktilen_zero
@@ -19725,6 +19919,8 @@ gen_typed_call_arg:
     call emit_scalar_type_conversion
     jmp .gtca_push
 .gtca_kosh:
+    cmp r14, PARAM_VIBHAG
+    je .r23_gtca_slice
     ; Typed kosh parameters accept a named kosh variable of the same element
     ; type. The runtime value is already the user pointer, so no conversion.
     cmp qword [r13], AST_VAR
@@ -19763,6 +19959,23 @@ gen_typed_call_arg:
     pop r12
     pop rbx
     ret
+.r23_gtca_slice:
+    ; R23 WS3: a vibhag parameter takes a slice, or a whole mala / integer kosh
+    ; (passed as the slice [0:length]). Anything else is a compile error.
+    mov rdi, r13
+    call r23_expr_is_slice
+    test rax, rax
+    jnz .gtca_emit_kosh
+    cmp qword [r13], AST_VAR
+    jne r23_slice_base_fail
+    call alloc_ast            ; the whole-array slice name[:]
+    mov qword [rax], AST_SLICE
+    mov rcx, [r13+8]
+    mov [rax+8], rcx
+    mov qword [rax+16], 0
+    mov qword [rax+24], 0
+    mov r13, rax
+    jmp .gtca_emit_kosh       ; r23_gen_slice refuses a base that is no array
 .gtca_kosh_type_fail:
 %ifdef SUTRAM_R65_PEEPHOLES
     pop r15
@@ -23205,6 +23418,8 @@ strcmp:
     sub ecx, edx
     mov eax, ecx
     ret
+
+%include "src/r23_capabilities.inc"
 
 itoa:
     mov rax, rdi
