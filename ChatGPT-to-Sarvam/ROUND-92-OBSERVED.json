@@ -1,0 +1,263 @@
+{
+  "schema": 1,
+  "round": 92,
+  "git_main_at_round_start": "affb99dc2472256884846c2b3258a0fabf76bd50",
+  "source_files": [
+    {
+      "path": "src/sutram_compiler.asm",
+      "git_blob": "1f6377e35897a467e2ae5781433f84d933a7886a"
+    },
+    {
+      "path": "src/r23_capabilities.inc",
+      "git_blob": "664964d38e894e89aac8e96c79e13a21472b646d"
+    },
+    {
+      "path": "src/r71_module_link.inc",
+      "git_blob": "ab47f41db59d94140f3036b7e7f9fa3959bd610d"
+    },
+    {
+      "path": "win/pe_imports.inc",
+      "git_blob": "fc8491c6192d34058f6ac7c9a203fa335bec04cc"
+    },
+    {
+      "path": "lib/phal.smlib",
+      "git_blob": "c23ae4ae9b48aba19fb66eb22fdf44b5fff5e392"
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-91-WS3-UNHANDLED.sm",
+      "git_blob": "7ae4536c4da5a92ed569ff00d1e855fd767fdcdd"
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-91-WS3-HANDLED.sm",
+      "git_blob": "863aa49b9dd9ddbe51a07506a1fd826738fe7fc4"
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-92-WS1-FREESTANDING-C.c",
+      "git_blob": "0a1be98844927f1cc1394fd3bc46cd6d16372b3c"
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-92-WS1-FREESTANDING-ENTRY.S",
+      "git_blob": "94c8146350575bd7437853cd02f1fe29b8679f3e"
+    }
+  ],
+  "host": {
+    "system": "Linux x86-64",
+    "compiler": "gcc 14.2.0",
+    "linker": "GNU ld 2.44",
+    "source_C_git_blob": "0a1be98844927f1cc1394fd3bc46cd6d16372b3c",
+    "source_ASM_git_blob": "94c8146350575bd7437853cd02f1fe29b8679f3e",
+    "source_C_sha256": "caf9d2242031748dfba1015759a26fc47a3e704c6778c5381bed07be7d163481",
+    "source_ASM_sha256": "da223c7c7b961d5e7a505048b14060492f9e17a7d48daaa55725a55c02628ce7",
+    "final_ELF_sha256": "7f60693cda2fcb43bcb0423d4cc0a372f88a3fd98ebca69def3fdb56055ecee6",
+    "ELF_bytes": 9096,
+    "runtime_stdout": "NO_LIBC_C_CALL=42\n",
+    "runtime_exit": 42,
+    "link_without_C_object_exit": 1,
+    "link_without_C_object_stderr": "ld: /mnt/data/sutram_round92/ffi_entry.o: in function `_start':\n(.text+0xf): undefined reference to `sutram_ffi_add'",
+    "has_PT_INTERP": false,
+    "has_DYNAMIC_SECTION": false,
+    "has_external_libc_requirement": false
+  },
+  "host_executed_assertions": [
+    {
+      "id": 1,
+      "status": "PASS",
+      "description": "Runtime exit code 42 as intentionally required"
+    },
+    {
+      "id": 2,
+      "status": "PASS",
+      "description": "Runtime stdout exactly NO_LIBC_C_CALL=42 newline"
+    },
+    {
+      "id": 3,
+      "status": "PASS",
+      "description": "Runtime stderr empty"
+    },
+    {
+      "id": 4,
+      "status": "PASS",
+      "description": "Final executable has no PT_INTERP"
+    },
+    {
+      "id": 5,
+      "status": "PASS",
+      "description": "Final executable has no dynamic section"
+    },
+    {
+      "id": 6,
+      "status": "PASS",
+      "description": "Compiled C object has no undefined symbols"
+    },
+    {
+      "id": 7,
+      "status": "PASS",
+      "description": "C function object is ELF64 ET_REL"
+    },
+    {
+      "id": 8,
+      "status": "PASS",
+      "description": "Caller object has R_X86_64_PLT32 relocation for function"
+    },
+    {
+      "id": 9,
+      "status": "PASS",
+      "description": "Omitting C object fails link with undefined reference"
+    }
+  ],
+  "source_review_assertions": [
+    {
+      "id": 1,
+      "status": "PASS",
+      "description": "Existing v1 marker is defined",
+      "evidence": "src/sutram_compiler.asm:754"
+    },
+    {
+      "id": 2,
+      "status": "PASS",
+      "description": "Existing v1 marker selects graph prepass",
+      "evidence": "src/sutram_compiler.asm:2290-2313"
+    },
+    {
+      "id": 3,
+      "status": "PASS",
+      "description": "niryat already in graph export parser",
+      "evidence": "src/sutram_compiler.asm:3079;3596-3598"
+    },
+    {
+      "id": 4,
+      "status": "PASS",
+      "description": "niryat already removed before lexer",
+      "evidence": "src/sutram_compiler.asm:2989"
+    },
+    {
+      "id": 5,
+      "status": "PASS",
+      "description": "Import is source flattening not objects",
+      "evidence": "src/sutram_compiler.asm:2534;3055-3063"
+    },
+    {
+      "id": 6,
+      "status": "PASS",
+      "description": "Graph DFS already exists",
+      "evidence": "src/sutram_compiler.asm:4588"
+    },
+    {
+      "id": 7,
+      "status": "PASS",
+      "description": "One local function table and patch list",
+      "evidence": "src/sutram_compiler.asm:11958-12032"
+    },
+    {
+      "id": 8,
+      "status": "PASS",
+      "description": "ELF writer writes ET_EXEC",
+      "evidence": "src/sutram_compiler.asm:23328"
+    },
+    {
+      "id": 9,
+      "status": "PASS",
+      "description": "ELF writer omits section table",
+      "evidence": "src/sutram_compiler.asm:23342"
+    },
+    {
+      "id": 10,
+      "status": "PASS",
+      "description": "First-class funcref emits RIP-relative pointer",
+      "evidence": "src/r23_capabilities.inc:159-168"
+    },
+    {
+      "id": 11,
+      "status": "PASS",
+      "description": "Function address uses patch list",
+      "evidence": "src/r23_capabilities.inc:168"
+    },
+    {
+      "id": 12,
+      "status": "PASS",
+      "description": "R71 object emitter not connected",
+      "evidence": "src/r71_module_link.inc:2"
+    },
+    {
+      "id": 13,
+      "status": "PASS",
+      "description": "Windows already generates KERNEL32 API imports",
+      "evidence": "win/pe_imports.inc"
+    },
+    {
+      "id": 14,
+      "status": "PASS",
+      "description": "Current compiler does not implement strict marker",
+      "evidence": "src/sutram_compiler.asm"
+    },
+    {
+      "id": 15,
+      "status": "PASS",
+      "description": "Lexer ignores hash-prefixed comments",
+      "evidence": "src/sutram_compiler.asm:5982-5983"
+    },
+    {
+      "id": 16,
+      "status": "PASS",
+      "description": "Current compiler lacks strict diagnostic",
+      "evidence": "src/sutram_compiler.asm"
+    },
+    {
+      "id": 17,
+      "status": "PASS",
+      "description": "Current phal value reads r[1] without guard",
+      "evidence": "lib/phal.smlib:56-58"
+    },
+    {
+      "id": 18,
+      "status": "PASS",
+      "description": "Current phal checked division exists",
+      "evidence": "lib/phal.smlib:127"
+    },
+    {
+      "id": 19,
+      "status": "PASS",
+      "description": "Unprotected R91 case extracts unchecked result",
+      "evidence": "ROUND-91-WS3-UNHANDLED.sm"
+    },
+    {
+      "id": 20,
+      "status": "PASS",
+      "description": "Guarded R91 case branches and returns",
+      "evidence": "ROUND-91-WS3-HANDLED.sm"
+    },
+    {
+      "id": 21,
+      "status": "PASS",
+      "description": "Freestanding C uploaded matches executed bytes",
+      "evidence": "ROUND-92-WS1-FREESTANDING-C.c"
+    },
+    {
+      "id": 22,
+      "status": "PASS",
+      "description": "Freestanding entry uploaded matches executed bytes",
+      "evidence": "ROUND-92-WS1-FREESTANDING-ENTRY.S"
+    }
+  ],
+  "WS1": {
+    "verdict": "Freestanding C function call without C runtime POSSIBLE via static object; actual libc printf REQUIRES formatter/libc implementation. Sutram compiler FFI NOT IMPLEMENTED."
+  },
+  "WS2": {
+    "verdict": "Existing source graph and niryat reused, but real module objects require new object writer/linker; existing # sutram-module-v1 marker is already meaningful and must not be silently repurposed.",
+    "R23_relocation_requirement": "Both E8 rel32 calls and RIP-relative function-address LEA must be accounted for."
+  },
+  "WS3": {
+    "verdict": "R91 negative is currently syntactically accepted by legacy grammar; proposed strict profile would reject ignored Result payload, but native enforcement and native test are NOT_RUN.",
+    "unchecked_line": 7
+  },
+  "not_run": [
+    "Sutram native FFI compile/link",
+    "Sutram module .smo emit/link",
+    "Sutram strict-result compiler rejection and guarded runtime",
+    "Windows C ABI and imported OS APIs",
+    "Full Sutram compiler fuzzer/suite"
+  ],
+  "no_compiler_changes": true,
+  "no_PR_merges": true,
+  "no_CI_launch": true
+}
