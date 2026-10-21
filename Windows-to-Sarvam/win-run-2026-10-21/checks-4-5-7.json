@@ -1,0 +1,2904 @@
+{
+ "hashes": {
+  "win/sutram.exe": "84c48500acfc6428d33a8cf17c4da88f00d03529e8b92035f1402ca18f4821a0",
+  "sutram.exe": "84c48500acfc6428d33a8cf17c4da88f00d03529e8b92035f1402ca18f4821a0",
+  "Sutram-Setup.exe": "4bf2fbabc6205f1a68fc9cc047dc734c2e50ab00056b814db54ba76f5526cc05",
+  "Sutram-Setup.sha256 (recorded)": "4bf2fbabc6205f1a68fc9cc047dc734c2e50ab00056b814db54ba76f5526cc05"
+ },
+ "sha256sums_r17": {
+  "total": 213,
+  "ok": 119,
+  "bad": [
+   {
+    "file": "R4-anya-yadi-after-anya.sm",
+    "want": "7cbb03e3273c0adfc4a18325e5524d3b948f4f9500fc2bc0653f9a3eb81f478c",
+    "got": "2b96b00b6a37551de59d80829771ce41ff52e7110060d3ac255ad27c2f6a5425"
+   },
+   {
+    "file": "R5-expression-left-of-assignment.sm",
+    "want": "065d85ba587fb6f0f0ac6a5e6a998f50e7ee688e3f97ba4d7b0817e6b82410de",
+    "got": "3cf2aac224fc2380a2bd063b80a39001a3df9798918d9a393455b4d734921c72"
+   },
+   {
+    "file": "R5b-index-expression-left-of-assignment.sm",
+    "want": "affb44f83abc27e412c0896458c5eb15bc58daf048a2fa2fdddb97f0800e24c3",
+    "got": "8011cc58ca4a59b2c8fa5a33c088bfc55a85c717b479054ce69c32a44d5da13e"
+   },
+   {
+    "file": "mutation-15-10061.sm",
+    "want": "44e55aee11ae2ff8b475cdf36b6c597e93b7f01f9bf23efc085f680e50dea46d",
+    "got": "8f63633a85187ced58966b25bf8f66bf8814ddf51b792c5d6f526d01b9251271"
+   },
+   {
+    "file": "mutation-15-10761.sm",
+    "want": "26aea7a8385aa8c457868dadafa17c0eeb460394a5ed02cfe1a08725e5a3cc53",
+    "got": "b7f222a26085489a501d8c71d23379e0cec3dd922034a11be5511fa5f599d2ab"
+   },
+   {
+    "file": "mutation-15-11005.sm",
+    "want": "a76cadba6d0f654c8282c41ad16153ea0fa7462638b32ed1d72a2ee600b389e7",
+    "got": "f0d08b85b6e6f68ac7b57b33b8f8e99b28fa5de050bbefd8a9e93a6dbcb3d80f"
+   },
+   {
+    "file": "mutation-15-11196.sm",
+    "want": "912ea0d03cf0786b89e8042cc69efba95d2bf25afcaa1a92f8c13ea20ebd163b",
+    "got": "9aa43ac3cf201954953b550316d0135f2883a79f02cd85b33c811c02408c7ecb"
+   },
+   {
+    "file": "mutation-15-11999.sm",
+    "want": "7b599882b8e926cddd334c1e1c9bb0bf7b385e43b89a476644a76c5fa967cfc2",
+    "got": "23c5dffa56601cdeb4e82183648ef67e05b9cf206eac9a08e95feffddb45cf6d"
+   },
+   {
+    "file": "mutation-15-1268.sm",
+    "want": "d2b893c135beba432741482ab74a4d4a868d33496d0bc42ccade8b3688924ed5",
+    "got": "da60bd8877f890e4534f329761a9522c8ad3de72e9f526237dc7cb3e153cd85e"
+   },
+   {
+    "file": "mutation-15-12957.sm",
+    "want": "53d0af1555300f47c5bf43ed2cafc20a6e70207e4ce85b41012c2a9f3bd4cdc2",
+    "got": "6561349bd5b5a91749b8417d142277003504d1e63dd08cd15f97395e2bd5f90b"
+   },
+   {
+    "file": "mutation-15-14386.sm",
+    "want": "3598a585f00d01a15292854e4c5cf5edf55e6c13aab986834126b1406080e756",
+    "got": "5ac6109ce3ee0ec75c5d26e30d07519248deb21ea0c245dc66cb759d0c9ab3b0"
+   },
+   {
+    "file": "mutation-15-15323.sm",
+    "want": "15406ed4434240135eed59c944d41d63482ec28997cc04c2feb23f5affb5cbea",
+    "got": "f6329f3898a0d16ddc9d1341cda6753715759fc75d0a6c2d9e0ad80ef59463d3"
+   },
+   {
+    "file": "mutation-15-15331.sm",
+    "want": "03aa431c59777ff1e5fa6a632ebb5bdf3b06ac0d44873bddbd3955fd4f2107ba",
+    "got": "119fae9f51e16406883ff61f7aff5400ab147b2f5314a3c15313bcc18b1dbb25"
+   },
+   {
+    "file": "mutation-15-15511.sm",
+    "want": "f1358a6b4a010a9601c03c3d5aef3330de4e445c28831a590063f8056831bec6",
+    "got": "e93b8ec6df22e5faddeb914fe5cc5818f0c4504443b1052080ffd1eaf5dd69d4"
+   },
+   {
+    "file": "mutation-15-17710.sm",
+    "want": "7101ac8ff853654eda33c956698aa58007f73f210b9a4fac4164ec528704d434",
+    "got": "803dd527d234252d6e32070e832a4acb64d9e09c2915d8abddc13bd627b2a29c"
+   },
+   {
+    "file": "mutation-15-18721.sm",
+    "want": "827c930be69d513bd1d0d9a6602eb7daa8af3d6d13cbbbc30d158bc0a8596b30",
+    "got": "f78611a042e00d2284ec0c229f815c2b8bb8277d4ad5f5404baea8333f977fec"
+   },
+   {
+    "file": "mutation-15-1981.sm",
+    "want": "94b25267a368d3b19feea4caf562d53a31e05a5414c3a81b9c8617af0ea81d41",
+    "got": "e8df0be17e9370a98aee2e2fe1e19d31801a2f548327392dc60791378e3279b2"
+   },
+   {
+    "file": "mutation-15-20160.sm",
+    "want": "00f3505f0ba9ed2de0b9769f8194dc1e59e64fec5aef547a9f72277e2438fe98",
+    "got": "a8ef3723f102befa56873136c70ee2034df92188515342a535a2814660f66063"
+   },
+   {
+    "file": "mutation-15-21279.sm",
+    "want": "b5f729febf1fe9202bd7f8e993bd24e7c4c1c6aeabcc73c6b05571e411334cb5",
+    "got": "11a8438d39331c80dea9fbd0ff8b8935c1b4d283d50ca5176c5c383ba5f38393"
+   },
+   {
+    "file": "mutation-15-22286.sm",
+    "want": "17b96756d4896500f559e346fc6ec2a52030a078c1e1729ad23670df99602399",
+    "got": "af170ac0481e3635c3a0523b07e9901aa15b67c0bba8b4858e791c92b99f987b"
+   },
+   {
+    "file": "mutation-15-23437.sm",
+    "want": "aa1efba142f82d77efb42faf0bbce4ee3ef40c33b6ea8da5a1c696ec417e9eff",
+    "got": "bb1f9a8da776ebaf8393e35e61c169adbacb0aac0be50b31afe44e900da914cc"
+   },
+   {
+    "file": "mutation-15-24127.sm",
+    "want": "875ccbaa1f41cdc3dc011c138391868ceee32e74fb81a3edbcf8b52497859cf0",
+    "got": "7e689abbe6e01400b3bbc85ecb5d60c57cd575b76c75a5a953414397ae257d29"
+   },
+   {
+    "file": "mutation-15-253.sm",
+    "want": "5504227d766ad610619adf2d9cace58f85c4008600300601d4b647150db94514",
+    "got": "3290ce4909a230e39d488335be269412c79dd046947449babb3561505ca9c00e"
+   },
+   {
+    "file": "mutation-15-25532.sm",
+    "want": "ea17f9e37e45bd47edb74163d3561f68e4f972fbb32677663d53de83790b424e",
+    "got": "df05b806f526c5d97b77fd05d1869ddbf3556c7656214421fc13f134a2499193"
+   },
+   {
+    "file": "mutation-15-25786.sm",
+    "want": "abe78cdf5532e085ea11c696d74491bc0e12dd4b09778ca8d11a9caee751af86",
+    "got": "29300660264c5847870bf36c94c2914064def325431472c217b1407f5f77756e"
+   },
+   {
+    "file": "mutation-15-26225.sm",
+    "want": "1baff7cb1ab794b50fdbff70959597df5817a699622b9102f93bbe38495fd817",
+    "got": "624f713681e63326eac3c8dc80ff549b564979c5d7c950e4b5367f8cbcc9eec8"
+   },
+   {
+    "file": "mutation-15-26549.sm",
+    "want": "64ed1be96476a7a4d128f6695b0bfc4163acdb41f60df535a17473ac34e25114",
+    "got": "dcbb8378ba93e527a2d072b3235c092cfcf99029fa7582871ed6625603cacd8a"
+   },
+   {
+    "file": "mutation-15-26636.sm",
+    "want": "132555cedf5e5df359b518b30f823e173162882cb01db41029d47cd754486120",
+    "got": "12a809079081b27b98f4e453ec083d52616d8b9e0469640765b3758d08f47670"
+   },
+   {
+    "file": "mutation-15-26729.sm",
+    "want": "d5376d38b844db6f6454bdcdf7e05c5c1f81de3b6c86dc5b2f115163851188b9",
+    "got": "bf92253c77fd3b7b9005efcfe38bd40fe7a9808c9fd29c605b58eda11f14befb"
+   },
+   {
+    "file": "mutation-15-2693.sm",
+    "want": "e2461e2305e74a486b5987943e00cf4014dc83ef18db15d8cafe7a554d7fc1eb",
+    "got": "1ccd74b314ae7f8d2b2b117dbc765b4425925b836ee51d96aca05a119052d270"
+   },
+   {
+    "file": "mutation-15-27046.sm",
+    "want": "391a28467677b4a58f82b266c8c37514f3803926fad79112dbeebbb24424f4f1",
+    "got": "7aaca713dd4544a4acede86e1a2827d4690bfbb29151a6a4cf2f2ba9a5a44385"
+   },
+   {
+    "file": "mutation-15-27298.sm",
+    "want": "58e4b5ec220018a4d82842e40ec973510ee6c79f5b71bf99ec6d37a4a671eabd",
+    "got": "dcd6c7ac2bbcf31644592b19bf59550c40bf9cf7b84d3272beb393d9119b3e16"
+   },
+   {
+    "file": "mutation-15-27522.sm",
+    "want": "f2c5b718bcc32594525ecec7556ddff51392be1a523c7b39227bd2a9120ddc25",
+    "got": "4683bcbb6af0b6cdfdab01e44de2b85f3268767677598fb32a2c5e174ac1dfa1"
+   },
+   {
+    "file": "mutation-15-27731.sm",
+    "want": "85f9db39b56cfee63b9547a8b2b4f35b1efd00640922dc691b40fbd692d2de89",
+    "got": "9518a977f5d7ef6d67a6b01f2d87a06d2dd0b7b80e2ea0e03c029d52505dc886"
+   },
+   {
+    "file": "mutation-15-28520.sm",
+    "want": "ce60be8c7c0b7401d48cae2af4e7da224afb742832b7b801f4d7ced37816c48e",
+    "got": "c4d2f0bf086e5dc4475cd248c256afacbd8d57fad0b9cc34c9c47eaf245f877f"
+   },
+   {
+    "file": "mutation-15-28969.sm",
+    "want": "376c7653a0fa6e39d1ae6f810d2764d94faba6d12c577b1a28a7d1922a6eb982",
+    "got": "2ac74785c11dd5eab34336af32e1cd3420f27a294e61dc6f19a573ae6dab69cd"
+   },
+   {
+    "file": "mutation-15-29084.sm",
+    "want": "b227f8d2cbe24c32bf181a5d8f4e0c5ae2fe9ab8a55e4dcb34f44e5f3b08c594",
+    "got": "00a451121dea048a737a796b916df1fbbd2097836cd6fd638ef8f29780fc3344"
+   },
+   {
+    "file": "mutation-15-29170.sm",
+    "want": "f8acaa507fd2ebaa41466b9812a1e8f68f4ec08c213928286e089e647f8657c4",
+    "got": "f2d94db602d08829d868741ba02a2509503c90959366534aa1cf5833bd10c78a"
+   },
+   {
+    "file": "mutation-15-29448.sm",
+    "want": "19db50300860a402c97b72a2f7170580a4b701b88304ffbc52ebb31b2bb2b28b",
+    "got": "2263d97115bdb2b565e69af9c7e304e6796a57d185b3b673930ae110e38dba03"
+   },
+   {
+    "file": "mutation-15-29767.sm",
+    "want": "ac8b927c72100a5ef3b54cb0392228ea402f6601244cc4482c8641a0f3f22d6b",
+    "got": "5b876f218dda9c9e6fe73154a494c63e0518fbabf098665d970704530cc1cb95"
+   },
+   {
+    "file": "mutation-15-29820.sm",
+    "want": "40c01ea6e66c5c65509a1c8d7dd330d01cacf924e8d03d0f566b3fbe80eb35ff",
+    "got": "f99bf429bea7cb34b810330d05435f5a94b5de98add2c150912b3d23d998cb07"
+   },
+   {
+    "file": "mutation-15-30524.sm",
+    "want": "3b8d9410d7e23d39f3030e1833dff96275ba5e184df807c4def2ab4bb106e5c5",
+    "got": "c8a37097f6ded43dfc0ba0e25b20481b1ae59f1a3b34b7ed265145e12b36b8cc"
+   },
+   {
+    "file": "mutation-15-3065.sm",
+    "want": "7a54594c7f3f94226a7f6d964c718c398f3ceb37dcbc5909e577643a20b0bb6e",
+    "got": "0a9ade51910a85c2fddf7f6847dd72135680098cdee56ebbd883c1abacb93bd6"
+   },
+   {
+    "file": "mutation-15-32160.sm",
+    "want": "7a121ee6bb586cf55cd86092874dd5b2a63040bc0bd21d05cd1753ba260be479",
+    "got": "d5769d6f4068a3a0264707872b51a49c27279e524eede94c467e1bf8c52a98d3"
+   },
+   {
+    "file": "mutation-15-32279.sm",
+    "want": "869063978efaf472faf4a3fffcf09be8314fdd493da140867a2b26b32605c3d2",
+    "got": "8a4e6e45c645e3947bd784defc29910bb7e2166f1dabf540b18f29c4c3570714"
+   },
+   {
+    "file": "mutation-15-33099.sm",
+    "want": "760cd558518f429a520a9ecb11e393a2661a1ff6a0fc4dac013e8fe2050f7f53",
+    "got": "d863e80f0071564f968e20c5935df7a6d553e78d639008da2de37963da6f558d"
+   },
+   {
+    "file": "mutation-15-33516.sm",
+    "want": "5e22609dfba55b25b5947e980872e31d1857aabb37c5721541c59c71ba59d3ef",
+    "got": "9fbee05c79ab69eeb4379079993cb23ea9b382a40c19491bb9fa7dd71f19b109"
+   },
+   {
+    "file": "mutation-15-3373.sm",
+    "want": "78d8882d1bc8c2d5425510ad8bd49251cfbe45d7c044a0edb30f12de0ab70a19",
+    "got": "b4b0eda452b28a0d8b3c4fee51b6d15e77c29f583e92d970bd4d186c455d0c28"
+   },
+   {
+    "file": "mutation-15-34588.sm",
+    "want": "638ad13001a9246b404d0c9916848fc269703d0af3f59d1534f6621a8f780cb1",
+    "got": "e97af8d35dc96c26c46310e10af1d53b035b6b7c4bd7898ac3275325439ac4de"
+   },
+   {
+    "file": "mutation-15-34901.sm",
+    "want": "1a96ef201d673ed93c8859999f95141667b5b8fb03353bc71369601366cdd986",
+    "got": "38298c7750cf7b4baf5cc7651575b6439798fa442c85e4065158cd3bcf2c5a06"
+   },
+   {
+    "file": "mutation-15-34912.sm",
+    "want": "47a1084193f64dd561d3555f563346f7f1fb9ea89849a04f3ace6379df93af54",
+    "got": "13871685663cce388108bf2d683044b6e8b049758716fe30fc2c683a57a525d3"
+   },
+   {
+    "file": "mutation-15-35150.sm",
+    "want": "1963d27e0ed08e33ae17f882197fd3bb5723ac77122fc6ada62c2fd2aa23a120",
+    "got": "9651607a5cff2ce46d693055b6021601b133b31ccff20de429b6dfa2cd8ae5fc"
+   },
+   {
+    "file": "mutation-15-35169.sm",
+    "want": "2a6e0ccee926c2698922b28c20654da750d266c01b4a048ba5f6caf109a57801",
+    "got": "225217f5683dd5a1046859663a017ff7274bdc6887dcc4d4737c09b1f3f738b7"
+   },
+   {
+    "file": "mutation-15-36797.sm",
+    "want": "b89cbd3ad9a8a22022a3685efb35aaa6b7765361f1b1c89e4b949492fc5e207e",
+    "got": "638a26e52f5fb9300aaf50d658c89179919e5144573c6beac53b9e1eb0b46ddd"
+   },
+   {
+    "file": "mutation-15-37510.sm",
+    "want": "0c3f9f10fc161e675ea6876968c27fa643dee0fb0726ca964dbf137f3387ea18",
+    "got": "427e6e8e203a44cd7eb28998b19e81b1d6a239aaf84be8fce642d74456277382"
+   },
+   {
+    "file": "mutation-15-38067.sm",
+    "want": "dc6328f566da68a129c4cdfc3e5e24c52bb8082ee099f2d86ecfdc4636c3251d",
+    "got": "74f41e121465375db1f5ebf4c4a1b7b1cb7bc0ec98d4d6f0c59f8f823728106a"
+   },
+   {
+    "file": "mutation-15-38467.sm",
+    "want": "0c7cdf65a6ec4de3170c1d8d52197e5a624865523db4c4728195d01f57a9e17e",
+    "got": "6be729e038eefff95ea93356091f28bca11908f4090369696ca9ccb762c8364d"
+   },
+   {
+    "file": "mutation-15-38911.sm",
+    "want": "b974f2c4e2290959003184f1405ac1e9c826e78f4ecdc3e5caf8207b9857c0bc",
+    "got": "cd4fd5fd2f3c46c8d94f79a18137e1b47217759371b0bc3e290176624ca1f809"
+   },
+   {
+    "file": "mutation-15-39435.sm",
+    "want": "b4364ac99ec8d9b5f6f17f06001f905aaa38ce3e4da9958848c79d173b2b0a0a",
+    "got": "eff34bf72de59b7f3e731a37bcdf606b171de8417c76f3a44e0abe201e9f065b"
+   },
+   {
+    "file": "mutation-15-40049.sm",
+    "want": "22e32625a9dd264f38d0e3500b35aa25e834f00b8aa9f4605321687c67c5fc34",
+    "got": "b02e5298d8287e8cc5491200e82f2075fa5413aeda6c6b798a4d58b83df86167"
+   },
+   {
+    "file": "mutation-15-40194.sm",
+    "want": "6a4cc49043b53f197708abbe978d3ecbfb9c028521dc5c737f62676f806c9c3e",
+    "got": "304c4af6cc0bd5357586287961e5dfbf5967bee849b14c56066159199104d62b"
+   },
+   {
+    "file": "mutation-15-40597.sm",
+    "want": "c992c0b4e7ba369bf21a2f1b676d9beb9d53f94268cb2c412b01fe2eccdf80db",
+    "got": "550c68f3caa8a89bd29371d7b079510417cb43644a7cce5e3b0a7687bff4ace0"
+   },
+   {
+    "file": "mutation-15-42057.sm",
+    "want": "b251932b7364045da371e112ce1fe8efc1b9b160d074e7394f68e45d9ddb536d",
+    "got": "cf840615f9fb8a7717b9abeea202dcd6d50856b62d2f6947fdd50c953f30f69f"
+   },
+   {
+    "file": "mutation-15-4364.sm",
+    "want": "5e8b64c9933430b86bf63661a41a0384be57d4ac9f820585ef66fbf54f12ca1b",
+    "got": "44667e52c7538591e94576b890eb2d5b1c1c22bdfc0abf32b9b0a3ff27a3111d"
+   },
+   {
+    "file": "mutation-15-43640.sm",
+    "want": "368df965e581e32b4961e4fc3d1b191a2ad6a88baeaa2875b70e4a9785565a67",
+    "got": "c07fd9282901edb8328e1573b0ea597625d28cdb3ec7d1bc2df13320916178d1"
+   },
+   {
+    "file": "mutation-15-45042.sm",
+    "want": "0aa461b4114a278f5257c90cd4954520aaf2239197492157dc6dce7e41cbfe7b",
+    "got": "6622cf837f4298fa9117ddb000dd2d62817ebc864696d1da632e83070e05d51e"
+   },
+   {
+    "file": "mutation-15-45236.sm",
+    "want": "7c5c5858d84537ad36c102ee09d2aabc637586d259ee40902802d87119ca4211",
+    "got": "22eef4ae1bc88addbd985b932633893da5ee7c8b5da11b81cce874862995e2b1"
+   },
+   {
+    "file": "mutation-15-45494.sm",
+    "want": "267a15e3d540dc8167aaf6daaf8a196e62f180bc54fafa30171bfc652645f901",
+    "got": "b92021155d4953c9af2f7805008ccfad92151ffaab843a8abcb95e8172e282a9"
+   },
+   {
+    "file": "mutation-15-46768.sm",
+    "want": "2f2ab58ca019b23559bca730427afd6bebd159eed62a34762a82be3845083ed5",
+    "got": "f1fecc4db111a749ce6e0c49b9df037f82ce18e5f13081311cb1b5b680d3cd43"
+   },
+   {
+    "file": "mutation-15-47693.sm",
+    "want": "bc97fed472588458658acf1070c703009f88d64de72a01a971f6d5f0cd0983aa",
+    "got": "4ec34218bbbcb9c1d4569ac86284a0dd4b3f4b043ce411fc42e2e7ea7283304e"
+   },
+   {
+    "file": "mutation-15-47954.sm",
+    "want": "0736dfbf715f13620cbd2f58c5a59ceda4f4cc810a2ad027e5960a29c01cc6b8",
+    "got": "ac0be38657c19af1daea0cde22e3c94e8ee554e45c865f20b9601123fbb8eedc"
+   },
+   {
+    "file": "mutation-15-48781.sm",
+    "want": "c2e9d054d054571bbbe84ff7dcac862a47dc0e3e7195e3b260cca1097ff78e0b",
+    "got": "d1f2dcf280326ff2f1c5b5640a916266c35718040e0593ebd8b610d65700ae47"
+   },
+   {
+    "file": "mutation-15-49077.sm",
+    "want": "1117e8713dfe880d128a8055b133db8f31740c012b12528f66dd1981a961c697",
+    "got": "1e9e109b6016635e3bfc15f0c334644cf9e5cc685f3cb5ce63f3a07e2c401375"
+   },
+   {
+    "file": "mutation-15-49763.sm",
+    "want": "567cab340465658e9cac459b26b122ac4d406034e156e43250225e1397885acd",
+    "got": "7cc9d52c76a6dce374ffa707ffa8fa239f9949e92c0ba1056aab965a805ca40a"
+   },
+   {
+    "file": "mutation-15-5065.sm",
+    "want": "e4e1e04017f0db44a3ee4dc92a1fcd4c3fcf18cb9b8401960e1869eb036b09c4",
+    "got": "d8f611237b19b0c6e59f3ef94b1985316300b7a6591e1e9206e6d5622128fab2"
+   },
+   {
+    "file": "mutation-15-5307.sm",
+    "want": "fd2c09ec32b2a1f9ea2ab2f27f30a94eb7763cca0f78141b9a65a9520cc0f92b",
+    "got": "59f49aa3c3690b198a31feeb9c47d17c2e5d57bdb151f57f5ceaab8fb3aee4f9"
+   },
+   {
+    "file": "mutation-15-574.sm",
+    "want": "2abae6b7323622ef12e4064ca90aaaa9ed79cca6fd3887b6135c985827b50bc7",
+    "got": "3a255752d01aff5f73e7a7154b8839417b262150d482988ba98d59f2315ad88e"
+   },
+   {
+    "file": "mutation-15-6070.sm",
+    "want": "4f64e2e21d1b295ec65557c5e0f3da577e81bf3ce9cd86939ef5a555dde3a0c0",
+    "got": "d09dae18b5f2b989ba86f452fa5e326f2513fc68a2f4688eb57addcce1b28bd2"
+   },
+   {
+    "file": "mutation-15-6125.sm",
+    "want": "9311edd16a1524059d7ad32d2e1daf8e3db9f715c07d8c56910f52c50b2eea21",
+    "got": "984cdc08d7a283c64c5c5f265c887f1a7914b462904862970a2aa5a0f1661048"
+   },
+   {
+    "file": "mutation-15-6489.sm",
+    "want": "97cecad4fec83a53a0a0d890bf04e9caadf039d62e5a2c46077863c83314761d",
+    "got": "8278975f289741997e3b9dbd1f72adf4d73ee5d94b348f08c28e9f249c33e095"
+   },
+   {
+    "file": "mutation-15-7460.sm",
+    "want": "526b982c1ba25465149cab81c022c104a5d53a26f7de81c97674c6b61f4ed130",
+    "got": "f5081ca5bf736075aea5538a20dafad54e6edde27f24362dd9b79f29ff5c69b6"
+   },
+   {
+    "file": "mutation-15-8325.sm",
+    "want": "5c151489479bf7287638ccd99d6f4ad513ac72f6e5146bd29963afb752e0c5c2",
+    "got": "6c1e522a8f7b9fdc495e943906c0dc90bc8553e8cd9d8cc6825451f18fe30fd3"
+   },
+   {
+    "file": "mutation-15-8352.sm",
+    "want": "2bbc8c080ab7e6c58305f730cb9768d1753134f89944bee1898627ee8deaba37",
+    "got": "406bbb7f80c01bd09fda9d49d8e4607c26dd73e675ac06b0547c013566af32f4"
+   },
+   {
+    "file": "mutation-15-9144.sm",
+    "want": "5af8789c856c669fd3644dc7c2d58f50e9c81e95035c6ee134c0f7e1c128b284",
+    "got": "403ad67cf9483c4ab3306970cb60e4fc23844c346cad247445fa37adece88438"
+   },
+   {
+    "file": "mutation-15-9452.sm",
+    "want": "decc5f2bc6b15df0d63779537fe5dc4a6bf38352bf7f6ae8f5227de46774cdf2",
+    "got": "027422b13bd26bc6e8c90d6856ef8a730205d2e098abb09cdddf31fc93bc33cd"
+   },
+   {
+    "file": "mutation-15-9682.sm",
+    "want": "26b3815490e552c7062b4b48d43a340c4ab631b39bba4def41782e32598173d5",
+    "got": "c2a61f2d9fd40bac8b758ab3e9b100a6f5d57745463e081df8d4af069eb703d4"
+   },
+   {
+    "file": "mutation-15-10761.sm",
+    "want": "3196bb89a5dec31e27946509d6eda68eaf893c7e7b726daaaae8ab691cac073f",
+    "got": "8cf25e2aa5b81249384f6ceef5c28a34dd8c5b46795602185c0855b160a47ba2"
+   },
+   {
+    "file": "mutation-15-11196.sm",
+    "want": "667cac7a45b4b416f44383db5975962aab195d8adcf904dd3431332b296d26dc",
+    "got": "dc79d4d37271af09c224a3b025695f8bded2a560a7c63951108acb417515c3ce"
+   },
+   {
+    "file": "mutation-15-2693.sm",
+    "want": "99af0ad7f877f0920874c5b0d7b68f3f7325d61749ac6f3c9e9402a4a343392e",
+    "got": "13f7f7bf3e7e2e406df478cfc76c3232e1e4a73fa6658e59a9340ecad56eeedf"
+   },
+   {
+    "file": "mutation-15-29448.sm",
+    "want": "8332fe9481cdeca86f45d97b6866acfd85cbab67e83523c238b21b779e2d1380",
+    "got": "b2f79d15d4594d5ea21bfdd35e28dbde90e939d773441214673aebf2815c75d7"
+   },
+   {
+    "file": "mutation-15-37510.sm",
+    "want": "1e8c6877aa7f4ca1cb603084e8e1f3fcb5ad38c4582b5b0e9f9f2a1bf44d66ed",
+    "got": "7a70e5b0f41fecd46a73c1ebb1cb75c552822e69d0dfc6074215128cdc4139b8"
+   },
+   {
+    "file": "mutation-15-38067.sm",
+    "want": "fb75d0a846b4573416829c5db82830b107ddbac4229584e60b0cfd680a656647",
+    "got": "c9bc161a8bef5618b2b1eaea15122186d1364acf72194d41e2c9bb3da422f680"
+   },
+   {
+    "file": "mutation-15-6070.sm",
+    "want": "4f64e2e21d1b295ec65557c5e0f3da577e81bf3ce9cd86939ef5a555dde3a0c0",
+    "got": "d09dae18b5f2b989ba86f452fa5e326f2513fc68a2f4688eb57addcce1b28bd2"
+   },
+   {
+    "file": "mutation-15-9144.sm",
+    "want": "8ac766325e4ad82937a1df43c6ca0e93fb766b159a42eba853de0f6cac094361",
+    "got": "968b908e7e82af49596592a8a63ca7087fdf6ea8bc511c28acb7ada6c170b06b"
+   }
+  ],
+  "missing": [],
+  "named": {
+   "mutation-15-27971.sm": {
+    "listed": "3e422c0c3525063559165261bb3b4c624cd3624731915a7dbe3914fa77c23901",
+    "computed": "3e422c0c3525063559165261bb3b4c624cd3624731915a7dbe3914fa77c23901"
+   },
+   "mutation-15-37233.sm": {
+    "listed": "9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462",
+    "computed": "9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462"
+   },
+   "mutation-15-42057.sm": {
+    "listed": "5b1f9a740e86d536dc22c924ef75860b9a2e44560afc0a294c8bf8d60fae97c7",
+    "computed": "5b1f9a740e86d536dc22c924ef75860b9a2e44560afc0a294c8bf8d60fae97c7"
+   },
+   "mutation-15-574.sm": {
+    "listed": "55c3bae7bac7f38fdca922f46c4fc1c4c70c8f44296cfd1f29d71aa1f91239ba",
+    "computed": "55c3bae7bac7f38fdca922f46c4fc1c4c70c8f44296cfd1f29d71aa1f91239ba"
+   }
+  }
+ },
+ "check5": [
+  {
+   "name": "246_r23_comparator_sort",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\246_r23_comparator_sort.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\246_r23_comparator_sort.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 5057 baait sankalit\n",
+   "exit": 0,
+   "stdout": "1 2 3 4 5 7 8 9 \n9 8 7 5 4 3 2 1 \n2 4 8 1 3 5 7 9 \n2 4 8 5 3 1 7 9 \n7\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "247_r23_methods",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\247_r23_methods.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\247_r23_methods.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1990 baait sankalit\n",
+   "exit": 0,
+   "stdout": "7\n4\n6\n0\n15\n31\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "248_r23_slices",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\248_r23_slices.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\248_r23_slices.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 6487 baait sankalit\n",
+   "exit": 0,
+   "stdout": "55\n12\n55\n4\n4\n7\n52\n100\n50\n0\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "249_r25_phal",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\249_r25_phal.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\249_r25_phal.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 3823 baait sankalit\n",
+   "exit": 3,
+   "stdout": "5\n1\n16\n6\n",
+   "stderr": "",
+   "expected_exit": 3,
+   "status": "matched"
+  },
+  {
+   "name": "250_r26_dosh_handler",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\250_r26_dosh_handler.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\250_r26_dosh_handler.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1511 baait sankalit\n",
+   "exit": 0,
+   "stdout": "2027\n1001\n1002\n142\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  }
+ ],
+ "check7_skipped_no_expectation": [
+  "215_r12_wordfreq",
+  "216_r12_expr",
+  "217_r12_report",
+  "219_sanskrit_kosh_aliases"
+ ],
+ "check7": [
+  {
+   "name": "01_hello",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\01_hello.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\01_hello.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 108 baait sankalit\n",
+   "exit": 0,
+   "stdout": "Namaste, Sutram!\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "02_arith",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\02_arith.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\02_arith.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 286 baait sankalit\n",
+   "exit": 0,
+   "stdout": "x + y = 30\n\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "03_if_else",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\03_if_else.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\03_if_else.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 113 baait sankalit\n",
+   "exit": 0,
+   "stdout": "big\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "04_while",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\04_while.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\04_while.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 253 baait sankalit\n",
+   "exit": 0,
+   "stdout": "0\n\n1\n\n2\n\n3\n\n4\n\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "05_func_params",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\05_func_params.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\05_func_params.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 643 baait sankalit\n",
+   "exit": 0,
+   "stdout": "add(10, 32) = 42\n\nmul3(3, 4, 5) = 60\n\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "06_rachana",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\06_rachana.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\06_rachana.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 937 baait sankalit\n",
+   "exit": 0,
+   "stdout": "p.x = 10\n\np.y = 20\n\nSum = 60\n\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "07_module",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\07_module.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\07_module.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1858 baait sankalit\n",
+   "exit": 0,
+   "stdout": "vargit(7) = 49\n\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "08_demo",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\08_demo.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\08_demo.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1228 baait sankalit\n",
+   "exit": 0,
+   "stdout": "=== Sutram Demo ===\ndouble(21) = 42\n\nAge: 25\n\nScore: 100\n\nLoop: 1\n\nLoop: 2\n\nLoop: 3\n\n=== Done ===\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "09_comparisons",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\09_comparisons.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\09_comparisons.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 972 baait sankalit\n",
+   "exit": 0,
+   "stdout": "=== Comparison Operators ===\na <= b: true\nb >= 20: true\na != b: true\na == 10: true\nLoop with <=: 0\n 1\n 2\n 3\n 4\n 5\n \nLoop with !=: 0\n 1\n 2\n 3\n 4\n \n=== Done ===\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "100_t18_kosh_bounds",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\100_t18_kosh_bounds.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\100_t18_kosh_bounds.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 694 baait sankalit\n",
+   "exit": 1,
+   "stdout": "Sutram Error: mala ank seema atikram\n",
+   "stderr": "",
+   "expected_exit": 1,
+   "status": "matched"
+  },
+  {
+   "name": "100_t18_kosh_devanagari",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\100_t18_kosh_devanagari.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\100_t18_kosh_devanagari.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1134 baait sankalit\n",
+   "exit": 0,
+   "stdout": "0\n0\n1\n4\n7\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "101_t18_kosh_empty",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\101_t18_kosh_empty.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\101_t18_kosh_empty.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 392 baait sankalit\n",
+   "exit": 1,
+   "stdout": "Sutram Error: riktat koshat kosh_pop\n",
+   "stderr": "",
+   "expected_exit": 1,
+   "status": "matched"
+  },
+  {
+   "name": "102_ast_multimodule_capacity",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\102_ast_multimodule_capacity.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\102_ast_multimodule_capacity.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 23889 baait sankalit\n",
+   "exit": 0,
+   "stdout": "1\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "103_b10_nested_break_patches",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\103_b10_nested_break_patches.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\103_b10_nested_break_patches.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 2307 baait sankalit\n",
+   "exit": 0,
+   "stdout": "9\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "104_b10_nested_continue_patches",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\104_b10_nested_continue_patches.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\104_b10_nested_continue_patches.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 2307 baait sankalit\n",
+   "exit": 0,
+   "stdout": "9\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "105_block_nesting_capacity",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\105_block_nesting_capacity.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\105_block_nesting_capacity.exe",
+   "compile_exit": 1,
+   "compile_output": "Sutram Error: khand gahrai seema atikram\n",
+   "expect": "compile_fail",
+   "status": "matched",
+   "diag_matches_linux_golden": true
+  },
+  {
+   "name": "106_rachana_field_capacity",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\106_rachana_field_capacity.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\106_rachana_field_capacity.exe",
+   "compile_exit": 1,
+   "compile_output": "Sutram Error: rachana kshetra seema atikram\n",
+   "expect": "compile_fail",
+   "status": "matched",
+   "diag_matches_linux_golden": true
+  },
+  {
+   "name": "107_b11_block_65_statements",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\107_b11_block_65_statements.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\107_b11_block_65_statements.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 400 baait sankalit\n",
+   "exit": 0,
+   "stdout": "63\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "108_b11_block_statement_capacity",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\108_b11_block_statement_capacity.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\108_b11_block_statement_capacity.exe",
+   "compile_exit": 1,
+   "compile_output": "Sutram Error: khand kathan seema atikram\n",
+   "expect": "compile_fail",
+   "status": "matched",
+   "diag_matches_linux_golden": true
+  },
+  {
+   "name": "109_t18_kosh_dasham",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\109_t18_kosh_dasham.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\109_t18_kosh_dasham.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 2543 baait sankalit\n",
+   "exit": 0,
+   "stdout": "0\n1\n2\n2\n1.500000\n2.000000\n3.000000\n2.000000\n1\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "10_mathlib",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\10_mathlib.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\10_mathlib.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 2687 baait sankalit\n",
+   "exit": 0,
+   "stdout": "=== Math Library ===\nvargit(9) = 81\n\ndvigun(21) = 42\n\ntrigun(14) = 42\n\nvardh(41) = 42\n\n=== Done ===\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "110_t18_kosh_dasham_devanagari",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\110_t18_kosh_dasham_devanagari.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\110_t18_kosh_dasham_devanagari.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1233 baait sankalit\n",
+   "exit": 0,
+   "stdout": "0.750000\n2.250000\n0\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "111_t18_kosh_dasham_function_return",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\111_t18_kosh_dasham_function_return.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\111_t18_kosh_dasham_function_return.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1259 baait sankalit\n",
+   "exit": 0,
+   "stdout": "2.500000\n1.250000\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "112_t18_kosh_integer_conversion",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\112_t18_kosh_integer_conversion.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\112_t18_kosh_integer_conversion.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 985 baait sankalit\n",
+   "exit": 0,
+   "stdout": "2\n4\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "113_perf_self_update",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\113_perf_self_update.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\113_perf_self_update.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 804 baait sankalit\n",
+   "exit": 0,
+   "stdout": "11\n6\n6\n25\n1\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "114_perf_loop_fastpaths",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\114_perf_loop_fastpaths.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\114_perf_loop_fastpaths.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 538 baait sankalit\n",
+   "exit": 0,
+   "stdout": "10\n16\n1\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "115_perf_loop_bottom",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\115_perf_loop_bottom.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\115_perf_loop_bottom.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1611 baait sankalit\n",
+   "exit": 0,
+   "stdout": "8\n 0\n 6\n 6\n 4\n 0\n\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "116_perf_reg_destination",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\116_perf_reg_destination.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\116_perf_reg_destination.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 971 baait sankalit\n",
+   "exit": 0,
+   "stdout": "70\n 10\n 9\n 9\n 21\n\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "117_perf_constant_literals",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\117_perf_constant_literals.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\117_perf_constant_literals.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 940 baait sankalit\n",
+   "exit": 0,
+   "stdout": "0\n 255\n 65535\n 4294967295\n 4294967296\n\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "118_t18_kosh_param",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\118_t18_kosh_param.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\118_t18_kosh_param.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 2694 baait sankalit\n",
+   "exit": 0,
+   "stdout": "2.000000\n4.000000\n12\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "119_t18_kosh_param_forward",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\119_t18_kosh_param_forward.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\119_t18_kosh_param_forward.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1206 baait sankalit\n",
+   "exit": 0,
+   "stdout": "4.000000\n1\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "11_forloop",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\11_forloop.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\11_forloop.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1179 baait sankalit\n",
+   "exit": 0,
+   "stdout": "=== For Loop Demo ===\nCount: 0\n 1\n 2\n 3\n 4\n 5\n \nSum 1-10 = 55\n\nTable of 3:\n3 x 1\n = 3\n\n3 x 2\n = 6\n\n3 x 3\n = 9\n\n3 x 4\n = 12\n\n3 x 5\n = 15\n\n=== Done ===\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "120_t18_kosh_param_mismatch",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\120_t18_kosh_param_mismatch.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\120_t18_kosh_param_mismatch.exe",
+   "compile_exit": 1,
+   "compile_output": "Sutram Error: kosh tark: tatv prakar bhinn\n",
+   "expect": "compile_fail",
+   "status": "matched",
+   "diag_matches_linux_golden": true
+  },
+  {
+   "name": "121_t18_kosh_param_push_reject",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\121_t18_kosh_param_push_reject.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\121_t18_kosh_param_push_reject.exe",
+   "compile_exit": 1,
+   "compile_output": "Sutram Error: kosh-tarke kosh_push asamarthitam\n",
+   "expect": "compile_fail",
+   "status": "matched",
+   "diag_matches_linux_golden": true
+  },
+  {
+   "name": "122_t18_kosh_param_devanagari",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\122_t18_kosh_param_devanagari.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\122_t18_kosh_param_devanagari.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 668 baait sankalit\n",
+   "exit": 0,
+   "stdout": "2.250000\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "123_t18_kosh_param_statement_call",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\123_t18_kosh_param_statement_call.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\123_t18_kosh_param_statement_call.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 937 baait sankalit\n",
+   "exit": 0,
+   "stdout": "2.250000\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "124_perf_wide_immediate",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\124_perf_wide_immediate.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\124_perf_wide_immediate.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 991 baait sankalit\n",
+   "exit": 0,
+   "stdout": "-2147484647\n129\n-125\n2147483650\n-2147483643\n100000\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "125_perf_register_immediate_destination",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\125_perf_register_immediate_destination.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\125_perf_register_immediate_destination.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1243 baait sankalit\n",
+   "exit": 0,
+   "stdout": "37\n1037\n-1963\n2147483684\n-2147483610\n2147483685\n-4294967258\n1037\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "126_numeric_pipeline",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\126_numeric_pipeline.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\126_numeric_pipeline.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 9611 baait sankalit\n",
+   "exit": 0,
+   "stdout": "1100000.000000\n11.000000\n5.000000\n3.141593\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "127_perf_float_self_register",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\127_perf_float_self_register.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\127_perf_float_self_register.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 775 baait sankalit\n",
+   "exit": 0,
+   "stdout": "3.000000\n4.000000\n0.000000\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "128_perf_float_self_fallback",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\128_perf_float_self_fallback.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\128_perf_float_self_fallback.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 617 baait sankalit\n",
+   "exit": 0,
+   "stdout": "9.000000\n4.500000\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "129_perf_float_destination",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\129_perf_float_destination.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\129_perf_float_destination.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1290 baait sankalit\n",
+   "exit": 0,
+   "stdout": "10.000000\n5.000000\n18.750000\n3.000000\n7.500000\n2.500000\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "12_elif",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\12_elif.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\12_elif.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 624 baait sankalit\n",
+   "exit": 0,
+   "stdout": "=== Elif Demo ===\nGrade: C\nx is medium\n=== Done ===\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "130_perf_float_destination_alias",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\130_perf_float_destination_alias.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\130_perf_float_destination_alias.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1603 baait sankalit\n",
+   "exit": 0,
+   "stdout": "6.000000\n1.500000\n13.000000\n8.000000\n12.000000\n14.000000\n8.500000\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "131_perf_float_compare_register",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\131_perf_float_compare_register.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\131_perf_float_compare_register.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1466 baait sankalit\n",
+   "exit": 0,
+   "stdout": "0\n1\n1\n0\n1\n0\n1\n1\n1\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "132_perf_float_compare_fallback",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\132_perf_float_compare_fallback.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\132_perf_float_compare_fallback.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1130 baait sankalit\n",
+   "exit": 0,
+   "stdout": "1\n1\n1\n1\n1\n77\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "133_perf_float_scalar_call_rhs",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\133_perf_float_scalar_call_rhs.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\133_perf_float_scalar_call_rhs.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1709 baait sankalit\n",
+   "exit": 0,
+   "stdout": "14.000000\n13.000000\n52.000000\n52.000000\n2.000000\n54.000000\n1\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "134_perf_float_complex_fallback",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\134_perf_float_complex_fallback.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\134_perf_float_complex_fallback.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 2315 baait sankalit\n",
+   "exit": 0,
+   "stdout": "4.500000\n54.000000\n46.000000\n46.000000\n3.000000\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "135_r30_float_index_scalar",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\135_r30_float_index_scalar.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\135_r30_float_index_scalar.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 3025 baait sankalit\n",
+   "exit": 0,
+   "stdout": "3.500000\n2.500000\n3.000000\n2.666667\n5.000000\n100.000000\n103.000000\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "136_r30_float_complex_left",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\136_r30_float_complex_left.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\136_r30_float_complex_left.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 2402 baait sankalit\n",
+   "exit": 0,
+   "stdout": "20.000000\n31.250000\n3.250000\n8.000000\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "137_r30_float_literal_rhs",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\137_r30_float_literal_rhs.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\137_r30_float_literal_rhs.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 2092 baait sankalit\n",
+   "exit": 0,
+   "stdout": "5.500000\n3.500000\n24.000000\n3.000000\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "138_r30_float_comparison_index",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\138_r30_float_comparison_index.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\138_r30_float_comparison_index.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1883 baait sankalit\n",
+   "exit": 0,
+   "stdout": "1\n1\n1\n0\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "139_r30_float_mixed_fallback",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\139_r30_float_mixed_fallback.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\139_r30_float_mixed_fallback.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1666 baait sankalit\n",
+   "exit": 0,
+   "stdout": "9.000000\n13.000000\n2.800000\n-4294967288.000000\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "13_negatives",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\13_negatives.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\13_negatives.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1993 baait sankalit\n",
+   "exit": 0,
+   "stdout": "=== Negative Numbers ===\nx = -5\n\ny = -10\n\nx + y = -15\n\nx - y = 5\n\nx * 3 = -15\n\n-3 + 10 = 7\n\n0 - x = 5\n\n-42 = -42\n\nx is negative\n=== Done ===\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "140_r30_index_side_effect",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\140_r30_index_side_effect.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\140_r30_index_side_effect.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1550 baait sankalit\n",
+   "exit": 0,
+   "stdout": "10.500000\n9.000000\n7.500000\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "141_xmm_cache_basic",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\141_xmm_cache_basic.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\141_xmm_cache_basic.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 970 baait sankalit\n",
+   "exit": 0,
+   "stdout": "2.500000\n3.500000\n1.000000\n2.000000\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "142_xmm_cache_alias",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\142_xmm_cache_alias.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\142_xmm_cache_alias.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 951 baait sankalit\n",
+   "exit": 0,
+   "stdout": "6.000000\n6.000000\n3.000000\n1.500000\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "143_xmm_cache_barriers",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\143_xmm_cache_barriers.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\143_xmm_cache_barriers.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1148 baait sankalit\n",
+   "exit": 0,
+   "stdout": "5.000000\n26.000000\n3.500000\n11.000000\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "144_xmm_cache_fallback",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\144_xmm_cache_fallback.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\144_xmm_cache_fallback.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1466 baait sankalit\n",
+   "exit": 0,
+   "stdout": "5.000000\n5.500000\n1.000000\n2.500000\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "145_xmm_cache_nested_calls",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\145_xmm_cache_nested_calls.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\145_xmm_cache_nested_calls.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 687 baait sankalit\n",
+   "exit": 0,
+   "stdout": "4.250000\n2.833333\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "146_stage2_loop_call_boundary",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\146_stage2_loop_call_boundary.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\146_stage2_loop_call_boundary.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 828 baait sankalit\n",
+   "exit": 0,
+   "stdout": "16.129395\n1.525879\n8.129395\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "147_stage2_recursive_float_boundary",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\147_stage2_recursive_float_boundary.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\147_stage2_recursive_float_boundary.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 869 baait sankalit\n",
+   "exit": 0,
+   "stdout": "6.500000\n6.000000\n0.923077\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "148_stage2_array_mutation_call",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\148_stage2_array_mutation_call.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\148_stage2_array_mutation_call.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1885 baait sankalit\n",
+   "exit": 0,
+   "stdout": "4.000000\n6.500000\n8.000000\n3.000000\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "149_namespaced_colliding_imports",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\149_namespaced_colliding_imports.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\149_namespaced_colliding_imports.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 736 baait sankalit\n",
+   "exit": 0,
+   "stdout": "13\n203\n12\n200\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "14_strings",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\14_strings.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\14_strings.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 908 baait sankalit\n",
+   "exit": 0,
+   "stdout": "=== String Operations ===\nHello, World!\nTab:\there\nNewline:\nhere\nQuote: \"hello\"\nBackslash: \\\nLine 1\nLine 2\nLine 3\nThe answer is: 42\n\nTemperature: -15\n degrees\n=== Done ===\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "150_namespaced_same_module_two_aliases",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\150_namespaced_same_module_two_aliases.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\150_namespaced_same_module_two_aliases.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 461 baait sankalit\n",
+   "exit": 0,
+   "stdout": "13\n13\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "151_namespaced_and_legacy_import",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\151_namespaced_and_legacy_import.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\151_namespaced_and_legacy_import.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 462 baait sankalit\n",
+   "exit": 0,
+   "stdout": "13\n203\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "152_namespaced_comment_string_preservation",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\152_namespaced_comment_string_preservation.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\152_namespaced_comment_string_preservation.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 339 baait sankalit\n",
+   "exit": 0,
+   "stdout": "clash() must not be renamed inside this string13\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "153_namespaced_devanagari_function",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\153_namespaced_devanagari_function.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\153_namespaced_devanagari_function.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 225 baait sankalit\n",
+   "exit": 0,
+   "stdout": "88\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "154_namespaced_duplicate_idempotent",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\154_namespaced_duplicate_idempotent.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\154_namespaced_duplicate_idempotent.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 259 baait sankalit\n",
+   "exit": 0,
+   "stdout": "13\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "155_namespaced_multi_alias_composition",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\155_namespaced_multi_alias_composition.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\155_namespaced_multi_alias_composition.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 801 baait sankalit\n",
+   "exit": 0,
+   "stdout": "13\n203\n12\n200\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "156_namespaced_alias_collision",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\156_namespaced_alias_collision.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\156_namespaced_alias_collision.exe",
+   "compile_exit": 1,
+   "compile_output": "Sutram Error: upanaam purv-niyukt (anya ghatak)\n",
+   "expect": "compile_fail",
+   "status": "matched",
+   "diag_matches_linux_golden": true
+  },
+  {
+   "name": "157_namespaced_missing_module",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\157_namespaced_missing_module.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\157_namespaced_missing_module.exe",
+   "compile_exit": 1,
+   "compile_output": "Sutram Error: ghatak patra aprapt\n",
+   "expect": "compile_fail",
+   "status": "matched",
+   "diag_matches_linux_golden": true
+  },
+  {
+   "name": "158_namespaced_alias_digit",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\158_namespaced_alias_digit.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\158_namespaced_alias_digit.exe",
+   "compile_exit": 1,
+   "compile_output": "Sutram Error: ashuddh yoj (roop: ghatak@upanaam, upanaam 31 baait tak)\n",
+   "expect": "compile_fail",
+   "status": "matched",
+   "diag_matches_linux_golden": true
+  },
+  {
+   "name": "159_namespaced_path_traversal",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\159_namespaced_path_traversal.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\159_namespaced_path_traversal.exe",
+   "compile_exit": 1,
+   "compile_output": "Sutram Error: ashuddh yoj (roop: ghatak@upanaam, upanaam 31 baait tak)\n",
+   "expect": "compile_fail",
+   "status": "matched",
+   "diag_matches_linux_golden": true
+  },
+  {
+   "name": "15_sutra_const",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\15_sutra_const.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\15_sutra_const.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1361 baait sankalit\n",
+   "exit": 0,
+   "stdout": "=== Sutra & Bitwise ===\nMAX_VAL = 100\n\n17 % 5 = 2\n\n12 & 10 = 8\n\n12 | 10 = 14\n\n12 ^ 10 = 6\n\nAssert passed\n=== Done ===\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "160_namespaced_empty_alias",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\160_namespaced_empty_alias.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\160_namespaced_empty_alias.exe",
+   "compile_exit": 1,
+   "compile_output": "Sutram Error: ashuddh yoj (roop: ghatak@upanaam, upanaam 31 baait tak)\n",
+   "expect": "compile_fail",
+   "status": "matched",
+   "diag_matches_linux_golden": true
+  },
+  {
+   "name": "161_namespaced_overlong_alias",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\161_namespaced_overlong_alias.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\161_namespaced_overlong_alias.exe",
+   "compile_exit": 1,
+   "compile_output": "Sutram Error: ashuddh yoj (roop: ghatak@upanaam, upanaam 31 baait tak)\n",
+   "expect": "compile_fail",
+   "status": "matched",
+   "diag_matches_linux_golden": true
+  },
+  {
+   "name": "162_namespaced_import_capacity",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\162_namespaced_import_capacity.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\162_namespaced_import_capacity.exe",
+   "compile_exit": 1,
+   "compile_output": "Sutram Error: ashuddh yoj (roop: ghatak@upanaam, upanaam 31 baait tak)\n",
+   "expect": "compile_fail",
+   "status": "matched",
+   "diag_matches_linux_golden": true
+  },
+  {
+   "name": "163_r40_transitive_diamond",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\163_r40_transitive_diamond.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\163_r40_transitive_diamond.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 475 baait sankalit\n",
+   "exit": 0,
+   "stdout": "17\n7\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "164_r41_cycle_reject",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\164_r41_cycle_reject.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\164_r41_cycle_reject.exe",
+   "compile_exit": 1,
+   "compile_output": "r41_cycle_b.smlib:2: Sutram Error [E_MODULE_CYCLE]: yoj chakra: r41_cycle_a -> r41_cycle_b -> r41_cycle_a\n",
+   "expect": "compile_fail",
+   "status": "matched",
+   "diag_matches_linux_golden": true
+  },
+  {
+   "name": "165_r41_missing_reject",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\165_r41_missing_reject.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\165_r41_missing_reject.exe",
+   "compile_exit": 1,
+   "compile_output": "165_r41_missing_reject.sm:2: Sutram Error [E_MODULE_MISSING]: yoj patra aprapt: r41_not_present\n",
+   "expect": "compile_fail",
+   "status": "matched",
+   "diag_matches_linux_golden": true
+  },
+  {
+   "name": "166_r41_optin_diamond",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\166_r41_optin_diamond.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\166_r41_optin_diamond.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 475 baait sankalit\n",
+   "exit": 0,
+   "stdout": "17\n7\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "16_advanced",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\16_advanced.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\16_advanced.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1136 baait sankalit\n",
+   "exit": 0,
+   "stdout": "=== Advanced Sutram ===\nPrimes up to 10\n:\n2\n 3\n 5\n 7\n \nFlags: 5\n\nBit 2 is set\nAll assertions passed\n=== Done ===\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "17_booleans",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\17_booleans.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\17_booleans.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1189 baait sankalit\n",
+   "exit": 0,
+   "stdout": "=== Booleans & Logic ===\nis_ready = 1\n\nis_done = 0\n\nReady but not done\nAt least one condition met\nboth_positive = 1\n\n=== Done ===\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "18_guna_switch",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\18_guna_switch.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\18_guna_switch.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 452 baait sankalit\n",
+   "exit": 0,
+   "stdout": "Wednesday\n=== Done ===\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "19_srijana_enum",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\19_srijana_enum.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\19_srijana_enum.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 547 baait sankalit\n",
+   "exit": 0,
+   "stdout": "Green\nRED = 1\n\n=== Done ===\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "200_madhava_series",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\200_madhava_series.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\200_madhava_series.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1830 baait sankalit\n",
+   "exit": 0,
+   "stdout": "pi  = 3.141593\nsin(0.5) = 0.479426\ncos(0.5) = 0.877583\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "201_madhava_library",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\201_madhava_library.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\201_madhava_library.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 4076 baait sankalit\n",
+   "exit": 0,
+   "stdout": "pi     = 3.141593\n\nsin .5 = 0.479426\n\ncos .5 = 0.877583\n\natan .5= 0.463648\n\nsqrt 2 = 1.414214\n\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "202_brahmagupta_area",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\202_brahmagupta_area.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\202_brahmagupta_area.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 7938 baait sankalit\n",
+   "exit": 0,
+   "stdout": "triangle 3,4,5  = 6\n\ntriangle 5,5,6  = 12\n\ncyclic 3,4,5,6  = 18\n\nsquare side 4   = 16\n\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "203_meru_with_kosh",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\203_meru_with_kosh.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\203_meru_with_kosh.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1845 baait sankalit\n",
+   "exit": 0,
+   "stdout": "length = 21\n\n1\n 1\n 1\n 1\n 2\n 1\n 1\n 3\n 3\n 1\n 1\n 4\n 6\n 4\n 1\n 1\n 5\n 10\n 10\n 5\n 1\n \n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "204_b11_block_statement_capacity",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\204_b11_block_statement_capacity.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\204_b11_block_statement_capacity.exe",
+   "compile_exit": 1,
+   "compile_output": "Sutram Error: khand kathan seema atikram\n",
+   "expect": "compile_fail",
+   "status": "matched",
+   "diag_matches_linux_golden": true
+  },
+  {
+   "name": "205_madhava_pi_kosh",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\205_madhava_pi_kosh.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\205_madhava_pi_kosh.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 994 baait sankalit\n",
+   "exit": 0,
+   "stdout": "9\n3.252366\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "206_sankhyiki",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\206_sankhyiki.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\206_sankhyiki.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 6482 baait sankalit\n",
+   "exit": 0,
+   "stdout": "8\n40.000000\n5.000000\n4.000000\n2.000000\n2.000000\n9.000000\n7.000000\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "207_sankhyiki_vector",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\207_sankhyiki_vector.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\207_sankhyiki_vector.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 5629 baait sankalit\n",
+   "exit": 0,
+   "stdout": "11.000000\n5.000000\n7.000000\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "208_kalana",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\208_kalana.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\208_kalana.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 9492 baait sankalit\n",
+   "exit": 0,
+   "stdout": "11\n0.335000\n0.333333\n1.000000\n2.000000\n2.000000\n1.414214\n1.000000\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "209_samanvaya",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\209_samanvaya.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\209_samanvaya.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 15844 baait sankalit\n",
+   "exit": 0,
+   "stdout": "4\n19.000000\n22.000000\n43.000000\n50.000000\n5.000000\n-2.000000\n7.000000\n-306.000000\n9\n3.000000\n6\n1.000000\n4.000000\n2.000000\n5.000000\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "20_pankti_array",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\20_pankti_array.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\20_pankti_array.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 947 baait sankalit\n",
+   "exit": 0,
+   "stdout": "0\n 1\n 4\n 9\n 16\n 25\n \n16\n\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "210_r41_cycle",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\210_r41_cycle.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\210_r41_cycle.exe",
+   "compile_exit": 1,
+   "compile_output": "E:\\Github Projects\\Sutram\\examples\\lib/r41_cyc_b.smlib:2: Sutram Error [E_MODULE_CYCLE]: yoj chakra: r41_cyc_a -> r41_cyc_b -> r41_cyc_a\n",
+   "expect": "compile_fail",
+   "status": "matched",
+   "diag_matches_linux_golden": true
+  },
+  {
+   "name": "211_r41_v1_public",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\211_r41_v1_public.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\211_r41_v1_public.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 256 baait sankalit\n",
+   "exit": 0,
+   "stdout": "42\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "212_r41_v1_private",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\212_r41_v1_private.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\212_r41_v1_private.exe",
+   "compile_exit": 1,
+   "compile_output": "E:\\Github Projects\\Sutram\\examples\\212_r41_v1_private.sm:5: Sutram Error [E_MODULE_NOT_EXPORTED]: 'helper' ghatakat 'r41_vec' aniryatam\n",
+   "expect": "compile_fail",
+   "status": "matched",
+   "diag_matches_linux_golden": true
+  },
+  {
+   "name": "213_r41_v1_dupexp",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\213_r41_v1_dupexp.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\213_r41_v1_dupexp.exe",
+   "compile_exit": 1,
+   "compile_output": "E:\\Github Projects\\Sutram\\examples\\lib/r41_dup.smlib:4: Sutram Error [E_MODULE_DUP_EXPORT]: punah niryat 'thing', ghatak 'r41_dup'\n",
+   "expect": "compile_fail",
+   "status": "matched",
+   "diag_matches_linux_golden": true
+  },
+  {
+   "name": "214_r41_v1_noalias",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\214_r41_v1_noalias.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\214_r41_v1_noalias.exe",
+   "compile_exit": 1,
+   "compile_output": "E:\\Github Projects\\Sutram\\examples\\214_r41_v1_noalias.sm:3:Sutram Error [E_MODULE_V1_ALIAS]: v1 ghatak 'r41_vec' upanaam avashyak: yoj r41_vec@upanaam\n",
+   "expect": "compile_fail",
+   "status": "matched",
+   "diag_matches_linux_golden": true
+  },
+  {
+   "name": "218_sanskrit_devanagari",
+   "compile_cmd": "--lang sanskrit E:\\Github Projects\\Sutram\\examples\\218_sanskrit_devanagari.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\218_sanskrit_devanagari.exe",
+   "compile_exit": 0,
+   "compile_output": "भाषा-पुटः प्राप्तः: sanskrit\nसिद्धम्: 276 बाइट् सङ्कलिताः\n",
+   "exit": 0,
+   "stdout": "योगः = 15\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "21_break_continue",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\21_break_continue.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\21_break_continue.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 389 baait sankalit\n",
+   "exit": 0,
+   "stdout": "Sum of odd numbers 1-10: 25\n\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "220_hindi_parse_error",
+   "compile_cmd": "--lang hindi E:\\Github Projects\\Sutram\\examples\\220_hindi_parse_error.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\220_hindi_parse_error.exe",
+   "compile_exit": 1,
+   "compile_output": "भाषा पैक मिला: hindi\n\nSutram Error: व्याकरण दोष, पंक्ति 7:1, शब्द 'फ़ाइल का अंत'\n  \n  ^\nसंकेत: इस स्थान पर शब्द और व्याकरण जाँचें।\n",
+   "expect": "compile_fail",
+   "status": "matched",
+   "diag_matches_linux_golden": true
+  },
+  {
+   "name": "221_eof_location",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\221_eof_location.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\221_eof_location.exe",
+   "compile_exit": 1,
+   "compile_output": "\nSutram Error: vyakaran dosh, pankti 9:1, shabd 'patra-ant'\n  \n  ^\nSanket: asmin sthane shabdam vyakaranam cha pashyatu.\n",
+   "expect": "compile_fail",
+   "status": "matched",
+   "diag_matches_linux_golden": true
+  },
+  {
+   "name": "222_old_keyword_name",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\222_old_keyword_name.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\222_old_keyword_name.exe",
+   "compile_exit": 1,
+   "compile_output": "222_old_keyword_name.sm:8:25: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'uddeshya'\n          yadi (i == 2) { uddeshya }\n                          ^\nSanket: 'uddeshya' puratanah kunjishabdah (v157 tah purvam); navinah: 'agrim'\n",
+   "expect": "compile_fail",
+   "status": "matched",
+   "diag_matches_linux_golden": true
+  },
+  {
+   "name": "223_undefined_name",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\223_undefined_name.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\223_undefined_name.exe",
+   "compile_exit": 1,
+   "compile_output": "223_undefined_name.sm:5:11: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'totl'\n      likha(totl)\n            ^\nSanket: prayogat purvam ghoshana avashyaki: vitti totl = ...\n",
+   "expect": "compile_fail",
+   "status": "matched",
+   "diag_matches_linux_golden": true
+  },
+  {
+   "name": "224_unknown_field",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\224_unknown_field.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\224_unknown_field.exe",
+   "compile_exit": 1,
+   "compile_output": "224_unknown_field.sm:7:13: Sutram Error [E_UNKNOWN_FIELD]: agyat kshetra 'w'\n      likha(p.w)\n              ^\nSanket: 'w' kasyashchid api rachanayah kshetram nasti\n",
+   "expect": "compile_fail",
+   "status": "matched",
+   "diag_matches_linux_golden": true
+  },
+  {
+   "name": "225_undeclared_array",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\225_undeclared_array.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\225_undeclared_array.exe",
+   "compile_exit": 1,
+   "compile_output": "225_undeclared_array.sm:5:11: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'totl'\n      likha(totl[0])\n            ^\nSanket: prayogat purvam ghoshana avashyaki: vitti totl = ...\n",
+   "expect": "compile_fail",
+   "status": "matched",
+   "diag_matches_linux_golden": true
+  },
+  {
+   "name": "226_long_field_names",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\226_long_field_names.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\226_long_field_names.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 473 baait sankalit\n",
+   "exit": 0,
+   "stdout": "1\n2\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "227_assign_undeclared",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\227_assign_undeclared.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\227_assign_undeclared.exe",
+   "compile_exit": 1,
+   "compile_output": "227_assign_undeclared.sm:6:5: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'totl'\n      totl = 10\n      ^\nSanket: prayogat purvam ghoshana avashyaki: vitti totl = ...\n",
+   "expect": "compile_fail",
+   "status": "matched",
+   "diag_matches_linux_golden": true
+  },
+  {
+   "name": "228_block_scope",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\228_block_scope.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\228_block_scope.exe",
+   "compile_exit": 1,
+   "compile_output": "228_block_scope.sm:6:11: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'b'\n      likha(b)\n            ^\nSanket: 'b' kasminshchit khande { } chakra-madhye va ghoshitam; tatah bahih na drishyate\n",
+   "expect": "compile_fail",
+   "status": "matched",
+   "diag_matches_linux_golden": true
+  },
+  {
+   "name": "229_loop_var_scope",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\229_loop_var_scope.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\229_loop_var_scope.exe",
+   "compile_exit": 1,
+   "compile_output": "229_loop_var_scope.sm:5:11: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'i'\n      likha(i)\n            ^\nSanket: 'i' kasminshchit khande { } chakra-madhye va ghoshitam; tatah bahih na drishyate\n",
+   "expect": "compile_fail",
+   "status": "matched",
+   "diag_matches_linux_golden": true
+  },
+  {
+   "name": "22_precedence",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\22_precedence.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\22_precedence.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 858 baait sankalit\n",
+   "exit": 0,
+   "stdout": "14\n\nBoth true\nAt least one\n2\n\n0\n\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "230_redeclare_after_block",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\230_redeclare_after_block.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\230_redeclare_after_block.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 673 baait sankalit\n",
+   "exit": 0,
+   "stdout": "7\n2\n0\n1\n2\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "231_duplicate_name",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\231_duplicate_name.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\231_duplicate_name.exe",
+   "compile_exit": 1,
+   "compile_output": "231_duplicate_name.sm:6:11: Sutram Error [E_DUPLICATE_NAME]: punah ghoshana 'x'\n      vitti x = 2\n            ^\nSanket: 'x' purvam eva ghoshitam; navinam manam datum: x = ...\n",
+   "expect": "compile_fail",
+   "status": "matched",
+   "diag_matches_linux_golden": true
+  },
+  {
+   "name": "232_arity",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\232_arity.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\232_arity.exe",
+   "compile_exit": 1,
+   "compile_output": "232_arity.sm:5:11: Sutram Error [E_ARITY]: 'f' ityasmai 1 tarkah dattah; hastakshare 2\n      likha(f(1))\n            ^\nSanket: prakriyayah paribhashayam yavantah tarkah santi, tavantah eva dadatu\n",
+   "expect": "compile_fail",
+   "status": "matched",
+   "diag_matches_linux_golden": true
+  },
+  {
+   "name": "233_missing_module",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\233_missing_module.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\233_missing_module.exe",
+   "compile_exit": 1,
+   "compile_output": "Sutram Error [E_MODULE_MISSING]: yoj patra aprapt: ganitt\nSanket: naam.smlib lib/ madhye srota-patrasya nirdeshikayam va bhavet\n",
+   "expect": "compile_fail",
+   "status": "matched",
+   "diag_matches_linux_golden": true
+  },
+  {
+   "name": "234_ambiguous_field",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\234_ambiguous_field.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\234_ambiguous_field.exe",
+   "compile_exit": 1,
+   "compile_output": "234_ambiguous_field.sm:8:7: Sutram Error [E_AMBIGUOUS_FIELD]: kshetra 'x'\n      b.x = 1\n        ^\nSanket: 'x' dvayoh rachanayoh bhinne sthane asti; pratyekasyam rachanayam bhinnam nama dadatu\n",
+   "expect": "compile_fail",
+   "status": "matched",
+   "diag_matches_linux_golden": true
+  },
+  {
+   "name": "235_duplicate_field",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\235_duplicate_field.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\235_duplicate_field.exe",
+   "compile_exit": 1,
+   "compile_output": "235_duplicate_field.sm:3:18: Sutram Error [E_DUPLICATE_NAME]: punah ghoshana 'x'\n  rachana P = { x, x }\n                   ^\nSanket: 'x' asyam rachanayam purvam eva asti\n",
+   "expect": "compile_fail",
+   "status": "matched",
+   "diag_matches_linux_golden": true
+  },
+  {
+   "name": "236_guna_once",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\236_guna_once.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\236_guna_once.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 2564 baait sankalit\n",
+   "exit": 0,
+   "stdout": "30\n1\n100\n200\n300\n2\n20\n40\n0\n2\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "237_many_variables",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\237_many_variables.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\237_many_variables.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 3265 baait sankalit\n",
+   "exit": 0,
+   "stdout": "16\n107\n12\n1.750000\n11\n39\n16\n107\n12\n1.750000\n11\n41\n10\n30\n2\n2111\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "238_r17_d1_unary_not",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\238_r17_d1_unary_not.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\238_r17_d1_unary_not.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 826 baait sankalit\n",
+   "exit": 0,
+   "stdout": "1\n1\n0\n1\n111\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "239_r17_d2_anya_loop_krama",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\239_r17_d2_anya_loop_krama.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\239_r17_d2_anya_loop_krama.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 417 baait sankalit\n",
+   "exit": 0,
+   "stdout": "0\n10\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "23_grahan_input",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\23_grahan_input.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\23_grahan_input.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 874 baait sankalit\n",
+   "exit": 0,
+   "stdout": "Enter two numbers:\nSum: 4\n\nProduct: -5\n\nFirst is bigger\nThey are equal\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "240_r17_d3_anya_self_assign",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\240_r17_d3_anya_self_assign.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\240_r17_d3_anya_self_assign.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 353 baait sankalit\n",
+   "exit": 0,
+   "stdout": "0\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "241_r17_d4_precedence",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\241_r17_d4_precedence.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\241_r17_d4_precedence.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 754 baait sankalit\n",
+   "exit": 0,
+   "stdout": "1\n0\n1\n0\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "242_r17_empty_guna",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\242_r17_empty_guna.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\242_r17_empty_guna.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 199 baait sankalit\n",
+   "exit": 0,
+   "stdout": "7\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "243_r18_sthagita",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\243_r18_sthagita.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\243_r18_sthagita.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 343 baait sankalit\n",
+   "exit": 0,
+   "stdout": "1\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "244_r18_rachana_in_function",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\244_r18_rachana_in_function.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\244_r18_rachana_in_function.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 429 baait sankalit\n",
+   "exit": 0,
+   "stdout": "1\n5\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "245_r18_netsock",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\245_r18_netsock.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\245_r18_netsock.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 962 baait sankalit\n",
+   "exit": 0,
+   "stdout": "0\n0\n-38\n-38\n-2\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "differed",
+   "detail": "stdout differs",
+   "first_diff": {
+    "line": 1,
+    "expected": "1",
+    "actual": "0"
+   }
+  },
+  {
+   "name": "246_r23_comparator_sort",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\246_r23_comparator_sort.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\246_r23_comparator_sort.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 5057 baait sankalit\n",
+   "exit": 0,
+   "stdout": "1 2 3 4 5 7 8 9 \n9 8 7 5 4 3 2 1 \n2 4 8 1 3 5 7 9 \n2 4 8 5 3 1 7 9 \n7\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "247_r23_methods",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\247_r23_methods.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\247_r23_methods.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1990 baait sankalit\n",
+   "exit": 0,
+   "stdout": "7\n4\n6\n0\n15\n31\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "248_r23_slices",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\248_r23_slices.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\248_r23_slices.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 6487 baait sankalit\n",
+   "exit": 0,
+   "stdout": "55\n12\n55\n4\n4\n7\n52\n100\n50\n0\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "249_r25_phal",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\249_r25_phal.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\249_r25_phal.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 3823 baait sankalit\n",
+   "exit": 3,
+   "stdout": "5\n1\n16\n6\n",
+   "stderr": "",
+   "expected_exit": 3,
+   "status": "matched"
+  },
+  {
+   "name": "24_guess_game",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\24_guess_game.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\24_guess_game.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 513 baait sankalit\n",
+   "exit": 0,
+   "stdout": "Guess the secret number (1-100): Correct! You found it!\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "250_r26_dosh_handler",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\250_r26_dosh_handler.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\250_r26_dosh_handler.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1511 baait sankalit\n",
+   "exit": 0,
+   "stdout": "2027\n1001\n1002\n142\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "25_patterns",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\25_patterns.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\25_patterns.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 851 baait sankalit\n",
+   "exit": 0,
+   "stdout": "Number Pyramid:\n* \n* * \n* * * \n* * * * \n* * * * * \n\nTable of 7:\n7\n x 1\n = 7\n\n7\n x 2\n = 14\n\n7\n x 3\n = 21\n\n7\n x 4\n = 28\n\n7\n x 5\n = 35\n\n7\n x 6\n = 42\n\n7\n x 7\n = 49\n\n7\n x 8\n = 56\n\n7\n x 9\n = 63\n\n7\n x 10\n = 70\n\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "26_calculator",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\26_calculator.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\26_calculator.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1837 baait sankalit\n",
+   "exit": 0,
+   "stdout": "Simple Calculator\n=================\nEnter first number: Enter second number: Sum: 24\n\nDifference: 16\n\nProduct: 80\n\nQuotient: 5\n\nRemainder: 0\n\nFirst is greater\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "27_even_odd",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\27_even_odd.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\27_even_odd.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 489 baait sankalit\n",
+   "exit": 0,
+   "stdout": "1\n is odd\n2\n is even\n3\n is odd\n4\n is even\n5\n is odd\n6\n is even\n7\n is odd\n8\n is even\n9\n is odd\n10\n is even\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "28_compound",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\28_compound.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\28_compound.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 2167 baait sankalit\n",
+   "exit": 0,
+   "stdout": "Compound Assignment Demo\n=======================\nStart: 100\n\nx += 50 -> 150\n\nx -= 30 -> 120\n\nx *= 2  -> 240\n\nx /= 4  -> 60\n\nx %= 7  -> 4\n\n\nSum 1 to 10 using += :\nTotal: 55\n\n\nFactorial of 5 using *= :\n5! = 120\n\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "29_nishkriya",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\29_nishkriya.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\29_nishkriya.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 588 baait sankalit\n",
+   "exit": 0,
+   "stdout": "Yantra: Inline Assembly\n==========================\nThis program exits with code 42 using raw x86-64 bytes.\nmov eax,60 / mov edi,42 / syscall  is just:\n  yantra(\"B8 3C 00 00 00\")\n  yantra(\"BF 2A 00 00 00\")\n  yantra(\"0F 05\")\nExiting with code 42...\n",
+   "stderr": "",
+   "expected_exit": 42,
+   "status": "differed",
+   "detail": "exit 0, expected 42"
+  },
+  {
+   "name": "30_lkhb",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\30_lkhb.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\30_lkhb.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1036 baait sankalit\n",
+   "exit": 0,
+   "stdout": "lkhb: Formatted Output Demo\n===========================\nMultiplication table (aligned):\n1  2  3  4  5  \n2  4  6  8  10 \n3  6  9  12 15 \n4  8  12 16 20 \n5  10 15 20 25 \n\nCountdown: 5 4 3 2 1 Done!\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "31_strcat",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\31_strcat.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\31_strcat.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 403 baait sankalit\n",
+   "exit": 0,
+   "stdout": "String Concatenation Demo\n=========================\nHello World\nThe answer is 42\n3 + 4 = 7\nYear: 2026\nDone!\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "32_bank_interest",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\32_bank_interest.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\32_bank_interest.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1438 baait sankalit\n",
+   "exit": 0,
+   "stdout": "Bank Interest Calculator\n========================\nPrincipal: 100000\nRate: 8% per year\n\nGrowth over 5 years:\nYear 1: 108000\nYear 2: 116640\nYear 3: 125971\nYear 4: 136048\nYear 5: 146931\n\nCompound growth using *= :\n2^10 = 2048\n\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "33_unit_conversion",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\33_unit_conversion.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\33_unit_conversion.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1648 baait sankalit\n",
+   "exit": 0,
+   "stdout": "Unit Conversion\n==============\nKilometers to Miles:\n1 km = 0 miles\n2 km = 1 miles\n3 km = 1 miles\n4 km = 2 miles\n5 km = 3 miles\n\nKilograms to Pounds:\n1 kg = 2 lbs\n2 kg = 4 lbs\n3 kg = 6 lbs\n4 kg = 8 lbs\n5 kg = 11 lbs\n\nCelsius to Fahrenheit:\n0C = 32F\n10C = 50F\n20C = 68F\n30C = 86F\n40C = 104F\n\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "34_incdec",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\34_incdec.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\34_incdec.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1849 baait sankalit\n",
+   "exit": 0,
+   "stdout": "Increment / Decrement Demo\n==========================\nx = 5\n\nx++ -> 6\n\nx++ -> 7\n\nx-- -> 6\n\n\nCounting with ++:\ncount = 5\n\n\nSquares table with ++:\n1 squared = 1\n2 squared = 4\n3 squared = 9\n4 squared = 16\n5 squared = 25\n\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "35_comments",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\35_comments.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\35_comments.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 488 baait sankalit\n",
+   "exit": 0,
+   "stdout": "x = 10\n\ny = 20\n\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "36_descending",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\36_descending.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\36_descending.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 970 baait sankalit\n",
+   "exit": 0,
+   "stdout": "Countdown: 5 4 3 2 1 \nRocket launch: 10 9 8 7 6 5 4 3 2 1 Lift off!\nDescending times table (9x): 81 72 63 54 45 36 27 18 9 \n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "37_native_gujarati",
+   "compile_cmd": "--lang gujarati E:\\Github Projects\\Sutram\\examples\\37_native_gujarati.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\37_native_gujarati.exe",
+   "compile_exit": 0,
+   "compile_output": "ભાષા પેક મળ્યો: gujarati\nસફળ: 479 બાઇટ સંકલિત\n",
+   "exit": 0,
+   "stdout": "ગુણાકાર કોષ્ટક:7\n14\n21\n28\n35\nસંખ્યા મોટી છે",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "38_native_hindi",
+   "compile_cmd": "--lang hindi E:\\Github Projects\\Sutram\\examples\\38_native_hindi.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\38_native_hindi.exe",
+   "compile_exit": 0,
+   "compile_output": "भाषा पैक मिला: hindi\nसफल: 438 बाइट संकलित\n",
+   "exit": 0,
+   "stdout": "नमस्ते दुनिया3\n6\n9\n12\nतीन मिला!",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "39_native_tamil",
+   "compile_cmd": "--lang tamil E:\\Github Projects\\Sutram\\examples\\39_native_tamil.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\39_native_tamil.exe",
+   "compile_exit": 0,
+   "compile_output": "மொழித் தொகுப்பு கிடைத்தது: tamil\nவெற்றி: 449 பைட் தொகுக்கப்பட்டது\n",
+   "exit": 0,
+   "stdout": "வணக்கம் உலகம்9\n18\n27\nபெரிய எண்",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "40_functions_params",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\40_functions_params.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\40_functions_params.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 681 baait sankalit\n",
+   "exit": 0,
+   "stdout": "42\n42\n30\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "41_recursion",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\41_recursion.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\41_recursion.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 752 baait sankalit\n",
+   "exit": 0,
+   "stdout": "720\n6765\n1024\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "42_block_comments",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\42_block_comments.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\42_block_comments.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 331 baait sankalit\n",
+   "exit": 0,
+   "stdout": "42\n7\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "43_nested_likha",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\43_nested_likha.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\43_nested_likha.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 975 baait sankalit\n",
+   "exit": 0,
+   "stdout": "2 + 3 = 5\n7 * 6 = 42\n5^2 = 25\nnested = 22\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "44_shabda",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\44_shabda.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\44_shabda.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 596 baait sankalit\n",
+   "exit": 0,
+   "stdout": "Namaste!0\nStrings flow through functions too0\nand literals work directly",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "45_shifts",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\45_shifts.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\45_shifts.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 912 baait sankalit\n",
+   "exit": 0,
+   "stdout": "16\n32\n8\n12\n24\n11\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "46_language_reference",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\46_language_reference.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\46_language_reference.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1240 baait sankalit\n",
+   "exit": 0,
+   "stdout": "big1\n2\n4\n5\n4\n3\n2\n1\n7\nx = 3\nhello",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "59_windows_grahan_runtime",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\59_windows_grahan_runtime.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\59_windows_grahan_runtime.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 270 baait sankalit\n",
+   "exit": 0,
+   "stdout": "42\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "60_six_func_args",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\60_six_func_args.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\60_six_func_args.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 608 baait sankalit\n",
+   "exit": 0,
+   "stdout": "21\n210\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "61_stdlib_math",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\61_stdlib_math.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\61_stdlib_math.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 3457 baait sankalit\n",
+   "exit": 0,
+   "stdout": "49\n\n5\n\n3\n\n9\n\n12\n\n12\n\n1024\n\n120\n\n1\n\n55\n\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "62_stdlib_num",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\62_stdlib_num.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\62_stdlib_num.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 2980 baait sankalit\n",
+   "exit": 0,
+   "stdout": "1\n 0\n\n5\n\n12\n\n4321\n\n1\n 0\n\n10\n\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "63_stdlib_string",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\63_stdlib_string.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\63_stdlib_string.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 9096 baait sankalit\n",
+   "exit": 0,
+   "stdout": "5\n\n65\n\n1\n 0\n\n1\n 1\n\n1\n 0\n\n2\n\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "64_param_reassign",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\64_param_reassign.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\64_param_reassign.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 237 baait sankalit\n",
+   "exit": 0,
+   "stdout": "5\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "65_char_code_index",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\65_char_code_index.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\65_char_code_index.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 215 baait sankalit\n",
+   "exit": 0,
+   "stdout": "90\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "66_module_dedupe",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\66_module_dedupe.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\66_module_dedupe.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1771 baait sankalit\n",
+   "exit": 0,
+   "stdout": "81\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "67_array_len_bounds",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\67_array_len_bounds.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\67_array_len_bounds.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 908 baait sankalit\n",
+   "exit": 0,
+   "stdout": "3\n30\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "68_array_oob",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\68_array_oob.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\68_array_oob.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 394 baait sankalit\n",
+   "exit": 1,
+   "stdout": "Sutram Error: mala ank seema atikram\n",
+   "stderr": "",
+   "expected_exit": 1,
+   "status": "matched"
+  },
+  {
+   "name": "69_undefined_function",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\69_undefined_function.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\69_undefined_function.exe",
+   "compile_exit": 1,
+   "compile_output": "Sutram Error: agyat prakriya: does_not_exist\n",
+   "expect": "compile_fail",
+   "status": "matched",
+   "diag_matches_linux_golden": true
+  },
+  {
+   "name": "70_module_collision",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\70_module_collision.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\70_module_collision.exe",
+   "compile_exit": 1,
+   "compile_output": "Sutram Error: punah prakriya paribhasha: varg\n",
+   "expect": "compile_fail",
+   "status": "matched",
+   "diag_matches_linux_golden": true
+  },
+  {
+   "name": "71_array_negative_index",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\71_array_negative_index.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\71_array_negative_index.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 399 baait sankalit\n",
+   "exit": 1,
+   "stdout": "Sutram Error: mala ank seema atikram\n",
+   "stderr": "",
+   "expected_exit": 1,
+   "status": "matched"
+  },
+  {
+   "name": "72_array_variable_index",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\72_array_variable_index.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\72_array_variable_index.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 652 baait sankalit\n",
+   "exit": 0,
+   "stdout": "21\n4\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "73_array_equal_length",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\73_array_equal_length.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\73_array_equal_length.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 394 baait sankalit\n",
+   "exit": 1,
+   "stdout": "Sutram Error: mala ank seema atikram\n",
+   "stderr": "",
+   "expected_exit": 1,
+   "status": "matched"
+  },
+  {
+   "name": "74_array_highest_valid",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\74_array_highest_valid.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\74_array_highest_valid.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 650 baait sankalit\n",
+   "exit": 0,
+   "stdout": "42\n3\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "75_array_dynamic_length",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\75_array_dynamic_length.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\75_array_dynamic_length.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 656 baait sankalit\n",
+   "exit": 0,
+   "stdout": "5\n55\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "76_array_function_scope",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\76_array_function_scope.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\76_array_function_scope.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1057 baait sankalit\n",
+   "exit": 0,
+   "stdout": "12\n24\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "77_ternary",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\77_ternary.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\77_ternary.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 947 baait sankalit\n",
+   "exit": 0,
+   "stdout": "100\n400\n2\n20\n50\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "78_do_while",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\78_do_while.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\78_do_while.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 444 baait sankalit\n",
+   "exit": 0,
+   "stdout": "1\n3\n4\n5\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "79_ayojan_cwd",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\79_ayojan_cwd.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\79_ayojan_cwd.exe",
+   "compile_exit": 1,
+   "compile_output": "Sutram Error [E_MODULE_MISSING]: yoj patra aprapt: ganit\nSanket: naam.smlib lib/ madhye srota-patrasya nirdeshikayam va bhavet\n",
+   "status": "failed to compile"
+  },
+  {
+   "name": "80_b6_nested_call_loop",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\80_b6_nested_call_loop.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\80_b6_nested_call_loop.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1989 baait sankalit\n",
+   "exit": 0,
+   "stdout": "1\n2\n3\n4\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "81_stdlib_num2",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\81_stdlib_num2.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\81_stdlib_num2.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 2966 baait sankalit\n",
+   "exit": 0,
+   "stdout": "55\n 0\n 1\n 1\n 0\n\n0\n 8\n 111\n\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "82_b7_stack_spill",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\82_b7_stack_spill.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\82_b7_stack_spill.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1566 baait sankalit\n",
+   "exit": 0,
+   "stdout": "4\n1\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "83_stdlib_sort",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\83_stdlib_sort.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\83_stdlib_sort.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 6139 baait sankalit\n",
+   "exit": 0,
+   "stdout": "0\n\n1\n 2\n 3\n 5\n 7\n 9\n \n1\n\n4\n\n1\n 9\n 27\n\n5\n 1\n\n9\n\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "84_stdlib_string2",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\84_stdlib_string2.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\84_stdlib_string2.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 9425 baait sankalit\n",
+   "exit": 0,
+   "stdout": "3\n 2\n\n2\n -1\n\n1\n 0\n 0\n\n65\n 97\n 65\n 122\n\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "85_stdlib_shellsort",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\85_stdlib_shellsort.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\85_stdlib_shellsort.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 4854 baait sankalit\n",
+   "exit": 0,
+   "stdout": "0\n\n1\n 2\n 3\n 4\n 6\n 7\n 8\n 9\n \n1\n\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "86_b8_multi_modules",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\86_b8_multi_modules.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\86_b8_multi_modules.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 10951 baait sankalit\n",
+   "exit": 0,
+   "stdout": "9\n 1\n 3\n\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "87_b8_all_modules",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\87_b8_all_modules.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\87_b8_all_modules.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 13487 baait sankalit\n",
+   "exit": 0,
+   "stdout": "1\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "87_b8_func_params_capacity",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\87_b8_func_params_capacity.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\87_b8_func_params_capacity.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 12010 baait sankalit\n",
+   "exit": 0,
+   "stdout": "1\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "87_b8_math_sort_string",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\87_b8_math_sort_string.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\87_b8_math_sort_string.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 12010 baait sankalit\n",
+   "exit": 0,
+   "stdout": "1\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "88_pingala_chandas",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\88_pingala_chandas.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\88_pingala_chandas.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 2312 baait sankalit\n",
+   "exit": 0,
+   "stdout": "8\n 64\n 10\n 55\n\n3\n 1\n0\n1\n\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "89_b9_short_circuit",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\89_b9_short_circuit.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\89_b9_short_circuit.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 2058 baait sankalit\n",
+   "exit": 0,
+   "stdout": "0\n10\n1\n10\n1\n40\n1\n50\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "90_b9_short_circuit_bounds",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\90_b9_short_circuit_bounds.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\90_b9_short_circuit_bounds.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1041 baait sankalit\n",
+   "exit": 0,
+   "stdout": "0\n1\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "91_indian_number_theory",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\91_indian_number_theory.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\91_indian_number_theory.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 9255 baait sankalit\n",
+   "exit": 0,
+   "stdout": "kuttaka(3,7,1) = 5\n\nx^2 - 13y^2 = 1: x = 649\n, y = 180\n\nx^2 - 61y^2 = 1: x = 1766319049\n, y = 226153980\n\nbhavana (8,1) x (8,1) for N=61: x = 125\n, y = 16\n\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "92_t12_dasham_float",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\92_t12_dasham_float.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\92_t12_dasham_float.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1668 baait sankalit\n",
+   "exit": 0,
+   "stdout": "3.750000\n1\n3.250000\n-1.250000\n0.300000\n1\n2.500000\n7\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "93_t12_float_functions",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\93_t12_float_functions.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\93_t12_float_functions.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1276 baait sankalit\n",
+   "exit": 0,
+   "stdout": "2.500000\n2.500000\n1.250000\n2.000000\n2\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "94_t12_float_functions",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\94_t12_float_functions.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\94_t12_float_functions.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1728 baait sankalit\n",
+   "exit": 0,
+   "stdout": "2.500000\n2.500000\n1.250000\n2.000000\n1.500000\n2.000000\n2\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "95_t12_madhava_functions",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\95_t12_madhava_functions.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\95_t12_madhava_functions.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1796 baait sankalit\n",
+   "exit": 0,
+   "stdout": "3.141593\n0.479426\n0.877583\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "96_t18_kosh",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\96_t18_kosh.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\96_t18_kosh.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 3053 baait sankalit\n",
+   "exit": 0,
+   "stdout": "0\n1\n1\n2\n2\n3\n4\n10\n20\n25\n30\n2\n4\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "97_t18_kosh_devanagari",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\97_t18_kosh_devanagari.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\97_t18_kosh_devanagari.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1134 baait sankalit\n",
+   "exit": 0,
+   "stdout": "0\n0\n1\n4\n7\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "98_t18_kosh_empty",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\98_t18_kosh_empty.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\98_t18_kosh_empty.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 392 baait sankalit\n",
+   "exit": 1,
+   "stdout": "Sutram Error: riktat koshat kosh_pop\n",
+   "stderr": "",
+   "expected_exit": 1,
+   "status": "matched"
+  },
+  {
+   "name": "99_ast_multimodule_capacity",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\99_ast_multimodule_capacity.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\99_ast_multimodule_capacity.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 23889 baait sankalit\n",
+   "exit": 0,
+   "stdout": "1\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "99_t18_kosh",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\99_t18_kosh.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\99_t18_kosh.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 3053 baait sankalit\n",
+   "exit": 0,
+   "stdout": "0\n1\n1\n2\n2\n3\n4\n10\n20\n25\n30\n2\n4\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "array_demo",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\array_demo.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\array_demo.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1046 baait sankalit\n",
+   "exit": 0,
+   "stdout": "=== Array Demo ===\nArray values:\n  arr[0\n] = 10\n\n  arr[1\n] = 20\n\n  arr[2\n] = 30\n\n  arr[3\n] = 40\n\n  arr[4\n] = 50\n\nSum: 150\n\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "char_ops",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\char_ops.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\char_ops.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 838 baait sankalit\n",
+   "exit": 0,
+   "stdout": "First char code: 72\n\nASCII of A: 65\n\nUpper of a: 65\n\nDone!\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "fizzbuzz",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\fizzbuzz.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\fizzbuzz.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 526 baait sankalit\n",
+   "exit": 0,
+   "stdout": "1\n\n2\n\nFizz\n4\n\nBuzz\nFizz\n7\n\n8\n\nFizz\nBuzz\n11\n\nFizz\n13\n\n14\n\nFizzBuzz\n16\n\n17\n\nFizz\n19\n\nBuzz\nFizz\n22\n\n23\n\nFizz\nBuzz\n26\n\nFizz\n28\n\n29\n\nFizzBuzz\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "format_demo",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\format_demo.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\format_demo.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 592 baait sankalit\n",
+   "exit": 0,
+   "stdout": "x = 42\n\ny = 100\n\nSum = 142\n\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "full_demo",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\full_demo.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\full_demo.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 2313 baait sankalit\n",
+   "exit": 0,
+   "stdout": "=== Sutram v6.0 ===\n1. Strings: Namaste!\n2. Numbers: 42\n\n3. Math: 15+4=19\n\n4. If-else: true\n5. Memory: 99\n\n6. String len: 6\n\n7. Char ops: 72\n\n8. Format: x=42\n\n9. Strength: 64\n\n10. Loop: 3\n 2\n 1\n \nDone!\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "func_demo",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\func_demo.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\func_demo.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 722 baait sankalit\n",
+   "exit": 0,
+   "stdout": "=== Function Demo ===\nCalling greet()...\n  Namaste from greet()!\nCalling ganit()...\n  10 + 32 = 42\nCalling answer()...\nanswer() = 42\n\nDone!\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "hello",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\hello.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\hello.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 112 baait sankalit\n",
+   "exit": 0,
+   "stdout": "Namaste! Sutram v6.0\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "import_demo",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\import_demo.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\import_demo.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 10004 baait sankalit\n",
+   "exit": 0,
+   "stdout": "=== Library Import Demo ===\nString: Namaste!\nNumber: 42\n\nx * 2 = 32\n\nx * 4 = 64\n\nLength: 6\n\n=== Done ===\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "mem_safe",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\mem_safe.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\mem_safe.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 730 baait sankalit\n",
+   "exit": 0,
+   "stdout": "v1 = 42\n\nAfter memset: 0\n\nMemory safety OK!\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "multable",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\multable.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\multable.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 320 baait sankalit\n",
+   "exit": 0,
+   "stdout": "1\n 2\n 3\n 4\n 5\n \n2\n 4\n 6\n 8\n 10\n \n3\n 6\n 9\n 12\n 15\n \n4\n 8\n 12\n 16\n 20\n \n5\n 10\n 15\n 20\n 25\n \n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "number_game",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\number_game.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\number_game.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 752 baait sankalit\n",
+   "exit": 0,
+   "stdout": "Guessing game!\nSecret: 42\n\nToo high!\nThe answer was: 42\n\nGame over!\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "prime",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\prime.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\prime.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 451 baait sankalit\n",
+   "exit": 0,
+   "stdout": "2\n is prime\n3\n is prime\n4\n is not prime\n5\n is prime\n6\n is not prime\n7\n is prime\n8\n is not prime\n9\n is not prime\n10\n is not prime\n11\n is prime\n12\n is not prime\n13\n is prime\n14\n is not prime\n15\n is not prime\n16\n is not prime\n17\n is prime\n18\n is not prime\n19\n is prime\n20\n is not prime\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  },
+  {
+   "name": "strength_reduction",
+   "compile_cmd": "E:\\Github Projects\\Sutram\\examples\\strength_reduction.sm C:\\Users\\Dhruv\\AppData\\Local\\Temp\\sutram-win\\bin\\strength_reduction.exe",
+   "compile_exit": 0,
+   "compile_output": "Siddh: 1371 baait sankalit\n",
+   "exit": 0,
+   "stdout": "x * 2 = 200\n\nx * 4 = 400\n\nx * 8 = 800\n\nx * 16 = 1600\n\nx * 3 = 300\n\nx * 5 = 500\n\n",
+   "stderr": "",
+   "expected_exit": 0,
+   "status": "matched"
+  }
+ ],
+ "check7_counts": {
+  "matched": 215,
+  "differed": 2,
+  "failed to compile": 1
+ }
+}

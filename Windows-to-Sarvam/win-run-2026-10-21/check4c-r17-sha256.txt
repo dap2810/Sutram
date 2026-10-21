@@ -1,0 +1,217 @@
+# check 4c: tests/negative/r17/SHA256SUMS, HEAD 0251f8c5, real Windows 11
+# 'work' = the file on disk in this checkout (core.autocrlf=true, system gitconfig)
+# 'blob' = the committed content, via git show HEAD:<path>
+# working tree: 119/213 OK ; committed blobs: 213/213 OK
+OK  work  OK  blob  w/none   R1-yoj-at-end-of-file.sm  listed=9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462
+OK  work  OK  blob  w/none   R2-parameter-list-at-end-of-file.sm  listed=88ad7d075cab2a3c96fc6cd90fc66346208ca9bc5ce81dce2ed151adaec98c29
+OK  work  OK  blob  w/none   R2b-parameter-list-comma-at-end-of-file.sm  listed=197a06a50d3d68848238f8cf98d842e94e303343a23b6b9ee662ff38c7a39f5e
+OK  work  OK  blob  w/none   R2c-number-as-parameter-then-end-of-file.sm  listed=6a81d57153c94e09ce09a48f4ffafa85b9ebea07f88e0fc1fa071c7269db2984
+OK  work  OK  blob  w/none   R3-rachana-at-end-of-file.sm  listed=96abe8e148c079a620708f792eab8702fceca738ecfdc1501c0ad9ed4bcd7f2d
+OK  work  OK  blob  w/none   R3b-rachana-comma-at-end-of-file.sm  listed=72fce7a9cd42aec5cc2819b22af5d1a470e3856946eb17c37d644de040b815f5
+BAD work  OK  blob  w/crlf   R4-anya-yadi-after-anya.sm  listed=7cbb03e3273c0adfc4a18325e5524d3b948f4f9500fc2bc0653f9a3eb81f478c  working-tree=2b96b00b6a37551de59d80829771ce41ff52e7110060d3ac255ad27c2f6a5425
+BAD work  OK  blob  w/crlf   R5-expression-left-of-assignment.sm  listed=065d85ba587fb6f0f0ac6a5e6a998f50e7ee688e3f97ba4d7b0817e6b82410de  working-tree=3cf2aac224fc2380a2bd063b80a39001a3df9798918d9a393455b4d734921c72
+BAD work  OK  blob  w/crlf   R5b-index-expression-left-of-assignment.sm  listed=affb44f83abc27e412c0896458c5eb15bc58daf048a2fa2fdddb97f0800e24c3  working-tree=8011cc58ca4a59b2c8fa5a33c088bfc55a85c717b479054ce69c32a44d5da13e
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-10061.sm  listed=44e55aee11ae2ff8b475cdf36b6c597e93b7f01f9bf23efc085f680e50dea46d  working-tree=8f63633a85187ced58966b25bf8f66bf8814ddf51b792c5d6f526d01b9251271
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-10761.sm  listed=26aea7a8385aa8c457868dadafa17c0eeb460394a5ed02cfe1a08725e5a3cc53  working-tree=b7f222a26085489a501d8c71d23379e0cec3dd922034a11be5511fa5f599d2ab
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-11005.sm  listed=a76cadba6d0f654c8282c41ad16153ea0fa7462638b32ed1d72a2ee600b389e7  working-tree=f0d08b85b6e6f68ac7b57b33b8f8e99b28fa5de050bbefd8a9e93a6dbcb3d80f
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-11196.sm  listed=912ea0d03cf0786b89e8042cc69efba95d2bf25afcaa1a92f8c13ea20ebd163b  working-tree=9aa43ac3cf201954953b550316d0135f2883a79f02cd85b33c811c02408c7ecb
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-11999.sm  listed=7b599882b8e926cddd334c1e1c9bb0bf7b385e43b89a476644a76c5fa967cfc2  working-tree=23c5dffa56601cdeb4e82183648ef67e05b9cf206eac9a08e95feffddb45cf6d
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-1268.sm  listed=d2b893c135beba432741482ab74a4d4a868d33496d0bc42ccade8b3688924ed5  working-tree=da60bd8877f890e4534f329761a9522c8ad3de72e9f526237dc7cb3e153cd85e
+OK  work  OK  blob  w/-text  r15-original/mutation-15-12832.sm  listed=f845ad055eda0eac09cc529eed79013ab743ae340f8ae9877965b9f758c0fcb3
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-12957.sm  listed=53d0af1555300f47c5bf43ed2cafc20a6e70207e4ce85b41012c2a9f3bd4cdc2  working-tree=6561349bd5b5a91749b8417d142277003504d1e63dd08cd15f97395e2bd5f90b
+OK  work  OK  blob  w/none   r15-original/mutation-15-13912.sm  listed=00edd8f2bb1c80afba7e8c5cdcb29f583fe0ad03a848a230c0a92fc287dc4448
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-14386.sm  listed=3598a585f00d01a15292854e4c5cf5edf55e6c13aab986834126b1406080e756  working-tree=5ac6109ce3ee0ec75c5d26e30d07519248deb21ea0c245dc66cb759d0c9ab3b0
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-15323.sm  listed=15406ed4434240135eed59c944d41d63482ec28997cc04c2feb23f5affb5cbea  working-tree=f6329f3898a0d16ddc9d1341cda6753715759fc75d0a6c2d9e0ad80ef59463d3
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-15331.sm  listed=03aa431c59777ff1e5fa6a632ebb5bdf3b06ac0d44873bddbd3955fd4f2107ba  working-tree=119fae9f51e16406883ff61f7aff5400ab147b2f5314a3c15313bcc18b1dbb25
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-15511.sm  listed=f1358a6b4a010a9601c03c3d5aef3330de4e445c28831a590063f8056831bec6  working-tree=e93b8ec6df22e5faddeb914fe5cc5818f0c4504443b1052080ffd1eaf5dd69d4
+OK  work  OK  blob  w/none   r15-original/mutation-15-16696.sm  listed=9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-17710.sm  listed=7101ac8ff853654eda33c956698aa58007f73f210b9a4fac4164ec528704d434  working-tree=803dd527d234252d6e32070e832a4acb64d9e09c2915d8abddc13bd627b2a29c
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-18721.sm  listed=827c930be69d513bd1d0d9a6602eb7daa8af3d6d13cbbbc30d158bc0a8596b30  working-tree=f78611a042e00d2284ec0c229f815c2b8bb8277d4ad5f5404baea8333f977fec
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-1981.sm  listed=94b25267a368d3b19feea4caf562d53a31e05a5414c3a81b9c8617af0ea81d41  working-tree=e8df0be17e9370a98aee2e2fe1e19d31801a2f548327392dc60791378e3279b2
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-20160.sm  listed=00f3505f0ba9ed2de0b9769f8194dc1e59e64fec5aef547a9f72277e2438fe98  working-tree=a8ef3723f102befa56873136c70ee2034df92188515342a535a2814660f66063
+OK  work  OK  blob  w/none   r15-original/mutation-15-2101.sm  listed=9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-21279.sm  listed=b5f729febf1fe9202bd7f8e993bd24e7c4c1c6aeabcc73c6b05571e411334cb5  working-tree=11a8438d39331c80dea9fbd0ff8b8935c1b4d283d50ca5176c5c383ba5f38393
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-22286.sm  listed=17b96756d4896500f559e346fc6ec2a52030a078c1e1729ad23670df99602399  working-tree=af170ac0481e3635c3a0523b07e9901aa15b67c0bba8b4858e791c92b99f987b
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-23437.sm  listed=aa1efba142f82d77efb42faf0bbce4ee3ef40c33b6ea8da5a1c696ec417e9eff  working-tree=bb1f9a8da776ebaf8393e35e61c169adbacb0aac0be50b31afe44e900da914cc
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-24127.sm  listed=875ccbaa1f41cdc3dc011c138391868ceee32e74fb81a3edbcf8b52497859cf0  working-tree=7e689abbe6e01400b3bbc85ecb5d60c57cd575b76c75a5a953414397ae257d29
+OK  work  OK  blob  w/none   r15-original/mutation-15-24931.sm  listed=9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-253.sm  listed=5504227d766ad610619adf2d9cace58f85c4008600300601d4b647150db94514  working-tree=3290ce4909a230e39d488335be269412c79dd046947449babb3561505ca9c00e
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-25532.sm  listed=ea17f9e37e45bd47edb74163d3561f68e4f972fbb32677663d53de83790b424e  working-tree=df05b806f526c5d97b77fd05d1869ddbf3556c7656214421fc13f134a2499193
+OK  work  OK  blob  w/none   r15-original/mutation-15-25571.sm  listed=9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-25786.sm  listed=abe78cdf5532e085ea11c696d74491bc0e12dd4b09778ca8d11a9caee751af86  working-tree=29300660264c5847870bf36c94c2914064def325431472c217b1407f5f77756e
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-26225.sm  listed=1baff7cb1ab794b50fdbff70959597df5817a699622b9102f93bbe38495fd817  working-tree=624f713681e63326eac3c8dc80ff549b564979c5d7c950e4b5367f8cbcc9eec8
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-26549.sm  listed=64ed1be96476a7a4d128f6695b0bfc4163acdb41f60df535a17473ac34e25114  working-tree=dcbb8378ba93e527a2d072b3235c092cfcf99029fa7582871ed6625603cacd8a
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-26636.sm  listed=132555cedf5e5df359b518b30f823e173162882cb01db41029d47cd754486120  working-tree=12a809079081b27b98f4e453ec083d52616d8b9e0469640765b3758d08f47670
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-26729.sm  listed=d5376d38b844db6f6454bdcdf7e05c5c1f81de3b6c86dc5b2f115163851188b9  working-tree=bf92253c77fd3b7b9005efcfe38bd40fe7a9808c9fd29c605b58eda11f14befb
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-2693.sm  listed=e2461e2305e74a486b5987943e00cf4014dc83ef18db15d8cafe7a554d7fc1eb  working-tree=1ccd74b314ae7f8d2b2b117dbc765b4425925b836ee51d96aca05a119052d270
+OK  work  OK  blob  w/-text  r15-original/mutation-15-26963.sm  listed=93fac06e288200e9303437c1b09ed0e0621acc904ee7fc7e20e57be16a01c5cd
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-27046.sm  listed=391a28467677b4a58f82b266c8c37514f3803926fad79112dbeebbb24424f4f1  working-tree=7aaca713dd4544a4acede86e1a2827d4690bfbb29151a6a4cf2f2ba9a5a44385
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-27298.sm  listed=58e4b5ec220018a4d82842e40ec973510ee6c79f5b71bf99ec6d37a4a671eabd  working-tree=dcd6c7ac2bbcf31644592b19bf59550c40bf9cf7b84d3272beb393d9119b3e16
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-27522.sm  listed=f2c5b718bcc32594525ecec7556ddff51392be1a523c7b39227bd2a9120ddc25  working-tree=4683bcbb6af0b6cdfdab01e44de2b85f3268767677598fb32a2c5e174ac1dfa1
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-27731.sm  listed=85f9db39b56cfee63b9547a8b2b4f35b1efd00640922dc691b40fbd692d2de89  working-tree=9518a977f5d7ef6d67a6b01f2d87a06d2dd0b7b80e2ea0e03c029d52505dc886
+OK  work  OK  blob  w/-text  r15-original/mutation-15-27971.sm  listed=7d42c065f75f419e1c75396f8e8d7b3215ca9d9899f5253be38ca008f7b00907
+OK  work  OK  blob  w/none   r15-original/mutation-15-28363.sm  listed=9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-28520.sm  listed=ce60be8c7c0b7401d48cae2af4e7da224afb742832b7b801f4d7ced37816c48e  working-tree=c4d2f0bf086e5dc4475cd248c256afacbd8d57fad0b9cc34c9c47eaf245f877f
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-28969.sm  listed=376c7653a0fa6e39d1ae6f810d2764d94faba6d12c577b1a28a7d1922a6eb982  working-tree=2ac74785c11dd5eab34336af32e1cd3420f27a294e61dc6f19a573ae6dab69cd
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-29084.sm  listed=b227f8d2cbe24c32bf181a5d8f4e0c5ae2fe9ab8a55e4dcb34f44e5f3b08c594  working-tree=00a451121dea048a737a796b916df1fbbd2097836cd6fd638ef8f29780fc3344
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-29170.sm  listed=f8acaa507fd2ebaa41466b9812a1e8f68f4ec08c213928286e089e647f8657c4  working-tree=f2d94db602d08829d868741ba02a2509503c90959366534aa1cf5833bd10c78a
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-29448.sm  listed=19db50300860a402c97b72a2f7170580a4b701b88304ffbc52ebb31b2bb2b28b  working-tree=2263d97115bdb2b565e69af9c7e304e6796a57d185b3b673930ae110e38dba03
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-29767.sm  listed=ac8b927c72100a5ef3b54cb0392228ea402f6601244cc4482c8641a0f3f22d6b  working-tree=5b876f218dda9c9e6fe73154a494c63e0518fbabf098665d970704530cc1cb95
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-29820.sm  listed=40c01ea6e66c5c65509a1c8d7dd330d01cacf924e8d03d0f566b3fbe80eb35ff  working-tree=f99bf429bea7cb34b810330d05435f5a94b5de98add2c150912b3d23d998cb07
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-30524.sm  listed=3b8d9410d7e23d39f3030e1833dff96275ba5e184df807c4def2ab4bb106e5c5  working-tree=c8a37097f6ded43dfc0ba0e25b20481b1ae59f1a3b34b7ed265145e12b36b8cc
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-3065.sm  listed=7a54594c7f3f94226a7f6d964c718c398f3ceb37dcbc5909e577643a20b0bb6e  working-tree=0a9ade51910a85c2fddf7f6847dd72135680098cdee56ebbd883c1abacb93bd6
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-32160.sm  listed=7a121ee6bb586cf55cd86092874dd5b2a63040bc0bd21d05cd1753ba260be479  working-tree=d5769d6f4068a3a0264707872b51a49c27279e524eede94c467e1bf8c52a98d3
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-32279.sm  listed=869063978efaf472faf4a3fffcf09be8314fdd493da140867a2b26b32605c3d2  working-tree=8a4e6e45c645e3947bd784defc29910bb7e2166f1dabf540b18f29c4c3570714
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-33099.sm  listed=760cd558518f429a520a9ecb11e393a2661a1ff6a0fc4dac013e8fe2050f7f53  working-tree=d863e80f0071564f968e20c5935df7a6d553e78d639008da2de37963da6f558d
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-33516.sm  listed=5e22609dfba55b25b5947e980872e31d1857aabb37c5721541c59c71ba59d3ef  working-tree=9fbee05c79ab69eeb4379079993cb23ea9b382a40c19491bb9fa7dd71f19b109
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-3373.sm  listed=78d8882d1bc8c2d5425510ad8bd49251cfbe45d7c044a0edb30f12de0ab70a19  working-tree=b4b0eda452b28a0d8b3c4fee51b6d15e77c29f583e92d970bd4d186c455d0c28
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-34588.sm  listed=638ad13001a9246b404d0c9916848fc269703d0af3f59d1534f6621a8f780cb1  working-tree=e97af8d35dc96c26c46310e10af1d53b035b6b7c4bd7898ac3275325439ac4de
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-34901.sm  listed=1a96ef201d673ed93c8859999f95141667b5b8fb03353bc71369601366cdd986  working-tree=38298c7750cf7b4baf5cc7651575b6439798fa442c85e4065158cd3bcf2c5a06
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-34912.sm  listed=47a1084193f64dd561d3555f563346f7f1fb9ea89849a04f3ace6379df93af54  working-tree=13871685663cce388108bf2d683044b6e8b049758716fe30fc2c683a57a525d3
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-35150.sm  listed=1963d27e0ed08e33ae17f882197fd3bb5723ac77122fc6ada62c2fd2aa23a120  working-tree=9651607a5cff2ce46d693055b6021601b133b31ccff20de429b6dfa2cd8ae5fc
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-35169.sm  listed=2a6e0ccee926c2698922b28c20654da750d266c01b4a048ba5f6caf109a57801  working-tree=225217f5683dd5a1046859663a017ff7274bdc6887dcc4d4737c09b1f3f738b7
+OK  work  OK  blob  w/none   r15-original/mutation-15-35457.sm  listed=9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-36797.sm  listed=b89cbd3ad9a8a22022a3685efb35aaa6b7765361f1b1c89e4b949492fc5e207e  working-tree=638a26e52f5fb9300aaf50d658c89179919e5144573c6beac53b9e1eb0b46ddd
+OK  work  OK  blob  w/none   r15-original/mutation-15-37149.sm  listed=e14095d61d2e9404b051b5ddf31099af35d20d78f3b138edc97da035e018c726
+OK  work  OK  blob  w/-text  r15-original/mutation-15-37233.sm  listed=768e294160e48a93842dc9e5cc1eaafa7a30d29fc4ea256a92e248d9dfadc8a7
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-37510.sm  listed=0c3f9f10fc161e675ea6876968c27fa643dee0fb0726ca964dbf137f3387ea18  working-tree=427e6e8e203a44cd7eb28998b19e81b1d6a239aaf84be8fce642d74456277382
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-38067.sm  listed=dc6328f566da68a129c4cdfc3e5e24c52bb8082ee099f2d86ecfdc4636c3251d  working-tree=74f41e121465375db1f5ebf4c4a1b7b1cb7bc0ec98d4d6f0c59f8f823728106a
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-38467.sm  listed=0c7cdf65a6ec4de3170c1d8d52197e5a624865523db4c4728195d01f57a9e17e  working-tree=6be729e038eefff95ea93356091f28bca11908f4090369696ca9ccb762c8364d
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-38911.sm  listed=b974f2c4e2290959003184f1405ac1e9c826e78f4ecdc3e5caf8207b9857c0bc  working-tree=cd4fd5fd2f3c46c8d94f79a18137e1b47217759371b0bc3e290176624ca1f809
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-39435.sm  listed=b4364ac99ec8d9b5f6f17f06001f905aaa38ce3e4da9958848c79d173b2b0a0a  working-tree=eff34bf72de59b7f3e731a37bcdf606b171de8417c76f3a44e0abe201e9f065b
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-40049.sm  listed=22e32625a9dd264f38d0e3500b35aa25e834f00b8aa9f4605321687c67c5fc34  working-tree=b02e5298d8287e8cc5491200e82f2075fa5413aeda6c6b798a4d58b83df86167
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-40194.sm  listed=6a4cc49043b53f197708abbe978d3ecbfb9c028521dc5c737f62676f806c9c3e  working-tree=304c4af6cc0bd5357586287961e5dfbf5967bee849b14c56066159199104d62b
+OK  work  OK  blob  w/-text  r15-original/mutation-15-40347.sm  listed=bd553cb397a102de32a03376597cc146ad6b3c1ca26d88a911a1a6cec479f1ee
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-40597.sm  listed=c992c0b4e7ba369bf21a2f1b676d9beb9d53f94268cb2c412b01fe2eccdf80db  working-tree=550c68f3caa8a89bd29371d7b079510417cb43644a7cce5e3b0a7687bff4ace0
+OK  work  OK  blob  w/none   r15-original/mutation-15-40855.sm  listed=9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-42057.sm  listed=b251932b7364045da371e112ce1fe8efc1b9b160d074e7394f68e45d9ddb536d  working-tree=cf840615f9fb8a7717b9abeea202dcd6d50856b62d2f6947fdd50c953f30f69f
+OK  work  OK  blob  w/none   r15-original/mutation-15-42507.sm  listed=9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-4364.sm  listed=5e8b64c9933430b86bf63661a41a0384be57d4ac9f820585ef66fbf54f12ca1b  working-tree=44667e52c7538591e94576b890eb2d5b1c1c22bdfc0abf32b9b0a3ff27a3111d
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-43640.sm  listed=368df965e581e32b4961e4fc3d1b191a2ad6a88baeaa2875b70e4a9785565a67  working-tree=c07fd9282901edb8328e1573b0ea597625d28cdb3ec7d1bc2df13320916178d1
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-45042.sm  listed=0aa461b4114a278f5257c90cd4954520aaf2239197492157dc6dce7e41cbfe7b  working-tree=6622cf837f4298fa9117ddb000dd2d62817ebc864696d1da632e83070e05d51e
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-45236.sm  listed=7c5c5858d84537ad36c102ee09d2aabc637586d259ee40902802d87119ca4211  working-tree=22eef4ae1bc88addbd985b932633893da5ee7c8b5da11b81cce874862995e2b1
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-45494.sm  listed=267a15e3d540dc8167aaf6daaf8a196e62f180bc54fafa30171bfc652645f901  working-tree=b92021155d4953c9af2f7805008ccfad92151ffaab843a8abcb95e8172e282a9
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-46768.sm  listed=2f2ab58ca019b23559bca730427afd6bebd159eed62a34762a82be3845083ed5  working-tree=f1fecc4db111a749ce6e0c49b9df037f82ce18e5f13081311cb1b5b680d3cd43
+OK  work  OK  blob  w/none   r15-original/mutation-15-47085.sm  listed=b642e9c6b0d62d8d26ddaf7445a5d13308ea70220e8590edf89151683107c937
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-47693.sm  listed=bc97fed472588458658acf1070c703009f88d64de72a01a971f6d5f0cd0983aa  working-tree=4ec34218bbbcb9c1d4569ac86284a0dd4b3f4b043ce411fc42e2e7ea7283304e
+OK  work  OK  blob  w/-text  r15-original/mutation-15-47726.sm  listed=6966b4124d612ea1ea8a01ebb445e118e70f680b0f51c0b3a83bc1f5fa569051
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-47954.sm  listed=0736dfbf715f13620cbd2f58c5a59ceda4f4cc810a2ad027e5960a29c01cc6b8  working-tree=ac0be38657c19af1daea0cde22e3c94e8ee554e45c865f20b9601123fbb8eedc
+OK  work  OK  blob  w/none   r15-original/mutation-15-48253.sm  listed=9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-48781.sm  listed=c2e9d054d054571bbbe84ff7dcac862a47dc0e3e7195e3b260cca1097ff78e0b  working-tree=d1f2dcf280326ff2f1c5b5640a916266c35718040e0593ebd8b610d65700ae47
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-49077.sm  listed=1117e8713dfe880d128a8055b133db8f31740c012b12528f66dd1981a961c697  working-tree=1e9e109b6016635e3bfc15f0c334644cf9e5cc685f3cb5ce63f3a07e2c401375
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-49763.sm  listed=567cab340465658e9cac459b26b122ac4d406034e156e43250225e1397885acd  working-tree=7cc9d52c76a6dce374ffa707ffa8fa239f9949e92c0ba1056aab965a805ca40a
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-5065.sm  listed=e4e1e04017f0db44a3ee4dc92a1fcd4c3fcf18cb9b8401960e1869eb036b09c4  working-tree=d8f611237b19b0c6e59f3ef94b1985316300b7a6591e1e9206e6d5622128fab2
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-5307.sm  listed=fd2c09ec32b2a1f9ea2ab2f27f30a94eb7763cca0f78141b9a65a9520cc0f92b  working-tree=59f49aa3c3690b198a31feeb9c47d17c2e5d57bdb151f57f5ceaab8fb3aee4f9
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-574.sm  listed=2abae6b7323622ef12e4064ca90aaaa9ed79cca6fd3887b6135c985827b50bc7  working-tree=3a255752d01aff5f73e7a7154b8839417b262150d482988ba98d59f2315ad88e
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-6070.sm  listed=4f64e2e21d1b295ec65557c5e0f3da577e81bf3ce9cd86939ef5a555dde3a0c0  working-tree=d09dae18b5f2b989ba86f452fa5e326f2513fc68a2f4688eb57addcce1b28bd2
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-6125.sm  listed=9311edd16a1524059d7ad32d2e1daf8e3db9f715c07d8c56910f52c50b2eea21  working-tree=984cdc08d7a283c64c5c5f265c887f1a7914b462904862970a2aa5a0f1661048
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-6489.sm  listed=97cecad4fec83a53a0a0d890bf04e9caadf039d62e5a2c46077863c83314761d  working-tree=8278975f289741997e3b9dbd1f72adf4d73ee5d94b348f08c28e9f249c33e095
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-7460.sm  listed=526b982c1ba25465149cab81c022c104a5d53a26f7de81c97674c6b61f4ed130  working-tree=f5081ca5bf736075aea5538a20dafad54e6edde27f24362dd9b79f29ff5c69b6
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-8325.sm  listed=5c151489479bf7287638ccd99d6f4ad513ac72f6e5146bd29963afb752e0c5c2  working-tree=6c1e522a8f7b9fdc495e943906c0dc90bc8553e8cd9d8cc6825451f18fe30fd3
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-8352.sm  listed=2bbc8c080ab7e6c58305f730cb9768d1753134f89944bee1898627ee8deaba37  working-tree=406bbb7f80c01bd09fda9d49d8e4607c26dd73e675ac06b0547c013566af32f4
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-9144.sm  listed=5af8789c856c669fd3644dc7c2d58f50e9c81e95035c6ee134c0f7e1c128b284  working-tree=403ad67cf9483c4ab3306970cb60e4fc23844c346cad247445fa37adece88438
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-9452.sm  listed=decc5f2bc6b15df0d63779537fe5dc4a6bf38352bf7f6ae8f5227de46774cdf2  working-tree=027422b13bd26bc6e8c90d6856ef8a730205d2e098abb09cdddf31fc93bc33cd
+BAD work  OK  blob  w/crlf   r15-original/mutation-15-9682.sm  listed=26b3815490e552c7062b4b48d43a340c4ab631b39bba4def41782e32598173d5  working-tree=c2a61f2d9fd40bac8b758ab3e9b100a6f5d57745463e081df8d4af069eb703d4
+OK  work  OK  blob  w/-text  r15-original/mutation-15-9720.sm  listed=7e8c5352568689adaa1732e6cabba7f919dcbb6c145f668cc81f8df3df163976
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-10061.sm  listed=9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462
+BAD work  OK  blob  w/crlf   r15-reduced/mutation-15-10761.sm  listed=3196bb89a5dec31e27946509d6eda68eaf893c7e7b726daaaae8ab691cac073f  working-tree=8cf25e2aa5b81249384f6ceef5c28a34dd8c5b46795602185c0855b160a47ba2
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-11005.sm  listed=055a3aed7ace2db051547b03927d264963cb855e06911f04d5170a49331682f9
+BAD work  OK  blob  w/crlf   r15-reduced/mutation-15-11196.sm  listed=667cac7a45b4b416f44383db5975962aab195d8adcf904dd3431332b296d26dc  working-tree=dc79d4d37271af09c224a3b025695f8bded2a560a7c63951108acb417515c3ce
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-11999.sm  listed=9c89aee6143c5006e30a85ea3477933a237c1300de4fe1dfda4e2796ce7f0031
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-1268.sm  listed=9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-12832.sm  listed=88ad7d075cab2a3c96fc6cd90fc66346208ca9bc5ce81dce2ed151adaec98c29
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-12957.sm  listed=a29e5476c3eb69fee5f97f36890d1cff74aee34209f391291d98f7f05433bb6f
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-13912.sm  listed=9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-14386.sm  listed=88ad7d075cab2a3c96fc6cd90fc66346208ca9bc5ce81dce2ed151adaec98c29
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-15323.sm  listed=355ad1efea804363474fbc80bf560c4d74a2b6d7a501f37d84db1b393a75388f
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-15331.sm  listed=b31af35581579d141042020ea7ec408dc31aad42bef641bc364654227b13c133
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-15511.sm  listed=5e5fec52a378ca5716e5377b669454344556ca24946dbbd8755c3b562157075e
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-16696.sm  listed=9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-17710.sm  listed=38ed9cd5beed6aa3f9d7c7dec082592b56964e201b43b16f16b3003e8e856972
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-18721.sm  listed=9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-1981.sm  listed=93815f9b258ff7ef61b1186f070716a759bc290b25d4ea599732c71cfa6bb608
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-20160.sm  listed=2708f64fafaf7a26e8ba1b03d685e36b8df4f9b5e758e0870ce143d0cdd2e31a
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-2101.sm  listed=9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-21279.sm  listed=055a3aed7ace2db051547b03927d264963cb855e06911f04d5170a49331682f9
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-22286.sm  listed=88ad7d075cab2a3c96fc6cd90fc66346208ca9bc5ce81dce2ed151adaec98c29
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-23437.sm  listed=055a3aed7ace2db051547b03927d264963cb855e06911f04d5170a49331682f9
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-24127.sm  listed=9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-24931.sm  listed=9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-253.sm  listed=02df927eebffef08f93bff798613241183cdfe7136b05491297555f27620e837
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-25532.sm  listed=f67579c9fa5c1006becce1ad5c289055e6aff16f78a633cc32f3458d466f942b
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-25571.sm  listed=9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-25786.sm  listed=b56aacd98102c6754beeb2ffe6a8da169599693f890c9b7519cc1f28da2cb076
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-26225.sm  listed=cbb2684aae86adb783e89f95f8c94fef367ae7a97db5917273d7ab84ea5d4a83
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-26549.sm  listed=69b7c4445106b9f12dc0d8899851b467235bfb4f93a9cd25e399b020fe857d06
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-26636.sm  listed=b0013aaa25269c6db2a822eaa886bf8ed85f3c953a8bea62bdac769db41fad9c
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-26729.sm  listed=8a343708dcf24d4f3a4a893f121954f4c5e733aaeb4133a50df6198f0c0672f6
+BAD work  OK  blob  w/crlf   r15-reduced/mutation-15-2693.sm  listed=99af0ad7f877f0920874c5b0d7b68f3f7325d61749ac6f3c9e9402a4a343392e  working-tree=13f7f7bf3e7e2e406df478cfc76c3232e1e4a73fa6658e59a9340ecad56eeedf
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-26963.sm  listed=88ad7d075cab2a3c96fc6cd90fc66346208ca9bc5ce81dce2ed151adaec98c29
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-27046.sm  listed=9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-27298.sm  listed=88ad7d075cab2a3c96fc6cd90fc66346208ca9bc5ce81dce2ed151adaec98c29
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-27522.sm  listed=2c63a9c0c4ff1dcf9589e45531c9e4aa22a4f9b8a547d63e3c02661b87a2cdcf
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-27731.sm  listed=5b1f9a740e86d536dc22c924ef75860b9a2e44560afc0a294c8bf8d60fae97c7
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-27971.sm  listed=3e422c0c3525063559165261bb3b4c624cd3624731915a7dbe3914fa77c23901
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-28363.sm  listed=9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-28520.sm  listed=7288099e3b4035ad375e39ecf1600a4ad846fb1e3f3e0c42932d40383215906c
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-28969.sm  listed=9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-29084.sm  listed=9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-29170.sm  listed=3e422c0c3525063559165261bb3b4c624cd3624731915a7dbe3914fa77c23901
+BAD work  OK  blob  w/crlf   r15-reduced/mutation-15-29448.sm  listed=8332fe9481cdeca86f45d97b6866acfd85cbab67e83523c238b21b779e2d1380  working-tree=b2f79d15d4594d5ea21bfdd35e28dbde90e939d773441214673aebf2815c75d7
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-29767.sm  listed=88ad7d075cab2a3c96fc6cd90fc66346208ca9bc5ce81dce2ed151adaec98c29
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-29820.sm  listed=cbb2684aae86adb783e89f95f8c94fef367ae7a97db5917273d7ab84ea5d4a83
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-30524.sm  listed=9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-3065.sm  listed=9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-32160.sm  listed=3e54220917f57627cac3e57903cba419970b91cf9264743629b7304565b1a7da
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-32279.sm  listed=a29e5476c3eb69fee5f97f36890d1cff74aee34209f391291d98f7f05433bb6f
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-33099.sm  listed=57ae621f00f9ed773024eb05fa96984a79c54bbc84b26863080748d40065a9be
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-33516.sm  listed=88ad7d075cab2a3c96fc6cd90fc66346208ca9bc5ce81dce2ed151adaec98c29
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-3373.sm  listed=9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-34588.sm  listed=ba5b47b6c3c637f60bab93ea2e384a309cb54672727dfa0b9de0fe11c2623413
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-34901.sm  listed=cd6529f3ac337e97e025e9c3ebd181a0b881a4be69092c879a84a20cf968177e
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-34912.sm  listed=a29e5476c3eb69fee5f97f36890d1cff74aee34209f391291d98f7f05433bb6f
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-35150.sm  listed=819fb89a39ea0ec560f8f38ceb5ef9b93e2fb08f44a50cf99542a9e2ec38eea0
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-35169.sm  listed=9a0b7aed2aa1572e3f298c13e6a219a9882f82be24b08f8524953252f98dda29
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-35457.sm  listed=9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-36797.sm  listed=e0e29dbe445a653f54242ccda386d24a0ce2b8343d6936b3feeec73db7a63c4c
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-37149.sm  listed=dde635eebc61b2520ddcf0b7ae3df2aade2d8e7b4f32bfc221e1627e6eb77940
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-37233.sm  listed=9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462
+BAD work  OK  blob  w/crlf   r15-reduced/mutation-15-37510.sm  listed=1e8c6877aa7f4ca1cb603084e8e1f3fcb5ad38c4582b5b0e9f9f2a1bf44d66ed  working-tree=7a70e5b0f41fecd46a73c1ebb1cb75c552822e69d0dfc6074215128cdc4139b8
+BAD work  OK  blob  w/crlf   r15-reduced/mutation-15-38067.sm  listed=fb75d0a846b4573416829c5db82830b107ddbac4229584e60b0cfd680a656647  working-tree=c9bc161a8bef5618b2b1eaea15122186d1364acf72194d41e2c9bb3da422f680
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-38467.sm  listed=88ad7d075cab2a3c96fc6cd90fc66346208ca9bc5ce81dce2ed151adaec98c29
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-38911.sm  listed=88ad7d075cab2a3c96fc6cd90fc66346208ca9bc5ce81dce2ed151adaec98c29
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-39435.sm  listed=804394fb20b6b81c859558dd2b44244e0d158dcaaed1c763db4280bdfc2aa510
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-40049.sm  listed=88ad7d075cab2a3c96fc6cd90fc66346208ca9bc5ce81dce2ed151adaec98c29
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-40194.sm  listed=9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-40347.sm  listed=9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-40597.sm  listed=88ad7d075cab2a3c96fc6cd90fc66346208ca9bc5ce81dce2ed151adaec98c29
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-40855.sm  listed=9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-42057.sm  listed=5b1f9a740e86d536dc22c924ef75860b9a2e44560afc0a294c8bf8d60fae97c7
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-42507.sm  listed=9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-4364.sm  listed=cbb2684aae86adb783e89f95f8c94fef367ae7a97db5917273d7ab84ea5d4a83
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-43640.sm  listed=503f66215741933673bf8404595e927f70ed157c05ee0553904810b14ea87ac1
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-45042.sm  listed=c83f5cb1741e437d301c4fcad1ba96584de0f669c613659bea5e19f0eec72f98
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-45236.sm  listed=644eac18dac8953e36707235cd24d1756519e3ff652e80f6aa1cb327dc89c244
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-45494.sm  listed=819fb89a39ea0ec560f8f38ceb5ef9b93e2fb08f44a50cf99542a9e2ec38eea0
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-46768.sm  listed=f4ebb8e12872b02c7eedad8f5bf50e36d75ba43f14f5e9982f6b3b5969b4f8ad
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-47085.sm  listed=9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-47693.sm  listed=366e071378b17db86a1d6450fb604ec816d5d5ef6e866a6dac2b4a8ebfb97458
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-47726.sm  listed=88ad7d075cab2a3c96fc6cd90fc66346208ca9bc5ce81dce2ed151adaec98c29
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-47954.sm  listed=383df58d40b567a693fa3f65ef3ced9248dc78fe476dcca162712aaafc35ed66
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-48253.sm  listed=9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-48781.sm  listed=9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-49077.sm  listed=6a1be1b06f94a7bf26c7cfc9cb40c1e19ba991f0b79230f8784d7ab90d22a352
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-49763.sm  listed=88ad7d075cab2a3c96fc6cd90fc66346208ca9bc5ce81dce2ed151adaec98c29
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-5065.sm  listed=88ad7d075cab2a3c96fc6cd90fc66346208ca9bc5ce81dce2ed151adaec98c29
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-5307.sm  listed=9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-574.sm  listed=55c3bae7bac7f38fdca922f46c4fc1c4c70c8f44296cfd1f29d71aa1f91239ba
+BAD work  OK  blob  w/crlf   r15-reduced/mutation-15-6070.sm  listed=4f64e2e21d1b295ec65557c5e0f3da577e81bf3ce9cd86939ef5a555dde3a0c0  working-tree=d09dae18b5f2b989ba86f452fa5e326f2513fc68a2f4688eb57addcce1b28bd2
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-6125.sm  listed=88ad7d075cab2a3c96fc6cd90fc66346208ca9bc5ce81dce2ed151adaec98c29
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-6489.sm  listed=2708f64fafaf7a26e8ba1b03d685e36b8df4f9b5e758e0870ce143d0cdd2e31a
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-7460.sm  listed=2708f64fafaf7a26e8ba1b03d685e36b8df4f9b5e758e0870ce143d0cdd2e31a
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-8325.sm  listed=7292f84aa00eb766163f8d5b0189645d75c105ec1048d488e8fd6a74ae2ff31b
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-8352.sm  listed=0179cf4b2ae19c7553ab1c92a7921f233066328296d5b3999bc5795ce81e3383
+BAD work  OK  blob  w/crlf   r15-reduced/mutation-15-9144.sm  listed=8ac766325e4ad82937a1df43c6ca0e93fb766b159a42eba853de0f6cac094361  working-tree=968b908e7e82af49596592a8a63ca7087fdf6ea8bc511c28acb7ada6c170b06b
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-9452.sm  listed=88ad7d075cab2a3c96fc6cd90fc66346208ca9bc5ce81dce2ed151adaec98c29
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-9682.sm  listed=5a7a2e4d6d57582db8b5aea52a48b864166faba21d6899620abac0ac385dc93f
+OK  work  OK  blob  w/none   r15-reduced/mutation-15-9720.sm  listed=78d3c784c6f808e3a2ea5206113fe055b26692d0ced1305f577810dd3b50ca01

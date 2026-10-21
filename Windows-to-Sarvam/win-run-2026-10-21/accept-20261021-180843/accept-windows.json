@@ -1,0 +1,262 @@
+{
+    "tool":  "tools/accept-windows.ps1",
+    "schema":  1,
+    "verdict":  "PASS",
+    "required_pass":  15,
+    "required_fail":  0,
+    "required_not_run":  0,
+    "environment":  {
+                        "environment":  "Windows",
+                        "wine":  false,
+                        "wine_version":  null,
+                        "windows_product":  "Windows 10 Pro",
+                        "windows_display_version":  "26H2",
+                        "windows_build":  "26300",
+                        "windows_ubr":  "9711",
+                        "os_version":  "Microsoft Windows NT 10.0.26300.0",
+                        "architecture":  "AMD64",
+                        "powershell":  "5.1.26100.9711",
+                        "powershell_edition":  "Desktop",
+                        "elevated":  false,
+                        "token_elevation_type":  3,
+                        "token_elevated":  0,
+                        "in_administrators_role":  false,
+                        "script_sha256":  "8c1f536a0eda9669e4d19737d425017dafe6d9d09fdadaacb7e6d65177d63b96",
+                        "repo_root":  "E:\\Github Projects\\Sutram",
+                        "git_commit":  "0251f8c544f695b6884035681b1958438403a156",
+                        "started":  "2026-10-21T18:08:43-04:00"
+                    },
+    "artefacts":  [
+                      {
+                          "role":  "setup",
+                          "path":  "E:\\Github Projects\\Sutram\\Sutram-Setup.exe",
+                          "sha256":  "4bf2fbabc6205f1a68fc9cc047dc734c2e50ab00056b814db54ba76f5526cc05",
+                          "bytes":  1515403
+                      },
+                      {
+                          "role":  "repo-compiler win\\sutram.exe",
+                          "path":  "E:\\Github Projects\\Sutram\\win\\sutram.exe",
+                          "sha256":  "84c48500acfc6428d33a8cf17c4da88f00d03529e8b92035f1402ca18f4821a0",
+                          "bytes":  401272
+                      },
+                      {
+                          "role":  "repo-compiler sutram.exe",
+                          "path":  "E:\\Github Projects\\Sutram\\sutram.exe",
+                          "sha256":  "84c48500acfc6428d33a8cf17c4da88f00d03529e8b92035f1402ca18f4821a0",
+                          "bytes":  401272
+                      },
+                      {
+                          "role":  "repo-ide sutram-ide-gui.exe",
+                          "path":  "E:\\Github Projects\\Sutram\\sutram-ide-gui.exe",
+                          "sha256":  "08fca64069ebfbfe0541cf7d51affffba04ac7b8901982588d8a07263e1f6575",
+                          "bytes":  140948
+                      },
+                      {
+                          "role":  "installed bin\\sutram.exe",
+                          "path":  "C:\\Users\\Dhruv\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+                          "sha256":  "84c48500acfc6428d33a8cf17c4da88f00d03529e8b92035f1402ca18f4821a0",
+                          "bytes":  401272
+                      },
+                      {
+                          "role":  "installed win\\sutram.exe",
+                          "path":  "C:\\Users\\Dhruv\\AppData\\Local\\Programs\\Sutram\\win\\sutram.exe",
+                          "sha256":  "84c48500acfc6428d33a8cf17c4da88f00d03529e8b92035f1402ca18f4821a0",
+                          "bytes":  401272
+                      },
+                      {
+                          "role":  "installed sutram-ide-gui.exe",
+                          "path":  "C:\\Users\\Dhruv\\AppData\\Local\\Programs\\Sutram\\sutram-ide-gui.exe",
+                          "sha256":  "08fca64069ebfbfe0541cf7d51affffba04ac7b8901982588d8a07263e1f6575",
+                          "bytes":  140948
+                      },
+                      {
+                          "role":  "installed Sutram-Uninstall.exe",
+                          "path":  "C:\\Users\\Dhruv\\AppData\\Local\\Programs\\Sutram\\Sutram-Uninstall.exe",
+                          "sha256":  "4bf2fbabc6205f1a68fc9cc047dc734c2e50ab00056b814db54ba76f5526cc05",
+                          "bytes":  1515403
+                      }
+                  ],
+    "checks":  [
+                   {
+                       "id":  "runner-not-elevated",
+                       "status":  "PASS",
+                       "required":  true,
+                       "environment":  "Windows",
+                       "command":  "GetTokenInformation(TokenElevation, TokenElevationType)",
+                       "output":  "TokenElevationType=3 (limited (UAC-filtered)) TokenElevation=0 AdministratorsRole=False",
+                       "detail":  "the acceptance process itself is not elevated",
+                       "time":  "2026-10-21T18:08:43"
+                   },
+                   {
+                       "id":  "setup-hash-file",
+                       "status":  "PASS",
+                       "required":  true,
+                       "environment":  "Windows",
+                       "command":  "Get-FileHash Sutram-Setup.exe vs Sutram-Setup.sha256",
+                       "output":  "4bf2fbabc6205f1a68fc9cc047dc734c2e50ab00056b814db54ba76f5526cc05",
+                       "detail":  "matches the committed hash file",
+                       "time":  "2026-10-21T18:08:43"
+                   },
+                   {
+                       "id":  "setup-self-test",
+                       "status":  "PASS",
+                       "required":  true,
+                       "environment":  "Windows",
+                       "command":  "\"E:\\Github Projects\\Sutram\\Sutram-Setup.exe\" --self-test",
+                       "output":  "",
+                       "detail":  "embedded SHA-256 self-test exit 0",
+                       "time":  "2026-10-21T18:08:44"
+                   },
+                   {
+                       "id":  "install-wizard",
+                       "status":  "PASS",
+                       "required":  true,
+                       "environment":  "Windows",
+                       "command":  "BM_CLICK Next / I accept / Next / Next / Install / Finish (launch unchecked) on the wizard this script started",
+                       "output":  "page: welcome\r\npage: license\r\nNext enabled before accepting: False\r\nNext enabled after accepting: True\r\npage: location\r\ninstall folder (default, unchanged): C:\\Users\\Dhruv\\AppData\\Local\\Programs\\Sutram\r\npage: components\r\nadd-to-PATH checked: 1\r\ndesktop shortcut checked: 0\r\npage: ready\r\noutcome: done page after 9 s\r\npage: done\r\ninstall.log copied from C:\\Users\\Dhruv\\AppData\\Local\\Temp\\STM8F00.tmp\r\n",
+                       "detail":  "outcome=done page; screenshots: wizard-welcome.png, wizard-license.png, wizard-location.png, wizard-components.png, wizard-ready.png, wizard-done.png",
+                       "time":  "2026-10-21T18:08:56"
+                   },
+                   {
+                       "id":  "install-no-elevation-prompt",
+                       "status":  "PASS",
+                       "required":  true,
+                       "environment":  "Windows",
+                       "command":  "Start-Process -FilePath \"E:\\Github Projects\\Sutram\\Sutram-Setup.exe\" (no RunAs verb)",
+                       "output":  "setup TokenElevationType=3 TokenElevation=0; consent.exe appeared during install: False",
+                       "detail":  "setup ran unelevated and no UAC consent prompt appeared",
+                       "time":  "2026-10-21T18:08:56"
+                   },
+                   {
+                       "id":  "install-footprint",
+                       "status":  "PASS",
+                       "required":  true,
+                       "environment":  "Windows",
+                       "command":  "Test-Path on the installed files, Start Menu shortcuts, HKCU keys, user PATH",
+                       "output":  "sutram-ide-gui.exe = True\nbin\\sutram.exe = True\nwin\\sutram.exe = True\nSutram-Uninstall.exe = True\npayload.manifest.sha256 = True\nexamples\\218_sanskrit_devanagari.sm = True\nlang\\sanskrit.lang = True\nStartMenu\\Sutram IDE.lnk = True\nStartMenu\\Sutram Terminal.lnk = True\nStartMenu\\Uninstall Sutram.lnk = True\nHKCU uninstall key = True\nHKCU Classes\\Sutram.Source = True\nuser PATH has bin = True",
+                       "detail":  "missing: ",
+                       "time":  "2026-10-21T18:08:57"
+                   },
+                   {
+                       "id":  "devanagari-cli",
+                       "status":  "PASS",
+                       "required":  true,
+                       "environment":  "Windows",
+                       "command":  "\"C:\\Users\\Dhruv\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe\" --lang sanskrit 218_sanskrit_devanagari.sm; run it",
+                       "output":  "compile exit=0\nभाषा-पुटः प्राप्तः: sanskrit\nसिद्धम्: 276 बाइट् सङ्कलिताः\n\nrun exit=0\nयोगः = 15\n",
+                       "detail":  "installed copy; expects the line योगः = 15",
+                       "time":  "2026-10-21T18:08:57"
+                   },
+                   {
+                       "id":  "ide-launches",
+                       "status":  "PASS",
+                       "required":  true,
+                       "environment":  "Windows",
+                       "command":  "Start-Process \"C:\\Users\\Dhruv\\AppData\\Local\\Programs\\Sutram\\sutram-ide-gui.exe\" -WorkingDirectory \"C:\\Users\\Dhruv\\AppData\\Local\\Programs\\Sutram\"",
+                       "output":  "pid=27668 title=Untitled - Sutram sampadak TokenElevation=0",
+                       "detail":  "installed copy; screenshot ide-start.png",
+                       "time":  "2026-10-21T18:08:58"
+                   },
+                   {
+                       "id":  "ide-menus-english",
+                       "status":  "PASS",
+                       "required":  true,
+                       "environment":  "Windows",
+                       "command":  "GetMenu / GetMenuItemCount / GetMenuStringW(MF_BYPOSITION)",
+                       "output":  "HMENU=527271 count=5\nFile: New\tCtrl+N / Open...\tCtrl+O / Save\tCtrl+S / Save As... / Exit\nEdit: Undo\tCtrl+Z / Cut\tCtrl+X / Copy\tCtrl+C / Paste\tCtrl+V / Select All\tCtrl+A / Find...\tCtrl+F / Find Next\tF3 / Indent (4 spaces)\tTab / Dedent\tShift+Tab\nShell: Run module\tF5 / Send (shell line)\tEnter / Clear shell\nLanguage: Auto (detect script) / Core (Latin keywords) / sanskrit  संस्कृतम् / bengali  বাংলা / gujarati  ગુજરાતી / hindi  हिन्दी / kannada  ಕನ್ನಡ / malayalam  മലയാളം / marathi  मराठी / odia  ଓଡ଼ିଆ / punjabi  ਪੰਜਾਬੀ / tamil  தமிழ் / telugu  తెలుగు / Type Latin, get the script\tCtrl+T\nHelp: Shortcut keys / About Sutram",
+                       "detail":  "expected top File Edit Shell Language Help; missing items: ",
+                       "time":  "2026-10-21T18:08:58"
+                   },
+                   {
+                       "id":  "ide-buttons-english",
+                       "status":  "PASS",
+                       "required":  true,
+                       "environment":  "Windows",
+                       "command":  "WM_GETTEXT on controls 101-106 and 208",
+                       "output":  "101=Run\n102=Open\n103=Save\n104=Load example\n105=Send\n106=Clear shell\n208=Find:",
+                       "detail":  "mismatched ids: ",
+                       "time":  "2026-10-21T18:08:58"
+                   },
+                   {
+                       "id":  "devanagari-ide",
+                       "status":  "PASS",
+                       "required":  true,
+                       "environment":  "Windows",
+                       "command":  "WM_SETTEXT editor = 218_sanskrit_devanagari.sm; WM_COMMAND Language\u003eAuto (2040); WM_COMMAND Run module (2010); WM_GETTEXT output",
+                       "output":  "योगः = 15\r\n\n[status] ???????? 1   ??????? 1   |   ????: ?????? (?????????)   |   ????????: 476   |   ????????? *",
+                       "detail":  "expects योगः = 15; screenshot ide-devanagari.png",
+                       "time":  "2026-10-21T18:08:58"
+                   },
+                   {
+                       "id":  "tab-indent",
+                       "status":  "PASS",
+                       "required":  true,
+                       "environment":  "Windows",
+                       "command":  "WM_KEYDOWN+WM_CHAR VK_TAB to the editor: once at the end of a line, once on a two-line selection",
+                       "output":  "caret: \"mukhya() {\\n    \"\nblock: \"mukhya() {\\n        likha(1)\\n        likha(2)\\n}\\n\"",
+                       "detail":  "four spaces, no tab character; a selection moves right by four",
+                       "time":  "2026-10-21T18:08:58"
+                   },
+                   {
+                       "id":  "shift-tab-dedent",
+                       "status":  "PASS",
+                       "required":  true,
+                       "environment":  "Windows",
+                       "command":  "Edit \u003e Dedent (WM_COMMAND 2039), the command Shift+Tab is bound to",
+                       "output":  "menu: \"likha(1)\"",
+                       "detail":  "menu path only",
+                       "time":  "2026-10-21T18:08:58"
+                   },
+                   {
+                       "id":  "shift-tab-keyboard",
+                       "status":  "NOT-RUN",
+                       "required":  false,
+                       "environment":  "Windows",
+                       "command":  "",
+                       "output":  "",
+                       "detail":  "a real Shift+Tab needs the keyboard state, i.e. SendInput into the foreground window; rerun with -Keyboard and do not touch the mouse/keyboard while it runs",
+                       "time":  "2026-10-21T18:08:58"
+                   },
+                   {
+                       "id":  "unsaved-guard",
+                       "status":  "PASS",
+                       "required":  true,
+                       "environment":  "Windows",
+                       "command":  "WM_SETTEXT editor; WM_COMMAND File\u003eNew (2004); read the box; BM_CLICK Cancel",
+                       "output":  "title=Untitled * - Sutram sampadak\nbox: The file has changed. Save it?\neditor kept after Cancel: True",
+                       "detail":  "screenshot ide-unsaved-guard.png",
+                       "time":  "2026-10-21T18:08:58"
+                   },
+                   {
+                       "id":  "uninstall-removes-install",
+                       "status":  "PASS",
+                       "required":  true,
+                       "environment":  "Windows",
+                       "command":  "\"C:\\Users\\Dhruv\\AppData\\Local\\Programs\\Sutram\\Sutram-Uninstall.exe\" --uninstall   (the Start Menu \"Uninstall Sutram\" target)",
+                       "output":  "sutram-ide-gui.exe removed = True\nbin\\sutram.exe removed = True\nwin\\sutram.exe removed = True\npayload.manifest.sha256 removed = True\nStart Menu folder removed = True\nHKCU uninstall key removed = True\nHKCU Classes\\Sutram.Source removed = True\nuser PATH entry removed = True\n[uninstall.log]\nSutram Uninstall Log\r\n2026-10-21 18:09:02 Uninstall completed; user-created and user-modified files were preserved.\r\n",
+                       "detail":  "failure box: ; not removed: ",
+                       "time":  "2026-10-21T18:09:05"
+                   },
+                   {
+                       "id":  "uninstall-folder-gone",
+                       "status":  "PASS",
+                       "required":  false,
+                       "environment":  "Windows",
+                       "command":  "Test-Path \"C:\\Users\\Dhruv\\AppData\\Local\\Programs\\Sutram\"",
+                       "output":  "exists=False",
+                       "detail":  "the install folder itself (it is kept when it holds user files)",
+                       "time":  "2026-10-21T18:09:05"
+                   },
+                   {
+                       "id":  "temp-staging-cleaned",
+                       "status":  "FAIL",
+                       "required":  false,
+                       "environment":  "Windows",
+                       "command":  "Get-ChildItem $env:TEMP STM*.tmp (new during this run)",
+                       "output":  "STM8F00.tmp\nSTMBC1B.tmp",
+                       "detail":  "known defect R4-03 s3; advisory only",
+                       "time":  "2026-10-21T18:09:05"
+                   }
+               ],
+    "finished":  "2026-10-21T18:09:05-04:00"
+}
