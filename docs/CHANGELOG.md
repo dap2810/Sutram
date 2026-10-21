@@ -1,3 +1,47 @@
+## v254 - F8 EXPLAINED, and part of it was MY ERROR in the test package
+
+### What the warning actually tests - ChatGPT found it, and it is exact
+
+**A language pack has TWO HALVES:**
+
+| Half | File | Where it comes from |
+|---|---|---|
+| **the messages** (`अज्ञात नाम`) | `lang/<pack>.sandesh` | **built into the compiler** since R11 - **always present** |
+| **the keywords** (`लिखो` -> `likha`) | `lang/<pack>.lang` | **from disk only** |
+
+**`try_load_lang` first switches the messages to the pack - which always succeeds - and THEN looks for
+`<pack>.lang` on disk. When that file is not on any of its paths, it warns.**
+
+**So the warning was CORRECT: the keyword file really was missing. And the messages really did load.**
+
+**That is exactly what the owner saw:** *"language pack not found"* in Hindi, followed by Hindi messages. **Both
+halves of that are true** - the messages were there, the keyword file was not.
+
+### And the reason it was missing is that MY TEST PACKAGE DID NOT SHIP IT
+
+**The repository ships 10 `.lang` files in `lang/`. My package build copied `lang/*.sandesh` - and NOT
+`lang/*.lang`.**
+
+**So the keyword aliases were absent from the package I gave the owner, the compiler correctly reported that
+it could not find them, and I read the warning as a compiler defect.**
+
+**That is my error, and it is the ninth this stretch.** I built a package by copying a glob I did not check,
+**and then attributed the consequence to the compiler.**
+
+### What is still a real defect
+
+**The message is misleading, and that part stands.** It says *"language pack not found"* when **the messages
+loaded fine** - a user reads that as *"your language is not supported"* and stops. **It should say what is
+actually missing: the keyword aliases.**
+
+**And it is worth a check:** if the keyword file is absent, **the user gets messages in their language but
+cannot type keywords in it** - which is a real functional difference the message should name.
+
+### The fixes
+
+1. **Mine:** rebuild the package with `lang/*.lang` included. **Done in the next package.**
+2. **Claude's (R22-02):** the wording. **The compiler now says what is actually missing.**
+
 ## v253 - F8 split between the two partners
 
 **Claude fixes it; ChatGPT finds what the warning actually checks.** Two readings of one defect - **the shape
