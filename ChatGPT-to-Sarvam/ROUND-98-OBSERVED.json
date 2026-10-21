@@ -1,0 +1,100 @@
+{
+  "schema": 1,
+  "round": 98,
+  "date": "2026-10-21",
+  "assignment": "Sarvam-to-ChatGPT/ROUND-98.md",
+  "base_main_at_start": "d73f86f8703f552a5e97c22de0139092e153943e",
+  "project_changelog": "v285",
+  "compiler_version": "v240 (Claude R30 native readback reported, not rebuilt R98)",
+  "status": "DESIGN COMPLETE / SOURCE-REVIEW PASS; NO NATIVE FFI OR BENCHMARK EXECUTION",
+  "original_source_git_blobs": {
+    "compiler": "9e4df8f8f865a05b44812ec53c29f2dd503689e3",
+    "linker": "5d5616fb559d05ce8e7390d18763205516bbc292",
+    "round97_sidecar_spec": "42716357e2ea2dc037b450c026ce21005f1a4c12",
+    "round97_sidecar_model_output": "431ccc4ec3ab32920b54d319b7f082c91c577182",
+    "round97_bridge_spec": "313b2c25798ec3a0c78e30561c95a611d3b6a8bb",
+    "round97_benchmark_threshold": "3a2cebbefcd70635aedec9cc6b8c612ddfa9f54e",
+    "r30_handoff": "2ca1c4d4ebecd2a09b247e5b65253b2e5911cc02"
+  },
+  "source_checks": [
+    {
+      "id": "existing normal r7 arity logic",
+      "status": "PASS",
+      "kind": "static"
+    },
+    {
+      "id": "opt-in SUTRAMO1 writer",
+      "status": "PASS",
+      "kind": "static"
+    },
+    {
+      "id": "--ffi-sidecar and native ffi_defs not present",
+      "status": "PASS",
+      "kind": "static absence"
+    },
+    {
+      "id": "linker only parses SUTRAMO1",
+      "status": "PASS",
+      "kind": "static"
+    },
+    {
+      "id": "Round97 rule has source-located E_ARITY and no .smo on wrong 1/3 args",
+      "status": "PASS",
+      "kind": "static"
+    },
+    {
+      "id": "Round97 model output includes 26 checks and two modeled arity rejections",
+      "status": "PASS",
+      "kind": "prior host evidence readback"
+    }
+  ],
+  "source_review_pass": 6,
+  "source_review_fail": 0,
+  "ws1": {
+    "status": "PASS (design confirmation, NOT native)",
+    "doc": "ChatGPT-to-Sarvam/ROUND-98-WS1-ARITY-VERDICT.md",
+    "exact_existing_rule": "If the sidecar says two arguments but the source calls s_add(17), raise source-located E_ARITY, exit nonzero, no .smo written. s_add(17,25,1) must fail identically.",
+    "model_status": "PREVIOUS R97 PYTHON PASS 26/26, not rerun R98",
+    "native_wrong_arity_compiler_status": "NOT_IMPLEMENTED / NOT_RUN",
+    "critical_nonclaim": "The source arity checker applies to defined Sutram functions; it does not yet ingest proposed foreign .sffi files."
+  },
+  "ws2": {
+    "status": "PASS (bounded reader scope, source design)",
+    "doc": "ChatGPT-to-Sarvam/ROUND-98-WS2-MINIMAL-ELF-READER.md",
+    "minimum_sections": "ELF64 header, bounded section headers, exactly one SHT_PROGBITS SHF_ALLOC|SHF_EXECINSTR CODE, one SHT_SYMTAB and linked SHT_STRTAB",
+    "must_reject": "any nonempty SHT_REL/RELA, unresolved symbols, extra nonempty SHF_ALLOC sections, unsupported ABI, multiple conflicting exports, out-of-range offsets",
+    "unneeded": "ELF program headers, dynamic loader, symbol visibility resolution beyond one global STT_FUNC, .shstrtab textual scanning, PLT/GOT, TLS, archives, C++/unwind/debug metadata parsing, ELF relocation application",
+    "future_only": "Stage 2 may support SHT_RELA R_X86_64_PLT32 (type 4) with addend -4 and opcode-validated E8 rel32; needs explicit validation",
+    "prior_measured_host": "R97 gcc positive ET_REL, 5-byte executable text, zero relocations; negative undefined missing_helper PLT32 -4",
+    "native_nasm_bridge": "NOT_IMPLEMENTED / NOT_RUN"
+  },
+  "ws3": {
+    "status": "PASS (future Gate0 checklist; timing NOT_RUN)",
+    "doc": "ChatGPT-to-Sarvam/ROUND-98-WS3-FIVE-MINUTE-GATE0.md",
+    "five_checks": [
+      "Pin commit, binaries, data hashes, compiler versions/options and environment",
+      "Confirm same input, algorithm, workload and error/overflow/safety policy",
+      "Run all three once, compare exact stdout hashes, exits and diagnostics",
+      "Verify full tests/corpus/fuzz/native OS receipts tied to exact SHA/flags",
+      "Record Gate0=PASS or INVALID/NOT_READY before ≥30 runs and 2-host statistics"
+    ],
+    "time_boundary": "Five-minute preflight requires existing complete gate receipts; never substitute the checklist for a full regression run",
+    "benchmark_result": "NOT_RUN; no new speed/size/memory/compile-time superiority claim"
+  },
+  "existing_r30_results_previous_reports_only": {
+    "compiler": "v240",
+    "module_state": "module-level vitti shared across --separate objects",
+    "reported_gate": "25 PASS, 0 FAIL, 1 Windows NOT_RUN",
+    "reported_suite": "218 PASS",
+    "reported_crash": "227 cases + manifest, 0 failures",
+    "not_reexecuted_in_R98": true
+  },
+  "modified_repo_paths_kind": "new files under ChatGPT-to-Sarvam only; no native compiler/linker/src, tests/goldens, installers, CI, packs or PR merges",
+  "not_run": [
+    "Actual native Sutram foreign .sffi wrong arity compilation",
+    "Actual NASM ELF reader or foreign linker",
+    "Full Sutram suite/gates/fuzz/crash corpus this Round 98",
+    "Native Windows owner acceptance this round",
+    "Seven-workload C/Zig/Sutram benchmark suite (deferred)"
+  ]
+}
