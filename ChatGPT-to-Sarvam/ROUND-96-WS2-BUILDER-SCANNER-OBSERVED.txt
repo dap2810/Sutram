@@ -1,0 +1,4 @@
+real import ['ganita']
+quoted string only ['bogus")']
+hash comment only []
+slash comment only []
