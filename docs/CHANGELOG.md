@@ -1,3 +1,50 @@
+## v247 - cross-verification: THREE independent readings agree, and the fuzzer claim holds
+
+### The translations: three readings, zero violations
+
+**Claude reproduced ChatGPT's structural pack check, writing its own checker from the pack files alone and
+sharing NO code with either `tools/sandesh.py` or ChatGPT's `r83_pack_structure.py`.**
+
+| | ChatGPT (R83) | Claude (R21) | The project's own gate |
+|---|---|---|---|
+| rows | 1,408 | 1,408 | 1,408 |
+| hard violations | **0** | **0** | **OK** |
+
+**And Claude looked for a violation in nine ways and found none** - *"and then made sure the checker would
+have reported one had it been there."* **That last clause is the difference between a verification and a
+re-run.**
+
+**Three independent readings now say the eleven packs are structurally sound.** For the eight DRAFT packs,
+**which will never have a native speaker read them, that is the strongest statement the project can make.**
+
+### And a discrepancy that turned out to be a checker difference
+
+**ChatGPT flagged 41 review candidates; Claude found 5.** The gap is **36 "extra `{kw:...}` placeholder"
+flags** in six draft packs - and Claude's checker reports **0**, with an explanation.
+
+**So the two checkers disagree about one rule, not about the packs.** **The 5 they AGREE on are the
+byte-identical-to-Sanskrit short labels** - hindi 2, marathi 3 - **which is exactly the class that turned out
+to be fine when the Hindi pair was read.** **The same finding, arrived at twice.**
+
+**That is worth recording as a limit:** a structural check is only as good as its rule set, **and two careful
+checkers disagreed on one rule.**
+
+### The fuzzer claim, verified against the raw data
+
+**ChatGPT read Claude's committed evidence and independently parsed the numbers:**
+
+| Evidence file | Claimed | Printed values | Failures |
+|---|---|---|---|
+| `evidence-r15/valid/run-seed15-20000.txt` | 20,000 | 387,913 | 0 |
+| `evidence-r17/fuzz-valid-seed15-20000-final.txt` | 20,000 | **388,616** | **0** |
+| `evidence-r18/fuzz-valid-seed15-20000.txt` | 20,000 | **388,616** | **0** |
+
+> *"The Round-17 and Round-18 claim of 20,000 / 20,000 with 388,616 reported print values matches the
+> committed summary headers exactly."*
+
+**And it labelled its own limit: "Sutram compiler execution: NOT_RUN, as directed."** **The strongest
+correctness claim the project has has now been read by someone who did not produce it.**
+
 ## v246 - the modes gate now RUNS, and it caught a real defect. Plus a new crash-corpus gate.
 
 ### The gate I asked for works, and it immediately found something
