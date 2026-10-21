@@ -1,3 +1,47 @@
+## v262 - THE THREE CAPABILITIES ARE MERGED AND WORKING. Verified by me on main.
+
+**Compiler v234. I ran all three on main rather than trusting the branch.**
+
+### The comparator sort - the proof I asked for
+
+```
+sutram examples/246_r23_comparator_sort.sm -> run:
+  1 2 3 4 5 7 8 9        ascending
+  9 8 7 5 4 3 2 1        descending
+  2 4 8 1 3 5 7 9        evens first
+  2 4 8 5 3 1 7 9        descending, MIDDLE FOUR ONLY - a slice
+  7                      a function value called through
+```
+
+**One insertion sort, four orderings, the comparator passed in.** **And the last one sorts only elements 2-5
+of the array - through a slice.**
+
+### Methods and slices
+
+| Example | Output |
+|---|---|
+| `247_r23_methods.sm` | **`7 4`** |
+| `248_r23_slices.sm` | **`55 12`** |
+
+**So three paradigms moved at once:** function values (paradigm 2), methods (4), and slices (5).
+
+**The language could not pass behaviour as a value this morning.**
+
+### And a tooling limit I found the hard way
+
+**Two of my merge attempts did not land, and I only caught it because I verified the result instead of
+trusting the call.** The version stayed at v233 and none of R23's files were present.
+
+**The cause: my large pushes fail silently.** A batch of 60+ files returns no error and writes nothing. **A
+batch of six works, and verifies.**
+
+**So from here I push in small batches and check the result.** **That is the tenth time this stretch that
+verifying rather than assuming was the thing that worked** - and the first time the failure was in the
+mechanism doing the writing rather than in my reasoning about it.
+
+**`tools/fuzz_r23.py` is in the tree too** - a fuzzer for the capabilities, which answers WS2 of ROUND-24
+before it was asked.
+
 ## v261 - ROUND-24 and ROUND-92 issued
 
 **The honest note first: I read R23 and R91 and recorded them, but did not issue the follow-up rounds until
