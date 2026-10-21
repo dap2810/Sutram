@@ -1,0 +1,18 @@
+# FILES-R31: every file this delivery changes on main (base d73f86f8 -> code commit 20bbdcfa), with its git blob.
+# A merge is complete when `git rev-parse main:<path>` equals each blob below.
+A  0349b46a662cb10e46d83c8412eb1d1b81c7d123  Claude-to-Sarvam/evidence-r31/compiler-version.txt
+A  6ec6edf7ea91ba27e1166b023e65b8bfeee96e52  Claude-to-Sarvam/evidence-r31/crash-corpus.txt
+A  aade336f18b1a1ae2e5c199e4264e46fae97372d  Claude-to-Sarvam/evidence-r31/fuzz_r23-robust-seed31-5000.txt
+A  5debebc25aff44c49e56b8c833e7caa8380fa3bf  Claude-to-Sarvam/evidence-r31/fuzz_r23-seed31-1000.txt
+A  82df9458ec70282425c45ad5f80e4d21b6a4c989  Claude-to-Sarvam/evidence-r31/fuzz_robust-seed31-5000.txt
+A  3f8bf83053f584def051117e8399c56ac7b86608  Claude-to-Sarvam/evidence-r31/fuzz_valid-capabilities-seed31-500.txt
+A  a642647a4c498b3fbb556810f54e306e11c222bf  Claude-to-Sarvam/evidence-r31/gates.txt
+A  6c27263f31660de9d8a1e9b3671a1c064cf695e0  Claude-to-Sarvam/evidence-r31/suite.txt
+A  11f12bf0b80916334a2baed972228218bae96508  Claude-to-Sarvam/evidence-r31/test_incremental.txt
+A  c404ced8b82451629c664f4b10b35c92e443692a  Claude-to-Sarvam/evidence-r31/ws2-ordinary-path-cost.txt
+M  463e19b99554b769a8e31278995ca4248f99b41e  Sutram-Setup.exe
+M  968f8be7345c860536b16bc304a117e26a0655e4  Sutram-Setup.sha256
+M  b6fb87006bd44cf6c1abf8d2b7f26ec56df809e2  docs/OBJECT-FORMAT.md
+A  f9a7d7605c3bac2fdc98639b30cac848e5b10dbd  tests/r31/test_incremental.py
+M  f0f415c12971f21374bbef7185d1c7e808708425  tools/gates.sh
+M  074203032044e3027a615a84721cc7cc7f79cb0f  tools/sutram_build.py

@@ -4,6 +4,19 @@
 
 ---
 
+## Index — ROUND-31 delivery (2026-10-21) — incremental rebuilds, pushed to `main`
+
+**Code commit `20bbdcfa` on main** (the docs commit is on top of it). **Compiler v240, unchanged.**
+**WS2: the module `vitti` costs the ordinary path nothing that reaches a program — 559 programs, v239 vs v240,
+0 differ.** Corpus 0 failed, suite 218, gates 26 / 0 / 1.
+
+| File | What |
+|---|---|
+| `R31-00-HANDBACK.md` | the first lines; WS1 in one sentence and the FFI question; WS2; every check; what I did not do |
+| `R31-01-INCREMENTAL.md` | `--cache`: the key, why a cached build is a clean build, the proof, the limits |
+| `FILES-R31.txt` | every changed file with its git blob |
+| `evidence-r31/` | gates, WS2's cost, the test, suite, corpus, fuzzers |
+
 ## Index — ROUND-30 delivery (2026-10-21) — module `vitti` in objects, pushed to `main`
 
 **Code commit `d0527487` on main** (v283 merge, installer and docs on top). **Compiler v240.**
