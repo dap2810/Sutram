@@ -1,3 +1,32 @@
+## v287 - the doc-count gate, and the design flaw I hit writing it
+
+**I said a third manual correction would be evidence that the method is the problem. So I built the fix:
+`tools/doc_counts_gate.py`.**
+
+**It parses the PASS/FAIL/NOT-RUN totals, counts the suite's PASS, and checks the six documents that quote
+those numbers.** **It reports a NOTE when a document is merely behind - a document may legitimately lag a
+commit - and FAILS only on a claim that is IMPOSSIBLE, like a PASS count higher than the gate total.**
+
+### And I hit a design flaw while writing it
+
+**My first version ran `gates.sh` from inside itself.** **Added to `gates.sh`, it would run `gates.sh`, which
+would run it - recursion.** **A check that cannot live beside the other checks is a check nobody will run.**
+
+**So it now takes a `--gates <transcript>` argument:**
+
+```
+sh tools/gates.sh > /tmp/gates.txt
+python3 tools/doc_counts_gate.py --gates /tmp/gates.txt
+```
+
+**A worse interface and a better tool.** **The version gate solved the same shape problem differently - it
+reads the compiler's source and the CHANGELOG, neither of which runs gates - which is why it could go straight
+into `gates.sh`.**
+
+**And I hit a second flaw writing this very message: an `await` outside a function, which failed the whole
+call.** **The tool is pushed; the changelog entry is what failed.** **That is the fifteenth error of mine, and
+the smallest - but it cost a round trip, and it was in my own script rather than in the project.**
+
 ## v286 - THE FFI IS READY. All four preconditions are met, and Claude said it fits.
 
 ### R31: incremental rebuilds, and the reason is the right one
