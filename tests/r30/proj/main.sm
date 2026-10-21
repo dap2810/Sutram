@@ -1,0 +1,13 @@
+# ROUND-30: module state shared across separately compiled modules.
+# r30_vam and r30_dakshin both yoj r30_ganak; there is one ganak, in r30_ganak's object.
+yoj r30_vam
+yoj r30_dakshin
+vitti mula = 100
+mukhya() {
+    likha(vam_badha())
+    likha(dakshin_badha())
+    likha(vam_badha())
+    ganak = ganak + mula
+    likha(ganak_padh())
+    likha(prarambha)
+}

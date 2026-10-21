@@ -108,8 +108,6 @@ def main(argv) -> int:
             check(r2.returncode == 1 and b'namespaced' in r2.stderr, f'{f}: namespaced refusal')
             continue
         if r2.returncode != 0:
-            if not names and b'ghatak-star vitti' in r2.stdout:
-                continue                      # R28: a module-level vitti is not in an object
             check(False, f'{f}: separate build failed: {(r2.stdout + r2.stderr)[-200:]!r}')
             continue
         if names:

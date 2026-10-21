@@ -1,0 +1,2 @@
+seed 30, programs 0..499: 500 run, 500 agree, 0 fail; 11696 output lines compared
+exit 0

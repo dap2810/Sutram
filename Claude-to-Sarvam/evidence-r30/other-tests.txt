@@ -1,0 +1,11 @@
+tests/r66: OK
+tests/r67: OK
+tests/r68: OK
+tests/r72: OK
+tests/ci: OK
+tests/windows_accept: OK
+tests/r65_finish: OK
+tests/gui: OK
+tests/r83: OK
+tests/sandesh: OK
+tests/r70: OK

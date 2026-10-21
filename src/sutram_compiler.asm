@@ -233,7 +233,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v239) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v240) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -6828,12 +6828,19 @@ parse_function:
 .pf_top_global:
     ; Only scalar vitti is permitted at module level in R56. AST_DECL is
     ; parsed once; runtime initializers are emitted before mukhya's body.
+    cmp qword [rel r29_separate_mode], 0  ; R30: where this vitti starts
+    je .r30_pg_plain
+    call r29_note_decl
+.r30_pg_plain:
     call parse_stmt
     cmp qword [rax], AST_DECL
     jne parse_error
     cmp qword [rax+24], 0
     jne parse_error
     call r56_register_global
+    cmp qword [rel r29_separate_mode], 0  ; R30: a vitti a yoj brought in is
+    je .pf_top_loop                       ; its own module's storage
+    call r30_mark_global_extern
     jmp .pf_top_loop
 .pf_top_const:
     ; Top-level sutra is a compile-time constant available to main and
@@ -22394,6 +22401,8 @@ r56_emit_global_store:
 r56_patch_global_storage:
     cmp qword [rel r56_global_count],0
     je .r56_pg_done
+    cmp qword [rel r28_object_mode],0   ; R30: an object places its own vitti
+    jne r30_object_globals
     push rbx
     push r12
     push r13

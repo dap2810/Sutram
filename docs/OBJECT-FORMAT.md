@@ -75,13 +75,26 @@ refused with the ordinary compile's own diagnostic.
 compiles every module); a module that calls back into the root sees no signature for it (the call is linked,
 but its return type is assumed integer, as in `--object`).
 
+## A module-level `vitti` in an object (ROUND-30)
+
+**Each object holds the 8 bytes of every `vitti` declared in it,** after its code (where the one-pass compile
+puts them), and exports each one as the symbol **`vitti:<name>`**, a name no prakriya can have. **No new kind of
+hole is needed:** an access is `mov rax, [rip + disp32]` (or the store), whose displacement is the last four
+bytes of the instruction, so it is filled with `target − (offset + 4)` like a call.
+
+- **In `--separate`, a `vitti` that a `yoj` brought in is not held in the importing object.** Every access to it
+  is a relocation to `vitti:<name>`, so the program has **one copy**, in its own module's object.
+- **The program's root initializes every `vitti`,** its modules' too, at the start of `mukhya`, in source order,
+  exactly as the one-pass compile does (the root sees every module's declarations).
+- **So a library object compiled with plain `--object`** (no `mukhya`, no root) **refuses a `vitti` with an
+  initializer**: nothing would run it. The diagnostic is `vastu-patre ghatak-star vitti asamarthita`. A `vitti`
+  with no initializer is held (it starts at zero, as always).
+
 ## What version 1 does not do
 
-- **No module-level `vitti`** in an object: its storage is placed after the code by the compiler, and that
-  placement would need a second kind of relocation. `--object` refuses it with a diagnostic.
 - **No `--lang` flag** with `--object` (`SUTRAM_LANG` works).
 - **Linux only.** The Windows executable has its runtime at the start of its image, so linking it needs more.
 - **With `--object`, every prakriya is exported** (including the library modules a `yoj` pulled in), so two
   objects that both `yoj` the same module define its prakriyas twice. **`--separate` (ROUND-29) is the fix:**
   a `yoj`'d module's prakriyas are not in the object that `yoj`s it.
-- **No C FFI, no data relocations, no archives, no package manager.**
+- **No C FFI, no archives, no package manager.** (No data relocation kind is needed for `vitti`: see above.)

@@ -3,8 +3,8 @@
 
   1. IDENTITY: every program in examples/ that compiles directly is also compiled with
      `--object` and linked alone by sutram-link; the two executables must be
-     byte-identical. (A module-level vitti is refused in --object mode, so those
-     programs are counted, not compared.)
+     byte-identical. (R30: a module-level vitti is now held in the object, so those
+     programs are compared too.)
   2. TWO MODULES: a program whose prakriyas live in two separately compiled
      objects links into one binary that prints the right values, in either
      argument order, including a call from the library back into the main object.
@@ -105,10 +105,19 @@ def main(argv) -> int:
         r = subprocess.run([link], capture_output=True, timeout=60)
         check(r.returncode == 2 and b'Prayog' in r.stdout, 'usage')
         print('PASS  %d linker errors and the usage line' % (len(cases) + 1))
-        # a module-level vitti is refused in --object mode
+        # R30: a module-level vitti is held in the object, so a program with one is the
+        # direct compile's bytes; only a library object (no mukhya) refuses an initializer,
+        # because no mukhya of its own would run it.
         (t / 'g.sm').write_text('vitti G = 5\nmukhya() {\n    likha(G)\n}\n')
         r = subprocess.run([comp, '--object', str(t / 'g.sm'), str(t / 'g.smo')], capture_output=True, timeout=60)
-        check(r.returncode == 1 and b'vastu-patre ghatak-star vitti asamarthita' in r.stdout, 'a module-level vitti in --object mode')
+        d = subprocess.run([comp, str(t / 'g.sm'), str(t / 'gd.bin')], capture_output=True, timeout=60)
+        l = subprocess.run([link, str(t / 'gl.bin'), str(t / 'g.smo')], capture_output=True, timeout=60)
+        check(r.returncode == 0 and d.returncode == 0 and l.returncode == 0
+              and (t / 'gl.bin').read_bytes() == (t / 'gd.bin').read_bytes(), 'a module-level vitti in --object mode')
+        (t / 'gl.sm').write_text('vitti G = 5\nprakriya g() {\n    prati G\n}\n')
+        r = subprocess.run([comp, '--object', str(t / 'gl.sm'), str(t / 'gl.smo')], capture_output=True, timeout=60)
+        check(r.returncode == 1 and b'vastu-patre ghatak-star vitti asamarthita' in r.stdout,
+              'an initialized vitti in a library object (no mukhya) is refused')
     print('r28 link: %d checks, %d failed' % (checks, fails))
     return 1 if fails else 0
 

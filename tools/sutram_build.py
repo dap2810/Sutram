@@ -23,7 +23,7 @@ because an inlined module's text is compiled as if it were in the root file:
 Version 1 refuses, plainly (exit 1):
   * a namespaced import (`yoj m@alias`), which rewrites the module's names;
   * a module that cannot be found.
-The compiler refuses a module-level `vitti` in an object (R28).
+A module's `vitti` is held once, in its own object (R30).
 Exit status: 0 linked, 1 a refusal or a compile/link error, 2 usage.
 """
 import os
