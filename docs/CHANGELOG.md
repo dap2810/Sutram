@@ -1,3 +1,45 @@
+## v273 - THE LINKER IS BUILT. Our own, in NASM. And the guard proves nothing regressed.
+
+**Compiler v238. Gates 23 PASS / 0 FAIL / 1 NOT-RUN - up from 22.**
+
+### `sutram-link`
+
+**`linker/sutram_link.asm`, about 500 lines, written the way the compiler is written:** Linux x86-64, raw
+system calls, **no libc and no other language.** It builds with the same `nasm` + `ld` step as the compiler,
+and it is committed at **100755**.
+
+```
+sutram-link out.bin a.smo [b.smo ...]
+```
+
+**It reads each object and checks the magic; requires exactly one object to define `mukhya` and puts it first;
+lays the code end to end; collects every symbol; fills every hole; and writes the executable.** **A truncated
+file is a bad object. A name defined twice is an error. A name nobody defines is an error.**
+
+### The guard, and this is the part that matters most
+
+**The linker is the riskiest change this project has made - Claude refused it once for exactly that reason.**
+**So the guard was absolute: the existing path must not change.** **It was measured:**
+
+| Check | Result |
+|---|---|
+| **543 programs, compiled the ordinary way, v237 vs v238** | **466 byte-identical, 77 refused with the identical diagnostic, 0 differ** |
+| **Wine, every example, `win/sutram.exe` old vs new** | **140 of 141 identical** |
+
+**Zero differences across 543 programs.** **The new capability cost nothing that already worked.**
+
+**And the guard EARNED ITSELF:** *"The guard caught a real shift, and it is fixed. A new pack message moved the
+PE import template."* **A regression the suite would not have seen, caught by comparing byte-for-byte.** **That
+is what a guard is for, and this one found something on its first run.**
+
+### And the linker's own net
+
+**`tests/r28/test_link.py`: 186 real programs, byte-identical through the new path.** **The fuzzers do not
+generate objects or link them - and Claude says so rather than implying coverage it does not have.**
+
+### Also delivered
+**`ROUND-95-WS1-SMO1-BYTE-SPEC.md`** - ChatGPT's byte-level object spec - **and `ROUND-95-WS3-HANDLER-REVIEW.md`.**
+
 ## v272 - A NEW FUNDAMENTAL: be faster than C and Zig, in all aspects
 
 **The owner has set a performance fundamental.** And it is measurable, which is what makes it a fundamental
