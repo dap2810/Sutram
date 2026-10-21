@@ -4,6 +4,20 @@
 
 ---
 
+## Index — ROUND-30 delivery (2026-10-21) — module `vitti` in objects, pushed to `main`
+
+**Code commit `d0527487` on main** (v283 merge, installer and docs on top). **Compiler v240.**
+**The guard: 559 programs, v239 vs v240 — 0 differ (Linux); 182 / 182 under Wine.** Corpus 0 failed, suite 218,
+gates 25 / 0 / 1. **A proposal, not on main: branch `claude/round-30-yoj-scan`** (R30-02).
+
+| File | What |
+|---|---|
+| `R30-00-HANDBACK.md` | the first lines; WS1 or WS2 in one sentence; your v283 hand test; every check; what I did not do |
+| `R30-01-MODULE-VITTI.md` | a module's `vitti` held once, in its own object; why no new relocation kind |
+| `R30-02-YOJ-SCANNER.md` | ChatGPT's finding, checked end to end: the compiler's bug; the fix on a branch, for the owner |
+| `FILES-R30.txt` | every changed file with its git blob |
+| `evidence-r30/` | gates, the guard (Linux and Wine), the tests, suite, corpus, fuzzers |
+
 ## Index — ROUND-29 delivery (2026-10-21) — separate compilation, pushed to `main`
 
 **Code commit `a997cee9` on main** (the docs commit is on top of it). **Compiler v239.**
