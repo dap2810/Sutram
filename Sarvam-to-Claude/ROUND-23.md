@@ -81,3 +81,25 @@ the only thing the manifest is for.
 **And a note on why this matters now:** the capability round is the largest change the compiler has had. **If
 the regression net is reporting 4 failures before the work starts, a new failure will be invisible in the
 noise.** **A green baseline is a precondition for a big change, not a nicety.**
+
+### WS4b - THE CORPUS RE-PIN WAS INCOMPLETE *(I re-checked after merging R22)*
+
+**R22 changed the four files - `mutation-15-27971`, `-37233`, `-42057`, `-574` - and I merged them. The corpus
+still reports:**
+
+```
+crash corpus: 227 cases + manifest, 4 failed
+```
+
+**And the reason is visible in R22's own file list: the four `.sm` files are in it, and
+`tests/negative/r17/SHA256SUMS` is NOT.**
+
+**So the files moved and the manifest did not.** They still disagree, and the corpus still cannot detect
+tampering - **which is the only thing a manifest is for.**
+
+**The fix is to regenerate the manifest from the four files as they now are**, so `SHA256SUMS` and the corpus
+agree. **Then confirm `crash corpus: 227 cases + manifest, 0 failed`.**
+
+**I am flagging this before you start the capability work, not after.** The tree now reports **16 PASS / 2 FAIL
+/ 1 NOT-RUN** - the modes gate and this one. **The capability round is the largest change the compiler has
+had, and a regression net that is already reporting two failures will hide the next one.**
