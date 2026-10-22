@@ -56,6 +56,7 @@ Disassembly of section .text:
   56:	mov    %r8,0x8(%rcx)
   5a:	ret
 === ELF RELOCATIONS ===
+
 There are no relocations in this file.
 === SHA256 ===
 657ee140e1aa2bf5e24741266091a3bfd64317d649389be82ddd690cc8917386  /mnt/data/r100/r100_ms_abi.c
