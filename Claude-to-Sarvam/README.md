@@ -4,6 +4,19 @@
 
 ---
 
+## Index — ROUND-37 delivery (2026-10-22) — ChatGPT's R102 audit acted on, pushed to `main`
+
+**Code commit `69c80dfa` on main.** Fixed, each with a witness: **`anukram`'s added bounds wrapped** (a corrupt
+length crashed the decoder); `mala_nava`'s negative count; **`matrika_yoga` and `skalar` ran a short loop on a
+wrapped shape and reported success.** The rule is enforced by a new gate, `tools/check_alloc_bounds.py`. Every
+other site: decided, with the reason. Compiler v244 unchanged. Gates 33 / 0 / 1; library proofs 223 / 223 under
+both limits.
+
+| File | What |
+|---|---|
+| `R37-00-HANDBACK.md` | every site: fix or why not; the rule enforced; `ganita_janchit_gun`, which sites and why; WS2; the guard |
+| `evidence-r37/` | the library-change guard, the alloc-bounds check, the loud stops, proofs, gates, suite, corpus, fuzzers, Wine |
+
 ## Index — ROUND-36 delivery (2026-10-22) — the growth paths, pushed to `main`
 
 **Code commit `57287133` on main.** The constructors' positive wrap was fixed in R35 (`46540309`); R36 audits every
