@@ -1,0 +1,393 @@
+{
+  "schema": 1,
+  "initial_main": "d6a4635c1dc9dc127589f96f29cce1864da80ab6",
+  "library_tree": "f68ce9e357493005d63afa0797abe04e8361c78c",
+  "tree_truncated": false,
+  "method": "Full API source reading of all 24 lib/*.smlib files. Manually classified source inventory, not an executed repository scanner or native test.",
+  "sources": {
+    "lib/aadhar.smlib": "5937b005016c24706f2930e483d70ac8a02b8319",
+    "lib/ank.smlib": "21801b82a9abaf81b134da1b4a2aa3966a6a5fe9",
+    "lib/anukram.smlib": "ccb00b00a7963cb17f1a0fe9ad3217c7344d3a31",
+    "lib/brihat.smlib": "f6f45b6212a9f3bb3eeccff582c74c7371c73da2",
+    "lib/chandas.smlib": "3dc24f437d79e4fb44717ee846a7e87a21a64bb4",
+    "lib/ganit.smlib": "c4008c37b3da79a7cec5f5c2411fdd516bf07ce4",
+    "lib/ganita.smlib": "53eb835102715b94e31e12d69072b8aa4f0c563e",
+    "lib/gudh.smlib": "63048abc15280d23ef37cde6763677347d6ffcff",
+    "lib/kalana.smlib": "52dde11a91b238089ad89c37fc528d6684dd233f",
+    "lib/khand.smlib": "97d3ff90fd9fe9c770bf4185c3fc42d4f19a70d7",
+    "lib/madhava.smlib": "ee16f9247a10e470aa5fe9a604df78c1b68db7db",
+    "lib/mala.smlib": "3d66fac4aa105fdcc376fe4096bb8cd678057687",
+    "lib/nighantu.smlib": "b8abc92cee497d8eff04cdf775b9733ff0025b13",
+    "lib/patra.smlib": "ade9810c048399429d46d65c6c096f2589c38fa6",
+    "lib/phal.smlib": "c23ae4ae9b48aba19fb66eb22fdf44b5fff5e392",
+    "lib/roop.smlib": "0ea8f9c4a57c5a744efc090c9581ebeeead17e49",
+    "lib/sadhan.smlib": "41d45dc2e69091a53fd54671e913ccdc177b9a8c",
+    "lib/samanvaya.smlib": "1fbb260632138c9ee225249c9c1aeec4c73ffd1d",
+    "lib/sangrah.smlib": "1c20177e524b97ad75dc348a0dcb7a31a558b5dc",
+    "lib/sankhyiki.smlib": "843a1c05617cbd4cea050aee63195d1a2c324f52",
+    "lib/shreni.smlib": "36801203fb5d4bfb72afd442d4a87f887e1566f7",
+    "lib/suchi.smlib": "0904406e1d55f876f27f5084b390fdd7a4b1bb71",
+    "lib/vakyank.smlib": "3359b87612cc653a92d064c73f8c6c437d32fe26",
+    "lib/varna.smlib": "87d1e1464838441719447ca76fd91c0032856f5e"
+  },
+  "R36_reconciliation": {
+    "main": "004a28a2d696caa552269ccf9765d1e609282b85",
+    "changed_library_blobs": {
+      "lib/mala.smlib": "6cf8cc2d8769b3443658738e42bc0b6265632828",
+      "lib/nighantu.smlib": "556866103b7803643d72e1149a314b2779b214b9",
+      "lib/suchi.smlib": "95c3269e7a709adcdc12d6e3ec46bee0a83b9711"
+    },
+    "handback_blob": "c467f42f1f6202a3f59cab6714073691c4190e33"
+  },
+  "variable_allocation_sites": [
+    {
+      "path": "lib/aadhar.smlib",
+      "function": "brihat_ank_tak",
+      "size": "c*8",
+      "classification": "Unchecked local arithmetic; valid-array extent is a caller precondition; unchecked allocation failure is independently reachable."
+    },
+    {
+      "path": "lib/aadhar.smlib",
+      "function": "brihat_ank_tak",
+      "size": "c*4*8",
+      "classification": "Unchecked local arithmetic; valid-array extent is a caller precondition; unchecked allocation failure is independently reachable."
+    },
+    {
+      "path": "lib/brihat.smlib",
+      "function": "brihat_shesh",
+      "size": "c*8",
+      "classification": "Validate n before first input access; reject overflow; unchecked allocation result."
+    },
+    {
+      "path": "lib/brihat.smlib",
+      "function": "brihat_ghatmod",
+      "size": "c*2*8",
+      "classification": "Validate 2n cells and scratch bytes; unchecked allocation results."
+    },
+    {
+      "path": "lib/brihat.smlib",
+      "function": "brihat_ghatmod",
+      "size": "c*8",
+      "classification": "Validate 2n cells and scratch bytes; unchecked allocation results."
+    },
+    {
+      "path": "lib/mala.smlib",
+      "function": "mala_nava",
+      "size": "c*8",
+      "classification": "R35 positive upper bound present; negative domain hole remains through R36."
+    },
+    {
+      "path": "lib/nighantu.smlib",
+      "function": "nighantu_srij",
+      "size": "(2+3*c)*8+c*32",
+      "classification": "R35 bounded nonnegative count; retain MAX-16 over 56 precheck."
+    },
+    {
+      "path": "lib/nighantu.smlib",
+      "function": "nighantu_vardh",
+      "size": "oldcap*33+1",
+      "classification": "Fits for intact R35 map; R36 fixes newm and scratch allocation failure checks."
+    },
+    {
+      "path": "lib/nighantu.smlib",
+      "function": "nighantu_mil",
+      "size": "scap*33+1",
+      "classification": "Fits if scap matches intact bounded map; unchecked allocation result and external-capacity mismatch remain."
+    },
+    {
+      "path": "lib/sangrah.smlib",
+      "function": "rakh_samroop_diff",
+      "size": "cap*33+1",
+      "classification": "Fits for verified R35 maps; raw cap parameters and allocation failures need validation."
+    },
+    {
+      "path": "lib/sangrah.smlib",
+      "function": "rakh_samroop_diff",
+      "size": "bcap*33+1",
+      "classification": "Fits for verified R35 maps; raw cap parameters and allocation failures need validation."
+    },
+    {
+      "path": "lib/sangrah.smlib",
+      "function": "rakh_sangam",
+      "size": "cap*33+1",
+      "classification": "Fits for verified R35 maps; raw cap parameters and allocation failures need validation."
+    },
+    {
+      "path": "lib/sangrah.smlib",
+      "function": "rakh_sangam",
+      "size": "bcap*33+1",
+      "classification": "Fits for verified R35 maps; raw cap parameters and allocation failures need validation."
+    },
+    {
+      "path": "lib/sangrah.smlib",
+      "function": "rakh_sampat",
+      "size": "cap*33+1",
+      "classification": "Fits for verified R35 map; allocation result unchecked."
+    },
+    {
+      "path": "lib/sangrah.smlib",
+      "function": "rakh_bhed",
+      "size": "cap*33+1",
+      "classification": "Fits for verified R35 map; allocation result unchecked."
+    },
+    {
+      "path": "lib/sangrah.smlib",
+      "function": "rakh_asti_upasamuh",
+      "size": "cap*33+1",
+      "classification": "Fits for verified R35 map; allocation result unchecked."
+    },
+    {
+      "path": "lib/sangrah.smlib",
+      "function": "rakh_tak_mala",
+      "size": "cap*33+1",
+      "classification": "Fits for verified R35 map; check all allocation results and stronger qword-export capacity."
+    },
+    {
+      "path": "lib/sangrah.smlib",
+      "function": "rakh_tak_mala",
+      "size": "cap*32+1",
+      "classification": "Fits for verified R35 map; check all allocation results and stronger qword-export capacity."
+    },
+    {
+      "path": "lib/sangrah.smlib",
+      "function": "rakh_tak_mala",
+      "size": "cap*8 [ptrs]",
+      "classification": "Fits for verified R35 map; check all allocation results and stronger qword-export capacity."
+    },
+    {
+      "path": "lib/sangrah.smlib",
+      "function": "rakh_tak_mala",
+      "size": "cap*8 [lens]",
+      "classification": "Fits for verified R35 map; check all allocation results and stronger qword-export capacity."
+    },
+    {
+      "path": "lib/shreni.smlib",
+      "function": "mil_shreni",
+      "size": "n*8",
+      "classification": "Valid caller input extent required; scratch allocation unchecked."
+    },
+    {
+      "path": "lib/suchi.smlib",
+      "function": "suchi_srij",
+      "size": "sz=c*8",
+      "classification": "R35 clamp plus prebound correct; do not repeat fix."
+    },
+    {
+      "path": "lib/suchi.smlib",
+      "function": "avali_srij",
+      "size": "sz=c*8",
+      "classification": "R35 clamp plus prebound correct; do not repeat fix."
+    },
+    {
+      "path": "lib/suchi.smlib",
+      "function": "suchi_vardh",
+      "size": "ncap*8; ncap=cap*2",
+      "classification": "R36 adds MAX/16 precheck. Positive-wrap forged header is outside intact constructor invariant."
+    },
+    {
+      "path": "lib/suchi.smlib",
+      "function": "avali_pravesh",
+      "size": "ncap*8; ncap=cap*2",
+      "classification": "R36 adds MAX/16 precheck. Preserve old state on refusal."
+    }
+  ],
+  "constant_allocation_sites": [
+    [
+      "suchi",
+      "suchi_srij",
+      "3*8"
+    ],
+    [
+      "suchi",
+      "avali_srij",
+      "4*8"
+    ],
+    [
+      "roop",
+      "roop_ank",
+      "22*8"
+    ],
+    [
+      "roop",
+      "roop_ank_aadhar",
+      "70*8"
+    ],
+    [
+      "roop",
+      "roop_varg_ank",
+      "32"
+    ],
+    [
+      "roop",
+      "roop_sthir_mool",
+      "22*8"
+    ],
+    [
+      "roop",
+      "roop_chinhit",
+      "32"
+    ],
+    [
+      "roop",
+      "roop_sign_akshar",
+      "32"
+    ],
+    [
+      "vakyank",
+      "ank_tak_varna",
+      "22*8"
+    ],
+    [
+      "vakyank",
+      "ank_tak_aadhar_varna",
+      "70*8"
+    ]
+  ],
+  "explicit_scaled_index_families": {
+    "brihat": {
+      "functions": [
+        "brihat_shunyank",
+        "brihat_ank_se_int",
+        "brihat_ank_tak_int",
+        "brihat_pratilip",
+        "brihat_tul",
+        "brihat_yuj",
+        "brihat_nyun",
+        "brihat_gun",
+        "brihat_asti_shunyank",
+        "brihat_bhajshesh",
+        "brihat_shesh"
+      ],
+      "forms": [
+        "base+i*8",
+        "base+j*8",
+        "base+k*8",
+        "base+m*8",
+        "base+m2*8",
+        "base+(j-1)*8",
+        "base+(i+j)*8",
+        "base+(i+c)*8",
+        "c*2 loop bound"
+      ],
+      "rule": "Validate n or 2n extent once, prove loop indices; no checked helper on every digit operation."
+    },
+    "mala": {
+      "functions": [
+        "mala_sangrah",
+        "mala_grah",
+        "mala_purn",
+        "mala_pratilip",
+        "mala_yog",
+        "mala_sangrah_surakshit",
+        "mala_grah_surakshit"
+      ],
+      "forms": [
+        "base+j*8"
+      ],
+      "rule": "Raw APIs require valid extent; surakshit index<n alone does not prove a trustworthy byte extent."
+    },
+    "khand": {
+      "functions": [
+        "khand_bhed",
+        "khand_yuj"
+      ],
+      "forms": [
+        "dst+(wpos+1)*8",
+        "p+rpos*8"
+      ],
+      "rule": "Validate segment lengths, checked addition then byte scaling, and output capacity including terminator."
+    },
+    "varna": {
+      "functions": [
+        "varna_gan"
+      ],
+      "forms": [
+        "h+pos*8"
+      ],
+      "rule": "Prove pos<=valid source cell extent; size checks do not prove pointer ownership."
+    },
+    "nighantu": {
+      "functions": [
+        "nighantu_kunji_sam",
+        "nighantu_koshtha_likh",
+        "nighantu_khip",
+        "nighantu_grah",
+        "nighantu_apanay",
+        "nighantu_rikta",
+        "nighantu_vardh",
+        "nighantu_grah_mool",
+        "nighantu_mulya",
+        "nighantu_kunjika",
+        "nighantu_kunjika_ashtak"
+      ],
+      "forms": [
+        "(2+3*cap)*8+slot*32",
+        "(2+3*cap)*8+i*32",
+        "(2+3*cap)*8+j*32",
+        "2+2*cap+slot",
+        "2+2*cap+i",
+        "2+2*cap+j",
+        "2+2*oldcap+slot",
+        "out+(wpos+1)*8"
+      ],
+      "rule": "Internal offsets safe for intact bounded map with matching cap and bounded slot; qword export needs stronger 264*cap+8 output bound."
+    },
+    "sangrah": {
+      "functions": [
+        "rakh_tak_mala"
+      ],
+      "forms": [
+        "out+(wpos+1)*8"
+      ],
+      "rule": "Output cell-array expansion is not covered by map storage bound; require real destination extent."
+    },
+    "samanvaya": {
+      "functions": [
+        "pehchan",
+        "vivartana",
+        "matrika_yoga",
+        "skalar",
+        "matrika_gunana",
+        "nishan",
+        "rekha_manak"
+      ],
+      "forms": [
+        "i*n+j",
+        "j*m+i",
+        "i*n+k",
+        "k*p+j",
+        "i*p+j",
+        "i*n+i",
+        "m*n",
+        "n*n",
+        "n*p",
+        "m*p"
+      ],
+      "rule": "Checked dimension products and actual kosh_len before any access; index guard sees only already-wrapped index."
+    }
+  },
+  "no_targeted_explicit_size_product": [
+    "ank",
+    "anukram",
+    "chandas",
+    "ganit",
+    "ganita",
+    "gudh",
+    "kalana",
+    "madhava",
+    "patra",
+    "phal",
+    "sadhan",
+    "sankhyiki"
+  ],
+  "bounded_constant_or_numeric_only": [
+    "roop",
+    "vakyank"
+  ],
+  "scope_caveat": "Implicit qword [] addressing affects other routines too. All caller-owned buffers require valid extent; listing only explicit products does not prove all memory accesses safe. Numeric wrapping, digit arithmetic and floating-point products are not allocation-size products.",
+  "adjacent_findings": [
+    "anukram p+8/p+8+n bounds can wrap: use subtraction-based remaining-length checks.",
+    "nighantu_vardh null dereference after a failed constructor was real and is fixed by R36.",
+    "Unchecked nirmmita results in scratch routines remain a separate failure-contract task."
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "schema": 1,
+  "round": 102,
+  "date": "2026-10-22",
+  "initial_main": "d6a4635c1dc9dc127589f96f29cce1864da80ab6",
+  "reconciliation_main": "004a28a2d696caa552269ccf9765d1e609282b85",
+  "assignment_blob": "a203471487ed0cb1b7937049c7e5130982b7ea50",
+  "review": {
+    "files": 24,
+    "tree_truncated": false,
+    "variable_nirmmita_calls": 25,
+    "constant_nirmmita_calls": 10,
+    "method": "Full source read through connected GitHub API; manually classified sink inventory, not an executed checkout scanner."
+  },
+  "execution": {
+    "command": "python3 -B ROUND-102-CONTROLS.py",
+    "environment": "Linux-6.18.55-x86_64-with-glibc2.41",
+    "python": "3.13.5",
+    "assertion_groups_pass": 69,
+    "assertion_groups_fail": 0,
+    "checked_mul_pairs": 20256,
+    "status": "PASS: arithmetic and proposed-contract models only",
+    "memory_allocations_tested": false,
+    "native_compiler_invoked": false,
+    "windows_executed": false
+  },
+  "findings": {
+    "negative_mala_capacity": "-2305843009213693951 * 8 wraps to +8; negative domain unguarded in initial and R36 source",
+    "matrix_shape": "(2^62+1)*4 wraps to 4; missing dimension/actual extent validation",
+    "false_positive_avoided": "33*cap+1 cannot wrap for an intact R35 map bound; cap mismatches and OOM are separate",
+    "already_fixed": "R35 constructor positive prebounds; R36 growth prebounds and nighantu_vardh null checks",
+    "helper": "ganita_janchit_gun in lib/ganita.smlib; check ok[0], not returned zero",
+    "helper_model_not_proof_of_native": "The source-equivalent model is compared to big integers; no native helper binary was run."
+  },
+  "windows_design": {
+    "source_branch": "claude/windows-ffi",
+    "source_commit": "d29fece4fd38189e59a3fcb37e0c6392495559f6",
+    "ffi_source_blob": "67cfd8562d53934ecd56e8edecbcb0355c134fb8",
+    "proposal": "sutram-ffi-v3|windows-x86_64-msabi with direct-literal-only cstr_ro argument",
+    "status": "NOT_IMPLEMENTED; grammar/bytes/provenance/stack modeled only",
+    "safety_boundary": "No claim arbitrary C respects prototype, const, extent, lifetime or ownership; raw ptr unchanged."
+  },
+  "partner_prior_not_rerun": {
+    "R36": "222/222 library proofs under capped/unlimited address spaces; gates 32 PASS/0 FAIL/1 Windows NOT_RUN; source-expansion 64422/65536 bytes",
+    "source": "Claude-to-Sarvam/R36-00-HANDBACK.md blob c467f42f1f6202a3f59cab6714073691c4190e33"
+  },
+  "not_run": [
+    "Native Sutram compiler/library regression programs",
+    "Full canonical Linux gates, fuzz and crash corpus",
+    "Real Windows FFI and installer acceptance",
+    "Proposed v3 literal checking in a compiler",
+    "Allocation exhaustion tests or giant mapping tests"
+  ],
+  "environment_limitations": [
+    "NASM not found in this container",
+    "Git remote access failed DNS; connector reads remained available"
+  ],
+  "changes": "Only new ChatGPT-to-Sarvam handoff/specifications/source inventory/test-model/raw-output/ledger. No existing source/tests/goldens/branches/installers/CI modified.",
+  "artifacts": [
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-102-CONTROLS-RAW.txt",
+      "bytes": 3965,
+      "sha256": "8de67b1c99f813e7536b5e124bfd3870946aab97842946d1a84583729cb33e80",
+      "git_blob": "eb5c973b0c5c32dc35f099f1581d9b325573ae6e"
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-102-CONTROLS.py",
+      "bytes": 10069,
+      "sha256": "af7c0de332931081a92debe1e77aa8e9f2ce9ae62424f1b512e8068bd3019e35",
+      "git_blob": "2184a193ffc1b21b7bc0f452f62944264552fde4"
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-102-HANDOFF.md",
+      "bytes": 6582,
+      "sha256": "d4cbd47adce2b9936846a8defda0547c67a1d3c11bd2fc752f37ab766f44e4cc",
+      "git_blob": "7a2bd36add2ce29107b1b04c436530b4bff20713"
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-102-SOURCE-INVENTORY.json",
+      "bytes": 12434,
+      "sha256": "52a5d22f76771acfaeae36409f3f07169c2ce656c0d77e0f4b5268418e497bc9",
+      "git_blob": "de21c2b8fe27c4bd83de1df1d278af0c1d7de191"
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-102-WS1-LIBRARY-OVERFLOW-AUDIT.md",
+      "bytes": 14374,
+      "sha256": "b3c0cbdec1b62366b00a108cdc08c511590a94f8222150a0a8ef6aa3e02ee91f",
+      "git_blob": "8c3a445c3f241acf7b6e5dd4e09ca2880ace6ae0"
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-102-WS2-WINDOWS-CSTR-BYTE-SPEC.md",
+      "bytes": 9065,
+      "sha256": "0e0c3820f251b2b24ddfb298fece4920c25ccef14cb617ecd439a16d17601692",
+      "git_blob": "e2e7f71b319b6533bf82c6e4fb536198153d0588"
+    }
+  ]
+}

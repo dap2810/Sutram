@@ -1,0 +1,81 @@
+PASS checked-multiply model matches bigint oracle for 20256 pairs
+PASS zero result requires ok flag
+PASS signed helper does not validate size domain
+PASS negative count is not a valid allocation size [expected rejection]
+PASS count*8 wraps positive
+PASS count*8 precheck [expected rejection]
+WITNESS count*8 count 2305843009213693953 mathematical 18446744073709551624 wrapped 8
+PASS count*16 wraps positive
+PASS count*16 precheck [expected rejection]
+WITNESS count*16 count 1152921504606846977 mathematical 18446744073709551632 wrapped 16
+PASS count*32 wraps positive
+PASS count*32 precheck [expected rejection]
+WITNESS count*32 count 576460752303423489 mathematical 18446744073709551648 wrapped 32
+PASS count*33+1 wraps positive
+PASS count*33+1 precheck [expected rejection]
+WITNESS count*33+1 count 558992244657865201 mathematical 18446744073709551634 wrapped 18
+PASS mala negative count escapes current upper and sign checks
+WITNESS mala_negative -2305843009213693951 wrapped_bytes 8
+PASS matrix dimensions can alias a four-cell loop
+WITNESS matrix 4611686018427387905 4 mathematical_cells 18446744073709551620 wrapped_cells 4
+PASS index stride can alias byte offset eight
+PASS R35 valid map bounds protect internal scratch arithmetic
+BOUND map_capacity 164703072086692424 scratch_bytes 5435201378860849993
+PASS cell-export expansion needs a stronger bound
+PASS growth positive-wrap witness violates intact R35 constructor bound
+PASS max valid constructor capacity can still overflow signed growth size
+PASS constant scratch products cannot wrap
+PASS FNV bounded product fits int64
+PASS size addition checked too [expected rejection]
+PASS a valid zero-size calculation is not overflow
+PASS bound stride=8 extra=0
+PASS bound+1 stride=8 extra=0 [expected rejection]
+PASS bound stride=16 extra=0
+PASS bound+1 stride=16 extra=0 [expected rejection]
+PASS bound stride=32 extra=0
+PASS bound+1 stride=32 extra=0 [expected rejection]
+PASS bound stride=33 extra=1
+PASS bound+1 stride=33 extra=1 [expected rejection]
+PASS bound stride=56 extra=16
+PASS bound+1 stride=56 extra=16 [expected rejection]
+PASS bound stride=264 extra=8
+PASS bound+1 stride=264 extra=8 [expected rejection]
+PASS proposed cstr signature retains five fields
+PASS internal kind word has id4, unused bytes zero
+PASS ASCII literal backing bytes
+PASS empty string is one NUL byte
+PASS UTF8 copied exactly plus one terminator
+PASS embedded NUL literal [expected rejection]
+PASS malformed UTF8 literal [expected rejection]
+PASS cstr provenance integer [expected rejection]
+PASS cstr provenance kosh [expected rejection]
+PASS cstr provenance raw_ptr [expected rejection]
+PASS cstr provenance variable [expected rejection]
+PASS proposal old v2 header [expected rejection]
+PASS proposal other ABI [expected rejection]
+PASS proposal CRLF [expected rejection]
+PASS proposal missing LF [expected rejection]
+PASS proposal BOM [expected rejection]
+PASS proposal bad kind [expected rejection]
+PASS proposal arity mismatch [expected rejection]
+PASS proposal extra field [expected rejection]
+PASS proposal cstr return [expected rejection]
+PASS proposal duplicate [expected rejection]
+PASS proposal oversize [expected rejection]
+PASS MS pointer slot 1 = rcx
+PASS MS pointer slot 2 = rdx
+PASS MS pointer slot 3 = r8
+PASS MS pointer slot 4 = r9
+PASS MS pointer slot 5 = [rsp+32]
+PASS MS pointer slot 6 = [rsp+40]
+PASS MS mixed arguments keep ordinal slots
+PASS shadow stack model from rsp=0x1000
+PASS shadow stack model from rsp=0x1008
+PASS shadow stack model from rsp=0x1018
+PASS shadow stack model from rsp=0x1020
+PASS call-hole displacement uses next instruction
+BYTES proposed_header 35 73757472616d2d6666692d76337c77696e646f77732d7838365f36342d6d736162690a
+BYTES literal_utf8 e0a4a8e0a4aee0a4b8e0a58de0a4a4e0a58700
+BYTES win_call_prefix 4989e34883e4f041534883ec38 suffix 4883c4385c
+RESULT 69 PASS / 0 FAIL
+SCOPE Python arithmetic and proposed-contract models only; no allocations, no native Sutram/Windows tests.
