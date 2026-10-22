@@ -1,3 +1,44 @@
+## v305 - ChatGPT built the mechanical checker, and its best line is what it does NOT claim
+
+**ROUND-103 asked for the smallest mechanical check that would catch a "validity must precede address formation"
+violation, in the shape of `check_layers.py`. It built one.**
+
+### `tools/check-alloc-sizes.py`
+
+**It scans `lib/*.smlib`, finds every `nirmmita(` call, handles nesting inside a line, and rejects any expression
+not in an explicit reviewed allowlist.** **It ran against four controlled fixtures:**
+
+```
+PASS reviewed spellings accepted (NOT certified safe)
+PASS new unsafe allocation formula rejected
+PASS parenthesised ...
+```
+
+### And the parenthetical is the best line in the delivery
+
+**`reviewed spellings accepted (NOT certified safe)`.**
+
+**A check that says what it does not prove is worth more than one that implies it proves everything.** **It
+accepts a reviewed spelling; it does not claim the reviewed spelling is safe.** **That is the difference between a
+gate and a guarantee, and the distinction has cost this project rounds before.**
+
+### And it reviewed rather than duplicated
+
+**ROUND-103's WS1 asked for the Windows FFI's top gap.** **It found that it had ALREADY delivered the exact
+`cstr_ro` pointer contract in R102** - *"R103 reviewed this against the current branch rather than inventing a
+conflicting second format."*
+
+**That is the same check Claude made in R36 and the same one I failed to make in my ROUND-36 brief.** **Two
+partners now check the tree before writing; I was the one who did not.**
+
+**The spec it reviewed:** `sutram-ffi-v3|windows-x86_64-msabi` and `s_len|1|cstr_ro|i64|sutram_w_cstrlen`.
+**Only a compiler-known UTF-8 literal with no embedded NUL is allowed; the compiler appends the NUL.** **And it
+rejects raw integers, pointers, kosh, dynamic strings, variables and slices** *"pending a real lifetime/extent
+model"* - **which is the honest reason and not a limitation dressed up.**
+
+**And it states the boundary:** *"This does NOT establish the foreign C function obeys a const-pointer/type
+contract; COFF lacks that metadata."*
+
 ## v304 - ROUND-37 and ROUND-103: the audit's findings, and whether the rule can be enforced
 
 **ROUND-37 (Claude):** act on ChatGPT's R102 audit - all 24 `lib/*.smlib` files, every allocation call and index
