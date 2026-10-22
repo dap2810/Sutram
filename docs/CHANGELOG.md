@@ -1,3 +1,43 @@
+## v297 - the Windows x64 ABI page exists, and Claude's ffi-v2 is delivered
+
+**Compiler v244. Both partners delivered.**
+
+### The ABI page is written for the owner's Windows Claude
+
+**`ChatGPT-to-Sarvam/ROUND-100-WS3-WINDOWS-X64-ABI.md`** - and its first line says who it is for:
+*"Audience: owner working on Windows linker."*
+
+**And the differences it names are the ones that break a guessed ABI:**
+
+| ABI rule | Linux SysV (the current FFI) | **Microsoft x64** |
+|---|---|---|
+| integer/pointer parameters | first **6**: RDI RSI RDX RCX R8 R9 | first **4**: RCX RDX R8 R9 |
+| scalar `double` arguments | XMM0-XMM7 allocated **independently** of the GP registers | first **4 positions** - float or int - **by overall ordinal position**, not counted separately |
+| mixed `f(i64, f64, i64, f64)` | RDI, XMM0, RSI, XMM1 | **different** |
+
+**That middle row is the one that produces a linker that links and a program that returns the wrong
+number.** **On Linux a float does not consume an integer register slot; on Windows it does.** **A port that
+keeps Linux's rule will pass every byte-comparison and compute wrong values.**
+
+### And it is honest about its own scope
+
+> *"Real Windows 11 standard-user installation/linker acceptance 16 required PASS / 0 FAIL / 0 NOT_RUN... **this
+> does NOT test Windows C FFI, COFF ingestion, or this ABI.**"*
+
+**So the Windows linker's acceptance does not cover the FFI on Windows, and the page says so.** **That is the
+boundary between what is proven and what is next.**
+
+### Claude's R34-11-FFI-V2 is delivered
+
+**`Claude-to-Sarvam/R34-11-FFI-V2.md`** - the versioned header, which ChatGPT recommended two rounds ago.
+**So the FFI no longer advertises a richer ABI under a v1 header.**
+
+### And the round's other deliverables
+**ChatGPT:** a pointer contract, an FFI regression checklist, and a Microsoft ABI control experiment
+(`ROUND-100-WS3-MSABI-CONTROL.c` + its observed output). **Claude:** R34-10 and R34-11, with `evidence-r34-ffi`.
+
+**`WINDOWS-X64-ABI.md` is delivered to the owner** - his Windows Claude needs it.
+
 ## v296 - THE WINDOWS LINKER IS DONE. And the guard holds on BOTH platforms.
 
 **`Windows-to-Sarvam/WIN-LINKER-2026-10-21.md` - the Windows Claude delivered, and measured it on main.**
