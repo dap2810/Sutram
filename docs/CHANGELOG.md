@@ -1,3 +1,41 @@
+## v294 - audit: the tree is clean, the docs are CURRENT for once, and one thing is on a branch
+
+**Measured: changelog v293, compiler v242, 3,554 files.**
+
+### The audit
+
+| Check | Result |
+|---|---|
+| `__pycache__` / `.pyc` | **0** |
+| `.bak` / `.orig` / `.rej` / `.tmp` | **0** |
+| stray build artifacts at root | **0** |
+| `.zip` inside the repo | **3** - cleanup candidates, inside collaboration folders |
+| the old `compiler/` folder | **446 KB** - superseded by `src/` |
+
+**And the documents are CURRENT: README, PROJECT-MASTER and the scorecard all read 27/27 and 218 pass, which is
+what the tree measures.** **My last correction held - and the doc-count gate I built is now in the tree to catch
+the next drift.**
+
+### And the Windows work is split across a branch and main
+
+**`Windows-to-Sarvam/` IS on main** - the acceptance, the first real run, and the raw logs under
+`win-run-2026-10-21/`. **So the owner's Windows evidence is published.**
+
+**But the compiler it was tested against - `v243`, on `claude/windows-linker` - is on a BRANCH.** **Main is at
+`v242`.**
+
+**So: the Windows linker works and is proven on real Windows, and its code is not yet on main.** **That is not a
+problem, but it is the kind of thing worth naming rather than discovering:** **a reader who clones main gets
+v242, which has no `sutram-link.exe` and none of the R34 fixes.**
+
+**And the four fixes in R34 are the ones the first Windows run found** - the PowerShell 5.1 start, v242 instead
+of v238, the `????????` status line, and the `%TEMP%` staging. **They are on the branch.**
+
+### What I did not touch
+**The three zips and the old `compiler/` folder.** **They are cleanup candidates and I have left them, because
+the zips are inside collaboration folders and the `compiler/` folder is history.** **The project's record has
+been worth more than the space every time I have checked.**
+
 ## v293 - THE WINDOWS ACCEPTANCE PASSED. Gate 6 is closed, and the Windows linker works.
 
 **I found `Windows-to-Sarvam/` on the repo - the folder the plan said the results would go in. It has the
