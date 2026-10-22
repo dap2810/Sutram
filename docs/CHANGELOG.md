@@ -1,3 +1,23 @@
+## v311 - Claude's R38 merge landed. Main is v246.
+
+**I checked main and the compiler reports v246** - so `claude/round-38` is merged. **That was ROUND-39's item 1, and
+it is done.**
+
+**What that puts on main:**
+- the R38 capability work, with a new gate "R38 fail-alloc" (gates 34)
+- library proofs 223/223 in both environments
+- and it merged without colliding with the Windows branch, **because Claude skipped v245 for it** - which is
+  the coordination that made a clean merge possible
+
+**Still outstanding: `claude/windows-ffi` at v245, unmerged.** **The Windows channel owns it, and the owner runs
+that side - so it merges when he does the Windows round.**
+
+### And the folder check
+**Nothing new in Claude-to-Sarvam or ChatGPT-to-Sarvam since R38/R104.** **Both are working the prompts the owner
+pasted rather than the ROUND-39/ROUND-105 files, which overlap and can be treated as superseded.**
+
+**Windows-to-Sarvam has its four deliveries, unchanged - waiting on the owner's Windows run.**
+
 ## v310 - ROUND-39 and ROUND-105: the merge first, and the prose audit that nobody has done
 
 **Two branches hold finished work and neither is on main: `claude/round-38` (v246, gates 34) and
