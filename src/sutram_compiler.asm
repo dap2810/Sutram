@@ -234,7 +234,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v244) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v245) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -2042,10 +2042,10 @@ _start:
     call strcmp
     test rax, rax
     jz .show_version
-%ifndef WINDOWS
     ; R32 --ffi <decls.sffi>, then --object or --separate and their arguments:
     ; note the sidecar, drop the two arguments, and go on as that mode. With anything else after it, it is a usage error, so the
-    ; ordinary compile can never read a sidecar.
+    ; ordinary compile can never read a sidecar. R35: the Windows compiler too
+    ; (its sidecar must name windows-x86_64-msabi; r32_load_sidecar checks).
     mov rdi, R49_ARG(16)
     lea rsi, [rel r32_flag_ffi]
     call strcmp
@@ -2056,6 +2056,7 @@ _start:
     jl .usage
     mov rax, R49_ARG(24)
     mov [rel r32_ffi_path], rax
+%ifndef WINDOWS
     mov rcx, R49_ARG(0)            ; argv[i] = argv[i+2] for i = 1 .. argc-2
     mov edx, 1
 .r32_shift:
@@ -2072,6 +2073,25 @@ _start:
     lea rax, [rel r32_empty]
     mov [rsp + rcx*8], rax         ; old argv[argc-1]
     mov [rsp + 8 + rcx*8], rax     ; old argv[argc] (its NULL moved down)
+%else
+    ; R35: Windows keeps argc and argv in win_stack (win/winrt.inc); the same
+    ; shift there, and the two freed slots become NULLs (argv's end; no
+    ; environment follows on Windows)
+    lea r8, [rel win_stack]
+    mov rcx, R49_ARG(0)
+    mov edx, 1
+.r35_shift:
+    lea rax, [rdx + 2]
+    cmp rax, rcx
+    jae .r35_shifted
+    mov rax, [r8 + 8 + rax*8]
+    mov [r8 + 8 + rdx*8], rax
+    inc rdx
+    jmp .r35_shift
+.r35_shifted:
+    mov qword [r8 + rcx*8], 0      ; old argv[argc-2], argv[argc-1]
+    mov qword [r8 + rcx*8 - 8], 0
+%endif
     sub qword R49_ARG(0), 2
     mov rdi, R49_ARG(16)
     lea rsi, [rel r28_flag_object]
@@ -2085,7 +2105,6 @@ _start:
     jnz .usage
 .r32_mode_ok:                      ; the sidecar is read after parsing (r7_check_arity),
 .r32_not_ffi:                      ; once SUTRAM_LANG's pack is loaded
-%endif
     ; R28 --object <input.sm> <output.smo>: the same compile, written as an
     ; object file for sutram-link. R34: the Windows compiler has it too; its
     ; object is version 2, SUTRAMO2 (a PE program's code), see r28_write_object.

@@ -40,6 +40,10 @@ every module's compile (so a wrong-arity call is E_ARITY there, and a declared
 call becomes a relocation to the foreign symbol); `--foreign f.o` (repeatable) reads
 an ELF object with sutram-elf2smo and links it in.  The sidecar's bytes are part
 of every cache key.
+
+ROUND-35: the FFI on Windows.  A `--foreign` object that is COFF x64 (a Windows .obj)
+is read by sutram-coff2smo instead (`--coff2smo` names it); which reader is decided by
+the object's own first bytes, never by its name.
 """
 import hashlib
 import os
@@ -152,6 +156,7 @@ def main(argv):
     ffi = None
     foreign = []
     elf2smo = os.path.join(REPO, "sutram-elf2smo")
+    coff2smo = os.path.join(REPO, "sutram-coff2smo.exe" if os.name == "nt" else "sutram-coff2smo")
     out = None
     show_graph = False
     while args and args[0].startswith("--"):
@@ -159,7 +164,7 @@ def main(argv):
         if flag == "--graph":
             show_graph = True
         elif flag in ("--compiler", "--linker", "--keep", "--cache", "--ffi", "--foreign",
-                      "--elf2smo") and args:
+                      "--elf2smo", "--coff2smo") and args:
             val = args.pop(0)
             if flag == "--ffi":
                 ffi = os.path.abspath(val)
@@ -167,6 +172,8 @@ def main(argv):
                 foreign.append(os.path.abspath(val))
             elif flag == "--elf2smo":
                 elf2smo = val
+            elif flag == "--coff2smo":
+                coff2smo = val
             elif flag == "--compiler":
                 compiler = val
             elif flag == "--linker":
@@ -242,7 +249,15 @@ def main(argv):
         objects.append(obj)
     for k, fo in enumerate(foreign):
         obj = os.path.join(work, f"f{k:03d}-{os.path.basename(fo)}.smo")
-        r = subprocess.run([elf2smo, fo, obj], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        try:
+            with open(fo, "rb") as f:
+                head = f.read(4)
+        except OSError:
+            head = b""
+        reader = coff2smo if head[:2] == b"\x64\x86" else elf2smo   # R35: COFF x64, else ELF
+        if os.name == "nt" and os.path.exists(reader):
+            reader = os.path.abspath(reader)
+        r = subprocess.run([reader, fo, obj], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         if r.returncode != 0:
             sys.stdout.write(r.stdout.decode("utf-8", "replace"))
             print(f"sutram-build: {fo}: not linked", file=sys.stderr)

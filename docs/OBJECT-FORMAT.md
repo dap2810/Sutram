@@ -200,14 +200,66 @@ ld -mi386pep --subsystem console --entry=_start --no-insert-timestamp -o sutram-
 same built separately, and 145 without are byte-identical; two modules in both orders; ten linker errors; 128
 `vitti` link, 129 are refused. (Run directly on real Windows 11; the plan's Wine step was not needed.)
 
-**Not on Windows yet:** the FFI (`--ffi`; its sidecar is `linux-x86_64-sysv`, and the Windows x64 calling
-convention is a different one), `sutram-elf2smo`, and `SUTRAM_LANG` (the Windows compiler does not read the
-environment; an object for another pack is not possible there yet).
+**Not on Windows yet:** `SUTRAM_LANG` (the Windows compiler does not read the environment; an object for
+another pack is not possible there yet). The FFI is on Windows from ROUND-35 (below).
+
+## The FFI on Windows (ROUND-35): `windows-x86_64-msabi` and `sutram-coff2smo`
+
+```
+sutram.exe --ffi decls.sffi --object in.sm out.smo        # the header says windows-x86_64-msabi
+sutram-coff2smo.exe foreign.obj foreign.smo               # C compiled for Windows (COFF x64)
+sutram-link.exe prog.exe out.smo foreign.smo
+python tools\sutram_build.py --ffi decls.sffi --foreign foreign.obj main.sm -o prog.exe   # all of it
+```
+
+**The sidecar names the ABI, and it must be the target's.** `sutram-ffi-v2|windows-x86_64-msabi` - the
+second field of the v2 header (R34-11) - is accepted only by a compile that writes a PE program (the Windows
+compiler); `linux-x86_64-sysv` only by one that writes an ELF. Each mismatch is refused at line 1, and msabi
+does not exist under v1 (v1 is R32's form exactly). The declarations and their kinds are unchanged.
+
+**The call is the Microsoft x64 one** (ChatGPT `ROUND-100-WS3-WINDOWS-X64-ABI.md`), not System V's:
+
+| | System V (Linux) | **Microsoft x64 (Windows)** |
+|---|---|---|
+| argument registers | integers `rdi rsi rdx rcx r8 r9`; f64 `xmm0..5` - **counted separately** | argument k **by its position**: `rcx rdx r8 r9`, or `xmm0..xmm3` for an f64 |
+| `f(i64, f64, i64, f64)` | `rdi, xmm0, rsi, xmm1` | **`rcx, xmm1, r8, xmm3`** |
+| 5th and 6th arguments | registers | the stack: `[rsp+32]`, `[rsp+40]` at the call |
+| shadow space | none | **32 bytes, reserved for every call** |
+| at the call | `rsp = 0 mod 16` | `rsp = 0 mod 16` |
+
+The generated sequence: the arguments are evaluated and popped into place (an f64 through `r11`, the 5th and
+6th into `r10` and `rax`), then `mov r11, rsp / and rsp, -16 / push r11 / sub rsp, 56 / [mov [rsp+32], r10]
+[mov [rsp+40], rax] / call <foreign> / add rsp, 56 / pop rsp`. The result: `rax`, or `xmm0` for an f64.
+
+**`sutram-coff2smo`** (`linker/sutram_coff2smo.asm`, NASM, built for both hosts like `sutram-link`) is
+`sutram-elf2smo` for COFF: one code section; read-only data placed after the code at its alignment (at most
+16); only `IMAGE_REL_AMD64_REL32`..`REL32_5` relocations in the code, all resolved in the reader; refused: a
+function that calls out, writable data, bss, unwind tables (`.pdata`, `.xdata`), `.drectve`, relocations in
+data, a weak external. It writes a **`SUTRAMO2`** object - **version 2 is unchanged**; no field was needed.
+Build the C side `gcc -c -O2 -ffreestanding -fno-asynchronous-unwind-tables -fno-stack-protector f.c` (MinGW-w64
+GCC targets Windows: COFF, the Microsoft ABI; use `int64_t`, not `long`, which is 32 bits on Windows).
+
+**One linker rule follows from it:** in a PE, `sutram-link` starts **every object after the first on a
+16-byte boundary of the image** (int3 padding, never reached). GCC reads 16-byte constants with aligned SSE
+instructions (`xorpd` for `-x`), and the code starts at RVA `0x1000 + RT_BLOB_LEN`, which is not aligned:
+linked unpadded, `w_neg` faulted. The first object does not move - an example linked alone is still the
+direct compile's bytes - and the ELF does not change.
+
+**The proof** (`tests/r35/test_ffi_windows.py`, on Windows; `tests/r35/test_coff2smo.py` on either host):
+22 C functions, 27 printed values exact - 0, 1, 4, 5 and 6 integer arguments; mixed integers and doubles by
+position; doubles only; 16-byte constants; ptr and void; `rsp = 8 mod 16` at the callee's entry; a callee
+that writes over its whole shadow space; one that destroys every volatile register. **A compiler that keeps
+System V's counting (`rcx, xmm0, rdx, xmm1` for the mixed case) printed `14411425` for `1284.25` and exited
+0** - built as a mutant to check the check; so did one without the shadow space (it crashed). The reader
+writes the same bytes on both hosts, and 100,000 malformed objects (5 x 20,000) broke none of its rules.
+
+**Not in this:** varargs (`printf`), structs by value or a 16-byte struct result (the hidden pointer),
+callbacks, a C function that calls out, exception unwinding, DLL imports - each refused or absent, as on Linux.
 
 ## What version 1 does not do
 
 - **No `--lang` flag** with `--object` (`SUTRAM_LANG` works).
-- ~~**Linux only.**~~ **R34: Windows too** (above). The FFI is still Linux only.
+- ~~**Linux only.**~~ **R34: Windows too** (above); the FFI on Windows from R35.
 - **With `--object`, every prakriya is exported** (including the library modules a `yoj` pulled in), so two
   objects that both `yoj` the same module define its prakriyas twice. **`--separate` (ROUND-29) is the fix:**
   a `yoj`'d module's prakriyas are not in the object that `yoj`s it.
