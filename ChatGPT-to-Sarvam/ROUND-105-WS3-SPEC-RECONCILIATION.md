@@ -1,0 +1,34 @@
+# Sutram Round 105 WS3 — Specification reconciliation
+
+**Read-only comparison, pinned initial main `09991ba4d28e4e985fc2fd5011b678aed2980360` (v310, compiler v244).** Compared our sidecar/ELF/ABI/benchmark/memory-rule documents with the current `docs/OBJECT-FORMAT.md` (blob `97544d1249f07b0a23f637e706178ec1f8cc6d28`), `src/sutram_compiler.asm` (blob `8b7875c06893333ee8be4191a04a94029a09d218`), Claude R29–R38 and the owner's Windows FFI delivery. Historical proposals remain valid *as historical stages*, but should not be linked without their subsequent implementation status.
+
+## Each contract — original, shipped state, conclusion
+
+| Document | What it proposed or specified | Current status and conflict |
+|---|---|---|
+| [R97 WS1 sidecar](ROUND-97-WS1-SIDECAR-SPEC.md) | `sutram-ffi-v1|linux-x86_64-sysv`, five fields, 0..6 i64 args, i64 result; compile-time `E_ARITY` and named import; proposed flag `--ffi-sidecar` | **V1 GRAMMAR IMPLEMENTED in R32**, and arity errors were tested. **The CLI string `--ffi-sidecar` is SUPERSEDED:** actual opt-in flag is `--ffi` with `--object`/`--separate`. Later v2 expands kinds; v1 stays i64-only. |
+| [R97 WS2 ELF](ROUND-97-WS2-ELF-BRIDGE-SPEC.md), [R98 minimal reader](ROUND-98-WS2-MINIMAL-ELF-READER.md) | First-stage Linux x86-64 ET_REL, one self-contained function, **zero** foreign ELF relocations, SUTRAMO1 symbol; PC32/PLT32 later | **ZERO-RELOCATION STAGE SUPERSEDED AS AN UPPER LIMIT.** Project NASM `sutram-elf2smo` ships; R33 accepts bounded internal PC32 read-only-data relocations. Undefined external helper, unsupported sections/relocations still fail. ELF `S+A-P` vs Sutram `S-(field+4)` remains valid. |
+| [R100 Windows x64 ABI](ROUND-100-WS3-WINDOWS-X64-ABI.md) | RCX/RDX/R8/R9 for GP, positional XMM0..3, mandatory 32-byte caller shadow, 5th/6th stack, alignment, RAX/XMM0 result; Windows C FFI then unimplemented | **ABI RULES VALID; R100 IMPLEMENTATION-STATUS SENTENCE NOW HISTORICAL.** Windows branch `claude/windows-ffi` v245 delivered real COFF→SUTRAMO2 and reported 21/21 Windows FFI tests. That branch is **NOT MERGED into v244 main**. R100 host GCC `ms_abi` disassembly is not itself a Windows run. |
+| [R100 WS1 pointer](ROUND-100-WS1-POINTER-CONTRACT.md) + [R101 correction](ROUND-101-WS3-POINTER-VERSION-CORRECTION.md) | Initially suggested new `cstr_ro`/`buf_ro@N` under header “v2” | **R100 V2 LABEL SUPERSEDED.** Shipped R34 v2 already means `f64,ptr,void`; Windows branch uses `sutram-ffi-v2|windows-x86_64-msabi`. R101 correctly reserves a **future v3** for checked pointer kinds. Do not reinterpret accepted v2. |
+| [R102 Windows cstr byte spec](ROUND-102-WS2-WINDOWS-CSTR-BYTE-SPEC.md) and R103 review | **PROPOSED `sutram-ffi-v3|windows-x86_64-msabi`** (35-byte LF header); `cstr_ro` token and internal kind tag 4; direct, validated UTF-8 literal only; embedded NUL refused, exact SUTRAMO2 named rel32 call | **CURRENT PROPOSAL ONLY — NOT IMPLEMENTED.** Existing raw `ptr` under v2 has no size/provenance/lifetime guarantee. Buffer forms `buf_ro@N` deferred. Symbol tables do not attest `const char*` or C ABI prototype. |
+| [R97 benchmark acceptance](ROUND-97-WS3-BENCHMARK-ACCEPTANCE.md), [R98 Gate 0](ROUND-98-WS3-FIVE-MINUTE-GATE0.md) | **FUTURE** seven workloads: 7/7 median at least 5% faster than best comparable C/Zig, confidence interval lower >1, two hosts, identical outputs/safety; stricter all-aspects goal | **NOT MET / NOT RUN AS THE DEFINED 7-WORKLOAD GATE.** Old loop measurements and HTML tables, including estimated third-party figures, do not meet this threshold or support a universal speed claim. |
+| [R104 allocation rule](ROUND-104-WS2-VALIDITY-BEFORE-ADDRESS.md) + [R102 library audit](ROUND-102-WS1-LIBRARY-OVERFLOW-AUDIT.md) | Count domain, checked size and actual extent **before** forming addresses; multiplication, matrix, serialization examples | **NORMATIVE RULE VALID; PARTIAL MECHANICAL GATE ONLY.** R37's `tools/check_alloc_bounds.py` counts 25 computed sites, 6 bounded and 19 conditional exemptions. R103 exact-spelling allowlist is only a review aid; R105 WS1 shows why it and the current gate are not full provenance proofs. |
+
+## Contradictions vs dated implementation changes
+
+1. **“Reject all ELF relocations” vs read-only PC32:** no contradiction if R98 is labeled the *minimal first milestone* and R33 the later extension. It becomes false only if copied into a present-tense user guide as the reader's complete current capability.
+2. **“Windows FFI not implemented” (R100) vs owner 21/21 Windows tests:** historical status vs later v245 review branch. That does **not** assert FFI is merged on v244 main or released in the v243 installer.
+3. **Sidecar v1 / v2 / proposed v3 vs SUTRAMO1 / SUTRAMO2:** independent axes. Sidecar versions encode permitted type tokens/ABI target; object-format markers identify Linux/Windows object output. A “v2” alone is ambiguous without naming which format.
+4. **Old `--ffi-sidecar` option vs shipped `--ffi`:** CLI proposal superseded. Use the shipped spelling in actual instructions.
+5. **Rule “validity before address” vs allocation gate green:** the gate is partial syntax review. Its 19 exemptions rest on caller invariants the checker does not verify; no pointer-memory-safety claim follows.
+6. **PROJECT-MASTER “wins four of five” vs proposed 7/7 benchmark:** a dated five-aspect anecdote and future seven-program target cannot be added together as a proof. Worse, the master's own memory comparison shows Zig < Sutram and its runtime comparison is a tie, so “four wins” is numerically overstated even on its own terms.
+
+## Genuine open specification issues
+
+- **C ABI identity:** ELF `STT_FUNC` and COFF symbols omit arity, return type, pointer constness, buffer capacity and lifetime. Sidecar types are programmer assertions unless matched to a reviewed C header/producer manifest. Do not label raw `ptr` safe.
+- **Proposed v3 only:** precise 35-byte header and literal rules are unimplemented until accepted compiler/parser, COFF, link and real-Windows tests pass. Do not ship fixtures implying current compiler accepts them.
+- **Performance honesty:** R97 future gate was not run; no new benchmarks were requested. R98 Gate0 is a prerequisite, not evidence of measured supremacy.
+- **Release boundary:** the Windows owner tested versions/branches, not current v310 default installer. Version and SHA must accompany release claims.
+- **Freestanding and ownership:** layer-core non-dependence is not proof of freestanding boot, pointer provenance or memory safety.
+
+**Status:** PASS — read-only version-aware document consistency review. **NOT RUN - no toolchain** — native compiler, Windows FFI, suite, fuzz, corpus, benchmark. **CANNOT CHECK FROM HERE** — future v3 ABI correctness. No `src/`, `lib/`, `tests/`, `tools/`, Windows-channel, backups, installer, golden, or CI modifications.
