@@ -1,0 +1,63 @@
+PASS integer RCX RDX R8 R9
+PASS fifth integer at entry RSP+0x28
+PASS four floats XMM0..3
+PASS mixed positions RCX R8 XMM1 XMM3
+PASS pointer RCX value RDX
+PASS struct return hidden storage RCX
+PASS no ELF relocations
+RESULT 7/7 host checks; no Windows or Sutram execution
+=== ENV ===
+gcc (Debian 14.2.0-19) 14.2.0
+GNU objdump (GNU Binutils for Debian) 2.44
+=== COMPILER DISASSEMBLY ===
+
+/mnt/data/r100/r100_ms_abi.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000000000 <r100_int4>:
+   0:	lea    (%rcx,%rdx,2),%rax
+   4:	lea    (%r8,%r8,2),%rdx
+   8:	add    %rdx,%rax
+   b:	lea    (%rax,%r9,4),%rax
+   f:	ret
+
+0000000000000010 <r100_int5>:
+  10:	add    %rdx,%rcx
+  13:	add    %r8,%rcx
+  16:	lea    (%rcx,%r9,1),%rax
+  1a:	add    0x28(%rsp),%rax
+  1f:	ret
+
+0000000000000020 <r100_fp4>:
+  20:	addsd  %xmm1,%xmm0
+  24:	addsd  %xmm2,%xmm0
+  28:	addsd  %xmm3,%xmm0
+  2c:	ret
+  2d:	nopl   (%rax)
+
+0000000000000030 <r100_mixed>:
+  30:	addsd  %xmm3,%xmm1
+  34:	add    %r8,%rcx
+  37:	cvttsd2si %xmm1,%rax
+  3c:	add    %rcx,%rax
+  3f:	ret
+
+0000000000000040 <r100_store>:
+  40:	mov    %rdx,(%rcx)
+  43:	ret
+  44:	data16 cs nopw 0x0(%rax,%rax,1)
+  4f:	nop
+
+0000000000000050 <r100_pair_return>:
+  50:	mov    %rdx,(%rcx)
+  53:	mov    %rcx,%rax
+  56:	mov    %r8,0x8(%rcx)
+  5a:	ret
+=== ELF RELOCATIONS ===
+
+There are no relocations in this file.
+=== SHA256 ===
+657ee140e1aa2bf5e24741266091a3bfd64317d649389be82ddd690cc8917386  /mnt/data/r100/r100_ms_abi.c
+28bc7f72b3ec095e5b64c9b3f7b772661ff5d807880056eb4c80dd06b580f3d0  /mnt/data/r100/r100_ms_abi.o

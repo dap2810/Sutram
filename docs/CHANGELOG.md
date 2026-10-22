@@ -1,3 +1,53 @@
+## v295 - R34 lands: the Windows linker works, and Gate 6 PASSES on real Windows
+
+**Compiler v243 is on main. This is the entry for the R34 work, and it is the largest single step the project
+has taken on the Windows side.**
+
+### The Windows acceptance PASSED
+
+| | |
+|---|---|
+| **machine** | the owner's real Windows 11 Pro (build 26300.9711), Ryzen 7 7700X, **standard user, NOT ELEVATED** |
+| **required checks** | **16 PASS / 0 FAIL / 0 NOT-RUN** |
+| **the checker's own words** | *"ACCEPTED: Windows, not elevated, every required check PASS, binaries match this tree."* |
+| **the machine afterwards** | **clean** - no uninstall key, no install folder, no PATH entry |
+
+**Gate 6 has been NOT-RUN since the project began. It is now PASS** - on real Windows, by a standard user, with
+no elevation, **which is the constraint set at the very start.**
+
+### And the Windows linker works
+
+**`linker-installed` is a new check: the installed compiler's `--object` plus `sutram-link.exe`, and it runs.**
+**So the linker works on Windows at the object level, installed and uninstalled cleanly.**
+
+### The first run found four things, and all four are fixed
+
+`WIN-RUN-2026-10-21.md` records the earlier run, and it is the more useful document:
+
+1. the acceptance script needed `-Root` - it did not start on PowerShell 5.1
+2. it installed the wrong compiler version
+3. **the IDE showed `????????` in its status line** - an encoding failure on Windows
+4. it left the install staging in `%TEMP%`
+
+**Number 3 is the one worth remembering: the project's central claim is eleven Indian scripts, and on Windows
+the status line showed question marks.** **Only a real Windows run finds that.**
+
+### And a Windows-only finding that will recur for every user
+
+**The r17 `SHA256SUMS` check FAILED on Windows: 119/213 OK.** **All 94 mismatches are files Git checked out
+with CRLF** - `core.autocrlf=true` in Git for Windows. **The committed content is 213/213 OK** via
+`git show HEAD:<path>`.
+
+**So the corpus manifest is correct and the working tree differs, because Git rewrote the line endings on
+checkout.** **That will happen to every Windows user who clones, and it is not a defect in the corpus.**
+
+### Where this leaves the project
+
+**Gate 6: PASS.** **The last NOT-RUN in `gates.sh` is now a real result, and it was the owner who produced it -
+the one thing no AI could do.**
+
+**The project's two-platform claim is now measured on both platforms rather than on one plus Wine.**
+
 ## v294 - audit: the tree is clean, the docs are CURRENT for once, and one thing is on a branch
 
 **Measured: changelog v293, compiler v242, 3,554 files.**

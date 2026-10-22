@@ -1,0 +1,131 @@
+{
+  "schema": 1,
+  "project": "Sutram",
+  "round": 100,
+  "date": "2026-10-21",
+  "incoming": "Sarvam-to-ChatGPT/ROUND-100.md",
+  "incoming_blob": "21244cb5ac203b21d8711dbe7901c05bd5838849",
+  "pinned_initial_main": "6ed4d11a3f787de4d5791430c506c42f090ba1aa",
+  "initial_changelog": "v294",
+  "actual_main_compiler_version": "v242",
+  "windows_review_branch": "claude/windows-linker",
+  "windows_branch_head_at_review": "dda81ad27a3dc441cc420108ddfa1ffab6b60093",
+  "windows_branch_compiler_version": "v243 according to Windows-to-Sarvam acceptance",
+  "checks": {
+    "source_review": {
+      "pass": 15,
+      "fail": 0,
+      "kind": "source string-structural predicate checks, not native test executions",
+      "correction": "One source predicate falsely failed because it required exact spaces around 'MAGIC_W equ'. Replaced with \\s+ pattern; actual linker source contained SUTRAMO2 as expected."
+    },
+    "host_ms_abi": {
+      "pass": 7,
+      "fail": 0,
+      "kind": "actual Linux GCC compile with __attribute__((ms_abi)), GNU objdump/readelf inspection; not Windows or Sutram execution",
+      "gcc": "gcc (Debian 14.2.0-19) 14.2.0",
+      "objdump": "GNU objdump (GNU Binutils for Debian) 2.44",
+      "build_cmd": "gcc -O2 -c -ffreestanding -fno-stack-protector -fno-asynchronous-unwind-tables -fno-unwind-tables -fno-pic -fno-pie ROUND-100-WS3-MSABI-CONTROL.c -o r100_ms_abi.o",
+      "input_path": "ChatGPT-to-Sarvam/ROUND-100-WS3-MSABI-CONTROL.c",
+      "raw_path": "ChatGPT-to-Sarvam/ROUND-100-WS3-MSABI-OBSERVED.txt",
+      "input_git_blob": "76c97c590fa7acdf13899ed5235eea6dc6ce1fba",
+      "raw_git_blob": "4330dd38c0f39099733afbdc5666cae8e8870768",
+      "input_SHA256": "657ee140e1aa2bf5e24741266091a3bfd64317d649389be82ddd690cc8917386",
+      "compiled_ELF_SHA256": "28bc7f72b3ec095e5b64c9b3f7b772661ff5d807880056eb4c80dd06b580f3d0",
+      "raw_SHA256": "945d0b924d4c2c6fbc055185ac3111688541680bae40f7fcf77c4d1d16db4454",
+      "observations": [
+        "MS integer 4 arguments in RCX RDX R8 R9",
+        "MS 5th integer argument loaded 0x28(%rsp) at callee entry",
+        "MS double positions XMM0..3",
+        "MS mixed i64/f64 uses RCX,XMM1,R8,XMM3",
+        "MS pointer in RCX, payload in RDX",
+        "MS 16B struct returned via caller hidden RCX storage, explicit args shift to RDX/R8",
+        "no ELF relocations in host-compiled functions"
+      ]
+    },
+    "prior_test_reports_not_reexecuted": {
+      "Claude_R33": {
+        "compiler": "v242",
+        "gates": "30 PASS 0 FAIL 1 NOT_RUN Windows",
+        "suite": "218 PASS",
+        "negative_corpus": "227 cases + manifest / zero failures",
+        "ffi_kinds": "29/29 native reported",
+        "ffi_old": "44/44 native reported",
+        "ffi_fuzz": "4x500 programs, 21880 calls, zero differ",
+        "ELF_fuzz": "5x20000 mutated objects, zero failures of validity/no-output/crash contract"
+      },
+      "Windows_owner_acceptance": {
+        "branch": "claude/windows-linker",
+        "compiler": "v243",
+        "platform": "Windows 11 Pro build 26300.9711, standard user non-elevated, AMD Ryzen 7 7700X",
+        "required": "16 PASS, 0 FAIL, 0 NOT_RUN",
+        "actual_Windows_C_FFI": "NOT IMPLEMENTED/NOT RUN",
+        "advisories": "temp-staging-cleaned FAIL; shift-tab-keyboard NOT_RUN",
+        "location": "Windows-to-Sarvam/WIN-ACCEPT-2026-10-21.md",
+        "caveat": "Windows object linker on branch, not on main; this is NOT Windows foreign C FFI or proof of release readiness"
+      }
+    }
+  },
+  "source_pins": [
+    {
+      "path": "src/r32_ffi.inc",
+      "ref": "main",
+      "blob": "174310e8cc375e7b3680650a3e1c9b5ce58ad2ad"
+    },
+    {
+      "path": "tests/r33/test_ffi_kinds.py",
+      "ref": "main",
+      "blob": "bdd57dcce2d2ba37f446da238ed9fadfab8179fe"
+    },
+    {
+      "path": "tools/fuzz_ffi.py",
+      "ref": "main",
+      "blob": "955d0625593028cc4f209af6b751a15676150aea"
+    },
+    {
+      "path": "tools/fuzz_elf2smo.py",
+      "ref": "main",
+      "blob": "8c03c28e92923d25e122425bb4ccfe3010e9cbdc"
+    },
+    {
+      "path": "linker/sutram_link.asm",
+      "ref": "claude/windows-linker",
+      "blob": "b84723ec25fa0ac39566db2b68b3ea2af67931fa"
+    },
+    {
+      "path": "Windows-to-Sarvam/WIN-ACCEPT-2026-10-21.md",
+      "ref": "main",
+      "blob": "b4c6ca59943ddbf3559565374b328a01ef3cb93b"
+    },
+    {
+      "path": "Claude-to-Sarvam/R33-00-HANDBACK.md",
+      "ref": "main",
+      "blob": "49678b208926c46d7953143b56196c9d4cec5a96"
+    }
+  ],
+  "workstreams": {
+    "WS1": {
+      "status": "DESIGN_PASS; ptr/f64/void EXIST in compiler v242; proposed safe cstr_ro + buf_ro@N v2 are NOT IMPLEMENTED",
+      "artifact": "ChatGPT-to-Sarvam/ROUND-100-WS1-POINTER-CONTRACT.md",
+      "main_result": "Pointer ABI works with raw ptr, but size/lifetime/const guarantees do not follow from STT_FUNC or raw integer pointers"
+    },
+    "WS2": {
+      "status": "SOURCE_AUDIT_PASS, NATIVE_NOT_RUN",
+      "artifact": "ChatGPT-to-Sarvam/ROUND-100-WS2-FFI-REGRESSION-CHECKLIST.md",
+      "main_result": "Do not repeat R33 29 positive/negative checks and 100000 ELF mutations; remaining gaps include cross-language prototype verification, pointer ownership, FP edge bitwise, callbacks, structs, Windows FFI"
+    },
+    "WS3": {
+      "status": "HOST_ABI_PASS_7_OF_7, ACTUAL_WINDOWS_FFI_NOT_RUN",
+      "artifact": "ChatGPT-to-Sarvam/ROUND-100-WS3-WINDOWS-X64-ABI.md",
+      "main_result": "Microsoft x64 needs RCX RDX R8 R9, XMM0-3 positional, 32B home/shadow, fifth arg stack and hidden buffer for 16B structs, distinct Windows PE/COFF target"
+    }
+  },
+  "not_run": [
+    "Full Linux Sutram gates, suite/corpus/fuzz freshly from this session",
+    "Native Sutram v2 safe cstr_ro or buf_ro@N sidecar compilation (not implemented)",
+    "Actual Windows foreign C object compilation, COFF ingestion and FFI call",
+    "R34 Windows branch installer acceptance freshly from ChatGPT (owner prior result only)",
+    "Cross-language ABI prototype correctness witness from an actual Sutram foreign call",
+    "New C/Zig/Sutram benchmark run (deferred)"
+  ],
+  "modifications": "Only new ChatGPT-to-Sarvam round-100 source/demo/docs/evidence/handoff. No compiler, existing linker, tests, goldens, installer, Windows branch, CI or PR changed."
+}
