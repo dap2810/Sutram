@@ -1,3 +1,29 @@
+## v292 - R99: ChatGPT measured the ABI, and ROUND-100 asks for the Windows one - because the owner needs it
+
+**ChatGPT's R99 did not reason about the host ABI; it ran GCC 14.2 and inspected it.** **And the two lines
+worth keeping are warnings rather than results:**
+
+> *"An ELF `STT_FUNC` symbol never provides C argument/return types: **matching names is not ABI compatibility
+> proof.**"*
+> *"A versioned `sutram-ffi-v2` / feature profile is preferable to silently advertising a richer ABI under the
+> old v1 header."*
+
+**The first names a class of mistake this project has not made yet and could.** **The second is a
+recommendation Claude is now acting on: it added `f64`, `ptr` and `void`, and the header still says `v1`.**
+
+**And its audit of Claude's test net is honest both ways:** *"strong for stage 1, not strong enough for ABI
+expansion or malicious ELF input."*
+
+### ROUND-100 is aimed at the owner's work
+
+**The owner is building the Windows linker.** **So ROUND-100's WS3 asks ChatGPT for one page on what is
+different about the Microsoft x64 ABI** - argument registers, the shadow space, floats, and what returns where
+- **byte-level where it matters.** *"The owner is working on this tonight and it is the most useful thing you
+can give him."*
+
+**That is the right thing to ask for and I nearly missed it.** **The ABI question was on my list as a
+Sutram-internal concern; it is also the thing standing between the owner and a working Windows linker.**
+
 ## v291 - R33: hardening the FFI found a SILENT TRUNCATION and a broken call. Compiler v242, gates 30.
 
 **The owner asked whether the repo is current before he starts the Windows linker. It is - and Claude's R33
