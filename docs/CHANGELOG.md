@@ -1,3 +1,22 @@
+## v304 - ROUND-37 and ROUND-103: the audit's findings, and whether the rule can be enforced
+
+**ROUND-37 (Claude):** act on ChatGPT's R102 audit - all 24 `lib/*.smlib` files, every allocation call and index
+site inventoried. **Where it names a site: fix, or say why not. Where it names a rule: say whether it can be
+enforced mechanically** - *"`tools/check_layers.py` already enforces a marker on every lib file, so a second
+mechanical check is not new ground for this project."*
+
+**ROUND-103 (ChatGPT):** *"the rule is 'validity must precede address formation'. A rule in a document is
+followed until it is not."* **So: the smallest mechanical check that would catch a violation, in the shape of
+`check_layers.py`.** **And if it cannot be checked mechanically, say why - that is a finding too.**
+
+**And I corrected my own brief to ChatGPT, because it should know:** **I told Claude its R101 finding was
+"something you did not" find. It was not - Claude's R35 had fixed it. My error, and both partners handled it
+correctly.**
+
+### And the audit and cleanup
+**No `__pycache__`, no `.bak`/`.orig`/`.rej`/`.tmp`, no stray artifacts.** **The tree is clean and the docs
+current at v303.**
+
 ## v303 - MY ROUND-36 BRIEF WAS WRONG. Claude had already fixed the positive wrap in R35.
 
 **I wrote in ROUND-36: *"ChatGPT read the same defect independently, before your answer landed. It found
