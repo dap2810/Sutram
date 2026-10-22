@@ -1,0 +1,127 @@
+{
+  "schema": 1,
+  "round": 105,
+  "date": "2026-10-22",
+  "mode": "READ_ONLY_AUDIT",
+  "authoritative_initial_main": "09991ba4d28e4e985fc2fd5011b678aed2980360",
+  "observed_changelog": "v310",
+  "current_compiler": "v244 as published on main; NOT RUN - no toolchain",
+  "assignment": {
+    "path": "Sarvam-to-ChatGPT/ROUND-105.md",
+    "blob": "c73e56c3f736340383b6166c2c55d3a2425bff8c"
+  },
+  "inputs": {
+    "root_prose": {
+      "README.md": "ec3c484f254593c969a35943da79582f333afdc2",
+      "PROJECT-MASTER.md": "17e9297d260c03a4293d52d6d95924934331cd5c",
+      "PROJECT-OVERVIEW.md": "dedc13057e796690edb71bcfa64494aa0d45ab9c"
+    },
+    "html_pages": {
+      "docs/_newchapter_en.html": "d09cd96ba07a45a1f7c4ae4163783b34da049d39",
+      "docs/mockup-setup.html": "19873bdb0fec0c4f58f3112da48e087e41d55ecf",
+      "docs/sutram-audit.html": "ffd2897d62f0b32da64c6e47897a922f86f7cb50",
+      "docs/sutram-benchmark-report.html": "405a4b08f351e59aa7b80bae278c38eb8cc72621",
+      "docs/sutram-book-2.html": "43928e7845ed8114c15c7a7d9f7bf36bf83229dd",
+      "docs/sutram-book-3.html": "47ba68822d9c8a9a4aaf7b72be82941fae2a71db",
+      "docs/sutram-book-english.html": "5c74dd066e21581ed312a76613bc1bd7748ae424",
+      "docs/sutram-book-gujarati.html": "3db8283785245bb2e262d7389c8babe868498387",
+      "docs/sutram-book-hindi.html": "3914f66f77073b338fe16b230b26d061ac7ce6dc",
+      "docs/sutram-book-sanskrit.html": "b181c74f87543df7244624eae592d269d3b62862",
+      "docs/sutram-book-tamil.html": "2f97b4b9f4ba2008b53326b7c09be92396802f38",
+      "docs/sutram-book-telugu.html": "c455d57a09ea82f98c343c438ea6d4017c58b24f",
+      "docs/sutram-book.html": "fe7754f697b0b31e44772907d5d591068e8089e8",
+      "docs/sutram-design-parameters.html": "93e8cc0af6af56b2a5d01e2b3234dc37f075275d",
+      "docs/sutram-icon-thread.html": "eb5dcf0e62bd266caf2c11a629ec6aca5553a918",
+      "docs/sutram-ide.html": "bb90eb0bca8649141374cd82204d5297c58a4b6c",
+      "docs/sutram-keyword-words.html": "25995d05c3dde6ea82399c3458c403cecfe486e3",
+      "docs/sutram-performance.html": "547a1f5091339753f31c7c1feb7f8b23e35da08d",
+      "docs/sutram-philosophy.html": "40d8240047d2067dcae5d260b591d03e0e874860",
+      "docs/sutram-project-status.html": "1648eec2545d93a3eb471f60b56b686cb7c190c6",
+      "docs/sutram-roadmap.html": "5a84003f73af8010c2efedd9da62eb20d8ca509e",
+      "docs/sutram-scorecard.html": "07543d01f23cff6ac86e58a5c0270a17d1800e8c",
+      "docs/sutram-stdlib-reference.html": "b925949ebeb3dee2e7aa51b52c63327e962021b6",
+      "docs/sutram-stdlib.html": "a120fe5739598131dab3768655eab60620536321",
+      "docs/sutram-vocabulary.html": "0a755ca409e0cfc21e2981cc29d0b2c3a3b7ad88"
+    },
+    "proof_sources": {
+      "tools/check_alloc_bounds.py": "55ce880c45eb36542c32c761689fc2aa0b9f6ad1",
+      "ChatGPT-to-Sarvam/ROUND-103-CHECK-ALLOC-SIZES.py": "cace924fc6af3e2b7b6e56643aa8187f8ca4fea3",
+      "src/sutram_compiler.asm": "8b7875c06893333ee8be4191a04a94029a09d218",
+      "docs/OBJECT-FORMAT.md": "97544d1249f07b0a23f637e706178ec1f8cc6d28",
+      "docs/CHANGELOG.md": "cc440a69090bf546a0c80f9458dceb6464b85cb6"
+    },
+    "windows_reports": {
+      "Windows-to-Sarvam/WIN-FFI-2026-10-21.md": "51315c8b2f073ee0dc56f2efc4f7edbb2a100b12",
+      "Windows-to-Sarvam/WIN-RUN-2026-10-21.md": "dd7979a48d47e73f49d553c589fd9d342b5d763f"
+    }
+  },
+  "ws1": {
+    "status": "PASS: full read of exemption reasons, logic and source relationships",
+    "exempt_rule_keys": 12,
+    "exempt_actual_allocation_sites": 19,
+    "reported_gate_sites": 25,
+    "reported_gate_bounded": 6,
+    "reported_gate_exempt": 19,
+    "reported_gate_failed": 0,
+    "highest_risk": "nighantu_mil and six sangrah functions assume caller-provided scap/cap/bcap match actual map handles; not source enforced",
+    "parser_weaknesses": [
+      "bound can be after multiply",
+      "bound constant need not be mathematically strong enough",
+      "bound can be branch-conditional",
+      "stale reaching-variable definition",
+      "new expression inside existing exempt function borrows blanket exemption",
+      "unchecked caller extent/alias"
+    ],
+    "proposed_step": "limited lexer+reaching definitions+pre-multiply dominating exact numeric bound; fail closed on unknowns/exemption site mutation; no general pointer-safety claim",
+    "native_status": "NOT RUN - no toolchain"
+  },
+  "ws2": {
+    "status": "PASS: sourced prose reading and qualified support taxonomy",
+    "root_markdown_read": 3,
+    "top_level_docs_html_read": 25,
+    "findings": [
+      "README/overview falsely deny shipped .smo separate compilation",
+      "Master/project status/designer/scorecard say no FFI though Linux implementation exists",
+      "Windows never executed claims stale versus version-specific owner run",
+      "Master performance 4 of 5 is contradicted by own memory and runtime table",
+      "Master parameter numbering differs from design charter",
+      "README example addition 191+11 not equal 195 and mala falsely called comment-only",
+      "Mixed-snapshot numbers and outdated human pack support language",
+      "Benchmark estimates must not appear as matched same-host measurements",
+      "Freestanding/core-layer is not demonstrated boot/memory safety"
+    ],
+    "native_status": "NOT RUN - no toolchain"
+  },
+  "ws3": {
+    "status": "PASS: documents read/reconciled",
+    "superseded": [
+      "R97 proposed --ffi-sidecar: now --ffi",
+      "R98 zero ELF relocation subset: extended by R33 internal PC32",
+      "R100 Windows FFI unimplemented status: native Windows v245 branch tested, not merged",
+      "R100 safe pointer v2 header superseded by shipped v2 and R101 proposed future v3"
+    ],
+    "still_proposal": [
+      "R102 cstr_ro v3 Windows literal-only",
+      "R97 seven-workload 7/7 performance threshold and R98 Gate0",
+      "R105 provenance checker upgrade"
+    ],
+    "still_normative": [
+      "R104 validity-before-address rule",
+      "R100 Microsoft x64 ABI register/stack convention"
+    ],
+    "native_status": "NOT RUN - no toolchain"
+  },
+  "live_other_partner": {
+    "Claude_R39_handback_at_independent_review": "not found",
+    "Claude_R38_branch": "v246 review branch not merged at initial main",
+    "Windows_FFI": "native v245 review branch not merged at initial main"
+  },
+  "explicit_not_run": [
+    "NOT RUN - no toolchain: compile/run Sutram compiler and all examples",
+    "NOT RUN - no toolchain: full gates.sh, library/property proofs, native crash corpus/fuzz",
+    "NOT RUN - no toolchain: native Windows GUI/installer/FFI",
+    "NOT RUN - no toolchain: source mutation tests of proposed strengthened provenance checker",
+    "NOT RUN - no toolchain: benchmark rebuild, 7-workload measurements or document generator"
+  ],
+  "changes": "Only new ROUND-105 documents inside ChatGPT-to-Sarvam/. No src/, lib/, tests/, tools/, Windows-to-Sarvam/, backups/, GitHub workflows, goldens or installers modified."
+}

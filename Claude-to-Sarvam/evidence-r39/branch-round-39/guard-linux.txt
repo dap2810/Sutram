@@ -1,0 +1,2 @@
+Linux. Compiler v246 (main a292d997) vs v247 (claude/round-39), the ordinary compile of every program:
+567 programs: 475 byte-identical executables, 92 refused identically, 0 DIFFER

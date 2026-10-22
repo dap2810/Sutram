@@ -1,0 +1,26 @@
+Each checker runs on the library of its own round, with the same mutation applied:
+  R38 gate (main before R39) and the R103 allowlist on the R38 library; the R39 gate on the R39 library.
+P0 no mutation
+    truth: safe
+    R38 gate: PASS   R39 gate: PASS   R103 allowlist: PASS
+P1 mala_nava's bound raised past the safe value (c > 2^61)
+    truth: unsafe: c * 8 wraps under the bound
+    R38 gate: PASS   R39 gate: FAIL   R103 allowlist: PASS
+P2 mala_nava doubles c after its bound
+    truth: unsafe: the bound no longer covers c
+    R38 gate: PASS   R39 gate: FAIL   R103 allowlist: PASS
+P3 a new allocation in an exempt prakriya (rakh_bhed)
+    truth: unsafe: bcap is the caller's, unbounded
+    R38 gate: PASS   R39 gate: FAIL   R103 allowlist: FAIL
+P4 R104's case: sz = c * 8 with no check, nirmmita(sz)
+    truth: unsafe
+    R38 gate: FAIL   R39 gate: FAIL   R103 allowlist: PASS
+P5 the multiply moved into the caller: mala_nava calls a helper with c * 8
+    truth: unsafe: n * 8 wraps; no nirmmita sees it
+    R38 gate: PASS   R39 gate: FAIL   R103 allowlist: PASS
+P6 mala_nava loses its c < 0 check (the R37 defect: -2^61 + 1 cells is 8 bytes)
+    truth: unsafe: a negative count wraps positive
+    R38 gate: PASS   R39 gate: FAIL   R103 allowlist: PASS
+P7 mala_nava's bound only on one branch (yadi (n == 7) { yadi (c > K) ... })
+    truth: unsafe for n != 7
+    R38 gate: PASS   R39 gate: FAIL   R103 allowlist: PASS

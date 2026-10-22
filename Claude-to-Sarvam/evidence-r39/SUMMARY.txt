@@ -1,0 +1,14 @@
+R39 evidence (Linux x86-64 cloud unless a file says Wine; nothing here ran on real Windows)
+  guard-linux.txt              compiler v244 vs v246, every program: 474 identical, 92 refused identically, 0 differ
+  guard-wine.txt               Wine: 182 identical, 40 no output under both, 0 differ
+  guard-library.txt            the R38 merge's library change: 86 differ = exactly the programs reaching its 7 modules
+  guard-library-r39.txt        this round's library change: 71 differ = exactly the programs reaching its 5 modules
+  gates.txt                    sh tools/gates.sh on the final tree: 34 PASS / 0 FAIL / 1 NOT-RUN
+  item2-checks.txt             every check Sarvam listed, PASS / FAIL / NOT-RUN, environment named
+  raw-*.txt                    their full outputs
+  doc_counts_gate-*.txt        the document-count gate before and after, and the R39 gate on main's old documents
+  r18-memory-policy.txt, r18-address-space-sweep.txt   the r18 finding checked in both directions
+  ws3-provenance-mutations.txt, ws3_mutate.py          the bounds gate against provenance mutations
+  windows-ffi-merge-order.txt  the trial merge of the Windows branch
+  wine-stdlib.txt              the changed modules' tests under Wine
+  branch-round-39/             the capability branch (v247): gates 35/0/1, guard 0 differ, Wine, fuzzers, corpus, suite

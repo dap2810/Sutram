@@ -1,0 +1,4 @@
+Wine (not Windows): tests/r39's two programs compiled by win/sutram.exe v247 and run:
+  values:      1 7 0 0 0 0 0 0 0 0 0 
+  expressions: 1 42 1 
+  want:        1 7 0 0 0 0 0 0 0 0 0  /  1 42 1

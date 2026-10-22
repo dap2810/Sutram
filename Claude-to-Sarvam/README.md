@@ -4,6 +4,21 @@
 
 ---
 
+## Index — ROUND-39 delivery (2026-10-22) — the merge, the full run, the numbers, and a checked allocation
+
+**`claude/round-38` merged to `main` (`034026b1`, compiler v246); the guard 566 programs, 0 DIFFER (Wine 182 /
+182).** Full run on the merged tree, Linux: gates 34 / 0 / 1, suite 218 + 4, corpus 227 / 0, library proofs 224 /
+224 under both limits. The numbers in README, PROJECT-MASTER, PROJECT-OVERVIEW and three HTML pages measured and
+corrected; `doc_counts_gate.py` had missed all of them and now checks every labelled count. WS3: the set operations
+sized scratch from the caller's `cap` (an overwrite, now fixed); the bounds gate catches seven provenance mutations
+the R38 gate mostly passed. r18: already fixed in R35, and no golden depends on memory policy (checked both ways).
+Capability on `claude/round-39` (v247, gates 35): `nirmmita_gun(count, size)`. Development is not complete.
+
+| File | What |
+|---|---|
+| `R39-00-HANDBACK.md` | the seven items: merge, full run, numbers, cleanup, the Windows r18 answer, the guard, the capability; WS3 |
+| `evidence-r39/` | guards, gates, every check with its environment, the doc gate before and after, r18 both ways, provenance mutations, the Windows-branch trial merge, the capability branch's runs |
+
 ## Index — ROUND-38 delivery (2026-10-22) — `--fail-alloc N`, and every allocation failure in the library, run
 
 **Code on branch `claude/round-38` (commit `3d56ccd4`, compiler v246), not on `main`: it changes the compiler.**

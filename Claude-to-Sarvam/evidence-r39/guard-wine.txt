@@ -1,0 +1,2 @@
+Wine (not Windows). win/sutram.exe of main before the merge (v244) vs after (v246, cloud cross-build), every examples/*.sm:
+Wine: 182 identical, 40 produce no output under both, 0 differ:

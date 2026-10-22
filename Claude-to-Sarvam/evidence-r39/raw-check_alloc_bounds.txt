@@ -1,0 +1,1 @@
+alloc bounds: 26 computed allocations in lib/: 13 bounded before the multiply, 13 exempt with a reason, 0 failed

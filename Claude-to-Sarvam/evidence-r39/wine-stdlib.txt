@@ -1,0 +1,1 @@
+Wine (not Windows): tests/stdlib programs that reach a changed module, compiled by win/sutram.exe (v246) with the R39 library, and run: 64 match their golden, 0 differ
