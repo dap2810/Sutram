@@ -1,0 +1,20 @@
+===== host, inherited virtual memory limit =====
+RLIMIT_AS=unlimited
+cap=3037000499 wrapped_bytes=24296003992 signed_bytes=24296003992 unsigned_overflow=0 signed_overflow=0 sz_lt_zero=0
+mmap=FAILED errno=12
+cap=2305843009213693953 wrapped_bytes=8 signed_bytes=8 unsigned_overflow=1 signed_overflow=1 sz_lt_zero=0
+mmap=SUCCESS nonnull=1 (zero pages touched)
+cap=9223372036854775807 wrapped_bytes=18446744073709551608 signed_bytes=-8 unsigned_overflow=1 signed_overflow=1 sz_lt_zero=1
+===== host, explicitly set 4 GiB virtual memory limit =====
+RLIMIT_AS=finite
+cap=3037000499 wrapped_bytes=24296003992 signed_bytes=24296003992 unsigned_overflow=0 signed_overflow=0 sz_lt_zero=0
+mmap=FAILED errno=12
+cap=2305843009213693953 wrapped_bytes=8 signed_bytes=8 unsigned_overflow=1 signed_overflow=1 sz_lt_zero=0
+mmap=SUCCESS nonnull=1 (zero pages touched)
+cap=9223372036854775807 wrapped_bytes=18446744073709551608 signed_bytes=-8 unsigned_overflow=1 signed_overflow=1 sz_lt_zero=1
+===== toolchain =====
+cc (Debian 14.2.0-19) 14.2.0
+===== SHA256 =====
+8618c10f7a23dac3fc88621d1a83c019fa4e7428cc72eb91914e5e1f0a4b1077  /mnt/data/r101_r18_mmap_control.c
+7121171c99bbdb4325c46c22f9b9147bdb1701104553555a5bfb5d133b4dab1b  /mnt/data/r101_r18_mmap_control
+NOTE: Host proof uses mmap/munmap with zero pages touched; NOT the Sutram compiler or compiled .sm test.
