@@ -234,13 +234,14 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v244) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v246) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
     r29_flag_separate db "--separate",0
     r32_flag_ffi db "--ffi",0
     r32_empty db 0
+    r38_flag_fail db "--fail-alloc",0
     r48_msg_near db ": Sutram Error [E_PARSE]: shabd '",0
     r48_msg_end db "'",10,0
     r48_msg_ok db "Sutram pariksha: shuddham (nirgata-patram na rachitam)",10,0
@@ -2043,6 +2044,55 @@ _start:
     test rax, rax
     jz .show_version
 %ifndef WINDOWS
+    ; R38 --fail-alloc N <in.sm> <out>: the ordinary compile, except that the
+    ; program's Nth nirmmita returns 0 (src/r38_fail_alloc.inc). Note N, drop the
+    ; two arguments, and go on as the ordinary compile; anything else is usage.
+    mov rdi, R49_ARG(16)
+    lea rsi, [rel r38_flag_fail]
+    call strcmp
+    test rax, rax
+    jnz .r38_not_fail
+    mov rax, R49_ARG(0)
+    cmp rax, 5                     ; prog --fail-alloc N in out
+    jne .usage
+    mov rsi, R49_ARG(24)
+    xor eax, eax
+    cmp byte [rsi], 0
+    je .usage
+.r38_digit:
+    movzx ecx, byte [rsi]
+    test ecx, ecx
+    jz .r38_number
+    sub ecx, '0'
+    cmp ecx, 9
+    ja .usage
+    cmp rax, 100000000             ; N < 10^9
+    jae .usage
+    imul rax, rax, 10
+    add rax, rcx
+    inc rsi
+    jmp .r38_digit
+.r38_number:
+    test rax, rax
+    jz .usage
+    mov [rel r38_fail_n], rax
+    mov rax, R49_ARG(32)           ; argv[1] = in, argv[2] = out
+    mov R49_ARG(16), rax
+    mov rax, R49_ARG(40)
+    mov R49_ARG(24), rax
+    mov qword R49_ARG(32), 0       ; argv[3] = NULL; the environment is found from
+    lea rax, [rel r32_empty]       ; argc, so the two freed slots become empty entries (as R32)
+    mov R49_ARG(40), rax
+    mov R49_ARG(48), rax
+    sub qword R49_ARG(0), 2
+    mov rdi, R49_ARG(16)
+    cmp byte [rdi], '-'            ; no other mode after it
+    je .usage
+    mov rdi, R49_ARG(24)
+    call want_pe
+    test rax, rax                  ; Linux programs only
+    jnz .usage
+.r38_not_fail:
     ; R32 --ffi <decls.sffi>, then --object or --separate and their arguments:
     ; note the sidecar, drop the two arguments, and go on as that mode. With anything else after it, it is a usage error, so the
     ; ordinary compile can never read a sidecar.
@@ -19631,6 +19681,9 @@ gen_expr:
 ; Emit allocation sequence assuming generated-program RAX already holds byte size.
 ; Leaves the allocated base pointer in generated-program RAX.
 emit_nirmmita_from_rax:
+    cmp qword [rel r38_fail_n], 0  ; R38 --fail-alloc: the counted form
+    jne r38_emit_faulty
+r38_nirm_seq:
     ; mov rsi, rax (length) = 48 89 C6
     mov dil, 0x48
     call emit_byte
@@ -23765,6 +23818,7 @@ strcmp:
 %include "src/r25_phal.inc"
 %include "src/r28_object.inc"
 %include "src/r32_ffi.inc"
+%include "src/r38_fail_alloc.inc"
 
 itoa:
     mov rax, rdi

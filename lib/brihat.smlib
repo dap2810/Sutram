@@ -253,7 +253,19 @@ prakriya brihat_bhajshesh(a, b, q, r, n) {
 # brihat_shesh(num, shesh, res, n) — res = num % shesh, where num has 2n digits
 # Helper for powmod. Uses long division. shesh == 0 is defined, not a
 # hang: no reduction is applied, so res is the low n digits of num.
+# Returns 0, or -1 (res unchanged) if its n-digit scratch cannot be allocated.
 prakriya brihat_shesh(ank, shesh, res, n) {
+    vitti c = n
+    vitti tr = 0
+    yadi (brihat_asti_shunyank(shesh, c) == 0) {
+        tr = nirmmita(c * 8)
+        yadi (tr == 0) { prati 0 - 1 }
+    }
+    prati brihat_shesh_tr(ank, shesh, res, c, tr)
+}
+
+# brihat_shesh_tr(num, shesh, res, n, tr) — brihat_shesh with the caller's n-digit scratch tr.
+prakriya brihat_shesh_tr(ank, shesh, res, n, scratch) {
     vitti x = ank
     vitti m = shesh
     vitti r = res
@@ -266,7 +278,7 @@ prakriya brihat_shesh(ank, shesh, res, n) {
         }
         prati 0
     }
-    vitti tr = nirmmita(c * 8)
+    vitti tr = scratch
     brihat_shunyank(tr, c)
     vitti i = c * 2 - 1
     yavat (i >= 0) {
@@ -303,7 +315,7 @@ prakriya brihat_shesh(ank, shesh, res, n) {
 # exp is a plain int and must be >= 0 (a negative exp returns 1:
 # the loop never runs). shesh == 0 means "no reduction" (see
 # brihat_shesh), so the result is base^exp truncated to n digits.
-# res is n-digit.
+# res is n-digit. Returns 0, or -1 (res unchanged) if its scratch cannot be allocated.
 prakriya brihat_ghatmod(base, exp, shesh, res, n) {
     vitti b = base
     vitti e = exp
@@ -312,15 +324,17 @@ prakriya brihat_ghatmod(base, exp, shesh, res, n) {
     vitti c = n
     vitti t1 = nirmmita(c * 2 * 8)
     vitti bcur = nirmmita(c * 8)
+    vitti tr = nirmmita(c * 8)
+    yadi (c > 0 && (t1 == 0 || bcur == 0 || tr == 0)) { prati 0 - 1 }
     brihat_ank_se_int(1, r, c)
     brihat_pratilip(bcur, b, c)
     yavat (e > 0) {
         yadi (e % 2 == 1) {
             brihat_gun(r, bcur, t1, c)
-            brihat_shesh(t1, m, r, c)
+            brihat_shesh_tr(t1, m, r, c, tr)
         }
         brihat_gun(bcur, bcur, t1, c)
-        brihat_shesh(t1, m, bcur, c)
+        brihat_shesh_tr(t1, m, bcur, c, tr)
         e = e / 2
     }
     prati 0
