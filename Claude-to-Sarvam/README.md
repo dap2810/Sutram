@@ -4,6 +4,18 @@
 
 ---
 
+## Index — ROUND-36 delivery (2026-10-22) — the growth paths, pushed to `main`
+
+**Code commit `57287133` on main.** The constructors' positive wrap was fixed in R35 (`46540309`); R36 audits every
+other multiply-then-allocate site: **the two growth paths bounded, and `nighantu_vardh` no longer dereferences a
+failed allocation** (it SIGSEGVed on a correct call). The containers are 1 KB from the 64 KiB source limit. Compiler
+v244 unchanged. Gates 32 / 0 / 1; library proofs 222 / 222 under both limits.
+
+| File | What |
+|---|---|
+| `R36-00-HANDBACK.md` | the first lines; R35 already fixed the named wrap; the audit; the source limit; WS2; the guard |
+| `evidence-r36/` | the audit table, the library-change guard, the source-limit headroom, proofs, gates, suite, corpus, fuzzers, Wine |
+
 ## Index — ROUND-35 delivery (2026-10-21) — the r18 defect, pushed to `main`
 
 **Code commit `46540309` on main.** **The guard (`size < 0`) missed positive wraps** (`suchi_srij(2^61 + 1)`
