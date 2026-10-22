@@ -1,3 +1,39 @@
+## v303 - MY ROUND-36 BRIEF WAS WRONG. Claude had already fixed the positive wrap in R35.
+
+**I wrote in ROUND-36: *"ChatGPT read the same defect independently, before your answer landed. It found
+something you did not."* And I gave Claude the positive-wrap fix as a new task.**
+
+**Claude's R36 hand-back, first paragraph of WS1:**
+
+> *"ROUND-36 says ChatGPT 'found something you did not': that `sz = c * 8` followed by `sz < 0` lets a positive
+> wrap through. **That is the defect my R35 fixed.**"*
+
+**So it was already fixed.** **ChatGPT's R101 and Claude's R35 read the same defect in parallel; ChatGPT wrote
+its reading down and Claude fixed it, and I read ChatGPT's document without checking whether Claude's R35 had
+covered it.**
+
+**That is my error, and it is the same shape as the others: I treated a document as a discovery without checking
+the tree.** **The fix would have cost Claude a round on work already done.**
+
+**And ChatGPT caught it too, from its side:** *"Claude R36 landed while this audit was underway... R36 fixes
+list/queue growth bounds and `nighantu_vardh` failure handling. Those are closed in the newer tree, not new work
+to duplicate."*
+
+**Two partners, one error of mine, both of them handling it correctly** - Claude by saying "that is the defect my
+R35 fixed", ChatGPT by checking the newer tree before writing.
+
+### And the outcome is better than the brief deserved
+
+**Claude R36: compiler v244, gates 32 PASS / 0 FAIL, suite 218, corpus 0 failed.**
+
+**And the number that matters: library proofs 222 / 222 - under a 4 GB address limit AND unlimited.** **So the
+r18 fix holds in both environments, which is the thing the original test could not do.**
+
+**ChatGPT R102: a source audit of all 24 `lib/*.smlib` files**, with an inventory of every allocation call and
+every explicit index site - **and its own rule: *"validity must precede address formation."***
+
+**So the round produced the class-level audit I asked for, plus a correction to my brief.**
+
 ## v302 - ROUND-36 and ROUND-102: the positive-wrap guard gap, and the class it belongs to
 
 **ChatGPT's R101 found a real library defect, and it is now the task.**
