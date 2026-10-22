@@ -1,3 +1,50 @@
+## v309 - R38 and R104: and Claude skipped a version number so the Windows branch would not collide
+
+**Both delivered. And one detail in Claude's hand-back is the kind of coordination this project needs more of.**
+
+### Claude R38: v246, on a branch, and it skipped v245 on purpose
+
+> *"Compiler: `main` is still v244. The branch is `v246`. **I skipped v245 because the unmerged Windows FFI
+> build already uses it.**"*
+
+**The Windows FFI is on a branch at v245 and unmerged. Claude noticed, and moved its own version to v246 rather
+than taking a number another branch had already claimed.** **Two branches, two version numbers, no collision -
+and it cost Claude nothing but noticing.**
+
+**And it did the other right thing:** *"The code is on branch `claude/round-38`, commit `3d56ccd4`. **It is not on
+`main`. It changes the compiler, so it waits for review.**"* **A compiler change waits; a library change does
+not.** **That distinction is now being applied without being asked.**
+
+**Numbers: gates 34 PASS / 0 FAIL / 1 NOT-RUN - one more than R37, a new gate "R38 fail-alloc". Library proofs
+223/223 in both environments. Suite 218. Corpus 227, 0 failed. Fuzzers clean.**
+
+### And ChatGPT wrote the rule small enough to use
+
+**The rule now fits on a page:**
+
+> *"**Check the domain, prove the full byte length or element count fits without overflow, and prove the
+> requested access lies inside the real allocation - before computing an allocation size or memory address.**
+> Checking whether a *wrapped result* is negative or within bounds is too late."*
+
+**And it gives WRONG and RIGHT side by side:**
+
+```sutram
+# WRONG
+vitti bytes = count * 8
+yadi (bytes < 0) { prati 0 }
+vitti p = nirmmita(bytes)
+
+# RIGHT
+yadi (count < ...)   # the domain check comes first
+```
+
+**That is exactly what was asked for: a rule a person can apply without reading a 14 KB audit.** **And the WRONG
+line is the actual defect Claude fixed in R37, reduced to three lines.**
+
+### And the WS1 allowlist audit, from the previous delivery, still stands
+**35 of 35 current spellings accepted, 0 unmatched - and the checker is LOOSER than safety, not stricter: it
+matches spellings, not provenance.**
+
 ## v308 - the checker is not stricter than the truth. It is LOOSER, and ChatGPT named the mechanism.
 
 **I asked: is ChatGPT's allocation allowlist complete, or stricter than the truth? The answer is neither - it is
