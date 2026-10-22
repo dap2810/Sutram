@@ -27,7 +27,7 @@ class Helpers(unittest.TestCase):
         paths=['src/r67_stack_pair.inc','windows/gui/r66_indic_clusters.asm','windows/gui/r67_cluster_count.asm']
         objects=[]
         for i,name in enumerate(paths):
-            text=(ROOT/name).read_text()
+            text=(ROOT/name).read_text(encoding='utf-8')
             text='\n'.join(x for x in text.splitlines() if not x.startswith('extern '))
             gas=p/f'helper{i}.S';gas.write_text(r66.to_gas(text));objects.append(str(gas))
         bridge=p/'bridge.c'
@@ -90,11 +90,11 @@ int64_t count_clusters(const unsigned char* p,const unsigned char* e) { return r
 
 class Source(unittest.TestCase):
     def pack(self,name):
-        return dict(line.split() for line in (ROOT/f'lang/{name}.lang').read_text().splitlines() if line and not line.startswith('#'))
+        return dict(line.split() for line in (ROOT/f'lang/{name}.lang').read_text(encoding='utf-8').splitlines() if line and not line.startswith('#'))
     def test_gujarati_collision_removed(self):
         p=self.pack('gujarati');self.assertNotIn('સંખ્યા',p);self.assertEqual(len(p),48)  # R23: +vibhag; R25: +siddhi dosh prasar
     def test_all_previous_words_preserved(self):
-        base=json.loads((ROOT/'tests/r67/baseline_packs.json').read_text())
+        base=json.loads((ROOT/'tests/r67/baseline_packs.json').read_text(encoding='utf-8'))
         for lang,words in base.items():
             for word,value in words.items(): self.assertEqual(self.pack(lang)[word],value)
     def test_new_abbreviations_exact(self):
@@ -106,13 +106,13 @@ class Source(unittest.TestCase):
         for lang in ('gujarati','bengali','punjabi'):
             self.assertTrue(all(len(k.encode())<64 for k in self.pack(lang)))
     def test_gui_build_links_objects(self):
-        s=(ROOT/'windows/gui/build-gui.ps1').read_text()
+        s=(ROOT/'windows/gui/build-gui.ps1').read_text(encoding='utf-8')
         for name in ('r67_gui_entry.asm','r66_indic_clusters.asm','r67_cluster_count.asm'): self.assertIn(name,s)
         # R4: since R73 the linker goes through Invoke-BoundedProcess with an argument array, so the
         # objects are appended ($objects) rather than splatted (@objects). Same intent: all three are linked.
         self.assertRegex(s,r"Invoke-BoundedProcess \$linker .*\+\$objects\+");self.assertNotIn('ExecutionPolicy Bypass',s)
     def test_gui_calls_real_counter_without_caret_override(self):
-        s=(ROOT/'windows/gui/r67_gui_entry.asm').read_text()
+        s=(ROOT/'windows/gui/r67_gui_entry.asm').read_text(encoding='utf-8')
         self.assertIn('call r67_count_editor_clusters',s)
         self.assertIn('API WideCharToMultiByte',s)
         # R4: since R73 the count goes to the status line (update_status), not the window title,
@@ -120,15 +120,15 @@ class Source(unittest.TestCase):
         self.assertIn('call update_status',s); self.assertNotIn('API SetWindowTextA',s)
         self.assertNotIn('EM_SETSEL',s);self.assertNotIn('COL_KEYWORD',s)
     def test_gui_single_call_redirect(self):
-        s=(ROOT/'windows/gui/r67_gui_entry.asm').read_text()
+        s=(ROOT/'windows/gui/r67_gui_entry.asm').read_text(encoding='utf-8')
         self.assertIn('%ifidni %1,highlight_editor',s)
         self.assertIn('%unmacro call 1',s)
         self.assertIn('%include "windows/gui/sutram_gui.asm"',s)
     def test_standalone_examples_have_expected_pairs(self):
         for lang in ('bengali','punjabi'):
             stem=ROOT/f'examples/r67/{lang}_native'
-            txt=stem.with_suffix('.sm').read_text()
+            txt=stem.with_suffix('.sm').read_text(encoding='utf-8')
             self.assertIn('।',txt);self.assertIn('॥',txt)
-            self.assertEqual(stem.with_suffix('.exit').read_text(),'0\n')
-            self.assertEqual(stem.with_suffix('.out').read_text(),'15\n12.500000\n-7.250000\n123456789\n')
+            self.assertEqual(stem.with_suffix('.exit').read_text(encoding='utf-8'),'0\n')
+            self.assertEqual(stem.with_suffix('.out').read_text(encoding='utf-8'),'15\n12.500000\n-7.250000\n123456789\n')
 if __name__=='__main__': unittest.main()

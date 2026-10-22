@@ -1,0 +1,32 @@
+environment: Windows  windows Windows 10 Pro 26H2 build 26300.9711  PowerShell 5.1.26100.9711  elevated=False  commit=71dad56b7be90b8e8ff55cae354f8c225cafe7dc
+verdict in log: PASS
+  PASS     runner-not-elevated            [Windows]  the acceptance process itself is not elevated
+  PASS     setup-hash-file                [Windows]  matches the committed hash file
+  PASS     setup-self-test                [Windows]  embedded SHA-256 self-test exit 0
+  PASS     install-wizard                 [Windows]  outcome=done page; screenshots: wizard-welcome.png, wizard-license.png, wizard-location.png, wizard-components.png, wizard-ready.png, wizard-done.p
+  PASS     install-no-elevation-prompt    [Windows]  setup ran unelevated and no UAC consent prompt appeared
+  PASS     install-footprint              [Windows]  missing: 
+  PASS     devanagari-cli                 [Windows]  installed copy; expects the line योगः = 15
+  PASS     linker-installed               [Windows]  installed copy; expects Namaste, Sutram!
+  PASS     ide-launches                   [Windows]  installed copy; screenshot ide-start.png
+  PASS     ide-menus-english              [Windows]  expected top File Edit Shell Language Help; missing items: 
+  PASS     ide-buttons-english            [Windows]  mismatched ids: 
+  PASS     devanagari-ide                 [Windows]  expects योगः = 15; screenshot ide-devanagari.png
+  PASS     tab-indent                     [Windows]  four spaces, no tab character; a selection moves right by four
+  PASS     shift-tab-dedent               [Windows]  menu path only
+  NOT-RUN  shift-tab-keyboard             [Windows] (advisory)  a real Shift+Tab needs the keyboard state, i.e. SendInput into the foreground window; rerun with -Keyboard and do not touch the mouse/ke
+  PASS     unsaved-guard                  [Windows]  screenshot ide-unsaved-guard.png
+  PASS     uninstall-removes-install      [Windows]  failure box: ; not removed: 
+  PASS     uninstall-folder-gone          [Windows] (advisory)  the install folder itself (it is kept when it holds user files)
+  PASS     install-staging-removed        [Windows] (advisory)  R34: the wizard removes its install staging after success
+  FAIL     temp-staging-cleaned           [Windows] (advisory)  R4-03 s3; advisory only; the uninstall folder holding uninstall.log stays by design
+binaries:
+  Sutram-Setup.exe: 285470a4a51c14eed7c23bd3342e068b4610f91301da1877f98fa0cfbe8c0c5b  MATCHES this tree
+  win/sutram.exe: 4533c46c841901e918830e167e211a53c4f49f3c9ad94b5110d8c3ced7ecbf9c  MATCHES this tree
+  sutram.exe: 4533c46c841901e918830e167e211a53c4f49f3c9ad94b5110d8c3ced7ecbf9c  MATCHES this tree
+  sutram-ide-gui.exe: 829f8658de55be045c6273339244d099022b373725ead3681228c00ba3d5c051  MATCHES this tree
+  installed bin\sutram.exe: 4533c46c841901e918830e167e211a53c4f49f3c9ad94b5110d8c3ced7ecbf9c (installed copy; not in the tree)
+  installed win\sutram.exe: 4533c46c841901e918830e167e211a53c4f49f3c9ad94b5110d8c3ced7ecbf9c (installed copy; not in the tree)
+  installed sutram-ide-gui.exe: 829f8658de55be045c6273339244d099022b373725ead3681228c00ba3d5c051 (installed copy; not in the tree)
+  installed Sutram-Uninstall.exe: 285470a4a51c14eed7c23bd3342e068b4610f91301da1877f98fa0cfbe8c0c5b (installed copy; not in the tree)
+ACCEPTED: Windows, not elevated, every required check PASS, binaries match this tree

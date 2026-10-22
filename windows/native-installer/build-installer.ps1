@@ -6,6 +6,7 @@ $stage=Join-Path $work 'payload'
 [void](New-Item -ItemType Directory -Force -Path $stage,(Join-Path $stage 'bin'),(Join-Path $stage 'win'),(Join-Path $stage 'assets'))
 foreach ($pair in @(
     @('win\sutram.exe','bin\sutram.exe'),@('win\sutram.exe','win\sutram.exe'),
+    @('sutram-link.exe','bin\sutram-link.exe'),
     @('sutram-ide-gui.exe','sutram-ide-gui.exe'),@('icons\sutram.ico','assets\sutram.ico'),
     @('LICENSE.txt','LICENSE.txt'),@('README.md','README.md'))) {
     $source=Join-Path $ProjectRoot $pair[0]

@@ -144,6 +144,9 @@ def main(argv):
     args = list(argv)
     compiler = os.path.join(REPO, "sutram_compiler")
     linker = os.path.join(REPO, "sutram-link")
+    if os.name == "nt":                    # R34: the Windows compiler and linker (a PE)
+        compiler = os.path.join(REPO, "sutram.exe")
+        linker = os.path.join(REPO, "sutram-link.exe")
     keep = None
     cache = None
     ffi = None
@@ -245,6 +248,8 @@ def main(argv):
             print(f"sutram-build: {fo}: not linked", file=sys.stderr)
             return 1
         objects.append(obj)
+    if os.name == "nt" and os.path.exists(linker):
+        linker = os.path.abspath(linker)   # R34: Windows looks for a bare name beside python, not here
     r = subprocess.run([linker, out] + [os.path.abspath(o) for o in objects], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     if r.returncode != 0:
         sys.stdout.write(r.stdout.decode("utf-8", "replace"))

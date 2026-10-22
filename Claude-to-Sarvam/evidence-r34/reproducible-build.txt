@@ -1,0 +1,11 @@
+== reproduce the committed binaries from these sources (LF clone of claude/windows-linker at b88a7344)
+SAME   sutram.exe 4533c46c841901e918830e167e211a53c4f49f3c9ad94b5110d8c3ced7ecbf9c
+SAME   sutram_compiler 9add8ae8296b44619039f9b73b68a5de3841db531aa531e008935a58b5fe8a43
+SAME   sutram-link.exe b53dcbbd95dd8ff19216c62534f72d981d669fec5fe7da5e97c41272019f659a
+SAME   sutram-link c673ff38a3b31de2bd0b9e80d1bbac19d6ee030e09404b2accebe9e2908bd590
+SAME   win/sutram.exe = sutram.exe
+== r69 pins
+exit=0
+  "status": "SOURCE_PINS_CHECKED",
+== version
+Sutram 1.0 (v243) - sampurna sutra

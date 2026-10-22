@@ -181,6 +181,7 @@ n_ExitProcess        db 'ExitProcess',0
 n_GetTempPathW       db 'GetTempPathW',0
 n_GetTempFileNameW db 'GetTempFileNameW',0
 n_DeleteFileW db 'DeleteFileW',0
+n_RemoveDirectoryW db 'RemoveDirectoryW',0   ; R34: the staging folder after a successful install
 n_GetEnvironmentVariableW db 'GetEnvironmentVariableW',0
 n_GetModuleFileNameW db 'GetModuleFileNameW',0
 n_CreateDirectoryW   db 'CreateDirectoryW',0
@@ -261,6 +262,7 @@ kernel_table:
     IMPORTS CreateThread
     IMPORTS Sleep
     IMPORTS GetModuleHandleW
+    IMPORTS RemoveDirectoryW
     dq 0, 0
 user_table:
     IMPORTS MessageBoxW
@@ -517,6 +519,7 @@ p_ExitProcess:        resq 1
 p_GetTempPathW:       resq 1
 p_GetTempFileNameW: resq 1
 p_DeleteFileW: resq 1
+p_RemoveDirectoryW: resq 1
 p_GetEnvironmentVariableW: resq 1
 p_GetModuleFileNameW: resq 1
 p_CreateDirectoryW:   resq 1
@@ -1152,6 +1155,20 @@ do_install_staged:
     API CloseHandle
     cmp  dword [rel exit_code], 0
     jne  .dfail
+    ; R34 (R4-03 s3): the install succeeded and install-core.ps1 has copied the log
+    ; into the install folder, so the %TEMP%\STM*.tmp staging folder is removed: its
+    ; three files, the log, then the folder. On a failure it stays - the failure
+    ; message points the user at its log.
+    PTR  rcx, payload_path
+    API  DeleteFileW
+    PTR  rcx, install_ps1
+    API  DeleteFileW
+    PTR  rcx, uninst_ps1
+    API  DeleteFileW
+    PTR  rcx, log_path
+    API  DeleteFileW
+    PTR  rcx, setup_dir
+    API  RemoveDirectoryW
     mov  ecx, 100
     call post_progress
     xor  eax, eax

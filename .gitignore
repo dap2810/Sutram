@@ -1,5 +1,9 @@
 # build artifacts
 *.o
+# R34: except the FFI tests' C objects, which the tests read as committed inputs
+# (tests/r32/OBJECTS.md says how they were built)
+!tests/r32/*.o
+!tests/r33/*.o
 *.obj
 *.exe
 *.bin

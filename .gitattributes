@@ -1,0 +1,21 @@
+# R34: line endings. Git for Windows checks text out as CRLF by default (core.autocrlf=true), and on a
+# real Windows 11 checkout that broke three things: 94 of the 213 hashes in tests/negative/r17/SHA256SUMS,
+# tools/r69_build.py --check-only (it hashes the raw bytes against the pins), and one program the Linux
+# compiler refused because the CR bytes pushed it over its source limit. The committed bytes are LF; these
+# rules only make every checkout match them. No file's content changes.
+
+# Sources: always LF.
+*.sm        text eol=lf
+*.smlib     text eol=lf
+*.asm       text eol=lf
+*.inc       text eol=lf
+*.lang      text eol=lf
+*.sandesh   text eol=lf
+*.sffi      text eol=lf
+
+# Test data and goldens: the exact committed bytes, never converted (their hashes and goldens are bytes).
+tests/negative/**   -text
+tests/expect/**     -text
+
+# Evidence typed in the Windows IDE: kept as recorded (CRLF).
+Claude-to-Sarvam/evidence-r9/wine/*.sm   -text

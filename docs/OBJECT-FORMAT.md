@@ -2,6 +2,9 @@
 
 **ROUND-28.** This file is written by `sutram_compiler --object in.sm out.smo`, read by `sutram-link`
 (`linker/sutram_link.asm`), and printed for people by `tools/smo_dump.py`.
+**ROUND-34:** the Windows compiler writes **version 2**, `SUTRAMO2` - the same layout, holding a PE program's
+code - and `sutram-link` (also built as `sutram-link.exe`) links those into a Windows `.exe`. See *Windows*
+below. Version 1 is unchanged.
 
 **The fundamental is unchanged.** An ordinary program is compiled to a finished executable by the compiler
 alone, in one pass, exactly as before; it never touches this format or the linker. `--object` is opt-in.
@@ -147,10 +150,57 @@ any other relocation. Build the C side freestanding, for example
 `gcc -c -O2 -ffreestanding -fno-asynchronous-unwind-tables -fno-pic -fno-stack-protector f.c`.
 **`SUTRAMO1` and `sutram-link` are unchanged.**
 
+## Windows (ROUND-34): version 2, `SUTRAMO2`, and a PE
+
+```
+sutram.exe --object   in.sm out.smo                 # a SUTRAMO2 object
+sutram.exe --separate in.sm out.smo [root.sm]
+sutram-link.exe prog.exe a.smo [b.smo ...]          # a Windows .exe
+python tools\sutram_build.py main.sm -o prog.exe    # all of it (Windows defaults: sutram.exe, sutram-link.exe)
+```
+
+**Version 2 is version 1's layout, entry for entry, under the magic `"SUTRAMO2"`** - not a second format,
+as the plan (`Claude-to-Sarvam/R29-02-WINDOWS-LINKER-PLAN.md`) asked. What the version adds is what the code is
+for: a PE program. A Windows program's code is not self-contained: the PE the
+compiler writes is `[headers][runtime blob][code]`, then a read/write `.data` section with the module-level
+`vitti` (1024 bytes, 128 of them) and the kernel32 imports, and the code reaches the blob and `.data` by
+rel32. In a `SUTRAMO2` object each of those is a hole, so **no new kind of entry is needed**:
+
+| In the code | In a `SUTRAMO2` object |
+|---|---|
+| the call to the blob's `rt_init`, the first instruction of `mukhya` | a relocation to **`rt:init`** |
+| every call into the blob's `rt_syscall` (each I/O, allocation and exit) | a relocation to **`rt:syscall`** |
+| every access to a `vitti`, the object's own ones too | a relocation to **`vitti:<name>`** |
+| a `vitti` the object holds | the symbol **`vitti:<name>`**, its offset **in this object's data** (8 bytes each, in order), not its code; no storage after the code |
+
+**`sutram-link` decides the output from the magic.** All `SUTRAMO1`: the ELF, exactly as before. All
+`SUTRAMO2`: a PE, written field for field as the compiler's `write_pe` writes it - the blob in front of the
+code, so `rt:init` and `rt:syscall` are defined by the linker at the blob's two entries; each object's data
+after the data of the objects before it, in `.data`, so a `vitti:` relocation is filled with
+`.data − (site + 4)`. **Mixed objects are refused** (`vastu-patrani bhinna-lakshyani`), and so is more `vitti`
+than `.data` holds (`ghatak-star vitti seema atikram`, as the compiler says it).
+
+**Either host links either target.** The one source builds as a Linux program (raw syscalls) and, with
+`-DWINDOWS`, as a Windows one (kernel32 through `win/winrt.inc`, the compiler's own layer):
+
+```
+nasm -f win64 -DWINDOWS=1 -I. linker/sutram_link.asm -o link.obj
+ld -mi386pep --subsystem console --entry=_start --no-insert-timestamp -o sutram-link.exe link.obj
+```
+
+**The proof** (`tests/r34/test_link_windows.py`, run on Windows): every example the Windows compiler compiles
+(182) is **byte-identical** through `--object` + `sutram-link.exe`; 252 programs with modules print and exit the
+same built separately, and 145 without are byte-identical; two modules in both orders; ten linker errors; 128
+`vitti` link, 129 are refused. (Run directly on real Windows 11; the plan's Wine step was not needed.)
+
+**Not on Windows yet:** the FFI (`--ffi`; its sidecar is `linux-x86_64-sysv`, and the Windows x64 calling
+convention is a different one), `sutram-elf2smo`, and `SUTRAM_LANG` (the Windows compiler does not read the
+environment; an object for another pack is not possible there yet).
+
 ## What version 1 does not do
 
 - **No `--lang` flag** with `--object` (`SUTRAM_LANG` works).
-- **Linux only.** The Windows executable has its runtime at the start of its image, so linking it needs more.
+- ~~**Linux only.**~~ **R34: Windows too** (above). The FFI is still Linux only.
 - **With `--object`, every prakriya is exported** (including the library modules a `yoj` pulled in), so two
   objects that both `yoj` the same module define its prakriyas twice. **`--separate` (ROUND-29) is the fix:**
   a `yoj`'d module's prakriyas are not in the object that `yoj`s it.

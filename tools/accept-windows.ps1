@@ -28,13 +28,16 @@
 #>
 [CmdletBinding()]
 param(
-    [string]$Root = (Split-Path -Parent $PSScriptRoot),
+    [string]$Root = '',
     [string]$Setup = '',
     [string]$OutDir = '',
     [switch]$KeepInstalled,
     [switch]$Keyboard,
     [int]$InstallTimeoutSec = 300
 )
+# R34: in Windows PowerShell 5.1 a [CmdletBinding()] script sees an empty $PSScriptRoot inside its
+# param() defaults, so the default is set here, where it is defined (found on real Windows 11).
+if (-not $Root) { $Root = Split-Path -Parent $PSScriptRoot }
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version 2.0
 $Root = [IO.Path]::GetFullPath($Root)
@@ -414,6 +417,12 @@ if ($skipInstall) {
             }
             $installed = ($outcome -eq 'done page') -and (Test-Path -LiteralPath $unKey)
             if ($installed) { $installDir = (Get-ItemProperty -LiteralPath $unKey).InstallLocation }
+            # R34: after a successful install the wizard removes its staging folder; the log is kept in the
+            # install folder (install-core.ps1 copies it there), so read it from there.
+            if ($installed -and -not (Test-Path -LiteralPath (Join-Path $OutDir 'install.log')) -and (Test-Path -LiteralPath (Join-Path $installDir 'install.log'))) {
+                Copy-Item -LiteralPath (Join-Path $installDir 'install.log') -Destination (Join-Path $OutDir 'install.log') -Force
+                [void]$log.AppendLine('install.log copied from ' + $installDir + ' (the staging folder was removed after success)')
+            }
             $st = 'FAIL'; if ($installed) { $st = 'PASS' }
             Add-Check 'install-wizard' $st 'BM_CLICK Next / I accept / Next / Next / Install / Finish (launch unchecked) on the wizard this script started' $log.ToString() ('outcome=' + $outcome + '; screenshots: ' + (($pages | Where-Object { $_ }) -join ', '))
         }
@@ -426,7 +435,7 @@ if ($skipInstall) {
 
     if ($installed) {
         $foot = [ordered]@{}
-        foreach ($rel in @('sutram-ide-gui.exe','bin\sutram.exe','win\sutram.exe','Sutram-Uninstall.exe','payload.manifest.sha256','examples\218_sanskrit_devanagari.sm','lang\sanskrit.lang')) { $foot[$rel] = Test-Path -LiteralPath (Join-Path $installDir $rel) }
+        foreach ($rel in @('sutram-ide-gui.exe','bin\sutram.exe','bin\sutram-link.exe','win\sutram.exe','Sutram-Uninstall.exe','payload.manifest.sha256','examples\218_sanskrit_devanagari.sm','lang\sanskrit.lang')) { $foot[$rel] = Test-Path -LiteralPath (Join-Path $installDir $rel) }   # R34: and the linker
         $sm = Join-Path ([Environment]::GetFolderPath('StartMenu')) 'Programs\Sutram'
         foreach ($lnk in @('Sutram IDE.lnk','Sutram Terminal.lnk','Uninstall Sutram.lnk')) { $foot['StartMenu\' + $lnk] = Test-Path -LiteralPath (Join-Path $sm $lnk) }
         $foot['HKCU uninstall key'] = Test-Path -LiteralPath $unKey
@@ -461,6 +470,23 @@ if ((Test-Path -LiteralPath $compiler) -and (Test-Path -LiteralPath $example)) {
     $st = 'FAIL'; if ($ok) { $st = 'PASS' }
     Add-Check 'devanagari-cli' $st ('"' + $compiler + '" --lang sanskrit 218_sanskrit_devanagari.sm; run it') $out ($where + '; expects the line ' + $yogah15)
 } else { NotRun 'devanagari-cli' ('no compiler or example under ' + $base) }
+
+# R34: the linker - the installed compiler's --object, then the installed sutram-link.exe, then run it.
+$linkExe = Join-Path $base 'bin\sutram-link.exe'
+$hello = Join-Path $base 'examples\01_hello.sm'
+if ((Test-Path -LiteralPath $compiler) -and (Test-Path -LiteralPath $linkExe) -and (Test-Path -LiteralPath $hello)) {
+    $smo = Join-Path $OutDir 'hello.smo'; $lexe = Join-Path $OutDir 'hello-linked.exe'
+    $o = Run-Exe $compiler ('--object "' + $hello + '" "' + $smo + '"') $base 30000
+    $out = 'object exit=' + $o.exit + "`n" + $o.out
+    $ok = $false
+    if ($o.exit -eq 0 -and (Test-Path -LiteralPath $smo)) {
+        $l = Run-Exe $linkExe ('"' + $lexe + '" "' + $smo + '"') $OutDir 30000
+        $out += "`nlink exit=" + $l.exit + "`n" + $l.out
+        if ($l.exit -eq 0 -and (Test-Path -LiteralPath $lexe)) { $x = Run-Exe $lexe '' $OutDir 10000; $out += "`nrun exit=" + $x.exit + "`n" + $x.out; $ok = ($x.exit -eq 0) -and $x.out.Contains('Namaste, Sutram!') }
+    }
+    $st = 'FAIL'; if ($ok) { $st = 'PASS' }
+    Add-Check 'linker-installed' $st ('"' + $compiler + '" --object 01_hello.sm; "' + $linkExe + '"; run it') $out ($where + '; expects Namaste, Sutram!')
+} else { NotRun 'linker-installed' ('no bin\sutram-link.exe or no compiler/example under ' + $base) }
 
 # ------------------------------------------------------------------------------------------------
 # IDE
@@ -598,7 +624,7 @@ if ($installed -and -not $KeepInstalled) {
     if (-not $ulogText) { $ulogText = '(no uninstall.log appeared within 180 s)' }
     Start-Sleep -Seconds 2
     $after = [ordered]@{}
-    foreach ($rel in @('sutram-ide-gui.exe','bin\sutram.exe','win\sutram.exe','payload.manifest.sha256')) { $after[$rel + ' removed'] = -not (Test-Path -LiteralPath (Join-Path $installDir $rel)) }
+    foreach ($rel in @('sutram-ide-gui.exe','bin\sutram.exe','bin\sutram-link.exe','win\sutram.exe','payload.manifest.sha256')) { $after[$rel + ' removed'] = -not (Test-Path -LiteralPath (Join-Path $installDir $rel)) }
     $sm = Join-Path ([Environment]::GetFolderPath('StartMenu')) 'Programs\Sutram'
     $after['Start Menu folder removed'] = -not (Test-Path -LiteralPath $sm)
     $after['HKCU uninstall key removed'] = -not (Test-Path -LiteralPath $unKey)
@@ -613,10 +639,17 @@ if ($installed -and -not $KeepInstalled) {
 } elseif ($installed) { NotRun 'uninstall-removes-install' '-KeepInstalled was given' }
 else { NotRun 'uninstall-removes-install' 'nothing was installed by this run' }
 
-# Known defect (R4-03 section 3, ChatGPT's): staging folders are left in %TEMP%. Advisory, not required.
+# Known defect (R4-03 section 3): staging folders are left in %TEMP%. Advisory, not required.
+# R34: the INSTALL staging folder (payload.zip, the scripts, the log) is removed after a successful
+# install - install-staging-removed checks exactly that. The UNINSTALL folder stays by design: the
+# uninstaller exits at once so it can delete itself, and its PowerShell writes uninstall.log there
+# (this script reads it above). temp-staging-cleaned is unchanged and still counts both.
 if ($installed) {
-    $leftStages = @(Get-ChildItem -LiteralPath $env:TEMP -Directory -Filter 'STM*.tmp' -ErrorAction SilentlyContinue | Where-Object { $tempBefore -notcontains $_.FullName } | ForEach-Object { $_.Name })
-    Add-Check 'temp-staging-cleaned' $(if ($leftStages.Count) { 'FAIL' } else { 'PASS' }) 'Get-ChildItem $env:TEMP STM*.tmp (new during this run)' ($leftStages -join "`n") 'known defect R4-03 s3; advisory only' $false
+    $newStages = @(Get-ChildItem -LiteralPath $env:TEMP -Directory -Filter 'STM*.tmp' -ErrorAction SilentlyContinue | Where-Object { $tempBefore -notcontains $_.FullName })
+    $leftStages = @($newStages | ForEach-Object { $_.Name + ': ' + ((Get-ChildItem -LiteralPath $_.FullName -File -ErrorAction SilentlyContinue | ForEach-Object { $_.Name }) -join ', ') })
+    $installStages = @($newStages | Where-Object { (Test-Path -LiteralPath (Join-Path $_.FullName 'payload.zip')) -or (Test-Path -LiteralPath (Join-Path $_.FullName 'install-core.ps1')) } | ForEach-Object { $_.Name })
+    Add-Check 'install-staging-removed' $(if ($installStages.Count) { 'FAIL' } else { 'PASS' }) 'new %TEMP%\STM*.tmp holding payload.zip or install-core.ps1' ($installStages -join "`n") 'R34: the wizard removes its install staging after success' $false
+    Add-Check 'temp-staging-cleaned' $(if ($leftStages.Count) { 'FAIL' } else { 'PASS' }) 'Get-ChildItem $env:TEMP STM*.tmp (new during this run)' ($leftStages -join "`n") 'R4-03 s3; advisory only; the uninstall folder holding uninstall.log stays by design' $false
 }
 
 # ------------------------------------------------------------------------------------------------

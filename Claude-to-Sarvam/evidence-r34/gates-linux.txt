@@ -1,0 +1,84 @@
+tools/gates.sh, WSL Ubuntu (kernel 6.6.87.2-microsoft-standard-WSL2), GNU ld 2.42, NASM 3.01 (the Windows nasm.exe through a path wrapper: WSL has no nasm).
+
+===== BRANCH, final: claude/windows-linker at b88a7344 (v243), a clean LF clone - the FFI objects come from the repository now, no C compiler used =====
+  regression suite (NO-EXPECTATION=4 PASS=218 ) PASS
+  codegen shapes (12/12)       PASS
+  language packs (33/33)       PASS
+  library proofs               FAIL     actual:   '132910765821952\n\n132886469812224\n\n0\n\n1\n\n'
+  property proofs (86/86)      PASS
+  layer check (14 core, 9 alloc, 1 std) PASS
+  stdlib inventory (Wrote /mnt/c/Users/Dhruv/AppData/Local/Temp/sutram-build/lfclone2/docs/sutram-stdlib.html: 24 modules, 303 functions) PASS
+  module graph                 PASS
+  pack messages (12 sets x 11 cases) PASS
+  keyword packs built in (11, = lang/*.lang) PASS
+  pack found without lang/ (40 checks, 0 failed) PASS
+  R23 capabilities (23 checks, 0 failed) PASS
+  R25 error type (21 checks, 0 failed) PASS
+  R28 linker (187 programs identical; 201 checks, 0 failed) PASS
+  R29 separate compilation     FAIL   tests/stdlib/r18_srij_overflow_guard.sm: behaviour differs
+  R30 module vitti (8 checks, 0 failed) PASS
+  R31 incremental (254 programs identical clean, cold and warm) PASS
+  R32 FFI (44 checks, 0 failed) PASS
+  R33 FFI kinds (29 checks, 0 failed) PASS
+  R34 Windows fixes (3 checks, 0 failed) PASS
+  FFI fuzzer (60 programs, 679 foreign calls, 316) PASS
+  ELF reader fuzzer (3000 malformed objects: 1937 refused (no output), 1063 accepted (well formed)) PASS
+  R23 fuzzer (100 programs, 3558 printed values compared, 0 differ) PASS
+  valid fuzzer + function values (60 run, 60 agree, 0 fail) PASS
+  crash corpus (227 cases + manifest, 0 failed) PASS
+  operator precedence (314 pairs tested) PASS
+  formatted tree               PASS
+  version string (v243 (CHANGELOG v291)) PASS
+  performance (  8 ran, 0 failed) PASS
+  X11 GUI protocol             FAIL   18 of 18 failed
+  Windows execution            NOT-RUN cannot run here (Linux) - on Windows: tests/r34/test_link_windows.py, tools/ide_examples_windows.ps1, tools/accept-windows.ps1
+
+  ------------------------------------------
+  PASS                         28
+  FAIL                         3
+  NOT-RUN                      1
+
+  PASS, FAIL and NOT-RUN are separate on purpose.
+  A count that hides its own skips is worse than no count.
+gates exit=1
+
+===== BASELINE: main at c062434f (v242), an LF clone; the FFI objects were NOT in the repository, so they were built first with gcc 13.3.0 and the documented flags =====
+  regression suite (NO-EXPECTATION=4 PASS=218 ) PASS
+  codegen shapes (12/12)       PASS
+  language packs (33/33)       PASS
+  library proofs               FAIL     actual:   '127406310879232\n\n127382014869504\n\n0\n\n1\n\n'
+  property proofs (86/86)      PASS
+  layer check (14 core, 9 alloc, 1 std) PASS
+  stdlib inventory (Wrote /mnt/c/Users/Dhruv/AppData/Local/Temp/sutram-build/baseclone/docs/sutram-stdlib.html: 24 modules, 303 functions) PASS
+  module graph                 PASS
+  pack messages (12 sets x 11 cases) PASS
+  keyword packs built in (11, = lang/*.lang) PASS
+  pack found without lang/ (40 checks, 0 failed) PASS
+  R23 capabilities (23 checks, 0 failed) PASS
+  R25 error type (21 checks, 0 failed) PASS
+  R28 linker (187 programs identical; 201 checks, 0 failed) PASS
+  R29 separate compilation     FAIL   tests/stdlib/r18_srij_overflow_guard.sm: behaviour differs
+  R30 module vitti (8 checks, 0 failed) PASS
+  R31 incremental (254 programs identical clean, cold and warm) PASS
+  R32 FFI (44 checks, 0 failed) PASS
+  R33 FFI kinds (29 checks, 0 failed) PASS
+  FFI fuzzer (60 programs, 679 foreign calls, 316) PASS
+  ELF reader fuzzer (3000 malformed objects: 1937 refused (no output), 1063 accepted (well formed)) PASS
+  R23 fuzzer (100 programs, 3558 printed values compared, 0 differ) PASS
+  valid fuzzer + function values (60 run, 60 agree, 0 fail) PASS
+  crash corpus (227 cases + manifest, 0 failed) PASS
+  operator precedence (314 pairs tested) PASS
+  formatted tree               PASS
+  version string (v242 (CHANGELOG v291)) PASS
+  performance (  8 ran, 0 failed) PASS
+  X11 GUI protocol             FAIL   18 of 18 failed
+  Windows execution            NOT-RUN cannot run here - never executed by anyone (Gate 6)
+
+  ------------------------------------------
+  PASS                         27
+  FAIL                         3
+  NOT-RUN                      1
+
+  PASS, FAIL and NOT-RUN are separate on purpose.
+  A count that hides its own skips is worse than no count.
+gates exit=1
