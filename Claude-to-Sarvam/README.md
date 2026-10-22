@@ -4,6 +4,18 @@
 
 ---
 
+## Index — ROUND-35 delivery (2026-10-21) — the r18 defect, pushed to `main`
+
+**Code commit `46540309` on main.** **The guard (`size < 0`) missed positive wraps** (`suchi_srij(2^61 + 1)`
+allocated 8 bytes and SIGSEGVed); **and my R18 test did not test the guard** (24 GB does not wrap; it tested the
+machine). Both fixed; every value is now machine-independent. Compiler v244 unchanged. Gates 32 / 0 / 1; library
+proofs 221 / 221 under a 4 GB limit and unlimited.
+
+| File | What |
+|---|---|
+| `R35-00-HANDBACK.md` | the first lines; the defect, both halves; the environment; WS2; the guard; every check |
+| `evidence-r35/` | gates, the library-change guard, proofs under both limits, suite, corpus, fuzzers, Wine |
+
 ## Index — ROUND-34 delivery, the cloud session (2026-10-21) — the FFI's version, pushed to `main`
 
 **Code commit `9fcb53d4`, built on `claude/windows-linker`, merged with `main` after you merged that branch
