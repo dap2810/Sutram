@@ -1,0 +1,10 @@
+R37: the samanvaya functions whose indices are products, at a wrapping shape (2^62 + 1 by 4, and the like). Linux.
+matrika_yoga and skalar use m * n as their loop bound, so a wrap ran a short loop and reported success: fixed (-1).
+The others index with i * n + j and friends; their first index past row 0 is already out of the kosh, so the
+runtime's kosh guard stops them loudly before any wrapped index is formed:
+  vivartana(a, 4611686018427387905, 4, o)  ->  Sutram Error: mala ank seema atikram (exit 1)
+  vivartana(a, 4, 4611686018427387905, o)  ->  Sutram Error: mala ank seema atikram (exit 1)
+  matrika_gunana(a, b, 2, 4611686018427387905, 2, o)  ->  Sutram Error: mala ank seema atikram (exit 1)
+  pehchan(4611686018427387905, o)  ->  Sutram Error: mala ank seema atikram (exit 1)
+  nishan(a, 4611686018427387905)  ->  Sutram Error: mala ank seema atikram (exit 1)
+  rekha_manak(a, 4, 4611686018427387905)  ->  Sutram Error: mala ank seema atikram (exit 1)
