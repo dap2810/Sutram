@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """R37: enforce "validity before the address is formed" for every computed allocation in lib/.
 
-Every `nirmmita(...)` in lib/*.smlib whose size is computed with a multiplication (directly,
-or through a variable assigned from one) must, in the same prakriya and on an earlier line,
+Every `nirmmita(...)` in lib/*.smlib whose size is not a constant (R37: computed with a
+multiplication, directly or through a variable assigned from one; R39: any size) must, in the same prakriya and on an earlier line,
 be preceded by a constant bound on a count: `yadi (<count> > <constant>) { prati ... }`.
 That is the R35/R36 form: the count is checked BEFORE it is multiplied, so a wrapped size
 never exists. A site that does not need one must be listed in EXEMPT below, with the reason
@@ -12,6 +12,17 @@ Constant sizes (`nirmmita(32)`, `nirmmita(3 * 8)`) need nothing. A `nirmmita(` t
 reader cannot read whole on its line (split over lines, nested parentheses two deep) fails (R38),
 so it is never skipped unchecked.
 
+R39 (Sarvam's WS3: does this check follow where a size comes from, or only how it is spelled?):
+  * an exemption names the expression, not only the prakriya, so a new allocation in an exempt
+    prakriya is not exempt;
+  * the bound must be small enough: the size, with every bounded count at its bound, must fit
+    in 2^63 - 1 (a bound like `c > 10^18` before `c * 33` fails);
+  * a bounded count assigned again after its bound is no longer bounded.
+  * every size that is not a constant is checked - a parameter (the multiply is in the caller)
+    or a function's result as well as a product - so no channel skips the check.
+What it still cannot see: a bound inside a branch that does not cover the allocation, and the
+value of a count a CALLER passes (its exemption reason must say why the caller is trusted).
+
 usage: python3 -B tools/check_alloc_bounds.py      (exit 0 when every site is bounded or explained)
 """
 import re
@@ -20,25 +31,53 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 
-# (module, prakriya) -> why its computed allocations need no bound before the multiply
+# (module, prakriya, size expression) -> why that allocation needs no bound before the multiply.
+# R39: keyed by the expression too, so a NEW allocation in an exempt prakriya is not exempt.
+# R39: every remaining exemption sizes from a container's own capacity (X[0]), which its
+# constructor bounds (nighantu_srij: c <= 164703072086692424, so X[0] * 33 + 1 <= 5.44e18).
+# Before R39 the sets sized from the caller's cap argument, which nothing bounds or checks.
+CAP = "a container's own capacity X[0], bounded by nighantu_srij: X[0] * 33 + 1 <= 5.44e18"
 EXEMPT = {
-    ('nighantu', 'nighantu_vardh'): 'oldcap = m[0] <= the nighantu_srij bound, so oldcap * 33 + 1 <= 5.44e18',
-    ('nighantu', 'nighantu_mil'): 'scap is the source map capacity, <= the nighantu_srij bound',
-    ('sangrah', 'rakh_samroop_diff'): 'a set is a map: cap <= the nighantu_srij bound',
-    ('sangrah', 'rakh_sangam'): 'a set is a map: cap <= the nighantu_srij bound',
-    ('sangrah', 'rakh_sampat'): 'a set is a map: cap <= the nighantu_srij bound',
-    ('sangrah', 'rakh_bhed'): 'a set is a map: cap <= the nighantu_srij bound',
-    ('sangrah', 'rakh_asti_upasamuh'): 'a set is a map: cap <= the nighantu_srij bound',
-    ('sangrah', 'rakh_tak_mala'): 'a set is a map: cap <= the nighantu_srij bound',
-    ('aadhar', 'brihat_ank_tak'): "the caller's own digit count: a wrap needs more than 2^58 digits",
-    ('brihat', 'brihat_shesh'): "the caller's own digit count",
-    ('brihat', 'brihat_ghatmod'): "the caller's own digit count",
-    ('shreni', 'mil_shreni'): "the caller's own array length",
+    ('nighantu', 'nighantu_vardh', 'oldcap * 33 + 1'): 'oldcap = m[0]: ' + CAP,
+    ('nighantu', 'nighantu_mil', 'src[0] * 33 + 1'): CAP,
+    ('sangrah', 'rakh_samroop_diff', 'a[0] * 33 + 1'): CAP,
+    ('sangrah', 'rakh_samroop_diff', 'b[0] * 33 + 1'): CAP,
+    ('sangrah', 'rakh_sangam', 'a[0] * 33 + 1'): CAP,
+    ('sangrah', 'rakh_sangam', 'b[0] * 33 + 1'): CAP,
+    ('sangrah', 'rakh_sampat', 'a[0] * 33 + 1'): CAP,
+    ('sangrah', 'rakh_bhed', 'a[0] * 33 + 1'): CAP,
+    ('sangrah', 'rakh_asti_upasamuh', 'a[0] * 33 + 1'): CAP,
+    ('sangrah', 'rakh_tak_mala', 's[0] * 33 + 1'): CAP,
+    ('sangrah', 'rakh_tak_mala', 's[0] * 32 + 1'): CAP,
+    ('sangrah', 'rakh_tak_mala', 's[0] * 8'): CAP,
 }
+INT64_MAX = 2 ** 63 - 1
 
-BOUND = re.compile(r'yadi \(\s*([\w\[\]]+)\s*>\s*\d+\s*\)\s*\{\s*prati')
+BOUND = re.compile(r'yadi \(\s*([\w\[\]]+)\s*>\s*(\d+)\s*\)\s*\{\s*prati')
 TERM = re.compile(r'[A-Za-z_]\w*(?:\[\d+\])?')
 CONST_SIZE = re.compile(r'^[\d\s*+]+$')
+
+
+def assigned(code):
+    """The names a line assigns to (`x = ...`, `vitti x = ...`); `==`, `<=`, `>=`, `!=` are not assignments."""
+    return [m.group(1) for m in re.finditer(r'([A-Za-z_]\w*(?:\[\d+\])?)\s*=(?!=)', code)]
+
+
+def size_at_bound(arg, exprs, bounds):
+    """The size with every bounded count at its bound, or None if it cannot be computed."""
+    text, seen = arg, set()
+    for _ in range(8):
+        names = [t for t in TERM.findall(text) if t not in bounds and t in exprs and t not in seen]
+        if not names:
+            break
+        for t in names:
+            seen.add(t)
+            text = re.sub(r'(?<![\w\[])' + re.escape(t) + r'(?![\w\[])', '(' + exprs[t] + ')', text)
+    for t, (k, _no) in bounds.items():
+        text = re.sub(r'(?<![\w\[])' + re.escape(t) + r'(?![\w\[])', str(k), text)
+    if not re.fullmatch(r'[\d\s*+()-]+', text):
+        return None
+    return eval(text, {'__builtins__': {}})
 
 
 def main():
@@ -46,19 +85,23 @@ def main():
     bad = []
     used = set()
     for lib in sorted((ROOT / 'lib').glob('*.smlib')):
-        func, mult_vars, bounds = None, {}, set()
+        func, exprs, bounds = None, {}, {}
         for no, line in enumerate(lib.read_text(encoding='utf-8').split('\n'), 1):
             code = line.split('#', 1)[0]
             m = re.match(r'\s*prakriya\s+(\w+)\s*\(', code)
             if m:
-                func, mult_vars, bounds = m.group(1), {}, set()
+                func, exprs, bounds = m.group(1), {}, {}
                 continue
             b = BOUND.search(code)
             if b:
-                bounds.add(b.group(1))
+                bounds[b.group(1)] = (int(b.group(2)), no)
+            # R39: a bounded count assigned again after its bound is no longer bounded
+            for name in assigned(code):
+                if name in bounds and bounds[name][1] != no:
+                    del bounds[name]
             a = re.match(r'\s*(?:vitti\s+)?(\w+)\s*=\s*(.+)$', code)
             if a and '*' in a.group(2) and 'nirmmita' not in a.group(2):
-                mult_vars[a.group(1)] = set(TERM.findall(a.group(2)))
+                exprs[a.group(1)] = a.group(2).strip()
             args = re.findall(r'nirmmita\(([^()]*(?:\([^()]*\)[^()]*)*)\)', code)
             if len(args) != len(re.findall(r'\bnirmmita\s*\(', code)):
                 # R38: a call this line-based reader cannot read (split over lines, or nested
@@ -68,11 +111,10 @@ def main():
                 arg = arg.strip()
                 if CONST_SIZE.match(arg):
                     continue
-                computed = '*' in arg or arg in mult_vars
-                if not computed:
-                    continue
+                # R39: every size that is not a constant counts - a product here, a variable assigned
+                # from one, a parameter (the multiply is in the caller) or a function's result
                 sites += 1
-                key = (lib.stem, func)
+                key = (lib.stem, func, arg)
                 # the counts this size is computed from, through any variable assigned from a product
                 counts, todo = set(), list(TERM.findall(arg))
                 while todo:
@@ -80,9 +122,18 @@ def main():
                     if t in counts:
                         continue
                     counts.add(t)
-                    todo.extend(mult_vars.get(t, ()))
-                if counts & bounds:
-                    bounded += 1
+                    todo.extend(TERM.findall(exprs.get(t, '')))
+                if counts & set(bounds):
+                    # R39: the bound must be small enough: the size at the bound must fit
+                    v = size_at_bound(arg, exprs, bounds)
+                    if v is None:
+                        bad.append(f'{lib.name}:{no}: {func}: nirmmita({arg}): bounded, but the size at the bound '
+                                   f'cannot be computed here, so the bound cannot be checked')
+                    elif v > INT64_MAX:
+                        bad.append(f'{lib.name}:{no}: {func}: nirmmita({arg}): the bound is too large - the size '
+                                   f'at the bound is {v}, past 2^63 - 1')
+                    else:
+                        bounded += 1
                 elif key in EXEMPT:
                     exempt += 1
                     used.add(key)

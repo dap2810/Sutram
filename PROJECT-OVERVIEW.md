@@ -51,10 +51,10 @@ UAC elevation, no HKLM, no services, no disabling of OS security), and
 
 | Path | What |
 |---|---|
-| `src/sutram_compiler.asm` | **the entire compiler**, one patra, ~15k lines |
-| `lib/` | standard library — 24 modules with code, 303 functions (`.smlib`) |
+| `src/sutram_compiler.asm` | **the entire compiler**, one patra, ~24k lines |
+| `lib/` | standard library — 24 modules with code, 305 functions (`.smlib`) |
 | `lang/` | 11 language packs, one per Indian language |
-| `examples/` | 202 programs, each with expected output and exit code |
+| `examples/` | 222 programs, each with expected output and exit code |
 | `tests/` | regression suite, golden files, per-host expectations |
 | `tools/` | benchmarks, codegen gates, protocol tests, verification helpers |
 | `docs/` | reference, guides, and generated HTML pages |
@@ -71,13 +71,13 @@ Only NASM and a linker are required. Nothing else.
 
 **Linux compiler**
 ```
-nasm -f elf64 src/sutram_compiler.asm -o sutram.o
+nasm -f elf64 -I. src/r68_compiler_entry.asm -o sutram.o
 ld -o sutram_compiler sutram.o
 ```
 
 **Windows compiler**
 ```
-nasm -f win64 -dWINDOWS -I. src/sutram_compiler.asm -o sutram.obj
+nasm -f win64 -dWINDOWS -I. src/r68_compiler_entry.asm -o sutram.obj
 ld -mi386pep --entry=_start -o win/sutram.exe sutram.obj
 ```
 
@@ -95,10 +95,10 @@ ld -mi386pep --entry=_start -o win/sutram.exe sutram.obj
 
 ```
 python3 tests/run_tests.py          # 218 pass, 4 no-expectation
-python3 tools/codegen_gate.py       # 27/27 expected
-python3 tools/test_lang_packs.py    # 30/30 expected
-python3 tools/test_ide_undo.py      # 27/27 expected
-python3 tools/test_x11_protocol.py  # 31 checks, no display needed
+python3 tools/codegen_gate.py ./sutram_compiler  # 12/12 expected
+python3 tools/test_lang_packs.py ./sutram_compiler  # 33/33 expected
+python3 tools/test_ide_undo.py      # 12/12 expected
+SUTRAM_GUI=$PWD/sutram-gui python3 tools/test_x11_protocol.py  # 65 checks, no display needed
 python3 tools/check_setup_abi.py    # static Win64 ABI audit of the installer
 ```
 
@@ -131,12 +131,12 @@ Loaded with `sutram --lang tamil` or `SUTRAM_LANG=tamil`.
 
 | | |
 |---|---|
-| Compiler SHA-256 | `6036dd1cef3bc7f257a5fc7e5244b0a5dda8cc7b38ab78d8d2c4ff6d8b8516d2` |
-| Regression suite | **227/270** |
-| Code-generation gates | **27/27** |
+| Compiler SHA-256 | `51f8f6f1da41ac93ddce4f99fbbbd552fadfa5e48448b71a5415ee78d150fc3b` (v246, Linux) |
+| Regression suite | **218 pass, 4 no-expectation** |
+| Code-generation gates | **12/12** |
 | Language packs | **33/33** |
-| Examples | 202 |
-| Library modules | 24 with code (303 functions) |
+| Examples | 222 (and 13 in subfolders) |
+| Library modules | 24 with code (305 functions) |
 | Books | 6 editions, kept in step with the language |
 
 ## 8. What is proven, and what is not
@@ -144,7 +144,7 @@ Loaded with `sutram --lang tamil` or `SUTRAM_LANG=tamil`.
 This distinction matters more than any feature suchi.
 
 **Proven by execution.** The compiler builds on both Linux and Windows targets
-and passes 178 regression tests. Emitted code is byte-identical across the
+and passes 218 regression tests. Emitted code is byte-identical across the
 performance benchmarks. The language packs each compile and run a real
 program. The terminal IDE's undo log works. The X11 client's protocol bytes are
 verified against a mock X server. The Windows installer's stack frames are

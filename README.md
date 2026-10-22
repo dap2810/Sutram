@@ -52,10 +52,10 @@ Semicolons and braces are optional. The full reference is in
 
 ## What is in this release
 
-- **195 example programs** in `examples/` — 191 numbered plus 11 from recent
-  rounds — with regression expectations in the test corpus. Cases without an
+- **222 example programs** in `examples/` — 209 numbered plus 13 others, and
+  13 more in its subfolders — with regression expectations in the test corpus. Cases without an
   accepted expectation are not counted as passing tests
-- **24 standard-library modules with code** in `lib/`, 303 functions between
+- **24 standard-library modules with code** in `lib/`, 305 functions between
   them — mathematics, sorting, strings, statistics, calculus, matrix work, and
   heritage modules built on classical Indian mathematics. Three further files
   (`mala`, `io`, `net`) are comment-only design sketches, not working modules
@@ -138,7 +138,7 @@ Windows target:
 ## Honest status
 
 The clean-project handoff reports a Linux baseline of **218 passing cases,
-4 no-expectation cases, and 27/27 code-generation shape gates**. These are
+4 no-expectation cases, and 12/12 code-generation shape gates**. These are
 maintainer-reported baseline measurements, not a Windows release certificate.
 A clean-source audit must rerun them independently; a percentage-complete
 estimate is not a substitute for those gates.

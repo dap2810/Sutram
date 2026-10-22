@@ -1,0 +1,43 @@
+# R39: a set operation sizes its scratch from the set (a[0]), not from the cap the caller
+# passes. Before, rakh_tak_mala(s, 1, out) on a set of 200 32-byte elements allocated
+# 1 * 33 + 1 bytes and wrote 200 * 33 into it, over the buffer allocated just before
+# (here `guard`). On the R38 library this printed 200, 0, 6437991695636517851, 1: the
+# guard overwritten, and rakh_sangam's count read from overwritten memory. The same for
+# the other set operations and nighantu_mil.
+yoj sangrah
+mukhya() {
+    vitti s = rakh_srij(300)
+    vitti k = nirmmita(40)
+    vitti i = 0
+    yavat (i < 200) {
+        vitti j = 0
+        yavat (j < 32) {
+            akshar_rakh(k, j, 65 + (i + j) % 26)
+            j = j + 1
+        }
+        akshar_rakh(k, 0, 33 + i % 90)
+        akshar_rakh(k, 1, 33 + i / 90)
+        rakh_yuj(s, 300, k, 32)
+        i = i + 1
+    }
+    vitti out = nirmmita(300 * 40 * 8)
+    vitti guard = nirmmita(8192)
+    likha(rakh_tak_mala(s, 1, out))
+    vitti clean = 1
+    i = 0
+    yavat (i < 1024) {
+        yadi (guard[i] != 0) { clean = 0 }
+        i = i + 1
+    }
+    likha(clean)
+    vitti e = rakh_srij(300)
+    guard = nirmmita(8192)
+    likha(rakh_sangam(s, 1, e, 1, rakh_srij(400)))
+    clean = 1
+    i = 0
+    yavat (i < 1024) {
+        yadi (guard[i] != 0) { clean = 0 }
+        i = i + 1
+    }
+    likha(clean)
+}

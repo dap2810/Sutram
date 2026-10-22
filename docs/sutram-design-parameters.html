@@ -301,7 +301,7 @@ suitable for serious development.</p>
   <p>Conceptual layers — <b>core</b> (no OS or allocator dependency), <b>allocation</b> (dynamic
   collections when an allocator exists), <b>standard/application</b> (files, networking, threads). The
   same type and safety rules across all layers. Not an unrelated “easy language” and “systems language”.</p>
-  <div class="aim"><b>Today:</b> <code>lib/</code> holds 21 modules, but the layers are not formally
+  <div class="aim"><b>Today:</b> <code>lib/</code> holds 24 modules, but the layers are not formally
   separated — nothing marks which modules are allocator-free.</div>
 </div>
 
@@ -349,7 +349,7 @@ suitable for serious development.</p>
   projects. Editor support for completion, navigation, renaming and diagnostics. Debug information, stack
   traces, profiling, actionable error messages. Standardised formatting, layout, contribution rules.
   Ready-to-use binaries so ordinary users need not build the compiler.</p>
-  <div class="aim"><b>Today:</b> a working IDE on Linux (16 GUI tests), a Windows installer, an
+  <div class="aim"><b>Today:</b> a working IDE on Linux (18 GUI tests), a Windows installer, an
   install-with-binaries path so end users need no toolchain, and actionable compiler diagnostics.
   <b>Missing:</b> a formatter, language server, debugger, and stack traces.</div>
 </div>
@@ -362,7 +362,7 @@ suitable for serious development.</p>
   networking, mathematics, testing and serialisation. GUI, database, scientific and AI integrations as
   packages rather than compiler expansion.</p>
   <div class="aim"><b>Aim:</b> reuse existing software while growing our own ecosystem. <b>Today:</b>
-  there is no FFI. The library is self-contained and 281 functions deep, which is a foundation, not an
+  there is no FFI. The library is self-contained and 305 functions deep, which is a foundation, not an
   ecosystem.</div>
 </div>
 
@@ -376,7 +376,7 @@ suitable for serious development.</p>
   tested implementation. Compatibility review before changing syntax or behaviour.</p>
   <div class="aim"><b>Aim:</b> a smaller sangrah of dependable features over a large suchi of partially
   working ones. <b>Today:</b> the gates are real and enforced — <b>218 pass / 4 no-expectation</b>,
-  codegen 27/27, packs 33/33, module graph, 180 library proofs, 72 property proofs, 16 GUI tests — and
+  codegen 12/12, packs 33/33, module graph, 224 library proofs, 86 property proofs, 18 GUI tests — and
   there are dedicated overflow-safety and byte-parity documents. <b>Missing:</b> a formal written
   specification, fuzzing, and cross-platform execution.</div>
 </div>
@@ -419,8 +419,8 @@ later.</p>
 <footer class="animate" style="--i:28">
   <b>Sutram — Design Parameters.</b> This page states the design target. It is not a description of
   shipped behaviour.<br>
-  Status is measured against the compiler as tested: <b>218 pass / 4 no-expectation</b> · codegen 27/27 ·
-  packs 33/33 · library 180 proofs · properties 72 · GUI 16 tests.<br>
+  Status is measured against the compiler as tested: <b>218 pass / 4 no-expectation</b> · codegen 12/12 ·
+  packs 33/33 · library 224 proofs · properties 86 · GUI 18 tests.<br>
   The constraint that does not change: Sanskrit keyword core · <code>.sm</code> · one pure-NASM compiler
   source · native machine code · no runtime dependency · no toolchain needed by the end user.<br>
   Do not claim safety, portability, performance superiority or OS readiness without corresponding

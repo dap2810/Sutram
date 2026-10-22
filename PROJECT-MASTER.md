@@ -143,25 +143,27 @@ comments, HTML, prose, keyword tables and the teaching books - **and not one was
 
 **Rename-audit evidence boundary (Round 85, 2026-10-20; pinned main v237 `75b4d77f`):** Of 2,854 tracked file blobs, 1,579 matched the audit's expanded source/text suffixes; 601 historical collaboration/handoff files were excluded, leaving 978 live eligible files. **Only 202 of those 978 live files were actually fetched and screened; 776 were NOT scanned**, including most active examples, tests, and tools. Another 1,275 tracked files with other suffixes (including expected outputs, JSON evidence, images, binaries, and archives) were outside this text scan. The 202 inspected files produced 38 review candidates, classified as historical snapshots/design (17), legitimate diagnostic `pankti` meaning a line (6), ordinary English in a comment (1), and compiler legacy-compatibility strings or comments (14); **no active obsolete syntax was confirmed within that limited inspected set**. This is **not** a completed whole-repository rename audit or proof of language-pack linguistic accuracy; the reviewed full-checkout scanner and native tests were **NOT_RUN** in that Round 85 environment. See `ChatGPT-to-Sarvam/ROUND-85-WS1-KEYWORD-AUDIT.md` and the Round 87 handoff.
 
-**Where the numbers stand now** (measured 2026-10-19). **`tools/gates.sh` prints this table** -
+**Where the numbers stand now** (measured 2026-10-22, compiler v246, Linux x86-64). **`tools/gates.sh` prints this table** -
 build everything and run it, and its output is the truth about the tree:
 
 | Metric | Value |
 |---|---|
+| Gates (`tools/gates.sh`) | **34 PASS, 0 FAIL, 1 NOT-RUN** (Windows execution) |
 | Regression suite | **218 pass, 4 no-expectation** |
+| Crash corpus | **227 cases + manifest, 0 failed** |
 | Code-generation shape gates | **12 / 12** |
 | Language packs | **33 / 33** checks over **11** packs |
-| Library proofs | **217 / 217** |
+| Library proofs | **224 / 224** |
 | Property proofs | **86 / 86** |
 | Module graph | **18 / 18** |
 | Layer check | **14 core, 9 alloc, 1 std** |
-| Standard library | **24 modules, 303 functions** |
-| Example programs | **207** |
+| Standard library | **24 modules, 305 functions** |
+| Example programs | **222** in `examples/`, 13 more in its subfolders |
 | GUI tests | **18 / 18** |
 | Windows execution | **PARTIAL** - installed, run, uninstalled on real Windows 11 once; not a release |
 | Negative corpus (R70) | **6 / 6, native_status PASS** |
-| Compiler source | 545,722 B → **190,144 B** binary |
-| Repository | ~1,800 files |
+| Compiler source | 598,889 B (`src/sutram_compiler.asm`) → **424,568 B** binary |
+| Repository | ~3,800 tracked files |
 
 ## 7. How the project is built
 
@@ -359,11 +361,11 @@ the observation that makes it true. Two of them — Windows execution and the fr
 3. **Run the gates** before and after your change:
    ```sh
    python3 tests/run_tests.py                        # expect PASS=218 NO-EXPECTATION=4
-   python3 tools/codegen_gate.py ./sutram_compiler   # expect 27 PASS
+   python3 tools/codegen_gate.py ./sutram_compiler   # expect 12 PASS
    python3 tools/test_lang_packs.py ./sutram_compiler # expect 33/33
-   python3 tools/proof_lib.py --compiler ./sutram_compiler     # expect 183
-   python3 tools/proof_props.py --compiler ./sutram_compiler   # expect 76
-   python3 tools/check_layers.py                     # expect 12 core, 9 alloc
+   python3 tools/proof_lib.py --compiler ./sutram_compiler     # expect 224
+   python3 tools/proof_props.py --compiler ./sutram_compiler   # expect 86
+   python3 tools/check_layers.py                     # expect 14 core, 9 alloc, 1 std
    ```
 4. **Work in a stage that matches the charter's order.** We are at stage 1–2.
 5. **Report honestly.** Say what you ran, what you observed, and what you could not verify. Keep failures

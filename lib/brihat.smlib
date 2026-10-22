@@ -256,6 +256,7 @@ prakriya brihat_bhajshesh(a, b, q, r, n) {
 # Returns 0, or -1 (res unchanged) if its n-digit scratch cannot be allocated.
 prakriya brihat_shesh(ank, shesh, res, n) {
     vitti c = n
+    yadi (c > 1152921504606846975) { prati 0 - 1 }   # R39: c * 8 must not wrap
     vitti tr = 0
     yadi (brihat_asti_shunyank(shesh, c) == 0) {
         tr = nirmmita(c * 8)
@@ -322,6 +323,7 @@ prakriya brihat_ghatmod(base, exp, shesh, res, n) {
     vitti m = shesh
     vitti r = res
     vitti c = n
+    yadi (c > 576460752303423487) { prati 0 - 1 }   # R39: c * 2 * 8 must not wrap
     vitti t1 = nirmmita(c * 2 * 8)
     vitti bcur = nirmmita(c * 8)
     vitti tr = nirmmita(c * 8)

@@ -1,6 +1,7 @@
 # lib/set.smlib — Sutram standard library: sets (set algebra over map)
 # layer: alloc
 # R38: an operation that cannot allocate its scratch returns -1, out unchanged (rakh_sam too).
+# R39: scratch is sized from the set itself (a[0]), never from the caller's cap argument.
 #
 # A set IS a map (`lib/map.smlib`) with a dummy value of 1: membership is
 # nighantu_antah, iteration is nighantu_kunjika_ashtak (R17: packed-byte segments,
@@ -61,8 +62,8 @@ prakriya rakh_maap(s) {
 # Returns rakh_maap(out).
 prakriya rakh_samroop_diff(a, cap, b, bcap, out) {
     vitti ocap = out[0]
-    vitti tmpa = nirmmita(cap * 33 + 1)
-    vitti tmpb = nirmmita(bcap * 33 + 1)
+    vitti tmpa = nirmmita(a[0] * 33 + 1)
+    vitti tmpb = nirmmita(b[0] * 33 + 1)
     yadi (tmpa == 0 || tmpb == 0) { prati 0 - 1 }
     vitti nka = nighantu_kunjika_ashtak(a, tmpa)
     vitti nkb = nighantu_kunjika_ashtak(b, tmpb)
@@ -94,8 +95,8 @@ prakriya rakh_samroop_diff(a, cap, b, bcap, out) {
 # out (fresh, empty, capacity >= cap + bcap). Returns rakh_maap(out).
 prakriya rakh_sangam(a, cap, b, bcap, out) {
     vitti ocap = out[0]
-    vitti tmpa = nirmmita(cap * 33 + 1)
-    vitti tmpb = nirmmita(bcap * 33 + 1)
+    vitti tmpa = nirmmita(a[0] * 33 + 1)
+    vitti tmpb = nirmmita(b[0] * 33 + 1)
     yadi (tmpa == 0 || tmpb == 0) { prati 0 - 1 }
     vitti nka = nighantu_kunjika_ashtak(a, tmpa)
     vitti nkb = nighantu_kunjika_ashtak(b, tmpb)
@@ -124,7 +125,7 @@ prakriya rakh_sangam(a, cap, b, bcap, out) {
 # Returns rakh_maap(out).
 prakriya rakh_sampat(a, cap, b, bcap, out) {
     vitti ocap = out[0]
-    vitti tmpa = nirmmita(cap * 33 + 1)
+    vitti tmpa = nirmmita(a[0] * 33 + 1)
     yadi (tmpa == 0) { prati 0 - 1 }
     vitti nka = nighantu_kunjika_ashtak(a, tmpa)
     vitti pos = 0
@@ -146,7 +147,7 @@ prakriya rakh_sampat(a, cap, b, bcap, out) {
 # rakh_maap(out).
 prakriya rakh_bhed(a, cap, b, bcap, out) {
     vitti ocap = out[0]
-    vitti tmpa = nirmmita(cap * 33 + 1)
+    vitti tmpa = nirmmita(a[0] * 33 + 1)
     yadi (tmpa == 0) { prati 0 - 1 }
     vitti nka = nighantu_kunjika_ashtak(a, tmpa)
     vitti pos = 0
@@ -191,7 +192,7 @@ prakriya rakh_sam(a, cap, b, bcap) {
 # rakh_asti_upasamuh(a, cap, b, bcap) — 1 if every element of a is in b, else
 # 0. Empty a is a subset of everything.
 prakriya rakh_asti_upasamuh(a, cap, b, bcap) {
-    vitti tmpa = nirmmita(cap * 33 + 1)
+    vitti tmpa = nirmmita(a[0] * 33 + 1)
     yadi (tmpa == 0) { prati 0 - 1 }
     vitti nka = nighantu_kunjika_ashtak(a, tmpa)
     vitti pos = 0
@@ -214,12 +215,12 @@ prakriya rakh_asti_upasamuh(a, cap, b, bcap) {
 # (khand_tul), so output is deterministic regardless of insertion
 # order or hash layout. Returns the element count.
 prakriya rakh_tak_mala(s, cap, out) {
-    vitti tmp = nirmmita(cap * 33 + 1)
-    vitti scratch = nirmmita(cap * 32 + 1)
-    vitti ptrs = nirmmita(cap * 8)
-    vitti lens = nirmmita(cap * 8)
+    vitti tmp = nirmmita(s[0] * 33 + 1)
+    vitti scratch = nirmmita(s[0] * 32 + 1)
+    vitti ptrs = nirmmita(s[0] * 8)
+    vitti lens = nirmmita(s[0] * 8)
     yadi (tmp == 0 || scratch == 0) { prati 0 - 1 }
-    yadi (cap > 0 && (ptrs == 0 || lens == 0)) { prati 0 - 1 }
+    yadi (ptrs == 0 || lens == 0) { prati 0 - 1 }
     vitti nk = nighantu_kunjika_ashtak(s, tmp)
     vitti pos = 0
     vitti i = 0

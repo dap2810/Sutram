@@ -330,7 +330,7 @@ prakriya nighantu_maap(m) {
 # from nighantu_kunjika_ashtak, so every key is known to exist.)
 # R38: -1 (dst unchanged) if its scratch cannot be allocated.
 prakriya nighantu_mil(dst, dcap, src, scap) {
-    vitti tmp = nirmmita(scap * 33 + 1)
+    vitti tmp = nirmmita(src[0] * 33 + 1)
     yadi (tmp == 0) { prati 0 - 1 }
     vitti nk = nighantu_kunjika_ashtak(src, tmp)
     vitti pos = 0
