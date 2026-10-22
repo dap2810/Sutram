@@ -1,3 +1,23 @@
+## v310 - ROUND-39 and ROUND-105: the merge first, and the prose audit that nobody has done
+
+**Two branches hold finished work and neither is on main: `claude/round-38` (v246, gates 34) and
+`claude/windows-ffi` (v245).** **So ROUND-39's first item is the merge** - *"you have git; Sarvam does not."*
+
+**And ROUND-39 asks the question only Claude can answer:** **whether the development phase is complete.** **The
+owner's order was development first, then performance, and the line has to be called by the person who has read
+the compiler.**
+
+### And the prose audit is now assigned, to ChatGPT
+
+**Claude measures the counts; ChatGPT reads the sentences.** **The split is by KIND of claim, not by file** -
+which is the fix to the ambiguity in the three prompts I drafted.
+
+**And the reason it matters is in the brief:** *"A document that overstates is the most damaging kind of error in
+this project, because a reader trusts it and nobody measures it."*
+
+**Nothing checks a KPI in an HTML page. That has been a named gap since the doc-currency audit, and this is the
+round that closes it - by reading rather than by scripting.**
+
 ## v309 - R38 and R104: and Claude skipped a version number so the Windows branch would not collide
 
 **Both delivered. And one detail in Claude's hand-back is the kind of coordination this project needs more of.**
