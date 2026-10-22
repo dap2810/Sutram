@@ -1,3 +1,39 @@
+## v306 - R37: the overflow CLASS is fixed, and it found a BUS ERROR. Gates 33, library proofs 223/223.
+
+**Claude acted on ChatGPT's R102 audit site by site, and the class is now closed rather than the instance.**
+
+### Fixed, each with a witness that misbehaves on the old library
+
+| Site | What was wrong | Now |
+|---|---|---|
+| **`anukram`, all four bounds** | **they ADDED** (`p + 8 > cap`, `p + 8 + n > cap`, `p2 + n > cap`) **and the sum wraps.** **A buffer whose 8-byte length field says `MAX` made `anukram_grah_ashtak` copy past its buffer: BUS ERROR** | **every bound subtracts:** `p > cap - 8`, `n > cap - 8 - p` |
+| **`mala_nava`, negative count** | `-2^61 + 1` passed the R35 upper bound, and `c x 8` wrapped to **8** | `c < 0` gives 0 |
+| **`matrika_yoga`, `skalar`** | `2^62 + 1` by `4` wrapped to 4: **a 4-element loop that reported success** | a shape check gives -1 unless `m x n` fits the actual `kosh_len` |
+
+**And the `anukram` finding is the one that matters most, in Claude's own words:** *"Decoding untrusted bytes is
+what `anukram` is for, so this was the most reachable defect in the audit."* **A length-prefixed buffer with a
+hostile length field produced a bus error in the function whose whole job is decoding untrusted bytes.**
+
+**That defect existed because the bounds ADDED.** **`p + 8 > cap` is a correct bound until `p + 8` wraps, and
+then it is no bound at all.** **Every bound now subtracts, which cannot wrap.**
+
+### And the ones NOT changed are measured, not assumed
+
+> *"`samanvaya`'s other functions (`vivartana`, `matrika_gunana`, `pehchan`, `nishan`, `rekha_manak`) - their
+> indices are products (`i x n + j`), but the first index past row 0 is already outside the kosh. So **the
+> runtime's kosh guard stops them loudly** (`mala ank seema atikram`, exit 1) before any wrapped..."*
+
+**Measured, not assumed.** **That is the difference between an audit that finds everything and an audit that
+claims to.**
+
+### The numbers
+**Gates 33 PASS / 0 FAIL / 1 NOT-RUN - one more than R36: "alloc bounds", the rule enforced.** **Library proofs
+223 / 223** under a 4 GB limit and unlimited. **Suite 218. Corpus 227, 0 failed.** Compiler v244 - the work is in
+the library.
+
+**And ChatGPT's mechanical checker (R103) is now matched by a gate** - **the rule is enforced in two places, one
+by a partner's script and one by the project's own gate.**
+
 ## v305 - ChatGPT built the mechanical checker, and its best line is what it does NOT claim
 
 **ROUND-103 asked for the smallest mechanical check that would catch a "validity must precede address formation"
