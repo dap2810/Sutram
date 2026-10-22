@@ -1,0 +1,50 @@
+R36: every place in lib/ that multiplies a count and then allocates (grep 'nirmmita(' with a '*', plus the four 'sz = ...' constructors).
+Verdicts: GUARDED (a bound on the count before multiplying) / CANNOT WRAP (the count is bounded by a structure that exists) / CALLER COUNT (the count describes the caller's own array).
+
+  lib/suchi.smlib     suchi_srij        sz = c * 8               GUARDED R35   c > (2^63-1)/8 -> 0
+  lib/suchi.smlib     avali_srij        sz = c * 8               GUARDED R35   c > (2^63-1)/8 -> 0
+  lib/mala.smlib      mala_nava         sz = c * 8               GUARDED R35   c > (2^63-1)/8 -> 0
+  lib/nighantu.smlib  nighantu_srij     sz = 16 + 56c            GUARDED R35   c > (2^63-17)/56 -> 0
+  lib/suchi.smlib     suchi_vardh       nirmmita(cap*2*8)        GUARDED R36   cap > (2^63-1)/16 -> 0, list unchanged
+  lib/suchi.smlib     avali_pravesh     nirmmita(cap*2*8)        GUARDED R36   cap > (2^63-1)/16 -> 0, queue unchanged
+  lib/nighantu.smlib  nighantu_vardh    nighantu_srij(newcap)    GUARDED (R35 bound) + R36: its 0 is now checked (it was dereferenced: SIGSEGV)
+  lib/nighantu.smlib  nighantu_vardh    nirmmita(oldcap*33+1)    CANNOT WRAP   oldcap = m[0] <= 164703072086692424, so <= 5.44e18; R36: the result is checked
+  lib/nighantu.smlib  nighantu_mil      nirmmita(scap*33+1)      CANNOT WRAP for a real map (scap <= the srij bound); result not checked
+  lib/sangrah.smlib   rakh_* (11 sites in 6 functions) nirmmita(cap*33+1), (cap*32+1), (cap*8)   CANNOT WRAP for a real set (a set is a map: cap <= the srij bound); results not checked
+  lib/aadhar.smlib    brihat_ank_tak    nirmmita(c*8), (c*4*8)   CALLER COUNT  c = the caller's digit count; a wrap needs > 2^58 digits; results not checked
+  lib/brihat.smlib    brihat_shesh, brihat_ghatmod (3 sites) nirmmita(c*8), (c*2*8)   CALLER COUNT  the same
+  lib/shreni.smlib    mil_shreni        nirmmita(n*8)            CALLER COUNT  n = the caller's array length
+
+So no count that a correct program can pass wraps any more. What remains is the other class: an allocation whose
+failure is not checked (nighantu_mil, sangrah, aadhar, brihat, shreni) dereferences 0 under memory exhaustion.
+
+The raw grep:
+  lib/aadhar.smlib:26:    vitti w = nirmmita(c * 8)
+  lib/aadhar.smlib:38:    vitti rev = nirmmita(c * 4 * 8)
+  lib/brihat.smlib:6:# allocates via nirmmita(n * 8) and tracks the size.
+  lib/brihat.smlib:269:    vitti tr = nirmmita(c * 8)
+  lib/brihat.smlib:313:    vitti t1 = nirmmita(c * 2 * 8)
+  lib/brihat.smlib:314:    vitti bcur = nirmmita(c * 8)
+  lib/nighantu.smlib:298:    tmp = nirmmita(oldcap * 33 + 1)
+  lib/nighantu.smlib:338:    vitti tmp = nirmmita(scap * 33 + 1)
+  lib/roop.smlib:34:    vitti rev = nirmmita(22 * 8)
+  lib/roop.smlib:73:    vitti rev = nirmmita(70 * 8)
+  lib/roop.smlib:468:    vitti rev = nirmmita(22 * 8)
+  lib/sangrah.smlib:69:    vitti tmpa = nirmmita(cap * 33 + 1)
+  lib/sangrah.smlib:70:    vitti tmpb = nirmmita(bcap * 33 + 1)
+  lib/sangrah.smlib:105:    vitti tmpa = nirmmita(cap * 33 + 1)
+  lib/sangrah.smlib:106:    vitti tmpb = nirmmita(bcap * 33 + 1)
+  lib/sangrah.smlib:134:    vitti tmpa = nirmmita(cap * 33 + 1)
+  lib/sangrah.smlib:155:    vitti tmpa = nirmmita(cap * 33 + 1)
+  lib/sangrah.smlib:200:    vitti tmpa = nirmmita(cap * 33 + 1)
+  lib/sangrah.smlib:222:    vitti tmp = nirmmita(cap * 33 + 1)
+  lib/sangrah.smlib:224:    vitti scratch = nirmmita(cap * 32 + 1)
+  lib/sangrah.smlib:225:    vitti ptrs = nirmmita(cap * 8)
+  lib/sangrah.smlib:226:    vitti lens = nirmmita(cap * 8)
+  lib/shreni.smlib:213:    vitti tmp = nirmmita(n * 8)
+  lib/suchi.smlib:58:    l = nirmmita(3 * 8)
+  lib/suchi.smlib:80:    nd = nirmmita(ncap * 8)
+  lib/suchi.smlib:395:    q = nirmmita(4 * 8)
+  lib/suchi.smlib:422:        nd = nirmmita(ncap * 8)
+  lib/vakyank.smlib:50:    vitti rev = nirmmita(22 * 8)
+  lib/vakyank.smlib:141:    vitti rev = nirmmita(70 * 8)

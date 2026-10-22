@@ -110,9 +110,7 @@ prakriya nighantu_srij(cap) {
     vitti i = 0
     vitti sz = 0
     yadi (c < 1) { c = 1 }
-    # R35: the size is 16 + 56c; a wrap is not always negative (a cap near
-    # 9.9e17 wrapped to 80 bytes and SIGSEGVed), so bound c: (2^63 - 17) / 56.
-    yadi (c > 164703072086692424) { prati 0 }
+    yadi (c > 164703072086692424) { prati 0 }   # R35: 16 + 56c must not wrap
     sz = (2 + 3 * c) * 8 + c * 32
     yadi (sz < 0) { prati 0 }
     m = nirmmita(sz)
@@ -273,7 +271,7 @@ prakriya nighantu_rikta(m) {
 # nighantu_vardh(m, newcap) — copy the map into a fresh map of capacity
 # newcap, rehashing every entry (WS2, R20). Returns the new handle.
 # Returns 0 and changes nothing if newcap < nighantu_maap(m) (no partial
-# copy). The old buffer is abandoned (the library has no free — same
+# copy), or (R36) if the new map cannot be allocated. The old buffer is abandoned (the library has no free — same
 # as re-init); rebind: m = nighantu_vardh(m, 32). Capacity is clamped
 # to >= 1 by nighantu_srij. Before this, growing a fixed-capacity map
 # meant a hand-written re-put loop over nighantu_kunjika_ashtak at every
@@ -291,8 +289,10 @@ prakriya nighantu_vardh(m, newcap) {
     vitti slot = 0
     yadi (newcap < n) { prati 0 }
     newm = nighantu_srij(newcap)
+    yadi (newm == 0) { prati 0 }   # R36: was dereferenced
     nc = newm[0]
     tmp = nirmmita(oldcap * 33 + 1)
+    yadi (tmp == 0) { prati 0 }
     nk = nighantu_kunjika_ashtak(m, tmp)
     yavat (i < nk) {
         seglen = akshar(tmp, pos)

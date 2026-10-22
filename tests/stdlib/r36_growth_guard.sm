@@ -1,0 +1,42 @@
+# R36: the growth paths. suchi_khip and avali_pravesh double a full list's
+# capacity; the new byte size is cap * 16, so a capacity over (2^63 - 1) / 16
+# must fail (return 0, the list unchanged) instead of wrapping to a small
+# buffer. No real list is that big, so the header is forged here: the
+# arithmetic is the point. nighantu_vardh to a capacity that cannot be
+# allocated returned through a null handle (SIGSEGV); now it gives 0.
+yoj suchi
+yoj nighantu
+mukhya() {
+    vitti l = suchi_srij(2)
+    suchi_khip(l, 7)
+    suchi_khip(l, 8)
+    l[0] = 2305843009213693953
+    l[1] = 2305843009213693953
+    likha(suchi_khip(l, 9))
+    likha("\n")
+    likha(l[1] == 2305843009213693953)
+    likha("\n")
+    vitti q = avali_srij(2)
+    avali_pravesh(q, 1)
+    avali_pravesh(q, 2)
+    q[0] = 2305843009213693953
+    q[1] = 2305843009213693953
+    likha(avali_pravesh(q, 3))
+    likha("\n")
+    vitti m = nighantu_srij(4)
+    likha(nighantu_vardh(m, 164703072086692425))
+    likha("\n")
+    likha(nighantu_vardh(m, 1000000000000000))
+    likha("\n")
+    vitti s = suchi_srij(1)
+    vitti i = 0
+    vitti ok = 1
+    yavat (i < 100) {
+        ok = ok * suchi_khip(s, i)
+        i = i + 1
+    }
+    likha(ok * suchi_maap(s))
+    likha("\n")
+    likha(nighantu_vardh(m, 64) != 0)
+    likha("\n")
+}

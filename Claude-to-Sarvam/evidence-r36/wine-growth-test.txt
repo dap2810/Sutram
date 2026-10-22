@@ -1,0 +1,3 @@
+Wine (not Windows): tests/stdlib/r36_growth_guard.sm compiled by win/sutram.exe and run under Wine:
+  matches its golden
+  real Windows: NOT-RUN

@@ -1,0 +1,16 @@
+Found in R36: the 64 KiB limit on the flattened source (IMPORT_BUF_CAP = 65536: a program plus every module it yoj's).
+My first R36 library change added about 600 bytes of comments to suchi and nighantu, and tools/proof_props.py's
+'containers resize/vinimay' program (nighantu + sangrah + suchi) stopped compiling: 'vistarit srot seema atikram'.
+The comments are now one line each and it compiles. The programs nearest the limit (the sum of the files a program
+reaches, which is what the import pass copies), Linux, this tree:
+   70422 bytes   -4886 left  examples/105_block_nesting_capacity.sm
+   64422 bytes    1114 left  tests/stdlib/r11_sets_lists.sm
+   63217 bytes    2319 left  tests/stdlib/containers_clear.sm
+   63195 bytes    2341 left  tests/stdlib/containers20.sm
+   62234 bytes    3302 left  tests/stdlib/gaps19.sm
+   55247 bytes   10289 left  tests/stdlib/r9_guard_cells2.sm
+   54659 bytes   10877 left  tests/stdlib/r9_alloc_failure.sm
+   53752 bytes   11784 left  tests/stdlib/containers21.sm
+(105_block_nesting_capacity is a compile-fail example: over the limit on purpose.)
+So a program that uses the containers together has about 1 KB of headroom. Every comment added to
+suchi, nighantu or sangrah spends it. Worth knowing before the next library round.
