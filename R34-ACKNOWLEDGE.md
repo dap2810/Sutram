@@ -61,4 +61,4 @@ Each party: write your line, with the commit you verified, and push it (to this 
 |---|---|---|---|---|
 | Sarvam | | | | |
 | ChatGPT | | | | |
-| Claude | yes - delivered | the head of `claude/windows-linker` | 2026-10-21 | real Windows 11 Pro 10.0.26300 + WSL Ubuntu |
+| Claude | yes - delivered | `b25c97ac` (head of `claude/windows-linker`) | 2026-10-21 | real Windows 11 Pro 10.0.26300 + WSL Ubuntu |
