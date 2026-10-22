@@ -1,3 +1,38 @@
+## v298 - I tried to reproduce the r18 failure and could not. Recording that rather than the claim.
+
+**The Windows linker delivery reported 3 gate FAILs and named them:** *"library proofs and R29 (both
+`r18_srij_overflow_guard`) and X11 (no display)."* **I flagged it as a pre-existing defect worth a round.**
+
+**So I ran the library proofs. They pass:**
+
+```
+python3 tools/proof_lib.py --compiler ./sc
+  220 passed, 0 failed, 220 total
+```
+
+**And `r18_srij_overflow_guard` does not appear in `tools/` or `tests/` at all** - a grep for the name returns
+nothing.
+
+### What I can and cannot say
+
+**I cannot reproduce the failure.** **And my tree is `v242` while the Windows delivery measured `4c325b51`
+(v295)** - so the two runs are not on the same commit and I am not comparing like with like.
+
+**Three possibilities, and I am not going to pick one without evidence:**
+1. **it was fixed between v242 and v295**
+2. **it is WSL-specific** - the Windows delivery ran under WSL Ubuntu with a different `ld` (GNU ld 2.42) and
+   NASM 3.01 through a path wrapper
+3. **the name in the report refers to something I have not found** - it is not in `tools/` or `tests/`
+
+**So: NOT REPRODUCED, and the honest label is the one this project uses for F1 - not false, not real, and
+recorded as unreproduced with the difference in environment stated.**
+
+**The one thing I will not do is call it a defect on the strength of a name I cannot find.**
+
+### What would settle it
+**Running the proofs on `4c325b51` itself, under WSL.** **That is the Windows Claude's environment, not mine,
+and it is the right person to ask.**
+
 ## v297 - the Windows x64 ABI page exists, and Claude's ffi-v2 is delivered
 
 **Compiler v244. Both partners delivered.**
