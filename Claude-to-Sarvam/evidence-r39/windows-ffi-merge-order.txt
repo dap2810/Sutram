@@ -1,0 +1,21 @@
+Does merging claude/round-38 first make claude/windows-ffi harder to merge?  (Linux, cloud, a throwaway worktree)
+
+A trial merge of origin/claude/windows-ffi (d29fece4, v245) onto main after the R38 merge (034026b1, v246):
+  9 files conflict: src/sutram_compiler.asm, src/r11_sandesh.inc, docs/BUILDING.md,
+  tests/negative/r70/manifest.json, tools/r69_build.lock.json, tools/r69_build.py,
+  sutram_compiler, sutram.exe, win/sutram.exe.
+
+  * Every one of them would conflict in either order: both branches bump the version, move the same pins
+    and rebuild the same three binaries. Merging R38 first does not add a conflict the other order avoids.
+  * The only source conflict that needs thought is one hunk in src/sutram_compiler.asm's argument
+    parsing. windows-ffi removed the `%ifndef WINDOWS` that guarded the R32 --ffi block (the FFI is on
+    Windows now); R38 put its --fail-alloc block inside that same guard. Resolution: keep R38's block
+    whole, close it with its own `%endif`, then windows-ffi's unconditional --ffi block.
+  * The rest is mechanical: one new version number (v247), `python3 tools/sandesh.py --write`, rebuild the
+    three binaries, re-pin.
+
+Resolved that way in the trial (not committed, not pushed):
+  Linux build: Sutram 1.0 (v247); tests/r38/test_fail_alloc.py 115 / 0; tests/r32/test_ffi.py 50 / 0;
+  ordinary path v246 vs the trial v247: 567 programs, 474 byte-identical, 93 refused identically, 0 DIFFER.
+  Windows cross-build (tools/cross_build_windows.py): win/sutram.exe builds (405,279 B).
+  Real Windows and tests/r35: NOT-RUN (they belong to the Windows channel).

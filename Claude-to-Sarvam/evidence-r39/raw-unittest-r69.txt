@@ -1,0 +1,23 @@
+............................FF.........
+======================================================================
+FAIL: test_native_diagnostics_gate (test_build_and_probe.DocsAndWindows.test_native_diagnostics_gate)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/sutram/tests/r69/test_build_and_probe.py", line 125, in test_native_diagnostics_gate
+    s=(ROOT/'windows/build-windows-native.ps1').read_text();self.assertIn('E_UTF8',s);self.assertIn('r68_compiler_entry.asm',s)
+                                                            ~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: 'E_UTF8' not found in ". (Join-Path $PSScriptRoot 'build-common.ps1')\n$nasm=Get-BuildTool 'nasm.exe'; $linker=Get-BuildTool 'ld.exe'\n$build=Join-Path $ProjectRoot 'build\\windows'\n[void](New-Item -ItemType Directory -Force -Path $build,(Join-Path $ProjectRoot 'win'))\n$obj=Join-Path $build 'sutram.obj'\n$exe=Join-Path $ProjectRoot 'win\\sutram.exe'\n$inc=($ProjectRoot.Replace('\\','/')+'/')\n[void](Invoke-BoundedProcess $nasm @('-f','win64','-dWINDOWS',('-I'+$inc),'src/r68_compiler_entry.asm','-o',$obj) $ProjectRoot)\n[void](Invoke-BoundedProcess $linker @('-mi386pep','--entry=_start','-o',$exe,$obj) $ProjectRoot)\nAssert-Pe64 $exe\n[void](Invoke-BoundedProcess $exe @('--version') $ProjectRoot)\n$out=Join-Path $build 'hello.exe'\n[void](Invoke-BoundedProcess $exe @('examples/01_hello.sm',$out) $ProjectRoot)\nAssert-Pe64 $out\n$run=Invoke-BoundedProcess $out @() $ProjectRoot\nif ($run.Stdout.Replace([string][char]13,'') -ne ('Namaste, Sutram!'+[char]10)) { throw 'Compiled hello output mismatch.' }\nforeach ($folder in @('lib','lang')) {\n    Copy-Item -LiteralPath (Join-Path $ProjectRoot $folder) -Destination (Join-Path $ProjectRoot 'win') -Recurse -Force\n}\nWrite-Host 'COMPILER PASS: native host and generated hello executed on Windows.'\n"
+
+======================================================================
+FAIL: test_staged_payload_hash_gate (test_build_and_probe.DocsAndWindows.test_staged_payload_hash_gate)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/claude/sutram/tests/r69/test_build_and_probe.py", line 127, in test_staged_payload_hash_gate
+    s=(ROOT/'windows/build-windows-setup.ps1').read_text();self.assertIn('bin\\sutram.exe',s);self.assertIn('win\\sutram.exe',s);self.assertIn('Installer staged a different',s)
+                                                           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'bin\\sutram.exe' not found in "$ErrorActionPreference='Stop'\n& (Join-Path $PSScriptRoot 'preflight-windows.ps1')\n& (Join-Path $PSScriptRoot 'build-windows-native.ps1')\n& (Join-Path $PSScriptRoot 'gui\\build-gui.ps1')\n& (Join-Path $PSScriptRoot 'native-installer\\build-installer.ps1')\nWrite-Host 'Build complete. No installation or Windows integration was performed.'\nWrite-Host 'Desktop and install/uninstall acceptance must pass before release.'\n"
+
+----------------------------------------------------------------------
+Ran 39 tests in 0.028s
+
+FAILED (failures=2)

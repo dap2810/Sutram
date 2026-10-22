@@ -1,0 +1,2 @@
+Wine (not Windows). win/sutram.exe v246 (main) vs v247 (claude/round-39, cloud cross-build), every examples/*.sm:
+Wine: 182 identical, 40 produce no output under both, 0 differ:

@@ -1,0 +1,3 @@
+measured: 34 gates PASS, 0 FAIL, 1 NOT-RUN; suite PASS=218
+  the 6 documents should quote: gates 34, and suite 218
+doc counts: every document agrees with the measured tree

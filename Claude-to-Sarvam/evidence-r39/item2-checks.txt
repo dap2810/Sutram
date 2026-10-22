@@ -1,0 +1,25 @@
+AS EXPECTED  [Linux x86-64, cloud]  tests/run_tests.py  :: NO-EXPECTATION=4  PASS=218, FAIL=0 (the runner exits 1 because it counts the 4 NO-EXPECTATION as not passing; the same 4 as on main: 215_r12_wordfreq, 216_r12_expr, 217_r12_report, 219_sanskrit_kosh_aliases)
+PASS  [Linux x86-64, cloud]  crash_corpus  :: crash corpus: 227 cases + manifest, 0 failed
+PASS  [Linux x86-64, cloud]  proof_lib (unlimited)  :: 224 passed, 0 failed, 224 total
+PASS  [Linux x86-64, cloud]  proof_lib (ulimit -v 4 GB)  :: 224 passed, 0 failed, 224 total
+PASS  [Linux x86-64, cloud]  proof_props  :: 86/86 properties hold
+PASS  [Linux x86-64, cloud]  check_layers  :: layers OK: 14 core, 9 alloc, 1 std
+PASS  [Linux x86-64, cloud]  check_alloc_bounds  :: alloc bounds: 26 computed allocations in lib/: 13 bounded before the multiply, 13 exempt with a reason, 0 failed
+PASS  [Linux x86-64, cloud]  tests/r66 (unittest)  :: Ran 22 tests in 0.340s OK 
+PASS  [Linux x86-64, cloud]  tests/r67 (unittest)  :: Ran 17 tests in 0.102s OK 
+PASS  [Linux x86-64, cloud]  tests/r68 (unittest)  :: Ran 19 tests in 0.303s OK 
+PASS  [Linux x86-64, cloud]  tests/r70 (unittest)  :: Ran 36 tests in 0.102s OK 
+PASS  [Linux x86-64, cloud]  tests/r22/test_lang_builtin.py  :: lang built-in: 40 checks, 0 failed
+PASS  [Linux x86-64, cloud]  tests/r23/test_capabilities.py  :: r23 capabilities: 23 checks, 0 failed
+PASS  [Linux x86-64, cloud]  tests/r25/test_phal.py  :: r25 phal: 21 checks, 0 failed
+PASS  [Linux x86-64, cloud]  tests/r28/test_link.py  :: r28 link: 201 checks, 0 failed
+PASS  [Linux x86-64, cloud]  tests/r29/test_separate.py  :: r29 separate: 258 programs with modules behave the same, 145 without are byte-identical, 0 failed
+PASS  [Linux x86-64, cloud]  tests/r30/test_vitti.py  :: r30 vitti: 8 checks, 0 failed
+PASS  [Linux x86-64, cloud]  tests/r31/test_incremental.py  :: r31 incremental: 258 programs identical clean, cold and warm, 0 failed
+PASS  [Linux x86-64, cloud]  tests/r34/test_ffi_v2.py  :: r34 ffi v2: 14 checks, 0 failed
+PASS  [Linux x86-64, cloud]  tests/r34/test_windows_fixes.py  :: r34 windows fixes: 3 checks, 0 failed
+FAIL  [Linux x86-64, cloud]  tests/r69 (unittest)  :: Ran 39 tests, FAILED (failures=2). Before this round 3 problems (2 failures, 1 error); the same 3 on main before the merge, so the merge did not cause them.
+        fixed (mine, tests/): test_fixtures_derive46 - tests/r69/pairs/all_registers.sm had been reformatted in R19 (spaces before '#'), so its pinned SHA-256 no longer matched. Restored the reviewed bytes (sha256 2c3ea504...) and listed it in tools/fmt-exclude.txt; the pin was not changed.
+        open (Windows channel's files, not touched): test_native_diagnostics_gate and test_staged_payload_hash_gate - windows/build-windows-native.ps1 no longer has the E_UTF8 diagnostic check and windows/build-windows-setup.ps1 no longer has the staged-payload hash check; both were dropped in the 2026-10-18 ROUND-03 Windows merge (91aa7e5c, 7bacd51f) and are still absent on claude/windows-ffi.
+NOT-RUN  [Windows required]  tests/r34/test_link_windows.py  :: needs real Windows (sutram.exe + sutram-link.exe natively); not runnable in the cloud
+NOT-RUN  [-]  tests/r35  :: does not exist on main: it is on the unmerged claude/windows-ffi branch (test_coff2smo.py, test_ffi_windows.py), owned by the Windows channel

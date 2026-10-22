@@ -1,0 +1,28 @@
+The R39 gate over main's documents BEFORE this round's corrections (origin/main 09991ba4), with this round's gates transcript:
+measured: 34 gates PASS, 0 FAIL, 1 NOT-RUN; suite PASS=218
+  the 6 documents should quote: gates 34, and suite 218
+NOTE    PROJECT-MASTER.md: library functions: says 303, measured 305  ('303 functions')
+NOTE    PROJECT-MASTER.md: library proofs: says 217, measured 224  ('Library proofs | **217 /')
+NOTE    PROJECT-OVERVIEW.md: codegen: says 27, measured 12  ('codegen_gate.py       # 27/27')
+NOTE    PROJECT-OVERVIEW.md: library functions: says 303, measured 305  ('303 functions')
+NOTE    README.md: codegen: says 27, measured 12  ('27/27 code-generation')
+NOTE    README.md: library functions: says 303, measured 305  ('303 functions')
+NOTE    docs/sutram-design-parameters.html: GUI tests: says 16, measured 18  ('16 GUI tests')
+NOTE    docs/sutram-design-parameters.html: GUI tests: says 16, measured 18  ('GUI 16 tests')
+NOTE    docs/sutram-design-parameters.html: codegen: says 27, measured 12  ('codegen 27/27')
+NOTE    docs/sutram-design-parameters.html: library functions: says 281, measured 305  ('281 functions')
+NOTE    docs/sutram-design-parameters.html: library modules: says 21, measured 24  ('21 modules')
+NOTE    docs/sutram-design-parameters.html: library proofs: says 180, measured 224  ('180 library proofs')
+NOTE    docs/sutram-design-parameters.html: library proofs: says 180, measured 224  ('library 180 proofs')
+NOTE    docs/sutram-design-parameters.html: property proofs: says 72, measured 86  ('72 property proofs')
+NOTE    docs/sutram-design-parameters.html: property proofs: says 72, measured 86  ('properties 72')
+NOTE    docs/sutram-project-status.html: GUI tests: says 16, measured 18  ('test_x11_*.py</td><td>the IDE, over the real X11 protocol</t')
+NOTE    docs/sutram-project-status.html: library functions: says 281, measured 305  ('281 functions')
+NOTE    docs/sutram-project-status.html: library functions: says 281, measured 305  ('281</b><span>library functions')
+NOTE    docs/sutram-project-status.html: library modules: says 21, measured 24  ('21 modules')
+NOTE    docs/sutram-project-status.html: library proofs: says 180, measured 224  ('proof_lib.py</td><td>library behaviour against stated contra')
+NOTE    docs/sutram-project-status.html: property proofs: says 72, measured 86  ('proof_props.py</td><td>properties that must hold across inpu')
+NOTE    docs/sutram-scorecard.html: codegen: says 3, measured 12  ('codegen gate (3/3')
+NOTE    docs/sutram-scorecard.html: library functions: says 303, measured 305  ('303 functions')
+NOTE    docs/sutram-scorecard.html: library modules: says 21, measured 24  ('21 modules')
+doc counts: 24 document(s) behind - not a failure, but bump them

@@ -1,0 +1,18 @@
+Linux x86-64 (cloud). The r18 finding, checked in both directions on the merged tree.
+
+1. A machine that REFUSES large allocations: tools/proof_lib.py under shrinking address spaces:
+ulimit -v 262144: 223 passed, 0 failed, 223 total 
+ulimit -v 524288: 223 passed, 0 failed, 223 total 
+ulimit -v 1048576: 223 passed, 0 failed, 223 total 
+ulimit -v 2097152: 223 passed, 0 failed, 223 total 
+ulimit -v 4194304: 223 passed, 0 failed, 223 total 
+ulimit -v unlimited: 223 passed, 0 failed, 223 total 
+
+2. A machine that GRANTS them (as the owner's 48 GB WSL and real Windows did): a SCRATCH compiler, not committed, whose
+   allocations pass MAP_NORESERVE, so this machine grants what overcommit would otherwise refuse:
+   nirmmita(24 GB) != 0, nirmmita(100 TB) != 0, nirmmita(200 TB) != 0 -> 1 1 0  (the ordinary compiler here: 0 0 0 )
+   tools/proof_lib.py:   223 passed, 0 failed, 223 total
+   tools/proof_props.py: 86/86 properties hold
+   tests/r38/test_fail_alloc.py: 115 checks, 0 failed
+   tests/run_tests.py:   NO-EXPECTATION=4  PASS=218
+   r18_srij_overflow_guard, r35_alloc_wrap_guard, r36_growth_guard, r37_bounds: each matches its golden

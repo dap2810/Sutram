@@ -1,0 +1,2 @@
+Linux. main before the merge (v244, 09991ba4) vs main after the merge (v246), the ordinary compile of every examples/, examples/*/, tests/stdlib/, tests/r*/ program:
+566 programs: 474 byte-identical executables, 92 refused identically, 0 DIFFER
