@@ -1,3 +1,29 @@
+## v302 - ROUND-36 and ROUND-102: the positive-wrap guard gap, and the class it belongs to
+
+**ChatGPT's R101 found a real library defect, and it is now the task.**
+
+> *"Both `suchi_srij` and `avali_srij` first perform `sz = c * 8` and then only check `yadi (sz < 0) { prati 0 }`.
+> **Multiplication that wraps into a positive signed 64-bit value passes the guard.**"*
+
+**A capacity between `2^61` and `2^62` asks for more bytes than exist and gets a small positive size.** **That is
+a silent wrong answer in the allocation path - the same class as F1 and the FFI truncation.**
+
+**ROUND-36 (Claude):** fix it, **say which method and why**, and **check every other place in the library that
+multiplies before it allocates.**
+
+**ROUND-102 (ChatGPT):** *"the same class, elsewhere - find the other silent wraps."* **Every place a
+multiplication precedes an allocation or an index where a wrap could land positive.** **And the instruction that
+makes it worth the round:** *"one instance is a fix, the class is a rule."*
+
+**And `ganita_checked_mul` already exists and returns 0 on failure rather than the wrapped value** - **so the
+question is which sites should use it and which should not.**
+
+### The method note worth keeping
+
+> *"Merely making this test pass by forcing a `ulimit` does not test the overflow guard."*
+
+**That is the rule that kept this defect from being closed by hiding it.**
+
 ## v301 - r18: TWO independent readings agreed, and each found something. Test wrong AND guard incomplete.
 
 **Claude R35 and ChatGPT R101 read the same defect independently, before either saw the other's answer. They
