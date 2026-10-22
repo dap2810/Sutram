@@ -1,0 +1,38 @@
+ALLOC aadhar.smlib:27 brihat_ank_tak: c * 8
+ALLOC aadhar.smlib:40 brihat_ank_tak: c * 4 * 8
+ALLOC brihat.smlib:261 brihat_shesh: c * 8
+ALLOC brihat.smlib:325 brihat_ghatmod: c * 2 * 8
+ALLOC brihat.smlib:326 brihat_ghatmod: c * 8
+ALLOC brihat.smlib:327 brihat_ghatmod: c * 8
+ALLOC mala.smlib:17 mala_nava: sz
+ALLOC nighantu.smlib:116 nighantu_srij: sz
+ALLOC nighantu.smlib:294 nighantu_vardh: oldcap * 33 + 1
+ALLOC nighantu.smlib:333 nighantu_mil: scap * 33 + 1
+ALLOC roop.smlib:35 roop_ank: 22 * 8
+ALLOC roop.smlib:78 roop_ank_aadhar: 70 * 8
+ALLOC roop.smlib:448 roop_varg_ank: 32
+ALLOC roop.smlib:485 roop_sthir_mool: 22 * 8
+ALLOC roop.smlib:599 roop_chinhit: 32
+ALLOC roop.smlib:637 roop_sign_akshar: 32
+ALLOC sangrah.smlib:64 rakh_samroop_diff: cap * 33 + 1
+ALLOC sangrah.smlib:65 rakh_samroop_diff: bcap * 33 + 1
+ALLOC sangrah.smlib:97 rakh_sangam: cap * 33 + 1
+ALLOC sangrah.smlib:98 rakh_sangam: bcap * 33 + 1
+ALLOC sangrah.smlib:127 rakh_sampat: cap * 33 + 1
+ALLOC sangrah.smlib:149 rakh_bhed: cap * 33 + 1
+ALLOC sangrah.smlib:194 rakh_asti_upasamuh: cap * 33 + 1
+ALLOC sangrah.smlib:217 rakh_tak_mala: cap * 33 + 1
+ALLOC sangrah.smlib:218 rakh_tak_mala: cap * 32 + 1
+ALLOC sangrah.smlib:219 rakh_tak_mala: cap * 8
+ALLOC sangrah.smlib:220 rakh_tak_mala: cap * 8
+ALLOC shreni.smlib:214 mil_shreni: n * 8
+ALLOC suchi.smlib:55 suchi_srij: 3 * 8
+ALLOC suchi.smlib:57 suchi_srij: sz
+ALLOC suchi.smlib:75 suchi_vardh: ncap * 8
+ALLOC suchi.smlib:390 avali_srij: 4 * 8
+ALLOC suchi.smlib:392 avali_srij: sz
+ALLOC suchi.smlib:416 avali_pravesh: ncap * 8
+ALLOC vakyank.smlib:51 ank_tak_varna: 22 * 8
+ALLOC vakyank.smlib:146 ank_tak_aadhar_varna: 70 * 8
+R103 ALLOC SCAN files=24 calls=36 findings=0
+BOUNDARY: reviewed allocation spellings only; NOT a numeric range, index, or pointer safety proof

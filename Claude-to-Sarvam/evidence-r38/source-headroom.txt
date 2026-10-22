@@ -1,0 +1,11 @@
+largest flattened programs (bytes, R38 library vs main), limit 65536:
+   70422   70422  examples/105_block_nesting_capacity.sm
+   65247   65397  /tmp/prop_resize_swap.sm
+   64893   65190  /tmp/prop_gaps19.sm
+   64272   64422  tests/stdlib/r11_sets_lists.sm
+   63067   63217  tests/stdlib/containers_clear.sm
+   63045   63195  tests/stdlib/containers20.sm
+   61937   62234  tests/stdlib/gaps19.sm
+   55431   55308  tests/stdlib/r9_guard_cells2.sm
+programs measured: 540 ; grew: 66 ; shrank: 22 ; largest growth: 1058
+note: examples/105_block_nesting_capacity.sm is over the limit on main too and is refused identically; it does not reach a changed module.

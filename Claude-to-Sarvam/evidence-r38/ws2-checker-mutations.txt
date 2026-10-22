@@ -1,0 +1,27 @@
+M0 none (today's library)
+    truth: both pass
+    R103 allowlist: PASS   alloc-bounds gate: PASS
+M1 mala_nava loses its bound (sz = c * 8 unchecked)
+    truth: unsafe: must FAIL
+    R103 allowlist: PASS   alloc-bounds gate: FAIL
+M2 a new function in mala allocates an unbounded product through sz
+    truth: unsafe: must FAIL
+    R103 allowlist: PASS   alloc-bounds gate: FAIL
+M3 aadhar respaces c * 8 as c*8 (same code)
+    truth: safe: should PASS
+    R103 allowlist: FAIL   alloc-bounds gate: PASS
+M4 a new constant scratch nirmmita(64) in shreni
+    truth: safe: should PASS
+    R103 allowlist: FAIL   alloc-bounds gate: PASS
+M5 suchi_srij splits nirmmita(3 * 8) over two lines
+    truth: safe, unreadable: a refusal is the honest answer
+    R103 allowlist: FAIL   alloc-bounds gate: FAIL
+M6 a bounded new formula: suchi_vardh allocates ncap * 8 + 8
+    truth: safe (ncap is bounded): should PASS
+    R103 allowlist: FAIL   alloc-bounds gate: PASS
+
+The gap this found in my own R37 gate (main's tools/check_alloc_bounds.py), Linux:
+  brihat_ghatmod's `nirmmita(c * 8)` split over two lines:
+    main's gate:  alloc bounds: 25 computed allocations ... 0 failed   (the split call was SKIPPED, not checked)
+    R38 gate:     FAIL brihat.smlib:326: brihat_ghatmod: a nirmmita( call this check cannot read on one line
+  M5 (a constant split over lines) under main's gate: PASS (skipped); under the R38 gate: FAIL (refused, as above).

@@ -1,0 +1,4 @@
+Sutram 1.0 (v246) - sampurna sutra
+Samskrita-mukhya bhasha -> x86-64 yantra-bhasha
+sha256 51f8f6f1da41ac93ddce4f99fbbbd552fadfa5e48448b71a5415ee78d150fc3b  sutram_compiler (Linux, built from this tree: nasm -f elf64 -I. src/r68_compiler_entry.asm; ld)
+sha256 eb00dc222183ca28b557b229004b23dfcc1f61474614c0169f76a44181b575c0  win/sutram.exe = sutram.exe (cross-built in the cloud with tools/cross_build_windows.py; NOT the owner's toolchain)

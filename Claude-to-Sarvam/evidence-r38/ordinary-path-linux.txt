@@ -1,0 +1,2 @@
+Linux, compiler v244 (main) vs v246 (this branch), the ordinary compile of every program:
+566 programs: 474 byte-identical executables, 92 refused identically, 0 DIFFER
