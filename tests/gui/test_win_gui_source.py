@@ -68,9 +68,9 @@ class GuiSourceContract(unittest.TestCase):
         self.assertFalse(stack)
 
     def test_powershell_build_and_automated_gui_smoke(self):
-        build = (GUI_DIR/'build-gui.ps1').read_text()
+        build = (GUI_DIR/'build-gui.ps1').read_text(encoding='utf-8')
         smoke = (ROOT/'tools/test_windows_gui.py').read_text(encoding='utf8')
-        common = (ROOT/'windows/build-common.ps1').read_text()
+        common = (ROOT/'windows/build-common.ps1').read_text(encoding='utf-8')
         self.assertIn('nasm.exe',build)
         self.assertIn('-mi386pep',build)
         self.assertIn('Assert-Pe64 $exe',build)
@@ -81,7 +81,7 @@ class GuiSourceContract(unittest.TestCase):
         self.assertIn('SendMessageTimeoutW',smoke)
 
     def test_manual_checklist_all_mandatory_flows(self):
-        doc = (GUI_DIR/'MANUAL-WINDOWS-GUI-TEST.md').read_text()
+        doc = (GUI_DIR/'MANUAL-WINDOWS-GUI-TEST.md').read_text(encoding='utf-8')
         for step in ['Window/startup', 'Editing', 'Syntax highlighting',
                      'Run/compile/output', 'Examples browser', 'Shell Enter',
                      'Shell button', 'Save', 'Load', 'Resize', 'Exit', 'Missing compiler',

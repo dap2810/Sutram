@@ -304,6 +304,8 @@ align 8                          ; R9: keep what follows where it was aligned be
 class_button db 'BUTTON',0
 class_edit db 'EDIT',0
 class_static db 'STATIC',0
+align 2, db 0
+class_static_w: dw __utf16__("STATIC"),0   ; R34: for create_child_w
 class_list db 'LISTBOX',0
 class_richedit db 'RICHEDIT50W',0
 richedit_dll db 'Msftedit.dll',0
@@ -514,6 +516,7 @@ suffix_exe_w: dw 46,101,120,101,0
 prefix_gui_w: dw 83,84,71,0
 
 quote_only_w: dw 34,0
+nul_device_w: dw __utf16__("NUL"),0   ; R34: a run's stdin
 
 quote_space_quote_w: dw 34,32,34,0
 
@@ -621,6 +624,8 @@ si_struct resb 104
 sa_struct resb 24
 pipe_rd resq 1
 pipe_wr resq 1
+nul_in resq 1                 ; R34: the NUL handle a run reads as stdin (0 = none)
+run_real_file resd 1          ; R34: 1 = compile current_file itself, not the temp copy
 process_start resq 1
 ; R73 state
 h_status resq 1
@@ -1214,6 +1219,38 @@ create_child:
     API CreateWindowExA
     EPILOG
 
+; R34: create_child as a Unicode window (CreateWindowExW), same arguments; rcx and
+; rdx are UTF-16. For the controls whose text is a pack's script - the status line
+; and the find label: an ANSI STATIC turns every Indic letter given to it by
+; SetWindowTextW into '?' (found on real Windows 11).
+create_child_w:
+    PROLOG 160
+    mov [rbp-8],rcx
+    mov [rbp-16],rdx
+    mov [rbp-24],r8
+    mov [rbp-32],r9
+    xor ecx,ecx
+    mov rdx,[rbp-8]
+    mov r8,[rbp-16]
+    mov r9,[rbp-24]
+    mov rax,[rbp+48]
+    mov [rsp+32],rax             ; x from caller's arg5
+    mov rax,[rbp+56]
+    mov [rsp+40],rax             ; y
+    mov rax,[rbp+64]
+    mov [rsp+48],rax             ; w
+    mov rax,[rbp+72]
+    mov [rsp+56],rax             ; h
+    mov rax,[rel h_main]
+    mov [rsp+64],rax
+    mov rax,[rbp-32]
+    mov [rsp+72],rax
+    mov rax,[rel h_instance]
+    mov [rsp+80],rax
+    mov qword [rsp+88],0
+    API CreateWindowExW
+    EPILOG
+
 ; SetWindowText/edit and SendMessage wrapper as Win64 internal calls.
 send_message:
     PROLOG 48
@@ -1610,9 +1647,24 @@ create_controls:
     CHILD class_richedit,msg_ready,WS_CHILD|WS_VISIBLE|WS_BORDER|ES_MULTILINE|ES_AUTOVSCROLL|ES_READONLY|WS_VSCROLL,ID_OUTPUT,10,500,1120,145,h_output
     CHILD class_edit,empty_text,WS_CHILD|WS_VISIBLE|WS_BORDER|ES_AUTOHSCROLL,ID_SHELL,10,659,1120,30,h_shell
     ; R73: find box in the toolbar and a status line along the bottom.
-    CHILD class_static,empty_text,WS_CHILD|WS_VISIBLE,ID_FINDLABEL,672,13,62,22,h_find_label
+    ; R34: the find label and the status line are Unicode windows (create_child_w):
+    ; their text is in the pack's script, which an ANSI STATIC shows as '?'.
+%macro CHILDW 9
+    PTR rcx,%1
+    PTR rdx,%2
+    mov r8d,%3
+    mov r9d,%4
+    mov qword [rsp+32],%5
+    mov qword [rsp+40],%6
+    mov qword [rsp+48],%7
+    mov qword [rsp+56],%8
+    call create_child_w
+    mov [rel %9],rax
+%endmacro
+    CHILDW class_static_w,empty_w,WS_CHILD|WS_VISIBLE,ID_FINDLABEL,672,13,62,22,h_find_label
     CHILD class_edit,empty_text,WS_CHILD|WS_VISIBLE|WS_BORDER|ES_AUTOHSCROLL,ID_FIND,736,8,200,27,h_find
-    CHILD class_static,empty_text,WS_CHILD|WS_VISIBLE,ID_STATUS,10,700,1120,22,h_status
+    CHILDW class_static_w,empty_w,WS_CHILD|WS_VISIBLE,ID_STATUS,10,700,1120,22,h_status
+%unmacro CHILDW 9
 %unmacro CHILD 9
     mov rcx,[rel h_find_label]
     PTR rdx,find_label_w
@@ -2847,6 +2899,10 @@ compose_compile:
     call wide_command_concat
     PTR rcx,command_line
     PTR rdx,temp_path
+    cmp dword [rel run_real_file],0   ; R34: the file itself, so its yoj modules are found
+    je .src_ready                     ; beside it, as the compiler's rule says
+    PTR rdx,current_file
+.src_ready:
     call wide_command_concat
     PTR rcx,command_line
     PTR rdx,quote_space_quote_w
@@ -2885,11 +2941,27 @@ spawn_capture:
     mov edx,HANDLE_FLAG_INHERIT
     xor r8d,r8d
     API SetHandleInformation
+    ; R34: stdin is the NUL device - end of input, as "prog < NUL" gives. With no
+    ; handle at all every read fails, and an input loop spun until the 10 s limit.
+    PTR rcx,nul_device_w
+    mov edx,GENERIC_READ
+    mov r8d,FILE_SHARE_READ|2       ; | FILE_SHARE_WRITE
+    PTR r9,sa_struct                ; inheritable
+    mov qword [rsp+32],OPEN_EXISTING
+    mov qword [rsp+40],0
+    mov qword [rsp+48],0
+    API CreateFileW
+    cmp rax,INVALID_HANDLE
+    jne .nul_ready
+    xor eax,eax
+.nul_ready:
+    mov [rel nul_in],rax
     ; Use redirected stdout and stderr, never expose console window.
     PTR r10,si_struct
     mov dword [r10],104
     mov dword [r10+60],STARTF_USESTDHANDLES
-    mov qword [r10+80],0
+    mov r11,[rel nul_in]
+    mov [r10+80],r11
     mov r11,[rel pipe_wr]
     mov [r10+88],r11
     mov [r10+96],r11
@@ -2910,6 +2982,12 @@ spawn_capture:
     mov rcx,[rel pipe_wr]
     API CloseHandle
     mov qword [rel pipe_wr],0
+    mov rcx,[rel nul_in]             ; R34: the child holds its own copy now
+    test rcx,rcx
+    jz .nul_closed
+    API CloseHandle
+    mov qword [rel nul_in],0
+.nul_closed:
     cmp dword [rbp-16],0
     je .close_read
     mov rcx,[rel pi_struct+8]    ; hThread
@@ -3105,8 +3183,19 @@ run_editor:
     call detect_devanagari
     mov ecx,eax
     call select_pack
+    ; R34: an opened or saved file with no unsaved change is compiled where it is,
+    ; so a yoj finds the modules beside it (the compiler looks beside the source).
+    ; Unsaved text still goes through the temp copy. The shell never comes here.
+    mov dword [rel run_real_file],0
+    cmp dword [rel is_modified],0
+    jne .temp_copy
+    cmp word [rel current_file],0
+    je .temp_copy
+    mov dword [rel run_real_file],1
+.temp_copy:
     PTR rcx,edit_buffer
     call compile_run
+    mov dword [rel run_real_file],0
     mov [rbp-4],eax
     PTR rcx,output_buffer
     PTR rdx,output_utf16

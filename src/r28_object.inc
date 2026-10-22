@@ -21,10 +21,10 @@
 ; A relocation's rel32 is filled with  target - (offset + 4), as a call's is.
 ; A module with no mukhya is allowed in --object mode; it exports no mukhya.
 ;
-; R34: the Windows compiler (target_pe) writes the same layout under the magic
-; "SUTRAMW1": the code of a PE program, whose runtime blob sutram-link puts in
-; front of it. Its three differences are all holes, so the format needs no new
-; kind of entry:
+; R34: the Windows compiler (target_pe) writes version 2 of the format, the
+; magic "SUTRAMO2": the same layout, holding the code of a PE program, whose
+; runtime blob sutram-link puts in front of it. Its three differences are all
+; holes, so the format needs no new kind of entry:
 ;   - the call to the blob's rt_init at mukhya's start is a relocation to "rt:init";
 ;   - every call into the blob's rt_syscall (emit_syscall) is one to "rt:syscall";
 ;   - a vitti lives in the PE's read/write .data, not after the code: its
@@ -49,7 +49,7 @@ section .bss
     r28_reloc_count  resq 1
     r28_hdr          resq 4
 section .data
-    r34_rt_init      db "rt:init", 0     ; R34: the blob's entries, in a SUTRAMW1 object
+    r34_rt_init      db "rt:init", 0     ; R34: the blob's entries, in a SUTRAMO2 object
     r34_rt_syscall   db "rt:syscall", 0
 section .text
 
@@ -132,7 +132,7 @@ r28_write_object:
     mov rax, 0x314F4D4152545553     ; "SUTRAMO1"
     cmp qword [rel target_pe], 0
     je .magic
-    mov rax, 0x31574D4152545553     ; R34: "SUTRAMW1"
+    mov rax, 0x324F4D4152545553     ; R34: "SUTRAMO2", version 2
 .magic:
     call r28_put_u64
     mov rax, [rel code_sz]
@@ -312,7 +312,7 @@ r30_mark_global_extern:
     ret
 
 ; r30_object_globals: r56_patch_global_storage in --object / --separate mode.
-; R34: for a PE program (SUTRAMW1) a slot is an offset in the object's data,
+; R34: for a PE program (SUTRAMO2) a slot is an offset in the object's data,
 ; not after its code, and every access is a hole: sutram-link puts the data in
 ; the PE's .data section, where the one-pass compile puts it.
 r30_object_globals:

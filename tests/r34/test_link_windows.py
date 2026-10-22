@@ -3,12 +3,12 @@
 sutram-link writing a PE. Run on real Windows, with the Windows binaries.
 
   1. IDENTITY: every program in examples/ that the Windows compiler compiles directly is
-     also compiled with `--object` (a SUTRAMW1 object) and linked alone by sutram-link;
+     also compiled with `--object` (a SUTRAMO2 object) and linked alone by sutram-link;
      the two .exe files must be byte-identical, and the linked one runs.
   2. TWO MODULES: two separately compiled objects link into one .exe that prints the
      right values, in either argument order, with calls in both directions.
   3. THE ERRORS: undefined, duplicate, no mukhya, two mukhyas, not an object, truncated,
-     missing file, usage - and two R34 ones: a SUTRAMO1 object with a SUTRAMW1 one
+     missing file, usage - and two R34 ones: a SUTRAMO1 object with a SUTRAMO2 one
      (mixed targets), and more vitti than the PE's .data holds (128).
   4. VITTI: a module-level vitti held in the object is placed in .data (byte-identical to
      the direct compile); tests/r30/proj built separately prints what the one-pass
@@ -50,7 +50,7 @@ def arg(argv, flag, default):
 
 def symbols(path):
     data = open(path, 'rb').read()
-    assert data[:8] in (b'SUTRAMO1', b'SUTRAMW1'), data[:8]
+    assert data[:8] in (b'SUTRAMO1', b'SUTRAMO2'), data[:8]
     code, nsym, _nrel = struct.unpack_from('<3Q', data, 8)
     pos, out = 32 + code, []
     for _ in range(nsym):
@@ -122,7 +122,7 @@ def main(argv) -> int:
             if o.returncode != 0 and b'vastu-patre ghatak-star vitti' in o.stdout:
                 refused += 1
                 continue
-            ok = o.returncode == 0 and (t / 'o.smo').read_bytes()[:8] == b'SUTRAMW1'
+            ok = o.returncode == 0 and (t / 'o.smo').read_bytes()[:8] == b'SUTRAMO2'
             if ok:
                 l = sh([link, t / 'l.exe', t / 'o.smo'])
                 ok = l.returncode == 0 and (t / 'l.exe').read_bytes() == (t / 'd.exe').read_bytes()

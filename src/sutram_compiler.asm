@@ -41,6 +41,7 @@ FUNC_TABLE_CAP equ 128        ; entries; matches func_defs capacity
 PATCH_LIST_CAP equ 512        ; entries; 16 bytes each
 FUNC_DEFS_CAP equ 128         ; entries; 8 bytes each
 CODE_BUF_CAP equ 262144       ; generated machine-code bytes; 4x guarded headroom
+BLOB_CALL_CAP equ CODE_BUF_CAP / 5 + 1 ; R34: every runtime call is 5 code bytes, so this never fills
 BREAK_PATCH_CAP equ 1024      ; active break patch entries across nested loops
 CONTINUE_PATCH_CAP equ 1024   ; active continue patch entries across nested loops
 RACHANA_CAP equ 16            ; 256-byte entries in 4096-byte table
@@ -921,7 +922,8 @@ section .bss
     root_node   resq 1
     call_args   resb 256
     param_buf_pos resq 1
-    blob_calls   resq 256
+    blob_calls   resq BLOB_CALL_CAP ; R34: was 256, unchecked - a Windows program with more
+                                   ; calls into the runtime overran it (the compiler crashed)
     blob_call_cnt resq 1
     target_pe    resq 1
     pe_hdr       resb 512
@@ -2086,7 +2088,7 @@ _start:
 %endif
     ; R28 --object <input.sm> <output.smo>: the same compile, written as an
     ; object file for sutram-link. R34: the Windows compiler has it too; its
-    ; object is a SUTRAMW1 (a PE program's code), see r28_write_object.
+    ; object is version 2, SUTRAMO2 (a PE program's code), see r28_write_object.
     mov rdi, R49_ARG(16)
     lea rsi, [rel r28_flag_object]
     call strcmp
@@ -11572,12 +11574,17 @@ emit_syscall:
     mov rax, [rel code_sz]          ; position of the rel32 field
     lea rcx, [rel blob_calls]
     mov rdx, [rel blob_call_cnt]
+    cmp rdx, BLOB_CALL_CAP          ; R34: never past its end
+    jae .es_full
     shl rdx, 3
     mov [rcx + rdx], rax
     inc qword [rel blob_call_cnt]
     xor edi, edi
     call emit_u32
     ret
+.es_full:
+    lea rdi, [rel msg_patch_overflow]
+    jmp capacity_fail
 
 emit_byte:
     ; dil = byte to emit

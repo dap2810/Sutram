@@ -118,6 +118,7 @@ run_gate() {                      # name, then the command
     "R31 incremental")  line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r31 incremental: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c6-80)";; esac ;;
     "R32 FFI")          line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r32 ffi: //'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c6-80)";; esac ;;
     "R33 FFI kinds")    line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r33 ffi kinds: //'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c6-80)";; esac ;;
+    "R34 Windows fixes") line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r34 windows fixes: //'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "FFI fuzzer")       line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 differ"*) ok "$name ($(echo "$line" | sed 's/fuzz_ffi: seed [0-9]*, //; s/ printed values.*//'))";; *) bad "$name" "${line:-no summary}";; esac ;;
     "ELF reader fuzzer") line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 broke the contract"*) ok "$name ($(echo "$line" | sed 's/fuzz_elf2smo: seed [0-9]*, //; s/, 0 broke the contract//'))";; *) bad "$name" "${line:-no summary}";; esac ;;
     "R23 fuzzer")       line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 differ"*) ok "$name ($(echo "$line" | sed 's/fuzz_r23: //'))";; *) bad "$name" "${line:-no summary}";; esac ;;
@@ -146,7 +147,8 @@ run_gate "R30 module vitti"  python3 tests/r30/test_vitti.py --compiler ./sutram
 run_gate "R31 incremental"   python3 tests/r31/test_incremental.py --compiler ./sutram_compiler --linker ./sutram-link   # R31: --cache rebuilds only what changed; the same executable as a clean build
 run_gate "R32 FFI"           python3 tests/r32/test_ffi.py --compiler ./sutram_compiler --linker ./sutram-link --elf2smo ./sutram-elf2smo   # R32: C functions, checked declarations, read from ELF
 run_gate "R33 FFI kinds"     python3 tests/r33/test_ffi_kinds.py --compiler ./sutram_compiler --linker ./sutram-link --elf2smo ./sutram-elf2smo   # R33: f64, ptr, void; checked; the stage-2 reader
-run_gate "FFI fuzzer"        python3 tools/fuzz_ffi.py --seed 33 --count 60 --compiler ./sutram_compiler --linker ./sutram-link --elf2smo ./sutram-elf2smo --out /tmp/fuzz-ffi-gate   # R33: random programs against a model
+run_gate "R34 Windows fixes" python3 tests/r34/test_windows_fixes.py --compiler ./sutram_compiler   # R34: a PE program with more than 256 runtime calls (the compiler crashed); PE through the Linux compiler here
+run_gate "FFI fuzzer"       python3 tools/fuzz_ffi.py --seed 33 --count 60 --compiler ./sutram_compiler --linker ./sutram-link --elf2smo ./sutram-elf2smo --out /tmp/fuzz-ffi-gate   # R33: random programs against a model
 run_gate "ELF reader fuzzer" python3 tools/fuzz_elf2smo.py --seed 33 --count 3000 --elf2smo ./sutram-elf2smo --out /tmp/fuzz-elf2smo-gate   # R33: malformed objects: no crash, no hang, no output on a refusal
 run_gate "R23 fuzzer"        python3 tools/fuzz_r23.py --seed 23 --count 100 --compiler ./sutram_compiler --out /tmp/fuzz-r23-gate   # R23: 100 random programs against the model
 run_gate "valid fuzzer + function values" python3 tools/fuzz_valid.py --seed 24 --count 60 --capabilities --compiler ./sutram_compiler --out /tmp/fuzz-valid-gate   # R24: the main fuzzer with calls through function values
@@ -167,8 +169,10 @@ else
   skip "X11 GUI protocol" "no DISPLAY and no /tmp/.X11-unix/X0"
 fi
 
-# Windows cannot be run here, and has never been run anywhere. Say it plainly.
-skip "Windows execution" "cannot run here - never executed by anyone (Gate 6)"
+# Windows cannot be run here. R34: it HAS been run, on real Windows 11 (Windows-to-Sarvam/,
+# Claude-to-Sarvam/evidence-r34/): there, run tests/r34/test_link_windows.py,
+# tools/ide_examples_windows.ps1 and tools/accept-windows.ps1. Say plainly it is not run here.
+skip "Windows execution" "cannot run here (Linux) - on Windows: tests/r34/test_link_windows.py, tools/ide_examples_windows.ps1, tools/accept-windows.ps1"
 
 # ---------------------------------------------------------------- summary
 echo

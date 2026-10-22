@@ -28,13 +28,16 @@
 #>
 [CmdletBinding()]
 param(
-    [string]$Root = (Split-Path -Parent $PSScriptRoot),
+    [string]$Root = '',
     [string]$Setup = '',
     [string]$OutDir = '',
     [switch]$KeepInstalled,
     [switch]$Keyboard,
     [int]$InstallTimeoutSec = 300
 )
+# R34: in Windows PowerShell 5.1 a [CmdletBinding()] script sees an empty $PSScriptRoot inside its
+# param() defaults, so the default is set here, where it is defined (found on real Windows 11).
+if (-not $Root) { $Root = Split-Path -Parent $PSScriptRoot }
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version 2.0
 $Root = [IO.Path]::GetFullPath($Root)

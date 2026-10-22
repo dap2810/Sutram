@@ -2,9 +2,9 @@
 """ROUND-28: print a Sutram object file (.smo) - its header, symbols and holes.
 
 The format is docs/OBJECT-FORMAT.md. This is a reader for people; the linker
-(linker/sutram_link.asm) is the reader the build uses. R34: a SUTRAMW1 object
-(the Windows compiler's) is read the same way; its "vitti:" symbols are offsets
-in the object's data, not its code.
+(linker/sutram_link.asm) is the reader the build uses. R34: version 2, a
+SUTRAMO2 object (the Windows compiler's), is read the same way; its "vitti:"
+symbols are offsets in the object's data, not its code.
 
 usage: python3 -B tools/smo_dump.py file.smo
 """
@@ -14,8 +14,8 @@ import sys
 
 def read(path):
     d = open(path, 'rb').read()
-    if len(d) < 32 or d[:8] not in (b'SUTRAMO1', b'SUTRAMW1'):
-        raise SystemExit('%s: not a Sutram object (no SUTRAMO1 or SUTRAMW1 magic)' % path)
+    if len(d) < 32 or d[:8] not in (b'SUTRAMO1', b'SUTRAMO2'):
+        raise SystemExit('%s: not a Sutram object (no SUTRAMO1 or SUTRAMO2 magic)' % path)
     code_size, nsym, nrel = struct.unpack_from('<3Q', d, 8)
     p = 32 + code_size
 
@@ -37,7 +37,7 @@ def main(argv):
     magic, code_size, syms, rels = read(argv[0])
     print('%s  code %d bytes, %d symbols, %d relocations' % (magic, code_size, len(syms), len(rels)))
     for off, name in syms:
-        where = 'data' if magic == 'SUTRAMW1' and name.startswith('vitti:') else 'code'
+        where = 'data' if magic == 'SUTRAMO2' and name.startswith('vitti:') else 'code'
         print('  defines  %-28s at %s+%d' % (name, where, off))
     for off, name in rels:
         print('  needs    %-28s rel32 at code+%d' % (name, off))

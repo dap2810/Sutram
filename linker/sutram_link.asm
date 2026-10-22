@@ -11,7 +11,7 @@
 ;
 ; R34: two targets, chosen by the objects' magic, never mixed:
 ;   SUTRAMO1 (the Linux compiler's)   -> an ELF: one PT_LOAD at 0x400000 + 120.
-;   SUTRAMW1 (the Windows compiler's) -> a PE, laid out as the compiler's
+;   SUTRAMO2 (the Windows compiler's) -> a PE, laid out as the compiler's
 ;       write_pe lays it out: [headers][runtime blob][code], then the .data
 ;       section with the vitti and the kernel32 imports. The blob's two
 ;       entries are the symbols "rt:init" and "rt:syscall"; a "vitti:<name>"
@@ -39,7 +39,7 @@ SYM_SIZE     equ 32                ; name, length, value, kind
 KIND_CODE    equ 0                 ; value: an offset from the start of the output's code
 KIND_DATA    equ 1                 ; value: an offset in the PE's .data
 MAGIC        equ 0x314F4D4152545553   ; "SUTRAMO1"
-MAGIC_W      equ 0x31574D4152545553   ; "SUTRAMW1" (R34)
+MAGIC_W      equ 0x324F4D4152545553   ; "SUTRAMO2" (R34): version 2, a PE program's code
 ARGS_CAP     equ OBJ_CAP + 4
 ARGBUF_CAP   equ 32768
 
@@ -53,7 +53,7 @@ section .data
     m_dup     db "Sutram Error: prakriya dvih paribhashita: ", 0
     m_nomain  db "Sutram Error: kasminnapi vastu-patre mukhya nasti", 10, 0
     m_full    db "Sutram Error: sutram-link seema atikram", 10, 0
-    m_mixed   db "Sutram Error: vastu-patrani bhinna-lakshyani (SUTRAMO1 SUTRAMW1 ca): ", 0
+    m_mixed   db "Sutram Error: vastu-patrani bhinna-lakshyani (SUTRAMO1 SUTRAMO2 ca): ", 0
     m_gfull   db "Sutram Error: ghatak-star vitti seema atikram", 10, 0
     m_ok      db "Siddh: ", 0
     m_bytes   db " baait sankalit", 10, 0
@@ -77,7 +77,7 @@ section .bss
     syms      resb SYM_CAP*SYM_SIZE
     nsyms     resq 1
     main_obj  resq 1
-    target_w  resq 1                ; R34: 1 = SUTRAMW1 objects, a PE
+    target_w  resq 1                ; R34: 1 = SUTRAMO2 objects, a PE
     hdr       resb 128
     pe_hdr    resb 512
     pe_pad    resb 256
