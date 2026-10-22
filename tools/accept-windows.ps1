@@ -417,6 +417,12 @@ if ($skipInstall) {
             }
             $installed = ($outcome -eq 'done page') -and (Test-Path -LiteralPath $unKey)
             if ($installed) { $installDir = (Get-ItemProperty -LiteralPath $unKey).InstallLocation }
+            # R34: after a successful install the wizard removes its staging folder; the log is kept in the
+            # install folder (install-core.ps1 copies it there), so read it from there.
+            if ($installed -and -not (Test-Path -LiteralPath (Join-Path $OutDir 'install.log')) -and (Test-Path -LiteralPath (Join-Path $installDir 'install.log'))) {
+                Copy-Item -LiteralPath (Join-Path $installDir 'install.log') -Destination (Join-Path $OutDir 'install.log') -Force
+                [void]$log.AppendLine('install.log copied from ' + $installDir + ' (the staging folder was removed after success)')
+            }
             $st = 'FAIL'; if ($installed) { $st = 'PASS' }
             Add-Check 'install-wizard' $st 'BM_CLICK Next / I accept / Next / Next / Install / Finish (launch unchecked) on the wizard this script started' $log.ToString() ('outcome=' + $outcome + '; screenshots: ' + (($pages | Where-Object { $_ }) -join ', '))
         }
@@ -616,10 +622,17 @@ if ($installed -and -not $KeepInstalled) {
 } elseif ($installed) { NotRun 'uninstall-removes-install' '-KeepInstalled was given' }
 else { NotRun 'uninstall-removes-install' 'nothing was installed by this run' }
 
-# Known defect (R4-03 section 3, ChatGPT's): staging folders are left in %TEMP%. Advisory, not required.
+# Known defect (R4-03 section 3): staging folders are left in %TEMP%. Advisory, not required.
+# R34: the INSTALL staging folder (payload.zip, the scripts, the log) is removed after a successful
+# install - install-staging-removed checks exactly that. The UNINSTALL folder stays by design: the
+# uninstaller exits at once so it can delete itself, and its PowerShell writes uninstall.log there
+# (this script reads it above). temp-staging-cleaned is unchanged and still counts both.
 if ($installed) {
-    $leftStages = @(Get-ChildItem -LiteralPath $env:TEMP -Directory -Filter 'STM*.tmp' -ErrorAction SilentlyContinue | Where-Object { $tempBefore -notcontains $_.FullName } | ForEach-Object { $_.Name })
-    Add-Check 'temp-staging-cleaned' $(if ($leftStages.Count) { 'FAIL' } else { 'PASS' }) 'Get-ChildItem $env:TEMP STM*.tmp (new during this run)' ($leftStages -join "`n") 'known defect R4-03 s3; advisory only' $false
+    $newStages = @(Get-ChildItem -LiteralPath $env:TEMP -Directory -Filter 'STM*.tmp' -ErrorAction SilentlyContinue | Where-Object { $tempBefore -notcontains $_.FullName })
+    $leftStages = @($newStages | ForEach-Object { $_.Name + ': ' + ((Get-ChildItem -LiteralPath $_.FullName -File -ErrorAction SilentlyContinue | ForEach-Object { $_.Name }) -join ', ') })
+    $installStages = @($newStages | Where-Object { (Test-Path -LiteralPath (Join-Path $_.FullName 'payload.zip')) -or (Test-Path -LiteralPath (Join-Path $_.FullName 'install-core.ps1')) } | ForEach-Object { $_.Name })
+    Add-Check 'install-staging-removed' $(if ($installStages.Count) { 'FAIL' } else { 'PASS' }) 'new %TEMP%\STM*.tmp holding payload.zip or install-core.ps1' ($installStages -join "`n") 'R34: the wizard removes its install staging after success' $false
+    Add-Check 'temp-staging-cleaned' $(if ($leftStages.Count) { 'FAIL' } else { 'PASS' }) 'Get-ChildItem $env:TEMP STM*.tmp (new during this run)' ($leftStages -join "`n") 'R4-03 s3; advisory only; the uninstall folder holding uninstall.log stays by design' $false
 }
 
 # ------------------------------------------------------------------------------------------------
