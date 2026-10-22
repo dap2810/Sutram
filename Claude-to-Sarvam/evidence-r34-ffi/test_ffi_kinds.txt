@@ -1,0 +1,6 @@
+the kinds work: f64 in and out, interleaved registers, a string and a kosh as pointers, a C write into a kosh, void as a statement, from mukhya and from a module
+the kinds are checked: 7 mismatches and 3 uses of a void value are E_FFI_KIND at the call, exit 1, no object; a kosh or string for ptr and an integer for f64 are accepted
+the stage-2 reader: read-only data and its PC32 relocations resolved (9 functions, 0 holes left); calling out, unwind tables, a 16-byte constant: refused
+the edges: an old object kept on failure; 64 / 65 declarations, 8192 / 8193 bytes; 3, 4 and 5 arguments; a foreign symbol twice, or nowhere: refused by the link; a new foreign object used under a warm cache
+r33 ffi kinds: 29 checks, 0 failed
+exit 0

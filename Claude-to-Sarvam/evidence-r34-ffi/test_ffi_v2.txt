@@ -1,0 +1,7 @@
+the version: v1 is i64 only, as R32 promised; v2 adds the kinds; i64 declarations give the same object
+a dasham works: 8 special doubles, Sutram -> C -> Sutram -> C, bit for bit, by expression and by variable
+the arity edges: 0 called with 1, 6 with 5, and 7 arguments: refused, no object
+hostile sidecar bytes: a NUL, invalid UTF-8, a DEL, a tab: refused with the line, no object
+the packs: E_FFI_KIND in Sanskrit and Gujarati
+r34 ffi v2: 14 checks, 0 failed
+exit 0

@@ -1,0 +1,11 @@
+it works: 4 C functions (2, 1, 6, 0 arguments), from mukhya and from a module; rsp is 16-byte aligned at every depth
+not a prakriya: nothing exported for a declaration; each call is a hole named sutram_ffi_add
+checked: s_add(17) and s_add(17, 25, 1) are E_ARITY at 2:11, exit 1, no object (--object and --separate)
+not a prakriya: a prakriya named s_add or sutram_ffi_add, or a builtin name, is an error
+the sidecar: 28 malformed cases refused with their line; in the SUTRAM_LANG pack too
+the reader: 4 functions read; a relocation, unwind tables, not ELF, truncated: refused; usage
+undeclared: a call nothing declares or defines is refused by the link, no executable
+the cache: a changed sidecar recompiles every module
+opt-in: --ffi needs --object or --separate; the ordinary compile never reads a sidecar
+r32 ffi: 50 checks, 0 failed
+exit 0

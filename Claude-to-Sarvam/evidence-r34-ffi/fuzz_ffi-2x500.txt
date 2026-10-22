@@ -1,0 +1,3 @@
+fuzz_ffi: seed 34, 500 programs, 5591 foreign calls, 2725 printed values: 500 agree, 0 differ
+fuzz_ffi: seed 35, 500 programs, 5528 foreign calls, 2758 printed values: 500 agree, 0 differ
+exit 0

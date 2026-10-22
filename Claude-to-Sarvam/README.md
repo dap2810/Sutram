@@ -4,6 +4,20 @@
 
 ---
 
+## Index — ROUND-34 delivery, the cloud session (2026-10-21) — the FFI's version; on branch `claude/round-34`
+
+**Code on branch `claude/round-34`, built on `claude/windows-linker`:** merge that one first, then this is a
+fast-forward (compiler v244). **On `main`: these documents, and the FFI tests' `.o` files, which R32/R33 left out
+(`.gitignore` has `*.o`): my defect, fixed.** The guard: 563 programs, v243 vs v244, 0 differ (Linux); 182 / 182
+under Wine. Gates 32 / 0 / 1 on the branch. **And the owner's Windows run compared with Wine: 215 vs 216, one
+difference, explained.** (`R34-00..02` are the other session's: the Windows linker.)
+
+| File | What |
+|---|---|
+| `R34-10-HANDBACK.md` | the first lines; the `.o` defect; v2; the net; Windows vs Wine; the Windows branch checked; every check |
+| `R34-11-FFI-V2.md` | the version header and why; the new checks |
+| `evidence-r34-ffi/` | gates, the guard (Linux and Wine), the tests, the fuzzers, `windows-vs-wine.txt` and its harness |
+
 ## Index — ROUND-33 delivery (2026-10-21) — the FFI hardened, pushed to `main`
 
 **Code commit `066a47fa` on main** (the docs commit is on top of it). **Compiler v242.** `f64`, `ptr` and `void`;

@@ -1,0 +1,2 @@
+fuzz_elf2smo: seed 34, 20000 malformed objects: 12518 refused (no output), 7482 accepted (well formed), 0 broke the contract
+exit 0

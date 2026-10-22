@@ -1,0 +1,25 @@
+WINDOWS vs WINE: the owner's real Windows run (Windows-to-Sarvam/WIN-RUN-2026-10-21.md, check 7) against the same harness run under Wine.
+Both on main's win/sutram.exe at 0251f8c5 (SHA-256 84c48500acfc6428...4821a0, v242), the same 218 examples with goldens, the same --lang, stdin and
+working-directory tables (the harness's own, copied: wine_goldens.py beside this file).
+
+                     real Windows 11    Wine (on Linux)
+  matched                215               216
+  differed                 2                 1
+  failed to compile        1                 1
+  crashed / timed out      0 / 0             0 / 0
+
+Example by example, the three that are not matched on real Windows:
+  245_r18_netsock   Windows: stdout 0 0 -38 -38 -2   Wine: 0 0 -38 -38 -2   (the same: no sockets in the Windows runtime)
+  79_ayojan_cwd     Windows: E_MODULE_MISSING        Wine: E_MODULE_MISSING (the same)
+  29_nishkriya      Windows: exit 0 (expected 42)    Wine: exit 42 - MATCHED
+
+29_nishkriya exits through a raw Linux syscall (mov eax,60 / mov edi,42 / syscall). Wine runs the .exe as a Linux
+process, so (most likely) that instruction reaches the Linux kernel and the program exits 42, as on Linux. On real Windows it
+does not. Wine cannot see a Linux system call left in a Windows program: one more reason Wine is not Windows.
+
+Raw Wine output:
+  {"matched": 216, "differed": 1, "failed to compile": 1}
+  NONMATCH 245_r18_netsock differed (exit 0, expected 0; stdout differs)
+  NONMATCH 79_ayojan_cwd failed to compile
+  
+  [exited with code 0]

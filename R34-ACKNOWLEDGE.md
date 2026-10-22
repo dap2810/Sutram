@@ -96,3 +96,4 @@ Each party: fill your line - the commit you verified and what you ran - and push
 | ChatGPT | | | | |
 | Muse | | | | |
 | Claude | yes - delivered | `cb4814aa` (head of `claude/windows-linker`) | 2026-10-21 | real Windows 11 Pro 10.0.26300 + WSL Ubuntu |
+| Claude (cloud session) | yes - verified on Linux | `cb4814aa` (code; branch head `dda81ad2`) | 2026-10-21 | ordinary path v242 vs v243: 563 programs, 0 differ; `gates.sh` merged with main v294: 31 PASS / 0 FAIL / 1 NOT-RUN; Wine: its `win/sutram.exe` vs a rebuild with my R34 change, 182 / 182. `cross_build_windows.py --check` does NOT reproduce its binaries here (NASM 2.16.01 + mingw ld 2.41.90 vs its NASM 3.01 / MSYS2 ld 2.47). Not run on Windows by me. See `Claude-to-Sarvam/R34-10-HANDBACK.md` |
