@@ -221,6 +221,7 @@ BN_KOSHCLEAR equ 42 ; R63 kosh_clear(k) -> 0; reset logical length in place
 BN_KOSHEMPTY equ 43 ; R63 kosh_empty(k) -> 1 when length=0
 BN_KOSHPEEK equ 44  ; R63 kosh_peek(k) -> last element (without popping)
 BN_KOSHDEQUEUE equ 45 ; R63 kosh_dequeue(k) -> first element (FIFO)
+BN_NIRMGUN equ 46   ; R39 nirmmita_gun(count, size): count * size bytes, 0 if that wraps
 
 ; ============================================================
 ; DATA
@@ -234,7 +235,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v246) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v247) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -300,6 +301,7 @@ r54_builtin_arity_table:
     db 1,1               ; 43 kosh_empty
     db 1,1               ; 44 kosh_peek
     db 1,1               ; 45 kosh_dequeue
+    db 2,2               ; 46 nirmmita_gun
 
     r48_msg_undefined db ": Sutram Error [E_UNDEFINED_FUNCTION]: agyat prakriya '",0
     ; R4: a read of a name that was never declared or assigned is an error
@@ -569,6 +571,7 @@ r54_builtin_arity_table:
         dq bn_koshenqueue, TOK_BUILTIN, BN_KOSHPUSH
         dq bn_koshdequeue, TOK_BUILTIN, BN_KOSHDEQUEUE
         dq bn_setchar,  TOK_BUILTIN, BN_SETCHAR
+        dq bn_nirmgun,  TOK_BUILTIN, BN_NIRMGUN
     bn_table_end:
 
     ; grahan(): read one line from stdin, parse digits, return in rax.
@@ -771,6 +774,7 @@ r54_builtin_arity_table:
     bn_koshpeek db "kosh_peek", 0
     bn_koshenqueue db "kosh_enqueue", 0  ; FIFO append = kosh_push
     bn_koshdequeue db "kosh_dequeue", 0 ; FIFO removal of first
+    bn_nirmgun   db "nirmmita_gun", 0   ; R39 checked allocation
     bn_charfr    db "char_from", 0
     bn_charup    db "char_upper", 0
     bn_charlo    db "char_lower", 0
@@ -11583,7 +11587,7 @@ parse_primary_inner:
 ; The check is before any AST argument pointer dereference in codegen.
 ; Updating a builtin ABI requires updating this table and the R54 test matrix.
 r54_builtin_arity_ok:
-    cmp rdi, 45
+    cmp rdi, 46
     ja .bad
     lea rax, [rel r54_builtin_arity_table]
     lea rax, [rax+rdi*2]
@@ -15167,6 +15171,8 @@ gen_expr:
     je .ge_call_netacc
     cmp r12, BN_NIRMRITA
     je .ge_call_nirm
+    cmp r12, BN_NIRMGUN
+    je .ge_call_nirmgun
     cmp r12, BN_LIKH8
     je .ge_call_likh8
     cmp r12, BN_PAD8
@@ -16834,6 +16840,21 @@ gen_expr:
     mov rax, [rbx+24]
     call gen_expr
     call emit_nirmmita_from_rax
+    jmp .ge_call_done
+
+.ge_call_nirmgun:
+    ; R39 nirmmita_gun(count, size): the multiply in the emitted code, checked, so a
+    ; wrapped size never reaches mmap. count < 0, size <= 0, or count * size past
+    ; 2^63 - 1 give 0, as a failed allocation does (src/r39_nirmgun.inc).
+    mov rax, [rbx+24]
+    call gen_expr               ; count
+    mov dil, 0x50               ; push rax
+    call emit_byte
+    mov rax, [rbx+32]
+    call gen_expr               ; size
+    mov dil, 0x59               ; pop rcx (count)
+    call emit_byte
+    call r39_emit_nirmgun
     jmp .ge_call_done
 
 .ge_call_likh8:
@@ -23819,6 +23840,7 @@ strcmp:
 %include "src/r28_object.inc"
 %include "src/r32_ffi.inc"
 %include "src/r38_fail_alloc.inc"
+%include "src/r39_nirmgun.inc"
 
 itoa:
     mov rax, rdi

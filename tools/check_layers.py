@@ -44,7 +44,7 @@ DOC = os.path.join(REPO, "docs", "LIBRARY-LAYERS.md")
 
 LAYER_RE = re.compile(r"^\s*#\s*layer:\s*(core|alloc|std)\s*$", re.M)
 AYOJAN_RE = re.compile(r"^\s*yoj\s+([a-z_][a-z0-9_]*)\s*$", re.M)
-NIRMMITA_RE = re.compile(r"\bnirmmita\s*\(")
+NIRMMITA_RE = re.compile(r"\bnirmmita(?:_gun)?\s*\(")   # R39: nirmmita_gun allocates too
 COMMENT_RE = re.compile(r"^\s*#")
 
 

@@ -8,7 +8,8 @@ That is the R35/R36 form: the count is checked BEFORE it is multiplied, so a wra
 never exists. A site that does not need one must be listed in EXEMPT below, with the reason
 (the R36 audit's verdicts). A new computed allocation with neither fails this check.
 
-Constant sizes (`nirmmita(32)`, `nirmmita(3 * 8)`) need nothing. A `nirmmita(` this line-based
+R39: `nirmmita_gun(count, size)` multiplies in the emitted code and gives 0 when the product would
+wrap, so it needs no bound; it is counted, not checked. Constant sizes (`nirmmita(32)`, `nirmmita(3 * 8)`) need nothing. A `nirmmita(` this line-based
 reader cannot read whole on its line (split over lines, nested parentheses two deep) fails (R38),
 so it is never skipped unchecked.
 
@@ -81,7 +82,7 @@ def size_at_bound(arg, exprs, bounds):
 
 
 def main():
-    sites = bounded = exempt = 0
+    sites = bounded = exempt = checked = 0
     bad = []
     used = set()
     for lib in sorted((ROOT / 'lib').glob('*.smlib')):
@@ -139,13 +140,15 @@ def main():
                     used.add(key)
                 else:
                     bad.append(f'{lib.name}:{no}: {func}: nirmmita({arg}) with no bound on the count before it')
+        checked += len(re.findall(r'\bnirmmita_gun\s*\(', '\n'.join(l.split('#', 1)[0] for l in lib.read_text(encoding='utf-8').split('\n'))))
     for b in bad:
         print('FAIL', b)
     stale = sorted(set(EXEMPT) - used)
     for s in stale:
         print('FAIL stale exemption (no computed allocation there any more):', s)
     print(f'alloc bounds: {sites} computed allocations in lib/: {bounded} bounded before the multiply, '
-          f'{exempt} exempt with a reason, {len(bad) + len(stale)} failed')
+          f'{exempt} exempt with a reason, {len(bad) + len(stale)} failed'
+          + (f'; {checked} nirmmita_gun (checked in the emitted code, no bound needed)' if checked else ''))
     return 1 if bad or stale else 0
 
 
