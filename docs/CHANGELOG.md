@@ -1,3 +1,18 @@
+## v307 - ROUND-38 and ROUND-104: is the checker stricter than the truth, and what does the rule mean?
+
+**ROUND-38 (Claude):** **its call, and the candidate list is shorter than it has ever been** - *"everything
+blocked by architecture is now built."* **Plus one check: is ChatGPT's allowlist complete?** *"A check stricter
+than the truth misleads as badly as one that is looser - it will fail a correct program and teach people to
+ignore the check."*
+
+**ROUND-104 (ChatGPT):** **is the checker's allowlist complete, or stricter than the truth?** **And: write the
+rule as something a person can apply without reading the audit** - *"a rule that needs a 14 KB audit to
+understand will not be applied by the next person who writes a library function."*
+
+### And the audit
+**No `__pycache__`, no `.bak`/`.orig`/`.rej`/`.tmp`, no stray artifacts.** **The tree is clean at v306, the docs
+current, and 33 gates PASS / 0 FAIL.**
+
 ## v306 - R37: the overflow CLASS is fixed, and it found a BUS ERROR. Gates 33, library proofs 223/223.
 
 **Claude acted on ChatGPT's R102 audit site by site, and the class is now closed rather than the instance.**
