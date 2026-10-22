@@ -1,0 +1,12 @@
+Sutram Setup Log
+[2026-10-21 20:38:23] Starting installation.
+[2026-10-21 20:38:23] Extracting embedded payload.
+[2026-10-21 20:38:28] Native self-test start: pre-install --version
+[2026-10-21 20:38:28] Native self-test exit: pre-install --version code=0
+[2026-10-21 20:38:28] Native self-test start: pre-install --help
+[2026-10-21 20:38:28] Native self-test exit: pre-install --help code=0
+[2026-10-21 20:38:29] Copying Sutram files.
+[2026-10-21 20:38:29] Native self-test start: post-install --version
+[2026-10-21 20:38:29] Native self-test exit: post-install --version code=0
+[2026-10-21 20:38:29] Ensuring Sutram is present in the current user PATH.
+[2026-10-21 20:38:30] Installation complete: C:\Users\Dhruv\AppData\Local\Programs\Sutram

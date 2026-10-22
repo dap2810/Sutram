@@ -435,7 +435,7 @@ if ($skipInstall) {
 
     if ($installed) {
         $foot = [ordered]@{}
-        foreach ($rel in @('sutram-ide-gui.exe','bin\sutram.exe','win\sutram.exe','Sutram-Uninstall.exe','payload.manifest.sha256','examples\218_sanskrit_devanagari.sm','lang\sanskrit.lang')) { $foot[$rel] = Test-Path -LiteralPath (Join-Path $installDir $rel) }
+        foreach ($rel in @('sutram-ide-gui.exe','bin\sutram.exe','bin\sutram-link.exe','win\sutram.exe','Sutram-Uninstall.exe','payload.manifest.sha256','examples\218_sanskrit_devanagari.sm','lang\sanskrit.lang')) { $foot[$rel] = Test-Path -LiteralPath (Join-Path $installDir $rel) }   # R34: and the linker
         $sm = Join-Path ([Environment]::GetFolderPath('StartMenu')) 'Programs\Sutram'
         foreach ($lnk in @('Sutram IDE.lnk','Sutram Terminal.lnk','Uninstall Sutram.lnk')) { $foot['StartMenu\' + $lnk] = Test-Path -LiteralPath (Join-Path $sm $lnk) }
         $foot['HKCU uninstall key'] = Test-Path -LiteralPath $unKey
@@ -470,6 +470,23 @@ if ((Test-Path -LiteralPath $compiler) -and (Test-Path -LiteralPath $example)) {
     $st = 'FAIL'; if ($ok) { $st = 'PASS' }
     Add-Check 'devanagari-cli' $st ('"' + $compiler + '" --lang sanskrit 218_sanskrit_devanagari.sm; run it') $out ($where + '; expects the line ' + $yogah15)
 } else { NotRun 'devanagari-cli' ('no compiler or example under ' + $base) }
+
+# R34: the linker - the installed compiler's --object, then the installed sutram-link.exe, then run it.
+$linkExe = Join-Path $base 'bin\sutram-link.exe'
+$hello = Join-Path $base 'examples\01_hello.sm'
+if ((Test-Path -LiteralPath $compiler) -and (Test-Path -LiteralPath $linkExe) -and (Test-Path -LiteralPath $hello)) {
+    $smo = Join-Path $OutDir 'hello.smo'; $lexe = Join-Path $OutDir 'hello-linked.exe'
+    $o = Run-Exe $compiler ('--object "' + $hello + '" "' + $smo + '"') $base 30000
+    $out = 'object exit=' + $o.exit + "`n" + $o.out
+    $ok = $false
+    if ($o.exit -eq 0 -and (Test-Path -LiteralPath $smo)) {
+        $l = Run-Exe $linkExe ('"' + $lexe + '" "' + $smo + '"') $OutDir 30000
+        $out += "`nlink exit=" + $l.exit + "`n" + $l.out
+        if ($l.exit -eq 0 -and (Test-Path -LiteralPath $lexe)) { $x = Run-Exe $lexe '' $OutDir 10000; $out += "`nrun exit=" + $x.exit + "`n" + $x.out; $ok = ($x.exit -eq 0) -and $x.out.Contains('Namaste, Sutram!') }
+    }
+    $st = 'FAIL'; if ($ok) { $st = 'PASS' }
+    Add-Check 'linker-installed' $st ('"' + $compiler + '" --object 01_hello.sm; "' + $linkExe + '"; run it') $out ($where + '; expects Namaste, Sutram!')
+} else { NotRun 'linker-installed' ('no bin\sutram-link.exe or no compiler/example under ' + $base) }
 
 # ------------------------------------------------------------------------------------------------
 # IDE
@@ -607,7 +624,7 @@ if ($installed -and -not $KeepInstalled) {
     if (-not $ulogText) { $ulogText = '(no uninstall.log appeared within 180 s)' }
     Start-Sleep -Seconds 2
     $after = [ordered]@{}
-    foreach ($rel in @('sutram-ide-gui.exe','bin\sutram.exe','win\sutram.exe','payload.manifest.sha256')) { $after[$rel + ' removed'] = -not (Test-Path -LiteralPath (Join-Path $installDir $rel)) }
+    foreach ($rel in @('sutram-ide-gui.exe','bin\sutram.exe','bin\sutram-link.exe','win\sutram.exe','payload.manifest.sha256')) { $after[$rel + ' removed'] = -not (Test-Path -LiteralPath (Join-Path $installDir $rel)) }
     $sm = Join-Path ([Environment]::GetFolderPath('StartMenu')) 'Programs\Sutram'
     $after['Start Menu folder removed'] = -not (Test-Path -LiteralPath $sm)
     $after['HKCU uninstall key removed'] = -not (Test-Path -LiteralPath $unKey)

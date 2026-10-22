@@ -35,7 +35,7 @@ same bytes (562 programs, 0 differ, Windows and Linux).
 | 6 | **The FFI tests' C objects were never committed** (`.gitignore` `*.o`); R32, R33, the FFI fuzzer and the ELF-reader fuzzer failed on every fresh clone | Committed, with a `.gitignore` exception; `tests/r32/OBJECTS.md` says how they were built (gcc 13.3.0, the documented flags) | the four gates PASS on a clean clone with no C compiler |
 | 7 | **Git for Windows' CRLF checkout** broke 94 of 213 r17 hashes, `r69_build.py --check-only`, and one Linux compile | `.gitattributes`: sources always LF, test data byte-exact. No file's content changes | a fresh default Windows clone: **213 / 213**, `SOURCE_PINS_CHECKED` |
 | 8 | Two GUI source tests failed on Windows (read files as cp1252) | `read_text(encoding='utf-8')` | both OK on Windows |
-| 9 | The installer would not carry `sutram-link.exe` | added to the payload (`bin\`); the uninstaller removes it by the manifest | **the installer itself is not rebuilt** (below) |
+| 9 | The installer would not carry `sutram-link.exe` | added to the payload (`bin\`); the uninstaller removes it by the manifest | **rebuilt in R34-02**; acceptance checks the installed linker |
 | 10 | `gates.sh` said Windows was "never executed by anyone" | it has been; the line says where the Windows gates are | - |
 
 ## 3. Every example through the real IDE (`tools/ide_examples_windows.ps1`, new)
@@ -67,8 +67,8 @@ them). Implementing them changes every Windows `.exe`'s runtime bytes - **a deci
   for another pack is not possible on Windows yet.
 - **The Windows IDE gives a program no input** (now a clean end of input, no longer a hang). An input box
   is a feature.
-- **`Sutram-Setup.exe` is not rebuilt:** it still carries v242 and the old IDE. Rebuild with
-  `windows\build-windows-setup.ps1`, then `tools\accept-windows.ps1`.
+- ~~`Sutram-Setup.exe` is not rebuilt~~ **Rebuilt in `R34-02-INSTALLER.md`** - v243, the linker, the fixed
+  IDE; Windows acceptance PASS 16 / 0 / 0, run as documented.
 - **The IDE's editor holds 65,534 bytes;** a bigger program cannot be opened in it (it says so). Raising it
   means larger buffers throughout the IDE - a change of its own.
 - **The IDE binary was linked by MSYS2 ld 2.47** here. The committed v290 IDE was built by another `ld`;

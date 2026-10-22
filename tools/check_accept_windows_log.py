@@ -92,6 +92,8 @@ def evaluate(data: dict, root: Path) -> tuple[list[str], list[str]]:
 
 
 def main(argv: list[str]) -> int:
+    if hasattr(sys.stdout, 'reconfigure'):   # R34: the log holds Indic text; a Windows console is cp1252
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument('log', type=Path)
     ap.add_argument('--root', type=Path, default=Path(__file__).resolve().parents[1])

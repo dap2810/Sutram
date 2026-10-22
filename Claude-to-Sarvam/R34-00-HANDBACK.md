@@ -82,8 +82,7 @@ GNU ld 2.42). NASM 3.01.
 
 - **The FFI on Windows.** The sidecar is `linux-x86_64-sysv`; Windows x64 passes arguments differently.
   `--ffi` stays Linux-only.
-- **The installer** is not rebuilt. Its payload list now includes `sutram-link.exe` (R34-01), so the next
-  rebuild carries it.
+- **The installer** - rebuilt in R34-02, with `sutram-link.exe`; Windows acceptance PASS 16 / 0 / 0.
 
 ## Files
 
