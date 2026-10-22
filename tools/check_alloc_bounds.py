@@ -18,10 +18,15 @@ R39 (Sarvam's WS3: does this check follow where a size comes from, or only how i
   * the bound must be small enough: the size, with every bounded count at its bound, must fit
     in 2^63 - 1 (a bound like `c > 10^18` before `c * 33` fails);
   * a bounded count assigned again after its bound is no longer bounded.
+  * a bounded plain count needs a check below as well (`c < 0` or `c < 1`): a negative count
+    wraps to a positive size too (mala_nava, R37). A container's field (X[1]) is its constructor's;
   * every size that is not a constant is checked - a parameter (the multiply is in the caller)
     or a function's result as well as a product - so no channel skips the check.
-What it still cannot see: a bound inside a branch that does not cover the allocation, and the
-value of a count a CALLER passes (its exemption reason must say why the caller is trusted).
+  * a bound counts only while the block it is in is still open: one inside a branch does not
+    cover an allocation after the branch.
+What it still cannot see: the value of a count a CALLER passes (its exemption reason must say
+why the caller is trusted), a '#' inside a string literal, and anything a regular expression
+over one line misreads; it is a structured approximation, not a proof.
 
 usage: python3 -B tools/check_alloc_bounds.py      (exit 0 when every site is bounded or explained)
 """
@@ -53,6 +58,7 @@ EXEMPT = {
 }
 INT64_MAX = 2 ** 63 - 1
 
+LOWER = re.compile(r'yadi \(\s*(\w+)\s*<\s*\d+\s*\)')   # R39: c < 0, c < 1, c < 2 ...: a clamp or a return
 BOUND = re.compile(r'yadi \(\s*([\w\[\]]+)\s*>\s*(\d+)\s*\)\s*\{\s*prati')
 TERM = re.compile(r'[A-Za-z_]\w*(?:\[\d+\])?')
 CONST_SIZE = re.compile(r'^[\d\s*+]+$')
@@ -73,7 +79,7 @@ def size_at_bound(arg, exprs, bounds):
         for t in names:
             seen.add(t)
             text = re.sub(r'(?<![\w\[])' + re.escape(t) + r'(?![\w\[])', '(' + exprs[t] + ')', text)
-    for t, (k, _no) in bounds.items():
+    for t, (k, _no, _d) in bounds.items():
         text = re.sub(r'(?<![\w\[])' + re.escape(t) + r'(?![\w\[])', str(k), text)
     if not re.fullmatch(r'[\d\s*+()-]+', text):
         return None
@@ -85,20 +91,32 @@ def main():
     bad = []
     used = set()
     for lib in sorted((ROOT / 'lib').glob('*.smlib')):
-        func, exprs, bounds = None, {}, {}
+        func, exprs, bounds, lowers, depth = None, {}, {}, {}, 0
         for no, line in enumerate(lib.read_text(encoding='utf-8').split('\n'), 1):
             code = line.split('#', 1)[0]
+            # R39: a bound counts only while the block it is in is open, so a bound inside a
+            # branch does not cover an allocation after that branch
+            for table in (bounds, lowers):
+                for name in [n for n, v in table.items() if (v[2] if table is bounds else v[1]) > depth]:
+                    del table[name]
+            here = depth
+            depth += code.count('{') - code.count('}')
             m = re.match(r'\s*prakriya\s+(\w+)\s*\(', code)
             if m:
-                func, exprs, bounds = m.group(1), {}, {}
+                func, exprs, bounds, lowers = m.group(1), {}, {}, {}
                 continue
             b = BOUND.search(code)
             if b:
-                bounds[b.group(1)] = (int(b.group(2)), no)
+                bounds[b.group(1)] = (int(b.group(2)), no, here)
+            lo = LOWER.search(code)
+            if lo:
+                lowers[lo.group(1)] = (no, here)
             # R39: a bounded count assigned again after its bound is no longer bounded
             for name in assigned(code):
                 if name in bounds and bounds[name][1] != no:
                     del bounds[name]
+                if name in lowers and lowers[name][0] != no:
+                    del lowers[name]
             a = re.match(r'\s*(?:vitti\s+)?(\w+)\s*=\s*(.+)$', code)
             if a and '*' in a.group(2) and 'nirmmita' not in a.group(2):
                 exprs[a.group(1)] = a.group(2).strip()
@@ -126,7 +144,13 @@ def main():
                 if counts & set(bounds):
                     # R39: the bound must be small enough: the size at the bound must fit
                     v = size_at_bound(arg, exprs, bounds)
-                    if v is None:
+                    # R39: a negative count wraps too (mala_nava, R37: -2^61 + 1 cells of 8 bytes is 8).
+                    # A plain count needs a lower check; a container's field (X[1]) is set by its constructor.
+                    unsigned = sorted(t for t in counts & set(bounds) if '[' not in t and t not in lowers)
+                    if unsigned:
+                        bad.append(f'{lib.name}:{no}: {func}: nirmmita({arg}): {", ".join(unsigned)} has an upper '
+                                   f'bound but no check below (c < 0, c < 1 ...) before it')
+                    elif v is None:
                         bad.append(f'{lib.name}:{no}: {func}: nirmmita({arg}): bounded, but the size at the bound '
                                    f'cannot be computed here, so the bound cannot be checked')
                     elif v > INT64_MAX:

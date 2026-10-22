@@ -24,6 +24,10 @@ prakriya brihat_ank_tak(x, n, base, out) {
     vitti dst = out
     yadi (b < 2) { prati 0 }
     yadi (b > 16) { prati 0 }
+    yadi (c < 1) {
+        dst[0] = 0
+        prati 1
+    }
     yadi (c > 288230376151711743) { prati 0 - 1 }   # R39: c * 4 * 8 must not wrap
     vitti w = nirmmita(c * 8)
     yadi (w == 0 && c > 0) { prati 0 - 1 }

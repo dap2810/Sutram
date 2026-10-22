@@ -211,6 +211,7 @@ prakriya mil_shreni_punar(a, tmp, lo, hi) {
 
 # mil_shreni(a, n) — merge sort; returns 0, or -1 (a unchanged) if its scratch cannot be allocated.
 prakriya mil_shreni(a, n) {
+    yadi (n < 2) { prati 0 }
     yadi (n > 1152921504606846975) { prati 0 - 1 }   # R39: n * 8 must not wrap
     vitti tmp = nirmmita(n * 8)
     yadi (tmp == 0 && n > 0) { prati 0 - 1 }
