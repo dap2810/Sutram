@@ -25,7 +25,7 @@
 INT64_MAX                           9223372036854775807
 floor(INT64_MAX / 8)                1152921504606846975
 first two input capacities          3037000499
-first two requested bytes           24296003992        (22.6266 GiB, fits int64)
+first two requested bytes           24296003992        (22.6274 GiB, fits int64)
 sz < 0                              false
 third input capacity                9223372036854775807
 third wrapped size in uint64        18446744073709551608
