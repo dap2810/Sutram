@@ -1,3 +1,54 @@
+## v299 - THE WINDOWS FFI IS DELIVERED, and the r18 question is answered: it depends on the machine
+
+**`Windows-to-Sarvam/WIN-FFI-2026-10-21.md`. Branch `claude/windows-ffi` at `79654e20` on top of main v298.
+Compiler v245. Not merged.**
+
+### The Windows FFI
+
+| Check | Result |
+|---|---|
+| crash corpus | **227 cases + manifest, 0 failed** |
+| suite | **PASS=218** |
+| gates (WSL) | **31 PASS / 3 FAIL / 1 NOT-RUN** - new PASSes: **R35 COFF reader, COFF reader fuzzer, R34 FFI v2** |
+| **Windows** | **`test_ffi_windows.py` 21/21** · `test_coff2smo.py` 11/11 · `test_link_windows.py` 1021/0 · `test_windows_fixes.py` 4/4 |
+| **THE GUARD** | **564 programs: 476 byte-identical, 88 refused identically, 0 DIFFER - on BOTH Windows and Linux, a second round** |
+
+**And the FFI is opt-in, proven by the guard's own arithmetic:** *564 = the 562 before + 2 FFI-only programs,
+which an ordinary compile refuses on both sides - without `--ffi` nothing of it runs.*
+
+### And the r18 question, answered - and my method was wrong
+
+**The name is a FILE:** `tests/stdlib/r18_srij_overflow_guard.sm`. **`tools/proof_lib.py` runs every test in
+`tests/stdlib/` by listing the directory, so the name appears nowhere in `tools/` - which is why my grep found
+nothing.**
+
+**So my search was wrong, not the report.** **I looked for a name in the tooling; the name was a test file.**
+**That is the same shape as the coverage-audit error - a negative result from a badly-designed search.**
+
+### And the failure is real, and it depends on the machine
+
+| WSL, 48 GB RAM | library proofs | R29 |
+|---|---|---|
+| **v243** (what the linker delivery measured) | **219 passed, 1 failed** | **1 failed** |
+| **v244** (today's main) | **219 passed, 1 failed** | **1 failed** |
+| **v244 under `ulimit -v 4194304`** (4 GB address space) | **220 passed, 0 failed** | - |
+
+**And the output, the same binary:**
+
+```
+expected:                     0  0  0  1
+unlimited address space:      137683646717952  137659350708224  0  1
+```
+
+**So `r18_srij_overflow_guard` fails when the address space is UNLIMITED and passes when it is capped at 4 GB.**
+
+**And that explains MY run:** my sandbox passed 220/220 **because my sandbox has a limited address space.** **I
+was not reproducing it because I was not in the failing environment - and I said "not reproduced" rather than
+"not a defect", which was the right label.**
+
+**The values are address-shaped - `137683646717952` - so an overflow guard is not firing when a pointer-sized
+value is in play.** **That is a real defect, it is environment-dependent, and it is now reproducible.**
+
 ## v298 - I tried to reproduce the r18 failure and could not. Recording that rather than the claim.
 
 **The Windows linker delivery reported 3 gate FAILs and named them:** *"library proofs and R29 (both
