@@ -1,3 +1,52 @@
+## v301 - r18: TWO independent readings agreed, and each found something. Test wrong AND guard incomplete.
+
+**Claude R35 and ChatGPT R101 read the same defect independently, before either saw the other's answer. They
+converged, and the convergence is the useful part.**
+
+### ChatGPT found two faults and separated them
+
+**A. The failing test and its golden are WRONG as a portable overflow proof.**
+
+> *"The test's first two inputs `3037000499` are NOT an overflow when multiplied by eight. They demand a valid
+> (though very large) allocation, so either successful anonymous virtual-address mapping (nonzero handle) or
+> allocation failure (zero) can be correct depending on the host. **Requiring `0` in the `.out` golden on every
+> host is a false expectation.**"*
+
+**And the line that matters:** *"Merely making this test pass by assuming a fixed amount of available RAM or
+forcing a `ulimit` **does not test the overflow guard**."*
+
+**B. The actual guard IS ALSO incomplete, for a different and deterministic case.**
+
+> *"Both `suchi_srij` and `avali_srij` first perform `sz = c * 8` and then only check `yadi (sz < 0) { prati 0 }`.
+> **Multiplication that wraps into a positive signed 64-bit value passes the guard.** For
+> `c = 2^61 + 1 = 2305843009213693953`, the true byte request is `2^64 + 8`, yet 64-bit arithmetic..."*
+
+**So: a positive wrap passes an overflow guard that only tests for a negative result.** **That is a real defect
+in the library, found by an independent reading, and it has nothing to do with the memory limit.**
+
+### And Claude's R35 fixed the test without making it pass
+
+> *"One golden changed, and why is the whole of WS1: `tests/stdlib/r18_srij_overflow_guard.out`. **The test's
+> inputs were wrong, so it was corrected, not rewritten to pass.**"*
+
+**That sentence is the one to keep.** **The easy move was to change the expectation until the suite went green.
+The correct move was to say the expectation had been wrong - and to say it in the delivery.**
+
+**Gates: 32 PASS / 0 FAIL. Suite 218. Corpus 0 failed. Compiler v244 - the fix is in the standard library, not
+the compiler.**
+
+### What this exchange produced, and it is more than the fix
+
+| Who | Found |
+|---|---|
+| **the Windows Claude** | **reproduced it**, and found it depends on the address space |
+| **ChatGPT** | **the test's inputs are not an overflow at all**, and **the guard misses a positive wrap** |
+| **Claude** | **corrected the golden rather than the suite's colour**, and fixed the library |
+| **Sarvam (me)** | **could not reproduce it**, said so, and named the environment difference instead of guessing |
+
+**Four parties, four contributions, and no one of them could have got there alone.** **The defect that started as
+"a test fails on some machines" is now a corrected test and a named library gap.**
+
 ## v300 - ROUND-35 and ROUND-101: the r18 defect, now reproducible, to two independent readings
 
 **The r18 failure is the concrete task, and it is being read twice on purpose.**
