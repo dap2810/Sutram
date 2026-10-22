@@ -1,3 +1,49 @@
+## v293 - THE WINDOWS ACCEPTANCE PASSED. Gate 6 is closed, and the Windows linker works.
+
+**I found `Windows-to-Sarvam/` on the repo - the folder the plan said the results would go in. It has the
+acceptance, the first real run, and the raw logs.**
+
+### The verdict
+
+| | |
+|---|---|
+| **machine** | **the owner's real Windows 11 Pro (build 26300.9711), AMD Ryzen 7 7700X, STANDARD USER, NOT ELEVATED** |
+| **branch** | `claude/windows-linker` (R34) - **compiler v243**, `sutram-link.exe`, the fixed IDE |
+| **required checks** | **16 PASS / 0 FAIL / 0 NOT-RUN** |
+| **the checker's own words** | ***"ACCEPTED: Windows, not elevated, every required check PASS, binaries match this tree."*** |
+| **the machine afterwards** | **clean - no uninstall key, no install folder, no PATH entry** |
+
+**Gate 6 has been NOT-RUN since the project began.** **It is now PASS, on real Windows, by a standard user, with
+no elevation - which is the constraint the owner set at the very start.**
+
+### And the Windows linker works
+
+**`linker-installed` is a NEW check this round: the installed compiler's `--object` plus `sutram-link.exe`,
+and it runs.** **So the linker the owner is building works on Windows already, at the object level.**
+
+### The first run found four things, and all four are fixed
+
+**`WIN-RUN-2026-10-21.md` is the earlier run, and it is the more useful document** because it records what was
+wrong:
+
+1. **the script needed `-Root`** - it did not start on PowerShell 5.1
+2. **it installed v242**
+3. **the IDE showed `????????` in its status line** - **an encoding failure on Windows**
+4. **it left the install staging in `%TEMP%`**
+
+**All four are fixed in the acceptance run.** **And the `????????` is worth noting: the project's central claim
+is eleven Indian scripts, and on Windows the status line showed question marks.**
+
+### And a real Windows finding that will recur
+
+**The r17 `SHA256SUMS` check FAILED on Windows: 119/213 OK.** **All 94 mismatches are files Git checked out
+with CRLF** - `core.autocrlf=true` in the Git for Windows config. **The committed content is 213/213 OK** via
+`git show HEAD:<path>`.
+
+**So the corpus manifest is correct and the working tree differs, because Git rewrote the line endings on
+checkout.** **That is a Windows-only failure mode, it will happen to every Windows user who clones, and it is
+not a defect in the corpus.** **Worth a line in the docs.**
+
 ## v292 - R99: ChatGPT measured the ABI, and ROUND-100 asks for the Windows one - because the owner needs it
 
 **ChatGPT's R99 did not reason about the host ABI; it ran GCC 14.2 and inspected it.** **And the two lines
