@@ -1,3 +1,45 @@
+## v296 - THE WINDOWS LINKER IS DONE. And the guard holds on BOTH platforms.
+
+**`Windows-to-Sarvam/WIN-LINKER-2026-10-21.md` - the Windows Claude delivered, and measured it on main.**
+
+### The three steps of R29-02's plan, all three done
+
+| Step | State |
+|---|---|
+| **1. the same format; a Windows need makes it a version 2, not a second format** | **`SUTRAMO2`** - version 1's layout, entry for entry. **The three things in a PE program's code that depend on its place in the image are HOLES:** `rt:init`, `rt:syscall`, `vitti:<name>`. **No new kind of entry.** |
+| **2. `--object`, then `--separate`, on the Windows compiler** | **both** - no longer `%ifndef WINDOWS` |
+| **3. `sutram-link` writes a PE: runtime, code, import table, in NASM** | **written field for field as the compiler's `write_pe`** - one source, `sutram-link` on Linux and `sutram-link.exe` on Windows, **and either host links either target to the same bytes** |
+
+**That last clause is the best line in the delivery.** **A linker on Linux that produces Windows binaries, and a
+linker on Windows that produces Linux ones, and the bytes are the same.** **That is what "the same format" was
+for, and it is now measured rather than intended.**
+
+### The guard, on both platforms
+
+| | Windows | Linux |
+|---|---|---|
+| **ordinary path**, 562 programs - executable bytes, compiler output, exit status | **476 byte-identical, 86 refused identically, 0 DIFFER** | **476 byte-identical, 86 refused identically, 0 DIFFER** |
+| **every example linked alone = its direct compile** | **182 / 182 byte-identical** | 187 identical |
+
+**Zero differences on either platform.** **The number has held at 470-ish across five rounds and now holds on
+both systems.**
+
+### And the 3 gate failures are main's own, not the linker's
+
+**Gates on WSL: 28 PASS / 3 FAIL / 1 NOT-RUN.** **The three failures are library proofs and R29 (both
+`r18_srij_overflow_guard`) and X11 (no display).** **They are pre-existing on main and the delivery says so
+rather than attributing them to its own work.**
+
+**Suite: PASS=218. Windows: 215 of 218 examples match, the 3 known Windows-specific ones.** **Crash corpus: 227
+cases, 0 failed.**
+
+### What this means
+**The project now has a linker that works on both platforms and produces identical bytes, and the ordinary path
+is unchanged on both.** **R29-02's plan was written as a plan; it is now a measurement.**
+
+**And it was done by a Claude the owner opened specifically for the Windows side, delivering into
+`Windows-to-Sarvam/`.** **Two Claudes, two channels, no collision.**
+
 ## v295 - R34 lands: the Windows linker works, and Gate 6 PASSES on real Windows
 
 **Compiler v243 is on main. This is the entry for the R34 work, and it is the largest single step the project
