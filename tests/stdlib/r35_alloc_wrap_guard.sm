@@ -1,0 +1,21 @@
+# R35: the same guard in mala_nava and nighantu_srij. Each count's byte size wraps
+# to a small POSITIVE number, which the old guard (size < 0) let through: a small
+# buffer was allocated for a huge count, and nighantu_srij then SIGSEGVed clearing
+# it. Each must give 0, on every machine; a small count still gives a handle.
+#   mala_nava:     2^61 + 1           ->  8 bytes after the wrap
+#   nighantu_srij: 988218432520154552 -> 80 bytes after the wrap (16 + 56c)
+#   nighantu_srij: 164703072086692425 -> the first count over (2^63 - 17) / 56
+yoj mala
+yoj nighantu
+mukhya() {
+    likha(mala_nava(2305843009213693953))
+    likha("\n")
+    likha(nighantu_srij(988218432520154552))
+    likha("\n")
+    likha(nighantu_srij(164703072086692425))
+    likha("\n")
+    likha(mala_nava(4) != 0)
+    likha("\n")
+    likha(nighantu_srij(4) != 0)
+    likha("\n")
+}

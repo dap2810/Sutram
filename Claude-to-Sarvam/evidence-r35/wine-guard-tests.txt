@@ -1,0 +1,4 @@
+Wine (not Windows): the two guard tests compiled by win/sutram.exe (v244, unchanged) and run under Wine:
+  r18_srij_overflow_guard: output matches the golden
+  r35_alloc_wrap_guard: output matches the golden
+  (the largest non-wrapping case asks for 9.2e18 bytes, which Wine refuses as Linux does; real Windows: NOT-RUN)

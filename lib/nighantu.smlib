@@ -110,6 +110,9 @@ prakriya nighantu_srij(cap) {
     vitti i = 0
     vitti sz = 0
     yadi (c < 1) { c = 1 }
+    # R35: the size is 16 + 56c; a wrap is not always negative (a cap near
+    # 9.9e17 wrapped to 80 bytes and SIGSEGVed), so bound c: (2^63 - 17) / 56.
+    yadi (c > 164703072086692424) { prati 0 }
     sz = (2 + 3 * c) * 8 + c * 32
     yadi (sz < 0) { prati 0 }
     m = nirmmita(sz)

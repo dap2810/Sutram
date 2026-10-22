@@ -49,6 +49,10 @@ prakriya suchi_srij(cap) {
     vitti d = 0
     vitti sz = 0
     yadi (c < 1) { c = 1 }
+    # R35: c * 8 must not wrap. A wrap is not always negative: 2^61 + 1
+    # wraps to 8, allocated 8 bytes for a list of 2^61 + 1 and SIGSEGVed on
+    # the second push. So bound c itself: (2^63 - 1) / 8.
+    yadi (c > 1152921504606846975) { prati 0 }
     sz = c * 8
     yadi (sz < 0) { prati 0 }
     l = nirmmita(3 * 8)
@@ -380,6 +384,7 @@ prakriya avali_srij(cap) {
     vitti d = 0
     vitti sz = 0
     yadi (c < 1) { c = 1 }
+    yadi (c > 1152921504606846975) { prati 0 }   # R35: c * 8 must not wrap
     sz = c * 8
     yadi (sz < 0) { prati 0 }
     q = nirmmita(4 * 8)

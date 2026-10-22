@@ -1,10 +1,23 @@
 # R18 (R15-03 witnesses): the constructors' overflow guard. A capacity whose byte
 # size would wrap must give 0, not a handle (R21's documented guard).
+# R35: every value here gives 0 on every machine, whatever its memory. R18 used
+# 3037000499, whose byte size (24 GB) does not wrap: it tested whether the machine
+# refused 24 GB, not the guard, so it failed where the allocation succeeded.
+#   2305843009213693953 = 2^61 + 1: c * 8 wraps to 8, a POSITIVE size (the old
+#                         guard, sz < 0, missed it and the list SIGSEGVed)
+#   1152921504606846976 = 2^60: c * 8 wraps to a negative size
+#   1152921504606846975: the largest count that does not wrap; 9.2e18 bytes is
+#                         more than any x86-64 address space, so it is refused
+#   9223372036854775807 = MAX
 yoj suchi
 mukhya() {
-    likha(suchi_srij(3037000499))
+    likha(suchi_srij(2305843009213693953))
     likha("\n")
-    likha(avali_srij(3037000499))
+    likha(avali_srij(2305843009213693953))
+    likha("\n")
+    likha(suchi_srij(1152921504606846976))
+    likha("\n")
+    likha(suchi_srij(1152921504606846975))
     likha("\n")
     likha(avali_srij(9223372036854775807))
     likha("\n")

@@ -1,0 +1,2 @@
+fuzz_r23: 1000 programs, 35862 printed values compared, 0 differ
+exit 0
