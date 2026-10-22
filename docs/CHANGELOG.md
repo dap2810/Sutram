@@ -1,3 +1,24 @@
+## v300 - ROUND-35 and ROUND-101: the r18 defect, now reproducible, to two independent readings
+
+**The r18 failure is the concrete task, and it is being read twice on purpose.**
+
+**ROUND-35 (Claude):** *"Find out what the guard is actually testing, and say whether the guard is wrong or the
+test is. And state which environment it must pass in - a test that only passes under a memory limit is not a
+test of the guard."*
+
+**ROUND-101 (ChatGPT):** **a separate reading from the source and the test file, BEFORE Claude's answer
+lands** - *"two independent readings of the same defect is what worked for F1."* **And the question I want
+answered: is the guard wrong, is the test wrong, or is the EXPECTATION wrong?**
+
+### And the record of how this one went
+
+**I could not reproduce it. I said "not reproduced", not "not a defect", and named the environment difference
+as the likely cause.** **The Windows Claude reproduced it and found it depends on the address space.**
+
+**That is the right outcome for a question I could not settle, and it is worth recording: the honest label
+("not reproduced, environment differs") left the question open for the environment that could answer it.**
+**"Not a defect" would have closed it wrongly.**
+
 ## v299 - THE WINDOWS FFI IS DELIVERED, and the r18 question is answered: it depends on the machine
 
 **`Windows-to-Sarvam/WIN-FFI-2026-10-21.md`. Branch `claude/windows-ffi` at `79654e20` on top of main v298.
