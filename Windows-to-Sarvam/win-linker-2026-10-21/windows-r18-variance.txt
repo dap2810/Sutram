@@ -1,0 +1,7 @@
+tests/stdlib/r18_srij_overflow_guard.sm compiled ONCE by win/sutram.exe v243 (direct compile, no linker), the same .exe run 6 times:
+5832704  7208960  0  1  
+5177344  5242880  0  1  
+5177344  5242880  0  1  
+7143424  7208960  0  1  
+7143424  7208960  0  1  
+5046272  7208960  0  1  

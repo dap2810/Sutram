@@ -1,0 +1,81 @@
+﻿{
+ "hashes": {
+  "win/sutram.exe": "4533c46c841901e918830e167e211a53c4f49f3c9ad94b5110d8c3ced7ecbf9c",
+  "sutram.exe": "4533c46c841901e918830e167e211a53c4f49f3c9ad94b5110d8c3ced7ecbf9c",
+  "Sutram-Setup.exe": "285470a4a51c14eed7c23bd3342e068b4610f91301da1877f98fa0cfbe8c0c5b",
+  "Sutram-Setup.sha256 (recorded)": "285470a4a51c14eed7c23bd3342e068b4610f91301da1877f98fa0cfbe8c0c5b"
+ },
+ "r17": {
+  "total": 213,
+  "ok": 213,
+  "missing": [],
+  "named": {
+   "mutation-15-27971.sm": {
+    "listed": "3e422c0c3525063559165261bb3b4c624cd3624731915a7dbe3914fa77c23901",
+    "computed": "3e422c0c3525063559165261bb3b4c624cd3624731915a7dbe3914fa77c23901"
+   },
+   "mutation-15-37233.sm": {
+    "listed": "9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462",
+    "computed": "9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462"
+   },
+   "mutation-15-42057.sm": {
+    "listed": "5b1f9a740e86d536dc22c924ef75860b9a2e44560afc0a294c8bf8d60fae97c7",
+    "computed": "5b1f9a740e86d536dc22c924ef75860b9a2e44560afc0a294c8bf8d60fae97c7"
+   },
+   "mutation-15-574.sm": {
+    "listed": "55c3bae7bac7f38fdca922f46c4fc1c4c70c8f44296cfd1f29d71aa1f91239ba",
+    "computed": "55c3bae7bac7f38fdca922f46c4fc1c4c70c8f44296cfd1f29d71aa1f91239ba"
+   }
+  }
+ },
+ "r17_bad": [],
+ "c5": [
+  [
+   "246_r23_comparator_sort",
+   "matched",
+   0,
+   null
+  ],
+  [
+   "247_r23_methods",
+   "matched",
+   0,
+   null
+  ],
+  [
+   "248_r23_slices",
+   "matched",
+   0,
+   null
+  ],
+  [
+   "249_r25_phal",
+   "matched",
+   3,
+   null
+  ],
+  [
+   "250_r26_dosh_handler",
+   "matched",
+   0,
+   null
+  ]
+ ],
+ "c7": {
+  "matched": 215,
+  "differed": 2,
+  "failed to compile": 1
+ },
+ "c7_total": 218,
+ "skipped": [
+  "215_r12_wordfreq",
+  "216_r12_expr",
+  "217_r12_report",
+  "219_sanskrit_kosh_aliases"
+ ]
+}
+NONMATCH 245_r18_netsock differed stdout differs {"line": 1, "expected": "1", "actual": "0"} 
+NONMATCH 29_nishkriya differed exit 0, expected 42 null 
+NONMATCH 79_ayojan_cwd failed to compile None null Sutram Error [E_MODULE_MISSING]: yoj patra aprapt: ganit
+Sanket: naam.smlib lib/ madhye srota-patrasya nirdeshikayam va bhavet
+
