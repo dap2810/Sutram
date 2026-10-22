@@ -122,6 +122,7 @@ run_gate() {                      # name, then the command
     "FFI fuzzer")       line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 differ"*) ok "$name ($(echo "$line" | sed 's/fuzz_ffi: seed [0-9]*, //; s/ printed values.*//'))";; *) bad "$name" "${line:-no summary}";; esac ;;
     "ELF reader fuzzer") line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 broke the contract"*) ok "$name ($(echo "$line" | sed 's/fuzz_elf2smo: seed [0-9]*, //; s/, 0 broke the contract//'))";; *) bad "$name" "${line:-no summary}";; esac ;;
     "R34 FFI v2")       line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r34 ffi v2: //'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c6-80)";; esac ;;
+    "R38 fail-alloc")   line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r38 fail-alloc: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c6-80)";; esac ;;
     "alloc bounds")     line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/alloc bounds: //; s/ computed allocations in lib\/:/:/; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c6-80)";; esac ;;
     "R23 fuzzer")       line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 differ"*) ok "$name ($(echo "$line" | sed 's/fuzz_r23: //'))";; *) bad "$name" "${line:-no summary}";; esac ;;
     "pack messages")    case "$(tail -1 /tmp/g_out.$$)" in OK*) ok "$name (12 sets x 11 cases)";; *) bad "$name" "$(grep -m1 -E 'FAIL|differ|Error' /tmp/g_out.$$ | cut -c1-60)";; esac ;;
@@ -153,6 +154,7 @@ run_gate "R34 Windows fixes" python3 tests/r34/test_windows_fixes.py --compiler 
 run_gate "FFI fuzzer"       python3 tools/fuzz_ffi.py --seed 33 --count 60 --compiler ./sutram_compiler --linker ./sutram-link --elf2smo ./sutram-elf2smo --out /tmp/fuzz-ffi-gate   # R33: random programs against a model
 run_gate "ELF reader fuzzer" python3 tools/fuzz_elf2smo.py --seed 33 --count 3000 --elf2smo ./sutram-elf2smo --out /tmp/fuzz-elf2smo-gate   # R33: malformed objects: no crash, no hang, no output on a refusal
 run_gate "R34 FFI v2"        python3 tests/r34/test_ffi_v2.py --compiler ./sutram_compiler --linker ./sutram-link --elf2smo ./sutram-elf2smo   # R34 (cloud): the sidecar's version; a dasham bit for bit; the edges
+run_gate "R38 fail-alloc"    python3 tests/r38/test_fail_alloc.py --compiler ./sutram_compiler   # R38: --fail-alloc N; every allocating library function at every allocation it makes
 run_gate "alloc bounds"      python3 tools/check_alloc_bounds.py   # R37: every computed allocation in lib/ bounds its count before multiplying, or says why not
 run_gate "R23 fuzzer"        python3 tools/fuzz_r23.py --seed 23 --count 100 --compiler ./sutram_compiler --out /tmp/fuzz-r23-gate   # R23: 100 random programs against the model
 run_gate "valid fuzzer + function values" python3 tools/fuzz_valid.py --seed 24 --count 60 --capabilities --compiler ./sutram_compiler --out /tmp/fuzz-valid-gate   # R24: the main fuzzer with calls through function values

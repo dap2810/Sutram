@@ -8,7 +8,9 @@ That is the R35/R36 form: the count is checked BEFORE it is multiplied, so a wra
 never exists. A site that does not need one must be listed in EXEMPT below, with the reason
 (the R36 audit's verdicts). A new computed allocation with neither fails this check.
 
-Constant sizes (`nirmmita(32)`, `nirmmita(3 * 8)`) need nothing.
+Constant sizes (`nirmmita(32)`, `nirmmita(3 * 8)`) need nothing. A `nirmmita(` this line-based
+reader cannot read whole on its line (split over lines, nested parentheses two deep) fails (R38),
+so it is never skipped unchecked.
 
 usage: python3 -B tools/check_alloc_bounds.py      (exit 0 when every site is bounded or explained)
 """
@@ -57,7 +59,12 @@ def main():
             a = re.match(r'\s*(?:vitti\s+)?(\w+)\s*=\s*(.+)$', code)
             if a and '*' in a.group(2) and 'nirmmita' not in a.group(2):
                 mult_vars[a.group(1)] = set(TERM.findall(a.group(2)))
-            for arg in re.findall(r'nirmmita\(([^()]*(?:\([^()]*\)[^()]*)*)\)', code):
+            args = re.findall(r'nirmmita\(([^()]*(?:\([^()]*\)[^()]*)*)\)', code)
+            if len(args) != len(re.findall(r'\bnirmmita\s*\(', code)):
+                # R38: a call this line-based reader cannot read (split over lines, or nested
+                # deeper than one level) would otherwise be skipped, not checked
+                bad.append(f'{lib.name}:{no}: {func}: a nirmmita( call this check cannot read on one line')
+            for arg in args:
                 arg = arg.strip()
                 if CONST_SIZE.match(arg):
                     continue

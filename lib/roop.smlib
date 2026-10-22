@@ -1,5 +1,6 @@
 # lib/fmt.smlib — Sutram standard library: formatting
 # layer: alloc
+# R38: a formatter that cannot allocate its scratch writes only the terminator and returns 0.
 #
 # Number and string formatting on BYTE strings (packed bytes, explicit
 # lengths, `strb` idiom): every function writes packed bytes into `out`
@@ -32,6 +33,10 @@ prakriya roop_ank(v, out) {
     vitti val = v
     vitti dst = out
     vitti rev = nirmmita(22 * 8)
+    yadi (rev == 0) {
+        akshar_rakh(dst, 0, 0)
+        prati 0
+    }
     vitti rlen = 0
     vitti i = 0
     yadi (val == 0) {
@@ -71,6 +76,10 @@ prakriya roop_ank_aadhar(v, base, upper, out) {
     vitti up = upper
     vitti dst = out
     vitti rev = nirmmita(70 * 8)
+    yadi (rev == 0) {
+        akshar_rakh(dst, 0, 0)
+        prati 0
+    }
     vitti rlen = 0
     vitti i = 0
     vitti d = 0
@@ -437,7 +446,15 @@ prakriya roop_varg(src, sn, out) {
 # `indian` 1 -> Indian grouping, 0 -> international.
 prakriya roop_varg_ank(v, indian, out) {
     vitti tmp = nirmmita(32)
+    yadi (tmp == 0) {
+        akshar_rakh(out, 0, 0)
+        prati 0
+    }
     vitti n = roop_ank_aadhar2(v, 10, tmp)
+    yadi (n == 0) {
+        akshar_rakh(out, 0, 0)
+        prati 0
+    }
     yadi (indian == 1) {
         prati roop_varg_bharatiya(tmp, n, out)
     }
@@ -466,6 +483,10 @@ prakriya roop_sthir_mool(dasham x, places, always_sign, out) {
     vitti wpos = 0
     vitti ndig = 0
     vitti rev = nirmmita(22 * 8)
+    yadi (rev == 0) {
+        akshar_rakh(dst, 0, 0)
+        prati 0
+    }
     vitti rlen = 0
     vitti k = 0
     yadi (pl < 0) { pl = 0 }
@@ -521,6 +542,10 @@ prakriya roop_sthir_mool(dasham x, places, always_sign, out) {
     }
     # integer part
     ndig = roop_ank(intpart, dst + wpos)
+    yadi (ndig == 0) {
+        akshar_rakh(dst, 0, 0)
+        prati 0
+    }
     wpos = wpos + ndig
     # fraction part, zero-padded to exactly pl digits
     yadi (pl > 0) {
@@ -574,7 +599,15 @@ prakriya roop_chinhit(v, out) {
     vitti tmp = nirmmita(32)
     vitti n = 0
     vitti i = 0
+    yadi (tmp == 0) {
+        akshar_rakh(dst, 0, 0)
+        prati 0
+    }
     n = roop_ank_aadhar2(val, 10, tmp)
+    yadi (n == 0) {
+        akshar_rakh(dst, 0, 0)
+        prati 0
+    }
     yadi (val < 0) {
         i = 0
         yavat (i < n) {
@@ -604,7 +637,15 @@ prakriya roop_sign_akshar(v, signch, out) {
     vitti tmp = nirmmita(32)
     vitti n = 0
     vitti i = 0
+    yadi (tmp == 0) {
+        akshar_rakh(dst, 0, 0)
+        prati 0
+    }
     n = roop_ank_aadhar2(val, 10, tmp)
+    yadi (n == 0) {
+        akshar_rakh(dst, 0, 0)
+        prati 0
+    }
     yadi (val < 0) {
         i = 0
         yavat (i < n) {

@@ -1,5 +1,6 @@
 # lib/strconv.smlib — Sutram standard library: number <-> string conversion
 # layer: alloc
+# R38: a renderer that cannot allocate its scratch writes only the terminator and returns 0.
 #
 # Renders integers as decimal (or base-2/8/16) digit characters into a buffer,
 # and parses them back. Buffers are pankti of integer character codes (not
@@ -48,6 +49,10 @@ prakriya ank_tak_varna(n, out) {
     }
     # collect digits least-significant first
     vitti rev = nirmmita(22 * 8)
+    yadi (rev == 0) {
+        dst[0] = 0
+        prati 0
+    }
     vitti rlen = 0
     yadi (val == 0) {
         rev[0] = 48
@@ -139,6 +144,10 @@ prakriya ank_tak_aadhar_varna(n, base, out) {
     vitti b = base
     vitti dst = out
     vitti rev = nirmmita(70 * 8)
+    yadi (rev == 0) {
+        dst[0] = 0
+        prati 0
+    }
     vitti rlen = 0
     yadi (b < 2) {
         dst[0] = 0
