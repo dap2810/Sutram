@@ -39,7 +39,7 @@ prakriya anukram_khip_i64(out, pos, cap, v) {
     vitti c = cap
     vitti val = v
     yadi (p < 0) { prati 0 - 1 }
-    yadi (p + 8 > c) { prati 0 - 1 }
+    yadi (p > c - 8) { prati 0 - 1 }   # R37: p + 8 could wrap
     vitti i = 0
     yavat (i < 8) {
         # Floor division: Sutram's / and % truncate toward zero,
@@ -64,7 +64,7 @@ prakriya anukram_grah_i64(buf, pos, cap, out) {
     vitti c = cap
     vitti o = out
     yadi (p < 0) { prati 0 - 1 }
-    yadi (p + 8 > c) { prati 0 - 1 }
+    yadi (p > c - 8) { prati 0 - 1 }   # R37: p + 8 could wrap
     vitti val = 0
     vitti i = 6
     yavat (i >= 0) {
@@ -93,7 +93,8 @@ prakriya anukram_khip_ashtak(out, pos, cap, src, n) {
     vitti cnt = n
     yadi (cnt < 0) { prati 0 - 1 }
     yadi (p < 0) { prati 0 - 1 }
-    yadi (p + 8 + cnt > c) { prati 0 - 1 }
+    yadi (p > c - 8) { prati 0 - 1 }   # R37: subtract; never add, the sum wraps
+    yadi (cnt > c - 8 - p) { prati 0 - 1 }
     vitti p2 = anukram_khip_i64(dst, p, c, cnt)
     vitti i = 0
     yavat (i < cnt) {
@@ -117,7 +118,8 @@ prakriya anukram_grah_ashtak(buf, pos, cap, dst, out_n) {
     yadi (p2 == 0 - 1) { prati 0 - 1 }
     vitti cnt = on[0]
     yadi (cnt < 0) { prati 0 - 1 }
-    yadi (p2 + cnt > c) { prati 0 - 1 }
+    # R37: cnt is read from the buffer; p2 + cnt wrapped for a corrupt length
+    yadi (cnt > c - p2) { prati 0 - 1 }
     vitti i = 0
     yavat (i < cnt) {
         akshar_rakh(d, i, akshar(src, p2 + i))

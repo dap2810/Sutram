@@ -1,0 +1,59 @@
+# R37 (ChatGPT R102's audit): validity before the address is formed.
+#   anukram: a length read from the buffer, or a cursor, near MAX made p + 8 + n
+#     wrap negative and pass the overrun check; now every bound subtracts.
+#   mala_nava: a negative count (-2^61 + 1) wrapped c * 8 to 8 bytes.
+#   matrika_yoga, skalar: an m x n that wraps (2^62 + 1 by 4 gives 4) ran a
+#     4-element loop and reported success; now -1 unless the shape fits.
+yoj anukram
+yoj mala
+yoj samanvaya
+mukhya() {
+    vitti buf = nirmmita(64)
+    vitti out = nirmmita(8)
+    vitti dst = nirmmita(64)
+    vitti n = nirmmita(8)
+    anukram_khip_i64(buf, 0, 16, 9223372036854775807)
+    likha(anukram_grah_ashtak(buf, 0, 16, dst, n))
+    likha("\n")
+    likha(anukram_khip_i64(buf, 9223372036854775804, 16, 1))
+    likha("\n")
+    likha(anukram_grah_i64(buf, 9223372036854775804, 16, out))
+    likha("\n")
+    likha(anukram_khip_ashtak(buf, 0, 16, dst, 9223372036854775803))
+    likha("\n")
+    likha(anukram_khip_ashtak(buf, 0, 64, "namaste", 7))
+    likha("\n")
+    likha(anukram_grah_ashtak(buf, 0, 64, dst, n))
+    likha(n[0])
+    likha("\n")
+    likha(mala_nava(0 - 2305843009213693951))
+    likha("\n")
+    likha(mala_nava(0 - 1))
+    likha("\n")
+    likha(mala_nava(3) != 0)
+    likha("\n")
+    kosh dasham a[4]
+    kosh dasham b[4]
+    kosh dasham o[4]
+    vitti i = 0
+    yavat (i < 4) {
+        kosh_push(a, 1.5)
+        kosh_push(b, 2.0)
+        kosh_push(o, 0.0)
+        i = i + 1
+    }
+    likha(matrika_yoga(a, b, 4611686018427387905, 4, o))
+    likha("\n")
+    likha(matrika_yoga(a, b, 0 - 1, 0 - 4, o))
+    likha("\n")
+    likha(skalar(a, 2.0, 4611686018427387905, 4, o))
+    likha("\n")
+    likha(matrika_yoga(a, b, 2, 3, o))
+    likha("\n")
+    likha(matrika_yoga(a, b, 2, 2, o))
+    likha(o[3])
+    likha("\n")
+    likha(skalar(a, 2.0, 1, 4, o))
+    likha(o[0])
+    likha("\n")
+}

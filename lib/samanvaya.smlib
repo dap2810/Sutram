@@ -17,6 +17,17 @@
 # element access helpers (flat index)
 # ---------------------------------------------------------------
 
+# samanvaya_akar_na(m, n, len) - R37: 1 when an m x n shape does NOT fit len
+# elements (or m or n is negative), else 0. It divides, never multiplies, so it
+# holds for every m and n: m x n fits exactly when n == 0 or m <= len / n.
+prakriya samanvaya_akar_na(m, n, len) {
+    yadi (m < 0) { prati 1 }
+    yadi (n < 0) { prati 1 }
+    yadi (n == 0) { prati 0 }
+    yadi (m > len / n) { prati 1 }
+    prati 0
+}
+
 # identity matrix: n x n, out must hold n*n elements
 prakriya pehchan(n, kosh dasham out) {
     vitti i = 0
@@ -49,9 +60,14 @@ prakriya vivartana(kosh dasham a, m, n, kosh dasham out) {
     prati m * n
 }
 
-# element-wise sum: a and b are m x n, out must hold m*n elements
+# element-wise sum: a and b are m x n, out must hold m*n elements.
+# R37: -1 if m x n does not fit a, b and out (or m, n < 0); m * n is never
+# formed until it is known to fit, so it cannot wrap to a small loop.
 prakriya matrika_yoga(kosh dasham a, kosh dasham b, m, n, kosh dasham out) {
     vitti k = 0
+    yadi (samanvaya_akar_na(m, n, kosh_len(a)) == 1) { prati 0 - 1 }
+    yadi (samanvaya_akar_na(m, n, kosh_len(b)) == 1) { prati 0 - 1 }
+    yadi (samanvaya_akar_na(m, n, kosh_len(out)) == 1) { prati 0 - 1 }
     yavat (k < m * n) {
         out[k] = a[k] + b[k]
         k = k + 1
@@ -59,9 +75,11 @@ prakriya matrika_yoga(kosh dasham a, kosh dasham b, m, n, kosh dasham out) {
     prati m * n
 }
 
-# scalar multiple: out must hold m*n elements
+# scalar multiple: out must hold m*n elements. R37: -1 if m x n does not fit.
 prakriya skalar(kosh dasham a, dasham c, m, n, kosh dasham out) {
     vitti k = 0
+    yadi (samanvaya_akar_na(m, n, kosh_len(a)) == 1) { prati 0 - 1 }
+    yadi (samanvaya_akar_na(m, n, kosh_len(out)) == 1) { prati 0 - 1 }
     yavat (k < m * n) {
         out[k] = a[k] * c
         k = k + 1

@@ -10,6 +10,7 @@ prakriya mala_nava(n) {
     vitti c = n
     vitti sz = 0
     # A count so large the byte size overflows returns 0 (R35: before multiplying).
+    yadi (c < 0) { prati 0 }   # R37: -2^61 + 1 wrapped to 8
     yadi (c > 1152921504606846975) { prati 0 }
     sz = c * 8
     yadi (sz < 0) { prati 0 }

@@ -1,0 +1,26 @@
+566 programs (1 new in this tree, not compared): 448 byte-identical, 92 refused identically, 25 differ
+  DIFFER examples/209_samanvaya.sm
+  DIFFER tests/stdlib/array_array_copy.sm
+  DIFFER tests/stdlib/array_array_fill.sm
+  DIFFER tests/stdlib/array_array_get.sm
+  DIFFER tests/stdlib/array_array_get_safe.sm
+  DIFFER tests/stdlib/array_array_new.sm
+  DIFFER tests/stdlib/array_array_set.sm
+  DIFFER tests/stdlib/array_array_set_safe.sm
+  DIFFER tests/stdlib/array_array_sum.sm
+  DIFFER tests/stdlib/r11_misc_edges.sm
+  DIFFER tests/stdlib/r35_alloc_wrap_guard.sm
+  DIFFER tests/stdlib/r9_alloc_failure.sm
+  DIFFER tests/stdlib/r9_guard_cells.sm
+  DIFFER tests/stdlib/r9_guard_cells2.sm
+  DIFFER tests/stdlib/samanvaya_mat_gunana.sm
+  DIFFER tests/stdlib/samanvaya_mat_yoga.sm
+  DIFFER tests/stdlib/samanvaya_nirnaya2.sm
+  DIFFER tests/stdlib/samanvaya_nirnaya3.sm
+  DIFFER tests/stdlib/samanvaya_nishan.sm
+  DIFFER tests/stdlib/samanvaya_pehchan.sm
+  DIFFER tests/stdlib/samanvaya_rekha_manak.sm
+  DIFFER tests/stdlib/samanvaya_sadish_yoga.sm
+  DIFFER tests/stdlib/samanvaya_skalar.sm
+  DIFFER tests/stdlib/samanvaya_vivartana.sm
+  DIFFER tests/stdlib/serial29.sm

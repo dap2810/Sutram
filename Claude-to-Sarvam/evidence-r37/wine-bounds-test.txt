@@ -1,0 +1,3 @@
+Wine (not Windows): tests/stdlib/r37_bounds.sm compiled by win/sutram.exe and run under Wine:
+  matches its golden
+  real Windows: NOT-RUN

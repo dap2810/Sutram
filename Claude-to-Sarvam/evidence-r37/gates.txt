@@ -1,0 +1,50 @@
+Sutram gates — 2026-10-22T12:50Z
+
+  committed modes (6 x 100755, git index) PASS
+  build: compiler              ok  (423976 B)
+  build: terminal IDE          ok  (24776 B)
+  build: X11 GUI               ok  (38160 B)
+  build: linker (R28)          ok  (16296 B)
+  build: ELF reader (R32)      ok  (13920 B)
+
+  regression suite (NO-EXPECTATION=4 PASS=218 ) PASS
+  codegen shapes (12/12)       PASS
+  language packs (33/33)       PASS
+  library proofs (223 passed, 0 failed, 223 total) PASS
+  property proofs (86/86)      PASS
+  layer check (14 core, 9 alloc, 1 std) PASS
+  stdlib inventory (Wrote /home/claude/sutram/docs/sutram-stdlib.html: 24 modules, 304 functions) PASS
+  module graph                 PASS
+  pack messages (12 sets x 11 cases) PASS
+  keyword packs built in (11, = lang/*.lang) PASS
+  pack found without lang/ (40 checks, 0 failed) PASS
+  R23 capabilities (23 checks, 0 failed) PASS
+  R25 error type (21 checks, 0 failed) PASS
+  R28 linker (187 programs identical; 201 checks, 0 failed) PASS
+  R29 separate compilation (257 programs with modules behave the same, 145 without are byte-identical) PASS
+  R30 module vitti (8 checks, 0 failed) PASS
+  R31 incremental (257 programs identical clean, cold and warm) PASS
+  R32 FFI (50 checks, 0 failed) PASS
+  R33 FFI kinds (29 checks, 0 failed) PASS
+  R34 Windows fixes (3 checks, 0 failed) PASS
+  FFI fuzzer (60 programs, 679 foreign calls, 316) PASS
+  ELF reader fuzzer (3000 malformed objects: 1937 refused (no output), 1063 accepted (well formed)) PASS
+  R34 FFI v2 (14 checks, 0 failed) PASS
+  alloc bounds (25: 6 bounded before the multiply, 19 exempt with a reason) PASS
+  R23 fuzzer (100 programs, 3558 printed values compared, 0 differ) PASS
+  valid fuzzer + function values (60 run, 60 agree, 0 fail) PASS
+  crash corpus (227 cases + manifest, 0 failed) PASS
+  operator precedence (314 pairs tested) PASS
+  formatted tree               PASS
+  version string (v244 (CHANGELOG v304)) PASS
+  performance (  8 ran, 0 failed) PASS
+  X11 GUI protocol (18/18)     PASS
+  Windows execution            NOT-RUN cannot run here (Linux) - on Windows: tests/r34/test_link_windows.py, tools/ide_examples_windows.ps1, tools/accept-windows.ps1
+
+  ------------------------------------------
+  PASS                         33
+  FAIL                         0
+  NOT-RUN                      1
+
+  PASS, FAIL and NOT-RUN are separate on purpose.
+  A count that hides its own skips is worse than no count.
