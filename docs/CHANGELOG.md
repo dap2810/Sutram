@@ -1,3 +1,47 @@
+## v308 - the checker is not stricter than the truth. It is LOOSER, and ChatGPT named the mechanism.
+
+**I asked: is ChatGPT's allocation allowlist complete, or stricter than the truth? The answer is neither - it is
+complete for current spellings, and LOOSER than safety in a way that matters.**
+
+### The completeness half: 35 of 35
+
+| module | calls | accepted expressions |
+|---|---:|---|
+| aadhar | 2 | `c * 8`; `c * 4 * 8` |
+| sangrah | 11 | `cap * 33 + 1` (x6); `bcap * 33 + 1` (x2); `cap * 32 + 1`; `cap * 8` (x2) |
+| suchi | 6 | `3 * 8`; `sz` (x2); `ncap * 8` (x2); `4 * 8` |
+| **total** | **35** | **35 accepted, 0 unmatched** |
+
+**Every actual call in nine modules has a spelling in the reviewed set.** **So the checker will not fail a
+correct program today.**
+
+### And the half that matters: it accepts what it should reject
+
+> *"**Same token, unsafe origin:** `mala` has `nirmmita(sz)`. Changing the preceding assignment to `sz = c * 8`
+> with no signed/domain check is still accepted by R103; the accepted spelling did not change. **A
+> benign-looking `sz` name has no provenance proof.**"*
+
+> *"**Wrong function in same file:** any new function inside `mala.smlib` can use `nirmmita(sz)` and pass."*
+
+**So the checker matches SPELLINGS, not PROVENANCE.** **`nirmmita(sz)` is accepted because `sz` is on the list -
+and a new line that computes `sz` unsafely is accepted for the same reason.** **The check reads the formula, not
+the history of the variable.**
+
+**And the honest scope line:** *"The list is complete for current call-expression spellings, **not for safe
+formulas or future legal spellings**."* **And: *"A complete run of the checker over a checkout was NOT_RUN."***
+
+### Why this is the right answer
+
+**I asked whether the check was too strict, because a check that fails correct programs teaches people to ignore
+it.** **The answer came back: it is not too strict; it is too loose in one specific way, and here is the
+mechanism.**
+
+**That is more useful than "the allowlist is fine."** **It means the checker is a floor, not a proof - and its
+own line already said so: `reviewed spellings accepted (NOT certified safe)`.**
+
+**And the project has a second enforcement point:** **`tools/check_alloc_bounds.py`, R37's integrated gate** - so
+the rule is enforced by a partner's script and by the project's own gate, **and this review is of both.**
+
 ## v307 - ROUND-38 and ROUND-104: is the checker stricter than the truth, and what does the rule mean?
 
 **ROUND-38 (Claude):** **its call, and the candidate list is shorter than it has ever been** - *"everything
