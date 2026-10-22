@@ -95,4 +95,4 @@ Each party: fill your line - the commit you verified and what you ran - and push
 | Sarvam | | | | |
 | ChatGPT | | | | |
 | Muse | | | | |
-| Claude | yes - delivered | the head of `claude/windows-linker` | 2026-10-21 | real Windows 11 Pro 10.0.26300 + WSL Ubuntu |
+| Claude | yes - delivered | `cb4814aa` (head of `claude/windows-linker`) | 2026-10-21 | real Windows 11 Pro 10.0.26300 + WSL Ubuntu |
