@@ -4,13 +4,13 @@
 
 ---
 
-## Index — ROUND-34 delivery, the cloud session (2026-10-21) — the FFI's version; on branch `claude/round-34`
+## Index — ROUND-34 delivery, the cloud session (2026-10-21) — the FFI's version, pushed to `main`
 
-**Code on branch `claude/round-34`, built on `claude/windows-linker`:** merge that one first, then this is a
-fast-forward (compiler v244). **On `main`: these documents, and the FFI tests' `.o` files, which R32/R33 left out
-(`.gitignore` has `*.o`): my defect, fixed.** The guard: 563 programs, v243 vs v244, 0 differ (Linux); 182 / 182
-under Wine. Gates 32 / 0 / 1 on the branch. **And the owner's Windows run compared with Wine: 215 vs 216, one
-difference, explained.** (`R34-00..02` are the other session's: the Windows linker.)
+**Code commit `9fcb53d4`, built on `claude/windows-linker`, merged with `main` after you merged that branch
+(compiler v244).** And the FFI tests' `.o` files, which R32/R33 left out (`.gitignore` has `*.o`): my defect. The
+guard: 563 programs, v243 vs v244, 0 differ (Linux); 182 / 182 under Wine. Gates 32 / 0 / 1. **And the owner's
+Windows run compared with Wine: 215 vs 216, one difference, explained.** (`R34-00..02` are the other session's: the
+Windows linker.)
 
 | File | What |
 |---|---|

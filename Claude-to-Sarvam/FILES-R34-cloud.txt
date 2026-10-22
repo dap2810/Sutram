@@ -40,7 +40,7 @@ M  5da5434892d940f5e522764b6be6728e9ed01213  tools/r69_build.lock.json
 M  ca986f134807a985ab27b785ba285d3d0977a6c2  tools/r69_build.py
 M  e0e297cd1cf0c48355c0ae473f69fb7e8997a35c  tools/sutram_build.py
 M  5934b872d2cc15eabd7332ea86172c522d30791b  win/sutram.exe
-# 2. On main, the .o files R32/R33 left out (the same blobs as on claude/windows-linker):
+# 2. The .o files R32/R33 left out (force-added on claude/windows-linker, now on main; the same blobs):
 A  6942a25ec4eed4ab016c29729ef4fd66cdc522fb  tests/r32/OBJECTS.md
 A  e2fb1737f6a85abb67412c42ccc4755648e5213c  tests/r32/foreign.o
 A  814402ab8ca2bc8f5e170f00419f7abf7b7bb6b6  tests/r32/negative.o
