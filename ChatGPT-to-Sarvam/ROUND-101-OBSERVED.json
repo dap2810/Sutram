@@ -1,0 +1,149 @@
+{
+  "schema": 1,
+  "project": "Sutram",
+  "round": 101,
+  "date": "2026-10-21/2026-10-22",
+  "assignment": "Sarvam-to-ChatGPT/ROUND-101.md",
+  "starting_main_sha": "4d25df8901e07a58b1ebf3a869f5638ac13ac512",
+  "project_changelog": "v300",
+  "main_compiler": "v244 (per project status)",
+  "reason_for_independence": "Own reading of test/golden, library source and allocator emission before reviewing any Claude Round 35 answer; only prior Windows/WSL data consulted.",
+  "source_pins": [
+    {
+      "path": "Sarvam-to-ChatGPT/ROUND-101.md",
+      "sha": "915c184be9c1448370f5d8eb45c1f782d6ce9b32"
+    },
+    {
+      "path": "tests/stdlib/r18_srij_overflow_guard.sm",
+      "sha": "8a19d6435b7b5c8891ca637582de7516dfc795dc"
+    },
+    {
+      "path": "tests/stdlib/r18_srij_overflow_guard.out",
+      "sha": "2887b954df0778b72ef88477fc7fa30186b7534b"
+    },
+    {
+      "path": "tests/stdlib/r18_srij_overflow_guard.exit",
+      "sha": "573541ac9702dd3969c9bc859d2b91ec1f7e6e56"
+    },
+    {
+      "path": "lib/suchi.smlib",
+      "sha": "c85eb3cb5d8de4d01ca624b895462c1337ff7aac"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "sha": "8b7875c06893333ee8be4191a04a94029a09d218"
+    },
+    {
+      "path": "tools/proof_lib.py",
+      "sha": "7c52f1bd2d4ccd62043bfeaf1dac164153d57d78"
+    },
+    {
+      "path": "Windows-to-Sarvam/win-ffi-2026-10-21/r18-proofs-and-r29-wsl.txt",
+      "sha": "9c343c13582b5bed94f81f3bb9b99836e59f8a34"
+    },
+    {
+      "path": "Claude-to-Sarvam/R34-11-FFI-V2.md",
+      "sha": "82666ea1a76297a6714b0e3fe6dfbcd3009a45c1"
+    }
+  ],
+  "source_static_audit": {
+    "pass": 11,
+    "fail": 0,
+    "corrected_bad_predicate": "initial literal search 'byte size would wrap' failed because test comment has '#\\n#' between byte and size. Replaced with correct two-line-aware regex. No source defect.",
+    "checks": [
+      "test is labeled byte-size arithmetic overflow",
+      "first two calls use 3037000499",
+      "third uses INT64_MAX",
+      "golden requires first two 0",
+      "list constructor multiplies cap*8 then only sz<0",
+      "queue constructor same negative-only guard",
+      "list growth doubles and allocates without pre-multiplication bound",
+      "queue growth doubles and allocates without pre-multiplication bound",
+      "compiler emits anonymous mmap and maps negative syscall errors to zero",
+      "proof harness enumerates .sm files, not named entries",
+      "prior FFI v2 header is implemented distinct from v1"
+    ]
+  },
+  "ws1": {
+    "classification": "Immediate R18 portable-test/golden expectation INVALID; constructor signed-overflow guard also INCOMPLETE for positive-wrap inputs.",
+    "status": "PASS source-and-mathematical-proof; native Sutram execution NOT_RUN",
+    "test_cap": 3037000499,
+    "valid_true_byte_request": 24296003992,
+    "valid_true_request_GiB": 22.627416990697384,
+    "valid_no_overflow": true,
+    "signed_int64_max": 9223372036854776000,
+    "safe_max_cap_for_8byte_cells": "1152921504606846975",
+    "failing_positive_wrap_cap": "2305843009213693953",
+    "positive_wrap_true_bytes": "18446744073709551624",
+    "positive_wrap_machine_bytes": 8,
+    "positive_wrap_guard_result": "sz < 0 is false even though multiplication overflowed",
+    "third_test_max_cap": "9223372036854775807",
+    "third_wrapped_size_signed": -8,
+    "third_guard_result": "sz<0 true, correctly refuses that one case",
+    "growth_safe_old_capacity_max": "576460752303423487",
+    "recommended_change": "check c>INT64_MAX/8 before c*8 in both constructors; check old capacity>INT64_MAX/16 before doubling in list and queue growth; do not silently rewrite golden; replace accidental OS allocation failure assumptions with deterministic overflow witnesses.",
+    "prior_wsl_observations": "Under unlimited WSL VM 24GB reservation succeeds, two nonzero address-shaped values; under 4GiB RLIMIT_AS both calls return 0, same original .sm file."
+  },
+  "host_control": {
+    "kind": "genuine Linux GCC C control for signed 64-bit size wrap and anonymous mmap/munmap behavior; NOT the Sutram compiler or an .sm program",
+    "source_path": "ChatGPT-to-Sarvam/ROUND-101-R18-MMAP-CONTROL.c",
+    "raw_path": "ChatGPT-to-Sarvam/ROUND-101-R18-HOST-OBSERVED.txt",
+    "source_git_blob": "dbccbcca40f8df6bd485946b822b976cd5162fa8",
+    "raw_git_blob": "2e2827b5c5ec28996fedcaffb7d949672c077e9c",
+    "source_sha256": "8618c10f7a23dac3fc88621d1a83c019fa4e7428cc72eb91914e5e1f0a4b1077",
+    "compiled_C_binary_sha256": "7121171c99bbdb4325c46c22f9b9147bdb1701104553555a5bfb5d133b4dab1b",
+    "cc": "cc (Debian 14.2.0-19) 14.2.0",
+    "compile": "cc -O2 -Wall -Wextra -std=c11 ROUND-101-R18-MMAP-CONTROL.c -o r101_r18_mmap_control",
+    "run_unlimited": "./r101_r18_mmap_control",
+    "run_capped": "(ulimit -v 4194304; ./r101_r18_mmap_control)",
+    "process_exit_unlimited": 0,
+    "process_exit_capped": 0,
+    "control_result": "observed arithmetic/signed-wrap and mmap outcomes, both commands completed",
+    "inherited_limit": "unlimited",
+    "unlimited_mmap_24gb": "FAILED errno=12",
+    "four_gib_mmap_24gb": "FAILED errno=12",
+    "small_wrapped_mmap": "SUCCESS, 8B in both runs",
+    "physical_memory_touched": "zero pages; munmap on every successful mapping",
+    "key_limit": "RLIMIT_AS=unlimited does not guarantee a huge reservation succeeds; policy/cgroup/commit can independently deny it."
+  },
+  "ws2": {
+    "status": "PASS source review, Windows FFI native test NOT_RUN by ChatGPT",
+    "artifact": "ChatGPT-to-Sarvam/ROUND-101-WS2-WINDOWS-FFI-GAPS.md",
+    "latest_windows_branch_at_read": "d29fece4fd38189e59a3fcb37e0c6392495559f6",
+    "proven_windows_ffi_commit": "79654e20",
+    "windows_compiler": "v245",
+    "prior_windows_native_reports": {
+      "ffi": "21/21 PASS",
+      "coff_converter": "11/11 PASS",
+      "sutram_pe_linker": "1021 tests, 0 failures",
+      "ordinary_path": "564 programs, 476 byte-identical, 88 same refusals, 0 different"
+    },
+    "prior_wsl_gate": "31 PASS / 3 FAIL / 1 NOT_RUN; two r18 environment dependent, X11 display unavailable",
+    "not_covered": [
+      "safe bounded typed ptr/cstr ownership lifetime mutability and full encoding guarantees",
+      "verified C/COFF prototype ↔ sidecar type/arity contract",
+      "all float edge bit patterns on real Windows",
+      "by-value structs including hidden pointer return",
+      "Windows callbacks C→Sutram",
+      "varargs (printf) / CRT / DLL imports and C functions calling other externals",
+      "arity >6",
+      "writable globals/TLS/unwind and unsupported COFF metadata/relocations",
+      "merge reviewed Windows FFI branch to main, rebuild installer v245+ and rerun owner acceptance",
+      "Windows environment SUTRAM_LANG pack selection"
+    ]
+  },
+  "ws3": {
+    "status": "PASS necessary correction; no new native implementation",
+    "artifact": "ChatGPT-to-Sarvam/ROUND-101-WS3-POINTER-VERSION-CORRECTION.md",
+    "correction": "R100's proposed new cstr_ro/buf_ro@2 header sutram-ffi-v2 is stale: v2 is now a shipped strict version with f64/ptr/void kinds. Reserve FUTURE sutram-ffi-v3 for these safe-pointer kinds, pending owner approval, preserve v1+v2 exact semantics.",
+    "native_v3": "NOT_IMPLEMENTED/NOT_RUN"
+  },
+  "not_run": [
+    "Compiling or running native Sutram r18_srij_overflow_guard.sm from this turn",
+    "Any native compiler, library or test/golden modification",
+    "Any fresh full Linux gates/corpus/fuzz",
+    "Any native Windows FFI or owner acceptance rerun on branch",
+    "Any Sutram v3 sidecar/cstr_ro/buf_ro@N implementation or test"
+  ],
+  "files_edited_in_repo": "New ChatGPT-to-Sarvam artifacts only. No production files, golden updates, branch merges, PR changes or release workflows."
+}
