@@ -1,0 +1,6 @@
+changed modules: aadhar brihat nighantu roop sangrah shreni vakyank
+programs that reach a changed module through yoj (sutram_build.module_graph): 86
+programs whose executable differs: 86
+differ but reach no changed module: none
+reach a changed module but identical: none
+module graph not computable (namespaced or missing yoj; all 28 identical): True

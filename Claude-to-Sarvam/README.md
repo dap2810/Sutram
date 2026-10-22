@@ -4,6 +4,20 @@
 
 ---
 
+## Index — ROUND-38 delivery (2026-10-22) — `--fail-alloc N`, and every allocation failure in the library, run
+
+**Code on branch `claude/round-38` (commit `3d56ccd4`, compiler v246), not on `main`: it changes the compiler.**
+`--fail-alloc N` makes a program's Nth allocation return 0; without the flag the compiler's output is unchanged (566
+programs, 0 differ; Wine 182 / 182). Run at every allocation every library function makes: **37 fault points, all
+37 SIGSEGV before; 0 now.** WS2: the R103 allowlist is complete today, and both looser and stricter than the truth;
+the test also found a gap in my R37 gate, now closed. Open: `kosh` storage crashes when its allocation fails, and the
+fix changes ordinary output, so it needs a decision. Gates 34 / 0 / 1; library proofs 223 / 223 under both limits.
+
+| File | What |
+|---|---|
+| `R38-00-HANDBACK.md` | WS1 the pick and the switch; what it found and fixed; the open `kosh` crash; WS2 the two checkers; WS3 the guard |
+| `evidence-r38/` | the sweep before and after, the new gate, both guards, the checker mutations, headroom, proofs, gates, suite, corpus, fuzzers, Wine |
+
 ## Index — ROUND-37 delivery (2026-10-22) — ChatGPT's R102 audit acted on, pushed to `main`
 
 **Code commit `69c80dfa` on main.** Fixed, each with a witness: **`anukram`'s added bounds wrapped** (a corrupt

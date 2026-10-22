@@ -1,0 +1,21 @@
+Linux. The compiler's own kosh runtime (declaration and kosh_push growth) under --fail-alloc.
+NOT fixed in R38: the fix adds a check to every kosh allocation, so it changes the ordinary compile's bytes.
+--- program
+mukhya() {
+    kosh k[2]
+    vitti i = 0
+    yavat (i < 40) {
+        kosh_push(k, i)
+        i = i + 1
+    }
+    likha(kosh_len(k))
+    likha("\n")
+}
+--- ordinary compile: b'40\n\n'
+N=1: exit -11 (SIGSEGV)
+N=2: exit -11 (SIGSEGV)
+N=3: exit -11 (SIGSEGV)
+N=4: exit -11 (SIGSEGV)
+N=5: exit -11 (SIGSEGV)
+N=6: exit -11 (SIGSEGV)
+N=7: exit 0 stdout b'40\n\n'

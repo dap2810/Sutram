@@ -1,0 +1,3 @@
+Wine (not Windows), win/sutram.exe v244 (main) vs v246 (this branch), every examples/*.sm:
+Wine: 182 identical, 40 produce no output under both, 0 differ
+Real Windows: NOT-RUN (cloud).
