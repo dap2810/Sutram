@@ -70,12 +70,12 @@ any compiler (re-pinned in ROUND-03 together with `manifest.json`):
 | `src/r66_indic_lexer.inc` | `998b6cb75a7e11cf6d488cf84a84a2154ffdebf0` |
 | `src/r67_stack_pair.inc` | `e8472bd1cad767cf06b0c00fcf88793419362db5` |
 | `lang/sanskrit.lang` | `b7bbbe1e07d258cc67f05e9dad81bca9379e59a6` |
-| `src/r11_sandesh.inc` | `e49e4fecf3a1a3f4160f38cdc102e7109e6fb311` |
+| `src/r11_sandesh.inc` | `930bc98e2e002c66df571239f70c6d62d3bbcfb1` |
 | `src/r22_lang_builtin.inc` | `5211b0bc4bae516e8b0eeb46a1b694cee7048e9b` |
 | `src/r23_capabilities.inc` | `fb73a3609fa4207b3450f4b7beaf4af18d6d7fd5` |
 | `src/r25_phal.inc` | `a36bd286aa6beea0b854576945e6874ba8835af0` |
 | `src/r28_object.inc` | `35d1edfdacfba28d3df9dffab2770f53777dede6` |
-| `src/r32_ffi.inc` | `174310e8cc375e7b3680650a3e1c9b5ce58ad2ad` |
+| `src/r32_ffi.inc` | `3b4872b7255c6d3d99ab48c037c1de0ed771cfe2` |
 
 Build the R68 diagnostic entry, not just the bare compiler. An example on the
 reviewer's existing Linux NASM toolchain is:

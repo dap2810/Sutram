@@ -119,7 +119,14 @@ One LF-terminated line per function: the name Sutram calls it by, its arity (0-6
 result kind, and the foreign symbol. ASCII, no spaces, no CR, at most 8192 bytes and 64 lines. Any other line is
 refused with its line number.
 
-**The kinds (ROUND-33):**
+**The header names the version (ROUND-34),** so a file never means more than its version promised:
+
+| Header | Kinds |
+|---|---|
+| `sutram-ffi-v1\|linux-x86_64-sysv` | R32's form, exactly: `i64` arguments, an `i64` result. Any other kind is refused |
+| `sutram-ffi-v2\|linux-x86_64-sysv` | the kinds below: `i64`, `f64`, `ptr` arguments; an `i64`, `f64`, `ptr` or `void` result |
+
+**The kinds (ROUND-33, `v2`):**
 
 | Kind | As an argument | As the result |
 |---|---|---|

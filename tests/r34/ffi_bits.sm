@@ -1,0 +1,28 @@
+# ROUND-34: a double through the FFI, bit for bit: -0.0, +inf, -inf, a quiet NaN,
+# a NaN with a payload, the smallest subnormal, the largest finite, 1.0.
+mukhya() {
+    likha(b_of(b_from(((0 - 9223372036854775807) - 1))))
+    dasham d4 = b_from(((0 - 9223372036854775807) - 1))
+    likha(b_twice(d4, 0))
+    likha(b_of(b_from(9218868437227405312)))
+    dasham d459 = b_from(9218868437227405312)
+    likha(b_twice(d459, 0))
+    likha(b_of(b_from((0 - 4503599627370496))))
+    dasham d496 = b_from((0 - 4503599627370496))
+    likha(b_twice(d496, 0))
+    likha(b_of(b_from(9221120237041090560)))
+    dasham d707 = b_from(9221120237041090560)
+    likha(b_twice(d707, 0))
+    likha(b_of(b_from(9218868437227405313)))
+    dasham d460 = b_from(9218868437227405313)
+    likha(b_twice(d460, 0))
+    likha(b_of(b_from(1)))
+    dasham d1 = b_from(1)
+    likha(b_twice(d1, 0))
+    likha(b_of(b_from(9218868437227405311)))
+    dasham d458 = b_from(9218868437227405311)
+    likha(b_twice(d458, 0))
+    likha(b_of(b_from(4607182418800017408)))
+    dasham d457 = b_from(4607182418800017408)
+    likha(b_twice(d457, 0))
+}

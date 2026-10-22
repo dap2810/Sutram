@@ -1,0 +1,4 @@
+THE GUARD: the ordinary path. (1) main's v242 vs claude/windows-linker's v243 (verifying the branch's own claim); (2) v243 vs this work's v244.
+Every .sm in examples/, examples/*/, tests/stdlib/, tests/r*/ (recursive), Linux; stdout and exit status compared too:
+  (1) v242 -> v243: 563 programs: 471 byte-identical executables, 92 refused identically, 0 DIFFER
+  (2) v243 -> v244: 563 programs: 471 byte-identical executables, 92 refused identically, 0 DIFFER

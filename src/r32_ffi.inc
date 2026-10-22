@@ -11,8 +11,10 @@
 ;   s_add|2|i64,i64|i64|sutram_ffi_add
 ;
 ; one LF-terminated line per declaration: local name | arity | argument kinds |
-; return kind | the foreign symbol. R33: the argument kinds are i64, f64 and
-; ptr; the result is i64, f64, ptr or void (R32 accepted i64 only). ASCII, no spaces, no CR, at most 8192 bytes and 64 declarations.
+; return kind | the foreign symbol. The header names the version (R34):
+;   sutram-ffi-v1  R32's form, unchanged: i64 arguments, an i64 result
+;   sutram-ffi-v2  R33's kinds: i64, f64, ptr arguments; i64, f64, ptr or void
+; so a v1 file never means more than v1 promised. ASCII, no spaces, no CR, at most 8192 bytes and 64 declarations.
 ;
 ; What a declaration does, and what it never does:
 ;   * the sidecar is read once, after parsing (in SUTRAM_LANG's language) and
@@ -36,14 +38,19 @@ section .bss
     r32_ffi_count resq 1
     r32_ffi_rec   resq R32_CAP*4      ; (local name, arity, foreign symbol, R33 kinds)
     r33_kinds     resq 1
+    r34_ffi_version resq 1           ; R34: 1 or 2, from the sidecar's header
     r33_call_nodes resq R7_CALL_CAP   ; R33: the AST_FUNCALL of each r7 call (with --ffi)
     r32_buf       resb R32_FILE_CAP + 8
     r32_len       resq 1
     r32_line      resq 1
 
 section .data
+    ; R34: "sutram-ffi-v1|..." or "sutram-ffi-v2|..."; the byte at R34_VERSION_AT
+    ; is the version. v1 is R32's form exactly: i64 arguments, an i64 result.
+    ; v2 adds the R33 kinds: f64 and ptr arguments, an f64, ptr or void result.
     r32_header    db "sutram-ffi-v1|linux-x86_64-sysv", 10
     r32_header_len equ $ - r32_header
+R34_VERSION_AT equ 12
 
 section .text
 
@@ -161,6 +168,18 @@ r32_load_sidecar:
     cmp rcx, r32_header_len
     jae .hdr_ok
     mov al, [rsi + rcx]
+    cmp rcx, R34_VERSION_AT           ; R34: the version digit, 1 or 2
+    jne .hdr_byte
+    sub al, '0'
+    cmp al, 1
+    jb r32_bad
+    cmp al, 2
+    ja r32_bad
+    movzx eax, al
+    mov [rel r34_ffi_version], rax
+    inc rcx
+    jmp .hdr
+.hdr_byte:
     cmp al, [rdi + rcx]
     jne r32_bad
     inc rcx
@@ -235,6 +254,11 @@ r32_load_sidecar:
     call r33_kind3
     cmp eax, 2
     ja .bad_pop
+    cmp qword [rel r34_ffi_version], 1  ; R34: v1 is i64 only, as R32 promised
+    jne .kind_any
+    test eax, eax
+    jnz .bad_pop
+.kind_any:
     lea rdx, [rel r33_kinds]
     mov [rdx + rcx], al
     add rdi, 3
@@ -257,6 +281,11 @@ r32_load_sidecar:
     cmp byte [rdi + 3], 0
     jne .bad_pop
 .ret_ok:
+    cmp qword [rel r34_ffi_version], 1  ; R34: v1 returns i64 only
+    jne .ret_any
+    test al, al
+    jnz .bad_pop
+.ret_any:
     mov [rel r33_kinds + 6], al
     ; no name and no symbol twice
     xor r15d, r15d

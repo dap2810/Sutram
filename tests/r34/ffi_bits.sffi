@@ -1,0 +1,4 @@
+sutram-ffi-v2|linux-x86_64-sysv
+b_of|1|f64|i64|sutram_b_of
+b_from|1|i64|f64|sutram_b_from
+b_twice|2|f64,i64|i64|sutram_b_twice

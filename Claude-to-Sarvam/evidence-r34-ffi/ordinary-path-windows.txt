@@ -1,0 +1,6 @@
+Wine (not Windows): every example in examples/*.sm compiled by claude/windows-linker's win/sutram.exe (v243, the one accepted on real Windows) and by this work's (v244, built in the cloud), byte for byte. Two full runs:
+  Wine: 182 identical, 40 produce no output under both, 0 differ:
+  Wine: 181 identical, 40 produce no output under both, 1 differ: examples/77_ternary.sm
+  examples/77_ternary.sm, the one difference in run 2, was identical in three targeted reruns (old vs new, and old vs old):
+  a flake in the Wine loop, as in R28, R30 and R33 (each time a different example; run 2 shared the machine with another Wine job).
+  (the 40 are compile-fail examples and the ones that need --lang; both compilers refuse them)

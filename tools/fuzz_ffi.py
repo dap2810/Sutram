@@ -25,7 +25,7 @@ from pathlib import Path
 sys.dont_write_bytecode = True
 ROOT = Path(__file__).resolve().parents[1]
 
-SIDECAR = """sutram-ffi-v1|linux-x86_64-sysv
+SIDECAR = """sutram-ffi-v2|linux-x86_64-sysv
 s_add|2|i64,i64|i64|sutram_ffi_add
 s_neg|1|i64|i64|sutram_ffi_neg
 s_mix|6|i64,i64,i64,i64,i64,i64|i64|sutram_ffi_mix

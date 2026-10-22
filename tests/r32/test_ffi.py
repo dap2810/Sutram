@@ -115,14 +115,22 @@ def main(argv) -> int:
     # 4. the sidecar
     bad = {
         'no header': 's_add|2|i64,i64|i64|sutram_ffi_add\n',
-        'another header': 'sutram-ffi-v2|linux-x86_64-sysv\n',
+        'another header': 'sutram-ffi-v3|linux-x86_64-sysv\n',
+        'version 0': 'sutram-ffi-v0|linux-x86_64-sysv\n',
+        'another ABI': 'sutram-ffi-v2|windows-x86_64-msabi\n',
         'four fields': HEADER + 's_add|2|i64,i64|i64\n',
         'six fields': HEADER + 's_add|2|i64,i64|i64|sutram_ffi_add|x\n',
         'arity 7': HEADER + 's_add|7|i64,i64,i64,i64,i64,i64,i64|i64|sutram_ffi_add\n',
         'arity 12': HEADER + 's_add|12|i64|i64|sutram_ffi_add\n',
         'kinds short': HEADER + 's_add|2|i64|i64|sutram_ffi_add\n',
         'kinds long': HEADER + 's_add|1|i64,i64|i64|sutram_ffi_add\n',
-        # R33: f64, ptr and a void result are accepted now (tests/r33); these kinds are not
+        # R34: v1 is R32's form exactly - i64 only - so these are refused under v1 again;
+        # a v2 header accepts them (tests/r33)
+        'f64 in v1': HEADER + 's_add|2|i64,f64|i64|sutram_ffi_add\n',
+        'ptr in v1': HEADER + 's_add|1|ptr|i64|sutram_ffi_add\n',
+        'void in v1': HEADER + 's_add|2|i64,i64|void|sutram_ffi_add\n',
+        'an f64 result in v1': HEADER + 's_add|2|i64,i64|f64|sutram_ffi_add\n',
+        # and these kinds exist in no version
         'an unknown kind': HEADER + 's_add|2|i64,u32|i64|sutram_ffi_add\n',
         'void as an argument': HEADER + 's_add|1|void|i64|sutram_ffi_add\n',
         'an unknown result': HEADER + 's_add|2|i64,i64|f32|sutram_ffi_add\n',

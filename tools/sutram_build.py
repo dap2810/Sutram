@@ -260,7 +260,7 @@ def main(argv):
         print(f"sutram-build: {mods} modules: {compiled} compiled, {reused} reused from the cache{extra}, "
               f"linked to {out}")
     else:
-        print(f"sutram-build: {mods} modules, each compiled once{extra}, linked to {out}")
+        print(f"sutram-build: {mods} module{'s' if mods != 1 else ''}, each compiled once{extra}, linked to {out}")
     return 0
 
 

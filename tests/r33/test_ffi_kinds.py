@@ -137,7 +137,7 @@ def main(argv) -> int:
     smo.write_bytes(b'an earlier object')
     r = run([comp, '--ffi', sffi, '--object', str(sm), str(smo)])
     check(r.returncode == 1 and smo.read_bytes() == b'an earlier object', 'a failed compile left the old object alone')
-    hdr = 'sutram-ffi-v1|linux-x86_64-sysv\n'
+    hdr = 'sutram-ffi-v2|linux-x86_64-sysv\n'
     for n, ok in ((64, True), (65, False)):
         f = t / f'n{n}.sffi'
         f.write_text(hdr + ''.join(f'n{k}|0||i64|f{k}\n' for k in range(n)))
