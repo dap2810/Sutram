@@ -1,0 +1,8 @@
+CROSS-HOST (final build, c6ef3b36):
+  winffi.obj -> SUTRAMO2: Linux sutram-coff2smo = Windows sutram-coff2smo.exe, byte-identical (sha256 cc0be81e75b107e1b27576a928f81c53d375deb36f123a11ae36cb960d01bf12)
+  winffi program (m.smo + w.smo) -> PE: Linux sutram-link = Windows sutram-link.exe, byte-identical; the Linux-linked PE runs on Windows and prints all 27 values
+
+FUZZING sutram-coff2smo (tools/fuzz_coff2smo.py):
+  Linux build, 5 x 20,000: seed 35: 18268 refused, 1732 accepted; seed 1: 18264/1736; seed 2: 18312/1688; seed 3: 18259/1741; seed 4: 18248/1752 - 0 broke the contract
+  Windows build, seed 35, 3,000: 2715 refused, 285 accepted - 0 broke the contract
+  gates.sh (Linux): seed 35, 3,000 - 0 broke the contract

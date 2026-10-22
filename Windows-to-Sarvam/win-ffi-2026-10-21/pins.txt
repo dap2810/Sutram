@@ -1,0 +1,4 @@
+Pins, after the re-pin commit 79654e20 (clean clones):
+  LF clone (WSL):              SOURCE_PINS_CHECKED, exit 0
+  Git-for-Windows-default clone: SOURCE_PINS_CHECKED
+On c6ef3b36 (before it): R69_BUILD_REFUSED: input drift: src/r32_ffi.inc: expected 4b43f007..., got 67cfd856... - the header comment was edited after the pins moved; only that pin.

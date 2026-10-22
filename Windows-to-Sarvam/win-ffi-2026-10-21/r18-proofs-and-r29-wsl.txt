@@ -1,0 +1,33 @@
+===== mainclone at 4c325b51, compiler: Sutram 1.0 (v243) - sampurna sutra
+uname: 6.6.87.2-microsoft-standard-WSL2  vm.overcommit_memory=0  MemTotal: MemTotal: 48892060 kB  ulimit -v: unlimited
+--- python3 tools/proof_lib.py --compiler ./sutram_compiler
+219 passed, 1 failed, 220 total
+FAIL r18_srij_overflow_guard:
+--- python3 tests/r29/test_separate.py (tail)
+once: 4 modules, every prakriya defined in exactly one object; ardha prints as dasham
+arity: a wrong call into another module is refused by --separate, with the same diagnostic
+refusals: a missing module, a namespaced yoj, usage
+r29 separate: 253 programs with modules behave the same, 145 without are byte-identical, 1 failed
+===== main298 at 1e8dc661, compiler: Sutram 1.0 (v244) - sampurna sutra
+uname: 6.6.87.2-microsoft-standard-WSL2  vm.overcommit_memory=0  MemTotal: MemTotal: 48892060 kB  ulimit -v: unlimited
+--- python3 tools/proof_lib.py --compiler ./sutram_compiler
+219 passed, 1 failed, 220 total
+FAIL r18_srij_overflow_guard:
+--- python3 tests/r29/test_separate.py (tail)
+once: 4 modules, every prakriya defined in exactly one object; ardha prints as dasham
+arity: a wrong call into another module is refused by --separate, with the same diagnostic
+refusals: a missing module, a namespaced yoj, usage
+r29 separate: 253 programs with modules behave the same, 145 without are byte-identical, 1 failed
+===== the one program, main298: tests/stdlib/r18_srij_overflow_guard.sm
+--- expected (.out):
+0  0  0  1  
+--- unlimited virtual memory (this WSL's default), 3 runs:
+137683646717952  137659350708224  0  1   exit=0
+134713767776256  134689471766528  0  1   exit=0
+137847445331968  137823149322240  0  1   exit=0
+--- ulimit -v 4194304 (4 GB of address space), 3 runs:
+0  0  0  1   exit=0
+0  0  0  1   exit=0
+0  0  0  1   exit=0
+--- proof_lib under ulimit -v 4194304:
+220 passed, 0 failed, 220 total

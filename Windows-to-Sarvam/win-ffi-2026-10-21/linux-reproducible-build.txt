@@ -1,0 +1,12 @@
+== reproduce the committed binaries from these sources (c6ef3b36)
+SAME   sutram.exe 335b6d87d4166078d1c38b6c852570534d09d2fc3401535e69d02b4e64c2dca6
+SAME   sutram_compiler 07d55ccd8733d17009de5f906b25da708e97c66a36ff91e3dd974664912429c3
+SAME   sutram-link.exe 5f7a8e202a5d04df88fbbc299b077b114c29a7dd50447194dd2e95ff4a848aa9
+SAME   sutram-link e4a244742b3e1db3eccaa6fdedd4ce69c75003f0894ab7fed9636b978b56c239
+SAME   sutram-coff2smo.exe b30f968a924a3e13fff4caefaa396638289307cc1e59e2b285ba43368e473e16
+SAME   sutram-coff2smo 7de7a3b0ccc4590c252bfe9eb492457d2b9e44385d17cbb69447c8f4bef2183e
+SAME   win/sutram.exe = sutram.exe
+== r69 pins
+exit=2
+== version
+Sutram 1.0 (v245) - sampurna sutra

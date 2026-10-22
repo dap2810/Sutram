@@ -1,0 +1,17 @@
+CHECKING THE CHECK - two deliberately broken compilers, built from a temporary copy of the sources (the repository was not changed):
+
+Mutant B = 'a port that keeps Linux's rule': integers and f64s counted separately (the System V loop), into the Microsoft registers and frame.
+Mutant C = no shadow space (a 24-byte frame instead of 56; still 16-aligned at the call).
+
+tests/r35/winffi.sm, full program:
+  mutant B: crashed (exit 139) at the first 5-argument call - caught
+  mutant C: crashed (exit 139) at w_shadow (the callee writes its shadow space) - caught
+
+The four 4-argument mixed/double calls alone (w_mixed, w_fmix, w_i3f, w_f4):
+  expected : 1284.250000 1739.000000 1234.500000 1234.500000
+  R35      : 1284.250000 1739.000000 1234.500000 1234.500000  exit=0
+  mutant B : 14411425.000000 1900.000000 1230.000000 1234.500000  exit=0   <- wrong numbers, no crash, exit 0
+
+ALIGNMENT - the same two objects linked by main's sutram-link.exe (b53dcbbd, no padding):
+  crashed (exit 139) after 11 lines - at w_neg, whose xorpd reads a 16-byte constant; the C object began at image offset 759 + 7111 = 7870 = 14 mod 16
+  linked by R35's sutram-link.exe (16-byte boundary for every object after the first): exit 0, all 27 lines
