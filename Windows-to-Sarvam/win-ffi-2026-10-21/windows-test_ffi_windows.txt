@@ -1,0 +1,22 @@
+PASS  build: coff2smo 0, compile 0, link 0 b'Siddh: 22 prakriya, 1136 baait\nSiddh: 7111 baait sankalit\nSiddh: 8249 baait sankalit\n'
+PASS  winffi.sm prints winffi.expect exactly (27 lines), exit 0
+PASS  sutram_build.py --ffi --foreign winffi.obj: b'sutram-build: 1 module, each compiled once and 1 foreign object, linked to C:\\Users\\Dhruv\\AppData\\Local\\Temp\\r35-lptkqop5\\b.exe\r\n'
+PASS  the builder's program prints the same
+PASS  sidecar refused: sysv on the Windows compiler (line 1, no object) b'Sutram Error: videshi-ghoshana-patram dushtam, pankti 1\n'
+PASS  sidecar refused: msabi under v1 (line 1, no object) b'Sutram Error: videshi-ghoshana-patram dushtam, pankti 1\n'
+PASS  sidecar refused: a near-miss ABI name (line 1, no object) b'Sutram Error: videshi-ghoshana-patram dushtam, pankti 1\n'
+PASS  sidecar refused: a longer ABI name (line 1, no object) b'Sutram Error: videshi-ghoshana-patram dushtam, pankti 1\n'
+PASS  sidecar refused: v3 (line 1, no object) b'Sutram Error: videshi-ghoshana-patram dushtam, pankti 1\n'
+PASS  sidecar refused: arity 7 (line 2, no object) b'Sutram Error: videshi-ghoshana-patram dushtam, pankti 2\n'
+PASS  the same, msabi under v2: accepted
+PASS  --ffi without --object or --separate: the usage, no output
+PASS  the ordinary compile reads no sidecar: b'Sutram Error: agyat prakriya: w_zero\n'
+PASS  coff2smo refuses calls out b'Sutram Error: COFF-patre agyat sanket: elsewhere\n'
+PASS  coff2smo refuses writable data b'Sutram Error: COFF-patre sanketat anyat bhara-khandam asamarthitam\n'
+PASS  coff2smo refuses a pointer table (relocation in data) b'Sutram Error: COFF-patre punahsthapanam asamarthitam\n'
+PASS  coff2smo refuses unwind tables b'Sutram Error: COFF-patre punahsthapanam asamarthitam (.pdata/.xdata)\n'
+PASS  coff2smo refuses not COFF b'Sutram Error: COFF x64 vastu-patram na\n'
+PASS  coff2smo refuses a truncated object
+PASS  coff2smo: a missing file
+PASS  coff2smo: usage
+r35 ffi (Windows): 21 checks, 0 failed

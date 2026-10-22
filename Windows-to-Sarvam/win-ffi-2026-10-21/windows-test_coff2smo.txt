@@ -1,0 +1,12 @@
+PASS  winffi.obj -> SUTRAMO2, the same bytes as the Windows build (cc0be81e75b107e1) b'Siddh: 22 prakriya, 1136 baait\n'
+PASS  no relocation left, and the file ends after the last symbol
+PASS  22 functions, in order: ['w_zero', 'w_one', 'w_four', 'w_five']
+PASS  refuses calls out b'Sutram Error: COFF-patre agyat sanket: elsewhere\n'
+PASS  refuses writable data b'Sutram Error: COFF-patre sanketat anyat bhara-khandam asamarthitam\n'
+PASS  refuses a pointer table (relocation in data) b'Sutram Error: COFF-patre punahsthapanam asamarthitam\n'
+PASS  refuses unwind tables b'Sutram Error: COFF-patre punahsthapanam asamarthitam (.pdata/.xdata)\n'
+PASS  refuses not COFF b'Sutram Error: COFF x64 vastu-patram na\n'
+PASS  refuses a truncated object
+PASS  a missing file
+PASS  usage
+r35 coff2smo: 11 checks, 0 failed
