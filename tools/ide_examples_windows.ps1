@@ -9,14 +9,20 @@
 
   Starts the IDE from the repository (it compiles with win\sutram.exe beside it), and for each
   examples\<name>.sm that has tests\expect\<name>.out or .compile_fail:
-    1. puts the source in the editor (WM_SETTEXT, as typing or File > Open would),
+    1. double-clicks it in the IDE's example list, as a user does (-Paste: puts the text in the
+       editor instead, as typing would - no file behind it),
     2. chooses the language as a user would: Language > <pack> for the six pack examples, else
        Language > Auto,
     3. presses Shell > Run module (WM_COMMAND 2010; the IDE runs it to the end or its 10 s limit),
     4. reads the output pane and the status line, and compares the output with the golden.
-  The IDE gives a program no stdin, so the six input examples are reported as such, not compared.
+  The IDE gives a program no input: the six input examples must finish at end of input (not hang).
+  A file the IDE refuses to open (its editor holds 65534 bytes) is reported NOT-OPENED.
+  Then two guards: a refused load followed by File > Save must leave the refused file untouched
+  (checked on a throwaway copy, never the repository's files), and an example must not replace
+  unsaved work without asking.
   Writes ide-examples.json (every run: output, status line, verdict) and ide-examples.txt (the
   summary) to -OutDir, and a screenshot of the IDE window (only that window) for any non-match.
+  -Ide another build of the IDE (run from -Root); -Only one example; -ShotAll a screenshot of each.
   Installs nothing, elevates nothing, sends window messages only to the IDE it started.
   This file is ASCII on purpose (5.1 reads BOM-less files as ANSI).
 #>
@@ -169,6 +175,8 @@ foreach ($n in $names) {
         $dlg = Wait-Until { [SutramIde]::WindowsOf([uint32]$ip.Id, '#32770') | Where-Object { [SutramIde]::IsWindowVisible($_) } | Select-Object -First 1 } 300
         if ($dlg) { $b = [SutramIde]::GetDlgItem($dlg, 7); if ($b -ne [IntPtr]::Zero) { [void][SutramIde]::PostMessageW($b, 0x00F5, [IntPtr]::Zero, [IntPtr]::Zero) }; Start-Sleep -Milliseconds 300 }
     }
+    $opened = $true
+    if ($how -eq 'list') { $opened = ([SutramIde]::Text($main)).StartsWith($n + '.sm') }   # the title names the file in the editor
     $menuId = 2040; $langName = 'auto'
     if ($lang.ContainsKey($n)) { $menuId = $packMenu[$lang[$n]]; $langName = $lang[$n] }
     [void][SutramIde]::Send($main, 0x0111, $menuId, 0, 10000)
@@ -184,6 +192,10 @@ foreach ($n in $names) {
     if ($err) {
         $verdict = 'IDE-HUNG'; $detail = 'the IDE did not answer: ' + $err
         [void](Wait-Until { try { [void][SutramIde]::Text($status); $true } catch { $false } } 120000)   # let it come back
+    }
+    elseif (-not $opened) {
+        # the IDE refused to open it (the editor holds at most 65534 bytes); what ran was another file
+        $verdict = 'NOT-OPENED'; $detail = 'the IDE refused to open it; title: ' + [SutramIde]::Text($main)
     }
     elseif ($stdinNeeded -contains $n) {
         # the IDE gives a run no input: the program must see end of input and finish, not hang
@@ -217,6 +229,61 @@ foreach ($n in $names) {
     Write-Host ('{0,-12} {1,-40} {2,-5} {3,6} ms  {4}' -f $verdict, $n, $how, $ms, $detail)
 }
 
+# Two guards, checked directly (only when the whole list ran):
+#  1. a refused load keeps the previous file's name (else Save would write one file's text over another)
+#  2. loading an example asks about unsaved work, as File > New and File > Open do
+$guards = @()
+if (-not $Only -and -not $Paste) {
+    $big = $null
+    foreach ($n in $names) { $f = Join-Path $Root ('examples\' + $n + '.sm'); if ((Get-Item -LiteralPath $f).Length -ge 65534) { $big = $n; break } }
+    $i1 = [SutramIde]::ListFind($list, '01_hello.sm')
+    [void][SutramIde]::Send($list, 0x0186, $i1, 0, 10000)
+    [void][SutramIde]::Send($main, 0x0111, (2 -shl 16) -bor 205, $list.ToInt64(), 30000)
+    if ($big) {
+        # In a throwaway copy (never the repository's files): open a small example, then the big one
+        # (refused), then File > Save. The big file must be untouched - before R34 it was overwritten
+        # with the small one's text.
+        $tr = Join-Path $OutDir 'save-guard'
+        foreach ($d in @($tr, (Join-Path $tr 'win'), (Join-Path $tr 'examples'))) { [void](New-Item -ItemType Directory -Force -Path $d) }
+        Copy-Item -LiteralPath $ideExe -Destination (Join-Path $tr 'sutram-ide-gui.exe') -Force
+        Copy-Item -LiteralPath $compiler -Destination (Join-Path $tr 'win\sutram.exe') -Force
+        Copy-Item -LiteralPath (Join-Path $Root 'examples\01_hello.sm') -Destination (Join-Path $tr 'examples\01_hello.sm') -Force
+        $bigCopy = Join-Path $tr ('examples\' + $big + '.sm')
+        Copy-Item -LiteralPath (Join-Path $Root ('examples\' + $big + '.sm')) -Destination $bigCopy -Force
+        $before = (Get-FileHash -LiteralPath $bigCopy).Hash
+        $gp = Start-Process -FilePath (Join-Path $tr 'sutram-ide-gui.exe') -WorkingDirectory $tr -PassThru
+        $gm = Wait-Until { [SutramIde]::WindowsOf([uint32]$gp.Id, 'SutramNativeGUIWindow') | Select-Object -First 1 } 15000
+        $saved = 'IDE did not open'
+        if ($gm) {
+            Start-Sleep -Milliseconds 800
+            $gl = [SutramIde]::GetDlgItem($gm, 205)
+            foreach ($name in @('01_hello.sm', ($big + '.sm'))) {
+                [void][SutramIde]::Send($gl, 0x0186, [SutramIde]::ListFind($gl, $name), 0, 10000)
+                [void][SutramIde]::Send($gm, 0x0111, (2 -shl 16) -bor 205, $gl.ToInt64(), 30000)
+            }
+            [void][SutramIde]::PostMessageW($gm, 0x0111, [IntPtr]2002, [IntPtr]::Zero)            # File > Save
+            Start-Sleep -Milliseconds 1500
+            $sd = [SutramIde]::WindowsOf([uint32]$gp.Id, '#32770') | Where-Object { [SutramIde]::IsWindowVisible($_) } | Select-Object -First 1
+            if ($sd) { [void][SutramIde]::PostMessageW($sd, 0x0010, [IntPtr]::Zero, [IntPtr]::Zero) }  # a Save As box: cancel it
+            $saved = 'title: ' + [SutramIde]::Text($gm)
+            [void][SutramIde]::PostMessageW($gm, 0x0010, [IntPtr]::Zero, [IntPtr]::Zero)
+            if (-not (Wait-Until { $gp.HasExited } 5000)) { try { $gp.Kill() } catch {} }
+        }
+        $after = (Get-FileHash -LiteralPath $bigCopy).Hash
+        $ok = $before -eq $after
+        $guards += [pscustomobject]@{ check = 'a refused load, then Save, leaves the refused file untouched'; result = $(if ($ok) { 'PASS' } else { 'FAIL' })
+                                      detail = $big + ' (' + (Get-Item -LiteralPath (Join-Path $Root ('examples\' + $big + '.sm'))).Length + ' bytes, a copy) is now ' + (Get-Item -LiteralPath $bigCopy).Length + ' bytes; ' + $saved }
+    }
+    [SutramIde]::SetText($editor, "mukhya() {`r`n    likha(`"unsaved`")`r`n}`r`n")              # unsaved work
+    [void][SutramIde]::Send($list, 0x0186, $i1, 0, 10000)
+    [void][SutramIde]::PostMessageW($main, 0x0111, [IntPtr]((2 -shl 16) -bor 205), $list)      # posted: the question is modal
+    $dlg = Wait-Until { [SutramIde]::WindowsOf([uint32]$ip.Id, '#32770') | Where-Object { [SutramIde]::IsWindowVisible($_) } | Select-Object -First 1 } 5000
+    if ($dlg) { $b = [SutramIde]::GetDlgItem($dlg, 2); [void][SutramIde]::PostMessageW($b, 0x00F5, [IntPtr]::Zero, [IntPtr]::Zero); Start-Sleep -Milliseconds 500 }   # Cancel
+    $kept = ([SutramIde]::Text($editor)).Contains('unsaved')
+    $guards += [pscustomobject]@{ check = 'an example asks before replacing unsaved work'; result = $(if ($dlg -and $kept) { 'PASS' } else { 'FAIL' }); detail = 'question shown: ' + [bool]$dlg + '; after Cancel the editor kept the text: ' + $kept }
+    foreach ($g in $guards) { Write-Host ('{0,-12} {1}  ({2})' -f $g.result, $g.check, $g.detail) }
+}
+
 # Close: the unsaved-work guard may ask; answer No (discard). Only the IDE this script started.
 [void][SutramIde]::PostMessageW($main, 0x0010, [IntPtr]::Zero, [IntPtr]::Zero)
 $dlg = Wait-Until { [SutramIde]::WindowsOf([uint32]$ip.Id, '#32770') | Where-Object { [SutramIde]::IsWindowVisible($_) } | Select-Object -First 1 } 3000
@@ -229,6 +296,7 @@ $summary = @('Sutram IDE, every example: ' + ($counts -join '  '),
              'Windows ' + [Environment]::OSVersion.Version.ToString() + '  PowerShell ' + $PSVersionTable.PSVersion.ToString(),
              'opened: ' + $startShot, '')
 $summary += ($results | Where-Object { $_.verdict -ne 'MATCH' } | ForEach-Object { '{0,-12} {1,-40} {2}' -f $_.verdict, $_.name, $_.detail })
+if ($guards.Count) { $summary += ''; $summary += ($guards | ForEach-Object { '{0,-12} {1}  ({2})' -f $_.result, $_.check, $_.detail }) }
 [IO.File]::WriteAllLines((Join-Path $OutDir 'ide-examples.txt'), [string[]]$summary, (New-Object Text.UTF8Encoding($false)))
 [IO.File]::WriteAllText((Join-Path $OutDir 'ide-examples.json'), ($results | ConvertTo-Json -Depth 4), (New-Object Text.UTF8Encoding($false)))
 $summary[0]

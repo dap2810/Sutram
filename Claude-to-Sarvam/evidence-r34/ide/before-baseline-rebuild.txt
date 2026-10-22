@@ -1,0 +1,26 @@
+Sutram IDE, every example: MATCH=193  DIFFER=19  NO-INPUT-HANG=2  IDE-HUNG=3  NO-INPUT-OK=1 IDE sutram-ide-gui.exe c4731c2b894490c072ff6ccb2616738ec9bdd5543d03ad455a6b1dcfbd7d56ca compiler win\sutram.exe 4533c46c841901e918830e167e211a53c4f49f3c9ad94b5110d8c3ced7ecbf9c Windows 10.0.26300.0  PowerShell 5.1.26100.9711 opened: ide-open.png 
+DIFFER       105_block_nesting_capacity               expected the diagnostic: Sutram Error: khand gahrai seema atikram
+DIFFER       149_namespaced_colliding_imports         line 1: expected [13] got [Sutram Error: ghatak patra aprapt]
+DIFFER       150_namespaced_same_module_two_aliases   line 1: expected [13] got [Sutram Error: ghatak patra aprapt]
+DIFFER       151_namespaced_and_legacy_import         line 1: expected [13] got [Sutram Error [E_MODULE_MISSING]: yoj patra aprapt: r33_alpha]
+DIFFER       152_namespaced_comment_string_preservation line 1: expected [clash() must not be renamed inside this string13] got [Sutram Error: ghatak patra aprapt]
+DIFFER       153_namespaced_devanagari_function       line 1: expected [88] got [Sutram Error: ghatak patra aprapt]
+DIFFER       154_namespaced_duplicate_idempotent      line 1: expected [13] got [Sutram Error: ghatak patra aprapt]
+DIFFER       155_namespaced_multi_alias_composition   line 1: expected [13] got [Sutram Error: ghatak patra aprapt]
+DIFFER       156_namespaced_alias_collision           expected the diagnostic: Sutram Error: upanaam purv-niyukt (anya 
+DIFFER       162_namespaced_import_capacity           expected the diagnostic: Sutram Error: ashuddh yoj (roop: ghatak@
+DIFFER       163_r40_transitive_diamond               line 1: expected [17] got [Sutram Error [E_MODULE_MISSING]: yoj patra aprapt: r40_a]
+DIFFER       164_r41_cycle_reject                     expected the diagnostic: Sutram Error [E_MODULE_CYCLE]: yoj chakr
+DIFFER       166_r41_optin_diamond                    line 1: expected [17] got [STG18F5.tmp:2: Sutram Error [E_MODULE_MISSING]: yoj patra aprapt: r40_a]
+DIFFER       210_r41_cycle                            expected the diagnostic: Sutram Error [E_MODULE_CYCLE]: yoj chakr
+DIFFER       211_r41_v1_public                        line 1: expected [42] got [STG18F5.tmp:3: Sutram Error [E_MODULE_MISSING]: yoj patra aprapt: r41_vec]
+DIFFER       212_r41_v1_private                       expected the diagnostic: Sutram Error [E_MODULE_NOT_EXPORTED]: 'h
+DIFFER       213_r41_v1_dupexp                        expected the diagnostic: Sutram Error [E_MODULE_DUP_EXPORT]: puna
+DIFFER       214_r41_v1_noalias                       expected the diagnostic: Sutram Error [E_MODULE_V1_ALIAS]: v1 gha
+NO-INPUT-HANG 23_grahan_input                          ran into the 10 s limit with no input
+IDE-HUNG     24_guess_game                            the IDE did not answer: Exception calling "Text" with "1" argument(s): "WM_GETTEXT timed out"
+DIFFER       245_r18_netsock                          line 1: expected [1] got [0]
+IDE-HUNG     26_calculator                            the IDE did not answer: Exception calling "Text" with "1" argument(s): "WM_GETTEXT timed out"
+IDE-HUNG     46_language_reference                    the IDE did not answer: Exception calling "Text" with "1" argument(s): "WM_GETTEXT timed out"
+NO-INPUT-HANG 59_windows_grahan_runtime                ran into the 10 s limit with no input
+NO-INPUT-OK  number_game                              finished at end of input: Game over!

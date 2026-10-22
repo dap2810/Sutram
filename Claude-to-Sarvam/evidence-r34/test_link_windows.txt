@@ -1,6 +1,6 @@
-tests/r34/test_link_windows.py on real Windows 11 Pro 10.0.26300 (AMD Ryzen 7 7700X), Python 3.13.11, branch claude/windows-linker at 0f27538a, not elevated
-compiler: sutram.exe e3c5b9be4a9a3a9e3f31474ea0b9fc8ba503e003d5ff93f88e2b9964590112b2
-linker:   sutram-link.exe 583a4f4b5d071c0636f065a31945961ca47036f78fe8a8d13249f1d92ce994ae
+tests/r34/test_link_windows.py on real Windows 11 Pro 10.0.26300 (AMD Ryzen 7 7700X), Python 3.13.11, branch claude/windows-linker (working tree before the R34 fixes commit), not elevated
+compiler: sutram.exe 4533c46c841901e918830e167e211a53c4f49f3c9ad94b5110d8c3ced7ecbf9c
+linker:   sutram-link.exe b53dcbbd95dd8ff19216c62534f72d981d669fec5fe7da5e97c41272019f659a
 
 PASS  identity: 182 programs byte-identical through --object + sutram-link; 0 refused (a module-level vitti); 34 do not compile directly
 PASS  two modules, both orders, calls in both directions

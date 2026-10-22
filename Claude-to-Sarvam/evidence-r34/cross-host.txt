@@ -1,7 +1,7 @@
 EITHER HOST LINKS EITHER TARGET: the same linker source, built for Linux (sutram-link) and for Windows
-(sutram-link.exe), linking the same objects.
+(sutram-link.exe), linking the same objects. Final build (b88a7344).
 
-  SUTRAMW1 objects (182 examples, compiled by the Windows sutram.exe --object):
+  SUTRAMO2 objects (182 examples, compiled by the Windows sutram.exe --object):
     linked by sutram-link.exe on Windows and by sutram-link on Linux (WSL): 182 PE files, 182 byte-identical, 0 differ
   SUTRAMO1 objects (185 examples, compiled by the Linux sutram_compiler --object in WSL):
     linked by sutram-link on Linux and by sutram-link.exe on Windows: 182 ELF files byte-identical, 0 differ;

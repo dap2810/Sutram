@@ -1,0 +1,12 @@
+Sutram IDE, every example: MATCH=210  NOT-OPENED=1  NO-INPUT-OK=6  DIFFER=1 IDE sutram-ide-gui-r34new.exe 829f8658de55be045c6273339244d099022b373725ead3681228c00ba3d5c051 compiler win\sutram.exe 4533c46c841901e918830e167e211a53c4f49f3c9ad94b5110d8c3ced7ecbf9c Windows 10.0.26300.0  PowerShell 5.1.26100.9711 opened: ide-open.png 
+NOT-OPENED   105_block_nesting_capacity               the IDE refused to open it; title: 104_b10_nested_continue_patches.sm - Sutram sampadak
+NO-INPUT-OK  23_grahan_input                          finished at end of input: They are equal
+NO-INPUT-OK  24_guess_game                            finished at end of input: Guess the secret number (1-100): Input ended. Goodbye!
+DIFFER       245_r18_netsock                          line 1: expected [1] got [0]
+NO-INPUT-OK  26_calculator                            finished at end of input: Both are equal
+NO-INPUT-OK  46_language_reference                    finished at end of input: hello
+NO-INPUT-OK  59_windows_grahan_runtime                finished at end of input: -1
+NO-INPUT-OK  number_game                              finished at end of input: Game over!
+
+PASS         a refused load, then Save, leaves the refused file untouched  (105_block_nesting_capacity (70686 bytes, a copy) is now 70686 bytes; title: 01_hello.sm - Sutram sampadak)
+PASS         an example asks before replacing unsaved work  (question shown: True; after Cancel the editor kept the text: True)

@@ -1,0 +1,5 @@
+A 48,080-byte program opened in the fixed IDE from the command line (as the .sm association opens it):
+file bytes=48080 file chars=48080 editor chars=48080 title=big50k.sm - Sutram sampadak
+ends with the last line in the editor: True
+
+A 120,720-byte program (over the IDE's 65534-byte editor): refused; title=Untitled - Sutram sampadak (not the refused file)

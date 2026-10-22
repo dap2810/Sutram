@@ -625,6 +625,7 @@ sa_struct resb 24
 pipe_rd resq 1
 pipe_wr resq 1
 nul_in resq 1                 ; R34: the NUL handle a run reads as stdin (0 = none)
+prev_file resb 1040           ; R34: current_file before a load, restored if the load is refused
 run_real_file resd 1          ; R34: 1 = compile current_file itself, not the temp copy
 process_start resq 1
 ; R73 state
@@ -1072,6 +1073,9 @@ gui_loop:
     je .fresh
     PTR rcx,current_file
     call load_file
+    test eax,eax                 ; R34: not loaded - the editor is untitled, not that file
+    jnz .fresh
+    mov word [rel current_file],0
 .fresh:
     call set_lang_check
     call update_title
@@ -2561,13 +2565,20 @@ open_dialog:
     call confirm_discard         ; R73: never drop unsaved work silently
     test eax,eax
     jz .end
+    PTR rcx,current_file          ; R34: the dialog writes its choice here; kept
+    PTR rdx,prev_file
+    call wide_string_copy
     call dialog_common
     PTR rcx,ofn_struct
     API GetOpenFileNameW
     test eax,eax
-    jz .end
+    jz .restore
     PTR rcx,current_file
     call load_file
+    test eax,eax
+    jnz .end
+.restore:
+    call restore_prev_file
 .end:
     EPILOG
 ; eax = 1 when the patra was written, 0 when cancelled or failed
@@ -2754,6 +2765,11 @@ load_example:
     cmp eax,-1
     je .end
     mov [rbp-8],eax
+    ; R34: an example replaces the editor's text, so unsaved work is asked
+    ; about first, as File > New and File > Open already did.
+    call confirm_discard
+    test eax,eax
+    jz .end
     mov rcx,[rel h_examples]
     mov edx,LB_GETTEXT
     mov r8d,[rbp-8]
@@ -2768,15 +2784,33 @@ load_example:
     PTR rcx,edit_buffer
     PTR rdx,example_name
     call string_concat
+    PTR rcx,current_file          ; R34: kept, in case the load is refused
+    PTR rdx,prev_file
+    call wide_string_copy
     PTR rcx,edit_buffer
     PTR rdx,current_file
     mov r8d,520
     call utf8_to_utf16
     test eax,eax
-    jz .end
+    jz .restore
     PTR rcx,current_file
     call load_file
+    test eax,eax
+    jnz .end
+.restore:
+    call restore_prev_file
 .end:
+    EPILOG
+
+; R34: a load was refused (too big, unreadable, not UTF-8): the editor still holds
+; the previous text, so current_file must name the previous file again - else the
+; title would name the refused file and Save would overwrite it with other text.
+restore_prev_file:
+    PROLOG 48
+    PTR rcx,prev_file
+    PTR rdx,current_file
+    call wide_string_copy
+    call update_title
     EPILOG
 
 ; Append a string to output control without moving existing user text.

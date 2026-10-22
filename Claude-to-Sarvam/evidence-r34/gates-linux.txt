@@ -1,16 +1,13 @@
-tools/gates.sh, WSL Ubuntu (kernel 6.6.87.2-microsoft-standard-WSL2), GNU ld 2.42, NASM 3.01 (the Windows nasm.exe through a path wrapper: WSL has no nasm), on two LF clones side by side:
-  BASELINE = main at c062434f (v242)      BRANCH = claude/windows-linker at 0f27538a (v243)
-The FFI tests' C objects are not in the repository (.gitignore *.o), so both clones built them first with gcc 13:
-  gcc -c -O2 -ffreestanding -fno-asynchronous-unwind-tables -fno-pic -fno-stack-protector  (foreign-unwind.o: with unwind tables)
+tools/gates.sh, WSL Ubuntu (kernel 6.6.87.2-microsoft-standard-WSL2), GNU ld 2.42, NASM 3.01 (the Windows nasm.exe through a path wrapper: WSL has no nasm).
 
-===== BRANCH =====
+===== BRANCH, final: claude/windows-linker at b88a7344 (v243), a clean LF clone - the FFI objects come from the repository now, no C compiler used =====
   regression suite (NO-EXPECTATION=4 PASS=218 ) PASS
   codegen shapes (12/12)       PASS
   language packs (33/33)       PASS
-  library proofs               FAIL     actual:   '129205597679616\n\n129181301669888\n\n0\n\n1\n\n'
+  library proofs               FAIL     actual:   '132910765821952\n\n132886469812224\n\n0\n\n1\n\n'
   property proofs (86/86)      PASS
   layer check (14 core, 9 alloc, 1 std) PASS
-  stdlib inventory (Wrote /mnt/c/Users/Dhruv/AppData/Local/Temp/sutram-build/lfclone/docs/sutram-stdlib.html: 24 modules, 303 functions) PASS
+  stdlib inventory (Wrote /mnt/c/Users/Dhruv/AppData/Local/Temp/sutram-build/lfclone2/docs/sutram-stdlib.html: 24 modules, 303 functions) PASS
   module graph                 PASS
   pack messages (12 sets x 11 cases) PASS
   keyword packs built in (11, = lang/*.lang) PASS
@@ -23,6 +20,7 @@ The FFI tests' C objects are not in the repository (.gitignore *.o), so both clo
   R31 incremental (254 programs identical clean, cold and warm) PASS
   R32 FFI (44 checks, 0 failed) PASS
   R33 FFI kinds (29 checks, 0 failed) PASS
+  R34 Windows fixes (3 checks, 0 failed) PASS
   FFI fuzzer (60 programs, 679 foreign calls, 316) PASS
   ELF reader fuzzer (3000 malformed objects: 1937 refused (no output), 1063 accepted (well formed)) PASS
   R23 fuzzer (100 programs, 3558 printed values compared, 0 differ) PASS
@@ -33,10 +31,10 @@ The FFI tests' C objects are not in the repository (.gitignore *.o), so both clo
   version string (v243 (CHANGELOG v291)) PASS
   performance (  8 ran, 0 failed) PASS
   X11 GUI protocol             FAIL   18 of 18 failed
-  Windows execution            NOT-RUN cannot run here - never executed by anyone (Gate 6)
+  Windows execution            NOT-RUN cannot run here (Linux) - on Windows: tests/r34/test_link_windows.py, tools/ide_examples_windows.ps1, tools/accept-windows.ps1
 
   ------------------------------------------
-  PASS                         27
+  PASS                         28
   FAIL                         3
   NOT-RUN                      1
 
@@ -44,7 +42,7 @@ The FFI tests' C objects are not in the repository (.gitignore *.o), so both clo
   A count that hides its own skips is worse than no count.
 gates exit=1
 
-===== BASELINE =====
+===== BASELINE: main at c062434f (v242), an LF clone; the FFI objects were NOT in the repository, so they were built first with gcc 13.3.0 and the documented flags =====
   regression suite (NO-EXPECTATION=4 PASS=218 ) PASS
   codegen shapes (12/12)       PASS
   language packs (33/33)       PASS

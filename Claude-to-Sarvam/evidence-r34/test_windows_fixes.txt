@@ -1,0 +1,11 @@
+PASS  100 likha: compiles to a PE (exit 0) and prints all of them
+PASS  200 likha: compiles to a PE (exit 0) and prints all of them
+PASS  250 likha: compiles to a PE (exit 0) and prints all of them
+PASS  250 likha through --object + sutram-link: byte-identical to the direct compile
+r34 windows fixes: 4 checks, 0 failed
+With main's v242 (the defect):
+PASS  100 likha: compiles to a PE (exit 0) and prints all of them
+FAIL  200 likha: compiles to a PE (exit 3221225477) and prints all of them
+FAIL  250 likha: compiles to a PE (exit 3221225477) and prints all of them
+FAIL  250 likha through --object + sutram-link: byte-identical to the direct compile
+r34 windows fixes: 4 checks, 3 failed
