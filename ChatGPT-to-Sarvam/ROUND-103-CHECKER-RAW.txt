@@ -1,0 +1,5 @@
+PASS reviewed spellings accepted (NOT certified safe)
+PASS new unsafe allocation formula rejected
+PASS parenthesized new formula rejected
+PASS incomplete allocation call rejected
+RESULT 4 PASS / 0 FAIL; checker fixtures only
