@@ -1,3 +1,113 @@
+## v294 - audit: the tree is clean, the docs are CURRENT for once, and one thing is on a branch
+
+**Measured: changelog v293, compiler v242, 3,554 files.**
+
+### The audit
+
+| Check | Result |
+|---|---|
+| `__pycache__` / `.pyc` | **0** |
+| `.bak` / `.orig` / `.rej` / `.tmp` | **0** |
+| stray build artifacts at root | **0** |
+| `.zip` inside the repo | **3** - cleanup candidates, inside collaboration folders |
+| the old `compiler/` folder | **446 KB** - superseded by `src/` |
+
+**And the documents are CURRENT: README, PROJECT-MASTER and the scorecard all read 27/27 and 218 pass, which is
+what the tree measures.** **My last correction held - and the doc-count gate I built is now in the tree to catch
+the next drift.**
+
+### And the Windows work is split across a branch and main
+
+**`Windows-to-Sarvam/` IS on main** - the acceptance, the first real run, and the raw logs under
+`win-run-2026-10-21/`. **So the owner's Windows evidence is published.**
+
+**But the compiler it was tested against - `v243`, on `claude/windows-linker` - is on a BRANCH.** **Main is at
+`v242`.**
+
+**So: the Windows linker works and is proven on real Windows, and its code is not yet on main.** **That is not a
+problem, but it is the kind of thing worth naming rather than discovering:** **a reader who clones main gets
+v242, which has no `sutram-link.exe` and none of the R34 fixes.**
+
+**And the four fixes in R34 are the ones the first Windows run found** - the PowerShell 5.1 start, v242 instead
+of v238, the `????????` status line, and the `%TEMP%` staging. **They are on the branch.**
+
+### What I did not touch
+**The three zips and the old `compiler/` folder.** **They are cleanup candidates and I have left them, because
+the zips are inside collaboration folders and the `compiler/` folder is history.** **The project's record has
+been worth more than the space every time I have checked.**
+
+## v293 - THE WINDOWS ACCEPTANCE PASSED. Gate 6 is closed, and the Windows linker works.
+
+**I found `Windows-to-Sarvam/` on the repo - the folder the plan said the results would go in. It has the
+acceptance, the first real run, and the raw logs.**
+
+### The verdict
+
+| | |
+|---|---|
+| **machine** | **the owner's real Windows 11 Pro (build 26300.9711), AMD Ryzen 7 7700X, STANDARD USER, NOT ELEVATED** |
+| **branch** | `claude/windows-linker` (R34) - **compiler v243**, `sutram-link.exe`, the fixed IDE |
+| **required checks** | **16 PASS / 0 FAIL / 0 NOT-RUN** |
+| **the checker's own words** | ***"ACCEPTED: Windows, not elevated, every required check PASS, binaries match this tree."*** |
+| **the machine afterwards** | **clean - no uninstall key, no install folder, no PATH entry** |
+
+**Gate 6 has been NOT-RUN since the project began.** **It is now PASS, on real Windows, by a standard user, with
+no elevation - which is the constraint the owner set at the very start.**
+
+### And the Windows linker works
+
+**`linker-installed` is a NEW check this round: the installed compiler's `--object` plus `sutram-link.exe`,
+and it runs.** **So the linker the owner is building works on Windows already, at the object level.**
+
+### The first run found four things, and all four are fixed
+
+**`WIN-RUN-2026-10-21.md` is the earlier run, and it is the more useful document** because it records what was
+wrong:
+
+1. **the script needed `-Root`** - it did not start on PowerShell 5.1
+2. **it installed v242**
+3. **the IDE showed `????????` in its status line** - **an encoding failure on Windows**
+4. **it left the install staging in `%TEMP%`**
+
+**All four are fixed in the acceptance run.** **And the `????????` is worth noting: the project's central claim
+is eleven Indian scripts, and on Windows the status line showed question marks.**
+
+### And a real Windows finding that will recur
+
+**The r17 `SHA256SUMS` check FAILED on Windows: 119/213 OK.** **All 94 mismatches are files Git checked out
+with CRLF** - `core.autocrlf=true` in the Git for Windows config. **The committed content is 213/213 OK** via
+`git show HEAD:<path>`.
+
+**So the corpus manifest is correct and the working tree differs, because Git rewrote the line endings on
+checkout.** **That is a Windows-only failure mode, it will happen to every Windows user who clones, and it is
+not a defect in the corpus.** **Worth a line in the docs.**
+
+## v292 - R99: ChatGPT measured the ABI, and ROUND-100 asks for the Windows one - because the owner needs it
+
+**ChatGPT's R99 did not reason about the host ABI; it ran GCC 14.2 and inspected it.** **And the two lines
+worth keeping are warnings rather than results:**
+
+> *"An ELF `STT_FUNC` symbol never provides C argument/return types: **matching names is not ABI compatibility
+> proof.**"*
+> *"A versioned `sutram-ffi-v2` / feature profile is preferable to silently advertising a richer ABI under the
+> old v1 header."*
+
+**The first names a class of mistake this project has not made yet and could.** **The second is a
+recommendation Claude is now acting on: it added `f64`, `ptr` and `void`, and the header still says `v1`.**
+
+**And its audit of Claude's test net is honest both ways:** *"strong for stage 1, not strong enough for ABI
+expansion or malicious ELF input."*
+
+### ROUND-100 is aimed at the owner's work
+
+**The owner is building the Windows linker.** **So ROUND-100's WS3 asks ChatGPT for one page on what is
+different about the Microsoft x64 ABI** - argument registers, the shadow space, floats, and what returns where
+- **byte-level where it matters.** *"The owner is working on this tonight and it is the most useful thing you
+can give him."*
+
+**That is the right thing to ask for and I nearly missed it.** **The ABI question was on my list as a
+Sutram-internal concern; it is also the thing standing between the owner and a working Windows linker.**
+
 ## v291 - R33: hardening the FFI found a SILENT TRUNCATION and a broken call. Compiler v242, gates 30.
 
 **The owner asked whether the repo is current before he starts the Windows linker. It is - and Claude's R33
