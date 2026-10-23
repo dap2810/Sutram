@@ -1,3 +1,46 @@
+## v328 - I applied 9 of Muse's 13 fixes and REFUSED the rest. The refused part would have undone the Sanskrit rename.
+
+**Muse's R33 patch is 64 KB across 7 files. I read it before applying it, and it is not one thing.**
+
+### Applied - the false-claim fixes I asked for
+
+| File | Fix |
+|---|---|
+| `PROJECT-MASTER.md` | *"Windows never executed"* to *"Windows executed - 16 required checks passed on real Windows 11"* |
+| `docs/LIBRARY-BOUNDARY.md` | *"there is no FFI yet (not started)"* to the C FFI exists; and the first-class-functions claim |
+| `lib/kalana.smlib` | *"Sutram has no first-class functions"* to *"Sutram has first-class functions (R23), but this module's API predates them"* |
+| `docs/sutram-design-parameters.html` | 5 of 6 - first-class functions, methods, slices, the Windows execution, separate compilation |
+| `docs/sutram-project-status.html` | the Windows compiler row, Unverified to Executed |
+| `docs/sutram-scorecard.html` | *"there is no C FFI"* to the C FFI exists |
+
+### REFUSED - and this is the important part
+
+**The patch also rewrites large parts of `docs/sutram-stdlib.html`, and that section contains what look like RENAME
+REGRESSIONS:**
+
+| The patch would change | To |
+|---|---|
+| `meru_mala` | **`meru_pankti`** |
+| `yoj sadhan` | **`ayojan util`** |
+| `mala` (array) in many descriptions | **`pankti`** |
+
+**`mala` is the CURRENT array keyword and `pankti` is the OLD one** - the rename went `pankti` to `mala`. **`yoj` is
+current; `ayojan` is old.** **So that part of the patch moves the documentation BACKWARDS through a rename that
+finished in v166.**
+
+**It may be that the committed `sutram-stdlib.html` is stale and Muse regenerated it from an older generator - in
+which case the fix is to regenerate, not to apply this text.** **Either way, applying it as-is would have put old
+keywords back into the standard-library reference.**
+
+### Why this is worth recording
+
+**Muse was right that `sutram-stdlib.html` is behind its source** - it found `brihat` 12 to 13 functions and
+`samanvaya` 10 to 11, which are real. **But the same regeneration also carried old vocabulary, and a patch is
+applied as a whole unless someone reads it.**
+
+**Nine of thirteen applied. Four held back pending a regeneration rather than a text patch.** **A patch from a
+trusted partner still has to be read - which is the same rule as the guard: verify, then apply.**
+
 ## v327 - ChatGPT's R108: my fixes confirmed, ONE leftover of mine found, and the keyword choice is now a clean decision
 
 ### It checked the live tree and confirmed the fixes are real
