@@ -127,8 +127,8 @@ tr:last-child td{border-bottom:none}
   <table>
     <tr><th>Item</th><th>Status</th><th>Note</th></tr>
     <tr><td>Undo in the IDE</td><td><span class="planned">Planned</span></td><td>Editor comfort; the one obvious missing editor feature</td></tr>
-    <tr><td>Verify on a real Windows machine</td><td><span class="planned">Planned</span></td><td>The largest untested area; the Windows build has never been run on Windows</td></tr>
-    <tr><td>Module system for <code>yoj</code></td><td><span class="planned">Planned</span></td><td>Today it inlines textually, so all library functions share one global namespace</td></tr>
+    <tr><td>Verify on a real Windows machine</td><td><span class="done">Done</span></td><td>Passed on real Windows 11 Pro, a standard user, not elevated: 16 required checks, 0 FAIL, 0 NOT-RUN, machine clean afterwards</td></tr>
+    <tr><td>Module system for <code>yoj</code></td><td><span class="done">Done</span></td><td>Separate compilation with object files (<code>SUTRAMO1</code>/<code>SUTRAMO2</code>), our own linker, module state and incremental rebuilds. <code>yoj</code> still inlines textually for the ordinary path, which is unchanged</td></tr>
     <tr><td>Windows build of the IDE</td><td><span class="planned">Planned</span></td><td>The IDE is Linux-only today; Windows users have the interactive shell</td></tr>
     <tr><td>XMM register residency (Stage 2)</td><td><span class="explore">Exploratory</span></td><td>Stage 1 was implemented and measured slightly slower, so the flag stays off</td></tr>
     <tr><td>A standard-library package format</td><td><span class="explore">Exploratory</span></td><td>Would follow the module system</td></tr>
