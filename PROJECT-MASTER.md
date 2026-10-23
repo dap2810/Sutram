@@ -104,7 +104,7 @@ The full statement is `docs/sutram-design-parameters.html`. Summary, with honest
 | 12 | Explicit error handling | Partial | `ok` out-param convention; no phal type or propagation |
 | 13 | Genuine freestanding capability | Partial | Native ELF/PE, no libc; **no boot path or kernel demonstrated** |
 | 14 | One language, layered libraries | Partial | 24 modules; layers now marked and machine-checked |
-| 15 | Portability in the compiler | Partial | Linux x86-64 tested; **Windows never executed** |
+| 15 | Portability in the compiler | Partial | Linux x86-64 tested; **Windows executed** — 16 required checks passed on real Windows 11 |
 | 16 | Real modules, packages, separate compilation | Partial | `yoj` is textual inclusion; no package manager |
 | 17 | Excellent developer tools | Partial | IDE + installer + diagnostics; no formatter, LSP or debugger |
 | 18 | Interoperability and ecosystem | Not started | No C FFI |
