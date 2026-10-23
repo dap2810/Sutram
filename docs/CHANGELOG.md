@@ -1,3 +1,32 @@
+## v321 - ChatGPT caught a claim of MINE that its own numbers contradict
+
+**Applying its R106-WS1 prose corrections, the first thing I hit is my own error.**
+
+**`PROJECT-MASTER.md`'s performance table said:**
+
+> *"| **Memory**, peak RSS | **16,128 KB** | 16,956 KB | 16,008 KB | **Sutram WINS (marginally)** |"*
+
+**Its own row shows Sutram 16,128 KB against Zig's 16,008 KB. ZIG WINS, by 120 KB.** **And the row below said
+"Runtime needed - Sutram WINS", when Sutram and Zig both need no runtime - that is a TIE.**
+
+**So the verdict line - "Sutram already wins four of five aspects" - was wrong twice: one row claimed a win it
+lost, and another claimed a win that was a tie.** **The honest count is two wins, two losses, one tie.**
+
+**Fixed, and the verdict now reads:** *"Sutram is not globally superior to Zig and this table does not claim it is.
+The losses are the honest part of the record and the wins are narrow ones."*
+
+### And this is the most damaging class of error this project can make
+
+**I wrote that table. I wrote the fundamental about measuring rather than assuming. And then I read my own numbers
+and recorded the verdict I wanted rather than the one they showed.**
+
+**A partner caught it, from the table I wrote.** **That is exactly why the prose audit was worth asking for - and
+exactly why I asked for it to be done by someone who did not write the numbers.**
+
+**ChatGPT's R106-WS1 lists 17 more P0 corrections across `PROJECT-OVERVIEW.md`, `docs/sutram-project-status.html`,
+`docs/sutram-design-parameters.html` and `PROJECT-MASTER.md`.** **All are the same class: a document stating a limit
+that has been removed, or a status that has moved.** **To be applied.**
+
 ## v320 - ChatGPT's R106: one exemption was demonstrably unsound, and it checked the tree first
 
 **All three workstreams delivered.**
