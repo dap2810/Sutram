@@ -1,3 +1,37 @@
+## v313 - LANGUAGE PRIORITY: Sanskrit only until v1.0. All channels now read one directive.
+
+**The owner's decision, 23 October 2026: develop in Sanskrit only until v1.0 is finished.** **The other ten packs -
+including Gujarati and Hindi - are FROZEN. They stay in the tree, they keep working, and no new development goes
+into them.** **After Sanskrit v1.0 they resume, and they will be cheaper then, because the compiler and toolchain
+will be finished.**
+
+### The mechanism: one directive, read by every channel
+
+**`LANGUAGE-PRIORITY.md` at the repository root** - and a short `READ-FIRST.md` pointer in all eight collaboration
+folders: `Sarvam-to-Claude`, `Claude-to-Sarvam`, `Sarvam-to-ChatGPT`, `ChatGPT-to-Sarvam`, `Sarvam-to-Muse`,
+`Muse-to-Sarvam`, `Sarvam-to-ChatGPT-Windows`, `Windows-to-Sarvam`.
+
+**So any AI opening its folder sees the priority before it reads a round.**
+
+### What it tells each party
+
+- **Claude:** all compiler, library, test and tool work targets Sanskrit; **if a change touches the packs it must
+  leave the other ten exactly as they are, and say so in the delivery.**
+- **ChatGPT:** review and design against Sanskrit; **the frozen packs remain in scope for READING - a defect found
+  there is REPORTED, not fixed.**
+- **Windows:** the installer, the IDE and the diagnostics target Sanskrit; **the installer still installs the other
+  packs - they are shipped, just not developed.**
+- **Sarvam:** every round states the target; **frozen-pack defects go on a queue and are not acted on.**
+
+### And the one thing that must NOT change
+
+> *"The language must remain multi-language capable. The pack mechanism, the eleven packs, the font handling and the
+> diagnostics pipeline all stay exactly as they are. **We are pausing the packs, not dismantling them.** A future
+> pack must still be a translation job. If Sanskrit-only work makes that harder, it is the wrong work."*
+
+**That clause is in the directive deliberately.** **The cheap way to focus on one language is to hard-code it, and
+that would cost far more later than it saves now.**
+
 ## v312 - the Sanskrit-and-AI note: what the NASA paper says, and the myth we decline to repeat
 
 **The owner asked what the NASA Sanskrit paper is and how it is useful. The honest answer is that the paper is real
