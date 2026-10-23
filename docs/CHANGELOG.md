@@ -1,3 +1,23 @@
+## v318 - the same stale claims were in three more files, not just the README
+
+**After fixing the README, I swept for the same class of claim elsewhere. It found three more files.**
+
+| File | The stale claim |
+|---|---|
+| **`PROJECT-OVERVIEW.md`** | *"No separate compilation... there are no `.smo` object files. No concurrency. No first-class functions."* |
+| **`docs/sutram-roadmap.html`** | *"Verify on a real Windows machine - Planned - **the Windows build has never been run on Windows**"* |
+| **`docs/sutram-scorecard.html`** | *"No first-class functions, namespaced modules, or pattern matching."* |
+
+**All three fixed.** **The roadmap's "Windows has never been run" is now "Done - passed on real Windows 11 Pro, a standard user, not elevated: 16 required checks, 0 FAIL, 0 NOT-RUN, machine clean afterwards."**
+
+### And a note on how the sweep worked
+
+**My first sweep ran on a stale clone (v310) and reported the README as still stale - which was wrong, because the fix was on main.** **So I checked main directly, found the README clean, and found the three other files.**
+
+**That is the third time in this stretch that a check of mine was wrong and the tree was right.** **The lesson is not "check more" - it is "check the thing you are about to make a claim about".**
+
+**And the sweep is worth repeating as a routine:** *a claim of absence goes stale the moment the thing arrives, and nothing checks for it.* **The scorecard, the roadmap and the overview each stated a limit that had been removed - and each is a document a reader trusts.**
+
 ## v317 - ROUND-106 to ChatGPT: the rest of its own prose audit, worked through with me
 
 **ChatGPT's R105 found a P0 and I fixed three items from it.** **But its audit was 17 KB and I applied only what I
