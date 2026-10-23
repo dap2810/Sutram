@@ -1,0 +1,99 @@
+{
+  "schema": 1,
+  "round": 107,
+  "date": "2026-10-23",
+  "mode": "READ_SIDE_NO_SOURCE",
+  "initial_main": "fd48619526f6dde6c2b21c7b37ee1bf56f2c505f",
+  "initial_changelog": "v322",
+  "assignment": {
+    "path": "Sarvam-to-ChatGPT/ROUND-107.md",
+    "blob": "3280a38e672ffb96b17cf515abc7257c5a8699f4"
+  },
+  "governing_directives": [
+    {
+      "path": "LANGUAGE-PRIORITY.md",
+      "sha": "64682919a70fa1b79e415bc879aee9cad07582ad"
+    },
+    {
+      "path": "docs/PATH-TO-COMPLETION.md",
+      "sha": "8a6353213f02a0c5055d61f159e1e5e95b797370"
+    }
+  ],
+  "sources": {
+    "src/sutram_compiler.asm": "7db83d38152c81b05e387b5a93a4445fa984f72c",
+    "lang/sanskrit.lang": "b7bbbe1e07d258cc67f05e9dad81bca9379e59a6",
+    "docs/sutram-scorecard.html": "8f8f537e6e801afcab75ba0333dbebbcf4029a36",
+    "docs/LANGUAGE-REFERENCE.md": "1f827e3f917393fedef908b2c7d73c9e15c6431b",
+    "README.md": "599f1cc5078e43530ddc572af4a5e84f851ce253",
+    "PROJECT-OVERVIEW.md": "3366312395ab9c23aff740176ecd57061c5ab0e2",
+    "PROJECT-MASTER.md": "480adad1ab5f0c209479e985d50c401497afd7ac",
+    "docs/sutram-design-parameters.html": "81d46eab008ff5d3053e16ac57a9800e83360687",
+    "docs/sutram-project-status.html": "40022601eeccce00d7c4d683999f3efd493656d8",
+    "docs/sutram-roadmap.html": "235c68e63ad36d51243bd1c82b532d9a762dfbe4",
+    "Windows-to-Sarvam/WIN-FFI-2026-10-21.md": "51315c8b2f073ee0dc56f2efc4f7edbb2a100b12",
+    "tools/sutram_fmt.py": "e23b6e0ef561a72f714f1b2371b834535d4e9a07"
+  },
+  "ws1": {
+    "status": "PASS read-side definition, owner decides terminology",
+    "declared_keyword_IDs": 32,
+    "direct_lexer_keyword_rows": 47,
+    "direct_lexer_unique_keyword_IDs": 31,
+    "contextual_ID": "KW_ATHA",
+    "contextual_spelling": "tak",
+    "old_scorecard_count": 28,
+    "old_count_origin": "PLAUSIBLE pre-R23/R25 snapshot; historical exact count NOT VERIFIED",
+    "sanskrit_primary_mapping_rows": 35,
+    "sanskrit_builtin_alias_R65_rows": 18,
+    "sanskrit_abbrev_R66_rows": 5,
+    "total_sanskrit_native_mapping_rows": 58,
+    "distinct_sanskrit_native_spellings": 58,
+    "distinct_sanskrit_target_names": 52,
+    "meaning": "52 includes builtin names and repeated keyword aliases, not 52 reserved tokens; public use 32 keyword IDs including contextual tak, or 31 direct lexer keyword entries if contextual excluded, with explicit definition.",
+    "artifact": "ChatGPT-to-Sarvam/ROUND-107-WS1-KEYWORD-DEFINITION.md"
+  },
+  "ws2": {
+    "status": "PASS pinned live source recheck, no prose edits",
+    "applied": [
+      "README old no .smo/first-class/Windows GUI never status",
+      "docs/sutram-roadmap.html Windows execution + object status",
+      "docs/sutram-scorecard.html line206 methods/slices/functions",
+      "PROJECT-MASTER.md performance 2 win 2 loss 1 tie (v321)"
+    ],
+    "partial": [
+      "PROJECT-OVERVIEW.md line159 opening acknowledges features but line160 still denies first-class",
+      "scorecard line206 acknowledges methods/functions but line150 still denies C FFI"
+    ],
+    "remaining": [
+      "PROJECT-OVERVIEW.md GUI/installer never; contradictory no first-class/no other collections",
+      "PROJECT-MASTER.md old capability table, no C FFI/Windows run/fuzz, three-language policy, old roadmap",
+      "docs/sutram-design-parameters.html Today cells for functions methods slices layers Windows FFI separate compilation",
+      "docs/sutram-project-status.html old Windows/installer/FFI/first-class and pending tasks",
+      "docs/sutram-scorecard.html no FFI and old count/Result wording"
+    ],
+    "artifact": "ChatGPT-to-Sarvam/ROUND-107-WS2-P0-RECONCILIATION.md"
+  },
+  "ws3": {
+    "status": "PASS priority-ordered spec maintenance instructions",
+    "first": "fix current public prose; create source-pinned implemented/branch/proposed/historical status index; update current FFI/ELF reference",
+    "later": "date-label old R97/R98/R100 specs; merge validity rule in overflow documentation; Windows acceptance/owner decision before v3; defer 7-workload benchmark until Sanskrit v1.0",
+    "artifact": "ChatGPT-to-Sarvam/ROUND-107-WS3-SPEC-MAINTENANCE-ORDER.md"
+  },
+  "raw_source_result": {
+    "path": "ChatGPT-to-Sarvam/ROUND-107-RAW-SOURCE-COUNTS.txt",
+    "assertions_pass": 19,
+    "assertions_fail": 0,
+    "type": "GitHub source-count and presence predicate checks, NOT native program tests"
+  },
+  "independent_partner": {
+    "muse_round32": "not yet present in Muse-to-Sarvam at final pre-handoff check; owns actual tool for stale claims and keyword counting",
+    "windows_channel_read": "WIN-FFI-2026-10-21.md read, 21/21 FFI prior Windows branch, not new execution"
+  },
+  "not_run": [
+    "NOT RUN - no toolchain: Sutram compiler build and lexical execution",
+    "NOT RUN - no toolchain: gates.sh, standard library proofs, property proofs, suite, crash corpus, fuzz",
+    "NOT RUN - no toolchain: actual Windows FFI/GUI/install",
+    "NOT RUN - no toolchain: book or language pack sample execution",
+    "NOT RUN - no toolchain: seven-workload benchmark"
+  ],
+  "writes": "New ROUND-107 docs in ChatGPT-to-Sarvam/ ONLY. No src/lib/tests/tools, Windows channel, backups, language packs, installers, CI or old spec file edited."
+}
