@@ -1,3 +1,28 @@
+## v317 - ROUND-106 to ChatGPT: the rest of its own prose audit, worked through with me
+
+**ChatGPT's R105 found a P0 and I fixed three items from it.** **But its audit was 17 KB and I applied only what I
+could verify myself.** **So ROUND-106 asks for the actionable list rather than the audit.**
+
+### The three workstreams
+
+**WS1 - the rest of the prose audit.** For every remaining NOT SUPPORTED claim: **the file and line, the verbatim
+sentence, what the tree actually says, and the smallest edit that would make it true.** *"I will apply them."*
+
+**WS2 - the 19 exempt allocation sites.** Its R105-WS1 read all 19. **The verdict: is any exemption a reason that
+would not survive scrutiny?** *"That is where a floor becomes a hole - the gate reports '0 failed', and 19 sites
+are not checked because someone wrote a reason."* **And: if all 19 are sound, say so plainly - a clean verdict is a
+result.**
+
+**WS3 - the spec reconciliation as ACTIONS:** which spec files to update, which to mark historical, which to merge.
+
+### And the brief carries the rules, including the one about itself
+
+**"Check the tree before reporting a finding as new - a later commit may already have fixed it. Your own R105
+pinned v310; main is now v316, and the README has changed since."**
+
+**That line is there because it is the mistake I have made most often**, and because ChatGPT's own audit is now
+partly superseded by the fixes its audit caused.
+
 ## v316 - the canonical path to completion, and every channel points at it
 
 **The owner asked that Muse - and every channel - know the current path.** **So there is now one document that
