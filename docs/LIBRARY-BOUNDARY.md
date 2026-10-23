@@ -38,8 +38,8 @@ points at it instead of claiming the library has none).
   `prati`, no environment variables, no command-line arguments.
   Reason: no OS assumed; process semantics belong to the host.
 - **FFI / calling foreign code.** No C interop, no dynamic loading.
-  Reason: there is no FFI yet (charter item 19, not started). The
-  library is self-contained by design.
+  Reason: the C FFI exists (R32-R34) but the library is self-contained by design
+  (charter item 19, done).
 - **GUI and windowing.** No windows, events, or drawing. Reason: the
   IDE has its own X11 event loop, but the language has no event or
   async facility (charter item 07, not started).
@@ -58,9 +58,9 @@ points at it instead of claiming the library has none).
   and the `Result` type (see `docs/ERROR-CONVENTION.md`, R29)
   are the error model; there is no propagation operator and no
   exhaustiveness checking yet (charter item 12, partial).
-- **Generics, closures, methods, traits.** No first-class functions,
-  no generic collections, no methods. Reason: the language does not
-  have them yet (charter items 02–04). Every collection in `lib/` is
+- **Generics, closures, methods, traits.** No generic collections.
+  Reason: first-class functions and methods exist (R23); generic collections,
+  closures and traits do not (charter items 02–04). Every collection in `lib/` is
   written against one concrete cell type. Higher-order operations
   (`list_map`, `list_filter`) are impossible without callbacks and
   are not faked with macros.
