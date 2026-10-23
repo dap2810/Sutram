@@ -1,3 +1,36 @@
+## v319 - Muse delivered Claude's round, and found three things the doc gate cannot catch
+
+**Muse took ROUND-31 (Claude's, reassigned) on `fc7ad7cb` (v316, compiler v246) and delivered.**
+
+### The test run, complete - including the line Sarvam could not capture
+
+| Check | Result |
+|---|---|
+| `sh tools/gates.sh` | **34 PASS / 0 FAIL / 1 NOT-RUN** |
+| **`tests/run_tests.py`** | **NO-EXPECTATION=4 PASS=218** - **the exact line Sarvam failed to capture** |
+| crash corpus | **227 cases + manifest, 0 failed** |
+| library proofs | **224 passed, 0 failed** - one more than the 223 Sarvam measured |
+| property proofs | reported |
+
+**So the suite line is 218, and it is now measured rather than assumed.** **That was the one number I refused to type into a prompt, and Muse produced it.**
+
+### And the numbers audit is CLEAN - my doc fixes held
+
+**`tools/doc_counts_gate.py`: "every document agrees with the measured tree. Nothing to fix."** **The seven documents I corrected are now consistent with the tree.** **The gate that I built for the drift found no drift.**
+
+### But it found three things the gate does NOT catch, and the first is a real inconsistency
+
+1. **`docs/sutram-scorecard.html` says "32 keywords" on line 48 and "28 keywords" on line 237 - in the SAME document.** **And the Sanskrit pack maps 52 distinct core keywords.** **Three numbers for one quantity, none of them agreeing.**
+   - **And Muse's reason for not picking one is the right one:** *"There is no single definition of 'keyword' in the tree, so I did not pick a number; the discrepancy is reported as found."* **A definition question is not a Muse decision.**
+2. **`docs/sutram-stdlib.html` as committed is behind the library source** - `brihat` 12 to 13 functions, `samanvaya` 10 to 11. **The gate regenerates it during the run, so the committed copy drifts.**
+3. **The R39-known remainder**, still true.
+
+### What this says about the gate I built
+
+**It catches numbers that disagree with the tree. It does not catch a document disagreeing with ITSELF, or a generated file drifting from its source.** **Both are real and both were found by a human-side read, not by the gate.**
+
+**That is the correct division of labour and worth recording: the gate is a floor, and Muse's audit is what stands above it.**
+
 ## v318 - the same stale claims were in three more files, not just the README
 
 **After fixing the README, I swept for the same class of claim elsewhere. It found three more files.**
