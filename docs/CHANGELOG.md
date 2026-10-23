@@ -1,3 +1,18 @@
+## v322 - ROUND-32 and ROUND-107: the check for outgrown limits, and the keyword definition
+
+**ROUND-32 (Muse): build `tools/doc_stale_claims.py`.** **Seven documents stated a limit that had been removed, and
+every gate missed it - because gates check that things WORK, not that the documents stopped saying they don't
+exist.** **The check cannot decide whether a claim is still true; it can make sure nobody has to remember to look.**
+**And it must say so in its own output, the way `check-alloc-sizes.py` says `reviewed spellings accepted (NOT
+certified safe)`.**
+
+**ROUND-107 (ChatGPT): the keyword definition.** `sutram-scorecard.html` says **32** and **28** in the same
+document; **the Sanskrit pack maps 52.** **Muse measures all three; ChatGPT says what each plausibly counts and
+which definition belongs in a public document. The owner decides.**
+
+**And ROUND-107 asks ChatGPT to mark which of its 17 remaining P0 corrections are already applied** - *"main moves
+while you work."*
+
 ## v321 - ChatGPT caught a claim of MINE that its own numbers contradict
 
 **Applying its R106-WS1 prose corrections, the first thing I hit is my own error.**
