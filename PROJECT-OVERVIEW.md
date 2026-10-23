@@ -150,10 +150,7 @@ program. The terminal IDE's undo log works. The X11 client's protocol bytes are
 verified against a mock X server. The Windows installer's stack frames are
 statically audited and its payload is embedded byte-for-byte.
 
-**Not proven.** Nobody has run the **Windows GUI** on real Windows. Nobody has
-**rendered the Linux X11 GUI** on a real display — the protocol is verified, the
-picture is not. The **Windows installer has never been executed on Windows**.
-Performance figures are directional (minimum of repeated runs), not
+**Not proven.** **Partly proven.** The Windows GUI and the installer **have been run on real Windows 11, by a standard user, not elevated** - 16 required checks PASS, machine clean afterwards (`Windows-to-Sarvam/`). **What is not yet proven: the current merged revision has not been re-accepted.** Nobody has **rendered the Linux X11 GUI** on a real display - the protocol is verified, the picture is not. Performance figures are directional (minimum of repeated runs), not
 microbenchmark-grade.
 
 Separate compilation with object files exists (our own linker, `SUTRAMO1`/`SUTRAMO2`), as do first-class functions and methods. Still absent: concurrency, pattern matching, and namespaced modules - `yoj` still inlines textually for the ordinary path First-class functions, methods and slices exist; `suchi`, `nighantu` and `sangrah` are library collections. Still absent: concurrency, pattern matching and namespaced modules.
