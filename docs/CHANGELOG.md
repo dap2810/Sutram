@@ -1,3 +1,47 @@
+## v320 - ChatGPT's R106: one exemption was demonstrably unsound, and it checked the tree first
+
+**All three workstreams delivered.**
+
+### WS2 - the exemptions verdict, and the answer is a real finding
+
+**I asked whether any of the 19 exempt allocation sites had a reason that would not survive scrutiny.**
+
+> *"**YES: the original 19 included a demonstrably unsound reason.** No: those 12 affected sites are not still
+> unfixed."*
+
+**The unsound reason:** for set/map scratch allocations the exemption said *"`cap` is the capacity of the set/map,
+so cannot exceed the constructor bound."* **But for API callers, `cap`, `bcap` and `scap` were INDEPENDENTLY
+SUPPLIED numbers, with no check against the actual handle.**
+
+> *"**That reason DID NOT survive scrutiny. A caller passing the wrong cap caused an observable overwrite and
+> silent wrong..."*
+
+**So the exemption was not a judgement call - it was a false premise, and it was already fixed in R37/R38.**
+**Which means the check I asked for was the right one: a gate that reports "0 failed" while exempting 19 sites on
+written reasons is only as good as those reasons, and one of them was wrong.**
+
+### WS1 - and it did the thing I asked, which I had failed to do myself
+
+**Its prose-correction list opens with a "Do not re-fix" section:**
+
+> *"`README.md` known limits; `docs/sutram-roadmap.html` real Windows acceptance, separate compilation and
+> first-class functions; `docs/sutram-scorecard.html`... `PROJECT-OVERVIEW.md`... **Sarvam has already changed
+> those.**"*
+
+**It checked the tree before writing, found my fixes, and did not redo them.** **That is the check I told it to
+make because I had failed to make it - and it made it.** **The instruction worked, and it worked on the party it
+was written for.**
+
+**Its list is 18 KB of actionable corrections, each with the current line and the minimum replacement text** -
+**and it notes `PROJECT-OVERVIEW.md` still has "other stale words" beyond the phrase I fixed.** **To be applied.**
+
+### WS3 - the spec maintenance actions
+**Which spec files to update, which to mark historical, which to merge.** **To be applied.**
+
+### State
+**main v246. Muse's R31 and ChatGPT's R106 are both delivered. Claude is away until Tuesday. The Windows branch
+still awaits the owner's run.**
+
 ## v319 - Muse delivered Claude's round, and found three things the doc gate cannot catch
 
 **Muse took ROUND-31 (Claude's, reassigned) on `fc7ad7cb` (v316, compiler v246) and delivered.**
