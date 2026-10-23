@@ -1,3 +1,33 @@
+## v312 - the Sanskrit-and-AI note: what the NASA paper says, and the myth we decline to repeat
+
+**The owner asked what the NASA Sanskrit paper is and how it is useful. The honest answer is that the paper is real
+and the claim built on it is false - so the project now documents both.**
+
+**`docs/SANSKRIT-AND-AI-BRIGGS-1985.md`** records:
+
+- **The paper:** Briggs, *AI Magazine*, Spring 1985, NASA Ames. **About natural-language INPUT and knowledge
+  representation - not about programming languages.**
+- **What it says:** the grammarians' sentence analysis is *"identical not only in essence but in form"* with the
+  semantic networks AI researchers were building.
+- **The myth, and its mechanism:** the paper is real, so the citation looks verifiable; **its subject is quietly
+  swapped from language *input* to language *choice*; a second-hand attribution (a 1987 *Forbes* report) is added
+  and never checked; repetition does the rest.** **No such Forbes report exists in any year, and NASA made no
+  endorsement.**
+- **The practical objection that settles it:** *if Sanskrit were the most suitable language for software, software
+  would have been written in it by now.* None has been, in forty years.
+- **What IS useful:** Pāṇini's ~3,976-rule grammar as a composable rule system - **which is the actual basis for
+  Sutram's root-composable 303-function vocabulary** - and the **kāraka** model (Agent, Recipient, Goal,
+  Instrument, Location, Source), **which is relevant only if the project ever builds natural-language input.**
+- **Why Sutram uses Sanskrit:** **accessibility, and nothing else.** *"You can measure whether a non-English
+  speaker learns `yadi`/`anya`/`yavat` faster than `if`/`else`/`while`. You cannot measure 'Sanskrit is more
+  scientific.'"*
+
+**And it closes on the rule it is an instance of:** *"This project's standard is: performance is measured, not
+assumed. The same standard applies to claims about the language's heritage. Declining a false claim costs nothing.
+Repeating one costs the credibility of every true claim beside it."*
+
+**Referenced from `PROJECT-MASTER.md`,** so any AI reading the project's purpose finds it.
+
 ## v311 - Claude's R38 merge landed. Main is v246.
 
 **I checked main and the compiler reports v246** - so `claude/round-38` is merged. **That was ROUND-39's item 1, and
