@@ -1,0 +1,34 @@
+ROUND-106 RAW GITHUB SOURCE-READ CHECKS
+PINNED_REF e6914bc598958053817f7c61133d579f1ba19bc2
+READ PASS README.md 599f1cc5078e43530ddc572af4a5e84f851ce253
+READ PASS PROJECT-OVERVIEW.md 3366312395ab9c23aff740176ecd57061c5ab0e2
+READ PASS PROJECT-MASTER.md dac50053f5c6d5a21e7481498519b9d4b924296f
+READ PASS docs/sutram-design-parameters.html 81d46eab008ff5d3053e16ac57a9800e83360687
+READ PASS docs/sutram-project-status.html 005ae1377fde46851ddbd98e0f2076723db5730a
+READ PASS docs/sutram-scorecard.html 8f8f537e6e801afcab75ba0333dbebbcf4029a36
+READ PASS docs/sutram-roadmap.html 235c68e63ad36d51243bd1c82b532d9a762dfbe4
+READ PASS tools/check_alloc_bounds.py 1083706f804271e0943cbda71bbe1cbe210e03ef
+READ PASS lib/nighantu.smlib 4c5f4255ef9cf6caa59acb117f2d545e80767e5c
+READ PASS lib/sangrah.smlib c0889298884655116f9950d79b6c1190d9098189
+READ PASS LANGUAGE-PRIORITY.md 64682919a70fa1b79e415bc879aee9cad07582ad
+READ PASS docs/PATH-TO-COMPLETION.md 8a6353213f02a0c5055d61f159e1e5e95b797370
+PASS README old separate-compilation absence gone
+PASS README old Windows GUI never-run absence gone
+PASS OVERVIEW still denies actual GUI run
+PASS OVERVIEW still contains contradictory No first-class functions
+PASS MASTER has false Windows never executed
+PASS MASTER still says no C FFI
+PASS MASTER performance memory figure Zig below Sutram
+PASS DESIGN PAGE still says no separate compilation
+PASS PROJECT STATUS still says No C FFI
+PASS SCORECARD still says no C FFI
+PASS ROADMAP now records Windows run
+PASS R39 gate keyed by expression
+PASS R39 set scratch uses handle a[0]
+PASS R39 map scratch uses src[0]
+PASS Sanskrit-only directive present
+PASS Canonical path points to Windows branch and type decision
+SOURCE_COUNT current EXEMPT dictionary keys=12 (two s[0]*8 call sites share one key)
+RESULT SOURCE_READ_PREDICATES 16 PASS / 0 FAIL
+NOT RUN - no toolchain: native Sutram compiler, gates, fuzz, corpus, Windows acceptance, benchmarks
+NOTE: READ/PREDICATE PASS is not executable or release acceptance.
