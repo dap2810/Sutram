@@ -1,3 +1,39 @@
+## v326 - Muse triaged the 163 hits, fixed 13, and LEFT THE 88 TRUE ONES ALONE
+
+**That last clause is the whole result.** **I asked for a triage and warned against "fixing" a real limit. Muse did
+both.**
+
+### The triage
+
+| Bucket | Count | Disposition |
+|---|---|---|
+| **FALSE** - a claim of absence for something that exists | **16 hits / 13 unique claims** | **fixed** |
+| **TRUE** - a real limit, policy or design proposal | **88** | **left alone** |
+| **HISTORICAL** - versioned history or dated snapshot | **57** | **left alone** |
+| **AMBIGUOUS** - needs the owner | **0** | - |
+
+**88 of 163 hits are legitimate.** *"There is no garbage collector"*, *"no concurrency"*, *"the ten packs have
+never been exercised by a human"* - **all true, all kept.** **A check that "fixed" those would have stripped the
+honest half of the documentation.**
+
+### And the 13 false ones, in 7 files
+
+- **`PROJECT-MASTER.md`** - *"Windows never executed"* → **Windows executed, 16 required checks passed on real Windows 11**
+- **`PROJECT-MASTER.md`** - the freestanding boot claim, split correctly: **Windows done, boot still never performed**
+- **`docs/LIBRARY-BOUNDARY.md`** - *"there is no FFI yet (not started)"* → **the C FFI exists (R32-R34)**
+- **`docs/LIBRARY-BOUNDARY.md`** - first-class functions and methods
+- **and three more**, in a patch of 7 files
+
+### And the AMBIGUOUS bucket is empty, which is itself a result
+
+**Muse found no definition question it could not resolve.** **So the keyword count - 32 vs 28 vs 52 - is the ONLY
+ambiguous one, and it came from ChatGPT's round, not this sweep.** **That is a clean separation: 163 hits, one
+genuine owner decision, and it was found by the other partner.**
+
+### And the patch is delivered, not applied
+**`2026-10-23-round33-triage-fixes.patch`** - **7 files.** **To be applied by Sarvam, since Muse's convention is to
+propose changes in a patch rather than push them.**
+
 ## v325 - ROUND-33 and ROUND-108
 
 **ROUND-33 (Muse):** **triage the 161 hits, do not count them.** *"Most will be legitimate - 'there is no garbage
