@@ -1,3 +1,35 @@
+## v315 - ChatGPT's prose audit found the README listing three DONE things as limits
+
+**ChatGPT replied to R105, and my earlier check said it had not. My check was wrong** - I searched the newest ten
+entries of an alphabetically-sorted listing, and its deliverables sorted earlier. **It had replied.**
+
+### And its prose audit found a P0
+
+**`README.md`, the "Known limits" section, listed three things that are now DONE:**
+
+| The README said | The truth |
+|---|---|
+| **"No separate compilation... there are no `.smo` object files yet"** | **separate compilation landed in R29-R31; `.smo` objects exist** |
+| **"No first-class functions"** | **first-class functions landed in R23** |
+| **"The Windows GUI has never been run on real Windows"** | **it passed 16 required checks on real Windows, not elevated** |
+
+**So the document a new reader trusts most was understating the project's own work by three milestones.** **And one
+of the three is the Windows acceptance - the thing the project is proudest of.**
+
+### Fixed, and replaced with limits that are real
+
+**The section now states what is actually true and uncomfortable:** no concurrency, **memory safety is manual - no
+GC, no ownership rules, C's problem inherited deliberately**, **the Linux X11 GUI cannot draw Indic script** (8-bit
+core font), **and the library is proven against known bugs, not proven correct - 818 mutants undecided, 15
+survived every proof.**
+
+**A limits section that understates is as damaging as one that overstates, and it is the opposite failure from the
+one I expected.** **I was watching for the README claiming too much. It was claiming too little.**
+
+### And ChatGPT's WS1 reviewed all 19 exempt allocation sites
+**The provenance gap, and every exemption, read one by one** - **with `NOT RUN - no toolchain` stated for every
+execution gate**, which is the honesty its brief asked for.
+
 ## v314 - Muse is asked to carry Claude's round; Claude is away until Tuesday
 
 **Claude is unavailable until next Tuesday.** **So ROUND-31 goes to Muse** - which has been idle since ROUND-30
