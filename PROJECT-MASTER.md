@@ -267,10 +267,12 @@ been *performance is measured, not assumed* - **so the gap is recorded here and 
 | **Speed**, sum 1..10M | **13.30 ms** | 7.88 ms | **1.77 ms** | **1.7x slower than C, 7.5x slower than Zig** |
 | **Startup**, empty program | **3.36 ms** | 8.38 ms | 4.24 ms | **Sutram WINS** |
 | **Binary size**, hello | **205 B** | 6,608 B | 1,729,200 B | **Sutram WINS** |
-| **Memory**, peak RSS | **16,128 KB** | 16,956 KB | 16,008 KB | **Sutram WINS (marginally)** |
-| **Runtime needed** | **none** | libc | none (static) | **Sutram WINS** |
+| **Memory**, peak RSS | **16,128 KB** | 16,956 KB | **16,008 KB** | **Zig wins by 120 KB** |
+| **Runtime needed** | **none** | libc | none (static) | **Sutram and Zig tie** |
 
-**So Sutram already wins four of five aspects and loses the one that is hardest: raw speed on a loop.**
+**So on this dated test: two measured wins (startup, binary size), two measured losses (speed, peak RSS by
+120 KB), and one tie (no runtime).** **Sutram is not globally superior to Zig and this table does not claim it
+is.** **The losses are the honest part of the record and the wins are narrow ones.**
 
 **What the speed gap actually is:** the compiler does not vectorise, and `SUTRAM_R65_PEEPHOLES` - a peephole
 optimiser already written - **is default-OFF.** So part of the gap is a switch, and part is real optimiser work.
