@@ -1,0 +1,50 @@
+ROUND-108 RAW GITHUB SOURCE CHECK — NOT NATIVE EXECUTION
+PINNED_MAIN 4a25db6092bdad3de7139367c68d203960cd1b22
+READ PASS README.md 599f1cc5078e43530ddc572af4a5e84f851ce253
+READ PASS PROJECT-OVERVIEW.md e8a890746e7b4092063dc158aaed9972550bf83e
+READ PASS PROJECT-MASTER.md 480adad1ab5f0c209479e985d50c401497afd7ac
+READ PASS docs/sutram-design-parameters.html 81d46eab008ff5d3053e16ac57a9800e83360687
+READ PASS docs/sutram-project-status.html 40022601eeccce00d7c4d683999f3efd493656d8
+READ PASS docs/sutram-scorecard.html 8f8f537e6e801afcab75ba0333dbebbcf4029a36
+READ PASS docs/sutram-roadmap.html 235c68e63ad36d51243bd1c82b532d9a762dfbe4
+READ PASS docs/LIBRARY-BOUNDARY.md eb8540b0a57f0dd47f2ff59d1c2643d818c421c3
+READ PASS lib/kalana.smlib 52dde11a91b238089ad89c37fc528d6684dd233f
+READ PASS docs/sutram-stdlib.html a120fe5739598131dab3768655eab60620536321
+READ PASS lang/sanskrit.lang b7bbbe1e07d258cc67f05e9dad81bca9379e59a6
+READ PASS src/sutram_compiler.asm 7db83d38152c81b05e387b5a93a4445fa984f72c
+READ PASS LANGUAGE-PRIORITY.md 64682919a70fa1b79e415bc879aee9cad07582ad
+READ PASS docs/PATH-TO-COMPLETION.md 8a6353213f02a0c5055d61f159e1e5e95b797370
+READ PASS Muse-to-Sarvam/2026-10-23-round32-stale-claims-keywords-guard.md 7184c4ef5b22486052a8bd0f046fc606e6f2cea0
+READ PASS Muse-to-Sarvam/2026-10-23-round33-triage-fixes.patch a72ddc5a9c9a70deedcf2bff845c301ce2359def
+READ PASS Muse-to-Sarvam/2026-10-23-round33-report.md 040c8a34ab05d56bb41b234ad085c0979d0876e6
+READ PASS Windows-to-Sarvam/WIN-FFI-2026-10-21.md 51315c8b2f073ee0dc56f2efc4f7edbb2a100b12
+PASS README already removed three absent-capability claims
+PASS OVERVIEW now asserts actual Windows GUI execution
+PASS OVERVIEW no longer claims no first-class functions
+PASS MASTER current code still has stale Windows-never status
+PASS MASTER current code still has no-C-FFI status
+PASS MASTER old four-wins claim corrected
+PASS DESIGN still denies first-class status
+PASS DESIGN still denies separate compilation
+PASS DESIGN still denies C FFI
+PASS STATUS first-class methods slices already fixed
+PASS STATUS Windows never still appears
+PASS STATUS no C FFI still appears
+PASS SCORECARD no C FFI still appears
+PASS ROADMAP native Windows acceptance already present
+PASS BOUNDARY still denies FFI
+PASS KALANA old comment still denies first-class
+PASS Muse patch contains pending seven-file proposed changes
+PASS Muse patch not reflected in current MASTER
+PASS Sanskrit-only directive currently controls
+PASS canonical path orders Windows and owner type decisions
+PASS KW constant declarations = 32
+PASS ordinary lexer keyword IDs = 31
+PASS contextual KW_ATHA missing from lexer table
+PASS Devanagari mapping rows = 58
+PASS distinct Sanskrit target strings = 52
+PASS Muse says 28 and 32 introduced together
+PASS Windows native prior FFI report read
+RESULT 27 PASS / 0 FAIL
+NOT RUN - no toolchain: native compiler, full gates, fuzz, crash corpus, real Windows, patch application
+CAUTION patch-delivered is NOT same as main-branch-applied; future changes require fresh head recheck.
