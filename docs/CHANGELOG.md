@@ -1,3 +1,39 @@
+## v323 - Muse built the stale-claims check, and caught that MY fix was only partial
+
+**Both delivered. And Muse's first finding is about my own work.**
+
+### The check exists: `tools/doc_stale_claims.py`
+
+**Eight absence-shaped patterns, scanned across every `.md` and `.html` outside the collaboration folders and
+`backups/`.** **Run on main: 115 documents, 161 hits.** **And its output states plainly that it is a floor, not a
+proof** - *"it finds sentences shaped like absence claims and cannot decide whether a claim is still true."*
+**Exactly the framing I asked for, and it is the same framing `check-alloc-sizes.py` uses.**
+
+### And its first significant hit was my own incomplete edit
+
+> *"`PROJECT-OVERVIEW.md:159` - contradictory paragraph, partially fixed. The v318 changelog says the stale claims
+> were fixed, but the paragraph now reads '**Not implemented.** Separate compilation..."*
+
+**So my v318 fix left the words "Not implemented." in front of a sentence saying it IS implemented, and left the
+old tail - "No concurrency. No first-class functions." - contradicting the sentence I had inserted.** **The
+changelog claimed a fix that was half a fix.**
+
+**That is the third time this stretch that my own change was the defect.** **And it was found by a check I asked
+for, against a claim I had already written down as done.**
+
+**Fixed now: the prefix is gone, and the tail names what actually remains absent - concurrency, pattern matching,
+namespaced modules.**
+
+### And ChatGPT defined the keyword counts
+
+**32 is the number of unique `KW_*` IDs in the compiler** (lines 145-176, `KW_MUKHYA` through `KW_PRASAR`).
+**28 is probably historical.** **And the warning matters:** *"Do not report them as '32 entries in the keyword lexer
+table'"* - **the lexer table has more entries than there are keyword IDs, so the two numbers are different
+quantities that look like the same one.**
+
+**So the scorecard's two numbers are a real ID count and a stale one, and neither is "the number of keywords" in
+the sense a reader would assume.** **The definition is the owner's call.**
+
 ## v322 - ROUND-32 and ROUND-107: the check for outgrown limits, and the keyword definition
 
 **ROUND-32 (Muse): build `tools/doc_stale_claims.py`.** **Seven documents stated a limit that had been removed, and
