@@ -1,3 +1,22 @@
+## v324 - the last P0 in PROJECT-OVERVIEW: the Windows claim, fixed by exact block
+
+**ChatGPT's R106 P0 list flagged `PROJECT-OVERVIEW.md`: *"Nobody has run the Windows GUI on real Windows... The
+Windows installer has never been executed on Windows."*** **Both are false - the acceptance ran on real Windows 11,
+non-elevated, 16 required checks PASS.**
+
+**My first two edit attempts MISSED, because the sentence is line-wrapped mid-phrase** - *"Nobody has run the
+**Windows GUI** on real Windows. Nobody has
+**rendered..."*. **A string match against wrapped prose fails, and it
+fails silently if you do not check the result.**
+
+**So I replaced the whole block between two anchors instead of matching a sentence inside it.** **That is the
+second time this stretch that line-wrapping defeated a text match - and the fix is the same both times: match a
+block between anchors, not a phrase.**
+
+**The paragraph now reads:** *"Partly proven. The Windows GUI and the installer HAVE been run on real Windows 11,
+by a standard user, not elevated - 16 required checks PASS, machine clean afterwards. What is not yet proven: the
+current merged revision has not been re-accepted."* **And the Linux X11 caveat is kept, because it is still true.**
+
 ## v323 - Muse built the stale-claims check, and caught that MY fix was only partial
 
 **Both delivered. And Muse's first finding is about my own work.**
