@@ -1,0 +1,174 @@
+{
+  "schema": 1,
+  "project": "Sutram",
+  "round": 108,
+  "date": "2026-10-23",
+  "mode": "READ_SIDE_DOC_AUDIT",
+  "initial_main": "4a25db6092bdad3de7139367c68d203960cd1b22",
+  "initial_changelog": "v326",
+  "sources": {
+    "assignment": {
+      "path": "Sarvam-to-ChatGPT/ROUND-108.md",
+      "sha": "bbd7c81f64e288eff8d64236efef2e2f3e0c7dcb"
+    },
+    "directives": [
+      {
+        "path": "LANGUAGE-PRIORITY.md",
+        "sha": "64682919a70fa1b79e415bc879aee9cad07582ad"
+      },
+      {
+        "path": "docs/PATH-TO-COMPLETION.md",
+        "sha": "8a6353213f02a0c5055d61f159e1e5e95b797370"
+      }
+    ],
+    "primary": [
+      {
+        "path": "README.md",
+        "sha": "599f1cc5078e43530ddc572af4a5e84f851ce253"
+      },
+      {
+        "path": "PROJECT-OVERVIEW.md",
+        "sha": "e8a890746e7b4092063dc158aaed9972550bf83e"
+      },
+      {
+        "path": "PROJECT-MASTER.md",
+        "sha": "480adad1ab5f0c209479e985d50c401497afd7ac"
+      },
+      {
+        "path": "docs/sutram-design-parameters.html",
+        "sha": "81d46eab008ff5d3053e16ac57a9800e83360687"
+      },
+      {
+        "path": "docs/sutram-project-status.html",
+        "sha": "40022601eeccce00d7c4d683999f3efd493656d8"
+      },
+      {
+        "path": "docs/sutram-scorecard.html",
+        "sha": "8f8f537e6e801afcab75ba0333dbebbcf4029a36"
+      },
+      {
+        "path": "docs/sutram-roadmap.html",
+        "sha": "235c68e63ad36d51243bd1c82b532d9a762dfbe4"
+      },
+      {
+        "path": "docs/LIBRARY-BOUNDARY.md",
+        "sha": "eb8540b0a57f0dd47f2ff59d1c2643d818c421c3"
+      },
+      {
+        "path": "lib/kalana.smlib",
+        "sha": "52dde11a91b238089ad89c37fc528d6684dd233f"
+      },
+      {
+        "path": "docs/sutram-stdlib.html",
+        "sha": "a120fe5739598131dab3768655eab60620536321"
+      },
+      {
+        "path": "src/sutram_compiler.asm",
+        "sha": "7db83d38152c81b05e387b5a93a4445fa984f72c"
+      },
+      {
+        "path": "lang/sanskrit.lang",
+        "sha": "b7bbbe1e07d258cc67f05e9dad81bca9379e59a6"
+      }
+    ],
+    "partners": [
+      {
+        "path": "Muse-to-Sarvam/2026-10-23-round32-stale-claims-keywords-guard.md",
+        "sha": "7184c4ef5b22486052a8bd0f046fc606e6f2cea0"
+      },
+      {
+        "path": "Muse-to-Sarvam/2026-10-23-round33-triage-fixes.patch",
+        "sha": "a72ddc5a9c9a70deedcf2bff845c301ce2359def"
+      },
+      {
+        "path": "Muse-to-Sarvam/2026-10-23-round33-report.md",
+        "sha": "040c8a34ab05d56bb41b234ad085c0979d0876e6"
+      },
+      {
+        "path": "Windows-to-Sarvam/WIN-FFI-2026-10-21.md",
+        "sha": "51315c8b2f073ee0dc56f2efc4f7edbb2a100b12"
+      }
+    ]
+  },
+  "ws1": {
+    "file": "ChatGPT-to-Sarvam/ROUND-108-WS1-CURRENT-P0-STATUS.md",
+    "status": "PASS_SOURCE_READING",
+    "confirmed_applied": [
+      "README old false absences",
+      "ROADMAP Windows and separate build",
+      "OVERVIEW GUI/installer false negative and firstclass/no-more-collections contradiction",
+      "PROJECT-STATUS firstclass-method-slices row",
+      "MASTER two wins/two losses/one tie"
+    ],
+    "remaining_p0": [
+      "PROJECT-MASTER old function/method/slice/Windows/FFI/fuzz capability rows",
+      "docs/sutram-design-parameters.html old Today assertions",
+      "docs/sutram-project-status.html old Windows/installer/FFI/pending items",
+      "docs/sutram-scorecard.html no C FFI"
+    ],
+    "additional": [
+      "docs/LIBRARY-BOUNDARY.md false absent FFI and firstclass",
+      "lib/kalana.smlib old comment; Muse owns",
+      "docs/sutram-stdlib.html generated; regen only after source correct"
+    ],
+    "muse_r33": {
+      "absence_matches": 163,
+      "false_hits": 16,
+      "false_unique_claims": 13,
+      "still_true": 88,
+      "historical": 57,
+      "ambiguous": 0,
+      "patch_files": 7,
+      "patch_status": "PROPOSED_NOT_APPLIED_AT_PINNED_MAIN",
+      "review_warnings": [
+        "Do not call entire charter 19 DONE based on partial FFI",
+        "Do not say no foreign calling convention documented; ABI is documented",
+        "Regenerate generated stdlib HTML from approved source, no manual stale hunk application"
+      ]
+    }
+  },
+  "ws2": {
+    "file": "ChatGPT-to-Sarvam/ROUND-108-WS2-SPEC-SEQUENCE-WITH-RISKS.md",
+    "status": "PASS_DESIGN",
+    "steps": [
+      "Pin live repo and owner priorities",
+      "Fix current P0 public prose, verify Muse patch precision",
+      "Create implemented/branch/proposed/historical spec-status index",
+      "Update current FFI/ELF reference",
+      "Mark old historical specs rather than change their raw recorded evidence",
+      "Link memory safety rule, note partial gate",
+      "Windows native merge/reacceptance and mixed ABI after owner approval",
+      "Owner variable type decision and Sanskrit v1.0 freeze",
+      "Defer benchmarks and frozen pack changes"
+    ],
+    "native_execution": "NOT RUN - no toolchain"
+  },
+  "ws3": {
+    "file": "ChatGPT-to-Sarvam/ROUND-108-WS3-OWNER-KEYWORD-DECISION.md",
+    "status": "PASS_SOURCE_READING_OWNER_CHOICE_PENDING",
+    "counts": {
+      "keyword_IDs": 32,
+      "ordinary_lexer": 31,
+      "contextual_extra": "tak",
+      "sanskrit_native_spelling_rows": 58,
+      "distinct_target_names": 52,
+      "scorecard_28": "NOT SUPPORTED: Muse R32 says 28 and 32 introduced together in same commit"
+    },
+    "recommended_public_text": "31 ordinary keywords plus one contextual loop word, 32 categories total; pack's 52 names shown separately"
+  },
+  "source_check_log": {
+    "path": "ChatGPT-to-Sarvam/ROUND-108-RAW-SOURCE-CHECKS.txt",
+    "source_files_read": 18,
+    "assertions_pass": 27,
+    "assertions_fail": 0,
+    "meaning": "GitHub pinned source string and keyword count checks, not Sutram native tests"
+  },
+  "not_run": [
+    "NOT RUN - no toolchain: Sutram native compiler/lexer, language packs",
+    "NOT RUN - no toolchain: native regression suite, standard-library/properties, fuzz, crash corpus",
+    "NOT RUN - no toolchain: Windows FFI, installer, GUI, mixed i64/f64 acceptance",
+    "NOT RUN - no toolchain: run Muse doc_stale_claims or apply seven-file patch",
+    "NOT RUN - no toolchain: generate stdlib HTML or measure benchmark"
+  ],
+  "changes": "Only new Round108 documents in ChatGPT-to-Sarvam/. No src/lib/tests/tools/Windows-to-Sarvam/backups/other packs or installer changed."
+}
