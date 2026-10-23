@@ -1,3 +1,17 @@
+## v325 - ROUND-33 and ROUND-108
+
+**ROUND-33 (Muse):** **triage the 161 hits, do not count them.** *"Most will be legitimate - 'there is no garbage
+collector' is TRUE and must stay."* **Four buckets: FALSE (fix), TRUE (leave), HISTORICAL (date it), AMBIGUOUS
+(owner).** **Then apply the FALSE ones and date the HISTORICAL ones, and change no TRUE one.**
+
+**ROUND-108 (ChatGPT):** **reconcile its P0 list against a tree that moved three times while it worked** - which are
+applied, which remain, with exact text for the rest. **Plus the spec-maintenance sequence, and the keyword
+definition put to the owner in one plain paragraph.**
+
+**The instruction that matters in ROUND-33 is the negative one:** **do not change a claim that is true.** **A
+triage that "fixes" a real limit would remove the honest half of the documentation - which is the error this
+project made in the opposite direction a week ago, when the README understated itself by three milestones.**
+
 ## v324 - the last P0 in PROJECT-OVERVIEW: the Windows claim, fixed by exact block
 
 **ChatGPT's R106 P0 list flagged `PROJECT-OVERVIEW.md`: *"Nobody has run the Windows GUI on real Windows... The
