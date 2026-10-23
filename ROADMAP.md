@@ -99,8 +99,8 @@ is exactly the kind of claim this project does not make.
 | Item | Status | Note |
 |---|---|---|
 | Undo in the IDE | Planned | Editor comfort; the one obvious missing editor feature |
-| Verify on a real Windows machine | Planned | The largest untested area; the Windows build has never been run on Windows |
-| Module system for `yoj` | Planned | Today it inlines textually, so all library functions share one global namespace |
+| Verify on a real Windows machine | **Done** | Passed on real Windows 11 Pro, a standard user, not elevated: 16 required checks, 0 FAIL, 0 NOT-RUN, machine clean afterwards |
+| Module system for `yoj` | **Done** | Separate compilation with object files (`SUTRAMO1`/`SUTRAMO2`), our own linker, module state and incremental rebuilds. `yoj` still inlines textually for the ordinary path, which is unchanged |
 | Windows build of the IDE | Planned | The IDE is Linux-only today; Windows users have the interactive shell |
 | XMM register residency (Stage 2) | Exploratory | Stage 1 was implemented and measured slightly slower, so the flag stays off |
 | A real standard-library package format | Exploratory | Would follow the module system |
