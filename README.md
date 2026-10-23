@@ -145,14 +145,17 @@ estimate is not a substitute for those gates.
 
 Known limits, stated plainly rather than buried:
 
-- **No separate compilation.** `yoj` expands modules textually within one
-  translation unit. Transitive imports are resolved once, but there are no
-  `.smo` object files yet.
 - **No concurrency** in the language itself.
-- **No first-class functions.**
-- **The Windows GUI has never been run on real Windows** by the person who
-  wrote it. It assembles and links correctly and passes its static tests; a
-  human still has to confirm it on screen.
+- **Memory safety is manual.** There is no garbage collector, no ownership
+  rules and no borrow checker. A program that misuses memory can corrupt
+  itself, exactly as C can. That is the price of a 205-byte binary with no
+  runtime, and it is a real price.
+- **The Linux X11 GUI cannot draw Indic script.** It uses `ImageText8` and the
+  core `fixed` font, which is 8-bit and cannot represent Devanagari. The bytes
+  the program produces are correct; the *display* on X11 is not. Windows is
+  unaffected.
+- **The library is proven against known bugs, not proven correct.** 818 mutants
+  remain undecided and 15 survived every proof.
 - **The Linux X11 GUI** speaks the X protocol correctly (verified against a
   mock server) but has not been rendered on a real display.
 
