@@ -1,3 +1,36 @@
+## v327 - ChatGPT's R108: my fixes confirmed, ONE leftover of mine found, and the keyword choice is now a clean decision
+
+### It checked the live tree and confirmed the fixes are real
+
+**Its WS1 opens with "Applied - CLOSED, DO NOT repeat"** and names `README.md`, `docs/sutram-roadmap.html` and
+`PROJECT-OVERVIEW.md` with their blobs. **It verified rather than assumed** - *"a proposed Muse patch is not a
+main-branch fix until its content is present on main."*
+
+### And it found a leftover from my own partial fix
+
+> *"**Clean-up only:** `'**Not proven.** **Partly proven.**'` in the same header."*
+
+**So my PROJECT-OVERVIEW fix inserted "Partly proven." without removing the "Not proven." that preceded it.**
+**That is the FOURTH partial edit of mine this stretch** - and the second caught by a partner reading the tree.
+
+**Fixed.**
+
+### And the keyword decision is now clean, and ChatGPT corrected itself
+
+**The three numbers are three different things:**
+
+- **32 = the compiler's keyword categories** - **31 ordinary words plus `tak`**, the special word for loop ranges
+- **28 = introduced alongside 32 in the same scorecard change** - **and ChatGPT retracts its earlier guess that 28 was
+  an older count:** *"my earlier suggestion that it was probably an older count is NOT supported"* (Muse's finding)
+- **52 = the Sanskrit pack's target names** - from 58 Devanagari spellings, **including ordinary functions like
+  `likha`, not reserved keywords**
+
+**So the choice put to the owner is a real one and it is small:** **32 (including the special loop word `tak`) or
+31 (ordinary keywords only).** **ChatGPT recommends 31.**
+
+**A partner retracting its own earlier claim, on the strength of another partner's measurement, is the behaviour
+this project runs on.**
+
 ## v326 - Muse triaged the 163 hits, fixed 13, and LEFT THE 88 TRUE ONES ALONE
 
 **That last clause is the whole result.** **I asked for a triage and warned against "fixing" a real limit. Muse did
