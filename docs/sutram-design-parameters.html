@@ -155,8 +155,8 @@ language rules, libraries and tools that agree with each other.</p>
   pattern matching, and collection operations such as mapping and filtering. Functions that calculate
   results without unexpectedly modifying unrelated state.</p>
   <div class="aim"><b>Aim:</b> functional tools where they improve clarity, while ordinary loops and
-  mutable data stay available. <b>Today:</b> functions exist and can be called, but they are
-  <b>not first-class</b> — there are no function values, closures, iterators or pattern matching.</div>
+  mutable data stay available. <b>Today:</b> functions exist and can be called, and they are
+  <b>first-class</b> (R23) — there are function values, but no closures, iterators or pattern matching.</div>
 </div>
 
 <div class="req none animate" style="--i:6">
@@ -176,7 +176,7 @@ language rules, libraries and tools that agree with each other.</p>
   components. Polymorphism, with runtime dispatch an explicit choice where practical. No deep class
   hierarchies or multiple inheritance in the initial design.</p>
   <div class="aim"><b>Aim:</b> structures + methods + traits + composition, not a reproduction of the C++
-  class system. <b>Today:</b> <code>rachana</code> gives plain structs. There are <b>no methods, no
+  class system. <b>Today:</b> <code>rachana</code> gives plain structs, and methods exist (R23). There are <b>no
   traits and no polymorphism</b>.</div>
 </div>
 
@@ -188,7 +188,7 @@ language rules, libraries and tools that agree with each other.</p>
   operations and SIMD later, backed by benchmarks.</p>
   <div class="aim"><b>Aim:</b> control over how data is represented and accessed — not promising speed
   merely because code is compiled. <b>Today:</b> <code>mala</code> and <code>kosh</code> exist and are
-  contiguous, but there are no slices, alignment controls, SIMD or vector operations.</div>
+  contiguous, and slices exist (R23, <code>vibhag</code>), but there are no alignment controls, SIMD or vector operations.</div>
 </div>
 
 <div class="req none animate" style="--i:9">
@@ -313,7 +313,7 @@ suitable for serious development.</p>
   it can generate for</em> separately. Reliable Windows/Linux x86-64 first, then other combinations
   individually. Every advertised target tested.</p>
   <div class="aim"><b>Today:</b> Linux x86-64 works and is tested. Windows x86-64 <b>sources exist and
-  have never been executed by this project</b> — the one gate nothing has passed. The one-patra pure-NASM
+  have been executed</b> — 16 required checks passed on real Windows 11 (standard user, not elevated). The one-patra pure-NASM
   constraint is preserved unless an architectural change is explicitly approved; clear internal phase
   boundaries should be introduced <em>within</em> that implementation.</div>
 </div>
@@ -326,7 +326,7 @@ suitable for serious development.</p>
   offline builds, reproducible settings. Compatibility and migration rules.</p>
   <div class="aim"><b>Aim:</b> suitable for teams and substantial codebases, not just single-patra
   examples. <b>Today:</b> <code>yoj</code> is <b>textual inclusion</b>, and <code>niryat</code> gives
-  export visibility. There is no separate compilation, no package manager, no lockfile.</div>
+  export visibility. There is separate compilation (R28/R29: <code>--separate</code> + <code>sutram-link</code>), but no package manager, no lockfile.</div>
 </div>
 
 <div class="req done animate" style="--i:20">
