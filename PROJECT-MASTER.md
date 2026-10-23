@@ -287,6 +287,17 @@ optimiser already written - **is default-OFF.** So part of the gap is a switch, 
 **and the benchmark set must grow** - one integer loop cannot support a claim about "all aspects". **String,
 allocation and call-heavy shapes are needed before that claim can be made.**
 
+
+### Why Sanskrit? (and a myth to decline)
+
+**Sutram uses Sanskrit keywords for one reason: accessibility** - so someone in India who does not read English can
+learn to program. **That is an argument from testability, not from heritage.**
+
+**A widely-repeated claim says "NASA declared Sanskrit the most suitable language for computer software." It is
+false.** The real source is Briggs, *AI Magazine*, Spring 1985 - a paper about natural-language *input* and
+knowledge representation, not about programming languages. **What it actually says, what is genuinely useful in it,
+and why we do not repeat the myth: see `docs/SANSKRIT-AND-AI-BRIGGS-1985.md`.**
+
 ## 9. What is NOT true — read before claiming anything
 
 - **Sutram does not claim memory safety.** There is no ownership model. The charter says specify the rules
