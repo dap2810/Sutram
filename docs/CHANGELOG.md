@@ -1,3 +1,29 @@
+## v316 - the canonical path to completion, and every channel points at it
+
+**The owner asked that Muse - and every channel - know the current path.** **So there is now one document that
+answers "what are we doing, and what is left", and every collaboration folder carries a pointer to it.**
+
+**`docs/PATH-TO-COMPLETION.md`** - and `PATH.md` in all eight collaboration folders, which says: read
+`/LANGUAGE-PRIORITY.md` and `docs/PATH-TO-COMPLETION.md` before any round, **and if a brief conflicts with either,
+they win.**
+
+### What the path document contains
+
+- **The goal, stated as a measure rather than a wish:** *"not 'a language exists' but that a person who has never
+  programmed can write a working program in it, and understand the error when they get one."*
+- **The Sanskrit-only priority**, with a pointer to the directive.
+- **The measured state**, so nobody works from an old picture.
+- **The ordered path, with owners and "done when":** merge the Windows branch, re-run the Windows acceptance, prove
+  the mixed `i64`/`f64` ABI case, **the type-on-variables decision (the owner's, and open longest)**, the Sanskrit
+  v1.0 freeze, then the other packs, then performance.
+- **Who owns what**, so the three AIs do not collide.
+- **The six rules that do not change.**
+- **And a closing note to any AI reading it:** *"Run the check, then report the result - including when the result
+  is that you could not run it. **'NOT RUN - no toolchain' is a complete and acceptable answer. A number typed from
+  memory is not.**"*
+
+**That last line is the one I most wanted in it**, because it is the failure I have made most often on this project.
+
 ## v315 - ChatGPT's prose audit found the README listing three DONE things as limits
 
 **ChatGPT replied to R105, and my earlier check said it had not. My check was wrong** - I searched the newest ten
