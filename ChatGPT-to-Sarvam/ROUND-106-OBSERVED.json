@@ -1,0 +1,110 @@
+{
+  "schema": 1,
+  "round": 106,
+  "date": "2026-10-23",
+  "mode": "READ_ONLY_SPEC_AND_PROSE",
+  "initial_main": "e6914bc598958053817f7c61133d579f1ba19bc2",
+  "project_changelog_at_inspection": "v318",
+  "sanskrit_only": true,
+  "current_priority_sources": [
+    {
+      "path": "LANGUAGE-PRIORITY.md",
+      "sha": "64682919a70fa1b79e415bc879aee9cad07582ad"
+    },
+    {
+      "path": "docs/PATH-TO-COMPLETION.md",
+      "sha": "8a6353213f02a0c5055d61f159e1e5e95b797370"
+    },
+    {
+      "path": "Sarvam-to-ChatGPT/ROUND-106.md",
+      "sha": "42b7092259f582b903a19582a92b7ca7e73b6b87"
+    }
+  ],
+  "source_files": {
+    "README.md": "599f1cc5078e43530ddc572af4a5e84f851ce253",
+    "PROJECT-OVERVIEW.md": "3366312395ab9c23aff740176ecd57061c5ab0e2",
+    "PROJECT-MASTER.md": "dac50053f5c6d5a21e7481498519b9d4b924296f",
+    "docs/sutram-design-parameters.html": "81d46eab008ff5d3053e16ac57a9800e83360687",
+    "docs/sutram-project-status.html": "005ae1377fde46851ddbd98e0f2076723db5730a",
+    "docs/sutram-scorecard.html": "8f8f537e6e801afcab75ba0333dbebbcf4029a36",
+    "docs/sutram-roadmap.html": "235c68e63ad36d51243bd1c82b532d9a762dfbe4",
+    "docs/sutram-stdlib-reference.html": "b925949ebeb3dee2e7aa51b52c63327e962021b6",
+    "docs/sutram-performance.html": "547a1f5091339753f31c7c1feb7f8b23e35da08d",
+    "docs/sutram-benchmark-report.html": "405a4b08f351e59aa7b80bae278c38eb8cc72621",
+    "docs/_newchapter_en.html": "d09cd96ba07a45a1f7c4ae4163783b34da049d39",
+    "tools/check_alloc_bounds.py": "1083706f804271e0943cbda71bbe1cbe210e03ef",
+    "lib/nighantu.smlib": "4c5f4255ef9cf6caa59acb117f2d545e80767e5c",
+    "lib/sangrah.smlib": "c0889298884655116f9950d79b6c1190d9098189",
+    "lib/aadhar.smlib": "b46e5da7c81159d9b2573e3f6d5a715f47bb6f09",
+    "lib/brihat.smlib": "b03c68e51f8127b20f2a6e4185ede7326e5d3cc6",
+    "lib/shreni.smlib": "d7f13d88280bc4d6d4bed5261d9dab7f2c5f10ae",
+    "tools/sutram_fmt.py": "e23b6e0ef561a72f714f1b2371b834535d4e9a07",
+    "lib/phal.smlib": "c23ae4ae9b48aba19fb66eb22fdf44b5fff5e392",
+    "Windows-to-Sarvam/WIN-FFI-2026-10-21.md": "51315c8b2f073ee0dc56f2efc4f7edbb2a100b12",
+    "Claude-to-Sarvam/R39-00-HANDBACK.md": "110b9bf2838a2b804b72b3a3de2349fe9b94b747"
+  },
+  "ws1": {
+    "status": "PASS - current tree read and smallest-edit proposals (not applied)",
+    "file": "ChatGPT-to-Sarvam/ROUND-106-WS1-ACTIONABLE-PROSE-CORRECTIONS.md",
+    "already_fixed": [
+      "README stale no-.smo, no first-class, Windows GUI never",
+      "docs/sutram-roadmap.html Windows never run and missing separate compilation",
+      "docs/sutram-scorecard.html line206 now acknowledges methods/slices",
+      "PROJECT-OVERVIEW first sentence of line159 corrected, but obsolete trailing text remains"
+    ],
+    "remaining_higher_risk": [
+      "PROJECT-OVERVIEW lines 153-155 Windows GUI/installer never, 159-160 contradictory no first-class/no collections",
+      "PROJECT-MASTER capability/status table, numeric 4-of-5 win contradicted by own Zig RSS/runtime",
+      "docs/sutram-design-parameters.html Today cells deny methods/slices/FFI/separate comp/Windows testing",
+      "docs/sutram-project-status.html denies tested Windows/installer and FFI, old current open-items table",
+      "docs/sutram-scorecard.html denies FFI and formatter/undo",
+      "docs/PATH-TO-COMPLETION.md canonical but as-of v315 allocation metrics stale relative to later R39 report"
+    ]
+  },
+  "ws2": {
+    "status": "PASS - reconciled 19 historic and 13 current source exemptions; native tests NOT RUN",
+    "file": "ChatGPT-to-Sarvam/ROUND-106-WS2-EXEMPTIONS-VERDICT.md",
+    "old_exempt_site_count": 19,
+    "old_unsafe_caller_cap_sites": 12,
+    "old_caller_raw_extent_preconditions": 6,
+    "old_existing_container_cap_site": 1,
+    "current_exact_exempt_keys": 12,
+    "current_site_instances": 13,
+    "current_measured_by_claude_R39": {
+      "computed": 26,
+      "bounded": 13,
+      "exempt": 13,
+      "failed": 0
+    },
+    "condition": "sound for intact nighantu_srij-created container handles, not arbitrary pointers",
+    "prior_native_bug": "R39 changed independent cap/bcap/scap scratch allocations to a[0]/b[0]/s[0]/src[0] after observing memory corruption"
+  },
+  "ws3": {
+    "status": "PASS - document action plan, no code changed",
+    "file": "ChatGPT-to-Sarvam/ROUND-106-WS3-SPEC-MAINTENANCE-ACTIONS.md",
+    "categories": [
+      "historical v1 sidecar CLI and R98 zero-reloc minimum",
+      "current Linux v1/v2 and Microsoft ABI evidence",
+      "future unimplemented Windows cstr_ro v3",
+      "future 7-workload performance acceptance with Gate0",
+      "normative validity-before-address rule vs partial mechanical checker"
+    ],
+    "priority": "Sanskrit v1.0 first; Windows branch/owner testing, not frozen language development"
+  },
+  "read_only_controls": {
+    "file": "ChatGPT-to-Sarvam/ROUND-106-RAW-SOURCE-CHECKS.txt",
+    "source_files_read": 12,
+    "predicates_pass": 16,
+    "predicates_fail": 0,
+    "distinct_current_exemption_keys_counted": 12,
+    "kind": "GitHub source-substring checks only, not native tests"
+  },
+  "not_run": [
+    "NOT RUN - no toolchain: native Sutram build, execution, full gates, crash corpus, fuzz, library proofs",
+    "NOT RUN - no toolchain: Windows FFI, installer, GUI acceptance",
+    "NOT RUN - no toolchain: formatter tests, example/book code",
+    "NOT RUN - no toolchain: new language-pack tests or frozen-language improvements",
+    "NOT RUN - no toolchain: performance benchmark or future 7/7 acceptance"
+  ],
+  "modifications": "New Round106 documents exclusively under ChatGPT-to-Sarvam; no src/lib/tests/tools/Windows-to-Sarvam/backups or language packs modified."
+}
