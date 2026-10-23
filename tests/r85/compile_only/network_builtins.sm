@@ -1,0 +1,7 @@
+# COMPILE-ONLY. NEVER RUN. netbind binds INADDR_ANY, netaccept may block.
+mukhya() {
+    vitti fd = netsock()
+    vitti binding = netbind(fd, 0)
+    vitti listening = netlisten(fd)
+    vitti accepted = netaccept(fd)
+}

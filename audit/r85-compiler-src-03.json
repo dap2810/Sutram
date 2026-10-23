@@ -1,0 +1,123 @@
+{
+  "snapshot": "75b4d77fb41350827cda938ebcc337d15000f2a3",
+  "part": 3,
+  "source_scope_total": 83,
+  "listed": 15,
+  "read": 15,
+  "bytes": 629267,
+  "errors": [],
+  "findings": [
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 314,
+      "column": 19,
+      "old": "punaravartana",
+      "kind": "quoted_literal_review",
+      "context": "r4_o_punar db \"punaravartana\",0"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 315,
+      "column": 19,
+      "old": "pratiyati",
+      "kind": "quoted_literal_review",
+      "context": "r4_o_prati db \"pratiyati\",0"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 317,
+      "column": 20,
+      "old": "pankti",
+      "kind": "quoted_literal_review",
+      "context": "r4_o_pankti db \"pankti\",0"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 318,
+      "column": 18,
+      "old": "srijana",
+      "kind": "quoted_literal_review",
+      "context": "r4_o_srij db \"srijana\",0"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 319,
+      "column": 18,
+      "old": "nishedha",
+      "kind": "quoted_literal_review",
+      "context": "r4_o_nish db \"nishedha\",0"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 320,
+      "column": 18,
+      "old": "ayojan",
+      "kind": "quoted_literal_review",
+      "context": "r4_o_ayoj db \"ayojan\",0"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 322,
+      "column": 19,
+      "old": "nishkriya",
+      "kind": "quoted_literal_review",
+      "context": "r4_o_nishk db \"nishkriya\",0"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 2281,
+      "column": 14,
+      "old": "ayojan",
+      "kind": "quoted_literal_review",
+      "context": "; the actual \"ayojan\" keyword and returns an honest column.  If the original"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 2322,
+      "column": 35,
+      "old": "ayojan",
+      "kind": "quoted_literal_review",
+      "context": "; still looked for the 6-byte \"ayojan\" and therefore printed '?'."
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 2536,
+      "column": 17,
+      "old": "ayojan",
+      "kind": "quoted_literal_review",
+      "context": "; Check for \"ayojan\" at current pos"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 8626,
+      "column": 41,
+      "old": "nishkriya",
+      "kind": "quoted_literal_review",
+      "context": "call advance_tok          ; consume 'nishkriya'"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 8886,
+      "column": 41,
+      "old": "punaravartana",
+      "kind": "quoted_literal_review",
+      "context": "call advance_tok          ; consume 'punaravartana'"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 9004,
+      "column": 41,
+      "old": "nishedha",
+      "kind": "quoted_literal_review",
+      "context": "call advance_tok          ; consume 'nishedha'"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "line": 9256,
+      "column": 41,
+      "old": "pratiyati",
+      "kind": "quoted_literal_review",
+      "context": "call advance_tok          ; consume 'pratiyati'"
+    }
+  ]
+}

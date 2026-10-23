@@ -1,0 +1,145 @@
+{
+  "snapshot": "75b4d77fb41350827cda938ebcc337d15000f2a3",
+  "part": 1,
+  "offset": 0,
+  "listed": 16,
+  "read": 16,
+  "bytes": 414338,
+  "errors": [],
+  "findings": [
+    {
+      "path": "compiler/MODULE_NAMESPACES_R33.md",
+      "line": 8,
+      "old": "ayojan",
+      "kind": "documentation_code_review",
+      "context": "```sutram ayojan r33_alpha@first ayojan r33_beta@second"
+    },
+    {
+      "path": "compiler/MODULE_NAMESPACES_R33.md",
+      "line": 9,
+      "old": "ayojan",
+      "kind": "documentation_code_review",
+      "context": "sutram ayojan r33_alpha@first ayojan r33_beta@second mukhya() { likha(f"
+    },
+    {
+      "path": "compiler/verified_snapshots/FG2_R30_verified.asm.txt",
+      "line": 569,
+      "col": 2,
+      "old": "pratiyati",
+      "kind": "quoted_review",
+      "context": "    kw_pratiyati db \"pratiyati\", 0"
+    },
+    {
+      "path": "compiler/verified_snapshots/FG2_R30_verified.asm.txt",
+      "line": 573,
+      "col": 2,
+      "old": "ayojan",
+      "kind": "quoted_review",
+      "context": "    kw_ayojan  db \"ayojan\", 0"
+    },
+    {
+      "path": "compiler/verified_snapshots/FG2_R30_verified.asm.txt",
+      "line": 575,
+      "col": 2,
+      "old": "punaravartana",
+      "kind": "quoted_review",
+      "context": "    kw_punaravartana db \"punaravartana\", 0"
+    },
+    {
+      "path": "compiler/verified_snapshots/FG2_R30_verified.asm.txt",
+      "line": 578,
+      "col": 2,
+      "old": "nishedha",
+      "kind": "quoted_review",
+      "context": "    kw_nishedha db \"nishedha\", 0"
+    },
+    {
+      "path": "compiler/verified_snapshots/FG2_R30_verified.asm.txt",
+      "line": 584,
+      "col": 2,
+      "old": "srijana",
+      "kind": "quoted_review",
+      "context": "    kw_srijana  db \"srijana\", 0"
+    },
+    {
+      "path": "compiler/verified_snapshots/FG2_R30_verified.asm.txt",
+      "line": 587,
+      "col": 2,
+      "old": "pankti",
+      "kind": "quoted_review",
+      "context": "    kw_pankti   db \"pankti\", 0"
+    },
+    {
+      "path": "compiler/verified_snapshots/FG2_R30_verified.asm.txt",
+      "line": 588,
+      "col": 2,
+      "old": "nishkriya",
+      "kind": "quoted_review",
+      "context": "    kw_nishkriya db \"nishkriya\", 0"
+    },
+    {
+      "path": "compiler/verified_snapshots/FG2_R30_verified.asm.txt",
+      "line": 633,
+      "col": 2,
+      "old": "char_at",
+      "kind": "quoted_review",
+      "context": "    bn_charat    db \"char_at\", 0"
+    },
+    {
+      "path": "compiler/verified_snapshots/FG2_R30_verified.asm.txt",
+      "line": 634,
+      "col": 2,
+      "old": "char_code",
+      "kind": "quoted_review",
+      "context": "    bn_charcd    db \"char_code\", 0"
+    },
+    {
+      "path": "compiler/verified_snapshots/FG2_R30_verified.asm.txt",
+      "line": 1890,
+      "col": 2,
+      "old": "ayojan",
+      "kind": "quoted_review",
+      "context": "    ; Check for \"ayojan\" at current pos"
+    },
+    {
+      "path": "compiler/verified_snapshots/FG2_R30_verified.asm.txt",
+      "line": 1899,
+      "col": 2,
+      "old": "ayojan",
+      "kind": "quoted_review",
+      "context": "    ; Found \"ayojan\" - skip it and module name"
+    },
+    {
+      "path": "compiler/verified_snapshots/FG2_R30_verified.asm.txt",
+      "line": 3511,
+      "col": 2,
+      "old": "nishkriya",
+      "kind": "quoted_review",
+      "context": "    call advance_tok          ; consume 'nishkriya'"
+    },
+    {
+      "path": "compiler/verified_snapshots/FG2_R30_verified.asm.txt",
+      "line": 3747,
+      "col": 2,
+      "old": "punaravartana",
+      "kind": "quoted_review",
+      "context": "    call advance_tok          ; consume 'punaravartana'"
+    },
+    {
+      "path": "compiler/verified_snapshots/FG2_R30_verified.asm.txt",
+      "line": 3846,
+      "col": 2,
+      "old": "nishedha",
+      "kind": "quoted_review",
+      "context": "    call advance_tok          ; consume 'nishedha'"
+    },
+    {
+      "path": "compiler/verified_snapshots/FG2_R30_verified.asm.txt",
+      "line": 4078,
+      "col": 2,
+      "old": "pratiyati",
+      "kind": "quoted_review",
+      "context": "    call advance_tok          ; consume 'pratiyati'"
+    }
+  ]
+}
