@@ -1,3 +1,22 @@
+## v314 - Muse is asked to carry Claude's round; Claude is away until Tuesday
+
+**Claude is unavailable until next Tuesday.** **So ROUND-31 goes to Muse** - which has been idle since ROUND-30
+(16 October) while main moved from there to v246.
+
+**ROUND-31 is Claude's round, reassigned:** the numbers audit, the full test run - **including the suite summary
+line Sarvam could not capture** - the guard, and its own capability choice.
+
+**And it opens with the language directive**, so Muse starts on the current priority rather than the
+three-language plan it last saw.
+
+### And ChatGPT has not replied to the prompt round
+**Nothing in `ChatGPT-to-Sarvam/` matches the prompt-round deliverables** - no prose audit, no provenance-gap
+answer. **Its last delivery is R104.** **So it is either still working or did not receive the prompt.**
+
+### State
+**main v246. The R38 merge landed, so ROUND-39's item 1 is done.** **The only branch still unmerged is
+`claude/windows-ffi` (v245), which the Windows channel owns.**
+
 ## v313 - LANGUAGE PRIORITY: Sanskrit only until v1.0. All channels now read one directive.
 
 **The owner's decision, 23 October 2026: develop in Sanskrit only until v1.0 is finished.** **The other ten packs -
