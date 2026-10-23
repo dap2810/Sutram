@@ -1,0 +1,45 @@
+ROUND-107 RAW SOURCE-READ RESULT — NOT A NATIVE TEST
+PINNED_MAIN fd48619526f6dde6c2b21c7b37ee1bf56f2c505f
+READ PASS lang/sanskrit.lang blob=b7bbbe1e07d258cc67f05e9dad81bca9379e59a6
+READ PASS src/sutram_compiler.asm blob=7db83d38152c81b05e387b5a93a4445fa984f72c
+READ PASS README.md blob=599f1cc5078e43530ddc572af4a5e84f851ce253
+READ PASS PROJECT-OVERVIEW.md blob=3366312395ab9c23aff740176ecd57061c5ab0e2
+READ PASS PROJECT-MASTER.md blob=480adad1ab5f0c209479e985d50c401497afd7ac
+READ PASS docs/sutram-design-parameters.html blob=81d46eab008ff5d3053e16ac57a9800e83360687
+READ PASS docs/sutram-project-status.html blob=40022601eeccce00d7c4d683999f3efd493656d8
+READ PASS docs/sutram-scorecard.html blob=8f8f537e6e801afcab75ba0333dbebbcf4029a36
+READ PASS docs/sutram-roadmap.html blob=235c68e63ad36d51243bd1c82b532d9a762dfbe4
+READ PASS docs/PATH-TO-COMPLETION.md blob=8a6353213f02a0c5055d61f159e1e5e95b797370
+READ PASS LANGUAGE-PRIORITY.md blob=64682919a70fa1b79e415bc879aee9cad07582ad
+SOURCE_COUNT keyword_id_definitions=32
+SOURCE_COUNT lexer_table_rows=47
+SOURCE_COUNT lexer_unique_keyword_ids=31
+SOURCE_COUNT contextual_id=KW_ATHA
+SOURCE_COUNT sanskrit_mapping_rows=58
+SOURCE_COUNT sanskrit_native_spellings=58
+SOURCE_COUNT sanskrit_distinct_targets=52
+SOURCE_COUNT primary_rows=35
+SOURCE_COUNT R65_rows=18
+SOURCE_COUNT R66_rows=5
+PASS 32 declared keyword IDs
+PASS 31 unique lexer-table keyword IDs
+PASS one contextual keyword outside direct lexer table
+PASS 58 Sanskrit source spellings
+PASS 52 distinct Sanskrit target spellings
+PASS 35 primary plus 18 R65 and 5 R66
+PASS README no longer denies separate compilation
+PASS README no longer denies first-class functions
+PASS Overview still denies real Windows GUI run
+PASS Overview contains leftover no first-class sentence
+PASS Master old three-language development policy remains
+PASS Master performance says Zig wins RSS and runtime tie
+PASS Master still lists no C FFI
+PASS Design page still claims no separate compilation
+PASS Project status still says no C FFI
+PASS Scorecard still says no C FFI
+PASS Roadmap now marks real Windows 16 checks
+PASS Canonical completion path states Sanskrit only
+PASS Owner directive states Sanskrit only
+RESULT SOURCE_ASSERTIONS 19 PASS / 0 FAIL
+NOT RUN - no toolchain: Sutram compiler build, suite, regression, lexer execution, real Windows, benchmarks
+NOTE 28 keyword-history origin is plausible but cannot be verified against its historical compiler SHA in this source count.
