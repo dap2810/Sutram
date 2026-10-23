@@ -5,7 +5,8 @@
 # Every function READS its kosh parameters only — never `kosh_push` on a parameter, which the
 # compiler deliberately rejects because the pointer is passed by value.
 #
-# Sutram has no first-class functions, so anything that would take a callback instead takes
+# Sutram has first-class functions (R23), but this module's API predates them:
+# anything that would take a callback instead takes
 # either SAMPLES (for integration/differentiation) or POLYNOMIAL COEFFICIENTS (for root finding).
 # Coefficients are in ascending order: c[0] + c[1]*x + c[2]*x^2 + ...
 
