@@ -156,9 +156,7 @@ picture is not. The **Windows installer has never been executed on Windows**.
 Performance figures are directional (minimum of repeated runs), not
 microbenchmark-grade.
 
-**Not implemented.** No separate compilation — `yoj` expands modules
-textually within one translation unit; transitive imports resolve once, but
-there are no `.smo` object files. No concurrency. No first-class functions. No
+**Not implemented.** Separate compilation with object files now exists (our own linker, `SUTRAMO1`/`SUTRAMO2`), as do first-class functions and methods. Still absent: concurrency, pattern matching, and namespaced modules - `yoj` still inlines textually for the ordinary path No concurrency. No first-class functions. No
 collections beyond `kosh` and `mala`.
 
 ## 9. How this project was built
