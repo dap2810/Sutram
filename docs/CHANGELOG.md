@@ -1,3 +1,25 @@
+## v331 - ROUND-35: the rename `lib/` never got, and my refusal was the error
+
+**Muse's R34 proved the generator is clean and the LIBRARY is stale.** **So ROUND-35 is the real defect: `lib/` still
+carries pre-rename vocabulary, and one of the tokens is an IDENTIFIER.**
+
+**The list so far:** `lib/chandas.smlib:82` declares `meru_pankti` where the docs say `meru_mala`; `lib/sadhan.smlib`
+instructs `Usage: ayojan util`; and `pankti` appears as the array keyword in comments across ten modules.
+
+**The brief asks for the COMPLETE list, including a check for the other old keywords** - `punaravartana`,
+`pratiyati`, `uddeshya`, `anytra`, `nishedha`, `parigrah`, `nishkriya`, `ayojan`, `srijana`, `to` - **because
+`pankti` and `ayojan` are the two we happened to notice.**
+
+**And the split that matters:** **identifiers are a breaking change and need the guard; comments do not.** **A rename
+that changes any compiled program's bytes is wrong.**
+
+### And the record of my error
+**I refused a correct patch because a token looked old.** **`pankti` is the old array keyword, so I read `pankti` as
+old everywhere - but `meru_pankti` is a function name that should have become `meru_mala`.** **The pattern-match was
+on the token, not the source.**
+
+**Two partners found the truth from opposite directions while I argued against the fix.**
+
 ## v330 - I WAS WRONG. I refused a correct patch, and the LIBRARY is what is stale.
 
 **In v328 I held back part of Muse's R33 patch because it changed `meru_mala` to `meru_pankti` and `yoj` to
