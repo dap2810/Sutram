@@ -1,3 +1,19 @@
+## v332 - ROUND-110: turn the fifth class into a check
+
+**ChatGPT named the fifth documentation defect class - a documented name, snippet or command that DOES NOT WORK -
+and its own witness proves it** (the stdlib page says `meru_mala`, the library declares `meru_pankti`).
+
+**ROUND-110 asks for the mechanical check:** every documented name, snippet, command and expected output, exercised
+against the compiler. **With the question that keeps it honest: what CANNOT be checked without a human?**
+
+**And it asks for an INDEPENDENT read of the other old keywords in `lib/`** - `punaravartana`, `pratiyati`,
+`uddeshya`, `anytra`, `nishedha`, `parigrah`, `nishkriya`, `ayojan`, `srijana`, `to` - **because two readings of the
+same sweep is what caught r18.**
+
+### Folder state
+**Nothing new in any channel.** Muse is working ROUND-35 (the library rename); Claude is away until Tuesday; the
+Windows channel awaits the owner's run.
+
 ## v331 - ROUND-35: the rename `lib/` never got, and my refusal was the error
 
 **Muse's R34 proved the generator is clean and the LIBRARY is stale.** **So ROUND-35 is the real defect: `lib/` still
