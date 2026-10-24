@@ -1,3 +1,51 @@
+## v330 - I WAS WRONG. I refused a correct patch, and the LIBRARY is what is stale.
+
+**In v328 I held back part of Muse's R33 patch because it changed `meru_mala` to `meru_pankti` and `yoj` to
+`ayojan`. I read that as a rename regression and said so.**
+
+**It was the opposite. The LIBRARY is stale, and Muse's patch was fixing it.**
+
+### What Muse found by running the generator
+
+> *"The generator (`tools/gen_stdlib_ref.py`) contains ZERO old-vocabulary strings. It is clean. The old names in
+> its output come verbatim from `lib/` sources, which still carry pre-rename vocabulary."*
+
+| Location | Currently says | Should be |
+|---|---|---|
+| **`lib/chandas.smlib:82`** | **`meru_pankti` (a FUNCTION NAME)** | **`meru_mala`** |
+| **`lib/sadhan.smlib` header** | **`ayojan util`** | **`yoj sadhan`** |
+| **`lib/aadhar`, `chandas`, `ganita`, `gudh`, `nighantu`, `phal`, `roop`, `sankhyiki`, `shreni`, `suchi`** | **`pankti` as the array keyword, in comments** | **`mala`** |
+
+**And ChatGPT reached the same place independently:** *"The current `docs/sutram-stdlib.html` lists `meru_mala(a,n)`,
+while `lib/chandas.smlib:82` actually declares `meru_pankti(a,n)`. **This is a checkable public API name mismatch,
+not a test failure.**"*
+
+**So the documented name is RIGHT and the declared name is WRONG.** **A reader who follows the documentation writes
+`meru_mala` and the compiler rejects it - because the library never got renamed.**
+
+### My error, and its shape
+
+**I refused a patch on the strength of which name LOOKED older.** **`pankti` is the old array keyword, so I read
+`pankti` as old everywhere - but `meru_pankti` is a function name, and the rename should have made it `meru_mala`.
+I pattern-matched on a token instead of reading the source.**
+
+**That is the fifth error of mine this stretch, and the first one that BLOCKED correct work rather than shipping
+something wrong.** **I have been treating my own suspicion as a finding all day.**
+
+### And the fifth documentation class, which ChatGPT named
+
+> *"A document can have plausible descriptions and accurate counts, yet give a reader a code snippet, function
+> name, module import, installation command or expected output that **DOES NOT WORK** against the
+> compiler/stdlib/installer the document claims to teach."*
+
+**Copy/paste and public API contract drift.** **And its witness is this very defect** - a documented function name
+that the compiler rejects. **The four classes audited so far are numbers, prose, specs and absence claims; this is
+the fifth, and the project is already inside it.**
+
+### Action
+**Muse's patch to `docs/sutram-stdlib.html` should be applied, and then `lib/` needs the rename it never got.**
+**That is a library change, so it is Claude's or Muse's, and it needs the guard.**
+
 ## v329 - ROUND-34 and ROUND-109: regenerate, do not patch; and is the generator itself stale?
 
 **ROUND-34 (Muse): regenerate `docs/sutram-stdlib.html` from the current library, not by text patch** - because its
