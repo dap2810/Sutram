@@ -1,0 +1,140 @@
+{
+  "schema": 1,
+  "project": "Sutram",
+  "round": 109,
+  "datetime": "2026-10-23",
+  "role": "READ_ONLY",
+  "start_main": "dfd0da5d14ef2ab51f7d74ca31193ea21bb9481b",
+  "initial_changelog": "v329",
+  "brief": {
+    "path": "Sarvam-to-ChatGPT/ROUND-109.md",
+    "sha": "649b50461096bf864a2956056145440b7fcb5d52"
+  },
+  "governing": [
+    {
+      "path": "LANGUAGE-PRIORITY.md",
+      "sha": "64682919a70fa1b79e415bc879aee9cad07582ad"
+    },
+    {
+      "path": "docs/PATH-TO-COMPLETION.md",
+      "sha": "8a6353213f02a0c5055d61f159e1e5e95b797370"
+    }
+  ],
+  "sources": {
+    "generator": {
+      "path": "tools/gen_stdlib_ref.py",
+      "sha": "7d13129e1aba99cf62ccfe3f7ec33e45d4bbf433"
+    },
+    "committed_page": {
+      "path": "docs/sutram-stdlib.html",
+      "sha": "a120fe5739598131dab3768655eab60620536321"
+    },
+    "critical": [
+      {
+        "path": "lib/chandas.smlib",
+        "sha": "3dc24f437d79e4fb44717ee846a7e87a21a64bb4"
+      },
+      {
+        "path": "lib/sadhan.smlib",
+        "sha": "41d45dc2e69091a53fd54671e913ccdc177b9a8c"
+      },
+      {
+        "path": "lib/aadhar.smlib",
+        "sha": "b46e5da7c81159d9b2573e3f6d5a715f47bb6f09"
+      },
+      {
+        "path": "lib/gudh.smlib",
+        "sha": "63048abc15280d23ef37cde6763677347d6ffcff"
+      },
+      {
+        "path": "lib/nighantu.smlib",
+        "sha": "4c5f4255ef9cf6caa59acb117f2d545e80767e5c"
+      },
+      {
+        "path": "lib/phal.smlib",
+        "sha": "c23ae4ae9b48aba19fb66eb22fdf44b5fff5e392"
+      },
+      {
+        "path": "lib/roop.smlib",
+        "sha": "00fd3cbfbf428dd007e7708a31313de246671193"
+      },
+      {
+        "path": "lib/shreni.smlib",
+        "sha": "d7f13d88280bc4d6d4bed5261d9dab7f2c5f10ae"
+      },
+      {
+        "path": "lib/suchi.smlib",
+        "sha": "95c3269e7a709adcdc12d6e3ec46bee0a83b9711"
+      },
+      {
+        "path": "lib/vakyank.smlib",
+        "sha": "87b9e817a06df7ce346d1fe1e71ba65d6d442de6"
+      },
+      {
+        "path": "lib/ganit.smlib",
+        "sha": "c4008c37b3da79a7cec5f5c2411fdd516bf07ce4"
+      },
+      {
+        "path": "lib/kalana.smlib",
+        "sha": "a3a2c47821b439d66bdf1d3450b92ab1e00fcd86"
+      }
+    ]
+  },
+  "ws1": {
+    "status": "PASS SOURCE READING; GENERATOR EXECUTION NOT RUN - no toolchain",
+    "expected_current_source": {
+      "modules": 24,
+      "prakriya": 305,
+      "brihat_functions": 13,
+      "samanvaya_functions": 11,
+      "current_chandas_function": "meru_pankti(a, n)"
+    },
+    "committed_html": {
+      "modules": 24,
+      "functions": 303,
+      "brihat_functions": 12,
+      "samanvaya_functions": 10,
+      "old_chandas_function": "meru_mala(a, n)"
+    },
+    "generator_mechanism": "No literal rename table. Copies actual function name/signature and leading/immediately preceding source comments; calculates counts directly from lib. Re-run expected to fix structural drift.",
+    "obsolete_source_comment_labels": {
+      "whole_token_pankti_locations": 16,
+      "ayojan_locations": 2,
+      "old_util_header_locations": 2,
+      "active_invalid_usage": "lib/sadhan.smlib:4 Usage: ayojan util",
+      "historical_ayojan": "lib/suchi.smlib:211",
+      "valid_source_function": "lib/chandas.smlib:82 meru_pankti"
+    },
+    "conclusion": "BOTH stale committed generated page and stale library-source comments. Re-running current generator will reproduce old comments but update real function signatures. Generator lacks semantic validation, not a stale hardcoded terminology map.",
+    "artifact": "ChatGPT-to-Sarvam/ROUND-109-WS1-STDLIB-GENERATOR-AUDIT.md"
+  },
+  "ws2": {
+    "status": "PASS ORDERED PROSE DESIGN, NOT APPLIED",
+    "steps": 9,
+    "artifact": "ChatGPT-to-Sarvam/ROUND-109-WS2-ORDERED-SPEC-CHECKLIST.md",
+    "constraints": "Sanskrit first, owner Windows merge/tests/type decision before v1.0, other ten language packs and benchmarks deferred"
+  },
+  "ws3": {
+    "status": "PASS SOURCE-GROUNDED FINDING; EXECUTION NOT RUN - no toolchain",
+    "name": "Copy/paste examples and public API contract drift",
+    "witnesses": [
+      "HTML meru_mala vs source meru_pankti",
+      "library comment Usage ayojan util vs current yoj sadhan"
+    ],
+    "recommendation": "Inventory and classify code blocks, CLI usage, module names and signatures; compare to pinned current API statically and run extracted deterministic samples only with a capable toolchain.",
+    "artifact": "ChatGPT-to-Sarvam/ROUND-109-WS2-DOCUMENTATION-FIFTH-CLASS.md"
+  },
+  "raw_evidence": "ChatGPT-to-Sarvam/ROUND-109-RAW-READ.txt",
+  "collaboration": {
+    "Muse_round34": "not yet present at last check; independently tasked with regeneration, stale-claim count and guard",
+    "Windows_latest": "Windows-to-Sarvam/WIN-FFI-2026-10-21.md read previously; no new Windows delivery at first inspection"
+  },
+  "not_run": [
+    "NOT RUN - no toolchain: executing tools/gen_stdlib_ref.py and comparing generated output",
+    "NOT RUN - no toolchain: native Sutram compiler or standard regression suite",
+    "NOT RUN - no toolchain: native Windows FFI/installer/GUI",
+    "NOT RUN - no toolchain: new sample compilation and code block acceptance",
+    "NOT RUN - no toolchain: gates/fuzz/crash corpus/benchmark"
+  ],
+  "mutations": "New docs only under ChatGPT-to-Sarvam. No src, lib, tests, tools, generated docs, Windows-to-Sarvam, backups, frozen packs changed."
+}
