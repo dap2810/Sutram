@@ -1,0 +1,76 @@
+ROUND-109 SOURCE-READ RECEIPT — PINNED MAIN dfd0da5d14ef2ab51f7d74ca31193ea21bb9481b
+NOT RUN - no toolchain: native Sutram, Python generator execution, gates, Windows and benchmark
+READ PASS tools/gen_stdlib_ref.py 7d13129e1aba99cf62ccfe3f7ec33e45d4bbf433
+READ PASS docs/sutram-stdlib.html a120fe5739598131dab3768655eab60620536321
+READ PASS lib/chandas.smlib 3dc24f437d79e4fb44717ee846a7e87a21a64bb4
+READ PASS lib/sadhan.smlib 41d45dc2e69091a53fd54671e913ccdc177b9a8c
+SOURCE_MODULE_COUNT 24
+SOURCE_FUNCTION_COUNTS:
+aadhar 2
+ank 10
+anukram 5
+brihat 13
+chandas 6
+ganit 18
+ganita 22
+gudh 2
+kalana 6
+khand 22
+madhava 5
+mala 8
+nighantu 17
+patra 3
+phal 14
+roop 23
+sadhan 7
+samanvaya 11
+sangrah 14
+sankhyiki 16
+shreni 14
+suchi 34
+vakyank 6
+varna 27
+SOURCE_TOTAL_PRAKRIYA 305
+COMMITTED_HTML brihat_functions=12
+COMMITTED_HTML samanvaya_functions=10
+COMMITTED_HTML FOOTER="24 modules, 303 functions. Generated from library sources."
+COMMITTED_HTML docs/sutram-stdlib.html:107="meru_mala(a, n)"
+CURRENT_SOURCE lib/chandas.smlib:82="prakriya meru_pankti(a, n) {"
+CURRENT_SOURCE lib/sadhan.smlib:1="# Sutram Utility Library - util.smlib"
+CURRENT_SOURCE lib/sadhan.smlib:4="# Usage: ayojan util"
+COMMITTED_HTML docs/sutram-stdlib.html:305 includes "Usage: yoj sadhan"
+CURRENT_SOURCE lib/suchi.smlib:211="# sorting a list meant `ayojan sort` plus a hand-written" [historical wording, not a current usage instruction]
+SOURCE_COMMENT_OLD_ARRAY_TOKEN pankti 16 locations:
+lib/aadhar.smlib:5
+lib/aadhar.smlib:15
+lib/aadhar.smlib:74
+lib/gudh.smlib:12
+lib/gudh.smlib:28
+lib/nighantu.smlib:4
+lib/phal.smlib:4
+lib/roop.smlib:8
+lib/shreni.smlib:4
+lib/suchi.smlib:4
+lib/suchi.smlib:33
+lib/vakyank.smlib:6
+lib/vakyank.smlib:12
+lib/vakyank.smlib:81
+lib/vakyank.smlib:83
+lib/vakyank.smlib:235
+SOURCE_COMMENT_OLD_IMPORT_TOKEN ayojan 2 locations:
+lib/sadhan.smlib:4
+lib/suchi.smlib:211 [historical]
+SOURCE_COMMENT_OLD_MODULE_ALIAS util 2 locations:
+lib/sadhan.smlib:1
+lib/sadhan.smlib:4
+NOT_A_LANGUAGE_TOKEN_RENAME lib/chandas.smlib:82 meru_pankti is the actual declared function; keep exact signature
+NOT_A_LANGUAGE_TOKEN_RENAME lib/ganit.smlib ganit_yadricch and ganit_seemit are actual function names
+GENERATOR_BEHAVIOR main: scans sorted lib/*.smlib
+GENERATOR_BEHAVIOR parse_module: header leading # comments (skips lib/ title lines) + immediately preceding # function comments
+GENERATOR_BEHAVIOR signature: prakriya name(args) read from current source
+GENERATOR_BEHAVIOR output: docs/sutram-stdlib.html, module and function counts computed from source
+GENERATOR_BEHAVIOR no vocabulary rewrite or correctness validation for Usage examples
+CONCLUSION stale committed HTML AND source comment vocabulary; no literal stale-name mapping in generator itself
+STATUS WS1 PASS SOURCE READING; GENERATOR EXECUTION NOT RUN - no toolchain
+STATUS WS2 PASS ORDERED DOCUMENT REVIEW; ACCEPTANCE NOT RUN - no toolchain
+STATUS WS3 PASS FIFTH-CLASS DESIGN REVIEW; NATIVE SNIPPET TESTS NOT RUN - no toolchain
