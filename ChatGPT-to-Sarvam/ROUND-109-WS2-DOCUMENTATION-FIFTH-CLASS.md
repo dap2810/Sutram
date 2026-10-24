@@ -1,0 +1,24 @@
+# Sutram ROUND-109 WS3 — Fifth documentation defect class: copy/paste contract drift
+
+**Pinned tree:** `dfd0da5d14ef2ab51f7d74ca31193ea21bb9481b`, v329, source-read only. The first four classes already audited are **numbers**, **prose/capability claims**, **versioned specifications**, and **false absence claims**. The next missing class is:
+
+> **A document can have plausible descriptions and accurate counts, yet give a reader a code snippet, function name, module import, installation command or expected output that DOES NOT WORK against the compiler/stdlib/installer the document claims to teach.** Call this **copy/paste and public API contract drift**.
+
+## The source-first witness in this round
+
+- The current `docs/sutram-stdlib.html` lists `meru_mala(a,n)`, while `lib/chandas.smlib:82` actually declares `meru_pankti(a,n)`. **This is a checkable public API name mismatch, not a test failure.** Regeneration should take the real name. The suffix `pankti` inside a real function identifier is not automatically an obsolete array-keyword token.
+- The current `lib/sadhan.smlib:4` header literally instructs `Usage: ayojan util`. The actual module is `sadhan.smlib`, and the current include keyword is `yoj`. The current generator will copy the wrong example into a regenerated page, even if its module/function counts are perfect. **This shows why generating from source comments cannot establish that the comments are true.**
+- The current source contains 16 old whole-word `pankti` array descriptions that a generator will copy. Whether each is a linguistic choice or a false executable instruction depends on context; **do not globally replace substrings**.
+- `docs/LANGUAGE-REFERENCE.md` and book pages contain worked programs, compiler CLI commands and expected output alongside historical text. No per-snippet executable acceptance trace is established here. A prose scanner that sees “nothing unsupported” can still overlook a wrong example.
+
+## How to check mechanically without confusing design prose with runnable programs
+
+1. **Inventory runnable surfaces** in published docs: Markdown fenced `sutram`/`sm`, `sh`/PowerShell commands, HTML `<pre>`, explicitly labelled `Usage:` and API signature tables, cross-references such as `yoj module` and function signatures. Mark each **EXECUTABLE**, **ILLUSTRATIVE/FRAGMENT**, **HISTORICAL**, **PROPOSAL**, or **PLATFORM SPECIFIC**, with a current source SHA and expected target. Do not blindly run every code block.
+2. **Cheap static checking:** read current `lib/*.smlib` `prakriya` names and module filenames; check all documented callable signatures and `yoj` paths against the actual exposed symbol table. For grammar snippets, check whole-token deprecated keywords (e.g. `ayojan` and stand-alone `pankti`) but exempt legitimate function-name substrings `meru_pankti`. Flag an unknown module/CLI switch for human review. A claim “all examples compile” must NEVER be inferred solely from matching names.
+3. **Native acceptance once toolchain is present:** compile each standalone Sanskrit snippet with the **canonical pinned compiler** and documented mode; compare **exit code, stdout/stderr, type/arity diagnostics and artifact presence** to the page's expected behavior; run only safe, deterministic examples in an isolated no-network/no-privilege environment. Check platform-specific commands on their stated host; Linux/Wine is not a real Windows GUI test.
+4. **Generated artifacts:** regenerate from the pinned library using `tools/gen_stdlib_ref.py`, then diff function inventory and source comments separately. A full byte-for-byte `--check`/diff detects stale output; additional vocabulary/command validation catches **wrong comments faithfully regenerated**. Neither alone guarantees the other.
+5. **Owner review:** only promote executed positive/negative examples to `PASS` if toolchain, source blob, platform, exact command and raw output are logged. Mark fragments `NOT RUN` or `DESIGN ONLY`. Keep frozen non-Sanskrit packs unchanged until the Sanskrit v1.0 freeze.
+
+**Why existing gates miss it:** `tools/doc_counts_gate.py` verifies counts, `tools/doc_stale_claims.py` detects some outdated absence-sentences, and `tools/check_alloc_bounds.py` checks selected allocator patterns. None establishes **“a user can paste this published example and it will compile/run as stated.”** `gen_stdlib_ref.py` only copies source names/comments, so the generated page can look official while its examples are obsolete.
+
+**Priority:** flag published `Usage`/copyable API first, then docs command snippets, then cross-platform examples, then dated historical fragments. This class can be checked partly with static source matching **today**, but a real PASS requires a native compiler/toolchain. **Current R109 execution status: NOT RUN - no toolchain.** This is a reader-side recommendation, not a new `tools/` script. No source/library/tests/Windows files were changed.
