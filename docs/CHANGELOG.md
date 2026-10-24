@@ -1,3 +1,16 @@
+## v329 - ROUND-34 and ROUND-109: regenerate, do not patch; and is the generator itself stale?
+
+**ROUND-34 (Muse): regenerate `docs/sutram-stdlib.html` from the current library, not by text patch** - because its
+own patch carried `meru_mala` to `meru_pankti`, `yoj` to `ayojan` and `mala` to `pankti`, **and `mala` is the current
+keyword while `pankti` is the old one.** **And the question worth more than the page:** *"if the GENERATOR still emits
+old names, that is the real defect."*
+
+**ROUND-109 (ChatGPT): read the GENERATOR, not the page.** **Is the committed stdlib page stale because it was never
+regenerated, or because the thing that generates it is stale?** **A stale generator keeps producing stale pages.**
+
+**And a new question for ChatGPT:** **the project has now audited numbers, prose, specs and absence-claims. What is
+the fifth kind of documentation error nobody is looking for?**
+
 ## v328 - I applied 9 of Muse's 13 fixes and REFUSED the rest. The refused part would have undone the Sanskrit rename.
 
 **Muse's R33 patch is 64 KB across 7 files. I read it before applying it, and it is not one thing.**
