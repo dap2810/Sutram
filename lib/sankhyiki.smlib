@@ -117,7 +117,7 @@ prakriya manak(kosh dasham a) {
 
 # ---------------------------------------------------------------------------
 # Integer statistics (ROUND-13, Part B): `purna` (whole/integer) variants
-# over `pankti` integer arrays, same (xs, n) shape as lib/sort.smlib.
+# over `mala` integer arrays, same (xs, n) shape as lib/shreni.smlib.
 # The float functions above take `kosh dasham`; these take plain integer
 # arrays, so integer data no longer needs float conversion.
 #
