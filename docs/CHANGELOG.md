@@ -1,3 +1,33 @@
+## v348 - Muse delivered whole files (installed), and ChatGPT reviewed my Sanskrit draft
+
+**Both delivered. The three approved changes are now installed, and my Sanskrit document has been corrected by review.**
+
+### Muse R39 - the whole files, as asked
+**`tools/gates.sh` (19,620 B) and `tools/doc_counts_gate.py` (10,921 B) installed**, plus **nine test files for the
+bounds guard** (`251_r38_alias_mala_oob.sm`, `252_r38_alias_kosh_oob.sm`, `253_r38_alias_slice_oob.sm` with their
+`.out` and `.exit` goldens).
+
+**So the four doc checks now run in every build**, and the bounds guard has tests.
+
+### ChatGPT R114-WS3 - the Sanskrit review, and it is disciplined
+
+| My claim | The verdict |
+|---|---|
+| utsarga/apavāda as a general-rule/specific-override mechanism | **DEFENSIBLE AS AN ANALOGY, not universal implementation** - *"Pāṇinian ordering, domain specificity and metarules can matter"* |
+| "one mechanism covers error handling, dispatch and defaults" | **UNTESTED ARCHITECTURE, not a property** - *"error handling concerns propagation, observability and recovery, not just selection precedence"* |
+| `abhava`/`anya` are crude versions of it | **NOT meaningful implementations** - I had implied they were |
+| eleven prefixes cover the vocabulary | **weaker than I said:** 91 distinct first components, **63 occur exactly once**, and only **171/305 (56%)** begin with their own module name |
+
+**The review is now at the top of the document**, so a reader sees the verdict before the claim.
+
+**And it says what the document is:** *"the mechanism claims are proposals with a scholarly analogy behind them, not
+descriptions of what the language does."*
+
+### The pattern, eighth time
+**Every error of mine this stretch was found by a partner reading something I wrote.** **This one was a document about
+Sanskrit, corrected by a partner that explicitly said it is not certifying the Sanskrit** - and it still found the
+overclaims, because they were about *architecture*, not grammar.
+
 ## v347 - ROUND-39 and ROUND-114: deliver whole files, not a diff
 
 **Muse's R38 patch is correct and I could not apply it - 22 KB of unified diff across five files, and my tool cannot
