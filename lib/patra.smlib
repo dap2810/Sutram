@@ -1,4 +1,4 @@
-# lib/file.smlib — Sutram standard library: file I/O
+# lib/patra.smlib — Sutram standard library: file I/O
 # layer: std
 #
 # The first std module: genuine OS services, via the file builtins
