@@ -1,0 +1,187 @@
+# R114 pinned df4b5237b8962adda7f0693f1fc5bb1408567798 | 12 modules | raw source declarations | module TAB line TAB name TAB params
+nighantu	38	nighantu_kunji_gudh	key, keyn, cap
+nighantu	47	nighantu_kunji_sam	m, slot, cap, key, keyn
+nighantu	62	nighantu_koshtha_likh	m, slot, cap, key, keyn, val
+nighantu	85	nighantu_anwesh	m, cap, key, keyn
+nighantu	107	nighantu_srij	cap
+nighantu	132	nighantu_khip	m, cap, key, keyn, val
+nighantu	159	nighantu_grah	m, cap, key, keyn
+nighantu	169	nighantu_antah	m, cap, key, keyn
+nighantu	181	nighantu_apanay	m, cap, key, keyn
+nighantu	250	nighantu_rikta	m
+nighantu	279	nighantu_vardh	m, newcap
+nighantu	312	nighantu_grah_mool	m, cap, key, keyn, def
+nighantu	321	nighantu_maap	m
+nighantu	332	nighantu_mil	dst, dcap, src, scap
+nighantu	359	nighantu_mulya	m, out
+nighantu	382	nighantu_kunjika	m, out
+nighantu	416	nighantu_kunjika_ashtak	m, out
+patra	29	patra_path_sarv	path, out, cap
+patra	57	patra_likh_sarv	path, data, n
+patra	81	patra_asti	path
+phal	33	phal_siddhi	out, v
+phal	41	phal_dosh	out
+phal	49	phal_asti_siddhi	r
+phal	56	phal_mulya	r
+phal	62	phal_mulya_va	r, def
+phal	69	phal_se_siddhi	out, v, ok
+phal	85	phal_janchit_yuj	out, a, b
+phal	99	phal_janchit_nyun	out, a, b
+phal	113	phal_janchit_gun	out, a, b
+phal	127	phal_janchit_bhaj	out, a, b
+phal	141	phal_janchit_shesh	out, a, b
+phal	157	phal_janchit_ghat	out, a, e
+phal	170	phal_janchit_kramgun	out, n
+phal	183	phal_janchit_nirapeksh	out, a
+roop	32	roop_ank	v, out
+roop	73	roop_ank_aadhar	v, base, upper, out
+roop	150	roop_ank_aadhar2	v, base, out
+roop	174	roop_ank_dhvaj	v, base, flags, out
+roop	212	roop_dash	v, out
+roop	216	roop_shodash	v, out
+roop	220	roop_shodash_unnat	v, out
+roop	224	roop_asht	v, out
+roop	228	roop_dwi	v, out
+roop	235	roop_ank_pre	v, base, upper, out
+roop	244	roop_pad_vam	src, sn, width, padbyte, out
+roop	277	roop_pad_dakshin	src, sn, width, padbyte, out
+roop	311	roop_pad_madhya	src, sn, width, padbyte, out
+roop	355	roop_varg_mool	src, sn, step, out
+roop	430	roop_varg_bharatiya	src, sn, out
+roop	435	roop_varg_vishwa	src, sn, out
+roop	441	roop_varg	src, sn, out
+roop	447	roop_varg_ank	v, indian, out
+roop	469	roop_sthir_mool	dasham x, places, always_sign, out
+roop	584	roop_sthir	dasham x, places, out
+roop	590	roop_sthir_chinhit	dasham x, places, out
+roop	596	roop_chinhit	v, out
+roop	633	roop_sign_akshar	v, signch, out
+sadhan	10	antargam	a, b, t
+sadhan	13	yog_seema	start, end
+sadhan	18	shesh	a, b
+sadhan	23	bhaj_urdhva	a, b
+sadhan	40	util_chinha	n
+sadhan	43	satya_tak_ank	b
+sadhan	46	ank_adhik	
+samanvaya	23	samanvaya_akar_na	m, n, len
+samanvaya	32	pehchan	n, kosh dasham out
+samanvaya	50	vivartana	kosh dasham a, m, n, kosh dasham out
+samanvaya	66	matrika_yoga	kosh dasham a, kosh dasham b, m, n, kosh dasham out
+samanvaya	79	skalar	kosh dasham a, dasham c, m, n, kosh dasham out
+samanvaya	91	matrika_gunana	kosh dasham a, kosh dasham b, m, n, p, kosh dasham out
+samanvaya	111	nishan	kosh dasham a, n
+samanvaya	122	nirnaya2	kosh dasham a
+samanvaya	127	nirnaya3	kosh dasham a
+samanvaya	135	sadish_yoga	kosh dasham u, kosh dasham v
+samanvaya	148	rekha_manak	kosh dasham a, m, n
+sangrah	33	rakh_srij	cap
+sangrah	40	rakh_yuj	s, cap, elem, elem_n
+sangrah	45	rakh_antah	s, cap, elem, elem_n
+sangrah	50	rakh_apanay	s, cap, elem, elem_n
+sangrah	55	rakh_maap	s
+sangrah	63	rakh_samroop_diff	a, cap, b, bcap, out
+sangrah	96	rakh_sangam	a, cap, b, bcap, out
+sangrah	126	rakh_sampat	a, cap, b, bcap, out
+sangrah	148	rakh_bhed	a, cap, b, bcap, out
+sangrah	171	rakh_vardh	s, newcap
+sangrah	179	rakh_rikta	s
+sangrah	186	rakh_sam	a, cap, b, bcap
+sangrah	194	rakh_asti_upasamuh	a, cap, b, bcap
+sangrah	217	rakh_tak_mala	s, cap, out
+sankhyiki	16	yoga	kosh dasham xs
+sankhyiki	27	madhya	kosh dasham xs
+sankhyiki	34	laghutama	kosh dasham xs
+sankhyiki	47	adhikatama	kosh dasham xs
+sankhyiki	60	vyapti	kosh dasham xs
+sankhyiki	65	prasaran	kosh dasham xs
+sankhyiki	82	sankhyiki_vargmool	dasham v
+sankhyiki	94	vichalan	kosh dasham xs
+sankhyiki	99	bindu	kosh dasham a, kosh dasham b
+sankhyiki	114	manak	kosh dasham a
+sankhyiki	131	purna_yoga	xs, n
+sankhyiki	142	purna_madhya	xs, n
+sankhyiki	148	purna_laghutama	xs, n
+sankhyiki	161	purna_adhikatama	xs, n
+sankhyiki	174	purna_vyapti	xs, n
+sankhyiki	181	purna_prasaran	xs, n
+shreni	7	vinimay	a, i, j
+shreni	13	budbud_shreni	a, n
+shreni	27	viparyay_mala	a, n
+shreni	37	laghu	a, n
+shreni	50	adhik	a, n
+shreni	62	yog	a, n
+shreni	72	anwesh_sarak	a, n, target
+shreni	81	gan	a, n, target
+shreni	91	asti_sorted	a, n
+shreni	100	dwi_anwesh	a, n, target
+shreni	111	shankh_shreni	a, n
+shreni	138	nivesh_shreni	a, n
+shreni	164	mil_shreni_punar	a, tmp, lo, hi
+shreni	213	mil_shreni	a, n
+suchi	46	suchi_srij	cap
+suchi	67	suchi_vardh	l
+suchi	87	suchi_khip	l, v
+suchi	100	suchi_grah	l, i
+suchi	110	suchi_sangrah	l, i, v
+suchi	122	suchi_maap	l
+suchi	128	suchi_nivesh	l, i, v
+suchi	152	suchi_apanay	l, i
+suchi	173	suchi_vinimay	l, i, j
+suchi	193	suchi_viparyay	l
+suchi	213	suchi_shreni	l
+suchi	223	suchi_laghu	l, ok
+suchi	234	suchi_adhik	l, ok
+suchi	246	suchi_yog	l
+suchi	253	suchi_gan	l, v
+suchi	260	suchi_anwesh	l, v
+suchi	267	suchi_asti_sorted	l
+suchi	275	suchi_dwi_anwesh	l, v
+suchi	285	suchi_rikta	l
+suchi	297	suchi_antah	l, v
+suchi	310	suchi_kramank	l, v
+suchi	325	chay_khip	l, v
+suchi	331	chay_apanay	l, ok
+suchi	348	chay_avalok	l, ok
+suchi	362	chay_rikta	l
+suchi	381	avali_srij	cap
+suchi	403	avali_pravesh	q, v
+suchi	437	avali_nishkas	q, ok
+suchi	455	avali_avalok	q, ok
+suchi	474	avali_tak_mala	q, out
+suchi	490	avali_antah	q, v
+suchi	507	avali_rikta	q
+suchi	520	avali_shunya	q
+suchi	526	avali_maap	q
+vakyank	15	ank_tak_varna	n, out
+vakyank	84	varna_tak_ank	buf, n, ok
+vakyank	142	ank_tak_aadhar_varna	n, base, out
+vakyank	186	varna_tak_ank_aadhar	buf, n, base, ok
+vakyank	238	pad_vam	out, count, width, fill
+vakyank	270	varna_tak_dashm	buf, n, ok
+varna	18	varna_maap	s
+varna	21	akshar_sanket	s, i
+varna	24	asti_ank_akshar	s, i
+varna	30	asti_unnat_akshar	s, i
+varna	36	asti_avanat_akshar	s, i
+varna	42	asti_akshar_akshar	s, i
+varna	49	asti_avakash_akshar	s, i
+varna	54	gan_swar	s
+varna	68	gan_akshar	s, code
+varna	79	anwesh_akshar	s, code
+varna	89	asti_sarv_ank	s
+varna	100	unnat_sanket	c
+varna	106	avanat_sanket	c
+varna	112	varna_sam	a, b
+varna	140	varna_anwesh	hay, hn, needle, nn
+varna	163	varna_antah	hay, hn, needle, nn
+varna	174	varna_pratisthap	src, sn, find, fn, repl, out
+varna	233	varna_bhed	src, sn, sep, sepn, parts, maxparts
+varna	319	varna_yuj	parts, count, sep, sepn, out
+varna	354	varna_chhid	src, sn, out
+varna	390	varna_unnat	src, sn, out
+varna	411	varna_avanat	src, sn, out
+varna	435	varna_aadi	src, sn, pre, pn
+varna	450	varna_ant	src, sn, suf, sn2
+varna	466	varna_tul	a, an, b, bn
+varna	489	varna_viparyay	src, sn, out
+varna	520	varna_gan	hay, hn, needle, nn
