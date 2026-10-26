@@ -1,0 +1,120 @@
+# R114 pinned df4b5237b8962adda7f0693f1fc5bb1408567798 | 12 modules | raw source declarations | module TAB line TAB name TAB params
+aadhar	20	brihat_ank_tak	x, n, base, out
+aadhar	78	brihat_ank_se	d, count, base, x, n
+ank	5	asti_yugm	n
+ank	8	asti_visham	n
+ank	11	ank_gan	n
+ank	25	ank_yog	n
+ank	39	viparyay_ank	n
+ank	54	asti_vilom	n
+ank	61	seemit	n, lo, hi
+ank	70	fib	n
+ank	85	asti_sampurna	n
+ank	103	collatz_charan	n
+anukram	30	anukram_maap_ashtak	n
+anukram	36	anukram_khip_i64	out, pos, cap, v
+anukram	61	anukram_grah_i64	buf, pos, cap, out
+anukram	88	anukram_khip_ashtak	out, pos, cap, src, n
+anukram	110	anukram_grah_ashtak	buf, pos, cap, dst, out_n
+brihat	13	brihat_shunyank	arr, n
+brihat	28	brihat_ank_se_int	val, arr, n
+brihat	69	brihat_ank_tak_int	arr, n
+brihat	82	brihat_pratilip	dst, src, n
+brihat	95	brihat_tul	a, b, n
+brihat	111	brihat_yuj	a, b, res, n
+brihat	128	brihat_nyun	a, b, res, n
+brihat	151	brihat_gun	a, b, res, n
+brihat	180	brihat_asti_shunyank	arr, n
+brihat	194	brihat_bhajshesh	a, b, q, r, n
+brihat	257	brihat_shesh	ank, shesh, res, n
+brihat	270	brihat_shesh_tr	ank, shesh, res, n, scratch
+brihat	321	brihat_ghatmod	base, exp, shesh, res, n
+chandas	13	dviguna	n
+chandas	24	meru	n, k
+chandas	39	matra_meru	n
+chandas	55	asti_guru	pat, i
+chandas	71	guru_gan	pat
+chandas	82	meru_mala	a, n
+ganit	8	varg	n
+ganit	11	vargit	n
+ganit	14	ghan	n
+ganit	17	nirapeksh_mulya	n
+ganit	25	laghu2	a, b
+ganit	32	adhik2	a, b
+ganit	39	mahattam	a, b
+ganit	55	laghuttam	a, b
+ganit	68	ghat	base, e
+ganit	79	kramgun	n
+ganit	94	asti_abhajya	n
+ganit	108	yog_tak	n
+ganit	120	dvigun	n
+ganit	123	trigun	n
+ganit	126	vardh	n
+ganit	129	bit_gan	n
+ganit	148	ganit_yadricch	state
+ganit	157	ganit_seemit	v, lo, hi
+ganita	17	kuttaka	a, b, c
+ganita	44	ganita_vargmool	n
+ganita	68	ganita_nirapeksh	n
+ganita	76	chakravala	out, n
+ganita	160	samasa	out, a, b, c, d, n
+ganita	173	brahmagupta_kshetr	a, b, c, d
+ganita	216	ganita_janchit_yuj	a, b, ok
+ganita	242	ganita_janchit_nyun	a, b, ok
+ganita	269	ganita_janchit_gun	a, b, ok
+ganita	306	ganita_janchit_bhaj	a, b, ok
+ganita	327	ganita_janchit_shesh	a, b, ok
+ganita	348	ganita_paripurna_yuj	a, b
+ganita	367	ganita_paripurna_nyun	a, b
+ganita	387	ganita_paripurna_gun	a, b
+ganita	418	ganita_janchit_ghat	a, e, ok
+ganita	441	ganita_janchit_kramgun	n, ok
+ganita	468	ganita_paripurna_ghat	a, e
+ganita	500	ganita_paripurna_bhaj	a, b
+ganita	518	ganita_paripurna_shesh	a, b
+ganita	533	ganita_janchit_nirapeksh	a, ok
+ganita	548	ganita_paripurna_nirapeksh	a
+ganita	563	ganita_paripurna_kramgun	n
+gudh	14	fnv1a	s, len
+gudh	29	fnv1a_varna	s
+kalana	18	kalana_trapiz	kosh dasham xs, kosh dasham ys
+kalana	34	simpson	kosh dasham xs, kosh dasham ys
+kalana	59	pravan	kosh dasham xs, kosh dasham ys, i
+kalana	79	pravan2	kosh dasham xs, kosh dasham ys, i
+kalana	102	bahu_ganana	kosh dasham c, dasham x
+kalana	119	bahu_mula	kosh dasham c, dasham lo, dasham hi, kosh dasham ok
+khand	39	khand_bandh	cells, n, out
+khand	61	khand_mukt	bytes, n, out
+khand	81	khand_pratilip	src, n, out
+khand	98	khand_maap	s
+khand	104	khand_anwesh	hay, hn, needle, nn
+khand	130	khand_antah	hay, hn, needle, nn
+khand	141	khand_pratisthap	src, sn, find, fn, repl, out
+khand	200	khand_bhed	src, sn, sep, sepn, parts, maxparts
+khand	281	khand_yuj	parts, count, sep, sepn, out
+khand	318	khand_chhid	src, sn, out
+khand	356	khand_unnat	src, sn, out
+khand	378	khand_avanat	src, sn, out
+khand	403	khand_aadi	src, sn, pre, pn
+khand	418	khand_ant	src, sn, suf, sn2
+khand	434	khand_tul	a, an, b, bn
+khand	462	khand_viparyay	src, sn, out
+khand	493	khand_gan	hay, hn, needle, nn
+khand	516	khand_gan_swar	s, n
+khand	535	khand_gan_akshar	s, n, code
+khand	550	khand_anwesh_akshar	s, n, code
+khand	565	khand_asti_sarv_ank	s, n
+khand	581	khand_sam	a, an, b, bn
+madhava	13	madhava_vargmool	dasham v
+madhava	26	madhava_pi	
+madhava	50	madhava_sin	dasham x
+madhava	70	madhava_cos	dasham x
+madhava	95	madhava_atan	dasham x
+mala	9	mala_nava	n
+mala	20	mala_sangrah	arr, i, val
+mala	28	mala_grah	arr, i
+mala	34	mala_purn	arr, val, n
+mala	46	mala_pratilip	dst, src, n
+mala	58	mala_yog	arr, n
+mala	70	mala_sangrah_surakshit	arr, i, val, n
+mala	81	mala_grah_surakshit	arr, i, n
