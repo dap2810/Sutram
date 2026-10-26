@@ -1,4 +1,4 @@
-# lib/array.smlib — Sutram standard library: dynamic arrays
+# lib/mala.smlib — Sutram standard library: dynamic arrays
 # layer: alloc
 #
 # Real functions over raw memory (nirmmita/likh8/pad8). Each element is
