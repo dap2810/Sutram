@@ -5,7 +5,7 @@ Base for this verification: main 11b2d5dd7d3985d8a9d9ab56b102454b4c0a2874. This 
 | File:line | Old callable name | Correct/current name | Status |
 |---|---|---|---|
 | lib/chandas.smlib:82 | meru_pankti(a, n) | meru_mala(a, n) | FIXED on main; function declaration now meru_mala |
-| tests/stdlib/chandas_meru_pankti.sm:4 | meru_pankti(a, 4) | meru_mala(a, 4) | Muse R35 reports caller updated; confirm by fetch before running native test |
+| tests/stdlib/chandas_meru_pankti.sm:4 | meru_pankti(a, 4) | meru_mala(a, 4) | FIXED on main, direct fetch confirms line 4 calls meru_mala |
 
 Current callable-name mismatches between all 305 lib declarations and all 305 documented HTML signatures: **0** in the pinned direct source comparison. The HTML has meru_mala, not meru_pankti. Do NOT present the old name as an outstanding source defect.
 
