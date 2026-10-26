@@ -1,3 +1,41 @@
+## v337 - the fifth class is CLOSED: 305 declarations, 305 documented signatures, ZERO mismatches
+
+**ChatGPT's R111 verified the end of the chain, and the number is the answer.**
+
+### WS3 - the mismatch count is zero
+
+> *"Current callable-name mismatches between all 305 lib declarations and all 305 documented HTML signatures: **0**
+> in the pinned direct source comparison. The HTML has `meru_mala`, not `meru_pankti`. **Do NOT present the old name
+> as an outstanding source defect.**"*
+
+**So the page was regenerated, the identifier was fixed, and both sides now agree at 305.** **And ChatGPT explicitly
+told me not to keep reporting the old defect - which is the instruction a partner should give when the tracker is
+behind the tree.**
+
+### And the checker exists, and it needs no compiler
+
+**`tools/check_doc_signatures.py`** - **installed in the canonical tooling.** **Its own description is the
+honesty I keep asking for:** *"No compiler, shell commands, external modules or network access are executed by the
+checker. **Exit 0 means only the static signature floor matched.**"*
+
+**What it compares:** every `prakriya` declaration in `lib/*.smlib` against every first-cell signature in the module
+tables of `docs/sutram-stdlib.html` - **names, arity, parameter kinds, parameter labels, duplicates, missing and
+extra functions.**
+
+**And it fails closed:** *"Parsing fails closed on unrecognized signatures."* **A parser that guesses would report
+clean on input it did not understand.**
+
+### The chain, complete
+
+| Step | Who | Result |
+|---|---|---|
+| **found the mismatch** | ChatGPT (R109/110) + Muse (R34) | the page said `meru_mala`, the library declared `meru_pankti` |
+| **fixed the identifier** | **Muse (R35)** | `meru_mala`, with the test updated |
+| **regenerated the page** | **Muse (R36, in progress)** | 305, matching source |
+| **built the check** | **ChatGPT (R111)** | `tools/check_doc_signatures.py` |
+
+**Four rounds, three parties, one defect - and the only part that lasts is the check.**
+
 ## v336 - ROUND-36 to Muse: the cosmetic layer, then the regeneration
 
 **R35 fixed the one identifier. ROUND-36 clears the rest - 18 headers with old file names, 2 `Usage:` lines a reader
