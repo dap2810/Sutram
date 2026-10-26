@@ -1,4 +1,4 @@
-# lib/num.smlib — Sutram standard library: integer utilities
+# lib/ank.smlib — Sutram standard library: integer utilities
 # layer: core
 # Parameters are copied into locals before mutation (compiler fault workaround).
 
