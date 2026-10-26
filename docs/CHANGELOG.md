@@ -1,3 +1,16 @@
+## v336 - ROUND-36 to Muse: the cosmetic layer, then the regeneration
+
+**R35 fixed the one identifier. ROUND-36 clears the rest - 18 headers with old file names, 2 `Usage:` lines a reader
+copies, 19 comment lines using `pankti` for the array - and then regenerates the stdlib page.**
+
+**With the guard stated: 476 byte-identical, 0 DIFFER.** **A comment change must not alter a single compiled byte,
+and that is the test that keeps a cosmetic sweep safe.**
+
+**And `util_chinha` stays, because it is the owner's decision.**
+
+**The question that matters is in WS2:** *"If it still shows 303 or `meru_pankti`, say so - that is a generator
+defect and it is worth more than the page."*
+
 ## v335 - Muse fixed the rename: EXACTLY ONE identifier was wrong, and it is fixed on main
 
 **The full inventory of old vocabulary in `lib/` - 24 modules, every `prakriya` name checked:**
