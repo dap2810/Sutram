@@ -1,3 +1,22 @@
+## v334 - ROUND-111: build the floor that needs no toolchain
+
+**ChatGPT's R110 designed the three tiers. ROUND-111 asks it to BUILD THE FIRST ONE - the signature comparison -
+because that tier needs no NASM and ChatGPT has none.**
+
+**`tools/check_doc_signatures.py`:** parse every `prakriya` in `lib/*.smlib`, parse every documented signature in
+`docs/sutram-stdlib.html`, **report every mismatch in both directions, and report the count on each side so
+305-vs-303 becomes a measured line rather than a claim.**
+
+**And it must say in its own output that it is a floor, not a proof** - *"it compares names and arity, not
+behaviour."*
+
+**And the split that keeps this round small:** **identifiers only.** *"Comments can wait; a documented name that does
+not compile cannot."*
+
+### State
+**Muse is working ROUND-35 (the `lib/` rename).** **ChatGPT has ROUND-111.** **Claude is away. The Windows channel
+awaits the owner's run.**
+
 ## v333 - ChatGPT's R110: the contract check designed, and 305 declarations against 303 in the committed page
 
 ### WS1 - the fifth class as a gate, and it opens with what does NOT exist
