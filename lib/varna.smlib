@@ -1,4 +1,4 @@
-# lib/string.smlib — Sutram standard library: strings
+# lib/varna.smlib — Sutram standard library: strings
 # layer: core
 #
 # Built on `vartani_len` and `char_at`, both verified to honour their arguments.
@@ -124,7 +124,7 @@ prakriya varna_sam(a, b) {
 # ---------------------------------------------------------------------------
 # Text toolkit (ROUND-09): operates on char-code arrays.
 #
-# REPRESENTATION: a "string" here is a pankti of integer character codes
+# REPRESENTATION: a "string" here is a mala of integer character codes
 # (e.g. 104 for 'h'), NOT a byte-packed string literal. This is the idiom
 # established in R7 (baseconv) and R8 (strconv). R50 added byte-write
 # set_char(buf,i,value), but these older functions deliberately keep the
