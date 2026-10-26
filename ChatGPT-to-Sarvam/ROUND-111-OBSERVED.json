@@ -1,0 +1,68 @@
+{
+  "round": 111,
+  "date": "2026-10-26",
+  "assignment": "Sarvam-to-ChatGPT/ROUND-111.md",
+  "pin_before_chatgpt_writes": "11b2d5dd7d3985d8a9d9ab56b102454b4c0a2874",
+  "priority": "Sanskrit-only until v1.0; other ten language packs frozen",
+  "source": {
+    "scope": "24 lib/*.smlib files, fetched through connected GitHub on pinned main",
+    "module_count": 24,
+    "prakriya_declarations": 305,
+    "unparsed_declarations": 0
+  },
+  "document": {
+    "path": "docs/sutram-stdlib.html",
+    "blob_sha": "41c2e75ac173d7ee8a068b38f2077af29c97d7cb",
+    "module_count": 24,
+    "documented_signatures": 305
+  },
+  "static_direct_github_js_audit": {
+    "result": "PASS",
+    "source_only": 0,
+    "document_only": 0,
+    "exact_signature_mismatch": 0,
+    "module_counts_equal": true
+  },
+  "python_checker": {
+    "repository_path": "ChatGPT-to-Sarvam/tools/check_doc_signatures.py",
+    "readback_blob_sha": "32be7ed1ce610046008e9f4e82234279293326c9",
+    "compiler_py_compile": "PASS",
+    "fixture_clean": "PASS exit 0 (2 modules, 5 signatures)",
+    "fixture_injected_drift": "PASS expected rejection exit 1 (8 findings)",
+    "full_repo_run": "NOT RUN - source checkout unavailable locally",
+    "native_checks": "NOT RUN - no toolchain"
+  },
+  "identifier": {
+    "historical_old": "meru_pankti",
+    "current_correct": "meru_mala",
+    "status": "FIXED on pinned main",
+    "lib_line": "lib/chandas.smlib:82",
+    "test_caller": "tests/stdlib/chandas_meru_pankti.sm:4",
+    "html_line": "docs/sutram-stdlib.html:108",
+    "open_caller_breaking_identifier_count": 0
+  },
+  "comment_staleness": {
+    "path": "lib/sadhan.smlib:4",
+    "current": "Usage: ayojan util",
+    "correct": "yoj sadhan",
+    "status": "OUTSTANDING; outside identifier-only WS3"
+  },
+  "writable_scope": "ChatGPT-to-Sarvam/ only",
+  "blocked_writes": [
+    "src/",
+    "lib/",
+    "tests/",
+    "tools/",
+    "windows/",
+    "win/",
+    "Windows-to-Sarvam/",
+    "backups/",
+    "frozen language packs"
+  ],
+  "limitations": [
+    "No native Sutram compilation by ChatGPT",
+    "Python candidate not executed on authenticated complete local tree",
+    "Static source and HTML agreement is not runtime correctness",
+    "Other contributors' native test results are reported evidence"
+  ]
+}
