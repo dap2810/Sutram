@@ -1,7 +1,7 @@
-# Sutram Utility Library - util.smlib
+# Sutram Utility Library - sadhan.smlib
 # layer: core
 # General-purpose utility functions
-# Usage: ayojan util
+# Usage: yoj sadhan
 #
 # Edge rules (R30): shesh/bhaj_urdhva return 0 on a zero divisor (no
 # SIGFPE); yog_seema returns 0 for end < start; bhaj_urdhva is true
