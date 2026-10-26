@@ -1,3 +1,32 @@
+## v345 - I INVENTED A FUNCTION NAME in the vocabulary draft. ChatGPT caught it.
+
+**ChatGPT's R113 review of `docs/VOCABULARY-DERIVATION.md` found three defects, and all three were mine.**
+
+| What I wrote | What is true |
+|---|---|
+| "303 functions" | **305** - I carried a stale number from memory |
+| **`ganita_sat_yuj` implements saturating addition** | **THAT FUNCTION DOES NOT EXIST.** The real name is **`ganita_paripurna_yuj`** |
+| "`ganita_janchit_gun` is not in the reference" | **It IS** - I asserted a negative without checking |
+
+**The second one is the worst thing I have done in this project.** **I wrote a document about a vocabulary, gave a
+worked example of a function name, and the name was made up.** **A learner following it would type `ganita_sat_yuj`
+and get a compile error - from a document whose entire purpose was to make the vocabulary learnable.**
+
+**And ChatGPT's instruction was exactly right:** *"Treat as wrong copyable function name; **do not rename the library
+to fit the draft.**"* **The tempting fix was to make the code match my document. That would have been catastrophic.**
+
+**All three corrections are now at the top of the document, attributed to the review, in my own voice as my errors.**
+
+### And Muse's R38 delivered the three approved changes
+- **Two of the five doc checks were ALREADY wired** - `check_version` and `check_alloc_bounds`. **Muse found that and
+  said so rather than claiming five.**
+- **The three missing ones are added**, and the recursion problem in `doc_counts_gate` is fixed with a `--totals` mode.
+- **And the judgement that matters:** **`doc_stale_claims` is a gate that RUNS the scanner, not one that fails on
+  hits** - *"FAILing on hits would permanently break the build at 160 hits. This gate makes the scanner RUN in every
+  build; it does not pretend a hit is a verdict."*
+
+**That is the correct distinction, and it is the same one the scanner's own output makes.**
+
 ## v344 - what is UNIQUE to Sutram, as opposed to borrowed
 
 **The owner asked for the unique angle. The document now has a section on it, and each claim is phrased as "no other
