@@ -1,4 +1,4 @@
-# lib/bigint.smlib — Sutram standard library: big integers
+# lib/brihat.smlib — Sutram standard library: big integers
 # layer: alloc
 #
 # Arbitrary-precision integers as arrays of base-10 digits (0-9),
