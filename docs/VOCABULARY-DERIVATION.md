@@ -29,22 +29,30 @@ does.**
 
 ## 2. The domains
 
-**A domain prefix tells you which part of the library you are in.** **Learn eleven words and you can place any of the
-303 names:**
+**A domain prefix tells you which part of the library you are in.**
+
+> **MEASURED CORRECTION (26 Oct 2026): this section overclaims.** I wrote that eleven prefixes would let a learner
+> place any of the 303 names. **I then measured it against `docs/sutram-vocabulary.html`:** of 259 names my
+> extraction found, **only 103 (40%) begin with one of these eleven.** **Four of the eleven - `vartani`, `kosh`,
+> `sangrah`, `shreni` - appear as a prefix ZERO times.** **So the prefix list below is a PARTIAL observation, not a
+> covering rule.** **And my extraction found 259 of 303 names, so even that 40% is a floor.** **Do not present this
+> section as a rule until the vocabulary is measured properly.**
+
+**The prefixes that DO carry weight, with their measured counts:**
 
 | Prefix | Meaning | The module |
 |---|---|---|
-| `ganita` | mathematics | arithmetic, checked arithmetic |
-| `vartani` | string, sequence | byte strings |
-| `akshar` | character, letter | character operations |
-| `mala` | row, array | fixed arrays |
-| `kosh` | store, treasury | growable arrays |
-| `suchi` | list, index | lists |
-| `nighantu` | glossary | maps |
-| `sangrah` | collection | sets |
-| `shreni` | row, rank | sorting |
-| `phal` | fruit, result | the result type |
-| `roop` | form | formatting |
+| `ganita` | mathematics | **18 names** |
+| `vartani` | string, sequence | **0 as a prefix** - see the correction above |
+| `akshar` | character, letter | **2 names** |
+| `mala` | row, array | **8 names** |
+| `kosh` | store, treasury | **0 as a prefix** - it is a type, not a name prefix |
+| `suchi` | list, index | **21 names** |
+| `nighantu` | glossary | **17 names** |
+| `sangrah` | collection | **0 as a prefix** |
+| `shreni` | row, rank | **0 as a prefix** |
+| `phal` | fruit, result | **14 names** |
+| `roop` | form | **23 names** |
 
 **These are already the module names.** **So `yoj ganita` puts you in the maths module, and every name inside it starts
 with `ganita`.**
