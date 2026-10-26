@@ -1,0 +1,432 @@
+diff --git a/PROJECT-MASTER.md b/PROJECT-MASTER.md
+index ad38d5ea..eecac605 100644
+--- a/PROJECT-MASTER.md
++++ b/PROJECT-MASTER.md
+@@ -148,8 +148,8 @@ build everything and run it, and its output is the truth about the tree:
+ 
+ | Metric | Value |
+ |---|---|
+-| Gates (`tools/gates.sh`) | **34 PASS, 0 FAIL, 1 NOT-RUN** (Windows execution) |
+-| Regression suite | **218 pass, 4 no-expectation** |
++| Gates (`tools/gates.sh`) | **37 PASS, 0 FAIL, 1 NOT-RUN** (Windows execution) |
++| Regression suite | **221 pass, 4 no-expectation** |
+ | Crash corpus | **227 cases + manifest, 0 failed** |
+ | Code-generation shape gates | **12 / 12** |
+ | Language packs | **33 / 33** checks over **11** packs |
+@@ -373,7 +373,7 @@ the observation that makes it true. Two of them — Windows execution and the fr
+    ```
+ 3. **Run the gates** before and after your change:
+    ```sh
+-   python3 tests/run_tests.py                        # expect PASS=218 NO-EXPECTATION=4
++   python3 tests/run_tests.py                        # expect PASS=221 NO-EXPECTATION=4
+    python3 tools/codegen_gate.py ./sutram_compiler   # expect 12 PASS
+    python3 tools/test_lang_packs.py ./sutram_compiler # expect 33/33
+    python3 tools/proof_lib.py --compiler ./sutram_compiler     # expect 224
+diff --git a/PROJECT-OVERVIEW.md b/PROJECT-OVERVIEW.md
+index 561bd342..01ad2fc1 100644
+--- a/PROJECT-OVERVIEW.md
++++ b/PROJECT-OVERVIEW.md
+@@ -94,7 +94,7 @@ ld -mi386pep --entry=_start -o win/sutram.exe sutram.obj
+ ## 5. Running the tests
+ 
+ ```
+-python3 tests/run_tests.py          # 218 pass, 4 no-expectation
++python3 tests/run_tests.py          # 221 pass, 4 no-expectation
+ python3 tools/codegen_gate.py ./sutram_compiler  # 12/12 expected
+ python3 tools/test_lang_packs.py ./sutram_compiler  # 33/33 expected
+ python3 tools/test_ide_undo.py      # 12/12 expected
+@@ -132,7 +132,7 @@ Loaded with `sutram --lang tamil` or `SUTRAM_LANG=tamil`.
+ | | |
+ |---|---|
+ | Compiler SHA-256 | `51f8f6f1da41ac93ddce4f99fbbbd552fadfa5e48448b71a5415ee78d150fc3b` (v246, Linux) |
+-| Regression suite | **218 pass, 4 no-expectation** |
++| Regression suite | **221 pass, 4 no-expectation** |
+ | Code-generation gates | **12/12** |
+ | Language packs | **33/33** |
+ | Examples | 222 (and 13 in subfolders) |
+diff --git a/docs/sutram-design-parameters.html b/docs/sutram-design-parameters.html
+index 097b5d75..0780a833 100644
+--- a/docs/sutram-design-parameters.html
++++ b/docs/sutram-design-parameters.html
+@@ -375,7 +375,7 @@ suitable for serious development.</p>
+   and executable size measured separately. Documentation, examples and feature status aligned with the
+   tested implementation. Compatibility review before changing syntax or behaviour.</p>
+   <div class="aim"><b>Aim:</b> a smaller sangrah of dependable features over a large suchi of partially
+-  working ones. <b>Today:</b> the gates are real and enforced — <b>218 pass / 4 no-expectation</b>,
++  working ones. <b>Today:</b> the gates are real and enforced — <b>221 pass / 4 no-expectation</b>,
+   codegen 12/12, packs 33/33, module graph, 224 library proofs, 86 property proofs, 18 GUI tests — and
+   there are dedicated overflow-safety and byte-parity documents. <b>Missing:</b> a formal written
+   specification, fuzzing, and cross-platform execution.</div>
+@@ -419,7 +419,7 @@ later.</p>
+ <footer class="animate" style="--i:28">
+   <b>Sutram — Design Parameters.</b> This page states the design target. It is not a description of
+   shipped behaviour.<br>
+-  Status is measured against the compiler as tested: <b>218 pass / 4 no-expectation</b> · codegen 12/12 ·
++  Status is measured against the compiler as tested: <b>221 pass / 4 no-expectation</b> · codegen 12/12 ·
+   packs 33/33 · library 224 proofs · properties 86 · GUI 18 tests.<br>
+   The constraint that does not change: Sanskrit keyword core · <code>.sm</code> · one pure-NASM compiler
+   source · native machine code · no runtime dependency · no toolchain needed by the end user.<br>
+diff --git a/docs/sutram-project-status.html b/docs/sutram-project-status.html
+index e084ed12..0d78f509 100644
+--- a/docs/sutram-project-status.html
++++ b/docs/sutram-project-status.html
+@@ -121,7 +121,7 @@ previous report.</p>
+ <table class="animate" style="--i:4">
+   <tr><th>Gate</th><th>What it checks</th><th>Result</th></tr>
+   <tr><td class="mono">tests/run_tests.py</td><td>the regression corpus, goldens and exit codes</td>
+-    <td class="ok">218 pass · 4 no-expectation</td></tr>
++    <td class="ok">221 pass · 4 no-expectation</td></tr>
+   <tr><td class="mono">codegen_gate.py</td><td>the shape of generated machine code</td>
+     <td class="ok">12 / 12</td></tr>
+   <tr><td class="mono">test_lang_packs.py</td><td>every pack, every keyword group</td>
+diff --git a/docs/sutram-scorecard.html b/docs/sutram-scorecard.html
+index b074874c..44a9f7a0 100644
+--- a/docs/sutram-scorecard.html
++++ b/docs/sutram-scorecard.html
+@@ -45,7 +45,7 @@
+   <h1>Progress scorecard</h1>
+   <p class="sub">Seventeen parameters that describe a mature language &mdash; measured against where Sutram stands, and how far each has moved.</p>
+   <div class="meta">
+-    Compiler source blob 7db83d38 (v246) &middot; suite 218 pass, 4 no-expectation &middot; 24 library modules (305 functions) &middot; 32 keywords<br>
++    Compiler source blob 7db83d38 (v246) &middot; suite 221 pass, 4 no-expectation &middot; 24 library modules (305 functions) &middot; 32 keywords<br>
+     222 examples &middot; 11 language packs &middot; 25 docs pages &middot; Linux ELF + Windows PE32+ &middot; IDE
+   </div>
+ 
+@@ -231,7 +231,7 @@
+ 
+   <h2>Measured state, for the record</h2>
+   <ul>
+-    <li><strong>Tests:</strong> 218 passing, including a deterministic codegen gate (12/12) that asserts instruction ceilings and loop shape.</li>
++    <li><strong>Tests:</strong> 221 passing, including a deterministic codegen gate (12/12) that asserts instruction ceilings and loop shape.</li>
+     <li><strong>Compiler:</strong> 24,325 lines of NASM, 599 KB source, building both a Linux ELF and a Windows PE32+ from the same patra.</li>
+     <li><strong>IDE:</strong> 1,708 lines of NASM, 25 KB binary, verified through a pseudo-terminal harness.</li>
+     <li><strong>Language:</strong> 28 keywords, 222 example programs, 11 language packs.</li>
+diff --git a/examples/251_r38_alias_mala_oob.sm b/examples/251_r38_alias_mala_oob.sm
+new file mode 100644
+index 00000000..5f86eacf
+--- /dev/null
++++ b/examples/251_r38_alias_mala_oob.sm
+@@ -0,0 +1,10 @@
++# R38: a mala alias must be bounds-checked like the original.
++# Before R38, vitti b = a left b unmarked and b[5] silently read 0.
++mukhya() {
++    mala a[3]
++    a[0] = 10
++    a[1] = 20
++    a[2] = 30
++    vitti b = a
++    likha(b[5])
++}
+diff --git a/examples/252_r38_alias_kosh_oob.sm b/examples/252_r38_alias_kosh_oob.sm
+new file mode 100644
+index 00000000..b22dca6b
+--- /dev/null
++++ b/examples/252_r38_alias_kosh_oob.sm
+@@ -0,0 +1,10 @@
++# R38: a kosh alias via assignment must be bounds-checked like the original.
++mukhya() {
++    kosh dasham v[4]
++    kosh_push(v, 1.5)
++    kosh_push(v, 2.5)
++    vitti w = 0
++    w = v
++    w[5] = 9.9
++    likha(999)
++}
+diff --git a/examples/253_r38_alias_slice_oob.sm b/examples/253_r38_alias_slice_oob.sm
+new file mode 100644
+index 00000000..278b8fd8
+--- /dev/null
++++ b/examples/253_r38_alias_slice_oob.sm
+@@ -0,0 +1,9 @@
++# R38: a slice alias via assignment must be bounds-checked like the original.
++mukhya() {
++    mala a[10]
++    a[0] = 1
++    vitti s = a[3:7]
++    vitti t = 0
++    t = s
++    likha(t[5])
++}
+diff --git a/src/sutram_compiler.asm b/src/sutram_compiler.asm
+index 7db83d38..c27fb4c6 100644
+--- a/src/sutram_compiler.asm
++++ b/src/sutram_compiler.asm
+@@ -12688,6 +12688,18 @@ gen_stmt:
+     ; [AST_DECL][name_ptr][init_ptr][array_size_expr_or_0][type_marker]
+     mov rdi, rbx              ; R23 WS3: vitti s = a[lo:hi] declares a slice
+     call r23_mark_slice_decl
++    ; R38: vitti b = a (a is a mala/kosh) marks b the same kind, so b[i] is
++    ; bounds-checked. Slice decls are already handled above; this covers the
++    ; plain-variable alias that was previously unmarked.
++    mov rax, [rbx+16]        ; init expr
++    test rax, rax
++    jz .gs_decl_no_alias
++    cmp qword [rax], AST_VAR
++    jne .gs_decl_no_alias
++    mov rdi, [rbx+8]         ; target name
++    mov rsi, [rax+8]         ; source name
++    call r38_mark_alias
++.gs_decl_no_alias:
+     ; PERF2/PERF3: when an integer scalar will occupy one of the first five
+     ; register slots, build simple literals/copies/var-binops directly in the
+     ; destination register.  Unsupported forms leave allocation untouched.
+@@ -12966,6 +12978,19 @@ gen_stmt:
+     je .gs_assign_index
+     cmp rcx, AST_FIELD
+     je .gs_assign_field
++    ; R38: b = a (a is a mala/kosh/slice) marks b the same kind, so b[i] is
++    ; bounds-checked. Only variable targets and variable values count, and
++    ; this runs before the fast paths, which return early.
++    cmp rcx, AST_VAR
++    jne .gs_assign_no_alias
++    mov rax, [rbx+16]        ; value node
++    cmp qword [rax], AST_VAR
++    jne .gs_assign_no_alias
++    mov rsi, [rax+8]         ; source name
++    mov rax, [rbx+8]
++    mov rdi, [rax+8]         ; target name
++    call r38_mark_alias
++.gs_assign_no_alias:
+ %ifdef SUTRAM_EXPERIMENTAL_XMM_CACHE
+     ; Stage 1: typed scalar assignments only, exactly 4 available XMM slots.
+     ; No calls/indices/subtrees are ever reordered or cached.
+@@ -20664,6 +20689,78 @@ mark_kosh_var:
+     lea rdi, [rel msg_var_table_overflow]
+     jmp capacity_fail
+ 
++; R38: mark an alias of a mala/kosh/slice as the same kind, so indexing through
++; it gets the same bounds check as indexing the original. Before R38, only the
++; declared name was marked: `vitti b = a` / `b = a` left b unmarked, and b[5]
++; silently read past a 3-cell mala (or a kosh), returning 0 instead of the
++; `mala ank seema atikram` error. The alias shares the original's allocation
++; and header layout ([ptr-8] length for mala, [ptr-16] for kosh, [ptr+8] for a
++; slice descriptor), so marking it is sound. Raw nirmmita pointers are NOT
++; marked by this helper (is_array/is_kosh are false for them), so their
++; historical unchecked path is unchanged. rdi = target name, rsi = source
++; name. Preserves rbx, r12-r15 and the target/source pointers on the stack.
++r38_mark_alias:
++    push rbx
++    push r12
++    push r13
++    push r14
++    push r15
++    mov r14, rdi              ; target name
++    mov r15, rsi              ; source name
++    ; already marked in any kind? then leave it alone (slice wins over array)
++    mov rdi, r14
++    call r23_is_slice_var
++    test rax, rax
++    jnz .r38_done
++    mov rdi, r14
++    call is_kosh_var
++    test rax, rax
++    jnz .r38_done
++    mov rdi, r14
++    call is_array_var
++    test rax, rax
++    jnz .r38_done
++    ; source kind, in precedence order: slice, float kosh, kosh, array
++    mov rdi, r15
++    call r23_is_slice_var
++    test rax, rax
++    jz .r38_not_slice
++    mov rdi, r14
++    call r23_mark_slice_var
++    jmp .r38_done
++.r38_not_slice:
++    mov rdi, r15
++    call is_float_kosh_var
++    test rax, rax
++    jz .r38_not_float_kosh
++    mov rdi, r14
++    call mark_kosh_var
++    mov rdi, r14
++    call mark_float_kosh_var
++    jmp .r38_done
++.r38_not_float_kosh:
++    mov rdi, r15
++    call is_kosh_var
++    test rax, rax
++    jz .r38_not_kosh
++    mov rdi, r14
++    call mark_kosh_var
++    jmp .r38_done
++.r38_not_kosh:
++    mov rdi, r15
++    call is_array_var
++    test rax, rax
++    jz .r38_done
++    mov rdi, r14
++    call mark_array_var
++.r38_done:
++    pop r15
++    pop r14
++    pop r13
++    pop r12
++    pop rbx
++    ret
++
+ is_kosh_var:
+     ; rdi=name ptr -> rax=1 if this is a kosh variable in current scope.
+     push rbx
+diff --git a/tests/expect/251_r38_alias_mala_oob.exit b/tests/expect/251_r38_alias_mala_oob.exit
+new file mode 100644
+index 00000000..d00491fd
+--- /dev/null
++++ b/tests/expect/251_r38_alias_mala_oob.exit
+@@ -0,0 +1 @@
++1
+diff --git a/tests/expect/251_r38_alias_mala_oob.out b/tests/expect/251_r38_alias_mala_oob.out
+new file mode 100644
+index 00000000..63e37d27
+--- /dev/null
++++ b/tests/expect/251_r38_alias_mala_oob.out
+@@ -0,0 +1 @@
++Sutram Error: mala ank seema atikram
+diff --git a/tests/expect/252_r38_alias_kosh_oob.exit b/tests/expect/252_r38_alias_kosh_oob.exit
+new file mode 100644
+index 00000000..d00491fd
+--- /dev/null
++++ b/tests/expect/252_r38_alias_kosh_oob.exit
+@@ -0,0 +1 @@
++1
+diff --git a/tests/expect/252_r38_alias_kosh_oob.out b/tests/expect/252_r38_alias_kosh_oob.out
+new file mode 100644
+index 00000000..63e37d27
+--- /dev/null
++++ b/tests/expect/252_r38_alias_kosh_oob.out
+@@ -0,0 +1 @@
++Sutram Error: mala ank seema atikram
+diff --git a/tests/expect/253_r38_alias_slice_oob.exit b/tests/expect/253_r38_alias_slice_oob.exit
+new file mode 100644
+index 00000000..d00491fd
+--- /dev/null
++++ b/tests/expect/253_r38_alias_slice_oob.exit
+@@ -0,0 +1 @@
++1
+diff --git a/tests/expect/253_r38_alias_slice_oob.out b/tests/expect/253_r38_alias_slice_oob.out
+new file mode 100644
+index 00000000..63e37d27
+--- /dev/null
++++ b/tests/expect/253_r38_alias_slice_oob.out
+@@ -0,0 +1 @@
++Sutram Error: mala ank seema atikram
+diff --git a/tools/doc_counts_gate.py b/tools/doc_counts_gate.py
+index 25c8c10f..9a49f69a 100644
+--- a/tools/doc_counts_gate.py
++++ b/tools/doc_counts_gate.py
+@@ -144,17 +144,36 @@ def main():
+     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+     ap.add_argument("--repo", default=".")
+     ap.add_argument("--gates", default=None, help="a gates.sh transcript, so gates.sh is not run again")
++    ap.add_argument("--totals", default=None,
++                    help="R38: authoritative totals 'PASS FAIL NOT-RUN' for use INSIDE gates.sh. "
++                         "When given, gates.sh is not run and no transcript is needed, so the "
++                         "doc-counts gate can live in gates.sh without recursing. gates.sh passes "
++                         "its final totals (counting this gate itself as a pass, which is exact "
++                         "when this gate passes and moot when it fails, since a failed build is "
++                         "not trusted). Labelled-count checks are skipped in this mode; they are "
++                         "still covered by the standalone run with --gates.")
++    ap.add_argument("--suite-pass", default=None, type=int,
++                    help="R38: suite PASS count, used with --totals instead of re-running the suite")
+     ap.add_argument("--quiet", action="store_true")
+     a = ap.parse_args()
+     repo = os.path.abspath(a.repo)
+ 
+-    t = gate_totals(repo, a.gates)
+-    if t is None:
+-        print("NOT-RUN  doc counts: gates.sh did not produce a PASS total")
+-        return 0
+-    gp, gf, gn = t
+-    measured = measured_counts(getattr(gate_totals, "text", ""))
+-    sp = suite_pass(repo)
++    if a.totals:
++        try:
++            gp, gf, gn = (int(x) for x in a.totals.split())
++        except Exception:
++            print("doc counts: --totals must be 'PASS FAIL NOT-RUN'")
++            return 1
++        sp = a.suite_pass
++        measured = {}
++    else:
++        t = gate_totals(repo, a.gates)
++        if t is None:
++            print("NOT-RUN  doc counts: gates.sh did not produce a PASS total")
++            return 0
++        gp, gf, gn = t
++        measured = measured_counts(getattr(gate_totals, "text", ""))
++        sp = suite_pass(repo)
+ 
+     print(f"measured: {gp} gates PASS, {gf} FAIL, {gn} NOT-RUN"
+           + (f"; suite PASS={sp}" if sp is not None else ""))
+@@ -182,6 +201,16 @@ def main():
+                 problems.append(f"{d}: quotes {n} pass but the suite has {sp}")
+             elif sp is not None and n < sp:
+                 notes.append(f"{d}: says {n} pass, measured {sp}")
++        # R38: a gate-total line in PROJECT-MASTER's format ("37 PASS, 0 FAIL").
++        # The N/N check above does not catch it, so a document quoting 99 PASS
++        # passed the gate until now. Quoting more gates than exist is impossible
++        # (FAIL); quoting fewer is lag (NOTE), as with the other counts.
++        for m in re.finditer(r"\b(\d{1,2})\s+PASS,\s*\d+\s+FAIL", s):
++            n = int(m.group(1))
++            if n > gp:
++                problems.append(f"{d}: quotes {n} PASS but only {gp} gates exist")
++            elif n < gp:
++                notes.append(f"{d}: says {n} PASS, measured {gp}")
+ 
+         # R39: the labelled counts. Before R39 this gate checked only "N/N" pairs above the gate total and
+         # "NNN pass"; a document quoting codegen 27/27, 180 library proofs or 281 functions passed it.
+diff --git a/tools/gates.sh b/tools/gates.sh
+index 148bdaaf..f87ff2ae 100644
+--- a/tools/gates.sh
++++ b/tools/gates.sh
+@@ -91,6 +91,7 @@ run_gate() {                      # name, then the command
+   case "$name" in
+     "regression suite")
+       s=$(grep -oE 'PASS=[0-9]+|FAIL=[0-9]+|NO-EXPECTATION=[0-9]+' /tmp/g_out.$$ | tr '\n' ' ')
++      SUITE_PASS=$(printf '%s' "$s" | grep -oE 'PASS=[0-9]+' | head -1 | cut -d= -f2)
+       case "$s" in *FAIL=[1-9]*) bad "$name" "$s";; *) ok "$name ($s)";; esac ;;
+     "codegen shapes")   n=$(grep -c PASS /tmp/g_out.$$); [ "$n" -ge 12 ] && ok "$name ($n/12)" || bad "$name" "$n/12" ;;
+     "language packs")   case "$(tail -1 /tmp/g_out.$$)" in *"33/33"*) ok "$name (33/33)";; *) bad "$name" "$(tail -1 /tmp/g_out.$$)";; esac ;;
+@@ -124,6 +125,8 @@ run_gate() {                      # name, then the command
+     "R34 FFI v2")       line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r34 ffi v2: //'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c6-80)";; esac ;;
+     "R38 fail-alloc")   line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r38 fail-alloc: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c6-80)";; esac ;;
+     "alloc bounds")     line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/alloc bounds: //; s/ computed allocations in lib\/:/:/; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c6-80)";; esac ;;
++    "doc signatures")   line=$(tail -1 /tmp/g_out.$$); case "$line" in *"RESULT: PASS"*) ok "$name ($(grep -E 'Document: ' /tmp/g_out.$$ | sed 's/Document: //; s/ function signatures//') signatures, 0 mismatches)";; *) bad "$name" "$(grep -m1 'Issues:' /tmp/g_out.$$)";; esac ;;
++    "stale claims")     line=$(grep -E 'absence-shaped sentences' /tmp/g_out.$$ | head -1); case "$line" in *"absence-shaped sentences"*) ok "$name ($(echo "$line" | sed 's/stale-claim scan: //; s/ absence-shaped sentences/ hits/'))";; *) bad "$name" "scanner produced no count";; esac ;;
+     "R23 fuzzer")       line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 differ"*) ok "$name ($(echo "$line" | sed 's/fuzz_r23: //'))";; *) bad "$name" "${line:-no summary}";; esac ;;
+     "pack messages")    case "$(tail -1 /tmp/g_out.$$)" in OK*) ok "$name (12 sets x 11 cases)";; *) bad "$name" "$(grep -m1 -E 'FAIL|differ|Error' /tmp/g_out.$$ | cut -c1-60)";; esac ;;
+     *)                  ok "$name" ;;
+@@ -156,6 +159,8 @@ run_gate "ELF reader fuzzer" python3 tools/fuzz_elf2smo.py --seed 33 --count 300
+ run_gate "R34 FFI v2"        python3 tests/r34/test_ffi_v2.py --compiler ./sutram_compiler --linker ./sutram-link --elf2smo ./sutram-elf2smo   # R34 (cloud): the sidecar's version; a dasham bit for bit; the edges
+ run_gate "R38 fail-alloc"    python3 tests/r38/test_fail_alloc.py --compiler ./sutram_compiler   # R38: --fail-alloc N; every allocating library function at every allocation it makes
+ run_gate "alloc bounds"      python3 tools/check_alloc_bounds.py   # R37: every computed allocation in lib/ bounds its count before multiplying, or says why not
++run_gate "doc signatures"    python3 tools/check_doc_signatures.py   # R38: lib signatures = docs/sutram-stdlib.html signatures, 305/305, 0 mismatches; a drift FAILs
++run_gate "stale claims"      python3 tools/doc_stale_claims.py   # R38: the absence-claim scanner runs; hits are review items, NOT failures (its own docstring: "Exit 0 always"), so this gate PASSes when the scanner completes and reports its count - FAILing on hits would permanently break the build at 160 hits
+ run_gate "R23 fuzzer"        python3 tools/fuzz_r23.py --seed 23 --count 100 --compiler ./sutram_compiler --out /tmp/fuzz-r23-gate   # R23: 100 random programs against the model
+ run_gate "valid fuzzer + function values" python3 tools/fuzz_valid.py --seed 24 --count 60 --capabilities --compiler ./sutram_compiler --out /tmp/fuzz-valid-gate   # R24: the main fuzzer with calls through function values
+ run_gate "crash corpus"      python3 tools/crash_corpus.py --compiler ./sutram_compiler   # R17: invalid input must error, never crash
+@@ -180,6 +185,22 @@ fi
+ # tools/ide_examples_windows.ps1 and tools/accept-windows.ps1. Say plainly it is not run here.
+ skip "Windows execution" "cannot run here (Linux) - on Windows: tests/r34/test_link_windows.py, tools/ide_examples_windows.ps1, tools/accept-windows.ps1"
+ 
++# R38: doc counts, LAST. doc_counts_gate.py normally runs gates.sh itself, which
++# would recurse if called from here. It now accepts --totals/--suite-pass (see its
++# header): gates.sh passes its final totals, counting this gate itself as a pass.
++# That is exact when this gate passes, and moot when it fails, since a failed build
++# is not trusted. An impossible document claim (a gate total above the final total,
++# or a suite pass above the measured one) FAILs the build, which is the point.
++# Labelled-count checks are skipped in this mode; the standalone run with --gates
++# still covers them.
++DOC_TOTAL_PASS=$((PASS+1))
++DOC_OUT=$(python3 tools/doc_counts_gate.py --totals "$DOC_TOTAL_PASS $FAIL $SKIP" --suite-pass "${SUITE_PASS:-0}" 2>&1)
++DOC_EXIT=$?
++case "$DOC_EXIT" in
++  0) ok "doc counts ($(echo "$DOC_OUT" | head -1 | sed 's/measured: //'))" ;;
++  *) bad "doc counts" "$(echo "$DOC_OUT" | grep -m1 '^FAIL' | cut -c6-80)" ;;
++esac
++
+ # ---------------------------------------------------------------- summary
+ echo
+ echo "  ------------------------------------------"
