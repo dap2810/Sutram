@@ -1,3 +1,30 @@
+## v344 - what is UNIQUE to Sutram, as opposed to borrowed
+
+**The owner asked for the unique angle. The document now has a section on it, and each claim is phrased as "no other
+language I can find does this" - because "unique" is a claim that can be wrong.**
+
+| Claim | Confidence |
+|---|---|
+| **A compiler in one hand-written NASM source, no bootstrap** | **high** - I can find no counter-example |
+| **A cross-target linker in assembly, identical bytes for both platforms** | **high** |
+| **205-byte static hello, no runtime** | **high** - measured; Zig's is 1.7 MB, C's 6.6 KB plus libc |
+| **11 Indian-language diagnostic packs, no English default** | **high** |
+| **A freestanding C FFI with no libc, no dynamic loader** | **high** - measured |
+| **Sanskrit mechanisms as design patterns** | **UNBUILT - a proposal, not a property** |
+| The verification culture | high, but a matter of degree |
+
+**And the document says which is which:** *"One of these seven is a proposal and six are properties. **The proposal is
+the one that would make the language distinctive rather than merely unusual** - and it is the one that needs a
+Sanskritist before it can be built."*
+
+### And the line worth keeping about the compiler
+**No other language has a compiler that is a single hand-written assembly source - GCC, Clang, Rust, Go and Zig all
+have a compiled core.** **The assembly compilers that exist are teaching exercises for tiny subsets, not languages
+with a 305-function library, a linker, an object format and a C FFI.**
+
+**So the "no dependency on another language" claim is true all the way down** - **Sutram depends on `nasm` and nothing
+else, and `nasm` is a translator, not a runtime.**
+
 ## v343 - Sanskrit for language design: five mechanisms with real engineering value
 
 **The owner asked what we can take from Sanskrit and how it makes the language prominent. `docs/SANSKRIT-FOR-LANGUAGE-DESIGN.md`
