@@ -1,3 +1,36 @@
+## v342 - I measured my own vocabulary draft, and its central claim is WRONG
+
+**`docs/VOCABULARY-DERIVATION.md` says eleven domain prefixes let a learner place any of the 303 names. I wrote that
+from pattern. Then I measured it.**
+
+**Against `docs/sutram-vocabulary.html`, extracting every underscored name:**
+
+| My claim | Measured |
+|---|---|
+| eleven prefixes cover the vocabulary | **103 of 259 names - 40%** |
+| `ganita` | 18 |
+| `roop` | 23 |
+| `suchi` | 21 |
+| `nighantu` | 17 |
+| `phal` | 14 |
+| `mala` | 8 |
+| `akshar` | 2 |
+| **`vartani`, `kosh`, `sangrah`, `shreni`** | **ZERO as prefixes** |
+
+**And my extraction found 259 of 303 names, so even 40% is a floor.**
+
+**So four of my eleven prefixes do not appear as prefixes at all.** **`kosh` is a TYPE, not a name prefix. `vartani` is
+a module name that the string functions do not use as a prefix.** **I built a rule out of module names and assumed the
+functions followed it.**
+
+**The document now carries the correction at the top of the section, with the measured counts, and says: *"do not
+present this section as a rule until the vocabulary is measured properly."***
+
+**That is the sixth error of mine this stretch, and the same shape as the other five: I described a pattern I had
+observed in a few names and asserted it as a rule over all of them.**
+
+**The honest version of the document is a hypothesis with one measured section. That is what it now says.**
+
 ## v341 - the owner approved all three. Muse executes; ChatGPT predicts what they break.
 
 **Approved and issued:**
