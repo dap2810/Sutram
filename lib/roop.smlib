@@ -1,15 +1,15 @@
-# lib/fmt.smlib — Sutram standard library: formatting
+# lib/roop.smlib — Sutram standard library: formatting
 # layer: alloc
 # R38: a formatter that cannot allocate its scratch writes only the terminator and returns 0.
 #
 # Number and string formatting on BYTE strings (packed bytes, explicit
-# lengths, `strb` idiom): every function writes packed bytes into `out`
+# lengths, `khand` idiom): every function writes packed bytes into `out`
 # with a 0 terminator and returns the byte count. This is the modern
-# idiom; the older `lib/strconv.smlib` works on CELL arrays (pankti of
+# idiom; the older `lib/vakyank.smlib` works on CELL arrays (mala of
 # char codes) and has no width/alignment/grouping/fixed-decimal/util_chinha
-# surface — fmt is the formatting module, strconv is the conversion
-# module. Do not mix the representations: fmt outputs are bytes
-# (read with char_at), strconv outputs are cells (read with [i]).
+# surface — roop is the formatting module, vakyank is the conversion
+# module. Do not mix the representations: roop outputs are bytes
+# (read with char_at), vakyank outputs are cells (read with [i]).
 #
 # Defaults, stated once here and at each function:
 #   - Bases: no prefix unless the _pre / flags form is used.
