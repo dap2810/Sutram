@@ -1,3 +1,34 @@
+## v333 - ChatGPT's R110: the contract check designed, and 305 declarations against 303 in the committed page
+
+### WS1 - the fifth class as a gate, and it opens with what does NOT exist
+
+> *"`tools/doc_counts_gate.py` and `tools/doc_stale_claims.py` measure counts and human-reviewable absence phrases.
+> `tools/gen_stdlib_ref.py` blindly copies current library function declarations and comments. **None certifies that
+> a reader can paste a documented sample and receive the stated result.**"*
+
+**And the P0 finding is a number:** **current source has 24 modules / 305 `prakriya` declarations; the committed
+`docs/sutram-stdlib.html` has 303.** **So the page is two functions behind its source, and the regeneration Muse was
+asked for will show it.**
+
+**Its design separates three tiers, which is the useful part:**
+
+| Tier | What it is |
+|---|---|
+| **a cheap mechanical floor** | compare every documented signature with `lib/*.smlib` - **no NASM, no execution** |
+| **real acceptance** | with the canonical toolchain: paste the sample, get the stated result |
+| **human-only** | what neither can prove |
+
+**That three-tier split is why the design is usable.** **A gate that needs a compiler cannot run everywhere; a gate
+that only compares names catches the `meru_mala`/`meru_pankti` class without one.**
+
+### WS3 - the independent sweep, and it read everything
+**All 24 `lib/*.smlib`, all 238 `examples/**/*.sm`, the 13 example companion modules, and all 83 `docs/` files** -
+**independently of Muse's R35, as asked.** **Two readings of the same sweep is what caught r18.**
+
+### State
+**Muse is still working ROUND-35 (the `lib/` rename).** **ChatGPT has delivered R110 and needs the next round.**
+**Claude is away. The Windows channel awaits the owner's run.**
+
 ## v332 - ROUND-110: turn the fifth class into a check
 
 **ChatGPT named the fifth documentation defect class - a documented name, snippet or command that DOES NOT WORK -
