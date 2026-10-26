@@ -1,9 +1,9 @@
-# lib/set.smlib — Sutram standard library: sets (set algebra over map)
+# lib/sangrah.smlib — Sutram standard library: sets (set algebra over map)
 # layer: alloc
 # R38: an operation that cannot allocate its scratch returns -1, out unchanged (rakh_sam too).
 # R39: scratch is sized from the set itself (a[0]), never from the caller's cap argument.
 #
-# A set IS a map (`lib/map.smlib`) with a dummy value of 1: membership is
+# A set IS a map (`lib/nighantu.smlib`) with a dummy value of 1: membership is
 # nighantu_antah, iteration is nighantu_kunjika_ashtak (R17: packed-byte segments,
 # passed straight to the byte-key map functions with no repacking).
 #
