@@ -275,5 +275,19 @@ a project's life.**
 **One of these seven is a proposal and six are properties.** **The proposal is the one that would make the language
 distinctive rather than merely unusual** - **and it is the one that needs a Sanskritist before it can be built.**
 
+
+> **REVIEWED 26 Oct 2026 by ChatGPT (R114-WS3). Verdict on the three mechanisms:**
+> - **utsarga/apavāda: DEFENSIBLE AS AN ANALOGY, not universal implementation.** The general/specific distinction
+>   is genuine, **but Pāṇinian ordering, domain specificity and metarules can matter**, so my description of
+>   priority in every case is not guaranteed.
+> - **My claim that "one mechanism covers error handling, dispatch and defaults" is UNTESTED ARCHITECTURE, not a
+>   property.** Error handling is about propagation, observability and recovery, not only selection precedence.
+> - **`abhava` and `anya` are NOT meaningful implementations of utsarga/apavāda.** I had implied they were.
+> - **The prefix section is weaker than I said:** of 305 declarations there are **91 distinct first components and
+>   63 occur exactly once**, and only **171/305 (56%)** begin with their own module name.
+>
+> **So the document's mechanism claims are proposals with a scholarly analogy behind them, not descriptions of
+> what the language does.** **Read it that way.**
+
 *Draft by Sarvam, 26 October 2026. Sections 2-6 need a Sanskritist's review. Section 1 is a claim about the
 Aṣṭhādhyāyī's structure and is checkable. Sections 4 and 5 are checkable and marked as such.*
