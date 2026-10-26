@@ -1,0 +1,91 @@
+{
+  "round": 114,
+  "date": "2026-10-26",
+  "repo": "dap2810/Sutram",
+  "pin_before_readside_uploads": "df4b5237b8962adda7f0693f1fc5bb1408567798",
+  "assignment": "Sarvam-to-ChatGPT/ROUND-114.md",
+  "assignment_blob": "0262ec5960cfb52808f35b5c86cb6842448968d9",
+  "changelog_at_pin": "v347",
+  "priority": "Sanskrit v1.0 active; other ten language packs frozen",
+  "completed_prior_chatgpt_round": 113,
+  "uncompleted_older_round": "112 remains without a matching handoff; not worked during R114",
+  "partner_status": "Muse R38 delivered patch, not verified as applied to pinned main",
+  "WS1": {
+    "source": "lib/*.smlib all 24 modules",
+    "raw_a": 119,
+    "raw_b": 186,
+    "total_functions": 305,
+    "unique_names": 305,
+    "unparsed": 0,
+    "first_token_distinct": 91,
+    "first_token_singletons": 63,
+    "segments_counts": {
+      "1": 45,
+      "2": 174,
+      "3": 81,
+      "4": 5
+    },
+    "prefix_matches_module": 171,
+    "draft_domain11_count": 102,
+    "draft_domain11_total": 305,
+    "full_frequency_table": "ROUND-114-WS1-MEASURED-PREFIXES.json",
+    "status": "PASS static source inventory"
+  },
+  "WS2": {
+    "html_sha": "212d6c97a31455361607b4b797d504b3061f05d9",
+    "modules": 24,
+    "html_signatures": 305,
+    "with_description": 205,
+    "empty_descriptions": 100,
+    "row_location_inventory": "ROUND-114-HTML-ROW-INVENTORY.tsv",
+    "confirmed_misleading_or_incomplete": [
+      "brihat_ank_tak n=0 out buffer extent",
+      "samanvaya.sadish_yoga is vector rather than matrix-row/column product",
+      "gudh.fnv1a byte strings mislabeled mala; dubious signed display claim",
+      "nighantu_mil partial merge detection by dst count",
+      "mala raw fixed buffer methods eight blank descriptions",
+      "ganita.chakravala/samasa raw output extent",
+      "kalana.simpson even sample drop",
+      "vakyank.ank_tak_aadhar_varna base 2..36",
+      "khand string.smlib/strb_* obsolete naming",
+      "phal result_checked_* phantom",
+      "sangrah map.smlib old filename",
+      "roop_pad_madhya unclear npad wording"
+    ],
+    "status": "FAIL on confirmed description correctness/completeness; no claim of native proof for all 205 nonblank rows"
+  },
+  "WS3": {
+    "document": "docs/SANSKRIT-FOR-LANGUAGE-DESIGN.md",
+    "blob": "76fa06d09438f8a3eb33b300d85a417efe62d3b6",
+    "utsarga_apavada": "DEFENSIBLE qualified general-specific priority analogy only",
+    "karaka": "DEFENSIBLE six semantic role relations, overstretched for named arg ABI safety",
+    "bahuvrihi": "CORRECT possessive exocentric grammar, INCORRECT structural typing equivalence",
+    "extra": [
+      "aṇ not all vowels; ac is all vowels",
+      "meru is function in chandas module, not meru module",
+      "Sanskrit is natural language; Panini grammar is formal description"
+    ],
+    "linguist": "CANNOT CERTIFY expert Sanskrit morphology and historical priority",
+    "status": "PASS read review, FAIL draft factual claims"
+  },
+  "execution": {
+    "GitHub_source_reads": "PASS",
+    "JS_source_token_counting": "PASS",
+    "native_compiler": "NOT RUN - no toolchain",
+    "tests_proofs_fuzz": "NOT RUN - no toolchain",
+    "Windows_acceptance": "NOT RUN - no toolchain",
+    "linguist_signoff": "NOT RUN"
+  },
+  "write_scope": "ChatGPT-to-Sarvam only",
+  "protected_paths_untouched": [
+    "src",
+    "lib",
+    "tests",
+    "tools",
+    "win",
+    "windows",
+    "Windows-to-Sarvam",
+    "backups",
+    "frozen language packs"
+  ]
+}
