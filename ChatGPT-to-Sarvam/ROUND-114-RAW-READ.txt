@@ -1,0 +1,65 @@
+SUTRAM ROUND 114 — PINNED RAW SOURCE AND INVENTORY RECEIPT
+date: 2026-10-26
+main at first fetch: df4b5237b8962adda7f0693f1fc5bb1408567798
+assignment Sarvam-to-ChatGPT/ROUND-114.md Git blob: 0262ec5960cfb52808f35b5c86cb6842448968d9
+priority LANGUAGE-PRIORITY.md Git blob: 64682919a70fa1b79e415bc879aee9cad07582ad
+library source: 24 lib/*.smlib files; from exact GitHub fetch
+unparsed prakriya declarations: 0
+raw source functions Part A: 119 across 12 modules
+raw source functions Part B: 186 across 12 modules
+TOTAL source declarations: 305
+distinct names: 305
+first-token categories (name.split('_')[0]): 91
+single-occurrence first tokens: 63
+function names with no underscore: 45
+names with 2 segments: 174
+names with 3 segments: 81
+names with 4 segments: 5
+names beginning with their own module stem: 171
+domain-11 specified tokens: ganita=18 vartani=0 akshar=1 mala=8 kosh=0 suchi=21 nighantu=17 sangrah=0 shreni=0 phal=14 roop=23
+domain-11 sum: 102 / 305 = 33.4426229508 %
+full 91 first-token counts, 91-or-more last-token counts, raw declarations/line source: ROUND-114-WS1-MEASURED-PREFIXES.json + RAW-NAMES-A.tsv/B.tsv
+
+HTML docs/sutram-stdlib.html blob: 212d6c97a31455361607b4b797d504b3061f05d9
+HTML module function rows: 305; nonblank description cells: 205; blank description cells: 100
+HTML module sections: 24
+EVERY html module/function/line/description-present row: ROUND-114-HTML-ROW-INVENTORY.tsv
+Missing-by-module:
+aadhar=0/2 ank=10/10 anukram=1/5 brihat=1/13 chandas=6/6 ganit=16/18 ganita=2/22 gudh=1/2 kalana=1/6 khand=4/22 madhava=1/5 mala=8/8 nighantu=1/17 patra=1/3 phal=4/14 roop=5/23 sadhan=7/7 samanvaya=1/11 sangrah=0/14 sankhyiki=1/16 shreni=12/14 suchi=0/34 vakyank=1/6 varna=16/27
+
+EXACT PINNED WITNESS LINES (source readback):
+lib/aadhar.smlib:16-19: Caller allocates out with >= 4*n cells
+lib/aadhar.smlib:27-35: c < 1, dst[0] = 0, returns 1
+docs/sutram-stdlib.html:53 same published insufficient n=0 contract
+lib/samanvaya.smlib:135-144: sadish_yoga takes kosh dasham u and v; n=min(kosh_len(u), kosh_len(v)), sum += u[i]*v[i]
+docs/sutram-stdlib.html:330: incorrectly describes row i / column j of two matrices
+lib/gudh.smlib:10-25: fnv1a uses akshar(str,i) byte reads; fnv1a_varna uses vartani_len(s)
+docs/sutram-stdlib.html:161-164: prose wrongly describes a 'mala s' input; sign claim needs deletion absent native witness
+lib/nighantu.smlib:323-348: nighantu_mil returns merged count, terminates early on nighantu_khip zero; dst map length alone not partial-merge detector
+docs/sutram-stdlib.html:245: check nighantu_maap(dst) afterwards claimed partial detector
+lib/mala.smlib:1,9-87: raw fixed-size alloc, pad8 and likh8 helpers, safe variants with caller-provided n
+docs/sutram-stdlib.html:219-226: 8 empty descriptions
+lib/ganita.smlib:76-84,151-152,160-167: raw out[0]/out[1] require 2 qwords
+lib/kalana.smlib:32-40: simpson truncates last when even available sample count >=4; HTML:172 omits it
+lib/vakyank.smlib:138-161: ank_tak_aadhar_varna accepts 2<=base<=36; HTML:437 introductory examples suggest 2/8/10/16 only
+lib/khand.smlib:4-6,19-27: legacy string.smlib and strb_* references; HTML:179 republishes stale names
+lib/phal.smlib:7-10: result_checked_* stale; real phal_janchit_*; HTML:259 republishes stale prefix
+lib/sangrah.smlib:9-12: map.smlib reference; current nighantu.smlib; HTML:334
+lib/roop.smlib:309-313: "npad" source name in description; HTML:293
+
+DOCS/SANSKRIT-FOR-LANGUAGE-DESIGN.md blob: 76fa06d09438f8a3eb33b300d85a417efe62d3b6
+Main review §2.1 utsarga/apavada analogy qualified; §2.2 karaka six thematic/grammatical roles real, positional ABI distinct; §2.3 bahuvrihi genuine exocentric compound, not formal structural-typing model.
+§2.4 false aṇ all vowels; correct ac (learnsanskrit.org/panini/shivasutras/).
+§4 false existing "meru module": real lib/chandas.smlib with meru and meru_mala functions.
+§1 Sanskrit natural language vs Panini formal grammar dichotomy.
+Public study refs in WS3 file; not a linguistic specialist certification.
+
+MUSE-TO-SARVAM latest read: 2026-10-26-round38-report.md blob 6c9b694a620fb08e7ea9b3b88a49fb512e983acc
+R38 patch not applied to pinned main per docs/CHANGELOG.md v347; partner test output NOT a ChatGPT test.
+R112 remains with no ChatGPT-to-Sarvam/ROUND-112-HANDOFF.md at first directory read. This CHECK FOLDER handled only R114.
+
+EXECUTION:
+Full source parsing/counting via connected GitHub fetch and JS: PASS
+Native NASM Sutram compiler build/run/proofs/gates/Windows/FFI: NOT RUN - no toolchain
+Sanskrit linguist signoff: NOT RUN — qualified external review required
+All writes confined to ChatGPT-to-Sarvam/.
