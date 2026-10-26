@@ -91,6 +91,7 @@ run_gate() {                      # name, then the command
   case "$name" in
     "regression suite")
       s=$(grep -oE 'PASS=[0-9]+|FAIL=[0-9]+|NO-EXPECTATION=[0-9]+' /tmp/g_out.$$ | tr '\n' ' ')
+      SUITE_PASS=$(printf '%s' "$s" | grep -oE 'PASS=[0-9]+' | head -1 | cut -d= -f2)
       case "$s" in *FAIL=[1-9]*) bad "$name" "$s";; *) ok "$name ($s)";; esac ;;
     "codegen shapes")   n=$(grep -c PASS /tmp/g_out.$$); [ "$n" -ge 12 ] && ok "$name ($n/12)" || bad "$name" "$n/12" ;;
     "language packs")   case "$(tail -1 /tmp/g_out.$$)" in *"33/33"*) ok "$name (33/33)";; *) bad "$name" "$(tail -1 /tmp/g_out.$$)";; esac ;;
@@ -124,6 +125,8 @@ run_gate() {                      # name, then the command
     "R34 FFI v2")       line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r34 ffi v2: //'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c6-80)";; esac ;;
     "R38 fail-alloc")   line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r38 fail-alloc: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c6-80)";; esac ;;
     "alloc bounds")     line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/alloc bounds: //; s/ computed allocations in lib\/:/:/; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c6-80)";; esac ;;
+    "doc signatures")   line=$(tail -1 /tmp/g_out.$$); case "$line" in *"RESULT: PASS"*) ok "$name ($(grep -E 'Document: ' /tmp/g_out.$$ | sed 's/Document: //; s/ function signatures//') signatures, 0 mismatches)";; *) bad "$name" "$(grep -m1 'Issues:' /tmp/g_out.$$)";; esac ;;
+    "stale claims")     line=$(grep -E 'absence-shaped sentences' /tmp/g_out.$$ | head -1); case "$line" in *"absence-shaped sentences"*) ok "$name ($(echo "$line" | sed 's/stale-claim scan: //; s/ absence-shaped sentences/ hits/'))";; *) bad "$name" "scanner produced no count";; esac ;;
     "R23 fuzzer")       line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 differ"*) ok "$name ($(echo "$line" | sed 's/fuzz_r23: //'))";; *) bad "$name" "${line:-no summary}";; esac ;;
     "pack messages")    case "$(tail -1 /tmp/g_out.$$)" in OK*) ok "$name (12 sets x 11 cases)";; *) bad "$name" "$(grep -m1 -E 'FAIL|differ|Error' /tmp/g_out.$$ | cut -c1-60)";; esac ;;
     *)                  ok "$name" ;;
@@ -156,6 +159,8 @@ run_gate "ELF reader fuzzer" python3 tools/fuzz_elf2smo.py --seed 33 --count 300
 run_gate "R34 FFI v2"        python3 tests/r34/test_ffi_v2.py --compiler ./sutram_compiler --linker ./sutram-link --elf2smo ./sutram-elf2smo   # R34 (cloud): the sidecar's version; a dasham bit for bit; the edges
 run_gate "R38 fail-alloc"    python3 tests/r38/test_fail_alloc.py --compiler ./sutram_compiler   # R38: --fail-alloc N; every allocating library function at every allocation it makes
 run_gate "alloc bounds"      python3 tools/check_alloc_bounds.py   # R37: every computed allocation in lib/ bounds its count before multiplying, or says why not
+run_gate "doc signatures"    python3 tools/check_doc_signatures.py   # R38: lib signatures = docs/sutram-stdlib.html signatures, 305/305, 0 mismatches; a drift FAILs
+run_gate "stale claims"      python3 tools/doc_stale_claims.py   # R38: the absence-claim scanner runs; hits are review items, NOT failures (its own docstring: "Exit 0 always"), so this gate PASSes when the scanner completes and reports its count - FAILing on hits would permanently break the build at 160 hits
 run_gate "R23 fuzzer"        python3 tools/fuzz_r23.py --seed 23 --count 100 --compiler ./sutram_compiler --out /tmp/fuzz-r23-gate   # R23: 100 random programs against the model
 run_gate "valid fuzzer + function values" python3 tools/fuzz_valid.py --seed 24 --count 60 --capabilities --compiler ./sutram_compiler --out /tmp/fuzz-valid-gate   # R24: the main fuzzer with calls through function values
 run_gate "crash corpus"      python3 tools/crash_corpus.py --compiler ./sutram_compiler   # R17: invalid input must error, never crash
@@ -179,6 +184,22 @@ fi
 # Claude-to-Sarvam/evidence-r34/): there, run tests/r34/test_link_windows.py,
 # tools/ide_examples_windows.ps1 and tools/accept-windows.ps1. Say plainly it is not run here.
 skip "Windows execution" "cannot run here (Linux) - on Windows: tests/r34/test_link_windows.py, tools/ide_examples_windows.ps1, tools/accept-windows.ps1"
+
+# R38: doc counts, LAST. doc_counts_gate.py normally runs gates.sh itself, which
+# would recurse if called from here. It now accepts --totals/--suite-pass (see its
+# header): gates.sh passes its final totals, counting this gate itself as a pass.
+# That is exact when this gate passes, and moot when it fails, since a failed build
+# is not trusted. An impossible document claim (a gate total above the final total,
+# or a suite pass above the measured one) FAILs the build, which is the point.
+# Labelled-count checks are skipped in this mode; the standalone run with --gates
+# still covers them.
+DOC_TOTAL_PASS=$((PASS+1))
+DOC_OUT=$(python3 tools/doc_counts_gate.py --totals "$DOC_TOTAL_PASS $FAIL $SKIP" --suite-pass "${SUITE_PASS:-0}" 2>&1)
+DOC_EXIT=$?
+case "$DOC_EXIT" in
+  0) ok "doc counts ($(echo "$DOC_OUT" | head -1 | sed 's/measured: //'))" ;;
+  *) bad "doc counts" "$(echo "$DOC_OUT" | grep -m1 '^FAIL' | cut -c6-80)" ;;
+esac
 
 # ---------------------------------------------------------------- summary
 echo
