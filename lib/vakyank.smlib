@@ -1,15 +1,15 @@
-# lib/strconv.smlib — Sutram standard library: number <-> string conversion
+# lib/vakyank.smlib — Sutram standard library: number <-> string conversion
 # layer: alloc
 # R38: a renderer that cannot allocate its scratch writes only the terminator and returns 0.
 #
 # Renders integers as decimal (or base-2/8/16) digit characters into a buffer,
-# and parses them back. Buffers are pankti of integer character codes (not
+# and parses them back. Buffers are mala of integer character codes (not
 # byte-packed strings — see ROUND-08 Part B: Sutram has no byte-write primitive,
-# so we use cell arrays of char codes, the same idiom as lib/baseconv.smlib).
+# so we use cell arrays of char codes, the same idiom as lib/aadhar.smlib).
 #
 # All functions handle: zero, negative numbers (decimal only), empty input.
 
-# ank_tak_varna(n, out) — write decimal representation of int n into pankti out
+# ank_tak_varna(n, out) — write decimal representation of int n into mala out
 # as character codes. Returns the character count (excluding terminator).
 # out[ count ] is set to 0 as a terminator. Caller allocates >= 22 cells.
 prakriya ank_tak_varna(n, out) {
@@ -78,9 +78,9 @@ prakriya ank_tak_varna(n, out) {
     prati pos + rlen
 }
 
-# varna_tak_ank(buf, n) — parse first n character codes of pankti buf as a
+# varna_tak_ank(buf, n) — parse first n character codes of mala buf as a
 # decimal integer. Leading '-' negates. Returns the value; sets ok[0] to 1
-# on success, 0 on malformed input (ok is a 1-cell pankti).
+# on success, 0 on malformed input (ok is a 1-cell mala).
 prakriya varna_tak_ank(buf, n, ok) {
     vitti src = buf
     vitti cnt = n
@@ -232,7 +232,7 @@ prakriya varna_tak_ank_aadhar(buf, n, base, ok) {
 }
 
 # pad_vam(out, count, width, fill) — left-pad the `count` character codes
-# in pankti `out` to `width` using fill character code `fill`, in place.
+# in mala `out` to `width` using fill character code `fill`, in place.
 # Returns the new count (width if width > count, else count).
 # Caller must allocate >= width cells.
 prakriya pad_vam(out, count, width, fill) {
