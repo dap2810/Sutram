@@ -2,6 +2,16 @@
 
 **Status: DRAFT - needs a Sanskrit scholar's review before it is presented as authoritative.**
 
+> **CORRECTIONS (26 Oct 2026, found by ChatGPT's R113 review - all three were mine):**
+> 1. **This document said "303" functions. The current count is 305** (`lib/*.smlib`, and the regenerated
+>    `sutram-stdlib.html` footer). **303 was a stale number I carried from memory.**
+> 2. **I wrote that `ganita_sat_yuj` implements saturating addition. That function DOES NOT EXIST** - the real
+>    name is **`ganita_paripurna_yuj`**. **I invented a function name and presented it as an example.**
+> 3. **I wrote that `ganita_janchit_gun` is not in the reference. It IS** - I asserted a negative without
+>    checking it.
+>
+> **All three are the same failure: I wrote a plausible document about a vocabulary I had not read.**
+
 **Why this document exists.** The project has a frozen vocabulary of 303 function names, and a reference page that
 lists them. **A list is a dictionary: it only helps someone who is already looking up a word they know.** **What makes
 a vocabulary learnable is the RULES - so that a learner can predict a name they have never seen.**
@@ -20,7 +30,7 @@ words, and you can type a name you were never taught.**
 |---|---|---|
 | `ganita_janchit_yuj` | `ganita` + `janchit` + `yuj` | math + checked + join = **checked addition** |
 | `ganita_janchit_nyun` | `ganita` + `janchit` + `nyun` | math + checked + less = **checked subtraction** |
-| `ganita_sat_yuj` | `ganita` + `sat` + `yuj` | math + true/valid + join = **saturating addition** |
+| `ganita_paripurna_yuj` | `ganita` + `paripurna` + `yuj` | math + complete/full + join = **saturating addition** (corrected - I had written a name that does not exist) |
 | `vartani_len` | `vartani` + `len` | string + length |
 | `akshar_rakh` | `akshar` + `rakh` | character + place = **set character** |
 
@@ -93,8 +103,9 @@ clamps, `janchit` refuses, and no qualifier means the plain wrapping operation.*
 
 **Three things, and they are the point of the whole document:**
 
-1. **A name they have never seen is a name they can guess.** **`ganita_janchit_gun`** is not in the reference - but
-   a learner who knows the rule reads it as "math, checked, multiply" and is right.
+1. **A name they have never seen is a name they can guess.** **`ganita_janchit_gun`** **IS** in the reference (corrected - I had claimed it was not, without checking). A
+   learner who reads it as "math, checked, multiply" is right, **and the fact that it exists is evidence the rule
+   holds rather than a hypothetical.**
 2. **A wrong guess is visibly wrong.** **`vartani_janchit_yuj`** does not exist, and a learner can tell *why* - the
    `janchit` qualifier belongs to `ganita`.
 3. **The vocabulary can grow without a new list.** **A function added tomorrow follows the same rule**, so the
