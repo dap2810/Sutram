@@ -1,11 +1,11 @@
-# lib/strb.smlib — Sutram standard library: byte-string surface
+# lib/khand.smlib — Sutram standard library: byte-string surface
 # layer: core
 #
 # The string toolkit on BYTE-PACKED strings (the representation of a
 # literal and of set_char-built buffers). Own module (not inside
 # string.smlib) because the compiler has a fixed AST ceiling.
 #
-# THE TWO REPRESENTATIONS (see also lib/string.smlib):
+# THE TWO REPRESENTATIONS (see also lib/varna.smlib):
 #   char-code array: qword cells, one char code per cell, h[i].
 #   byte string: bytes packed 1-per-byte, char_at(s, i) /
 #     set_char(s, i, v) / vartani_len(s). Do NOT mix them: h[i] on
