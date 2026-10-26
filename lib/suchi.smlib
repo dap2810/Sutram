@@ -1,7 +1,7 @@
-# lib/list.smlib — Sutram standard library: dynamic lists, stacks, queues
+# lib/suchi.smlib — Sutram standard library: dynamic lists, stacks, queues
 # layer: alloc
 #
-# Elements are QWORD CELLS (the pankti/kosh convention), not byte
+# Elements are QWORD CELLS (the mala/kosh convention), not byte
 # strings. Users with byte strings store POINTERS (suchi_khip(l, ptr));
 # the caller keeps the pointed-to buffers alive. No mixing: every
 # element here is a qword. dasham elements are NOT supported — an
@@ -30,7 +30,7 @@
 # matters. suchi_sangrah / suchi_nivesh / suchi_apanay return
 # 1 ok / 0 out of bounds (or allocation failure for insert).
 # chay_apanay / chay_avalok / avali_nishkas / avali_avalok return the
-# value and set ok[0] (a 1-cell pankti) to 1 on success, 0 when
+# value and set ok[0] (a 1-cell mala) to 1 on success, 0 when
 # empty — the value alone cannot signal emptiness.
 #
 # All signatures stay within the 6-argument cap.
@@ -208,7 +208,7 @@ prakriya suchi_viparyay(l) {
 
 # suchi_shreni(l) — sort the list in place, ascending (WS2, R21).
 # Merge sort (O(n log n)) over the list's data array. Before this,
-# sorting a list meant `ayojan sort` plus a hand-written
+# sorting a list meant `yoj shreni` plus a hand-written
 # `mil_shreni(l[2], suchi_maap(l))` at every call site. Returns 1.
 prakriya suchi_shreni(l) {
     mil_shreni(l[2], l[0])
