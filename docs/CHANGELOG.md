@@ -1,3 +1,49 @@
+## v346 - sync, test, audit: everything passes, and Muse's three approved changes are NOT on main
+
+**Fresh clone of main, built, and measured.**
+
+| Check | Result |
+|---|---|
+| changelog / compiler | **v345 / v246** |
+| files | **3,909** |
+| crash corpus | **227 cases + manifest, 0 failed** |
+| library proofs | **224 / 224** |
+| layers | **14 core, 9 alloc, 1 std** |
+| alloc bounds | **26 allocations, 13 bounded, 13 exempt, 0 failed** |
+| **doc signatures** | **24 modules, 305 signatures, 0 issues, PASS** |
+| cruft | **0 pyc, 0 bak, 0 stray, 2 zips** |
+
+**So the tree is healthy on every measure I can run.**
+
+### And the finding: the three approved changes are delivered as a PATCH, not applied
+
+**Muse's R38 says so on its second line:** *"patch + this report in the outbox (**NOT direct to main**), for a reason
+stated at the end."* **And the measurement agrees:**
+
+```
+checks present: 4/4
+gates wired:    0
+```
+
+**All four check scripts are on main. NONE of them is wired into `gates.sh`.** **So the gates Muse built do not run.**
+
+**That is the difference between delivered and merged, and it is exactly the failure this project keeps meeting:**
+**the work is done and the thing that makes it matter has not been switched on.**
+
+### And the reason matters
+**Muse did not push directly because it changed `gates.sh` and `doc_counts_gate.py`** - **a build-system change.** **Its
+convention is to propose those as a patch, and that convention is correct.** **So the patch needs applying, by someone
+with git.**
+
+### What I cannot do
+**Apply it.** **The patch touches `gates.sh` and a Python tool, and my tool cannot set a file mode or merge a patch
+with context.** **So it goes to whoever has git** - Claude when it returns, or the owner.
+
+### And one number moved in the right direction
+**Alloc bounds went from 19 exempt to 13 exempt, and from 6 bounded to 13 bounded** - **so seven sites that were exempt
+are now checked.** **That is a real improvement since the last measurement, and it happened in a round I did not
+attribute.**
+
 ## v345 - I INVENTED A FUNCTION NAME in the vocabulary draft. ChatGPT caught it.
 
 **ChatGPT's R113 review of `docs/VOCABULARY-DERIVATION.md` found three defects, and all three were mine.**
