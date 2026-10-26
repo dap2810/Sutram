@@ -144,17 +144,36 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--repo", default=".")
     ap.add_argument("--gates", default=None, help="a gates.sh transcript, so gates.sh is not run again")
+    ap.add_argument("--totals", default=None,
+                    help="R38: authoritative totals 'PASS FAIL NOT-RUN' for use INSIDE gates.sh. "
+                         "When given, gates.sh is not run and no transcript is needed, so the "
+                         "doc-counts gate can live in gates.sh without recursing. gates.sh passes "
+                         "its final totals (counting this gate itself as a pass, which is exact "
+                         "when this gate passes and moot when it fails, since a failed build is "
+                         "not trusted). Labelled-count checks are skipped in this mode; they are "
+                         "still covered by the standalone run with --gates.")
+    ap.add_argument("--suite-pass", default=None, type=int,
+                    help="R38: suite PASS count, used with --totals instead of re-running the suite")
     ap.add_argument("--quiet", action="store_true")
     a = ap.parse_args()
     repo = os.path.abspath(a.repo)
 
-    t = gate_totals(repo, a.gates)
-    if t is None:
-        print("NOT-RUN  doc counts: gates.sh did not produce a PASS total")
-        return 0
-    gp, gf, gn = t
-    measured = measured_counts(getattr(gate_totals, "text", ""))
-    sp = suite_pass(repo)
+    if a.totals:
+        try:
+            gp, gf, gn = (int(x) for x in a.totals.split())
+        except Exception:
+            print("doc counts: --totals must be 'PASS FAIL NOT-RUN'")
+            return 1
+        sp = a.suite_pass
+        measured = {}
+    else:
+        t = gate_totals(repo, a.gates)
+        if t is None:
+            print("NOT-RUN  doc counts: gates.sh did not produce a PASS total")
+            return 0
+        gp, gf, gn = t
+        measured = measured_counts(getattr(gate_totals, "text", ""))
+        sp = suite_pass(repo)
 
     print(f"measured: {gp} gates PASS, {gf} FAIL, {gn} NOT-RUN"
           + (f"; suite PASS={sp}" if sp is not None else ""))
@@ -182,6 +201,16 @@ def main():
                 problems.append(f"{d}: quotes {n} pass but the suite has {sp}")
             elif sp is not None and n < sp:
                 notes.append(f"{d}: says {n} pass, measured {sp}")
+        # R38: a gate-total line in PROJECT-MASTER's format ("37 PASS, 0 FAIL").
+        # The N/N check above does not catch it, so a document quoting 99 PASS
+        # passed the gate until now. Quoting more gates than exist is impossible
+        # (FAIL); quoting fewer is lag (NOTE), as with the other counts.
+        for m in re.finditer(r"\b(\d{1,2})\s+PASS,\s*\d+\s+FAIL", s):
+            n = int(m.group(1))
+            if n > gp:
+                problems.append(f"{d}: quotes {n} PASS but only {gp} gates exist")
+            elif n < gp:
+                notes.append(f"{d}: says {n} PASS, measured {gp}")
 
         # R39: the labelled counts. Before R39 this gate checked only "N/N" pairs above the gate total and
         # "NNN pass"; a document quoting codegen 27/27, 180 library proofs or 281 functions passed it.
