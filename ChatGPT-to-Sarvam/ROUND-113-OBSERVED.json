@@ -1,0 +1,87 @@
+{
+  "round": 113,
+  "date": "2026-10-26",
+  "read_pin": "1ccec720dccc53ae8ed344e4f58f87fba727682a",
+  "changelog": "v341",
+  "assignment": "Sarvam-to-ChatGPT/ROUND-113.md",
+  "assignment_blob": "f41808466eb477169254966c60b02c8701547099",
+  "uncompleted_prior_assignment": "ROUND-112.md on main, no corresponding ROUND-112-HANDOFF.md observed at start; not executed in this trigger",
+  "source_blobs": {
+    "src/sutram_compiler.asm": "7db83d38152c81b05e387b5a93a4445fa984f72c",
+    "lib/mala.smlib": "286150850621ccd0a3f3523a246b3d4314258bf1",
+    "lib/ganita.smlib": "c616b3b4893443404a8e96d32615a25b6d413873",
+    "lib/samanvaya.smlib": "5705b6508fcbeaf948e6a161ea6021f22e5786aa",
+    "lib/kalana.smlib": "a3a2c47821b439d66bdf1d3450b92ab1e00fcd86",
+    "docs/sutram-stdlib.html": "212d6c97a31455361607b4b797d504b3061f05d9",
+    "docs/VOCABULARY-DERIVATION.md": "9d21095a23b28687ff2278dc8f0ae1c54dfc774e"
+  },
+  "WS1": {
+    "confirmed_existing_oob_success_dependencies_in_inspected_sample": 0,
+    "whole_repo_absence_claim": "NOT ESTABLISHED",
+    "intentional_fail_fixtures": [
+      "examples/68_array_oob.sm",
+      "examples/71_array_negative_index.sm",
+      "examples/100_t18_kosh_bounds.sm",
+      "tests/r23/test_capabilities.py"
+    ],
+    "valid_guard_sentinel_fixtures": [
+      "tests/stdlib/r8_array_guard.sm",
+      "tests/stdlib/r10_roop_suchi_edges.sm"
+    ],
+    "compiler_fact": "Typed array indexing invokes emit_array_bounds_check; raw nirmmita pointers historically unchecked",
+    "risk_interfaces": [
+      "lib/mala.smlib raw likh8/pad8 methods",
+      "lib/samanvaya.smlib caller-filled kosh outputs",
+      "lib/kalana.smlib bahu_mula ok[0]",
+      "lib/ganita.smlib raw out[0]/out[1] and okp[0]"
+    ],
+    "result": "PASS source-audit; no proof of runtime changes"
+  },
+  "WS2": {
+    "read_html_sections": [
+      "ganita",
+      "mala",
+      "kalana",
+      "samanvaya",
+      "khand",
+      "sadhan",
+      "nighantu",
+      "roop"
+    ],
+    "materially_misleading": [
+      "samanvaya.sadish_yoga documented row/column but actually flat vector min-length dot",
+      "mala raw fixed-memory helpers labeled dynamic arrays"
+    ],
+    "incomplete_contracts": [
+      "ganita.chakravala and samasa 2-cell output preconditions",
+      "mala 8 per-function empty descriptions",
+      "kalana.simpson drop-last-even-count not in HTML"
+    ],
+    "correct_not_reflagged": [
+      "kalana.bahu_mula requires pushed ok[0]",
+      "sadhan Usage: yoj sadhan after Muse R36"
+    ],
+    "result": "FAIL doc semantic consistency"
+  },
+  "WS3": {
+    "draft_not_authoritative": true,
+    "factual_failures": [
+      "303 reference functions vs 305 current source+HTML signatures",
+      "ganita_sat_yuj example vs ganita_paripurna_yuj current",
+      "ganita_janchit_gun claimed missing but currently declared and documented",
+      "eleven domain names claimed as current modules though 24 actual modules and no vartani/akshar/kosh module",
+      "claim every ganita function begins ganita contradicted by kuttaka/chakravala/samasa"
+    ],
+    "linguistic_validation": "CANNOT CHECK as qualified Sanskritist, requires specialist",
+    "rakh_likh_verdict": "rakh/raksh synonymity risky; likh/lekh stem certification deferred",
+    "result": "FAIL source-level assertions; Sanskrit morphology NOT CERTIFIED"
+  },
+  "execution": {
+    "source_reads": "PASS (GitHub connector)",
+    "native_sutram": "NOT RUN - no toolchain",
+    "Windows": "NOT RUN - no toolchain",
+    "full_test_suite": "NOT RUN - no toolchain",
+    "performance": "NOT RUN - no toolchain"
+  },
+  "write_scope": "ChatGPT-to-Sarvam/ only; no src/lib/tests/tools/Windows/backups/frozen language packs touched"
+}
