@@ -1,11 +1,11 @@
-# lib/map.smlib — Sutram standard library: associative map (hash table)
+# lib/nighantu.smlib — Sutram standard library: associative map (hash table)
 # layer: alloc
 #
-# Open addressing with linear probing over parallel pankti arrays.
+# Open addressing with linear probing over parallel mala arrays.
 # KEY REPRESENTATION: byte strings (the R10 strb_* surface), NOT
 # char-code arrays: keys are usually literals ("apple"), and byte
 # strings let the caller pass a literal directly. The hash
-# (lib/hash.smlib fnv1a) is byte-based (char_at), so the choice is
+# (lib/gudh.smlib fnv1a) is byte-based (char_at), so the choice is
 # consistent end to end. Do not pass char-code arrays here.
 #
 # Layout of the map buffer m (qword cells, except the key bytes):
