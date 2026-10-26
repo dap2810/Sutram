@@ -1,0 +1,149 @@
+{
+  "schema": 1,
+  "round": 110,
+  "date": "2026-10-26",
+  "initial_main": "cc69322c22b354296a3448aa3d1edf254ef319b5",
+  "initial_changelog": "v332",
+  "role": "READ-ONLY; no source/tool edits",
+  "assignment": {
+    "path": "Sarvam-to-ChatGPT/ROUND-110.md",
+    "sha": "0584db7bf2fd0a3939ca1146657a653ba536e63f"
+  },
+  "owner_controls": [
+    {
+      "path": "LANGUAGE-PRIORITY.md",
+      "sha": "64682919a70fa1b79e415bc879aee9cad07582ad",
+      "meaning": "Sanskrit only until v1.0; other ten packs frozen"
+    },
+    {
+      "path": "docs/PATH-TO-COMPLETION.md",
+      "sha": "8a6353213f02a0c5055d61f159e1e5e95b797370",
+      "meaning": "Windows branch/acceptance, mixed ABI and owner variable-type decision before Sanskrit freeze"
+    }
+  ],
+  "pinned_source_reads": {
+    "tools/gen_stdlib_ref.py": "7d13129e1aba99cf62ccfe3f7ec33e45d4bbf433",
+    "docs/sutram-stdlib.html": "a120fe5739598131dab3768655eab60620536321",
+    "lib/chandas.smlib": "3dc24f437d79e4fb44717ee846a7e87a21a64bb4",
+    "lib/sadhan.smlib": "41d45dc2e69091a53fd54671e913ccdc177b9a8c",
+    "lib/ganita.smlib": "53eb835102715b94e31e12d69072b8aa4f0c563e",
+    "lib/sankhyiki.smlib": "843a1c05617cbd4cea050aee63195d1a2c324f52",
+    "lib/varna.smlib": "87d1e1464838441719447ca76fd91c0032856f5e",
+    "examples/222_old_keyword_name.sm": "2389868a11489a2ff2497a32b05bfd43189258a4",
+    "examples/19_srijana_enum.sm": "ee4bffc29eb3a7fb2ad2b15d8071e4020061a518",
+    "docs/R56-MODULE-GLOBALS.md": "bfb98eaa994e6356bbf3075e177735a40f02bc01",
+    "docs/R65-DEVANAGARI-SURFACE.md": "1765446aea55be453449a263c65303dd0348bd9d",
+    "docs/CHANGELOG.md": "94104973ff389c1e36dcf6869c82076857762331",
+    "Windows-to-Sarvam/WIN-FFI-2026-10-21.md": "51315c8b2f073ee0dc56f2efc4f7edbb2a100b12",
+    "Muse-to-Sarvam/2026-10-23-round34-regen-guard.md": "de89039321808070f0674d7a54e714d7a3892b32"
+  },
+  "inventory": {
+    "lib_smlib_read": 24,
+    "example_sm_read": 238,
+    "example_smlib_read": 13,
+    "docs_md_html_read": 83,
+    "docs_split": "82 direct non-CHANGELOG + 1 CHANGELOG",
+    "github_recursive_tree_truncated": false,
+    "read_failures": 0,
+    "old_token_search_tokens": [
+      "punaravartana",
+      "pratiyati",
+      "uddeshya",
+      "anytra",
+      "nishedha",
+      "parigrah",
+      "nishkriya",
+      "ayojan",
+      "srijana",
+      "pankti",
+      "meru_pankti"
+    ],
+    "unquoted_english_to": "EXCLUDED from automatic word matching; needs context-aware parsing",
+    "lib_pankti_comment_lines": 19,
+    "lib_pankti_modules": 11,
+    "lib_ayojan_comments": 2,
+    "lib_meru_pankti_declaration": 1,
+    "example_matches": [
+      {
+        "path": "examples/19_srijana_enum.sm",
+        "lines": [
+          1
+        ],
+        "meaning": "descriptive title, actual enum syntax uses ganana"
+      },
+      {
+        "path": "examples/222_old_keyword_name.sm",
+        "lines": [
+          1,
+          8
+        ],
+        "meaning": "intentional compile-reject regression for obsolete uddeshya"
+      }
+    ],
+    "example_companion_module_hits": 0,
+    "docs_changelog_old_token_lines": 75,
+    "docs_changelog_status": "HISTORICAL; not active grammar",
+    "docs_non_changelog_hits": [
+      "docs/LANGUAGE-REFERENCE.md:242 diagnostic pankti means line number",
+      "docs/NEGATIVE-CORPUS.md:24,27 same diagnostic",
+      "docs/R56-MODULE-GLOBALS.md:28 historical ayojan",
+      "docs/R65-DEVANAGARI-SURFACE.md:3 historical pankti/srijana/nishkriya/parigrah",
+      "docs/R67-SOURCE-REVIEW.md:109 historical nishkriya",
+      "docs/R71-MEMORY-BOUNDARY.md:29 historical nishkriya",
+      "docs/R71-MODULES.md:9 historical ayojan",
+      "docs/sutram-book-english.html:218 etymological Pankti, :308 diagnostic",
+      "docs/sutram-book-{gujarati,hindi,sanskrit,tamil,telugu}.html diagnostic pankti respectively lines 286,316,276,292,315"
+    ]
+  },
+  "ws1": {
+    "path": "ChatGPT-to-Sarvam/ROUND-110-WS1-DOCUMENTATION-CONTRACT-CHECK.md",
+    "status": "PASS - design source-grounded; NOT RUN - no toolchain for implementation/execution",
+    "priority": [
+      "public 305 lib callable names/signatures",
+      "Sanskrit keywords and builtins vs compiler source and alias map",
+      "classified runnable README and guides snippets",
+      "safe PowerShell parse and separately approved native Windows installer acceptance",
+      "expected outputs, references, source hashes"
+    ],
+    "limitations": [
+      "source symbol existence cannot prove semantics",
+      "raw-pointer extent and preconditions require human fixtures or typed metadata",
+      "inert snippets/drafts/historical/negative fixtures must not auto-execute",
+      "PowerShell installation/uninstall requires explicit owner authorization",
+      "native GUI and language quality require human observation"
+    ]
+  },
+  "ws2": {
+    "path": "ChatGPT-to-Sarvam/ROUND-110-WS2-SPEC-ORDER.md",
+    "status": "PASS - ten-step ordered advice with a check and risk at each step"
+  },
+  "ws3": {
+    "path": "ChatGPT-to-Sarvam/ROUND-110-WS3-INDEPENDENT-OLD-TOKENS.md",
+    "status": "PASS - independent source reading",
+    "source_contract_failures": [
+      "docs/sutram-stdlib.html:107 documents meru_mala but lib/chandas.smlib:82 declares meru_pankti until approved Muse R35 migration",
+      "lib/sadhan.smlib:4 says Usage: ayojan util; current import/module is yoj sadhan"
+    ],
+    "intentionally_retained": [
+      "examples/222_old_keyword_name.sm:8 intentionally rejected uddeshya",
+      "examples/19_srijana_enum.sm title-only historical",
+      "pankti in diagnostic lines meaning line-number",
+      "dated docs/R56,R65,R67,R71/CHANGELOG history"
+    ],
+    "partner_comparison": "Muse R34 agrees generator copies old library comments; Muse R35 not landed as of last check; keep independent chronology"
+  },
+  "raw": {
+    "path": "ChatGPT-to-Sarvam/ROUND-110-RAW-READ.txt",
+    "type": "GitHub source-derived text, not native test output",
+    "static_assertions_pass": 9,
+    "static_assertions_fail": 0
+  },
+  "not_run": [
+    "NOT RUN - no toolchain: native Sutram compilation, individual API invocation, snippet execution",
+    "NOT RUN - no toolchain: executing Python generator or new mechanical doc checker",
+    "NOT RUN - no toolchain: full gates, fuzz, corpus, library/proofs",
+    "NOT RUN - no toolchain: PowerShell parser, install/uninstall/native Windows FFI/GUI acceptance",
+    "NOT RUN - no toolchain: benchmarks, human localization/GUI tests"
+  ],
+  "writes": "Only new ROUND-110 docs in ChatGPT-to-Sarvam; no src/lib/tests/tools/examples/Windows-to-Sarvam/backups/frozen language pack changes."
+}
