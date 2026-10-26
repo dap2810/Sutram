@@ -1,3 +1,38 @@
+## v343 - Sanskrit for language design: five mechanisms with real engineering value
+
+**The owner asked what we can take from Sanskrit and how it makes the language prominent. `docs/SANSKRIT-FOR-LANGUAGE-DESIGN.md`
+sets out the honest version - mechanisms, not mysticism.**
+
+**And it opens by naming the false version so it cannot creep back:** *"Sanskrit is the most suitable language for
+computers"* is **not supported by anything.**
+
+### The strongest five
+
+| Mechanism | What it maps to | Why it matters here |
+|---|---|---|
+| **Utsarga / Apavāda** | general rule, specific override **without deleting the general one** | **one mechanism for error handling, dispatch and defaults** instead of three |
+| **Kāraka** (six roles) | **named arguments with semantic roles** | **the sharpest one: our C FFI says `s_add\|2\|i64,i64` and nothing about which is which.** **Role annotations make the FFI checkable by role, not just by count** - in the one place the language is currently unsafe |
+| **Bahuvrīhi** | **structural typing** - a thing named by what it HAS | **traits get a Sanskrit derivation** instead of a borrowed one |
+| **Pratyāhāra** | **a set named by two endpoints** | character classes and enum ranges in two tokens |
+| **Sandhi** | **rules for what happens at a boundary** | **`yoj` is textual inclusion with no rules at the seam; sandhi is the principled version** |
+
+**Plus three smaller ones with real value:** **anuvṛtti** (inheritance by context = lexical scoping), **adhikāra**
+(a governing header = section-scoped default), **ekasheṣa** (one remains = common-subexpression elimination).
+
+### And two historical facts we can state accurately
+**Piṅgala's Chandaḥśāstra uses a binary-like notation and his metre rules generate the Fibonacci sequence** - **and
+the project already has a `meru` module, which is Meru Prastāra, Pascal's triangle.** **So the library's name is
+historically grounded and we can say so.** **And Katapayadi saṅkhyā encodes numbers as letters** - **directly relevant
+to making error codes memorable.**
+
+### What it does not claim
+**Not that Sanskrit is better for computers. Not that any mechanism is unique to it. Not that the tradition is
+superior.** **It claims that a 2,500-year-old formal grammar contains mechanisms with direct engineering analogues,
+that Pāṇini got there first, and that the modern names are the ones we learn instead.**
+
+**And it lists the six questions a Sanskritist must answer before any of it is authoritative - including whether I
+have utsarga/apavāda's priority right, and whether I am collapsing several compound types into bahuvrīhi.**
+
 ## v342 - I measured my own vocabulary draft, and its central claim is WRONG
 
 **`docs/VOCABULARY-DERIVATION.md` says eleven domain prefixes let a learner place any of the 303 names. I wrote that
