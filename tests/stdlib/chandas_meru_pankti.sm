@@ -1,7 +1,7 @@
 yoj chandas
 mukhya() {
     mala a[10]
-    meru_pankti(a, 4)
+    meru_mala(a, 4)
     likha(a[0])
     likha("\n")
     likha(a[1])
