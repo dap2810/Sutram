@@ -1,4 +1,4 @@
-# lib/serial.smlib — Sutram standard library: binary serialisation (R29 WS5)
+# lib/anukram.smlib — Sutram standard library: binary serialisation (R29 WS5)
 # layer: core
 #
 # The library's one new capability area: encode values into a flat
