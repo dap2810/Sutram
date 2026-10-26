@@ -1,0 +1,79 @@
+SUTRAM ROUND-111 RAW READ / STATIC RECEIPT
+PIN main-before-ChatGPT-files: 11b2d5dd7d3985d8a9d9ab56b102454b4c0a2874
+ASSIGNMENT Sarvam-to-ChatGPT/ROUND-111.md blob cdf94f2fe589bbb61f757e694eaaa1af30269904
+HTML docs/sutram-stdlib.html blob 41c2e75ac173d7ee8a068b38f2077af29c97d7cb
+SCRIPT ChatGPT-to-Sarvam/tools/check_doc_signatures.py uploaded-and-readback blob 32be7ed1ce610046008e9f4e82234279293326c9
+
+GITHUB-CONNECTOR DIRECT SOURCE READ / EXACT SIGNATURES
+scope: 24/24 lib/*.smlib + docs/sutram-stdlib.html
+source signature expression: /^\s*prakriya\s+([A-Za-z_]\w*)\s*\(([^)]*)\)/
+HTML function-cell expression: /<tr><td><code>([^<]+)<\/code><\/td>/
+aadhar       source= 2 html= 2 mismatch=0
+ank          source=10 html=10 mismatch=0
+anukram      source= 5 html= 5 mismatch=0
+brihat       source=13 html=13 mismatch=0
+chandas      source= 6 html= 6 mismatch=0
+ganit        source=18 html=18 mismatch=0
+ganita       source=22 html=22 mismatch=0
+gudh         source= 2 html= 2 mismatch=0
+kalana       source= 6 html= 6 mismatch=0
+khand        source=22 html=22 mismatch=0
+madhava      source= 5 html= 5 mismatch=0
+mala         source= 8 html= 8 mismatch=0
+nighantu     source=17 html=17 mismatch=0
+patra        source= 3 html= 3 mismatch=0
+phal         source=14 html=14 mismatch=0
+roop         source=23 html=23 mismatch=0
+sadhan       source= 7 html= 7 mismatch=0
+samanvaya    source=11 html=11 mismatch=0
+sangrah      source=14 html=14 mismatch=0
+sankhyiki    source=16 html=16 mismatch=0
+shreni       source=14 html=14 mismatch=0
+suchi        source=34 html=34 mismatch=0
+vakyank      source= 6 html= 6 mismatch=0
+varna        source=27 html=27 mismatch=0
+TOTAL        source=305 html=305
+DIRECT SOURCE NAME/SIGNATURE MISMATCHES: 0
+UNPARSED SOURCE DECLARATION LINES: 0
+HTML MODULES: 24
+
+VERIFIED LIVE IDENTIFIERS
+lib/chandas.smlib blob ab09b6655ef76f2a8abc1abc80cc33fe24051272 line 82: prakriya meru_mala(a, n) {
+tests/stdlib/chandas_meru_pankti.sm blob 3ec862ef446d4493c69440eb4598815be1f2452f line 4:     meru_mala(a, 4)
+docs/sutram-stdlib.html line 108: <tr><td><code>meru_mala(a, n)</code></td><td></td></tr>
+Source/code row meru_pankti: absent.
+lib/sadhan.smlib line 4: # Usage: ayojan util
+CORRECT COPYABLE USAGE (not yet in source comment): yoj sadhan
+
+ACTUAL LOCAL PYTHON EXECUTION (source fixture; NOT full repository)
+$ python -m py_compile ChatGPT-to-Sarvam/tools/check_doc_signatures.py
+exit=0
+$ python ChatGPT-to-Sarvam/tools/check_doc_signatures.py --repo-root FIXTURE_WITH_TWO_MODULES
+SUTRAM DOC SIGNATURE FLOOR — compares names, arity and declared parameter kinds, NOT behaviour.
+NO NASM / NATIVE COMPILER / RUNTIME ACCEPTANCE IS RUN BY THIS CHECK.
+Source: 2 modules, 5 prakriya declarations
+Document: 2 modules, 5 function signatures
+Issues: 0
+RESULT: PASS (static signature floor only)
+exit=0
+
+$ python ChatGPT-to-Sarvam/tools/check_doc_signatures.py --repo-root FIXTURE_WITH_INTENTIONAL_DRIFT
+SUTRAM DOC SIGNATURE FLOOR — compares names, arity and declared parameter kinds, NOT behaviour.
+NO NASM / NATIVE COMPILER / RUNTIME ACCEPTANCE IS RUN BY THIS CHECK.
+Source: 2 modules, 5 prakriya declarations
+Document: 2 modules, 5 function signatures
+Issues: 8
+FAIL: SOURCE-ONLY: chandas.meru_mala(a, n) at /mnt/data/sutram_round111/fixtures/lib/chandas.smlib:2
+FAIL: SOURCE-ONLY: chandas.zero() at /mnt/data/sutram_round111/fixtures/lib/chandas.smlib:6
+FAIL: DOCUMENT-ONLY: chandas.meru_pankti(a) at /mnt/data/sutram_round111/fixtures/docs/sutram-stdlib.html:3
+FAIL: DOCUMENT-ONLY: chandas.old_zero() at /mnt/data/sutram_round111/fixtures/docs/sutram-stdlib.html:5
+FAIL: KIND MISMATCH: chandas.pehchan: source ('untyped', 'kosh dasham') at /mnt/data/sutram_round111/fixtures/lib/chandas.smlib:4; doc ('untyped', 'untyped') at /mnt/data/sutram_round111/fixtures/docs/sutram-stdlib.html:4
+FAIL: ARITY MISMATCH: kalana.kalana_trapiz: source 2 at /mnt/data/sutram_round111/fixtures/lib/kalana.smlib:1; doc 1 at /mnt/data/sutram_round111/fixtures/docs/sutram-stdlib.html:6
+FAIL: KIND MISMATCH: kalana.kalana_trapiz: source ('kosh dasham', 'kosh dasham') at /mnt/data/sutram_round111/fixtures/lib/kalana.smlib:1; doc ('kosh dasham',) at /mnt/data/sutram_round111/fixtures/docs/sutram-stdlib.html:6
+FAIL: PARAMETER LABEL MISMATCH: kalana.kalana_trapiz: source ('xs', 'ys') at /mnt/data/sutram_round111/fixtures/lib/kalana.smlib:1; doc ('xs',) at /mnt/data/sutram_round111/fixtures/docs/sutram-stdlib.html:6
+RESULT: FAIL
+exit=1 (EXPECTED)
+
+CAVEAT: the full 24-module source comparison was executed in the connector's JS runtime against GitHub content, not by the delivered Python script against a local full clone. The Python executable did run only on the two-module fixtures. Do not conflate them.
+FULL REPOSITORY PYTHON TOOL EXECUTION: NOT RUN - local authenticated checkout unavailable
+NASM NATIVE COMPILER / STDLIB PROOFS / ABI / WINDOWS: NOT RUN - no toolchain
