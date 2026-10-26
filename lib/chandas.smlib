@@ -79,7 +79,7 @@ prakriya guru_gan(pat) {
     prati c
 }
 
-prakriya meru_pankti(a, n) {
+prakriya meru_mala(a, n) {
     vitti i = 0
     yavat (i <= n) {
         a[i] = meru(n, i)
