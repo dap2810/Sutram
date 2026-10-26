@@ -1,7 +1,7 @@
-# lib/result.smlib — Sutram standard library: Result values (R29 WS3)
+# lib/phal.smlib — Sutram standard library: Result values (R29 WS3)
 # layer: core
 #
-# A Result is a 2-cell pankti supplied by the caller: [ok, value].
+# A Result is a 2-cell mala supplied by the caller: [ok, value].
 # ok = 1 means success and value holds the answer; ok = 0 means
 # failure and value is 0. The checked functions can produce Results
 # directly (result_checked_*), and phal_se_siddhi bridges the older
