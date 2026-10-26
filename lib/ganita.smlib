@@ -185,7 +185,7 @@ prakriya brahmagupta_kshetr(a, b, c, d) {
 # proposal at the end of this section), and silently changing every
 # program's arithmetic would rewrite accepted behaviour. Instead,
 # code that must not be wrong calls a checked function and reads
-# ok[0] (the varna_tak_ank ok-pattern: ok is a 1-cell pankti). On
+# ok[0] (the varna_tak_ank ok-pattern: ok is a 1-cell mala). On
 # failure the function returns 0 — never the wrapped value — so a
 # caller that forgets to check ok gets an obviously-wrong 0, not a
 # plausible-but-wrong wrapped value.
