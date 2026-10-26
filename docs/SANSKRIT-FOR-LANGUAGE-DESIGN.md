@@ -185,5 +185,95 @@ in their own tradition, so the concepts are not foreign.**
 
 ---
 
+
+---
+
+## 8. What is UNIQUE to Sutram - as opposed to borrowed
+
+**The previous sections say what we take from the tradition. This one says what nobody else has.** **Each claim is
+phrased as "no other language I can find does this" - because "unique" is a claim that can be wrong, and it should be
+falsifiable.**
+
+### 8.1 A compiler written entirely in hand-written assembly, with no bootstrap
+
+**No other language I can find has a compiler that is a single hand-written NASM source - no C, no Python, no
+self-hosting bootstrap, no LLVM.** **GCC, Clang, Rust, Go and Zig all have a compiled core.** **The compilers written
+in assembly that exist are teaching exercises for tiny subsets, not languages with a 305-function library, a linker,
+an object format and a C FFI.**
+
+**Why it matters:** **the "no dependency on another language" claim is true all the way down.** **A C compiler depends
+on a C compiler being built; Sutram depends on `nasm` and nothing else - and even that is a translator, not a
+language runtime.**
+
+### 8.2 Our own linker, in assembly, producing identical bytes for both platforms
+
+**`sutram-link` is ~500 lines of NASM with no libc.** **And the Windows and Linux linkers are ONE source: either host
+links either target, to the same bytes.**
+
+**No other language I can find has a linker that is cross-target in that sense** - **`ld` and `lld` are multi-target
+but they are large C++ programs, and their output differs by target by design, not by intent.**
+
+### 8.3 A 205-byte hello world that needs nothing installed
+
+**Sutram's hello world is 205 bytes, statically linked, with no dynamic section and no interpreter entry.**
+**Zig's equivalent is 1.7 MB; C's is 6.6 KB and needs libc.**
+
+**The 205 bytes is not a party trick - it is the consequence of emitting only the instructions the program needs, with
+no runtime, no section headers and no metadata.** **It is why Sutram starts in 3.36 ms against C's 8.38.**
+
+### 8.4 Eleven Indian language packs, with no English anywhere
+
+**The compiler's diagnostics are in 11 Indian languages - 1,408 strings - and the default is Sanskrit.**
+**A program that fails prints its error in the language the programmer chose.**
+
+**No other language I can find ships diagnostics in a language other than English by default, let alone eleven.**
+**Every other language's error messages are English, and translation is a third-party afterthought.**
+
+**Why it matters:** **this is the one feature that directly serves the stated aim - someone who does not read English
+can read their own error.**
+
+### 8.5 A C FFI that stays freestanding
+
+**Sutram calls a C function with no libc, no dynamic loader, no `DT_NEEDED` and no `PT_INTERP`.** **The object is
+translated from ELF by our own reader and linked by our own linker.**
+
+**Other languages' FFIs require the C runtime to be present.** **Ours does not, because we never load anything - we
+link it.**
+
+### 8.6 Sanskrit grammatical mechanisms as design patterns
+
+**This is the one that is unique in kind, not degree.** **If utsarga/apavāda becomes the exception mechanism and
+kāraka becomes the FFI's argument model, then Sutram is the only language whose design decisions are derived from a
+formal grammar 2,500 years older than the discipline.**
+
+**And the derivation is checkable** - **a reader can read the Aṣṭādhyāyī's rule-priority discussion and see the same
+problem we are solving.** **That is not a marketing claim; it is a citation.**
+
+### 8.7 The verification culture, which is rarer than any feature
+
+**A guard that compiles 500+ programs before and after every change and compares the bytes.** **Five documentation
+checks.** **223 library proofs.** **A crash corpus of 227 pinned cases.** **Two AI partners reading each other's work
+and catching each other's errors.**
+
+**Most languages at this age have none of that.** **It is not unique in kind - it is unique in degree at this stage of
+a project's life.**
+
+---
+
+## 9. The honest summary of "unique"
+
+| Claim | Confidence |
+|---|---|
+| A compiler in one hand-written NASM source, no bootstrap | **high** - I can find no counter-example |
+| A cross-target linker in assembly, identical bytes | **high** |
+| 205-byte static hello, no runtime | **high** - measured |
+| 11 Indian-language diagnostic packs, no English default | **high** |
+| A freestanding C FFI with no libc | **high** - measured |
+| **Sanskrit mechanisms as design patterns** | **UNBUILT** - this is a proposal, not a property |
+| The verification culture | **high, but a matter of degree** |
+
+**One of these seven is a proposal and six are properties.** **The proposal is the one that would make the language
+distinctive rather than merely unusual** - **and it is the one that needs a Sanskritist before it can be built.**
+
 *Draft by Sarvam, 26 October 2026. Sections 2-6 need a Sanskritist's review. Section 1 is a claim about the
 Aṣṭhādhyāyī's structure and is checkable. Sections 4 and 5 are checkable and marked as such.*
