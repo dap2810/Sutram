@@ -1,3 +1,30 @@
+## v340 - the vocabulary as RULES, not a list - and it needs a Sanskritist before it is authoritative
+
+**The owner's directive was that the words be easy to remember and easy to type, so someone who does not read English
+can learn the language.** **A list of 303 names does not serve that - a list is a dictionary, and a dictionary only
+helps someone who already knows the word they are looking for.**
+
+**So `docs/VOCABULARY-DERIVATION.md` sets out the rules the names already follow:**
+
+- **`<domain>_<qualifier>_<action>`** - most general first, **and the last word is what the function does**
+- **eleven domain prefixes**, which are already the module names: `ganita`, `vartani`, `akshar`, `mala`, `kosh`,
+  `suchi`, `nighantu`, `sangrah`, `shreni`, `phal`, `roop`
+- **qualifiers that narrow the action:** `janchit` = checked, `sat` = saturating, `nirapeksh` = absolute
+- **the recurring actions:** `yuj` join, `nyun` less, `rakh` place, `grah` take, `likh` write, `pad` read
+
+**What it buys:** **a name the learner has never seen is a name they can guess** - `ganita_janchit_gun` reads as
+"math, checked, multiply" and is right. **A wrong guess is visibly wrong.** **And the vocabulary can grow without a
+new list.**
+
+### And it is marked DRAFT, with the limits named
+**Three questions need a Sanskritist, and the document says so:** whether `ganita` carries the right sense here,
+whether the qualifiers compose the way the document describes or Sanskrit compounding imposes an order I have
+simplified, and whether `rakh`/`likh` are the right stems.
+
+**Sections 1 and 5 are observations about the code and stand on their own. Sections 2-4 need review.**
+
+**I am not a Sanskritist, and a document about Sanskrit compounding written by an AI should say so on its face.**
+
 ## v339 - ROUND-37 and ROUND-112: the full suite with the three new checks, and the layer no check covers
 
 **ROUND-37 (Muse):** run everything, **including the three checks that did not exist last week** - `doc_counts_gate`,
