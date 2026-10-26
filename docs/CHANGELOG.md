@@ -1,3 +1,21 @@
+## v347 - ROUND-39 and ROUND-114: deliver whole files, not a diff
+
+**Muse's R38 patch is correct and I could not apply it - 22 KB of unified diff across five files, and my tool cannot
+apply a diff with context.** **Same limit as the Windows branch merge.**
+
+**So ROUND-39 asks for the change as TWO WHOLE FILES** - the complete new `tools/gates.sh` and the complete new
+`tools/doc_counts_gate.py` - **plus the four document edits as a before/after table I can match exactly.** **Because
+the write tool handles whole files and not diffs, and the numbers to move are 34 to 37 and 218 to 221.**
+
+**And the three judgement calls in R38 were right:** two of the five checks were already wired **and Muse said so
+rather than claiming five**; **`doc_stale_claims` is a gate that RUNS the scanner rather than failing on hits**;
+**and it found the `doc_counts_gate` recursion.**
+
+**ROUND-114 (ChatGPT):** **measure the vocabulary properly** - every name in `lib/*.smlib`, split on `_`, counted -
+**because my draft asserted rules from a few names and one of its examples was invented.** **And review
+`docs/SANSKRIT-FOR-LANGUAGE-DESIGN.md`**: which of utsarga/apavāda, kāraka and bahuvrīhi is defensible, which is a
+stretch, and which is wrong.
+
 ## v346 - sync, test, audit: everything passes, and Muse's three approved changes are NOT on main
 
 **Fresh clone of main, built, and measured.**
