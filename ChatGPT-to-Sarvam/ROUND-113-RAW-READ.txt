@@ -1,0 +1,114 @@
+SUTRAM ROUND 113 — RAW SOURCE-READ RECEIPT
+READ PIN main 1ccec720dccc53ae8ed344e4f58f87fba727682a
+ASSIGNMENT Sarvam-to-ChatGPT/ROUND-113.md blob f41808466eb477169254966c60b02c8701547099
+CHANGELOG docs/CHANGELOG.md blob 9a46ab943ecdd00dab8dbd2a6305e58c35b94c9c — v341
+PRIORITY LANGUAGE-PRIORITY.md blob 64682919a70fa1b79e415bc879aee9cad07582ad
+SANSKRIT only until v1.0
+
+DIRECT GITHUB FILE READS (not native runs):
+src/sutram_compiler.asm blob 7db83d38152c81b05e387b5a93a4445fa984f72c
+12853: ; scope. Raw nirmmita pointers keep their historical unchecked index path.
+13194: ; at [ptr-16] and capacity at [ptr-8]. Raw nirmmita pointers stay unchecked.
+13235:     test r12, r12
+13236:     jz .gs_ai_no_bounds
+13237:     call emit_array_bounds_check
+14444: ; emit_array_bounds_check
+14445: ; Runtime index is in rax and runtime length is on top of the generated
+14446: ; program stack ([rsp]).  Unsigned index < length rejects negative indices too.
+15032:     test r12, r12
+15033:     jz .ge_index_no_bounds
+15034:     call emit_array_bounds_check
+
+examples/68_array_oob.sm blob 8516c15301d688e2cb99f5b939cff412b6746228
+2:     mala a[3]
+3:     a[3] = 99
+4:     likha(999)
+tests/expect/68_array_oob.exit blob d00491fd7e5bb6fa28c517a0bb32b8b506539d4d: 1
+tests/expect/68_array_oob.out blob 63e37d27bb5e68c25708228f04e4b21fb8c3af53: Sutram Error: mala ank seema atikram
+
+examples/71_array_negative_index.sm blob 147c18adcc314cc35dafcda549aef4a6cd238237
+2:     mala a[3]
+3:     a[-1] = 99
+tests/expect/71_array_negative_index.exit blob 56a6051ca2b02b04ef92d5150c9ef600403cb1de: 1
+tests/expect/71_array_negative_index.out blob 63e37d27bb5e68c25708228f04e4b21fb8c3af53: Sutram Error: mala ank seema atikram
+
+examples/100_t18_kosh_bounds.sm blob 6655aa274557a96e4228b138a33d9ee06dc31deb
+3:     kosh a[1]
+4:     kosh_push(a, 42)
+5:     kosh_pop(a)
+6:     likha(a[0])
+tests/expect/100_t18_kosh_bounds.exit blob 56a6051ca2b02b04ef92d5150c9ef600403cb1de: 1
+tests/expect/100_t18_kosh_bounds.out blob 63e37d27bb5e68c25708228f04e4b21fb8c3af53: Sutram Error: mala ank seema atikram
+
+tests/r23/test_capabilities.py blob bec9813d7533c283ab8a50b3d3ffa962c9559c3d
+CASES: slice index/write past length, hi/lo invalid, negative lo, sub-slice past expected run-fail; invalid slice base/return expected compile-fail.
+
+lib/mala.smlib blob 286150850621ccd0a3f3523a246b3d4314258bf1
+20: prakriya mala_sangrah(arr, i, val) {
+24:     likh8(a + j * 8, v)
+28: prakriya mala_grah(arr, i) {
+31:     prati pad8(a + j * 8)
+70: prakriya mala_sangrah_surakshit(arr, i, val, n) {
+81: prakriya mala_grah_surakshit(arr, i, n) {
+
+lib/samanvaya.smlib blob 5705b6508fcbeaf948e6a161ea6021f22e5786aa
+9: # CONTRACT for output matrices: the caller must have pushed m*n elements already.
+32: prakriya pehchan(n, kosh dasham out) {
+50: prakriya vivartana(kosh dasham a, m, n, kosh dasham out) {
+66: prakriya matrika_yoga(kosh dasham a, kosh dasham b, m, n, kosh dasham out) {
+79: prakriya skalar(kosh dasham a, dasham c, m, n, kosh dasham out) {
+91: prakriya matrika_gunana(kosh dasham a, kosh dasham b, m, n, p, kosh dasham out) {
+135: prakriya sadish_yoga(kosh dasham u, kosh dasham v) {
+137:     yadi (kosh_len(v) < n) { n = kosh_len(v) }
+141:         s = s + u[i] * v[i]
+
+lib/kalana.smlib blob a3a2c47821b439d66bdf1d3450b92ab1e00fcd86
+115: # CONTRACT: `ok` must already contain ONE element (call kosh_push(ok, 0.0) first).
+116: # A kosh's capacity is not its length, so ok[0] is out of bounds until an element exists.
+119: prakriya bahu_mula(kosh dasham c, dasham lo, dasham hi, kosh dasham ok) {
+123:     yadi (flo == 0.0) { ok[0] = 1.0; prati lo }
+tests/stdlib/kalana_bahu_mula.sm blob 268f7fee55b980467d3ebc56d64f758eafdedf64: kosh_push(ok, 0.0) before call
+
+lib/ganita.smlib blob c616b3b4893443404a8e96d32615a25b6d413873
+76: prakriya chakravala(out, n) {
+83:         out[0] = 1
+84:         out[1] = 0
+151:     out[0] = a
+152:     out[1] = b
+160: prakriya samasa(out, a, b, c, d, n) {
+166:     out[0] = p * r + nn * q * s
+167:     out[1] = p * s + q * r
+269: prakriya ganita_janchit_gun(a, b, ok) {
+348: prakriya ganita_paripurna_yuj(a, b) {
+
+HTML docs/sutram-stdlib.html blob 212d6c97a31455361607b4b797d504b3061f05d9
+24 modules, 305 signatures, no lib/vartani.smlib or lib/kosh.smlib or lib/akshar.smlib
+145: <tr><td><code>ganita_janchit_gun(a, b, ok)</code></td>
+148: <tr><td><code>ganita_paripurna_yuj(a, b)</code></td>
+215: <h2 id="mala"><code>mala</code></h2>
+317: <h2 id="samanvaya"><code>samanvaya</code></h2>
+HTML's samanvaya sadish_yoga says dot product of matrix row and column, while source is flat u, v min-length dot.
+
+docs/VOCABULARY-DERIVATION.md blob 9d21095a23b28687ff2278dc8f0ae1c54dfc774e
+5: **Why this document exists.** The project has a frozen vocabulary of 303 function names, and a reference page that
+23: | `ganita_sat_yuj` | `ganita` + `sat` + `yuj` | math + true/valid + join = **saturating addition** |
+24: | `vartani_len` | `vartani` + `len` | string + length |
+25: | `akshar_rakh` | `akshar` + `rakh` | character + place = **set character** |
+49: **These are already the module names.** **So `yoj ganita` puts you in the maths module, and every name inside it starts
+88: 1. **A name they have never seen is a name they can guess.** **`ganita_janchit_gun`** is not in the reference - but
+100-102: The draft itself requests a Sanskritist for compound ordering and rakh/raksh vs likh/lekh stems.
+
+docs/sutram-vocabulary.html blob 0a755ca409e0cfc21e2981cc29d0b2c3a3b7ad88
+Contains akshar_rakh as vocabulary item, but it is not in standard library module inventory.
+lang/sanskrit.lang blob b7bbbe1e07d258cc67f05e9dad81bca9379e59a6
+Latin keyword mapping and aliases; no changes requested or made.
+
+tests/stdlib/r8_array_guard.sm blob 2f7e0aa04875bdd621f48319128ed85b2ae13979
+Physical allocation is 4 qword cells; algorithmic n is 3; sentinel at raw a[3]. Valid within allocation.
+tests/stdlib/r10_roop_suchi_edges.sm blob 633afa41afcf9fb5e52f9810922abc994e630c0f
+Raw o allocated 4 qword cells; sentinel at o[2]. Valid within allocation.
+
+README NOTES:
+- No native Sutram suite, Windows, allocation guard trial or ABI experiment executed in this read-side session.
+- All results above are direct GitHub connected source reads; no simulation of native behavior.
+- Check source contract changes again on newer main before acting.
