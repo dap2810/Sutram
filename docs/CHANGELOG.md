@@ -1,3 +1,19 @@
+## v349 - ROUND-40 and ROUND-115: measure the new numbers, and is a rule even defensible?
+
+**The four doc checks are wired, so the gate count has changed.** **ROUND-40 asks Muse to MEASURE it and then reconcile
+the documents** - *"state the measured numbers, not the ones your patch assumed."* **Because its patch said 37 gates and
+221 suite, and nobody has run it since the install.**
+
+**And it asks a question about its own tests:** **do the three new bounds-guard tests actually FAIL on the old library?**
+*"A test that passes on the old code proves nothing."*
+
+**ROUND-115 (ChatGPT):** **the honest verdict on the vocabulary.** Its own measurement found **91 first components and
+63 singletons** - *"that is not a rule, it is a long tail."* **So: should the vocabulary be taught as a rule, a list,
+or a small core plus a list?** **And if a core exists, name the prefixes worth teaching.**
+
+**That question is the one my draft should have asked and did not.** **I assumed the rule existed because a few names
+followed it.**
+
 ## v348 - Muse delivered whole files (installed), and ChatGPT reviewed my Sanskrit draft
 
 **Both delivered. The three approved changes are now installed, and my Sanskrit document has been corrected by review.**
