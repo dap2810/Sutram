@@ -1,3 +1,20 @@
+## v339 - ROUND-37 and ROUND-112: the full suite with the three new checks, and the layer no check covers
+
+**ROUND-37 (Muse):** run everything, **including the three checks that did not exist last week** - `doc_counts_gate`,
+`doc_stale_claims`, and the new `check_doc_signatures` **which must report 305 / 305, 0 mismatches.**
+
+**And the question nobody has asked:** **`check_doc_signatures.py` compares names and arity. It does not read the
+prose.** **Is every function's DOCUMENTED DESCRIPTION still accurate?**
+
+**ROUND-112 (ChatGPT):** **the spec sequence as a checklist I execute, not a document about the order** - *"if a step
+needs a compiler, mark it so - I will route it to Muse."* **Plus the description layer, and the sixth class:** *"if
+there is not one, say that plainly - 'no sixth class found' is a result."*
+
+### The five checks the project now has
+**`check_version`, `doc_counts_gate`, `doc_stale_claims`, `check_alloc_bounds`, `check_doc_signatures`** - **four of
+them built in the last week, each after a class of error had already shipped.** **That is the honest order, and it is
+why they exist.**
+
 ## v338 - Muse's R36: 47 comment lines, 0 code lines, and the guard proves a comment changed nothing
 
 **The cosmetic layer, in one pass - 20 files, 47 comment lines, and NOT ONE line of code.**
