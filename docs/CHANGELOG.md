@@ -1,3 +1,34 @@
+## v338 - Muse's R36: 47 comment lines, 0 code lines, and the guard proves a comment changed nothing
+
+**The cosmetic layer, in one pass - 20 files, 47 comment lines, and NOT ONE line of code.**
+
+| What | Count |
+|---|---|
+| **headers with old file names** | **18** - baseconv to `aadhar`, num to `ank`, serial to `anukram`, bigint to `brihat`, math to `ganit`, hash to `gudh`, strb to `khand`, array to `mala`, map to `nighantu`, file to `patra`, result to `phal`, fmt to `roop`, util to `sadhan`, set to `sangrah`, sort to `shreni`, list to `suchi`, strconv to `vakyank`, string to `varna` |
+| **`Usage:` lines** | **2** - `ayojan util` to `yoj sadhan`, `ayojan sort` to `yoj shreni` |
+| **`pankti` comment lines** | **19** across 12 modules |
+| **identifier changes** | **0** - `util_chinha` stays, as the round said |
+| **code lines changed** | **0** |
+
+### And the guard, proved two ways
+
+> *"Before/after compile, same compiler, all 551 programs: **0 differ** (exit code, stdout, stderr, and executable
+> bytes all identical). A comment change altered not a single compiled byte."*
+
+**That is the sentence that makes a cosmetic sweep safe to trust.** **551 programs, four dimensions compared, zero
+differences.** **Without it, "I only changed comments" is a claim.**
+
+### And the historical notes it did NOT touch
+
+> *"Left alone as historical: `lib/varna.smlib` R7/R8 notes naming baseconv/strconv as they were at that time."*
+
+**A changelog note that names a module as it was in R7 is CORRECT, not stale.** **Fixing it would falsify history.**
+**That is the same distinction as the 88 TRUE limits in the triage - and Muse made it again without being told.**
+
+### The rename is now complete
+**One identifier (R35), then 47 comments and 18 headers (R36), with the guard at 551 programs and 0 differ.**
+**And the check that would have caught the identifier is installed: `tools/check_doc_signatures.py`.**
+
 ## v337 - the fifth class is CLOSED: 305 declarations, 305 documented signatures, ZERO mismatches
 
 **ChatGPT's R111 verified the end of the chain, and the number is the answer.**
