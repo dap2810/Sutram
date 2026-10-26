@@ -1,3 +1,24 @@
+## v341 - the owner approved all three. Muse executes; ChatGPT predicts what they break.
+
+**Approved and issued:**
+
+1. **Wire the five doc checks into `gates.sh`** - they exist and nothing runs them. **A documentation regression now
+   fails the build.**
+2. **Turn on `SUTRAM_R65_PEEPHOLES` and measure it** - **with the guard absolute: if it moves one byte, revert. And if
+   it is off for a correctness reason, do not turn it on.**
+3. **A universal bounds guard on `mala` and `kosh`** - the runtime already has it; extending it is the cheapest real
+   memory safety we can get without a collector.
+
+**And the instruction that keeps an approval from becoming a licence:** *"if any of the three cannot be done safely,
+STOP and say which and why - an approved change that breaks the guard is still wrong."*
+
+**ROUND-113 (ChatGPT): predict what the bounds guard will break.** **Extending it changes behaviour for programs that
+currently overrun silently, so Muse needs the list before it runs the suite** - *"so a red test is explained rather
+than mysterious."*
+
+**And it is asked to review `docs/VOCABULARY-DERIVATION.md`** - the draft I wrote about the Sanskrit compounding.
+**With permission to say it cannot judge**, because that is the honest answer the owner needs.
+
 ## v340 - the vocabulary as RULES, not a list - and it needs a Sanskritist before it is authoritative
 
 **The owner's directive was that the words be easy to remember and easy to type, so someone who does not read English
