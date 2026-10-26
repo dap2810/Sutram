@@ -1,3 +1,40 @@
+## v335 - Muse fixed the rename: EXACTLY ONE identifier was wrong, and it is fixed on main
+
+**The full inventory of old vocabulary in `lib/` - 24 modules, every `prakriya` name checked:**
+
+| Class | Count | State |
+|---|---|---|
+| **Identifiers - names callers use** | **exactly 1** | **FIXED** |
+| Headers carrying old file names | 18 files | documented |
+| `Usage:` lines a reader copies | 2 (`ayojan util`, `ayojan sort`) | documented |
+| `pankti` in comments | 19 lines across 11 modules | documented |
+| **Other pre-rename keywords** (`punaravartana`, `pratiyati`, `uddeshya`, `anytra`, `nishedha`, `parigrah`, `nishkriya`, `srijana`, `to`) | **ZERO** | - |
+
+### The one that mattered
+
+**`lib/chandas.smlib:82`: `prakriya meru_pankti(a, n)` became `prakriya meru_mala(a, n)`** - **and the test that
+called it (`tests/stdlib/chandas_meru_pankti.sm`) was updated with it.** **Uploaded directly to main as a
+round-authorized fix.**
+
+**So the documented name and the declared name now agree.** **A reader who follows the standard-library page will
+write something the compiler accepts.**
+
+### And the judgement call worth keeping
+
+**`lib/sadhan.smlib:40` has `util_chinha(n)` - the name carries the old `util` stem.** **Muse did NOT rename it:**
+*"`util_chinha` is also used throughout `lib/` as the generic term for 'sign', renaming it is a wider decision, left
+for the owner."*
+
+**That is the right call.** **A rename that is also a semantic question is not a rename - and a partner that stops at
+the boundary and names it is worth more than one that guesses.**
+
+### And the reassurance in the numbers
+
+**I spent two rounds worrying that the rename had been missed across the library.** **It was ONE identifier.**
+**Everything else is a header, a usage line or a comment - cosmetic, documented, and not a compile error.**
+
+**That is the difference between a defect and a mess, and it took a full inventory to tell them apart.**
+
 ## v334 - ROUND-111: build the floor that needs no toolchain
 
 **ChatGPT's R110 designed the three tiers. ROUND-111 asks it to BUILD THE FIRST ONE - the signature comparison -
