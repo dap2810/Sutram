@@ -1,4 +1,4 @@
-# lib/math.smlib — Sutram standard library: mathematics
+# lib/ganit.smlib — Sutram standard library: mathematics
 # layer: core
 #
 # Pure integer arithmetic, written only with verified language features.
