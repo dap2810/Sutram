@@ -1,4 +1,4 @@
-# lib/hash.smlib — Sutram standard library: checksum/hash functions
+# lib/gudh.smlib — Sutram standard library: checksum/hash functions
 # layer: core
 #
 # FNV-1a (Fowler–Noll–Vo) 32-bit hash. Deterministic, fast, good distribution
@@ -9,7 +9,7 @@
 #   prime        = 16777619
 #   for each byte b: hash = (hash XOR b) * prime  (shesh 2^32)
 
-# fnv1a(s, len) — FNV-1a 32-bit hash of first `len` chars of pankti `s`.
+# fnv1a(s, len) — FNV-1a 32-bit hash of first `len` chars of mala `s`.
 # Returns an unsigned 32-bit value (may print as negative via likha).
 prakriya fnv1a(s, len) {
     vitti h = 2166136261
@@ -25,7 +25,7 @@ prakriya fnv1a(s, len) {
     prati h
 }
 
-# fnv1a_varna(s) — FNV-1a of NUL-terminated pankti `s` (uses vartani_len).
+# fnv1a_varna(s) — FNV-1a of NUL-terminated mala `s` (uses vartani_len).
 prakriya fnv1a_varna(s) {
     prati fnv1a(s, vartani_len(s))
 }
