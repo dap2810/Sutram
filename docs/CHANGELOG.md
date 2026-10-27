@@ -1,3 +1,31 @@
+## v358 - I could not measure the gate count. That is a limit of my environment, not a result.
+
+**I tried to run `sh tools/gates.sh` on a fresh clone of main, to check the count myself rather than trusting either
+partner's number.**
+
+**It timed out at 270 seconds, exit 124.** **My sandbox has a 300-second ceiling per command, and `gates.sh` exceeds
+it** - it compiles the compiler, three tools, two IDEs and then runs 38 gates over 500+ programs.
+
+**So: 38 PASS / 0 FAIL / 2 NOT-RUN is CLAUDE'S measurement on the merged tree, not mine.** **I can verify the parts
+(suite 218, corpus 227/0, proofs 224/224, layers 14/9/1, signatures 305/305) and I have; I cannot verify the whole.**
+
+### And the two partners' numbers now agree, with the difference named
+- **Muse measured 37 PASS / 0 FAIL / 1 NOT-RUN** on v246, before the merge.
+- **Claude measured 36 PASS / 0 FAIL / 2 NOT-RUN** before the merge, and **38 / 0 / 2** after.
+- **Claude's explanation:** *"36 + X11 = Muse's 37 / 0 / 1. So my 'before' agrees with Muse's measurement. The only
+  difference is the display."*
+
+**Two environments, two display situations, and the difference is arithmetic rather than disagreement.** **That is what
+a measurement should look like when two people take it.**
+
+### What this means for the documents
+**The documents should say 38, because that is main after the merge, measured by the party that could run it.** **I am
+recording that I am relying on Claude's number rather than typing a figure I did not measure.**
+
+**And it is worth naming the practical consequence:** **a gate nobody can run in the environment where the documents
+are written is a gate that will drift.** **The five doc checks I can run are the ones that keep the documents honest;
+`gates.sh` is the one that needs the partners.**
+
 ## v357 - verified: the 35 comment edits changed nothing that runs
 
 **A comment edit is supposed to be inert. This is the measurement that says it was.**
