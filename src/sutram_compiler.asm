@@ -234,7 +234,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v250) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v251) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -2204,6 +2204,40 @@ _start:
     call maybe_load_env_lang
     jmp .args_ok
 .r29_not_separate:
+    ; R45 --debug <in.sm> <out> (and --debug --lang <pak> <in.sm> <out>): the
+    ; ordinary compile, with a trap before every statement (src/r45_debug.inc).
+    mov rdi, R49_ARG(16)
+    lea rsi, [rel r45_flag]
+    call strcmp
+    test rax, rax
+    jnz .r45_not_debug
+    mov rax, R49_ARG(0)
+    cmp rax, 4                     ; prog --debug in out
+    jl .usage
+    mov qword [rel r45_debug], 1
+    mov rdi, R49_ARG(24)
+    lea rsi, [rel str_flag_lang]
+    call strcmp
+    test rax, rax
+    jnz .r45_plain
+    mov rax, R49_ARG(0)
+    cmp rax, 6                     ; prog --debug --lang pak in out
+    jl .usage
+    mov rdi, R49_ARG(32)
+    call try_load_lang
+    mov rax, R49_ARG(40)
+    mov R49_ARG(16), rax
+    mov rax, R49_ARG(48)
+    mov R49_ARG(24), rax
+    jmp .args_ok
+.r45_plain:
+    mov rax, R49_ARG(24)
+    mov R49_ARG(16), rax
+    mov rax, R49_ARG(32)
+    mov R49_ARG(24), rax
+    call maybe_load_env_lang
+    jmp .args_ok
+.r45_not_debug:
     ; R48 --check <input.sm>: use the real lexer/parser/codegen semantic
     ; validation without ever creating the output file.
     mov rdi, R49_ARG(16)
@@ -8680,7 +8714,7 @@ parse_block:
     jmp capacity_fail
 
 ; parse_stmt() → rax = statement node
-parse_stmt:
+r45_parse_stmt_body:                ; R45: parse_stmt is the wrapper in src/r45_debug.inc
     push rbx
     cmp qword [rel r48_mode], 0
     je .r48_no_mark
@@ -12457,6 +12491,11 @@ gen_block:
 gen_stmt:
     push rbx
     mov rbx, rax
+    cmp qword [rel r45_debug], 0   ; R45 --debug: the trap before the statement
+    je .r45_no_trap
+    mov rdi, rbx
+    call r45_gen_trap
+.r45_no_trap:
 %ifdef SUTRAM_R65_PEEPHOLES
     ; Consume the one-statement RAX value token. Every statement first
     ; invalidates it; only the immediate next scalar assignment may reuse it.
@@ -23937,6 +23976,7 @@ strcmp:
 %include "src/r28_object.inc"
 %include "src/r32_ffi.inc"
 %include "src/r38_fail_alloc.inc"
+%include "src/r45_debug.inc"
 
 itoa:
     mov rax, rdi
