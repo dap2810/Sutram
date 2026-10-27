@@ -1,3 +1,37 @@
+## v366 - the gate hole closed: `check_version_strings.py`
+
+**v365 found four stale version figures in three documents, and noted that `check_version` did not catch them because
+it checks the CHANGELOG rather than every document that quotes a version.**
+
+**So I wrote the check that would have caught them.**
+
+**It reads the authoritative version from `src/sutram_compiler.asm` - the highest `v<number>` token in the file, which
+is the compiler's own banner - then scans every tracked `.md` and `.html` for a `v<digits>` token and reports any that
+differ.**
+
+### And it is deliberately conservative, because a false hit is worse than no hit
+- **`docs/CHANGELOG.md`, `compiler/verified_snapshots/` and `backups/` are exempt** - they are records
+- **any line containing "was", "before", "older", "earlier", "then", "previously", "used to" or "changed from" is
+  exempt** - a sentence about a past version is a record, not a stale claim
+- **exit 0 always; a hit is `RESULT: REVIEW`, not a failure** - the same judgement Muse made about
+  `doc_stale_claims`, and for the same reason
+
+**That third point is the important one.** **A check that fails the build on a legitimate historical sentence gets
+disabled within a week.** **A check that reports and never lies about what it found gets run for years.**
+
+### And the pattern is now complete
+**Three times this stretch a documentation class was found by a partner, and three times the fix was a check rather
+than a correction:**
+
+| Class | The check |
+|---|---|
+| a documented name the compiler rejects | `check_doc_signatures.py` |
+| a limit that has been outgrown | `doc_stale_claims.py` |
+| **a version string that has moved on** | **`check_version_strings.py`** |
+
+**Each was written after the class had already shipped.** **That is still the honest order, and it is still the reason
+they exist.**
+
 ## v365 - four stale numbers across three documents, found by sweeping rather than by a partner
 
 **I swept the five master documents for the figures that change: the gate count, the suite count, the compiler version.**
