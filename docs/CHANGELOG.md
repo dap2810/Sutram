@@ -1,3 +1,44 @@
+## v373 - I measured the English in `lib/`, and my own round was wrong in scale
+
+**I told the partners to rename `char`->`akshar`, `int`->`anka`, `div`->`bhaj`, `len`->`aayam` across `lib/`. Then I
+measured what those names actually are.**
+
+### The builtins are already Sanskrit
+| Internal label | What a user types |
+|---|---|
+| `bn_charat` | **`akshar`** |
+| `bn_setchar` | **`akshar_rakh`** |
+| `bn_charcd` | **`aksharank`** |
+| `bn_vartlen` | **`vartani_aayam`** |
+
+**So `char`, `char_at`, `char_code`, `set_char` are INTERNAL assembler labels for builtins whose public names are
+already Sanskrit.** **Renaming them changes nothing a user sees.**
+
+### And the 30 `len` occurrences are local variables
+**`len`, `len0`, `len1`, `flen`, `hlen`, `keylen`, `nlen`, `plen`, `rlen`, `seglen`, `sflen`, `slen`, `splen`** - **all
+local variable names inside function bodies.** **`slen` means "source length"; renaming it to `saayam` would make the
+code harder to read, because the meaning is in the prefix.**
+
+**And the public length function is already `vartani_aayam`.**
+
+### What genuinely needs it: THREE public function names
+| Name | Should be |
+|---|---|
+| **`sat_div`** (saturating divide) | **`sat_bhaj`** |
+| **`brihat_ank_se_int`** | needs a Sanskrit word |
+| **`brihat_ank_tak_int`** | same |
+
+**Three names, not fifty-five.**
+
+### The lesson, and it is mine
+**"English in the library" and "English a user sees" are different sets.** **A grep counts both; only the second one
+matters.** **I counted the first and called it a vocabulary problem.**
+
+**And the caution I built into the round - *"report what each name actually does before you rename it"* - is what
+produced this answer.** **The guard against a bad rename also prevented a pointless one.**
+
+**Recorded in `docs/LIBRARY-ENGLISH-AUDIT.md`.**
+
 ## v372 - the five inconsistencies go to the partners, with a caution that may stop the rename
 
 **The owner scanned the tree and found five English words in `lib/` that already have a Sanskrit answer in the
