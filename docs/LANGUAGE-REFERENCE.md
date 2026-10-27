@@ -104,10 +104,10 @@ These are the **actual** builtin names the compiler accepts, taken from its tabl
 | `nirmmita` | allocate memory |
 | `smaran` | fill memory |
 | `smaran_cp` | copy memory |
-| `vartani_len` | varna length |
-| `vartani_cmp` | varna compare |
+| `vartani_aayam` | varna length |
+| `vartani_tul` | varna compare |
 | `vartani_cat` | varna concatenate |
-| `vartani_cp` | varna copy |
+| `vartani_pratilip` | varna copy |
 | `akshar` | character code at an index |
 | `aksharank` | character code (note: index currently ignored) |
 | `char_from` | character from a code |
