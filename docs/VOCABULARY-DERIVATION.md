@@ -59,6 +59,34 @@ saturating. **That is a question about Sanskrit, and it is not answered here.**
 
 ---
 
+
+---
+
+## The last three English words, now Sanskrit
+
+**`len`, `cmp` and `cpy` were the only English in the builtin names.** **They stayed English because they begin with a
+keyword prefix - `prati` is `return`, so `vartani_pratilip` looked like it might not lex.**
+
+**`docs/LEXER-BOUNDARY-TEST.md` settled it: 672 boundary cases, both scripts, all pass.** **The lexer was never
+broken.** **So the three words are now Sanskrit:**
+
+| Was | Now | Devanagari | Meaning |
+|---|---|---|---|
+| `vartani_len` | **`vartani_aayam`** | आयाम | extent, span - the length of a sequence |
+| `vartani_cmp` | **`vartani_tul`** | तुल् (तुलना) | to weigh, to compare |
+| `vartani_cp` | **`vartani_pratilip`** | प्रतिलिपि | a copy, a duplicate |
+
+**Why these three:**
+- **`aayam`** is the noun for extent - the natural word for a length, and 5 letters.
+- **`tul`** is the root of `tulana` (comparison) - **3 letters, and the same root-shape as `yuj` (join) and `likh`
+  (write)** that the project already uses.
+- **`pratilip`** is the standard Sanskrit word for a copy. **It was the word I avoided for two days over a collision
+  that does not occur.**
+
+**And the lesson worth keeping in this document:** **the words were compromised by an assumption nobody tested.** **A
+four-program test, ten minutes, would have freed them on the first day.**
+
+
 *Draft by Sarvam. Rewritten 27 October 2026 after ChatGPT's R115 verdict and its measurement of all 305 declarations.
 The earlier version of this page asserted a rule that the measurement does not support, and gave an example function
 name that does not exist.*
