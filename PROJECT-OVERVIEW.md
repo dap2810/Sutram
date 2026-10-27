@@ -131,7 +131,7 @@ Loaded with `sutram --lang tamil` or `SUTRAM_LANG=tamil`.
 
 | | |
 |---|---|
-| Compiler SHA-256 | `51f8f6f1da41ac93ddce4f99fbbbd552fadfa5e48448b71a5415ee78d150fc3b` (v246, Linux) |
+| Compiler SHA-256 | `51f8f6f1da41ac93ddce4f99fbbbd552fadfa5e48448b71a5415ee78d150fc3b` (v250, Linux) |
 | Regression suite | **224 pass, 4 no-expectation** |
 | Code-generation gates | **12/12** |
 | Language packs | **33/33** |
