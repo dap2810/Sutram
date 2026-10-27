@@ -1,3 +1,37 @@
+## v364 - the rename is in (v250), the docs are consistent, and the debugger round is issued
+
+### The rename landed as ONE commit, revertible whole
+**`cca5b35b`, and `git revert cca5b35b` reverses it entirely.** **Compiler v250.**
+**574 programs: 480 byte-identical, 93 refused identically, 0 DIFFER, 1 new** - and it held on all three paths (Linux
+to ELF, Linux to PE, Windows under Wine). **Suite PASS=224.**
+
+**And Claude checked against Muse's independent caller list:** **its 9 program sites and 9 `lib/` sites were exactly the
+ones renamed.** **Two lists, one answer.**
+
+### And the docs, after my own error
+**I first applied ChatGPT's rename TSV with the wrong columns - 0 of 32 applied.** **Then I read the header and found a
+`mode` column I had ignored:**
+
+| Mode | Rows | What it means |
+|---|---|---|
+| **KEEP_HISTORICAL** | **16** | archived snapshots - **never retroactively rewrite** |
+| **PROPOSE_EXACT_CURRENT** | **10** | the real renames |
+| ALREADY_PRESENT_NOOP | 3 | done |
+| REGENERATE_FROM_SOURCE | 3 | generate, do not hand-edit |
+
+**Applied only the 10 - 10 applied, 0 missed.** **The 16 historical rows stayed.**
+
+**So the 32 files still carrying the old names are mostly CHANGELOG entries and verified snapshots, which is
+correct.** **A changelog that names a function as it was then is a record, not a stale claim.** **That distinction has
+now been made three times in this project, and each time it was right.**
+
+### The next phase starts
+**ROUND-45 (Claude): a debugger** - *"a compile flag that traps on each statement, prints the LINE and the live
+variables, and lets the program continue."* **The owner named it first, and it is the gap that decides whether someone
+can develop in the language rather than only compile in it.**
+**ROUND-45 (Muse): what a trap point CAN print** - *"if only some variables can be shown, say which and why."*
+**ROUND-120 (ChatGPT): the debugger spec** - what to show, what is noise, and **the Sanskrit labels**.
+
 ## v363 - the payoff: the last three English builtins get Sanskrit names
 
 **The lexer is proven, so the vocabulary is free.** **The owner asked for Sanskrit for `len`, `cmp` and `cpy` - these
