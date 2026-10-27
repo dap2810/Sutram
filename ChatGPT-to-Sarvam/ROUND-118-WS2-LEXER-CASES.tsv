@@ -1,0 +1,73 @@
+case_id	scope	input_line	expected	why	evidence
+M01	RUN_SANSKRIT	prakriya vartani_pratilip(x) { prati x } mukhya() { likha(6) }	COMPILE PASS; RUN stdout=6\n	Muse question 1: function definition named vartani_pratilip must remain a single identifier	NOT RUN - no toolchain
+M02	RUN_SANSKRIT	prakriya vartani_pratilip(x) { prati x + 1 } mukhya() { likha(vartani_pratilip(5)) }	COMPILE PASS; RUN stdout=6\n	Muse question 2: actual callable invocation not split as prati + suffix	NOT RUN - no toolchain
+M03	RUN_SANSKRIT	mukhya() { vitti pratiX = 3; likha(pratiX) }	COMPILE PASS; RUN stdout=3\n	Muse question 3: ASCII keyword prefix with uppercase ASCII continuation	PARTNER REPORTED PASS (Sarvam v249)
+M04	RUN_SANSKRIT	mukhya() { vitti प्रतिलिपि = 4; likha(प्रतिलिपि) }	COMPILE PASS; RUN stdout=4\n	Muse question 4 verbatim example; this is NOT a true प्रतियाति keyword prefix since pack maps प्रतियाति, not प्रति	NOT RUN - no toolchain
+M05	RUN_SANSKRIT	mukhya() { vitti mukhyata = 7; likha(mukhyata) }	COMPILE PASS; RUN stdout=7\n	Muse question 5: longer name with mukhya prefix	PARTNER REPORTED PASS (Sarvam v249)
+P01	RUN_SANSKRIT	prakriya prati_test(x) { prati x + 1 } mukhya() { likha(prati_test(5)) }	COMPILE PASS; RUN stdout=6\n	Function name prati + underscore; extend Sarvam t1 to callable and invocation	NOT RUN - no toolchain
+P02	RUN_SANSKRIT	mukhya() { vitti vartani_pratilip = 9; likha(vartani_pratilip) }	COMPILE PASS; RUN stdout=9\n	Sarvam t4 is a VARIABLE not a callable; don't conflate with M01/M02	PARTNER REPORTED PASS (Sarvam v249)
+P03	RUN_SANSKRIT	mukhya() { vitti prati3 = 10; likha(prati3) }	COMPILE PASS; RUN stdout=10\n	ASCII decimal digit suffix must not end keyword	NOT RUN - no toolchain
+P04	RUN_SANSKRIT	mukhya() { vitti _prati = 11; likha(_prati) }	COMPILE PASS; RUN stdout=11\n	Underscore is a valid identifier starter and continuation	NOT RUN - no toolchain
+P05	RUN_SANSKRIT	mukhya() { vitti xprati = 12; likha(xprati) }	COMPILE PASS; RUN stdout=12\n	Keyword inside a larger identifier must not match	NOT RUN - no toolchain
+P06	RUN_SANSKRIT	prakriya f() { prati 13 } mukhya() { likha(f()) }	COMPILE PASS; RUN stdout=13\n	Standalone Latin keyword is still recognized	NOT RUN - no toolchain
+P07	RUN_SANSKRIT	mukhya() { vitti prati_ = 14; likha(prati_) }	COMPILE PASS; RUN stdout=14\n	Trailing underscore suffix forms an identifier	NOT RUN - no toolchain
+D01	RUN_SANSKRIT	prakriya f() { प्रतियाति 15 } mukhya() { likha(f()) }	COMPILE PASS; RUN stdout=15\n	TRUE exact native return keyword from lang/sanskrit.lang	NOT RUN - no toolchain
+D02	RUN_SANSKRIT	mukhya() { vitti प्रतियातिक = 16; likha(प्रतियातिक) }	COMPILE PASS; RUN stdout=16\n	Actual Devanagari keyword प्रतियाति followed immediately by क must remain identifier	NOT RUN - no toolchain
+D03	RUN_SANSKRIT	mukhya() { vitti प्रतियातिX = 17; likha(प्रतियातिX) }	COMPILE PASS; RUN stdout=17\n	Native keyword plus Latin letter must remain one identifier	NOT RUN - no toolchain
+D04	RUN_SANSKRIT	mukhya() { vitti प्रतियाति_क = 18; likha(प्रतियाति_क) }	COMPILE PASS; RUN stdout=18\n	Native keyword plus underscore and Indic letter	NOT RUN - no toolchain
+D05	RUN_SANSKRIT	mukhya() { vitti प्रतियाति३ = 19; likha(प्रतियाति३) }	COMPILE PASS; RUN stdout=19\n	Native Devanagari decimal digit is identifier continuation after letter	NOT RUN - no toolchain
+D06	RUN_SANSKRIT	mukhya() { vitti प्रतियाति2 = 20; likha(प्रतियाति2) }	COMPILE PASS; RUN stdout=20\n	Native keyword plus ASCII digit remains identifier	NOT RUN - no toolchain
+D07	RUN_SANSKRIT	mukhya() { vitti वित्तिमूल = 21; likha(वित्तिमूल) }	COMPILE PASS; RUN stdout=21\n	Actual Devanagari vitti keyword followed by another Devanagari letter	NOT RUN - no toolchain
+D08	RUN_SANSKRIT	mukhya() { vitti वित्तिX = 22; likha(वित्तिX) }	COMPILE PASS; RUN stdout=22\n	Actual native keyword vitti plus Latin letter	NOT RUN - no toolchain
+D09	RUN_SANSKRIT	mukhya() { vitti वित्ति2 = 23; likha(वित्ति2) }	COMPILE PASS; RUN stdout=23\n	Native keyword plus ASCII digit	NOT RUN - no toolchain
+D10	RUN_SANSKRIT	mukhya() { vitti वित्ति३ = 24; likha(वित्ति३) }	COMPILE PASS; RUN stdout=24\n	Native keyword plus native decimal digit	NOT RUN - no toolchain
+D11	RUN_SANSKRIT	mukhya() { vitti वित्ति_foo = 25; likha(वित्ति_foo) }	COMPILE PASS; RUN stdout=25\n	Keyword plus mixed underscore suffix	NOT RUN - no toolchain
+D12	TOKENS_SANSKRIT	प्रति	IDENT(प्रति)	Actual native Sanskrit keyword is प्रतियाति not प्रति; input should not be return keyword	NOT RUN - no toolchain
+D13	TOKENS_SANSKRIT	प्रतिलिपि	IDENT(प्रतिलिपि)	Requested original Muse example is an ordinary identifier, not a real full-keyword-prefix collision	NOT RUN - no toolchain
+D14	TOKENS_SANSKRIT	प्रतियाति	KEYWORD(prati)	Standalone full native spelling recognized as return token	NOT RUN - no toolchain
+D15	TOKENS_SANSKRIT	प्रतियाति।	KEYWORD(prati), DANDA(।)	Single danda U+0964 must delimit, not become part of name	NOT RUN - no toolchain
+D16	TOKENS_SANSKRIT	प्रतियाति॥	KEYWORD(prati), DOUBLE_DANDA(॥)	Double danda U+0965 must delimit	NOT RUN - no toolchain
+D17	TOKENS_SANSKRIT	प्रतियाति#comment	KEYWORD(prati), COMMENT_TO_EOL	Native keyword followed by comment opener at boundary	NOT RUN - no toolchain
+D18	TOKENS_SANSKRIT	प॰	KEYWORD(prati)	Real punctuated abbreviation from Sanskrit pack, exact spelling only	NOT RUN - no toolchain
+D19	TOKENS_SANSKRIT	वि॰	KEYWORD(vitti)	Abbreviation U+0970 requires exact alias recognition, not general identifier punctuation	NOT RUN - no toolchain
+D20	TOKENS_SANSKRIT	प्रतियाति_	IDENT(प्रतियाति_)	Underscore continues an otherwise complete keyword	NOT RUN - no toolchain
+X01	RUN_SANSKRIT	mukhya() { vitti pratiक = 26; likha(pratiक) }	COMPILE PASS; RUN stdout=26\n	Latin keyword immediately followed by Devanagari LETTER is a single identifier	NOT RUN - no toolchain
+X02	RUN_SANSKRIT	mukhya() { vitti vittiक = 27; likha(vittiक) }	COMPILE PASS; RUN stdout=27\n	Second Latin keyword followed by Devanagari letter	NOT RUN - no toolchain
+X03	RUN_SANSKRIT	mukhya() { vitti mukhyaअ = 28; likha(mukhyaअ) }	COMPILE PASS; RUN stdout=28\n	Mixed-script keyword prefix with vowel as next scalar	NOT RUN - no toolchain
+X04	RUN_SANSKRIT	mukhya() { vitti prati३ = 29; likha(prati३) }	COMPILE PASS; RUN stdout=29\n	Latin keyword plus Devanagari decimal digit	NOT RUN - no toolchain
+X05	RUN_SANSKRIT	mukhya() { vitti pratiि = 30; likha(pratiि) }	COMPILE PASS; RUN stdout=30\n	Latin base followed by Devanagari combining vowel mark; lexical continuation although unnatural word	NOT RUN - no toolchain
+X06	TOKENS_SANSKRIT	प्रतियाति्	IDENT(प्रतियाति्)	Combining virama U+094D after a keyword must not serve as word boundary	NOT RUN - no toolchain
+X07	TOKENS_SANSKRIT	प्रतियातिँ	IDENT(प्रतियातिँ)	Anusvara/candrabindu combining mark is identifier continuation	NOT RUN - no toolchain
+X08	TOKENS_SANSKRIT	pratiकि	IDENT(pratiकि)	Mixed-script letter followed by Devanagari vowel sign is one token	NOT RUN - no toolchain
+X09	TOKENS_SANSKRIT	वित्ति_नाम	IDENT(वित्ति_नाम)	Devanagari keyword followed by underscore and native letters is one token	NOT RUN - no toolchain
+X10	TOKENS_SANSKRIT	prati०	IDENT(prati०)	Native digit zero U+0966 after Latin keyword, not number/keyword boundary	NOT RUN - no toolchain
+B01	TOKENS_SANSKRIT	prati	KEYWORD(prati) at EOF	No read past exclusive source end	NOT RUN - no toolchain
+B02	TOKENS_SANSKRIT	prati 	KEYWORD(prati), WHITESPACE	ASCII space is delimiter	NOT RUN - no toolchain
+B03	TOKENS_SANSKRIT	prati\t	KEYWORD(prati), TAB	ASCII tab is delimiter; backslash-t represents one tab in fixture	NOT RUN - no toolchain
+B04	TOKENS_SANSKRIT	prati\n	KEYWORD(prati), NEWLINE	LF delimiter advances line count	NOT RUN - no toolchain
+B05	TOKENS_SANSKRIT	prati\r\n	KEYWORD(prati), CRLF	CRLF delimiter, no extra spurious tokens	NOT RUN - no toolchain
+B06	TOKENS_SANSKRIT	prati+	KEYWORD(prati), OP(+)	Operator delimiter can follow without whitespace; parser may separately reject incomplete expression	NOT RUN - no toolchain
+B07	TOKENS_SANSKRIT	prati(	KEYWORD(prati), LPAREN	Opening parenthesis separates tokens	NOT RUN - no toolchain
+B08	TOKENS_SANSKRIT	prati=	KEYWORD(prati), EQUAL	Assignment character is delimiter; parser validity separate	NOT RUN - no toolchain
+B09	TOKENS_SANSKRIT	prati}	KEYWORD(prati), RBRACE	Closing brace is delimiter	NOT RUN - no toolchain
+B10	TOKENS_SANSKRIT	prati# note	KEYWORD(prati), COMMENT_TO_EOL	Hash comment starts after a complete token	NOT RUN - no toolchain
+B11	TOKENS_SANSKRIT	prati// note	KEYWORD(prati), COMMENT_TO_EOL	Two-slash comment opener at token boundary	NOT RUN - no toolchain
+B12	TOKENS_SANSKRIT	prati/* note */	KEYWORD(prati), BLOCK_COMMENT	Block comment boundary	NOT RUN - no toolchain
+B13	TOKENS_SANSKRIT	# prati\n	COMMENT_ONLY	Keyword spelling inside a comment ignored	NOT RUN - no toolchain
+B14	TOKENS_SANSKRIT	\"prati\"	STRING(prati)	Keyword spelling inside string literal ignored	NOT RUN - no toolchain
+B15	TOKENS_SANSKRIT	\"प्रतियाति\"	STRING(प्रतियाति)	Native keyword spelling in a string is data	NOT RUN - no toolchain
+B16	TOKENS_SANSKRIT	xprati	IDENT(xprati)	Keyword matching must begin at token start, not in its interior	NOT RUN - no toolchain
+B17	TOKENS_SANSKRIT	prati1	IDENT(prati1)	ASCII digit continuation blocks keyword	NOT RUN - no toolchain
+B18	TOKENS_SANSKRIT	prati_	IDENT(prati_)	Underscore continuation blocks keyword	NOT RUN - no toolchain
+B19	TOKENS_SANSKRIT	प्रतियातिX	IDENT(प्रतियातिX)	Native + Latin is one token	NOT RUN - no toolchain
+B20	TOKENS_SANSKRIT	pratiक	IDENT(pratiक)	Latin + native is one token	NOT RUN - no toolchain
+B21	TOKENS_SANSKRIT	प्रतियाति 	KEYWORD(prati), WHITESPACE	Full Devanagari keyword followed by space	NOT RUN - no toolchain
+B22	TOKENS_SANSKRIT	प्रतियाति(	KEYWORD(prati), LPAREN	Full Devanagari keyword followed by operator punctuation	NOT RUN - no toolchain
+B23	TOKENS_SANSKRIT	३	NUMBER(3)	Native digit at beginning is decimal number, not identifier	NOT RUN - no toolchain
+E01	RAW_BYTES_SANSKRIT	hex:70 72 61 74 69 E0 A4	LEXICAL_ERROR(E_UTF8); NOT keyword plus ignored bytes	Truncated E0 Indic UTF-8 scalar after ASCII keyword bytes	NOT RUN - no toolchain
+E02	RAW_BYTES_SANSKRIT	hex:70 72 61 74 69 C0 AF	LEXICAL_ERROR(E_UTF8); NOT prefix keyword	Overlong UTF-8 encoding after Latin keyword must not create false delimiter	NOT RUN - no toolchain
+E03	RAW_BYTES_SANSKRIT	hex:70 72 61 74 69 80	LEXICAL_ERROR(E_UTF8)	Orphan continuation byte cannot act as delimiter	NOT RUN - no toolchain
+E04	RAW_BYTES_SANSKRIT	hex:E0 A4	LEXICAL_ERROR(E_UTF8)	Truncated Indic character before end of file	NOT RUN - no toolchain
+E05	RAW_BYTES_SANSKRIT	hex:ED A0 80	LEXICAL_ERROR(E_UTF8)	UTF-8 surrogate encoding must be refused	NOT RUN - no toolchain
+E06	RAW_BYTES_SANSKRIT	hex:F4 90 80 80	LEXICAL_ERROR(E_UTF8)	Out-of-range Unicode scalar must be refused	NOT RUN - no toolchain
+E07	TOKENS_SANSKRIT	प्रतिX	IDENT(प्रतिX)	Devanagari lexical piece प्रति not a keyword; verify mixing independently of actual keyword	NOT RUN - no toolchain
