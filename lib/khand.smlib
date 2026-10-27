@@ -2,14 +2,14 @@
 # layer: core
 #
 # The string toolkit on BYTE-PACKED strings (the representation of a
-# literal and of set_char-built buffers). Own module (not inside
+# literal and of akshar_rakh-built buffers). Own module (not inside
 # lib/varna.smlib) because the compiler has a fixed AST ceiling.
 #
 # THE TWO REPRESENTATIONS (see also lib/varna.smlib):
 #   char-code array: qword cells, one char code per cell, h[i].
-#   byte string: bytes packed 1-per-byte, char_at(s, i) /
-#     set_char(s, i, v) / vartani_aayam(s). Do NOT mix them: h[i] on
-#     a byte string reads 8 bytes at once; char_at on a char-code
+#   byte string: bytes packed 1-per-byte, akshar(s, i) /
+#     akshar_rakh(s, i, v) / vartani_aayam(s). Do NOT mix them: h[i] on
+#     a byte string reads 8 bytes at once; akshar on a char-code
 #     array reads one byte of a qword cell.
 #
 # Conventions: lengths are explicit; out-buffers get a 0 terminator;

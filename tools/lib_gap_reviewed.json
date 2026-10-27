@@ -124,7 +124,7 @@
   "EQUIVALENT",
   "sn = 0: the swap loop does nothing, the terminator lands at out[0], and 0 is returned either way"
  ],
- "brihat.brihat_ank_se_int C6:<-><=": [
+ "brihat.brihat_ank_se_anka C6:<-><=": [
   "EQUIVALENT",
   "the carry loop only writes while carry is 1; adding 1 to MAX's digits stops at the lowest digit (7 -> 8), so the extra pass at j = n writes nothing"
  ],

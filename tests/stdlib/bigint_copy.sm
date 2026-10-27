@@ -2,10 +2,10 @@ yoj brihat
 mukhya() {
     vitti a = nirmmita(8 * 8)
     vitti b = nirmmita(8 * 8)
-    brihat_ank_se_int(54321, a, 8)
+    brihat_ank_se_anka(54321, a, 8)
     brihat_shunyank(b, 8)
     brihat_pratilip(b, a, 8)
-    likha(brihat_ank_tak_int(b, 8))
+    likha(brihat_ank_tak_anka(b, 8))
     likha("\n")
     likha(brihat_tul(a, b, 8))
     likha("\n")

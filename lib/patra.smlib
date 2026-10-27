@@ -7,8 +7,8 @@
 # (tools/check_layers.py enforces this).
 #
 # Paths are NUL-terminated byte strings: a literal works, as does
-# a set_char-built buffer with a 0 terminator. Data buffers are
-# raw byte pointers (a literal, or a set_char-built buffer) with
+# a akshar_rakh-built buffer with a 0 terminator. Data buffers are
+# raw byte pointers (a literal, or a akshar_rakh-built buffer) with
 # an explicit byte count — NOT qword-cell arrays.
 #
 # Errors: every function returns -1 on any OS error (open failure,

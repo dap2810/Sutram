@@ -5,7 +5,7 @@
 # KEY REPRESENTATION: byte strings (the current khand_* byte surface), NOT
 # char-code arrays: keys are usually literals ("apple"), and byte
 # strings let the caller pass a literal directly. The hash
-# (lib/gudh.smlib fnv1a) is byte-based (char_at), so the choice is
+# (lib/gudh.smlib fnv1a) is byte-based (akshar), so the choice is
 # consistent end to end. Do not pass char-code arrays here.
 #
 # Layout of the map buffer m (qword cells, except the key bytes):

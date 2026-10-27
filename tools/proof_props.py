@@ -97,8 +97,8 @@ def prop_bigint_add_sub(compiler, rng):
              "    vitti a = nirmmita(8*8)", "    vitti b = nirmmita(8*8)",
              "    vitti r = nirmmita(8*8)", "    vitti s = nirmmita(8*8)"]
     for a, b in cases:
-        lines.append(f"    brihat_ank_se_int({a}, a, 8)")
-        lines.append(f"    brihat_ank_se_int({b}, b, 8)")
+        lines.append(f"    brihat_ank_se_anka({a}, a, 8)")
+        lines.append(f"    brihat_ank_se_anka({b}, b, 8)")
         lines.append(f"    brihat_yuj(a, b, r, 8)")
         lines.append(f"    brihat_nyun(r, a, s, 8)")
         lines.append(f"    yadi (brihat_tul(s, b, 8) != 0) {{")
@@ -125,9 +125,9 @@ def prop_bigint_mul_distrib(compiler, rng):
              "    vitti lhs = nirmmita(16*8)", "    vitti ab = nirmmita(16*8)",
              "    vitti ac = nirmmita(16*8)", "    vitti rhs = nirmmita(16*8)"]
     for a, b, c in cases:
-        lines.append(f"    brihat_ank_se_int({a}, a, 8)")
-        lines.append(f"    brihat_ank_se_int({b}, b, 8)")
-        lines.append(f"    brihat_ank_se_int({c}, c, 8)")
+        lines.append(f"    brihat_ank_se_anka({a}, a, 8)")
+        lines.append(f"    brihat_ank_se_anka({b}, b, 8)")
+        lines.append(f"    brihat_ank_se_anka({c}, c, 8)")
         lines.append(f"    brihat_yuj(b, c, bc, 8)")
         lines.append(f"    brihat_gun(a, bc, lhs, 8)")
         lines.append(f"    brihat_gun(a, b, ab, 8)")
@@ -150,8 +150,8 @@ def prop_bigint_roundtrip(compiler, rng):
     lines = ["yoj brihat", "mukhya() {",
              "    vitti a = nirmmita(8*8)"]
     for x in cases:
-        lines.append(f"    brihat_ank_se_int({x}, a, 8)")
-        lines.append(f"    yadi (brihat_ank_tak_int(a, 8) != {x}) {{")
+        lines.append(f"    brihat_ank_se_anka({x}, a, 8)")
+        lines.append(f"    yadi (brihat_ank_tak_anka(a, 8) != {x}) {{")
         lines.append(f'        likha("FAIL roundtrip {x}\\n")')
         lines.append(f"        prati 1")
         lines.append(f"    }}")
@@ -173,8 +173,8 @@ def prop_bigint_divmod(compiler, rng):
              "    vitti q = nirmmita(8*8)", "    vitti r = nirmmita(8*8)",
              "    vitti qb = nirmmita(16*8)", "    vitti chk = nirmmita(16*8)"]
     for a, b in cases:
-        lines.append(f"    brihat_ank_se_int({a}, a, 8)")
-        lines.append(f"    brihat_ank_se_int({b}, b, 8)")
+        lines.append(f"    brihat_ank_se_anka({a}, a, 8)")
+        lines.append(f"    brihat_ank_se_anka({b}, b, 8)")
         lines.append(f"    brihat_bhajshesh(a, b, q, r, 8)")
         lines.append(f"    brihat_gun(q, b, qb, 8)")
         lines.append(f"    brihat_yuj(qb, r, chk, 16)")
@@ -401,7 +401,7 @@ def prop_baseconv_roundtrip(compiler, rng):
     for idx in range(N_CASES):
         val = rng.randint(0, 999999)
         for b in (2, 8, 10, 16):
-            lines.append(f"    brihat_ank_se_int({val}, x, 8)")
+            lines.append(f"    brihat_ank_se_anka({val}, x, 8)")
             lines.append(f"    vitti len{idx}_{b} = brihat_ank_tak(x, 8, {b}, digits)")
             lines.append(f"    brihat_ank_se(digits, len{idx}_{b}, {b}, y, 8)")
             lines.append(f"    yadi (brihat_tul(x, y, 8) != 0) {{")
@@ -3927,20 +3927,20 @@ def prop_bigint_divzero(compiler, rng):
              "    vitti b = nirmmita(4 * 8)",
              "    vitti q = nirmmita(4 * 8)",
              "    vitti r = nirmmita(4 * 8)",
-             "    brihat_ank_se_int(10, a, 4)",
-             "    brihat_ank_se_int(0, b, 4)",
+             "    brihat_ank_se_anka(10, a, 4)",
+             "    brihat_ank_se_anka(0, b, 4)",
              "    brihat_bhajshesh(a, b, q, r, 4)",
-             "    yadi (brihat_ank_tak_int(q, 4) != 0) {",
+             "    yadi (brihat_ank_tak_anka(q, 4) != 0) {",
              '        likha("FAIL divmod zero q\\n")',
              "        prati 1",
              "    }",
-             "    yadi (brihat_ank_tak_int(r, 4) != 10) {",
+             "    yadi (brihat_ank_tak_anka(r, 4) != 10) {",
              '        likha("FAIL divmod zero r\\n")',
              "        prati 1",
              "    }",
-             "    brihat_ank_se_int(2, a, 4)",
+             "    brihat_ank_se_anka(2, a, 4)",
              "    brihat_ghatmod(a, 10, b, r, 4)",
-             "    yadi (brihat_ank_tak_int(r, 4) != 1024) {",
+             "    yadi (brihat_ank_tak_anka(r, 4) != 1024) {",
              '        likha("FAIL powmod zero shesh\\n")',
              "        prati 1",
              "    }",
@@ -4474,9 +4474,9 @@ def prop_edge30_conv(compiler, rng):
     lines.append("        }")
     lines.append("        i = i + 1")
     lines.append("    }")
-    # brihat_ank_se_int(MIN): digits are the exact magnitude 0..9
+    # brihat_ank_se_anka(MIN): digits are the exact magnitude 0..9
     lines.append("    brihat_shunyank(zero, 19)")
-    check("brihat_ank_se_int(minv, arr, 19)", 1, "from_int MIN ret")
+    check("brihat_ank_se_anka(minv, arr, 19)", 1, "from_int MIN ret")
     lines.append("    i = 0")
     lines.append("    yavat (i < 19) {")
     lines.append("        yadi (arr[i] < 0) {")
@@ -4492,8 +4492,8 @@ def prop_edge30_conv(compiler, rng):
     check("arr[0]", 8, "MIN digit 0")
     check("arr[18]", 9, "MIN digit 18")
     check("brihat_tul(arr, zero, 19)", 1, "MIN magnitude > 0")
-    check("brihat_ank_tak_int(arr, 19)", "minv", "MIN to_int wraps")
-    check("brihat_ank_se_int(minv, arr, 18)", 0, "from_int MIN trunc")
+    check("brihat_ank_tak_anka(arr, 19)", "minv", "MIN to_int wraps")
+    check("brihat_ank_se_anka(minv, arr, 18)", 0, "from_int MIN trunc")
     lines.append('    likha("PASS\\n")')
     lines.append("}")
     ok, out = run_sm(compiler, "edge30_conv", "\n".join(lines))

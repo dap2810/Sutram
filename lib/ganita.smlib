@@ -494,7 +494,7 @@ prakriya ganita_paripurna_ghat(a, e) {
 # sat_* companion of ganita_janchit_bhaj. INT64_MIN / -1 saturates to
 # INT64_MAX (the true quotient 2^63 does not fit); b == 0 returns 0
 # (the saturating form has no ok channel, so 0 is the documented
-# sentinel — same as sat_pow/sat_fact on invalid input). Guards both
+# sentinel — same as ganita_paripurna_ghat/ganita_paripurna_kramgun on invalid input). Guards both
 # cases before dividing, so it never executes a trapping operation
 # under a trapping compiler.
 prakriya ganita_paripurna_bhaj(a, b) {
@@ -513,7 +513,7 @@ prakriya ganita_paripurna_bhaj(a, b) {
 # overflows mathematically (INT64_MIN % -1 is exactly 0), but the
 # hardware operation still traps on MIN % -1 (same SIGFPE as MIN / -1),
 # so this guards that case and returns 0 — which is also the exact
-# result. b == 0 returns 0 (same sentinel as sat_div). Guards before
+# result. b == 0 returns 0 (same sentinel as ganita_paripurna_bhaj). Guards before
 # operating, so it never executes a trapping operation.
 prakriya ganita_paripurna_shesh(a, b) {
     vitti x = a

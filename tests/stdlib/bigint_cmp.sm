@@ -2,8 +2,8 @@ yoj brihat
 mukhya() {
     vitti a = nirmmita(8 * 8)
     vitti b = nirmmita(8 * 8)
-    brihat_ank_se_int(100, a, 8)
-    brihat_ank_se_int(200, b, 8)
+    brihat_ank_se_anka(100, a, 8)
+    brihat_ank_se_anka(200, b, 8)
     likha(brihat_tul(a, b, 8))
     likha("\n")
     likha(brihat_tul(b, a, 8))
@@ -11,8 +11,8 @@ mukhya() {
     likha(brihat_tul(a, a, 8))
     likha("\n")
     # 1000 > 999 despite fewer digits in b
-    brihat_ank_se_int(1000, a, 8)
-    brihat_ank_se_int(999, b, 8)
+    brihat_ank_se_anka(1000, a, 8)
+    brihat_ank_se_anka(999, b, 8)
     likha(brihat_tul(a, b, 8))
     likha("\n")
 }

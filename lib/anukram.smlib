@@ -7,7 +7,7 @@
 #   i64    — 8 bytes, little-endian, two's complement
 #   bytes  — 8-byte little-endian length (n) followed by n payload bytes
 #
-# Buffers are byte strings (char_at / set_char), caller-allocated
+# Buffers are byte strings (akshar / akshar_rakh), caller-allocated
 # and caller-sized. Every put/get takes (buf, pos, cap): pos is the
 # cursor, cap is the buffer size in bytes. On success the function
 # returns the new cursor; on overrun (or a corrupt negative length
