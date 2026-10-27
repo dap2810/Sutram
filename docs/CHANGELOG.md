@@ -1,3 +1,31 @@
+## v360 - the lexer round: test first, then fix, and the UTF-8 risk named
+
+**The owner's decision: a Sanskrit word must never be blocked by a keyword prefix.** **`prati` is `return`; a library
+function `vartani_pratilip` (string-copy) must be legal.** **Today we do not know whether it is** - and the project has
+been choosing worse words to avoid the question.
+
+**Three rounds, split so they do not collide:**
+
+**Claude (has the compiler):** **TEST FIRST.** *"Write a program that calls a `prakriya` named `vartani_pratilip` and
+compile it. Report whether it works. **If it already works, the lexer is fine and there is nothing to fix - say so and
+stop. That is a complete answer."* **Then, only if needed, character-aware boundaries.**
+
+**Muse (has a compiler):** **the independent baseline** - five questions, compiled, with the exact output. **Not the
+fix; the second reading.** **That is what caught r18 and `meru_pankti`.**
+
+**ChatGPT (no compiler):** **the boundary rule and the test cases** - *"what counts as a word character, and how that
+is decided for multi-byte UTF-8."*
+
+### And the risk I named explicitly, because it would be worse than the bug
+**The keyword table has Devanagari rows.** **A naive check - "next byte not in [a-z0-9_]" - would see the first byte of
+a Devanagari letter, decide it is not a word character, and match `prati` inside `प्रतिलिपि`.**
+
+**That would break the one thing the project exists for.** **So the rule must be character-aware, and both directions
+must be tested: Devanagari keyword followed by Latin letter, and Latin keyword followed by Devanagari letter.**
+
+**And the evidence standard is higher than the guard:** **the guard proves compiled programs did not change; it does
+not prove the lexer is correct on new input.** **So the suite, the corpus and `fuzz_robust` too.**
+
 ## v359 - my "376-byte loss" was bytes vs characters. Muse's delivery was exact. Compiler v249.
 
 **Muse's R42 explained the mismatch I reported, and the explanation is complete:**
