@@ -1,0 +1,52 @@
+SUTRAM ROUND 121 — RAW CONNECTED SOURCE READING AND TSV RECEIPT
+Date 2026-10-27; initial main SHA 7ef38a2fbfec33ba9d78dd62c5f5ae55ff3cce8c
+Assignment Sarvam-to-ChatGPT/ROUND-121.md; compiler v252, changelog v370
+Scope Sanskrit only through v1.0; frozen packs preserved
+Source Git blob IDs:
+Sarvam-to-ChatGPT/ROUND-121.md 28c7f3ce4ab2a7101b027163c70f849ceccf54a9
+src/sutram_compiler.asm 3df625fe6d38e4529bfd6181afa54b71fa5a756e
+src/r45_debug.inc 544db02c2141107e7254441b27565ad4ac6dec88
+docs/LANGUAGE-REFERENCE.md 00f06311551de90714e00999d96fafdae8de9d17
+docs/sutram-book-sanskrit.html b181c74f87543df7244624eae592d269d3b62862
+docs/CHANGELOG.md d7dfff858eec91aa99af8949014db3f28fa5b02f
+lang/sanskrit.lang b7bbbe1e07d258cc67f05e9dad81bca9379e59a6
+
+WS1 exact insertion TSV blob 885a3484f751a20f657a6e70cf5ee03a839e5583
+TSV rows 56, eight fields each true
+docs/LANGUAGE-REFERENCE.md = 37 insert lines
+docs/sutram-book-sanskrit.html = 19 insert lines
+All insertion row positions AFTER anchors, sequences consecutive per target, 2 current source unique anchors
+docs/LANGUAGE-REFERENCE.md:263 exact anchor: | `sutram --version` | version |
+docs/sutram-book-sanskrit.html:279 exact anchor: Sanket: asmin sthane shabdam vyakaranam cha pashyatu.</code></pre>
+New markdown heading: ### Debugging a program with `--debug` (compiler v252)
+New book section nested within <div class=ch id=ch12>: <h3>शोधनम् — क्रमादेशस्य निरीक्षणम्
+
+VERIFIED IMPLEMENTATION FACTS
+src/sutram_compiler.asm:2207-2240 command line --debug <in.sm> <out> / --debug --lang <pack> <in.sm> <out>
+src/sutram_compiler.asm:12496 hook invokes r45 debugger trap if enabled
+src/r45_debug.inc intro: per-statement tracing generated as ordinary Sutram statements, not an interactive debugger
+src/r45_debug.inc: actual output marker [shodhan] pankti N, current scalar locals/parameters in scope
+src/r45_debug.inc: source main file only, no imported library internals, no yantra trap
+src/r45_debug.inc: skip mala/kosh/slice, module-level globals
+src/r45_debug.inc: debug output to standard output (likha), interleaved with program output, NO stderr separation
+src/r45_debug.inc: no step/continue keyboard commands, watches, or breakpoints
+docs/CHANGELOG.md v370: Sarvam native fresh clone --debug trial x=2,y=3 final 5, normal same program output just 5
+docs/CHANGELOG.md v370 measured sizes debug 1797 bytes and normal 371 bytes FOR ITS PARTICULAR TEST, not general size formula
+Same v370: compiler v252, suite PASS=224, corpus 227/0, library proofs 224/224; PARTNER-REPORTED only
+
+WS2 TERMINOLOGY
+shodhana शोधनम् lexicons: cleaning/correction/refining and investigation/examination: appropriate but not uniquely debugging
+doṣānveṣaṇam दोषान्वेषणम् proposed narrower compound; no canonical name change recommended
+paṅkti पङ्क्तिः dictionary line/row/series: good source-line label
+vitti वित्ति dictionary knowledge/judgment/gain: existing Sutram keyword but NOT independently lexical synonym of computer variable
+Reference URLs stored in ROUND-121-WS2-SANSKRIT-LABEL-REVIEW.md, not a scholarly signoff
+
+WS3 NO SIXTH DISTINCT DOCUMENTATION ERROR CLASS FOUND
+
+STATUS
+PASS: connected source/assignment read
+PASS: two exact source anchors matched once, insert TSV 56 rows with eight fields, source snippets verified
+PASS: dictionary-backed lexical sense review with qualification
+NOT RUN - no toolchain: Sutram debugger compile/run by ChatGPT, all test gates/Windows, actual docs insertion
+NOT APPLIED: docs/LANGUAGE-REFERENCE.md and docs/sutram-book-sanskrit.html remain unmodified by ChatGPT
+PROTECTED CHANGES: NONE; no src/lib/tests/tools/docs/windows/lang/backups modifications
