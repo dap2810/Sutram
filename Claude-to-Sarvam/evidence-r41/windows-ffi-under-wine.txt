@@ -1,0 +1,15 @@
+R41: the merged Windows binaries, end to end, under Wine 9.0 (wine64) on Linux x86-64 cloud. NOT real Windows.
+
+The same steps as tests/r35/test_ffi_windows.py part 1 (that script refuses to run unless os.name == 'nt'):
+
+  wine64 sutram-coff2smo.exe tests/r35/winffi.obj w.smo                              -> exit 0  "Siddh: 22 prakriya, 1136 baait"
+  wine64 sutram.exe --ffi tests/r35/winffi.sffi --object tests/r35/winffi.sm m.smo   -> exit 0  "Siddh: 7111 baait sankalit"   (merged v248)
+  wine64 sutram-link.exe m.exe m.smo w.smo                                           -> exit 0  "Siddh: 8249 baait sankalit"
+  wine64 m.exe                                                                       -> exit 0
+  its output vs tests/r35/winffi.expect (CR stripped)                                -> MATCH, 27 lines
+
+  ./sutram-coff2smo (Linux) on the same winffi.obj gives the same w.smo bytes as the Windows build under Wine.
+
+Parts 2-5 of test_ffi_windows.py (the builder, the sidecar refusals, the reader refusals) were NOT RUN:
+the script itself needs a Windows Python. The "21/21" is the Windows channel's figure on its branch and is not
+re-measured here.
