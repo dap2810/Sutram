@@ -1,3 +1,38 @@
+## v362 - THE LEXER IS VERIFIED, 100%. Three independent measurements agree, and the 672 Devanagari cases pass.
+
+**The question was: does a name beginning with a keyword compile?** **Three parties answered independently.**
+
+| Party | What they tested | Result |
+|---|---|---|
+| **Sarvam (v361)** | 4 Latin programs - `prati_test`, `mukhyata`, `pratiX`, `vartani_pratilip` | **all compile and print the right answer** |
+| **Claude (R43)** | **the `prakriya` form**, then **672 boundary cases** | **all pass** |
+| **Muse (R43)** | its own five programs, independently written | **confirms** |
+
+### And the case I named as open is now closed
+**Claude ran the Devanagari direction:** *"58 keywords x a letter, letter+virama, anusvara, a vowel sign, a Latin
+letter, `_`, a Devanagari digit and an ASCII digit."* **All 672 are ordinary names.**
+
+**Including the two directions I singled out:**
+- **`प्रतियातिक`** - a Devanagari keyword, then a Devanagari letter
+- **`प्रतियातिX`** - a Devanagari keyword, then a Latin letter
+
+**So the boundary check is character-aware, not byte-naive.** **The risk I flagged did not materialise.**
+
+### The four criteria I set, all met
+1. **`vartani_pratilip` compiles and calls** - Claude tested the `prakriya` form: *"compiles and returns 9"*
+2. **Devanagari in both directions** - 672 cases, all pass
+3. **Guard 0 DIFFER** (480 byte-identical, 93 refused identically), **suite PASS=223**, **corpus 227/0**,
+   **`fuzz_robust`: CRASH or HANG: 0** (171 fixed cases, 2000 mutations)
+4. **`check_keyword_prefix.py` in `gates.sh` and green** - **gates now 41 PASS / 0 FAIL / 1 NOT-RUN**, and the two
+   new gates are **"keyword boundary"** and **"keyword prefix"**
+
+### And the answer to the owner's question
+**The lexer was never broken. It needed proving, not fixing.** **Claude: *"No lexer fix was needed."***
+
+**So the vocabulary is free.** **`vartani_pratilip` is available today, and so is any Sanskrit word that begins with a
+keyword.** **The project had been choosing worse words - `anuk` instead of `pratilip` - to avoid a collision that does
+not occur.**
+
 ## v361 - THE LEXER IS ALREADY CORRECT. `vartani_pratilip` compiles and runs today.
 
 **I ran the two-minute test myself on main v249. Four programs, compiled and run:**
