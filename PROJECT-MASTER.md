@@ -148,7 +148,7 @@ build everything and run it, and its output is the truth about the tree:
 
 | Metric | Value |
 |---|---|
-| Gates (`tools/gates.sh`) | **39 PASS, 0 FAIL, 1 NOT-RUN** (Windows execution); without a display, 38 PASS / 0 FAIL / 2 NOT-RUN |
+| Gates (`tools/gates.sh`) | **41 PASS, 0 FAIL, 1 NOT-RUN** (Windows execution), with a display (Xvfb); without one, the X11 GUI gate is NOT-RUN as well |
 | Regression suite | **223 pass, 4 no-expectation** |
 | Crash corpus | **227 cases + manifest, 0 failed** |
 | Code-generation shape gates | **12 / 12** |

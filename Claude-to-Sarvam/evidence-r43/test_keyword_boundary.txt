@@ -1,0 +1,5 @@
+PASS  WS1: a prakriya named vartani_pratilip compiles, is called, returns 9
+PASS  52 Latin keywords x 4 continuations: each is an ordinary name
+PASS  58 Devanagari keywords x 8 continuations: each is an ordinary name
+PASS  controls: 9 keywords, Latin and Devanagari, are each refused as a name
+r43 keyword boundary: 681 checks, 0 failed

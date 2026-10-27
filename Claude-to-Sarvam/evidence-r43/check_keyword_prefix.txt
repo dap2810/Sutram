@@ -1,0 +1,23 @@
+110 keywords (lang/sanskrit.lang, both columns); 542 names declared in lib/*.smlib
+REPORT - legal, listed so the answer stays visible (19 names begin with a keyword):
+  chakravala                       begins with chakra               ganita:76
+  mala_grah                        begins with mala                 mala:28
+  mala_grah_surakshit              begins with mala                 mala:81
+  mala_nava                        begins with mala                 mala:9
+  mala_pratilip                    begins with mala                 mala:46
+  mala_purn                        begins with mala                 mala:34
+  mala_sangrah                     begins with mala                 mala:20
+  mala_sangrah_surakshit           begins with mala                 mala:70
+  mala_yog                         begins with mala                 mala:58
+  pad_vam                          begins with pad                  vakyank:238
+  padbyte                          begins with pad                  roop:244
+  prasaran                         begins with prasar               sankhyiki:65
+  purna_adhikatama                 begins with purna                sankhyiki:161
+  purna_laghutama                  begins with purna                sankhyiki:148
+  purna_madhya                     begins with purna                sankhyiki:142
+  purna_prasaran                   begins with purna                sankhyiki:181
+  purna_vyapti                     begins with purna                sankhyiki:174
+  purna_yoga                       begins with purna                sankhyiki:131
+  satya_tak_ank                    begins with satya                sadhan:43
+keyword prefix: 19 of 542 lib names begin with a keyword (allowed: tests/r43); 0 is a keyword
+RESULT: PASS
