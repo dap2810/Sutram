@@ -1,14 +1,15 @@
 # R45-00 — Hand-back to Sarvam: the first lines
 
-- **Commit on `main`:** `e2c10b7b5275ce9e2160b0cb0934ab42b653ed96` (the debugger, v250 → v251), then this hand-back's commit. Pushed with git, not
+- **Commit on `main`:** `e2c10b7b5275ce9e2160b0cb0934ab42b653ed96` (the debugger, v250 → v251), then `1f62b0b1a28c962b161f403938f496af2e4f0bf5` (R45b: only in-scope variables, v251 → v252), then this update. Pushed with git, not
   `--force`.
-- **Compiler: `Sutram 1.0 (v251) - sampurna sutra`.**
+- **Compiler: `Sutram 1.0 (v252) - sampurna sutra`** (v251 was R45; v252 is the scope fix below).
 - **`crash corpus: 227 cases + manifest, 0 failed`.** Linux x86-64 (cloud).
 - **Suite: `NO-EXPECTATION=4 PASS=224`, FAIL=0.** Linux x86-64 (cloud).
 - **Gates (`sh tools/gates.sh`), Linux x86-64 cloud, with a display (Xvfb): 42 PASS / 0 FAIL / 1 NOT-RUN.**
   - The new gate is "R45 debug".
   - The NOT-RUN is Windows execution.
-- **The guard, with the flag off, v250 → v251: 574 programs, 481 byte-identical, 93 refused identically, 0 DIFFER.**
+- **The guard, with the flag off: 574 programs, 481 byte-identical, 93 refused identically, 0 DIFFER.** Measured for
+  v250 → v251, v251 → v252 and v250 → v252.
   - It held on all three paths: the Linux compiler to ELF, the Linux compiler to PE, and the Windows compiler under
     Wine.
   - **A note on the Wine run.** In the first Wine run, the *old* v250 compiler failed once on
@@ -69,10 +70,34 @@ variable in scope**, then goes on:
 | **No trap before** | **`yantra("...")`.** Raw machine code may depend on registers that the previous `yantra` set: `examples/29_nishkriya.sm` splits `mov/mov/syscall` over three. **The suite found this. The first version broke that example.** |
 | **Where it goes** | where `likha` goes: **standard output**, in order with the program's own output |
 
+## R45b — a defect I found after pushing, and fixed: out-of-scope variables
+
+**After R45 landed, ChatGPT's R120 spec named a risk:** *"visibility is not the same as var_table membership"*. **I
+tested it instead of arguing with it, and it was real.**
+
+- `var_table` is **flat per function**. Block scope is enforced only at parse time.
+- So **a name declared inside a `yadi` block was still printed after the block ended.**
+- **In a branch never taken, it would have shown an uninitialized slot.** That is a wrong value, which is worse
+  than none.
+
+**The fix, in v252, works under `--debug` only:**
+
+- `alloc_var` and `gen_block` are wrapped the way `parse_stmt` is.
+- A declaration makes its name visible at the current block depth.
+- The end of that block hides it again.
+- A new function starts clean.
+- **Without the flag, both wrappers jump straight to their bodies.** The guard, v251 → v252, is 0 DIFFER on all three
+  paths.
+
+The case is now a permanent check (`evidence-r45/scope-example-trace.txt`):
+
+- `b` is shown only inside its block.
+- `z`, declared in a branch never taken, is never shown.
+
 ## WS2 — the guard, and the suite
 
 - **With the flag off:** 0 DIFFER, on all three paths (above).
-- **With the flag on, against the suite.** `tests/r45/test_debug.py` is gate "R45 debug", **7 checks, 0 failed**.
+- **With the flag on, against the suite.** `tests/r45/test_debug.py` is gate "R45 debug", **8 checks, 0 failed**.
   - It compiles **every suite program WITH `--debug`** and runs it.
   - **188 programs print exactly their expected output once the trace is taken out, with the same exit code.**
   - **A trace changes what is printed, never what the program does.**
@@ -98,8 +123,17 @@ That check is what found the `yantra` case.
   it to stderr needs a new runtime path, and that is a bigger change than "smallest".
 - **The usage text does not mention `--debug`.** That text is a message in all eleven language packs, and ten of
   them are frozen.
-- **The label `[shodhan] pankti` is mine** (शोधन). ChatGPT's R120 spec may name it differently; it is one string in
-  `src/r45_debug.inc`.
+- **ChatGPT's R120 spec asks for more than this round built,** and I agree with its direction:
+  - typed displays for `mala`, `kosh` and slices;
+  - globals;
+  - "changed values first";
+  - step / continue / quit controls;
+  - output on stderr.
+  - **What R45 does instead:** it shows only what it can show **correctly**, and leaves the rest out rather than
+    print an address. It does not yet print an explicit "unavailable" marker. Each of those items is a round of its
+    own.
+- **The label `[shodhan] pankti` is mine** (शोधन). R120 proposes पङ्क्तिः for "line", which agrees. It is one string
+  in `src/r45_debug.inc`.
 - **The label is not translated by `--lang`,** for the same frozen-pack reason.
 - **`--debug` with `--object`, `--separate`, `--ffi` or `--check`: not supported.** It is a usage error.
 - **Not run:**
