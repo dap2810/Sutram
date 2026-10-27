@@ -1,0 +1,56 @@
+ROUND 122 — RAW PINNED SOURCE AND EXACT TEXT SCAN RECEIPTS
+date=2026-10-27
+initial_main=61d5f7b70e30e6711cc2171e57744de2dede70a1
+assignment_blob=9c18a3f871c8721e7ef7511d91a314c4bfac1192
+changelog=v374 compiler=v253
+LANGUAGE-PRIORITY Sanskrit only v1.0, other ten packs frozen
+lib/*.smlib direct source parse: 24/24, 305 prakriya declarations, public names brihat_ank_se_int & brihat_ank_tak_int only relevant English export pair
+lib/sat_div declaration count=0
+real saturating division declaration=ganita_paripurna_bhaj at lib/ganita.smlib:500
+compiler builtin table already has: akshar, akshar_rakh, aksharank, vartani_aayam
+32 core ASCII kw_* db spellings (extracted direct from src/sutram_compiler.asm:684-715), 58 Sanskrit pack mapping rows (include native keywords, builtin aliases and abbreviations)
+all 9 proposed kosh bare stems (8 supplied + aayam for missing len) have 0 exact equality with 32 core keyword spellings or 58 native spellings; no proposed kosh_* builtin already registered
+current 9 kosh builtins source lines src/sutram_compiler.asm:562-570; current semantics docs/KOSH-BUILTINS.md
+
+WS1 EXACT DOCUMENT SEARCH
+git tree untruncated entries=4373
+92 docs/root UTF8 text files fetched (md/html/htm/txt/rst): 92
+matching files 37
+negative files 55
+broad matching physical lines 1122
+WARNING: broad word regexp catches ordinary English prose and CSS/HTML div markup; NOT a rename hit count.
+PART FILES SHA:
+PART-1	sha=e05ed0ad229b5d9b0822de867a29b592f19cbec5	matching_physical_lines=100
+PART-2	sha=db1ba954383b0c0b94f682e565d2f82f56a0de9e	matching_physical_lines=46
+PART-3	sha=b1ac9d4f96ec700ae0dd413bc38a90697f54936d	matching_physical_lines=3
+PART-4	sha=ec5f1dd260cb1c548b4c0e5a967bcfe31e475d79	matching_physical_lines=11
+PART-5	sha=0b367311ed791bb8ac1b7daad01bb87bdd4d278e	matching_physical_lines=373
+PART-6	sha=35ec973ad5da530970a821a6eae4dfc97c55ce49	matching_physical_lines=548
+PART-7	sha=5c8c402eaf25a353cdc4100621689358aa131d26	matching_physical_lines=41
+92-path manifest SHA 80e0f2d51c2b68633f496943cf3d51c6c6a5d25c
+31 public API mention curated TSV SHA 3692d083c625bb5422deaf4a3a48adbc570af3a4
+curated physical lines 31
+curated modes {"KEEP_HISTORICAL":20,"PROPOSE_EXACT_CURRENT":8,"REGENERATE_FROM_SOURCE":3}
+
+EXACT SOURCE-WITNESS LINES (all read from live main; evidence includes accurate file/source line)
+lib/brihat.smlib:28 prakriya brihat_ank_se_int(val, arr, n)
+lib/brihat.smlib:69 prakriya brihat_ank_tak_int(arr, n)
+lib/ganita.smlib:500 prakriya ganita_paripurna_bhaj(a, b)
+lib/ganita.smlib:516 # result. b == 0 returns 0 (same sentinel as sat_div). Guards before
+docs/OVERFLOW-SAFETY.md:57 `sat_div`. `MIN % -1` is guarded because the hardware operation traps
+docs/sutram-stdlib.html:86 <tr><td><code>brihat_ank_se_int(val, arr, n)</code>
+docs/sutram-stdlib.html:87 <tr><td><code>brihat_ank_tak_int(arr, n)</code>
+
+WS2 8 proposed words plus missing ninth kosh_len
+proposal roles: kshep push, uddhar pop, dharita cap, shodh clear, rikt empty, iksh peek, apanay dequeue, yuj enqueue
+missing ninth in Sarvam's table: len => aayam, consistent with current vartani_aayam
+lexical warning dharita means held/borne rather than available capacity
+semantic warning clear only sets logical length zero, not cryptographic erasure
+peek reads LAST unchanged; pop removes LAST; dequeue removes FIRST, O(n); enqueue append aliases push
+no source or docs rename applied; final name owner decision pending and scholarly Sanskrit approval pending
+
+WS3 NO SIXTH DISTINCT DOC ERROR CLASS FOUND
+
+PASS connected GitHub pinned source and complete 92-file document scan, exact declaration/collision check
+NOT RUN - no toolchain: Sutram compiler, gates, proof suite, Windows, proposed kosh naming examples
+NO MODIFICATIONS outside ChatGPT-to-Sarvam/; backups and frozen language packs untouched
