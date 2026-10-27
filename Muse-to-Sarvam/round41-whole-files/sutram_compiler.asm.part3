@@ -1,0 +1,3919 @@
+    jne .olc_not_newline
+    inc r12
+    mov r15d,1
+    jmp .olc_next
+.olc_not_newline:
+    and al,0xC0
+    cmp al,0x80
+    je .olc_next
+    inc r15
+.olc_next:
+    inc rcx
+    jmp .olc_scan
+.olc_done:
+    mov rax,r12
+    mov rdx,r15
+    mov rcx,r13            ; rcx = origin file path (compare with source_path_ptr)
+    jmp .olc_ret
+.olc_missing:
+    xor eax,eax
+    xor edx,edx
+    xor ecx,ecx
+.olc_ret:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+r51_print_original_context:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    mov r15,[rel r51_last_size]
+    test r15,r15
+    js .done
+    lea r12,[rel mg_buf]
+    mov rbx,[rel r51_last_off]
+    cmp rbx,r15
+    jbe .bounded
+    mov rbx,r15
+.bounded:
+    add rbx,r12              ; current source location
+    mov r13,rbx
+.back:
+    cmp r13,r12
+    jbe .start
+    cmp byte [r13-1],10
+    je .start
+    dec r13
+    jmp .back
+.start:
+    add r15,r12
+    mov r14,r13
+.forward:
+    cmp r14,r15
+    jae .end
+    mov al,[r14]
+    cmp al,10
+    je .end
+    cmp al,13
+    je .end
+    inc r14
+    jmp .forward
+.end:
+    lea rdi,[rel msg_diag_indent]
+    call print_str_z
+    mov rdi,1
+    mov rsi,r13
+    mov rdx,r14
+    sub rdx,r13
+    call os_write
+    lea rdi,[rel msg_diag_nl]
+    call print_str_z
+    lea rdi,[rel msg_diag_indent]
+    call print_str_z
+.loop:
+    cmp r13,rbx
+    jae .caret
+    movzx eax,byte [r13]
+    cmp al,9
+    je .tab
+    and al,0xC0
+    cmp al,0x80
+    je .next
+    lea rdi,[rel msg_diag_space]
+    call print_str_z
+    jmp .next
+.tab:
+    lea rdi,[rel msg_diag_tab]
+    call print_str_z
+.next:
+    inc r13
+    jmp .loop
+.caret:
+    lea rdi,[rel msg_diag_caret]
+    call print_str_z
+.done:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; R48 post-parse semantic diagnostics for unresolved user function calls.
+; The code generator already owns function lookup; no second parser is used.
+; Match the exact original lexer token pointer to recover line, column,
+; offending identifier and source/caret. No output binary is written.
+
+; ===================================================================
+; R4: an undefined name is a compile error.
+; The parser records every name a function declares, in source order
+; (AST_DECL, loop variable, parameter, assignment target). A bare-name
+; read that is not yet declared is queued; at the end of parse_program a
+; queued name that is a module-level global is accepted, anything else is
+; reported at its token with the source line and caret. Code generation
+; is unchanged.
+; ===================================================================
+
+; r4_declare(rdi = name ptr). Preserves every register.
+r4_declare:
+    push rax
+    mov rax,[rel r4_seen_count]
+    cmp rax,R4_SEEN_CAP
+    jae .full
+    push rdx
+    lea rdx,[rel r4_seen]
+    mov [rdx+rax*8],rdi
+    pop rdx
+    inc qword [rel r4_seen_count]
+.full:
+    pop rax
+    ret
+
+; r4_is_seen(rdi = name) -> rax = 1 if declared in the current function scope.
+r4_is_seen:
+    push rbx
+    push rcx
+    push rdx
+    push rsi
+    push rdi
+    push r12
+    mov r12,rdi
+    mov rbx,[rel r4_seen_count]
+.scan:
+    cmp rbx,[rel r4_seen_base]
+    jbe .no
+    dec rbx
+    lea rdx,[rel r4_seen]
+    mov rsi,[rdx+rbx*8]
+    mov rdi,r12
+    call strcmp
+    test rax,rax
+    jnz .scan
+    mov eax,1
+    jmp .out
+.no:
+    xor eax,eax
+.out:
+    pop r12
+    pop rdi
+    pop rsi
+    pop rdx
+    pop rcx
+    pop rbx
+    ret
+
+; r4_check_read(rdi = name). Called for every bare identifier read built by
+; parse_primary. The identifier token is the one just consumed. A name
+; followed by a single '=' is an assignment target: .ps_check_expr declares
+; it after its right-hand side, so `x = x + 1` on an undeclared x is still
+; reported. Preserves every register.
+r4_check_read:
+    push rax
+    push rcx
+    push rdx
+    call r4_is_seen
+    test rax,rax
+    jnz .done
+    call cur_tok
+    cmp qword [rax],TOK_OPERATOR
+    jne .queue
+    cmp qword [rax+8],'='
+    jne .queue
+    ; R7: an assignment target. Remember its token; .ps_check_expr queues it
+    ; after the right-hand side if it is still undeclared then.
+    mov rcx,[rel token_idx]
+    dec rcx
+    imul rcx,rcx,TOKEN_SIZE
+    lea rdx,[rel token_arr]
+    add rcx,rdx
+    mov [rel r7_assign_tok],rcx
+    jmp .done
+.queue:
+    mov rax,[rel r4_pend_count]
+    cmp rax,R4_PEND_CAP
+    jae .done
+    mov rcx,[rel token_idx]
+    dec rcx                     ; the identifier token just consumed
+    imul rcx,rcx,TOKEN_SIZE
+    lea rdx,[rel token_arr]
+    add rcx,rdx
+    lea rdx,[rel r4_pend_tok]
+    mov [rdx+rax*8],rcx
+    inc qword [rel r4_pend_count]
+.done:
+    pop rdx
+    pop rcx
+    pop rax
+    ret
+
+; r7_close_block(rdi = r4_seen_count when the block opened). Names declared
+; inside the block stop being visible after its '}'. Each is remembered in
+; r7_closed so that a later read can say it was declared in a block.
+; Preserves every register.
+r7_close_block:
+    push rax
+    push rcx
+    push rdx
+    push rsi
+    push rdi
+    mov rax,[rel r4_seen_count]
+    cmp rdi,rax
+    jae .done                   ; nothing declared (or the scope was reset inside)
+    cmp rdi,[rel r4_seen_base]
+    jb .done                    ; never pop below the current function's base
+    mov rsi,rdi
+.mark:
+    cmp rsi,rax
+    jae .trunc
+    mov rcx,[rel r7_closed_count]
+    cmp rcx,R7_CLOSED_CAP
+    jae .next
+    lea rdx,[rel r4_seen]
+    mov rdx,[rdx+rsi*8]
+    push rdi
+    lea rdi,[rel r7_closed]
+    shl rcx,4
+    mov [rdi+rcx],rdx           ; name
+    mov rdx,[rel token_idx]
+    imul rdx,rdx,TOKEN_SIZE
+    push rax
+    lea rax,[rel token_arr]
+    add rdx,rax
+    pop rax
+    mov [rdi+rcx+8],rdx         ; where the block closed
+    pop rdi
+    inc qword [rel r7_closed_count]
+.next:
+    inc rsi
+    jmp .mark
+.trunc:
+    mov [rel r4_seen_count],rdi
+.done:
+    pop rdi
+    pop rsi
+    pop rdx
+    pop rcx
+    pop rax
+    ret
+
+; r7_note_call(rbx = name, r12 = argument count, rcx = name token).
+; r7_note_def(rbx = name, r12 = parameter count). Both preserve every register.
+r7_note_call:
+    push rax
+    push rdx
+    mov rax,[rel r7_call_count]
+    cmp rax,R7_CALL_CAP
+    jae .full
+    imul rax,rax,24
+    lea rdx,[rel r7_calls]
+    mov [rdx+rax],rbx
+    mov [rdx+rax+8],r12
+    mov [rdx+rax+16],rcx
+    cmp qword [rel r32_ffi_path],0    ; R33: with --ffi, remember the call's node
+    je .r33_no_node
+    mov rax,[rsp+8]                   ; the caller's rax: the AST_FUNCALL
+    call r33_note_node
+.r33_no_node:
+    inc qword [rel r7_call_count]
+.full:
+    pop rdx
+    pop rax
+    ret
+r7_note_def:
+    push rax
+    push rdx
+    mov rax,[rel r7_def_count]
+    cmp rax,R7_DEF_CAP
+    jae .full
+    shl rax,4
+    lea rdx,[rel r7_defs]
+    mov [rdx+rax],rbx
+    mov [rdx+rax+8],r12
+    inc qword [rel r7_def_count]
+.full:
+    pop rdx
+    pop rax
+    ret
+
+; r7_check_arity: after the whole program is parsed. A call to a function this
+; program defines must pass exactly as many arguments as it declares; before R7
+; f(1) for f(a, b) compiled and b read whatever was in its register.
+; Calls to names with no definition are left to the undefined-function check.
+r7_check_arity:
+    push rbx
+    push r12
+    push r13
+    push r14
+    cmp qword [rel r32_ffi_path],0    ; R32: read the foreign declarations; a
+    je .r32_no_ffi                    ; foreign name is no prakriya's
+    call r32_load_sidecar
+    call r32_check_clashes
+.r32_no_ffi:
+    xor r12d,r12d               ; call index
+.call:
+    cmp r12,[rel r7_call_count]
+    jae .done
+    mov rax,r12
+    imul rax,rax,24
+    lea rbx,[rel r7_calls]
+    add rbx,rax                 ; rbx -> (name, argc, token)
+    xor r13d,r13d               ; def index
+.def:
+    cmp r13,[rel r7_def_count]
+    jae .r32_foreign            ; not ours (builtin-like or undefined): skip
+    mov rax,r13
+    shl rax,4
+    lea r14,[rel r7_defs]
+    add r14,rax
+    mov rdi,[rbx]
+    mov rsi,[r14]
+    call strcmp
+    test rax,rax
+    jz .found
+    inc r13
+    jmp .def
+.found:
+    mov rax,[rbx+8]
+    cmp rax,[r14+8]
+    je .next_call
+    ; report: file:L:C: Sutram Error [E_ARITY]: 'f' ko N tark diye; hastakshar me M
+    mov rax,[rbx+16]
+    mov rdi,[rax+32]
+    call r51_print_origin
+    lea rdi,[rel r7_msg_arity]
+    call print_str_z
+    mov rdi,[rbx]
+    call print_str_z
+    lea rdi,[rel r7_msg_arity2]
+    call print_str_z
+    mov rax,[rbx+8]
+    call mg_print_uint
+    lea rdi,[rel r7_msg_arity3]
+    call print_str_z
+    mov rax,[r14+8]
+    call mg_print_uint
+    lea rdi,[rel msg_nl]
+    call print_str_z
+    call r51_print_original_context
+    lea rdi,[rel r7_msg_arity_hint]
+    call print_str_z
+    mov rdi,1
+    call os_exit
+.r32_foreign:
+    cmp qword [rel r32_ffi_count],0   ; R32: or a declared foreign function's
+    je .next_call
+    mov rdi,[rbx]
+    call r32_ffi_find
+    test rax,rax
+    jz .next_call
+    mov r14,rax                 ; (name, arity, symbol): [r14+8] is the arity
+    jmp .found
+.next_call:
+    inc r12
+    jmp .call
+.done:
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; r7_declare_new(rdi = name). A declaration of a name that is already visible
+; in this function (same block, or an enclosing one, or a parameter) is an
+; error: before R7 the second `vitti x = 2` got a fresh slot while every later
+; read still used the first, so x silently kept its old value. Preserves regs.
+r7_declare_new:
+    push rax
+    call r4_is_seen
+    test rax,rax
+    jnz .dup
+    pop rax
+    jmp r4_declare
+.dup:
+    pop rax
+    push rbx
+    push rcx
+    mov rcx,[rel token_cnt]     ; find the declaring token (pointer identity)
+    xor ebx,ebx
+.find:
+    cmp rbx,rcx
+    jae .nofind
+    mov rax,rbx
+    imul rax,rax,TOKEN_SIZE
+    push rdx
+    lea rdx,[rel token_arr]
+    add rax,rdx
+    pop rdx
+    cmp [rax+8],rdi
+    je .found
+    inc rbx
+    jmp .find
+.found:
+    mov rbx,rax
+    push rdi
+    mov rdi,[rbx+32]
+    call r51_print_origin
+    pop rdi
+    jmp .msg
+.nofind:
+    mov rbx,0
+.msg:
+    push rdi
+    lea rdi,[rel r7_msg_dup]
+    call print_str_z
+    mov rdi,[rsp]
+    call print_str_z
+    lea rdi,[rel r48_msg_end]
+    call print_str_z
+    test rbx,rbx
+    jz .nocontext
+    call r51_print_original_context
+.nocontext:
+    lea rdi,[rel r4_msg_hint_old]
+    call print_str_z
+    mov rdi,[rsp]
+    call print_str_z
+    lea rdi,[rel r7_msg_dup_hint]
+    call print_str_z
+    mov rdi,[rsp]
+    call print_str_z
+    lea rdi,[rel r7_msg_dup_hint2]
+    call print_str_z
+    mov rdi,1
+    call os_exit
+
+; r7_field_ambiguous(rdi = field name, rsi = offset found first) -> rax = 1
+; when some rachana declares the same field name at a different offset. Field
+; access has no type, so before R7 `b.x` silently used the first rachana's x.
+r7_field_ambiguous:
+    push rbx
+    push rcx
+    push rdx
+    push r8
+    push r9
+    push r10
+    push r11
+    mov rbx,rdi
+    mov r10,rsi
+    xor r8d,r8d
+.ent:
+    cmp r8,[rel rachana_cnt]
+    jae .no
+    lea r9,[rel rachana_defs]
+    mov rax,r8
+    shl rax,8
+    add r9,rax
+    xor r11d,r11d
+.fld:
+    cmp r11,[r9+8]
+    jae .next_ent
+    mov rax,r11
+    shl rax,4
+    mov rsi,[r9+16+rax]
+    mov rdi,rbx
+    push rax
+    call strcmp
+    mov rcx,rax
+    pop rax
+    test rcx,rcx
+    jnz .next_fld
+    cmp [r9+16+rax+8],r10
+    jne .yes
+.next_fld:
+    inc r11
+    jmp .fld
+.next_ent:
+    inc r8
+    jmp .ent
+.yes:
+    mov eax,1
+    jmp .out
+.no:
+    xor eax,eax
+.out:
+    pop r11
+    pop r10
+    pop r9
+    pop r8
+    pop rdx
+    pop rcx
+    pop rbx
+    ret
+
+; r7_field_dup_here(rdi = field name) -> rax = 1 when the rachana being defined
+; (entry rachana_cnt, r12 fields so far) already has this field.
+r7_field_dup_here:
+    push rcx
+    push rdx
+    push r9
+    push r11
+    lea r9,[rel rachana_defs]
+    mov rax,[rel rachana_cnt]
+    shl rax,8
+    add r9,rax
+    xor r11d,r11d
+.fld:
+    cmp r11,r12
+    jae .no
+    mov rax,r11
+    shl rax,4
+    mov rsi,[r9+16+rax]
+    push rdi
+    call strcmp
+    pop rdi
+    test rax,rax
+    jz .yes
+    inc r11
+    jmp .fld
+.yes:
+    mov eax,1
+    jmp .out
+.no:
+    xor eax,eax
+.out:
+    pop r11
+    pop r9
+    pop rdx
+    pop rcx
+    ret
+
+; Field diagnostics (exit 1): r5_field_tok is the field token.
+r7_report_ambiguous_field:
+    lea r12,[rel r7_msg_field_amb]
+    lea r13,[rel r7_msg_field_amb_hint]
+    jmp r7_report_field
+r7_report_dup_field:
+    lea r12,[rel r7_msg_dup]
+    lea r13,[rel r7_msg_field_dup_hint]
+r7_report_field:
+    mov rbx,[rel r5_field_tok]
+    mov rdi,[rbx+32]
+    call r51_print_origin
+    mov rdi,r12
+    call print_str_z
+    mov rdi,[rbx+8]
+    call print_str_z
+    lea rdi,[rel r48_msg_end]
+    call print_str_z
+    call r51_print_original_context
+    lea rdi,[rel r4_msg_hint_old]
+    call print_str_z
+    mov rdi,[rbx+8]
+    call print_str_z
+    mov rdi,r13
+    call print_str_z
+    mov rdi,1
+    call os_exit
+
+; r7_check_assign(rdi = target name). Called after the right-hand side of a
+; plain assignment. An undeclared target is queued like an undeclared read; a
+; module global declared later is accepted when the queue is resolved.
+; Preserves every register.
+r7_check_assign:
+    push rax
+    push rcx
+    push rdx
+    call r4_is_seen
+    test rax,rax
+    jnz .done
+    mov rcx,[rel r7_assign_tok]
+    test rcx,rcx
+    jz .done
+    cmp [rcx+8],rdi              ; the remembered token is this target
+    jne .done
+    mov rax,[rel r4_pend_count]
+    cmp rax,R4_PEND_CAP
+    jae .done
+    lea rdx,[rel r4_pend_tok]
+    mov [rdx+rax*8],rcx
+    inc qword [rel r4_pend_count]
+.done:
+    mov qword [rel r7_assign_tok],0
+    pop rdx
+    pop rcx
+    pop rax
+    ret
+
+; r4_resolve_pending: end of parse_program. Exits 1 on the first unresolved
+; read (normal mode) or after up to 8 (--check mode).
+r4_resolve_pending:
+    push rbx
+    push r12
+    push r13
+    xor r12d,r12d               ; index
+    xor r13d,r13d               ; errors printed
+.loop:
+    cmp r12,[rel r4_pend_count]
+    jae .end
+    lea rax,[rel r4_pend_tok]
+    mov rbx,[rax+r12*8]         ; token
+    mov rdi,[rbx+8]
+    call r56_global_index
+    test rax,rax
+    jnz .next                   ; a module-level global (may be declared later)
+    call r23_resolve_pending_read   ; R23 WS1: a prakriya name is a value
+    test rax,rax
+    jnz .next
+    call r4_report
+    inc r13
+    cmp qword [rel r48_mode],0
+    je .fail
+    cmp r13,8
+    jae .fail
+.next:
+    inc r12
+    jmp .loop
+.end:
+    test r13,r13
+    jz .ok
+.fail:
+    cmp qword [rel r48_mode],0
+    je .exit
+    lea rdi,[rel r48_msg_errors]
+    call print_str_z
+.exit:
+    mov rdi,1
+    call os_exit
+.ok:
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; r4_report(rbx = identifier token)
+r4_report:
+    push rbx
+    push r12
+    mov rdi,[rbx+32]            ; source pointer of the token
+    call r51_print_origin
+    lea rdi,[rel r4_msg_undef]
+    call print_str_z
+    mov rdi,[rbx+8]
+    call print_str_z
+    lea rdi,[rel r48_msg_end]
+    call print_str_z
+    call r51_print_original_context
+    ; hint: an old (pre-v157) keyword gets its new spelling
+    lea r12,[rel r4_old_kw]
+.old:
+    mov rsi,[r12]
+    test rsi,rsi
+    jz .generic
+    mov rdi,[rbx+8]
+    call strcmp
+    test rax,rax
+    jz .is_old
+    add r12,16
+    jmp .old
+.is_old:
+    lea rdi,[rel r4_msg_hint_old]
+    call print_str_z
+    mov rdi,[rbx+8]
+    call print_str_z
+    lea rdi,[rel r4_msg_hint_old2]
+    call print_str_z
+    mov rdi,[r12+8]
+    call print_str_z
+    lea rdi,[rel r4_msg_hint_old3]
+    call print_str_z
+    jmp .out
+.generic:
+    ; R7: a name whose block (or loop) has closed gets its own hint
+    xor r12d,r12d
+.closed:
+    cmp r12,[rel r7_closed_count]
+    jae .plain
+    lea rax,[rel r7_closed]
+    mov rcx,r12
+    shl rcx,4
+    cmp [rax+rcx+8],rbx          ; only a block that closed before this use
+    ja .closed_next
+    mov rsi,[rax+rcx]
+    mov rdi,[rbx+8]
+    call strcmp
+    test rax,rax
+    jz .was_block
+.closed_next:
+    inc r12
+    jmp .closed
+.was_block:
+    lea rdi,[rel r4_msg_hint_old]
+    call print_str_z
+    mov rdi,[rbx+8]
+    call print_str_z
+    lea rdi,[rel r7_msg_hint_block]
+    call print_str_z
+    jmp .out
+.plain:
+    lea rdi,[rel r4_msg_hint_decl]
+    call print_str_z
+    mov rdi,[rbx+8]
+    call print_str_z
+    lea rdi,[rel r4_msg_hint_decl2]
+    call print_str_z
+.out:
+    pop r12
+    pop rbx
+    ret
+
+; r5_unknown_field: p.f where f is a field of no rachana. Exits 1.
+r5_unknown_field:
+    mov rbx,[rel r5_field_tok]
+    mov rdi,[rbx+32]            ; source pointer of the field token
+    call r51_print_origin
+    lea rdi,[rel r5_msg_field]
+    call print_str_z
+    mov rdi,[rbx+8]
+    call print_str_z
+    lea rdi,[rel r48_msg_end]
+    call print_str_z
+    call r51_print_original_context
+    lea rdi,[rel r5_msg_field_hint]
+    call print_str_z
+    mov rdi,[rbx+8]
+    call print_str_z
+    lea rdi,[rel r5_msg_field_hint2]
+    call print_str_z
+    mov rdi,1
+    call os_exit
+
+r48_print_undefined_function:
+    push rbx
+    push r12
+    push r13
+    mov r12, rdi
+    xor ebx, ebx
+.r48_lookup:
+    cmp rbx, [rel token_cnt]
+    jae .r48_fallback
+    mov rax, rbx
+    imul rax, TOKEN_SIZE
+    lea r13, [rel token_arr]
+    add r13, rax
+    cmp qword [r13], TOK_IDENT
+    jne .r48_next
+    ; R49: token lexeme pointers are unique per occurrence. Matching by
+    ; string text mislocated repeated unresolved calls at the FIRST call.
+    ; Patch-list function-name pointers come from their exact lexer token,
+    ; so pointer identity gives the original occurrence and caret.
+    cmp qword [r13+8], r12
+    je .r48_found
+.r48_next:
+    inc rbx
+    jmp .r48_lookup
+.r48_found:
+    mov rdi,[r13+32]
+    call r51_print_origin
+    lea rdi, [rel r48_msg_undefined]
+    call print_str_z
+    mov rdi, r12
+    call print_str_z
+    lea rdi, [rel r48_msg_end]
+    call print_str_z
+    call r51_print_original_context
+    jmp .r48_sem_done
+.r48_fallback:
+    ; In unusual imported/rewritten source, a call-name pointer may not
+    ; match a local token. Never fabricate a line number or location.
+    lea rdi, [rel msg_undefined_func]
+    call print_str_z
+    mov rdi, r12
+    call print_str_z
+    lea rdi, [rel msg_nl]
+    call print_str_z
+.r48_sem_done:
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; R48 check mode: diagnostics reuse lexer-origin token source position.
+; Unlike the normal localized parser error output, the check-mode protocol
+; produces stable path:line:column and offending token plus source/caret.
+r48_print_parse_error:
+    push rbx
+    call cur_tok
+    mov rbx,rax
+    mov rax,[rbx+24]
+    mov [rel r48_error_line],rax
+    mov rdi,[rbx+32]
+    call r51_print_origin
+    lea rdi, [rel r48_msg_near]
+    call print_str_z
+    mov rcx, [rbx]
+    cmp rcx, TOK_EOF
+    je .r48_eof
+    cmp rcx, TOK_IDENT
+    je .r48_word
+    cmp rcx, TOK_KEYWORD
+    je .r48_word
+    cmp rcx, TOK_BUILTIN
+    je .r48_word
+    cmp rcx, TOK_STRING
+    je .r48_word
+    cmp rcx, TOK_NUMBER
+    je .r48_num
+    mov rax, [rbx+8]
+    lea rcx, [rel r48_charbuf]
+    mov [rcx], al
+    mov byte [rcx+1], 0
+    cmp rax, 255
+    jbe .r48_chars
+    shr rax, 8
+    mov [rcx+1], al
+    mov byte [rcx+2], 0
+.r48_chars:
+    mov rdi, rcx
+    call print_str_z
+    jmp .r48_end
+.r48_word:
+    mov rdi, [rbx+8]
+    call print_str_z
+    jmp .r48_end
+.r48_num:
+    mov rdi, [rbx+8]
+    lea rsi, [rel num_buf]
+    call itoa
+    mov rdi, rax
+    call print_str_z
+    jmp .r48_end
+.r48_eof:
+    lea rdi, [rel r48_msg_eof]
+    call print_str_z
+.r48_end:
+    lea rdi, [rel r48_msg_end]
+    call print_str_z
+    call r51_print_original_context
+    pop rbx
+    ret
+
+; Synchronize by removing ONLY the malformed lexical statement from the
+; in-memory token stream, then re-run the same parser from its top level.
+; Original source text and source offsets remain unchanged for diagnostics.
+; Stop before '}' or EOF, or consume ';'; do not discard a closing brace.
+; Abort when a safe separator cannot be found to avoid phantom errors.
+r48_recover_stmt:
+    ; Stage 2: start at malformed statement (not the error token).
+    ; Deep expression parsing may have already passed a safe ';' boundary.
+    ; Track delimiter depth, protect enclosing '}' and original EOF.
+    push rbx
+    push r12
+    push r13
+    push r14
+    cmp qword [rel r48_stmt_valid], 1
+    jne .r48_no
+    mov r8, [rel r48_stmt_start]
+    mov r12, [rel token_idx]
+    mov r10, [rel token_cnt]
+    cmp r8, r12
+    ja .r48_no
+    cmp r12, r10
+    jae .r48_no
+    mov r9, r8
+    xor r13d, r13d                 ; parentheses depth
+    xor r14d, r14d                 ; brackets depth
+    xor ebx, ebx                   ; braces depth
+.r48_find:
+    cmp r9, r10
+    jae .r48_no
+    mov rax, r9
+    imul rax, TOKEN_SIZE
+    lea r11, [rel token_arr]
+    add r11, rax
+    cmp qword [r11], TOK_EOF
+    je .r48_no                     ; never remove EOF and restart
+    cmp qword [r11], TOK_DELIMITER
+    jne .r48_line
+    mov rax, [r11+8]
+    cmp rax, '('
+    je .r48_open_paren
+    cmp rax, ')'
+    je .r48_close_paren
+    cmp rax, '['
+    je .r48_open_bracket
+    cmp rax, ']'
+    je .r48_close_bracket
+    cmp rax, '{'
+    je .r48_open_brace
+    cmp rax, '}'
+    je .r48_close_brace
+    cmp rax, ';'
+    jne .r48_line
+    test r13, r13                   ; semicolon in for(...) is not stmt end
+    jnz .r48_next
+    test r14, r14
+    jnz .r48_next
+    test rbx, rbx
+    jnz .r48_next
+    inc r9                         ; consume outer statement ';'
+    jmp .r48_found
+.r48_open_paren:
+    inc r13
+    jmp .r48_next
+.r48_close_paren:
+    test r13, r13
+    jz .r48_next
+    dec r13
+    jmp .r48_next
+.r48_open_bracket:
+    inc r14
+    jmp .r48_next
+.r48_close_bracket:
+    test r14, r14
+    jz .r48_next
+    dec r14
+    jmp .r48_next
+.r48_open_brace:
+    inc rbx
+    jmp .r48_next
+.r48_close_brace:
+    test rbx, rbx
+    jz .r48_found                  ; protect enclosing block closer
+    dec rbx
+    jmp .r48_next
+.r48_line:
+    cmp r9, r12
+    jbe .r48_next
+    mov rax, [r11+24]
+    cmp rax, [rel r48_error_line]
+    jbe .r48_next
+    cmp qword [r11], TOK_KEYWORD
+    jne .r48_next
+    ; Preserve conservative fallback when the subsequent physical line
+    ; has a keyword-led statement but the delimiter is missing.
+    jmp .r48_found
+.r48_next:
+    inc r9
+    jmp .r48_find
+.r48_found:
+    cmp r9, r8
+    jbe .r48_no
+    mov rax, r9
+    sub rax, r8
+    mov rdx, r10
+    sub rdx, rax
+    mov [rel token_cnt], rdx
+    lea rdi, [rel token_arr]
+    mov rax, r8
+    imul rax, TOKEN_SIZE
+    add rdi, rax
+    lea rsi, [rel token_arr]
+    mov rax, r9
+    imul rax, TOKEN_SIZE
+    add rsi, rax
+    mov rcx, r10
+    sub rcx, r9
+    imul rcx, TOKEN_SIZE
+    cld
+    rep movsb
+    mov eax, 1
+    jmp .r48_done
+.r48_no:
+    xor eax, eax
+.r48_done:
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; calc_src_column(rdi = token source pointer) -> rax = 1-based display column
+; UTF-8 continuation bytes do not advance the display column.
+calc_src_column:
+    push rbx
+    push r12
+    mov rbx, rdi
+    lea r12, [rel source_buf]
+    mov rax, 1
+    cmp rbx, r12
+    jbe .csc_done
+    dec rbx
+.csc_loop:
+    cmp rbx, r12
+    jb .csc_done
+    movzx edx, byte [rbx]
+    cmp dl, 10
+    je .csc_done
+    mov ecx, edx
+    and ecx, 0xC0
+    cmp ecx, 0x80
+    je .csc_prev
+    inc rax
+.csc_prev:
+    dec rbx
+    jmp .csc_loop
+.csc_done:
+    pop r12
+    pop rbx
+    ret
+
+; print_source_context(rdi = token source pointer)
+; Prints the offending source line plus a caret under the token.  Tabs are
+; preserved and UTF-8 continuation bytes do not add extra caret spacing.
+print_source_context:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    mov r12, rdi                    ; token pointer
+    lea r13, [rel source_buf]       ; source start
+    lea r15, [rel source_buf]
+    add r15, [rel source_len]       ; source end
+    cmp r12, r15
+    jbe .psc_ptr_hi_ok
+    mov r12, r15
+.psc_ptr_hi_ok:
+    cmp r12, r13                    ; R17 R1-R3: a token with no source pointer
+    jae .psc_ptr_ok                 ; (the end of the file) is shown at the end
+    mov r12, r15
+.psc_ptr_ok:
+    ; Find start of the source line.
+    mov rbx, r12
+.psc_back:
+    cmp rbx, r13
+    jbe .psc_line_start
+    cmp byte [rbx-1], 10
+    je .psc_line_start
+    dec rbx
+    jmp .psc_back
+.psc_line_start:
+    mov r13, rbx                    ; r13 = line start
+    ; Find end of the source line.
+    mov r14, r13
+.psc_fwd:
+    cmp r14, r15
+    jae .psc_line_end
+    mov al, [r14]
+    cmp al, 10
+    je .psc_line_end
+    cmp al, 13
+    je .psc_line_end
+    inc r14
+    jmp .psc_fwd
+.psc_line_end:
+    lea rdi, [rel msg_diag_indent]
+    call print_str_z
+    mov rdi, 1
+    mov rsi, r13
+    mov rdx, r14
+    sub rdx, r13
+    call os_write
+    lea rdi, [rel msg_diag_nl]
+    call print_str_z
+    lea rdi, [rel msg_diag_indent]
+    call print_str_z
+    ; Reproduce horizontal layout up to the token using spaces/tabs.
+    mov rbx, r13
+.psc_caret_loop:
+    cmp rbx, r12
+    jae .psc_caret
+    movzx eax, byte [rbx]
+    cmp al, 9
+    je .psc_tab
+    mov edx, eax
+    and edx, 0xC0
+    cmp edx, 0x80
+    je .psc_next                  ; continuation byte: same display cell
+    lea rdi, [rel msg_diag_space]
+    call print_str_z
+    jmp .psc_next
+.psc_tab:
+    lea rdi, [rel msg_diag_tab]
+    call print_str_z
+.psc_next:
+    inc rbx
+    jmp .psc_caret_loop
+.psc_caret:
+    lea rdi, [rel msg_diag_caret]
+    call print_str_z
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; parse_block() → rax = block node
+parse_block:
+    push rbx
+    push r12
+    push r13
+    mov rax, [rel parse_block_depth]
+    cmp rax, BLOCK_NESTING_CAP
+    jae .pblock_nesting_overflow
+    inc qword [rel parse_block_depth]
+    push qword [rel r4_seen_count] ; R7: names declared in this block end with it
+    call alloc_ast
+    mov rbx, rax              ; block node
+    call reserve_ast_block_extra
+    mov qword [rbx], AST_BLOCK
+    xor r12, r12              ; statement count
+.pblock_loop:
+    call cur_tok
+    mov rcx, [rax]
+    cmp rcx, TOK_DELIMITER
+    jne .pblock_stmt
+    mov rcx, [rax+8]
+    cmp rcx, '}'
+    je .pblock_done
+.pblock_stmt:
+    cmp r12, BLOCK_STMT_CAP
+    jae .pblock_stmt_overflow
+    call parse_stmt           ; rax = statement node
+    mov [rbx + 16 + r12*8], rax
+    inc r12
+    jmp .pblock_loop
+.pblock_stmt_overflow:
+    lea rdi, [rel msg_block_stmt_overflow]
+    jmp capacity_fail
+.pblock_done:
+    call advance_tok          ; consume }
+    pop rdi                   ; r4_seen_count at '{'
+    call r7_close_block       ; R7: block scope
+    mov [rbx+8], r12          ; statement count
+    mov rax, rbx
+    dec qword [rel parse_block_depth]
+    pop r13
+    pop r12
+    pop rbx
+    ret
+.pblock_nesting_overflow:
+    lea rdi, [rel msg_block_nesting_overflow]
+    jmp capacity_fail
+
+; parse_stmt() → rax = statement node
+parse_stmt:
+    push rbx
+    cmp qword [rel r48_mode], 0
+    je .r48_no_mark
+    mov rax, [rel token_idx]
+    mov [rel r48_stmt_start], rax
+    mov qword [rel r48_stmt_valid], 1
+.r48_no_mark:
+    call cur_tok
+    mov rcx, [rax]
+    cmp rcx, TOK_EOF          ; stop cleanly instead of looping on malformed input
+    jne .ps_not_eof
+    pop rbx
+    jmp parse_error
+.ps_not_eof:
+    mov rdx, [rax+16]
+
+    ; Variable declaration?
+    cmp rcx, TOK_KEYWORD
+    jne .ps_check_expr
+    cmp rdx, KW_VITTI
+    je .ps_decl
+    cmp rdx, KW_ANKA
+    je .ps_decl
+    cmp rdx, KW_SANKHYA
+    je .ps_decl
+    cmp rdx, KW_PARIGRAH
+    je .ps_decl
+    cmp rdx, KW_PANKTI
+    je .ps_decl
+    cmp rdx, KW_DASHAM
+    je .ps_fdecl
+    cmp rdx, KW_KOSH
+    je .ps_kosh
+    cmp rdx, KW_SRIJANA
+    je .ps_sutra
+    cmp rdx, KW_GUNA
+    je .ps_guna
+    cmp rdx, KW_NISHKRIYA
+    je .ps_nishkriya
+    cmp rdx, KW_YADI
+    je .ps_if
+    cmp rdx, KW_PRAKRIYA
+    je .ps_funcdef
+    cmp rdx, KW_AYOJAN
+    je .ps_ayojan
+    cmp rdx, KW_RACHANA
+    je .ps_rachana
+    cmp rdx, KW_YAVAT
+    je .ps_while
+    cmp rdx, KW_KURU
+    je .ps_do_while
+    cmp rdx, KW_PRATIYATI
+    je .ps_return
+    cmp rdx, KW_PUNARAVARTANA
+    je .ps_for
+    cmp rdx, KW_SUTRA
+    je .ps_sutra
+    cmp rdx, KW_NISHEDHA
+    je .ps_nishedha
+    cmp rdx, KW_KRAMA
+    je .ps_krama
+    cmp rdx, KW_UDDESHYA
+    je .ps_uddeshya
+    jmp .ps_check_expr
+
+.ps_decl:
+    call advance_tok          ; consume type keyword
+    call cur_tok
+    mov rcx, [rax]
+    cmp rcx, TOK_IDENT
+    jne parse_error
+    mov rbx, [rax+8]         ; variable name ptr
+    call advance_tok
+    ; Check for [N] (array declaration: vitti arr[10] / pankti arr[10])
+    call cur_tok
+    mov rcx, [rax]
+    cmp rcx, TOK_DELIMITER
+    jne .ps_decl_check_init
+    mov rcx, [rax+8]
+    cmp rcx, '['
+    jne .ps_decl_check_init
+    ; Array declaration: vitti name[size]
+    call advance_tok          ; consume '['
+    call parse_expr           ; rax = size expr
+    ; T8b: keep the size AST on the declaration itself.  Runtime array
+    ; metadata is stored in a hidden header immediately before element 0,
+    ; avoiding the old compilation-global name table and supporting dynamic
+    ; lengths plus same-named arrays in separate function scopes.
+    push rax                  ; save size expr
+    call cur_tok
+    mov rcx, [rax+8]
+    cmp rcx, ']'
+    jne parse_error
+    call advance_tok          ; consume ']'
+    call maybe_semi
+    ; Build DECL directly.  The array code generator owns allocation, so no
+    ; legacy nirmmita(size*8) AST is needed and the size expression is kept
+    ; intact/evaluated exactly once at runtime.
+    call alloc_ast
+    pop rdx                   ; original size expression
+    mov qword [rax], AST_DECL
+    mov [rax+8], rbx          ; name
+    push rdi
+    mov rdi, rbx
+    call r7_declare_new      ; R7: duplicate check, then R4 declare
+    pop rdi
+    mov qword [rax+16], 0     ; no ordinary initializer
+    mov [rax+24], rdx         ; nonzero marks array declaration + size AST
+    pop rbx
+    ret
+.ps_decl_check_init:
+    ; Check for = expr
+    call cur_tok
+    mov rcx, [rax]
+    cmp rcx, TOK_OPERATOR
+    jne .ps_decl_noinit
+    mov rcx, [rax+8]
+    cmp rcx, '='
+    jne .ps_decl_noinit
+    call advance_tok          ; consume '='
+    call parse_expr           ; rax = init expr
+    ; Build decl node with init
+    push rax                  ; save init expr
+    push rbx                  ; save name
+    call alloc_ast
+    pop rbx                   ; restore name
+    pop rcx                   ; restore init expr (was rax from parse_expr)
+    ; Wait — alloc_ast clobbers rax. But we pushed the init expr value.
+    ; Actually: we pushed rax (init expr), then rbx (name).
+    ; alloc_ast returns in rax. pop rbx restores name. pop rcx restores init expr.
+    ; But alloc_ast might clobber rcx! Let me fix the pop order.
+    ; Actually, alloc_ast only uses rbx (pushed/popped internally).
+    ; So rcx from pop is safe.
+    mov qword [rax], AST_DECL
+    mov [rax+8], rbx          ; name
+    push rdi
+    mov rdi, rbx
+    call r7_declare_new      ; R7: duplicate check, then R4 declare
+    pop rdi
+    mov [rax+16], rcx         ; init expr
+    call maybe_semi
+    pop rbx
+    ret
+
+.ps_decl_noinit:
+    push rbx
+    call alloc_ast
+    pop rbx
+    mov qword [rax], AST_DECL
+    mov [rax+8], rbx
+    push rdi
+    mov rdi, rbx
+    call r7_declare_new      ; R7: duplicate check, then R4 declare
+    pop rdi
+    mov qword [rax+16], 0
+    call maybe_semi
+    pop rbx
+    ret
+
+.ps_kosh:
+    ; T18 growable array. `kosh name` is integer/raw-qword;
+    ; `kosh dasham name` / `कोश दशम name` stores IEEE-754 binary64 elements.
+    ; Capacity is optional (default 4); logical length starts at zero.
+    call advance_tok         ; consume kosh / कोश
+    call cur_tok
+    mov rdx, 2               ; AST_DECL marker 2 = integer/raw kosh
+    cmp qword [rax], TOK_KEYWORD
+    jne .ps_kosh_name
+    cmp qword [rax+16], KW_DASHAM
+    jne .ps_kosh_name
+    mov rdx, 3               ; marker 3 = kosh dasham
+    call advance_tok         ; consume dasham / दशम
+    call cur_tok
+.ps_kosh_name:
+    push rdx                 ; preserve element type through parsing
+    cmp qword [rax], TOK_IDENT
+    jne parse_error
+    mov rbx, [rax+8]
+    call advance_tok
+    call cur_tok
+    cmp qword [rax], TOK_DELIMITER
+    jne .ps_kosh_default_cap
+    cmp qword [rax+8], '['
+    jne .ps_kosh_default_cap
+    call advance_tok
+    call parse_expr
+    push rax
+    call cur_tok
+    cmp qword [rax+8], ']'
+    jne parse_error
+    call advance_tok
+    jmp .ps_kosh_have_cap
+.ps_kosh_default_cap:
+    call alloc_ast
+    mov qword [rax], AST_NUM
+    mov qword [rax+8], 4
+    push rax
+.ps_kosh_have_cap:
+    push rbx
+    call alloc_ast
+    pop rbx
+    pop rcx                  ; capacity expression
+    pop rdx                  ; declaration element-type marker
+    mov qword [rax], AST_DECL
+    mov [rax+8], rbx
+    push rdi
+    mov rdi, rbx
+    call r7_declare_new      ; R7: duplicate check, then R4 declare
+    pop rdi
+    mov qword [rax+16], 0
+    mov [rax+24], rcx
+    mov [rax+32], rdx        ; 2=integer/raw kosh, 3=kosh dasham
+    call maybe_semi
+    pop rbx
+    ret
+
+.ps_fdecl:
+    ; T12 scalar double declaration: dasham name [= expr]
+    call advance_tok
+    call cur_tok
+    cmp qword [rax], TOK_IDENT
+    jne parse_error
+    mov rbx, [rax+8]
+    call advance_tok
+    call cur_tok
+    cmp qword [rax], TOK_OPERATOR
+    jne .ps_fdecl_noinit
+    cmp qword [rax+8], '='
+    jne .ps_fdecl_noinit
+    call advance_tok
+    call parse_expr
+    push rax
+    push rbx
+    call alloc_ast
+    pop rbx
+    pop rcx
+    mov qword [rax], AST_DECL
+    mov [rax+8], rbx
+    push rdi
+    mov rdi, rbx
+    call r7_declare_new      ; R7: duplicate check, then R4 declare
+    pop rdi
+    mov [rax+16], rcx
+    mov qword [rax+32], 1     ; declaration type marker: dasham
+    call maybe_semi
+    pop rbx
+    ret
+.ps_fdecl_noinit:
+    push rbx
+    call alloc_ast
+    pop rbx
+    mov qword [rax], AST_DECL
+    mov [rax+8], rbx
+    push rdi
+    mov rdi, rbx
+    call r7_declare_new      ; R7: duplicate check, then R4 declare
+    pop rdi
+    mov qword [rax+16], 0
+    mov qword [rax+32], 1
+    call maybe_semi
+    pop rbx
+    ret
+
+.ps_nishkriya:
+    ; nishkriya("hex bytes") — inline assembly
+    call advance_tok          ; consume 'nishkriya'
+    call cur_tok
+    mov rcx, [rax+8]
+    cmp rcx, '('
+    jne parse_error
+    call advance_tok
+    call cur_tok
+    mov rcx, [rax]            ; token type
+    cmp rcx, TOK_STRING
+    jne parse_error           ; nishkriya requires a string literal
+    mov rbx, [rax+8]          ; rbx = string pointer
+    call advance_tok          ; consume string
+    call cur_tok
+    mov rcx, [rax+8]
+    cmp rcx, ')'
+    jne parse_error
+    call advance_tok          ; consume ')'
+    ; Build node: [AST_NISHKRIYA][str_ptr][0][0]
+    push rbx
+    call alloc_ast
+    pop rcx
+    mov qword [rax], AST_NISHKRIYA
+    mov [rax+8], rcx          ; hex string pointer
+    mov qword [rax+16], 0
+    call maybe_semi
+    pop rbx
+    ret
+
+.ps_if:
+    ; Simplified — parse if(cond){block}
+    call advance_tok          ; consume 'yadi'
+    call cur_tok              ; R26: yadi dosh (q = call) { ... } anya { ... }
+    cmp qword [rax], TOK_KEYWORD
+    jne .r26_not_handler
+    cmp qword [rax+16], KW_DOSH
+    jne .r26_not_handler
+    call r26_parse_handler
+    pop rbx
+    ret
+.r26_not_handler:
+    ; expect (
+    call cur_tok
+    mov rcx, [rax+8]
+    cmp rcx, '('
+    jne parse_error
+    call advance_tok
+    call parse_expr           ; rax = condition
+    mov rbx, rax              ; save condition
+    ; expect )
+    call cur_tok
+    mov rcx, [rax+8]
+    cmp rcx, ')'
+    jne parse_error
+    call advance_tok
+    ; Parse body — braces optional
+    call parse_body            ; rax = then-block
+    ; Build if node: [AST_IF][cond][then][else=0]
+    push rax                  ; save then-block
+    push rbx                  ; save condition
+    call alloc_ast
+    pop rbx                   ; restore condition
+    pop rcx                   ; restore then-block
+    ; Same issue: alloc_ast clobbers rax, but rbx and rcx are from pop
+    mov qword [rax], AST_IF
+    mov [rax+8], rbx          ; condition
+    mov [rax+16], rcx         ; then block
+    mov qword [rax+24], 0    ; no else
+    ; Check for 'anyatra' (else)
+    push rax                  ; save if-node
+    call cur_tok
+    mov rcx, [rax]            ; token type
+    cmp rcx, TOK_KEYWORD
+    jne .ps_if_no_else
+    mov rcx, [rax+16]         ; keyword id
+    cmp rcx, KW_ANYATRA
+    jne .ps_if_no_else
+    ; Found 'anyatra' — consume it
+    call advance_tok
+    ; Parse else body
+    call parse_body            ; rax = else-block
+    mov rcx, rax              ; rcx = else-block
+    mov rax, [rsp]            ; rax = if-node
+    mov [rax+24], rcx         ; store else block
+    jmp .ps_if_done           ; R17 R4: one anya only. A second one used to be
+                              ; parsed below, over the first, and crashed.
+.ps_if_no_else:
+    ; Check for 'anyatra' (else or elif)
+    ; if-node is already on stack from push at line ~1245
+    call cur_tok
+    mov rcx, [rax]            ; token type
+    cmp rcx, TOK_KEYWORD
+    jne .ps_if_done
+    mov rcx, [rax+16]         ; keyword id
+    cmp rcx, KW_ANYATRA
+    jne .ps_if_done
+    ; Found 'anyatra' — check if next is 'yadi' (elif)
+    call advance_tok          ; consume 'anyatra'
+    call cur_tok
+    mov rcx, [rax+16]
+    cmp rcx, KW_YADI
+    jne .ps_if_else_body
+    ; It's 'anyatra yadi' (elif) — parse as nested if
+    call .ps_if               ; recursively parse if, returns in rax
+    mov rcx, rax              ; rcx = nested if-node
+    mov rax, [rsp]            ; rax = original if-node
+    mov [rax+24], rcx         ; store as else block
+    jmp .ps_if_done
+.ps_if_else_body:
+    ; Regular else — parse body
+    call parse_body            ; rax = else-block
+    mov rcx, rax
+    mov rax, [rsp]            ; rax = if-node
+    mov [rax+24], rcx         ; store else block
+.ps_if_done:
+    pop rax
+    pop rbx
+    ret
+
+.ps_funcdef:
+    ; prakriya name(params) { body }
+    mov qword [rel r25_parse_phal], 0   ; R25
+    push r12                 ; save r12 (parse_func_block uses it as stmt count)
+    push r13                 ; save r13 (parse_func_block uses it as stmt index)
+    push qword [rel r4_seen_base]   ; R4: open the function's own name scope
+    push rax
+    mov rax, [rel r4_seen_count]
+    mov [rel r4_seen_base], rax
+    pop rax
+    call advance_tok          ; consume 'prakriya'
+    ; Expect function name
+    call cur_tok
+    mov rcx, [rax]
+    cmp rcx, TOK_IDENT
+    jne parse_error
+    mov rbx, [rax+8]         ; function name ptr
+    call advance_tok
+    call cur_tok              ; R23 WS2: prakriya Rachana.method(...)
+    cmp qword [rax], TOK_DELIMITER
+    jne .r23_not_method_def
+    cmp qword [rax+8], '.'
+    jne .r23_not_method_def
+    call r23_parse_method_def ; rbx = "Rachana.method"
+.r23_not_method_def:
+    ; Expect (
+    call cur_tok
+    mov rcx, [rax+8]
+    cmp rcx, '('
+    jne parse_error
+    call advance_tok
+    ; Parse parameter list — collect param names into func_params
+    ; r13 continues from param_buf_pos so each function's params stay intact
+    xor r12, r12             ; param count
+    mov r13, [rel param_buf_pos]   ; offset in func_params (accumulating)
+.ps_fd_param:
+    xor r10d, r10d            ; PARAM_RAW unless an explicit type prefix follows
+    call cur_tok
+    mov rcx, [rax]
+    cmp rcx, TOK_DELIMITER
+    jne .ps_fd_param_maybe_type
+    mov rcx, [rax+8]
+    cmp rcx, ')'
+    je .ps_fd_params_done
+    cmp rcx, ','
+    je .ps_fd_comma
+    jmp parse_error
+.ps_fd_param_maybe_type:
+    cmp rcx, TOK_KEYWORD
+    jne .ps_fd_param_name
+    cmp qword [rax+16], KW_DASHAM
+    je .ps_fd_param_dasham
+    cmp qword [rax+16], KW_KOSH
+    je .ps_fd_param_kosh
+    cmp qword [rax+16], KW_VIBHAG
+    je .ps_fd_param_vibhag
+    jmp parse_error
+.ps_fd_param_vibhag:
+    mov r10d, PARAM_VIBHAG    ; R23 WS3
+    call advance_tok          ; consume vibhag / विभाग
+    call cur_tok
+    mov rcx, [rax]
+    jmp .ps_fd_param_name
+.ps_fd_param_dasham:
+    mov r10d, PARAM_DASHAM
+    call advance_tok          ; consume dasham / दशम
+    call cur_tok
+    mov rcx, [rax]
+    jmp .ps_fd_param_name
+.ps_fd_param_kosh:
+    mov r10d, PARAM_KOSH
+    call advance_tok          ; consume kosh / कोश
+    call cur_tok
+    mov rcx, [rax]
+    cmp rcx, TOK_KEYWORD
+    jne .ps_fd_param_name
+    cmp qword [rax+16], KW_DASHAM
+    jne parse_error
+    mov r10d, PARAM_KOSH_DASHAM
+    call advance_tok          ; consume dasham / दशम after kosh
+    call cur_tok
+    mov rcx, [rax]
+.ps_fd_param_name:
+    ; Preserve the historical permissive untyped-parameter grammar. Explicit
+    ; dasham/kosh prefixes require a following identifier.
+    test r10d, r10d
+    jz .ps_fd_param_untyped
+    cmp rcx, TOK_IDENT
+    jne parse_error
+    jmp .ps_fd_param_name_ok
+.ps_fd_param_untyped:
+    ; R17 R2: a parameter is a name. The end of the file, a number, a string,
+    ; an operator or a delimiter here used to be stored as a name and crashed.
+    cmp rcx, TOK_IDENT
+    je .ps_fd_param_name_ok
+    cmp rcx, TOK_KEYWORD
+    je .ps_fd_param_name_ok
+    cmp rcx, TOK_BUILTIN
+    jne parse_error
+.ps_fd_param_name_ok:
+    cmp r12, 6
+    jb .ps_fd_param_ok
+    mov qword [rel parse_error_kind], 1
+    jmp parse_error
+.ps_fd_param_ok:
+    cmp r13, FUNC_PARAMS_CAP
+    jae .ps_fd_param_capacity
+    ; Store parameter type in a parallel table indexed by the qword name slot.
+    mov rdx, r13
+    shr rdx, 3
+    lea rcx, [rel func_param_types]
+    mov [rcx + rdx], r10b
+    mov rcx, [rax+8]         ; param name ptr
+    lea rax, [rel func_params]
+    mov [rax + r13], rcx
+    push rdi
+    mov rdi, rcx
+    call r7_declare_new      ; R4/R7: parameters are declared names; f(a, a) is an error
+    pop rdi
+    add r13, 8
+    inc r12
+    call advance_tok
+    call cur_tok
+    mov rcx, [rax]
+    cmp rcx, TOK_DELIMITER
+    jne parse_error
+    mov rcx, [rax+8]
+    cmp rcx, ','
+    je .ps_fd_comma
+    cmp rcx, ')'
+    je .ps_fd_params_done
+    jmp parse_error
+.ps_fd_comma:
+    call advance_tok
+    jmp .ps_fd_param
+.ps_fd_param_capacity:
+    lea rdi, [rel msg_func_params_overflow]
+    jmp capacity_fail
+.ps_fd_params_done:
+    call advance_tok          ; consume ')'
+    ; R55: an explicit ';' after the signature declares a forward prototype.
+    ; No body is emitted, and the declaration must match a real definition.
+    call cur_tok
+    cmp qword [rax],TOK_DELIMITER
+    jne .r55_parse_real_body
+    cmp qword [rax+8],';'
+    jne .r55_parse_real_body
+    call advance_tok
+    xor eax,eax               ; null body = prototype
+    jmp .r55_body_ready
+.r55_parse_real_body:
+    call parse_body           ; rax = real block node
+.r55_body_ready:
+    ; Build funcdef node: [AST_FUNCDEF][name_ptr][param_count][body]
+    push rax                  ; save body
+    push rbx                  ; save name
+    push r12                  ; save param count
+    call alloc_ast
+    pop r12                   ; restore param count
+    pop rbx                   ; restore name
+    pop rcx                   ; restore body
+    mov qword [rax], AST_FUNCDEF
+    mov [rax+8], rbx          ; function name
+    mov [rax+16], r12         ; param count
+    mov [rax+24], rcx         ; body block
+    call r7_note_def          ; R7: (rbx name, r12 params) for the arity check
+    cmp qword [rel r25_parse_phal], 0   ; R25: it returns siddhi / dosh: a phal-prakriya
+    je .r25_not_phal_def
+    push rdi
+    mov rdi, rbx
+    call r25_mark_phal
+    pop rdi
+.r25_not_phal_def:
+    mov [rax+32], r13         ; param buffer end position
+    mov qword [rax+40], 0
+    mov [rel param_buf_pos], r13   ; remember cursor for the next function
+    mov rcx, [rel r4_seen_base]    ; R4: close the function's name scope
+    mov [rel r4_seen_count], rcx
+    pop qword [rel r4_seen_base]
+    pop r13                  ; restore r13
+    pop r12                  ; restore r12
+    pop rbx
+    ret
+
+.ps_for:
+    ; punaravartana i = start to end { body }
+    call advance_tok          ; consume 'punaravartana'
+    ; Expect variable name
+    call cur_tok
+    mov rcx, [rax]
+    cmp rcx, TOK_IDENT
+    jne parse_error
+    mov rbx, [rax+8]         ; var name ptr
+    push qword [rel r4_seen_count] ; R7: the loop variable belongs to the loop
+    push rdi
+    mov rdi, rbx
+    call r4_is_seen          ; R7: `chakra i` over a visible i reuses it (stays after the loop)
+    test rax, rax
+    jnz .ps_for_reuse
+    call r4_declare          ; R4
+.ps_for_reuse:
+    pop rdi
+    call advance_tok
+    ; Expect '='
+    call cur_tok
+    mov rcx, [rax+8]
+    cmp rcx, '='
+    jne parse_error
+    call advance_tok          ; consume '='
+    ; Parse start expression
+    call parse_expr           ; rax = start expr
+    push rax                  ; save start expr
+    ; Expect 'to' keyword (punaravartana uses 'to' as contextual keyword)
+    ; We accept bare identifier 'to' or keyword
+    call cur_tok
+    mov rcx, [rax]
+    cmp rcx, TOK_IDENT
+    jne .ps_for_check_kw
+    ; Check if it's literally 'tak' (3 bytes: 't','a','k',0)
+    mov rdi, [rax+8]
+    movzx ecx, word [rdi]
+    cmp ecx, 0x6174
+    jne .ps_for_lang_to
+    movzx ecx, byte [rdi+2]
+    cmp ecx, 0x6B
+    jne .ps_for_lang_to
+    movzx ecx, byte [rdi+3]
+    test ecx, ecx
+    jnz .ps_for_lang_to
+    jmp .ps_for_got_to
+.ps_for_lang_to:
+    ; or the loaded language's native word for 'to'
+    cmp byte [rel lang_to_word], 0
+    je parse_error
+    call cur_tok
+    mov rdi, [rax+8]
+    lea rsi, [rel lang_to_word]
+    call strcmp
+    test rax, rax
+    jnz parse_error
+    jmp .ps_for_got_to
+.ps_for_check_kw:
+    jmp parse_error
+.ps_for_got_to:
+    call advance_tok          ; consume 'to'
+    ; Parse end expression
+    call parse_expr           ; rax = end expr
+    push rax                  ; save end expr
+    ; Parse body
+    call parse_body           ; rax = body block
+    mov rdi, [rsp+16]         ; R7: r4_seen_count before the loop variable
+    call r7_close_block       ; the loop variable ends with the loop
+    push rax                  ; save body
+    ; Build AST_FOR node
+    push rbx                  ; save var name
+    call alloc_ast
+    pop rbx                   ; restore var name
+    pop rcx                   ; restore body
+    pop rdx                   ; restore end expr
+    pop rsi                   ; restore start expr
+    add rsp, 8                ; R7: drop the saved r4_seen_count
+    mov qword [rax], AST_FOR
+    mov [rax+8], rbx          ; var name
+    mov [rax+16], rsi         ; start expr
+    mov [rax+24], rdx         ; end expr
+    mov [rax+32], rcx         ; body block
+    mov qword [rax+40], 0    ; no step yet
+    call maybe_semi
+    pop rbx
+    ret
+
+.ps_sutra:
+    ; sutra NAME = value  (compile-time constant — treated as vitti)
+    call advance_tok          ; consume 'sutra'
+    call cur_tok
+    mov rcx, [rax]
+    cmp rcx, TOK_IDENT
+    jne parse_error
+    mov rbx, [rax+8]
+    call advance_tok
+    call cur_tok
+    mov rcx, [rax+8]
+    cmp rcx, '='
+    jne parse_error
+    call advance_tok
+    call parse_expr
+    push rax
+    push rbx
+    call alloc_ast
+    pop rbx
+    pop rcx
+    mov qword [rax], AST_DECL
+    mov [rax+8], rbx
+    push rdi
+    mov rdi, rbx
+    call r7_declare_new      ; R7: duplicate check, then R4 declare
+    pop rdi
+    mov [rax+16], rcx
+    call maybe_semi
+    pop rbx
+    ret
+
+.ps_nishedha:
+    ; nishedha(expr)  — assert: if expr is false, exit with error
+    call advance_tok          ; consume 'nishedha'
+    call cur_tok
+    mov rcx, [rax+8]
+    cmp rcx, '('
+    jne parse_error
+    call advance_tok           ; consume '('
+    call parse_expr            ; rax = condition
+    push rax                  ; save condition
+    call cur_tok
+    mov rcx, [rax+8]
+    cmp rcx, ')'
+    jne parse_error
+    call advance_tok           ; consume ')'
+    call maybe_semi
+    pop rcx                   ; restore condition
+    push rcx
+    call alloc_ast
+    pop rcx
+    mov qword [rax], AST_ASSERT
+    mov [rax+8], rcx          ; condition
+    mov qword [rax+16], 0
+    pop rbx
+    ret
+
+.ps_krama:
+    ; krama  — break out of loop
+    call advance_tok          ; consume 'krama'
+    call maybe_semi
+    push 0
+    call alloc_ast
+    pop rcx
+    mov qword [rax], AST_BREAK
+    mov qword [rax+8], 0
+    pop rbx
+    ret
+
+.ps_uddeshya:
+    ; uddeshya  — continue to next loop iteration
+    call advance_tok          ; consume 'uddeshya'
+    call maybe_semi
+    push 0
+    call alloc_ast
+    pop rcx
+    mov qword [rax], AST_CONTINUE
+    mov qword [rax+8], 0
+    pop rbx
+    ret
+
+.ps_guna:
+    ; guna (expr) { bhavana VAL: { body } ... anyatra: { body } }
+    ; Desugars to if-elif chain using stack: [rbp_g-8]=expr, [rbp_g-16]=first, [rbp_g-24]=last
+    call advance_tok          ; consume 'guna'
+    call cur_tok
+    mov rcx, [rax+8]
+    cmp rcx, '('
+    jne parse_error
+    call advance_tok          ; consume '('
+    call parse_expr           ; rax = switch expression
+    ; R9 (F3): every bhavana compares against the switch expression, so an
+    ; expression with a call in it was evaluated once per case tested. Unless
+    ; it is a plain variable or number, evaluate it once into a hidden local
+    ; ("#g<n>": '#' cannot start a name in source) and switch on that.
+    call r9_guna_once         ; rax = expression to compare, rdx = DECL or 0
+    push rdx                  ; [rsp+24] = hidden DECL (or 0)
+    push rax                  ; [rsp+16] = switch_expr
+    push 0                    ; [rsp+8]  = first_if = NULL
+    push 0                    ; [rsp+0]  = last_if = NULL
+    call cur_tok
+    mov rcx, [rax+8]
+    cmp rcx, ')'
+    jne parse_error
+    call advance_tok          ; consume ')'
+    call cur_tok
+    mov rcx, [rax+8]
+    cmp rcx, '{'
+    jne parse_error
+    call advance_tok          ; consume '{'
+
+.ps_guna_loop:
+    call cur_tok
+    mov rcx, [rax]
+    cmp rcx, TOK_DELIMITER
+    jne .ps_guna_check_kw
+    mov rcx, [rax+8]
+    cmp rcx, '}'
+    je .ps_guna_done
+
+.ps_guna_check_kw:
+    mov rcx, [rax]
+    cmp rcx, TOK_KEYWORD
+    jne .ps_guna_done
+    mov rdx, [rax+16]
+    cmp rdx, KW_BHAVANA
+    je .ps_guna_case
+    cmp rdx, KW_ANYATRA
+    je .ps_guna_default
+    jmp .ps_guna_done
+
+.ps_guna_case:
+    call advance_tok          ; consume 'bhavana'
+    call parse_expr           ; rax = case value
+    push rax                  ; [rsp+0]=case_val, [rsp+8]=last, [rsp+16]=first, [rsp+24]=expr
+    call cur_tok
+    mov rcx, [rax+8]
+    cmp rcx, ':'
+    jne parse_error
+    call advance_tok          ; consume ':'
+    ; Now parse_body. Save nothing extra - parse_body preserves rsp.
+    ; But we need switch_expr after parse_body. It's at [rsp+24].
+    call parse_body           ; rax = body block
+    pop rcx                   ; rcx = case_val. [rsp+0]=last,[rsp+8]=first,[rsp+16]=expr
+    ; Create BINOP(OP_EQ, switch_expr, case_val)
+    push rax                  ; save body. [rsp+0]=body,[rsp+8]=last,[rsp+16]=first,[rsp+24]=expr
+    call alloc_ast            ; rax = binop node
+    pop rdx                   ; rdx = body. [rsp+0]=last,[rsp+8]=first,[rsp+16]=expr
+    mov qword [rax], 4        ; AST_BINOP
+    mov qword [rax+8], OP_EQ
+    mov r8, [rsp+16]          ; r8 = switch_expr
+    mov [rax+16], r8          ; left = switch_expr
+    mov [rax+24], rcx         ; right = case_val
+    ; Create IF(binop, body, NULL)
+    ; rax=binop, rdx=body. Save both on stack.
+    push rdx                  ; save body
+    push rax                  ; save binop
+    call alloc_ast            ; rax = if node
+    pop rdx                   ; rdx = binop
+    pop rcx                   ; rcx = body
+    mov qword [rax], 5        ; AST_IF
+    mov [rax+8], rdx          ; cond = binop
+    mov [rax+16], rcx         ; then = body
+    mov qword [rax+24], 0     ; else = NULL
+    ; Link: if last != NULL, set [last+24] = this_if
+    mov r8, [rsp]             ; r8 = last_if
+    test r8, r8
+    jz .ps_guna_newfirst
+    ; Wrap this IF in a BLOCK node so gen_block can handle it as else
+    push rax                  ; save IF2. Stack: [IF2][last][first][expr]
+    call alloc_ast            ; rax = block node. Stack unchanged.
+    pop rdx                   ; rdx = IF2. Stack: [last][first][expr]
+    mov qword [rax], 10       ; AST_BLOCK
+    mov [rax+16], rdx          ; statement[0] = IF2
+    mov qword [rax+8], 1      ; count = 1
+    ; Link: prev_if.else = block(IF2)
+    mov [r8+24], rax
+    mov rax, rdx              ; rax = IF2 (not BLOCK) so setlast stores IF2
+    jmp .ps_guna_setlast
+.ps_guna_newfirst:
+    mov [rsp+8], rax          ; first_if = this_if
+.ps_guna_setlast:
+    mov [rsp], rax            ; last_if = this_if
+    jmp .ps_guna_loop
+
+.ps_guna_default:
+    call advance_tok          ; consume 'anyatra'
+    call cur_tok
+    mov rcx, [rax+8]
+    cmp rcx, ':'
+    jne parse_error
+    call advance_tok          ; consume ':'
+    call parse_body           ; rax = default body
+    mov r8, [rsp]             ; r8 = last_if
+    test r8, r8
+    jz .ps_guna_loop
+    mov [r8+24], rax          ; last_if.else = default body
+    jmp .ps_guna_loop
+
+.ps_guna_done:
+    call cur_tok
+    mov rcx, [rax+8]
+    cmp rcx, '}'
+    jne parse_error
+    call advance_tok          ; consume '}'
+    call maybe_semi
+    mov rax, [rsp+8]          ; first_if
+    test rax, rax
+    jnz .ps_guna_have_cases
+    call alloc_ast            ; R17: an empty guna { } is an empty block, not a null statement
+    mov qword [rax], AST_BLOCK
+    mov qword [rax+8], 0
+.ps_guna_have_cases:
+    add rsp, 24               ; clean up 3 pushes
+    pop rdx                   ; R9: hidden DECL or 0
+    test rdx, rdx
+    jz .ps_guna_plain
+    ; BLOCK { DECL #g<n> = expr ; if-chain }
+    push rax
+    push rdx
+    call alloc_ast
+    pop rdx
+    pop rcx
+    mov qword [rax], AST_BLOCK
+    mov qword [rax+8], 2
+    mov [rax+16], rdx
+    mov [rax+24], rcx
+.ps_guna_plain:
+    pop rbx
+    ret
+
+.ps_while:
+    call advance_tok          ; consume 'yavat'
+    call cur_tok
+    mov rcx, [rax+8]
+    cmp rcx, '('
+    jne parse_error
+    call advance_tok
+    call parse_expr           ; rax = condition
+    mov rbx, rax              ; save condition
+    call cur_tok
+    mov rcx, [rax+8]
+    cmp rcx, ')'
+    jne parse_error
+    call advance_tok
+    ; Parse body — braces optional
+    call parse_body            ; rax = body
+    push rax                  ; save body
+    push rbx                  ; save condition
+    call alloc_ast
+    pop rbx                   ; condition
+    pop rcx                   ; body
+    mov qword [rax], AST_WHILE
+    mov [rax+8], rbx          ; condition
+    mov [rax+16], rcx         ; body
+    pop rbx
+    ret
+
+.ps_do_while:
+    ; kuru { body } yavat (condition) ;
+    ; Sanskrit-only do-while form: body executes once before the test.
+    call advance_tok          ; consume 'kuru'
+    call parse_body           ; rax = body block
+    push rax                  ; save body
+    call cur_tok
+    cmp qword [rax], TOK_KEYWORD
+    jne parse_error
+    cmp qword [rax+16], KW_YAVAT
+    jne parse_error
+    call advance_tok          ; consume 'yavat'
+    call cur_tok
+    cmp qword [rax+8], '('
+    jne parse_error
+    call advance_tok
+    call parse_expr           ; rax = condition
+    push rax                  ; save condition
+    call cur_tok
+    cmp qword [rax+8], ')'
+    jne parse_error
+    call advance_tok
+    call maybe_semi
+    call alloc_ast
+    pop rcx                   ; condition
+    pop rdx                   ; body
+    mov qword [rax], AST_DO_WHILE
+    mov [rax+8], rdx          ; body
+    mov [rax+16], rcx         ; condition
+    pop rbx
+    ret
+
+.ps_return:
+    call advance_tok          ; consume 'pratiyati'
+    call cur_tok              ; R25: prati siddhi(e) / prati dosh(e)
+    cmp qword [rax], TOK_KEYWORD
+    jne .r25_ret_plain
+    mov rcx, [rax+16]
+    cmp rcx, KW_SIDDHI
+    je .r25_ret_phal
+    cmp rcx, KW_DOSH
+    jne .r25_ret_plain
+.r25_ret_phal:
+    sub rcx, KW_SIDDHI - 1    ; siddhi = 1, dosh = 2
+    push rcx
+    mov qword [rel r25_parse_phal], 1
+    call advance_tok          ; consume siddhi / dosh
+    call cur_tok
+    cmp qword [rax], TOK_DELIMITER
+    jne parse_error
+    cmp qword [rax+8], '('
+    jne parse_error
+    call advance_tok
+    call parse_expr
+    push rax
+    call cur_tok
+    cmp qword [rax], TOK_DELIMITER
+    jne parse_error
+    cmp qword [rax+8], ')'
+    jne parse_error
+    call advance_tok
+    call alloc_ast
+    pop rbx                   ; the value or the code
+    pop rcx                   ; 1 siddhi, 2 dosh
+    mov qword [rax], AST_RETURN
+    mov [rax+8], rbx
+    mov [rax+16], rcx
+    call maybe_semi
+    pop rbx
+    ret
+.r25_ret_plain:
+    call cur_tok
+    mov rcx, [rax]
+    cmp rcx, TOK_DELIMITER
+    jne .ps_ret_check_eof
+    ; A delimiter means 'no value' only for ) } ; — a '(' starts an expression
+    mov rcx, [rax+8]
+    cmp rcx, ')'
+    je .ps_ret_noexpr
+    cmp rcx, '}'
+    je .ps_ret_noexpr
+    cmp rcx, ';'
+    je .ps_ret_noexpr
+    jmp .ps_ret_parse
+.ps_ret_check_eof:
+    cmp rcx, TOK_EOF
+    je .ps_ret_noexpr
+.ps_ret_parse:
+    call parse_expr           ; rax = return value
+    mov rbx, rax              ; save it
+    jmp .ps_ret_build
+.ps_ret_noexpr:
+    xor rbx, rbx
+.ps_ret_build:
+    push rbx
+    call alloc_ast
+    pop rbx
+    mov qword [rax], AST_RETURN
+    mov [rax+8], rbx
+    call maybe_semi
+    pop rbx
+    ret
+
+.ps_rachana:
+    ; rachana Name = { f1, f2, ... }
+push r12                  ; save r12 (parse_func_block uses it)
+    push r13                  ; save r13
+    call advance_tok          ; consume 'rachana'
+    call cur_tok
+    mov rcx, [rax]
+    cmp rcx, TOK_IDENT
+    jne parse_error
+    mov rbx, [rax+8]         ; rachana name ptr
+    call advance_tok
+    ; Expect '='
+    call cur_tok
+    cmp qword [rax+8], '='
+    jne parse_error
+    call advance_tok
+    ; Expect '{'
+    call cur_tok
+    cmp qword [rax+8], '{'
+    jne parse_error
+    call advance_tok
+    ; Register rachana
+    mov rcx, [rel rachana_cnt]
+    cmp rcx, RACHANA_CAP
+    jae .pr_rachana_overflow
+    lea rax, [rel rachana_defs]
+    shl rcx, 8               ; 256 bytes per entry
+    mov [rax + rcx], rbx     ; name ptr
+    mov qword [rax + rcx + 8], 0  ; field count = 0
+    ; Parse fields
+    xor r12, r12             ; field count
+.pr_field_loop:
+    call cur_tok
+    mov rcx, [rax]
+    cmp rcx, TOK_DELIMITER
+    jne .pr_field_name
+    cmp qword [rax+8], '}'
+    je .pr_field_done
+    jmp parse_error
+.pr_field_name:
+    ; R17 R3: a field is a name. The end of the file or a number here used to
+    ; be stored as a name and crashed.
+    cmp rcx, TOK_IDENT
+    je .pr_field_name_ok
+    cmp rcx, TOK_KEYWORD
+    je .pr_field_name_ok
+    cmp rcx, TOK_BUILTIN
+    jne parse_error
+.pr_field_name_ok:
+    cmp r12, RACHANA_FIELDS_CAP
+    jae .pr_rachana_fields_overflow
+    mov rdx, [rax+8]         ; field name ptr
+    mov [rel r5_field_tok], rax   ; R7: for the duplicate-field diagnostic
+    mov rdi, rdx
+    call r7_field_dup_here   ; R7: { x, x } is an error (the second x was unreachable)
+    test rax, rax
+    jnz r7_report_dup_field
+    mov rax, [rel r5_field_tok]
+    mov rdx, [rax+8]
+    call advance_tok
+    ; Store field: [rachana_entry + 16 + field_count * 16] = name, +8 = offset
+    lea rax, [rel rachana_defs]
+    mov rcx, [rel rachana_cnt]
+    shl rcx, 8
+    ; offset = field_count * 8
+    mov r8, r12
+    shl r8, 3
+    ; Compute store address manually (no *16 scale in NASM)
+    mov r9, r12
+    shl r9, 4               ; field_count * 16
+    add r9, 16              ; + 16 (fields start at offset 16)
+    add r9, rcx             ; + rachana base offset
+    mov [rax + r9], rdx     ; field name ptr
+    mov [rax + r9 + 8], r8  ; field offset
+    inc r12
+    ; Update field count
+    mov [rax + rcx + 8], r12
+    ; Check for comma
+    call cur_tok
+    cmp qword [rax+8], ','
+    jne .pr_field_done
+    call advance_tok
+    jmp .pr_field_loop
+.pr_field_done:
+    call cur_tok
+    cmp qword [rax+8], '}'
+    jne parse_error
+    call advance_tok
+    inc qword [rel rachana_cnt]
+    call maybe_semi
+    ; R18 F9: a rachana declaration is registered above and generates no code.
+    ; It used to return an AST_HALT node, so a rachana written inside a
+    ; function compiled to `hlt` and the program died there.
+    call alloc_ast
+    mov qword [rax], AST_BLOCK
+    mov qword [rax+8], 0
+    pop r13                  ; restore r13
+    pop r12                  ; restore r12
+    pop rbx
+    ret
+.pr_rachana_overflow:
+    lea rdi, [rel msg_rachana_overflow]
+    jmp capacity_fail
+.pr_rachana_fields_overflow:
+    lea rdi, [rel msg_rachana_fields_overflow]
+    jmp capacity_fail
+
+.ps_ayojan:
+    ; ayojan module_name — Python-style import (documentation directive)
+    call advance_tok
+    call advance_tok
+    pop rbx
+    ret
+
+.ps_check_expr:
+    ; Could be assignment or expression statement
+    call parse_expr           ; rax = left side
+    mov rbx, rax              ; save it
+    call cur_tok
+    mov rcx, [rax]
+    cmp rcx, TOK_OPERATOR
+    jne .ps_expr_done
+    mov rcx, [rax+8]
+    ; R17 R5: only a name, an element or a field can be assigned to. Any other
+    ; expression left of = (or += ...) used to be stored as a name and crashed.
+    mov rdx, [rbx]
+    cmp rdx, AST_VAR
+    je .ps_target_ok
+    cmp rdx, AST_INDEX
+    je .ps_target_ok
+    cmp rdx, AST_FIELD
+    je .ps_target_ok
+    cmp rcx, '='
+    je parse_error
+    cmp rcx, 0x3D2B           ; +=
+    je parse_error
+    cmp rcx, 0x3D2D           ; -=
+    je parse_error
+    cmp rcx, 0x3D2A           ; *=
+    je parse_error
+    cmp rcx, 0x3D2F           ; /=
+    je parse_error
+    cmp rcx, 0x3D25           ; %=
+    je parse_error
+    cmp rcx, 0x2B2B           ; ++
+    je parse_error
+    cmp rcx, 0x2D2D           ; --
+    je parse_error
+.ps_target_ok:
+    cmp rcx, '='
+    jne .ps_check_compound
+    ; Assignment: rbx = parse_expr
+    call advance_tok          ; consume '='
+    call parse_expr           ; rax = value
+    ; Build assign node
+    push rax                  ; save value
+    push rbx                  ; save target
+    call alloc_ast
+    pop rbx                   ; target
+    pop rcx                   ; value
+    mov qword [rax], AST_ASSIGN
+    mov [rax+8], rbx          ; target
+    mov [rax+16], rcx         ; value
+    cmp qword [rbx], AST_VAR  ; R4: `x = ...` declares x (after the RHS is parsed)
+    jne .r4_assign_declared
+    push rdi
+    mov rdi, [rbx+8]
+    call r7_check_assign      ; R7: an undeclared target is an error (globals may come later)
+    call r4_declare           ; still declared, so --check reports it once, not at every use
+    pop rdi
+.r4_assign_declared:
+    call maybe_semi
+    pop rbx
+    ret
+.ps_check_compound:
+    ; Check for compound assignment operators += -= *= /= %=
+    ; Also postfix ++ and --
+    ; CRITICAL: r12 is parse_block's statement counter — save it!
+    push r12
+    cmp rcx, 0x2B2B          ; ++
+    je .ps_incr
+    cmp rcx, 0x2D2D          ; --
+    je .ps_decr
+    cmp rcx, 0x3D2B          ; +=
+    je .ps_compound_add
+    cmp rcx, 0x3D2D          ; -=
+    je .ps_compound_sub
+    cmp rcx, 0x3D2A          ; *=
+    je .ps_compound_mul
+    cmp rcx, 0x3D2F          ; /=
+    je .ps_compound_div
+    cmp rcx, 0x3D25          ; %=
+    je .ps_compound_mod
+    pop r12                  ; no match — restore and continue
+    jmp .ps_expr_done
+.ps_compound_add:
+    mov r12, OP_ADD
+    jmp .ps_do_compound
+.ps_compound_sub:
+    mov r12, OP_SUB
+    jmp .ps_do_compound
+.ps_compound_mul:
+    mov r12, OP_MUL
+    jmp .ps_do_compound
+.ps_compound_div:
+    mov r12, OP_DIV
+    jmp .ps_do_compound
+.ps_compound_mod:
+    mov r12, OP_MOD
+    jmp .ps_do_compound
+.ps_incr:
+    mov r12, OP_ADD
+    jmp .ps_do_incdec
+.ps_decr:
+    mov r12, OP_SUB
+    jmp .ps_do_incdec
+.ps_do_incdec:
+    ; rbx = target AST node, r12 = OP_ADD or OP_SUB
+    ; x++ → x = x + 1 ;  x-- → x = x - 1
+    call advance_tok          ; consume ++ or --
+    ; Build NUM(1) node
+    call alloc_ast
+    mov qword [rax], 1        ; AST_NUM
+    mov qword [rax+8], 1      ; value = 1
+    mov r13, rax              ; r13 = rhs (NUM 1)
+    ; Build binop node: [AST_BINOP][op][left=target][right=NUM(1)]
+    call alloc_ast
+    mov qword [rax], AST_BINOP
+%ifdef SUTRAM_R65_TRAP_INT
+    push rcx                  ; unary-minus builder retains AST_NUM in RCX
+    mov rcx,[rel cur_line]
+    mov [rax+32],rcx          ; R65: parser-time BINOP source line
+    pop rcx
+%endif
+    mov [rax+8], r12          ; op
+    mov [rax+16], rbx         ; left = target
+    mov [rax+24], r13         ; right = 1
+    mov r14, rax              ; r14 = binop
+    ; Build assign node: [AST_ASSIGN][target][value=binop]
+    call alloc_ast
+    mov qword [rax], AST_ASSIGN
+    mov [rax+8], rbx          ; target
+    mov [rax+16], r14         ; value = binop
+    call maybe_semi
+    pop r12
+    pop rbx
+    ret
+.ps_do_compound:
+    ; rbx = target AST node, r12 = operator id
+    ; Desugar: target op= rhs  →  target = target op rhs
+    call advance_tok          ; consume the compound operator
+    call parse_expr           ; rax = rhs (rbx, r12 preserved)
+    mov r13, rax              ; r13 = rhs
+    ; Build binop node: [AST_BINOP][op][left=target][right=rhs]
+    call alloc_ast            ; rax = binop node (rbx preserved)
+    mov qword [rax], AST_BINOP
+%ifdef SUTRAM_R65_TRAP_INT
+    push rcx                  ; unary-minus builder retains AST_NUM in RCX
+    mov rcx,[rel cur_line]
+    mov [rax+32],rcx          ; R65: parser-time BINOP source line
+    pop rcx
+%endif
+    mov [rax+8], r12          ; op
+    mov [rax+16], rbx         ; left = target
+    mov [rax+24], r13         ; right = rhs
+    mov r14, rax              ; r14 = binop node
+    ; Build assign node: [AST_ASSIGN][target][value=binop]
+    call alloc_ast            ; rax = assign node
+    mov qword [rax], AST_ASSIGN
+    mov [rax+8], rbx          ; target
+    mov [rax+16], r14         ; value = binop
+    call maybe_semi
+    pop r12                  ; restore parse_block's statement counter
+    pop rbx
+    ret
+
+.ps_expr_done:
+    call maybe_semi
+    mov rax, rbx
+    pop rbx
+    ret
+
+maybe_semi:
+    push rax
+    call cur_tok
+    mov rcx, [rax]
+    cmp rcx, TOK_DELIMITER
+    jne .ms_done
+    mov rcx, [rax+8]
+    cmp rcx, ';'
+    jne .ms_done
+    call advance_tok
+.ms_done:
+    pop rax
+    ret
+
+; ============================================================
+; EXPRESSION PARSING
+; ============================================================
+; Simple single-level: additive (op additive)*
+; This avoids complex precedence for now.
+
+parse_expr:
+    ; Top-level: ternary ?: (lower precedence than ||, right-associative)
+    push rbx
+    push r12
+    push r13
+    push r14
+    call parse_ternary
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; parse_ternary() -> rax = AST node
+; conditional := logical_or ('?' expression ':' conditional)?
+parse_ternary:
+    push rbx
+    push r12
+    push r13
+    call parse_lor
+    mov rbx, rax              ; condition / ordinary expression
+    call cur_tok
+    cmp qword [rax], TOK_DELIMITER
+    jne .pt_done
+    cmp qword [rax+8], '?'
+    jne .pt_done
+    call advance_tok          ; consume '?'
+    call parse_expr           ; true branch; ':' naturally terminates it
+    mov r12, rax
+    call cur_tok
+    cmp qword [rax], TOK_DELIMITER
+    jne parse_error
+    cmp qword [rax+8], ':'
+    jne parse_error
+    call advance_tok          ; consume ':'
+    call parse_ternary        ; false branch: right-associative
+    mov r13, rax
+    push rbx
+    push r12
+    push r13
+    call alloc_ast
+    pop r13
+    pop r12
+    pop rbx
+    mov qword [rax], AST_TERNARY
+    mov [rax+8], rbx
+    mov [rax+16], r12
+    mov [rax+24], r13
+    mov rbx, rax
+.pt_done:
+    mov rax, rbx
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; parse_lor() -> rax = AST node
+; Handles || (logical OR)
+parse_lor:
+    push rbx
+    push r12
+    push r13
+    push r14
+    call parse_land
+    mov rbx, rax              ; left
+.lor_loop:
+    call cur_tok
+    mov rcx, [rax]
+    cmp rcx, TOK_OPERATOR
+    jne .lor_done
+    mov rcx, [rax+8]
+    cmp rcx, 0x7C7C           ; ||
+    jne .lor_done
+    mov r12, OP_LOR
+    call advance_tok
+    call parse_land           ; rax = right
+    mov r13, rax
+    mov r14, r12
+    push rbx
+    push r14
+    push r13
+    call alloc_ast
+    pop r13
+    pop r14
+    pop rbx
+    mov qword [rax], AST_BINOP
+%ifdef SUTRAM_R65_TRAP_INT
+    push rcx                  ; unary-minus builder retains AST_NUM in RCX
+    mov rcx,[rel cur_line]
+    mov [rax+32],rcx          ; R65: parser-time BINOP source line
+    pop rcx
+%endif
+    mov [rax+8], r14
+    mov [rax+16], rbx
+    mov [rax+24], r13
+    mov rbx, rax
+    jmp .lor_loop
+.lor_done:
+    mov rax, rbx
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; parse_land() -> rax = AST node
+; Handles && (logical AND)
+parse_land:
+    push rbx
+    push r12
+    push r13
+    push r14
+    call parse_bitor          ; R17 D4: the bitwise operators bind looser than the comparisons
+    mov rbx, rax              ; left
+.land_loop:
+    call cur_tok
+    mov rcx, [rax]
+    cmp rcx, TOK_OPERATOR
+    jne .land_done
+    mov rcx, [rax+8]
+    cmp rcx, 0x2626           ; &&
+    jne .land_done
+    mov r12, OP_LAND
+    call advance_tok
+    call parse_bitor          ; rax = right (R17 D4)
+    mov r13, rax
+    mov r14, r12
+    push rbx
+    push r14
+    push r13
+    call alloc_ast
+    pop r13
+    pop r14
+    pop rbx
+    mov qword [rax], AST_BINOP
+%ifdef SUTRAM_R65_TRAP_INT
+    push rcx                  ; unary-minus builder retains AST_NUM in RCX
+    mov rcx,[rel cur_line]
+    mov [rax+32],rcx          ; R65: parser-time BINOP source line
+    pop rcx
+%endif
+    mov [rax+8], r14
+    mov [rax+16], rbx
+    mov [rax+24], r13
+    mov rbx, rax
+    jmp .land_loop
+.land_done:
+    mov rax, rbx
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; parse_eq() -> rax = AST node   (R17 D4: the documented C order)
+; Handles == and !=; its operands are parse_rel
+parse_eq:
+    push rbx
+    push r12
+    push r13
+    push r14
+    call parse_rel
+    mov rbx, rax              ; left
+.eq_loop:
+    call cur_tok
+    mov rcx, [rax]
+    cmp rcx, TOK_OPERATOR
+    jne .eq_done
+    mov rcx, [rax+8]
+    cmp rcx, 0x3D3D           ; ==
+    je .e_eq
+    cmp rcx, 0x3D21           ; !=
+    je .e_ne
+    jmp .eq_done
+.e_eq:
+    mov r12, OP_EQ
+    jmp .e_do
+.e_ne:
+    mov r12, OP_NE
+.e_do:
+    call advance_tok
+    call parse_rel            ; rax = right
+    mov r13, rax
+    mov r14, r12
+    push rbx
+    push r14
+    push r13
+    call alloc_ast
+    pop r13
+    pop r14
+    pop rbx
+    mov qword [rax], AST_BINOP
+%ifdef SUTRAM_R65_TRAP_INT
+    push rcx                  ; unary-minus builder retains AST_NUM in RCX
+    mov rcx,[rel cur_line]
+    mov [rax+32],rcx          ; R65: parser-time BINOP source line
+    pop rcx
+%endif
+    mov [rax+8], r14
+    mov [rax+16], rbx
+    mov [rax+24], r13
+    mov rbx, rax
+    jmp .eq_loop
+.eq_done:
+    mov rax, rbx
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; parse_rel() -> rax = AST node   (R17 D4)
+; Handles <, >, <=, >=; its operands are parse_shift
+parse_rel:
+    push rbx
+    push r12
+    push r13
+    push r14
+    call parse_shift
+    mov rbx, rax              ; left
+.rel_loop:
+    call cur_tok
+    mov rcx, [rax]
+    cmp rcx, TOK_OPERATOR
+    jne .rel_done
+    mov rcx, [rax+8]
+    cmp rcx, 0x3D3C           ; <=
+    je .c_le
+    cmp rcx, 0x3D3E           ; >=
+    je .c_ge
+    cmp rcx, '<'
+    je .c_lt
+    cmp rcx, '>'
+    je .c_gt
+    jmp .rel_done
+.c_le:
+    mov r12, OP_LE
+    jmp .c_do
+.c_ge:
+    mov r12, OP_GE
+    jmp .c_do
+.c_lt:
+    mov r12, OP_LT
+    jmp .c_do
+.c_gt:
+    mov r12, OP_GT
+.c_do:
+    call advance_tok
+    call parse_shift          ; rax = right
+    mov r13, rax
+    mov r14, r12
+    push rbx
+    push r14
+    push r13
+    call alloc_ast
+    pop r13
+    pop r14
+    pop rbx
+    mov qword [rax], AST_BINOP
+%ifdef SUTRAM_R65_TRAP_INT
+    push rcx                  ; unary-minus builder retains AST_NUM in RCX
+    mov rcx,[rel cur_line]
+    mov [rax+32],rcx          ; R65: parser-time BINOP source line
+    pop rcx
+%endif
+    mov [rax+8], r14
+    mov [rax+16], rbx
+    mov [rax+24], r13
+    mov rbx, rax
+    jmp .rel_loop
+.rel_done:
+    mov rax, rbx
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; parse_add() → rax = AST node
+; Handles + and -
+; parse_bitor() -> rax = AST node
+parse_bitor:
+    push rbx
+    push r12
+    push r13
+    push r14
+    call parse_bitxor
+    mov rbx, rax              ; left
+.bor_loop:
+    call cur_tok
+    mov rcx, [rax]
+    cmp rcx, TOK_OPERATOR
+    jne .bor_done
+    mov rcx, [rax+8]
+    cmp rcx, 0x7C
+    je .bor_take
+    jmp .bor_done
+.bor_take:
+    mov r12, OP_OR
+    call advance_tok
+    call parse_bitxor               ; rax = right
+    mov r13, rax
+    mov r14, r12
+    push rbx
+    push r14
+    push r13
+    call alloc_ast
+    pop r13
+    pop r14
+    pop rbx
+    mov qword [rax], AST_BINOP
+%ifdef SUTRAM_R65_TRAP_INT
+    push rcx                  ; unary-minus builder retains AST_NUM in RCX
+    mov rcx,[rel cur_line]
+    mov [rax+32],rcx          ; R65: parser-time BINOP source line
+    pop rcx
+%endif
+    mov [rax+8], r14
+    mov [rax+16], rbx
+    mov [rax+24], r13
+    mov rdi, rax
+    call fold_const
+    mov rbx, rax
+    jmp .bor_loop
+.bor_done:
+    mov rax, rbx
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; parse_bitxor() -> rax = AST node
+parse_bitxor:
+    push rbx
+    push r12
+    push r13
+    push r14
+    call parse_bitand
+    mov rbx, rax              ; left
+.bxor_loop:
+    call cur_tok
+    mov rcx, [rax]
+    cmp rcx, TOK_OPERATOR
+    jne .bxor_done
+    mov rcx, [rax+8]
+    cmp rcx, '^'
+    je .bxor_take
+    jmp .bxor_done
+.bxor_take:
+    mov r12, OP_XOR
+    call advance_tok
+    call parse_bitand               ; rax = right
+    mov r13, rax
+    mov r14, r12
+    push rbx
+    push r14
+    push r13
+    call alloc_ast
+    pop r13
+    pop r14
+    pop rbx
+    mov qword [rax], AST_BINOP
+%ifdef SUTRAM_R65_TRAP_INT
+    push rcx                  ; unary-minus builder retains AST_NUM in RCX
+    mov rcx,[rel cur_line]
+    mov [rax+32],rcx          ; R65: parser-time BINOP source line
+    pop rcx
+%endif
+    mov [rax+8], r14
+    mov [rax+16], rbx
+    mov [rax+24], r13
+    mov rdi, rax
+    call fold_const
+    mov rbx, rax
+    jmp .bxor_loop
+.bxor_done:
+    mov rax, rbx
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; parse_bitand() -> rax = AST node
+parse_bitand:
+    push rbx
+    push r12
+    push r13
+    push r14
+    call parse_eq             ; R17 D4: & binds looser than == !=
+    mov rbx, rax              ; left
+.band_loop:
+    call cur_tok
+    mov rcx, [rax]
+    cmp rcx, TOK_OPERATOR
+    jne .band_done
+    mov rcx, [rax+8]
+    cmp rcx, 0x26
+    je .band_take
+    jmp .band_done
+.band_take:
+    mov r12, OP_AND
+    call advance_tok
+    call parse_eq             ; R17 D4               ; rax = right
+    mov r13, rax
+    mov r14, r12
+    push rbx
+    push r14
+    push r13
+    call alloc_ast
+    pop r13
+    pop r14
+    pop rbx
+    mov qword [rax], AST_BINOP
+%ifdef SUTRAM_R65_TRAP_INT
+    push rcx                  ; unary-minus builder retains AST_NUM in RCX
+    mov rcx,[rel cur_line]
+    mov [rax+32],rcx          ; R65: parser-time BINOP source line
+    pop rcx
+%endif
+    mov [rax+8], r14
+    mov [rax+16], rbx
+    mov [rax+24], r13
+    mov rdi, rax
+    call fold_const
+    mov rbx, rax
+    jmp .band_loop
+.band_done:
+    mov rax, rbx
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; parse_shift() -> rax = AST node   (<< and >> bind looser than + -, tighter than comparisons)
+parse_shift:
+    push rbx
+    push r12
+    push r13
+    push r14
+    call parse_add
+    mov rbx, rax              ; left
+.sh_loop:
+    call cur_tok
+    mov rcx, [rax]
+    cmp rcx, TOK_OPERATOR
+    jne .sh_done
+    mov rcx, [rax+8]
+    cmp rcx, 0x3C3C           ; <<
+    je .sh_left
+    cmp rcx, 0x3E3E           ; >>
+    je .sh_right
+    jmp .sh_done
+.sh_left:
+    mov r12, OP_SHL
+    jmp .sh_go
+.sh_right:
+    mov r12, OP_SHR
+.sh_go:
+    call advance_tok
+    call parse_add            ; rax = right
+    mov r13, rax
+    mov r14, r12
+    push rbx
+    push r14
+    push r13
+    call alloc_ast
+    pop r13
+    pop r14
+    pop rbx
+    mov qword [rax], AST_BINOP
+%ifdef SUTRAM_R65_TRAP_INT
+    push rcx                  ; unary-minus builder retains AST_NUM in RCX
+    mov rcx,[rel cur_line]
+    mov [rax+32],rcx          ; R65: parser-time BINOP source line
+    pop rcx
+%endif
+    mov [rax+8], r14
+    mov [rax+16], rbx
+    mov [rax+24], r13
+    mov rbx, rax
+    jmp .sh_loop
+.sh_done:
+    mov rax, rbx
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+parse_add:
+    push rbx
+    push r12
+    push r13
+    push r14
+    call parse_mul
+    mov rbx, rax              ; left
+.add_loop:
+    call cur_tok
+    mov rcx, [rax]
+    cmp rcx, TOK_OPERATOR
+    jne .add_done
+    mov rcx, [rax+8]
+    cmp rcx, '+'
+    je .a_add
+    cmp rcx, '-'
+    je .a_sub
+    jmp .add_done
+.a_add:
+    mov r12, OP_ADD
+    jmp .a_do
+.a_sub:
+    mov r12, OP_SUB
+.a_do:
+%ifdef SUTRAM_R65_TRAP_INT
+    push qword [rax+24]
+%endif
+    call advance_tok
+    call parse_mul            ; rax = right
+    mov r13, rax              ; save right
+    mov r14, r12              ; save op
+    push rbx
+    push r14
+    push r13
+    call alloc_ast
+    pop r13
+    pop r14
+    pop rbx
+    mov qword [rax], AST_BINOP
+%ifdef SUTRAM_R65_TRAP_INT
+    ; Saved before advancing the operator token; not the lexer's EOF line.
+    pop qword [rax+32]
+%endif
+    mov [rax+8], r14
+    mov [rax+16], rbx
+    mov [rax+24], r13
+    ; --- Constant folding ---
+    ; If both operands are AST_NUM, compute result now
+    mov rdi, rax              ; BINOP node
+    call fold_const           ; rax = folded node (or unchanged)
+    mov rbx, rax
+    jmp .add_loop
+.add_done:
+    mov rax, rbx
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; parse_mul() → rax = AST node
+; Handles * and /
+parse_mul:
+    push rbx
+    push r12
+    push r13
+    push r14
+    call parse_primary
+    mov rbx, rax              ; left
+.mul_loop:
+    call cur_tok
+    mov rcx, [rax]
+    cmp rcx, TOK_OPERATOR
+    jne .mul_done
+    mov rcx, [rax+8]
+    cmp rcx, '*'
+    je .m_mul
+    cmp rcx, '/'
+    je .m_div
+    cmp rcx, '%'
+    je .m_mod
+    jmp .mul_done
+.m_mul:
+    mov r12, OP_MUL
+    jmp .m_do
+.m_div:
+    mov r12, OP_DIV
+    jmp .m_do
+.m_mod:
+    mov r12, OP_MOD
+.m_do:
+%ifdef SUTRAM_R65_TRAP_INT
+    push qword [rax+24]
+%endif
+    call advance_tok
+    call parse_primary        ; rax = right
+    mov r13, rax
+    mov r14, r12
+    push rbx
+    push r14
+    push r13
+    call alloc_ast
+    pop r13
+    pop r14
+    pop rbx
+    mov qword [rax], AST_BINOP
+%ifdef SUTRAM_R65_TRAP_INT
+    ; Saved before advancing the operator token; not the lexer's EOF line.
+    pop qword [rax+32]
+%endif
+    mov [rax+8], r14
+    mov [rax+16], rbx
+    mov [rax+24], r13
+    ; --- Constant folding ---
+    mov rdi, rax              ; BINOP node
+    call fold_const           ; rax = folded node (or unchanged)
+    mov rbx, rax
+    jmp .mul_loop
+.mul_done:
+    mov rax, rbx
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; fold_const(rdi = BINOP node) -> rax = folded AST_NUM or original node
+; If both operands are AST_NUM, compute the result at compile time
+fold_const:
+%ifdef SUTRAM_R65_TRAP_INT
+    ; Keep safe constants and compile-time string concatenation. Preserve
+    ; only a hazardous integer subtree for the runtime diagnostic path.
+    push rdi
+    call r65_can_fold_integer
+    pop rdi
+    test eax,eax
+    jnz .r65_safe_constant_fold
+    mov rax,rdi
+    ret
+.r65_safe_constant_fold:
+%endif
+    push rbx
+    push r12
+    push r13
+    push r14
+    mov rbx, rdi              ; rbx = BINOP node
+    ; Check that node type is AST_BINOP (3)
+    mov rax, [rbx]
+    cmp rax, AST_BINOP
+    jne .fc_return            ; not a binop, return as-is
+    ; Get left and right operands
+    mov r12, [rbx+16]         ; left node
+    mov r13, [rbx+24]         ; right node
+    ; --- Compile-time string concatenation: "a"+"b", "a"+42, 42+"a" ---
+    mov rax, [rbx+8]         ; operator
+    cmp rax, OP_ADD
+    jne .fc_no_strcat
+    mov rax, [r12]
+    cmp rax, AST_STR
+    je .fc_sc_left
+    mov rax, [r13]
+    cmp rax, AST_STR
+    je .fc_sc_right
+    jmp .fc_no_strcat
+.fc_sc_left:
+    mov rax, [r13]
+    cmp rax, AST_STR
+    je .fc_sc_both
+    cmp rax, AST_NUM
+    je .fc_sc_str_num
+    jmp .fc_return
+.fc_sc_right:
+    mov rax, [r12]
+    cmp rax, AST_NUM
+    je .fc_sc_num_str
+    jmp .fc_return
+.fc_no_strcat:
+    ; Check left is AST_NUM (1)
+    mov rax, [r12]
+    cmp rax, AST_NUM
+    jne .fc_return
+    ; Check right is AST_NUM (1)
+    mov rax, [r13]
+    cmp rax, AST_NUM
+    jne .fc_return
+    ; Both are numbers! Get values
+    mov r14, [rbx+8]          ; operator
+    mov rax, [r12+8]          ; left value
+    mov rcx, [r13+8]          ; right value
+    ; Compute based on operator
+    cmp r14, OP_ADD
+    je .fc_add
+    cmp r14, OP_SUB
+    je .fc_sub
+    cmp r14, OP_MUL
+    je .fc_mul
+    cmp r14, OP_DIV
+    je .fc_div
+    cmp r14, OP_MOD
+    je .fc_mod
+    cmp r14, OP_AND
+    je .fc_and
+    cmp r14, OP_OR
+    je .fc_or
+    cmp r14, OP_XOR
+    je .fc_xor
+    jmp .fc_return            ; unknown op, return as-is
+.fc_add:
+    add rax, rcx
+    jmp .fc_make
+.fc_sub:
+    sub rax, rcx
+    jmp .fc_make
+.fc_mul:
+    imul rax, rcx
+    jmp .fc_make
+.fc_div:
+    test rcx, rcx
+    jz .fc_return             ; division by zero, return as-is
+    xor rdx, rdx
+    cqo
+    idiv rcx
+    jmp .fc_make
+.fc_mod:
+    test rcx, rcx
+    jz .fc_return
+    xor rdx, rdx
+    cqo
+    idiv rcx
+    mov rax, rdx            ; remainder
+    jmp .fc_make
+.fc_and:
+    and rax, rcx
+    jmp .fc_make
+.fc_or:
+    or rax, rcx
+    jmp .fc_make
+.fc_xor:
+    xor rax, rcx
+    jmp .fc_make
+.fc_make:
+    ; Create a new AST_NUM node with the computed value
+    push rax
+    call alloc_ast
+    pop rcx
+    mov qword [rax], AST_NUM
+    mov [rax+8], rcx          ; value
+    jmp .fc_done
+
+.fc_sc_both:
+    mov rdi, [rel str_ptr]
+    mov rsi, [r12+8]         ; left string
+    call fc_copy_str
+    mov rsi, [r13+8]         ; right string
+    call fc_copy_str
+    mov byte [rdi], 0        ; final null
+    inc rdi
+    mov r14, [rel str_ptr]
+    mov [rel str_ptr], rdi
+    call fc_make_str
+    jmp .fc_done
+.fc_sc_num_str:
+    mov rdi, [rel str_ptr]
+    mov rax, [r12+8]         ; number value
+    call fc_num_to_str       ; rdi = past digits
+    mov rsi, [r13+8]         ; right string
+    call fc_copy_str
+    mov byte [rdi], 0
+    inc rdi
+    mov r14, [rel str_ptr]
+    mov [rel str_ptr], rdi
+    call fc_make_str
+    jmp .fc_done
+.fc_sc_str_num:
+    mov rdi, [rel str_ptr]
+    mov rsi, [r12+8]         ; left string
+    call fc_copy_str         ; rdi at the null after left
+    mov rax, [r13+8]         ; number value
+    call fc_num_to_str       ; digits written at rdi
+    mov byte [rdi], 0
+    inc rdi
+    mov r14, [rel str_ptr]
+    mov [rel str_ptr], rdi
+    call fc_make_str
+    jmp .fc_done
+
+.fc_return:
+    mov rax, rbx              ; return original node
+.fc_done:
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; fc_num_to_str: rax = signed number, rdi = dest
+; writes decimal digits at rdi; returns rdi = past last digit
+fc_num_to_str:
+    push rbx
+    push r12
+    push r13
+    push r14
+    mov rbx, rdi             ; save dest base
+    mov r12, rdi             ; write pos
+    test rax, rax
+    jns .fns_pos
+    neg rax
+    mov byte [r12], '-'
+    inc r12
+.fns_pos:
+    mov r13, r12
+    add r13, 24              ; rightmost digit pos
+    mov r14, r13
+.fns_loop:
+    xor edx, edx
+    mov rcx, 10
+    div rcx
+    add dl, '0'
+    dec r13
+    mov [r13], dl
+    test rax, rax
+    jnz .fns_loop
+    ; compact: move [r13..r14) to [r12..)
+    mov rsi, r13
+    mov rdi, r12
+.fns_move:
+    cmp rsi, r14
+    jae .fns_done
+    mov al, [rsi]
+    mov [rdi], al
+    inc rsi
+    inc rdi
+    jmp .fns_move
+.fns_done:
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; fc_copy_str(rsi = src) -> copies null-terminated string to [rdi]
+; on return rdi points AT the null (so a following copy overwrites it)
+fc_copy_str:
+    push rax
+.fcs_loop:
+    mov al, [rsi]
+    mov [rdi], al
+    inc rsi
+    inc rdi
+    test al, al
+    jnz .fcs_loop
+    dec rdi
+    pop rax
+    ret
+
+; fc_make_str(r14 = string ptr) -> rax = new AST_STR node
+fc_make_str:
+    push r14
+    call alloc_ast
+    pop rcx
+    mov qword [rax], AST_STR
+    mov [rax+8], rcx
+    ret
+
+; parse_primary() → rax = AST node
+; R17 R6: every nested expression ( (...), -x, !x, f(...) ) passes through here.
+; Unbounded nesting ran the parser out of stack at about 18,600 levels and
+; crashed; now it is a diagnostic (the block-nesting one) at EXPR_NESTING_CAP.
+parse_primary:
+    mov rax, [rel parse_expr_depth]
+    cmp rax, EXPR_NESTING_CAP
+    jae .pp_nesting_overflow
+    inc qword [rel parse_expr_depth]
+    call parse_primary_inner
+    dec qword [rel parse_expr_depth]
+    ret
+.pp_nesting_overflow:
+    lea rdi, [rel msg_block_nesting_overflow]
+    jmp capacity_fail
+
+parse_primary_inner:
+    push rbx
+    call cur_tok
+    mov rcx, [rax]            ; token type
+    cmp rcx, TOK_EOF          ; ran out of input mid-expression -> diagnostic
+    jne .pp_not_eof
+    pop rbx
+    jmp parse_error
+.pp_not_eof:
+    ; Check for unary minus: -expr
+    cmp rcx, TOK_OPERATOR
+    jne .pp_check_kw
+    mov rcx, [rax+8]
+    cmp rcx, '!'
+    je .pp_not
+    cmp rcx, '-'
+    jne .pp_check_delim
+    ; Unary minus — consume '-' and parse the following expression
+    call advance_tok          ; consume '-'
+    call parse_primary        ; rax = inner expr
+    ; Check if inner is a constant number — if so, negate directly
+    mov rcx, [rax]
+    cmp rcx, AST_FLOAT
+    je .pp_neg_float
+    cmp rcx, AST_NUM
+    jne .pp_neg_expr
+    ; Negate constant
+    mov rcx, [rax+8]
+    neg rcx
+    mov [rax+8], rcx
+    pop rbx
+    ret
+.pp_neg_float:
+    ; IEEE-754 sign bit toggle for a literal.
+    btc qword [rax+8], 63
+    pop rbx
+    ret
+.pp_neg_expr:
+    ; Create BINOP(0 - expr): [AST_BINOP][OP_SUB][AST_NUM(0)][expr]
+    ; rax = inner expr, rbx is already pushed by parse_primary entry
+    push rax                  ; save expr on stack
+    call alloc_ast            ; rax = new node for AST_NUM(0)
+    mov qword [rax], AST_NUM
+    mov qword [rax+8], 0
+    push rax                  ; save AST_NUM(0) on stack
+    call alloc_ast            ; rax = new node for BINOP
+    pop rcx                   ; rcx = AST_NUM(0) (left)
+    pop rdx                   ; rdx = expr (right)
+    mov qword [rax], AST_BINOP
+%ifdef SUTRAM_R65_TRAP_INT
+    push rcx                  ; unary-minus builder retains AST_NUM in RCX
+    mov rcx,[rel cur_line]
+    mov [rax+32],rcx          ; R65: parser-time BINOP source line
+    pop rcx
+%endif
+    mov qword [rax+8], OP_SUB
+    mov [rax+16], rcx         ; left = 0
+    mov [rax+24], rdx         ; right = expr
+    pop rbx
+    ret
+
+.pp_not:
+    ; R17 D1: logical not. !expr is BINOP(expr == 0): 1 when expr is 0, else 0.
+    call advance_tok          ; consume '!'
+    call parse_primary        ; rax = inner expr
+    mov rcx, [rax]
+    cmp rcx, AST_NUM
+    jne .pp_not_expr
+    xor edx, edx              ; a literal: fold it
+    cmp qword [rax+8], 0
+    sete dl
+    mov [rax+8], rdx
+    pop rbx
+    ret
+.pp_not_expr:
+    push rax                  ; the expression (left)
+    call alloc_ast
+    mov qword [rax], AST_NUM
+    mov qword [rax+8], 0
+    push rax                  ; AST_NUM(0) (right)
+    call alloc_ast
+    pop rdx                   ; rdx = AST_NUM(0)
+    pop rcx                   ; rcx = expr
+    mov qword [rax], AST_BINOP
+%ifdef SUTRAM_R65_TRAP_INT
+    push rcx
+    mov rcx,[rel cur_line]
+    mov [rax+32],rcx
+    pop rcx
+%endif
+    mov qword [rax+8], OP_EQ
+    mov [rax+16], rcx         ; left = expr
+    mov [rax+24], rdx         ; right = 0
+    pop rbx
+    ret
+
+.pp_check_kw:
+    ; Check for purna/shunya (true/false)
+    cmp rcx, TOK_KEYWORD
+    jne .pp_check_delim
+    mov rdx, [rax+16]        ; keyword ID (rax = token ptr from cur_tok)
+    cmp rdx, KW_PRASAR       ; R25: prasar f(...)
+    jne .r25_not_prasar
+    call advance_tok
+    call parse_primary
+    cmp qword [rax], AST_FUNCALL
+    jne .r25_prasar_not_call
+    push rax
+    call alloc_ast
+    pop rcx
+    mov qword [rax], AST_PRASAR
+    mov [rax+8], rcx
+    pop rbx
+    ret
+.r25_prasar_not_call:
+    lea rdi, [rel r25_msg_prasar_call]
+    jmp capacity_fail
+.r25_not_prasar:
+    cmp rdx, KW_PURNA
+    jne .pp_check_shunya
+    ; purna: return AST_NUM(1)
+    call advance_tok          ; consume 'purna'
+    push 1
+    call alloc_ast
+    pop rcx
+    mov qword [rax], AST_NUM
+    mov qword [rax+8], 1
+    pop rbx
+    ret
+.pp_check_shunya:
+    cmp rdx, KW_SHUNYA
+    jne .pp_check_delim
+    call advance_tok          ; consume 'shunya'
+    push 0
+    call alloc_ast
+    pop rcx
+    mov qword [rax], AST_NUM
+    mov qword [rax+8], 0
+    pop rbx
+    ret
+
+.pp_check_delim:
+    cmp rcx, TOK_DELIMITER
+    jne .pp_str
+    mov rcx, [rax+8]
+    ; Parenthesized expression: ( expr )
+    cmp rcx, '('
+    je .pp_paren
+    cmp rcx, '['
+    jne .pp_str
+    jmp .pp_vector_lit
+.pp_paren:
+    call advance_tok          ; consume '('
+    call parse_expr           ; rax = inner expression
+    push rax                  ; SAVE result (cur_tok clobbers rax!)
+    call cur_tok
+    mov rcx, [rax+8]
+    cmp rcx, ')'
+    jne parse_error
+    call advance_tok          ; consume ')'
+    pop rax                   ; RESTORE result
+    pop rbx
+    ret
+.pp_vector_lit:
+    ; VECTOR LITERAL [n1, n2, n3, n4]
+    call advance_tok          ; consume '['
+    ; Parse 4 numbers
+    push r12
+    push r13
+    push r14
+    xor r12, r12              ; element count
+    mov r13, 0                ; accumulator for values
+.pv_loop:
+    call cur_tok
+    mov rcx, [rax]
+    cmp rcx, TOK_NUMBER
+    jne .pv_done
+    mov rax, [rax+8]          ; value
+    ; Store in AST_VEC node fields
+    push rax
+    inc r12
+    call advance_tok
+    ; Check for comma
+    call cur_tok
+    mov rcx, [rax+8]
+    cmp rcx, ','
+    jne .pv_check_end
+    call advance_tok          ; consume comma
+    jmp .pv_loop
+.pv_check_end:
+    cmp r12, 4
+    jge .pv_done
+    jmp .pv_loop
+.pv_done:
+    ; AST_VEC has exactly four payload slots.  Older code always popped four
+    ; values even when fewer were parsed, corrupting the parser stack (for
+    ; example: vitti a = [1, 2, 3]) and eventually segfaulting the compiler.
+    ; Reject any non-4-wide literal cleanly before touching the saved stack.
+    cmp r12, 4
+    jne parse_error
+    ; Expect ']'
+    call cur_tok
+    mov rcx, [rax+8]
+    cmp rcx, ']'
+    jne parse_error
+    call advance_tok          ; consume ']'
+    ; Create AST_VEC node with 4 values on stack
+    ; Pop values in reverse order
+    call alloc_ast
+    mov qword [rax], AST_VEC
+    ; Pop 4 values (reverse order)
+    pop rcx                   ; val4
+    mov [rax+40], rcx
+    pop rcx                   ; val3
+    mov [rax+32], rcx
+    pop rcx                   ; val2
+    mov [rax+24], rcx
+    pop rcx                   ; val1
+    mov [rax+16], rcx
+    mov [rax+8], r12          ; count
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+.pp_str:
+    ; STRING
+    cmp rcx, TOK_STRING
+    jne .pp_num
+    mov rbx, [rax+8]         ; string pointer
+    call advance_tok
+    push rbx
+    call alloc_ast
+    pop rbx
+    mov qword [rax], AST_STR
+    mov [rax+8], rbx         ; string ptr
+    pop rbx
+    ret
+
+.pp_num:
+    ; NUMBER / T12 FLOAT
+    cmp rcx, TOK_FLOAT
+    je .pp_float
+    cmp rcx, TOK_NUMBER
+    jne .pp_ident
+    mov rbx, [rax+8]         ; numeric value
+    call advance_tok
+    push rbx
+    call alloc_ast
+    pop rbx
+    mov qword [rax], AST_NUM
+    mov [rax+8], rbx         ; value
+    pop rbx
+    ret
+.pp_float:
+    mov rbx, [rax+8]         ; raw IEEE-754 binary64 bits
+    call advance_tok
+    push rbx
+    call alloc_ast
+    pop rbx
+    mov qword [rax], AST_FLOAT
+    mov [rax+8], rbx
+    pop rbx
+    ret
+
+.pp_ident:
+    cmp rcx, TOK_IDENT
+    jne .pp_builtin
+    mov rbx, [rax+8]         ; name ptr
+    ; Resolve previously declared top-level sutra symbols before building an
+    ; AST_VAR. Compile-time inlining works inside functions without a global
+    ; data section or cross-function variable lifetime.
+    xor r8, r8
+.pp_top_const:
+    cmp r8, [rel top_const_count]
+    jae .pp_not_top_const
+    lea rdx, [rel top_const_nodes]
+    mov rax, [rdx + r8*8]
+    mov rdi, rbx
+    mov rsi, [rax+8]
+    push r8
+    call strcmp
+    pop r8
+    test rax,rax
+    jz .pp_found_top_const
+    inc r8
+    jmp .pp_top_const
+.pp_found_top_const:
+    lea rdx, [rel top_const_nodes]
+    mov rax, [rdx + r8*8]
+    mov rax, [rax+16]        ; initializer AST, immutable read-only use
+    push rax
+    call advance_tok
+    pop rax
+    pop rbx
+    ret
+.pp_not_top_const:
+    call advance_tok
+    ; Check if next token is '(' → function call
+    call cur_tok
+    mov rcx, [rax]
+    cmp rcx, TOK_DELIMITER
+    jne .pp_ident_var
+    mov rcx, [rax+8]
+    cmp rcx, '('
+    je .pp_ident_call
+    cmp rcx, '['
+    je .pp_ident_index
+    cmp rcx, '.'
+    je .pp_ident_field
+.pp_ident_var:
+    push rdi
+    mov rdi, rbx
+    push qword [rel r4_pend_count]   ; R23 WS1: was this read queued as unresolved?
+    call r4_check_read        ; R4: an undeclared read is queued, then reported
+    pop rcx
+    pop rdi
+    push rcx
+    push rbx
+    call alloc_ast
+    pop rbx
+    pop rcx
+    mov qword [rax], AST_VAR
+    mov [rax+8], rbx
+    cmp rcx, [rel r4_pend_count]
+    jae .r23_pp_not_pending
+    cmp rcx, R4_PEND_CAP
+    jae .r23_pp_not_pending
+    lea rdx, [rel r23_pend_node]
+    mov [rdx + rcx*8], rax    ; resolved at the end of the parse: a prakriya name -> AST_FUNCREF
+.r23_pp_not_pending:
+    pop rbx
+    ret
+.pp_ident_field:
+    ; Field access: ident.field
+    push rdi
+    mov rdi, rbx
+    call r4_check_read        ; R5: the base of p.x must be declared too
+    pop rdi
+    call advance_tok          ; consume '.'
+    call cur_tok
+    cmp qword [rax], TOK_IDENT
+    jne parse_error
+    mov [rel r5_field_tok], rax   ; R5: for the unknown-field diagnostic
+    mov rdx, [rax+8]         ; field name ptr
+    call advance_tok          ; consume field name
+    push rdx                  ; R23 WS2: q.m( is a method call
+    call cur_tok
+    pop rdx
+    cmp qword [rax], TOK_DELIMITER
+    jne .r23_pif_field
+    cmp qword [rax+8], '('
+    je .r23_method_call
+.r23_pif_field:
+    push rbx                 ; save var name
+    push rdx                 ; save field name
+    ; Search rachana entries for this field
+    xor r8, r8
+.pif_search:
+    cmp r8, [rel rachana_cnt]
+    jae .pif_notfound
+    lea r9, [rel rachana_defs]
+    mov r10, r8
+    shl r10, 8
+    add r9, r10              ; r9 = entry base
+    mov r10, [r9 + 8]        ; field count
+    xor r11, r11
+.pif_fields:
+    cmp r11, r10
+    jae .pif_next
+    ; R5: compare the whole field name. Before R5 only the first 8 bytes were
+    ; compared ("more than 8 chars - assume match"), so p.position_y read p.position_x.
+    mov rax, r11
+    shl rax, 4
+    push r8
+    push r9
+    push r10
+    push r11
+    push rdx
+    mov rdi, [r9 + 16 + rax] ; field name ptr from rachana table
+    mov rsi, rdx             ; searched field name
+    call strcmp
+    pop rdx
+    pop r11
+    pop r10
+    pop r9
+    pop r8
+    test rax, rax
+    jz .pif_found
+    jmp .pif_no_match
+.pif_no_match:
+    inc r11
+    jmp .pif_fields
+.pif_next:
+    inc r8
+    jmp .pif_search
+.pif_found:
+    ; Get field offset
+    mov rax, r11
+    shl rax, 4
+    mov rdx, [r9 + 16 + rax + 8]  ; field offset
+    mov rdi, [rsp]           ; R7: field name
+    mov rsi, rdx
+    call r7_field_ambiguous  ; another rachana has this name at another offset?
+    test rax, rax
+    jnz r7_report_ambiguous_field
+    pop rax                  ; discard saved field name
+    pop rbx                  ; restore var name
+    push rbx
+    push rdx
+    call alloc_ast
+    pop rdx
+    pop rbx
+    mov qword [rax], AST_FIELD
+    mov [rax+8], rbx         ; var name
+    mov [rax+16], rdx        ; field offset
+    pop rbx
+    ret
+.pif_notfound:
+    jmp r5_unknown_field      ; R5: was a silent read/write of offset 0
+    pop rax                  ; discard saved field name
+    pop rbx                  ; restore var name
+    push rbx
+    call alloc_ast
+    pop rbx
+    mov qword [rax], AST_FIELD
+    mov [rax+8], rbx
+    mov qword [rax+16], 0
+    pop rbx
+    ret
+
+.r23_method_call:
+    ; R23 WS2: q.m(args) is the call m(q, args), m resolved after the parse.
+    ; The name token is pushed with its low bit set: .pp_no_pop_f records it.
+    mov rax, [rel r5_field_tok]
+    or rax, 1
+    push rax
+    push r12                  ; save r12 (as .pp_ident_call does)
+    push rdx
+    push rbx
+    call alloc_ast
+    pop rbx
+    pop rdx
+    mov qword [rax], AST_VAR  ; the receiver is the first argument
+    mov [rax+8], rbx
+    mov rbx, rdx              ; callee: the method name for now
+    push rax
+    mov r12d, 1
+    call advance_tok          ; consume '('
+    jmp .pp_ic_args
+
+.pp_ident_index:
+    ; Array index: ident[expr]
+    push rdi
+    mov rdi, rbx
+    call r4_check_read        ; R5: the base of a[i] must be declared too
+    pop rdi
+    call advance_tok          ; consume '['
+    ; Save name ptr
+    push rbx
+    call cur_tok              ; R23 WS3: a[:hi]
+    cmp qword [rax], TOK_DELIMITER
+    jne .r23_index_lo
+    cmp qword [rax+8], ':'
+    jne .r23_index_lo
+    xor eax, eax
+    jmp .r23_slice_colon
+.r23_index_lo:
+    ; Parse index expression
+    call parse_expr
+    ; rax = index node
+    push rax
+    call cur_tok              ; R23 WS3: a[lo:hi] is a slice
+    cmp qword [rax], TOK_DELIMITER
+    jne .r23_index_plain
+    cmp qword [rax+8], ':'
+    jne .r23_index_plain
+    pop rax
+.r23_slice_colon:
+    push rax                  ; lo (0 = from the start)
+    call advance_tok          ; consume ':'
+    call cur_tok
+    cmp qword [rax], TOK_DELIMITER
+    jne .r23_slice_hi
+    cmp qword [rax+8], ']'
+    jne .r23_slice_hi
+    xor eax, eax              ; hi omitted: to the end
+    jmp .r23_slice_hi_done
+.r23_slice_hi:
+    call parse_expr
+.r23_slice_hi_done:
+    push rax
+    call cur_tok
+    cmp qword [rax], TOK_DELIMITER
+    jne parse_error
+    cmp qword [rax+8], ']'
+    jne parse_error
+    call advance_tok          ; consume ']'
+    call alloc_ast
+    pop rdx                   ; hi
+    pop rcx                   ; lo
+    pop r8                    ; base name
+    mov qword [rax], AST_SLICE
+    mov [rax+8], r8
+    mov [rax+16], rcx
+    mov [rax+24], rdx
+    pop rbx
+    ret
+.r23_index_plain:
+    ; Expect ']'
+    call cur_tok
+    mov rcx, [rax+8]
+    cmp rcx, ']'
+    jne parse_error
+    call advance_tok          ; consume ']'
+    ; Create AST_INDEX node: [AST_INDEX][name_ptr][index_node]
+    pop rcx                   ; index node
+    pop rdx                   ; name ptr (was rbx, now in rdx)
+    push rdx                  ; save name
+    push rcx                  ; save index
+    call alloc_ast
+    pop rcx                   ; index
+    pop rdx                   ; name
+    mov qword [rax], AST_INDEX
+    mov [rax+8], rdx          ; name ptr
+    mov [rax+16], rcx         ; index node
+    pop rbx
+    ret
+
+.pp_ident_call:
+    ; Function call: name(args)
+    mov rax, [rel token_idx]  ; R7: the name token, for the arity diagnostic
+    dec rax
+    imul rax, rax, TOKEN_SIZE
+    lea rcx, [rel token_arr]
+    add rax, rcx
+    push rax
+    call advance_tok          ; consume '('
+    push r12                  ; save r12 (parse_func_block uses it)
+    xor r12, r12             ; arg count
+.pp_ic_args:
+    call cur_tok
+    mov rcx, [rax]
+    cmp rcx, TOK_DELIMITER
+    jne .pp_ic_parse
+    mov rcx, [rax+8]
+    cmp rcx, ')'
+    je .pp_ic_done
+.pp_ic_parse:
+    cmp r12, 6
+    jb .pp_ic_parse_ok
+    mov qword [rel parse_error_kind], 1
+    jmp parse_error
+.pp_ic_parse_ok:
+    call parse_expr
+    push rax                 ; stash arg (nest-safe)
+    inc r12
+    call cur_tok
+    mov rcx, [rax]
+    cmp rcx, TOK_DELIMITER
+    jne .pp_ic_args
+    mov rcx, [rax+8]
+    cmp rcx, ','
+    jne .pp_ic_args
+    call advance_tok
+    jmp .pp_ic_args
+.pp_ic_done:
+    call advance_tok          ; consume ')'
+    ; Build funcall node: [AST_FUNCALL][name_ptr][arg_count][arg1..arg6]
+    push rbx
+    push r12
+    call alloc_ast
+    pop r12
+    pop rbx
+    mov qword [rax], AST_FUNCALL
+    mov [rax+8], rbx          ; function name
+    mov [rax+16], r12         ; arg count
