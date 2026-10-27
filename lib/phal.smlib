@@ -4,7 +4,7 @@
 # A Result is a 2-cell mala supplied by the caller: [ok, value].
 # ok = 1 means success and value holds the answer; ok = 0 means
 # failure and value is 0. The checked functions can produce Results
-# directly (result_checked_*), and phal_se_siddhi bridges the older
+# directly (phal_janchit_*), and phal_se_siddhi bridges the older
 # ok out-parameter convention into a Result.
 #
 # What this buys over the ok convention (docs/ERROR-CONVENTION.md):
