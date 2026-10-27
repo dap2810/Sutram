@@ -1,3 +1,31 @@
+## v382 - issue A1 closed at the documentation level: the trap was documented, the guard was not
+
+**`docs/KOSH-BUILTINS.md` listed the three traps and never said how to avoid them.** **So a reader learned that
+`kosh_pop` on empty stops the program, and not what to do about it.**
+
+**Now it has a section: `Guarding an empty store - the pattern to use`, with a runnable loop:**
+
+```sutram
+yavat (kosh_len(a) > 0)
+    likha(kosh_pop(a))
+```
+
+**`kosh_len(a)` is 0 exactly when `a` is empty, so the guard is one comparison.** **And the section says the trap was
+measured on v253 with three separate programs, one per operation.**
+
+### So A1 is closed at the documentation level
+**The three options I listed were: document the guard, add `_ok` variants, or close it.** **The first is done.**
+
+**Whether to add `kosh_pop_ok` is now a smaller question:** **the trap has a clear message, the guard is documented, and
+the remaining gap is that a caller must remember it.** **That is a real gap and it is not urgent.**
+
+**I would leave the `_ok` variants until a user asks.** **And I would say so in the issue list rather than leaving A1 as
+"a pop aborts with no way to report it", which overstated it.**
+
+### And this is the shape most of the audit's defects take
+**The behaviour is defensible; the documentation did not say what to do with it.** **Same as `sat_div`, same as the
+LSB-first order, same as the nine English words: the code is right and the sentence beside it is missing or wrong.**
+
 ## v381 - I reproduced the `kosh` abort myself. It is real, it is clear, and it is milder than "no way to report"
 
 **Three programs, each declaring `kosh a[4]` and calling one operation on the empty store.**
