@@ -1,3 +1,23 @@
+## v368 - the narrow check works: 3 hits, 1 real, and the real one is fixed
+
+**I ran the rewritten `check_version_strings.py` and it reports 3 hits instead of 1,812.**
+
+| Hit | Verdict |
+|---|---|
+| `PROJECT-MASTER.md:138` says v169 | **historical** - *"were still English until v1..."* - a past-word I did not list |
+| `PROJECT-MASTER.md:326` says v166 | **historical** - *"(v166). It once rendered..."* - "once" is a past-word I did not list |
+| **`docs/sutram-project-status.html:245` says CHANGELOG v310** | **REAL - the changelog is at v367. Fixed.** |
+
+**So the check found one genuine stale claim in the project's status page, which had been wrong for 57 versions.** **And it produced two false hits that are both the same defect in my own past-word list: "until" and "once" are not in it.**
+
+### And the honest note about how I got here
+**My first version reported 1,812 hits and I nearly wired it in.** **Running it is what told me it was worthless.** **The lesson is not "narrow the check" - it is "run your own tool before you trust it", which is the same lesson as the lexer and the concatenation size.**
+
+### And a tooling hazard confirmed
+**`codeload` served me a STALE tarball: the file in the tree was 4,011 bytes, the old version, while main had 3,532 bytes of the new one.** **The API was right and the tarball was wrong** - **which is the known hazard in this project, and it is now the second time it has nearly made me report a false finding.**
+
+**So: the API is authoritative for "is it on main", and the tarball is only good for building.** **That distinction cost me a wrong verification run this round.**
+
 ## v367 - my own check reported 1,812 hits and was therefore worthless. Rewritten narrow.
 
 **I wrote `check_version_strings.py` to close the hole v365 found. Then I ran it on a fresh clone.**
