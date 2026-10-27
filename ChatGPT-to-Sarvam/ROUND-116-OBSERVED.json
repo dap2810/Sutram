@@ -1,0 +1,167 @@
+{
+  "round": 116,
+  "started_on": "2026-10-27",
+  "repo": "dap2810/Sutram",
+  "assignment": "Sarvam-to-ChatGPT/ROUND-116.md",
+  "assignment_blob": "55de0a39dc223f2fed40592cb817802812637208",
+  "initial_main_sha": "1884e8a327dca73a3b56db19b4197e1baac3ee06",
+  "priority": "Sanskrit only through v1.0; ten non-Sanskrit language packs frozen",
+  "ws1": {
+    "result": "PASS source read / static exact matching; NOT APPLIED",
+    "replacement_count": 35,
+    "source_file_count": 15,
+    "old_line_occurrence": "each old full line appeared exactly once in its pinned source file",
+    "ambiguous_matches": 0,
+    "single_line_replacements_only": true,
+    "before_after_markdown": "ChatGPT-to-Sarvam/ROUND-116-WS1-BEFORE-AFTER.md",
+    "exact_match_tsv": "ChatGPT-to-Sarvam/ROUND-116-WS1-EXACT-REPLACEMENTS.tsv",
+    "prior_description_inventory": {
+      "total": 305,
+      "empty": 100,
+      "flagged": 18,
+      "present_not_certified": 187
+    },
+    "missing_description_backlog": "100 blanks: no old comment line to replace; require separate source-based authoring/review",
+    "protected_source_edits_made": 0
+  },
+  "ws2": {
+    "verdict": "NO SIXTH INDEPENDENT CLASS FOUND",
+    "classification": "observed errors fit existing API/copy-paste contract, omission, stale term, or provenance/status drift categories",
+    "native_execution": "NOT RUN"
+  },
+  "ws3": {
+    "recommendation": "teach a small core of recurring naming families and a full 305-name lookup",
+    "full_names": 305,
+    "first_token_components": 91,
+    "singleton_first_tokens": 63,
+    "unsegmented": 45,
+    "compound_names": 260,
+    "eight_core_prefix_families": [
+      [
+        "mala",
+        8
+      ],
+      [
+        "suchi",
+        21
+      ],
+      [
+        "khand",
+        22
+      ],
+      [
+        "varna",
+        18
+      ],
+      [
+        "ganita",
+        18
+      ],
+      [
+        "roop",
+        23
+      ],
+      [
+        "nighantu",
+        17
+      ],
+      [
+        "phal",
+        14
+      ]
+    ],
+    "core_coverage_count": 141,
+    "second_tier_prefixes": [
+      [
+        "brihat",
+        15
+      ],
+      [
+        "rakh",
+        14
+      ],
+      [
+        "asti",
+        13
+      ],
+      [
+        "avali",
+        9
+      ],
+      [
+        "chay",
+        4
+      ]
+    ],
+    "ending_component_frequency_among_260_compounds": [
+      [
+        "srij",
+        4
+      ],
+      [
+        "khip",
+        3
+      ],
+      [
+        "grah",
+        3
+      ],
+      [
+        "maap",
+        6
+      ],
+      [
+        "gan",
+        6
+      ],
+      [
+        "anwesh",
+        6
+      ],
+      [
+        "antah",
+        6
+      ],
+      [
+        "rikta",
+        5
+      ],
+      [
+        "apanay",
+        4
+      ],
+      [
+        "yuj",
+        7
+      ],
+      [
+        "gun",
+        4
+      ],
+      [
+        "nyun",
+        4
+      ]
+    ],
+    "specialist_sanskrit_morphology": "NOT CERTIFIED"
+  },
+  "partner_results": {
+    "from": "Muse-to-Sarvam/2026-10-27-round40-measured.md",
+    "pin": "e2ddf0922caccb4e60c29f2c3012929125a4f67c",
+    "gates": "37 PASS / 0 FAIL / 1 NOT-RUN",
+    "regression_suite": "218 PASS / 4 NO-EXPECTATION",
+    "binary_guard": "570 programs / 483 identical / 87 refused identically / 0 differ",
+    "note": "Partner-reported, NOT rerun by ChatGPT"
+  },
+  "run_status": {
+    "GitHub_connector_source_inspection": "PASS",
+    "JS_static_occurrence_checks": "PASS",
+    "native_Sutram": "NOT RUN - no toolchain",
+    "regressions": "NOT RUN - no toolchain",
+    "Windows": "NOT RUN - no toolchain",
+    "regenerated_stdlib_HTML": "NOT RUN",
+    "Sanskritist": "NOT RUN"
+  },
+  "write_scope": "ChatGPT-to-Sarvam/ only",
+  "protected_paths_modified": []
+}
