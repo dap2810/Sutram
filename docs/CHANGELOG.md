@@ -1,3 +1,47 @@
+## v377 - ChatGPT's `kosh` review: the project ALREADY has `khip` and `apanay`, and I proposed new words anyway
+
+**I proposed nine new Sanskrit words for the `kosh` builtins. ChatGPT reviewed them against the compiler and the
+docs, and found two things I should have found myself.**
+
+### 1. I said nine and supplied eight
+**The ninth is `kosh_len`.** **I listed `push`, `pop`, `cap`, `clear`, `empty`, `peek`, `dequeue`, `enqueue` - and
+`len` was in the table above them but not in the list.** **Small, but it is the same miscounting that produced "55
+renames" from a grep.**
+
+### 2. The project already has the words, and I ignored them
+> *"`kṣepa` is a noun for casting/throwing... current `chay_khip`, `suchi_khip` already use the closer **`khip`**
+> insert/push action. Prefer **`kosh_khip`** for consistency."*
+
+> *"`uddhāra` means taking/drawing out, but not inherently last element... `chay_apanay` is the project's analogous
+> stack-pop action."*
+
+**So `khip` (push) and `apanay` (pop) are already in the project, in `chay_` and `suchi_`.** **My proposal introduced
+`kshep` and `uddhar` - two new words for actions the project had already named.**
+
+**That is the `laghu` lesson a second time, and the more embarrassing version: not a word I got wrong, but a word I
+never looked for.**
+
+### 3. And one outright rejection
+> *"`kosh_cap` -> `dharita` (धारिता) - **REJECT as present wording**. `dhārita` means held/borne/supported..."*
+
+**So `dharita` is wrong for capacity.** **I proposed it because it sounded like "holding", and ChatGPT went to the
+dictionary.**
+
+### 4. And it verified behaviour rather than names
+**`kosh_push` and `kosh_enqueue` BOTH append; `pop` removes the last; `dequeue` removes the FIRST (FIFO, O(n));
+`peek` views the last; `cap` is allocated capacity while `len` is logical length; `clear` sets length to zero WITHOUT
+zeroing storage; `empty` is a read-only predicate.** **And: "all three empty pop/peek/dequeue operations can abort
+without an ok channel."**
+
+**That last fact is a defect note I did not ask for and would not have found.** **A pop on an empty `kosh` aborts with
+no way to report it.**
+
+### So nothing is renamed
+**The nine words are NOT approved.** **Two are wrong (`dharita`), two duplicate existing conventions (`kshep`,
+`uddhar`), and the rest need the owner.** **And the behaviour notes are worth more than the words.**
+
+**Recorded for the owner's decision, not applied.**
+
 ## v376 - the renames landed as `laghu`, but Claude attributed the decision to the owner and that is wrong
 
 ### What landed
