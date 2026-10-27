@@ -47,3 +47,20 @@ jobs:
         with:
           name: r42-windows
           path: r42-windows/
+      - name: Publish the transcripts as annotations (readable through the API)
+        if: always()
+        shell: python
+        run: |
+          import pathlib
+          d = pathlib.Path('r42-windows')
+          def esc(s): return s.replace('%', '%25').replace('\r', '').replace('\n', '%0A')
+          files = ([d / 'SUMMARY.txt'] if (d / 'SUMMARY.txt').exists() else []) + sorted(p for p in d.glob('*.txt') if p.name != 'SUMMARY.txt')
+          if not files:
+              print('::notice title=r42 no transcripts::the driver wrote nothing')
+          for p in files[:10]:
+              t = p.read_text(encoding='utf-8', errors='replace')
+              if p.name == 'guard.txt':
+                  t = '\n'.join(l for l in t.splitlines() if not l.startswith(('IDENTICAL', 'REFUSED-SAME')))
+              if len(t) > 3800:
+                  t = '...(head cut)...\n' + t[-3800:]
+              print(f'::notice title=r42 {p.stem}::{esc(t)}')
