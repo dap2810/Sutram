@@ -234,7 +234,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v253) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v254) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -2212,6 +2212,20 @@ _start:
     jz .r45_not_debug
     cmp rax, 1
     jne .usage                     ; a malformed --debug=<spec>
+.r49_more_flags:                   ; R49: more --debug / --debug=<spec> / --debug-from=<N>
+    mov rax, R49_ARG(0)            ; may follow, in any order; each is read, then dropped
+    cmp rax, 3
+    jl .usage
+    mov rdi, R49_ARG(24)
+    call r45_match_flag
+    test rax, rax
+    jz .r49_flags_done
+    cmp rax, 1
+    jne .usage
+    mov edi, 2                     ; drop argv[2]: the rest moves down one
+    call r49_drop_arg
+    jmp .r49_more_flags
+.r49_flags_done:
     mov rax, R49_ARG(0)
     cmp rax, 4                     ; prog --debug in out
     jl .usage

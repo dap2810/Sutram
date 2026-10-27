@@ -13,6 +13,8 @@
   4. MODULE VITTI: a module-level vitti is shown in the trace and the summary, with its updated value.
   5. MALFORMED: --debug=, --debug=a, --debug=,a, --debug=@, --debug=@5-2, --debug=x@3y each give the usage and
      write nothing.
+  7. R49: the flags repeat, in any order: --debug=yoga --debug=i --debug-from=11 is --debug=yoga,i@11; a
+     malformed --debug-from is the usage; the environment is still read after the extra flags are dropped.
   6. A WRONG ANSWER IS FINDABLE: madhava_sin with the sign error that survives every library proof
      (PROJECT-MASTER; here line 10 is `y = y - pi2` where it should be `y + pi2`). The program prints a wrong
      sin(-4.0) - 0.757068 for 0.756802, off in the fourth digit. Compiled with --debug=y@5-12 the trace shows y
@@ -140,6 +142,35 @@ def main(argv) -> int:
             before = set(os.listdir(t))
             c = subprocess.run([comp, spec, 'x.sm', 'x.bin'], capture_output=True, timeout=30, cwd=t)
             check(set(os.listdir(t)) == before, f'malformed {spec}: the usage, nothing written (exit {c.returncode})')
+
+        # 7. R49: repeated flags in any order, and --debug-from=<N>
+        def trace_of(*flags):
+            pp, bb = t / 'p.sm', t / 'p.bin'
+            pp.write_text(PROG, encoding='utf-8')
+            if bb.exists():
+                bb.unlink()
+            c = subprocess.run([comp, *flags, str(pp), str(bb)], capture_output=True, timeout=60, cwd=ROOT)
+            if c.returncode != 0 or not bb.exists():
+                return None
+            o = subprocess.run([str(bb)], capture_output=True, timeout=30).stdout.decode('utf-8', 'replace')
+            return o.split('[shodhan] samapti')[0]
+        one = trace_of('--debug=yoga,i@11-14')
+        check(one is not None and one == trace_of('--debug=yoga', '--debug=i', '--debug-from=11', '--debug=@11-14')
+              and one == trace_of('--debug=i@11-14', '--debug=yoga'),
+              'R49: --debug=yoga --debug=i --debug-from=11 ... is the same trace as --debug=yoga,i@11-14, in any order')
+        two = trace_of('--debug-from=14')
+        check(two is not None and two == trace_of('--debug=@14') and two.startswith('[shodhan] pankti 14\n'),
+              f'R49: --debug-from=14 is --debug=@14 (got {two!r:.60})')
+        for spec in ('--debug-from=', '--debug-from=x', '--debug-from=0'):
+            before = set(os.listdir(t))
+            c = subprocess.run([comp, '--debug=yoga', spec, 'x.sm', 'x.bin'], capture_output=True, timeout=30, cwd=t)
+            check(set(os.listdir(t)) == before, f'R49: malformed {spec} after --debug=yoga: the usage, nothing written')
+        (t / 'dv.sm').write_text('मुख्य()\n    वित्ति योग = 4।\n    लिख(योग)।\n', encoding='utf-8')
+        c = subprocess.run([comp, '--debug=योग', '--debug', '--debug-from=3', 'dv.sm', 'dv.bin'], capture_output=True,
+                           timeout=30, cwd=t, env={**os.environ, 'SUTRAM_LANG': 'sanskrit'})
+        out = subprocess.run([str(t / 'dv.bin')], capture_output=True, timeout=30).stdout.decode() if c.returncode == 0 else ''
+        check(out.startswith('[shodhan] pankti 3\n    योग = 4\n4\n'), 'R49: after two flags are dropped the environment is '
+              f'still read (SUTRAM_LANG=sanskrit compiles Devanagari) (got {out!r:.60})')
 
         # 6. a wrong answer, found
         bad = SIN.replace('SIGN', '-')

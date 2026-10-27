@@ -1,0 +1,33 @@
+== madhava_sin, the sign error at lib/madhava.smlib:56 -> yadi (y < 0.0 - pi) { y = y - pi2 }
+tests/stdlib/r18_madhava_reduction.sm against it (< the golden, > the mutant):
+3c3
+< 0.750987
+---
+> 0.770223
+5c5
+< 0.756802
+---
+> 0.757068
+
+== madhava_cos, the sign error at lib/madhava.smlib:76 -> yadi (y < 0.0 - pi) { y = y - pi2 }
+tests/stdlib/r18_madhava_reduction.sm against it (< the golden, > the mutant):
+9c9
+< 0.660317
+---
+> 0.606488
+11c11
+< -0.653644
+---
+> -0.654492
+
+== madhava_atan, the sign error at lib/madhava.smlib:104 -> yadi (neg == 1) { prati r }
+tests/stdlib/r18_madhava_reduction.sm against it (< the golden, > the mutant):
+13c13
+< -1.520838
+---
+> 1.520838
+15c15
+< -0.982794
+---
+> 0.982794
+

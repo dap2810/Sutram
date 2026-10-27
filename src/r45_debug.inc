@@ -4,6 +4,11 @@
 ;   sutram_compiler --debug <in.sm> <out>
 ;   sutram_compiler --debug --lang <pak> <in.sm> <out>
 ;   sutram_compiler --debug=<name>[,<name>...][@N[-M]] <in.sm> <out>      (R46)
+;   sutram_compiler --debug=yoga --debug=i --debug-from=20 <in.sm> <out>  (R49)
+;
+; R49: the debug flags may be repeated, in any order, before the input: each
+; --debug=<names> adds to the watch list; --debug-from=N is --debug=@N; the
+; last line range given wins.
 ;
 ; R46: --debug=yoga,i shows only those names, and prints no line where none of
 ; them is in scope; @N or @N-M prints only statements on lines N.. or N..M
@@ -79,6 +84,7 @@ section .bss
     r45_names     resq R45_NAMES_CAP
 section .data
     r45_flag      db "--debug", 0
+    r49_from_flag db "--debug-from=", 0
     r45_head      db "[shodhan] pankti ", 0
     r45_indent    db "    ", 0
     r45_equals    db " = ", 0
@@ -469,6 +475,27 @@ r45_register_counter:
 r45_match_flag:
     push rbx
     mov rbx, rdi
+    lea rsi, [rel r49_from_flag]   ; R49: "--debug-from=<N>", the same as --debug=@N
+.from_pre:
+    mov al, [rsi]
+    test al, al
+    jz .from_flag
+    cmp al, [rbx]
+    jne .not_from
+    inc rsi
+    inc rbx
+    jmp .from_pre
+.from_flag:
+    call .number
+    test rax, rax
+    jz .bad
+    cmp byte [rbx], 0
+    jne .bad
+    mov [rel r45_from], rax
+    mov qword [rel r45_to], 0
+    jmp .yes
+.not_from:
+    mov rbx, rdi
     lea rsi, [rel r45_flag]        ; "--debug"
 .pre:
     mov al, [rsi]
@@ -755,4 +782,32 @@ r45_scope_reset:
     pop rcx
     pop rax
 .ret:
+    ret
+
+; R49: drop argv[edi] (edi >= 1) as the R32 --ffi shift does: argv[i] = argv[i+1]
+; up to argc, argc - 1. Called from _start, whose rsp is the argument block, so
+; that block is at [rsp + 8] here (Windows: win_stack). On Linux the old
+; argv[argc] slot - the NULL, moved down one - becomes an empty entry, because
+; the environment is found from argc (env_get_value), as in R32.
+r49_drop_arg:
+%ifdef WINDOWS
+    lea r8, [rel win_stack]
+%else
+    lea r8, [rsp + 8]
+%endif
+    mov rcx, [r8]                  ; argc
+    mov edx, edi
+.shift:
+    cmp rdx, rcx
+    jae .shifted
+    mov rax, [r8 + 16 + rdx*8]     ; argv[i + 1]
+    mov [r8 + 8 + rdx*8], rax      ; argv[i]
+    inc rdx
+    jmp .shift
+.shifted:
+%ifndef WINDOWS
+    lea rax, [rel r32_empty]
+    mov [r8 + 8 + rcx*8], rax      ; the old argv[argc]
+%endif
+    dec qword [r8]
     ret

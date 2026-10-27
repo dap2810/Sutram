@@ -1,0 +1,21 @@
+PASS  --debug=yoga: the first line printed is 8, after yoga is declared (got ['[shodhan] pankti 8', '[shodhan] pankti 9'])
+PASS  --debug=yoga: the trace names no other variable
+PASS  --debug=n,r@2-3: the function's two lines, each of 3 calls (got '[shodhan] pankti 2\n    n = 1\n[shodhan] pankti 3\n    n = 1\n    r = 2\n[shodhan] pankti 2\n    n = 2\n[shodhan] pankti 3\n    n = 2\n    r = 4\n[shodhan] pan)
+PASS  summary: 17 statements ran - lines 7-10 once (4), 11-12 per pass (6), 2-3 per call (6), 14 (1) - then the final scalars (got '[shodhan] samapti, vakya: 17\n    yoga = 12\n    i = 4\n    ardha = 0.500000\n')
+PASS  a module-level vitti: in the trace and the summary (got '[shodhan] pankti 3\n    ginti = 5\n[shodhan] pankti 4\n    x = 1\n    ginti = 5\n[shodhan] pankti 5\n    x = 1\n    ginti = 6\n6\n[shodhan] samapti, vakya: 3\n    x = 1\n    ginti = 6\n')
+PASS  malformed --debug=: the usage, nothing written (exit 0)
+PASS  malformed --debug=a,: the usage, nothing written (exit 0)
+PASS  malformed --debug=,a: the usage, nothing written (exit 0)
+PASS  malformed --debug=@: the usage, nothing written (exit 0)
+PASS  malformed --debug=@5-2: the usage, nothing written (exit 0)
+PASS  malformed --debug=x@3y: the usage, nothing written (exit 0)
+PASS  R49: --debug=yoga --debug=i --debug-from=11 ... is the same trace as --debug=yoga,i@11-14, in any order
+PASS  R49: --debug-from=14 is --debug=@14 (got '[shodhan] pankti 14\n    yoga = 12\n    i = 4\n    ardha = )
+PASS  R49: malformed --debug-from= after --debug=yoga: the usage, nothing written
+PASS  R49: malformed --debug-from=x after --debug=yoga: the usage, nothing written
+PASS  R49: malformed --debug-from=0 after --debug=yoga: the usage, nothing written
+PASS  R49: after two flags are dropped the environment is still read (SUTRAM_LANG=sanskrit compiles Devanagari) (got '[shodhan] pankti 3\n    योग = 4\n4\n[shodhan] samapti, vaky)
+PASS  the sign error gives a wrong sin(-4.0): '0.757068' (true: 0.756802)
+PASS  the trace finds it: y = -4.000000 before line 10, y = -10.283185 (outside [-pi, pi]) at line 12 - line 10 made the first wrong value (got '[shodhan] pankti 6\n    y = -4.000000\n[shodhan] pankti 9\n    y = -4.000000\n[shodhan] pankti 10\n    y = -4.000000\n[shodhan] pankti 12\n    y = -10.283185\n0.757068\n')
+PASS  with the sign corrected: y = 2.283185 and sin(-4.0) = 0.756802 (got 'y = -4.000000\n[shodhan] pankti 12\n    y = 2.283185\n0.756802\n')
+r46 debug usable: 20 checks, 0 failed
