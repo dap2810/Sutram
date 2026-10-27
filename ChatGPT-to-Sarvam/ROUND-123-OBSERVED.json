@@ -1,0 +1,74 @@
+{
+  "round": 123,
+  "utc_date": "2026-10-27",
+  "pinned_main": "95fd5ff00f91bd2dee46b91a5827f2aedb464500",
+  "assignment": "Sarvam-to-ChatGPT/ROUND-123.md",
+  "assignment_blob": "9e6c4519812e8ee9e3cf82372477083cfbac200e",
+  "current_changelog_head": "v380",
+  "reported_compiler": "v253",
+  "review_mode": "read only: output proposals restricted to ChatGPT-to-Sarvam",
+  "files_evidence": {
+    "Sarvam-to-ChatGPT/ROUND-123.md": "9e6c4519812e8ee9e3cf82372477083cfbac200e",
+    "docs/OPEN-ISSUES.md": "d8a10e57d3c58244f7a4145922e50d8c4a0ca6cd",
+    "docs/LANGUAGE-REFERENCE.md": "00f06311551de90714e00999d96fafdae8de9d17",
+    "lib/brihat.smlib": "beb68ee29427bab657e3610bc9bd6e09225d59b6",
+    "docs/MEMORY-MODEL.md": "5f481243171edbe8d6bd12bcf4b4c3afc627fb5a",
+    "docs/R71-MODULES.md": "e3131e865c2189233893d7aac04e915066dc0f20",
+    "compiler/MODULE_SYSTEM_R40_DESIGN.md": "ae1da389e32372ed53c8ba6c3de84adf054fe656",
+    "src/sutram_compiler.asm": "89495406b5b77258a9699ed5c8c2d51baead1474",
+    "lib/suchi.smlib": "eca929ace7cbf98b15d611c64155970c1638e2ff",
+    "docs/KOSH-BUILTINS.md": "44d6cdaced710e922883e15e2cf9c6c22c9f4f91",
+    "lang/sanskrit.lang": "b7bbbe1e07d258cc67f05e9dad81bca9379e59a6"
+  },
+  "checks": [
+    {
+      "subject": "D1 language-reference brihat_ank, LSB-first mention",
+      "result": "FAIL (missing in reference; source correctly LSB-first)",
+      "evidence": [
+        "docs/LANGUAGE-REFERENCE.md full 571 lines checked; 0 brihat or LSB matches",
+        "lib/brihat.smlib:4-6,24-28,67-79"
+      ]
+    },
+    {
+      "subject": "D4 documents have status text",
+      "result": "PASS (some already have status notes); banners proposed for skim clarity",
+      "evidence": [
+        "docs/MEMORY-MODEL.md:1-5",
+        "docs/R71-MODULES.md:1-9",
+        "compiler/MODULE_SYSTEM_R40_DESIGN.md:1-15"
+      ]
+    },
+    {
+      "subject": "public kosh names exist",
+      "result": "PASS (9 current English suffixes); 9 Sanskrit alternatives proposed, NOT APPLIED",
+      "evidence": [
+        "src/sutram_compiler.asm:561-570,765-773",
+        "docs/KOSH-BUILTINS.md:36-48,68-115"
+      ]
+    },
+    {
+      "subject": "core keyword collision",
+      "result": "PASS for 32 kw_* current ASCII names; 38-name premise NOT VERIFIED",
+      "evidence": [
+        "src/sutram_compiler.asm:684-715"
+      ]
+    },
+    {
+      "subject": "pankti_aayam",
+      "result": "PROPOSED only, no implementation",
+      "evidence": [
+        "src/sutram_compiler.asm:561,764",
+        "lang/sanskrit.lang:59"
+      ]
+    },
+    {
+      "subject": "native compiler, regression, debugger, Windows",
+      "result": "NOT RUN - no toolchain"
+    },
+    {
+      "subject": "protected files or backups modified",
+      "result": "NO; proposals uploaded only to ChatGPT-to-Sarvam"
+    }
+  ],
+  "sixth_class_verdict": "NO SIXTH DISTINCT CLASS FOUND"
+}
