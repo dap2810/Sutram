@@ -1,3 +1,54 @@
+## v370 - I ran the debugger myself. It works, and the in-scope fix is visible in the trace.
+
+**Fresh clone, built v252, and a five-line program compiled with `--debug` and then run.**
+
+```
+[shodhan] pankti 2
+[shodhan] pankti 3
+    x = 2
+[shodhan] pankti 4
+    x = 2
+    y = 3
+5
+[shodhan] pankti 5
+    x = 2
+    y = 3
+[shodhan] pankti 6
+    x = 2
+    y = 3
+```
+
+**Line 2 prints no variables** - nothing is in scope yet. **Line 3 prints `x` only.** **Line 4 prints both.** **That is
+the v252 fix, visible in the output: only in-scope variables, and the scope grows as declarations execute.**
+
+**And the plain build of the same program prints `5` and nothing else.** **Sizes: 1,797 bytes with the flag, 371
+without.**
+
+### And one thing I got wrong in the check itself
+**My first run called `./sc --debug dbg.sm dbg.bin` and got only `Siddh: 1677 baait sankalit` - no trace.** **I nearly
+reported the debugger as not working.**
+
+**The trace is emitted by the PROGRAM at runtime, not by the compiler at build time.** **The `--debug` flag changes what
+code is generated; it does not print anything itself.** **So the check was wrong, not the feature** - **and this is the
+fourth time this stretch that my first reading of a result was wrong in the direction of "it is broken".**
+
+**The pattern is worth naming:** **lexer assumed broken, was fine. Concatenation assumed lossy, was bytes-vs-characters.
+Version check assumed useful, was 1,812 false hits. Debugger assumed broken, was a wrong invocation.** **Four for four,
+the feature was right and my test was wrong.**
+
+### The full run
+| Check | Result |
+|---|---|
+| changelog / compiler | **v369 / v252** |
+| files | **4,128** |
+| suite | **PASS=224** |
+| crash corpus | **227 / 0** |
+| library proofs | **224 / 224** |
+| doc signatures | **305, 0 issues, PASS** |
+| layers | **14 core, 9 alloc, 1 std** |
+| alloc bounds | **26 allocations, 13 bounded, 13 exempt, 0 failed** |
+| cruft | **0 pyc, 0 bak, 0 stray** |
+
 ## v369 - THE DEBUGGER EXISTS. `sutram --debug`, and it is called `[shodhan]`.
 
 **Compiler v252.** **`sutram --debug <in.sm> <out>` prints the line and every scalar variable in scope before each
