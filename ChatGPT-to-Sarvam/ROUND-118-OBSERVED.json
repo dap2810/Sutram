@@ -1,0 +1,85 @@
+{
+  "round": 118,
+  "date": "2026-10-27",
+  "assignment": "Sarvam-to-ChatGPT/ROUND-118.md",
+  "assignment_blob": "bb076a71b2377b05aa519287f778328e3b72fc05",
+  "read_pin": "3b1a9e7f5369a7f826cfa9ce07c4d873a40973e6",
+  "compiler": "v249",
+  "changelog": "v361",
+  "priority": "Sanskrit only to v1.0; ten other language packs frozen",
+  "WS1": {
+    "deliverable": "ChatGPT-to-Sarvam/ROUND-118-WS1-LEXER-BOUNDARY-SPEC.md",
+    "keyword_contract": "read maximal whole identifier before exact keyword and builtin lookup; do not split keyword prefix",
+    "word_continue": "Unicode UAX31 XID_Continue or a precisely specified active Sanskrit/ASCII subset, including letters, decimal digits, underscores and combining marks",
+    "utf8": "full bounded scalar decode; invalid bytes produce error rather than fake delimiter",
+    "true_devanagari_keyword": "प्रतियाति means prati; प्रति alone is not the native return keyword in lang/sanskrit.lang",
+    "repertoire_scope": "active Sanskrit; do not alter frozen packs; Unicode normalization policy separate",
+    "delimiter_cases": [
+      "EOF",
+      "space/tab/CR/LF",
+      "operator",
+      "comment hash, // and /*",
+      "Devanagari danda single/double",
+      "letter/digit/underscore/combining continuation",
+      "malformed UTF-8"
+    ],
+    "source_witnesses": [
+      "src/sutram_compiler.asm:6210-6318",
+      "src/sutram_compiler.asm:24058-24176",
+      "src/sutram_compiler.asm:23969-23990",
+      "src/r66_indic_lexer.inc",
+      "lang/sanskrit.lang"
+    ],
+    "verified_current_behavior": "partner-reported four compiled Latin-script prefix cases; general UTF-8 and mixed-script correctness NOT proved",
+    "status": "PASS - static source spec; no native verification"
+  },
+  "WS2": {
+    "tsv": "ChatGPT-to-Sarvam/ROUND-118-WS2-LEXER-CASES.tsv",
+    "execution_guide": "ChatGPT-to-Sarvam/ROUND-118-WS2-TEST-EXECUTION-CONTRACT.md",
+    "cases": 72,
+    "by_scope": {
+      "RUN_SANSKRIT": 28,
+      "TOKENS_SANSKRIT": 38,
+      "RAW_BYTES_SANSKRIT": 6
+    },
+    "includes_muse_5_questions": true,
+    "true_deva_keyword_prefix_cases": true,
+    "mixed_script_both_directions": true,
+    "combining_mark_cases": true,
+    "eof_whitespace_operator_comments_danda_cases": true,
+    "invalid_utf8_negative_cases": true,
+    "structured_parse_test": "PASS 72 rows with 6 columns each",
+    "unicode_xid_continue_spotcheck": "PASS 9 representative suffix codepoints by JS reference Unicode property; not Sutram native",
+    "native_run": "NOT RUN - no toolchain",
+    "partner_reported_cases": [
+      "prati_test prints 6",
+      "mukhyata prints 7",
+      "pratiX prints 3",
+      "variable vartani_pratilip prints 9"
+    ],
+    "excluded_false_claim": "Sarvam never claimed to compile+run the actual vartani_pratilip(x) function definition and call; Muse asks that separately"
+  },
+  "WS3": {
+    "verdict": "NO SIXTH DISTINCT DOCUMENTATION ERROR CLASS FOUND",
+    "new_lexer_issue": "language correctness test risk not a new doc classification"
+  },
+  "source_blobs": {
+    "src/sutram_compiler.asm": "03e9845c2ec59c2798a7b7e2edcb2a7d8b907449",
+    "src/r66_indic_lexer.inc": "998b6cb75a7e11cf6d488cf84a84a2154ffdebf0",
+    "lang/sanskrit.lang": "b7bbbe1e07d258cc67f05e9dad81bca9379e59a6",
+    "docs/LEXER-BOUNDARY-TEST.md": "86969285258af1e3ce4a3d04ef6b4087a5026bc4",
+    "Sarvam-to-Muse/ROUND-43.md": "07b216f4b25bd6ef4ad9e5a1cbd3c02e3658649c",
+    "Sarvam-to-Claude/ROUND-43.md": "49a34c1bc5ce6173f57d9ae94c86ebc177291678"
+  },
+  "execution": {
+    "connected_source_read": "PASS",
+    "TSV_static_validation": "PASS",
+    "Unicode_category_spot_checks": "PASS",
+    "native_compiler": "NOT RUN - no toolchain",
+    "regressions": "NOT RUN - no toolchain",
+    "fuzz_robust": "NOT RUN - no toolchain",
+    "Windows": "NOT RUN - no toolchain"
+  },
+  "write_scope": "ChatGPT-to-Sarvam only",
+  "modified_protected_files": []
+}
