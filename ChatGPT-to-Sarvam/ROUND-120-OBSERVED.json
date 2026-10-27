@@ -1,0 +1,101 @@
+{
+  "round": 120,
+  "date": "2026-10-27",
+  "repository": "dap2810/Sutram",
+  "read_pin": "1492190da00d4b17688e6a1baeed19f1d28c7e92",
+  "assignment": "Sarvam-to-ChatGPT/ROUND-120.md",
+  "assignment_blob": "3e526d718f3ec750aeeac469df4c358e5221a7ab",
+  "changelog": "v364",
+  "compiler": "v250",
+  "priority": "Sanskrit only until v1.0; other ten language packs frozen",
+  "ws1": {
+    "status": "PASS static source review; debugger NOT IMPLEMENTED/NOT RUN in this read-side session",
+    "deliverable": "ChatGPT-to-Sarvam/ROUND-120-WS1-DEBUGGER-TRAP-SPEC.md",
+    "minimal_trap": [
+      "actual source file:line/function with bounded statement text",
+      "semantic step index and stop kind",
+      "visible initialized, recoverable typed variables only",
+      "truthful unavailable/uninitialized/optimized out markers",
+      "step/continue/quit",
+      "debugger output separate from user stdout and stdin"
+    ],
+    "avoid": [
+      "guessed values",
+      "unbounded pointer reads",
+      "all CPU registers by default",
+      "synthetic AST stops",
+      "unbounded loop trace",
+      "interactive hang in CI"
+    ],
+    "source_witnesses": [
+      "src/sutram_compiler.asm:889-891 compiler-only var table",
+      "src/sutram_compiler.asm:12124-12250 user function prologue and typed params",
+      "src/sutram_compiler.asm:12457-12521 AST statement dispatcher",
+      "src/sutram_compiler.asm:20920-20956 first five locals in register IDs, others stack",
+      "src/sutram_compiler.asm:22745-22799 global lookup separate"
+    ],
+    "sanskrit_proposed_labels": {
+      "line": "पङ्क्तिः",
+      "variable": "वित्ति",
+      "value": "मूल्यम्",
+      "step": "क्रमः",
+      "continue": "अग्रे"
+    },
+    "label_qualification": "line and variable match existing project usage; all proposals require UX/Sanskritist review before canonicalizing",
+    "code_modified": false
+  },
+  "ws2": {
+    "status": "PASS: 3/3 old regenerated rows already show renamed vartani_aayam; no repeat application",
+    "deliverable": "ChatGPT-to-Sarvam/ROUND-120-WS2-GENERATED-REFERENCE-RECHECK.md",
+    "generator": "tools/gen_stdlib_ref.py",
+    "target": "docs/sutram-stdlib.html",
+    "rows": [
+      {
+        "html_line": 165,
+        "source": "lib/gudh.smlib:28",
+        "status": "SYNCED"
+      },
+      {
+        "html_line": 179,
+        "source": "lib/khand.smlib:11,24",
+        "status": "RENAMED TOKEN SYNCED; HEADER TEXT DEFECT"
+      },
+      {
+        "html_line": 443,
+        "source": "lib/varna.smlib:4",
+        "status": "SYNCED"
+      }
+    ],
+    "source_blobs": {
+      "docs/sutram-stdlib.html": "fc84c4b898ba0b45a2454d0ac6d794b042d91d21",
+      "tools/gen_stdlib_ref.py": "7d13129e1aba99cf62ccfe3f7ec33e45d4bbf433",
+      "lib/gudh.smlib": "54b9a1e2c212150972aeab135dd14df988138301",
+      "lib/khand.smlib": "b7b4528c30999784e37540651fe5aaec3290ca66",
+      "lib/varna.smlib": "616c6f00ab3c56d9d6134a23de8c32e0d59e8e61"
+    },
+    "separate_finding": {
+      "type": "generator comment-header loss",
+      "source_line": "lib/khand.smlib:6",
+      "reason": "tools/gen_stdlib_ref.py strips any header comment starting lib/, erroneously excluding a line that completes the sentence",
+      "current_render": "Own module (not inside THE TWO REPRESENTATIONS",
+      "recommended_action": "authorized source comment edit to remove path-at-start plus regeneration, or reviewed generator adjustment",
+      "fix_applied": false
+    }
+  },
+  "ws3": {
+    "verdict": "NO SIXTH DISTINCT DOC DEFECT CLASS FOUND",
+    "category": "generator's omitted source-comment text fits existing generated-document incompleteness/publication drift; debugger spec is not doc defect",
+    "deliverable": "ChatGPT-to-Sarvam/ROUND-120-WS3-SIXTH-CLASS.md"
+  },
+  "run_status": {
+    "connected_source_read": "PASS",
+    "static_line_and_generator_logic_verification": "PASS",
+    "debugger_compile_execute": "NOT RUN - no toolchain",
+    "docs_regeneration": "NOT RUN",
+    "full_suite": "NOT RUN - no toolchain",
+    "Windows": "NOT RUN - no toolchain",
+    "Sanskritist_approval": "NOT RUN"
+  },
+  "write_scope": "ChatGPT-to-Sarvam only",
+  "protected_files_modified": []
+}
