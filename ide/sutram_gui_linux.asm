@@ -201,7 +201,7 @@ bi_tab:
     ; Devanagari spellings (slice 23)
     db 0xE0,0xA4,0xA6,0xE0,0xA5,0x8D,0xE0,0xA4,0xB5,0xE0,0xA4,0xBE,0xE0,0xA4,0xB0,0xE0,0xA4,0xAE,0
     db 'dvaram',0,'band',0,'sthagita',0,'akshar',0,'aksharank',0
-    db 'akshar_rakh',0,'vartani_len',0,'vartani_cmp',0,'vartani_cp',0
+    db 'akshar_rakh',0,'vartani_aayam',0,'vartani_tul',0,'vartani_pratilip',0
     db 'nirmmita',0,'likh',0,'likh8',0,'pad',0,'pad8',0,0
 
 ; ---- menu bar data (slice 20) ----------------------------------------------

@@ -8,7 +8,7 @@
 # THE TWO REPRESENTATIONS (see also lib/varna.smlib):
 #   char-code array: qword cells, one char code per cell, h[i].
 #   byte string: bytes packed 1-per-byte, char_at(s, i) /
-#     set_char(s, i, v) / vartani_len(s). Do NOT mix them: h[i] on
+#     set_char(s, i, v) / vartani_aayam(s). Do NOT mix them: h[i] on
 #     a byte string reads 8 bytes at once; char_at on a char-code
 #     array reads one byte of a qword cell.
 #
@@ -21,7 +21,7 @@
 # function takes an explicit length and stops at it. The
 # NUL-terminated forms (anwesh_akshar, gan_akshar, gan_swar,
 # asti_sarv_ank, varna_sam) scan to the terminator — WRONG on
-# slices. khand_maap / varna_maap / vartani_len scan to the terminator
+# slices. khand_maap / varna_maap / vartani_aayam scan to the terminator
 # and cannot be used on slices. khand_pratisthap's repl is 0-terminated
 # (length derived), so repl cannot be a slice; khand_pratilip it into a
 # terminated buffer first.
@@ -96,7 +96,7 @@ prakriya khand_pratilip(src, n, out) {
 }
 
 prakriya khand_maap(s) {
-    prati vartani_len(s)
+    prati vartani_aayam(s)
 }
 
 # khand_anwesh(hay, hn, needle, nn) — byte index of first occurrence of

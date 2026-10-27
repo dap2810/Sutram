@@ -66,13 +66,13 @@ def pointer_params(funcs: dict) -> dict[tuple, set[int]]:
     params = {k: [p.strip() for p in f['params'].split(',') if p.strip()] for k, f in funcs.items()}
     ptr: dict[tuple, set[int]] = {k: set() for k in funcs}
     # builtins that read or write memory, and which argument is the address
-    for bn in ('akshar', 'akshar_rakh', 'pad8', 'likh8', 'pad8c', 'likh8c', 'pankti_len', 'vartani_len',
-               'vartani_cmp', 'vartani_cat', 'vartani_cp', 'smaran', 'smaran_cp', 'kosh_push', 'kosh_pop',
+    for bn in ('akshar', 'akshar_rakh', 'pad8', 'likh8', 'pad8c', 'likh8c', 'pankti_len', 'vartani_aayam',
+               'vartani_tul', 'vartani_cat', 'vartani_pratilip', 'smaran', 'smaran_cp', 'kosh_push', 'kosh_pop',
                'kosh_len', 'kosh_cap', 'kosh_clear', 'kosh_empty', 'kosh_peek', 'kosh_enqueue',
                'kosh_dequeue', 'sankhya_yog', 'sankhya_gunan', 'sankhya_dot', 'lkhb'):
         key = ('<builtin>', bn)
         names[bn] = key
-        ptr[key] = {0} if bn not in ('vartani_cmp', 'vartani_cat', 'vartani_cp', 'smaran_cp',
+        ptr[key] = {0} if bn not in ('vartani_tul', 'vartani_cat', 'vartani_pratilip', 'smaran_cp',
                                      'sankhya_yog', 'sankhya_gunan', 'sankhya_dot') else {0, 1}
 
     def aliases(body, p):

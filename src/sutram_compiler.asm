@@ -234,7 +234,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v249) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v250) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -270,8 +270,8 @@ r54_builtin_arity_table:
     db 1,1               ; 13 nirmmita
     db 2,2               ; 14 likh8
     db 1,1               ; 15 pad8
-    db 1,1               ; 16 vartani_len
-    db 2,2               ; 17 vartani_cmp
+    db 1,1               ; 16 vartani_aayam
+    db 2,2               ; 17 vartani_tul
     db 2,2               ; 18 vartani_cat
     db 3,3               ; 19 sankhya_yog
     db 3,3               ; 20 sankhya_gunan
@@ -286,7 +286,7 @@ r54_builtin_arity_table:
     db 2,2               ; 29 pad8c
     db 3,3               ; 30 smaran
     db 3,3               ; 31 smaran_cp
-    db 2,2               ; 32 vartani_cp
+    db 2,2               ; 32 vartani_pratilip
     db 0,0               ; 33 grahan
     db 1,1               ; 34 lkhb
     db 1,1               ; 35 shabda
@@ -751,8 +751,8 @@ r54_builtin_arity_table:
     bn_nirm      db "nirmmita", 0
     bn_likh8     db "likh8", 0
     bn_pad8      db "pad8", 0
-    bn_vartlen   db "vartani_len", 0
-    bn_vartcmp   db "vartani_cmp", 0
+    bn_vartlen   db "vartani_aayam", 0
+    bn_vartcmp   db "vartani_tul", 0
     bn_vartcat   db "vartani_cat", 0
     bn_vecadd    db "sankhya_yog", 0
     bn_vecmul    db "sankhya_gunan", 0
@@ -778,7 +778,7 @@ r54_builtin_arity_table:
     bn_pad8c     db "pad8c", 0
     bn_memset    db "smaran", 0
     bn_memcpy    db "smaran_cp", 0
-    bn_vartcp    db "vartani_cp", 0
+    bn_vartcp    db "vartani_pratilip", 0
     bn_grahan    db "grahan", 0
     bn_lkhb      db "lkhb", 0
     bn_shabda    db "shabda", 0
@@ -16977,7 +16977,7 @@ gen_expr:
     jmp .ge_call_done
 
 .ge_call_vartlen:
-    ; vartani_len(str) → inline strlen, rax = length
+    ; vartani_aayam(str) → inline strlen, rax = length
     mov rax, [rbx+24]
     call gen_expr
     ; mov rdi, rax = 48 89 C7
@@ -17033,7 +17033,7 @@ gen_expr:
     jmp .ge_call_done
 
 .ge_call_vartcmp:
-    ; vartani_cmp(s1, s2) → 0 if equal, 1 if not
+    ; vartani_tul(s1, s2) → 0 if equal, 1 if not
     mov rax, [rbx+24]
     call gen_expr
     mov dil, 0x50           ; push rax (s1)
@@ -17818,7 +17818,7 @@ gen_expr:
     jmp .ge_call_done
 
 .ge_call_vartcp:
-    ; R54: vartani_cp(dst,src) copies a complete NUL-terminated byte string.
+    ; R54: vartani_pratilip(dst,src) copies a complete NUL-terminated byte string.
     ; Previous sequence scanned dst with repne scasb and failed to copy src.
     ; No allocation length is known: the caller must supply writable capacity.
     mov rax, [rbx+24]

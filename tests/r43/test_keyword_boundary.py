@@ -6,7 +6,8 @@
 anusvara or virama are all part of the word) and only then compares the complete word with the keyword
 table. These cases pin that, generated from lang/sanskrit.lang so a keyword added later is tested too:
 
-  1. WS1: a prakriya named vartani_pratilip, called, returns its value.
+  1. WS1: the builtin vartani_pratilip (R44; was vartani_cp) is called, and a prakriya named pratilekha_kuru
+     (begins with prati) returns its value.
   2. every Latin keyword K (column 2 of lang/sanskrit.lang): K+letter, K+_, K+digit and K+Devanagari letter
      are ordinary names (vitti NAME = 41; likha(NAME + 1) prints 42).
   3. every Devanagari keyword D (column 1), under --lang sanskrit: D + a Devanagari letter, a letter+virama,
@@ -74,12 +75,16 @@ def main(argv) -> int:
                 fails += 1
                 print('FAIL  ' + what)
 
-        # 1. the case the round is about
-        rc, out = build_run('prakriya vartani_pratilip(a)\n    prati a + 1\n\nmukhya()\n'
-                            '    likha(vartani_pratilip(8))\n', None)
-        check(rc == 0 and out == '9', f'WS1: prakriya vartani_pratilip(8) returns 9 (got rc={rc} {out!r:.80})')
+        # 1. the case the round is about. R44 made vartani_pratilip a builtin (it was vartani_cp), so the name
+        # is now checked as the builtin it became, and a user prakriya with a keyword prefix is checked apart.
+        rc, out = build_run('mukhya() {\n    vitti b = nirmmita(16)\n    smaran(b, 0, 16)\n'
+                            '    vartani_pratilip(b, "abc")\n    likha(vartani_aayam(b))\n}\n', None)
+        check(rc == 0 and out == '3', f'WS1: the builtin vartani_pratilip copies "abc" (got rc={rc} {out!r:.80})')
+        rc, out = build_run('prakriya pratilekha_kuru(a)\n    prati a + 1\n\nmukhya()\n'
+                            '    likha(pratilekha_kuru(8))\n', None)
+        check(rc == 0 and out == '9', f'WS1: prakriya pratilekha_kuru(8) returns 9 (got rc={rc} {out!r:.80})')
         if fails == 0:
-            print('PASS  WS1: a prakriya named vartani_pratilip compiles, is called, returns 9')
+            print('PASS  WS1: the builtin vartani_pratilip is called; a prakriya named pratilekha_kuru (prefix prati) returns 9')
 
         # 2. every Latin keyword followed by a word character
         n0 = fails

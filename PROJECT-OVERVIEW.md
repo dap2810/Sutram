@@ -94,7 +94,7 @@ ld -mi386pep --entry=_start -o win/sutram.exe sutram.obj
 ## 5. Running the tests
 
 ```
-python3 tests/run_tests.py          # 223 pass, 4 no-expectation
+python3 tests/run_tests.py          # 224 pass, 4 no-expectation
 python3 tools/codegen_gate.py ./sutram_compiler  # 12/12 expected
 python3 tools/test_lang_packs.py ./sutram_compiler  # 33/33 expected
 python3 tools/test_ide_undo.py      # 12/12 expected
@@ -132,7 +132,7 @@ Loaded with `sutram --lang tamil` or `SUTRAM_LANG=tamil`.
 | | |
 |---|---|
 | Compiler SHA-256 | `51f8f6f1da41ac93ddce4f99fbbbd552fadfa5e48448b71a5415ee78d150fc3b` (v246, Linux) |
-| Regression suite | **223 pass, 4 no-expectation** |
+| Regression suite | **224 pass, 4 no-expectation** |
 | Code-generation gates | **12/12** |
 | Language packs | **33/33** |
 | Examples | 222 (and 13 in subfolders) |
@@ -144,7 +144,7 @@ Loaded with `sutram --lang tamil` or `SUTRAM_LANG=tamil`.
 This distinction matters more than any feature suchi.
 
 **Proven by execution.** The compiler builds on both Linux and Windows targets
-and passes 223 regression tests. Emitted code is byte-identical across the
+and passes 224 regression tests. Emitted code is byte-identical across the
 performance benchmarks. The language packs each compile and run a real
 program. The terminal IDE's undo log works. The X11 client's protocol bytes are
 verified against a mock X server. The Windows installer's stack frames are

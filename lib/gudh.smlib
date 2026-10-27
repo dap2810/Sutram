@@ -25,7 +25,7 @@ prakriya fnv1a(s, len) {
     prati h
 }
 
-# fnv1a_varna(s) — FNV-1a of a NUL-terminated packed byte string (uses vartani_len).
+# fnv1a_varna(s) — FNV-1a of a NUL-terminated packed byte string (uses vartani_aayam).
 prakriya fnv1a_varna(s) {
-    prati fnv1a(s, vartani_len(s))
+    prati fnv1a(s, vartani_aayam(s))
 }

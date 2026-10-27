@@ -1,7 +1,7 @@
 # lib/varna.smlib — Sutram standard library: strings
 # layer: core
 #
-# Built on `vartani_len` and `char_at`, both verified to honour their arguments.
+# Built on `vartani_aayam` and `char_at`, both verified to honour their arguments.
 # R52 audit: `char_code(s, i)` already honours i in the compiler; a one-argument
 # `char_code(s)` remains a compatible alias for the first byte. This library
 # continues to call `char_at(s, i)` as before, without changing its API.
@@ -16,7 +16,7 @@
 # (s, i) char predicates take no length: the caller keeps i in bounds.
 
 prakriya varna_maap(s)
-    prati vartani_len(s)
+    prati vartani_aayam(s)
 
 prakriya akshar_sanket(s, i)
     prati akshar(s, i)
@@ -52,7 +52,7 @@ prakriya asti_avakash_akshar(s, i) {
 }
 
 prakriya gan_swar(s) {
-    vitti n = vartani_len(s)
+    vitti n = vartani_aayam(s)
     vitti i = 0
     vitti c = 0
     yavat (i < n) {
@@ -66,7 +66,7 @@ prakriya gan_swar(s) {
 }
 
 prakriya gan_akshar(s, code) {
-    vitti n = vartani_len(s)
+    vitti n = vartani_aayam(s)
     vitti i = 0
     vitti c = 0
     yavat (i < n) {
@@ -77,7 +77,7 @@ prakriya gan_akshar(s, code) {
 }
 
 prakriya anwesh_akshar(s, code) {
-    vitti n = vartani_len(s)
+    vitti n = vartani_aayam(s)
     vitti i = 0
     yavat (i < n) {
         yadi (akshar(s, i) == code) { prati i }
@@ -87,7 +87,7 @@ prakriya anwesh_akshar(s, code) {
 }
 
 prakriya asti_sarv_ank(s) {
-    vitti n = vartani_len(s)
+    vitti n = vartani_aayam(s)
     yadi (n == 0) { prati 0 }
     vitti i = 0
     yavat (i < n) {
@@ -110,8 +110,8 @@ prakriya avanat_sanket(c) {
 }
 
 prakriya varna_sam(a, b) {
-    vitti na = vartani_len(a)
-    vitti nb = vartani_len(b)
+    vitti na = vartani_aayam(a)
+    vitti nb = vartani_aayam(b)
     yadi (na != nb) { prati 0 }
     vitti i = 0
     yavat (i < na) {

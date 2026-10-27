@@ -1,0 +1,17 @@
+# R44: the last three English builtin names are Sanskrit.
+#   vartani_aayam    (was vartani_len)  आयाम    extent, length
+#   vartani_tul      (was vartani_cmp)  तुल्     to weigh, compare
+#   vartani_pratilip (was vartani_cp)   प्रतिलिपि a copy
+# vartani_pratilip begins with the keyword prati (return). The lexer reads the
+# whole word before it looks for a keyword (R43, tests/r43), so it is a name.
+mukhya() {
+    vitti b = nirmmita(64)
+    smaran(b, 0, 64)
+    vartani_pratilip(b, "sutram")
+    likha(vartani_aayam(b))
+    likha(vartani_tul(b, "sutram"))
+    likha(vartani_tul(b, "sutra"))
+    vartani_pratilip(b, "ok")
+    likha(vartani_aayam(b))
+    likha(vartani_tul(b, "ok"))
+}

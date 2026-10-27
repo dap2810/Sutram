@@ -1,3 +1,3 @@
 vitti greeting = "Namaste"
-prakriya length() { prati vartani_len(greeting) }
+prakriya length() { prati vartani_aayam(greeting) }
 mukhya() { likha(length()) }

@@ -13,7 +13,7 @@ prakriya ank_mulya(c) {
 
 # the number written in s; 2: an empty string; a bad digit passes up as 1
 prakriya sankhya_padh(s) {
-    vitti n = vartani_len(s)
+    vitti n = vartani_aayam(s)
     yadi (n == 0) {
         prati dosh(2)
     }

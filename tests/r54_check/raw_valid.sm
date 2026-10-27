@@ -15,8 +15,8 @@ mukhya() {
     smaran_cp(b + 32, "OK", 3)
     likha(akshar(b, 32))
     likha(akshar(b, 33))
-    vartani_cp(b + 48, "YES")
+    vartani_pratilip(b + 48, "YES")
     likha(akshar(b, 48))
     vartani_cat(b + 48, "!")
-    likha(vartani_len(b + 48))
+    likha(vartani_aayam(b + 48))
 }

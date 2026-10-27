@@ -19,6 +19,6 @@ mukhya()
     likha("\n")
     vitti s = "Sutram"
     likha("Length: ")
-    likha(vartani_len(s))
+    likha(vartani_aayam(s))
     likha("\n")
     likha("=== Done ===\n")

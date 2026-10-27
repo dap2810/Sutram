@@ -5,6 +5,6 @@ mukhya() {
     akshar_rakh(buf, 2, 0)
     likha(akshar(buf, 0))
     likha(akshar(buf, 1))
-    likha(vartani_len(buf))
-    likha(vartani_cmp(buf, "hi"))
+    likha(vartani_aayam(buf))
+    likha(vartani_tul(buf, "hi"))
 }
