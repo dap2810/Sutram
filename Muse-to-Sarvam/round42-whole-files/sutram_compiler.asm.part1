@@ -1,0 +1,3019 @@
+; ============================================================
+; Sutram Compiler — Sutram Compiler — Sanskrit → x86-64
+; ============================================================
+; Pure x86-64 assembly. No libc, no C, no Python.
+; Reads .sk source, produces a raw ELF executable.
+;
+; CALLING CONVENTION:
+;   - Arguments in rdi, rsi, rdx, rcx, r8, r9
+;   - Return value in rax
+;   - Callee-saved: rbx, r12, r13, r14, r15, rbp
+;   - Caller-saved: rax, rcx, rdx, rsi, rdi, r8-r11
+;   - Every function must push/pop any callee-saved reg it uses
+;   - Stack must be 16-byte aligned before every CALL
+;
+; Build: nasm -f elf64 Sutram Compiler -o sc.o && ld -o sc sc.o
+; Run:   ./Sutram compiler input.sk output.bin
+; ============================================================
+
+BITS 64
+
+BASE_ADDR    equ 0x400000
+ELF_HDR_SIZE equ 64
+PHDR_SIZE    equ 56
+HEADERS_SIZE equ 120
+TOKEN_SIZE   equ 40
+R4_SEEN_CAP  equ 8192
+R4_PEND_CAP  equ 256
+R7_CLOSED_CAP equ 1024
+R7_CALL_CAP  equ 8192
+R7_DEF_CAP   equ 2048
+TOKEN_CAP    equ 65537      ; max one token per source byte + EOF
+STR_POOL_CAP equ 65537      ; max lexeme bytes + terminators for 64 KiB source
+IMPORT_BUF_CAP equ 65536    ; expanded source cannot exceed source_buf
+AST_NODE_SIZE equ 72
+BLOCK_STMT_CAP equ 256        ; B11: max statements stored in one AST_BLOCK
+AST_BLOCK_EXTRA equ (BLOCK_STMT_CAP * 8) - (AST_NODE_SIZE - 16)
+AST_HEAP_CAP equ 3145728      ; R53: 3 MiB compile-time AST heap for expanded modern stdlib (no runtime/codegen ABI change)
+FUNC_PARAMS_CAP equ 8192      ; 1024 parameter-name slots; >= 128 funcs * 6 args
+VAR_TABLE_CAP equ 256         ; entries; 16 bytes each
+FUNC_TABLE_CAP equ 128        ; entries; matches func_defs capacity
+PATCH_LIST_CAP equ 512        ; entries; 16 bytes each
+FUNC_DEFS_CAP equ 128         ; entries; 8 bytes each
+CODE_BUF_CAP equ 262144       ; generated machine-code bytes; 4x guarded headroom
+BLOB_CALL_CAP equ CODE_BUF_CAP / 5 + 1 ; R34: every runtime call is 5 code bytes, so this never fills
+BREAK_PATCH_CAP equ 1024      ; active break patch entries across nested loops
+CONTINUE_PATCH_CAP equ 1024   ; active continue patch entries across nested loops
+RACHANA_CAP equ 16            ; 256-byte entries in 4096-byte table
+RACHANA_FIELDS_CAP equ 15     ; 16-byte header + 15*16-byte fields = 256 bytes
+BLOCK_NESTING_CAP equ 128     ; parser recursion guard for nested blocks
+EXPR_NESTING_CAP  equ 1024    ; R17 R6: parser recursion guard for nested expressions ( ( ( ... ) ) )
+NS_FUNC_CAP equ 128         ; max exported user functions in an aliased module
+NS_FUNC_NAME_CAP equ 63    ; max function name bytes for module rewrite
+NS_ALIAS_CAP equ 31        ; ASCII alias bound, excluding terminator
+IMPORT_NAMES_CAP equ 16       ; 64-byte dedupe slots
+KOSH_VAR_CAP equ 256          ; growable-array names tracked per generated scope
+KOSH_PARAM_VAR_CAP equ 6      ; user functions accept at most six parameters
+PARAM_RAW equ 0               ; untyped/integer scalar parameter
+PARAM_DASHAM equ 1            ; scalar IEEE-754 binary64 parameter
+PARAM_KOSH equ 2              ; integer/raw-qword growable-array parameter
+PARAM_KOSH_DASHAM equ 3       ; binary64 growable-array parameter
+PARAM_VIBHAG equ 4            ; R23 WS3: a slice (descriptor pointer) parameter
+
+; Token types
+TOK_KEYWORD   equ 1
+TOK_IDENT     equ 2
+TOK_NUMBER    equ 3
+TOK_OPERATOR  equ 4
+TOK_DELIMITER equ 5
+TOK_BUILTIN   equ 6
+TOK_EOF       equ 0
+TOK_STRING    equ 7
+TOK_FLOAT     equ 8    ; T12 IEEE-754 binary64 literal
+
+; AST node types
+AST_NUM       equ 1
+AST_VAR       equ 2
+AST_ASSIGN    equ 3
+AST_BINOP     equ 4
+AST_IF        equ 5
+AST_WHILE     equ 6
+AST_RETURN    equ 7
+AST_CALL      equ 8
+AST_DECL      equ 9
+AST_BLOCK     equ 10
+AST_FUNC      equ 11
+AST_HALT      equ 12
+AST_WRITEMEM  equ 13
+AST_STR       equ 14
+AST_VEC       equ 15
+AST_FUNCDEF   equ 16
+AST_FUNCALL   equ 17
+AST_INDEX     equ 18    ; array read: [type][name_ptr][index_node]
+AST_FIELD     equ 19    ; field access: [type][name_ptr][field_offset]
+AST_FOR       equ 20    ; for loop: [type][var_name][start_expr][end_expr][body][0]
+AST_BREAK     equ 21    ; break: [type][0][0][0][0]
+AST_CONTINUE  equ 22    ; continue: [type][0][0][0][0]
+AST_ASSERT    equ 23    ; assert: [type][cond_expr][0][0][0]
+AST_TERNARY   equ 27    ; conditional expr: [type][cond][true_expr][false_expr]
+AST_DO_WHILE  equ 28    ; do-while stmt: [type][body][cond]
+AST_FLOAT     equ 29    ; T12 IEEE-754 binary64 bits in field1
+AST_FUNCREF   equ 40    ; R23 WS1: a prakriya name as a value: [type][name_ptr]
+AST_SLICE     equ 41    ; R23 WS3: base[lo:hi]: [type][base_name][lo][hi][desc_offset]
+AST_PRASAR    equ 42    ; R25: prasar call: [type][AST_FUNCALL]
+R28_RELOC_CAP equ 4096
+%define R28_PE_PAD db 0          ; R28: one byte past the 16-byte boundary, the parity v237 had (see the template)
+AST_HANDLE    equ 43    ; R26: yadi dosh (q = call) {fail} anya {ok}: [type][name][call][fail][ok]
+R25_PHAL_CAP  equ 512
+R23_METHOD_CAP equ 256
+R23_MCALL_CAP  equ 2048
+R56_GLOBAL_CAP equ 128
+R56_PATCH_CAP equ 16384
+R9_GUNA_CAP equ 1024        ; R9: hidden guna values per compilation
+FUNC_SPILL_BYTES equ 2048 ; reserved stack spill area per generated function/main
+; R31 experimental, disabled by default. Enable only with NASM:
+;   -DSUTRAM_EXPERIMENTAL_XMM_CACHE=1
+; This is a *compiler build* feature flag, not a source-language flag.
+; When omitted, zero generated-code paths or data change. Stage 1 uses only
+; volatile XMM2-XMM5, never XMM6-XMM15 (Windows nonvolatile).
+
+
+; R65 opt-in source mode: nasm -DSUTRAM_R65_TRAP_INT=1
+; Default build (without -D) follows the accepted wrap semantics.
+; Independent peephole mode: -DSUTRAM_R65_PEEPHOLES=1.
+; Operator IDs
+OP_ADD equ 1
+OP_SUB equ 2
+OP_MUL equ 3
+OP_DIV equ 4
+OP_EQ  equ 5
+OP_LE  equ 6
+OP_LT  equ 7
+OP_GT  equ 8
+OP_GE  equ 9
+OP_NE  equ 10
+OP_MOD equ 11   ; modulo (%)
+OP_AND equ 12   ; bitwise AND (&)
+OP_OR  equ 13   ; bitwise OR (|)
+OP_XOR equ 14   ; bitwise XOR (^)
+OP_LAND equ 15  ; logical AND (&&)
+OP_LOR equ 16   ; logical OR (||)
+OP_SHL equ 17   ; shift left (<<)
+OP_SHR equ 18   ; shift right (>>)
+
+; Keyword IDs
+KW_MUKHYA  equ 2
+KW_VITTI   equ 3
+KW_ANKA    equ 4
+KW_YADI    equ 6
+KW_YAVAT   equ 8
+KW_PRATIYATI equ 9
+KW_SANKHYA   equ 10
+KW_ANYATRA  equ 11
+KW_PRAKRIYA equ 12
+KW_AYOJAN  equ 13
+KW_RACHANA equ 14
+KW_PUNARAVARTANA equ 15
+KW_ATHA equ 16    ; atha = then/to (contextual keyword for for-loop)
+KW_SUTRA    equ 17    ; sutra = compile-time constant (rule/formula)
+KW_NISHEDHA equ 18    ; abhava = negation (absence)
+KW_KRAMA    equ 19    ; krama = break (order/sequence - stop)
+KW_UDDESHYA equ 20    ; agrim = continue (onward)
+KW_PURNA   equ 21    ; purna = true (complete/full)
+KW_SHUNYA  equ 22    ; shunya = false (void/empty)
+KW_PARIGRAH equ 23   ; satya = bool type (truth)
+KW_SRIJANA  equ 24   ; ganana = enum (enumeration)
+KW_GUNA     equ 25   ; guna = switch (quality/attribute)
+KW_BHAVANA  equ 26   ; bhavana = case (state/condition)
+KW_NISHKRIYA equ 27   ; yantra = inline assembly (machine)
+KW_PANKTI    equ 28   ; mala = array (garland/row)
+KW_KURU      equ 29   ; kuru = do (imperative Sanskrit, for do-while)
+KW_DASHAM    equ 30   ; dasham / दशम = scalar IEEE-754 binary64
+KW_KOSH      equ 31   ; kosh / कोश = growable qword array
+KW_VIBHAG    equ 32   ; R23 WS3: vibhag / विभाग = a slice parameter
+KW_SIDDHI    equ 33   ; R25: siddhi / सिद्धि = return success
+KW_DOSH      equ 34   ; R25: dosh / दोष = return failure
+KW_PRASAR    equ 35   ; R25: prasar / प्रसार = propagate a failure
+AST_NISHKRIYA equ 26  ; inline asm statement node
+
+; Builtin IDs
+BN_LIKH     equ 1
+BN_STHAGITA equ 3
+BN_PAD      equ 4
+BN_DVARAM   equ 5
+BN_PAADH    equ 6
+BN_LIKHA    equ 7
+BN_BAND     equ 8
+BN_NETSOCK  equ 9
+BN_NETBIND  equ 10
+BN_NETLIST  equ 11
+BN_NETACC   equ 12
+BN_NIRMRITA equ 13
+BN_LIKH8    equ 14
+BN_PAD8     equ 15
+BN_VARTLEN  equ 16
+BN_VARTCMP  equ 17
+BN_VARTCAT  equ 18
+BN_VECADD  equ 19
+BN_VECMUL  equ 20
+BN_VECDOT  equ 21
+BN_LKFMT   equ 22
+BN_CHARAT  equ 23
+BN_CHARCD  equ 24
+BN_CHARFR  equ 25
+BN_CHARUP  equ 26
+BN_CHARLO  equ 27
+BN_LIKH8C  equ 28
+BN_PAD8C   equ 29
+BN_MEMSET  equ 30
+BN_MEMCPY  equ 31
+BN_VARTCP  equ 32
+BN_GRAHAN  equ 33   ; grahan = read number from stdin
+BN_LKHB     equ 34   ; lkhb = print number without newline
+BN_SHABDA   equ 35   ; shabda = print a NUL-terminated string (variable)
+BN_PANKTILEN equ 36   ; pankti_len = array length for declared arrays
+BN_KOSHPUSH equ 37   ; kosh_push(k, value) -> new length
+BN_KOSHPOP  equ 38   ; kosh_pop(k) -> removed value
+BN_KOSHLEN  equ 39   ; kosh_len(k) -> logical length
+BN_KOSHCAP  equ 40   ; kosh_cap(k) -> current capacity
+BN_SETCHAR  equ 41   ; R50 one-byte store into byte-packed text
+BN_KOSHCLEAR equ 42 ; R63 kosh_clear(k) -> 0; reset logical length in place
+BN_KOSHEMPTY equ 43 ; R63 kosh_empty(k) -> 1 when length=0
+BN_KOSHPEEK equ 44  ; R63 kosh_peek(k) -> last element (without popping)
+BN_KOSHDEQUEUE equ 45 ; R63 kosh_dequeue(k) -> first element (FIFO)
+
+; ============================================================
+; DATA
+; ============================================================
+section .data
+str_dot_exe  db ".exe", 0
+    msg_usage    db "Sutram - sampurna sutra", 10
+                  db "Prayog:", 10
+                  db "  sutram <nivesh.sm> <nirgat.bin>         sankalan", 10
+                  db "  sutram --check <nivesh.sm>              pariksha matram, nirgatam na", 10
+                  db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
+                  db "  sutram -i                               khol (samvad)", 10
+                  db "  sutram --version                        sanskaran", 10, 0
+    msg_version  db "Sutram 1.0 (v248) - sampurna sutra", 10
+                  db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
+    r48_flag db "--check",0
+    r28_flag_object db "--object",0
+    r29_flag_separate db "--separate",0
+    r32_flag_ffi db "--ffi",0
+    r32_empty db 0
+    r38_flag_fail db "--fail-alloc",0
+    r48_msg_near db ": Sutram Error [E_PARSE]: shabd '",0
+    r48_msg_end db "'",10,0
+    r48_msg_ok db "Sutram pariksha: shuddham (nirgata-patram na rachitam)",10,0
+    r48_msg_errors db "Sutram pariksha: doshah praptah; nirgata-patram na rachitam",10,0
+    r48_msg_eof db "<patra-ant>",0
+    r50_msg_setchar_arity db "Sutram Error: akshar_rakh: 3 tark avashyak",10,0
+    r52_msg_dvaram_arity db "Sutram Error: dvaram: 2 va 3 tark avashyak",10,0
+    r52_msg_charat_arity db "Sutram Error: akshar: 2 tark avashyak",10,0
+    r52_msg_charcode_arity db "Sutram Error: aksharank: 1 va 2 tark avashyak",10,0
+    r54_msg_arity db "Sutram Error: tark sankhya hastakshar se bhinn",10,0
+    ; R54 builtin signature min,max in declaration ID order.
+r54_builtin_arity_table:
+    db 0,0               ; 0 reserved0
+    db 2,2               ; 1 likh
+    db 0,0               ; 2 reserved2
+    db 0,0               ; 3 sthagita
+    db 1,1               ; 4 pad
+    db 2,3               ; 5 dvaram
+    db 3,3               ; 6 paadh
+    db 1,3               ; 7 likha
+    db 1,1               ; 8 band
+    db 0,0               ; 9 netsock
+    db 2,2               ; 10 netbind
+    db 1,1               ; 11 netlisten
+    db 1,1               ; 12 netaccept
+    db 1,1               ; 13 nirmmita
+    db 2,2               ; 14 likh8
+    db 1,1               ; 15 pad8
+    db 1,1               ; 16 vartani_len
+    db 2,2               ; 17 vartani_cmp
+    db 2,2               ; 18 vartani_cat
+    db 3,3               ; 19 sankhya_yog
+    db 3,3               ; 20 sankhya_gunan
+    db 2,2               ; 21 sankhya_dot
+    db 2,2               ; 22 likha_fmt
+    db 2,2               ; 23 char_at
+    db 1,2               ; 24 char_code
+    db 1,1               ; 25 char_from
+    db 1,1               ; 26 char_upper
+    db 1,1               ; 27 char_lower
+    db 3,3               ; 28 likh8c
+    db 2,2               ; 29 pad8c
+    db 3,3               ; 30 smaran
+    db 3,3               ; 31 smaran_cp
+    db 2,2               ; 32 vartani_cp
+    db 0,0               ; 33 grahan
+    db 1,1               ; 34 lkhb
+    db 1,1               ; 35 shabda
+    db 1,1               ; 36 pankti_len
+    db 2,2               ; 37 kosh_push
+    db 1,1               ; 38 kosh_pop
+    db 1,1               ; 39 kosh_len
+    db 1,1               ; 40 kosh_cap
+    db 3,3               ; 41 set_char
+    db 1,1               ; 42 kosh_clear
+    db 1,1               ; 43 kosh_empty
+    db 1,1               ; 44 kosh_peek
+    db 1,1               ; 45 kosh_dequeue
+
+    r48_msg_undefined db ": Sutram Error [E_UNDEFINED_FUNCTION]: agyat prakriya '",0
+    ; R4: a read of a name that was never declared or assigned is an error
+    ; (it used to be auto-allocated and read as 0: a wrong answer, no diagnostic).
+    r4_msg_undef db ": Sutram Error [E_UNDEFINED_NAME]: agyat naam '",0
+    r4_msg_hint_decl db "Sanket: prayogat purvam ghoshana avashyaki: vitti ",0
+    r4_msg_hint_decl2 db " = ...",10,0
+    r4_msg_hint_old db "Sanket: '",0
+    r4_msg_hint_old2 db "' puratanah kunjishabdah (v157 tah purvam); navinah: '",0
+    r4_msg_hint_old3 db "'",10,0
+    r5_msg_field db ": Sutram Error [E_UNKNOWN_FIELD]: agyat kshetra '",0
+    r7_msg_dup db ": Sutram Error [E_DUPLICATE_NAME]: punah ghoshana '",0
+    r7_msg_dup_hint db "' purvam eva ghoshitam; navinam manam datum: ",0
+    r7_msg_dup_hint2 db " = ...",10,0
+    r7_msg_field_amb db ": Sutram Error [E_AMBIGUOUS_FIELD]: kshetra '",0
+    r7_msg_field_amb_hint db "' dvayoh rachanayoh bhinne sthane asti; pratyekasyam rachanayam bhinnam nama dadatu",10,0
+    r7_msg_field_dup_hint db "' asyam rachanayam purvam eva asti",10,0
+    r7_msg_arity db ": Sutram Error [E_ARITY]: '",0
+    r7_msg_arity2 db "' ityasmai ",0
+    r7_msg_arity3 db " tarkah dattah; hastakshare ",0
+    r7_msg_arity_hint db "Sanket: prakriyayah paribhashayam yavantah tarkah santi, tavantah eva dadatu",10,0
+    r7_msg_mod_missing db "Sutram Error [E_MODULE_MISSING]: yoj patra aprapt: ",0
+    r7_msg_mod_missing2 db 10,"Sanket: naam.smlib lib/ madhye srota-patrasya nirdeshikayam va bhavet",10,0
+    r7_msg_hint_block db "' kasminshchit khande { } chakra-madhye va ghoshitam; tatah bahih na drishyate",10,0
+    r5_msg_field_hint db "Sanket: '",0
+    r5_msg_field_hint2 db "' kasyashchid api rachanayah kshetram nasti",10,0
+    r4_old_kw:
+        dq r4_o_anyatra, kw_anyatra, r4_o_punar, kw_punaravartana, r4_o_prati, kw_pratiyati
+        dq r4_o_udd, kw_uddeshya, r4_o_pankti, kw_pankti, r4_o_srij, kw_srijana
+        dq r4_o_nish, kw_nishedha, r4_o_ayoj, kw_ayojan, r4_o_parig, kw_parigrah
+        dq r4_o_nishk, kw_nishkriya, r4_o_to, kw_to_str, 0, 0
+    r4_o_anyatra db "anyatra",0
+    r4_o_punar db "punaravartana",0
+    r4_o_prati db "pratiyati",0
+    r4_o_udd db "uddeshya",0
+    r4_o_pankti db "pankti",0
+    r4_o_srij db "srijana",0
+    r4_o_nish db "nishedha",0
+    r4_o_ayoj db "ayojan",0
+    r4_o_parig db "parigrah",0
+    r4_o_nishk db "nishkriya",0
+    r4_o_to db "to",0
+    msg_err_line db 10, "Sutram Error: vyakaran dosh, pankti ", 0
+    msg_err_near db ", shabd '", 0
+    msg_err_end  db "'", 10, 0
+    msg_err_eof  db "patra-ant", 0
+    msg_err_hint db "Sanket: asmin sthane shabdam vyakaranam cha pashyatu.", 10, 0
+    msg_err_colon db ":", 0
+    msg_diag_indent db "  ", 0
+    msg_diag_space db " ", 0
+    msg_diag_tab db 9, 0
+    msg_diag_nl db 10, 0
+    msg_diag_caret db "^", 10, 0
+    msg_err_arg_limit db "Sanket: prakriya adhikatamam 6 tarkan grihnati.", 10, 0
+    msg_err_duplicate_func db "Sanket: prakriyayah dvih paribhasha (nama-sangharshah).", 10, 0
+    msg_duplicate_func db "Sutram Error: punah prakriya paribhasha: ", 0
+    msg_undefined_func db "Sutram Error: agyat prakriya: ", 0
+    msg_array_oob db "Sutram Error: mala ank seema atikram", 10, 0
+    msg_kosh_required db "Sutram Error: kosh prakriya hetu kosh-vitti avashyak", 10, 0
+%ifdef SUTRAM_R65_TRAP_INT
+    r65_msg_prefix db "Sutram Error [E_INTEGER_TRAP] ",0
+    r65_msg_colon db ":",0
+    r65_msg_add db ": yog atipravah",10,0
+    r65_msg_sub db ": nyun atipravah",10,0
+    r65_msg_mul db ": gun atipravah",10,0
+    r65_msg_div db ": shunyena bhagah",10,0
+    r65_msg_mod db ": shunyena sheshah",10,0
+    r65_msg_div_overflow db ": bhajan atipravah",10,0
+    r65_msg_mod_overflow db ": shesh atipravah",10,0
+%endif
+    msg_kosh_empty db "Sutram Error: riktat koshat kosh_pop", 10, 0
+    msg_kosh_peek_empty db "Sutram Error: riktat koshat kosh_peek", 10, 0
+    msg_kosh_dequeue_empty db "Sutram Error: riktat koshat kosh_dequeue", 10, 0
+    msg_kosh_param_type db "Sutram Error: kosh tark: tatv prakar bhinn", 10, 0
+    msg_kosh_param_push db "Sutram Error: kosh-tarke kosh_push asamarthitam", 10, 0
+    r23_msg_slice_base db "Sutram Error: vibhag: mala, kosh va vibhag apekshita", 10, 0
+    r23_msg_slice_return db "Sutram Error: vibhag prakriyayah na pratyarpaniyah", 10, 0
+    r24_msg_method_hint db "Sanket: vidheh purvam ghoshana avashyaki: rachana ",0
+    r25_msg_phal_return db "Sutram Error: phal-prakriya: prati siddhi va dosh bhavet", 10, 0
+    r25_msg_phal_unused db "Sutram Error: phal-prakriya prasar vina ahuta", 10, 0
+    r25_msg_prasar_call db "Sutram Error: prasar: phal-prakriya-ahvanam apekshitam", 10, 0
+    r25_msg_prasar_where db "Sutram Error: prasar kevalam phal-prakriya-madhye mukhya-madhye va", 10, 0
+    r26_msg_handle_call db "Sutram Error: yadi dosh: phal-prakriya-ahvanam apekshitam", 10, 0
+    r28_msg_object_globals db "Sutram Error: vastu-patre ghatak-star vitti asamarthita", 10, 0
+    r32_msg_ffi_bad db "Sutram Error: videshi-ghoshana-patram dushtam, pankti ", 0
+    r32_msg_ffi_clash db "Sutram Error: videshi prakriya-nama anyatra api: ", 0
+    r33_msg_ffi_kind db "Sutram Error [E_FFI_KIND]: videshi prakriya ", 0
+    r33_msg_ffi_kind2 db ": ghoshitat prakarat bhinnah tarkah ", 0
+    r33_msg_ffi_void db ": mulyam na pratyarpayati", 10, 0
+
+    ; The v27 per-pack copies of five parse messages lived here. R11: every message
+    ; now has a copy per pack, in lang/<pack>.sandesh, assembled into
+    ; src/r11_sandesh.inc by tools/sandesh.py.
+
+    ; Language id: 0 = no --lang (the romanised default), 1..10 these packs,
+    ; 11 = sanskrit (R11: its messages are Devanagari Sanskrit).
+    lang_names:
+        dq 0, ln_bn, ln_gu, ln_hi, ln_kn, ln_ml, ln_mr, ln_or, ln_pa, ln_ta, ln_te, ln_sa
+    ln_bn db "bengali", 0
+    ln_gu db "gujarati", 0
+    ln_hi db "hindi", 0
+    ln_kn db "kannada", 0
+    ln_ml db "malayalam", 0
+    ln_mr db "marathi", 0
+    ln_or db "odia", 0
+    ln_pa db "punjabi", 0
+    ln_ta db "tamil", 0
+    ln_te db "telugu", 0
+    ln_sa db "sanskrit", 0
+%include "src/r22_lang_builtin.inc"
+
+    cur_lang_id dq 0
+    msg_lang_ok  db "Bhasha pak prapt: ", 0
+    msg_lang_fail db "Chetavani: bhasha-pakah na praptah: ", 0
+    msg_nl       db 10, 0
+    str_flag_i   db "-i", 0
+    str_flag_shell db "--shell", 0
+    str_flag_ver db "--version", 0
+    str_flag_v   db "-v", 0
+    str_flag_lang db "--lang", 0
+    str_envlang  db "SUTRAM_LANG=", 0
+    str_envhome  db "HOME=", 0
+    str_lp1      db "lang/", 0
+    str_lp2      db ".lang", 0
+    str_lp3      db "/.local/share/sutram/lang/", 0
+    str_procself db "/proc/self/exe", 0
+%ifdef WINDOWS
+    ; Keep REPL scratch files in the current directory on Windows.  The output
+    ; suffix intentionally selects the PE backend for the child compilation.
+    str_repl_in  db ".sutram_repl.sm", 0
+    str_repl_out db ".sutram_repl.exe", 0
+    str_repl_quote db '"', 0
+    str_repl_space db " ", 0
+    wn_repl_createprocess db "CreateProcessA", 0
+    wn_repl_wait          db "WaitForSingleObject", 0
+    wn_repl_getexit       db "GetExitCodeProcess", 0
+%else
+    str_repl_in  db "/tmp/.sutram_repl.sm", 0
+    str_repl_out db "/tmp/.sutram_repl.bin", 0
+%endif
+    str_exit1    db "nirgat", 0
+    str_exit2    db "exit", 0
+    str_exit3    db "quit", 0
+    str_help1    db "sahayata", 0
+    str_help2    db "help", 0
+    str_sarvam   db "sarvam", 0
+    msg_shell_banner db "Sutram khol v1.0 - sampurna sutra", 10
+                      db "Sutram-kathanam likhatu, Enter nudatu. Sadyah chalishyati.", 10
+                      db "Aadeshah: sahayata (sahayata) | nirgat (nirgamanam) | sarvam (sarvam pashyatu)", 10, 10, 0
+    msg_shell_prompt db "sutra> ", 0
+    msg_shell_bye db "Namaste! Satra samapt.", 10, 0
+    msg_shell_help db "Sutram khol sahayata:", 10
+                     db '  likha("Namaste\n")            patham likhati', 10
+                     db "  vitti x = 5             vitti-ghoshana", 10
+                     db "  likha(x + 3)            mulyam likhati", 10
+                     db "  chakra i = 0 tak 5 { likha(i) }   avartanam", 10
+                     db "  mala arr[5]             mala-ghoshana", 10
+                     db "  sarvam                  sampurnam karyakramam pashyatu", 10
+                     db "  nirgat                  kholat nirgacchatu", 10, 0
+    repl_prog_hdr db "mukhya() {", 10, 0
+    repl_prog_ftr db 10, "}", 10, 0
+    msg_open_err  db "Sutram Error: nivesh patra aprapt", 10, 0
+    msg_ok        db "Siddh: ", 0
+    msg_bytes     db " baait sankalit", 10, 0
+    dbg_pfb       db 0
+    lk_no_nl      dq 0
+    for_descend  dq 0      ; 1 = descending for-loop
+    newline       db 10, 0
+
+    ; Keyword table: [ptr][type][id] — 24 bytes each
+    kw_table:
+        dq kw_mukhya,    TOK_KEYWORD, KW_MUKHYA
+        dq kw_vitti,     TOK_KEYWORD, KW_VITTI
+        dq kw_anka,      TOK_KEYWORD, KW_ANKA
+        dq kw_yadi,      TOK_KEYWORD, KW_YADI
+        dq kw_yavat,     TOK_KEYWORD, KW_YAVAT
+        dq kw_pratiyati, TOK_KEYWORD, KW_PRATIYATI
+        ; Vector type
+        dq kw_sankhya,   TOK_KEYWORD, KW_SANKHYA
+        dq kw_anyatra,  TOK_KEYWORD, KW_ANYATRA
+        dq kw_dev_anyatra, TOK_KEYWORD, KW_ANYATRA
+        dq kw_prakriya,  TOK_KEYWORD, KW_PRAKRIYA
+        dq kw_dev_prakriya, TOK_KEYWORD, KW_PRAKRIYA
+        dq kw_ayojan,  TOK_KEYWORD, KW_AYOJAN
+        dq kw_rachana,  TOK_KEYWORD, KW_RACHANA
+        dq kw_punaravartana, TOK_KEYWORD, KW_PUNARAVARTANA
+        dq kw_sutra,      TOK_KEYWORD, KW_SUTRA
+        dq kw_nishedha,   TOK_KEYWORD, KW_NISHEDHA
+        dq kw_krama,      TOK_KEYWORD, KW_KRAMA
+        dq kw_uddeshya,   TOK_KEYWORD, KW_UDDESHYA
+        dq kw_purna,      TOK_KEYWORD, KW_PURNA
+        dq kw_shunya,     TOK_KEYWORD, KW_SHUNYA
+        dq kw_parigrah,   TOK_KEYWORD, KW_PARIGRAH
+        dq kw_srijana,    TOK_KEYWORD, KW_SRIJANA
+        dq kw_guna,       TOK_KEYWORD, KW_GUNA
+        dq kw_bhavana,    TOK_KEYWORD, KW_BHAVANA
+        dq kw_pankti,     TOK_KEYWORD, KW_PANKTI
+        dq kw_nishkriya,  TOK_KEYWORD, KW_NISHKRIYA
+        dq kw_kuru,       TOK_KEYWORD, KW_KURU
+        dq kw_dasham,     TOK_KEYWORD, KW_DASHAM
+        dq kw_kosh,       TOK_KEYWORD, KW_KOSH
+        dq kw_vibhag,     TOK_KEYWORD, KW_VIBHAG
+        dq kw_siddhi,     TOK_KEYWORD, KW_SIDDHI
+        dq kw_dosh,       TOK_KEYWORD, KW_DOSH
+        dq kw_prasar,     TOK_KEYWORD, KW_PRASAR
+        ; Devanagari equivalents (optional script)
+        dq kw_dev_mukhya,    TOK_KEYWORD, KW_MUKHYA
+        dq kw_dev_vitti,     TOK_KEYWORD, KW_VITTI
+        dq kw_dev_anka,      TOK_KEYWORD, KW_ANKA
+        dq kw_dev_yadi,      TOK_KEYWORD, KW_YADI
+        dq kw_dev_yavat,     TOK_KEYWORD, KW_YAVAT
+        dq kw_dev_pratiyati, TOK_KEYWORD, KW_PRATIYATI
+        dq kw_dev_pankti,    TOK_KEYWORD, KW_PANKTI
+        dq kw_dev_kuru,      TOK_KEYWORD, KW_KURU
+        dq kw_dev_dasham,    TOK_KEYWORD, KW_DASHAM
+        dq kw_dev_kosh,      TOK_KEYWORD, KW_KOSH
+        dq kw_dev_vibhag,    TOK_KEYWORD, KW_VIBHAG
+        dq kw_dev_siddhi,    TOK_KEYWORD, KW_SIDDHI
+        dq kw_dev_dosh,      TOK_KEYWORD, KW_DOSH
+        dq kw_dev_prasar,    TOK_KEYWORD, KW_PRASAR
+    kw_table_end:
+
+    ; Builtin table
+    bn_table:
+        dq bn_likh,     TOK_BUILTIN, BN_LIKH
+        dq bn_sthagita, TOK_BUILTIN, BN_STHAGITA
+        dq bn_pad,      TOK_BUILTIN, BN_PAD
+        dq bn_dvaram,   TOK_BUILTIN, BN_DVARAM
+        dq bn_paadh,    TOK_BUILTIN, BN_PAADH
+        dq bn_likha,    TOK_BUILTIN, BN_LIKHA
+        dq bn_band,     TOK_BUILTIN, BN_BAND
+        dq bn_netsock,  TOK_BUILTIN, BN_NETSOCK
+        dq bn_netbind,  TOK_BUILTIN, BN_NETBIND
+        dq bn_netlist,  TOK_BUILTIN, BN_NETLIST
+        dq bn_netacc,   TOK_BUILTIN, BN_NETACC
+        dq bn_nirm,     TOK_BUILTIN, BN_NIRMRITA
+        dq bn_likh8,    TOK_BUILTIN, BN_LIKH8
+        dq bn_pad8,     TOK_BUILTIN, BN_PAD8
+        dq bn_vartlen,  TOK_BUILTIN, BN_VARTLEN
+        dq bn_vartcmp,  TOK_BUILTIN, BN_VARTCMP
+        dq bn_vartcat,  TOK_BUILTIN, BN_VARTCAT
+        dq bn_vecadd,   TOK_BUILTIN, BN_VECADD
+        dq bn_vecmul,   TOK_BUILTIN, BN_VECMUL
+        dq bn_vecdot,   TOK_BUILTIN, BN_VECDOT
+        dq bn_lkfmt,    TOK_BUILTIN, BN_LKFMT
+        dq bn_charat,   TOK_BUILTIN, BN_CHARAT
+        dq bn_charcd,   TOK_BUILTIN, BN_CHARCD
+        dq bn_charfr,   TOK_BUILTIN, BN_CHARFR
+        dq bn_charup,   TOK_BUILTIN, BN_CHARUP
+        dq bn_charlo,   TOK_BUILTIN, BN_CHARLO
+        dq bn_likh8c,   TOK_BUILTIN, BN_LIKH8C
+        dq bn_pad8c,    TOK_BUILTIN, BN_PAD8C
+        dq bn_memset,   TOK_BUILTIN, BN_MEMSET
+        dq bn_memcpy,   TOK_BUILTIN, BN_MEMCPY
+        dq bn_vartcp,   TOK_BUILTIN, BN_VARTCP
+        dq bn_grahan,   TOK_BUILTIN, BN_GRAHAN
+        dq bn_lkhb,     TOK_BUILTIN, BN_LKHB
+        dq bn_shabda,   TOK_BUILTIN, BN_SHABDA
+        dq bn_panktilen, TOK_BUILTIN, BN_PANKTILEN
+        dq bn_koshpush, TOK_BUILTIN, BN_KOSHPUSH
+        dq bn_koshpop,  TOK_BUILTIN, BN_KOSHPOP
+        dq bn_koshlen,  TOK_BUILTIN, BN_KOSHLEN
+        dq bn_koshcap,  TOK_BUILTIN, BN_KOSHCAP
+        dq bn_koshclear, TOK_BUILTIN, BN_KOSHCLEAR
+        dq bn_koshempty, TOK_BUILTIN, BN_KOSHEMPTY
+        dq bn_koshpeek, TOK_BUILTIN, BN_KOSHPEEK
+        dq bn_koshenqueue, TOK_BUILTIN, BN_KOSHPUSH
+        dq bn_koshdequeue, TOK_BUILTIN, BN_KOSHDEQUEUE
+        dq bn_setchar,  TOK_BUILTIN, BN_SETCHAR
+    bn_table_end:
+
+    ; grahan(): read one line from stdin, parse digits, return in rax.
+    ; The read operation itself is emitted through emit_syscall.  Linux gets a
+    ; native syscall instruction; PE targets get a rel32 call to rt_syscall,
+    ; whose syscall-0 path uses kernel32!ReadFile on the cached stdin handle.
+    ;
+    ; Replacing the 2-byte Linux syscall with a 5-byte PE call changes the
+    ; backwards branch distances in the parse loop, so the common prefix and
+    ; target-specific tails are stored separately.
+    grahan_prefix_bytes:
+        db 0x48, 0x83, 0xEC, 0x10            ; sub rsp, 16
+        db 0x45, 0x31, 0xC0                  ; xor r8d, r8d
+        ; --- .read_loop ---
+        db 0x31, 0xC0                        ; xor eax, eax         (sys_read)
+        db 0x31, 0xFF                        ; xor edi, edi         (fd=0)
+        db 0x48, 0x89, 0xE6                  ; mov rsi, rsp         (buf)
+        db 0xBA, 0x01, 0x00, 0x00, 0x00      ; mov edx, 1          (len)
+    grahan_prefix_end:
+    GRAHAN_PREFIX_LEN equ grahan_prefix_end - grahan_prefix_bytes
+
+    ; Tail for Linux: follows a 2-byte syscall at offset 19.
+    grahan_linux_tail:
+        db 0x85, 0xC0                        ; test eax, eax
+        db 0x7E, 0x24                        ; jle .eof (+36)
+        db 0x0F, 0xB6, 0x14, 0x24            ; movzx edx,[rsp]
+        db 0x80, 0xFA, 0x0A                  ; cmp dl, 10
+        db 0x74, 0x16                        ; je .done (+22)
+        db 0x80, 0xFA, 0x30                  ; cmp dl, '0'
+        db 0x7C, 0xE0                        ; jl .read_loop (-32)
+        db 0x80, 0xFA, 0x39                  ; cmp dl, '9'
+        db 0x7F, 0xDB                        ; jg .read_loop (-37)
+        db 0x80, 0xEA, 0x30                  ; sub dl, '0'
+        db 0x4D, 0x6B, 0xC0, 0x0A            ; imul r8, r8, 10
+        db 0x49, 0x01, 0xD0                  ; add r8, rdx
+        db 0xEB, 0xCF                        ; jmp .read_loop (-49)
+        ; --- .done ---
+        db 0x4C, 0x89, 0xC0                  ; mov rax, r8
+        db 0xEB, 0x07                        ; jmp .ret (+7)
+        ; --- .eof: EOF -> return -1 ---
+        db 0x48, 0xC7, 0xC0, 0xFF, 0xFF, 0xFF, 0xFF ; mov rax, -1
+        ; --- .ret ---
+        db 0x48, 0x83, 0xC4, 0x10            ; add rsp, 16
+    grahan_linux_tail_end:
+    GRAHAN_TAIL_LEN equ grahan_linux_tail_end - grahan_linux_tail
+
+    ; Tail for PE: follows a 5-byte call to rt_syscall.  Forward branches keep
+    ; the same displacement; only the three branches back to .read_loop grow by 3.
+    grahan_pe_tail:
+        db 0x85, 0xC0                        ; test eax, eax
+        db 0x7E, 0x24                        ; jle .eof (+36)
+        db 0x0F, 0xB6, 0x14, 0x24            ; movzx edx,[rsp]
+        db 0x80, 0xFA, 0x0A                  ; cmp dl, 10
+        db 0x74, 0x16                        ; je .done (+22)
+        db 0x80, 0xFA, 0x30                  ; cmp dl, '0'
+        db 0x7C, 0xDD                        ; jl .read_loop (-35)
+        db 0x80, 0xFA, 0x39                  ; cmp dl, '9'
+        db 0x7F, 0xD8                        ; jg .read_loop (-40)
+        db 0x80, 0xEA, 0x30                  ; sub dl, '0'
+        db 0x4D, 0x6B, 0xC0, 0x0A            ; imul r8, r8, 10
+        db 0x49, 0x01, 0xD0                  ; add r8, rdx
+        db 0xEB, 0xCC                        ; jmp .read_loop (-52)
+        db 0x4C, 0x89, 0xC0                  ; mov rax, r8
+        db 0xEB, 0x07                        ; jmp .ret (+7)
+        db 0x48, 0xC7, 0xC0, 0xFF, 0xFF, 0xFF, 0xFF ; mov rax, -1
+        db 0x48, 0x83, 0xC4, 0x10            ; add rsp, 16
+    grahan_pe_tail_end:
+    GRAHAN_PE_TAIL_LEN equ grahan_pe_tail_end - grahan_pe_tail
+
+    ; T12 fixed-six-decimal float printer. Input: raw binary64 bits in RAX.
+    ; Prefix ends immediately before the platform write syscall/call so the
+    ; existing emit_syscall abstraction remains valid for ELF and PE.
+    float_print_prefix_bytes:
+        db 0x66,0x48,0x0F,0x6E,0xC0                  ; movq xmm0, rax
+        db 0x48,0xC7,0xC1,0x40,0x42,0x0F,0x00       ; mov rcx, 1000000
+        db 0xF2,0x48,0x0F,0x2A,0xC9                  ; cvtsi2sd xmm1, rcx
+        db 0xF2,0x0F,0x59,0xC1                       ; mulsd xmm0, xmm1
+        db 0xF2,0x4C,0x0F,0x2D,0xC0                  ; cvtsd2si r8, xmm0
+        db 0x48,0x83,0xEC,0x40                       ; sub rsp, 64
+        db 0x48,0x8D,0x74,0x24,0x3F                  ; lea rsi,[rsp+63]
+        db 0xC6,0x06,0x0A                             ; newline
+        db 0x48,0xFF,0xCE                             ; dec rsi
+        db 0x45,0x31,0xC9                             ; xor r9d,r9d
+        db 0x4D,0x85,0xC0,0x79,0x06                  ; test r8,r8 / jns
+        db 0x49,0xF7,0xD8,0x41,0xB1,0x01             ; neg r8 / sign=1
+        db 0xB9,0x06,0x00,0x00,0x00                  ; six fractional digits
+        db 0x31,0xD2,0x4C,0x89,0xC0                  ; frac loop: xor edx,edx; mov rax,r8
+        db 0x41,0xBA,0x0A,0x00,0x00,0x00             ; mov r10d,10
+        db 0x49,0xF7,0xF2,0x49,0x89,0xC0             ; div r10; mov r8,rax
+        db 0x80,0xC2,0x30,0x88,0x16,0x48,0xFF,0xCE  ; digit/store/dec rsi
+        db 0xFF,0xC9,0x75,0xE3                       ; dec ecx; jnz frac loop
+        db 0xC6,0x06,0x2E,0x48,0xFF,0xCE             ; '.' / dec rsi
+        db 0x4D,0x85,0xC0,0x75,0x08                  ; test r8 / jnz integer loop
+        db 0xC6,0x06,0x30,0x48,0xFF,0xCE,0xEB,0x1E  ; integer zero / jump done
+        db 0x31,0xD2,0x4C,0x89,0xC0                  ; integer loop
+        db 0x41,0xBA,0x0A,0x00,0x00,0x00             ; mov r10d,10
+        db 0x49,0xF7,0xF2,0x49,0x89,0xC0             ; div r10; mov r8,rax
+        db 0x80,0xC2,0x30,0x88,0x16,0x48,0xFF,0xCE  ; digit/store/dec rsi
+        db 0x4D,0x85,0xC0,0x75,0xE2                  ; loop while nonzero
+        db 0x45,0x84,0xC9,0x74,0x06                  ; test sign / jz
+        db 0xC6,0x06,0x2D,0x48,0xFF,0xCE             ; '-' / dec rsi
+        db 0x48,0xFF,0xC6                             ; inc rsi
+        db 0x48,0x8D,0x54,0x24,0x40,0x48,0x29,0xF2  ; length = rsp+64-rsi
+        db 0xBF,0x01,0x00,0x00,0x00                  ; edi=stdout
+        db 0xB8,0x01,0x00,0x00,0x00                  ; eax=write
+    float_print_prefix_end:
+    FLOAT_PRINT_PREFIX_LEN equ float_print_prefix_end - float_print_prefix_bytes
+    float_print_suffix_bytes:
+        db 0x48,0x83,0xC4,0x40                       ; add rsp,64
+    float_print_suffix_end:
+    FLOAT_PRINT_SUFFIX_LEN equ float_print_suffix_end - float_print_suffix_bytes
+
+    kw_mukhya    db "mukhya", 0
+    kw_vitti     db "vitti", 0
+    kw_anka      db "anka", 0
+    kw_yadi      db "yadi", 0
+    kw_yavat     db "yavat", 0
+    kw_pratiyati db "prati", 0
+    kw_sankhya   db "sankhya", 0
+    kw_anyatra  db "anya", 0
+    kw_prakriya db "prakriya", 0
+    kw_ayojan  db "yoj", 0
+    kw_rachana db "rachana", 0
+    kw_punaravartana db "chakra", 0
+    kw_to_str   db "tak", 0
+    kw_sutra    db "sutra", 0
+    kw_nishedha db "abhava", 0
+    kw_krama    db "krama", 0
+    kw_uddeshya db "agrim", 0
+    kw_purna    db "purna", 0
+    kw_shunya   db "shunya", 0
+    kw_parigrah db "satya", 0
+    kw_srijana  db "ganana", 0
+    kw_guna     db "guna", 0
+    kw_bhavana  db "bhavana", 0
+    kw_pankti   db "mala", 0
+    kw_nishkriya db "yantra", 0
+    kw_kuru      db "kuru", 0
+    kw_dasham    db "dasham", 0
+    kw_kosh      db "kosh", 0
+    kw_vibhag    db "vibhag", 0
+    kw_siddhi    db "siddhi", 0
+    kw_dosh      db "dosh", 0
+    kw_prasar    db "prasar", 0
+
+    ; Devanagari keyword strings (UTF-8 encoded)
+    kw_dev_mukhya    db 0xE0,0xA4,0xAE,0xE0,0xA5,0x81,0xE0,0xA4,0x96,0xE0,0xA5,0x8D,0xE0,0xA4,0xAF, 0
+    kw_dev_vitti     db 0xE0,0xA4,0xB5,0xE0,0xA4,0xBF,0xE0,0xA4,0xA4,0xE0,0xA5,0x8D,0xE0,0xA4,0xA4,0xE0,0xA4,0xBF, 0
+    kw_dev_anka      db 0xE0,0xA4,0x85,0xE0,0xA4,0x99,0xE0,0xA5,0x8D,0xE0,0xA4,0x95, 0
+    kw_dev_yadi      db 0xE0,0xA4,0xAF,0xE0,0xA4,0xA6,0xE0,0xA4,0xBF, 0
+    kw_dev_pankti    db 0xE0, 0xA4, 0xAA, 0xE0, 0xA4, 0x99, 0xE0, 0xA5, 0x8D, 0xE0, 0xA4, 0x95, 0xE0, 0xA5, 0x8D, 0xE0, 0xA4, 0xA4, 0xE0, 0xA4, 0xBF, 0
+    kw_dev_yavat     db 0xE0,0xA4,0xAF,0xE0,0xA4,0xBE,0xE0,0xA4,0xB5,0xE0,0xA4,0xA4,0xE0,0xA5,0x8D, 0
+    kw_dev_kuru      db 0xE0,0xA4,0x95,0xE0,0xA5,0x81,0xE0,0xA4,0xB0,0xE0,0xA5,0x81, 0
+    ; दशम
+    kw_dev_dasham   db 0xE0,0xA4,0xA6,0xE0,0xA4,0xB6,0xE0,0xA4,0xAE, 0
+    ; कोश
+    kw_dev_kosh     db 0xE0,0xA4,0x95,0xE0,0xA5,0x8B,0xE0,0xA4,0xB6, 0
+    kw_dev_vibhag   db 224,164,181,224,164,191,224,164,173,224,164,190,224,164,151, 0
+    kw_dev_siddhi   db 224,164,184,224,164,191,224,164,166,224,165,141,224,164,167,224,164,191, 0
+    kw_dev_dosh     db 224,164,166,224,165,139,224,164,183, 0
+    kw_dev_prasar   db 224,164,170,224,165,141,224,164,176,224,164,184,224,164,190,224,164,176, 0
+            kw_dev_prakriya db 0xE0,0xA4,0xAA,0xE0,0xA5,0x8D,0xE0,0xA4,0xB0,0xE0,0xA4,0x95,0xE0,0xA5,0x8D,0xE0,0xA4,0xB0,0xE0,0xA4,0xBF,0xE0,0xA4,0xAF,0xE0,0xA4,0xBE, 0
+    kw_dev_anyatra db 0xE0,0xA4,0x85,0xE0,0xA4,0xA8,0xE0,0xA5,0x8D,0xE0,0xA4,0xAF,0xE0,0xA4,0xA4,0xE0,0xA5,0x8D,0xE0,0xA4,0xB0, 0
+    kw_dev_pratiyati db 0xE0,0xA4,0xAA,0xE0,0xA5,0x8D,0xE0,0xA4,0xB0,0xE0,0xA4,0xA4,0xE0,0xA5,0x8D,0xE0,0xA4,0xAF,0xE0,0xA4,0xBE,0xE0,0xA4,0xAF,0xE0,0xA4,0xA4,0xE0,0xA4,0xBF, 0
+
+    bn_likh      db "likh", 0
+    bn_sthagita  db "sthagita", 0
+    bn_pad       db "pad", 0
+    bn_dvaram    db "dvaram", 0
+    bn_paadh     db "paadh", 0
+    msg_guna_dbg1  db "G1", 10
+    msg_guna_dbg2  db "BAD\n", 0
+    msg_guna_dbg3  db "LK", 10
+    bn_likha     db "likha", 0
+    bn_band      db "band", 0
+    bn_netsock   db "netsock", 0
+    bn_netbind   db "netbind", 0
+    bn_netlist   db "netlisten", 0
+    bn_netacc    db "netaccept", 0
+    bn_nirm      db "nirmmita", 0
+    bn_likh8     db "likh8", 0
+    bn_pad8      db "pad8", 0
+    bn_vartlen   db "vartani_len", 0
+    bn_vartcmp   db "vartani_cmp", 0
+    bn_vartcat   db "vartani_cat", 0
+    bn_vecadd    db "sankhya_yog", 0
+    bn_vecmul    db "sankhya_gunan", 0
+    bn_vecdot    db "sankhya_dot", 0
+    bn_lkfmt     db "likha_fmt", 0
+    bn_charat    db "akshar", 0
+    bn_setchar   db "akshar_rakh", 0
+    bn_charcd    db "aksharank", 0
+    bn_panktilen db "pankti_len", 0
+    bn_koshpush db "kosh_push", 0
+    bn_koshpop  db "kosh_pop", 0
+    bn_koshlen  db "kosh_len", 0
+    bn_koshcap  db "kosh_cap", 0
+    bn_koshclear db "kosh_clear", 0
+    bn_koshempty db "kosh_empty", 0
+    bn_koshpeek db "kosh_peek", 0
+    bn_koshenqueue db "kosh_enqueue", 0  ; FIFO append = kosh_push
+    bn_koshdequeue db "kosh_dequeue", 0 ; FIFO removal of first
+    bn_charfr    db "char_from", 0
+    bn_charup    db "char_upper", 0
+    bn_charlo    db "char_lower", 0
+    bn_likh8c    db "likh8c", 0
+    bn_pad8c     db "pad8c", 0
+    bn_memset    db "smaran", 0
+    bn_memcpy    db "smaran_cp", 0
+    bn_vartcp    db "vartani_cp", 0
+    bn_grahan    db "grahan", 0
+    bn_lkhb      db "lkhb", 0
+    bn_shabda    db "shabda", 0
+
+    msg_namespace_error db "Sutram Error: ashuddh yoj (roop: ghatak@upanaam, upanaam 31 baait tak)", 10, 0
+    msg_namespace_module_missing db "Sutram Error: ghatak patra aprapt", 10, 0
+    msg_namespace_alias_reuse db "Sutram Error: upanaam purv-niyukt (anya ghatak)", 10, 0
+    r51_alias_conflict db ": Sutram Error [E_MODULE_ALIAS_REUSE]: upanaam purv-niyukt (anya ghatak)",10,0
+    msg_namespace_func_limit db "Sutram Error: ghatak prakriya-naam seema atikram", 10, 0
+    msg_import_overflow db "Sutram Error: vistarit srot seema atikram", 10, 0
+    graph_v1_header db '# sutram-module-v1', 0
+    graph_msg_cycle db 'E_MODULE_CYCLE', 0
+    graph_msg_missing db 'E_MODULE_MISSING', 0
+    graph_msg_limit db 'E_MODULE_LIMIT', 0
+    graph_msg_invalid db 'E_MODULE_INVALID', 0
+    graph_prefix db ': Sutram Error [', 0
+    graph_close db ']: ', 0
+    graph_arrow db ' -> ', 0
+    graph_colon db ':', 0
+    r49_unknown_column db "?", 0
+    r51_unknown_origin db ":?:?",0
+    graph_nl db 10,0
+    graph_cycle_prefix db 'yoj chakra: ',0
+    graph_missing_prefix db 'yoj patra aprapt: ',0
+    graph_limit_prefix db 'ghatak/yoj seema atikram',0
+    graph_invalid_prefix db 'ashuddh ghatak naam',0
+    msg_ast_overflow db "Sutram Error: vakya-vriksh seema atikram", 10, 0
+    msg_func_params_overflow db "Sutram Error: prakriya tark-suchi seema atikram", 10, 0
+    msg_var_table_overflow db "Sutram Error: vitti-suchi seema atikram", 10, 0
+    msg_func_table_overflow db "Sutram Error: prakriya-suchi seema atikram", 10, 0
+    msg_patch_overflow db "Sutram Error: aahvan-suchi seema atikram", 10, 0
+    msg_func_defs_overflow db "Sutram Error: prakriya paribhasha-suchi seema atikram", 10, 0
+    msg_r9_guna_overflow db "Sutram Error: guna seema atikram (1024)", 10, 0
+    msg_break_patch_overflow db "Sutram Error: chakra-madhye krama seema atikram", 10, 0
+    msg_continue_patch_overflow db "Sutram Error: chakra-madhye agrim seema atikram", 10, 0
+    msg_code_overflow db "Sutram Error: yantra-bhasha seema atikram", 10, 0
+    msg_rachana_overflow db "Sutram Error: rachana-suchi seema atikram", 10, 0
+    msg_rachana_fields_overflow db "Sutram Error: rachana kshetra seema atikram", 10, 0
+    msg_block_nesting_overflow db "Sutram Error: khand gahrai seema atikram", 10, 0
+    msg_block_stmt_overflow db "Sutram Error: khand kathan seema atikram", 10, 0
+    r55_msg_proto_duplicate db "Sutram Error: punah prakriya purv-ghoshana",10,0
+    r55_msg_proto_missing db "Sutram Error: prakriya purv-ghoshana paribhasha-rahit",10,0
+    r55_msg_proto_signature db "Sutram Error: prakriya purv-ghoshana va paribhasha bhinn (tark/prakar)",10,0
+    r55_msg_proto_capacity db "Sutram Error: prakriya purv-ghoshana seema atikram",10,0
+    r56_msg_global_capacity db "Sutram Error: ghatak-star vitti seema atikram",10,0
+    r56_msg_global_duplicate db "Sutram Error: punah ghatak-star vitti naam",10,0
+    r56_msg_patch_capacity db "Sutram Error: sarvatrik mulya sandarbh seema atikram",10,0
+
+%include "src/r11_sandesh.inc"   ; R11: every message per pack (tools/sandesh.py writes it)
+section .bss
+    source_buf  resb 65536
+    source_len  resq 1
+    source_path_ptr resq 1      ; original input path for ayojan resolution
+    r48_mode resq 1
+    r48_error_count resq 1
+    r48_parse_rsp resq 1
+    r48_stmt_start resq 1
+    r48_stmt_valid resq 1
+    r48_error_line resq 1
+    r48_charbuf resb 4
+    ; R51 diagnostic origin maps, bounded to expanded source capacity.
+    r51_src_file resq IMPORT_BUF_CAP
+    r51_dst_file resq IMPORT_BUF_CAP
+    r51_src_off resd IMPORT_BUF_CAP
+    r51_dst_off resd IMPORT_BUF_CAP
+    r51_import_paths resb IMPORT_NAMES_CAP * 512
+    r51_paths_used resq 1
+    r51_current_path resq 1
+    r51_import_start resq 1
+    r51_raw_map resd IMPORT_BUF_CAP
+    r51_ns_emit_pos resq 1
+    r51_last_off resq 1
+    r51_last_size resq 1
+    alignb 8                    ; R23 WS2: token pointers are even; a method call marks bit 0
+    token_arr   resb TOKEN_CAP * TOKEN_SIZE ; capacity matches 64 KiB source + EOF
+    token_cnt   resq 1
+    token_idx   resq 1
+    ; R4 undefined-name check: names declared so far in parse order
+    r4_seen        resq R4_SEEN_CAP
+    r4_seen_count  resq 1
+    r4_seen_base   resq 1
+    r5_field_tok   resq 1             ; R5: token of the field name being resolved
+    r7_assign_tok  resq 1             ; R7: token of the assignment target being parsed
+    r7_closed      resq R7_CLOSED_CAP*2 ; R7: (name, token at the close) of closed names
+    r7_closed_count resq 1
+    r7_calls       resq R7_CALL_CAP*3 ; R7: (name, argc, token) of every user call
+    r7_call_count  resq 1
+    r7_defs        resq R7_DEF_CAP*2  ; R7: (name, params) of every prakriya
+    r7_def_count   resq 1
+    r4_pend_tok    resq R4_PEND_CAP   ; identifier token of each unresolved read
+    r4_pend_count  resq 1
+    ast_heap    resb AST_HEAP_CAP
+    ast_ptr     resq 1
+    str_pool    resb STR_POOL_CAP ; lexer identifier/string storage for max-size source
+    import_buf  resb IMPORT_BUF_CAP ; dedicated ayojan expansion buffer
+    ns_active resq 1
+    ns_alias resb 32
+    ns_dedupe_key resb 64
+    ns_raw_buf resb IMPORT_BUF_CAP
+    ns_raw_len resq 1
+    ns_func_count resq 1
+    ns_func_names resb NS_FUNC_CAP * 64
+    ns_func_is_const resb NS_FUNC_CAP ; 1 for top-level sutra, 0 for prakriya
+    module_path_buf resb 512      ; dedicated ayojan path scratch
+    str_ptr     resq 1
+    code_buf    resb CODE_BUF_CAP
+    code_sz     resq 1
+    var_table   resb VAR_TABLE_CAP * 16 ; [name_ptr(8)][offset(8)]
+    var_cnt     resq 1
+    stack_dep   resq 1
+    ; R65: compiler-only preceding assignment value still live in generated RAX.
+    ; Enabled only with -DSUTRAM_R65_PEEPHOLES=1. Never deletes emitted bytes.
+%ifdef SUTRAM_R65_PEEPHOLES
+    r65_last_store_name resq 1
+    r65_candidate_name resq 1
+    r65_last_store_end resq 1
+    r65_candidate_end resq 1
+%endif
+    array_vars  resq 256        ; T8b: pankti names in current generated-function scope
+    array_var_cnt resq 1
+    kosh_vars   resq KOSH_VAR_CAP ; T18 growable-array names in current generated-function scope
+    kosh_var_cnt resq 1
+    kosh_param_vars resq KOSH_PARAM_VAR_CAP ; T18: kosh parameters (growth cannot replace caller ptr)
+    kosh_param_var_cnt resq 1
+    float_kosh_vars resq KOSH_VAR_CAP ; T18: kosh dasham element-type names in current scope
+    float_kosh_var_cnt resq 1
+    float_vars  resq VAR_TABLE_CAP ; T12 dasham names in current generated-function scope
+    float_var_cnt resq 1
+%ifdef SUTRAM_EXPERIMENTAL_XMM_CACHE
+    ; Stage 1 within-basic-block virtual cache. Fixed logical slots 1..4 map
+    ; to XMM2..XMM5. GPRs/stack remain authoritative at ALL times (write-through).
+    ; Dirty stays zero: no delayed spills can cross calls/branches/return edges.
+    xmm_cache_valid_mask resq 1
+    xmm_cache_live_mask resq 1
+    xmm_cache_dirty_mask resq 1
+    xmm_cache_hits resq 1
+    xmm_cache_misses resq 1
+    xmm_cache_barriers resq 1
+%endif
+    num_buf     resb 32
+    out_fd      resq 1
+    root_node   resq 1
+    call_args   resb 256
+    param_buf_pos resq 1
+    blob_calls   resq BLOB_CALL_CAP ; R34: was 256, unchecked - a Windows program with more
+                                   ; calls into the runtime overran it (the compiler crashed)
+    blob_call_cnt resq 1
+    target_pe    resq 1
+    pe_hdr       resb 512
+    pe_pad       resb 256
+    func_params resb FUNC_PARAMS_CAP ; aggregate parameter-name storage
+    func_param_types resb FUNC_PARAMS_CAP / 8 ; T12/T18: PARAM_* byte per parameter slot
+    func_table  resb FUNC_TABLE_CAP * 16 ; [name_ptr(8)][code_offset(8)]
+    func_count  resq 1
+    patch_list   resb PATCH_LIST_CAP * 16 ; [call_offset(8)][name_ptr(8)]
+    patch_count  resq 1
+    func_defs    resb FUNC_DEFS_CAP * 8 ; [funcdef_node_ptr(8)]
+    func_def_cnt resq 1
+    ; R55 compile-time only forward declarations (no emitted code/data).
+    r55_proto_count resq 1
+    r55_proto_names resq FUNC_DEFS_CAP
+    r55_proto_arity resq FUNC_DEFS_CAP
+    r55_proto_param_end resq FUNC_DEFS_CAP
+    ; R56: separate module-global names/declarations, not per-function registers.
+    r56_global_count resq 1
+    r56_global_names resq R56_GLOBAL_CAP
+    r56_global_nodes resq R56_GLOBAL_CAP
+    ; [generated RIP displacement field offset, 0-based module-global index].
+    r56_patch_count resq 1
+    r56_patches resq R56_PATCH_CAP * 2
+    top_const_count resq 1
+    top_const_nodes resq 128   ; compile-time top-level sutra initializers
+    in_function  resq 1       ; 0 = in main, 1 = in user function
+    current_func_float resq 1 ; T12: active prakriya returns binary64 when nonzero
+    alloc_sizes  resb 1024    ; [name_ptr(8)][size(8)] = 16 bytes each (borrow checker)
+    alloc_sz_cnt resq 1
+    import_names resb IMPORT_NAMES_CAP * 64 ; fixed 64-byte module-name slots for ayojan dedupe
+    import_count resq 1
+    import_new_this_pass resq 1  ; R40: transitive import fixed-point tracker
+    import_depth_round resq 1   ; R40: bounded graph expansion passes
+    ; Single-pass R44 module graph uses mg_* tables below; no duplicate 1MiB
+    ; R41 graph_buffers allocation or second DFS state remains.
+    graph_detail_ptr resq 1  ; only retained for portable R41 missing diagnostic
+    rachana_defs resb RACHANA_CAP * 256 ; [name_ptr(8)][field_count(8)][fields...]
+    rachana_cnt  resq 1
+    r9_guna_cnt resq 1
+    r9_guna_names resb R9_GUNA_CAP * 16
+    break_patch_positions resq BREAK_PATCH_CAP ; positions of break jmps to backpatch
+    break_patch_cnt      resq 1
+    continue_patch_positions resq CONTINUE_PATCH_CAP ; positions of continue jmps to backpatch
+    continue_patch_cnt      resq 1
+    guna_expr   resq 1      ; switch expression for guna parser
+    guna_first  resq 1      ; first if node in chain
+    guna_last   resq 1      ; last if node in chain
+    cur_line    resq 1      ; current source line (error reporting)
+    parse_error_kind resq 1 ; 0=generic, 1=too many function args, 2=duplicate function
+    parse_block_depth resq 1 ; B10 audit: guarded recursive block nesting depth
+    parse_expr_depth  resq 1 ; R17 R6: nesting depth of the expression being parsed
+    orig_rsp    resq 1      ; original stack ptr at _start (for envp scan)
+    ; Language pack support
+    lang_file_buf resb 16384 ; contents of .lang file
+    lang_w1     resb 64      ; native word scratch
+    lang_to_word resb 64     ; native word for 'to' (loop ranges)
+    lang_w2     resb 64      ; sanskrit keyword scratch
+    lang_kw_strs resb 8192   ; pool for native keyword strings
+    lang_str_ptr resq 1      ; current pos in lang_kw_strs
+    lang_kw_table resb 2304  ; runtime keyword entries (24 bytes x 96)
+    lang_kw_cnt resq 1       ; number of loaded entries
+    lang_builtin_table resb 768 ; runtime builtin aliases (24 x 32)
+    lang_builtin_cnt resq 1  ; number of loaded builtin aliases
+    lang_entry_type resq 1   ; scratch: 1=keyword, 0=builtin
+    lang_path_buf resb 512   ; scratch for building paths
+    ; REPL support
+    repl_line   resb 512     ; one input line
+    repl_session resb 8192   ; accumulated program lines
+    repl_self   resb 256     ; path of this executable
+    repl_argv1  resq 6       ; argv for compile exec
+    lang_loaded_name resb 64  ; name of the active language pack
+    repl_argv2  resq 3       ; argv for run exec
+    repl_envp   resq 1       ; empty envp
+    repl_status resq 1       ; child exit status
+    repl_total_len resq 1    ; program buffer length
+%ifdef WINDOWS
+    ; Windows REPL process-launch state.  STARTUPINFOA is 104 bytes on x64;
+    ; PROCESS_INFORMATION is 24 bytes.
+    repl_cmd_compile resb 1024
+    repl_cmd_run     resb 512
+    repl_win_si      resb 104
+    repl_win_pi      resb 24
+    repl_win_exit    resd 1
+    repl_win_written resd 1
+    p_repl_createprocess resq 1
+    p_repl_wait          resq 1
+    p_repl_getexit       resq 1
+%endif
+    pe_charbuf  resb 8       ; scratch for operator chars
+
+; ============================================================
+; CODE
+; ============================================================
+section .text
+    global _start
+
+; ============================================================
+; ENTRY POINT
+; ============================================================
+
+; ============================================================
+; SHELL & LANGUAGE PACK RUNTIME
+; ============================================================
+
+; get_self_path: remember the compiler path for REPL child launches.
+get_self_path:
+%ifdef WINDOWS
+    push rbx
+    mov rbx,rsp
+    and rsp,-16
+    sub rsp,32
+    xor ecx,ecx
+    lea rdx,[rel repl_self]
+    mov r8d,256
+    call qword [rel p_modulepath]
+    mov rsp,rbx
+    pop rbx
+    test eax,eax
+    jz .gsp_bad
+    cmp eax,256
+    jb .gsp_done
+.gsp_bad:
+    mov edi,2
+    call os_exit
+%else
+    lea rdi, [rel str_procself]
+    lea rsi, [rel repl_self]
+    mov rdx, 255
+    call os_readlink
+    test rax, rax
+    jle .gsp_done
+    lea rcx, [rel repl_self]
+    mov byte [rcx + rax], 0
+%endif
+.gsp_done:
+    ret
+
+; env_get_value(rdi = "NAME=") -> rax = value ptr or 0
+env_get_value:
+    push rbx
+    push r12
+    mov rbx, rdi                ; name=
+    mov r12, [rel orig_rsp]
+    mov rax, [r12]              ; argc
+    lea r12, [r12 + rax*8 + 16] ; &env[0]
+.env_loop:
+    mov rsi, [r12]
+    test rsi, rsi
+    jz .env_notfound
+    xor rcx, rcx
+.env_cmp:
+    mov dl, [rbx + rcx]
+    test dl, dl
+    jz .env_found
+    cmp dl, [rsi + rcx]
+    jne .env_next
+    inc rcx
+    jmp .env_cmp
+.env_next:
+    add r12, 8
+    jmp .env_loop
+.env_found:
+    lea rax, [rsi + rcx]        ; value ptr
+    pop r12
+    pop rbx
+    ret
+.env_notfound:
+    xor rax, rax
+    pop r12
+    pop rbx
+    ret
+
+; maybe_load_env_lang: load SUTRAM_LANG pack if the env var is set
+maybe_load_env_lang:
+    push rbx
+    lea rdi, [rel str_envlang]
+    call env_get_value
+    test rax, rax
+    jz .mle_done
+    mov rdi, rax
+    call try_load_lang
+.mle_done:
+    pop rbx
+    ret
+
+; str_copy(rdi = dst, rsi = src): copy null-terminated string
+str_copy:
+    push rbx
+    mov rbx, rdi
+.sc_loop:
+    movzx rax, byte [rsi]
+    mov [rbx], al
+    test al, al
+    jz .sc_done
+    inc rbx
+    inc rsi
+    jmp .sc_loop
+.sc_done:
+    pop rbx
+    ret
+
+; str_append(rdi = dst, rsi = src): append src to dst
+str_append:
+    push rbx
+    push r12
+    mov rbx, rdi
+.sa_find_end:
+    cmp byte [rbx], 0
+    je .sa_copy
+    inc rbx
+    jmp .sa_find_end
+.sa_copy:
+    movzx r12, byte [rsi]
+    mov [rbx], r12
+    test r12b, r12b
+    jz .sa_done
+    inc rbx
+    inc rsi
+    jmp .sa_copy
+.sa_done:
+    pop r12
+    pop rbx
+    ret
+
+; try_load_lang(rdi = pack name): search paths, load, report
+try_load_lang:
+    push rbx
+    push r12
+    mov r12, rdi                ; save pack name
+    ; Pack names must fit lang_loaded_name (63 bytes plus NUL).
+    xor ecx,ecx
+.tll_name_bound:
+    cmp byte [r12+rcx],0
+    je .tll_name_ok
+    inc ecx
+    cmp ecx,64
+    jb .tll_name_bound
+    jmp .tll_fail
+.tll_name_ok:
+    call set_lang_id              ; R11: messages follow the named pack, found or not
+    ; remember the pack name for the REPL child processes
+    lea rdi, [rel lang_loaded_name]
+    mov rsi, r12
+    call str_copy
+    ; path 1: lang/<name>.lang
+    lea rdi, [rel lang_path_buf]
+    lea rsi, [rel str_lp1]
+    call str_copy
+    lea rdi, [rel lang_path_buf]
+    mov rsi, r12
+    call str_append
+    lea rdi, [rel lang_path_buf]
+    lea rsi, [rel str_lp2]
+    call str_append
+    lea rdi, [rel lang_path_buf]
+    call load_lang_file
+    test rax, rax
+    jnz .tll_ok
+%ifdef WINDOWS
+    ; Portable/install layout keeps language packs beside the executable.
+    lea rsi,[rel repl_self]
+    xor ecx,ecx
+    xor r8d,r8d
+.tll_dir_scan:
+    mov al,[rsi+rcx]
+    test al,al
+    jz .tll_dir_copy
+    cmp al,'/'
+    je .tll_dir_mark
+    cmp al,92
+    jne .tll_dir_next
+.tll_dir_mark:
+    lea r8,[rcx+1]
+.tll_dir_next:
+    inc ecx
+    jmp .tll_dir_scan
+.tll_dir_copy:
+    lea rdi,[rel lang_path_buf]
+    mov rcx,r8
+    rep movsb
+    mov byte [rdi],0
+    lea rsi,[rel str_lp1]
+    call str_copy
+    lea rdi,[rel lang_path_buf]
+    mov rsi,r12
+    call str_append
+    lea rdi,[rel lang_path_buf]
+    lea rsi,[rel str_lp2]
+    call str_append
+    lea rdi,[rel lang_path_buf]
+    call load_lang_file
+    test rax,rax
+    jnz .tll_ok
+%endif
+    ; path 2: $HOME/.local/share/sutram/lang/<name>.lang
+    lea rdi, [rel str_envhome]
+    call env_get_value
+    test rax, rax
+    jz .tll_builtin
+    mov rsi, rax
+    lea rdi, [rel lang_path_buf]
+    call str_copy
+    lea rdi, [rel lang_path_buf]
+    lea rsi, [rel str_lp3]
+    call str_append
+    lea rdi, [rel lang_path_buf]
+    mov rsi, r12
+    call str_append
+    lea rdi, [rel lang_path_buf]
+    lea rsi, [rel str_lp2]
+    call str_append
+    lea rdi, [rel lang_path_buf]
+    call load_lang_file
+    test rax, rax
+    jnz .tll_ok
+.tll_builtin:
+    ; R22 (F8): no .lang file on any path. The pack's messages are built in
+    ; (set_lang_id above), so its keywords are too: a name that is a pack never
+    ; reaches the warning. Only a name that is no pack at all does.
+    mov ebx, 1
+.tll_bi_next:
+    cmp ebx, 12
+    jae .tll_fail
+    lea rax, [rel lang_names]
+    mov rdi, [rax + rbx*8]
+    mov rsi, r12
+    push rbx
+    call strcmp
+    pop rbx
+    test rax, rax
+    jz .tll_bi_found
+    inc ebx
+    jmp .tll_bi_next
+.tll_bi_found:
+    lea rax, [rel lang_builtin_ptr]
+    mov rdi, [rax + rbx*8]
+    lea rax, [rel lang_builtin_len]
+    mov rsi, [rax + rbx*8]
+    call load_lang_mem
+    test rax, rax
+    jnz .tll_ok
+.tll_fail:
+    lea rdi, [rel msg_lang_fail]
+    call print_str_z
+    mov rdi, r12
+    call print_str_z
+    lea rdi, [rel msg_nl]
+    call print_str_z
+    xor rax, rax
+    pop r12
+    pop rbx
+    ret
+.tll_ok:
+    lea rdi, [rel msg_lang_ok]
+    call print_str_z
+    mov rdi, r12
+    call print_str_z
+    lea rdi, [rel msg_nl]
+    call print_str_z
+    mov rax, 1
+    pop r12
+    pop rbx
+    ret
+
+; load_lang_mem(rdi = data, rsi = length) -> rax = 1 loaded, 0 failed
+; R22 (F8): a built-in .lang, parsed exactly as a file is (same buffer, same parser).
+load_lang_mem:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    mov r13, rsi
+    test r13, r13
+    jle load_lang_file.llf_fail
+    cmp r13, 16384
+    ja load_lang_file.llf_fail
+    mov rsi, rdi
+    lea rdi, [rel lang_file_buf]
+    mov rcx, r13
+    rep movsb
+    jmp load_lang_file.llf_parse
+
+; load_lang_file(rdi = path) -> rax = 1 loaded, 0 failed
+; File format: "<native word> <sanskrit keyword>" per line, # comments
+load_lang_file:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    ; open(path, O_RDONLY)
+    xor rsi, rsi
+    xor rdx, rdx
+    call os_open
+    test rax, rax
+    js .llf_fail
+    mov r12, rax                 ; fd
+    ; read(fd, buf, 16384)
+    mov rdi, r12
+    lea rsi, [rel lang_file_buf]
+    mov rdx, 16384
+    call os_read
+    mov r13, rax                 ; length
+    ; close(fd)
+    mov rdi, r12
+    call os_close
+    test r13, r13
+    jle .llf_fail
+.llf_parse:                      ; R22: load_lang_mem enters here with r13 = length
+    ; init string pool only on first pack
+    cmp qword [rel lang_kw_cnt], 0
+    jne .llf_no_init
+    lea rax, [rel lang_kw_strs]
+    mov [rel lang_str_ptr], rax
+.llf_no_init:
+    lea r14, [rel lang_file_buf]
+    lea r15, [rel lang_file_buf]
+    add r15, r13                 ; end
+.llf_line:
+    cmp r14, r15
+    jae .llf_done
+    movzx rax, byte [r14]
+    cmp al, 10
+    je .llf_adv
+    cmp al, 13
+    je .llf_adv
+    cmp al, ' '
+    je .llf_adv
+    cmp al, 9
+    je .llf_adv
+    cmp al, '#'
+    je .llf_skip_line
+    ; --- word 1 (native) -> lang_w1 ---
+    lea rbx, [rel lang_w1]
+.llf_w1:
+    cmp r14, r15
+    jae .llf_w1_done
+    movzx rax, byte [r14]
+    cmp al, ' '
+    je .llf_w1_done
+    cmp al, 9
+    je .llf_w1_done
+    cmp al, 10
+    je .llf_w1_done
+    cmp al, 13
+    je .llf_w1_done
+    mov [rbx], al
+    inc rbx
+    inc r14
+    jmp .llf_w1
+.llf_w1_done:
+    mov byte [rbx], 0
+    ; skip separators
+.llf_sep:
+    cmp r14, r15
+    jae .llf_w2_done
+    movzx rax, byte [r14]
+    cmp al, ' '
+    je .llf_sep_adv
+    cmp al, 9
+    je .llf_sep_adv
+    jmp .llf_w2
+.llf_sep_adv:
+    inc r14
+    jmp .llf_sep
+.llf_w2:
+    lea rbx, [rel lang_w2]
+.llf_w2c:
+    cmp r14, r15
+    jae .llf_w2_done
+    movzx rax, byte [r14]
+    cmp al, 10
+    je .llf_w2_done
+    cmp al, 13
+    je .llf_w2_done
+    mov [rbx], al
+    inc rbx
+    inc r14
+    jmp .llf_w2c
+.llf_w2_done:
+    mov byte [rbx], 0
+    ; --- process the pair ---
+    ; lookup the sanskrit keyword id
+    lea rdi, [rel lang_w2]
+    call lookup_keyword          ; rax = 1 found, rdx = id
+    test rax, rax
+    jz .llf_try_builtin
+    mov qword [rel lang_entry_type], 1   ; keyword
+    jmp .llf_have_id
+.llf_try_builtin:
+    lea rdi, [rel lang_w2]
+    call lookup_builtin          ; rax = 1 found, rdx = builtin_id
+    test rax, rax
+    jnz .llf_have_builtin
+    ; not a keyword or builtin — is it the contextual 'to' word?
+    lea rdi, [rel lang_w2]
+    lea rsi, [rel kw_to_str]
+    call strcmp
+    test rax, rax
+    jnz .llf_line                ; unknown entry: skip
+    ; store w1 as the native word for 'to' (loop ranges)
+    lea rsi, [rel lang_w1]
+    lea rdi, [rel lang_to_word]
+.llf_tocopy:
+    movzx rax, byte [rsi]
+    mov [rdi], al
+    test al, al
+    jz .llf_todone
+    inc rdi
+    inc rsi
+    jmp .llf_tocopy
+.llf_todone:
+    jmp .llf_line
+.llf_have_builtin:
+    nop
+    mov qword [rel lang_entry_type], 0   ; builtin
+.llf_have_id:
+    ; copy native word into the pool (rdx = id survives, no calls)
+    lea rsi, [rel lang_w1]
+    mov rdi, [rel lang_str_ptr]
+    mov r13, rdi
+.llf_pcopy:
+    movzx rax, byte [rsi]
+    mov [rdi], al
+    test al, al
+    jz .llf_pcopy_done
+    inc rdi
+    inc rsi
+    jmp .llf_pcopy
+.llf_pcopy_done:
+    inc rdi
+    mov [rel lang_str_ptr], rdi
+    ; store entry in the right table
+    cmp qword [rel lang_entry_type], 0
+    je .llf_store_builtin
+    ; keyword entry
+    mov rax, [rel lang_kw_cnt]
+    cmp rax, 96
+    jge .llf_line
+    imul rax, rax, 24
+    lea rcx, [rel lang_kw_table]
+    mov [rcx + rax], r13
+    mov qword [rcx + rax + 8], TOK_KEYWORD
+    mov [rcx + rax + 16], rdx
+    inc qword [rel lang_kw_cnt]
+    jmp .llf_line
+.llf_store_builtin:
+    ; builtin entry
+    mov rax, [rel lang_builtin_cnt]
+    cmp rax, 32
+    jge .llf_line
+    imul rax, rax, 24
+    lea rcx, [rel lang_builtin_table]
+    mov [rcx + rax], r13
+    mov qword [rcx + rax + 8], TOK_BUILTIN
+    mov [rcx + rax + 16], rdx
+    inc qword [rel lang_builtin_cnt]
+    jmp .llf_line
+.llf_skip_line:
+    cmp r14, r15
+    jae .llf_done
+    movzx rax, byte [r14]
+    cmp al, 10
+    je .llf_adv
+    inc r14
+    jmp .llf_skip_line
+.llf_adv:
+    inc r14
+    jmp .llf_line
+.llf_done:
+    cmp qword [rel lang_kw_cnt], 0
+    je .llf_fail
+    mov rax, 1
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+.llf_fail:
+    xor rax, rax
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; ============================================================
+; INTERACTIVE SHELL (REPL)
+; ============================================================
+
+shell_main:
+    lea rdi, [rel msg_shell_banner]
+    call print_str_z
+    lea rax, [rel repl_session]
+    mov byte [rax], 0
+.shell_loop:
+    lea rdi, [rel msg_shell_prompt]
+    call print_str_z
+    ; read a line from stdin
+    xor rdi, rdi
+    lea rsi, [rel repl_line]
+    mov rdx, 512
+    call os_read
+    test rax, rax
+    jle .shell_exit
+    lea rcx, [rel repl_line]
+    mov byte [rcx + rax], 0
+.shell_strip:
+    test rax, rax
+    jz .shell_stripped
+    movzx edx, byte [rcx + rax - 1]
+    cmp dl, 10
+    je .shell_trim
+    cmp dl, 13
+    je .shell_trim
+    cmp dl, ' '
+    je .shell_trim
+    jmp .shell_stripped
+.shell_trim:
+    dec rax
+    mov byte [rcx + rax], 0
+    jmp .shell_strip
+.shell_stripped:
+    cmp byte [rcx], 0
+    je .shell_loop
+    ; exit commands
+    lea rdi, [rel repl_line]
+    lea rsi, [rel str_exit1]
+    call strcmp
+    test rax, rax
+    jz .shell_exit
+    lea rdi, [rel repl_line]
+    lea rsi, [rel str_exit2]
+    call strcmp
+    test rax, rax
+    jz .shell_exit
+    lea rdi, [rel repl_line]
+    lea rsi, [rel str_exit3]
+    call strcmp
+    test rax, rax
+    jz .shell_exit
+    ; help commands
+    lea rdi, [rel repl_line]
+    lea rsi, [rel str_help1]
+    call strcmp
+    test rax, rax
+    jz .shell_help
+    lea rdi, [rel repl_line]
+    lea rsi, [rel str_help2]
+    call strcmp
+    test rax, rax
+    jz .shell_help
+    ; sarvam: show the session
+    lea rdi, [rel repl_line]
+    lea rsi, [rel str_sarvam]
+    call strcmp
+    test rax, rax
+    jz .shell_show
+    ; append the line to the session
+    lea rdi, [rel repl_session]
+    lea rsi, [rel repl_line]
+    call str_append
+    lea rdi, [rel repl_session]
+    lea rsi, [rel msg_nl]
+    call str_append
+    ; write program, compile and run it
+    call repl_write_program
+    call repl_compile_and_run
+    jmp .shell_loop
+.shell_help:
+    lea rdi, [rel msg_shell_help]
+    call print_str_z
+    jmp .shell_loop
+.shell_show:
+    lea rdi, [rel repl_prog_hdr]
+    call print_str_z
+    lea rdi, [rel repl_session]
+    call print_str_z
+    lea rdi, [rel repl_prog_ftr]
+    call print_str_z
+    jmp .shell_loop
+.shell_exit:
+    lea rdi, [rel msg_shell_bye]
+    call print_str_z
+    jmp do_exit
+
+; fd_write_str(rdi = fd, rsi = str): write null-terminated string
+fd_write_str:
+    push rbx
+    push r12
+    push r13
+    mov rbx, rdi
+    mov r12, rsi
+    xor r13, r13
+.fws_len:
+    cmp byte [r12 + r13], 0
+    je .fws_go
+    inc r13
+    jmp .fws_len
+.fws_go:
+    mov rdi, rbx
+    mov rsi, r12
+    mov rdx, r13
+    call os_write
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; repl_write_program: write mukhya(){session} to the REPL scratch source.
+; Linux deliberately keeps the original raw-syscall path byte-for-byte.
+repl_write_program:
+%ifdef WINDOWS
+    ; CreateFileA(str_repl_in, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS,
+    ;             FILE_ATTRIBUTE_NORMAL, NULL)
+    push rbx
+    push r12
+    sub rsp, 56                  ; shadow + args 5..7, keep Win64 alignment
+    lea rcx, [rel str_repl_in]
+    mov rdx, 0x40000000          ; GENERIC_WRITE
+    xor r8d, r8d                 ; no sharing needed for scratch file
+    xor r9d, r9d                 ; lpSecurityAttributes = NULL
+    mov qword [rsp+32], 2        ; CREATE_ALWAYS
+    mov qword [rsp+40], 0x80     ; FILE_ATTRIBUTE_NORMAL
+    mov qword [rsp+48], 0        ; hTemplateFile = NULL
+    call qword [rel p_createfile]
+    cmp rax, -1                  ; INVALID_HANDLE_VALUE
+    je .rwp_win_done
+    mov r12, rax
+    mov rdi, r12
+    lea rsi, [rel repl_prog_hdr]
+    call repl_win_write_str
+    mov rdi, r12
+    lea rsi, [rel repl_session]
+    call repl_win_write_str
+    mov rdi, r12
+    lea rsi, [rel repl_prog_ftr]
+    call repl_win_write_str
+    mov rcx, r12
+    call qword [rel p_closehandle]
+.rwp_win_done:
+    add rsp, 56
+    pop r12
+    pop rbx
+    ret
+%else
+    push rbx
+    push r12
+    lea rdi, [rel str_repl_in]
+    mov rsi, 0x241               ; O_WRONLY|O_CREAT|O_TRUNC
+    mov rdx, 0x1A4               ; 0644
+    mov rax, 2                   ; sys_open
+    syscall
+    test rax, rax
+    js .rwp_done
+    mov r12, rax                 ; fd
+    mov rdi, r12
+    lea rsi, [rel repl_prog_hdr]
+    call fd_write_str
+    mov rdi, r12
+    lea rsi, [rel repl_session]
+    call fd_write_str
+    mov rdi, r12
+    lea rsi, [rel repl_prog_ftr]
+    call fd_write_str
+    mov rdi, r12
+    mov rax, 3                   ; sys_close
+    syscall
+.rwp_done:
+    pop r12
+    pop rbx
+    ret
+%endif
+
+%ifdef WINDOWS
+; repl_win_write_str(rdi=HANDLE, rsi=zstr)
+; WriteFile helper used only by the compiler-host REPL scratch file.
+repl_win_write_str:
+    push rbx
+    push r12
+    push r13
+    sub rsp, 48                  ; Win64 shadow + OVERLAPPED argument
+    mov rbx, rdi
+    mov r12, rsi
+    xor r13, r13
+.rww_len:
+    cmp byte [r12+r13], 0
+    je .rww_go
+    inc r13
+    jmp .rww_len
+.rww_go:
+    mov rcx, rbx
+    mov rdx, r12
+    mov r8, r13
+    lea r9, [rel repl_win_written]
+    mov qword [rsp+32], 0
+    call qword [rel p_writefile]
+    add rsp, 48
+    pop r13
+    pop r12
+    pop rbx
+    ret
+%endif
+
+; repl_compile_and_run: compile the accumulated session, then run it.
+repl_compile_and_run:
+%ifdef WINDOWS
+    ; Build a mutable CreateProcessA command line.  CreateProcessA is allowed
+    ; to modify lpCommandLine, so these live in BSS rather than .data.
+    lea rdi, [rel repl_cmd_compile]
+    lea rsi, [rel str_repl_quote]
+    call str_copy
+    lea rdi, [rel repl_cmd_compile]
+    lea rsi, [rel repl_self]
+    call str_append
+    lea rdi, [rel repl_cmd_compile]
+    lea rsi, [rel str_repl_quote]
+    call str_append
+    lea rdi, [rel repl_cmd_compile]
+    lea rsi, [rel str_repl_space]
+    call str_append
+
+    lea rax, [rel lang_loaded_name]
+    cmp byte [rax], 0
+    je .rcr_win_plain
+    lea rdi, [rel repl_cmd_compile]
+    lea rsi, [rel str_flag_lang]
+    call str_append
+    lea rdi, [rel repl_cmd_compile]
+    lea rsi, [rel str_repl_space]
+    call str_append
+    lea rdi, [rel repl_cmd_compile]
+    lea rsi, [rel lang_loaded_name]
+    call str_append
+    lea rdi, [rel repl_cmd_compile]
+    lea rsi, [rel str_repl_space]
+    call str_append
+.rcr_win_plain:
+    lea rdi, [rel repl_cmd_compile]
+    lea rsi, [rel str_repl_quote]
+    call str_append
+    lea rdi, [rel repl_cmd_compile]
+    lea rsi, [rel str_repl_in]
+    call str_append
+    lea rdi, [rel repl_cmd_compile]
+    lea rsi, [rel str_repl_quote]
+    call str_append
+    lea rdi, [rel repl_cmd_compile]
+    lea rsi, [rel str_repl_space]
+    call str_append
+    lea rdi, [rel repl_cmd_compile]
+    lea rsi, [rel str_repl_quote]
+    call str_append
+    lea rdi, [rel repl_cmd_compile]
+    lea rsi, [rel str_repl_out]
+    call str_append
+    lea rdi, [rel repl_cmd_compile]
+    lea rsi, [rel str_repl_quote]
+    call str_append
+
+    lea rdi, [rel repl_cmd_compile]
+    call repl_win_spawn
+    test eax, eax
+    jne .rcr_win_ret             ; compiler failed: do not run stale output
+
+    lea rdi, [rel repl_cmd_run]
+    lea rsi, [rel str_repl_quote]
+    call str_copy
+    lea rdi, [rel repl_cmd_run]
+    lea rsi, [rel str_repl_out]
+    call str_append
+    lea rdi, [rel repl_cmd_run]
+    lea rsi, [rel str_repl_quote]
+    call str_append
+    lea rdi, [rel repl_cmd_run]
+    call repl_win_spawn
+.rcr_win_ret:
+    ret
+%else
+    ; build compile argv (with --lang if a pack is active)
+    lea rax, [rel repl_argv1]
+    lea rcx, [rel repl_self]
+    mov [rax], rcx
+    lea rdx, [rel lang_loaded_name]
+    cmp byte [rdx], 0
+    je .rcr_plain
+    lea rcx, [rel str_flag_lang]
+    mov [rax+8], rcx
+    lea rcx, [rel lang_loaded_name]
+    mov [rax+16], rcx
+    lea rcx, [rel str_repl_in]
+    mov [rax+24], rcx
+    lea rcx, [rel str_repl_out]
+    mov [rax+32], rcx
+    mov qword [rax+40], 0
+    jmp .rcr_fork_compile
+.rcr_plain:
+    lea rcx, [rel str_repl_in]
+    mov [rax+8], rcx
+    lea rcx, [rel str_repl_out]
+    mov [rax+16], rcx
+    mov qword [rax+24], 0
+.rcr_fork_compile:
+    mov rax, 57                  ; sys_fork
+    syscall
+    test rax, rax
+    js .rcr_ret
+    jz .rcr_child_compile
+    mov rdi, rax
+    lea rsi, [rel repl_status]
+    xor rdx, rdx
+    xor r10, r10
+    mov rax, 61                  ; sys_wait4
+    syscall
+    cmp dword [rel repl_status], 0
+    jne .rcr_ret                 ; compile failed: skip run
+    ; build run argv
+    lea rax, [rel repl_argv2]
+    lea rcx, [rel str_repl_out]
+    mov [rax], rcx
+    mov qword [rax+8], 0
+    mov rax, 57                  ; sys_fork
+    syscall
+    test rax, rax
+    js .rcr_ret
+    jz .rcr_child_run
+    mov rdi, rax
+    lea rsi, [rel repl_status]
+    xor rdx, rdx
+    xor r10, r10
+    mov rax, 61                  ; sys_wait4
+    syscall
+.rcr_ret:
+    ret
+.rcr_child_compile:
+    lea rdi, [rel repl_self]
+    lea rsi, [rel repl_argv1]
+    lea rdx, [rel repl_envp]
+    mov rax, 59                  ; sys_execve
+    syscall
+    mov rdi, 127
+    mov rax, 60
+    syscall
+.rcr_child_run:
+    lea rdi, [rel str_repl_out]
+    lea rsi, [rel repl_argv2]
+    lea rdx, [rel repl_envp]
+    mov rax, 59                  ; sys_execve
+    syscall
+    mov rdi, 127
+    mov rax, 60
+    syscall
+%endif
+
+%ifdef WINDOWS
+; Resolve the process APIs lazily.  They are host-only and deliberately stay
+; out of the embedded generated-program runtime.
+repl_win_init:
+    cmp qword [rel p_repl_createprocess], 0
+    jne .rwi_done
+    lea rdi, [rel wn_repl_createprocess]
+    call win_resolve
+    mov [rel p_repl_createprocess], rax
+    lea rdi, [rel wn_repl_wait]
+    call win_resolve
+    mov [rel p_repl_wait], rax
+    lea rdi, [rel wn_repl_getexit]
+    call win_resolve
+    mov [rel p_repl_getexit], rax
+.rwi_done:
+    ret
+
+; repl_win_spawn(rdi=mutable command line) -> eax=child exit code, -1 on error
+repl_win_spawn:
+    push rbx
+    push r12
+    push r13
+    mov r12, rdi
+    call repl_win_init
+    cmp qword [rel p_repl_createprocess], 0
+    je .rws_fail_nostack
+    cmp qword [rel p_repl_wait], 0
+    je .rws_fail_nostack
+    cmp qword [rel p_repl_getexit], 0
+    je .rws_fail_nostack
+
+    ; Clear STARTUPINFOA and PROCESS_INFORMATION on every launch.
+    lea rdi, [rel repl_win_si]
+    xor eax, eax
+    mov ecx, 13                  ; 13 qwords = 104 bytes
+    rep stosq
+    lea rdi, [rel repl_win_pi]
+    mov ecx, 3                   ; 3 qwords = 24 bytes
+    rep stosq
+    mov dword [rel repl_win_si], 104
+    mov dword [rel repl_win_exit], -1
+
+    ; Entry RSP is 8 mod 16. Three pushes above make it aligned; 80 bytes
+    ; supplies 32-byte shadow space plus CreateProcessA arguments 5..10.
+    sub rsp, 80
+    xor ecx, ecx                 ; lpApplicationName = NULL (parse command line)
+    mov rdx, r12                 ; mutable lpCommandLine
+    xor r8d, r8d                 ; process attributes
+    xor r9d, r9d                 ; thread attributes
+    mov qword [rsp+32], 1        ; inherit console/std handles
+    mov qword [rsp+40], 0        ; creation flags
+    mov qword [rsp+48], 0        ; inherit environment
+    mov qword [rsp+56], 0        ; current directory
+    lea rax, [rel repl_win_si]
+    mov [rsp+64], rax
+    lea rax, [rel repl_win_pi]
+    mov [rsp+72], rax
+    call qword [rel p_repl_createprocess]
+    test eax, eax
+    jz .rws_fail
+
+    ; The thread handle is no longer needed once the process has started.
+    mov rcx, [rel repl_win_pi+8]
+    test rcx, rcx
+    jz .rws_wait
+    call qword [rel p_closehandle]
+.rws_wait:
+    mov rcx, [rel repl_win_pi]
+    mov edx, 0xFFFFFFFF          ; INFINITE
+    call qword [rel p_repl_wait]
+    mov rcx, [rel repl_win_pi]
+    lea rdx, [rel repl_win_exit]
+    call qword [rel p_repl_getexit]
+    mov rcx, [rel repl_win_pi]
+    call qword [rel p_closehandle]
+    mov eax, [rel repl_win_exit]
+    add rsp, 80
+    pop r13
+    pop r12
+    pop rbx
+    ret
+.rws_fail:
+    add rsp, 80
+.rws_fail_nostack:
+    mov eax, -1
+    pop r13
+    pop r12
+    pop rbx
+    ret
+%endif
+
+; The Windows host stores argc/argv in win_stack, NOT at native process RSP.
+; Keep OS thread stack intact (for WinAPI/unwind), switch only argument loads.
+%ifdef WINDOWS
+%define R49_ARG(n) [rel win_stack + n]
+%else
+%define R49_ARG(n) [rsp + n]
+%endif
+
+_start:
+%ifdef R49_WIN_DIAG_0
+    ; CI-only entrypoint probe. Normal builds never include this.
+    mov eax, 71
+    ret
+%endif
+    mov [rel orig_rsp], rsp
+%ifdef WINDOWS
+    call rt_init                ; resolve kernel32 before any I/O
+%ifdef R49_WIN_DIAG_1
+    mov eax, 72
+    ret
+%endif
+    call win_build_argv         ; build argc/argv from GetCommandLineA
+%ifdef R49_WIN_DIAG_2
+    mov eax, 73
+    ret
+%endif
+%endif
+    call get_self_path
+    ; decide the output format now: .exe -> Windows PE, else Linux ELF
+%ifdef WINDOWS
+    mov qword [rel target_pe], 1
+%else
+    mov rax, R49_ARG(0)
+    cmp rax, 3
+    jl .tp_done
+    mov rdi, R49_ARG(24)           ; argv[2] = output file
+    test rdi, rdi
+    jz .tp_done
+    call want_pe
+    mov [rel target_pe], rax
+.tp_done:
+%endif
+    ; argc check
+    mov rax, R49_ARG(0)
+    cmp rax, 2
+    jl .usage
+    ; -i / --shell : interactive REPL
+    mov rdi, R49_ARG(16)
+    lea rsi, [rel str_flag_i]
+    call strcmp
+    test rax, rax
+    jz shell_main
+    mov rdi, R49_ARG(16)
+    lea rsi, [rel str_flag_shell]
+    call strcmp
+    test rax, rax
+    jz shell_main
+    ; --version / -v
+    mov rdi, R49_ARG(16)
+    lea rsi, [rel str_flag_ver]
+    call strcmp
+    test rax, rax
+    jz .show_version
+    mov rdi, R49_ARG(16)
+    lea rsi, [rel str_flag_v]
+    call strcmp
+    test rax, rax
+    jz .show_version
+%ifndef WINDOWS
+    ; R38 --fail-alloc N <in.sm> <out>: the ordinary compile, except that the
+    ; program's Nth nirmmita returns 0 (src/r38_fail_alloc.inc). Note N, drop the
+    ; two arguments, and go on as the ordinary compile; anything else is usage.
+    mov rdi, R49_ARG(16)
+    lea rsi, [rel r38_flag_fail]
+    call strcmp
+    test rax, rax
+    jnz .r38_not_fail
+    mov rax, R49_ARG(0)
+    cmp rax, 5                     ; prog --fail-alloc N in out
+    jne .usage
+    mov rsi, R49_ARG(24)
+    xor eax, eax
+    cmp byte [rsi], 0
+    je .usage
+.r38_digit:
+    movzx ecx, byte [rsi]
+    test ecx, ecx
+    jz .r38_number
+    sub ecx, '0'
+    cmp ecx, 9
+    ja .usage
+    cmp rax, 100000000             ; N < 10^9
+    jae .usage
+    imul rax, rax, 10
+    add rax, rcx
+    inc rsi
+    jmp .r38_digit
+.r38_number:
+    test rax, rax
+    jz .usage
+    mov [rel r38_fail_n], rax
+    mov rax, R49_ARG(32)           ; argv[1] = in, argv[2] = out
+    mov R49_ARG(16), rax
+    mov rax, R49_ARG(40)
+    mov R49_ARG(24), rax
+    mov qword R49_ARG(32), 0       ; argv[3] = NULL; the environment is found from
+    lea rax, [rel r32_empty]       ; argc, so the two freed slots become empty entries (as R32)
+    mov R49_ARG(40), rax
+    mov R49_ARG(48), rax
+    sub qword R49_ARG(0), 2
+    mov rdi, R49_ARG(16)
+    cmp byte [rdi], '-'            ; no other mode after it
+    je .usage
+    mov rdi, R49_ARG(24)
+    call want_pe
+    test rax, rax                  ; Linux programs only
+    jnz .usage
+.r38_not_fail:
+%endif
+    ; R32 --ffi <decls.sffi>, then --object or --separate and their arguments:
+    ; note the sidecar, drop the two arguments, and go on as that mode. With anything else after it, it is a usage error, so the
+    ; ordinary compile can never read a sidecar. R35: the Windows compiler too
+    ; (its sidecar must name windows-x86_64-msabi; r32_load_sidecar checks).
+    mov rdi, R49_ARG(16)
+    lea rsi, [rel r32_flag_ffi]
+    call strcmp
+    test rax, rax
+    jnz .r32_not_ffi
+    mov rax, R49_ARG(0)
+    cmp rax, 6                     ; prog --ffi f.sffi --object in out
+    jl .usage
+    mov rax, R49_ARG(24)
+    mov [rel r32_ffi_path], rax
+%ifndef WINDOWS
+    mov rcx, R49_ARG(0)            ; argv[i] = argv[i+2] for i = 1 .. argc-2
+    mov edx, 1
+.r32_shift:
+    lea rax, [rdx + 2]
+    cmp rax, rcx
+    ja .r32_shifted
+    mov rax, [rsp + 8 + rax*8]
+    mov [rsp + 8 + rdx*8], rax
+    inc rdx
+    jmp .r32_shift
+.r32_shifted:
+    ; the environment still starts after the OLD argv's NULL; env_get_value
+    ; finds it from argc, so the two freed slots become two empty entries
+    lea rax, [rel r32_empty]
+    mov [rsp + rcx*8], rax         ; old argv[argc-1]
+    mov [rsp + 8 + rcx*8], rax     ; old argv[argc] (its NULL moved down)
+%else
+    ; R35: Windows keeps argc and argv in win_stack (win/winrt.inc); the same
+    ; shift there, and the two freed slots become NULLs (argv's end; no
+    ; environment follows on Windows)
+    lea r8, [rel win_stack]
+    mov rcx, R49_ARG(0)
+    mov edx, 1
+.r35_shift:
+    lea rax, [rdx + 2]
+    cmp rax, rcx
+    jae .r35_shifted
+    mov rax, [r8 + 8 + rax*8]
+    mov [r8 + 8 + rdx*8], rax
+    inc rdx
+    jmp .r35_shift
+.r35_shifted:
+    mov qword [r8 + rcx*8], 0      ; old argv[argc-2], argv[argc-1]
+    mov qword [r8 + rcx*8 - 8], 0
+%endif
+    sub qword R49_ARG(0), 2
+    mov rdi, R49_ARG(16)
+    lea rsi, [rel r28_flag_object]
+    call strcmp
+    test rax, rax
+    jz .r32_mode_ok
+    mov rdi, R49_ARG(16)
+    lea rsi, [rel r29_flag_separate]
+    call strcmp
+    test rax, rax
+    jnz .usage
+.r32_mode_ok:                      ; the sidecar is read after parsing (r7_check_arity),
+.r32_not_ffi:                      ; once SUTRAM_LANG's pack is loaded
+    ; R28 --object <input.sm> <output.smo>: the same compile, written as an
+    ; object file for sutram-link. R34: the Windows compiler has it too; its
+    ; object is version 2, SUTRAMO2 (a PE program's code), see r28_write_object.
+    mov rdi, R49_ARG(16)
+    lea rsi, [rel r28_flag_object]
+    call strcmp
+    test rax, rax
+    jnz .r28_not_object
+    mov rax, R49_ARG(0)
+    cmp rax, 4
+    jl .usage
+    mov qword [rel r28_object_mode], 1
+    mov rax, R49_ARG(24)           ; argv[2] = input
+    mov R49_ARG(16), rax
+    mov rax, R49_ARG(32)           ; argv[3] = output
+    mov R49_ARG(24), rax
+    call maybe_load_env_lang
+    jmp .args_ok
+.r28_not_object:
+    ; R29 --separate <input.sm> <output.smo> [root.sm]: --object, and a prakriya that a
+    ; `yoj` brought in is parsed and checked (its arity, its return type) but
+    ; generates no code here: its calls become holes for sutram-link, so each
+    ; module's code is compiled once, in its own object
+    ; (tools/sutram_build.py walks the module graph).
+    mov rdi, R49_ARG(16)
+    lea rsi, [rel r29_flag_separate]
+    call strcmp
+    test rax, rax
+    jnz .r29_not_separate
+    mov rax, R49_ARG(0)
+    cmp rax, 4
+    jl .usage
+    mov qword [rel r28_object_mode], 1
+    mov qword [rel r29_separate_mode], 1
+    mov rax, R49_ARG(0)            ; an optional argv[4]: the program's root
+    cmp rax, 5                     ; file, from whose directory yoj looks up
+    jl .r29_no_root                ; modules, as in the whole-program compile
+    mov rax, R49_ARG(40)
+    mov [rel r29_yoj_root], rax
+.r29_no_root:
+    mov rax, R49_ARG(24)
+    mov R49_ARG(16), rax
+    mov rax, R49_ARG(32)
+    mov R49_ARG(24), rax
+    call maybe_load_env_lang
+    jmp .args_ok
+.r29_not_separate:
+    ; R48 --check <input.sm>: use the real lexer/parser/codegen semantic
+    ; validation without ever creating the output file.
+    mov rdi, R49_ARG(16)
+    lea rsi, [rel r48_flag]
+    call strcmp
+    test rax, rax
+    jnz .not_check_mode
+    mov rax, R49_ARG(0)
+    cmp rax, 3
+    jl .usage
+    mov qword [rel r48_mode], 1
+    ; R2-WS1c: --check --lang <pack> <input.sm> is accepted too
+    mov rdi, R49_ARG(24)
+    lea rsi, [rel str_flag_lang]
+    call strcmp
+    test rax, rax
+    jnz .check_plain
+    mov rax, R49_ARG(0)
+    cmp rax, 5
+    jl .usage
+    mov rdi, R49_ARG(32)           ; argv[3] = pack name
+    call try_load_lang
+    mov rax, R49_ARG(40)           ; argv[4] = input
+    mov R49_ARG(16), rax
+    jmp .args_ok
+.check_plain:
+    mov rax, R49_ARG(24)
+    mov R49_ARG(16), rax           ; normalize input argument for normal I/O
+    call maybe_load_env_lang
+    jmp .args_ok
+.not_check_mode:
+    ; --lang <pack> <in.sm> <out.bin>
+    mov rdi, R49_ARG(16)
+    lea rsi, [rel str_flag_lang]
+    call strcmp
+    test rax, rax
+    jz .lang_mode
+    ; normal mode
+    mov rax, R49_ARG(0)
+    cmp rax, 3
+    jl .usage
+    call maybe_load_env_lang
+    jmp .args_ok
+.lang_mode:
+    mov rax, R49_ARG(0)
+    cmp rax, 5
+    jl .usage
+    mov rdi, R49_ARG(24)           ; argv[2] = pack name
+    call try_load_lang
+    ; R2-WS1c: --lang <pack> --check <input.sm> is accepted too
+    mov rdi, R49_ARG(32)
+    lea rsi, [rel r48_flag]
+    call strcmp
+    test rax, rax
+    jnz .lang_compile
+    mov qword [rel r48_mode], 1
+    mov rax, R49_ARG(40)           ; argv[4] = input
+    mov R49_ARG(16), rax
+    mov R49_ARG(24), rax
+    jmp .args_ok
+.lang_compile:
+    ; rewrite argv[1]/argv[2] to point at input/output
+    mov rax, R49_ARG(32)           ; argv[3] = input
+    mov R49_ARG(16), rax
+    mov rax, R49_ARG(40)           ; argv[4] = output
+    mov R49_ARG(24), rax
+    jmp .args_ok
+.show_version:
+    lea rdi, [rel msg_version]
+    call print_str_z
+    jmp do_exit
+.usage:
+    lea rdi, [rel msg_usage]
+    call print_str_z
+    jmp do_exit
+.args_ok:
+    ; Read source file
+    mov rdi, R49_ARG(16)          ; argv[1]
+    mov [rel source_path_ptr], rdi
+    call read_file
+    mov [rel source_len], rax
+%ifdef R49_WIN_DIAG_3
+    mov eax, [rel source_len]   ; host exit = actual bytes read
+    ret
+%endif
+
+    ; R2-WS1d: origin map kept in every mode (was --check only)
+    call r51_init_map
+    ; R41: opt-in module-v1 graph preflight runs BEFORE destructive expansion.
+    ; The legacy import and generated-code path is byte-for-byte unchanged.
+    call graph_preflight_v1   ; R44 single graph traversal (dispatch to merged Muse DFS)
+%ifdef R49_WIN_DIAG_4
+    mov eax, 74
+    ret
+%endif
+    ; Expand imports (inline .smlib files)
+    call expand_imports
+%ifdef R49_WIN_DIAG_5
+    mov eax, 75
+    ret
+%endif
+    ; Lex
+    call lex
+%ifdef R49_WIN_DIAG_6
+    mov eax, 76
+    ret
+%endif
+
+    ; Parse using the ordinary parser, but in check mode recover at a safe
+    ; statement/brace boundary after each parser error and restart the parser.
+.r48_parse_again:
+    mov qword [rel token_idx], 0
+    cmp qword [rel r48_mode], 0
+    je .r48_parse_normal
+    mov [rel r48_parse_rsp], rsp
+    mov qword [rel r48_stmt_valid], 0
+    mov qword [rel func_def_cnt], 0
+    mov qword [rel parse_block_depth], 0
+    mov qword [rel parse_expr_depth], 0
+.r48_parse_normal:
+    call parse_program
+%ifdef R49_WIN_DIAG_7
+    mov eax, 77
+    ret
+%endif
+    cmp qword [rel r48_mode], 0
+    je .r48_generate
+    cmp qword [rel r48_error_count], 0
+    jne .r48_check_fail
+.r48_generate:
+    ; Generate code. --check intentionally still validates generator-side
+    ; semantic constraints; code is kept in memory and never written.
+    mov qword [rel code_sz], 0
+    call gen_code
+    cmp qword [rel r48_mode], 0
+    je .r48_normal_write
+    lea rdi, [rel r48_msg_ok]
+    call print_str_z
+    jmp do_exit
+.r48_check_fail:
+    lea rdi, [rel r48_msg_errors]
+    call print_str_z
+    mov rdi, 1
+    call os_exit
+.r48_parse_failure:
+    ; A parser may jump here with arbitrary nested expression/AST stack
+    ; frames. Restore its saved top-level stack before attempting recovery.
+    mov rsp, [rel r48_parse_rsp]
+    call r48_print_parse_error
+    inc qword [rel r48_error_count]
+    cmp qword [rel r48_error_count], 8
+    jae .r48_check_fail
+    call r48_recover_stmt
+    test rax, rax
+    jz .r48_check_fail
+    jmp .r48_parse_again
+.r48_normal_write:
+    ; Write output
+    mov rdi, R49_ARG(24)           ; argv[2]
+    cmp qword [rel r28_object_mode], 0
+    je .r28_write_elf
+    call r28_write_object          ; R28: --object
+    jmp .r28_written
+.r28_write_elf:
+    call write_elf
+.r28_written:
+
+    ; Print success
+    lea rdi, [rel msg_ok]
+    call print_str_z
+    mov rdi, [rel code_sz]
+    lea rsi, [rel num_buf]
+    call itoa
+    mov rdi, rax
+    call print_str_z
+    lea rdi, [rel msg_bytes]
+    call print_str_z
+
+do_exit:
+    xor rdi, rdi
+    call os_exit
+
+; build_module_path_from_file(rdi=file path)
+; Build <directory-of-file>/lib/<module>.smlib into module_path_buf.
+; If the file path contains no slash/backslash, use ./lib/...
+build_module_path_from_file:
+    push rbx
+    push r12
+    mov r12, rdi
+    lea rbx, [rel module_path_buf]
+    xor rcx, rcx
+    xor r8, r8                  ; position just after last separator
+.bmp_scan:
+    mov al, [r12 + rcx]
+    test al, al
+    jz .bmp_scanned
+    cmp al, '/'
+    je .bmp_mark
+    cmp al, 92                  ; '\\'
+    jne .bmp_next
+.bmp_mark:
+    lea r8, [rcx + 1]
+.bmp_next:
+    inc rcx
+    cmp rcx, 240
+    jb .bmp_scan
+.bmp_scanned:
+    test r8, r8
+    jnz .bmp_copy_dir
+    mov byte [rbx], '.'
+    mov byte [rbx+1], '/'
+    mov rdi, rbx
+    add rdi, 2
+    jmp .bmp_append_lib
+.bmp_copy_dir:
+    xor rcx, rcx
+.bmp_dir_loop:
+    cmp rcx, r8
+    jae .bmp_dir_done
+    mov al, [r12 + rcx]
+    mov [rbx + rcx], al
+    inc rcx
+    jmp .bmp_dir_loop
+.bmp_dir_done:
+    lea rdi, [rbx + rcx]
+.bmp_append_lib:
+    mov byte [rdi], 'l'
+    mov byte [rdi+1], 'i'
+    mov byte [rdi+2], 'b'
+    mov byte [rdi+3], '/'
+    add rdi, 4
+    lea rsi, [rel num_buf]
+.bmp_name:
+    mov al, [rsi]
+    test al, al
+    jz .bmp_suffix
+    mov [rdi], al
+    inc rdi
+    inc rsi
+    jmp .bmp_name
+.bmp_suffix:
+    mov byte [rdi], '.'
+    mov byte [rdi+1], 's'
+    mov byte [rdi+2], 'm'
+    mov byte [rdi+3], 'l'
+    mov byte [rdi+4], 'i'
+    mov byte [rdi+5], 'b'
+    mov byte [rdi+6], 0
+    pop r12
+    pop rbx
+    ret
+
+; build CWD-relative lib/<module>.smlib into module_path_buf
+build_module_path_cwd:
+    lea rdi, [rel module_path_buf]
+    mov byte [rdi], 'l'
+    mov byte [rdi+1], 'i'
+    mov byte [rdi+2], 'b'
+    mov byte [rdi+3], '/'
+    add rdi, 4
+    lea rsi, [rel num_buf]
+.bmpc_name:
+    mov al, [rsi]
+    test al, al
+    jz .bmpc_suffix
+    mov [rdi], al
+    inc rdi
+    inc rsi
+    jmp .bmpc_name
+.bmpc_suffix:
+    mov byte [rdi], '.'
+    mov byte [rdi+1], 's'
+    mov byte [rdi+2], 'm'
+    mov byte [rdi+3], 'l'
+    mov byte [rdi+4], 'i'
+    mov byte [rdi+5], 'b'
+    mov byte [rdi+6], 0
+    ret
+
+; ============================================================
+; R41: opt-in module-v1 dependency graph preflight, pure x86-64 NASM.
+; This rejects cycles/missing modules before the R40 visited-set expansion.
+; It changes NOTHING for existing files without an exact v1 header.
+; Contract: source-order DFS, dependencies before importer, siblings in source
+; order, and each module visited once. Runtime initializers are NOT yet supplied.
+; Source-path diagnostics point at the importing file and directive line.
+; ============================================================
+graph_preflight_v1:
+    ; R44: one module graph traversal, preserving R41 exact-header semantics.
+    ; The merged Muse DFS is authoritative; duplicate R41 scan was removed.
+    mov byte [rel mg_root_exact_v1], 0
+    lea rdi, [rel source_buf]
+    lea rsi, [rel graph_v1_header]
+    xor rcx, rcx
+.r44_header:
+    mov al, [rsi + rcx]
+    test al, al
+    jz .r44_eol
+    cmp rcx, [rel source_len]
+    jae .r44_done
+    cmp al, [rdi + rcx]
+    jne .r44_done
+    inc rcx
+    jmp .r44_header
+.r44_eol:
+    cmp byte [rdi + rcx], 10
+    je .r44_optin
+    cmp byte [rdi + rcx], 13
+    jne .r44_done
+.r44_optin:
+    mov byte [rel mg_root_exact_v1], 1
+.r44_done:
+    jmp check_module_graph
+
+; R44: historic R41 graph_scan/graph_visit removed. The Muse DFS now performs
+; the ONE native dependency traversal for modern and legacy programs.
+
+; File:line uses a stable basename so golden diagnostics remain portable
+; across checkout locations on Windows/Linux.
+graph_print_file:
+    push rbx
+    mov rbx,rdi
+.find_separator:
+    mov al,[rdi]
+    test al,al
+    jz .basename
+    cmp al,'/'
+    je .mark
+    cmp al,92
+    jne .advance
+.mark:
+    lea rbx,[rdi+1]
+.advance:
+    inc rdi
+    jmp .find_separator
+.basename:
+    mov rdi,rbx
+    call print_str_z
+    pop rbx
+    ret
+
+; R49 check-only accurate location for an ayojan module directive.
+; Reads the original importer (not flattened source), searches that line for
+; the actual "ayojan" keyword and returns an honest column.  If the original
+; location cannot be recovered, use '?' rather than fabricating column 1.
+; rdi = original importer path, rsi = original 1-based line.
+r49_print_module_location:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    mov r12, rdi
+    mov r13, rsi
+    call graph_print_file
+    lea rdi, [rel graph_colon]
+    call print_str_z
+    mov rax, r13
+    call mg_print_uint
+    lea rdi, [rel graph_colon]
+    call print_str_z
+    mov rdi, r12
+    call mg_read_file
+    test rax, rax
+    js .r49_unknown
+    mov r14, rax             ; original file size
+    lea rbx, [rel mg_buf]
+    xor r9, r9               ; byte position
+    mov r8, 1                ; current source line
+.r49_findline:
+    cmp r8, r13
+    jae .r49_on_line
+    cmp r9, r14
+    jae .r49_unknown
+    cmp byte [rbx+r9], 10
+    jne .r49_nextline
+    inc r8
+.r49_nextline:
+    inc r9
+    jmp .r49_findline
+.r49_on_line:
+    mov r15, r9             ; byte start of original physical line
+.r49_findword:
+    ; R2-WS2a: the import keyword is "yoj" (3 bytes) since v157; this scan
+    ; still looked for the 6-byte "ayojan" and therefore printed '?'.
+    mov rax,r9
+    add rax,3
+    cmp rax,r14
+    ja .r49_symbol_search
+    cmp byte [rbx+r9],10
+    je .r49_symbol_search
+    cmp word [rbx+r9], 0x6F79        ; "yo"
+    jne .r49_try_niryat
+    cmp byte [rbx+r9+2], 0x6A        ; "j"
+    jne .r49_try_niryat
+    ; whole word: end of file, or whitespace after "yoj"
+    mov rax,r9
+    add rax,3
+    cmp rax,r14
+    jae .r49_word_found
+    movzx eax, byte [rbx+r9+3]
+    cmp al, ' '
+    je .r49_word_found
+    cmp al, 9
+    je .r49_word_found
+    cmp al, 13
+    je .r49_word_found
+    cmp al, 10
+    je .r49_word_found
+    jmp .r49_nextword
+.r49_try_niryat:
+    mov rax,r9
+    add rax,6
+    cmp rax,r14
+    ja .r49_nextword
+    cmp dword [rbx+r9],0x7972696E  ; "niry" from niryat
+    jne .r49_nextword
+    cmp word [rbx+r9+4],0x7461     ; "at"
+    je .r49_word_found
+    jmp .r49_nextword
+.r49_word_found:
+    mov rax, r9
+    sub rax, r15
+    inc rax                 ; 1-based position on this physical line
+    ; Count ASCII module-keyword positions precisely. The keyword itself is
+    ; ASCII; tabs before it count as one source column, like calc_src_column.
+    call mg_print_uint
+    jmp .r49_done
+.r49_nextword:
+    inc r9
+    jmp .r49_findword
+.r49_symbol_search:
+    ; R51: qualified private/unknown function errors are on ordinary code
+    ; lines rather than an ayojan/niryat directive. Find exact original
+    ; reference prefix (mg_pat) on this physical source line.
+    lea r11,[rel mg_pat]
+    cmp byte [r11],0
+    je .r49_unknown
+    mov r8,r15
+.r49_symbol_next:
+    cmp r8,r14
+    jae .r49_unknown
+    cmp byte [rbx+r8],10
+    je .r49_unknown
+    xor ecx,ecx
+.r49_symbol_cmp:
+    cmp rcx,62
+    jae .r49_unknown
+    mov dl,[r11+rcx]
+    test dl,dl
+    jz .r49_symbol_found
+    mov rax,r8
+    add rax,rcx
+    cmp rax,r14
+    jae .r49_symbol_next_advance
+    cmp dl,[rbx+rax]
+    jne .r49_symbol_next_advance
+    inc rcx
+    jmp .r49_symbol_cmp
+.r49_symbol_next_advance:
+    inc r8
+    jmp .r49_symbol_next
+.r49_symbol_found:
+    mov rax,r8
+    sub rax,r15
+    inc rax
+    call mg_print_uint
+    jmp .r49_done
+.r49_unknown:
+    lea rdi, [rel r49_unknown_column]
+    call print_str_z
+.r49_done:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; Diagnostic rdi=importer path, rsi=1-based line, rdx=code, rcx=message.
+; Print to stdout to match the existing compiler's diagnostic convention.
+graph_error:
+    push rcx               ; message prefix (printed second)
+    push rdx               ; error code     (printed first)
+    push rsi               ; line
+    cmp qword [rel r48_mode], 0
+    jne .r49_check_location
+    call graph_print_file
+    lea rdi,[rel graph_colon]
+    call print_str_z
+    pop rdi
+    lea rsi,[rel num_buf]
+    call itoa
+    mov rdi,rax
+    call print_str_z
+    jmp .r49_after_location
+.r49_check_location:
+    pop rsi
+    call r49_print_module_location
+.r49_after_location:
+    lea rdi,[rel graph_prefix]
+    call print_str_z
+    pop rdi
+    call print_str_z
+    lea rdi,[rel graph_close]
+    call print_str_z
+    pop rdi
+    call print_str_z
+    mov rdi,[rel graph_detail_ptr]
+    test rdi,rdi
+    jz .no_detail
+    call print_str_z
+ .no_detail:
+    lea rdi,[rel graph_nl]
+    call print_str_z
+    cmp qword [rel r48_mode],0
+    je .graph_fail_fast
+    inc qword [rel r48_error_count]
+    cmp qword [rel r48_error_count],8
+    jb .graph_return
+.graph_fail_fast:
+    mov rdi,1
+    call os_exit
+.graph_return:
+    ret
+
+; ============================================================
+; MODULE IMPORT - expand ayojan directives
+; Scans source for ayojan <name> and inlines lib/<name>.smlib
+; ============================================================
+; R40: Expand transitive imports in bounded, deterministic breadth-first rounds.
+; The visited module key table is shared by every round, so diamond imports
+; include the same module source once. Existing legacy imports remain accepted.
+; NOTE: this is still single-translation-unit source expansion; NOT object-file
+; separate compilation. Cyclic edges currently collapse via visited keys rather
+; than yielding a cycle diagnostic. Do not advertise this as the complete module
+; system until that distinct failure mode and export isolation exist.
+expand_imports:
+    push rbx
+    mov qword [rel import_count], 0
+    mov qword [rel import_depth_round], 0
+.ei_round:
+    mov qword [rel import_new_this_pass], 0
+    call expand_imports_pass
+    cmp qword [rel import_new_this_pass], 0
+    je .ei_finished
+    inc qword [rel import_depth_round]
+    cmp qword [rel import_depth_round], IMPORT_NAMES_CAP
+    jbe .ei_round
+    lea rdi,[rel msg_import_overflow]
+    call print_str_z
+    mov rdi,1
+    call os_exit
+.ei_finished:
+    pop rbx
+    ret
+
+expand_imports_pass:
+    push rbx
+    push r12
+    push r13
+    push r14
+    lea rsi, [rel source_buf]
+    lea rdi, [rel import_buf] ; dedicated expanded-source output buffer
+    xor r12, r12              ; source pos
+    mov r13, [rel source_len]
+    xor r14, r14              ; output pos
+.ei_loop:
+    cmp r12, r13
+    jae .ei_done
+    ; Check for comment lines — skip them (don't look for ayojan inside)
+    lea rsi, [rel source_buf]
+    add rsi, r12
+    movzx eax, byte [rsi]
+    cmp eax, '#'
+    je .ei_copy_line
+    cmp eax, '/'
+    jne .ei_check_ayojan
+    movzx eax, byte [rsi+1]
+    cmp eax, '/'
+    jne .ei_check_ayojan
+.ei_copy_line:
+    ; Copy bytes until newline (inclusive)
+    cmp r14, IMPORT_BUF_CAP
+    jae .ei_overflow
+    lea rsi, [rel source_buf]
+    movzx eax, byte [rsi + r12]
+    lea rdi, [rel import_buf]
+    mov [rdi + r14], al
+    call r51_copy_origin
+    inc r12
+    inc r14
+    cmp eax, 10
+    je .ei_loop
+    cmp r12, r13
+    jae .ei_loop
+    jmp .ei_copy_line
+.ei_check_ayojan:
+    ; Check for "ayojan" at current pos
+    lea rsi, [rel source_buf]
+    add rsi, r12
+    ; Compare 3 bytes: y(79) o(6F) j(6A)  -- keyword is now "yoj"
+    cmp word [rsi], 0x6F79
+    jne .ei_copy
+    movzx eax, byte [rsi+2]
+    cmp al, 0x6A
+    jne .ei_copy
+    movzx eax, byte [rsi+3]
+    cmp eax, 32
+    je  .ei_yoj_ok
+    cmp eax, 10
+    je  .ei_yoj_ok
+    cmp eax, 9
+    je  .ei_yoj_ok
+    cmp eax, 13
+    je  .ei_yoj_ok
+    jmp .ei_copy
+.ei_yoj_ok:
+    add r12, 3
+    ; Skip spaces/newlines
+.ei_skip_sp:
+    cmp r12, r13
+    jae .ei_copy
+    lea rsi, [rel source_buf]
+    movzx eax, byte [rsi + r12]
+    cmp eax, 32
+    je .ei_sp_adv
+    cmp eax, 10
+    je .ei_sp_adv
+    cmp eax, 13
+    je .ei_sp_adv
+    jmp .ei_read_mod
+.ei_sp_adv:
+    inc r12
+    jmp .ei_skip_sp
+.ei_read_mod:
+    ; Legacy: ayojan math. Namespaced: ayojan math@maths.
+    ; The core Sanskrit keyword is unchanged and no runtime lookup is needed.
+    mov qword [rel ns_active], 0
+    mov byte [rel ns_alias], 0
+    lea rdi, [rel num_buf]
+    xor rcx, rcx
+.ei_mod_loop:
+    cmp r12, r13
+    jae .ei_mod_done
+    lea rsi, [rel source_buf]
+    movzx eax, byte [rsi + r12]
+    cmp eax, 10
+    je .ei_mod_done
+    cmp eax, 13
+    je .ei_mod_done
+    cmp eax, 32
+    je .ei_mod_done
+    cmp eax, 9
+    je .ei_mod_done
+    cmp eax, '@'
+    je .ei_alias_start
+    cmp rcx, 30                 ; bounded module file-name scratch
+    jae .ei_namespace_error
+    mov [rdi], al
+    inc rdi
+    inc r12
+    inc rcx
+    jmp .ei_mod_loop
+.ei_alias_start:
+    test rcx, rcx
+    jz .ei_namespace_error
+    mov byte [rdi], 0          ; terminate the module name before alias
+    inc r12                    ; consume @
+    mov qword [rel ns_active], 1
+    lea rdi, [rel ns_alias]
+    xor rcx, rcx
+.ei_alias_loop:
+    cmp r12, r13
+    jae .ei_alias_done
+    lea rsi, [rel source_buf]
+    movzx eax, byte [rsi+r12]
+    cmp eax, 10
+    je .ei_alias_done
+    cmp eax, 13
+    je .ei_alias_done
+    cmp eax, 32
+    je .ei_alias_done
+    cmp eax, 9
+    je .ei_alias_done
+    cmp rcx, NS_ALIAS_CAP
+    jae .ei_namespace_error
+    cmp al, '_'
+    je .ei_alias_char
+    cmp al, 'A'
+    jb .ei_alias_digit
+    cmp al, 'Z'
+    jbe .ei_alias_char
+    cmp al, 'a'
+    jb .ei_namespace_error
+    cmp al, 'z'
+    jbe .ei_alias_char
+    jmp .ei_namespace_error
+.ei_alias_digit:
+    test rcx, rcx
+    jz .ei_namespace_error    ; leading digit not an identifier
+    cmp al, '0'
+    jb .ei_namespace_error
+    cmp al, '9'
+    ja .ei_namespace_error
+.ei_alias_char:
+    mov [rdi+rcx], al
+    inc rcx
+    inc r12
+    jmp .ei_alias_loop
+.ei_alias_done:
+    test rcx,rcx
+    jz .ei_namespace_error
+    mov byte [rdi+rcx], 0
+    ; num_buf was already terminated before parsing the alias.
+    jmp .ei_build_key
+.ei_mod_done:
+    mov byte [rdi], 0
+.ei_build_key:
+    ; R34: opt-in namespace imports must be simple, project-local module names.
+    ; Legacy imports deliberately retain their old path interpretation.
+    ; Disallow '/' and '.' segments so a namespaced module cannot traverse out
+    ; of an intended lib/ lookup root. Allow ASCII alnum, '_' and '-'.
+    cmp qword [rel ns_active],0
+    je .ei_module_safe
+    lea rsi,[rel num_buf]
+.ei_validate_mod:
+    mov al,[rsi]
+    test al,al
+    jz .ei_module_safe
+    cmp al,'_'
+    je .ei_mod_char_ok
+    cmp al,'-'
+    je .ei_mod_char_ok
+    cmp al,'0'
+    jb .ei_namespace_error
+    cmp al,'9'
+    jbe .ei_mod_char_ok
+    cmp al,'A'
+    jb .ei_namespace_error
+    cmp al,'Z'
+    jbe .ei_mod_char_ok
+    cmp al,'a'
+    jb .ei_namespace_error
+    cmp al,'z'
+    ja .ei_namespace_error
+.ei_mod_char_ok:
+    inc rsi
+    jmp .ei_validate_mod
+.ei_module_safe:
+    ; Unique dedupe keys incorporate the alias, so one module may be imported
+    ; under more than one name. Legacy keys remain identical to their old form.
+    lea rsi, [rel num_buf]
+    lea rdi, [rel ns_dedupe_key]
+    xor rcx,rcx
+.ei_key_module:
+    mov al,[rsi+rcx]
+    test al,al
+    jz .ei_key_alias
+    cmp rcx, 62
+    jae .ei_namespace_error
+    mov [rdi+rcx],al
+    inc rcx
+    jmp .ei_key_module
+.ei_key_alias:
+    cmp qword [rel ns_active],0
+    je .ei_key_done
+    cmp rcx,62
+    jae .ei_namespace_error
+    mov byte [rdi+rcx],'@'
+    inc rcx
+    lea rsi,[rel ns_alias]
+    xor rdx,rdx
+.ei_key_alias_copy:
+    mov al,[rsi+rdx]
+    test al,al
+    jz .ei_key_done
+    cmp rcx,62
+    jae .ei_namespace_error
+    mov [rdi+rcx],al
+    inc rcx
+    inc rdx
+    jmp .ei_key_alias_copy
+.ei_key_done:
+    mov byte [rdi+rcx],0
+    ; R34: one alias means one module. An exact duplicate is idempotent, but
+    ; importing two different modules under the same alias is ambiguous.
+    ; Reuse the existing bounded dedupe table; never allocate a second registry.
+    cmp qword [rel ns_active],0
+    je .ei_alias_verified
+    xor rbx,rbx
+.ei_alias_scan:
+    cmp rbx,[rel import_count]
+    jae .ei_alias_verified
+    mov rax,rbx
+    shl rax,6
+    lea rsi,[rel import_names]
+    add rsi,rax
+.ei_find_at:
+    mov al,[rsi]
+    test al,al
+    jz .ei_next_alias
+    cmp al,'@'
+    je .ei_compare_alias
+    inc rsi
+    jmp .ei_find_at
+.ei_compare_alias:
+    inc rsi
+    lea rdi,[rel ns_alias]
+    call strcmp
+    test rax,rax
+    jne .ei_next_alias
+    ; Alias matches: allow only the SAME full module@alias key.
