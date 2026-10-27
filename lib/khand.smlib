@@ -3,7 +3,7 @@
 #
 # The string toolkit on BYTE-PACKED strings (the representation of a
 # literal and of set_char-built buffers). Own module (not inside
-# string.smlib) because the compiler has a fixed AST ceiling.
+# lib/varna.smlib) because the compiler has a fixed AST ceiling.
 #
 # THE TWO REPRESENTATIONS (see also lib/varna.smlib):
 #   char-code array: qword cells, one char code per cell, h[i].
@@ -17,7 +17,7 @@
 # found" is -1. All signatures stay within the 6-argument cap.
 #
 # SLICE-BOUNDARY RULES (R23): a slice is (pointer, length) into a
-# larger buffer, with NO terminator at the slice end. Every strb_*
+# larger buffer, with NO terminator at the slice end. Explicit-length khand_*
 # function takes an explicit length and stops at it. The
 # NUL-terminated forms (anwesh_akshar, gan_akshar, gan_swar,
 # asti_sarv_ank, varna_sam) scan to the terminator — WRONG on
