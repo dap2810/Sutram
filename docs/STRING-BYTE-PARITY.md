@@ -61,7 +61,7 @@ the slice into a terminated buffer first, then pass it (proven by the
 R23 `slices23` golden). Note the same rule means a `repl` containing an
 interior NUL byte is truncated at that byte.
 
-**The length-function rule.** `varna_maap` / `khand_maap` / `vartani_len`
+**The length-function rule.** `varna_maap` / `khand_maap` / `vartani_aayam`
 scan to the terminator: they cannot be used on slices at all. A slice
 carries its length — that IS the length.
 
