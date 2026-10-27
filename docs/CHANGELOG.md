@@ -1,3 +1,34 @@
+## v356 - ChatGPT's 35 description corrections applied, 0 missed, across 15 library modules
+
+**Its R116-WS1 delivered a TSV: 35 exact old/new line pairs across 15 modules. I applied every one.**
+
+| Module | Edits |
+|---|---|
+| `suchi` | 6 |
+| `nighantu` | 4 |
+| `aadhar`, `gudh`, `mala`, `vakyank` | 3 each |
+| `brihat`, `ganita`, `khand`, `roop` | 2 each |
+| `kalana`, `phal`, `samanvaya`, `sangrah`, `varna` | 1 each |
+| **total** | **35 applied, 0 missed** |
+
+**The shape of the corrections is the interesting part. They are all about what a CALLER must supply:**
+
+- *"Caller allocates out with >= 4*n cells (70 cells sufficed for n <= 21 in base 2)"* becomes *"Caller provides at
+  least 1 writable output cell when n <= 0, or at least 4*n cells when n > 0 (base-2 worst case)"* - **the old comment
+  named a magic number and a range that no longer held.**
+- *"Fills out[0] = x and out[1] = y"* becomes *"Writes out[0] = x and out[1] = y; **caller must supply at least 2
+  writable qword cells**"* - **the old version said what happens but not what is required.**
+- *"Base outside 2..16: returns 0 (base 0 trapped with SIGFPE)"* becomes *"Base outside 2..16 returns 0 without
+  dividing (older code could trap)"* - **a defect description that outlived the defect.**
+
+**So the pattern is: a comment that described a BUG, left in place after the bug was fixed.** **Three of the 35 were
+exactly that.** **A reader would believe a trap that no longer happens.**
+
+### And the delivery shape is why this worked
+**A TSV of exact old/new lines, applied mechanically, with a count of misses.** **Zero misses means the source had not
+drifted from what ChatGPT read.** **That is the opposite of the 22 KB patch I could not apply - and the right shape for
+a partner without a compiler to deliver prose changes in.**
+
 ## v355 - three rounds: implement the guard directly, deliver verifiably, re-check the TSV
 
 **ROUND-42 (Claude):** **implement the bounds guard yourself** - Muse's compiler could not be installed (7 parts
