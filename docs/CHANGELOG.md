@@ -1,3 +1,33 @@
+## v380 - the audit turned into a round: the top of the fix list goes to all three
+
+**I wrote `docs/OPEN-ISSUES.md` and did not issue the round with it. That was the mistake - the audit and the work should
+have gone together.** **Now they have.**
+
+### ROUND-48 (Claude) - the three heaviest
+1. **Reproduce the `kosh` abort**, then design the smallest fix - *"not an exception system. Either return a sentinel that
+   is documented, or add an ok-channel variant - whichever is smaller and matches how `ganita_paripurna_*` already
+   handles its sentinels."*
+2. **The 15 surviving mutants** - *"for each: is it a real wrong answer, or a mutation no input can distinguish? Deliver
+   the list split into those two."*
+3. **The debugger usable** - named watches, a start-line, an exit summary.
+
+### ROUND-48 (Muse) - the independent evidence
+**Reproduce the abort with its OWN program, not Claude's.** **And the design question: *"how do the
+`ganita_paripurna_*` functions report their sentinel, and would the same pattern work for `kosh`? From the source, not
+from preference."***
+**Plus: sample 40 of the 818 undecided mutants** - *"that tells us whether the 818 are mostly harmless or mostly
+unexamined."*
+**Plus the `yoj` error message** - where is `agyat prakriya` raised, and what does the compiler know at that point?
+
+### ROUND-123 (ChatGPT) - the docs and the words
+**The LSB-first gap in the reference, the status banners for three design docs, and the final nine `kosh` words using
+the project's own `khip`/`apanay` conventions.**
+
+### And the rule that goes in every brief now
+**"Five times now, a partner or I has concluded 'it is broken' and been wrong five times. So every workstream says what
+to do if the feature turns out to be ALREADY CORRECT. Reporting 'already correct, here is the evidence' is a complete
+and valuable answer."**
+
 ## v379 - the full audit: 30 open issues, and six of them are mine
 
 **`docs/OPEN-ISSUES.md` lists everything the passing checks do not cover.** **Suite 224, corpus 227/0, proofs 224/224,
