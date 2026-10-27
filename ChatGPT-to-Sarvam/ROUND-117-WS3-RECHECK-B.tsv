@@ -1,0 +1,17 @@
+# R117 WS3 exact matching against pinned main fd02405aad986001c451ee5c5decb91346c7bb53; last seven library files; 15 original proposal lines
+file	prior_line	current_line	current_blob	old_occurrences	new_occurrences	status
+lib/phal.smlib	7	7	9e1c126cbf2e268777f7479aff3b14accf3bad47	0	1	APPLIED
+lib/roop.smlib	309	309	3146996954ca33790c7ecfc4a310b1254d088d1e	0	1	APPLIED
+lib/roop.smlib	310	310	3146996954ca33790c7ecfc4a310b1254d088d1e	0	1	APPLIED
+lib/samanvaya.smlib	134	134	8de0d29f2619d38f4f639728a1220a21996211bb	0	1	APPLIED
+lib/sangrah.smlib	10	10	8136867a12254ca9c77ba4ffda9565e483e5c1f4	0	1	APPLIED
+lib/suchi.smlib	220	220	eca929ace7cbf98b15d611c64155970c1638e2ff	0	1	APPLIED
+lib/suchi.smlib	245	245	eca929ace7cbf98b15d611c64155970c1638e2ff	0	1	APPLIED
+lib/suchi.smlib	252	252	eca929ace7cbf98b15d611c64155970c1638e2ff	0	1	APPLIED
+lib/suchi.smlib	258	258	eca929ace7cbf98b15d611c64155970c1638e2ff	0	1	APPLIED
+lib/suchi.smlib	266	266	eca929ace7cbf98b15d611c64155970c1638e2ff	0	1	APPLIED
+lib/suchi.smlib	272	272	eca929ace7cbf98b15d611c64155970c1638e2ff	0	1	APPLIED
+lib/vakyank.smlib	81	81	7885bad46d154a4e77d5ac2730bbe7a7ae2f0d4d	0	1	APPLIED
+lib/vakyank.smlib	138	138	7885bad46d154a4e77d5ac2730bbe7a7ae2f0d4d	0	1	APPLIED
+lib/vakyank.smlib	139	139	7885bad46d154a4e77d5ac2730bbe7a7ae2f0d4d	0	1	APPLIED
+lib/varna.smlib	13	13	54fcc67e5837a1be8314832fa44dd565ea273189	0	1	APPLIED
