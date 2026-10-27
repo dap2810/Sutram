@@ -1,0 +1,4432 @@
+    mov rdi, [rax+8]
+    call emit_load_named_var
+    mov dil, 0x49             ; mov r8,rax
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    mov dil, 0x4D             ; mov r9,[r8-16]
+    call emit_byte
+    mov dil, 0x8B
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xF0
+    call emit_byte
+    call emit_kosh_empty_check_r9
+    ; R63 peek shares the existing checked pop load path but must never
+    ; store a shortened length; this is compile-time selection, not a
+    ; generated conditional branch. Existing kosh_pop bytes stay unchanged.
+    cmp r12, BN_KOSHDEQUEUE
+    je .ge_koshdequeue
+    cmp r12, BN_KOSHPEEK
+    je .ge_koshpeek_only
+    mov dil, 0x49             ; dec r9
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0xC9
+    call emit_byte
+    mov dil, 0x4D             ; mov [r8-16],r9
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xF0
+    call emit_byte
+    jmp .ge_koshpop_load
+.ge_koshpeek_only:
+    ; dec r9 for index only; header [r8-16] remains untouched.
+    mov dil, 0x49
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0xC9
+    call emit_byte
+.ge_koshpop_load:
+    mov dil, 0x4B             ; mov rax,[r8+r9*8]
+    call emit_byte
+    mov dil, 0x8B
+    call emit_byte
+    mov dil, 0x04
+    call emit_byte
+    mov dil, 0xC8
+    call emit_byte
+    jmp .ge_call_done
+
+.ge_koshdequeue:
+    ; FIFO remove first element. Runtime precondition r8=kosh base, r9=len>0
+    ; is established by the common checked kosh_pop/kosh_peek prologue.
+    ; The first element's raw 64 bits remain in RAX while the other qwords
+    ; shift down one slot. rep movsq copies forward (dest < source) safely.
+    ; CLD establishes the required copy direction even after user inline ASM.
+    ; mov rax,[r8]      49 8B 00
+    mov dil, 0x49
+    call emit_byte
+    mov dil, 0x8B
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    ; dec r9             49 FF C9
+    mov dil, 0x49
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0xC9
+    call emit_byte
+    ; mov [r8-16],r9    4D 89 48 F0
+    mov dil, 0x4D
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xF0
+    call emit_byte
+    ; mov rdi,r8         4C 89 C7
+    mov dil, 0x4C
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    ; lea rsi,[r8+8]    49 8D 70 08
+    mov dil, 0x49
+    call emit_byte
+    mov dil, 0x8D
+    call emit_byte
+    mov dil, 0x70
+    call emit_byte
+    mov dil, 0x08
+    call emit_byte
+    ; mov rcx,r9         4C 89 C9
+    mov dil, 0x4C
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC9
+    call emit_byte
+    ; cld; rep movsq    FC F3 48 A5 (copy len-1 qwords to the left)
+    mov dil, 0xFC
+    call emit_byte
+    mov dil, 0xF3
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xA5
+    call emit_byte
+    jmp .ge_call_done
+
+.ge_call_koshpush:
+    push r13
+    push r14
+    push r15
+    cmp qword [rbx+16], 2
+    jne .ge_call_koshpush_bad
+    mov rax, [rbx+24]
+    cmp qword [rax], AST_VAR
+    jne .ge_call_koshpush_bad
+    mov r13, [rax+8]         ; compiler-time kosh variable name
+    mov rdi, r13
+    call is_kosh_var
+    test rax, rax
+    jz .ge_call_koshpush_bad
+    ; Parameters are pointer-by-value views. A grow operation could replace the
+    ; callee's pointer without updating the caller, so kosh_push is rejected on
+    ; parameters until a deliberate reference ABI is introduced.
+    mov rdi, r13
+    call is_kosh_param_var
+    test rax, rax
+    jnz .ge_call_koshpush_param_bad
+    ; Evaluate value first, converting to the kosh element type, then preserve it
+    ; on the generated runtime stack while capacity/growth is handled.
+    mov rdi, [rbx+32]
+    call expr_is_float
+    mov r14, rax             ; source type
+    mov rdi, r13
+    call is_float_kosh_var
+    mov r15, rax             ; target type
+    push r14                 ; preserve compiler-time types across gen_expr
+    push r15
+    mov rax, [rbx+32]
+    call gen_expr
+    pop r15
+    pop r14
+    mov rdi, r14
+    mov rsi, r15
+    call emit_scalar_type_conversion
+    mov dil, 0x50
+    call emit_byte
+    mov rdi, r13
+    call emit_load_named_var
+    ; r8=ptr, r9=len, r10=cap
+    mov dil, 0x49
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    mov dil, 0x4D
+    call emit_byte
+    mov dil, 0x8B
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xF0
+    call emit_byte
+    mov dil, 0x4D
+    call emit_byte
+    mov dil, 0x8B
+    call emit_byte
+    mov dil, 0x50
+    call emit_byte
+    mov dil, 0xF8
+    call emit_byte
+    mov dil, 0x4D             ; cmp r9,r10
+    call emit_byte
+    mov dil, 0x39
+    call emit_byte
+    mov dil, 0xD1
+    call emit_byte
+    mov dil, 0x0F             ; jb .space rel32
+    call emit_byte
+    mov dil, 0x82
+    call emit_byte
+    mov r15, [rel code_sz]
+    xor edi, edi
+    call emit_u32
+    ; newcap = cap ? cap*2 : 4
+    mov dil, 0x4D
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xD3
+    call emit_byte
+    mov dil, 0x49
+    call emit_byte
+    mov dil, 0xD1
+    call emit_byte
+    mov dil, 0xE3
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    mov edi, 4
+    call emit_u32
+    mov dil, 0x4D
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+    mov dil, 0xDB
+    call emit_byte
+    mov dil, 0x4C
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x44
+    call emit_byte
+    mov dil, 0xD8
+    call emit_byte
+    ; Preserve old pointer, length, and new capacity across allocation.
+    mov dil, 0x41
+    call emit_byte
+    mov dil, 0x50
+    call emit_byte
+    mov dil, 0x41
+    call emit_byte
+    mov dil, 0x51
+    call emit_byte
+    mov dil, 0x41
+    call emit_byte
+    mov dil, 0x53
+    call emit_byte
+    mov dil, 0x4C             ; mov rax,r11
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xD8
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x83
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    mov dil, 0x02
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xC1
+    call emit_byte
+    mov dil, 0xE0
+    call emit_byte
+    mov dil, 0x03
+    call emit_byte
+    call emit_nirmmita_from_rax
+    mov dil, 0x41
+    call emit_byte
+    mov dil, 0x5B
+    call emit_byte
+    mov dil, 0x41
+    call emit_byte
+    mov dil, 0x59
+    call emit_byte
+    mov dil, 0x41
+    call emit_byte
+    mov dil, 0x58
+    call emit_byte
+    mov dil, 0x4C             ; mov [rax],r9
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0x08
+    call emit_byte
+    mov dil, 0x4C             ; mov [rax+8],r11
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0x58
+    call emit_byte
+    mov dil, 0x08
+    call emit_byte
+    mov dil, 0x4C             ; lea r10,[rax+16]
+    call emit_byte
+    mov dil, 0x8D
+    call emit_byte
+    mov dil, 0x50
+    call emit_byte
+    mov dil, 0x10
+    call emit_byte
+    mov dil, 0x31             ; xor ecx,ecx
+    call emit_byte
+    mov dil, 0xC9
+    call emit_byte
+    mov r14, [rel code_sz]
+    mov dil, 0x4C             ; cmp rcx,r9
+    call emit_byte
+    mov dil, 0x39
+    call emit_byte
+    mov dil, 0xC9
+    call emit_byte
+    mov dil, 0x0F             ; jae copy_done rel32
+    call emit_byte
+    mov dil, 0x83
+    call emit_byte
+    mov r12, [rel code_sz]
+    xor edi, edi
+    call emit_u32
+    mov dil, 0x49             ; mov rdx,[r8+rcx*8]
+    call emit_byte
+    mov dil, 0x8B
+    call emit_byte
+    mov dil, 0x14
+    call emit_byte
+    mov dil, 0xC8
+    call emit_byte
+    mov dil, 0x49             ; mov [r10+rcx*8],rdx
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0x14
+    call emit_byte
+    mov dil, 0xCA
+    call emit_byte
+    mov dil, 0x48             ; inc rcx
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0xC1
+    call emit_byte
+    mov dil, 0xE9             ; jmp copy_loop
+    call emit_byte
+    mov rax, r14
+    sub rax, [rel code_sz]
+    sub rax, 4
+    mov edi, eax
+    call emit_u32
+    ; Patch jae to copy_done.
+    mov rax, [rel code_sz]
+    sub rax, r12
+    sub rax, 4
+    lea rcx, [rel code_buf]
+    mov [rcx+r12], eax
+    ; Update Sutram variable to new user pointer.
+    mov dil, 0x4C             ; mov rax,r10
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xD0
+    call emit_byte
+    mov rdi, r13
+    call emit_store_named_var
+    mov dil, 0x4D             ; mov r8,r10
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xD0
+    call emit_byte
+    ; Patch initial jb to append path.
+    mov rax, [rel code_sz]
+    sub rax, r15
+    sub rax, 4
+    lea rcx, [rel code_buf]
+    mov [rcx+r15], eax
+    mov dil, 0x5A             ; pop value -> rdx
+    call emit_byte
+    mov dil, 0x4B             ; mov [r8+r9*8],rdx
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0x14
+    call emit_byte
+    mov dil, 0xC8
+    call emit_byte
+    mov dil, 0x49             ; inc r9
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0xC1
+    call emit_byte
+    mov dil, 0x4D             ; mov [r8-16],r9
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xF0
+    call emit_byte
+    mov dil, 0x4C             ; mov rax,r9
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC8
+    call emit_byte
+    pop r15
+    pop r14
+    pop r13
+    jmp .ge_call_done
+.ge_call_koshpush_param_bad:
+    pop r15
+    pop r14
+    pop r13
+    lea rdi, [rel msg_kosh_param_push]
+    jmp capacity_fail
+.ge_call_koshpush_bad:
+    pop r15
+    pop r14
+    pop r13
+.ge_call_kosh_bad:
+    lea rdi, [rel msg_kosh_required]
+    jmp capacity_fail
+
+.ge_call_lkhb:
+    ; lkhb(x) = print number WITHOUT trailing newline
+    ; Reuse likha's number code path with the no-newline flag set
+    mov qword [rel lk_no_nl], 1
+    jmp .ge_lk_3reg
+
+.ge_call_grahan:
+    ; Inline integer input parser.  Crucially, emit the read through
+    ; emit_syscall so PE output reaches rt_syscall -> kernel32!ReadFile rather
+    ; than executing a Linux 0F 05 instruction inside a Windows process.
+    push r12
+    push r13
+    push r14
+    lea r12, [rel grahan_prefix_bytes]
+    xor r13, r13
+.grahan_emit_prefix:
+    cmp r13, GRAHAN_PREFIX_LEN
+    jge .grahan_emit_read
+    mov dil, [r12 + r13]
+    call emit_byte
+    inc r13
+    jmp .grahan_emit_prefix
+.grahan_emit_read:
+    call emit_syscall
+    cmp qword [rel target_pe], 0
+    jne .grahan_use_pe_tail
+    lea r12, [rel grahan_linux_tail]
+    mov r14, GRAHAN_TAIL_LEN
+    jmp .grahan_tail_ready
+.grahan_use_pe_tail:
+    lea r12, [rel grahan_pe_tail]
+    mov r14, GRAHAN_PE_TAIL_LEN
+.grahan_tail_ready:
+    xor r13, r13
+.grahan_emit_tail:
+    cmp r13, r14
+    jge .grahan_emit_done
+    mov dil, [r12 + r13]
+    call emit_byte
+    inc r13
+    jmp .grahan_emit_tail
+.grahan_emit_done:
+    pop r14
+    pop r13
+    pop r12
+    jmp .ge_call_done
+
+.ge_call_pad:
+    ; pad(addr) -> byte value at address
+    ; gen_expr(arg1) leaves addr in rax at runtime
+    mov rax, [rbx+24]
+    call gen_expr
+    ; emit: mov rdi, rax (48 89 C7)
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    ; emit: movzx rax, byte [rdi] (48 0F B6 07)
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0xB6
+    call emit_byte
+    mov dil, 0x07
+    call emit_byte
+    jmp .ge_call_done
+
+.ge_call_band:
+    ; band(fd) -> sys_close(fd)=3
+    ; gen_expr(arg1) leaves fd in rax at runtime
+    mov rax, [rbx+24]
+    call gen_expr
+    ; emit: mov rdi, rax (48 89 C7)
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    ; emit: mov eax, 3 (B8 03 00 00 00)
+    mov dil, 0xB8
+    call emit_byte
+    mov dil, 0x03
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    ; emit: syscall (0F 05)
+    call emit_syscall
+    jmp .ge_call_done
+
+.ge_call_dvaram:
+    ; R52: dvaram(path, flags[, mode]) -> Linux sys_open result.
+    ; The previous two-argument path left rdx unspecified and O_CREAT could
+    ; create inaccessible mode-000 files. Default creation mode is 0644.
+    ; Explicit third argument supplies the mode; effective bits honor umask.
+    cmp qword [rbx+16], 2
+    je .ge_dvaram_args_ok
+    cmp qword [rbx+16], 3
+    jne .ge_dvaram_arity
+.ge_dvaram_args_ok:
+    mov rax, [rbx+24]
+    call gen_expr
+    mov dil, 0x50                 ; push path
+    call emit_byte
+    mov rax, [rbx+32]
+    call gen_expr
+    mov dil, 0x50                 ; push flags
+    call emit_byte
+    cmp qword [rbx+16], 3
+    jne .ge_dvaram_default
+    mov rax, [rbx+40]
+    call gen_expr
+    mov dil, 0x48                 ; mov rdx,rax = 48 89 C2
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC2
+    call emit_byte
+    jmp .ge_dvaram_ready
+.ge_dvaram_default:
+    mov dil, 0xBA                 ; mov edx,420 = 0644
+    call emit_byte
+    mov edi, 420
+    call emit_u32
+.ge_dvaram_ready:
+    mov dil, 0x5E                 ; pop rsi = flags
+    call emit_byte
+    mov dil, 0x5F                 ; pop rdi = path
+    call emit_byte
+    mov dil, 0xB8                 ; mov eax,2 = sys_open
+    call emit_byte
+    mov edi, 2
+    call emit_u32
+    call emit_syscall
+    jmp .ge_call_done
+.ge_dvaram_arity:
+    lea rdi, [rel r52_msg_dvaram_arity]
+    jmp capacity_fail
+
+.ge_call_paadh:
+    ; paadh(fd, buf, count) -> bytes_read (sys_read=0)
+    ; 3 args: push arg1, push arg2, eval arg3 into rdx, pop rsi, pop rdi
+    ; gen_expr(arg1) -> rax, push rax
+    mov rax, [rbx+24]
+    call gen_expr
+    mov dil, 0x50            ; push rax
+    call emit_byte
+    ; gen_expr(arg2) -> rax, push rax
+    mov rax, [rbx+32]
+    call gen_expr
+    mov dil, 0x50            ; push rax
+    call emit_byte
+    ; gen_expr(arg3) -> rax
+    mov rax, [rbx+40]
+    call gen_expr
+    ; emit: mov rdx, rax (48 89 C2)
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC2
+    call emit_byte
+    ; emit: pop rsi (5E)
+    mov dil, 0x5E
+    call emit_byte
+    ; emit: pop rdi (5F)
+    mov dil, 0x5F
+    call emit_byte
+    ; emit: xor eax, eax (31 C0) — sys_read = 0
+    mov dil, 0x31
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    ; emit: syscall (0F 05)
+    call emit_syscall
+    jmp .ge_call_done
+
+.ge_call_likha:
+    ; arg counts: 1 = print value, 2 = print two values, 3 = sys_write(fd,buf,len)
+    mov rax, [rbx+16]
+    cmp rax, 1
+    je .ge_lk_str
+    cmp rax, 2
+    je .ge_lk_two
+    ; 3-arg form: likha(fd, buf, count)
+    mov rax, [rbx+24]
+    call gen_expr
+    mov dil, 0x50
+    call emit_byte
+    mov rax, [rbx+32]
+    call gen_expr
+    mov dil, 0x50
+    call emit_byte
+    mov rax, [rbx+40]
+    call gen_expr
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC2
+    call emit_byte
+    mov dil, 0x5E
+    call emit_byte
+    mov dil, 0x5F
+    call emit_byte
+    mov dil, 0xB8
+    call emit_byte
+    mov dil, 0x01
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    call emit_syscall
+    jmp .ge_call_done
+.ge_lk_two:
+    ; likha(a, b): print a, then print b — synthesise two 1-arg likha calls
+    mov rax, [rbx+24]
+    push rax
+    call alloc_ast
+    pop rcx
+    mov qword [rax], 8            ; AST_CALL
+    mov qword [rax+8], BN_LIKHA
+    mov qword [rax+16], 1
+    mov [rax+24], rcx
+    call gen_expr                 ; print(a)
+    mov rax, [rbx+32]
+    push rax
+    call alloc_ast
+    pop rcx
+    mov qword [rax], 8
+    mov qword [rax+8], BN_LIKHA
+    mov qword [rax+16], 1
+    mov [rax+24], rcx
+    call gen_expr                 ; print(b)
+    jmp .ge_call_done
+
+.ge_call_shabda:
+    ; shabda(s): print the NUL-terminated string whose address is in s
+    ; (works for string variables, and for literals too)
+    mov rax, [rbx+24]         ; arg node
+    call gen_expr             ; rax = string address
+    ; --- inline runtime printer (fixed 33 bytes) ---
+    ; mov rsi, rax
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC6
+    call emit_byte
+    ; xor rcx, rcx
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x31
+    call emit_byte
+    mov dil, 0xC9
+    call emit_byte
+    ; .scan: cmp byte [rsi+rcx], 0
+    mov dil, 0x80
+    call emit_byte
+    mov dil, 0x3C
+    call emit_byte
+    mov dil, 0x0E
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    ; je .done (74 05)
+    mov dil, 0x74
+    call emit_byte
+    mov dil, 0x05
+    call emit_byte
+    ; inc rcx
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0xC1
+    call emit_byte
+    ; jmp .scan (EB F5)
+    mov dil, 0xEB
+    call emit_byte
+    mov dil, 0xF5
+    call emit_byte
+    ; mov rdi, 1
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    mov dil, 0x01
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    ; mov rdx, rcx
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xCA
+    call emit_byte
+    ; mov rax, 1
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    mov dil, 0x01
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    ; syscall
+    call emit_syscall
+    jmp .ge_call_done
+
+.ge_lk_str:
+    ; 1-arg string form: likha("text")
+    mov rax, [rbx+24]
+    mov rcx, [rax]
+    cmp rcx, 14
+    jne .ge_lk_maybe_float
+    ; String literal — emit inline string + sys_write(1, str, len)
+    push r12
+    push r13
+    mov r12, [rax+8]
+    ; lea rax,[rip+2]: 48 8D 05 02 00 00 00
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x8D
+    call emit_byte
+    mov dil, 0x05
+    call emit_byte
+    mov dil, 0x02
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    ; strlen to get length
+    mov rdi, r12
+    call strlen
+    mov r13, rax
+    ; jmp rel8 = EB (len+1)
+    mov dil, 0xEB
+    call emit_byte
+    mov edi, r13d
+    add edi, 1
+    call emit_byte
+    ; emit string bytes
+.ge_lk_sl:
+    test r13, r13
+    jz .ge_lk_sd
+    movzx edi, byte [r12]
+    call emit_byte
+    inc r12
+    dec r13
+    jmp .ge_lk_sl
+.ge_lk_sd:
+    ; mov rdi, 1 (stdout) = 48 C7 C7 01 00 00 00
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    mov dil, 0x01
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    ; mov rsi, rax = 48 89 C6
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC6
+    call emit_byte
+    ; mov rdx, <len> = BA xx 00 00 00
+    mov dil, 0xBA
+    call emit_byte
+    ; re-compute length
+    mov rax, [rbx+24]
+    mov rax, [rax+8]
+    push r12
+    mov rdi, rax
+    call strlen
+    mov edi, eax
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    pop r12
+    ; mov eax, 1 = B8 01 00 00 00
+    mov dil, 0xB8
+    call emit_byte
+    mov dil, 0x01
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    ; syscall = 0F 05
+    call emit_syscall
+    pop r13
+    pop r12
+    jmp .ge_call_done
+.ge_lk_maybe_float:
+    mov rdi, [rbx+24]
+    call expr_is_float
+    test rax, rax
+    jz .ge_lk_3reg
+.ge_lk_float:
+    mov rax, [rbx+24]
+    call gen_expr
+    push r12
+    push r13
+    lea r12, [rel float_print_prefix_bytes]
+    xor r13, r13
+.glf_prefix:
+    cmp r13, FLOAT_PRINT_PREFIX_LEN
+    jae .glf_syscall
+    movzx edi, byte [r12+r13]
+    call emit_byte
+    inc r13
+    jmp .glf_prefix
+.glf_syscall:
+    call emit_syscall
+    lea r12, [rel float_print_suffix_bytes]
+    xor r13, r13
+.glf_suffix:
+    cmp r13, FLOAT_PRINT_SUFFIX_LEN
+    jae .glf_done
+    movzx edi, byte [r12+r13]
+    call emit_byte
+    inc r13
+    jmp .glf_suffix
+.glf_done:
+    pop r13
+    pop r12
+    jmp .ge_call_done
+
+.ge_lk_3reg:
+    ; Number printing: likha(42) or likha(x+1)
+    ; Evaluate expression → rax has number at runtime
+    mov rax, [rbx+24]
+    call gen_expr
+    ; Emit inline number-to-decimal + sys_write code
+    ; mov r8, rax = 49 89 C0
+    mov dil, 0x49
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    ; sub rsp, 32 = 48 83 EC 20
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x83
+    call emit_byte
+    mov dil, 0xEC
+    call emit_byte
+    mov dil, 0x20
+    call emit_byte
+    ; Sign check: if r8 is negative, print '-' and negate
+    ; test r8, r8 = 4D 85 C0
+    mov dil, 0x4D
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    ; jns +28 (skip negation code) = 79 1C
+    mov dil, 0x79
+    call emit_byte
+    mov dil,0x1C
+    cmp qword [rel target_pe],0
+    je .print_sign_skip_ready
+    add dil,3 ; PE call rel32 is 5 bytes; Linux syscall is 2.
+.print_sign_skip_ready:
+    call emit_byte
+    ; neg r8 = 49 F7 D8
+    mov dil, 0x49
+    call emit_byte
+    mov dil, 0xF7
+    call emit_byte
+    mov dil, 0xD8
+    call emit_byte
+    ; mov byte [rsp], 0x2D ('-') = C6 04 24 2D
+    mov dil, 0xC6
+    call emit_byte
+    mov dil, 0x04
+    call emit_byte
+    mov dil, 0x24
+    call emit_byte
+    mov dil, 0x2D
+    call emit_byte
+    ; mov eax, 1 = B8 01 00 00 00
+    mov dil, 0xB8
+    call emit_byte
+    mov dil, 0x01
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    call emit_byte
+    call emit_byte
+    ; mov edi, 1 = BF 01 00 00 00
+    mov dil, 0xBF
+    call emit_byte
+    mov dil, 0x01
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    call emit_byte
+    call emit_byte
+    ; lea rsi, [rsp] = 48 8D 34 24
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x8D
+    call emit_byte
+    mov dil, 0x34
+    call emit_byte
+    mov dil, 0x24
+    call emit_byte
+    ; mov edx, 1 = BA 01 00 00 00
+    mov dil, 0xBA
+    call emit_byte
+    mov dil, 0x01
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    call emit_byte
+    call emit_byte
+    ; syscall = 0F 05
+    call emit_syscall
+    ; lea rsi, [rsp+31] = 48 8D 74 24 1F
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x8D
+    call emit_byte
+    mov dil, 0x74
+    call emit_byte
+    mov dil, 0x24
+    call emit_byte
+    mov dil, 0x1F
+    call emit_byte
+    ; mov byte [rsi], 10 = C6 06 0A
+    mov dil, 0xC6
+    call emit_byte
+    mov dil, 0x06
+    call emit_byte
+    mov dil, 0x0A
+    call emit_byte
+    ; dec rsi = 48 FF CE
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0xCE
+    call emit_byte
+    ; test r8, r8 = 4D 85 C0
+    mov dil, 0x4D
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    ; jnz +8 = 75 08 (skip zero case, jump to loop at offset 31)
+    mov dil, 0x75
+    call emit_byte
+    mov dil, 0x08
+    call emit_byte
+    ; mov byte [rsi], 0x30 = C6 06 30
+    mov dil, 0xC6
+    call emit_byte
+    mov dil, 0x06
+    call emit_byte
+    mov dil, 0x30
+    call emit_byte
+    ; dec rsi = 48 FF CE (match loop's dec pattern)
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0xCE
+    call emit_byte
+    ; jmp +30 = EB 1E (skip to print section)
+    mov dil, 0xEB
+    call emit_byte
+    mov dil, 0x1E
+    call emit_byte
+    ; --- LOOP START (offset 28) ---
+    ; xor rdx, rdx = 48 31 D2
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x31
+    call emit_byte
+    mov dil, 0xD2
+    call emit_byte
+    ; mov rax, r8 = 4C 89 C0
+    mov dil, 0x4C
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    ; mov ecx, 10 = B9 0A 00 00 00
+    mov dil, 0xB9
+    call emit_byte
+    mov dil, 0x0A
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    ; div rcx = 48 F7 F1
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xF7
+    call emit_byte
+    mov dil, 0xF1
+    call emit_byte
+    ; mov r8, rax = 49 89 C0
+    mov dil, 0x49
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    ; add dl, 0x30 = 80 C2 30
+    mov dil, 0x80
+    call emit_byte
+    mov dil, 0xC2
+    call emit_byte
+    mov dil, 0x30
+    call emit_byte
+    ; mov [rsi], dl = 88 16
+    mov dil, 0x88
+    call emit_byte
+    mov dil, 0x16
+    call emit_byte
+    ; dec rsi = 48 FF CE
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0xCE
+    call emit_byte
+    ; test r8, r8 = 4D 85 C0
+    mov dil, 0x4D
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    ; jnz -30 = 75 E2 (back to loop start)
+    mov dil, 0x75
+    call emit_byte
+    mov dil, 0xE2
+    call emit_byte
+    ; --- PRINT SECTION (offset 58) ---
+    ; lea rdx, [rsp+32] = 48 8D 54 24 20
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x8D
+    call emit_byte
+    mov dil, 0x54
+    call emit_byte
+    mov dil, 0x24
+    call emit_byte
+    mov dil, 0x20
+    call emit_byte
+    ; sub rdx, rsi = 48 29 F2
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x29
+    call emit_byte
+    mov dil, 0xF2
+    call emit_byte
+    ; dec rdx = 48 FF CA
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0xCA
+    call emit_byte
+    ; lkhb: if no-newline flag set, emit one more dec rdx (skip the newline byte)
+    cmp qword [rel lk_no_nl], 0
+    je .lk_nl_ok
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0xCA
+    call emit_byte
+    mov qword [rel lk_no_nl], 0
+.lk_nl_ok:
+    ; inc rsi = 48 FF C6
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0xC6
+    call emit_byte
+    ; mov rdi, 1 = 48 C7 C7 01 00 00 00
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    mov dil, 0x01
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    ; mov eax, 1 = B8 01 00 00 00
+    mov dil, 0xB8
+    call emit_byte
+    mov dil, 0x01
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    ; syscall = 0F 05
+    call emit_syscall
+    ; add rsp, 32 = 48 83 C4 20
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x83
+    call emit_byte
+    mov dil, 0xC4
+    call emit_byte
+    mov dil, 0x20
+    call emit_byte
+    jmp .ge_call_done
+
+.ge_call_netsock:
+    ; netsock() → socket(AF_INET=2, SOCK_STREAM=1, 0)
+    ; syscall 41: rdi=domain, rsi=type, rdx=protocol
+    mov dil, 0xB8           ; mov eax, 41
+    call emit_byte
+    mov dil, 41
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    ; mov edi, 2 (AF_INET) = BF 02 00 00 00
+    mov dil, 0xBF
+    call emit_byte
+    mov dil, 0x02
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    ; mov esi, 1 (SOCK_STREAM) = BE 01 00 00 00
+    mov dil, 0xBE
+    call emit_byte
+    mov dil, 0x01
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    ; xor edx, edx = 31 D2
+    mov dil, 0x31
+    call emit_byte
+    mov dil, 0xD2
+    call emit_byte
+    ; syscall = 0F 05
+    call emit_syscall
+    jmp .ge_call_done
+
+.ge_call_netbind:
+    ; netbind(fd, port) → bind(fd, sockaddr_in, 16)
+    ; Evaluate fd → push
+    mov rax, [rbx+24]
+    call gen_expr
+    mov dil, 0x50           ; push rax
+    call emit_byte
+    ; Evaluate port → rax
+    mov rax, [rbx+32]
+    call gen_expr
+    ; sub rsp, 16 = 48 83 EC 10
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x83
+    call emit_byte
+    mov dil, 0xEC
+    call emit_byte
+    mov dil, 0x10
+    call emit_byte
+    ; mov word [rsp], 2 (AF_INET) = 66 C7 04 24 02 00
+    mov dil, 0x66
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    mov dil, 0x04
+    call emit_byte
+    mov dil, 0x24
+    call emit_byte
+    mov dil, 0x02
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    ; mov cx, ax = 66 89 C1
+    mov dil, 0x66
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC1
+    call emit_byte
+    ; xchg cl, ch = 86 E9
+    mov dil, 0x86
+    call emit_byte
+    mov dil, 0xE9
+    call emit_byte
+    ; mov [rsp+2], cx = 66 89 4C 24 02
+    mov dil, 0x66
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0x4C
+    call emit_byte
+    mov dil, 0x24
+    call emit_byte
+    mov dil, 0x02
+    call emit_byte
+    ; mov dword [rsp+4], 0 = C7 44 24 04 00 00 00 00
+    mov dil, 0xC7
+    call emit_byte
+    mov dil, 0x44
+    call emit_byte
+    mov dil, 0x24
+    call emit_byte
+    mov dil, 0x04
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    ; mov qword [rsp+8], 0 = 48 C7 44 24 08 00 00 00 00
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    mov dil, 0x44
+    call emit_byte
+    mov dil, 0x24
+    call emit_byte
+    mov dil, 0x08
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    ; mov rsi, rsp = 48 89 E6
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xE6
+    call emit_byte
+    ; mov rdi, [rsp+16] = 48 8B 7C 24 10
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x8B
+    call emit_byte
+    mov dil, 0x7C
+    call emit_byte
+    mov dil, 0x24
+    call emit_byte
+    mov dil, 0x10
+    call emit_byte
+    ; mov edx, 16 = BA 10 00 00 00
+    mov dil, 0xBA
+    call emit_byte
+    mov dil, 0x10
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    ; mov eax, 49 (sys_bind) = B8 31 00 00 00
+    mov dil, 0xB8
+    call emit_byte
+    mov dil, 49
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    ; syscall = 0F 05
+    call emit_syscall
+    ; add rsp, 24 = 48 83 C4 18
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x83
+    call emit_byte
+    mov dil, 0xC4
+    call emit_byte
+    mov dil, 0x18
+    call emit_byte
+    jmp .ge_call_done
+
+.ge_call_netlist:
+    ; netlisten(fd) → listen(fd, 5)
+    mov rax, [rbx+24]
+    call gen_expr
+    ; mov rdi, rax = 48 89 C7
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    ; mov esi, 5 = BE 05 00 00 00
+    mov dil, 0xBE
+    call emit_byte
+    mov dil, 0x05
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    ; mov eax, 50 (sys_listen) = B8 32 00 00 00
+    mov dil, 0xB8
+    call emit_byte
+    mov dil, 50
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    ; syscall
+    call emit_syscall
+    jmp .ge_call_done
+
+.ge_call_netacc:
+    ; netaccept(fd) → accept(fd, 0, 0)
+    mov rax, [rbx+24]
+    call gen_expr
+    ; mov rdi, rax = 48 89 C7
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    ; xor esi, esi = 31 F6
+    mov dil, 0x31
+    call emit_byte
+    mov dil, 0xF6
+    call emit_byte
+    ; xor edx, edx = 31 D2
+    mov dil, 0x31
+    call emit_byte
+    mov dil, 0xD2
+    call emit_byte
+    ; mov eax, 43 (sys_accept) = B8 2B 00 00 00
+    mov dil, 0xB8
+    call emit_byte
+    mov dil, 43
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    ; syscall
+    call emit_syscall
+    jmp .ge_call_done
+
+.ge_call_nirm:
+    ; nirmmita(size) → mmap(0, size, 3, 0x22, -1, 0)
+    mov rax, [rbx+24]
+    call gen_expr
+    call emit_nirmmita_from_rax
+    jmp .ge_call_done
+
+.ge_call_likh8:
+    ; likh8(addr, val) → mov [rdi], rsi
+    mov rax, [rbx+24]
+    call gen_expr
+    mov dil, 0x50           ; push rax (save addr)
+    call emit_byte
+    mov rax, [rbx+32]
+    call gen_expr
+    ; pop rdi (addr) = 5F
+    mov dil, 0x5F
+    call emit_byte
+    ; mov rsi, rax (val) = 48 89 C6
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC6
+    call emit_byte
+    ; mov [rdi], rsi = 48 89 37
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0x37
+    call emit_byte
+    jmp .ge_call_done
+
+.ge_call_pad8:
+    ; pad8(addr) → mov rax, [rdi]
+    mov rax, [rbx+24]
+    call gen_expr
+    ; mov rdi, rax = 48 89 C7
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    ; mov rax, [rdi] = 48 8B 07
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x8B
+    call emit_byte
+    mov dil, 0x07
+    call emit_byte
+    jmp .ge_call_done
+
+.ge_call_panktilen:
+    ; T8b: real pankti declarations carry a hidden runtime length header.
+    ; Preserve historical behavior for arbitrary/raw pointers: pankti_len(p)
+    ; is 0 unless p is a pankti variable in this generated function scope.
+    mov rdi, [rbx+24]
+    call r23_expr_is_slice    ; R23 WS3: pankti_len(s), pankti_len(a[lo:hi]): the slice's length
+    test rax, rax
+    jz .r23_panktilen_not_slice
+    mov rax, [rbx+24]
+    call gen_expr
+    mov dil, 0x48             ; mov rax, [rax+8]
+    call emit_byte
+    mov dil, 0x8B
+    call emit_byte
+    mov dil, 0x40
+    call emit_byte
+    mov dil, 0x08
+    call emit_byte
+    jmp .ge_call_done
+.r23_panktilen_not_slice:
+    mov rax, [rbx+24]
+    cmp qword [rax], AST_VAR
+    jne .ge_call_panktilen_zero
+    mov rdi, [rax+8]
+    call is_array_var
+    test rax, rax
+    jz .ge_call_panktilen_zero
+    mov rax, [rbx+24]
+    call gen_expr
+    mov dil, 0x48             ; mov rax, [rax-8]
+    call emit_byte
+    mov dil, 0x8B
+    call emit_byte
+    mov dil, 0x40
+    call emit_byte
+    mov dil, 0xF8
+    call emit_byte
+    jmp .ge_call_done
+.ge_call_panktilen_zero:
+    mov dil, 0x48             ; xor rax, rax
+    call emit_byte
+    mov dil, 0x31
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    jmp .ge_call_done
+
+.ge_call_vartlen:
+    ; vartani_len(str) → inline strlen, rax = length
+    mov rax, [rbx+24]
+    call gen_expr
+    ; mov rdi, rax = 48 89 C7
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    ; xor ecx, ecx = 31 C9
+    mov dil, 0x31
+    call emit_byte
+    mov dil, 0xC9
+    call emit_byte
+    ; cmp byte [rdi], 0 = 80 3F 00
+    mov dil, 0x80
+    call emit_byte
+    mov dil, 0x3F
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    ; je +8 = 74 08
+    mov dil, 0x74
+    call emit_byte
+    mov dil, 0x08
+    call emit_byte
+    ; inc rdi = 48 FF C7
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    ; inc rcx = 48 FF C1
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0xC1
+    call emit_byte
+    ; jmp -13 = EB F3
+    mov dil, 0xEB
+    call emit_byte
+    mov dil, 0xF3
+    call emit_byte
+    ; mov rax, rcx = 48 89 C8
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC8
+    call emit_byte
+    jmp .ge_call_done
+
+.ge_call_vartcmp:
+    ; vartani_cmp(s1, s2) → 0 if equal, 1 if not
+    mov rax, [rbx+24]
+    call gen_expr
+    mov dil, 0x50           ; push rax (s1)
+    call emit_byte
+    mov rax, [rbx+32]
+    call gen_expr
+    ; pop rdi (s1) = 5F
+    mov dil, 0x5F
+    call emit_byte
+    ; mov rsi, rax (s2) = 48 89 C6
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC6
+    call emit_byte
+    ; movzx ecx, [rdi] = 0F B6 0F
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0xB6
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    ; movzx edx, [rsi] = 0F B6 16
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0xB6
+    call emit_byte
+    mov dil, 0x16
+    call emit_byte
+    ; cmp ecx, edx = 39 D1
+    mov dil, 0x39
+    call emit_byte
+    mov dil, 0xD1
+    call emit_byte
+    ; jne +16 = 75 10
+    mov dil, 0x75
+    call emit_byte
+    mov dil, 0x10
+    call emit_byte
+    ; test ecx, ecx = 85 C9
+    mov dil, 0x85
+    call emit_byte
+    mov dil, 0xC9
+    call emit_byte
+    ; jz +8 = 74 08
+    mov dil, 0x74
+    call emit_byte
+    mov dil, 0x08
+    call emit_byte
+    ; inc rdi = 48 FF C7
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    ; inc rsi = 48 FF C6
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0xC6
+    call emit_byte
+    ; jmp -22 = EB EA
+    mov dil, 0xEB
+    call emit_byte
+    mov dil, 0xEA
+    call emit_byte
+    ; xor eax, eax (equal) = 31 C0
+    mov dil, 0x31
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    ; jmp +5 = EB 05
+    mov dil, 0xEB
+    call emit_byte
+    mov dil, 0x05
+    call emit_byte
+    ; mov eax, 1 (not equal) = B8 01 00 00 00
+    mov dil, 0xB8
+    call emit_byte
+    mov dil, 0x01
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    jmp .ge_call_done
+
+.ge_call_vartcat:
+    ; vartani_cat(dst, src) → strcat, returns dst
+    mov rax, [rbx+24]
+    call gen_expr
+    mov dil, 0x50           ; push rax (dst)
+    call emit_byte
+    mov rax, [rbx+32]
+    call gen_expr
+    ; pop rdi (dst) = 5F
+    mov dil, 0x5F
+    call emit_byte
+    ; mov rsi, rax (src) = 48 89 C6
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC6
+    call emit_byte
+    ; mov r8, rdi (save dst) = 49 89 F8
+    mov dil, 0x49
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xF8
+    call emit_byte
+    ; cmp byte [rdi], 0 = 80 3F 00
+    mov dil, 0x80
+    call emit_byte
+    mov dil, 0x3F
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    ; je +5 = 74 05
+    mov dil, 0x74
+    call emit_byte
+    mov dil, 0x05
+    call emit_byte
+    ; inc rdi = 48 FF C7
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    ; jmp -10 = EB F6
+    mov dil, 0xEB
+    call emit_byte
+    mov dil, 0xF6
+    call emit_byte
+    ; movzx ecx, [rsi] = 0F B6 0E
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0xB6
+    call emit_byte
+    mov dil, 0x0E
+    call emit_byte
+    ; mov [rdi], cl = 88 0F
+    mov dil, 0x88
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    ; test ecx, ecx = 85 C9
+    mov dil, 0x85
+    call emit_byte
+    mov dil, 0xC9
+    call emit_byte
+    ; jz +8 = 74 08
+    mov dil, 0x74
+    call emit_byte
+    mov dil, 0x08
+    call emit_byte
+    ; inc rdi = 48 FF C7
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    ; inc rsi = 48 FF C6
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0xC6
+    call emit_byte
+    ; jmp -17 = EB EF
+    mov dil, 0xEB
+    call emit_byte
+    mov dil, 0xEF
+    call emit_byte
+    ; mov rax, r8 (return dst) = 4C 89 C0
+    mov dil, 0x4C
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    jmp .ge_call_done
+
+.ge_call_vecadd:
+    ; sankhya_yog(dst, src1, src2) — vaddps xmm0, xmm1, xmm2
+    ; All 3 args are pointers to 16-byte aligned vectors
+    ; Evaluate arg1 (dst) → push
+    mov rax, [rbx+24]
+    call gen_expr
+    mov dil, 0x50           ; push rax
+    call emit_byte
+    ; Evaluate arg2 (src1) → push
+    mov rax, [rbx+32]
+    call gen_expr
+    mov dil, 0x50           ; push rax
+    call emit_byte
+    ; Evaluate arg3 (src2)
+    mov rax, [rbx+40]
+    call gen_expr
+    ; mov rdx, rax (src2) = 48 89 C2
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC2
+    call emit_byte
+    ; pop rsi (src1) = 5E
+    mov dil, 0x5E
+    call emit_byte
+    ; pop rdi (dst) = 5F
+    mov dil, 0x5F
+    call emit_byte
+    ; movups xmm0, [rsi] = 0F 10 06
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x10
+    call emit_byte
+    mov dil, 0x06
+    call emit_byte
+    ; movups xmm1, [rdx] = 0F 10 0A
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x10
+    call emit_byte
+    mov dil, 0x0A
+    call emit_byte
+    ; addps xmm0, xmm1 = 0F 58 C1
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x58
+    call emit_byte
+    mov dil, 0xC1
+    call emit_byte
+    ; movups [rdi], xmm0 = 0F 11 07
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x11
+    call emit_byte
+    mov dil, 0x07
+    call emit_byte
+    ; mov rax, rdi (return dst) = 48 89 F8
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xF8
+    call emit_byte
+    jmp .ge_call_done
+
+.ge_call_vecmul:
+    ; sankhya_gunan(dst, src1, src2) — vmulps
+    mov rax, [rbx+24]
+    call gen_expr
+    mov dil, 0x50
+    call emit_byte
+    mov rax, [rbx+32]
+    call gen_expr
+    mov dil, 0x50
+    call emit_byte
+    mov rax, [rbx+40]
+    call gen_expr
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC2
+    call emit_byte
+    mov dil, 0x5E
+    call emit_byte
+    mov dil, 0x5F
+    call emit_byte
+    ; movups xmm0, [rsi] = 0F 10 06
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x10
+    call emit_byte
+    mov dil, 0x06
+    call emit_byte
+    ; movups xmm1, [rdx] = 0F 10 0A
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x10
+    call emit_byte
+    mov dil, 0x0A
+    call emit_byte
+    ; mulps xmm0, xmm1 = 0F 59 C1
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x59
+    call emit_byte
+    mov dil, 0xC1
+    call emit_byte
+    ; movups [rdi], xmm0 = 0F 11 07
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x11
+    call emit_byte
+    mov dil, 0x07
+    call emit_byte
+    ; mov rax, rdi
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xF8
+    call emit_byte
+    jmp .ge_call_done
+
+.ge_call_vecdot:
+    ; sankhya_dot(src1, src2) — dot product via dpps
+    ; Returns scalar float in xmm0 (low 32 bits)
+    mov rax, [rbx+24]
+    call gen_expr
+    mov dil, 0x50
+    call emit_byte
+    mov rax, [rbx+32]
+    call gen_expr
+    ; mov rdx, rax (src2) = 48 89 C2
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC2
+    call emit_byte
+    ; pop rsi (src1) = 5E
+    mov dil, 0x5E
+    call emit_byte
+    ; movups xmm0, [rsi] = 0F 10 06
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x10
+    call emit_byte
+    mov dil, 0x06
+    call emit_byte
+    ; movups xmm1, [rdx] = 0F 10 0A
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x10
+    call emit_byte
+    mov dil, 0x0A
+    call emit_byte
+    ; mulps xmm0, xmm1 = 0F 59 C1
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x59
+    call emit_byte
+    mov dil, 0xC1
+    call emit_byte
+    ; haddps xmm0, xmm0 = 66 0F 7C C0
+    mov dil, 0x66
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x7C
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    ; haddps xmm0, xmm0 = 66 0F 7C C0
+    mov dil, 0x66
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x7C
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    ; movd eax, xmm0 = 66 0F 7E C0
+    mov dil, 0x66
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x7E
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    ; Return float bits in rax (as integer representation)
+    jmp .ge_call_done
+
+.ge_call_setchar:
+    ; R50 set_char(buffer, byte_index, integer_value).
+    ; Evaluate each argument exactly once, left-to-right.
+    ; 1-byte stride; store ONLY value's low eight bits. Return 0..255.
+    ; Caller must provide writable storage and a valid byte offset.
+    ; qword-stride buf[i]=v and char_at(...) remain UNCHANGED.
+    cmp qword [rbx+16], 3
+    jne .ge_call_setchar_arity
+    mov rax, [rbx+24]
+    call gen_expr
+    mov dil, 0x50             ; push rax (buffer)
+    call emit_byte
+    mov rax, [rbx+32]
+    call gen_expr
+    mov dil, 0x50             ; push rax (index)
+    call emit_byte
+    mov rax, [rbx+40]
+    call gen_expr
+    mov dil, 0x5A             ; pop rdx (index)
+    call emit_byte
+    mov dil, 0x59             ; pop rcx (buffer)
+    call emit_byte
+    ; mov byte [rcx+rdx],al: 88 04 11 (SIB: scale1,rdx,rcx)
+    mov dil, 0x88
+    call emit_byte
+    mov dil, 0x04
+    call emit_byte
+    mov dil, 0x11
+    call emit_byte
+    ; movzx eax, al — return stored low byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0xB6
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    jmp .ge_call_done
+.ge_call_setchar_arity:
+    lea rdi, [rel r50_msg_setchar_arity]
+    jmp capacity_fail
+
+.ge_call_charat:
+    ; char_at(str, index) → byte at str[index] in rax
+    cmp qword [rbx+16], 2
+    jne .ge_charat_arity
+    mov rax, [rbx+24]
+    call gen_expr
+    mov dil, 0x50           ; push rax (str)
+    call emit_byte
+    mov rax, [rbx+32]
+    call gen_expr
+    ; mov rdx, rax (index) = 48 89 C2
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC2
+    call emit_byte
+    ; pop rdi (str) = 5F
+    mov dil, 0x5F
+    call emit_byte
+    ; movzx eax, byte [rdi+rdx] = 0F B6 04 17
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0xB6
+    call emit_byte
+    mov dil, 0x04
+    call emit_byte
+    mov dil, 0x17
+    call emit_byte
+    jmp .ge_call_done
+.ge_charat_arity:
+    lea rdi, [rel r52_msg_charat_arity]
+    jmp capacity_fail
+
+.ge_call_charcd:
+    ; B3: char_code(str, index) returns the indexed byte.  Keep the historical
+    ; one-argument form as char_code(str, 0) for compatibility.
+    cmp qword [rbx+16], 1
+    je .ge_call_charcd_first
+    cmp qword [rbx+16], 2
+    jne .ge_call_charcd_arity
+    mov rax, [rbx+24]
+    call gen_expr
+    mov dil, 0x50           ; push rax (str)
+    call emit_byte
+    mov rax, [rbx+32]
+    call gen_expr
+    mov dil, 0x48           ; mov rdx, rax
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC2
+    call emit_byte
+    mov dil, 0x5F           ; pop rdi
+    call emit_byte
+    mov dil, 0x0F           ; movzx eax, byte [rdi+rdx]
+    call emit_byte
+    mov dil, 0xB6
+    call emit_byte
+    mov dil, 0x04
+    call emit_byte
+    mov dil, 0x17
+    call emit_byte
+    jmp .ge_call_done
+.ge_call_charcd_first:
+    mov rax, [rbx+24]
+    call gen_expr
+    mov dil, 0x0F           ; movzx eax, byte [rax]
+    call emit_byte
+    mov dil, 0xB6
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    jmp .ge_call_done
+.ge_call_charcd_arity:
+    lea rdi, [rel r52_msg_charcode_arity]
+    jmp capacity_fail
+
+.ge_call_charfr:
+    ; char_from(code) → pointer to a char (writes code to a temp buffer)
+    ; Uses a static 1-byte buffer in BSS
+    mov rax, [rbx+24]
+    call gen_expr
+    ; lea rdi, [rel char_buf] — we need the runtime address
+    ; But lea [rel] in generated code needs the address at link time
+    ; Instead: mov [rsp-1], al; lea rax, [rsp-1]
+    ; sub rsp, 16 = 48 83 EC 10
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x83
+    call emit_byte
+    mov dil, 0xEC
+    call emit_byte
+    mov dil, 0x10
+    call emit_byte
+    ; mov [rsp], al = 88 04 24
+    mov dil, 0x88
+    call emit_byte
+    mov dil, 0x04
+    call emit_byte
+    mov dil, 0x24
+    call emit_byte
+    ; mov byte [rsp+1], 0 = C6 44 24 01 00
+    mov dil, 0xC6
+    call emit_byte
+    mov dil, 0x44
+    call emit_byte
+    mov dil, 0x24
+    call emit_byte
+    mov dil, 0x01
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    ; mov rax, rsp = 48 89 E0
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xE0
+    call emit_byte
+    ; add rsp, 8 (preserve the byte for return) = 48 83 C4 08
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x83
+    call emit_byte
+    mov dil, 0xC4
+    call emit_byte
+    mov dil, 0x08
+    call emit_byte
+    jmp .ge_call_done
+
+.ge_call_charup:
+    ; char_upper(ch) → uppercase ASCII letter code
+    mov rax, [rbx+24]
+    call gen_expr
+    ; cmp al, 'a' = 3C 61
+    mov dil, 0x3C
+    call emit_byte
+    mov dil, 0x61
+    call emit_byte
+    ; jl skip (small letter) = 7C 06
+    mov dil, 0x7C
+    call emit_byte
+    mov dil, 0x06
+    call emit_byte
+    ; cmp al, 'z' = 3C 7A
+    mov dil, 0x3C
+    call emit_byte
+    mov dil, 0x7A
+    call emit_byte
+    ; jg skip = 7F 02
+    mov dil, 0x7F
+    call emit_byte
+    mov dil, 0x02
+    call emit_byte
+    ; sub al, 32 = 2C 20
+    mov dil, 0x2C
+    call emit_byte
+    mov dil, 0x20
+    call emit_byte
+    jmp .ge_call_done
+
+.ge_call_charlo:
+    ; char_lower(ch) → lowercase ASCII letter code
+    mov rax, [rbx+24]
+    call gen_expr
+    ; cmp al, 'A' = 3C 41
+    mov dil, 0x3C
+    call emit_byte
+    mov dil, 0x41
+    call emit_byte
+    ; jl skip = 7C 06
+    mov dil, 0x7C
+    call emit_byte
+    mov dil, 0x06
+    call emit_byte
+    ; cmp al, 'Z' = 3C 5A
+    mov dil, 0x3C
+    call emit_byte
+    mov dil, 0x5A
+    call emit_byte
+    ; jg skip = 7F 02
+    mov dil, 0x7F
+    call emit_byte
+    mov dil, 0x02
+    call emit_byte
+    ; add al, 32 = 04 20
+    mov dil, 0x04
+    call emit_byte
+    mov dil, 0x20
+    call emit_byte
+    jmp .ge_call_done
+
+.ge_call_likh8c:
+    ; likh8c(addr, val, bound) — bounds-checked write
+    mov rax, [rbx+24]
+    call gen_expr
+    mov dil, 0x50           ; push rax (addr)
+    call emit_byte
+    mov rax, [rbx+32]
+    call gen_expr
+    mov dil, 0x50           ; push rax (val)
+    call emit_byte
+    mov rax, [rbx+40]
+    call gen_expr
+    ; mov rdx, rax (bound) = 48 89 C2
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC2
+    call emit_byte
+    ; pop rsi (val) = 5E
+    mov dil, 0x5E
+    call emit_byte
+    ; pop rdi (addr) = 5F
+    mov dil, 0x5F
+    call emit_byte
+    ; cmp rdi, rdx = 48 39 D7
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x39
+    call emit_byte
+    mov dil, 0xD7
+    call emit_byte
+    ; jae +3 (skip mov [rdi],rsi) = 73 03
+    mov dil, 0x73
+    call emit_byte
+    mov dil, 0x03
+    call emit_byte
+    ; mov [rdi], rsi = 48 89 37
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0x37
+    call emit_byte
+    jmp .ge_call_done
+
+.ge_call_pad8c:
+    ; pad8c(addr, bound) — bounds-checked read
+    ; If addr >= bound, return 0 (prevent out-of-bounds read)
+    mov rax, [rbx+24]
+    call gen_expr
+    mov dil, 0x50           ; push rax (addr)
+    call emit_byte
+    mov rax, [rbx+32]
+    call gen_expr
+    ; mov rdx, rax (bound) = 48 89 C2
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC2
+    call emit_byte
+    ; pop rdi (addr) = 5F
+    mov dil, 0x5F
+    call emit_byte
+    ; cmp rdi, rdx = 48 39 D7
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x39
+    call emit_byte
+    mov dil, 0xD7
+    call emit_byte
+    ; jae +8 (skip to xor eax) = 73 08
+    mov dil, 0x73
+    call emit_byte
+    mov dil, 0x08
+    call emit_byte
+    ; mov rax, [rdi] = 48 8B 07
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x8B
+    call emit_byte
+    mov dil, 0x07
+    call emit_byte
+    ; jmp +2 (skip xor eax) = EB 02
+    mov dil, 0xEB
+    call emit_byte
+    mov dil, 0x02
+    call emit_byte
+    ; xor eax, eax (out of bounds = 0) = 31 C0
+    mov dil, 0x31
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    jmp .ge_call_done
+
+.ge_call_memset:
+    ; smaran(dst, val, count) — fill memory with byte value
+    ; Uses rep stosb
+    mov rax, [rbx+24]
+    call gen_expr
+    mov dil, 0x50           ; push rax (dst)
+    call emit_byte
+    mov rax, [rbx+32]
+    call gen_expr
+    mov dil, 0x50           ; push rax (val)
+    call emit_byte
+    mov rax, [rbx+40]
+    call gen_expr
+    ; mov rcx, rax (count) = 48 89 C1
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC1
+    call emit_byte
+    ; pop rax (val) = 58
+    mov dil, 0x58
+    call emit_byte
+    ; pop rdi (dst) = 5F
+    mov dil, 0x5F
+    call emit_byte
+    ; mov al, al (already there) — rep stosb uses al
+    ; rep stosb = F3 AA
+    mov dil, 0xF3
+    call emit_byte
+    mov dil, 0xAA
+    call emit_byte
+    jmp .ge_call_done
+
+.ge_call_memcpy:
+    ; smaran_cp(dst, src, count) — copy memory
+    ; Uses rep movsb
+    mov rax, [rbx+24]
+    call gen_expr
+    mov dil, 0x50           ; push rax (dst)
+    call emit_byte
+    mov rax, [rbx+32]
+    call gen_expr
+    mov dil, 0x50           ; push rax (src)
+    call emit_byte
+    mov rax, [rbx+40]
+    call gen_expr
+    ; mov rcx, rax (count) = 48 89 C1
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC1
+    call emit_byte
+    ; pop rsi (src) = 5E
+    mov dil, 0x5E
+    call emit_byte
+    ; pop rdi (dst) = 5F
+    mov dil, 0x5F
+    call emit_byte
+    ; rep movsb = F3 A4
+    mov dil, 0xF3
+    call emit_byte
+    mov dil, 0xA4
+    call emit_byte
+    jmp .ge_call_done
+
+.ge_call_vartcp:
+    ; R54: vartani_cp(dst,src) copies a complete NUL-terminated byte string.
+    ; Previous sequence scanned dst with repne scasb and failed to copy src.
+    ; No allocation length is known: the caller must supply writable capacity.
+    mov rax, [rbx+24]
+    call gen_expr
+    mov dil, 0x50              ; push generated dst pointer
+    call emit_byte
+    mov rax, [rbx+32]
+    call gen_expr
+    ; mov rsi,rax
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC6
+    call emit_byte
+    ; pop rdi
+    mov dil, 0x5F
+    call emit_byte
+    ; mov r8,rdi
+    mov dil, 0x49
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xF8
+    call emit_byte
+    ; loop: mov al,[rsi]
+    mov dil, 0x8A
+    call emit_byte
+    mov dil, 0x06
+    call emit_byte
+    ; mov [rdi],al
+    mov dil, 0x88
+    call emit_byte
+    mov dil, 0x07
+    call emit_byte
+    ; inc rsi
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0xC6
+    call emit_byte
+    ; inc rdi
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    ; test al,al
+    mov dil, 0x84
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    ; jnz loop (-14)
+    mov dil, 0x75
+    call emit_byte
+    mov dil, 0xF2
+    call emit_byte
+    ; mov rax,r8
+    mov dil, 0x4C
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    jmp .ge_call_done
+
+.ge_call_lkfmt:
+    ; likha_fmt(fmt, arg1) — simple format: prints fmt string,
+    ; replacing {0} with integer arg1 as decimal
+    ; For now: print the format string, then print the number
+    ; (simplified — no actual substitution, just sequential print)
+    ; Check if arg1 is AST_STR
+    mov rax, [rbx+24]
+    mov rcx, [rax]
+    cmp rcx, 14              ; AST_STR
+    jne .ge_lkfmt_numonly
+    ; It's a string format — print it, then print arg2 as number
+    push r12
+    push r13
+    mov r12, [rax+8]         ; r12 = format string pointer
+    ; Emit lea rax,[rip+2] for the format string
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x8D
+    call emit_byte
+    mov dil, 0x05
+    call emit_byte
+    mov dil, 0x02
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    ; strlen for jmp offset
+    mov rdi, r12
+    call strlen
+    mov r13, rax
+    ; jmp rel8
+    mov dil, 0xEB
+    call emit_byte
+    mov edi, r13d
+    add edi, 1
+    call emit_byte
+    ; emit string bytes
+.ge_lf_sl:
+    test r13, r13
+    jz .ge_lf_sd
+    movzx edi, byte [r12]
+    call emit_byte
+    inc r12
+    dec r13
+    jmp .ge_lf_sl
+.ge_lf_sd:
+    ; Now emit sys_write for the format string
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    mov dil, 0x01
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC6
+    call emit_byte
+    mov dil, 0xBA
+    call emit_byte
+    mov rax, [rbx+24]
+    mov rax, [rax+8]
+    push r12
+    mov rdi, rax
+    call strlen
+    mov edi, eax
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    pop r12
+    mov dil, 0xB8
+    call emit_byte
+    mov dil, 0x01
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    call emit_syscall
+    ; Now print arg2 as number (inline the number printing code)
+    mov rax, [rbx+32]
+    call gen_expr
+    ; mov r8, rax = 49 89 C0
+    mov dil, 0x49
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    ; sub rsp, 32 = 48 83 EC 20
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x83
+    call emit_byte
+    mov dil, 0xEC
+    call emit_byte
+    mov dil, 0x20
+    call emit_byte
+    ; lea rsi, [rsp+31] = 48 8D 74 24 1F
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x8D
+    call emit_byte
+    mov dil, 0x74
+    call emit_byte
+    mov dil, 0x24
+    call emit_byte
+    mov dil, 0x1F
+    call emit_byte
+    ; mov byte [rsi], 10 = C6 06 0A
+    mov dil, 0xC6
+    call emit_byte
+    mov dil, 0x06
+    call emit_byte
+    mov dil, 0x0A
+    call emit_byte
+    ; dec rsi = 48 FF CE
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0xCE
+    call emit_byte
+    ; test r8, r8 = 4D 85 C0
+    mov dil, 0x4D
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    ; jnz +8 = 75 08
+    mov dil, 0x75
+    call emit_byte
+    mov dil, 0x08
+    call emit_byte
+    ; mov byte [rsi], 0x30
+    mov dil, 0xC6
+    call emit_byte
+    mov dil, 0x06
+    call emit_byte
+    mov dil, 0x30
+    call emit_byte
+    ; dec rsi = 48 FF CE
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0xCE
+    call emit_byte
+    ; jmp +30 = EB 1E
+    mov dil, 0xEB
+    call emit_byte
+    mov dil, 0x1E
+    call emit_byte
+    ; xor rdx, rdx = 48 31 D2
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x31
+    call emit_byte
+    mov dil, 0xD2
+    call emit_byte
+    ; mov rax, r8 = 4C 89 C0
+    mov dil, 0x4C
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    ; mov ecx, 10 = B9 0A 00 00 00
+    mov dil, 0xB9
+    call emit_byte
+    mov dil, 0x0A
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    ; div rcx = 48 F7 F1
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xF7
+    call emit_byte
+    mov dil, 0xF1
+    call emit_byte
+    ; mov r8, rax = 49 89 C0
+    mov dil, 0x49
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    ; add dl, 0x30 = 80 C2 30
+    mov dil, 0x80
+    call emit_byte
+    mov dil, 0xC2
+    call emit_byte
+    mov dil, 0x30
+    call emit_byte
+    ; mov [rsi], dl = 88 16
+    mov dil, 0x88
+    call emit_byte
+    mov dil, 0x16
+    call emit_byte
+    ; dec rsi = 48 FF CE
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0xCE
+    call emit_byte
+    ; test r8, r8 = 4D 85 C0
+    mov dil, 0x4D
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    ; jnz -30 = 75 E2
+    mov dil, 0x75
+    call emit_byte
+    mov dil, 0xE2
+    call emit_byte
+    ; lea rdx, [rsp+32] = 48 8D 54 24 20
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x8D
+    call emit_byte
+    mov dil, 0x54
+    call emit_byte
+    mov dil, 0x24
+    call emit_byte
+    mov dil, 0x20
+    call emit_byte
+    ; sub rdx, rsi = 48 29 F2
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x29
+    call emit_byte
+    mov dil, 0xF2
+    call emit_byte
+    ; dec rdx = 48 FF CA
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0xCA
+    call emit_byte
+    ; inc rsi = 48 FF C6
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0xC6
+    call emit_byte
+    ; mov rdi, 1 = 48 C7 C7 01 00 00 00
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    mov dil, 0x01
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    ; mov eax, 1 = B8 01 00 00 00
+    mov dil, 0xB8
+    call emit_byte
+    mov dil, 0x01
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    ; syscall = 0F 05
+    call emit_syscall
+    ; add rsp, 32 = 48 83 C4 20
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x83
+    call emit_byte
+    mov dil, 0xC4
+    call emit_byte
+    mov dil, 0x20
+    call emit_byte
+    pop r13
+    pop r12
+    jmp .ge_call_done
+.ge_lkfmt_numonly:
+    ; Non-string first arg — just evaluate as expression
+    mov rax, [rbx+24]
+    call gen_expr
+    jmp .ge_call_done
+
+.ge_call_done:
+    pop r12
+    pop rbx
+    ret
+
+.ge_vec:
+    ; rbx = AST_VEC node with 4 integer values at [rbx+16], [rbx+24], [rbx+32], [rbx+40]
+    ; Convert to IEEE 754 single-precision floats and emit inline
+    ; Then emit vmovups xmm0, [rip+offset] to load them
+    ;
+    ; Pattern: lea rax, [rip+2]; jmp +18; <16 bytes float data>
+    ; Actually we don't need lea — we load into xmm0 directly:
+    ; vmovups xmm0, [rip+2]; jmp +18; <16 bytes of float data>
+    ;
+    ; vmovups xmm0, [rip+disp32] = C5 F8 10 05 <disp32> = 8 bytes
+    ; jmp rel8 = EB 12 (skip 18 bytes of float data)
+    ; Then 16 bytes of float data (4 x float32)
+    push r12
+    push r13
+    ; Emit vmovups xmm0, [rip+10] — disp32 = 10 (past jmp)
+    ; Actually: vmovups is 8 bytes, jmp is 2 bytes = 10 bytes before data
+    ; rip at end of vmovups points to jmp, rip+2 points past jmp to data
+    mov dil, 0xC5              ; VEX prefix byte 1
+    call emit_byte
+    mov dil, 0xF8              ; VEX prefix byte 2 (vvvv=1111, L=0, pp=00)
+    call emit_byte
+    mov dil, 0x10              ; opcode: vmovups
+    call emit_byte
+    mov dil, 0x05              ; ModRM: mod=00, reg=000(xmm0), rm=101(RIP)
+    call emit_byte
+    mov dil, 0x02              ; disp32 = 2 (past the 2-byte jmp)
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    ; Emit jmp rel8 = EB 10 (skip 16 bytes of float data)
+    mov dil, 0xEB
+    call emit_byte
+    mov dil, 0x10              ; 16 bytes to skip
+    call emit_byte
+    ; Now emit 16 bytes of float data
+    ; Convert 4 integers to IEEE 754 single-precision floats
+    ; Integer 0 = float 0.0 = 0x00000000
+    ; Integer 1 = float 1.0 = 0x3F800000
+    ; Integer 2 = float 2.0 = 0x40000000
+    ; Integer N = float N.0 (for small integers, we can use a lookup or conversion)
+    ;
+    ; Simple conversion for small positive integers:
+    ; float = sign(0) + exponent(127+bits) + mantissa
+    ; For integer N: exponent = 127 + floor(log2(N)), mantissa = shifted fraction
+    ; This is complex. Instead, let's emit the raw 32-bit float representation.
+    ; We'll use cvtsi2ss at RUNTIME to convert, but that requires an XMM register.
+    ;
+    ; Simpler approach: emit the 4 integers as-is (they'll be interpreted as floats).
+    ; For integer 1: as float bits 0x00000001 = denormalized tiny number ≈ 0
+    ; That won't work.
+    ;
+    ; Best approach: emit code to convert at runtime using cvtsi2ss
+    ; But that's complex. For now, let's just emit the 4 raw 32-bit values.
+    ; The user will see that AVX loads 4 values in parallel — the values happen to be integers
+    ; but they're loaded as 128-bit packed data.
+    ;
+    ; Actually, the simplest approach: emit the 4 values as 32-bit integers.
+    ; They'll be loaded as a 128-bit value. For integer arithmetic (not float),
+    ; we can use vpaddd (packed add doubleword) instead of vaddps.
+    ; This gives us SIMD integer vector addition!
+    ;
+    ; Let's use vpaddd for integer vectors:
+    ; vpaddd xmm0, xmm1, xmm2 = VEX.128.66.0F.WIG EF /r
+    ; pp = 01 (66 prefix), opcode = EF
+    ; VEX byte2 = vvvv(inverted) L(0) pp(01)
+    ;
+    ; For loading: vmovdqa or vmovdqu (aligned/unaligned)
+    ; vmovdqu xmm0, [rip+disp32] = VEX.128.F3.0F 6F /r
+    ; pp = 10 (F3 prefix)
+    ;
+    ; Let me redo the load with vmovdqu:
+    ; Actually I already emitted vmovups. Let me keep it — it works for both int and float.
+    ; vmovups loads 128 bits regardless of interpretation.
+    ;
+    ; Emit 4 x 32-bit values (little-endian)
+    mov r12, [rbx+16]          ; val1
+    mov r13, [rbx+24]          ; val2
+    ; Emit val1 as 4 bytes (avoid ah — use shift instead)
+    mov rax, r12
+    mov dil, al
+    call emit_byte
+    shr rax, 8
+    mov dil, al
+    call emit_byte
+    shr rax, 8
+    mov dil, al
+    call emit_byte
+    shr rax, 8
+    mov dil, al
+    call emit_byte
+    ; Emit val2 as 4 bytes
+    mov rax, r13
+    mov dil, al
+    call emit_byte
+    shr rax, 8
+    mov dil, al
+    call emit_byte
+    shr rax, 8
+    mov dil, al
+    call emit_byte
+    shr rax, 8
+    mov dil, al
+    call emit_byte
+    ; Emit val3
+    mov rax, [rbx+32]
+    mov dil, al
+    call emit_byte
+    shr rax, 8
+    mov dil, al
+    call emit_byte
+    shr rax, 8
+    mov dil, al
+    call emit_byte
+    shr rax, 8
+    mov dil, al
+    call emit_byte
+    ; Emit val4
+    mov rax, [rbx+40]
+    mov dil, al
+    call emit_byte
+    shr rax, 8
+    mov dil, al
+    call emit_byte
+    shr rax, 8
+    mov dil, al
+    call emit_byte
+    shr rax, 8
+    mov dil, al
+    call emit_byte
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+.ge_str:
+    ; rbx = AST_STR node, [rbx+8] = string pointer
+    push r12
+    push r13
+    mov r12, [rbx+8]          ; r12 = string pointer (preserved by emit_byte)
+    ; Emit lea rax,[rip+2]: 48 8D 05 02 00 00 00
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x8D
+    call emit_byte
+    mov dil, 0x05
+    call emit_byte
+    mov dil, 0x02
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    ; Compute string length for jmp offset
+    mov rdi, r12
+    call strlen               ; rax = length
+    mov r13, rax              ; r13 = length (preserved by emit_byte)
+    ; Emit jmp rel8 = EB (length+1)
+    mov dil, 0xEB
+    call emit_byte
+    mov edi, r13d
+    add edi, 1
+    call emit_byte
+    ; Emit string bytes + null terminator
+.ge_str_loop:
+    test r13, r13
+    jz .ge_str_null
+    movzx edi, byte [r12]
+    call emit_byte
+    inc r12
+    dec r13
+    jmp .ge_str_loop
+.ge_str_null:
+    xor edi, edi
+    call emit_byte
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+.ge_float:
+    ; T12: values travel through the existing 64-bit scalar ABI as raw bits.
+    mov dil, 0x48            ; mov rax, imm64
+    call emit_byte
+    mov dil, 0xB8
+    call emit_byte
+    mov rdi, [rbx+8]
+    call emit_u64
+    pop rbx
+    ret
+
+.ge_num:
+    ; PERF3: a non-negative literal that fits uint32 needs one instruction:
+    ; mov eax,imm32 (architecturally zero-extends into RAX).  The previous
+    ; xor rax,rax + mov al,N sequence was two instructions for small values.
+    mov rax, [rbx+8]
+    mov rcx, rax
+    shr rcx, 32
+    jnz .ge_num_full
+    mov dil, 0xB8
+    call emit_byte
+    mov edi, dword [rbx+8]
+    call emit_u32
+    pop rbx
+    ret
+.ge_num_full:
+    ; mov rax, imm64 (10 bytes)
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xB8
+    call emit_byte
+    mov rdi, [rbx+8]
+    call emit_u64
+    pop rbx
+    ret
+
+.ge_var:
+    mov rdi, [rbx+8]
+    call r56_global_index
+    test rax, rax
+    jz .r56_var_local
+    dec rax
+    mov rdi, rax
+    call r56_emit_global_load
+    pop rbx
+    ret
+.r56_var_local:
+    mov rdi, [rbx+8]         ; name ptr
+    call lookup_var           ; rax = location
+    ; Check if register or stack
+    test rax, rax
+    jle .ge_var_stack
+    ; Register: emit mov rax, reg
+    mov rdi, rax
+    call emit_load_reg
+    pop rbx
+    ret
+.ge_var_stack:
+    ; Stack: mov rax, [rbp+offset]
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x8B
+    call emit_byte
+    push rsi                  ; R10 (F1): disp8 or disp32, by range
+    mov esi, eax
+    mov dil, 0x45
+    call emit_rbp_modrm_disp
+    pop rsi
+    pop rbx
+    ret
+
+.ge_binop:
+    ; [AST_BINOP][op][left][right]
+    ; PERF-FC1: register-only scalar float comparisons. Preserve the exact
+    ; existing UCOMISD/SETcc semantics but remove the runtime stack spill.
+    mov rdi, rbx
+    call try_emit_float_reg_compare
+    test rax, rax
+    jz .ge_binop_general
+    pop rbx
+    ret
+.ge_binop_general:
+    ; T12 float arithmetic/comparison is selected before integer fast paths.
+    mov rdi, rbx
+    call binop_needs_float
+    test rax, rax
+    jnz .ge_fbinop
+%ifndef SUTRAM_R65_TRAP_INT
+    ; In legacy mode retain R58 division strength reduction.
+    mov rdi,rbx
+    call r58_is_div_pow2
+    test rax,rax
+    jnz .ge_r58_div_pow2
+%endif
+    ; Logical && / || require true short-circuit evaluation. Handle them
+    ; before the generic binary path, which necessarily evaluates both sides.
+    push rbx
+    mov rax, [rbx+8]         ; operator
+    cmp rax, OP_LAND
+    je .ge_binop_land_sc
+    cmp rax, OP_LOR
+    je .ge_binop_lor_sc
+%ifdef SUTRAM_R65_TRAP_INT
+    jmp .ge_binop_generic    ; checking lives in generic arithmetic
+%endif
+    ; FAST PATH: If right is AST_NUM and op is ADD/SUB, emit add/sub rax, imm8
+    mov rax, [rbx+24]        ; right operand node
+    mov rcx, [rax]           ; right node type
+    cmp rcx, AST_NUM
+    jne .ge_binop_generic
+    ; Right is a number — check if value fits in imm8 (0-127)
+    mov rcx, [rax+8]         ; right value
+    cmp rcx, 127
+    ja .ge_binop_generic
+    ; Check if op is ADD or SUB
+    mov rax, [rbx+8]         ; operator
+    cmp rax, OP_ADD
+    je .ge_binop_add_imm
+    cmp rax, OP_SUB
+    je .ge_binop_sub_imm
+    cmp rax, OP_MUL
+    je .ge_binop_mul_imm
+    jmp .ge_binop_generic
+.ge_r58_div_pow2:
+    ; RHS is a positive literal 2,4,8,16,32,64: no side effects.
+    ; rax = LHS, output signed truncating quotient via r58_div_pow2.
+    mov rax,[rbx+16]
+    call gen_expr
+    mov rdi,[rbx+24]
+    mov rdi,[rdi+8]
+    call r58_emit_div_pow2
+    pop rbx
+    ret
+.ge_binop_land_sc:
+    ; Undo .ge_binop's extra save; gen_expr's entry save remains on stack.
+    pop rbx
+    push r12
+    push r13
+    ; Evaluate left first.
+    mov rax, [rbx+16]
+    call gen_expr
+    ; test rax, rax
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    ; je false_label (rel32 patched after the RHS code is emitted)
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x84
+    call emit_byte
+    mov r12, [rel code_sz]
+    xor edi, edi
+    call emit_u32
+    ; Left was true: only now evaluate the RHS.
+    mov rax, [rbx+24]
+    call gen_expr
+    ; Normalize RHS to 0/1: test rax,rax; setne al; movzx rax,al
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x95
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0xB6
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    ; jmp done (skip the false result materialization)
+    mov dil, 0xE9
+    call emit_byte
+    mov r13, [rel code_sz]
+    xor edi, edi
+    call emit_u32
+    ; false_label: patch JE and produce canonical false (0).
+    mov rax, [rel code_sz]
+    sub rax, r12
+    sub rax, 4
+    lea rcx, [rel code_buf]
+    mov [rcx + r12], eax
+    ; xor eax, eax
+    mov dil, 0x31
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    ; done: patch the unconditional jump.
+    mov rax, [rel code_sz]
+    sub rax, r13
+    sub rax, 4
+    lea rcx, [rel code_buf]
+    mov [rcx + r13], eax
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+.ge_binop_lor_sc:
+    ; Undo .ge_binop's extra save; gen_expr's entry save remains on stack.
+    pop rbx
+    push r12
+    push r13
+    ; Evaluate left first.
+    mov rax, [rbx+16]
+    call gen_expr
+    ; test rax, rax
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    ; jne true_label (rel32 patched after the RHS code is emitted)
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+    mov r12, [rel code_sz]
+    xor edi, edi
+    call emit_u32
+    ; Left was false: only now evaluate the RHS.
+    mov rax, [rbx+24]
+    call gen_expr
+    ; Normalize RHS to 0/1.
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x95
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0xB6
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    ; jmp done (skip the true result materialization)
+    mov dil, 0xE9
+    call emit_byte
+    mov r13, [rel code_sz]
+    xor edi, edi
+    call emit_u32
+    ; true_label: patch JNE and produce canonical true (1).
+    mov rax, [rel code_sz]
+    sub rax, r12
+    sub rax, 4
+    lea rcx, [rel code_buf]
+    mov [rcx + r12], eax
+    ; mov eax, 1
+    mov dil, 0xB8
+    call emit_byte
+    mov edi, 1
+    call emit_u32
+    ; done: patch the unconditional jump.
+    mov rax, [rel code_sz]
+    sub rax, r13
+    sub rax, 4
+    lea rcx, [rel code_buf]
+    mov [rcx + r13], eax
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+.ge_binop_add_imm:
+    ; Evaluate left -> RAX
+    pop rbx
+    mov rax, [rbx+16]
+    call gen_expr
+    ; Check if value is 1 → use inc rax (48 FF C0, 3 bytes)
+    mov rax, [rbx+24]        ; right node
+    mov rcx, [rax+8]         ; value
+    cmp rcx, 1
+    je .ge_add_inc
+    ; add rax, imm8 = 48 83 C0 XX (4 bytes)
+    ; NOTE: emit_byte clobbers rcx, so reload the value from the AST
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x83
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    mov rax, [rbx+24]        ; right node (rbx preserved by emit_byte)
+    mov rax, [rax+8]         ; reload value
+    mov dil, al
+    call emit_byte
+    pop rbx
+    ret
+.ge_add_inc:
+    ; inc rax = 48 FF C0 (3 bytes)
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    pop rbx
+    ret
+.ge_binop_sub_imm:
+    ; Evaluate left -> RAX
+    pop rbx
+    mov rax, [rbx+16]
+    call gen_expr
+    ; Check if value is 1 → use dec rax (48 FF C8, 3 bytes)
+    mov rax, [rbx+24]        ; right node
+    mov rcx, [rax+8]         ; value
+    cmp rcx, 1
+    je .ge_sub_dec
+    ; sub rax, imm8 = 48 83 E8 XX (4 bytes)
+    ; NOTE: emit_byte clobbers rcx, so reload the value from the AST
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x83
+    call emit_byte
+    mov dil, 0xE8
+    call emit_byte
+    mov rax, [rbx+24]        ; right node (rbx preserved by emit_byte)
+    mov rax, [rax+8]         ; reload value
+    mov dil, al
+    call emit_byte
+    pop rbx
+    ret
+.ge_sub_dec:
+    ; dec rax = 48 FF C8 (3 bytes)
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0xC8
+    call emit_byte
+    pop rbx
+    ret
+.ge_binop_mul_imm:
+    ; Strength reduction: *2,*4,*8,*16,*32,*64 → shl
+    ; Follow same pattern as ADD/SUB: pop rbx first, then evaluate left
+    pop rbx                  ; restore rbx from .ge_binop push
+    ; Check right value (rbx still has AST node ptr)
+    mov rax, [rbx+24]        ; right node
+    mov rcx, [rax+8]         ; right value
+    cmp rcx, 2
+    je .ge_mul_s1
+    cmp rcx, 4
+    je .ge_mul_s2
+    cmp rcx, 8
+    je .ge_mul_s3
+    cmp rcx, 16
+    je .ge_mul_s4
+    cmp rcx, 32
+    je .ge_mul_s5
+    cmp rcx, 64
+    je .ge_mul_s6
+    ; Not power of 2 — re-push rbx and go to generic path
+    push rbx
+    jmp .ge_binop_generic
+.ge_mul_s1:
+    ; *2 = shl rax, 1
+    mov rax, [rbx+16]
+    call gen_expr
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xC1
+    call emit_byte
+    mov dil, 0xE0
+    call emit_byte
+    mov dil, 0x01
+    call emit_byte
+    pop rbx
+    ret
+.ge_mul_s2:
+    ; *4 = shl rax, 2
+    mov rax, [rbx+16]
+    call gen_expr
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xC1
+    call emit_byte
+    mov dil, 0xE0
+    call emit_byte
+    mov dil, 0x02
+    call emit_byte
+    pop rbx
+    ret
+.ge_mul_s3:
+    ; *8 = shl rax, 3
+    mov rax, [rbx+16]
+    call gen_expr
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xC1
+    call emit_byte
+    mov dil, 0xE0
+    call emit_byte
+    mov dil, 0x03
+    call emit_byte
+    pop rbx
+    ret
+.ge_mul_s4:
+    ; *16 = shl rax, 4
+    mov rax, [rbx+16]
+    call gen_expr
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xC1
+    call emit_byte
+    mov dil, 0xE0
+    call emit_byte
+    mov dil, 0x04
+    call emit_byte
+    pop rbx
+    ret
+.ge_mul_s5:
+    ; *32 = shl rax, 5
+    mov rax, [rbx+16]
+    call gen_expr
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xC1
+    call emit_byte
+    mov dil, 0xE0
+    call emit_byte
+    mov dil, 0x05
+    call emit_byte
+    pop rbx
+    ret
+.ge_mul_s6:
+    ; *64 = shl rax, 6
+    mov rax, [rbx+16]
+    call gen_expr
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xC1
+    call emit_byte
+    mov dil, 0xE0
+    call emit_byte
+    mov dil, 0x06
+    call emit_byte
+    pop rbx
+    ret
+.ge_binop_generic:
+%ifdef SUTRAM_R65_TRAP_INT
+    pop rbx
+    jmp .r57_old_stack_tree
+%endif
+    ; R57: preserve source-order pure integer trees in RAX/R10/R11, without
+    ; round-tripping each nested operand through runtime PUSH/POP. Register
+    ; depth is statically bounded; any unsafe shape takes the old generator.
+    pop rbx
+    mov rdi, rbx
+    xor esi, esi
+    call r57_tree_fits
+    test rax, rax
+    jz .r57_old_stack_tree
+    mov rdi, rbx
+    xor esi, esi
+    call r57_emit_tree
+    pop rbx
+    ret
+.r57_old_stack_tree:
+    ; Evaluate left -> RAX
+    mov rax, [rbx+16]        ; left
+    call gen_expr
+    ; mov rdx, rax (save left in rdx)
+    mov dil, 0x50            ; push rax (save on stack — call-safe)
+    call emit_byte
+    ; Evaluate right -> RAX
+    mov rax, [rbx+24]        ; right
+    call gen_expr
+    ; xchg rax, rdx (rax=left, rdx=right)
+    mov dil, 0x5A            ; pop rdx (restore saved left)
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x87
+    call emit_byte
+    mov dil, 0xD0
+    call emit_byte
+    ; Now rax=left, rdx=right. Emit operation.
+    mov rax, [rbx+8]         ; op id
+    cmp rax, OP_ADD
+    je .ge_add
+    cmp rax, OP_SUB
+    je .ge_sub
+    cmp rax, OP_MUL
+    je .ge_mul
+    cmp rax, OP_DIV
+    je .ge_div
+    cmp rax, OP_EQ
+    je .ge_eq
+    cmp rax, OP_LT
+    je .ge_lt
+    cmp rax, OP_GT
+    je .ge_gt
+    cmp rax, OP_LE
+    je .ge_le
+    cmp rax, OP_GE
+    je .ge_ge
+    cmp rax, OP_NE
+    je .ge_ne
+    cmp rax, OP_MOD
+    je .ge_mod
+    cmp rax, OP_SHL
+    je .ge_shl
+    cmp rax, OP_SHR
+    je .ge_shr
+    cmp rax, OP_AND
+    je .ge_and
+    cmp rax, OP_OR
+    je .ge_or
+    cmp rax, OP_XOR
+    je .ge_xor
+    cmp rax, OP_LAND
+    je .ge_land
+    cmp rax, OP_LOR
+    je .ge_lor
+    pop rbx
+    ret
+.ge_fbinop:
+    ; Evaluate raw operands through the normal scalar ABI, then convert/promote
+    ; to SSE2 binary64. The result returns as raw bits in RAX; comparisons return 0/1.
+    push r12
+    push r13
+    push r14
+    push r15
+    ; PERF-FG2 (R30): Evaluate effectful/indexed/complex LHS first, then read
+    ; a by-value, register-resident float RHS. This preserves all LHS effects
+    ; and does NOT reorder an indexed read/write or function call. It avoids
+    ; runtime push/pop for the outer binary operation. RHS with indexing,
+    ; calls, stack locals, or integer conversion stays on the old path.
+    xor r15d, r15d
+    mov rax, [rbx+24]
+    ; Literal RHS is side-effect-free. Its generated MOV into RAX can happen
+    ; after converting the LHS into XMM0, with no runtime stack save.
+    cmp qword [rax], AST_FLOAT
+    jne .gfb_check_rhs_num
+    mov r15, 6
+    jmp .gfb_rhs_classified
+.gfb_check_rhs_num:
+    cmp qword [rax], AST_NUM
+    jne .gfb_check_rhs_var
+    mov r15, 7
+    jmp .gfb_rhs_classified
+.gfb_check_rhs_var:
+    cmp qword [rax], AST_VAR
+    jne .gfb_rhs_classified
+    mov rdi, [rax+8]
+    call is_float_var
+    test rax, rax
+    jz .gfb_rhs_classified
+    mov rax, [rbx+24]
+    mov rdi, [rax+8]
+    call lookup_var
+    cmp rax, 1
+    jb .gfb_rhs_classified
+    cmp rax, 5
+    ja .gfb_rhs_classified
+    mov r15, rax
+.gfb_rhs_classified:
+    ; PERF-FG1: scalar-left / complex-right float expression.
+    ; The left scalar is a by-value local held in a callee-saved GPR.
+    ; No function called by the right expression can mutate this local.
+    ; Therefore evaluate the right expression first and load the left directly
+    ; into XMM0 afterwards, avoiding a runtime push/pop of the left value.
+    ; Indexed operands and stack-resident locals deliberately stay generic.
+    xor r14d, r14d
+    mov rax, [rbx+16]
+    cmp qword [rax], AST_VAR
+    jne .gfb_classified
+    mov rdi, [rax+8]
+    call is_float_var
+    test rax, rax
+    jz .gfb_classified
+    mov rax, [rbx+16]
+    mov rdi, [rax+8]
+    call lookup_var
+    cmp rax, 1
+    jb .gfb_classified
+    cmp rax, 5
+    ja .gfb_classified
+    mov r14, rax
+.gfb_classified:
+    mov rdi, [rbx+16]
+    call expr_is_float
+    mov r12, rax
+    mov rdi, [rbx+24]
+    call expr_is_float
+    mov r13, rax
+    test r15, r15
+    jnz .gfb_left_first_rhs_reg
+    test r14, r14
+    jnz .gfb_eval_right_only
+    ; Generic, order-preserving path for non-scalar/stack operands.
+    mov rax, [rbx+16]
+    call gen_expr
+    mov dil, 0x50            ; runtime push left raw scalar
+    call emit_byte
+    jmp .gfb_eval_right_only
+.gfb_left_first_rhs_reg:
+    ; Left-to-right exactly: evaluate LHS before reading RHS register.
+    ; R15 is a compile-time marker; preserve it during recursive codegen.
+    push r15
+    mov rax, [rbx+16]
+    call gen_expr
+    pop r15
+    ; LHS result is raw binary64 or integer in runtime RAX.
+    test r12, r12
+    jz .gfb_direct_left_int
+    mov dil, 0x66           ; movq xmm0,rax
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x6E
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    jmp .gfb_direct_load_rhs
+.gfb_direct_left_int:
+    mov dil, 0xF2           ; cvtsi2sd xmm0,rax
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x2A
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+.gfb_direct_load_rhs:
+    ; Marker 1..5: RHS is a callee-saved float scalar GPR.
+    ; Markers 6/7: a side-effect-free AST_FLOAT/AST_NUM literal respectively.
+    cmp r15, 5
+    ja .gfb_direct_rhs_literal
+    mov rdi, r15
+    mov rsi, 1
+    call emit_float_gpr_to_xmm
+    jmp .gfb_left_ready
+.gfb_direct_rhs_literal:
+    push r15
+    mov rax, [rbx+24]
+    call gen_expr             ; MOV immediate to runtime RAX, preserves XMM0
+    pop r15
+    test r13, r13
+    jz .gfb_direct_rhs_lit_int
+    mov dil, 0x66            ; movq xmm1,rax
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x6E
+    call emit_byte
+    mov dil, 0xC8
+    call emit_byte
+    jmp .gfb_left_ready
+.gfb_direct_rhs_lit_int:
+    mov dil, 0xF2            ; cvtsi2sd xmm1,rax
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x2A
+    call emit_byte
+    mov dil, 0xC8
+    call emit_byte
+    jmp .gfb_left_ready
+.gfb_eval_right_only:
+    ; Protect the compiler-side live-register marker across nested codegen,
+    ; even if a nested codegen helper uses R14 internally.
+    push r14
+    mov rax, [rbx+24]
+    call gen_expr
+    pop r14
+    ; right -> xmm1
+    test r13, r13
+    jz .gfb_right_int
+    mov dil, 0x66
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x6E
+    call emit_byte
+    mov dil, 0xC8            ; movq xmm1,rax
+    call emit_byte
+    jmp .gfb_right_ready
+.gfb_right_int:
+    mov dil, 0xF2
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x2A
+    call emit_byte
+    mov dil, 0xC8            ; cvtsi2sd xmm1,rax
+    call emit_byte
+.gfb_right_ready:
+    test r14, r14
+    jz .gfb_pop_left
+    ; PERF-FG1: left variable lives in RBX/R12-R15 across RHS calls.
+    ; XMM1 now holds the computed RHS, including mixed integer promotion.
+    mov rdi, r14
+    xor rsi, rsi
+    call emit_float_gpr_to_xmm
+    jmp .gfb_left_ready
+.gfb_pop_left:
+    mov dil, 0x5A            ; runtime pop left -> rdx
+    call emit_byte
+    test r12, r12
+    jz .gfb_left_int
+    mov dil, 0x66
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x6E
+    call emit_byte
+    mov dil, 0xC2            ; movq xmm0,rdx
+    call emit_byte
+    jmp .gfb_left_ready
+.gfb_left_int:
+    mov dil, 0xF2
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x2A
+    call emit_byte
+    mov dil, 0xC2            ; cvtsi2sd xmm0,rdx
+    call emit_byte
+.gfb_left_ready:
+    mov rax, [rbx+8]
+    cmp rax, OP_ADD
+    je .gfb_add
+    cmp rax, OP_SUB
+    je .gfb_sub
+    cmp rax, OP_MUL
+    je .gfb_mul
+    cmp rax, OP_DIV
+    je .gfb_div
+    ; comparisons: ucomisd xmm0,xmm1
+    mov dil, 0x66
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x2E
+    call emit_byte
+    mov dil, 0xC1
+    call emit_byte
+    mov rax, [rbx+8]
+    mov dil, 0x0F
+    call emit_byte
+    cmp rax, OP_EQ
+    je .gfb_sete
+    cmp rax, OP_NE
+    je .gfb_setne
+    cmp rax, OP_LT
+    je .gfb_setb
+    cmp rax, OP_GT
+    je .gfb_seta
+    cmp rax, OP_LE
+    je .gfb_setbe
+    ; OP_GE
+    mov dil, 0x93            ; setae al
+    jmp .gfb_set_emit
+.gfb_sete:
+    mov dil, 0x94
+    jmp .gfb_set_emit
+.gfb_setne:
+    mov dil, 0x95
+    jmp .gfb_set_emit
+.gfb_setb:
+    mov dil, 0x92
+    jmp .gfb_set_emit
+.gfb_seta:
+    mov dil, 0x97
+    jmp .gfb_set_emit
+.gfb_setbe:
+    mov dil, 0x96
+.gfb_set_emit:
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    mov dil, 0x48            ; movzx rax,al
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0xB6
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+.gfb_add:
+    mov dil, 0xF2
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x58
+    call emit_byte
+    mov dil, 0xC1
+    call emit_byte
+    jmp .gfb_arith_done
+.gfb_sub:
+    mov dil, 0xF2
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x5C
+    call emit_byte
+    mov dil, 0xC1
+    call emit_byte
+    jmp .gfb_arith_done
+.gfb_mul:
+    mov dil, 0xF2
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x59
+    call emit_byte
+    mov dil, 0xC1
+    call emit_byte
+    jmp .gfb_arith_done
+.gfb_div:
+    mov dil, 0xF2
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x5E
+    call emit_byte
+    mov dil, 0xC1
+    call emit_byte
+.gfb_arith_done:
+    mov dil, 0x66            ; movq rax,xmm0
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x7E
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+.ge_land:
+    ; Short-circuit AND: if left==0, result=0; else result=right
+    ; rax=left, rdx=right already evaluated by generic binop
+    ; test rax,rax; cmovz rdx, rax (if left=0, result=0)
+    ; test rdx,rdx; setne al (normalize to 0/1)
+    ; Simplified: and rax, rdx; then normalize
+    ; For short-circuit we'd need labels, but simple approach:
+    ; result = (left != 0) && (right != 0) = (left & right) but normalized
+    ; test rax, rax; setne cl
+    ; test rdx, rdx; setne al
+    ; and rax, rcx
+    ; Actually: just do test+setne for both, then and
+    ; test rax, rax = 48 85 C0
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    ; setne cl = 0F 95 C1
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x95
+    call emit_byte
+    mov dil, 0xC1
+    call emit_byte
+    ; test rdx, rdx = 48 85 D2
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+    mov dil, 0xD2
+    call emit_byte
+    ; setne al = 0F 95 C0
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x95
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    ; and rax, rcx = 48 21 C8
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x21
+    call emit_byte
+    mov dil, 0xC8
+    call emit_byte
+    ; movzx rax, al = 48 0F B6 C0
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0xB6
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    pop rbx
+    ret
+.ge_lor:
+    ; Short-circuit OR: if left!=0, result=1; else result=(right!=0)
+    ; test rax, rax; setne cl
+    ; test rdx, rdx; setne al
+    ; or rax, rcx; movzx rax, al
+    ; test rax, rax = 48 85 C0
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    ; setne cl = 0F 95 C1
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x95
+    call emit_byte
+    mov dil, 0xC1
+    call emit_byte
+    ; test rdx, rdx = 48 85 D2
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+    mov dil, 0xD2
+    call emit_byte
+    ; setne al = 0F 95 C0
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x95
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    ; or rax, rcx = 48 09 C8
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x09
+    call emit_byte
+    mov dil, 0xC8
+    call emit_byte
+    ; movzx rax, al = 48 0F B6 C0
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0xB6
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    pop rbx
+    ret
+.ge_mod:
+    ; mov rcx, rdx; cqo; idiv rcx; rax=remainder
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xD1
+    call emit_byte
+%ifdef SUTRAM_R65_TRAP_INT
+    lea rdi,[rel r65_msg_mod]
+    call r65_emit_zero_guard
+%endif
+    ; cqo (sign-extend rax into rdx:rax) = 48 99
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x99
+    call emit_byte
+    ; idiv rcx = 48 F7 F9
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xF7
+    call emit_byte
+    mov dil, 0xF9
+    call emit_byte
+    ; mov rax, rdx (remainder) = 48 89 D0
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xD0
+    call emit_byte
+    pop rbx
+    ret
+.ge_and:
+    ; and rax, rdx = 48 21 D0
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x21
+    call emit_byte
+    mov dil, 0xD0
+    call emit_byte
+    pop rbx
+    ret
+.ge_or:
+    ; or rax, rdx = 48 09 D0
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x09
+    call emit_byte
+    mov dil, 0xD0
+    call emit_byte
+    pop rbx
+    ret
+.ge_shl:
+    ; rax=left, rdx=count -> mov rcx,rdx ; shl rax,cl
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xD1
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xD3
+    call emit_byte
+    mov dil, 0xE0
+    call emit_byte
+    pop rbx
+    ret
+.ge_shr:
+    ; mov rcx,rdx ; shr rax,cl
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xD1
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xD3
+    call emit_byte
+    mov dil, 0xE8
+    call emit_byte
+    pop rbx
+    ret
+.ge_xor:
+    ; xor rax, rdx = 48 31 D0
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x31
+    call emit_byte
+    mov dil, 0xD0
+    call emit_byte
+    pop rbx
+    ret
+.ge_le:
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x39
+    call emit_byte
+    mov dil, 0xD0
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x9E
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0xB6
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    pop rbx
+    ret
+.ge_ge:
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x39
+    call emit_byte
+    mov dil, 0xD0
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x9D
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0xB6
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    pop rbx
+    ret
+.ge_ne:
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x39
+    call emit_byte
+    mov dil, 0xD0
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x95
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0xB6
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    pop rbx
+    ret
+.ge_add:
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x01
+    call emit_byte
+    mov dil, 0xD0
+    call emit_byte
+%ifdef SUTRAM_R65_TRAP_INT
+    lea rdi,[rel r65_msg_add]
+    call r65_emit_overflow_guard
+%endif
+    pop rbx
+    ret
+.ge_sub:
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x29
+    call emit_byte
+    mov dil, 0xD0
+    call emit_byte
+%ifdef SUTRAM_R65_TRAP_INT
+    lea rdi,[rel r65_msg_sub]
+    call r65_emit_overflow_guard
+%endif
+    pop rbx
+    ret
+.ge_mul:
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0xAF
+    call emit_byte
+    mov dil, 0xC2
+    call emit_byte
+%ifdef SUTRAM_R65_TRAP_INT
+    lea rdi,[rel r65_msg_mul]
+    call r65_emit_overflow_guard
+%endif
+    pop rbx
+    ret
+.ge_div:
+    ; mov rcx, rdx; cqo; idiv rcx; rax=quotient
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xD1
+    call emit_byte
+%ifdef SUTRAM_R65_TRAP_INT
+    lea rdi,[rel r65_msg_div]
+    call r65_emit_zero_guard
+%endif
+    ; cqo (sign-extend) = 48 99
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x99
+    call emit_byte
+    ; idiv rcx = 48 F7 F9
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xF7
+    call emit_byte
+    mov dil, 0xF9
+    call emit_byte
+    pop rbx
+    ret
+.ge_eq:
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x39
+    call emit_byte
+    mov dil, 0xD0
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x94
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0xB6
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    pop rbx
+    ret
+.ge_lt:
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x39
+    call emit_byte
+    mov dil, 0xD0
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x9C
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0xB6
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    pop rbx
+    ret
+.ge_gt:
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x39
+    call emit_byte
+    mov dil, 0xD0
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x9F
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0xB6
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    pop rbx
+    ret
+.ge_writemem:
+    ; [AST_WRITEMEM][arg_count][arg1_addr_node][arg2_val_node]
+    ; Evaluate address -> rax, push, evaluate value -> rax, pop rdi, store
+    push r12
+    ; Evaluate arg1 (address)
+    mov rax, [rbx+16]        ; address node
+    call gen_expr             ; rax = address value (runtime)
+    ; emit: push rax (50)
+    mov dil, 0x50
+    call emit_byte
+    ; Evaluate arg2 (value)
+    mov rax, [rbx+24]        ; value node
+    call gen_expr             ; rax = value (runtime)
+    ; emit: mov rcx, rax (48 89 C1) — save value in rcx
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC1
+    call emit_byte
+    ; emit: pop rdi (5F) — rdi = address
+    mov dil, 0x5F
+    call emit_byte
+    ; emit: mov [rdi], rcx (48 89 0F) — store rcx at [rdi]
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    pop r12
+    pop rbx
+    ret
+.ge_halt:
+    mov dil, 0xF4
+    call emit_byte
+    pop rbx
+    ret
+
+; emit_nirmmita_from_rax
+; Emit allocation sequence assuming generated-program RAX already holds byte size.
+; Leaves the allocated base pointer in generated-program RAX.
+emit_nirmmita_from_rax:
+    cmp qword [rel r38_fail_n], 0  ; R38 --fail-alloc: the counted form
+    jne r38_emit_faulty
+r38_nirm_seq:
+    ; mov rsi, rax (length) = 48 89 C6
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC6
+    call emit_byte
+    ; xor edi, edi (addr=0) = 31 FF
+    mov dil, 0x31
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    ; mov edx, 3 (PROT_READ|PROT_WRITE) = BA 03 00 00 00
+    mov dil, 0xBA
+    call emit_byte
+    mov dil, 0x03
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    ; mov r10d, 0x22 (MAP_PRIVATE|MAP_ANONYMOUS) = 41 BA 22 00 00 00
+    mov dil, 0x41
+    call emit_byte
+    mov dil, 0xBA
+    call emit_byte
+    mov dil, 0x22
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    ; mov r8, -1 (fd) = 49 C7 C0 FF FF FF FF
+    mov dil, 0x49
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    ; xor r9d, r9d (offset=0) = 45 31 C9
+    mov dil, 0x45
+    call emit_byte
+    mov dil, 0x31
+    call emit_byte
+    mov dil, 0xC9
+    call emit_byte
+    ; mov eax, 9 (sys_mmap) = B8 09 00 00 00
+    mov dil, 0xB8
+    call emit_byte
+    mov dil, 0x09
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    ; syscall
+    call emit_syscall
+    ; R9 (F2): mmap reports failure as -errno (-4095..-1), and nirmmita
+    ; promises 0 on failure. Map the error range to 0:
+    ;   cmp rax, -4095 = 48 3D 01 F0 FF FF ; jb +2 = 72 02 ; xor eax, eax = 31 C0
+    ; The Windows shim already returns 0, which passes through unchanged.
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x3D
+    call emit_byte
+    mov dil, 0x01
+    call emit_byte
+    mov dil, 0xF0
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0x72
+    call emit_byte
+    mov dil, 0x02
+    call emit_byte
+    mov dil, 0x31
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    ret
+
+; ============================================================
+; T12 FLOAT TYPE / CONVERSION HELPERS
+; ============================================================
+mark_float_var:
+    ; rdi=name ptr; current generated-function scope only
+    push rbx
+    push r12
+    mov rbx, rdi
+    mov r12, [rel float_var_cnt]
+    cmp r12, VAR_TABLE_CAP
+    jae .mfv_overflow
+    lea rcx, [rel float_vars]
+    mov [rcx + r12*8], rbx
+    inc qword [rel float_var_cnt]
+    pop r12
+    pop rbx
+    ret
+.mfv_overflow:
+    pop r12
+    pop rbx
+    lea rdi, [rel msg_var_table_overflow]
