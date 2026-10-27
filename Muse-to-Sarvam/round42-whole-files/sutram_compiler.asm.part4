@@ -1,0 +1,3991 @@
+    call parse_expr
+    push rax                 ; stash arg (nest-safe)
+    inc r12
+    call cur_tok
+    mov rcx, [rax]
+    cmp rcx, TOK_DELIMITER
+    jne .pp_ic_args
+    mov rcx, [rax+8]
+    cmp rcx, ','
+    jne .pp_ic_args
+    call advance_tok
+    jmp .pp_ic_args
+.pp_ic_done:
+    call advance_tok          ; consume ')'
+    ; Build funcall node: [AST_FUNCALL][name_ptr][arg_count][arg1..arg6]
+    push rbx
+    push r12
+    call alloc_ast
+    pop r12
+    pop rbx
+    mov qword [rax], AST_FUNCALL
+    mov [rax+8], rbx          ; function name
+    mov [rax+16], r12         ; arg count
+    ; pop stashed args (pushed in order) into node slots in reverse
+    mov rcx, r12
+    test rcx, rcx
+    jz .pp_no_pop_f
+    lea rdx, [rax + 24]
+    mov r8, r12
+    dec r8
+    shl r8, 3
+    add rdx, r8
+.pp_pop_f:
+    pop r8
+    mov [rdx], r8
+    sub rdx, 8
+    dec rcx
+    jnz .pp_pop_f
+.pp_no_pop_f:
+    mov rcx, [rsp+8]          ; R7: name token (below the saved r12)
+    test rcx, 1
+    jz .r23_plain_call
+    and rcx, -2               ; R23 WS2: a method call, resolved after the parse
+    call r23_note_method_call
+.r23_plain_call:
+    call r7_note_call         ; (rbx name, r12 argc, rcx token)
+    pop r12                   ; restore r12
+    add rsp, 8                ; drop the name token
+    pop rbx
+    ret
+
+.pp_builtin:
+    cmp rcx, TOK_BUILTIN
+    je .pp_builtin_valid
+    ; Check mode must reject stray ';', ']', ',' and other tokens here.
+    ; The legacy fallback treated every unsupported primary as '(' and
+    ; accidentally consumed tokens in later malformed declarations.
+    ; Preserve historical non-check compilation behavior unchanged.
+    cmp qword [rel r48_mode], 0
+    jne parse_error
+    jmp .pp_paren
+.pp_builtin_valid:
+    mov rbx, [rax+16]        ; builtin id
+    call advance_tok          ; consume builtin name
+    ; expect (
+    call cur_tok
+    mov rcx, [rax+8]
+    cmp rcx, '('
+    jne parse_error
+    call advance_tok
+    ; R54: parser-level builtin arity validation happens before AST creation
+    ; or machine-code emission, including special sthagita/likh nodes.
+    ; Parse args
+    push r12                  ; save r12 (parse_func_block uses it)
+    xor r12, r12             ; arg count
+.pp_args:
+    call cur_tok
+    mov rcx, [rax]
+    cmp rcx, TOK_DELIMITER
+    jne .pp_arg_parse
+    mov rcx, [rax+8]
+    cmp rcx, ')'
+    je .pp_args_done
+.pp_arg_parse:
+    ; R54: AST_CALL stores at most six expression pointers ([+24..+64]).
+    ; Reject oversized lists BEFORE spilling beyond the 72-byte AST node.
+    cmp r12, 6
+    jae parse_error
+    call parse_expr          ; rax = arg
+    push rax                 ; stash arg (nest-safe; call_args would be clobbered)
+    inc r12
+    ; Check comma
+    call cur_tok
+    mov rcx, [rax]
+    cmp rcx, TOK_DELIMITER
+    jne .pp_args
+    mov rcx, [rax+8]
+    cmp rcx, ','
+    jne .pp_args
+    call advance_tok          ; consume comma
+    jmp .pp_args
+.pp_args_done:
+    ; The current token is ')'; report a located, recoverable parse error
+    ; for EVERY builtin, not only the R50/R52 special cases. rbx/r12 survive.
+    mov rdi, rbx
+    mov rsi, r12
+    call r54_builtin_arity_ok
+    test eax, eax
+    jz parse_error
+    call advance_tok          ; consume )
+    ; Build node based on builtin
+    cmp rbx, BN_STHAGITA
+    je .pp_halt
+    cmp rbx, BN_LIKH
+    je .pp_writemem
+    ; Generic call
+    push rbx
+    push r12
+    call alloc_ast
+    pop r12
+    pop rbx
+    mov qword [rax], 8       ; AST_CALL
+    mov [rax+8], rbx          ; builtin id
+    mov [rax+16], r12         ; arg count
+    ; pop stashed args (pushed in order) into node slots in reverse
+    mov rcx, r12
+    test rcx, rcx
+    jz .pp_no_pop_b
+    lea rdx, [rax + 24]
+    mov r8, r12
+    dec r8
+    shl r8, 3
+    add rdx, r8
+.pp_pop_b:
+    pop r8
+    mov [rdx], r8
+    sub rdx, 8
+    dec rcx
+    jnz .pp_pop_b
+.pp_no_pop_b:
+    pop r12                   ; restore r12
+    pop rbx
+    ret
+
+.pp_halt:
+    push rbx
+    call alloc_ast
+    pop rbx
+    mov qword [rax], AST_HALT
+    pop r12                   ; restore r12
+    pop rbx
+    ret
+
+.pp_writemem:
+    ; R52: the generic argument parser stashes nodes on the stack, not in
+    ; call_args (which can contain stale pointers from unrelated calls).
+    ; Previous code read call_args and could crash the compiler for likh().
+    cmp r12, 2
+    jne parse_error
+    push rbx
+    push r12
+    call alloc_ast
+    pop r12
+    pop rbx
+    mov qword [rax], AST_WRITEMEM
+    mov [rax+8], r12
+    pop rcx                    ; second argument, most recent stashed node
+    pop rdx                    ; first argument, destination address node
+    mov [rax+16], rdx
+    mov [rax+24], rcx
+    pop r12                    ; restore r12
+    pop rbx
+    ret
+
+; R54/R63: verified ABI signatures for builtin IDs 1..45.
+; Input rdi=id, rsi=parsed arg count, return eax=1 iff allowed.
+; The check is before any AST argument pointer dereference in codegen.
+; Updating a builtin ABI requires updating this table and the R54 test matrix.
+r54_builtin_arity_ok:
+    cmp rdi, 45
+    ja .bad
+    lea rax, [rel r54_builtin_arity_table]
+    lea rax, [rax+rdi*2]
+    movzx ecx, byte [rax]
+    cmp rsi, rcx
+    jb .bad
+    movzx ecx, byte [rax+1]
+    cmp rsi, rcx
+    ja .bad
+    mov eax, 1
+    ret
+.bad:
+    xor eax,eax
+    ret
+
+; ============================================================
+; CODE GENERATOR
+; ============================================================
+; Emits x86-64 machine code into code_buf.
+; Stack-based: every expression leaves result in RAX.
+
+
+; emit_syscall — Linux: the 2-byte syscall instruction.
+;                Windows: a call into the embedded runtime shim (patched later).
+emit_syscall:
+    cmp qword [rel target_pe], 0
+    jne .es_pe
+    ; Linux target: the 2-byte syscall instruction
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x05
+    call emit_byte
+    ret
+.es_pe:
+    ; Windows target: call into the embedded runtime shim (patched later)
+    mov dil, 0xE8
+    call emit_byte
+    mov rax, [rel code_sz]          ; position of the rel32 field
+    lea rcx, [rel blob_calls]
+    mov rdx, [rel blob_call_cnt]
+    cmp rdx, BLOB_CALL_CAP          ; R34: never past its end
+    jae .es_full
+    shl rdx, 3
+    mov [rcx + rdx], rax
+    inc qword [rel blob_call_cnt]
+    xor edi, edi
+    call emit_u32
+    ret
+.es_full:
+    lea rdi, [rel msg_patch_overflow]
+    jmp capacity_fail
+
+emit_byte:
+    ; dil = byte to emit
+    push rbx
+    mov rbx, [rel code_sz]
+    cmp rbx, CODE_BUF_CAP
+    jae .emit_byte_overflow
+    lea rcx, [rel code_buf]
+    mov [rcx + rbx], dil
+    inc rbx
+    mov [rel code_sz], rbx
+    pop rbx
+    ret
+.emit_byte_overflow:
+    pop rbx
+    lea rdi, [rel msg_code_overflow]
+    jmp capacity_fail
+
+; R10 (F1): emit an rbp-relative ModRM byte and its displacement.
+; dil = the ModRM byte in its disp8 form (mod = 01, r/m = 101: 0x45 for rax,
+; 0x6D for /5, ...), esi = the signed displacement. A displacement in
+; -128..127 is emitted as disp8; any other as disp32 (mod = 10: ModRM + 0x40).
+; Before R10 every site emitted disp8 unconditionally, so the 17th stack slot
+; (rbp-136) became rbp+120: above the frame, onto the caller's saved
+; registers and the return address. That was F1.
+emit_rbp_modrm_disp:
+    push rbx
+    push r12
+    movzx ebx, dil
+    movsxd r12, esi
+    cmp r12, -128
+    jl .erd_wide
+    cmp r12, 127
+    jg .erd_wide
+    mov edi, ebx
+    call emit_byte
+    mov edi, r12d
+    call emit_byte
+    jmp .erd_done
+.erd_wide:
+    lea edi, [rbx + 0x40]
+    call emit_byte
+    mov edi, r12d
+    call emit_u32
+.erd_done:
+    pop r12
+    pop rbx
+    ret
+
+emit_u32:
+    ; edi = 32-bit value
+    push rbx
+    mov ebx, edi
+    movzx edi, bl
+    call emit_byte
+    shr ebx, 8
+    movzx edi, bl
+    call emit_byte
+    shr ebx, 8
+    movzx edi, bl
+    call emit_byte
+    shr ebx, 8
+    movzx edi, bl
+    call emit_byte
+    pop rbx
+    ret
+
+emit_u64:
+    ; rdi = 64-bit value
+    push rbx
+    push rdi
+    mov rbx, rdi
+    ; low 32 bits
+    mov edi, ebx
+    call emit_u32
+    ; high 32 bits
+    shr rbx, 32
+    mov edi, ebx
+    call emit_u32
+    pop rdi
+    pop rbx
+    ret
+
+%ifdef SUTRAM_R67_PURE_STACK_PAIRS
+%include "src/r67_stack_pair.inc"
+%endif
+
+gen_code:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    ; T12: establish prakriya return metadata before main call sites are typed.
+    call classify_float_functions
+    ; PE target: call the embedded runtime's rt_init first (the blob sits
+    ; at image offset 0, so this call is always exactly 5 bytes back)
+    cmp qword [rel target_pe], 0
+    je .gc_no_rtinit
+    mov dil, 0xE8
+    call emit_byte
+    cmp qword [rel r28_object_mode], 0  ; R34: in an object, a hole for sutram-link
+    jne .r34_rtinit_hole
+    mov edi, -(RT_BLOB_LEN + 5)      ; call back to the blob at image offset 0
+    call emit_u32
+    jmp .gc_no_rtinit
+.r34_rtinit_hole:
+    mov rdi, [rel code_sz]
+    lea rsi, [rel r34_rt_init]
+    call r28_add_reloc
+    xor edi, edi
+    call emit_u32
+.gc_no_rtinit:
+    ; Init variable table
+    mov qword [rel var_cnt], 0
+    mov qword [rel stack_dep], 0
+    mov qword [rel array_var_cnt], 0
+    mov qword [rel r23_slice_var_cnt], 0
+    mov qword [rel kosh_var_cnt], 0
+    mov qword [rel kosh_param_var_cnt], 0
+    mov qword [rel float_kosh_var_cnt], 0
+    mov qword [rel float_var_cnt], 0
+    ; Do NOT reset func_def_cnt — it may have FUNCDEF nodes from top-level parsing
+    mov qword [rel patch_count], 0
+    mov qword [rel func_count], 0
+    mov qword [rel blob_call_cnt], 0
+    mov qword [rel in_function], 0
+    mov qword [rel current_func_float], 0
+
+    ; Get function body (block node)
+    mov rax, [rel root_node]
+    mov rax, [rax+8]          ; body = block node
+
+    ; Function prologue: push rbp; push callee-saved; mov rbp, rsp
+    mov dil, 0x55             ; push rbp
+    call emit_byte
+    mov dil, 0x48             ; push rbx
+    call emit_byte
+    mov dil, 0x53
+    call emit_byte
+    mov dil, 0x41             ; push r12
+    call emit_byte
+    mov dil, 0x54
+    call emit_byte
+    mov dil, 0x41             ; push r13
+    call emit_byte
+    mov dil, 0x55
+    call emit_byte
+    mov dil, 0x41             ; push r14
+    call emit_byte
+    mov dil, 0x56
+    call emit_byte
+    mov dil, 0x41             ; push r15
+    call emit_byte
+    mov dil, 0x57
+    call emit_byte
+    mov dil, 0x48             ; mov rbp, rsp
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xE5
+    call emit_byte
+    ; Reserve a stable spill area so stack locals survive generated calls.
+    ; sub rsp, FUNC_SPILL_BYTES = 48 81 EC imm32
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x81
+    call emit_byte
+    mov dil, 0xEC
+    call emit_byte
+    mov edi, FUNC_SPILL_BYTES
+    call emit_u32
+
+    ; R56: once-only ordered global initialization at process entry.
+    ; This runs before mukhya and before any user function can be called.
+    call r56_gen_global_initializers
+    mov rax, [rel root_node]
+    mov rax, [rax+8]
+    ; Generate body
+    call gen_block
+
+    ; Function epilogue: mov rsp,rbp; pop callee-saved; pop rbp; sys_exit
+    mov dil, 0x48             ; mov rsp, rbp
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xEC
+    call emit_byte
+    mov dil, 0x41             ; pop r15
+    call emit_byte
+    mov dil, 0x5F
+    call emit_byte
+    mov dil, 0x41             ; pop r14
+    call emit_byte
+    mov dil, 0x5E
+    call emit_byte
+    mov dil, 0x41             ; pop r13
+    call emit_byte
+    mov dil, 0x5D
+    call emit_byte
+    mov dil, 0x41             ; pop r12
+    call emit_byte
+    mov dil, 0x5C
+    call emit_byte
+    mov dil, 0x5B             ; pop rbx
+    call emit_byte
+    mov dil, 0x5D             ; pop rbp
+    call emit_byte
+    ; sys_exit(0): mov rax,60; xor rdi,rdi; syscall
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xB8
+    call emit_byte
+    mov edi, 60
+    call emit_u32
+    xor edi, edi
+    call emit_u32
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x31
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    call emit_syscall
+
+    ; Generate all function bodies after main
+    call gen_all_functions
+    mov qword [rel in_function], 0   ; back in main context
+    mov qword [rel current_func_float], 0
+    ; Backpatch all call sites
+    call backpatch_calls
+    ; Final function/code size is now known; fix RIP-relative globals.
+    ; ELF appends zero-initialized writable slots to the existing load segment;
+    ; PE emits a distinct RW .data section in write_pe.
+    call r56_patch_global_storage
+
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+
+; R55: store explicit prakriya name(params); declarations, rejecting repeated
+; prototypes and enforcing that each has a complete matching body.
+; Input RAX = AST_FUNCDEF with [rax+24]==0. No emitted runtime data.
+r55_register_proto:
+    push rbx
+    push r12
+    push r13
+    mov rbx,rax
+    mov r13,[rbx+8]
+    xor r12,r12
+.rp_loop:
+    cmp r12,[rel r55_proto_count]
+    jae .rp_add
+    lea rax,[rel r55_proto_names]
+    mov rdi,r13
+    mov rsi,[rax+r12*8]
+    call strcmp
+    test rax,rax
+    jz .rp_duplicate
+    inc r12
+    jmp .rp_loop
+.rp_add:
+    cmp r12,FUNC_DEFS_CAP
+    jae .rp_full
+    lea rax,[rel r55_proto_names]
+    mov [rax+r12*8],r13
+    mov rcx,[rbx+16]
+    lea rax,[rel r55_proto_arity]
+    mov [rax+r12*8],rcx
+    mov rcx,[rbx+32]
+    lea rax,[rel r55_proto_param_end]
+    mov [rax+r12*8],rcx
+    inc qword [rel r55_proto_count]
+    pop r13
+    pop r12
+    pop rbx
+    ret
+.rp_duplicate:
+    lea rdi,[rel r55_msg_proto_duplicate]
+    jmp capacity_fail
+.rp_full:
+    lea rdi,[rel r55_msg_proto_capacity]
+    jmp capacity_fail
+
+; Run after collecting top-level functions, before parsing mukhya. A prototype
+; is not allowed to remain undefined (even if uncalled); matching arity protects
+; callers from silently invoking an incorrect parameter ABI.
+r55_validate_prototypes:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    xor r12,r12
+.vp_outer:
+    cmp r12,[rel r55_proto_count]
+    jae .vp_done
+    lea rcx,[rel r55_proto_names]
+    mov r13,[rcx+r12*8]
+    lea rcx,[rel r55_proto_arity]
+    mov r14,[rcx+r12*8]
+    xor r15,r15
+.vp_inner:
+    cmp r15,[rel func_def_cnt]
+    jae .vp_missing
+    lea rcx,[rel func_defs]
+    mov rbx,[rcx+r15*8]
+    mov rdi,r13
+    mov rsi,[rbx+8]
+    call strcmp
+    test rax,rax
+    jz .vp_match
+    inc r15
+    jmp .vp_inner
+.vp_match:
+    cmp r14,[rbx+16]
+    jne .vp_mismatch
+    ; Compare the parameter-type bytes as well as the ABI arity.
+    ; Param *names* may differ, but dasham/kosh types must agree.
+    lea rcx,[rel r55_proto_param_end]
+    mov rcx,[rcx+r12*8]
+    shr rcx,3
+    sub rcx,r14
+    mov rdx,[rbx+32]
+    shr rdx,3
+    sub rdx,r14
+    lea r10,[rel func_param_types]
+    xor r8,r8
+.vp_type_loop:
+    cmp r8,r14
+    jae .vp_accepted
+    mov r9b,[r10+rcx]
+    cmp r9b,[r10+rdx]
+    jne .vp_mismatch
+    inc rcx
+    inc rdx
+    inc r8
+    jmp .vp_type_loop
+.vp_accepted:
+    inc r12
+    jmp .vp_outer
+.vp_missing:
+    lea rdi,[rel r55_msg_proto_missing]
+    jmp capacity_fail
+.vp_mismatch:
+    lea rdi,[rel r55_msg_proto_signature]
+    jmp capacity_fail
+.vp_done:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; funcdef_name_exists(rdi=name ptr) -> rax=1 if a collected definition
+; already owns this name.  Used by T4 module collision checks.
+funcdef_name_exists:
+    push rbx
+    push r12
+    push r13
+    mov rbx, rdi
+    xor r12, r12
+    mov r13, [rel func_def_cnt]
+.fdne_loop:
+    cmp r12, r13
+    jae .fdne_no
+    lea rcx, [rel func_defs]
+    mov rcx, [rcx + r12*8]
+    mov rdi, rbx
+    mov rsi, [rcx+8]
+    call strcmp
+    test rax, rax
+    jz .fdne_yes
+    inc r12
+    jmp .fdne_loop
+.fdne_yes:
+    mov rax, 1
+    pop r13
+    pop r12
+    pop rbx
+    ret
+.fdne_no:
+    xor rax, rax
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; gen_all_functions — emit code for all collected FUNCDEF nodes
+ ; R56 top-level global initializer list: each expression executes once,
+ ; in source order, with every slot initially zero. Nonliteral expressions
+ ; and function calls use the ordinary expression emitter and call patches.
+r56_gen_global_initializers:
+    push rbx
+    push r12
+    xor r12, r12
+.r56_init_loop:
+    cmp r12, [rel r56_global_count]
+    jae .r56_init_done
+    lea rcx, [rel r56_global_nodes]
+    mov rbx, [rcx+r12*8]
+    mov rax, [rbx+16]
+    test rax, rax
+    jz .r56_init_next
+    call gen_expr
+    mov rdi, r12
+    call r56_emit_global_store
+.r56_init_next:
+    inc r12
+    jmp .r56_init_loop
+.r56_init_done:
+    pop r12
+    pop rbx
+    ret
+
+gen_all_functions:
+    push rbx
+    push r12
+    push r13
+    push r14
+    xor r12, r12              ; index
+.gaf_loop:
+    cmp r12, [rel func_def_cnt]
+    jae .gaf_done
+    cmp qword [rel r29_separate_mode], 0  ; R29: no code for another module's
+    je .r29_gaf_emit                      ; prakriya; its calls become holes
+    lea rax, [rel r29_extern]
+    cmp byte [rax + r12], 0
+    je .r29_gaf_emit
+    inc r12
+    jmp .gaf_loop
+.r29_gaf_emit:
+    ; Get FUNCDEF node
+    lea rax, [rel func_defs]
+    mov rbx, [rax + r12*8]   ; rbx = FUNCDEF node
+    mov rax, [rbx+40]        ; T12 inferred return type
+    mov [rel current_func_float], rax
+    ; Register function address in func_table
+    mov rdx, [rel func_count]
+    cmp rdx, FUNC_TABLE_CAP
+    jae .gaf_func_table_overflow
+    lea rcx, [rel func_table]
+    push rdx
+    shl rdx, 4
+    mov rax, [rbx+8]
+    mov [rcx + rdx], rax
+    mov rax, [rel code_sz]
+    mov [rcx + rdx + 8], rax
+    pop rdx
+    inc qword [rel func_count]
+    ; Reset variable table for function scope
+    mov qword [rel var_cnt], 0
+    mov qword [rel stack_dep], 0
+    mov qword [rel array_var_cnt], 0
+    mov qword [rel r23_slice_var_cnt], 0
+    mov qword [rel kosh_var_cnt], 0
+    mov qword [rel kosh_param_var_cnt], 0
+    mov qword [rel float_kosh_var_cnt], 0
+    mov qword [rel float_var_cnt], 0
+    mov qword [rel in_function], 1   ; we're inside a user function
+    ; Emit function prologue: push rbp; mov rbp, rsp; push rbx
+    mov dil, 0x55             ; push rbp
+    call emit_byte
+    mov dil, 0x48             ; mov rbp, rsp
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xE5
+    call emit_byte
+    mov dil, 0x53             ; push rbx
+    call emit_byte
+    ; Parameter handling: push arg registers, register in var_table
+    mov r13, [rbx+16]        ; param count
+    mov r14, [rbx+32]        ; param buffer end pos
+    test r13, r13
+    jz .gaf_no_params
+    ; Calculate param start
+    mov rax, r13
+    shl rax, 3
+    sub r14, rax              ; r14 = start of params
+    ; Push arg registers in reverse order so param 0 is deepest:
+    ; rdi, rsi, rdx, rcx, r8, r9 (maximum 6).
+    cmp r13, 6
+    jb .gaf_p5
+    mov dil, 0x41             ; push r9 = 41 51
+    call emit_byte
+    mov dil, 0x51
+    call emit_byte
+.gaf_p5:
+    cmp r13, 5
+    jb .gaf_p4
+    mov dil, 0x41             ; push r8 = 41 50
+    call emit_byte
+    mov dil, 0x50
+    call emit_byte
+.gaf_p4:
+    cmp r13, 4
+    jb .gaf_p3
+    mov dil, 0x51             ; push rcx
+    call emit_byte
+.gaf_p3:
+    cmp r13, 3
+    jb .gaf_p2
+    mov dil, 0x52             ; push rdx
+    call emit_byte
+.gaf_p2:
+    cmp r13, 2
+    jb .gaf_p1
+    mov dil, 0x56             ; push rsi
+    call emit_byte
+.gaf_p1:
+    cmp r13, 1
+    jb .gaf_pdone
+    mov dil, 0x57             ; push rdi
+    call emit_byte
+.gaf_pdone:
+    ; Register params in var_table with known stack offsets
+    ; After push rbp, push rbx, then the active argument-register saves:
+    ;   param 0 (rdi) is at [rbp - 8 - param_count*8]
+    ;   param i is at [rbp - 8 - (param_count - i)*8]
+    xor r15, r15
+.gaf_ploop:
+    cmp r15, r13
+    jae .gaf_no_params
+    ; Get param name
+    lea rax, [rel func_params]
+    add rax, r14
+    mov rdi, [rax + r15*8]  ; param name ptr
+    ; Calculate stack offset: -(8 + (param_count - param_index) * 8)
+    mov rax, r13
+    sub rax, r15
+    shl rax, 3
+    add rax, 8
+    neg rax
+    ; Manually add to var_table
+    push rdi
+    mov rdi, [rel var_cnt]
+    cmp rdi, VAR_TABLE_CAP
+    jae .gaf_var_table_overflow
+    imul rdi, rdi, 16
+    lea rcx, [rel var_table]
+    pop rsi                  ; param name ptr
+    mov [rcx + rdi], rsi     ; name
+    mov [rcx + rdi + 8], rax  ; location (negative = stack)
+    inc qword [rel var_cnt]
+    ; T12/T18 typed parameter metadata is compile-time only. Runtime ABI stays
+    ; one qword per argument; kosh parameters are pointers with hidden headers.
+    mov rax, r14
+    shr rax, 3
+    add rax, r15
+    lea rdx, [rel func_param_types]
+    movzx eax, byte [rdx + rax]
+    cmp eax, PARAM_DASHAM
+    je .gaf_param_scalar_float
+    cmp eax, PARAM_KOSH
+    je .gaf_param_kosh
+    cmp eax, PARAM_KOSH_DASHAM
+    je .gaf_param_kosh_float
+    cmp eax, PARAM_VIBHAG
+    jne .gaf_param_type_done
+    mov rdi, rsi              ; R23 WS3: a vibhag parameter is a slice
+    call r23_mark_slice_var
+    jmp .gaf_param_type_done
+.gaf_param_scalar_float:
+    mov rdi, rsi
+    call mark_float_var
+    jmp .gaf_param_type_done
+.gaf_param_kosh:
+    push rsi
+    mov rdi, rsi
+    call mark_kosh_var
+    pop rsi
+    mov rdi, rsi
+    call mark_kosh_param_var
+    jmp .gaf_param_type_done
+.gaf_param_kosh_float:
+    push rsi
+    mov rdi, rsi
+    call mark_kosh_var
+    pop rsi
+    push rsi
+    mov rdi, rsi
+    call mark_kosh_param_var
+    pop rsi
+    mov rdi, rsi
+    call mark_float_kosh_var
+.gaf_param_type_done:
+    inc r15
+    jmp .gaf_ploop
+.gaf_var_table_overflow:
+    lea rdi, [rel msg_var_table_overflow]
+    jmp capacity_fail
+.gaf_no_params:
+    ; Stack spill slots must live below saved rbx and all pushed parameters.
+    ; stack_dep tracks positive depth from rbp before alloc_var negates it.
+    mov rax, r13
+    shl rax, 3
+    add rax, 8               ; saved rbx + param_count*8
+    mov [rel stack_dep], rax
+    ; Reserve a stable spill area so later user calls cannot overwrite locals.
+    ; sub rsp, FUNC_SPILL_BYTES = 48 81 EC imm32
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x81
+    call emit_byte
+    mov dil, 0xEC
+    call emit_byte
+    mov edi, FUNC_SPILL_BYTES
+    call emit_u32
+    ; Generate function body
+    mov rax, [rbx+8]          ; R25: the prakriya being generated
+    mov [rel r25_cur_func], rax
+    mov rax, [rbx+24]        ; body block node
+    call gen_block
+    call r25_emit_fall_off    ; R25: the end of a phal-prakriya is siddhi(0)
+    ; Emit function epilogue: lea rsp,[rbp-8]; pop rbx; pop rbp; ret
+    mov dil, 0x48             ; lea rsp, [rbp-8]
+    call emit_byte
+    mov dil, 0x8D
+    call emit_byte
+    mov dil, 0x65
+    call emit_byte
+    mov dil, 0xF8
+    call emit_byte
+    mov dil, 0x5B             ; pop rbx
+    call emit_byte
+    mov dil, 0x5D             ; pop rbp
+    call emit_byte
+    mov dil, 0xC3             ; ret
+    call emit_byte
+    inc r12
+    jmp .gaf_loop
+.gaf_func_table_overflow:
+    lea rdi, [rel msg_func_table_overflow]
+    jmp capacity_fail
+.gaf_done:
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; backpatch_calls — fix up all call rel32 instructions
+backpatch_calls:
+    push rbx
+    push r12
+    push r13
+    push r14
+    xor r12, r12              ; index
+.bc_loop:
+    cmp r12, [rel patch_count]
+    jae .bc_done
+    ; Get patch entry
+    lea rax, [rel patch_list]
+    push r12
+    shl r12, 4
+    mov r13, [rax + r12]      ; call_site offset
+    mov r14, [rax + r12 + 8]  ; function name ptr
+    pop r12
+    ; Look up function in func_table
+    lea rax, [rel func_table]
+    xor rcx, rcx
+.bc_search:
+    cmp rcx, [rel func_count]
+    jae .bc_not_found
+    mov rdi, r14
+    push rcx
+    shl rcx, 4
+    mov rsi, [rax + rcx]     ; func_table name_ptr
+    pop rcx
+    push rcx                 ; save counter around strcmp (it clobbers rcx)
+    call strcmp               ; rax = 0 if match
+    pop rcx                  ; restore counter
+    test rax, rax
+    jz .bc_found
+    lea rax, [rel func_table] ; re-load base (strcmp clobbers rax)
+    inc rcx
+    jmp .bc_search
+.bc_found:
+    ; Get function address from func_table[rcx]
+    lea rax, [rel func_table]
+    push rcx
+    shl rcx, 4
+    mov rax, [rax + rcx + 8] ; function address (code offset)
+    pop rcx
+    ; Calculate rel32 = func_addr - (call_site + 4)
+    ; call_site is the offset of the rel32 bytes in code_buf
+    ; The call instruction is: E8 [rel32] (5 bytes)
+    ; call_site = offset of rel32 = offset of E8 + 1
+    ; target = call_site + 4 + rel32
+    ; rel32 = target - (call_site + 4)
+    sub rax, r13              ; func_addr - call_site
+    sub rax, 4               ; - 4
+    ; Patch code_buf at call_site
+    lea rcx, [rel code_buf]
+    mov [rcx + r13], eax     ; write rel32 (4 bytes)
+    jmp .bc_next
+.bc_not_found:
+    cmp qword [rel r28_object_mode], 0  ; R28: in an object, a hole for sutram-link
+    je .r28_bc_not_object
+    mov rdi, r13
+    mov rsi, r14
+    call r28_add_reloc
+    jmp .bc_next
+.r28_bc_not_object:
+    ; Stage 2: in check mode report every unresolved call backpatch.
+    ; Ordinary compilation still exits on the first unresolved name.
+    cmp qword [rel r48_mode], 0
+    je .bc_old_error
+    mov rdi, r14
+    call r48_print_undefined_function
+    inc qword [rel r48_error_count]
+    cmp qword [rel r48_error_count], 8
+    jae .bc_check_fail
+    jmp .bc_next
+.bc_old_error:
+    lea rdi, [rel msg_undefined_func]
+    call print_str_z
+    mov rdi, r14
+    call print_str_z
+    lea rdi, [rel msg_nl]
+    call print_str_z
+    mov rdi, 1
+    call os_exit
+.bc_next:
+    inc r12
+    jmp .bc_loop
+.bc_done:
+    cmp qword [rel r48_mode], 0
+    je .bc_return
+    cmp qword [rel r48_error_count], 0
+    jne .bc_check_fail
+.bc_return:
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+.bc_check_fail:
+    lea rdi, [rel r48_msg_errors]
+    call print_str_z
+    mov rdi, 1
+    call os_exit
+
+; gen_block(rax = block node)
+gen_block:
+%ifdef SUTRAM_R65_PEEPHOLES
+    ; No cross-block or cross-function RAX lifetime assumptions.
+    mov qword [rel r65_last_store_name],0
+    mov qword [rel r65_candidate_name],0
+%endif
+%ifdef SUTRAM_EXPERIMENTAL_XMM_CACHE
+    ; Basic-block entry: do not trust cached XMM values across jumps/merges.
+    call xmm_cache_barrier
+%endif
+    push rbx
+    push r12
+    push r13
+    push r14
+    mov rbx, rax              ; block node
+    mov r12, [rbx+8]          ; statement count
+    xor r13, r13              ; index
+.gb_loop:
+    cmp r13, r12
+    jae .gb_done
+    mov rax, [rbx + 16 + r13*8]
+    call gen_stmt
+%ifdef SUTRAM_EXPERIMENTAL_XMM_CACHE
+    ; A declaration, call, branch, loop, early return or array store might
+    ; clobber volatile XMM2-XMM5 or change control flow. Never cache across it.
+    mov rax, [rbx + 16 + r13*8]
+    cmp qword [rax], AST_ASSIGN
+    je .gb_no_after_barrier
+    call xmm_cache_barrier
+.gb_no_after_barrier:
+%endif
+    inc r13
+    jmp .gb_loop
+.gb_done:
+%ifdef SUTRAM_R65_PEEPHOLES
+    mov qword [rel r65_last_store_name],0
+    mov qword [rel r65_candidate_name],0
+%endif
+%ifdef SUTRAM_EXPERIMENTAL_XMM_CACHE
+    call xmm_cache_barrier
+%endif
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; gen_stmt(rax = statement node)
+gen_stmt:
+    push rbx
+    mov rbx, rax
+%ifdef SUTRAM_R65_PEEPHOLES
+    ; Consume the one-statement RAX value token. Every statement first
+    ; invalidates it; only the immediate next scalar assignment may reuse it.
+    mov rax,[rel r65_last_store_name]
+    mov [rel r65_candidate_name],rax
+    mov rax,[rel r65_last_store_end]
+    mov [rel r65_candidate_end],rax
+    mov qword [rel r65_last_store_name],0
+%endif
+    mov rax, [rbx]            ; node type
+%ifdef SUTRAM_EXPERIMENTAL_XMM_CACHE
+    ; Conservative statement barrier. Only simple scalar assignments can
+    ; keep cache residency across consecutive statements. Unknown calls,
+    ; indexing, loops, conditionals, inline asm and all other statements
+    ; invalidate the compile-time cache *before* emitting their code.
+    cmp rax, AST_ASSIGN
+    je .gs_stage1_assignment
+    push rax
+    call xmm_cache_barrier
+    pop rax
+.gs_stage1_assignment:
+%endif
+    cmp rax, AST_DECL
+    je .gs_decl
+    cmp rax, AST_BLOCK
+    je .gs_block
+    cmp rax, AST_ASSIGN
+    je .gs_assign
+    cmp rax, AST_IF
+    je .gs_if
+    cmp rax, AST_WHILE
+    je .gs_while
+    cmp rax, AST_DO_WHILE
+    je .gs_do_while
+    cmp rax, AST_RETURN
+    je .gs_return
+    cmp rax, AST_HALT
+    je .gs_halt
+    cmp rax, AST_WRITEMEM
+    je .gs_writemem
+    cmp rax, AST_CALL
+    je .gs_call
+    cmp rax, AST_FUNCDEF
+    je .gs_funcdef
+    cmp rax, AST_FUNCALL
+    je .gs_funcall
+    cmp rax, AST_FOR
+    je .gs_for
+    cmp rax, AST_BREAK
+    je .gs_break
+    cmp rax, AST_CONTINUE
+    je .gs_continue
+    cmp rax, AST_ASSERT
+    je .gs_assert
+    cmp rax, AST_NISHKRIYA
+    je .gs_nishkriya
+    cmp rax, AST_HANDLE
+    je .gs_handle
+    ; Default: expression
+    mov rax, rbx
+    call gen_expr
+    pop rbx
+    ret
+
+.gs_handle:
+    call r26_gen_handle       ; R26: a failure caught here
+    pop rbx
+    ret
+
+.gs_funcdef:
+    ; Collect FUNCDEF node for later code generation
+    push rax
+    mov rcx, [rel func_def_cnt]
+    cmp rcx, FUNC_DEFS_CAP
+    jae .gs_funcdef_overflow
+    lea rax, [rel func_defs]
+    mov [rax + rcx*8], rbx
+    inc qword [rel func_def_cnt]
+    pop rax
+    pop rbx
+    ret
+.gs_funcdef_overflow:
+    pop rax
+    pop rbx
+    lea rdi, [rel msg_func_defs_overflow]
+    jmp capacity_fail
+
+.gs_funcall:
+    cmp qword [rel r32_ffi_count], 0  ; R33: a declared foreign function called
+    je .r33_gs_sutram                 ; as a statement (R32 sent it to the
+    mov rdi, [rbx+8]                  ; Sutram call, by its local name)
+    call r23_call_is_indirect
+    test rax, rax
+    jnz .r33_gs_sutram
+    mov rdi, [rbx+8]
+    call r32_ffi_find
+    test rax, rax
+    jz .r33_gs_sutram
+    mov rsi, rax
+    xor edx, edx                      ; a statement: its value is not used
+    call r33_gen_foreign_funcall
+    pop rbx
+    ret
+.r33_gs_sutram:
+    ; [AST_FUNCALL][name_ptr][arg_count][arg1..arg6]
+    mov rdi, [rbx+8]          ; R25: a phal-prakriya only under prasar
+    call r25_check_call
+    ; Evaluate arguments and load them into the Sutram user-function registers:
+    ;   rdi, rsi, rdx, rcx, r8, r9
+    push r15
+    push r14
+    mov r15, [rbx+16]         ; arg count
+    test r15, r15
+    jz .gfc_call
+    ; Evaluate args in REVERSE order. Use the same typed helper as expression
+    ; calls so statement calls cannot bypass dasham/kosh conversion or checks.
+    mov r14, r15
+.gfc_eval:
+    dec r14
+    mov rdi, [rbx+8]         ; function name
+    mov rsi, r14             ; zero-based argument index
+    mov rdx, [rbx + 24 + r14*8]
+    call gen_typed_call_arg  ; emits converted value + runtime push
+    test r14, r14
+    jnz .gfc_eval
+    ; Pop into arg registers in forward order (arg0 first)
+    xor r14, r14
+.gfc_pop:
+    cmp r14, r15
+    jae .gfc_call
+    cmp r14, 0
+    je .gfc_p0
+    cmp r14, 1
+    je .gfc_p1
+    cmp r14, 2
+    je .gfc_p2
+    cmp r14, 3
+    je .gfc_p3
+    cmp r14, 4
+    je .gfc_p4
+    ; arg5 -> r9 (41 59)
+    mov dil, 0x41
+    call emit_byte
+    mov dil, 0x59
+    call emit_byte
+    jmp .gfc_pnext
+.gfc_p0:
+    mov dil, 0x5F             ; pop rdi  (arg0)
+    call emit_byte
+    jmp .gfc_pnext
+.gfc_p1:
+    mov dil, 0x5E             ; pop rsi  (arg1)
+    call emit_byte
+    jmp .gfc_pnext
+.gfc_p2:
+    mov dil, 0x5A             ; pop rdx  (arg2)
+    call emit_byte
+    jmp .gfc_pnext
+.gfc_p3:
+    mov dil, 0x59             ; pop rcx  (arg3)
+    call emit_byte
+    jmp .gfc_pnext
+.gfc_p4:
+    mov dil, 0x41             ; pop r8 = 41 58 (arg4)
+    call emit_byte
+    mov dil, 0x58
+    call emit_byte
+.gfc_pnext:
+    inc r14
+    jmp .gfc_pop
+.gfc_call:
+    call r46_live_callee_saved_vars
+    mov r15, rax
+    test r15, r15
+    jz .gfc_saves_done
+    ; B6: user variables may live in r12-r15. Preserve those compiler-allocated
+    ; callee-saved registers across every Sutram user-function call.
+    mov dil, 0x41             ; push r12 = 41 54
+    call emit_byte
+    mov dil, 0x54
+    call emit_byte
+    mov dil, 0x41             ; push r13 = 41 55
+    call emit_byte
+    mov dil, 0x55
+    call emit_byte
+    mov dil, 0x41             ; push r14 = 41 56
+    call emit_byte
+    mov dil, 0x56
+    call emit_byte
+    mov dil, 0x41             ; push r15 = 41 57
+    call emit_byte
+    mov dil, 0x57
+    call emit_byte
+.gfc_saves_done:
+    mov rdi, [rbx+8]          ; R23 WS1: a call through a variable
+    call r23_call_is_indirect
+    test rax, rax
+    jz .gfc_direct
+    mov rdi, [rbx+8]
+    call r23_emit_indirect_call
+    jmp .gfc_after_call
+.gfc_direct:
+    ; Emit call rel32 (E8 + 4-byte offset, patched later)
+    mov dil, 0xE8
+    call emit_byte
+    ; Record patch site
+    mov rax, [rel code_sz]
+    mov rdx, [rel patch_count]
+    cmp rdx, PATCH_LIST_CAP
+    jae .gfc_patch_overflow
+    lea rcx, [rel patch_list]
+    push rdx
+    shl rdx, 4
+    mov [rcx + rdx], rax
+    mov rax, [rbx+8]
+    mov [rcx + rdx + 8], rax
+    pop rdx
+    inc qword [rel patch_count]
+    xor edi, edi
+    call emit_u32
+.gfc_after_call:
+    test r15, r15
+    jz .gfc_restores_done
+    mov dil, 0x41             ; pop r15 = 41 5F
+    call emit_byte
+    mov dil, 0x5F
+    call emit_byte
+    mov dil, 0x41             ; pop r14 = 41 5E
+    call emit_byte
+    mov dil, 0x5E
+    call emit_byte
+    mov dil, 0x41             ; pop r13 = 41 5D
+    call emit_byte
+    mov dil, 0x5D
+    call emit_byte
+    mov dil, 0x41             ; pop r12 = 41 5C
+    call emit_byte
+    mov dil, 0x5C
+    call emit_byte
+.gfc_restores_done:
+    pop r14
+    pop r15
+    pop rbx
+    ret
+.gfc_patch_overflow:
+    lea rdi, [rel msg_patch_overflow]
+    jmp capacity_fail
+
+.gs_decl:
+    ; [AST_DECL][name_ptr][init_ptr][array_size_expr_or_0][type_marker]
+    mov rdi, rbx              ; R23 WS3: vitti s = a[lo:hi] declares a slice
+    call r23_mark_slice_decl
+    ; R38: vitti b = a (a is a mala/kosh) marks b the same kind, so b[i] is
+    ; bounds-checked. Slice decls are already handled above; this covers the
+    ; plain-variable alias that was previously unmarked.
+    mov rax, [rbx+16]        ; init expr
+    test rax, rax
+    jz .gs_decl_no_alias
+    cmp qword [rax], AST_VAR
+    jne .gs_decl_no_alias
+    mov rdi, [rbx+8]         ; target name
+    mov rsi, [rax+8]         ; source name
+    call r38_mark_alias
+.gs_decl_no_alias:
+    ; PERF2/PERF3: when an integer scalar will occupy one of the first five
+    ; register slots, build simple literals/copies/var-binops directly in the
+    ; destination register.  Unsupported forms leave allocation untouched.
+%ifndef SUTRAM_R65_TRAP_INT
+    mov rdi, rbx
+    call try_emit_int_decl_reg
+    test rax, rax
+    jz .gs_decl_not_fast
+    pop rbx
+    ret
+%endif
+.gs_decl_not_fast:
+    cmp qword [rbx+32], 2
+    je .gs_decl_kosh
+    cmp qword [rbx+32], 3
+    je .gs_decl_kosh
+    cmp qword [rbx+24], 0
+    jne .gs_decl_array
+    ; T12 type marker is compiler-side only; runtime storage remains one qword.
+    cmp qword [rbx+32], 1
+    jne .gs_decl_type_marked
+    mov rdi, [rbx+8]
+    call mark_float_var
+.gs_decl_type_marked:
+    mov rax, [rbx+16]        ; init expr
+    test rax, rax
+    jz .gs_decl_noinit
+    mov rdi, rax
+    call expr_is_float
+    push rax                  ; source result type
+    mov rax, [rbx+16]
+    call gen_expr             ; runtime result in RAX
+    pop rcx
+    cmp qword [rbx+32], 1
+    jne .gs_decl_to_int
+    test rcx, rcx
+    jnz .gs_decl_value_ready
+    call emit_i64_to_f64_rax
+    jmp .gs_decl_value_ready
+.gs_decl_to_int:
+    test rcx, rcx
+    jz .gs_decl_value_ready
+    call emit_f64_to_i64_rax
+.gs_decl_value_ready:
+    ; Allocate variable and store
+    mov rdi, [rbx+8]         ; name ptr
+    call alloc_var            ; rax = location
+    test rax, rax
+    jle .gs_decl_stack
+    mov rdi, rax
+    call emit_store_reg
+    pop rbx
+    ret
+.gs_decl_stack:
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    push rsi                  ; R10 (F1): disp8 or disp32, by range
+    mov esi, eax
+    mov dil, 0x45
+    call emit_rbp_modrm_disp
+    pop rsi
+    pop rbx
+    ret
+.gs_decl_kosh:
+    ; T18 layout: [user-16]=length, [user-8]=capacity, user[0..]=qword elements.
+    ; Marker 3 adds compiler-side binary64 element typing; runtime layout is identical.
+    mov rdi, [rbx+8]
+    call mark_kosh_var
+    cmp qword [rbx+32], 3
+    jne .gs_decl_kosh_type_done
+    mov rdi, [rbx+8]
+    call mark_float_kosh_var
+.gs_decl_kosh_type_done:
+    mov rax, [rbx+24]
+    call gen_expr             ; runtime capacity -> rax
+    ; Normalize negative capacity to zero.
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    mov dil, 0x79             ; jns +3
+    call emit_byte
+    mov dil, 0x03
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x31
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    mov dil, 0x50             ; push capacity
+    call emit_byte
+    mov dil, 0x48             ; add rax,2 header qwords
+    call emit_byte
+    mov dil, 0x83
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    mov dil, 0x02
+    call emit_byte
+    mov dil, 0x48             ; shl rax,3
+    call emit_byte
+    mov dil, 0xC1
+    call emit_byte
+    mov dil, 0xE0
+    call emit_byte
+    mov dil, 0x03
+    call emit_byte
+    call emit_nirmmita_from_rax
+    mov dil, 0x59             ; pop cap -> rcx
+    call emit_byte
+    mov dil, 0x48             ; mov qword [rax],0
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    mov dil, 0x00
+    call emit_byte
+    xor edi, edi
+    call emit_u32
+    mov dil, 0x48             ; mov [rax+8],rcx
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x08
+    call emit_byte
+    mov dil, 0x48             ; add rax,16 -> user pointer
+    call emit_byte
+    mov dil, 0x83
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    mov dil, 0x10
+    call emit_byte
+    mov rdi, [rbx+8]
+    call alloc_var
+    test rax, rax
+    jle .gs_decl_kosh_stack
+    mov rdi, rax
+    call emit_store_reg
+    pop rbx
+    ret
+.gs_decl_kosh_stack:
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    push rsi                  ; R10 (F1): disp8 or disp32, by range
+    mov esi, eax
+    mov dil, 0x45
+    call emit_rbp_modrm_disp
+    pop rsi
+    pop rbx
+    ret
+
+.gs_decl_array:
+    ; Mark this name as a real pankti array in the current generated-function
+    ; scope. Raw nirmmita pointers keep their historical unchecked index path.
+    mov rdi, [rbx+8]
+    call mark_array_var
+    ; T8b runtime-header layout:
+    ;   allocation base +0  = element count (hidden)
+    ;   user array pointer   = allocation base +8 (element 0)
+    ; This removes compile-time name collisions and preserves dynamic lengths.
+    mov rax, [rbx+24]        ; size expression
+    call gen_expr             ; runtime length -> rax
+    ; push length while allocation is emitted
+    mov dil, 0x50
+    call emit_byte
+    ; add rax, 1  (header slot + elements)
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x83
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    mov dil, 0x01
+    call emit_byte
+    ; shl rax, 3  (qwords -> bytes)
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xC1
+    call emit_byte
+    mov dil, 0xE0
+    call emit_byte
+    mov dil, 0x03
+    call emit_byte
+    call emit_nirmmita_from_rax
+    ; pop length -> rcx; store header at allocation base
+    mov dil, 0x59
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0x08             ; mov [rax], rcx
+    call emit_byte
+    ; user pointer = base + 8
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x83
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    mov dil, 0x08
+    call emit_byte
+    ; Store user pointer in the declared variable.
+    mov rdi, [rbx+8]
+    call alloc_var
+    test rax, rax
+    jle .gs_decl_array_stack
+    mov rdi, rax
+    call emit_store_reg
+    pop rbx
+    ret
+.gs_decl_array_stack:
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    push rsi                  ; R10 (F1): disp8 or disp32, by range
+    mov esi, eax
+    mov dil, 0x45
+    call emit_rbp_modrm_disp
+    pop rsi
+    pop rbx
+    ret
+
+.gs_decl_noinit:
+    mov rdi, [rbx+8]
+    call alloc_var
+    pop rbx
+    ret
+
+.gs_assign:
+    ; R59 pre-emission peephole: an existing scalar's x=x has a side-effect-
+    ; free AST_VAR RHS, so evaluating x and writing it back cannot alter
+    ; memory/register state. Skip BOTH load and store before any code bytes
+    ; or relocation patches are produced. Do not auto-allocate an undeclared
+    ; name, preserve every other expression on the validated old path.
+    mov rdi,rbx
+    call r59_skip_existing_self_assign
+    test rax,rax
+    jz .r59_assign_live
+    pop rbx
+    ret
+.r59_assign_live:
+    ; [AST_ASSIGN][target_ptr][value_ptr]
+    ; R56: resolve a module global only if the current scope has no local
+    ; parameter/declaration with the same name. Bypass every fast store path.
+    mov rax, [rbx+8]
+    cmp qword [rax], AST_VAR
+    jne .r56_assign_local
+    mov rdi, [rax+8]
+    call r56_global_index
+    test rax, rax
+    jz .r56_assign_local
+    push rax
+    mov rax, [rbx+16]
+    call gen_expr
+    pop rdi
+    dec rdi
+    call r56_emit_global_store
+    pop rbx
+    ret
+.r56_assign_local:
+    ; Check if target is AST_INDEX (array store)
+    mov rax, [rbx+8]         ; target node
+    mov rcx, [rax]           ; target type
+    cmp rcx, AST_INDEX
+    je .gs_assign_index
+    cmp rcx, AST_FIELD
+    je .gs_assign_field
+    ; R38: b = a (a is a mala/kosh/slice) marks b the same kind, so b[i] is
+    ; bounds-checked. Only variable targets and variable values count, and
+    ; this runs before the fast paths, which return early.
+    cmp rcx, AST_VAR
+    jne .gs_assign_no_alias
+    mov rax, [rbx+16]        ; value node
+    cmp qword [rax], AST_VAR
+    jne .gs_assign_no_alias
+    mov rsi, [rax+8]         ; source name
+    mov rax, [rbx+8]
+    mov rdi, [rax+8]         ; target name
+    call r38_mark_alias
+.gs_assign_no_alias:
+%ifdef SUTRAM_EXPERIMENTAL_XMM_CACHE
+    ; Stage 1: typed scalar assignments only, exactly 4 available XMM slots.
+    ; No calls/indices/subtrees are ever reordered or cached.
+    mov rdi, rbx
+    call try_emit_xmm_cached_assignment
+    test rax, rax
+    jnz .gs_assign_fast_done
+    ; Fallback is intentionally conservative. The generic scalar generator
+    ; can use other SSE temps, so flush metadata before its emission.
+    call xmm_cache_barrier
+%endif
+    ; PERF-F1: float self-updates with two register-resident dasham values.
+    ; Transfer both raw binary64 payloads directly to SSE2, perform the native
+    ; op, then return the result to its assigned GPR. Avoid runtime stack
+    ; traffic; generic path still owns other float expressions and ABI calls.
+    mov rdi, rbx
+    call try_emit_float_reg_self_update
+    test rax, rax
+    jnz .gs_assign_fast_done
+    ; PERF-F2: float c=a op b, with three scalar dasham register locals.
+    ; Load operands into XMM scratch registers before writing the destination,
+    ; so even c=b aliases remain safe for subtraction and division.
+    mov rdi, rbx
+    call try_emit_float_reg_destination
+    test rax, rax
+    jnz .gs_assign_fast_done
+%ifndef SUTRAM_R65_TRAP_INT
+    ; PERF1: integer self-update fast path.  The first five locals live in
+    ; callee-saved registers; avoid materializing x=x+y / x=x+imm through
+    ; RAX plus a generated push/pop/xchg/store sequence when the destination
+    ; can be updated directly.  Stack locals get an in-place imm8 form too.
+    mov rdi, rbx
+    call try_emit_int_self_update
+    test rax, rax
+    jnz .gs_assign_fast_done
+    ; PERF2: distinct register destination scheduling for integer copies,
+    ; constants and var-var +,-,* expressions.
+    mov rdi, rbx
+    call try_emit_int_reg_assignment
+    test rax, rax
+    jz .gs_assign_generic
+%endif
+%ifdef SUTRAM_R65_TRAP_INT
+    ; The optional safety mode bypasses all integer assignment fast paths.
+    ; Continue through the generic value emitter, never fall through to
+    ; the fast-path "done" return without generating an assignment.
+    jmp .gs_assign_generic
+%endif
+.gs_assign_fast_done:
+    pop rbx
+    ret
+.gs_assign_generic:
+    ; Normal assignment with T12 destination/source conversion.
+    mov rax, [rbx+8]
+    mov rdi, [rax+8]
+    call is_float_var
+    push rax                  ; target float flag
+    mov rdi, [rbx+16]
+    call expr_is_float
+    push rax                  ; source float flag
+%ifdef SUTRAM_R65_PEEPHOLES
+    ; R65: no intervening generated instruction since prior generic local
+    ; scalar store, and RHS is exactly that variable: RAX still has the bits.
+    mov rax,[rbx+16]
+    cmp qword [rax],AST_VAR
+    jne .r65_emit_rhs
+    mov rdi,[rel code_sz]
+    cmp rdi,[rel r65_candidate_end]
+    jne .r65_emit_rhs
+    mov rdi,[rel r65_candidate_name]
+    test rdi,rdi
+    jz .r65_emit_rhs
+    mov rsi,[rax+8]
+    call strcmp
+    test rax,rax
+    jz .r65_rhs_done
+.r65_emit_rhs:
+%endif
+    mov rax, [rbx+16]
+    call gen_expr             ; runtime result in RAX
+%ifdef SUTRAM_R65_PEEPHOLES
+.r65_rhs_done:
+%endif
+    pop rcx                   ; source flag
+    pop rdx                   ; target flag
+    test rdx, rdx
+    jz .gs_assign_target_int
+    test rcx, rcx
+    jnz .gs_assign_value_ready
+    call emit_i64_to_f64_rax
+    jmp .gs_assign_value_ready
+.gs_assign_target_int:
+    test rcx, rcx
+    jz .gs_assign_value_ready
+    call emit_f64_to_i64_rax
+.gs_assign_value_ready:
+    ; Get target variable offset
+    mov rax, [rbx+8]         ; target node
+    mov rax, [rax+8]         ; variable name ptr
+    mov rdi, rax
+    call lookup_var           ; rax = location
+    ; Check if register or stack
+    test rax, rax
+    jle .gs_assign_stack
+    ; Register: emit mov reg, rax
+    mov rdi, rax
+    call emit_store_reg
+%ifdef SUTRAM_R65_PEEPHOLES
+    mov rax,[rbx+8]
+    mov rax,[rax+8]
+    mov [rel r65_last_store_name],rax
+    mov rax,[rel code_sz]
+    mov [rel r65_last_store_end],rax
+%endif
+    pop rbx
+    ret
+.gs_assign_stack:
+    ; Stack/parameter assignment: mov [rbp+offset], rax.  B1 used to fall
+    ; through into array-store generation after only pushing the offset.
+    push r12
+    mov r12, rax              ; compiler-time stack offset from lookup_var
+    mov dil, 0x48             ; 48 89 45 xx = mov [rbp+disp8], rax
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    push rsi                  ; R10 (F1): disp8 or disp32, by range
+    mov esi, r12d
+    mov dil, 0x45
+    call emit_rbp_modrm_disp
+    pop rsi
+%ifdef SUTRAM_R65_PEEPHOLES
+    mov rax,[rbx+8]
+    mov rax,[rax+8]
+    mov [rel r65_last_store_name],rax
+    mov rax,[rel code_sz]
+    mov [rel r65_last_store_end],rax
+%endif
+    pop r12
+    pop rbx
+    ret
+
+.gs_assign_index:
+%ifdef SUTRAM_EXPERIMENTAL_XMM_CACHE
+    call xmm_cache_barrier
+%endif
+    ; T8/T18 array store with generated bounds check. For kosh, normalize the
+    ; assigned scalar to the declared element type before writing the qword.
+    push r12
+    push r13
+    push r14
+    xor r13, r13             ; 0=not kosh, 1=integer kosh, 2=float kosh
+    mov rax, [rbx+8]
+    mov rdi, [rax+8]
+    call is_kosh_var
+    test rax, rax
+    jz .gs_ai_type_known
+    mov r13, 1
+    mov rax, [rbx+8]
+    mov rdi, [rax+8]
+    call is_float_kosh_var
+    test rax, rax
+    jz .gs_ai_type_known
+    mov r13, 2
+.gs_ai_type_known:
+    mov rdi, [rbx+16]
+    call expr_is_float
+    mov r14, rax             ; source scalar type
+    push r13                 ; gen_expr may use compiler temporaries
+    push r14
+    mov rax, [rbx+16]        ; value expr
+    call gen_expr
+    pop r14
+    pop r13
+    test r13, r13
+    jz .gs_ai_value_ready
+    mov rdi, r14
+    xor esi, esi             ; integer/raw target
+    cmp r13, 2
+    jne .gs_ai_convert_value
+    mov esi, 1               ; binary64 target
+.gs_ai_convert_value:
+    call emit_scalar_type_conversion
+.gs_ai_value_ready:
+    mov dil, 0x50            ; push value
+    call emit_byte
+    mov rax, [rbx+8]
+    mov rdi, [rax+8]
+    call r56_global_index
+    test rax, rax
+    jz .r56_ai_local
+    dec rax
+    mov rdi, rax
+    call r56_emit_global_load
+    jmp .gs_ai_have
+.r56_ai_local:
+    mov rax, [rbx+8]
+    mov rdi, [rax+8]
+    call lookup_var
+    test rax, rax
+    jle .gs_ai_stk
+    mov rdi, rax
+    call emit_load_reg
+    jmp .gs_ai_have
+.gs_ai_stk:
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x8B
+    call emit_byte
+    push rsi                  ; R10 (F1): disp8 or disp32, by range
+    mov esi, eax
+    mov dil, 0x45
+    call emit_rbp_modrm_disp
+    pop rsi
+.gs_ai_have:
+    mov rax, [rbx+8]          ; R23 WS3: a slice: its elements and its length
+    mov rdi, [rax+8]
+    call r23_index_slice
+    test rax, rax
+    jz .r23_gs_ai_not_slice
+    mov r12, 3
+    jmp .gs_ai_no_len
+.r23_gs_ai_not_slice:
+    mov dil, 0x50            ; push base address
+    call emit_byte
+    ; Fixed pankti keeps length at [ptr-8]; T18 kosh keeps logical length
+    ; at [ptr-16] and capacity at [ptr-8]. Raw nirmmita pointers stay unchecked.
+    mov rax, [rbx+8]
+    mov rdi, [rax+8]
+    call is_kosh_var
+    test rax, rax
+    jz .gs_ai_check_pankti
+    mov r12, 2
+    mov dil, 0x48             ; mov rcx,[rax-16]
+    call emit_byte
+    mov dil, 0x8B
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xF0
+    call emit_byte
+    mov dil, 0x51
+    call emit_byte
+    jmp .gs_ai_no_len
+.gs_ai_check_pankti:
+    mov rax, [rbx+8]
+    mov rdi, [rax+8]
+    call is_array_var
+    mov r12, rax
+    test r12, r12
+    jz .gs_ai_no_len
+    mov dil, 0x48             ; mov rcx,[rax-8]
+    call emit_byte
+    mov dil, 0x8B
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xF8
+    call emit_byte
+    mov dil, 0x51
+    call emit_byte
+.gs_ai_no_len:
+    mov rax, [rbx+8]
+    mov rax, [rax+16]
+    push r12                  ; preserve compiler-time array marker
+    call gen_expr             ; runtime index -> rax
+    pop r12
+    test r12, r12
+    jz .gs_ai_no_bounds
+    call emit_array_bounds_check
+    mov dil, 0x59            ; discard runtime length
+    call emit_byte
+.gs_ai_no_bounds:
+    mov dil, 0x48            ; shl rax,3
+    call emit_byte
+    mov dil, 0xC1
+    call emit_byte
+    mov dil, 0xE0
+    call emit_byte
+    mov dil, 0x03
+    call emit_byte
+    mov dil, 0x59            ; pop base -> rcx
+    call emit_byte
+    mov dil, 0x48            ; add rax,rcx
+    call emit_byte
+    mov dil, 0x01
+    call emit_byte
+    mov dil, 0xC8
+    call emit_byte
+    mov dil, 0x5A            ; pop value -> rdx
+    call emit_byte
+    mov dil, 0x48            ; mov [rax],rdx
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0x10
+    call emit_byte
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+.gs_assign_stack_orig:
+    ; Stack: mov [rbp+offset], rax
+    push rax                  ; save offset
+
+.gs_assign_field:
+%ifdef SUTRAM_EXPERIMENTAL_XMM_CACHE
+    call xmm_cache_barrier
+%endif
+    ; obj.field = val
+    ; [AST_ASSIGN][target=AST_FIELD][value]
+    ; 1. gen_expr(value) → push
+    ; 2. lookup_var(name) → load base, push
+    ; 3. mov rax, offset
+    ; 4. pop rcx (base), add
+    ; 5. pop rdx (value), mov [rax], rdx
+    mov rax, [rbx+16]        ; value expr
+    call gen_expr
+    mov dil, 0x50            ; push rax (value)
+    call emit_byte
+    ; Load base
+    mov rax, [rbx+8]         ; target = AST_FIELD
+    mov rdi, [rax+8]         ; name ptr
+    call r56_global_index
+    test rax, rax
+    jz .r56_af_local
+    dec rax
+    mov rdi, rax
+    call r56_emit_global_load
+    jmp .gs_af_have
+.r56_af_local:
+    mov rax, [rbx+8]
+    mov rdi, [rax+8]
+    call lookup_var
+    test rax, rax
+    jle .gs_af_stk
+    mov rdi, rax
+    call emit_load_reg
+    jmp .gs_af_have
+.gs_af_stk:
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x8B
+    call emit_byte
+    push rsi                  ; R10 (F1): disp8 or disp32, by range
+    mov esi, eax
+    mov dil, 0x45
+    call emit_rbp_modrm_disp
+    pop rsi
+.gs_af_have:
+    mov dil, 0x50            ; push rax (base)
+    call emit_byte
+    ; mov rax, offset (48 B8 + 8 bytes of offset, little-endian)
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xB8
+    call emit_byte
+    ; Save field offset in r14 (not used by gen_block/gen_stmt/gen_expr)
+    push r14
+    mov rax, [rbx+8]         ; AST_FIELD
+    mov r14, [rax+16]        ; field offset
+    ; Emit 8 bytes of the offset (little-endian)
+    mov rdi, r14
+    call emit_u32
+    shr r14, 32
+    mov rdi, r14
+    call emit_u32
+    pop r14
+    ; pop rcx (base)
+    mov dil, 0x59
+    call emit_byte
+    ; add rax, rcx
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x01
+    call emit_byte
+    mov dil, 0xC8
+    call emit_byte
+    ; pop rdx (value)
+    mov dil, 0x5A
+    call emit_byte
+    ; mov [rax], rdx
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0x10
+    call emit_byte
+    pop rbx
+    ret
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    pop rax
+    push rsi                  ; R10 (F1): disp8 or disp32, by range
+    mov esi, eax
+    mov dil, 0x45
+    call emit_rbp_modrm_disp
+    pop rsi
+    pop rbx
+    ret
+
+.gs_if:
+    push r12
+    push r13
+    ; [AST_IF][cond][then][else]
+    ; Check if condition is a comparison
+    push rbx
+    mov rax, [rbx+8]
+    mov rcx, [rax]           ; node type
+    cmp rcx, AST_BINOP
+    jne .gi_normal_cond
+    mov rdi, rax
+    call binop_needs_float
+    test rax, rax
+    jnz .gi_normal_cond
+    mov rax, [rbx+8]         ; reload condition after helper
+    mov rcx, [rax+8]         ; operator
+    cmp rcx, OP_GT
+    je .gi_cmp_cond
+    cmp rcx, OP_LT
+    je .gi_cmp_cond
+    cmp rcx, OP_EQ
+    je .gi_cmp_cond
+    cmp rcx, OP_LE
+    je .gi_cmp_cond
+    cmp rcx, OP_GE
+    je .gi_cmp_cond
+    cmp rcx, OP_NE
+    je .gi_cmp_cond
+.gi_normal_cond:
+    pop rbx
+    mov rax, [rbx+8]         ; condition
+    call gen_expr
+    ; test rax, rax
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    ; je rel32
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x84
+    call emit_byte
+    mov r12, [rel code_sz]
+    xor edi, edi
+    call emit_u32
+    jmp .gi_then
+.gi_cmp_cond:
+    pop rbx                  ; restore rbx = if node
+    ; PERF1: if both comparison operands are register-resident integer vars,
+    ; compare them in place instead of round-tripping through RAX + stack.
+    mov rdi, [rbx+8]
+    call try_emit_int_reg_cmp
+    test rax, rax
+    jnz .gi_emit_jcc
+    ; Evaluate left -> rax (gen_expr preserves rbx)
+    mov rax, [rbx+8]
+    mov rax, [rax+16]        ; left
+    call gen_expr
+    ; Check if right is constant <= 127
+    push rbx
+    mov rax, [rbx+8]
+    mov rax, [rax+24]        ; right node
+    mov rcx, [rax]
+    cmp rcx, AST_NUM
+    jne .gi_full_cmp
+    mov rcx, [rax+8]
+    cmp rcx, 127
+    ja .gi_full_cmp
+    ; FAST: cmp rax, imm8
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x83
+    call emit_byte
+    mov dil, 0xF8
+    call emit_byte
+    mov rax, [rbx+8]
+    mov rax, [rax+24]
+    mov rax, [rax+8]
+    mov dil, al
+    call emit_byte
+    pop rbx
+    jmp .gi_emit_jcc
+.gi_full_cmp:
+    pop rbx
+    ; mov rdx, rax
+    mov dil, 0x50            ; push rax (save on stack — call-safe)
+    call emit_byte
+    ; Evaluate right
+    mov rax, [rbx+8]
+    mov rax, [rax+24]
+    call gen_expr
+    mov dil, 0x5A            ; pop rdx (restore saved left)
+    call emit_byte
+    ; xchg rax, rdx
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x87
+    call emit_byte
+    mov dil, 0xD0
+    call emit_byte
+    ; cmp rax, rdx
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x39
+    call emit_byte
+    mov dil, 0xD0
+    call emit_byte
+.gi_emit_jcc:
+    ; Inverted conditional jump
+    mov rax, [rbx+8]
+    mov rax, [rax+8]         ; operator
+    cmp rax, OP_GT
+    je .gi_jle
+    cmp rax, OP_LT
+    je .gi_jge
+    cmp rax, OP_LE
+    je .gi_jg
+    cmp rax, OP_GE
+    je .gi_jl
+    cmp rax, OP_NE
+    je .gi_je
+    mov dil, 0x0F            ; jne
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+    jmp .gi_emit_offset
+.gi_jg:
+    mov dil, 0x0F            ; jg = 0F 8F (not <=)
+    call emit_byte
+    mov dil, 0x8F
+    call emit_byte
+    jmp .gi_emit_offset
+.gi_jl:
+    mov dil, 0x0F            ; jl = 0F 8C (not >=)
+    call emit_byte
+    mov dil, 0x8C
+    call emit_byte
+    jmp .gi_emit_offset
+.gi_je:
+    mov dil, 0x0F            ; je = 0F 84 (not !=)
+    call emit_byte
+    mov dil, 0x84
+    call emit_byte
+    jmp .gi_emit_offset
+.gi_jle:
+    mov dil, 0x0F            ; jle
+    call emit_byte
+    mov dil, 0x8E
+    call emit_byte
+    jmp .gi_emit_offset
+.gi_jge:
+    mov dil, 0x0F            ; jge
+    call emit_byte
+    mov dil, 0x8D
+    call emit_byte
+.gi_emit_offset:
+    mov r12, [rel code_sz]
+    xor edi, edi
+    call emit_u32
+.gi_then:
+    ; Generate then body
+    mov rax, [rbx+16]        ; then block
+    call gen_block
+    ; Check for else
+    mov rax, [rbx+24]        ; else block
+    test rax, rax
+    jz .gs_if_noelse
+    ; jmp rel32 (skip else)
+    mov dil, 0xE9
+    call emit_byte
+    mov r13, [rel code_sz]   ; jmp offset position
+    xor edi, edi
+    call emit_u32
+    ; Patch je to here
+    mov rax, [rel code_sz]
+    sub rax, r12
+    sub rax, 4
+    lea rcx, [rel code_buf]
+    mov [rcx + r12], eax
+    ; Generate else body
+    mov rax, [rbx+24]
+    call gen_block
+    ; Patch jmp to here
+    mov rax, [rel code_sz]
+    sub rax, r13
+    sub rax, 4
+    lea rcx, [rel code_buf]  ; R17 D2/D3: gen_block above may change rcx
+    mov [rcx + r13], eax
+    pop r13
+    pop r12
+    pop rbx
+    ret
+.gs_if_noelse:
+    ; Patch je to here
+    mov rax, [rel code_sz]
+    sub rax, r12
+    sub rax, 4
+    lea rcx, [rel code_buf]
+    mov [rcx + r12], eax
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+.gs_nishkriya:
+    ; [AST_NISHKRIYA][hex_str_ptr][0][0]
+%ifdef SUTRAM_R67_PURE_STACK_PAIRS
+    ; Explicit opt-in contract: the WHOLE inline block is pure stack traffic.
+    ; The matcher validates every byte BEFORE emission, never removes code.
+    mov rdi,[rbx+8]
+    call strlen
+    cmp rax,64
+    ja .r67_not_pair
+    mov rdi,[rbx+8]
+    lea rsi,[rdi+rax]
+    call r67_is_pure_stack_pair
+    test eax,eax
+    jz .r67_not_pair
+    pop rbx
+    ret
+.r67_not_pair:
+%endif
+    ; CRITICAL: preserve r12/r13 (r13 is gen_block's statement index!)
+    push r12
+    push r13
+    mov r12, [rbx+8]         ; r12 = hex string pointer
+    ; Skip leading spaces
+.gn_skip1:
+    cmp byte [r12], ' '
+    jne .gn_start
+    inc r12
+    jmp .gn_skip1
+.gn_start:
+    cmp byte [r12], 0
+    je .gn_done               ; empty string
+    ; Parse two hex digits: value = (d1 << 4) | d2
+    xor r13, r13              ; r13 = byte value accumulator
+    ; First digit (hexval takes char in DIL, returns value in rax)
+    movzx edi, byte [r12]
+    call hexval
+    shl r13, 4
+    or r13, rax
+    inc r12
+    ; Second digit
+    movzx edi, byte [r12]
+    call hexval
+    shl r13, 4
+    or r13, rax
+    inc r12
+    ; Emit the byte
+    mov edi, r13d
+    call emit_byte
+    ; Skip spaces after the byte
+.gn_skip2:
+    cmp byte [r12], ' '
+    jne .gn_check
+    inc r12
+    jmp .gn_skip2
+.gn_check:
+    cmp byte [r12], 0
+    jne .gn_start
+.gn_done:
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+.gs_for:
+    ; [AST_FOR][var_name][start_expr][end_expr][body][0]
+    ; PERF2: test-at-bottom shape.  Emit one initial jump to the test, then
+    ; one backward conditional branch per iteration.  This removes the old
+    ; forward-exit + backward-unconditional branch pair from hot loops.
+    push r12
+    push r13
+    push r14
+    push r15
+    ; --- Direction detection: descending when both bounds are constants
+    ;     and start > end (e.g. punaravartana i = 5 to 1) ---
+    mov qword [rel for_descend], 0
+    mov rax, [rbx+16]
+    mov rcx, [rax]
+    cmp rcx, AST_NUM
+    jne .gf2_dir_done
+    mov rax, [rbx+24]
+    mov rcx, [rax]
+    cmp rcx, AST_NUM
+    jne .gf2_dir_done
+    mov rax, [rbx+16]
+    mov rax, [rax+8]
+    mov rcx, [rbx+24]
+    mov rcx, [rcx+8]
+    cmp rax, rcx
+    jle .gf2_dir_done
+    mov qword [rel for_descend], 1
+.gf2_dir_done:
+    ; Preserve outer loop patch ranges.
+    mov rax, [rel break_patch_cnt]
+    push rax
+    mov rax, [rel continue_patch_cnt]
+    push rax
+    ; Nested loops may change the global direction flag while the body emits.
+    push qword [rel for_descend]
+
+    ; Evaluate and store the induction start value.
+    mov rax, [rbx+16]
+    call gen_expr
+    mov rdi, [rbx+8]
+    call lookup_var
+    test rax, rax
+    jz .gf2_fresh_var
+    mov r14, rax
+    jmp .gf2_have_loc
+.gf2_fresh_var:
+    mov rdi, [rbx+8]
+    call alloc_var
+    mov r14, rax
+.gf2_have_loc:
+    cmp r14, -65536
+    jle .r56_for_init_global
+    test r14, r14
+    jle .gf2_stk_init
+    mov rdi, r14
+    call emit_store_reg
+    jmp .gf2_emit_entry_jump
+.r56_for_init_global:
+    mov rdi, r14
+    neg rdi
+    sub rdi, 65537
+    call r56_emit_global_store
+    jmp .gf2_emit_entry_jump
+.gf2_stk_init:
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    push rsi                  ; R10 (F1): disp8 or disp32, by range
+    mov esi, r14d
+    mov dil, 0x45
+    call emit_rbp_modrm_disp
+    pop rsi
+
+.gf2_emit_entry_jump:
+    ; Zero-iteration correctness: skip the body and test the bounds first.
+    mov dil, 0xE9
+    call emit_byte
+    mov r13, [rel code_sz]       ; rel32 field to patch to the bottom test
+    xor edi, edi
+    call emit_u32
+    mov r12, [rel code_sz]       ; body start
+
+    mov rax, [rbx+32]
+    call gen_block
+
+    ; Restore this loop's direction after nested loops in the body.
+    pop rax
+    mov [rel for_descend], rax
+
+    ; continue in a for-loop means perform the induction update, then test.
+    mov r15, [rel code_sz]
+    push r15                    ; preserve continue target across patch scratch use
+    mov rdi, r14
+    mov rsi, OP_ADD
+    cmp qword [rel for_descend], 0
+    je .gf2_inc_ready
+    mov rsi, OP_SUB
+.gf2_inc_ready:
+    mov rdx, 1
+    cmp r14, -65536
+    jle .r56_for_inc_global
+    test r14, r14
+    jle .gf2_inc_stack
+    call emit_reg_self_update_imm
+    jmp .gf2_test_start
+.r56_for_inc_global:
+    mov rdi, r14
+    neg rdi
+    sub rdi, 65537
+    call r56_emit_global_load
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    cmp qword [rel for_descend],0
+    jne .r56_for_dec
+    mov dil, 0xC0             ; inc rax
+    jmp .r56_for_inc_op
+.r56_for_dec:
+    mov dil, 0xC8             ; dec rax
+.r56_for_inc_op:
+    call emit_byte
+    mov rdi, r14
+    neg rdi
+    sub rdi, 65537
+    call r56_emit_global_store
+    jmp .gf2_test_start
+.gf2_inc_stack:
+    call emit_stack_self_update_imm
+
+.gf2_test_start:
+    ; Patch the one-time entry jump to this test position.
+    mov rax, [rel code_sz]
+    sub rax, r13
+    sub rax, 4
+    lea rcx, [rel code_buf]
+    mov [rcx+r13], eax
+
+    ; Compare induction variable to end bound.  Keep PERF1's direct-reg form.
+    test r14, r14
+    jle .gf2_cmp_slow
+    mov rax, [rbx+24]
+    cmp qword [rax], AST_VAR
+    jne .gf2_cmp_slow
+    mov rdi, [rax+8]
+    call lookup_var
+    test rax, rax
+    jle .gf2_cmp_slow
+    mov rdi, r14
+    mov rsi, rax
+    call emit_reg_cmp_reg
+    jmp .gf2_cmp_ready
+.gf2_cmp_slow:
+    test r14, r14
+    jle .gf2_stk_load
+    mov rdi, r14
+    call emit_load_reg
+    jmp .gf2_have_var
+.gf2_stk_load:
+    cmp r14,-65536
+    jg .r56_for_load_stack
+    mov rdi,r14
+    neg rdi
+    sub rdi,65537
+    call r56_emit_global_load
+    jmp .gf2_have_var
+.r56_for_load_stack:
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x8B
+    call emit_byte
+    push rsi                  ; R10 (F1): disp8 or disp32, by range
+    mov esi, r14d
+    mov dil, 0x45
+    call emit_rbp_modrm_disp
+    pop rsi
+.gf2_have_var:
+    mov dil, 0x50
+    call emit_byte
+    mov rax, [rbx+24]
+    call gen_expr
+    mov dil, 0x5A
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x87
+    call emit_byte
+    mov dil, 0xD0
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x39
+    call emit_byte
+    mov dil, 0xD0
+    call emit_byte
+.gf2_cmp_ready:
+    ; Branch backward only while the inclusive range remains valid.
+    mov dil, 0x0F
+    call emit_byte
+    cmp qword [rel for_descend], 0
+    jne .gf2_back_jge
+    mov dil, 0x8E               ; jle body_start (ascending var <= end)
+    jmp .gf2_back_opcode
+.gf2_back_jge:
+    mov dil, 0x8D               ; jge body_start (descending var >= end)
+.gf2_back_opcode:
+    call emit_byte
+    mov rax, r12
+    mov rcx, [rel code_sz]
+    add rcx, 4
+    sub rax, rcx
+    mov edi, eax
+    call emit_u32
+
+    ; loop_end is current code_sz. Patch this loop's breaks only.
+    mov r14, [rel break_patch_cnt]
+    cmp r14, [rsp+16]
+    je .gf2_no_brk
+    lea r15, [rel break_patch_positions]
+    mov rcx, [rel code_sz]
+.gf2_brk_loop:
+    dec r14
+    mov rax, [r15+r14*8]
+    mov rdx, rcx
+    sub rdx, rax
+    sub rdx, 4
+    push rcx
+    lea rcx, [rel code_buf]
+    mov [rcx+rax], edx
+    pop rcx
+    cmp r14, [rsp+16]
+    jne .gf2_brk_loop
+.gf2_no_brk:
+    mov r14, [rel continue_patch_cnt]
+    cmp r14, [rsp+8]
+    je .gf2_no_cont
+    lea r15, [rel continue_patch_positions]
+    mov rcx, [rsp]              ; saved continue/update target
+.gf2_cont_loop:
+    dec r14
+    mov rax, [r15+r14*8]
+    mov rdx, rcx
+    sub rdx, rax
+    sub rdx, 4
+    push rcx
+    lea rcx, [rel code_buf]
+    mov [rcx+rax], edx
+    pop rcx
+    cmp r14, [rsp+8]
+    jne .gf2_cont_loop
+.gf2_no_cont:
+    mov rax, [rsp+8]
+    mov [rel continue_patch_cnt], rax
+    mov rax, [rsp+16]
+    mov [rel break_patch_cnt], rax
+    add rsp, 24
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+.gs_break:
+    ; Emit: jmp rel32 to loop_end (needs backpatching)
+    ; For simplicity, emit a jmp that targets the nearest loop end
+    ; We store the patch position in a global for the while/for to fix
+    mov dil, 0xE9            ; jmp rel32
+    call emit_byte
+    ; Store position for backpatching
+    mov rax, [rel break_patch_cnt]
+    cmp rax, BREAK_PATCH_CAP
+    jae .gs_break_overflow
+    lea rcx, [rel break_patch_positions]
+    mov rdx, [rel code_sz]
+    mov [rcx + rax*8], rdx
+    inc qword [rel break_patch_cnt]
+    xor edi, edi
+    call emit_u32
+    pop rbx
+    ret
+.gs_break_overflow:
+    lea rdi, [rel msg_break_patch_overflow]
+    jmp capacity_fail
+
+.gs_continue:
+    ; Emit: jmp rel32 to loop_start (needs backpatching)
+    mov dil, 0xE9            ; jmp rel32
+    call emit_byte
+    mov rax, [rel continue_patch_cnt]
+    cmp rax, CONTINUE_PATCH_CAP
+    jae .gs_continue_overflow
+    lea rcx, [rel continue_patch_positions]
+    mov rdx, [rel code_sz]
+    mov [rcx + rax*8], rdx
+    inc qword [rel continue_patch_cnt]
+    xor edi, edi
+    call emit_u32
+    pop rbx
+    ret
+.gs_continue_overflow:
+    lea rdi, [rel msg_continue_patch_overflow]
+    jmp capacity_fail
+
+.gs_assert:
+    ; nishedha(cond) — if cond is false, exit with error code 1
+    ; Evaluate cond -> rax, test rax, if zero then sys_exit(1)
+    mov rax, [rbx+8]
+    call gen_expr
+    ; test rax, rax
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    ; jnz +12 (skip exit, continue)
+    mov dil, 0x75
+    call emit_byte
+    mov dil,0x0C
+    cmp qword [rel target_pe],0
+    je .assert_skip_ready
+    add dil,3
+.assert_skip_ready:
+    call emit_byte
+    ; mov eax, 60 (sys_exit)
+    mov dil, 0xB8
+    call emit_byte
+    mov dil, 0x3C
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    call emit_byte
+    call emit_byte
+    ; mov edi, 1 (error code)
+    mov dil, 0xBF
+    call emit_byte
+    mov dil, 0x01
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    call emit_byte
+    call emit_byte
+    ; syscall
+    call emit_syscall
+    pop rbx
+    ret
+
+.gs_while:
+    ; [AST_WHILE][cond][body]
+    ; PERF2: test-at-bottom layout.  One initial jump preserves zero-iteration
+    ; semantics; steady-state iterations use only one backward conditional.
+    push r12
+    push r13
+    push r14
+    push r15
+    mov rax, [rel break_patch_cnt]
+    push rax
+    mov rax, [rel continue_patch_cnt]
+    push rax
+
+    ; One-time entry jump to the bottom test.
+    mov dil, 0xE9
+    call emit_byte
+    mov r13, [rel code_sz]
+    xor edi, edi
+    call emit_u32
+    mov r12, [rel code_sz]       ; body start
+
+    mov rax, [rbx+16]
+    call gen_block
+    mov r15, [rel code_sz]       ; continue/test target
+    push r15                      ; preserve across condition generation
+
+    ; Patch the one-time entry jump to test_start.
+    mov rax, r15
+    sub rax, r13
+    sub rax, 4
+    lea rcx, [rel code_buf]
+    mov [rcx+r13], eax
+
+    ; Prefer comparison-aware codegen so the condition can branch directly
+    ; back to body without materializing a boolean in RAX.
+    mov r14, [rbx+8]
+    cmp qword [r14], AST_BINOP
+    jne .gw2_normal_cond
+    mov rdi, r14
+    call binop_needs_float
+    test rax, rax
+    jnz .gw2_normal_cond
+    mov rax, [r14+8]
+    cmp rax, OP_GT
+    je .gw2_cmp_cond
+    cmp rax, OP_LT
+    je .gw2_cmp_cond
+    cmp rax, OP_EQ
+    je .gw2_cmp_cond
+    cmp rax, OP_LE
+    je .gw2_cmp_cond
+    cmp rax, OP_GE
+    je .gw2_cmp_cond
+    cmp rax, OP_NE
+    je .gw2_cmp_cond
+
+.gw2_normal_cond:
+    mov rax, [rbx+8]
+    call gen_expr
+    mov dil, 0x48               ; test rax,rax
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    mov dil, 0x0F               ; jne body_start
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+    jmp .gw2_emit_back_offset
+
+.gw2_cmp_cond:
+    mov rdi, [rbx+8]
+    call try_emit_int_reg_cmp
+    test rax, rax
+    jnz .gw2_emit_true_jcc
+    ; General integer comparison path, retaining the imm8 shortcut.
+    mov r14, [rbx+8]
+    mov rax, [r14+16]
+    call gen_expr
+    mov r14, [rbx+8]
+    mov rax, [r14+24]
+    cmp qword [rax], AST_NUM
+    jne .gw2_full_cmp
+    mov rcx, [rax+8]
+    cmp rcx, 127
+    ja .gw2_full_cmp
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x83
+    call emit_byte
+    mov dil, 0xF8
+    call emit_byte
+    mov r14, [rbx+8]
+    mov rax, [r14+24]
+    mov rax, [rax+8]
+    mov dil, al
+    call emit_byte
+    jmp .gw2_emit_true_jcc
+.gw2_full_cmp:
+    mov dil, 0x50
+    call emit_byte
+    mov r14, [rbx+8]
+    mov rax, [r14+24]
+    call gen_expr
+    mov dil, 0x5A
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x87
+    call emit_byte
+    mov dil, 0xD0
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x39
+    call emit_byte
+    mov dil, 0xD0
+    call emit_byte
+
+.gw2_emit_true_jcc:
+    mov r14, [rbx+8]
+    mov rax, [r14+8]
+    mov dil, 0x0F
+    call emit_byte
+    cmp rax, OP_GT
+    je .gw2_jg
+    cmp rax, OP_LT
+    je .gw2_jl
+    cmp rax, OP_LE
+    je .gw2_jle
+    cmp rax, OP_GE
+    je .gw2_jge
+    cmp rax, OP_NE
+    je .gw2_jne
+    mov dil, 0x84               ; je
+    jmp .gw2_jcc_ready
+.gw2_jg:
+    mov dil, 0x8F
+    jmp .gw2_jcc_ready
+.gw2_jl:
+    mov dil, 0x8C
+    jmp .gw2_jcc_ready
+.gw2_jle:
+    mov dil, 0x8E
+    jmp .gw2_jcc_ready
+.gw2_jge:
+    mov dil, 0x8D
+    jmp .gw2_jcc_ready
+.gw2_jne:
+    mov dil, 0x85
+.gw2_jcc_ready:
+    call emit_byte
+
+.gw2_emit_back_offset:
+    mov rax, r12
+    mov rcx, [rel code_sz]
+    add rcx, 4
+    sub rax, rcx
+    mov edi, eax
+    call emit_u32
+
+    ; Patch this loop's breaks to loop_end.
+    mov r14, [rel break_patch_cnt]
+    cmp r14, [rsp+16]
+    je .gw2_no_brk
+    lea r15, [rel break_patch_positions]
+    mov rcx, [rel code_sz]
+.gw2_brk_loop:
+    dec r14
+    mov rax, [r15+r14*8]
+    mov rdx, rcx
+    sub rdx, rax
+    sub rdx, 4
+    push rcx
+    lea rcx, [rel code_buf]
+    mov [rcx+rax], edx
+    pop rcx
+    cmp r14, [rsp+16]
+    jne .gw2_brk_loop
+.gw2_no_brk:
+    ; Continue goes to the bottom test, not directly to the body.
+    mov r14, [rel continue_patch_cnt]
+    cmp r14, [rsp+8]
+    je .gw2_no_cont
+    lea rax, [rel continue_patch_positions]
+    mov rcx, [rsp]              ; preserved test target
+.gw2_cont_loop:
+    dec r14
+    mov rsi, [rax+r14*8]
+    mov rdi, rcx
+    sub rdi, rsi
+    sub rdi, 4
+    push rcx
+    lea rcx, [rel code_buf]
+    mov [rcx+rsi], edi
+    pop rcx
+    cmp r14, [rsp+8]
+    jne .gw2_cont_loop
+.gw2_no_cont:
+    mov rax, [rsp+8]
+    mov [rel continue_patch_cnt], rax
+    mov rax, [rsp+16]
+    mov [rel break_patch_cnt], rax
+    add rsp, 24
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+.gs_do_while:
+    ; [AST_DO_WHILE][body][condition]
+    push r12
+    push r13
+    push r14
+    push r15
+    ; Save base patch counts; nested loops append without overwriting outer entries.
+    mov rax, [rel break_patch_cnt]
+    push rax
+    mov rax, [rel continue_patch_cnt]
+    push rax
+    mov r12, [rel code_sz]        ; body start: executes at least once
+    mov rax, [rbx+8]
+    call gen_block
+    mov r15, [rel code_sz]        ; continue target = condition test
+    mov rax, [rbx+16]
+    call gen_expr
+    ; test rax, rax
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    ; jne rel32 back to body start
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+    mov rax, r12
+    mov rcx, [rel code_sz]
+    add rcx, 4
+    sub rax, rcx
+    mov edi, eax
+    call emit_u32
+    ; Patch break jumps to loop end.
+    mov r14, [rel break_patch_cnt]
+    cmp r14, [rsp+8]          ; saved break base
+    je .gdw_no_brk
+    lea r13, [rel break_patch_positions]
+.gdw_brk_loop:
+    dec r14
+    mov rax, [r13 + r14*8]
+    mov rdx, [rel code_sz]
+    sub rdx, rax
+    sub rdx, 4
+    lea rcx, [rel code_buf]
+    mov [rcx + rax], edx
+    cmp r14, [rsp+8]
+    jne .gdw_brk_loop
+.gdw_no_brk:
+    ; Patch continue jumps to condition evaluation.
+    mov r14, [rel continue_patch_cnt]
+    cmp r14, [rsp]            ; saved continue base
+    je .gdw_no_cont
+    lea r13, [rel continue_patch_positions]
+.gdw_cont_loop:
+    dec r14
+    mov rax, [r13 + r14*8]
+    mov rdx, r15
+    sub rdx, rax
+    sub rdx, 4
+    lea rcx, [rel code_buf]
+    mov [rcx + rax], edx
+    cmp r14, [rsp]
+    jne .gdw_cont_loop
+.gdw_no_cont:
+    ; Restore enclosing-loop patch counts.
+    mov rax, [rsp]
+    mov [rel continue_patch_cnt], rax
+    mov rax, [rsp+8]
+    mov [rel break_patch_cnt], rax
+    add rsp, 16
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+.gs_return:
+    call r25_check_plain_return   ; R25: in a phal-prakriya every prati is siddhi / dosh
+    mov rax, [rbx+8]         ; return expr
+    test rax, rax
+    jz .gs_ret_none
+    mov rdi, rax              ; R23 WS3: a slice cannot outlive its frame
+    call r23_check_return
+    mov rax, [rbx+8]
+    mov rdi, rax
+    call expr_is_float
+    push rax                  ; compile-time source type
+    mov rax, [rbx+8]
+    call gen_expr
+    pop rcx                   ; 0=integer/raw, 1=binary64
+    ; Main returns an integer process status; truncate an explicit float.
+    cmp qword [rel in_function], 0
+    jne .gs_ret_func_typed
+    test rcx, rcx
+    jz .gs_ret_epilogue
+    call emit_f64_to_i64_rax
+    jmp .gs_ret_epilogue
+.gs_ret_func_typed:
+    mov rdx, [rel current_func_float]
+    cmp rcx, rdx
+    je .gs_ret_func
+    test rdx, rdx
+    jz .gs_ret_func_to_int
+    call emit_i64_to_f64_rax
+    jmp .gs_ret_func
+.gs_ret_func_to_int:
+    call emit_f64_to_i64_rax
+    jmp .gs_ret_func
+.gs_ret_none:
+    cmp qword [rel in_function], 0
+    jne .gs_ret_func_none     ; in user function → emit ret
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xB8
+    call emit_byte
+    xor edi, edi
+    call emit_u32
+    xor edi, edi
+    call emit_u32
+    jmp .gs_ret_epilogue       ; in main → emit sys_exit
+.gs_ret_func:
+    call r25_emit_return_status   ; R25: rdx = 0 for siddhi, 1 for dosh
+    ; User function return: lea rsp,[rbp-8]; pop rbx; pop rbp; ret
+    mov dil, 0x48             ; lea rsp, [rbp-8]
+    call emit_byte
+    mov dil, 0x8D
+    call emit_byte
+    mov dil, 0x65
+    call emit_byte
+    mov dil, 0xF8
+    call emit_byte
+    mov dil, 0x5B             ; pop rbx
+    call emit_byte
+    mov dil, 0x5D             ; pop rbp
+    call emit_byte
+    mov dil, 0xC3             ; ret
+    call emit_byte
+    pop rbx
+    ret
+
+.gs_ret_func_none:
+    ; User function return with no value: xor rax; lea rsp,[rbp-8]; pop rbx; pop rbp; ret
+    mov dil, 0x48             ; xor rax, rax
+    call emit_byte
+    mov dil, 0x31
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    mov dil, 0x48             ; lea rsp, [rbp-8]
+    call emit_byte
+    mov dil, 0x8D
+    call emit_byte
+    mov dil, 0x65
+    call emit_byte
+    mov dil, 0xF8
+    call emit_byte
+    mov dil, 0x5B             ; pop rbx
+    call emit_byte
+    mov dil, 0x5D             ; pop rbp
+    call emit_byte
+    mov dil, 0xC3             ; ret
+    call emit_byte
+    pop rbx
+    ret
+
+.gs_ret_epilogue:
+    call r25_emit_main_dosh   ; R25: prati dosh(c) in mukhya exits with c
+    ; mov rsp, rbp; pop rbp; sys_exit
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xEC
+    call emit_byte
+    mov dil, 0x5D
+    call emit_byte
+    ; sys_exit(0)
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xB8
+    call emit_byte
+    mov edi, 60
+    call emit_u32
+    xor edi, edi
+    call emit_u32
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x31
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    call emit_syscall
+    pop rbx
+    ret
+
+.gs_block:
+    ; R9: a statement-level block (the hidden-value form of guna)
+    mov rax, rbx
+    call gen_block
+    pop rbx
+    ret
+
+.gs_halt:
+    ; R18 F8: sthagita() ends the program with exit status 0. It used to emit
+    ; `hlt`, a privileged instruction, so the program died with SIGSEGV.
+    ; mov eax, 60 (sys_exit) = B8 3C 00 00 00
+    mov dil, 0xB8
+    call emit_byte
+    mov dil, 0x3C
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    call emit_byte
+    call emit_byte
+    ; xor edi, edi = 31 FF (status 0)
+    mov dil, 0x31
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    call emit_syscall         ; Linux: syscall; Windows: the runtime shim
+    pop rbx
+    ret
+
+.gs_writemem:
+    ; Statement-level writemem — delegate to gen_expr
+    mov rax, rbx
+    call gen_expr
+    pop rbx
+    ret
+
+.gs_call:
+    ; Statement-level call — delegate to gen_expr
+    mov rax, rbx
+    call gen_expr
+    pop rbx
+    ret
+
+; emit_array_bounds_check
+; Runtime index is in rax and runtime length is on top of the generated
+; program stack ([rsp]).  Unsigned index < length rejects negative indices too.
+emit_array_bounds_check:
+    push rbx
+    push r13
+    ; cmp rax, [rsp] = 48 3B 04 24
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x3B
+    call emit_byte
+    mov dil, 0x04
+    call emit_byte
+    mov dil, 0x24
+    call emit_byte
+    ; jb .ok = 0F 82 rel32
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x82
+    call emit_byte
+    mov r13, [rel code_sz]
+    xor edi, edi
+    call emit_u32
+    ; Failure block: print the portable diagnostic and exit 1.
+    call alloc_ast
+    mov qword [rax], AST_STR
+    lea rcx, [rel msg_array_oob]
+    call r11_tr_rcx               ; R11: in the --lang pack's language
+    mov [rax+8], rcx
+    push rax
+    call alloc_ast
+    pop rcx
+    mov qword [rax], AST_CALL
+    mov qword [rax+8], BN_LIKHA
+    mov qword [rax+16], 1
+    mov [rax+24], rcx
+    call gen_expr
+    mov dil, 0xB8
+    call emit_byte
+    mov edi, 60
+    call emit_u32
+    mov dil, 0xBF
+    call emit_byte
+    mov edi, 1
+    call emit_u32
+    call emit_syscall
+    ; Patch jb rel32 to success continuation.
+    mov rax, [rel code_sz]
+    sub rax, r13
+    sub rax, 4
+    lea rcx, [rel code_buf]
+    mov [rcx + r13], eax
+    pop r13
+    pop rbx
+    ret
+
+emit_kosh_empty_check_r9:
+    ; Runtime R9 = current kosh length. Empty pop is a safe runtime error.
+    push rbx
+    push r13
+    mov dil, 0x4D             ; test r9,r9
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+    mov dil, 0xC9
+    call emit_byte
+    mov dil, 0x0F             ; jnz success rel32
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+    mov r13, [rel code_sz]
+    xor edi, edi
+    call emit_u32
+    call alloc_ast
+    mov qword [rax], AST_STR
+    ; R64: choose the error text at the *compiler* emission site.
+    ; The legacy pop path still emits the exact original diagnostic.
+    lea rcx, [rel msg_kosh_empty]
+    cmp r12, BN_KOSHPEEK
+    jne .r64_not_peek
+    lea rcx, [rel msg_kosh_peek_empty]
+    jmp .r64_message_selected
+.r64_not_peek:
+    cmp r12, BN_KOSHDEQUEUE
+    jne .r64_message_selected
+    lea rcx, [rel msg_kosh_dequeue_empty]
+.r64_message_selected:
+    call r11_tr_rcx               ; R11: in the --lang pack's language
+    mov [rax+8], rcx
+    push rax
+    call alloc_ast
+    pop rcx
+    mov qword [rax], AST_CALL
+    mov qword [rax+8], BN_LIKHA
+    mov qword [rax+16], 1
+    mov [rax+24], rcx
+    call gen_expr
+    mov dil, 0xB8
+    call emit_byte
+    mov edi, 60
+    call emit_u32
+    mov dil, 0xBF
+    call emit_byte
+    mov edi, 1
+    call emit_u32
+    call emit_syscall
+    mov rax, [rel code_sz]
+    sub rax, r13
+    sub rax, 4
+    lea rcx, [rel code_buf]
+    mov [rcx+r13], eax
+    pop r13
+    pop rbx
+    ret
+
+; R46 compiler-time call liveness: 1 if any caller local occupies r12..r15.
+; Argument parameters in stack slots and rbx do not require these saves.
+; No generated runtime code executes this helper.
+r46_live_callee_saved_vars:
+    xor eax, eax
+    xor ecx, ecx
+    mov r8, [rel var_cnt]
+    lea r9, [rel var_table]
+.r46_loop:
+    cmp rcx, r8
+    jae .r46_done
+    mov rdx, rcx
+    shl rdx, 4
+    mov rdx, [r9+rdx+8]
+    cmp rdx, 2
+    jb .r46_next
+    cmp rdx, 5
+    ja .r46_next
+    mov eax, 1
+    ret
+.r46_next:
+    inc rcx
+    jmp .r46_loop
+.r46_done:
+    ret
+
+; gen_expr(rax = expression node)
+gen_expr:
+    push rbx
+%ifdef SUTRAM_R65_TRAP_INT
+    ; Do not compile-fold operands before runtime overflow checks.
+    mov rbx,rax
+%else
+    mov rdi,rax
+    xor esi,esi
+    call r58_fold_tree
+    mov rbx,rax
+%endif
+    mov rax, [rbx]            ; node type
+    cmp rax, AST_NUM
+    je .ge_num
+    cmp rax, AST_FLOAT
+    je .ge_float
+    cmp rax, AST_VAR
+    je .ge_var
+    cmp rax, AST_BINOP
+    je .ge_binop
+    cmp rax, AST_WRITEMEM
+    je .ge_writemem
+    cmp rax, AST_HALT
+    je .ge_halt
+    cmp rax, AST_STR
+    je .ge_str
+    cmp rax, AST_VEC
+    je .ge_vec
+    cmp rax, 8               ; AST_CALL
+    je .ge_call
+    cmp rax, AST_FUNCALL
+    je .ge_funcall
+    cmp rax, AST_INDEX
+    je .ge_index
+    cmp rax, AST_FIELD
+    je .ge_field
+    cmp rax, AST_TERNARY
+    je .ge_ternary
+    cmp rax, AST_FUNCREF
+    je .ge_funcref
+    cmp rax, AST_SLICE
+    je .ge_slice
+    cmp rax, AST_PRASAR
+    je .ge_prasar
+    ; Unknown — emit nop
+    mov dil, 0x90
+    call emit_byte
+    pop rbx
+    ret
+
+.ge_funcref:
+    call r23_gen_funcref      ; R23 WS1: rax = the function's address
+    pop rbx
+    ret
+.ge_slice:
+    call r23_gen_slice        ; R23 WS3: rax = the slice descriptor
+    pop rbx
+    ret
+.ge_prasar:
+    call r25_gen_prasar       ; R25: the call, then return a failure at once
+    pop rbx
+    ret
+
+.ge_funcall:
+    cmp qword [rel r32_ffi_count], 0  ; R32/R33: a declared foreign function,
+    je .r33_fc_sutram                 ; not called through a variable
+    mov rdi, [rbx+8]
+    call r23_call_is_indirect
+    test rax, rax
+    jnz .r33_fc_sutram
+    mov rdi, [rbx+8]
+    call r32_ffi_find
+    test rax, rax
+    jz .r33_fc_sutram
+    mov rsi, rax
+    mov edx, 1                        ; its value is used
+    call r33_gen_foreign_funcall
+    pop rbx
+    ret
+.r33_fc_sutram:
+    ; [AST_FUNCALL][name_ptr][arg_count][arg1..arg6]
+    ; Evaluate args left-to-right, push each result, then pop them into
+    ; rdi, rsi, rdx, rcx, r8, r9 in reverse stack order.
+    mov rdi, [rbx+8]          ; R25: a phal-prakriya only under prasar
+    call r25_check_call
+    push r15                  ; save compiler-time r15 for R46
+    push r14                  ; save r14 (gen_block uses it)
+    mov r14, [rbx+16]        ; arg count
+    test r14, r14
+    jz .ge_fc_call
+    ; Arg 1
+    mov rdi, [rbx+8]
+    xor esi, esi
+    mov rdx, [rbx+24]
+%ifdef SUTRAM_R65_PEEPHOLES
+    cmp r14,1
+    jne .r65_normal_first_arg
+    call r65_direct_typed_call_arg
+    jmp .r65_first_arg_ready
+.r65_normal_first_arg:
+%endif
+    call gen_typed_call_arg
+%ifdef SUTRAM_R65_PEEPHOLES
+.r65_first_arg_ready:
+%endif
+    cmp r14, 2
+    jb .ge_fc_pop1
+    ; Arg 2
+    mov rdi, [rbx+8]
+    mov esi, 1
+    mov rdx, [rbx+32]
+%ifdef SUTRAM_R65_PEEPHOLES
+    xor r8d,r8d
+%endif
+    call gen_typed_call_arg
+    cmp r14, 3
+    jb .ge_fc_pop2
+    ; Arg 3
+    mov rdi, [rbx+8]
+    mov esi, 2
+    mov rdx, [rbx+40]
+%ifdef SUTRAM_R65_PEEPHOLES
+    xor r8d,r8d
+%endif
+    call gen_typed_call_arg
+    cmp r14, 4
+    jb .ge_fc_pop3
+    ; Arg 4
+    mov rdi, [rbx+8]
+    mov esi, 3
+    mov rdx, [rbx+48]
+%ifdef SUTRAM_R65_PEEPHOLES
+    xor r8d,r8d
+%endif
+    call gen_typed_call_arg
+    cmp r14, 5
+    jb .ge_fc_pop4
+    ; Arg 5
+    mov rdi, [rbx+8]
+    mov esi, 4
+    mov rdx, [rbx+56]
+%ifdef SUTRAM_R65_PEEPHOLES
+    xor r8d,r8d
+%endif
+    call gen_typed_call_arg
+    cmp r14, 6
+    jb .ge_fc_pop5
+    ; Arg 6
+    mov rdi, [rbx+8]
+    mov esi, 5
+    mov rdx, [rbx+64]
+%ifdef SUTRAM_R65_PEEPHOLES
+    xor r8d,r8d
+%endif
+    call gen_typed_call_arg
+    ; Pop 6: arg5->r9, arg4->r8, arg3->rcx, arg2->rdx, arg1->rsi, arg0->rdi
+    mov dil, 0x41
+    call emit_byte
+    mov dil, 0x59            ; pop r9
+    call emit_byte
+    mov dil, 0x41
+    call emit_byte
+    mov dil, 0x58            ; pop r8
+    call emit_byte
+    mov dil, 0x59            ; pop rcx
+    call emit_byte
+    mov dil, 0x5A            ; pop rdx
+    call emit_byte
+    mov dil, 0x5E            ; pop rsi
+    call emit_byte
+    mov dil, 0x5F            ; pop rdi
+    call emit_byte
+    jmp .ge_fc_call
+.ge_fc_pop5:
+    mov dil, 0x41
+    call emit_byte
+    mov dil, 0x58            ; pop r8
+    call emit_byte
+    mov dil, 0x59            ; pop rcx
+    call emit_byte
+    mov dil, 0x5A            ; pop rdx
+    call emit_byte
+    mov dil, 0x5E            ; pop rsi
+    call emit_byte
+    mov dil, 0x5F            ; pop rdi
+    call emit_byte
+    jmp .ge_fc_call
+.ge_fc_pop4:
+    mov dil, 0x59            ; pop rcx
+    call emit_byte
+    mov dil, 0x5A            ; pop rdx
+    call emit_byte
+    mov dil, 0x5E            ; pop rsi
+    call emit_byte
+    mov dil, 0x5F            ; pop rdi
+    call emit_byte
+    jmp .ge_fc_call
+.ge_fc_pop3:
+    mov dil, 0x5A            ; pop rdx
+    call emit_byte
+    mov dil, 0x5E            ; pop rsi
+    call emit_byte
+    mov dil, 0x5F            ; pop rdi
+    call emit_byte
+    jmp .ge_fc_call
+.ge_fc_pop2:
+    mov dil, 0x5E            ; pop rsi
+    call emit_byte
+    mov dil, 0x5F            ; pop rdi
+    call emit_byte
+    jmp .ge_fc_call
+.ge_fc_pop1:
+%ifdef SUTRAM_R65_PEEPHOLES
+    ; Call value is still in runtime RAX; mov rdi,rax is 3 bytes,
+    ; versus a redundant push rax + pop rdi (2) but avoids stack writes.
+    mov dil,0x48
+    call emit_byte
+    mov dil,0x89
+    call emit_byte
+    mov dil,0xC7
+    call emit_byte
+%else
+    mov dil, 0x5F            ; pop rdi
+    call emit_byte
+%endif
+.ge_fc_call:
+    call r46_live_callee_saved_vars
+    mov r15, rax
+    test r15, r15
+    jz .ge_fc_saves_done
+    ; B6: preserve caller variables held in r12-r15 across user calls.
+    mov dil, 0x41             ; push r12
+    call emit_byte
+    mov dil, 0x54
+    call emit_byte
+    mov dil, 0x41             ; push r13
+    call emit_byte
+    mov dil, 0x55
+    call emit_byte
+    mov dil, 0x41             ; push r14
+    call emit_byte
+    mov dil, 0x56
+    call emit_byte
+    mov dil, 0x41             ; push r15
+    call emit_byte
+    mov dil, 0x57
+    call emit_byte
+.ge_fc_saves_done:
+    mov rdi, [rbx+8]          ; R23 WS1: a call through a variable
+    call r23_call_is_indirect
+    test rax, rax
+    jz .ge_fc_direct
+    mov rdi, [rbx+8]
+    call r23_emit_indirect_call
+    jmp .ge_fc_after_call
+.ge_fc_direct:
+    ; Emit call rel32
+    mov dil, 0xE8
+    call emit_byte
+    mov rax, [rel code_sz]
+    mov rdx, [rel patch_count]
+    cmp rdx, PATCH_LIST_CAP
+    jae .ge_patch_overflow
+    lea r8, [rel patch_list]
+    push rdx
+    shl rdx, 4
+    mov [r8 + rdx], rax
+    mov rax, [rbx+8]
+    mov [r8 + rdx + 8], rax
+    pop rdx
+    inc qword [rel patch_count]
+    xor edi, edi
+    call emit_u32
+.ge_fc_after_call:
+    test r15, r15
+    jz .ge_fc_restores_done
+    mov dil, 0x41             ; pop r15
+    call emit_byte
+    mov dil, 0x5F
+    call emit_byte
+    mov dil, 0x41             ; pop r14
+    call emit_byte
+    mov dil, 0x5E
+    call emit_byte
+    mov dil, 0x41             ; pop r13
+    call emit_byte
+    mov dil, 0x5D
+    call emit_byte
+    mov dil, 0x41             ; pop r12
+    call emit_byte
+    mov dil, 0x5C
+    call emit_byte
+.ge_fc_restores_done:
+    pop r14                   ; restore compiler-time r14
+    pop r15                   ; restore compiler-time r15
+    pop rbx
+    ret
+.ge_patch_overflow:
+    lea rdi, [rel msg_patch_overflow]
+    jmp capacity_fail
+
+.ge_ternary:
+    ; [AST_TERNARY][cond][true_expr][false_expr]
+    push r12
+    push r13
+    push r14
+    push r15
+    mov rdi, rbx
+    call expr_is_float
+    mov r14, rax             ; common result type
+    mov rax, [rbx+8]
+    call gen_expr
+    ; test rax, rax
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    ; je false
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x84
+    call emit_byte
+    mov r12, [rel code_sz]
+    xor edi, edi
+    call emit_u32
+    ; true expression
+    mov rdi, [rbx+16]
+    call expr_is_float
+    mov r15, rax
+    mov rax, [rbx+16]
+    call gen_expr
+    mov rdi, r15
+    mov rsi, r14
+    call emit_scalar_type_conversion
+    ; jmp end
+    mov dil, 0xE9
+    call emit_byte
+    mov r13, [rel code_sz]
+    xor edi, edi
+    call emit_u32
+    ; false target
+    mov rax, [rel code_sz]
+    sub rax, r12
+    sub rax, 4
+    lea rcx, [rel code_buf]
+    mov [rcx + r12], eax
+    mov rdi, [rbx+24]
+    call expr_is_float
+    mov r15, rax
+    mov rax, [rbx+24]
+    call gen_expr
+    mov rdi, r15
+    mov rsi, r14
+    call emit_scalar_type_conversion
+    ; end target
+    mov rax, [rel code_sz]
+    sub rax, r13
+    sub rax, 4
+    lea rcx, [rel code_buf]
+    mov [rcx + r13], eax
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+.ge_index:
+    ; [AST_INDEX][name_ptr][index_node]
+    ; Load variable (address), push base + runtime length, eval index, check.
+    push r12
+    mov rdi, [rbx+8]         ; variable name ptr
+    call r56_global_index
+    test rax, rax
+    jz .r56_index_local
+    dec rax
+    mov rdi, rax
+    call r56_emit_global_load
+    jmp .ge_index_have_addr
+.r56_index_local:
+    mov rdi, [rbx+8]
+    call lookup_var          ; rax = location
+    test rax, rax
+    jle .ge_index_stack
+    mov rdi, rax
+    call emit_load_reg
+    jmp .ge_index_have_addr
+.ge_index_stack:
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x8B
+    call emit_byte
+    push rsi                  ; R10 (F1): disp8 or disp32, by range
+    mov esi, eax
+    mov dil, 0x45
+    call emit_rbp_modrm_disp
+    pop rsi
+.ge_index_have_addr:
+    mov rdi, [rbx+8]          ; R23 WS3: a slice: its elements and its length
+    call r23_index_slice
+    test rax, rax
+    jz .r23_ge_index_not_slice
+    mov r12, 3
+    jmp .ge_index_no_len
+.r23_ge_index_not_slice:
+    mov dil, 0x50            ; push rax (save base address)
+    call emit_byte
+    mov rdi, [rbx+8]
+    call is_kosh_var
+    test rax, rax
+    jz .ge_index_check_pankti
+    mov r12, 2               ; kosh length header at [ptr-16]
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x8B
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xF0
+    call emit_byte
+    mov dil, 0x51
+    call emit_byte
+    jmp .ge_index_no_len
+.ge_index_check_pankti:
+    mov rdi, [rbx+8]
+    call is_array_var
+    mov r12, rax             ; 1=fixed pankti, 0=raw pointer
+    test r12, r12
+    jz .ge_index_no_len
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x8B
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xF8
+    call emit_byte
+    mov dil, 0x51
+    call emit_byte
+.ge_index_no_len:
+    mov rax, [rbx+16]
+    push r12                  ; preserve compiler-time array marker
+    call gen_expr             ; runtime index -> rax
+    pop r12
+    test r12, r12
+    jz .ge_index_no_bounds
+    call emit_array_bounds_check
+    mov dil, 0x59            ; discard runtime length
+    call emit_byte
+.ge_index_no_bounds:
+    mov dil, 0x48            ; shl rax, 3
+    call emit_byte
+    mov dil, 0xC1
+    call emit_byte
+    mov dil, 0xE0
+    call emit_byte
+    mov dil, 0x03
+    call emit_byte
+    mov dil, 0x59            ; pop rcx (base)
+    call emit_byte
+    mov dil, 0x48            ; add rax, rcx
+    call emit_byte
+    mov dil, 0x01
+    call emit_byte
+    mov dil, 0xC8
+    call emit_byte
+    mov dil, 0x48            ; mov rax, [rax]
+    call emit_byte
+    mov dil, 0x8B
+    call emit_byte
+    mov dil, 0x00
+    call emit_byte
+    pop r12
+    pop rbx
+    ret
+
+.ge_field:
+    ; [AST_FIELD][var_name][field_offset]
+    ; Load var (base addr), add offset, load value
+    mov rdi, [rbx+8]
+    call r56_global_index
+    test rax, rax
+    jz .r56_field_local
+    dec rax
+    mov rdi, rax
+    call r56_emit_global_load
+    jmp .ge_field_have
+.r56_field_local:
+    mov rdi, [rbx+8]
+    call lookup_var
+    test rax, rax
+    jle .ge_field_stk
+    mov rdi, rax
+    call emit_load_reg
+    jmp .ge_field_have
+.ge_field_stk:
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x8B
+    call emit_byte
+    push rsi                  ; R10 (F1): disp8 or disp32, by range
+    mov esi, eax
+    mov dil, 0x45
+    call emit_rbp_modrm_disp
+    pop rsi
+.ge_field_have:
+    ; push rax (base address)
+    mov dil, 0x50
+    call emit_byte
+    ; mov rax, field_offset (48 B8 + u64)
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xB8
+    call emit_byte
+    ; Save offset in r14 (not used by gen_block/gen_expr)
+    push r14
+    mov r14, [rbx+16]
+    mov rdi, r14
+    call emit_u32
+    shr r14, 32
+    mov rdi, r14
+    call emit_u32
+    pop r14
+    ; pop rcx (base address)
+    mov dil, 0x59
+    call emit_byte
+    ; add rax, rcx (48 01 C8)
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x01
+    call emit_byte
+    mov dil, 0xC8
+    call emit_byte
+    ; mov rax, [rax] (48 8B 00)
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x8B
+    call emit_byte
+    mov dil, 0x00
+    call emit_byte
+    pop rbx
+    ret
+.ge_field_stk3:
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x8B
+    call emit_byte
+    push rsi                  ; R10 (F1): disp8 or disp32, by range
+    mov esi, eax
+    mov dil, 0x45
+    call emit_rbp_modrm_disp
+    pop rsi
+    pop rbx
+    ret
+
+.ge_call:
+    ; rbx = AST_CALL node: [8][builtin_id][arg_count][arg1][arg2]
+    ; gen_expr emits CODE that leaves the value in rax at runtime.
+    ; We emit push/pop to save args between evaluations.
+    push r12
+    mov r12, [rbx+8]         ; builtin id
+    ; Check builtin type
+    cmp r12, BN_PAD
+    je .ge_call_pad
+    cmp r12, BN_BAND
+    je .ge_call_band
+    cmp r12, BN_DVARAM
+    je .ge_call_dvaram
+    cmp r12, BN_PAADH
+    je .ge_call_paadh
+    cmp r12, BN_LIKHA
+    je .ge_call_likha
+    cmp r12, BN_NETSOCK
+    je .ge_call_netsock
+    cmp r12, BN_NETBIND
+    je .ge_call_netbind
+    cmp r12, BN_NETLIST
+    je .ge_call_netlist
+    cmp r12, BN_NETACC
+    je .ge_call_netacc
+    cmp r12, BN_NIRMRITA
+    je .ge_call_nirm
+    cmp r12, BN_LIKH8
+    je .ge_call_likh8
+    cmp r12, BN_PAD8
+    je .ge_call_pad8
+    cmp r12, BN_VARTLEN
+    je .ge_call_vartlen
+    cmp r12, BN_VARTCMP
+    je .ge_call_vartcmp
+    cmp r12, BN_VARTCAT
+    je .ge_call_vartcat
+    cmp r12, BN_VECADD
+    je .ge_call_vecadd
+    cmp r12, BN_VECMUL
+    je .ge_call_vecmul
+    cmp r12, BN_VECDOT
+    je .ge_call_vecdot
+    cmp r12, BN_LKFMT
+    je .ge_call_lkfmt
+    cmp r12, BN_CHARAT
+    je .ge_call_charat
+    cmp r12, BN_SETCHAR
+    je .ge_call_setchar
+    cmp r12, BN_CHARCD
+    je .ge_call_charcd
+    cmp r12, BN_CHARFR
+    je .ge_call_charfr
+    cmp r12, BN_CHARUP
+    je .ge_call_charup
+    cmp r12, BN_CHARLO
+    je .ge_call_charlo
+    cmp r12, BN_LIKH8C
+    je .ge_call_likh8c
+    cmp r12, BN_PAD8C
+    je .ge_call_pad8c
+    cmp r12, BN_MEMSET
+    je .ge_call_memset
+    cmp r12, BN_MEMCPY
+    je .ge_call_memcpy
+    cmp r12, BN_VARTCP
+    je .ge_call_vartcp
+    cmp r12, BN_GRAHAN
+    je .ge_call_grahan
+    cmp r12, BN_LKHB
+    je .ge_call_lkhb
+    cmp r12, BN_SHABDA
+    je .ge_call_shabda
+    cmp r12, BN_PANKTILEN
+    je .ge_call_panktilen
+    cmp r12, BN_KOSHPUSH
+    je .ge_call_koshpush
+    cmp r12, BN_KOSHPOP
+    je .ge_call_koshpop
+    cmp r12, BN_KOSHLEN
+    je .ge_call_koshlen
+    cmp r12, BN_KOSHCAP
+    je .ge_call_koshcap
+    cmp r12, BN_KOSHCLEAR
+    je .ge_call_koshclear
+    cmp r12, BN_KOSHEMPTY
+    je .ge_call_koshempty
+    cmp r12, BN_KOSHPEEK
+    je .ge_call_koshpop
+    cmp r12, BN_KOSHDEQUEUE
+    je .ge_call_koshpop
+    ; Unknown — nop
+    mov dil, 0x90
+    call emit_byte
+    jmp .ge_call_done
+
+.ge_call_koshclear:
+    ; R63: clear only the kosh logical length in-place, leaving capacity
+    ; and allocation intact; element storage is unreachable via bounds checks.
+    ; The argument must be an existing typed kosh AST_VAR.
+    cmp qword [rbx+16], 1
+    jne .ge_call_kosh_bad
+    mov rax, [rbx+24]
+    cmp qword [rax], AST_VAR
+    jne .ge_call_kosh_bad
+    mov rdi, [rax+8]
+    call is_kosh_var
+    test rax, rax
+    jz .ge_call_kosh_bad
+    mov rax, [rbx+24]
+    mov rdi, [rax+8]
+    call emit_load_named_var
+    ; mov qword [rax-16],0 = 48 C7 40 F0 00 00 00 00
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    mov dil, 0x40
+    call emit_byte
+    mov dil, 0xF0
+    call emit_byte
+    xor edi, edi
+    call emit_u32
+    ; xor eax,eax = 31 C0; clear has defined return value zero.
+    mov dil, 0x31
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    jmp .ge_call_done
+
+.ge_call_koshempty:
+    ; R63: returns 1 for zero elements, 0 otherwise. No mutation.
+    cmp qword [rbx+16], 1
+    jne .ge_call_kosh_bad
+    mov rax, [rbx+24]
+    cmp qword [rax], AST_VAR
+    jne .ge_call_kosh_bad
+    mov rdi, [rax+8]
+    call is_kosh_var
+    test rax, rax
+    jz .ge_call_kosh_bad
+    mov rax, [rbx+24]
+    mov rdi, [rax+8]
+    call emit_load_named_var
+    ; mov rax,[rax-16]; test rax,rax; sete al; movzx eax,al
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x8B
+    call emit_byte
+    mov dil, 0x40
+    call emit_byte
+    mov dil, 0xF0
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x94
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0xB6
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    jmp .ge_call_done
+
+.ge_call_koshlen:
+    cmp qword [rbx+16], 1
+    jne .ge_call_kosh_bad
+    mov rax, [rbx+24]
+    cmp qword [rax], AST_VAR
+    jne .ge_call_kosh_bad
+    mov rdi, [rax+8]
+    call is_kosh_var
+    test rax, rax
+    jz .ge_call_kosh_bad
+    mov rax, [rbx+24]
+    mov rdi, [rax+8]
+    call emit_load_named_var
+    mov dil, 0x48             ; mov rax,[rax-16]
+    call emit_byte
+    mov dil, 0x8B
+    call emit_byte
+    mov dil, 0x40
+    call emit_byte
+    mov dil, 0xF0
+    call emit_byte
+    jmp .ge_call_done
+
+.ge_call_koshcap:
+    cmp qword [rbx+16], 1
+    jne .ge_call_kosh_bad
+    mov rax, [rbx+24]
+    cmp qword [rax], AST_VAR
+    jne .ge_call_kosh_bad
+    mov rdi, [rax+8]
+    call is_kosh_var
+    test rax, rax
+    jz .ge_call_kosh_bad
+    mov rax, [rbx+24]
+    mov rdi, [rax+8]
+    call emit_load_named_var
+    mov dil, 0x48             ; mov rax,[rax-8]
+    call emit_byte
+    mov dil, 0x8B
+    call emit_byte
+    mov dil, 0x40
+    call emit_byte
+    mov dil, 0xF8
+    call emit_byte
+    jmp .ge_call_done
+
+.ge_call_koshpop:
+    cmp qword [rbx+16], 1
+    jne .ge_call_kosh_bad
+    mov rax, [rbx+24]
+    cmp qword [rax], AST_VAR
+    jne .ge_call_kosh_bad
+    mov rdi, [rax+8]
+    call is_kosh_var
+    test rax, rax
+    jz .ge_call_kosh_bad
+    mov rax, [rbx+24]
