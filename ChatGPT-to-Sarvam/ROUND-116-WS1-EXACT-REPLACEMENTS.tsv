@@ -1,0 +1,36 @@
+file	source_line	source_blob	old_line_exact	new_line_exact	old_line_matches
+lib/aadhar.smlib	16	9cb21190365de56f0b2899b9a063ace339597f53	# Caller allocates out with >= 4*n cells (70 cells sufficed for	# Caller provides at least 1 writable output cell when n <= 0, or	1
+lib/aadhar.smlib	17	9cb21190365de56f0b2899b9a063ace339597f53	# n <= 21 in base 2; n >= 22 overflowed the internal buffer).	# at least 4*n cells when n > 0 (base-2 worst case).	1
+lib/aadhar.smlib	18	9cb21190365de56f0b2899b9a063ace339597f53	# Base outside 2..16: returns 0 (base 0 trapped with SIGFPE).	# Base outside 2..16 returns 0 without dividing (older code could trap).	1
+lib/brihat.smlib	253	3ff9e2960ad09aa5527d38b297d7eca6390f4bae	# brihat_shesh(num, shesh, res, n) — res = num % shesh, where num has 2n digits	# brihat_shesh(ank, shesh, res, n) — res = ank % shesh, where ank has 2n digits	1
+lib/brihat.smlib	269	3ff9e2960ad09aa5527d38b297d7eca6390f4bae	# brihat_shesh_tr(num, shesh, res, n, tr) — brihat_shesh with the caller's n-digit scratch tr.	# brihat_shesh_tr(ank, shesh, res, n, scratch) — brihat_shesh with caller's n-digit scratch.	1
+lib/ganita.smlib	75	c616b3b4893443404a8e96d32615a25b6d413873	# Fills out[0] = x and out[1] = y.	# Writes out[0] = x and out[1] = y; caller must supply at least 2 writable qword cells.	1
+lib/ganita.smlib	159	c616b3b4893443404a8e96d32615a25b6d413873	# Fills out[0] = a*c + n*b*d  and  out[1] = a*d + b*c.	# Writes out[0] = a*c + n*b*d and out[1] = a*d + b*c; requires 2 writable qword cells.	1
+lib/gudh.smlib	12	1c757afb96c7e4828b52c1089a3f973ba82efc59	# fnv1a(s, len) — FNV-1a 32-bit hash of first `len` chars of mala `s`.	# fnv1a(s, len) — FNV-1a hash of the first len BYTES of a packed byte-string pointer s.	1
+lib/gudh.smlib	13	1c757afb96c7e4828b52c1089a3f973ba82efc59	# Returns an unsigned 32-bit value (may print as negative via likha).	# Returns an unsigned 32-bit value in the integer range 0..4294967295.	1
+lib/gudh.smlib	28	1c757afb96c7e4828b52c1089a3f973ba82efc59	# fnv1a_varna(s) — FNV-1a of NUL-terminated mala `s` (uses vartani_len).	# fnv1a_varna(s) — FNV-1a of a NUL-terminated packed byte string (uses vartani_len).	1
+lib/kalana.smlib	33	a3a2c47821b439d66bdf1d3450b92ab1e00fcd86	# (an even number of intervals); if there are fewer it falls back to the kalana_trapiz.	# (even intervals); for usable even n >= 4 drops the final sample; n < 3 uses kalana_trapiz.	1
+lib/khand.smlib	6	66d94186653461d7150ab30321a57cc6d3015fe4	# string.smlib) because the compiler has a fixed AST ceiling.	# lib/varna.smlib) because the compiler has a fixed AST ceiling.	1
+lib/khand.smlib	20	66d94186653461d7150ab30321a57cc6d3015fe4	# larger buffer, with NO terminator at the slice end. Every strb_*	# larger buffer, with NO terminator at the slice end. Explicit-length khand_*	1
+lib/mala.smlib	1	286150850621ccd0a3f3523a246b3d4314258bf1	# lib/mala.smlib — Sutram standard library: dynamic arrays	# lib/mala.smlib — Sutram standard library: fixed-size raw qword-array helpers	1
+lib/mala.smlib	6	286150850621ccd0a3f3523a246b3d4314258bf1	# allocates. Safe variants take the element count and return 0 / do	# allocates without tracking length. Count-checked variants take caller's n;	1
+lib/mala.smlib	7	286150850621ccd0a3f3523a246b3d4314258bf1	# nothing on out-of-bounds access.	# n must not exceed allocated cells. Raw variants do no allocation bounds check.	1
+lib/nighantu.smlib	5	99405f3103b0deedaf28b3900b6051e9d46438b2	# KEY REPRESENTATION: byte strings (the R10 strb_* surface), NOT	# KEY REPRESENTATION: byte strings (the current khand_* byte surface), NOT	1
+lib/nighantu.smlib	328	99405f3103b0deedaf28b3900b6051e9d46438b2	# the return is less than nighantu_maap(src) — check nighantu_maap(dst)	# the return is less than nighantu_maap(src), the merge is incomplete.	1
+lib/nighantu.smlib	329	99405f3103b0deedaf28b3900b6051e9d46438b2	# afterwards to detect a partial merge. (nighantu_grah's -1 sentinel is not a hazard here: the keys come	# Destination map size alone cannot detect this: updates need not change it.	1
+lib/nighantu.smlib	330	99405f3103b0deedaf28b3900b6051e9d46438b2	# from nighantu_kunjika_ashtak, so every key is known to exist.)	# Keys come from nighantu_kunjika_ashtak, so each is known to exist (no -1 ambiguity).	1
+lib/phal.smlib	7	733521e0e294a05bc10bd968f854b65097744d32	# directly (result_checked_*), and phal_se_siddhi bridges the older	# directly (phal_janchit_*), and phal_se_siddhi bridges the older	1
+lib/roop.smlib	309	28e98b0dd4071fbb42c0ba88b698adccb493da3f	# roop_pad_madhya(src, sn, width, padbyte, out) — npad on BOTH sides;	# roop_pad_madhya(src, sn, width, padbyte, out) — pad both sides to width;	1
+lib/roop.smlib	310	28e98b0dd4071fbb42c0ba88b698adccb493da3f	# when width-sn is odd, the extra npad byte goes RIGHT.	# when width-sn is odd, the extra padding byte goes RIGHT.	1
+lib/samanvaya.smlib	134	5705b6508fcbeaf948e6a161ea6021f22e5786aa	# dot product of two flat vectors (row i of a with column j of b) — convenience	# dot product of flat vectors u and v over min(kosh_len(u), kosh_len(v)) entries.	1
+lib/sangrah.smlib	10	51aee3d837cc97e47b735cd4211096171f903994	# ELEMENTS ARE BYTE STRINGS — the same choice as `map.smlib`'s keys:	# ELEMENTS ARE BYTE STRINGS — the same choice as `lib/nighantu.smlib` keys:	1
+lib/suchi.smlib	220	185e1bca0b5c936d82fa554aeef82e3868d4cc90	# the min loop by hand or called sort.smlib's laghu on l[2] — which	# the min loop by hand or called shreni.smlib's laghu on l[2] — which	1
+lib/suchi.smlib	245	185e1bca0b5c936d82fa554aeef82e3868d4cc90	# the sum loop by hand or called sort.smlib's yog on l[2].	# the sum loop by hand or called shreni.smlib's yog on l[2].	1
+lib/suchi.smlib	252	185e1bca0b5c936d82fa554aeef82e3868d4cc90	# sort.smlib's gan on l[2].	# shreni.smlib's gan on l[2].	1
+lib/suchi.smlib	258	185e1bca0b5c936d82fa554aeef82e3868d4cc90	# form of sort.smlib's anwesh_sarak; before, the caller called	# form of shreni.smlib's anwesh_sarak; before, the caller called	1
+lib/suchi.smlib	266	185e1bca0b5c936d82fa554aeef82e3868d4cc90	# List-shaped form of sort.smlib's asti_sorted.	# List-shaped form of shreni.smlib's asti_sorted.	1
+lib/suchi.smlib	272	185e1bca0b5c936d82fa554aeef82e3868d4cc90	# (WS2, R23). List-shaped form of sort.smlib's dwi_anwesh. The	# (WS2, R23). List-shaped form of shreni.smlib's dwi_anwesh. The	1
+lib/vakyank.smlib	81	b90960e0d01bc9ddbd32fcaf0af3113c382bc7dd	# varna_tak_ank(buf, n) — parse first n character codes of mala buf as a	# varna_tak_ank(buf, n, ok) — parse first n character codes of mala buf as a	1
+lib/vakyank.smlib	138	b90960e0d01bc9ddbd32fcaf0af3113c382bc7dd	# ank_tak_aadhar_varna(n, base, out) — write n in `base` (2/8/10/16) into out	# ank_tak_aadhar_varna(n, base, out) — write n in any base 2..36 into out	1
+lib/vakyank.smlib	139	b90960e0d01bc9ddbd32fcaf0af3113c382bc7dd	# as character codes (0-9, a-f). Returns count. No util_chinha handling; n >= 0.	# as character codes (0-9, a-z). Returns count. No util_chinha handling; n >= 0.	1
+lib/varna.smlib	13	40e52d2d26d7d48c8b2cf837b8448ec7bec2ed39	# slice has no terminator at its end. Use the explicit-length strb_*	# slice has no terminator at its end. Use the explicit-length khand_*	1
