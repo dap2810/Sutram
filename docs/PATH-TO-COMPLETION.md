@@ -3,7 +3,7 @@
 **The canonical answer to "what are we doing, and what is left".** If any other document disagrees with this one,
 **this one is current** - it is dated and measured, and the others may not be.
 
-**Last updated:** 23 October 2026 - main at **compiler v246**, changelog v315.
+**Last updated:** 23 October 2026 - main at **compiler v250**, changelog v315.
 
 ---
 
@@ -32,10 +32,10 @@ working program in it, and understand the error when they get one.**
 
 | Check | Result |
 |---|---|
-| compiler | **v246** |
+| compiler | **v250** |
 | gates | **34 PASS / 0 FAIL / 1 NOT-RUN** |
 | crash corpus | **227 cases + manifest, 0 failed** |
-| library proofs | **223 passed, 0 failed** - under a 4 GB limit AND unlimited |
+| library proofs | **224 passed, 0 failed** - under a 4 GB limit AND unlimited |
 | layers | **14 core, 9 alloc, 1 std** |
 | alloc bounds | **25 allocations, 6 bounded, 19 exempt, 0 failed** |
 | the guard | **476 byte-identical executables, 0 differ, on Linux AND Windows** |
