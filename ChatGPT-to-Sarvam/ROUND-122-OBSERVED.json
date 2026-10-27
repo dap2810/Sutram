@@ -1,0 +1,106 @@
+{
+  "round": 122,
+  "date": "2026-10-27",
+  "repository": "dap2810/Sutram",
+  "source_pin": "61d5f7b70e30e6711cc2171e57744de2dede70a1",
+  "assignment": "Sarvam-to-ChatGPT/ROUND-122.md",
+  "assignment_blob": "9c18a3f871c8721e7ef7511d91a314c4bfac1192",
+  "changelog": "v374",
+  "compiler": "v253",
+  "priority": "Sanskrit only until v1.0; ten language packs frozen",
+  "ws1": {
+    "verdict": "NO blanket char/int/div/len/slice rename; two real public names subject to owner decision",
+    "source_modules_examined": 24,
+    "source_functions": 305,
+    "actual_public_candidates": [
+      "brihat_ank_se_int(val,arr,n)",
+      "brihat_ank_tak_int(arr,n)"
+    ],
+    "provisional_laghu_names_not_approved": [
+      "brihat_ank_se_laghu",
+      "brihat_ank_tak_laghu"
+    ],
+    "phantom_export": "sat_div absent across all lib/*.smlib",
+    "actual_divide": "ganita_paripurna_bhaj(a,b)",
+    "builtin_names_already_sanskrit": [
+      "akshar",
+      "akshar_rakh",
+      "aksharank",
+      "vartani_aayam"
+    ],
+    "documentation_corpus": {
+      "scanned_text_documents": 92,
+      "matched_text_documents": 37,
+      "zero_match_documents": 55,
+      "broad_physical_line_matches": 1122,
+      "broad_text_warning": "contains ordinary English and HTML div markup; NOT 1122 API changes",
+      "manifest": "ChatGPT-to-Sarvam/ROUND-122-WS1-CORPUS-MANIFEST.tsv",
+      "all_hits_parts": [
+        "ChatGPT-to-Sarvam/ROUND-122-WS1-DOC-PART-1.tsv",
+        "ChatGPT-to-Sarvam/ROUND-122-WS1-DOC-PART-2.tsv",
+        "ChatGPT-to-Sarvam/ROUND-122-WS1-DOC-PART-3.tsv",
+        "ChatGPT-to-Sarvam/ROUND-122-WS1-DOC-PART-4.tsv",
+        "ChatGPT-to-Sarvam/ROUND-122-WS1-DOC-PART-5.tsv",
+        "ChatGPT-to-Sarvam/ROUND-122-WS1-DOC-PART-6.tsv",
+        "ChatGPT-to-Sarvam/ROUND-122-WS1-DOC-PART-7.tsv"
+      ],
+      "curated_api_related_rows": 31,
+      "curated_modes": {
+        "KEEP_HISTORICAL": 20,
+        "PROPOSE_EXACT_CURRENT": 8,
+        "REGENERATE_FROM_SOURCE": 3
+      },
+      "curated_file": "ChatGPT-to-Sarvam/ROUND-122-WS1-API-IMPACT.tsv"
+    },
+    "no_public_rename_authorized": true,
+    "additional_doc_defect": "docs/OVERFLOW-SAFETY.md:57, lib/ganita.smlib:516, generated docs/sutram-stdlib.html:155 reference nonexistent sat_div, recommendation conditional corrected literal name ganita_paripurna_bhaj",
+    "status": "PASS source census and exact docs scan, proposed edits NOT APPLIED"
+  },
+  "ws2": {
+    "brief_count_claim": "nine kosh words",
+    "brief_proposals_count": 8,
+    "missing_builtin": "kosh_len",
+    "missing_suggestion": "aayam => kosh_aayam (owner approval required)",
+    "source": "docs/KOSH-BUILTINS.md",
+    "keyword_count_direct_ascii_defs": 32,
+    "sanskrit_pack_mappings": 58,
+    "exact_keyword_collisions_among_eight_plus_aayam": 0,
+    "current_KOSH_builtin_count": 9,
+    "review": {
+      "kshep": "plausible noun throwing, prefer established khip",
+      "uddhar": "plausible extraction, still ambiguous LIFO",
+      "dharita": "reject held != allocated capacity; prefer kshamata",
+      "shodh": "reject semantic cleansing/erasure misconception; clear only length=0",
+      "rikt": "meaning empty; prefer predicate form asti_rikta, distinguish clear",
+      "iksh": "plausible see; prefer existing avalok peek convention",
+      "apanay": "generic removal; prefer nishkas for FIFO",
+      "yuj": "join; prefer pravesh for queue append",
+      "aayam": "length logical, not capacity"
+    },
+    "status": "PASS source semantic and lexicon review; exact keyword check; Sanskrit morphology CANNOT CERTIFY; no rename approved"
+  },
+  "ws3": {
+    "verdict": "NO SIXTH INDEPENDENT DOCUMENTATION ERROR CLASS FOUND",
+    "basis": "English grep mistaken for exported API is familiar unsupported public-contract assertion; historical mentions not to rewrite"
+  },
+  "evidence_blobs": {
+    "src/sutram_compiler.asm": "89495406b5b77258a9699ed5c8c2d51baead1474",
+    "docs/KOSH-BUILTINS.md": "44d6cdaced710e922883e15e2cf9c6c22c9f4f91",
+    "lib/brihat.smlib": "c72df8753a33a4d207aa5c37093b6abe85f54d99",
+    "lib/ganita.smlib": "d0d2c6798c859df6893e4eb24c7b4d0212e7d4ed",
+    "lang/sanskrit.lang": "b7bbbe1e07d258cc67f05e9dad81bca9379e59a6"
+  },
+  "run_status": {
+    "GitHub_source_reads": "PASS",
+    "static_24_module_declaration_scan": "PASS",
+    "static_92_doc_scan": "PASS",
+    "keyword_table_collision_check": "PASS",
+    "Sanskrit_dictionary_lookup": "PASS limited lexical sense, not certified grammar",
+    "Sutram_native_compiler": "NOT RUN - no toolchain",
+    "regression_suite": "NOT RUN - no toolchain",
+    "Windows": "NOT RUN - no toolchain",
+    "source_rename": "NOT PERFORMED"
+  },
+  "write_scope": "ChatGPT-to-Sarvam/ only",
+  "protected_paths_modified": []
+}
