@@ -1,136 +1,64 @@
-# The vocabulary: the rules, not just the list
+# The vocabulary: a small core, and a list
 
-**Status: DRAFT - needs a Sanskrit scholar's review before it is presented as authoritative.**
-
-> **CORRECTIONS (26 Oct 2026, found by ChatGPT's R113 review - all three were mine):**
-> 1. **This document said "303" functions. The current count is 305** (`lib/*.smlib`, and the regenerated
->    `sutram-stdlib.html` footer). **303 was a stale number I carried from memory.**
-> 2. **I wrote that `ganita_sat_yuj` implements saturating addition. That function DOES NOT EXIST** - the real
->    name is **`ganita_paripurna_yuj`**. **I invented a function name and presented it as an example.**
-> 3. **I wrote that `ganita_janchit_gun` is not in the reference. It IS** - I asserted a negative without
->    checking it.
->
-> **All three are the same failure: I wrote a plausible document about a vocabulary I had not read.**
-
-**Why this document exists.** The project has a frozen vocabulary of 303 function names, and a reference page that
-lists them. **A list is a dictionary: it only helps someone who is already looking up a word they know.** **What makes
-a vocabulary learnable is the RULES - so that a learner can predict a name they have never seen.**
-
-**The owner's directive was that word choice be *easy to remember and easy to type*, and that someone who does not
-read English can learn this language.** **A derivational rule serves both: you remember one rule instead of 303
-words, and you can type a name you were never taught.**
+**Status: DRAFT, rewritten 27 October 2026 to ChatGPT's R115 verdict. Needs a Sanskritist for the linguistic claims.**
 
 ---
 
-## 1. The pattern that is already there
+## The verdict this document now follows
 
-**Sutram's names are compounds, built left to right, most general first:**
+**The original version of this page claimed a derivational rule - `domain_qualifier_action` - that would let a learner
+place any of the 303 names.** **That claim was wrong twice over:**
 
-| Name | Parts | Reads as |
-|---|---|---|
-| `ganita_janchit_yuj` | `ganita` + `janchit` + `yuj` | math + checked + join = **checked addition** |
-| `ganita_janchit_nyun` | `ganita` + `janchit` + `nyun` | math + checked + less = **checked subtraction** |
-| `ganita_paripurna_yuj` | `ganita` + `paripurna` + `yuj` | math + complete/full + join = **saturating addition** (corrected - I had written a name that does not exist) |
-| `vartani_len` | `vartani` + `len` | string + length |
-| `akshar_rakh` | `akshar` + `rakh` | character + place = **set character** |
+- **Measured:** of 305 declarations there are **91 distinct first components and 63 occur exactly once.** **Only
+ 171/305 (56%) begin with their own module name.** **That is a long tail, not a rule.**
+- **And the examples were invented.** **This page said `ganita_sat_yuj` implements saturating addition. That function
+  does not exist** - the real name is `ganita_paripurna_yuj`.
 
-**The rule a learner can extract:** **`<domain>_<qualifier>_<action>`**, and **the last word is what the function
-does.**
+**So the recommendation is ChatGPT's, and it is the honest one:**
 
-## 2. The domains
+> *"Use small core of recurring conventions + explicit searchable list of all 305 current callables. Not a strict
+> `domain_qualifier_action` rule, and not 305 names to memorize unstructured."*
 
-**A domain prefix tells you which part of the library you are in.**
+> ***"No claim that Latin underscores are formal Pāṇinian samāsa grammar."***
 
-> **MEASURED CORRECTION (26 Oct 2026): this section overclaims.** I wrote that eleven prefixes would let a learner
-> place any of the 303 names. **I then measured it against `docs/sutram-vocabulary.html`:** of 259 names my
-> extraction found, **only 103 (40%) begin with one of these eleven.** **Four of the eleven - `vartani`, `kosh`,
-> `sangrah`, `shreni` - appear as a prefix ZERO times.** **So the prefix list below is a PARTIAL observation, not a
-> covering rule.** **And my extraction found 259 of 303 names, so even that 40% is a floor.** **Do not present this
-> section as a rule until the vocabulary is measured properly.**
-
-**The prefixes that DO carry weight, with their measured counts:**
-
-| Prefix | Meaning | The module |
-|---|---|---|
-| `ganita` | mathematics | **18 names** |
-| `vartani` | string, sequence | **0 as a prefix** - see the correction above |
-| `akshar` | character, letter | **2 names** |
-| `mala` | row, array | **8 names** |
-| `kosh` | store, treasury | **0 as a prefix** - it is a type, not a name prefix |
-| `suchi` | list, index | **21 names** |
-| `nighantu` | glossary | **17 names** |
-| `sangrah` | collection | **0 as a prefix** |
-| `shreni` | row, rank | **0 as a prefix** |
-| `phal` | fruit, result | **14 names** |
-| `roop` | form | **23 names** |
-
-**These are already the module names.** **So `yoj ganita` puts you in the maths module, and every name inside it starts
-with `ganita`.**
-
-## 3. The qualifiers
-
-**A qualifier narrows what the action does.** **The ones that recur:**
-
-| Qualifier | Meaning | Where it appears |
-|---|---|---|
-| `janchit` | checked, examined | checked arithmetic that detects overflow |
-| `sat` | true, valid | saturating arithmetic that clamps instead of wrapping |
-| `nirapeksh` | independent, absolute | absolute value |
-| `vargmool` | square root | root extraction |
-
-**So the rule a learner applies:** **`ganita_<qualifier>_<action>` is a maths operation with that property.** **`sat`
-clamps, `janchit` refuses, and no qualifier means the plain wrapping operation.**
-
-## 4. The actions
-
-**The last word says what happens.** **The recurring ones:**
-
-| Action | Meaning | Example |
-|---|---|---|
-| `yuj` | join, add | `ganita_janchit_yuj` |
-| `nyun` | less, subtract | `ganita_janchit_nyun` |
-| `gun` | multiply | (see the module) |
-| `bhaj` | divide | (see the module) |
-| `raksh` / `rakh` | keep, place | `akshar_rakh` |
-| `grah` | take, receive | `anukram_grah_ashtak` |
-| `likh` | write | `likh` |
-| `pad` | read | `pad` |
-| `khol` | open | `dvaram`-adjacent |
-| `band` | close | |
-| `shreni` | arrange, sort | `suchi_shreni` |
-
-## 5. What this buys a learner
-
-**Three things, and they are the point of the whole document:**
-
-1. **A name they have never seen is a name they can guess.** **`ganita_janchit_gun`** **IS** in the reference (corrected - I had claimed it was not, without checking). A
-   learner who reads it as "math, checked, multiply" is right, **and the fact that it exists is evidence the rule
-   holds rather than a hypothetical.**
-2. **A wrong guess is visibly wrong.** **`vartani_janchit_yuj`** does not exist, and a learner can tell *why* - the
-   `janchit` qualifier belongs to `ganita`.
-3. **The vocabulary can grow without a new list.** **A function added tomorrow follows the same rule**, so the
-   reference page is a lookup rather than the only source of truth.
-
-## 6. The honest limits of this draft
-
-**Three things need checking, and I am not the person to check them:**
-
-1. **Is `ganita` the right word for "mathematics" here, or does it carry a narrower sense?**
-2. **Do the qualifiers compose the way I have described, or does Sanskrit compounding impose an order I have
-   simplified?**
-3. **Are `rakh`/`raksh` and `likh`/`lekh` the right stems, or have the shorter forms drifted from the roots?**
-
-**A Sanskritist should review sections 2 to 4 before this is presented as a rule.** **Sections 1 and 5 are
-observations about the code and stand on their own.**
-
-## 7. Why this is worth doing at all
-
-**The project's aim is that someone in India who does not read English can learn to program.** **The keywords are
-already Sanskrit.** **But a vocabulary of 303 words is 303 things to memorise unless it has rules.**
-
-**The rules are what make it a language rather than a glossary.**
+**That last line is the one this page needed.** **A naming convention is a naming convention.** **It is not a
+grammatical derivation, and calling it one borrows authority the convention has not earned.**
 
 ---
 
-*Draft by Sarvam, 26 October 2026. Derived from the frozen vocabulary in `docs/sutram-vocabulary.html` and the
-module names in `lib/`. Needs a Sanskrit scholar's review of the compounding before it is authoritative.*
+## What a learner should actually be taught, in order
+
+**1. The core Sanskrit grammar of the language** - `mukhya`, `vitti`, `yadi`, `anya`, `yavat`, `chakra`, `prakriya`,
+`prati`. **Twenty-odd words, and they are the language.**
+
+**2. What a module and a builtin are.** **`yoj ganita` puts you in the maths module; `likha` is a builtin.**
+
+**3. A SMALL set of reliable word families** - the ones that recur often enough to be worth remembering as units.
+**These are being measured; the list is not yet written.**
+
+**4. Worked examples with real, verified names** - and their parameter and return expectations. **Every name in an
+example must be checked against `lib/`; that is now a gate (`tools/check_doc_signatures.py`).**
+
+**5. The complete generated reference as a lookup.** **`docs/sutram-stdlib.html`, 305 functions, signature-checked.**
+
+**A learner needs 1 and 2 to start, 3 to become fluent, and 5 forever.**
+
+---
+
+## What this page is NOT
+
+**It is not a claim that the vocabulary is systematically derivable.** **It is not a claim that a learner can predict a
+name they have never seen.** **It is not a claim that the Sanskrit compounding in these names is formally correct.**
+
+**It is a curriculum, and a list of the word families worth teaching.**
+
+## What still needs a Sanskritist
+
+**Whether the words chosen are the right words** - `ganita` for mathematics, `janchit` for checked, `paripurna` for
+saturating. **That is a question about Sanskrit, and it is not answered here.**
+
+---
+
+*Draft by Sarvam. Rewritten 27 October 2026 after ChatGPT's R115 verdict and its measurement of all 305 declarations.
+The earlier version of this page asserted a rule that the measurement does not support, and gave an example function
+name that does not exist.*
