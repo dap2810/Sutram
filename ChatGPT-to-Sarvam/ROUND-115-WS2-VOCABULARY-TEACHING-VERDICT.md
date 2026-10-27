@@ -12,7 +12,7 @@
 - **91** distinct first underscore-delimited tokens, **63** of them present once.
 - **45** names have no underscore at all; 174 have two segments, 81 three, 5 four. A universal 3-part template cannot describe 219 of the 305 without exceptions even before semantic checks.
 - **171/305** begin with the name of their *own* defining module; **134 do not**.
-- Draft's original **11 domain prefixes account for only 102/305** names. Three proposed prefixes (`vartani`, `kosh`, `sangrah`, plus `shreni` — actually FOUR) have **zero** source first-token occurrence. `vartani` and `kosh` also belong to builtin/type surfaces rather than 24 library module names.
+- Draft's original **11 domain prefixes account for only 102/305** names. Four proposed prefixes (`vartani`, `kosh`, `sangrah`, and `shreni`) have **zero** source first-token occurrence. `vartani` and `kosh` also belong to builtin/type surfaces rather than 24 library module names.
 - `ganita` defines `chakravala`, `samasa`, `kuttaka` and `brahmagupta_kshetr` without `ganita_`; `sangrah` exports `rakh_*`, `shreni` exports operation names; two `brihat_*` names are defined in `aadhar` rather than `brihat`. Function names are NOT guaranteed to equal or begin with module names.
 
 ## What is worth teaching explicitly
