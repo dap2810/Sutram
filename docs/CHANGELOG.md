@@ -1,3 +1,49 @@
+## v381 - I reproduced the `kosh` abort myself. It is real, it is clear, and it is milder than "no way to report"
+
+**Three programs, each declaring `kosh a[4]` and calling one operation on the empty store.**
+
+| Operation | What happens |
+|---|---|
+| `kosh_pop` on empty | **`Sutram Error: riktat koshat kosh_pop`** |
+| `kosh_peek` on empty | **`Sutram Error: riktat koshat kosh_peek`** |
+| `kosh_dequeue` on empty | **`Sutram Error: riktat koshat kosh_dequeue`** |
+
+**`riktat koshat` - "from an empty kosh".** **All three trap, the program stops, and each has its own message** -
+**which the spec says was fixed in R64, and it was.**
+
+### So the finding is accurate, and it needs one correction
+**ChatGPT said *"abort without an ok channel"*, and that is true** - **there is no `kosh_pop_ok` that returns a status.**
+
+**But there IS a way to guard, and it is in the same library:**
+
+```sutram
+yadi (kosh_len(a) > 0)
+    vitti r = kosh_pop(a)
+    ...
+```
+
+**`kosh_len(a)` returns 0 on an empty store, so a programmer can check before popping.** **So the defect is not "no way to
+avoid the trap" - it is "no way to pop-and-check in one operation".**
+
+**That is a smaller issue than the audit said, and it is still a real one:** **every caller must remember the guard, and
+nothing in the type system reminds them.**
+
+### And the honest note about my own audit
+**I listed A1 as "a `kosh` pop on empty aborts with no way to report it", from ChatGPT's sentence.** **I did not run it
+before writing it down.** **The reproduction took four minutes and would have made the entry precise.**
+
+**That is the sixth time this stretch that measuring first would have saved a round-trip - and the first time I caught
+myself writing an issue from a quote rather than from a run.**
+
+### So the fix is smaller than a new mechanism
+**Options, in order of size:**
+1. **Document the guard in `docs/KOSH-BUILTINS.md`** - one paragraph, and the spec already lists the trap
+2. **Add `kosh_pop_ok` / `kosh_peek_ok` returning a status** - a real API addition
+3. **Nothing** - if the guard is considered sufficient, say so and close A1
+
+**I would take (1) now and (2) if a user asks.** **A trap with a clear message and a documented guard is a defensible
+design; a trap with no documented guard is not.**
+
 ## v380 - the audit turned into a round: the top of the fix list goes to all three
 
 **I wrote `docs/OPEN-ISSUES.md` and did not issue the round with it. That was the mistake - the audit and the work should
