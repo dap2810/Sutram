@@ -27,8 +27,8 @@ brihat	lib/brihat.smlib	128	91	brihat_nyun	79	PRESENT_NOT_CERTIFIED
 brihat	lib/brihat.smlib	151	92	brihat_gun	85	PRESENT_NOT_CERTIFIED	
 brihat	lib/brihat.smlib	180	93	brihat_asti_shunyank	60	PRESENT_NOT_CERTIFIED	
 brihat	lib/brihat.smlib	194	94	brihat_bhajshesh	210	PRESENT_NOT_CERTIFIED	
-brihat	lib/brihat.smlib	257	95	brihat_shesh	288	PRESENT_NOT_CERTIFIED	
-brihat	lib/brihat.smlib	270	96	brihat_shesh_tr	92	PRESENT_NOT_CERTIFIED	
+brihat	lib/brihat.smlib	257	95	brihat_shesh	288	REVIEW_ISSUE	P3: embedded description arg name num differs from declared ank; keep contract labels consistent
+brihat	lib/brihat.smlib	270	96	brihat_shesh_tr	92	REVIEW_ISSUE	P3: embedded description args num,tr differ from declared ank,scratch
 brihat	lib/brihat.smlib	321	97	brihat_ghatmod	340	PRESENT_NOT_CERTIFIED	
 chandas	lib/chandas.smlib	13	103	dviguna	0	EMPTY	
 chandas	lib/chandas.smlib	24	104	meru	0	EMPTY	
@@ -57,8 +57,8 @@ ganit	lib/ganit.smlib	157	131	ganit_seemit	192	PRESENT_NOT_CERTIFIED
 ganita	lib/ganita.smlib	17	137	kuttaka	0	EMPTY	
 ganita	lib/ganita.smlib	44	138	ganita_vargmool	27	PRESENT_NOT_CERTIFIED	
 ganita	lib/ganita.smlib	68	139	ganita_nirapeksh	0	EMPTY	
-ganita	lib/ganita.smlib	76	140	chakravala	100	PRESENT_NOT_CERTIFIED	
-ganita	lib/ganita.smlib	160	141	samasa	266	PRESENT_NOT_CERTIFIED	
+ganita	lib/ganita.smlib	76	140	chakravala	100	REVIEW_ISSUE	P2: underdocuments required two-cell raw output allocation
+ganita	lib/ganita.smlib	160	141	samasa	266	REVIEW_ISSUE	P2: underdocuments required two-cell raw output allocation
 ganita	lib/ganita.smlib	173	142	brahmagupta_kshetr	268	PRESENT_NOT_CERTIFIED	
 ganita	lib/ganita.smlib	216	143	ganita_janchit_yuj	81	PRESENT_NOT_CERTIFIED	
 ganita	lib/ganita.smlib	242	144	ganita_janchit_nyun	82	PRESENT_NOT_CERTIFIED	
@@ -77,7 +77,7 @@ ganita	lib/ganita.smlib	533	156	ganita_janchit_nirapeksh	220	PRESENT_NOT_CERTIFI
 ganita	lib/ganita.smlib	548	157	ganita_paripurna_nirapeksh	98	PRESENT_NOT_CERTIFIED	
 ganita	lib/ganita.smlib	563	158	ganita_paripurna_kramgun	397	PRESENT_NOT_CERTIFIED	
 gudh	lib/gudh.smlib	14	164	fnv1a	0	EMPTY	
-gudh	lib/gudh.smlib	29	165	fnv1a_varna	70	PRESENT_NOT_CERTIFIED	
+gudh	lib/gudh.smlib	29	165	fnv1a_varna	70	REVIEW_ISSUE	P1: description says mala but implementation hashes NUL-terminated packed byte string
 kalana	lib/kalana.smlib	18	171	kalana_trapiz	0	EMPTY	
 kalana	lib/kalana.smlib	34	172	simpson	163	REVIEW_ISSUE	P2: even common length >=4 drops final sample, not described
 kalana	lib/kalana.smlib	59	173	pravan	62	PRESENT_NOT_CERTIFIED	
@@ -273,7 +273,7 @@ suchi	lib/suchi.smlib	507	427	avali_rikta	275	PRESENT_NOT_CERTIFIED
 suchi	lib/suchi.smlib	520	428	avali_shunya	50	PRESENT_NOT_CERTIFIED	
 suchi	lib/suchi.smlib	526	429	avali_maap	30	PRESENT_NOT_CERTIFIED	
 vakyank	lib/vakyank.smlib	15	435	ank_tak_varna	0	EMPTY	
-vakyank	lib/vakyank.smlib	84	436	varna_tak_ank	199	PRESENT_NOT_CERTIFIED	
+vakyank	lib/vakyank.smlib	84	436	varna_tak_ank	199	REVIEW_ISSUE	P1: embedded description lists two args but declaration requires three incl ok
 vakyank	lib/vakyank.smlib	142	437	ank_tak_aadhar_varna	270	REVIEW_ISSUE	P2: source accepts every base 2..36, prose lists 2/8/10/16
 vakyank	lib/vakyank.smlib	186	438	varna_tak_ank_aadhar	122	PRESENT_NOT_CERTIFIED	
 vakyank	lib/vakyank.smlib	238	439	pad_vam	237	PRESENT_NOT_CERTIFIED	
