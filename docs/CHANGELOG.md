@@ -1,3 +1,36 @@
+## v386 - the complete vocabulary extracted: 305 names, and 14 that are not Sanskrit
+
+**`docs/VOCABULARY-COMPLETE.md` lists every `prakriya` in `lib/`, by module, read from the declarations rather than from
+memory.** **24 modules, 305 functions.**
+
+### What is not Sanskrit
+- **9 English words:** `fib`, `fnv1a`, `fnv1a_varna`, `simpson`, `skalar`, `util_chinha`, `bit_gan`, `asti_sorted`,
+  `suchi_asti_sorted`, `roop_sign_akshar`
+- **2 Hindi/Urdu, not Sanskrit:** **`pehchan`** (should be `abhigyan` or `chinha`) and **`nishan`** (should be `chinha`
+  or `lakshan`)
+- **5 numbered suffixes:** `laghu2`, `adhik2`, `pravan2`, `nirnaya2`, `nirnaya3`, `roop_ank_aadhar2`
+- **5 dubious coinages:** the four `chay_*` names, `avali_nishkas`, and `samanvaya_akar_na`
+
+### And the biggest finding, which is not an English word
+**There are TWO modules called `ganita` (22 functions) and `ganit` (18 functions).** **One letter apart, same word,
+different families** - **`ganita` is the checked-arithmetic family, `ganit` is the plain one.**
+
+**A learner cannot tell them apart, and a typo silently picks the wrong module.** **That is worse than any English word
+on the list.**
+
+### And two functions named twice
+**`aadhar` has `brihat_ank_se` and `brihat_ank_tak`; `brihat` has `brihat_ank_se_laghu` and `brihat_ank_tak_laghu`.**
+**The same concept, two names, in two modules.**
+
+### The three questions for the owner
+1. **`ganita` and `ganit` - merge or rename?** **This is the one that will bite a learner.**
+2. **The 9 English and 2 Hindi words - replace or accept?** **`fib`, `simpson` and `fnv1a` are proper names and arguably
+   should stay; the rest are not.**
+3. **What are `nirnaya2` and `nirnaya3` for?**
+
+**None of it is renamed.** **The list exists so the owner can decide with the whole vocabulary in front of him, which is
+what he asked for.**
+
 ## v385 - three rounds issued; Windows out of scope as instructed
 
 ### ROUND-49 (Claude) - the debugger, usable
