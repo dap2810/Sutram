@@ -1,3 +1,24 @@
+## v352 - the gate count applied: 34 to 37, and only one document needed it
+
+**Muse measured `gates.sh` at 37 PASS / 0 FAIL / 1 NOT-RUN on main.** **I swept the six documents for a stale gate
+count and found exactly one:**
+
+| Document | Quoted |
+|---|---|
+| `PROJECT-MASTER.md` | **34 PASS** - fixed to **37** |
+| the other five | **33/33**, which is the LANGUAGE PACK count, not the gate count - **correct as it stands** |
+
+**So the number I expected to be wrong in six places was wrong in one.** **That is worth recording, because I have
+spent this stretch assuming that a stale claim spreads - and twice it did (the "not implemented" claims were in seven
+documents) and twice it did not.**
+
+**The difference is whether the claim is copied or measured.** **`33/33` is generated and checked; `34 PASS` was typed
+by hand.** **A hand-typed number drifts; a generated one does not.**
+
+### And the suite count is 218, not 221
+**Muse refused to apply the 218-to-221 change because the tests it assumed are not on main.** **That refusal saved the
+documents from being wrong in the opposite direction.**
+
 ## v351 - the vocabulary page is rewritten: a small core and a list, not a rule
 
 **The page claimed a derivational rule that would let a learner place any of 303 names.** **It is now rewritten to the
