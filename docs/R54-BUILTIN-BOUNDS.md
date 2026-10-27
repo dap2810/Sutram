@@ -24,23 +24,23 @@ The current authoritative per-builtin ABI table is in `src/sutram_compiler.asm` 
 | `pad8c` | 2 | Partial upper-bound check: return 0 if `addr >= bound`; does **not** check lower bound or complete 8-byte read span |
 | `smaran` | 3 | `rep stosb` fills `count` bytes; no destination capacity check |
 | `smaran_cp` | 3 | `rep movsb` copies `count` bytes; no source/destination capacity checks or overlap guarantee |
-| `vartani_cp` | 2 | Copies bytes through first NUL from source to destination; destination must fit **strlen(source)+1**; no runtime capacity guard |
+| `vartani_pratilip` | 2 | Copies bytes through first NUL from source to destination; destination must fit **strlen(source)+1**; no runtime capacity guard |
 | `vartani_cat` | 2 | NUL-terminated append; destination needs **strlen(dst)+strlen(src)+1** bytes; no runtime capacity guard |
-| `vartani_len` | 1 | Scans until NUL: the address must point into a readable, NUL-terminated allocation |
-| `vartani_cmp` | 2 | Scans both NUL-terminated operands; neither length nor allocation validated |
+| `vartani_aayam` | 1 | Scans until NUL: the address must point into a readable, NUL-terminated allocation |
+| `vartani_tul` | 2 | Scans both NUL-terminated operands; neither length nor allocation validated |
 | `shabda` | 1 | Prints bytes until NUL (including literal and variable strings); NUL terminator/readable memory required |
-| `vartani_cp`, `vartani_cat` | 2 | Byte-oriented operations, **not** qword-array `buf[i]` semantics |
+| `vartani_pratilip`, `vartani_cat` | 2 | Byte-oriented operations, **not** qword-array `buf[i]` semantics |
 | `paadh` | 3 | Syscall `read(fd,buf,count)`; caller supplies writable `count` bytes, OS may reject invalid address |
 | `band`, `netlisten`, `netaccept`, `lkhb`, `nirmmita`, `pankti_len`, `char_upper`, `char_lower` | 1 | Non-pointer primitives or typed accesses; `nirmmita` allocates writable pages; `pankti_len` depends on recognized array metadata |
 | `netbind` | 2 | Creates local sockaddr stack data; syscall returns OS status |
 | `sankhya_yog`, `sankhya_gunan` | 3 | Vector operation reads 16 bytes from each source, writes 16 bytes to destination; no size/ownership check |
 | `sankhya_dot` | 2 | Reads 16 bytes from both vector pointers, no size check |
-| `likha_fmt`, `vartani_cmp` | 2 | Formatter/byte string comparison, no buffer capacity checking |
+| `likha_fmt`, `vartani_tul` | 2 | Formatter/byte string comparison, no buffer capacity checking |
 | `kosh_push` | 2 | Requires a recognized dynamic `kosh` variable; growth logic controls dynamic capacity |
 | `kosh_pop`, `kosh_len`, `kosh_cap` | 1 | Require recognized `kosh`; `kosh_pop` rejects empty array at runtime |
 | `shabda` | 1 | NUL-terminated raw string pointer (no maximum scanning length) |
 
-Other names: `char_code` accepts 1 or 2; `likha` accepts 1, 2 or 3; `dvaram` accepts 2 or 3; `vartani_cat` accepts 2; `vartani_cmp` accepts 2; `vartani_cp` accepts 2. All other registered builtin IDs have the exact arity shown above.
+Other names: `char_code` accepts 1 or 2; `likha` accepts 1, 2 or 3; `dvaram` accepts 2 or 3; `vartani_cat` accepts 2; `vartani_tul` accepts 2; `vartani_pratilip` accepts 2. All other registered builtin IDs have the exact arity shown above.
 
 ## The byte-copy defect found during the sweep
 
