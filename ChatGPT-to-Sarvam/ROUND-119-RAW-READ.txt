@@ -1,0 +1,67 @@
+ROUND 119 — PINNED RAW NAME-RENAME DOCUMENTATION SCAN
+date=2026-10-27
+repository=dap2810/Sutram
+pinned_main=307520c1492cf73b4f5e7cb6e15b3b377d3e5b53
+assignment=Sarvam-to-ChatGPT/ROUND-119.md blob=257ffb4158afe5dc3b3b572ef5d6630b8a72a118
+source_change=NOT_YET_APPLIED_ON_PIN
+compiler=src/sutram_compiler.asm blob=03e9845c2ec59c2798a7b7e2edcb2a7d8b907449
+compiler old token occurrences vartani_len=3 vartani_cmp=3 vartani_cp=3; new token occurrences all zero
+exact matched input identities vartani_len vartani_cmp vartani_cp (right-boundary exclusion for suffix letters/digits/_)
+git_tree_total_blobs=4079
+scanned_text_document_files=154
+matched_document_files=8
+matched_document_physical_lines=32
+classification KEEP_HISTORICAL=16
+classification PROPOSE_EXACT_CURRENT=10
+classification ALREADY_PRESENT_NOOP=3
+classification REGENERATE_FROM_SOURCE=3
+manifest_git_blob=3d194a79aeabad4d3d79a364eccec4c6cdbe87dd
+matched_lines_git_blob=c64e36819b0bf7a481d005a520a29eeaf371ecca
+vocabulary_git_blob=e6cba5c0f24d21fc0ff1afee2b38be614ffd6100
+book_and_reference_exact_old_mentions=ZERO across docs/sutram-book*.html and docs/sutram-stdlib-reference.html
+source-only old builtin callsite witnesses: lib/gudh.smlib:30, lib/khand.smlib:99, lib/varna.smlib:19,55,69,80,90,113,114
+source comment witnesses: lib/gudh.smlib:28 lib/khand.smlib:11,24 lib/varna.smlib:4
+vocabulary rows 75-77 already contain new words and Devanagari forms; NO INSERTION
+
+EVERY EXACT DOCUMENT OCCURRENCE (file | line | blob | classification | OLD; NEW targets in TSV)
+compiler/verified_snapshots/FG2_R30_verified.asm.txt | 626 | ef1eda6449502b6e8654daa418ff513f831d119f | KEEP_HISTORICAL |     bn_vartlen   db "vartani_len", 0
+compiler/verified_snapshots/FG2_R30_verified.asm.txt | 627 | ef1eda6449502b6e8654daa418ff513f831d119f | KEEP_HISTORICAL |     bn_vartcmp   db "vartani_cmp", 0
+compiler/verified_snapshots/FG2_R30_verified.asm.txt | 647 | ef1eda6449502b6e8654daa418ff513f831d119f | KEEP_HISTORICAL |     bn_vartcp    db "vartani_cp", 0
+compiler/verified_snapshots/FG2_R30_verified.asm.txt | 10035 | ef1eda6449502b6e8654daa418ff513f831d119f | KEEP_HISTORICAL |     ; vartani_len(str) → inline strlen, rax = length
+compiler/verified_snapshots/FG2_R30_verified.asm.txt | 10091 | ef1eda6449502b6e8654daa418ff513f831d119f | KEEP_HISTORICAL |     ; vartani_cmp(s1, s2) → 0 if equal, 1 if not
+compiler/verified_snapshots/FG2_R30_verified.asm.txt | 10825 | ef1eda6449502b6e8654daa418ff513f831d119f | KEEP_HISTORICAL |     ; vartani_cp(dst, src) — strcpy (copies until null)
+docs/CHANGELOG.md | 8 | 7ce64b5fdca5483bdbce480823c3c647c6f916ff | KEEP_HISTORICAL | | `vartani_len` | **`vartani_aayam`** | आयाम - extent, length |
+docs/CHANGELOG.md | 9 | 7ce64b5fdca5483bdbce480823c3c647c6f916ff | KEEP_HISTORICAL | | `vartani_cmp` | **`vartani_tul`** | तुल् - to weigh, compare (तुलना) |
+docs/CHANGELOG.md | 10 | 7ce64b5fdca5483bdbce480823c3c647c6f916ff | KEEP_HISTORICAL | | `vartani_cp` | **`vartani_pratilip`** | प्रतिलिपि - a copy |
+docs/CHANGELOG.md | 7523 | 7ce64b5fdca5483bdbce480823c3c647c6f916ff | KEEP_HISTORICAL | - **They found and fixed a pre-existing codegen bug**: `vartani_cp(dst,src)` scanned
+docs/CHANGELOG.md | 7703 | 7ce64b5fdca5483bdbce480823c3c647c6f916ff | KEEP_HISTORICAL |   `char_at(buf,0)`=104, `char_at(buf,1)`=105, `vartani_len(buf)`=2,
+docs/CHANGELOG.md | 7704 | 7ce64b5fdca5483bdbce480823c3c647c6f916ff | KEEP_HISTORICAL |   `vartani_cmp(buf,"hi")`=0. `buf[i]=c` keeps its qword-cell meaning; `width_repro`
+docs/CHANGELOG.md | 8775 | 7ce64b5fdca5483bdbce480823c3c647c6f916ff | KEEP_HISTORICAL |   (`vartani_len`, `char_at`, `smaran_cp`, ...) and added a standard-library section.
+docs/LANGUAGE-REFERENCE.md | 107 | 1f827e3f917393fedef908b2c7d73c9e15c6431b | PROPOSE_EXACT_CURRENT | | `vartani_len` | varna length |
+docs/LANGUAGE-REFERENCE.md | 108 | 1f827e3f917393fedef908b2c7d73c9e15c6431b | PROPOSE_EXACT_CURRENT | | `vartani_cmp` | varna compare |
+docs/LANGUAGE-REFERENCE.md | 110 | 1f827e3f917393fedef908b2c7d73c9e15c6431b | PROPOSE_EXACT_CURRENT | | `vartani_cp` | varna copy |
+docs/R50-BYTE-PACKED-TEXT.md | 5 | 590487af0ad02598d8b5002f44701366b9b27e23 | KEEP_HISTORICAL | Use `vitti buf = nirmmita(16)`; `set_char(buf,0,104)`; `set_char(buf,1,105)`; `set_char(buf,2,0)`; then `char_at(buf,1)` returns 105, `vartani_len(buf)` returns 2, and `vartani_cmp(buf,"hi")` returns 0. Existing byte-aware `char_at`, `vartani_len` and `vartani_cmp` remain unchanged. No new length/compare primitives are needed.
+docs/R54-BUILTIN-BOUNDS.md | 27 | 131efd0cfa57b16996bfeee86cff5068ae223a13 | PROPOSE_EXACT_CURRENT | | `vartani_cp` | 2 | Copies bytes through first NUL from source to destination; destination must fit **strlen(source)+1**; no runtime capacity guard |
+docs/R54-BUILTIN-BOUNDS.md | 29 | 131efd0cfa57b16996bfeee86cff5068ae223a13 | PROPOSE_EXACT_CURRENT | | `vartani_len` | 1 | Scans until NUL: the address must point into a readable, NUL-terminated allocation |
+docs/R54-BUILTIN-BOUNDS.md | 30 | 131efd0cfa57b16996bfeee86cff5068ae223a13 | PROPOSE_EXACT_CURRENT | | `vartani_cmp` | 2 | Scans both NUL-terminated operands; neither length nor allocation validated |
+docs/R54-BUILTIN-BOUNDS.md | 32 | 131efd0cfa57b16996bfeee86cff5068ae223a13 | PROPOSE_EXACT_CURRENT | | `vartani_cp`, `vartani_cat` | 2 | Byte-oriented operations, **not** qword-array `buf[i]` semantics |
+docs/R54-BUILTIN-BOUNDS.md | 38 | 131efd0cfa57b16996bfeee86cff5068ae223a13 | PROPOSE_EXACT_CURRENT | | `likha_fmt`, `vartani_cmp` | 2 | Formatter/byte string comparison, no buffer capacity checking |
+docs/R54-BUILTIN-BOUNDS.md | 43 | 131efd0cfa57b16996bfeee86cff5068ae223a13 | PROPOSE_EXACT_CURRENT | Other names: `char_code` accepts 1 or 2; `likha` accepts 1, 2 or 3; `dvaram` accepts 2 or 3; `vartani_cat` accepts 2; `vartani_cmp` accepts 2; `vartani_cp` accepts 2. All other registered builtin IDs have the exact arity shown above.
+docs/R54-BUILTIN-BOUNDS.md | 47 | 131efd0cfa57b16996bfeee86cff5068ae223a13 | KEEP_HISTORICAL | In the pre-R54 emitted `vartani_cp(dst,src)` sequence, `repne scasb` scanned **dst** rather than src. A memory fixture demonstrated a wrong `0\n1\n` tail instead of the expected `89\n4\n` after copying `"YES"` and appending `"!"`.
+docs/R54-BUILTIN-BOUNDS.md | 63 | 131efd0cfa57b16996bfeee86cff5068ae223a13 | KEEP_HISTORICAL | **Only `vartani_cp` changes generated instructions.** Arity validation and the six-argument parser guard are compiler-side only. This is a behavioral correction to a broken string-copy builtin, **not** a newly introduced bounds check.
+docs/STRING-BYTE-PARITY.md | 64 | 3687e807b7119c47e59c3676e53c80fbc9f273f3 | PROPOSE_EXACT_CURRENT | **The length-function rule.** `varna_maap` / `khand_maap` / `vartani_len`
+docs/VOCABULARY-DERIVATION.md | 75 | a0cfb673f8588a99f49afb86a523fa2c0d033c85 | ALREADY_PRESENT_NOOP | | `vartani_len` | **`vartani_aayam`** | आयाम | extent, span - the length of a sequence |
+docs/VOCABULARY-DERIVATION.md | 76 | a0cfb673f8588a99f49afb86a523fa2c0d033c85 | ALREADY_PRESENT_NOOP | | `vartani_cmp` | **`vartani_tul`** | तुल् (तुलना) | to weigh, to compare |
+docs/VOCABULARY-DERIVATION.md | 77 | a0cfb673f8588a99f49afb86a523fa2c0d033c85 | ALREADY_PRESENT_NOOP | | `vartani_cp` | **`vartani_pratilip`** | प्रतिलिपि | a copy, a duplicate |
+docs/sutram-stdlib.html | 165 | d05d649bdc2b2e2630adc9a0134afe97c44324f6 | REGENERATE_FROM_SOURCE | <tr><td><code>fnv1a_varna(s)</code></td><td>fnv1a_varna(s) — FNV-1a of a NUL-terminated packed byte string (uses vartani_len).</td></tr>
+docs/sutram-stdlib.html | 179 | d05d649bdc2b2e2630adc9a0134afe97c44324f6 | REGENERATE_FROM_SOURCE | <p class="shesh-desc">layer: core The string toolkit on BYTE-PACKED strings (the representation of a literal and of set_char-built buffers). Own module (not inside THE TWO REPRESENTATIONS (see also lib/varna.smlib): char-code array: qword cells, one char code per cell, h[i]. byte string: bytes packed 1-per-byte, char_at(s, i) / set_char(s [long line truncated in this raw preview; FULL OLD and NEW in TSV]
+docs/sutram-stdlib.html | 443 | d05d649bdc2b2e2630adc9a0134afe97c44324f6 | REGENERATE_FROM_SOURCE | <p class="shesh-desc">layer: core Built on `vartani_len` and `char_at`, both verified to honour their arguments. R52 audit: `char_code(s, i)` already honours i in the compiler; a one-argument `char_code(s)` remains a compatible alias for the first byte. This library continues to call `char_at(s, i)` as before, without changing its API. AS [long line truncated in this raw preview; FULL OLD and NEW in TSV]
+
+PROTOCOL
+Historical mentions in compiler snapshot, CHANGELOG and R50/R54 historical lessons are preserved; NOT silently rewritten.
+Generated docs/sutram-stdlib.html must be regenerated from source comments; direct hand edit forbidden.
+Current guide lines conditional on verified source rename, NOT APPLIED.
+WS2 vocab ALREADY PRESENT NO-OP; WS3 NO SIXTH CLASS.
+PASS static full 154-file corpus retrieval/line search; complete 32-line inventory validated.
+NOT RUN - no toolchain compiler/regression/Windows, renamed API acceptance.
+No protected paths touched, no source files written.
