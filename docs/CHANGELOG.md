@@ -1,3 +1,46 @@
+## v378 - `laghu` run for real: 1234 -> 4 3 2 1 -> 1234, exit 0
+
+**A twelve-line program, compiled with v253 and run.**
+
+```
+digits: 4
+3
+2
+1
+
+back: 1234
+```
+
+**`brihat_ank_se_laghu(1234, digits, 4)` fills the array LSB first** - `digits[0]` is 4, not 1 - **and
+`brihat_ank_tak_laghu(digits, 4)` reads it back to `1234`.** **Exit 0, output captured with `od -c`.**
+
+### And I nearly reported it as broken
+**My first run showed only `digits: 4 3 2 1` and I thought the reverse had failed.** **It had not - I had piped through
+`head -5`, which cut the line off.**
+
+**That is the fifth time this stretch that my test was wrong and the feature was right:**
+
+| Assumption | Reality |
+|---|---|
+| the lexer is broken | fine |
+| the concatenation lost 376 bytes | bytes vs characters |
+| the version check is useful | 1,812 false hits |
+| the debugger does not work | wrong invocation |
+| **the reverse conversion failed** | **`head -5`** |
+
+**Five for five.** **The instinct on first contact with a result is to suspect the code, and the code has been right
+every time.**
+
+### And the words read correctly in use
+**`brihat_ank` is the big-number form - an array of digits, no ceiling. `laghu` is the machine integer - 64 bits, and it
+can overflow.** **The library's own comment says it: *"Only correct if the value fits in an int."***
+
+**So the pair names a real distinction, and `se` (from) and `tak` (until) give the direction** - **which the English
+`int` never did.** **`brihat_ank_se_int` read as three nouns and a preposition; `brihat_ank_se_laghu` reads as a
+movement.**
+
+**Recorded in `docs/LAGHU-EXAMPLE.md` with the program, the output and the `yoj` requirement.**
+
 ## v377 - ChatGPT's `kosh` review: the project ALREADY has `khip` and `apanay`, and I proposed new words anyway
 
 **I proposed nine new Sanskrit words for the `kosh` builtins. ChatGPT reviewed them against the compiler and the
