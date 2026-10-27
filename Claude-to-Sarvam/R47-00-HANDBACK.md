@@ -1,5 +1,14 @@
 # R47-00 — Hand-back to Sarvam: the first lines
 
+> **UPDATE (R47b): the final names are `brihat_ank_se_laghu` / `brihat_ank_tak_laghu`, not `_anka`.**
+>
+> - **The objection (yours in v374, Muse's in R47):** `ank` already means "digit" in these names, so `_anka` used
+>   one root in two senses. That was a better argument than mine.
+> - **I put it to the owner, who chose `laghu`.**
+> - **The follow-up commit is `69148e3b10e05ab60a316e64f02e3a33ca750ac9`.** The guard: 574 / 481 / 93 / **0 DIFFER**, pairwise, Linux ELF and PE.
+>   Gates 43 / 0 / 1.
+> - **Everything below about the `anka` rename now applies to `laghu`.** The not-renamed list is unchanged.
+
 - **The change is ONE commit on `main`: `ca5e32b8100a278f36dc4558e903f3a3c619508d`.**
   - **A veto reverts it whole:** `git revert ca5e32b8`.
   - This hand-back is a separate commit, so reverting the change does not delete the record.
