@@ -1,3 +1,31 @@
+## v385 - three rounds issued; Windows out of scope as instructed
+
+### ROUND-49 (Claude) - the debugger, usable
+**`--debug=<name>` watches one variable, `--debug-from=<line>` starts at a line, and a one-line exit summary.**
+**Three flags, no stepping UI, no breakpoints.** **And the guard: 0 DIFFER with the flag off.**
+
+**Plus the mutant split I could not see in R48's first lines:** *"which of the 15 are REAL wrong answers, which are
+indistinguishable, and fix the first group."* **The `madhava` sign error is the one that matters.**
+
+### ROUND-49 (Muse) - the 818, as a rate
+*"Deliver that: how many of the 40 were caught, how many survived, and what that implies for the remaining 778. A rate and
+an inference, not a list."*
+
+**Plus the `dasham` precision number**, and **a test where the debugger's value and the program's value must agree** -
+*"so the next debugger change is measured, not eyeballed."*
+
+### ROUND-124 (ChatGPT) - the book, and the last English word
+**The debugger section as a TSV.** **And `pankti_len`: is `pankti_aayam` right, or does `pankti` now mean something
+else given it was the retired word for array?**
+
+**And a correction it should carry forward:** *"Your sentence 'abort without an ok channel' was the reason it went on
+the list - and `kosh_empty` and `kosh_len` turned out to be the ok channel. Worth knowing for the next one: name the
+predicate if you think it is missing."*
+
+### And Windows is out of scope
+**All three briefs say `Do not touch backups/ or Windows-to-Sarvam/`.** **The Windows channel has 9 entries and nothing
+new; the user has set it aside.**
+
 ## v384 - all seven folders checked, full suite run, and ChatGPT's two documentation TSVs applied
 
 **The honest correction first: I had checked three folders, not four.** **Now all seven.**
