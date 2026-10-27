@@ -1,3 +1,40 @@
+## v383 - A1 is NOT a defect. Three independent reproductions, all identical, and the ok channel already existed.
+
+**My audit called A1 "the first thing to fix".** **Three parties ran it, and all three got the same result:**
+
+| Party | `kosh_pop` on empty |
+|---|---|
+| **me** | **`Sutram Error: riktat koshat kosh_pop`** |
+| **Claude** | **same, `exit 1`** |
+| **Muse** | **same, `exit 1`, and `999` never printed** |
+
+**And Claude's conclusion is the one that matters:** *"It aborts, with its own diagnostic, exactly like an index out of
+bounds. The programmer CAN handle it. The ok channel already exists: `kosh_empty(k)` and `kosh_len(k)`."*
+
+### So the top item on my own fix list was wrong twice
+**First I wrote it from ChatGPT's sentence without running it.** **Then I ran it, saw the trap, and still called it a
+defect with "a documented guard" as the remedy.**
+
+**The truth is simpler: it is a checked error with a clear Sanskrit message, a non-zero exit code, and two predicates
+that let a caller avoid it.** **That is not a defect. That is a design.**
+
+**`docs/OPEN-ISSUES.md` A1 should be reclassified from "real defect" to "behaviour, documented" - and I documented the
+guard anyway, so the page is right even though the heading was wrong.**
+
+### And the rest of R48
+**Suite PASS=225** (224 plus the `kosh` example). **Library proofs 226/226** (224 plus 2). **Gates 43 PASS / 0 FAIL /
+1 NOT-RUN.**
+
+**The guard: 577 programs, 470 byte-identical, 93 refused identically, 11 DIFFER, 3 new.** **And the 11 are explained:**
+*"exactly the 11 existing programs that `yoj chandas`, because `meru` changed."* **Claude checked that every one imports
+`chandas` and that no other program differs.**
+
+**That is what an explained guard looks like: not "0 differ", but "11 differ and here is why each one is expected".**
+
+### And the pattern, seventh time
+**I concluded a defect from a description rather than from a run - and the run said otherwise.** **The three-party
+reproduction is what caught it, and it only worked because I asked two others to check me.**
+
 ## v382 - issue A1 closed at the documentation level: the trap was documented, the guard was not
 
 **`docs/KOSH-BUILTINS.md` listed the three traps and never said how to avoid them.** **So a reader learned that
