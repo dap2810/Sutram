@@ -1,4 +1,5 @@
 # Round 71 — separate compilation: design and tested linker substrate
+> **STATUS — HISTORICAL ROUND-71 SUPPLEMENT, NOT THE CURRENT MODULE FEATURE LIST.** Its native helper was partial at Round 71; later compiler/linker revisions added separate compilation. Statements below saying the production module system is absent refer only to this R71 snapshot. Verify today's functionality using current source and `docs/PATH-TO-COMPLETION.md`.
 
 ## Status: partial implementation, not a working Sutram module system
 
