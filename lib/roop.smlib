@@ -306,8 +306,8 @@ prakriya roop_pad_dakshin(src, sn, width, padbyte, out) {
     prati w
 }
 
-# roop_pad_madhya(src, sn, width, padbyte, out) — npad on BOTH sides;
-# when width-sn is odd, the extra npad byte goes RIGHT.
+# roop_pad_madhya(src, sn, width, padbyte, out) — pad both sides to width;
+# when width-sn is odd, the extra padding byte goes RIGHT.
 prakriya roop_pad_madhya(src, sn, width, padbyte, out) {
     vitti s = src
     vitti cnt = sn
