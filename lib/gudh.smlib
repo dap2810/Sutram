@@ -9,8 +9,8 @@
 #   prime        = 16777619
 #   for each byte b: hash = (hash XOR b) * prime  (shesh 2^32)
 
-# fnv1a(s, len) — FNV-1a 32-bit hash of first `len` chars of mala `s`.
-# Returns an unsigned 32-bit value (may print as negative via likha).
+# fnv1a(s, len) — FNV-1a hash of the first len BYTES of a packed byte-string pointer s.
+# Returns an unsigned 32-bit value in the integer range 0..4294967295.
 prakriya fnv1a(s, len) {
     vitti h = 2166136261
     vitti i = 0
@@ -25,7 +25,7 @@ prakriya fnv1a(s, len) {
     prati h
 }
 
-# fnv1a_varna(s) — FNV-1a of NUL-terminated mala `s` (uses vartani_len).
+# fnv1a_varna(s) — FNV-1a of a NUL-terminated packed byte string (uses vartani_len).
 prakriya fnv1a_varna(s) {
     prati fnv1a(s, vartani_len(s))
 }
