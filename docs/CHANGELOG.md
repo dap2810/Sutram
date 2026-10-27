@@ -1,3 +1,37 @@
+## v371 - the README now announces the debugger, because nothing did
+
+**A new capability landed and neither `README.md` nor `PROJECT-MASTER.md` mentioned `--debug` or `shodhan`.** **So the
+feature existed and no user would ever find it.**
+
+**That is the documentation version of the same failure this project keeps meeting: the work is done and the thing
+that makes it matter is not switched on.** **A debugger nobody knows about is a debugger nobody uses.**
+
+### What the README now says
+- **what the flag does**, with a runnable example
+- **what the trace looks like**, including the line that shows scope growing as declarations execute
+- **three things worth knowing:** it changes only the debug build; **it shows variables that are IN SCOPE, not every
+  variable in the file**; and **the debug build is bigger - about 1,800 bytes against 370 for the same five-line
+  program**
+- **and why the flag is off by default**
+
+### And the sentence that matters for trust
+**"A normal build is byte-for-byte what it was; the project's guard proves this on every round."**
+
+**That is the difference between a debug mode and a debug mode you can rely on.** **The guard has measured it every
+round: 574 programs, 481 byte-identical, 0 DIFFER with the flag off.**
+
+### The pattern, named
+**Three times this stretch a change was correct and invisible:**
+
+| Change | How it was invisible |
+|---|---|
+| the four doc checks | **they existed and nothing ran them** - needed wiring into `gates.sh` |
+| the lexer | **it worked and we avoided words to fit a limitation that did not exist** |
+| **the debugger** | **it worked and the README did not mention it** |
+
+**All three are the same shape: the capability was built, and the thing that makes it usable was not.** **It is worth
+asking of every change now: what makes this reachable?**
+
 ## v370 - I ran the debugger myself. It works, and the in-scope fix is visible in the trace.
 
 **Fresh clone, built v252, and a five-line program compiled with `--debug` and then run.**
