@@ -1,0 +1,10 @@
+# R38: a kosh alias via assignment must be bounds-checked like the original.
+mukhya() {
+    kosh dasham v[4]
+    kosh_push(v, 1.5)
+    kosh_push(v, 2.5)
+    vitti w = 0
+    w = v
+    w[5] = 9.9
+    likha(999)
+}
