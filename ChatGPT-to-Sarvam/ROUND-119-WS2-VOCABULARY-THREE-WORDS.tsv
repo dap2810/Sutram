@@ -1,0 +1,4 @@
+target_file	line_at_pin	old_builtin	proposed_builtin	devanagari	one_line_gloss	status	existing_exact_line
+docs/VOCABULARY-DERIVATION.md	75	vartani_len	vartani_aayam	आयाम	extent, span - the length of a sequence	ALREADY_PRESENT_NOOP	| `vartani_len` | **`vartani_aayam`** | आयाम | extent, span - the length of a sequence |
+docs/VOCABULARY-DERIVATION.md	76	vartani_cmp	vartani_tul	तुल् (तुलना)	to weigh, to compare	ALREADY_PRESENT_NOOP	| `vartani_cmp` | **`vartani_tul`** | तुल् (तुलना) | to weigh, to compare |
+docs/VOCABULARY-DERIVATION.md	77	vartani_cp	vartani_pratilip	प्रतिलिपि	a copy, a duplicate	ALREADY_PRESENT_NOOP	| `vartani_cp` | **`vartani_pratilip`** | प्रतिलिपि | a copy, a duplicate |
