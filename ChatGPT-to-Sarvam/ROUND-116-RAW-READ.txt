@@ -1,0 +1,66 @@
+SUTRAM ROUND-116 — RAW READ/STATIC CHECK RECEIPT
+starting pinned main: 1884e8a327dca73a3b56db19b4197e1baac3ee06
+assignment: Sarvam-to-ChatGPT/ROUND-116.md blob 55de0a39dc223f2fed40592cb817802812637208
+priority: Sanskrit only until v1.0; remaining 10 language packs frozen
+canonical completion: docs/PATH-TO-COMPLETION.md (historical v315 measures, not live R40)
+WS1 proposed substitutions: 35
+source files with exact-match proposals: 15
+verified old line occurrence count for each: 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+ambiguous line matches: 0
+no source modified: YES
+TSV Git blob: 38eca6bbf6cadb03827cc409a3f30f16bef058ff
+WS1 machine table: ChatGPT-to-Sarvam/ROUND-116-WS1-EXACT-REPLACEMENTS.tsv
+WS1 human-readable before/after: ChatGPT-to-Sarvam/ROUND-116-WS1-BEFORE-AFTER.md
+missing HTML per-function descriptions (R115): 100; not fabricated as exact replacements
+WS2: NO SIXTH CLASS FOUND; existing API drift/omissions/stale status categories suffice
+WS3 source declarations: 305 across 24 modules
+first components: 91, singletons: 63
+begin with own module: 171
+draft domain11 begins: 102
+compound names with _ : 260; unsegmented: 45
+top recommended prefixes (from source): roop=23 khand=22 suchi=21 ganita=18 varna=18 nighantu=17 phal=14 mala=8
+these eight sum: 141
+last-token suffixes among only 260 compound names: yuj=7 maap=6 gan=6 anwesh=6 antah=6 rikta=5 srij=4 apanay=4 gun=4 nyun=4 khip=3 grah=3
+partner Muse R40 reported (not executed here): gates 37 PASS 0 FAIL 1 NOT-RUN; suite PASS=218 NO-EXPECTATION=4; guard 570 programs, 483 identical, 87 refused identically, 0 DIFFER
+Muse R40 source report blob: 9095619a0dd64717e73a66a251ba7dfc8fd015ac
+Current integration pin status: tools/gates.sh installed; alias guard helper and 251-253 test examples absent (per independent reads and Muse R40)
+native NASM builds, regression suite, Windows acceptance: NOT RUN - no toolchain
+Sanskritist review: NOT RUN
+protected folder modifications: NONE
+
+PINNED SOURCE EXACT MATCH RECEIPTS (file TAB line TAB source blob TAB matching count TAB old text)
+lib/aadhar.smlib	16	9cb21190365de56f0b2899b9a063ace339597f53	1	# Caller allocates out with >= 4*n cells (70 cells sufficed for
+lib/aadhar.smlib	17	9cb21190365de56f0b2899b9a063ace339597f53	1	# n <= 21 in base 2; n >= 22 overflowed the internal buffer).
+lib/aadhar.smlib	18	9cb21190365de56f0b2899b9a063ace339597f53	1	# Base outside 2..16: returns 0 (base 0 trapped with SIGFPE).
+lib/brihat.smlib	253	3ff9e2960ad09aa5527d38b297d7eca6390f4bae	1	# brihat_shesh(num, shesh, res, n) — res = num % shesh, where num has 2n digits
+lib/brihat.smlib	269	3ff9e2960ad09aa5527d38b297d7eca6390f4bae	1	# brihat_shesh_tr(num, shesh, res, n, tr) — brihat_shesh with the caller's n-digit scratch tr.
+lib/ganita.smlib	75	c616b3b4893443404a8e96d32615a25b6d413873	1	# Fills out[0] = x and out[1] = y.
+lib/ganita.smlib	159	c616b3b4893443404a8e96d32615a25b6d413873	1	# Fills out[0] = a*c + n*b*d  and  out[1] = a*d + b*c.
+lib/gudh.smlib	12	1c757afb96c7e4828b52c1089a3f973ba82efc59	1	# fnv1a(s, len) — FNV-1a 32-bit hash of first `len` chars of mala `s`.
+lib/gudh.smlib	13	1c757afb96c7e4828b52c1089a3f973ba82efc59	1	# Returns an unsigned 32-bit value (may print as negative via likha).
+lib/gudh.smlib	28	1c757afb96c7e4828b52c1089a3f973ba82efc59	1	# fnv1a_varna(s) — FNV-1a of NUL-terminated mala `s` (uses vartani_len).
+lib/kalana.smlib	33	a3a2c47821b439d66bdf1d3450b92ab1e00fcd86	1	# (an even number of intervals); if there are fewer it falls back to the kalana_trapiz.
+lib/khand.smlib	6	66d94186653461d7150ab30321a57cc6d3015fe4	1	# string.smlib) because the compiler has a fixed AST ceiling.
+lib/khand.smlib	20	66d94186653461d7150ab30321a57cc6d3015fe4	1	# larger buffer, with NO terminator at the slice end. Every strb_*
+lib/mala.smlib	1	286150850621ccd0a3f3523a246b3d4314258bf1	1	# lib/mala.smlib — Sutram standard library: dynamic arrays
+lib/mala.smlib	6	286150850621ccd0a3f3523a246b3d4314258bf1	1	# allocates. Safe variants take the element count and return 0 / do
+lib/mala.smlib	7	286150850621ccd0a3f3523a246b3d4314258bf1	1	# nothing on out-of-bounds access.
+lib/nighantu.smlib	5	99405f3103b0deedaf28b3900b6051e9d46438b2	1	# KEY REPRESENTATION: byte strings (the R10 strb_* surface), NOT
+lib/nighantu.smlib	328	99405f3103b0deedaf28b3900b6051e9d46438b2	1	# the return is less than nighantu_maap(src) — check nighantu_maap(dst)
+lib/nighantu.smlib	329	99405f3103b0deedaf28b3900b6051e9d46438b2	1	# afterwards to detect a partial merge. (nighantu_grah's -1 sentinel is not a hazard here: the keys come
+lib/nighantu.smlib	330	99405f3103b0deedaf28b3900b6051e9d46438b2	1	# from nighantu_kunjika_ashtak, so every key is known to exist.)
+lib/phal.smlib	7	733521e0e294a05bc10bd968f854b65097744d32	1	# directly (result_checked_*), and phal_se_siddhi bridges the older
+lib/roop.smlib	309	28e98b0dd4071fbb42c0ba88b698adccb493da3f	1	# roop_pad_madhya(src, sn, width, padbyte, out) — npad on BOTH sides;
+lib/roop.smlib	310	28e98b0dd4071fbb42c0ba88b698adccb493da3f	1	# when width-sn is odd, the extra npad byte goes RIGHT.
+lib/samanvaya.smlib	134	5705b6508fcbeaf948e6a161ea6021f22e5786aa	1	# dot product of two flat vectors (row i of a with column j of b) — convenience
+lib/sangrah.smlib	10	51aee3d837cc97e47b735cd4211096171f903994	1	# ELEMENTS ARE BYTE STRINGS — the same choice as `map.smlib`'s keys:
+lib/suchi.smlib	220	185e1bca0b5c936d82fa554aeef82e3868d4cc90	1	# the min loop by hand or called sort.smlib's laghu on l[2] — which
+lib/suchi.smlib	245	185e1bca0b5c936d82fa554aeef82e3868d4cc90	1	# the sum loop by hand or called sort.smlib's yog on l[2].
+lib/suchi.smlib	252	185e1bca0b5c936d82fa554aeef82e3868d4cc90	1	# sort.smlib's gan on l[2].
+lib/suchi.smlib	258	185e1bca0b5c936d82fa554aeef82e3868d4cc90	1	# form of sort.smlib's anwesh_sarak; before, the caller called
+lib/suchi.smlib	266	185e1bca0b5c936d82fa554aeef82e3868d4cc90	1	# List-shaped form of sort.smlib's asti_sorted.
+lib/suchi.smlib	272	185e1bca0b5c936d82fa554aeef82e3868d4cc90	1	# (WS2, R23). List-shaped form of sort.smlib's dwi_anwesh. The
+lib/vakyank.smlib	81	b90960e0d01bc9ddbd32fcaf0af3113c382bc7dd	1	# varna_tak_ank(buf, n) — parse first n character codes of mala buf as a
+lib/vakyank.smlib	138	b90960e0d01bc9ddbd32fcaf0af3113c382bc7dd	1	# ank_tak_aadhar_varna(n, base, out) — write n in `base` (2/8/10/16) into out
+lib/vakyank.smlib	139	b90960e0d01bc9ddbd32fcaf0af3113c382bc7dd	1	# as character codes (0-9, a-f). Returns count. No util_chinha handling; n >= 0.
+lib/varna.smlib	13	40e52d2d26d7d48c8b2cf837b8448ec7bec2ed39	1	# slice has no terminator at its end. Use the explicit-length strb_*
