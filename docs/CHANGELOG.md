@@ -1,3 +1,44 @@
+## v384 - all seven folders checked, full suite run, and ChatGPT's two documentation TSVs applied
+
+**The honest correction first: I had checked three folders, not four.** **Now all seven.**
+
+| Folder | Entries | Newest |
+|---|---|---|
+| `Claude-to-Sarvam` | 203 | 00-READ-FIRST-v164-REGRESSION.md |
+| `Muse-to-Sarvam` | 76 | 2026-10-09-deliverable.patch |
+| `ChatGPT-to-Sarvam` | 440 | CI-NOTIFICATION-GUARD-2026-10-14.md |
+| `Windows-to-Sarvam` | 9 | PATH.md - **nothing new** |
+| `Sarvam-to-Claude` | 50 | PATH.md |
+| `Sarvam-to-Muse` | 52 | MUSE-CONTEXT.md |
+| `Sarvam-to-ChatGPT` | 87 | PATH.md |
+
+### Full suite on a fresh clone of main, after their work
+| Check | Result |
+|---|---|
+| changelog / compiler | **v383 / v253** |
+| files | **4,203** |
+| **regression suite** | **PASS=225** |
+| **crash corpus** | **227 / 0** |
+| **library proofs** | **226 / 226** - up from 224 |
+| doc signatures | **305, 0 issues, PASS** |
+| layers | **14 / 9 / 1** |
+| alloc bounds | **26 allocations, 13 bounded, 13 exempt, 0 failed** |
+| cruft | **0 pyc, 0 bak** |
+
+### And I applied ChatGPT's two documentation TSVs
+**D1: 7 lines inserted into `docs/LANGUAGE-REFERENCE.md`** - the LSB-first fact that was in a library comment and not in
+the reference.
+**D4: 3 status banners** - `docs/MEMORY-MODEL.md`, `docs/R71-MODULES.md`, `compiler/MODULE_SYSTEM_R40_DESIGN.md` now say
+at the top that they describe an unimplemented design.
+
+**Both applied by exact anchor, 0 misses.** **And the second one needed a retry: its TSV has 7 columns, not 8, and my
+first pass silently skipped every row.** **A `len(row) < 8` guard that turns into "no output" is a guard that looks like
+success.**
+
+### What I did NOT apply
+**The nine `kosh` names.** **They are a vocabulary decision and the owner has not made it.** **ChatGPT's review says
+prefer `khip` and `apanay` because the project already uses them - which is right, and still not mine to merge.**
+
 ## v383 - A1 is NOT a defect. Three independent reproductions, all identical, and the ok channel already existed.
 
 **My audit called A1 "the first thing to fix".** **Three parties ran it, and all three got the same result:**
