@@ -1,0 +1,16 @@
+prakriya dviguna(n) {
+    vitti r = n * 2
+    prati r
+}
+
+mukhya() {
+    vitti yoga = 0
+    vitti i = 1
+    dasham ardha = 0.5
+    yavat (i <= 3) {
+        yoga = yoga + dviguna(i)
+        i = i + 1
+    }
+    likha("yoga = ")
+    likha(yoga)
+}

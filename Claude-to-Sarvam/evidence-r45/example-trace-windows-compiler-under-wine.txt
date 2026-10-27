@@ -1,0 +1,58 @@
+[shodhan] pankti 7
+[shodhan] pankti 8
+    yoga = 0
+[shodhan] pankti 9
+    yoga = 0
+    i = 1
+[shodhan] pankti 10
+    yoga = 0
+    i = 1
+    ardha = 0.500000
+[shodhan] pankti 11
+    yoga = 0
+    i = 1
+    ardha = 0.500000
+[shodhan] pankti 2
+    n = 1
+[shodhan] pankti 3
+    n = 1
+    r = 2
+[shodhan] pankti 12
+    yoga = 2
+    i = 1
+    ardha = 0.500000
+[shodhan] pankti 11
+    yoga = 2
+    i = 2
+    ardha = 0.500000
+[shodhan] pankti 2
+    n = 2
+[shodhan] pankti 3
+    n = 2
+    r = 4
+[shodhan] pankti 12
+    yoga = 6
+    i = 2
+    ardha = 0.500000
+[shodhan] pankti 11
+    yoga = 6
+    i = 3
+    ardha = 0.500000
+[shodhan] pankti 2
+    n = 3
+[shodhan] pankti 3
+    n = 3
+    r = 6
+[shodhan] pankti 12
+    yoga = 12
+    i = 3
+    ardha = 0.500000
+[shodhan] pankti 14
+    yoga = 12
+    i = 4
+    ardha = 0.500000
+yoga = [shodhan] pankti 15
+    yoga = 12
+    i = 4
+    ardha = 0.500000
+12
