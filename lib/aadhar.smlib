@@ -13,9 +13,9 @@ yoj brihat
 
 # brihat_ank_tak(x, n, base, out) — render n-digit bigint x in `base`
 # into mala `out` as digit values (MSB first). Returns digit count.
-# Caller allocates out with >= 4*n cells (70 cells sufficed for
-# n <= 21 in base 2; n >= 22 overflowed the internal buffer).
-# Base outside 2..16: returns 0 (base 0 trapped with SIGFPE).
+# Caller provides at least 1 writable output cell when n <= 0, or
+# at least 4*n cells when n > 0 (base-2 worst case).
+# Base outside 2..16 returns 0 without dividing (older code could trap).
 # -1 (out unchanged) if its scratch cannot be allocated (R38).
 prakriya brihat_ank_tak(x, n, base, out) {
     vitti src = x
