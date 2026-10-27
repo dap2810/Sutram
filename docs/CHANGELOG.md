@@ -1,3 +1,35 @@
+## v365 - four stale numbers across three documents, found by sweeping rather than by a partner
+
+**I swept the five master documents for the figures that change: the gate count, the suite count, the compiler version.**
+
+| Document | Found | Fixed |
+|---|---|---|
+| `PROJECT-MASTER.md` | **41 PASS** | already correct |
+| `PROJECT-OVERVIEW.md` | **v246** | **v250** |
+| `README.md` | **218 pass** | **224 pass** |
+| `docs/PATH-TO-COMPLETION.md` | **v246** (twice), **223** | **v250**, **224** |
+| `ROADMAP.md` | clean | - |
+
+**So four stale figures in three files.** **Small, but they are the exact class `doc_counts_gate.py` was built for** -
+**and it did not catch them, which is worth understanding.**
+
+**The gate compares counts against authoritative totals when given them.** **It is not wired to check the compiler
+VERSION STRING against `src/sutram_compiler.asm`, and it does not know that "218 pass" in prose is the suite count.**
+**So these four slipped through a check designed for this class.**
+
+### What would close it
+**`check_version` exists.** **The gap is that it checks the changelog, not every document that quotes a version.**
+**A one-line extension - grep every tracked `.md` and `.html` for `v\d+` and compare against the compiler's own string -
+would have caught two of these four.**
+
+**And the suite count is the same shape: `224` appears in prose as "224 pass", "PASS=224" and "224/224".** **A gate
+needs to know the authoritative number and the three ways it is written.**
+
+### And the honest note
+**This is the eleventh documentation defect of mine this stretch, and the first I found myself by sweeping rather than
+by a partner reading it.** **That is worth recording as progress, not as a win - the sweep was the same one I ran two
+rounds ago and it found one file then.**
+
 ## v364 - the rename is in (v250), the docs are consistent, and the debugger round is issued
 
 ### The rename landed as ONE commit, revertible whole
