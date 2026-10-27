@@ -1,0 +1,105 @@
+SUTRAM ROUND-117 — PINNED READ-SIDE SOURCE VERIFICATION RECEIPT
+date: 2026-10-27
+assignment: Sarvam-to-ChatGPT/ROUND-117.md
+read pin main: fd02405aad986001c451ee5c5decb91346c7bb53
+compiler v248 on read pin; source compiler blob b9dbbb5f26f338df291b23199e573ad0d3dde22f
+R116 TSV source original blob: 38eca6bbf6cadb03827cc409a3f30f16bef058ff
+R117 application receipt A blob: 6a9780aec1f9d8529580ac909c5af5d0c0f22047
+R117 application receipt B blob: fcd4545cf6efe35ca418bd89a252b57b9e565d2b
+exact replacements on original R116 TSV: 35
+APPLIED: 35
+PENDING: 0
+DRIFT_OR_CONFLICT: 0
+source modules: 15
+expected-old line occurrences: 0
+expected-new line occurrences: 35
+
+CURRENT FILE BLOBS / EDIT COUNTS
+lib/aadhar.smlib edits=3 git_blob=9f1724be077c3c68f5be642fbef7a09ac35cc445
+lib/brihat.smlib edits=2 git_blob=c72df8753a33a4d207aa5c37093b6abe85f54d99
+lib/ganita.smlib edits=2 git_blob=d0d2c6798c859df6893e4eb24c7b4d0212e7d4ed
+lib/gudh.smlib edits=3 git_blob=be9deb614e099a5f90049cd617f6f4b0ae1f3089
+lib/kalana.smlib edits=1 git_blob=5de30858e4e663f4be1fa46f28c3ee38d5e6e6de
+lib/khand.smlib edits=2 git_blob=1769a69dca62983ed8e72e9d3e2cc3268c95b371
+lib/mala.smlib edits=3 git_blob=2c5aa792893563dca3c13d0122089d6def7b6b83
+lib/nighantu.smlib edits=4 git_blob=d00a337da0f6baabb51fb7c11af5caee05d3621f
+lib/phal.smlib edits=1 git_blob=9e1c126cbf2e268777f7479aff3b14accf3bad47
+lib/roop.smlib edits=2 git_blob=3146996954ca33790c7ecfc4a310b1254d088d1e
+lib/samanvaya.smlib edits=1 git_blob=8de0d29f2619d38f4f639728a1220a21996211bb
+lib/sangrah.smlib edits=1 git_blob=8136867a12254ca9c77ba4ffda9565e483e5c1f4
+lib/suchi.smlib edits=6 git_blob=eca929ace7cbf98b15d611c64155970c1638e2ff
+lib/vakyank.smlib edits=3 git_blob=7885bad46d154a4e77d5ac2730bbe7a7ae2f0d4d
+lib/varna.smlib edits=1 git_blob=54fcc67e5837a1be8314832fa44dd565ea273189
+
+DETAILED SOURCE LINE STATUS
+lib/aadhar.smlib:16 old=0 new=1 APPLIED blob=9f1724be077c3c68f5be642fbef7a09ac35cc445
+lib/aadhar.smlib:17 old=0 new=1 APPLIED blob=9f1724be077c3c68f5be642fbef7a09ac35cc445
+lib/aadhar.smlib:18 old=0 new=1 APPLIED blob=9f1724be077c3c68f5be642fbef7a09ac35cc445
+lib/brihat.smlib:253 old=0 new=1 APPLIED blob=c72df8753a33a4d207aa5c37093b6abe85f54d99
+lib/brihat.smlib:269 old=0 new=1 APPLIED blob=c72df8753a33a4d207aa5c37093b6abe85f54d99
+lib/ganita.smlib:75 old=0 new=1 APPLIED blob=d0d2c6798c859df6893e4eb24c7b4d0212e7d4ed
+lib/ganita.smlib:159 old=0 new=1 APPLIED blob=d0d2c6798c859df6893e4eb24c7b4d0212e7d4ed
+lib/gudh.smlib:12 old=0 new=1 APPLIED blob=be9deb614e099a5f90049cd617f6f4b0ae1f3089
+lib/gudh.smlib:13 old=0 new=1 APPLIED blob=be9deb614e099a5f90049cd617f6f4b0ae1f3089
+lib/gudh.smlib:28 old=0 new=1 APPLIED blob=be9deb614e099a5f90049cd617f6f4b0ae1f3089
+lib/kalana.smlib:33 old=0 new=1 APPLIED blob=5de30858e4e663f4be1fa46f28c3ee38d5e6e6de
+lib/khand.smlib:6 old=0 new=1 APPLIED blob=1769a69dca62983ed8e72e9d3e2cc3268c95b371
+lib/khand.smlib:20 old=0 new=1 APPLIED blob=1769a69dca62983ed8e72e9d3e2cc3268c95b371
+lib/mala.smlib:1 old=0 new=1 APPLIED blob=2c5aa792893563dca3c13d0122089d6def7b6b83
+lib/mala.smlib:6 old=0 new=1 APPLIED blob=2c5aa792893563dca3c13d0122089d6def7b6b83
+lib/mala.smlib:7 old=0 new=1 APPLIED blob=2c5aa792893563dca3c13d0122089d6def7b6b83
+lib/nighantu.smlib:5 old=0 new=1 APPLIED blob=d00a337da0f6baabb51fb7c11af5caee05d3621f
+lib/nighantu.smlib:328 old=0 new=1 APPLIED blob=d00a337da0f6baabb51fb7c11af5caee05d3621f
+lib/nighantu.smlib:329 old=0 new=1 APPLIED blob=d00a337da0f6baabb51fb7c11af5caee05d3621f
+lib/nighantu.smlib:330 old=0 new=1 APPLIED blob=d00a337da0f6baabb51fb7c11af5caee05d3621f
+lib/phal.smlib:7 old=0 new=1 APPLIED blob=9e1c126cbf2e268777f7479aff3b14accf3bad47
+lib/roop.smlib:309 old=0 new=1 APPLIED blob=3146996954ca33790c7ecfc4a310b1254d088d1e
+lib/roop.smlib:310 old=0 new=1 APPLIED blob=3146996954ca33790c7ecfc4a310b1254d088d1e
+lib/samanvaya.smlib:134 old=0 new=1 APPLIED blob=8de0d29f2619d38f4f639728a1220a21996211bb
+lib/sangrah.smlib:10 old=0 new=1 APPLIED blob=8136867a12254ca9c77ba4ffda9565e483e5c1f4
+lib/suchi.smlib:220 old=0 new=1 APPLIED blob=eca929ace7cbf98b15d611c64155970c1638e2ff
+lib/suchi.smlib:245 old=0 new=1 APPLIED blob=eca929ace7cbf98b15d611c64155970c1638e2ff
+lib/suchi.smlib:252 old=0 new=1 APPLIED blob=eca929ace7cbf98b15d611c64155970c1638e2ff
+lib/suchi.smlib:258 old=0 new=1 APPLIED blob=eca929ace7cbf98b15d611c64155970c1638e2ff
+lib/suchi.smlib:266 old=0 new=1 APPLIED blob=eca929ace7cbf98b15d611c64155970c1638e2ff
+lib/suchi.smlib:272 old=0 new=1 APPLIED blob=eca929ace7cbf98b15d611c64155970c1638e2ff
+lib/vakyank.smlib:81 old=0 new=1 APPLIED blob=7885bad46d154a4e77d5ac2730bbe7a7ae2f0d4d
+lib/vakyank.smlib:138 old=0 new=1 APPLIED blob=7885bad46d154a4e77d5ac2730bbe7a7ae2f0d4d
+lib/vakyank.smlib:139 old=0 new=1 APPLIED blob=7885bad46d154a4e77d5ac2730bbe7a7ae2f0d4d
+lib/varna.smlib:13 old=0 new=1 APPLIED blob=54fcc67e5837a1be8314832fa44dd565ea273189
+
+GENERATED HTML VS CURRENT SOURCE COMMENT RECONCILIATION
+docs/sutram-stdlib.html git_blob=212d6c97a31455361607b4b797d504b3061f05d9
+affected modules audited: 15
+function rows inspected within affected modules: 221
+source-vs-HTML function description differences: 18
+module=aadhar function_description_differences=1
+module=brihat function_description_differences=2
+module=ganita function_description_differences=2
+module=gudh function_description_differences=1
+module=kalana function_description_differences=1
+module=khand function_description_differences=0
+module=mala function_description_differences=0
+module=nighantu function_description_differences=1
+module=phal function_description_differences=0
+module=roop function_description_differences=1
+module=samanvaya function_description_differences=1
+module=sangrah function_description_differences=0
+module=suchi function_description_differences=6
+module=vakyank function_description_differences=2
+module=varna function_description_differences=0
+source-vs-HTML module-header differences: 7
+header differences: gudh, khand, mala, nighantu, phal, sangrah, varna
+total generated changed regions not reflected: 25
+HTML:436 old prose varna_tak_ank(buf, n); lib/vakyank.smlib:81 corrected prose varna_tak_ank(buf, n, ok)
+HTML:330 old matrix row-column sadish_yoga; lib/samanvaya.smlib:134 corrected flat-vector semantics
+HTML:53 old >=4*n output claim; lib/aadhar.smlib:16-18 corrected n<=0 branch extent
+
+CURRENT PARTNER/TEST SEPARATION
+Changelog v357: 35 comments updated; regression 218, library proofs 224, crash 227: PARTNER-REPORTED on fresh main clone, NOT RUN here
+Muse R41: alternative alias guard delivery, installation status NOT PROVEN on this read pin; compiler source has no r38_mark_alias
+READSIDE source exact occurrence checks: PASS
+READSIDE current-source-vs-committed-generated-HTML static checks: FAIL synchronization
+Native NASM build, compiler tests, Windows, generator executable: NOT RUN - no toolchain
+Sanskrit morphologic certification: NOT RUN
+Protected writes outside ChatGPT-to-Sarvam: NONE
