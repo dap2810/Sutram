@@ -1,3 +1,37 @@
+## v372 - the five inconsistencies go to the partners, with a caution that may stop the rename
+
+**The owner scanned the tree and found five English words in `lib/` that already have a Sanskrit answer in the
+language itself:**
+
+| English in `lib/` | The project's own word | Already a keyword? |
+|---|---|---|
+| `char` (15) | **`akshar`** | yes |
+| `int` (5) | **`anka`** | yes |
+| `div` (1) | **`bhaj`** | used in `ganita` |
+| `slice` (prose) | **`vibhag`** | yes |
+| `len` (30) | **`aayam`** | chosen last round |
+
+**So a learner meets `akshar` in the language and `char` in the library.**
+
+### And the caution that may stop it
+**`akshar`, `aksharank` and `akshar_rakh` already exist as builtins.** **So if `lib/char` is really `aksharank` (the
+code) and not `akshar` (the character), renaming it to `akshar` would put a WRONG name on a RIGHT function - worse than
+leaving it English.**
+
+**So ROUND-47 tells Claude: *"report what each name actually does before you rename it, and rename only where the
+meaning matches."*** **And Muse is asked the same question independently, BEFORE the rename lands** - *"that check has
+to happen before Claude's rename lands, or it happens after and it is a second rename."*
+
+### And the debugger survived Muse's attack
+**Register vs stack: PASS.** **And the scope note is the important one:** *"`total` is absent at pankti 13 and present
+at pankti 14, which is correct, not missing."*
+**`dasham` precision: "VALUE PASS, PRECISION FAIL - limitation, not a lie."** **That distinction is right.**
+
+### And `shodhan` is confirmed
+**ChatGPT:** *"`śodhana` / शोधनम् has dictionary senses cleaning, correcting, improving, and also sifting, investigation
+and examination. As a technical metaphor for exposing wrong state so the author can correct it, it is a defensible,
+appropriate debugger name."* **Kept, with the reasoning recorded rather than only the verdict.**
+
 ## v371 - the README now announces the debugger, because nothing did
 
 **A new capability landed and neither `README.md` nor `PROJECT-MASTER.md` mentioned `--debug` or `shodhan`.** **So the
