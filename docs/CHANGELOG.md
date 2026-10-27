@@ -1,3 +1,31 @@
+## v361 - THE LEXER IS ALREADY CORRECT. `vartani_pratilip` compiles and runs today.
+
+**I ran the two-minute test myself on main v249. Four programs, compiled and run:**
+
+| Program | Tests | Result |
+|---|---|---|
+| `t1` | a `prakriya` named **`prati_test`** | **compiles, prints 6** |
+| `t2` | a `vitti` named **`mukhyata`** | **compiles, prints 7** |
+| `t3` | a `vitti` named **`pratiX`** | **compiles, prints 3** |
+| `t4` | a `vitti` named **`vartani_pratilip`** | **compiles, prints 9** |
+
+**All four compiled and all four printed the right answer.** **So the lexer already requires a keyword to end at a
+non-word character** - `prati` does not match inside `prati_test`, `pratiX` or `vartani_pratilip`.
+
+**The project has been choosing worse words to avoid a problem it does not have.** **`anuk` instead of `pratilip`
+because of a collision that does not occur.**
+
+### What is still genuinely open
+**1. The four cases should be permanent test files**, so a future lexer change cannot break them silently.
+**2. The Devanagari direction is untested** - a Devanagari keyword followed by a Devanagari letter. **If the boundary
+check is byte-naive rather than character-aware, that case fails while these four pass.** **That is the one that
+matters for this project.**
+**3. `check_keyword_prefix.py` is still useful as a REPORT**, not a constraint.
+**4. `pankti` appears 34 times in the compiler source** - mostly the "line" sense in error messages, which is correct
+Sanskrit. **Worth checking whether any is the retired array sense.**
+
+**Recorded in `docs/LEXER-BOUNDARY-TEST.md` with the four programs and their outputs.**
+
 ## v360 - the lexer round: test first, then fix, and the UTF-8 risk named
 
 **The owner's decision: a Sanskrit word must never be blocked by a keyword prefix.** **`prati` is `return`; a library
