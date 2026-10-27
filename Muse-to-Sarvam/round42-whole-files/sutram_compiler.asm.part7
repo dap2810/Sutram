@@ -1,0 +1,112 @@
+    jae .pp_patched
+    lea rax, [rel blob_calls]
+    mov rax, [rax + r12*8]           ; site offset within code buffer
+    mov rcx, RT_BLOB_LEN
+    add rcx, rax
+    add rcx, 4                       ; site is the rel32 field: opcode+4 = next insn
+    mov edx, RT_SYSCALL_OFF
+    sub rdx, rcx                     ; rel32
+    lea rcx, [rel code_buf]
+    add rcx, rax
+    mov [rcx], edx
+    inc r12
+    jmp .pp_patch
+.pp_patched:
+    ; --- write code ---
+    mov rdi, [rel out_fd]
+    lea rsi, [rel code_buf]
+    mov rdx, [rel code_sz]
+    call os_write
+    ; --- pad to file alignment ---
+    mov rax, [rel code_sz]
+    add rax, RT_BLOB_LEN
+    add rax, 0x1FF
+    and rax, 0xFFFFFFFFFFFFFE00
+    sub rax, [rel code_sz]
+    sub rax, RT_BLOB_LEN
+    mov r13, rax
+.pp_pad:
+    test r13, r13
+    jle .pp_done
+    mov rdx, r13
+    cmp rdx, 0x100
+    jbe .pp_pad_go
+    mov rdx, 0x100
+.pp_pad_go:
+    mov rdi, [rel out_fd]
+    lea rsi, [rel pe_pad]
+    ; Windows os_write calls WriteFile, which may clobber caller-saved
+    ; RDX. Preserve the chosen chunk length for forward progress.
+    ; Linux syscall also allows this explicit preservation.
+    push rdx
+    call os_write
+    pop rdx
+    sub r13, rdx
+    jmp .pp_pad
+.pp_done:
+    ; R56: physically write zero-initialized .data raw bytes after .text pad.
+    ; PE's section loader makes these independent writable qwords.
+    mov r12,RT_GLOBAL_BYTES
+.r56_pe_data_loop:
+    test r12,r12
+    jz .pe_write_imports
+    mov rdx,r12
+    cmp rdx,0x100
+    jbe .r56_pe_data_write
+    mov rdx,0x100
+.r56_pe_data_write:
+    mov rdi,[rel out_fd]
+    lea rsi,[rel pe_pad]
+    push rdx
+    call os_write
+    pop rdx
+    sub r12,rdx
+    jmp .r56_pe_data_loop
+.pe_write_imports:
+    mov rdi,[rel out_fd]
+    lea rsi,[rel pe_import_output]
+    mov edx,RT_IMPORT_BYTES
+    call os_write
+.r56_pe_close:
+    mov rdi, [rel out_fd]
+    call os_close
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; ============================================================
+; OS ABSTRACTION LAYER
+;   os_write(fd, buf, len) / os_read(fd, buf, len)
+;   os_open(path, flags, mode) -> fd  / os_close(fd) / os_exit(code)
+;   os_readlink(path, buf, len)
+; Linux: raw syscalls. Windows: kernel32 (see win/winrt.inc).
+; ============================================================
+%ifndef WINDOWS
+os_write:
+    mov rax, 1
+    syscall
+    ret
+os_read:
+    xor rax, rax
+    syscall
+    ret
+os_open:
+    mov rax, 2
+    syscall
+    ret
+os_close:
+    mov rax, 3
+    syscall
+    ret
+os_exit:
+    mov rax, 60
+    syscall
+    hlt
+os_readlink:
+    mov rax, 89
+    syscall
+    ret
+%else
+%include "win/winrt.inc"
+%endif
