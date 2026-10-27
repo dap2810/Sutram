@@ -1,3 +1,34 @@
+## v353 - full test run and audit: everything passes, the tree is clean, and one zip is left on purpose
+
+**Fresh clone of main, built, and measured.**
+
+| Check | Result |
+|---|---|
+| changelog / compiler | **v352 / v246** |
+| files | **3,970** |
+| **regression suite** | **NO-EXPECTATION=4 PASS=218** |
+| **crash corpus** | **227 cases + manifest, 0 failed** |
+| **library proofs** | **224 passed, 0 failed** |
+| layers | **14 core, 9 alloc, 1 std** |
+| alloc bounds | **26 allocations, 13 bounded, 13 exempt, 0 failed** |
+| **doc signatures** | **305 signatures, 0 issues, PASS** |
+| cruft | **0 pyc, 0 bak, 0 stray** |
+
+**Every gate I can run passes.** **And the suite is 218, which matches what the documents now say.**
+
+### The audit: two zips, and one of them is deliberate
+
+| Zip | Verdict |
+|---|---|
+| **`backups/bk.zip`** | **EXEMPT** - part of the snapshot the owner asked for, and `backups/README.md` says not to touch it. **Six entries, intact.** |
+| **`ChatGPT-to-Sarvam/Sutram_R42_Stage1_NASM_And_Sarvam_Handoff_2026-10-08.zip`** | **56 KB, a dated handoff record from 8 October.** **Left on purpose** - it is a historical artefact from the collaboration, not build output. |
+
+**So the tree has no cruft: no `__pycache__`, no `.bak`/`.orig`/`.rej`/`.tmp`, no stray objects.** **The only two archives are one deliberate snapshot and one dated record.**
+
+### What this means
+**The code is stable and the checks agree with each other.** **Nine errors of mine this stretch, and every one was in a
+document rather than in the tree** - **which is why the tree keeps passing while my reports needed correcting.**
+
 ## v352 - the gate count applied: 34 to 37, and only one document needed it
 
 **Muse measured `gates.sh` at 37 PASS / 0 FAIL / 1 NOT-RUN on main.** **I swept the six documents for a stale gate
