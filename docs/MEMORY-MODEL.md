@@ -1,4 +1,5 @@
 # Sutram — current memory observations and proposed ownership model
+> **STATUS — HISTORICAL RESEARCH AND UNIMPLEMENTED DESIGN (R70 snapshot).** Current-state observations below are pinned to an older compiler revision; proposed ownership, borrowing and automatic cleanup are NOT implemented. Specific bounds checks added later do not establish general memory safety. Consult `docs/OPEN-ISSUES.md` and current source for present status.
 
 **Status: current-state inventory followed by an explicitly unimplemented
 design. Sutram does not claim memory safety. No ownership feature is introduced
