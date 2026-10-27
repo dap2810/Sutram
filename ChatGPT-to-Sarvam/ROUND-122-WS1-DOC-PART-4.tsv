@@ -1,0 +1,13 @@
+# Pin 61d5f7b70e30e6711cc2171e57744de2dede70a1 docs corpus slice 45-60; exact lines read directly via GitHub; NOOP includes explanatory English not public identifiers.
+file	line	sha	mode	matched_tokens	old_line_exact	new_line_or_status
+docs/STRING-BYTE-PARITY.md	12	2a0a22d85cbe3cb0c56f79ea81c408eda85c1ec2	ALREADY_PRESENT_NOOP	char;char	| Element | one qword cell per char code, `h[i]` (8-byte stride) | one byte per char, `akshar(s, i)` (1-byte stride) |	NO CHANGE pending verified public API decision
+docs/STRING-BYTE-PARITY.md	23	2a0a22d85cbe3cb0c56f79ea81c408eda85c1ec2	ALREADY_PRESENT_NOOP	slice	| 1 | `varna_maap(s)` — NUL-terminated | `khand_maap(s)` — NUL-terminated | both exist; both scan to the terminator, neither is usable on a slice |	NO CHANGE pending verified public API decision
+docs/STRING-BYTE-PARITY.md	52	2a0a22d85cbe3cb0c56f79ea81c408eda85c1ec2	ALREADY_PRESENT_NOOP	slice	| 30 | — | `khand_pratilip(src, n, out)` | `deliberately not` — same; also the slice-as-repl workaround (below) |	NO CHANGE pending verified public API decision
+docs/STRING-BYTE-PARITY.md	58	2a0a22d85cbe3cb0c56f79ea81c408eda85c1ec2	ALREADY_PRESENT_NOOP	slice	cannot be a slice. An explicit-length `repl` form would need 7	NO CHANGE pending verified public API decision
+docs/STRING-BYTE-PARITY.md	60	2a0a22d85cbe3cb0c56f79ea81c408eda85c1ec2	ALREADY_PRESENT_NOOP	slice	the slice into a terminated buffer first, then pass it (proven by the	NO CHANGE pending verified public API decision
+docs/STRING-BYTE-PARITY.md	65	2a0a22d85cbe3cb0c56f79ea81c408eda85c1ec2	ALREADY_PRESENT_NOOP	slice	scan to the terminator: they cannot be used on slices at all. A slice	NO CHANGE pending verified public API decision
+docs/STRING-BYTE-PARITY.md	68	2a0a22d85cbe3cb0c56f79ea81c408eda85c1ec2	ALREADY_PRESENT_NOOP	char	**The `(s, i)` predicate rule.** The char predicates take no length:	NO CHANGE pending verified public API decision
+docs/STRING-BYTE-PARITY.md	74	2a0a22d85cbe3cb0c56f79ea81c408eda85c1ec2	ALREADY_PRESENT_NOOP	slice	A slice is a (pointer, length) pair into a larger buffer, with NO	NO CHANGE pending verified public API decision
+docs/STRING-BYTE-PARITY.md	75	2a0a22d85cbe3cb0c56f79ea81c408eda85c1ec2	ALREADY_PRESENT_NOOP	slice	terminator at the slice end. Every `strb_*` function takes an explicit	NO CHANGE pending verified public API decision
+docs/STRING-BYTE-PARITY.md	79	2a0a22d85cbe3cb0c56f79ea81c408eda85c1ec2	ALREADY_PRESENT_NOOP	slice	WRONG on slices — never pass a slice to them. The same rules are stated	NO CHANGE pending verified public API decision
+docs/STRING-BYTE-PARITY.md	83	2a0a22d85cbe3cb0c56f79ea81c408eda85c1ec2	ALREADY_PRESENT_NOOP	slice	is `'h'`), so slice pointers must come from variables.	NO CHANGE pending verified public API decision
