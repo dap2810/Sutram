@@ -172,6 +172,14 @@ def step_abi_gcc(out, tmp):
 
 
 def step_abi_msvc(out, tmp):
+    # tests/r35/winffi.c has three __attribute__((naked)) functions in GCC inline assembly (w_align, w_shadow,
+    # w_clobber); MSVC has no x64 inline assembly, so cl cannot compile it. Run 40515082104 confirmed it
+    # (C2143 at lines 43, 48, 53). That is a property of the test file, not an ABI result: NOT-RUN.
+    if b'__attribute__((naked))' in (ROOT / 'tests/r35/winffi.c').read_bytes():
+        record('abi_msvc', 'NOT-RUN', 'winffi.c has GCC naked inline asm; MSVC x64 has no inline asm', [
+            'NOT-RUN: tests/r35/winffi.c uses __attribute__((naked)) + __asm__ (w_align, w_shadow, w_clobber);',
+            'MSVC x64 supports no inline assembly. A MSVC check needs those three moved to a separate .asm file.'], out)
+        return
     cl = shutil.which('cl')
     if not cl:
         record('abi_msvc', 'NOT-RUN', 'no cl.exe on PATH (the workflow sets up the MSVC environment first)',

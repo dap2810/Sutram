@@ -1,0 +1,115 @@
+## warning Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5, actions/upload-artifact@v4. For more informat
+===== r42 win_fixes
+PASS  100 likha: compiles to a PE (exit 0) and prints all of them
+PASS  200 likha: compiles to a PE (exit 0) and prints all of them
+PASS  250 likha: compiles to a PE (exit 0) and prints all of them
+PASS  250 likha through --object + sutram-link: byte-identical to the direct compile
+r34 windows fixes: 4 checks, 0 failed
+
+
+===== r42 versions
+committed win/sutram.exe: rc=0 sha256=ba6e7f6010a340acfb3965dac366ea23e765baec407d7ba3af8177d661724f29
+Sutram 1.0 (v249) - sampurna sutra
+Samskrita-mukhya bhasha -> x86-64 yantra-bhasha
+previous (--old-ref): rc=0 sha256=416c2dbce73d0b7f3f834dfecee4cd80b44807b5607a18880b4a1c86b4eff0fa
+Sutram 1.0 (v248) - sampurna sutra
+Samskrita-mukhya bhasha -> x86-64 yantra-bhasha
+
+===== r42 link_windows
+PASS  identity: 187 programs byte-identical through --object + sutram-link; 0 refused (a module-level vitti); 34 do not compile directly
+PASS  two modules, both orders, calls in both directions
+PASS  10 linker errors, the usage line, and 128 vitti exactly
+PASS  vitti: in .data, shared across modules, one copy each
+PASS  separate: 258 programs with modules print and exit the same; 10 namespaced, refused; 56 do not compile directly; no modules: 150 of 150 byte-identical
+PASS  once: every prakriya of tests/r29/proj in exactly one object
+r34 link (Windows): 1044 checks, 0 failed
+
+
+===== r42 guard
+DIFFER       examples/251_r38_alias_mala_oob.sm old rc=0 3584B, new rc=0 3584B
+DIFFER       examples/252_r38_alias_kosh_oob.sm old rc=0 3584B, new rc=0 4096B
+DIFFER       examples/253_r38_alias_slice_oob.sm old rc=0 3584B, new rc=0 4096B
+DIFFER       examples/254_r42_alias_pankti_len.sm old rc=0 4096B, new rc=0 4608B
+DIFFER       examples/255_r42_alias_kosh_push.sm old rc=1 NoneB, new rc=0 4096B
+573 programs: 475 byte-identical, 93 refused identically, 5 DIFFER
+DIFFER outside the five new alias tests: 0 []
+===== r42 ffi_windows
+PASS  build: coff2smo 0, compile 0, link 0 b'Siddh: 22 prakriya, 1136 baait\nSiddh: 7111 baait sankalit\nSiddh: 8249 baait sankalit\n'
+PASS  winffi.sm prints winffi.expect exactly (27 lines), exit 0
+PASS  sutram_build.py --ffi --foreign winffi.obj: b'sutram-build: 1 module, each compiled once and 1 foreign object, linked to C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\r35-pqujne1d\\b.exe\r\n'
+PASS  the builder's program prints the same
+PASS  sidecar refused: sysv on the Windows compiler (line 1, no object) b'Sutram Error: videshi-ghoshana-patram dushtam, pankti 1\n'
+PASS  sidecar refused: msabi under v1 (line 1, no object) b'Sutram Error: videshi-ghoshana-patram dushtam, pankti 1\n'
+PASS  sidecar refused: a near-miss ABI name (line 1, no object) b'Sutram Error: videshi-ghoshana-patram dushtam, pankti 1\n'
+PASS  sidecar refused: a longer ABI name (line 1, no object) b'Sutram Error: videshi-ghoshana-patram dushtam, pankti 1\n'
+PASS  sidecar refused: v3 (line 1, no object) b'Sutram Error: videshi-ghoshana-patram dushtam, pankti 1\n'
+PASS  sidecar refused: arity 7 (line 2, no object) b'Sutram Error: videshi-ghoshana-patram dushtam, pankti 2\n'
+PASS  the same, msabi under v2: accepted
+PASS  --ffi without --object or --separate: the usage, no output
+PASS  the ordinary compile reads no sidecar: b'Sutram Error: agyat prakriya: w_zero\n'
+PASS  coff2smo refuses calls out b'Sutram Error: COFF-patre agyat sanket: elsewhere\n'
+PASS  coff2smo refuses writable data b'Sutram Error: COFF-patre sanketat anyat bhara-khandam asamarthitam\n'
+PASS  coff2smo refuses a pointer table (relocation in data) b'Sutram Error: COFF-patre punahsthapanam asamarthitam\n'
+PASS  coff2smo refuses unwind tables b'Sutram Error: COFF-patre punahsthapanam asamarthitam (.pdata/.xdata)\n'
+PASS  coff2smo refuses not COFF b'Sutram Error: COFF x64 vastu-patram na\n'
+PASS  coff2smo refuses a truncated object
+PASS  coff2smo: a missing file
+PASS  coff2smo: usage
+r35 ffi (Windows): 21 checks, 0 failed
+
+
+===== r42 alias
+PASS 251_r38_alias_mala_oob: exit 1 (want 1), stdout b'Sutram Error: mala ank seema atikram\n' (want b'Sutram Error: mala ank seema atikram\n')
+PASS 252_r38_alias_kosh_oob: exit 1 (want 1), stdout b'Sutram Error: mala ank seema atikram\n' (want b'Sutram Error: mala ank seema atikram\n')
+PASS 253_r38_alias_slice_oob: exit 1 (want 1), stdout b'Sutram Error: mala ank seema atikram\n' (want b'Sutram Error: mala ank seema atikram\n')
+PASS 254_r42_alias_pankti_len: exit 0 (want 0), stdout b'30\n7\n3\n' (want b'30\n7\n3\n')
+PASS 255_r42_alias_kosh_push: exit 0 (want 0), stdout b'2\n4\n' (want b'2\n4\n')
+
+===== r42 abi_msvc
+cl /c rc=2 winffi.c
+D:\a\Sutram\Sutram\tests\r35\winffi.c(43): error C2143: syntax error: missing ')' before '('
+D:\a\Sutram\Sutram\tests\r35\winffi.c(43): error C2059: syntax error: ')'
+D:\a\Sutram\Sutram\tests\r35\winffi.c(43): error C2059: syntax error: ')'
+D:\a\Sutram\Sutram\tests\r35\winffi.c(43): error C2146: syntax error: missing ')' before identifier 'int64_t'
+D:\a\Sutram\Sutram\tests\r35\winffi.c(43): error C2091: function returns function
+D:\a\Sutram\Sutram\tests\r35\winffi.c(43): error C2085: 'w_align': not in formal parameter list
+D:\a\Sutram\Sutram\tests\r35\winffi.c(43): error C2143: syntax error: missing ';' before '{'
+D:\a\Sutram\Sutram\tests\r35\winffi.c(48): error C2143: syntax error: missing ')' before '('
+D:\a\Sutram\Sutram\tests\r35\winffi.c(48): error C2059: syntax error: ')'
+D:\a\Sutram\Sutram\tests\r35\winffi.c(48): error C2059: syntax error: ')'
+D:\a\Sutram\Sutram\tests\r35\winffi.c(48): error C2146: syntax error: missing ')' before identifier 'int64_t'
+D:\a\Sutram\Sutram\tests\r35\winffi.c(48): error C2091: function returns function
+D:\a\Sutram\Sutram\tests\r35\winffi.c(48): error C2084: function 'int (__cdecl *__attribute__())()' already has a body
+D:\a\Sutram\Sutram\tests\r35\winffi.c(43): note: see previous definition of '__attribute__'
+D:\a\Sutram\Sutram\tests\r35\winffi.c(48): error C2085: 'w_shadow': not in formal parameter list
+D:\a\Sutram\Sutram\tests\r35\winffi.c(48): error C2143: syntax error: missing ';' before '{'
+D:\a\Sutram\Sutram\tests\r35\winffi.c(53): error C2143: syntax error: missing ')' before '('
+D:\a\Sutram\Sutram\tests\r35\winffi.c(53): error C2059: syntax error: ')'
+D:\a\Sutram\Sutram\tests\r35\winffi.c(53): error C2059: syntax error: ')'
+D:\a\Sutram\Sutram\tests\r35\winffi.c(53): error C2146: syntax error: missing ')' before identifier 'int64_t'
+D:\a\Sutram\Sutram\tests\r35\winffi.c(53): error C2091: function returns function
+D:\a\Sutram\Sutram\tests\r35\winffi.c(53): error C2085: 'w_clobber': not in formal parameter list
+D:\a\Sutram\Sutram\tests\r35\winffi.c(53): error C2143: syntax error: missing ';' before '{'
+
+===== r42 abi_gcc
+gcc.EXE (x86_64-posix-seh-rev1, Built by MinGW-Builds project) 15.2.0
+gcc -c rc=0 
+object identical to the committed winffi.obj (GCC 16.2.0 MSYS2): False
+coff2smo: rc=0 Siddh: 22 prakriya, 1200 baait
+compile --ffi --object: rc=0 Siddh: 7111 baait sankalit
+link: rc=0 Siddh: 8313 baait sankalit
+run: exit 0; 27 lines; expect 27 lines
+
+===== r42 SUMMARY
+PASS     versions: Sutram 1.0 (v249) - sampurna sutra / previous: Sutram 1.0 (v248) - sampurna sutra
+PASS     alias: 5/5 run natively and match tests/expect
+PASS     guard: 573 programs: 475 byte-identical, 93 refused identically, 5 DIFFER (outside the 5 new alias tests: 0)
+PASS     ffi_windows: rc=0; r35 ffi (Windows): 21 checks, 0 failed
+PASS     link_windows: rc=0; r34 link (Windows): 1044 checks, 0 failed
+PASS     win_fixes: rc=0; r34 windows fixes: 4 checks, 0 failed
+PASS     abi_gcc: gcc.EXE (x86_64-posix-seh-rev1, Built by MinGW-Builds project) 15.2.0: winffi.sm prints winffi.expect exactly: True (object same as committed: False)
+FAIL     abi_msvc: cl could not compile winffi.c
+
+PASS 7  FAIL 1  NOT-RUN 0
+
+## failure Process completed with exit code 1.
