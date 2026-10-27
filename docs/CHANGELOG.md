@@ -1,3 +1,35 @@
+## v379 - the full audit: 30 open issues, and six of them are mine
+
+**`docs/OPEN-ISSUES.md` lists everything the passing checks do not cover.** **Suite 224, corpus 227/0, proofs 224/224,
+signatures 305/305 - and thirty things still open.**
+
+### The six real defects
+1. **A `kosh` pop on empty ABORTS with no ok channel** - ChatGPT's finding. **A design defect, not a missing feature.**
+2. **Fifteen mutants survived every proof** - including **a sign error in `madhava_sin`/`cos`/`atan`**.
+3. **818 mutants undecided** - the library is proven against known bugs, not proven correct.
+4. **`sat_div`** - a comment naming a function that does not exist.
+5. **The `kosh` growth leak** - ~15.3 bytes/item, no free primitive.
+6. **`yoj` fails with `agyat prakriya`** instead of saying the module is missing - **I hit this writing a twelve-line
+example.**
+
+### The nine English words still in the language
+**`kosh_push`, `kosh_pop`, `kosh_cap`, `kosh_clear`, `kosh_empty`, `kosh_peek`, `kosh_dequeue`, `kosh_enqueue`,
+`kosh_len`** - **plus `pankti_len`.** **And ChatGPT found the project already has `khip` and `apanay` for two of them.**
+
+### And the process failures, which are mine
+- **Five times I concluded "it is broken" and was wrong five times** - lexer, concatenation size, version check,
+  debugger, reverse conversion
+- **I reported 55 renames when 2 needed it** - a grep counted internal labels as API
+- **The stale tarball produced a false absence** - and I had written the warning down before violating it
+- **A partner attributed `laghu` to the owner** - a suggestion recorded as a decision
+
+### What I would fix first
+**The `kosh` abort, then the 15 survivors, then the debugger's usability, then the nine words, then the type
+decision** - **in that order, because the first is a defect a user will hit and the last is yours.**
+
+**And the process fix: every round from now on says what it will do when the feature turns out to be already correct.**
+**Because that has been the answer five times out of five.**
+
 ## v378 - `laghu` run for real: 1234 -> 4 3 2 1 -> 1234, exit 0
 
 **A twelve-line program, compiled with v253 and run.**
