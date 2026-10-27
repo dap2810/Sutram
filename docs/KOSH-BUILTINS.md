@@ -109,6 +109,32 @@ empty kosh_peek(k):    Sutram Error: riktat koshat kosh_peek
 empty kosh_dequeue(k): Sutram Error: riktat koshat kosh_dequeue
 ```
 
+### Guarding an empty store — the pattern to use
+
+The three traps above stop the program. There is no `_ok` variant that returns a status, so the check is the
+programmer's job, and `kosh_len` is the check:
+
+```sutram
+mukhya()
+    kosh a[4]
+    kosh_push(a, 10)
+    kosh_push(a, 20)
+
+    yavat (kosh_len(a) > 0)
+        likha(kosh_pop(a))
+        likha("\n")
+
+    prati 0
+```
+
+`kosh_len(a)` is 0 exactly when `a` is empty, so `yadi (kosh_len(a) > 0)` or `yavat (kosh_len(a) > 0)` is the guard.
+Use it before every `pop`, `peek` or `dequeue` on a store whose emptiness you have not already established.
+
+**Measured, not assumed.** A program that pops an empty `kosh` prints
+`Sutram Error: riktat koshat kosh_pop` and stops — verified on compiler v253 with three separate programs, one per
+operation.
+
+
 All three exit 1. There is **no** `ok[0]` channel here, unlike the
 library's `chay_apanay`/`avali_nishkas`, which return `ok[0] = 0` on empty.
 Code that must survive an empty `peek`/`dequeue` must check
