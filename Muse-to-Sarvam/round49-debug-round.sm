@@ -1,0 +1,13 @@
+mukhya() {
+    dasham a = 1.0000001
+    dasham b = 1.0000004
+    dasham d = (b - a) * 10000000.0
+    dasham t = 0.0000001
+    dasham u = 0.0
+    dasham e = (t - u) * 10000000.0
+    likha(a)
+    likha(b)
+    likha(d)
+    likha(t)
+    likha(e)
+}
