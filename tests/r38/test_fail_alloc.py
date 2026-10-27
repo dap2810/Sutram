@@ -62,20 +62,20 @@ PROBES = {
     'brihat_shesh': ('brihat', '''    vitti x = nirmmita(16 * 8)
     vitti m = nirmmita(8 * 8)
     vitti r = nirmmita(8 * 8)
-    brihat_ank_se_anka(12345, x, 16)
-    brihat_ank_se_anka(97, m, 8)
-    brihat_ank_se_anka(7, r, 8)
-''', 'brihat_shesh(x, m, r, 8)', 3, 1, '-1', 'brihat_ank_tak_anka(r, 8)', '7'),
+    brihat_ank_se_laghu(12345, x, 16)
+    brihat_ank_se_laghu(97, m, 8)
+    brihat_ank_se_laghu(7, r, 8)
+''', 'brihat_shesh(x, m, r, 8)', 3, 1, '-1', 'brihat_ank_tak_laghu(r, 8)', '7'),
     'brihat_ghatmod': ('brihat', '''    vitti x = nirmmita(8 * 8)
     vitti m = nirmmita(8 * 8)
     vitti r = nirmmita(8 * 8)
-    brihat_ank_se_anka(3, x, 8)
-    brihat_ank_se_anka(97, m, 8)
-    brihat_ank_se_anka(7, r, 8)
-''', 'brihat_ghatmod(x, 5, m, r, 8)', 3, 3, '-1', 'brihat_ank_tak_anka(r, 8)', '7'),
+    brihat_ank_se_laghu(3, x, 8)
+    brihat_ank_se_laghu(97, m, 8)
+    brihat_ank_se_laghu(7, r, 8)
+''', 'brihat_ghatmod(x, 5, m, r, 8)', 3, 3, '-1', 'brihat_ank_tak_laghu(r, 8)', '7'),
     'brihat_ank_tak': ('aadhar', '''    vitti x = nirmmita(4 * 8)
     vitti o = nirmmita(16 * 8)
-    brihat_ank_se_anka(13, x, 4)
+    brihat_ank_se_laghu(13, x, 4)
     o[0] = 9
 ''', 'brihat_ank_tak(x, 4, 2, o)', 2, 2, '-1', 'o[0]', '9'),
     'mil_shreni': ('shreni', '''    vitti a = nirmmita(4 * 8)

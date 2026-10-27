@@ -1,17 +1,17 @@
 yoj brihat
 mukhya() {
     vitti a = nirmmita(8 * 8)
-    likha(brihat_ank_se_anka(12345, a, 8))
+    likha(brihat_ank_se_laghu(12345, a, 8))
     likha("\n")
-    likha(brihat_ank_tak_anka(a, 8))
+    likha(brihat_ank_tak_laghu(a, 8))
     likha("\n")
-    likha(brihat_ank_se_anka(0, a, 8))
+    likha(brihat_ank_se_laghu(0, a, 8))
     likha("\n")
-    likha(brihat_ank_tak_anka(a, 8))
+    likha(brihat_ank_tak_laghu(a, 8))
     likha("\n")
     # 8 digits cannot hold 123456789 (9 digits) -> truncated, returns 0
-    likha(brihat_ank_se_anka(123456789, a, 8))
+    likha(brihat_ank_se_laghu(123456789, a, 8))
     likha("\n")
-    likha(brihat_ank_tak_anka(a, 8))
+    likha(brihat_ank_tak_laghu(a, 8))
     likha("\n")
 }
