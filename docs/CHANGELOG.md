@@ -1,3 +1,30 @@
+## v374 - two names, not three, and they are a naming question rather than a translation
+
+**I read the three names I had proposed. The answer is smaller and less obvious than I said.**
+
+### `sat_div` is not where I claimed
+**A tree-wide search finds it only inside old evidence JSON files, never in `lib/`.** **My earlier list came from a loose
+regex and I did not confirm the hit.** **So it is not a name to rename - it is a name I mis-reported.**
+
+### The two `brihat` functions are real, and they are not simple renames
+**`brihat_ank_se_int(val, arr, n)` converts an int to a digit array; `brihat_ank_tak_int(arr, n)` converts back.**
+**So `int` there means the NATIVE MACHINE INTEGER, and the project's keyword for that type is `anka`.**
+
+**But `ank` is already in the name, meaning "digit".** **So `brihat_ank_se_anka` would use one word in two senses in one
+identifier - worse than the English it replaces.**
+
+**That is a naming question, not a missing word.** **The pair is *big number* against *machine integer*, and the project
+has no single word for the second distinct from `ank`.**
+
+**My proposal, for the owner:** **`brihat_ank_se_laghu` and `brihat_ank_tak_laghu`** - **`laghu` (light, small) is the
+conventional opposite of `brihat` (great)**, it avoids reusing `ank`, **and the pair reads as a pair** - which the
+English does not, because `int` says nothing about being the smaller of two representations.
+
+### And a caution about my own evidence
+**This check ran against a tarball that has already served me a stale file once this session.** **So the absence of
+`sat_div` from `lib/` should be confirmed against the API before anyone acts on it.** **A finding of absence is exactly
+what a stale tree produces for free.**
+
 ## v373 - I measured the English in `lib/`, and my own round was wrong in scale
 
 **I told the partners to rename `char`->`akshar`, `int`->`anka`, `div`->`bhaj`, `len`->`aayam` across `lib/`. Then I
