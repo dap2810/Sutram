@@ -5,6 +5,8 @@
 !tests/r32/*.o
 !tests/r33/*.o
 *.obj
+# R35: except the Windows FFI tests' COFF objects (tests/r35/OBJECTS.md)
+!tests/r35/*.obj
 *.exe
 *.bin
 

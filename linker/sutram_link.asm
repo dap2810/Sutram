@@ -611,6 +611,26 @@ _start:
     imul rbx, rax, OBJ_SIZE
     lea rcx, [rel objs]
     add rbx, rcx
+    ; R35: in a PE every object after the first starts on a 16-byte boundary
+    ; of the image (its code begins at RVA 0x1000 + RT_BLOB_LEN): C code from
+    ; sutram-coff2smo reads 16-byte constants with aligned SSE instructions. The
+    ; padding is int3, never reached. The first object, and the ELF, do not move.
+    cmp qword [rel target_w], 0
+    je .based
+    test r12, r12
+    jz .based
+.pad:
+    mov rax, [rel out_size]
+    lea rcx, [rax + RT_BLOB_LEN]
+    test ecx, 15
+    jz .based
+    cmp rax, OUT_CAP
+    jae .full
+    lea rcx, [rel out_code]
+    mov byte [rcx + rax], 0xCC
+    inc qword [rel out_size]
+    jmp .pad
+.based:
     mov rax, [rel out_size]
     mov [rbx + 56], rax             ; base
     mov rdx, [rbx + 16]

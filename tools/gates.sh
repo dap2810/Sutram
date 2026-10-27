@@ -37,7 +37,7 @@ echo
 # files themselves instead of the index, so it never says NOT-RUN. The two
 # readings agree when the tree is the committed one; they differ only after a
 # chmod that is not yet in the index, which `git ls-files -s` would still show.
-EXES="sutram_compiler sutram-ide sutram-gui sutram-fmt sutram-link sutram-elf2smo"
+EXES="sutram_compiler sutram-ide sutram-gui sutram-fmt sutram-link sutram-elf2smo sutram-coff2smo"
 if command -v git >/dev/null 2>&1 && git rev-parse --git-dir >/dev/null 2>&1; then
   m=$(git ls-files -s $EXES | awk '$1 != "100755" {print $4}' | tr '\n' ' ')
   for f in $EXES; do git ls-files --error-unmatch "$f" >/dev/null 2>&1 || m="$m$f(not committed) "; done   # R28: a missing one is not a pass
@@ -76,6 +76,11 @@ $NASM -f elf64 linker/sutram_elf2smo.asm -o /tmp/g_e.o 2>/tmp/g_e.log \
   && $LD -o ./sutram-elf2smo /tmp/g_e.o 2>>/tmp/g_e.log \
   && line "build: ELF reader (R32)" "ok  ($(wc -c < sutram-elf2smo) B)" \
   || bad "build: ELF reader (R32)" "see /tmp/g_e.log"
+
+$NASM -f elf64 -I. linker/sutram_coff2smo.asm -o /tmp/g_k.o 2>/tmp/g_k.log \
+  && $LD -o ./sutram-coff2smo /tmp/g_k.o 2>>/tmp/g_k.log \
+  && line "build: COFF reader (R35)" "ok  ($(wc -c < sutram-coff2smo) B)" \
+  || bad "build: COFF reader (R35)" "see /tmp/g_k.log"
 
 [ "$BUILD_FAIL" = 1 ] && { echo; echo "compiler did not build — gates not run"; exit 1; }
 echo
@@ -119,6 +124,8 @@ run_gate() {                      # name, then the command
     "R31 incremental")  line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r31 incremental: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c6-80)";; esac ;;
     "R32 FFI")          line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r32 ffi: //'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c6-80)";; esac ;;
     "R33 FFI kinds")    line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r33 ffi kinds: //'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c6-80)";; esac ;;
+    "R35 COFF reader")  line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r35 coff2smo: //'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
+    "COFF reader fuzzer") line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 broke the contract"*) ok "$name ($(echo "$line" | sed 's/fuzz_coff2smo: seed [0-9]*, //; s/, 0 broke the contract//'))";; *) bad "$name" "${line:-no summary}";; esac ;;
     "R34 Windows fixes") line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r34 windows fixes: //'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "FFI fuzzer")       line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 differ"*) ok "$name ($(echo "$line" | sed 's/fuzz_ffi: seed [0-9]*, //; s/ printed values.*//'))";; *) bad "$name" "${line:-no summary}";; esac ;;
     "ELF reader fuzzer") line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 broke the contract"*) ok "$name ($(echo "$line" | sed 's/fuzz_elf2smo: seed [0-9]*, //; s/, 0 broke the contract//'))";; *) bad "$name" "${line:-no summary}";; esac ;;
@@ -153,6 +160,8 @@ run_gate "R30 module vitti"  python3 tests/r30/test_vitti.py --compiler ./sutram
 run_gate "R31 incremental"   python3 tests/r31/test_incremental.py --compiler ./sutram_compiler --linker ./sutram-link   # R31: --cache rebuilds only what changed; the same executable as a clean build
 run_gate "R32 FFI"           python3 tests/r32/test_ffi.py --compiler ./sutram_compiler --linker ./sutram-link --elf2smo ./sutram-elf2smo   # R32: C functions, checked declarations, read from ELF
 run_gate "R33 FFI kinds"     python3 tests/r33/test_ffi_kinds.py --compiler ./sutram_compiler --linker ./sutram-link --elf2smo ./sutram-elf2smo   # R33: f64, ptr, void; checked; the stage-2 reader
+run_gate "R35 COFF reader"   python3 tests/r35/test_coff2smo.py --coff2smo ./sutram-coff2smo   # R35: the Windows FFI's COFF reader - the same bytes as on Windows; its refusals
+run_gate "COFF reader fuzzer" python3 tools/fuzz_coff2smo.py --seed 35 --count 3000 --coff2smo ./sutram-coff2smo --out /tmp/fuzz-coff2smo-gate   # R35: malformed COFF: no crash, no hang, no output on a refusal
 run_gate "R34 Windows fixes" python3 tests/r34/test_windows_fixes.py --compiler ./sutram_compiler   # R34: a PE program with more than 256 runtime calls (the compiler crashed); PE through the Linux compiler here
 run_gate "FFI fuzzer"       python3 tools/fuzz_ffi.py --seed 33 --count 60 --compiler ./sutram_compiler --linker ./sutram-link --elf2smo ./sutram-elf2smo --out /tmp/fuzz-ffi-gate   # R33: random programs against a model
 run_gate "ELF reader fuzzer" python3 tools/fuzz_elf2smo.py --seed 33 --count 3000 --elf2smo ./sutram-elf2smo --out /tmp/fuzz-elf2smo-gate   # R33: malformed objects: no crash, no hang, no output on a refusal
@@ -183,7 +192,7 @@ fi
 # Windows cannot be run here. R34: it HAS been run, on real Windows 11 (Windows-to-Sarvam/,
 # Claude-to-Sarvam/evidence-r34/): there, run tests/r34/test_link_windows.py,
 # tools/ide_examples_windows.ps1 and tools/accept-windows.ps1. Say plainly it is not run here.
-skip "Windows execution" "cannot run here (Linux) - on Windows: tests/r34/test_link_windows.py, tools/ide_examples_windows.ps1, tools/accept-windows.ps1"
+skip "Windows execution" "cannot run here (Linux) - on Windows: tests/r34/test_link_windows.py, tests/r35/test_ffi_windows.py, tools/ide_examples_windows.ps1, tools/accept-windows.ps1"
 
 # R38: doc counts, LAST. doc_counts_gate.py normally runs gates.sh itself, which
 # would recurse if called from here. It now accepts --totals/--suite-pass (see its

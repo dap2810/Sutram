@@ -1,0 +1,53 @@
+# ROUND-35: the FFI on Windows - the Microsoft x64 ABI. Every declaration in
+# winffi.sffi, from winffi.obj (C, compiled for Windows). Each weighted sum shows
+# a swapped or misplaced argument as a different number.
+prakriya live(n) {
+    vitti t = n * 2
+    vitti r = w_five(t, 1, 1, 1, 1)
+    prati r + t
+}
+mukhya() {
+    likha(w_zero())
+    likha(w_one(14))
+    likha(w_four(1, 2, 3, 4))
+    likha(w_five(1, 2, 3, 4, 5))
+    likha(w_six(1, 2, 3, 4, 5, 6))
+    likha(w_mixed(1, 2.5, 3, 4.25))
+    likha(w_fmix(1.5, 2, 3.5, 4))
+    likha(w_i3f(1, 2, 3, 4.5))
+    likha(w_mix6(1, 2.0, 3, 4.0, 5, 6.0))
+    likha(w_f4(1.0, 2.0, 3.0, 4.5))
+    likha(w_f6(1.0, 2.0, 3.0, 4.0, 5.0, 6.0))
+    likha(w_neg(2.5))
+    likha(w_abs(0.0 - 3.25))
+    likha(w_trunc(9.75))
+    likha(w_strlen("namaste"))
+    kosh xs[4]
+    kosh_push(xs, 10)
+    kosh_push(xs, 20)
+    kosh_push(xs, 30)
+    likha(w_sum(xs, 3))
+    w_set(xs, 1, 200)
+    likha(xs[1])
+    likha(w_sum(xs, 3))
+    kosh dasham ys[2]
+    kosh_push(ys, 0.25)
+    kosh_push(ys, 0.5)
+    likha(w_fsum(ys, 2))
+    w_nothing()
+    likha(w_align())
+    vitti a = 11
+    vitti b = 22
+    vitti s = w_shadow(1, 2, 3, 4)
+    likha(a + b)
+    likha(s)
+    vitti x = 5
+    dasham y = 1.5
+    vitti z = w_clobber() + x * 2
+    likha(z)
+    likha(y)
+    likha(w_four(w_one(1), 2, w_zero() - 39, 4))
+    likha(live(1))
+    dasham h = w_neg(w_abs(0.0 - 2.0)) + 1.0
+    likha(h)
+}

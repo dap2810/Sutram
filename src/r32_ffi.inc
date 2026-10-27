@@ -15,6 +15,13 @@
 ;   sutram-ffi-v1  R32's form, unchanged: i64 arguments, an i64 result
 ;   sutram-ffi-v2  R33's kinds: i64, f64, ptr arguments; i64, f64, ptr or void
 ; so a v1 file never means more than v1 promised. ASCII, no spaces, no CR, at most 8192 bytes and 64 declarations.
+; R35: the header's second field is the ABI, and it must be the target's:
+;   sutram-ffi-v1|linux-x86_64-sysv      or  sutram-ffi-v2|linux-x86_64-sysv     (an ELF program)
+;   sutram-ffi-v2|windows-x86_64-msabi   (a PE program - the Windows compiler; v2 only)
+; Under msabi a call is the Microsoft x64 one (ChatGPT ROUND-100-WS3): argument k
+; by its POSITION - rcx, rdx, r8, r9, or xmm0..xmm3 for an f64 - the 5th and 6th
+; on the stack above a 32-byte shadow space reserved for every call, rsp = 0 mod
+; 16 at the call. Varargs, structs and callbacks do not exist in the sidecar.
 ;
 ; What a declaration does, and what it never does:
 ;   * the sidecar is read once, after parsing (in SUTRAM_LANG's language) and
@@ -51,6 +58,16 @@ section .data
     r32_header    db "sutram-ffi-v1|linux-x86_64-sysv", 10
     r32_header_len equ $ - r32_header
 R34_VERSION_AT equ 12
+    ; R35: the header's second field is the ABI, and it must be the target's:
+    ; an ELF program calls linux-x86_64-sysv, a PE program windows-x86_64-msabi
+    ; (which exists only from v2: v1 is R32's form exactly).
+    r35_abi_sysv  db "linux-x86_64-sysv", 10
+    r35_abi_sysv_len equ $ - r35_abi_sysv
+    r35_abi_ms    db "windows-x86_64-msabi", 10
+    r35_abi_ms_len equ $ - r35_abi_ms
+section .bss
+    r35_msabi     resq 1              ; R35: 1 = the sidecar's ABI is windows-x86_64-msabi
+section .data
 
 section .text
 
@@ -158,18 +175,22 @@ r32_load_sidecar:
     lea rsi, [rel r32_buf]
     cmp byte [rsi + r12 - 1], 10      ; ends with LF
     jne r32_bad
-    ; the header, exactly
+    ; the header: "sutram-ffi-v" <1 or 2> "|" <the ABI> LF, exactly
     mov qword [rel r32_line], 1
-    cmp r12, r32_header_len
+    cmp r12, R34_VERSION_AT + 2
     jb r32_bad
     lea rdi, [rel r32_header]
     xor ecx, ecx
 .hdr:
-    cmp rcx, r32_header_len
-    jae .hdr_ok
+    cmp rcx, R34_VERSION_AT
+    jae .hdr_version
     mov al, [rsi + rcx]
-    cmp rcx, R34_VERSION_AT           ; R34: the version digit, 1 or 2
-    jne .hdr_byte
+    cmp al, [rdi + rcx]
+    jne r32_bad
+    inc rcx
+    jmp .hdr
+.hdr_version:
+    mov al, [rsi + rcx]               ; R34: the version digit, 1 or 2
     sub al, '0'
     cmp al, 1
     jb r32_bad
@@ -177,15 +198,52 @@ r32_load_sidecar:
     ja r32_bad
     movzx eax, al
     mov [rel r34_ffi_version], rax
-    inc rcx
-    jmp .hdr
-.hdr_byte:
-    cmp al, [rdi + rcx]
+    cmp byte [rsi + R34_VERSION_AT + 1], '|'
     jne r32_bad
-    inc rcx
-    jmp .hdr
+    ; R35: the ABI, one of two, and it must be the target's
+    lea r13, [rel r35_abi_sysv]
+    mov r14d, r35_abi_sysv_len
+    xor r15d, r15d                    ; 0: sysv
+    call .abi_is
+    jz .abi_ok
+    lea r13, [rel r35_abi_ms]
+    mov r14d, r35_abi_ms_len
+    mov r15d, 1                       ; 1: msabi
+    call .abi_is
+    jnz r32_bad
+.abi_ok:
+    cmp r15, [rel target_pe]          ; a PE program calls msabi, an ELF one sysv
+    jne r32_bad
+    test r15, r15
+    jz .hdr_ok
+    cmp qword [rel r34_ffi_version], 2  ; msabi exists only from v2
+    jne r32_bad
 .hdr_ok:
-    add rsi, r32_header_len
+    mov [rel r35_msabi], r15
+    lea rsi, [rsi + R34_VERSION_AT + 2 + r14]
+    jmp .decl_start
+; .abi_is(r13 = the ABI name with its LF, r14 = its length): ZF = 1 when the
+; header's ABI field (from byte R34_VERSION_AT + 2) is exactly it.
+.abi_is:
+    lea rax, [R34_VERSION_AT + 2 + r14]
+    cmp rax, r12
+    ja .abi_no
+    xor ecx, ecx
+.abi_l:
+    cmp rcx, r14
+    jae .abi_yes
+    mov al, [rsi + R34_VERSION_AT + 2 + rcx]
+    cmp al, [r13 + rcx]
+    jne .abi_no
+    inc rcx
+    jmp .abi_l
+.abi_yes:
+    xor eax, eax                      ; ZF = 1
+    ret
+.abi_no:
+    or eax, 1                         ; ZF = 0
+    ret
+.decl_start:
     mov qword [rel r32_ffi_count], 0
 .decl:
     lea rax, [rel r32_buf]
@@ -670,6 +728,8 @@ r33_gen_foreign_funcall:
 .bad:
     jmp r33_kind_error
 .args_done:
+    cmp qword [rel r35_msabi], 0      ; R35: Microsoft x64, by position
+    jne .ms
     ; pop them, the last first, into their registers
     xor ecx, ecx                      ; integers before argument k
     xor edx, edx                      ; f64s before argument k
@@ -732,6 +792,67 @@ r33_gen_foreign_funcall:
 .call:
     mov rsi, r14
     call r32_gen_foreign_call
+    jmp .result
+.ms:
+    ; R35: Microsoft x64 (ChatGPT ROUND-100-WS3). Argument k goes by its POSITION
+    ; among all the arguments: k < 4 to rcx, rdx, r8, r9 - or, an f64, to xmm<k>
+    ; (not the next free xmm, as System V does); k = 4, 5 to the stack above the
+    ; 32-byte shadow space. Popped the last first: an f64 in a register through
+    ; r11; arguments 5 and 6 into r10 and rax until the frame exists.
+    mov r13, r15
+.ms_pop:
+    test r13, r13
+    jz .ms_call
+    dec r13
+    cmp r13, 4
+    jae .ms_stack
+    movzx eax, byte [r14 + 24 + r13]
+    cmp eax, 1
+    je .ms_xmm
+    lea rcx, [rel r35_pop_ms]
+    movzx edi, word [rcx + r13*2]     ; pop rcx / rdx / r8 / r9
+    test edi, 0xFF00
+    jz .ms_one
+    push rdi
+    call emit_byte                    ; 0x41 prefix
+    pop rdi
+    shr edi, 8
+.ms_one:
+    call emit_byte
+    jmp .ms_pop
+.ms_xmm:
+    mov dil, 0x41                     ; pop r11
+    call emit_byte
+    mov dil, 0x5B
+    call emit_byte
+    mov dil, 0x66                     ; movq xmm<k>, r11 = 66 49 0F 6E (C3 + 8k)
+    call emit_byte
+    mov dil, 0x49
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x6E
+    call emit_byte
+    lea edi, [0xC3 + r13*8]
+    call emit_byte
+    jmp .ms_pop
+.ms_stack:
+    cmp r13, 4
+    jne .ms_sixth
+    mov dil, 0x41                     ; argument 5: pop r10
+    call emit_byte
+    mov dil, 0x5A
+    call emit_byte
+    jmp .ms_pop
+.ms_sixth:
+    mov dil, 0x58                     ; argument 6: pop rax
+    call emit_byte
+    jmp .ms_pop
+.ms_call:
+    mov rsi, r14
+    mov rdx, r15
+    call r35_gen_foreign_call_ms
+.result:
     movzx eax, byte [r14 + 24 + 6]
     cmp eax, 1
     jne .done                         ; i64, ptr: rax; void: a statement, unused
@@ -753,9 +874,86 @@ r33_gen_foreign_funcall:
     pop r12
     ret
 
+; r35_gen_foreign_call_ms(rsi = record, rdx = the argument count): the Microsoft
+; x64 call. Arguments 1-4 are in their registers; 5 in r10, 6 in rax.
+;   mov r11, rsp / and rsp, -16 / push r11      ; rsp = 8 mod 16
+;   sub rsp, 56                                  ; = 0 mod 16: 32 shadow, 5th, 6th, 8 pad
+;   [mov [rsp+32], r10] [mov [rsp+40], rax]      ; the callee sees them at rsp+40, +48
+;   call <foreign symbol>                        ; an R28 relocation
+;   add rsp, 56 / pop rsp                        ; rsp as it was
+; The shadow space is reserved for every call, as the ABI requires. Preserves
+; rbx, r12-r15.
+r35_gen_foreign_call_ms:
+    push rbx
+    push r12
+    mov rbx, rsi
+    mov r12, rdx
+    lea rsi, [rel r35_ms_pre]
+    mov ecx, r35_ms_pre_len
+    call r35_emit_bytes
+    cmp r12, 5
+    jb .call
+    lea rsi, [rel r35_ms_arg5]
+    mov ecx, 5
+    call r35_emit_bytes
+    cmp r12, 6
+    jb .call
+    lea rsi, [rel r35_ms_arg6]
+    mov ecx, 5
+    call r35_emit_bytes
+.call:
+    mov dil, 0xE8                     ; call rel32: a hole named by the foreign symbol
+    call emit_byte
+    mov rax, [rel code_sz]
+    mov rdx, [rel patch_count]
+    cmp rdx, PATCH_LIST_CAP
+    jae .overflow
+    lea r8, [rel patch_list]
+    shl rdx, 4
+    mov [r8 + rdx], rax
+    mov rax, [rbx + 16]
+    mov [r8 + rdx + 8], rax
+    inc qword [rel patch_count]
+    xor edi, edi
+    call emit_u32
+    lea rsi, [rel r35_ms_post]
+    mov ecx, r35_ms_post_len
+    call r35_emit_bytes
+    pop r12
+    pop rbx
+    ret
+.overflow:
+    lea rdi, [rel msg_patch_overflow]
+    jmp capacity_fail
+
+; r35_emit_bytes(rsi = bytes, ecx = count). Preserves rbx, r12-r15.
+r35_emit_bytes:
+    push r12
+    push r13
+    mov r12, rsi
+    mov r13d, ecx
+.l: test r13d, r13d
+    jz .d
+    mov dil, [r12]
+    call emit_byte
+    inc r12
+    dec r13d
+    jmp .l
+.d: pop r13
+    pop r12
+    ret
+
 section .data
     ; pop rdi, rsi, rdx, rcx, r8, r9 (a word: low byte first emitted; 0 high = one byte)
     r33_pop_int dw 0x005F, 0x005E, 0x005A, 0x0059, 0x5841, 0x5941
+    ; R35: pop rcx, rdx, r8, r9 - the Microsoft x64 argument registers, by position
+    r35_pop_ms  dw 0x0059, 0x005A, 0x5841, 0x5941
+    r35_ms_pre  db 0x49, 0x89, 0xE3, 0x48, 0x83, 0xE4, 0xF0, 0x41, 0x53, 0x48, 0x83, 0xEC, 0x38
+    r35_ms_pre_len equ $ - r35_ms_pre
+    r35_ms_arg5 db 0x4C, 0x89, 0x54, 0x24, 0x20   ; mov [rsp+32], r10
+    r35_ms_arg6 db 0x48, 0x89, 0x44, 0x24, 0x28   ; mov [rsp+40], rax
+    r35_ms_post db 0x48, 0x83, 0xC4, 0x38, 0x5C   ; add rsp, 56 / pop rsp
+    r35_ms_post_len equ $ - r35_ms_post
 section .bss
     r33_slot resb 8
 section .text
