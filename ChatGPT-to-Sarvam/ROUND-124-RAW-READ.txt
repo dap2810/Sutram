@@ -1,0 +1,317 @@
+# Sutram Round 124 pinned raw reads
+main = 87015a8fa9cd3b55f868ac49f517b3f657d2b443
+assignment blob = 7dd023095f1a01a90c57e77efa91cb4664e5f485
+
+=== docs/sutram-book-sanskrit.html blob=b181c74f87543df7244624eae592d269d3b62862 original_lines=266-281 ===
+266: <div class="ch" id="ch12"><h2>12. दोषाः दोषसुधारः च <span class="en-gloss">(Errors and debugging)</span></h2>
+267: <p>सूत्रम् पार्स्-दोषेषु पङ्क्ति-संख्यां तथा च तत् टोकन् यत्र अटकितवान् इति वदति:</p>
+268: <pre><code>$ cat galat.sm
+269: mukhya() {
+270:     vitti x = 5
+271:     vitti y = (x
+272:     likha(x)
+273: }
+274: $ ./sutram_compiler galat.sm out.bin
+275: 
+276: Sutram Error: vyakaran dosh, pankti 4:5, shabd '<span class="k" data-tip="अर्थः: print">likha</span>'
+277:       likha(x)
+278:       ^
+279: Sanket: asmin sthane shabdam vyakaranam cha pashyatu.</code></pre>
+280: </div>
+281: <div class="ch" id="ch13"><h2>13. सम्पूर्णः सन्दर्भः <span class="en-gloss">(Complete reference)</span></h2>
+
+=== src/r45_debug.inc blob=cd46e83cda53572d96397bbd8e02228af4a10354 original_lines=1-17 ===
+1: ; ===================================================================
+2: ; ROUND-45: --debug, the smallest useful debugger.
+3: ;
+4: ;   sutram_compiler --debug <in.sm> <out>
+5: ;   sutram_compiler --debug --lang <pak> <in.sm> <out>
+6: ;   sutram_compiler --debug=<name>[,<name>...][@N[-M]] <in.sm> <out>      (R46)
+7: ;
+8: ; R46: --debug=yoga,i shows only those names, and prints no line where none of
+9: ; them is in scope; @N or @N-M prints only statements on lines N.. or N..M
+10: ; (every statement is still counted). At the end of mukhya's body the program
+11: ; prints "[shodhan] samapti, vakya: <statements run>" and every scalar then in
+12: ; scope. The counter is a module-level vitti registered before parsing, named
+13: ; so that a program cannot write it (0shodhan_vakya), incremented by an
+14: ; ordinary generated `c = c + 1` before each statement. Module-level vitti are
+15: ; shown in the trace too (after the locals), unless a var_table entry of the
+16: ; same name would be what the name reads. The summary is not printed when the
+17: ; program ends early (prati in mukhya, sthagita, a runtime error).
+
+=== src/r45_debug.inc blob=cd46e83cda53572d96397bbd8e02228af4a10354 original_lines=153-184 ===
+153:     call r45_emit_count            ; R46: every statement of the file is counted
+154:     mov rax, [rel r45_from]        ; R46: --debug=...@N-M - only lines N..M print
+155:     test rax, rax
+156:     jz .from_ok
+157:     cmp r14, rax
+158:     jb .done
+159: .from_ok:
+160:     mov rax, [rel r45_to]
+161:     test rax, rax
+162:     jz .to_ok
+163:     cmp r14, rax
+164:     ja .done
+165: .to_ok:
+166:     mov edi, 1                     ; with the watch list
+167:     call r45_collect
+168:     cmp qword [rel r45_watch_cnt], 0
+169:     je .print
+170:     cmp qword [rel r45_ncnt], 0    ; R46: watching, and none of them in scope: no line
+171:     je .done
+172: .print:
+173:     ; "[shodhan] pankti <line>\n"
+174:     lea rdi, [rel r45_text]
+175:     lea rsi, [rel r45_head]
+176:     call r45_copy
+177:     mov rax, r14
+178:     call r45_decimal               ; rdi = end, rax = line
+179:     mov byte [rdi], 10
+180:     mov byte [rdi + 1], 0
+181:     call r45_likha_text
+182:     call r45_print_names
+183: .done:
+184:     mov [rel ast_ptr], r15
+
+=== src/r45_debug.inc blob=cd46e83cda53572d96397bbd8e02228af4a10354 original_lines=422-444 ===
+422: ; R46: the summary at the end of mukhya's body: the number of statements run,
+423: ; then every scalar in scope (the watch list does not apply).
+424: r45_gen_summary:
+425:     push r15
+426:     mov qword [rel r45_in_trap], 1
+427:     mov r15, [rel ast_ptr]
+428:     lea rdi, [rel r45_text]
+429:     lea rsi, [rel r45_summary]
+430:     call r45_copy
+431:     mov byte [rdi], 0
+432:     call r45_likha_text
+433:     call alloc_ast
+434:     mov qword [rax], AST_VAR
+435:     lea rcx, [rel r45_counter_name]
+436:     mov [rax + 8], rcx
+437:     call r45_likha_node
+438:     xor edi, edi
+439:     call r45_collect
+440:     call r45_print_names
+441:     mov [rel ast_ptr], r15
+442:     mov qword [rel r45_in_trap], 0
+443:     pop r15
+444:     ret
+
+=== src/r45_debug.inc blob=cd46e83cda53572d96397bbd8e02228af4a10354 original_lines=465-554 ===
+465: ; R46: rdi = an argument. rax = 0 if it is not --debug; 1 if it is --debug or
+466: ; --debug=<spec> (r45_debug set, the spec read); 2 if the spec is malformed.
+467: ;   <spec> = [name{,name}][@N[-M]]   e.g. yoga,i   yoga@20-40   @20
+468: ; The names and numbers are cut out of the argument in place.
+469: r45_match_flag:
+470:     push rbx
+471:     mov rbx, rdi
+472:     lea rsi, [rel r45_flag]        ; "--debug"
+473: .pre:
+474:     mov al, [rsi]
+475:     test al, al
+476:     jz .pre_done
+477:     cmp al, [rbx]
+478:     jne .no
+479:     inc rsi
+480:     inc rbx
+481:     jmp .pre
+482: .pre_done:
+483:     mov al, [rbx]
+484:     test al, al
+485:     jz .yes                        ; exactly --debug
+486:     cmp al, '='
+487:     jne .no                        ; --debugx: not the flag
+488:     inc rbx
+489:     cmp byte [rbx], 0
+490:     je .bad                        ; --debug= with nothing
+491: .name:                             ; a name runs to ',', '@' or the end
+492:     mov al, [rbx]
+493:     cmp al, '@'
+494:     je .range
+495:     test al, al
+496:     jz .yes
+497:     cmp al, ','
+498:     je .bad                        ; an empty name
+499:     mov rcx, [rel r45_watch_cnt]
+500:     cmp rcx, R45_WATCH_CAP
+501:     jae .bad
+502:     lea rdx, [rel r45_watch]
+503:     mov [rdx + rcx*8], rbx
+504:     inc qword [rel r45_watch_cnt]
+505: .name_end:
+506:     mov al, [rbx]
+507:     test al, al
+508:     jz .yes
+509:     cmp al, '@'
+510:     je .cut_range
+511:     cmp al, ','
+512:     je .cut_next
+513:     inc rbx
+514:     jmp .name_end
+515: .cut_next:
+516:     mov byte [rbx], 0
+517:     inc rbx
+518:     cmp byte [rbx], 0
+519:     je .bad                        ; a trailing ','
+520:     jmp .name
+521: .cut_range:
+522:     mov byte [rbx], 0
+523: .range:
+524:     inc rbx                        ; past '@'
+525:     call .number
+526:     test rax, rax
+527:     jz .bad
+528:     mov [rel r45_from], rax
+529:     cmp byte [rbx], 0
+530:     je .yes
+531:     cmp byte [rbx], '-'
+532:     jne .bad
+533:     inc rbx
+534:     call .number
+535:     test rax, rax
+536:     jz .bad
+537:     cmp rax, [rel r45_from]
+538:     jb .bad
+539:     mov [rel r45_to], rax
+540:     cmp byte [rbx], 0
+541:     jne .bad
+542: .yes:
+543:     mov qword [rel r45_debug], 1
+544:     mov eax, 1
+545:     pop rbx
+546:     ret
+547: .no:
+548:     xor eax, eax
+549:     pop rbx
+550:     ret
+551: .bad:
+552:     mov eax, 2
+553:     pop rbx
+554:     ret
+
+=== src/sutram_compiler.asm blob=89495406b5b77258a9699ed5c8c2d51baead1474 original_lines=2207-2240 ===
+2207:     ; R45 --debug <in.sm> <out> (and --debug --lang <pak> <in.sm> <out>): the
+2208:     ; ordinary compile, with a trap before every statement (src/r45_debug.inc).
+2209:     mov rdi, R49_ARG(16)
+2210:     call r45_match_flag            ; R46: --debug or --debug=<names>[@N[-M]]
+2211:     test rax, rax
+2212:     jz .r45_not_debug
+2213:     cmp rax, 1
+2214:     jne .usage                     ; a malformed --debug=<spec>
+2215:     mov rax, R49_ARG(0)
+2216:     cmp rax, 4                     ; prog --debug in out
+2217:     jl .usage
+2218:     mov rdi, R49_ARG(24)
+2219:     lea rsi, [rel str_flag_lang]
+2220:     call strcmp
+2221:     test rax, rax
+2222:     jnz .r45_plain
+2223:     mov rax, R49_ARG(0)
+2224:     cmp rax, 6                     ; prog --debug --lang pak in out
+2225:     jl .usage
+2226:     mov rdi, R49_ARG(32)
+2227:     call try_load_lang
+2228:     mov rax, R49_ARG(40)
+2229:     mov R49_ARG(16), rax
+2230:     mov rax, R49_ARG(48)
+2231:     mov R49_ARG(24), rax
+2232:     jmp .args_ok
+2233: .r45_plain:
+2234:     mov rax, R49_ARG(24)
+2235:     mov R49_ARG(16), rax
+2236:     mov rax, R49_ARG(32)
+2237:     mov R49_ARG(24), rax
+2238:     call maybe_load_env_lang
+2239:     jmp .args_ok
+2240: .r45_not_debug:
+
+=== src/sutram_compiler.asm blob=89495406b5b77258a9699ed5c8c2d51baead1474 original_lines=16976-17021 ===
+16976: .ge_call_panktilen:
+16977:     ; T8b: real pankti declarations carry a hidden runtime length header.
+16978:     ; Preserve historical behavior for arbitrary/raw pointers: pankti_len(p)
+16979:     ; is 0 unless p is a pankti variable in this generated function scope.
+16980:     mov rdi, [rbx+24]
+16981:     call r23_expr_is_slice    ; R23 WS3: pankti_len(s), pankti_len(a[lo:hi]): the slice's length
+16982:     test rax, rax
+16983:     jz .r23_panktilen_not_slice
+16984:     mov rax, [rbx+24]
+16985:     call gen_expr
+16986:     mov dil, 0x48             ; mov rax, [rax+8]
+16987:     call emit_byte
+16988:     mov dil, 0x8B
+16989:     call emit_byte
+16990:     mov dil, 0x40
+16991:     call emit_byte
+16992:     mov dil, 0x08
+16993:     call emit_byte
+16994:     jmp .ge_call_done
+16995: .r23_panktilen_not_slice:
+16996:     mov rax, [rbx+24]
+16997:     cmp qword [rax], AST_VAR
+16998:     jne .ge_call_panktilen_zero
+16999:     mov rdi, [rax+8]
+17000:     call is_array_var
+17001:     test rax, rax
+17002:     jz .ge_call_panktilen_zero
+17003:     mov rax, [rbx+24]
+17004:     call gen_expr
+17005:     mov dil, 0x48             ; mov rax, [rax-8]
+17006:     call emit_byte
+17007:     mov dil, 0x8B
+17008:     call emit_byte
+17009:     mov dil, 0x40
+17010:     call emit_byte
+17011:     mov dil, 0xF8
+17012:     call emit_byte
+17013:     jmp .ge_call_done
+17014: .ge_call_panktilen_zero:
+17015:     mov dil, 0x48             ; xor rax, rax
+17016:     call emit_byte
+17017:     mov dil, 0x31
+17018:     call emit_byte
+17019:     mov dil, 0xC0
+17020:     call emit_byte
+17021:     jmp .ge_call_done
+
+=== lang/sanskrit.lang blob=b7bbbe1e07d258cc67f05e9dad81bca9379e59a6 original_lines=25-29 ===
+25: उद्देश्य agrim
+26: गुण guna
+27: भावना bhavana
+28: पङ्क्ति mala
+29: सृजन ganana
+
+=== lang/sanskrit.lang blob=b7bbbe1e07d258cc67f05e9dad81bca9379e59a6 original_lines=56-61 ===
+56: बन्ध band
+57: निर्मित nirmmita
+58: शब्दम् shabda
+59: पङ्क्तिदैर्घ्य pankti_len
+60: कोशपुष् kosh_push
+61: कोशपोप् kosh_pop
+
+=== docs/LANGUAGE-REFERENCE.md blob=86bc60620bde169a2136cd6b1e934323f94d59bb original_lines=471-495 ===
+471: `a[lo:hi]` is a view of the elements `lo .. hi-1` of a `mala`, an integer `kosh`
+472: or another slice. **Nothing is copied:** a write through the slice changes the
+473: array. `a[lo:]` runs to the end, `a[:hi]` starts at 0, `a[:]` is all of it.
+474: 
+475: ```
+476: prakriya yog(vibhag s) { ... pankti_len(s) ... s[i] ... }
+477: likha(yog(a[2:5]))         # elements 2, 3, 4
+478: vitti s = a[1:7]           # s is a slice: s[0] is a[1]
+479: likha(yog(a))              # a whole mala or kosh is passed as a[:]
+480: ```
+481: 
+482: - **Checked twice at run time:** when made (`0 <= lo <= hi <= length`) and when
+483:   indexed (`s[i]`, `s[i] = v` against the slice's own length), with the array
+484:   bounds diagnostic, exit 1.
+485: - **`vibhag` (Devanagari `विभाग`, and a word in each pack) declares a slice
+486:   parameter.** It takes a slice, or a whole `mala` or integer `kosh`; anything
+487:   else is a compile error (`vibhag: mala, kosh va vibhag apekshita`), as is
+488:   slicing a raw pointer (an untyped parameter, a `nirmmita` result).
+489: - **A variable is a slice when it is declared from one** (`vitti s = a[1:3]`,
+490:   `vitti t = s`) or is a `vibhag` parameter.
+491: - **A slice lives in the frame of the function that makes it:** returning one is a
+492:   compile error (`vibhag prakriyayah na pratyarpaniyah`). A slice made at one place
+493:   in a loop is the same slice each time round (the next iteration remakes it).
+494: - `pankti_len(s)` is the slice's length.
+495: 
