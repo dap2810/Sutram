@@ -1,0 +1,57 @@
+file	anchor_line_at_pin	anchor_exact	insert_mode	sequence	new_line_exact_or_BLANK	old_anchor_count	pinned_source_blob
+docs/LANGUAGE-REFERENCE.md	263	| `sutram --version` | version |	AFTER	1	### Debugging a program with `--debug` (compiler v252)	1	00f06311551de90714e00999d96fafdae8de9d17
+docs/LANGUAGE-REFERENCE.md	263	| `sutram --version` | version |	AFTER	2	<BLANK>	1	00f06311551de90714e00999d96fafdae8de9d17
+docs/LANGUAGE-REFERENCE.md	263	| `sutram --version` | version |	AFTER	3	`--debug` is an **opt-in compile flag**, not a command to inspect the compiler itself. First compile, **then execute the generated program** to see the trace:	1	00f06311551de90714e00999d96fafdae8de9d17
+docs/LANGUAGE-REFERENCE.md	263	| `sutram --version` | version |	AFTER	4	<BLANK>	1	00f06311551de90714e00999d96fafdae8de9d17
+docs/LANGUAGE-REFERENCE.md	263	| `sutram --version` | version |	AFTER	5	```text	1	00f06311551de90714e00999d96fafdae8de9d17
+docs/LANGUAGE-REFERENCE.md	263	| `sutram --version` | version |	AFTER	6	./sutram_compiler --debug demo.sm demo.bin	1	00f06311551de90714e00999d96fafdae8de9d17
+docs/LANGUAGE-REFERENCE.md	263	| `sutram --version` | version |	AFTER	7	./demo.bin	1	00f06311551de90714e00999d96fafdae8de9d17
+docs/LANGUAGE-REFERENCE.md	263	| `sutram --version` | version |	AFTER	8	```	1	00f06311551de90714e00999d96fafdae8de9d17
+docs/LANGUAGE-REFERENCE.md	263	| `sutram --version` | version |	AFTER	9	<BLANK>	1	00f06311551de90714e00999d96fafdae8de9d17
+docs/LANGUAGE-REFERENCE.md	263	| `sutram --version` | version |	AFTER	10	For Devanagari source, `./sutram_compiler --debug --lang sanskrit demo.sm demo.bin` is supported. The normal command `./sutram_compiler demo.sm demo.bin` produces no debug trace.	1	00f06311551de90714e00999d96fafdae8de9d17
+docs/LANGUAGE-REFERENCE.md	263	| `sutram --version` | version |	AFTER	11	<BLANK>	1	00f06311551de90714e00999d96fafdae8de9d17
+docs/LANGUAGE-REFERENCE.md	263	| `sutram --version` | version |	AFTER	12	Worked example (`demo.sm`):	1	00f06311551de90714e00999d96fafdae8de9d17
+docs/LANGUAGE-REFERENCE.md	263	| `sutram --version` | version |	AFTER	13	<BLANK>	1	00f06311551de90714e00999d96fafdae8de9d17
+docs/LANGUAGE-REFERENCE.md	263	| `sutram --version` | version |	AFTER	14	```sutram	1	00f06311551de90714e00999d96fafdae8de9d17
+docs/LANGUAGE-REFERENCE.md	263	| `sutram --version` | version |	AFTER	15	mukhya() {	1	00f06311551de90714e00999d96fafdae8de9d17
+docs/LANGUAGE-REFERENCE.md	263	| `sutram --version` | version |	AFTER	16	    vitti x = 2	1	00f06311551de90714e00999d96fafdae8de9d17
+docs/LANGUAGE-REFERENCE.md	263	| `sutram --version` | version |	AFTER	17	    vitti y = 3	1	00f06311551de90714e00999d96fafdae8de9d17
+docs/LANGUAGE-REFERENCE.md	263	| `sutram --version` | version |	AFTER	18	    likha(x + y)	1	00f06311551de90714e00999d96fafdae8de9d17
+docs/LANGUAGE-REFERENCE.md	263	| `sutram --version` | version |	AFTER	19	}	1	00f06311551de90714e00999d96fafdae8de9d17
+docs/LANGUAGE-REFERENCE.md	263	| `sutram --version` | version |	AFTER	20	```	1	00f06311551de90714e00999d96fafdae8de9d17
+docs/LANGUAGE-REFERENCE.md	263	| `sutram --version` | version |	AFTER	21	<BLANK>	1	00f06311551de90714e00999d96fafdae8de9d17
+docs/LANGUAGE-REFERENCE.md	263	| `sutram --version` | version |	AFTER	22	The generated program prints a `[shodhan] pankti N` line **before each traced source statement**, followed by scalar variables **already in scope**. Near the addition, a trace excerpt has this shape:	1	00f06311551de90714e00999d96fafdae8de9d17
+docs/LANGUAGE-REFERENCE.md	263	| `sutram --version` | version |	AFTER	23	<BLANK>	1	00f06311551de90714e00999d96fafdae8de9d17
+docs/LANGUAGE-REFERENCE.md	263	| `sutram --version` | version |	AFTER	24	```text	1	00f06311551de90714e00999d96fafdae8de9d17
+docs/LANGUAGE-REFERENCE.md	263	| `sutram --version` | version |	AFTER	25	[shodhan] pankti 4	1	00f06311551de90714e00999d96fafdae8de9d17
+docs/LANGUAGE-REFERENCE.md	263	| `sutram --version` | version |	AFTER	26	    x = 2	1	00f06311551de90714e00999d96fafdae8de9d17
+docs/LANGUAGE-REFERENCE.md	263	| `sutram --version` | version |	AFTER	27	    y = 3	1	00f06311551de90714e00999d96fafdae8de9d17
+docs/LANGUAGE-REFERENCE.md	263	| `sutram --version` | version |	AFTER	28	5	1	00f06311551de90714e00999d96fafdae8de9d17
+docs/LANGUAGE-REFERENCE.md	263	| `sutram --version` | version |	AFTER	29	```	1	00f06311551de90714e00999d96fafdae8de9d17
+docs/LANGUAGE-REFERENCE.md	263	| `sutram --version` | version |	AFTER	30	<BLANK>	1	00f06311551de90714e00999d96fafdae8de9d17
+docs/LANGUAGE-REFERENCE.md	263	| `sutram --version` | version |	AFTER	31	This is an **illustrative excerpt**, not the complete exact output for the shown program; line numbers depend on the input file. Sarvam's verified v252 run shows the same `x = 2`, `y = 3` and final `5` with further trace lines. The trace is emitted **when `demo.bin` runs**, not while `sutram_compiler` compiles. Debug messages and the program's own output are **interleaved on standard output**, so filter or redirect them carefully.	1	00f06311551de90714e00999d96fafdae8de9d17
+docs/LANGUAGE-REFERENCE.md	263	| `sutram --version` | version |	AFTER	32	<BLANK>	1	00f06311551de90714e00999d96fafdae8de9d17
+docs/LANGUAGE-REFERENCE.md	263	| `sutram --version` | version |	AFTER	33	**Limitations:** current `--debug` automatically traces; it does **not** offer an interactive `step` / `continue` prompt, breakpoints, expression watch lists or source-code editing. It traces statements from the main input file, not imported `yoj` library internals, and deliberately skips traps before `yantra` inline-machine-code statements. It reports in-scope scalar locals and parameters (including `dasham`); **arrays (`mala`), `kosh`, slices and module-level globals are not expanded**. A raw pointer that is treated as a scalar may print as a number, not readable string contents.	1	00f06311551de90714e00999d96fafdae8de9d17
+docs/LANGUAGE-REFERENCE.md	263	| `sutram --version` | version |	AFTER	34	<BLANK>	1	00f06311551de90714e00999d96fafdae8de9d17
+docs/LANGUAGE-REFERENCE.md	263	| `sutram --version` | version |	AFTER	35	**When not to use it:** ordinary production builds, performance benchmarking, tight loops producing thousands of trace lines, or programs whose stdout must stay machine-readable. Traces may expose sensitive scalar values, so do not publish them unreviewed. Use the unflagged build for normal output; debug-only binaries are larger and noisier.	1	00f06311551de90714e00999d96fafdae8de9d17
+docs/LANGUAGE-REFERENCE.md	263	| `sutram --version` | version |	AFTER	36	<BLANK>	1	00f06311551de90714e00999d96fafdae8de9d17
+docs/LANGUAGE-REFERENCE.md	263	| `sutram --version` | version |	AFTER	37	**Vocabulary:** `shodhan` (शोधनम्) means examination/correction in this tool context; `pankti` (पङ्क्ति) denotes a source line and `vitti` (वित्ति) is the project's existing declaration keyword. The label choices are project conventions, not a Sanskritist certification.	1	00f06311551de90714e00999d96fafdae8de9d17
+docs/sutram-book-sanskrit.html	279	Sanket: asmin sthane shabdam vyakaranam cha pashyatu.</code></pre>	AFTER	1	<h3>शोधनम् — क्रमादेशस्य निरीक्षणम् <span class="en-gloss">(Debugging a running program)</span></h3>	1	b181c74f87543df7244624eae592d269d3b62862
+docs/sutram-book-sanskrit.html	279	Sanket: asmin sthane shabdam vyakaranam cha pashyatu.</code></pre>	AFTER	2	<p><code>--debug</code> इति विकल्पः <strong>सङ्कलनसमये</strong> प्रयुज्यते। प्रथमं क्रमादेशं सङ्कलयतु, ततः निष्पादनीयां सञ्चिकां चालयतु। निरीक्षणसूचनाः <em>चालनसमये</em> दृश्यन्ते, न तु सङ्कलनसमये।</p>	1	b181c74f87543df7244624eae592d269d3b62862
+docs/sutram-book-sanskrit.html	279	Sanket: asmin sthane shabdam vyakaranam cha pashyatu.</code></pre>	AFTER	3	<pre><code>$ ./sutram_compiler --debug demo.sm demo.bin	1	b181c74f87543df7244624eae592d269d3b62862
+docs/sutram-book-sanskrit.html	279	Sanket: asmin sthane shabdam vyakaranam cha pashyatu.</code></pre>	AFTER	4	$ ./demo.bin</code></pre>	1	b181c74f87543df7244624eae592d269d3b62862
+docs/sutram-book-sanskrit.html	279	Sanket: asmin sthane shabdam vyakaranam cha pashyatu.</code></pre>	AFTER	5	<p>देवनागरी-कूटशब्दानां कृते <code>./sutram_compiler --debug --lang sanskrit demo.sm demo.bin</code> प्रयुज्यताम्। सामान्य-सङ्कलने <code>--debug</code> न आवश्यकः।</p>	1	b181c74f87543df7244624eae592d269d3b62862
+docs/sutram-book-sanskrit.html	279	Sanket: asmin sthane shabdam vyakaranam cha pashyatu.</code></pre>	AFTER	6	<p>उदाहरणम् — <code>demo.sm</code>:</p>	1	b181c74f87543df7244624eae592d269d3b62862
+docs/sutram-book-sanskrit.html	279	Sanket: asmin sthane shabdam vyakaranam cha pashyatu.</code></pre>	AFTER	7	<pre><code>mukhya() {	1	b181c74f87543df7244624eae592d269d3b62862
+docs/sutram-book-sanskrit.html	279	Sanket: asmin sthane shabdam vyakaranam cha pashyatu.</code></pre>	AFTER	8	    vitti x = 2	1	b181c74f87543df7244624eae592d269d3b62862
+docs/sutram-book-sanskrit.html	279	Sanket: asmin sthane shabdam vyakaranam cha pashyatu.</code></pre>	AFTER	9	    vitti y = 3	1	b181c74f87543df7244624eae592d269d3b62862
+docs/sutram-book-sanskrit.html	279	Sanket: asmin sthane shabdam vyakaranam cha pashyatu.</code></pre>	AFTER	10	    likha(x + y)	1	b181c74f87543df7244624eae592d269d3b62862
+docs/sutram-book-sanskrit.html	279	Sanket: asmin sthane shabdam vyakaranam cha pashyatu.</code></pre>	AFTER	11	}</code></pre>	1	b181c74f87543df7244624eae592d269d3b62862
+docs/sutram-book-sanskrit.html	279	Sanket: asmin sthane shabdam vyakaranam cha pashyatu.</code></pre>	AFTER	12	<p>प्रतिपङ्क्ति <code>[shodhan] pankti N</code> इति सूचना, ततः तत्कालीन-दृश्याः संख्यात्मकाः वित्तयः दर्श्यन्ते। अधोलिखितम् <strong>उदाहरणांशः</strong>, न संपूर्णः वास्तविक-उत्पादन-प्रतिलेखः:</p>	1	b181c74f87543df7244624eae592d269d3b62862
+docs/sutram-book-sanskrit.html	279	Sanket: asmin sthane shabdam vyakaranam cha pashyatu.</code></pre>	AFTER	13	<pre><code>[shodhan] pankti 4	1	b181c74f87543df7244624eae592d269d3b62862
+docs/sutram-book-sanskrit.html	279	Sanket: asmin sthane shabdam vyakaranam cha pashyatu.</code></pre>	AFTER	14	    x = 2	1	b181c74f87543df7244624eae592d269d3b62862
+docs/sutram-book-sanskrit.html	279	Sanket: asmin sthane shabdam vyakaranam cha pashyatu.</code></pre>	AFTER	15	    y = 3	1	b181c74f87543df7244624eae592d269d3b62862
+docs/sutram-book-sanskrit.html	279	Sanket: asmin sthane shabdam vyakaranam cha pashyatu.</code></pre>	AFTER	16	5</code></pre>	1	b181c74f87543df7244624eae592d269d3b62862
+docs/sutram-book-sanskrit.html	279	Sanket: asmin sthane shabdam vyakaranam cha pashyatu.</code></pre>	AFTER	17	<p><strong>अवधारयतु:</strong> निरीक्षणसूचनाः सामान्य-निर्गमेन (stdout) सह मिश्रिताः भवन्ति। अयं वर्तमान-विकल्पः केवलम् अविच्छिन्नं पङ्क्त्यनुसारिणं विवरणं प्रदर्शयति; विरामबिन्दवः (breakpoints), अन्तःक्रियात्मकं क्रमशः-चालनं (interactive stepping) तथा चर-निरीक्षणसूच्यः (watch lists) न सन्ति।</p>	1	b181c74f87543df7244624eae592d269d3b62862
+docs/sutram-book-sanskrit.html	279	Sanket: asmin sthane shabdam vyakaranam cha pashyatu.</code></pre>	AFTER	18	<p>एषः मुख्यसञ्चिकायाः कूटवाक्यानि दर्शयति, आयातित-पुस्तकालयानाम् आन्तरिकवाक्यानि न। `mala`, `kosh`, विभागाः तथा वैश्विक-वित्तयः न विस्तरेण दर्श्यन्ते। `yantra` इति मूलयन्त्रकूटस्य पूर्वं निरीक्षण-विरामः न क्रियते।</p>	1	b181c74f87543df7244624eae592d269d3b62862
+docs/sutram-book-sanskrit.html	279	Sanket: asmin sthane shabdam vyakaranam cha pashyatu.</code></pre>	AFTER	19	<p><strong>कदा न प्रयोज्यम्:</strong> सामान्ये विमोचने, वेगमापने, बहुवारं भ्रमणेषु, अथवा यदा शुद्धः stdout आवश्यकः। निरीक्षणे निजी संख्यात्मकमूल्यानि दृश्यन्ते; प्रकाशितुं पूर्वं परीक्षणं कुर्यात्।</p>	1	b181c74f87543df7244624eae592d269d3b62862
