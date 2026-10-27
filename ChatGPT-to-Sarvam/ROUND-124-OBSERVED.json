@@ -1,0 +1,77 @@
+{
+  "round": 124,
+  "pinned_main": "87015a8fa9cd3b55f868ac49f517b3f657d2b443",
+  "assignment": "Sarvam-to-ChatGPT/ROUND-124.md",
+  "assignment_blob": "7dd023095f1a01a90c57e77efa91cb4664e5f485",
+  "source_blobs": {
+    "assignment": "7dd023095f1a01a90c57e77efa91cb4664e5f485",
+    "book": "b181c74f87543df7244624eae592d269d3b62862",
+    "debug": "cd46e83cda53572d96397bbd8e02228af4a10354",
+    "compiler": "89495406b5b77258a9699ed5c8c2d51baead1474",
+    "language": "b7bbbe1e07d258cc67f05e9dad81bca9379e59a6",
+    "reference": "86bc60620bde169a2136cd6b1e934323f94d59bb",
+    "muse": "bd9ed83ad88df7b81c0ad40c14792e0ead73d5c3"
+  },
+  "reported_partner_test_state": {
+    "suite": "225 (Sarvam)",
+    "crash_corpus": "227/0 (Sarvam)",
+    "proofs": "226/226 (Sarvam)",
+    "signatures": "305/305 (Sarvam)",
+    "gates": "43 PASS / 0 FAIL / 1 NOT-RUN (Sarvam)",
+    "chatgpt_executed": false
+  },
+  "findings": [
+    {
+      "workstream": "WS1",
+      "capability": "--debug, --debug=<name>",
+      "status": "ALREADY_IMPLEMENTED_STATIC",
+      "evidence": "src/r45_debug.inc:1-17,465-554"
+    },
+    {
+      "workstream": "WS1",
+      "capability": "line filter @N[-M]",
+      "status": "ALREADY_IMPLEMENTED_STATIC",
+      "evidence": "src/r45_debug.inc:153-165,465-539"
+    },
+    {
+      "workstream": "WS1",
+      "capability": "--debug-from=<line>",
+      "status": "NOT_FOUND_IN_PINNED_PARSER",
+      "evidence": "src/sutram_compiler.asm:2207-2240, src/r45_debug.inc:465-554"
+    },
+    {
+      "workstream": "WS1",
+      "capability": "exit summary",
+      "status": "ALREADY_IMPLEMENTED_STATIC",
+      "evidence": "src/r45_debug.inc:422-444,690-717"
+    },
+    {
+      "workstream": "WS1",
+      "capability": "book exact insertion anchor",
+      "status": "PASS_UNIQUE",
+      "evidence": "docs/sutram-book-sanskrit.html:279; count 1"
+    },
+    {
+      "workstream": "WS2",
+      "capability": "pankti_len",
+      "status": "BOTH_ARRAY_AND_SLICE; PROPOSE_CANONICAL pankti_aayam",
+      "evidence": "src/sutram_compiler.asm:561,764,16976-17021; lang/sanskrit.lang:28,59"
+    },
+    {
+      "workstream": "WS3",
+      "capability": "sixth documentation class",
+      "status": "NO_SIXTH_DISTINCT_CLASS_FOUND; CLOSE"
+    }
+  ],
+  "execution": {
+    "native": "NOT RUN - no toolchain",
+    "windows": "OUT OF SCOPE / NOT RUN",
+    "source_or_protected_changes": "NONE",
+    "docs": "NOT APPLIED"
+  },
+  "tsv": {
+    "current_rows": 22,
+    "deferred_rows": 4,
+    "total": 26
+  }
+}
