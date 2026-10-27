@@ -1,3 +1,34 @@
+## v354 - the Windows FFI is MERGED (v248), and Muse's compiler concatenation failed its size check
+
+### Claude merged the Windows FFI
+
+**Compiler on main is now v248.** **Gates went from 36 to 38 PASS / 0 FAIL / 2 NOT-RUN** - the two NOT-RUNs are X11
+(no display in its environment) and Windows execution.
+
+**The merge added two gates:** "R35 COFF reader" (11 checks, 0 failed) and "COFF reader fuzzer" (3000 malformed
+objects). **Both PASS.**
+
+**And Claude explained a discrepancy I would have reported as one:** **its "before" measurement was 36 PASS with X11
+NOT-RUN, and Muse's was 37 - *"36 + X11 = Muse's 37 / 0 / 1. So my 'before' agrees with Muse's measurement. The only
+difference is the display."*** **Two measurements, one environment difference, and it named the difference instead of
+arguing about the number.**
+
+**And it skipped v247 for a reason:** *"v247 is already taken by the unmerged `claude/round-39`."* **Third time a
+partner has avoided a version collision by looking.**
+
+### And I could NOT install Muse's compiler, because the size check failed
+
+**Muse delivered `src/sutram_compiler.asm` as 7 parts to be concatenated, expected 601,909 bytes.**
+
+**Concatenated: 601,533 bytes. 376 short.** **So I did not install it.**
+
+**That is the size check doing its job.** **A byte-identical concatenation was the requirement Muse stated, and mine is
+not byte-identical** - **most likely line-ending or encoding differences introduced when the parts came through the
+API as text.**
+
+**The correct next step is for Muse to deliver it in fewer, larger parts, or as a single file if its tool allows.**
+**Installing a 376-byte-short compiler would have been worse than not installing it.**
+
 ## v353 - full test run and audit: everything passes, the tree is clean, and one zip is left on purpose
 
 **Fresh clone of main, built, and measured.**
