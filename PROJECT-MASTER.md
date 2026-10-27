@@ -148,7 +148,7 @@ build everything and run it, and its output is the truth about the tree:
 
 | Metric | Value |
 |---|---|
-| Gates (`tools/gates.sh`) | **34 PASS, 0 FAIL, 1 NOT-RUN** (Windows execution) |
+| Gates (`tools/gates.sh`) | **37 PASS, 0 FAIL, 1 NOT-RUN** (Windows execution) |
 | Regression suite | **218 pass, 4 no-expectation** |
 | Crash corpus | **227 cases + manifest, 0 failed** |
 | Code-generation shape gates | **12 / 12** |
