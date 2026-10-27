@@ -1,10 +1,10 @@
-# lib/mala.smlib — Sutram standard library: dynamic arrays
+# lib/mala.smlib — Sutram standard library: fixed-size raw qword-array helpers
 # layer: alloc
 #
 # Real functions over raw memory (nirmmita/likh8/pad8). Each element is
 # 8 bytes (one integer). The caller tracks the length; mala_nava only
-# allocates. Safe variants take the element count and return 0 / do
-# nothing on out-of-bounds access.
+# allocates without tracking length. Count-checked variants take caller's n;
+# n must not exceed allocated cells. Raw variants do no allocation bounds check.
 
 prakriya mala_nava(n) {
     vitti c = n
