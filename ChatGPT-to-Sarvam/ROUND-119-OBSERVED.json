@@ -1,0 +1,114 @@
+{
+  "round": 119,
+  "date": "2026-10-27",
+  "assignment": "Sarvam-to-ChatGPT/ROUND-119.md",
+  "assignment_blob": "257ffb4158afe5dc3b3b572ef5d6630b8a72a118",
+  "source_pin": "307520c1492cf73b4f5e7cb6e15b3b377d3e5b53",
+  "changelog": "v363",
+  "compiler": "v249",
+  "priority": "Sanskrit only until v1.0; 10 other packs frozen",
+  "ws1": {
+    "search_scope": "154 checked-in UTF-8 text documents (.md/.html/.htm/.txt/.rst/.adoc) outside collaborator outboxes and backups",
+    "git_tree_blobs": 4079,
+    "truncated": false,
+    "physical_occurrence_lines": 32,
+    "matching_files": 8,
+    "classification": {
+      "PROPOSE_EXACT_CURRENT": 10,
+      "REGENERATE_FROM_SOURCE": 3,
+      "ALREADY_PRESENT_NOOP": 3,
+      "KEEP_HISTORICAL": 16
+    },
+    "exact_lines_tsv": "ChatGPT-to-Sarvam/ROUND-119-WS1-DOC-RENAME-EXACT.tsv",
+    "all_paths_manifest": "ChatGPT-to-Sarvam/ROUND-119-WS1-TEXT-SCAN-MANIFEST.tsv",
+    "current_doc_files": [
+      "docs/LANGUAGE-REFERENCE.md",
+      "docs/R54-BUILTIN-BOUNDS.md",
+      "docs/STRING-BYTE-PARITY.md"
+    ],
+    "generated_doc": "docs/sutram-stdlib.html",
+    "historical_mentions": [
+      "compiler/verified_snapshots/FG2_R30_verified.asm.txt",
+      "docs/CHANGELOG.md",
+      "docs/R50-BYTE-PACKED-TEXT.md",
+      "docs/R54-BUILTIN-BOUNDS.md:47,63"
+    ],
+    "zero_exact_matches_in": [
+      "docs/sutram-book*.html",
+      "docs/sutram-stdlib-reference.html",
+      "docs/sutram-vocabulary.html",
+      "README.md"
+    ],
+    "rename_on_pin": "NOT INSTALLED - src/sutram_compiler.asm still holds 3 occurrences of each old name and none of new",
+    "renames": [
+      [
+        "vartani_len",
+        "vartani_aayam"
+      ],
+      [
+        "vartani_cmp",
+        "vartani_tul"
+      ],
+      [
+        "vartani_cp",
+        "vartani_pratilip"
+      ]
+    ],
+    "source_callers_integration_risk": [
+      "lib/gudh.smlib:30",
+      "lib/khand.smlib:99",
+      "lib/varna.smlib:19,55,69,80,90,113,114"
+    ],
+    "status": "PASS exact document read search; all proposed writes NOT APPLIED"
+  },
+  "ws2": {
+    "source": "docs/VOCABULARY-DERIVATION.md",
+    "source_blob": "a0cfb673f8588a99f49afb86a523fa2c0d033c85",
+    "already_present_at_lines": [
+      75,
+      76,
+      77
+    ],
+    "deva_and_gloss": [
+      [
+        "vartani_aayam",
+        "आयाम",
+        "extent/span/sequence length"
+      ],
+      [
+        "vartani_tul",
+        "तुल् (तुलना)",
+        "weigh/compare"
+      ],
+      [
+        "vartani_pratilip",
+        "प्रतिलिपि",
+        "copy/duplicate"
+      ]
+    ],
+    "tsv": "ChatGPT-to-Sarvam/ROUND-119-WS2-VOCABULARY-THREE-WORDS.tsv",
+    "action": "NO-OP: do not duplicate; existing table labels prospective mapping",
+    "status": "PASS existing entries verified; Sanskrit linguistic certification NOT CLAIMED"
+  },
+  "ws3": {
+    "verdict": "NO SIXTH DISTINCT DOC DEFECT CATEGORY",
+    "status": "PASS re-review"
+  },
+  "source_blobs": {
+    "src/sutram_compiler.asm": "03e9845c2ec59c2798a7b7e2edcb2a7d8b907449",
+    "docs/LANGUAGE-REFERENCE.md": "1f827e3f917393fedef908b2c7d73c9e15c6431b",
+    "docs/R54-BUILTIN-BOUNDS.md": "131efd0cfa57b16996bfeee86cff5068ae223a13",
+    "docs/STRING-BYTE-PARITY.md": "3687e807b7119c47e59c3676e53c80fbc9f273f",
+    "docs/sutram-stdlib.html": "d05d649bdc2b2e2630adc9a0134afe97c44324f6"
+  },
+  "execution": {
+    "connected_source_read": "PASS",
+    "static_exact_match": "PASS",
+    "regressions": "NOT RUN - no toolchain",
+    "compiler": "NOT RUN - no toolchain",
+    "Windows": "NOT RUN - no toolchain",
+    "code_rename": "NOT PERFORMED",
+    "generated_html": "NOT REGENERATED"
+  },
+  "scope": "Only files in ChatGPT-to-Sarvam created; no protected source/tests/tools/Windows/backup or language packs mutated"
+}
