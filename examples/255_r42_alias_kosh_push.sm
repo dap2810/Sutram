@@ -1,0 +1,10 @@
+# R42: an alias of a kosh is the kosh: kosh_push through it grows the original.
+# Before R42 (v248), kosh_push(w, 4) was refused: kosh-vitti avashyak.
+mukhya()
+    kosh v[4]
+    kosh_push(v, 3)
+    vitti w = 0
+    w = v
+    kosh_push(w, 4)
+    likha(kosh_len(v))
+    likha(w[1])

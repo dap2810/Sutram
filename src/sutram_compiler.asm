@@ -234,7 +234,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v248) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v249) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -12709,6 +12709,18 @@ gen_stmt:
     ; [AST_DECL][name_ptr][init_ptr][array_size_expr_or_0][type_marker]
     mov rdi, rbx              ; R23 WS3: vitti s = a[lo:hi] declares a slice
     call r23_mark_slice_decl
+    ; R38: vitti b = a (a is a mala/kosh) marks b the same kind, so b[i] is
+    ; bounds-checked. Slice decls are already handled above; this covers the
+    ; plain-variable alias that was previously unmarked.
+    mov rax, [rbx+16]        ; init expr
+    test rax, rax
+    jz .gs_decl_no_alias
+    cmp qword [rax], AST_VAR
+    jne .gs_decl_no_alias
+    mov rdi, [rbx+8]         ; target name
+    mov rsi, [rax+8]         ; source name
+    call r38_mark_alias
+.gs_decl_no_alias:
     ; PERF2/PERF3: when an integer scalar will occupy one of the first five
     ; register slots, build simple literals/copies/var-binops directly in the
     ; destination register.  Unsupported forms leave allocation untouched.
@@ -12987,6 +12999,19 @@ gen_stmt:
     je .gs_assign_index
     cmp rcx, AST_FIELD
     je .gs_assign_field
+    ; R38: b = a (a is a mala/kosh/slice) marks b the same kind, so b[i] is
+    ; bounds-checked. Only variable targets and variable values count, and
+    ; this runs before the fast paths, which return early.
+    cmp rcx, AST_VAR
+    jne .gs_assign_no_alias
+    mov rax, [rbx+16]        ; value node
+    cmp qword [rax], AST_VAR
+    jne .gs_assign_no_alias
+    mov rsi, [rax+8]         ; source name
+    mov rax, [rbx+8]
+    mov rdi, [rax+8]         ; target name
+    call r38_mark_alias
+.gs_assign_no_alias:
 %ifdef SUTRAM_EXPERIMENTAL_XMM_CACHE
     ; Stage 1: typed scalar assignments only, exactly 4 available XMM slots.
     ; No calls/indices/subtrees are ever reordered or cached.
@@ -20684,6 +20709,78 @@ mark_kosh_var:
     pop rbx
     lea rdi, [rel msg_var_table_overflow]
     jmp capacity_fail
+
+; R38: mark an alias of a mala/kosh/slice as the same kind, so indexing through
+; it gets the same bounds check as indexing the original. Before R38, only the
+; declared name was marked: `vitti b = a` / `b = a` left b unmarked, and b[5]
+; silently read past a 3-cell mala (or a kosh), returning 0 instead of the
+; `mala ank seema atikram` error. The alias shares the original's allocation
+; and header layout ([ptr-8] length for mala, [ptr-16] for kosh, [ptr+8] for a
+; slice descriptor), so marking it is sound. Raw nirmmita pointers are NOT
+; marked by this helper (is_array/is_kosh are false for them), so their
+; historical unchecked path is unchanged. rdi = target name, rsi = source
+; name. Preserves rbx, r12-r15 and the target/source pointers on the stack.
+r38_mark_alias:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    mov r14, rdi              ; target name
+    mov r15, rsi              ; source name
+    ; already marked in any kind? then leave it alone (slice wins over array)
+    mov rdi, r14
+    call r23_is_slice_var
+    test rax, rax
+    jnz .r38_done
+    mov rdi, r14
+    call is_kosh_var
+    test rax, rax
+    jnz .r38_done
+    mov rdi, r14
+    call is_array_var
+    test rax, rax
+    jnz .r38_done
+    ; source kind, in precedence order: slice, float kosh, kosh, array
+    mov rdi, r15
+    call r23_is_slice_var
+    test rax, rax
+    jz .r38_not_slice
+    mov rdi, r14
+    call r23_mark_slice_var
+    jmp .r38_done
+.r38_not_slice:
+    mov rdi, r15
+    call is_float_kosh_var
+    test rax, rax
+    jz .r38_not_float_kosh
+    mov rdi, r14
+    call mark_kosh_var
+    mov rdi, r14
+    call mark_float_kosh_var
+    jmp .r38_done
+.r38_not_float_kosh:
+    mov rdi, r15
+    call is_kosh_var
+    test rax, rax
+    jz .r38_not_kosh
+    mov rdi, r14
+    call mark_kosh_var
+    jmp .r38_done
+.r38_not_kosh:
+    mov rdi, r15
+    call is_array_var
+    test rax, rax
+    jz .r38_done
+    mov rdi, r14
+    call mark_array_var
+.r38_done:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
 
 is_kosh_var:
     ; rdi=name ptr -> rax=1 if this is a kosh variable in current scope.

@@ -1,0 +1,12 @@
+# R42: an alias of a mala is the mala: pankti_len, reads and writes go through it.
+# Before R42 (v248), pankti_len(b) of the alias printed 0.
+mukhya()
+    mala a[3]
+    a[0] = 10
+    a[1] = 20
+    a[2] = 30
+    vitti b = a
+    likha(b[2])
+    b[1] = 7
+    likha(a[1])
+    likha(pankti_len(b))
