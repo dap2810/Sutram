@@ -1,0 +1,22 @@
+# R117 WS3 exact matching against pinned main fd02405aad986001c451ee5c5decb91346c7bb53; first eight library files; 20 original proposal lines
+file	prior_line	current_line	current_blob	old_occurrences	new_occurrences	status
+lib/aadhar.smlib	16	16	9f1724be077c3c68f5be642fbef7a09ac35cc445	0	1	APPLIED
+lib/aadhar.smlib	17	17	9f1724be077c3c68f5be642fbef7a09ac35cc445	0	1	APPLIED
+lib/aadhar.smlib	18	18	9f1724be077c3c68f5be642fbef7a09ac35cc445	0	1	APPLIED
+lib/brihat.smlib	253	253	c72df8753a33a4d207aa5c37093b6abe85f54d99	0	1	APPLIED
+lib/brihat.smlib	269	269	c72df8753a33a4d207aa5c37093b6abe85f54d99	0	1	APPLIED
+lib/ganita.smlib	75	75	d0d2c6798c859df6893e4eb24c7b4d0212e7d4ed	0	1	APPLIED
+lib/ganita.smlib	159	159	d0d2c6798c859df6893e4eb24c7b4d0212e7d4ed	0	1	APPLIED
+lib/gudh.smlib	12	12	be9deb614e099a5f90049cd617f6f4b0ae1f3089	0	1	APPLIED
+lib/gudh.smlib	13	13	be9deb614e099a5f90049cd617f6f4b0ae1f3089	0	1	APPLIED
+lib/gudh.smlib	28	28	be9deb614e099a5f90049cd617f6f4b0ae1f3089	0	1	APPLIED
+lib/kalana.smlib	33	33	5de30858e4e663f4be1fa46f28c3ee38d5e6e6de	0	1	APPLIED
+lib/khand.smlib	6	6	1769a69dca62983ed8e72e9d3e2cc3268c95b371	0	1	APPLIED
+lib/khand.smlib	20	20	1769a69dca62983ed8e72e9d3e2cc3268c95b371	0	1	APPLIED
+lib/mala.smlib	1	1	2c5aa792893563dca3c13d0122089d6def7b6b83	0	1	APPLIED
+lib/mala.smlib	6	6	2c5aa792893563dca3c13d0122089d6def7b6b83	0	1	APPLIED
+lib/mala.smlib	7	7	2c5aa792893563dca3c13d0122089d6def7b6b83	0	1	APPLIED
+lib/nighantu.smlib	5	5	d00a337da0f6baabb51fb7c11af5caee05d3621f	0	1	APPLIED
+lib/nighantu.smlib	328	328	d00a337da0f6baabb51fb7c11af5caee05d3621f	0	1	APPLIED
+lib/nighantu.smlib	329	329	d00a337da0f6baabb51fb7c11af5caee05d3621f	0	1	APPLIED
+lib/nighantu.smlib	330	330	d00a337da0f6baabb51fb7c11af5caee05d3621f	0	1	APPLIED
