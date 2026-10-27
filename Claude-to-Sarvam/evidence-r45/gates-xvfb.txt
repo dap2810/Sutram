@@ -1,7 +1,7 @@
-Sutram gates — 2026-10-27T15:26Z
+Sutram gates — 2026-10-27T15:36Z
 
   committed modes (7 x 100755, git index) PASS
-  build: compiler              ok  (428592 B)
+  build: compiler              ok  (429192 B)
   build: terminal IDE          ok  (24776 B)
   build: X11 GUI               ok  (38168 B)
   build: linker (R28)          ok  (16368 B)
@@ -35,7 +35,7 @@ Sutram gates — 2026-10-27T15:26Z
   R34 FFI v2 (14 checks, 0 failed) PASS
   R38 fail-alloc (115 checks, 43 library fault points, 115 passed) PASS
   alloc bounds (26: 13 bounded before the multiply, 13 exempt with a reason) PASS
-  R45 debug (188 programs programs the same with the trace; 7 checks) PASS
+  R45 debug (188 programs the same under the trace; 8 checks) PASS
   keyword boundary (682 checks) PASS
   keyword prefix (19 of 542 lib names begin with a keyword, reported) PASS
   doc signatures (24 modules, 305 signatures, 0 mismatches) PASS
@@ -45,7 +45,7 @@ Sutram gates — 2026-10-27T15:26Z
   crash corpus (227 cases + manifest, 0 failed) PASS
   operator precedence (314 pairs tested) PASS
   formatted tree               PASS
-  version string (v251 (CHANGELOG v364)) PASS
+  version string (v252 (CHANGELOG v368)) PASS
   performance (  8 ran, 0 failed) PASS
   X11 GUI protocol (18/18)     PASS
   Windows execution            NOT-RUN cannot run here (Linux) - on Windows: tests/r34/test_link_windows.py, tests/r35/test_ffi_windows.py, tools/ide_examples_windows.ps1, tools/accept-windows.ps1

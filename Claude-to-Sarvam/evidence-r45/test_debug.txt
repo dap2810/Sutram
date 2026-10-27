@@ -1,9 +1,10 @@
 PASS  the trace: every statement of the file, its line, its scalar variables (a local, a dasham, a parameter, a loop counter), each loop pass; then the output
 PASS  not shown: the mala m (an address, not a value)
+PASS  block scope: b only inside its block; z (branch not taken) never shown (got '[shodhan] pankti 2\n[shodhan] pankti 3\n    a = 1\n[shodhan] pankti 4\n    a = 1\n[shodhan] pankti 5\n    a = 1\n    b = 5\n[shodhan] pankti 7\n    a = 2\n[shodhan] pankti 10\n    a = 2\n[shodhan] pa)
 PASS  yoj varna: only the program's own 2 statements are traced (got ['[shodhan] pankti 3', '[shodhan] pankti 4'])
 PASS  Devanagari names and lines under --lang sanskrit (got '[shodhan] pankti 2\n[shodhan] pankti 3\n    योग = 0\n[shodhan] pankti 4\n    योग = 0\n    इ = 4\n[shodhan] pankti 5\n    योग = 4\n    इ = 4\n4\n')
 PASS  usage: --debug without an output writes nothing (exit 0)
 PASS  usage: --debug --lang without an output writes nothing (exit 0)
 NOTE  237_many_variables: too large for a debug build: Sutram Error: yantra-bhasha seema atikram
 PASS  the suite under --debug: 188 programs print exactly their expected output once the trace is taken out, with the same exit code; 1 too large for a debug build, 0 with a trace too long to compare
-r45 debug: 7 checks, 0 failed
+r45 debug: 8 checks, 0 failed

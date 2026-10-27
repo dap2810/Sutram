@@ -1,0 +1,14 @@
+[shodhan] pankti 2
+[shodhan] pankti 3
+    a = 1
+[shodhan] pankti 4
+    a = 1
+[shodhan] pankti 5
+    a = 1
+    b = 5
+[shodhan] pankti 7
+    a = 2
+[shodhan] pankti 8
+    a = 2
+    c = 7
+7

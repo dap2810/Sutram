@@ -4,6 +4,8 @@
   1. THE TRACE: a fixed program compiled with --debug prints, before each statement of the program's own
      file, `[shodhan] pankti N` and every scalar variable then in scope (locals, parameters, a dasham), and
      goes on. Checked exactly: the lines, the values, the order, a function's own scope, a loop's every pass.
+  1b. SCOPE: a name declared in a block is not shown once the block has ended, nor when its branch was
+     never taken (var_table is flat per function; the slot would be stale or uninitialized).
   2. NOT TRACED: a mala/kosh (an address) is left out; a library function called through `yoj` is one step
      (its statements are not traced); a module-level vitti is not shown.
   3. DEVANAGARI: the same under --debug --lang sanskrit, with Devanagari names; the line is the original
@@ -108,6 +110,25 @@ def main(argv) -> int:
             print('      want: ' + repr(want[:300]))
             print('      got:  ' + repr((out or '')[:300]))
         check(rc == 0 and '    m = ' not in out, 'not shown: the mala m (an address, not a value)')
+
+        # 1b. block scope: a block's name is not shown after the block, nor when its branch was not taken
+        rc, out = build('mukhya() {\n'            # 1
+                        '    vitti a = 1\n'        # 2
+                        '    yadi (a == 1) {\n'    # 3
+                        '        vitti b = 5\n'    # 4
+                        '        a = 2\n'          # 5
+                        '    }\n'                  # 6
+                        '    yadi (a == 9) {\n'    # 7
+                        '        vitti z = 8\n'    # 8
+                        '    }\n'                  # 9
+                        '    vitti c = 7\n'        # 10
+                        '    likha(c)\n'           # 11
+                        '}\n')
+        want1b = ('[shodhan] pankti 2\n[shodhan] pankti 3\n    a = 1\n[shodhan] pankti 4\n    a = 1\n'
+                  '[shodhan] pankti 5\n    a = 1\n    b = 5\n[shodhan] pankti 7\n    a = 2\n'
+                  '[shodhan] pankti 10\n    a = 2\n[shodhan] pankti 11\n    a = 2\n    c = 7\n7\n')
+        check(rc == 0 and out == want1b, 'block scope: b only inside its block; z (branch not taken) never shown '
+              f'(got {out!r:.200})')
 
         # 2. a library call is one step; the library's own statements are not traced
         rc, out = build('yoj varna\nmukhya() {\n    vitti n = varna_maap("abc")\n    likha(n)\n}\n')

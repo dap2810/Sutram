@@ -26,7 +26,11 @@
 ;   * the program's own file only: a statement that came in through `yoj`
 ;     (a library module's) gets no trap, so a library call is one step.
 ;   * the variables: var_table, the current function's locals and parameters
-;     in declaration order. A mala, a kosh and a slice are left out (likha would
+;     in declaration order. var_table is flat per function (block scope is a
+;     parse-time rule), so under --debug alloc_var and gen_block are wrapped
+;     too: a declaration makes its entry visible, and the end of the block it
+;     was declared in hides it again - a name of a closed block, or of a branch
+;     not taken, is never shown with a stale or uninitialized slot. A mala, a kosh and a slice are left out (likha would
 ;     print an address); a name shadowed by a later entry is shown once, as the
 ;     later one; a module-level vitti is not in var_table and is not shown.
 ;   * no trap before a yantra("...") statement: raw machine code may rely on
@@ -48,6 +52,9 @@ section .bss
     r45_map_cnt   resq 1
     r45_map       resq R45_MAP_CAP * 2   ; [node][source position of its first token]
     r45_text      resb 256         ; the trap's current string literal
+    r45_depth     resq 1           ; block depth while generating code
+    r45_hidden    resb VAR_TABLE_CAP ; 1: its block has ended (var_table is flat per function)
+    r45_vdepth    resq VAR_TABLE_CAP ; the block depth it was (re)declared at
 section .data
     r45_flag      db "--debug", 0
     r45_head      db "[shodhan] pankti ", 0
@@ -148,6 +155,9 @@ r45_gen_trap:
     cmp al, 'z'
     ja .next
 .name_ok:
+    lea rax, [rel r45_hidden]      ; its block has ended: out of scope, not shown
+    cmp byte [rax + r12], 0
+    jne .next
     ; shadowed by a later entry? then that one is shown instead
     lea r14, [r12 + 1]
 .shadow:
@@ -159,6 +169,9 @@ r45_gen_trap:
     mov rsi, [rcx + rax]
     test rsi, rsi
     jz .shadow_next
+    lea rax, [rel r45_hidden]
+    cmp byte [rax + r14], 0
+    jne .shadow_next
     mov rdi, r13
     call strcmp
     test rax, rax
@@ -269,4 +282,109 @@ r45_likha_node:
     mov qword [rax + 16], 1
     mov [rax + 24], rcx
     call gen_stmt
+    ret
+
+; alloc_var, wrapped: under --debug, the declared name becomes visible at the
+; current block depth. Otherwise a jump straight to the body.
+alloc_var:
+    cmp qword [rel r45_debug], 0
+    je r45_alloc_var_body
+    push rdi
+    call r45_alloc_var_body
+    pop rdi
+    push rax
+    push rcx
+    push rdx
+    push rsi
+    push r8
+    push r9
+    push r10
+    push r11
+    xor r8d, r8d                   ; the first entry with this name: the one lookup_var uses
+.find:
+    cmp r8, [rel var_cnt]
+    jae .done
+    mov rax, r8
+    shl rax, 4
+    lea rcx, [rel var_table]
+    mov rsi, [rcx + rax]
+    test rsi, rsi
+    jz .next
+    push rdi
+    push r8
+    call strcmp
+    pop r8
+    pop rdi
+    test rax, rax
+    jz .mark
+.next:
+    inc r8
+    jmp .find
+.mark:
+    lea rax, [rel r45_hidden]
+    mov byte [rax + r8], 0
+    lea rax, [rel r45_vdepth]
+    mov rcx, [rel r45_depth]
+    mov [rax + r8*8], rcx
+.done:
+    pop r11
+    pop r10
+    pop r9
+    pop r8
+    pop rsi
+    pop rdx
+    pop rcx
+    pop rax
+    ret
+
+; gen_block, wrapped: under --debug, the block's own declarations are hidden
+; when it ends. Otherwise a jump straight to the body.
+gen_block:
+    cmp qword [rel r45_debug], 0
+    je r45_gen_block_body
+    inc qword [rel r45_depth]
+    call r45_gen_block_body
+    push rax
+    push rcx
+    push rdx
+    dec qword [rel r45_depth]
+    mov rdx, [rel r45_depth]
+    xor ecx, ecx
+.hide:
+    cmp rcx, [rel var_cnt]
+    jae .hidden
+    lea rax, [rel r45_vdepth]
+    cmp [rax + rcx*8], rdx
+    jbe .keep
+    lea rax, [rel r45_hidden]
+    mov byte [rax + rcx], 1
+.keep:
+    inc rcx
+    jmp .hide
+.hidden:
+    pop rdx
+    pop rcx
+    pop rax
+    ret
+
+; a new function's var_table: every entry visible, at depth 0. Preserves every
+; register (it is called between two instructions of the code that resets it).
+r45_scope_reset:
+    cmp qword [rel r45_debug], 0
+    je .ret
+    push rax
+    push rcx
+    push rdi
+    lea rdi, [rel r45_hidden]
+    xor eax, eax
+    mov ecx, VAR_TABLE_CAP
+    rep stosb
+    lea rdi, [rel r45_vdepth]
+    mov ecx, VAR_TABLE_CAP
+    rep stosq
+    mov qword [rel r45_depth], 0
+    pop rdi
+    pop rcx
+    pop rax
+.ret:
     ret

@@ -234,7 +234,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v251) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v252) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -11805,6 +11805,7 @@ gen_code:
 .gc_no_rtinit:
     ; Init variable table
     mov qword [rel var_cnt], 0
+    call r45_scope_reset           ; R45: --debug visibility (a no-op without the flag)
     mov qword [rel stack_dep], 0
     mov qword [rel array_var_cnt], 0
     mov qword [rel r23_slice_var_cnt], 0
@@ -12147,6 +12148,7 @@ gen_all_functions:
     inc qword [rel func_count]
     ; Reset variable table for function scope
     mov qword [rel var_cnt], 0
+    call r45_scope_reset           ; R45: --debug visibility (a no-op without the flag)
     mov qword [rel stack_dep], 0
     mov qword [rel array_var_cnt], 0
     mov qword [rel r23_slice_var_cnt], 0
@@ -12440,7 +12442,7 @@ backpatch_calls:
     call os_exit
 
 ; gen_block(rax = block node)
-gen_block:
+r45_gen_block_body:                 ; R45: gen_block is the wrapper in src/r45_debug.inc
 %ifdef SUTRAM_R65_PEEPHOLES
     ; No cross-block or cross-function RAX lifetime assumptions.
     mov qword [rel r65_last_store_name],0
@@ -20956,7 +20958,7 @@ r7_find_var:
     pop rcx
     ret
 
-alloc_var:
+r45_alloc_var_body:                 ; R45: alloc_var is the wrapper in src/r45_debug.inc
     push rbx
     push r12
     mov rbx, rdi              ; name
