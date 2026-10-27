@@ -1,0 +1,61 @@
+SUTRAM ROUND 120 — PINNED RAW READ / STATIC AUDIT
+date: 2026-10-27
+read_pin_main: 1492190da00d4b17688e6a1baeed19f1d28c7e92
+assignment: Sarvam-to-ChatGPT/ROUND-120.md blob 3e526d718f3ec750aeeac469df4c358e5221a7ab
+compiler: v250 (changelog v364)
+priority: Sanskrit only to v1.0, other 10 language packs unchanged
+
+EXACT SOURCE BLOBS
+src/sutram_compiler.asm = 7b0d8217c2d9f004c9ebf4034296e69a0ccab079
+tools/gen_stdlib_ref.py = 7d13129e1aba99cf62ccfe3f7ec33e45d4bbf433
+docs/sutram-stdlib.html = fc84c4b898ba0b45a2454d0ac6d794b042d91d21
+lib/gudh.smlib = 54b9a1e2c212150972aeab135dd14df988138301
+lib/khand.smlib = b7b4528c30999784e37540651fe5aaec3290ca66
+lib/varna.smlib = 616c6f00ab3c56d9d6134a23de8c32e0d59e8e61
+lang/sanskrit.lang = b7bbbe1e07d258cc67f05e9dad81bca9379e59a6
+Sarvam-to-Claude/ROUND-45.md = e0f4021d4756c9407e3e15223ce1323cb8d7d630
+Sarvam-to-Muse/ROUND-45.md = fe453e98b235a9363341dc34654f3f96bc98a226
+
+DEBUGGER SOURCE WITNESSES
+src/sutram_compiler.asm:889-891 var_table / var_cnt / stack_dep compiler-only metadata
+src/sutram_compiler.asm:12124-12208 function prologue, parameter register saves, rbp-relative location
+src/sutram_compiler.asm:12209-12250 typed params metadata
+src/sutram_compiler.asm:12457-12521 gen_stmt dispatch from AST
+src/sutram_compiler.asm:20920-20956 alloc_var first five local variables register IDs, later stack slots
+src/sutram_compiler.asm:22745-22799 lookup_var globals special handling
+explicit --debug/per-statement-trap implementation on pin: NOT FOUND
+native debugger runtime: NOT RUN - no toolchain
+
+GENERATED HTML RECHECK: ALL 3/3 OLD REMAINS ZERO
+docs/sutram-stdlib.html:165: fnv1a_varna(s) — ... (uses vartani_aayam).
+docs/sutram-stdlib.html:179: module khand header ... vartani_aayam(s) ... vartani_aayam ...
+docs/sutram-stdlib.html:443: module varna header ... Built on vartani_aayam ...
+exact vartani_len/cmp/cp tokens on those three HTML lines: 0
+source owning comment lib/gudh.smlib:28 uses vartani_aayam; :30 calls vartani_aayam
+source owning comments lib/khand.smlib:11,24 use vartani_aayam; :99 calls vartani_aayam
+source owning header lib/varna.smlib:4 uses vartani_aayam; :19,55,69,80,90,113,114 call vartani_aayam
+generator: tools/gen_stdlib_ref.py uses source lib/*.smlib headers/comments for docs/sutram-stdlib.html
+
+NEW DOCUMENT BUG — DISTINCT FROM SUCCESSFUL RENAME
+lib/khand.smlib:5 exact: # literal and of set_char-built buffers). Own module (not inside
+lib/khand.smlib:6 exact: # lib/varna.smlib) because the compiler has a fixed AST ceiling.
+tools/gen_stdlib_ref.py parse_module exact line: desc_lines = [l for l in header if l and not l.startswith("lib/")]
+This skips lib/khand.smlib:6 after stripping # and a space.
+docs/sutram-stdlib.html:179 now includes incomplete phrase "Own module (not inside THE TWO REPRESENTATIONS ...".
+Suggested conditional authorized source comment fix lib/khand.smlib:6 OLD exact:
+# lib/varna.smlib) because the compiler has a fixed AST ceiling.
+NEW exact:
+# the varna module) because the compiler has a fixed AST ceiling.
+NO source or generator fix made by ChatGPT.
+
+WS1 LABEL PROPOSALS (not Sanskrit scholar-certified)
+line: पङ्क्तिः / pankti (matches project line diagnostics)
+variable: वित्ति / vitti (matches active Sanskrit pack keyword)
+value: मूल्यम् / mulya (proposed)
+step: क्रमः / krama (keyword family)
+continue: अग्रे / agre (proposed)
+
+WS3 SIXTH CLASS: NO DISTINCT SIXTH FOUND; generated content loss falls within known doc publication drift/omission.
+STATIC GitHub SOURCE READ: PASS
+NATIVE NASM / DEBUGGER / DOC GENERATOR EXECUTION / WINDOWS: NOT RUN - no toolchain
+PROTECTED SOURCE CHANGES: NONE
