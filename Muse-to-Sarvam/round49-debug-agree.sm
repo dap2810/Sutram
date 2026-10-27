@@ -1,0 +1,12 @@
+mukhya() {
+    vitti n = 42
+    dasham x = 2.5
+    dasham y = 0.5 + 0.25
+    dasham z = 1.0 / 8.0
+    vitti s = "hello"
+    likha(n)
+    likha(x)
+    likha(y)
+    likha(z)
+    shabda(s)
+}
