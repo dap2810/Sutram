@@ -155,6 +155,13 @@ Written in Sutram itself. Every library function copies its parameters into
 locals before changing them, because the compiler currently faults on
 assignment to a parameter.
 
+### Big-integer digit order (`brihat`)
+
+`lib/brihat.smlib` represents a nonnegative base-10 big integer in **least-significant-digit-first (LSB-first)** order, not ordinary printed digit order.
+Each digit occupies one 8-byte cell; callers allocate an array of `n` cells (for example with `nirmmita(n * 8)`).
+After `brihat_ank_se_laghu(1234, digits, 4)`, `pad8(digits + 0 * 8)` is `4`, `pad8(digits + 1 * 8)` is `3`, `pad8(digits + 2 * 8)` is `2`, and `pad8(digits + 3 * 8)` is `1`.
+`brihat_ank_tak_laghu(digits, 4)` reads that same LSB-first representation back as `1234`. Do not reverse the cells when passing them to other `brihat_*` functions.
+
 ## 5. Types
 
 | type | declared with |
