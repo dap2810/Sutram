@@ -1,0 +1,64 @@
+SUTRAM ROUND-115 — RAW SOURCE-READ AND MISMATCH RECEIPT
+Date: 2026-10-27
+Starting HEAD (source pin): e2ddf0922caccb4e60c29f2c3012929125a4f67c
+Sarvam assignment: Sarvam-to-ChatGPT/ROUND-115.md blob 709772289f9a8b6227ad97a324158e7a565da4d1
+Main HTML: docs/sutram-stdlib.html blob 212d6c97a31455361607b4b797d504b3061f05d9
+Priority: Sanskrit active until v1.0; remaining ten language packs FROZEN.
+
+STATIC DESCRIPTION INVENTORY (all rows)
+Rows scanned: 305
+EMPTY: 100
+REVIEW_ISSUE (function-row): 18
+PRESENT_NOT_CERTIFIED: 187
+Sum: 305
+Source locations: ChatGPT-to-Sarvam/ROUND-115-ALL-305-DESCRIPTIONS.tsv
+Active source modules read: 24/24 lib/*.smlib; declaration lines parsed 305.
+HTML module sections: 24; function rows: 305.
+
+LEADING EMBEDDED SIGNATURES VS FUNCTION COLUMN
+HTML:95:  actual brihat_shesh(ank, shesh, res, n)
+          prose  brihat_shesh(num, shesh, res, n)
+HTML:96:  actual brihat_shesh_tr(ank, shesh, res, n, scratch)
+          prose  brihat_shesh_tr(num, shesh, res, n, tr)
+HTML:436: actual varna_tak_ank(buf, n, ok)
+          prose  varna_tak_ank(buf, n)
+Source: lib/vakyank.smlib:84 confirms 3 actual parameters and okp[0].
+Leading signature differences: 3; source function-column differences: NONE CLAIMED in this document, earlier check_doc_signatures reported 305/305 as partner evidence.
+
+EXACT FALSE/UNRELIABLE CONTRACT WITNESSES
+lib/aadhar.smlib:20-30: output c<1 branch writes dst[0]; HTML:53 permits >=4*n (0 cells for n=0).
+lib/gudh.smlib:14-25: hash reads packed bytes via akshar(s,i); description falsely says a cell-array mala; modulo 2^32 result is 0..2^32-1 under normal signed 64-bit intermediate.
+lib/samanvaya.smlib:135-144: sadish_yoga(u,v) loops until min(kosh_len(u), kosh_len(v)); HTML:330 instead suggests row-i/col-j matrix product.
+lib/nighantu.smlib:332-350: nighantu_mil reports merged entry count; HTML:245 tells user to check dst map count for partial merge, wrong when replacing keys.
+lib/kalana.smlib:34-40: simpson uses min input lengths and truncates even >=4 usable sample counts by 1; HTML:172 doesn't state last sample dropped.
+lib/vakyank.smlib:142-161: ank_tak_aadhar_varna takes base 2..36, HTML:437's summary describes 2/8/10/16 only.
+lib/ganita.smlib:76-84,151-167: caller out[0] and out[1] imply allocated two 8-byte cells; HTML:140,141 doesn't declare output extent.
+lib/phal.smlib:7-10: source module intro uses phantom result_checked_* ; HTML:259 inherits it; real family phal_janchit_*.
+lib/sangrah.smlib:9-12: old map.smlib in source comment; HTML:334 inherits it.
+lib/khand.smlib:4-27: string.smlib and strb_* naming legacy; HTML:179 inherits it.
+lib/suchi.smlib:223-275: six function descriptions mention old sort.smlib; HTML rows 407,409-413.
+lib/roop.smlib:309-313: roop_pad_madhya description contains internal word npad without explanation.
+
+WS2 MEASURED NAME COUNTS (raw source-derived Round 114, rechecked source 24 modules)
+Distinct names: 305
+Distinct first underscore-delimited components: 91
+Singleton first components: 63
+Same as owning module: 171
+Names beginning with eleven draft domain prefix tokens: 102
+First eight high-weight teaching families (roop/khand/suchi/ganita/varna/nighantu/phal/mala): 141 names (not 305).
+Counts by segment count: 1:45 2:174 3:81 4:5 5:0 6:0
+Full first/last-token histogram: ChatGPT-to-Sarvam/ROUND-114-WS1-MEASURED-PREFIXES.json (blob bedb4412fa6950e516c4a074dcae2e1c8c309f0d).
+
+CURRENT INTEGRATION STATE (pin HEAD)
+tools/gates.sh blob f87ff2ae8ce344573b217d5bcfbdca8c6459e87a, 19620 bytes; new doc checks included.
+tools/doc_counts_gate.py blob 9a49f69ac83bf53e425adfd36a0859041a52112c, 10921 bytes; --totals supported.
+src/sutram_compiler.asm blob 7db83d38152c81b05e387b5a93a4445fa984f72c: no r38_mark_alias.
+active examples 251/252/253: 404/not found, despite delivered in Muse-to-Sarvam/round39-whole-files.
+This source-only observation contradicts the v348 narrative of all three changes installed.
+
+EXECUTED IN THIS READ-SIDE ROUND
+GitHub connected direct source/readback and deterministic JS static counting: PASS
+Sutram NASM build/tests/proofs/guard/Windows: NOT RUN - no toolchain
+All 187 other descriptions semantically proven: CANNOT CHECK
+Sanskrit scholarly confirmation: NOT RUN (outside scope)
+No protected source, library, tests, tools, language pack, binary or backups changes.
