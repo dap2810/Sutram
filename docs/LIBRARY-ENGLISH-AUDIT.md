@@ -107,3 +107,42 @@ as a pair - which the English does not, because `int` says nothing about being t
 **This check ran against a tarball that has already served me a stale file once this session.** **So the absence of
 `sat_div` from `lib/` should be confirmed against the API before anyone acts on it.** **A finding of absence is the
 kind that a stale tree produces for free.**
+
+---
+
+## Resolved: `sat_div` is a stale comment, and the answer took three passes
+
+**I said it did not exist. Then the API search said it did, in `ganita.smlib`. Then I read the context.**
+
+**It appears once, inside a comment:**
+
+> *"b == 0 returns 0 (same sentinel as sat_div)"*
+
+**There is no function called `sat_div` in `lib/`.** **The comment refers to one as though it exists.**
+
+**So the three passes were:**
+1. **a loose regex put `sat_div` in a list of identifiers** - it was a comment hit I did not check
+2. **a tarball search found nothing, and I concluded "does not exist"** - which happened to be right for the function, for the wrong reason, on a tree that has already served me a stale file once
+3. **an API search found it in `ganita.smlib`** - correctly, because the comment is there
+
+**Only reading the context gave the actual answer.**
+
+### So it is a documentation defect, not a rename
+**A comment naming a function that does not exist is the same class as the 35 descriptions ChatGPT corrected: text that
+describes something other than the code.** **A reader would look for `sat_div` and not find it.**
+
+**And what it probably means:** the comment is describing the saturating-divide behaviour, **whose real name is
+`ganita_paripurna_bhaj`** - the `paripurna` family that the saturating operations use. **So the fix is to name the real
+function, not to rename a missing one.**
+
+## The final tally
+
+| Item | Verdict |
+|---|---|
+| `char`, `int`, `len` in `lib/` | **internal labels and local variables - not API, no change** |
+| `slice` in prose | **should say `vibhag`; compiler labels are fine** |
+| **`sat_div`** | **a stale comment naming a function that does not exist** - fix the comment |
+| **`brihat_ank_se_int`** | **real, public, needs `laghu`** |
+| **`brihat_ank_tak_int`** | **real, public, needs `laghu`** |
+
+**Two renames and one comment fix.** **That is the whole vocabulary task, after four measurements that each shrank it.**
