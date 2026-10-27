@@ -72,7 +72,7 @@ prakriya ganita_nirapeksh(n) {
 }
 
 # chakravala(out, n): solves x^2 - n*y^2 = 1 for least positive x, y.
-# Fills out[0] = x and out[1] = y.
+# Writes out[0] = x and out[1] = y; caller must supply at least 2 writable qword cells.
 prakriya chakravala(out, n) {
     vitti a = ganita_vargmool(n)
     vitti b = 1
@@ -156,7 +156,7 @@ prakriya chakravala(out, n) {
 # samasa(out, a, b, c, d, n): Brahmagupta's composition law (bhavana / samasa).
 # Given a^2 - n*b^2 = k1 and c^2 - n*d^2 = k2, composes them into a third:
 #   (a^2 - n*b^2)(c^2 - n*d^2) = (a*c + n*b*d)^2 - n*(a*d + b*c)^2
-# Fills out[0] = a*c + n*b*d  and  out[1] = a*d + b*c.
+# Writes out[0] = a*c + n*b*d and out[1] = a*d + b*c; requires 2 writable qword cells.
 prakriya samasa(out, a, b, c, d, n) {
     vitti p = a
     vitti q = b
