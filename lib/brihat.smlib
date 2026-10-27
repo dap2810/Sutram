@@ -250,7 +250,7 @@ prakriya brihat_bhajshesh(a, b, q, r, n) {
     prati 0
 }
 
-# brihat_shesh(num, shesh, res, n) — res = num % shesh, where num has 2n digits
+# brihat_shesh(ank, shesh, res, n) — res = ank % shesh, where ank has 2n digits
 # Helper for powmod. Uses long division. shesh == 0 is defined, not a
 # hang: no reduction is applied, so res is the low n digits of num.
 # Returns 0, or -1 (res unchanged) if its n-digit scratch cannot be allocated.
@@ -266,7 +266,7 @@ prakriya brihat_shesh(ank, shesh, res, n) {
     prati brihat_shesh_tr(ank, shesh, res, c, tr)
 }
 
-# brihat_shesh_tr(num, shesh, res, n, tr) — brihat_shesh with the caller's n-digit scratch tr.
+# brihat_shesh_tr(ank, shesh, res, n, scratch) — brihat_shesh with caller's n-digit scratch.
 prakriya brihat_shesh_tr(ank, shesh, res, n, scratch) {
     vitti x = ank
     vitti m = shesh
