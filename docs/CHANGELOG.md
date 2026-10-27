@@ -1,3 +1,24 @@
+## v351 - the vocabulary page is rewritten: a small core and a list, not a rule
+
+**The page claimed a derivational rule that would let a learner place any of 303 names.** **It is now rewritten to the
+measured verdict, and it says what was wrong with the old version.**
+
+**Two reasons the rule claim failed:**
+- **Measured: 91 distinct first components, 63 occurring exactly once, only 171/305 beginning with their own module
+  name.** *"That is a long tail, not a rule."*
+- **And the examples were invented** - the page said `ganita_sat_yuj`; the function is `ganita_paripurna_yuj`.
+
+**The new page is a CURRICULUM in five steps:** the core grammar of the language (twenty-odd words), what a module and
+a builtin are, **a small set of reliable word families**, worked examples with **verified** names, and the generated
+reference as a lookup forever.
+
+**And it carries the line the old version needed:** ***"No claim that Latin underscores are formal Pāṇinian samāsa
+grammar. A naming convention is a naming convention. It is not a grammatical derivation, and calling it one borrows
+authority the convention has not earned."***
+
+**What is still open, and honestly so:** **whether the words are the right words** - `ganita` for mathematics,
+`janchit` for checked, `paripurna` for saturating. **That is a Sanskritist's question and the page says so.**
+
 ## v350 - Muse caught me twice: the bounds guard and its compiler fix are NOT on main
 
 **I told the owner the nine bounds-guard test files were installed. Muse measured and they are not.**
