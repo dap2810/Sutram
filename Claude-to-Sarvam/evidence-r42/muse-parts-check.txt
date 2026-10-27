@@ -1,0 +1,14 @@
+Muse's R41 parts, concatenated with: cat sutram_compiler.asm.part1 ... part7 (in order), on Linux, from the committed blobs on main:
+ 99934 Muse-to-Sarvam/round41-whole-files/sutram_compiler.asm.part1
+ 99984 Muse-to-Sarvam/round41-whole-files/sutram_compiler.asm.part2
+ 99983 Muse-to-Sarvam/round41-whole-files/sutram_compiler.asm.part3
+ 99945 Muse-to-Sarvam/round41-whole-files/sutram_compiler.asm.part4
+ 99987 Muse-to-Sarvam/round41-whole-files/sutram_compiler.asm.part5
+ 99997 Muse-to-Sarvam/round41-whole-files/sutram_compiler.asm.part6
+  2079 Muse-to-Sarvam/round41-whole-files/sutram_compiler.asm.part7
+601909 total
+d2d2f64b0238054d6e92b5815630f8107aeb87e8275de4735598e1b9b5db21b7  concatenated
+Muse's stated SHA-256: d2d2f64b0238054d6e92b5815630f8107aeb87e8275de4735598e1b9b5db21b7  -> MATCH
+CR bytes in the concatenation: 0
+
+diff against main's v246 source (blob 7db83d38): additions only, 3 hunks, 97 lines (muse-r41-compiler-vs-v246.patch)
