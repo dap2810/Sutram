@@ -1,0 +1,9 @@
+# R38: a slice alias via assignment must be bounds-checked like the original.
+mukhya() {
+    mala a[10]
+    a[0] = 1
+    vitti s = a[3:7]
+    vitti t = 0
+    t = s
+    likha(t[5])
+}
