@@ -1,0 +1,73 @@
+SUTRAM ROUND 118 — RAW SOURCE READ / STATIC TEST SPEC CHECK
+read pin main: 3b1a9e7f5369a7f826cfa9ce07c4d873a40973e6
+assignment Sarvam-to-ChatGPT/ROUND-118.md sha bb076a71b2377b05aa519287f778328e3b72fc05
+source files read / GitHub blob hashes:
+Sarvam-to-ChatGPT/ROUND-118.md	bb076a71b2377b05aa519287f778328e3b72fc05	chars=2027
+docs/LEXER-BOUNDARY-TEST.md	86969285258af1e3ce4a3d04ef6b4087a5026bc4	chars=2798
+lang/sanskrit.lang	b7bbbe1e07d258cc67f05e9dad81bca9379e59a6	chars=1664
+src/r66_indic_lexer.inc	998b6cb75a7e11cf6d488cf84a84a2154ffdebf0	chars=2670
+src/sutram_compiler.asm	03e9845c2ec59c2798a7b7e2edcb2a7d8b907449	chars=602204
+Sarvam-to-Muse/ROUND-43.md	07b216f4b25bd6ef4ad9e5a1cbd3c02e3658649c	chars=1746
+Sarvam-to-Claude/ROUND-43.md	49a34c1bc5ce6173f57d9ae94c86ebc177291678	chars=2500
+
+CODE OBSERVATIONS (direct source reads, not an executed compiler)
+src/sutram_compiler.asm:6210-6276 gathers whole identifier bytes, is_alpha and is_digit.
+src/sutram_compiler.asm:6278-6318 calls lookup_keyword then lookup_builtin then TOK_IDENT.
+src/sutram_compiler.asm:24058-24116: lookup_keyword string-equality table using strcmp.
+src/sutram_compiler.asm:24118-24176: lookup_builtin string-equality table using strcmp.
+src/sutram_compiler.asm:23969-23990: is_alpha accepts ASCII letters/_ and 0xE0 Indic byte start.
+src/sutram_compiler.asm:6143-6193: whitespace and #, //, /* comment paths.
+src/sutram_compiler.asm:6195-6200: special danda recognition, including U+0964 and U+0965.
+src/r66_indic_lexer.inc: r66_indic_scalar_width recognises selected E0 three-byte scalars.
+src/r66_indic_lexer.inc: r66_decimal_digit_at recognises native decimal digits and ASCII.
+lang/sanskrit.lang exact native keyword row: प्रतियाति prati
+lang/sanskrit.lang exact native keyword row: वित्ति vitti
+lang/sanskrit.lang exact abbreviation rows: प॰ prati and वि॰ vitti
+IMPORTANT: प्रति (alone) is not the current Sanskrit return-keyword spelling. प्रतिलिपि does not begin with the actual mapped keyword प्रतियाति.
+
+PARTNER REPORTED BUT NOT CHATGPT-EXECUTED
+docs/LEXER-BOUNDARY-TEST.md: four compiled+executed Latin cases: prati_test -> 6, mukhyata -> 7, pratiX -> 3, variable vartani_pratilip -> 9.
+Sarvam-to-Muse/ROUND-43.md: five requested baseline questions; M01-M05 in TSV.
+Changelog v361 reports v249 lexer already accepts Latin prefix names; Devanagari keyword-prefix acceptance not proven there.
+
+WS2 CASE DATA (static)
+TSV blob af861df0e4d52d71bf711cc1fdef66ed6e91f4b6
+rows 72
+columns each row 6/6 VALID
+RUN_SANSKRIT=28
+TOKENS_SANSKRIT=38
+RAW_BYTES_SANSKRIT=6
+previous partner reported results precisely marked in each evidence column; remaining cases NOT RUN - no toolchain.
+Unicode UAX31 scalar-class spot check (static JS, NOT Sutram):
+prati+क (U+0915) -> XID_Continue true
+prati+३ (U+0969) -> XID_Continue true
+prati+ि (U+093F) -> XID_Continue true
+प्रतियाति+क (U+0915) -> XID_Continue true
+प्रतियाति+X (U+0058) -> XID_Continue true
+प्रतियाति+३ (U+0969) -> XID_Continue true
+वित्ति+म (U+092E) -> XID_Continue true
+वित्ति+X (U+0058) -> XID_Continue true
+वित्ति+३ (U+0969) -> XID_Continue true
+
+EXACT TSV SAMPLE ROWS id/scope/input/expected/why/evidence:
+M01	RUN_SANSKRIT	prakriya vartani_pratilip(x) { prati x } mukhya() { likha(6) }	COMPILE PASS; RUN stdout=6\n	Muse question 1: function definition named vartani_pratilip must remain a single identifier	NOT RUN - no toolchain
+M02	RUN_SANSKRIT	prakriya vartani_pratilip(x) { prati x + 1 } mukhya() { likha(vartani_pratilip(5)) }	COMPILE PASS; RUN stdout=6\n	Muse question 2: actual callable invocation not split as prati + suffix	NOT RUN - no toolchain
+M03	RUN_SANSKRIT	mukhya() { vitti pratiX = 3; likha(pratiX) }	COMPILE PASS; RUN stdout=3\n	Muse question 3: ASCII keyword prefix with uppercase ASCII continuation	PARTNER REPORTED PASS (Sarvam v249)
+M04	RUN_SANSKRIT	mukhya() { vitti प्रतिलिपि = 4; likha(प्रतिलिपि) }	COMPILE PASS; RUN stdout=4\n	Muse question 4 verbatim example; this is NOT a true प्रतियाति keyword prefix since pack maps प्रतियाति, not प्रति	NOT RUN - no toolchain
+M05	RUN_SANSKRIT	mukhya() { vitti mukhyata = 7; likha(mukhyata) }	COMPILE PASS; RUN stdout=7\n	Muse question 5: longer name with mukhya prefix	PARTNER REPORTED PASS (Sarvam v249)
+D02	RUN_SANSKRIT	mukhya() { vitti प्रतियातिक = 16; likha(प्रतियातिक) }	COMPILE PASS; RUN stdout=16\n	Actual Devanagari keyword प्रतियाति followed immediately by क must remain identifier	NOT RUN - no toolchain
+D03	RUN_SANSKRIT	mukhya() { vitti प्रतियातिX = 17; likha(प्रतियातिX) }	COMPILE PASS; RUN stdout=17\n	Native keyword plus Latin letter must remain one identifier	NOT RUN - no toolchain
+D15	TOKENS_SANSKRIT	प्रतियाति।	KEYWORD(prati), DANDA(।)	Single danda U+0964 must delimit, not become part of name	NOT RUN - no toolchain
+D16	TOKENS_SANSKRIT	प्रतियाति॥	KEYWORD(prati), DOUBLE_DANDA(॥)	Double danda U+0965 must delimit	NOT RUN - no toolchain
+D18	TOKENS_SANSKRIT	प॰	KEYWORD(prati)	Real punctuated abbreviation from Sanskrit pack, exact spelling only	NOT RUN - no toolchain
+X01	RUN_SANSKRIT	mukhya() { vitti pratiक = 26; likha(pratiक) }	COMPILE PASS; RUN stdout=26\n	Latin keyword immediately followed by Devanagari LETTER is a single identifier	NOT RUN - no toolchain
+X05	RUN_SANSKRIT	mukhya() { vitti pratiि = 30; likha(pratiि) }	COMPILE PASS; RUN stdout=30\n	Latin base followed by Devanagari combining vowel mark; lexical continuation although unnatural word	NOT RUN - no toolchain
+B01	TOKENS_SANSKRIT	prati	KEYWORD(prati) at EOF	No read past exclusive source end	NOT RUN - no toolchain
+B03	TOKENS_SANSKRIT	prati\t	KEYWORD(prati), TAB	ASCII tab is delimiter; backslash-t represents one tab in fixture	NOT RUN - no toolchain
+B04	TOKENS_SANSKRIT	prati\n	KEYWORD(prati), NEWLINE	LF delimiter advances line count	NOT RUN - no toolchain
+B05	TOKENS_SANSKRIT	prati\r\n	KEYWORD(prati), CRLF	CRLF delimiter, no extra spurious tokens	NOT RUN - no toolchain
+E01	RAW_BYTES_SANSKRIT	hex:70 72 61 74 69 E0 A4	LEXICAL_ERROR(E_UTF8); NOT keyword plus ignored bytes	Truncated E0 Indic UTF-8 scalar after ASCII keyword bytes	NOT RUN - no toolchain
+
+PASS: connected GitHub source and assignment fetch; 72-row TSV parsed; 9 Unicode identifier-continuation spot checks.
+NOT RUN - no toolchain: Sutram native lexer, compiler, full tests, fuzz corpus, Windows.
+No source/lib/tests/tools/Windows/non-Sanskrit packs/backups changed by ChatGPT.
