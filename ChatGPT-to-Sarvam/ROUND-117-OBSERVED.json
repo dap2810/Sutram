@@ -1,0 +1,100 @@
+{
+  "round": 117,
+  "date": "2026-10-27",
+  "assignment": "Sarvam-to-ChatGPT/ROUND-117.md",
+  "assignment_blob": "b06a0d8b9e21eb46c1ed3e81ceb6df759bc244d7",
+  "pinned_main": "fd02405aad986001c451ee5c5decb91346c7bb53",
+  "changelog": "v357",
+  "compiler": "v248",
+  "priority": "Sanskrit only through v1.0; ten other language packs frozen",
+  "WS1": {
+    "verdict": "NO SIXTH CLASS FOUND",
+    "classification": "new findings fit established API/copy-paste, documentation completeness or generated/release provenance drift",
+    "improvement": "reproducibility gate comparing regenerated HTML bytes with committed docs, plus embedded-signature and description-presence checks"
+  },
+  "WS2": {
+    "deliverable": "ChatGPT-to-Sarvam/ROUND-117-WS2-BEGINNER-TEACHING-ORDER.md",
+    "source_declarations": 305,
+    "prefixes": 91,
+    "singletons": 63,
+    "compound_names": 260,
+    "unsegmented": 45,
+    "eight_families": [
+      [
+        "mala",
+        8
+      ],
+      [
+        "suchi",
+        21
+      ],
+      [
+        "khand",
+        22
+      ],
+      [
+        "varna",
+        18
+      ],
+      [
+        "ganita",
+        18
+      ],
+      [
+        "roop",
+        23
+      ],
+      [
+        "nighantu",
+        17
+      ],
+      [
+        "phal",
+        14
+      ]
+    ],
+    "eight_family_count": 141,
+    "examples_verified_against_current_source": 8,
+    "examples_kind": "callable declaration exists with listed signature and line, not native runtime acceptance",
+    "not_claimed": "formal Sanskrit samasa morphology"
+  },
+  "WS3": {
+    "prior_tsv": "ChatGPT-to-Sarvam/ROUND-116-WS1-EXACT-REPLACEMENTS.tsv",
+    "files_checked": 15,
+    "expected_old_rows": 35,
+    "applied": 35,
+    "pending": 0,
+    "conflicts": 0,
+    "old_occurrences": 0,
+    "new_occurrences": 35,
+    "complete_recheck_evidence": [
+      "ChatGPT-to-Sarvam/ROUND-117-WS3-RECHECK-A.tsv",
+      "ChatGPT-to-Sarvam/ROUND-117-WS3-RECHECK-B.tsv"
+    ],
+    "reissue": "NONE",
+    "source_vs_generated_html": {
+      "generated_html_blob": "212d6c97a31455361607b4b797d504b3061f05d9",
+      "affected_module_count": 15,
+      "affected_source_function_rows_inspected": 221,
+      "function_description_differences": 18,
+      "module_header_differences": 7,
+      "total_different_content_regions": 25,
+      "changed_html": "NOT UPDATED",
+      "action": "Sarvam/authorized docs owner regenerate from 24 current library source files and verify 305 signatures and descriptions"
+    }
+  },
+  "partner_evidence": {
+    "changelog_v357": "Sarvam reports fresh-clone tests after 35 comments: suite 218; proofs 224; crash cases 227; not rerun by ChatGPT",
+    "Muse_R41": "compiler alias guard bundle delivered; not presumed installed"
+  },
+  "status": {
+    "static_repo_reads": "PASS",
+    "exact_match_R116_comment_recheck": "PASS",
+    "generated_reference_synced": "FAIL",
+    "native_compiler": "NOT RUN - no toolchain",
+    "regressions": "NOT RUN - no toolchain",
+    "Windows": "NOT RUN - no toolchain",
+    "Sanskritist": "NOT RUN"
+  },
+  "scope": "Only ChatGPT-to-Sarvam/ files created, no compiler/lib/tests/tools/windows/backups/frozen packs touched"
+}
