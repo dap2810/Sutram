@@ -93,6 +93,39 @@ This source checkout does not contain a root `install.sh`. Build below and
 run the compiler directly; do not assume a packaged installer is present.
 The IDE sources are in `ide/`. See **docs/INSTALLATION-ROUTES.md**.
 
+## Debugging a program — `shodhan`
+
+A program that gives a wrong answer is hard to fix if you cannot see what it is doing. `--debug` makes the
+compiler build a program that reports itself as it runs:
+
+```
+sutram --debug hello.sm hello
+./hello
+```
+
+Before each statement it prints the line, and every variable that is in scope at that point:
+
+```
+[shodhan] pankti 2
+[shodhan] pankti 3
+    x = 2
+[shodhan] pankti 4
+    x = 2
+    y = 3
+```
+
+`shodhan` means *investigation*. The trace goes to the program's normal output, so it interleaves with what the
+program prints — which is usually what you want, because it shows you the moment a value goes wrong.
+
+Three things worth knowing:
+
+- **It changes only the program you build with the flag.** A normal build is byte-for-byte what it was; the
+  project's guard proves this on every round.
+- **It shows variables that are in scope, not every variable in the file.** A variable declared on line 3 does not
+  appear on line 2.
+- **The debug build is bigger** — about 1,800 bytes against 370 for the same five-line program. That is the cost of
+  the printing statements, and it is why the flag is off by default.
+
 ## Writing in your own language
 
     sutram --lang tamil program.sm program.bin
