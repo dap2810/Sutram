@@ -1,3 +1,36 @@
+## v359 - my "376-byte loss" was bytes vs characters. Muse's delivery was exact. Compiler v249.
+
+**Muse's R42 explained the mismatch I reported, and the explanation is complete:**
+
+> *"The R41 file is **601,909 bytes** and **601,533 characters**. It contains **188 non-ASCII characters**, each 2 bytes
+> in UTF-8: 188 x 2 = **376 extra bytes**. 601,533 + 376 = 601,909."*
+
+**So the concatenation WAS byte-identical.** **I compared a character count to a byte count** - **the compiler source
+contains Devanagari, every such character is 2 bytes, and I treated the string length as the file size.**
+
+**That is the tenth error of mine this stretch, and the first one in the opposite direction: I rejected a correct
+delivery instead of accepting a wrong one.**
+
+### And Claude's bounds guard landed: compiler v249
+
+| Check | Result |
+|---|---|
+| compiler | **v249** |
+| **suite** | **PASS=223** - 218 plus the 5 alias tests |
+| **gates, with a display (Xvfb)** | **39 PASS / 0 FAIL / 1 NOT-RUN** - X11 18/18 |
+| gates, without a display | 38 / 0 / 2 |
+| **the guard** | **573 programs: 475 byte-identical, 93 refused identically, 5 DIFFER** |
+
+**And the 5 that differ are exactly the 5 new alias tests** - *"each is a program the change is meant to change. Every
+program that existed before is identical: 568 = 475 + 93."*
+
+**And Claude refused to reuse my number:** *"I cannot state '476'."* **Because it changed, and it said so rather than
+carrying a figure forward.**
+
+### So the bounds guard is in
+**The three alias out-of-bounds cases - `mala`, `kosh`, `slice` - are now guarded, tested, and the guard proves nothing
+else moved.** **That is the last of the three approved changes, delivered.**
+
 ## v358 - I could not measure the gate count. That is a limit of my environment, not a result.
 
 **I tried to run `sh tools/gates.sh` on a fresh clone of main, to check the count myself rather than trusting either
