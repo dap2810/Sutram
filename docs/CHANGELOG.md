@@ -1,3 +1,31 @@
+## v357 - verified: the 35 comment edits changed nothing that runs
+
+**A comment edit is supposed to be inert. This is the measurement that says it was.**
+
+**Fresh clone of main, built, and every gate I can run:**
+
+| Check | Result |
+|---|---|
+| changelog / compiler | **v356 / v248** |
+| **regression suite** | **NO-EXPECTATION=4 PASS=218** |
+| **crash corpus** | **227 cases + manifest, 0 failed** |
+| **library proofs** | **224 passed, 0 failed** |
+| layers | **14 core, 9 alloc, 1 std** |
+| **doc signatures** | **305 signatures, 0 issues, PASS** |
+
+**Identical to the run before the edits.** **35 comments changed across 15 library modules, and not one test, proof or
+signature moved.**
+
+### Why this matters more than it sounds
+**The library's comments are what a caller reads to learn what to pass in.** **Correcting 35 of them is a real
+improvement to usability** - **and it carries a real risk, because a comment is inside the file the compiler reads.**
+
+**So the check is not "did it compile" - it is "did anything else change".** **Nothing did.**
+
+### And the state is now consistent
+**The tree, the documents and the library all describe the same thing.** **Nine errors of mine this stretch, every one
+in a document - and the five checks that would have caught most of them are now wired into `gates.sh`.**
+
 ## v356 - ChatGPT's 35 description corrections applied, 0 missed, across 15 library modules
 
 **Its R116-WS1 delivered a TSV: 35 exact old/new line pairs across 15 modules. I applied every one.**
