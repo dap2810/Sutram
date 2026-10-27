@@ -1,0 +1,4481 @@
+    jmp capacity_fail
+
+is_float_var:
+    ; rdi=name ptr -> rax=1/0
+    push rbx
+    push r12
+    push r13
+    mov rbx, rdi
+    xor r12, r12
+    mov r13, [rel float_var_cnt]
+.ifv_loop:
+    cmp r12, r13
+    jae .ifv_no
+    lea rcx, [rel float_vars]
+    mov rdi, [rcx + r12*8]
+    mov rsi, rbx
+    call strcmp
+    test rax, rax
+    jz .ifv_yes
+    inc r12
+    jmp .ifv_loop
+.ifv_yes:
+    mov rax, 1
+    pop r13
+    pop r12
+    pop rbx
+    ret
+.ifv_no:
+    xor rax, rax
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+expr_is_float:
+    ; rdi=AST node -> rax=1 only when the expression result itself is binary64.
+    push rbx
+    push r12
+    mov rbx, rdi
+    test rbx, rbx
+    jz .eif_no
+    mov rax, [rbx]
+    cmp rax, AST_FLOAT
+    je .eif_yes
+    cmp rax, AST_VAR
+    je .eif_var
+    cmp rax, AST_BINOP
+    je .eif_binop
+    cmp rax, AST_TERNARY
+    je .eif_ternary
+    cmp rax, AST_FUNCALL
+    je .eif_funcall
+    cmp rax, AST_INDEX
+    je .eif_index
+    cmp rax, AST_CALL
+    je .eif_builtin
+    jmp .eif_no
+.eif_var:
+    mov rdi, [rbx+8]
+    call is_float_var
+    jmp .eif_done
+.eif_funcall:
+    mov rdi, [rbx+8]
+    call func_return_is_float
+    jmp .eif_done
+.eif_index:
+    mov rdi, [rbx+8]
+    call is_float_kosh_var
+    jmp .eif_done
+.eif_builtin:
+    cmp qword [rbx+8], BN_KOSHPOP
+    je .eif_kosh_value
+    cmp qword [rbx+8], BN_KOSHPEEK
+    je .eif_kosh_value
+    cmp qword [rbx+8], BN_KOSHDEQUEUE
+    jne .eif_no
+.eif_kosh_value:
+    cmp qword [rbx+16], 1
+    jne .eif_no
+    mov rax, [rbx+24]
+    test rax, rax
+    jz .eif_no
+    cmp qword [rax], AST_VAR
+    jne .eif_no
+    mov rdi, [rax+8]
+    call is_float_kosh_var
+    jmp .eif_done
+.eif_binop:
+    mov r12, [rbx+8]
+    cmp r12, OP_ADD
+    je .eif_bin_arith
+    cmp r12, OP_SUB
+    je .eif_bin_arith
+    cmp r12, OP_MUL
+    je .eif_bin_arith
+    cmp r12, OP_DIV
+    jne .eif_no
+.eif_bin_arith:
+    mov rdi, [rbx+16]
+    call expr_is_float
+    test rax, rax
+    jnz .eif_yes
+    mov rdi, [rbx+24]
+    call expr_is_float
+    test rax, rax
+    jnz .eif_yes
+    jmp .eif_no
+.eif_ternary:
+    mov rdi, [rbx+16]
+    call expr_is_float
+    test rax, rax
+    jnz .eif_yes
+    mov rdi, [rbx+24]
+    call expr_is_float
+    test rax, rax
+    jnz .eif_yes
+    jmp .eif_no
+.eif_yes:
+    mov rax, 1
+    jmp .eif_done
+.eif_no:
+    xor rax, rax
+.eif_done:
+    pop r12
+    pop rbx
+    ret
+
+func_return_is_float:
+    ; rdi=function name -> rax=1 when pre-classified return type is binary64.
+    push rbx
+    push r12
+    push r13
+    push r14
+    mov rbx, rdi
+    xor r12, r12
+    mov r13, [rel func_def_cnt]
+.frif_loop:
+    cmp r12, r13
+    jae .frif_no
+    lea rcx, [rel func_defs]
+    mov r14, [rcx + r12*8]
+    mov rdi, rbx
+    mov rsi, [r14+8]
+    call strcmp
+    test rax, rax
+    jz .frif_found
+    inc r12
+    jmp .frif_loop
+.frif_found:
+    cmp qword [r14+40], 0
+    setne al
+    movzx rax, al
+    jmp .frif_done
+.frif_no:
+    xor rax, rax
+    cmp qword [rel r32_ffi_count], 0   ; R33: a foreign function's f64 result
+    je .frif_done
+    mov rdi, rbx
+    call r33_return_is_float
+.frif_done:
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+func_param_type:
+    ; rdi=function name, rsi=zero-based arg index -> rax=PARAM_* type byte.
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    mov rbx, rdi
+    mov r12, rsi
+    xor r13, r13
+    mov r14, [rel func_def_cnt]
+.fpt_loop:
+    cmp r13, r14
+    jae .fpt_no
+    lea rcx, [rel func_defs]
+    mov r15, [rcx + r13*8]
+    mov rdi, rbx
+    mov rsi, [r15+8]
+    call strcmp
+    test rax, rax
+    jz .fpt_found
+    inc r13
+    jmp .fpt_loop
+.fpt_found:
+    cmp r12, [r15+16]
+    jae .fpt_no
+    mov rax, [r15+32]        ; parameter-name buffer end byte offset
+    mov rcx, [r15+16]
+    shl rcx, 3
+    sub rax, rcx             ; start byte offset
+    shr rax, 3               ; start slot
+    add rax, r12
+    lea rcx, [rel func_param_types]
+    movzx eax, byte [rcx + rax]
+    jmp .fpt_done
+.fpt_no:
+    xor rax, rax
+.fpt_done:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+mark_func_typed_params:
+    ; rdi=FUNCDEF node. Seed float inference from typed parameters. Scalar
+    ; dasham marks float_vars; kosh dasham marks float_kosh_vars. Raw kosh does
+    ; not affect return-float inference and therefore needs no marker here.
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    mov rbx, rdi
+    xor r12, r12
+    mov r13, [rbx+16]        ; count
+    mov r14, [rbx+32]        ; end byte offset
+    mov rax, r13
+    shl rax, 3
+    sub r14, rax             ; start byte offset
+.mftp_loop:
+    cmp r12, r13
+    jae .mftp_done
+    mov rax, r14
+    shr rax, 3
+    add rax, r12
+    lea rcx, [rel func_param_types]
+    movzx r15d, byte [rcx + rax]
+    cmp r15d, PARAM_DASHAM
+    je .mftp_scalar_float
+    cmp r15d, PARAM_KOSH_DASHAM
+    je .mftp_kosh_float
+    jmp .mftp_next
+.mftp_scalar_float:
+    mov rax, r12
+    shl rax, 3
+    add rax, r14
+    lea rcx, [rel func_params]
+    mov rdi, [rcx + rax]
+    call mark_float_var
+    jmp .mftp_next
+.mftp_kosh_float:
+    mov rax, r12
+    shl rax, 3
+    add rax, r14
+    lea rcx, [rel func_params]
+    mov rdi, [rcx + rax]
+    call mark_float_kosh_var
+.mftp_next:
+    inc r12
+    jmp .mftp_loop
+.mftp_done:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+collect_float_decls:
+    ; rdi=statement/block node. Collect scalar dasham and kosh-dasham declarations.
+    push rbx
+    push r12
+    push r13
+    mov rbx, rdi
+    test rbx, rbx
+    jz .cfd_done
+    mov rax, [rbx]
+    cmp rax, AST_DECL
+    je .cfd_decl
+    cmp rax, AST_BLOCK
+    je .cfd_block
+    cmp rax, AST_IF
+    je .cfd_if
+    cmp rax, AST_WHILE
+    je .cfd_while
+    cmp rax, AST_DO_WHILE
+    je .cfd_do
+    cmp rax, AST_FOR
+    je .cfd_for
+    jmp .cfd_done
+.cfd_decl:
+    cmp qword [rbx+32], 1
+    je .cfd_scalar_float
+    cmp qword [rbx+32], 3
+    jne .cfd_done
+    mov rdi, [rbx+8]
+    call mark_float_kosh_var
+    jmp .cfd_done
+.cfd_scalar_float:
+    mov rdi, [rbx+8]
+    call mark_float_var
+    jmp .cfd_done
+.cfd_block:
+    xor r12, r12
+    mov r13, [rbx+8]
+.cfd_block_loop:
+    cmp r12, r13
+    jae .cfd_done
+    mov rdi, [rbx + 16 + r12*8]
+    call collect_float_decls
+    inc r12
+    jmp .cfd_block_loop
+.cfd_if:
+    mov rdi, [rbx+16]
+    call collect_float_decls
+    mov rdi, [rbx+24]
+    call collect_float_decls
+    jmp .cfd_done
+.cfd_while:
+    mov rdi, [rbx+16]
+    call collect_float_decls
+    jmp .cfd_done
+.cfd_do:
+    mov rdi, [rbx+8]
+    call collect_float_decls
+    jmp .cfd_done
+.cfd_for:
+    mov rdi, [rbx+40]
+    call collect_float_decls
+.cfd_done:
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+node_has_float_return:
+    ; rdi=statement/block node -> rax=1 if any reachable syntactic return is float.
+    push rbx
+    push r12
+    push r13
+    mov rbx, rdi
+    test rbx, rbx
+    jz .nhfr_no
+    mov rax, [rbx]
+    cmp rax, AST_RETURN
+    je .nhfr_return
+    cmp rax, AST_BLOCK
+    je .nhfr_block
+    cmp rax, AST_IF
+    je .nhfr_if
+    cmp rax, AST_WHILE
+    je .nhfr_while
+    cmp rax, AST_DO_WHILE
+    je .nhfr_do
+    cmp rax, AST_FOR
+    je .nhfr_for
+    jmp .nhfr_no
+.nhfr_return:
+    mov rdi, [rbx+8]
+    test rdi, rdi
+    jz .nhfr_no
+    call expr_is_float
+    jmp .nhfr_done
+.nhfr_block:
+    xor r12, r12
+    mov r13, [rbx+8]
+.nhfr_block_loop:
+    cmp r12, r13
+    jae .nhfr_no
+    mov rdi, [rbx + 16 + r12*8]
+    call node_has_float_return
+    test rax, rax
+    jnz .nhfr_yes
+    inc r12
+    jmp .nhfr_block_loop
+.nhfr_if:
+    mov rdi, [rbx+16]
+    call node_has_float_return
+    test rax, rax
+    jnz .nhfr_yes
+    mov rdi, [rbx+24]
+    call node_has_float_return
+    test rax, rax
+    jnz .nhfr_yes
+    jmp .nhfr_no
+.nhfr_while:
+    mov rdi, [rbx+16]
+    call node_has_float_return
+    test rax, rax
+    jnz .nhfr_yes
+    jmp .nhfr_no
+.nhfr_do:
+    mov rdi, [rbx+8]
+    call node_has_float_return
+    test rax, rax
+    jnz .nhfr_yes
+    jmp .nhfr_no
+.nhfr_for:
+    mov rdi, [rbx+40]
+    call node_has_float_return
+    test rax, rax
+    jnz .nhfr_yes
+    jmp .nhfr_no
+.nhfr_yes:
+    mov rax, 1
+    jmp .nhfr_done
+.nhfr_no:
+    xor rax, rax
+.nhfr_done:
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+classify_float_functions:
+    ; Fixed-point inference over all parsed prakriya definitions. [funcdef+40]
+    ; becomes 1 when a return expression is binary64. Typed params and local
+    ; dasham declarations seed each function's compile-time type environment.
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    xor r15, r15             ; pass count
+.cff_pass:
+    mov rax, [rel func_def_cnt]
+    cmp r15, rax
+    ja .cff_done
+    xor r14d, r14d           ; changed this pass
+    xor r12, r12
+    mov r13, [rel func_def_cnt]
+.cff_func_loop:
+    cmp r12, r13
+    jae .cff_pass_done
+    lea rcx, [rel func_defs]
+    mov rbx, [rcx + r12*8]
+    cmp qword [rbx+40], 0
+    jne .cff_next
+    mov qword [rel float_var_cnt], 0
+    mov qword [rel float_kosh_var_cnt], 0
+    mov rdi, rbx
+    call mark_func_typed_params
+    mov rdi, [rbx+24]
+    call collect_float_decls
+    mov rdi, [rbx+24]
+    call node_has_float_return
+    test rax, rax
+    jz .cff_next
+    mov qword [rbx+40], 1
+    mov r14d, 1
+.cff_next:
+    inc r12
+    jmp .cff_func_loop
+.cff_pass_done:
+    test r14d, r14d
+    jz .cff_done
+    inc r15
+    jmp .cff_pass
+.cff_done:
+    mov qword [rel float_var_cnt], 0
+    mov qword [rel float_kosh_var_cnt], 0
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+%ifdef SUTRAM_R65_PEEPHOLES
+; Only the single-argument EXPRESSION caller may omit its push. Statement
+; calls and every other caller retain the historical push-by-default ABI.
+r65_direct_typed_call_arg:
+    mov r8d,1
+    jmp gen_typed_call_arg.r65_explicit_push_mode
+%endif
+gen_typed_call_arg:
+%ifdef SUTRAM_R65_PEEPHOLES
+    xor r8d,r8d
+.r65_explicit_push_mode:
+%endif
+    ; rdi=function name, rsi=arg index, rdx=arg AST. Emit the argument value
+    ; and runtime push. Scalar params retain T12 conversion. T18 kosh params
+    ; keep the one-qword pointer ABI and enforce matching element type at compile
+    ; time so a pointer is never accidentally converted as a scalar float.
+    push rbx
+    push r12
+    push r13
+    push r14
+%ifdef SUTRAM_R65_PEEPHOLES
+    push r15
+    mov r15,r8               ; one-arg direct-to-RDI transfer requested
+%endif
+    mov rbx, rdi
+    mov r12, rsi
+    mov r13, rdx
+    mov rdi, rbx
+    mov rsi, r12
+    call func_param_type
+    mov r14, rax             ; PARAM_* target type
+    cmp r14, PARAM_KOSH
+    jae .gtca_kosh
+    ; Scalar path: infer source scalar type then apply int<->dasham conversion.
+    mov rdi, r13
+    call expr_is_float
+    push rax
+    mov rax, r13
+    call gen_expr
+    pop rdi                  ; source scalar type 0/1
+    mov rsi, r14             ; target scalar type 0/1
+    call emit_scalar_type_conversion
+    jmp .gtca_push
+.gtca_kosh:
+    cmp r14, PARAM_VIBHAG
+    je .r23_gtca_slice
+    ; Typed kosh parameters accept a named kosh variable of the same element
+    ; type. The runtime value is already the user pointer, so no conversion.
+    cmp qword [r13], AST_VAR
+    jne .gtca_kosh_type_fail
+    mov rdi, [r13+8]
+    call is_kosh_var
+    test rax, rax
+    jz .gtca_kosh_type_fail
+    mov rdi, [r13+8]
+    call is_float_kosh_var
+    cmp r14, PARAM_KOSH_DASHAM
+    je .gtca_need_float_kosh
+    ; PARAM_KOSH must not silently reinterpret binary64 elements as integers.
+    test rax, rax
+    jnz .gtca_kosh_type_fail
+    jmp .gtca_emit_kosh
+.gtca_need_float_kosh:
+    test rax, rax
+    jz .gtca_kosh_type_fail
+.gtca_emit_kosh:
+    mov rax, r13
+    call gen_expr
+.gtca_push:
+%ifdef SUTRAM_R65_PEEPHOLES
+    test r15,r15
+    jnz .r65_skip_arg_push
+%endif
+    mov dil, 0x50            ; runtime push rax
+    call emit_byte
+%ifdef SUTRAM_R65_PEEPHOLES
+.r65_skip_arg_push:
+    pop r15
+%endif
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+.r23_gtca_slice:
+    ; R23 WS3: a vibhag parameter takes a slice, or a whole mala / integer kosh
+    ; (passed as the slice [0:length]). Anything else is a compile error.
+    mov rdi, r13
+    call r23_expr_is_slice
+    test rax, rax
+    jnz .gtca_emit_kosh
+    cmp qword [r13], AST_VAR
+    jne r23_slice_base_fail
+    call alloc_ast            ; the whole-array slice name[:]
+    mov qword [rax], AST_SLICE
+    mov rcx, [r13+8]
+    mov [rax+8], rcx
+    mov qword [rax+16], 0
+    mov qword [rax+24], 0
+    mov r13, rax
+    jmp .gtca_emit_kosh       ; r23_gen_slice refuses a base that is no array
+.gtca_kosh_type_fail:
+%ifdef SUTRAM_R65_PEEPHOLES
+    pop r15
+%endif
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    lea rdi, [rel msg_kosh_param_type]
+    jmp capacity_fail
+
+emit_scalar_type_conversion:
+    ; rdi=source type, rsi=target type; runtime value is in RAX.
+    cmp rdi, rsi
+    je .estc_done
+    test rsi, rsi
+    jz .estc_to_int
+    call emit_i64_to_f64_rax
+    ret
+.estc_to_int:
+    call emit_f64_to_i64_rax
+.estc_done:
+    ret
+
+binop_needs_float:
+    ; rdi=AST_BINOP -> rax=1 for supported arithmetic/comparison with a float operand.
+    push rbx
+    mov rbx, rdi
+    mov rax, [rbx+8]
+    cmp rax, OP_ADD
+    je .bnf_operands
+    cmp rax, OP_SUB
+    je .bnf_operands
+    cmp rax, OP_MUL
+    je .bnf_operands
+    cmp rax, OP_DIV
+    je .bnf_operands
+    cmp rax, OP_EQ
+    je .bnf_operands
+    cmp rax, OP_NE
+    je .bnf_operands
+    cmp rax, OP_LT
+    je .bnf_operands
+    cmp rax, OP_GT
+    je .bnf_operands
+    cmp rax, OP_LE
+    je .bnf_operands
+    cmp rax, OP_GE
+    jne .bnf_no
+.bnf_operands:
+    mov rdi, [rbx+16]
+    call expr_is_float
+    test rax, rax
+    jnz .bnf_yes
+    mov rdi, [rbx+24]
+    call expr_is_float
+    test rax, rax
+    jnz .bnf_yes
+.bnf_no:
+    xor rax, rax
+    pop rbx
+    ret
+.bnf_yes:
+    mov rax, 1
+    pop rbx
+    ret
+
+emit_i64_to_f64_rax:
+    ; Runtime RAX integer -> raw binary64 bits in runtime RAX.
+    mov dil, 0xF2
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x2A
+    call emit_byte
+    mov dil, 0xC0            ; cvtsi2sd xmm0,rax
+    call emit_byte
+    mov dil, 0x66
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x7E
+    call emit_byte
+    mov dil, 0xC0            ; movq rax,xmm0
+    call emit_byte
+    ret
+
+emit_f64_to_i64_rax:
+    ; Raw binary64 bits in runtime RAX -> truncating signed integer in RAX.
+    mov dil, 0x66
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x6E
+    call emit_byte
+    mov dil, 0xC0            ; movq xmm0,rax
+    call emit_byte
+    mov dil, 0xF2
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x2C
+    call emit_byte
+    mov dil, 0xC0            ; cvttsd2si rax,xmm0
+    call emit_byte
+    ret
+
+; ============================================================
+; VARIABLE TABLE
+; ============================================================
+; T8b scoped array markers. These are compiler-side only and reset whenever
+; code generation enters main or a user function. Runtime length itself lives
+; in the hidden qword immediately before a pankti array's element-0 pointer.
+; This keeps same-named arrays in different functions independent and avoids
+; changing raw nirmmita pointer/index semantics.
+mark_array_var:
+    ; rdi = name ptr
+    push rbx
+    push r12
+    mov rbx, rdi
+    mov r12, [rel array_var_cnt]
+    cmp r12, 256
+    jae .mav_done
+    lea rcx, [rel array_vars]
+    mov [rcx + r12*8], rbx
+    inc qword [rel array_var_cnt]
+.mav_done:
+    pop r12
+    pop rbx
+    ret
+
+is_array_var:
+    ; rdi = name ptr -> rax = 1 if marked in current function scope, else 0
+    push rbx
+    push r12
+    push r13
+    mov rbx, rdi
+    xor r12, r12
+    mov r13, [rel array_var_cnt]
+.iav_loop:
+    cmp r12, r13
+    jae .iav_no
+    lea rcx, [rel array_vars]
+    mov rdi, [rcx + r12*8]
+    mov rsi, rbx
+    call strcmp
+    test rax, rax
+    jz .iav_yes
+    inc r12
+    jmp .iav_loop
+.iav_yes:
+    mov rax, 1
+    pop r13
+    pop r12
+    pop rbx
+    ret
+.iav_no:
+    xor rax, rax
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+mark_kosh_param_var:
+    ; rdi=name ptr; current generated-function scope only.
+    push rbx
+    push r12
+    mov rbx, rdi
+    mov r12, [rel kosh_param_var_cnt]
+    cmp r12, KOSH_PARAM_VAR_CAP
+    jae .mkpv_overflow
+    lea rcx, [rel kosh_param_vars]
+    mov [rcx+r12*8], rbx
+    inc qword [rel kosh_param_var_cnt]
+    pop r12
+    pop rbx
+    ret
+.mkpv_overflow:
+    pop r12
+    pop rbx
+    lea rdi, [rel msg_var_table_overflow]
+    jmp capacity_fail
+
+is_kosh_param_var:
+    ; rdi=name ptr -> rax=1 when this kosh is a by-value function parameter.
+    push rbx
+    push r12
+    push r13
+    mov rbx, rdi
+    xor r12, r12
+    mov r13, [rel kosh_param_var_cnt]
+.ikpv_loop:
+    cmp r12, r13
+    jae .ikpv_no
+    lea rcx, [rel kosh_param_vars]
+    mov rdi, [rcx+r12*8]
+    mov rsi, rbx
+    call strcmp
+    test rax, rax
+    jz .ikpv_yes
+    inc r12
+    jmp .ikpv_loop
+.ikpv_yes:
+    mov rax, 1
+    pop r13
+    pop r12
+    pop rbx
+    ret
+.ikpv_no:
+    xor eax, eax
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+mark_float_kosh_var:
+    ; rdi=name ptr; compiler-side marker for kosh dasham element typing.
+    push rbx
+    push r12
+    mov rbx, rdi
+    mov r12, [rel float_kosh_var_cnt]
+    cmp r12, KOSH_VAR_CAP
+    jae .mfkv_overflow
+    lea rcx, [rel float_kosh_vars]
+    mov [rcx+r12*8], rbx
+    inc qword [rel float_kosh_var_cnt]
+    pop r12
+    pop rbx
+    ret
+.mfkv_overflow:
+    pop r12
+    pop rbx
+    lea rdi, [rel msg_var_table_overflow]
+    jmp capacity_fail
+
+is_float_kosh_var:
+    ; rdi=name ptr -> rax=1 when this kosh stores binary64 elements.
+    push rbx
+    push r12
+    push r13
+    mov rbx, rdi
+    xor r12, r12
+    mov r13, [rel float_kosh_var_cnt]
+.ifkv_loop:
+    cmp r12, r13
+    jae .ifkv_no
+    lea rcx, [rel float_kosh_vars]
+    mov rdi, [rcx+r12*8]
+    mov rsi, rbx
+    call strcmp
+    test rax, rax
+    jz .ifkv_yes
+    inc r12
+    jmp .ifkv_loop
+.ifkv_yes:
+    mov rax, 1
+    pop r13
+    pop r12
+    pop rbx
+    ret
+.ifkv_no:
+    xor eax, eax
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+mark_kosh_var:
+    ; rdi=name ptr; compiler-side marker for the current generated function.
+    push rbx
+    push r12
+    mov rbx, rdi
+    mov r12, [rel kosh_var_cnt]
+    cmp r12, KOSH_VAR_CAP
+    jae .mkv_overflow
+    lea rcx, [rel kosh_vars]
+    mov [rcx+r12*8], rbx
+    inc qword [rel kosh_var_cnt]
+    pop r12
+    pop rbx
+    ret
+.mkv_overflow:
+    pop r12
+    pop rbx
+    lea rdi, [rel msg_var_table_overflow]
+    jmp capacity_fail
+
+; R38: mark an alias of a mala/kosh/slice as the same kind, so indexing through
+; it gets the same bounds check as indexing the original. Before R38, only the
+; declared name was marked: `vitti b = a` / `b = a` left b unmarked, and b[5]
+; silently read past a 3-cell mala (or a kosh), returning 0 instead of the
+; `mala ank seema atikram` error. The alias shares the original's allocation
+; and header layout ([ptr-8] length for mala, [ptr-16] for kosh, [ptr+8] for a
+; slice descriptor), so marking it is sound. Raw nirmmita pointers are NOT
+; marked by this helper (is_array/is_kosh are false for them), so their
+; historical unchecked path is unchanged. rdi = target name, rsi = source
+; name. Preserves rbx, r12-r15 and the target/source pointers on the stack.
+r38_mark_alias:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    mov r14, rdi              ; target name
+    mov r15, rsi              ; source name
+    ; already marked in any kind? then leave it alone (slice wins over array)
+    mov rdi, r14
+    call r23_is_slice_var
+    test rax, rax
+    jnz .r38_done
+    mov rdi, r14
+    call is_kosh_var
+    test rax, rax
+    jnz .r38_done
+    mov rdi, r14
+    call is_array_var
+    test rax, rax
+    jnz .r38_done
+    ; source kind, in precedence order: slice, float kosh, kosh, array
+    mov rdi, r15
+    call r23_is_slice_var
+    test rax, rax
+    jz .r38_not_slice
+    mov rdi, r14
+    call r23_mark_slice_var
+    jmp .r38_done
+.r38_not_slice:
+    mov rdi, r15
+    call is_float_kosh_var
+    test rax, rax
+    jz .r38_not_float_kosh
+    mov rdi, r14
+    call mark_kosh_var
+    mov rdi, r14
+    call mark_float_kosh_var
+    jmp .r38_done
+.r38_not_float_kosh:
+    mov rdi, r15
+    call is_kosh_var
+    test rax, rax
+    jz .r38_not_kosh
+    mov rdi, r14
+    call mark_kosh_var
+    jmp .r38_done
+.r38_not_kosh:
+    mov rdi, r15
+    call is_array_var
+    test rax, rax
+    jz .r38_done
+    mov rdi, r14
+    call mark_array_var
+.r38_done:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+is_kosh_var:
+    ; rdi=name ptr -> rax=1 if this is a kosh variable in current scope.
+    push rbx
+    push r12
+    push r13
+    mov rbx, rdi
+    xor r12, r12
+    mov r13, [rel kosh_var_cnt]
+.ikv_loop:
+    cmp r12, r13
+    jae .ikv_no
+    lea rcx, [rel kosh_vars]
+    mov rdi, [rcx+r12*8]
+    mov rsi, rbx
+    call strcmp
+    test rax, rax
+    jz .ikv_yes
+    inc r12
+    jmp .ikv_loop
+.ikv_yes:
+    mov rax, 1
+    pop r13
+    pop r12
+    pop rbx
+    ret
+.ikv_no:
+    xor eax, eax
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+emit_load_named_var:
+    ; Compiler-time rdi=name; emit runtime load of variable into RAX.
+    push rdi
+    call r56_global_index
+    test rax, rax
+    jz .r56_named_load_local
+    add rsp, 8
+    dec rax
+    mov rdi, rax
+    call r56_emit_global_load
+    ret
+.r56_named_load_local:
+    pop rdi
+    call lookup_var
+    test rax, rax
+    jle .elnv_stack
+    mov rdi, rax
+    call emit_load_reg
+    ret
+.elnv_stack:
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x8B
+    call emit_byte
+    push rsi                  ; R10 (F1): disp8 or disp32, by range
+    mov esi, eax
+    mov dil, 0x45
+    call emit_rbp_modrm_disp
+    pop rsi
+    ret
+
+emit_store_named_var:
+    ; Compiler-time rdi=name; emit runtime store from RAX into variable.
+    push rdi
+    call r56_global_index
+    test rax, rax
+    jz .r56_named_store_local
+    add rsp, 8
+    dec rax
+    mov rdi, rax
+    call r56_emit_global_store
+    ret
+.r56_named_store_local:
+    pop rdi
+    call lookup_var
+    test rax, rax
+    jle .esnv_stack
+    mov rdi, rax
+    call emit_store_reg
+    ret
+.esnv_stack:
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    push rsi                  ; R10 (F1): disp8 or disp32, by range
+    mov esi, eax
+    mov dil, 0x45
+    call emit_rbp_modrm_disp
+    pop rsi
+    ret
+
+; alloc_var(rdi = name ptr) → rax = location
+; Returns: 1-5 = register (rbx, r12, r13, r14, r15)
+;          negative = stack offset (as before)
+; r7_find_var(rdi = name) -> rax = location of an existing local of that name
+; in var_table, or 0. Never allocates. Preserves every register but rax.
+r7_find_var:
+    push rcx
+    push rdx
+    push rsi
+    push rdi
+    push r8
+    xor r8d,r8d
+.loop:
+    cmp r8,[rel var_cnt]
+    jae .none
+    mov rax,r8
+    shl rax,4
+    lea rdx,[rel var_table]
+    mov rsi,[rdx+rax]
+    mov rdi,[rsp+8]
+    call strcmp
+    test rax,rax
+    jz .hit
+    inc r8
+    jmp .loop
+.hit:
+    mov rax,r8
+    shl rax,4
+    lea rdx,[rel var_table]
+    mov rax,[rdx+rax+8]
+    jmp .out
+.none:
+    xor eax,eax
+.out:
+    pop r8
+    pop rdi
+    pop rsi
+    pop rdx
+    pop rcx
+    ret
+
+alloc_var:
+    push rbx
+    push r12
+    mov rbx, rdi              ; name
+    ; R7: block scope lets a name be declared again after its block closed
+    ; (`yadi {vitti b = 1} ... vitti b = 2`). Reuse its slot: before R7 the new
+    ; slot was never read, because lookup_var returns the first entry.
+    call r7_find_var
+    test rax, rax
+    jz .av_new
+    pop r12
+    pop rbx
+    ret
+.av_new:
+    ; Check if we have free registers (first 5 variables)
+    mov rax, [rel var_cnt]
+    cmp rax, 5
+    jge .av_stack
+    ; Assign a register: var 0→reg 1, var 1→reg 2, etc.
+    add rax, 1                ; register ID = var_cnt + 1
+    jmp .av_store
+.av_stack:
+    ; Assign stack slot
+    mov rax, [rel stack_dep]
+    add rax, 8
+    mov [rel stack_dep], rax
+    neg rax                   ; offset is negative
+.av_store:
+    ; Store in table
+    mov r12, [rel var_cnt]
+    cmp r12, VAR_TABLE_CAP
+    jae .av_overflow
+    imul r12, r12, 16
+    lea rcx, [rel var_table]
+    mov [rcx + r12], rbx      ; name ptr
+    mov [rcx + r12 + 8], rax  ; location (reg ID or stack offset)
+    inc qword [rel var_cnt]
+    pop r12
+    pop rbx
+    ret
+.av_overflow:
+    pop r12
+    pop rbx
+    lea rdi, [rel msg_var_table_overflow]
+    jmp capacity_fail
+
+; PERF2/PERF3: direct integer register destination scheduling.
+; These helpers deliberately accept only proven integer scalar forms and keep
+; floats, calls, indexing and complex expressions on the established path.
+
+; try_emit_int_decl_reg(rdi=AST_DECL) -> rax=1 if declaration fully emitted.
+; Only fires while the next variable is guaranteed to be register-resident.
+try_emit_int_decl_reg:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    mov rbx, rdi
+    cmp qword [rbx], AST_DECL
+    jne .teidr_no
+    cmp qword [rbx+32], 0       ; integer scalar only
+    jne .teidr_no
+    cmp qword [rbx+24], 0       ; not pankti
+    jne .teidr_no
+    mov r13, [rbx+16]
+    test r13, r13
+    jz .teidr_no
+    cmp qword [rel var_cnt], 5  ; next alloc must be rbx/r12-r15
+    jae .teidr_no
+    push rdi
+    mov rdi, [rbx+8]            ; R7: a re-declared name keeps its slot: not this path
+    call r7_find_var
+    pop rdi
+    test rax, rax
+    jnz .teidr_no
+    ; Integer declarations fed from a float expression need the established
+    ; truncating conversion path, so do not bypass it.
+    mov rdi, r13
+    call expr_is_float
+    test rax, rax
+    jnz .teidr_no
+    mov r13, [rbx+16]
+    ; Classify and validate the initializer before allocating the destination,
+    ; preserving the old "evaluate then allocate" name-resolution behavior.
+    cmp qword [r13], AST_NUM
+    je .teidr_num
+    cmp qword [r13], AST_VAR
+    je .teidr_var
+    cmp qword [r13], AST_BINOP
+    jne .teidr_no
+    mov r15, [r13+8]            ; operator
+    cmp r15, OP_ADD
+    je .teidr_binop_ok
+    cmp r15, OP_SUB
+    je .teidr_binop_ok
+    cmp r15, OP_MUL
+    jne .teidr_no
+.teidr_binop_ok:
+    mov rax, [r13+16]
+    cmp qword [rax], AST_VAR
+    jne .teidr_no
+    mov rdi, [rax+8]
+    call lookup_var
+    test rax, rax
+    jle .teidr_no
+    mov r14, rax                ; left reg id
+    mov rax, [r13+24]
+    cmp qword [rax], AST_VAR
+    jne .teidr_no
+    mov rdi, [rax+8]
+    call lookup_var
+    test rax, rax
+    jle .teidr_no
+    mov r12, rax                ; right reg id
+    mov rdi, [rbx+8]
+    call alloc_var
+    mov r13, rax                ; destination reg id
+    ; dst = left, then dst op= right. Newly allocated dst cannot alias sources.
+    mov rdi, r13
+    mov rsi, r14
+    call emit_reg_move_reg
+    mov rdi, r13
+    mov rsi, r15
+    mov rdx, r12
+    call emit_reg_binary_update
+    jmp .teidr_yes
+.teidr_var:
+    mov rdi, [r13+8]
+    call lookup_var
+    test rax, rax
+    jle .teidr_no
+    mov r14, rax
+    mov rdi, [rbx+8]
+    call alloc_var
+    mov rdi, rax
+    mov rsi, r14
+    call emit_reg_move_reg
+    jmp .teidr_yes
+.teidr_num:
+    mov r14, [r13+8]
+    mov rdi, [rbx+8]
+    call alloc_var
+    mov rdi, rax
+    mov rsi, r14
+    call emit_reg_load_imm
+.teidr_yes:
+    mov rax, 1
+    jmp .teidr_done
+.teidr_no:
+    xor rax, rax
+.teidr_done:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; try_emit_int_reg_assignment(rdi=AST_ASSIGN) -> rax=1 if fully emitted.
+try_emit_int_reg_assignment:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    mov rbx, rdi
+    mov rax, [rbx+8]
+    cmp qword [rax], AST_VAR
+    jne .teira_no
+    mov rdi, [rax+8]
+    call is_float_var
+    test rax, rax
+    jnz .teira_no
+    mov rax, [rbx+8]
+    mov rdi, [rax+8]
+    call lookup_var
+    test rax, rax
+    jle .teira_no
+    mov r12, rax                ; destination reg id
+    mov r13, [rbx+16]           ; source expr
+    mov rdi, r13
+    call expr_is_float
+    test rax, rax
+    jnz .teira_no
+    mov r13, [rbx+16]           ; reload across recursive type helper
+    cmp qword [r13], AST_NUM
+    je .teira_num
+    cmp qword [r13], AST_VAR
+    je .teira_var
+    cmp qword [r13], AST_BINOP
+    jne .teira_no
+    mov r15, [r13+8]
+    cmp r15, OP_ADD
+    je .teira_binop_ok
+    cmp r15, OP_SUB
+    je .teira_binop_ok
+    cmp r15, OP_MUL
+    jne .teira_no
+.teira_binop_ok:
+    mov rax, [r13+16]
+    cmp qword [rax], AST_VAR
+    jne .teira_no
+    ; PERF5: dst = integer_register +/- non-negative signed-imm32.
+    ; The two generated instructions are MOV dst,src; ADD/SUB dst,imm.
+    ; This is safe when the destination aliases the source (MOV is a no-op),
+    ; and preserves 64-bit fallback for literals > 0x7fffffff.
+    mov rax, [r13+24]
+    cmp qword [rax], AST_NUM
+    je .teira_rhs_imm
+    mov rax, [r13+16]
+    mov rdi, [rax+8]
+    call lookup_var
+    test rax, rax
+    jle .teira_no
+    mov r14, rax                ; left reg id
+    mov rax, [r13+24]
+    cmp qword [rax], AST_VAR
+    jne .teira_no
+    mov rdi, [rax+8]
+    call lookup_var
+    test rax, rax
+    jle .teira_no
+    mov rdx, rax                ; right reg id
+    cmp r15, OP_SUB
+    jne .teira_commutative
+    ; For subtraction, dst==right would destroy the RHS before use; fallback.
+    cmp r12, rdx
+    je .teira_no
+    cmp r12, r14
+    je .teira_have_left
+    push rdx
+    mov rdi, r12
+    mov rsi, r14
+    call emit_reg_move_reg
+    pop rdx
+.teira_have_left:
+    mov rdi, r12
+    mov rsi, r15
+    call emit_reg_binary_update
+    jmp .teira_yes
+.teira_commutative:
+    ; ADD/MUL can reuse either operand if target aliases one of them.
+    cmp r12, r14
+    je .teira_comm_left
+    cmp r12, rdx
+    je .teira_comm_right
+    push rdx
+    mov rdi, r12
+    mov rsi, r14
+    call emit_reg_move_reg
+    pop rdx
+.teira_comm_left:
+    mov rdi, r12
+    mov rsi, r15
+    call emit_reg_binary_update
+    jmp .teira_yes
+.teira_comm_right:
+    mov rcx, r14
+    mov rdi, r12
+    mov rsi, r15
+    mov rdx, rcx
+    call emit_reg_binary_update
+    jmp .teira_yes
+.teira_rhs_imm:
+    cmp r15, OP_MUL           ; no IMUL immediate here; leave it generic
+    je .teira_no
+    mov r14, [rax+8]         ; RHS literal, unsigned in the AST
+    cmp r14, 0x7FFFFFFF      ; arithmetic imm32 sign-extends in x86-64
+    ja .teira_no
+    mov rax, [r13+16]
+    mov rdi, [rax+8]
+    call lookup_var
+    test rax, rax
+    jle .teira_no           ; left must already occupy a register
+    mov rsi, rax
+    mov rdi, r12
+    call emit_reg_move_reg   ; preserves r14 literal and r15 operator
+    mov rdi, r12
+    mov rsi, r15
+    mov rdx, r14
+    call emit_reg_self_update_imm
+    jmp .teira_yes
+.teira_var:
+    mov rdi, [r13+8]
+    call lookup_var
+    test rax, rax
+    jle .teira_no
+    cmp rax, r12
+    je .teira_yes
+    mov rdi, r12
+    mov rsi, rax
+    call emit_reg_move_reg
+    jmp .teira_yes
+.teira_num:
+    mov rsi, [r13+8]
+    mov rdi, r12
+    call emit_reg_load_imm
+.teira_yes:
+    mov rax, 1
+    jmp .teira_done
+.teira_no:
+    xor rax, rax
+.teira_done:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; emit_reg_move_reg(rdi=dst logical id, rsi=src logical id)
+emit_reg_move_reg:
+    push rbx
+    push r12
+    push r13
+    mov rbx, rdi
+    mov r12, rsi
+    cmp rbx, r12
+    je .ermr_done
+    ; destination low code / REX.B
+    cmp rbx, 1
+    je .ermr_dst_rbx
+    mov r13, rbx
+    add r13, 2
+    mov rcx, 1
+    jmp .ermr_dst_done
+.ermr_dst_rbx:
+    mov r13, 3
+    xor rcx, rcx
+.ermr_dst_done:
+    ; source low code / REX.R
+    cmp r12, 1
+    je .ermr_src_rbx
+    mov rax, r12
+    add rax, 2
+    mov rdx, 1
+    jmp .ermr_src_done
+.ermr_src_rbx:
+    mov rax, 3
+    xor rdx, rdx
+.ermr_src_done:
+    mov rdi, 0x48
+    test rdx, rdx
+    jz .ermr_no_r
+    or rdi, 0x04
+.ermr_no_r:
+    test rcx, rcx
+    jz .ermr_no_b
+    or rdi, 0x01
+.ermr_no_b:
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    and rax, 7
+    shl rax, 3
+    and r13, 7
+    or rax, r13
+    or rax, 0xC0
+    mov dil, al
+    call emit_byte
+.ermr_done:
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; emit_reg_binary_update(rdi=dst, rsi=OP_ADD/SUB/MUL, rdx=src)
+emit_reg_binary_update:
+    cmp rsi, OP_MUL
+    je emit_reg_imul_reg
+    jmp emit_reg_self_update_reg
+
+; emit_reg_imul_reg(rdi=dst, rdx=src): imul dst,src
+emit_reg_imul_reg:
+    push rbx
+    push r12
+    push r13
+    mov rbx, rdi
+    mov r12, rdx
+    ; dst occupies ModRM.reg -> REX.R
+    cmp rbx, 1
+    je .erir_dst_rbx
+    mov r13, rbx
+    add r13, 2
+    mov rcx, 1
+    jmp .erir_dst_done
+.erir_dst_rbx:
+    mov r13, 3
+    xor rcx, rcx
+.erir_dst_done:
+    ; src occupies ModRM.r/m -> REX.B
+    cmp r12, 1
+    je .erir_src_rbx
+    mov rax, r12
+    add rax, 2
+    mov rdx, 1
+    jmp .erir_src_done
+.erir_src_rbx:
+    mov rax, 3
+    xor rdx, rdx
+.erir_src_done:
+    mov rdi, 0x48
+    test rcx, rcx
+    jz .erir_no_r
+    or rdi, 0x04
+.erir_no_r:
+    test rdx, rdx
+    jz .erir_no_b
+    or rdi, 0x01
+.erir_no_b:
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0xAF
+    call emit_byte
+    and r13, 7
+    shl r13, 3
+    and rax, 7
+    or rax, r13
+    or rax, 0xC0
+    mov dil, al
+    call emit_byte
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; emit_reg_load_imm(rdi=dst logical id, rsi=non-negative integer literal)
+emit_reg_load_imm:
+    push rbx
+    push r12
+    push r13
+    mov rbx, rdi
+    mov r12, rsi
+    cmp rbx, 1
+    je .erli_rbx
+    mov r13, rbx
+    add r13, 2                 ; low register code 4..7
+    mov rcx, 1                 ; extended register bank
+    jmp .erli_mapped
+.erli_rbx:
+    mov r13, 3
+    xor rcx, rcx
+.erli_mapped:
+    mov rax, r12
+    shr rax, 32
+    jnz .erli_imm64
+    ; mov r32,imm32 zero-extends into the 64-bit destination.
+    test rcx, rcx
+    jz .erli_emit_opcode32
+    mov dil, 0x41
+    call emit_byte
+.erli_emit_opcode32:
+    mov rax, r13
+    and rax, 7
+    add rax, 0xB8
+    mov dil, al
+    call emit_byte
+    mov edi, r12d
+    call emit_u32
+    jmp .erli_done
+.erli_imm64:
+    mov rdi, 0x48
+    test rcx, rcx
+    jz .erli_rex_ready
+    or rdi, 0x01
+.erli_rex_ready:
+    call emit_byte
+    mov rax, r13
+    and rax, 7
+    add rax, 0xB8
+    mov dil, al
+    call emit_byte
+    mov rdi, r12
+    call emit_u64
+.erli_done:
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; PERF1: try_emit_int_reg_cmp(rdi = AST_BINOP) -> rax=1 if a direct
+; register-to-register integer comparison was emitted.  Callers already know
+; the operator is a comparison; this helper only proves operand/type safety.
+try_emit_int_reg_cmp:
+    push rbx
+    push r12
+    push r13
+    mov rbx, rdi
+    cmp qword [rbx], AST_BINOP
+    jne .teirc_no
+    mov rdi, rbx
+    call binop_needs_float
+    test rax, rax
+    jnz .teirc_no
+    mov r12, [rbx+16]
+    mov r13, [rbx+24]
+    cmp qword [r12], AST_VAR
+    jne .teirc_no
+    cmp qword [r13], AST_VAR
+    jne .teirc_no
+    mov rdi, [r12+8]
+    call lookup_var
+    test rax, rax
+    jle .teirc_no
+    mov r12, rax              ; left register id
+    mov rdi, [r13+8]
+    call lookup_var
+    test rax, rax
+    jle .teirc_no
+    mov rsi, rax              ; right register id
+    mov rdi, r12
+    call emit_reg_cmp_reg
+    mov rax, 1
+    jmp .teirc_done
+.teirc_no:
+    xor rax, rax
+.teirc_done:
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; emit_reg_cmp_reg(rdi=left reg id, rsi=right reg id)
+; Emits cmp left,right using 39 /r with the same register map as alloc_var.
+emit_reg_cmp_reg:
+    push rbx
+    push r12
+    push r13
+    mov rbx, rdi              ; left/destination id
+    mov r12, rsi              ; right/source id
+    ; left low code -> r13, REX.B -> rcx
+    cmp rbx, 1
+    je .ercr_left_rbx
+    mov r13, rbx
+    add r13, 2
+    mov rcx, 1
+    jmp .ercr_left_done
+.ercr_left_rbx:
+    mov r13, 3
+    xor rcx, rcx
+.ercr_left_done:
+    ; right low code -> rax, REX.R -> rdx
+    cmp r12, 1
+    je .ercr_right_rbx
+    mov rax, r12
+    add rax, 2
+    mov rdx, 1
+    jmp .ercr_right_done
+.ercr_right_rbx:
+    mov rax, 3
+    xor rdx, rdx
+.ercr_right_done:
+    mov rdi, 0x48
+    test rdx, rdx
+    jz .ercr_no_r
+    or rdi, 0x04
+.ercr_no_r:
+    test rcx, rcx
+    jz .ercr_no_b
+    or rdi, 0x01
+.ercr_no_b:
+    call emit_byte
+    mov dil, 0x39
+    call emit_byte
+    and rax, 7
+    shl rax, 3
+    and r13, 7
+    or rax, r13
+    or rax, 0xC0
+    mov dil, al
+    call emit_byte
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; ================================================================
+; R31 Stage 1: deliberately opt-in XMM2-XMM5 cache, single basic block.
+; These helper routines are *not part of the compiler* when flag is OFF.
+; All writes are write-through to the old raw-qword GPR homes, so there
+; is never a dirty value to spill, including at recursive prakriya calls.
+; Valid/liveness masks are compiler-time metadata; the ABI is unchanged.
+; Cache hits only apply to named scalar dasham variables in registers 1-4.
+; Fifth and stack locals, array indices, aliased writes, calls and complex
+; trees fall back to byte-identical old codegen. No XMM6+ usage.
+; ================================================================
+%ifdef SUTRAM_EXPERIMENTAL_XMM_CACHE
+xmm_cache_barrier:
+    mov qword [rel xmm_cache_valid_mask], 0
+    mov qword [rel xmm_cache_live_mask], 0
+    mov qword [rel xmm_cache_dirty_mask], 0
+    inc qword [rel xmm_cache_barriers]
+    ret
+
+; rdi=logical GPR id 1..4 -> cache xmm2..5. Compiler-time helper.
+; It emits a raw MOVQ load only for misses; no FP numerical conversion.
+xmm_cache_ensure:
+    push rbx
+    push r12
+    mov rbx, rdi
+    mov r12, rdi
+    dec r12
+    mov rcx, r12
+    mov rax, 1
+    shl rax, cl
+    test [rel xmm_cache_valid_mask], rax
+    jnz .xce_hit
+    push rax
+    mov rsi, rbx
+    inc rsi                           ; xmm id = logical GPR + 1
+    call emit_float_gpr_to_xmm
+    pop rax
+    or [rel xmm_cache_valid_mask], rax
+    or [rel xmm_cache_live_mask], rax
+    inc qword [rel xmm_cache_misses]
+    jmp .xce_done
+.xce_hit:
+    inc qword [rel xmm_cache_hits]
+.xce_done:
+    mov rax, rbx
+    inc rax
+    pop r12
+    pop rbx
+    ret
+
+; rdi=logical GPR destination 1..4, rsi=cached XMM source 2..5.
+; Emit MOVQ r64,xmmN, preserving full 64-bit binary64 payload exactly.
+; The low three GPR bits and REX.B are mapped like emit_float_xmm0_to_gpr.
+xmm_cache_store_gpr:
+    push rbx
+    push r12
+    push r13
+    mov rbx, rdi
+    mov r12, rsi
+    mov r13, 0x49
+    cmp rbx, 1
+    jne .xcsg_mapped
+    mov rbx, 3                       ; RBX encoded as /3
+    mov r13, 0x48
+    jmp .xcsg_byte
+.xcsg_mapped:
+    add rbx, 2                       ; R12..15 encoded as /4..7
+.xcsg_byte:
+    shl r12, 3
+    or r12, rbx
+    or r12, 0xC0
+    mov dil, 0x66
+    call emit_byte
+    mov dil, r13b
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x7E
+    call emit_byte
+    mov dil, r12b
+    call emit_byte
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; rdi=ASSIGN node. On full match returns 1 and emits optimized code.
+; Only AST_VAR float operands and AST_VAR float targets with logical
+; registers 1..4 may enter. Evaluation of scalar, by-value locals has no
+; side effects. All potentially aliased or side-effecting forms fall back.
+try_emit_xmm_cached_assignment:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    mov rbx, rdi
+    cmp qword [rbx], AST_ASSIGN
+    jne .txca_no
+    mov r12, [rbx+8]
+    cmp qword [r12], AST_VAR
+    jne .txca_no
+    mov r13, [rbx+16]
+    cmp qword [r13], AST_BINOP
+    jne .txca_no
+    mov r15, [r13+8]
+    cmp r15, OP_ADD
+    je .txca_op_ok
+    cmp r15, OP_SUB
+    je .txca_op_ok
+    cmp r15, OP_MUL
+    je .txca_op_ok
+    cmp r15, OP_DIV
+    jne .txca_no
+.txca_op_ok:
+    mov r14, [r13+16]
+    cmp qword [r14], AST_VAR
+    jne .txca_no
+    mov r13, [r13+24]
+    cmp qword [r13], AST_VAR
+    jne .txca_no
+    mov rdi, [r12+8]
+    call is_float_var
+    test rax, rax
+    jz .txca_no
+    mov rdi, [r14+8]
+    call is_float_var
+    test rax, rax
+    jz .txca_no
+    mov rdi, [r13+8]
+    call is_float_var
+    test rax, rax
+    jz .txca_no
+    mov rdi, [r12+8]
+    call lookup_var
+    cmp rax, 1
+    jb .txca_no
+    cmp rax, 4
+    ja .txca_no
+    mov r12, rax                     ; destination ID
+    mov rdi, [r14+8]
+    call lookup_var
+    cmp rax, 1
+    jb .txca_no
+    cmp rax, 4
+    ja .txca_no
+    mov r14, rax                     ; left ID
+    mov rdi, [r13+8]
+    call lookup_var
+    cmp rax, 1
+    jb .txca_no
+    cmp rax, 4
+    ja .txca_no
+    mov r13, rax                     ; right ID
+
+    ; Load both original operands into cache in left-to-right order.
+    mov rdi, r14
+    call xmm_cache_ensure
+    mov rdi, r13
+    call xmm_cache_ensure
+
+    cmp r12, r14
+    jne .txca_distinct
+    ; x = x op y: operate on resident destination; never overwrite the
+    ; original RHS unless it aliases x (in which case both operands = x).
+    mov r10, r12
+    inc r10                           ; xmm index 2..5
+    mov r11, r13
+    inc r11
+    jmp .txca_emit_op
+.txca_distinct:
+    ; Destination distinct from left: first copy left -> xmm0, so a dest
+    ; aliasing right does not corrupt inputs to noncommutative SUB/DIV.
+    mov dil, 0x66                     ; movapd xmm0,xmmLeft
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x28
+    call emit_byte
+    mov rdi, r14
+    inc rdi
+    or dil, 0xC0
+    call emit_byte
+    xor r10, r10                      ; result xmm0
+    mov r11, r13
+    inc r11
+.txca_emit_op:
+    ; SSE2 arithmetic: addsd/subsd/mulsd/divsd xmmDest,xmmRight.
+    push r10
+    push r11
+    mov dil, 0xF2
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    cmp r15, OP_SUB
+    je .txca_op_sub
+    cmp r15, OP_MUL
+    je .txca_op_mul
+    cmp r15, OP_DIV
+    je .txca_op_div
+    mov dil, 0x58                      ; addsd
+    jmp .txca_op_byte
+.txca_op_sub:
+    mov dil, 0x5C                      ; subsd
+    jmp .txca_op_byte
+.txca_op_mul:
+    mov dil, 0x59                      ; mulsd
+    jmp .txca_op_byte
+.txca_op_div:
+    mov dil, 0x5E                      ; divsd
+.txca_op_byte:
+    call emit_byte
+    pop r11
+    pop r10
+    shl r10, 3
+    or r10, r11
+    or r10, 0xC0
+    mov dil, r10b
+    call emit_byte
+
+    ; For distinct destinations, mirror xmm0 into the target cache slot.
+    cmp r12, r14
+    je .txca_store
+    mov dil, 0x66                     ; movapd xmmTarget,xmm0
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x28
+    call emit_byte
+    mov rdi, r12
+    inc rdi
+    shl rdi, 3
+    or rdi, 0xC0
+    call emit_byte
+    mov rdi, r12
+    dec rdi
+    mov rcx, rdi
+    mov rdx, 1
+    shl rdx, cl
+    or [rel xmm_cache_valid_mask], rdx
+    or [rel xmm_cache_live_mask], rdx
+.txca_store:
+    ; Canonical GPR home is updated immediately; dirty bit stays clear.
+    mov rdi, r12
+    mov rsi, r12
+    inc rsi
+    call xmm_cache_store_gpr
+    mov rax, 1
+    jmp .txca_done
+.txca_no:
+    xor rax, rax
+.txca_done:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+%endif
+
+; PERF-F1: float x=x+y / x=x-y / x=x*y / x=x/y, where x and y
+; are named, scalar dasham locals resident in callee-saved GPRs 1..5.
+; Do NOT change the scalar raw-qword ABI. XMM0/XMM1 are scratch here, exactly
+; as on the established float path. Branches/calls/arrays/mixed expressions,
+; non-self destinations and stack locals keep the existing path unchanged.
+try_emit_float_reg_self_update:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    mov rbx, rdi
+    cmp qword [rbx], AST_ASSIGN
+    jne .tfrsu_no
+    mov r12, [rbx+8]
+    cmp qword [r12], AST_VAR
+    jne .tfrsu_no
+    mov r13, [rbx+16]
+    cmp qword [r13], AST_BINOP
+    jne .tfrsu_no
+    mov r14, [r13+8]
+    cmp r14, OP_ADD
+    je .tfrsu_op_ok
+    cmp r14, OP_SUB
+    je .tfrsu_op_ok
+    cmp r14, OP_MUL
+    je .tfrsu_op_ok
+    cmp r14, OP_DIV
+    jne .tfrsu_no
+.tfrsu_op_ok:
+    mov r15, [r13+16]
+    cmp qword [r15], AST_VAR
+    jne .tfrsu_no
+    mov rdi, [r12+8]
+    mov rsi, [r15+8]
+    call strcmp
+    test rax, rax
+    jnz .tfrsu_no
+    mov rdi, [r12+8]
+    call is_float_var
+    test rax, rax
+    jz .tfrsu_no
+    mov r15, [r13+24]
+    cmp qword [r15], AST_VAR
+    jne .tfrsu_no
+    mov rdi, [r15+8]
+    call is_float_var
+    test rax, rax
+    jz .tfrsu_no
+    mov rdi, [r12+8]
+    call lookup_var
+    test rax, rax
+    jle .tfrsu_no
+    mov r12, rax                 ; destination logical register 1..5
+    mov rdi, [r15+8]
+    call lookup_var
+    test rax, rax
+    jle .tfrsu_no
+    mov rdx, rax                 ; rhs logical register 1..5
+    mov rdi, r12
+    mov rsi, r14
+    call emit_float_reg_self_update
+    mov rax, 1
+    jmp .tfrsu_done
+.tfrsu_no:
+    xor rax, rax
+.tfrsu_done:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; PERF-F2: c=a+b / c=a-b / c=a*b / c=a/b for three scalar dasham
+; locals already in callee-saved GPRs. Never modify either input before both
+; operands are transferred to XMM0/XMM1; only destination gets the final qword.
+; Anything mixed, non-scalar, stack-resident or complex falls back unchanged.
+try_emit_float_reg_destination:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    mov rbx, rdi                  ; assignment node
+    cmp qword [rbx], AST_ASSIGN
+    jne .tfrd_no
+    mov r12, [rbx+8]              ; target
+    cmp qword [r12], AST_VAR
+    jne .tfrd_no
+    mov r13, [rbx+16]             ; expression
+    cmp qword [r13], AST_BINOP
+    jne .tfrd_no
+    mov r15, [r13+8]              ; op, preserved across lookups
+    cmp r15, OP_ADD
+    je .tfrd_op_ok
+    cmp r15, OP_SUB
+    je .tfrd_op_ok
+    cmp r15, OP_MUL
+    je .tfrd_op_ok
+    cmp r15, OP_DIV
+    jne .tfrd_no
+.tfrd_op_ok:
+    mov r14, [r13+16]             ; left
+    cmp qword [r14], AST_VAR
+    jne .tfrd_no
+    mov r13, [r13+24]             ; right
+    cmp qword [r13], AST_VAR
+    jne .tfrd_no
+    mov rdi, [r12+8]
+    call is_float_var
+    test rax, rax
+    jz .tfrd_no
+    mov rdi, [r14+8]
+    call is_float_var
+    test rax, rax
+    jz .tfrd_no
+    mov rdi, [r13+8]
+    call is_float_var
+    test rax, rax
+    jz .tfrd_no
+    mov rdi, [r12+8]
+    call lookup_var
+    test rax, rax
+    jle .tfrd_no
+    mov r12, rax                  ; target logical GPR
+    mov rdi, [r14+8]
+    call lookup_var
+    test rax, rax
+    jle .tfrd_no
+    mov r14, rax                  ; left logical GPR
+    mov rdi, [r13+8]
+    call lookup_var
+    test rax, rax
+    jle .tfrd_no
+    mov rdx, rax                  ; right logical GPR
+    mov rdi, r14                  ; left
+    mov rsi, r15                  ; operation
+    mov rcx, r12                  ; target
+    call emit_float_reg_binop_to_gpr
+    mov rax, 1
+    jmp .tfrd_done
+.tfrd_no:
+    xor rax, rax
+.tfrd_done:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; rdi=logical GPR id (1=rbx 2=r12 3=r13 4=r14 5=r15),
+; rsi=XMM destination index 0 or 1. Emit movq xmmN,GPR (66 REX.W 0F 6E /r).
+; Scratch r10/r11 only, as in surrounding codegen helpers.
+emit_float_gpr_to_xmm:
+    mov r10, rdi
+    mov r11, 0x49
+    cmp r10, 1
+    je .efgtx_rbx
+    add r10, 2
+    jmp .efgtx_mapped
+.efgtx_rbx:
+    mov r10, 3
+    mov r11, 0x48
+.efgtx_mapped:
+    shl rsi, 3
+    or r10, rsi
+    or r10, 0xC0
+    mov dil, 0x66
+    call emit_byte
+    mov dil, r11b
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x6E
+    call emit_byte
+    mov dil, r10b
+    call emit_byte
+    ret
+
+; rdi=logical destination GPR id. Emit movq GPR,xmm0 (66 REX.W 0F 7E /r).
+emit_float_xmm0_to_gpr:
+    mov r10, rdi
+    mov r11, 0x49
+    cmp r10, 1
+    je .efxtg_rbx
+    add r10, 2
+    jmp .efxtg_mapped
+.efxtg_rbx:
+    mov r10, 3
+    mov r11, 0x48
+.efxtg_mapped:
+    or r10, 0xC0
+    mov dil, 0x66
+    call emit_byte
+    mov dil, r11b
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x7E
+    call emit_byte
+    mov dil, r10b
+    call emit_byte
+    ret
+
+; PERF-F1 wrapper: x=x op y. Delegate to PERF-F2 emitter, with left=dst.
+; rdi=left/destination id, rsi=OP_ADD/SUB/MUL/DIV, rdx=right id.
+emit_float_reg_self_update:
+    mov rcx, rdi
+    jmp emit_float_reg_binop_to_gpr
+
+; PERF-F2 generic register-only float binary operator.
+; rdi=left logical GPR, rsi=operator, rdx=right logical GPR, rcx=destination.
+; Exactly four runtime instructions, no runtime stack traffic, no ABI change.
+emit_float_reg_binop_to_gpr:
+    push rbx
+    push r12
+    push r13
+    push r14
+    mov rbx, rdi
+    mov r12, rsi
+    mov r13, rdx
+    mov r14, rcx
+    mov rdi, rbx
+    xor rsi, rsi
+    call emit_float_gpr_to_xmm
+    mov rdi, r13
+    mov rsi, 1
+    call emit_float_gpr_to_xmm
+    mov dil, 0xF2
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov rdi, r12
+    cmp rdi, OP_ADD
+    je .efrsu_add
+    cmp rdi, OP_SUB
+    je .efrsu_sub
+    cmp rdi, OP_MUL
+    je .efrsu_mul
+    mov dil, 0x5E              ; divsd xmm0,xmm1
+    jmp .efrsu_opcode
+.efrsu_add:
+    mov dil, 0x58              ; addsd xmm0,xmm1
+    jmp .efrsu_opcode
+.efrsu_sub:
+    mov dil, 0x5C              ; subsd xmm0,xmm1
+    jmp .efrsu_opcode
+.efrsu_mul:
+    mov dil, 0x59              ; mulsd xmm0,xmm1
+.efrsu_opcode:
+    call emit_byte
+    mov dil, 0xC1
+    call emit_byte
+    mov rdi, r14
+    call emit_float_xmm0_to_gpr
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; PERF-FC1: register-resident float comparisons a == b, !=, <, >, <=, >=.
+; rdi=AST_BINOP node. Emit 2 MOVQ + UCOMISD + SETcc + MOVZX (5 insns).
+; Only two named dasham scalar locals in registers 1..5 qualify. NaN handling
+; remains byte-identical to the existing T12 UCOMISD/SETcc code path.
+; XMM0/XMM1 are already volatile temporaries in the float expression ABI.
+try_emit_float_reg_compare:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    mov rbx, rdi
+    cmp qword [rbx], AST_BINOP
+    jne .tfrc_no
+    mov r15, [rbx+8]
+    cmp r15, OP_EQ
+    je .tfrc_op_ok
+    cmp r15, OP_NE
+    je .tfrc_op_ok
+    cmp r15, OP_LT
+    je .tfrc_op_ok
+    cmp r15, OP_GT
+    je .tfrc_op_ok
+    cmp r15, OP_LE
+    je .tfrc_op_ok
+    cmp r15, OP_GE
+    jne .tfrc_no
+.tfrc_op_ok:
+    mov r12, [rbx+16]
+    mov r13, [rbx+24]
+    cmp qword [r12], AST_VAR
+    jne .tfrc_no
+    cmp qword [r13], AST_VAR
+    jne .tfrc_no
+    mov rdi, [r12+8]
+    call is_float_var
+    test rax, rax
+    jz .tfrc_no
+    mov rdi, [r13+8]
+    call is_float_var
+    test rax, rax
+    jz .tfrc_no
+    mov rdi, [r12+8]
+    call lookup_var
+    test rax, rax
+    jle .tfrc_no
+    mov r14, rax
+    mov rdi, [r13+8]
+    call lookup_var
+    test rax, rax
+    jle .tfrc_no
+    mov r13, rax
+    mov rdi, r14
+    xor rsi, rsi
+    call emit_float_gpr_to_xmm
+    mov rdi, r13
+    mov rsi, 1
+    call emit_float_gpr_to_xmm
+    mov dil, 0x66              ; ucomisd xmm0,xmm1
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x2E
+    call emit_byte
+    mov dil, 0xC1
+    call emit_byte
+    mov dil, 0x0F              ; setcc al; identical to T12
+    call emit_byte
+    cmp r15, OP_EQ
+    je .tfrc_eq
+    cmp r15, OP_NE
+    je .tfrc_ne
+    cmp r15, OP_LT
+    je .tfrc_lt
+    cmp r15, OP_GT
+    je .tfrc_gt
+    cmp r15, OP_LE
+    je .tfrc_le
+    mov dil, 0x93              ; setae: >=
+    jmp .tfrc_emit_cc
+.tfrc_eq:
+    mov dil, 0x94              ; sete
+    jmp .tfrc_emit_cc
+.tfrc_ne:
+    mov dil, 0x95              ; setne
+    jmp .tfrc_emit_cc
+.tfrc_lt:
+    mov dil, 0x92              ; setb
+    jmp .tfrc_emit_cc
+.tfrc_gt:
+    mov dil, 0x97              ; seta
+    jmp .tfrc_emit_cc
+.tfrc_le:
+    mov dil, 0x96              ; setbe
+.tfrc_emit_cc:
+    call emit_byte
+    mov dil, 0xC0              ; al
+    call emit_byte
+    mov dil, 0x48              ; movzx rax,al
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0xB6
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    mov rax, 1
+    jmp .tfrc_done
+.tfrc_no:
+    xor rax, rax
+.tfrc_done:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; PERF1: try_emit_int_self_update(rdi = AST_ASSIGN node) -> rax=1 if emitted.
+; Recognizes integer x=x+imm, x=x-imm, x=x+y and x=x-y.  This is deliberately
+; narrow: float expressions, reordered operands, complex RHS expressions and
+; unsupported locations fall back to the existing general generator.
+try_emit_int_self_update:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    mov rbx, rdi
+    mov r12, [rbx+8]          ; target
+    cmp qword [r12], AST_VAR
+    jne .teisu_no
+    mov r13, [rbx+16]         ; value
+    cmp qword [r13], AST_BINOP
+    jne .teisu_no
+    mov r14, [r13+8]          ; operator
+    cmp r14, OP_ADD
+    je .teisu_op_ok
+    cmp r14, OP_SUB
+    jne .teisu_no
+.teisu_op_ok:
+    ; Keep every float/mixed expression on the established T12 path.
+    mov rdi, [r12+8]
+    call is_float_var
+    test rax, rax
+    jnz .teisu_no
+    mov rdi, r13
+    call expr_is_float
+    test rax, rax
+    jnz .teisu_no
+    ; Require the left operand to be the same variable as the assignment target.
+    mov r15, [r13+16]
+    cmp qword [r15], AST_VAR
+    jne .teisu_no
+    mov rdi, [r12+8]
+    mov rsi, [r15+8]
+    call strcmp
+    test rax, rax
+    jnz .teisu_no
+    ; Resolve destination location.
+    mov rdi, [r12+8]
+    call lookup_var
+    mov r12, rax              ; >0 register id, <=0 stack offset
+    mov r15, [r13+24]         ; RHS node
+    cmp qword [r15], AST_NUM
+    je .teisu_rhs_imm
+    cmp qword [r15], AST_VAR
+    jne .teisu_no
+    ; Register-to-register form only when both variables are register-resident.
+    test r12, r12
+    jle .teisu_no
+    mov rdi, [r15+8]
+    call lookup_var
+    test rax, rax
+    jle .teisu_no
+    mov rdx, rax              ; source register id
+    mov rdi, r12              ; destination register id
+    mov rsi, r14              ; OP_ADD / OP_SUB
+    call emit_reg_self_update_reg
+    jmp .teisu_yes
+.teisu_rhs_imm:
+    mov rdx, [r15+8]
+    ; x86-64 sign-extends arithmetic imm32 to 64 bits.  The direct one-
+    ; instruction update is valid only for non-negative literals <= INT32_MAX.
+    ; Larger literal values must use the generic full-width evaluator.
+    cmp rdx, 0x7FFFFFFF
+    ja .teisu_no
+    test r12, r12
+    jle .teisu_stack_imm
+    mov rdi, r12              ; destination register id
+    mov rsi, r14              ; operator
+    call emit_reg_self_update_imm
+    jmp .teisu_yes
+.teisu_stack_imm:
+    ; Existing stack locals use disp8 addressing; optimize only offsets that fit.
+    cmp r12, -128
+    jl .teisu_no
+    mov rdi, r12              ; signed disp8
+    mov rsi, r14              ; operator
+    call emit_stack_self_update_imm
+.teisu_yes:
+    mov rax, 1
+    jmp .teisu_done
+.teisu_no:
+    xor rax, rax
+.teisu_done:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; emit_reg_self_update_imm(rdi=reg id 1..5, rsi=OP_ADD/SUB,
+;                          rdx=non-negative imm <= signed INT32_MAX)
+; Selects compact 83 /digit imm8 for 0..127, otherwise 81 /digit imm32.
+; Generated register mapping: 1=rbx, 2=r12, 3=r13, 4=r14, 5=r15.
+emit_reg_self_update_imm:
+    push rbx
+    push r12
+    push r13
+    mov rbx, rdi              ; register id
+    mov r12, rsi              ; operator
+    mov r13, rdx              ; immediate
+    ; Map logical register id to x86 low register number and REX.B extension.
+    cmp rbx, 1
+    je .ersui_rbx
+    mov rax, rbx
+    add rax, 2                ; 2..5 -> low codes 4..7
+    mov rcx, 1                ; REX.B
+    jmp .ersui_mapped
+.ersui_rbx:
+    mov rax, 3
+    xor rcx, rcx
+.ersui_mapped:
+    ; +/- 1 uses inc/dec, matching the existing RAX fast path.
+    cmp r13, 1
+    jne .ersui_imm8
+    mov rdx, 0x48
+    or rdx, rcx
+    mov dil, dl
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov rdx, rax
+    and rdx, 7
+    or rdx, 0xC0              ; /0 INC
+    cmp r12, OP_ADD
+    je .ersui_emit_modrm
+    or rdx, 0x08              ; /1 DEC
+.ersui_emit_modrm:
+    mov dil, dl
+    call emit_byte
+    jmp .ersui_done
+.ersui_imm8:
+    mov rdx, 0x48
+    or rdx, rcx
+    mov dil, dl
+    call emit_byte
+    mov dil, 0x83
+    cmp r13, 127
+    jbe .ersui_emit_opcode
+    mov dil, 0x81
+.ersui_emit_opcode:
+    call emit_byte
+    mov rdx, rax
+    and rdx, 7
+    or rdx, 0xC0              ; /0 ADD
+    cmp r12, OP_ADD
+    je .ersui_emit_imm_modrm
+    or rdx, 0x28              ; /5 SUB
+.ersui_emit_imm_modrm:
+    mov dil, dl
+    call emit_byte
+    cmp r13, 127
+    ja .ersui_wide_immediate
+    mov dil, r13b
+    call emit_byte
+    jmp .ersui_done
+.ersui_wide_immediate:
+    mov edi, r13d
+    call emit_u32
+.ersui_done:
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; emit_reg_self_update_reg(rdi=dst id, rsi=OP_ADD/SUB, rdx=src id)
+emit_reg_self_update_reg:
+    push rbx
+    push r12
+    push r13
+    push r14
+    mov rbx, rdi              ; dst id
+    mov r12, rsi              ; operator
+    mov r13, rdx              ; src id
+    ; dst low code / extension -> r14 / rcx
+    cmp rbx, 1
+    je .ersur_dst_rbx
+    mov r14, rbx
+    add r14, 2
+    mov rcx, 1                ; REX.B
+    jmp .ersur_dst_done
+.ersur_dst_rbx:
+    mov r14, 3
+    xor rcx, rcx
+.ersur_dst_done:
+    ; src low code / extension -> rax / rdx
+    cmp r13, 1
+    je .ersur_src_rbx
+    mov rax, r13
+    add rax, 2
+    mov rdx, 1                ; REX.R
+    jmp .ersur_src_done
+.ersur_src_rbx:
+    mov rax, 3
+    xor rdx, rdx
+.ersur_src_done:
+    ; REX.W plus R(src extension) and B(dst extension).
+    mov rdi, 0x48
+    test rdx, rdx
+    jz .ersur_no_r
+    or rdi, 0x04
+.ersur_no_r:
+    test rcx, rcx
+    jz .ersur_no_b
+    or rdi, 0x01
+.ersur_no_b:
+    call emit_byte
+    mov dil, 0x01             ; add r/m64,r64
+    cmp r12, OP_ADD
+    je .ersur_opcode_ready
+    mov dil, 0x29             ; sub r/m64,r64
+.ersur_opcode_ready:
+    call emit_byte
+    ; ModRM = 11 | src.low<<3 | dst.low
+    and rax, 7
+    shl rax, 3
+    and r14, 7
+    or rax, r14
+    or rax, 0xC0
+    mov dil, al
+    call emit_byte
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; emit_stack_self_update_imm(rdi=negative displacement (any size since R10), rsi=OP_ADD/SUB,
+;                            rdx=non-negative imm <= signed INT32_MAX)
+; Emits an in-place arithmetic update with an imm8 or imm32 encoding.
+emit_stack_self_update_imm:
+    push rbx
+    push r12
+    push r13
+    mov rbx, rdi              ; stack displacement
+    mov r12, rsi              ; operator
+    mov r13, rdx              ; immediate
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x83
+    cmp r13, 127
+    jbe .essui_emit_opcode
+    mov dil, 0x81
+.essui_emit_opcode:
+    call emit_byte
+    mov dil, 0x45             ; /0 ADD, [rbp+disp8]
+    cmp r12, OP_ADD
+    je .essui_modrm_ready
+    mov dil, 0x6D             ; /5 SUB, [rbp+disp8]
+.essui_modrm_ready:
+    push rsi                  ; R10 (F1): disp8 or disp32, by range
+    mov esi, ebx
+    call emit_rbp_modrm_disp
+    pop rsi
+    cmp r13, 127
+    ja .essui_wide_immediate
+    mov dil, r13b
+    call emit_byte
+    jmp .essui_done
+.essui_wide_immediate:
+    mov edi, r13d
+    call emit_u32
+.essui_done:
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; emit_store_reg(dil = register ID) — emits "mov reg, rax"
+emit_store_reg:
+    push rbx
+    push r12
+    mov rbx, rdi              ; register ID
+    ; Jump table based on register ID
+    cmp rbx, 1
+    je .esr_r1
+    cmp rbx, 2
+    je .esr_r2
+    cmp rbx, 3
+    je .esr_r3
+    cmp rbx, 4
+    je .esr_r4
+    cmp rbx, 5
+    je .esr_r5
+    pop r12
+    pop rbx
+    ret
+.esr_r1:   ; mov rbx, rax = 48 89 C3
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC3
+    call emit_byte
+    pop r12
+    pop rbx
+    ret
+.esr_r2:   ; mov r12, rax = 49 89 C4
+    mov dil, 0x49
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC4
+    call emit_byte
+    pop r12
+    pop rbx
+    ret
+.esr_r3:   ; mov r13, rax = 49 89 C5
+    mov dil, 0x49
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC5
+    call emit_byte
+    pop r12
+    pop rbx
+    ret
+.esr_r4:   ; mov r14, rax = 49 89 C6
+    mov dil, 0x49
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC6
+    call emit_byte
+    pop r12
+    pop rbx
+    ret
+.esr_r5:   ; mov r15, rax = 49 89 C7
+    mov dil, 0x49
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    pop r12
+    pop rbx
+    ret
+
+; emit_load_reg(dil = register ID) — emits "mov rax, reg"
+emit_load_reg:
+    push rbx
+    push r12
+    mov rbx, rdi
+    cmp rbx, 1
+    je .elr_r1
+    cmp rbx, 2
+    je .elr_r2
+    cmp rbx, 3
+    je .elr_r3
+    cmp rbx, 4
+    je .elr_r4
+    cmp rbx, 5
+    je .elr_r5
+    pop r12
+    pop rbx
+    ret
+.elr_r1:   ; mov rax, rbx = 48 89 D8
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xD8
+    call emit_byte
+    pop r12
+    pop rbx
+    ret
+.elr_r2:   ; mov rax, r12 = 4C 89 E0
+    mov dil, 0x4C
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xE0
+    call emit_byte
+    pop r12
+    pop rbx
+    ret
+.elr_r3:   ; mov rax, r13 = 4C 89 E8
+    mov dil, 0x4C
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xE8
+    call emit_byte
+    pop r12
+    pop rbx
+    ret
+.elr_r4:   ; mov rax, r14 = 4C 89 F0
+    mov dil, 0x4C
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xF0
+    call emit_byte
+    pop r12
+    pop rbx
+    ret
+.elr_r5:   ; mov rax, r15 = 4C 89 F8
+    mov dil, 0x4C
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xF8
+    call emit_byte
+    pop r12
+    pop rbx
+    ret
+
+; is_register(rax = location) → ZF=1 if stack, ZF=0 if register
+; Tests if location > 0 (register IDs are 1-5)
+
+; lookup_var(rdi = name ptr) → rax = stack offset
+; R56 registration and scoped resolution. Module globals are never added to
+; the local/parameter var_table and are never reset per function.
+r56_register_global:
+    push rbx
+    push r12
+    push r13
+    mov rbx,rax
+    mov r13,[rbx+8]
+    xor r12,r12
+.r56_rg_scan:
+    cmp r12,[rel r56_global_count]
+    jae .r56_rg_insert
+    lea rax,[rel r56_global_names]
+    mov rdi,r13
+    mov rsi,[rax+r12*8]
+    call strcmp
+    test rax,rax
+    jz .r56_rg_duplicate
+    inc r12
+    jmp .r56_rg_scan
+.r56_rg_insert:
+    cmp r12,R56_GLOBAL_CAP
+    jae .r56_rg_overflow
+    lea rax,[rel r56_global_names]
+    mov [rax+r12*8],r13
+    lea rax,[rel r56_global_nodes]
+    mov [rax+r12*8],rbx
+    inc qword [rel r56_global_count]
+    pop r13
+    pop r12
+    pop rbx
+    ret
+.r56_rg_duplicate:
+    lea rdi,[rel r56_msg_global_duplicate]
+    jmp capacity_fail
+.r56_rg_overflow:
+    lea rdi,[rel r56_msg_global_capacity]
+    jmp capacity_fail
+
+; name rdi -> rax 1-based global slot, or 0 when local exists or not global.
+; A parameter or local declaration shadows a global (including in main).
+r56_global_index:
+    push rbx
+    push r12
+    push r13
+    mov rbx,rdi
+    xor r12,r12
+.r56_gi_local_loop:
+    cmp r12,[rel var_cnt]
+    jae .r56_gi_globals
+    mov rcx,r12
+    shl rcx,4
+    lea rdx,[rel var_table]
+    mov rdi,[rdx+rcx]
+    mov rsi,rbx
+    call strcmp
+    test rax,rax
+    jz .r56_gi_notfound
+    inc r12
+    jmp .r56_gi_local_loop
+.r56_gi_globals:
+    xor r12,r12
+.r56_gi_gl_loop:
+    cmp r12,[rel r56_global_count]
+    jae .r56_gi_notfound
+    lea rcx,[rel r56_global_names]
+    mov rdi,[rcx+r12*8]
+    mov rsi,rbx
+    call strcmp
+    test rax,rax
+    jz .r56_gi_found
+    inc r12
+    jmp .r56_gi_gl_loop
+.r56_gi_found:
+    lea rax,[r12+1]
+    jmp .r56_gi_done
+.r56_gi_notfound:
+    xor rax,rax
+.r56_gi_done:
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; Store a RIP displacement patch: rdi=0-based global index, current code_sz
+; points to the next 4-byte displacement. All relocation math is compiler-side.
+r56_record_patch:
+    push rbx
+    mov rbx,rdi
+    mov rcx,[rel r56_patch_count]
+    cmp rcx,R56_PATCH_CAP
+    jae .r56_patch_overflow
+    shl rcx,4
+    lea rdx,[rel r56_patches]
+    mov rax,[rel code_sz]
+    mov [rdx+rcx],rax
+    mov [rdx+rcx+8],rbx
+    inc qword [rel r56_patch_count]
+    xor edi,edi
+    call emit_u32
+    pop rbx
+    ret
+.r56_patch_overflow:
+    lea rdi,[rel r56_msg_patch_capacity]
+    jmp capacity_fail
+
+; Emit mov rax,[rip+disp32] with later relocation into writable storage.
+r56_emit_global_load:
+    push rbx
+    mov rbx,rdi
+    mov dil,0x48
+    call emit_byte
+    mov dil,0x8B
+    call emit_byte
+    mov dil,0x05
+    call emit_byte
+    mov rdi,rbx
+    call r56_record_patch
+    pop rbx
+    ret
+
+; Emit mov [rip+disp32],rax with later relocation.
+r56_emit_global_store:
+    push rbx
+    mov rbx,rdi
+    mov dil,0x48
+    call emit_byte
+    mov dil,0x89
+    call emit_byte
+    mov dil,0x05
+    call emit_byte
+    mov rdi,rbx
+    call r56_record_patch
+    pop rbx
+    ret
+
+; Finalize after main + all functions + user call backpatches.
+; ELF storage begins at code_sz and is appended to its writable PT_LOAD;
+; PE storage is its own read/write .data section with page-aligned RVA.
+r56_patch_global_storage:
+    cmp qword [rel r56_global_count],0
+    je .r56_pg_done
+    cmp qword [rel r28_object_mode],0   ; R30: an object places its own vitti
+    jne r30_object_globals
+    push rbx
+    push r12
+    push r13
+    mov r12,[rel code_sz]
+    cmp qword [rel target_pe],0
+    je .r56_pg_target_ready
+    add r12,RT_BLOB_LEN+0xFFF
+    and r12,-0x1000
+    sub r12,RT_BLOB_LEN
+.r56_pg_target_ready:
+    xor r13,r13
+.r56_pg_fix_loop:
+    cmp r13,[rel r56_patch_count]
+    jae .r56_pg_patched
+    lea rdx,[rel r56_patches]
+    mov rcx,r13
+    shl rcx,4
+    mov rbx,[rdx+rcx]         ; rel32 field offset in code_buf
+    mov rax,[rdx+rcx+8]       ; global index
+    shl rax,3
+    add rax,r12              ; final data offset from code origin
+    sub rax,rbx
+    sub rax,4
+    lea rdx,[rel code_buf]
+    mov [rdx+rbx],eax
+    inc r13
+    jmp .r56_pg_fix_loop
+.r56_pg_patched:
+    cmp qword [rel target_pe],0
+    jne .r56_pg_leave        ; PE writer owns physical data section
+    xor r13,r13
+.r56_pg_zero_loop:
+    cmp r13,[rel r56_global_count]
+    jae .r56_pg_leave
+    xor edi,edi
+    call emit_u32
+    xor edi,edi
+    call emit_u32
+    inc r13
+    jmp .r56_pg_zero_loop
+.r56_pg_leave:
+    pop r13
+    pop r12
+    pop rbx
+.r56_pg_done:
+    ret
+
+lookup_var:
+    push rbx
+    push r12
+    push r13
+    mov rbx, rdi              ; name to find
+    mov r13, [rel var_cnt]
+    xor r12, r12
+.lv_loop:
+    cmp r12, r13
+    jae .lv_notfound
+    imul rcx, r12, 16
+    lea rdx, [rel var_table]
+    mov rdi, [rdx + rcx]      ; table name ptr
+    mov rsi, rbx              ; search name
+    push rbx
+    push r12
+    push r13
+    call strcmp
+    pop r13
+    pop r12
+    pop rbx
+    test rax, rax
+    jz .lv_found
+    inc r12
+    jmp .lv_loop
+.lv_found:
+    imul rcx, r12, 16
+    lea rdx, [rel var_table]
+    mov rax, [rdx + rcx + 8]  ; offset
+    pop r13
+    pop r12
+    pop rbx
+    ret
+.lv_notfound:
+    ; R56: never accidentally auto-allocate a global as a stack/register local
+    ; from an integer fast path. The sentinel is rejected by fast register
+    ; optimizations; actual accesses go through the RIP-relative emitters.
+    mov rdi, rbx
+    call r56_global_index
+    test rax, rax
+    jz .r56_lv_allocate
+    neg rax
+    sub rax, 65536
+    pop r13
+    pop r12
+    pop rbx
+    ret
+.r56_lv_allocate:
+    ; Auto-allocate
+    mov rdi, rbx
+    call alloc_var
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; ============================================================
+; R59: exact self-assignment no-op test, BEFORE emitted bytes exist.
+; rdi=AST_ASSIGN -> eax=1 only if both operands are equal AST_VAR
+; and name is already a local or module global. No compiler storage writes.
+; This intentionally does NOT claim to optimize arbitrary store/reload.
+; ============================================================
+r59_skip_existing_self_assign:
+    push rbx
+    push r12
+    push r13
+    mov rbx,rdi
+    mov rax,[rbx+8]
+    cmp qword [rax],AST_VAR
+    jne .r59_no
+    mov r12,[rax+8]
+    mov rax,[rbx+16]
+    cmp qword [rax],AST_VAR
+    jne .r59_no
+    mov rdi,r12
+    mov rsi,[rax+8]
+    call strcmp
+    test rax,rax
+    jnz .r59_no
+    ; Search existing locals without calling lookup_var (auto-allocates).
+    xor r13,r13
+.r59_local_loop:
+    cmp r13,[rel var_cnt]
+    jae .r59_global
+    lea rdx,[rel var_table]
+    mov rcx,r13
+    shl rcx,4
+    mov rdi,[rdx+rcx]
+    mov rsi,r12
+    call strcmp
+    test rax,rax
+    jz .r59_yes
+    inc r13
+    jmp .r59_local_loop
+.r59_global:
+    mov rdi,r12
+    call r56_global_index
+    test rax,rax
+    jnz .r59_yes
+.r59_no:
+    xor eax,eax
+    jmp .r59_done
+.r59_yes:
+    mov eax,1
+.r59_done:
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; ============================================================
+; R58: SAFE integer constant folding / limited strength reduction.
+;
+; r58_fold_tree returns an equivalent AST pointer and rewrites only numeric
+; literal-literal BINOP nodes (integer arithmetic, bitwise, masked shifts).
+; It never descends into calls, float/string nodes or arbitrary AST forms.
+; AST_BINOP recursion is conservatively capped to 64 for hostile input.
+; The parser's earlier fold_const already handles simple +/-/* and signed
+; integer / and %, so this pass extends that without changing old behavior.
+;
+; Identity reduction x+0, x-0, x*1 is only allowed after checking that
+; the expression does not require floating arithmetic. The original LHS
+; is still evaluated exactly once, and the RHS is a literal (no effects).
+; ============================================================
+r58_fold_tree:
+    push rbx
+    push r12
+    mov rbx,rdi
+    mov r12,rsi
+    test rbx,rbx
+    jz .r58_ft_original
+    cmp qword [rbx],AST_BINOP
+    jne .r58_ft_original
+    cmp r12,64
+    jae .r58_ft_original
+    mov rdi,[rbx+16]
+    lea rsi,[r12+1]
+    call r58_fold_tree
+    mov [rbx+16],rax
+    mov rdi,[rbx+24]
+    lea rsi,[r12+1]
+    call r58_fold_tree
+    mov [rbx+24],rax
+    mov rcx,[rbx+16]
+    mov rdx,[rbx+24]
+    cmp qword [rcx],AST_NUM
+    jne .r58_ft_identity
+    cmp qword [rdx],AST_NUM
+    jne .r58_ft_identity
+    mov r8,[rbx+8]
+    mov rax,[rcx+8]
+    mov r9,[rdx+8]
+    cmp r8,OP_ADD
+    je .r58_ft_add
+    cmp r8,OP_SUB
+    je .r58_ft_sub
+    cmp r8,OP_MUL
+    je .r58_ft_mul
+    cmp r8,OP_AND
+    je .r58_ft_and
+    cmp r8,OP_OR
+    je .r58_ft_or
+    cmp r8,OP_XOR
+    je .r58_ft_xor
+    cmp r8,OP_SHL
+    je .r58_ft_shl
+    cmp r8,OP_SHR
+    je .r58_ft_shr
+    jmp .r58_ft_original
+.r58_ft_add:
+    add rax,r9
+    jmp .r58_ft_set
+.r58_ft_sub:
+    sub rax,r9
+    jmp .r58_ft_set
+.r58_ft_mul:
+    imul rax,r9
+    jmp .r58_ft_set
+.r58_ft_and:
+    and rax,r9
+    jmp .r58_ft_set
+.r58_ft_or:
+    or rax,r9
+    jmp .r58_ft_set
+.r58_ft_xor:
+    xor rax,r9
+    jmp .r58_ft_set
+.r58_ft_shl:
+    mov rcx,r9
+    shl rax,cl
+    jmp .r58_ft_set
+.r58_ft_shr:
+    mov rcx,r9
+    shr rax,cl
+.r58_ft_set:
+    mov qword [rbx],AST_NUM
+    mov [rbx+8],rax
+    mov rax,rbx
+    jmp .r58_ft_done
+.r58_ft_identity:
+    ; Only eliminate a harmless *integer* algebraic identity.
+    mov rax,[rdx]
+    cmp rax,AST_NUM
+    jne .r58_ft_original
+    mov rax,[rdx+8]
+    test rax,rax
+    jz .r58_ft_id_zero
+    cmp rax,1
+    jne .r58_ft_original
+    cmp qword [rbx+8],OP_MUL
+    jne .r58_ft_original
+    jmp .r58_ft_check_type
+.r58_ft_id_zero:
+    cmp qword [rbx+8],OP_ADD
+    je .r58_ft_check_type
+    cmp qword [rbx+8],OP_SUB
+    jne .r58_ft_original
+.r58_ft_check_type:
+    mov rdi,rbx
+    call binop_needs_float
+    test rax,rax
+    jnz .r58_ft_original
+    mov rax,[rbx+16]
+    jmp .r58_ft_done
+.r58_ft_original:
+    mov rax,rbx
+.r58_ft_done:
+    pop r12
+    pop rbx
+    ret
+
+; In rdi=AST node; returns 1 iff op is DIV and RHS is a *positive*
+; exact power of two in 2..64. Float arithmetic is filtered by caller.
+r58_is_div_pow2:
+    xor eax,eax
+    cmp qword [rdi+8],OP_DIV
+    jne .r58_id_no
+    mov rcx,[rdi+24]
+    cmp qword [rcx],AST_NUM
+    jne .r58_id_no
+    mov rcx,[rcx+8]
+    cmp rcx,2
+    je .r58_id_yes
+    cmp rcx,4
+    je .r58_id_yes
+    cmp rcx,8
+    je .r58_id_yes
+    cmp rcx,16
+    je .r58_id_yes
+    cmp rcx,32
+    je .r58_id_yes
+    cmp rcx,64
+    jne .r58_id_no
+.r58_id_yes:
+    mov eax,1
+.r58_id_no:
+    ret
+
+; Input rdi=positive power-of-two 2..64, generated RAX has signed dividend.
+; Signed truncate-toward-zero correction:
+;   q=(x+((x>>63) & (divisor-1))) >> log2(divisor)
+; Note: 0x7fffffffffffffff + bias not possible on positive x; on
+; negative x, bias <=63 and cannot overflow signed to positive outside
+; range. RHS count known at compile time.
+r58_emit_div_pow2:
+    push rbx
+    push r12
+    mov rbx,rdi
+    xor r12,r12
+.r58_div_log_loop:
+    shr rbx,1
+    inc r12
+    cmp rbx,1
+    ja .r58_div_log_loop
+    ; mov rdx,rax
+    mov dil,0x48
+    call emit_byte
+    mov dil,0x89
+    call emit_byte
+    mov dil,0xC2
+    call emit_byte
+    ; sar rdx,63 (sign mask)
+    mov dil,0x48
+    call emit_byte
+    mov dil,0xC1
+    call emit_byte
+    mov dil,0xFA
+    call emit_byte
+    mov dil,63
+    call emit_byte
+    ; and edx,divisor-1 (mask <=63)
+    mov dil,0x83
+    call emit_byte
+    mov dil,0xE2
+    call emit_byte
+    ; Encode the correction mask as imm8: (1<<log2(divisor))-1.
+    mov rcx,r12
+    mov rax,1
+    shl rax,cl
+    dec rax
+    mov dil,al
+    call emit_byte
+    ; add rax,rdx
+    mov dil,0x48
+    call emit_byte
+    mov dil,0x01
+    call emit_byte
+    mov dil,0xD0
+    call emit_byte
+    ; sar rax, log2(divisor)
+    mov dil,0x48
+    call emit_byte
+    mov dil,0xC1
+    call emit_byte
+    mov dil,0xF8
+    call emit_byte
+    mov rdi,r12
+    call emit_byte
+    pop r12
+    pop rbx
+    ret
+
+; ============================================================
+; R57: bounded deterministic integer expression register allocator.
+;
+; Runtime: RAX = destination register 0; R10 = temp 1; R11 = temp 2.
+; The compiler never uses R10/R11 for named local storage. Fast paths only
+; accept AST_NUM/AST_VAR and pure integer +,-,*,&,|,^ expression trees, with
+; source-order evaluation. Fitted trees need at most 3 simultaneously live
+; result registers. Immediate RHS ADD/SUB 0..127 or power-of-two MUL uses
+; the left register directly without allocating a second temporary.
+; Overflowed register depth, stack-resident locals, floats, calls, divisions,
+; logical short-circuits, indexing, unknown names and effects stay in the
+; original proven stack evaluator (the deterministic spill/fallback rule).
+; Every checked tree is emitted as a whole; no partial emission on rejection.
+; ============================================================
+
+; In: rdi = name. Returns local register id 1..5, or a global sentinel
+; -65537 - global_index, or 0 if this is stack-resident / unresolved.
+; Never allocates a new local during the eligibility probe.
+r57_find_home:
+    push rbx
+    push r12
+    mov rbx,rdi
+    xor r12,r12
+.r57_find_loop:
+    cmp r12,[rel var_cnt]
+    jae .r57_find_global
+    lea rdx,[rel var_table]
+    mov rcx,r12
+    shl rcx,4
+    mov rdi,[rdx+rcx]
+    mov rsi,rbx
+    call strcmp
+    test rax,rax
+    jz .r57_find_local
+    inc r12
+    jmp .r57_find_loop
+.r57_find_local:
+    lea rdx,[rel var_table]
+    mov rcx,r12
+    shl rcx,4
+    mov rax,[rdx+rcx+8]
+    cmp rax,1
+    jl .r57_find_none
+    cmp rax,5
+    jg .r57_find_none
+    jmp .r57_find_done
+.r57_find_global:
+    mov rdi,rbx
+    call r56_global_index
+    test rax,rax
+    jz .r57_find_none
+    neg rax
+    sub rax,65536
+    jmp .r57_find_done
+.r57_find_none:
+    xor eax,eax
+.r57_find_done:
+    pop r12
+    pop rbx
+    ret
+
+; Pure integer immediate folded into one emitted register operation?
+; rdi=AST_BINOP -> eax=1 eligible (integer 0..127 ADD/SUB or
+; power-of-two MUL 2..64), 0 otherwise.
+r57_is_immediate:
+    mov rax,[rdi+24]
+    cmp qword [rax],AST_NUM
+    jne .r57_imm_no
+    mov rcx,[rax+8]
+    cmp qword [rdi+8],OP_ADD
+    je .r57_imm_arith
+    cmp qword [rdi+8],OP_SUB
+    je .r57_imm_arith
+    cmp qword [rdi+8],OP_MUL
+    jne .r57_imm_no
+    cmp rcx,2
+    je .r57_imm_yes
+    cmp rcx,4
+    je .r57_imm_yes
+    cmp rcx,8
+    je .r57_imm_yes
+    cmp rcx,16
+    je .r57_imm_yes
+    cmp rcx,32
+    je .r57_imm_yes
+    cmp rcx,64
+    je .r57_imm_yes
+    jmp .r57_imm_no
+.r57_imm_arith:
+    cmp rcx,127
+    ja .r57_imm_no
+.r57_imm_yes:
+    mov eax,1
+    ret
+.r57_imm_no:
+    xor eax,eax
+    ret
+
+; rdi=AST node, rsi=register index (0..2).
+; Determine eligibility BEFORE any bytes are emitted. No reordering, no
+; side-effectful expression; if a fourth live register is needed fail entire
+; tree and use the existing stack codegen.
+r57_tree_fits:
+    push rbx
+    push r12
+    mov rbx,rdi
+    mov r12,rsi
+    cmp r12,2
+    ja .r57_fit_no
+    cmp qword [rbx],AST_NUM
+    je .r57_fit_yes
+    cmp qword [rbx],AST_VAR
+    jne .r57_fit_binop
+    mov rdi,[rbx+8]
+    call r57_find_home
+    test rax,rax
+    jnz .r57_fit_yes
+    jmp .r57_fit_no
+.r57_fit_binop:
+    cmp qword [rbx],AST_BINOP
+    jne .r57_fit_no
+    mov rax,[rbx+8]
+    cmp rax,OP_ADD
+    je .r57_fit_op_ok
+    cmp rax,OP_SUB
+    je .r57_fit_op_ok
+    cmp rax,OP_MUL
+    je .r57_fit_op_ok
+    cmp rax,OP_AND
+    je .r57_fit_op_ok
+    cmp rax,OP_OR
+    je .r57_fit_op_ok
+    cmp rax,OP_XOR
+    jne .r57_fit_no
+.r57_fit_op_ok:
+    mov rdi,rbx
+    call r57_is_immediate
+    test rax,rax
+    jnz .r57_fit_left
+    cmp r12,2
+    jae .r57_fit_no
+    mov rdi,[rbx+16]
+    mov rsi,r12
+    call r57_tree_fits
+    test rax,rax
+    jz .r57_fit_no
+    mov rdi,[rbx+24]
+    lea rsi,[r12+1]
+    call r57_tree_fits
+    test rax,rax
+    jz .r57_fit_no
+    jmp .r57_fit_yes
+.r57_fit_left:
+    mov rdi,[rbx+16]
+    mov rsi,r12
+    call r57_tree_fits
+    test rax,rax
+    jz .r57_fit_no
+.r57_fit_yes:
+    mov eax,1
+    jmp .r57_fit_done
+.r57_fit_no:
+    xor eax,eax
+.r57_fit_done:
+    pop r12
+    pop rbx
+    ret
+
+; rdi = expression AST, rsi = destination register index 0..2.
+; Called only if r57_tree_fits has proved the entire subtree safe.
+r57_emit_tree:
+    push rbx
+    push r12
+    mov rbx,rdi
+    mov r12,rsi
+    cmp qword [rbx],AST_VAR
+    je .r57_et_var
+    cmp qword [rbx],AST_NUM
+    je .r57_et_num
+    mov rdi,rbx
+    call r57_is_immediate
+    test rax,rax
+    jnz .r57_et_immediate
+    mov rdi,[rbx+16]
+    mov rsi,r12
+    call r57_emit_tree
+    mov rdi,[rbx+24]
+    lea rsi,[r12+1]
+    call r57_emit_tree
+    mov rdi,[rbx+8]
+    mov rsi,r12
+    call r57_emit_op
+    jmp .r57_et_done
+.r57_et_immediate:
+    mov rdi,[rbx+16]
+    mov rsi,r12
+    call r57_emit_tree
+    mov rdi,rbx
+    mov rsi,r12
+    call r57_emit_imm
+    jmp .r57_et_done
+.r57_et_var:
+    mov rdi,[rbx+8]
+    call r57_find_home
+    mov rdi,rax
+    mov rsi,r12
+    call r57_emit_var
+    jmp .r57_et_done
+.r57_et_num:
+    mov rdi,[rbx+8]
+    mov rsi,r12
+    call r57_emit_num
+.r57_et_done:
+    pop r12
+    pop rbx
+    ret
+
+; rdi=integer literal, rsi=register index.
+r57_emit_num:
+    push rbx
+    push r12
+    mov rbx,rdi
+    mov r12,rsi
+    mov rax,rbx
+    shr rax,32
+    jnz .r57_num_64
+    test r12,r12
+    jz .r57_num_opcode
+    mov dil,0x41             ; REX.B for 32-bit r10d/r11d
+    call emit_byte
+.r57_num_opcode:
+    mov rdi,r12
+    test r12,r12
+    jz .r57_num_emit_opcode
+    inc rdi                  ; low opcode BAh/BBh
+.r57_num_emit_opcode:
+    add rdi,0xB8
+    call emit_byte
+    mov edi,ebx
+    call emit_u32
+    jmp .r57_num_done
+.r57_num_64:
+    mov dil,0x48
+    test r12,r12
+    jz .r57_num_rex
+    inc rdi                  ; REX.W+B
+.r57_num_rex:
+    call emit_byte
+    mov rdi,r12
+    test r12,r12
+    jz .r57_num_full_op
+    inc rdi
+.r57_num_full_op:
+    add rdi,0xB8
+    call emit_byte
+    mov rdi,rbx
+    call emit_u64
+.r57_num_done:
+    pop r12
+    pop rbx
+    ret
+
+; rdi=home (1..5 or -65537-index), rsi=destination index (0..2).
+; mov destination, named register or [rip+global], never alter other temps.
+r57_emit_var:
+    push rbx
+    push r12
+    push r13
+    mov rbx,rdi
+    mov r12,rsi
+    test rbx,rbx
+    jl .r57_var_global
+    ; REX.W + REX.R for r10/r11 destinations + B for r12..r15 locals.
+    mov rdi,0x48
+    test r12,r12
+    jz .r57_var_no_rex_r
+    or rdi,4
+.r57_var_no_rex_r:
+    cmp rbx,1
+    je .r57_var_no_rex_b
+    or rdi,1
+.r57_var_no_rex_b:
+    call emit_byte
+    mov dil,0x8B
+    call emit_byte
+    ; dst low code: RAX=0, R10=2, R11=3.
+    mov r13,r12
+    test r12,r12
+    jz .r57_var_dest_ok
+    inc r13
+.r57_var_dest_ok:
+    shl r13,3
+    ; source local 1=RBX (3); 2..5=R12..R15 (4..7).
+    mov rax,rbx
+    cmp rbx,1
+    jne .r57_var_src_extended
+    mov rax,3
+    jmp .r57_var_modrm
+.r57_var_src_extended:
+    add rax,2
+.r57_var_modrm:
+    or rax,r13
+    or rax,0xC0
+    mov dil,al
+    call emit_byte
+    jmp .r57_var_done
+.r57_var_global:
+    mov dil,0x48
+    test r12,r12
+    jz .r57_var_g_rex
+    mov dil,0x4C            ; REX.R for r10/r11
+.r57_var_g_rex:
+    call emit_byte
+    mov dil,0x8B
+    call emit_byte
+    mov rax,r12
+    test r12,r12
+    jz .r57_var_g_modrm
+    inc rax
+.r57_var_g_modrm:
+    shl rax,3
+    or rax,5                ; RIP + disp32
+    mov dil,al
+    call emit_byte
+    mov rdi,rbx
+    neg rdi
+    sub rdi,65537
+    call r56_record_patch
+.r57_var_done:
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; rdi=AST_BINOP with supported immediate rhs; rsi=destination index.
+; The lhs is already in its destination. MUL by power 2 -> SHL.
+r57_emit_imm:
+    push rbx
+    push r12
+    push r13
+    mov rbx,rdi
+    mov r12,rsi
+    mov rax,[rbx+24]
+    mov r13,[rax+8]
+    mov rdi,0x48
+    test r12,r12
+    jz .r57_imm_rex
+    inc rdi
+.r57_imm_rex:
+    call emit_byte
+    cmp qword [rbx+8],OP_MUL
+    je .r57_imm_mul
+    mov dil,0x83
+    call emit_byte
+    mov rdi,r12
+    test r12,r12
+    jz .r57_imm_arith_mod
+    inc rdi
+.r57_imm_arith_mod:
+    add rdi,0xC0
+    cmp qword [rbx+8],OP_SUB
+    jne .r57_imm_arith_emit
+    add rdi,0x28
+.r57_imm_arith_emit:
+    call emit_byte
+    mov rdi,r13
+    call emit_byte
+    jmp .r57_imm_emit_done
+.r57_imm_mul:
+    mov dil,0xC1
+    call emit_byte
+    mov rdi,r12
+    test r12,r12
+    jz .r57_imm_mul_mod
+    inc rdi
+.r57_imm_mul_mod:
+    add rdi,0xE0
+    call emit_byte
+    xor ecx,ecx
+.r57_imm_shift_loop:
+    shr r13,1
+    inc ecx
+    cmp r13,1
+    ja .r57_imm_shift_loop
+    mov edi,ecx
+    call emit_byte
+.r57_imm_emit_done:
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; rdi=OP_ADD/SUB/MUL/AND/OR/XOR, rsi=destination index.
+; Left = index, right = index+1. The target is always in r/m for
+; two-operand ALU ops; for IMUL target occupies the ModRM.reg field.
+r57_emit_op:
+    push rbx
+    push r12
+    mov rbx,rdi
+    mov r12,rsi
+    cmp rbx,OP_MUL
+    je .r57_op_mul
+    mov rdi,0x4C            ; REX.W|REX.R: RHS R10/R11
+    test r12,r12
+    jz .r57_op_rex
+    or rdi,1                ; REX.B: LHS R10
+.r57_op_rex:
+    call emit_byte
+    mov dil,0x01
+    cmp rbx,OP_ADD
+    je .r57_op_opcode
+    mov dil,0x29
+    cmp rbx,OP_SUB
+    je .r57_op_opcode
+    mov dil,0x21
+    cmp rbx,OP_AND
+    je .r57_op_opcode
+    mov dil,0x09
+    cmp rbx,OP_OR
+    je .r57_op_opcode
+    mov dil,0x31            ; XOR
+.r57_op_opcode:
+    call emit_byte
+    ; ModRM = 0xC0 | RHS code << 3 | LHS code
+    mov rax,r12
+    add rax,2
+    shl rax,3
+    mov rdx,r12
+    test r12,r12
+    jz .r57_op_arith_mod
+    inc rdx
+.r57_op_arith_mod:
+    or rax,rdx
+    or rax,0xC0
+    mov dil,al
+    call emit_byte
+    jmp .r57_op_done
+.r57_op_mul:
+    mov rdi,0x49            ; REX.W|REX.B: RHS r10/r11
+    test r12,r12
+    jz .r57_op_mul_rex
+    or rdi,4                ; REX.R: LHS r10
+.r57_op_mul_rex:
+    call emit_byte
+    mov dil,0x0F
+    call emit_byte
+    mov dil,0xAF
+    call emit_byte
+    mov rax,r12
+    test r12,r12
+    jz .r57_op_mul_mod
+    inc rax
+.r57_op_mul_mod:
+    shl rax,3
+    mov rdx,r12
+    add rdx,2
+    or rax,rdx
+    or rax,0xC0
+    mov dil,al
+    call emit_byte
+.r57_op_done:
+    pop r12
+    pop rbx
+    ret
+
+%ifdef SUTRAM_R65_TRAP_INT
+; R65 opt-in trap helpers, all decisions made before machine code emission.
+r65_emit_literal:
+    push rbx
+    push r12
+    push r13
+    call r11_tr                   ; R11: a message in the --lang pack's language
+    mov rdi,rax
+    mov r12,rdi
+    call strlen
+    mov r13,rax
+    ; lea rsi,[rip+message], patched after the syscall and data-skip jump.
+    mov dil,0x48
+    call emit_byte
+    mov dil,0x8D
+    call emit_byte
+    mov dil,0x35
+    call emit_byte
+    mov rbx,[rel code_sz]
+    xor edi,edi
+    call emit_u32
+    mov dil,0xBA              ; mov edx,message length
+    call emit_byte
+    mov rdi,r13
+    call emit_u32
+    mov dil,0xBF              ; stdout (preserves existing trap contract)
+    call emit_byte
+    mov edi,1
+    call emit_u32
+    mov dil,0xB8              ; write
+    call emit_byte
+    mov edi,1
+    call emit_u32
+    call emit_syscall
+    mov dil,0xE9              ; skip inline data with rel32
+    call emit_byte
+    mov rdi,r13
+    call emit_u32
+    mov rax,[rel code_sz]
+    sub rax,rbx
+    sub rax,4
+    lea rcx,[rel code_buf]
+    mov [rcx+rbx],eax
+.r65_literal_loop:
+    test r13,r13
+    jz .r65_literal_done
+    movzx edi,byte [r12]
+    call emit_byte
+    inc r12
+    dec r13
+    jmp .r65_literal_loop
+.r65_literal_done:
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+r65_emit_number:
+    push rbx
+    mov rbx,rdi
+    call alloc_ast
+    mov qword [rax],AST_NUM
+    mov [rax+8],rbx
+    push rax
+    call alloc_ast
+    pop rcx
+    mov qword [rax],AST_CALL
+    mov qword [rax+8],BN_LKHB
+    mov qword [rax+16],1
+    mov [rax+24],rcx
+    call gen_expr
+    pop rbx
+    ret
+
+r65_emit_fatal:
+    ; compiler-time inputs: rdi = operation text, rsi = BINOP source line.
+    push rbx
+    push r12
+    push r13
+    mov r12,rdi
+    mov r13,rsi
+    lea rdi,[rel r65_msg_prefix]
+    call r65_emit_literal
+    mov rdi,[rel source_path_ptr]
+    call r65_emit_literal
+    lea rdi,[rel r65_msg_colon]
+    call r65_emit_literal
+    mov rdi,r13
+    call r65_emit_number
+    mov rdi,r12
+    call r65_emit_literal
+    ; exit(1) through existing target-dependent syscall emitter
+    mov dil,0xB8
+    call emit_byte
+    mov edi,60
+    call emit_u32
+    mov dil,0xBF
+    call emit_byte
+    mov edi,1
+    call emit_u32
+    call emit_syscall
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+r65_emit_overflow_guard:
+    ; Immediately after arithmetic: JNO rel32 skips inline fatal path.
+    push rbx
+    push r12
+    push r13
+    mov r12,rdi
+    mov dil,0x0F
+    call emit_byte
+    mov dil,0x81
+    call emit_byte
+    mov r13,[rel code_sz]
+    xor edi,edi
+    call emit_u32
+    mov rdi,r12
+    mov rsi,[rbx+32]
+    call r65_emit_fatal
+    mov rax,[rel code_sz]
+    sub rax,r13
+    sub rax,4
+    lea rcx,[rel code_buf]
+    mov [rcx+r13],eax
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+r65_emit_zero_guard:
+    ; test rcx,rcx; jnz rel32; fatal before IDIV.
+    push rbx
+    push r12
+    push r13
+    mov r12,rdi
+    mov dil,0x48
+    call emit_byte
+    mov dil,0x85
+    call emit_byte
+    mov dil,0xC9
+    call emit_byte
+    mov dil,0x0F
+    call emit_byte
+    mov dil,0x85
+    call emit_byte
+    mov r13,[rel code_sz]
+    xor edi,edi
+    call emit_u32
+    mov rdi,r12
+    mov rsi,[rbx+32]
+    call r65_emit_fatal
+    mov rax,[rel code_sz]
+    sub rax,r13
+    sub rax,4
+    lea rcx,[rel code_buf]
+    mov [rcx+r13],eax
+    mov rdi,r12
+    call r65_emit_div_overflow_guard
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; R65 finishing corrections: inside the existing TRAP_INT guard.
+; All temporaries below are compiler-side unless described as emitted bytes.
+r65_can_fold_integer:
+    cmp qword [rdi],AST_BINOP
+    jne .yes
+    mov r8,[rdi+16]
+    mov r9,[rdi+24]
+    cmp qword [r8],AST_NUM
+    jne .yes
+    cmp qword [r9],AST_NUM
+    jne .yes
+    mov r8,[r8+8]
+    mov r9,[r9+8]
+    mov rax,[rdi+8]
+    cmp rax,OP_ADD
+    je .add
+    cmp rax,OP_SUB
+    je .sub
+    cmp rax,OP_MUL
+    je .mul
+    cmp rax,OP_DIV
+    je .div
+    cmp rax,OP_MOD
+    je .div
+    jmp .yes
+.add:
+    add r8,r9
+    jo .no
+    jmp .yes
+.sub:
+    sub r8,r9
+    jo .no
+    jmp .yes
+.mul:
+    imul r8,r9
+    jo .no
+    jmp .yes
+.div:
+    test r9,r9
+    jz .no
+    cmp r9,-1
+    jne .yes
+    mov rax,0x8000000000000000
+    cmp r8,rax
+    je .no
+.yes:
+    mov eax,1
+    ret
+.no:
+    xor eax,eax
+    ret
+
+r65_emit_div_overflow_guard:
+    ; Normal generic arithmetic holds lhs in runtime RAX, divisor in RCX.
+    ; R10 is volatile scratch, not a named local or an active register tree.
+    push rbx
+    push r12
+    push r13
+    push r14
+    mov r12,rdi
+    ; cmp rcx,-1; jne success
+    mov dil,0x48
+    call emit_byte
+    mov dil,0x83
+    call emit_byte
+    mov dil,0xF9
+    call emit_byte
+    mov dil,0xFF
+    call emit_byte
+    mov dil,0x0F
+    call emit_byte
+    mov dil,0x85
+    call emit_byte
+    mov r13,[rel code_sz]
+    xor edi,edi
+    call emit_u32
+    ; mov r10,INT64_MIN; cmp rax,r10; jne success
+    mov dil,0x49
+    call emit_byte
+    mov dil,0xBA
+    call emit_byte
+    mov rdi,0x8000000000000000
+    call emit_u64
+    mov dil,0x4C
+    call emit_byte
+    mov dil,0x39
+    call emit_byte
+    mov dil,0xD0
+    call emit_byte
+    mov dil,0x0F
+    call emit_byte
+    mov dil,0x85
+    call emit_byte
+    mov r14,[rel code_sz]
+    xor edi,edi
+    call emit_u32
+    lea rax,[rel r65_msg_mod]
+    cmp r12,rax
+    lea rdi,[rel r65_msg_div_overflow]
+    jne .message_ready
+    lea rdi,[rel r65_msg_mod_overflow]
+.message_ready:
+    mov rsi,[rbx+32]
+    call r65_emit_fatal
+    mov rax,[rel code_sz]
+    sub rax,r13
+    sub rax,4
+    lea rcx,[rel code_buf]
+    mov [rcx+r13],eax
+    mov rax,[rel code_sz]
+    sub rax,r14
+    sub rax,4
+    mov [rcx+r14],eax
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+%endif
+
+; ============================================================
+; ELF WRITER
+; ============================================================
+write_elf:
+    ; choose target: Windows build always emits PE; on Linux a .exe
+    ; output name selects PE (lets us build/test Windows binaries here).
+    cmp qword [rel target_pe], 0
+    jne write_pe
+    push rbx
+    mov rbx, rdi              ; filename
+    ; Create file
+    mov rsi, 0x241             ; O_WRONLY|O_CREAT|O_TRUNC
+    mov rdx, 0o755
+    call os_open
+    mov [rel out_fd], rax
+    ; Build headers on stack
+    sub rsp, 64
+    ; ELF header
+    mov dword [rsp], 0x464C457F
+    mov dword [rsp+4], 0x00010102
+    xor rax, rax
+    mov [rsp+8], rax
+    mov word [rsp+16], 2
+    mov word [rsp+18], 0x3E
+    mov dword [rsp+20], 1
+    mov rax, BASE_ADDR + HEADERS_SIZE
+    mov [rsp+24], rax
+    mov rax, ELF_HDR_SIZE
+    mov [rsp+32], rax
+    xor rax, rax
+    mov [rsp+40], rax
+    mov dword [rsp+48], 0
+    mov word [rsp+52], 64
+    mov word [rsp+54], 56
+    mov word [rsp+56], 1
+    mov word [rsp+58], 0
+    mov word [rsp+60], 0
+    mov word [rsp+62], 0
+    ; Write ELF header
+    mov rdi, [rel out_fd]
+    mov rsi, rsp
+    mov rdx, 64
+    call os_write
+    ; Program header
+    mov dword [rsp], 1
+    mov dword [rsp+4], 7
+    mov rax, HEADERS_SIZE
+    mov [rsp+8], rax
+    mov rax, BASE_ADDR + HEADERS_SIZE
+    mov [rsp+16], rax
+    mov [rsp+24], rax
+    mov rax, [rel code_sz]
+    mov [rsp+32], rax         ; p_filesz = code_sz
+    mov rax, [rel code_sz]
+    add rax, 0x10000          ; p_memsz = code_sz + 64KB (BSS)
+    mov [rsp+40], rax
+    mov rax, 0x1000
+    mov [rsp+48], rax
+    ; Write program header
+    mov rdi, [rel out_fd]
+    mov rsi, rsp
+    mov rdx, 56
+    call os_write
+    add rsp, 64
+    ; Write code
+    mov rdi, [rel out_fd]
+    lea rsi, [rel code_buf]
+    mov rdx, [rel code_sz]
+    call os_write
+    ; Close
+    mov rdi, [rel out_fd]
+    call os_close
+%ifndef WINDOWS
+    ; chmod +x
+    mov rdi, rbx
+    mov rsi, 0o755
+    mov rax, 90
+    syscall
+%endif
+    pop rbx
+    ret
+
+; ============================================================
+; UTILITY FUNCTIONS
+; ============================================================
+strlen:
+    xor rcx, rcx
+.sl_loop:
+    cmp byte [rdi], 0
+    je .sl_done
+    inc rdi
+    inc rcx
+    jmp .sl_loop
+.sl_done:
+    mov rax, rcx
+    ret
+
+strcmp:
+.sc_loop:
+    movzx ecx, byte [rdi]
+    movzx edx, byte [rsi]
+    cmp ecx, edx
+    jne .sc_diff
+    cmp ecx, 0
+    je .sc_equal
+    inc rdi
+    inc rsi
+    jmp .sc_loop
+.sc_equal:
+    xor rax, rax
+    ret
+.sc_diff:
+    sub ecx, edx
+    mov eax, ecx
+    ret
+
+%include "src/r23_capabilities.inc"
+%include "src/r25_phal.inc"
+%include "src/r28_object.inc"
+%include "src/r32_ffi.inc"
+%include "src/r38_fail_alloc.inc"
+
+itoa:
+    mov rax, rdi
+    mov rcx, 10
+    add rsi, 20
+    mov byte [rsi], 0
+.ia_loop:
+    xor rdx, rdx
+    div rcx
+    add dl, '0'
+    dec rsi
+    mov [rsi], dl
+    test rax, rax
+    jnz .ia_loop
+    mov rax, rsi
+    ret
+
+print_str_z:
+    call r11_tr                   ; R11: a compiler message in the --lang pack's language
+    mov rdi, rax
+    push rdi
+    call strlen
+    pop rdi
+    mov rdx, rax
+    mov rsi, rdi
+    mov rdi, 1
+    call os_write
+    ret
+
+is_alpha:
+    movzx eax, dil
+    cmp eax, 'A'
+    jb .ia_check_lower
+    cmp eax, 'Z'
+    jbe .ia_yes
+.ia_check_lower:
+    cmp eax, 'a'
+    jb .ia_check_under
+    cmp eax, 'z'
+    jbe .ia_yes
+.ia_check_under:
+    cmp eax, '_'
+    je .ia_yes
+    ; Check for Devanagari UTF-8 start byte (0xE0)
+    cmp eax, 0xE0
+    je .ia_yes
+    xor rax, rax
+    ret
+.ia_yes:
+    mov rax, 1
+    ret
+
+is_digit:
+    movzx eax, dil
+    cmp eax, '0'
+    jb .id_no
+    cmp eax, '9'
+    ja .id_no
+    mov rax, 1
+    ret
+.id_no:
+    xor rax, rax
+    ret
+
+is_hex:
+    movzx eax, dil
+    cmp eax, '0'
+    jb .ih_no
+    cmp eax, '9'
+    jbe .ih_yes
+    cmp eax, 'A'
+    jb .ih_no
+    cmp eax, 'F'
+    jbe .ih_yes
+    cmp eax, 'a'
+    jb .ih_no
+    cmp eax, 'f'
+    jbe .ih_yes
+.ih_no:
+    xor rax, rax
+    ret
+.ih_yes:
+    mov rax, 1
+    ret
+
+hexval:
+    movzx eax, dil
+    cmp eax, '9'
+    jbe .hv_dec
+    cmp eax, 'F'
+    jbe .hv_upper
+    sub eax, 'a'
+    add eax, 10
+    ret
+.hv_upper:
+    sub eax, 'A'
+    add eax, 10
+    ret
+.hv_dec:
+    sub eax, '0'
+    ret
+
+is_space:
+    movzx eax, dil
+    cmp eax, ' '
+    je .is_yes
+    cmp eax, 9
+    je .is_yes
+    cmp eax, 10
+    je .is_yes
+    cmp eax, 13
+    je .is_yes
+    xor rax, rax
+    ret
+.is_yes:
+    mov rax, 1
+    ret
+
+lookup_keyword:
+    push rbx
+    push r12
+    push r13
+    mov r13, rdi              ; string to find
+    lea rax, [rel kw_table_end]
+    lea rcx, [rel kw_table]
+    sub rax, rcx
+    mov rcx, 24
+    xor rdx, rdx
+    div rcx                   ; rax = count
+    mov rcx, rax
+    lea r12, [rel kw_table]
+.lk_loop:
+    test rcx, rcx
+    jz .lk_notfound
+    mov rdi, r13
+    mov rsi, [r12]
+    push rcx
+    call strcmp
+    pop rcx
+    test rax, rax
+    jz .lk_found
+    add r12, 24
+    dec rcx
+    jmp .lk_loop
+.lk_found:
+    mov rdx, [r12+16]         ; keyword id
+    mov rax, 1
+    pop r13
+    pop r12
+    pop rbx
+    ret
+.lk_notfound:
+    ; Also scan runtime-loaded language pack keywords
+    mov rcx, [rel lang_kw_cnt]
+    test rcx, rcx
+    jz .lk_really_notfound
+    lea r12, [rel lang_kw_table]
+.lk_lang_loop:
+    test rcx, rcx
+    jz .lk_really_notfound
+    mov rdi, r13
+    mov rsi, [r12]
+    push rcx
+    call strcmp
+    pop rcx
+    test rax, rax
+    jz .lk_found
+    add r12, 24
+    dec rcx
+    jmp .lk_lang_loop
+.lk_really_notfound:
+    xor rax, rax
+    xor rdx, rdx
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+lookup_builtin:
+    push rbx
+    push r12
+    push r13
+    mov r13, rdi
+    lea rax, [rel bn_table_end]
+    lea rcx, [rel bn_table]
+    sub rax, rcx
+    mov rcx, 24
+    xor rdx, rdx
+    div rcx
+    mov rcx, rax
+    lea r12, [rel bn_table]
+.lb_loop:
+    test rcx, rcx
+    jz .lb_notfound
+    mov rdi, r13
+    mov rsi, [r12]
+    push rcx
+    call strcmp
+    pop rcx
+    test rax, rax
+    jz .lb_found
+    add r12, 24
+    dec rcx
+    jmp .lb_loop
+.lb_found:
+    mov rdx, [r12+16]
+    mov rax, 1
+    pop r13
+    pop r12
+    pop rbx
+    ret
+.lb_notfound:
+    ; Also scan runtime-loaded builtin aliases
+    mov rcx, [rel lang_builtin_cnt]
+    test rcx, rcx
+    jz .lb_really_notfound
+    lea r12, [rel lang_builtin_table]
+.lb_lang_loop:
+    test rcx, rcx
+    jz .lb_really_notfound
+    mov rdi, r13
+    mov rsi, [r12]
+    push rcx
+    call strcmp
+    pop rcx
+    test rax, rax
+    jz .lb_found
+    add r12, 24
+    dec rcx
+    jmp .lb_lang_loop
+.lb_really_notfound:
+    xor rax, rax
+    xor rdx, rdx
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; R28: pin the import template's alignment. Its `align 2` entries are
+; absolute, so any change in the size of the data before it (a new message in
+; the packs) used to shift its padding and change every Windows output by a
+; byte. Aligned here, the template starts at the same parity whatever precedes
+; it, and the bytes it writes are the ones v237 wrote.
+section .data
+    align 16, db 0
+    R28_PE_PAD
+section .text
+%include "win/pe_layout.inc"
+%include "win/pe_imports.inc"
+%include "win/rtblob.inc"   ; embedded Win64 runtime bytes
+
+; ============================================================
+; PE64 WRITER (Windows target)
+;   want_pe(filename) -> 1 if the name ends in .exe
+;   write_pe(filename)  -> writes [512B headers][runtime blob][code]
+; ============================================================
+want_pe:
+    push rbx
+    push rdi                  ; strlen/strcmp advance rdi — keep the filename
+    mov rbx, rdi
+    call strlen
+    cmp rax, 4
+    jb .wp_no
+    lea rdi, [rbx + rax - 4]
+    lea rsi, [rel str_dot_exe]
+    call strcmp
+    test rax, rax
+    jz .wp_yes
+.wp_no:
+    xor rax, rax
+    pop rdi
+    pop rbx
+    ret
+.wp_yes:
+    mov rax, 1
+    pop rdi
+    pop rbx
+    ret
+
+write_pe:
+    push rbx
+    push r12
+    push r13
+    mov rbx, rdi
+    mov rsi, 0x241
+    mov rdx, 0o755
+    call os_open
+    mov [rel out_fd], rax
+    ; --- zero the 512-byte header block ---
+    lea rdi, [rel pe_hdr]
+    xor eax, eax
+    mov ecx, 64
+    rep stosq
+    lea rdi, [rel pe_hdr]
+    ; DOS header
+    mov word [rdi], 0x5A4D
+    mov dword [rdi+0x3C], 0x40
+    ; PE signature + COFF
+    mov dword [rdi+0x40], 0x00004550
+    mov word [rdi+0x44], 0x8664
+    mov word [rdi+0x46],2 ; RX code and RW data/imports
+.r56_pe_single_section:
+    mov word [rdi+0x54], 0xF0
+    mov word [rdi+0x56], 0x0022
+    ; Optional header
+    mov word [rdi+0x58], 0x20B
+    mov rax, [rel code_sz]
+    add rax, RT_BLOB_LEN
+    mov r12, rax                     ; section virtual size
+    mov rcx, rax
+    add rcx, 0x1FF
+    and rcx, 0xFFFFFFFFFFFFFE00
+    mov r13, rcx                     ; aligned raw size
+    mov [rdi+0x5C], ecx
+    mov eax, 0x1000 + RT_BLOB_LEN
+    mov [rdi+0x68], eax
+    mov dword [rdi+0x6C], 0x1000
+    mov rax, 0x140000000
+    mov [rdi+0x70], rax
+    mov dword [rdi+0x78], 0x1000
+    mov dword [rdi+0x7C], 0x200
+    mov word [rdi+0x80], 6
+    mov word [rdi+0x88], 6
+    mov rax, r13
+    add rax, 0x1000
+    mov [rdi+0x90], eax
+    mov dword [rdi+0x94], 0x200
+    mov word [rdi+0x9C], 3
+    mov rax, 0x100000
+    mov [rdi+0xA0], rax
+    mov rax, 0x1000
+    mov [rdi+0xA8], rax
+    mov rax, 0x100000
+    mov [rdi+0xB0], rax
+    mov rax, 0x1000
+    mov [rdi+0xB8], rax
+    mov dword [rdi+0xC4], 16
+    ; section header
+    mov dword [rdi+0x148], 0x74786574
+    mov eax, r12d
+    mov [rdi+0x150], eax
+    mov dword [rdi+0x154], 0x1000
+    mov eax, r13d
+    mov [rdi+0x158], eax
+    mov dword [rdi+0x15C], 0x200
+    mov dword [rdi+0x16C], 0x60000020
+
+    ; Separate initialized RW data section (not RWX text): 128*8 <= 4096.
+    ; RVA = 0x1000 + round_up(.text virtual size, 0x1000).
+    mov rax, r12
+    add rax, 0xFFF
+    and rax, -0x1000
+    add rax, 0x1000
+    mov [rdi+0x17C], eax      ; .data virtual address
+    add rax, 0x1000
+    mov [rdi+0x90], eax       ; SizeOfImage
+    mov dword [rdi+0x170], 0x7461642E  ; '.dat'
+    mov word [rdi+0x174], 0x0061       ; 'a', NUL
+    mov eax,RT_DATA_BYTES
+    mov [rdi+0x178], eax      ; .data virtual size
+    add rax, 0x1FF
+    and rax, -0x200
+    mov [rdi+0x180], eax      ; aligned .data raw size
+    mov [rdi+0x60], eax       ; SizeOfInitializedData
+    mov eax, r13d
+    add eax,0x200
+    mov [rdi+0x184], eax      ; .data raw pointer after .text
+    mov dword [rdi+0x194],0xC0000040  ; initialized, read/write
+    mov eax,[rdi+0x17c]
+    add eax,RT_GLOBAL_BYTES
+    mov [rdi+0xd0],eax
+    mov dword [rdi+0xd4],40
+    add eax,RT_IAT_OFF
+    mov [rdi+0x128],eax
+    mov dword [rdi+0x12c],88
+    sub eax,RT_IAT_OFF
+    call pe_prepare_imports
+.r56_pe_no_data_header:
+    ; --- write headers ---
+    mov rdi, [rel out_fd]
+    lea rsi, [rel pe_hdr]
+    mov rdx, 0x200
+    call os_write
+    ; --- write runtime blob ---
+    mov rdi, [rel out_fd]
+    lea rsi, [rel rt_blob]
+    mov rdx, RT_BLOB_LEN
+    call os_write
+    ; --- patch recorded blob-call sites in the code buffer ---
+    xor r12, r12
+.pp_patch:
+    cmp r12, [rel blob_call_cnt]
