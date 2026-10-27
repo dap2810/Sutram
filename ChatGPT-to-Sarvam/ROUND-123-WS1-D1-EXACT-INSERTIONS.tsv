@@ -1,0 +1,8 @@
+path	mode	source_blob	placement	anchor_line_current	anchor_exact	sequence	insert_exact_line
+docs/LANGUAGE-REFERENCE.md	PROPOSE_EXACT_CURRENT	00f06311551de90714e00999d96fafdae8de9d17	INSERT_BEFORE	158	## 5. Types	1	### Big-integer digit order (`brihat`)
+docs/LANGUAGE-REFERENCE.md	PROPOSE_EXACT_CURRENT	00f06311551de90714e00999d96fafdae8de9d17	INSERT_BEFORE	158	## 5. Types	2	
+docs/LANGUAGE-REFERENCE.md	PROPOSE_EXACT_CURRENT	00f06311551de90714e00999d96fafdae8de9d17	INSERT_BEFORE	158	## 5. Types	3	`lib/brihat.smlib` represents a nonnegative base-10 big integer in **least-significant-digit-first (LSB-first)** order, not ordinary printed digit order.
+docs/LANGUAGE-REFERENCE.md	PROPOSE_EXACT_CURRENT	00f06311551de90714e00999d96fafdae8de9d17	INSERT_BEFORE	158	## 5. Types	4	Each digit occupies one 8-byte cell; callers allocate an array of `n` cells (for example with `nirmmita(n * 8)`).
+docs/LANGUAGE-REFERENCE.md	PROPOSE_EXACT_CURRENT	00f06311551de90714e00999d96fafdae8de9d17	INSERT_BEFORE	158	## 5. Types	5	After `brihat_ank_se_laghu(1234, digits, 4)`, `pad8(digits + 0 * 8)` is `4`, `pad8(digits + 1 * 8)` is `3`, `pad8(digits + 2 * 8)` is `2`, and `pad8(digits + 3 * 8)` is `1`.
+docs/LANGUAGE-REFERENCE.md	PROPOSE_EXACT_CURRENT	00f06311551de90714e00999d96fafdae8de9d17	INSERT_BEFORE	158	## 5. Types	6	`brihat_ank_tak_laghu(digits, 4)` reads that same LSB-first representation back as `1234`. Do not reverse the cells when passing them to other `brihat_*` functions.
+docs/LANGUAGE-REFERENCE.md	PROPOSE_EXACT_CURRENT	00f06311551de90714e00999d96fafdae8de9d17	INSERT_BEFORE	158	## 5. Types	7	
