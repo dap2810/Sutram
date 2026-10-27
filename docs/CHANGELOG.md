@@ -1,3 +1,38 @@
+## v375 - `sat_div` resolved: it is a stale COMMENT, not a function. Three passes, only the third was right.
+
+**I said it did not exist. The API search said it did, in `ganita.smlib`. Then I read the context.**
+
+**It appears once, inside a comment:** *"b == 0 returns 0 (same sentinel as sat_div)"* - **and there is no function
+called `sat_div` anywhere in `lib/`.**
+
+**The three passes:**
+1. **A loose regex put `sat_div` in a list of identifiers** - a comment hit I did not check
+2. **A tarball search found nothing, and I concluded "does not exist"** - **right for the function, for the wrong reason,
+on a tree that has already served me a stale file once this session**
+3. **An API search found it in `ganita.smlib`** - **correctly, because the comment is there**
+
+**Only reading the context gave the answer.**
+
+### So it is a documentation defect, not a rename
+**A comment naming a function that does not exist is the same class as the 35 descriptions ChatGPT corrected: text
+describing something other than the code.** **A reader would look for `sat_div` and not find it.**
+
+**And it probably means `ganita_paripurna_bhaj`** - **the `paripurna` family the saturating operations use.** **So the fix
+is to name the real function, not to rename a missing one.**
+
+### The final tally, after four measurements that each shrank it
+| Item | Verdict |
+|---|---|
+| `char`, `int`, `len` in `lib/` | **internal labels and local variables - no change** |
+| `slice` in prose | **say `vibhag`; labels fine** |
+| **`sat_div`** | **stale comment - fix the comment** |
+| **`brihat_ank_se_int`** | **real, public - needs `laghu`** |
+| **`brihat_ank_tak_int`** | **real, public - needs `laghu`** |
+
+**Two renames and one comment fix.** **And the lesson is about method, not about vocabulary: I warned that a finding of
+absence is what a stale tree produces for free, and then produced one.** **The API is authoritative; the tarball is for
+building.**
+
 ## v374 - two names, not three, and they are a naming question rather than a translation
 
 **I read the three names I had proposed. The answer is smaller and less obvious than I said.**
