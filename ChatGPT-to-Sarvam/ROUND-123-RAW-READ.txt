@@ -1,0 +1,173 @@
+# ROUND-123 direct read receipts (pinned main 95fd5ff00f91bd2dee46b91a5827f2aedb464500)
+
+--- docs/LANGUAGE-REFERENCE.md lines 124-127 blob 00f06311551de90714e00999d96fafdae8de9d17 ---
+124: ## 4b. Standard library (`lib/`)
+125: 
+126: `yoj <name>` inlines `lib/<name>.smlib` into your program at compile time —
+127: no runtime dependency, the code becomes part of your binary. `lib/` ships:
+
+--- docs/LANGUAGE-REFERENCE.md lines 152-158 blob 00f06311551de90714e00999d96fafdae8de9d17 ---
+152: ```
+153: 
+154: Written in Sutram itself. Every library function copies its parameters into
+155: locals before changing them, because the compiler currently faults on
+156: assignment to a parameter.
+157: 
+158: ## 5. Types
+
+--- lib/brihat.smlib lines 1-10 blob beb68ee29427bab657e3610bc9bd6e09225d59b6 ---
+1: # lib/brihat.smlib — Sutram standard library: big integers
+2: # layer: alloc
+3: #
+4: # Arbitrary-precision integers as arrays of base-10 digits (0-9),
+5: # least-significant digit first. All arrays are fixed size n; the caller
+6: # allocates via nirmmita(n * 8) and tracks the size.
+7: #
+8: # Convention: brihat_gun requires res to have 2n digits (product of two
+9: # n-digit numbers can need 2n digits). All other functions use n-digit arrays.
+10: # Digits must be 0-9; behavior is undefined for out-of-range digits.
+
+--- lib/brihat.smlib lines 24-29 blob beb68ee29427bab657e3610bc9bd6e09225d59b6 ---
+24: # brihat_ank_se_laghu(val, arr, n) — convert int to digit array (LSB first)
+25: # Returns 1 if val fit in n digits, 0 if truncated.
+26: # MIN: |MIN| does not fit in int64, so plain negation wraps and
+27: # emits negative digits. Convert MAX and add 1 instead.
+28: prakriya brihat_ank_se_laghu(val, arr, n) {
+29:     vitti v = val
+
+--- lib/brihat.smlib lines 67-79 blob beb68ee29427bab657e3610bc9bd6e09225d59b6 ---
+67: # brihat_ank_tak_laghu(arr, n) — convert digit array back to int (for verification)
+68: # Only correct if the value fits in an int.
+69: prakriya brihat_ank_tak_laghu(arr, n) {
+70:     vitti a = arr
+71:     vitti c = n
+72:     vitti r = 0
+73:     vitti i = c - 1
+74:     yavat (i >= 0) {
+75:         r = r * 10 + pad8(a + i * 8)
+76:         i = i - 1
+77:     }
+78:     prati r
+79: }
+
+--- docs/MEMORY-MODEL.md lines 1-6 blob 5f481243171edbe8d6bd12bcf4b4c3afc627fb5a ---
+1: # Sutram — current memory observations and proposed ownership model
+2: 
+3: **Status: current-state inventory followed by an explicitly unimplemented
+4: design. Sutram does not claim memory safety. No ownership feature is introduced
+5: by this document.**
+6: 
+
+--- docs/R71-MODULES.md lines 1-16 blob e3131e865c2189233893d7aac04e915066dc0f20 ---
+1: # Round 71 — separate compilation: design and tested linker substrate
+2: 
+3: ## Status: partial implementation, not a working Sutram module system
+4: 
+5: `src/r71_module_link.vardh` implements two native compiler/linker-host primitives.
+6: There is no second parser or Python compiler. The existing pure-NASM Sutram
+7: compiler is preserved. **The production `.sm` to object emitter, module driver,
+8: import/export parser integration and complete native two-module Sutram build
+9: are NOT implemented by this supplement.** Textual `ayojan` remains textual.
+10: 
+11: The implementation that exists is useful but narrower: resolve a qualified
+12: symbol against a bounded export table, enforce its visibility and integer
+13: arity, then patch a validated direct-call relocation in a native image. The
+14: local tests link two independently specified machine-code fixtures, both named
+15: `init` in different namespaces, and execute the resulting Linux ELF. It exits
+16: 42 (17 + 25). These fixtures are **not compiled Sutram module units**.
+
+--- compiler/MODULE_SYSTEM_R40_DESIGN.md lines 1-16 blob ae1da389e32372ed53c8ba6c3de84adf054fe656 ---
+1: # Sutram Module System v1 — Round 40 implementation and remaining design
+2: 
+3: ## Status / non-negotiable distinction
+4: 
+5: **Implemented in the NASM source in this round:** a bounded multi-pass `ayojan`
+6: expansion with a **single visited key table across passes**. This closes the
+7: one-level import limitation and makes transitive diamond source definitions
+8: available exactly once. The existing `ayojan module@alias` rename mechanism is
+9: unchanged. Legacy `ayojan module` is unchanged when imports have no children.
+10: 
+11: **NOT implemented or claimed:** object-file separate compilation, private/export
+12: visibility, explicit initializer semantics, cyclic-import rejection, provenance-
+13: accurate file+line diagnostics, or module-cache reuse across translation units.
+14: The new diamond golden **requires a NASM rebuild**. Do not merge it into a
+15: release until Sarvam verifies the generated binary and other regressions.
+16: 
+
+--- src/sutram_compiler.asm lines 561-570 blob 89495406b5b77258a9699ed5c8c2d51baead1474 ---
+561:         dq bn_panktilen, TOK_BUILTIN, BN_PANKTILEN
+562:         dq bn_koshpush, TOK_BUILTIN, BN_KOSHPUSH
+563:         dq bn_koshpop,  TOK_BUILTIN, BN_KOSHPOP
+564:         dq bn_koshlen,  TOK_BUILTIN, BN_KOSHLEN
+565:         dq bn_koshcap,  TOK_BUILTIN, BN_KOSHCAP
+566:         dq bn_koshclear, TOK_BUILTIN, BN_KOSHCLEAR
+567:         dq bn_koshempty, TOK_BUILTIN, BN_KOSHEMPTY
+568:         dq bn_koshpeek, TOK_BUILTIN, BN_KOSHPEEK
+569:         dq bn_koshenqueue, TOK_BUILTIN, BN_KOSHPUSH
+570:         dq bn_koshdequeue, TOK_BUILTIN, BN_KOSHDEQUEUE
+
+--- src/sutram_compiler.asm lines 684-715 blob 89495406b5b77258a9699ed5c8c2d51baead1474 ---
+684:     kw_mukhya    db "mukhya", 0
+685:     kw_vitti     db "vitti", 0
+686:     kw_anka      db "anka", 0
+687:     kw_yadi      db "yadi", 0
+688:     kw_yavat     db "yavat", 0
+689:     kw_pratiyati db "prati", 0
+690:     kw_sankhya   db "sankhya", 0
+691:     kw_anyatra  db "anya", 0
+692:     kw_prakriya db "prakriya", 0
+693:     kw_ayojan  db "yoj", 0
+694:     kw_rachana db "rachana", 0
+695:     kw_punaravartana db "chakra", 0
+696:     kw_to_str   db "tak", 0
+697:     kw_sutra    db "sutra", 0
+698:     kw_nishedha db "abhava", 0
+699:     kw_krama    db "krama", 0
+700:     kw_uddeshya db "agrim", 0
+701:     kw_purna    db "purna", 0
+702:     kw_shunya   db "shunya", 0
+703:     kw_parigrah db "satya", 0
+704:     kw_srijana  db "ganana", 0
+705:     kw_guna     db "guna", 0
+706:     kw_bhavana  db "bhavana", 0
+707:     kw_pankti   db "mala", 0
+708:     kw_nishkriya db "yantra", 0
+709:     kw_kuru      db "kuru", 0
+710:     kw_dasham    db "dasham", 0
+711:     kw_kosh      db "kosh", 0
+712:     kw_vibhag    db "vibhag", 0
+713:     kw_siddhi    db "siddhi", 0
+714:     kw_dosh      db "dosh", 0
+715:     kw_prasar    db "prasar", 0
+
+--- src/sutram_compiler.asm lines 764-773 blob 89495406b5b77258a9699ed5c8c2d51baead1474 ---
+764:     bn_panktilen db "pankti_len", 0
+765:     bn_koshpush db "kosh_push", 0
+766:     bn_koshpop  db "kosh_pop", 0
+767:     bn_koshlen  db "kosh_len", 0
+768:     bn_koshcap  db "kosh_cap", 0
+769:     bn_koshclear db "kosh_clear", 0
+770:     bn_koshempty db "kosh_empty", 0
+771:     bn_koshpeek db "kosh_peek", 0
+772:     bn_koshenqueue db "kosh_enqueue", 0  ; FIFO append = kosh_push
+773:     bn_koshdequeue db "kosh_dequeue", 0 ; FIFO removal of first
+
+--- lang/sanskrit.lang lines 58-75 blob b7bbbe1e07d258cc67f05e9dad81bca9379e59a6 ---
+58: शब्दम् shabda
+59: पङ्क्तिदैर्घ्य pankti_len
+60: कोशपुष् kosh_push
+61: कोशपोप् kosh_pop
+62: कोशदैर्घ्य kosh_len
+63: कोशक्षमता kosh_cap
+64: कोशशुद्धि kosh_clear
+65: कोशरिक्त kosh_empty
+66: कोशशिखर kosh_peek
+67: कोशनिर्गम kosh_dequeue
+68: 
+69: # R66: exact abbreviations, NOT arbitrary prefix matching or terminators.
+70: # U+0970 belongs to the alias spelling. Danda remains the terminator.
+71: वि॰ vitti
+72: लि॰ likha
+73: प्र॰ prakriya
+74: प॰ prati
+75: कोशप्रवेश kosh_enqueue
