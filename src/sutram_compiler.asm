@@ -234,7 +234,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v252) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v253) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -2207,14 +2207,14 @@ _start:
     ; R45 --debug <in.sm> <out> (and --debug --lang <pak> <in.sm> <out>): the
     ; ordinary compile, with a trap before every statement (src/r45_debug.inc).
     mov rdi, R49_ARG(16)
-    lea rsi, [rel r45_flag]
-    call strcmp
+    call r45_match_flag            ; R46: --debug or --debug=<names>[@N[-M]]
     test rax, rax
-    jnz .r45_not_debug
+    jz .r45_not_debug
+    cmp rax, 1
+    jne .usage                     ; a malformed --debug=<spec>
     mov rax, R49_ARG(0)
     cmp rax, 4                     ; prog --debug in out
     jl .usage
-    mov qword [rel r45_debug], 1
     mov rdi, R49_ARG(24)
     lea rsi, [rel str_flag_lang]
     call strcmp
@@ -6954,6 +6954,7 @@ parse_program:
     mov qword [rel r4_pend_count], 0
     lea rax, [rel ast_heap]
     mov [rel ast_ptr], rax
+    call r45_register_counter          ; R46: --debug's statement counter (a no-op without it)
     call parse_function
     mov [rel root_node], rax
     call r4_resolve_pending            ; R4: undefined names are errors
@@ -11870,7 +11871,9 @@ gen_code:
     mov rax, [rel root_node]
     mov rax, [rax+8]
     ; Generate body
+    mov qword [rel r45_main_body], 1   ; R46: --debug's summary goes at its end
     call gen_block
+    mov qword [rel r45_main_body], 0
 
     ; Function epilogue: mov rsp,rbp; pop callee-saved; pop rbp; sys_exit
     mov dil, 0x48             ; mov rsp, rbp

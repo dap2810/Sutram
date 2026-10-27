@@ -1,0 +1,10 @@
+[shodhan] pankti 11
+    y = -4.000000
+[shodhan] pankti 14
+    y = -4.000000
+[shodhan] pankti 15
+    y = -4.000000
+[shodhan] pankti 17
+    y = -10.283185
+0.757068
+[shodhan] samapti, vakya: 58

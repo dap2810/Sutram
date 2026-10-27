@@ -1,0 +1,29 @@
+# R46 WS2: a wrong answer, and the trace that finds it.
+# madhava_sin (lib/madhava.smlib) with the sign error that survives every library proof:
+# line 15 below should be  y = y + pi2.  sin(-4.0) prints 0.757068; the true value is 0.756802.
+#   sutram --debug=y@10-17 sin_galat.sm sin_galat      then run it
+
+prakriya sin_galat(dasham x) {
+    dasham pi2 = 6.283185307179586
+    dasham pi = 3.141592653589793
+    vitti k = x / pi2
+    dasham y = x - k * pi2
+    yadi (y > pi) {
+        y = y - pi2
+    }
+    yadi (y < 0.0 - pi) {
+        y = y - pi2
+    }
+    dasham s = y
+    dasham t = y
+    vitti n = 1
+    yavat (n < 16) {
+        t = 0.0 - t * y * y / ((2.0 * n) * (2.0 * n + 1.0))
+        s = s + t
+        n = n + 1
+    }
+    prati s
+}
+mukhya() {
+    likha(sin_galat(0.0 - 4.0))
+}

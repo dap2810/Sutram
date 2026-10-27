@@ -3,6 +3,18 @@
 ;
 ;   sutram_compiler --debug <in.sm> <out>
 ;   sutram_compiler --debug --lang <pak> <in.sm> <out>
+;   sutram_compiler --debug=<name>[,<name>...][@N[-M]] <in.sm> <out>      (R46)
+;
+; R46: --debug=yoga,i shows only those names, and prints no line where none of
+; them is in scope; @N or @N-M prints only statements on lines N.. or N..M
+; (every statement is still counted). At the end of mukhya's body the program
+; prints "[shodhan] samapti, vakya: <statements run>" and every scalar then in
+; scope. The counter is a module-level vitti registered before parsing, named
+; so that a program cannot write it (0shodhan_vakya), incremented by an
+; ordinary generated `c = c + 1` before each statement. Module-level vitti are
+; shown in the trace too (after the locals), unless a var_table entry of the
+; same name would be what the name reads. The summary is not printed when the
+; program ends early (prati in mukhya, sthagita, a runtime error).
 ;
 ; The same compile, except that before every statement the program prints the
 ; statement's source line and every scalar variable then in scope, and goes on:
@@ -30,9 +42,10 @@
 ;     parse-time rule), so under --debug alloc_var and gen_block are wrapped
 ;     too: a declaration makes its entry visible, and the end of the block it
 ;     was declared in hides it again - a name of a closed block, or of a branch
-;     not taken, is never shown with a stale or uninitialized slot. A mala, a kosh and a slice are left out (likha would
-;     print an address); a name shadowed by a later entry is shown once, as the
-;     later one; a module-level vitti is not in var_table and is not shown.
+;     not taken, is never shown with a stale or uninitialized slot. A mala, a
+;     kosh and a slice are left out (likha would print an address); a name
+;     shadowed by a later entry is shown once, as the later one. R46: module-level
+;     vitti follow the locals.
 ;   * no trap before a yantra("...") statement: raw machine code may rely on
 ;     registers the previous yantra set (examples/29_nishkriya.sm splits one
 ;     mov/mov/syscall over three), and a trap between them would clobber them.
@@ -45,6 +58,8 @@
 
 R45_MAP_CAP   equ 65536            ; statements with a recorded line
 R45_LABEL_CAP equ 120              ; a string literal is jumped over with jmp rel8
+R45_WATCH_CAP equ 32               ; R46: names in --debug=<names>
+R45_NAMES_CAP equ VAR_TABLE_CAP + 128 ; the names one trap shows: locals, then module vitti
 
 section .bss
     r45_debug     resq 1           ; 1 under --debug
@@ -55,11 +70,20 @@ section .bss
     r45_depth     resq 1           ; block depth while generating code
     r45_hidden    resb VAR_TABLE_CAP ; 1: its block has ended (var_table is flat per function)
     r45_vdepth    resq VAR_TABLE_CAP ; the block depth it was (re)declared at
+    r45_watch_cnt resq 1           ; R46: --debug=<names>: only these are shown
+    r45_watch     resq R45_WATCH_CAP
+    r45_from      resq 1           ; R46: --debug=...@N-M: only lines N..M print (0: no bound)
+    r45_to        resq 1
+    r45_main_body resq 1           ; R46: 1 while mukhya's body is generated
+    r45_ncnt      resq 1
+    r45_names     resq R45_NAMES_CAP
 section .data
     r45_flag      db "--debug", 0
     r45_head      db "[shodhan] pankti ", 0
     r45_indent    db "    ", 0
     r45_equals    db " = ", 0
+    r45_summary   db "[shodhan] samapti, vakya: ", 0
+    r45_counter_name db "0shodhan_vakya", 0   ; R46: the statement counter, a module vitti
 section .text
 
 ; parse_stmt, wrapped: under --debug, note (statement node, line of its first
@@ -85,8 +109,10 @@ parse_stmt:
     ret
 
 ; r45_gen_trap(rdi = statement node). Called by gen_stmt under --debug only.
-; Emits the trap for that statement, if it is one with a recorded line.
-; Preserves rbx and r12-r15 (gen_stmt's own state).
+; Emits the trap for that statement, if it is one with a recorded line of the
+; program's own file: the statement counter, then - when the line is in the
+; --debug=...@N-M range and a watched name (if any) is in scope - the line and
+; the variables. Preserves rbx and r12-r15 (gen_stmt's own state).
 r45_gen_trap:
     cmp qword [rel r45_in_trap], 0
     jne .ret
@@ -124,6 +150,26 @@ r45_gen_trap:
     mov r14, rax                   ; the line (r45_copy uses al)
     mov qword [rel r45_in_trap], 1
     mov r15, [rel ast_ptr]         ; the trap's nodes are reclaimed afterwards
+    call r45_emit_count            ; R46: every statement of the file is counted
+    mov rax, [rel r45_from]        ; R46: --debug=...@N-M - only lines N..M print
+    test rax, rax
+    jz .from_ok
+    cmp r14, rax
+    jb .done
+.from_ok:
+    mov rax, [rel r45_to]
+    test rax, rax
+    jz .to_ok
+    cmp r14, rax
+    ja .done
+.to_ok:
+    mov edi, 1                     ; with the watch list
+    call r45_collect
+    cmp qword [rel r45_watch_cnt], 0
+    je .print
+    cmp qword [rel r45_ncnt], 0    ; R46: watching, and none of them in scope: no line
+    je .done
+.print:
     ; "[shodhan] pankti <line>\n"
     lea rdi, [rel r45_text]
     lea rsi, [rel r45_head]
@@ -133,33 +179,49 @@ r45_gen_trap:
     mov byte [rdi], 10
     mov byte [rdi + 1], 0
     call r45_likha_text
-    ; every scalar variable in var_table, in declaration order
+    call r45_print_names
+.done:
+    mov [rel ast_ptr], r15
+    mov qword [rel r45_in_trap], 0
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+.ret:
+    ret
+
+; r45_collect(edi = 1: apply the watch list). Fills r45_names with the names to
+; show, in order: the current function's visible scalar locals and parameters
+; (a shadowed name once, as the later entry), then the module-level vitti that
+; no var_table entry hides. A mala, kosh or slice (an address) is left out, as
+; is a name too long for one literal. Preserves rbx and r12-r15.
+r45_collect:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    mov r15d, edi
+    mov qword [rel r45_ncnt], 0
     xor r12d, r12d
 .vars:
     cmp r12, [rel var_cnt]
-    jae .vars_done
+    jae .globals
     mov r13, r12
     shl r13, 4
     lea rax, [rel var_table]
     mov r13, [rax + r13]           ; r13 = name
     test r13, r13
     jz .next
-    movzx eax, byte [r13]          ; an ordinary name only: a letter, _ or an Indic letter
-    cmp al, '_'
-    je .name_ok
-    cmp al, 0xE0
-    je .name_ok
-    or al, 0x20
-    cmp al, 'a'
-    jb .next
-    cmp al, 'z'
-    ja .next
-.name_ok:
+    mov rdi, r13
+    call r45_ordinary_name
+    test rax, rax
+    jz .next
     lea rax, [rel r45_hidden]      ; its block has ended: out of scope, not shown
     cmp byte [rax + r12], 0
     jne .next
-    ; shadowed by a later entry? then that one is shown instead
-    lea r14, [r12 + 1]
+    lea r14, [r12 + 1]             ; shadowed by a later visible entry? that one is shown
 .shadow:
     cmp r14, [rel var_cnt]
     jae .not_shadowed
@@ -193,10 +255,117 @@ r45_gen_trap:
     test rax, rax
     jnz .next
     mov rdi, r13
+    mov esi, r15d
+    call r45_add_name
+.next:
+    inc r12
+    jmp .vars
+.globals:
+    xor r12d, r12d                 ; R46: module-level vitti
+.g_loop:
+    cmp r12, [rel r56_global_count]
+    jae .done
+    lea rax, [rel r56_global_names]
+    mov r13, [rax + r12*8]
+    lea rax, [rel r45_counter_name]
+    cmp r13, rax                   ; the trace's own counter is not the program's
+    je .g_next
+    xor r14d, r14d                 ; any var_table entry of that name (even a closed
+.g_local:                          ; block's) would be what the name reads: not shown
+    cmp r14, [rel var_cnt]
+    jae .g_add
+    mov rax, r14
+    shl rax, 4
+    lea rcx, [rel var_table]
+    mov rsi, [rcx + rax]
+    inc r14
+    test rsi, rsi
+    jz .g_local
+    mov rdi, r13
+    call strcmp
+    test rax, rax
+    jz .g_next
+    jmp .g_local
+.g_add:
+    mov rdi, r13
+    mov esi, r15d
+    call r45_add_name
+.g_next:
+    inc r12
+    jmp .g_loop
+.done:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; rdi = name, esi = 1: apply the watch list. Appends to r45_names if it passes.
+r45_add_name:
+    push rbx
+    push r12
+    mov rbx, rdi
+    test esi, esi
+    jz .watched
+    mov r12, [rel r45_watch_cnt]
+    test r12, r12
+    jz .watched
+.w_loop:                           ; the watch list: only these names
+    test r12, r12
+    jz .out
+    dec r12
+    lea rax, [rel r45_watch]
+    mov rsi, [rax + r12*8]
+    mov rdi, rbx
+    call strcmp
+    test rax, rax
+    jnz .w_loop
+.watched:
+    mov rdi, rbx
     call strlen
     cmp rax, R45_LABEL_CAP - 8
-    ja .next                       ; a name too long for one literal: left out
-    ; "    <name> = "
+    ja .out                        ; a name too long for one literal: left out
+    mov rcx, [rel r45_ncnt]
+    cmp rcx, R45_NAMES_CAP
+    jae .out
+    lea rax, [rel r45_names]
+    mov [rax + rcx*8], rbx
+    inc qword [rel r45_ncnt]
+.out:
+    pop r12
+    pop rbx
+    ret
+
+; rdi = name -> rax = 1 if it begins with a letter, _ or an Indic letter
+r45_ordinary_name:
+    movzx eax, byte [rdi]
+    cmp al, '_'
+    je .yes
+    cmp al, 0xE0
+    je .yes
+    or al, 0x20
+    cmp al, 'a'
+    jb .no
+    cmp al, 'z'
+    ja .no
+.yes:
+    mov eax, 1
+    ret
+.no:
+    xor eax, eax
+    ret
+
+; "    <name> = " and likha(<name>) for each collected name
+r45_print_names:
+    push r12
+    push r13
+    xor r12d, r12d
+.loop:
+    cmp r12, [rel r45_ncnt]
+    jae .done
+    lea rax, [rel r45_names]
+    mov r13, [rax + r12*8]
     lea rdi, [rel r45_text]
     lea rsi, [rel r45_indent]
     call r45_copy
@@ -206,23 +375,204 @@ r45_gen_trap:
     call r45_copy
     mov byte [rdi], 0
     call r45_likha_text
-    ; likha(<name>)
     call alloc_ast
     mov qword [rax], AST_VAR
     mov [rax + 8], r13
     call r45_likha_node
-.next:
     inc r12
-    jmp .vars
-.vars_done:
+    jmp .loop
+.done:
+    pop r13
+    pop r12
+    ret
+
+; R46: the counter: <c> = <c> + 1, generated as a statement
+r45_emit_count:
+    call alloc_ast
+    mov qword [rax], AST_NUM
+    mov qword [rax + 8], 1
+    push rax
+    call alloc_ast
+    mov qword [rax], AST_VAR
+    lea rcx, [rel r45_counter_name]
+    mov [rax + 8], rcx
+    push rax
+    call alloc_ast
+    mov qword [rax], AST_BINOP
+    mov qword [rax + 8], OP_ADD
+    pop rcx
+    mov [rax + 16], rcx
+    pop rcx
+    mov [rax + 24], rcx
+    push rax
+    call alloc_ast
+    mov qword [rax], AST_VAR
+    lea rcx, [rel r45_counter_name]
+    mov [rax + 8], rcx
+    push rax
+    call alloc_ast
+    mov qword [rax], AST_ASSIGN
+    pop rcx
+    mov [rax + 8], rcx
+    pop rcx
+    mov [rax + 16], rcx
+    call gen_stmt
+    ret
+
+; R46: the summary at the end of mukhya's body: the number of statements run,
+; then every scalar in scope (the watch list does not apply).
+r45_gen_summary:
+    push r15
+    mov qword [rel r45_in_trap], 1
+    mov r15, [rel ast_ptr]
+    lea rdi, [rel r45_text]
+    lea rsi, [rel r45_summary]
+    call r45_copy
+    mov byte [rdi], 0
+    call r45_likha_text
+    call alloc_ast
+    mov qword [rax], AST_VAR
+    lea rcx, [rel r45_counter_name]
+    mov [rax + 8], rcx
+    call r45_likha_node
+    xor edi, edi
+    call r45_collect
+    call r45_print_names
     mov [rel ast_ptr], r15
     mov qword [rel r45_in_trap], 0
     pop r15
-    pop r14
-    pop r13
-    pop r12
-    pop rbx
+    ret
+
+; R46: under --debug, the counter is a module-level vitti of the program,
+; registered before the program is parsed. Its name cannot be written in a
+; program (it begins with a digit), so it can neither clash nor be read.
+r45_register_counter:
+    cmp qword [rel r45_debug], 0
+    je .ret
+    call alloc_ast
+    mov qword [rax], AST_NUM       ; = 0
+    push rax
+    call alloc_ast
+    mov qword [rax], AST_DECL
+    lea rcx, [rel r45_counter_name]
+    mov [rax + 8], rcx
+    pop rcx
+    mov [rax + 16], rcx
+    call r56_register_global
 .ret:
+    ret
+
+; R46: rdi = an argument. rax = 0 if it is not --debug; 1 if it is --debug or
+; --debug=<spec> (r45_debug set, the spec read); 2 if the spec is malformed.
+;   <spec> = [name{,name}][@N[-M]]   e.g. yoga,i   yoga@20-40   @20
+; The names and numbers are cut out of the argument in place.
+r45_match_flag:
+    push rbx
+    mov rbx, rdi
+    lea rsi, [rel r45_flag]        ; "--debug"
+.pre:
+    mov al, [rsi]
+    test al, al
+    jz .pre_done
+    cmp al, [rbx]
+    jne .no
+    inc rsi
+    inc rbx
+    jmp .pre
+.pre_done:
+    mov al, [rbx]
+    test al, al
+    jz .yes                        ; exactly --debug
+    cmp al, '='
+    jne .no                        ; --debugx: not the flag
+    inc rbx
+    cmp byte [rbx], 0
+    je .bad                        ; --debug= with nothing
+.name:                             ; a name runs to ',', '@' or the end
+    mov al, [rbx]
+    cmp al, '@'
+    je .range
+    test al, al
+    jz .yes
+    cmp al, ','
+    je .bad                        ; an empty name
+    mov rcx, [rel r45_watch_cnt]
+    cmp rcx, R45_WATCH_CAP
+    jae .bad
+    lea rdx, [rel r45_watch]
+    mov [rdx + rcx*8], rbx
+    inc qword [rel r45_watch_cnt]
+.name_end:
+    mov al, [rbx]
+    test al, al
+    jz .yes
+    cmp al, '@'
+    je .cut_range
+    cmp al, ','
+    je .cut_next
+    inc rbx
+    jmp .name_end
+.cut_next:
+    mov byte [rbx], 0
+    inc rbx
+    cmp byte [rbx], 0
+    je .bad                        ; a trailing ','
+    jmp .name
+.cut_range:
+    mov byte [rbx], 0
+.range:
+    inc rbx                        ; past '@'
+    call .number
+    test rax, rax
+    jz .bad
+    mov [rel r45_from], rax
+    cmp byte [rbx], 0
+    je .yes
+    cmp byte [rbx], '-'
+    jne .bad
+    inc rbx
+    call .number
+    test rax, rax
+    jz .bad
+    cmp rax, [rel r45_from]
+    jb .bad
+    mov [rel r45_to], rax
+    cmp byte [rbx], 0
+    jne .bad
+.yes:
+    mov qword [rel r45_debug], 1
+    mov eax, 1
+    pop rbx
+    ret
+.no:
+    xor eax, eax
+    pop rbx
+    ret
+.bad:
+    mov eax, 2
+    pop rbx
+    ret
+.number:                           ; rbx -> decimal; rax = value (0: none or too long)
+    xor eax, eax
+    xor ecx, ecx
+.digit:
+    movzx edx, byte [rbx]
+    sub edx, '0'
+    cmp edx, 9
+    ja .num_end
+    cmp rax, 100000000
+    jae .num_bad
+    imul rax, rax, 10
+    add rax, rdx
+    inc rbx
+    inc ecx
+    jmp .digit
+.num_end:
+    test ecx, ecx
+    jnz .num_ret
+.num_bad:
+    xor eax, eax
+.num_ret:
     ret
 
 ; copy the NUL-terminated rsi to rdi; rdi = the end (not terminated)
@@ -347,6 +697,24 @@ gen_block:
     push rax
     push rcx
     push rdx
+    cmp qword [rel r45_main_body], 0   ; R46: mukhya's own block ends: the summary,
+    je .no_summary                     ; while its names are still in scope
+    cmp qword [rel r45_depth], 1
+    jne .no_summary
+    push rsi
+    push rdi
+    push r8
+    push r9
+    push r10
+    push r11
+    call r45_gen_summary
+    pop r11
+    pop r10
+    pop r9
+    pop r8
+    pop rdi
+    pop rsi
+.no_summary:
     dec qword [rel r45_depth]
     mov rdx, [rel r45_depth]
     xor ecx, ecx

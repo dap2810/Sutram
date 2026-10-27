@@ -33,7 +33,7 @@ from pathlib import Path
 
 sys.dont_write_bytecode = True
 ROOT = Path(__file__).resolve().parents[2]
-TRACE = re.compile(r'\[shodhan\] pankti \d+\n(?:    [^\n]* = [^\n]*\n)*')
+TRACE = re.compile(r'\[shodhan\] (?:pankti|samapti, vakya:) \d+\n(?:    [^\n]* = [^\n]*\n)*')  # R46: + the summary
 OUT_CAP = 64 << 20                 # a trace past 64 MiB is a loop too long to compare usefully
 
 
@@ -102,7 +102,8 @@ def main(argv) -> int:
                 '[shodhan] pankti 3\n    n = 2\n    r = 4\n'
                 '[shodhan] pankti 12\n    yoga = 6\n    ardha = 0.500000\n    i = 2\n'
                 '[shodhan] pankti 14\n    yoga = 6\n    ardha = 0.500000\n    i = 3\n'
-                '6\n')
+                '6\n'
+                '[shodhan] samapti, vakya: 14\n    yoga = 6\n    ardha = 0.500000\n    i = 3\n')   # R46
         rc, out = build(src)
         ok = check(rc == 0 and out == want, 'the trace: every statement of the file, its line, its scalar '
                    'variables (a local, a dasham, a parameter, a loop counter), each loop pass; then the output')
@@ -126,14 +127,15 @@ def main(argv) -> int:
                         '}\n')
         want1b = ('[shodhan] pankti 2\n[shodhan] pankti 3\n    a = 1\n[shodhan] pankti 4\n    a = 1\n'
                   '[shodhan] pankti 5\n    a = 1\n    b = 5\n[shodhan] pankti 7\n    a = 2\n'
-                  '[shodhan] pankti 10\n    a = 2\n[shodhan] pankti 11\n    a = 2\n    c = 7\n7\n')
+                  '[shodhan] pankti 10\n    a = 2\n[shodhan] pankti 11\n    a = 2\n    c = 7\n7\n'
+                  '[shodhan] samapti, vakya: 7\n    a = 2\n    c = 7\n')   # R46
         check(rc == 0 and out == want1b, 'block scope: b only inside its block; z (branch not taken) never shown '
               f'(got {out!r:.200})')
 
         # 2. a library call is one step; the library's own statements are not traced
         rc, out = build('yoj varna\nmukhya() {\n    vitti n = varna_maap("abc")\n    likha(n)\n}\n')
-        lines = [l for l in (out or '').splitlines() if l.startswith('[shodhan]')]
-        check(rc == 0 and lines == ['[shodhan] pankti 3', '[shodhan] pankti 4'] and out.endswith('3\n'),
+        lines = [l for l in (out or '').splitlines() if l.startswith('[shodhan] pankti')]
+        check(rc == 0 and lines == ['[shodhan] pankti 3', '[shodhan] pankti 4'] and '\n3\n[shodhan] samapti, vakya: 2\n' in out,
               f'yoj varna: only the program\'s own 2 statements are traced (got {lines})')
 
         # 3. Devanagari, under --lang sanskrit
@@ -141,7 +143,8 @@ def main(argv) -> int:
                         lang='sanskrit')
         want3 = ('[shodhan] pankti 2\n[shodhan] pankti 3\n    योग = 0\n'
                  '[shodhan] pankti 4\n    योग = 0\n    इ = 4\n'
-                 '[shodhan] pankti 5\n    योग = 4\n    इ = 4\n4\n')
+                 '[shodhan] pankti 5\n    योग = 4\n    इ = 4\n4\n'
+                 '[shodhan] samapti, vakya: 4\n    योग = 4\n    इ = 4\n')   # R46
         check(rc == 0 and out == want3, f'Devanagari names and lines under --lang sanskrit (got {out!r:.160})')
 
         # 5. usage: nothing written
