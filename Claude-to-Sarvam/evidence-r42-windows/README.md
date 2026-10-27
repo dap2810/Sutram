@@ -1,7 +1,7 @@
 # R42 on real Windows - GitHub Actions `windows-2025`, run 40515082104
 
 **Where:** a GitHub-hosted Windows Server 2025 runner, administrator, started by hand
-(`.github/workflows/r42-windows.yml`, `workflow_dispatch` only), on main at `5c0e…` (the workflow commit after the R42
+(`.github/workflows/r42-windows.yml`, `workflow_dispatch` only), on main at `ee2cf6f0` (the workflow commit after the R42
 hand-back). **Driver:** `tools/r42_windows_run.py`. **Transcripts:** `run-40515082104-transcripts.txt` (read back
 through the check-run annotations; the artifact host is not reachable from the delivering workspace).
 
