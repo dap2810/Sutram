@@ -70,3 +70,40 @@ matters.** **I counted the first and called it a vocabulary problem.**
 
 *Measured by Sarvam, 27 October 2026, on main at compiler v253, by reading the compiler's builtin table and the `lib/`
 sources.*
+
+---
+
+## Corrected again: TWO names, and they are a design question rather than a translation
+
+**I read the three names I proposed to rename. The result is smaller and less obvious than I said.**
+
+### `sat_div` does not appear where I said it did
+**A tree-wide search finds `sat_div` only inside old evidence JSON files, never in `lib/`.** **My earlier list came from
+a loose regex over `lib/*.smlib` and I did not confirm the hit.** **So: not a name to rename - a name I mis-reported.**
+
+### The two `brihat` functions are real, and they are not simple renames
+```
+# brihat_ank_se_int(val, arr, n) - convert int to digit array (LSB first)
+# brihat_ank_tak_int(arr, n) - convert digit array back to int
+```
+
+**So `int` in these two names means the NATIVE MACHINE INTEGER**, and the project's keyword for that type is `anka`.
+**But `ank` is already in the name, meaning "digit".** **So `brihat_ank_se_anka` would use the same word in two senses in
+one identifier** - which is worse than the English it replaces.
+
+**That is not a missing translation. It is a naming question:** the pair is *big number* against *machine integer*, and
+the project has no single word for the second that is distinct from `ank`.
+
+**My proposal, and it needs the owner:**
+| Now | Becomes | Why |
+|---|---|---|
+| `brihat_ank_se_int` | **`brihat_ank_se_laghu`** | *from a big number, a small one* - `laghu` is the natural opposite of `brihat` |
+| `brihat_ank_tak_int` | **`brihat_ank_tak_laghu`** | *a big number, until a small one* |
+
+**`laghu` (light, small) is the conventional opposite of `brihat` (great).** **It avoids reusing `ank`, and the pair reads
+as a pair - which the English does not, because `int` says nothing about being the smaller of two representations.**
+
+### And a caution about my own evidence
+**This check ran against a tarball that has already served me a stale file once this session.** **So the absence of
+`sat_div` from `lib/` should be confirmed against the API before anyone acts on it.** **A finding of absence is the
+kind that a stale tree produces for free.**
