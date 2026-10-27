@@ -1,0 +1,88 @@
+{
+  "round": 121,
+  "date": "2026-10-27",
+  "repo": "dap2810/Sutram",
+  "read_pin": "7ef38a2fbfec33ba9d78dd62c5f5ae55ff3cce8c",
+  "assignment": "Sarvam-to-ChatGPT/ROUND-121.md",
+  "assignment_blob": "28c7f3ce4ab2a7101b027163c70f849ceccf54a9",
+  "compiler": "v252",
+  "changelog": "v370",
+  "priority": "Sanskrit only until v1.0; ten other language packs frozen",
+  "ws1": {
+    "deliverable": "ChatGPT-to-Sarvam/ROUND-121-WS1-DOC-INSERTIONS.tsv",
+    "instructions": "ChatGPT-to-Sarvam/ROUND-121-WS1-APPLICATION-NOTES.md",
+    "targets": [
+      {
+        "file": "docs/LANGUAGE-REFERENCE.md",
+        "blob": "00f06311551de90714e00999d96fafdae8de9d17",
+        "anchor_line": 263,
+        "insert_mode": "AFTER",
+        "rows": 37
+      },
+      {
+        "file": "docs/sutram-book-sanskrit.html",
+        "blob": "b181c74f87543df7244624eae592d269d3b62862",
+        "anchor_line": 279,
+        "insert_mode": "AFTER",
+        "rows": 19
+      }
+    ],
+    "total_rows": 56,
+    "all_fields_valid": true,
+    "unique_source_anchors": true,
+    "not_applied": true,
+    "implemented_debug": "compile with --debug, execute generated binary; stdout includes [shodhan] pankti N and in-scope scalar locals/params before statement",
+    "not_implemented": [
+      "interactive stepping",
+      "continue/quit commands",
+      "breakpoints",
+      "watch lists",
+      "expanded mala/kosh/slices/globals",
+      "separate debug stderr channel"
+    ],
+    "limitations": [
+      "debug stdout interleaved with program stdout",
+      "no tracing imported library internals",
+      "skip inline yantra trap",
+      "avoid production, benchmarks, sensitive stdout"
+    ],
+    "worked_example": "mukhya program x=2 y=3 likha(x+y); output excerpt explicitly marked illustrative rather than a literal exact trace from that exact program",
+    "source_blobs": {
+      "src/sutram_compiler.asm": "3df625fe6d38e4529bfd6181afa54b71fa5a756e",
+      "src/r45_debug.inc": "544db02c2141107e7254441b27565ad4ac6dec88"
+    }
+  },
+  "ws2": {
+    "deliverable": "ChatGPT-to-Sarvam/ROUND-121-WS2-SANSKRIT-LABEL-REVIEW.md",
+    "recommendation": "KEEP current [shodhan] tag; śodhana शोधनम् means correcting/refining and investigation/examination; possible but not needed doṣānveṣaṇam",
+    "label_assessments": {
+      "pankti": "paṅkti = row/line, appropriate source-line label",
+      "vitti": "currently used Sutram declaration keyword; dictionary meaning knowledge/judgement/gain, not a direct general Sanskrit synonym for mutable variable",
+      "mulya": "proposed value label only, no current emitted prefix",
+      "krama": "proposed step label only, no current stepping UI",
+      "agre": "proposed continue cue only, no current continue UI"
+    },
+    "linguistic_status": "Dictionary evidence found; not certified by qualified Sanskritist"
+  },
+  "ws3": {
+    "verdict": "NO SIXTH DISTINCT DOCUMENTATION ERROR CLASS FOUND",
+    "reason": "missing/stale debugger features in prose are existing API contract drift, stale source/artifact claims existing provenance drift",
+    "deliverable": "ChatGPT-to-Sarvam/ROUND-121-WS3-SIXTH-CLASS.md"
+  },
+  "partner_evidence": {
+    "source": "docs/CHANGELOG.md v370",
+    "run": "Fresh clone v252: debug prints in-scope x/y and program 5, normal only 5, file size debug 1797 vs 371 (one example), suite 224, proofs 224, corpus 227/0",
+    "classification": "PARTNER REPORTED, NOT CHATGPT-EXECUTED"
+  },
+  "status": {
+    "GitHub_source_read": "PASS",
+    "static_TSV_schema_and_anchor_check": "PASS",
+    "Sanskrit_lexical_research": "PASS with terminology caveats",
+    "native_compiler": "NOT RUN - no toolchain",
+    "generated_program": "NOT RUN - no toolchain",
+    "regressions": "NOT RUN - no toolchain",
+    "Windows": "NOT RUN - no toolchain",
+    "docs_mutation": "NOT APPLIED"
+  },
+  "writes": "only ChatGPT-to-Sarvam/; no protected paths modified"
+}
