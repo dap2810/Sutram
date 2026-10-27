@@ -1,0 +1,49 @@
+name: R42 Windows native checks
+# Manual-only: no email flood on each push. Started deliberately with workflow_dispatch.
+# Runs the checks Wine cannot settle on a real Windows machine (tools/r42_windows_run.py):
+# the alias tests run natively, the guard with the Windows compiler, the Windows FFI and linker
+# tests, and the Microsoft x64 call against C compiled on this machine by gcc and by MSVC.
+# It is a Windows Server runner, as an administrator: it is NOT the Windows 11 standard-user acceptance.
+on:
+  workflow_dispatch:
+    inputs:
+      old_ref:
+        description: "commit whose win/sutram.exe is the previous compiler (default: v248, R41 hand-back)"
+        required: false
+        default: "3157d3f210d5357b471cac861562b59e6cf26eff"
+permissions:
+  contents: read
+jobs:
+  windows-native:
+    runs-on: windows-2025
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Tools on this runner
+        shell: pwsh
+        run: |
+          python --version
+          git --version
+          $g = Get-Command gcc -ErrorAction SilentlyContinue
+          if ($g) { & gcc --version | Select-Object -First 1 } else { Write-Output "gcc: not on PATH" }
+          [System.Environment]::OSVersion.VersionString
+          (Get-CimInstance Win32_OperatingSystem).Caption
+      - name: The R42 Windows checks (MSVC environment loaded)
+        shell: cmd
+        env:
+          OLD_REF: ${{ github.event.inputs.old_ref }}
+        run: |
+          for /f "usebackq tokens=*" %%i in (`"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -property installationPath`) do set "VSDIR=%%i"
+          if defined VSDIR call "%VSDIR%\VC\Auxiliary\Build\vcvars64.bat" >nul
+          python -B tools\r42_windows_run.py --old-ref %OLD_REF% --out r42-windows
+      - name: Keep the transcripts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: r42-windows
+          path: r42-windows/
