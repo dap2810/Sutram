@@ -1,4 +1,5 @@
 # Sutram Module System v1 — Round 40 implementation and remaining design
+> **STATUS — HISTORICAL ROUND-40 IMPLEMENTATION/DESIGN SNAPSHOT.** Only the explicitly labeled R40 importer subset was reported implemented in this round; `niryat`, DFS cycle handling, object emission, cache behavior and other proposals below were NOT delivered by this document. Later releases may implement portions: check the current compiler and project completion record before describing a feature as missing.
 
 ## Status / non-negotiable distinction
 
