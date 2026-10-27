@@ -78,7 +78,7 @@ prakriya ank_tak_varna(n, out) {
     prati pos + rlen
 }
 
-# varna_tak_ank(buf, n) — parse first n character codes of mala buf as a
+# varna_tak_ank(buf, n, ok) — parse first n character codes of mala buf as a
 # decimal integer. Leading '-' negates. Returns the value; sets ok[0] to 1
 # on success, 0 on malformed input (ok is a 1-cell mala).
 prakriya varna_tak_ank(buf, n, ok) {
@@ -135,8 +135,8 @@ prakriya varna_tak_ank(buf, n, ok) {
     prati val
 }
 
-# ank_tak_aadhar_varna(n, base, out) — write n in `base` (2/8/10/16) into out
-# as character codes (0-9, a-f). Returns count. No util_chinha handling; n >= 0.
+# ank_tak_aadhar_varna(n, base, out) — write n in any base 2..36 into out
+# as character codes (0-9, a-z). Returns count. No util_chinha handling; n >= 0.
 # Base outside 2..36: terminator only, returns 0 (base 0 trapped
 # with SIGFPE, base 1 looped forever past the buffer).
 prakriya ank_tak_aadhar_varna(n, base, out) {
