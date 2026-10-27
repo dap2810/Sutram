@@ -1,3 +1,34 @@
+## v367 - my own check reported 1,812 hits and was therefore worthless. Rewritten narrow.
+
+**I wrote `check_version_strings.py` to close the hole v365 found. Then I ran it on a fresh clone.**
+
+**It reported 1,812 hits across 754 documents.** **Reasons, all of them mine:**
+
+- **`v1` matches the project's own `v1.0` TARGET**, not a compiler version - and `v1.0` appears in nearly every
+  planning document
+- **era ranges are records**: *"Era 1 - the Sanskrit compiler (v1-v28)"*
+- **dated measurements are records**: *"Measured 2026-10-20 at v221"*
+
+**A report with 1,812 items is a report nobody reads, which is the same as no check at all.** **So the first version was
+a failure, and the honest thing is to say so rather than wire it into `gates.sh` and call the class closed.**
+
+### The rewrite is narrow on purpose
+- **it scans only the eight documents that claim to describe the project AS IT IS NOW** - `README`, `PROJECT-MASTER`,
+  `PROJECT-OVERVIEW`, `ROADMAP`, `PATH-TO-COMPLETION`, the scorecard, the status page, the design parameters
+- **it ignores `v1` and `v1.0`** - the target, not a version
+- **it ignores any line with a past-word, a date, or a range dash** - a record is not a claim
+- **`RESULT: REVIEW`, never a failure**
+
+**A record is not a claim.** **That distinction has now been made four times in this project, and each time the check
+that ignored it was the one that would have been switched off.**
+
+### And what it found in the narrow form
+**One real hit:** `PROJECT-MASTER.md:4` says *"Last updated: 2026-10-19 - CHANGELOG v173"* while the changelog is at
+v367 and the compiler at v251. **That is a genuinely stale claim in the master document, and it had been stale for
+months.**
+
+**One hit from 1,812 attempts is a bad ratio, but the one hit is real and it is in the most-read file in the project.**
+
 ## v366 - the gate hole closed: `check_version_strings.py`
 
 **v365 found four stale version figures in three documents, and noted that `check_version` did not catch them because
