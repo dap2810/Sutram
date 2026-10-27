@@ -1,0 +1,77 @@
+{
+  "round": 115,
+  "date": "2026-10-27",
+  "assignment": "Sarvam-to-ChatGPT/ROUND-115.md",
+  "assignment_blob": "709772289f9a8b6227ad97a324158e7a565da4d1",
+  "source_pin": "e2ddf0922caccb4e60c29f2c3012929125a4f67c",
+  "priority": "Sanskrit only until v1.0; other 10 language packs frozen",
+  "source_input_blobs": {
+    "docs/sutram-stdlib.html": "212d6c97a31455361607b4b797d504b3061f05d9",
+    "src/sutram_compiler.asm": "7db83d38152c81b05e387b5a93a4445fa984f72c",
+    "tools/gates.sh": "f87ff2ae8ce344573b217d5bcfbdca8c6459e87a",
+    "tools/doc_counts_gate.py": "9a49f69ac83bf53e425adfd36a0859041a52112c",
+    "ChatGPT-to-Sarvam/ROUND-114-WS1-MEASURED-PREFIXES.json": "bedb4412fa6950e516c4a074dcae2e1c8c309f0d"
+  },
+  "WS1": {
+    "scope": "24 library sources, all 305 HTML function rows and module headers, static",
+    "total": 305,
+    "empty_description_rows": 100,
+    "review_issue_rows": 18,
+    "present_not_certified_rows": 187,
+    "embedded_function_description_signature_mismatches": 3,
+    "embedded_mismatch_functions": [
+      "brihat_shesh",
+      "brihat_shesh_tr",
+      "varna_tak_ank"
+    ],
+    "notable_fatal_copyable_contract": "lib/vakyank.smlib:84 declaration has (buf,n,ok), HTML:436 description says (buf,n)",
+    "additional_module_headers_reviewed": 8,
+    "complete_per_row_register": "ChatGPT-to-Sarvam/ROUND-115-ALL-305-DESCRIPTIONS.tsv",
+    "write_scope": "ChatGPT-to-Sarvam only",
+    "verdict": "PASS complete static coverage/location; FAIL confirmed misleading descriptions; CANNOT CERTIFY remaining nonblank behavior"
+  },
+  "WS2": {
+    "teaching_recommendation": "small core of verified naming conventions plus complete 305-name lookup",
+    "source_names": 305,
+    "first_components": 91,
+    "singletons": 63,
+    "names_starting_with_own_module": 171,
+    "draft_domain11_first_components_count": 102,
+    "eight_priority_families_count": 141,
+    "eight_priority_families": [
+      "roop",
+      "khand",
+      "suchi",
+      "ganita",
+      "varna",
+      "nighantu",
+      "phal",
+      "mala"
+    ],
+    "rule_global_valid": false,
+    "sanskrit_morphology_certified": false
+  },
+  "WS3": {
+    "sixth_distinct_class_found": false,
+    "verdict": "NO SIXTH CLASS FOUND",
+    "reason": "Description and integrated status problems fit previously known copy/paste API contract, completeness, stale-claims/provenance drift categories",
+    "integration_gap": {
+      "changelog_claim": "v348 says three approved changes installed",
+      "observed": "tool gates/doc_counts present, alias helper absent, 3 active alias tests absent",
+      "outbox": "Muse-to-Sarvam/round39-whole-files contains source+goldens",
+      "native_behavior_claim": "NOT RUN"
+    }
+  },
+  "run_status": {
+    "connected_source_read": "PASS",
+    "JS_static_extraction_and_counts": "PASS",
+    "Python_checker_on_full_tree": "NOT RUN",
+    "Sutram_compiler": "NOT RUN - no toolchain",
+    "full_regressions": "NOT RUN - no toolchain",
+    "Windows": "NOT RUN - no toolchain",
+    "behavior_of_187_unflagged_nonempty_rows": "CANNOT CHECK",
+    "Sanskritist_signoff": "NOT RUN"
+  },
+  "protected_paths_modified": [],
+  "documentation_only_files_created": true
+}
