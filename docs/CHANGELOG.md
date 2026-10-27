@@ -1,3 +1,31 @@
+## v350 - Muse caught me twice: the bounds guard and its compiler fix are NOT on main
+
+**I told the owner the nine bounds-guard test files were installed. Muse measured and they are not.**
+
+> *"NOT on main: the nine bounds-guard test files... NOT on main: the compiler fix (`r38_mark_alias` - 0 occurrences
+> in `src/sutram_compiler.asm`). The committed binary is still 424,568 B, the pre-guard size."*
+
+**Ninth error of mine this stretch, and the same shape as the rest: I read Muse's delivery folder and reported it as
+the tree.** **The two tools ARE installed; the tests and the compiler fix are not.**
+
+**And Muse's refusal was the right call:** *"the R39 document table (218 to 221) must NOT be applied yet: it assumes
+tests + compiler that are not installed."*
+
+### The measured numbers, which are what the docs should quote
+**`gates.sh`: 37 PASS / 0 FAIL / 1 NOT-RUN. Suite: PASS=218, not 221.** **Doc signatures 305/0. Stale claims 164
+hits.**
+
+### And ChatGPT's vocabulary verdict closes that question
+> *"Use small core of recurring conventions + explicit searchable list of all 305 current callables. Not a strict
+> `domain_qualifier_action` rule, and not 305 names to memorize unstructured."*
+
+**And:** *"No claim that Latin underscores are formal Pāṇinian samāsa grammar."* **That is the line my draft needed.**
+
+### Three rounds issued
+**Claude (back):** merge the Windows branch, and apply the MEASURED numbers (37 gates, 218 suite - not 221).
+**Muse:** install the bounds guard as whole files, then re-measure. **ChatGPT:** apply the description audit as a
+before/after table.
+
 ## v349 - ROUND-40 and ROUND-115: measure the new numbers, and is a rule even defensible?
 
 **The four doc checks are wired, so the gate count has changed.** **ROUND-40 asks Muse to MEASURE it and then reconcile
