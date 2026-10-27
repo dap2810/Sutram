@@ -1,0 +1,37 @@
+# R48 (WS2): the constructors allocate cap * 8 bytes - proven by filling them.
+# A mutant that allocates cap + 8 (A:* in suchi_srij / avali_srij) survived every
+# proof once R35 removed the 24 GB input, whose answer depended on the machine.
+# Filling a 1000-cell list writes 8000 bytes: past one page if the data is short.
+# No growth happens: 1000 pushes into capacity 1000.
+yoj suchi
+mukhya() {
+    vitti ok = nirmmita(8)
+    vitti l = suchi_srij(1000)
+    vitti i = 0
+    yavat (i < 1000) {
+        suchi_khip(l, i)
+        i = i + 1
+    }
+    likha(suchi_yog(l))
+    likha("\n")
+    likha(suchi_grah(l, 999))
+    likha("\n")
+    likha(l[1])
+    likha("\n")
+    vitti q = avali_srij(1000)
+    i = 0
+    yavat (i < 1000) {
+        avali_pravesh(q, i)
+        i = i + 1
+    }
+    vitti s = 0
+    i = 0
+    yavat (i < 1000) {
+        s = s + avali_nishkas(q, ok)
+        i = i + 1
+    }
+    likha(s)
+    likha("\n")
+    likha(q[1])
+    likha("\n")
+}

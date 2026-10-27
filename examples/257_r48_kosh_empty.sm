@@ -1,0 +1,21 @@
+# R48: a kosh that is empty. kosh_pop / kosh_peek / kosh_dequeue on an empty kosh
+# stop the program with their own diagnostic and exit 1 - a checked error, like
+# an index out of bounds. The way to handle it is to ask first: kosh_empty(k)
+# (or kosh_len(k)). Any value, 0 included, can be in a kosh, so no return value
+# could mean "empty".
+mukhya() {
+    kosh v[4]
+    kosh_push(v, 7)
+    vitti i = 0
+    yavat (i < 3) {
+        yadi (kosh_empty(v)) {
+            likha("rikta\n")
+        } anya {
+            likha(kosh_pop(v))
+        }
+        i = i + 1
+    }
+    likha(kosh_len(v))
+    likha(kosh_pop(v))
+    likha(99)
+}

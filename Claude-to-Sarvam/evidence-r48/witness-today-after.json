@@ -1,0 +1,549 @@
+[
+ {
+  "module": "madhava",
+  "name": "madhava_sin",
+  "mutant": "C1:>->>=@L55",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_sin",
+  "mutant": "C2:<-><=@L56",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_sin",
+  "mutant": "C3:<-><=@L60",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_sin",
+  "mutant": "N@L55",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_sin",
+  "mutant": "K:16@L60",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_cos",
+  "mutant": "C1:>->>=@L75",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_cos",
+  "mutant": "C2:<-><=@L76",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_cos",
+  "mutant": "C3:<-><=@L80",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_cos",
+  "mutant": "N@L75",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_cos",
+  "mutant": "K:16@L80",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_atan",
+  "mutant": "C1:<-><=@L98",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_atan",
+  "mutant": "C4:<-><=@L112",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_atan",
+  "mutant": "C5:>->>=@L114",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_atan",
+  "mutant": "K:1@L111",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_atan",
+  "mutant": "K:60@L112",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "madhava",
+  "name": "madhava_atan",
+  "mutant": "K:0@L120",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "ank",
+  "name": "ank_gan",
+  "mutant": "C2:<-><=@L16",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "ank",
+  "name": "ank_gan",
+  "mutant": "K:0@L16",
+  "result": "NO-WITNESS",
+  "inputs_tried": 332
+ },
+ {
+  "module": "ganita",
+  "name": "ganita_paripurna_kramgun",
+  "mutant": "K:9223372036854775807@L565",
+  "result": "WITNESS",
+  "input": [
+   1000000000
+  ],
+  "real": "9223372036854775807",
+  "mutant_gives": "CRASH"
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_srij",
+  "mutant": "C1:<-><=@L51",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_srij",
+  "mutant": "C2:>->>=@L52",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_srij",
+  "mutant": "C3:<-><=@L54",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_srij",
+  "mutant": "K:0@L48",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_srij",
+  "mutant": "K:0@L49",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_srij",
+  "mutant": "K:0@L50",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_srij",
+  "mutant": "K:1@L51",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_srij",
+  "mutant": "K:1@L51",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_srij",
+  "mutant": "K:1152921504606846975@L52",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_srij",
+  "mutant": "K:8@L53",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_srij",
+  "mutant": "K:0@L54",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_srij",
+  "mutant": "K:0@L54",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_srij",
+  "mutant": "A:*@L55",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_srij",
+  "mutant": "K:0@L56",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_srij",
+  "mutant": "K:0@L56",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_srij",
+  "mutant": "K:0@L59",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "suchi_srij",
+  "mutant": "D@L59",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "avali_srij",
+  "mutant": "C1:<-><=@L386",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "avali_srij",
+  "mutant": "C2:>->>=@L387",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "avali_srij",
+  "mutant": "C3:<-><=@L389",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "avali_srij",
+  "mutant": "K:0@L383",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "avali_srij",
+  "mutant": "K:0@L384",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "avali_srij",
+  "mutant": "K:0@L385",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "avali_srij",
+  "mutant": "K:1@L386",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "avali_srij",
+  "mutant": "K:1@L386",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "avali_srij",
+  "mutant": "K:1152921504606846975@L387",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "avali_srij",
+  "mutant": "K:8@L388",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "avali_srij",
+  "mutant": "K:0@L389",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "avali_srij",
+  "mutant": "K:0@L389",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "avali_srij",
+  "mutant": "A:*@L390",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "avali_srij",
+  "mutant": "K:0@L391",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "avali_srij",
+  "mutant": "K:0@L391",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "avali_srij",
+  "mutant": "K:0@L394",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "avali_srij",
+  "mutant": "D@L394",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "avali_srij",
+  "mutant": "K:3@L397",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "suchi",
+  "name": "avali_srij",
+  "mutant": "D@L397",
+  "result": "NO-WITNESS",
+  "inputs_tried": 6
+ },
+ {
+  "module": "ank",
+  "name": "seemit",
+  "mutant": "C1:<-><=@L65",
+  "result": "WITNESS",
+  "input": [
+   3037000499,
+   3037000499,
+   -1
+  ],
+  "real": "-1",
+  "mutant_gives": "3037000499"
+ },
+ {
+  "module": "ank",
+  "name": "seemit",
+  "mutant": "C2:>->>=@L66",
+  "result": "NO-WITNESS",
+  "inputs_tried": 600
+ },
+ {
+  "module": "chandas",
+  "name": "meru",
+  "mutant": "C3:>->>=@L29",
+  "result": "NO-WITNESS",
+  "inputs_tried": 358
+ },
+ {
+  "module": "chandas",
+  "name": "meru",
+  "mutant": "K:0@L27",
+  "result": "WITNESS",
+  "input": [
+   -7,
+   -7
+  ],
+  "real": "0",
+  "mutant_gives": "1"
+ },
+ {
+  "module": "chandas",
+  "name": "meru",
+  "mutant": "N@L29",
+  "result": "WITNESS",
+  "input": [
+   100,
+   16
+  ],
+  "real": "192939124439967674",
+  "mutant_gives": "-89841263756067081"
+ },
+ {
+  "module": "chandas",
+  "name": "meru",
+  "mutant": "A:-@L29",
+  "result": "WITNESS",
+  "input": [
+   3037000499,
+   3037000499
+  ],
+  "real": "1",
+  "mutant_gives": "CRASH"
+ },
+ {
+  "module": "ganit",
+  "name": "ganit_seemit",
+  "mutant": "C1:<-><=@L161",
+  "result": "WITNESS",
+  "input": [
+   3037000499,
+   3037000499,
+   -1
+  ],
+  "real": "-1",
+  "mutant_gives": "3037000499"
+ },
+ {
+  "module": "ganit",
+  "name": "ganit_seemit",
+  "mutant": "C2:>->>=@L162",
+  "result": "NO-WITNESS",
+  "inputs_tried": 600
+ },
+ {
+  "module": "ganita",
+  "name": "brahmagupta_kshetr",
+  "mutant": "C1:<-><=@L176",
+  "result": "NO-WITNESS",
+  "inputs_tried": 600
+ },
+ {
+  "module": "ganita",
+  "name": "brahmagupta_kshetr",
+  "mutant": "K:0@L176",
+  "result": "NO-WITNESS",
+  "inputs_tried": 600
+ },
+ {
+  "module": "ganita",
+  "name": "brahmagupta_kshetr",
+  "mutant": "K:0@L176",
+  "result": "WITNESS",
+  "input": [
+   16,
+   5,
+   4,
+   1000
+  ],
+  "real": "0",
+  "mutant_gives": "1"
+ },
+ {
+  "module": "ganita",
+  "name": "kuttaka",
+  "mutant": "C3:<-><=@L35",
+  "result": "NO-WITNESS",
+  "inputs_tried": 600
+ },
+ {
+  "module": "ganita",
+  "name": "kuttaka",
+  "mutant": "C4:>->>=@L36",
+  "result": "WITNESS",
+  "input": [
+   -9223372036854775807,
+   0,
+   12
+  ],
+  "real": "0",
+  "mutant_gives": "CRASH"
+ },
+ {
+  "module": "ganita",
+  "name": "kuttaka",
+  "mutant": "K:0@L31",
+  "result": "WITNESS",
+  "input": [
+   0,
+   0,
+   4611686018427387904
+  ],
+  "real": "0",
+  "mutant_gives": "1"
+ },
+ {
+  "module": "ganita",
+  "name": "kuttaka",
+  "mutant": "K:0@L35",
+  "result": "NO-WITNESS",
+  "inputs_tried": 600
+ },
+ {
+  "module": "ganita",
+  "name": "kuttaka",
+  "mutant": "K:0@L36",
+  "result": "NO-WITNESS",
+  "inputs_tried": 600
+ }
+]

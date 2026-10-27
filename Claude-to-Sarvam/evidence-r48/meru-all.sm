@@ -1,0 +1,12 @@
+yoj chandas
+mukhya() {
+    vitti n = 0
+    yavat (n <= 70) {
+        vitti k = 0 - 1
+        yavat (k <= n + 1) {
+            likha(meru(n, k))
+            k = k + 1
+        }
+        n = n + 1
+    }
+}

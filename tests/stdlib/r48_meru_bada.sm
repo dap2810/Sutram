@@ -1,0 +1,14 @@
+# R48 (WS2): meru(n, k) = C(n, k) exactly whenever the answer fits in 64 bits.
+# The product res * (n - r + i) passed 2^63 before the division for answers that
+# fit: meru(62, 31) came out negative and 113 of the 2642 such answers with
+# n <= 70 were wrong. Expected values from Python's math.comb.
+yoj chandas
+mukhya() {
+    likha(meru(62, 31))
+    likha(meru(100, 16))
+    likha(meru(66, 33))
+    likha(meru(57, 25))
+    likha(meru(10, 3))
+    likha(meru(5, 0 - 1))
+    likha(meru(5, 6))
+}

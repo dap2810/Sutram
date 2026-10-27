@@ -149,11 +149,11 @@ build everything and run it, and its output is the truth about the tree:
 | Metric | Value |
 |---|---|
 | Gates (`tools/gates.sh`) | **43 PASS, 0 FAIL, 1 NOT-RUN** (Windows execution), with a display (Xvfb); without one, the X11 GUI gate is NOT-RUN as well |
-| Regression suite | **224 pass, 4 no-expectation** |
+| Regression suite | **225 pass, 4 no-expectation** |
 | Crash corpus | **227 cases + manifest, 0 failed** |
 | Code-generation shape gates | **12 / 12** |
 | Language packs | **33 / 33** checks over **11** packs |
-| Library proofs | **224 / 224** |
+| Library proofs | **226 / 226** |
 | Property proofs | **86 / 86** |
 | Module graph | **18 / 18** |
 | Layer check | **14 core, 9 alloc, 1 std** |
@@ -373,10 +373,10 @@ the observation that makes it true. Two of them — Windows execution and the fr
    ```
 3. **Run the gates** before and after your change:
    ```sh
-   python3 tests/run_tests.py                        # expect PASS=224 NO-EXPECTATION=4
+   python3 tests/run_tests.py                        # expect PASS=225 NO-EXPECTATION=4
    python3 tools/codegen_gate.py ./sutram_compiler   # expect 12 PASS
    python3 tools/test_lang_packs.py ./sutram_compiler # expect 33/33
-   python3 tools/proof_lib.py --compiler ./sutram_compiler     # expect 224
+   python3 tools/proof_lib.py --compiler ./sutram_compiler     # expect 226
    python3 tools/proof_props.py --compiler ./sutram_compiler   # expect 86
    python3 tools/check_layers.py                     # expect 14 core, 9 alloc, 1 std
    ```

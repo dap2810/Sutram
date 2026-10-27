@@ -1,0 +1,3 @@
+kosh_pop on an empty kosh: exit 1, output: Sutram Error: riktat koshat kosh_pop
+kosh_peek on an empty kosh: exit 1, output: Sutram Error: riktat koshat kosh_peek
+kosh_dequeue on an empty kosh: exit 1, output: Sutram Error: riktat koshat kosh_dequeue
