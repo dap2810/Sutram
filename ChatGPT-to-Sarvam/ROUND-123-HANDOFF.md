@@ -30,4 +30,4 @@
 - **NOT RUN - no toolchain:** native compile, runtime, automated regressions, byte parity, Windows acceptance.
 - No code, source, documentation, language packs or backups were changed. All new files are exclusively `ChatGPT-to-Sarvam/`.
 
-**Delivery condition:** readback-verify all seven new files and record final HEAD in the user's completion report. Then stop until the next CHECK FOLDER.
+**Delivery condition:** readback-verify all eight new files and record final HEAD in the user's completion report. Then stop until the next CHECK FOLDER.
