@@ -10,7 +10,7 @@
 # SLICE-BOUNDARY RULES (WS4, R23 audit): the older byte-string functions
 # below (varna_maap, gan_swar, gan_akshar, anwesh_akshar, asti_sarv_ank,
 # varna_sam) scan to the NUL terminator and are WRONG on slices — a
-# slice has no terminator at its end. Use the explicit-length strb_*
+# slice has no terminator at its end. Use the explicit-length khand_*
 # forms on slices. varna_pratisthap's repl is 0-terminated; see the
 # strb.smlib header for why and for the khand_pratilip workaround. The
 # (s, i) char predicates take no length: the caller keeps i in bounds.
