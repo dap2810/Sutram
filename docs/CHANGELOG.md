@@ -1,3 +1,31 @@
+## v363 - the payoff: the last three English builtins get Sanskrit names
+
+**The lexer is proven, so the vocabulary is free.** **The owner asked for Sanskrit for `len`, `cmp` and `cpy` - these
+are the last three English words in the builtin names.**
+
+| Now | Becomes | Sanskrit |
+|---|---|---|
+| `vartani_len` | **`vartani_aayam`** | आयाम - extent, length |
+| `vartani_cmp` | **`vartani_tul`** | तुल् - to weigh, compare (तुलना) |
+| `vartani_cp` | **`vartani_pratilip`** | प्रतिलिपि - a copy |
+
+**And the part that matters:** **`vartani_pratilip` is the exact name the lexer question was about.** **So after the
+rename, a program calling it must compile - and that program becomes a permanent test file.** **That closes the loop
+between the lexer proof and the vocabulary change.**
+
+**Three rounds:** **Claude renames** (one commit, guard 0 differ on everything that does not call the three, and the
+symbol change named); **Muse delivers the independent caller list** so the rename is checked against two lists;
+**ChatGPT delivers the doc rename list** - `sutram-stdlib.html`, the book, the reference, the vocabulary page.
+
+### And the owner may veto a word
+**The brief says so explicitly:** *"The owner may veto a word; if he does, the rename is reverted, so keep it one
+commit."* **A vocabulary decision belongs to him, and the round is built so reversing it is one commit, not an
+archaeology.**
+
+### And a finding carried forward
+**`pankti` appears 34 times in the compiler source.** **Muse is asked to break it down: how many are the "line" sense in
+error messages - correct Sanskrit - and how many are the retired ARRAY sense that should now be `mala`.**
+
 ## v362 - THE LEXER IS VERIFIED, 100%. Three independent measurements agree, and the 672 Devanagari cases pass.
 
 **The question was: does a name beginning with a keyword compile?** **Three parties answered independently.**
