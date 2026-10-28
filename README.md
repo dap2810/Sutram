@@ -40,7 +40,7 @@ The name means *thread* — one thread running through many languages.
 | `vitti` | variable | `anya` | else |
 | `anka` | integer | `yavat` | while |
 | `sutra` | constant | `chakra` | for |
-| `prakriya` | function | `prati` | return |
+| `prakriya` | function | `nivartanam` | return |
 | `likha` | print | `krama` | break |
 | `kosh` | growable mala | `agrim` | continue |
 | `dasham` | float | `rachana` | struct |

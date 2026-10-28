@@ -2,9 +2,9 @@
 yoj r32_ganit
 prakriya gahan(n) {
     yadi (n == 0) {
-        prati s_rsp()
+        nivartanam s_rsp()
     }
-    prati gahan(n - 1)
+    nivartanam gahan(n - 1)
 }
 mukhya() {
     likha(s_add(17, 25))

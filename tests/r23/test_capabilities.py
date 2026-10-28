@@ -32,20 +32,20 @@ ARR = 'mukhya() {\n    mala a[4]\n    a[0] = 1\n    a[1] = 2\n    a[2] = 3\n    
 # with text, ('compile-fail', text) for one the compiler refuses with text.
 CASES = [
     ('function value: passed, stored, returned',
-     'prakriya f(a) {\n    prati a * 2\n}\nprakriya h(a) {\n    prati a * 3\n}\n'
-     'prakriya chuno(k) {\n    yadi (k) {\n        prati h\n    }\n    prati f\n}\n'
-     'prakriya lagu(g, x) {\n    prati g(x)\n}\n'
+     'prakriya f(a) {\n    nivartanam a * 2\n}\nprakriya h(a) {\n    nivartanam a * 3\n}\n'
+     'prakriya chuno(k) {\n    yadi (k) {\n        nivartanam h\n    }\n    nivartanam f\n}\n'
+     'prakriya lagu(g, x) {\n    nivartanam g(x)\n}\n'
      'mukhya() {\n    vitti c = chuno(1)\n    likha(c(5))\n    likha(lagu(f, 5))\n    likha(lagu(chuno(0), 6))\n}\n',
      ('out', '15\n10\n12\n')),
     ('function value through a mala',
-     'prakriya f(a) {\n    prati a + 1\n}\nmukhya() {\n    mala t[1]\n    t[0] = f\n    vitti c = t[0]\n    likha(c(41))\n}\n',
+     'prakriya f(a) {\n    nivartanam a + 1\n}\nmukhya() {\n    mala t[1]\n    t[0] = f\n    vitti c = t[0]\n    likha(c(41))\n}\n',
      ('out', '42\n')),
     ('the same function is the same value',
-     'prakriya f(a) {\n    prati a\n}\nprakriya h(a) {\n    prati a\n}\n'
+     'prakriya f(a) {\n    nivartanam a\n}\nprakriya h(a) {\n    nivartanam a\n}\n'
      'mukhya() {\n    vitti x = f\n    likha(x == f)\n    likha(x == h)\n}\n',
      ('out', '1\n0\n')),
     ('a prakriya wins over a parameter of its name',
-     'prakriya f(a) {\n    prati a + 1\n}\nprakriya g(f) {\n    prati f(10)\n}\nmukhya() {\n    likha(g(5))\n}\n',
+     'prakriya f(a) {\n    nivartanam a + 1\n}\nprakriya g(f) {\n    nivartanam f(10)\n}\nmukhya() {\n    likha(g(5))\n}\n',
      ('out', '11\n')),
     ('an undefined name is still an error',
      'mukhya() {\n    vitti g = nahi_hai\n    likha(g)\n}\n',
@@ -54,24 +54,24 @@ CASES = [
      'mukhya() {\n    likha(nahi_hai(1))\n}\n',
      ('compile-fail', 'agyat prakriya: nahi_hai')),
     ('a method changes its object',
-     'rachana B = { x }\nprakriya B.badha(swa, d) {\n    swa.x = swa.x + d\n    prati swa.x\n}\n'
+     'rachana B = { x }\nprakriya B.badha(swa, d) {\n    swa.x = swa.x + d\n    nivartanam swa.x\n}\n'
      'mukhya() {\n    vitti b = nirmmita(8)\n    b.x = 1\n    likha(b.badha(4))\n    likha(b.x)\n}\n',
      ('out', '5\n5\n')),
     ('no such method',
      'rachana B = { x }\nmukhya() {\n    vitti b = nirmmita(8)\n    likha(b.nahi())\n}\n',
      ('compile-fail', "[E_UNKNOWN_FIELD]: agyat kshetra 'nahi'")),
     ('a method name in two rachanas',
-     'rachana A = { x }\nrachana B = { y }\nprakriya A.m(p) {\n    prati 1\n}\nprakriya B.m(p) {\n    prati 2\n}\n'
+     'rachana A = { x }\nrachana B = { y }\nprakriya A.m(p) {\n    nivartanam 1\n}\nprakriya B.m(p) {\n    nivartanam 2\n}\n'
      'mukhya() {\n    vitti b = nirmmita(8)\n    likha(b.m())\n}\n',
      ('compile-fail', "[E_AMBIGUOUS_FIELD]: kshetra 'm'")),
     ('a method of an undeclared rachana',
-     'prakriya Nahi.m(p) {\n    prati 1\n}\nmukhya() {\n    likha(1)\n}\n',
+     'prakriya Nahi.m(p) {\n    nivartanam 1\n}\nmukhya() {\n    likha(1)\n}\n',
      ('compile-fail', "[E_UNDEFINED_NAME]: agyat naam 'Nahi'")),
     ('... and its hint names the rachana (R24)',
-     'prakriya Nahi.m(p) {\n    prati 1\n}\nmukhya() {\n    likha(1)\n}\n',
+     'prakriya Nahi.m(p) {\n    nivartanam 1\n}\nmukhya() {\n    likha(1)\n}\n',
      ('compile-fail', 'Sanket: vidheh purvam ghoshana avashyaki: rachana Nahi = ...')),
     ('a method call with the wrong number of arguments',
-     'rachana A = { x }\nprakriya A.m(p, q) {\n    prati q\n}\nmukhya() {\n    vitti b = nirmmita(8)\n    likha(b.m())\n}\n',
+     'rachana A = { x }\nprakriya A.m(p, q) {\n    nivartanam q\n}\nmukhya() {\n    vitti b = nirmmita(8)\n    likha(b.m())\n}\n',
      ('compile-fail', "[E_ARITY]: 'A.m' ityasmai 1 tarkah dattah; hastakshare 2")),
     ('slices: views, writes, omitted bounds',
      ARR + '    vitti s = a[1:4]\n    s[0] = 20\n    likha(a[1])\n    likha(pankti_len(s))\n'
@@ -93,13 +93,13 @@ CASES = [
      'mukhya() {\n    vitti p = nirmmita(32)\n    vitti s = p[0:2]\n}\n',
      ('compile-fail', 'Sutram Error: vibhag: mala, kosh va vibhag apekshita')),
     ('a number to a vibhag parameter',
-     'prakriya f(vibhag s) {\n    prati s[0]\n}\nmukhya() {\n    likha(f(5))\n}\n',
+     'prakriya f(vibhag s) {\n    nivartanam s[0]\n}\nmukhya() {\n    likha(f(5))\n}\n',
      ('compile-fail', 'Sutram Error: vibhag: mala, kosh va vibhag apekshita')),
     ('returning a slice',
-     'prakriya f(vibhag s) {\n    prati s\n}\nmukhya() {\n    mala a[2]\n    likha(f(a))\n}\n',
+     'prakriya f(vibhag s) {\n    nivartanam s\n}\nmukhya() {\n    mala a[2]\n    likha(f(a))\n}\n',
      ('compile-fail', 'Sutram Error: vibhag prakriyayah na pratyarpaniyah')),
     ('a whole kosh to a vibhag parameter, and a kosh slice',
-     'prakriya yog(vibhag s) {\n    vitti t = 0\n    chakra i = 0 tak pankti_len(s) - 1 {\n        t = t + s[i]\n    }\n    prati t\n}\n'
+     'prakriya yog(vibhag s) {\n    vitti t = 0\n    chakra i = 0 tak pankti_len(s) - 1 {\n        t = t + s[i]\n    }\n    nivartanam t\n}\n'
      'mukhya() {\n    kosh k[1]\n    kosh_push(k, 1)\n    kosh_push(k, 2)\n    kosh_push(k, 3)\n    likha(yog(k))\n    likha(yog(k[1:]))\n}\n',
      ('out', '6\n5\n')),
 ]

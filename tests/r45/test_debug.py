@@ -75,7 +75,7 @@ def main(argv) -> int:
         # 1. the trace, exactly
         src = ('prakriya dviguna(n) {\n'          # 1
                '    vitti r = n * 2\n'             # 2
-               '    prati r\n'                     # 3
+               '    nivartanam r\n'                     # 3
                '}\n'                               # 4
                'mukhya() {\n'                      # 5
                '    vitti yoga = 0\n'              # 6

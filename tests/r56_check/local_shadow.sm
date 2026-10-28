@@ -2,7 +2,7 @@ vitti count = 31
 prakriya local_test() {
     vitti count = 99
     count = count + 1
-    prati count
+    nivartanam count
 }
-prakriya global_test() { prati count }
+prakriya global_test() { nivartanam count }
 mukhya() { likha(local_test()) likha(global_test()) }

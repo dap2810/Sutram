@@ -35,7 +35,7 @@ points at it instead of claiming the library has none).
   (charter item 06, not started). A library cannot provide safe
   concurrency the language cannot express.
 - **Processes and environment.** No spawning, no exit codes beyond
-  `prati`, no environment variables, no command-line arguments.
+  `nivartanam`, no environment variables, no command-line arguments.
   Reason: no OS assumed; process semantics belong to the host.
 - **FFI / calling foreign code.** No C interop, no dynamic loading.
   Reason: the C FFI exists (R32-R34) but the library is self-contained by design

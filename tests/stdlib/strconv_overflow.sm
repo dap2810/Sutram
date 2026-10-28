@@ -166,83 +166,83 @@ mukhya() {
     likha("\n")
     yadi (buf[0] != 45) {
         likha("MISMATCH\n")
-        prati 1
+        nivartanam 1
     }
     yadi (buf[1] != 57) {
         likha("MISMATCH\n")
-        prati 1
+        nivartanam 1
     }
     yadi (buf[2] != 50) {
         likha("MISMATCH\n")
-        prati 1
+        nivartanam 1
     }
     yadi (buf[3] != 50) {
         likha("MISMATCH\n")
-        prati 1
+        nivartanam 1
     }
     yadi (buf[4] != 51) {
         likha("MISMATCH\n")
-        prati 1
+        nivartanam 1
     }
     yadi (buf[5] != 51) {
         likha("MISMATCH\n")
-        prati 1
+        nivartanam 1
     }
     yadi (buf[6] != 55) {
         likha("MISMATCH\n")
-        prati 1
+        nivartanam 1
     }
     yadi (buf[7] != 50) {
         likha("MISMATCH\n")
-        prati 1
+        nivartanam 1
     }
     yadi (buf[8] != 48) {
         likha("MISMATCH\n")
-        prati 1
+        nivartanam 1
     }
     yadi (buf[9] != 51) {
         likha("MISMATCH\n")
-        prati 1
+        nivartanam 1
     }
     yadi (buf[10] != 54) {
         likha("MISMATCH\n")
-        prati 1
+        nivartanam 1
     }
     yadi (buf[11] != 56) {
         likha("MISMATCH\n")
-        prati 1
+        nivartanam 1
     }
     yadi (buf[12] != 53) {
         likha("MISMATCH\n")
-        prati 1
+        nivartanam 1
     }
     yadi (buf[13] != 52) {
         likha("MISMATCH\n")
-        prati 1
+        nivartanam 1
     }
     yadi (buf[14] != 55) {
         likha("MISMATCH\n")
-        prati 1
+        nivartanam 1
     }
     yadi (buf[15] != 55) {
         likha("MISMATCH\n")
-        prati 1
+        nivartanam 1
     }
     yadi (buf[16] != 53) {
         likha("MISMATCH\n")
-        prati 1
+        nivartanam 1
     }
     yadi (buf[17] != 56) {
         likha("MISMATCH\n")
-        prati 1
+        nivartanam 1
     }
     yadi (buf[18] != 48) {
         likha("MISMATCH\n")
-        prati 1
+        nivartanam 1
     }
     yadi (buf[19] != 56) {
         likha("MISMATCH\n")
-        prati 1
+        nivartanam 1
     }
     likha(1)
     likha("\n")
@@ -251,15 +251,15 @@ mukhya() {
     likha("\n")
     yadi (buf[0] != 49) {
         likha("MISMATCH\n")
-        prati 1
+        nivartanam 1
     }
     yadi (buf[1] != 50) {
         likha("MISMATCH\n")
-        prati 1
+        nivartanam 1
     }
     yadi (buf[2] != 51) {
         likha("MISMATCH\n")
-        prati 1
+        nivartanam 1
     }
     likha(1)
     likha("\n")
@@ -268,19 +268,19 @@ mukhya() {
     likha("\n")
     yadi (buf[0] != 45) {
         likha("MISMATCH\n")
-        prati 1
+        nivartanam 1
     }
     yadi (buf[1] != 52) {
         likha("MISMATCH\n")
-        prati 1
+        nivartanam 1
     }
     yadi (buf[2] != 53) {
         likha("MISMATCH\n")
-        prati 1
+        nivartanam 1
     }
     yadi (buf[3] != 54) {
         likha("MISMATCH\n")
-        prati 1
+        nivartanam 1
     }
     likha(1)
     likha("\n")
@@ -289,7 +289,7 @@ mukhya() {
     likha("\n")
     yadi (buf[0] != 48) {
         likha("MISMATCH\n")
-        prati 1
+        nivartanam 1
     }
     likha(1)
     likha("\n")

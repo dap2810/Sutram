@@ -7,10 +7,10 @@ prakriya safe_compute(out, a, b, c) {
     phal_janchit_yuj(t, a, b)
     yadi (phal_asti_siddhi(t) == 0) {
         phal_dosh(out)
-        prati 0
+        nivartanam 0
     }
     phal_janchit_gun(out, phal_mulya(t), c)
-    prati phal_asti_siddhi(out)
+    nivartanam phal_asti_siddhi(out)
 }
 
 prakriya safe_pow_fact(out, a, e) {
@@ -19,10 +19,10 @@ prakriya safe_pow_fact(out, a, e) {
     phal_janchit_ghat(t, a, e)
     yadi (phal_asti_siddhi(t) == 0) {
         phal_dosh(out)
-        prati 0
+        nivartanam 0
     }
     phal_janchit_kramgun(out, phal_mulya(t))
-    prati phal_asti_siddhi(out)
+    nivartanam phal_asti_siddhi(out)
 }
 
 mukhya() {

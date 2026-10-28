@@ -2,8 +2,8 @@ vitti ganak = 0
 vitti prarambha = 7
 prakriya ganak_badha(n) {
     ganak = ganak + n
-    prati ganak
+    nivartanam ganak
 }
 prakriya ganak_padh() {
-    prati ganak
+    nivartanam ganak
 }

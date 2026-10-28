@@ -1,7 +1,7 @@
 vitti global_value = 3
 prakriya vardh() {
     global_value = global_value + 1
-    prati global_value
+    nivartanam global_value
 }
 mukhya() {
     likha(global_value + vardh())

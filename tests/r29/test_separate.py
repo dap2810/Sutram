@@ -151,7 +151,7 @@ def main(argv) -> int:
 
     # 5. refusals
     miss = os.path.join(tmp, 'miss.sm')
-    open(miss, 'w').write('yoj r29_no_such_module\nmukhya() {\n    prati 0\n}\n')
+    open(miss, 'w').write('yoj r29_no_such_module\nmukhya() {\n    nivartanam 0\n}\n')
     r = build(comp, link, miss, os.path.join(tmp, 'm'))
     check(r.returncode == 1 and b'module not found' in r.stderr, 'missing module')
     r = subprocess.run([sys.executable, '-B', str(ROOT / 'tools' / 'sutram_build.py')], capture_output=True)

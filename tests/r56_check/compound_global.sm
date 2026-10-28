@@ -3,6 +3,6 @@ prakriya run_steps() {
     total += 5
     total++
     total *= 2
-    prati total
+    nivartanam total
 }
 mukhya() { likha(run_steps()) likha(total) }

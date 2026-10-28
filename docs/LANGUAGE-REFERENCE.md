@@ -38,7 +38,7 @@ language has a pack of native words (see the `lang/` table at the end).
 | `mala` | mala |
 | `satya` | boolean type |
 | `prakriya` | function (up to 6 arguments) |
-| `prati` | return |
+| `nivartanam` (निवर्तनम्; legacy alias: `prati`) | return / returning / turning back (नि + √वृत्) |
 | `chakra` | for |
 | `purna` | true |
 | `rachana` | struct |
@@ -49,8 +49,8 @@ language has a pack of native words (see the `lang/` table at the end).
 | `agrim` | continue |
 | `vitti` | variable |
 | `vibhag` | slice parameter (R23; §17) |
-| `siddhi` | return success: `prati siddhi(v)` (R25; §18) |
-| `dosh` | return failure: `prati dosh(code)` (R25; §18) |
+| `siddhi` | return success: `nivartanam siddhi(v)` (R25; §18) |
+| `dosh` | return failure: `nivartanam dosh(code)` (R25; §18) |
 | `prasar` | call a phal-prakriya, propagating its failure (R25; §18) |
 | `yadi` | if |
 | `yavat` | while |
@@ -92,9 +92,9 @@ These are the **actual** builtin names the compiler accepts, taken from its tabl
 | `likh8c` | print a character |
 | `pad8c` | read a character |
 | `pankti_len` | length of a constant-length `mala` mala |
-| `likha` | print a value or varna |
-| `lkhb` | print, no newline |
-| `likha_fmt` | formatted print |
+| `likha` | 1–6 arguments: value(s) or raw three-argument write; see §4a (string literals do not append LF, numeric final values do) |
+| `lkhb` | numeric output without LF; includes `dasham` numeric printing since R52 |
+| `likha_fmt` | literal prefix plus integer followed by LF (no placeholder substitution; see §4a) |
 | `shabda` | print a string variable |
 | `grahan` | read a number from input |
 | `sthagita` | halt the program |
@@ -121,6 +121,87 @@ These are the **actual** builtin names the compiler accepts, taken from its tabl
 | `netlisten` | listen |
 | `netaccept` | accept a connection |
 
+### 4a. Output: print values, raw bytes, and formatting (compiler v257)
+
+`likha` is overloaded. **A string literal prints its bytes exactly as written** (there is no automatic newline); **a scalar integer or `dasham` prints a value followed by a newline**. A string *variable* passed to ordinary `likha` prints its pointer value, not its contents; use `shabda(s)` for a NUL-terminated string variable.
+
+**One scalar value — `likha(x)` (newline included):**
+```sutram
+mukhya() {
+    vitti x = 42
+    likha(x)
+}
+```
+**Exact expected stdout:**
+```text
+42
+```
+
+**One labelled line — `likha("label", x)` (already works):**
+```sutram
+mukhya() {
+    vitti x = 42
+    likha("x = ", x)
+}
+```
+**Exact expected stdout:**
+```text
+x = 42
+```
+Both examples above end with one LF byte (`0A`), because printing the final numeric value adds it. Existing `examples/43_nested_likha.sm` uses this two-argument form, with an exact output golden.
+
+**Three to six values (R52):** when *exactly three* arguments are supplied, the first must be a **string literal** to select multi-value output. Four to six arguments always use multi-value output. Numeric intermediate values do not add newlines; the last numeric value adds one.
+```sutram
+mukhya() {
+    vitti x = 42
+    vitti y = 7
+    likha("x = ", x, ", y = ", y)
+}
+```
+**Exact expected stdout:**
+```text
+x = 42, y = 7
+```
+
+**Raw write — `likha(fd, buf, len)` is a different THREE-argument operation:**
+```sutram
+mukhya() {
+    likha(1, "raw\n", 4)
+}
+```
+**Exact expected stdout** (`raw` plus LF, four bytes):
+```text
+raw
+```
+Here `1` is stdout's file descriptor; the second value is a byte-buffer pointer and the third is its byte count. **Do not assume all three-argument `likha` calls print three values.** The first argument's syntax determines the mode: a string literal means multi-value print; a nonliteral first argument means raw write. Keep existing raw-write calls unchanged.
+
+**`lkhb(x)` — numeric output without a newline (R52 also fixes `dasham`):**
+```sutram
+mukhya() {
+    dasham d = 2.5
+    lkhb(d)
+    likha("|\n")
+}
+```
+**Exact expected stdout:**
+```text
+2.500000|
+```
+`lkhb(2.5)` prints **`2.500000`**, not the raw IEEE-754 integer bits on compiler v257. It contributes no newline; the explicit string literal contributes the trailing `|` and LF.
+
+**`likha_fmt(fmt, v)` — literal prefix + integer, not placeholder substitution:**
+```sutram
+mukhya() {
+    likha_fmt("x = ", 42)
+}
+```
+**Exact expected stdout:**
+```text
+x = 42
+```
+`likha_fmt` currently outputs the literal format/prefix string and numeric value sequentially. It does **not** interpret `{0}` or other format placeholders; its integer number path **already writes a final LF**. Therefore an extra `likha("\n")` gives an unwanted blank line. The existing `examples/format_demo.sm` has this extra newline; its golden records the blank lines. Do not edit either without running and updating acceptance.
+
+**Evidence:** `src/sutram_compiler.asm:15956-15964,16144-16242,18050-18183`; `tests/r52/test_r52.py:55-74`; `tests/expect/43_nested_likha.out` and `tests/expect/format_demo.out`. Exact outputs are source/committed-test expectations, **NOT RUN by ChatGPT**.
 ## 4b. Standard library (`lib/`)
 
 `yoj <name>` inlines `lib/<name>.smlib` into your program at compile time —
@@ -212,11 +293,11 @@ mukhya()
     vitti n = grahan()              # read a number
 
 prakriya joda(a, b)                 # function (up to 6 arguments)
-    prati a + b                 # return
+    nivartanam a + b                 # return
 
 prakriya fib(n) {                   # braces are required for a body of >1 statement
-    yadi (n < 2) { prati n }
-    prati fib(n - 1) + fib(n - 2)
+    yadi (n < 2) { nivartanam n }
+    nivartanam fib(n - 1) + fib(n - 2)
 }
 ```
 
@@ -242,11 +323,11 @@ mukhya()
 ```sm
 prakriya f(n)
     vitti x = n        # this does NOT compile - parse error
-    prati x
+    nivartanam x
 ```
 
 **Verified:** `mukhya()` with three brace-less statements compiles and runs; `prakriya f(n)` with
-three brace-less statements fails with `vyakaran dosh, pankti 3:5, shabd 'prati'`.
+three brace-less statements fails with `vyakaran dosh, pankti 3:5, shabd 'nivartanam'`.
 
 **This is an inconsistency, not a rule**, and it is recorded rather than resolved. **Every example in every
 book writes `mukhya()` without braces** - 84 complete book programs, all of which compile - **so a beginner
@@ -259,6 +340,42 @@ is what the books should show.
 section does; unifying them would be a language change.*
 
 
+### 6a. Counted loops: `tak` and `arabhya … paryantam` (R52)
+
+**Legacy spelling** (accepted, but `tak` is Hindi/Urdu, not a Sanskrit particle):
+```sutram
+mukhya() {
+    chakra i = 0 tak 4 {
+        likha(i)
+    }
+}
+```
+**Sanskrit-oriented alternative — already implemented, same loop and binary in the R52 test:**
+```sutram
+mukhya() {
+    chakra i = 0 arabhya 4 paryantam {
+        likha(i)
+    }
+}
+```
+**Exact expected stdout for EACH form:**
+```text
+0
+1
+2
+3
+4
+```
+The endpoints in this example are **inclusive**; `arabhya` means 'starting from' and `paryantam` means 'up to'. Both are contextual words in the `chakra` grammar, **not reserved keywords**: they can still name variables. `arabhya` without the closing `paryantam` is invalid. `chakra` means wheel/cycle and is a technical loop marker; neither spelling makes the whole code a classical Sanskrit sentence.
+
+**Evidence:** `src/sutram_compiler.asm:9361-9415`, `tests/r52/test_r52.py:89-99`, `examples/11_forloop.sm` (legacy `tak` form). Test assertions are partner-maintained, not re-executed here.
+### 6b. Is Sutram speakable Sanskrit?
+
+**Yes, as Sanskrit-oriented technical instructions; no, not as complete Sanskrit prose.** Keywords such as `mukhya`, `vitti`, `chakra`, `yoj` and `nivartanam` are Sanskrit-origin vocabulary (some are modern technical metaphors or conventional forms). `chakra i = 0 arabhya 4 paryantam` is a speakable *range phrase*, but its identifiers, `=`, braces, and command sequence do not supply the Sanskrit cases, verb inflections, and agreement required of an ordinary grammatical sentence.
+
+Read it aloud as **code** with Sanskrit vocabulary, not as poetry or automatically well-formed Sanskrit discourse. Pāṇini's `anuvṛtti` and `adhikāra` are useful formal-grammar analogies, **not mechanisms currently implemented merely because they have Sanskrit names**. No new parser feature or natural-language understanding is claimed.
+
+**Teaching example:** `examples/11_forloop.sm` already teaches a loop, but only the legacy `tak` spelling. After separately verifying the new form, update or extend that example to show the equivalent Sanskrit-oriented range without removing legacy coverage.
 ## 7. Command line
 
 | command | purpose |
@@ -323,7 +440,7 @@ keyword, and it compiles to the same native machine code.
 | mala | पङ्क्ति | পঙক্তি | પંક્તિ | पंक्ति | ಸಾಲು | വരി | रांग | ଧାଡ଼ି | ਕਤਾਰ | வரிசைப்பட | వరుస |
 | satya | परिग्रह | ধারণ | ધારણ | धारण | ಧಾರಣೆ | ധാരണ | धारण | ଧାରଣ | ਧਾਰਨ | உரிமை | కలిగివుండు |
 | prakriya | प्रक्रिया | ফলন | ફલન | फलन | ಕ್ರಿಯೆ | ക്രിയ | कार्य | କାର୍ଯ୍ୟ | ਕਾਰਜ | சார்பு | ప్రమేయం |
-| prati | प्रतियाति | ফেরত | પાછા | वापस | ಹಿಂತಿರುಗು | മടങ്ങുക | परत | ଫେରସ | ਵਾਪਸ | திரும்ப | తిరిగి |
+| nivartanam | निवर्तनम् | ফেরত | પાછા | वापस | ಹಿಂತಿರುಗು | മടങ്ങുക | परत | ଫେରସ | ਵਾਪਸ | திரும்ப | తిరిగి |
 | chakra | पुनरावर्तन | পুনরাবৃত্তি | પુનરાવર્તન | पुनरावृत्ति | ಪುನರಾವರ್ತನೆ | പുനരാവൃത്തി | पुनरावृत्ति | ପୁନରାବୃତ୍ତି | ਦੁਹਰਾਓ | மடக்கு | పునరావృతం |
 | purna | पूर्ण | সত্য | સાચું | सत्य | ನಿಜ | സത്യം | खरे | ସତ୍ୟ | ਸੱਚ | பூரணம் | నిజం |
 | rachana | रचना | সংরচনা | રચના | संरचना | ರಚನೆ | ഘടന | रचना | ସଂରଚନା | ਢਾਂਚਾ | அமைப்பு | నిర్మాణం |
@@ -431,7 +548,7 @@ variable, passed as an argument, returned, kept in a `mala`, compared with `==`.
 A variable that holds one is called like a function.
 
 ```
-prakriya aarohi(a, b) { prati a - b }
+prakriya aarohi(a, b) { nivartanam a - b }
 prakriya shreni(vibhag s, tulana) { ... yadi (tulana(s[j], v) > 0) { ... } ... }
 shreni(x, aarohi)          # pass it
 vitti f = aarohi           # store it
@@ -453,7 +570,7 @@ calls it with `x` as the first argument (`swa` is a name like any other).
 
 ```
 rachana Bindu = { x, y }
-prakriya Bindu.chal(swa, dx, dy) { swa.x = swa.x + dx  swa.y = swa.y + dy  prati 0 }
+prakriya Bindu.chal(swa, dx, dy) { swa.x = swa.x + dx  swa.y = swa.y + dy  nivartanam 0 }
 p.chal(3, 4)               # Bindu.chal(p, 3, 4)
 ```
 
@@ -508,13 +625,13 @@ The smallest working version. Example: `examples/249_r25_phal.sm`.
 ```
 prakriya bhaj(a, b) {
     yadi (b == 0) {
-        prati dosh(1)            # failure, carrying the code 1
+        nivartanam dosh(1)            # failure, carrying the code 1
     }
-    prati siddhi(a / b)          # success, carrying the value
+    nivartanam siddhi(a / b)          # success, carrying the value
 }
 prakriya ek_adhik(a, b) {
     vitti q = prasar bhaj(a, b)  # failure: returned from here at once; success: q is the value
-    prati siddhi(q + 1)
+    nivartanam siddhi(q + 1)
 }
 mukhya() {
     likha(prasar ek_adhik(10, 2))    # 6
@@ -522,12 +639,12 @@ mukhya() {
 }
 ```
 
-- **A prakriya with a `prati siddhi(...)` or `prati dosh(...)` is a phal-prakriya.** In one, every `prati` is
-  `siddhi` or `dosh` (a plain `prati` is a compile error), and falling off its end is `siddhi(0)`.
+- **A prakriya with a `nivartanam siddhi(...)` or `nivartanam dosh(...)` is a phal-prakriya.** In one, every `nivartanam` is
+  `siddhi` or `dosh` (a plain `nivartanam` is a compile error), and falling off its end is `siddhi(0)`.
 - **A phal-prakriya must be called under `prasar`**, and `prasar` must be on a call of one: a failure cannot
   be ignored, and a status is never read where none was set. Both are compile errors otherwise.
 - **`prasar` is allowed in a phal-prakriya (it propagates) and in `mukhya`**, where a failure ends the
-  program with the code as its exit status (the low 8 bits). `prati dosh(c)` in `mukhya` exits with `c`.
+  program with the code as its exit status (the low 8 bits). `nivartanam dosh(c)` in `mukhya` exits with `c`.
 - **No heap:** the value or the code travels in `rax`, the status in `rdx`.
 - Methods can be phal-prakriyas (`prasar p.ghata(4)`).
 
@@ -539,9 +656,9 @@ the value. The failure goes no further, so recovery is possible anywhere, in any
 ```
 prakriya padh_ya(s, mool) {          # never fails: a bad number counts as the default
     yadi dosh (q = sankhya_padh(s)) {
-        prati mool
+        nivartanam mool
     }
-    prati q
+    nivartanam q
 }
 ```
 

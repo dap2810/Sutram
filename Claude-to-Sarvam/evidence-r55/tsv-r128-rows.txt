@@ -1,0 +1,35 @@
+2 | docs/ERROR-CONVENTION.md | PROPOSE_AFTER_CANONICAL_MERGE | ANCHOR-MISSING |         prati 0
+3 | docs/ERROR-CONVENTION.md | PROPOSE_AFTER_CANONICAL_MERGE | ANCHOR-MISSING |     prati phal_asti_siddhi(out)
+4 | docs/KOSH-BUILTINS.md | PROPOSE_AFTER_CANONICAL_MERGE | ANCHOR-MISSING |     prati 0
+5 | docs/LAGHU-EXAMPLE.md | PROPOSE_AFTER_CANONICAL_MERGE | ANCHOR-MISSING |     prati 0
+27 | docs/LANGUAGE-REFERENCE.md | PROPOSE_AFTER_CANONICAL_MERGE | ANCHOR-MISSING | | `prati` | return |
+28 | docs/LANGUAGE-REFERENCE.md | PROPOSE_AFTER_CANONICAL_MERGE | ANCHOR-MISSING | | `siddhi` | return success: `prati siddhi(v)` (R25; §18) |
+29 | docs/LANGUAGE-REFERENCE.md | PROPOSE_AFTER_CANONICAL_MERGE | ANCHOR-MISSING | | `dosh` | return failure: `prati dosh(code)` (R25; §18) |
+30 | docs/LANGUAGE-REFERENCE.md | PROPOSE_AFTER_CANONICAL_MERGE | ANCHOR-MISSING |     prati a + b                 # return
+31 | docs/LANGUAGE-REFERENCE.md | PROPOSE_AFTER_CANONICAL_MERGE | ANCHOR-MISSING |     yadi (n < 2) { prati n }
+32 | docs/LANGUAGE-REFERENCE.md | PROPOSE_AFTER_CANONICAL_MERGE | ANCHOR-MISSING |     prati fib(n - 1) + fib(n - 2)
+33 | docs/LANGUAGE-REFERENCE.md | PROPOSE_AFTER_CANONICAL_MERGE | ANCHOR-MISSING |     prati x
+34 | docs/LANGUAGE-REFERENCE.md | PROPOSE_AFTER_CANONICAL_MERGE__FROZEN_COLUMNS_UNCHANGED | ANCHOR-MISSING | | prati | प्रतियाति | ফেরত | પાછા | वापस | ಹಿಂತಿರುಗು | മടങ്ങുക | परत |
+35 | docs/LANGUAGE-REFERENCE.md | PROPOSE_AFTER_CANONICAL_MERGE | ANCHOR-MISSING | prakriya aarohi(a, b) { prati a - b }
+36 | docs/LANGUAGE-REFERENCE.md | PROPOSE_AFTER_CANONICAL_MERGE | ANCHOR-MISSING | prakriya Bindu.chal(swa, dx, dy) { swa.x = swa.x + dx  swa.y = swa.y +
+37 | docs/LANGUAGE-REFERENCE.md | PROPOSE_AFTER_CANONICAL_MERGE | ANCHOR-MISSING |         prati dosh(1)            # failure, carrying the code 1
+38 | docs/LANGUAGE-REFERENCE.md | PROPOSE_AFTER_CANONICAL_MERGE | ANCHOR-MISSING |     prati siddhi(a / b)          # success, carrying the value
+39 | docs/LANGUAGE-REFERENCE.md | PROPOSE_AFTER_CANONICAL_MERGE | ANCHOR-MISSING |     prati siddhi(q + 1)
+40 | docs/LANGUAGE-REFERENCE.md | PROPOSE_AFTER_CANONICAL_MERGE | ANCHOR-MISSING | - **A prakriya with a `prati siddhi(...)` or `prati dosh(...)` is a ph
+41 | docs/LANGUAGE-REFERENCE.md | PROPOSE_AFTER_CANONICAL_MERGE | ANCHOR-MISSING |   `siddhi` or `dosh` (a plain `prati` is a compile error), and falling
+42 | docs/LANGUAGE-REFERENCE.md | PROPOSE_AFTER_CANONICAL_MERGE | ANCHOR-MISSING |   program with the code as its exit status (the low 8 bits). `prati do
+43 | docs/LANGUAGE-REFERENCE.md | PROPOSE_AFTER_CANONICAL_MERGE | ANCHOR-MISSING |         prati mool
+44 | docs/LANGUAGE-REFERENCE.md | PROPOSE_AFTER_CANONICAL_MERGE | ANCHOR-MISSING |     prati q
+45 | docs/SPECIFICATION.md | PROPOSE_AFTER_CANONICAL_MERGE | ANCHOR-MISSING |     prati v
+46 | docs/SPECIFICATION.md | PROPOSE_AFTER_CANONICAL_MERGE | ANCHOR-MISSING | `prakriya` introduces a named function, `prati` returns, `vitti` intro
+47 | docs/sutram-book-sanskrit.html | PROPOSE_AFTER_CANONICAL_MERGE | ANCHOR-MISSING | <code><span class="k" data-tip="अर्थः: return">prati</span></code>-द्व
+48 | docs/sutram-book-sanskrit.html | PROPOSE_AFTER_CANONICAL_MERGE | ANCHOR-MISSING |     <span class="k" data-tip="अर्थः: return">prati</span> mulya * muly
+49 | docs/sutram-book-sanskrit.html | PROPOSE_AFTER_CANONICAL_MERGE | ANCHOR-MISSING |     <span class="k" data-tip="अर्थः: if">yadi</span> (n &lt; 2) { prat
+50 | docs/sutram-book-sanskrit.html | PROPOSE_AFTER_CANONICAL_MERGE | ANCHOR-MISSING |     prati fib(n - 1) + fib(n - 2)
+51 | docs/sutram-book-sanskrit.html | PROPOSE_AFTER_CANONICAL_MERGE | ANCHOR-MISSING | <tr><td><code><span class="k" data-tip="अर्थः: function">prakriya</spa
+52 | docs/sutram-book-sanskrit.html | PROPOSE_AFTER_CANONICAL_MERGE | ANCHOR-MISSING |     <span class="kw">prati</span> s / <span class="kw">kosh_len</span>
+53 | docs/sutram-vocabulary.html | PROPOSE_AFTER_CANONICAL_MERGE | ANCHOR-MISSING | <tr><td><code>return</code></td><td><code>prati</code></td><td><b>prat
+54 | docs/WHATS-LEFT.md | PROPOSE_EXACT_CURRENT | ANCHOR-MISSING | | **F4** | **`prati` stays** - decided | **and `nivartan` was consider
+55 | PROJECT-OVERVIEW.md | PROPOSE_AFTER_CANONICAL_MERGE | APPLIED | | `prakriya` | function | `prati` | return |
+56 | README.md | PROPOSE_AFTER_CANONICAL_MERGE | APPLIED | | `prakriya` | function | `prati` | return |
+group | docs/LANGUAGE-REFERENCE.md | PROPOSE_INSERT_BEFORE_AFTER_CANONICAL_MERGE | ok | 21 lines before '## 3. Operators and precedence'

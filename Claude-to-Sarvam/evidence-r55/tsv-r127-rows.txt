@@ -1,0 +1,5 @@
+2 | docs/LANGUAGE-REFERENCE.md | REPLACE_EXACT_CURRENT | APPLIED | | `likha` | print a value or varna |
+3 | docs/LANGUAGE-REFERENCE.md | REPLACE_EXACT_CURRENT | APPLIED | | `lkhb` | print, no newline |
+4 | docs/LANGUAGE-REFERENCE.md | REPLACE_EXACT_CURRENT | APPLIED | | `likha_fmt` | formatted print |
+group | docs/LANGUAGE-REFERENCE.md | INSERT_BEFORE | APPLIED | 81 lines before '## 4b. Standard library (`lib/`)'
+group | docs/LANGUAGE-REFERENCE.md | INSERT_BEFORE | APPLIED | 36 lines before '## 7. Command line'

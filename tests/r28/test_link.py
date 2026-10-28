@@ -72,9 +72,9 @@ def main(argv) -> int:
               '(a module-level vitti); %d do not compile directly (compile-fail examples)' % (same, refused, direct_fail))
 
         # two modules
-        (t / 'lib.sm').write_text('prakriya varg(x) {\n    prati x * x\n}\n\nprakriya yog_varg(a, b) {\n'
-                                  '    prati varg(a) + varg(b) + upar(1)\n}\n')
-        (t / 'main.sm').write_text('prakriya upar(x) {\n    prati x + 100\n}\n\nprakriya dvigun(x) {\n    prati 2 * x\n}\n\n'
+        (t / 'lib.sm').write_text('prakriya varg(x) {\n    nivartanam x * x\n}\n\nprakriya yog_varg(a, b) {\n'
+                                  '    nivartanam varg(a) + varg(b) + upar(1)\n}\n')
+        (t / 'main.sm').write_text('prakriya upar(x) {\n    nivartanam x + 100\n}\n\nprakriya dvigun(x) {\n    nivartanam 2 * x\n}\n\n'
                                    'mukhya() {\n    likha(yog_varg(3, 4))\n    likha(dvigun(varg(5)))\n}\n')
         for name in ('lib', 'main'):
             r = subprocess.run([comp, '--object', str(t / (name + '.sm')), str(t / (name + '.smo'))], capture_output=True, timeout=60)
@@ -114,7 +114,7 @@ def main(argv) -> int:
         l = subprocess.run([link, str(t / 'gl.bin'), str(t / 'g.smo')], capture_output=True, timeout=60)
         check(r.returncode == 0 and d.returncode == 0 and l.returncode == 0
               and (t / 'gl.bin').read_bytes() == (t / 'gd.bin').read_bytes(), 'a module-level vitti in --object mode')
-        (t / 'gl.sm').write_text('vitti G = 5\nprakriya g() {\n    prati G\n}\n')
+        (t / 'gl.sm').write_text('vitti G = 5\nprakriya g() {\n    nivartanam G\n}\n')
         r = subprocess.run([comp, '--object', str(t / 'gl.sm'), str(t / 'gl.smo')], capture_output=True, timeout=60)
         check(r.returncode == 1 and b'vastu-patre ghatak-star vitti asamarthita' in r.stdout,
               'an initialized vitti in a library object (no mukhya) is refused')

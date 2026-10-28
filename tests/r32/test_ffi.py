@@ -103,7 +103,7 @@ def main(argv) -> int:
     # 3. a prakriya with either name
     for name in ('s_add', 'sutram_ffi_add'):
         src = t / f'c_{name}.sm'
-        src.write_text(f'prakriya {name}(a, b) {{\n    prati a\n}}\nmukhya() {{\n    likha({name}(1, 2))\n}}\n')
+        src.write_text(f'prakriya {name}(a, b) {{\n    nivartanam a\n}}\nmukhya() {{\n    likha({name}(1, 2))\n}}\n')
         r = run([comp, '--ffi', sffi, '--object', str(src), str(t / 'c.smo')])
         check(r.returncode == 1 and b'videshi prakriya-nama anyatra api: ' + name.encode() in r.stdout,
               f'clash {name}: {r.stdout!r}')

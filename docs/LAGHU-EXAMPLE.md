@@ -29,7 +29,7 @@ mukhya()
     likha("back: ")
     likha(brihat_ank_tak_laghu(digits, 4))
     likha("\n")
-    prati 0
+    nivartanam 0
 ```
 
 ## What it prints

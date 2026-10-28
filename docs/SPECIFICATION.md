@@ -48,7 +48,7 @@ The following are exercised forms, not a complete EBNF grammar:
 ```sm
 prakriya set0(a, v) {
     a[0] = v
-    prati v
+    nivartanam v
 }
 
 mukhya() {
@@ -63,7 +63,7 @@ mukhya() {
 
 The composite illustration above is explanatory; the constituent forms are
 supported by the linked fixtures, not by a claimed new run of that composite.
-`prakriya` introduces a named function, `prati` returns, `vitti` introduces a
+`prakriya` introduces a named function, `nivartanam` returns, `vitti` introduces a
 scalar variable, and the inspected `mala`/`kosh` cases provide indexed storage.
 A typed parameter form `kosh dasham a` is exercised by the accepted negative type
 case. There is no claim here of first-class functions, closures, generics, methods,

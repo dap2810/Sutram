@@ -37,7 +37,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 PROG = ('prakriya dviguna(n) {\n'          # 1
         '    vitti r = n * 2\n'             # 2
-        '    prati r\n'                     # 3
+        '    nivartanam r\n'                     # 3
         '}\n'                               # 4
         '\n'                                # 5
         'mukhya() {\n'                      # 6
@@ -70,7 +70,7 @@ SIN = ('prakriya sin_galat(dasham x) {\n'                  # 1
        '        s = s + t\n'                                # 17
        '        n = n + 1\n'                                # 18
        '    }\n'                                            # 19
-       '    prati s\n'                                      # 20
+       '    nivartanam s\n'                                      # 20
        '}\n'                                                # 21
        'mukhya() {\n'                                       # 22
        '    likha(sin_galat(0.0 - 4.0))\n'                  # 23

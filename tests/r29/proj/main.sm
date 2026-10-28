@@ -9,5 +9,5 @@ mukhya() {
     likha("\n")
     likha(ardha(7))
     likha("\n")
-    prati vam(1) + dakshin(1)
+    nivartanam vam(1) + dakshin(1)
 }

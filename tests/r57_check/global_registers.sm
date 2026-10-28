@@ -1,5 +1,5 @@
 vitti total = 7
-prakriya vardh() { total = total + 3 prati total }
+prakriya vardh() { total = total + 3 nivartanam total }
 mukhya() {
     vitti a = 4
     vitti b = 2

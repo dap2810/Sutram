@@ -1,0 +1,161 @@
+{
+  "mode": "native",
+  "compiler": "/home/claude/sutram/sutram_compiler",
+  "compiler_sha256": "9063901e8b1bb0eccdc3eec5fefe8283b54476793e91c747652cb63777093ea2",
+  "source_git_blobs": {
+    "src/sutram_compiler.asm": "569ffdeb909a957e8d1534c6dbeb3edaff957022",
+    "src/r68_compiler_entry.asm": "42389aaf73179726d91e23359aee2199734036e1",
+    "src/r68_diagnostics.inc": "578dc6577b7a39f67475a2a58542664c16043278",
+    "src/r68_unicode_helpers.inc": "69103e059634aa6b5b871ce7c06c2f4b9c742ff1",
+    "src/r66_indic_lexer.inc": "998b6cb75a7e11cf6d488cf84a84a2154ffdebf0",
+    "src/r67_stack_pair.inc": "e8472bd1cad767cf06b0c00fcf88793419362db5",
+    "lang/sanskrit.lang": "8c863e599cabd36781020799c10b0b311b72d564",
+    "src/r11_sandesh.inc": "0c94b80dc29435c5e7e2354b9a339178748b7876",
+    "src/r22_lang_builtin.inc": "f5f936bb2ddd20405f90a1185756516186dd46b9",
+    "src/r23_capabilities.inc": "fb73a3609fa4207b3450f4b7beaf4af18d6d7fd5",
+    "src/r25_phal.inc": "a36bd286aa6beea0b854576945e6874ba8835af0",
+    "src/r28_object.inc": "2ad1942d7444c9246ea1015bad071a60b2b2ca0e",
+    "src/r32_ffi.inc": "67cfd8562d53934ecd56e8edecbcb0355c134fb8",
+    "src/r38_fail_alloc.inc": "4ba57bc871838810d2f47aa98488f8d21677dce1",
+    "src/r45_debug.inc": "d7e776da98db43132bec37c2252e6f35737e5381",
+    "src/r52_yoj_hint.inc": "45aa67ca7d747b8b68e58c2cf89194d8b723179f",
+    "src/r52_lib_index.inc": "f30555e4bbcd31d951e337955f3addbb9393b467"
+  },
+  "binary_source_correspondence": "reported pins are not proof of binary build provenance",
+  "positive_controls": [
+    {
+      "language": "default",
+      "status": "PASS",
+      "binary_sha256": "912bb412361e458b50c5c24fd3d4278a48d0fc9240ead56d4c704b23c7e36e3d"
+    },
+    {
+      "language": "sanskrit",
+      "status": "PASS",
+      "binary_sha256": "912bb412361e458b50c5c24fd3d4278a48d0fc9240ead56d4c704b23c7e36e3d"
+    }
+  ],
+  "cases": [
+    {
+      "id": "bad_type",
+      "category": "bad_type",
+      "source": "/tmp/sutram-r70-fd7x4_bi/bad_type.sm",
+      "program_sha256": "2f2c7abd0b6aab98d7a6f1d0073fc9a0bacca9f9c04d384b5dc3353997b03267",
+      "provenance": {
+        "level": "inherited_exact_golden",
+        "source": "examples/120_t18_kosh_param_mismatch.sm",
+        "source_git_blob": "4e9769a8d99313b83512ac47c0a05ad3b7a5478b",
+        "golden": "tests/expect/120_t18_kosh_param_mismatch.out",
+        "golden_git_blob": "c563cad9a72cb790d7053ad8b332922a1ea0a68d",
+        "note": "Copied program bytes match the accepted source; no old golden modified."
+      },
+      "exit": 1,
+      "stdout": "Sutram Error: kosh tark: tatv prakar bhinn\n",
+      "stderr": "",
+      "problems": [],
+      "status": "PASS"
+    },
+    {
+      "id": "bad_arity",
+      "category": "bad_arity",
+      "source": "/tmp/sutram-r70-fd7x4_bi/bad_arity.sm",
+      "program_sha256": "3a435e45e73196c603e3370b7e798b5012b05f6dfbb7fb866b56e1736e271e16",
+      "provenance": {
+        "level": "source_derived_new_fixture",
+        "source": "src/sutram_compiler.asm",
+        "symbols": [
+          "parse_primary.pp_ic_parse",
+          "msg_err_arg_limit"
+        ],
+        "note": "The six-argument limit has an explicit error path. Full diagnostic framing and this new fixture have not been executed here."
+      },
+      "exit": 1,
+      "stdout": "\nSutram Error: vyakaran dosh, pankti 3:33, shabd '7'\n      likha(six(1, 2, 3, 4, 5, 6, 7))\n                                  ^\nSanket: prakriya adhikatamam 6 tarkan grihnati.\n",
+      "stderr": "",
+      "problems": [],
+      "status": "PASS"
+    },
+    {
+      "id": "unknown_identifier",
+      "category": "unknown_identifier",
+      "source": "/tmp/sutram-r70-fd7x4_bi/unknown_identifier.sm",
+      "program_sha256": "4eaec3f63bb084e4ac4dcaa885b0fb41452d7040c8a45c465cb20ce5344dae2e",
+      "provenance": {
+        "level": "inherited_exact_golden",
+        "source": "examples/69_undefined_function.sm",
+        "source_git_blob": "74bc96e32c8921623cdaac3ec441e8fbf9f26c4c",
+        "golden": "tests/expect/69_undefined_function.out",
+        "golden_git_blob": "1810d695b23345b4f2c35a9f59a2acbd4eda7561",
+        "note": "This is an unknown function identifier, NOT evidence that every unknown local variable is rejected."
+      },
+      "exit": 1,
+      "stdout": "Sutram Error: agyat prakriya: does_not_exist\n",
+      "stderr": "",
+      "problems": [],
+      "status": "PASS"
+    },
+    {
+      "id": "malformed_literal",
+      "category": "malformed_literal",
+      "source": "/tmp/sutram-r70-fd7x4_bi/malformed_literal.sm",
+      "program_sha256": "058adf2bb12ea74bd25d337b119b011a0f70d42996b0a578e87a1706f61c7891",
+      "provenance": {
+        "level": "source_derived_new_fixture",
+        "source": "src/r68_diagnostics.inc",
+        "symbols": [
+          "r68_prelex_validate",
+          "r68_report_error"
+        ],
+        "note": "Malformed Devanagari digit-shaped UTF-8 in source code. This does not test malformed ASCII hex/exponent grammar."
+      },
+      "exit": 1,
+      "stdout": "Sutram Error [E_UTF8]: /tmp/sutram-r70-fd7x4_bi/malformed_literal.sm:2: srote ashuddham khanditam va UTF-8\n",
+      "stderr": "",
+      "problems": [],
+      "status": "PASS"
+    },
+    {
+      "id": "unterminated_string",
+      "category": "unterminated_string",
+      "source": "/tmp/sutram-r70-fd7x4_bi/unterminated_string.sm",
+      "program_sha256": "c84b053c9c633248e68022267ca9221759fcb85acd894d636b4ad784f7530306",
+      "provenance": {
+        "level": "source_derived_new_fixture",
+        "source": "src/sutram_compiler.asm",
+        "symbols": [
+          "parse_primary",
+          "parse_error",
+          "msg_err_eof"
+        ],
+        "note": "Proposed rejection expectation for this exact source. It also lacks a parsed closing call delimiter; no universal unterminated-string rejection guarantee is inferred."
+      },
+      "exit": 1,
+      "stdout": "\nSutram Error: vyakaran dosh, pankti 4:1, shabd 'patra-ant'\n  \n  ^\nSanket: asmin sthane shabdam vyakaranam cha pashyatu.\n",
+      "stderr": "",
+      "problems": [],
+      "status": "PASS"
+    },
+    {
+      "id": "misplaced_keyword",
+      "category": "misplaced_keyword",
+      "source": "/tmp/sutram-r70-fd7x4_bi/misplaced_keyword.sm",
+      "program_sha256": "80845a8fb7ec41f225ef46d42b30698ac5d297b6df9473891326ca5872521605",
+      "provenance": {
+        "level": "source_derived_new_fixture",
+        "source": "src/r68_diagnostics.inc",
+        "symbols": [
+          "r68_guard_value_start"
+        ],
+        "pack": "lang/sanskrit.lang",
+        "note": "Uses the existing exact abbreviation वि॰ -> vitti at a value position, under --lang sanskrit."
+      },
+      "exit": 1,
+      "stdout": "भाषा-पुटः प्राप्तः: sanskrit\nSutram Error [E_ABBREVIATION_VALUE]: /tmp/sutram-r70-fd7x4_bi/misplaced_keyword.sm:2: संक्षेप-शब्दः मूल्यं नास्ति: 'वि॰'\n",
+      "stderr": "",
+      "problems": [],
+      "status": "PASS"
+    }
+  ],
+  "passed": 6,
+  "failed": 0,
+  "native_status": "PASS"
+}

@@ -1,0 +1,6 @@
+Muse's two patches alone, on main at bbc7609: every changed line compared with the line it replaced.
+A line is a pure rename if replacing \bprati\b with nivartanam in the old line gives the new line.
+
+73 files, 233 changed lines, every file keeps its line count
+not a pure rename: ['docs/LANGUAGE-REFERENCE.md:326', 'docs/sutram-vocabulary.html:83']  (both are the Devanagari column, प्रतियाति/प्रति -> निवर्तनम्; in the reference row the 10 frozen-pack columns are unchanged)
+files under tests/negative/ or any .out/.exit/.err touched: []

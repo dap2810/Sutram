@@ -124,7 +124,7 @@ mukhya()
         likha(kosh_pop(a))
         likha("\n")
 
-    prati 0
+    nivartanam 0
 ```
 
 `kosh_len(a)` is 0 exactly when `a` is empty, so `yadi (kosh_len(a) > 0)` or `yavat (kosh_len(a) > 0)` is the guard.

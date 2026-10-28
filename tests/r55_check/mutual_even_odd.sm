@@ -3,13 +3,13 @@ prakriya asti_yugm(n);
 prakriya asti_visham(n);
 
 prakriya asti_yugm(n) {
-    yadi (n == 0) { prati 1 }
-    prati asti_visham(n - 1)
+    yadi (n == 0) { nivartanam 1 }
+    nivartanam asti_visham(n - 1)
 }
 
 prakriya asti_visham(n) {
-    yadi (n == 0) { prati 0 }
-    prati asti_yugm(n - 1)
+    yadi (n == 0) { nivartanam 0 }
+    nivartanam asti_yugm(n - 1)
 }
 
 mukhya() {

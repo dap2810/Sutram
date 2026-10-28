@@ -8,7 +8,7 @@ prakriya dikha(a, n) {
         s = s * 10 + a[i]
         i = i - 1
     }
-    prati s
+    nivartanam s
 }
 mukhya() {
     # brihat_gun: a[3] and b[3] are guards; res holds 2n digits and res[6] is a guard

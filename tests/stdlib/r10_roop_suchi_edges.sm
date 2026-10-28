@@ -7,7 +7,7 @@ prakriya dikha(b, n) {
         likha(akshar(b, i))
         i = i + 1
     }
-    prati 0
+    nivartanam 0
 }
 mukhya() {
     vitti out = nirmmita(96)

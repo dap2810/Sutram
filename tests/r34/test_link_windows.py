@@ -136,9 +136,9 @@ def main(argv) -> int:
         check(same >= 150, 'expected at least 150 identical programs, got %d' % same)
 
         # 2. two modules
-        (t / 'lib.sm').write_text('prakriya varg(x) {\n    prati x * x\n}\n\nprakriya yog_varg(a, b) {\n'
-                                  '    prati varg(a) + varg(b) + upar(1)\n}\n')
-        (t / 'main.sm').write_text('prakriya upar(x) {\n    prati x + 100\n}\n\nprakriya dvigun(x) {\n    prati 2 * x\n}\n\n'
+        (t / 'lib.sm').write_text('prakriya varg(x) {\n    nivartanam x * x\n}\n\nprakriya yog_varg(a, b) {\n'
+                                  '    nivartanam varg(a) + varg(b) + upar(1)\n}\n')
+        (t / 'main.sm').write_text('prakriya upar(x) {\n    nivartanam x + 100\n}\n\nprakriya dvigun(x) {\n    nivartanam 2 * x\n}\n\n'
                                    'mukhya() {\n    likha(yog_varg(3, 4))\n    likha(dvigun(varg(5)))\n}\n')
         for name in ('lib', 'main'):
             r = sh([comp, '--object', t / (name + '.sm'), t / (name + '.smo')])
@@ -162,8 +162,8 @@ def main(argv) -> int:
         (t / 'linux.smo').write_bytes(b'SUTRAMO1' + (t / 'lib.smo').read_bytes()[8:])
         many = lambda k, base: ''.join('vitti %s%d\n' % (base, i) for i in range(k))
         (t / 'g100a.sm').write_text(many(100, 'A') + 'mukhya() {\n    likha(1)\n}\n')
-        (t / 'g100b.sm').write_text(many(29, 'B') + 'prakriya b() {\n    prati 2\n}\n')
-        (t / 'g28b.sm').write_text(many(28, 'B') + 'prakriya b() {\n    prati 2\n}\n')
+        (t / 'g100b.sm').write_text(many(29, 'B') + 'prakriya b() {\n    nivartanam 2\n}\n')
+        (t / 'g28b.sm').write_text(many(28, 'B') + 'prakriya b() {\n    nivartanam 2\n}\n')
         for n in ('g100a', 'g100b', 'g28b'):
             r = sh([comp, '--object', t / (n + '.sm'), t / (n + '.smo')])
             check(r.returncode == 0, '--object %s: %r' % (n, r.stdout))
@@ -199,7 +199,7 @@ def main(argv) -> int:
               'a module-level vitti in --object mode: in .data, byte-identical, runs')
         check(dict(symbols(t / 'g.smo')).get('vitti:G') == 0 and dict(symbols(t / 'g.smo')).get('vitti:H') == 8,
               'vitti symbols are data offsets: %r' % symbols(t / 'g.smo'))
-        (t / 'gl.sm').write_text('vitti G = 5\nprakriya g() {\n    prati G\n}\n')
+        (t / 'gl.sm').write_text('vitti G = 5\nprakriya g() {\n    nivartanam G\n}\n')
         r = sh([comp, '--object', t / 'gl.sm', t / 'gl.smo'])
         check(r.returncode == 1 and b'vastu-patre ghatak-star vitti asamarthita' in r.stdout,
               'an initialized vitti in a library object (no mukhya) is refused')

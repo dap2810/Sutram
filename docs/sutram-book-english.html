@@ -196,9 +196,9 @@ The answer is 25.</div>
 </div>
 <div class="ch" id="ch7"><h2>7. Functions: <span class="k" data-tip="function">prakriya</span></h2>
 <p>A <code><span class="k" data-tip="function">prakriya</span></code> (a process / procedure) is a named block that takes up <span class="k" data-tip="range-to">to</span> three
-arguments and returns a value with <code><span class="k" data-tip="return">prati</span></code>:</p>
+arguments and returns a value with <code><span class="k" data-tip="return">nivartanam</span></code>:</p>
 <pre><code><span class="k" data-tip="function">prakriya</span> vishalya(mulya)
-    <span class="k" data-tip="return">prati</span> mulya * mulya
+    <span class="k" data-tip="return">nivartanam</span> mulya * mulya
 
 <span class="k" data-tip="main">mukhya</span>()
     <span class="k" data-tip="variable">vitti</span> phalam = vishalya(7)
@@ -206,8 +206,8 @@ arguments and returns a value with <code><span class="k" data-tip="return">prati
     <span class="k" data-tip="print">likha</span>("\n")</code></pre>
 <p>Functions can call themselves — recursion works out of the box:</p>
 <pre><code><span class="k" data-tip="function">prakriya</span> fib(n) {
-    <span class="k" data-tip="if">yadi</span> (n &lt; 2) { prati n }
-    prati fib(n - 1) + fib(n - 2)
+    <span class="k" data-tip="if">yadi</span> (n &lt; 2) { nivartanam n }
+    nivartanam fib(n - 1) + fib(n - 2)
 }
 
 mukhya()
@@ -331,7 +331,7 @@ instantly without leaving your flow.</div>
 <tr><td><code><span class="k" data-tip="for">chakra</span> i = a <span class="k" data-tip="range-to">tak</span> b</code></td><td>for loop</td></tr>
 <tr><td><code><span class="k" data-tip="while">yavat</span></code></td><td>while loop</td></tr>
 <tr><td><code><span class="k" data-tip="break">krama</span> / <span class="k" data-tip="continue">agrim</span></code></td><td>break / continue</td></tr>
-<tr><td><code><span class="k" data-tip="function">prakriya</span> / <span class="k" data-tip="return">prati</span></code></td><td>function / return</td></tr>
+<tr><td><code><span class="k" data-tip="function">prakriya</span> / <span class="k" data-tip="return">nivartanam</span></code></td><td>function / return</td></tr>
 <tr><td><code><span class="k" data-tip="enum">ganana</span></code></td><td>enum</td></tr>
 <tr><td><code><span class="k" data-tip="struct">rachana</span></code></td><td>struct</td></tr>
 <tr><td><code><span class="k" data-tip="include">yoj</span></code></td><td>import</td></tr>
@@ -703,7 +703,7 @@ toolchain. The installer is only packaging — it is not part of the language.</
         s = s + xs[i]
         i = i + 1
     }
-    <span class="kw">prati</span> s / <span class="kw">kosh_len</span>(xs)
+    <span class="kw">nivartanam</span> s / <span class="kw">kosh_len</span>(xs)
 }</pre>
   <p>A <code>kosh dasham</code> is passed as a pointer, so <strong>indexed writes are visible to the
   caller</strong> — a function can fill an mala for you. But growing it is not allowed: calling

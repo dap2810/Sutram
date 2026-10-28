@@ -1,0 +1,31 @@
+`prati` as a whole word (\bprati\b), git-tracked files, bytes decoded as UTF-8 with replacement.
+before = main at bbc7609; after = this commit.
+
+area                                before   after  files after
+lib/                                     0       0            0
+examples/                                1       1            1
+tests/negative/                        108     108           38
+tests/ (the rest)                      213      33            9
+docs/                                  157      66            8
+README.md + PROJECT-OVERVIEW.md          2       0            0
+
+files in tests/ (outside tests/negative/) still saying prati:
+    1  tests/gui/test_win_gui_colour_tables.py
+    1  tests/r25/test_phal.py
+    6  tests/r43/test_keyword_boundary.py
+    3  tests/r50/test_devanagari_default.py
+   13  tests/r53/test_nivartanam.py
+    3  tests/r54/test_r54.py
+    2  tests/r66/baseline_packs.json
+    1  tests/r66/test_prepare_review.py
+    3  tests/r67/baseline_packs.json
+
+files in docs/ (outside tests/negative/) still saying prati:
+   50  docs/CHANGELOG.md
+    1  docs/LANGUAGE-REFERENCE.md
+    4  docs/LEXER-BOUNDARY-TEST.md
+    1  docs/SPECIFICATION.md
+    2  docs/VOCABULARY-DERIVATION.md
+    2  docs/VOCABULARY-SHORT.md
+    5  docs/VOCABULARY-TABLE.md
+    1  docs/WHATS-LEFT.md

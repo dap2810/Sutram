@@ -3,7 +3,7 @@ vitti b = a + 4
 vitti c = b * 2
 vitti empty
 vitti d = c + a
-prakriya read_global() { prati d + empty }
+prakriya read_global() { nivartanam d + empty }
 mukhya() {
     likha(a)
     likha(b)

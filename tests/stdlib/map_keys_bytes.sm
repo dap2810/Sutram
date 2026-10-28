@@ -9,12 +9,12 @@ prakriya seg_found(buf, nk, key, keyn) {
     yavat (i < nk) {
         seglen = akshar(buf, pos)
         yadi (seglen == keyn) {
-            yadi (khand_tul(buf + pos + 1, seglen, key, keyn) == 0) { prati 1 }
+            yadi (khand_tul(buf + pos + 1, seglen, key, keyn) == 0) { nivartanam 1 }
         }
         pos = pos + 1 + seglen
         i = i + 1
     }
-    prati 0
+    nivartanam 0
 }
 mukhya() {
     vitti m = nighantu_srij(8)

@@ -84,10 +84,10 @@ def main(argv) -> int:
     check(l.returncode == 0 and (t / 'gl.bin').read_bytes() == (t / 'gd.bin').read_bytes(), 'vitti: --object + link = direct')
     print('the same bytes: a program with a vitti, --object and linked alone, is the direct compile')
     # 3. the refusal
-    (t / 'li.sm').write_text('vitti G = 5\nprakriya g() {\n    prati G\n}\n')
+    (t / 'li.sm').write_text('vitti G = 5\nprakriya g() {\n    nivartanam G\n}\n')
     r = subprocess.run([comp, '--object', str(t / 'li.sm'), str(t / 'li.smo')], capture_output=True)
     check(r.returncode == 1 and b'vastu-patre ghatak-star vitti asamarthita' in r.stdout, f'refusal {r.stdout!r}')
-    (t / 'ln.sm').write_text('vitti G\nprakriya g() {\n    prati G\n}\n')
+    (t / 'ln.sm').write_text('vitti G\nprakriya g() {\n    nivartanam G\n}\n')
     r = subprocess.run([comp, '--object', str(t / 'ln.sm'), str(t / 'ln.smo')], capture_output=True)
     check(r.returncode == 0 and 'vitti:G' in symbols(t / 'ln.smo'), f'no initializer: accepted {r.stdout!r}')
     print('the refusal: an initialized vitti in a library object; without an initializer it is held')

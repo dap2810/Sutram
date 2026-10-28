@@ -110,7 +110,7 @@ python3 tools/check_setup_abi.py    # static Win64 ABI audit of the installer
 | `vitti` | variable | `anya` | else |
 | `anka` | integer | `yavat` | while |
 | `sutra` | constant | `chakra` | for |
-| `prakriya` | function | `prati` | return |
+| `prakriya` | function | `nivartanam` | return |
 | `likha` | print | `krama` | break |
 | `kosh` | growable mala | `agrim` | continue |
 | `dasham` | float | `rachana` | struct |

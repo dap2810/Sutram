@@ -23,7 +23,7 @@ prakriya dikha(parts, cnt) {
         w = w + 1 + len
         g = g + 1
     }
-    prati 0
+    nivartanam 0
 }
 mukhya() {
     vitti st = nirmmita(8)

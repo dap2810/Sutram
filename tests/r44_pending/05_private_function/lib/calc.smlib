@@ -1,4 +1,4 @@
 # sutram-module-v1
 niryat add
-prakriya helper() { prati 9 }
-prakriya add() { prati helper() + 2 }
+prakriya helper() { nivartanam 9 }
+prakriya add() { nivartanam helper() + 2 }
