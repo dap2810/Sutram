@@ -24,7 +24,7 @@ mukhya() {
     # --- derivative of x^2 at the midpoint sample (i=5 -> x=0.5 -> 2x = 1) ---
     likha(pravan(xs, ys, 5))
     # --- second derivative of x^2 is 2 everywhere ---
-    likha(pravan2(xs, ys, 5))
+    likha(dvitiya_pravan(xs, ys, 5))
 
     # --- root of x^2 - 2 on [0,2] ---
     kosh dasham c[4]

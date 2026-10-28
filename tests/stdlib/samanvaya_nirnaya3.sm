@@ -10,7 +10,7 @@ mukhya() {
     kosh_push(ident, 0.0)
     kosh_push(ident, 0.0)
     kosh_push(ident, 1.0)
-    likha(nirnaya3(ident))
+    likha(saranik3(ident))
     likha("\n")
     kosh dasham sing[9]
     kosh_push(sing, 1.0)
@@ -22,6 +22,6 @@ mukhya() {
     kosh_push(sing, 7.0)
     kosh_push(sing, 8.0)
     kosh_push(sing, 9.0)
-    likha(nirnaya3(sing))
+    likha(saranik3(sing))
     likha("\n")
 }

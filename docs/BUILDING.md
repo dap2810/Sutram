@@ -8,7 +8,7 @@ in old round reports reproduce those historical snapshots, not a current build.
 
 ## Input identity and developer commands
 
-Required core Git blob: `aedeb3136b2c4a03904a6607d6ba7c655f71e4a8` (re-pinned in ROUND-03; was `64ea028a…`, stale since v157).
+Required core Git blob: `a42bd106d7c3f5fe1c847c9e9b2d7dc0bfbd7bcf` (re-pinned in ROUND-03; was `64ea028a…`, stale since v157).
 R11: the core includes `src/r11_sandesh.inc`, every message per language pack, which is
 **generated**: edit `lang/<pack>.sandesh`, then run `python3 tools/sandesh.py --write`
 (it also writes `windows/gui/r11_ide_sandesh.inc`). `python3 tools/sandesh.py --check`

@@ -5,7 +5,7 @@ mukhya() {
     kosh_push(out, 0.0)
     kosh_push(out, 0.0)
     kosh_push(out, 0.0)
-    likha(pehchan(2, out))
+    likha(ekaka_matrika(2, out))
     likha("\n")
     likha(out[0])
     likha("\n")

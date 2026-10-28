@@ -1,9 +1,9 @@
 yoj ank
 mukhya() {
-    likha(asti_vilom(12321))
+    likha(asti_viparyay_sam(12321))
     likha("\n")
-    likha(asti_vilom(12345))
+    likha(asti_viparyay_sam(12345))
     likha("\n")
-    likha(asti_vilom(7))
+    likha(asti_viparyay_sam(7))
     likha("\n")
 }

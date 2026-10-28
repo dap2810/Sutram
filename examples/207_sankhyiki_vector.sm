@@ -13,12 +13,12 @@ mukhya() {
     kosh_push(b, 1)
     kosh_push(b, 2)
 
-    likha(bindu(a, b))
+    likha(bindu_gunan(a, b))
     likha(manak(a))
 
     kosh dasham c[2]
     kosh_push(c, 1)
     kosh_push(c, 1)
     kosh_push(c, 1)
-    likha(bindu(a, c))
+    likha(bindu_gunan(a, c))
 }

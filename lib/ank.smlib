@@ -54,8 +54,8 @@ prakriya viparyay_ank(n) {
     nivartanam r
 }
 
-# asti_vilom(n) — 1 if n reads the same backwards (a palindrome); negatives are never palindromes.
-prakriya asti_vilom(n) {
+# asti_viparyay_sam(n) — 1 if n reads the same backwards (a palindrome); negatives are never palindromes.
+prakriya asti_viparyay_sam(n) {
     # Negatives are not palindromes (the '-' is not a digit).
     yadi (n < 0) { nivartanam 0 }
     vitti r = viparyay_ank(n)

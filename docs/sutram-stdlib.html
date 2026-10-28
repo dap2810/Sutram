@@ -62,7 +62,7 @@ Do not edit by hand.</p>
 <tr><td><code>ank_gan(n)</code></td><td>ank_gan(n) — number of decimal digits in n (sign ignored; MIN counts as 19).</td></tr>
 <tr><td><code>ank_yog(n)</code></td><td>ank_yog(n) — sum of the decimal digits of n (sign ignored; MIN counts as 89).</td></tr>
 <tr><td><code>viparyay_ank(n)</code></td><td>viparyay_ank(n) — n with its decimal digits reversed, sign kept (e.g. -123 -&gt; -321).</td></tr>
-<tr><td><code>asti_vilom(n)</code></td><td>asti_vilom(n) — 1 if n reads the same backwards (a palindrome); negatives are never palindromes.</td></tr>
+<tr><td><code>asti_viparyay_sam(n)</code></td><td>asti_viparyay_sam(n) — 1 if n reads the same backwards (a palindrome); negatives are never palindromes.</td></tr>
 <tr><td><code>seemit(n, lo, hi)</code></td><td>seemit(n, lo, hi) — n clamped into [lo, hi]: lo if n &lt; lo, hi if n &gt; hi, else n.</td></tr>
 <tr><td><code>fib(n)</code></td><td>fib(n) — the nth Fibonacci number (fib(0) = 0, fib(1) = 1), iterative; wraps past int64.</td></tr>
 <tr><td><code>asti_sampurna(n)</code></td><td>asti_sampurna(n) — 1 if n is a perfect number (equals the sum of its proper divisors), else 0.</td></tr>
@@ -117,8 +117,8 @@ Do not edit by hand.</p>
 <tr><td><code>nirapeksh_mulya(n)</code></td><td>nirapeksh_mulya(n) — absolute value of n (MIN wraps to MIN, as it cannot be negated).</td></tr>
 <tr><td><code>laghu2(a, b)</code></td><td>laghu2(a, b) — the smaller of a and b.</td></tr>
 <tr><td><code>adhik2(a, b)</code></td><td>adhik2(a, b) — the larger of a and b.</td></tr>
-<tr><td><code>mahattam(a, b)</code></td><td>mahattam(a, b) — greatest common divisor of a and b, always non-negative (mahattam(0, 0) = 0).</td></tr>
-<tr><td><code>laghuttam(a, b)</code></td><td>laghuttam(a, b) — least common multiple of a and b, always non-negative (laghuttam(0, 0) = 0).</td></tr>
+<tr><td><code>mahattam_samapavartak(a, b)</code></td><td>mahattam_samapavartak(a, b) — greatest common divisor of a and b, always non-negative (mahattam_samapavartak(0, 0) = 0).</td></tr>
+<tr><td><code>laghuttam_samapavartya(a, b)</code></td><td>laghuttam_samapavartya(a, b) — least common multiple of a and b, always non-negative (laghuttam_samapavartya(0, 0) = 0).</td></tr>
 <tr><td><code>ghat(base, e)</code></td><td>ghat(base, e) — base raised to the power e (e &gt;= 0; negative e returns 1, as the loop never runs).</td></tr>
 <tr><td><code>kramgun(n)</code></td><td>kramgun(n) — n factorial (n!); 1 for n &lt; 2; wraps past int64 for n &gt;= 21.</td></tr>
 <tr><td><code>asti_abhajya(n)</code></td><td>asti_abhajya(n) — 1 if n is prime, 0 otherwise (n &lt; 2 is not prime).</td></tr>
@@ -131,7 +131,7 @@ Do not edit by hand.</p>
 <tr><td><code>ganit_seemit(v, lo, hi)</code></td><td>ganit_seemit(v, lo, hi): lo if v &lt; lo, hi if v &gt; hi, else v. Requires lo &lt;= hi. If lo &gt; hi: lo when v &lt; lo, otherwise hi (R9, F4: the old comment said lo always; ganit_seemit(4, 4, -2) is -2).</td></tr>
 </table>
 <h2 id="ganita"><code>ganita</code></h2>
-<p class="shesh-desc">layer: core After Aryabhata&#x27;s Kuttaka (~499 CE) and the Chakravala of Jayadeva and Bhaskara II (~1150 CE). KUTTAKA (&quot;the pulveriser&quot;) solves the linear indeterminate equation ax + by = c. It is the ancestor of the extended Euclidean algorithm. CHAKRAVALA (&quot;the wheel&quot;) solves x^2 - N*y^2 = 1 (Pell&#x27;s equation); N = 61 gives x = 1766319049, y = 226153980. CHECKED / SATURATING ARITHMETIC (R18) lives here too: ganita is the arithmetic module. See the notes above ganita_janchit_yuj. kuttaka(a, b, c) -&gt; x such that a*x is congruent to c (shesh b). Requires mahattam(a, b) to divide c. Returns x (a particular solution).</p>
+<p class="shesh-desc">layer: core After Aryabhata&#x27;s Kuttaka (~499 CE) and the Chakravala of Jayadeva and Bhaskara II (~1150 CE). KUTTAKA (&quot;the pulveriser&quot;) solves the linear indeterminate equation ax + by = c. It is the ancestor of the extended Euclidean algorithm. CHAKRAVALA (&quot;the wheel&quot;) solves x^2 - N*y^2 = 1 (Pell&#x27;s equation); N = 61 gives x = 1766319049, y = 226153980. CHECKED / SATURATING ARITHMETIC (R18) lives here too: ganita is the arithmetic module. See the notes above ganita_janchit_yuj. kuttaka(a, b, c) -&gt; x such that a*x is congruent to c (shesh b). Requires mahattam_samapavartak(a, b) to divide c. Returns x (a particular solution).</p>
 <table>
 <tr><th>Function</th><th>Description</th></tr>
 <tr><td><code>kuttaka(a, b, c)</code></td><td></td></tr>
@@ -171,7 +171,7 @@ Do not edit by hand.</p>
 <tr><td><code>kalana_trapiz(kosh dasham xs, kosh dasham ys)</code></td><td></td></tr>
 <tr><td><code>simpson(kosh dasham xs, kosh dasham ys)</code></td><td>Simpson&#x27;s 1/3 rule over equally spaced samples. Needs an odd number of points (even intervals); for usable even n &gt;= 4 drops the final sample; n &lt; 3 uses kalana_trapiz.</td></tr>
 <tr><td><code>pravan(kosh dasham xs, kosh dasham ys, i)</code></td><td>Central difference at interior point i; one-sided at the ends.</td></tr>
-<tr><td><code>pravan2(kosh dasham xs, kosh dasham ys, i)</code></td><td>Second derivative at an interior point (central, equally spaced assumption relaxed).</td></tr>
+<tr><td><code>dvitiya_pravan(kosh dasham xs, kosh dasham ys, i)</code></td><td>Second derivative at an interior point (central, equally spaced assumption relaxed).</td></tr>
 <tr><td><code>bahu_ganana(kosh dasham c, dasham x)</code></td><td>Horner evaluation: c[0] + c[1]x + c[2]x^2 + ...</td></tr>
 <tr><td><code>bahu_mula(kosh dasham c, dasham lo, dasham hi, kosh dasham ok)</code></td><td>Bisection root of a polynomial on [lo, hi]. CONTRACT: `ok` must already contain ONE element (call kosh_push(ok, 0.0) first). A kosh&#x27;s capacity is not its length, so ok[0] is out of bounds until an element exists. Requires a util_chinha change across the interval, which is checked and reported by returning a NaN-like sentinel of 0.0 with ok=0. ok is returned through a one-element kosh so the caller can tell success from failure.</td></tr>
 </table>
@@ -319,14 +319,14 @@ Do not edit by hand.</p>
 <table>
 <tr><th>Function</th><th>Description</th></tr>
 <tr><td><code>samanvaya_akar_ayogya(m, n, len)</code></td><td></td></tr>
-<tr><td><code>pehchan(n, kosh dasham out)</code></td><td>identity matrix: n x n, out must hold n*n elements</td></tr>
+<tr><td><code>ekaka_matrika(n, kosh dasham out)</code></td><td>identity matrix: n x n, out must hold n*n elements</td></tr>
 <tr><td><code>vivartana(kosh dasham a, m, n, kosh dasham out)</code></td><td>transpose: a is m x n, out must hold n*m elements</td></tr>
 <tr><td><code>matrika_yoga(kosh dasham a, kosh dasham b, m, n, kosh dasham out)</code></td><td>element-wise sum: a and b are m x n, out must hold m*n elements. R37: -1 if m x n does not fit a, b and out (or m, n &lt; 0); m * n is never formed until it is known to fit, so it cannot wrap to a small loop.</td></tr>
 <tr><td><code>skalar(kosh dasham a, dasham c, m, n, kosh dasham out)</code></td><td>scalar multiple: out must hold m*n elements. R37: -1 if m x n does not fit.</td></tr>
 <tr><td><code>matrika_gunana(kosh dasham a, kosh dasham b, m, n, p, kosh dasham out)</code></td><td>matrix product: a is m x n, b is n x p, out must hold m*p elements</td></tr>
-<tr><td><code>nishan(kosh dasham a, n)</code></td><td>trace of an n x n matrix</td></tr>
-<tr><td><code>nirnaya2(kosh dasham a)</code></td><td>determinant of a 2 x 2 matrix (a holds 4 elements)</td></tr>
-<tr><td><code>nirnaya3(kosh dasham a)</code></td><td>determinant of a 3 x 3 matrix (a holds 9 elements), by cofactor expansion</td></tr>
+<tr><td><code>karna_yog(kosh dasham a, n)</code></td><td>trace of an n x n matrix</td></tr>
+<tr><td><code>saranik2(kosh dasham a)</code></td><td>determinant of a 2 x 2 matrix (a holds 4 elements)</td></tr>
+<tr><td><code>saranik3(kosh dasham a)</code></td><td>determinant of a 3 x 3 matrix (a holds 9 elements), by cofactor expansion</td></tr>
 <tr><td><code>sadish_yoga(kosh dasham u, kosh dasham v)</code></td><td>dot product of flat vectors u and v over min(kosh_len(u), kosh_len(v)) entries.</td></tr>
 <tr><td><code>rekha_manak(kosh dasham a, m, n)</code></td><td>largest absolute row sum (a cheap norm, useful for conditioning checks)</td></tr>
 </table>
@@ -361,7 +361,7 @@ Do not edit by hand.</p>
 <tr><td><code>prasaran(kosh dasham xs)</code></td><td>--- population variance (प्रसरण) ---</td></tr>
 <tr><td><code>sankhyiki_vargmool(dasham v)</code></td><td>--- vargit root, Newton&#x27;s method (private to this module: distinct name so it never collides with madhava_vargmool or a user function) --- 1000 iterations, as madhava_vargmool (20 gave 1279996 for sqrt(1e12)).</td></tr>
 <tr><td><code>vichalan(kosh dasham xs)</code></td><td>--- population standard deviation (मानक विचलन) ---</td></tr>
-<tr><td><code>bindu(kosh dasham a, kosh dasham b)</code></td><td>--- dot product of two float arrays (बिंदु गुणनफल) ---</td></tr>
+<tr><td><code>bindu_gunan(kosh dasham a, kosh dasham b)</code></td><td>--- dot product of two float arrays (बिंदु गुणनफल) ---</td></tr>
 <tr><td><code>manak(kosh dasham a)</code></td><td>--- Euclidean norm (magnitude) of a vector ---</td></tr>
 <tr><td><code>purna_yoga(xs, n)</code></td><td>--- integer sum ---</td></tr>
 <tr><td><code>purna_madhya(xs, n)</code></td><td>--- integer mean (truncated toward zero) ---</td></tr>

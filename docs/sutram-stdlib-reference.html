@@ -77,7 +77,7 @@ program with <code>yoj</code>, naming it without the extension:</p>
 <span class="k">yoj</span> ganit
 
 <span class="k">mukhya</span>()
-    <span class="k">vitti</span> g = mahattam(48, 18)
+    <span class="k">vitti</span> g = mahattam_samapavartak(48, 18)
     likha(g)
 <span class="k">samapt</span></pre>
 
@@ -136,7 +136,7 @@ program at that point. That has three consequences worth knowing:</p>
 
   <section class="shesh" id="ganit">
     <h3>ganit <span class="lay lay-core">core</span> <span class="cnt">18 functions</span></h3>
-    <p class="what">Arithmetic and number theory — squares, mahattam, laghuttam, factorials, primes.</p>
+    <p class="what">Arithmetic and number theory — squares, mahattam_samapavartak, laghuttam_samapavartya, factorials, primes.</p>
     <p class="laynote">Pure computation. Touches no OS service and allocates nothing.</p>
     <table class="fns"><tbody>
       <tr><td class="sig"><code>varg(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
@@ -145,8 +145,8 @@ program at that point. That has three consequences worth knowing:</p>
       <tr><td class="sig"><code>nirapeksh_mulya(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
       <tr><td class="sig"><code>laghu2(a, b)</code></td><td class="doc"><span class=dim>—</span></td></tr>
       <tr><td class="sig"><code>adhik2(a, b)</code></td><td class="doc"><span class=dim>—</span></td></tr>
-      <tr><td class="sig"><code>mahattam(a, b)</code></td><td class="doc"><span class=dim>—</span></td></tr>
-      <tr><td class="sig"><code>laghuttam(a, b)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>mahattam_samapavartak(a, b)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>laghuttam_samapavartya(a, b)</code></td><td class="doc"><span class=dim>—</span></td></tr>
       <tr><td class="sig"><code>ghat(base, e)</code></td><td class="doc"><span class=dim>—</span></td></tr>
       <tr><td class="sig"><code>kramgun(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
       <tr><td class="sig"><code>asti_abhajya(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
@@ -160,8 +160,8 @@ program at that point. That has three consequences worth knowing:</p>
     </tbody></table>
     <pre class="ex">yoj ganit
 mukhya()
-    likha(mahattam(48, 18))        ; 6
-    likha(laghuttam(4, 6))          ; 12
+    likha(mahattam_samapavartak(48, 18))        ; 6
+    likha(laghuttam_samapavartya(4, 6))          ; 12
     likha(kramgun(5))            ; 120
 samapt</pre>
   </section>
@@ -175,7 +175,7 @@ samapt</pre>
       <tr><td class="sig"><code>ank_gan(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
       <tr><td class="sig"><code>ank_yog(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
       <tr><td class="sig"><code>viparyay_ank(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
-      <tr><td class="sig"><code>asti_vilom(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>asti_viparyay_sam(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
       <tr><td class="sig"><code>seemit(n, lo, hi)</code></td><td class="doc"><span class=dim>—</span></td></tr>
       <tr><td class="sig"><code>fib(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
       <tr><td class="sig"><code>asti_sampurna(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
@@ -193,7 +193,7 @@ samapt</pre>
     <p class="what">The checked-arithmetic core: every operation that can overflow has a checked and a saturating form.</p>
     <p class="laynote">Pure computation. Touches no OS service and allocates nothing.</p>
     <table class="fns"><tbody>
-      <tr><td class="sig"><code>kuttaka(a, b, c)</code></td><td class="doc">Requires mahattam(a, b) to divide c. Returns x (a particular solution).</td></tr>
+      <tr><td class="sig"><code>kuttaka(a, b, c)</code></td><td class="doc">Requires mahattam_samapavartak(a, b) to divide c. Returns x (a particular solution).</td></tr>
       <tr><td class="sig"><code>ganita_vargmool(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
       <tr><td class="sig"><code>ganita_nirapeksh(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
       <tr><td class="sig"><code>chakravala(out, n)</code></td><td class="doc">Fills out[0] = x and out[1] = y.</td></tr>
@@ -273,7 +273,7 @@ samapt</pre>
       <tr><td class="sig"><code>prasaran(kosh dasham xs)</code></td><td class="doc"><span class=dim>—</span></td></tr>
       <tr><td class="sig"><code>sankhyiki_vargmool(dasham v)</code></td><td class="doc"><span class=dim>—</span></td></tr>
       <tr><td class="sig"><code>vichalan(kosh dasham xs)</code></td><td class="doc"><span class=dim>—</span></td></tr>
-      <tr><td class="sig"><code>bindu(kosh dasham a, kosh dasham b)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>bindu_gunan(kosh dasham a, kosh dasham b)</code></td><td class="doc"><span class=dim>—</span></td></tr>
       <tr><td class="sig"><code>manak(kosh dasham a)</code></td><td class="doc"><span class=dim>—</span></td></tr>
       <tr><td class="sig"><code>purna_yoga(xs, n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
       <tr><td class="sig"><code>purna_madhya(xs, n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
@@ -297,7 +297,7 @@ samapt</pre>
       <tr><td class="sig"><code>kalana_trapiz(kosh dasham xs, kosh dasham ys)</code></td><td class="doc">Trapezoidal rule. xs and ys are sample points and values; uses the shorter length.</td></tr>
       <tr><td class="sig"><code>simpson(kosh dasham xs, kosh dasham ys)</code></td><td class="doc">Simpson&#x27;s 1/3 rule over equally spaced samples. Needs an odd number of points</td></tr>
       <tr><td class="sig"><code>pravan(kosh dasham xs, kosh dasham ys, i)</code></td><td class="doc">Central difference at interior point i; one-sided at the ends.</td></tr>
-      <tr><td class="sig"><code>pravan2(kosh dasham xs, kosh dasham ys, i)</code></td><td class="doc">Second derivative at an interior point (central, equally spaced assumption relaxed).</td></tr>
+      <tr><td class="sig"><code>dvitiya_pravan(kosh dasham xs, kosh dasham ys, i)</code></td><td class="doc">Second derivative at an interior point (central, equally spaced assumption relaxed).</td></tr>
       <tr><td class="sig"><code>bahu_ganana(kosh dasham c, dasham x)</code></td><td class="doc">Horner evaluation: c[0] + c[1]x + c[2]x^2 + ...</td></tr>
       <tr><td class="sig"><code>bahu_mula(kosh dasham c, dasham lo, dasham hi, kosh dasham ok)</code></td><td class="doc">Bisection root of a polynomial on [lo, hi].</td></tr>
     </tbody></table>
@@ -669,14 +669,14 @@ samapt</pre>
     <p class="what">Coordination — joining, grouping and aligning collections.</p>
     <p class="laynote">Pure computation. Touches no OS service and allocates nothing.</p>
     <table class="fns"><tbody>
-      <tr><td class="sig"><code>pehchan(n, kosh dasham out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>ekaka_matrika(n, kosh dasham out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
       <tr><td class="sig"><code>vivartana(kosh dasham a, m, n, kosh dasham out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
       <tr><td class="sig"><code>matrika_yoga(kosh dasham a, kosh dasham b, m, n, kosh dasham out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
       <tr><td class="sig"><code>skalar(kosh dasham a, dasham c, m, n, kosh dasham out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
       <tr><td class="sig"><code>matrika_gunana(kosh dasham a, kosh dasham b, m, n, p, kosh dasham out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
-      <tr><td class="sig"><code>nishan(kosh dasham a, n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
-      <tr><td class="sig"><code>nirnaya2(kosh dasham a)</code></td><td class="doc"><span class=dim>—</span></td></tr>
-      <tr><td class="sig"><code>nirnaya3(kosh dasham a)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>karna_yog(kosh dasham a, n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>saranik2(kosh dasham a)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>saranik3(kosh dasham a)</code></td><td class="doc"><span class=dim>—</span></td></tr>
       <tr><td class="sig"><code>sadish_yoga(kosh dasham u, kosh dasham v)</code></td><td class="doc"><span class=dim>—</span></td></tr>
       <tr><td class="sig"><code>rekha_manak(kosh dasham a, m, n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
     </tbody></table>

@@ -76,7 +76,7 @@ prakriya pravan(kosh dasham xs, kosh dasham ys, i) {
 }
 
 # Second derivative at an interior point (central, equally spaced assumption relaxed).
-prakriya pravan2(kosh dasham xs, kosh dasham ys, i) {
+prakriya dvitiya_pravan(kosh dasham xs, kosh dasham ys, i) {
     vitti n = kosh_len(xs)
     yadi (kosh_len(ys) < n) { n = kosh_len(ys) }
     yadi (i <= 0) { nivartanam 0.0 }

@@ -29,7 +29,7 @@ prakriya samanvaya_akar_ayogya(m, n, len) {
 }
 
 # identity matrix: n x n, out must hold n*n elements
-prakriya pehchan(n, kosh dasham out) {
+prakriya ekaka_matrika(n, kosh dasham out) {
     vitti i = 0
     yavat (i < n) {
         vitti j = 0
@@ -108,7 +108,7 @@ prakriya matrika_gunana(kosh dasham a, kosh dasham b, m, n, p, kosh dasham out) 
 }
 
 # trace of an n x n matrix
-prakriya nishan(kosh dasham a, n) {
+prakriya karna_yog(kosh dasham a, n) {
     dasham t = 0.0
     vitti i = 0
     yavat (i < n) {
@@ -119,12 +119,12 @@ prakriya nishan(kosh dasham a, n) {
 }
 
 # determinant of a 2 x 2 matrix (a holds 4 elements)
-prakriya nirnaya2(kosh dasham a) {
+prakriya saranik2(kosh dasham a) {
     nivartanam a[0] * a[3] - a[1] * a[2]
 }
 
 # determinant of a 3 x 3 matrix (a holds 9 elements), by cofactor expansion
-prakriya nirnaya3(kosh dasham a) {
+prakriya saranik3(kosh dasham a) {
     dasham t1 = a[0] * (a[4] * a[8] - a[5] * a[7])
     dasham t2 = a[1] * (a[3] * a[8] - a[5] * a[6])
     dasham t3 = a[2] * (a[3] * a[7] - a[4] * a[6])

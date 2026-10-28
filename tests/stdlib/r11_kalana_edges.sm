@@ -11,8 +11,8 @@ mukhya() {
     likha(pravan(xs, ys, 0))
     kosh_push(xs, 3.0)
     kosh_push(ys, 7.0)
-    likha(pravan2(xs, ys, 2))
-    likha(pravan2(xs, ys, 1))
+    likha(dvitiya_pravan(xs, ys, 2))
+    likha(dvitiya_pravan(xs, ys, 1))
     kosh dasham c[2]
     kosh_push(c, -1.0)
     kosh_push(c, 1.0)

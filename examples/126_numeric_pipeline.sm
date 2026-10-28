@@ -35,7 +35,7 @@ mukhya() {
         i = i + 1
     }
     likha(total)
-    likha(bindu(u, v))
+    likha(bindu_gunan(u, v))
     likha(manak(u))
     likha(madhava_pi())
 }

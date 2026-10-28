@@ -27,8 +27,8 @@ mukhya() {
     likha(c[2])
     likha(c[3])
 
-    likha(nishan(a, 2))
-    likha(nirnaya2(a))
+    likha(karna_yog(a, 2))
+    likha(saranik2(a))
     likha(rekha_manak(a, 2, 2))
 
     kosh dasham d[9]
@@ -41,13 +41,13 @@ mukhya() {
     kosh_push(d, 2.0)
     kosh_push(d, 8.0)
     kosh_push(d, 7.0)
-    likha(nirnaya3(d))
+    likha(saranik3(d))
 
     kosh dasham id[9]
     vitti w = 0
     yavat (w < 9) { kosh_push(id, 0.0); w = w + 1 }
-    likha(pehchan(3, id))
-    likha(nishan(id, 3))
+    likha(ekaka_matrika(3, id))
+    likha(karna_yog(id, 3))
 
     kosh dasham e[6]
     kosh_push(e, 1.0)

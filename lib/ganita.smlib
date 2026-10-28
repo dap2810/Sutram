@@ -13,7 +13,7 @@
 # arithmetic module. See the notes above ganita_janchit_yuj.
 
 # kuttaka(a, b, c) -> x such that a*x is congruent to c (shesh b).
-# Requires mahattam(a, b) to divide c. Returns x (a particular solution).
+# Requires mahattam_samapavartak(a, b) to divide c. Returns x (a particular solution).
 prakriya kuttaka(a, b, c) {
     vitti old_r = a
     vitti r = b

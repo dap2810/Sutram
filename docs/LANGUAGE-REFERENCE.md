@@ -209,8 +209,8 @@ no runtime dependency, the code becomes part of your binary. `lib/` ships:
 
 | module | include with | functions |
 |---|---|---|
-| ganit | `yoj ganit` | 15 — `varg`, `vargit`, `ghan`, `dvigun`, `trigun`, `vardh`, `nirapeksh_mulya`, `laghu2`, `adhik2`, `mahattam`, `laghuttam`, `ghat`, `kramgun`, `asti_abhajya`, `yog_tak` |
-| ank | `yoj ank` | 10 — `asti_yugm`, `asti_visham`, `ank_gan`, `ank_yog`, `viparyay_ank`, `asti_vilom`, `seemit`, `fib`, `asti_sampurna`, `collatz_charan` |
+| ganit | `yoj ganit` | 15 — `varg`, `vargit`, `ghan`, `dvigun`, `trigun`, `vardh`, `nirapeksh_mulya`, `laghu2`, `adhik2`, `mahattam_samapavartak`, `laghuttam_samapavartya`, `ghat`, `kramgun`, `asti_abhajya`, `yog_tak` |
+| ank | `yoj ank` | 10 — `asti_yugm`, `asti_visham`, `ank_gan`, `ank_yog`, `viparyay_ank`, `asti_viparyay_sam`, `seemit`, `fib`, `asti_sampurna`, `collatz_charan` |
 | shreni | `yoj shreni` | 11 — `vinimay`, `budbud_shreni`, `shankh_shreni`, `viparyay_mala`, `laghu`, `adhik`, `yog`, `anwesh_sarak`, `gan`, `asti_sorted`, `dwi_anwesh` |
 | ganita | `yoj ganita` | 6 — `kuttaka` (linear indeterminate), `chakravala` (Pell's equation x^2-Ny^2=1), `samasa` (Brahmagupta's composition law), `brahmagupta_kshetr` (cyclic-quadrilateral area), `ganita_vargmool`, `ganita_nirapeksh` |
 | madhava | `yoj madhava` | 5 — `madhava_pi`, `madhava_sin`, `madhava_cos`, `madhava_atan`, `madhava_vargmool` (Kerala school, T12 floats) |
@@ -226,7 +226,7 @@ Example:
 yoj ganit
 
 mukhya()
-    likha(mahattam(48, 36))     # 12
+    likha(mahattam_samapavartak(48, 36))     # 12
     likha("\n")
     likha(kramgun(5))         # 120
     likha("\n")

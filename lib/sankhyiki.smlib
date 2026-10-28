@@ -96,7 +96,7 @@ prakriya vichalan(kosh dasham xs) {
 }
 
 # --- dot product of two float arrays (बिंदु गुणनफल) ---
-prakriya bindu(kosh dasham a, kosh dasham b) {
+prakriya bindu_gunan(kosh dasham a, kosh dasham b) {
     vitti na = kosh_len(a)
     vitti nb = kosh_len(b)
     vitti n = na
@@ -112,7 +112,7 @@ prakriya bindu(kosh dasham a, kosh dasham b) {
 
 # --- Euclidean norm (magnitude) of a vector ---
 prakriya manak(kosh dasham a) {
-    nivartanam sankhyiki_vargmool(bindu(a, a))
+    nivartanam sankhyiki_vargmool(bindu_gunan(a, a))
 }
 
 # ---------------------------------------------------------------------------

@@ -38,9 +38,9 @@ mukhya() {
     likha(ank_gan(10))
     likha(ank_gan(100))
     likha(ank_gan(0 - 10))
-    # viparyay_ank / asti_vilom at 0
+    # viparyay_ank / asti_viparyay_sam at 0
     likha(viparyay_ank(0))
-    likha(asti_vilom(0))
+    likha(asti_viparyay_sam(0))
     # unnat_sanket / avanat_sanket at both ends of each letter range
     likha(unnat_sanket(96))
     likha(unnat_sanket(97))

@@ -193,7 +193,7 @@ def prop_bigint_divmod(compiler, rng):
 
 
 def prop_math_gcd(compiler, rng):
-    """mahattam(a,b) divides both a and b"""
+    """mahattam_samapavartak(a,b) divides both a and b"""
     cases = []
     for _ in range(N_CASES):
         a = rng.randint(1, 9999)
@@ -203,7 +203,7 @@ def prop_math_gcd(compiler, rng):
     # NOTE: use unique var names per case — redeclaring `vitti g` in the same
     # block does not reassign (compiler limitation, found by this property).
     for idx, (a, b) in enumerate(cases):
-        lines.append(f"    vitti g{idx} = mahattam({a}, {b})")
+        lines.append(f"    vitti g{idx} = mahattam_samapavartak({a}, {b})")
         lines.append(f"    yadi ({a} % g{idx} != 0) {{")
         lines.append(f'        likha("FAIL gcd_divides {a} {b}\\n")')
         lines.append(f"        prati 1")
@@ -214,12 +214,12 @@ def prop_math_gcd(compiler, rng):
         lines.append(f"    }}")
     lines.append('    likha("PASS\\n")')
     lines.append("}")
-    ok, out = run_sm(compiler, "mahattam", "\n".join(lines))
+    ok, out = run_sm(compiler, "mahattam_samapavartak", "\n".join(lines))
     return ok and out == "PASS", out
 
 
 def prop_math_gcd_lcm(compiler, rng):
-    """mahattam(a,b) * laghuttam(a,b) == a * b"""
+    """mahattam_samapavartak(a,b) * laghuttam_samapavartya(a,b) == a * b"""
     cases = []
     for _ in range(N_CASES):
         a = rng.randint(1, 999)
@@ -227,7 +227,7 @@ def prop_math_gcd_lcm(compiler, rng):
         cases.append((a, b))
     lines = ["yoj ganit", "mukhya() {"]
     for a, b in cases:
-        lines.append(f"    yadi (mahattam({a},{b}) * laghuttam({a},{b}) != {a}*{b}) {{")
+        lines.append(f"    yadi (mahattam_samapavartak({a},{b}) * laghuttam_samapavartya({a},{b}) != {a}*{b}) {{")
         lines.append(f'        likha("FAIL gcd_lcm {a} {b}\\n")')
         lines.append(f"        prati 1")
         lines.append(f"    }}")
@@ -4019,7 +4019,7 @@ def prop_ok_convention(compiler, rng):
 
 
 def prop_numeric28(compiler, rng):
-    """R28 WS3: the numeric contract — mahattam/laghuttam util_chinha and zero cases,
+    """R28 WS3: the numeric contract — mahattam_samapavartak/laghuttam_samapavartya util_chinha and zero cases,
     math ghat/kramgun edges, wrapping abs, bit_gan negatives,
     asti_abhajya/yog_tak edges, and the documented domain limits."""
     lines = ["yoj ganit", "yoj ganita", "yoj roop", "yoj vakyank",
@@ -4036,18 +4036,18 @@ def prop_numeric28(compiler, rng):
         lines.append("        prati 1")
         lines.append("    }")
 
-    # mahattam is non-negative; mahattam(0,0) = 0
-    check("mahattam(0 - 6, 4)", 2, "mahattam neg first")
-    check("mahattam(6, 0 - 4)", 2, "mahattam neg second")
-    check("mahattam(0 - 6, 0 - 4)", 2, "mahattam both neg")
-    check("mahattam(0, 0)", 0, "mahattam 0 0")
-    check("mahattam(0, 5)", 5, "mahattam 0 5")
-    # laghuttam is non-negative; laghuttam(0,0) = 0 (was SIGFPE)
-    check("laghuttam(0, 0)", 0, "laghuttam 0 0")
-    check("laghuttam(0, 5)", 0, "laghuttam 0 5")
-    check("laghuttam(6, 4)", 12, "laghuttam 6 4")
-    check("laghuttam(0 - 6, 4)", 12, "laghuttam neg")
-    check("laghuttam(6, 0 - 4)", 12, "laghuttam neg2")
+    # mahattam_samapavartak is non-negative; mahattam_samapavartak(0,0) = 0
+    check("mahattam_samapavartak(0 - 6, 4)", 2, "mahattam_samapavartak neg first")
+    check("mahattam_samapavartak(6, 0 - 4)", 2, "mahattam_samapavartak neg second")
+    check("mahattam_samapavartak(0 - 6, 0 - 4)", 2, "mahattam_samapavartak both neg")
+    check("mahattam_samapavartak(0, 0)", 0, "mahattam_samapavartak 0 0")
+    check("mahattam_samapavartak(0, 5)", 5, "mahattam_samapavartak 0 5")
+    # laghuttam_samapavartya is non-negative; laghuttam_samapavartya(0,0) = 0 (was SIGFPE)
+    check("laghuttam_samapavartya(0, 0)", 0, "laghuttam_samapavartya 0 0")
+    check("laghuttam_samapavartya(0, 5)", 0, "laghuttam_samapavartya 0 5")
+    check("laghuttam_samapavartya(6, 4)", 12, "laghuttam_samapavartya 6 4")
+    check("laghuttam_samapavartya(0 - 6, 4)", 12, "laghuttam_samapavartya neg")
+    check("laghuttam_samapavartya(6, 0 - 4)", 12, "laghuttam_samapavartya neg2")
     # math ghat/kramgun edges: non-positive exponent/argument -> 1
     check("ghat(2, 0)", 1, "ghat 0")
     check("ghat(2, 0 - 1)", 1, "ghat neg")
@@ -4340,8 +4340,8 @@ def prop_edge30_int(compiler, rng):
     check("viparyay_ank(0 - 123)", "0 - 321", "viparyay_ank neg")
     check("viparyay_ank(minv)", "0 - 8085774586302733229",
           "viparyay_ank MIN")
-    check("asti_vilom(0 - 121)", 0, "asti_vilom neg")
-    check("asti_vilom(121)", 1, "asti_vilom 121")
+    check("asti_viparyay_sam(0 - 121)", 0, "asti_viparyay_sam neg")
+    check("asti_viparyay_sam(121)", 1, "asti_viparyay_sam 121")
     # math: kramgun iterative (no stack exhaustion), yog_tak closed form
     check("kramgun(21)", "0 - 4249290049419214848", "kramgun 21 wrap")
     fact100k = 1
@@ -4625,7 +4625,7 @@ def prop_edge30_float(compiler, rng):
         # R7: one name per call (was `vitti f` three times; E_DUPLICATE_NAME since R7)
         lines.append(f"    vitti fbig{n} = varna_tak_dashm(buf, {len(s)}, ok)")
         check("ok[0]", want, msg)
-    # kalana: duplicate x -> pravan/pravan2 0.0 (was inf/blank)
+    # kalana: duplicate x -> pravan/dvitiya_pravan 0.0 (was inf/blank)
     lines.append("    kosh_push(xs, 1.0)")
     lines.append("    kosh_push(xs, 1.0)")
     lines.append("    kosh_push(xs, 2.0)")
@@ -4633,7 +4633,7 @@ def prop_edge30_float(compiler, rng):
     lines.append("    kosh_push(ys, 5.0)")
     lines.append("    kosh_push(ys, 7.0)")
     check("pravan(xs, ys, 0)", "0.0", "pravan dup x")
-    check("pravan2(xs, ys, 1)", "0.0", "pravan2 dup x")
+    check("dvitiya_pravan(xs, ys, 1)", "0.0", "dvitiya_pravan dup x")
     lines.append('    likha("PASS\\n")')
     lines.append("}")
     ok, out = run_sm(compiler, "edge30_float", "\n".join(lines))
@@ -4750,8 +4750,8 @@ def main():
         ("bigint mul distributes over add", prop_bigint_mul_distrib),
         ("bigint from_int/to_int roundtrip", prop_bigint_roundtrip),
         ("bigint divmod reconstruct", prop_bigint_divmod),
-        ("math mahattam divides", prop_math_gcd),
-        ("math mahattam*laghuttam == a*b", prop_math_gcd_lcm),
+        ("math mahattam_samapavartak divides", prop_math_gcd),
+        ("math mahattam_samapavartak*laghuttam_samapavartya == a*b", prop_math_gcd_lcm),
         ("hash fnv1a deterministic", prop_hash_fnv1a_deterministic),
         ("hash fnv1a empty == basis", prop_hash_fnv1a_empty),
         ("hash fnv1a avalanche", prop_hash_fnv1a_avalanche),
