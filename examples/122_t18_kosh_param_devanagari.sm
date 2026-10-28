@@ -1,10 +1,10 @@
-# Devanagari type aliases are first-class in function parameter syntax.
-prakriya first(कोश दशम a) {
+# Devanagari type aliases are pratham-class in function parameter syntax.
+prakriya pratham(कोश दशम a) {
     prati a[0]
 }
 
 mukhya() {
     कोश दशम values[1]
     kosh_push(values, 2.25)
-    likha(first(values))
+    likha(pratham(values))
 }
