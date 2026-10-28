@@ -1,0 +1,229 @@
+name	english	real_word(Y/N)	dictionary_form	meaning	sense_fits(PASS/FAIL)	better_word	reason
+mukhya	main	Y	मुख्य	chief, principal	PASS		Technical main entry is a fair metaphor for chief. [current; table L19]
+vitti	var	N	वित्ति	knowledge or understanding (not a standard variable term)	FAIL	chara / parivartya	vitti denotes knowing or finding; a mutable program variable is not its dictionary sense. KEEP requires a technical definition. [current; table L20]
+anka	int	Y	अङ्क	mark, numeral	PASS		current; table L21; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+dasham	float	Y	दशम	tenth	FAIL	dashamalava or dashamika	dashama means tenth; floating point is not simply a tenth. [current; table L22]
+sankhya	number	Y	संख्या	number, count	PASS		current; table L23; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+yadi	if	Y	यदि	if	PASS		current; table L24; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+anya	else	Y	अन्य	other	PASS		current; table L25; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+yavat	while	Y	यावत्	as long as	PASS		current; table L26; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+chakra	for	Y	चक्र	wheel, circle	PASS		current; table L27; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+kuru	do	Y	कुरु	do! (imperative)	PASS		current; table L28; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+prati	return	Y	प्रति	towards, in return (preposition or prefix)	PASS		Owner's existing keyword is a defensible conventional prefix for returning; not an independent imperative verb. Keep unchanged. [current; table L29]
+prakriya	function	Y	प्रक्रिया	procedure, process	PASS		current; table L30; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+likha	print	N	[likha: not independently verified]	print; one or more members not verified	FAIL	lekha / likhati	As written likha is a project form based on √likh rather than a classical finite command; printing semantics are conventional. [current; table L31]
+likh	write	Y	√लिख्	write, scratch, inscribe	PASS	likha	Verbal root √likh is genuine but different output operations cannot simply be merged on vocabulary evidence. [current; table L32]
+likha	candidate replacing likh (write)	N	[likha: not independently verified]	candidate replacing likh (write); one or more members not verified	FAIL	lekha / likhati	As written likha is a project form based on √likh rather than a classical finite command; printing semantics are conventional. [proposed; table L32]
+pad	read	Y	पद	foot, word, position	FAIL	path / pathana	pada means word/foot; reading is √paṭh, not pad. [current; table L33]
+grahan	input	Y	ग्रहण	grasping, receiving	PASS		current; table L34; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+purna	true	Y	पूर्ण	full, complete	PASS		current; table L35; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+shunya	false	Y	शून्य	zero, empty	PASS		current; table L36; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+sutra	const	Y	सूत्र	thread, aphorism	PASS		current; table L37; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+krama	break	Y	क्रम	order, sequence, step	FAIL	virama	krama means order/step, not interruption; project convention need not equal dictionary meaning. [current; table L38]
+agrim	continue	Y	अग्रिम	foremost, following/next	PASS		current; table L39; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+guna	switch	Y	गुण	attribute, quality; multiplier	FAIL	vikalpa	guṇa denotes attribute/quality; switch dispatch is choice among alternatives. [current; table L40]
+bhavana	case	N	भावना	imagining, cultivating, reflection	FAIL	paksha	bhāvanā means cultivation/mental imagining, not a switch case. [current; table L41]
+mala	array	Y	माला	garland, row	PASS		current; table L42; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+kosh	vector	Y	कोश	store, treasury, sheath	PASS		current; table L43; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+vibhag	slice	Y	विभाग	division, partition	PASS		current; table L44; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+ganana	enum	Y	गणना	enumeration, counting	PASS		current; table L45; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+abhava	not	Y	अभाव	nonexistence, absence	PASS		current; table L46; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+rachana	struct	Y	रचना	arrangement, construction	PASS		current; table L47; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+yoj	include	Y	√युज्/योज्	join, attach	PASS		current; table L48; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+satya	bool	Y	सत्य	true, truth	PASS		current; table L49; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+tak	to	N	[tak: not independently verified]	to; one or more members not verified	FAIL	paryanta	tak is Hindi/Urdu for until, not a Sanskrit word as spelled. [current; table L50]
+shabda	print string	Y	शब्द	sound, word	FAIL	likha_shabda	śabda is a noun sound or word, not an imperative to print; merging into likha changes type/overload contracts. [current; table L51]
+likha	candidate replacing shabda (print string)	N	[likha: not independently verified]	candidate replacing shabda (print string); one or more members not verified	FAIL	lekha / likhati	As written likha is a project form based on √likh rather than a classical finite command; printing semantics are conventional. [proposed; table L51]
+yantra	asm	Y	यन्त्र	instrument, machine	PASS		Machine metaphor appropriate for embedded machine instructions. [current; table L52]
+siddhi	success	Y	सिद्धि	attainment, success	PASS		current; table L53; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+dosh	error	Y	दोष	defect, fault	PASS		current; table L54; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+prasar	propagate	Y	प्रसार	spreading, extension	PASS		current; table L55; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+nirmmita	alloc	Y	निर्मित	formed, manufactured, created	PASS		Nirmita means created; allocation is a specific form of creation. Exact runtime behavior needs separate contract. [current; table L56]
+sthagita	pause	Y	स्थगित	suspended, postponed	PASS		current; table L57; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+dvaram	open	Y	द्वारम्	door, gateway	FAIL	udghatana	dvāram is doorway noun; opening a file is a verb, not a door. [current; table L58]
+band	close	Y	बन्ध	binding, bond, fastening	FAIL	bandhana or pidhan	bandha is binding, not a complete command to close a handle. [current; table L59]
+paadh	?	N	पाठ/√पठ्	reading, recitation	FAIL	pathana	paadh is not a standard spelling of pāṭha (reading); this builtin opens a file and is not the same operation as pad. [current; table L60]
+pad	candidate replacing paadh (?)	Y	पद	foot, word, position	FAIL	path / pathana	pada means word/foot; reading is √paṭh, not pad. [proposed; table L60]
+anya	Native spelling of anya (अन्यत्र anyatra -> अन्य anya)	Y	अन्य	other	PASS		current; table L72; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+anya	proposed native-script mapping for anya	Y	अन्य	other	PASS		proposed; table L72; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+chakra	Native spelling of chakra (पुनरावर्तन punaravartana -> चक्र chakra)	Y	चक्र	wheel, circle	PASS		current; table L73; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+chakra	proposed native-script mapping for chakra	Y	चक्र	wheel, circle	PASS		proposed; table L73; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+prati	Native spelling of prati (प्रतियाति pratiyati -> प्रति prati)	Y	प्रति	towards, in return (preposition or prefix)	PASS		Owner's existing keyword is a defensible conventional prefix for returning; not an independent imperative verb. Keep unchanged. [current; table L74]
+prati	proposed native-script mapping for prati	Y	प्रति	towards, in return (preposition or prefix)	PASS		Owner's existing keyword is a defensible conventional prefix for returning; not an independent imperative verb. Keep unchanged. [proposed; table L74]
+agrim	Native spelling of agrim (उद्देश्य uddeshya -> अग्रिम agrim)	Y	अग्रिम	foremost, following/next	PASS		current; table L75; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+agrim	proposed native-script mapping for agrim	Y	अग्रिम	foremost, following/next	PASS		proposed; table L75; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+mala	Native spelling of mala (पङ्क्ति pankti -> माला mala)	Y	माला	garland, row	PASS		current; table L76; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+mala	proposed native-script mapping for mala	Y	माला	garland, row	PASS		proposed; table L76; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+ganana	Native spelling of ganana (सृजन srijan -> गणना ganana)	Y	गणना	enumeration, counting	PASS		current; table L77; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+ganana	proposed native-script mapping for ganana	Y	गणना	enumeration, counting	PASS		proposed; table L77; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+abhava	Native spelling of abhava (निषेध nishedh -> अभाव abhava)	Y	अभाव	nonexistence, absence	PASS		current; table L78; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+abhava	proposed native-script mapping for abhava	Y	अभाव	nonexistence, absence	PASS		proposed; table L78; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+satya	Native spelling of satya (परिग्रह parigraha -> सत्य satya)	Y	सत्य	true, truth	PASS		current; table L79; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+satya	proposed native-script mapping for satya	Y	सत्य	true, truth	PASS		proposed; table L79; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+tak	Native spelling of tak (पर्यन्त paryanta -> तक् tak)	N	[tak: not independently verified]	Native spelling of tak (पर्यन्त paryanta -> तक् tak); one or more members not verified	FAIL	paryanta	tak is Hindi/Urdu for until, not a Sanskrit word as spelled. [current; table L80]
+tak	proposed native-script mapping for tak	N	[tak: not independently verified]	proposed native-script mapping for tak; one or more members not verified	FAIL	paryanta	tak is Hindi/Urdu for until, not a Sanskrit word as spelled. [proposed; table L80]
+yantra	Native spelling of yantra (निष्क्रिय nishkriya -> यन्त्र yantra)	Y	यन्त्र	instrument, machine	PASS		Machine metaphor appropriate for embedded machine instructions. [current; table L81]
+yantra	proposed native-script mapping for yantra	Y	यन्त्र	instrument, machine	PASS		Machine metaphor appropriate for embedded machine instructions. [proposed; table L81]
+akshar	char_at	Y	अक्षर	letter, syllable	PASS		current; table L92; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+aksharank	char_code	Y	अक्षर + अङ्क	letter + numeral (technical compound)	PASS		current; table L93; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+akshar_rakh	set_char	N	अक्षर + रख (Hindi)	letter, syllable; put, place (Hindi imperative stem)	FAIL		current; table L94; not established as a complete Sanskrit expression as written
+vartani_aayam	strlen	Y	वर्तनी + आयाम	spelling, orthography; length, extent, dimension	PASS		current; table L95; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+vartani_tul	strcmp	Y	वर्तनी + √तुल्	spelling, orthography; weigh, compare	PASS		current; table L96; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+vartani_pratilip	strcpy	Y	वर्तनी + प्रतिलिपि	spelling, orthography; copy, duplicate	PASS		current; table L97; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+vartani_cat	strcat	N	वर्तनी + concatenate (English)	spelling, orthography; concatenation	FAIL	vartani_yuj	current; table L98; not established as a complete Sanskrit expression as written
+vartani_yuj	candidate replacing vartani_cat (strcat)	Y	वर्तनी + √युज्	spelling, orthography; join, connect	PASS		proposed; table L98; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+pankti_len	array length	N	पङ्क्ति + length (English)	line, row, series; length	FAIL	pankti_aayam	Current name mixes genuine Sanskrit row pankti with English len; source covers mala AND vibhag lengths. [current; table L99]
+mala_aayam	candidate replacing pankti_len (array length)	Y	माला + आयाम	garland, row; length, extent, dimension	PASS	pankti_aayam	Valid Sanskrit compound but not preferred: source handles slices as well as arrays. [proposed; table L99]
+sankhya_yog	vector add	Y	संख्या + योग	number, count; addition, conjunction	PASS		current; table L100; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+sankhya_gunan	vector multiply	Y	संख्या + गुणन	number, count; multiplication	PASS		current; table L101; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+sankhya_dot	dot product	N	संख्या + dot (English)	number, count; dot product in computer notation	FAIL	sadish_antar_gunan	Point bindu does not by itself mean dot product; use a scalar/inner multiplication term. [current; table L102]
+sankhya_bindu	candidate replacing sankhya_dot (dot product)	Y	संख्या + बिन्दु	number, count; point, drop	FAIL	sadish_antar_gunana	Bindu point is real but not the scalar dot-product operation. [proposed; table L102]
+likha_fmt	format	N	[likha: not independently verified] + format (English)	format; one or more members not verified	FAIL	likha_roop	current; table L103; not established as a complete Sanskrit expression as written
+likha_roop	candidate replacing likha_fmt (format)	N	[likha: not independently verified] + रूप	candidate replacing likha_fmt (format); one or more members not verified	PASS		Form/format describes how output prints; check formatting contract. [proposed; table L103]
+kosh_push	push	N	कोश + push (English)	store, treasury, sheath; append	FAIL	kosh_khip	English push; Sanskrit root kship under project khip convention. [current; table L104]
+kosh_khip	candidate replacing kosh_push (push)	Y	कोश + √क्षिप्	store, treasury, sheath; throw, cast, insert (project writes khip)	PASS		khip derives from Sanskrit kṣip and matches project append naming. [proposed; table L104]
+kosh_pop	pop	N	कोश + pop (English)	store, treasury, sheath; remove last item	FAIL	kosh_apanay	Current English suffix unsuitable; proposed existing stack removal action apa-nay is source-consistent. [current; table L105]
+kosh_apanay	candidate replacing kosh_pop (pop)	Y	कोश + अपनय/अप-√नी	store, treasury, sheath; take away, remove	PASS		apa-nay is real remove; source removes last value. [proposed; table L105]
+kosh_len	length	N	कोश + length (English)	store, treasury, sheath; length	FAIL	kosh_aayam	English len; aayam denotes extent and preserves logical count rather than capacity. [current; table L106]
+kosh_aayam	candidate replacing kosh_len (length)	Y	कोश + आयाम	store, treasury, sheath; length, extent, dimension	PASS		āyāma extent; logical length not allocated capacity. [proposed; table L106]
+kosh_cap	capacity	N	कोश + capacity (English)	store, treasury, sheath; maximum allocation	FAIL	kosh_kshamata	English cap lacks a Sanskrit dictionary form; kshamata is established capacity. [current; table L107]
+kosh_kshamata	candidate replacing kosh_cap (capacity)	Y	कोश + क्षमता	store, treasury, sheath; capacity, ability	PASS		kṣamatā means ability/capacity; preserve allocated-capacity contract. [proposed; table L107]
+kosh_clear	clear	N	कोश + clear (English)	store, treasury, sheath; remove logical contents	FAIL	kosh_rikta_kuru	Clear resets logical length only, not cells, so purification shodh is misleading. [current; table L108]
+kosh_shodh	candidate replacing kosh_clear (clear)	Y	कोश + √शुध्/शोधन	store, treasury, sheath; purification, cleansing	FAIL	kosh_rikta_kuru	Cleansing implies wiping while current clear only resets length. [proposed; table L108]
+kosh_empty	is empty	N	कोश + empty (English)	store, treasury, sheath; is empty	FAIL	kosh_asti_rikta	rikta means empty, but bare name conflicts with mutating rikta names in other families. [current; table L109]
+kosh_rikt	candidate replacing kosh_empty (is empty)	N	कोश + रिक्त	store, treasury, sheath; empty (stem fragment)	FAIL	kosh_asti_rikta	Rikt is clipped from rikta, and predicate should be distinguished from mutating clear. [proposed; table L109]
+kosh_peek	peek	N	कोश + peek (English)	store, treasury, sheath; inspect	FAIL	kosh_avalok	English peek; established avalok is the project non-removing observe action. [current; table L110]
+kosh_iksh	candidate replacing kosh_peek (peek)	Y	कोश + √ईक्ष्	store, treasury, sheath; see, observe	PASS	kosh_avalok	√īkṣ is see; existing project uses avalok for read-only peek. [proposed; table L110]
+kosh_dequeue	dequeue	N	कोश + dequeue (English)	store, treasury, sheath; remove queue head	FAIL	kosh_nishkasana	Purva_apanay means remove front; FIFO condition should be documented. [current; table L111]
+kosh_purva_apanay	candidate replacing kosh_dequeue (dequeue)	Y	कोश + पूर्व + अपनय/अप-√नी	store, treasury, sheath; before, preceding, prior; take away, remove	PASS	kosh_nishkasana	pūrva+apanaya literally front removal and matches FIFO semantics. [proposed; table L111]
+kosh_enqueue	enqueue	N	कोश + enqueue (English)	store, treasury, sheath; append to queue tail	FAIL	kosh_pravesh	Queue enqueue appends at the TAIL; a proposed purva (front) compound would invert it. [current; table L112]
+kosh_purva_yuj	candidate replacing kosh_enqueue (enqueue)	Y	कोश + पूर्व + √युज्	store, treasury, sheath; before, preceding, prior; join, connect	FAIL	kosh_pravesh	Enqueue at rear, not front; proposed name contradicts function. [proposed; table L112]
+netsock	socket	N	[netsock: not independently verified]	socket; one or more members not verified	FAIL	jala_antya	English socket; jala+sutra describes a network thread, not an endpoint. [current; table L113]
+jala_sutra	candidate replacing netsock (socket)	Y	जाल + सूत्र	net, network; thread, aphorism	FAIL	jala_antya	A network thread is not necessarily a socket/endpoint. [proposed; table L113]
+netbind	bind	N	[netbind: not independently verified]	bind; one or more members not verified	FAIL	jala_bandh	English netbind; bandha denotes binding but network bind is an address operation. [current; table L114]
+jala_bandh	candidate replacing netbind (bind)	Y	जाल + बन्ध	net, network; binding	PASS		Metaphor for bind is defensible. [proposed; table L114]
+netlisten	listen	N	[netlisten: not independently verified]	listen; one or more members not verified	FAIL	jala_shravan	English netlisten; shravana means hearing, appropriate as a metaphor only. [current; table L115]
+jala_shravan	candidate replacing netlisten (listen)	Y	जाल + श्रवण	net, network; hearing	PASS		Hearing/listening metaphor matches listen operation. [proposed; table L115]
+netaccept	accept	N	[netaccept: not independently verified]	accept; one or more members not verified	FAIL	jala_grahan	English netaccept; grahana is receiving, a plausible metaphor for accepting connection. [current; table L116]
+jala_grahan	candidate replacing netaccept (accept)	Y	जाल + ग्रहण	net, network; grasping, receiving	PASS		Receiving matches accept of connection. [proposed; table L116]
+ganita	mathematics, checked	Y	गणित	reckoning, mathematics	PASS		Distinct module naming/organization problem, not a faulty lexeme. [current; table L124]
+ganit	mathematics, plain	N	गणित	reckoning, mathematics (clipped transliteration)	FAIL	saral_ganita	Clipped spelling of ganita is not a distinct Sanskrit word; ganan means counting but module also includes powers, prime tests and randomness. [current; table L125]
+ganan	candidate replacing ganit (mathematics, plain)	Y	गणन	counting	FAIL	saral_ganita	Ganana means counting and is too narrow for power/prime/random arithmetic functions. [proposed; table L125]
+suchi	list	Y	सूची	list, catalogue	PASS		current; table L126; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+varna	character, letter	Y	वर्ण	letter, color	PASS		current; table L127; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+roop	form	Y	रूप	form, shape	PASS		current; table L128; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+khand	piece, bit	Y	खण्ड	part, piece, section	PASS		current; table L129; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+nighantu	glossary, map	Y	निघण्टु	dictionary, glossary	PASS		current; table L130; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+sankhyiki	statistics	Y	सांख्यिकी	statistics (modern Sanskrit)	PASS		Modern established term for statistics, not merely an arbitrary deletion of vowels. [current; table L131]
+phal	fruit, result	Y	फल	fruit, result	PASS		current; table L132; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+shreni	row, rank	Y	श्रेणी	row, series, class	FAIL	kramita / shrenibaddha	Śreṇī means row or series, not an action meaning sort; module family is metaphorical. [current; table L133]
+sangrah	collection	Y	संग्रह	collection, compilation	PASS		current; table L134; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+brihat	great	Y	बृहत्	large, great	PASS		current; table L135; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+samanvaya	coordination	Y	समन्वय	coordination, integration	PASS		current; table L136; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+ank	digit, number	Y	अङ्क	mark, digit	PASS		current; table L137; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+mala	row, garland	Y	माला	garland, row	PASS		current; table L138; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+sadhan	instrument	Y	साधन	instrument, means	PASS		current; table L139; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+kalana	calculation	Y	कलन	calculation	PASS		current; table L140; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+chandas	metre	Y	छन्दस्	meter, prosody	PASS		current; table L141; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+vakyank	sentence-number	Y	वाक्य + अङ्क	sentence + number (technical)	FAIL	aadhar_parivartan	Sentence-number is a coined compound; module does base conversion, not sentence parsing. [current; table L142]
+anukram	sequence	Y	अनुक्रम	sequence	PASS		current; table L143; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+madhava	(the Kerala mathematician)	Y	माधव	Madhava, personal name	PASS		current; table L144; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+patra	leaf, page	Y	पत्र	leaf, document, vessel	PASS		current; table L145; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+aadhar	base, support	Y	आधार	foundation, support	PASS		current; table L146; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+gudh	hidden	Y	गूढ	hidden, secret	FAIL	gudhank / anukram_chihna	Gūḍha means hidden or secret; hashing is not confidentiality. Module needs a nonsecurity description. [current; table L147]
+asti	is (boolean marker)	Y	अस्ति	is, exists	PASS		current; table L169; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+maap	measure	Y	√मा/माप	measure	PASS		Based on √mā measuring; modern maap spelling is vernacular-style technical spelling. [current; table L170]
+khip	insert	Y	√क्षिप्	throw, cast, insert (project writes khip)	PASS		Underlying Sanskrit root is √kṣip; project transliteration drops ṣ/s, so document spelling convention. [current; table L171]
+apanay	remove	Y	अपनय/अप-√नी	take away, remove	PASS		current; table L172; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+srij	create	Y	√सृज्	produce, create	PASS		current; table L173; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+grah	take	Y	√ग्रह्	seize, take	PASS		current; table L174; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+anwesh	search	Y	अन्वेषण/अनु-√इष्	search, investigate	PASS		current; table L175; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+viparyay	reverse	Y	विपर्यय	inversion, reversal	PASS		current; table L176; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+pratilip	copy	Y	प्रतिलिपि	copy, duplicate	PASS		current; table L177; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+janchit	checked	N	जाँचित (Hindi)	checked (Hindi-derived)	FAIL	parikshita	Hindi jān̄c from examination plus suffix; not classical Sanskrit participle. [current; table L178]
+paripurna	saturating	Y	परिपूर्ण	completely full, filled	PASS		current; table L179; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+nirapeksh	absolute	Y	निरपेक्ष	independent, indifferent, without dependence	FAIL	nirapeksha (independent); parimana for magnitude	Independent does not literally mean absolute value; good project metaphor only if sign independence defined. [current; table L180]
+tul	compare	Y	√तुल्	weigh, compare	PASS		current; table L181; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+yuj	join	Y	√युज्	join, connect	PASS		current; table L182; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+bhed	split	Y	भेद	difference, division	PASS		current; table L183; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+vardh	grow	Y	√वृध्	increase, grow	PASS		current; table L184; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+antah	contains	Y	अन्तः	within, inside	PASS		current; table L185; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+rikta	empty	Y	रिक्त	empty, vacant	PASS		current; table L186; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+sanket	symbol	Y	संकेत	sign, indication	PASS		current; table L187; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+mulya	value	Y	मूल्य	price, value	PASS		current; table L188; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+shreni	sort	Y	श्रेणी	row, series, class	FAIL	kramita / shrenibaddha	Śreṇī means row or series, not an action meaning sort; module family is metaphorical. [current; table L189]
+unnat	raise	Y	उन्नत	raised, elevated	PASS		current; table L190; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+avanat	lower	Y	अवनत	bent down, lowered	PASS		current; table L191; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+gan	count	Y	√गण्	count, enumerate	PASS		current; table L192; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+kram	step	Y	क्रम	order, succession	PASS		current; table L193; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+gun	multiply	Y	गुण/√गुण्	attribute or multiply in technical naming	PASS		current; table L194; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+bhaj	divide	Y	√भज्	divide, apportion, distribute	PASS		current; table L195; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+shesh	remainder	Y	शेष	remainder, residue	PASS		current; table L196; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+ghat	power	Y	घात	strike, power in mathematics	PASS		current; table L197; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+varg	square	Y	वर्ग	class, square in mathematics	PASS		current; table L198; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+mool	root	Y	मूल	root, base	PASS		current; table L199; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+fib	Fibonacci	N	Fibonacci (proper name)	Fibonacci numbers	PASS	fib / fibonacci; optional meru_sankhya	Proper algorithm abbreviation not Sanskrit but unambiguous; Meru relates historically to combinatorics, not necessarily direct alias. [current; table L213]
+meru_sankhya	candidate replacing fib (Fibonacci)	Y	मेरु + संख्या	Meru mountain; proper name; number, count	PASS	fib	Meru refers to historical combinatorial constructions; do not assume identity with exact Fibonacci algorithm. [proposed; table L213]
+fnv1a	the FNV-1a hash	N	FNV-1a (algorithm)	published hash algorithm	PASS		Published algorithm identifier; intentionally non-Sanskrit but should retain for reproducibility. [current; table L214]
+fnv1a_varna	FNV-1a over bytes	N	FNV-1a (algorithm) + वर्ण	published hash algorithm; letter, color	PASS		FNV-1a proper algorithm label + varna Sanskrit letter. [current; table L215]
+simpson	Simpson's rule	N	Simpson (proper name)	named integration method	PASS		Published named numerical-integration method; translating hides provenance. [current; table L216]
+skalar	scalar	N	scalar (English)	multiplication by scalar	FAIL	sankhya_gunan	English loan; actual function multiplies each matrix element by a scalar. [current; table L217]
+ekank	candidate replacing skalar (scalar)	Y	एकाङ्क	single-digit, one-act	FAIL	sankhya_gunan	Ekāṅka single digit or one-act; operation is multiplication of matrix by scalar. [proposed; table L217]
+util_chinha	utility sign	N	utility (English) + चिह्न	utility; mark, sign, symbol	FAIL	ank_chihna	Actual signum returns -1 / 0 / 1; utility-sign upayog_chinha is not that. [current; table L218]
+upayog_chinha	candidate replacing util_chinha (utility sign)	Y	उपयोग + चिह्न	use, utility; mark, sign, symbol	FAIL	ank_chihna	Use/utility marker does not identify signum -1/0/+1. [proposed; table L218]
+bit_gan	bit count	N	bit (English) + √गण्	binary digit; count, enumerate	FAIL	dvi_eka_gan	Popcount counts set bits; ansh means any part and would lose binary specificity. [current; table L219]
+ansh_gan	candidate replacing bit_gan (bit count)	Y	अंश + √गण्	part, fraction; count, enumerate	FAIL	dvi_eka_gan	Part count too broad; source counts one-bits. [proposed; table L219]
+asti_sorted	is sorted	N	अस्ति + sorted (English)	is, exists; in ascending order	FAIL	asti_kramita	sorted is English; shrenit not established as a Sanskrit participle. [current; table L220]
+asti_shrenit	candidate replacing asti_sorted (is sorted)	N	अस्ति + श्रेणित	is, exists; graded/arranged (not independently established)	FAIL	asti_kramita	Shrenit not established independent Sanskrit participle meaning sorted. [proposed; table L220]
+suchi_asti_sorted	is sorted	N	सूची + अस्ति + sorted (English)	list, catalogue; is, exists; in ascending order	FAIL	suchi_asti_kramita	sorted is English; shrenit not established. [current; table L221]
+suchi_asti_shrenit	candidate replacing suchi_asti_sorted (is sorted)	N	सूची + अस्ति + श्रेणित	list, catalogue; is, exists; graded/arranged (not independently established)	FAIL	suchi_asti_kramita	Shrenit unclear; prefer kramita 'arranged in order'. [proposed; table L221]
+roop_sign_akshar	sign character	N	रूप + sign (English) + अक्षर	form, shape; plus or minus indicator; letter, syllable	FAIL	roop_chihna_akshar	sign is English; chihna is a valid marker noun. [current; table L222]
+roop_chinha_akshar	candidate replacing roop_sign_akshar (sign character)	Y	रूप + चिह्न + अक्षर	form, shape; mark, sign, symbol; letter, syllable	PASS		Chihna means sign/marker; source uses selectable plus-sign character. [proposed; table L222]
+pehchan	identity (Hindi)	N	पहचान (Hindi)	recognition, identification	FAIL	ekaka_matrika	pehchan is Hindi recognition; function produces identity matrix, not recognizing an object. [current; table L223]
+abhigyan	candidate replacing pehchan (identity (Hindi))	Y	अभिज्ञान	recognition	FAIL	ekaka_matrika	Abhijñāna is recognition, not identity matrix. [proposed; table L223]
+nishan	mark (Hindi)	N	निशान (Hindi/Persian)	mark, sign	FAIL	karna_yog	nishan is Hindi/Persian mark; function sums diagonal entries of square matrix. [current; table L224]
+chinha	candidate replacing nishan (mark (Hindi))	Y	चिह्न	mark, sign, symbol	FAIL	karna_yog	Chihna is mark; source computes diagonal sum. [proposed; table L224]
+chay_khip	stack insert	Y	चय + √क्षिप्	heap, pile, accumulation; throw, cast, insert (project writes khip)	PASS	chiti_khip	Chaya (चय) is a dictionary Sanskrit heap/pile; rejecting chay as nonsensical was wrong. [current; table L225]
+chiti_khip	candidate replacing chay_khip (stack insert)	Y	चिति + √क्षिप्	heap, layer, pile, stack; throw, cast, insert (project writes khip)	PASS	chay_khip	Citi is valid pile, but replacing real chay adds no semantic improvement. [proposed; table L225]
+chay_apanay	stack remove	Y	चय + अपनय/अप-√नी	heap, pile, accumulation; take away, remove	PASS	chiti_apanay	Chaya = pile; remove last via apa-nay; source returns ok flag. [current; table L226]
+chiti_apanay	candidate replacing chay_apanay (stack remove)	Y	चिति + अपनय/अप-√नी	heap, layer, pile, stack; take away, remove	PASS	chay_apanay	Citi valid and stack operation; chay also Sanskrit. [proposed; table L226]
+chay_avalok	stack look	Y	चय + अवलोकन/अव-√लोक्	heap, pile, accumulation; look, observe	PASS	chiti_avalok	Chaya = pile; avalok looks at top without removal. [current; table L227]
+chiti_avalok	candidate replacing chay_avalok (stack look)	Y	चिति + अवलोकन/अव-√लोक्	heap, layer, pile, stack; look, observe	PASS	chay_avalok	Citi valid and observe action; chay already valid. [proposed; table L227]
+chay_rikta	stack empty	Y	चय + रिक्त	heap, pile, accumulation; empty, vacant	PASS	chiti_rikta	Chaya = pile; rikta correctly predicates empty. [current; table L228]
+chiti_rikta	candidate replacing chay_rikta (stack empty)	Y	चिति + रिक्त	heap, layer, pile, stack; empty, vacant	PASS	chay_rikta	Citi valid and empty; chay already valid. [proposed; table L228]
+avali_nishkas	row remove	N	आवली/आवली + निष्कास/निष्कासन	row, series; expelling, extracting (truncated)	FAIL	avali_purva_apanay	nishkas is truncated; use full niṣkāsana or explicit front-removal term. [current; table L229]
+avali_apanay	candidate replacing avali_nishkas (row remove)	Y	आवली/आवली + अपनय/अप-√नी	row, series; take away, remove	PASS	avali_purva_apanay	Valid generic removal, but does not specify queue head. [proposed; table L229]
+samanvaya_akar_na	matrix shape	Y	समन्वय + आकार + न	coordination, integration; shape, extent; not, negation	PASS	samanvaya_akar_ayogya	Source returns 1 for shape NOT fitting len (or negative dimension); dropping na reverses meaning. [current; table L230]
+samanvaya_akar	candidate replacing samanvaya_akar_na (matrix shape)	Y	समन्वय + आकार	coordination, integration; shape, extent	FAIL	samanvaya_akar_ayogya	Drops negating na from predicate (1 invalid/not fitting, 0 valid). [proposed; table L230]
+nirnaya2	decision, 2 and 3	N	[nirnaya2: not independently verified]	decision, 2 and 3; one or more members not verified	FAIL	dwi_kram_nirdharak	Actual code computes 2x2 determinant; nirnaya decision is vague, trailing digit is not a Sanskrit word. [current; table L231]
+dwi_kram_nirdharak	candidate replacing nirnaya2 (decision, 2 and 3)	Y	द्वि + क्रम + निर्धारक	two (compound form); order, succession; determining, determinant (mathematical)	PASS		Determinant of order 2. [proposed; table L231]
+nirnaya3	decision, 2 and 3	N	[nirnaya3: not independently verified]	decision, 2 and 3; one or more members not verified	FAIL	tri_kram_nirdharak	Actual code computes 3x3 determinant; trailing digit is not a Sanskrit word. [current; table L231]
+tri_kram_nirdharak	candidate replacing nirnaya3 (decision, 2 and 3)	Y	त्रि + क्रम + निर्धारक	three (compound form); order, succession; determining, determinant (mathematical)	PASS		Determinant of order 3. [proposed; table L231]
+laghu2	less-than, greater-than	N	[laghu2: not independently verified]	less-than, greater-than; one or more members not verified	FAIL	laghutar	Function returns MIN(a,b), not predicate less-than; 2 marks arity, not Sanskrit comparative. [current; table L232]
+laghutar	candidate replacing laghu2 (less-than, greater-than)	Y	लघुतर	smaller, lesser	PASS		Comparative smaller matches MIN of two. [proposed; table L232]
+adhik2	less-than, greater-than	N	[adhik2: not independently verified]	less-than, greater-than; one or more members not verified	FAIL	adhikatar	Function returns MAX(a,b), not predicate greater-than. [current; table L232]
+adhikatar	candidate replacing adhik2 (less-than, greater-than)	Y	अधिकतर	greater, more	PASS		Comparative greater matches MAX of two. [proposed; table L232]
+pravan2	slope, second	N	[pravan2: not independently verified]	slope, second; one or more members not verified	FAIL	dwitiya_avakalaja	Actual code computes 2nd derivative, not a second slope call. [current; table L233]
+pravan_dwi	candidate replacing pravan2 (slope, second)	Y	प्रवण + द्वि	sloping, inclined; two (compound form)	FAIL	dwitiya_avakalaja	Pravana two can mean second slope; source computes second derivative. [proposed; table L233]
+roop_ank_aadhar2	second base	N	रूप + अङ्क + [aadhar2: not independently verified]	second base; one or more members not verified	FAIL	roop_ank_aadhar_saral	Variant formats base 2..36 lower-case without prefix/sign flags; the 2 is a variant number, not radix 2. [current; table L234]
+roop_ank_aadhar_dwi	candidate replacing roop_ank_aadhar2 (second base)	Y	रूप + अङ्क + आधार + द्वि	form, shape; mark, digit; foundation, support; two (compound form)	FAIL	roop_ank_aadhar_saral	Suffix 'two' distinguishes versions but fails to identify simplified formatting contract. [proposed; table L234]
+karna_yog	matrix trace / sum of diagonal	Y	कर्ण + योग	ear; hypotenuse or diagonal in mathematics; addition, conjunction	PASS		Karṇa is mathematically diagonal/hypotenuse; source sums a[i*n+i], exactly diagonal sum. [explicit-focus; table L0]
+tadatmya	identity matrix	Y	तादात्म्य	identity/sameness of nature	FAIL	ekaka_matrika	Tādātmya is identity/sameness of nature, not specifically identity matrix. [explicit-focus; table L0]
+ekatva	identity matrix alternative	Y	एकत्व	oneness, unity	FAIL	ekaka_matrika	Ekatva is oneness abstract, no matrix specified. [explicit-focus; table L0]
+asti_ksham	is there capacity	Y	अस्ति + √क्षम	is, exists; be able, tolerate, bear	FAIL	asti_avakash	Kṣam is root capable/tolerate, not quantity of unused slots; capacity predicate needs free space. [explicit-focus; table L0]
+madhava_jya	sine	Y	माधव + ज्या	Madhava, personal name; bowstring, sine in Indian mathematics	PASS		Jyā is a historically attested sine (Madhava names its series). [explicit-focus; table L0]
+madhava_kotijya	cosine	Y	माधव + कोटिज्या	Madhava, personal name; cosine	PASS		Koṭijyā is a historically attested cosine. [explicit-focus; table L0]
+madhava_chapsparsh	arctangent	N	माधव + चाप + स्पर्श	arctangent; one or more members not verified	FAIL	madhava_pratiloma_sparshajya	Chāpa + sparśa is arc + contact, not established arctangent; name is invented. [explicit-focus; table L0]
+gun_tray	product of three parameters	Y	गुणन + त्रय	attribute or multiply in technical naming; three, triad (noun)	FAIL	tri_pad_gunana	traya is noun 'three'; source multiplies THREE ARGUMENTS, not a value by 3. [explicit-focus; table L0]
+kalana_paravalay	Simpson 1/3 integration	Y	कलन + परवलय	calculation; parabola (modern term)	FAIL	simpson	Parāvalaya (parabola) is real but not an established name for Simpson 1/3 weighted-sample integration. [explicit-focus; table L0]
+kalana_samalamb	trapezoidal integration	Y	कलन + समलम्ब	calculation; trapezoid	PASS	kalana_samalamba_niyama	Samalamba is a real trapezoid term and the algorithm sums trapezoid areas. [explicit-focus; table L0]
+anukram_khip_asht	length-prefixed payload serialization	Y	अनुक्रम + √क्षिप् + अष्ट	sequence; throw, cast, insert (project writes khip); eight (numeral compound form)	FAIL	anukram_khip_aayam_purva	Aṣṭa is genuinely eight and aṣṭaka group of eight; actual API writes 8-byte LENGTH plus variable-length payload, not fixed 8-byte object. [explicit-focus; table L0]
+anukram_khip_ashtak	length-prefixed payload serialization (current)	Y	अनुक्रम + √क्षिप् + अष्टक	sequence; throw, cast, insert (project writes khip); set or whole consisting of eight	FAIL	anukram_khip_aayam_purva	Ashtaka real 'group of eight' but length-prefixed variable payload is not an octet. [explicit-focus; table L0]
+nivartan	return alternative	Y	निवर्तन (नि-√वृत् + ल्युट्)	turning back/retreating	PASS		Nivartana is a real noun 'turning back/returning'; r is essential from ni-√vṛt. [explicit-focus; table L0]
+chiti_khip	stack push	Y	चिति + √क्षिप्	heap, layer, pile, stack; throw, cast, insert (project writes khip)	PASS	chay_khip	Citi is a real Sanskrit heap/stack; but chay already real and consistent, so no rename necessary. [explicit-focus; table L0]
+chiti_apanay	stack pop	Y	चिति + अपनय/अप-√नी	heap, layer, pile, stack; take away, remove	PASS	chay_apanay	Citi is real; chay existing stack prefix also genuine. [explicit-focus; table L0]
+pankti_aayam	array or slice length	Y	पङ्क्ति + आयाम	line, row, series; length, extent, dimension	PASS		Current prefix + Sanskrit aayam covers row/array/slice extent. [explicit-focus; table L0]
+kosh_asti_rikta	empty predicate	Y	कोश + अस्ति + रिक्त	store, treasury, sheath; is, exists; empty, vacant	PASS		explicit-focus; table L0; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+kosh_rikta_kuru	logical clear	Y	कोश + रिक्त + कुरु	store, treasury, sheath; empty, vacant; do! (imperative)	PASS		explicit-focus; table L0; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+avali_purva_apanay	FIFO dequeue	Y	आवली/आवली + पूर्व + अपनय/अप-√नी	row, series; before, preceding, prior; take away, remove	PASS		explicit-focus; table L0; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+dwitiya_avakalaja	second derivative	Y	द्वितीय + अवकलज	second; derivative (modern mathematical term)	PASS		explicit-focus; table L0; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
