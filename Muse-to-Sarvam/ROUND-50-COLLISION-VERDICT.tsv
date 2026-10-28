@@ -1,0 +1,59 @@
+name	proposed	collides	with_what	convention_break	which	sites_to_change	verdict
+likh	likha	Y	builtin likha (existing)	Y	merge, not rename: likh is raw write (2 args), likha is print (1-3 args)	10	REJECT-AS-RENAME
+shabda	likha	Y	builtin likha (existing)	Y	merge, not rename: shabda prints string content, likha prints string address	8	REJECT-AS-RENAME
+paadh	REMOVE	N	—	Y	not a duplicate: pad is 1-arg, paadh is 3-arg fd/buf/count read used by patra	4	REJECT-REMOVE
+anya	anya (Devanagari)	N	—	N	—	2	SAFE
+chakra	chakra (Devanagari)	N	—	N	—	2	SAFE
+prati	prati (Devanagari)	N	—	N	—	2	SAFE
+agrim	agrim (Devanagari)	N	—	N	—	2	SAFE
+mala	mala (Devanagari)	N	—	N	—	2	SAFE
+ganana	ganana (Devanagari)	N	—	N	—	2	SAFE
+abhava	abhava (Devanagari)	N	—	N	—	2	SAFE
+satya	satya (Devanagari)	N	—	N	—	2	SAFE
+tak	tak (Devanagari)	N	—	N	—	2	SAFE
+yantra	yantra (Devanagari)	N	—	N	—	2	SAFE
+vartani_cat	vartani_yuj	N	—	N	—	4	SAFE
+pankti_len	mala_aayam	N	—	Y	maap (7 lib length functions use maap, not aayam)	23	SAFE-WITH-NOTE
+sankhya_dot	sankhya_bindu	N	—	N	—	3	SAFE
+likha_fmt	likha_roop	N	—	N	—	8	SAFE
+kosh_push	kosh_khip	N	—	N	—	343	SAFE
+kosh_pop	kosh_apanay	N	—	N	—	31	SAFE
+kosh_len	kosh_aayam	N	—	Y	maap (see mala_aayam)	60	SAFE-WITH-NOTE
+kosh_cap	kosh_kshamata	N	—	N	—	20	SAFE
+kosh_clear	kosh_shodh	N	—	N	—	8	SAFE
+kosh_empty	kosh_rikt	N	—	Y	rikta spelling: existing rakh_rikta/suchi_rikta use rikta, not rikt	14	SAFE-WITH-NOTE
+kosh_peek	kosh_iksh	N	—	N	—	26	SAFE
+kosh_dequeue	kosh_purva_apanay	N	—	N	—	23	SAFE
+kosh_enqueue	kosh_purva_yuj	N	—	Y	direction: enqueue appends to BACK, purva means front	10	REJECT
+netsock	jala_sutra	N	—	N	—	5	SAFE
+netbind	jala_bandh	N	—	N	—	4	SAFE
+netlisten	jala_shravan	N	—	N	—	4	SAFE
+netaccept	jala_grahan	N	—	N	—	3	SAFE
+ganit	ganan	N	—	N	—	41	SAFE
+ganit	vyavahar (alternative)	N	—	N	—	41	ALTERNATIVE-NOT-CHOSEN
+fib	meru_sankhya	N	—	N	—	8	SAFE
+skalar	ekank	N	—	N	—	4	SAFE
+util_chinha	upayog_chinha	N	—	N	—	22	SAFE-WITH-NOTE
+bit_gan	ansh_gan	N	—	N	—	5	SAFE
+asti_sorted	asti_shrenit	N	—	N	—	8	SAFE
+suchi_asti_sorted	suchi_asti_shrenit	N	—	N	—	3	SAFE
+roop_sign_akshar	roop_chinha_akshar	N	—	N	—	4	SAFE
+pehchan	abhigyan	N	—	Y	bare name: samanvaya module already breaks module-prefix-first for these functions	3	SAFE-WITH-NOTE
+nishan	chinha	N	—	Y	chinha already means sign in roop/upayog contexts; here it would mean trace	4	SAFE-WITH-NOTE
+chay_khip	chiti_khip	N	—	N	—	4	SAFE
+chay_apanay	chiti_apanay	N	—	N	—	5	SAFE
+chay_avalok	chiti_avalok	N	—	N	—	4	SAFE
+chay_rikta	chiti_rikta	N	—	Y	rikta spelling (see kosh_rikt); inherited from chay_rikta	3	SAFE-WITH-NOTE
+avali_nishkas	avali_apanay	N	—	N	—	14	SAFE
+samanvaya_akar_na	samanvaya_akar	N	—	Y	asti_ for booleans: function returns 1=bad shape, 0=ok, not a shape	6	SAFE-WITH-NOTE
+nirnaya2	nirnaya_dwi (proposed here)	N	—	N	—	4	SAFE
+nirnaya3	nirnaya_tri (proposed here)	N	—	N	—	4	SAFE
+laghu2	laghutar	N	—	N	—	6	SAFE
+adhik2	adhikatar	N	—	N	—	6	SAFE
+pravan2	pravan_dwi	N	—	N	—	6	SAFE-WITH-NOTE
+roop_ank_aadhar2	roop_ank_aadhar_dwi	N	—	N	—	14	SAFE
+kunji/kunjika	— (no proposal)	N	—	N	—	—	UNDECIDED
+seemit/seema	— (no proposal)	N	—	N	—	—	KEEP-BOTH
+yog (examples/05)	— (do not add yoj shreni)	Y	shreni.yog (lib/shreni.smlib:62)	N	—	1	DO-NOT-ADD
+blend	mishr	N	—	N	—	6	SAFE
+mixed	mishrit	N	—	N	—	6	SAFE
