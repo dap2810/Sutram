@@ -1,0 +1,573 @@
+diff --git a/docs/ERROR-CONVENTION.md b/docs/ERROR-CONVENTION.md
+index 06d1b7f7..cd1ccb95 100644
+--- a/docs/ERROR-CONVENTION.md
++++ b/docs/ERROR-CONVENTION.md
+@@ -146,10 +146,10 @@ prakriya safe_compute(out, a, b, c) {
+     phal_janchit_yuj(t, a, b)
+     yadi (phal_asti_siddhi(t) == 0) {
+         phal_dosh(out)
+-        prati 0
++        nivartanam 0
+     }
+     phal_janchit_gun(out, phal_mulya(t), c)
+-    prati phal_asti_siddhi(out)
++    nivartanam phal_asti_siddhi(out)
+ }
+ ```
+ 
+diff --git a/docs/KOSH-BUILTINS.md b/docs/KOSH-BUILTINS.md
+index 8062b5ba..2b1143d1 100644
+--- a/docs/KOSH-BUILTINS.md
++++ b/docs/KOSH-BUILTINS.md
+@@ -124,7 +124,7 @@ mukhya()
+         likha(kosh_pop(a))
+         likha("\n")
+ 
+-    prati 0
++    nivartanam 0
+ ```
+ 
+ `kosh_len(a)` is 0 exactly when `a` is empty, so `yadi (kosh_len(a) > 0)` or `yavat (kosh_len(a) > 0)` is the guard.
+diff --git a/docs/LAGHU-EXAMPLE.md b/docs/LAGHU-EXAMPLE.md
+index 271d7519..5c7ad9aa 100644
+--- a/docs/LAGHU-EXAMPLE.md
++++ b/docs/LAGHU-EXAMPLE.md
+@@ -29,7 +29,7 @@ mukhya()
+     likha("back: ")
+     likha(brihat_ank_tak_laghu(digits, 4))
+     likha("\n")
+-    prati 0
++    nivartanam 0
+ ```
+ 
+ ## What it prints
+diff --git a/docs/LANGUAGE-REFERENCE.md b/docs/LANGUAGE-REFERENCE.md
+index 86bc6062..aba271be 100644
+--- a/docs/LANGUAGE-REFERENCE.md
++++ b/docs/LANGUAGE-REFERENCE.md
+@@ -38,7 +38,7 @@ language has a pack of native words (see the `lang/` table at the end).
+ | `mala` | mala |
+ | `satya` | boolean type |
+ | `prakriya` | function (up to 6 arguments) |
+-| `prati` | return |
++| `nivartanam` | return |
+ | `chakra` | for |
+ | `purna` | true |
+ | `rachana` | struct |
+@@ -49,8 +49,8 @@ language has a pack of native words (see the `lang/` table at the end).
+ | `agrim` | continue |
+ | `vitti` | variable |
+ | `vibhag` | slice parameter (R23; §17) |
+-| `siddhi` | return success: `prati siddhi(v)` (R25; §18) |
+-| `dosh` | return failure: `prati dosh(code)` (R25; §18) |
++| `siddhi` | return success: `nivartanam siddhi(v)` (R25; §18) |
++| `dosh` | return failure: `nivartanam dosh(code)` (R25; §18) |
+ | `prasar` | call a phal-prakriya, propagating its failure (R25; §18) |
+ | `yadi` | if |
+ | `yavat` | while |
+@@ -212,11 +212,11 @@ mukhya()
+     vitti n = grahan()              # read a number
+ 
+ prakriya joda(a, b)                 # function (up to 6 arguments)
+-    prati a + b                 # return
++    nivartanam a + b                 # return
+ 
+ prakriya fib(n) {                   # braces are required for a body of >1 statement
+-    yadi (n < 2) { prati n }
+-    prati fib(n - 1) + fib(n - 2)
++    yadi (n < 2) { nivartanam n }
++    nivartanam fib(n - 1) + fib(n - 2)
+ }
+ ```
+ 
+@@ -242,11 +242,11 @@ mukhya()
+ ```sm
+ prakriya f(n)
+     vitti x = n        # this does NOT compile - parse error
+-    prati x
++    nivartanam x
+ ```
+ 
+ **Verified:** `mukhya()` with three brace-less statements compiles and runs; `prakriya f(n)` with
+-three brace-less statements fails with `vyakaran dosh, pankti 3:5, shabd 'prati'`.
++three brace-less statements fails with `vyakaran dosh, pankti 3:5, shabd 'nivartanam'`.
+ 
+ **This is an inconsistency, not a rule**, and it is recorded rather than resolved. **Every example in every
+ book writes `mukhya()` without braces** - 84 complete book programs, all of which compile - **so a beginner
+@@ -323,7 +323,7 @@ keyword, and it compiles to the same native machine code.
+ | mala | पङ्क्ति | পঙক্তি | પંક્તિ | पंक्ति | ಸಾಲು | വരി | रांग | ଧାଡ଼ି | ਕਤਾਰ | வரிசைப்பட | వరుస |
+ | satya | परिग्रह | ধারণ | ધારણ | धारण | ಧಾರಣೆ | ധാരണ | धारण | ଧାରଣ | ਧਾਰਨ | உரிமை | కలిగివుండు |
+ | prakriya | प्रक्रिया | ফলন | ફલન | फलन | ಕ್ರಿಯೆ | ക്രിയ | कार्य | କାର୍ଯ୍ୟ | ਕਾਰਜ | சார்பு | ప్రమేయం |
+-| prati | प्रतियाति | ফেরত | પાછા | वापस | ಹಿಂತಿರುಗು | മടങ്ങുക | परत | ଫେରସ | ਵਾਪਸ | திரும்ப | తిరిగి |
++| nivartanam | निवर्तनम् | ফেরত | પાછા | वापस | ಹಿಂತಿರುಗು | മടങ്ങുക | परत | ଫେରସ | ਵਾਪਸ | திரும்ப | తిరిగి |
+ | chakra | पुनरावर्तन | পুনরাবৃত্তি | પુનરાવર્તન | पुनरावृत्ति | ಪುನರಾವರ್ತನೆ | പുനരാവൃത്തി | पुनरावृत्ति | ପୁନରାବୃତ୍ତି | ਦੁਹਰਾਓ | மடக்கு | పునరావృతం |
+ | purna | पूर्ण | সত্য | સાચું | सत्य | ನಿಜ | സത്യം | खरे | ସତ୍ୟ | ਸੱਚ | பூரணம் | నిజం |
+ | rachana | रचना | সংরচনা | રચના | संरचना | ರಚನೆ | ഘടന | रचना | ସଂରଚନା | ਢਾਂਚਾ | அமைப்பு | నిర్మాణం |
+@@ -431,7 +431,7 @@ variable, passed as an argument, returned, kept in a `mala`, compared with `==`.
+ A variable that holds one is called like a function.
+ 
+ ```
+-prakriya aarohi(a, b) { prati a - b }
++prakriya aarohi(a, b) { nivartanam a - b }
+ prakriya shreni(vibhag s, tulana) { ... yadi (tulana(s[j], v) > 0) { ... } ... }
+ shreni(x, aarohi)          # pass it
+ vitti f = aarohi           # store it
+@@ -453,7 +453,7 @@ calls it with `x` as the first argument (`swa` is a name like any other).
+ 
+ ```
+ rachana Bindu = { x, y }
+-prakriya Bindu.chal(swa, dx, dy) { swa.x = swa.x + dx  swa.y = swa.y + dy  prati 0 }
++prakriya Bindu.chal(swa, dx, dy) { swa.x = swa.x + dx  swa.y = swa.y + dy  nivartanam 0 }
+ p.chal(3, 4)               # Bindu.chal(p, 3, 4)
+ ```
+ 
+@@ -508,13 +508,13 @@ The smallest working version. Example: `examples/249_r25_phal.sm`.
+ ```
+ prakriya bhaj(a, b) {
+     yadi (b == 0) {
+-        prati dosh(1)            # failure, carrying the code 1
++        nivartanam dosh(1)            # failure, carrying the code 1
+     }
+-    prati siddhi(a / b)          # success, carrying the value
++    nivartanam siddhi(a / b)          # success, carrying the value
+ }
+ prakriya ek_adhik(a, b) {
+     vitti q = prasar bhaj(a, b)  # failure: returned from here at once; success: q is the value
+-    prati siddhi(q + 1)
++    nivartanam siddhi(q + 1)
+ }
+ mukhya() {
+     likha(prasar ek_adhik(10, 2))    # 6
+@@ -522,12 +522,12 @@ mukhya() {
+ }
+ ```
+ 
+-- **A prakriya with a `prati siddhi(...)` or `prati dosh(...)` is a phal-prakriya.** In one, every `prati` is
+-  `siddhi` or `dosh` (a plain `prati` is a compile error), and falling off its end is `siddhi(0)`.
++- **A prakriya with a `nivartanam siddhi(...)` or `nivartanam dosh(...)` is a phal-prakriya.** In one, every `nivartanam` is
++  `siddhi` or `dosh` (a plain `nivartanam` is a compile error), and falling off its end is `siddhi(0)`.
+ - **A phal-prakriya must be called under `prasar`**, and `prasar` must be on a call of one: a failure cannot
+   be ignored, and a status is never read where none was set. Both are compile errors otherwise.
+ - **`prasar` is allowed in a phal-prakriya (it propagates) and in `mukhya`**, where a failure ends the
+-  program with the code as its exit status (the low 8 bits). `prati dosh(c)` in `mukhya` exits with `c`.
++  program with the code as its exit status (the low 8 bits). `nivartanam dosh(c)` in `mukhya` exits with `c`.
+ - **No heap:** the value or the code travels in `rax`, the status in `rdx`.
+ - Methods can be phal-prakriyas (`prasar p.ghata(4)`).
+ 
+@@ -539,9 +539,9 @@ the value. The failure goes no further, so recovery is possible anywhere, in any
+ ```
+ prakriya padh_ya(s, mool) {          # never fails: a bad number counts as the default
+     yadi dosh (q = sankhya_padh(s)) {
+-        prati mool
++        nivartanam mool
+     }
+-    prati q
++    nivartanam q
+ }
+ ```
+ 
+diff --git a/docs/LIBRARY-BOUNDARY.md b/docs/LIBRARY-BOUNDARY.md
+index 138d3826..321131fe 100644
+--- a/docs/LIBRARY-BOUNDARY.md
++++ b/docs/LIBRARY-BOUNDARY.md
+@@ -35,7 +35,7 @@ points at it instead of claiming the library has none).
+   (charter item 06, not started). A library cannot provide safe
+   concurrency the language cannot express.
+ - **Processes and environment.** No spawning, no exit codes beyond
+-  `prati`, no environment variables, no command-line arguments.
++  `nivartanam`, no environment variables, no command-line arguments.
+   Reason: no OS assumed; process semantics belong to the host.
+ - **FFI / calling foreign code.** No C interop, no dynamic loading.
+   Reason: the C FFI exists (R32-R34) but the library is self-contained by design
+diff --git a/docs/R56-MODULE-GLOBALS.md b/docs/R56-MODULE-GLOBALS.md
+index bfb98eaa..76672424 100644
+--- a/docs/R56-MODULE-GLOBALS.md
++++ b/docs/R56-MODULE-GLOBALS.md
+@@ -10,7 +10,7 @@ vitti doubled = counter * 2
+ vitti unset
+ prakriya add_two() {
+     counter += 2
+-    prati counter
++    nivartanam counter
+ }
+ mukhya() {
+     likha(add_two())
+diff --git a/docs/SPECIFICATION.md b/docs/SPECIFICATION.md
+index 100e7b8e..c521dce2 100644
+--- a/docs/SPECIFICATION.md
++++ b/docs/SPECIFICATION.md
+@@ -48,7 +48,7 @@ The following are exercised forms, not a complete EBNF grammar:
+ ```sm
+ prakriya set0(a, v) {
+     a[0] = v
+-    prati v
++    nivartanam v
+ }
+ 
+ mukhya() {
+@@ -63,7 +63,7 @@ mukhya() {
+ 
+ The composite illustration above is explanatory; the constituent forms are
+ supported by the linked fixtures, not by a claimed new run of that composite.
+-`prakriya` introduces a named function, `prati` returns, `vitti` introduces a
++`prakriya` introduces a named function, `nivartanam` returns, `vitti` introduces a
+ scalar variable, and the inspected `mala`/`kosh` cases provide indexed storage.
+ A typed parameter form `kosh dasham a` is exercised by the accepted negative type
+ case. There is no claim here of first-class functions, closures, generics, methods,
+diff --git a/docs/_newchapter_en.html b/docs/_newchapter_en.html
+index d09cd96b..c166236d 100644
+--- a/docs/_newchapter_en.html
++++ b/docs/_newchapter_en.html
+@@ -44,7 +44,7 @@
+         s = s + xs[i]
+         i = i + 1
+     }
+-    <span class="kw">prati</span> s / <span class="kw">kosh_len</span>(xs)
++    <span class="kw">nivartanam</span> s / <span class="kw">kosh_len</span>(xs)
+ }</pre>
+   <p>A <code>kosh dasham</code> is passed as a pointer, so <strong>indexed writes are visible to the
+   caller</strong> — a function can fill an mala for you. But growing it is not allowed: calling
+diff --git a/docs/sutram-book-english.html b/docs/sutram-book-english.html
+index 5c74dd06..5719dc3c 100644
+--- a/docs/sutram-book-english.html
++++ b/docs/sutram-book-english.html
+@@ -196,9 +196,9 @@ The answer is 25.</div>
+ </div>
+ <div class="ch" id="ch7"><h2>7. Functions: <span class="k" data-tip="function">prakriya</span></h2>
+ <p>A <code><span class="k" data-tip="function">prakriya</span></code> (a process / procedure) is a named block that takes up <span class="k" data-tip="range-to">to</span> three
+-arguments and returns a value with <code><span class="k" data-tip="return">prati</span></code>:</p>
++arguments and returns a value with <code><span class="k" data-tip="return">nivartanam</span></code>:</p>
+ <pre><code><span class="k" data-tip="function">prakriya</span> vishalya(mulya)
+-    <span class="k" data-tip="return">prati</span> mulya * mulya
++    <span class="k" data-tip="return">nivartanam</span> mulya * mulya
+ 
+ <span class="k" data-tip="main">mukhya</span>()
+     <span class="k" data-tip="variable">vitti</span> phalam = vishalya(7)
+@@ -206,8 +206,8 @@ arguments and returns a value with <code><span class="k" data-tip="return">prati
+     <span class="k" data-tip="print">likha</span>("\n")</code></pre>
+ <p>Functions can call themselves — recursion works out of the box:</p>
+ <pre><code><span class="k" data-tip="function">prakriya</span> fib(n) {
+-    <span class="k" data-tip="if">yadi</span> (n &lt; 2) { prati n }
+-    prati fib(n - 1) + fib(n - 2)
++    <span class="k" data-tip="if">yadi</span> (n &lt; 2) { nivartanam n }
++    nivartanam fib(n - 1) + fib(n - 2)
+ }
+ 
+ mukhya()
+@@ -331,7 +331,7 @@ instantly without leaving your flow.</div>
+ <tr><td><code><span class="k" data-tip="for">chakra</span> i = a <span class="k" data-tip="range-to">tak</span> b</code></td><td>for loop</td></tr>
+ <tr><td><code><span class="k" data-tip="while">yavat</span></code></td><td>while loop</td></tr>
+ <tr><td><code><span class="k" data-tip="break">krama</span> / <span class="k" data-tip="continue">agrim</span></code></td><td>break / continue</td></tr>
+-<tr><td><code><span class="k" data-tip="function">prakriya</span> / <span class="k" data-tip="return">prati</span></code></td><td>function / return</td></tr>
++<tr><td><code><span class="k" data-tip="function">prakriya</span> / <span class="k" data-tip="return">nivartanam</span></code></td><td>function / return</td></tr>
+ <tr><td><code><span class="k" data-tip="enum">ganana</span></code></td><td>enum</td></tr>
+ <tr><td><code><span class="k" data-tip="struct">rachana</span></code></td><td>struct</td></tr>
+ <tr><td><code><span class="k" data-tip="include">yoj</span></code></td><td>import</td></tr>
+@@ -703,7 +703,7 @@ toolchain. The installer is only packaging — it is not part of the language.</
+         s = s + xs[i]
+         i = i + 1
+     }
+-    <span class="kw">prati</span> s / <span class="kw">kosh_len</span>(xs)
++    <span class="kw">nivartanam</span> s / <span class="kw">kosh_len</span>(xs)
+ }</pre>
+   <p>A <code>kosh dasham</code> is passed as a pointer, so <strong>indexed writes are visible to the
+   caller</strong> — a function can fill an mala for you. But growing it is not allowed: calling
+diff --git a/docs/sutram-book-gujarati.html b/docs/sutram-book-gujarati.html
+index 3db82837..2d069cfd 100644
+--- a/docs/sutram-book-gujarati.html
++++ b/docs/sutram-book-gujarati.html
+@@ -174,7 +174,7 @@ $ ./namaste.bin
+ </div>
+ <div class="ch" id="ch7"><h2>7. <span class="k" data-tip="સંસ્કૃત: prakriya · function">ફલન</span>: <span class="k" data-tip="સંસ્કૃત: prakriya · function">prakriya</span> <span class="en-gloss">(Functions)</span></h2>
+ <pre><code><span class="k" data-tip="સંસ્કૃત: prakriya · function">prakriya</span> vishalya(mulya)
+-    <span class="k" data-tip="સંસ્કૃત: prati · return">prati</span> mulya * mulya
++    <span class="k" data-tip="સંસ્કૃત: nivartanam · return">nivartanam</span> mulya * mulya
+ 
+ <span class="k" data-tip="સંસ્કૃત: mukhya · main">mukhya</span>()
+     <span class="k" data-tip="સંસ્કૃત: vitti · variable">vitti</span> phalam = vishalya(7)
+@@ -182,8 +182,8 @@ $ ./namaste.bin
+     <span class="k" data-tip="સંસ્કૃત: likha · print">likha</span>("\n")</code></pre>
+ <p>રિકર્ઝન સીધું કામ કરે:</p>
+ <pre><code><span class="k" data-tip="સંસ્કૃત: prakriya · function">prakriya</span> fib(n) {
+-    <span class="k" data-tip="સંસ્કૃત: yadi · if">yadi</span> (n &lt; 2) { prati n }
+-    prati fib(n - 1) + fib(n - 2)
++    <span class="k" data-tip="સંસ્કૃત: yadi · if">yadi</span> (n &lt; 2) { nivartanam n }
++    nivartanam fib(n - 1) + fib(n - 2)
+ }
+ 
+ mukhya()
+@@ -238,7 +238,7 @@ Siddh: 201 baait sankalit
+ <tr><td><code><span class="k" data-tip="સંસ્કૃત: yavat · while">જ્યાંસુધી</span></code></td><td>while</td><td><code><span class="k" data-tip="સંસ્કૃત: yavat · while">yavat</span></code></td></tr>
+ <tr><td><code><span class="k" data-tip="સંસ્કૃત: chakra · for">પુનરાવર્તન</span> x = 1 <span class="k" data-tip="સંસ્કૃત: tak · range-to">થી</span> 5</code></td><td>for x = 1 <span class="k" data-tip="સંસ્કૃત: tak · range-to">to</span> 5</td><td><code><span class="k" data-tip="સંસ્કૃત: chakra · for">chakra</span> ... <span class="k" data-tip="સંસ્કૃત: tak · range-to">tak</span></code></td></tr>
+ <tr><td><code><span class="k" data-tip="સંસ્કૃત: prakriya · function">કાર્ય</span> / <span class="k" data-tip="સંસ્કૃત: prakriya · function">ફલન</span></code></td><td>function</td><td><code><span class="k" data-tip="સંસ્કૃત: prakriya · function">prakriya</span></code></td></tr>
+-<tr><td><code><span class="k" data-tip="સંસ્કૃત: prati · return">પાછા</span></code></td><td>return</td><td><code><span class="k" data-tip="સંસ્કૃત: prati · return">prati</span></code></td></tr>
++<tr><td><code><span class="k" data-tip="સંસ્કૃત: nivartanam · return">પાછા</span></code></td><td>return</td><td><code><span class="k" data-tip="સંસ્કૃત: nivartanam · return">nivartanam</span></code></td></tr>
+ <tr><td><code><span class="k" data-tip="સંસ્કૃત: likha · print">લખો</span></code></td><td>print</td><td><code><span class="k" data-tip="સંસ્કૃત: likha · print">likha</span></code></td></tr>
+ <tr><td><code><span class="k" data-tip="સંસ્કૃત: grahan · input">વાંચો</span></code></td><td>input</td><td><code><span class="k" data-tip="સંસ્કૃત: grahan · input">grahan</span></code></td></tr>
+ <tr><td><code><span class="k" data-tip="સંસ્કૃત: krama · break">ક્રમ</span></code></td><td>break</td><td><code><span class="k" data-tip="સંસ્કૃત: krama · break">krama</span></code></td></tr>
+@@ -304,7 +304,7 @@ Sanket: asmin sthane shabdam vyakaranam cha pashyatu.</code></pre>
+ <tr><td><code><span class="k" data-tip="સંસ્કૃત: chakra · for">chakra</span> i = a <span class="k" data-tip="સંસ્કૃત: tak · range-to">tak</span> b</code></td><td>for loop</td></tr>
+ <tr><td><code><span class="k" data-tip="સંસ્કૃત: yavat · while">yavat</span></code></td><td>while loop</td></tr>
+ <tr><td><code><span class="k" data-tip="સંસ્કૃત: krama · break">krama</span> / <span class="k" data-tip="સંસ્કૃત: agrim · continue">agrim</span></code></td><td>break / continue</td></tr>
+-<tr><td><code><span class="k" data-tip="સંસ્કૃત: prakriya · function">prakriya</span> / <span class="k" data-tip="સંસ્કૃત: prati · return">prati</span></code></td><td>function / return</td></tr>
++<tr><td><code><span class="k" data-tip="સંસ્કૃત: prakriya · function">prakriya</span> / <span class="k" data-tip="સંસ્કૃત: nivartanam · return">nivartanam</span></code></td><td>function / return</td></tr>
+ <tr><td><code><span class="k" data-tip="સંસ્કૃત: ganana · enum">ganana</span></code></td><td>enum</td></tr>
+ <tr><td><code><span class="k" data-tip="સંસ્કૃત: rachana · struct">rachana</span></code></td><td>struct</td></tr>
+ <tr><td><code><span class="k" data-tip="સંસ્કૃત: yoj · include">yoj</span></code></td><td>import</td></tr>
+@@ -683,7 +683,7 @@ namaste.exe
+         s = s + xs[i]
+         i = i + 1
+     }
+-    <span class="kw">prati</span> s / <span class="kw">kosh_len</span>(xs)
++    <span class="kw">nivartanam</span> s / <span class="kw">kosh_len</span>(xs)
+ }</pre>
+   <h3>Using the library</h3>
+ <pre><span class="kw">yoj</span> sankhyiki
+diff --git a/docs/sutram-book-hindi.html b/docs/sutram-book-hindi.html
+index 3914f66f..3488fa46 100644
+--- a/docs/sutram-book-hindi.html
++++ b/docs/sutram-book-hindi.html
+@@ -190,9 +190,9 @@ $ ./namaste.bin
+ </div>
+ <div class="ch" id="ch7"><h2>7. <span class="k" data-tip="संस्कृत: prakriya · function">फलन</span>: <span class="k" data-tip="संस्कृत: prakriya · function">prakriya</span> <span class="en-gloss">(Functions)</span></h2>
+ <p><code><span class="k" data-tip="संस्कृत: prakriya · function">prakriya</span></code> (प्रक्रिया) एक नामित ब्लॉक है जो तीन तर्क तक लेता है और
+-<code><span class="k" data-tip="संस्कृत: prati · return">prati</span></code> <span class="k" data-tip="संस्कृत: tak · range-to">से</span> मान लौटाता है:</p>
++<code><span class="k" data-tip="संस्कृत: nivartanam · return">nivartanam</span></code> <span class="k" data-tip="संस्कृत: tak · range-to">से</span> मान लौटाता है:</p>
+ <pre><code><span class="k" data-tip="संस्कृत: prakriya · function">prakriya</span> vishalya(mulya)
+-    <span class="k" data-tip="संस्कृत: prati · return">prati</span> mulya * mulya
++    <span class="k" data-tip="संस्कृत: nivartanam · return">nivartanam</span> mulya * mulya
+ 
+ <span class="k" data-tip="संस्कृत: mukhya · main">mukhya</span>()
+     <span class="k" data-tip="संस्कृत: vitti · variable">vitti</span> phalam = vishalya(7)
+@@ -200,8 +200,8 @@ $ ./namaste.bin
+     <span class="k" data-tip="संस्कृत: likha · print">likha</span>("\n")</code></pre>
+ <p><span class="k" data-tip="संस्कृत: prakriya · function">फलन</span> स्वयं को कॉल कर सकते हैं — <span class="k" data-tip="संस्कृत: chakra · for">पुनरावृत्ति</span> सीधे काम करती है:</p>
+ <pre><code><span class="k" data-tip="संस्कृत: prakriya · function">prakriya</span> fib(n) {
+-    <span class="k" data-tip="संस्कृत: yadi · if">yadi</span> (n &lt; 2) { prati n }
+-    prati fib(n - 1) + fib(n - 2)
++    <span class="k" data-tip="संस्कृत: yadi · if">yadi</span> (n &lt; 2) { nivartanam n }
++    nivartanam fib(n - 1) + fib(n - 2)
+ }
+ 
+ mukhya()
+@@ -268,7 +268,7 @@ Siddh: 201 baait sankalit
+ <tr><td><code><span class="k" data-tip="संस्कृत: yavat · while">जबतक</span></code></td><td>while</td><td><code><span class="k" data-tip="संस्कृत: yavat · while">yavat</span></code></td></tr>
+ <tr><td><code><span class="k" data-tip="संस्कृत: chakra · for">पुनरावृत्ति</span> x = 1 <span class="k" data-tip="संस्कृत: tak · range-to">से</span> 5</code></td><td>for x = 1 <span class="k" data-tip="संस्कृत: tak · range-to">to</span> 5</td><td><code><span class="k" data-tip="संस्कृत: chakra · for">chakra</span> ... <span class="k" data-tip="संस्कृत: tak · range-to">tak</span></code></td></tr>
+ <tr><td><code><span class="k" data-tip="संस्कृत: prakriya · function">फलन</span></code></td><td>function</td><td><code><span class="k" data-tip="संस्कृत: prakriya · function">prakriya</span></code></td></tr>
+-<tr><td><code><span class="k" data-tip="संस्कृत: prati · return">वापस</span></code></td><td>return</td><td><code><span class="k" data-tip="संस्कृत: prati · return">prati</span></code></td></tr>
++<tr><td><code><span class="k" data-tip="संस्कृत: nivartanam · return">वापस</span></code></td><td>return</td><td><code><span class="k" data-tip="संस्कृत: nivartanam · return">nivartanam</span></code></td></tr>
+ <tr><td><code><span class="k" data-tip="संस्कृत: likha · print">लिखो</span></code></td><td>print</td><td><code><span class="k" data-tip="संस्कृत: likha · print">likha</span></code></td></tr>
+ <tr><td><code><span class="k" data-tip="संस्कृत: grahan · input">पढ़ो</span></code></td><td>input</td><td><code><span class="k" data-tip="संस्कृत: grahan · input">grahan</span></code></td></tr>
+ <tr><td><code><span class="k" data-tip="संस्कृत: krama · break">क्रम</span></code></td><td>break</td><td><code><span class="k" data-tip="संस्कृत: krama · break">krama</span></code></td></tr>
+@@ -337,7 +337,7 @@ Sanket: asmin sthane shabdam vyakaranam cha pashyatu.</code></pre>
+ <tr><td><code><span class="k" data-tip="संस्कृत: chakra · for">chakra</span> i = a <span class="k" data-tip="संस्कृत: tak · range-to">tak</span> b</code></td><td>for loop</td></tr>
+ <tr><td><code><span class="k" data-tip="संस्कृत: yavat · while">yavat</span></code></td><td>while loop</td></tr>
+ <tr><td><code><span class="k" data-tip="संस्कृत: krama · break">krama</span> / <span class="k" data-tip="संस्कृत: agrim · continue">agrim</span></code></td><td>break / continue</td></tr>
+-<tr><td><code><span class="k" data-tip="संस्कृत: prakriya · function">prakriya</span> / <span class="k" data-tip="संस्कृत: prati · return">prati</span></code></td><td>function / return</td></tr>
++<tr><td><code><span class="k" data-tip="संस्कृत: prakriya · function">prakriya</span> / <span class="k" data-tip="संस्कृत: nivartanam · return">nivartanam</span></code></td><td>function / return</td></tr>
+ <tr><td><code><span class="k" data-tip="संस्कृत: ganana · enum">ganana</span></code></td><td>enum</td></tr>
+ <tr><td><code><span class="k" data-tip="संस्कृत: rachana · struct">rachana</span></code></td><td>struct</td></tr>
+ <tr><td><code><span class="k" data-tip="संस्कृत: yoj · include">yoj</span></code></td><td>import</td></tr>
+@@ -368,7 +368,7 @@ sutram --version                     <span class="cm"># संस्करण</s
+ <span class="k" data-tip="संस्कृत: likha · print">likha</span>(x)</code></pre>
+ 
+ <h3>संयुक्त असाइनमेंट (Compound Assignment)</h3>
+-<p><span class="k" data-tip="संस्कृत: vitti · variable">चर</span> को उसी के मान पर कोई संक्रिया करके परिणाम <span class="k" data-tip="संस्कृत: prati · return">वापस</span> उसी में रखना:</p>
++<p><span class="k" data-tip="संस्कृत: vitti · variable">चर</span> को उसी के मान पर कोई संक्रिया करके परिणाम <span class="k" data-tip="संस्कृत: nivartanam · return">वापस</span> उसी में रखना:</p>
+ <pre><code><span class="k" data-tip="संस्कृत: vitti · variable">vitti</span> x = 100
+ x += 50   <span class="cm"># 150</span>
+ x -= 30   <span class="cm"># 120</span>
+@@ -726,7 +726,7 @@ namaste.exe
+         s = s + xs[i]
+         i = i + 1
+     }
+-    <span class="kw">prati</span> s / <span class="kw">kosh_len</span>(xs)
++    <span class="kw">nivartanam</span> s / <span class="kw">kosh_len</span>(xs)
+ }</pre>
+   <h3>Using the library</h3>
+ <pre><span class="kw">yoj</span> sankhyiki
+diff --git a/docs/sutram-book-sanskrit.html b/docs/sutram-book-sanskrit.html
+index b181c74f..6a8bff58 100644
+--- a/docs/sutram-book-sanskrit.html
++++ b/docs/sutram-book-sanskrit.html
+@@ -181,9 +181,9 @@ $ ./namaste.bin
+ </div>
+ <div class="ch" id="ch7"><h2>7. फलनानि: <span class="k" data-tip="अर्थः: function">prakriya</span> <span class="en-gloss">(Functions)</span></h2>
+ <p><code><span class="k" data-tip="अर्थः: function">prakriya</span></code> (प्रक्रिया) नामकं ब्लॉकं यत् षट् यावत् तर्कान् गृह्णाति,
+-<code><span class="k" data-tip="अर्थः: return">prati</span></code>-द्वारा मूल्यं प्रत्यागच्छति:</p>
++<code><span class="k" data-tip="अर्थः: return">nivartanam</span></code>-द्वारा मूल्यं प्रत्यागच्छति:</p>
+ <pre><code><span class="k" data-tip="अर्थः: function">prakriya</span> vishalya(mulya)
+-    <span class="k" data-tip="अर्थः: return">prati</span> mulya * mulya
++    <span class="k" data-tip="अर्थः: return">nivartanam</span> mulya * mulya
+ 
+ <span class="k" data-tip="अर्थः: main">mukhya</span>()
+     <span class="k" data-tip="अर्थः: variable">vitti</span> phalam = vishalya(7)
+@@ -191,8 +191,8 @@ $ ./namaste.bin
+     <span class="k" data-tip="अर्थः: print">likha</span>("\n")</code></pre>
+ <p>फलनानि स्वयम् एव आह्वयितुं शक्नुवन्ति — पुनरावृत्तिः प्रत्यक्षतः कार्यं करोति:</p>
+ <pre><code><span class="k" data-tip="अर्थः: function">prakriya</span> fib(n) {
+-    <span class="k" data-tip="अर्थः: if">yadi</span> (n &lt; 2) { prati n }
+-    prati fib(n - 1) + fib(n - 2)
++    <span class="k" data-tip="अर्थः: if">yadi</span> (n &lt; 2) { nivartanam n }
++    nivartanam fib(n - 1) + fib(n - 2)
+ }
+ 
+ mukhya()
+@@ -295,7 +295,7 @@ Sanket: asmin sthane shabdam vyakaranam cha pashyatu.</code></pre>
+ <tr><td><code><span class="k" data-tip="अर्थः: for">chakra</span> i = a <span class="k" data-tip="अर्थः: range-to">tak</span> b</code></td><td>for loop</td></tr>
+ <tr><td><code><span class="k" data-tip="अर्थः: while">yavat</span></code></td><td>while loop</td></tr>
+ <tr><td><code><span class="k" data-tip="अर्थः: break">krama</span> / <span class="k" data-tip="अर्थः: continue">agrim</span></code></td><td>break / continue</td></tr>
+-<tr><td><code><span class="k" data-tip="अर्थः: function">prakriya</span> / <span class="k" data-tip="अर्थः: return">prati</span></code></td><td>function / return</td></tr>
++<tr><td><code><span class="k" data-tip="अर्थः: function">prakriya</span> / <span class="k" data-tip="अर्थः: return">nivartanam</span></code></td><td>function / return</td></tr>
+ <tr><td><code><span class="k" data-tip="अर्थः: enum">ganana</span></code></td><td>enum</td></tr>
+ <tr><td><code><span class="k" data-tip="अर्थः: struct">rachana</span></code></td><td>struct</td></tr>
+ <tr><td><code><span class="k" data-tip="अर्थः: include">yoj</span></code></td><td>import</td></tr>
+@@ -676,7 +676,7 @@ Sutram → Uninstall</b>। अनुस्थापकः केवलं स
+         s = s + xs[i]
+         i = i + 1
+     }
+-    <span class="kw">prati</span> s / <span class="kw">kosh_len</span>(xs)
++    <span class="kw">nivartanam</span> s / <span class="kw">kosh_len</span>(xs)
+ }</pre>
+   <h3>Using the library</h3>
+ <pre><span class="kw">yoj</span> sankhyiki
+diff --git a/docs/sutram-book-tamil.html b/docs/sutram-book-tamil.html
+index 2f97b4b9..3bc10ebf 100644
+--- a/docs/sutram-book-tamil.html
++++ b/docs/sutram-book-tamil.html
+@@ -179,7 +179,7 @@ $ ./namaste.bin
+ </div>
+ <div class="ch" id="ch7"><h2>7. சார்புகள்: <span class="k" data-tip="சமசுகிருதம்: prakriya · function">prakriya</span> <span class="en-gloss">(Functions)</span></h2>
+ <pre><code><span class="k" data-tip="சமசுகிருதம்: prakriya · function">prakriya</span> vishalya(mulya)
+-    <span class="k" data-tip="சமசுகிருதம்: prati · return">prati</span> mulya * mulya
++    <span class="k" data-tip="சமசுகிருதம்: nivartanam · return">nivartanam</span> mulya * mulya
+ 
+ <span class="k" data-tip="சமசுகிருதம்: mukhya · main">mukhya</span>()
+     <span class="k" data-tip="சமசுகிருதம்: vitti · variable">vitti</span> phalam = vishalya(7)
+@@ -187,8 +187,8 @@ $ ./namaste.bin
+     <span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span>("\n")</code></pre>
+ <p>ரிகர்ஷன் நேரடியாக வேலை செய்யும்:</p>
+ <pre><code><span class="k" data-tip="சமசுகிருதம்: prakriya · function">prakriya</span> fib(n) {
+-    <span class="k" data-tip="சமசுகிருதம்: yadi · if">yadi</span> (n &lt; 2) { prati n }
+-    prati fib(n - 1) + fib(n - 2)
++    <span class="k" data-tip="சமசுகிருதம்: yadi · if">yadi</span> (n &lt; 2) { nivartanam n }
++    nivartanam fib(n - 1) + fib(n - 2)
+ }
+ 
+ mukhya()
+@@ -246,7 +246,7 @@ Siddh: 201 baait sankalit
+ <tr><td><code><span class="k" data-tip="சமசுகிருதம்: yavat · while">வரை</span></code></td><td>while</td><td><code><span class="k" data-tip="சமசுகிருதம்: yavat · while">yavat</span></code></td></tr>
+ <tr><td><code><span class="k" data-tip="சமசுகிருதம்: chakra · for">மீண்டும்</span> x = 1 <span class="k" data-tip="சமசுகிருதம்: tak · range-to">முதல்</span> 5</code></td><td>for x = 1 <span class="k" data-tip="சமசுகிருதம்: tak · range-to">to</span> 5</td><td><code><span class="k" data-tip="சமசுகிருதம்: chakra · for">chakra</span> ... <span class="k" data-tip="சமசுகிருதம்: tak · range-to">tak</span></code></td></tr>
+ <tr><td><code><span class="k" data-tip="சமசுகிருதம்: prakriya · function">செயல்</span> / <span class="k" data-tip="சமசுகிருதம்: prakriya · function">சார்பு</span></code></td><td>function</td><td><code><span class="k" data-tip="சமசுகிருதம்: prakriya · function">prakriya</span></code></td></tr>
+-<tr><td><code><span class="k" data-tip="சமசுகிருதம்: prati · return">திரும்ப</span></code></td><td>return</td><td><code><span class="k" data-tip="சமசுகிருதம்: prati · return">prati</span></code></td></tr>
++<tr><td><code><span class="k" data-tip="சமசுகிருதம்: nivartanam · return">திரும்ப</span></code></td><td>return</td><td><code><span class="k" data-tip="சமசுகிருதம்: nivartanam · return">nivartanam</span></code></td></tr>
+ <tr><td><code><span class="k" data-tip="சமசுகிருதம்: likha · print">எழுது</span></code></td><td>print</td><td><code><span class="k" data-tip="சமசுகிருதம்: likha · print">likha</span></code></td></tr>
+ <tr><td><code><span class="k" data-tip="சமசுகிருதம்: grahan · input">படி</span></code></td><td>input</td><td><code><span class="k" data-tip="சமசுகிருதம்: grahan · input">grahan</span></code></td></tr>
+ <tr><td><code><span class="k" data-tip="சமசுகிருதம்: krama · break">வரிசை</span></code></td><td>break</td><td><code><span class="k" data-tip="சமசுகிருதம்: krama · break">krama</span></code></td></tr>
+@@ -310,7 +310,7 @@ Sanket: asmin sthane shabdam vyakaranam cha pashyatu.</code></pre>
+ <tr><td><code><span class="k" data-tip="சமசுகிருதம்: chakra · for">chakra</span> i = a <span class="k" data-tip="சமசுகிருதம்: tak · range-to">tak</span> b</code></td><td>for loop</td></tr>
+ <tr><td><code><span class="k" data-tip="சமசுகிருதம்: yavat · while">yavat</span></code></td><td>while loop</td></tr>
+ <tr><td><code><span class="k" data-tip="சமசுகிருதம்: krama · break">krama</span> / <span class="k" data-tip="சமசுகிருதம்: agrim · continue">agrim</span></code></td><td>break / continue</td></tr>
+-<tr><td><code><span class="k" data-tip="சமசுகிருதம்: prakriya · function">prakriya</span> / <span class="k" data-tip="சமசுகிருதம்: prati · return">prati</span></code></td><td>function / return</td></tr>
++<tr><td><code><span class="k" data-tip="சமசுகிருதம்: prakriya · function">prakriya</span> / <span class="k" data-tip="சமசுகிருதம்: nivartanam · return">nivartanam</span></code></td><td>function / return</td></tr>
+ <tr><td><code><span class="k" data-tip="சமசுகிருதம்: ganana · enum">ganana</span></code></td><td>enum</td></tr>
+ <tr><td><code><span class="k" data-tip="சமசுகிருதம்: rachana · struct">rachana</span></code></td><td>struct</td></tr>
+ <tr><td><code><span class="k" data-tip="சமசுகிருதம்: yoj · include">yoj</span></code></td><td>import</td></tr>
+@@ -443,7 +443,7 @@ mukhya()
+ 
+ <p><b>Function → <span class="k" data-tip="சமசுகிருதம்: prakriya · function">சார்பு</span></b> — உள்ளீட்டிலிருந்து வெளியீட்டின் விதி; கணிதத்திலிருந்து வந்த <span class="k" data-tip="சமசுகிருதம்: sutra · constant">நிலையான</span> சொல்.</p>
+ 
+-<p><b>Loop → <span class="k" data-tip="சமசுகிருதம்: chakra · for">மடக்கு</span></b> — திரும்பத் <span class="k" data-tip="சமசுகிருதம்: prati · return">திரும்ப</span> இயங்கும் <span class="k" data-tip="சமசுகிருதம்: rachana · struct">அமைப்பு</span>; "மீள் சுற்று" என்பதும் வழக்கில் உண்டு.</p>
++<p><b>Loop → <span class="k" data-tip="சமசுகிருதம்: chakra · for">மடக்கு</span></b> — திரும்பத் <span class="k" data-tip="சமசுகிருதம்: nivartanam · return">திரும்ப</span> இயங்கும் <span class="k" data-tip="சமசுகிருதம்: rachana · struct">அமைப்பு</span>; "மீள் சுற்று" என்பதும் வழக்கில் உண்டு.</p>
+ 
+ <p><b>Array → <span class="k" data-tip="சமசுகிருதம்: krama · break">வரிசை</span></b> — வரிசையாக அடுக்கிய மதிப்புகள். சூத்ரமில் இதற்கு <code><span class="k" data-tip="சமசுகிருதம்: mala · mala">mala</span></code> (<span class="k" data-tip="சமசுகிருதம்: krama · break">வரிசை</span>/பங்க்தி) குறிச்சொல் உள்ளது.</p>
+ 
+@@ -698,7 +698,7 @@ Uninstall</b>. நீக்கி தான் நிறுவிய கோப
+         s = s + xs[i]
+         i = i + 1
+     }
+-    <span class="kw">prati</span> s / <span class="kw">kosh_len</span>(xs)
++    <span class="kw">nivartanam</span> s / <span class="kw">kosh_len</span>(xs)
+ }</pre>
+   <h3>Using the library</h3>
+ <pre><span class="kw">yoj</span> sankhyiki
+diff --git a/docs/sutram-book-telugu.html b/docs/sutram-book-telugu.html
+index c455d57a..d1c9ad96 100644
+--- a/docs/sutram-book-telugu.html
++++ b/docs/sutram-book-telugu.html
+@@ -196,9 +196,9 @@ syscall.</div>
+ </div>
+ <div class="ch" id="ch7"><h2>7. ప్రమేయాలు: <span class="k" data-tip="సంస్కృతం: prakriya · function">prakriya</span> <span class="en-gloss">(Functions)</span></h2>
+ <p><code><span class="k" data-tip="సంస్కృతం: prakriya · function">prakriya</span></code> (<span class="k" data-tip="సంస్కృతం: prakriya · function">ప్రక్రియ</span>) ఒక పేరున్న బ్లాక్ — ఆరు ఆర్గ్యుమెంట్‌ల వరకు తీసుకుంటుంది,
+-<code><span class="k" data-tip="సంస్కృతం: prati · return">prati</span></code>‌తో విలువను <span class="k" data-tip="సంస్కృతం: prati · return">తిరిగి</span> ఇస్తుంది:</p>
++<code><span class="k" data-tip="సంస్కృతం: nivartanam · return">nivartanam</span></code>‌తో విలువను <span class="k" data-tip="సంస్కృతం: nivartanam · return">తిరిగి</span> ఇస్తుంది:</p>
+ <pre><code><span class="k" data-tip="సంస్కృతం: prakriya · function">prakriya</span> vishalya(mulya)
+-    <span class="k" data-tip="సంస్కృతం: prati · return">prati</span> mulya * mulya
++    <span class="k" data-tip="సంస్కృతం: nivartanam · return">nivartanam</span> mulya * mulya
+ 
+ <span class="k" data-tip="సంస్కృతం: mukhya · main">mukhya</span>()
+     <span class="k" data-tip="సంస్కృతం: vitti · variable">vitti</span> phalam = vishalya(7)
+@@ -206,8 +206,8 @@ syscall.</div>
+     <span class="k" data-tip="సంస్కృతం: likha · print">likha</span>("\n")</code></pre>
+ <p>ప్రమేయాలు తమను తాము కాల్ చేయగలవు — రికర్షన్ సూటిగా పనిచేస్తుంది:</p>
+ <pre><code><span class="k" data-tip="సంస్కృతం: prakriya · function">prakriya</span> fib(n) {
+-    <span class="k" data-tip="సంస్కృతం: yadi · if">yadi</span> (n &lt; 2) { prati n }
+-    prati fib(n - 1) + fib(n - 2)
++    <span class="k" data-tip="సంస్కృతం: yadi · if">yadi</span> (n &lt; 2) { nivartanam n }
++    nivartanam fib(n - 1) + fib(n - 2)
+ }
+ 
+ mukhya()
+@@ -272,7 +272,7 @@ Siddh: 201 baait sankalit
+ <tr><td><code><span class="k" data-tip="సంస్కృతం: yavat · while">ఎంతవరకు</span></code></td><td>while</td><td><code><span class="k" data-tip="సంస్కృతం: yavat · while">yavat</span></code></td></tr>
+ <tr><td><code><span class="k" data-tip="సంస్కృతం: chakra · for">పునరావృతం</span> x = 1 <span class="k" data-tip="సంస్కృతం: tak · range-to">నుండి</span> 5</code></td><td>for x = 1 <span class="k" data-tip="సంస్కృతం: tak · range-to">to</span> 5</td><td><code><span class="k" data-tip="సంస్కృతం: chakra · for">chakra</span> ... <span class="k" data-tip="సంస్కృతం: tak · range-to">tak</span></code></td></tr>
+ <tr><td><code><span class="k" data-tip="సంస్కృతం: prakriya · function">క్రియ</span> / <span class="k" data-tip="సంస్కృతం: prakriya · function">ప్రమేయం</span></code></td><td>function</td><td><code><span class="k" data-tip="సంస్కృతం: prakriya · function">prakriya</span></code></td></tr>
+-<tr><td><code><span class="k" data-tip="సంస్కృతం: prati · return">తిరిగి</span></code></td><td>return</td><td><code><span class="k" data-tip="సంస్కృతం: prati · return">prati</span></code></td></tr>
++<tr><td><code><span class="k" data-tip="సంస్కృతం: nivartanam · return">తిరిగి</span></code></td><td>return</td><td><code><span class="k" data-tip="సంస్కృతం: nivartanam · return">nivartanam</span></code></td></tr>
+ <tr><td><code><span class="k" data-tip="సంస్కృతం: likha · print">వ్రాయు</span> / <span class="k" data-tip="సంస్కృతం: likha · print">లేఖ</span></code></td><td>print</td><td><code><span class="k" data-tip="సంస్కృతం: likha · print">likha</span></code></td></tr>
+ <tr><td><code><span class="k" data-tip="సంస్కృతం: grahan · input">చదువు</span></code></td><td>input</td><td><code><span class="k" data-tip="సంస్కృతం: grahan · input">grahan</span></code></td></tr>
+ <tr><td><code><span class="k" data-tip="సంస్కృతం: krama · break">క్రమం</span></code></td><td>break</td><td><code><span class="k" data-tip="సంస్కృతం: krama · break">krama</span></code></td></tr>
+@@ -337,7 +337,7 @@ Sanket: asmin sthane shabdam vyakaranam cha pashyatu.</code></pre>
+ <tr><td><code><span class="k" data-tip="సంస్కృతం: chakra · for">chakra</span> i = a <span class="k" data-tip="సంస్కృతం: tak · range-to">tak</span> b</code></td><td>for loop</td></tr>
+ <tr><td><code><span class="k" data-tip="సంస్కృతం: yavat · while">yavat</span></code></td><td>while loop</td></tr>
+ <tr><td><code><span class="k" data-tip="సంస్కృతం: krama · break">krama</span> / <span class="k" data-tip="సంస్కృతం: agrim · continue">agrim</span></code></td><td>break / continue</td></tr>
+-<tr><td><code><span class="k" data-tip="సంస్కృతం: prakriya · function">prakriya</span> / <span class="k" data-tip="సంస్కృతం: prati · return">prati</span></code></td><td>function / return</td></tr>
++<tr><td><code><span class="k" data-tip="సంస్కృతం: prakriya · function">prakriya</span> / <span class="k" data-tip="సంస్కృతం: nivartanam · return">nivartanam</span></code></td><td>function / return</td></tr>
+ <tr><td><code><span class="k" data-tip="సంస్కృతం: ganana · enum">ganana</span></code></td><td>enum</td></tr>
+ <tr><td><code><span class="k" data-tip="సంస్కృతం: rachana · struct">rachana</span></code></td><td>struct</td></tr>
+ <tr><td><code><span class="k" data-tip="సంస్కృతం: yoj · include">yoj</span></code></td><td>import</td></tr>
+@@ -721,7 +721,7 @@ Uninstall</b>. అన్‌ఇన్‌స్టాలర్ తాను ఇన
+         s = s + xs[i]
+         i = i + 1
+     }
+-    <span class="kw">prati</span> s / <span class="kw">kosh_len</span>(xs)
++    <span class="kw">nivartanam</span> s / <span class="kw">kosh_len</span>(xs)
+ }</pre>
+   <h3>Using the library</h3>
+ <pre><span class="kw">yoj</span> sankhyiki
+diff --git a/docs/sutram-keyword-words.html b/docs/sutram-keyword-words.html
+index 25995d05..83fe61f7 100644
+--- a/docs/sutram-keyword-words.html
++++ b/docs/sutram-keyword-words.html
+@@ -27,7 +27,7 @@ footer{margin-top:20px;font-family:'IBM Plex Mono',monospace;font-size:11px;colo
+ <h1>Sutram <span style="color:var(--navy)">सूत्रम्</span> — Keyword Words</h1>
+ <p class="sub">26 keywords &middot; 11 language packs, 33/33 pack checks passing &middot; every pack clean: 26 words, no duplicates</p>
+ <div class="note"><b>Tamil and Malayalam are paused</b> for now and not shown here. Their packs remain in the tree unchanged. Sanskrit is the base language — every keyword above is the Sanskrit word the packs translate.</div>
+-<div class="scroll"><table><thead><tr><th>Sanskrit keyword</th><th>हिन्दी Hindi</th><th>বাংলা Bengali</th><th>ગુજરાતી Gujarati</th><th>ಕನ್ನಡ Kannada</th><th>मराठी Marathi</th><th>ଓଡ଼ିଆ Odia</th><th>ਪੰਜਾਬੀ Punjabi</th><th>తెలుగు Telugu</th></tr></thead><tbody><tr><td class="kw"><code>mukhya</code><small>main / entry point</small></td><td>मुख्य</td><td>মুখ্য</td><td>મુખ્ય</td><td>ಮುಖ್ಯ</td><td>मुख्य</td><td>ମୁଖ୍ୟ</td><td>ਮੁੱਖ</td><td>ముఖ్యం</td></tr><tr><td class="kw"><code>vitti</code><small>variable</small></td><td>चर</td><td>চল</td><td>ચલ</td><td>ಚರ</td><td>चल</td><td>ଚଳ</td><td>ਵੇਰੀਏਬਲ</td><td>చరం</td></tr><tr><td class="kw"><code>anka</code><small>integer type</small></td><td>अंक</td><td>সংখ্যা</td><td>અંક</td><td>ಸಂಖ್ಯೆ</td><td>अंक</td><td>ଅଙ୍କ</td><td>ਅੰਕ</td><td>సంఖ్య</td></tr><tr><td class="kw"><code>yadi</code><small>if</small></td><td>यदि</td><td>যদি</td><td>જો</td><td>ಒಂದುವೇಳೆ</td><td>जर</td><td>ଯଦି</td><td>ਜੇ</td><td>ఒకవేళ</td></tr><tr><td class="kw"><code>anya</code><small>else</small></td><td>अन्यथा</td><td>অন্যথা</td><td>નહિંતર</td><td>ಇಲ್ಲದಿದ್ದರೆ</td><td>नाहीतर</td><td>ନଚେତ୍</td><td>ਨਹੀਂਤਾਂ</td><td>లేకపోతే</td></tr><tr><td class="kw"><code>yavat</code><small>while</small></td><td>जबतक</td><td>যতক্ষণ</td><td>જ્યાંસુધી</td><td>ಯಾವವರೆಗೂ</td><td>जोपर्यंत</td><td>ଯେତେବେଳେ</td><td>ਜਦੋਂਤਕ</td><td>ఎంతవరకు</td></tr><tr><td class="kw"><code>chakra</code><small>for</small></td><td>पुनरावृत्ति</td><td>পুনরাবৃত্তি</td><td>પુનરાવર્તન</td><td>ಪುನರಾವರ್ತನೆ</td><td>पुनरावृत्ती</td><td>ପୁନରାବୃତ୍ତି</td><td>ਦੁਹਰਾਓ</td><td>పునరావృతం</td></tr><tr><td class="kw"><code>prati</code><small>return</small></td><td>वापस</td><td>ফেরত</td><td>પાછા</td><td>ಹಿಂತಿರುಗು</td><td>परत</td><td>ଫେରସ</td><td>ਵਾਪਸ</td><td>తిరిగి</td></tr><tr><td class="kw"><code>prakriya</code><small>function</small></td><td>फलन</td><td>ফলন</td><td>ફલન</td><td>ಕ್ರಿಯೆ</td><td>कार्य</td><td>କାର୍ଯ୍ୟ</td><td>ਕਾਰਜ</td><td>ప్రక్రియ</td></tr><tr><td class="kw"><code>likha</code><small>print value/varna</small></td><td>लिखो</td><td>লিখো</td><td>લખો</td><td>ಬರೆ</td><td>लिहा</td><td>ଲେଖ</td><td>ਲਿਖੋ</td><td>వ్రాయు</td></tr><tr><td class="kw"><code>purna</code><small>true</small></td><td>सत्य</td><td>সত্য</td><td>સાચું</td><td>ನಿಜ</td><td>खरे</td><td>ସତ୍ୟ</td><td>ਸੱਚ</td><td>నిజం</td></tr><tr><td class="kw"><code>shunya</code><small>false / null</small></td><td>असत्य</td><td>মিথ্যা</td><td>ખોટું</td><td>ಸುಳ್ಳು</td><td>खोटे</td><td>ମିଥ୍ୟା</td><td>ਝੂਠ</td><td>అబద్ధం</td></tr><tr><td class="kw"><code>sutra</code><small>constant</small></td><td>स्थिर</td><td>স্থির</td><td>અચલ</td><td>ಸ್ಥಿರ</td><td>स्थिर</td><td>ସ୍ଥିର</td><td>ਸਥਿਰ</td><td>స్థిరం</td></tr><tr><td class="kw"><code>krama</code><small>break</small></td><td>क्रम</td><td>ক্রম</td><td>ક્રમ</td><td>ಕ್ರಮ</td><td>क्रम</td><td>କ୍ରମ</td><td>ਕ੍ਰਮ</td><td>క్రమం</td></tr><tr><td class="kw"><code>agrim</code><small>continue</small></td><td>आगे</td><td>এগিয়ে</td><td>આગળ</td><td>ಮುಂದುವರಿಸು</td><td>पुढे</td><td>ଆଗକୁ</td><td>ਅੱਗੇ</td><td>కొనసాగు</td></tr><tr><td class="kw"><code>guna</code><small>switch / multiply</small></td><td>गुण</td><td>গুণ</td><td>ગુણ</td><td>ಗುಣ</td><td>गुण</td><td>ଗୁଣ</td><td>ਗੁਣ</td><td>గుణం</td></tr><tr><td class="kw"><code>bhavana</code><small>case (in guna)</small></td><td>भावना</td><td>ভাবনা</td><td>ભાવના</td><td>ಭಾವನೆ</td><td>भावना</td><td>ଭାବନା</td><td>ਭਾਵਨਾ</td><td>భావన</td></tr><tr><td class="kw"><code>mala</code><small>mala</small></td><td>पंक्ति</td><td>পঙক্তি</td><td>પંક્તિ</td><td>ಪಂಕ್ತಿ</td><td>रांग</td><td>ଧାଡ଼ି</td><td>ਕਤਾਰ</td><td>పంక్తి</td></tr><tr><td class="kw"><code>ganana</code><small>enum</small></td><td>सृजन</td><td>সৃজন</td><td>સર્જન</td><td>ಸೃಜನ</td><td>सृजन</td><td>ସୃଜନ</td><td>ਸਿਰਜਣ</td><td>సృజన</td></tr><tr><td class="kw"><code>abhava</code><small>negation</small></td><td>निषेध</td><td>নিষেধ</td><td>નિષેધ</td><td>ನಿಷೇಧ</td><td>निषेध</td><td>ନିଷେଧ</td><td>ਨਿਸ਼ੇਧ</td><td>నిషేధం</td></tr><tr><td class="kw"><code>rachana</code><small>struct</small></td><td>संरचना</td><td>সংরচনা</td><td>રચના</td><td>ರಚನೆ</td><td>रचना</td><td>ସଂରଚନା</td><td>ਰਚਨਾ</td><td>రచన</td></tr><tr><td class="kw"><code>yoj</code><small>include (module)</small></td><td>समावेश</td><td>সমাবেশ</td><td>સમાવેશ</td><td>ಸೇರಿಸು</td><td>समावेश</td><td>ସମାବେଶ</td><td>ਸ਼ਾਮਲ</td><td>చేర్చు</td></tr><tr><td class="kw"><code>satya</code><small>boolean type</small></td><td>धारण</td><td>ধারণ</td><td>ધારણ</td><td>ಧಾರಣೆ</td><td>धारण</td><td>ଧାରଣ</td><td>ਧਾਰਨ</td><td>కలిగివుండు</td></tr><tr><td class="kw"><code>grahan</code><small>read input</small></td><td>पढ़ो</td><td>পড়ো</td><td>વાંચો</td><td>ಓದು</td><td>वाचा</td><td>ପଢ଼</td><td>ਪੜ੍ਹੋ</td><td>చదువు</td></tr><tr><td class="kw"><code>to</code><small>to (loop range)</small></td><td>से</td><td>থেকে</td><td>થી</td><td>ರಿಂದ</td><td>पासून</td><td>ଠାରୁ</td><td>ਤੋਂ</td><td>నుండి</td></tr><tr><td class="kw"><code>shabda</code><small>print varna var</small></td><td>शब्द</td><td>শব্দ</td><td>શબ્દ</td><td>ಶಬ್ದ</td><td>शब्द</td><td>ଶବ୍ଦ</td><td>ਸ਼ਬਦ</td><td>శబ్దం</td></tr></tbody></table>
++<div class="scroll"><table><thead><tr><th>Sanskrit keyword</th><th>हिन्दी Hindi</th><th>বাংলা Bengali</th><th>ગુજરાતી Gujarati</th><th>ಕನ್ನಡ Kannada</th><th>मराठी Marathi</th><th>ଓଡ଼ିଆ Odia</th><th>ਪੰਜਾਬੀ Punjabi</th><th>తెలుగు Telugu</th></tr></thead><tbody><tr><td class="kw"><code>mukhya</code><small>main / entry point</small></td><td>मुख्य</td><td>মুখ্য</td><td>મુખ્ય</td><td>ಮುಖ್ಯ</td><td>मुख्य</td><td>ମୁଖ୍ୟ</td><td>ਮੁੱਖ</td><td>ముఖ్యం</td></tr><tr><td class="kw"><code>vitti</code><small>variable</small></td><td>चर</td><td>চল</td><td>ચલ</td><td>ಚರ</td><td>चल</td><td>ଚଳ</td><td>ਵੇਰੀਏਬਲ</td><td>చరం</td></tr><tr><td class="kw"><code>anka</code><small>integer type</small></td><td>अंक</td><td>সংখ্যা</td><td>અંક</td><td>ಸಂಖ್ಯೆ</td><td>अंक</td><td>ଅଙ୍କ</td><td>ਅੰਕ</td><td>సంఖ్య</td></tr><tr><td class="kw"><code>yadi</code><small>if</small></td><td>यदि</td><td>যদি</td><td>જો</td><td>ಒಂದುವೇಳೆ</td><td>जर</td><td>ଯଦି</td><td>ਜੇ</td><td>ఒకవేళ</td></tr><tr><td class="kw"><code>anya</code><small>else</small></td><td>अन्यथा</td><td>অন্যথা</td><td>નહિંતર</td><td>ಇಲ್ಲದಿದ್ದರೆ</td><td>नाहीतर</td><td>ନଚେତ୍</td><td>ਨਹੀਂਤਾਂ</td><td>లేకపోతే</td></tr><tr><td class="kw"><code>yavat</code><small>while</small></td><td>जबतक</td><td>যতক্ষণ</td><td>જ્યાંસુધી</td><td>ಯಾವವರೆಗೂ</td><td>जोपर्यंत</td><td>ଯେତେବେଳେ</td><td>ਜਦੋਂਤਕ</td><td>ఎంతవరకు</td></tr><tr><td class="kw"><code>chakra</code><small>for</small></td><td>पुनरावृत्ति</td><td>পুনরাবৃত্তি</td><td>પુનરાવર્તન</td><td>ಪುನರಾವರ್ತನೆ</td><td>पुनरावृत्ती</td><td>ପୁନରାବୃତ୍ତି</td><td>ਦੁਹਰਾਓ</td><td>పునరావృతం</td></tr><tr><td class="kw"><code>nivartanam</code><small>return</small></td><td>वापस</td><td>ফেরত</td><td>પાછા</td><td>ಹಿಂತಿರುಗು</td><td>परत</td><td>ଫେରସ</td><td>ਵਾਪਸ</td><td>తిరిగి</td></tr><tr><td class="kw"><code>prakriya</code><small>function</small></td><td>फलन</td><td>ফলন</td><td>ફલન</td><td>ಕ್ರಿಯೆ</td><td>कार्य</td><td>କାର୍ଯ୍ୟ</td><td>ਕਾਰਜ</td><td>ప్రక్రియ</td></tr><tr><td class="kw"><code>likha</code><small>print value/varna</small></td><td>लिखो</td><td>লিখো</td><td>લખો</td><td>ಬರೆ</td><td>लिहा</td><td>ଲେଖ</td><td>ਲਿਖੋ</td><td>వ్రాయు</td></tr><tr><td class="kw"><code>purna</code><small>true</small></td><td>सत्य</td><td>সত্য</td><td>સાચું</td><td>ನಿಜ</td><td>खरे</td><td>ସତ୍ୟ</td><td>ਸੱਚ</td><td>నిజం</td></tr><tr><td class="kw"><code>shunya</code><small>false / null</small></td><td>असत्य</td><td>মিথ্যা</td><td>ખોટું</td><td>ಸುಳ್ಳು</td><td>खोटे</td><td>ମିଥ୍ୟା</td><td>ਝੂਠ</td><td>అబద్ధం</td></tr><tr><td class="kw"><code>sutra</code><small>constant</small></td><td>स्थिर</td><td>স্থির</td><td>અચલ</td><td>ಸ್ಥಿರ</td><td>स्थिर</td><td>ସ୍ଥିର</td><td>ਸਥਿਰ</td><td>స్థిరం</td></tr><tr><td class="kw"><code>krama</code><small>break</small></td><td>क्रम</td><td>ক্রম</td><td>ક્રમ</td><td>ಕ್ರಮ</td><td>क्रम</td><td>କ୍ରମ</td><td>ਕ੍ਰਮ</td><td>క్రమం</td></tr><tr><td class="kw"><code>agrim</code><small>continue</small></td><td>आगे</td><td>এগিয়ে</td><td>આગળ</td><td>ಮುಂದುವರಿಸು</td><td>पुढे</td><td>ଆଗକୁ</td><td>ਅੱਗੇ</td><td>కొనసాగు</td></tr><tr><td class="kw"><code>guna</code><small>switch / multiply</small></td><td>गुण</td><td>গুণ</td><td>ગુણ</td><td>ಗುಣ</td><td>गुण</td><td>ଗୁଣ</td><td>ਗੁਣ</td><td>గుణం</td></tr><tr><td class="kw"><code>bhavana</code><small>case (in guna)</small></td><td>भावना</td><td>ভাবনা</td><td>ભાવના</td><td>ಭಾವನೆ</td><td>भावना</td><td>ଭାବନା</td><td>ਭਾਵਨਾ</td><td>భావన</td></tr><tr><td class="kw"><code>mala</code><small>mala</small></td><td>पंक्ति</td><td>পঙক্তি</td><td>પંક્તિ</td><td>ಪಂಕ್ತಿ</td><td>रांग</td><td>ଧାଡ଼ି</td><td>ਕਤਾਰ</td><td>పంక్తి</td></tr><tr><td class="kw"><code>ganana</code><small>enum</small></td><td>सृजन</td><td>সৃজন</td><td>સર્જન</td><td>ಸೃಜನ</td><td>सृजन</td><td>ସୃଜନ</td><td>ਸਿਰਜਣ</td><td>సృజన</td></tr><tr><td class="kw"><code>abhava</code><small>negation</small></td><td>निषेध</td><td>নিষেধ</td><td>નિષેધ</td><td>ನಿಷೇಧ</td><td>निषेध</td><td>ନିଷେଧ</td><td>ਨਿਸ਼ੇਧ</td><td>నిషేధం</td></tr><tr><td class="kw"><code>rachana</code><small>struct</small></td><td>संरचना</td><td>সংরচনা</td><td>રચના</td><td>ರಚನೆ</td><td>रचना</td><td>ସଂରଚନା</td><td>ਰਚਨਾ</td><td>రచన</td></tr><tr><td class="kw"><code>yoj</code><small>include (module)</small></td><td>समावेश</td><td>সমাবেশ</td><td>સમાવેશ</td><td>ಸೇರಿಸು</td><td>समावेश</td><td>ସମାବେଶ</td><td>ਸ਼ਾਮਲ</td><td>చేర్చు</td></tr><tr><td class="kw"><code>satya</code><small>boolean type</small></td><td>धारण</td><td>ধারণ</td><td>ધારણ</td><td>ಧಾರಣೆ</td><td>धारण</td><td>ଧାରଣ</td><td>ਧਾਰਨ</td><td>కలిగివుండు</td></tr><tr><td class="kw"><code>grahan</code><small>read input</small></td><td>पढ़ो</td><td>পড়ো</td><td>વાંચો</td><td>ಓದು</td><td>वाचा</td><td>ପଢ଼</td><td>ਪੜ੍ਹੋ</td><td>చదువు</td></tr><tr><td class="kw"><code>to</code><small>to (loop range)</small></td><td>से</td><td>থেকে</td><td>થી</td><td>ರಿಂದ</td><td>पासून</td><td>ଠାରୁ</td><td>ਤੋਂ</td><td>నుండి</td></tr><tr><td class="kw"><code>shabda</code><small>print varna var</small></td><td>शब्द</td><td>শব্দ</td><td>શબ્દ</td><td>ಶಬ್ದ</td><td>शब्द</td><td>ଶବ୍ଦ</td><td>ਸ਼ਬਦ</td><td>శబ్దం</td></tr></tbody></table>
+ 
+ <h2>Scripts, not just transliteration</h2>
+ <p>Each keyword has a native-script spelling as well as its Latin form, and the language reads them directly — no transliteration step. Sanskrit in Devanagari is the reference; the other scripts follow the same pattern.</p>
+diff --git a/docs/sutram-vocabulary.html b/docs/sutram-vocabulary.html
+index 94c5d522..bc65fd50 100644
+--- a/docs/sutram-vocabulary.html
++++ b/docs/sutram-vocabulary.html
+@@ -80,7 +80,7 @@ Marathi, Gujarati, Bengali, Punjabi, Odia, Tamil, Telugu, Kannada and Malayalam.
+ <table><thead><tr><th>Concept</th><th>Was</th><th>Becomes</th><th>Devanagari</th></tr></thead>
+ <tbody><tr><td><code>mala</code></td><td><code>mala</code></td><td><b>mala</b></td><td>माला</td></tr>
+ <tr><td><code>for</code></td><td><code>chakra</code></td><td><b>chakra</b></td><td>चक्र</td></tr>
+-<tr><td><code>return</code></td><td><code>prati</code></td><td><b>prati</b></td><td>प्रति</td></tr>
++<tr><td><code>return</code></td><td><code>nivartanam</code></td><td><b>nivartanam</b></td><td>निवर्तनम्</td></tr>
+ <tr><td><code>continue</code></td><td><code>agrim</code></td><td><b>agrim</b></td><td>अग्रिम</td></tr>
+ <tr><td><code>else</code></td><td><code>anya</code></td><td><b>anya</b></td><td>अन्य</td></tr>
+ <tr><td><code>negation</code></td><td><code>abhava</code></td><td><b>abhava</b></td><td>अभाव</td></tr>
