@@ -1,0 +1,1134 @@
+diff --git a/tests/module_graph/test_module_graph_reference.py b/tests/module_graph/test_module_graph_reference.py
+index c3f9c329..47565997 100644
+--- a/tests/module_graph/test_module_graph_reference.py
++++ b/tests/module_graph/test_module_graph_reference.py
+@@ -15,10 +15,10 @@ class GraphContract(unittest.TestCase):
+     def entry(self,body):
+         p=self.root/'main.sm';p.write_text(body,encoding='utf8');return p
+     def diamond(self):
+-        self.module('d','prakriya shared() { prati 2 }\n')
+-        self.module('b','yoj d\nprakriya one() { prati shared() }\n')
+-        self.module('c','yoj d\nprakriya two() { prati shared() }\n')
+-        self.module('a','yoj b\nyoj c\nprakriya top() { prati one()+two() }\n')
++        self.module('d','prakriya shared() { nivartanam 2 }\n')
++        self.module('b','yoj d\nprakriya one() { nivartanam shared() }\n')
++        self.module('c','yoj d\nprakriya two() { nivartanam shared() }\n')
++        self.module('a','yoj b\nyoj c\nprakriya top() { nivartanam one()+two() }\n')
+     def test_diamond_one_visit(self):
+         self.diamond()
+         self.assertEqual(self.g.analyze(self.entry('yoj a\n')),['d','b','c','a'])
+@@ -27,7 +27,7 @@ class GraphContract(unittest.TestCase):
+         self.assertEqual(self.g.analyze(self.entry('yoj a\nyoj d\nyoj a\n')),['d','b','c','a'])
+     def test_deterministic_sibling_order(self):
+         self.diamond()
+-        self.module('a','yoj c\nyoj b\nprakriya top() { prati 0 }\n')
++        self.module('a','yoj c\nyoj b\nprakriya top() { nivartanam 0 }\n')
+         self.assertEqual(self.g.analyze(self.entry('yoj a\n')),['d','c','b','a'])
+     def test_missing_diagnostic_has_file_and_line(self):
+         entry=self.entry('# comment\nyoj missing\n')
+@@ -36,42 +36,42 @@ class GraphContract(unittest.TestCase):
+         self.assertEqual(cm.exception.line,2)
+         self.assertIn('main.sm:2:',str(cm.exception))
+     def test_cycle_reports_dependency_path(self):
+-        self.module('a','yoj b\nprakriya a() { prati 1 }\n')
+-        self.module('b','yoj a\nprakriya b() { prati 1 }\n')
++        self.module('a','yoj b\nprakriya a() { nivartanam 1 }\n')
++        self.module('b','yoj a\nprakriya b() { nivartanam 1 }\n')
+         with self.assertRaises(GraphDiagnostic) as cm:self.g.analyze(self.entry('yoj a\n'))
+         self.assertEqual(cm.exception.kind,'E_MODULE_CYCLE')
+         self.assertIn('a -> b -> a',str(cm.exception))
+         self.assertIn('b.smlib:1:',str(cm.exception))
+     def test_private_not_visible(self):
+-        self.module('secure','# sutram-module-v1\nniryat api\nprakriya api() { prati 1 }\nprakriya helper() { prati 2 }\n')
++        self.module('secure','# sutram-module-v1\nniryat api\nprakriya api() { nivartanam 1 }\nprakriya helper() { nivartanam 2 }\n')
+         entry=self.entry('yoj secure@sec\n')
+         self.g.analyze(entry)
+         self.assertTrue(self.g.check_access('secure','api',entry,2))
+         with self.assertRaises(GraphDiagnostic) as cm:self.g.check_access('secure','helper',entry,2)
+         self.assertEqual(cm.exception.kind,'E_PRIVATE_SYMBOL')
+     def test_export_not_defined(self):
+-        self.module('m','# sutram-module-v1\nniryat nofunc\nprakriya other() { prati 1 }\n')
++        self.module('m','# sutram-module-v1\nniryat nofunc\nprakriya other() { nivartanam 1 }\n')
+         with self.assertRaises(GraphDiagnostic) as cm:self.g.analyze(self.entry('yoj m\n'))
+         self.assertEqual(cm.exception.kind,'E_EXPORT_UNDEFINED')
+     def test_duplicate_explicit_export(self):
+-        self.module('m','# sutram-module-v1\nniryat one\nniryat one\nprakriya one() { prati 1 }\n')
++        self.module('m','# sutram-module-v1\nniryat one\nniryat one\nprakriya one() { nivartanam 1 }\n')
+         with self.assertRaises(GraphDiagnostic) as cm:self.g.analyze(self.entry('yoj m\n'))
+         self.assertEqual(cm.exception.kind,'E_EXPORT_DUPLICATE')
+     def test_unqualified_conflict_in_modern_mode(self):
+-        self.module('m','# sutram-module-v1\nniryat same\nprakriya same() { prati 1 }\n')
+-        self.module('n','# sutram-module-v1\nniryat same\nprakriya same() { prati 2 }\n')
++        self.module('m','# sutram-module-v1\nniryat same\nprakriya same() { nivartanam 1 }\n')
++        self.module('n','# sutram-module-v1\nniryat same\nprakriya same() { nivartanam 2 }\n')
+         with self.assertRaises(GraphDiagnostic) as cm:self.g.analyze(self.entry('# sutram-module-v1\nyoj m\nyoj n\n'))
+         self.assertEqual(cm.exception.kind,'E_EXPORT_COLLISION')
+     def test_qualified_collision_is_safe(self):
+-        self.module('m','# sutram-module-v1\nniryat same\nprakriya same() { prati 1 }\n')
+-        self.module('n','# sutram-module-v1\nniryat same\nprakriya same() { prati 2 }\n')
++        self.module('m','# sutram-module-v1\nniryat same\nprakriya same() { nivartanam 1 }\n')
++        self.module('n','# sutram-module-v1\nniryat same\nprakriya same() { nivartanam 2 }\n')
+         self.assertEqual(self.g.analyze(self.entry('# sutram-module-v1\nyoj m@left\nyoj n@right\n')),['m','n'])
+     def test_alias_conflict_diagnostic(self):
+-        self.module('m','prakriya f() { prati 1 }\n');self.module('n','prakriya f() { prati 2 }\n')
++        self.module('m','prakriya f() { nivartanam 1 }\n');self.module('n','prakriya f() { nivartanam 2 }\n')
+         with self.assertRaises(GraphDiagnostic) as cm:self.g.analyze(self.entry('yoj m@x\nyoj n@x\n'))
+         self.assertEqual(cm.exception.kind,'E_IMPORT_ALIAS')
+     def test_legacy_export_compatibility(self):
+-        self.module('m','prakriya public() { prati 1 }\nprakriya internal() { prati 2 }\n')
++        self.module('m','prakriya public() { nivartanam 1 }\nprakriya internal() { nivartanam 2 }\n')
+         e=self.entry('yoj m\n');self.g.analyze(e)
+         self.assertTrue(self.g.check_access('m','internal',e,2))
+ 
+diff --git a/tests/r23/test_capabilities.py b/tests/r23/test_capabilities.py
+index bec9813d..789827e2 100644
+--- a/tests/r23/test_capabilities.py
++++ b/tests/r23/test_capabilities.py
+@@ -32,20 +32,20 @@ ARR = 'mukhya() {\n    mala a[4]\n    a[0] = 1\n    a[1] = 2\n    a[2] = 3\n
+ # with text, ('compile-fail', text) for one the compiler refuses with text.
+ CASES = [
+     ('function value: passed, stored, returned',
+-     'prakriya f(a) {\n    prati a * 2\n}\nprakriya h(a) {\n    prati a * 3\n}\n'
+-     'prakriya chuno(k) {\n    yadi (k) {\n        prati h\n    }\n    prati f\n}\n'
+-     'prakriya lagu(g, x) {\n    prati g(x)\n}\n'
++     'prakriya f(a) {\n    nivartanam a * 2\n}\nprakriya h(a) {\n    nivartanam a * 3\n}\n'
++     'prakriya chuno(k) {\n    yadi (k) {\n        nivartanam h\n    }\n    nivartanam f\n}\n'
++     'prakriya lagu(g, x) {\n    nivartanam g(x)\n}\n'
+      'mukhya() {\n    vitti c = chuno(1)\n    likha(c(5))\n    likha(lagu(f, 5))\n    likha(lagu(chuno(0), 6))\n}\n',
+      ('out', '15\n10\n12\n')),
+     ('function value through a mala',
+-     'prakriya f(a) {\n    prati a + 1\n}\nmukhya() {\n    mala t[1]\n    t[0] = f\n    vitti c = t[0]\n    likha(c(41))\n}\n',
++     'prakriya f(a) {\n    nivartanam a + 1\n}\nmukhya() {\n    mala t[1]\n    t[0] = f\n    vitti c = t[0]\n    likha(c(41))\n}\n',
+      ('out', '42\n')),
+     ('the same function is the same value',
+-     'prakriya f(a) {\n    prati a\n}\nprakriya h(a) {\n    prati a\n}\n'
++     'prakriya f(a) {\n    nivartanam a\n}\nprakriya h(a) {\n    nivartanam a\n}\n'
+      'mukhya() {\n    vitti x = f\n    likha(x == f)\n    likha(x == h)\n}\n',
+      ('out', '1\n0\n')),
+     ('a prakriya wins over a parameter of its name',
+-     'prakriya f(a) {\n    prati a + 1\n}\nprakriya g(f) {\n    prati f(10)\n}\nmukhya() {\n    likha(g(5))\n}\n',
++     'prakriya f(a) {\n    nivartanam a + 1\n}\nprakriya g(f) {\n    nivartanam f(10)\n}\nmukhya() {\n    likha(g(5))\n}\n',
+      ('out', '11\n')),
+     ('an undefined name is still an error',
+      'mukhya() {\n    vitti g = nahi_hai\n    likha(g)\n}\n',
+@@ -54,24 +54,24 @@ CASES = [
+      'mukhya() {\n    likha(nahi_hai(1))\n}\n',
+      ('compile-fail', 'agyat prakriya: nahi_hai')),
+     ('a method changes its object',
+-     'rachana B = { x }\nprakriya B.badha(swa, d) {\n    swa.x = swa.x + d\n    prati swa.x\n}\n'
++     'rachana B = { x }\nprakriya B.badha(swa, d) {\n    swa.x = swa.x + d\n    nivartanam swa.x\n}\n'
+      'mukhya() {\n    vitti b = nirmmita(8)\n    b.x = 1\n    likha(b.badha(4))\n    likha(b.x)\n}\n',
+      ('out', '5\n5\n')),
+     ('no such method',
+      'rachana B = { x }\nmukhya() {\n    vitti b = nirmmita(8)\n    likha(b.nahi())\n}\n',
+      ('compile-fail', "[E_UNKNOWN_FIELD]: agyat kshetra 'nahi'")),
+     ('a method name in two rachanas',
+-     'rachana A = { x }\nrachana B = { y }\nprakriya A.m(p) {\n    prati 1\n}\nprakriya B.m(p) {\n    prati 2\n}\n'
++     'rachana A = { x }\nrachana B = { y }\nprakriya A.m(p) {\n    nivartanam 1\n}\nprakriya B.m(p) {\n    nivartanam 2\n}\n'
+      'mukhya() {\n    vitti b = nirmmita(8)\n    likha(b.m())\n}\n',
+      ('compile-fail', "[E_AMBIGUOUS_FIELD]: kshetra 'm'")),
+     ('a method of an undeclared rachana',
+-     'prakriya Nahi.m(p) {\n    prati 1\n}\nmukhya() {\n    likha(1)\n}\n',
++     'prakriya Nahi.m(p) {\n    nivartanam 1\n}\nmukhya() {\n    likha(1)\n}\n',
+      ('compile-fail', "[E_UNDEFINED_NAME]: agyat naam 'Nahi'")),
+     ('... and its hint names the rachana (R24)',
+-     'prakriya Nahi.m(p) {\n    prati 1\n}\nmukhya() {\n    likha(1)\n}\n',
++     'prakriya Nahi.m(p) {\n    nivartanam 1\n}\nmukhya() {\n    likha(1)\n}\n',
+      ('compile-fail', 'Sanket: vidheh purvam ghoshana avashyaki: rachana Nahi = ...')),
+     ('a method call with the wrong number of arguments',
+-     'rachana A = { x }\nprakriya A.m(p, q) {\n    prati q\n}\nmukhya() {\n    vitti b = nirmmita(8)\n    likha(b.m())\n}\n',
++     'rachana A = { x }\nprakriya A.m(p, q) {\n    nivartanam q\n}\nmukhya() {\n    vitti b = nirmmita(8)\n    likha(b.m())\n}\n',
+      ('compile-fail', "[E_ARITY]: 'A.m' ityasmai 1 tarkah dattah; hastakshare 2")),
+     ('slices: views, writes, omitted bounds',
+      ARR + '    vitti s = a[1:4]\n    s[0] = 20\n    likha(a[1])\n    likha(pankti_len(s))\n'
+@@ -93,13 +93,13 @@ CASES = [
+      'mukhya() {\n    vitti p = nirmmita(32)\n    vitti s = p[0:2]\n}\n',
+      ('compile-fail', 'Sutram Error: vibhag: mala, kosh va vibhag apekshita')),
+     ('a number to a vibhag parameter',
+-     'prakriya f(vibhag s) {\n    prati s[0]\n}\nmukhya() {\n    likha(f(5))\n}\n',
++     'prakriya f(vibhag s) {\n    nivartanam s[0]\n}\nmukhya() {\n    likha(f(5))\n}\n',
+      ('compile-fail', 'Sutram Error: vibhag: mala, kosh va vibhag apekshita')),
+     ('returning a slice',
+-     'prakriya f(vibhag s) {\n    prati s\n}\nmukhya() {\n    mala a[2]\n    likha(f(a))\n}\n',
++     'prakriya f(vibhag s) {\n    nivartanam s\n}\nmukhya() {\n    mala a[2]\n    likha(f(a))\n}\n',
+      ('compile-fail', 'Sutram Error: vibhag prakriyayah na pratyarpaniyah')),
+     ('a whole kosh to a vibhag parameter, and a kosh slice',
+-     'prakriya yog(vibhag s) {\n    vitti t = 0\n    chakra i = 0 tak pankti_len(s) - 1 {\n        t = t + s[i]\n    }\n    prati t\n}\n'
++     'prakriya yog(vibhag s) {\n    vitti t = 0\n    chakra i = 0 tak pankti_len(s) - 1 {\n        t = t + s[i]\n    }\n    nivartanam t\n}\n'
+      'mukhya() {\n    kosh k[1]\n    kosh_push(k, 1)\n    kosh_push(k, 2)\n    kosh_push(k, 3)\n    likha(yog(k))\n    likha(yog(k[1:]))\n}\n',
+      ('out', '6\n5\n')),
+ ]
+diff --git a/tests/r25/test_phal.py b/tests/r25/test_phal.py
+index e340fedf..e8f78e0a 100644
+--- a/tests/r25/test_phal.py
++++ b/tests/r25/test_phal.py
+@@ -4,7 +4,7 @@
+ The working program is examples/249_r25_phal.sm (golden in tests/expect, run by
+ the suite). This pins each rule: a failure propagates through every level, a
+ phal-prakriya must be called under prasar, prasar only on such a call and only
+-in a phal-prakriya or mukhya, every prati in one is siddhi or dosh, the end of
++in a phal-prakriya or mukhya, every nivartanam in one is siddhi or dosh, the end of
+ one is siddhi(0), and in mukhya a failure is the exit status.
+ 
+ Runs the Linux compiler. No network.
+@@ -21,32 +21,32 @@ from pathlib import Path
+ sys.dont_write_bytecode = True
+ ROOT = Path(__file__).resolve().parents[2]
+ 
+-F = 'prakriya f(a) {\n    yadi (a) {\n        prati dosh(3)\n    }\n    prati siddhi(a + 1)\n}\n'
++F = 'prakriya f(a) {\n    yadi (a) {\n        nivartanam dosh(3)\n    }\n    nivartanam siddhi(a + 1)\n}\n'
+ # (name, source, expect): ('out', text, exit) or ('compile-fail', text)
+ CASES = [
+     ('success and failure through three levels',
+-     'prakriya bhaj(a, b) {\n    yadi (b == 0) {\n        prati dosh(7)\n    }\n    prati siddhi(a / b)\n}\n'
+-     'prakriya ek(a, b) {\n    vitti q = prasar bhaj(a, b)\n    prati siddhi(q + 1)\n}\n'
+-     'prakriya dvi(a, b, c) {\n    vitti x = prasar ek(a, b)\n    vitti y = prasar ek(x, c)\n    prati siddhi(x * 100 + y)\n}\n'
++     'prakriya bhaj(a, b) {\n    yadi (b == 0) {\n        nivartanam dosh(7)\n    }\n    nivartanam siddhi(a / b)\n}\n'
++     'prakriya ek(a, b) {\n    vitti q = prasar bhaj(a, b)\n    nivartanam siddhi(q + 1)\n}\n'
++     'prakriya dvi(a, b, c) {\n    vitti x = prasar ek(a, b)\n    vitti y = prasar ek(x, c)\n    nivartanam siddhi(x * 100 + y)\n}\n'
+      'mukhya() {\n    likha(prasar dvi(20, 2, 3))\n    likha(prasar dvi(20, 0, 3))\n    likha(999)\n}\n',
+      ('out', '1104\n', 7)),
+     ('a failure stops a later step: the deeper call is not made',
+-     'prakriya g(a) {\n    likha(a)\n    prati siddhi(a)\n}\n'
+-     'prakriya h(a) {\n    yadi (a > 1) {\n        prati dosh(4)\n    }\n    vitti x = prasar g(a)\n    prati siddhi(x)\n}\n'
++     'prakriya g(a) {\n    likha(a)\n    nivartanam siddhi(a)\n}\n'
++     'prakriya h(a) {\n    yadi (a > 1) {\n        nivartanam dosh(4)\n    }\n    vitti x = prasar g(a)\n    nivartanam siddhi(x)\n}\n'
+      'mukhya() {\n    likha(prasar h(1))\n    likha(prasar h(2))\n}\n',
+      ('out', '1\n1\n', 4)),
+-    ('recursion', 'prakriya gin(n) {\n    yadi (n == 0) {\n        prati siddhi(0)\n    }\n    vitti r = prasar gin(n - 1)\n    prati siddhi(r + n)\n}\n'
++    ('recursion', 'prakriya gin(n) {\n    yadi (n == 0) {\n        nivartanam siddhi(0)\n    }\n    vitti r = prasar gin(n - 1)\n    nivartanam siddhi(r + n)\n}\n'
+      'mukhya() {\n    likha(prasar gin(10))\n}\n', ('out', '55\n', 0)),
+     ('a method that is a phal-prakriya',
+-     'rachana B = { x }\nprakriya B.ghata(swa, d) {\n    yadi (swa.x < d) {\n        prati dosh(swa.x)\n    }\n'
+-     '    swa.x = swa.x - d\n    prati siddhi(swa.x)\n}\n'
++     'rachana B = { x }\nprakriya B.ghata(swa, d) {\n    yadi (swa.x < d) {\n        nivartanam dosh(swa.x)\n    }\n'
++     '    swa.x = swa.x - d\n    nivartanam siddhi(swa.x)\n}\n'
+      'mukhya() {\n    vitti b = nirmmita(8)\n    b.x = 10\n    likha(prasar b.ghata(4))\n    likha(prasar b.ghata(7))\n}\n',
+      ('out', '6\n', 6)),
+     ('the end of a phal-prakriya is siddhi(0)',
+-     'prakriya z(a) {\n    yadi (a) {\n        prati dosh(9)\n    }\n}\nmukhya() {\n    likha(prasar z(0))\n    likha(prasar z(1))\n}\n',
++     'prakriya z(a) {\n    yadi (a) {\n        nivartanam dosh(9)\n    }\n}\nmukhya() {\n    likha(prasar z(0))\n    likha(prasar z(1))\n}\n',
+      ('out', '0\n', 9)),
+-    ('prati dosh(c) in mukhya exits with c',
+-     'mukhya() {\n    likha(1)\n    prati dosh(42)\n}\n', ('out', '1\n', 42)),
++    ('nivartanam dosh(c) in mukhya exits with c',
++     'mukhya() {\n    likha(1)\n    nivartanam dosh(42)\n}\n', ('out', '1\n', 42)),
+     ('prasar inside an argument of a prasar call',
+      F + 'mukhya() {\n    likha(prasar f(prasar f(0) - 1))\n}\n', ('out', '1\n', 0)),
+     ('a call without prasar', F + 'mukhya() {\n    likha(f(0))\n}\n',
+@@ -55,11 +55,11 @@ CASES = [
+      ('compile-fail', 'Sutram Error: phal-prakriya prasar vina ahuta')),
+     ('a call inside prasar\'s arguments without prasar', F + 'mukhya() {\n    likha(prasar f(f(0)))\n}\n',
+      ('compile-fail', 'Sutram Error: phal-prakriya prasar vina ahuta')),
+-    ('prasar on a plain prakriya', 'prakriya g(a) {\n    prati a\n}\nmukhya() {\n    likha(prasar g(1))\n}\n',
++    ('prasar on a plain prakriya', 'prakriya g(a) {\n    nivartanam a\n}\nmukhya() {\n    likha(prasar g(1))\n}\n',
+      ('compile-fail', 'Sutram Error: prasar: phal-prakriya-ahvanam apekshitam')),
+     ('prasar on something that is not a call', 'mukhya() {\n    vitti x = 1\n    likha(prasar x)\n}\n',
+      ('compile-fail', 'Sutram Error: prasar: phal-prakriya-ahvanam apekshitam')),
+-    ('prasar in a plain prakriya', F + 'prakriya h(a) {\n    prati prasar f(a)\n}\nmukhya() {\n    likha(h(1))\n}\n',
++    ('prasar in a plain prakriya', F + 'prakriya h(a) {\n    nivartanam prasar f(a)\n}\nmukhya() {\n    likha(h(1))\n}\n',
+      ('compile-fail', 'Sutram Error: prasar kevalam phal-prakriya-madhye mukhya-madhye va')),
+     ('R26 handler: failure runs the first block with the code, success the anya block with the value',
+      F + 'mukhya() {\n    yadi dosh (q = f(1)) {\n        likha(100 + q)\n    } anya {\n        likha(q)\n    }\n'
+@@ -69,19 +69,19 @@ CASES = [
+      F + 'mukhya() {\n    yadi dosh (q = f(1)) {\n        likha(q)\n    }\n    likha(q + 10)\n}\n',
+      ('out', '3\n13\n', 0)),
+     ('R26 handler in a plain prakriya: recovery, the caller never sees the failure',
+-     F + 'prakriya bachao(a) {\n    yadi dosh (q = f(a)) {\n        prati 0 - q\n    }\n    prati q\n}\n'
++     F + 'prakriya bachao(a) {\n    yadi dosh (q = f(a)) {\n        nivartanam 0 - q\n    }\n    nivartanam q\n}\n'
+      'mukhya() {\n    likha(bachao(0))\n    likha(bachao(5))\n}\n', ('out', '1\n-3\n', 0)),
+     ('R26 handler inside a phal-prakriya, turning a failure into a success',
+-     F + 'prakriya g(a) {\n    yadi dosh (q = f(a)) {\n        prati siddhi(50)\n    }\n    prati siddhi(q)\n}\n'
++     F + 'prakriya g(a) {\n    yadi dosh (q = f(a)) {\n        nivartanam siddhi(50)\n    }\n    nivartanam siddhi(q)\n}\n'
+      'mukhya() {\n    likha(prasar g(1))\n    likha(prasar g(0))\n}\n', ('out', '50\n1\n', 0)),
+     ('R26 handler in a loop', F + 'mukhya() {\n    chakra i = 0 tak 2 {\n        yadi dosh (q = f(i % 2)) {\n            likha(0 - q)\n'
+      '        } anya {\n            likha(q)\n        }\n    }\n}\n', ('out', '1\n-3\n1\n', 0)),
+-    ('R26 handler on a plain prakriya', 'prakriya g(a) {\n    prati a\n}\nmukhya() {\n    yadi dosh (q = g(1)) {\n        likha(q)\n    }\n}\n',
++    ('R26 handler on a plain prakriya', 'prakriya g(a) {\n    nivartanam a\n}\nmukhya() {\n    yadi dosh (q = g(1)) {\n        likha(q)\n    }\n}\n',
+      ('compile-fail', 'Sutram Error: yadi dosh: phal-prakriya-ahvanam apekshitam')),
+     ('R26 handler on something that is not a call', 'mukhya() {\n    yadi dosh (q = 5) {\n        likha(q)\n    }\n}\n',
+      ('compile-fail', 'Sutram Error: yadi dosh: phal-prakriya-ahvanam apekshitam')),
+-    ('a plain prati in a phal-prakriya',
+-     'prakriya k(a) {\n    yadi (a) {\n        prati dosh(1)\n    }\n    prati a\n}\nmukhya() {\n    likha(prasar k(0))\n}\n',
++    ('a plain nivartanam in a phal-prakriya',
++     'prakriya k(a) {\n    yadi (a) {\n        nivartanam dosh(1)\n    }\n    nivartanam a\n}\nmukhya() {\n    likha(prasar k(0))\n}\n',
+      ('compile-fail', 'Sutram Error: phal-prakriya: prati siddhi va dosh bhavet')),
+ ]
+ 
+diff --git a/tests/r28/test_link.py b/tests/r28/test_link.py
+index 5f0d438a..b68c0ea3 100644
+--- a/tests/r28/test_link.py
++++ b/tests/r28/test_link.py
+@@ -72,9 +72,9 @@ def main(argv) -> int:
+               '(a module-level vitti); %d do not compile directly (compile-fail examples)' % (same, refused, direct_fail))
+ 
+         # two modules
+-        (t / 'lib.sm').write_text('prakriya varg(x) {\n    prati x * x\n}\n\nprakriya yog_varg(a, b) {\n'
+-                                  '    prati varg(a) + varg(b) + upar(1)\n}\n')
+-        (t / 'main.sm').write_text('prakriya upar(x) {\n    prati x + 100\n}\n\nprakriya dvigun(x) {\n    prati 2 * x\n}\n\n'
++        (t / 'lib.sm').write_text('prakriya varg(x) {\n    nivartanam x * x\n}\n\nprakriya yog_varg(a, b) {\n'
++                                  '    nivartanam varg(a) + varg(b) + upar(1)\n}\n')
++        (t / 'main.sm').write_text('prakriya upar(x) {\n    nivartanam x + 100\n}\n\nprakriya dvigun(x) {\n    nivartanam 2 * x\n}\n\n'
+                                    'mukhya() {\n    likha(yog_varg(3, 4))\n    likha(dvigun(varg(5)))\n}\n')
+         for name in ('lib', 'main'):
+             r = subprocess.run([comp, '--object', str(t / (name + '.sm')), str(t / (name + '.smo'))], capture_output=True, timeout=60)
+@@ -114,7 +114,7 @@ def main(argv) -> int:
+         l = subprocess.run([link, str(t / 'gl.bin'), str(t / 'g.smo')], capture_output=True, timeout=60)
+         check(r.returncode == 0 and d.returncode == 0 and l.returncode == 0
+               and (t / 'gl.bin').read_bytes() == (t / 'gd.bin').read_bytes(), 'a module-level vitti in --object mode')
+-        (t / 'gl.sm').write_text('vitti G = 5\nprakriya g() {\n    prati G\n}\n')
++        (t / 'gl.sm').write_text('vitti G = 5\nprakriya g() {\n    nivartanam G\n}\n')
+         r = subprocess.run([comp, '--object', str(t / 'gl.sm'), str(t / 'gl.smo')], capture_output=True, timeout=60)
+         check(r.returncode == 1 and b'vastu-patre ghatak-star vitti asamarthita' in r.stdout,
+               'an initialized vitti in a library object (no mukhya) is refused')
+diff --git a/tests/r29/proj/lib/r29_dakshin.smlib b/tests/r29/proj/lib/r29_dakshin.smlib
+index 02d8135a..958f7702 100644
+--- a/tests/r29/proj/lib/r29_dakshin.smlib
++++ b/tests/r29/proj/lib/r29_dakshin.smlib
+@@ -1,4 +1,4 @@
+ yoj r29_mul
+ prakriya dakshin(x) {
+-    prati mul(x) * 2
++    nivartanam mul(x) * 2
+ }
+diff --git a/tests/r29/proj/lib/r29_mul.smlib b/tests/r29/proj/lib/r29_mul.smlib
+index caa6be92..fb3f2311 100644
+--- a/tests/r29/proj/lib/r29_mul.smlib
++++ b/tests/r29/proj/lib/r29_mul.smlib
+@@ -1,6 +1,6 @@
+ prakriya mul(x) {
+-    prati x * 10
++    nivartanam x * 10
+ }
+ prakriya ardha(dasham x) {
+-    prati x / 2.0
++    nivartanam x / 2.0
+ }
+diff --git a/tests/r29/proj/lib/r29_vam.smlib b/tests/r29/proj/lib/r29_vam.smlib
+index e2488ef7..6b2cfe05 100644
+--- a/tests/r29/proj/lib/r29_vam.smlib
++++ b/tests/r29/proj/lib/r29_vam.smlib
+@@ -1,4 +1,4 @@
+ yoj r29_mul
+ prakriya vam(x) {
+-    prati mul(x) + 1
++    nivartanam mul(x) + 1
+ }
+diff --git a/tests/r29/proj/main.sm b/tests/r29/proj/main.sm
+index 7196f479..a50fa644 100644
+--- a/tests/r29/proj/main.sm
++++ b/tests/r29/proj/main.sm
+@@ -9,5 +9,5 @@ mukhya() {
+     likha("\n")
+     likha(ardha(7))
+     likha("\n")
+-    prati vam(1) + dakshin(1)
++    nivartanam vam(1) + dakshin(1)
+ }
+diff --git a/tests/r29/test_separate.py b/tests/r29/test_separate.py
+index 910c867e..d0909ad9 100644
+--- a/tests/r29/test_separate.py
++++ b/tests/r29/test_separate.py
+@@ -151,7 +151,7 @@ def main(argv) -> int:
+ 
+     # 5. refusals
+     miss = os.path.join(tmp, 'miss.sm')
+-    open(miss, 'w').write('yoj r29_no_such_module\nmukhya() {\n    prati 0\n}\n')
++    open(miss, 'w').write('yoj r29_no_such_module\nmukhya() {\n    nivartanam 0\n}\n')
+     r = build(comp, link, miss, os.path.join(tmp, 'm'))
+     check(r.returncode == 1 and b'module not found' in r.stderr, 'missing module')
+     r = subprocess.run([sys.executable, '-B', str(ROOT / 'tools' / 'sutram_build.py')], capture_output=True)
+diff --git a/tests/r30/proj/lib/r30_dakshin.smlib b/tests/r30/proj/lib/r30_dakshin.smlib
+index 31e62043..9bcde945 100644
+--- a/tests/r30/proj/lib/r30_dakshin.smlib
++++ b/tests/r30/proj/lib/r30_dakshin.smlib
+@@ -1,4 +1,4 @@
+ yoj r30_ganak
+ prakriya dakshin_badha() {
+-    prati ganak_badha(10)
++    nivartanam ganak_badha(10)
+ }
+diff --git a/tests/r30/proj/lib/r30_ganak.smlib b/tests/r30/proj/lib/r30_ganak.smlib
+index ca60f7f3..1f235a16 100644
+--- a/tests/r30/proj/lib/r30_ganak.smlib
++++ b/tests/r30/proj/lib/r30_ganak.smlib
+@@ -2,8 +2,8 @@ vitti ganak = 0
+ vitti prarambha = 7
+ prakriya ganak_badha(n) {
+     ganak = ganak + n
+-    prati ganak
++    nivartanam ganak
+ }
+ prakriya ganak_padh() {
+-    prati ganak
++    nivartanam ganak
+ }
+diff --git a/tests/r30/proj/lib/r30_vam.smlib b/tests/r30/proj/lib/r30_vam.smlib
+index e005f713..ae2af354 100644
+--- a/tests/r30/proj/lib/r30_vam.smlib
++++ b/tests/r30/proj/lib/r30_vam.smlib
+@@ -1,4 +1,4 @@
+ yoj r30_ganak
+ prakriya vam_badha() {
+-    prati ganak_badha(1)
++    nivartanam ganak_badha(1)
+ }
+diff --git a/tests/r30/test_vitti.py b/tests/r30/test_vitti.py
+index 59659eb0..dcc58443 100644
+--- a/tests/r30/test_vitti.py
++++ b/tests/r30/test_vitti.py
+@@ -84,10 +84,10 @@ def main(argv) -> int:
+     check(l.returncode == 0 and (t / 'gl.bin').read_bytes() == (t / 'gd.bin').read_bytes(), 'vitti: --object + link = direct')
+     print('the same bytes: a program with a vitti, --object and linked alone, is the direct compile')
+     # 3. the refusal
+-    (t / 'li.sm').write_text('vitti G = 5\nprakriya g() {\n    prati G\n}\n')
++    (t / 'li.sm').write_text('vitti G = 5\nprakriya g() {\n    nivartanam G\n}\n')
+     r = subprocess.run([comp, '--object', str(t / 'li.sm'), str(t / 'li.smo')], capture_output=True)
+     check(r.returncode == 1 and b'vastu-patre ghatak-star vitti asamarthita' in r.stdout, f'refusal {r.stdout!r}')
+-    (t / 'ln.sm').write_text('vitti G\nprakriya g() {\n    prati G\n}\n')
++    (t / 'ln.sm').write_text('vitti G\nprakriya g() {\n    nivartanam G\n}\n')
+     r = subprocess.run([comp, '--object', str(t / 'ln.sm'), str(t / 'ln.smo')], capture_output=True)
+     check(r.returncode == 0 and 'vitti:G' in symbols(t / 'ln.smo'), f'no initializer: accepted {r.stdout!r}')
+     print('the refusal: an initialized vitti in a library object; without an initializer it is held')
+diff --git a/tests/r32/lib/r32_ganit.smlib b/tests/r32/lib/r32_ganit.smlib
+index 4a131a1c..b77aa028 100644
+--- a/tests/r32/lib/r32_ganit.smlib
++++ b/tests/r32/lib/r32_ganit.smlib
+@@ -1,3 +1,3 @@
+ prakriya dvigun(x) {
+-    prati s_add(x, x)
++    nivartanam s_add(x, x)
+ }
+diff --git a/tests/r32/main.sm b/tests/r32/main.sm
+index 527e89e1..b9365085 100644
+--- a/tests/r32/main.sm
++++ b/tests/r32/main.sm
+@@ -2,9 +2,9 @@
+ yoj r32_ganit
+ prakriya gahan(n) {
+     yadi (n == 0) {
+-        prati s_rsp()
++        nivartanam s_rsp()
+     }
+-    prati gahan(n - 1)
++    nivartanam gahan(n - 1)
+ }
+ mukhya() {
+     likha(s_add(17, 25))
+diff --git a/tests/r32/test_ffi.py b/tests/r32/test_ffi.py
+index ae74d67e..4cf851e2 100644
+--- a/tests/r32/test_ffi.py
++++ b/tests/r32/test_ffi.py
+@@ -103,7 +103,7 @@ def main(argv) -> int:
+     # 3. a prakriya with either name
+     for name in ('s_add', 'sutram_ffi_add'):
+         src = t / f'c_{name}.sm'
+-        src.write_text(f'prakriya {name}(a, b) {{\n    prati a\n}}\nmukhya() {{\n    likha({name}(1, 2))\n}}\n')
++        src.write_text(f'prakriya {name}(a, b) {{\n    nivartanam a\n}}\nmukhya() {{\n    likha({name}(1, 2))\n}}\n')
+         r = run([comp, '--ffi', sffi, '--object', str(src), str(t / 'c.smo')])
+         check(r.returncode == 1 and b'videshi prakriya-nama anyatra api: ' + name.encode() in r.stdout,
+               f'clash {name}: {r.stdout!r}')
+diff --git a/tests/r33/lib/r33_ardha.smlib b/tests/r33/lib/r33_ardha.smlib
+index 6d3d6934..7dd6c8bb 100644
+--- a/tests/r33/lib/r33_ardha.smlib
++++ b/tests/r33/lib/r33_ardha.smlib
+@@ -1,4 +1,4 @@
+ prakriya ardha_jod(dasham x, n) {
+     dasham h = k_half(x)
+-    prati h + k_scale(h, n)
++    nivartanam h + k_scale(h, n)
+ }
+diff --git a/tests/r34/test_link_windows.py b/tests/r34/test_link_windows.py
+index 2b25cede..a6db785e 100644
+--- a/tests/r34/test_link_windows.py
++++ b/tests/r34/test_link_windows.py
+@@ -136,9 +136,9 @@ def main(argv) -> int:
+         check(same >= 150, 'expected at least 150 identical programs, got %d' % same)
+ 
+         # 2. two modules
+-        (t / 'lib.sm').write_text('prakriya varg(x) {\n    prati x * x\n}\n\nprakriya yog_varg(a, b) {\n'
+-                                  '    prati varg(a) + varg(b) + upar(1)\n}\n')
+-        (t / 'main.sm').write_text('prakriya upar(x) {\n    prati x + 100\n}\n\nprakriya dvigun(x) {\n    prati 2 * x\n}\n\n'
++        (t / 'lib.sm').write_text('prakriya varg(x) {\n    nivartanam x * x\n}\n\nprakriya yog_varg(a, b) {\n'
++                                  '    nivartanam varg(a) + varg(b) + upar(1)\n}\n')
++        (t / 'main.sm').write_text('prakriya upar(x) {\n    nivartanam x + 100\n}\n\nprakriya dvigun(x) {\n    nivartanam 2 * x\n}\n\n'
+                                    'mukhya() {\n    likha(yog_varg(3, 4))\n    likha(dvigun(varg(5)))\n}\n')
+         for name in ('lib', 'main'):
+             r = sh([comp, '--object', t / (name + '.sm'), t / (name + '.smo')])
+@@ -162,8 +162,8 @@ def main(argv) -> int:
+         (t / 'linux.smo').write_bytes(b'SUTRAMO1' + (t / 'lib.smo').read_bytes()[8:])
+         many = lambda k, base: ''.join('vitti %s%d\n' % (base, i) for i in range(k))
+         (t / 'g100a.sm').write_text(many(100, 'A') + 'mukhya() {\n    likha(1)\n}\n')
+-        (t / 'g100b.sm').write_text(many(29, 'B') + 'prakriya b() {\n    prati 2\n}\n')
+-        (t / 'g28b.sm').write_text(many(28, 'B') + 'prakriya b() {\n    prati 2\n}\n')
++        (t / 'g100b.sm').write_text(many(29, 'B') + 'prakriya b() {\n    nivartanam 2\n}\n')
++        (t / 'g28b.sm').write_text(many(28, 'B') + 'prakriya b() {\n    nivartanam 2\n}\n')
+         for n in ('g100a', 'g100b', 'g28b'):
+             r = sh([comp, '--object', t / (n + '.sm'), t / (n + '.smo')])
+             check(r.returncode == 0, '--object %s: %r' % (n, r.stdout))
+@@ -199,7 +199,7 @@ def main(argv) -> int:
+               'a module-level vitti in --object mode: in .data, byte-identical, runs')
+         check(dict(symbols(t / 'g.smo')).get('vitti:G') == 0 and dict(symbols(t / 'g.smo')).get('vitti:H') == 8,
+               'vitti symbols are data offsets: %r' % symbols(t / 'g.smo'))
+-        (t / 'gl.sm').write_text('vitti G = 5\nprakriya g() {\n    prati G\n}\n')
++        (t / 'gl.sm').write_text('vitti G = 5\nprakriya g() {\n    nivartanam G\n}\n')
+         r = sh([comp, '--object', t / 'gl.sm', t / 'gl.smo'])
+         check(r.returncode == 1 and b'vastu-patre ghatak-star vitti asamarthita' in r.stdout,
+               'an initialized vitti in a library object (no mukhya) is refused')
+diff --git a/tests/r35/winffi.sm b/tests/r35/winffi.sm
+index a631f599..33871915 100644
+--- a/tests/r35/winffi.sm
++++ b/tests/r35/winffi.sm
+@@ -4,7 +4,7 @@
+ prakriya live(n) {
+     vitti t = n * 2
+     vitti r = w_five(t, 1, 1, 1, 1)
+-    prati r + t
++    nivartanam r + t
+ }
+ mukhya() {
+     likha(w_zero())
+diff --git a/tests/r44_pending/01_undefined_export/lib/calc.smlib b/tests/r44_pending/01_undefined_export/lib/calc.smlib
+index 2cebe578..63889759 100644
+--- a/tests/r44_pending/01_undefined_export/lib/calc.smlib
++++ b/tests/r44_pending/01_undefined_export/lib/calc.smlib
+@@ -1,3 +1,3 @@
+ # sutram-module-v1
+ niryat missing
+-prakriya add() { prati 3 }
++prakriya add() { nivartanam 3 }
+diff --git a/tests/r44_pending/03_unknown_qualified/lib/calc.smlib b/tests/r44_pending/03_unknown_qualified/lib/calc.smlib
+index c0201cdb..22211553 100644
+--- a/tests/r44_pending/03_unknown_qualified/lib/calc.smlib
++++ b/tests/r44_pending/03_unknown_qualified/lib/calc.smlib
+@@ -1,3 +1,3 @@
+ # sutram-module-v1
+ niryat add
+-prakriya add() { prati 9 }
++prakriya add() { nivartanam 9 }
+diff --git a/tests/r44_pending/05_private_function/lib/calc.smlib b/tests/r44_pending/05_private_function/lib/calc.smlib
+index 3172544a..fe0b006c 100644
+--- a/tests/r44_pending/05_private_function/lib/calc.smlib
++++ b/tests/r44_pending/05_private_function/lib/calc.smlib
+@@ -1,4 +1,4 @@
+ # sutram-module-v1
+ niryat add
+-prakriya helper() { prati 9 }
+-prakriya add() { prati helper() + 2 }
++prakriya helper() { nivartanam 9 }
++prakriya add() { nivartanam helper() + 2 }
+diff --git a/tests/r44_pending/06_public_function/lib/calc.smlib b/tests/r44_pending/06_public_function/lib/calc.smlib
+index 3172544a..fe0b006c 100644
+--- a/tests/r44_pending/06_public_function/lib/calc.smlib
++++ b/tests/r44_pending/06_public_function/lib/calc.smlib
+@@ -1,4 +1,4 @@
+ # sutram-module-v1
+ niryat add
+-prakriya helper() { prati 9 }
+-prakriya add() { prati helper() + 2 }
++prakriya helper() { nivartanam 9 }
++prakriya add() { nivartanam helper() + 2 }
+diff --git a/tests/r44_pending/07_legacy_import/lib/legacy.smlib b/tests/r44_pending/07_legacy_import/lib/legacy.smlib
+index ba1e836a..ddb4080d 100644
+--- a/tests/r44_pending/07_legacy_import/lib/legacy.smlib
++++ b/tests/r44_pending/07_legacy_import/lib/legacy.smlib
+@@ -1 +1 @@
+-prakriya legacy_answer() { prati 42 }
++prakriya legacy_answer() { nivartanam 42 }
+diff --git a/tests/r45/test_debug.py b/tests/r45/test_debug.py
+index 779da314..3fca1373 100644
+--- a/tests/r45/test_debug.py
++++ b/tests/r45/test_debug.py
+@@ -75,7 +75,7 @@ def main(argv) -> int:
+         # 1. the trace, exactly
+         src = ('prakriya dviguna(n) {\n'          # 1
+                '    vitti r = n * 2\n'             # 2
+-               '    prati r\n'                     # 3
++               '    nivartanam r\n'                     # 3
+                '}\n'                               # 4
+                'mukhya() {\n'                      # 5
+                '    vitti yoga = 0\n'              # 6
+diff --git a/tests/r46/test_debug_usable.py b/tests/r46/test_debug_usable.py
+index 78ae56a4..4e3ddacf 100644
+--- a/tests/r46/test_debug_usable.py
++++ b/tests/r46/test_debug_usable.py
+@@ -37,7 +37,7 @@ ROOT = Path(__file__).resolve().parents[2]
+ 
+ PROG = ('prakriya dviguna(n) {\n'          # 1
+         '    vitti r = n * 2\n'             # 2
+-        '    prati r\n'                     # 3
++        '    nivartanam r\n'                     # 3
+         '}\n'                               # 4
+         '\n'                                # 5
+         'mukhya() {\n'                      # 6
+@@ -70,7 +70,7 @@ SIN = ('prakriya sin_galat(dasham x) {\n'                  # 1
+        '        s = s + t\n'                                # 17
+        '        n = n + 1\n'                                # 18
+        '    }\n'                                            # 19
+-       '    prati s\n'                                      # 20
++       '    nivartanam s\n'                                      # 20
+        '}\n'                                                # 21
+        'mukhya() {\n'                                       # 22
+        '    likha(sin_galat(0.0 - 4.0))\n'                  # 23
+diff --git a/tests/r49_check/lib/faulty_r49.smlib b/tests/r49_check/lib/faulty_r49.smlib
+index 1d85a5b0..04635fca 100644
+--- a/tests/r49_check/lib/faulty_r49.smlib
++++ b/tests/r49_check/lib/faulty_r49.smlib
+@@ -1,4 +1,4 @@
+ prakriya faulty_r49() {
+     vitti broken = ;
+-    prati 0;
++    nivartanam 0;
+ }
+diff --git a/tests/r51_check/lib/broken_ns_r51.smlib b/tests/r51_check/lib/broken_ns_r51.smlib
+index 0972d8ea..e1493313 100644
+--- a/tests/r51_check/lib/broken_ns_r51.smlib
++++ b/tests/r51_check/lib/broken_ns_r51.smlib
+@@ -1,4 +1,4 @@
+ prakriya namespace_invalid() {
+     vitti invalid_char = ;
+-    prati 0;
++    nivartanam 0;
+ }
+diff --git a/tests/r51_check/lib/inner_r51.smlib b/tests/r51_check/lib/inner_r51.smlib
+index ad61fef8..8575a021 100644
+--- a/tests/r51_check/lib/inner_r51.smlib
++++ b/tests/r51_check/lib/inner_r51.smlib
+@@ -1,4 +1,4 @@
+ prakriya inner_invalid() {
+     vitti bad_value = ;
+-    prati 0;
++    nivartanam 0;
+ }
+diff --git a/tests/r51_check/lib/outer_r51.smlib b/tests/r51_check/lib/outer_r51.smlib
+index 653edd30..9b55c79d 100644
+--- a/tests/r51_check/lib/outer_r51.smlib
++++ b/tests/r51_check/lib/outer_r51.smlib
+@@ -1,4 +1,4 @@
+ yoj inner_r51
+ prakriya outer_ok() {
+-    prati 1;
++    nivartanam 1;
+ }
+diff --git a/tests/r51_check/lib/semantics_r51.smlib b/tests/r51_check/lib/semantics_r51.smlib
+index ff86d796..77a8d185 100644
+--- a/tests/r51_check/lib/semantics_r51.smlib
++++ b/tests/r51_check/lib/semantics_r51.smlib
+@@ -2,5 +2,5 @@ prakriya semantic_failures() {
+     likha(missing_sem_one(1));
+     likha(missing_sem_two(2));
+     likha(missing_sem_three(3));
+-    prati 0;
++    nivartanam 0;
+ }
+diff --git a/tests/r55_check/mutual_even_odd.sm b/tests/r55_check/mutual_even_odd.sm
+index c873c28f..b0e6f8cf 100644
+--- a/tests/r55_check/mutual_even_odd.sm
++++ b/tests/r55_check/mutual_even_odd.sm
+@@ -3,13 +3,13 @@ prakriya asti_yugm(n);
+ prakriya asti_visham(n);
+ 
+ prakriya asti_yugm(n) {
+-    yadi (n == 0) { prati 1 }
+-    prati asti_visham(n - 1)
++    yadi (n == 0) { nivartanam 1 }
++    nivartanam asti_visham(n - 1)
+ }
+ 
+ prakriya asti_visham(n) {
+-    yadi (n == 0) { prati 0 }
+-    prati asti_yugm(n - 1)
++    yadi (n == 0) { nivartanam 0 }
++    nivartanam asti_yugm(n - 1)
+ }
+ 
+ mukhya() {
+diff --git a/tests/r55_check/mutual_triple_reverse.sm b/tests/r55_check/mutual_triple_reverse.sm
+index 3ea9965f..142c31ff 100644
+--- a/tests/r55_check/mutual_triple_reverse.sm
++++ b/tests/r55_check/mutual_triple_reverse.sm
+@@ -4,16 +4,16 @@ prakriya stage_two(n);
+ prakriya stage_three(n);
+ 
+ prakriya stage_three(n) {
+-    yadi (n <= 0) { prati 0 }
+-    prati 1 + stage_one(n - 1)
++    yadi (n <= 0) { nivartanam 0 }
++    nivartanam 1 + stage_one(n - 1)
+ }
+ prakriya stage_two(n) {
+-    yadi (n <= 0) { prati 0 }
+-    prati 1 + stage_three(n - 1)
++    yadi (n <= 0) { nivartanam 0 }
++    nivartanam 1 + stage_three(n - 1)
+ }
+ prakriya stage_one(n) {
+-    yadi (n <= 0) { prati 0 }
+-    prati 1 + stage_two(n - 1)
++    yadi (n <= 0) { nivartanam 0 }
++    nivartanam 1 + stage_two(n - 1)
+ }
+ mukhya() {
+     likha(stage_one(15))
+diff --git a/tests/r55_check/prototype_duplicate.sm b/tests/r55_check/prototype_duplicate.sm
+index b9951458..cd4caa37 100644
+--- a/tests/r55_check/prototype_duplicate.sm
++++ b/tests/r55_check/prototype_duplicate.sm
+@@ -1,4 +1,4 @@
+ prakriya alpha(n);
+ prakriya alpha(n);
+-prakriya alpha(n) { prati n }
++prakriya alpha(n) { nivartanam n }
+ mukhya() { likha(alpha(10)) }
+diff --git a/tests/r55_check/prototype_mismatch.sm b/tests/r55_check/prototype_mismatch.sm
+index 4c5329d7..36320d86 100644
+--- a/tests/r55_check/prototype_mismatch.sm
++++ b/tests/r55_check/prototype_mismatch.sm
+@@ -1,3 +1,3 @@
+ prakriya alpha(n);
+-prakriya alpha(n, k) { prati n + k }
++prakriya alpha(n, k) { nivartanam n + k }
+ mukhya() { likha(alpha(10)) }
+diff --git a/tests/r55_check/prototype_type_mismatch.sm b/tests/r55_check/prototype_type_mismatch.sm
+index 0882e680..1bce7e8a 100644
+--- a/tests/r55_check/prototype_type_mismatch.sm
++++ b/tests/r55_check/prototype_type_mismatch.sm
+@@ -1,4 +1,4 @@
+ # Arity matches, but prototype promises a binary64 parameter and body is integer.
+ prakriya typed(dasham n);
+-prakriya typed(n) { prati n }
++prakriya typed(n) { nivartanam n }
+ mukhya() { likha(typed(1)) }
+diff --git a/tests/r55_check/without_global_gap.sm b/tests/r55_check/without_global_gap.sm
+index 6a8417a8..85c3f0d4 100644
+--- a/tests/r55_check/without_global_gap.sm
++++ b/tests/r55_check/without_global_gap.sm
+@@ -2,6 +2,6 @@
+ vitti shared_value = 10
+ prakriya increment() {
+     shared_value = shared_value + 1
+-    prati shared_value
++    nivartanam shared_value
+ }
+ mukhya() { likha(increment()) }
+diff --git a/tests/r56_check/compound_global.sm b/tests/r56_check/compound_global.sm
+index 8d731c09..c739917f 100644
+--- a/tests/r56_check/compound_global.sm
++++ b/tests/r56_check/compound_global.sm
+@@ -3,6 +3,6 @@ prakriya run_steps() {
+     total += 5
+     total++
+     total *= 2
+-    prati total
++    nivartanam total
+ }
+ mukhya() { likha(run_steps()) likha(total) }
+diff --git a/tests/r56_check/global_pointer.sm b/tests/r56_check/global_pointer.sm
+index 1ac3b141..09774c0b 100644
+--- a/tests/r56_check/global_pointer.sm
++++ b/tests/r56_check/global_pointer.sm
+@@ -1,3 +1,3 @@
+ vitti buf = nirmmita(16)
+-prakriya fill() { buf[0] = 44 prati buf[0] }
++prakriya fill() { buf[0] = 44 nivartanam buf[0] }
+ mukhya() { likha(fill()) likha(buf[0]) }
+diff --git a/tests/r56_check/global_string_pointer.sm b/tests/r56_check/global_string_pointer.sm
+index fcd0835f..ff62cdf5 100644
+--- a/tests/r56_check/global_string_pointer.sm
++++ b/tests/r56_check/global_string_pointer.sm
+@@ -1,3 +1,3 @@
+ vitti greeting = "Namaste"
+-prakriya length() { prati vartani_aayam(greeting) }
++prakriya length() { nivartanam vartani_aayam(greeting) }
+ mukhya() { likha(length()) }
+diff --git a/tests/r56_check/initializer_calls.sm b/tests/r56_check/initializer_calls.sm
+index bdb96a35..03d1347a 100644
+--- a/tests/r56_check/initializer_calls.sm
++++ b/tests/r56_check/initializer_calls.sm
+@@ -1,4 +1,4 @@
+ vitti a = 8
+ vitti b = double_value(a) + 1
+-prakriya double_value(x) { prati x * 2 }
++prakriya double_value(x) { nivartanam x * 2 }
+ mukhya() { likha(b) likha(double_value(3)) }
+diff --git a/tests/r56_check/local_shadow.sm b/tests/r56_check/local_shadow.sm
+index 615627f5..64ef1a87 100644
+--- a/tests/r56_check/local_shadow.sm
++++ b/tests/r56_check/local_shadow.sm
+@@ -2,7 +2,7 @@ vitti count = 31
+ prakriya local_test() {
+     vitti count = 99
+     count = count + 1
+-    prati count
++    nivartanam count
+ }
+-prakriya global_test() { prati count }
++prakriya global_test() { nivartanam count }
+ mukhya() { likha(local_test()) likha(global_test()) }
+diff --git a/tests/r56_check/ordered_initializers.sm b/tests/r56_check/ordered_initializers.sm
+index c9950a84..17c35454 100644
+--- a/tests/r56_check/ordered_initializers.sm
++++ b/tests/r56_check/ordered_initializers.sm
+@@ -3,7 +3,7 @@ vitti b = a + 4
+ vitti c = b * 2
+ vitti empty
+ vitti d = c + a
+-prakriya read_global() { prati d + empty }
++prakriya read_global() { nivartanam d + empty }
+ mukhya() {
+     likha(a)
+     likha(b)
+diff --git a/tests/r56_check/parameter_shadow.sm b/tests/r56_check/parameter_shadow.sm
+index 07958dfb..1fe9987d 100644
+--- a/tests/r56_check/parameter_shadow.sm
++++ b/tests/r56_check/parameter_shadow.sm
+@@ -1,9 +1,9 @@
+ vitti level = 40
+ prakriya use_param(level) {
+     level = level + 1
+-    prati level
++    nivartanam level
+ }
+-prakriya use_global() { level = level + 2 prati level }
++prakriya use_global() { level = level + 2 nivartanam level }
+ mukhya() {
+     likha(use_param(5))
+     likha(level)
+diff --git a/tests/r56_check/recursive_global.sm b/tests/r56_check/recursive_global.sm
+index 4d2ba78e..480c42b3 100644
+--- a/tests/r56_check/recursive_global.sm
++++ b/tests/r56_check/recursive_global.sm
+@@ -1,8 +1,8 @@
+ vitti calls = 0
+ prakriya recurse(n) {
+     calls = calls + 1
+-    yadi (n <= 0) { prati calls }
+-    prati recurse(n - 1)
++    yadi (n <= 0) { nivartanam calls }
++    nivartanam recurse(n - 1)
+ }
+ mukhya() {
+     likha(recurse(4))
+diff --git a/tests/r56_check/shared_rw.sm b/tests/r56_check/shared_rw.sm
+index 123cf422..acab5f6e 100644
+--- a/tests/r56_check/shared_rw.sm
++++ b/tests/r56_check/shared_rw.sm
+@@ -1,7 +1,7 @@
+ vitti shared = 7
+-prakriya read_one() { prati shared }
+-prakriya increase() { shared = shared + 2 prati shared }
+-prakriya read_two() { prati shared }
++prakriya read_one() { nivartanam shared }
++prakriya increase() { shared = shared + 2 nivartanam shared }
++prakriya read_two() { nivartanam shared }
+ mukhya() {
+     likha(read_one())
+     likha(increase())
+diff --git a/tests/r57_check/global_registers.sm b/tests/r57_check/global_registers.sm
+index 64c5c5dd..c3ebfb2e 100644
+--- a/tests/r57_check/global_registers.sm
++++ b/tests/r57_check/global_registers.sm
+@@ -1,5 +1,5 @@
+ vitti total = 7
+-prakriya vardh() { total = total + 3 prati total }
++prakriya vardh() { total = total + 3 nivartanam total }
+ mukhya() {
+     vitti a = 4
+     vitti b = 2
+diff --git a/tests/r57_check/legacy_fallback.sm b/tests/r57_check/legacy_fallback.sm
+index b0b99778..15a0512c 100644
+--- a/tests/r57_check/legacy_fallback.sm
++++ b/tests/r57_check/legacy_fallback.sm
+@@ -1,7 +1,7 @@
+ vitti global_value = 3
+ prakriya vardh() {
+     global_value = global_value + 1
+-    prati global_value
++    nivartanam global_value
+ }
+ mukhya() {
+     likha(global_value + vardh())
+diff --git a/tests/r58_check/effectful_identity.sm b/tests/r58_check/effectful_identity.sm
+index befb001d..362c151c 100644
+--- a/tests/r58_check/effectful_identity.sm
++++ b/tests/r58_check/effectful_identity.sm
+@@ -1,7 +1,7 @@
+ vitti counter = 0
+ prakriya bump() {
+     counter = counter + 1
+-    prati counter
++    nivartanam counter
+ }
+ mukhya() {
+     likha(bump() + 0)
+diff --git a/tests/r65_check/peephole_scalar.sm b/tests/r65_check/peephole_scalar.sm
+index 456c0ba6..74921969 100644
+--- a/tests/r65_check/peephole_scalar.sm
++++ b/tests/r65_check/peephole_scalar.sm
+@@ -1,5 +1,5 @@
+ # Direct one-argument transfer and consecutive scalar store/load.
+-prakriya identity(x) { prati x }
++prakriya identity(x) { nivartanam x }
+ mukhya() {
+     vitti a = 1
+     vitti b = 2
+diff --git a/tests/sandesh/cases/arity.sm b/tests/sandesh/cases/arity.sm
+index 0b230d12..8b1479dd 100644
+--- a/tests/sandesh/cases/arity.sm
++++ b/tests/sandesh/cases/arity.sm
+@@ -1,6 +1,6 @@
+ # R11: a call with the wrong number of arguments
+ prakriya f(a, b) {
+-    prati a + b
++    nivartanam a + b
+ }
+ mukhya() {
+     likha(f(1))
+diff --git a/tests/stdlib/map_keys_bytes.sm b/tests/stdlib/map_keys_bytes.sm
+index b986f343..4829ab50 100644
+--- a/tests/stdlib/map_keys_bytes.sm
++++ b/tests/stdlib/map_keys_bytes.sm
+@@ -9,12 +9,12 @@ prakriya seg_found(buf, nk, key, keyn) {
+     yavat (i < nk) {
+         seglen = akshar(buf, pos)
+         yadi (seglen == keyn) {
+-            yadi (khand_tul(buf + pos + 1, seglen, key, keyn) == 0) { prati 1 }
++            yadi (khand_tul(buf + pos + 1, seglen, key, keyn) == 0) { nivartanam 1 }
+         }
+         pos = pos + 1 + seglen
+         i = i + 1
+     }
+-    prati 0
++    nivartanam 0
+ }
+ mukhya() {
+     vitti m = nighantu_srij(8)
+diff --git a/tests/stdlib/r10_roop_suchi_edges.sm b/tests/stdlib/r10_roop_suchi_edges.sm
+index 633afa41..135ea9c1 100644
+--- a/tests/stdlib/r10_roop_suchi_edges.sm
++++ b/tests/stdlib/r10_roop_suchi_edges.sm
+@@ -7,7 +7,7 @@ prakriya dikha(b, n) {
+         likha(akshar(b, i))
+         i = i + 1
+     }
+-    prati 0
++    nivartanam 0
+ }
+ mukhya() {
+     vitti out = nirmmita(96)
+diff --git a/tests/stdlib/r11_brihat_guards.sm b/tests/stdlib/r11_brihat_guards.sm
+index be46dde6..43f0ce00 100644
+--- a/tests/stdlib/r11_brihat_guards.sm
++++ b/tests/stdlib/r11_brihat_guards.sm
+@@ -8,7 +8,7 @@ prakriya dikha(a, n) {
+         s = s * 10 + a[i]
+         i = i - 1
+     }
+-    prati s
++    nivartanam s
+ }
+ mukhya() {
+     # brihat_gun: a[3] and b[3] are guards; res holds 2n digits and res[6] is a guard
+diff --git a/tests/stdlib/r8_split_model.sm b/tests/stdlib/r8_split_model.sm
+index 2603bad8..3edc48a7 100644
+--- a/tests/stdlib/r8_split_model.sm
++++ b/tests/stdlib/r8_split_model.sm
+@@ -23,7 +23,7 @@ prakriya dikha(parts, cnt) {
+         w = w + 1 + len
+         g = g + 1
+     }
+-    prati 0
++    nivartanam 0
+ }
+ mukhya() {
+     vitti st = nirmmita(8)
+diff --git a/tests/stdlib/result_chain.sm b/tests/stdlib/result_chain.sm
+index 59965fa4..228b7bb8 100644
+--- a/tests/stdlib/result_chain.sm
++++ b/tests/stdlib/result_chain.sm
+@@ -7,10 +7,10 @@ prakriya safe_compute(out, a, b, c) {
+     phal_janchit_yuj(t, a, b)
+     yadi (phal_asti_siddhi(t) == 0) {
+         phal_dosh(out)
+-        prati 0
++        nivartanam 0
+     }
+     phal_janchit_gun(out, phal_mulya(t), c)
+-    prati phal_asti_siddhi(out)
++    nivartanam phal_asti_siddhi(out)
+ }
+ 
+ prakriya safe_pow_fact(out, a, e) {
+@@ -19,10 +19,10 @@ prakriya safe_pow_fact(out, a, e) {
+     phal_janchit_ghat(t, a, e)
+     yadi (phal_asti_siddhi(t) == 0) {
+         phal_dosh(out)
+-        prati 0
++        nivartanam 0
+     }
+     phal_janchit_kramgun(out, phal_mulya(t))
+-    prati phal_asti_siddhi(out)
++    nivartanam phal_asti_siddhi(out)
+ }
+ 
+ mukhya() {
+diff --git a/tests/stdlib/strconv_overflow.sm b/tests/stdlib/strconv_overflow.sm
+index 9ca668a6..bccca7b4 100644
+--- a/tests/stdlib/strconv_overflow.sm
++++ b/tests/stdlib/strconv_overflow.sm
+@@ -166,83 +166,83 @@ mukhya() {
+     likha("\n")
+     yadi (buf[0] != 45) {
+         likha("MISMATCH\n")
+-        prati 1
++        nivartanam 1
+     }
+     yadi (buf[1] != 57) {
+         likha("MISMATCH\n")
+-        prati 1
++        nivartanam 1
+     }
+     yadi (buf[2] != 50) {
+         likha("MISMATCH\n")
+-        prati 1
++        nivartanam 1
+     }
+     yadi (buf[3] != 50) {
+         likha("MISMATCH\n")
+-        prati 1
++        nivartanam 1
+     }
+     yadi (buf[4] != 51) {
+         likha("MISMATCH\n")
+-        prati 1
++        nivartanam 1
+     }
+     yadi (buf[5] != 51) {
+         likha("MISMATCH\n")
+-        prati 1
++        nivartanam 1
+     }
+     yadi (buf[6] != 55) {
+         likha("MISMATCH\n")
+-        prati 1
++        nivartanam 1
+     }
+     yadi (buf[7] != 50) {
+         likha("MISMATCH\n")
+-        prati 1
++        nivartanam 1
+     }
+     yadi (buf[8] != 48) {
+         likha("MISMATCH\n")
+-        prati 1
++        nivartanam 1
+     }
+     yadi (buf[9] != 51) {
+         likha("MISMATCH\n")
+-        prati 1
++        nivartanam 1
+     }
+     yadi (buf[10] != 54) {
+         likha("MISMATCH\n")
+-        prati 1
++        nivartanam 1
+     }
+     yadi (buf[11] != 56) {
+         likha("MISMATCH\n")
+-        prati 1
++        nivartanam 1
+     }
+     yadi (buf[12] != 53) {
+         likha("MISMATCH\n")
+-        prati 1
++        nivartanam 1
+     }
+     yadi (buf[13] != 52) {
+         likha("MISMATCH\n")
+-        prati 1
++        nivartanam 1
+     }
+     yadi (buf[14] != 55) {
+         likha("MISMATCH\n")
+-        prati 1
++        nivartanam 1
+     }
+     yadi (buf[15] != 55) {
+         likha("MISMATCH\n")
+-        prati 1
++        nivartanam 1
+     }
+     yadi (buf[16] != 53) {
+         likha("MISMATCH\n")
+-        prati 1
++        nivartanam 1
+     }
+     yadi (buf[17] != 56) {
+         likha("MISMATCH\n")
+-        prati 1
++        nivartanam 1
+     }
+     yadi (buf[18] != 48) {
+         likha("MISMATCH\n")
+-        prati 1
++        nivartanam 1
+     }
+     yadi (buf[19] != 56) {
+         likha("MISMATCH\n")
+-        prati 1
++        nivartanam 1
+     }
+     likha(1)
+     likha("\n")
+@@ -251,15 +251,15 @@ mukhya() {
+     likha("\n")
+     yadi (buf[0] != 49) {
+         likha("MISMATCH\n")
+-        prati 1
++        nivartanam 1
+     }
+     yadi (buf[1] != 50) {
+         likha("MISMATCH\n")
+-        prati 1
++        nivartanam 1
+     }
+     yadi (buf[2] != 51) {
+         likha("MISMATCH\n")
+-        prati 1
++        nivartanam 1
+     }
+     likha(1)
+     likha("\n")
+@@ -268,19 +268,19 @@ mukhya() {
+     likha("\n")
+     yadi (buf[0] != 45) {
+         likha("MISMATCH\n")
+-        prati 1
++        nivartanam 1
+     }
+     yadi (buf[1] != 52) {
+         likha("MISMATCH\n")
+-        prati 1
++        nivartanam 1
+     }
+     yadi (buf[2] != 53) {
+         likha("MISMATCH\n")
+-        prati 1
++        nivartanam 1
+     }
+     yadi (buf[3] != 54) {
+         likha("MISMATCH\n")
+-        prati 1
++        nivartanam 1
+     }
+     likha(1)
+     likha("\n")
+@@ -289,7 +289,7 @@ mukhya() {
+     likha("\n")
+     yadi (buf[0] != 48) {
+         likha("MISMATCH\n")
+-        prati 1
++        nivartanam 1
+     }
+     likha(1)
+     likha("\n")
