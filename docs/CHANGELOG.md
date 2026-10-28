@@ -1,3 +1,42 @@
+## v387 - Windows executed for the first time on a current revision: it passes, and found three defects
+
+**`Windows-to-Sarvam/WIN-TEST-2026-10-27.md` - run by Claude Code on the owner's Windows 11 Pro PC, non-elevated,
+commit `2ec4c18f`, compiler v254.**
+
+### What passed
+| | |
+|---|---|
+| **non-elevated shell** | **`IsInRole(Administrator)` = False** - least privilege holds |
+| **`nasm` build** | **PASS, 4.74 s, 438,849 B** |
+| **`ld` link** | **PASS, no warnings** |
+| **`--version`** | **`Sutram 1.0 (v254)`** |
+| **`sutram_win.exe`** | **413,825 bytes** |
+| **Devanagari with `--lang sanskrit`** | **byte-identical to the Latin output** |
+
+**"Byte-identical" is the sentence that matters.** **It means the lexer and the language pack agree on a real Windows
+machine** - **which is what the 672 boundary cases claimed on Linux and nobody had confirmed on Windows until now.**
+
+### And it found three defects, all real
+**W1: Devanagari needs `--lang sanskrit`.** **The compiler already has 34 Devanagari keywords built in, so some work
+without the flag and the rest do not.** **A Sanskrit-first language should not need a flag to accept Sanskrit.**
+**Fix: make `--lang sanskrit` the default, or complete the built-in table.**
+
+**W2: one word, three forms, none correct.** **`lang/sanskrit.lang:18` says `प्रतियाति` ("goes towards");
+`src/sutram_compiler.asm:735` says `प्रत्यायति` ("comes back"); line 74 says `प॰` (an abbreviation).** **The Latin is
+`prati`; the Devanagari is `प्रति`.** **That is what belongs in both places.**
+
+**W3: `Sutram Error` is English, in 74 places.** **The rule is no English.** **And the language already has the word:
+`dosh` is a keyword meaning fault.** **So `Sutram Error` -> `Sutram dosh`.** **The `[E_*]` codes stay - a symbol is not
+prose.**
+
+### And two of the errors were in MY prompt
+**I wrote v253; the tree is v254.** **I wrote the Devanagari `प्रति` in the prompt from the Latin without checking the
+pack - and it is in neither the pack nor the compiler.**
+
+**Both are the same mistake: a test prompt containing facts I had not verified against the tree.** **A wrong expected
+value wastes a partner's time and can make a correct build look wrong.** **The report caught both, which is what the
+prompt was for.**
+
 ## v386 - the complete vocabulary extracted: 305 names, and 14 that are not Sanskrit
 
 **`docs/VOCABULARY-COMPLETE.md` lists every `prakriya` in `lib/`, by module, read from the declarations rather than from
