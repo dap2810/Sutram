@@ -1,5 +1,5 @@
 # R30: literals are side-effect-free, safe tak materialize after indexed LHS.
-prakriya twice(dasham x) {
+prakriya dwi_gun(dasham x) {
     prati x * 2.0
 }
 mukhya() {
@@ -13,6 +13,6 @@ mukhya() {
     likha(out)
     out = (values[0] + values[1]) * 3.0
     likha(out)
-    out = twice(values[0]) / 2
+    out = dwi_gun(values[0]) / 2
     likha(out)
 }
