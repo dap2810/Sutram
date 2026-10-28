@@ -1,58 +1,41 @@
-# Sutram — ROUND-53: `nivartan` becomes the keyword
+# Sutram — ROUND-53 (corrected): `nirvatanam` becomes the keyword
 
 **Base:** main at **v395**, compiler **v255** · **Deliver into:** `Claude-to-Sarvam/`
+**Supersedes the earlier ROUND-53.** **Read this one; the word changed.**
 
-**Read first:** `docs/WHATS-LEFT.md`, and **finish R52 first if it is still open** - this round comes after it.
-
-## The owner's decision
-**`nivartan` becomes the keyword. `prati` stays accepted as a legacy alias.**
-
-**Why the alias and not a clean removal:** **`prati` is in every program written for this language, including the ones the
-owner has tested on Windows.** **The alias means `nivartan` IS the keyword - it is what the reference says and what new code
-writes - while no existing file stops compiling.** **The guard then proves it: 0 DIFFER.**
+## The owner's decision, corrected
+**The keyword is `nirvatanam` (निर्वतनम्) — not `nivartan`.** **I issued the wrong word; the owner corrected it.** **`prati`
+stays accepted as a legacy alias so nothing breaks.**
 
 ## The fact that makes this safe
-**`prati` is a statement keyword. It never appears in program output.** **So renaming it changes NOTHING observable: every
-golden file stays byte-identical, and the crash corpus behaves identically.** **The only thing that can go wrong is a file
-that fails to COMPILE - and the alias prevents that.**
+**`prati` is a statement keyword and never appears in program output.** **So renaming it changes NOTHING observable: every
+golden stays byte-identical, the crash corpus behaves identically, and the guard reads 0 DIFFER.** **The only failure mode is
+a file that does not COMPILE, and the alias removes it.**
 
-**Devanagari: `निवर्तन` (nivartana) for `nivartan`.** **`प्रति` stays as the Devanagari alias.**
+## The exact bytes - verified, not guessed
+**`nirvatanam` = निर्वतनम् =**
+`0xE0,0xA4,0xA8,0xE0,0xA4,0xBF,0xE0,0xA4,0xB0,0xE0,0xA5,0x8D,0xE0,0xA4,0xB5,0xE0,0xA4,0xA4,0xE0,0xA4,0xA8,0xE0,0xA4,0xAE,0xE0,0xA5,0x8D`
+**27 bytes.** **Decode it before you use it and confirm it prints as निर्वतनम्.**
 
 ---
 
 ## WS1 — the keyword
-
-**In `src/sutram_compiler.asm`:** **`kw_pratiyati db "prati", 0` becomes `kw_nivartan db "nivartan", 0`.**
-
-**Add `nivartan` to the keyword table as the canonical name, and keep `prati` as an accepted alias** - **a second table
-entry that produces the same token `KW_PRATIYATI`.** **The parser must not care which spelling arrived.**
-
-**Do not rename the internal token or the label unless it is cheap.** **The internal name `KW_PRATIYATI` is invisible to
-users; changing it is churn. Say which you did and why.**
+**`kw_pratiyati db "prati", 0` becomes `kw_nirvatanam db "nirvatanam", 0`.** **Add `prati` as a second table entry producing
+the same token.** **The parser must not care which spelling arrived.** **Do not rename the internal `KW_PRATIYATI` token
+unless it is cheap - it is invisible to users.**
 
 ## WS2 — the Devanagari
+**`निर्वतनम्` canonical (bytes above), `प्रति` kept as the Devanagari alias.**
+**`प्रति` bytes:** `0xE0,0xA4,0xAA,0xE0,0xA5,0x8D,0xE0,0xA4,0xA4,0xE0,0xA4,0xBF`
 
-**`kw_dev_pratiyati` currently holds bytes for `प्रत्यायति`.** **Round 52's WS2 was already changing that to `प्रति`.**
-**Now it needs both:**
-- **`निवर्तन` as the canonical Devanagari** - `0xE0,0xA4,0xA8,0xE0,0xA4,0xBF,0xE0,0xA4,0xB5,0xE0,0xA4,0xB0,0xE0,0xA5,0x8D,0xE0,0xA4,0xA4,0xE0,0xA4,0xA8`
-- **`प्रति` kept as the Devanagari alias**
-
-**Verify both byte strings decode before you use them.**
-
-## WS3 — the Sanskrit pack
-
-**`lang/sanskrit.lang`:** **`निवर्तन nivartan` as the canonical entry.** **`प्रति prati` stays as an alias line if the pack
-format supports it - if it does not, say so and keep only `nivartan`, because the compiler-side alias covers the Latin
-spelling.**
+## WS3 — the pack
+**`lang/sanskrit.lang`: `निर्वतनम् nirvatanam` canonical, `प्रति prati` as the alias line if the format supports it.**
 
 ## WS4 — prove it
-
-**The suite, the crash corpus, the proofs, the gates.** **And the guard: it must be 0 DIFFER, because a keyword rename
-cannot change output.**
-
-**Then the decisive test: compile three programs that use `prati` and three that use `nivartan`, and show that both
-spellings produce byte-identical binaries.** **If they do not, the alias is not working and that is the finding.**
+**Suite, crash corpus, proofs, gates.** **Guard must be 0 DIFFER.**
+**Then the decisive test: three programs using `prati` and three using `nirvatanam` must produce byte-identical binaries.**
+**If they do not, the alias is broken and that is the finding.**
 
 ## Return
-`R53-00-HANDBACK.md` with the results table · **the guard numbers** · **the six binaries compared** · **whether the internal
-token was renamed and why** · and anything surprising.
+`R53-00-HANDBACK.md` with the results table · the guard numbers · **the six binaries compared** · whether the internal token
+was renamed and why.
