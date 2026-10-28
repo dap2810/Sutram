@@ -132,7 +132,7 @@ prakriya saranik3(kosh dasham a) {
 }
 
 # dot product of flat vectors u and v over min(kosh_len(u), kosh_len(v)) entries.
-prakriya sadish_yoga(kosh dasham u, kosh dasham v) {
+prakriya adish_gunan(kosh dasham u, kosh dasham v) {
     vitti n = kosh_len(u)
     yadi (kosh_len(v) < n) { n = kosh_len(v) }
     dasham s = 0.0

@@ -1,9 +1,9 @@
 yoj chandas
 mukhya() {
-    likha(dviguna(0))
+    likha(dwi_ghat(0))
     likha("\n")
-    likha(dviguna(5))
+    likha(dwi_ghat(5))
     likha("\n")
-    likha(dviguna(10))
+    likha(dwi_ghat(10))
     likha("\n")
 }

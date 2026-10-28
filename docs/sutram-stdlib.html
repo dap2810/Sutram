@@ -100,7 +100,7 @@ Do not edit by hand.</p>
 <p class="shesh-desc">layer: core After Pingala&#x27;s Chandahśāstra (~2nd c. BCE). Sanskrit metre is built from two syllable weights — laghu (light) and guru (heavy) — so an n-syllable metre is a sequence of two choices: there are exactly 2^n of them. Pingala gave the doubling rule for 2^n, the Meru-prastāra (Pascal&#x27;s triangle) to count how many metres have exactly k guru syllables, and the mātrā-meru, which generates the Fibonacci numbers. A pattern is carried as an integer bitmask: bit i (LSB = first syllable) is 1 for guru, 0 for laghu. The integer value IS the pattern&#x27;s index in the prastāra.</p>
 <table>
 <tr><th>Function</th><th>Description</th></tr>
-<tr><td><code>dviguna(n)</code></td><td></td></tr>
+<tr><td><code>dwi_ghat(n)</code></td><td></td></tr>
 <tr><td><code>meru(n, k)</code></td><td>meru(n, k) — the binomial coefficient C(n, k); 0 for k &lt; 0 or k &gt; n.</td></tr>
 <tr><td><code>matra_meru(n)</code></td><td>matra_meru(n) — the nth Fibonacci number (matra_meru(0) = 0, matra_meru(1) = 1).</td></tr>
 <tr><td><code>asti_guru(pat, i)</code></td><td>asti_guru(pat, i) — 1 if bit i of the integer pattern pat is set; 0 for i &lt; 0 or i &gt;= 64.</td></tr>
@@ -327,7 +327,7 @@ Do not edit by hand.</p>
 <tr><td><code>karna_yog(kosh dasham a, n)</code></td><td>trace of an n x n matrix</td></tr>
 <tr><td><code>saranik2(kosh dasham a)</code></td><td>determinant of a 2 x 2 matrix (a holds 4 elements)</td></tr>
 <tr><td><code>saranik3(kosh dasham a)</code></td><td>determinant of a 3 x 3 matrix (a holds 9 elements), by cofactor expansion</td></tr>
-<tr><td><code>sadish_yoga(kosh dasham u, kosh dasham v)</code></td><td>dot product of flat vectors u and v over min(kosh_len(u), kosh_len(v)) entries.</td></tr>
+<tr><td><code>adish_gunan(kosh dasham u, kosh dasham v)</code></td><td>dot product of flat vectors u and v over min(kosh_len(u), kosh_len(v)) entries.</td></tr>
 <tr><td><code>rekha_manak(kosh dasham a, m, n)</code></td><td>largest absolute row sum (a cheap norm, useful for conditioning checks)</td></tr>
 </table>
 <h2 id="sangrah"><code>sangrah</code></h2>

@@ -3,9 +3,9 @@
 yoj chandas
 
 mukhya()
-    likha(dviguna(3))
+    likha(dwi_ghat(3))
     likha(" ")
-    likha(dviguna(6))
+    likha(dwi_ghat(6))
     likha(" ")
     likha(meru(5, 2))
     likha(" ")

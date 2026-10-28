@@ -328,7 +328,7 @@
   "EQUIVALENT",
   "R11 clamp: at kosh_len(ys) == n the assignment stores the value n already has (kosh_len has no side effect); the clamp rule's pattern does not match a call on the left"
  ],
- "samanvaya.sadish_yoga C1:<-><=": [
+ "samanvaya.adish_gunan C1:<-><=": [
   "EQUIVALENT",
   "R11 clamp: at kosh_len(v) == n the assignment stores the value n already has (kosh_len has no side effect); the clamp rule's pattern does not match a call on the left"
  ],

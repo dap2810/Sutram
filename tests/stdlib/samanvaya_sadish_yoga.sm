@@ -8,6 +8,6 @@ mukhya() {
     kosh_push(v, 4.0)
     kosh_push(v, 5.0)
     kosh_push(v, 6.0)
-    likha(sadish_yoga(u, v))
+    likha(adish_gunan(u, v))
     likha("\n")
 }

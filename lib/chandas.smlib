@@ -9,7 +9,7 @@
 #
 # A pattern is carried as an integer bitmask: bit i (LSB = first syllable) is 1 for
 # guru, 0 for laghu. The integer value IS the pattern's index in the prastāra.
-prakriya dviguna(n) {
+prakriya dwi_ghat(n) {
     vitti x = n
     vitti r = 1
     vitti i = 0
