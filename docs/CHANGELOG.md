@@ -1,3 +1,21 @@
+## v395 - the consolidated picture, and three rounds issued from it
+
+**`docs/WHATS-LEFT.md` is now the single page that says where the project stands and everything remaining**, grouped by
+whether it is ready to implement, waiting on the owner, a defect, parked, platform, or beyond v1.0.
+
+### The three rounds issued
+- **Claude R52: four small things, three of them bugs.** `likha` with up to six values (Claude's own proposal, its own line numbers) · **`lkhb(2.5)` printing the raw IEEE-754 bit pattern** · **the `yoj` error message** · **`arabhya ... paryantam`** as the Sanskrit range, contextually parsed so `tak` keeps working.
+- **Muse R52: the examples teach the wrong form.** **135 three-statement triples in 48 files - 405 lines that could be 135 - for something the language does in one.** **Plus the 88 library functions with no usage comment** (29% of the library, and the reason three of my renames named the wrong thing).
+- **ChatGPT R127: write down what the language already does.** **The biggest documentation gap is not a missing feature - it is a feature nobody wrote down.** **Plus the honest speakable verdict: if the syntax is a technical compound register rather than prose, the reference should say so.**
+
+### And the honest summary of what is actually missing
+**Not features. Three things:**
+1. **The documentation does not say what the language already does.**
+2. **The examples teach the opposite of the language - 48 English function names, 135 three-statement prints.**
+3. **The vocabulary is 90% Sanskrit in the library and 44% in the examples.**
+
+**All three are fixable without touching the compiler.**
+
 ## v394 - three of my six "problems" do not exist, and all three parties proved it independently
 
 **I wrote six writing-style problems and asked Claude, ChatGPT and Muse to solve them.** **Three of the six were not problems.**
