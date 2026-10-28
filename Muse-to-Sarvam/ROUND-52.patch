@@ -1,0 +1,1995 @@
+diff --git a/examples/02_arith.sm b/examples/02_arith.sm
+index a1880acf..869e6095 100644
+--- a/examples/02_arith.sm
++++ b/examples/02_arith.sm
+@@ -3,6 +3,4 @@ mukhya()
+     vitti x = 10
+     vitti y = 20
+     vitti z = x + y
+-    likha("x + y = ")
+-    likha(z)
+-    likha("\n")
++    likha("x + y = ", z)
+diff --git a/examples/05_func_params.sm b/examples/05_func_params.sm
+index d0a2b81c..3987bb88 100644
+--- a/examples/05_func_params.sm
++++ b/examples/05_func_params.sm
+@@ -7,9 +7,5 @@ prakriya gun_tray(a, b, c)
+ 
+ mukhya()
+     vitti x = yog(10, 32)
+-    likha("yog(10, 32) = ")
+-    likha(x)
+-    likha("\n")
+-    likha("gun_tray(3, 4, 5) = ")
+-    likha(gun_tray(3, 4, 5))
+-    likha("\n")
++    likha("yog(10, 32) = ", x)
++    likha("gun_tray(3, 4, 5) = ", gun_tray(3, 4, 5))
+diff --git a/examples/06_rachana.sm b/examples/06_rachana.sm
+index 98d038e4..8dbdb392 100644
+--- a/examples/06_rachana.sm
++++ b/examples/06_rachana.sm
+@@ -6,12 +6,6 @@ mukhya()
+     p.x = 10
+     p.y = 20
+     p.z = 30
+-    likha("p.x = ")
+-    likha(p.x)
+-    likha("\n")
+-    likha("p.y = ")
+-    likha(p.y)
+-    likha("\n")
+-    likha("Sum = ")
+-    likha(p.x + p.y + p.z)
+-    likha("\n")
++    likha("p.x = ", p.x)
++    likha("p.y = ", p.y)
++    likha("Sum = ", p.x + p.y + p.z)
+diff --git a/examples/07_module.sm b/examples/07_module.sm
+index c175dd66..d54ada10 100644
+--- a/examples/07_module.sm
++++ b/examples/07_module.sm
+@@ -4,6 +4,4 @@ yoj ganit
+ 
+ mukhya()
+     vitti x = vargit(7)
+-    likha("vargit(7) = ")
+-    likha(x)
+-    likha("\n")
++    likha("vargit(7) = ", x)
+diff --git a/examples/08_demo.sm b/examples/08_demo.sm
+index 8a58d809..89fab503 100644
+--- a/examples/08_demo.sm
++++ b/examples/08_demo.sm
+@@ -7,23 +7,15 @@ prakriya dwigun(n)
+ mukhya()
+     likha("=== Sutram Demo ===\n")
+     vitti x = dwigun(21)
+-    likha("double(21) = ")
+-    likha(x)
+-    likha("\n")
++    likha("double(21) = ", x)
+     vitti p = nirmmita(16)
+     p.age = 25
+     p.score = 100
+-    likha("Age: ")
+-    likha(p.age)
+-    likha("\n")
+-    likha("Score: ")
+-    likha(p.score)
+-    likha("\n")
++    likha("Age: ", p.age)
++    likha("Score: ", p.score)
+     vitti i = 1
+     yavat (i < 4) {
+-        likha("Loop: ")
+-        likha(i)
+-        likha("\n")
++        likha("Loop: ", i)
+         i = i + 1
+     }
+     likha("=== Done ===\n")
+diff --git a/examples/10_mathlib.sm b/examples/10_mathlib.sm
+index 9807b5c1..e6e1d3a3 100644
+--- a/examples/10_mathlib.sm
++++ b/examples/10_mathlib.sm
+@@ -2,19 +2,11 @@ yoj ganit
+ mukhya()
+     likha("=== Math Library ===\n")
+     vitti s = vargit(9)
+-    likha("vargit(9) = ")
+-    likha(s)
+-    likha("\n")
++    likha("vargit(9) = ", s)
+     vitti d = dvigun(21)
+-    likha("dvigun(21) = ")
+-    likha(d)
+-    likha("\n")
++    likha("dvigun(21) = ", d)
+     vitti t = trigun(14)
+-    likha("trigun(14) = ")
+-    likha(t)
+-    likha("\n")
++    likha("trigun(14) = ", t)
+     vitti i = vardh(41)
+-    likha("vardh(41) = ")
+-    likha(i)
+-    likha("\n")
++    likha("vardh(41) = ", i)
+     likha("=== Done ===\n")
+diff --git a/examples/11_forloop.sm b/examples/11_forloop.sm
+index bc8e4851..8b8f5d7d 100644
+--- a/examples/11_forloop.sm
++++ b/examples/11_forloop.sm
+@@ -17,18 +17,14 @@ mukhya()
+     chakra j = 1 tak 10 {
+         sum = sum + j
+     }
+-    likha("Sum 1-10 = ")
+-    likha(sum)
+-    likha("\n")
++    likha("Sum 1-10 = ", sum)
+ 
+     # Multiplication table for 3
+     likha("Table of 3:\n")
+     chakra k = 1 tak 5 {
+         likha("3 x ")
+         likha(k)
+-        likha(" = ")
+-        likha(3 * k)
+-        likha("\n")
++        likha(" = ", 3 * k)
+     }
+ 
+     likha("=== Done ===\n")
+diff --git a/examples/13_negatives.sm b/examples/13_negatives.sm
+index fe0e2f44..75964381 100644
+--- a/examples/13_negatives.sm
++++ b/examples/13_negatives.sm
+@@ -7,45 +7,29 @@ mukhya()
+     # Negative variables
+     vitti x = -5
+     vitti y = -10
+-    likha("x = ")
+-    likha(x)
+-    likha("\n")
+-    likha("y = ")
+-    likha(y)
+-    likha("\n")
++    likha("x = ", x)
++    likha("y = ", y)
+ 
+     # Arithmetic with negatives
+     vitti sum = x + y
+-    likha("x + y = ")
+-    likha(sum)
+-    likha("\n")
++    likha("x + y = ", sum)
+ 
+     vitti diff = x - y
+-    likha("x - y = ")
+-    likha(diff)
+-    likha("\n")
++    likha("x - y = ", diff)
+ 
+     vitti prod = x * 3
+-    likha("x * 3 = ")
+-    likha(prod)
+-    likha("\n")
++    likha("x * 3 = ", prod)
+ 
+     # Unary minus on expressions
+     vitti z = -3 + 10
+-    likha("-3 + 10 = ")
+-    likha(z)
+-    likha("\n")
++    likha("-3 + 10 = ", z)
+ 
+     # Negation
+     vitti w = 0 - x
+-    likha("0 - x = ")
+-    likha(w)
+-    likha("\n")
++    likha("0 - x = ", w)
+ 
+     # Direct negative print
+-    likha("-42 = ")
+-    likha(-42)
+-    likha("\n")
++    likha("-42 = ", -42)
+ 
+     # Comparison with negatives
+     yadi (x < 0) {
+diff --git a/examples/14_strings.sm b/examples/14_strings.sm
+index e9e5cd22..261455ff 100644
+--- a/examples/14_strings.sm
++++ b/examples/14_strings.sm
+@@ -17,9 +17,7 @@ mukhya()
+     likha("Line 1\nLine 2\nLine 3\n")
+ 
+     # Combining strings and numbers
+-    likha("The answer is: ")
+-    likha(42)
+-    likha("\n")
++    likha("The answer is: ", 42)
+ 
+     likha("Temperature: ")
+     likha(-15)
+diff --git a/examples/15_sutra_const.sm b/examples/15_sutra_const.sm
+index 9ceec50f..5427660a 100644
+--- a/examples/15_sutra_const.sm
++++ b/examples/15_sutra_const.sm
+@@ -6,29 +6,19 @@ mukhya()
+ 
+     likha("=== Sutra & Bitwise ===\n")
+ 
+-    likha("MAX_VAL = ")
+-    likha(MAX_VAL)
+-    likha("\n")
++    likha("MAX_VAL = ", MAX_VAL)
+ 
+     vitti rem = 17 % 5
+-    likha("17 % 5 = ")
+-    likha(rem)
+-    likha("\n")
++    likha("17 % 5 = ", rem)
+ 
+     vitti a = 12 & 10
+-    likha("12 & 10 = ")
+-    likha(a)
+-    likha("\n")
++    likha("12 & 10 = ", a)
+ 
+     vitti b = 12 | 10
+-    likha("12 | 10 = ")
+-    likha(b)
+-    likha("\n")
++    likha("12 | 10 = ", b)
+ 
+     vitti c = 12 ^ 10
+-    likha("12 ^ 10 = ")
+-    likha(c)
+-    likha("\n")
++    likha("12 ^ 10 = ", c)
+ 
+     vitti x = 42
+     abhava(x > 0)
+diff --git a/examples/16_advanced.sm b/examples/16_advanced.sm
+index efe46152..b39130c3 100644
+--- a/examples/16_advanced.sm
++++ b/examples/16_advanced.sm
+@@ -27,9 +27,7 @@ mukhya()
+     vitti flags = 0
+     flags = flags | 1
+     flags = flags | 4
+-    likha("Flags: ")
+-    likha(flags)
+-    likha("\n")
++    likha("Flags: ", flags)
+ 
+     vitti check = flags & 4
+     yadi (check != 0) {
+diff --git a/examples/17_booleans.sm b/examples/17_booleans.sm
+index 9a61fb93..2ad6311d 100644
+--- a/examples/17_booleans.sm
++++ b/examples/17_booleans.sm
+@@ -10,13 +10,9 @@ mukhya()
+ 
+     likha("=== Booleans & Logic ===\n")
+ 
+-    likha("is_ready = ")
+-    likha(is_ready)
+-    likha("\n")
++    likha("is_ready = ", is_ready)
+ 
+-    likha("is_done = ")
+-    likha(is_done)
+-    likha("\n")
++    likha("is_done = ", is_done)
+ 
+     # Logical AND
+     yadi (is_ready == purna && is_done == shunya) {
+@@ -32,8 +28,6 @@ mukhya()
+     vitti x = 5
+     vitti y = 10
+     vitti both_positive = x > 0 && y > 0
+-    likha("both_positive = ")
+-    likha(both_positive)
+-    likha("\n")
++    likha("both_positive = ", both_positive)
+ 
+     likha("=== Done ===\n")
+diff --git a/examples/19_srijana_enum.sm b/examples/19_srijana_enum.sm
+index ee4bffc2..f3ff403d 100644
+--- a/examples/19_srijana_enum.sm
++++ b/examples/19_srijana_enum.sm
+@@ -10,7 +10,5 @@ mukhya()
+         bhavana 3: { likha("Blue\n") }
+         anya: { likha("Unknown\n") }
+     }
+-    likha("RED = ")
+-    likha(RED)
+-    likha("\n")
++    likha("RED = ", RED)
+     likha("=== Done ===\n")
+diff --git a/examples/201_madhava_library.sm b/examples/201_madhava_library.sm
+index 3c2b876f..18690943 100644
+--- a/examples/201_madhava_library.sm
++++ b/examples/201_madhava_library.sm
+@@ -3,18 +3,8 @@
+ yoj madhava
+ 
+ mukhya()
+-    likha("pi     = ")
+-    likha(madhava_pi())
+-    likha("\n")
+-    likha("sin .5 = ")
+-    likha(madhava_sin(0.5))
+-    likha("\n")
+-    likha("cos .5 = ")
+-    likha(madhava_cos(0.5))
+-    likha("\n")
+-    likha("atan .5= ")
+-    likha(madhava_atan(0.5))
+-    likha("\n")
+-    likha("sqrt 2 = ")
+-    likha(madhava_vargmool(2.0))
+-    likha("\n")
++    likha("pi     = ", madhava_pi())
++    likha("sin .5 = ", madhava_sin(0.5))
++    likha("cos .5 = ", madhava_cos(0.5))
++    likha("atan .5= ", madhava_atan(0.5))
++    likha("sqrt 2 = ", madhava_vargmool(2.0))
+diff --git a/examples/202_brahmagupta_area.sm b/examples/202_brahmagupta_area.sm
+index f5191066..433e37e5 100644
+--- a/examples/202_brahmagupta_area.sm
++++ b/examples/202_brahmagupta_area.sm
+@@ -4,15 +4,7 @@
+ yoj ganita
+ 
+ mukhya()
+-    likha("triangle 3,4,5  = ")
+-    likha(brahmagupta_kshetr(3, 4, 5, 0))
+-    likha("\n")
+-    likha("triangle 5,5,6  = ")
+-    likha(brahmagupta_kshetr(5, 5, 6, 0))
+-    likha("\n")
+-    likha("cyclic 3,4,5,6  = ")
+-    likha(brahmagupta_kshetr(3, 4, 5, 6))
+-    likha("\n")
+-    likha("square side 4   = ")
+-    likha(brahmagupta_kshetr(4, 4, 4, 4))
+-    likha("\n")
++    likha("triangle 3,4,5  = ", brahmagupta_kshetr(3, 4, 5, 0))
++    likha("triangle 5,5,6  = ", brahmagupta_kshetr(5, 5, 6, 0))
++    likha("cyclic 3,4,5,6  = ", brahmagupta_kshetr(3, 4, 5, 6))
++    likha("square side 4   = ", brahmagupta_kshetr(4, 4, 4, 4))
+diff --git a/examples/203_meru_with_kosh.sm b/examples/203_meru_with_kosh.sm
+index 564a9f48..32c8e76c 100644
+--- a/examples/203_meru_with_kosh.sm
++++ b/examples/203_meru_with_kosh.sm
+@@ -13,9 +13,7 @@ mukhya()
+         }
+         n = n + 1
+     }
+-    likha("length = ")
+-    likha(kosh_len(row))
+-    likha("\n")
++    likha("length = ", kosh_len(row))
+     vitti j = 0
+     yavat (j < kosh_len(row)) {
+         likha(row[j])
+diff --git a/examples/215_r12_wordfreq.sm b/examples/215_r12_wordfreq.sm
+index 94d43ed9..8de57275 100644
+--- a/examples/215_r12_wordfreq.sm
++++ b/examples/215_r12_wordfreq.sm
+@@ -74,9 +74,7 @@ mukhya() {
+     yavat (i < nuniq) {
+         # uptrs[i] already points tak packed bytes; print directly
+         likha(1, uptrs[i], ulens[i])
+-        likha(": ")
+-        likha(nighantu_grah(m, 32, uptrs[i], ulens[i]))
+-        likha("\n")
++        likha(": ", nighantu_grah(m, 32, uptrs[i], ulens[i]))
+         i = i + 1
+     }
+ }
+diff --git a/examples/217_r12_report.sm b/examples/217_r12_report.sm
+index 80beaf0b..977c53fa 100644
+--- a/examples/217_r12_report.sm
++++ b/examples/217_r12_report.sm
+@@ -37,9 +37,7 @@ mukhya() {
+     likha(mn)
+     likha("\nMax:   ")
+     likha(mx)
+-    likha("\nRange: ")
+-    likha(mx - mn)
+-    likha("\n")
++    likha("\nRange: ", mx - mn)
+     likha("-------------------------\n")
+     likha("Padded scores:\n")
+     # demonstrate pad_vam: right-align each score in width 6
+diff --git a/examples/21_break_continue.sm b/examples/21_break_continue.sm
+index 31863a4b..3d22ccd7 100644
+--- a/examples/21_break_continue.sm
++++ b/examples/21_break_continue.sm
+@@ -5,6 +5,4 @@ mukhya()
+         yadi (i % 2 == 0) { agrim }
+         sum = sum + i
+     }
+-    likha("Sum of odd numbers 1-10: ")
+-    likha(sum)
+-    likha("\n")
++    likha("Sum of odd numbers 1-10: ", sum)
+diff --git a/examples/23_grahan_input.sm b/examples/23_grahan_input.sm
+index 22617ceb..a6db5096 100644
+--- a/examples/23_grahan_input.sm
++++ b/examples/23_grahan_input.sm
+@@ -2,12 +2,8 @@ mukhya()
+     likha("Enter two numbers:\n")
+     vitti a = grahan()
+     vitti b = grahan()
+-    likha("Sum: ")
+-    likha(a + b)
+-    likha("\n")
+-    likha("Product: ")
+-    likha(a * b)
+-    likha("\n")
++    likha("Sum: ", a + b)
++    likha("Product: ", a * b)
+     yadi (a > b) {
+         likha("First is bigger\n")
+     } yadi (b > a) {
+diff --git a/examples/25_patterns.sm b/examples/25_patterns.sm
+index 381402e2..9a2a1aa4 100644
+--- a/examples/25_patterns.sm
++++ b/examples/25_patterns.sm
+@@ -11,7 +11,5 @@ mukhya()
+         likha(7)
+         likha(" x ")
+         likha(n)
+-        likha(" = ")
+-        likha(7 * n)
+-        likha("\n")
++        likha(" = ", 7 * n)
+     }
+diff --git a/examples/28_compound.sm b/examples/28_compound.sm
+index ff189359..a60b1645 100644
+--- a/examples/28_compound.sm
++++ b/examples/28_compound.sm
+@@ -2,42 +2,26 @@ mukhya()
+     likha("Compound Assignment Demo\n")
+     likha("=======================\n")
+     vitti x = 100
+-    likha("Start: ")
+-    likha(x)
+-    likha("\n")
++    likha("Start: ", x)
+     x += 50
+-    likha("x += 50 -> ")
+-    likha(x)
+-    likha("\n")
++    likha("x += 50 -> ", x)
+     x -= 30
+-    likha("x -= 30 -> ")
+-    likha(x)
+-    likha("\n")
++    likha("x -= 30 -> ", x)
+     x *= 2
+-    likha("x *= 2  -> ")
+-    likha(x)
+-    likha("\n")
++    likha("x *= 2  -> ", x)
+     x /= 4
+-    likha("x /= 4  -> ")
+-    likha(x)
+-    likha("\n")
++    likha("x /= 4  -> ", x)
+     x %= 7
+-    likha("x %= 7  -> ")
+-    likha(x)
+-    likha("\n")
++    likha("x %= 7  -> ", x)
+     likha("\nSum 1 to 10 using += :\n")
+     vitti total = 0
+     chakra i = 1 tak 10 {
+         total += i
+     }
+-    likha("Total: ")
+-    likha(total)
+-    likha("\n")
++    likha("Total: ", total)
+     likha("\nFactorial of 5 using *= :\n")
+     vitti kramgun = 1
+     chakra n = 1 tak 5 {
+         kramgun *= n
+     }
+-    likha("5! = ")
+-    likha(kramgun)
+-    likha("\n")
++    likha("5! = ", kramgun)
+diff --git a/examples/32_bank_interest.sm b/examples/32_bank_interest.sm
+index fd0767a5..57452af4 100644
+--- a/examples/32_bank_interest.sm
++++ b/examples/32_bank_interest.sm
+@@ -14,15 +14,11 @@ mukhya()
+         principal += interest
+         likha("Year ")
+         lkhb(year)
+-        likha(": ")
+-        lkhb(principal)
+-        likha("\n")
++        likha(": ", principal)
+     }
+     likha("\nCompound growth using *= :\n")
+     vitti x = 2
+     chakra i = 1 tak 10 {
+         x *= 2
+     }
+-    likha("2^10 = ")
+-    likha(x)
+-    likha("\n")
++    likha("2^10 = ", x)
+diff --git a/examples/34_incdec.sm b/examples/34_incdec.sm
+index f6670fa0..f992072e 100644
+--- a/examples/34_incdec.sm
++++ b/examples/34_incdec.sm
+@@ -2,37 +2,25 @@ mukhya()
+     likha("Increment / Decrement Demo\n")
+     likha("==========================\n")
+     vitti x = 5
+-    likha("x = ")
+-    likha(x)
+-    likha("\n")
++    likha("x = ", x)
+     x++
+-    likha("x++ -> ")
+-    likha(x)
+-    likha("\n")
++    likha("x++ -> ", x)
+     x++
+-    likha("x++ -> ")
+-    likha(x)
+-    likha("\n")
++    likha("x++ -> ", x)
+     x--
+-    likha("x-- -> ")
+-    likha(x)
+-    likha("\n")
++    likha("x-- -> ", x)
+     likha("\nCounting with ++:\n")
+     vitti count = 0
+     chakra i = 1 tak 5 {
+         count++
+     }
+-    likha("count = ")
+-    likha(count)
+-    likha("\n")
++    likha("count = ", count)
+     likha("\nSquares table with ++:\n")
+     vitti n = 1
+     chakra i = 1 tak 5 {
+         vitti varg = n * n
+         lkhb(n)
+-        likha(" squared = ")
+-        lkhb(varg)
+-        likha("\n")
++        likha(" squared = ", varg)
+         n++
+     }
+     likha("\n")
+diff --git a/examples/35_comments.sm b/examples/35_comments.sm
+index f2c3add9..90323ca4 100644
+--- a/examples/35_comments.sm
++++ b/examples/35_comments.sm
+@@ -4,11 +4,7 @@
+ mukhya()  // This is a slash comment (like C)
+     # Comments are ignored by the compiler
+     vitti x = 10  # comment after code
+-    likha("x = ")
+-    likha(x)
+-    likha("\n")
++    likha("x = ", x)
+     // Use comments tak explain your program
+     vitti y = x * 2   // y = 20
+-    likha("y = ")
+-    likha(y)
+-    likha("\n")
++    likha("y = ", y)
+diff --git a/examples/91_indian_number_theory.sm b/examples/91_indian_number_theory.sm
+index c8174c80..04a28a65 100644
+--- a/examples/91_indian_number_theory.sm
++++ b/examples/91_indian_number_theory.sm
+@@ -4,25 +4,17 @@
+ yoj ganita
+ 
+ mukhya()
+-    likha("kuttaka(3,7,1) = ")
+-    likha(kuttaka(3, 7, 1))
+-    likha("\n")
++    likha("kuttaka(3,7,1) = ", kuttaka(3, 7, 1))
+     mala r[2]
+     chakravala(r, 13)
+     likha("x^2 - 13y^2 = 1: x = ")
+     likha(r[0])
+-    likha(", y = ")
+-    likha(r[1])
+-    likha("\n")
++    likha(", y = ", r[1])
+     chakravala(r, 61)
+     likha("x^2 - 61y^2 = 1: x = ")
+     likha(r[0])
+-    likha(", y = ")
+-    likha(r[1])
+-    likha("\n")
++    likha(", y = ", r[1])
+     samasa(r, 8, 1, 8, 1, 61)
+     likha("bhavana (8,1) x (8,1) for N=61: x = ")
+     likha(r[0])
+-    likha(", y = ")
+-    likha(r[1])
+-    likha("\n")
++    likha(", y = ", r[1])
+diff --git a/examples/array_demo.sm b/examples/array_demo.sm
+index 737cf80a..462599a0 100644
+--- a/examples/array_demo.sm
++++ b/examples/array_demo.sm
+@@ -12,9 +12,7 @@ mukhya()
+     yavat (i < 5) {
+         likha("  arr[")
+         likha(i)
+-        likha("] = ")
+-        likha(arr[i])
+-        likha("\n")
++        likha("] = ", arr[i])
+         i = i + 1
+     }
+     likha("Sum: ")
+diff --git a/examples/char_ops.sm b/examples/char_ops.sm
+index c2940949..1ccd49c3 100644
+--- a/examples/char_ops.sm
++++ b/examples/char_ops.sm
+@@ -2,16 +2,10 @@
+ mukhya()
+     vitti s = "Hello"
+     vitti c0 = akshar(s, 0)
+-    likha("First char code: ")
+-    likha(c0)
+-    likha("\n")
++    likha("First char code: ", c0)
+     vitti code = aksharank("A")
+-    likha("ASCII of A: ")
+-    likha(code)
+-    likha("\n")
++    likha("ASCII of A: ", code)
+     vitti lower_a = aksharank("a")
+     vitti upper_a = char_upper(lower_a)
+-    likha("Upper of a: ")
+-    likha(upper_a)
+-    likha("\n")
++    likha("Upper of a: ", upper_a)
+     likha("Done!\n")
+diff --git a/examples/full_demo.sm b/examples/full_demo.sm
+index ea4347ea..42194a5d 100644
+--- a/examples/full_demo.sm
++++ b/examples/full_demo.sm
+@@ -3,14 +3,10 @@
+ mukhya()
+     likha("=== Sutram v6.0 ===\n")
+     likha("1. Strings: Namaste!\n")
+-    likha("2. Numbers: ")
+-    likha(42)
+-    likha("\n")
++    likha("2. Numbers: ", 42)
+     vitti a = 15
+     vitti b = 4
+-    likha("3. Math: 15+4=")
+-    likha(a + b)
+-    likha("\n")
++    likha("3. Math: 15+4=", a + b)
+     likha("4. If-else: ")
+     yadi (a > b) {
+         likha("true\n")
+@@ -22,12 +18,8 @@ mukhya()
+     likh8c(buf, 99, buf + 1024)
+     likha(pad8c(buf, buf + 1024))
+     likha("\n")
+-    likha("6. String len: ")
+-    likha(vartani_aayam("Sutram"))
+-    likha("\n")
+-    likha("7. Char ops: ")
+-    likha(akshar("Hello", 0))
+-    likha("\n")
++    likha("6. String len: ", vartani_aayam("Sutram"))
++    likha("7. Char ops: ", akshar("Hello", 0))
+     likha("8. Format: ")
+     likha_fmt("x=", 42)
+     likha("\n")
+diff --git a/examples/func_demo.sm b/examples/func_demo.sm
+index e3a83f0a..ec563cfa 100644
+--- a/examples/func_demo.sm
++++ b/examples/func_demo.sm
+@@ -7,9 +7,7 @@ mukhya()
+     ganit()
+     likha("Calling uttar()...\n")
+     vitti x = uttar()
+-    likha("uttar() = ")
+-    likha(x)
+-    likha("\n")
++    likha("uttar() = ", x)
+     likha("Done!\n")
+ 
+ prakriya abhivadan()
+diff --git a/examples/import_demo.sm b/examples/import_demo.sm
+index b96abb76..1146d377 100644
+--- a/examples/import_demo.sm
++++ b/examples/import_demo.sm
+@@ -5,20 +5,12 @@ yoj varna
+ mukhya()
+     likha("=== Library Import Demo ===\n")
+     likha("String: Namaste!\n")
+-    likha("Number: ")
+-    likha(42)
+-    likha("\n")
++    likha("Number: ", 42)
+     vitti x = 16
+     vitti doubled = x * 2
+-    likha("x * 2 = ")
+-    likha(doubled)
+-    likha("\n")
++    likha("x * 2 = ", doubled)
+     vitti quad = x * 4
+-    likha("x * 4 = ")
+-    likha(quad)
+-    likha("\n")
++    likha("x * 4 = ", quad)
+     vitti s = "Sutram"
+-    likha("Length: ")
+-    likha(vartani_aayam(s))
+-    likha("\n")
++    likha("Length: ", vartani_aayam(s))
+     likha("=== Done ===\n")
+diff --git a/examples/mem_safe.sm b/examples/mem_safe.sm
+index 2c9aef7d..b5abda17 100644
+--- a/examples/mem_safe.sm
++++ b/examples/mem_safe.sm
+@@ -4,11 +4,7 @@ mukhya()
+     likh8c(buf, 42, buf + 64)
+     likh8c(buf + 8, 99, buf + 64)
+     vitti v1 = pad8c(buf, buf + 64)
+-    likha("v1 = ")
+-    likha(v1)
+-    likha("\n")
++    likha("v1 = ", v1)
+     smaran(buf, 0, 64)
+-    likha("After memset: ")
+-    likha(pad8c(buf, buf + 64))
+-    likha("\n")
++    likha("After memset: ", pad8c(buf, buf + 64))
+     likha("Memory safety OK!\n")
+diff --git a/examples/number_game.sm b/examples/number_game.sm
+index 713034fd..4f868ebd 100644
+--- a/examples/number_game.sm
++++ b/examples/number_game.sm
+@@ -3,9 +3,7 @@ mukhya()
+     vitti secret = 42
+     vitti guess = 50
+     likha("Guessing game!\n")
+-    likha("Secret: ")
+-    likha(secret)
+-    likha("\n")
++    likha("Secret: ", secret)
+     yadi (guess == secret) {
+         likha("Correct!\n")
+     } anya {
+@@ -14,8 +12,6 @@ mukhya()
+         } anya {
+             likha("Too low!\n")
+         }
+-        likha("The answer was: ")
+-        likha(secret)
+-        likha("\n")
++        likha("The answer was: ", secret)
+     }
+     likha("Game over!\n")
+diff --git a/examples/strength_reduction.sm b/examples/strength_reduction.sm
+index f3d318a3..1eb94dfd 100644
+--- a/examples/strength_reduction.sm
++++ b/examples/strength_reduction.sm
+@@ -1,21 +1,9 @@
+ # Strength reduction demo — x*2 uses shl, x*3 uses imul
+ mukhya()
+     vitti x = 100
+-    likha("x * 2 = ")
+-    likha(x * 2)
+-    likha("\n")
+-    likha("x * 4 = ")
+-    likha(x * 4)
+-    likha("\n")
+-    likha("x * 8 = ")
+-    likha(x * 8)
+-    likha("\n")
+-    likha("x * 16 = ")
+-    likha(x * 16)
+-    likha("\n")
+-    likha("x * 3 = ")
+-    likha(x * 3)
+-    likha("\n")
+-    likha("x * 5 = ")
+-    likha(x * 5)
+-    likha("\n")
++    likha("x * 2 = ", x * 2)
++    likha("x * 4 = ", x * 4)
++    likha("x * 8 = ", x * 8)
++    likha("x * 16 = ", x * 16)
++    likha("x * 3 = ", x * 3)
++    likha("x * 5 = ", x * 5)
+diff --git a/lib/ank.smlib b/lib/ank.smlib
+index eff84408..a5d9a483 100644
+--- a/lib/ank.smlib
++++ b/lib/ank.smlib
+@@ -1,13 +1,14 @@
+ # lib/ank.smlib — Sutram standard library: integer utilities
+ # layer: core
+ # Parameters are copied into locals before mutation (compiler fault workaround).
+-
+ prakriya asti_yugm(n)
+     prati (n % 2) == 0
+ 
++# asti_visham(n) — 1 if n is odd, 0 if even.
+ prakriya asti_visham(n)
+     prati (n % 2) != 0
+ 
++# ank_gan(n) — number of decimal digits in n (sign ignored; MIN counts as 19).
+ prakriya ank_gan(n) {
+     vitti x = n
+     vitti minv = (0 - 9223372036854775807) - 1
+@@ -22,6 +23,7 @@ prakriya ank_gan(n) {
+     prati c
+ }
+ 
++# ank_yog(n) — sum of the decimal digits of n (sign ignored; MIN counts as 89).
+ prakriya ank_yog(n) {
+     vitti x = n
+     vitti minv = (0 - 9223372036854775807) - 1
+@@ -36,6 +38,7 @@ prakriya ank_yog(n) {
+     prati s
+ }
+ 
++# viparyay_ank(n) — n with its decimal digits reversed, sign kept (e.g. -123 -> -321).
+ prakriya viparyay_ank(n) {
+     vitti x = n
+     vitti r = 0
+@@ -51,6 +54,7 @@ prakriya viparyay_ank(n) {
+     prati r
+ }
+ 
++# asti_vilom(n) — 1 if n reads the same backwards (a palindrome); negatives are never palindromes.
+ prakriya asti_vilom(n) {
+     # Negatives are not palindromes (the '-' is not a digit).
+     yadi (n < 0) { prati 0 }
+@@ -58,6 +62,7 @@ prakriya asti_vilom(n) {
+     prati r == n
+ }
+ 
++# seemit(n, lo, hi) — n clamped into [lo, hi]: lo if n < lo, hi if n > hi, else n.
+ prakriya seemit(n, lo, hi) {
+     vitti x = n
+     vitti a = lo
+@@ -67,6 +72,7 @@ prakriya seemit(n, lo, hi) {
+     prati x
+ }
+ 
++# fib(n) — the nth Fibonacci number (fib(0) = 0, fib(1) = 1), iterative; wraps past int64.
+ prakriya fib(n) {
+     vitti x = n
+     yadi (x < 2) { prati x }
+@@ -82,6 +88,7 @@ prakriya fib(n) {
+     prati b
+ }
+ 
++# asti_sampurna(n) — 1 if n is a perfect number (equals the sum of its proper divisors), else 0.
+ prakriya asti_sampurna(n) {
+     vitti x = n
+     yadi (x < 2) { prati 0 }
+@@ -100,6 +107,7 @@ prakriya asti_sampurna(n) {
+     prati s == x
+ }
+ 
++# collatz_charan(n) — steps for the Collatz sequence from n to reach 1; -1 if n < 1 or 3x+1 would overflow.
+ prakriya collatz_charan(n) {
+     vitti x = n
+     vitti c = 0
+diff --git a/lib/chandas.smlib b/lib/chandas.smlib
+index e659e74f..9e5b638c 100644
+--- a/lib/chandas.smlib
++++ b/lib/chandas.smlib
+@@ -9,7 +9,6 @@
+ #
+ # A pattern is carried as an integer bitmask: bit i (LSB = first syllable) is 1 for
+ # guru, 0 for laghu. The integer value IS the pattern's index in the prastāra.
+-
+ prakriya dviguna(n) {
+     vitti x = n
+     vitti r = 1
+@@ -21,6 +20,7 @@ prakriya dviguna(n) {
+     prati r
+ }
+ 
++# meru(n, k) — the binomial coefficient C(n, k); 0 for k < 0 or k > n.
+ prakriya meru(n, k) {
+     vitti top = n
+     vitti r = k
+@@ -48,6 +48,7 @@ prakriya meru(n, k) {
+     prati res
+ }
+ 
++# matra_meru(n) — the nth Fibonacci number (matra_meru(0) = 0, matra_meru(1) = 1).
+ prakriya matra_meru(n) {
+     vitti x = n
+     yadi (x <= 0) { prati 0 }
+@@ -64,6 +65,7 @@ prakriya matra_meru(n) {
+     prati b
+ }
+ 
++# asti_guru(pat, i) — 1 if bit i of the integer pattern pat is set; 0 for i < 0 or i >= 64.
+ prakriya asti_guru(pat, i) {
+     vitti p = pat
+     vitti idx = i
+@@ -80,6 +82,7 @@ prakriya asti_guru(pat, i) {
+     prati (p / d) % 2
+ }
+ 
++# guru_gan(pat) — count of set bits in pat (population count); negatives return 0.
+ prakriya guru_gan(pat) {
+     vitti p = pat
+     vitti c = 0
+@@ -91,6 +94,7 @@ prakriya guru_gan(pat) {
+     prati c
+ }
+ 
++# meru_mala(a, n) — fills a[0..n] with the nth row of Pascal's triangle: a[i] = meru(n, i).
+ prakriya meru_mala(a, n) {
+     vitti i = 0
+     yavat (i <= n) {
+diff --git a/lib/ganit.smlib b/lib/ganit.smlib
+index 9bc5897d..d79055cd 100644
+--- a/lib/ganit.smlib
++++ b/lib/ganit.smlib
+@@ -4,16 +4,18 @@
+ # Pure integer arithmetic, written only with verified language features.
+ # Every function copies its parameters into locals before mutating them,
+ # because the compiler currently faults on assignment to a parameter.
+-
+ prakriya varg(n)
+     prati n * n
+ 
++# vargit(n) — n squared (n * n).
+ prakriya vargit(n)
+     prati n * n
+ 
++# ghan(n) — n cubed (n * n * n).
+ prakriya ghan(n)
+     prati n * n * n
+ 
++# nirapeksh_mulya(n) — absolute value of n (MIN wraps to MIN, as it cannot be negated).
+ prakriya nirapeksh_mulya(n) {
+     vitti x = n
+     yadi (x < 0) {
+@@ -22,6 +24,7 @@ prakriya nirapeksh_mulya(n) {
+     prati x
+ }
+ 
++# laghu2(a, b) — the smaller of a and b.
+ prakriya laghu2(a, b) {
+     vitti x = a
+     vitti y = b
+@@ -29,6 +32,7 @@ prakriya laghu2(a, b) {
+     prati y
+ }
+ 
++# adhik2(a, b) — the larger of a and b.
+ prakriya adhik2(a, b) {
+     vitti x = a
+     vitti y = b
+@@ -36,6 +40,7 @@ prakriya adhik2(a, b) {
+     prati y
+ }
+ 
++# mahattam(a, b) — greatest common divisor of a and b, always non-negative (mahattam(0, 0) = 0).
+ prakriya mahattam(a, b) {
+     vitti x = a
+     vitti y = b
+@@ -52,6 +57,7 @@ prakriya mahattam(a, b) {
+     prati x
+ }
+ 
++# laghuttam(a, b) — least common multiple of a and b, always non-negative (laghuttam(0, 0) = 0).
+ prakriya laghuttam(a, b) {
+     vitti g = mahattam(a, b)
+     # mahattam(0, 0) is 0; without this guard (a / g) divides by zero and
+@@ -65,6 +71,7 @@ prakriya laghuttam(a, b) {
+     prati r
+ }
+ 
++# ghat(base, e) — base raised to the power e (e >= 0; negative e returns 1, as the loop never runs).
+ prakriya ghat(base, e) {
+     vitti b = base
+     vitti n = e
+@@ -76,6 +83,7 @@ prakriya ghat(base, e) {
+     prati r
+ }
+ 
++# kramgun(n) — n factorial (n!); 1 for n < 2; wraps past int64 for n >= 21.
+ prakriya kramgun(n) {
+     # Iterative: the recursive form overflowed the call stack at
+     # kramgun(100000) (SIGSEGV). Same values — multiplication
+@@ -91,6 +99,7 @@ prakriya kramgun(n) {
+     prati r
+ }
+ 
++# asti_abhajya(n) — 1 if n is prime, 0 otherwise (n < 2 is not prime).
+ prakriya asti_abhajya(n) {
+     vitti x = n
+     yadi (x < 2) { prati 0 }
+@@ -105,6 +114,7 @@ prakriya asti_abhajya(n) {
+     prati 1
+ }
+ 
++# yog_tak(n) — sum 1 + 2 + ... + n, closed form n*(n+1)/2; 0 for n <= 0.
+ prakriya yog_tak(n) {
+     # Closed form n*(n+1)/2 (the old loop took n iterations, so
+     # yog_tak(4294967296) was ~4.3e9 iterations). Divide before
+@@ -117,15 +127,19 @@ prakriya yog_tak(n) {
+     prati x * (x / 2 + 1)
+ }
+ 
++# dvigun(n) — n doubled (n * 2).
+ prakriya dvigun(n)
+     prati n * 2
+ 
++# trigun(n) — n tripled (n * 3).
+ prakriya trigun(n)
+     prati n * 3
+ 
++# vardh(n) — n incremented by 1 (n + 1).
+ prakriya vardh(n)
+     prati n + 1
+ 
++# bit_gan(n) — count of set bits in n; negatives return 0.
+ prakriya bit_gan(n) {
+     vitti x = n
+     vitti c = 0
+diff --git a/lib/ganita.smlib b/lib/ganita.smlib
+index 57cc4fdd..29ff1ee7 100644
+--- a/lib/ganita.smlib
++++ b/lib/ganita.smlib
+@@ -65,6 +65,7 @@ prakriya ganita_vargmool(n) {
+     prati ans
+ }
+ 
++# ganita_nirapeksh(n) — absolute value of n (the ganita-module spelling of nirapeksh_mulya).
+ prakriya ganita_nirapeksh(n) {
+     vitti x = n
+     yadi (x < 0) { prati 0 - x }
+diff --git a/lib/khand.smlib b/lib/khand.smlib
+index 48846bc7..1858e72a 100644
+--- a/lib/khand.smlib
++++ b/lib/khand.smlib
+@@ -95,6 +95,7 @@ prakriya khand_pratilip(src, n, out) {
+     prati cnt
+ }
+ 
++# khand_maap(s) — byte length of the string s (via vartani_aayam).
+ prakriya khand_maap(s) {
+     prati vartani_aayam(s)
+ }
+@@ -375,6 +376,7 @@ prakriya khand_unnat(src, sn, out) {
+     prati slen
+ }
+ 
++# khand_avanat(src, sn, out) — copies src (sn bytes) to out with A-Z lowercased to a-z, NUL-terminated; returns sn (0 for sn < 0).
+ prakriya khand_avanat(src, sn, out) {
+     vitti s = src
+     vitti slen = sn
+@@ -415,6 +417,7 @@ prakriya khand_aadi(src, sn, pre, pn) {
+     prati 1
+ }
+ 
++# khand_ant(src, sn, suf, sn2) — 1 if the src byte string (sn bytes) ends with suf (sn2 bytes), else 0.
+ prakriya khand_ant(src, sn, suf, sn2) {
+     vitti s = src
+     vitti slen = sn
+diff --git a/lib/mala.smlib b/lib/mala.smlib
+index 2c5aa792..0200a2cd 100644
+--- a/lib/mala.smlib
++++ b/lib/mala.smlib
+@@ -5,7 +5,6 @@
+ # 8 bytes (one integer). The caller tracks the length; mala_nava only
+ # allocates without tracking length. Count-checked variants take caller's n;
+ # n must not exceed allocated cells. Raw variants do no allocation bounds check.
+-
+ prakriya mala_nava(n) {
+     vitti c = n
+     vitti sz = 0
+@@ -17,6 +16,7 @@ prakriya mala_nava(n) {
+     prati nirmmita(sz)
+ }
+ 
++# mala_sangrah(arr, i, val) — stores val at arr[i] (qword cells, no bounds check); returns 0.
+ prakriya mala_sangrah(arr, i, val) {
+     vitti a = arr
+     vitti j = i
+@@ -25,12 +25,14 @@ prakriya mala_sangrah(arr, i, val) {
+     prati 0
+ }
+ 
++# mala_grah(arr, i) — loads the qword at arr[i] (no bounds check).
+ prakriya mala_grah(arr, i) {
+     vitti a = arr
+     vitti j = i
+     prati pad8(a + j * 8)
+ }
+ 
++# mala_purn(arr, val, n) — fills arr[0..n-1] with val; returns 0.
+ prakriya mala_purn(arr, val, n) {
+     vitti a = arr
+     vitti v = val
+@@ -43,6 +45,7 @@ prakriya mala_purn(arr, val, n) {
+     prati 0
+ }
+ 
++# mala_pratilip(dst, src, n) — copies n qwords from src to dst; returns 0.
+ prakriya mala_pratilip(dst, src, n) {
+     vitti d = dst
+     vitti s = src
+@@ -55,6 +58,7 @@ prakriya mala_pratilip(dst, src, n) {
+     prati 0
+ }
+ 
++# mala_yog(arr, n) — sum of arr[0..n-1].
+ prakriya mala_yog(arr, n) {
+     vitti a = arr
+     vitti c = n
+@@ -67,6 +71,7 @@ prakriya mala_yog(arr, n) {
+     prati s
+ }
+ 
++# mala_sangrah_surakshit(arr, i, val, n) — bounds-checked store: 1 and stores if 0 <= i < n, else 0 and stores nothing.
+ prakriya mala_sangrah_surakshit(arr, i, val, n) {
+     vitti a = arr
+     vitti j = i
+@@ -78,6 +83,7 @@ prakriya mala_sangrah_surakshit(arr, i, val, n) {
+     prati 1
+ }
+ 
++# mala_grah_surakshit(arr, i, n) — bounds-checked load: arr[i] if 0 <= i < n, else 0.
+ prakriya mala_grah_surakshit(arr, i, n) {
+     vitti a = arr
+     vitti j = i
+diff --git a/lib/nighantu.smlib b/lib/nighantu.smlib
+index 21c49388..bc7e364d 100644
+--- a/lib/nighantu.smlib
++++ b/lib/nighantu.smlib
+@@ -318,6 +318,7 @@ prakriya nighantu_grah_mool(m, cap, key, keyn, def) {
+     prati m[2 + 2 * cap + slot]
+ }
+ 
++# nighantu_maap(m) — number of entries in the map m (its stored size cell).
+ prakriya nighantu_maap(m) {
+     prati m[1]
+ }
+diff --git a/lib/phal.smlib b/lib/phal.smlib
+index 9e1c126c..98c9ab92 100644
+--- a/lib/phal.smlib
++++ b/lib/phal.smlib
+@@ -96,6 +96,7 @@ prakriya phal_janchit_yuj(out, a, b) {
+     prati o[0]
+ }
+ 
++# phal_janchit_nyun(out, a, b) — checked subtraction: out[0] = ok flag, out[1] = a - b if ok else 0; returns out[0].
+ prakriya phal_janchit_nyun(out, a, b) {
+     # out doubles as the ok cell: the ganita checked form writes
+     # out[0] = ok flag and returns the value. No allocation, so
+@@ -110,6 +111,7 @@ prakriya phal_janchit_nyun(out, a, b) {
+     prati o[0]
+ }
+ 
++# phal_janchit_gun(out, a, b) — checked multiplication: out[0] = ok flag, out[1] = a * b if ok else 0; returns out[0].
+ prakriya phal_janchit_gun(out, a, b) {
+     # out doubles as the ok cell: the ganita checked form writes
+     # out[0] = ok flag and returns the value. No allocation, so
+@@ -124,6 +126,7 @@ prakriya phal_janchit_gun(out, a, b) {
+     prati o[0]
+ }
+ 
++# phal_janchit_bhaj(out, a, b) — checked division: out[0] = ok flag, out[1] = a / b if ok else 0; returns out[0].
+ prakriya phal_janchit_bhaj(out, a, b) {
+     # out doubles as the ok cell: the ganita checked form writes
+     # out[0] = ok flag and returns the value. No allocation, so
+@@ -138,6 +141,7 @@ prakriya phal_janchit_bhaj(out, a, b) {
+     prati o[0]
+ }
+ 
++# phal_janchit_shesh(out, a, b) — checked remainder: out[0] = ok flag, out[1] = a % b if ok else 0; returns out[0].
+ prakriya phal_janchit_shesh(out, a, b) {
+     # out doubles as the ok cell: the ganita checked form writes
+     # out[0] = ok flag and returns the value. No allocation, so
+diff --git a/lib/roop.smlib b/lib/roop.smlib
+index e439b22b..56147a72 100644
+--- a/lib/roop.smlib
++++ b/lib/roop.smlib
+@@ -213,18 +213,22 @@ prakriya roop_dash(v, out) {
+     prati roop_ank_aadhar2(v, 10, out)
+ }
+ 
++# roop_shodash(v, out) — formats v as lowercase hexadecimal into out (no prefix); returns the digit count.
+ prakriya roop_shodash(v, out) {
+     prati roop_ank_aadhar2(v, 16, out)
+ }
+ 
++# roop_shodash_unnat(v, out) — formats v as UPPERCASE hexadecimal into out (no prefix); returns the digit count.
+ prakriya roop_shodash_unnat(v, out) {
+     prati roop_ank_dhvaj(v, 16, 2, out)
+ }
+ 
++# roop_asht(v, out) — formats v as octal into out (no prefix); returns the digit count.
+ prakriya roop_asht(v, out) {
+     prati roop_ank_aadhar2(v, 8, out)
+ }
+ 
++# roop_dwi(v, out) — formats v as binary into out (no prefix); returns the digit count.
+ prakriya roop_dwi(v, out) {
+     prati roop_ank_aadhar2(v, 2, out)
+ }
+diff --git a/lib/sadhan.smlib b/lib/sadhan.smlib
+index 4f20d8e8..57b9e9cc 100644
+--- a/lib/sadhan.smlib
++++ b/lib/sadhan.smlib
+@@ -6,20 +6,22 @@
+ # Edge rules (R30): shesh/bhaj_urdhva return 0 on a zero divisor (no
+ # SIGFPE); yog_seema returns 0 for end < start; bhaj_urdhva is true
+ # ceiling division for every util_chinha combination.
+-
+ prakriya antargam(a, b, t)
+     prati a + (b - a) * t / 100
+ 
++# yog_seema(start, end) — sum of the integers from start to end inclusive; 0 if end < start.
+ prakriya yog_seema(start, end) {
+     yadi (end < start) { prati 0 }
+     prati (start + end) * (end - start + 1) / 2
+ }
+ 
++# shesh(a, b) — remainder a % b computed as a - (a / b) * b; 0 if b == 0.
+ prakriya shesh(a, b) {
+     yadi (b == 0) { prati 0 }
+     prati a - (a / b) * b
+ }
+ 
++# bhaj_urdhva(a, b) — ceiling division of a by b (rounds up when the remainder is nonzero); 0 if b == 0.
+ prakriya bhaj_urdhva(a, b) {
+     # Ceiling division: q = a / b (truncating), round up iff the
+     # remainder is nonzero and has the divisor's util_chinha. The old
+@@ -37,11 +39,14 @@ prakriya bhaj_urdhva(a, b) {
+     prati q
+ }
+ 
++# util_chinha(n) — sign of n: 1 if n > 0, -1 if n < 0, 0 if n == 0.
+ prakriya util_chinha(n)
+     prati (n > 0) - (n < 0)
+ 
++# satya_tak_ank(b) — boolean b converted to an integer (b * 1).
+ prakriya satya_tak_ank(b)
+     prati b * 1
+ 
++# ank_adhik() — the maximum int64 value, 9223372036854775807.
+ prakriya ank_adhik()
+     prati 9223372036854775807
+diff --git a/lib/shreni.smlib b/lib/shreni.smlib
+index 6f76c6ae..884f4ade 100644
+--- a/lib/shreni.smlib
++++ b/lib/shreni.smlib
+@@ -3,13 +3,13 @@
+ #
+ # Operates on `mala` integer arrays, in place. Scalar arguments are copied into
+ # locals before mutation; array elements are written directly.
+-
+ prakriya vinimay(a, i, j) {
+     vitti t = a[i]
+     a[i] = a[j]
+     a[j] = t
+ }
+ 
++# budbud_shreni(a, n) — sorts a[0..n-1] in place, ascending, by bubble sort.
+ prakriya budbud_shreni(a, n) {
+     vitti i = 0
+     yavat (i < n) {
+@@ -24,6 +24,7 @@ prakriya budbud_shreni(a, n) {
+     }
+ }
+ 
++# viparyay_mala(a, n) — reverses a[0..n-1] in place.
+ prakriya viparyay_mala(a, n) {
+     vitti i = 0
+     vitti j = n - 1
+@@ -34,6 +35,7 @@ prakriya viparyay_mala(a, n) {
+     }
+ }
+ 
++# laghu(a, n) — smallest element of a[0..n-1]; 0 if n <= 0.
+ prakriya laghu(a, n) {
+     # n <= 0: no element exists — return 0, as suchi_laghu does
+     # on an empty list (the old code read a[0] and segfaulted).
+@@ -47,6 +49,7 @@ prakriya laghu(a, n) {
+     prati best
+ }
+ 
++# adhik(a, n) — largest element of a[0..n-1]; 0 if n <= 0.
+ prakriya adhik(a, n) {
+     # n <= 0: no element exists — return 0, as laghu.
+     yadi (n <= 0) { prati 0 }
+@@ -59,6 +62,7 @@ prakriya adhik(a, n) {
+     prati best
+ }
+ 
++# yog(a, n) — sum of a[0..n-1].
+ prakriya yog(a, n) {
+     vitti i = 0
+     vitti s = 0
+@@ -69,6 +73,7 @@ prakriya yog(a, n) {
+     prati s
+ }
+ 
++# anwesh_sarak(a, n, target) — index of the first occurrence of target in a[0..n-1], or -1.
+ prakriya anwesh_sarak(a, n, target) {
+     vitti i = 0
+     yavat (i < n) {
+@@ -78,6 +83,7 @@ prakriya anwesh_sarak(a, n, target) {
+     prati 0 - 1
+ }
+ 
++# gan(a, n, target) — count of occurrences of target in a[0..n-1].
+ prakriya gan(a, n, target) {
+     vitti i = 0
+     vitti c = 0
+@@ -88,6 +94,7 @@ prakriya gan(a, n, target) {
+     prati c
+ }
+ 
++# asti_sorted(a, n) — 1 if a[0..n-1] is in non-decreasing order, else 0.
+ prakriya asti_sorted(a, n) {
+     vitti i = 0
+     yavat (i < n - 1) {
+@@ -97,6 +104,7 @@ prakriya asti_sorted(a, n) {
+     prati 1
+ }
+ 
++# dwi_anwesh(a, n, target) — binary search for target in sorted a[0..n-1]: its index, or -1.
+ prakriya dwi_anwesh(a, n, target) {
+     vitti lo = 0
+     vitti hi = n - 1
+@@ -108,6 +116,7 @@ prakriya dwi_anwesh(a, n, target) {
+     prati 0 - 1
+ }
+ 
++# shankh_shreni(a, n) — sorts a[0..n-1] in place, ascending, by shell sort.
+ prakriya shankh_shreni(a, n) {
+     vitti gap = n / 2
+     yavat (gap > 0) {
+@@ -135,6 +144,7 @@ prakriya shankh_shreni(a, n) {
+     }
+ }
+ 
++# nivesh_shreni(a, n) — sorts a[0..n-1] in place, ascending, by insertion sort.
+ prakriya nivesh_shreni(a, n) {
+     vitti arr = a
+     vitti len = n
+diff --git a/lib/varna.smlib b/lib/varna.smlib
+index f7108ac8..061f3437 100644
+--- a/lib/varna.smlib
++++ b/lib/varna.smlib
+@@ -14,31 +14,35 @@
+ # forms on slices. varna_pratisthap's repl is 0-terminated; see the
+ # strb.smlib header for why and for the khand_pratilip workaround. The
+ # (s, i) char predicates take no length: the caller keeps i in bounds.
+-
+ prakriya varna_maap(s)
+     prati vartani_aayam(s)
+ 
++# akshar_sanket(s, i) — byte code of s[i] (the akshar builtin on a string).
+ prakriya akshar_sanket(s, i)
+     prati akshar(s, i)
+ 
++# asti_ank_akshar(s, i) — 1 if s[i] is a decimal digit ('0'-'9'), else 0.
+ prakriya asti_ank_akshar(s, i) {
+     vitti c = akshar(s, i)
+     yadi (c >= 48 && c <= 57) { prati 1 }
+     prati 0
+ }
+ 
++# asti_unnat_akshar(s, i) — 1 if s[i] is an uppercase letter ('A'-'Z'), else 0.
+ prakriya asti_unnat_akshar(s, i) {
+     vitti c = akshar(s, i)
+     yadi (c >= 65 && c <= 90) { prati 1 }
+     prati 0
+ }
+ 
++# asti_avanat_akshar(s, i) — 1 if s[i] is a lowercase letter ('a'-'z'), else 0.
+ prakriya asti_avanat_akshar(s, i) {
+     vitti c = akshar(s, i)
+     yadi (c >= 97 && c <= 122) { prati 1 }
+     prati 0
+ }
+ 
++# asti_akshar_akshar(s, i) — 1 if s[i] is any letter (A-Z or a-z), else 0.
+ prakriya asti_akshar_akshar(s, i) {
+     vitti c = akshar(s, i)
+     yadi (c >= 65 && c <= 90) { prati 1 }
+@@ -46,11 +50,13 @@ prakriya asti_akshar_akshar(s, i) {
+     prati 0
+ }
+ 
++# asti_avakash_akshar(s, i) — 1 if s[i] is a space (code 32), else 0.
+ prakriya asti_avakash_akshar(s, i) {
+     vitti c = akshar(s, i)
+     prati c == 32
+ }
+ 
++# gan_swar(s) — count of lowercase vowels (a, e, i, o, u) in the string s.
+ prakriya gan_swar(s) {
+     vitti n = vartani_aayam(s)
+     vitti i = 0
+@@ -65,6 +71,7 @@ prakriya gan_swar(s) {
+     prati c
+ }
+ 
++# gan_akshar(s, code) — count of occurrences of byte code in the string s.
+ prakriya gan_akshar(s, code) {
+     vitti n = vartani_aayam(s)
+     vitti i = 0
+@@ -76,6 +83,7 @@ prakriya gan_akshar(s, code) {
+     prati c
+ }
+ 
++# anwesh_akshar(s, code) — index of the first occurrence of byte code in s, or -1.
+ prakriya anwesh_akshar(s, code) {
+     vitti n = vartani_aayam(s)
+     vitti i = 0
+@@ -86,6 +94,7 @@ prakriya anwesh_akshar(s, code) {
+     prati 0 - 1
+ }
+ 
++# asti_sarv_ank(s) — 1 if s is non-empty and every character is a digit, else 0.
+ prakriya asti_sarv_ank(s) {
+     vitti n = vartani_aayam(s)
+     yadi (n == 0) { prati 0 }
+@@ -97,18 +106,21 @@ prakriya asti_sarv_ank(s) {
+     prati 1
+ }
+ 
++# unnat_sanket(c) — byte code c converted to uppercase (a-z -> A-Z, other codes unchanged).
+ prakriya unnat_sanket(c) {
+     vitti x = c
+     yadi (x >= 97 && x <= 122) { x = x - 32 }
+     prati x
+ }
+ 
++# avanat_sanket(c) — byte code c converted to lowercase (A-Z -> a-z, other codes unchanged).
+ prakriya avanat_sanket(c) {
+     vitti x = c
+     yadi (x >= 65 && x <= 90) { x = x + 32 }
+     prati x
+ }
+ 
++# varna_sam(a, b) — 1 if strings a and b are byte-identical (same length and bytes), else 0.
+ prakriya varna_sam(a, b) {
+     vitti na = vartani_aayam(a)
+     vitti nb = vartani_aayam(b)
+@@ -408,6 +420,7 @@ prakriya varna_unnat(src, sn, out) {
+     prati slen
+ }
+ 
++# varna_avanat(src, sn, out) — copies src (sn qword cells) to out with A-Z lowercased, NUL-terminated; returns sn (0 for sn < 0).
+ prakriya varna_avanat(src, sn, out) {
+     vitti s = src
+     vitti slen = sn
+@@ -447,6 +460,7 @@ prakriya varna_aadi(src, sn, pre, pn) {
+     prati 1
+ }
+ 
++# varna_ant(src, sn, suf, sn2) — 1 if the src string (sn cells) ends with suf (sn2 cells), else 0.
+ prakriya varna_ant(src, sn, suf, sn2) {
+     vitti s = src
+     vitti slen = sn
+diff --git a/tests/expect/02_arith.out b/tests/expect/02_arith.out
+index 8c407e19..b9ddc2e5 100644
+--- a/tests/expect/02_arith.out
++++ b/tests/expect/02_arith.out
+@@ -1,2 +1 @@
+ x + y = 30
+-
+diff --git a/tests/expect/05_func_params.out b/tests/expect/05_func_params.out
+index 3ce47723..a15c5f77 100644
+--- a/tests/expect/05_func_params.out
++++ b/tests/expect/05_func_params.out
+@@ -1,4 +1,2 @@
+ yog(10, 32) = 42
+-
+ gun_tray(3, 4, 5) = 60
+-
+diff --git a/tests/expect/06_rachana.out b/tests/expect/06_rachana.out
+index eb229673..00593afd 100644
+--- a/tests/expect/06_rachana.out
++++ b/tests/expect/06_rachana.out
+@@ -1,6 +1,3 @@
+ p.x = 10
+-
+ p.y = 20
+-
+ Sum = 60
+-
+diff --git a/tests/expect/07_module.out b/tests/expect/07_module.out
+index 5587b2d0..c5c08db6 100644
+--- a/tests/expect/07_module.out
++++ b/tests/expect/07_module.out
+@@ -1,2 +1 @@
+ vargit(7) = 49
+-
+diff --git a/tests/expect/08_demo.out b/tests/expect/08_demo.out
+index 4e0e9bd3..17be2219 100644
+--- a/tests/expect/08_demo.out
++++ b/tests/expect/08_demo.out
+@@ -1,14 +1,8 @@
+ === Sutram Demo ===
+ double(21) = 42
+-
+ Age: 25
+-
+ Score: 100
+-
+ Loop: 1
+-
+ Loop: 2
+-
+ Loop: 3
+-
+ === Done ===
+diff --git a/tests/expect/10_mathlib.out b/tests/expect/10_mathlib.out
+index 0a7e2174..2b881cf0 100644
+--- a/tests/expect/10_mathlib.out
++++ b/tests/expect/10_mathlib.out
+@@ -1,10 +1,6 @@
+ === Math Library ===
+ vargit(9) = 81
+-
+ dvigun(21) = 42
+-
+ trigun(14) = 42
+-
+ vardh(41) = 42
+-
+ === Done ===
+diff --git a/tests/expect/11_forloop.out b/tests/expect/11_forloop.out
+index e83b48c3..798496d8 100644
+--- a/tests/expect/11_forloop.out
++++ b/tests/expect/11_forloop.out
+@@ -7,21 +7,15 @@ Count: 0
+  5
+  
+ Sum 1-10 = 55
+-
+ Table of 3:
+ 3 x 1
+  = 3
+-
+ 3 x 2
+  = 6
+-
+ 3 x 3
+  = 9
+-
+ 3 x 4
+  = 12
+-
+ 3 x 5
+  = 15
+-
+ === Done ===
+diff --git a/tests/expect/13_negatives.out b/tests/expect/13_negatives.out
+index afae181e..0068076d 100644
+--- a/tests/expect/13_negatives.out
++++ b/tests/expect/13_negatives.out
+@@ -1,19 +1,11 @@
+ === Negative Numbers ===
+ x = -5
+-
+ y = -10
+-
+ x + y = -15
+-
+ x - y = 5
+-
+ x * 3 = -15
+-
+ -3 + 10 = 7
+-
+ 0 - x = 5
+-
+ -42 = -42
+-
+ x is negative
+ === Done ===
+diff --git a/tests/expect/14_strings.out b/tests/expect/14_strings.out
+index 820d65f7..f4783846 100644
+--- a/tests/expect/14_strings.out
++++ b/tests/expect/14_strings.out
+@@ -9,7 +9,6 @@ Line 1
+ Line 2
+ Line 3
+ The answer is: 42
+-
+ Temperature: -15
+  degrees
+ === Done ===
+diff --git a/tests/expect/15_sutra_const.out b/tests/expect/15_sutra_const.out
+index 1b5183b4..7d55bac9 100644
+--- a/tests/expect/15_sutra_const.out
++++ b/tests/expect/15_sutra_const.out
+@@ -1,13 +1,8 @@
+ === Sutra & Bitwise ===
+ MAX_VAL = 100
+-
+ 17 % 5 = 2
+-
+ 12 & 10 = 8
+-
+ 12 | 10 = 14
+-
+ 12 ^ 10 = 6
+-
+ Assert passed
+ === Done ===
+diff --git a/tests/expect/16_advanced.out b/tests/expect/16_advanced.out
+index 0856b21b..3517a1fe 100644
+--- a/tests/expect/16_advanced.out
++++ b/tests/expect/16_advanced.out
+@@ -7,7 +7,6 @@ Primes up to 10
+  7
+  
+ Flags: 5
+-
+ Bit 2 is set
+ All assertions passed
+ === Done ===
+diff --git a/tests/expect/17_booleans.out b/tests/expect/17_booleans.out
+index 7d706eb6..795e322e 100644
+--- a/tests/expect/17_booleans.out
++++ b/tests/expect/17_booleans.out
+@@ -1,10 +1,7 @@
+ === Booleans & Logic ===
+ is_ready = 1
+-
+ is_done = 0
+-
+ Ready but not done
+ At least one condition met
+ both_positive = 1
+-
+ === Done ===
+diff --git a/tests/expect/19_srijana_enum.out b/tests/expect/19_srijana_enum.out
+index 76ea7cfb..866c8df5 100644
+--- a/tests/expect/19_srijana_enum.out
++++ b/tests/expect/19_srijana_enum.out
+@@ -1,4 +1,3 @@
+ Green
+ RED = 1
+-
+ === Done ===
+diff --git a/tests/expect/201_madhava_library.out b/tests/expect/201_madhava_library.out
+index 42a2164f..fc152cea 100644
+--- a/tests/expect/201_madhava_library.out
++++ b/tests/expect/201_madhava_library.out
+@@ -1,10 +1,5 @@
+ pi     = 3.141593
+-
+ sin .5 = 0.479426
+-
+ cos .5 = 0.877583
+-
+ atan .5= 0.463648
+-
+ sqrt 2 = 1.414214
+-
+diff --git a/tests/expect/202_brahmagupta_area.out b/tests/expect/202_brahmagupta_area.out
+index 775fd250..67453609 100644
+--- a/tests/expect/202_brahmagupta_area.out
++++ b/tests/expect/202_brahmagupta_area.out
+@@ -1,8 +1,4 @@
+ triangle 3,4,5  = 6
+-
+ triangle 5,5,6  = 12
+-
+ cyclic 3,4,5,6  = 18
+-
+ square side 4   = 16
+-
+diff --git a/tests/expect/203_meru_with_kosh.out b/tests/expect/203_meru_with_kosh.out
+index 4e594634..79734ff3 100644
+--- a/tests/expect/203_meru_with_kosh.out
++++ b/tests/expect/203_meru_with_kosh.out
+@@ -1,5 +1,4 @@
+ length = 21
+-
+ 1
+  1
+  1
+diff --git a/tests/expect/21_break_continue.out b/tests/expect/21_break_continue.out
+index 8900611a..899e7e3d 100644
+--- a/tests/expect/21_break_continue.out
++++ b/tests/expect/21_break_continue.out
+@@ -1,2 +1 @@
+ Sum of odd numbers 1-10: 25
+-
+diff --git a/tests/expect/23_grahan_input.out b/tests/expect/23_grahan_input.out
+index 6c83c734..b5dd8a99 100644
+--- a/tests/expect/23_grahan_input.out
++++ b/tests/expect/23_grahan_input.out
+@@ -1,7 +1,5 @@
+ Enter two numbers:
+ Sum: 4
+-
+ Product: -5
+-
+ First is bigger
+ They are equal
+diff --git a/tests/expect/25_patterns.out b/tests/expect/25_patterns.out
+index a884556d..461fe53b 100644
+--- a/tests/expect/25_patterns.out
++++ b/tests/expect/25_patterns.out
+@@ -9,40 +9,30 @@ Table of 7:
+ 7
+  x 1
+  = 7
+-
+ 7
+  x 2
+  = 14
+-
+ 7
+  x 3
+  = 21
+-
+ 7
+  x 4
+  = 28
+-
+ 7
+  x 5
+  = 35
+-
+ 7
+  x 6
+  = 42
+-
+ 7
+  x 7
+  = 49
+-
+ 7
+  x 8
+  = 56
+-
+ 7
+  x 9
+  = 63
+-
+ 7
+  x 10
+  = 70
+-
+diff --git a/tests/expect/28_compound.out b/tests/expect/28_compound.out
+index 94f31d2d..61db4d40 100644
+--- a/tests/expect/28_compound.out
++++ b/tests/expect/28_compound.out
+@@ -1,22 +1,14 @@
+ Compound Assignment Demo
+ =======================
+ Start: 100
+-
+ x += 50 -> 150
+-
+ x -= 30 -> 120
+-
+ x *= 2  -> 240
+-
+ x /= 4  -> 60
+-
+ x %= 7  -> 4
+ 
+-
+ Sum 1 to 10 using += :
+ Total: 55
+ 
+-
+ Factorial of 5 using *= :
+ 5! = 120
+-
+diff --git a/tests/expect/32_bank_interest.out b/tests/expect/32_bank_interest.out
+index ecd6d4db..250a2f59 100644
+--- a/tests/expect/32_bank_interest.out
++++ b/tests/expect/32_bank_interest.out
+@@ -12,4 +12,3 @@ Year 5: 146931
+ 
+ Compound growth using *= :
+ 2^10 = 2048
+-
+diff --git a/tests/expect/34_incdec.out b/tests/expect/34_incdec.out
+index d91f35da..a51b6c51 100644
+--- a/tests/expect/34_incdec.out
++++ b/tests/expect/34_incdec.out
+@@ -1,18 +1,13 @@
+ Increment / Decrement Demo
+ ==========================
+ x = 5
+-
+ x++ -> 6
+-
+ x++ -> 7
+-
+ x-- -> 6
+ 
+-
+ Counting with ++:
+ count = 5
+ 
+-
+ Squares table with ++:
+ 1 squared = 1
+ 2 squared = 4
+diff --git a/tests/expect/35_comments.out b/tests/expect/35_comments.out
+index a2ce9d59..49aa3ed1 100644
+--- a/tests/expect/35_comments.out
++++ b/tests/expect/35_comments.out
+@@ -1,4 +1,2 @@
+ x = 10
+-
+ y = 20
+-
+diff --git a/tests/expect/91_indian_number_theory.out b/tests/expect/91_indian_number_theory.out
+index 1ca6f214..fd69c86b 100644
+--- a/tests/expect/91_indian_number_theory.out
++++ b/tests/expect/91_indian_number_theory.out
+@@ -1,11 +1,7 @@
+ kuttaka(3,7,1) = 5
+-
+ x^2 - 13y^2 = 1: x = 649
+ , y = 180
+-
+ x^2 - 61y^2 = 1: x = 1766319049
+ , y = 226153980
+-
+ bhavana (8,1) x (8,1) for N=61: x = 125
+ , y = 16
+-
+diff --git a/tests/expect/array_demo.out b/tests/expect/array_demo.out
+index dfb9a17f..81d19524 100644
+--- a/tests/expect/array_demo.out
++++ b/tests/expect/array_demo.out
+@@ -2,18 +2,13 @@
+ Array values:
+   arr[0
+ ] = 10
+-
+   arr[1
+ ] = 20
+-
+   arr[2
+ ] = 30
+-
+   arr[3
+ ] = 40
+-
+   arr[4
+ ] = 50
+-
+ Sum: 150
+ 
+diff --git a/tests/expect/char_ops.out b/tests/expect/char_ops.out
+index eec0d3af..187adbd6 100644
+--- a/tests/expect/char_ops.out
++++ b/tests/expect/char_ops.out
+@@ -1,7 +1,4 @@
+ First char code: 72
+-
+ ASCII of A: 65
+-
+ Upper of a: 65
+-
+ Done!
+diff --git a/tests/expect/full_demo.out b/tests/expect/full_demo.out
+index 00438bbc..3e96e81d 100644
+--- a/tests/expect/full_demo.out
++++ b/tests/expect/full_demo.out
+@@ -1,16 +1,12 @@
+ === Sutram v6.0 ===
+ 1. Strings: Namaste!
+ 2. Numbers: 42
+-
+ 3. Math: 15+4=19
+-
+ 4. If-else: true
+ 5. Memory: 99
+ 
+ 6. String len: 6
+-
+ 7. Char ops: 72
+-
+ 8. Format: x=42
+ 
+ 9. Strength: 64
+diff --git a/tests/expect/func_demo.out b/tests/expect/func_demo.out
+index 86cd981b..391bb285 100644
+--- a/tests/expect/func_demo.out
++++ b/tests/expect/func_demo.out
+@@ -5,5 +5,4 @@ Calling ganit()...
+   10 + 32 = 42
+ Calling uttar()...
+ uttar() = 42
+-
+ Done!
+diff --git a/tests/expect/import_demo.out b/tests/expect/import_demo.out
+index 7ebe7c2f..1e3050fb 100644
+--- a/tests/expect/import_demo.out
++++ b/tests/expect/import_demo.out
+@@ -1,11 +1,7 @@
+ === Library Import Demo ===
+ String: Namaste!
+ Number: 42
+-
+ x * 2 = 32
+-
+ x * 4 = 64
+-
+ Length: 6
+-
+ === Done ===
+diff --git a/tests/expect/mem_safe.out b/tests/expect/mem_safe.out
+index fa5c3f41..9d8937eb 100644
+--- a/tests/expect/mem_safe.out
++++ b/tests/expect/mem_safe.out
+@@ -1,5 +1,3 @@
+ v1 = 42
+-
+ After memset: 0
+-
+ Memory safety OK!
+diff --git a/tests/expect/number_game.out b/tests/expect/number_game.out
+index 39f882f1..9bf1ddea 100644
+--- a/tests/expect/number_game.out
++++ b/tests/expect/number_game.out
+@@ -1,7 +1,5 @@
+ Guessing game!
+ Secret: 42
+-
+ Too high!
+ The answer was: 42
+-
+ Game over!
+diff --git a/tests/expect/strength_reduction.out b/tests/expect/strength_reduction.out
+index e76bf69f..017db87b 100644
+--- a/tests/expect/strength_reduction.out
++++ b/tests/expect/strength_reduction.out
+@@ -1,12 +1,6 @@
+ x * 2 = 200
+-
+ x * 4 = 400
+-
+ x * 8 = 800
+-
+ x * 16 = 1600
+-
+ x * 3 = 300
+-
+ x * 5 = 500
+-
