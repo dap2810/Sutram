@@ -1,12 +1,12 @@
 # Sutram v8 - Combined demo
 rachana Person = { age, score }
 
-prakriya double_it(n)
+prakriya dwigun(n)
     prati n * 2
 
 mukhya()
     likha("=== Sutram Demo ===\n")
-    vitti x = double_it(21)
+    vitti x = dwigun(21)
     likha("double(21) = ")
     likha(x)
     likha("\n")
