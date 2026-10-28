@@ -1,15 +1,15 @@
 # Function with parameters
-prakriya add(a, b)
+prakriya yog(a, b)
     prati a + b
 
-prakriya mul3(a, b, c)
+prakriya gun_tray(a, b, c)
     prati a * b * c
 
 mukhya()
-    vitti x = add(10, 32)
-    likha("add(10, 32) = ")
+    vitti x = yog(10, 32)
+    likha("yog(10, 32) = ")
     likha(x)
     likha("\n")
-    likha("mul3(3, 4, 5) = ")
-    likha(mul3(3, 4, 5))
+    likha("gun_tray(3, 4, 5) = ")
+    likha(gun_tray(3, 4, 5))
     likha("\n")
