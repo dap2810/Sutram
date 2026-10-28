@@ -1,0 +1,109 @@
+english	count	files	proposed	collides	notes
+sum	9	115_perf_loop_bottom.sm,11_forloop.sm,13_negatives.sm,200_madhava_series.sm,205_madhava_pi_kosh.sm,217_r12_report.sm,21_break_continue.sm,95_t12_madhava_functions.sm,array_demo.sm	sankalan	NO	Accumulation; yog alone collides with shreni.yog lib function, so sankalan used.
+values	9	111_t18_kosh_dasham_function_return.sm,118_t18_kosh_param.sm,119_t18_kosh_param_forward.sm,121_t18_kosh_param_push_reject.sm,123_t18_kosh_param_statement_call.sm,126_numeric_pipeline.sm,137_r30_float_literal_rhs.sm	mulya	NO	Kosh of numbers; element meaning, not container type. If owner wants container in name, use mulya_kosh.
+total	7	118_t18_kosh_param.sm,126_numeric_pipeline.sm,134_perf_float_complex_fallback.sm,223_undefined_name.sm,225_undeclared_array.sm,227_assign_undeclared.sm,28_compound.sm	sarva_yog	NO	Sum of all; distinct from sum/sankalan so the two names stay distinct.
+xs	7	135_r30_float_index_scalar.sm,144_xmm_cache_fallback.sm,148_stage2_array_mutation_call.sm,206_sankhyiki.sm,208_kalana.sm	pratham_suchi	NO	First numeric list; suchi is the existing list word, pratham distinguishes it from ys.
+st	6	216_r12_expr.sm	avastha	NO	Parser state array (ptr,len,pos); avastha = state/condition.
+arr	5	140_r30_index_side_effect.sm,237_many_variables.sm,array_demo.sm	ank_mala	NO	Numeric kosh; mala alone is the array keyword, so compound used.
+out	4	136_r30_float_complex_left.sm,137_r30_float_literal_rhs.sm,139_r30_float_mixed_fallback.sm,140_r30_index_side_effect.sm	nirgat	NO	Output value; nirgat = outgoing/output.
+terms	4	205_madhava_pi_kosh.sm,95_t12_madhava_functions.sm	pada	NO	Series terms in a kosh; pada = term/step. pad alone is a builtin, pada is distinct.
+buf	3	217_r12_report.sm,full_demo.sm,mem_safe.sm	koshtha	NO	Scratch buffer (nirmmita); koshtha = receptacle. New word, not in project vocabulary — owner to confirm.
+data	3	134_perf_float_complex_fallback.sm,136_r30_float_complex_left.sm,138_r30_float_comparison_index.sm	datt	NO	Input numbers; datt = given/data.
+flag	3	93_t12_float_functions.sm,94_t12_float_functions.sm	dhvaj	NO	Boolean flag; dhvaj = flag/banner.
+util_chinha	3	200_madhava_series.sm,205_madhava_pi_kosh.sm,95_t12_madhava_functions.sm	chinha	NO	MIXED name: util (English) + chinha (Sanskrit sign). Drop util, keep chinha; sign flips +1/-1.
+cont	2	216_r12_expr.sm	nirantar	NO	Loop-continuation flag (1 = continue); nirantar = continuous.
+count	2	34_incdec.sm,46_language_reference.sm	ganan	NO	Counter; ganan does not collide with ganana keyword (R50 tested).
+dx	2	247_r23_methods.sm	x_antar	NO	Change in x; x/y are coordinate names, kept, antar = difference.
+dy	2	247_r23_methods.sm	y_antar	NO	Change in y; see dx.
+guess	2	24_guess_game.sm,number_game.sm	anumaan	NO	Guessed number; anumaan = guess/estimate.
+hi	2	115_perf_loop_bottom.sm,82_b7_stack_spill.sm	uchcha	NO	Upper bound; uchcha = high.
+lo	2	115_perf_loop_bottom.sm,82_b7_stack_spill.sm	nimna	NO	Lower bound; nimna = low.
+nums	2	118_t18_kosh_param.sm,20_pankti_array.sm	ankavali	NO	List of numbers; ankavali = number sequence.
+op	2	216_r12_expr.sm	kriya	NO	Operator code in parser; kriya = operation/action.
+p3	2	200_madhava_series.sm,95_t12_madhava_functions.sm	tri_shakti	NO	Power of three (3^k); shakti is the existing power function name, tri qualifies it.
+rem	2	15_sutra_const.sm,prime.sm	avashesh	NO	Remainder; shesh alone is a sadhan lib function, so avashesh used.
+rhs	2	216_r12_expr.sm	dakshin	NO	Right-hand side in parser; dakshin = right.
+root12	2	200_madhava_series.sm,95_t12_madhava_functions.sm	dvadash_mool	NO	Approximation to sqrt(12), refined by iteration; dvadash = twelve, mool = root.
+row	2	203_meru_with_kosh.sm,217_r12_report.sm	pankti	NO	One row of a kosh (Pascal triangle); pankti is the retired array type word, now free as a variable name — owner to confirm reuse is not confusing.
+secret	2	24_guess_game.sm,number_game.sm	gupt	NO	Secret number in guess game; gudh alone is the hash module, so gupt (hidden) used.
+term	2	200_madhava_series.sm,95_t12_madhava_functions.sm	pada	NO	Single series term; see terms.
+whole	2	93_t12_float_functions.sm,94_t12_float_functions.sm	sampurna	NO	Blended value in 93; name is vague in original, sampurna = whole/complete matches the English name.
+asc	1	115_perf_loop_bottom.sm	aarohi	NO	Ascending counter; aarohi = ascending.
+base	1	41_recursion.sm	ghat_aadhar	NO	Base of power shakti(base, exp); aadhar alone is the base-conversion module, so compound used.
+both_positive	1	17_booleans.sm	ubhay_dhan	NO	Boolean both x>0 and y>0; ubhay = both, dhan = positive.
+calls	1	236_guna_once.sm	ahvan	NO	Call count in guna_once test; ahvan = call/invocation.
+check	1	16_advanced.sm	pariksha	NO	Check value flags & 4; pariksha = test/check.
+cnt	1	217_r12_report.sm	ganan	NO	Count from ank_tak_varna; ganan = counting. Same proposal as count (different files, same meaning).
+code	1	char_ops.sm	sanket	NO	Character code of A; sanket = code/signal. aksharank alone is the builtin, so not used.
+color	1	19_srijana_enum.sm	rang	NO	Colour enum value; varna alone is the string module, so rang (colour) used.
+cs	1	200_madhava_series.sm	kotijya_yog	NO	Cosine series sum; kotijya = cosine (Indian maths), yog = sum.
+ct	1	200_madhava_series.sm	kotijya_pad	NO	Cosine series term; kotijya_pad = cosine term, compound, not the pad builtin alone.
+cur	1	215_r12_wordfreq.sm	vartaman	NO	Current index/value; vartaman = current/present.
+day	1	18_guna_switch.sm	divas	NO	Day number in guna switch; divas = day.
+delta	1	140_r30_index_side_effect.sm	antar	NO	Delta 1.5; see offset.
+denom	1	205_madhava_pi_kosh.sm	har	NO	Denominator 2k+1; har = denominator/divisor.
+desc	1	115_perf_loop_bottom.sm	avarohi	NO	Descending counter; avarohi = descending.
+diff	1	13_negatives.sm	bhed	NO	Difference x-y; bhed = difference.
+doubled	1	import_demo.sm	dvigunit	NO	Doubled value x*2; dvigunit = doubled. dvigun alone is a ganit lib function, so -it form used.
+empty	1	115_perf_loop_bottom.sm	rikta	NO	Empty flag (0 = not empty in test); rikta = empty.
+exp	1	41_recursion.sm	ghatank	NO	Exponent of power; ghatank = exponent/power index.
+flags	1	16_advanced.sm	dhvaj_gana	NO	Bit flags bitmask; dhvaj_gana = group of flags, distinct from flag/dhvaj.
+greeting	1	44_shabda.sm	namaskar	NO	Greeting string Namaste!; namaskar = greeting. abhivadan would clash in spirit with abhivadana function in same file, so namaskar chosen.
+id	1	209_samanvaya.sm	parichay	NO	Id array (identity); parichay = identity/introduction.
+interest	1	32_bank_interest.sm	vyaj	NO	Interest amount; vyaj = interest.
+is_done	1	17_booleans.sm	sampanna	NO	Boolean is_done; sampanna = done/completed.
+is_ready	1	17_booleans.sm	sajj	NO	Boolean is_ready; sajj = ready/prepared.
+kg	1	33_unit_conversion.sm	kilogram	NO	UNIT: kilograms loop variable. Kilogram is a loanword transliteration — owner may keep kg as the SI symbol instead.
+km	1	33_unit_conversion.sm	kilomitar	NO	UNIT: kilometres loop variable. Kilomitar is a loanword transliteration, not a native Sanskrit word — owner may keep km as the SI symbol instead.
+lens	1	215_r12_wordfreq.sm	aayam_suchi	NO	List of lengths; aayam = length (vartani_aayam), suchi = list.
+lower_a	1	char_ops.sm	nimna_akshar	NO	Code of lowercase a; nimna + akshar (letter).
+mean	1	217_r12_report.sm	madhyaman	NO	Average sum/n; madhyaman = mean. madhya alone is a sankhyiki lib function, so not used.
+mid	1	82_b7_stack_spill.sm	madhyank	NO	Middle index (lo+hi)/2; madhyank = middle number. madhya alone is a lib function, so not used.
+miles	1	33_unit_conversion.sm	mail	NO	UNIT: miles value. Mail is a loanword transliteration, not a native Sanskrit word — owner may keep miles.
+mixed	1	92_t12_dasham_float.sm	mishrit	NO	Mixed float value; mishrit = mixed (R50: mishrit follows -it pattern, valid).
+mn	1	217_r12_report.sm	kanishth	NO	Minimum score; kanishth = smallest. laghu alone is a shreni lib function, so not used.
+mod3	1	fizzbuzz.sm	shesh_tri	NO	Remainder mod 3 in fizzbuzz; shesh = remainder, tri = three. shesh alone is a lib function, so compound used.
+mod5	1	fizzbuzz.sm	shesh_pancha	NO	Remainder mod 5; shesh + pancha (five).
+msg	1	44_shabda.sm	sandesh	NO	Message string from abhivadana; sandesh = message.
+mx	1	217_r12_report.sm	brihattam	NO	Maximum score; brihattam = largest.
+name	1	44_shabda.sm	naam	NO	Name parameter (string to greet); naam = name.
+neg	1	92_t12_dasham_float.sm	rin	NO	Negative float -1.25; rin = negative/debt.
+nseg	1	215_r12_wordfreq.sm	bhed_ganana	NO	Number of segments from split; bhed + ganana (counting).
+nuniq	1	215_r12_wordfreq.sm	vishesh_ganana	NO	Count of unique items; vishesh + ganana.
+offset	1	139_r30_float_mixed_fallback.sm	antar	NO	Offset 2; antar = difference/interval. Same proposal as delta (different files, same meaning).
+ok	1	208_kalana.sm	siddh	NO	Ok flag array (success channel); siddh = accomplished/successful.
+once	1	78_do_while.sm	ekbar	NO	Do-while counter that makes loop run once; ekbar = once/one time.
+pa	1	246_r23_comparator_sort.sm	a_shesh	NO	Parity of a (a % 2); a_shesh = remainder of a.
+parts	1	215_r12_wordfreq.sm	bhed	NO	Split parts array; bhed = division/split. khand alone is the string module, so bhed used, not khand.
+pat	1	88_pingala_chandas.sm	pratirup	NO	Prosody pattern number 13; pratirup = pattern/form.
+pb	1	246_r23_comparator_sort.sm	b_shesh	NO	Parity of b (b % 2); see pa.
+pos	1	215_r12_wordfreq.sm	sthan	NO	Position index; sthan = place/position.
+pounds	1	33_unit_conversion.sm	paund	NO	UNIT: pounds value. Paund is a loanword transliteration — owner may keep pounds.
+principal	1	32_bank_interest.sm	mooldhan	NO	Principal amount 100000; mooldhan = principal capital.
+prod	1	13_negatives.sm	gunanphal	NO	Product x*3; gunanphal = product of multiplication.
+ptrs	1	215_r12_wordfreq.sm	sanket_suchi	NO	List of pointers; sanket = pointer/signal, suchi = list.
+quad	1	import_demo.sm	chaturgun	NO	Quadrupled value x*4; chaturgun = fourfold.
+rate	1	32_bank_interest.sm	dar	NO	Interest rate 8; dar = rate.
+raw	1	120_t18_kosh_param_mismatch.sm	kachcha	NO	Raw/unprocessed kosh; kachcha = raw/unripe.
+score	1	12_elif.sm	praptank	NO	Test score (75, graded A-F); praptank = obtained marks.
+scores	1	217_r12_report.sm	praptank_suchi	NO	List of test scores; praptank + suchi.
+spill	1	139_r30_float_mixed_fallback.sm	uchchhal	NO	Spill value 6.0 in register test; uchchhal = overflow/spill.
+target	1	82_b7_stack_spill.sm	lakshya	NO	Binary-search target; lakshya = target/aim.
+text	1	215_r12_wordfreq.sm	paath	NO	Input passage text; paath = text/reading.
+threshold	1	138_r30_float_comparison_index.sm	seema	NO	Comparison threshold 4.0; seema = limit/boundary.
+tl	1	215_r12_wordfreq.sm	asthayi_aayam	NO	Temporary length in sort swap; see tp.
+tlen	1	215_r12_wordfreq.sm	paath_aayam	NO	Length of text; paath + aayam.
+tmp	1	215_r12_wordfreq.sm	asthayi	NO	Temporary buffer; asthayi = temporary.
+tp	1	215_r12_wordfreq.sm	asthayi_sanket	NO	Temporary pointer in sort swap; asthayi = temporary.
+truth	1	133_perf_float_scalar_call_rhs.sm	tathya	NO	Boolean comparison result; tathya = fact/truth. Distinct from yes/parinam.
+two	1	133_perf_float_scalar_call_rhs.sm	dvi	NO	Constant 2; dvi = two.
+ulens	1	215_r12_wordfreq.sm	vishesh_aayam	NO	Unique lengths array; see uptrs.
+upper_a	1	char_ops.sm	uchcha_akshar	NO	Code of uppercase A; uchcha + akshar.
+uptrs	1	215_r12_wordfreq.sm	vishesh_sanket	NO	Unique pointers array; vishesh = distinct/unique.
+wbuf	1	215_r12_wordfreq.sm	lekhan_koshtha	NO	Write buffer for repacking; lekhan = writing, koshtha = receptacle.
+weight	1	135_r30_float_index_scalar.sm	bhar	NO	Weight factor 1.5; bhar = weight/load.
+wlen	1	215_r12_wordfreq.sm	lekhan_aayam	NO	Written length; lekhan + aayam.
+wpos	1	215_r12_wordfreq.sm	lekhan_sthan	NO	Write position; lekhan + sthan (place).
+year	1	32_bank_interest.sm	varsh	NO	Year in bank interest (label only, variable is in print string context); varsh = year.
+yes	1	138_r30_float_comparison_index.sm	parinam	NO	Boolean comparison result; parinam = outcome. satya alone is the bool keyword, so not used.
+ys	1	208_kalana.sm	dvitiya_suchi	NO	Second numeric list; dvitiya = second, suchi = list. Paired with xs/pratham_suchi.
