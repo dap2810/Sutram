@@ -1,0 +1,1063 @@
+diff -ruN a/examples/05_func_params.sm examples/05_func_params.sm
+--- a/examples/05_func_params.sm	2026-10-28 13:28:00.302695847 -0400
++++ b/examples/05_func_params.sm	2026-10-28 13:26:21.005977974 -0400
+@@ -1,9 +1,9 @@
+ # Function with parameters
+ prakriya yog(a, b)
+-    prati a + b
++    nivartanam a + b
+ 
+ prakriya gun_tray(a, b, c)
+-    prati a * b * c
++    nivartanam a * b * c
+ 
+ mukhya()
+     vitti x = yog(10, 32)
+diff -ruN a/examples/08_demo.sm examples/08_demo.sm
+--- a/examples/08_demo.sm	2026-10-28 13:28:00.302645511 -0400
++++ b/examples/08_demo.sm	2026-10-28 13:26:21.006071925 -0400
+@@ -2,7 +2,7 @@
+ rachana Person = { age, score }
+ 
+ prakriya dwigun(n)
+-    prati n * 2
++    nivartanam n * 2
+ 
+ mukhya()
+     likha("=== Sutram Demo ===\n")
+diff -ruN a/examples/111_t18_kosh_dasham_function_return.sm examples/111_t18_kosh_dasham_function_return.sm
+--- a/examples/111_t18_kosh_dasham_function_return.sm	2026-10-28 13:28:00.302582527 -0400
++++ b/examples/111_t18_kosh_dasham_function_return.sm	2026-10-28 13:26:21.006166868 -0400
+@@ -2,13 +2,13 @@
+ prakriya antim_mulya() {
+     kosh dasham values[1]
+     kosh_push(values, 2.5)
+-    prati kosh_pop(values)
++    nivartanam kosh_pop(values)
+ }
+ 
+ prakriya sanket_mulya() {
+     kosh dasham values[1]
+     kosh_push(values, 1.25)
+-    prati values[0]
++    nivartanam values[0]
+ }
+ 
+ mukhya() {
+diff -ruN a/examples/118_t18_kosh_param.sm examples/118_t18_kosh_param.sm
+--- a/examples/118_t18_kosh_param.sm	2026-10-28 13:28:00.302526733 -0400
++++ b/examples/118_t18_kosh_param.sm	2026-10-28 13:26:21.006285235 -0400
+@@ -2,11 +2,11 @@
+ prakriya madhya(kosh dasham a) {
+     dasham total = a[0] + a[1] + a[2]
+     a[1] = 4.0
+-    prati total / kosh_len(a)
++    nivartanam total / kosh_len(a)
+ }
+ 
+ prakriya kacch_yog(kosh a) {
+-    prati a[0] + a[1] + kosh_len(a)
++    nivartanam a[0] + a[1] + kosh_len(a)
+ }
+ 
+ mukhya() {
+diff -ruN a/examples/119_t18_kosh_param_forward.sm examples/119_t18_kosh_param_forward.sm
+--- a/examples/119_t18_kosh_param_forward.sm	2026-10-28 13:28:00.302459121 -0400
++++ b/examples/119_t18_kosh_param_forward.sm	2026-10-28 13:26:21.006447859 -0400
+@@ -1,15 +1,15 @@
+ # Typed kosh parameters can be forwarded, participate in float-return inference,
+ # and safely mutate shared length/data when no pointer replacement is required.
+ prakriya aavaran(kosh dasham a) {
+-    prati shirsh(a) + puchh(a)
++    nivartanam shirsh(a) + puchh(a)
+ }
+ 
+ prakriya shirsh(kosh dasham a) {
+-    prati a[0]
++    nivartanam a[0]
+ }
+ 
+ prakriya puchh(kosh dasham a) {
+-    prati kosh_pop(a)
++    nivartanam kosh_pop(a)
+ }
+ 
+ mukhya() {
+diff -ruN a/examples/120_t18_kosh_param_mismatch.sm examples/120_t18_kosh_param_mismatch.sm
+--- a/examples/120_t18_kosh_param_mismatch.sm	2026-10-28 13:28:00.302376057 -0400
++++ b/examples/120_t18_kosh_param_mismatch.sm	2026-10-28 13:26:21.006521930 -0400
+@@ -1,6 +1,6 @@
+ # A raw/integer kosh must not be reinterpreted as a binary64 kosh parameter.
+ prakriya pratham(kosh dasham a) {
+-    prati a[0]
++    nivartanam a[0]
+ }
+ 
+ mukhya() {
+diff -ruN a/examples/121_t18_kosh_param_push_reject.sm examples/121_t18_kosh_param_push_reject.sm
+--- a/examples/121_t18_kosh_param_push_reject.sm	2026-10-28 13:28:00.302158200 -0400
++++ b/examples/121_t18_kosh_param_push_reject.sm	2026-10-28 13:26:21.006593708 -0400
+@@ -2,7 +2,7 @@
+ # reject it until Sutram deliberately gains a reference/descriptor ABI.
+ prakriya yuj_ek(kosh dasham a) {
+     kosh_push(a, 1.0)
+-    prati kosh_len(a)
++    nivartanam kosh_len(a)
+ }
+ 
+ mukhya() {
+diff -ruN a/examples/122_t18_kosh_param_devanagari.sm examples/122_t18_kosh_param_devanagari.sm
+--- a/examples/122_t18_kosh_param_devanagari.sm	2026-10-28 13:28:00.302112451 -0400
++++ b/examples/122_t18_kosh_param_devanagari.sm	2026-10-28 13:26:21.006679256 -0400
+@@ -1,6 +1,6 @@
+ # Devanagari type aliases are pratham-class in function parameter syntax.
+ prakriya pratham(कोश दशम a) {
+-    prati a[0]
++    nivartanam a[0]
+ }
+ 
+ mukhya() {
+diff -ruN a/examples/126_numeric_pipeline.sm examples/126_numeric_pipeline.sm
+--- a/examples/126_numeric_pipeline.sm	2026-10-28 13:28:00.302008535 -0400
++++ b/examples/126_numeric_pipeline.sm	2026-10-28 13:26:21.006835030 -0400
+@@ -5,7 +5,7 @@
+ 
+ prakriya maap(kosh dasham values) {
+     # 5 + 4 + 2 = 11 for the textbook dataset.
+-    prati madhya(values) + prasaran(values) + vichalan(values)
++    nivartanam madhya(values) + prasaran(values) + vichalan(values)
+ }
+ 
+ mukhya() {
+diff -ruN a/examples/133_perf_float_scalar_call_rhs.sm examples/133_perf_float_scalar_call_rhs.sm
+--- a/examples/133_perf_float_scalar_call_rhs.sm	2026-10-28 13:28:00.301906973 -0400
++++ b/examples/133_perf_float_scalar_call_rhs.sm	2026-10-28 13:26:21.006947519 -0400
+@@ -2,10 +2,10 @@
+ # operation whose RHS is a function call. The caller-local scalar must
+ # survive the function call; all four operator orders must be preserved.
+ prakriya dwigun(dasham x) {
+-    prati x * 2.0
++    nivartanam x * 2.0
+ }
+ prakriya ardh(dasham x) {
+-    prati x / 2.0
++    nivartanam x / 2.0
+ }
+ mukhya() {
+     dasham s = 10.0
+diff -ruN a/examples/134_perf_float_complex_fallback.sm examples/134_perf_float_complex_fallback.sm
+--- a/examples/134_perf_float_complex_fallback.sm	2026-10-28 13:28:00.301838350 -0400
++++ b/examples/134_perf_float_complex_fallback.sm	2026-10-28 13:26:21.007041780 -0400
+@@ -1,7 +1,7 @@
+ # PERF-FG1 guards: indexed LHS and nested function-call expressions remain
+ # on the generic path; scalar local can be read after call expressions.
+ prakriya dasham_nirm(dasham x) {
+-    prati x + 0.5
++    nivartanam x + 0.5
+ }
+ mukhya() {
+     kosh dasham data[2]
+diff -ruN a/examples/135_r30_float_index_scalar.sm examples/135_r30_float_index_scalar.sm
+--- a/examples/135_r30_float_index_scalar.sm	2026-10-28 13:28:00.301763918 -0400
++++ b/examples/135_r30_float_index_scalar.sm	2026-10-28 13:26:21.007143703 -0400
+@@ -1,7 +1,7 @@
+ # R30: preserve indexed read order; right float register is never mutated.
+ prakriya shunya_badl(kosh dasham xs) {
+     xs[0] = 100.0
+-    prati 3.0
++    nivartanam 3.0
+ }
+ mukhya() {
+     kosh dasham xs[2]
+diff -ruN a/examples/136_r30_float_complex_left.sm examples/136_r30_float_complex_left.sm
+--- a/examples/136_r30_float_complex_left.sm	2026-10-28 13:28:00.301683027 -0400
++++ b/examples/136_r30_float_complex_left.sm	2026-10-28 13:26:21.007253769 -0400
+@@ -1,6 +1,6 @@
+ # R30: nested expression LHS + safe scalar RHS, including a function call.
+ prakriya yog_ardh(dasham x) {
+-    prati x + 0.5
++    nivartanam x + 0.5
+ }
+ mukhya() {
+     kosh dasham data[2]
+diff -ruN a/examples/137_r30_float_literal_rhs.sm examples/137_r30_float_literal_rhs.sm
+--- a/examples/137_r30_float_literal_rhs.sm	2026-10-28 13:28:00.301621865 -0400
++++ b/examples/137_r30_float_literal_rhs.sm	2026-10-28 13:26:21.007342762 -0400
+@@ -1,6 +1,6 @@
+ # R30: literals are side-effect-free, safe tak materialize after indexed LHS.
+ prakriya dwi_gun(dasham x) {
+-    prati x * 2.0
++    nivartanam x * 2.0
+ }
+ mukhya() {
+     kosh dasham values[2]
+diff -ruN a/examples/138_r30_float_comparison_index.sm examples/138_r30_float_comparison_index.sm
+--- a/examples/138_r30_float_comparison_index.sm	2026-10-28 13:28:00.301562936 -0400
++++ b/examples/138_r30_float_comparison_index.sm	2026-10-28 13:26:21.007430133 -0400
+@@ -1,5 +1,5 @@
+ # R30: indexed or complex LHS comparisons preserve ordering and bool output.
+-prakriya yog_ek(dasham a) { prati a + 1.0 }
++prakriya yog_ek(dasham a) { nivartanam a + 1.0 }
+ mukhya() {
+     kosh dasham data[2]
+     kosh_push(data, 3.0)
+diff -ruN a/examples/140_r30_index_side_effect.sm examples/140_r30_index_side_effect.sm
+--- a/examples/140_r30_index_side_effect.sm	2026-10-28 13:28:00.301495035 -0400
++++ b/examples/140_r30_index_side_effect.sm	2026-10-28 13:26:21.007523483 -0400
+@@ -1,10 +1,10 @@
+ # Index expression is effectful: the compiler must preserve evaluation order.
+ prakriya badl_sanket(kosh dasham arr) {
+     arr[0] = 9.0
+-    prati 0
++    nivartanam 0
+ }
+ prakriya pad_pashchat(kosh dasham arr) {
+-    prati arr[0]
++    nivartanam arr[0]
+ }
+ mukhya() {
+     kosh dasham arr[1]
+diff -ruN a/examples/143_xmm_cache_barriers.sm examples/143_xmm_cache_barriers.sm
+--- a/examples/143_xmm_cache_barriers.sm	2026-10-28 13:28:00.301276176 -0400
++++ b/examples/143_xmm_cache_barriers.sm	2026-10-28 13:26:21.007627680 -0400
+@@ -1,6 +1,6 @@
+ # Calls, printing, branches and loops must invalidate cached XMM locals.
+ prakriya vardh(dasham x) {
+-    prati x + 1.5
++    nivartanam x + 1.5
+ }
+ mukhya() {
+     dasham a = 1.0
+diff -ruN a/examples/145_xmm_cache_nested_calls.sm examples/145_xmm_cache_nested_calls.sm
+--- a/examples/145_xmm_cache_nested_calls.sm	2026-10-28 13:28:00.301184178 -0400
++++ b/examples/145_xmm_cache_nested_calls.sm	2026-10-28 13:26:21.007708832 -0400
+@@ -1,9 +1,9 @@
+ # Recursion and nested calls keep the custom raw-qword ABI.
+ prakriya punar(dasham x, n) {
+     yadi (n <= 0) {
+-        prati x
++        nivartanam x
+     }
+-    prati punar(x + 0.5, n - 1)
++    nivartanam punar(x + 0.5, n - 1)
+ }
+ mukhya() {
+     dasham a = 2.0
+diff -ruN a/examples/146_stage2_loop_call_boundary.sm examples/146_stage2_loop_call_boundary.sm
+--- a/examples/146_stage2_loop_call_boundary.sm	2026-10-28 13:28:00.301123747 -0400
++++ b/examples/146_stage2_loop_call_boundary.sm	2026-10-28 13:26:21.007795542 -0400
+@@ -1,7 +1,7 @@
+ # Stage 2 acceptance: a loop crosses repeated prakriya calls, then reuses floats.
+ # A caller's XMM2-5 cache must never trust call-clobbered volatile registers.
+ prakriya gun_maap(dasham x) {
+-    prati x * 1.25
++    nivartanam x * 1.25
+ }
+ mukhya() {
+     dasham a = 1.0
+diff -ruN a/examples/147_stage2_recursive_float_boundary.sm examples/147_stage2_recursive_float_boundary.sm
+--- a/examples/147_stage2_recursive_float_boundary.sm	2026-10-28 13:28:00.301059761 -0400
++++ b/examples/147_stage2_recursive_float_boundary.sm	2026-10-28 13:26:21.007901070 -0400
+@@ -1,9 +1,9 @@
+ # Stage 2 acceptance: recursion must not corrupt a caller's cached values.
+ prakriya aaroh(dasham x, n) {
+     yadi (n <= 0) {
+-        prati x
++        nivartanam x
+     }
+-    prati aaroh(x + 0.25, n - 1)
++    nivartanam aaroh(x + 0.25, n - 1)
+ }
+ mukhya() {
+     dasham a = 2.0
+diff -ruN a/examples/148_stage2_array_mutation_call.sm examples/148_stage2_array_mutation_call.sm
+--- a/examples/148_stage2_array_mutation_call.sm	2026-10-28 13:28:00.300825219 -0400
++++ b/examples/148_stage2_array_mutation_call.sm	2026-10-28 13:26:21.007993739 -0400
+@@ -2,7 +2,7 @@
+ # Never reorder reads across the call or make assumptions about its effects.
+ prakriya vardh_avayav(kosh dasham xs) {
+     xs[0] = xs[0] + 1.0
+-    prati xs[0]
++    nivartanam xs[0]
+ }
+ mukhya() {
+     kosh dasham xs[1]
+diff -ruN a/examples/215_r12_wordfreq.sm examples/215_r12_wordfreq.sm
+--- a/examples/215_r12_wordfreq.sm	2026-10-28 13:28:00.311619298 -0400
++++ b/examples/215_r12_wordfreq.sm	2026-10-28 13:26:20.999285050 -0400
+@@ -29,7 +29,7 @@
+         }
+         i = i + 1
+     }
+-    prati 0
++    nivartanam 0
+ }
+ 
+ mukhya() {
+diff -ruN a/examples/216_r12_expr.sm examples/216_r12_expr.sm
+--- a/examples/216_r12_expr.sm	2026-10-28 13:28:00.311441051 -0400
++++ b/examples/216_r12_expr.sm	2026-10-28 13:26:20.999578290 -0400
+@@ -6,10 +6,10 @@
+ 
+ prakriya skip_ws(st) {
+     yavat (st[2] < st[1]) {
+-        yadi (akshar(st[0], st[2]) != 32) { prati 0 }
++        yadi (akshar(st[0], st[2]) != 32) { nivartanam 0 }
+         st[2] = st[2] + 1
+     }
+-    prati 0
++    nivartanam 0
+ }
+ 
+ prakriya parse_num(st) {
+@@ -18,11 +18,11 @@
+     skip_ws(st)
+     yavat (st[2] < st[1]) {
+         c = akshar(st[0], st[2])
+-        yadi (c < 48 || c > 57) { prati v }
++        yadi (c < 48 || c > 57) { nivartanam v }
+         v = v * 10 + (c - 48)
+         st[2] = st[2] + 1
+     }
+-    prati v
++    nivartanam v
+ }
+ 
+ prakriya parse_factor(st) {
+@@ -36,10 +36,10 @@
+             yadi (st[2] < st[1]) {
+                 yadi (akshar(st[0], st[2]) == 41) { st[2] = st[2] + 1 }
+             }
+-            prati v
++            nivartanam v
+         }
+     }
+-    prati parse_num(st)
++    nivartanam parse_num(st)
+ }
+ 
+ prakriya parse_term(st) {
+@@ -60,7 +60,7 @@
+             }
+         }
+     }
+-    prati v
++    nivartanam v
+ }
+ 
+ prakriya parse_expr(st) {
+@@ -81,7 +81,7 @@
+             }
+         }
+     }
+-    prati v
++    nivartanam v
+ }
+ 
+ prakriya eval(s, n) {
+@@ -89,7 +89,7 @@
+     st[0] = s
+     st[1] = n
+     st[2] = 0
+-    prati parse_expr(st)
++    nivartanam parse_expr(st)
+ }
+ 
+ mukhya() {
+diff -ruN a/examples/232_arity.sm examples/232_arity.sm
+--- a/examples/232_arity.sm	2026-10-28 13:28:00.309453738 -0400
++++ b/examples/232_arity.sm	2026-10-28 13:26:21.000259663 -0400
+@@ -1,6 +1,6 @@
+ # R7 golden: a call must pass as many arguments as the prakriya declares.
+ # Before R7 f(1) compiled and b read whatever was in its register.
+-prakriya f(a, b) { prati a + b }
++prakriya f(a, b) { nivartanam a + b }
+ mukhya() {
+     likha(f(1))
+ }
+diff -ruN a/examples/236_guna_once.sm examples/236_guna_once.sm
+--- a/examples/236_guna_once.sm	2026-10-28 13:28:00.309129992 -0400
++++ b/examples/236_guna_once.sm	2026-10-28 13:26:21.000524730 -0400
+@@ -3,15 +3,15 @@
+ vitti calls = 0
+ prakriya f() {
+     calls = calls + 1
+-    prati 3
++    nivartanam 3
+ }
+ prakriya g(n) {
+     guna (n * 2) {
+-        bhavana 2: { prati 20 }
+-        bhavana 4: { prati 40 }
+-        anya: { prati 0 }
++        bhavana 2: { nivartanam 20 }
++        bhavana 4: { nivartanam 40 }
++        anya: { nivartanam 0 }
+     }
+-    prati 0
++    nivartanam 0
+ }
+ mukhya() {
+     guna (f()) {
+diff -ruN a/examples/237_many_variables.sm examples/237_many_variables.sm
+--- a/examples/237_many_variables.sm	2026-10-28 13:28:00.309017714 -0400
++++ b/examples/237_many_variables.sm	2026-10-28 13:26:21.000739723 -0400
+@@ -71,7 +71,7 @@
+     likha(d)
+     likha(k[1])
+     likha(f0 + f39)
+-    prati t + f39
++    nivartanam t + f39
+ }
+ mukhya() {
+     vitti a = 10
+diff -ruN a/examples/246_r23_comparator_sort.sm examples/246_r23_comparator_sort.sm
+--- a/examples/246_r23_comparator_sort.sm	2026-10-28 13:28:00.308295380 -0400
++++ b/examples/246_r23_comparator_sort.sm	2026-10-28 13:26:21.001302668 -0400
+@@ -4,11 +4,11 @@
+ # The canonical use: one sort, any order, chosen by the comparator passed in.
+ 
+ prakriya aarohi(a, b) {
+-    prati a - b
++    nivartanam a - b
+ }
+ 
+ prakriya avarohi(a, b) {
+-    prati b - a
++    nivartanam b - a
+ }
+ 
+ # even numbers first, each group in ascending order
+@@ -16,9 +16,9 @@
+     vitti pa = a % 2
+     vitti pb = b % 2
+     yadi (pa != pb) {
+-        prati pa - pb
++        nivartanam pa - pb
+     }
+-    prati a - b
++    nivartanam a - b
+ }
+ 
+ # insertion sort of a slice, ordered by tulana(x, y) < 0
+@@ -33,17 +33,17 @@
+         }
+         s[j + 1] = v
+     }
+-    prati 0
++    nivartanam 0
+ }
+ 
+ prakriya kram_chuno(k) {
+     yadi (k == 1) {
+-        prati avarohi
++        nivartanam avarohi
+     }
+     yadi (k == 2) {
+-        prati sama_pratham
++        nivartanam sama_pratham
+     }
+-    prati aarohi
++    nivartanam aarohi
+ }
+ 
+ prakriya dikhao(vibhag s) {
+@@ -52,7 +52,7 @@
+         likha(" ")
+     }
+     likha("\n")
+-    prati 0
++    nivartanam 0
+ }
+ 
+ mukhya() {
+diff -ruN a/examples/247_r23_methods.sm examples/247_r23_methods.sm
+--- a/examples/247_r23_methods.sm	2026-10-28 13:28:00.308084383 -0400
++++ b/examples/247_r23_methods.sm	2026-10-28 13:26:21.001453114 -0400
+@@ -8,13 +8,13 @@
+ prakriya Bindu.srij(swa, x, y) {
+     swa.x = x
+     swa.y = y
+-    prati swa
++    nivartanam swa
+ }
+ 
+ prakriya Bindu.chal(swa, dx, dy) {
+     swa.x = swa.x + dx
+     swa.y = swa.y + dy
+-    prati 0
++    nivartanam 0
+ }
+ 
+ prakriya Bindu.manhattan(swa, anya_bindu) {
+@@ -26,15 +26,15 @@
+     yadi (dy < 0) {
+         dy = 0 - dy
+     }
+-    prati dx + dy
++    nivartanam dx + dy
+ }
+ 
+ prakriya Ayat.kshetraphal(swa) {
+-    prati swa.chaudai * swa.lambai
++    nivartanam swa.chaudai * swa.lambai
+ }
+ 
+ prakriya Ayat.paridhi(swa) {
+-    prati 2 * (swa.chaudai + swa.lambai)
++    nivartanam 2 * (swa.chaudai + swa.lambai)
+ }
+ 
+ mukhya() {
+diff -ruN a/examples/248_r23_slices.sm examples/248_r23_slices.sm
+--- a/examples/248_r23_slices.sm	2026-10-28 13:28:00.307977753 -0400
++++ b/examples/248_r23_slices.sm	2026-10-28 13:26:21.001619353 -0400
+@@ -8,26 +8,26 @@
+     chakra i = 0 tak pankti_len(s) - 1 {
+         t = t + s[i]
+     }
+-    prati t
++    nivartanam t
+ }
+ 
+ prakriya bhar(vibhag s, v) {
+     chakra i = 0 tak pankti_len(s) - 1 {
+         s[i] = v
+     }
+-    prati 0
++    nivartanam 0
+ }
+ 
+ # the sum of s, splitting it in halves: each call takes part of the array
+ prakriya yog_vibhajya(vibhag s) {
+     vitti n = pankti_len(s)
+     yadi (n == 0) {
+-        prati 0
++        nivartanam 0
+     }
+     yadi (n == 1) {
+-        prati s[0]
++        nivartanam s[0]
+     }
+-    prati yog_vibhajya(s[:n / 2]) + yog_vibhajya(s[n / 2:])
++    nivartanam yog_vibhajya(s[:n / 2]) + yog_vibhajya(s[n / 2:])
+ }
+ 
+ mukhya() {
+diff -ruN a/examples/249_r25_phal.sm examples/249_r25_phal.sm
+--- a/examples/249_r25_phal.sm	2026-10-28 13:28:00.307849551 -0400
++++ b/examples/249_r25_phal.sm	2026-10-28 13:26:21.001783820 -0400
+@@ -7,36 +7,36 @@
+ # 1: division by zero; 2: an index outside the mala
+ prakriya bhaj(a, b) {
+     yadi (b == 0) {
+-        prati dosh(1)
++        nivartanam dosh(1)
+     }
+-    prati siddhi(a / b)
++    nivartanam siddhi(a / b)
+ }
+ 
+ prakriya grah(vibhag s, i) {
+     yadi (i < 0 || i >= pankti_len(s)) {
+-        prati dosh(2)
++        nivartanam dosh(2)
+     }
+-    prati siddhi(s[i])
++    nivartanam siddhi(s[i])
+ }
+ 
+ # s[i] / s[j]: either step can fail, and the failure passes straight up
+ prakriya anupat(vibhag s, i, j) {
+     vitti a = prasar grah(s, i)
+     vitti b = prasar grah(s, j)
+-    prati siddhi(prasar bhaj(a, b))
++    nivartanam siddhi(prasar bhaj(a, b))
+ }
+ 
+ # the mean of s; an empty slice is a failure of its own (3)
+ prakriya madhyaman(vibhag s) {
+     vitti n = pankti_len(s)
+     yadi (n == 0) {
+-        prati dosh(3)
++        nivartanam dosh(3)
+     }
+     vitti t = 0
+     chakra i = 0 tak n - 1 {
+         t = t + s[i]
+     }
+-    prati siddhi(prasar bhaj(t, n))
++    nivartanam siddhi(prasar bhaj(t, n))
+ }
+ 
+ mukhya() {
+diff -ruN a/examples/250_r26_dosh_handler.sm examples/250_r26_dosh_handler.sm
+--- a/examples/250_r26_dosh_handler.sm	2026-10-28 13:28:00.303091801 -0400
++++ b/examples/250_r26_dosh_handler.sm	2026-10-28 13:26:21.005645145 -0400
+@@ -6,31 +6,31 @@
+ # 1: not a digit
+ prakriya ank_mulya(c) {
+     yadi (c < 48 || c > 57) {
+-        prati dosh(1)
++        nivartanam dosh(1)
+     }
+-    prati siddhi(c - 48)
++    nivartanam siddhi(c - 48)
+ }
+ 
+ # the number written in s; 2: an empty string; a bad digit passes up as 1
+ prakriya sankhya_padh(s) {
+     vitti n = vartani_aayam(s)
+     yadi (n == 0) {
+-        prati dosh(2)
++        nivartanam dosh(2)
+     }
+     vitti t = 0
+     chakra i = 0 tak n - 1 {
+         vitti d = prasar ank_mulya(akshar(s, i))
+         t = t * 10 + d
+     }
+-    prati siddhi(t)
++    nivartanam siddhi(t)
+ }
+ 
+ # never fails: a bad number counts as the default
+ prakriya padh_ya(s, mool) {
+     yadi dosh (q = sankhya_padh(s)) {
+-        prati mool
++        nivartanam mool
+     }
+-    prati q
++    nivartanam q
+ }
+ 
+ mukhya() {
+diff -ruN a/examples/40_functions_params.sm examples/40_functions_params.sm
+--- a/examples/40_functions_params.sm	2026-10-28 13:28:00.306527166 -0400
++++ b/examples/40_functions_params.sm	2026-10-28 13:26:21.002693795 -0400
+@@ -1,12 +1,12 @@
+ # 40 — functions with real parameters (v29)
+ prakriya joda(a, b) {
+-    prati a + b
++    nivartanam a + b
+ }
+ prakriya kshetraphala(l, w) {
+-    prati l * w
++    nivartanam l * w
+ }
+ prakriya madhya(a, b, c) {
+-    prati (a + b + c) / 3
++    nivartanam (a + b + c) / 3
+ }
+ mukhya()
+     likha(joda(10, 32))
+diff -ruN a/examples/41_recursion.sm examples/41_recursion.sm
+--- a/examples/41_recursion.sm	2026-10-28 13:28:00.300748434 -0400
++++ b/examples/41_recursion.sm	2026-10-28 13:26:21.008089783 -0400
+@@ -1,21 +1,21 @@
+ # 41 — recursion (v29)
+ prakriya krama_fal(n) {
+     yadi (n <= 1) {
+-        prati 1
++        nivartanam 1
+     }
+-    prati n * krama_fal(n - 1)
++    nivartanam n * krama_fal(n - 1)
+ }
+ prakriya meru_ank(n) {
+     yadi (n < 2) {
+-        prati n
++        nivartanam n
+     }
+-    prati meru_ank(n - 1) + meru_ank(n - 2)
++    nivartanam meru_ank(n - 1) + meru_ank(n - 2)
+ }
+ prakriya shakti(base, exp) {
+     yadi (exp == 0) {
+-        prati 1
++        nivartanam 1
+     }
+-    prati base * shakti(base, exp - 1)
++    nivartanam base * shakti(base, exp - 1)
+ }
+ mukhya()
+     likha(krama_fal(6))
+diff -ruN a/examples/43_nested_likha.sm examples/43_nested_likha.sm
+--- a/examples/43_nested_likha.sm	2026-10-28 13:28:00.306255278 -0400
++++ b/examples/43_nested_likha.sm	2026-10-28 13:26:21.002818633 -0400
+@@ -1,12 +1,12 @@
+ # 43 — multi-argument likha + nested calls (v29)
+ prakriya joda(a, b) {
+-    prati a + b
++    nivartanam a + b
+ }
+ prakriya gunana(a, b) {
+-    prati a * b
++    nivartanam a * b
+ }
+ prakriya varga(n) {
+-    prati gunana(n, n)
++    nivartanam gunana(n, n)
+ }
+ mukhya()
+     likha("2 + 3 = ", joda(2, 3))
+diff -ruN a/examples/44_shabda.sm examples/44_shabda.sm
+--- a/examples/44_shabda.sm	2026-10-28 13:28:00.306174797 -0400
++++ b/examples/44_shabda.sm	2026-10-28 13:26:21.002888518 -0400
+@@ -2,7 +2,7 @@
+ # likha() prints numbers (and varna literals); shabda() prints a
+ # NUL-terminated varna held in a variable.
+ prakriya abhivadana(name) {
+-    prati name
++    nivartanam name
+ }
+ mukhya()
+     vitti greeting = "Namaste!"
+diff -ruN a/examples/46_language_reference.sm examples/46_language_reference.sm
+--- a/examples/46_language_reference.sm	2026-10-28 13:28:00.300524909 -0400
++++ b/examples/46_language_reference.sm	2026-10-28 13:26:21.008243003 -0400
+@@ -34,9 +34,9 @@
+     vitti n = grahan()              # read a number
+ 
+ prakriya joda(a, b)                 # function (up tak 3 arguments)
+-    prati a + b                 # return
++    nivartanam a + b                 # return
+ 
+ prakriya meru_ank(n) {                   # braces are required for a body of >1 statement
+-    yadi (n < 2) { prati n }
+-    prati meru_ank(n - 1) + meru_ank(n - 2)
++    yadi (n < 2) { nivartanam n }
++    nivartanam meru_ank(n - 1) + meru_ank(n - 2)
+ }
+diff -ruN a/examples/60_six_func_args.sm examples/60_six_func_args.sm
+--- a/examples/60_six_func_args.sm	2026-10-28 13:28:00.300122335 -0400
++++ b/examples/60_six_func_args.sm	2026-10-28 13:26:21.008319488 -0400
+@@ -1,6 +1,6 @@
+ # Six-argument user functions (T5)
+ prakriya yog_shat(a, b, c, d, e, f)
+-    prati a + b + c + d + e + f
++    nivartanam a + b + c + d + e + f
+ 
+ prakriya darsh_shat(a, b, c, d, e, f)
+     likha(a + b + c + d + e + f)
+diff -ruN a/examples/64_param_reassign.sm examples/64_param_reassign.sm
+--- a/examples/64_param_reassign.sm	2026-10-28 13:28:00.300072680 -0400
++++ b/examples/64_param_reassign.sm	2026-10-28 13:26:21.008401521 -0400
+@@ -1,6 +1,6 @@
+ prakriya vardh(a) {
+     a = a + 1
+-    prati a
++    nivartanam a
+ }
+ 
+ mukhya() {
+diff -ruN a/examples/70_module_collision.sm examples/70_module_collision.sm
+--- a/examples/70_module_collision.sm	2026-10-28 13:28:00.305669980 -0400
++++ b/examples/70_module_collision.sm	2026-10-28 13:26:21.003351032 -0400
+@@ -1,6 +1,6 @@
+ yoj ganit
+ prakriya varg(n) {
+-    prati n
++    nivartanam n
+ }
+ mukhya() {
+     likha(varg(5))
+diff -ruN a/examples/76_array_function_scope.sm examples/76_array_function_scope.sm
+--- a/examples/76_array_function_scope.sm	2026-10-28 13:28:00.300027302 -0400
++++ b/examples/76_array_function_scope.sm	2026-10-28 13:26:21.008482483 -0400
+@@ -1,13 +1,13 @@
+ prakriya pratham() {
+     mala a[2]
+     a[1] = 10
+-    prati pankti_len(a) + a[1]
++    nivartanam pankti_len(a) + a[1]
+ }
+ 
+ prakriya dwitiya() {
+     mala a[4]
+     a[3] = 20
+-    prati pankti_len(a) + a[3]
++    nivartanam pankti_len(a) + a[3]
+ }
+ 
+ mukhya() {
+diff -ruN a/examples/82_b7_stack_spill.sm examples/82_b7_stack_spill.sm
+--- a/examples/82_b7_stack_spill.sm	2026-10-28 13:28:00.305218562 -0400
++++ b/examples/82_b7_stack_spill.sm	2026-10-28 13:26:21.003949750 -0400
+@@ -3,10 +3,10 @@
+     vitti hi = n - 1
+     yavat (lo <= hi) {
+         vitti mid = (lo + hi) / 2
+-        yadi (a[mid] == target) { prati mid }
++        yadi (a[mid] == target) { nivartanam mid }
+         yadi (a[mid] < target) { lo = mid + 1 } anya { hi = mid - 1 }
+     }
+-    prati 0 - 1
++    nivartanam 0 - 1
+ }
+ 
+ prakriya laghu(a, n) {
+@@ -16,7 +16,7 @@
+         yadi (a[i] < m) { m = a[i] }
+         i = i + 1
+     }
+-    prati m
++    nivartanam m
+ }
+ 
+ mukhya() {
+diff -ruN a/examples/89_b9_short_circuit.sm examples/89_b9_short_circuit.sm
+--- a/examples/89_b9_short_circuit.sm	2026-10-28 13:28:00.299867652 -0400
++++ b/examples/89_b9_short_circuit.sm	2026-10-28 13:26:21.008680730 -0400
+@@ -1,6 +1,6 @@
+ prakriya rakh_shunya(a, v) {
+     a[0] = v
+-    prati v
++    nivartanam v
+ }
+ 
+ mukhya() {
+diff -ruN a/examples/93_t12_float_functions.sm examples/93_t12_float_functions.sm
+--- a/examples/93_t12_float_functions.sm	2026-10-28 13:28:00.304109067 -0400
++++ b/examples/93_t12_float_functions.sm	2026-10-28 13:26:21.004639996 -0400
+@@ -2,22 +2,22 @@
+ # inference, integer promotion at calls, mixed returns, and float->int assignment.
+ 
+ prakriya wrapper(dasham x) {
+-    prati twice(x)
++    nivartanam twice(x)
+ }
+ 
+ prakriya twice(dasham x) {
+-    prati x * 2
++    nivartanam x * 2
+ }
+ 
+ prakriya blend(dasham a, दशम b) {
+-    prati (a + b) / 2.0
++    nivartanam (a + b) / 2.0
+ }
+ 
+ prakriya mixed(flag) {
+     yadi (flag) {
+-        prati 1.25
++        nivartanam 1.25
+     }
+-    prati 2
++    nivartanam 2
+ }
+ 
+ mukhya() {
+diff -ruN a/examples/94_t12_float_functions.sm examples/94_t12_float_functions.sm
+--- a/examples/94_t12_float_functions.sm	2026-10-28 13:28:00.304035407 -0400
++++ b/examples/94_t12_float_functions.sm	2026-10-28 13:26:21.004779095 -0400
+@@ -2,27 +2,27 @@
+ # inference, integer promotion at calls, mixed returns, and float->int assignment.
+ 
+ prakriya wrapper(dasham x) {
+-    prati twice(x)
++    nivartanam twice(x)
+ }
+ 
+ prakriya twice(dasham x) {
+-    prati x * 2
++    nivartanam x * 2
+ }
+ 
+ prakriya blend(dasham a, दशम b) {
+-    prati (a + b) / 2.0
++    nivartanam (a + b) / 2.0
+ }
+ 
+ prakriya mixed(flag) {
+     yadi (flag) {
+-        prati 1.25
++        nivartanam 1.25
+     }
+-    prati 2
++    nivartanam 2
+ }
+ 
+ # Mixed ternary branches must normalize tak the inferred float return type.
+ prakriya choose(flag) {
+-    prati flag ? 1.5 : 2
++    nivartanam flag ? 1.5 : 2
+ }
+ 
+ mukhya() {
+diff -ruN a/examples/95_t12_madhava_functions.sm examples/95_t12_madhava_functions.sm
+--- a/examples/95_t12_madhava_functions.sm	2026-10-28 13:28:00.303949468 -0400
++++ b/examples/95_t12_madhava_functions.sm	2026-10-28 13:26:21.004942360 -0400
+@@ -23,7 +23,7 @@
+         util_chinha = 0 - util_chinha
+         k = k + 1
+     }
+-    prati root12 * sum
++    nivartanam root12 * sum
+ }
+ 
+ prakriya madhava_sin(dasham x, terms) {
+@@ -35,7 +35,7 @@
+         s = s + t
+         n = n + 1
+     }
+-    prati s
++    nivartanam s
+ }
+ 
+ prakriya madhava_cos(दशम x, terms) {
+@@ -47,7 +47,7 @@
+         s = s + t
+         n = n + 1
+     }
+-    prati s
++    nivartanam s
+ }
+ 
+ mukhya() {
+diff -ruN a/examples/func_demo.sm examples/func_demo.sm
+--- a/examples/func_demo.sm	2026-10-28 13:28:00.299450006 -0400
++++ b/examples/func_demo.sm	2026-10-28 13:26:21.008887030 -0400
+@@ -17,4 +17,4 @@
+     likha("  10 + 32 = 42\n")
+ 
+ prakriya uttar()
+-    prati 42
++    nivartanam 42
+diff -ruN a/examples/lib/r33_alpha.smlib examples/lib/r33_alpha.smlib
+--- a/examples/lib/r33_alpha.smlib	2026-10-28 13:28:00.327324297 -0400
++++ b/examples/lib/r33_alpha.smlib	2026-10-28 13:26:21.009660330 -0400
+@@ -1,3 +1,3 @@
+ # Namespaced fixture A: deliberately collides with fixture B.
+-prakriya helper() { prati 12 }
+-prakriya clash() { prati helper() + 1 }
++prakriya helper() { nivartanam 12 }
++prakriya clash() { nivartanam helper() + 1 }
+diff -ruN a/examples/lib/r33_beta.smlib examples/lib/r33_beta.smlib
+--- a/examples/lib/r33_beta.smlib	2026-10-28 13:28:00.326930876 -0400
++++ b/examples/lib/r33_beta.smlib	2026-10-28 13:26:21.009715743 -0400
+@@ -1,3 +1,3 @@
+ # Namespaced fixture B: same exported names, distinct implementations.
+-prakriya helper() { prati 200 }
+-prakriya clash() { prati helper() + 3 }
++prakriya helper() { nivartanam 200 }
++prakriya clash() { nivartanam helper() + 3 }
+diff -ruN a/examples/lib/r33_devanagari.smlib examples/lib/r33_devanagari.smlib
+--- a/examples/lib/r33_devanagari.smlib	2026-10-28 13:28:00.326861242 -0400
++++ b/examples/lib/r33_devanagari.smlib	2026-10-28 13:26:21.009773830 -0400
+@@ -1,2 +1,2 @@
+ # Function-definition keyword uses the Sanskrit Devanagari alias.
+-प्रक्रिया namaskara() { prati 88 }
++प्रक्रिया namaskara() { nivartanam 88 }
+diff -ruN a/examples/lib/r40_a.smlib examples/lib/r40_a.smlib
+--- a/examples/lib/r40_a.smlib	2026-10-28 13:28:00.326789895 -0400
++++ b/examples/lib/r40_a.smlib	2026-10-28 13:26:21.009837636 -0400
+@@ -1,5 +1,5 @@
+ yoj r40_b
+ yoj r40_c
+ prakriya r40_diamond() {
+-    prati r40_left() + r40_right()
++    nivartanam r40_left() + r40_right()
+ }
+diff -ruN a/examples/lib/r40_b.smlib examples/lib/r40_b.smlib
+--- a/examples/lib/r40_b.smlib	2026-10-28 13:28:00.326719469 -0400
++++ b/examples/lib/r40_b.smlib	2026-10-28 13:26:21.009901372 -0400
+@@ -1,4 +1,4 @@
+ yoj r40_d
+ prakriya r40_left() {
+-    prati r40_shared() + 1
++    nivartanam r40_shared() + 1
+ }
+diff -ruN a/examples/lib/r40_c.smlib examples/lib/r40_c.smlib
+--- a/examples/lib/r40_c.smlib	2026-10-28 13:28:00.326650546 -0400
++++ b/examples/lib/r40_c.smlib	2026-10-28 13:26:21.009963806 -0400
+@@ -1,4 +1,4 @@
+ yoj r40_d
+ prakriya r40_right() {
+-    prati r40_shared() + 2
++    nivartanam r40_shared() + 2
+ }
+diff -ruN a/examples/lib/r40_d.smlib examples/lib/r40_d.smlib
+--- a/examples/lib/r40_d.smlib	2026-10-28 13:28:00.326578918 -0400
++++ b/examples/lib/r40_d.smlib	2026-10-28 13:26:21.010025158 -0400
+@@ -1,4 +1,4 @@
+ # Shared leaf in two branches of a diamond.
+ prakriya r40_shared() {
+-    prati 7
++    nivartanam 7
+ }
+diff -ruN a/examples/lib/r41_cyc_a.smlib examples/lib/r41_cyc_a.smlib
+--- a/examples/lib/r41_cyc_a.smlib	2026-10-28 13:28:00.326506519 -0400
++++ b/examples/lib/r41_cyc_a.smlib	2026-10-28 13:26:21.010125418 -0400
+@@ -1,5 +1,5 @@
+ # R41 test: cyclic import (a -> b -> a). Must be E_MODULE_CYCLE, not silent.
+ yoj r41_cyc_b
+ prakriya cyc_a() {
+-    prati 1
++    nivartanam 1
+ }
+diff -ruN a/examples/lib/r41_cyc_b.smlib examples/lib/r41_cyc_b.smlib
+--- a/examples/lib/r41_cyc_b.smlib	2026-10-28 13:28:00.326351837 -0400
++++ b/examples/lib/r41_cyc_b.smlib	2026-10-28 13:26:21.010227762 -0400
+@@ -1,5 +1,5 @@
+ # R41 test: cyclic import (a -> b -> a). Must be E_MODULE_CYCLE, not silent.
+ yoj r41_cyc_a
+ prakriya cyc_b() {
+-    prati 2
++    nivartanam 2
+ }
+diff -ruN a/examples/lib/r41_cycle_a.smlib examples/lib/r41_cycle_a.smlib
+--- a/examples/lib/r41_cycle_a.smlib	2026-10-28 13:28:00.326301782 -0400
++++ b/examples/lib/r41_cycle_a.smlib	2026-10-28 13:26:21.010309324 -0400
+@@ -1,3 +1,3 @@
+ # sutram-module-v1
+ yoj r41_cycle_b
+-prakriya cycle_a() { prati 1 }
++prakriya cycle_a() { nivartanam 1 }
+diff -ruN a/examples/lib/r41_cycle_b.smlib examples/lib/r41_cycle_b.smlib
+--- a/examples/lib/r41_cycle_b.smlib	2026-10-28 13:28:00.326260470 -0400
++++ b/examples/lib/r41_cycle_b.smlib	2026-10-28 13:26:21.010382905 -0400
+@@ -1,3 +1,3 @@
+ # sutram-module-v1
+ yoj r41_cycle_a
+-prakriya cycle_b() { prati 2 }
++prakriya cycle_b() { nivartanam 2 }
+diff -ruN a/examples/lib/r41_dup.smlib examples/lib/r41_dup.smlib
+--- a/examples/lib/r41_dup.smlib	2026-10-28 13:28:00.326180500 -0400
++++ b/examples/lib/r41_dup.smlib	2026-10-28 13:26:21.010459980 -0400
+@@ -3,5 +3,5 @@
+ niryat thing
+ niryat thing
+ prakriya thing() {
+-    prati 7
++    nivartanam 7
+ }
+diff -ruN a/examples/lib/r41_vec.smlib examples/lib/r41_vec.smlib
+--- a/examples/lib/r41_vec.smlib	2026-10-28 13:28:00.326137506 -0400
++++ b/examples/lib/r41_vec.smlib	2026-10-28 13:26:21.010526750 -0400
+@@ -2,8 +2,8 @@
+ # R41 test: export visibility. Only `length` is exported; `helper` is private.
+ niryat length
+ prakriya length() {
+-    prati helper()
++    nivartanam helper()
+ }
+ prakriya helper() {
+-    prati 42
++    nivartanam 42
+ }
+diff -ruN a/examples/r71/evaluation_order.sm examples/r71/evaluation_order.sm
+--- a/examples/r71/evaluation_order.sm	2026-10-28 13:28:00.324893609 -0400
++++ b/examples/r71/evaluation_order.sm	2026-10-28 13:26:21.009577746 -0400
+@@ -1,9 +1,9 @@
+ prakriya stamp(a, v) {
+     a[0] = a[0] * 10 + v
+-    prati v
++    nivartanam v
+ }
+ prakriya collect(a, b, c) {
+-    prati a * 100 + b * 10 + c
++    nivartanam a * 100 + b * 10 + c
+ }
+ mukhya() {
+     mala a[1]
