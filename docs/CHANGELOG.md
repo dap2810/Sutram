@@ -1,3 +1,44 @@
+## v401 - my own work while the rounds ran: eleven defects in the Sanskrit pack
+
+**`docs/LANG-PACK-AUDIT.md`.** **I read all 58 rows of `lang/sanskrit.lang` instead of waiting, and the file has real
+defects.**
+
+### Eight rows where the Devanagari is the WRONG WORD, not a variant
+| Latin | Pack says | Means | Should be |
+|---|---|---|---|
+| `chakra` | पुनरावर्तन | repetition | **चक्र** |
+| `anya` | अन्यत्र | elsewhere | **अन्य** |
+| `agrim` | उद्देश्य | purpose | **अग्रिम** |
+| **`mala`** | **पङ्क्ति** | **row - and `pankti` is the RETIRED array word** | **माला** |
+| `ganana` | सृजन | creation | **गणना** |
+| `yantra` | निष्क्रिय | inactive | **यन्त्र** |
+| `satya` | परिग्रह | possession | **सत्य** |
+| `tak` | पर्यन्त | limit | **तक्** |
+
+**A Devanagari programmer writing `चक्र` for the loop gets an error, because the pack only accepts `पुनरावर्तन`.** **And `mala`
+is mapped to the retired word `पङ्क्ति`, so the current array keyword has to be typed as the old one.**
+
+### Three rows are ABBREVIATIONS, not words
+**`vitti` -> वि॰, `likha` -> लि॰, `prakriya` -> प्र॰, using U+0970.** **Each of those three ALSO has a full row, so both work and
+nobody noticed.** **The abbreviation rows are clutter.**
+
+### And four Latin names appear more than once
+**`likha` three times - with three different Devanagari spellings - plus `vitti`, `prakriya` and `shabda` twice each.** **Nothing
+in the file says which is canonical.**
+
+### The finding that settles the naming debate for ten builtins
+**The pack ALREADY has proper Sanskrit compounds for them: `kosh_push` -> कोशपुष्, `kosh_cap` -> कोशक्षमता, `kosh_empty` ->
+कोशरिक्त, `kosh_peek` -> कोशशिखर, `kosh_dequeue` -> कोशनिर्गम, `kosh_enqueue` -> कोशप्रवेश.**
+
+**So the Sanskrit for these was chosen deliberately and is already in the tree.** **The Devanagari column is AHEAD of the Latin
+column - the answer to "what should `kosh_push` be called" is sitting in the pack.**
+
+**One caution: `kosh_pop` -> कोशपोप् looks like the English "pop" transliterated, not a Sanskrit word.** **Worth a check before
+it is treated as precedent.**
+
+### All five fixes are edits to one data file
+**No compiler change, and none changes what a Latin program does.** **The pack is data.**
+
 ## v400 - the `nivartanam` rename is three-quarters done, and the last quarter has a trap in it
 
 **State: compiler v257 speaks `nivartanam`, guard 0 DIFFER, both spellings byte-identical.** **Muse's `lib/` (677) and
