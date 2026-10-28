@@ -1,44 +1,42 @@
-# Sutram — ROUND-129: the memory vocabulary, dictionary-checked before we build anything
+# Sutram — ROUND-129: audit the 305 library names against their BODIES
 
-**Base:** main at **v404** · **Deliver into:** `ChatGPT-to-Sarvam/`
+**Base:** main at **v404**, compiler **v258** · **Deliver into:** `ChatGPT-to-Sarvam/`
 
-**Read first:** `docs/MEMORY-MODEL.md`, `docs/OPEN-ISSUES.md`, `docs/WHATS-LEFT.md`.
+**Read first:** `docs/VOCABULARY-TABLE.md`, `docs/LIBRARY-ENGLISH-AUDIT.md`.
 
-## Why now
-**The owner has set aside the vocabulary work to build memory management next.** **Sutram has `nirmmita` (allocate) and NO
-`free`, and `kosh` leaks about 15.3 bytes per item.**
+**This round REPLACES the earlier ROUND-129, which was about memory vocabulary.** **That work is deferred by the owner.**
+**This is the vocabulary work, and it is the last deep piece of it.**
 
-**The owner has refused a garbage collector - it needs a runtime, and this language's promise is a native binary with no
-runtime.** **So the choice is between explicit free, region allocation, and compile-time ownership.**
+## Why this round exists
+**`nishan` means "mark" and computes a matrix TRACE.** **`pehchan` is Hindi for identity.** **`samanvaya_akar_na` says "shape" and
+checks whether m×n FITS.** **Every one of those was found by reading the BODY, not the name.**
 
-## WS1 — the five words, checked
-**I proposed these and I have been wrong four times this session on Sanskrit.** **Check each one and say plainly if it is wrong:**
+**So the naming problem in this library is not English - it is names that are wrong about what the function does.** **A Sanskrit
+name that describes the wrong operation is worse than an English name that describes the right one, because it looks finished.**
 
-| My proposal | What I claim it means | What I want to know |
-|---|---|---|
-| **`nyāsa`** (न्यास) | **a deposit held in trust, which must be returned** | **Is it the right word for "allocate"? Is the obligation sense really there?** |
-| **`pratyarpana`** (प्रत्यर्पण) | **returning a deposit** | **Is this the right word for "free"?** |
-| **`kośa`** (कोश) | **sheath, as in the pañcakośa - nested layers shed whole, outside in** | **Is a `kośa` a legitimate word for a memory REGION?** |
-| **`saṃskāra`** (संस्कार) | **the impressions left by past actions - the residue in reused memory** | **Is this honest, or am I romanticising?** |
-| **`ṛṇa`** (ऋण) | **debt** | **Is "you owe three deposits" a fair use of the word?** |
+## WS1 — the audit, one function at a time
+**All 305 library functions across the 24 modules in `lib/`.** **For each, read the body and answer: does the name describe
+what the code does?**
 
-**And the one I most want an answer to: is there a SINGLE Sanskrit word for "the act of letting go of what you hold"?**
-**Because that is what `free` is, and English does not have a clean word for it either - `free` also means "no cost".**
+**Output a TSV: `module | function | what the body actually does | name_accurate(Y/N) | why_not | better_name`**
 
-## WS2 — the honest design question
-**Three options, and I want your judgement on which fits a language that must stay runtime-free:**
+**Only `N` rows need a better name.** **Do not propose a change for a name that is accurate - I want the failures, not a
+rewrite of the whole library.**
 
-1. **Explicit `nyāsa` / `pratyarpana`** - **the programmer pairs them. Leaks are possible.**
-2. **`kośa` regions** - **allocate is a pointer bump, free is a pointer reset. Faster than malloc. Nothing can leak, because there is nothing to forget.**
-3. **Compile-time ownership** - **Rust's approach. Zero runtime cost, but it constrains how you write.**
+## WS2 — the four I already know are wrong, as the calibration
+**Start with these four and check my reading of them:**
+- **`nishan`** - I say it computes the matrix trace (sum of the diagonal). **Is that right?**
+- **`pehchan`** - I say it builds the identity matrix.
+- **`samanvaya_akar_na`** - I say it checks whether m×n fits in a length.
+- **`chay_*`** - I said `chay` was not a Sanskrit word; **you corrected me that चय means heap.** **So these four are FINE, and I was
+wrong.** **Confirm that so I stop questioning them.**
 
-**My recommendation is 2 as the default and 1 for the low-level user.** **Tell me if that is wrong, and why.**
+**If my reading of any of the first three is wrong, say so - I have been wrong four times this session on names.**
 
-## WS3 — the measurement I want you to specify
-**I will measure arena allocation against malloc myself.** **Tell me the exact experiment that would settle it:**
-**how many allocations, what sizes, how many iterations, and what to measure.** **I want a benchmark whose result I cannot
-argue with, whichever way it comes out.**
+## WS3 — and the 88 functions with no comment
+**88 of 305 have no comment above them.** **Muse is writing them in ROUND-55.**
+**For any function where the name is accurate but the body is surprising, say so** - **a comment saying "this looks like X but
+does Y" is worth more than a rename.**
 
 ## Return
-`ROUND-129-MEMORY-VOCABULARY.md` with: the five word verdicts, your answer on the single "let go" word, your judgement on the
-three options, and the benchmark spec. **No code.**
+`ROUND-129-LIBRARY-NAMES.md` with the TSV, the four calibration verdicts, and the surprising-body list. **No code changes.**
