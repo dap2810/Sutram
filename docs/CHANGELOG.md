@@ -1,3 +1,39 @@
+## v392 - Muse found four of my proposals wrong, and Claude stopped where it should have
+
+**Muse R50 and Claude R50 both returned. ChatGPT R125 has not.**
+
+### Muse: four rejections, and every one is right
+
+| My proposal | Muse's verdict | Why |
+|---|---|---|
+| **`likh` -> merge into `likha`** | **REJECT** | **They are different functions**: `likh` is raw write (2 args), `likha` is print (1-3). **Not duplicates.** |
+| **`shabda` -> merge into `likha`** | **REJECT** | **`shabda` prints string CONTENT, `likha` prints the ADDRESS.** **Different.** |
+| **`paadh` -> REMOVE as a duplicate** | **REJECT** | **Not a duplicate**: `pad` is 1-arg, `paadh` is 3-arg fd/buf/count read used by `patra`. |
+| **`kosh_enqueue` -> `kosh_purva_yuj`** | **REJECT** | **enqueue appends to the BACK; `purva` means FRONT.** **My direction was backwards.** |
+
+**Four for four wrong, and all four were wrong in the same way: I read the NAME and not the BODY.** **That is the
+`nishan` mistake again, and Muse caught it again.**
+
+### And three convention notes that change the proposal
+- **`pankti_len` -> `mala_maap`, not `mala_aayam`** - **the project uses `maap` for length in 7 library functions, and `aayam` is not the convention.**
+- **`kosh_len` -> `kosh_maap`** - same reason.
+- **`kosh_empty` -> `kosh_rikta`, not `kosh_rikt`** - **existing `rakh_rikta` and `suchi_rikta` use the full form.**
+
+### And the site counts, which are the real cost
+**`kosh_push` -> `kosh_khip`: 343 sites.** **`kosh_len`: 60.** **`ganit` -> `ganan`: 41.** **`kosh_pop`: 31.**
+**Everything else is under 25.** **So three renames carry 84% of the change surface.**
+
+### Claude: WS3 done, WS1 stopped correctly
+**Compiler v255, commit `8eade706`. Suite PASS=225, proofs 226/226, gates 44 PASS / 0 FAIL / 1 NOT-RUN** - **one new gate,
+"Devanagari default".**
+
+**The guard: 577 programs, 484 byte-identical, 91 refused identically, 2 DIFFER.** **And the 2 are exactly the two
+Devanagari examples that needed `--lang sanskrit` before and now compile without it.** **That is what an explained guard
+looks like.**
+
+**WS1 (`Sutram Error` -> `Sutram dosh`) was STOPPED, as the brief instructed** - **code matches on the literal, and one
+match would fail silently, in the Linux IDE.** **Claude did the right thing: it reported instead of changing it.**
+
 ## v391 - Claude gets the three Windows defects, so no one is idle while the vocabulary is reviewed
 
 **The owner asked why nothing came back.** **The answer is not that the rounds were missing - they are in the folders -
