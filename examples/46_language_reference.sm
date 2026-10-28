@@ -36,7 +36,7 @@ mukhya()
 prakriya joda(a, b)                 # function (up tak 3 arguments)
     prati a + b                 # return
 
-prakriya fib(n) {                   # braces are required for a body of >1 statement
+prakriya meru_ank(n) {                   # braces are required for a body of >1 statement
     yadi (n < 2) { prati n }
-    prati fib(n - 1) + fib(n - 2)
+    prati meru_ank(n - 1) + meru_ank(n - 2)
 }
