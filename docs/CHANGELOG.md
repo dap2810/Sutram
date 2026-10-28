@@ -1,3 +1,41 @@
+## v394 - three of my six "problems" do not exist, and all three parties proved it independently
+
+**I wrote six writing-style problems and asked Claude, ChatGPT and Muse to solve them.** **Three of the six were not problems.**
+**Each party measured, each caught the same three, and none of them took my word for it.**
+
+| My premise | What the compiler actually does |
+|---|---|
+| **P1: one labelled value takes three statements** | **`likha("x = ", x)` is ONE statement and prints `x = 42` plus a newline.** **The two-argument form has existed all along** (`.ge_lk_two`, line 16142). |
+| **P2: the loop is C-shaped with three clauses** | **The C-shape is a SYNTAX ERROR.** **The loop is already `chakra i = 0 tak 10 { ... }`** (`.ps_for`, line 9315). |
+| **P4: every `mukhya` ends with `prati 0`** | **Zero of 141 examples have `prati` in a `mukhya`.** **It is optional and the program exits 0 at its end.** |
+
+**Muse counted it: 135 three-statement print triples in 48 example files** - **405 lines that could be 135.** **So the language
+is fine and the EXAMPLES are written badly.** **Claude measured it: `likha("x = ", x)` compiled and run, transcript in
+`evidence-r51/today.txt`.** **ChatGPT found the source lines.**
+
+### What is actually real
+
+**1. `likha` with more than two values.** **One value is one statement; TWO values cost five** (`likha`, `lkhb`, `likha`,
+`lkhb`, `likha("\n")`). **Claude's fix: `likha("x = ", x, ", y = ", y)`** - **the parser arity goes from `db 1,3` to `db 1,6`
+(line 264), and the emitter gains about 40 lines beside `.ge_lk_two`.** **The argument count is known at compile time, so it
+costs nothing at runtime.** **All 55 three-argument calls in the tree pass `1` or an fd first, never a string literal, so the
+new form is selectable without touching an existing call.**
+
+**2. A real bug Claude found: `lkhb(2.5)` prints `4612811918334230528`** - **the raw IEEE-754 bit pattern, not the number.**
+**There is no float printer without a newline.**
+
+**3. `tak` is Hindi, not Sanskrit.** **ChatGPT proposes `chakra i = 0 arabhya 10 paryantam`** - **`arabhya` ("beginning from")
+and `paryantam` ("up to") are the genuine Sanskrit range construction.** **As an alternative spelling only, parsed
+contextually after `chakra`, so `tak` keeps working.**
+
+**4. The P5 error message** - **still real and still unaddressed.**
+
+### And the honest count of my own errors this session
+**Six times I concluded something was missing and it was there: the lexer, the concatenation size, the version check, the
+debugger, the reverse conversion, and now three syntax features at once.** **The pattern is always the same: I read the
+NAME and not the BODY.** **This time three independent parties measured before I could ship a fix for a feature that already
+worked.**
+
 ## v393 - the writing style: same six problems, three lenses, and every answer must be code
 
 **The owner asked for syntax ideas from the other AIs and a side-by-side comparison.** **Three AIs asked "what syntax should we
