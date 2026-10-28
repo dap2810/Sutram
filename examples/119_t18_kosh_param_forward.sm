@@ -1,14 +1,14 @@
 # Typed kosh parameters can be forwarded, participate in float-return inference,
 # and safely mutate shared length/data when no pointer replacement is required.
-prakriya wrapper(kosh dasham a) {
-    prati head(a) + tail(a)
+prakriya aavaran(kosh dasham a) {
+    prati shirsh(a) + puchh(a)
 }
 
-prakriya head(kosh dasham a) {
+prakriya shirsh(kosh dasham a) {
     prati a[0]
 }
 
-prakriya tail(kosh dasham a) {
+prakriya puchh(kosh dasham a) {
     prati kosh_pop(a)
 }
 
@@ -16,6 +16,6 @@ mukhya() {
     kosh dasham values[2]
     kosh_push(values, 1.25)
     kosh_push(values, 2.75)
-    likha(wrapper(values))
+    likha(aavaran(values))
     likha(kosh_len(values))
 }
