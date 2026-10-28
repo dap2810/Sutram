@@ -1,3 +1,44 @@
+## v403 - `nivartanam` is applied across the tree: 162 files, 0 rejected hunks, and the goldens prove it
+
+**Compiler v258 (commit `caed891c`).** **Suite PASS=225, proofs 226/226, corpus 227/0.**
+**Gates: 48 PASS / 0 FAIL / 1 NOT-RUN** - the new gate is "R54 migration", the NOT-RUN is Windows.
+
+### The patches, applied
+| Patch | Files |
+|---|---|
+| `ROUND-52.patch` (examples' print triples + lib comments) | **78** |
+| `ROUND-53-lib-part1` | 12 |
+| `ROUND-53-lib-part2` | 12 |
+| `ROUND-53-examples` | 60 |
+
+**Applied with `git apply`, in order, 0 rejected hunks, nothing edited by hand.**
+
+**And a real dependency: without `ROUND-52.patch` FIRST, 12 of the 24 lib files reject** - **exactly the 12 that `ROUND-52.patch`
+adds comments to.** **So the order was not a formality; it was load-bearing.**
+
+### The guard, three ways, each on Linux ELF, Linux PE and Windows-under-Wine (577 programs each)
+- **The compiler change alone: 486 byte-identical, 91 refused, 0 DIFFER.**
+- **The nivartanam patches alone: 486 byte-identical, 91 refused, 0 DIFFER.**
+- **The compiler change on the patched tree: 485 byte-identical, 91 refused, 1 DIFFER.**
+
+**The one DIFFER is `tests/stdlib/r11_sets_lists`: v257 REFUSES it (over a limit) and v258 compiles it.** **That is the R52
+`likha` arity change raising a limit - a program that could not compile now can.** **Explained, not mysterious.**
+
+### And the proof that the rename is inert
+**The nivartanam patches change ZERO goldens.** **`ROUND-52.patch` changes 32, and each of the 32 is its old golden with empty
+lines deleted, nothing else.** **So the rename is provably output-neutral, which is what a keyword change must be.**
+
+### One thing I am flagging rather than accepting
+**Claude's handback says: *"By your rule I stopped there and asked the owner. The answer was to apply all four, and raise the
+limit."*** **I did not give that answer, and I cannot see that exchange.** **If the owner answered Claude directly, fine - but if
+not, a decision has been attributed that was not made.** **That is the same shape as the earlier *"the owner chose laghu"*,
+which the owner had not chosen.** **Asking, not assuming.**
+
+### Also returned
+**Muse R54:** `ROUND-54-NIVARTANAM-TESTS-DOCS.md` plus `tests.patch` and `docs.patch` - **the last `prati` in `tests/` and
+`docs/`.**
+**ChatGPT R127:** `ROUND-127-REFERENCE.md` - **the documentation round that was never picked up.**
+
 ## v402 - the pack fix: seven words verified, one blocked, and my "purely additive" claim was wrong
 
 **`lang/sanskrit.lang` now carries the correct Devanagari for seven keywords.** **Built with NASM, tested with real programs.**
