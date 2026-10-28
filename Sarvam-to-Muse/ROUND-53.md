@@ -1,52 +1,36 @@
-# Sutram — ROUND-53: migrate the library and the examples to `nivartan`
+# Sutram — ROUND-53 (corrected): migrate to `nirvatanam` — BUT DO NOT START YET
 
 **Base:** main at **v395** · **Deliver into:** `Muse-to-Sarvam/`
+**Supersedes the earlier ROUND-53.** **Read this one; the word changed.**
 
-**Read first:** `docs/WHATS-LEFT.md`, and **finish R52 first if it is still open** - this round comes after it.
+## GATE - read this first
+**The owner's word is `nirvatanam` (निर्वतनम्).** **ChatGPT is being asked to confirm the spelling in ROUND-128 before this
+migration runs.**
 
-## The owner's decision
-**`nivartan` becomes the keyword. `prati` stays accepted as a legacy alias.**
+**So: do WS1 now, and WAIT for ChatGPT's answer before WS2 and WS3.**
+**If ChatGPT says the spelling is wrong, the migration is one word different and it is cheaper to find out now than after
+1,400 sites move.**
 
-**Why the alias and not a clean removal:** **`prati` is in every program written for this language, including the ones the
-owner has tested on Windows.** **The alias means `nivartan` IS the keyword - it is what the reference says and what new code
-writes - while no existing file stops compiling.** **The guard then proves it: 0 DIFFER.**
-
-## The fact that makes this safe
-**`prati` is a statement keyword. It never appears in program output.** **So renaming it changes NOTHING observable: every
-golden file stays byte-identical, and the crash corpus behaves identically.** **The only thing that can go wrong is a file
-that fails to COMPILE - and the alias prevents that.**
-
-**Devanagari: `निवर्तन` (nivartana) for `nivartan`.** **`प्रति` stays as the Devanagari alias.**
+## Why this is safe when it does run
+**`prati` is a statement keyword and never appears in program output.** **So every golden must stay BYTE-IDENTICAL.**
 
 ---
 
-## WS1 — count it first
+## WS1 — count it, now
+**Count every `prati` in the tree:** `lib/`, `examples/`, `tests/`, `docs/`. **Numbers by directory.** **That is the change
+surface and it is the first thing to report.** **Do this before the gate opens.**
 
-**Before changing anything, count every `prati` in the tree:** **how many in `lib/` (functions and statements), how many in
-`examples/`, how many in `tests/`, how many in `docs/`.** **Give the numbers by directory.** **That is the change surface,
-and it is the first thing to report.**
+## WS2 — migrate `lib/` (after the gate)
+**Every `prakriya` ending in `prati x` becomes `nirvatanam x`.** **Library proofs must still pass 226/226.**
 
-## WS2 — migrate `lib/`
+## WS3 — migrate `examples/` (after the gate)
+**Every `prati` becomes `nirvatanam`.** **Compile, run, compare against the UNCHANGED golden.** **A golden that differs means
+the rename broke something - revert that file and list it.**
 
-**Every `prakriya` in `lib/` that ends with `prati x` becomes `nivartan x`.**
-
-**Then: the library proofs must still pass 226/226.** **If any fails, that function's body changed in a way it should not
-have - revert it and list it.**
-
-## WS3 — migrate `examples/`
-
-**Every `prati` in `examples/` becomes `nivartan`.**
-
-**And here is the test that makes it safe: every golden must stay BYTE-IDENTICAL, because `prati` never prints anything.**
-**So: change, compile, run, compare against the unchanged golden.** **A golden that differs means the rename broke something
-and that file must be reverted and listed.**
-
-**Report: files changed, and any file where the output changed.**
-
-## WS4 — and the honest check
-**After the migration, does any file still use `prati`?** **If yes, list it and say why it was left.**
-**Then re-run the counts from WS1 and give the before and after.**
+## WS4 — the honest check
+**After migration, does any file still use `prati`?** **List it and say why.** **Re-run the WS1 counts and give before and
+after.**
 
 ## Return
-`ROUND-53-NIVARTAN.md` with: the counts before and after · **every file changed** · **any file reverted with the reason** ·
-**the library proof result** · **the suite result**.
+`ROUND-53-NIVATANAM.md` with the counts · every file changed · any file reverted with the reason · the library proof result ·
+the suite result. **And say explicitly whether you waited for the gate.**
