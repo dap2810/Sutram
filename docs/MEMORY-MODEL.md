@@ -1,3 +1,10 @@
+> **Status at v405.** The memory model below is unchanged and accurate. **Memory is the NEXT block of work, after the vocabulary round closes.**
+>
+> **The facts that matter:** `nirmmita` allocates and there is **no `free`**. **`kosh` leaks about 15.3 bytes per item** — a million appends leaks ~15 MB with no way to recover it.
+> **A garbage collector is refused:** it needs a runtime, and the promise is a native binary with no runtime.
+> **The three real options are explicit allocate/free, region allocation, and compile-time ownership** — and **region allocation is faster than `malloc`, not slower**, because allocating is a pointer bump and freeing is a pointer reset.
+> **The measurement that should settle it is not done.** It has to be written in assembly in this sandbox (NASM is available, there is no C compiler) — which is the right language for it anyway, because `nirmmita` uses `mmap` directly.
+
 # Sutram — current memory observations and proposed ownership model
 > **STATUS — HISTORICAL RESEARCH AND UNIMPLEMENTED DESIGN (R70 snapshot).** Current-state observations below are pinned to an older compiler revision; proposed ownership, borrowing and automatic cleanup are NOT implemented. Specific bounds checks added later do not establish general memory safety. Consult `docs/OPEN-ISSUES.md` and current source for present status.
 
