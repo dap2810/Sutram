@@ -234,7 +234,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v256) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v257) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -261,7 +261,7 @@ r54_builtin_arity_table:
     db 1,1               ; 4 pad
     db 2,3               ; 5 dvaram
     db 3,3               ; 6 paadh
-    db 1,3               ; 7 likha
+    db 1,6               ; 7 likha (R52: up to six values)
     db 1,1               ; 8 band
     db 0,0               ; 9 netsock
     db 2,2               ; 10 netbind
@@ -673,11 +673,15 @@ r54_builtin_arity_table:
         db 0x45,0x84,0xC9,0x74,0x06                  ; test sign / jz
         db 0xC6,0x06,0x2D,0x48,0xFF,0xCE             ; '-' / dec rsi
         db 0x48,0xFF,0xC6                             ; inc rsi
-        db 0x48,0x8D,0x54,0x24,0x40,0x48,0x29,0xF2  ; length = rsp+64-rsi
+        db 0x48,0x8D,0x54,0x24                       ; length = rsp+64-rsi:
+    float_print_len_disp:                            ;   R52: lkhb emits 0x3F here, so the
+        db 0x40                                      ;   newline at [rsp+63] is not written
+        db 0x48,0x29,0xF2
         db 0xBF,0x01,0x00,0x00,0x00                  ; edi=stdout
         db 0xB8,0x01,0x00,0x00,0x00                  ; eax=write
     float_print_prefix_end:
     FLOAT_PRINT_PREFIX_LEN equ float_print_prefix_end - float_print_prefix_bytes
+    FLOAT_PRINT_NL_OFF equ float_print_len_disp - float_print_prefix_bytes   ; R52
     float_print_suffix_bytes:
         db 0x48,0x83,0xC4,0x40                       ; add rsp,64
     float_print_suffix_end:
@@ -8376,6 +8380,8 @@ r48_print_undefined_function:
     lea rdi, [rel r48_msg_end]
     call print_str_z
     call r51_print_original_context
+    mov rdi, r12                   ; R52: the yoj hint, in check mode too
+    call r52_print_yoj_hint
     jmp .r48_sem_done
 .r48_fallback:
     ; In unusual imported/rewritten source, a call-name pointer may not
@@ -8386,6 +8392,8 @@ r48_print_undefined_function:
     call print_str_z
     lea rdi, [rel msg_nl]
     call print_str_z
+    mov rdi, r12                   ; R52
+    call r52_print_yoj_hint
 .r48_sem_done:
     pop r13
     pop r12
@@ -9350,6 +9358,29 @@ r45_parse_stmt_body:                ; R45: parse_stmt is the wrapper in src/r45_
     mov rcx, [rax]
     cmp rcx, TOK_IDENT
     jne .ps_for_check_kw
+    ; R52: `chakra i = a arabhya b paryantam` ("beginning from a, up to b") is the
+    ; same loop as `chakra i = a tak b`. Both words are read only here, as names:
+    ; neither is reserved, so a program may still use them as identifiers.
+    mov rdi, [rax+8]
+    lea rsi, [rel r52_w_arabhya]
+    call strcmp
+    test rax, rax
+    jnz .r52_not_arabhya
+    call advance_tok          ; consume 'arabhya'
+    call parse_expr           ; rax = end expr
+    push rax                  ; save end expr
+    call cur_tok
+    cmp qword [rax], TOK_IDENT
+    jne parse_error
+    mov rdi, [rax+8]
+    lea rsi, [rel r52_w_paryantam]
+    call strcmp
+    test rax, rax
+    jnz parse_error
+    call advance_tok          ; consume 'paryantam'
+    jmp .r52_for_body
+.r52_not_arabhya:
+    call cur_tok
     ; Check if it's literally 'tak' (3 bytes: 't','a','k',0)
     mov rdi, [rax+8]
     movzx ecx, word [rdi]
@@ -9380,6 +9411,7 @@ r45_parse_stmt_body:                ; R45: parse_stmt is the wrapper in src/r45_
     ; Parse end expression
     call parse_expr           ; rax = end expr
     push rax                  ; save end expr
+.r52_for_body:
     ; Parse body
     call parse_body           ; rax = body block
     mov rdi, [rsp+16]         ; R7: r4_seen_count before the loop variable
@@ -12455,6 +12487,8 @@ backpatch_calls:
     call print_str_z
     lea rdi, [rel msg_nl]
     call print_str_z
+    mov rdi, r14                   ; R52: a library prakriya? say which `yoj` brings it in
+    call r52_print_yoj_hint
     mov rdi, 1
     call os_exit
 .bc_next:
@@ -15923,6 +15957,10 @@ gen_expr:
     ; lkhb(x) = print number WITHOUT trailing newline
     ; Reuse likha's number code path with the no-newline flag set
     mov qword [rel lk_no_nl], 1
+    mov rdi, [rbx+24]              ; R52: a dasham prints as a number, not its raw
+    call expr_is_float             ; IEEE-754 bits (lkhb(2.5) printed 4612811918334230528)
+    test rax, rax
+    jnz .ge_lk_float
     jmp .ge_lk_3reg
 
 .ge_call_grahan:
@@ -16110,6 +16148,11 @@ gen_expr:
     je .ge_lk_str
     cmp rax, 2
     je .ge_lk_two
+    cmp rax, 3                     ; R52: 4 to 6 values always print; 3 print when the
+    ja .r52_lk_many                ; first is a string literal (every existing 3-argument
+    mov rcx, [rbx+24]              ; call passes 1 or an fd first: a raw write)
+    cmp qword [rcx], AST_STR
+    je .r52_lk_many
     ; 3-arg form: likha(fd, buf, count)
     mov rax, [rbx+24]
     call gen_expr
@@ -16142,6 +16185,39 @@ gen_expr:
     xor edi, edi
     call emit_byte
     call emit_syscall
+    jmp .ge_call_done
+.r52_lk_many:
+    ; R52 likha(v1, ..., vn), n = 3..6: each value but the last as lkhb (a number,
+    ; no newline) or likha (a string literal, which has none); the last as likha,
+    ; so the line ends the way likha(a, b) ends it.
+    push r12
+    push r13
+    mov r13, [rbx+16]              ; n
+    xor r12d, r12d
+.r52_lk_next:
+    cmp r12, r13
+    jae .r52_lk_done
+    mov rcx, [rbx + 24 + r12*8]    ; argument i
+    push rcx
+    call alloc_ast
+    pop rcx
+    mov qword [rax], AST_CALL
+    mov qword [rax+16], 1
+    mov [rax+24], rcx
+    mov qword [rax+8], BN_LIKHA
+    lea rdx, [r12 + 1]
+    cmp rdx, r13
+    je .r52_lk_emit                ; the last value: likha
+    cmp qword [rcx], AST_STR
+    je .r52_lk_emit                ; a string literal: likha (no newline)
+    mov qword [rax+8], BN_LKHB     ; a number: lkhb
+.r52_lk_emit:
+    call gen_expr
+    inc r12
+    jmp .r52_lk_next
+.r52_lk_done:
+    pop r13
+    pop r12
     jmp .ge_call_done
 .ge_lk_two:
     ; likha(a, b): print a, then print b — synthesise two 1-arg likha calls
@@ -16369,6 +16445,12 @@ gen_expr:
     cmp r13, FLOAT_PRINT_PREFIX_LEN
     jae .glf_syscall
     movzx edi, byte [r12+r13]
+    cmp r13, FLOAT_PRINT_NL_OFF    ; R52: lkhb of a dasham: length excludes the newline
+    jne .glf_byte
+    cmp qword [rel lk_no_nl], 0
+    je .glf_byte
+    mov edi, 0x3F
+.glf_byte:
     call emit_byte
     inc r13
     jmp .glf_prefix
@@ -16386,6 +16468,7 @@ gen_expr:
 .glf_done:
     pop r13
     pop r12
+    mov qword [rel lk_no_nl], 0    ; R52
     jmp .ge_call_done
 
 .ge_lk_3reg:
@@ -24015,6 +24098,7 @@ strcmp:
 %include "src/r32_ffi.inc"
 %include "src/r38_fail_alloc.inc"
 %include "src/r45_debug.inc"
+%include "src/r52_yoj_hint.inc"
 
 itoa:
     mov rax, rdi

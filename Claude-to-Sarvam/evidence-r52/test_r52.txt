@@ -1,0 +1,11 @@
+PASS  likha with 3 to 6 values prints one line; likha(a, b) and the raw 3-argument write are unchanged (got 'x = 42, y = 7\nd = 2.500000 and x+y = 49\nabcde6\nthree: 42!\n42 7\ntwo: 42\nraw\n')
+PASS  likha with seven values is refused
+PASS  lkhb prints a dasham as a number, no newline; an integer as before (got '2.500000|\n-1.250000|\n7|\n')
+PASS  the yoj hint after agyat prakriya (got "Sutram Error: agyat prakriya: brihat_yuj\n  Sanket: 'brihat_yuj' 'brihat' ghatake asti; 'yoj brihat' iti likhatu\n")
+PASS  --check prints the same hint
+PASS  a name in no module: no hint
+PASS  with `yoj brihat` the same call compiles
+PASS  chakra i = 0 arabhya 4 paryantam: the same binary as chakra i = 0 tak 4
+PASS  arabhya and paryantam are not reserved: names, even inside the loop (got '2\n3\n4\n5\n')
+PASS  arabhya without paryantam is a grammar error
+r52: 10 checks, 0 failed
