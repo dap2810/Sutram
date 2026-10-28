@@ -1,0 +1,1356 @@
+diff --git a/examples/115_perf_loop_bottom.sm b/examples/115_perf_loop_bottom.sm
+index e59a245..d78a222 100644
+--- a/examples/115_perf_loop_bottom.sm
++++ b/examples/115_perf_loop_bottom.sm
+@@ -15,14 +15,14 @@ mukhya()
+     likha(z)
+     likha(" ")
+ 
+-    vitti asc = 0
+-    chakra a = 1 tak 3 { asc = asc + a }
+-    likha(asc)
++    vitti aarohi = 0
++    chakra a = 1 tak 3 { aarohi = aarohi + a }
++    likha(aarohi)
+     likha(" ")
+ 
+-    vitti desc = 0
+-    chakra d = 3 tak 1 { desc = desc + d }
+-    likha(desc)
++    vitti avarohi = 0
++    chakra d = 3 tak 1 { avarohi = avarohi + d }
++    likha(avarohi)
+     likha(" ")
+ 
+     vitti f = 0
+@@ -34,9 +34,9 @@ mukhya()
+     likha(f)
+     likha(" ")
+ 
+-    vitti lo = 5
+-    vitti hi = 3
+-    vitti empty = 0
+-    chakra k = lo tak hi { empty = empty + 1 }
+-    likha(empty)
++    vitti nimna = 5
++    vitti uchcha = 3
++    vitti rikta = 0
++    chakra k = nimna tak uchcha { rikta = rikta + 1 }
++    likha(rikta)
+     likha("\n")
+diff --git a/examples/118_t18_kosh_param.sm b/examples/118_t18_kosh_param.sm
+index 237dc98..9af82d0 100644
+--- a/examples/118_t18_kosh_param.sm
++++ b/examples/118_t18_kosh_param.sm
+@@ -17,8 +17,8 @@ mukhya() {
+     likha(madhya(mulya))
+     likha(mulya[1])
+ 
+-    kosh nums[2]
+-    kosh_push(nums, 3)
+-    kosh_push(nums, 7)
+-    likha(kacch_yog(nums))
++    kosh ankavali[2]
++    kosh_push(ankavali, 3)
++    kosh_push(ankavali, 7)
++    likha(kacch_yog(ankavali))
+ }
+diff --git a/examples/120_t18_kosh_param_mismatch.sm b/examples/120_t18_kosh_param_mismatch.sm
+index 920286b..edabec0 100644
+--- a/examples/120_t18_kosh_param_mismatch.sm
++++ b/examples/120_t18_kosh_param_mismatch.sm
+@@ -4,7 +4,7 @@ prakriya pratham(kosh dasham a) {
+ }
+ 
+ mukhya() {
+-    kosh raw[1]
+-    kosh_push(raw, 7)
+-    likha(pratham(raw))
++    kosh kachcha[1]
++    kosh_push(kachcha, 7)
++    likha(pratham(kachcha))
+ }
+diff --git a/examples/122_t18_kosh_param_devanagari.sm b/examples/122_t18_kosh_param_devanagari.sm
+index 8267a6e..0d672f4 100644
+--- a/examples/122_t18_kosh_param_devanagari.sm
++++ b/examples/122_t18_kosh_param_devanagari.sm
+@@ -4,7 +4,7 @@ prakriya pratham(कोश दशम a) {
+ }
+ 
+ mukhya() {
+-    कोश दशम values[1]
+-    kosh_push(values, 2.25)
+-    likha(pratham(values))
++    कोश दशम mulya[1]
++    kosh_push(mulya, 2.25)
++    likha(pratham(mulya))
+ }
+diff --git a/examples/12_elif.sm b/examples/12_elif.sm
+index 788c124..52b3cb6 100644
+--- a/examples/12_elif.sm
++++ b/examples/12_elif.sm
+@@ -4,15 +4,15 @@
+ mukhya()
+     likha("=== Elif Demo ===\n")
+ 
+-    vitti score = 75
++    vitti praptank = 75
+ 
+-    yadi (score >= 90) {
++    yadi (praptank >= 90) {
+         likha("Grade: A\n")
+-    } anya yadi (score >= 80) {
++    } anya yadi (praptank >= 80) {
+         likha("Grade: B\n")
+-    } anya yadi (score >= 70) {
++    } anya yadi (praptank >= 70) {
+         likha("Grade: C\n")
+-    } anya yadi (score >= 60) {
++    } anya yadi (praptank >= 60) {
+         likha("Grade: D\n")
+     } anya {
+         likha("Grade: F\n")
+diff --git a/examples/133_perf_float_scalar_call_rhs.sm b/examples/133_perf_float_scalar_call_rhs.sm
+index fdd96b5..1f62270 100644
+--- a/examples/133_perf_float_scalar_call_rhs.sm
++++ b/examples/133_perf_float_scalar_call_rhs.sm
+@@ -19,10 +19,10 @@ mukhya() {
+     s = s / ardh(x)
+     likha(s)
+     likha(x)
+-    vitti two = 2
+-    s = s + two
++    vitti dvi = 2
++    s = s + dvi
+     likha(s)
+-    vitti truth = 0
+-    truth = s > ardh(x)
+-    likha(truth)
++    vitti tathya = 0
++    tathya = s > ardh(x)
++    likha(tathya)
+ }
+diff --git a/examples/135_r30_float_index_scalar.sm b/examples/135_r30_float_index_scalar.sm
+index 5df2ce8..f8153cd 100644
+--- a/examples/135_r30_float_index_scalar.sm
++++ b/examples/135_r30_float_index_scalar.sm
+@@ -7,15 +7,15 @@ mukhya() {
+     kosh dasham ank_suchi[2]
+     kosh_push(ank_suchi, 2.0)
+     kosh_push(ank_suchi, 4.0)
+-    dasham weight = 1.5
++    dasham bhar = 1.5
+     dasham phal = 0.0
+-    phal = ank_suchi[0] + weight
++    phal = ank_suchi[0] + bhar
+     likha(phal)
+-    phal = ank_suchi[1] - weight
++    phal = ank_suchi[1] - bhar
+     likha(phal)
+-    phal = ank_suchi[0] * weight
++    phal = ank_suchi[0] * bhar
+     likha(phal)
+-    phal = ank_suchi[1] / weight
++    phal = ank_suchi[1] / bhar
+     likha(phal)
+     phal = ank_suchi[0] + shunya_badl(ank_suchi)
+     likha(phal)
+diff --git a/examples/138_r30_float_comparison_index.sm b/examples/138_r30_float_comparison_index.sm
+index fb6b1f8..908536b 100644
+--- a/examples/138_r30_float_comparison_index.sm
++++ b/examples/138_r30_float_comparison_index.sm
+@@ -4,14 +4,14 @@ mukhya() {
+     kosh dasham datt[2]
+     kosh_push(datt, 3.0)
+     kosh_push(datt, 9.0)
+-    dasham threshold = 4.0
+-    vitti yes = 0
+-    yes = datt[0] < threshold
+-    likha(yes)
+-    yes = datt[1] > threshold
+-    likha(yes)
+-    yes = yog_ek(datt[0]) == threshold
+-    likha(yes)
+-    yes = (datt[1] - datt[0]) <= threshold
+-    likha(yes)
++    dasham seema = 4.0
++    vitti parinam = 0
++    parinam = datt[0] < seema
++    likha(parinam)
++    parinam = datt[1] > seema
++    likha(parinam)
++    parinam = yog_ek(datt[0]) == seema
++    likha(parinam)
++    parinam = (datt[1] - datt[0]) <= seema
++    likha(parinam)
+ }
+diff --git a/examples/139_r30_float_mixed_fallback.sm b/examples/139_r30_float_mixed_fallback.sm
+index 6690845..181fc34 100644
+--- a/examples/139_r30_float_mixed_fallback.sm
++++ b/examples/139_r30_float_mixed_fallback.sm
+@@ -6,12 +6,12 @@ mukhya() {
+     dasham y = 3.0
+     dasham z = 4.0
+     dasham q = 5.0
+-    dasham spill = 6.0
+-    vitti offset = 2
++    dasham uchchhal = 6.0
++    vitti antar = 2
+     dasham nirgat = 0.0
+-    nirgat = v[0] + offset
++    nirgat = v[0] + antar
+     likha(nirgat)
+-    nirgat = v[0] + spill
++    nirgat = v[0] + uchchhal
+     likha(nirgat)
+     nirgat = (x + y * z) / q
+     likha(nirgat)
+diff --git a/examples/13_negatives.sm b/examples/13_negatives.sm
+index 8e1b093..de1727d 100644
+--- a/examples/13_negatives.sm
++++ b/examples/13_negatives.sm
+@@ -14,11 +14,11 @@ mukhya()
+     vitti sankalan = x + y
+     likha("x + y = ", sankalan)
+ 
+-    vitti diff = x - y
+-    likha("x - y = ", diff)
++    vitti bhed = x - y
++    likha("x - y = ", bhed)
+ 
+-    vitti prod = x * 3
+-    likha("x * 3 = ", prod)
++    vitti gunanphal = x * 3
++    likha("x * 3 = ", gunanphal)
+ 
+     # Unary minus on expressions
+     vitti z = -3 + 10
+diff --git a/examples/140_r30_index_side_effect.sm b/examples/140_r30_index_side_effect.sm
+index e1c592b..e0af5b7 100644
+--- a/examples/140_r30_index_side_effect.sm
++++ b/examples/140_r30_index_side_effect.sm
+@@ -9,11 +9,11 @@ prakriya pad_pashchat(kosh dasham ank_mala) {
+ mukhya() {
+     kosh dasham ank_mala[1]
+     kosh_push(ank_mala, 2.0)
+-    dasham delta = 1.5
++    dasham antar = 1.5
+     dasham nirgat = 0.0
+-    nirgat = ank_mala[badl_sanket(ank_mala)] + delta
++    nirgat = ank_mala[badl_sanket(ank_mala)] + antar
+     likha(nirgat)
+     likha(ank_mala[0])
+-    nirgat = pad_pashchat(ank_mala) - delta
++    nirgat = pad_pashchat(ank_mala) - antar
+     likha(nirgat)
+ }
+diff --git a/examples/15_sutra_const.sm b/examples/15_sutra_const.sm
+index 5427660..8f62d14 100644
+--- a/examples/15_sutra_const.sm
++++ b/examples/15_sutra_const.sm
+@@ -8,8 +8,8 @@ mukhya()
+ 
+     likha("MAX_VAL = ", MAX_VAL)
+ 
+-    vitti rem = 17 % 5
+-    likha("17 % 5 = ", rem)
++    vitti avashesh = 17 % 5
++    likha("17 % 5 = ", avashesh)
+ 
+     vitti a = 12 & 10
+     likha("12 & 10 = ", a)
+diff --git a/examples/16_advanced.sm b/examples/16_advanced.sm
+index b39130c..bef4b7f 100644
+--- a/examples/16_advanced.sm
++++ b/examples/16_advanced.sm
+@@ -24,17 +24,17 @@ mukhya()
+     }
+     likha("\n")
+ 
+-    vitti flags = 0
+-    flags = flags | 1
+-    flags = flags | 4
+-    likha("Flags: ", flags)
++    vitti dhvaj_gana = 0
++    dhvaj_gana = dhvaj_gana | 1
++    dhvaj_gana = dhvaj_gana | 4
++    likha("Flags: ", dhvaj_gana)
+ 
+-    vitti check = flags & 4
+-    yadi (check != 0) {
++    vitti pariksha = dhvaj_gana & 4
++    yadi (pariksha != 0) {
+         likha("Bit 2 is set\n")
+     }
+ 
+-    abhava(flags > 0)
++    abhava(dhvaj_gana > 0)
+     likha("All assertions passed\n")
+ 
+     likha("=== Done ===\n")
+diff --git a/examples/17_booleans.sm b/examples/17_booleans.sm
+index 2ad6311..76090a4 100644
+--- a/examples/17_booleans.sm
++++ b/examples/17_booleans.sm
+@@ -5,29 +5,29 @@
+ # && = logical AND, || = logical OR
+ 
+ mukhya()
+-    satya is_ready = purna
+-    satya is_done = shunya
++    satya sajj = purna
++    satya sampanna = shunya
+ 
+     likha("=== Booleans & Logic ===\n")
+ 
+-    likha("is_ready = ", is_ready)
++    likha("is_ready = ", sajj)
+ 
+-    likha("is_done = ", is_done)
++    likha("is_done = ", sampanna)
+ 
+     # Logical AND
+-    yadi (is_ready == purna && is_done == shunya) {
++    yadi (sajj == purna && sampanna == shunya) {
+         likha("Ready but not done\n")
+     }
+ 
+     # Logical OR
+-    yadi (is_done == purna || is_ready == purna) {
++    yadi (sampanna == purna || sajj == purna) {
+         likha("At least one condition met\n")
+     }
+ 
+     # Using in computation
+     vitti x = 5
+     vitti y = 10
+-    vitti both_positive = x > 0 && y > 0
+-    likha("both_positive = ", both_positive)
++    vitti ubhay_dhan = x > 0 && y > 0
++    likha("both_positive = ", ubhay_dhan)
+ 
+     likha("=== Done ===\n")
+diff --git a/examples/18_guna_switch.sm b/examples/18_guna_switch.sm
+index 6e7105c..2d8628e 100644
+--- a/examples/18_guna_switch.sm
++++ b/examples/18_guna_switch.sm
+@@ -1,7 +1,7 @@
+ # Guna (switch/case) — Sanskrit for 'quality/attribute'
+ mukhya()
+-    vitti day = 3
+-    guna (day) {
++    vitti divas = 3
++    guna (divas) {
+         bhavana 1: { likha("Monday\n") }
+         bhavana 2: { likha("Tuesday\n") }
+         bhavana 3: { likha("Wednesday\n") }
+diff --git a/examples/19_srijana_enum.sm b/examples/19_srijana_enum.sm
+index f3ff403..abf721d 100644
+--- a/examples/19_srijana_enum.sm
++++ b/examples/19_srijana_enum.sm
+@@ -3,8 +3,8 @@ mukhya()
+     ganana RED = 1
+     ganana GREEN = 2
+     ganana BLUE = 3
+-    vitti color = GREEN
+-    guna (color) {
++    vitti rang = GREEN
++    guna (rang) {
+         bhavana 1: { likha("Red\n") }
+         bhavana 2: { likha("Green\n") }
+         bhavana 3: { likha("Blue\n") }
+diff --git a/examples/200_madhava_series.sm b/examples/200_madhava_series.sm
+index 41a09f3..0d62c39 100644
+--- a/examples/200_madhava_series.sm
++++ b/examples/200_madhava_series.sm
+@@ -3,29 +3,29 @@
+ # Uses T12 scalar floats (dasham).
+ mukhya()
+     # --- pi via Madhava's fast series: pi = sqrt(12) * sum (-1)^k / ((2k+1) * 3^k) ---
+-    dasham root12 = 3.5
++    dasham dvadash_mool = 3.5
+     vitti i = 0
+     yavat (i < 12) {
+-        root12 = (root12 + 12.0 / root12) / 2.0
++        dvadash_mool = (dvadash_mool + 12.0 / dvadash_mool) / 2.0
+         i = i + 1
+     }
+     dasham sankalan = 0.0
+-    dasham p3 = 1.0
++    dasham tri_shakti = 1.0
+     vitti k = 0
+     vitti chinha = 1
+     yavat (k < 30) {
+-        dasham term = 1.0 / ((2.0 * k + 1.0) * p3)
++        dasham pada = 1.0 / ((2.0 * k + 1.0) * tri_shakti)
+         yadi (chinha > 0) {
+-            sankalan = sankalan + term
++            sankalan = sankalan + pada
+         } anya {
+-            sankalan = sankalan - term
++            sankalan = sankalan - pada
+         }
+-        p3 = p3 * 3.0
++        tri_shakti = tri_shakti * 3.0
+         chinha = 0 - chinha
+         k = k + 1
+     }
+     likha("pi  = ")
+-    likha(root12 * sankalan)
++    likha(dvadash_mool * sankalan)
+ 
+     # --- sine via Madhava's series: sin(x) = x - x^3/3! + x^5/5! - ... ---
+     dasham x = 0.5
+@@ -41,13 +41,13 @@ mukhya()
+     likha(s)
+ 
+     # --- cosine via Madhava's series: cos(x) = 1 - x^2/2! + x^4/4! - ... ---
+-    dasham cs = 1.0
+-    dasham ct = 1.0
++    dasham kotijya_yog = 1.0
++    dasham kotijya_pad = 1.0
+     vitti m = 1
+     yavat (m < 12) {
+-        ct = 0.0 - ct * x * x / ((2.0 * m - 1.0) * (2.0 * m))
+-        cs = cs + ct
++        kotijya_pad = 0.0 - kotijya_pad * x * x / ((2.0 * m - 1.0) * (2.0 * m))
++        kotijya_yog = kotijya_yog + kotijya_pad
+         m = m + 1
+     }
+     likha("cos(0.5) = ")
+-    likha(cs)
++    likha(kotijya_yog)
+diff --git a/examples/203_meru_with_kosh.sm b/examples/203_meru_with_kosh.sm
+index 32c8e76..1d8ff33 100644
+--- a/examples/203_meru_with_kosh.sm
++++ b/examples/203_meru_with_kosh.sm
+@@ -3,20 +3,20 @@
+ yoj chandas
+ 
+ mukhya()
+-    kosh row
++    kosh pankti
+     vitti n = 0
+     yavat (n < 6) {
+         vitti i = 0
+         yavat (i <= n) {
+-            kosh_push(row, meru(n, i))
++            kosh_push(pankti, meru(n, i))
+             i = i + 1
+         }
+         n = n + 1
+     }
+-    likha("length = ", kosh_len(row))
++    likha("length = ", kosh_len(pankti))
+     vitti j = 0
+-    yavat (j < kosh_len(row)) {
+-        likha(row[j])
++    yavat (j < kosh_len(pankti)) {
++        likha(pankti[j])
+         likha(" ")
+         j = j + 1
+     }
+diff --git a/examples/205_madhava_pi_kosh.sm b/examples/205_madhava_pi_kosh.sm
+index cf44eba..c2d9655 100644
+--- a/examples/205_madhava_pi_kosh.sm
++++ b/examples/205_madhava_pi_kosh.sm
+@@ -6,8 +6,8 @@ mukhya() {
+     dasham chinha = 1.0
+     vitti k = 0
+     yavat (k < 9) {
+-        dasham denom = 2 * k + 1
+-        kosh_push(pada_kosh, chinha / denom)
++        dasham har = 2 * k + 1
++        kosh_push(pada_kosh, chinha / har)
+         chinha = chinha * -1.0
+         k = k + 1
+     }
+diff --git a/examples/208_kalana.sm b/examples/208_kalana.sm
+index f27ea43..2143247 100644
+--- a/examples/208_kalana.sm
++++ b/examples/208_kalana.sm
+@@ -8,23 +8,23 @@ yoj kalana
+ mukhya() {
+     # --- integrate x^2 over [0,1] with 11 equally spaced samples ---
+     kosh dasham ank_suchi[4]
+-    kosh dasham ys[4]
++    kosh dasham phal_suchi[4]
+     vitti i = 0
+     yavat (i < 11) {
+         dasham x = i
+         x = x / 10.0
+         kosh_push(ank_suchi, x)
+-        kosh_push(ys, x * x)
++        kosh_push(phal_suchi, x * x)
+         i = i + 1
+     }
+     likha(kosh_len(ank_suchi))
+-    likha(kalana_trapiz(ank_suchi, ys))
+-    likha(simpson(ank_suchi, ys))
++    likha(kalana_trapiz(ank_suchi, phal_suchi))
++    likha(simpson(ank_suchi, phal_suchi))
+ 
+     # --- derivative of x^2 at the midpoint sample (i=5 -> x=0.5 -> 2x = 1) ---
+-    likha(pravan(ank_suchi, ys, 5))
++    likha(pravan(ank_suchi, phal_suchi, 5))
+     # --- second derivative of x^2 is 2 everywhere ---
+-    likha(pravan2(ank_suchi, ys, 5))
++    likha(pravan2(ank_suchi, phal_suchi, 5))
+ 
+     # --- root of x^2 - 2 on [0,2] ---
+     kosh dasham c[4]
+@@ -34,8 +34,8 @@ mukhya() {
+     likha(bahu_ganana(c, 2.0))
+     # the out-parameter needs one element pushed: a kosh's CAPACITY is not its LENGTH,
+     # so ok[0] would be out of bounds until something is pushed.
+-    kosh dasham ok[1]
+-    kosh_push(ok, 0.0)
+-    likha(bahu_mula(c, 0.0, 2.0, ok))
+-    likha(ok[0])
++    kosh dasham siddh[1]
++    kosh_push(siddh, 0.0)
++    likha(bahu_mula(c, 0.0, 2.0, siddh))
++    likha(siddh[0])
+ }
+diff --git a/examples/209_samanvaya.sm b/examples/209_samanvaya.sm
+index 581e985..6dff412 100644
+--- a/examples/209_samanvaya.sm
++++ b/examples/209_samanvaya.sm
+@@ -43,11 +43,11 @@ mukhya() {
+     kosh_push(d, 7.0)
+     likha(nirnaya3(d))
+ 
+-    kosh dasham id[9]
++    kosh dasham parichay[9]
+     vitti w = 0
+-    yavat (w < 9) { kosh_push(id, 0.0); w = w + 1 }
+-    likha(pehchan(3, id))
+-    likha(nishan(id, 3))
++    yavat (w < 9) { kosh_push(parichay, 0.0); w = w + 1 }
++    likha(pehchan(3, parichay))
++    likha(nishan(parichay, 3))
+ 
+     kosh dasham e[6]
+     kosh_push(e, 1.0)
+diff --git a/examples/20_pankti_array.sm b/examples/20_pankti_array.sm
+index d7dba3f..5f382ff 100644
+--- a/examples/20_pankti_array.sm
++++ b/examples/20_pankti_array.sm
+@@ -1,12 +1,12 @@
+ mukhya()
+-    mala nums[6]   # 0..5 inclusive in the loops below
++    mala ankavali[6]   # 0..5 inclusive in the loops below
+     chakra i = 0 tak 5 {
+-        nums[i] = i * i
++        ankavali[i] = i * i
+     }
+     chakra j = 0 tak 5 {
+-        likha(nums[j])
++        likha(ankavali[j])
+         likha(" ")
+     }
+     likha("\n")
+-    likha(nums[4])
++    likha(ankavali[4])
+     likha("\n")
+diff --git a/examples/215_r12_wordfreq.sm b/examples/215_r12_wordfreq.sm
+index e531eaf..cf62c56 100644
+--- a/examples/215_r12_wordfreq.sm
++++ b/examples/215_r12_wordfreq.sm
+@@ -6,24 +6,24 @@ yoj khand
+ yoj nighantu
+ 
+ # Bubble-shreni an mala of (ptr,len) pairs by varna content.
+-prakriya sort_keys(ptrs, lens, n) {
+-    vitti a = ptrs
+-    vitti b = lens
++prakriya sort_keys(sanket_suchi, aayam_suchi, n) {
++    vitti a = sanket_suchi
++    vitti b = aayam_suchi
+     vitti c = n
+     vitti i = 0
+     vitti j = 0
+-    vitti tp = 0
+-    vitti tl = 0
++    vitti asthayi_sanket = 0
++    vitti asthayi_aayam = 0
+     yavat (i < c - 1) {
+         j = 0
+         yavat (j < c - 1 - i) {
+             yadi (khand_tul(a[j], b[j], a[j + 1], b[j + 1]) > 0) {
+-                tp = a[j]
++                asthayi_sanket = a[j]
+                 a[j] = a[j + 1]
+-                a[j + 1] = tp
+-                tl = b[j]
++                a[j + 1] = asthayi_sanket
++                asthayi_aayam = b[j]
+                 b[j] = b[j + 1]
+-                b[j + 1] = tl
++                b[j + 1] = asthayi_aayam
+             }
+             j = j + 1
+         }
+@@ -33,48 +33,48 @@ prakriya sort_keys(ptrs, lens, n) {
+ }
+ 
+ mukhya() {
+-    vitti text = "the quick brown fox jumps over the lazy dog the fox"
+-    vitti tlen = khand_maap(text)
+-    vitti parts = nirmmita(512 * 8)
+-    vitti nseg = khand_bhed(text, tlen, " ", 1, parts, 64)
++    vitti paath = "the quick brown fox jumps over the lazy dog the fox"
++    vitti paath_aayam = khand_maap(paath)
++    vitti bhed = nirmmita(512 * 8)
++    vitti bhed_ganana = khand_bhed(paath, paath_aayam, " ", 1, bhed, 64)
+     vitti m = nighantu_srij(32)
+     # track unique words: khand_bandh moves each word's bytes into a
+     # contiguous buffer (segments store bytes as qword cells)
+-    vitti uptrs = nirmmita(64 * 8)
+-    vitti ulens = nirmmita(64 * 8)
+-    vitti nuniq = 0
+-    vitti wbuf = nirmmita(64 * 40)
+-    vitti wpos = 0
++    vitti vishesh_sanket = nirmmita(64 * 8)
++    vitti vishesh_aayam = nirmmita(64 * 8)
++    vitti vishesh_ganana = 0
++    vitti lekhan_koshtha = nirmmita(64 * 40)
++    vitti lekhan_sthan = 0
+     vitti i = 0
+-    vitti pos = 0
+-    vitti wlen = 0
+-    vitti cur = 0
++    vitti sthan = 0
++    vitti lekhan_aayam = 0
++    vitti vartaman = 0
+     vitti j = 0
+-    yavat (i < nseg) {
+-        wlen = parts[pos]
++    yavat (i < bhed_ganana) {
++        lekhan_aayam = bhed[sthan]
+         # pack wlen bytes from qword cells into wbuf+wpos (R13: was a
+         # hand-written repack loop; cell index -> byte offset (pos+1)*8)
+-        khand_bandh(parts + (pos + 1) * 8, wlen, wbuf + wpos)
+-        cur = nighantu_grah(m, 32, wbuf + wpos, wlen)
+-        yadi (cur < 0) {
+-            nighantu_khip(m, 32, wbuf + wpos, wlen, 1)
+-            uptrs[nuniq] = wbuf + wpos
+-            ulens[nuniq] = wlen
+-            nuniq = nuniq + 1
+-            wpos = wpos + wlen
++        khand_bandh(bhed + (sthan + 1) * 8, lekhan_aayam, lekhan_koshtha + lekhan_sthan)
++        vartaman = nighantu_grah(m, 32, lekhan_koshtha + lekhan_sthan, lekhan_aayam)
++        yadi (vartaman < 0) {
++            nighantu_khip(m, 32, lekhan_koshtha + lekhan_sthan, lekhan_aayam, 1)
++            vishesh_sanket[vishesh_ganana] = lekhan_koshtha + lekhan_sthan
++            vishesh_aayam[vishesh_ganana] = lekhan_aayam
++            vishesh_ganana = vishesh_ganana + 1
++            lekhan_sthan = lekhan_sthan + lekhan_aayam
+         } anya {
+-            nighantu_khip(m, 32, wbuf + wpos, wlen, cur + 1)
++            nighantu_khip(m, 32, lekhan_koshtha + lekhan_sthan, lekhan_aayam, vartaman + 1)
+         }
+-        pos = pos + 1 + wlen
++        sthan = sthan + 1 + lekhan_aayam
+         i = i + 1
+     }
+-    sort_keys(uptrs, ulens, nuniq)
+-    vitti tmp = nirmmita(64)
++    sort_keys(vishesh_sanket, vishesh_aayam, vishesh_ganana)
++    vitti asthayi = nirmmita(64)
+     i = 0
+-    yavat (i < nuniq) {
++    yavat (i < vishesh_ganana) {
+         # uptrs[i] already points tak packed bytes; print directly
+-        likha(1, uptrs[i], ulens[i])
+-        likha(": ", nighantu_grah(m, 32, uptrs[i], ulens[i]))
++        likha(1, vishesh_sanket[i], vishesh_aayam[i])
++        likha(": ", nighantu_grah(m, 32, vishesh_sanket[i], vishesh_aayam[i]))
+         i = i + 1
+     }
+ }
+diff --git a/examples/216_r12_expr.sm b/examples/216_r12_expr.sm
+index c72c6e5..9f25b4f 100644
+--- a/examples/216_r12_expr.sm
++++ b/examples/216_r12_expr.sm
+@@ -44,19 +44,19 @@ prakriya parse_factor(avastha) {
+ 
+ prakriya parse_term(avastha) {
+     vitti v = parse_factor(avastha)
+-    vitti op = 0
+-    vitti rhs = 0
+-    vitti cont = 1
+-    yavat (cont == 1) {
++    vitti kriya = 0
++    vitti dakshin = 0
++    vitti nirantar = 1
++    yavat (nirantar == 1) {
+         skip_ws(avastha)
+-        cont = 0
++        nirantar = 0
+         yadi (avastha[2] < avastha[1]) {
+-            op = akshar(avastha[0], avastha[2])
+-            yadi (op == 42 || op == 47) {
++            kriya = akshar(avastha[0], avastha[2])
++            yadi (kriya == 42 || kriya == 47) {
+                 avastha[2] = avastha[2] + 1
+-                rhs = parse_factor(avastha)
+-                yadi (op == 42) { v = v * rhs } anya { v = v / rhs }
+-                cont = 1
++                dakshin = parse_factor(avastha)
++                yadi (kriya == 42) { v = v * dakshin } anya { v = v / dakshin }
++                nirantar = 1
+             }
+         }
+     }
+@@ -65,19 +65,19 @@ prakriya parse_term(avastha) {
+ 
+ prakriya parse_expr(avastha) {
+     vitti v = parse_term(avastha)
+-    vitti op = 0
+-    vitti rhs = 0
+-    vitti cont = 1
+-    yavat (cont == 1) {
++    vitti kriya = 0
++    vitti dakshin = 0
++    vitti nirantar = 1
++    yavat (nirantar == 1) {
+         skip_ws(avastha)
+-        cont = 0
++        nirantar = 0
+         yadi (avastha[2] < avastha[1]) {
+-            op = akshar(avastha[0], avastha[2])
+-            yadi (op == 43 || op == 45) {
++            kriya = akshar(avastha[0], avastha[2])
++            yadi (kriya == 43 || kriya == 45) {
+                 avastha[2] = avastha[2] + 1
+-                rhs = parse_term(avastha)
+-                yadi (op == 43) { v = v + rhs } anya { v = v - rhs }
+-                cont = 1
++                dakshin = parse_term(avastha)
++                yadi (kriya == 43) { v = v + dakshin } anya { v = v - dakshin }
++                nirantar = 1
+             }
+         }
+     }
+diff --git a/examples/217_r12_report.sm b/examples/217_r12_report.sm
+index 0de23d6..5964a12 100644
+--- a/examples/217_r12_report.sm
++++ b/examples/217_r12_report.sm
+@@ -4,57 +4,57 @@ yoj vakyank
+ yoj khand
+ 
+ mukhya() {
+-    vitti scores = nirmmita(8 * 8)
+-    scores[0] = 85
+-    scores[1] = 92
+-    scores[2] = 78
+-    scores[3] = 95
+-    scores[4] = 88
+-    scores[5] = 76
+-    scores[6] = 90
+-    scores[7] = 84
++    vitti praptank_suchi = nirmmita(8 * 8)
++    praptank_suchi[0] = 85
++    praptank_suchi[1] = 92
++    praptank_suchi[2] = 78
++    praptank_suchi[3] = 95
++    praptank_suchi[4] = 88
++    praptank_suchi[5] = 76
++    praptank_suchi[6] = 90
++    praptank_suchi[7] = 84
+     vitti n = 8
+     # compute stats
+     vitti sankalan = 0
+-    vitti mn = scores[0]
+-    vitti mx = scores[0]
++    vitti kanishth = praptank_suchi[0]
++    vitti brihattam = praptank_suchi[0]
+     vitti i = 0
+     yavat (i < n) {
+-        sankalan = sankalan + scores[i]
+-        yadi (scores[i] < mn) { mn = scores[i] }
+-        yadi (scores[i] > mx) { mx = scores[i] }
++        sankalan = sankalan + praptank_suchi[i]
++        yadi (praptank_suchi[i] < kanishth) { kanishth = praptank_suchi[i] }
++        yadi (praptank_suchi[i] > brihattam) { brihattam = praptank_suchi[i] }
+         i = i + 1
+     }
+-    vitti mean = sankalan / n
++    vitti madhyaman = sankalan / n
+     likha("=== Test Scores Report ===\n")
+     likha("Count: ")
+     likha(n)
+     likha("\nSum:   ")
+     likha(sankalan)
+     likha("\nMean:  ")
+-    likha(mean)
++    likha(madhyaman)
+     likha("\nMin:   ")
+-    likha(mn)
++    likha(kanishth)
+     likha("\nMax:   ")
+-    likha(mx)
+-    likha("\nRange: ", mx - mn)
++    likha(brihattam)
++    likha("\nRange: ", brihattam - kanishth)
+     likha("-------------------------\n")
+     likha("Padded scores:\n")
+     # demonstrate pad_vam: right-align each score in width 6
+     vitti koshtha = nirmmita(32)
+-    vitti row = nirmmita(64)
++    vitti pankti = nirmmita(64)
+     i = 0
+     yavat (i < n) {
+-        vitti cnt = ank_tak_varna(scores[i], koshtha)
++        vitti ganan = ank_tak_varna(praptank_suchi[i], koshtha)
+         # pad buf in place tak width 6 (buf holds qword cells)
+-        pad_vam(koshtha, cnt, 6, 32)
++        pad_vam(koshtha, ganan, 6, 32)
+         # repack 6 qword cells tak bytes for printing
+         vitti j = 0
+         yavat (j < 6) {
+-            akshar_rakh(row, j, koshtha[j])
++            akshar_rakh(pankti, j, koshtha[j])
+             j = j + 1
+         }
+-        likha(1, row, 6)
++        likha(1, pankti, 6)
+         likha("\n")
+         i = i + 1
+     }
+diff --git a/examples/236_guna_once.sm b/examples/236_guna_once.sm
+index e0812c1..83af98e 100644
+--- a/examples/236_guna_once.sm
++++ b/examples/236_guna_once.sm
+@@ -1,8 +1,8 @@
+ # R9 (F3): guna evaluates its value once, however many bhavana it tests.
+ # Before R9, guna (f()) called f once per case compared: 3 times here.
+-vitti calls = 0
++vitti ahvan = 0
+ prakriya f() {
+-    calls = calls + 1
++    ahvan = ahvan + 1
+     nivartanam 3
+ }
+ prakriya g(n) {
+@@ -20,7 +20,7 @@ mukhya() {
+         bhavana 3: { likha(30) }
+         anya: { likha(40) }
+     }
+-    likha(calls)
++    likha(ahvan)
+     # nested, in a loop, and a value that matches nothing
+     vitti i = 0
+     yavat (i < 3) {
+@@ -36,7 +36,7 @@ mukhya() {
+         }
+         i = i + 1
+     }
+-    likha(calls)
++    likha(ahvan)
+     likha(g(1))
+     likha(g(2))
+     likha(g(5))
+diff --git a/examples/246_r23_comparator_sort.sm b/examples/246_r23_comparator_sort.sm
+index f2b5ce0..2c63803 100644
+--- a/examples/246_r23_comparator_sort.sm
++++ b/examples/246_r23_comparator_sort.sm
+@@ -13,10 +13,10 @@ prakriya avarohi(a, b) {
+ 
+ # even numbers first, each group in ascending order
+ prakriya sama_pratham(a, b) {
+-    vitti pa = a % 2
+-    vitti pb = b % 2
+-    yadi (pa != pb) {
+-        nivartanam pa - pb
++    vitti a_shesh = a % 2
++    vitti b_shesh = b % 2
++    yadi (a_shesh != b_shesh) {
++        nivartanam a_shesh - b_shesh
+     }
+     nivartanam a - b
+ }
+diff --git a/examples/247_r23_methods.sm b/examples/247_r23_methods.sm
+index 54d3b8f..50cc8a3 100644
+--- a/examples/247_r23_methods.sm
++++ b/examples/247_r23_methods.sm
+@@ -11,22 +11,22 @@ prakriya Bindu.srij(swa, x, y) {
+     nivartanam swa
+ }
+ 
+-prakriya Bindu.chal(swa, dx, dy) {
+-    swa.x = swa.x + dx
+-    swa.y = swa.y + dy
++prakriya Bindu.chal(swa, x_antar, y_antar) {
++    swa.x = swa.x + x_antar
++    swa.y = swa.y + y_antar
+     nivartanam 0
+ }
+ 
+ prakriya Bindu.manhattan(swa, anya_bindu) {
+-    vitti dx = swa.x - anya_bindu.x
+-    vitti dy = swa.y - anya_bindu.y
+-    yadi (dx < 0) {
+-        dx = 0 - dx
++    vitti x_antar = swa.x - anya_bindu.x
++    vitti y_antar = swa.y - anya_bindu.y
++    yadi (x_antar < 0) {
++        x_antar = 0 - x_antar
+     }
+-    yadi (dy < 0) {
+-        dy = 0 - dy
++    yadi (y_antar < 0) {
++        y_antar = 0 - y_antar
+     }
+-    nivartanam dx + dy
++    nivartanam x_antar + y_antar
+ }
+ 
+ prakriya Ayat.kshetraphal(swa) {
+diff --git a/examples/24_guess_game.sm b/examples/24_guess_game.sm
+index d742fd2..a110ee6 100644
+--- a/examples/24_guess_game.sm
++++ b/examples/24_guess_game.sm
+@@ -1,19 +1,19 @@
+ mukhya()
+     likha("Guess the secret number (1-100): ")
+-    vitti secret = 7
+-    vitti guess = 0
+-    yavat (guess != secret) {
+-        guess = grahan()
+-        yadi (guess == -1) {
++    vitti gupt = 7
++    vitti anumaan = 0
++    yavat (anumaan != gupt) {
++        anumaan = grahan()
++        yadi (anumaan == -1) {
+             likha("Input ended. Goodbye!\n")
+             krama
+         }
+-        yadi (guess < secret) {
++        yadi (anumaan < gupt) {
+             likha("Too low! Try again: ")
+-        } anya yadi (guess > secret) {
++        } anya yadi (anumaan > gupt) {
+             likha("Too high! Try again: ")
+         }
+     }
+-    yadi (guess == secret) {
++    yadi (anumaan == gupt) {
+         likha("Correct! You found it!\n")
+     }
+diff --git a/examples/32_bank_interest.sm b/examples/32_bank_interest.sm
+index 57452af..22864e6 100644
+--- a/examples/32_bank_interest.sm
++++ b/examples/32_bank_interest.sm
+@@ -1,20 +1,20 @@
+ mukhya()
+     likha("Bank Interest Calculator\n")
+     likha("========================\n")
+-    vitti principal = 100000
+-    vitti rate = 8
++    vitti mooldhan = 100000
++    vitti dar = 8
+     likha("Principal: ")
+-    lkhb(principal)
++    lkhb(mooldhan)
+     likha("\nRate: ")
+-    lkhb(rate)
++    lkhb(dar)
+     likha("% per year\n\n")
+     likha("Growth over 5 years:\n")
+-    chakra year = 1 tak 5 {
+-        vitti interest = principal * rate / 100
+-        principal += interest
++    chakra varsh = 1 tak 5 {
++        vitti vyaj = mooldhan * dar / 100
++        mooldhan += vyaj
+         likha("Year ")
+-        lkhb(year)
+-        likha(": ", principal)
++        lkhb(varsh)
++        likha(": ", mooldhan)
+     }
+     likha("\nCompound growth using *= :\n")
+     vitti x = 2
+diff --git a/examples/33_unit_conversion.sm b/examples/33_unit_conversion.sm
+index 308c071..f2b85a5 100644
+--- a/examples/33_unit_conversion.sm
++++ b/examples/33_unit_conversion.sm
+@@ -2,19 +2,19 @@ mukhya()
+     likha("Unit Conversion\n")
+     likha("==============\n")
+     likha("Kilometers to Miles:\n")
+-    chakra km = 1 tak 5 {
+-        vitti miles = km * 62 / 100
+-        lkhb(km)
++    chakra kilomitar = 1 tak 5 {
++        vitti mail = kilomitar * 62 / 100
++        lkhb(kilomitar)
+         likha(" km = ")
+-        lkhb(miles)
++        lkhb(mail)
+         likha(" miles\n")
+     }
+     likha("\nKilograms to Pounds:\n")
+-    chakra kg = 1 tak 5 {
+-        vitti pounds = kg * 220 / 100
+-        lkhb(kg)
++    chakra kilogram = 1 tak 5 {
++        vitti paund = kilogram * 220 / 100
++        lkhb(kilogram)
+         likha(" kg = ")
+-        lkhb(pounds)
++        lkhb(paund)
+         likha(" lbs\n")
+     }
+     likha("\nCelsius to Fahrenheit:\n")
+diff --git a/examples/34_incdec.sm b/examples/34_incdec.sm
+index f992072..206560e 100644
+--- a/examples/34_incdec.sm
++++ b/examples/34_incdec.sm
+@@ -10,11 +10,11 @@ mukhya()
+     x--
+     likha("x-- -> ", x)
+     likha("\nCounting with ++:\n")
+-    vitti count = 0
++    vitti ganan = 0
+     chakra i = 1 tak 5 {
+-        count++
++        ganan++
+     }
+-    likha("count = ", count)
++    likha("count = ", ganan)
+     likha("\nSquares table with ++:\n")
+     vitti n = 1
+     chakra i = 1 tak 5 {
+diff --git a/examples/41_recursion.sm b/examples/41_recursion.sm
+index ca8af36..74570cf 100644
+--- a/examples/41_recursion.sm
++++ b/examples/41_recursion.sm
+@@ -11,11 +11,11 @@ prakriya meru_ank(n) {
+     }
+     nivartanam meru_ank(n - 1) + meru_ank(n - 2)
+ }
+-prakriya shakti(base, exp) {
+-    yadi (exp == 0) {
++prakriya shakti(ghat_aadhar, ghatank) {
++    yadi (ghatank == 0) {
+         nivartanam 1
+     }
+-    nivartanam base * shakti(base, exp - 1)
++    nivartanam ghat_aadhar * shakti(ghat_aadhar, ghatank - 1)
+ }
+ mukhya()
+     likha(krama_fal(6))
+diff --git a/examples/44_shabda.sm b/examples/44_shabda.sm
+index 0fecdbe..550bc8e 100644
+--- a/examples/44_shabda.sm
++++ b/examples/44_shabda.sm
+@@ -1,14 +1,14 @@
+ # 44 — shabda(): print a varna variable (v29)
+ # likha() prints numbers (and varna literals); shabda() prints a
+ # NUL-terminated varna held in a variable.
+-prakriya abhivadana(name) {
+-    nivartanam name
++prakriya abhivadana(naam) {
++    nivartanam naam
+ }
+ mukhya()
+-    vitti greeting = "Namaste!"
+-    shabda(greeting)
++    vitti namaskar = "Namaste!"
++    shabda(namaskar)
+     likha(0)
+-    vitti msg = abhivadana("Strings flow through functions too")
+-    shabda(msg)
++    vitti sandesh = abhivadana("Strings flow through functions too")
++    shabda(sandesh)
+     likha(0)
+     shabda("and literals work directly")
+diff --git a/examples/46_language_reference.sm b/examples/46_language_reference.sm
+index fb3da15..a72b936 100644
+--- a/examples/46_language_reference.sm
++++ b/examples/46_language_reference.sm
+@@ -1,12 +1,12 @@
+ # comments:  # ...   or  // ...   or  /* block */
+ 
+ mukhya()
+-    vitti count = 3                 # variable
++    vitti ganan = 3                 # variable
+     sutra LIMIT = 10                # constant
+ 
+-    yadi (count > 2) {              # if / else if / else
++    yadi (ganan > 2) {              # if / else if / else
+         likha("big")
+-    } anya yadi (count == 2) {
++    } anya yadi (ganan == 2) {
+         likha("two")
+     } anya {
+         likha("small")
+diff --git a/examples/78_do_while.sm b/examples/78_do_while.sm
+index c5ac0c9..a474ceb 100644
+--- a/examples/78_do_while.sm
++++ b/examples/78_do_while.sm
+@@ -7,9 +7,9 @@ mukhya() {
+         yadi (i == 4) { krama }
+     } yavat (i < 10)
+ 
+-    vitti once = 5
++    vitti ekbar = 5
+     कुरु {
+-        likha(once)
+-        once = once + 1
+-    } yavat (once < 5)
++        likha(ekbar)
++        ekbar = ekbar + 1
++    } yavat (ekbar < 5)
+ }
+diff --git a/examples/82_b7_stack_spill.sm b/examples/82_b7_stack_spill.sm
+index e5653a9..392d0b0 100644
+--- a/examples/82_b7_stack_spill.sm
++++ b/examples/82_b7_stack_spill.sm
+@@ -1,10 +1,10 @@
+-prakriya dwi_anwesh(a, n, target) {
+-    vitti lo = 0
+-    vitti hi = n - 1
+-    yavat (lo <= hi) {
+-        vitti mid = (lo + hi) / 2
+-        yadi (a[mid] == target) { nivartanam mid }
+-        yadi (a[mid] < target) { lo = mid + 1 } anya { hi = mid - 1 }
++prakriya dwi_anwesh(a, n, lakshya) {
++    vitti nimna = 0
++    vitti uchcha = n - 1
++    yavat (nimna <= uchcha) {
++        vitti madhyank = (nimna + uchcha) / 2
++        yadi (a[madhyank] == lakshya) { nivartanam madhyank }
++        yadi (a[madhyank] < lakshya) { nimna = madhyank + 1 } anya { uchcha = madhyank - 1 }
+     }
+     nivartanam 0 - 1
+ }
+diff --git a/examples/88_pingala_chandas.sm b/examples/88_pingala_chandas.sm
+index 0612daf..12ef26f 100644
+--- a/examples/88_pingala_chandas.sm
++++ b/examples/88_pingala_chandas.sm
+@@ -11,10 +11,10 @@ mukhya()
+     likha(" ")
+     likha(matra_meru(10))
+     likha("\n")
+-    vitti pat = 13
+-    likha(guru_gan(pat))
++    vitti pratirup = 13
++    likha(guru_gan(pratirup))
+     likha(" ")
+-    likha(asti_guru(pat, 0))
+-    likha(asti_guru(pat, 1))
+-    likha(asti_guru(pat, 3))
++    likha(asti_guru(pratirup, 0))
++    likha(asti_guru(pratirup, 1))
++    likha(asti_guru(pratirup, 3))
+     likha("\n")
+diff --git a/examples/92_t12_dasham_float.sm b/examples/92_t12_dasham_float.sm
+index 20c70ab..56d2758 100644
+--- a/examples/92_t12_dasham_float.sm
++++ b/examples/92_t12_dasham_float.sm
+@@ -10,18 +10,18 @@ mukhya() {
+     c = c - 0.5
+     likha(c)
+ 
+-    dasham neg = -1.25
+-    likha(neg)
++    dasham rin = -1.25
++    likha(rin)
+ 
+-    दशम third = 0.1 + 0.2
+-    likha(third)
+-    likha(third > 0.299999)
++    दशम tritiya = 0.1 + 0.2
++    likha(tritiya)
++    likha(tritiya > 0.299999)
+ 
+     vitti k = 2
+-    dasham mixed = k * 1.25
+-    likha(mixed)
++    dasham mishrit = k * 1.25
++    likha(mishrit)
+ 
+-    yadi (mixed >= 2.5) {
++    yadi (mishrit >= 2.5) {
+         likha(7)
+     }
+ }
+diff --git a/examples/93_t12_float_functions.sm b/examples/93_t12_float_functions.sm
+index 059de28..28ae5ae 100644
+--- a/examples/93_t12_float_functions.sm
++++ b/examples/93_t12_float_functions.sm
+@@ -26,6 +26,6 @@ mukhya() {
+     likha(mixed(1))
+     likha(mixed(0))
+ 
+-    vitti whole = blend(1.0, 4.0)
+-    likha(whole)
++    vitti sampurna = blend(1.0, 4.0)
++    likha(sampurna)
+ }
+diff --git a/examples/94_t12_float_functions.sm b/examples/94_t12_float_functions.sm
+index 9c10d1f..7f548f4 100644
+--- a/examples/94_t12_float_functions.sm
++++ b/examples/94_t12_float_functions.sm
+@@ -33,6 +33,6 @@ mukhya() {
+     likha(choose(1))
+     likha(choose(0))
+ 
+-    vitti whole = blend(1.0, 4.0)
+-    likha(whole)
++    vitti sampurna = blend(1.0, 4.0)
++    likha(sampurna)
+ }
+diff --git a/examples/95_t12_madhava_functions.sm b/examples/95_t12_madhava_functions.sm
+index a5d86bc..166c9d1 100644
+--- a/examples/95_t12_madhava_functions.sm
++++ b/examples/95_t12_madhava_functions.sm
+@@ -2,28 +2,28 @@
+ # example 93 now cross prakriya boundaries as reusable floating-point functions.
+ 
+ prakriya madhava_pi(pada_ganana) {
+-    dasham root12 = 3.5
++    dasham dvadash_mool = 3.5
+     vitti i = 0
+     yavat (i < 12) {
+-        root12 = (root12 + 12.0 / root12) / 2.0
++        dvadash_mool = (dvadash_mool + 12.0 / dvadash_mool) / 2.0
+         i = i + 1
+     }
+     dasham sankalan = 0.0
+-    dasham p3 = 1.0
++    dasham tri_shakti = 1.0
+     vitti k = 0
+     vitti chinha = 1
+     yavat (k < pada_ganana) {
+-        dasham term = 1.0 / ((2.0 * k + 1.0) * p3)
++        dasham pada = 1.0 / ((2.0 * k + 1.0) * tri_shakti)
+         yadi (chinha > 0) {
+-            sankalan = sankalan + term
++            sankalan = sankalan + pada
+         } anya {
+-            sankalan = sankalan - term
++            sankalan = sankalan - pada
+         }
+-        p3 = p3 * 3.0
++        tri_shakti = tri_shakti * 3.0
+         chinha = 0 - chinha
+         k = k + 1
+     }
+-    nivartanam root12 * sankalan
++    nivartanam dvadash_mool * sankalan
+ }
+ 
+ prakriya madhava_sin(dasham x, pada_ganana) {
+diff --git a/examples/char_ops.sm b/examples/char_ops.sm
+index 1ccd49c..e5bff5b 100644
+--- a/examples/char_ops.sm
++++ b/examples/char_ops.sm
+@@ -3,9 +3,9 @@ mukhya()
+     vitti s = "Hello"
+     vitti c0 = akshar(s, 0)
+     likha("First char code: ", c0)
+-    vitti code = aksharank("A")
+-    likha("ASCII of A: ", code)
+-    vitti lower_a = aksharank("a")
+-    vitti upper_a = char_upper(lower_a)
+-    likha("Upper of a: ", upper_a)
++    vitti sanket = aksharank("A")
++    likha("ASCII of A: ", sanket)
++    vitti nimna_akshar = aksharank("a")
++    vitti uchcha_akshar = char_upper(nimna_akshar)
++    likha("Upper of a: ", uchcha_akshar)
+     likha("Done!\n")
+diff --git a/examples/fizzbuzz.sm b/examples/fizzbuzz.sm
+index 6b2aeec..46872f9 100644
+--- a/examples/fizzbuzz.sm
++++ b/examples/fizzbuzz.sm
+@@ -2,16 +2,16 @@
+ mukhya()
+     vitti i = 1
+     yavat (i <= 30) {
+-        vitti mod3 = i - i / 3 * 3
+-        vitti mod5 = i - i / 5 * 5
+-        yadi (mod3 == 0) {
+-            yadi (mod5 == 0) {
++        vitti shesh_tri = i - i / 3 * 3
++        vitti shesh_pancha = i - i / 5 * 5
++        yadi (shesh_tri == 0) {
++            yadi (shesh_pancha == 0) {
+                 likha("FizzBuzz\n")
+             } anya {
+                 likha("Fizz\n")
+             }
+         } anya {
+-            yadi (mod5 == 0) {
++            yadi (shesh_pancha == 0) {
+                 likha("Buzz\n")
+             } anya {
+                 likha(i)
+diff --git a/examples/import_demo.sm b/examples/import_demo.sm
+index 1146d37..a13d86f 100644
+--- a/examples/import_demo.sm
++++ b/examples/import_demo.sm
+@@ -7,10 +7,10 @@ mukhya()
+     likha("String: Namaste!\n")
+     likha("Number: ", 42)
+     vitti x = 16
+-    vitti doubled = x * 2
+-    likha("x * 2 = ", doubled)
+-    vitti quad = x * 4
+-    likha("x * 4 = ", quad)
++    vitti dvigunit = x * 2
++    likha("x * 2 = ", dvigunit)
++    vitti chaturgun = x * 4
++    likha("x * 4 = ", chaturgun)
+     vitti s = "Sutram"
+     likha("Length: ", vartani_aayam(s))
+     likha("=== Done ===\n")
+diff --git a/examples/number_game.sm b/examples/number_game.sm
+index 4f868eb..2f65c37 100644
+--- a/examples/number_game.sm
++++ b/examples/number_game.sm
+@@ -1,17 +1,17 @@
+ # Number guessing game
+ mukhya()
+-    vitti secret = 42
+-    vitti guess = 50
++    vitti gupt = 42
++    vitti anumaan = 50
+     likha("Guessing game!\n")
+-    likha("Secret: ", secret)
+-    yadi (guess == secret) {
++    likha("Secret: ", gupt)
++    yadi (anumaan == gupt) {
+         likha("Correct!\n")
+     } anya {
+-        yadi (guess > secret) {
++        yadi (anumaan > gupt) {
+             likha("Too high!\n")
+         } anya {
+             likha("Too low!\n")
+         }
+-        likha("The answer was: ", secret)
++        likha("The answer was: ", gupt)
+     }
+     likha("Game over!\n")
+diff --git a/examples/prime.sm b/examples/prime.sm
+index e4c5f1a..6b0d81a 100644
+--- a/examples/prime.sm
++++ b/examples/prime.sm
+@@ -5,8 +5,8 @@ mukhya()
+         vitti asti_abhajya = 1
+         vitti d = 2
+         yavat (d < n) {
+-            vitti rem = n - n / d * d
+-            yadi (rem == 0) {
++            vitti avashesh = n - n / d * d
++            yadi (avashesh == 0) {
+                 asti_abhajya = 0
+             }
+             d = d + 1
