@@ -1,6 +1,6 @@
 # Stage 2 acceptance: a call can mutate shared typed kosh storage.
 # Never reorder reads across the call or make assumptions about its effects.
-prakriya bump_element(kosh dasham xs) {
+prakriya vardh_avayav(kosh dasham xs) {
     xs[0] = xs[0] + 1.0
     prati xs[0]
 }
@@ -12,7 +12,7 @@ mukhya() {
     dasham c = 4.0
     dasham d = 5.0
     a = a + b
-    c = a + bump_element(xs)
+    c = a + vardh_avayav(xs)
     d = d + xs[0]
     a = a + b
     likha(a)
