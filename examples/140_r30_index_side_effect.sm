@@ -1,9 +1,9 @@
 # Index expression is effectful: the compiler must preserve evaluation order.
-prakriya mutate_index(kosh dasham arr) {
+prakriya badl_sanket(kosh dasham arr) {
     arr[0] = 9.0
     prati 0
 }
-prakriya read_after(kosh dasham arr) {
+prakriya pad_pashchat(kosh dasham arr) {
     prati arr[0]
 }
 mukhya() {
@@ -11,9 +11,9 @@ mukhya() {
     kosh_push(arr, 2.0)
     dasham delta = 1.5
     dasham out = 0.0
-    out = arr[mutate_index(arr)] + delta
+    out = arr[badl_sanket(arr)] + delta
     likha(out)
     likha(arr[0])
-    out = read_after(arr) - delta
+    out = pad_pashchat(arr) - delta
     likha(out)
 }
