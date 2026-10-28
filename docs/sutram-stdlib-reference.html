@@ -378,7 +378,7 @@ samapt</pre>
     <table class="fns"><tbody>
       <tr><td class="sig"><code>roop_ank(v, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
       <tr><td class="sig"><code>roop_ank_aadhar(v, base, upper, out)</code></td><td class="doc">Base outside 2..36 writes only the terminator and returns 0.</td></tr>
-      <tr><td class="sig"><code>roop_ank_aadhar2(v, base, out)</code></td><td class="doc">Base outside 2..36: terminator only, returns 0. Digits are written</td></tr>
+      <tr><td class="sig"><code>roop_ank_aadhar_saral(v, base, out)</code></td><td class="doc">Base outside 2..36: terminator only, returns 0. Digits are written</td></tr>
       <tr><td class="sig"><code>roop_ank_dhvaj(v, base, flags, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
       <tr><td class="sig"><code>roop_dash(v, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
       <tr><td class="sig"><code>roop_shodash(v, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
@@ -389,7 +389,7 @@ samapt</pre>
       <tr><td class="sig"><code>roop_pad_vam(src, sn, width, padbyte, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
       <tr><td class="sig"><code>roop_pad_dakshin(src, sn, width, padbyte, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
       <tr><td class="sig"><code>roop_pad_madhya(src, sn, width, padbyte, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
-      <tr><td class="sig"><code>roop_varg_mool(src, sn, step, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>roop_varg_sahaya(src, sn, step, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
       <tr><td class="sig"><code>roop_varg_bharatiya(src, sn, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
       <tr><td class="sig"><code>roop_varg_vishwa(src, sn, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
       <tr><td class="sig"><code>roop_varg(src, sn, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
@@ -485,11 +485,11 @@ samapt</pre>
     <p class="what">Small helpers that fit nowhere else — ceiling division, clamping, swapping.</p>
     <p class="laynote">Pure computation. Touches no OS service and allocates nothing.</p>
     <table class="fns"><tbody>
-      <tr><td class="sig"><code>antargam(a, b, t)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>antarveshan(a, b, t)</code></td><td class="doc"><span class=dim>—</span></td></tr>
       <tr><td class="sig"><code>yog_seema(start, end)</code></td><td class="doc"><span class=dim>—</span></td></tr>
       <tr><td class="sig"><code>shesh(a, b)</code></td><td class="doc"><span class=dim>—</span></td></tr>
       <tr><td class="sig"><code>bhaj_urdhva(a, b)</code></td><td class="doc"><span class=dim>—</span></td></tr>
-      <tr><td class="sig"><code>util_chinha(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>ank_chihna(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
       <tr><td class="sig"><code>satya_tak_ank(b)</code></td><td class="doc"><span class=dim>—</span></td></tr>
       <tr><td class="sig"><code>ank_adhik()</code></td><td class="doc"><span class=dim>—</span></td></tr>
     </tbody></table>
@@ -690,11 +690,11 @@ samapt</pre>
     <p class="what">Turning values into a byte stream and reading them back.</p>
     <p class="laynote">Pure computation. Touches no OS service and allocates nothing.</p>
     <table class="fns"><tbody>
-      <tr><td class="sig"><code>anukram_maap_ashtak(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
+      <tr><td class="sig"><code>anukram_maap_aayam_purva(n)</code></td><td class="doc"><span class=dim>—</span></td></tr>
       <tr><td class="sig"><code>anukram_khip_i64(out, pos, cap, v)</code></td><td class="doc"><span class=dim>—</span></td></tr>
       <tr><td class="sig"><code>anukram_grah_i64(buf, pos, cap, out)</code></td><td class="doc"><span class=dim>—</span></td></tr>
-      <tr><td class="sig"><code>anukram_khip_ashtak(out, pos, cap, src, n)</code></td><td class="doc">LE length followed by n payload bytes from src. Returns the new</td></tr>
-      <tr><td class="sig"><code>anukram_grah_ashtak(buf, pos, cap, dst, out_n)</code></td><td class="doc">Returns the new cursor, or -1 on overrun / negative length.</td></tr>
+      <tr><td class="sig"><code>anukram_khip_aayam_purva(out, pos, cap, src, n)</code></td><td class="doc">LE length followed by n payload bytes from src. Returns the new</td></tr>
+      <tr><td class="sig"><code>anukram_grah_aayam_purva(buf, pos, cap, dst, out_n)</code></td><td class="doc">Returns the new cursor, or -1 on overrun / negative length.</td></tr>
     </tbody></table>
     <pre class="ex">yoj anukram
 mukhya()

@@ -2,7 +2,7 @@ yoj roop
 mukhya() {
     vitti out = nirmmita(80 * 8)
     vitti minv = (0 - 9223372036854775807) - 1
-    vitti n = roop_ank_aadhar2(minv, 10, out)
+    vitti n = roop_ank_aadhar_saral(minv, 10, out)
     likha(n)
     likha("\n")
     vitti i = 0
@@ -11,7 +11,7 @@ mukhya() {
         likha("\n")
         i = i + 1
     }
-    vitti m = roop_ank_aadhar2(minv, 16, out)
+    vitti m = roop_ank_aadhar_saral(minv, 16, out)
     likha(m)
     likha("\n")
     i = 0
@@ -43,7 +43,7 @@ mukhya() {
         likha("\n")
         i = i + 1
     }
-    vitti b = roop_ank_aadhar2(minv, 2, out)
+    vitti b = roop_ank_aadhar_saral(minv, 2, out)
     likha(b)
     likha("\n")
     likha(akshar(out, 0))

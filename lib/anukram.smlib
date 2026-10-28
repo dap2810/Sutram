@@ -26,8 +26,8 @@
 # enough for this first area), and schema/versioning (the caller
 # owns the field order; there is no header).
 
-# anukram_maap_ashtak(n) — encoded size of an n-byte payload: 8 + n.
-prakriya anukram_maap_ashtak(n) {
+# anukram_maap_aayam_purva(n) — encoded size of an n-byte payload: 8 + n.
+prakriya anukram_maap_aayam_purva(n) {
     nivartanam 8 + n
 }
 
@@ -82,10 +82,10 @@ prakriya anukram_grah_i64(buf, pos, cap, out) {
     nivartanam p + 8
 }
 
-# anukram_khip_ashtak(out, pos, cap, src, n) — write n as an 8-byte
+# anukram_khip_aayam_purva(out, pos, cap, src, n) — write n as an 8-byte
 # LE length followed by n payload bytes from src. Returns the new
 # cursor, or -1 on overrun (n < 0 is also an error: -1).
-prakriya anukram_khip_ashtak(out, pos, cap, src, n) {
+prakriya anukram_khip_aayam_purva(out, pos, cap, src, n) {
     vitti dst = out
     vitti p = pos
     vitti c = cap
@@ -104,10 +104,10 @@ prakriya anukram_khip_ashtak(out, pos, cap, src, n) {
     nivartanam p2 + cnt
 }
 
-# anukram_grah_ashtak(buf, pos, cap, dst, out_n) — read a
+# anukram_grah_aayam_purva(buf, pos, cap, dst, out_n) — read a
 # length-prefixed payload: length into out_n[0], payload into dst.
 # Returns the new cursor, or -1 on overrun / negative length.
-prakriya anukram_grah_ashtak(buf, pos, cap, dst, out_n) {
+prakriya anukram_grah_aayam_purva(buf, pos, cap, dst, out_n) {
     vitti src = buf
     vitti p = pos
     vitti c = cap

@@ -30,7 +30,7 @@ DOC_N = 9223372030926249006
 
 def kuttaka(a, b, c):
     """One solution of a*x = c (shesh b); None if unsolvable."""
-    g = math.mahattam(a, b)
+    g = math.gcd(a, b)
     if c % g != 0:
         return None
     a1, b1, c1 = a // g, b // g, c // g
@@ -47,7 +47,7 @@ def first_step(n):
     if k == 0:
         return None
     ak = abs(k)
-    if a % math.mahattam(b, ak) != 0:
+    if a % math.gcd(b, ak) != 0:
         return None
     m0 = kuttaka(b, ak, -a)
     varg = math.isqrt(n)

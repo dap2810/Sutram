@@ -17,10 +17,10 @@
 # element access helpers (flat index)
 # ---------------------------------------------------------------
 
-# samanvaya_akar_na(m, n, len) - R37: 1 when an m x n shape does NOT fit len
+# samanvaya_akar_ayogya(m, n, len) - R37: 1 when an m x n shape does NOT fit len
 # elements (or m or n is negative), else 0. It divides, never multiplies, so it
 # holds for every m and n: m x n fits exactly when n == 0 or m <= len / n.
-prakriya samanvaya_akar_na(m, n, len) {
+prakriya samanvaya_akar_ayogya(m, n, len) {
     yadi (m < 0) { nivartanam 1 }
     yadi (n < 0) { nivartanam 1 }
     yadi (n == 0) { nivartanam 0 }
@@ -65,9 +65,9 @@ prakriya vivartana(kosh dasham a, m, n, kosh dasham out) {
 # formed until it is known to fit, so it cannot wrap to a small loop.
 prakriya matrika_yoga(kosh dasham a, kosh dasham b, m, n, kosh dasham out) {
     vitti k = 0
-    yadi (samanvaya_akar_na(m, n, kosh_len(a)) == 1) { nivartanam 0 - 1 }
-    yadi (samanvaya_akar_na(m, n, kosh_len(b)) == 1) { nivartanam 0 - 1 }
-    yadi (samanvaya_akar_na(m, n, kosh_len(out)) == 1) { nivartanam 0 - 1 }
+    yadi (samanvaya_akar_ayogya(m, n, kosh_len(a)) == 1) { nivartanam 0 - 1 }
+    yadi (samanvaya_akar_ayogya(m, n, kosh_len(b)) == 1) { nivartanam 0 - 1 }
+    yadi (samanvaya_akar_ayogya(m, n, kosh_len(out)) == 1) { nivartanam 0 - 1 }
     yavat (k < m * n) {
         out[k] = a[k] + b[k]
         k = k + 1
@@ -78,8 +78,8 @@ prakriya matrika_yoga(kosh dasham a, kosh dasham b, m, n, kosh dasham out) {
 # scalar multiple: out must hold m*n elements. R37: -1 if m x n does not fit.
 prakriya skalar(kosh dasham a, dasham c, m, n, kosh dasham out) {
     vitti k = 0
-    yadi (samanvaya_akar_na(m, n, kosh_len(a)) == 1) { nivartanam 0 - 1 }
-    yadi (samanvaya_akar_na(m, n, kosh_len(out)) == 1) { nivartanam 0 - 1 }
+    yadi (samanvaya_akar_ayogya(m, n, kosh_len(a)) == 1) { nivartanam 0 - 1 }
+    yadi (samanvaya_akar_ayogya(m, n, kosh_len(out)) == 1) { nivartanam 0 - 1 }
     yavat (k < m * n) {
         out[k] = a[k] * c
         k = k + 1

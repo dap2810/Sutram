@@ -384,11 +384,11 @@
   "NO-CONTRACT",
   "R11: an internal helper; its return value is not documented and its one caller (nighantu_khip) calls it as a statement"
  ],
- "roop.roop_varg_mool C4:<-><=": [
+ "roop.roop_varg_sahaya C4:<-><=": [
   "EQUIVALENT",
   "R11: the extra pass i = cnt can only set dot = cnt, which is dot's starting value; it reads one byte past the input"
  ],
- "roop.roop_varg_mool C12:>->>=": [
+ "roop.roop_varg_sahaya C12:>->>=": [
   "EQUIVALENT",
   "R11: this test is in the anya of yadi (rem == 3), so rem != 3 and rem > 3 equals rem >= 3"
  ],

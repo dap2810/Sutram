@@ -263,11 +263,11 @@ prakriya brihat_shesh(ank, shesh, res, n) {
         tr = nirmmita(c * 8)
         yadi (tr == 0) { nivartanam 0 - 1 }
     }
-    nivartanam brihat_shesh_tr(ank, shesh, res, c, tr)
+    nivartanam brihat_shesh_sahaya(ank, shesh, res, c, tr)
 }
 
-# brihat_shesh_tr(ank, shesh, res, n, scratch) — brihat_shesh with caller's n-digit scratch.
-prakriya brihat_shesh_tr(ank, shesh, res, n, scratch) {
+# brihat_shesh_sahaya(ank, shesh, res, n, scratch) — brihat_shesh with caller's n-digit scratch.
+prakriya brihat_shesh_sahaya(ank, shesh, res, n, scratch) {
     vitti x = ank
     vitti m = shesh
     vitti r = res
@@ -335,10 +335,10 @@ prakriya brihat_ghatmod(base, exp, shesh, res, n) {
     yavat (e > 0) {
         yadi (e % 2 == 1) {
             brihat_gun(r, bcur, t1, c)
-            brihat_shesh_tr(t1, m, r, c, tr)
+            brihat_shesh_sahaya(t1, m, r, c, tr)
         }
         brihat_gun(bcur, bcur, t1, c)
-        brihat_shesh_tr(t1, m, bcur, c, tr)
+        brihat_shesh_sahaya(t1, m, bcur, c, tr)
         e = e / 2
     }
     nivartanam 0

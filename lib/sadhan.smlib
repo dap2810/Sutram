@@ -6,7 +6,7 @@
 # Edge rules (R30): shesh/bhaj_urdhva return 0 on a zero divisor (no
 # SIGFPE); yog_seema returns 0 for end < start; bhaj_urdhva is true
 # ceiling division for every util_chinha combination.
-prakriya antargam(a, b, t)
+prakriya antarveshan(a, b, t)
     nivartanam a + (b - a) * t / 100
 
 # yog_seema(start, end) — sum of the integers from start to end inclusive; 0 if end < start.
@@ -39,8 +39,8 @@ prakriya bhaj_urdhva(a, b) {
     nivartanam q
 }
 
-# util_chinha(n) — sign of n: 1 if n > 0, -1 if n < 0, 0 if n == 0.
-prakriya util_chinha(n)
+# ank_chihna(n) — sign of n: 1 if n > 0, -1 if n < 0, 0 if n == 0.
+prakriya ank_chihna(n)
     nivartanam (n > 0) - (n < 0)
 
 # satya_tak_ank(b) — boolean b converted to an integer (b * 1).

@@ -1,9 +1,9 @@
 yoj sadhan
 mukhya() {
-    likha(antargam(0, 100, 50))
+    likha(antarveshan(0, 100, 50))
     likha("\n")
-    likha(antargam(10, 20, 0))
+    likha(antarveshan(10, 20, 0))
     likha("\n")
-    likha(antargam(10, 20, 100))
+    likha(antarveshan(10, 20, 100))
     likha("\n")
 }

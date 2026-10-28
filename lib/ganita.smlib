@@ -463,7 +463,7 @@ prakriya ganita_janchit_kramgun(n, ok) {
 # has no ok channel, so 0 is the documented sentinel). 0^0 = 1.
 # Repeated saturating multiplication. Correct because |a| <= 1 never
 # saturates, and once saturated with |a| >= 2 every later true
-# product overflows in the direction util_chinha(r) * util_chinha(a)^remaining —
+# product overflows in the direction ank_chihna(r) * ank_chihna(a)^remaining —
 # so the loop exits early with the parity of the remaining steps
 # deciding the final bound, instead of iterating e times.
 prakriya ganita_paripurna_ghat(a, e) {

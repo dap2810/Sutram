@@ -1414,7 +1414,7 @@ def _fmt_half_away(x, places):
 
 
 def prop_fmt_int_base_roundtrip(compiler, rng):
-    """roop_ank_aadhar2 then parse == original, incl negatives and base 36;
+    """roop_ank_aadhar_saral then parse == original, incl negatives and base 36;
     bad bases return 0"""
     vals = [0, 1, -1, 255, -255, 99999, -99999, rng.randint(-10 ** 6, 10 ** 6)]
     bases = [2, 8, 10, 16, 36]
@@ -1450,7 +1450,7 @@ def prop_fmt_int_base_roundtrip(compiler, rng):
              "    vitti out = nirmmita(128)"]
     for v in vals:
         for b in bases:
-            lines.append(f"    yadi (parse_base(out, roop_ank_aadhar2({v}, {b}, out), {b}) != {v}) {{")
+            lines.append(f"    yadi (parse_base(out, roop_ank_aadhar_saral({v}, {b}, out), {b}) != {v}) {{")
             lines.append('        likha("FAIL fmt base roundtrip\\n")')
             lines.append("        prati 1")
             lines.append("    }")
@@ -1471,11 +1471,11 @@ def prop_fmt_int_base_roundtrip(compiler, rng):
     lines.append('        likha("FAIL fmt hex prefix roundtrip\\n")')
     lines.append("        prati 1")
     lines.append("    }")
-    lines.append("    yadi (roop_ank_aadhar2(255, 1, out) != 0) {")
+    lines.append("    yadi (roop_ank_aadhar_saral(255, 1, out) != 0) {")
     lines.append('        likha("FAIL fmt bad base low\\n")')
     lines.append("        prati 1")
     lines.append("    }")
-    lines.append("    yadi (roop_ank_aadhar2(255, 37, out) != 0) {")
+    lines.append("    yadi (roop_ank_aadhar_saral(255, 37, out) != 0) {")
     lines.append('        likha("FAIL fmt bad base high\\n")')
     lines.append("        prati 1")
     lines.append("    }")
@@ -3724,7 +3724,7 @@ def _base_repr(n, b):
 
 def prop_min26(compiler, rng):
     """R26 WS3: INT64_MIN fixes — ank_tak_varna(MIN), roop_ank_aadhar
-    negatives, roop_ank_aadhar2/roop_ank_dhvaj(MIN) vs Python."""
+    negatives, roop_ank_aadhar_saral/roop_ank_dhvaj(MIN) vs Python."""
     lines = ["yoj vakyank", "yoj roop", "mukhya() {",
              "    vitti ok = nirmmita(8)",
              "    vitti buf = nirmmita(32 * 8)",
@@ -3757,16 +3757,16 @@ def prop_min26(compiler, rng):
     lines.append("    yadi (akshar(out, 0) != 53) {")
     fail("roop_ank_aadhar neg char")
     lines.append("    }")
-    # roop_ank_aadhar2(MIN) vs Python in several bases
+    # roop_ank_aadhar_saral(MIN) vs Python in several bases
     for ci, b in enumerate([2, 8, 10, 16, 36]):
         want = "-" + _base_repr(2**63, b)
-        lines.append(f"    vitti nb{ci} = roop_ank_aadhar2(minv, {b}, out)")
+        lines.append(f"    vitti nb{ci} = roop_ank_aadhar_saral(minv, {b}, out)")
         lines.append(f"    yadi (nb{ci} != {len(want)}) {{")
-        fail(f"roop_ank_aadhar2 MIN base {b} len")
+        fail(f"roop_ank_aadhar_saral MIN base {b} len")
         lines.append("    }")
         for j, ch in enumerate(want):
             lines.append(f"    yadi (akshar(out, {j}) != {ord(ch)}) {{")
-            fail(f"roop_ank_aadhar2 MIN base {b} char {j}")
+            fail(f"roop_ank_aadhar_saral MIN base {b} char {j}")
             lines.append("    }")
     # roop_ank_dhvaj(MIN, 16, prefix) == "-0x8000000000000000"
     want = "-0x8000000000000000"
@@ -4198,7 +4198,7 @@ def prop_serial29(compiler, rng):
     check("anukram_khip_i64(buf, 60, 64, 1)", "0 - 1", "put overrun")
     check("anukram_grah_i64(buf, 60, 64, out)", "0 - 1", "get overrun")
     check("anukram_khip_i64(buf, 0 - 1, 64, 1)", "0 - 1", "put neg pos")
-    check("anukram_maap_ashtak(5)", 13, "len_bytes")
+    check("anukram_maap_aayam_purva(5)", 13, "len_bytes")
     # bytes roundtrip
     lines.append("    vitti src = nirmmita(16 * 8)")
     lines.append("    akshar_rakh(src, 0, 104)")
@@ -4206,22 +4206,22 @@ def prop_serial29(compiler, rng):
     lines.append("    akshar_rakh(src, 2, 108)")
     lines.append("    akshar_rakh(src, 3, 108)")
     lines.append("    akshar_rakh(src, 4, 111)")
-    check("anukram_khip_ashtak(buf, 0, 64, src, 5)", 13, "put_bytes")
-    check("anukram_grah_ashtak(buf, 0, 64, dst, n)", 13, "get_bytes")
+    check("anukram_khip_aayam_purva(buf, 0, 64, src, 5)", 13, "put_bytes")
+    check("anukram_grah_aayam_purva(buf, 0, 64, dst, n)", 13, "get_bytes")
     check("n[0]", 5, "get_bytes len")
     for i, c in enumerate([104, 101, 108, 108, 111]):
         check(f"akshar(dst, {i})", c, f"byte {i}")
     # empty payload
-    check("anukram_khip_ashtak(buf, 0, 64, src, 0)", 8, "put_bytes empty")
-    check("anukram_grah_ashtak(buf, 0, 64, dst, n)", 8, "get_bytes empty")
+    check("anukram_khip_aayam_purva(buf, 0, 64, src, 0)", 8, "put_bytes empty")
+    check("anukram_grah_aayam_purva(buf, 0, 64, dst, n)", 8, "get_bytes empty")
     check("n[0]", 0, "get_bytes empty len")
     # overrun and negative length
-    check("anukram_khip_ashtak(buf, 60, 64, src, 5)", "0 - 1",
+    check("anukram_khip_aayam_purva(buf, 60, 64, src, 5)", "0 - 1",
           "put_bytes overrun")
-    check("anukram_khip_ashtak(buf, 0, 64, src, 0 - 1)", "0 - 1",
+    check("anukram_khip_aayam_purva(buf, 0, 64, src, 0 - 1)", "0 - 1",
           "put_bytes neg len")
     lines.append("    anukram_khip_i64(buf, 0, 64, 0 - 1)")
-    check("anukram_grah_ashtak(buf, 0, 64, dst, n)", "0 - 1",
+    check("anukram_grah_aayam_purva(buf, 0, 64, dst, n)", "0 - 1",
           "get_bytes neg len")
     lines.append('    likha("PASS\\n")')
     lines.append("}")
