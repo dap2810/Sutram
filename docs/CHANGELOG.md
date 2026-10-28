@@ -1,3 +1,44 @@
+## v389 - every English function name in `examples/` renamed, with the output verified for each
+
+**31 example files and their goldens changed. The suite still passes: `PASS=225`, no FAIL.**
+
+### How it was done - and why it is safe
+**For each file: rename in the source, compile it, run it, and compare the output against the OLD golden with the same
+renames applied.** **A file was only written when the output matched exactly.** **So the rename changed the printed text
+and nothing else.**
+
+**Result: 27 verified on the first pass, 4 handled after.**
+
+### The 4 that needed care
+- **`93` and `94`: `blend` and `mixed` both became `mishr`, and the compiler said `punah prakriya paribhasha: mishr` -
+  duplicate function definition.** **My mapping had a collision.** **Fixed: `blend` -> `mishr`, `mixed` -> `mishrit`.**
+- **`120` and `121` are NEGATIVE tests** - their golden is the error message, so a successful compile looked like a
+  failure. **Renamed and checked against the error text: both MATCH.**
+
+### The renames
+`add_half`->`yog_ardh` · `add_one`->`yog_ek` · `append_one`->`yuj_ek` · `ascend`->`aaroh` · `average`->`madhya` ·
+`blend`->`mishr` · `mixed`->`mishrit` · `bsort`->`budbud_shreni` · `bump`->`vardh` · `bump_element`->`vardh_avayav` ·
+`choose`->`chun` · `double_it`/`double_of`->`dwigun` · `eval`->`mulyan` · `first`->`pratham` · `greet`->`abhivadan` ·
+`half_of`->`ardh` · `head`->`shirsh` · `indexed_value`->`sanket_mulya` · `last_value`->`antim_mulya` ·
+`make_float`->`dasham_nirm` · `measure`->`maap` · `mutate_index`->`badl_sanket` · `parse_expr`->`vishleshan_vakya` ·
+`parse_factor`->`vishleshan_gunan` · `parse_num`->`vishleshan_sankhya` · `parse_term`->`vishleshan_pad` ·
+`raw_total`->`kacch_yog` · `read_after`->`pad_pashchat` · `repeat`->`punar` · `replace_zero`->`shunya_badl` ·
+`scale`->`gun_maap` · `second`->`dwitiya` · `set0`->`rakh_shunya` · `show6`->`darsh_shat` · `skip_ws`->`rikta_ghas` ·
+`sort_keys`->`shreni_kunji` · `sum6`->`yog_shat` · `tail`->`puchh` · `touch`->`sparsh` · `twice`->`dwi_gun` ·
+`wrapper`->`aavaran` · `answer`->`uttar` · `fib`->`meru_ank` · `test`->`pariksha`
+
+### And two files left alone
+**`215_r12_wordfreq` and `216_r12_expr` have no golden in `tests/expect/`, so there was nothing to verify against.**
+**Their `sort_keys`, `eval`, `parse_*` and `skip_ws` names are unchanged until someone can prove the output.**
+
+### What is NOT done, and must not be claimed
+**The English VARIABLES in the examples** - `count`, `sum`, `total`, `len`, `arr`, `max`, `min`, `tmp`, `msg`, `code`,
+`color`, `score`, `guess`, `interest`, `principal`, `rate` and the rest. **About 140 of them.** **They need the same
+rename-run-verify treatment, and the printed text of many examples contains them.** **Not touched.**
+
+**And the library and builtin renames from the audit** - 24 library functions, 15 builtins, the `ganit`/`ganan` module.
+**Not touched either.** **Those are a separate round with the full guard.**
+
 ## v388 - `add` -> `yog`, `mul3` -> `gun_tray`: the first function example is now Sanskrit
 
 **`examples/05_func_params.sm` is the fifth file a beginner reads and the FIRST one that declares a function.** **The
