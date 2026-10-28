@@ -1,0 +1,580 @@
+IDENTICAL    examples/01_hello.sm 5996967f556508fb
+IDENTICAL    examples/02_arith.sm 91dc36d3b7be27fd
+IDENTICAL    examples/03_if_else.sm 7cb151cc032b3aab
+IDENTICAL    examples/04_while.sm cf8d3f36dde3ca45
+IDENTICAL    examples/05_func_params.sm e2a287f11f155f72
+IDENTICAL    examples/06_rachana.sm c9268963dd406bfa
+IDENTICAL    examples/07_module.sm c073f6a620e1eb9d
+IDENTICAL    examples/08_demo.sm febfa025ba8904a4
+IDENTICAL    examples/09_comparisons.sm 0c1efb79edb1792c
+IDENTICAL    examples/100_t18_kosh_bounds.sm 5f0e98e190fd509d
+IDENTICAL    examples/100_t18_kosh_devanagari.sm eb85d7dab2bab0f4
+IDENTICAL    examples/101_t18_kosh_empty.sm f1d4975fa0a901ab
+IDENTICAL    examples/102_ast_multimodule_capacity.sm 51109ddf9122e6f7
+IDENTICAL    examples/103_b10_nested_break_patches.sm e2f37f3d2af93c2a
+IDENTICAL    examples/104_b10_nested_continue_patches.sm 7e2ac7f42ea75f62
+REFUSED-SAME examples/105_block_nesting_capacity.sm
+REFUSED-SAME examples/106_rachana_field_capacity.sm
+IDENTICAL    examples/107_b11_block_65_statements.sm 6d97484ba328eb05
+REFUSED-SAME examples/108_b11_block_statement_capacity.sm
+IDENTICAL    examples/109_t18_kosh_dasham.sm b3c1d74843ba19d7
+IDENTICAL    examples/10_mathlib.sm 18b07619759e477f
+IDENTICAL    examples/110_t18_kosh_dasham_devanagari.sm 2a8bcf7dbf326a0f
+IDENTICAL    examples/111_t18_kosh_dasham_function_return.sm c2894da6a03a8ea0
+IDENTICAL    examples/112_t18_kosh_integer_conversion.sm e77bf25f7a31fbcf
+IDENTICAL    examples/113_perf_self_update.sm 600baabfbc2524b9
+IDENTICAL    examples/114_perf_loop_fastpaths.sm c5d6fbec10b37b50
+IDENTICAL    examples/115_perf_loop_bottom.sm a8e56d7e0e75f0c3
+IDENTICAL    examples/116_perf_reg_destination.sm 459043aa606c6558
+IDENTICAL    examples/117_perf_constant_literals.sm b2010233097b0630
+IDENTICAL    examples/118_t18_kosh_param.sm 2d9883df46e07fe8
+IDENTICAL    examples/119_t18_kosh_param_forward.sm d009da0c495c4af4
+IDENTICAL    examples/11_forloop.sm 2dad24e4b4f37594
+REFUSED-SAME examples/120_t18_kosh_param_mismatch.sm
+REFUSED-SAME examples/121_t18_kosh_param_push_reject.sm
+IDENTICAL    examples/122_t18_kosh_param_devanagari.sm 7f34382f96d5a1b6
+IDENTICAL    examples/123_t18_kosh_param_statement_call.sm a0b59bad3502a21e
+IDENTICAL    examples/124_perf_wide_immediate.sm 6c40a0647f05d25b
+IDENTICAL    examples/125_perf_register_immediate_destination.sm ec3915fa2231f721
+IDENTICAL    examples/126_numeric_pipeline.sm 91a5b6fe2feb4a6c
+IDENTICAL    examples/127_perf_float_self_register.sm 00a84e2777b02e46
+IDENTICAL    examples/128_perf_float_self_fallback.sm c8edc076b77782ac
+IDENTICAL    examples/129_perf_float_destination.sm b3a2bfe5c7f4422e
+IDENTICAL    examples/12_elif.sm f6e071fe0e691859
+IDENTICAL    examples/130_perf_float_destination_alias.sm c1a99387538063c3
+IDENTICAL    examples/131_perf_float_compare_register.sm 749086c997082c51
+IDENTICAL    examples/132_perf_float_compare_fallback.sm 79c601412cf08ea7
+IDENTICAL    examples/133_perf_float_scalar_call_rhs.sm db8a1c284a69339c
+IDENTICAL    examples/134_perf_float_complex_fallback.sm 544be0fc2976d87c
+IDENTICAL    examples/135_r30_float_index_scalar.sm de85c220f82002c1
+IDENTICAL    examples/136_r30_float_complex_left.sm f1bd4447498bf217
+IDENTICAL    examples/137_r30_float_literal_rhs.sm f16a7ba80d90ed07
+IDENTICAL    examples/138_r30_float_comparison_index.sm 22edcc41efbb22b2
+IDENTICAL    examples/139_r30_float_mixed_fallback.sm 616d426e9ac8beaa
+IDENTICAL    examples/13_negatives.sm 14d8a58968789cec
+IDENTICAL    examples/140_r30_index_side_effect.sm 5741420d8ed7d12e
+IDENTICAL    examples/141_xmm_cache_basic.sm 903c7258c5107ef8
+IDENTICAL    examples/142_xmm_cache_alias.sm df12d37473ad1d39
+IDENTICAL    examples/143_xmm_cache_barriers.sm 373bf360b534ac4c
+IDENTICAL    examples/144_xmm_cache_fallback.sm 5507b137c8492fba
+IDENTICAL    examples/145_xmm_cache_nested_calls.sm 2c1ad7c6e057e5b8
+IDENTICAL    examples/146_stage2_loop_call_boundary.sm fff37bd6cb284ecc
+IDENTICAL    examples/147_stage2_recursive_float_boundary.sm 74e6d872c98b0755
+IDENTICAL    examples/148_stage2_array_mutation_call.sm be603ccedaa2c330
+IDENTICAL    examples/149_namespaced_colliding_imports.sm 9946e76d2ba5b7f8
+IDENTICAL    examples/14_strings.sm 28b0a83b7cae9736
+IDENTICAL    examples/150_namespaced_same_module_two_aliases.sm 2dc5fac418304f83
+IDENTICAL    examples/151_namespaced_and_legacy_import.sm 3479ea6e7d5aedc6
+IDENTICAL    examples/152_namespaced_comment_string_preservation.sm 5b4985d36049aad4
+IDENTICAL    examples/153_namespaced_devanagari_function.sm 91a0bba9f26d64e7
+IDENTICAL    examples/154_namespaced_duplicate_idempotent.sm 8574b1ab5058f5ff
+IDENTICAL    examples/155_namespaced_multi_alias_composition.sm cdc7c66c4682c9b8
+REFUSED-SAME examples/156_namespaced_alias_collision.sm
+REFUSED-SAME examples/157_namespaced_missing_module.sm
+REFUSED-SAME examples/158_namespaced_alias_digit.sm
+REFUSED-SAME examples/159_namespaced_path_traversal.sm
+IDENTICAL    examples/15_sutra_const.sm 6275339e9988e3d4
+REFUSED-SAME examples/160_namespaced_empty_alias.sm
+REFUSED-SAME examples/161_namespaced_overlong_alias.sm
+REFUSED-SAME examples/162_namespaced_import_capacity.sm
+IDENTICAL    examples/163_r40_transitive_diamond.sm 3e2f745430cc769d
+REFUSED-SAME examples/164_r41_cycle_reject.sm
+REFUSED-SAME examples/165_r41_missing_reject.sm
+IDENTICAL    examples/166_r41_optin_diamond.sm 3e2f745430cc769d
+IDENTICAL    examples/16_advanced.sm 4ef695d6016f4e1a
+IDENTICAL    examples/17_booleans.sm edf4955be9547cab
+IDENTICAL    examples/18_guna_switch.sm 12ff9f103bd5c8dd
+IDENTICAL    examples/19_srijana_enum.sm 9592ea1083b8a333
+IDENTICAL    examples/200_madhava_series.sm e9effa14142855ac
+IDENTICAL    examples/201_madhava_library.sm cc4d5d8192f0f308
+IDENTICAL    examples/202_brahmagupta_area.sm 7e3bf3ad13fb5570
+IDENTICAL    examples/203_meru_with_kosh.sm 624c606c39abb99f
+REFUSED-SAME examples/204_b11_block_statement_capacity.sm
+IDENTICAL    examples/205_madhava_pi_kosh.sm a7d34f3e9f6f7ec7
+IDENTICAL    examples/206_sankhyiki.sm 877fa83511fdcc9a
+IDENTICAL    examples/207_sankhyiki_vector.sm 2de745c18d8dfb41
+IDENTICAL    examples/208_kalana.sm 73264fff99aa92c6
+IDENTICAL    examples/209_samanvaya.sm fef9a5bdc9921948
+IDENTICAL    examples/20_pankti_array.sm cfabde3a5769420c
+REFUSED-SAME examples/210_r41_cycle.sm
+IDENTICAL    examples/211_r41_v1_public.sm 3f7e2c4004260c4a
+REFUSED-SAME examples/212_r41_v1_private.sm
+REFUSED-SAME examples/213_r41_v1_dupexp.sm
+REFUSED-SAME examples/214_r41_v1_noalias.sm
+IDENTICAL    examples/215_r12_wordfreq.sm be53322029300976
+IDENTICAL    examples/216_r12_expr.sm 32a049f8f492330a
+IDENTICAL    examples/217_r12_report.sm 02ce018e8a2d9ab6
+DIFFER       examples/218_sanskrit_devanagari.sm refused before, compiles now; compiler output differs
+DIFFER       examples/219_sanskrit_kosh_aliases.sm refused before, compiles now; compiler output differs
+IDENTICAL    examples/21_break_continue.sm 152b6c864b5f2679
+REFUSED-SAME examples/220_hindi_parse_error.sm
+REFUSED-SAME examples/221_eof_location.sm
+REFUSED-SAME examples/222_old_keyword_name.sm
+REFUSED-SAME examples/223_undefined_name.sm
+REFUSED-SAME examples/224_unknown_field.sm
+REFUSED-SAME examples/225_undeclared_array.sm
+IDENTICAL    examples/226_long_field_names.sm 22a982395e9ec820
+REFUSED-SAME examples/227_assign_undeclared.sm
+REFUSED-SAME examples/228_block_scope.sm
+REFUSED-SAME examples/229_loop_var_scope.sm
+IDENTICAL    examples/22_precedence.sm 72c11ae8ceb4fc16
+IDENTICAL    examples/230_redeclare_after_block.sm 0fcf7911a385a498
+REFUSED-SAME examples/231_duplicate_name.sm
+REFUSED-SAME examples/232_arity.sm
+REFUSED-SAME examples/233_missing_module.sm
+REFUSED-SAME examples/234_ambiguous_field.sm
+REFUSED-SAME examples/235_duplicate_field.sm
+IDENTICAL    examples/236_guna_once.sm adf8b41c1b7534b1
+IDENTICAL    examples/237_many_variables.sm dfe5b520e37d17b5
+IDENTICAL    examples/238_r17_d1_unary_not.sm c75536701f0428a0
+IDENTICAL    examples/239_r17_d2_anya_loop_krama.sm cb9aadbaf8bc953f
+IDENTICAL    examples/23_grahan_input.sm 98bb72146a269fe0
+IDENTICAL    examples/240_r17_d3_anya_self_assign.sm 615aec525d039613
+IDENTICAL    examples/241_r17_d4_precedence.sm 33b10d4d5476af73
+IDENTICAL    examples/242_r17_empty_guna.sm c566790c3dc486ea
+IDENTICAL    examples/243_r18_sthagita.sm b9e1db4bcbce3975
+IDENTICAL    examples/244_r18_rachana_in_function.sm 81582f129dcdcf3c
+IDENTICAL    examples/245_r18_netsock.sm e9abe8c9136dd0e0
+IDENTICAL    examples/246_r23_comparator_sort.sm 30e3671f9473c991
+IDENTICAL    examples/247_r23_methods.sm d534734c6067b332
+IDENTICAL    examples/248_r23_slices.sm bb60fbb5a0290360
+IDENTICAL    examples/249_r25_phal.sm c320e696d5fc14a5
+IDENTICAL    examples/24_guess_game.sm 96e2097403da8b0e
+IDENTICAL    examples/250_r26_dosh_handler.sm 098ea0c298d77a33
+IDENTICAL    examples/251_r38_alias_mala_oob.sm 08561639e8acffea
+IDENTICAL    examples/252_r38_alias_kosh_oob.sm bb98f90a80dcd149
+IDENTICAL    examples/253_r38_alias_slice_oob.sm 630494d480f871bd
+IDENTICAL    examples/254_r42_alias_pankti_len.sm 1cb706b75335728f
+IDENTICAL    examples/255_r42_alias_kosh_push.sm b8c58fadd86b4626
+IDENTICAL    examples/256_r44_vartani_sanskrit_names.sm 72fde5e36ef78406
+IDENTICAL    examples/257_r48_kosh_empty.sm 2a573f35072e9418
+IDENTICAL    examples/25_patterns.sm e1841e6fb90c189c
+IDENTICAL    examples/26_calculator.sm a473d478f8e8e505
+IDENTICAL    examples/27_even_odd.sm 3cdd643ba5c7b9e5
+IDENTICAL    examples/28_compound.sm 908ca03bfa2a776b
+IDENTICAL    examples/29_nishkriya.sm 89df0eb7a0bff4c4
+IDENTICAL    examples/30_lkhb.sm 4909cc65db37528f
+IDENTICAL    examples/31_strcat.sm 31c1ec2f81b2c401
+IDENTICAL    examples/32_bank_interest.sm b21d240b060980bd
+IDENTICAL    examples/33_unit_conversion.sm b0fc3dab72349967
+IDENTICAL    examples/34_incdec.sm 2b686959389ea410
+IDENTICAL    examples/35_comments.sm de3c356aac8aa31a
+IDENTICAL    examples/36_descending.sm c992d59bab71cf21
+REFUSED-SAME examples/37_native_gujarati.sm
+REFUSED-SAME examples/38_native_hindi.sm
+REFUSED-SAME examples/39_native_tamil.sm
+IDENTICAL    examples/40_functions_params.sm edfeda119b513b3d
+IDENTICAL    examples/41_recursion.sm 3e83c23f331e4bf2
+IDENTICAL    examples/42_block_comments.sm 60091142cb933343
+IDENTICAL    examples/43_nested_likha.sm ad153e3ff544fc2f
+IDENTICAL    examples/44_shabda.sm f978ca437dbd791b
+IDENTICAL    examples/45_shifts.sm d34466470e3f8ce0
+IDENTICAL    examples/46_language_reference.sm c3226df5b9ac5123
+IDENTICAL    examples/59_windows_grahan_runtime.sm ec3ddfaa0e790a94
+IDENTICAL    examples/60_six_func_args.sm 359384492b15e181
+IDENTICAL    examples/61_stdlib_math.sm 2e88234b5ce7ccb4
+IDENTICAL    examples/62_stdlib_num.sm 04448aeeb5501f93
+IDENTICAL    examples/63_stdlib_string.sm db4d05a183ce7ce7
+IDENTICAL    examples/64_param_reassign.sm 3ba625625517c5d0
+IDENTICAL    examples/65_char_code_index.sm 1cc7886d82bc4815
+IDENTICAL    examples/66_module_dedupe.sm 5d05489dbe2d1dca
+IDENTICAL    examples/67_array_len_bounds.sm d0cbac2f94e9c12d
+IDENTICAL    examples/68_array_oob.sm 1a7b6f68c3a4a8cf
+REFUSED-SAME examples/69_undefined_function.sm
+REFUSED-SAME examples/70_module_collision.sm
+IDENTICAL    examples/71_array_negative_index.sm a985dfd05dc60940
+IDENTICAL    examples/72_array_variable_index.sm af7f868f4ef46be9
+IDENTICAL    examples/73_array_equal_length.sm 328f2efe186c916c
+IDENTICAL    examples/74_array_highest_valid.sm 890f2ad2ec829dac
+IDENTICAL    examples/75_array_dynamic_length.sm 3d3647b859ef1fab
+IDENTICAL    examples/76_array_function_scope.sm 4dd3cbebf4d00fed
+IDENTICAL    examples/77_ternary.sm 2ce5d6c0b4cbbeeb
+IDENTICAL    examples/78_do_while.sm c17f670745780fae
+IDENTICAL    examples/79_ayojan_cwd.sm 5d05489dbe2d1dca
+IDENTICAL    examples/80_b6_nested_call_loop.sm 95ad881608077a8a
+IDENTICAL    examples/81_stdlib_num2.sm 5f8b9651d2365512
+IDENTICAL    examples/82_b7_stack_spill.sm 97a522f718f3a6f3
+IDENTICAL    examples/83_stdlib_sort.sm fa0a426e7c81ef8a
+IDENTICAL    examples/84_stdlib_string2.sm a035a44fa1052fc8
+IDENTICAL    examples/85_stdlib_shellsort.sm 23d97eada517ad9b
+IDENTICAL    examples/86_b8_multi_modules.sm c6606947a1ecfa51
+IDENTICAL    examples/87_b8_all_modules.sm 7d300392154f76ec
+IDENTICAL    examples/87_b8_func_params_capacity.sm 845f5eeab9da7e77
+IDENTICAL    examples/87_b8_math_sort_string.sm 845f5eeab9da7e77
+IDENTICAL    examples/88_pingala_chandas.sm ccacd2c259a46cf7
+IDENTICAL    examples/89_b9_short_circuit.sm e6b042fa71653b92
+IDENTICAL    examples/90_b9_short_circuit_bounds.sm a2a62940ad990699
+IDENTICAL    examples/91_indian_number_theory.sm d820e659acd79007
+IDENTICAL    examples/92_t12_dasham_float.sm 305a3c5a3f3d7542
+IDENTICAL    examples/93_t12_float_functions.sm 1025af26f527151d
+IDENTICAL    examples/94_t12_float_functions.sm 04a258266153ed45
+IDENTICAL    examples/95_t12_madhava_functions.sm d837d1c9666b47eb
+IDENTICAL    examples/96_t18_kosh.sm 9941ae645dfa93eb
+IDENTICAL    examples/97_t18_kosh_devanagari.sm eb85d7dab2bab0f4
+IDENTICAL    examples/98_t18_kosh_empty.sm f1d4975fa0a901ab
+IDENTICAL    examples/99_ast_multimodule_capacity.sm 51109ddf9122e6f7
+IDENTICAL    examples/99_t18_kosh.sm 9941ae645dfa93eb
+IDENTICAL    examples/array_demo.sm 9285c56e23ab80d2
+IDENTICAL    examples/char_ops.sm 2c5021f8fab0e9f2
+IDENTICAL    examples/fizzbuzz.sm 3768ba1f1ebde33d
+IDENTICAL    examples/format_demo.sm 42b9a71f959d8918
+IDENTICAL    examples/full_demo.sm 6f2d637634a1bab5
+IDENTICAL    examples/func_demo.sm cffa8b7a056ab53e
+IDENTICAL    examples/hello.sm e747358cfc2fe791
+IDENTICAL    examples/import_demo.sm 5b68cba3355ba558
+IDENTICAL    examples/mem_safe.sm 87811a36a73e9ca6
+IDENTICAL    examples/multable.sm 70147aeb0e4a504c
+IDENTICAL    examples/number_game.sm 1ae807cf1fa4faf6
+IDENTICAL    examples/prime.sm c97839147ffcd536
+REFUSED-SAME examples/r67/bengali_native.sm
+REFUSED-SAME examples/r67/punjabi_native.sm
+REFUSED-SAME examples/r68/hindi.sm
+REFUSED-SAME examples/r68/kannada.sm
+REFUSED-SAME examples/r68/marathi.sm
+REFUSED-SAME examples/r68/odia.sm
+REFUSED-SAME examples/r68/tamil.sm
+REFUSED-SAME examples/r68/telugu.sm
+IDENTICAL    examples/r71/associativity.sm d8ef975107d5b18a
+IDENTICAL    examples/r71/boundary_bad.sm 8ecde47687d187a1
+REFUSED-SAME examples/r71/boundary_good.sm
+IDENTICAL    examples/r71/conversion.sm 261bc69cff03df12
+IDENTICAL    examples/r71/evaluation_order.sm 478bc49c05b7038a
+IDENTICAL    examples/strength_reduction.sm 51eff0efa5574062
+REFUSED-SAME tests/r29/proj/arity.sm
+IDENTICAL    tests/r29/proj/main.sm ff24b539737956e1
+IDENTICAL    tests/r30/proj/main.sm c4ced074b70607c8
+REFUSED-SAME tests/r32/main.sm
+REFUSED-SAME tests/r33/kinds.sm
+REFUSED-SAME tests/r33/modmain.sm
+REFUSED-SAME tests/r34/ffi_bits.sm
+REFUSED-SAME tests/r35/winffi.sm
+REFUSED-SAME tests/r44_pending/01_undefined_export/main.sm
+IDENTICAL    tests/r44_pending/02_exported_constant/main.sm a47f4e02a91a4090
+REFUSED-SAME tests/r44_pending/03_unknown_qualified/main.sm
+REFUSED-SAME tests/r44_pending/04_private_constant/main.sm
+REFUSED-SAME tests/r44_pending/05_private_function/main.sm
+IDENTICAL    tests/r44_pending/06_public_function/main.sm 9fe21681c4cda596
+IDENTICAL    tests/r44_pending/07_legacy_import/main.sm 830bbd7122961a65
+REFUSED-SAME tests/r48_check/nested_recovery.sm
+REFUSED-SAME tests/r48_check/semantic_unknown.sm
+REFUSED-SAME tests/r48_check/structural_three_errors.sm
+REFUSED-SAME tests/r48_check/three_parse_errors.sm
+REFUSED-SAME tests/r48_check/three_undefined_functions.sm
+REFUSED-SAME tests/r48_check/unclosed_block.sm
+IDENTICAL    tests/r48_check/valid.sm c823f0a8c5c011a1
+REFUSED-SAME tests/r49_check/import_bad.sm
+REFUSED-SAME tests/r49_check/missing_separators.sm
+REFUSED-SAME tests/r49_check/module_missing.sm
+REFUSED-SAME tests/r49_check/nested_expressions.sm
+REFUSED-SAME tests/r49_check/repeated_undefined.sm
+REFUSED-SAME tests/r49_check/top_level_malformed.sm
+IDENTICAL    tests/r50_check/byte_truncation.sm 4a8169fd755ba36a
+IDENTICAL    tests/r50_check/runtime_hi.sm 289939af7d3ebf6c
+REFUSED-SAME tests/r51_check/missing_three.sm
+REFUSED-SAME tests/r51_check/namespaced_root.sm
+REFUSED-SAME tests/r51_check/nested_braces.sm
+REFUSED-SAME tests/r51_check/nested_root.sm
+REFUSED-SAME tests/r51_check/semantic_import.sm
+REFUSED-SAME tests/r52_check/char_at_bad_arity.sm
+REFUSED-SAME tests/r52_check/char_code_bad_arity.sm
+IDENTICAL    tests/r52_check/char_code_index.sm 30e9d20f721a2c61
+REFUSED-SAME tests/r52_check/dvaram_bad_arity.sm
+IDENTICAL    tests/r52_check/dvaram_default.sm 96a61e34e63533c5
+IDENTICAL    tests/r52_check/dvaram_explicit.sm 221fb1626130403d
+REFUSED-SAME tests/r52_check/likh_missing_value.sm
+REFUSED-SAME tests/r52_check/likh_no_args.sm
+IDENTICAL    tests/r52_check/likh_valid.sm 5a20ecb977d51f16
+REFUSED-SAME tests/r54_check/raw_invalid.sm
+IDENTICAL    tests/r54_check/raw_valid.sm 5cfe2e6bb33e7b99
+IDENTICAL    tests/r55_check/mutual_even_odd.sm 6f16dac51453418c
+IDENTICAL    tests/r55_check/mutual_triple_reverse.sm 1923a5e594ca440e
+REFUSED-SAME tests/r55_check/prototype_duplicate.sm
+REFUSED-SAME tests/r55_check/prototype_mismatch.sm
+REFUSED-SAME tests/r55_check/prototype_missing.sm
+REFUSED-SAME tests/r55_check/prototype_type_mismatch.sm
+IDENTICAL    tests/r55_check/without_global_gap.sm f5d1b9984e9bd01c
+REFUSED-SAME tests/r56_check/after_main.sm
+REFUSED-SAME tests/r56_check/bad_declaration.sm
+IDENTICAL    tests/r56_check/compound_global.sm 905ef10c29dd5d08
+REFUSED-SAME tests/r56_check/duplicate_global.sm
+REFUSED-SAME tests/r56_check/global_array_unsupported.sm
+IDENTICAL    tests/r56_check/global_for.sm d7b8f2a3ccc7d02f
+IDENTICAL    tests/r56_check/global_pointer.sm bd4bcfcc6e349b2f
+IDENTICAL    tests/r56_check/global_string_pointer.sm 4c16ecfc5ea793e1
+IDENTICAL    tests/r56_check/initializer_calls.sm 2349f60fd1672138
+IDENTICAL    tests/r56_check/local_shadow.sm 5b29424db46c564b
+IDENTICAL    tests/r56_check/ordered_initializers.sm 8d2883ae25d1681f
+IDENTICAL    tests/r56_check/parameter_shadow.sm f1ca62428769f9a9
+IDENTICAL    tests/r56_check/recursive_global.sm ecb79c588a58da08
+IDENTICAL    tests/r56_check/shared_rw.sm 393c5e168ccd4bf7
+IDENTICAL    tests/r57_check/arithmetic_10m.sm b2fe4641e1c5788f
+IDENTICAL    tests/r57_check/control_10m.sm b730fb4138eaeb99
+IDENTICAL    tests/r57_check/global_registers.sm 629bef699e74e2ad
+IDENTICAL    tests/r57_check/large_literals.sm 41a75c699350c3fd
+IDENTICAL    tests/r57_check/legacy_fallback.sm 8751ed5bbc1a06cb
+IDENTICAL    tests/r57_check/nested_registers.sm 9f3b7448d84b751f
+IDENTICAL    tests/r58_check/div_signed.sm ae008fc03ff08a1f
+IDENTICAL    tests/r58_check/effectful_identity.sm 3a0e2486c17a3a8c
+IDENTICAL    tests/r58_check/fold_nested.sm 91bdb2b62091a2fa
+IDENTICAL    tests/r58_check/fold_vs_dynamic_dynamic.sm 568a2e202b39c437
+IDENTICAL    tests/r58_check/fold_vs_dynamic_folded.sm 1d19955ba807be75
+IDENTICAL    tests/r58_check/foldable_10m.sm a636c8b190bbe04c
+IDENTICAL    tests/r59_check/global_self_10m.sm ec98a07244782b42
+IDENTICAL    tests/r59_check/self_assign_cases.sm ef63636059ec883b
+IDENTICAL    tests/r59_check/stack_self_10m.sm 018c4d564a4f9943
+IDENTICAL    tests/r63_check/indic_danda_regression.sm 0dc65aed39e4e826
+IDENTICAL    tests/r63_check/kosh_dequeue_empty.sm d14ae5d839556c6f
+IDENTICAL    tests/r63_check/kosh_fifo_core.sm 921b4b093e16552b
+IDENTICAL    tests/r63_check/kosh_fifo_float.sm 1c83d275555fc36c
+REFUSED-SAME tests/r63_check/kosh_invalid_arity.sm
+REFUSED-SAME tests/r63_check/kosh_invalid_non_kosh.sm
+IDENTICAL    tests/r63_check/kosh_native_core.sm 02c9f14d5710b493
+IDENTICAL    tests/r63_check/kosh_native_float.sm 69da3dbd407a5d9c
+IDENTICAL    tests/r63_check/kosh_peek_empty.sm d8a1d113530cb11e
+IDENTICAL    tests/r64_check/default_compat.sm 3a70b86d3d9e7352
+IDENTICAL    tests/r64_check/kosh_dequeue_empty.sm d14ae5d839556c6f
+IDENTICAL    tests/r64_check/kosh_nonempty.sm 185848142764f1a4
+IDENTICAL    tests/r64_check/kosh_peek_empty.sm d8a1d113530cb11e
+IDENTICAL    tests/r64_check/kosh_pop_empty.sm 998e42fa51161720
+IDENTICAL    tests/r65_check/overflow_safe.sm df2f1fab27b2e43f
+IDENTICAL    tests/r65_check/peephole_scalar.sm b4eac0eaaf0fba01
+IDENTICAL    tests/r65_check/trap_add.sm 69273d788da44312
+IDENTICAL    tests/r65_check/trap_div.sm c6faa46ae7fa9eb7
+IDENTICAL    tests/r65_check/trap_mod.sm 3c39646b232b612e
+IDENTICAL    tests/r65_check/trap_mul.sm 8f2d00f83912445e
+IDENTICAL    tests/r65_check/trap_sub.sm 1b7bbf94fadc00ab
+IDENTICAL    tests/r69/pairs/all_registers.sm 936baa56c2b65601
+IDENTICAL    tests/r69/pairs/no_pairs.sm d0543143db6a49b6
+IDENTICAL    tests/r69/pairs/nonmatching.sm 4ed868d7608419d7
+IDENTICAL    tests/r83/cases/empty_kosh_dequeue.sm 8c3c093818260181
+IDENTICAL    tests/r83/cases/empty_kosh_peek.sm 6d29951a6483f82e
+REFUSED-SAME tests/r83/cases/setchar_bad_arity.sm
+IDENTICAL    tests/stdlib/array_array_copy.sm bc265e4d45de3852
+IDENTICAL    tests/stdlib/array_array_fill.sm a59f1f443211fc32
+IDENTICAL    tests/stdlib/array_array_get.sm b9812a6821488ed5
+IDENTICAL    tests/stdlib/array_array_get_safe.sm cf1cdc8fc1adae08
+IDENTICAL    tests/stdlib/array_array_new.sm 4b93ca3b7a3d41e0
+IDENTICAL    tests/stdlib/array_array_set.sm a4ced64c74743d31
+IDENTICAL    tests/stdlib/array_array_set_safe.sm 6860d4551df3ed1d
+IDENTICAL    tests/stdlib/array_array_sum.sm c7e38850b550a22a
+IDENTICAL    tests/stdlib/baseconv_roundtrip.sm 9fb7f238002853b6
+IDENTICAL    tests/stdlib/bigint_add.sm 454fbe54538cf15b
+IDENTICAL    tests/stdlib/bigint_cmp.sm 62c7bea743185fa7
+IDENTICAL    tests/stdlib/bigint_copy.sm fa144f386390bb77
+IDENTICAL    tests/stdlib/bigint_divmod.sm 6e76fa10f658babc
+IDENTICAL    tests/stdlib/bigint_divzero.sm 13f3bacd14b4a6d0
+IDENTICAL    tests/stdlib/bigint_from_int.sm 06980dfa0f052479
+IDENTICAL    tests/stdlib/bigint_is_zero.sm d6c165a8b0bee02f
+IDENTICAL    tests/stdlib/bigint_mul.sm 2267c1874ff3e670
+IDENTICAL    tests/stdlib/bigint_powmod.sm 45748d83a4f7c5f7
+IDENTICAL    tests/stdlib/bigint_sub.sm 4e7b50727ff9a3eb
+IDENTICAL    tests/stdlib/bigint_to_int.sm 5e7d74c1d287e664
+IDENTICAL    tests/stdlib/bigint_zero.sm 8969fcbd043150f2
+IDENTICAL    tests/stdlib/breadth26.sm f701f36e10230286
+IDENTICAL    tests/stdlib/chakravala29.sm fb0c69465d5839d8
+IDENTICAL    tests/stdlib/chandas_dviguna.sm 6249855bd415440c
+IDENTICAL    tests/stdlib/chandas_guru_count.sm 4b5616489d07e303
+IDENTICAL    tests/stdlib/chandas_is_guru.sm 1ca698eac29e1b6f
+IDENTICAL    tests/stdlib/chandas_matra_meru.sm af6e2db399adf2b7
+IDENTICAL    tests/stdlib/chandas_meru.sm 42c88b7731b2023d
+IDENTICAL    tests/stdlib/chandas_meru_pankti.sm 0e185296c7d041bb
+IDENTICAL    tests/stdlib/containers20.sm e89687465cdf939a
+IDENTICAL    tests/stdlib/containers21.sm 5680c1ae9f534b3c
+IDENTICAL    tests/stdlib/containers23.sm ea9429f0f5ef9265
+IDENTICAL    tests/stdlib/containers_clear.sm 34d5faa2eb16431b
+IDENTICAL    tests/stdlib/file_read.sm 45e5c06365039f16
+IDENTICAL    tests/stdlib/file_write.sm a8f9e19bb87d82ed
+IDENTICAL    tests/stdlib/fmt_fixed.sm 64306acf72d475d9
+IDENTICAL    tests/stdlib/fmt_group.sm b1f07e16d97240b7
+IDENTICAL    tests/stdlib/fmt_int_base.sm 347431eea254d101
+IDENTICAL    tests/stdlib/fmt_min.sm 9e621aec98187126
+IDENTICAL    tests/stdlib/fmt_pad.sm 961e304d12ee6f07
+IDENTICAL    tests/stdlib/fmt_signed.sm c6e567b654f14f20
+IDENTICAL    tests/stdlib/ganita_brahmagupta_area.sm ebd3243b375a65be
+IDENTICAL    tests/stdlib/ganita_chakravala.sm ff4b8aadff92bef7
+IDENTICAL    tests/stdlib/ganita_checked.sm 40fd993a68b1a85b
+IDENTICAL    tests/stdlib/ganita_ganita_abs.sm 5ebca58a3cfaee6a
+IDENTICAL    tests/stdlib/ganita_ganita_isqrt.sm 3abb27279b591632
+IDENTICAL    tests/stdlib/ganita_kuttaka.sm 793cb928b9e8c902
+IDENTICAL    tests/stdlib/ganita_samasa.sm e1752a13efde7408
+IDENTICAL    tests/stdlib/ganita_sat.sm cf16b50b43b46420
+IDENTICAL    tests/stdlib/gaps19.sm 5d339a021240ecf9
+IDENTICAL    tests/stdlib/gaps20.sm 9aed14044de9e99e
+IDENTICAL    tests/stdlib/gaps21.sm 02197ce44d432c5c
+IDENTICAL    tests/stdlib/gaps23.sm 919448c385f0601a
+IDENTICAL    tests/stdlib/hash_fnv1a.sm d5569a82cd2ac291
+IDENTICAL    tests/stdlib/kalana_bahu_ganana.sm a8ab859429b56f5d
+IDENTICAL    tests/stdlib/kalana_bahu_mula.sm 89db2fae10b3d68a
+IDENTICAL    tests/stdlib/kalana_simpson.sm af0c06300ccc4901
+IDENTICAL    tests/stdlib/kalana_slope.sm 9dc058b0e418be0d
+IDENTICAL    tests/stdlib/kalana_slope2.sm 3863109d198da8f3
+IDENTICAL    tests/stdlib/kalana_trapezoid.sm 92d321b34f34d65a
+IDENTICAL    tests/stdlib/kosh_reuse.sm 2b859df10bddc226
+IDENTICAL    tests/stdlib/list_basic.sm 7636e00f7838be28
+IDENTICAL    tests/stdlib/list_queue.sm 03704cb22614f3ac
+IDENTICAL    tests/stdlib/list_stack.sm 9b7c426d3692c4e5
+IDENTICAL    tests/stdlib/madhava_madhava_atan.sm 8e17f0e87dfb6d30
+IDENTICAL    tests/stdlib/madhava_madhava_cos.sm 9dabf4557f7b56ef
+IDENTICAL    tests/stdlib/madhava_madhava_pi.sm 90a1058bdf466c56
+IDENTICAL    tests/stdlib/madhava_madhava_sin.sm e71006f26f8a14c1
+IDENTICAL    tests/stdlib/madhava_madhava_sqrt.sm 3b4805c44faaff41
+IDENTICAL    tests/stdlib/map_basic.sm e927957eae8b16eb
+IDENTICAL    tests/stdlib/map_clear.sm f00b88ab34d26da0
+IDENTICAL    tests/stdlib/map_keys_bytes.sm 9c82ef60e463ea6a
+IDENTICAL    tests/stdlib/map_remove.sm d0a5f4662630ea05
+IDENTICAL    tests/stdlib/math_abs_val.sm ca29b1f873b0e6ad
+IDENTICAL    tests/stdlib/math_bit_count.sm 87c46943e57cfc35
+IDENTICAL    tests/stdlib/math_cube.sm 74e5ba5eb7ddd5e0
+IDENTICAL    tests/stdlib/math_double.sm 1224442573f256e1
+IDENTICAL    tests/stdlib/math_fact.sm bc7cfcbb8306fabb
+IDENTICAL    tests/stdlib/math_gcd.sm a99e84c7e637db45
+IDENTICAL    tests/stdlib/math_gcd_lcm_edge.sm b034503871e4467a
+IDENTICAL    tests/stdlib/math_inc.sm c61fe90eef8d6daa
+IDENTICAL    tests/stdlib/math_is_prime.sm a23c97d7ea19e5e3
+IDENTICAL    tests/stdlib/math_lcm.sm f1ca7f5db128b73a
+IDENTICAL    tests/stdlib/math_max2.sm 70f1ef0987aecc68
+IDENTICAL    tests/stdlib/math_min2.sm be35fbccc74c0105
+IDENTICAL    tests/stdlib/math_power.sm 6721cafd4e33d537
+IDENTICAL    tests/stdlib/math_sq.sm 49d9d9f5d0d1cedc
+IDENTICAL    tests/stdlib/math_square.sm 732dbb8ae63cea43
+IDENTICAL    tests/stdlib/math_sum_to.sm e83fd9dc0c215717
+IDENTICAL    tests/stdlib/math_triple.sm 293eb66c639576e1
+IDENTICAL    tests/stdlib/num_clamp.sm b9e18a8e1ec72c60
+IDENTICAL    tests/stdlib/num_collatz_steps.sm d7ee0132f284c35d
+IDENTICAL    tests/stdlib/num_digit_count.sm 0dc8423e24c93cfc
+IDENTICAL    tests/stdlib/num_digit_sum.sm 793762dabb335226
+IDENTICAL    tests/stdlib/num_fib.sm 6c79f6db26304e6a
+IDENTICAL    tests/stdlib/num_is_even.sm 8a080a6dda604860
+IDENTICAL    tests/stdlib/num_is_odd.sm e6cc88c19af8e8da
+IDENTICAL    tests/stdlib/num_is_palindrome.sm 0104605f77cc589f
+IDENTICAL    tests/stdlib/num_is_perfect.sm b3d2e60666eb07e2
+IDENTICAL    tests/stdlib/num_reverse_num.sm cf27983584ca991a
+IDENTICAL    tests/stdlib/numeric29.sm 3b38caa23871db6a
+IDENTICAL    tests/stdlib/numeric_hangfix.sm b2df8cc24bafaf38
+IDENTICAL    tests/stdlib/r10_roop_suchi_edges.sm 1d682f7272989262
+IDENTICAL    tests/stdlib/r11_brihat_guards.sm a2d39cc253c69613
+IDENTICAL    tests/stdlib/r11_kalana_edges.sm 0f92a611d300f235
+IDENTICAL    tests/stdlib/r11_khand_varna.sm c183d60e8bedf845
+IDENTICAL    tests/stdlib/r11_misc_edges.sm 03c887c2c26ceb9f
+IDENTICAL    tests/stdlib/r11_nighantu_edges.sm 163a66ab0656f818
+IDENTICAL    tests/stdlib/r11_page_edges.sm aa068ee15ffaaaca
+IDENTICAL    tests/stdlib/r11_sets_lists.sm 3937a1c5b65e07af
+IDENTICAL    tests/stdlib/r18_madhava_reduction.sm 53667f1de7e96e1c
+IDENTICAL    tests/stdlib/r18_sign_digits_kramgun.sm 808ccc05a563259d
+IDENTICAL    tests/stdlib/r18_srij_overflow_guard.sm a5a4d0241d73b85f
+IDENTICAL    tests/stdlib/r35_alloc_wrap_guard.sm 9fbc1df7bc686524
+IDENTICAL    tests/stdlib/r36_growth_guard.sm 08cdc5436f95d68c
+IDENTICAL    tests/stdlib/r37_bounds.sm bdeccc82a072b0f5
+IDENTICAL    tests/stdlib/r39_scratch_from_set.sm 056465e89122b9ab
+IDENTICAL    tests/stdlib/r48_meru_bada.sm 00b814af13e33273
+IDENTICAL    tests/stdlib/r48_srij_fill.sm 3925efba30057570
+IDENTICAL    tests/stdlib/r8_array_guard.sm b52dace2a2866db6
+IDENTICAL    tests/stdlib/r8_base_digits.sm 9e93d1ba753bb0fa
+IDENTICAL    tests/stdlib/r8_bytes_edges.sm 3a8cbc9845f21a78
+IDENTICAL    tests/stdlib/r8_chakravala_sweep.sm 159d1a11d9807f88
+IDENTICAL    tests/stdlib/r8_char_class.sm 433482975366c110
+IDENTICAL    tests/stdlib/r8_list_edges.sm 1a4248ba2f8e085b
+IDENTICAL    tests/stdlib/r8_list_growth.sm 8461b2f9bcf8792f
+IDENTICAL    tests/stdlib/r8_list_model.sm 5f03cb19f708869f
+IDENTICAL    tests/stdlib/r8_map_edges.sm 4f6912d73d811c85
+IDENTICAL    tests/stdlib/r8_map_model.sm 514af9912996e8d9
+IDENTICAL    tests/stdlib/r8_number_edges.sm 3a549e634df1ad9e
+IDENTICAL    tests/stdlib/r8_result_flags.sm 23b5c52bdbdac40b
+IDENTICAL    tests/stdlib/r8_split_model.sm 336de225038186e4
+IDENTICAL    tests/stdlib/r8_text_edges.sm eb148d864d3faabe
+IDENTICAL    tests/stdlib/r9_aadhar_alone.sm 6a1676d18f64846a
+IDENTICAL    tests/stdlib/r9_alloc_failure.sm 4f59fe88e0e56ae7
+IDENTICAL    tests/stdlib/r9_guard_cells.sm ed200f7dcb07a46f
+IDENTICAL    tests/stdlib/r9_guard_cells2.sm 610412eaa31d1f9a
+IDENTICAL    tests/stdlib/result29.sm ea0882bdff34ffd7
+IDENTICAL    tests/stdlib/result_chain.sm a1a21e069d18b2e0
+IDENTICAL    tests/stdlib/safety24.sm b05bb82962ef16ed
+IDENTICAL    tests/stdlib/safety25.sm 8d6184ffdd7804ec
+IDENTICAL    tests/stdlib/samanvaya_mat_gunana.sm 038673b036e42f2a
+IDENTICAL    tests/stdlib/samanvaya_mat_yoga.sm 2d082af6316c0660
+IDENTICAL    tests/stdlib/samanvaya_nirnaya2.sm b1043703dbbd510e
+IDENTICAL    tests/stdlib/samanvaya_nirnaya3.sm 4a35872b56f9a26e
+IDENTICAL    tests/stdlib/samanvaya_nishan.sm 4848a6076963ecf9
+IDENTICAL    tests/stdlib/samanvaya_pehchan.sm ce03d57c0c1e8137
+IDENTICAL    tests/stdlib/samanvaya_rekha_manak.sm 95751354ce1bcb53
+IDENTICAL    tests/stdlib/samanvaya_sadish_yoga.sm 81280bccd527d9a0
+IDENTICAL    tests/stdlib/samanvaya_skalar.sm 8f1c0b8cdebf9018
+IDENTICAL    tests/stdlib/samanvaya_vivartana.sm 7dbb59aadc57b1d4
+IDENTICAL    tests/stdlib/sankhyiki_adhikatama.sm da2ee1866deb9b35
+IDENTICAL    tests/stdlib/sankhyiki_bindu.sm f6b57123bab9c987
+IDENTICAL    tests/stdlib/sankhyiki_laghutama.sm 8130612a5dbc91a0
+IDENTICAL    tests/stdlib/sankhyiki_madhya.sm b46ccebe88fae0ae
+IDENTICAL    tests/stdlib/sankhyiki_manak.sm 993b1a00b609a544
+IDENTICAL    tests/stdlib/sankhyiki_prasaran.sm d8bbe0389474b7ab
+IDENTICAL    tests/stdlib/sankhyiki_purna_adhikatama.sm 089c2499b821905a
+IDENTICAL    tests/stdlib/sankhyiki_purna_laghutama.sm a287963bf916f1a2
+IDENTICAL    tests/stdlib/sankhyiki_purna_madhya.sm 0b21fb52ecdf644f
+IDENTICAL    tests/stdlib/sankhyiki_purna_prasaran.sm 3ec61c25c3f8784c
+IDENTICAL    tests/stdlib/sankhyiki_purna_vyapti.sm a45093448f222c77
+IDENTICAL    tests/stdlib/sankhyiki_purna_yoga.sm d2c6cde014ae7eff
+IDENTICAL    tests/stdlib/sankhyiki_sankhyiki_sqrt.sm 370922ffb40a4f67
+IDENTICAL    tests/stdlib/sankhyiki_vichalan.sm da879b447512b589
+IDENTICAL    tests/stdlib/sankhyiki_vyapti.sm dc9f6adc81d5a4cb
+IDENTICAL    tests/stdlib/sankhyiki_yoga.sm 6e33768ca8f6a9c7
+IDENTICAL    tests/stdlib/serial29.sm 86fda72fe71f613c
+IDENTICAL    tests/stdlib/set_basic.sm 69328f6f77a5b492
+IDENTICAL    tests/stdlib/set_difference.sm 586611f406c125a2
+IDENTICAL    tests/stdlib/set_intersect.sm b10111815801e663
+IDENTICAL    tests/stdlib/set_subset.sm 2be0e08a9431e419
+IDENTICAL    tests/stdlib/set_to_array.sm 3946a527a0017986
+IDENTICAL    tests/stdlib/set_union.sm 5229b570080f178d
+IDENTICAL    tests/stdlib/slices23.sm 9b49ac8734f7f8c5
+IDENTICAL    tests/stdlib/sort_binary_search.sm d49fe281b5e8b608
+IDENTICAL    tests/stdlib/sort_bubble_sort.sm a577c15d1c4f1eda
+IDENTICAL    tests/stdlib/sort_count_of.sm 048967c555e9e655
+IDENTICAL    tests/stdlib/sort_find_linear.sm 22ef7c3042646a5d
+IDENTICAL    tests/stdlib/sort_insertion.sm ec8e6b4f03485d39
+IDENTICAL    tests/stdlib/sort_is_sorted.sm cfd6e87490d1f9b5
+IDENTICAL    tests/stdlib/sort_max_of.sm c1aa6b6e4f5ff8a7
+IDENTICAL    tests/stdlib/sort_merge.sm 99f3902e260e1cbe
+IDENTICAL    tests/stdlib/sort_min_of.sm 181466beba5e407f
+IDENTICAL    tests/stdlib/sort_reverse_arr.sm 517a68df38b06bc1
+IDENTICAL    tests/stdlib/sort_shell_sort.sm 9363e6bcf3b5f511
+IDENTICAL    tests/stdlib/sort_sum_of.sm 997fdd3e09eca0d8
+IDENTICAL    tests/stdlib/sort_swap.sm 6fb375ea3a55f7e1
+IDENTICAL    tests/stdlib/strb_cell_pairs.sm 8e92849b04d4d004
+IDENTICAL    tests/stdlib/strb_dup.sm f4e7e32528579fb5
+IDENTICAL    tests/stdlib/strb_pack_unpack.sm 786cb6407057e717
+IDENTICAL    tests/stdlib/strconv_base.sm 20a01bf9da605d30
+IDENTICAL    tests/stdlib/strconv_int_str.sm 4b20b931a97fd8e6
+IDENTICAL    tests/stdlib/strconv_overflow.sm 33c301f0116e6105
+IDENTICAL    tests/stdlib/strconv_pad.sm f809f354f1aad347
+IDENTICAL    tests/stdlib/string_case_trim.sm 8909f63fc88d3e1f
+IDENTICAL    tests/stdlib/string_char_code_at.sm 889d6d69c6bb6815
+IDENTICAL    tests/stdlib/string_count_char.sm 617368bb4dc32735
+IDENTICAL    tests/stdlib/string_count_vowels.sm 26cd823b770e3a22
+IDENTICAL    tests/stdlib/string_find.sm d113c3a3f9921476
+IDENTICAL    tests/stdlib/string_find_char.sm 257ac1d479e3b248
+IDENTICAL    tests/stdlib/string_is_all_digits.sm 6ef993bed2b1b442
+IDENTICAL    tests/stdlib/string_is_digit_char.sm ed57a815a7111f83
+IDENTICAL    tests/stdlib/string_is_letter_char.sm cc95628301200115
+IDENTICAL    tests/stdlib/string_is_lower_char.sm 62cf124b2be88a67
+IDENTICAL    tests/stdlib/string_is_space_char.sm 82984a5677484002
+IDENTICAL    tests/stdlib/string_is_upper_char.sm ca5034b969c65f02
+IDENTICAL    tests/stdlib/string_lower_code.sm 8dc94c01e346e89c
+IDENTICAL    tests/stdlib/string_replace.sm 639eb7c8f6bd342a
+IDENTICAL    tests/stdlib/string_split_join.sm c7a5b968817d696a
+IDENTICAL    tests/stdlib/string_str_equals.sm e3b4e045e22358b2
+IDENTICAL    tests/stdlib/string_str_len.sm 43aa3d087c1ad33c
+IDENTICAL    tests/stdlib/string_strb_bridge.sm 99fc98854a0350c7
+IDENTICAL    tests/stdlib/string_strb_find.sm 776fbfd39ae6810a
+IDENTICAL    tests/stdlib/string_strb_split_join.sm 8b7bedfa9962ecee
+IDENTICAL    tests/stdlib/string_strb_starts_compare.sm 61a2f6ef26fbedf8
+IDENTICAL    tests/stdlib/string_strb_trim_case.sm bd51bf580201b9c9
+IDENTICAL    tests/stdlib/string_upper_code.sm 5149c64c6f46c01e
+IDENTICAL    tests/stdlib/util_bool_to_int.sm abd4f0b512c3dace
+IDENTICAL    tests/stdlib/util_div_ceil.sm 3aa44d386a852321
+IDENTICAL    tests/stdlib/util_int_max.sm 66843b2837bea787
+IDENTICAL    tests/stdlib/util_lerp.sm 6dffed21bc4ada87
+IDENTICAL    tests/stdlib/util_mod.sm 0338e6342f279fa6
+IDENTICAL    tests/stdlib/util_sign.sm f7ac087f3ac859a2
+IDENTICAL    tests/stdlib/util_sum_range.sm a7a54cdfce9f9b00
+IDENTICAL    tests/stdlib/width_repro.sm 01a692e69321dfd5
+pe: 577 programs: 484 byte-identical, 91 refused identically, 2 DIFFER
+  DIFFER examples/218_sanskrit_devanagari.sm - refused before, compiles now; compiler output differs
+  DIFFER examples/219_sanskrit_kosh_aliases.sm - refused before, compiles now; compiler output differs

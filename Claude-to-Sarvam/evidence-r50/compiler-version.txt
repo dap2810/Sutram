@@ -1,0 +1,4 @@
+Sutram 1.0 (v255) - sampurna sutra
+Samskrita-mukhya bhasha -> x86-64 yantra-bhasha
+281deba42a4813cb0eeb24186e44283c1b21f9259df9634e5311d032d5c69abb  sutram_compiler
+2f5e7d90e23f1a59f12917fe35e1bd9f2686146f87845cf14830e8722e1e480b  win/sutram.exe

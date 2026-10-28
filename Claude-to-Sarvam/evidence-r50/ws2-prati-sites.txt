@@ -1,0 +1,108 @@
+WS2: every site in the tree that uses an old Devanagari spelling of prati, after R50 (git grep -F, tracked files; backups/ excluded).
+Changed by R50: lang/sanskrit.lang:18 (प्रतियाति -> प्रति), lang/sanskrit.lang:74 (प॰ removed), src/sutram_compiler.asm kw_dev_pratiyati (प्रत्यायति -> प्रति),
+  src/r22_lang_builtin.inc and src/r11_sandesh.inc (regenerated), tests/r43/test_keyword_boundary.py:118, tests/r66/baseline_packs.json:10, tests/r66/test_prepare_review.py (count 58 -> 57).
+
+== प्रतियाति : the sites left
+ChatGPT-to-Sarvam/ROUND-118-HANDOFF.md:11:**IMPORTANT correction to the assigned example:** `lang/sanskrit.lang` maps **`प्रतियाति` to `prati`**, NOT `�
+ChatGPT-to-Sarvam/ROUND-118-OBSERVED.json:15:    "true_devanagari_keyword": "प्रतियाति means prati; प्रति alone is not the native return keywo
+ChatGPT-to-Sarvam/ROUND-118-RAW-READ.txt:23:lang/sanskrit.lang exact native keyword row: प्रतियाति prati
+ChatGPT-to-Sarvam/ROUND-118-RAW-READ.txt:26:IMPORTANT: प्रति (alone) is not the current Sanskrit return-keyword spelling. प्रतिलिपि does not b
+ChatGPT-to-Sarvam/ROUND-118-RAW-READ.txt:45:प्रतियाति+क (U+0915) -> XID_Continue true
+ChatGPT-to-Sarvam/ROUND-118-RAW-READ.txt:46:प्रतियाति+X (U+0058) -> XID_Continue true
+ChatGPT-to-Sarvam/ROUND-118-RAW-READ.txt:47:प्रतियाति+३ (U+0969) -> XID_Continue true
+ChatGPT-to-Sarvam/ROUND-118-RAW-READ.txt:56:M04	RUN_SANSKRIT	mukhya() { vitti प्रतिलिपि = 4; likha(प्रतिलिपि) }	COMPILE PASS; RUN stdo
+ChatGPT-to-Sarvam/ROUND-118-RAW-READ.txt:58:D02	RUN_SANSKRIT	mukhya() { vitti प्रतियातिक = 16; likha(प्रतियातिक) }	COMPILE PASS; R
+ChatGPT-to-Sarvam/ROUND-118-RAW-READ.txt:59:D03	RUN_SANSKRIT	mukhya() { vitti प्रतियातिX = 17; likha(प्रतियातिX) }	COMPILE PASS; RUN s
+ChatGPT-to-Sarvam/ROUND-118-RAW-READ.txt:60:D15	TOKENS_SANSKRIT	प्रतियाति।	KEYWORD(prati), DANDA(।)	Single danda U+0964 must delimit, not become par
+ChatGPT-to-Sarvam/ROUND-118-RAW-READ.txt:61:D16	TOKENS_SANSKRIT	प्रतियाति॥	KEYWORD(prati), DOUBLE_DANDA(॥)	Double danda U+0965 must delimit	NOT RUN 
+ChatGPT-to-Sarvam/ROUND-118-WS1-LEXER-BOUNDARY-SPEC.md:23:- `IdentifierContinue`: everything in Start, plus ASCII **0-9**, supported Devanagari **decimal digits**, and re
+ChatGPT-to-Sarvam/ROUND-118-WS1-LEXER-BOUNDARY-SPEC.md:27:- **Important script-specific fact:** `lang/sanskrit.lang` maps **`प्रतियाति` → `prati`**, *
+ChatGPT-to-Sarvam/ROUND-118-WS1-LEXER-BOUNDARY-SPEC.md:42:| Devanagari letter, digit or combining mark | **One ordinary identifier**, including mixed-script continuations
+ChatGPT-to-Sarvam/ROUND-118-WS2-LEXER-CASES.tsv:5:M04	RUN_SANSKRIT	mukhya() { vitti प्रतिलिपि = 4; likha(प्रतिलिपि) }	COMPILE PASS; RU
+ChatGPT-to-Sarvam/ROUND-118-WS2-LEXER-CASES.tsv:14:D01	RUN_SANSKRIT	prakriya f() { प्रतियाति 15 } mukhya() { likha(f()) }	COMPILE PASS; RUN stdout=15\n	
+ChatGPT-to-Sarvam/ROUND-118-WS2-LEXER-CASES.tsv:15:D02	RUN_SANSKRIT	mukhya() { vitti प्रतियातिक = 16; likha(प्रतियातिक) }	COMPILE 
+ChatGPT-to-Sarvam/ROUND-118-WS2-LEXER-CASES.tsv:16:D03	RUN_SANSKRIT	mukhya() { vitti प्रतियातिX = 17; likha(प्रतियातिX) }	COMPILE PASS
+ChatGPT-to-Sarvam/ROUND-118-WS2-LEXER-CASES.tsv:17:D04	RUN_SANSKRIT	mukhya() { vitti प्रतियाति_क = 18; likha(प्रतियाति_क) }	COMPIL
+ChatGPT-to-Sarvam/ROUND-118-WS2-LEXER-CASES.tsv:18:D05	RUN_SANSKRIT	mukhya() { vitti प्रतियाति३ = 19; likha(प्रतियाति३) }	COMPILE 
+ChatGPT-to-Sarvam/ROUND-118-WS2-LEXER-CASES.tsv:19:D06	RUN_SANSKRIT	mukhya() { vitti प्रतियाति2 = 20; likha(प्रतियाति2) }	COMPILE PASS
+ChatGPT-to-Sarvam/ROUND-118-WS2-LEXER-CASES.tsv:25:D12	TOKENS_SANSKRIT	प्रति	IDENT(प्रति)	Actual native Sanskrit keyword is प्रतियात�
+ChatGPT-to-Sarvam/ROUND-118-WS2-LEXER-CASES.tsv:27:D14	TOKENS_SANSKRIT	प्रतियाति	KEYWORD(prati)	Standalone full native spelling recognized as return tok
+ChatGPT-to-Sarvam/ROUND-118-WS2-LEXER-CASES.tsv:28:D15	TOKENS_SANSKRIT	प्रतियाति।	KEYWORD(prati), DANDA(।)	Single danda U+0964 must delimit, not bec
+ChatGPT-to-Sarvam/ROUND-118-WS2-LEXER-CASES.tsv:29:D16	TOKENS_SANSKRIT	प्रतियाति॥	KEYWORD(prati), DOUBLE_DANDA(॥)	Double danda U+0965 must delimit	N
+ChatGPT-to-Sarvam/ROUND-118-WS2-LEXER-CASES.tsv:30:D17	TOKENS_SANSKRIT	प्रतियाति#comment	KEYWORD(prati), COMMENT_TO_EOL	Native keyword followed by comme
+ChatGPT-to-Sarvam/ROUND-118-WS2-LEXER-CASES.tsv:33:D20	TOKENS_SANSKRIT	प्रतियाति_	IDENT(प्रतियाति_)	Underscore continues an otherwise 
+ChatGPT-to-Sarvam/ROUND-118-WS2-LEXER-CASES.tsv:39:X06	TOKENS_SANSKRIT	प्रतियाति्	IDENT(प्रतियाति्)	Combining virama U+094D after 
+ChatGPT-to-Sarvam/ROUND-118-WS2-LEXER-CASES.tsv:40:X07	TOKENS_SANSKRIT	प्रतियातिँ	IDENT(प्रतियातिँ)	Anusvara/candrabindu combining
+ChatGPT-to-Sarvam/ROUND-118-WS2-LEXER-CASES.tsv:58:B15	TOKENS_SANSKRIT	\"प्रतियाति\"	STRING(प्रतियाति)	Native keyword spelling in a st
+ChatGPT-to-Sarvam/ROUND-118-WS2-LEXER-CASES.tsv:62:B19	TOKENS_SANSKRIT	प्रतियातिX	IDENT(प्रतियातिX)	Native + Latin is one token	NOT RU
+ChatGPT-to-Sarvam/ROUND-118-WS2-LEXER-CASES.tsv:64:B21	TOKENS_SANSKRIT	प्रतियाति 	KEYWORD(prati), WHITESPACE	Full Devanagari keyword followed by space	N
+ChatGPT-to-Sarvam/ROUND-118-WS2-LEXER-CASES.tsv:65:B22	TOKENS_SANSKRIT	प्रतियाति(	KEYWORD(prati), LPAREN	Full Devanagari keyword followed by operator pu
+ChatGPT-to-Sarvam/ROUND-118-WS2-TEST-EXECUTION-CONTRACT.md:13:**The five original Muse baseline questions are `M01`–`M05`.** `M04` preserves its given `प्रति�
+ChatGPT-to-Sarvam/ROUND-118-WS2-TEST-EXECUTION-CONTRACT.md:19:- Active native Sanskrit `lang/sanskrit.lang`: `प्रतियाति → prati`, `वित्ति 
+Claude-to-Sarvam/02-HARDCODED-CONSTANTS.md:98:15: अन्यत्र anya        17: पुनरावर्तन chakra    18: प्रतियाति prati    
+Claude-to-Sarvam/02-HARDCODED-CONSTANTS.md:112:So a Sanskrit user writing in Devanagari must still type `अन्यत्र`, `पुनरावर्तन`, `प्
+Claude-to-Sarvam/03-DOCUMENTATION-AUDIT.md:142:| 278–296 | pack table Devanagari column: `अन्यत्र`, `आयोजन`, `पङ्क्ति`, `परि
+Claude-to-Sarvam/R43-00-HANDBACK.md:31:- **`प्रतियातिक`:** a Devanagari keyword, then a Devanagari letter.
+Claude-to-Sarvam/R43-00-HANDBACK.md:32:- **`प्रतियातिX`:** a Devanagari keyword, then a Latin letter.
+Muse-to-Sarvam/2026-10-27-round43-lexer-baseline.md:73:`lang/sanskrit.lang` is **प्रतियाति**, not प्रति (प्रति is its prefix).
+Muse-to-Sarvam/2026-10-27-round43-lexer-baseline.md:86:(b) The stronger case, identifier **प्रतियातिता** (full keyword
+Muse-to-Sarvam/2026-10-27-round43-lexer-baseline.md:87:प्रतियाति + ता):
+Muse-to-Sarvam/2026-10-27-round43-lexer-baseline.md:90:    वित्ति प्रतियातिता = 11।
+Muse-to-Sarvam/2026-10-27-round43-lexer-baseline.md:91:    लिख(प्रतियातिता)।
+Muse-to-Sarvam/2026-10-27-round43-lexer-baseline.md:120:| Q4b Devanagari `प्रतियातिता` (full keyword + suffix) | PASS (prints 11) |
+Sarvam-to-Claude/ANSWER-WIN-TEST-2026-10-27.md:28:| `lang/sanskrit.lang:18` | **प्रतियाति** `pratiyati` | "goes towards" - **not return** |
+Sarvam-to-Claude/ROUND-50.md:44:| `lang/sanskrit.lang:18` | `प्रतियाति prati` | **`प्रति prati`** |
+Windows-to-Sarvam/WIN-TEST-2026-10-27.md:15:   `प्रतियाति`; the compiler's built-in `kw_dev_pratiyati` holds the bytes for `प्रत्यायत�
+Windows-to-Sarvam/WIN-TEST-2026-10-27.md:52:| 3. Devanagari with the tree's spelling `प्रतियाति` + `--lang sanskrit` | PASS | Compiles (271 bytes, the s
+Windows-to-Sarvam/WIN-TEST-2026-10-27.md:53:| 3. Devanagari **without** `--lang sanskrit` | **FAIL** | With `प्रतियाति`: `agyat naam 'प्रतिय
+Windows-to-Sarvam/WIN-TEST-2026-10-27.md:98:- `lang/sanskrit.lang:18` and `docs/LANGUAGE-REFERENCE.md:326` give `प्रतियाति`.
+Windows-to-Sarvam/WIN-TEST-2026-10-27.md:104:The same program with line 6 changed to `प्रतियाति 0`:
+Windows-to-Sarvam/WIN-TEST-2026-10-27.md:107:t_dev2.sm:6:5: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'प्रतियाति'
+Windows-to-Sarvam/WIN-TEST-2026-10-27.md:108:      प्रतियाति 0
+Windows-to-Sarvam/WIN-TEST-2026-10-27.md:110:Sanket: prayogat purvam ghoshana avashyaki: vitti प्रतियाति = ...
+Windows-to-Sarvam/WIN-TEST-2026-10-27.md:181:- `t_dev_pratiyati.sm` (`प्रतियाति`) and `t_dev_pratyayati.sm` (`प्रत्यायति`) are the t
+Windows-to-Sarvam/win-test-2026-10-27/t_dev_pratiyati.sm:6:    प्रतियाति 0
+docs/CHANGELOG.md:14:is making the pack and the compiler agree on `प्रति`.** **`lang/sanskrit.lang:18` says `प्रतियाति`, the compiler holds
+docs/CHANGELOG.md:162:**W2: one word, three forms, none correct.** **`lang/sanskrit.lang:18` says `प्रतियाति` ("goes towards");
+docs/CHANGELOG.md:1028:- **`प्रतियातिक`** - a Devanagari keyword, then a Devanagari letter
+docs/CHANGELOG.md:1029:- **`प्रतियातिX`** - a Devanagari keyword, then a Latin letter
+docs/LANGUAGE-REFERENCE.md:326:| prati | प्रतियाति | ফেরত | પાછા | वापस | ಹಿಂತಿರುಗು | മടങ്ങുക | 
+docs/VOCABULARY-TABLE.md:29:| 11 | `prati` | प्रतियाति | return | 5 | **KEEP** - but **Devanagari `pratiyati` is "goes towards"; `prati` alone is "towar
+docs/VOCABULARY-TABLE.md:74:| `prati` | प्रतियाति `pratiyati` | **प्रति `prati`** |
+
+== प्रत्यायति : the sites left
+Claude-to-Sarvam/02-HARDCODED-CONSTANTS.md:90:| 707 | kw_dev_pratiyati | प्रत्यायति | KW_PRATIYATI | `prati` | प्रति |
+Claude-to-Sarvam/R3-04-HIDDEN-OLD-NAMES.md:112:| 15 | **hex-encoded bytes** | `src/sutram_compiler.asm:698, 706, 707` | `kw_dev_pankti` = पङ्क्ति, `kw_dev_a
+Sarvam-to-Claude/ANSWER-WIN-TEST-2026-10-27.md:29:| `src/sutram_compiler.asm:735` (`kw_dev_pratiyati`) | **प्रत्यायति** `pratyayati` | "comes back" - 
+Sarvam-to-Claude/ROUND-50.md:46:| `src/sutram_compiler.asm` `kw_dev_pratiyati` | bytes for `प्रत्यायति` | **bytes for `प्रति`** |
+Windows-to-Sarvam/WIN-TEST-2026-10-27.md:15:   `प्रतियाति`; the compiler's built-in `kw_dev_pratiyati` holds the bytes for `प्रत्यायत�
+Windows-to-Sarvam/WIN-TEST-2026-10-27.md:53:| 3. Devanagari **without** `--lang sanskrit` | **FAIL** | With `प्रतियाति`: `agyat naam 'प्रतिय
+Windows-to-Sarvam/WIN-TEST-2026-10-27.md:99:- The compiler's built-in table (`src/sutram_compiler.asm`, `kw_dev_pratiyati`) holds the bytes for `प्रत्याय�
+Windows-to-Sarvam/WIN-TEST-2026-10-27.md:114:With line 6 changed to `प्रत्यायति 0` (the built-in form):
+Windows-to-Sarvam/WIN-TEST-2026-10-27.md:132:Without the flag, only some Devanagari keywords are built in (`मुख्य`, `वित्ति`, `प्रत्या
+Windows-to-Sarvam/WIN-TEST-2026-10-27.md:181:- `t_dev_pratiyati.sm` (`प्रतियाति`) and `t_dev_pratyayati.sm` (`प्रत्यायति`) are the t
+Windows-to-Sarvam/win-test-2026-10-27/t_dev_pratyayati.sm:6:    प्रत्यायति 0
+docs/CHANGELOG.md:15:`प्रत्यायति`, and line 74 says `प॰`.**
+docs/CHANGELOG.md:163:`src/sutram_compiler.asm:735` says `प्रत्यायति` ("comes back"); line 74 says `प॰` (an abbreviation).** **The Latin is
+src/sutram_compiler.asm:735:    kw_dev_pratiyati db 0xE0,0xA4,0xAA,0xE0,0xA5,0x8D,0xE0,0xA4,0xB0,0xE0,0xA4,0xA4,0xE0,0xA4,0xBF, 0   ; R50: प्रति (was प्र�
+
+== प॰ : the sites left
+ChatGPT-to-Sarvam/ROUND-118-HANDOFF.md:17:Boundaries: EOF; space/tab/CR/LF/CRLF; operators/punctuation; `#`, `//`, `/*` comments at token boundaries; danda `।` and `॥
+ChatGPT-to-Sarvam/ROUND-118-RAW-READ.txt:25:lang/sanskrit.lang exact abbreviation rows: प॰ prati and वि॰ vitti
+ChatGPT-to-Sarvam/ROUND-118-RAW-READ.txt:62:D18	TOKENS_SANSKRIT	प॰	KEYWORD(prati)	Real punctuated abbreviation from Sanskrit pack, exact spelling only	NOT RUN - no to
+ChatGPT-to-Sarvam/ROUND-118-WS1-LEXER-BOUNDARY-SPEC.md:28:- Current abbreviation aliases like `प॰` (`prati`) and `वि॰` (`vitti`) contain punctuation `U+0970` an
+ChatGPT-to-Sarvam/ROUND-118-WS1-LEXER-BOUNDARY-SPEC.md:46:| Special alias `प॰` | Exact keyword alias per Sanskrit pack; `॰` is an alias terminator, not a generic id
+ChatGPT-to-Sarvam/ROUND-118-WS2-LEXER-CASES.tsv:31:D18	TOKENS_SANSKRIT	प॰	KEYWORD(prati)	Real punctuated abbreviation from Sanskrit pack, exact spelling only	NOT RUN 
+ChatGPT-to-Sarvam/ROUND-118-WS2-TEST-EXECUTION-CONTRACT.md:19:- Active native Sanskrit `lang/sanskrit.lang`: `प्रतियाति → prati`, `वित्ति 
+ChatGPT-to-Sarvam/ROUND-123-RAW-READ.txt:172:74: प॰ prati
+Claude-to-Sarvam/02-HARDCODED-CONSTANTS.md:116:other** on the Devanagari spelling of eleven keywords. (The pack's line 70 `प॰ prati` abbreviation is
+Sarvam-to-Claude/ANSWER-WIN-TEST-2026-10-27.md:30:| `lang/sanskrit.lang:74` | **प॰** `prati` | **an abbreviation, not the word** |
+Sarvam-to-Claude/ROUND-50.md:45:| `lang/sanskrit.lang:74` | `प॰ prati` | **`प्रति prati`** |
+docs/CHANGELOG.md:15:`प्रत्यायति`, and line 74 says `प॰`.**
+docs/CHANGELOG.md:163:`src/sutram_compiler.asm:735` says `प्रत्यायति` ("comes back"); line 74 says `प॰` (an abbreviation).** **The Latin is
+docs/SPECIFICATION.md:227:`प्र॰ -> prakriya`, and `प॰ -> prati` aliases. These are exact language-pack
+tests/negative/r70/manifest.json:7:  "repinned": "R3 (Claude, 2026-10-19): input_git_blobs moved from the pre-v157 snapshot to claude/round-03 (v169 + the R3 EOF-location
+tests/r66/test_prepare_review.py:21:        # R50: Sanskrit -1, the abbreviation प॰ removed (prati has one Devanagari form, प्रति).
+tools/r69_build.lock.json:5:  "repinned": "R3 (Claude, 2026-10-19): pins moved to the accepted v169 sources plus the R3 EOF-location fix on claude/round-03. Re-pin only w
+
+== byte-encoded (decoded from db lines in .asm/.inc)

@@ -4,6 +4,19 @@
 
 ---
 
+## Index — ROUND-50 delivery (2026-10-28) — Devanagari without the flag, `प्रति`, and why `Sutram dosh` waits
+
+**Code commit `8eade706` on `main`, compiler v255.** WS3: with no pack named, the Sanskrit pack's keywords are loaded from the
+built-in copy, so Devanagari needs no flag; messages and every Latin program unchanged. WS2: `prati` is `प्रति` in the pack and
+the compiler (the brief's bytes were missing `र`). The guard: 577 programs, 484 identical, 91 refused identically, 2 DIFFER
+(the two Devanagari examples, now compiling) on Linux ELF, PE and Wine. **WS1 stopped:** the Linux IDE decides failure by the
+word `Error`, so the rename would make it run a stale binary; three decisions listed. Gates 44 / 0 / 1.
+
+| File | What |
+|---|---|
+| `R50-00-HANDBACK.md` | the results table, the WS1 stop and its decisions, the `prati` sites, the WS3 choice, every number |
+| `evidence-r50/` | the guards (ELF, PE, Wine, and under `--lang sanskrit`), gates, the WS1 measurement and every literal match, the `prati` site list, the Devanagari runs |
+
 ## Index — ROUND-39 delivery (2026-10-22) — the merge, the full run, the numbers, and a checked allocation
 
 **`claude/round-38` merged to `main` (`034026b1`, compiler v246); the guard 566 programs, 0 DIFFER (Wine 182 /

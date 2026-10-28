@@ -1,0 +1,9 @@
+Linux x86-64 (cloud). The two Devanagari examples, which needed --lang sanskrit before R50:
+218_sanskrit_devanagari:
+  run output identical in all three: True (exit 0)
+  executable: no flag 379 B; --lang sanskrit 379 B (v254: 379 B); --lang v254 = v255: True
+219_sanskrit_kosh_aliases:
+  run output identical in all three: True (exit 0)
+  executable: no flag 1184 B; --lang sanskrit 1271 B (v254: 1271 B); --lang v254 = v255: True
+A no-flag build carries the Latin runtime messages; a --lang sanskrit build carries the Devanagari ones (the messages follow the
+named pack, as before). Only the KEYWORDS are loaded by default, so the program behaves the same and only a trap message differs.

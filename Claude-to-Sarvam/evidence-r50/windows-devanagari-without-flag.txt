@@ -1,0 +1,12 @@
+Linux x86-64 (cloud). The Windows channel's three Devanagari programs, compiled with NO flag:
+  t_dev.sm [v254]: t_dev.sm:6:5: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'प्रति'
+  t_dev.sm [v255]: Siddh: 251 baait sankalit  -> runs, prints: 1 5 \n \n
+  t_dev_pratiyati.sm [v254]: t_dev_pratiyati.sm:6:5: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'प्रतियाति'
+  t_dev_pratiyati.sm [v255]: t_dev_pratiyati.sm:6:5: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'प्रतियाति'
+  t_dev_pratyayati.sm [v254]: Sutram Error: agyat prakriya: लिख
+  t_dev_pratyayati.sm [v255]: t_dev_pratyayati.sm:6:5: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'प्रत्यायति'
+  t_dev.sm (v255, no flag) is byte-identical to t_lat.sm
+
+Wine (not Windows): win/sutram.exe v255, t_dev.sm with no flag: Siddh: 271 baait sankalit -> runs, prints: 1 5 \n \n
+  t_dev.exe is byte-identical to t_lat.exe
+  Real Windows: NOT-RUN (the owner's machine).
