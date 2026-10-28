@@ -1,3 +1,30 @@
+## v393 - the writing style: same six problems, three lenses, and every answer must be code
+
+**The owner asked for syntax ideas from the other AIs and a side-by-side comparison.** **Three AIs asked "what syntax should we
+add?" produce three wish lists that all sound reasonable.** **So the brief is the same for all three, and the answer must be
+a runnable `.sm` snippet, not an opinion.**
+
+### The six problems
+1. **Printing a labelled value** - **today it takes three statements for one line of output.**
+2. **A counted loop** - today it is C-shaped with three clauses.
+3. **Declaring a variable** - today every one needs `vitti`.
+4. **Returning from a function** - every `mukhya` ends with `prati 0` and nobody means it.
+5. **An error a beginner can act on** - **the `agyat prakriya` message when the real answer is `yoj brihat`.**
+6. **The speakable test** - **should a Sutram program read aloud as Sanskrit prose?**
+
+### Three lenses, so they do not converge
+- **ChatGPT (R126): the Sanskritist.** *"Your question is not 'is this good syntax' - it is 'does this read as Sanskrit?'"* **And: is there anything in the Ashtadhyayi's own notation a programming syntax could borrow - honestly, if the answer is no.**
+- **Muse (R51): the codebase.** *"Count it. How many lines in examples/ are the three-statement print pattern? Give numbers - that is your argument, not taste."* **And: name a seventh problem if the same pattern appears 50 times and nobody has named it.**
+- **Claude (R51): the compiler.** *"How many lines of NASM, where in the compiler, and which of the six can be added without touching any existing code path - an addition the guard cannot see."*
+
+### The hard rules in all three
+**No feature that breaks an existing program** (225 tests, 577 guard programs, 200 examples). **Nothing that needs a runtime
+or a GC.** **Sanskrit keywords only.** **And: "leave it as it is" is a valid and useful answer.**
+
+### What the comparison will look like
+**Three code blocks for the same problem, side by side.** **Then I take the ones all three agree on, and bring the
+disagreements to the owner with both arguments - the same process that found `likh` and `paadh` were not duplicates.**
+
 ## v392 - Muse found four of my proposals wrong, and Claude stopped where it should have
 
 **Muse R50 and Claude R50 both returned. ChatGPT R125 has not.**
