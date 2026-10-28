@@ -1,3 +1,33 @@
+## v411 - Claude's R57: the 33 comments applied, Patch A stopped at two hunks, and why
+
+**The comments are in - commit `d0ff986`, guard 0 DIFFER on all three paths.** **So a comment cannot change a binary, and the proof is
+that it did not.** **Suite PASS=225, proofs 226/226, property proofs 86/86, gates 48 PASS / 0 FAIL / 1 NOT-RUN.**
+
+### Patch A was stopped, and it was right to stop
+**`git apply --check` rejects 2 of its 36 files, and the reason is a dependency I created:**
+
+| File | Why |
+|---|---|
+| `examples/126_numeric_pipeline.sm` | its context line `likha(bindu(u, v))` is now **`likha(bindu_gunan(u, v))`** |
+| `examples/208_kalana.sm` | it rewrites `likha(pravan2(...))`, and that line now says **`dvitiya_pravan`** |
+
+**Both are my R56 renames.** **Muse made the patch at `8236bdd`, before them, and on that base it applies cleanly.** **So this is not
+Muse's error - it is the ordinary consequence of two rounds touching the same files in the same session.**
+
+**Claude stopped instead of hand-editing around a rejected hunk.** **That is the rule from R54, and it held.**
+
+### The fix is one small round, and it is issued
+**Muse R58: rebase the two hunks onto current main, regenerate, and prove `git apply --check` passes.** **Do not re-derive the whole
+patch - 34 of the 36 hunks are still correct.**
+
+**And one question worth asking: of the 12 names in Patch A, which does a beginner actually meet in the first ten example files?** **That
+subset is the only one that matters for readability, and it may be fewer than 12.**
+
+### And Muse's own question got answered
+**"After this, does a beginner reading `examples/01_hello.sm` still meet an English word?"** **Claude: *"Line 1 is the comment `# Sutram -
+Hello World`; it has no variables, so no English variable name, with or without Patch A."*** **So the answer is no, and the honest
+version is that the file never had one.**
+
 ## v410 - the vocabulary work is done: v261, 20 names renamed, guard 0 DIFFER nine times
 
 **Compiler v261 (three commits: `d01059ac`, `1acb1654`, `9903e73c`).** **Suite PASS=225 after each, library proofs 226/226,
