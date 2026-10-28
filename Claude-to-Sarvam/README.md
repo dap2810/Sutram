@@ -4,6 +4,18 @@
 
 ---
 
+## Index — ROUND-51 delivery (2026-10-28) — the writing style, from the compiler side (analysis, nothing implemented)
+
+**`R51-00-STYLE-COST.md`: the six problems with before/after code, the NASM cost and location of each, and which are invisible
+to the guard.** Measured first: three premises are not today's compiler (P1 already has `likha("x = ", x)`, P2 already has
+`chakra i = 0 tak 10`, and no example's `mukhya` has `prati`). First pick: P5, the `yoj` hint (error path only). The seventh
+idea: a wrong-arity builtin call is reported as a syntax error, although the arity message exists and is never used.
+
+| File | What |
+|---|---|
+| `R51-00-STYLE-COST.md` | P1-P6, the guard table, the first pick, the seventh idea |
+| `evidence-r51/` | every "today" program compiled and run (`today.txt`, `probe.py`), and the counts quoted (`counts.txt`) |
+
 ## Index — ROUND-50 delivery (2026-10-28) — Devanagari without the flag, `प्रति`, and why `Sutram dosh` waits
 
 **Code commit `8eade706` on `main`, compiler v255.** WS3: with no pack named, the Sanskrit pack's keywords are loaded from the

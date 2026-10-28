@@ -1,0 +1,5 @@
+Linux x86-64 (cloud), main aaaa6655. The counts R51 quotes.
+three-argument likha calls in examples/, tests/, lib/: 55; first argument: {'1': 54, 'fd': 1}
+guard programs with a mukhya: 476; with prati inside mukhya: 2 ['tests/r29/proj/main.sm', 'tests/stdlib/strconv_overflow.sm']
+top-level examples with a mukhya: 136; with prati inside it: 0
+r54_msg_arity references in src/sutram_compiler.asm (definition included): 1

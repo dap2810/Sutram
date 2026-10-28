@@ -1,0 +1,123 @@
+Linux x86-64 (cloud), main aaaa6655, Sutram 1.0 (v255) - sampurna sutra. Every program compiled with no flag and run.
+== p1_two_arg
+mukhya() {
+    vitti x = 42
+    likha("x = ", x)
+    likha("y")
+}
+--- compile (exit 0): Siddh: 250 baait sankalit
+--- run (exit 0): b'x = 42\ny'
+== p1_three_arg
+mukhya() {
+    vitti x = 42
+    likha("x = ", x, 9)
+}
+--- compile (exit 0): Siddh: 90 baait sankalit
+--- run (exit 0): b''
+== p1_today
+mukhya() {
+    vitti x = 42
+    likha("x = ")
+    likha(x)
+    likha("\n")
+}
+--- compile (exit 0): Siddh: 250 baait sankalit
+--- run (exit 0): b'x = 42\n\n'
+== p2_tak
+mukhya() {
+    chakra i = 0 tak 3 {
+        likha(i)
+    }
+}
+--- compile (exit 0): Siddh: 216 baait sankalit
+--- run (exit 0): b'0\n1\n2\n3\n'
+== p2_c_shape
+mukhya() {
+    chakra (vitti i = 0; i < 3; i = i + 1) {
+        likha(i)
+    }
+}
+--- compile (exit 1): Sutram Error: vyakaran dosh, pankti 2:12, shabd '('
+      chakra (vitti i = 0; i < 3; i = i + 1) {
+             ^
+Sanket: asmin sthane shabdam vyakaranam cha pashyatu.
+== p3_no_vitti
+mukhya() {
+    x = 5
+    likha(x)
+}
+--- compile (exit 1): p3_no_vitti.sm:2:5: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'x'
+      x = 5
+      ^
+Sanket: prayogat purvam ghoshana avashyaki: vitti x = ...
+== p4_no_prati
+mukhya() {
+    likha(1)
+}
+--- compile (exit 0): Siddh: 180 baait sankalit
+--- run (exit 0): b'1\n'
+== p4_prati_3
+mukhya() {
+    likha(1)
+    prati 3
+}
+--- compile (exit 0): Siddh: 204 baait sankalit
+--- run (exit 0): b'1\n'
+== p5_no_yoj
+mukhya() {
+    likha(brihat_yuj(1, 2, 3, 4))
+}
+--- compile (exit 1): Sutram Error: agyat prakriya: brihat_yuj
+== p5_typo
+mukhya() {
+    likh(1)
+}
+--- compile (exit 1): Sutram Error: vyakaran dosh, pankti 2:11, shabd ')'
+      likh(1)
+            ^
+Sanket: asmin sthane shabdam vyakaranam cha pashyatu.
+== brace
+mukhya() {
+    likha("a{b}c {x}\n")
+}
+--- compile (exit 0): Siddh: 90 baait sankalit
+--- run (exit 0): b'a{b}c {x}\n'
+== p6_devanagari
+मुख्य() {
+    वित्ति फलम् = 2 + 3।
+    लिख(फलम्)।
+}
+--- compile (exit 0): Siddh: 183 baait sankalit
+--- run (exit 0): b'5\n'
+== arity_likha0
+mukhya() {
+    likha()
+}
+--- compile (exit 1): Sutram Error: vyakaran dosh, pankti 2:11, shabd ')'
+      likha()
+            ^
+Sanket: asmin sthane shabdam vyakaranam cha pashyatu.
+== arity_kosh_push1
+mukhya() {
+    kosh k[2]
+    kosh_push(5)
+}
+--- compile (exit 1): Sutram Error: vyakaran dosh, pankti 3:16, shabd ')'
+      kosh_push(5)
+                 ^
+Sanket: asmin sthane shabdam vyakaranam cha pashyatu.
+== lkhb_dasham
+mukhya() {
+    dasham d = 2.5
+    lkhb(d)
+    likha("\n")
+}
+--- compile (exit 0): Siddh: 226 baait sankalit
+--- run (exit 0): b'4612811918334230528\n'
+== brace_var
+mukhya() {
+    vitti x = 7
+    likha("{x}\n")
+}
+--- compile (exit 0): Siddh: 89 baait sankalit
+--- run (exit 0): b'{x}\n'
