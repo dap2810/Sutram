@@ -1,3 +1,43 @@
+## v399 - `nivartanam` is in, both spellings compile identically, and Claude caught a wrong byte string of mine
+
+**Compiler v256 (commit `74edff92`), then v257. Suite PASS=225, proofs 226/226, corpus 227/0.**
+**Gates: 45 PASS / 0 FAIL / 1 NOT-RUN** - the new gate is "R53 nivartanam", and the NOT-RUN is Windows.
+
+### The decisive test passed
+**Guard v255 -> v256: 577 programs, 486 byte-identical, 91 refused identically, 0 DIFFER**, held on all three paths -
+Linux ELF, Linux PE, and the Windows compiler under Wine.
+
+**And the test that mattered: a Latin program using `nivartanam` and one using `prati` compile to BYTE-IDENTICAL binaries
+(76 bytes).** **The same for the Devanagari pair `निवर्तनम्` / `प्रति` under `--lang sanskrit`.** **So the alias is real, not
+just documented.**
+
+**The internal token was renamed too:** `KW_PRATIYATI` -> `KW_NIVARTANAM`. **Four uses, invisible to a user, and now it
+says what it is.**
+
+### And a real catch: my `प्रति` byte string was WRONG
+**I gave `0xE0,0xA4,0xAA,0xE0,0xA5,0x8D,0xE0,0xA4,0xA4,0xE0,0xA4,0xBF` for `प्रति`.** **Claude decoded it: it is `प्ति` - the
+`र` is missing.** **The real `प्रति` is 15 bytes: `0xE0,0xA4,0xAA,0xE0,0xA5,0x8D,0xE0,0xA4,0xB0,0xE0,0xA4,0xA4,0xE0,0xA4,0xBF`.**
+
+**The compiler has held the correct 15 bytes since R50 and Claude kept them rather than the brief's.** **Had it copied my
+bytes, the alias would not have matched.** **That is the second byte-string error I have made this session, and the second
+one a partner caught by decoding rather than trusting.**
+
+### Muse's migration: 814 code sites, delivered as patches
+| Directory | Files | Occurrences |
+|---|---|---|
+| `lib/` | **24 - all of them** | **677** |
+| `examples/` | 48 | 122 |
+| `examples/lib/` | 13 | 16 |
+| `tests/` | 108 | 389 |
+| `docs/` | 22 | 146 |
+
+**Total code migrated: 814.** **Counted with word boundaries, so `vartani_pratilip`, `khand_pratilip` and `pratiyati` are
+correctly NOT counted.**
+
+**Delivered as three patches - `ROUND-53-lib-part1.patch`, `-lib-part2.patch`, `-examples.patch` - and verified to apply
+cleanly in order on a fresh HEAD and reproduce the tree byte-for-byte.** **NOT yet applied to main, because I cannot apply a
+patch.**
+
 ## v398 - `nivartanam` confirmed, gate open, migration running
 
 **Three corrections and the owner landed on the word I believed was right.** **`nivartanam` (निवर्तनम्) - `ni` + `vṛt`,
