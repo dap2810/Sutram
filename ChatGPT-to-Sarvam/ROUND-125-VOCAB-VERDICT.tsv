@@ -69,7 +69,7 @@ aksharank	char_code	Y	अक्षर + अङ्क	letter + numeral (technical
 akshar_rakh	set_char	N	अक्षर + रख (Hindi)	letter, syllable; put, place (Hindi imperative stem)	FAIL		current; table L94; not established as a complete Sanskrit expression as written
 vartani_aayam	strlen	Y	वर्तनी + आयाम	spelling, orthography; length, extent, dimension	PASS		current; table L95; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
 vartani_tul	strcmp	Y	वर्तनी + √तुल्	spelling, orthography; weigh, compare	PASS		current; table L96; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
-vartani_pratilip	strcpy	Y	वर्तनी + प्रतिलिपि	spelling, orthography; copy, duplicate	PASS		current; table L97; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+vartani_pratilip	strcpy	N	वर्तनी + प्रतिलिपि	spelling, orthography; copy, duplicate	FAIL	vartani_pratilipi	Pratilipi (प्रतिलिपि) is the complete noun for copy; pratilip is clipped. Vartani means spelling/orthography rather than exactly an arbitrary byte string. [current; table L97]
 vartani_cat	strcat	N	वर्तनी + concatenate (English)	spelling, orthography; concatenation	FAIL	vartani_yuj	current; table L98; not established as a complete Sanskrit expression as written
 vartani_yuj	candidate replacing vartani_cat (strcat)	Y	वर्तनी + √युज्	spelling, orthography; join, connect	PASS		proposed; table L98; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
 pankti_len	array length	N	पङ्क्ति + length (English)	line, row, series; length	FAIL	pankti_aayam	Current name mixes genuine Sanskrit row pankti with English len; source covers mala AND vibhag lengths. [current; table L99]
@@ -108,7 +108,7 @@ netaccept	accept	N	[netaccept: not independently verified]	accept; one or more m
 jala_grahan	candidate replacing netaccept (accept)	Y	जाल + ग्रहण	net, network; grasping, receiving	PASS		Receiving matches accept of connection. [proposed; table L116]
 ganita	mathematics, checked	Y	गणित	reckoning, mathematics	PASS		Distinct module naming/organization problem, not a faulty lexeme. [current; table L124]
 ganit	mathematics, plain	N	गणित	reckoning, mathematics (clipped transliteration)	FAIL	saral_ganita	Clipped spelling of ganita is not a distinct Sanskrit word; ganan means counting but module also includes powers, prime tests and randomness. [current; table L125]
-ganan	candidate replacing ganit (mathematics, plain)	Y	गणन	counting	FAIL	saral_ganita	Ganana means counting and is too narrow for power/prime/random arithmetic functions. [proposed; table L125]
+ganan	candidate replacing ganit (mathematics, plain)	Y	गणन	counting	PASS	saral_ganita (optional)	Gaṇana is attested as both counting and calculation, so it fits an arithmetic family; wider functions merit documentation, not a semantic FAIL. [proposed; table L125]
 suchi	list	Y	सूची	list, catalogue	PASS		current; table L126; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
 varna	character, letter	Y	वर्ण	letter, color	PASS		current; table L127; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
 roop	form	Y	रूप	form, shape	PASS		current; table L128; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
@@ -116,7 +116,7 @@ khand	piece, bit	Y	खण्ड	part, piece, section	PASS		current; table L129; 
 nighantu	glossary, map	Y	निघण्टु	dictionary, glossary	PASS		current; table L130; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
 sankhyiki	statistics	Y	सांख्यिकी	statistics (modern Sanskrit)	PASS		Modern established term for statistics, not merely an arbitrary deletion of vowels. [current; table L131]
 phal	fruit, result	Y	फल	fruit, result	PASS		current; table L132; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
-shreni	row, rank	Y	श्रेणी	row, series, class	FAIL	kramita / shrenibaddha	Śreṇī means row or series, not an action meaning sort; module family is metaphorical. [current; table L133]
+shreni	row, rank	Y	श्रेणी	row, series, class	PASS		As a sorting MODULE, śreṇī 'ordered series/row' is a reasonable category metaphor. It is not itself a verb meaning sort. [current; table L133]
 sangrah	collection	Y	संग्रह	collection, compilation	PASS		current; table L134; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
 brihat	great	Y	बृहत्	large, great	PASS		current; table L135; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
 samanvaya	coordination	Y	समन्वय	coordination, integration	PASS		current; table L136; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
@@ -139,7 +139,7 @@ srij	create	Y	√सृज्	produce, create	PASS		current; table L173; members
 grah	take	Y	√ग्रह्	seize, take	PASS		current; table L174; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
 anwesh	search	Y	अन्वेषण/अनु-√इष्	search, investigate	PASS		current; table L175; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
 viparyay	reverse	Y	विपर्यय	inversion, reversal	PASS		current; table L176; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
-pratilip	copy	Y	प्रतिलिपि	copy, duplicate	PASS		current; table L177; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
+pratilip	copy	N	प्रतिलिपि	copy, duplicate	FAIL	pratilipi	Pratilipi (प्रतिलिपि) is the full nominal 'copy'; pratilip drops the final vowel, a truncated project spelling. [current; table L177]
 janchit	checked	N	जाँचित (Hindi)	checked (Hindi-derived)	FAIL	parikshita	Hindi jān̄c from examination plus suffix; not classical Sanskrit participle. [current; table L178]
 paripurna	saturating	Y	परिपूर्ण	completely full, filled	PASS		current; table L179; members are Sanskrit lexemes or recognized roots (compound itself not independently attested)
 nirapeksh	absolute	Y	निरपेक्ष	independent, indifferent, without dependence	FAIL	nirapeksha (independent); parimana for magnitude	Independent does not literally mean absolute value; good project metaphor only if sign independence defined. [current; table L180]
