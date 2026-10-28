@@ -3,7 +3,7 @@
 yoj sankhyiki
 yoj madhava
 
-prakriya measure(kosh dasham values) {
+prakriya maap(kosh dasham values) {
     # 5 + 4 + 2 = 11 for the textbook dataset.
     prati madhya(values) + prasaran(values) + vichalan(values)
 }
@@ -31,7 +31,7 @@ mukhya() {
     dasham total = 0.0
     vitti i = 0
     yavat (i < 100000) {
-        total = total + measure(values)
+        total = total + maap(values)
         i = i + 1
     }
     likha(total)
