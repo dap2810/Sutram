@@ -1,3 +1,33 @@
+## v408 - my pack fix verified from the repo tree: the failing gate is green
+
+**I did not wait for a partner to confirm it. I built from the tree and ran the gate that was failing.**
+
+### The gate
+**`python3 -B tools/lang_builtin.py --check` -> `BUILT-IN PACKS CURRENT: 11 keyword packs`, exit 0.**
+**It said `STALE: src/r22_lang_builtin.inc is not lang/*.lang` before my fix.** **Green now.**
+
+### And three things proved from the repo tree, not from a local copy
+- **The pack carries all seven words.**
+- **The compiler builds, and `चक्र i = 0 पर्यन्त 3 { likha(i) }` prints `0 1 2 3`.** **So the Devanagari loop keyword works from a
+  fresh clone.**
+- **`nivartanam` and `prati` produce IDENTICAL 76-byte binaries.** **The alias is real at the byte level.**
+
+**That last one is the whole justification for keeping `prati` as an alias: a program written either way produces the same
+executable.** **Not similar - identical.**
+
+### State
+**Compiler v258, changelog v408.** **`nivartanam` in the compiler, `lib/`, `examples/`, `tests/` and `docs/` - 235 files across
+R53, R54 and R55, zero goldens changed.**
+
+**Waiting on the owner, and nothing else blocks:**
+- **Muse's variable table** - the English names in `examples/`, counted properly, with Sanskrit proposals
+- **ChatGPT's 20 wrong library names** - out of 305, names whose sense does not match the body
+- **The 305-name review page** the owner has not been through
+
+**Waiting on nobody:**
+- **The two gates I broke are green.**
+- **The `तक्` loop-parser limitation is a compiler change, not a data change, and it is documented.**
+
 ## v407 - I broke two gates and Claude caught it: the pack commit left the built-in copy stale
 
 **Claude's R55 reports gates at 47 PASS / 2 FAIL, and both FAILs come from MY commits `e1fd04b` and `7fb43c6`.**
