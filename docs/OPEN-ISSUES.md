@@ -1,3 +1,10 @@
+> **Status at v405, 28 October 2026 — read this before the page below.**
+>
+> **Compiler v258.** Suite PASS=225 · crash corpus 227/0 · library proofs 226/226 · guard 0 DIFFER · gates 48 PASS / 0 FAIL / 1 NOT-RUN.
+> **`nivartanam` is the return keyword; `prati` is accepted as a legacy alias.** The rename covered 162 files and changed **zero goldens**, which is what makes it safe.
+> **Already done and removed from every open list:** `likha` with up to six values · the 135 three-statement print triples · the `lkhb` float bug · `arabhya ... paryantam` · seven wrong Devanagari words in the Sanskrit pack.
+> **The authoritative page is `docs/WHATS-LEFT.md`.** Where this page disagrees with it, that page is right — it is generated from the tree, and this one is not.
+
 # Open issues — the whole project, 27 October 2026
 
 **Audited on main at changelog v378, compiler v253.** **Every check that can run passes; this is the list of what the
@@ -169,3 +176,17 @@ already correct.** **Because that has been the answer five times out of five.**
 
 *Audited by Sarvam, 27 October 2026. Suite 224, corpus 227/0, proofs 224/224, signatures 305/305 - the checks pass; this
 is what they do not cover.*
+
+---
+
+## Closed since this page was written (27 Oct -> 28 Oct)
+
+| Was | Now |
+|---|---|
+| **`likha` printed one value per statement** | **Up to six values, R52.** |
+| **135 three-statement print triples in `examples/`** | **Migrated in R52; 405 lines -> 135.** |
+| **`lkhb(2.5)` printed the raw IEEE-754 bit pattern** | **Fixed in R52.** |
+| **No Sanskrit range form** | **`arabhya ... paryantam`, R52, byte-identical to `tak` loops.** |
+| **`prati` was a prefix, not the noun for "return"** | **`nivartanam` is the keyword; `prati` is the alias.** |
+| **`chay` was believed to be a coinage** | **`चय` is real Sanskrit for heap. My audit was wrong, not the code.** |
+| **Eight wrong Devanagari words in the pack** | **Seven fixed and tested; `तक्` blocked by the loop parser.** |
