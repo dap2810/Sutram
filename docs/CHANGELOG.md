@@ -1,3 +1,36 @@
+## v388 - `add` -> `yog`, `mul3` -> `gun_tray`: the first function example is now Sanskrit
+
+**`examples/05_func_params.sm` is the fifth file a beginner reads and the FIRST one that declares a function.** **The
+first two function names they ever saw were `add` and `mul3` - both English.**
+
+**Changed:**
+
+| Now | Was | Why |
+|---|---|---|
+| **`yog(a, b)`** | `add(a, b)` | **the project's own word for addition, and `shreni.yog` already means "sum"** |
+| **`gun_tray(a, b, c)`** | `mul3(a, b, c)` | **`gun` is multiply, `traya` is three. NOT `tri_gun`, which already means "triple" (multiply BY three)** |
+
+**And the golden `tests/expect/05_func_params.out` updated to match.** **Verified before pushing:** the renamed example
+compiles (615 bytes), runs, and its output is **byte-identical to the new golden** (`diff` = MATCH).
+
+### And one thing to know
+**`yog` already exists as `shreni.yog(a, n)` - the sum of a range.** **This example does not `yoj shreni`, so there is no
+clash** - **but a learner who later imports `shreni` and declares their own `yog` will be shadowing.** **That is normal in
+programming and worth one line in the docs, not a different word.**
+
+### Why `mul` was English: nobody decided it
+**`mul3` appears in no `.md` and no `.html` in the repository.** **It is not a keyword, not a library function, not in the
+reference** - **it exists only in that example and its golden.**
+
+**And the tell is in the same file: every keyword is Sanskrit** (`mukhya`, `prakriya`, `prati`, `vitti`, `likha`) **and
+only the two names the learner invents were English.** **The keywords are Sanskrit because the language chose them; the
+identifiers were English because nobody chose them.**
+
+### And a correction to my own last report
+**I said 36 examples use the legacy `pratiyati`.** **That was read from a stale partial tree in my sandbox.** **The real
+number is zero** - **every example uses `prati` correctly.** **The third time this session a stale tree produced a false
+finding, and the first time I caught it before acting on it.**
+
 ## v387 - Windows executed for the first time on a current revision: it passes, and found three defects
 
 **`Windows-to-Sarvam/WIN-TEST-2026-10-27.md` - run by Claude Code on the owner's Windows 11 Pro PC, non-elevated,
