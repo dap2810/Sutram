@@ -1,50 +1,41 @@
-# Sutram — ROUND-128: `nivartan`, written down
+# Sutram — ROUND-128 (corrected): `nirvatanam` — and the spelling is the first question
 
 **Base:** main at **v395** · **Deliver into:** `ChatGPT-to-Sarvam/`
+**Supersedes the earlier ROUND-128.** **Read this one; the word changed.**
 
-**Read first:** `docs/WHATS-LEFT.md`, `docs/LANGUAGE-REFERENCE.md`, your own `ROUND-126-STYLE-SANSKRIT.md`.
+## THE GATE - answer this before anything else
+**The owner has chosen `nirvatanam` (निर्वतनम्).** **I issued `nivartan` first and was corrected.** **Muse is waiting on your
+answer before migrating 1,400 sites.**
 
-## The owner's decision
-**`nivartan` becomes the keyword. `prati` stays accepted as a legacy alias.**
+**So: is `nirvatanam` a real Sanskrit word?**
 
-**Why the alias and not a clean removal:** **`prati` is in every program written for this language, including the ones the
-owner has tested on Windows.** **The alias means `nivartan` IS the keyword - it is what the reference says and what new code
-writes - while no existing file stops compiling.** **The guard then proves it: 0 DIFFER.**
+**The three candidates, and they are not the same:**
 
-## The fact that makes this safe
-**`prati` is a statement keyword. It never appears in program output.** **So renaming it changes NOTHING observable: every
-golden file stays byte-identical, and the crash corpus behaves identically.** **The only thing that can go wrong is a file
-that fails to COMPILE - and the alias prevents that.**
+| Spelling | Devanagari | What I believe |
+|---|---|---|
+| **`nirvatanam`** | **निर्वतनम्** | **the owner's choice. `vatan` is not a root I know. Is this a word at all?** |
+| **`nirvartanam`** | **निर्वर्तनम्** | **`nir` + `vṛt` - accomplishment, completion** |
+| **`nivartanam`** | **निवर्तनम्** | **`ni` + `vṛt` - returning, turning back** |
 
-**Devanagari: `निवर्तन` (nivartana) for `nivartan`.** **`प्रति` stays as the Devanagari alias.**
+**Answer plainly: is `nirvatanam` correct, is it a variant, or is it a misspelling of one of the other two?**
+**If it is a misspelling, say which word was meant and what it means.**
 
----
+**Do not soften this.** **The owner has chosen it, and if it is right I will implement it and say so.** **If it is wrong, saying
+so now costs one message; saying so after 1,400 sites costs a rollback.**
 
-## WS1 — the reference entry
+## WS1 — the reference entry (after the spelling answer)
+**Rewrite the `prati` entry as `nirvatanam`.** **Include the Devanagari, the meaning, the alias note, one runnable example
+with its exact output, and the honest line: is this an improvement in precision, or a correction of an error?**
 
-**Rewrite the `prati` entry in `docs/LANGUAGE-REFERENCE.md` as `nivartan`.** **Include:**
-- **`निवर्तन` and its meaning** - **the noun for "returning, turning back", from `ni` + `vṛt`**
-- **that `prati` still works as an alias, and why**
-- **one runnable example with its exact output**
-- **and the honest note you gave in R126: `prati` is a prefix and `nivartan` is the noun, so the change is an improvement
-  in precision, not a correction of an error.**
-
-## WS2 — every place it is documented
-
-**Find every document that shows `prati` in a code sample.** **List them, and give the exact replacement line for each** -
-**in the `path | mode | anchor_exact | insert_exact_line` shape you used in R123.**
-
-**Do not rewrite a historical changelog entry.** **A record of what was true then stays true.** **Say which you marked
+## WS2 — every document showing `prati`
+**List them with exact replacement lines in the `path | mode | anchor_exact | insert_exact_line` shape.**
+**Historical changelog entries stay as they are - a record of what was true then is still true.** **Mark them
 KEEP_HISTORICAL.**
 
-## WS3 — and the question I most want answered
-**Is `nivartan` the right word for a keyword, or is a keyword better served by a shorter form?**
-
-**`prati` was 5 letters; `nivartan` is 8.** **It appears in every function ever written in this language.** **So: is there a
-shorter genuine Sanskrit noun for "return" that is not a fragment?** **`nivṛtti`? `pratyaya`? `pratidā`?** **If `nivartan` is
-the best available, say so plainly and I will stop asking.** **If there is something better, say it now, before 1,400 sites
-are migrated.**
+## WS3 — the length question
+**`prati` was 5 letters; `nirvatanam` is 10.** **It appears in every function ever written in this language.**
+**Is there a shorter genuine Sanskrit noun for "return" that is not a fragment?** **`nivṛtti`? `pratidā`?**
+**If `nirvatanam` is the best available, say so and I will stop asking.**
 
 ## Return
-`ROUND-128-NIVARTAN-DOCS.md` with the reference entry · **the exact-insertion list** · **the KEEP_HISTORICAL list** · and
-your answer to WS3.
+`ROUND-128-NIRVATANAM-DOCS.md`, **with the spelling verdict as the FIRST line.**
