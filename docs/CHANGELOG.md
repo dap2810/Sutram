@@ -1,3 +1,23 @@
+## v396 - `nivartan` becomes the keyword, `prati` stays as an alias, and the reason it is safe
+
+**The owner decided: `nivartan` instead of `prati`.** **Implemented as the canonical keyword with `prati` kept as a legacy
+alias, so no existing program stops compiling - including the ones the owner has already tested on Windows.**
+
+### Why this is safer than it looks
+**`prati` is a statement keyword and never appears in program output.** **So renaming it changes NOTHING observable: every
+golden stays byte-identical, the crash corpus behaves identically, and the guard should read 0 DIFFER.** **The only failure
+mode is a file that does not COMPILE, and the alias removes it.**
+
+### The three rounds
+- **Claude R53:** the keyword table (`kw_nivartan`), the Devanagari (`निवर्तन` canonical, `प्रति` alias), the pack. **And the decisive test: three programs using `prati` and three using `nivartan` must produce byte-identical binaries.**
+- **Muse R53:** migrate `lib/` and `examples/`. **The test that makes it safe: every golden must stay byte-identical, because `prati` never prints.** **A golden that differs means the rename broke something.**
+- **ChatGPT R128:** the reference entry, every document showing `prati`, and the question I most want answered - **is `nivartan` the right word, or is there a shorter genuine Sanskrit noun?** **`prati` was 5 letters, `nivartan` is 8, and it appears in every function ever written.** **Better to ask now than after 1,400 sites are migrated.**
+
+### And the note on my own earlier recommendation
+**I recommended the alias and the owner said "instead of".** **The design I issued is both: `nivartan` IS the keyword - it is
+what the reference says and what new code writes - and `prati` is accepted so nothing breaks.** **That satisfies "instead of"
+without a migration that could regress a working language.**
+
 ## v395 - the consolidated picture, and three rounds issued from it
 
 **`docs/WHATS-LEFT.md` is now the single page that says where the project stands and everything remaining**, grouped by
