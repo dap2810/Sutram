@@ -1,3 +1,37 @@
+## v390 - the vocabulary refinement split three ways, and issued
+
+**The owner asked whether the other AIs could refine the 211 proposed names before development continues.** **Yes - and
+not by asking all three the same question.**
+
+### The split
+| Who | The question | Why them |
+|---|---|---|
+| **ChatGPT (R125)** | **Is it a real word, and is the sense right?** | It went to the dictionary every time I went to intuition |
+| **Muse (R50)** | **Does it collide, and does the project already have the word?** | It found `khip` and `apanay` when I invented `kshep` and `uddhar` |
+| **Claude (later)** | **Can it be applied without breaking anything?** | It has the compiler, the suite, the guard |
+
+**And they answer independently.** **Separate rounds, separate folders, and I do not tell Muse what ChatGPT said.** **The
+value is in the disagreement, and a shared document destroys it.**
+
+### The rubric - five criteria, and three of them reject outright
+1. **Is it a real word?** **Not a fragment** (`purn` is not a word, `purna` is).
+2. **Does the sense match the body?** `nishan` means "mark" and the function computes a matrix trace - **fail even
+   though the word is real.**
+3. **Is it short?** A stem of 5 letters or fewer.
+4. **Is it consistent?** If `khip` already means insert, a new word for insert is a defect.
+5. **Does it collide?** `blend` and `mixed` both became `mishr` and the compiler refused the second.
+
+**Failing 1, 2 or 4 rejects a proposal regardless of how good it sounds.**
+
+### What I held back
+**The keywords are not in scope.** **The owner has decided `prati` stays, and the rest are in every program ever
+written.** **And a longer name for a shorter CORRECT one is churn, not refinement.**
+
+### The names I flagged as most likely to be wrong
+**`karna_yog`** (matrix trace), **`tadatmya`** (identity), **`asti_ksham`** (capacity), **the three Aryabhatan trig
+names**, **`ganit` -> `ganan`** (does it collide with the `ganana` enum keyword?), **`chiti_*`** (is `chiti` right for a
+stack?), **`anukram_khip_asht`** (`asht` or `ashtak?`).
+
 ## v389 - every English function name in `examples/` renamed, with the output verified for each
 
 **31 example files and their goldens changed. The suite still passes: `PASS=225`, no FAIL.**
