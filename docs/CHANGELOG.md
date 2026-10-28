@@ -1,3 +1,30 @@
+## v404 - R52 already closed three of my roadmap items, and ChatGPT corrected four of my statements
+
+**ChatGPT's R127 opens with a section headed "Findings that supersede stale Round-127 assumptions", and every one of them
+corrects me.** **This is the seventh time a partner has measured something I asserted.**
+
+| I said | The tree says |
+|---|---|
+| **"`likha("x = ", x)` works and NO EXAMPLE USES IT"** | **It is in `examples/43_nested_likha.sm`, with its exact output in `tests/expect/43_nested_likha.out`.** **The assertion was false.** |
+| **"`lkhb(2.5)` prints raw bits - a real bug, to be fixed"** | **Fixed in R52.** **Already closed.** |
+| **"`likha` needs to go from 1 value to 6"** | **Implemented in R52.** **Already closed.** |
+| **"`arabhya ... paryantam` should be added"** | **Already implemented and tested byte-identical to `tak` loops.** **Already closed.** |
+| **"`likha_fmt(fmt, v)` still needs a newline"** | **WRONG.** **The compiler emits LF at the end of its numeric printer.** **`format_demo.out` has TWO LFs because the example adds `likha("\n")` anyway.** **Documenting my version would have taught a beginner to add a newline that is already there.** |
+
+**So three roadmap items - A1, A4 and A6 - are done, and I had them open.** **The remaining work is smaller than the roadmap says.**
+
+### And ChatGPT caught a documentation bug that would have taught the wrong thing
+**The `likha_fmt` double newline is not a compiler bug, it is an example that adds a newline the printer already adds.** **So the
+fix is in the example, not the compiler - and if I had written the reference from my own note, the reference would have been
+wrong in the same way.**
+
+### ROUND-55 issued
+**Apply Muse's `tests.patch` and `docs.patch`** - the last `prati` in `tests/` and `docs/` - **and apply ChatGPT's R127 and R128
+exact insertions to the reference.**
+
+**With the check that matters for the negative tests: a test that FEEDS `prati` as input keeps feeding it, because that is a
+test of the alias.** **The error message did not change, so its golden must not have either.**
+
 ## v403 - `nivartanam` is applied across the tree: 162 files, 0 rejected hunks, and the goldens prove it
 
 **Compiler v258 (commit `caed891c`).** **Suite PASS=225, proofs 226/226, corpus 227/0.**
