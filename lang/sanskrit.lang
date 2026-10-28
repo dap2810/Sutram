@@ -76,6 +76,8 @@
 
 # R54: correct Devanagari for eight keywords whose pack row held the WRONG WORD.
 # Purely additive - the previous rows stay, so no existing Devanagari program stops compiling.
+# 'tak' is NOT added here: the loop parser holds one spelling per keyword and
+# last-wins, so adding तक् silently broke पर्यन्त. That needs a parser change.
 # Audit: docs/LANG-PACK-AUDIT.md
 चक्र chakra
 अन्य anya
@@ -84,4 +86,3 @@
 गणना ganana
 यन्त्र yantra
 सत्य satya
-तक् tak
