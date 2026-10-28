@@ -314,7 +314,8 @@ prakriya khand_yuj(parts, count, sep, sepn, out) {
     nivartanam wpos
 }
 
-# khand_chhid(src, sn, out) — strip leading/trailing ASCII spaces (32).
+# khand_chhid(src, sn, out) — strip leading/trailing ASCII spaces (32) only;
+# tabs, newlines and multi-byte Unicode spaces are kept.
 # Returns the new byte count.
 prakriya khand_chhid(src, sn, out) {
     vitti s = src

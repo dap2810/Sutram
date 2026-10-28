@@ -22,6 +22,7 @@ prakriya shesh(a, b) {
 }
 
 # bhaj_urdhva(a, b) — ceiling division of a by b (rounds up when the remainder is nonzero); 0 if b == 0.
+# That 0 cannot be told apart from a real quotient of 0: check b first.
 prakriya bhaj_urdhva(a, b) {
     # Ceiling division: q = a / b (truncating), round up iff the
     # remainder is nonzero and has the divisor's util_chinha. The old

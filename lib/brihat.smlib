@@ -22,7 +22,8 @@ prakriya brihat_shunyank(arr, n) {
 }
 
 # brihat_ank_se_laghu(val, arr, n) — convert int to digit array (LSB first)
-# Returns 1 if val fit in n digits, 0 if truncated.
+# Returns 1 if val fit in n digits, 0 if truncated. The digits are of |val|:
+# the sign is not stored.
 # MIN: |MIN| does not fit in int64, so plain negation wraps and
 # emits negative digits. Convert MAX and add 1 instead.
 prakriya brihat_ank_se_laghu(val, arr, n) {

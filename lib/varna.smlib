@@ -14,6 +14,8 @@
 # forms on slices. varna_pratisthap's repl is 0-terminated; see the
 # strb.smlib header for why and for the khand_pratilip workaround. The
 # (s, i) char predicates take no length: the caller keeps i in bounds.
+# varna_maap(s) — length of the NUL-terminated packed string s in BYTES, not in
+# characters: a multi-byte UTF-8 letter counts as several.
 prakriya varna_maap(s)
     nivartanam vartani_aayam(s)
 
@@ -57,6 +59,7 @@ prakriya asti_avakash_akshar(s, i) {
 }
 
 # gan_swar(s) — count of lowercase vowels (a, e, i, o, u) in the string s.
+# ASCII bytes only: uppercase vowels and Devanagari vowels are not counted.
 prakriya gan_swar(s) {
     vitti n = vartani_aayam(s)
     vitti i = 0

@@ -258,7 +258,8 @@ prakriya pad_vam(out, count, width, fill) {
     nivartanam w
 }
 
-# varna_tak_dashm(buf, n, ok): parse a decimal float from a byte string.
+# varna_tak_dashm(buf, n, ok): parse a decimal float from the first n character
+# codes of mala buf, one code per cell (as varna_tak_ank; not a packed byte string).
 # Grammar: [-] digits [. digits] [(e|E) [-] digits]; at least one digit
 # in the integer or fraction part. No leading/trailing whitespace, no
 # '+', no "inf"/"nan" — those are ok = 0 (same conventions as

@@ -11,6 +11,7 @@
 
 # fnv1a(s, len) — FNV-1a hash of the first len BYTES of a packed byte-string pointer s.
 # Returns an unsigned 32-bit value in the integer range 0..4294967295.
+# A non-cryptographic hash: not encryption and not a secure digest.
 prakriya fnv1a(s, len) {
     vitti h = 2166136261
     vitti i = 0

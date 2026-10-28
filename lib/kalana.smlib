@@ -56,6 +56,7 @@ prakriya simpson(kosh dasham xs, kosh dasham ys) {
 # ---------------------------------------------------------------
 
 # Central difference at interior point i; one-sided at the ends.
+# Zero x-spacing (a duplicate x), or fewer than 2 samples, returns 0.0, not an error.
 prakriya pravan(kosh dasham xs, kosh dasham ys, i) {
     vitti n = kosh_len(xs)
     yadi (kosh_len(ys) < n) { n = kosh_len(ys) }
@@ -113,7 +114,7 @@ prakriya bahu_ganana(kosh dasham c, dasham x) {
 
 # Bisection root of a polynomial on [lo, hi].
 # CONTRACT: `ok` must already contain ONE element (call kosh_push(ok, 0.0) first).
-# A kosh's capacity is not its length, so ok[0] is out of bounds until an element exists. Requires a util_chinha change across the interval,
+# A kosh's capacity is not its length, so ok[0] is out of bounds until an element exists. Requires a sign change across the interval,
 # which is checked and reported by returning a NaN-like sentinel of 0.0 with ok=0.
 # ok is returned through a one-element kosh so the caller can tell success from failure.
 prakriya bahu_mula(kosh dasham c, dasham lo, dasham hi, kosh dasham ok) {

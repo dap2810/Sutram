@@ -399,7 +399,8 @@ prakriya avali_srij(cap) {
 }
 
 # avali_pravesh(q, v) — append v at the tail.
-# Returns 1 ok / 0 allocation failure.
+# Returns 1 ok / 0 allocation failure. A full queue grows: capacity doubles
+# and the elements are copied, so that one append is not O(1).
 prakriya avali_pravesh(q, v) {
     vitti qu = q
     vitti val = v
