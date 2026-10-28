@@ -1,3 +1,28 @@
+## v397 - the word is `nirvatanam`, not `nivartan`, and the spelling is gated before the migration
+
+**I issued `nivartan`. The owner corrected it: `nirvatanam` (निर्वतनम्).** **All three rounds reissued with the right word.**
+
+### The bytes, verified not guessed
+**`निर्वतनम्` = `0xE0,0xA4,0xA8,0xE0,0xA4,0xBF,0xE0,0xA4,0xB0,0xE0,0xA5,0x8D,0xE0,0xA4,0xB5,0xE0,0xA4,0xA4,0xE0,0xA4,0xA8,0xE0,0xA4,0xAE,0xE0,0xA5,0x8D` - 27 bytes.**
+
+### And the three words are not the same
+| Spelling | Devanagari | Bytes |
+|---|---|---|
+| **`nirvatanam`** | **निर्वतनम्** | **27 - the owner's choice** |
+| **`nirvartanam`** | **निर्वर्तनम्** | **33 - one extra `र्`** |
+| **`nivartanam`** | **निवर्तनम्** | **27 - `ni` not `nir`** |
+
+**`nirvatanam` and `nivartanam` are the same length and differ in one syllable.** **My reading is that `vatan` is not a root
+and the word may be a variant of one of the other two - but the owner has decided and this is their language.**
+
+### So the migration is gated
+**ChatGPT answers the spelling as the FIRST line of ROUND-128.** **Muse does its counts now and waits for that answer before
+touching a single file.** **If the word is right, the migration runs and I will say I was wrong to doubt it. If it is wrong,
+one message catches it instead of a 1,400-site rollback.**
+
+**That is the only part of this that needed slowing down.** **The rest is safe because `prati` never appears in output - every
+golden stays byte-identical and the guard reads 0 DIFFER.**
+
 ## v396 - `nivartan` becomes the keyword, `prati` stays as an alias, and the reason it is safe
 
 **The owner decided: `nivartan` instead of `prati`.** **Implemented as the canonical keyword with `prati` kept as a legacy
