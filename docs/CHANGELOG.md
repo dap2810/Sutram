@@ -1,3 +1,34 @@
+## v406 - every document synced to v405, with a banner that says which page is authoritative
+
+**Four documents carried stale state and now carry a banner: compiler v258, `nivartanam` decided, and the seven items that
+closed since they were written.**
+
+### `docs/OPEN-ISSUES.md` (written 27 October, still listing closed work)
+**Banner plus a "Closed since this page was written" table:** `likha` one value per statement · the 135 triples · the `lkhb`
+float bug · no Sanskrit range form · `prati` as a prefix · **`chay` believed to be a coinage** · eight wrong Devanagari words.
+
+**The `chay` line is the one I want on the record: `चय` is real Sanskrit for heap.** **My audit was wrong, not the code.** **Third
+time this session I called a real word a coinage.**
+
+### `docs/MEMORY-MODEL.md`
+**Banner stating it is accurate and that memory is the NEXT block.** **And the three facts: no `free`, `kosh` leaks ~15.3 bytes
+per item, a GC is refused.** **Plus the point that matters for the decision - region allocation is FASTER than `malloc`, because
+allocating is a pointer bump and freeing is a pointer reset.** **And the honest gap: the measurement is not done, and it has to
+be written in assembly here because there is no C compiler.**
+
+### `docs/VOCABULARY-TABLE.md`
+**Banner: `nivartanam` decided, `prati` the alias, 162 files, zero goldens changed.** **Plus the two corrections - `chay` is real,
+and `kosh_enqueue` must not be `kosh_purva_yuj` because enqueue appends at the rear.** **Plus the finding that the pack's
+Devanagari column already held the Sanskrit for ten builtins.**
+
+### And the rule now in every banner
+**`docs/WHATS-LEFT.md` is authoritative.** **Where another page disagrees with it, that page is right - it is generated from the
+tree, and the others are not.** **That sentence exists because six items on the roadmap were already done and the page did not
+know.**
+
+**`docs/LANGUAGE-REFERENCE.md` was deliberately NOT touched - Claude is editing it in R55.** **Editing the same file in two places
+is how a merge becomes a guess.**
+
 ## v405 - the roadmap rewritten, because six of its open items were already done
 
 **`docs/WHATS-LEFT.md` said `likha` with six values, the `lkhb` float bug and `arabhya ... paryantam` were work to do.** **All
