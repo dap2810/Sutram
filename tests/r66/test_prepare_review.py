@@ -18,7 +18,8 @@ class PackTests(unittest.TestCase):
     def test_counts_and_uniqueness(self):
         # R67 omitted the colliding Gujarati reservation; keep its 44-entry contract.
         # R23: +1 each, the keyword vibhag (a slice parameter). R25: +3, siddhi dosh prasar.
-        for lang, count in [('sanskrit', 58), ('gujarati', 48)]:
+        # R50: Sanskrit -1, the abbreviation प॰ removed (prati has one Devanagari form, प्रति).
+        for lang, count in [('sanskrit', 57), ('gujarati', 48)]:
             rows = self.entries(lang)
             self.assertEqual(len(rows), count)
             self.assertEqual(len({a for a, _ in rows}), count)

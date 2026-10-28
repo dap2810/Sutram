@@ -234,7 +234,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v254) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v255) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -732,7 +732,7 @@ r54_builtin_arity_table:
     kw_dev_prasar   db 224,164,170,224,165,141,224,164,176,224,164,184,224,164,190,224,164,176, 0
             kw_dev_prakriya db 0xE0,0xA4,0xAA,0xE0,0xA5,0x8D,0xE0,0xA4,0xB0,0xE0,0xA4,0x95,0xE0,0xA5,0x8D,0xE0,0xA4,0xB0,0xE0,0xA4,0xBF,0xE0,0xA4,0xAF,0xE0,0xA4,0xBE, 0
     kw_dev_anyatra db 0xE0,0xA4,0x85,0xE0,0xA4,0xA8,0xE0,0xA5,0x8D,0xE0,0xA4,0xAF,0xE0,0xA4,0xA4,0xE0,0xA5,0x8D,0xE0,0xA4,0xB0, 0
-    kw_dev_pratiyati db 0xE0,0xA4,0xAA,0xE0,0xA5,0x8D,0xE0,0xA4,0xB0,0xE0,0xA4,0xA4,0xE0,0xA5,0x8D,0xE0,0xA4,0xAF,0xE0,0xA4,0xBE,0xE0,0xA4,0xAF,0xE0,0xA4,0xA4,0xE0,0xA4,0xBF, 0
+    kw_dev_pratiyati db 0xE0,0xA4,0xAA,0xE0,0xA5,0x8D,0xE0,0xA4,0xB0,0xE0,0xA4,0xA4,0xE0,0xA4,0xBF, 0   ; R50: प्रति (was प्रत्यायति)
 
     bn_likh      db "likh", 0
     bn_sthagita  db "sthagita", 0
@@ -2328,6 +2328,21 @@ _start:
     call print_str_z
     jmp do_exit
 .args_ok:
+    ; R50 (W1): with no pack named (no --lang, no SUTRAM_LANG), the Sanskrit pack's
+    ; KEYWORDS are loaded - from the copy built into the compiler, silently - so a
+    ; Devanagari program needs no flag. Only the keywords: the messages, the banner and
+    ; every Latin program stay exactly as before. A named pack (found or not) is used
+    ; alone, as before.
+    cmp byte [rel lang_loaded_name], 0
+    jne .r50_lang_done
+    cmp qword [rel lang_kw_cnt], 0
+    jne .r50_lang_done
+    lea rax, [rel lang_builtin_ptr]
+    mov rdi, [rax + 11*8]          ; lang_names[11] = sanskrit
+    lea rax, [rel lang_builtin_len]
+    mov rsi, [rax + 11*8]
+    call load_lang_mem
+.r50_lang_done:
     ; Read source file
     mov rdi, R49_ARG(16)          ; argv[1]
     mov [rel source_path_ptr], rdi

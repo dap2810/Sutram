@@ -115,7 +115,7 @@ def main(argv) -> int:
         for k in ('prati', 'yadi', 'mukhya', 'vitti', 'kosh'):
             rc, out = build_run(f'mukhya()\n    vitti {k} = 41\n    likha(1)\n', None)
             check(rc is None, f'control: the keyword {k} itself is refused as a name (it compiled)')
-        for d in ('प्रतियाति', 'यदि', 'कोश', 'प॰'):
+        for d in ('प्रति', 'यदि', 'कोश', 'वि॰'):
             rc, out = build_run(f'मुख्य()\n    वित्ति {d} = 41।\n    लिख(1)।\n', 'sanskrit')
             check(rc is None, f'control: the keyword {d} itself is refused as a name (it compiled)')
         if fails == n0:
