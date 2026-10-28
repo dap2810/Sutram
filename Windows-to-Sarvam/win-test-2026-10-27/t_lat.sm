@@ -1,0 +1,6 @@
+mukhya()
+    vitti x = 5
+    vitti y = 10
+    likha(x + y)
+    likha("\n")
+    prati 0

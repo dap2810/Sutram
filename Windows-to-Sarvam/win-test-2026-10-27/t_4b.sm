@@ -1,0 +1,4 @@
+mukhya()
+    vitti a[4]
+    a[10] = 1
+    prati 0

@@ -1,0 +1,4 @@
+mukhya()
+    kosh k[4]
+    likha(kosh_pop(k))
+    prati 0

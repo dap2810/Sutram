@@ -1,0 +1,6 @@
+prakriya yog(a, b)
+    prati a + b
+
+mukhya()
+    likha(yog(10, 32))
+    prati 0

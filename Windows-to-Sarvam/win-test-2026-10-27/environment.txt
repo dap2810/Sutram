@@ -1,0 +1,7 @@
+Windows : Microsoft Windows NT 10.0.26300.0
+Elevated: False
+nasm    : NASM version 3.01 compiled on Jun 10 2026
+ld      : GNU ld (GNU Binutils) 2.47.20260726 (C:\msys64\ucrt64\bin\ld.exe)
+commit  : 2ec4c18fbd02bc9e29dc7f6382250b62d58e6ad0
+sutram_win.exe: 413825 bytes, --version: Sutram 1.0 (v254) - sampurna sutra
+committed sutram.exe: 413180 bytes

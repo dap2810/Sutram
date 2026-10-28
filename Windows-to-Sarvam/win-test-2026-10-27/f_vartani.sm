@@ -1,0 +1,8 @@
+mukhya()
+    vitti b = nirmmita(64)
+    smaran(b, 0, 64)
+    vartani_pratilip(b, "namaste")
+    likha(vartani_aayam(b))
+    likha(vartani_tul(b, "namaste"))
+    likha(vartani_tul(b, "namas"))
+    prati 0

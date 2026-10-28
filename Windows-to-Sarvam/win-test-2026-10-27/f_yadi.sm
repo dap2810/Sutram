@@ -1,0 +1,13 @@
+mukhya()
+    vitti x = 5
+    yadi (x > 3) {
+        likha("satya\n")
+    } anya {
+        likha("asatya\n")
+    }
+    yadi (x > 9) {
+        likha("satya\n")
+    } anya {
+        likha("asatya\n")
+    }
+    prati 0

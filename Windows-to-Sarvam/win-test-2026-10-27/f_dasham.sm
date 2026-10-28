@@ -1,0 +1,8 @@
+mukhya()
+    dasham a = 3.14159265358979
+    likha(a)
+    dasham b = 1.0 / 3.0
+    likha(b)
+    dasham c = 2.5
+    likha(c)
+    prati 0

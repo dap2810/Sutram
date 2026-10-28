@@ -1,0 +1,13 @@
+mukhya()
+    kosh k[2]
+    kosh_push(k, 10)
+    kosh_push(k, 20)
+    kosh_push(k, 30)
+    kosh_push(k, 40)
+    kosh_push(k, 50)
+    likha(kosh_len(k))
+    likha(kosh_cap(k))
+    likha(k[0])
+    likha(k[2])
+    likha(k[4])
+    prati 0

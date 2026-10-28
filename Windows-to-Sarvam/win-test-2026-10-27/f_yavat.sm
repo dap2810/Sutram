@@ -1,0 +1,8 @@
+mukhya()
+    vitti i = 0
+    yavat (i < 3) {
+        likha(i)
+        i = i + 1
+    }
+    likha("samapta\n")
+    prati 0
