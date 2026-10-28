@@ -1,3 +1,37 @@
+## v409 - the three tables become three rounds, and the vocabulary work is all in flight
+
+**The owner delegated the review decision, so I made it and issued the work.**
+
+### Claude R56 - the 20 wrong library names
+**ChatGPT read all 305 bodies and judged 285 accurate.** **Two of the 20 have the OPERATION wrong, not just the word:**
+- **`sadish_yoga`** - the name says VECTOR ADDITION; the body is a DOT PRODUCT. **A caller gets a different answer of the same type - the worst kind of wrong.**
+- **`chandas.dviguna`** - `dviguna` means DOUBLING; the body computes **2^n**.
+
+**Plus `mahattam`/`laghuttam` returning GCD and LCM with the relation missing, `sankhyiki.bindu` (point) computing an inner product,
+`roop_varg_mool` (square root) formatting digit groups, three `_ashtak` functions handling an 8-byte LENGTH PREFIX, `asti_vilom`
+testing a palindrome, and `nirnaya2`/`nirnaya3` being determinants of order 2 and 3.**
+
+**Three commits, smallest risk first, `sadish_yoga` and `dviguna` LAST with their call sites counted first.**
+
+### Muse R56 - the 108 English variables
+**Not 140 - 108, by Muse's own stated method.** **Batches of 20, every golden byte-identical.** **And a question at the end: after
+this round, does a beginner reading `01_hello.sm` meet an English word?** **If the answer is "yes, but fewer", I want the file list.**
+
+### ChatGPT R130 - the 33 comments, and four names reconsidered
+**The 33 are right-named traps: `fnv1a` is a hash not encryption; `ganita_paripurna_bhaj` returns a sentinel zero on
+divide-by-zero and zero is also a legitimate quotient.** **Comment text only - Muse is in the library.**
+
+**And four suggestions are much longer than what they replace: `mahattam` (8) -> 22 characters.** **Asked for a shorter exact
+compound; if none exists I will take the long name.**
+
+**And the one I want on the record: is there ANY reading of `sadish_yoga` under which a dot product is correct?**
+
+### The rubric now applied to every name
+**Complete word or compound, never a fragment. Sense must match the body. Shorter is better, but a correct long name beats a wrong
+short one. No collision. Nothing breaks a program.**
+**Plus the rule I added after being wrong all session: if a suggested name is longer, ask for the shorter correct alternative
+rather than accepting the first suggestion.**
+
 ## v408 - my pack fix verified from the repo tree: the failing gate is green
 
 **I did not wait for a partner to confirm it. I built from the tree and ran the gate that was failing.**
