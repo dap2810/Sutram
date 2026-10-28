@@ -1,8 +1,8 @@
-prakriya bump(a) {
+prakriya vardh(a) {
     a = a + 1
     prati a
 }
 
 mukhya() {
-    likha(bump(4))
+    likha(vardh(4))
 }
