@@ -1,3 +1,30 @@
+## v405 - the roadmap rewritten, because six of its open items were already done
+
+**`docs/WHATS-LEFT.md` said `likha` with six values, the `lkhb` float bug and `arabhya ... paryantam` were work to do.** **All
+three landed in R52 and I did not know.** **It also said `likha("x = ", x)` was unused, and it is used in
+`examples/43_nested_likha.sm` with a golden.**
+
+**So the page was wrong about the language, wrong about the examples, and wrong about the work remaining.** **It is rewritten,
+with the rule at the top: every claim carries the command that produced it.**
+
+### What the rewrite shows
+**Seven things are DONE and verified:** `likha` arity, the 135 triples, the `lkhb` float bug, `arabhya`, `nivartanam` across 162
+files, seven wrong Devanagari words, and the pack audit.
+
+**Three rounds are in flight:** Claude R55 (the last patches and the reference), Muse R55 (the English variables, table only),
+ChatGPT R129 (**audit all 305 library names against their BODIES**).
+
+**Eight things are still open, and none is a language feature:** `Sutram Error` (blocked on the IDE decision), the 15 surviving
+mutants (including a maths sign error), 818 undecided mutants, `तक्` in the loop parser, `पङ्क्ति` inside `pankti_len`,
+`कोशपोप्`, the ~140 English variables, and the 305-name review the owner has not been through.
+
+**And six decisions only the owner can make**, including the one I have to ask about: **Claude's R54 attributes to the owner a
+decision I cannot see being made.**
+
+### And R129 was replaced
+**I had issued it about memory vocabulary.** **The owner's instruction was to finish the CURRENT work first and leave memory for
+after.** **So R129 is now the library-name audit - the work that found `nishan` meaning "mark" while computing a matrix trace.**
+
 ## v404 - R52 already closed three of my roadmap items, and ChatGPT corrected four of my statements
 
 **ChatGPT's R127 opens with a section headed "Findings that supersede stale Round-127 assumptions", and every one of them
