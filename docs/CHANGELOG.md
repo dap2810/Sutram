@@ -1,3 +1,21 @@
+## v407 - I broke two gates and Claude caught it: the pack commit left the built-in copy stale
+
+**Claude's R55 reports gates at 47 PASS / 2 FAIL, and both FAILs come from MY commits `e1fd04b` and `7fb43c6`.**
+
+**"keyword packs built in" failed because I pushed `lang/sanskrit.lang` and never pushed the regenerated
+`src/r22_lang_builtin.inc`.** **The pack is compiled into the compiler through that file, and I updated the source without
+updating the copy.** **"doc counts" failed as a consequence.**
+
+**And Claude did the right thing with the number: it did NOT lower PROJECT-MASTER's 48 to 47.** **Its words: *"that would make a
+broken gate look like the normal count."*** **So the count stayed at 48 and the failure was reported.** **That is exactly how a
+gate should be treated.**
+
+**Fixed now: `src/r22_lang_builtin.inc` regenerated from the current pack and pushed.** **`tools/lang_builtin.py --check` passes.**
+
+**The lesson is the same one this session keeps teaching: I regenerated the file locally, tested against it, and never pushed
+it.** **Testing against a local artefact and believing the repo matches is how a stale tree produced two false findings
+earlier.**
+
 ## v406 - every document synced to v405, with a banner that says which page is authoritative
 
 **Four documents carried stale state and now carry a banner: compiler v258, `nivartanam` decided, and the seven items that
