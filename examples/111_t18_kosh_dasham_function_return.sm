@@ -1,17 +1,17 @@
 # Typed kosh values must participate in T12 prakriya return inference.
-prakriya last_value() {
+prakriya antim_mulya() {
     kosh dasham values[1]
     kosh_push(values, 2.5)
     prati kosh_pop(values)
 }
 
-prakriya indexed_value() {
+prakriya sanket_mulya() {
     kosh dasham values[1]
     kosh_push(values, 1.25)
     prati values[0]
 }
 
 mukhya() {
-    likha(last_value())
-    likha(indexed_value())
+    likha(antim_mulya())
+    likha(sanket_mulya())
 }
