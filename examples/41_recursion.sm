@@ -5,11 +5,11 @@ prakriya krama_fal(n) {
     }
     prati n * krama_fal(n - 1)
 }
-prakriya fib(n) {
+prakriya meru_ank(n) {
     yadi (n < 2) {
         prati n
     }
-    prati fib(n - 1) + fib(n - 2)
+    prati meru_ank(n - 1) + meru_ank(n - 2)
 }
 prakriya shakti(base, exp) {
     yadi (exp == 0) {
@@ -19,5 +19,5 @@ prakriya shakti(base, exp) {
 }
 mukhya()
     likha(krama_fal(6))
-    likha(fib(20))
+    likha(meru_ank(20))
     likha(shakti(2, 10))
