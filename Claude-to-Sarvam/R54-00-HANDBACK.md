@@ -160,3 +160,20 @@ new comments, so 81 functions now have a one-line description there. **That file
 - **Not touched:**
   - `backups/`, `Windows-to-Sarvam/`, `lang/` and `windows/`;
   - **the non-Sanskrit packs.**
+
+## After the push: the pack fix landed around mine
+
+**Two commits change `lang/sanskrit.lang`:**
+- **`e1fd04b`, the owner's,** landed just before mine. It adds Devanagari rows for eight keywords.
+- **`7fb43c6`** came after. It leaves seven of them (चक्र, अन्य, अग्रिम, माला, गणना, यन्त्र, सत्य) and drops तक्.
+
+**My numbers above were measured before either.**
+
+**They changed only the `.lang` file, not the compiler's built-in copy.** Measured on main at `bfd8ed3`:
+- **`python3 tools/lang_builtin.py --check` gives `STALE`.** So the "keyword packs built in" gate fails on main until
+  `src/r22_lang_builtin.inc` is regenerated and the compiler rebuilt.
+- **The committed compiler does not know the new words yet.** `चक्र i = 0 तक 3 { ... }` under `--lang sanskrit` is a
+  parse error.
+
+**I did not regenerate it.** That is a compiler change (v259: re-pin and the guard), and no round asked for it. It is a
+few minutes of work when one does.
