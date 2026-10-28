@@ -1,3 +1,29 @@
+## v400 - the `nivartanam` rename is three-quarters done, and the last quarter has a trap in it
+
+**State: compiler v257 speaks `nivartanam`, guard 0 DIFFER, both spellings byte-identical.** **Muse's `lib/` (677) and
+`examples/` (122) patches are waiting on Claude to apply them (ROUND-54).**
+
+### The last quarter, and the trap
+**Muse counted 389 more `prati` in `tests/` and 146 in `docs/`.** **Those are still `prati`.**
+
+**The trap: `tests/negative/` has 108 files with `prati`, and some of them assert on an ERROR MESSAGE.** **If the message
+contains `prati`, renaming it changes what the test expects.** **So ROUND-54 asks Muse to find every test whose expected
+output contains `prati` and list them separately - a decision, not a blind rename.**
+
+**And the rule that makes it safe: a test that FEEDS `prati` as input should keep feeding it, because that is a test of the
+alias.** **A test that WRITES a program using `prati` as a statement becomes `nivartanam`.** **Different things, and the
+difference matters.**
+
+### And ChatGPT's R128 flagged something I missed
+**Its own opening line: *"issued R127 remains without a ChatGPT handoff."*** **R127 is the documentation round - the one that
+documents `likha("x = ", x)` and gives the honest speakable verdict.** **It was never picked up, so I re-issued it as a
+reminder.**
+
+### And ChatGPT's R128 static check is stale, correctly so
+**It pinned at `b425a9f3` where the compiler had ZERO `nivartanam` occurrences, and said so plainly rather than assuming.**
+**That is the right behaviour: it verified what was there instead of what the brief claimed.** **The docs update is now safe
+because the compiler migration has passed, so I will apply its insertions after Claude's R54 lands.**
+
 ## v399 - `nivartanam` is in, both spellings compile identically, and Claude caught a wrong byte string of mine
 
 **Compiler v256 (commit `74edff92`), then v257. Suite PASS=225, proofs 226/226, corpus 227/0.**
