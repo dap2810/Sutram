@@ -1,9 +1,9 @@
 # Stage 2 acceptance: recursion must not corrupt a caller's cached values.
-prakriya ascend(dasham x, n) {
+prakriya aaroh(dasham x, n) {
     yadi (n <= 0) {
         prati x
     }
-    prati ascend(x + 0.25, n - 1)
+    prati aaroh(x + 0.25, n - 1)
 }
 mukhya() {
     dasham a = 2.0
@@ -12,7 +12,7 @@ mukhya() {
     dasham d = 0.5
     a = a + c
     a = a + c
-    b = ascend(a, 4)
+    b = aaroh(a, 4)
     a = a + c
     d = b / a
     likha(a)
