@@ -78,7 +78,7 @@ docs/LANGUAGE-REFERENCE.md	PROPOSE_INSERT_BEFORE_AFTER_CANONICAL_MERGE	## 3. Ope
 docs/LANGUAGE-REFERENCE.md	PROPOSE_INSERT_BEFORE_AFTER_CANONICAL_MERGE	## 3. Operators and precedence	<BLANK>
 docs/LANGUAGE-REFERENCE.md	PROPOSE_INSERT_BEFORE_AFTER_CANONICAL_MERGE	## 3. Operators and precedence	For a presently supported equivalent, use `prati a + b`; the alias is not scheduled for removal. A canonical name does not itself establish byte identity or compiler acceptance: those are separate native regression gates.
 docs/LANGUAGE-REFERENCE.md	PROPOSE_INSERT_BEFORE_AFTER_CANONICAL_MERGE	## 3. Operators and precedence	<BLANK>
-docs/LANGUAGE-REFERENCE.md	PROPOSE_AFTER_CANONICAL_MERGE	| `prati` | return |	| `nivartanam` | return |
+docs/LANGUAGE-REFERENCE.md	PROPOSE_AFTER_CANONICAL_MERGE	| `prati` | return |	| `nivartanam` (निवर्तनम्; legacy alias: `prati`) | return / returning / turning back (नि + √वृत्) |
 docs/LANGUAGE-REFERENCE.md	PROPOSE_AFTER_CANONICAL_MERGE	| `siddhi` | return success: `prati siddhi(v)` (R25; §18) |	| `siddhi` | return success: `nivartanam siddhi(v)` (R25; §18) |
 docs/LANGUAGE-REFERENCE.md	PROPOSE_AFTER_CANONICAL_MERGE	| `dosh` | return failure: `prati dosh(code)` (R25; §18) |	| `dosh` | return failure: `nivartanam dosh(code)` (R25; §18) |
 docs/LANGUAGE-REFERENCE.md	PROPOSE_AFTER_CANONICAL_MERGE	    prati a + b                 # return	    nivartanam a + b                 # return
