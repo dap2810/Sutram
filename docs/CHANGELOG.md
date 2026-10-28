@@ -1,3 +1,27 @@
+## v398 - `nivartanam` confirmed, gate open, migration running
+
+**Three corrections and the owner landed on the word I believed was right.** **`nivartanam` (निवर्तनम्) - `ni` + `vṛt`,
+"returning, turning back".** **27 bytes, verified.**
+
+### The record of how this went, because it matters
+1. **I issued `nivartan` - wrong.**
+2. **The owner corrected to `nirvatanam` - and I flagged that `vatan` is not a root and it might be a variant of `nivartanam`.**
+3. **The owner confirmed `nivartanam` - the word I believed meant "return".** **So we agree, and the flagging was worth the two extra messages.**
+
+**That is the third time this session that a spelling question was settled by asking rather than by assuming.** **The earlier
+two were `pradarsh` vs `pradarsh` and the Devanagari `prati` triple.**
+
+### The gate is open
+**The owner confirmed the word, so nothing waits on a spelling answer any more.** **Muse migrates `lib/` and `examples/` now.**
+
+### Why the migration is safe
+**`prati` is a statement keyword and never appears in program output.** **Every golden must stay byte-identical, the crash
+corpus behaves identically, and the guard reads 0 DIFFER.** **The only failure mode is a file that does not compile, and
+`prati` stays as an alias to prevent it.**
+
+**And Claude's decisive test: three programs using `prati` and three using `nivartanam` must produce byte-identical
+binaries.** **If they do not, the alias is broken and that is the finding.**
+
 ## v397 - the word is `nirvatanam`, not `nivartan`, and the spelling is gated before the migration
 
 **I issued `nivartan`. The owner corrected it: `nirvatanam` (निर्वतनम्).** **All three rounds reissued with the right word.**
