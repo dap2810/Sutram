@@ -1,0 +1,34 @@
+file	function	verdict	why
+lib/brihat.smlib	brihat_ank_se_laghu	RECONCILED	the existing comment did not say the sign is lost
+lib/brihat.smlib	brihat_ank_tak_laghu	ALREADY ADEQUATE	the existing comment states the same contract
+lib/brihat.smlib	brihat_bhajshesh	ALREADY ADEQUATE	the existing comment states the same contract
+lib/brihat.smlib	brihat_shesh	ALREADY ADEQUATE	the existing comment states the same contract
+lib/gudh.smlib	fnv1a	RECONCILED	did not say non-cryptographic
+lib/ganita.smlib	ganita_paripurna_bhaj	ALREADY ADEQUATE	the existing comment states the same contract
+lib/ganita.smlib	ganita_paripurna_shesh	ALREADY ADEQUATE	the existing comment states the same contract
+lib/ganita.smlib	ganita_paripurna_nirapeksh	ALREADY ADEQUATE	the existing comment states the same contract
+lib/ganit.smlib	ganit_yadricch	RECONCILED	said deterministic, not that it is unsafe for secrets
+lib/ganit.smlib	ghat	ALREADY ADEQUATE	the existing comment states the same contract
+lib/kalana.smlib	simpson	ALREADY ADEQUATE	the existing comment states the same contract
+lib/kalana.smlib	pravan	RECONCILED	the 0.0 on zero spacing was only in the body
+lib/kalana.smlib	bahu_mula	RECONCILED	the contract was there; "util_chinha change" (an old blind rename of "sign") put back to "sign change"
+lib/khand.smlib	khand_chhid	RECONCILED	did not say tabs/newlines are kept
+lib/nighantu.smlib	nighantu_grah	ALREADY ADEQUATE	the existing comment states the same contract
+lib/nighantu.smlib	nighantu_vardh	ALREADY ADEQUATE	the existing comment states the same contract
+lib/nighantu.smlib	nighantu_kunjika	ALREADY ADEQUATE	the existing comment states the same contract
+lib/nighantu.smlib	nighantu_kunjika_ashtak	ALREADY ADEQUATE	the existing comment states the same contract
+lib/patra.smlib	patra_asti	ALREADY ADEQUATE	the existing comment states the same contract
+lib/phal.smlib	phal_mulya	ALREADY ADEQUATE	the existing comment states the same contract
+lib/roop.smlib	roop_sthir_mool	ALREADY ADEQUATE	the existing comment states the same contract
+lib/roop.smlib	roop_varg	RECONCILED	did not name roop_varg_vishwa
+lib/sadhan.smlib	bhaj_urdhva	RECONCILED	said 0 if b == 0, not that the 0 is ambiguous
+lib/sankhyiki.smlib	purna_prasaran	ALREADY ADEQUATE	the existing comment states the same contract
+lib/shreni.smlib	asti_sorted	ALREADY ADEQUATE	the existing comment states the same contract
+lib/sangrah.smlib	rakh_tak_mala	ALREADY ADEQUATE	the existing comment states the same contract
+lib/suchi.smlib	chay_apanay	ALREADY ADEQUATE	the existing comment states the same contract
+lib/suchi.smlib	avali_pravesh	RECONCILED	did not say a full queue grows by copying
+lib/suchi.smlib	avali_nishkas	ALREADY ADEQUATE	the existing comment states the same contract
+lib/suchi.smlib	suchi_rikta	ALREADY ADEQUATE	the existing comment states the same contract
+lib/varna.smlib	gan_swar	RECONCILED	did not say ASCII only
+lib/varna.smlib	varna_maap	INSERTED	no comment of its own (the block above it is the file header)
+lib/vakyank.smlib	varna_tak_dashm	RECONCILED	WRONG: said "byte string"; the body reads one code per cell (src[p]), as its callers and varna_tak_ank do
