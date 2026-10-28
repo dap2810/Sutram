@@ -1,3 +1,33 @@
+## v391 - Claude gets the three Windows defects, so no one is idle while the vocabulary is reviewed
+
+**The owner asked why nothing came back.** **The answer is not that the rounds were missing - they are in the folders -
+but that ChatGPT and Muse do not watch the repository.** **A round file sitting in `Sarvam-to-ChatGPT/ROUND-125.md` does
+nothing until someone opens that tool and points it at the folder.**
+
+**So: three rounds are waiting, and one of them is now real work for Claude that does not depend on the review.**
+
+### ROUND-50 (Claude) - the three defects Windows found
+**W1: `--lang sanskrit` should be the default.** **The compiler has 34 Devanagari keywords built in, so some Devanagari
+works without the flag and the rest does not - that inconsistency is the defect.**
+
+**W2: one word, three forms.** **The owner has decided `prati` stays as the Latin keyword, so this is not a rename - it
+is making the pack and the compiler agree on `प्रति`.** **`lang/sanskrit.lang:18` says `प्रतियाति`, the compiler holds
+`प्रत्यायति`, and line 74 says `प॰`.**
+
+**W3: `Sutram Error` -> `Sutram dosh`.** **74 places, and `dosh` is already the keyword for fault.** **The `[E_*]` codes
+stay.**
+
+**All three are independent of the vocabulary review** - **they are about error messages and one word's spelling, not
+about naming.** **So they can run in parallel.**
+
+### And the rounds that are waiting
+- **`Sarvam-to-ChatGPT/ROUND-125.md`** - the dictionary verdict on the proposed names
+- **`Sarvam-to-Muse/ROUND-50.md`** - the collision and convention verdict, plus the change surface
+- **`Sarvam-to-Claude/ROUND-50.md`** - the three defects, just issued
+
+**Claude's R49 came back** (`R49-00-HANDBACK.md`) - **the debugger rounding test.** **I will read it when the owner asks;
+it is not blocking anything.**
+
 ## v390 - the vocabulary refinement split three ways, and issued
 
 **The owner asked whether the other AIs could refine the 211 proposed names before development continues.** **Yes - and
