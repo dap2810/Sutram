@@ -73,3 +73,15 @@
 लि॰ likha
 प्र॰ prakriya
 कोशप्रवेश kosh_enqueue
+
+# R54: correct Devanagari for eight keywords whose pack row held the WRONG WORD.
+# Purely additive - the previous rows stay, so no existing Devanagari program stops compiling.
+# Audit: docs/LANG-PACK-AUDIT.md
+चक्र chakra
+अन्य anya
+अग्रिम agrim
+माला mala
+गणना ganana
+यन्त्र yantra
+सत्य satya
+तक् tak
