@@ -1,0 +1,17 @@
+== ROUND-56-patchA.patch on main 9903e73:
+error: patch failed: examples/126_numeric_pipeline.sm:28
+error: patch failed: examples/208_kalana.sm:7
+== ROUND-56-patchB.patch on main 9903e73:
+error: patch failed: examples/118_t18_kosh_param.sm:17
+error: patch failed: examples/135_r30_float_index_scalar.sm:7
+error: patch failed: examples/138_r30_float_comparison_index.sm:4
+error: patch failed: examples/139_r30_float_mixed_fallback.sm:6
+error: patch failed: examples/13_negatives.sm:14
+error: patch failed: examples/140_r30_index_side_effect.sm:9
+error: patch failed: examples/200_madhava_series.sm:3
+error: patch failed: examples/205_madhava_pi_kosh.sm:6
+error: patch failed: examples/208_kalana.sm:8
+error: patch failed: examples/209_samanvaya.sm:43
+error: patch failed: examples/216_r12_expr.sm:44
+error: patch failed: examples/217_r12_report.sm:4
+error: patch failed: examples/95_t12_madhava_functions.sm:2

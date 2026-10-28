@@ -1,0 +1,21 @@
+new name                   library proofs (tests/stdlib) that call it            property proofs  called by (lib)
+anukram_maap_aayam_purva   serial29                                               1            -
+anukram_khip_aayam_purva   r11_misc_edges, r37_bounds, serial29                   4            anukram_grah_i64
+anukram_grah_aayam_purva   r11_misc_edges, r37_bounds, serial29                   3            anukram_khip_aayam_purva
+brihat_shesh_sahaya        -                                                      0            brihat_ghatmod, brihat_shesh
+roop_ank_aadhar_saral      fmt_int_base, fmt_min                                  5            roop_ank_aadhar, roop_asht, roop_chinhit, roop_dash, roop_dwi, roop_shodash, roop_sign_akshar, roop_varg_ank
+roop_varg_sahaya           -                                                      0            roop_pad_madhya, roop_varg_bharatiya, roop_varg_vishwa
+antarveshan                util_lerp                                              0            -
+ank_chihna                 r18_sign_digits_kramgun, util_sign                     0            bhaj_urdhva, ganita_janchit_kramgun
+samanvaya_akar_ayogya      -                                                      0            matrika_yoga, skalar
+asti_viparyay_sam          num_is_palindrome, r8_number_edges                     2            viparyay_ank
+mahattam_samapavartak      math_gcd, math_gcd_lcm_edge                           10            adhik2, laghuttam_samapavartya, meru
+laghuttam_samapavartya     math_gcd_lcm_edge, math_lcm                            8            mahattam_samapavartak
+dvitiya_pravan             kalana_slope2, r11_kalana_edges                        1            -
+ekaka_matrika              samanvaya_pehchan                                      0            -
+karna_yog                  samanvaya_nishan                                       0            -
+saranik2                   samanvaya_nirnaya2                                     0            -
+saranik3                   samanvaya_nirnaya3                                     0            -
+bindu_gunan                sankhyiki_bindu                                        0            manak
+adish_gunan                samanvaya_sadish_yoga                                  0            -
+dwi_ghat                   chandas_dviguna                                        0            -
