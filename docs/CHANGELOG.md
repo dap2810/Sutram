@@ -1,3 +1,34 @@
+## v402 - the pack fix: seven words verified, one blocked, and my "purely additive" claim was wrong
+
+**`lang/sanskrit.lang` now carries the correct Devanagari for seven keywords.** **Built with NASM, tested with real programs.**
+
+### What I proved works
+| Word | Test | Result |
+|---|---|---|
+| **`चक्र`** | `चक्र i = 0 पर्यन्त 3 { likha(i) }` | **prints `0 1 2 3`** |
+| **`माला`** | `माला a[3]` | **compiles** |
+| **`अन्य`** | `yadi (1) { ... } अन्य { ... }` | **compiles** |
+| **`अग्रिम`** | inside a loop, skips one iteration | **prints `0 2 3`** |
+
+**Three more - `सत्य`, `गणना`, `यन्त्र` - are in the pack but UNVERIFIED, because I could not write valid syntax for them in either
+Latin or Devanagari.** **I am not claiming they work.**
+
+### And my "purely additive, nothing breaks" claim was WRONG
+**I said adding a correct word beside the wrong one was safe.** **It is not.** **The pack is LAST-WINS for `tak`: adding `तक्`
+silently broke `पर्यन्त`, and moving `तक्` above it broke `तक्` instead.** **One spelling per keyword, and whichever is last
+wins.**
+
+**So `तक्` is NOT in the pack.** **The loop parser holds a single spelling, and changing it needs a compiler change, not a data
+change.** **`पर्यन्त` still works, so nothing regressed.**
+
+**And `likha`, `vitti` DO accept multiple spellings** - all three `likha` rows work. **So aliases work in the general keyword
+table and not in the loop parser.** **That is a specific, findable defect rather than a general one.**
+
+### And the error I made before the fix
+**I pushed the pack, then tested against my LOCAL tree - which was the old file.** **`चक्र` failed and I nearly reported the fix
+broken.** **The tree was stale, not the pack.** **Same stale-tree trap as before; the fix is to update the local copy before
+testing, not to trust the fetched one.**
+
 ## v401 - my own work while the rounds ran: eleven defects in the Sanskrit pack
 
 **`docs/LANG-PACK-AUDIT.md`.** **I read all 58 rows of `lang/sanskrit.lang` instead of waiting, and the file has real
