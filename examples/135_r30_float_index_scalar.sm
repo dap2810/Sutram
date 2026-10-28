@@ -1,5 +1,5 @@
 # R30: preserve indexed read order; right float register is never mutated.
-prakriya replace_zero(kosh dasham xs) {
+prakriya shunya_badl(kosh dasham xs) {
     xs[0] = 100.0
     prati 3.0
 }
@@ -17,9 +17,9 @@ mukhya() {
     likha(phal)
     phal = xs[1] / weight
     likha(phal)
-    phal = xs[0] + replace_zero(xs)
+    phal = xs[0] + shunya_badl(xs)
     likha(phal)
     likha(xs[0])
-    phal = replace_zero(xs) + xs[0]
+    phal = shunya_badl(xs) + xs[0]
     likha(phal)
 }
