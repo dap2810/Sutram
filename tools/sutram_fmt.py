@@ -64,7 +64,7 @@ OPS2 = ['==', '!=', '<=', '>=', '<<', '>>', '&&', '||', '+=', '-=', '*=', '/=', 
 OPS1 = set('+-*/%<>=!&|^?:')
 DELIMS = set('()[]{},;.')
 DANDA = {'।', '॥'}        # । ॥ : statement terminators, like ;
-CORE = {'mukhya', 'vitti', 'anka', 'yadi', 'yavat', 'prati', 'sankhya', 'anya', 'prakriya', 'yoj',
+CORE = {'mukhya', 'vitti', 'anka', 'yadi', 'yavat', 'prati', 'nivartanam', 'sankhya', 'anya', 'prakriya', 'yoj',
         'rachana', 'chakra', 'tak', 'sutra', 'abhava', 'krama', 'agrim', 'purna', 'shunya', 'satya',
         'ganana', 'guna', 'bhavana', 'mala', 'yantra', 'kuru', 'dasham', 'kosh', 'vibhag', 'siddhi', 'dosh', 'prasar'}
 CALLLIKE_CORE = {'mukhya', 'yantra', 'abhava', 'siddhi', 'dosh'}   # R25: prati siddhi(v)     # keyword( ... ) written like a call

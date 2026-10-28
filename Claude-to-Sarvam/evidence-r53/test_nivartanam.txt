@@ -1,0 +1,10 @@
+PASS  program 1: 1 returns written `prati` and `nivartanam` give the same binary (342 B) and the same output
+PASS  program 2: 5 returns written `prati` and `nivartanam` give the same binary (757 B) and the same output
+PASS  program 3: 7 returns written `prati` and `nivartanam` give the same binary (3779 B) and the same output
+PASS  Devanagari: प्रति and निवर्तनम् give the same binary
+PASS  Devanagari under --lang sanskrit: प्रति and निवर्तनम् give the same binary
+PASS  निवर्तनम् and Latin nivartanam give the same binary
+PASS  kw_dev_nivartanam decodes to निवर्तनम् (27 bytes): the confirmed word
+PASS  `vitti nivartanam = 1` is refused: nivartanam is a keyword
+PASS  `vitti prati = 1` is refused: prati is a keyword
+r53 nivartanam: 9 checks, 0 failed

@@ -147,7 +147,7 @@ KW_VITTI   equ 3
 KW_ANKA    equ 4
 KW_YADI    equ 6
 KW_YAVAT   equ 8
-KW_PRATIYATI equ 9
+KW_NIVARTANAM equ 9
 KW_SANKHYA   equ 10
 KW_ANYATRA  equ 11
 KW_PRAKRIYA equ 12
@@ -234,7 +234,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v255) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v256) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -327,7 +327,7 @@ r54_builtin_arity_table:
     r5_msg_field_hint db "Sanket: '",0
     r5_msg_field_hint2 db "' kasyashchid api rachanayah kshetram nasti",10,0
     r4_old_kw:
-        dq r4_o_anyatra, kw_anyatra, r4_o_punar, kw_punaravartana, r4_o_prati, kw_pratiyati
+        dq r4_o_anyatra, kw_anyatra, r4_o_punar, kw_punaravartana, r4_o_prati, kw_nivartanam
         dq r4_o_udd, kw_uddeshya, r4_o_pankti, kw_pankti, r4_o_srij, kw_srijana
         dq r4_o_nish, kw_nishedha, r4_o_ayoj, kw_ayojan, r4_o_parig, kw_parigrah
         dq r4_o_nishk, kw_nishkriya, r4_o_to, kw_to_str, 0, 0
@@ -476,7 +476,8 @@ r54_builtin_arity_table:
         dq kw_anka,      TOK_KEYWORD, KW_ANKA
         dq kw_yadi,      TOK_KEYWORD, KW_YADI
         dq kw_yavat,     TOK_KEYWORD, KW_YAVAT
-        dq kw_pratiyati, TOK_KEYWORD, KW_PRATIYATI
+        dq kw_nivartanam, TOK_KEYWORD, KW_NIVARTANAM
+        dq kw_prati_alias, TOK_KEYWORD, KW_NIVARTANAM   ; R53: prati, the alias
         ; Vector type
         dq kw_sankhya,   TOK_KEYWORD, KW_SANKHYA
         dq kw_anyatra,  TOK_KEYWORD, KW_ANYATRA
@@ -511,7 +512,8 @@ r54_builtin_arity_table:
         dq kw_dev_anka,      TOK_KEYWORD, KW_ANKA
         dq kw_dev_yadi,      TOK_KEYWORD, KW_YADI
         dq kw_dev_yavat,     TOK_KEYWORD, KW_YAVAT
-        dq kw_dev_pratiyati, TOK_KEYWORD, KW_PRATIYATI
+        dq kw_dev_nivartanam, TOK_KEYWORD, KW_NIVARTANAM
+        dq kw_dev_pratiyati, TOK_KEYWORD, KW_NIVARTANAM   ; R53: प्रति, the alias
         dq kw_dev_pankti,    TOK_KEYWORD, KW_PANKTI
         dq kw_dev_kuru,      TOK_KEYWORD, KW_KURU
         dq kw_dev_dasham,    TOK_KEYWORD, KW_DASHAM
@@ -686,7 +688,8 @@ r54_builtin_arity_table:
     kw_anka      db "anka", 0
     kw_yadi      db "yadi", 0
     kw_yavat     db "yavat", 0
-    kw_pratiyati db "prati", 0
+    kw_nivartanam db "nivartanam", 0   ; R53: the return keyword (nivartanam, "returning")
+    kw_prati_alias db "prati", 0      ; R53: the legacy spelling, accepted as the same keyword
     kw_sankhya   db "sankhya", 0
     kw_anyatra  db "anya", 0
     kw_prakriya db "prakriya", 0
@@ -732,7 +735,8 @@ r54_builtin_arity_table:
     kw_dev_prasar   db 224,164,170,224,165,141,224,164,176,224,164,184,224,164,190,224,164,176, 0
             kw_dev_prakriya db 0xE0,0xA4,0xAA,0xE0,0xA5,0x8D,0xE0,0xA4,0xB0,0xE0,0xA4,0x95,0xE0,0xA5,0x8D,0xE0,0xA4,0xB0,0xE0,0xA4,0xBF,0xE0,0xA4,0xAF,0xE0,0xA4,0xBE, 0
     kw_dev_anyatra db 0xE0,0xA4,0x85,0xE0,0xA4,0xA8,0xE0,0xA5,0x8D,0xE0,0xA4,0xAF,0xE0,0xA4,0xA4,0xE0,0xA5,0x8D,0xE0,0xA4,0xB0, 0
-    kw_dev_pratiyati db 0xE0,0xA4,0xAA,0xE0,0xA5,0x8D,0xE0,0xA4,0xB0,0xE0,0xA4,0xA4,0xE0,0xA4,0xBF, 0   ; R50: प्रति (was प्रत्यायति)
+    kw_dev_nivartanam db 0xE0,0xA4,0xA8,0xE0,0xA4,0xBF,0xE0,0xA4,0xB5,0xE0,0xA4,0xB0,0xE0,0xA5,0x8D,0xE0,0xA4,0xA4,0xE0,0xA4,0xA8,0xE0,0xA4,0xAE,0xE0,0xA5,0x8D, 0   ; R53: निवर्तनम्
+    kw_dev_pratiyati db 0xE0,0xA4,0xAA,0xE0,0xA5,0x8D,0xE0,0xA4,0xB0,0xE0,0xA4,0xA4,0xE0,0xA4,0xBF, 0   ; R50: प्रति (was प्रत्यायति); R53: the alias
 
     bn_likh      db "likh", 0
     bn_sthagita  db "sthagita", 0
@@ -8796,7 +8800,7 @@ r45_parse_stmt_body:                ; R45: parse_stmt is the wrapper in src/r45_
     je .ps_while
     cmp rdx, KW_KURU
     je .ps_do_while
-    cmp rdx, KW_PRATIYATI
+    cmp rdx, KW_NIVARTANAM
     je .ps_return
     cmp rdx, KW_PUNARAVARTANA
     je .ps_for
