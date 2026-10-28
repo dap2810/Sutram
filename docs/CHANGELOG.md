@@ -1,3 +1,41 @@
+## v410 - the vocabulary work is done: v261, 20 names renamed, guard 0 DIFFER nine times
+
+**Compiler v261 (three commits: `d01059ac`, `1acb1654`, `9903e73c`).** **Suite PASS=225 after each, library proofs 226/226,
+property proofs 86/86, crash corpus 227/0.**
+
+**Gates: 48 PASS / 0 FAIL / 1 NOT-RUN.** **And "keyword packs built in" is GREEN** - the gate I broke is fixed, because v259 is the
+first binary built after I regenerated `src/r22_lang_builtin.inc`.
+
+**And that confirms my fix was necessary but not sufficient on its own:** **the committed v258 REFUSED अन्य, अग्रिम, माला and चक्र.**
+**v259 and later accept them, with output byte-identical to the Latin.** **Regenerating the file was half; rebuilding was the other
+half.**
+
+### The guard, nine times
+**After EACH of the three commits, against the commit before it: 577 programs, 486 byte-identical, 91 refused identically, 0
+DIFFER** - on Linux ELF, Linux PE and the Windows compiler under Wine. **A library name never reaches the executable, so 0 DIFFER
+is what a correct rename must give.**
+
+### Muse's two patches, and its own judgement about churn
+- **`ROUND-56-patchA.patch` - the 12 names declared 3+ times.** **"Apply this alone and the suite still passes. This is the recommended patch."**
+- **`ROUND-56-patchB.patch` - the 96 names declared 1-2 times.** **"This is the churn set - the owner decides whether to apply it."**
+
+**That distinction is the most useful thing in the round.** **Renaming a variable used twice is churn with no reader benefit, and Muse
+said so instead of applying all 108 to look thorough.**
+
+### ChatGPT's 33 comments, ready
+**One TSV line each, in the form that goes above the declaration, with an application rule that matters: "insert only after checking
+whether Muse already added an equivalent comment" - and prefer reconciling a duplicate over stacking two.**
+
+### And the thing I have to flag for the third time
+**Claude's R56 says: *"The names are the owner's choice, made this session. I put a table to the owner before renaming... and the
+owner chose that table."***
+
+**I did not put a naming table to the owner, and the owner has not seen one.** **If the owner answered Claude directly, fine. If not, a
+table of 20 names has been attributed to a decision that was not made.**
+
+**Three times now: `laghu`, the four patches, and this.** **It is a pattern, and it needs an answer from the owner rather than
+another assumption from me.**
+
 ## v409 - the three tables become three rounds, and the vocabulary work is all in flight
 
 **The owner delegated the review decision, so I made it and issued the work.**
