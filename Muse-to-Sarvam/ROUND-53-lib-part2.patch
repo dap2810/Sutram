@@ -1,0 +1,2615 @@
+diff -ruN a/lib/nighantu.smlib lib/nighantu.smlib
+--- a/lib/nighantu.smlib	2026-10-28 13:28:00.290914116 -0400
++++ b/lib/nighantu.smlib	2026-10-28 13:26:50.500913924 -0400
+@@ -36,9 +36,9 @@
+ 
+ # nighantu_kunji_gudh(key, keyn, cap) — home bucket of key (internal helper).
+ prakriya nighantu_kunji_gudh(key, keyn, cap) {
+-    yadi (cap < 1) { prati 0 }
++    yadi (cap < 1) { nivartanam 0 }
+     vitti h = fnv1a(key, keyn)
+-    prati h % cap
++    nivartanam h % cap
+ }
+ 
+ # nighantu_kunji_sam(m, slot, cap, key, keyn) — 1 if slot's key equals (key,keyn)
+@@ -47,10 +47,10 @@
+ prakriya nighantu_kunji_sam(m, slot, cap, key, keyn) {
+     vitti base = 0
+     vitti kl = m[2 + cap + slot]
+-    yadi (kl != keyn) { prati 0 }
++    yadi (kl != keyn) { nivartanam 0 }
+     base = (2 + 3 * cap) * 8 + slot * 32
+-    yadi (khand_tul(m + base, kl, key, keyn) == 0) { prati 1 }
+-    prati 0
++    yadi (khand_tul(m + base, kl, key, keyn) == 0) { nivartanam 1 }
++    nivartanam 0
+ }
+ 
+ # nighantu_koshtha_likh(m, slot, cap, key, keyn, val) — store key+val at slot and
+@@ -73,7 +73,7 @@
+         akshar_rakh(m, base + i, 0)
+         i = i + 1
+     }
+-    prati 1
++    nivartanam 1
+ }
+ 
+ # nighantu_anwesh(m, cap, key, keyn) — slot index holding key, or -1 if absent
+@@ -86,18 +86,18 @@
+     vitti kn = keyn
+     vitti idx = 0
+     vitti start = 0
+-    yadi (cap < 1) { prati 0 - 1 }
+-    yadi (kn < 0) { prati 0 - 1 }
++    yadi (cap < 1) { nivartanam 0 - 1 }
++    yadi (kn < 0) { nivartanam 0 - 1 }
+     yadi (kn > 32) { kn = 32 }
+     idx = nighantu_kunji_gudh(key, kn, cap)
+     start = idx
+     yavat (m[2 + idx] == 1) {
+-        yadi (nighantu_kunji_sam(m, idx, cap, key, kn) == 1) { prati idx }
++        yadi (nighantu_kunji_sam(m, idx, cap, key, kn) == 1) { nivartanam idx }
+         idx = idx + 1
+         yadi (idx >= cap) { idx = 0 }
+-        yadi (idx == start) { prati 0 - 1 }
++        yadi (idx == start) { nivartanam 0 - 1 }
+     }
+-    prati 0 - 1
++    nivartanam 0 - 1
+ }
+ 
+ # nighantu_srij(cap) — allocate and clear a map of capacity cap (clamped to >= 1).
+@@ -110,18 +110,18 @@
+     vitti i = 0
+     vitti sz = 0
+     yadi (c < 1) { c = 1 }
+-    yadi (c > 164703072086692424) { prati 0 }   # R35: 16 + 56c must not wrap
++    yadi (c > 164703072086692424) { nivartanam 0 }   # R35: 16 + 56c must not wrap
+     sz = (2 + 3 * c) * 8 + c * 32
+-    yadi (sz < 0) { prati 0 }
++    yadi (sz < 0) { nivartanam 0 }
+     m = nirmmita(sz)
+-    yadi (m == 0) { prati 0 }
++    yadi (m == 0) { nivartanam 0 }
+     m[0] = c
+     m[1] = 0
+     yavat (i < c) {
+         m[2 + i] = 0
+         i = i + 1
+     }
+-    prati m
++    nivartanam m
+ }
+ 
+ # nighantu_khip(m, cap, key, keyn, val) — insert or update key; returns 1 on
+@@ -134,24 +134,24 @@
+     vitti idx = 0
+     vitti start = 0
+     vitti slot = 0
+-    yadi (cap < 1) { prati 0 }
+-    yadi (kn < 0) { prati 0 }
++    yadi (cap < 1) { nivartanam 0 }
++    yadi (kn < 0) { nivartanam 0 }
+     yadi (kn > 32) { kn = 32 }
+     slot = nighantu_anwesh(m, cap, key, kn)
+     yadi (slot >= 0) {
+         m[2 + 2 * cap + slot] = val
+-        prati 1
++        nivartanam 1
+     }
+     idx = nighantu_kunji_gudh(key, kn, cap)
+     start = idx
+     yavat (m[2 + idx] == 1) {
+         idx = idx + 1
+         yadi (idx >= cap) { idx = 0 }
+-        yadi (idx == start) { prati 0 }
++        yadi (idx == start) { nivartanam 0 }
+     }
+     nighantu_koshtha_likh(m, idx, cap, key, kn, val)
+     m[1] = m[1] + 1
+-    prati 1
++    nivartanam 1
+ }
+ 
+ # nighantu_grah(m, cap, key, keyn) — value stored for key, or -1 if absent
+@@ -161,16 +161,16 @@
+     vitti slot = 0
+     yadi (kn > 32) { kn = 32 }
+     slot = nighantu_anwesh(m, cap, key, kn)
+-    yadi (slot < 0) { prati 0 - 1 }
+-    prati m[2 + 2 * cap + slot]
++    yadi (slot < 0) { nivartanam 0 - 1 }
++    nivartanam m[2 + 2 * cap + slot]
+ }
+ 
+ # nighantu_antah(m, cap, key, keyn) — 1 if key is present, else 0.
+ prakriya nighantu_antah(m, cap, key, keyn) {
+     vitti kn = keyn
+     yadi (kn > 32) { kn = 32 }
+-    yadi (nighantu_anwesh(m, cap, key, kn) < 0) { prati 0 }
+-    prati 1
++    yadi (nighantu_anwesh(m, cap, key, kn) < 0) { nivartanam 0 }
++    nivartanam 1
+ }
+ 
+ # nighantu_apanay(m, cap, key, keyn) — delete key; 1 if removed, 0 if absent.
+@@ -192,7 +192,7 @@
+     vitti kl = 0
+     yadi (kn > 32) { kn = 32 }
+     pos = nighantu_anwesh(m, cap, key, kn)
+-    yadi (pos < 0) { prati 0 }
++    yadi (pos < 0) { nivartanam 0 }
+     m[2 + pos] = 0
+     m[1] = m[1] - 1
+     i = pos
+@@ -235,7 +235,7 @@
+         j = j + 1
+         yadi (j >= cap) { j = 0 }
+     }
+-    prati 1
++    nivartanam 1
+ }
+ 
+ # nighantu_rikta(m) — reset the map to empty IN PLACE (WS1, R19): same
+@@ -265,7 +265,7 @@
+         }
+         i = i + 1
+     }
+-    prati 1
++    nivartanam 1
+ }
+ 
+ # nighantu_vardh(m, newcap) — copy the map into a fresh map of capacity
+@@ -287,12 +287,12 @@
+     vitti i = 0
+     vitti seglen = 0
+     vitti slot = 0
+-    yadi (newcap < n) { prati 0 }
++    yadi (newcap < n) { nivartanam 0 }
+     newm = nighantu_srij(newcap)
+-    yadi (newm == 0) { prati 0 }   # R36: was dereferenced
++    yadi (newm == 0) { nivartanam 0 }   # R36: was dereferenced
+     nc = newm[0]
+     tmp = nirmmita(oldcap * 33 + 1)
+-    yadi (tmp == 0) { prati 0 }
++    yadi (tmp == 0) { nivartanam 0 }
+     nk = nighantu_kunjika_ashtak(m, tmp)
+     yavat (i < nk) {
+         seglen = akshar(tmp, pos)
+@@ -301,7 +301,7 @@
+         pos = pos + 1 + seglen
+         i = i + 1
+     }
+-    prati newm
++    nivartanam newm
+ }
+ 
+ # nighantu_grah_mool(m, cap, key, keyn, def) — value for key, or def if
+@@ -314,13 +314,13 @@
+     vitti slot = 0
+     yadi (kn > 32) { kn = 32 }
+     slot = nighantu_anwesh(m, cap, key, kn)
+-    yadi (slot < 0) { prati def }
+-    prati m[2 + 2 * cap + slot]
++    yadi (slot < 0) { nivartanam def }
++    nivartanam m[2 + 2 * cap + slot]
+ }
+ 
+ # nighantu_maap(m) — number of entries in the map m (its stored size cell).
+ prakriya nighantu_maap(m) {
+-    prati m[1]
++    nivartanam m[1]
+ }
+ 
+ # nighantu_mil(dst, dcap, src, scap) — copy every entry of src into dst;
+@@ -332,7 +332,7 @@
+ # R38: -1 (dst unchanged) if its scratch cannot be allocated.
+ prakriya nighantu_mil(dst, dcap, src, scap) {
+     vitti tmp = nirmmita(src[0] * 33 + 1)
+-    yadi (tmp == 0) { prati 0 - 1 }
++    yadi (tmp == 0) { nivartanam 0 - 1 }
+     vitti nk = nighantu_kunjika_ashtak(src, tmp)
+     vitti pos = 0
+     vitti i = 0
+@@ -343,13 +343,13 @@
+         seglen = akshar(tmp, pos)
+         v = nighantu_grah(src, scap, tmp + pos + 1, seglen)
+         yadi (nighantu_khip(dst, dcap, tmp + pos + 1, seglen, v) == 0) {
+-            prati merged
++            nivartanam merged
+         }
+         merged = merged + 1
+         pos = pos + 1 + seglen
+         i = i + 1
+     }
+-    prati merged
++    nivartanam merged
+ }
+ 
+ # nighantu_mulya(m, out) — write the live values into out (one qword cell
+@@ -368,7 +368,7 @@
+         }
+         i = i + 1
+     }
+-    prati n
++    nivartanam n
+ }
+ 
+ # nighantu_kunjika(m, out) — write live keys into out in length-prefixed form
+@@ -402,7 +402,7 @@
+         }
+         i = i + 1
+     }
+-    prati n
++    nivartanam n
+ }
+ 
+ # nighantu_kunjika_ashtak(m, out) — R17. Same segments as nighantu_kunjika, but PACKED
+@@ -437,5 +437,5 @@
+         }
+         i = i + 1
+     }
+-    prati n
++    nivartanam n
+ }
+diff -ruN a/lib/patra.smlib lib/patra.smlib
+--- a/lib/patra.smlib	2026-10-28 13:28:00.289973744 -0400
++++ b/lib/patra.smlib	2026-10-28 13:26:50.500913924 -0400
+@@ -32,23 +32,23 @@
+     vitti c = cap
+     vitti fd = 0
+     vitti total = 0
+-    yadi (c < 0) { prati 0 - 1 }
++    yadi (c < 0) { nivartanam 0 - 1 }
+     fd = dvaram(p, 0)
+-    yadi (fd < 0) { prati 0 - 1 }
++    yadi (fd < 0) { nivartanam 0 - 1 }
+     yavat (total < c) {
+         vitti n = paadh(fd, dst + total, c - total)
+         yadi (n < 0) {
+             band(fd)
+-            prati 0 - 1
++            nivartanam 0 - 1
+         }
+         yadi (n == 0) {
+             band(fd)
+-            prati total
++            nivartanam total
+         }
+         total = total + n
+     }
+     band(fd)
+-    prati total
++    nivartanam total
+ }
+ 
+ # patra_likh_sarv(path, data, n) — create/truncate path, write all n
+@@ -60,19 +60,19 @@
+     vitti c = n
+     vitti fd = 0
+     vitti total = 0
+-    yadi (c < 0) { prati 0 - 1 }
++    yadi (c < 0) { nivartanam 0 - 1 }
+     fd = dvaram(p, 577)
+-    yadi (fd < 0) { prati 0 - 1 }
++    yadi (fd < 0) { nivartanam 0 - 1 }
+     yavat (total < c) {
+         vitti w = likha(fd, src + total, c - total)
+         yadi (w <= 0) {
+             band(fd)
+-            prati 0 - 1
++            nivartanam 0 - 1
+         }
+         total = total + w
+     }
+     band(fd)
+-    prati total
++    nivartanam total
+ }
+ 
+ # patra_asti(path) — 1 if path opens read-only, 0 otherwise.
+@@ -80,7 +80,7 @@
+ # permission denial alike — the caller cannot distinguish them.)
+ prakriya patra_asti(path) {
+     vitti fd = dvaram(path, 0)
+-    yadi (fd < 0) { prati 0 }
++    yadi (fd < 0) { nivartanam 0 }
+     band(fd)
+-    prati 1
++    nivartanam 1
+ }
+diff -ruN a/lib/phal.smlib lib/phal.smlib
+--- a/lib/phal.smlib	2026-10-28 13:28:00.289126413 -0400
++++ b/lib/phal.smlib	2026-10-28 13:26:50.501194703 -0400
+@@ -34,7 +34,7 @@
+     vitti o = out
+     o[0] = 1
+     o[1] = v
+-    prati 1
++    nivartanam 1
+ }
+ 
+ # phal_dosh(out) — write the failure Result [0, 0] into out.
+@@ -42,26 +42,26 @@
+     vitti o = out
+     o[0] = 0
+     o[1] = 0
+-    prati 0
++    nivartanam 0
+ }
+ 
+ # phal_asti_siddhi(r) — 1 if r is a success Result, else 0.
+ prakriya phal_asti_siddhi(r) {
+-    prati r[0]
++    nivartanam r[0]
+ }
+ 
+ # phal_mulya(r) — the value of a success Result. Caller must
+ # check phal_asti_siddhi first: on a failure Result this returns 0,
+ # which is indistinguishable from a success value of 0.
+ prakriya phal_mulya(r) {
+-    prati r[1]
++    nivartanam r[1]
+ }
+ 
+ # phal_mulya_va(r, def) — the value if r is success, else def.
+ # The one-expression way to handle both branches.
+ prakriya phal_mulya_va(r, def) {
+-    yadi (r[0] == 1) { prati r[1] }
+-    prati def
++    yadi (r[0] == 1) { nivartanam r[1] }
++    nivartanam def
+ }
+ 
+ # phal_se_siddhi(out, v, ok) — lift the ok convention into a
+@@ -75,7 +75,7 @@
+         o[0] = 0
+         o[1] = 0
+     }
+-    prati o[0]
++    nivartanam o[0]
+ }
+ 
+ # phal_janchit_yuj/sub/mul/div/shesh(out, a, b) — the ganita
+@@ -93,7 +93,7 @@
+     } anya {
+         o[1] = 0
+     }
+-    prati o[0]
++    nivartanam o[0]
+ }
+ 
+ # phal_janchit_nyun(out, a, b) — checked subtraction: out[0] = ok flag, out[1] = a - b if ok else 0; returns out[0].
+@@ -108,7 +108,7 @@
+     } anya {
+         o[1] = 0
+     }
+-    prati o[0]
++    nivartanam o[0]
+ }
+ 
+ # phal_janchit_gun(out, a, b) — checked multiplication: out[0] = ok flag, out[1] = a * b if ok else 0; returns out[0].
+@@ -123,7 +123,7 @@
+     } anya {
+         o[1] = 0
+     }
+-    prati o[0]
++    nivartanam o[0]
+ }
+ 
+ # phal_janchit_bhaj(out, a, b) — checked division: out[0] = ok flag, out[1] = a / b if ok else 0; returns out[0].
+@@ -138,7 +138,7 @@
+     } anya {
+         o[1] = 0
+     }
+-    prati o[0]
++    nivartanam o[0]
+ }
+ 
+ # phal_janchit_shesh(out, a, b) — checked remainder: out[0] = ok flag, out[1] = a % b if ok else 0; returns out[0].
+@@ -153,7 +153,7 @@
+     } anya {
+         o[1] = 0
+     }
+-    prati o[0]
++    nivartanam o[0]
+ }
+ 
+ # phal_janchit_ghat(out, a, e) — ganita_janchit_ghat as a Result.
+@@ -166,7 +166,7 @@
+     } anya {
+         o[1] = 0
+     }
+-    prati o[0]
++    nivartanam o[0]
+ }
+ 
+ # phal_janchit_kramgun(out, n) — ganita_janchit_kramgun as a Result.
+@@ -179,7 +179,7 @@
+     } anya {
+         o[1] = 0
+     }
+-    prati o[0]
++    nivartanam o[0]
+ }
+ 
+ # phal_janchit_nirapeksh(out, a) — ganita_janchit_nirapeksh as a Result.
+@@ -192,5 +192,5 @@
+     } anya {
+         o[1] = 0
+     }
+-    prati o[0]
++    nivartanam o[0]
+ }
+diff -ruN a/lib/roop.smlib lib/roop.smlib
+--- a/lib/roop.smlib	2026-10-28 13:28:00.288504199 -0400
++++ b/lib/roop.smlib	2026-10-28 13:26:50.501194703 -0400
+@@ -35,20 +35,20 @@
+     vitti rev = nirmmita(22 * 8)
+     yadi (rev == 0) {
+         akshar_rakh(dst, 0, 0)
+-        prati 0
++        nivartanam 0
+     }
+     vitti rlen = 0
+     vitti i = 0
+     yadi (val == 0) {
+         akshar_rakh(dst, 0, 48)
+         akshar_rakh(dst, 1, 0)
+-        prati 1
++        nivartanam 1
+     }
+     yadi (val < 0) {
+         yadi (val == (0 - 9223372036854775807) - 1) {
+             # |MIN| = 2^63 does not fit in int64; roop_ank_aadhar
+             # handles it (hi/lo split), so delegate for this one value.
+-            prati roop_ank_aadhar(val, 10, 0, dst)
++            nivartanam roop_ank_aadhar(val, 10, 0, dst)
+         }
+         val = 0 - val
+     }
+@@ -63,7 +63,7 @@
+         i = i + 1
+     }
+     akshar_rakh(dst, rlen, 0)
+-    prati rlen
++    nivartanam rlen
+ }
+ 
+ # --- integer digits in a base (private helper) ---
+@@ -78,7 +78,7 @@
+     vitti rev = nirmmita(70 * 8)
+     yadi (rev == 0) {
+         akshar_rakh(dst, 0, 0)
+-        prati 0
++        nivartanam 0
+     }
+     vitti rlen = 0
+     vitti i = 0
+@@ -86,16 +86,16 @@
+     vitti ch = 0
+     yadi (b < 2) {
+         akshar_rakh(dst, 0, 0)
+-        prati 0
++        nivartanam 0
+     }
+     yadi (b > 36) {
+         akshar_rakh(dst, 0, 0)
+-        prati 0
++        nivartanam 0
+     }
+     yadi (val == 0) {
+         akshar_rakh(dst, 0, 48)
+         akshar_rakh(dst, 1, 0)
+-        prati 1
++        nivartanam 1
+     }
+     yadi (val < 0) {
+         yadi (val == (0 - 9223372036854775807) - 1) {
+@@ -115,7 +115,7 @@
+                 }
+             }
+             akshar_rakh(dst, hn + 1, 0)
+-            prati hn + 1
++            nivartanam hn + 1
+         }
+         val = 0 - val
+     }
+@@ -140,7 +140,7 @@
+         i = i + 1
+     }
+     akshar_rakh(dst, rlen, 0)
+-    prati rlen
++    nivartanam rlen
+ }
+ 
+ # roop_ank_aadhar2(v, base, out) — write v in `base` (2..36), lowercase
+@@ -159,12 +159,12 @@
+     n = roop_ank_aadhar(val, base, 0, dst + neg)
+     yadi (n == 0) {
+         akshar_rakh(dst, 0, 0)
+-        prati 0
++        nivartanam 0
+     }
+     yadi (neg == 1) {
+         akshar_rakh(dst, 0, 45)
+     }
+-    prati n + neg
++    nivartanam n + neg
+ }
+ 
+ # roop_ank_dhvaj(v, base, flags, out) — roop_ank_aadhar2 plus flags:
+@@ -194,7 +194,7 @@
+     n = roop_ank_aadhar(val, b, up, dst + neg + pre)
+     yadi (n == 0) {
+         akshar_rakh(dst, 0, 0)
+-        prati 0
++        nivartanam 0
+     }
+     # digits already sit at [neg+pre, ...); fill in util_chinha + prefix.
+     yadi (neg == 1) { akshar_rakh(dst, 0, 45) }
+@@ -204,33 +204,33 @@
+         yadi (b == 8) { akshar_rakh(dst, neg + 1, 111) }
+         yadi (b == 16) { akshar_rakh(dst, neg + 1, 120) }
+     }
+-    prati neg + pre + n
++    nivartanam neg + pre + n
+ }
+ 
+ # roop_dash(v, out) — decimal, no prefix. roop_shodash / roop_shodash_unnat /
+ # roop_asht / roop_dwi — base 16 (lower / upper), 8, 2, no prefix.
+ prakriya roop_dash(v, out) {
+-    prati roop_ank_aadhar2(v, 10, out)
++    nivartanam roop_ank_aadhar2(v, 10, out)
+ }
+ 
+ # roop_shodash(v, out) — formats v as lowercase hexadecimal into out (no prefix); returns the digit count.
+ prakriya roop_shodash(v, out) {
+-    prati roop_ank_aadhar2(v, 16, out)
++    nivartanam roop_ank_aadhar2(v, 16, out)
+ }
+ 
+ # roop_shodash_unnat(v, out) — formats v as UPPERCASE hexadecimal into out (no prefix); returns the digit count.
+ prakriya roop_shodash_unnat(v, out) {
+-    prati roop_ank_dhvaj(v, 16, 2, out)
++    nivartanam roop_ank_dhvaj(v, 16, 2, out)
+ }
+ 
+ # roop_asht(v, out) — formats v as octal into out (no prefix); returns the digit count.
+ prakriya roop_asht(v, out) {
+-    prati roop_ank_aadhar2(v, 8, out)
++    nivartanam roop_ank_aadhar2(v, 8, out)
+ }
+ 
+ # roop_dwi(v, out) — formats v as binary into out (no prefix); returns the digit count.
+ prakriya roop_dwi(v, out) {
+-    prati roop_ank_aadhar2(v, 2, out)
++    nivartanam roop_ank_aadhar2(v, 2, out)
+ }
+ 
+ # roop_ank_pre(v, base, upper, out) — any base with its prefix
+@@ -239,7 +239,7 @@
+ prakriya roop_ank_pre(v, base, upper, out) {
+     vitti fl = 1
+     yadi (upper == 1) { fl = 3 }
+-    prati roop_ank_dhvaj(v, base, fl, out)
++    nivartanam roop_ank_dhvaj(v, base, fl, out)
+ }
+ 
+ # --- padding / alignment ---
+@@ -260,7 +260,7 @@
+             i = i + 1
+         }
+         akshar_rakh(dst, cnt, 0)
+-        prati cnt
++        nivartanam cnt
+     }
+     npad = w - cnt
+     i = 0
+@@ -274,7 +274,7 @@
+         i = i + 1
+     }
+     akshar_rakh(dst, w, 0)
+-    prati w
++    nivartanam w
+ }
+ 
+ # roop_pad_dakshin(src, sn, width, padbyte, out) — pad on the RIGHT.
+@@ -293,7 +293,7 @@
+             i = i + 1
+         }
+         akshar_rakh(dst, cnt, 0)
+-        prati cnt
++        nivartanam cnt
+     }
+     npad = w - cnt
+     i = 0
+@@ -307,7 +307,7 @@
+         i = i + 1
+     }
+     akshar_rakh(dst, w, 0)
+-    prati w
++    nivartanam w
+ }
+ 
+ # roop_pad_madhya(src, sn, width, padbyte, out) — pad both sides to width;
+@@ -328,7 +328,7 @@
+             i = i + 1
+         }
+         akshar_rakh(dst, cnt, 0)
+-        prati cnt
++        nivartanam cnt
+     }
+     npad = w - cnt
+     left = npad / 2
+@@ -348,7 +348,7 @@
+         i = i + 1
+     }
+     akshar_rakh(dst, w, 0)
+-    prati w
++    nivartanam w
+ }
+ 
+ # --- thousands grouping (private helper) ---
+@@ -369,7 +369,7 @@
+     vitti rem = 0
+     yadi (cnt == 0) {
+         akshar_rakh(dst, 0, 0)
+-        prati 0
++        nivartanam 0
+     }
+     yadi (akshar(s, 0) == 45) { start = 1 }
+     yadi (akshar(s, 0) == 43) { start = 1 }
+@@ -427,23 +427,23 @@
+         k = k + 1
+     }
+     akshar_rakh(dst, wpos, 0)
+-    prati wpos
++    nivartanam wpos
+ }
+ 
+ # roop_varg_bharatiya(src, sn, out) — 1234567 -> 12,34,567.
+ prakriya roop_varg_bharatiya(src, sn, out) {
+-    prati roop_varg_mool(src, sn, 2, out)
++    nivartanam roop_varg_mool(src, sn, 2, out)
+ }
+ 
+ # roop_varg_vishwa(src, sn, out) — 1234567 -> 1,234,567.
+ prakriya roop_varg_vishwa(src, sn, out) {
+-    prati roop_varg_mool(src, sn, 3, out)
++    nivartanam roop_varg_mool(src, sn, 3, out)
+ }
+ 
+ # roop_varg(src, sn, out) — DEFAULT grouping: Indian (12,34,567).
+ # The default is Indian because the audience is Indian.
+ prakriya roop_varg(src, sn, out) {
+-    prati roop_varg_bharatiya(src, sn, out)
++    nivartanam roop_varg_bharatiya(src, sn, out)
+ }
+ 
+ # roop_varg_ank(v, indian, out) — format integer v, then group it.
+@@ -452,17 +452,17 @@
+     vitti tmp = nirmmita(32)
+     yadi (tmp == 0) {
+         akshar_rakh(out, 0, 0)
+-        prati 0
++        nivartanam 0
+     }
+     vitti n = roop_ank_aadhar2(v, 10, tmp)
+     yadi (n == 0) {
+         akshar_rakh(out, 0, 0)
+-        prati 0
++        nivartanam 0
+     }
+     yadi (indian == 1) {
+-        prati roop_varg_bharatiya(tmp, n, out)
++        nivartanam roop_varg_bharatiya(tmp, n, out)
+     }
+-    prati roop_varg_vishwa(tmp, n, out)
++    nivartanam roop_varg_vishwa(tmp, n, out)
+ }
+ 
+ # --- fixed decimals (private helper) ---
+@@ -489,7 +489,7 @@
+     vitti rev = nirmmita(22 * 8)
+     yadi (rev == 0) {
+         akshar_rakh(dst, 0, 0)
+-        prati 0
++        nivartanam 0
+     }
+     vitti rlen = 0
+     vitti k = 0
+@@ -515,7 +515,7 @@
+     yadi (v == 0.0) {
+         yadi (v < 0.0) {
+             akshar_rakh(dst, 0, 0)
+-            prati 0
++            nivartanam 0
+         }
+     }
+     scaled = mag * p10f + 0.5
+@@ -529,7 +529,7 @@
+     # this is exactly the cvttsd2si indefinite boundary.
+     yadi (scaled >= 9223372036854775807.0) {
+         akshar_rakh(dst, 0, 0)
+-        prati 0
++        nivartanam 0
+     }
+     rounded = scaled
+     intpart = rounded / p10i
+@@ -548,7 +548,7 @@
+     ndig = roop_ank(intpart, dst + wpos)
+     yadi (ndig == 0) {
+         akshar_rakh(dst, 0, 0)
+-        prati 0
++        nivartanam 0
+     }
+     wpos = wpos + ndig
+     # fraction part, zero-padded to exactly pl digits
+@@ -580,19 +580,19 @@
+         }
+     }
+     akshar_rakh(dst, wpos, 0)
+-    prati wpos
++    nivartanam wpos
+ }
+ 
+ # roop_sthir(dasham x, places, out) — fixed decimals, '-' for negatives only.
+ # 3.14159 at 2 places -> "3.14". Rounding: half away from zero.
+ prakriya roop_sthir(dasham x, places, out) {
+-    prati roop_sthir_mool(x, places, 0, out)
++    nivartanam roop_sthir_mool(x, places, 0, out)
+ }
+ 
+ # roop_sthir_chinhit(dasham x, places, out) — fixed decimals, always a util_chinha:
+ # "+3.14" / "-3.14".
+ prakriya roop_sthir_chinhit(dasham x, places, out) {
+-    prati roop_sthir_mool(x, places, 1, out)
++    nivartanam roop_sthir_mool(x, places, 1, out)
+ }
+ 
+ # --- signed formatting ---
+@@ -605,12 +605,12 @@
+     vitti i = 0
+     yadi (tmp == 0) {
+         akshar_rakh(dst, 0, 0)
+-        prati 0
++        nivartanam 0
+     }
+     n = roop_ank_aadhar2(val, 10, tmp)
+     yadi (n == 0) {
+         akshar_rakh(dst, 0, 0)
+-        prati 0
++        nivartanam 0
+     }
+     yadi (val < 0) {
+         i = 0
+@@ -619,7 +619,7 @@
+             i = i + 1
+         }
+         akshar_rakh(dst, n, 0)
+-        prati n
++        nivartanam n
+     }
+     akshar_rakh(dst, 0, 43)
+     i = 0
+@@ -628,7 +628,7 @@
+         i = i + 1
+     }
+     akshar_rakh(dst, n + 1, 0)
+-    prati n + 1
++    nivartanam n + 1
+ }
+ 
+ # roop_sign_akshar(v, signch, out) — `signch` (a byte value, e.g. 32 for a
+@@ -643,12 +643,12 @@
+     vitti i = 0
+     yadi (tmp == 0) {
+         akshar_rakh(dst, 0, 0)
+-        prati 0
++        nivartanam 0
+     }
+     n = roop_ank_aadhar2(val, 10, tmp)
+     yadi (n == 0) {
+         akshar_rakh(dst, 0, 0)
+-        prati 0
++        nivartanam 0
+     }
+     yadi (val < 0) {
+         i = 0
+@@ -657,7 +657,7 @@
+             i = i + 1
+         }
+         akshar_rakh(dst, n, 0)
+-        prati n
++        nivartanam n
+     }
+     akshar_rakh(dst, 0, sc)
+     i = 0
+@@ -666,5 +666,5 @@
+         i = i + 1
+     }
+     akshar_rakh(dst, n + 1, 0)
+-    prati n + 1
++    nivartanam n + 1
+ }
+diff -ruN a/lib/sadhan.smlib lib/sadhan.smlib
+--- a/lib/sadhan.smlib	2026-10-28 13:28:00.287269326 -0400
++++ b/lib/sadhan.smlib	2026-10-28 13:26:50.501538391 -0400
+@@ -7,18 +7,18 @@
+ # SIGFPE); yog_seema returns 0 for end < start; bhaj_urdhva is true
+ # ceiling division for every util_chinha combination.
+ prakriya antargam(a, b, t)
+-    prati a + (b - a) * t / 100
++    nivartanam a + (b - a) * t / 100
+ 
+ # yog_seema(start, end) — sum of the integers from start to end inclusive; 0 if end < start.
+ prakriya yog_seema(start, end) {
+-    yadi (end < start) { prati 0 }
+-    prati (start + end) * (end - start + 1) / 2
++    yadi (end < start) { nivartanam 0 }
++    nivartanam (start + end) * (end - start + 1) / 2
+ }
+ 
+ # shesh(a, b) — remainder a % b computed as a - (a / b) * b; 0 if b == 0.
+ prakriya shesh(a, b) {
+-    yadi (b == 0) { prati 0 }
+-    prati a - (a / b) * b
++    yadi (b == 0) { nivartanam 0 }
++    nivartanam a - (a / b) * b
+ }
+ 
+ # bhaj_urdhva(a, b) — ceiling division of a by b (rounds up when the remainder is nonzero); 0 if b == 0.
+@@ -26,7 +26,7 @@
+     # Ceiling division: q = a / b (truncating), round up iff the
+     # remainder is nonzero and has the divisor's util_chinha. The old
+     # (a + b - 1) / b was only correct for a >= 0, b > 0.
+-    yadi (b == 0) { prati 0 }
++    yadi (b == 0) { nivartanam 0 }
+     vitti q = a / b
+     vitti r = a % b
+     yadi (r != 0) {
+@@ -36,17 +36,17 @@
+             yadi (b < 0) { q = q + 1 }
+         }
+     }
+-    prati q
++    nivartanam q
+ }
+ 
+ # util_chinha(n) — sign of n: 1 if n > 0, -1 if n < 0, 0 if n == 0.
+ prakriya util_chinha(n)
+-    prati (n > 0) - (n < 0)
++    nivartanam (n > 0) - (n < 0)
+ 
+ # satya_tak_ank(b) — boolean b converted to an integer (b * 1).
+ prakriya satya_tak_ank(b)
+-    prati b * 1
++    nivartanam b * 1
+ 
+ # ank_adhik() — the maximum int64 value, 9223372036854775807.
+ prakriya ank_adhik()
+-    prati 9223372036854775807
++    nivartanam 9223372036854775807
+diff -ruN a/lib/samanvaya.smlib lib/samanvaya.smlib
+--- a/lib/samanvaya.smlib	2026-10-28 13:28:00.286767242 -0400
++++ b/lib/samanvaya.smlib	2026-10-28 13:26:50.501538391 -0400
+@@ -21,11 +21,11 @@
+ # elements (or m or n is negative), else 0. It divides, never multiplies, so it
+ # holds for every m and n: m x n fits exactly when n == 0 or m <= len / n.
+ prakriya samanvaya_akar_na(m, n, len) {
+-    yadi (m < 0) { prati 1 }
+-    yadi (n < 0) { prati 1 }
+-    yadi (n == 0) { prati 0 }
+-    yadi (m > len / n) { prati 1 }
+-    prati 0
++    yadi (m < 0) { nivartanam 1 }
++    yadi (n < 0) { nivartanam 1 }
++    yadi (n == 0) { nivartanam 0 }
++    yadi (m > len / n) { nivartanam 1 }
++    nivartanam 0
+ }
+ 
+ # identity matrix: n x n, out must hold n*n elements
+@@ -43,7 +43,7 @@
+         }
+         i = i + 1
+     }
+-    prati n * n
++    nivartanam n * n
+ }
+ 
+ # transpose: a is m x n, out must hold n*m elements
+@@ -57,7 +57,7 @@
+         }
+         i = i + 1
+     }
+-    prati m * n
++    nivartanam m * n
+ }
+ 
+ # element-wise sum: a and b are m x n, out must hold m*n elements.
+@@ -65,26 +65,26 @@
+ # formed until it is known to fit, so it cannot wrap to a small loop.
+ prakriya matrika_yoga(kosh dasham a, kosh dasham b, m, n, kosh dasham out) {
+     vitti k = 0
+-    yadi (samanvaya_akar_na(m, n, kosh_len(a)) == 1) { prati 0 - 1 }
+-    yadi (samanvaya_akar_na(m, n, kosh_len(b)) == 1) { prati 0 - 1 }
+-    yadi (samanvaya_akar_na(m, n, kosh_len(out)) == 1) { prati 0 - 1 }
++    yadi (samanvaya_akar_na(m, n, kosh_len(a)) == 1) { nivartanam 0 - 1 }
++    yadi (samanvaya_akar_na(m, n, kosh_len(b)) == 1) { nivartanam 0 - 1 }
++    yadi (samanvaya_akar_na(m, n, kosh_len(out)) == 1) { nivartanam 0 - 1 }
+     yavat (k < m * n) {
+         out[k] = a[k] + b[k]
+         k = k + 1
+     }
+-    prati m * n
++    nivartanam m * n
+ }
+ 
+ # scalar multiple: out must hold m*n elements. R37: -1 if m x n does not fit.
+ prakriya skalar(kosh dasham a, dasham c, m, n, kosh dasham out) {
+     vitti k = 0
+-    yadi (samanvaya_akar_na(m, n, kosh_len(a)) == 1) { prati 0 - 1 }
+-    yadi (samanvaya_akar_na(m, n, kosh_len(out)) == 1) { prati 0 - 1 }
++    yadi (samanvaya_akar_na(m, n, kosh_len(a)) == 1) { nivartanam 0 - 1 }
++    yadi (samanvaya_akar_na(m, n, kosh_len(out)) == 1) { nivartanam 0 - 1 }
+     yavat (k < m * n) {
+         out[k] = a[k] * c
+         k = k + 1
+     }
+-    prati m * n
++    nivartanam m * n
+ }
+ 
+ # matrix product: a is m x n, b is n x p, out must hold m*p elements
+@@ -104,7 +104,7 @@
+         }
+         i = i + 1
+     }
+-    prati m * p
++    nivartanam m * p
+ }
+ 
+ # trace of an n x n matrix
+@@ -115,12 +115,12 @@
+         t = t + a[i * n + i]
+         i = i + 1
+     }
+-    prati t
++    nivartanam t
+ }
+ 
+ # determinant of a 2 x 2 matrix (a holds 4 elements)
+ prakriya nirnaya2(kosh dasham a) {
+-    prati a[0] * a[3] - a[1] * a[2]
++    nivartanam a[0] * a[3] - a[1] * a[2]
+ }
+ 
+ # determinant of a 3 x 3 matrix (a holds 9 elements), by cofactor expansion
+@@ -128,7 +128,7 @@
+     dasham t1 = a[0] * (a[4] * a[8] - a[5] * a[7])
+     dasham t2 = a[1] * (a[3] * a[8] - a[5] * a[6])
+     dasham t3 = a[2] * (a[3] * a[7] - a[4] * a[6])
+-    prati t1 - t2 + t3
++    nivartanam t1 - t2 + t3
+ }
+ 
+ # dot product of flat vectors u and v over min(kosh_len(u), kosh_len(v)) entries.
+@@ -141,7 +141,7 @@
+         s = s + u[i] * v[i]
+         i = i + 1
+     }
+-    prati s
++    nivartanam s
+ }
+ 
+ # largest absolute row sum (a cheap norm, useful for conditioning checks)
+@@ -160,5 +160,5 @@
+         yadi (row > best) { best = row }
+         i = i + 1
+     }
+-    prati best
++    nivartanam best
+ }
+diff -ruN a/lib/sangrah.smlib lib/sangrah.smlib
+--- a/lib/sangrah.smlib	2026-10-28 13:28:00.286405500 -0400
++++ b/lib/sangrah.smlib	2026-10-28 13:26:50.501795067 -0400
+@@ -31,29 +31,29 @@
+ 
+ # rakh_srij(cap) — allocate an empty set of capacity cap (clamped to >= 1).
+ prakriya rakh_srij(cap) {
+-    prati nighantu_srij(cap)
++    nivartanam nighantu_srij(cap)
+ }
+ 
+ # rakh_yuj(s, cap, elem, elem_n) — add elem; 1 on success, 0 if the set
+ # is full (then the set is unchanged). Adding an existing element keeps
+ # rakh_maap unchanged (idempotent).
+ prakriya rakh_yuj(s, cap, elem, elem_n) {
+-    prati nighantu_khip(s, cap, elem, elem_n, 1)
++    nivartanam nighantu_khip(s, cap, elem, elem_n, 1)
+ }
+ 
+ # rakh_antah(s, cap, elem, elem_n) — 1 if elem is in the set, else 0.
+ prakriya rakh_antah(s, cap, elem, elem_n) {
+-    prati nighantu_antah(s, cap, elem, elem_n)
++    nivartanam nighantu_antah(s, cap, elem, elem_n)
+ }
+ 
+ # rakh_apanay(s, cap, elem, elem_n) — remove elem; 1 if removed, 0 if absent.
+ prakriya rakh_apanay(s, cap, elem, elem_n) {
+-    prati nighantu_apanay(s, cap, elem, elem_n)
++    nivartanam nighantu_apanay(s, cap, elem, elem_n)
+ }
+ 
+ # rakh_maap(s) — number of elements.
+ prakriya rakh_maap(s) {
+-    prati nighantu_maap(s)
++    nivartanam nighantu_maap(s)
+ }
+ 
+ # rakh_samroop_diff(a, cap, b, bcap, out) — add every element that is in
+@@ -64,7 +64,7 @@
+     vitti ocap = out[0]
+     vitti tmpa = nirmmita(a[0] * 33 + 1)
+     vitti tmpb = nirmmita(b[0] * 33 + 1)
+-    yadi (tmpa == 0 || tmpb == 0) { prati 0 - 1 }
++    yadi (tmpa == 0 || tmpb == 0) { nivartanam 0 - 1 }
+     vitti nka = nighantu_kunjika_ashtak(a, tmpa)
+     vitti nkb = nighantu_kunjika_ashtak(b, tmpb)
+     vitti pos = 0
+@@ -88,7 +88,7 @@
+         pos = pos + 1 + seglen
+         i = i + 1
+     }
+-    prati nighantu_maap(out)
++    nivartanam nighantu_maap(out)
+ }
+ 
+ # rakh_sangam(a, cap, b, bcap, out) — add every element of a and of b into
+@@ -97,7 +97,7 @@
+     vitti ocap = out[0]
+     vitti tmpa = nirmmita(a[0] * 33 + 1)
+     vitti tmpb = nirmmita(b[0] * 33 + 1)
+-    yadi (tmpa == 0 || tmpb == 0) { prati 0 - 1 }
++    yadi (tmpa == 0 || tmpb == 0) { nivartanam 0 - 1 }
+     vitti nka = nighantu_kunjika_ashtak(a, tmpa)
+     vitti nkb = nighantu_kunjika_ashtak(b, tmpb)
+     vitti pos = 0
+@@ -117,7 +117,7 @@
+         pos = pos + 1 + seglen
+         i = i + 1
+     }
+-    prati nighantu_maap(out)
++    nivartanam nighantu_maap(out)
+ }
+ 
+ # rakh_sampat(a, cap, b, bcap, out) — add every element of a that is
+@@ -126,7 +126,7 @@
+ prakriya rakh_sampat(a, cap, b, bcap, out) {
+     vitti ocap = out[0]
+     vitti tmpa = nirmmita(a[0] * 33 + 1)
+-    yadi (tmpa == 0) { prati 0 - 1 }
++    yadi (tmpa == 0) { nivartanam 0 - 1 }
+     vitti nka = nighantu_kunjika_ashtak(a, tmpa)
+     vitti pos = 0
+     vitti i = 0
+@@ -139,7 +139,7 @@
+         pos = pos + 1 + seglen
+         i = i + 1
+     }
+-    prati nighantu_maap(out)
++    nivartanam nighantu_maap(out)
+ }
+ 
+ # rakh_bhed(a, cap, b, bcap, out) — add every element of a that is
+@@ -148,7 +148,7 @@
+ prakriya rakh_bhed(a, cap, b, bcap, out) {
+     vitti ocap = out[0]
+     vitti tmpa = nirmmita(a[0] * 33 + 1)
+-    yadi (tmpa == 0) { prati 0 - 1 }
++    yadi (tmpa == 0) { nivartanam 0 - 1 }
+     vitti nka = nighantu_kunjika_ashtak(a, tmpa)
+     vitti pos = 0
+     vitti i = 0
+@@ -161,7 +161,7 @@
+         pos = pos + 1 + seglen
+         i = i + 1
+     }
+-    prati nighantu_maap(out)
++    nivartanam nighantu_maap(out)
+ }
+ 
+ # rakh_vardh(s, newcap) — copy the set into a fresh set of capacity
+@@ -169,7 +169,7 @@
+ # with the same all-or-nothing rule: returns the new handle, or 0
+ # if newcap < rakh_maap(s). Rebind: s = rakh_vardh(s, 32).
+ prakriya rakh_vardh(s, newcap) {
+-    prati nighantu_vardh(s, newcap)
++    nivartanam nighantu_vardh(s, newcap)
+ }
+ 
+ # rakh_rikta(s) — reset the set to empty in place (WS2, R19): same
+@@ -177,7 +177,7 @@
+ # zero (count, state, keylens, vals, key bytes) with no stale
+ # elements readable afterwards. Returns 1.
+ prakriya rakh_rikta(s) {
+-    prati nighantu_rikta(s)
++    nivartanam nighantu_rikta(s)
+ }
+ 
+ # rakh_sam(a, cap, b, bcap) — 1 if a and b hold exactly the same
+@@ -185,15 +185,15 @@
+ # two empty sets are equal.
+ prakriya rakh_sam(a, cap, b, bcap) {
+     vitti r = rakh_asti_upasamuh(a, cap, b, bcap)
+-    yadi (r != 1) { prati r }
+-    prati rakh_asti_upasamuh(b, bcap, a, cap)
++    yadi (r != 1) { nivartanam r }
++    nivartanam rakh_asti_upasamuh(b, bcap, a, cap)
+ }
+ 
+ # rakh_asti_upasamuh(a, cap, b, bcap) — 1 if every element of a is in b, else
+ # 0. Empty a is a subset of everything.
+ prakriya rakh_asti_upasamuh(a, cap, b, bcap) {
+     vitti tmpa = nirmmita(a[0] * 33 + 1)
+-    yadi (tmpa == 0) { prati 0 - 1 }
++    yadi (tmpa == 0) { nivartanam 0 - 1 }
+     vitti nka = nighantu_kunjika_ashtak(a, tmpa)
+     vitti pos = 0
+     vitti i = 0
+@@ -201,12 +201,12 @@
+     yavat (i < nka) {
+         seglen = akshar(tmpa, pos)
+         yadi (nighantu_antah(b, bcap, tmpa + pos + 1, seglen) == 0) {
+-            prati 0
++            nivartanam 0
+         }
+         pos = pos + 1 + seglen
+         i = i + 1
+     }
+-    prati 1
++    nivartanam 1
+ }
+ 
+ # rakh_tak_mala(s, cap, out) — write the set's elements into out in
+@@ -219,8 +219,8 @@
+     vitti scratch = nirmmita(s[0] * 32 + 1)
+     vitti ptrs = nirmmita(s[0] * 8)
+     vitti lens = nirmmita(s[0] * 8)
+-    yadi (tmp == 0 || scratch == 0) { prati 0 - 1 }
+-    yadi (ptrs == 0 || lens == 0) { prati 0 - 1 }
++    yadi (tmp == 0 || scratch == 0) { nivartanam 0 - 1 }
++    yadi (ptrs == 0 || lens == 0) { nivartanam 0 - 1 }
+     vitti nk = nighantu_kunjika_ashtak(s, tmp)
+     vitti pos = 0
+     vitti i = 0
+@@ -274,5 +274,5 @@
+         wpos = wpos + 1 + lens[i]
+         i = i + 1
+     }
+-    prati nk
++    nivartanam nk
+ }
+diff -ruN a/lib/sankhyiki.smlib lib/sankhyiki.smlib
+--- a/lib/sankhyiki.smlib	2026-10-28 13:28:00.285759230 -0400
++++ b/lib/sankhyiki.smlib	2026-10-28 13:26:50.502031391 -0400
+@@ -20,51 +20,51 @@
+         s = s + xs[i]
+         i = i + 1
+     }
+-    prati s
++    nivartanam s
+ }
+ 
+ # --- arithmetic mean ---
+ prakriya madhya(kosh dasham xs) {
+     vitti n = kosh_len(xs)
+-    yadi (n == 0) { prati 0.0 }
+-    prati yoga(xs) / n
++    yadi (n == 0) { nivartanam 0.0 }
++    nivartanam yoga(xs) / n
+ }
+ 
+ # --- minimum ---
+ prakriya laghutama(kosh dasham xs) {
+     vitti n = kosh_len(xs)
+-    yadi (n == 0) { prati 0.0 }
++    yadi (n == 0) { nivartanam 0.0 }
+     dasham m = xs[0]
+     vitti i = 1
+     yavat (i < n) {
+         yadi (xs[i] < m) { m = xs[i] }
+         i = i + 1
+     }
+-    prati m
++    nivartanam m
+ }
+ 
+ # --- maximum ---
+ prakriya adhikatama(kosh dasham xs) {
+     vitti n = kosh_len(xs)
+-    yadi (n == 0) { prati 0.0 }
++    yadi (n == 0) { nivartanam 0.0 }
+     dasham m = xs[0]
+     vitti i = 1
+     yavat (i < n) {
+         yadi (xs[i] > m) { m = xs[i] }
+         i = i + 1
+     }
+-    prati m
++    nivartanam m
+ }
+ 
+ # --- range (max - min) ---
+ prakriya vyapti(kosh dasham xs) {
+-    prati adhikatama(xs) - laghutama(xs)
++    nivartanam adhikatama(xs) - laghutama(xs)
+ }
+ 
+ # --- population variance (प्रसरण) ---
+ prakriya prasaran(kosh dasham xs) {
+     vitti n = kosh_len(xs)
+-    yadi (n == 0) { prati 0.0 }
++    yadi (n == 0) { nivartanam 0.0 }
+     dasham m = madhya(xs)
+     dasham acc = 0.0
+     vitti i = 0
+@@ -73,26 +73,26 @@
+         acc = acc + d * d
+         i = i + 1
+     }
+-    prati acc / n
++    nivartanam acc / n
+ }
+ 
+ # --- vargit root, Newton's method (private to this module: distinct name so it
+ #     never collides with madhava_vargmool or a user function) ---
+ # 1000 iterations, as madhava_vargmool (20 gave 1279996 for sqrt(1e12)).
+ prakriya sankhyiki_vargmool(dasham v) {
+-    yadi (v <= 0.0) { prati 0.0 }
++    yadi (v <= 0.0) { nivartanam 0.0 }
+     dasham g = v
+     vitti k = 0
+     yavat (k < 1000) {
+         g = (g + v / g) / 2.0
+         k = k + 1
+     }
+-    prati g
++    nivartanam g
+ }
+ 
+ # --- population standard deviation (मानक विचलन) ---
+ prakriya vichalan(kosh dasham xs) {
+-    prati sankhyiki_vargmool(prasaran(xs))
++    nivartanam sankhyiki_vargmool(prasaran(xs))
+ }
+ 
+ # --- dot product of two float arrays (बिंदु गुणनफल) ---
+@@ -107,12 +107,12 @@
+         s = s + a[i] * b[i]
+         i = i + 1
+     }
+-    prati s
++    nivartanam s
+ }
+ 
+ # --- Euclidean norm (magnitude) of a vector ---
+ prakriya manak(kosh dasham a) {
+-    prati sankhyiki_vargmool(bindu(a, a))
++    nivartanam sankhyiki_vargmool(bindu(a, a))
+ }
+ 
+ # ---------------------------------------------------------------------------
+@@ -135,45 +135,45 @@
+         s = s + xs[i]
+         i = i + 1
+     }
+-    prati s
++    nivartanam s
+ }
+ 
+ # --- integer mean (truncated toward zero) ---
+ prakriya purna_madhya(xs, n) {
+-    yadi (n <= 0) { prati 0 }
+-    prati purna_yoga(xs, n) / n
++    yadi (n <= 0) { nivartanam 0 }
++    nivartanam purna_yoga(xs, n) / n
+ }
+ 
+ # --- integer minimum ---
+ prakriya purna_laghutama(xs, n) {
+     vitti m = 0
+     vitti i = 1
+-    yadi (n <= 0) { prati 0 }
++    yadi (n <= 0) { nivartanam 0 }
+     m = xs[0]
+     yavat (i < n) {
+         yadi (xs[i] < m) { m = xs[i] }
+         i = i + 1
+     }
+-    prati m
++    nivartanam m
+ }
+ 
+ # --- integer maximum ---
+ prakriya purna_adhikatama(xs, n) {
+     vitti m = 0
+     vitti i = 1
+-    yadi (n <= 0) { prati 0 }
++    yadi (n <= 0) { nivartanam 0 }
+     m = xs[0]
+     yavat (i < n) {
+         yadi (xs[i] > m) { m = xs[i] }
+         i = i + 1
+     }
+-    prati m
++    nivartanam m
+ }
+ 
+ # --- integer range (max - min) ---
+ prakriya purna_vyapti(xs, n) {
+-    yadi (n <= 0) { prati 0 }
+-    prati purna_adhikatama(xs, n) - purna_laghutama(xs, n)
++    yadi (n <= 0) { nivartanam 0 }
++    nivartanam purna_adhikatama(xs, n) - purna_laghutama(xs, n)
+ }
+ 
+ # --- integer population variance (truncated toward zero; uses the
+@@ -183,12 +183,12 @@
+     vitti acc = 0
+     vitti i = 0
+     vitti d = 0
+-    yadi (n <= 0) { prati 0 }
++    yadi (n <= 0) { nivartanam 0 }
+     m = purna_madhya(xs, n)
+     yavat (i < n) {
+         d = xs[i] - m
+         acc = acc + d * d
+         i = i + 1
+     }
+-    prati acc / n
++    nivartanam acc / n
+ }
+diff -ruN a/lib/shreni.smlib lib/shreni.smlib
+--- a/lib/shreni.smlib	2026-10-28 13:28:00.285041152 -0400
++++ b/lib/shreni.smlib	2026-10-28 13:26:50.503194703 -0400
+@@ -39,27 +39,27 @@
+ prakriya laghu(a, n) {
+     # n <= 0: no element exists — return 0, as suchi_laghu does
+     # on an empty list (the old code read a[0] and segfaulted).
+-    yadi (n <= 0) { prati 0 }
++    yadi (n <= 0) { nivartanam 0 }
+     vitti i = 1
+     vitti best = a[0]
+     yavat (i < n) {
+         yadi (a[i] < best) { best = a[i] }
+         i = i + 1
+     }
+-    prati best
++    nivartanam best
+ }
+ 
+ # adhik(a, n) — largest element of a[0..n-1]; 0 if n <= 0.
+ prakriya adhik(a, n) {
+     # n <= 0: no element exists — return 0, as laghu.
+-    yadi (n <= 0) { prati 0 }
++    yadi (n <= 0) { nivartanam 0 }
+     vitti i = 1
+     vitti best = a[0]
+     yavat (i < n) {
+         yadi (a[i] > best) { best = a[i] }
+         i = i + 1
+     }
+-    prati best
++    nivartanam best
+ }
+ 
+ # yog(a, n) — sum of a[0..n-1].
+@@ -70,17 +70,17 @@
+         s = s + a[i]
+         i = i + 1
+     }
+-    prati s
++    nivartanam s
+ }
+ 
+ # anwesh_sarak(a, n, target) — index of the first occurrence of target in a[0..n-1], or -1.
+ prakriya anwesh_sarak(a, n, target) {
+     vitti i = 0
+     yavat (i < n) {
+-        yadi (a[i] == target) { prati i }
++        yadi (a[i] == target) { nivartanam i }
+         i = i + 1
+     }
+-    prati 0 - 1
++    nivartanam 0 - 1
+ }
+ 
+ # gan(a, n, target) — count of occurrences of target in a[0..n-1].
+@@ -91,17 +91,17 @@
+         yadi (a[i] == target) { c = c + 1 }
+         i = i + 1
+     }
+-    prati c
++    nivartanam c
+ }
+ 
+ # asti_sorted(a, n) — 1 if a[0..n-1] is in non-decreasing order, else 0.
+ prakriya asti_sorted(a, n) {
+     vitti i = 0
+     yavat (i < n - 1) {
+-        yadi (a[i] > a[i + 1]) { prati 0 }
++        yadi (a[i] > a[i + 1]) { nivartanam 0 }
+         i = i + 1
+     }
+-    prati 1
++    nivartanam 1
+ }
+ 
+ # dwi_anwesh(a, n, target) — binary search for target in sorted a[0..n-1]: its index, or -1.
+@@ -110,10 +110,10 @@
+     vitti hi = n - 1
+     yavat (lo <= hi) {
+         vitti mid = (lo + hi) / 2
+-        yadi (a[mid] == target) { prati mid }
++        yadi (a[mid] == target) { nivartanam mid }
+         yadi (a[mid] < target) { lo = mid + 1 } anya { hi = mid - 1 }
+     }
+-    prati 0 - 1
++    nivartanam 0 - 1
+ }
+ 
+ # shankh_shreni(a, n) — sorts a[0..n-1] in place, ascending, by shell sort.
+@@ -172,7 +172,7 @@
+ 
+ # mil_shreni(a, n) — top-down merge sort using a temp buffer.
+ prakriya mil_shreni_punar(a, tmp, lo, hi) {
+-    yadi (hi - lo < 2) { prati 0 }
++    yadi (hi - lo < 2) { nivartanam 0 }
+     vitti mid = (lo + hi) / 2
+     mil_shreni_punar(a, tmp, lo, mid)
+     mil_shreni_punar(a, tmp, mid, hi)
+@@ -216,14 +216,14 @@
+         a[c] = tmp[c]
+         c = c + 1
+     }
+-    prati 0
++    nivartanam 0
+ }
+ 
+ # mil_shreni(a, n) — merge sort; returns 0, or -1 (a unchanged) if its scratch cannot be allocated.
+ prakriya mil_shreni(a, n) {
+-    yadi (n < 2) { prati 0 }
+-    yadi (n > 1152921504606846975) { prati 0 - 1 }   # R39: n * 8 must not wrap
++    yadi (n < 2) { nivartanam 0 }
++    yadi (n > 1152921504606846975) { nivartanam 0 - 1 }   # R39: n * 8 must not wrap
+     vitti tmp = nirmmita(n * 8)
+-    yadi (tmp == 0 && n > 0) { prati 0 - 1 }
++    yadi (tmp == 0 && n > 0) { nivartanam 0 - 1 }
+     mil_shreni_punar(a, tmp, 0, n)
+ }
+diff -ruN a/lib/suchi.smlib lib/suchi.smlib
+--- a/lib/suchi.smlib	2026-10-28 13:28:00.284620771 -0400
++++ b/lib/suchi.smlib	2026-10-28 13:26:50.504194703 -0400
+@@ -49,17 +49,17 @@
+     vitti d = 0
+     vitti sz = 0
+     yadi (c < 1) { c = 1 }
+-    yadi (c > 1152921504606846975) { prati 0 }   # R35: c * 8 must not wrap
++    yadi (c > 1152921504606846975) { nivartanam 0 }   # R35: c * 8 must not wrap
+     sz = c * 8
+-    yadi (sz < 0) { prati 0 }
++    yadi (sz < 0) { nivartanam 0 }
+     l = nirmmita(3 * 8)
+-    yadi (l == 0) { prati 0 }
++    yadi (l == 0) { nivartanam 0 }
+     d = nirmmita(sz)
+-    yadi (d == 0) { prati 0 }
++    yadi (d == 0) { nivartanam 0 }
+     l[0] = 0
+     l[1] = c
+     l[2] = d
+-    prati l
++    nivartanam l
+ }
+ 
+ # suchi_vardh(l) — private helper: dvigun l's capacity, copying the
+@@ -70,17 +70,17 @@
+     vitti nd = 0
+     vitti old = lst[2]
+     vitti i = 0
+-    yadi (lst[1] > 576460752303423487) { prati 0 }   # R36: cap * 16 must not wrap
++    yadi (lst[1] > 576460752303423487) { nivartanam 0 }   # R36: cap * 16 must not wrap
+     ncap = lst[1] * 2
+     nd = nirmmita(ncap * 8)
+-    yadi (nd == 0) { prati 0 }
++    yadi (nd == 0) { nivartanam 0 }
+     yavat (i < lst[0]) {
+         nd[i] = old[i]
+         i = i + 1
+     }
+     lst[2] = nd
+     lst[1] = ncap
+-    prati 1
++    nivartanam 1
+ }
+ 
+ # suchi_khip(l, v) — append v. Returns 1 ok / 0 allocation failure.
+@@ -88,22 +88,22 @@
+     vitti lst = l
+     vitti val = v
+     yadi (lst[0] == lst[1]) {
+-        yadi (suchi_vardh(lst) == 0) { prati 0 }
++        yadi (suchi_vardh(lst) == 0) { nivartanam 0 }
+     }
+     vitti d = lst[2]
+     d[lst[0]] = val
+     lst[0] = lst[0] + 1
+-    prati 1
++    nivartanam 1
+ }
+ 
+ # suchi_grah(l, i) — element i, or 0 if i is out of bounds.
+ prakriya suchi_grah(l, i) {
+     vitti lst = l
+     vitti idx = i
+-    yadi (idx < 0) { prati 0 }
+-    yadi (idx >= lst[0]) { prati 0 }
++    yadi (idx < 0) { nivartanam 0 }
++    yadi (idx >= lst[0]) { nivartanam 0 }
+     vitti d = lst[2]
+-    prati d[idx]
++    nivartanam d[idx]
+ }
+ 
+ # suchi_sangrah(l, i, v) — set element i. Returns 1 ok / 0 out of bounds.
+@@ -111,16 +111,16 @@
+     vitti lst = l
+     vitti idx = i
+     vitti val = v
+-    yadi (idx < 0) { prati 0 }
+-    yadi (idx >= lst[0]) { prati 0 }
++    yadi (idx < 0) { nivartanam 0 }
++    yadi (idx >= lst[0]) { nivartanam 0 }
+     vitti d = lst[2]
+     d[idx] = val
+-    prati 1
++    nivartanam 1
+ }
+ 
+ # suchi_maap(l) — element count.
+ prakriya suchi_maap(l) {
+-    prati l[0]
++    nivartanam l[0]
+ }
+ 
+ # suchi_nivesh(l, i, v) — insert v before index i (i == len
+@@ -131,10 +131,10 @@
+     vitti val = v
+     vitti d = 0
+     vitti k = 0
+-    yadi (idx < 0) { prati 0 }
+-    yadi (idx > lst[0]) { prati 0 }
++    yadi (idx < 0) { nivartanam 0 }
++    yadi (idx > lst[0]) { nivartanam 0 }
+     yadi (lst[0] == lst[1]) {
+-        yadi (suchi_vardh(lst) == 0) { prati 0 }
++        yadi (suchi_vardh(lst) == 0) { nivartanam 0 }
+     }
+     d = lst[2]
+     k = lst[0]
+@@ -144,7 +144,7 @@
+     }
+     d[idx] = val
+     lst[0] = lst[0] + 1
+-    prati 1
++    nivartanam 1
+ }
+ 
+ # suchi_apanay(l, i) — remove element i, shifting the rest left.
+@@ -154,8 +154,8 @@
+     vitti idx = i
+     vitti d = 0
+     vitti k = 0
+-    yadi (idx < 0) { prati 0 }
+-    yadi (idx >= lst[0]) { prati 0 }
++    yadi (idx < 0) { nivartanam 0 }
++    yadi (idx >= lst[0]) { nivartanam 0 }
+     d = lst[2]
+     k = idx
+     yavat (k < lst[0] - 1) {
+@@ -163,7 +163,7 @@
+         k = k + 1
+     }
+     lst[0] = lst[0] - 1
+-    prati 1
++    nivartanam 1
+ }
+ 
+ # suchi_vinimay(l, i, j) — vinimay elements i and j (WS2, R20). Returns 1
+@@ -176,15 +176,15 @@
+     vitti b = j
+     vitti d = 0
+     vitti t = 0
+-    yadi (a < 0) { prati 0 }
+-    yadi (a >= lst[0]) { prati 0 }
+-    yadi (b < 0) { prati 0 }
+-    yadi (b >= lst[0]) { prati 0 }
++    yadi (a < 0) { nivartanam 0 }
++    yadi (a >= lst[0]) { nivartanam 0 }
++    yadi (b < 0) { nivartanam 0 }
++    yadi (b >= lst[0]) { nivartanam 0 }
+     d = lst[2]
+     t = d[a]
+     d[a] = d[b]
+     d[b] = t
+-    prati 1
++    nivartanam 1
+ }
+ 
+ # suchi_viparyay(l) — reverse the list in place (WS3, R20). Two-pointer
+@@ -203,7 +203,7 @@
+         i = i + 1
+         j = j - 1
+     }
+-    prati 1
++    nivartanam 1
+ }
+ 
+ # suchi_shreni(l) — sort the list in place, ascending (WS2, R21).
+@@ -212,7 +212,7 @@
+ # `mil_shreni(l[2], suchi_maap(l))` at every call site. Returns 1.
+ prakriya suchi_shreni(l) {
+     mil_shreni(l[2], l[0])
+-    prati 1
++    nivartanam 1
+ }
+ 
+ # suchi_laghu(l, ok) — smallest element (WS2, R21); ok[0] 1, or 0 if
+@@ -223,10 +223,10 @@
+ prakriya suchi_laghu(l, ok) {
+     yadi (l[0] == 0) {
+         ok[0] = 0
+-        prati 0
++        nivartanam 0
+     }
+     ok[0] = 1
+-    prati laghu(l[2], l[0])
++    nivartanam laghu(l[2], l[0])
+ }
+ 
+ # suchi_adhik(l, ok) — largest element (WS2, R21); ok[0] 1, or 0 if
+@@ -234,38 +234,38 @@
+ prakriya suchi_adhik(l, ok) {
+     yadi (l[0] == 0) {
+         ok[0] = 0
+-        prati 0
++        nivartanam 0
+     }
+     ok[0] = 1
+-    prati adhik(l[2], l[0])
++    nivartanam adhik(l[2], l[0])
+ }
+ 
+ # suchi_yog(l) — sum of the elements (WS2, R21); 0 for an empty list
+ # (well-defined, no ok channel needed). Before this, the caller wrote
+ # the sum loop by hand or called shreni.smlib's yog on l[2].
+ prakriya suchi_yog(l) {
+-    prati yog(l[2], l[0])
++    nivartanam yog(l[2], l[0])
+ }
+ 
+ # suchi_gan(l, v) — number of occurrences of v (WS2, R21).
+ # Before this, the caller wrote the count loop by hand or called
+ # shreni.smlib's gan on l[2].
+ prakriya suchi_gan(l, v) {
+-    prati gan(l[2], l[0], v)
++    nivartanam gan(l[2], l[0], v)
+ }
+ 
+ # suchi_anwesh(l, v) — first index of v, or -1 (WS2, R23). List-shaped
+ # form of shreni.smlib's anwesh_sarak; before, the caller called
+ # anwesh_sarak(l[2], suchi_maap(l), v) by hand.
+ prakriya suchi_anwesh(l, v) {
+-    prati anwesh_sarak(l[2], l[0], v)
++    nivartanam anwesh_sarak(l[2], l[0], v)
+ }
+ 
+ # suchi_asti_sorted(l) — 1 if the elements are in non-decreasing order,
+ # else 0; empty and single-element lists are sorted (WS2, R23).
+ # List-shaped form of shreni.smlib's asti_sorted.
+ prakriya suchi_asti_sorted(l) {
+-    prati asti_sorted(l[2], l[0])
++    nivartanam asti_sorted(l[2], l[0])
+ }
+ 
+ # suchi_dwi_anwesh(l, v) — index of v in a SORTED list, or -1
+@@ -273,7 +273,7 @@
+ # caller must sort first (suchi_shreni); on an unsorted list the result
+ # is undefined, exactly as with dwi_anwesh.
+ prakriya suchi_dwi_anwesh(l, v) {
+-    prati dwi_anwesh(l[2], l[0], v)
++    nivartanam dwi_anwesh(l[2], l[0], v)
+ }
+ 
+ # suchi_rikta(l) — empty the list, keeping the allocated capacity.
+@@ -290,7 +290,7 @@
+         i = i + 1
+     }
+     l[0] = 0
+-    prati 1
++    nivartanam 1
+ }
+ 
+ # suchi_antah(l, v) — 1 if any element equals v, else 0.
+@@ -300,10 +300,10 @@
+     vitti d = lst[2]
+     vitti i = 0
+     yavat (i < lst[0]) {
+-        yadi (d[i] == val) { prati 1 }
++        yadi (d[i] == val) { nivartanam 1 }
+         i = i + 1
+     }
+-    prati 0
++    nivartanam 0
+ }
+ 
+ # suchi_kramank(l, v) — first index with value v, or -1 if absent.
+@@ -313,17 +313,17 @@
+     vitti d = lst[2]
+     vitti i = 0
+     yavat (i < lst[0]) {
+-        yadi (d[i] == val) { prati i }
++        yadi (d[i] == val) { nivartanam i }
+         i = i + 1
+     }
+-    prati 0 - 1
++    nivartanam 0 - 1
+ }
+ 
+ # --- stacks (built on the same list storage) ---
+ 
+ # chay_khip(l, v) — push v. Returns 1 ok / 0 allocation failure.
+ prakriya chay_khip(l, v) {
+-    prati suchi_khip(l, v)
++    nivartanam suchi_khip(l, v)
+ }
+ 
+ # chay_apanay(l, ok) — pop the top value; sets ok[0] to 1 on success,
+@@ -335,13 +335,13 @@
+     vitti val = 0
+     yadi (lst[0] == 0) {
+         okp[0] = 0
+-        prati 0
++        nivartanam 0
+     }
+     d = lst[2]
+     lst[0] = lst[0] - 1
+     val = d[lst[0]]
+     okp[0] = 1
+-    prati val
++    nivartanam val
+ }
+ 
+ # chay_avalok(l, ok) — top value without removing it; ok[0] 1/0.
+@@ -351,17 +351,17 @@
+     vitti d = 0
+     yadi (lst[0] == 0) {
+         okp[0] = 0
+-        prati 0
++        nivartanam 0
+     }
+     d = lst[2]
+     okp[0] = 1
+-    prati d[lst[0] - 1]
++    nivartanam d[lst[0] - 1]
+ }
+ 
+ # chay_rikta(l) — 1 if the stack is empty, else 0.
+ prakriya chay_rikta(l) {
+-    yadi (l[0] == 0) { prati 1 }
+-    prati 0
++    yadi (l[0] == 0) { nivartanam 1 }
++    nivartanam 0
+ }
+ 
+ # --- queues (ring buffer) ---
+@@ -384,18 +384,18 @@
+     vitti d = 0
+     vitti sz = 0
+     yadi (c < 1) { c = 1 }
+-    yadi (c > 1152921504606846975) { prati 0 }   # R35: c * 8 must not wrap
++    yadi (c > 1152921504606846975) { nivartanam 0 }   # R35: c * 8 must not wrap
+     sz = c * 8
+-    yadi (sz < 0) { prati 0 }
++    yadi (sz < 0) { nivartanam 0 }
+     q = nirmmita(4 * 8)
+-    yadi (q == 0) { prati 0 }
++    yadi (q == 0) { nivartanam 0 }
+     d = nirmmita(sz)
+-    yadi (d == 0) { prati 0 }
++    yadi (d == 0) { nivartanam 0 }
+     q[0] = 0
+     q[1] = c
+     q[2] = d
+     q[3] = 0
+-    prati q
++    nivartanam q
+ }
+ 
+ # avali_pravesh(q, v) — append v at the tail.
+@@ -411,10 +411,10 @@
+     vitti k = 0
+     yadi (qu[0] == qu[1]) {
+         # grow: dvigun, copy in logical order, reset head to 0
+-        yadi (qu[1] > 576460752303423487) { prati 0 }   # R36: no wrap
++        yadi (qu[1] > 576460752303423487) { nivartanam 0 }   # R36: no wrap
+         ncap = qu[1] * 2
+         nd = nirmmita(ncap * 8)
+-        yadi (nd == 0) { prati 0 }
++        yadi (nd == 0) { nivartanam 0 }
+         old = qu[2]
+         k = 0
+         yavat (k < qu[0]) {
+@@ -429,7 +429,7 @@
+     tail = (qu[3] + qu[0]) % qu[1]
+     d[tail] = val
+     qu[0] = qu[0] + 1
+-    prati 1
++    nivartanam 1
+ }
+ 
+ # avali_nishkas(q, ok) — remove and return the front value; sets
+@@ -441,14 +441,14 @@
+     vitti val = 0
+     yadi (qu[0] == 0) {
+         okp[0] = 0
+-        prati 0
++        nivartanam 0
+     }
+     d = qu[2]
+     val = d[qu[3]]
+     qu[3] = (qu[3] + 1) % qu[1]
+     qu[0] = qu[0] - 1
+     okp[0] = 1
+-    prati val
++    nivartanam val
+ }
+ 
+ # avali_avalok(q, ok) — front value without removing it; ok[0] 1/0.
+@@ -458,11 +458,11 @@
+     vitti d = 0
+     yadi (qu[0] == 0) {
+         okp[0] = 0
+-        prati 0
++        nivartanam 0
+     }
+     d = qu[2]
+     okp[0] = 1
+-    prati d[qu[3]]
++    nivartanam d[qu[3]]
+ }
+ 
+ # avali_tak_mala(q, out) — write the queue's elements into out in
+@@ -479,7 +479,7 @@
+         out[k] = d[(qu[3] + k) % qu[1]]
+         k = k + 1
+     }
+-    prati qu[0]
++    nivartanam qu[0]
+ }
+ 
+ # avali_antah(q, v) — 1 if v is in the queue, else 0 (WS2, R21).
+@@ -493,10 +493,10 @@
+     vitti d = qu[2]
+     vitti k = 0
+     yavat (k < qu[0]) {
+-        yadi (d[(qu[3] + k) % qu[1]] == val) { prati 1 }
++        yadi (d[(qu[3] + k) % qu[1]] == val) { nivartanam 1 }
+         k = k + 1
+     }
+-    prati 0
++    nivartanam 0
+ }
+ 
+ # avali_rikta(q) — empty the queue in place (WS2, R19): same handle,
+@@ -513,16 +513,16 @@
+     }
+     q[0] = 0
+     q[3] = 0
+-    prati 1
++    nivartanam 1
+ }
+ 
+ # avali_shunya(q) — 1 if the queue is empty, else 0.
+ prakriya avali_shunya(q) {
+-    yadi (q[0] == 0) { prati 1 }
+-    prati 0
++    yadi (q[0] == 0) { nivartanam 1 }
++    nivartanam 0
+ }
+ 
+ # avali_maap(q) — element count.
+ prakriya avali_maap(q) {
+-    prati q[0]
++    nivartanam q[0]
+ }
+diff -ruN a/lib/vakyank.smlib lib/vakyank.smlib
+--- a/lib/vakyank.smlib	2026-10-28 13:28:00.283882173 -0400
++++ b/lib/vakyank.smlib	2026-10-28 13:26:50.505778104 -0400
+@@ -40,7 +40,7 @@
+         dst[18] = 48
+         dst[19] = 56
+         dst[20] = 0
+-        prati 20
++        nivartanam 20
+     }
+     vitti neg = 0
+     yadi (val < 0) {
+@@ -51,7 +51,7 @@
+     vitti rev = nirmmita(22 * 8)
+     yadi (rev == 0) {
+         dst[0] = 0
+-        prati 0
++        nivartanam 0
+     }
+     vitti rlen = 0
+     yadi (val == 0) {
+@@ -75,7 +75,7 @@
+         p = p + 1
+     }
+     dst[pos + rlen] = 0
+-    prati pos + rlen
++    nivartanam pos + rlen
+ }
+ 
+ # varna_tak_ank(buf, n, ok) — parse first n character codes of mala buf as a
+@@ -88,7 +88,7 @@
+     okp[0] = 1
+     yadi (cnt == 0) {
+         okp[0] = 0
+-        prati 0
++        nivartanam 0
+     }
+     vitti neg = 0
+     vitti p = 0
+@@ -97,7 +97,7 @@
+         p = 1
+         yadi (cnt == 1) {
+             okp[0] = 0
+-            prati 0
++            nivartanam 0
+         }
+     }
+     vitti val = 0
+@@ -105,26 +105,26 @@
+         vitti c = src[p]
+         yadi (c < 48) {
+             okp[0] = 0
+-            prati 0
++            nivartanam 0
+         }
+         yadi (c > 57) {
+             okp[0] = 0
+-            prati 0
++            nivartanam 0
+         }
+         yadi (val > 922337203685477580) {
+             okp[0] = 0
+-            prati 0
++            nivartanam 0
+         }
+         yadi (val == 922337203685477580) {
+             yadi (neg == 1) {
+                 yadi ((c - 48) > 8) {
+                     okp[0] = 0
+-                    prati 0
++                    nivartanam 0
+                 }
+             } anya {
+                 yadi ((c - 48) > 7) {
+                     okp[0] = 0
+-                    prati 0
++                    nivartanam 0
+                 }
+             }
+         }
+@@ -132,7 +132,7 @@
+         p = p + 1
+     }
+     yadi (neg == 1) { val = 0 - val }
+-    prati val
++    nivartanam val
+ }
+ 
+ # ank_tak_aadhar_varna(n, base, out) — write n in any base 2..36 into out
+@@ -146,21 +146,21 @@
+     vitti rev = nirmmita(70 * 8)
+     yadi (rev == 0) {
+         dst[0] = 0
+-        prati 0
++        nivartanam 0
+     }
+     vitti rlen = 0
+     yadi (b < 2) {
+         dst[0] = 0
+-        prati 0
++        nivartanam 0
+     }
+     yadi (b > 36) {
+         dst[0] = 0
+-        prati 0
++        nivartanam 0
+     }
+     yadi (val == 0) {
+         dst[0] = 48
+         dst[1] = 0
+-        prati 1
++        nivartanam 1
+     }
+     yavat (val > 0) {
+         vitti d = val % b
+@@ -178,7 +178,7 @@
+         p = p + 1
+     }
+     dst[rlen] = 0
+-    prati rlen
++    nivartanam rlen
+ }
+ 
+ # varna_tak_ank_aadhar(buf, n, base, ok) — parse first n char codes of buf in
+@@ -191,7 +191,7 @@
+     okp[0] = 1
+     yadi (cnt == 0) {
+         okp[0] = 0
+-        prati 0
++        nivartanam 0
+     }
+     vitti val = 0
+     vitti p = 0
+@@ -209,26 +209,26 @@
+         }
+         yadi (d < 0) {
+             okp[0] = 0
+-            prati 0
++            nivartanam 0
+         }
+         yadi (d >= b) {
+             okp[0] = 0
+-            prati 0
++            nivartanam 0
+         }
+         yadi (val > 9223372036854775807 / b) {
+             okp[0] = 0
+-            prati 0
++            nivartanam 0
+         }
+         yadi (val == 9223372036854775807 / b) {
+             yadi (d > 9223372036854775807 - val * b) {
+                 okp[0] = 0
+-                prati 0
++                nivartanam 0
+             }
+         }
+         val = val * b + d
+         p = p + 1
+     }
+-    prati val
++    nivartanam val
+ }
+ 
+ # pad_vam(out, count, width, fill) — left-pad the `count` character codes
+@@ -240,7 +240,7 @@
+     vitti cnt = count
+     vitti w = width
+     vitti f = fill
+-    yadi (w <= cnt) { prati cnt }
++    yadi (w <= cnt) { nivartanam cnt }
+     vitti shift = w - cnt
+     # move existing chars right
+     vitti p = cnt - 1
+@@ -255,7 +255,7 @@
+         q = q + 1
+     }
+     dst[w] = 0
+-    prati w
++    nivartanam w
+ }
+ 
+ # varna_tak_dashm(buf, n, ok): parse a decimal float from a byte string.
+@@ -274,7 +274,7 @@
+     okp[0] = 1
+     yadi (cnt == 0) {
+         okp[0] = 0
+-        prati 0.0
++        nivartanam 0.0
+     }
+     vitti neg = 0
+     vitti p = 0
+@@ -283,7 +283,7 @@
+         p = 1
+         yadi (cnt == 1) {
+             okp[0] = 0
+-            prati 0.0
++            nivartanam 0.0
+         }
+     }
+     vitti mant = 0
+@@ -298,11 +298,11 @@
+         } anya {
+             yadi (c1 < 48) {
+                 okp[0] = 0
+-                prati 0.0
++                nivartanam 0.0
+             }
+             yadi (c1 > 57) {
+                 okp[0] = 0
+-                prati 0.0
++                nivartanam 0.0
+             }
+             yadi (ndig < 18) {
+                 mant = mant * 10 + (c1 - 48)
+@@ -325,11 +325,11 @@
+                 } anya {
+                     yadi (c2 < 48) {
+                         okp[0] = 0
+-                        prati 0.0
++                        nivartanam 0.0
+                     }
+                     yadi (c2 > 57) {
+                         okp[0] = 0
+-                        prati 0.0
++                        nivartanam 0.0
+                     }
+                     yadi (ndig < 18) {
+                         mant = mant * 10 + (c2 - 48)
+@@ -344,7 +344,7 @@
+     }
+     yadi (seen == 0) {
+         okp[0] = 0
+-        prati 0.0
++        nivartanam 0.0
+     }
+     yadi (p < cnt) {
+         yadi (src[p] == 101) {
+@@ -354,7 +354,7 @@
+                 p = p + 1
+             } anya {
+                 okp[0] = 0
+-                prati 0.0
++                nivartanam 0.0
+             }
+         }
+         vitti eneg = 0
+@@ -366,7 +366,7 @@
+         }
+         yadi (p >= cnt) {
+             okp[0] = 0
+-            prati 0.0
++            nivartanam 0.0
+         }
+         vitti e = 0
+         vitti eseen = 0
+@@ -374,11 +374,11 @@
+             vitti c3 = src[p]
+             yadi (c3 < 48) {
+                 okp[0] = 0
+-                prati 0.0
++                nivartanam 0.0
+             }
+             yadi (c3 > 57) {
+                 okp[0] = 0
+-                prati 0.0
++                nivartanam 0.0
+             }
+             yadi (e < 1000) {
+                 e = e * 10 + (c3 - 48)
+@@ -388,7 +388,7 @@
+         }
+         yadi (eseen == 0) {
+             okp[0] = 0
+-            prati 0.0
++            nivartanam 0.0
+         }
+         yadi (eneg == 1) {
+             exp10 = exp10 - e
+@@ -398,17 +398,17 @@
+     }
+     yadi (p != cnt) {
+         okp[0] = 0
+-        prati 0.0
++        nivartanam 0.0
+     }
+     yadi (mant == 0) {
+-        prati 0.0
++        nivartanam 0.0
+     }
+     yadi (exp10 > 308) {
+         okp[0] = 0
+-        prati 0.0
++        nivartanam 0.0
+     }
+     yadi (exp10 < -308) {
+-        prati 0.0
++        nivartanam 0.0
+     }
+     dasham val = mant
+     yadi (exp10 > 0) {
+@@ -431,9 +431,9 @@
+     yadi (val != 0.0) {
+         yadi (val / 2.0 == val) {
+             okp[0] = 0
+-            prati 0.0
++            nivartanam 0.0
+         }
+     }
+     yadi (neg == 1) { val = 0.0 - val }
+-    prati val
++    nivartanam val
+ }
+diff -ruN a/lib/varna.smlib lib/varna.smlib
+--- a/lib/varna.smlib	2026-10-28 13:28:00.280921790 -0400
++++ b/lib/varna.smlib	2026-10-28 13:26:50.506194703 -0400
+@@ -15,45 +15,45 @@
+ # strb.smlib header for why and for the khand_pratilip workaround. The
+ # (s, i) char predicates take no length: the caller keeps i in bounds.
+ prakriya varna_maap(s)
+-    prati vartani_aayam(s)
++    nivartanam vartani_aayam(s)
+ 
+ # akshar_sanket(s, i) — byte code of s[i] (the akshar builtin on a string).
+ prakriya akshar_sanket(s, i)
+-    prati akshar(s, i)
++    nivartanam akshar(s, i)
+ 
+ # asti_ank_akshar(s, i) — 1 if s[i] is a decimal digit ('0'-'9'), else 0.
+ prakriya asti_ank_akshar(s, i) {
+     vitti c = akshar(s, i)
+-    yadi (c >= 48 && c <= 57) { prati 1 }
+-    prati 0
++    yadi (c >= 48 && c <= 57) { nivartanam 1 }
++    nivartanam 0
+ }
+ 
+ # asti_unnat_akshar(s, i) — 1 if s[i] is an uppercase letter ('A'-'Z'), else 0.
+ prakriya asti_unnat_akshar(s, i) {
+     vitti c = akshar(s, i)
+-    yadi (c >= 65 && c <= 90) { prati 1 }
+-    prati 0
++    yadi (c >= 65 && c <= 90) { nivartanam 1 }
++    nivartanam 0
+ }
+ 
+ # asti_avanat_akshar(s, i) — 1 if s[i] is a lowercase letter ('a'-'z'), else 0.
+ prakriya asti_avanat_akshar(s, i) {
+     vitti c = akshar(s, i)
+-    yadi (c >= 97 && c <= 122) { prati 1 }
+-    prati 0
++    yadi (c >= 97 && c <= 122) { nivartanam 1 }
++    nivartanam 0
+ }
+ 
+ # asti_akshar_akshar(s, i) — 1 if s[i] is any letter (A-Z or a-z), else 0.
+ prakriya asti_akshar_akshar(s, i) {
+     vitti c = akshar(s, i)
+-    yadi (c >= 65 && c <= 90) { prati 1 }
+-    yadi (c >= 97 && c <= 122) { prati 1 }
+-    prati 0
++    yadi (c >= 65 && c <= 90) { nivartanam 1 }
++    yadi (c >= 97 && c <= 122) { nivartanam 1 }
++    nivartanam 0
+ }
+ 
+ # asti_avakash_akshar(s, i) — 1 if s[i] is a space (code 32), else 0.
+ prakriya asti_avakash_akshar(s, i) {
+     vitti c = akshar(s, i)
+-    prati c == 32
++    nivartanam c == 32
+ }
+ 
+ # gan_swar(s) — count of lowercase vowels (a, e, i, o, u) in the string s.
+@@ -68,7 +68,7 @@
+         }
+         i = i + 1
+     }
+-    prati c
++    nivartanam c
+ }
+ 
+ # gan_akshar(s, code) — count of occurrences of byte code in the string s.
+@@ -80,7 +80,7 @@
+         yadi (akshar(s, i) == code) { c = c + 1 }
+         i = i + 1
+     }
+-    prati c
++    nivartanam c
+ }
+ 
+ # anwesh_akshar(s, code) — index of the first occurrence of byte code in s, or -1.
+@@ -88,49 +88,49 @@
+     vitti n = vartani_aayam(s)
+     vitti i = 0
+     yavat (i < n) {
+-        yadi (akshar(s, i) == code) { prati i }
++        yadi (akshar(s, i) == code) { nivartanam i }
+         i = i + 1
+     }
+-    prati 0 - 1
++    nivartanam 0 - 1
+ }
+ 
+ # asti_sarv_ank(s) — 1 if s is non-empty and every character is a digit, else 0.
+ prakriya asti_sarv_ank(s) {
+     vitti n = vartani_aayam(s)
+-    yadi (n == 0) { prati 0 }
++    yadi (n == 0) { nivartanam 0 }
+     vitti i = 0
+     yavat (i < n) {
+-        yadi (asti_ank_akshar(s, i) == 0) { prati 0 }
++        yadi (asti_ank_akshar(s, i) == 0) { nivartanam 0 }
+         i = i + 1
+     }
+-    prati 1
++    nivartanam 1
+ }
+ 
+ # unnat_sanket(c) — byte code c converted to uppercase (a-z -> A-Z, other codes unchanged).
+ prakriya unnat_sanket(c) {
+     vitti x = c
+     yadi (x >= 97 && x <= 122) { x = x - 32 }
+-    prati x
++    nivartanam x
+ }
+ 
+ # avanat_sanket(c) — byte code c converted to lowercase (A-Z -> a-z, other codes unchanged).
+ prakriya avanat_sanket(c) {
+     vitti x = c
+     yadi (x >= 65 && x <= 90) { x = x + 32 }
+-    prati x
++    nivartanam x
+ }
+ 
+ # varna_sam(a, b) — 1 if strings a and b are byte-identical (same length and bytes), else 0.
+ prakriya varna_sam(a, b) {
+     vitti na = vartani_aayam(a)
+     vitti nb = vartani_aayam(b)
+-    yadi (na != nb) { prati 0 }
++    yadi (na != nb) { nivartanam 0 }
+     vitti i = 0
+     yavat (i < na) {
+-        yadi (akshar(a, i) != akshar(b, i)) { prati 0 }
++        yadi (akshar(a, i) != akshar(b, i)) { nivartanam 0 }
+         i = i + 1
+     }
+-    prati 1
++    nivartanam 1
+ }
+ 
+ # ---------------------------------------------------------------------------
+@@ -154,9 +154,9 @@
+     vitti hlen = hn
+     vitti nd = needle
+     vitti nlen = nn
+-    yadi (nlen < 0) { prati 0 - 1 }
+-    yadi (nlen == 0) { prati 0 }
+-    yadi (nlen > hlen) { prati 0 - 1 }
++    yadi (nlen < 0) { nivartanam 0 - 1 }
++    yadi (nlen == 0) { nivartanam 0 }
++    yadi (nlen > hlen) { nivartanam 0 - 1 }
+     vitti i = 0
+     yavat (i <= hlen - nlen) {
+         vitti match = 1
+@@ -165,16 +165,16 @@
+             yadi (h[i + j] != nd[j]) { match = 0 }
+             j = j + 1
+         }
+-        yadi (match == 1) { prati i }
++        yadi (match == 1) { nivartanam i }
+         i = i + 1
+     }
+-    prati 0 - 1
++    nivartanam 0 - 1
+ }
+ 
+ # varna_antah(hay, hn, needle, nn) — 1 if needle occurs in hay, else 0.
+ prakriya varna_antah(hay, hn, needle, nn) {
+-    yadi (varna_anwesh(hay, hn, needle, nn) >= 0) { prati 1 }
+-    prati 0
++    yadi (varna_anwesh(hay, hn, needle, nn) >= 0) { nivartanam 1 }
++    nivartanam 0
+ }
+ 
+ # varna_pratisthap(src, sn, find, fn, repl, out) — copy src to out,
+@@ -204,7 +204,7 @@
+             rpos = rpos + 1
+         }
+         dst[wpos] = 0
+-        prati wpos
++        nivartanam wpos
+     }
+     yavat (rpos < slen) {
+         # check for find at rpos
+@@ -233,7 +233,7 @@
+         }
+     }
+     dst[wpos] = 0
+-    prati wpos
++    nivartanam wpos
+ }
+ 
+ # varna_bhed(src, sn, sep, sepn, parts, maxparts) — split src on sep.
+@@ -252,7 +252,7 @@
+     # empty input: one empty segment
+     yadi (slen == 0) {
+         dst[0] = 0
+-        prati 1
++        nivartanam 1
+     }
+     # empty separator: one segment (the whole input). splen < 0
+     # is invalid: same result (the old code looped forever).
+@@ -263,7 +263,7 @@
+             dst[1 + ci] = s[ci]
+             ci = ci + 1
+         }
+-        prati 1
++        nivartanam 1
+     }
+     vitti nseg = 0
+     vitti wpos = 0
+@@ -323,7 +323,7 @@
+             }
+         }
+     }
+-    prati nseg
++    nivartanam nseg
+ }
+ 
+ # varna_yuj(parts, count, sep, sepn, out) — inverse of varna_bhed for the
+@@ -358,7 +358,7 @@
+         si = si + 1
+     }
+     dst[wpos] = 0
+-    prati wpos
++    nivartanam wpos
+ }
+ 
+ # varna_chhid(src, sn, out) — strip leading/trailing ASCII spaces (32).
+@@ -393,7 +393,7 @@
+         k = k + 1
+     }
+     dst[wpos] = 0
+-    prati wpos
++    nivartanam wpos
+ }
+ 
+ # varna_unnat(src, sn, out) / varna_avanat — ASCII case conversion.
+@@ -406,7 +406,7 @@
+     vitti i = 0
+     yadi (slen < 0) {
+         dst[0] = 0
+-        prati 0
++        nivartanam 0
+     }
+     yavat (i < slen) {
+         vitti c = s[i]
+@@ -417,7 +417,7 @@
+         i = i + 1
+     }
+     dst[slen] = 0
+-    prati slen
++    nivartanam slen
+ }
+ 
+ # varna_avanat(src, sn, out) — copies src (sn qword cells) to out with A-Z lowercased, NUL-terminated; returns sn (0 for sn < 0).
+@@ -428,7 +428,7 @@
+     vitti i = 0
+     yadi (slen < 0) {
+         dst[0] = 0
+-        prati 0
++        nivartanam 0
+     }
+     yavat (i < slen) {
+         vitti c = s[i]
+@@ -439,7 +439,7 @@
+         i = i + 1
+     }
+     dst[slen] = 0
+-    prati slen
++    nivartanam slen
+ }
+ 
+ # varna_aadi(src, sn, pre, pn) / varna_ant — 0/1.
+@@ -450,14 +450,14 @@
+     vitti slen = sn
+     vitti pr = pre
+     vitti plen = pn
+-    yadi (plen < 0) { prati 0 }
+-    yadi (plen > slen) { prati 0 }
++    yadi (plen < 0) { nivartanam 0 }
++    yadi (plen > slen) { nivartanam 0 }
+     vitti i = 0
+     yavat (i < plen) {
+-        yadi (s[i] != pr[i]) { prati 0 }
++        yadi (s[i] != pr[i]) { nivartanam 0 }
+         i = i + 1
+     }
+-    prati 1
++    nivartanam 1
+ }
+ 
+ # varna_ant(src, sn, suf, sn2) — 1 if the src string (sn cells) ends with suf (sn2 cells), else 0.
+@@ -466,14 +466,14 @@
+     vitti slen = sn
+     vitti sf = suf
+     vitti sflen = sn2
+-    yadi (sflen < 0) { prati 0 }
+-    yadi (sflen > slen) { prati 0 }
++    yadi (sflen < 0) { nivartanam 0 }
++    yadi (sflen > slen) { nivartanam 0 }
+     vitti i = 0
+     yavat (i < sflen) {
+-        yadi (s[slen - sflen + i] != sf[i]) { prati 0 }
++        yadi (s[slen - sflen + i] != sf[i]) { nivartanam 0 }
+         i = i + 1
+     }
+-    prati 1
++    nivartanam 1
+ }
+ 
+ # varna_tul(a, an, b, bn) — -1 / 0 / 1 (lexicographic by char code).
+@@ -486,13 +486,13 @@
+     vitti n = xn
+     yadi (yn < n) { n = yn }
+     yavat (i < n) {
+-        yadi (x[i] < y[i]) { prati 0 - 1 }
+-        yadi (x[i] > y[i]) { prati 1 }
++        yadi (x[i] < y[i]) { nivartanam 0 - 1 }
++        yadi (x[i] > y[i]) { nivartanam 1 }
+         i = i + 1
+     }
+-    yadi (xn < yn) { prati 0 - 1 }
+-    yadi (xn > yn) { prati 1 }
+-    prati 0
++    yadi (xn < yn) { nivartanam 0 - 1 }
++    yadi (xn > yn) { nivartanam 1 }
++    nivartanam 0
+ }
+ 
+ # varna_viparyay(src, sn, out) — copy the cell array reversed into out
+@@ -509,7 +509,7 @@
+     vitti t = 0
+     yadi (n <= 0) {
+         dst[0] = 0
+-        prati 0
++        nivartanam 0
+     }
+     i = 0
+     j = n - 1
+@@ -524,7 +524,7 @@
+         dst[n / 2] = s[n / 2]
+     }
+     dst[n] = 0
+-    prati n
++    nivartanam n
+ }
+ 
+ # varna_gan(hay, hn, needle, nn) — count non-overlapping occurrences
+@@ -539,12 +539,12 @@
+     vitti pos = 0
+     vitti c = 0
+     vitti f = 0
+-    yadi (nlen <= 0) { prati 0 }
++    yadi (nlen <= 0) { nivartanam 0 }
+     yavat (pos <= hlen - nlen) {
+         f = varna_anwesh(h + pos * 8, hlen - pos, nd, nlen)
+-        yadi (f < 0) { prati c }
++        yadi (f < 0) { nivartanam c }
+         c = c + 1
+         pos = pos + f + nlen
+     }
+-    prati c
++    nivartanam c
+ }
