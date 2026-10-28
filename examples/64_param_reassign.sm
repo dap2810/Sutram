@@ -1,6 +1,6 @@
 prakriya vardh(a) {
     a = a + 1
-    prati a
+    nivartanam a
 }
 
 mukhya() {

@@ -17,9 +17,7 @@ mukhya()
     likha("Line 1\nLine 2\nLine 3\n")
 
     # Combining strings and numbers
-    likha("The answer is: ")
-    likha(42)
-    likha("\n")
+    likha("The answer is: ", 42)
 
     likha("Temperature: ")
     likha(-15)

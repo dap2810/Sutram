@@ -3,15 +3,15 @@
 vitti calls = 0
 prakriya f() {
     calls = calls + 1
-    prati 3
+    nivartanam 3
 }
 prakriya g(n) {
     guna (n * 2) {
-        bhavana 2: { prati 20 }
-        bhavana 4: { prati 40 }
-        anya: { prati 0 }
+        bhavana 2: { nivartanam 20 }
+        bhavana 4: { nivartanam 40 }
+        anya: { nivartanam 0 }
     }
-    prati 0
+    nivartanam 0
 }
 mukhya() {
     guna (f()) {

@@ -30,7 +30,7 @@ R7_CALL_CAP  equ 8192
 R7_DEF_CAP   equ 2048
 TOKEN_CAP    equ 65537      ; max one token per source byte + EOF
 STR_POOL_CAP equ 65537      ; max lexeme bytes + terminators for 64 KiB source
-IMPORT_BUF_CAP equ 65536    ; expanded source cannot exceed source_buf
+IMPORT_BUF_CAP equ 131072   ; expanded source cannot exceed source_buf (R54: was 65536; one file is still read up to 64 KiB)
 AST_NODE_SIZE equ 72
 BLOCK_STMT_CAP equ 256        ; B11: max statements stored in one AST_BLOCK
 AST_BLOCK_EXTRA equ (BLOCK_STMT_CAP * 8) - (AST_NODE_SIZE - 16)
@@ -234,7 +234,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v257) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v258) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -837,7 +837,7 @@ r54_builtin_arity_table:
 
 %include "src/r11_sandesh.inc"   ; R11: every message per pack (tools/sandesh.py writes it)
 section .bss
-    source_buf  resb 65536
+    source_buf  resb IMPORT_BUF_CAP   ; R54: the expanded source (program + every yoj) lives here
     source_len  resq 1
     source_path_ptr resq 1      ; original input path for ayojan resolution
     r48_mode resq 1

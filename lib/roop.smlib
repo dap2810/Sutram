@@ -35,20 +35,20 @@ prakriya roop_ank(v, out) {
     vitti rev = nirmmita(22 * 8)
     yadi (rev == 0) {
         akshar_rakh(dst, 0, 0)
-        prati 0
+        nivartanam 0
     }
     vitti rlen = 0
     vitti i = 0
     yadi (val == 0) {
         akshar_rakh(dst, 0, 48)
         akshar_rakh(dst, 1, 0)
-        prati 1
+        nivartanam 1
     }
     yadi (val < 0) {
         yadi (val == (0 - 9223372036854775807) - 1) {
             # |MIN| = 2^63 does not fit in int64; roop_ank_aadhar
             # handles it (hi/lo split), so delegate for this one value.
-            prati roop_ank_aadhar(val, 10, 0, dst)
+            nivartanam roop_ank_aadhar(val, 10, 0, dst)
         }
         val = 0 - val
     }
@@ -63,7 +63,7 @@ prakriya roop_ank(v, out) {
         i = i + 1
     }
     akshar_rakh(dst, rlen, 0)
-    prati rlen
+    nivartanam rlen
 }
 
 # --- integer digits in a base (private helper) ---
@@ -78,7 +78,7 @@ prakriya roop_ank_aadhar(v, base, upper, out) {
     vitti rev = nirmmita(70 * 8)
     yadi (rev == 0) {
         akshar_rakh(dst, 0, 0)
-        prati 0
+        nivartanam 0
     }
     vitti rlen = 0
     vitti i = 0
@@ -86,16 +86,16 @@ prakriya roop_ank_aadhar(v, base, upper, out) {
     vitti ch = 0
     yadi (b < 2) {
         akshar_rakh(dst, 0, 0)
-        prati 0
+        nivartanam 0
     }
     yadi (b > 36) {
         akshar_rakh(dst, 0, 0)
-        prati 0
+        nivartanam 0
     }
     yadi (val == 0) {
         akshar_rakh(dst, 0, 48)
         akshar_rakh(dst, 1, 0)
-        prati 1
+        nivartanam 1
     }
     yadi (val < 0) {
         yadi (val == (0 - 9223372036854775807) - 1) {
@@ -115,7 +115,7 @@ prakriya roop_ank_aadhar(v, base, upper, out) {
                 }
             }
             akshar_rakh(dst, hn + 1, 0)
-            prati hn + 1
+            nivartanam hn + 1
         }
         val = 0 - val
     }
@@ -140,7 +140,7 @@ prakriya roop_ank_aadhar(v, base, upper, out) {
         i = i + 1
     }
     akshar_rakh(dst, rlen, 0)
-    prati rlen
+    nivartanam rlen
 }
 
 # roop_ank_aadhar2(v, base, out) — write v in `base` (2..36), lowercase
@@ -159,12 +159,12 @@ prakriya roop_ank_aadhar2(v, base, out) {
     n = roop_ank_aadhar(val, base, 0, dst + neg)
     yadi (n == 0) {
         akshar_rakh(dst, 0, 0)
-        prati 0
+        nivartanam 0
     }
     yadi (neg == 1) {
         akshar_rakh(dst, 0, 45)
     }
-    prati n + neg
+    nivartanam n + neg
 }
 
 # roop_ank_dhvaj(v, base, flags, out) — roop_ank_aadhar2 plus flags:
@@ -194,7 +194,7 @@ prakriya roop_ank_dhvaj(v, base, flags, out) {
     n = roop_ank_aadhar(val, b, up, dst + neg + pre)
     yadi (n == 0) {
         akshar_rakh(dst, 0, 0)
-        prati 0
+        nivartanam 0
     }
     # digits already sit at [neg+pre, ...); fill in util_chinha + prefix.
     yadi (neg == 1) { akshar_rakh(dst, 0, 45) }
@@ -204,29 +204,33 @@ prakriya roop_ank_dhvaj(v, base, flags, out) {
         yadi (b == 8) { akshar_rakh(dst, neg + 1, 111) }
         yadi (b == 16) { akshar_rakh(dst, neg + 1, 120) }
     }
-    prati neg + pre + n
+    nivartanam neg + pre + n
 }
 
 # roop_dash(v, out) — decimal, no prefix. roop_shodash / roop_shodash_unnat /
 # roop_asht / roop_dwi — base 16 (lower / upper), 8, 2, no prefix.
 prakriya roop_dash(v, out) {
-    prati roop_ank_aadhar2(v, 10, out)
+    nivartanam roop_ank_aadhar2(v, 10, out)
 }
 
+# roop_shodash(v, out) — formats v as lowercase hexadecimal into out (no prefix); returns the digit count.
 prakriya roop_shodash(v, out) {
-    prati roop_ank_aadhar2(v, 16, out)
+    nivartanam roop_ank_aadhar2(v, 16, out)
 }
 
+# roop_shodash_unnat(v, out) — formats v as UPPERCASE hexadecimal into out (no prefix); returns the digit count.
 prakriya roop_shodash_unnat(v, out) {
-    prati roop_ank_dhvaj(v, 16, 2, out)
+    nivartanam roop_ank_dhvaj(v, 16, 2, out)
 }
 
+# roop_asht(v, out) — formats v as octal into out (no prefix); returns the digit count.
 prakriya roop_asht(v, out) {
-    prati roop_ank_aadhar2(v, 8, out)
+    nivartanam roop_ank_aadhar2(v, 8, out)
 }
 
+# roop_dwi(v, out) — formats v as binary into out (no prefix); returns the digit count.
 prakriya roop_dwi(v, out) {
-    prati roop_ank_aadhar2(v, 2, out)
+    nivartanam roop_ank_aadhar2(v, 2, out)
 }
 
 # roop_ank_pre(v, base, upper, out) — any base with its prefix
@@ -235,7 +239,7 @@ prakriya roop_dwi(v, out) {
 prakriya roop_ank_pre(v, base, upper, out) {
     vitti fl = 1
     yadi (upper == 1) { fl = 3 }
-    prati roop_ank_dhvaj(v, base, fl, out)
+    nivartanam roop_ank_dhvaj(v, base, fl, out)
 }
 
 # --- padding / alignment ---
@@ -256,7 +260,7 @@ prakriya roop_pad_vam(src, sn, width, padbyte, out) {
             i = i + 1
         }
         akshar_rakh(dst, cnt, 0)
-        prati cnt
+        nivartanam cnt
     }
     npad = w - cnt
     i = 0
@@ -270,7 +274,7 @@ prakriya roop_pad_vam(src, sn, width, padbyte, out) {
         i = i + 1
     }
     akshar_rakh(dst, w, 0)
-    prati w
+    nivartanam w
 }
 
 # roop_pad_dakshin(src, sn, width, padbyte, out) — pad on the RIGHT.
@@ -289,7 +293,7 @@ prakriya roop_pad_dakshin(src, sn, width, padbyte, out) {
             i = i + 1
         }
         akshar_rakh(dst, cnt, 0)
-        prati cnt
+        nivartanam cnt
     }
     npad = w - cnt
     i = 0
@@ -303,7 +307,7 @@ prakriya roop_pad_dakshin(src, sn, width, padbyte, out) {
         i = i + 1
     }
     akshar_rakh(dst, w, 0)
-    prati w
+    nivartanam w
 }
 
 # roop_pad_madhya(src, sn, width, padbyte, out) — pad both sides to width;
@@ -324,7 +328,7 @@ prakriya roop_pad_madhya(src, sn, width, padbyte, out) {
             i = i + 1
         }
         akshar_rakh(dst, cnt, 0)
-        prati cnt
+        nivartanam cnt
     }
     npad = w - cnt
     left = npad / 2
@@ -344,7 +348,7 @@ prakriya roop_pad_madhya(src, sn, width, padbyte, out) {
         i = i + 1
     }
     akshar_rakh(dst, w, 0)
-    prati w
+    nivartanam w
 }
 
 # --- thousands grouping (private helper) ---
@@ -365,7 +369,7 @@ prakriya roop_varg_mool(src, sn, step, out) {
     vitti rem = 0
     yadi (cnt == 0) {
         akshar_rakh(dst, 0, 0)
-        prati 0
+        nivartanam 0
     }
     yadi (akshar(s, 0) == 45) { start = 1 }
     yadi (akshar(s, 0) == 43) { start = 1 }
@@ -423,23 +427,23 @@ prakriya roop_varg_mool(src, sn, step, out) {
         k = k + 1
     }
     akshar_rakh(dst, wpos, 0)
-    prati wpos
+    nivartanam wpos
 }
 
 # roop_varg_bharatiya(src, sn, out) — 1234567 -> 12,34,567.
 prakriya roop_varg_bharatiya(src, sn, out) {
-    prati roop_varg_mool(src, sn, 2, out)
+    nivartanam roop_varg_mool(src, sn, 2, out)
 }
 
 # roop_varg_vishwa(src, sn, out) — 1234567 -> 1,234,567.
 prakriya roop_varg_vishwa(src, sn, out) {
-    prati roop_varg_mool(src, sn, 3, out)
+    nivartanam roop_varg_mool(src, sn, 3, out)
 }
 
 # roop_varg(src, sn, out) — DEFAULT grouping: Indian (12,34,567).
 # The default is Indian because the audience is Indian.
 prakriya roop_varg(src, sn, out) {
-    prati roop_varg_bharatiya(src, sn, out)
+    nivartanam roop_varg_bharatiya(src, sn, out)
 }
 
 # roop_varg_ank(v, indian, out) — format integer v, then group it.
@@ -448,17 +452,17 @@ prakriya roop_varg_ank(v, indian, out) {
     vitti tmp = nirmmita(32)
     yadi (tmp == 0) {
         akshar_rakh(out, 0, 0)
-        prati 0
+        nivartanam 0
     }
     vitti n = roop_ank_aadhar2(v, 10, tmp)
     yadi (n == 0) {
         akshar_rakh(out, 0, 0)
-        prati 0
+        nivartanam 0
     }
     yadi (indian == 1) {
-        prati roop_varg_bharatiya(tmp, n, out)
+        nivartanam roop_varg_bharatiya(tmp, n, out)
     }
-    prati roop_varg_vishwa(tmp, n, out)
+    nivartanam roop_varg_vishwa(tmp, n, out)
 }
 
 # --- fixed decimals (private helper) ---
@@ -485,7 +489,7 @@ prakriya roop_sthir_mool(dasham x, places, always_sign, out) {
     vitti rev = nirmmita(22 * 8)
     yadi (rev == 0) {
         akshar_rakh(dst, 0, 0)
-        prati 0
+        nivartanam 0
     }
     vitti rlen = 0
     vitti k = 0
@@ -511,7 +515,7 @@ prakriya roop_sthir_mool(dasham x, places, always_sign, out) {
     yadi (v == 0.0) {
         yadi (v < 0.0) {
             akshar_rakh(dst, 0, 0)
-            prati 0
+            nivartanam 0
         }
     }
     scaled = mag * p10f + 0.5
@@ -525,7 +529,7 @@ prakriya roop_sthir_mool(dasham x, places, always_sign, out) {
     # this is exactly the cvttsd2si indefinite boundary.
     yadi (scaled >= 9223372036854775807.0) {
         akshar_rakh(dst, 0, 0)
-        prati 0
+        nivartanam 0
     }
     rounded = scaled
     intpart = rounded / p10i
@@ -544,7 +548,7 @@ prakriya roop_sthir_mool(dasham x, places, always_sign, out) {
     ndig = roop_ank(intpart, dst + wpos)
     yadi (ndig == 0) {
         akshar_rakh(dst, 0, 0)
-        prati 0
+        nivartanam 0
     }
     wpos = wpos + ndig
     # fraction part, zero-padded to exactly pl digits
@@ -576,19 +580,19 @@ prakriya roop_sthir_mool(dasham x, places, always_sign, out) {
         }
     }
     akshar_rakh(dst, wpos, 0)
-    prati wpos
+    nivartanam wpos
 }
 
 # roop_sthir(dasham x, places, out) — fixed decimals, '-' for negatives only.
 # 3.14159 at 2 places -> "3.14". Rounding: half away from zero.
 prakriya roop_sthir(dasham x, places, out) {
-    prati roop_sthir_mool(x, places, 0, out)
+    nivartanam roop_sthir_mool(x, places, 0, out)
 }
 
 # roop_sthir_chinhit(dasham x, places, out) — fixed decimals, always a util_chinha:
 # "+3.14" / "-3.14".
 prakriya roop_sthir_chinhit(dasham x, places, out) {
-    prati roop_sthir_mool(x, places, 1, out)
+    nivartanam roop_sthir_mool(x, places, 1, out)
 }
 
 # --- signed formatting ---
@@ -601,12 +605,12 @@ prakriya roop_chinhit(v, out) {
     vitti i = 0
     yadi (tmp == 0) {
         akshar_rakh(dst, 0, 0)
-        prati 0
+        nivartanam 0
     }
     n = roop_ank_aadhar2(val, 10, tmp)
     yadi (n == 0) {
         akshar_rakh(dst, 0, 0)
-        prati 0
+        nivartanam 0
     }
     yadi (val < 0) {
         i = 0
@@ -615,7 +619,7 @@ prakriya roop_chinhit(v, out) {
             i = i + 1
         }
         akshar_rakh(dst, n, 0)
-        prati n
+        nivartanam n
     }
     akshar_rakh(dst, 0, 43)
     i = 0
@@ -624,7 +628,7 @@ prakriya roop_chinhit(v, out) {
         i = i + 1
     }
     akshar_rakh(dst, n + 1, 0)
-    prati n + 1
+    nivartanam n + 1
 }
 
 # roop_sign_akshar(v, signch, out) — `signch` (a byte value, e.g. 32 for a
@@ -639,12 +643,12 @@ prakriya roop_sign_akshar(v, signch, out) {
     vitti i = 0
     yadi (tmp == 0) {
         akshar_rakh(dst, 0, 0)
-        prati 0
+        nivartanam 0
     }
     n = roop_ank_aadhar2(val, 10, tmp)
     yadi (n == 0) {
         akshar_rakh(dst, 0, 0)
-        prati 0
+        nivartanam 0
     }
     yadi (val < 0) {
         i = 0
@@ -653,7 +657,7 @@ prakriya roop_sign_akshar(v, signch, out) {
             i = i + 1
         }
         akshar_rakh(dst, n, 0)
-        prati n
+        nivartanam n
     }
     akshar_rakh(dst, 0, sc)
     i = 0
@@ -662,5 +666,5 @@ prakriya roop_sign_akshar(v, signch, out) {
         i = i + 1
     }
     akshar_rakh(dst, n + 1, 0)
-    prati n + 1
+    nivartanam n + 1
 }

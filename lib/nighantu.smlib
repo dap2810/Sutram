@@ -36,9 +36,9 @@ yoj khand
 
 # nighantu_kunji_gudh(key, keyn, cap) — home bucket of key (internal helper).
 prakriya nighantu_kunji_gudh(key, keyn, cap) {
-    yadi (cap < 1) { prati 0 }
+    yadi (cap < 1) { nivartanam 0 }
     vitti h = fnv1a(key, keyn)
-    prati h % cap
+    nivartanam h % cap
 }
 
 # nighantu_kunji_sam(m, slot, cap, key, keyn) — 1 if slot's key equals (key,keyn)
@@ -47,10 +47,10 @@ prakriya nighantu_kunji_gudh(key, keyn, cap) {
 prakriya nighantu_kunji_sam(m, slot, cap, key, keyn) {
     vitti base = 0
     vitti kl = m[2 + cap + slot]
-    yadi (kl != keyn) { prati 0 }
+    yadi (kl != keyn) { nivartanam 0 }
     base = (2 + 3 * cap) * 8 + slot * 32
-    yadi (khand_tul(m + base, kl, key, keyn) == 0) { prati 1 }
-    prati 0
+    yadi (khand_tul(m + base, kl, key, keyn) == 0) { nivartanam 1 }
+    nivartanam 0
 }
 
 # nighantu_koshtha_likh(m, slot, cap, key, keyn, val) — store key+val at slot and
@@ -73,7 +73,7 @@ prakriya nighantu_koshtha_likh(m, slot, cap, key, keyn, val) {
         akshar_rakh(m, base + i, 0)
         i = i + 1
     }
-    prati 1
+    nivartanam 1
 }
 
 # nighantu_anwesh(m, cap, key, keyn) — slot index holding key, or -1 if absent
@@ -86,18 +86,18 @@ prakriya nighantu_anwesh(m, cap, key, keyn) {
     vitti kn = keyn
     vitti idx = 0
     vitti start = 0
-    yadi (cap < 1) { prati 0 - 1 }
-    yadi (kn < 0) { prati 0 - 1 }
+    yadi (cap < 1) { nivartanam 0 - 1 }
+    yadi (kn < 0) { nivartanam 0 - 1 }
     yadi (kn > 32) { kn = 32 }
     idx = nighantu_kunji_gudh(key, kn, cap)
     start = idx
     yavat (m[2 + idx] == 1) {
-        yadi (nighantu_kunji_sam(m, idx, cap, key, kn) == 1) { prati idx }
+        yadi (nighantu_kunji_sam(m, idx, cap, key, kn) == 1) { nivartanam idx }
         idx = idx + 1
         yadi (idx >= cap) { idx = 0 }
-        yadi (idx == start) { prati 0 - 1 }
+        yadi (idx == start) { nivartanam 0 - 1 }
     }
-    prati 0 - 1
+    nivartanam 0 - 1
 }
 
 # nighantu_srij(cap) — allocate and clear a map of capacity cap (clamped to >= 1).
@@ -110,18 +110,18 @@ prakriya nighantu_srij(cap) {
     vitti i = 0
     vitti sz = 0
     yadi (c < 1) { c = 1 }
-    yadi (c > 164703072086692424) { prati 0 }   # R35: 16 + 56c must not wrap
+    yadi (c > 164703072086692424) { nivartanam 0 }   # R35: 16 + 56c must not wrap
     sz = (2 + 3 * c) * 8 + c * 32
-    yadi (sz < 0) { prati 0 }
+    yadi (sz < 0) { nivartanam 0 }
     m = nirmmita(sz)
-    yadi (m == 0) { prati 0 }
+    yadi (m == 0) { nivartanam 0 }
     m[0] = c
     m[1] = 0
     yavat (i < c) {
         m[2 + i] = 0
         i = i + 1
     }
-    prati m
+    nivartanam m
 }
 
 # nighantu_khip(m, cap, key, keyn, val) — insert or update key; returns 1 on
@@ -134,24 +134,24 @@ prakriya nighantu_khip(m, cap, key, keyn, val) {
     vitti idx = 0
     vitti start = 0
     vitti slot = 0
-    yadi (cap < 1) { prati 0 }
-    yadi (kn < 0) { prati 0 }
+    yadi (cap < 1) { nivartanam 0 }
+    yadi (kn < 0) { nivartanam 0 }
     yadi (kn > 32) { kn = 32 }
     slot = nighantu_anwesh(m, cap, key, kn)
     yadi (slot >= 0) {
         m[2 + 2 * cap + slot] = val
-        prati 1
+        nivartanam 1
     }
     idx = nighantu_kunji_gudh(key, kn, cap)
     start = idx
     yavat (m[2 + idx] == 1) {
         idx = idx + 1
         yadi (idx >= cap) { idx = 0 }
-        yadi (idx == start) { prati 0 }
+        yadi (idx == start) { nivartanam 0 }
     }
     nighantu_koshtha_likh(m, idx, cap, key, kn, val)
     m[1] = m[1] + 1
-    prati 1
+    nivartanam 1
 }
 
 # nighantu_grah(m, cap, key, keyn) — value stored for key, or -1 if absent
@@ -161,16 +161,16 @@ prakriya nighantu_grah(m, cap, key, keyn) {
     vitti slot = 0
     yadi (kn > 32) { kn = 32 }
     slot = nighantu_anwesh(m, cap, key, kn)
-    yadi (slot < 0) { prati 0 - 1 }
-    prati m[2 + 2 * cap + slot]
+    yadi (slot < 0) { nivartanam 0 - 1 }
+    nivartanam m[2 + 2 * cap + slot]
 }
 
 # nighantu_antah(m, cap, key, keyn) — 1 if key is present, else 0.
 prakriya nighantu_antah(m, cap, key, keyn) {
     vitti kn = keyn
     yadi (kn > 32) { kn = 32 }
-    yadi (nighantu_anwesh(m, cap, key, kn) < 0) { prati 0 }
-    prati 1
+    yadi (nighantu_anwesh(m, cap, key, kn) < 0) { nivartanam 0 }
+    nivartanam 1
 }
 
 # nighantu_apanay(m, cap, key, keyn) — delete key; 1 if removed, 0 if absent.
@@ -192,7 +192,7 @@ prakriya nighantu_apanay(m, cap, key, keyn) {
     vitti kl = 0
     yadi (kn > 32) { kn = 32 }
     pos = nighantu_anwesh(m, cap, key, kn)
-    yadi (pos < 0) { prati 0 }
+    yadi (pos < 0) { nivartanam 0 }
     m[2 + pos] = 0
     m[1] = m[1] - 1
     i = pos
@@ -235,7 +235,7 @@ prakriya nighantu_apanay(m, cap, key, keyn) {
         j = j + 1
         yadi (j >= cap) { j = 0 }
     }
-    prati 1
+    nivartanam 1
 }
 
 # nighantu_rikta(m) — reset the map to empty IN PLACE (WS1, R19): same
@@ -265,7 +265,7 @@ prakriya nighantu_rikta(m) {
         }
         i = i + 1
     }
-    prati 1
+    nivartanam 1
 }
 
 # nighantu_vardh(m, newcap) — copy the map into a fresh map of capacity
@@ -287,12 +287,12 @@ prakriya nighantu_vardh(m, newcap) {
     vitti i = 0
     vitti seglen = 0
     vitti slot = 0
-    yadi (newcap < n) { prati 0 }
+    yadi (newcap < n) { nivartanam 0 }
     newm = nighantu_srij(newcap)
-    yadi (newm == 0) { prati 0 }   # R36: was dereferenced
+    yadi (newm == 0) { nivartanam 0 }   # R36: was dereferenced
     nc = newm[0]
     tmp = nirmmita(oldcap * 33 + 1)
-    yadi (tmp == 0) { prati 0 }
+    yadi (tmp == 0) { nivartanam 0 }
     nk = nighantu_kunjika_ashtak(m, tmp)
     yavat (i < nk) {
         seglen = akshar(tmp, pos)
@@ -301,7 +301,7 @@ prakriya nighantu_vardh(m, newcap) {
         pos = pos + 1 + seglen
         i = i + 1
     }
-    prati newm
+    nivartanam newm
 }
 
 # nighantu_grah_mool(m, cap, key, keyn, def) — value for key, or def if
@@ -314,12 +314,13 @@ prakriya nighantu_grah_mool(m, cap, key, keyn, def) {
     vitti slot = 0
     yadi (kn > 32) { kn = 32 }
     slot = nighantu_anwesh(m, cap, key, kn)
-    yadi (slot < 0) { prati def }
-    prati m[2 + 2 * cap + slot]
+    yadi (slot < 0) { nivartanam def }
+    nivartanam m[2 + 2 * cap + slot]
 }
 
+# nighantu_maap(m) — number of entries in the map m (its stored size cell).
 prakriya nighantu_maap(m) {
-    prati m[1]
+    nivartanam m[1]
 }
 
 # nighantu_mil(dst, dcap, src, scap) — copy every entry of src into dst;
@@ -331,7 +332,7 @@ prakriya nighantu_maap(m) {
 # R38: -1 (dst unchanged) if its scratch cannot be allocated.
 prakriya nighantu_mil(dst, dcap, src, scap) {
     vitti tmp = nirmmita(src[0] * 33 + 1)
-    yadi (tmp == 0) { prati 0 - 1 }
+    yadi (tmp == 0) { nivartanam 0 - 1 }
     vitti nk = nighantu_kunjika_ashtak(src, tmp)
     vitti pos = 0
     vitti i = 0
@@ -342,13 +343,13 @@ prakriya nighantu_mil(dst, dcap, src, scap) {
         seglen = akshar(tmp, pos)
         v = nighantu_grah(src, scap, tmp + pos + 1, seglen)
         yadi (nighantu_khip(dst, dcap, tmp + pos + 1, seglen, v) == 0) {
-            prati merged
+            nivartanam merged
         }
         merged = merged + 1
         pos = pos + 1 + seglen
         i = i + 1
     }
-    prati merged
+    nivartanam merged
 }
 
 # nighantu_mulya(m, out) — write the live values into out (one qword cell
@@ -367,7 +368,7 @@ prakriya nighantu_mulya(m, out) {
         }
         i = i + 1
     }
-    prati n
+    nivartanam n
 }
 
 # nighantu_kunjika(m, out) — write live keys into out in length-prefixed form
@@ -401,7 +402,7 @@ prakriya nighantu_kunjika(m, out) {
         }
         i = i + 1
     }
-    prati n
+    nivartanam n
 }
 
 # nighantu_kunjika_ashtak(m, out) — R17. Same segments as nighantu_kunjika, but PACKED
@@ -436,5 +437,5 @@ prakriya nighantu_kunjika_ashtak(m, out) {
         }
         i = i + 1
     }
-    prati n
+    nivartanam n
 }

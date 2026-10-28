@@ -6,29 +6,19 @@ mukhya()
 
     likha("=== Sutra & Bitwise ===\n")
 
-    likha("MAX_VAL = ")
-    likha(MAX_VAL)
-    likha("\n")
+    likha("MAX_VAL = ", MAX_VAL)
 
     vitti rem = 17 % 5
-    likha("17 % 5 = ")
-    likha(rem)
-    likha("\n")
+    likha("17 % 5 = ", rem)
 
     vitti a = 12 & 10
-    likha("12 & 10 = ")
-    likha(a)
-    likha("\n")
+    likha("12 & 10 = ", a)
 
     vitti b = 12 | 10
-    likha("12 | 10 = ")
-    likha(b)
-    likha("\n")
+    likha("12 | 10 = ", b)
 
     vitti c = 12 ^ 10
-    likha("12 ^ 10 = ")
-    likha(c)
-    likha("\n")
+    likha("12 ^ 10 = ", c)
 
     vitti x = 42
     abhava(x > 0)

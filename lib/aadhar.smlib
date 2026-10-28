@@ -22,15 +22,15 @@ prakriya brihat_ank_tak(x, n, base, out) {
     vitti c = n
     vitti b = base
     vitti dst = out
-    yadi (b < 2) { prati 0 }
-    yadi (b > 16) { prati 0 }
+    yadi (b < 2) { nivartanam 0 }
+    yadi (b > 16) { nivartanam 0 }
     yadi (c < 1) {
         dst[0] = 0
-        prati 1
+        nivartanam 1
     }
-    yadi (c > 288230376151711743) { prati 0 - 1 }   # R39: c * 4 * 8 must not wrap
+    yadi (c > 288230376151711743) { nivartanam 0 - 1 }   # R39: c * 4 * 8 must not wrap
     vitti w = nirmmita(c * 8)
-    yadi (w == 0 && c > 0) { prati 0 - 1 }
+    yadi (w == 0 && c > 0) { nivartanam 0 - 1 }
     vitti i = 0
     yavat (i < c) {
         w[i] = src[i]
@@ -38,12 +38,12 @@ prakriya brihat_ank_tak(x, n, base, out) {
     }
     yadi (brihat_asti_shunyank(w, c) == 1) {
         dst[0] = 0
-        prati 1
+        nivartanam 1
     }
     # rev holds the digits LSB-first: base 2 needs ceil(n*log2(10))
     # = ceil(3.33*n) cells; 4*n is safe for every base.
     vitti rev = nirmmita(c * 4 * 8)
-    yadi (rev == 0 && c > 0) { prati 0 - 1 }
+    yadi (rev == 0 && c > 0) { nivartanam 0 - 1 }
     vitti rlen = 0
     vitti cont = 1
     yavat (cont == 1) {
@@ -67,7 +67,7 @@ prakriya brihat_ank_tak(x, n, base, out) {
         dst[p] = rev[rlen - 1 - p]
         p = p + 1
     }
-    prati rlen
+    nivartanam rlen
 }
 
 # brihat_ank_se(d, count, base, x, n) — parse `count` digit values
@@ -81,14 +81,14 @@ prakriya brihat_ank_se(d, count, base, x, n) {
     vitti b = base
     vitti dst = x
     vitti c = n
-    yadi (b < 2) { prati 0 }
-    yadi (b > 16) { prati 0 }
+    yadi (b < 2) { nivartanam 0 }
+    yadi (b > 16) { nivartanam 0 }
     brihat_shunyank(dst, c)
     vitti p = 0
     yavat (p < cnt) {
         vitti dv = src[p]
-        yadi (dv < 0) { prati 0 }
-        yadi (dv >= b) { prati 0 }
+        yadi (dv < 0) { nivartanam 0 }
+        yadi (dv >= b) { nivartanam 0 }
         # dst = dst * b + dv
         vitti carry = dv
         vitti k = 0
@@ -100,5 +100,5 @@ prakriya brihat_ank_se(d, count, base, x, n) {
         }
         p = p + 1
     }
-    prati 1
+    nivartanam 1
 }

@@ -3,13 +3,13 @@
 #
 # Operates on `mala` integer arrays, in place. Scalar arguments are copied into
 # locals before mutation; array elements are written directly.
-
 prakriya vinimay(a, i, j) {
     vitti t = a[i]
     a[i] = a[j]
     a[j] = t
 }
 
+# budbud_shreni(a, n) — sorts a[0..n-1] in place, ascending, by bubble sort.
 prakriya budbud_shreni(a, n) {
     vitti i = 0
     yavat (i < n) {
@@ -24,6 +24,7 @@ prakriya budbud_shreni(a, n) {
     }
 }
 
+# viparyay_mala(a, n) — reverses a[0..n-1] in place.
 prakriya viparyay_mala(a, n) {
     vitti i = 0
     vitti j = n - 1
@@ -34,31 +35,34 @@ prakriya viparyay_mala(a, n) {
     }
 }
 
+# laghu(a, n) — smallest element of a[0..n-1]; 0 if n <= 0.
 prakriya laghu(a, n) {
     # n <= 0: no element exists — return 0, as suchi_laghu does
     # on an empty list (the old code read a[0] and segfaulted).
-    yadi (n <= 0) { prati 0 }
+    yadi (n <= 0) { nivartanam 0 }
     vitti i = 1
     vitti best = a[0]
     yavat (i < n) {
         yadi (a[i] < best) { best = a[i] }
         i = i + 1
     }
-    prati best
+    nivartanam best
 }
 
+# adhik(a, n) — largest element of a[0..n-1]; 0 if n <= 0.
 prakriya adhik(a, n) {
     # n <= 0: no element exists — return 0, as laghu.
-    yadi (n <= 0) { prati 0 }
+    yadi (n <= 0) { nivartanam 0 }
     vitti i = 1
     vitti best = a[0]
     yavat (i < n) {
         yadi (a[i] > best) { best = a[i] }
         i = i + 1
     }
-    prati best
+    nivartanam best
 }
 
+# yog(a, n) — sum of a[0..n-1].
 prakriya yog(a, n) {
     vitti i = 0
     vitti s = 0
@@ -66,18 +70,20 @@ prakriya yog(a, n) {
         s = s + a[i]
         i = i + 1
     }
-    prati s
+    nivartanam s
 }
 
+# anwesh_sarak(a, n, target) — index of the first occurrence of target in a[0..n-1], or -1.
 prakriya anwesh_sarak(a, n, target) {
     vitti i = 0
     yavat (i < n) {
-        yadi (a[i] == target) { prati i }
+        yadi (a[i] == target) { nivartanam i }
         i = i + 1
     }
-    prati 0 - 1
+    nivartanam 0 - 1
 }
 
+# gan(a, n, target) — count of occurrences of target in a[0..n-1].
 prakriya gan(a, n, target) {
     vitti i = 0
     vitti c = 0
@@ -85,29 +91,32 @@ prakriya gan(a, n, target) {
         yadi (a[i] == target) { c = c + 1 }
         i = i + 1
     }
-    prati c
+    nivartanam c
 }
 
+# asti_sorted(a, n) — 1 if a[0..n-1] is in non-decreasing order, else 0.
 prakriya asti_sorted(a, n) {
     vitti i = 0
     yavat (i < n - 1) {
-        yadi (a[i] > a[i + 1]) { prati 0 }
+        yadi (a[i] > a[i + 1]) { nivartanam 0 }
         i = i + 1
     }
-    prati 1
+    nivartanam 1
 }
 
+# dwi_anwesh(a, n, target) — binary search for target in sorted a[0..n-1]: its index, or -1.
 prakriya dwi_anwesh(a, n, target) {
     vitti lo = 0
     vitti hi = n - 1
     yavat (lo <= hi) {
         vitti mid = (lo + hi) / 2
-        yadi (a[mid] == target) { prati mid }
+        yadi (a[mid] == target) { nivartanam mid }
         yadi (a[mid] < target) { lo = mid + 1 } anya { hi = mid - 1 }
     }
-    prati 0 - 1
+    nivartanam 0 - 1
 }
 
+# shankh_shreni(a, n) — sorts a[0..n-1] in place, ascending, by shell sort.
 prakriya shankh_shreni(a, n) {
     vitti gap = n / 2
     yavat (gap > 0) {
@@ -135,6 +144,7 @@ prakriya shankh_shreni(a, n) {
     }
 }
 
+# nivesh_shreni(a, n) — sorts a[0..n-1] in place, ascending, by insertion sort.
 prakriya nivesh_shreni(a, n) {
     vitti arr = a
     vitti len = n
@@ -162,7 +172,7 @@ prakriya nivesh_shreni(a, n) {
 
 # mil_shreni(a, n) — top-down merge sort using a temp buffer.
 prakriya mil_shreni_punar(a, tmp, lo, hi) {
-    yadi (hi - lo < 2) { prati 0 }
+    yadi (hi - lo < 2) { nivartanam 0 }
     vitti mid = (lo + hi) / 2
     mil_shreni_punar(a, tmp, lo, mid)
     mil_shreni_punar(a, tmp, mid, hi)
@@ -206,14 +216,14 @@ prakriya mil_shreni_punar(a, tmp, lo, hi) {
         a[c] = tmp[c]
         c = c + 1
     }
-    prati 0
+    nivartanam 0
 }
 
 # mil_shreni(a, n) — merge sort; returns 0, or -1 (a unchanged) if its scratch cannot be allocated.
 prakriya mil_shreni(a, n) {
-    yadi (n < 2) { prati 0 }
-    yadi (n > 1152921504606846975) { prati 0 - 1 }   # R39: n * 8 must not wrap
+    yadi (n < 2) { nivartanam 0 }
+    yadi (n > 1152921504606846975) { nivartanam 0 - 1 }   # R39: n * 8 must not wrap
     vitti tmp = nirmmita(n * 8)
-    yadi (tmp == 0 && n > 0) { prati 0 - 1 }
+    yadi (tmp == 0 && n > 0) { nivartanam 0 - 1 }
     mil_shreni_punar(a, tmp, 0, n)
 }

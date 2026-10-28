@@ -32,23 +32,23 @@ prakriya patra_path_sarv(path, out, cap) {
     vitti c = cap
     vitti fd = 0
     vitti total = 0
-    yadi (c < 0) { prati 0 - 1 }
+    yadi (c < 0) { nivartanam 0 - 1 }
     fd = dvaram(p, 0)
-    yadi (fd < 0) { prati 0 - 1 }
+    yadi (fd < 0) { nivartanam 0 - 1 }
     yavat (total < c) {
         vitti n = paadh(fd, dst + total, c - total)
         yadi (n < 0) {
             band(fd)
-            prati 0 - 1
+            nivartanam 0 - 1
         }
         yadi (n == 0) {
             band(fd)
-            prati total
+            nivartanam total
         }
         total = total + n
     }
     band(fd)
-    prati total
+    nivartanam total
 }
 
 # patra_likh_sarv(path, data, n) — create/truncate path, write all n
@@ -60,19 +60,19 @@ prakriya patra_likh_sarv(path, data, n) {
     vitti c = n
     vitti fd = 0
     vitti total = 0
-    yadi (c < 0) { prati 0 - 1 }
+    yadi (c < 0) { nivartanam 0 - 1 }
     fd = dvaram(p, 577)
-    yadi (fd < 0) { prati 0 - 1 }
+    yadi (fd < 0) { nivartanam 0 - 1 }
     yavat (total < c) {
         vitti w = likha(fd, src + total, c - total)
         yadi (w <= 0) {
             band(fd)
-            prati 0 - 1
+            nivartanam 0 - 1
         }
         total = total + w
     }
     band(fd)
-    prati total
+    nivartanam total
 }
 
 # patra_asti(path) — 1 if path opens read-only, 0 otherwise.
@@ -80,7 +80,7 @@ prakriya patra_likh_sarv(path, data, n) {
 # permission denial alike — the caller cannot distinguish them.)
 prakriya patra_asti(path) {
     vitti fd = dvaram(path, 0)
-    yadi (fd < 0) { prati 0 }
+    yadi (fd < 0) { nivartanam 0 }
     band(fd)
-    prati 1
+    nivartanam 1
 }

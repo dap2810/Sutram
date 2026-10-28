@@ -58,15 +58,15 @@ Do not edit by hand.</p>
 <table>
 <tr><th>Function</th><th>Description</th></tr>
 <tr><td><code>asti_yugm(n)</code></td><td></td></tr>
-<tr><td><code>asti_visham(n)</code></td><td></td></tr>
-<tr><td><code>ank_gan(n)</code></td><td></td></tr>
-<tr><td><code>ank_yog(n)</code></td><td></td></tr>
-<tr><td><code>viparyay_ank(n)</code></td><td></td></tr>
-<tr><td><code>asti_vilom(n)</code></td><td></td></tr>
-<tr><td><code>seemit(n, lo, hi)</code></td><td></td></tr>
-<tr><td><code>fib(n)</code></td><td></td></tr>
-<tr><td><code>asti_sampurna(n)</code></td><td></td></tr>
-<tr><td><code>collatz_charan(n)</code></td><td></td></tr>
+<tr><td><code>asti_visham(n)</code></td><td>asti_visham(n) — 1 if n is odd, 0 if even.</td></tr>
+<tr><td><code>ank_gan(n)</code></td><td>ank_gan(n) — number of decimal digits in n (sign ignored; MIN counts as 19).</td></tr>
+<tr><td><code>ank_yog(n)</code></td><td>ank_yog(n) — sum of the decimal digits of n (sign ignored; MIN counts as 89).</td></tr>
+<tr><td><code>viparyay_ank(n)</code></td><td>viparyay_ank(n) — n with its decimal digits reversed, sign kept (e.g. -123 -&gt; -321).</td></tr>
+<tr><td><code>asti_vilom(n)</code></td><td>asti_vilom(n) — 1 if n reads the same backwards (a palindrome); negatives are never palindromes.</td></tr>
+<tr><td><code>seemit(n, lo, hi)</code></td><td>seemit(n, lo, hi) — n clamped into [lo, hi]: lo if n &lt; lo, hi if n &gt; hi, else n.</td></tr>
+<tr><td><code>fib(n)</code></td><td>fib(n) — the nth Fibonacci number (fib(0) = 0, fib(1) = 1), iterative; wraps past int64.</td></tr>
+<tr><td><code>asti_sampurna(n)</code></td><td>asti_sampurna(n) — 1 if n is a perfect number (equals the sum of its proper divisors), else 0.</td></tr>
+<tr><td><code>collatz_charan(n)</code></td><td>collatz_charan(n) — steps for the Collatz sequence from n to reach 1; -1 if n &lt; 1 or 3x+1 would overflow.</td></tr>
 </table>
 <h2 id="anukram"><code>anukram</code></h2>
 <p class="shesh-desc">layer: core The library&#x27;s one new capability area: encode values into a flat byte buffer and decode them back, with bounds checking. Format: i64    — 8 bytes, little-endian, two&#x27;s complement bytes  — 8-byte little-endian length (n) followed by n payload bytes Buffers are byte strings (akshar / akshar_rakh), caller-allocated and caller-sized. Every put/get takes (buf, pos, cap): pos is the cursor, cap is the buffer size in bytes. On success the function returns the new cursor; on overrun (or a corrupt negative length when decoding) it returns -1 and the destination buffer is untouched (out_n may hold the decoded length if the length itself was readable). The caller owns the buffer and must check for -1, exactly like checking ok. put_bytes requires src and dst NOT to overlap: it writes the length header before copying the payload, so an overlapping src would be clobbered mid-copy. get_bytes requires buf and dst not to overlap for the same reason. Deliberately not here: floats (the language has no bit-cast primitive to turn a dasham into bits), varints (fixed-width is enough for this first area), and schema/versioning (the caller owns the field order; there is no header). anukram_maap_ashtak(n) — encoded size of an n-byte payload: 8 + n.</p>
@@ -101,32 +101,32 @@ Do not edit by hand.</p>
 <table>
 <tr><th>Function</th><th>Description</th></tr>
 <tr><td><code>dviguna(n)</code></td><td></td></tr>
-<tr><td><code>meru(n, k)</code></td><td></td></tr>
-<tr><td><code>matra_meru(n)</code></td><td></td></tr>
-<tr><td><code>asti_guru(pat, i)</code></td><td></td></tr>
-<tr><td><code>guru_gan(pat)</code></td><td></td></tr>
-<tr><td><code>meru_mala(a, n)</code></td><td></td></tr>
+<tr><td><code>meru(n, k)</code></td><td>meru(n, k) — the binomial coefficient C(n, k); 0 for k &lt; 0 or k &gt; n.</td></tr>
+<tr><td><code>matra_meru(n)</code></td><td>matra_meru(n) — the nth Fibonacci number (matra_meru(0) = 0, matra_meru(1) = 1).</td></tr>
+<tr><td><code>asti_guru(pat, i)</code></td><td>asti_guru(pat, i) — 1 if bit i of the integer pattern pat is set; 0 for i &lt; 0 or i &gt;= 64.</td></tr>
+<tr><td><code>guru_gan(pat)</code></td><td>guru_gan(pat) — count of set bits in pat (population count); negatives return 0.</td></tr>
+<tr><td><code>meru_mala(a, n)</code></td><td>meru_mala(a, n) — fills a[0..n] with the nth row of Pascal&#x27;s triangle: a[i] = meru(n, i).</td></tr>
 </table>
 <h2 id="ganit"><code>ganit</code></h2>
 <p class="shesh-desc">layer: core Pure integer arithmetic, written only with verified language features. Every function copies its parameters into locals before mutating them, because the compiler currently faults on assignment to a parameter.</p>
 <table>
 <tr><th>Function</th><th>Description</th></tr>
 <tr><td><code>varg(n)</code></td><td></td></tr>
-<tr><td><code>vargit(n)</code></td><td></td></tr>
-<tr><td><code>ghan(n)</code></td><td></td></tr>
-<tr><td><code>nirapeksh_mulya(n)</code></td><td></td></tr>
-<tr><td><code>laghu2(a, b)</code></td><td></td></tr>
-<tr><td><code>adhik2(a, b)</code></td><td></td></tr>
-<tr><td><code>mahattam(a, b)</code></td><td></td></tr>
-<tr><td><code>laghuttam(a, b)</code></td><td></td></tr>
-<tr><td><code>ghat(base, e)</code></td><td></td></tr>
-<tr><td><code>kramgun(n)</code></td><td></td></tr>
-<tr><td><code>asti_abhajya(n)</code></td><td></td></tr>
-<tr><td><code>yog_tak(n)</code></td><td></td></tr>
-<tr><td><code>dvigun(n)</code></td><td></td></tr>
-<tr><td><code>trigun(n)</code></td><td></td></tr>
-<tr><td><code>vardh(n)</code></td><td></td></tr>
-<tr><td><code>bit_gan(n)</code></td><td></td></tr>
+<tr><td><code>vargit(n)</code></td><td>vargit(n) — n squared (n * n).</td></tr>
+<tr><td><code>ghan(n)</code></td><td>ghan(n) — n cubed (n * n * n).</td></tr>
+<tr><td><code>nirapeksh_mulya(n)</code></td><td>nirapeksh_mulya(n) — absolute value of n (MIN wraps to MIN, as it cannot be negated).</td></tr>
+<tr><td><code>laghu2(a, b)</code></td><td>laghu2(a, b) — the smaller of a and b.</td></tr>
+<tr><td><code>adhik2(a, b)</code></td><td>adhik2(a, b) — the larger of a and b.</td></tr>
+<tr><td><code>mahattam(a, b)</code></td><td>mahattam(a, b) — greatest common divisor of a and b, always non-negative (mahattam(0, 0) = 0).</td></tr>
+<tr><td><code>laghuttam(a, b)</code></td><td>laghuttam(a, b) — least common multiple of a and b, always non-negative (laghuttam(0, 0) = 0).</td></tr>
+<tr><td><code>ghat(base, e)</code></td><td>ghat(base, e) — base raised to the power e (e &gt;= 0; negative e returns 1, as the loop never runs).</td></tr>
+<tr><td><code>kramgun(n)</code></td><td>kramgun(n) — n factorial (n!); 1 for n &lt; 2; wraps past int64 for n &gt;= 21.</td></tr>
+<tr><td><code>asti_abhajya(n)</code></td><td>asti_abhajya(n) — 1 if n is prime, 0 otherwise (n &lt; 2 is not prime).</td></tr>
+<tr><td><code>yog_tak(n)</code></td><td>yog_tak(n) — sum 1 + 2 + ... + n, closed form n*(n+1)/2; 0 for n &lt;= 0.</td></tr>
+<tr><td><code>dvigun(n)</code></td><td>dvigun(n) — n doubled (n * 2).</td></tr>
+<tr><td><code>trigun(n)</code></td><td>trigun(n) — n tripled (n * 3).</td></tr>
+<tr><td><code>vardh(n)</code></td><td>vardh(n) — n incremented by 1 (n + 1).</td></tr>
+<tr><td><code>bit_gan(n)</code></td><td>bit_gan(n) — count of set bits in n; negatives return 0.</td></tr>
 <tr><td><code>ganit_yadricch(state)</code></td><td>ganit_yadricch(state): Knuth MMIX LCG — state = state * 6364136223846793005 + 1442695040888963407 (shesh 2^64, plain wrapping arithmetic). `state` is a 1-cell array holding the seed; it is updated in place and the new state is returned. The full 64-bit state is returned (it may be negative); use nirapeksh_mulya or a modulo to map it to a range. Any seed works, including 0. Deterministic: the same seed always yields the same sequence. There is no entropy source in the language, so the caller owns the seed.</td></tr>
 <tr><td><code>ganit_seemit(v, lo, hi)</code></td><td>ganit_seemit(v, lo, hi): lo if v &lt; lo, hi if v &gt; hi, else v. Requires lo &lt;= hi. If lo &gt; hi: lo when v &lt; lo, otherwise hi (R9, F4: the old comment said lo always; ganit_seemit(4, 4, -2) is -2).</td></tr>
 </table>
@@ -136,7 +136,7 @@ Do not edit by hand.</p>
 <tr><th>Function</th><th>Description</th></tr>
 <tr><td><code>kuttaka(a, b, c)</code></td><td></td></tr>
 <tr><td><code>ganita_vargmool(n)</code></td><td>integer vargit root (floor)</td></tr>
-<tr><td><code>ganita_nirapeksh(n)</code></td><td></td></tr>
+<tr><td><code>ganita_nirapeksh(n)</code></td><td>ganita_nirapeksh(n) — absolute value of n (the ganita-module spelling of nirapeksh_mulya).</td></tr>
 <tr><td><code>chakravala(out, n)</code></td><td>chakravala(out, n): solves x^2 - n*y^2 = 1 for least positive x, y. Writes out[0] = x and out[1] = y; caller must supply at least 2 writable qword cells.</td></tr>
 <tr><td><code>samasa(out, a, b, c, d, n)</code></td><td>samasa(out, a, b, c, d, n): Brahmagupta&#x27;s composition law (bhavana / samasa). Given a^2 - n*b^2 = k1 and c^2 - n*d^2 = k2, composes them into a third: (a^2 - n*b^2)(c^2 - n*d^2) = (a*c + n*b*d)^2 - n*(a*d + b*c)^2 Writes out[0] = a*c + n*b*d and out[1] = a*d + b*c; requires 2 writable qword cells.</td></tr>
 <tr><td><code>brahmagupta_kshetr(a, b, c, d)</code></td><td>brahmagupta_kshetr(a, b, c, d): Brahmagupta&#x27;s formula for the area of a cyclic quadrilateral (Brahma-sphuta-siddhanta, 628 CE):  area = sqrt((s-a)(s-b)(s-c)(s-d)),  s = (a+b+c+d)/2. With d = 0 this is Brahmagupta&#x27;s triangle (Heron&#x27;s) formula. Returns the integer part.</td></tr>
@@ -182,7 +182,7 @@ Do not edit by hand.</p>
 <tr><td><code>khand_bandh(cells, n, out)</code></td><td></td></tr>
 <tr><td><code>khand_mukt(bytes, n, out)</code></td><td>khand_mukt(bytes, n, out) — the inverse: expand n contiguous bytes into qword cells (one byte value per cell). Writes a 0 terminator cell at out[n]. Returns n. n &lt;= 0 writes only the terminator, returns 0. POINTER ARITHMETIC IS IN BYTES: to unpack into cell i of a cell array, pass out + i*8, not out + i.</td></tr>
 <tr><td><code>khand_pratilip(src, n, out)</code></td><td>khand_pratilip(src, n, out) — copy n bytes verbatim (&quot;make me a real byte string from this&quot;). Writes a 0 terminator at out[n]. Returns n. n &lt;= 0 writes only the terminator, returns 0.</td></tr>
-<tr><td><code>khand_maap(s)</code></td><td></td></tr>
+<tr><td><code>khand_maap(s)</code></td><td>khand_maap(s) — byte length of the string s (via vartani_aayam).</td></tr>
 <tr><td><code>khand_anwesh(hay, hn, needle, nn)</code></td><td>khand_anwesh(hay, hn, needle, nn) — byte index of first occurrence of needle in hay, or -1. Empty needle matches at 0.</td></tr>
 <tr><td><code>khand_antah(hay, hn, needle, nn)</code></td><td>khand_antah(hay, hn, needle, nn) — 1 if needle occurs in hay, else 0.</td></tr>
 <tr><td><code>khand_pratisthap(src, sn, find, fn, repl, out)</code></td><td>khand_pratisthap(src, sn, find, fn, repl, out) — copy src to out, replacing every (non-overlapping) occurrence of find with repl. repl is 0-terminated (its length is derived, so a literal works) — repl cannot be a slice; khand_pratilip a slice into a terminated buffer first (see header, slice-boundary rules). Returns the new byte count. Empty find: copy verbatim. Caller allocates generously.</td></tr>
@@ -190,9 +190,9 @@ Do not edit by hand.</p>
 <tr><td><code>khand_yuj(parts, count, sep, sepn, out)</code></td><td>khand_yuj(parts, count, sep, sepn, out) — inverse of khand_bhed for the length-prefixed format. Joins `count` segments with sep into a byte string. Returns the new byte count.</td></tr>
 <tr><td><code>khand_chhid(src, sn, out)</code></td><td>khand_chhid(src, sn, out) — strip leading/trailing ASCII spaces (32). Returns the new byte count.</td></tr>
 <tr><td><code>khand_unnat(src, sn, out)</code></td><td>khand_unnat(src, sn, out) / khand_avanat — ASCII case conversion on byte strings. Returns the byte count. sn &lt; 0: empty output (the old code wrote the terminator at out[-1], out of bounds).</td></tr>
-<tr><td><code>khand_avanat(src, sn, out)</code></td><td></td></tr>
+<tr><td><code>khand_avanat(src, sn, out)</code></td><td>khand_avanat(src, sn, out) — copies src (sn bytes) to out with A-Z lowercased to a-z, NUL-terminated; returns sn (0 for sn &lt; 0).</td></tr>
 <tr><td><code>khand_aadi(src, sn, pre, pn)</code></td><td>khand_aadi(src, sn, pre, pn) / khand_ant — 0/1 on byte strings. A negative prefix/suffix length is invalid: 0 (the old code treated it as empty and returned 1).</td></tr>
-<tr><td><code>khand_ant(src, sn, suf, sn2)</code></td><td></td></tr>
+<tr><td><code>khand_ant(src, sn, suf, sn2)</code></td><td>khand_ant(src, sn, suf, sn2) — 1 if the src byte string (sn bytes) ends with suf (sn2 bytes), else 0.</td></tr>
 <tr><td><code>khand_tul(a, an, b, bn)</code></td><td>khand_tul(a, an, b, bn) — -1 / 0 / 1 (lexicographic by byte value).</td></tr>
 <tr><td><code>khand_viparyay(src, sn, out)</code></td><td>khand_viparyay(src, sn, out) — copy src reversed into out (WS3, R19). Two-pointer vinimay, so it is SAFE IN PLACE (src == out works). Writes a 0 terminator at out[sn]. Returns sn. sn &lt;= 0 writes only the terminator, returns 0. Before this, reversing a byte string meant a hand-written loop at every call site.</td></tr>
 <tr><td><code>khand_gan(hay, hn, needle, nn)</code></td><td>khand_gan(hay, hn, needle, nn) — count NON-OVERLAPPING occurrences of needle in hay (WS3, R19). Empty needle returns 0 (khand_anwesh would match at 0 forever). Before this, counting meant looping khand_anwesh over successive suffixes at every call site.</td></tr>
@@ -217,13 +217,13 @@ Do not edit by hand.</p>
 <table>
 <tr><th>Function</th><th>Description</th></tr>
 <tr><td><code>mala_nava(n)</code></td><td></td></tr>
-<tr><td><code>mala_sangrah(arr, i, val)</code></td><td></td></tr>
-<tr><td><code>mala_grah(arr, i)</code></td><td></td></tr>
-<tr><td><code>mala_purn(arr, val, n)</code></td><td></td></tr>
-<tr><td><code>mala_pratilip(dst, src, n)</code></td><td></td></tr>
-<tr><td><code>mala_yog(arr, n)</code></td><td></td></tr>
-<tr><td><code>mala_sangrah_surakshit(arr, i, val, n)</code></td><td></td></tr>
-<tr><td><code>mala_grah_surakshit(arr, i, n)</code></td><td></td></tr>
+<tr><td><code>mala_sangrah(arr, i, val)</code></td><td>mala_sangrah(arr, i, val) — stores val at arr[i] (qword cells, no bounds check); returns 0.</td></tr>
+<tr><td><code>mala_grah(arr, i)</code></td><td>mala_grah(arr, i) — loads the qword at arr[i] (no bounds check).</td></tr>
+<tr><td><code>mala_purn(arr, val, n)</code></td><td>mala_purn(arr, val, n) — fills arr[0..n-1] with val; returns 0.</td></tr>
+<tr><td><code>mala_pratilip(dst, src, n)</code></td><td>mala_pratilip(dst, src, n) — copies n qwords from src to dst; returns 0.</td></tr>
+<tr><td><code>mala_yog(arr, n)</code></td><td>mala_yog(arr, n) — sum of arr[0..n-1].</td></tr>
+<tr><td><code>mala_sangrah_surakshit(arr, i, val, n)</code></td><td>mala_sangrah_surakshit(arr, i, val, n) — bounds-checked store: 1 and stores if 0 &lt;= i &lt; n, else 0 and stores nothing.</td></tr>
+<tr><td><code>mala_grah_surakshit(arr, i, n)</code></td><td>mala_grah_surakshit(arr, i, n) — bounds-checked load: arr[i] if 0 &lt;= i &lt; n, else 0.</td></tr>
 </table>
 <h2 id="nighantu"><code>nighantu</code></h2>
 <p class="shesh-desc">layer: alloc Open addressing with linear probing over parallel mala arrays. KEY REPRESENTATION: byte strings (the current khand_* byte surface), NOT char-code arrays: keys are usually literals (&quot;apple&quot;), and byte strings let the caller pass a literal directly. The hash (lib/gudh.smlib fnv1a) is byte-based (akshar), so the choice is consistent end to end. Do not pass char-code arrays here. Layout of the map buffer m (qword cells, except the key bytes): m[0]           capacity m[1]           live entry count m[2+i]         state[i]   (0 = empty, 1 = live), i in 0..cap-1 m[2+cap+i]     keylen[i] m[2+2*cap+i]   val[i] key bytes: byte region at byte offset (2+3*cap)*8, KEY_MAX bytes/slot. KEY_MAX = 32: keys longer than 32 bytes are truncated to 32, consistently on put/get/contains/remove (documented; excluded from the properties). cap must be &gt;= 1 (clamped). Probing wraps modulo cap. DELETION is backward-shift (Knuth 6.4R): the freed slot is filled by shifting later probe-chain entries back toward their home bucket, so there is no &quot;deleted&quot; state and no tombstones — a lookup stops at the first empty slot and never misses a live entry. ABSENT SENTINEL: nighantu_grah returns -1 (0-1) for a missing key. Values are programmer-managed integers; do not store -1 as a value unless you disambiguate with nighantu_antah first. FULL TABLE: nighantu_khip returns 0 and changes nothing.</p>
@@ -241,7 +241,7 @@ Do not edit by hand.</p>
 <tr><td><code>nighantu_rikta(m)</code></td><td>nighantu_rikta(m) — reset the map to empty IN PLACE (WS1, R19): same handle, same capacity, no leak, no re-allocation. Capacity is read from m[0]; no cap parameter, so a mismatched cap cannot corrupt the map. FULL ZERO, not a count reset: the count, every state flag, every keylen, every val, and every key byte are set to 0. After nighantu_rikta the buffer is indistinguishable from a freshly zeroed map. Merely resetting the count would leave the old keys readable through the key region to anyone holding the handle — the stale-segment hazard this closes. Returns 1.</td></tr>
 <tr><td><code>nighantu_vardh(m, newcap)</code></td><td>nighantu_vardh(m, newcap) — copy the map into a fresh map of capacity newcap, rehashing every entry (WS2, R20). Returns the new handle. Returns 0 and changes nothing if newcap &lt; nighantu_maap(m) (no partial copy), or (R36) if the new map cannot be allocated. The old buffer is abandoned (the library has no free — same as re-init); rebind: m = nighantu_vardh(m, 32). Capacity is clamped to &gt;= 1 by nighantu_srij. Before this, growing a fixed-capacity map meant a hand-written re-put loop over nighantu_kunjika_ashtak at every call site.</td></tr>
 <tr><td><code>nighantu_grah_mool(m, cap, key, keyn, def)</code></td><td>nighantu_grah_mool(m, cap, key, keyn, def) — value for key, or def if absent (WS3, R19). The -1 sentinel of nighantu_grah cannot distinguish &quot;absent&quot; from &quot;stored -1&quot;; this removes the contains-check dance for callers whose default is not -1. (A caller whose default IS -1 gets exactly nighantu_grah&#x27;s behaviour.)</td></tr>
-<tr><td><code>nighantu_maap(m)</code></td><td></td></tr>
+<tr><td><code>nighantu_maap(m)</code></td><td>nighantu_maap(m) — number of entries in the map m (its stored size cell).</td></tr>
 <tr><td><code>nighantu_mil(dst, dcap, src, scap)</code></td><td>nighantu_mil(dst, dcap, src, scap) — copy every entry of src into dst; src&#x27;s values overwrite dst&#x27;s on key conflict (WS3, R23). Returns the number of entries merged. If dst fills up, merging stops early and the return is less than nighantu_maap(src), the merge is incomplete. Destination map size alone cannot detect this: updates need not change it. Keys come from nighantu_kunjika_ashtak, so each is known to exist (no -1 ambiguity). R38: -1 (dst unchanged) if its scratch cannot be allocated.</td></tr>
 <tr><td><code>nighantu_mulya(m, out)</code></td><td>nighantu_mulya(m, out) — write the live values into out (one qword cell each), in the same slot order as nighantu_kunjika / nighantu_kunjika_ashtak (WS2, R21). Returns the value count, which equals nighantu_maap(m). Caller allocates cap cells. Before this, collecting values meant a nighantu_kunjika_ashtak pass plus a nighantu_grah per key at every call site.</td></tr>
 <tr><td><code>nighantu_kunjika(m, out)</code></td><td>nighantu_kunjika(m, out) — write live keys into out in length-prefixed form [len0, b0, b1, ..., len1, b0, ...] (same shape as varna_bhed parts). Returns the key count, which equals nighantu_maap(m). NOTE: segments are QWORD CELLS (len in one cell, one byte per cell), kept for backward compatibility. New code should use nighantu_kunjika_ashtak below, which returns the same segments as packed bytes — the form every key consumer (nighantu_khip, nighantu_antah, khand_tul) actually takes. Passing a nighantu_kunjika segment straight to a byte-key consumer compiles and silently compares the wrong bytes (the R14 trap).</td></tr>
@@ -266,10 +266,10 @@ Do not edit by hand.</p>
 <tr><td><code>phal_mulya_va(r, def)</code></td><td>phal_mulya_va(r, def) — the value if r is success, else def. The one-expression way to handle both branches.</td></tr>
 <tr><td><code>phal_se_siddhi(out, v, ok)</code></td><td>phal_se_siddhi(out, v, ok) — lift the ok convention into a Result: writes [ok[0], v] into out (value 0 on failure).</td></tr>
 <tr><td><code>phal_janchit_yuj(out, a, b)</code></td><td>phal_janchit_yuj/sub/mul/div/shesh(out, a, b) — the ganita checked operation, producing a Result in out instead of an ok out-parameter. On overflow (or div/shesh by zero, MIN/-1) the Result is failure [0, 0].</td></tr>
-<tr><td><code>phal_janchit_nyun(out, a, b)</code></td><td></td></tr>
-<tr><td><code>phal_janchit_gun(out, a, b)</code></td><td></td></tr>
-<tr><td><code>phal_janchit_bhaj(out, a, b)</code></td><td></td></tr>
-<tr><td><code>phal_janchit_shesh(out, a, b)</code></td><td></td></tr>
+<tr><td><code>phal_janchit_nyun(out, a, b)</code></td><td>phal_janchit_nyun(out, a, b) — checked subtraction: out[0] = ok flag, out[1] = a - b if ok else 0; returns out[0].</td></tr>
+<tr><td><code>phal_janchit_gun(out, a, b)</code></td><td>phal_janchit_gun(out, a, b) — checked multiplication: out[0] = ok flag, out[1] = a * b if ok else 0; returns out[0].</td></tr>
+<tr><td><code>phal_janchit_bhaj(out, a, b)</code></td><td>phal_janchit_bhaj(out, a, b) — checked division: out[0] = ok flag, out[1] = a / b if ok else 0; returns out[0].</td></tr>
+<tr><td><code>phal_janchit_shesh(out, a, b)</code></td><td>phal_janchit_shesh(out, a, b) — checked remainder: out[0] = ok flag, out[1] = a % b if ok else 0; returns out[0].</td></tr>
 <tr><td><code>phal_janchit_ghat(out, a, e)</code></td><td>phal_janchit_ghat(out, a, e) — ganita_janchit_ghat as a Result. Failure [0, 0] on e &lt; 0 or overflow (see ganita_janchit_ghat).</td></tr>
 <tr><td><code>phal_janchit_kramgun(out, n)</code></td><td>phal_janchit_kramgun(out, n) — ganita_janchit_kramgun as a Result. Failure [0, 0] on n &lt; 0 or overflow (21! overflows).</td></tr>
 <tr><td><code>phal_janchit_nirapeksh(out, a)</code></td><td>phal_janchit_nirapeksh(out, a) — ganita_janchit_nirapeksh as a Result. Failure [0, 0] on abs(MIN) (no int64 absolute value).</td></tr>
@@ -283,10 +283,10 @@ Do not edit by hand.</p>
 <tr><td><code>roop_ank_aadhar2(v, base, out)</code></td><td>roop_ank_aadhar2(v, base, out) — write v in `base` (2..36), lowercase digits, &#x27;-&#x27; for negatives, no prefix. Returns the byte count. Base outside 2..36: terminator only, returns 0. Digits are written directly at dst + neg, so the util_chinha just fills position 0.</td></tr>
 <tr><td><code>roop_ank_dhvaj(v, base, flags, out)</code></td><td>roop_ank_dhvaj(v, base, flags, out) — roop_ank_aadhar2 plus flags: bit 0 (1) = prefix: &quot;0b&quot; / &quot;0o&quot; / &quot;0x&quot; for bases 2 / 8 / 16 (no prefix for other bases, including 10); bit 1 (2) = uppercase hex digits (the prefix itself stays lowercase). Returns byte count.</td></tr>
 <tr><td><code>roop_dash(v, out)</code></td><td>roop_dash(v, out) — decimal, no prefix. roop_shodash / roop_shodash_unnat / roop_asht / roop_dwi — base 16 (lower / upper), 8, 2, no prefix.</td></tr>
-<tr><td><code>roop_shodash(v, out)</code></td><td></td></tr>
-<tr><td><code>roop_shodash_unnat(v, out)</code></td><td></td></tr>
-<tr><td><code>roop_asht(v, out)</code></td><td></td></tr>
-<tr><td><code>roop_dwi(v, out)</code></td><td></td></tr>
+<tr><td><code>roop_shodash(v, out)</code></td><td>roop_shodash(v, out) — formats v as lowercase hexadecimal into out (no prefix); returns the digit count.</td></tr>
+<tr><td><code>roop_shodash_unnat(v, out)</code></td><td>roop_shodash_unnat(v, out) — formats v as UPPERCASE hexadecimal into out (no prefix); returns the digit count.</td></tr>
+<tr><td><code>roop_asht(v, out)</code></td><td>roop_asht(v, out) — formats v as octal into out (no prefix); returns the digit count.</td></tr>
+<tr><td><code>roop_dwi(v, out)</code></td><td>roop_dwi(v, out) — formats v as binary into out (no prefix); returns the digit count.</td></tr>
 <tr><td><code>roop_ank_pre(v, base, upper, out)</code></td><td>roop_ank_pre(v, base, upper, out) — any base with its prefix (&quot;0b&quot;/&quot;0o&quot;/&quot;0x&quot; for 2/8/16; none for other bases). `upper` 1 -&gt; uppercase digits, prefix stays lowercase.</td></tr>
 <tr><td><code>roop_pad_vam(src, sn, width, padbyte, out)</code></td><td>--- padding / alignment --- roop_pad_vam(src, sn, width, padbyte, out) — pad on the LEFT with `padbyte` (32 space, 48 &#x27;0&#x27;) to `width`. width &lt;= sn: copy unchanged.</td></tr>
 <tr><td><code>roop_pad_dakshin(src, sn, width, padbyte, out)</code></td><td>roop_pad_dakshin(src, sn, width, padbyte, out) — pad on the RIGHT.</td></tr>
@@ -307,12 +307,12 @@ Do not edit by hand.</p>
 <table>
 <tr><th>Function</th><th>Description</th></tr>
 <tr><td><code>antargam(a, b, t)</code></td><td></td></tr>
-<tr><td><code>yog_seema(start, end)</code></td><td></td></tr>
-<tr><td><code>shesh(a, b)</code></td><td></td></tr>
-<tr><td><code>bhaj_urdhva(a, b)</code></td><td></td></tr>
-<tr><td><code>util_chinha(n)</code></td><td></td></tr>
-<tr><td><code>satya_tak_ank(b)</code></td><td></td></tr>
-<tr><td><code>ank_adhik()</code></td><td></td></tr>
+<tr><td><code>yog_seema(start, end)</code></td><td>yog_seema(start, end) — sum of the integers from start to end inclusive; 0 if end &lt; start.</td></tr>
+<tr><td><code>shesh(a, b)</code></td><td>shesh(a, b) — remainder a % b computed as a - (a / b) * b; 0 if b == 0.</td></tr>
+<tr><td><code>bhaj_urdhva(a, b)</code></td><td>bhaj_urdhva(a, b) — ceiling division of a by b (rounds up when the remainder is nonzero); 0 if b == 0.</td></tr>
+<tr><td><code>util_chinha(n)</code></td><td>util_chinha(n) — sign of n: 1 if n &gt; 0, -1 if n &lt; 0, 0 if n == 0.</td></tr>
+<tr><td><code>satya_tak_ank(b)</code></td><td>satya_tak_ank(b) — boolean b converted to an integer (b * 1).</td></tr>
+<tr><td><code>ank_adhik()</code></td><td>ank_adhik() — the maximum int64 value, 9223372036854775807.</td></tr>
 </table>
 <h2 id="samanvaya"><code>samanvaya</code></h2>
 <p class="shesh-desc">layer: core Sutram has no 2-D array type, so a matrix is a FLAT `kosh dasham` of m*n elements in row-major order, with the dimensions passed explicitly: A[i][j]  ==  a[i * n + j]        for an m x n matrix CONTRACT for output matrices: the caller must have pushed m*n elements already. A kosh&#x27;s capacity is not its length, so out[i] is out of bounds until an element exists. Functions here never `kosh_push` a parameter — the compiler rejects that, correctly, because the pointer is passed by value. Inputs are read-only. Outputs are written in place and are visible to the caller. --------------------------------------------------------------- element access helpers (flat index) --------------------------------------------------------------- samanvaya_akar_na(m, n, len) - R37: 1 when an m x n shape does NOT fit len elements (or m or n is negative), else 0. It divides, never multiplies, so it holds for every m and n: m x n fits exactly when n == 0 or m &lt;= len / n.</p>
@@ -375,17 +375,17 @@ Do not edit by hand.</p>
 <table>
 <tr><th>Function</th><th>Description</th></tr>
 <tr><td><code>vinimay(a, i, j)</code></td><td></td></tr>
-<tr><td><code>budbud_shreni(a, n)</code></td><td></td></tr>
-<tr><td><code>viparyay_mala(a, n)</code></td><td></td></tr>
-<tr><td><code>laghu(a, n)</code></td><td></td></tr>
-<tr><td><code>adhik(a, n)</code></td><td></td></tr>
-<tr><td><code>yog(a, n)</code></td><td></td></tr>
-<tr><td><code>anwesh_sarak(a, n, target)</code></td><td></td></tr>
-<tr><td><code>gan(a, n, target)</code></td><td></td></tr>
-<tr><td><code>asti_sorted(a, n)</code></td><td></td></tr>
-<tr><td><code>dwi_anwesh(a, n, target)</code></td><td></td></tr>
-<tr><td><code>shankh_shreni(a, n)</code></td><td></td></tr>
-<tr><td><code>nivesh_shreni(a, n)</code></td><td></td></tr>
+<tr><td><code>budbud_shreni(a, n)</code></td><td>budbud_shreni(a, n) — sorts a[0..n-1] in place, ascending, by bubble sort.</td></tr>
+<tr><td><code>viparyay_mala(a, n)</code></td><td>viparyay_mala(a, n) — reverses a[0..n-1] in place.</td></tr>
+<tr><td><code>laghu(a, n)</code></td><td>laghu(a, n) — smallest element of a[0..n-1]; 0 if n &lt;= 0.</td></tr>
+<tr><td><code>adhik(a, n)</code></td><td>adhik(a, n) — largest element of a[0..n-1]; 0 if n &lt;= 0.</td></tr>
+<tr><td><code>yog(a, n)</code></td><td>yog(a, n) — sum of a[0..n-1].</td></tr>
+<tr><td><code>anwesh_sarak(a, n, target)</code></td><td>anwesh_sarak(a, n, target) — index of the first occurrence of target in a[0..n-1], or -1.</td></tr>
+<tr><td><code>gan(a, n, target)</code></td><td>gan(a, n, target) — count of occurrences of target in a[0..n-1].</td></tr>
+<tr><td><code>asti_sorted(a, n)</code></td><td>asti_sorted(a, n) — 1 if a[0..n-1] is in non-decreasing order, else 0.</td></tr>
+<tr><td><code>dwi_anwesh(a, n, target)</code></td><td>dwi_anwesh(a, n, target) — binary search for target in sorted a[0..n-1]: its index, or -1.</td></tr>
+<tr><td><code>shankh_shreni(a, n)</code></td><td>shankh_shreni(a, n) — sorts a[0..n-1] in place, ascending, by shell sort.</td></tr>
+<tr><td><code>nivesh_shreni(a, n)</code></td><td>nivesh_shreni(a, n) — sorts a[0..n-1] in place, ascending, by insertion sort.</td></tr>
 <tr><td><code>mil_shreni_punar(a, tmp, lo, hi)</code></td><td>mil_shreni(a, n) — top-down merge sort using a temp buffer.</td></tr>
 <tr><td><code>mil_shreni(a, n)</code></td><td>mil_shreni(a, n) — merge sort; returns 0, or -1 (a unchanged) if its scratch cannot be allocated.</td></tr>
 </table>
@@ -444,19 +444,19 @@ Do not edit by hand.</p>
 <table>
 <tr><th>Function</th><th>Description</th></tr>
 <tr><td><code>varna_maap(s)</code></td><td></td></tr>
-<tr><td><code>akshar_sanket(s, i)</code></td><td></td></tr>
-<tr><td><code>asti_ank_akshar(s, i)</code></td><td></td></tr>
-<tr><td><code>asti_unnat_akshar(s, i)</code></td><td></td></tr>
-<tr><td><code>asti_avanat_akshar(s, i)</code></td><td></td></tr>
-<tr><td><code>asti_akshar_akshar(s, i)</code></td><td></td></tr>
-<tr><td><code>asti_avakash_akshar(s, i)</code></td><td></td></tr>
-<tr><td><code>gan_swar(s)</code></td><td></td></tr>
-<tr><td><code>gan_akshar(s, code)</code></td><td></td></tr>
-<tr><td><code>anwesh_akshar(s, code)</code></td><td></td></tr>
-<tr><td><code>asti_sarv_ank(s)</code></td><td></td></tr>
-<tr><td><code>unnat_sanket(c)</code></td><td></td></tr>
-<tr><td><code>avanat_sanket(c)</code></td><td></td></tr>
-<tr><td><code>varna_sam(a, b)</code></td><td></td></tr>
+<tr><td><code>akshar_sanket(s, i)</code></td><td>akshar_sanket(s, i) — byte code of s[i] (the akshar builtin on a string).</td></tr>
+<tr><td><code>asti_ank_akshar(s, i)</code></td><td>asti_ank_akshar(s, i) — 1 if s[i] is a decimal digit (&#x27;0&#x27;-&#x27;9&#x27;), else 0.</td></tr>
+<tr><td><code>asti_unnat_akshar(s, i)</code></td><td>asti_unnat_akshar(s, i) — 1 if s[i] is an uppercase letter (&#x27;A&#x27;-&#x27;Z&#x27;), else 0.</td></tr>
+<tr><td><code>asti_avanat_akshar(s, i)</code></td><td>asti_avanat_akshar(s, i) — 1 if s[i] is a lowercase letter (&#x27;a&#x27;-&#x27;z&#x27;), else 0.</td></tr>
+<tr><td><code>asti_akshar_akshar(s, i)</code></td><td>asti_akshar_akshar(s, i) — 1 if s[i] is any letter (A-Z or a-z), else 0.</td></tr>
+<tr><td><code>asti_avakash_akshar(s, i)</code></td><td>asti_avakash_akshar(s, i) — 1 if s[i] is a space (code 32), else 0.</td></tr>
+<tr><td><code>gan_swar(s)</code></td><td>gan_swar(s) — count of lowercase vowels (a, e, i, o, u) in the string s.</td></tr>
+<tr><td><code>gan_akshar(s, code)</code></td><td>gan_akshar(s, code) — count of occurrences of byte code in the string s.</td></tr>
+<tr><td><code>anwesh_akshar(s, code)</code></td><td>anwesh_akshar(s, code) — index of the first occurrence of byte code in s, or -1.</td></tr>
+<tr><td><code>asti_sarv_ank(s)</code></td><td>asti_sarv_ank(s) — 1 if s is non-empty and every character is a digit, else 0.</td></tr>
+<tr><td><code>unnat_sanket(c)</code></td><td>unnat_sanket(c) — byte code c converted to uppercase (a-z -&gt; A-Z, other codes unchanged).</td></tr>
+<tr><td><code>avanat_sanket(c)</code></td><td>avanat_sanket(c) — byte code c converted to lowercase (A-Z -&gt; a-z, other codes unchanged).</td></tr>
+<tr><td><code>varna_sam(a, b)</code></td><td>varna_sam(a, b) — 1 if strings a and b are byte-identical (same length and bytes), else 0.</td></tr>
 <tr><td><code>varna_anwesh(hay, hn, needle, nn)</code></td><td>varna_anwesh(hay, hn, needle, nn) — index of first occurrence of needle in hay, or -1. Empty needle matches at 0. Negative needle length is invalid: -1 (the old code treated it as empty, matching at 0).</td></tr>
 <tr><td><code>varna_antah(hay, hn, needle, nn)</code></td><td>varna_antah(hay, hn, needle, nn) — 1 if needle occurs in hay, else 0.</td></tr>
 <tr><td><code>varna_pratisthap(src, sn, find, fn, repl, out)</code></td><td>varna_pratisthap(src, sn, find, fn, repl, out) — copy src to out, replacing every (non-overlapping) occurrence of find with repl. repl is 0-terminated (its length is derived) — repl cannot be a slice; copy the slice into a terminated cell array first (see strb.smlib header, slice-boundary rules). Returns the new count. Caller allocates generously.</td></tr>
@@ -464,9 +464,9 @@ Do not edit by hand.</p>
 <tr><td><code>varna_yuj(parts, count, sep, sepn, out)</code></td><td>varna_yuj(parts, count, sep, sepn, out) — inverse of varna_bhed for the length-prefixed format. Joins `count` segments with sep. Returns new count.</td></tr>
 <tr><td><code>varna_chhid(src, sn, out)</code></td><td>varna_chhid(src, sn, out) — strip leading/trailing ASCII spaces (32). Returns new count.</td></tr>
 <tr><td><code>varna_unnat(src, sn, out)</code></td><td>varna_unnat(src, sn, out) / varna_avanat — ASCII case conversion. sn &lt; 0: empty output (the old code wrote the terminator at out[-1], an out-of-bounds write before the buffer).</td></tr>
-<tr><td><code>varna_avanat(src, sn, out)</code></td><td></td></tr>
+<tr><td><code>varna_avanat(src, sn, out)</code></td><td>varna_avanat(src, sn, out) — copies src (sn qword cells) to out with A-Z lowercased, NUL-terminated; returns sn (0 for sn &lt; 0).</td></tr>
 <tr><td><code>varna_aadi(src, sn, pre, pn)</code></td><td>varna_aadi(src, sn, pre, pn) / varna_ant — 0/1. A negative prefix/suffix length is invalid: 0 (the old code treated it as empty and returned 1).</td></tr>
-<tr><td><code>varna_ant(src, sn, suf, sn2)</code></td><td></td></tr>
+<tr><td><code>varna_ant(src, sn, suf, sn2)</code></td><td>varna_ant(src, sn, suf, sn2) — 1 if the src string (sn cells) ends with suf (sn2 cells), else 0.</td></tr>
 <tr><td><code>varna_tul(a, an, b, bn)</code></td><td>varna_tul(a, an, b, bn) — -1 / 0 / 1 (lexicographic by char code).</td></tr>
 <tr><td><code>varna_viparyay(src, sn, out)</code></td><td>varna_viparyay(src, sn, out) — copy the cell array reversed into out (WS1, R20). Cell-array form of khand_viparyay: the same two-pointer vinimay, so it is safe in place (src == out works). Writes a 0 terminator cell at out[sn]. Returns sn. sn &lt;= 0 writes only the terminator, returns 0.</td></tr>
 <tr><td><code>varna_gan(hay, hn, needle, nn)</code></td><td>varna_gan(hay, hn, needle, nn) — count non-overlapping occurrences of needle in hay, over cell arrays (WS1, R20). Cell-array form of khand_gan. Empty needle returns 0. (Pointer arithmetic is in bytes: the suffix at cell pos is hay + pos * 8.)</td></tr>

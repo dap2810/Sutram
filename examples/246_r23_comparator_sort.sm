@@ -4,11 +4,11 @@
 # The canonical use: one sort, any order, chosen by the comparator passed in.
 
 prakriya aarohi(a, b) {
-    prati a - b
+    nivartanam a - b
 }
 
 prakriya avarohi(a, b) {
-    prati b - a
+    nivartanam b - a
 }
 
 # even numbers first, each group in ascending order
@@ -16,9 +16,9 @@ prakriya sama_pratham(a, b) {
     vitti pa = a % 2
     vitti pb = b % 2
     yadi (pa != pb) {
-        prati pa - pb
+        nivartanam pa - pb
     }
-    prati a - b
+    nivartanam a - b
 }
 
 # insertion sort of a slice, ordered by tulana(x, y) < 0
@@ -33,17 +33,17 @@ prakriya shreni(vibhag s, tulana) {
         }
         s[j + 1] = v
     }
-    prati 0
+    nivartanam 0
 }
 
 prakriya kram_chuno(k) {
     yadi (k == 1) {
-        prati avarohi
+        nivartanam avarohi
     }
     yadi (k == 2) {
-        prati sama_pratham
+        nivartanam sama_pratham
     }
-    prati aarohi
+    nivartanam aarohi
 }
 
 prakriya dikhao(vibhag s) {
@@ -52,7 +52,7 @@ prakriya dikhao(vibhag s) {
         likha(" ")
     }
     likha("\n")
-    prati 0
+    nivartanam 0
 }
 
 mukhya() {

@@ -18,7 +18,7 @@ prakriya brihat_shunyank(arr, n) {
         likh8(a + i * 8, 0)
         i = i + 1
     }
-    prati 0
+    nivartanam 0
 }
 
 # brihat_ank_se_laghu(val, arr, n) — convert int to digit array (LSB first)
@@ -42,7 +42,7 @@ prakriya brihat_ank_se_laghu(val, arr, n) {
         v = v / 10
         i = i + 1
     }
-    yadi (v > 0) { prati 0 }
+    yadi (v > 0) { nivartanam 0 }
     yadi (ismin == 1) {
         # add 1 to the digit array: |MIN| = MAX + 1
         vitti carry = 1
@@ -59,9 +59,9 @@ prakriya brihat_ank_se_laghu(val, arr, n) {
             }
             j = j + 1
         }
-        yadi (carry == 1) { prati 0 }
+        yadi (carry == 1) { nivartanam 0 }
     }
-    prati 1
+    nivartanam 1
 }
 
 # brihat_ank_tak_laghu(arr, n) — convert digit array back to int (for verification)
@@ -75,7 +75,7 @@ prakriya brihat_ank_tak_laghu(arr, n) {
         r = r * 10 + pad8(a + i * 8)
         i = i - 1
     }
-    prati r
+    nivartanam r
 }
 
 # brihat_pratilip(dst, src, n) — copy n digits
@@ -88,7 +88,7 @@ prakriya brihat_pratilip(dst, src, n) {
         likh8(d + i * 8, pad8(s + i * 8))
         i = i + 1
     }
-    prati 0
+    nivartanam 0
 }
 
 # brihat_tul(a, b, n) — compare: 1 if a > b, -1 if a < b, 0 if equal
@@ -100,11 +100,11 @@ prakriya brihat_tul(a, b, n) {
     yavat (i >= 0) {
         vitti dx = pad8(x + i * 8)
         vitti dy = pad8(y + i * 8)
-        yadi (dx > dy) { prati 1 }
-        yadi (dx < dy) { prati -1 }
+        yadi (dx > dy) { nivartanam 1 }
+        yadi (dx < dy) { nivartanam -1 }
         i = i - 1
     }
-    prati 0
+    nivartanam 0
 }
 
 # brihat_yuj(a, b, res, n) — res = a + b; returns final carry (0 or 1)
@@ -121,7 +121,7 @@ prakriya brihat_yuj(a, b, res, n) {
         carry = s / 10
         i = i + 1
     }
-    prati carry
+    nivartanam carry
 }
 
 # brihat_nyun(a, b, res, n) — res = a - b (requires a >= b); returns final borrow
@@ -143,7 +143,7 @@ prakriya brihat_nyun(a, b, res, n) {
         }
         i = i + 1
     }
-    prati borrow
+    nivartanam borrow
 }
 
 # brihat_gun(a, b, res, n) — res = a * b; res must have 2n digits
@@ -173,7 +173,7 @@ prakriya brihat_gun(a, b, res, n) {
         likh8(r + (i + c) * 8, pad8(r + (i + c) * 8) + carry)
         i = i + 1
     }
-    prati 0
+    nivartanam 0
 }
 
 # brihat_asti_shunyank(arr, n) — 1 if all digits are 0, else 0
@@ -182,10 +182,10 @@ prakriya brihat_asti_shunyank(arr, n) {
     vitti c = n
     vitti i = 0
     yavat (i < c) {
-        yadi (pad8(a + i * 8) != 0) { prati 0 }
+        yadi (pad8(a + i * 8) != 0) { nivartanam 0 }
         i = i + 1
     }
-    prati 1
+    nivartanam 1
 }
 
 # brihat_bhajshesh(a, b, q, r, n) — q = a / b, r = a % b (a,b,q,r are n-digit)
@@ -213,7 +213,7 @@ prakriya brihat_bhajshesh(a, b, q, r, n) {
             likh8(rr + m * 8, pad8(x + m * 8))
             m = m + 1
         }
-        prati 0
+        nivartanam 0
     }
     # long division from most significant digit
     i = c - 1
@@ -247,7 +247,7 @@ prakriya brihat_bhajshesh(a, b, q, r, n) {
         likh8(qq + i * 8, qd)
         i = i - 1
     }
-    prati 0
+    nivartanam 0
 }
 
 # brihat_shesh(ank, shesh, res, n) — res = ank % shesh, where ank has 2n digits
@@ -256,14 +256,14 @@ prakriya brihat_bhajshesh(a, b, q, r, n) {
 # Returns 0, or -1 (res unchanged) if its n-digit scratch cannot be allocated.
 prakriya brihat_shesh(ank, shesh, res, n) {
     vitti c = n
-    yadi (c < 1) { prati 0 }
-    yadi (c > 1152921504606846975) { prati 0 - 1 }   # R39: c * 8 must not wrap
+    yadi (c < 1) { nivartanam 0 }
+    yadi (c > 1152921504606846975) { nivartanam 0 - 1 }   # R39: c * 8 must not wrap
     vitti tr = 0
     yadi (brihat_asti_shunyank(shesh, c) == 0) {
         tr = nirmmita(c * 8)
-        yadi (tr == 0) { prati 0 - 1 }
+        yadi (tr == 0) { nivartanam 0 - 1 }
     }
-    prati brihat_shesh_tr(ank, shesh, res, c, tr)
+    nivartanam brihat_shesh_tr(ank, shesh, res, c, tr)
 }
 
 # brihat_shesh_tr(ank, shesh, res, n, scratch) — brihat_shesh with caller's n-digit scratch.
@@ -278,7 +278,7 @@ prakriya brihat_shesh_tr(ank, shesh, res, n, scratch) {
             likh8(r + m2 * 8, pad8(x + m2 * 8))
             m2 = m2 + 1
         }
-        prati 0
+        nivartanam 0
     }
     vitti tr = scratch
     brihat_shunyank(tr, c)
@@ -310,7 +310,7 @@ prakriya brihat_shesh_tr(ank, shesh, res, n, scratch) {
         i = i - 1
     }
     brihat_pratilip(r, tr, c)
-    prati 0
+    nivartanam 0
 }
 
 # brihat_ghatmod(base, exp, shesh, res, n) — res = base^exp shesh shesh
@@ -324,12 +324,12 @@ prakriya brihat_ghatmod(base, exp, shesh, res, n) {
     vitti m = shesh
     vitti r = res
     vitti c = n
-    yadi (c < 1) { prati 0 }
-    yadi (c > 576460752303423487) { prati 0 - 1 }   # R39: c * 2 * 8 must not wrap
+    yadi (c < 1) { nivartanam 0 }
+    yadi (c > 576460752303423487) { nivartanam 0 - 1 }   # R39: c * 2 * 8 must not wrap
     vitti t1 = nirmmita(c * 2 * 8)
     vitti bcur = nirmmita(c * 8)
     vitti tr = nirmmita(c * 8)
-    yadi (c > 0 && (t1 == 0 || bcur == 0 || tr == 0)) { prati 0 - 1 }
+    yadi (c > 0 && (t1 == 0 || bcur == 0 || tr == 0)) { nivartanam 0 - 1 }
     brihat_ank_se_laghu(1, r, c)
     brihat_pratilip(bcur, b, c)
     yavat (e > 0) {
@@ -341,5 +341,5 @@ prakriya brihat_ghatmod(base, exp, shesh, res, n) {
         brihat_shesh_tr(t1, m, bcur, c, tr)
         e = e / 2
     }
-    prati 0
+    nivartanam 0
 }

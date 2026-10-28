@@ -6,25 +6,27 @@
 # Edge rules (R30): shesh/bhaj_urdhva return 0 on a zero divisor (no
 # SIGFPE); yog_seema returns 0 for end < start; bhaj_urdhva is true
 # ceiling division for every util_chinha combination.
-
 prakriya antargam(a, b, t)
-    prati a + (b - a) * t / 100
+    nivartanam a + (b - a) * t / 100
 
+# yog_seema(start, end) — sum of the integers from start to end inclusive; 0 if end < start.
 prakriya yog_seema(start, end) {
-    yadi (end < start) { prati 0 }
-    prati (start + end) * (end - start + 1) / 2
+    yadi (end < start) { nivartanam 0 }
+    nivartanam (start + end) * (end - start + 1) / 2
 }
 
+# shesh(a, b) — remainder a % b computed as a - (a / b) * b; 0 if b == 0.
 prakriya shesh(a, b) {
-    yadi (b == 0) { prati 0 }
-    prati a - (a / b) * b
+    yadi (b == 0) { nivartanam 0 }
+    nivartanam a - (a / b) * b
 }
 
+# bhaj_urdhva(a, b) — ceiling division of a by b (rounds up when the remainder is nonzero); 0 if b == 0.
 prakriya bhaj_urdhva(a, b) {
     # Ceiling division: q = a / b (truncating), round up iff the
     # remainder is nonzero and has the divisor's util_chinha. The old
     # (a + b - 1) / b was only correct for a >= 0, b > 0.
-    yadi (b == 0) { prati 0 }
+    yadi (b == 0) { nivartanam 0 }
     vitti q = a / b
     vitti r = a % b
     yadi (r != 0) {
@@ -34,14 +36,17 @@ prakriya bhaj_urdhva(a, b) {
             yadi (b < 0) { q = q + 1 }
         }
     }
-    prati q
+    nivartanam q
 }
 
+# util_chinha(n) — sign of n: 1 if n > 0, -1 if n < 0, 0 if n == 0.
 prakriya util_chinha(n)
-    prati (n > 0) - (n < 0)
+    nivartanam (n > 0) - (n < 0)
 
+# satya_tak_ank(b) — boolean b converted to an integer (b * 1).
 prakriya satya_tak_ank(b)
-    prati b * 1
+    nivartanam b * 1
 
+# ank_adhik() — the maximum int64 value, 9223372036854775807.
 prakriya ank_adhik()
-    prati 9223372036854775807
+    nivartanam 9223372036854775807

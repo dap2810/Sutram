@@ -1,0 +1,12 @@
+`prati` as a whole word (\bprati\b: vartani_pratilip, pratiyati and the like are not counted), git-tracked files.
+before = main at 16fc16b (before this round); after = this commit.
+
+area                                before   after   files after
+lib/*.smlib                            677       0   0
+examples/**/*.sm                       122       1   1
+examples/lib/*.smlib                    16       0   0
+tests/                                 318     319   102
+docs/                                  154     154   22
+
+The one left in examples/: examples/256_r44_vartani_sanskrit_names.sm:5, a comment that names the keyword (kept by Muse on purpose).
+tests/ after includes tests/r54/test_r54.py, which names prati in its own text.

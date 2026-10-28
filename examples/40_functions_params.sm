@@ -1,12 +1,12 @@
 # 40 — functions with real parameters (v29)
 prakriya joda(a, b) {
-    prati a + b
+    nivartanam a + b
 }
 prakriya kshetraphala(l, w) {
-    prati l * w
+    nivartanam l * w
 }
 prakriya madhya(a, b, c) {
-    prati (a + b + c) / 3
+    nivartanam (a + b + c) / 3
 }
 mukhya()
     likha(joda(10, 32))

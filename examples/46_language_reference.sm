@@ -34,9 +34,9 @@ mukhya()
     vitti n = grahan()              # read a number
 
 prakriya joda(a, b)                 # function (up tak 3 arguments)
-    prati a + b                 # return
+    nivartanam a + b                 # return
 
 prakriya meru_ank(n) {                   # braces are required for a body of >1 statement
-    yadi (n < 2) { prati n }
-    prati meru_ank(n - 1) + meru_ank(n - 2)
+    yadi (n < 2) { nivartanam n }
+    nivartanam meru_ank(n - 1) + meru_ank(n - 2)
 }

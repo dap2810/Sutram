@@ -17,18 +17,14 @@ mukhya()
     chakra j = 1 tak 10 {
         sum = sum + j
     }
-    likha("Sum 1-10 = ")
-    likha(sum)
-    likha("\n")
+    likha("Sum 1-10 = ", sum)
 
     # Multiplication table for 3
     likha("Table of 3:\n")
     chakra k = 1 tak 5 {
         likha("3 x ")
         likha(k)
-        likha(" = ")
-        likha(3 * k)
-        likha("\n")
+        likha(" = ", 3 * k)
     }
 
     likha("=== Done ===\n")

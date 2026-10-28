@@ -29,7 +29,7 @@ prakriya sort_keys(ptrs, lens, n) {
         }
         i = i + 1
     }
-    prati 0
+    nivartanam 0
 }
 
 mukhya() {
@@ -74,9 +74,7 @@ mukhya() {
     yavat (i < nuniq) {
         # uptrs[i] already points tak packed bytes; print directly
         likha(1, uptrs[i], ulens[i])
-        likha(": ")
-        likha(nighantu_grah(m, 32, uptrs[i], ulens[i]))
-        likha("\n")
+        likha(": ", nighantu_grah(m, 32, uptrs[i], ulens[i]))
         i = i + 1
     }
 }

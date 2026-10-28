@@ -37,9 +37,7 @@ mukhya() {
     likha(mn)
     likha("\nMax:   ")
     likha(mx)
-    likha("\nRange: ")
-    likha(mx - mn)
-    likha("\n")
+    likha("\nRange: ", mx - mn)
     likha("-------------------------\n")
     likha("Padded scores:\n")
     # demonstrate pad_vam: right-align each score in width 6

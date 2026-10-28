@@ -5,7 +5,7 @@ yoj madhava
 
 prakriya maap(kosh dasham values) {
     # 5 + 4 + 2 = 11 for the textbook dataset.
-    prati madhya(values) + prasaran(values) + vichalan(values)
+    nivartanam madhya(values) + prasaran(values) + vichalan(values)
 }
 
 mukhya() {

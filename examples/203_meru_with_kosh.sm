@@ -13,9 +13,7 @@ mukhya()
         }
         n = n + 1
     }
-    likha("length = ")
-    likha(kosh_len(row))
-    likha("\n")
+    likha("length = ", kosh_len(row))
     vitti j = 0
     yavat (j < kosh_len(row)) {
         likha(row[j])

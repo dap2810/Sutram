@@ -49,17 +49,17 @@ prakriya suchi_srij(cap) {
     vitti d = 0
     vitti sz = 0
     yadi (c < 1) { c = 1 }
-    yadi (c > 1152921504606846975) { prati 0 }   # R35: c * 8 must not wrap
+    yadi (c > 1152921504606846975) { nivartanam 0 }   # R35: c * 8 must not wrap
     sz = c * 8
-    yadi (sz < 0) { prati 0 }
+    yadi (sz < 0) { nivartanam 0 }
     l = nirmmita(3 * 8)
-    yadi (l == 0) { prati 0 }
+    yadi (l == 0) { nivartanam 0 }
     d = nirmmita(sz)
-    yadi (d == 0) { prati 0 }
+    yadi (d == 0) { nivartanam 0 }
     l[0] = 0
     l[1] = c
     l[2] = d
-    prati l
+    nivartanam l
 }
 
 # suchi_vardh(l) — private helper: dvigun l's capacity, copying the
@@ -70,17 +70,17 @@ prakriya suchi_vardh(l) {
     vitti nd = 0
     vitti old = lst[2]
     vitti i = 0
-    yadi (lst[1] > 576460752303423487) { prati 0 }   # R36: cap * 16 must not wrap
+    yadi (lst[1] > 576460752303423487) { nivartanam 0 }   # R36: cap * 16 must not wrap
     ncap = lst[1] * 2
     nd = nirmmita(ncap * 8)
-    yadi (nd == 0) { prati 0 }
+    yadi (nd == 0) { nivartanam 0 }
     yavat (i < lst[0]) {
         nd[i] = old[i]
         i = i + 1
     }
     lst[2] = nd
     lst[1] = ncap
-    prati 1
+    nivartanam 1
 }
 
 # suchi_khip(l, v) — append v. Returns 1 ok / 0 allocation failure.
@@ -88,22 +88,22 @@ prakriya suchi_khip(l, v) {
     vitti lst = l
     vitti val = v
     yadi (lst[0] == lst[1]) {
-        yadi (suchi_vardh(lst) == 0) { prati 0 }
+        yadi (suchi_vardh(lst) == 0) { nivartanam 0 }
     }
     vitti d = lst[2]
     d[lst[0]] = val
     lst[0] = lst[0] + 1
-    prati 1
+    nivartanam 1
 }
 
 # suchi_grah(l, i) — element i, or 0 if i is out of bounds.
 prakriya suchi_grah(l, i) {
     vitti lst = l
     vitti idx = i
-    yadi (idx < 0) { prati 0 }
-    yadi (idx >= lst[0]) { prati 0 }
+    yadi (idx < 0) { nivartanam 0 }
+    yadi (idx >= lst[0]) { nivartanam 0 }
     vitti d = lst[2]
-    prati d[idx]
+    nivartanam d[idx]
 }
 
 # suchi_sangrah(l, i, v) — set element i. Returns 1 ok / 0 out of bounds.
@@ -111,16 +111,16 @@ prakriya suchi_sangrah(l, i, v) {
     vitti lst = l
     vitti idx = i
     vitti val = v
-    yadi (idx < 0) { prati 0 }
-    yadi (idx >= lst[0]) { prati 0 }
+    yadi (idx < 0) { nivartanam 0 }
+    yadi (idx >= lst[0]) { nivartanam 0 }
     vitti d = lst[2]
     d[idx] = val
-    prati 1
+    nivartanam 1
 }
 
 # suchi_maap(l) — element count.
 prakriya suchi_maap(l) {
-    prati l[0]
+    nivartanam l[0]
 }
 
 # suchi_nivesh(l, i, v) — insert v before index i (i == len
@@ -131,10 +131,10 @@ prakriya suchi_nivesh(l, i, v) {
     vitti val = v
     vitti d = 0
     vitti k = 0
-    yadi (idx < 0) { prati 0 }
-    yadi (idx > lst[0]) { prati 0 }
+    yadi (idx < 0) { nivartanam 0 }
+    yadi (idx > lst[0]) { nivartanam 0 }
     yadi (lst[0] == lst[1]) {
-        yadi (suchi_vardh(lst) == 0) { prati 0 }
+        yadi (suchi_vardh(lst) == 0) { nivartanam 0 }
     }
     d = lst[2]
     k = lst[0]
@@ -144,7 +144,7 @@ prakriya suchi_nivesh(l, i, v) {
     }
     d[idx] = val
     lst[0] = lst[0] + 1
-    prati 1
+    nivartanam 1
 }
 
 # suchi_apanay(l, i) — remove element i, shifting the rest left.
@@ -154,8 +154,8 @@ prakriya suchi_apanay(l, i) {
     vitti idx = i
     vitti d = 0
     vitti k = 0
-    yadi (idx < 0) { prati 0 }
-    yadi (idx >= lst[0]) { prati 0 }
+    yadi (idx < 0) { nivartanam 0 }
+    yadi (idx >= lst[0]) { nivartanam 0 }
     d = lst[2]
     k = idx
     yavat (k < lst[0] - 1) {
@@ -163,7 +163,7 @@ prakriya suchi_apanay(l, i) {
         k = k + 1
     }
     lst[0] = lst[0] - 1
-    prati 1
+    nivartanam 1
 }
 
 # suchi_vinimay(l, i, j) — vinimay elements i and j (WS2, R20). Returns 1
@@ -176,15 +176,15 @@ prakriya suchi_vinimay(l, i, j) {
     vitti b = j
     vitti d = 0
     vitti t = 0
-    yadi (a < 0) { prati 0 }
-    yadi (a >= lst[0]) { prati 0 }
-    yadi (b < 0) { prati 0 }
-    yadi (b >= lst[0]) { prati 0 }
+    yadi (a < 0) { nivartanam 0 }
+    yadi (a >= lst[0]) { nivartanam 0 }
+    yadi (b < 0) { nivartanam 0 }
+    yadi (b >= lst[0]) { nivartanam 0 }
     d = lst[2]
     t = d[a]
     d[a] = d[b]
     d[b] = t
-    prati 1
+    nivartanam 1
 }
 
 # suchi_viparyay(l) — reverse the list in place (WS3, R20). Two-pointer
@@ -203,7 +203,7 @@ prakriya suchi_viparyay(l) {
         i = i + 1
         j = j - 1
     }
-    prati 1
+    nivartanam 1
 }
 
 # suchi_shreni(l) — sort the list in place, ascending (WS2, R21).
@@ -212,7 +212,7 @@ prakriya suchi_viparyay(l) {
 # `mil_shreni(l[2], suchi_maap(l))` at every call site. Returns 1.
 prakriya suchi_shreni(l) {
     mil_shreni(l[2], l[0])
-    prati 1
+    nivartanam 1
 }
 
 # suchi_laghu(l, ok) — smallest element (WS2, R21); ok[0] 1, or 0 if
@@ -223,10 +223,10 @@ prakriya suchi_shreni(l) {
 prakriya suchi_laghu(l, ok) {
     yadi (l[0] == 0) {
         ok[0] = 0
-        prati 0
+        nivartanam 0
     }
     ok[0] = 1
-    prati laghu(l[2], l[0])
+    nivartanam laghu(l[2], l[0])
 }
 
 # suchi_adhik(l, ok) — largest element (WS2, R21); ok[0] 1, or 0 if
@@ -234,38 +234,38 @@ prakriya suchi_laghu(l, ok) {
 prakriya suchi_adhik(l, ok) {
     yadi (l[0] == 0) {
         ok[0] = 0
-        prati 0
+        nivartanam 0
     }
     ok[0] = 1
-    prati adhik(l[2], l[0])
+    nivartanam adhik(l[2], l[0])
 }
 
 # suchi_yog(l) — sum of the elements (WS2, R21); 0 for an empty list
 # (well-defined, no ok channel needed). Before this, the caller wrote
 # the sum loop by hand or called shreni.smlib's yog on l[2].
 prakriya suchi_yog(l) {
-    prati yog(l[2], l[0])
+    nivartanam yog(l[2], l[0])
 }
 
 # suchi_gan(l, v) — number of occurrences of v (WS2, R21).
 # Before this, the caller wrote the count loop by hand or called
 # shreni.smlib's gan on l[2].
 prakriya suchi_gan(l, v) {
-    prati gan(l[2], l[0], v)
+    nivartanam gan(l[2], l[0], v)
 }
 
 # suchi_anwesh(l, v) — first index of v, or -1 (WS2, R23). List-shaped
 # form of shreni.smlib's anwesh_sarak; before, the caller called
 # anwesh_sarak(l[2], suchi_maap(l), v) by hand.
 prakriya suchi_anwesh(l, v) {
-    prati anwesh_sarak(l[2], l[0], v)
+    nivartanam anwesh_sarak(l[2], l[0], v)
 }
 
 # suchi_asti_sorted(l) — 1 if the elements are in non-decreasing order,
 # else 0; empty and single-element lists are sorted (WS2, R23).
 # List-shaped form of shreni.smlib's asti_sorted.
 prakriya suchi_asti_sorted(l) {
-    prati asti_sorted(l[2], l[0])
+    nivartanam asti_sorted(l[2], l[0])
 }
 
 # suchi_dwi_anwesh(l, v) — index of v in a SORTED list, or -1
@@ -273,7 +273,7 @@ prakriya suchi_asti_sorted(l) {
 # caller must sort first (suchi_shreni); on an unsorted list the result
 # is undefined, exactly as with dwi_anwesh.
 prakriya suchi_dwi_anwesh(l, v) {
-    prati dwi_anwesh(l[2], l[0], v)
+    nivartanam dwi_anwesh(l[2], l[0], v)
 }
 
 # suchi_rikta(l) — empty the list, keeping the allocated capacity.
@@ -290,7 +290,7 @@ prakriya suchi_rikta(l) {
         i = i + 1
     }
     l[0] = 0
-    prati 1
+    nivartanam 1
 }
 
 # suchi_antah(l, v) — 1 if any element equals v, else 0.
@@ -300,10 +300,10 @@ prakriya suchi_antah(l, v) {
     vitti d = lst[2]
     vitti i = 0
     yavat (i < lst[0]) {
-        yadi (d[i] == val) { prati 1 }
+        yadi (d[i] == val) { nivartanam 1 }
         i = i + 1
     }
-    prati 0
+    nivartanam 0
 }
 
 # suchi_kramank(l, v) — first index with value v, or -1 if absent.
@@ -313,17 +313,17 @@ prakriya suchi_kramank(l, v) {
     vitti d = lst[2]
     vitti i = 0
     yavat (i < lst[0]) {
-        yadi (d[i] == val) { prati i }
+        yadi (d[i] == val) { nivartanam i }
         i = i + 1
     }
-    prati 0 - 1
+    nivartanam 0 - 1
 }
 
 # --- stacks (built on the same list storage) ---
 
 # chay_khip(l, v) — push v. Returns 1 ok / 0 allocation failure.
 prakriya chay_khip(l, v) {
-    prati suchi_khip(l, v)
+    nivartanam suchi_khip(l, v)
 }
 
 # chay_apanay(l, ok) — pop the top value; sets ok[0] to 1 on success,
@@ -335,13 +335,13 @@ prakriya chay_apanay(l, ok) {
     vitti val = 0
     yadi (lst[0] == 0) {
         okp[0] = 0
-        prati 0
+        nivartanam 0
     }
     d = lst[2]
     lst[0] = lst[0] - 1
     val = d[lst[0]]
     okp[0] = 1
-    prati val
+    nivartanam val
 }
 
 # chay_avalok(l, ok) — top value without removing it; ok[0] 1/0.
@@ -351,17 +351,17 @@ prakriya chay_avalok(l, ok) {
     vitti d = 0
     yadi (lst[0] == 0) {
         okp[0] = 0
-        prati 0
+        nivartanam 0
     }
     d = lst[2]
     okp[0] = 1
-    prati d[lst[0] - 1]
+    nivartanam d[lst[0] - 1]
 }
 
 # chay_rikta(l) — 1 if the stack is empty, else 0.
 prakriya chay_rikta(l) {
-    yadi (l[0] == 0) { prati 1 }
-    prati 0
+    yadi (l[0] == 0) { nivartanam 1 }
+    nivartanam 0
 }
 
 # --- queues (ring buffer) ---
@@ -384,18 +384,18 @@ prakriya avali_srij(cap) {
     vitti d = 0
     vitti sz = 0
     yadi (c < 1) { c = 1 }
-    yadi (c > 1152921504606846975) { prati 0 }   # R35: c * 8 must not wrap
+    yadi (c > 1152921504606846975) { nivartanam 0 }   # R35: c * 8 must not wrap
     sz = c * 8
-    yadi (sz < 0) { prati 0 }
+    yadi (sz < 0) { nivartanam 0 }
     q = nirmmita(4 * 8)
-    yadi (q == 0) { prati 0 }
+    yadi (q == 0) { nivartanam 0 }
     d = nirmmita(sz)
-    yadi (d == 0) { prati 0 }
+    yadi (d == 0) { nivartanam 0 }
     q[0] = 0
     q[1] = c
     q[2] = d
     q[3] = 0
-    prati q
+    nivartanam q
 }
 
 # avali_pravesh(q, v) — append v at the tail.
@@ -411,10 +411,10 @@ prakriya avali_pravesh(q, v) {
     vitti k = 0
     yadi (qu[0] == qu[1]) {
         # grow: dvigun, copy in logical order, reset head to 0
-        yadi (qu[1] > 576460752303423487) { prati 0 }   # R36: no wrap
+        yadi (qu[1] > 576460752303423487) { nivartanam 0 }   # R36: no wrap
         ncap = qu[1] * 2
         nd = nirmmita(ncap * 8)
-        yadi (nd == 0) { prati 0 }
+        yadi (nd == 0) { nivartanam 0 }
         old = qu[2]
         k = 0
         yavat (k < qu[0]) {
@@ -429,7 +429,7 @@ prakriya avali_pravesh(q, v) {
     tail = (qu[3] + qu[0]) % qu[1]
     d[tail] = val
     qu[0] = qu[0] + 1
-    prati 1
+    nivartanam 1
 }
 
 # avali_nishkas(q, ok) — remove and return the front value; sets
@@ -441,14 +441,14 @@ prakriya avali_nishkas(q, ok) {
     vitti val = 0
     yadi (qu[0] == 0) {
         okp[0] = 0
-        prati 0
+        nivartanam 0
     }
     d = qu[2]
     val = d[qu[3]]
     qu[3] = (qu[3] + 1) % qu[1]
     qu[0] = qu[0] - 1
     okp[0] = 1
-    prati val
+    nivartanam val
 }
 
 # avali_avalok(q, ok) — front value without removing it; ok[0] 1/0.
@@ -458,11 +458,11 @@ prakriya avali_avalok(q, ok) {
     vitti d = 0
     yadi (qu[0] == 0) {
         okp[0] = 0
-        prati 0
+        nivartanam 0
     }
     d = qu[2]
     okp[0] = 1
-    prati d[qu[3]]
+    nivartanam d[qu[3]]
 }
 
 # avali_tak_mala(q, out) — write the queue's elements into out in
@@ -479,7 +479,7 @@ prakriya avali_tak_mala(q, out) {
         out[k] = d[(qu[3] + k) % qu[1]]
         k = k + 1
     }
-    prati qu[0]
+    nivartanam qu[0]
 }
 
 # avali_antah(q, v) — 1 if v is in the queue, else 0 (WS2, R21).
@@ -493,10 +493,10 @@ prakriya avali_antah(q, v) {
     vitti d = qu[2]
     vitti k = 0
     yavat (k < qu[0]) {
-        yadi (d[(qu[3] + k) % qu[1]] == val) { prati 1 }
+        yadi (d[(qu[3] + k) % qu[1]] == val) { nivartanam 1 }
         k = k + 1
     }
-    prati 0
+    nivartanam 0
 }
 
 # avali_rikta(q) — empty the queue in place (WS2, R19): same handle,
@@ -513,16 +513,16 @@ prakriya avali_rikta(q) {
     }
     q[0] = 0
     q[3] = 0
-    prati 1
+    nivartanam 1
 }
 
 # avali_shunya(q) — 1 if the queue is empty, else 0.
 prakriya avali_shunya(q) {
-    yadi (q[0] == 0) { prati 1 }
-    prati 0
+    yadi (q[0] == 0) { nivartanam 1 }
+    nivartanam 0
 }
 
 # avali_maap(q) — element count.
 prakriya avali_maap(q) {
-    prati q[0]
+    nivartanam q[0]
 }

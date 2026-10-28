@@ -9,7 +9,6 @@
 #
 # A pattern is carried as an integer bitmask: bit i (LSB = first syllable) is 1 for
 # guru, 0 for laghu. The integer value IS the pattern's index in the prastāra.
-
 prakriya dviguna(n) {
     vitti x = n
     vitti r = 1
@@ -18,14 +17,15 @@ prakriya dviguna(n) {
         r = r * 2
         i = i + 1
     }
-    prati r
+    nivartanam r
 }
 
+# meru(n, k) — the binomial coefficient C(n, k); 0 for k < 0 or k > n.
 prakriya meru(n, k) {
     vitti top = n
     vitti r = k
-    yadi (r < 0) { prati 0 }
-    yadi (r > top) { prati 0 }
+    yadi (r < 0) { nivartanam 0 }
+    yadi (r > top) { nivartanam 0 }
     yadi (r > top - r) { r = top - r }
     vitti res = 1
     vitti i = 1
@@ -45,13 +45,14 @@ prakriya meru(n, k) {
         res = (res / g) * (m / (i / g))
         i = i + 1
     }
-    prati res
+    nivartanam res
 }
 
+# matra_meru(n) — the nth Fibonacci number (matra_meru(0) = 0, matra_meru(1) = 1).
 prakriya matra_meru(n) {
     vitti x = n
-    yadi (x <= 0) { prati 0 }
-    yadi (x == 1) { prati 1 }
+    yadi (x <= 0) { nivartanam 0 }
+    yadi (x == 1) { nivartanam 1 }
     vitti a = 0
     vitti b = 1
     vitti i = 2
@@ -61,25 +62,27 @@ prakriya matra_meru(n) {
         b = c
         i = i + 1
     }
-    prati b
+    nivartanam b
 }
 
+# asti_guru(pat, i) — 1 if bit i of the integer pattern pat is set; 0 for i < 0 or i >= 64.
 prakriya asti_guru(pat, i) {
     vitti p = pat
     vitti idx = i
     # Index must be a bit position: negative or >= 64 has no bit
     # (i >= 64 shifted the divisor to 0 and trapped with SIGFPE).
-    yadi (idx < 0) { prati 0 }
-    yadi (idx >= 64) { prati 0 }
+    yadi (idx < 0) { nivartanam 0 }
+    yadi (idx >= 64) { nivartanam 0 }
     vitti d = 1
     vitti j = 0
     yavat (j < idx) {
         d = d * 2
         j = j + 1
     }
-    prati (p / d) % 2
+    nivartanam (p / d) % 2
 }
 
+# guru_gan(pat) — count of set bits in pat (population count); negatives return 0.
 prakriya guru_gan(pat) {
     vitti p = pat
     vitti c = 0
@@ -88,9 +91,10 @@ prakriya guru_gan(pat) {
         c = c + (p % 2)
         p = p / 2
     }
-    prati c
+    nivartanam c
 }
 
+# meru_mala(a, n) — fills a[0..n] with the nth row of Pascal's triangle: a[i] = meru(n, i).
 prakriya meru_mala(a, n) {
     vitti i = 0
     yavat (i <= n) {

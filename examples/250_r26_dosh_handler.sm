@@ -6,31 +6,31 @@
 # 1: not a digit
 prakriya ank_mulya(c) {
     yadi (c < 48 || c > 57) {
-        prati dosh(1)
+        nivartanam dosh(1)
     }
-    prati siddhi(c - 48)
+    nivartanam siddhi(c - 48)
 }
 
 # the number written in s; 2: an empty string; a bad digit passes up as 1
 prakriya sankhya_padh(s) {
     vitti n = vartani_aayam(s)
     yadi (n == 0) {
-        prati dosh(2)
+        nivartanam dosh(2)
     }
     vitti t = 0
     chakra i = 0 tak n - 1 {
         vitti d = prasar ank_mulya(akshar(s, i))
         t = t * 10 + d
     }
-    prati siddhi(t)
+    nivartanam siddhi(t)
 }
 
 # never fails: a bad number counts as the default
 prakriya padh_ya(s, mool) {
     yadi dosh (q = sankhya_padh(s)) {
-        prati mool
+        nivartanam mool
     }
-    prati q
+    nivartanam q
 }
 
 mukhya() {

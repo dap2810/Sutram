@@ -11,7 +11,5 @@ mukhya()
         likha(7)
         likha(" x ")
         likha(n)
-        likha(" = ")
-        likha(7 * n)
-        likha("\n")
+        likha(" = ", 7 * n)
     }

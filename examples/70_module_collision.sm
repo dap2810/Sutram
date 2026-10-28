@@ -1,6 +1,6 @@
 yoj ganit
 prakriya varg(n) {
-    prati n
+    nivartanam n
 }
 mukhya() {
     likha(varg(5))

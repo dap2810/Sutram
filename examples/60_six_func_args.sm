@@ -1,6 +1,6 @@
 # Six-argument user functions (T5)
 prakriya yog_shat(a, b, c, d, e, f)
-    prati a + b + c + d + e + f
+    nivartanam a + b + c + d + e + f
 
 prakriya darsh_shat(a, b, c, d, e, f)
     likha(a + b + c + d + e + f)

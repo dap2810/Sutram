@@ -63,14 +63,14 @@ any compiler (re-pinned in ROUND-03 together with `manifest.json`):
 
 | Input | Required Git blob |
 |---|---|
-| `src/sutram_compiler.asm` | `7f23de90e8ca43ad63c66dd28a5e76aa8cc88cff` |
+| `src/sutram_compiler.asm` | `569ffdeb909a957e8d1534c6dbeb3edaff957022` |
 | `src/r68_compiler_entry.asm` | `42389aaf73179726d91e23359aee2199734036e1` |
 | `src/r68_diagnostics.inc` | `578dc6577b7a39f67475a2a58542664c16043278` |
 | `src/r68_unicode_helpers.inc` | `69103e059634aa6b5b871ce7c06c2f4b9c742ff1` |
 | `src/r66_indic_lexer.inc` | `998b6cb75a7e11cf6d488cf84a84a2154ffdebf0` |
 | `src/r67_stack_pair.inc` | `e8472bd1cad767cf06b0c00fcf88793419362db5` |
 | `lang/sanskrit.lang` | `8c863e599cabd36781020799c10b0b311b72d564` |
-| `src/r11_sandesh.inc` | `fa24763e16e0cb63182c7d032fce16ed3a2afa16` |
+| `src/r11_sandesh.inc` | `0c94b80dc29435c5e7e2354b9a339178748b7876` |
 | `src/r22_lang_builtin.inc` | `f5f936bb2ddd20405f90a1185756516186dd46b9` |
 | `src/r23_capabilities.inc` | `fb73a3609fa4207b3450f4b7beaf4af18d6d7fd5` |
 | `src/r25_phal.inc` | `a36bd286aa6beea0b854576945e6874ba8835af0` |

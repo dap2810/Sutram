@@ -40,7 +40,7 @@ prakriya ank_tak_varna(n, out) {
         dst[18] = 48
         dst[19] = 56
         dst[20] = 0
-        prati 20
+        nivartanam 20
     }
     vitti neg = 0
     yadi (val < 0) {
@@ -51,7 +51,7 @@ prakriya ank_tak_varna(n, out) {
     vitti rev = nirmmita(22 * 8)
     yadi (rev == 0) {
         dst[0] = 0
-        prati 0
+        nivartanam 0
     }
     vitti rlen = 0
     yadi (val == 0) {
@@ -75,7 +75,7 @@ prakriya ank_tak_varna(n, out) {
         p = p + 1
     }
     dst[pos + rlen] = 0
-    prati pos + rlen
+    nivartanam pos + rlen
 }
 
 # varna_tak_ank(buf, n, ok) — parse first n character codes of mala buf as a
@@ -88,7 +88,7 @@ prakriya varna_tak_ank(buf, n, ok) {
     okp[0] = 1
     yadi (cnt == 0) {
         okp[0] = 0
-        prati 0
+        nivartanam 0
     }
     vitti neg = 0
     vitti p = 0
@@ -97,7 +97,7 @@ prakriya varna_tak_ank(buf, n, ok) {
         p = 1
         yadi (cnt == 1) {
             okp[0] = 0
-            prati 0
+            nivartanam 0
         }
     }
     vitti val = 0
@@ -105,26 +105,26 @@ prakriya varna_tak_ank(buf, n, ok) {
         vitti c = src[p]
         yadi (c < 48) {
             okp[0] = 0
-            prati 0
+            nivartanam 0
         }
         yadi (c > 57) {
             okp[0] = 0
-            prati 0
+            nivartanam 0
         }
         yadi (val > 922337203685477580) {
             okp[0] = 0
-            prati 0
+            nivartanam 0
         }
         yadi (val == 922337203685477580) {
             yadi (neg == 1) {
                 yadi ((c - 48) > 8) {
                     okp[0] = 0
-                    prati 0
+                    nivartanam 0
                 }
             } anya {
                 yadi ((c - 48) > 7) {
                     okp[0] = 0
-                    prati 0
+                    nivartanam 0
                 }
             }
         }
@@ -132,7 +132,7 @@ prakriya varna_tak_ank(buf, n, ok) {
         p = p + 1
     }
     yadi (neg == 1) { val = 0 - val }
-    prati val
+    nivartanam val
 }
 
 # ank_tak_aadhar_varna(n, base, out) — write n in any base 2..36 into out
@@ -146,21 +146,21 @@ prakriya ank_tak_aadhar_varna(n, base, out) {
     vitti rev = nirmmita(70 * 8)
     yadi (rev == 0) {
         dst[0] = 0
-        prati 0
+        nivartanam 0
     }
     vitti rlen = 0
     yadi (b < 2) {
         dst[0] = 0
-        prati 0
+        nivartanam 0
     }
     yadi (b > 36) {
         dst[0] = 0
-        prati 0
+        nivartanam 0
     }
     yadi (val == 0) {
         dst[0] = 48
         dst[1] = 0
-        prati 1
+        nivartanam 1
     }
     yavat (val > 0) {
         vitti d = val % b
@@ -178,7 +178,7 @@ prakriya ank_tak_aadhar_varna(n, base, out) {
         p = p + 1
     }
     dst[rlen] = 0
-    prati rlen
+    nivartanam rlen
 }
 
 # varna_tak_ank_aadhar(buf, n, base, ok) — parse first n char codes of buf in
@@ -191,7 +191,7 @@ prakriya varna_tak_ank_aadhar(buf, n, base, ok) {
     okp[0] = 1
     yadi (cnt == 0) {
         okp[0] = 0
-        prati 0
+        nivartanam 0
     }
     vitti val = 0
     vitti p = 0
@@ -209,26 +209,26 @@ prakriya varna_tak_ank_aadhar(buf, n, base, ok) {
         }
         yadi (d < 0) {
             okp[0] = 0
-            prati 0
+            nivartanam 0
         }
         yadi (d >= b) {
             okp[0] = 0
-            prati 0
+            nivartanam 0
         }
         yadi (val > 9223372036854775807 / b) {
             okp[0] = 0
-            prati 0
+            nivartanam 0
         }
         yadi (val == 9223372036854775807 / b) {
             yadi (d > 9223372036854775807 - val * b) {
                 okp[0] = 0
-                prati 0
+                nivartanam 0
             }
         }
         val = val * b + d
         p = p + 1
     }
-    prati val
+    nivartanam val
 }
 
 # pad_vam(out, count, width, fill) — left-pad the `count` character codes
@@ -240,7 +240,7 @@ prakriya pad_vam(out, count, width, fill) {
     vitti cnt = count
     vitti w = width
     vitti f = fill
-    yadi (w <= cnt) { prati cnt }
+    yadi (w <= cnt) { nivartanam cnt }
     vitti shift = w - cnt
     # move existing chars right
     vitti p = cnt - 1
@@ -255,7 +255,7 @@ prakriya pad_vam(out, count, width, fill) {
         q = q + 1
     }
     dst[w] = 0
-    prati w
+    nivartanam w
 }
 
 # varna_tak_dashm(buf, n, ok): parse a decimal float from a byte string.
@@ -274,7 +274,7 @@ prakriya varna_tak_dashm(buf, n, ok) {
     okp[0] = 1
     yadi (cnt == 0) {
         okp[0] = 0
-        prati 0.0
+        nivartanam 0.0
     }
     vitti neg = 0
     vitti p = 0
@@ -283,7 +283,7 @@ prakriya varna_tak_dashm(buf, n, ok) {
         p = 1
         yadi (cnt == 1) {
             okp[0] = 0
-            prati 0.0
+            nivartanam 0.0
         }
     }
     vitti mant = 0
@@ -298,11 +298,11 @@ prakriya varna_tak_dashm(buf, n, ok) {
         } anya {
             yadi (c1 < 48) {
                 okp[0] = 0
-                prati 0.0
+                nivartanam 0.0
             }
             yadi (c1 > 57) {
                 okp[0] = 0
-                prati 0.0
+                nivartanam 0.0
             }
             yadi (ndig < 18) {
                 mant = mant * 10 + (c1 - 48)
@@ -325,11 +325,11 @@ prakriya varna_tak_dashm(buf, n, ok) {
                 } anya {
                     yadi (c2 < 48) {
                         okp[0] = 0
-                        prati 0.0
+                        nivartanam 0.0
                     }
                     yadi (c2 > 57) {
                         okp[0] = 0
-                        prati 0.0
+                        nivartanam 0.0
                     }
                     yadi (ndig < 18) {
                         mant = mant * 10 + (c2 - 48)
@@ -344,7 +344,7 @@ prakriya varna_tak_dashm(buf, n, ok) {
     }
     yadi (seen == 0) {
         okp[0] = 0
-        prati 0.0
+        nivartanam 0.0
     }
     yadi (p < cnt) {
         yadi (src[p] == 101) {
@@ -354,7 +354,7 @@ prakriya varna_tak_dashm(buf, n, ok) {
                 p = p + 1
             } anya {
                 okp[0] = 0
-                prati 0.0
+                nivartanam 0.0
             }
         }
         vitti eneg = 0
@@ -366,7 +366,7 @@ prakriya varna_tak_dashm(buf, n, ok) {
         }
         yadi (p >= cnt) {
             okp[0] = 0
-            prati 0.0
+            nivartanam 0.0
         }
         vitti e = 0
         vitti eseen = 0
@@ -374,11 +374,11 @@ prakriya varna_tak_dashm(buf, n, ok) {
             vitti c3 = src[p]
             yadi (c3 < 48) {
                 okp[0] = 0
-                prati 0.0
+                nivartanam 0.0
             }
             yadi (c3 > 57) {
                 okp[0] = 0
-                prati 0.0
+                nivartanam 0.0
             }
             yadi (e < 1000) {
                 e = e * 10 + (c3 - 48)
@@ -388,7 +388,7 @@ prakriya varna_tak_dashm(buf, n, ok) {
         }
         yadi (eseen == 0) {
             okp[0] = 0
-            prati 0.0
+            nivartanam 0.0
         }
         yadi (eneg == 1) {
             exp10 = exp10 - e
@@ -398,17 +398,17 @@ prakriya varna_tak_dashm(buf, n, ok) {
     }
     yadi (p != cnt) {
         okp[0] = 0
-        prati 0.0
+        nivartanam 0.0
     }
     yadi (mant == 0) {
-        prati 0.0
+        nivartanam 0.0
     }
     yadi (exp10 > 308) {
         okp[0] = 0
-        prati 0.0
+        nivartanam 0.0
     }
     yadi (exp10 < -308) {
-        prati 0.0
+        nivartanam 0.0
     }
     dasham val = mant
     yadi (exp10 > 0) {
@@ -431,9 +431,9 @@ prakriya varna_tak_dashm(buf, n, ok) {
     yadi (val != 0.0) {
         yadi (val / 2.0 == val) {
             okp[0] = 0
-            prati 0.0
+            nivartanam 0.0
         }
     }
     yadi (neg == 1) { val = 0.0 - val }
-    prati val
+    nivartanam val
 }

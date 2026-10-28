@@ -31,29 +31,29 @@ yoj khand
 
 # rakh_srij(cap) — allocate an empty set of capacity cap (clamped to >= 1).
 prakriya rakh_srij(cap) {
-    prati nighantu_srij(cap)
+    nivartanam nighantu_srij(cap)
 }
 
 # rakh_yuj(s, cap, elem, elem_n) — add elem; 1 on success, 0 if the set
 # is full (then the set is unchanged). Adding an existing element keeps
 # rakh_maap unchanged (idempotent).
 prakriya rakh_yuj(s, cap, elem, elem_n) {
-    prati nighantu_khip(s, cap, elem, elem_n, 1)
+    nivartanam nighantu_khip(s, cap, elem, elem_n, 1)
 }
 
 # rakh_antah(s, cap, elem, elem_n) — 1 if elem is in the set, else 0.
 prakriya rakh_antah(s, cap, elem, elem_n) {
-    prati nighantu_antah(s, cap, elem, elem_n)
+    nivartanam nighantu_antah(s, cap, elem, elem_n)
 }
 
 # rakh_apanay(s, cap, elem, elem_n) — remove elem; 1 if removed, 0 if absent.
 prakriya rakh_apanay(s, cap, elem, elem_n) {
-    prati nighantu_apanay(s, cap, elem, elem_n)
+    nivartanam nighantu_apanay(s, cap, elem, elem_n)
 }
 
 # rakh_maap(s) — number of elements.
 prakriya rakh_maap(s) {
-    prati nighantu_maap(s)
+    nivartanam nighantu_maap(s)
 }
 
 # rakh_samroop_diff(a, cap, b, bcap, out) — add every element that is in
@@ -64,7 +64,7 @@ prakriya rakh_samroop_diff(a, cap, b, bcap, out) {
     vitti ocap = out[0]
     vitti tmpa = nirmmita(a[0] * 33 + 1)
     vitti tmpb = nirmmita(b[0] * 33 + 1)
-    yadi (tmpa == 0 || tmpb == 0) { prati 0 - 1 }
+    yadi (tmpa == 0 || tmpb == 0) { nivartanam 0 - 1 }
     vitti nka = nighantu_kunjika_ashtak(a, tmpa)
     vitti nkb = nighantu_kunjika_ashtak(b, tmpb)
     vitti pos = 0
@@ -88,7 +88,7 @@ prakriya rakh_samroop_diff(a, cap, b, bcap, out) {
         pos = pos + 1 + seglen
         i = i + 1
     }
-    prati nighantu_maap(out)
+    nivartanam nighantu_maap(out)
 }
 
 # rakh_sangam(a, cap, b, bcap, out) — add every element of a and of b into
@@ -97,7 +97,7 @@ prakriya rakh_sangam(a, cap, b, bcap, out) {
     vitti ocap = out[0]
     vitti tmpa = nirmmita(a[0] * 33 + 1)
     vitti tmpb = nirmmita(b[0] * 33 + 1)
-    yadi (tmpa == 0 || tmpb == 0) { prati 0 - 1 }
+    yadi (tmpa == 0 || tmpb == 0) { nivartanam 0 - 1 }
     vitti nka = nighantu_kunjika_ashtak(a, tmpa)
     vitti nkb = nighantu_kunjika_ashtak(b, tmpb)
     vitti pos = 0
@@ -117,7 +117,7 @@ prakriya rakh_sangam(a, cap, b, bcap, out) {
         pos = pos + 1 + seglen
         i = i + 1
     }
-    prati nighantu_maap(out)
+    nivartanam nighantu_maap(out)
 }
 
 # rakh_sampat(a, cap, b, bcap, out) — add every element of a that is
@@ -126,7 +126,7 @@ prakriya rakh_sangam(a, cap, b, bcap, out) {
 prakriya rakh_sampat(a, cap, b, bcap, out) {
     vitti ocap = out[0]
     vitti tmpa = nirmmita(a[0] * 33 + 1)
-    yadi (tmpa == 0) { prati 0 - 1 }
+    yadi (tmpa == 0) { nivartanam 0 - 1 }
     vitti nka = nighantu_kunjika_ashtak(a, tmpa)
     vitti pos = 0
     vitti i = 0
@@ -139,7 +139,7 @@ prakriya rakh_sampat(a, cap, b, bcap, out) {
         pos = pos + 1 + seglen
         i = i + 1
     }
-    prati nighantu_maap(out)
+    nivartanam nighantu_maap(out)
 }
 
 # rakh_bhed(a, cap, b, bcap, out) — add every element of a that is
@@ -148,7 +148,7 @@ prakriya rakh_sampat(a, cap, b, bcap, out) {
 prakriya rakh_bhed(a, cap, b, bcap, out) {
     vitti ocap = out[0]
     vitti tmpa = nirmmita(a[0] * 33 + 1)
-    yadi (tmpa == 0) { prati 0 - 1 }
+    yadi (tmpa == 0) { nivartanam 0 - 1 }
     vitti nka = nighantu_kunjika_ashtak(a, tmpa)
     vitti pos = 0
     vitti i = 0
@@ -161,7 +161,7 @@ prakriya rakh_bhed(a, cap, b, bcap, out) {
         pos = pos + 1 + seglen
         i = i + 1
     }
-    prati nighantu_maap(out)
+    nivartanam nighantu_maap(out)
 }
 
 # rakh_vardh(s, newcap) — copy the set into a fresh set of capacity
@@ -169,7 +169,7 @@ prakriya rakh_bhed(a, cap, b, bcap, out) {
 # with the same all-or-nothing rule: returns the new handle, or 0
 # if newcap < rakh_maap(s). Rebind: s = rakh_vardh(s, 32).
 prakriya rakh_vardh(s, newcap) {
-    prati nighantu_vardh(s, newcap)
+    nivartanam nighantu_vardh(s, newcap)
 }
 
 # rakh_rikta(s) — reset the set to empty in place (WS2, R19): same
@@ -177,7 +177,7 @@ prakriya rakh_vardh(s, newcap) {
 # zero (count, state, keylens, vals, key bytes) with no stale
 # elements readable afterwards. Returns 1.
 prakriya rakh_rikta(s) {
-    prati nighantu_rikta(s)
+    nivartanam nighantu_rikta(s)
 }
 
 # rakh_sam(a, cap, b, bcap) — 1 if a and b hold exactly the same
@@ -185,15 +185,15 @@ prakriya rakh_rikta(s) {
 # two empty sets are equal.
 prakriya rakh_sam(a, cap, b, bcap) {
     vitti r = rakh_asti_upasamuh(a, cap, b, bcap)
-    yadi (r != 1) { prati r }
-    prati rakh_asti_upasamuh(b, bcap, a, cap)
+    yadi (r != 1) { nivartanam r }
+    nivartanam rakh_asti_upasamuh(b, bcap, a, cap)
 }
 
 # rakh_asti_upasamuh(a, cap, b, bcap) — 1 if every element of a is in b, else
 # 0. Empty a is a subset of everything.
 prakriya rakh_asti_upasamuh(a, cap, b, bcap) {
     vitti tmpa = nirmmita(a[0] * 33 + 1)
-    yadi (tmpa == 0) { prati 0 - 1 }
+    yadi (tmpa == 0) { nivartanam 0 - 1 }
     vitti nka = nighantu_kunjika_ashtak(a, tmpa)
     vitti pos = 0
     vitti i = 0
@@ -201,12 +201,12 @@ prakriya rakh_asti_upasamuh(a, cap, b, bcap) {
     yavat (i < nka) {
         seglen = akshar(tmpa, pos)
         yadi (nighantu_antah(b, bcap, tmpa + pos + 1, seglen) == 0) {
-            prati 0
+            nivartanam 0
         }
         pos = pos + 1 + seglen
         i = i + 1
     }
-    prati 1
+    nivartanam 1
 }
 
 # rakh_tak_mala(s, cap, out) — write the set's elements into out in
@@ -219,8 +219,8 @@ prakriya rakh_tak_mala(s, cap, out) {
     vitti scratch = nirmmita(s[0] * 32 + 1)
     vitti ptrs = nirmmita(s[0] * 8)
     vitti lens = nirmmita(s[0] * 8)
-    yadi (tmp == 0 || scratch == 0) { prati 0 - 1 }
-    yadi (ptrs == 0 || lens == 0) { prati 0 - 1 }
+    yadi (tmp == 0 || scratch == 0) { nivartanam 0 - 1 }
+    yadi (ptrs == 0 || lens == 0) { nivartanam 0 - 1 }
     vitti nk = nighantu_kunjika_ashtak(s, tmp)
     vitti pos = 0
     vitti i = 0
@@ -274,5 +274,5 @@ prakriya rakh_tak_mala(s, cap, out) {
         wpos = wpos + 1 + lens[i]
         i = i + 1
     }
-    prati nk
+    nivartanam nk
 }

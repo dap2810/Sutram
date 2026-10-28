@@ -1,6 +1,6 @@
 # R7 golden: a call must pass as many arguments as the prakriya declares.
 # Before R7 f(1) compiled and b read whatever was in its register.
-prakriya f(a, b) { prati a + b }
+prakriya f(a, b) { nivartanam a + b }
 mukhya() {
     likha(f(1))
 }

@@ -10,13 +10,9 @@ mukhya()
 
     likha("=== Booleans & Logic ===\n")
 
-    likha("is_ready = ")
-    likha(is_ready)
-    likha("\n")
+    likha("is_ready = ", is_ready)
 
-    likha("is_done = ")
-    likha(is_done)
-    likha("\n")
+    likha("is_done = ", is_done)
 
     # Logical AND
     yadi (is_ready == purna && is_done == shunya) {
@@ -32,8 +28,6 @@ mukhya()
     vitti x = 5
     vitti y = 10
     vitti both_positive = x > 0 && y > 0
-    likha("both_positive = ")
-    likha(both_positive)
-    likha("\n")
+    likha("both_positive = ", both_positive)
 
     likha("=== Done ===\n")

@@ -2,13 +2,13 @@
 prakriya antim_mulya() {
     kosh dasham values[1]
     kosh_push(values, 2.5)
-    prati kosh_pop(values)
+    nivartanam kosh_pop(values)
 }
 
 prakriya sanket_mulya() {
     kosh dasham values[1]
     kosh_push(values, 1.25)
-    prati values[0]
+    nivartanam values[0]
 }
 
 mukhya() {

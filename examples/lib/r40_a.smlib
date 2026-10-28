@@ -1,5 +1,5 @@
 yoj r40_b
 yoj r40_c
 prakriya r40_diamond() {
-    prati r40_left() + r40_right()
+    nivartanam r40_left() + r40_right()
 }

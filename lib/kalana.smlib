@@ -18,7 +18,7 @@
 prakriya kalana_trapiz(kosh dasham xs, kosh dasham ys) {
     vitti n = kosh_len(xs)
     yadi (kosh_len(ys) < n) { n = kosh_len(ys) }
-    yadi (n < 2) { prati 0.0 }
+    yadi (n < 2) { nivartanam 0.0 }
     dasham total = 0.0
     vitti i = 0
     yavat (i < n - 1) {
@@ -26,7 +26,7 @@ prakriya kalana_trapiz(kosh dasham xs, kosh dasham ys) {
         total = total + h * (ys[i] + ys[i + 1]) / 2.0
         i = i + 1
     }
-    prati total
+    nivartanam total
 }
 
 # Simpson's 1/3 rule over equally spaced samples. Needs an odd number of points
@@ -34,7 +34,7 @@ prakriya kalana_trapiz(kosh dasham xs, kosh dasham ys) {
 prakriya simpson(kosh dasham xs, kosh dasham ys) {
     vitti n = kosh_len(xs)
     yadi (kosh_len(ys) < n) { n = kosh_len(ys) }
-    yadi (n < 3) { prati kalana_trapiz(xs, ys) }
+    yadi (n < 3) { nivartanam kalana_trapiz(xs, ys) }
     # if the count is even, drop the last point so the rule applies
     yadi ((n - 1) - ((n - 1) / 2) * 2 == 1) { n = n - 1 }
     dasham h = (xs[n - 1] - xs[0]) / (n - 1)
@@ -48,7 +48,7 @@ prakriya simpson(kosh dasham xs, kosh dasham ys) {
         }
         i = i + 1
     }
-    prati total * h / 3.0
+    nivartanam total * h / 3.0
 }
 
 # ---------------------------------------------------------------
@@ -59,7 +59,7 @@ prakriya simpson(kosh dasham xs, kosh dasham ys) {
 prakriya pravan(kosh dasham xs, kosh dasham ys, i) {
     vitti n = kosh_len(xs)
     yadi (kosh_len(ys) < n) { n = kosh_len(ys) }
-    yadi (n < 2) { prati 0.0 }
+    yadi (n < 2) { nivartanam 0.0 }
     # Neighbouring pair: first, last, or centred. The two
     # sequential yadi (not yadi/anyatra) matter: for n == 2,
     # i == 0 satisfies the first but not the second, and the
@@ -71,27 +71,27 @@ prakriya pravan(kosh dasham xs, kosh dasham ys, i) {
     # Zero spacing (duplicate x): no pravan is defined — return
     # 0.0 instead of inf / NaN (the old code divided by zero).
     dasham dx = xs[hi] - xs[lo]
-    yadi (dx == 0.0) { prati 0.0 }
-    prati (ys[hi] - ys[lo]) / dx
+    yadi (dx == 0.0) { nivartanam 0.0 }
+    nivartanam (ys[hi] - ys[lo]) / dx
 }
 
 # Second derivative at an interior point (central, equally spaced assumption relaxed).
 prakriya pravan2(kosh dasham xs, kosh dasham ys, i) {
     vitti n = kosh_len(xs)
     yadi (kosh_len(ys) < n) { n = kosh_len(ys) }
-    yadi (i <= 0) { prati 0.0 }
-    yadi (i >= n - 1) { prati 0.0 }
+    yadi (i <= 0) { nivartanam 0.0 }
+    yadi (i >= n - 1) { nivartanam 0.0 }
     dasham hl = xs[i] - xs[i - 1]
     dasham hr = xs[i + 1] - xs[i]
     # Zero spacing on either side (or hl == -hr, so the mean
     # spacing is 0): the second difference is undefined — 0.0.
-    yadi (hl == 0.0) { prati 0.0 }
-    yadi (hr == 0.0) { prati 0.0 }
+    yadi (hl == 0.0) { nivartanam 0.0 }
+    yadi (hr == 0.0) { nivartanam 0.0 }
     dasham dl = (ys[i] - ys[i - 1]) / hl
     dasham dr = (ys[i + 1] - ys[i]) / hr
     dasham hm = (hl + hr) / 2.0
-    yadi (hm == 0.0) { prati 0.0 }
-    prati (dr - dl) / hm
+    yadi (hm == 0.0) { nivartanam 0.0 }
+    nivartanam (dr - dl) / hm
 }
 
 # ---------------------------------------------------------------
@@ -101,14 +101,14 @@ prakriya pravan2(kosh dasham xs, kosh dasham ys, i) {
 # Horner evaluation: c[0] + c[1]x + c[2]x^2 + ...
 prakriya bahu_ganana(kosh dasham c, dasham x) {
     vitti n = kosh_len(c)
-    yadi (n == 0) { prati 0.0 }
+    yadi (n == 0) { nivartanam 0.0 }
     dasham acc = c[n - 1]
     vitti k = n - 2
     yavat (k >= 0) {
         acc = acc * x + c[k]
         k = k - 1
     }
-    prati acc
+    nivartanam acc
 }
 
 # Bisection root of a polynomial on [lo, hi].
@@ -120,16 +120,16 @@ prakriya bahu_mula(kosh dasham c, dasham lo, dasham hi, kosh dasham ok) {
     dasham flo = bahu_ganana(c, lo)
     dasham fhi = bahu_ganana(c, hi)
     # need opposite signs; treat exact zeros first
-    yadi (flo == 0.0) { ok[0] = 1.0; prati lo }
-    yadi (fhi == 0.0) { ok[0] = 1.0; prati hi }
-    yadi ((flo < 0.0) == (fhi < 0.0)) { ok[0] = 0.0; prati 0.0 }
+    yadi (flo == 0.0) { ok[0] = 1.0; nivartanam lo }
+    yadi (fhi == 0.0) { ok[0] = 1.0; nivartanam hi }
+    yadi ((flo < 0.0) == (fhi < 0.0)) { ok[0] = 0.0; nivartanam 0.0 }
     dasham a = lo
     dasham b = hi
     vitti k = 0
     yavat (k < 80) {
         dasham m = (a + b) / 2.0
         dasham fm = bahu_ganana(c, m)
-        yadi (fm == 0.0) { ok[0] = 1.0; prati m }
+        yadi (fm == 0.0) { ok[0] = 1.0; nivartanam m }
         yadi ((fm < 0.0) == (flo < 0.0)) {
             a = m
             flo = fm
@@ -139,7 +139,7 @@ prakriya bahu_mula(kosh dasham c, dasham lo, dasham hi, kosh dasham ok) {
         k = k + 1
     }
     ok[0] = 1.0
-    prati (a + b) / 2.0
+    nivartanam (a + b) / 2.0
 }
 
 # ---------------------------------------------------------------

@@ -43,14 +43,14 @@ prakriya khand_bandh(cells, n, out) {
     vitti i = 0
     yadi (cnt <= 0) {
         akshar_rakh(dst, 0, 0)
-        prati 0
+        nivartanam 0
     }
     yavat (i < cnt) {
         akshar_rakh(dst, i, c[i])
         i = i + 1
     }
     akshar_rakh(dst, cnt, 0)
-    prati cnt
+    nivartanam cnt
 }
 
 # khand_mukt(bytes, n, out) — the inverse: expand n contiguous bytes
@@ -65,14 +65,14 @@ prakriya khand_mukt(bytes, n, out) {
     vitti i = 0
     yadi (cnt <= 0) {
         dst[0] = 0
-        prati 0
+        nivartanam 0
     }
     yavat (i < cnt) {
         dst[i] = akshar(s, i)
         i = i + 1
     }
     dst[cnt] = 0
-    prati cnt
+    nivartanam cnt
 }
 
 # khand_pratilip(src, n, out) — copy n bytes verbatim ("make me a real byte
@@ -85,18 +85,19 @@ prakriya khand_pratilip(src, n, out) {
     vitti i = 0
     yadi (cnt <= 0) {
         akshar_rakh(dst, 0, 0)
-        prati 0
+        nivartanam 0
     }
     yavat (i < cnt) {
         akshar_rakh(dst, i, akshar(s, i))
         i = i + 1
     }
     akshar_rakh(dst, cnt, 0)
-    prati cnt
+    nivartanam cnt
 }
 
+# khand_maap(s) — byte length of the string s (via vartani_aayam).
 prakriya khand_maap(s) {
-    prati vartani_aayam(s)
+    nivartanam vartani_aayam(s)
 }
 
 # khand_anwesh(hay, hn, needle, nn) — byte index of first occurrence of
@@ -109,9 +110,9 @@ prakriya khand_anwesh(hay, hn, needle, nn) {
     vitti i = 0
     vitti match = 0
     vitti j = 0
-    yadi (nlen < 0) { prati 0 - 1 }
-    yadi (nlen == 0) { prati 0 }
-    yadi (nlen > hlen) { prati 0 - 1 }
+    yadi (nlen < 0) { nivartanam 0 - 1 }
+    yadi (nlen == 0) { nivartanam 0 }
+    yadi (nlen > hlen) { nivartanam 0 - 1 }
     i = 0
     yavat (i <= hlen - nlen) {
         match = 1
@@ -120,16 +121,16 @@ prakriya khand_anwesh(hay, hn, needle, nn) {
             yadi (akshar(h, i + j) != akshar(nd, j)) { match = 0 }
             j = j + 1
         }
-        yadi (match == 1) { prati i }
+        yadi (match == 1) { nivartanam i }
         i = i + 1
     }
-    prati 0 - 1
+    nivartanam 0 - 1
 }
 
 # khand_antah(hay, hn, needle, nn) — 1 if needle occurs in hay, else 0.
 prakriya khand_antah(hay, hn, needle, nn) {
-    yadi (khand_anwesh(hay, hn, needle, nn) >= 0) { prati 1 }
-    prati 0
+    yadi (khand_anwesh(hay, hn, needle, nn) >= 0) { nivartanam 1 }
+    nivartanam 0
 }
 
 # khand_pratisthap(src, sn, find, fn, repl, out) — copy src to out, replacing
@@ -161,7 +162,7 @@ prakriya khand_pratisthap(src, sn, find, fn, repl, out) {
             rpos = rpos + 1
         }
         akshar_rakh(dst, wpos, 0)
-        prati wpos
+        nivartanam wpos
     }
     yavat (rpos < slen) {
         match = 1
@@ -189,7 +190,7 @@ prakriya khand_pratisthap(src, sn, find, fn, repl, out) {
         }
     }
     akshar_rakh(dst, wpos, 0)
-    prati wpos
+    nivartanam wpos
 }
 
 # khand_bhed(src, sn, sep, sepn, parts, maxparts) — split src on sep.
@@ -219,14 +220,14 @@ prakriya khand_bhed(src, sn, sep, sepn, parts, maxparts) {
     vitti ci = 0
     yadi (slen == 0) {
         dst[0] = 0
-        prati 1
+        nivartanam 1
     }
     yadi (splen <= 0) {
         # splen < 0: same one-segment result as empty separator
         # (the old code looped forever on a negative length).
         dst[0] = slen
         khand_mukt(s, slen, dst + 8)
-        prati 1
+        nivartanam 1
     }
     done = 0
     yavat (done == 0) {
@@ -272,7 +273,7 @@ prakriya khand_bhed(src, sn, sep, sepn, parts, maxparts) {
             }
         }
     }
-    prati nseg
+    nivartanam nseg
 }
 
 # khand_yuj(parts, count, sep, sepn, out) — inverse of khand_bhed for the
@@ -310,7 +311,7 @@ prakriya khand_yuj(parts, count, sep, sepn, out) {
         si = si + 1
     }
     akshar_rakh(dst, wpos, 0)
-    prati wpos
+    nivartanam wpos
 }
 
 # khand_chhid(src, sn, out) — strip leading/trailing ASCII spaces (32).
@@ -347,7 +348,7 @@ prakriya khand_chhid(src, sn, out) {
         k = k + 1
     }
     akshar_rakh(dst, wpos, 0)
-    prati wpos
+    nivartanam wpos
 }
 
 # khand_unnat(src, sn, out) / khand_avanat — ASCII case conversion on byte
@@ -361,7 +362,7 @@ prakriya khand_unnat(src, sn, out) {
     vitti c = 0
     yadi (slen < 0) {
         akshar_rakh(dst, 0, 0)
-        prati 0
+        nivartanam 0
     }
     yavat (i < slen) {
         c = akshar(s, i)
@@ -372,9 +373,10 @@ prakriya khand_unnat(src, sn, out) {
         i = i + 1
     }
     akshar_rakh(dst, slen, 0)
-    prati slen
+    nivartanam slen
 }
 
+# khand_avanat(src, sn, out) — copies src (sn bytes) to out with A-Z lowercased to a-z, NUL-terminated; returns sn (0 for sn < 0).
 prakriya khand_avanat(src, sn, out) {
     vitti s = src
     vitti slen = sn
@@ -383,7 +385,7 @@ prakriya khand_avanat(src, sn, out) {
     vitti c = 0
     yadi (slen < 0) {
         akshar_rakh(dst, 0, 0)
-        prati 0
+        nivartanam 0
     }
     yavat (i < slen) {
         c = akshar(s, i)
@@ -394,7 +396,7 @@ prakriya khand_avanat(src, sn, out) {
         i = i + 1
     }
     akshar_rakh(dst, slen, 0)
-    prati slen
+    nivartanam slen
 }
 
 # khand_aadi(src, sn, pre, pn) / khand_ant — 0/1 on byte strings.
@@ -406,28 +408,29 @@ prakriya khand_aadi(src, sn, pre, pn) {
     vitti pr = pre
     vitti plen = pn
     vitti i = 0
-    yadi (plen < 0) { prati 0 }
-    yadi (plen > slen) { prati 0 }
+    yadi (plen < 0) { nivartanam 0 }
+    yadi (plen > slen) { nivartanam 0 }
     yavat (i < plen) {
-        yadi (akshar(s, i) != akshar(pr, i)) { prati 0 }
+        yadi (akshar(s, i) != akshar(pr, i)) { nivartanam 0 }
         i = i + 1
     }
-    prati 1
+    nivartanam 1
 }
 
+# khand_ant(src, sn, suf, sn2) — 1 if the src byte string (sn bytes) ends with suf (sn2 bytes), else 0.
 prakriya khand_ant(src, sn, suf, sn2) {
     vitti s = src
     vitti slen = sn
     vitti sf = suf
     vitti sflen = sn2
     vitti i = 0
-    yadi (sflen < 0) { prati 0 }
-    yadi (sflen > slen) { prati 0 }
+    yadi (sflen < 0) { nivartanam 0 }
+    yadi (sflen > slen) { nivartanam 0 }
     yavat (i < sflen) {
-        yadi (akshar(s, slen - sflen + i) != akshar(sf, i)) { prati 0 }
+        yadi (akshar(s, slen - sflen + i) != akshar(sf, i)) { nivartanam 0 }
         i = i + 1
     }
-    prati 1
+    nivartanam 1
 }
 
 # khand_tul(a, an, b, bn) — -1 / 0 / 1 (lexicographic by byte value).
@@ -445,13 +448,13 @@ prakriya khand_tul(a, an, b, bn) {
     yavat (i < n) {
         cx = akshar(x, i)
         cy = akshar(y, i)
-        yadi (cx < cy) { prati 0 - 1 }
-        yadi (cx > cy) { prati 1 }
+        yadi (cx < cy) { nivartanam 0 - 1 }
+        yadi (cx > cy) { nivartanam 1 }
         i = i + 1
     }
-    yadi (xn < yn) { prati 0 - 1 }
-    yadi (xn > yn) { prati 1 }
-    prati 0
+    yadi (xn < yn) { nivartanam 0 - 1 }
+    yadi (xn > yn) { nivartanam 1 }
+    nivartanam 0
 }
 
 # khand_viparyay(src, sn, out) — copy src reversed into out (WS3, R19).
@@ -468,7 +471,7 @@ prakriya khand_viparyay(src, sn, out) {
     vitti t = 0
     yadi (n <= 0) {
         akshar_rakh(dst, 0, 0)
-        prati 0
+        nivartanam 0
     }
     i = 0
     j = n - 1
@@ -483,7 +486,7 @@ prakriya khand_viparyay(src, sn, out) {
         akshar_rakh(dst, n / 2, akshar(s, n / 2))
     }
     akshar_rakh(dst, n, 0)
-    prati n
+    nivartanam n
 }
 
 # khand_gan(hay, hn, needle, nn) — count NON-OVERLAPPING occurrences
@@ -498,14 +501,14 @@ prakriya khand_gan(hay, hn, needle, nn) {
     vitti pos = 0
     vitti c = 0
     vitti f = 0
-    yadi (nlen <= 0) { prati 0 }
+    yadi (nlen <= 0) { nivartanam 0 }
     yavat (pos <= hlen - nlen) {
         f = khand_anwesh(h + pos, hlen - pos, nd, nlen)
-        yadi (f < 0) { prati c }
+        yadi (f < 0) { nivartanam c }
         c = c + 1
         pos = pos + f + nlen
     }
-    prati c
+    nivartanam c
 }
 
 # khand_gan_swar(s, n) — count lowercase vowels (a e i o u) in the
@@ -526,7 +529,7 @@ prakriya khand_gan_swar(s, n) {
         }
         i = i + 1
     }
-    prati c
+    nivartanam c
 }
 
 # khand_gan_akshar(s, n, code) — count occurrences of byte `code` in
@@ -542,7 +545,7 @@ prakriya khand_gan_akshar(s, n, code) {
         yadi (akshar(src, i) == cd) { c = c + 1 }
         i = i + 1
     }
-    prati c
+    nivartanam c
 }
 
 # khand_anwesh_akshar(s, n, code) — first index of byte `code` in the first
@@ -553,10 +556,10 @@ prakriya khand_anwesh_akshar(s, n, code) {
     vitti cd = code
     vitti i = 0
     yavat (i < cnt) {
-        yadi (akshar(src, i) == cd) { prati i }
+        yadi (akshar(src, i) == cd) { nivartanam i }
         i = i + 1
     }
-    prati 0 - 1
+    nivartanam 0 - 1
 }
 
 # khand_asti_sarv_ank(s, n) — 1 if all of the first n bytes are ASCII
@@ -567,18 +570,18 @@ prakriya khand_asti_sarv_ank(s, n) {
     vitti cnt = n
     vitti i = 0
     vitti ch = 0
-    yadi (cnt <= 0) { prati 0 }
+    yadi (cnt <= 0) { nivartanam 0 }
     yavat (i < cnt) {
         ch = akshar(src, i)
-        yadi (ch < 48 || ch > 57) { prati 0 }
+        yadi (ch < 48 || ch > 57) { nivartanam 0 }
         i = i + 1
     }
-    prati 1
+    nivartanam 1
 }
 
 # khand_sam(a, an, b, bn) — 1 if the two byte strings are equal,
 # else 0 (WS1, R20). Explicit-length form of varna_sam.
 prakriya khand_sam(a, an, b, bn) {
-    yadi (khand_tul(a, an, b, bn) == 0) { prati 1 }
-    prati 0
+    yadi (khand_tul(a, an, b, bn) == 0) { nivartanam 1 }
+    nivartanam 0
 }

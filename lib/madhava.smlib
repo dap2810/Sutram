@@ -11,7 +11,7 @@
 # the guess until it reaches sqrt(v) (~512 halvings for
 # v = 1.8e308); 40 iterations gave 1e288 for sqrt(1e300).
 prakriya madhava_vargmool(dasham v) {
-    yadi (v <= 0.0) { prati 0.0 }
+    yadi (v <= 0.0) { nivartanam 0.0 }
     dasham g = v
     yadi (g < 1.0) { g = 1.0 }
     vitti i = 0
@@ -19,7 +19,7 @@ prakriya madhava_vargmool(dasham v) {
         g = (g + v / g) / 2.0
         i = i + 1
     }
-    prati g
+    nivartanam g
 }
 
 # Madhava's fast series for pi:  pi = sqrt(12) * sum (-1)^k / ((2k+1) * 3^k)
@@ -40,7 +40,7 @@ prakriya madhava_pi() {
         util_chinha = 0 - util_chinha
         k = k + 1
     }
-    prati root12 * sum
+    nivartanam root12 * sum
 }
 
 # Madhava's sine series:  sin(x) = x - x^3/3! + x^5/5! - ...
@@ -62,7 +62,7 @@ prakriya madhava_sin(dasham x) {
         s = s + t
         n = n + 1
     }
-    prati s
+    nivartanam s
 }
 
 # Madhava's cosine series:  cos(x) = 1 - x^2/2! + x^4/4! - ...
@@ -82,7 +82,7 @@ prakriya madhava_cos(dasham x) {
         s = s + t
         n = n + 1
     }
-    prati s
+    nivartanam s
 }
 
 # Madhava-Gregory arctangent series:  atan(x) = x - x^3/3 + x^5/5 - ...
@@ -101,8 +101,8 @@ prakriya madhava_atan(dasham x) {
     }
     yadi (ax > 1.0) {
         dasham r = madhava_pi() / 2.0 - madhava_atan(1.0 / ax)
-        yadi (neg == 1) { prati 0.0 - r }
-        prati r
+        yadi (neg == 1) { nivartanam 0.0 - r }
+        nivartanam r
     }
     dasham y = ax / (1.0 + madhava_vargmool(1.0 + ax * ax))
     dasham s = 0.0
@@ -121,6 +121,6 @@ prakriya madhava_atan(dasham x) {
         k = k + 1
     }
     dasham res = 2.0 * s
-    yadi (neg == 1) { prati 0.0 - res }
-    prati res
+    yadi (neg == 1) { nivartanam 0.0 - res }
+    nivartanam res
 }

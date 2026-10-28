@@ -5,32 +5,34 @@
 # 8 bytes (one integer). The caller tracks the length; mala_nava only
 # allocates without tracking length. Count-checked variants take caller's n;
 # n must not exceed allocated cells. Raw variants do no allocation bounds check.
-
 prakriya mala_nava(n) {
     vitti c = n
     vitti sz = 0
     # A count so large the byte size overflows returns 0 (R35: before multiplying).
-    yadi (c < 0) { prati 0 }   # R37: -2^61 + 1 wrapped to 8
-    yadi (c > 1152921504606846975) { prati 0 }
+    yadi (c < 0) { nivartanam 0 }   # R37: -2^61 + 1 wrapped to 8
+    yadi (c > 1152921504606846975) { nivartanam 0 }
     sz = c * 8
-    yadi (sz < 0) { prati 0 }
-    prati nirmmita(sz)
+    yadi (sz < 0) { nivartanam 0 }
+    nivartanam nirmmita(sz)
 }
 
+# mala_sangrah(arr, i, val) — stores val at arr[i] (qword cells, no bounds check); returns 0.
 prakriya mala_sangrah(arr, i, val) {
     vitti a = arr
     vitti j = i
     vitti v = val
     likh8(a + j * 8, v)
-    prati 0
+    nivartanam 0
 }
 
+# mala_grah(arr, i) — loads the qword at arr[i] (no bounds check).
 prakriya mala_grah(arr, i) {
     vitti a = arr
     vitti j = i
-    prati pad8(a + j * 8)
+    nivartanam pad8(a + j * 8)
 }
 
+# mala_purn(arr, val, n) — fills arr[0..n-1] with val; returns 0.
 prakriya mala_purn(arr, val, n) {
     vitti a = arr
     vitti v = val
@@ -40,9 +42,10 @@ prakriya mala_purn(arr, val, n) {
         likh8(a + j * 8, v)
         j = j + 1
     }
-    prati 0
+    nivartanam 0
 }
 
+# mala_pratilip(dst, src, n) — copies n qwords from src to dst; returns 0.
 prakriya mala_pratilip(dst, src, n) {
     vitti d = dst
     vitti s = src
@@ -52,9 +55,10 @@ prakriya mala_pratilip(dst, src, n) {
         likh8(d + j * 8, pad8(s + j * 8))
         j = j + 1
     }
-    prati 0
+    nivartanam 0
 }
 
+# mala_yog(arr, n) — sum of arr[0..n-1].
 prakriya mala_yog(arr, n) {
     vitti a = arr
     vitti c = n
@@ -64,25 +68,27 @@ prakriya mala_yog(arr, n) {
         s = s + pad8(a + j * 8)
         j = j + 1
     }
-    prati s
+    nivartanam s
 }
 
+# mala_sangrah_surakshit(arr, i, val, n) — bounds-checked store: 1 and stores if 0 <= i < n, else 0 and stores nothing.
 prakriya mala_sangrah_surakshit(arr, i, val, n) {
     vitti a = arr
     vitti j = i
     vitti v = val
     vitti c = n
-    yadi (j < 0) { prati 0 }
-    yadi (j >= c) { prati 0 }
+    yadi (j < 0) { nivartanam 0 }
+    yadi (j >= c) { nivartanam 0 }
     likh8(a + j * 8, v)
-    prati 1
+    nivartanam 1
 }
 
+# mala_grah_surakshit(arr, i, n) — bounds-checked load: arr[i] if 0 <= i < n, else 0.
 prakriya mala_grah_surakshit(arr, i, n) {
     vitti a = arr
     vitti j = i
     vitti c = n
-    yadi (j < 0) { prati 0 }
-    yadi (j >= c) { prati 0 }
-    prati pad8(a + j * 8)
+    yadi (j < 0) { nivartanam 0 }
+    yadi (j >= c) { nivartanam 0 }
+    nivartanam pad8(a + j * 8)
 }

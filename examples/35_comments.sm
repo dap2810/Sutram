@@ -4,11 +4,7 @@
 mukhya()  // This is a slash comment (like C)
     # Comments are ignored by the compiler
     vitti x = 10  # comment after code
-    likha("x = ")
-    likha(x)
-    likha("\n")
+    likha("x = ", x)
     // Use comments tak explain your program
     vitti y = x * 2   // y = 20
-    likha("y = ")
-    likha(y)
-    likha("\n")
+    likha("y = ", y)

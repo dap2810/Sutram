@@ -1,5 +1,5 @@
 # R41 test: cyclic import (a -> b -> a). Must be E_MODULE_CYCLE, not silent.
 yoj r41_cyc_b
 prakriya cyc_a() {
-    prati 1
+    nivartanam 1
 }

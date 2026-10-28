@@ -1,6 +1,6 @@
 prakriya rakh_shunya(a, v) {
     a[0] = v
-    prati v
+    nivartanam v
 }
 
 mukhya() {

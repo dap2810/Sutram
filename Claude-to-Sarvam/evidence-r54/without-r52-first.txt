@@ -1,0 +1,17 @@
+Without ROUND-52.patch first (main at 16fc16b), git apply --check:
+== ROUND-53-lib-part1
+error: patch failed: lib/ank.smlib:2
+error: patch failed: lib/chandas.smlib:17
+error: patch failed: lib/ganit.smlib:5
+error: patch failed: lib/ganita.smlib:62
+error: patch failed: lib/khand.smlib:85
+error: patch failed: lib/mala.smlib:9
+== ROUND-53-lib-part2
+error: patch failed: lib/nighantu.smlib:314
+error: patch failed: lib/phal.smlib:93
+error: patch failed: lib/roop.smlib:204
+error: patch failed: lib/sadhan.smlib:7
+error: patch failed: lib/shreni.smlib:39
+error: patch failed: lib/varna.smlib:15
+== ROUND-53-examples
+applies

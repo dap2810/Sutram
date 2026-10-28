@@ -14,15 +14,11 @@ mukhya()
         principal += interest
         likha("Year ")
         lkhb(year)
-        likha(": ")
-        lkhb(principal)
-        likha("\n")
+        likha(": ", principal)
     }
     likha("\nCompound growth using *= :\n")
     vitti x = 2
     chakra i = 1 tak 10 {
         x *= 2
     }
-    likha("2^10 = ")
-    likha(x)
-    likha("\n")
+    likha("2^10 = ", x)

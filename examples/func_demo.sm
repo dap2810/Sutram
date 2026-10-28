@@ -7,9 +7,7 @@ mukhya()
     ganit()
     likha("Calling uttar()...\n")
     vitti x = uttar()
-    likha("uttar() = ")
-    likha(x)
-    likha("\n")
+    likha("uttar() = ", x)
     likha("Done!\n")
 
 prakriya abhivadan()
@@ -19,4 +17,4 @@ prakriya ganit()
     likha("  10 + 32 = 42\n")
 
 prakriya uttar()
-    prati 42
+    nivartanam 42

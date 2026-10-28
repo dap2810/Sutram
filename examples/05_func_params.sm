@@ -1,15 +1,11 @@
 # Function with parameters
 prakriya yog(a, b)
-    prati a + b
+    nivartanam a + b
 
 prakriya gun_tray(a, b, c)
-    prati a * b * c
+    nivartanam a * b * c
 
 mukhya()
     vitti x = yog(10, 32)
-    likha("yog(10, 32) = ")
-    likha(x)
-    likha("\n")
-    likha("gun_tray(3, 4, 5) = ")
-    likha(gun_tray(3, 4, 5))
-    likha("\n")
+    likha("yog(10, 32) = ", x)
+    likha("gun_tray(3, 4, 5) = ", gun_tray(3, 4, 5))

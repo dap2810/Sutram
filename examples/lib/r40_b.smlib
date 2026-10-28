@@ -1,4 +1,4 @@
 yoj r40_d
 prakriya r40_left() {
-    prati r40_shared() + 1
+    nivartanam r40_shared() + 1
 }

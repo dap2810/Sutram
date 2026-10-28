@@ -1,6 +1,6 @@
 # A raw/integer kosh must not be reinterpreted as a binary64 kosh parameter.
 prakriya pratham(kosh dasham a) {
-    prati a[0]
+    nivartanam a[0]
 }
 
 mukhya() {

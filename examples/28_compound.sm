@@ -2,42 +2,26 @@ mukhya()
     likha("Compound Assignment Demo\n")
     likha("=======================\n")
     vitti x = 100
-    likha("Start: ")
-    likha(x)
-    likha("\n")
+    likha("Start: ", x)
     x += 50
-    likha("x += 50 -> ")
-    likha(x)
-    likha("\n")
+    likha("x += 50 -> ", x)
     x -= 30
-    likha("x -= 30 -> ")
-    likha(x)
-    likha("\n")
+    likha("x -= 30 -> ", x)
     x *= 2
-    likha("x *= 2  -> ")
-    likha(x)
-    likha("\n")
+    likha("x *= 2  -> ", x)
     x /= 4
-    likha("x /= 4  -> ")
-    likha(x)
-    likha("\n")
+    likha("x /= 4  -> ", x)
     x %= 7
-    likha("x %= 7  -> ")
-    likha(x)
-    likha("\n")
+    likha("x %= 7  -> ", x)
     likha("\nSum 1 to 10 using += :\n")
     vitti total = 0
     chakra i = 1 tak 10 {
         total += i
     }
-    likha("Total: ")
-    likha(total)
-    likha("\n")
+    likha("Total: ", total)
     likha("\nFactorial of 5 using *= :\n")
     vitti kramgun = 1
     chakra n = 1 tak 5 {
         kramgun *= n
     }
-    likha("5! = ")
-    likha(kramgun)
-    likha("\n")
+    likha("5! = ", kramgun)

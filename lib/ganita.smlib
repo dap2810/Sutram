@@ -28,7 +28,7 @@ prakriya kuttaka(a, b, c) {
         old_s = s
         s = tmp
     }
-    yadi (old_r == 0) { prati 0 }
+    yadi (old_r == 0) { nivartanam 0 }
     vitti mult = c / old_r
     vitti res = old_s * mult
     vitti bb = b
@@ -37,14 +37,14 @@ prakriya kuttaka(a, b, c) {
         res = res % bb
         yadi (res < 0) { res = res + bb }
     }
-    prati res
+    nivartanam res
 }
 
 # integer vargit root (floor)
 prakriya ganita_vargmool(n) {
     vitti x = n
-    yadi (x < 0) { prati 0 }
-    yadi (x < 2) { prati x }
+    yadi (x < 0) { nivartanam 0 }
+    yadi (x < 2) { nivartanam x }
     # Binary search with a division bound. The old loop
     # `yavat ((i + 1) * (i + 1) <= x)` overflowed for x near MAX:
     # (i+1)^2 wraps negative, the condition stays true, and the
@@ -62,13 +62,14 @@ prakriya ganita_vargmool(n) {
             hi = mid - 1
         }
     }
-    prati ans
+    nivartanam ans
 }
 
+# ganita_nirapeksh(n) — absolute value of n (the ganita-module spelling of nirapeksh_mulya).
 prakriya ganita_nirapeksh(n) {
     vitti x = n
-    yadi (x < 0) { prati 0 - x }
-    prati x
+    yadi (x < 0) { nivartanam 0 - x }
+    nivartanam x
 }
 
 # chakravala(out, n): solves x^2 - n*y^2 = 1 for least positive x, y.
@@ -82,7 +83,7 @@ prakriya chakravala(out, n) {
     yadi (k == 0) {
         out[0] = 1
         out[1] = 0
-        prati 1
+        nivartanam 1
     }
     vitti guard = 0
     yavat (k != 1) {
@@ -99,7 +100,7 @@ prakriya chakravala(out, n) {
             g1 = g2
             g2 = gt
         }
-        yadi (a % g1 != 0) { prati 0 }
+        yadi (a % g1 != 0) { nivartanam 0 }
         vitti m0 = kuttaka(b, ak, 0 - a)
         vitti varg = ganita_vargmool(n)
         vitti d = varg - m0
@@ -128,29 +129,29 @@ prakriya chakravala(out, n) {
             t = t + 1
             cnt = cnt + 1
         }
-        yadi (bf < 0) { prati 0 }
+        yadi (bf < 0) { nivartanam 0 }
         vitti mm = bm
         # Overflow in na/nb/nk returns 0, not a wrap.
-        yadi (a != 0 && mm > 9223372036854775807 / a) { prati 0 }
+        yadi (a != 0 && mm > 9223372036854775807 / a) { nivartanam 0 }
         vitti amm = a * mm
-        yadi (b != 0 && n > 9223372036854775807 / b) { prati 0 }
+        yadi (b != 0 && n > 9223372036854775807 / b) { nivartanam 0 }
         vitti nbp = n * b
-        yadi (amm > 9223372036854775807 - nbp) { prati 0 }
+        yadi (amm > 9223372036854775807 - nbp) { nivartanam 0 }
         vitti na = (amm + nbp) / ak
-        yadi (b != 0 && mm > 9223372036854775807 / b) { prati 0 }
+        yadi (b != 0 && mm > 9223372036854775807 / b) { nivartanam 0 }
         vitti bmm = b * mm
-        yadi (bmm > 9223372036854775807 - a) { prati 0 }
+        yadi (bmm > 9223372036854775807 - a) { nivartanam 0 }
         vitti nb = (a + bmm) / ak
         vitti nk = bn / k
         a = na
         b = nb
         k = nk
         guard = guard + 1
-        yadi (guard > 1000) { prati 0 }
+        yadi (guard > 1000) { nivartanam 0 }
     }
     out[0] = a
     out[1] = b
-    prati 1
+    nivartanam 1
 }
 
 # samasa(out, a, b, c, d, n): Brahmagupta's composition law (bhavana / samasa).
@@ -173,8 +174,8 @@ prakriya samasa(out, a, b, c, d, n) {
 prakriya brahmagupta_kshetr(a, b, c, d) {
     vitti s = (a + b + c + d) / 2
     vitti p = (s - a) * (s - b) * (s - c) * (s - d)
-    yadi (p < 0) { prati 0 }
-    prati ganita_vargmool(p)
+    yadi (p < 0) { nivartanam 0 }
+    nivartanam ganita_vargmool(p)
 }
 
 # --- checked / saturating integer arithmetic (R18) ---
@@ -222,19 +223,19 @@ prakriya ganita_janchit_yuj(a, b, ok) {
         yadi (y >= 0) {
             yadi (s < 0) {
                 okp[0] = 0
-                prati 0
+                nivartanam 0
             }
         }
     } anya {
         yadi (y < 0) {
             yadi (s >= 0) {
                 okp[0] = 0
-                prati 0
+                nivartanam 0
             }
         }
     }
     okp[0] = 1
-    prati s
+    nivartanam s
 }
 
 # ganita_janchit_nyun(a, b, ok) — a - b; ok[0] 1, or 0 on overflow
@@ -248,19 +249,19 @@ prakriya ganita_janchit_nyun(a, b, ok) {
         yadi (y < 0) {
             yadi (d < 0) {
                 okp[0] = 0
-                prati 0
+                nivartanam 0
             }
         }
     } anya {
         yadi (y >= 0) {
             yadi (d >= 0) {
                 okp[0] = 0
-                prati 0
+                nivartanam 0
             }
         }
     }
     okp[0] = 1
-    prati d
+    nivartanam d
 }
 
 # ganita_janchit_gun(a, b, ok) — a * b; ok[0] 1, or 0 on overflow
@@ -274,31 +275,31 @@ prakriya ganita_janchit_gun(a, b, ok) {
     vitti minv = (0 - 9223372036854775807) - 1
     yadi (x == 0) {
         okp[0] = 1
-        prati 0
+        nivartanam 0
     }
     yadi (y == 0) {
         okp[0] = 1
-        prati 0
+        nivartanam 0
     }
     yadi (x == minv) {
         yadi (y == 0 - 1) {
             okp[0] = 0
-            prati 0
+            nivartanam 0
         }
     }
     yadi (y == minv) {
         yadi (x == 0 - 1) {
             okp[0] = 0
-            prati 0
+            nivartanam 0
         }
     }
     m = x * y
     yadi (m / x != y) {
         okp[0] = 0
-        prati 0
+        nivartanam 0
     }
     okp[0] = 1
-    prati m
+    nivartanam m
 }
 
 # ganita_janchit_bhaj(a, b, ok) — truncating a / b; ok[0] 1, or 0 on
@@ -310,16 +311,16 @@ prakriya ganita_janchit_bhaj(a, b, ok) {
     vitti minv = (0 - 9223372036854775807) - 1
     yadi (y == 0) {
         okp[0] = 0
-        prati 0
+        nivartanam 0
     }
     yadi (x == minv) {
         yadi (y == 0 - 1) {
             okp[0] = 0
-            prati 0
+            nivartanam 0
         }
     }
     okp[0] = 1
-    prati x / y
+    nivartanam x / y
 }
 
 # ganita_janchit_shesh(a, b, ok) — truncating a % b (remainder takes the
@@ -331,16 +332,16 @@ prakriya ganita_janchit_shesh(a, b, ok) {
     vitti minv = (0 - 9223372036854775807) - 1
     yadi (y == 0) {
         okp[0] = 0
-        prati 0
+        nivartanam 0
     }
     yadi (x == minv) {
         yadi (y == 0 - 1) {
             okp[0] = 0
-            prati 0
+            nivartanam 0
         }
     }
     okp[0] = 1
-    prati x % y
+    nivartanam x % y
 }
 
 # ganita_paripurna_yuj(a, b) — a + b, SATURATING: on overflow returns
@@ -353,14 +354,14 @@ prakriya ganita_paripurna_yuj(a, b) {
     vitti s = x + y
     yadi (x >= 0) {
         yadi (y >= 0) {
-            yadi (s < 0) { prati maxv }
+            yadi (s < 0) { nivartanam maxv }
         }
     } anya {
         yadi (y < 0) {
-            yadi (s >= 0) { prati minv }
+            yadi (s >= 0) { nivartanam minv }
         }
     }
-    prati s
+    nivartanam s
 }
 
 # ganita_paripurna_nyun(a, b) — a - b, saturating (see ganita_paripurna_yuj).
@@ -372,14 +373,14 @@ prakriya ganita_paripurna_nyun(a, b) {
     vitti d = x - y
     yadi (x >= 0) {
         yadi (y < 0) {
-            yadi (d < 0) { prati maxv }
+            yadi (d < 0) { nivartanam maxv }
         }
     } anya {
         yadi (y >= 0) {
-            yadi (d >= 0) { prati minv }
+            yadi (d >= 0) { nivartanam minv }
         }
     }
-    prati d
+    nivartanam d
 }
 
 # ganita_paripurna_gun(a, b) — a * b, saturating (see ganita_paripurna_yuj).
@@ -391,22 +392,22 @@ prakriya ganita_paripurna_gun(a, b) {
     vitti minv = (0 - 9223372036854775807) - 1
     vitti m = 0
     vitti neg = 0
-    yadi (x == 0) { prati 0 }
-    yadi (y == 0) { prati 0 }
+    yadi (x == 0) { nivartanam 0 }
+    yadi (y == 0) { nivartanam 0 }
     yadi (x == minv) {
-        yadi (y == 0 - 1) { prati maxv }
+        yadi (y == 0 - 1) { nivartanam maxv }
     }
     yadi (y == minv) {
-        yadi (x == 0 - 1) { prati maxv }
+        yadi (x == 0 - 1) { nivartanam maxv }
     }
     m = x * y
     yadi (m / x != y) {
         yadi (x < 0) { neg = 1 - neg }
         yadi (y < 0) { neg = 1 - neg }
-        yadi (neg == 1) { prati minv }
-        prati maxv
+        yadi (neg == 1) { nivartanam minv }
+        nivartanam maxv
     }
-    prati m
+    nivartanam m
 }
 
 # ganita_janchit_ghat(a, e, ok) — a^e for e >= 0 via repeated
@@ -423,15 +424,15 @@ prakriya ganita_janchit_ghat(a, e, ok) {
     vitti i = 0
     yadi (exp < 0) {
         okp[0] = 0
-        prati 0
+        nivartanam 0
     }
     yavat (i < exp) {
         r = ganita_janchit_gun(r, base, okp)
-        yadi (okp[0] == 0) { prati 0 }
+        yadi (okp[0] == 0) { nivartanam 0 }
         i = i + 1
     }
     okp[0] = 1
-    prati r
+    nivartanam r
 }
 
 # ganita_janchit_kramgun(n, ok) — n! via repeated checked multiplication
@@ -445,15 +446,15 @@ prakriya ganita_janchit_kramgun(n, ok) {
     vitti i = 2
     yadi (nn < 0) {
         okp[0] = 0
-        prati 0
+        nivartanam 0
     }
     yavat (i <= nn) {
         r = ganita_janchit_gun(r, i, okp)
-        yadi (okp[0] == 0) { prati 0 }
+        yadi (okp[0] == 0) { nivartanam 0 }
         i = i + 1
     }
     okp[0] = 1
-    prati r
+    nivartanam r
 }
 
 # ganita_paripurna_ghat(a, e) — a^e, saturating (WS3, R20): on overflow
@@ -472,22 +473,22 @@ prakriya ganita_paripurna_ghat(a, e) {
     vitti minv = (0 - 9223372036854775807) - 1
     vitti r = 1
     vitti i = 0
-    yadi (exp < 0) { prati 0 }
+    yadi (exp < 0) { nivartanam 0 }
     yavat (i < exp) {
         r = ganita_paripurna_gun(r, base)
         i = i + 1
         yadi (r == maxv) {
-            yadi (base > 0) { prati maxv }
-            yadi ((exp - i) % 2 == 0) { prati maxv }
-            prati minv
+            yadi (base > 0) { nivartanam maxv }
+            yadi ((exp - i) % 2 == 0) { nivartanam maxv }
+            nivartanam minv
         }
         yadi (r == minv) {
-            yadi (base > 0) { prati minv }
-            yadi ((exp - i) % 2 == 0) { prati minv }
-            prati maxv
+            yadi (base > 0) { nivartanam minv }
+            yadi ((exp - i) % 2 == 0) { nivartanam minv }
+            nivartanam maxv
         }
     }
-    prati r
+    nivartanam r
 }
 
 # ganita_paripurna_bhaj(a, b) — truncating a / b, saturating (WS4, R24): the
@@ -502,11 +503,11 @@ prakriya ganita_paripurna_bhaj(a, b) {
     vitti y = b
     vitti maxv = 9223372036854775807
     vitti minv = (0 - 9223372036854775807) - 1
-    yadi (y == 0) { prati 0 }
+    yadi (y == 0) { nivartanam 0 }
     yadi (x == minv) {
-        yadi (y == 0 - 1) { prati maxv }
+        yadi (y == 0 - 1) { nivartanam maxv }
     }
-    prati x / y
+    nivartanam x / y
 }
 
 # ganita_paripurna_shesh(a, b) — truncating a % b (WS4, R24). Remainder never
@@ -519,11 +520,11 @@ prakriya ganita_paripurna_shesh(a, b) {
     vitti x = a
     vitti y = b
     vitti minv = (0 - 9223372036854775807) - 1
-    yadi (y == 0) { prati 0 }
+    yadi (y == 0) { nivartanam 0 }
     yadi (x == minv) {
-        yadi (y == 0 - 1) { prati 0 }
+        yadi (y == 0 - 1) { nivartanam 0 }
     }
-    prati x % y
+    nivartanam x % y
 }
 
 # ganita_janchit_nirapeksh(a, ok) — |a| (WS4, R24); ok[0] 1, or 0 on
@@ -536,11 +537,11 @@ prakriya ganita_janchit_nirapeksh(a, ok) {
     vitti minv = (0 - 9223372036854775807) - 1
     yadi (x == minv) {
         okp[0] = 0
-        prati 0
+        nivartanam 0
     }
     okp[0] = 1
-    yadi (x < 0) { prati 0 - x }
-    prati x
+    yadi (x < 0) { nivartanam 0 - x }
+    nivartanam x
 }
 
 # ganita_paripurna_nirapeksh(a) — |a|, saturating (WS4, R24):
@@ -549,9 +550,9 @@ prakriya ganita_paripurna_nirapeksh(a) {
     vitti x = a
     vitti maxv = 9223372036854775807
     vitti minv = (0 - 9223372036854775807) - 1
-    yadi (x == minv) { prati maxv }
-    yadi (x < 0) { prati 0 - x }
-    prati x
+    yadi (x == minv) { nivartanam maxv }
+    yadi (x < 0) { nivartanam 0 - x }
+    nivartanam x
 }
 
 # ganita_paripurna_kramgun(n) — n!, saturating (WS3, R21): on overflow returns
@@ -565,11 +566,11 @@ prakriya ganita_paripurna_kramgun(n) {
     vitti maxv = 9223372036854775807
     vitti r = 1
     vitti i = 2
-    yadi (nn < 0) { prati 0 }
+    yadi (nn < 0) { nivartanam 0 }
     yavat (i <= nn) {
         r = ganita_paripurna_gun(r, i)
-        yadi (r == maxv) { prati maxv }
+        yadi (r == maxv) { nivartanam maxv }
         i = i + 1
     }
-    prati r
+    nivartanam r
 }

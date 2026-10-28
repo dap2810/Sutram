@@ -12,9 +12,7 @@ mukhya()
     yavat (i < 5) {
         likha("  arr[")
         likha(i)
-        likha("] = ")
-        likha(arr[i])
-        likha("\n")
+        likha("] = ", arr[i])
         i = i + 1
     }
     likha("Sum: ")

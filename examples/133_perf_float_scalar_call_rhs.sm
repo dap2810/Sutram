@@ -2,10 +2,10 @@
 # operation whose RHS is a function call. The caller-local scalar must
 # survive the function call; all four operator orders must be preserved.
 prakriya dwigun(dasham x) {
-    prati x * 2.0
+    nivartanam x * 2.0
 }
 prakriya ardh(dasham x) {
-    prati x / 2.0
+    nivartanam x / 2.0
 }
 mukhya() {
     dasham s = 10.0

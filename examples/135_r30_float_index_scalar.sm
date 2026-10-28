@@ -1,7 +1,7 @@
 # R30: preserve indexed read order; right float register is never mutated.
 prakriya shunya_badl(kosh dasham xs) {
     xs[0] = 100.0
-    prati 3.0
+    nivartanam 3.0
 }
 mukhya() {
     kosh dasham xs[2]

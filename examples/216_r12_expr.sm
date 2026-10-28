@@ -6,10 +6,10 @@ yoj khand
 
 prakriya skip_ws(st) {
     yavat (st[2] < st[1]) {
-        yadi (akshar(st[0], st[2]) != 32) { prati 0 }
+        yadi (akshar(st[0], st[2]) != 32) { nivartanam 0 }
         st[2] = st[2] + 1
     }
-    prati 0
+    nivartanam 0
 }
 
 prakriya parse_num(st) {
@@ -18,11 +18,11 @@ prakriya parse_num(st) {
     skip_ws(st)
     yavat (st[2] < st[1]) {
         c = akshar(st[0], st[2])
-        yadi (c < 48 || c > 57) { prati v }
+        yadi (c < 48 || c > 57) { nivartanam v }
         v = v * 10 + (c - 48)
         st[2] = st[2] + 1
     }
-    prati v
+    nivartanam v
 }
 
 prakriya parse_factor(st) {
@@ -36,10 +36,10 @@ prakriya parse_factor(st) {
             yadi (st[2] < st[1]) {
                 yadi (akshar(st[0], st[2]) == 41) { st[2] = st[2] + 1 }
             }
-            prati v
+            nivartanam v
         }
     }
-    prati parse_num(st)
+    nivartanam parse_num(st)
 }
 
 prakriya parse_term(st) {
@@ -60,7 +60,7 @@ prakriya parse_term(st) {
             }
         }
     }
-    prati v
+    nivartanam v
 }
 
 prakriya parse_expr(st) {
@@ -81,7 +81,7 @@ prakriya parse_expr(st) {
             }
         }
     }
-    prati v
+    nivartanam v
 }
 
 prakriya eval(s, n) {
@@ -89,7 +89,7 @@ prakriya eval(s, n) {
     st[0] = s
     st[1] = n
     st[2] = 0
-    prati parse_expr(st)
+    nivartanam parse_expr(st)
 }
 
 mukhya() {

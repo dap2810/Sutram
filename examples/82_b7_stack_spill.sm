@@ -3,10 +3,10 @@ prakriya dwi_anwesh(a, n, target) {
     vitti hi = n - 1
     yavat (lo <= hi) {
         vitti mid = (lo + hi) / 2
-        yadi (a[mid] == target) { prati mid }
+        yadi (a[mid] == target) { nivartanam mid }
         yadi (a[mid] < target) { lo = mid + 1 } anya { hi = mid - 1 }
     }
-    prati 0 - 1
+    nivartanam 0 - 1
 }
 
 prakriya laghu(a, n) {
@@ -16,7 +16,7 @@ prakriya laghu(a, n) {
         yadi (a[i] < m) { m = a[i] }
         i = i + 1
     }
-    prati m
+    nivartanam m
 }
 
 mukhya() {

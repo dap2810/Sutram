@@ -2,37 +2,25 @@ mukhya()
     likha("Increment / Decrement Demo\n")
     likha("==========================\n")
     vitti x = 5
-    likha("x = ")
-    likha(x)
-    likha("\n")
+    likha("x = ", x)
     x++
-    likha("x++ -> ")
-    likha(x)
-    likha("\n")
+    likha("x++ -> ", x)
     x++
-    likha("x++ -> ")
-    likha(x)
-    likha("\n")
+    likha("x++ -> ", x)
     x--
-    likha("x-- -> ")
-    likha(x)
-    likha("\n")
+    likha("x-- -> ", x)
     likha("\nCounting with ++:\n")
     vitti count = 0
     chakra i = 1 tak 5 {
         count++
     }
-    likha("count = ")
-    likha(count)
-    likha("\n")
+    likha("count = ", count)
     likha("\nSquares table with ++:\n")
     vitti n = 1
     chakra i = 1 tak 5 {
         vitti varg = n * n
         lkhb(n)
-        likha(" squared = ")
-        lkhb(varg)
-        likha("\n")
+        likha(" squared = ", varg)
         n++
     }
     likha("\n")

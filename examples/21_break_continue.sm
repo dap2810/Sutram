@@ -5,6 +5,4 @@ mukhya()
         yadi (i % 2 == 0) { agrim }
         sum = sum + i
     }
-    likha("Sum of odd numbers 1-10: ")
-    likha(sum)
-    likha("\n")
+    likha("Sum of odd numbers 1-10: ", sum)

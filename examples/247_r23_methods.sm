@@ -8,13 +8,13 @@ rachana Ayat = { chaudai, lambai }
 prakriya Bindu.srij(swa, x, y) {
     swa.x = x
     swa.y = y
-    prati swa
+    nivartanam swa
 }
 
 prakriya Bindu.chal(swa, dx, dy) {
     swa.x = swa.x + dx
     swa.y = swa.y + dy
-    prati 0
+    nivartanam 0
 }
 
 prakriya Bindu.manhattan(swa, anya_bindu) {
@@ -26,15 +26,15 @@ prakriya Bindu.manhattan(swa, anya_bindu) {
     yadi (dy < 0) {
         dy = 0 - dy
     }
-    prati dx + dy
+    nivartanam dx + dy
 }
 
 prakriya Ayat.kshetraphal(swa) {
-    prati swa.chaudai * swa.lambai
+    nivartanam swa.chaudai * swa.lambai
 }
 
 prakriya Ayat.paridhi(swa) {
-    prati 2 * (swa.chaudai + swa.lambai)
+    nivartanam 2 * (swa.chaudai + swa.lambai)
 }
 
 mukhya() {

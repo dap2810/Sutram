@@ -1,75 +1,81 @@
 # lib/ank.smlib — Sutram standard library: integer utilities
 # layer: core
 # Parameters are copied into locals before mutation (compiler fault workaround).
-
 prakriya asti_yugm(n)
-    prati (n % 2) == 0
+    nivartanam (n % 2) == 0
 
+# asti_visham(n) — 1 if n is odd, 0 if even.
 prakriya asti_visham(n)
-    prati (n % 2) != 0
+    nivartanam (n % 2) != 0
 
+# ank_gan(n) — number of decimal digits in n (sign ignored; MIN counts as 19).
 prakriya ank_gan(n) {
     vitti x = n
     vitti minv = (0 - 9223372036854775807) - 1
     # MIN: |MIN| has 19 digits, but 0 - MIN wraps to MIN.
-    yadi (x == minv) { prati 19 }
+    yadi (x == minv) { nivartanam 19 }
     yadi (x < 0) { x = 0 - x }
     vitti c = 1
     yavat (x >= 10) {
         x = x / 10
         c = c + 1
     }
-    prati c
+    nivartanam c
 }
 
+# ank_yog(n) — sum of the decimal digits of n (sign ignored; MIN counts as 89).
 prakriya ank_yog(n) {
     vitti x = n
     vitti minv = (0 - 9223372036854775807) - 1
     # MIN: digit sum of 9223372036854775808 is 89.
-    yadi (x == minv) { prati 89 }
+    yadi (x == minv) { nivartanam 89 }
     yadi (x < 0) { x = 0 - x }
     vitti s = 0
     yavat (x > 0) {
         s = s + (x % 10)
         x = x / 10
     }
-    prati s
+    nivartanam s
 }
 
+# viparyay_ank(n) — n with its decimal digits reversed, sign kept (e.g. -123 -> -321).
 prakriya viparyay_ank(n) {
     vitti x = n
     vitti r = 0
     vitti minv = (0 - 9223372036854775807) - 1
     # Negatives reverse with the util_chinha: viparyay_ank(-123) = -321.
     # MIN: reverse of 9223372036854775808, negated.
-    yadi (x == minv) { prati 0 - 8085774586302733229 }
-    yadi (x < 0) { prati 0 - viparyay_ank(0 - x) }
+    yadi (x == minv) { nivartanam 0 - 8085774586302733229 }
+    yadi (x < 0) { nivartanam 0 - viparyay_ank(0 - x) }
     yavat (x > 0) {
         r = r * 10 + (x % 10)
         x = x / 10
     }
-    prati r
+    nivartanam r
 }
 
+# asti_vilom(n) — 1 if n reads the same backwards (a palindrome); negatives are never palindromes.
 prakriya asti_vilom(n) {
     # Negatives are not palindromes (the '-' is not a digit).
-    yadi (n < 0) { prati 0 }
+    yadi (n < 0) { nivartanam 0 }
     vitti r = viparyay_ank(n)
-    prati r == n
+    nivartanam r == n
 }
 
+# seemit(n, lo, hi) — n clamped into [lo, hi]: lo if n < lo, hi if n > hi, else n.
 prakriya seemit(n, lo, hi) {
     vitti x = n
     vitti a = lo
     vitti b = hi
-    yadi (x < a) { prati a }
-    yadi (x > b) { prati b }
-    prati x
+    yadi (x < a) { nivartanam a }
+    yadi (x > b) { nivartanam b }
+    nivartanam x
 }
 
+# fib(n) — the nth Fibonacci number (fib(0) = 0, fib(1) = 1), iterative; wraps past int64.
 prakriya fib(n) {
     vitti x = n
-    yadi (x < 2) { prati x }
+    yadi (x < 2) { nivartanam x }
     vitti a = 0
     vitti b = 1
     vitti i = 2
@@ -79,12 +85,13 @@ prakriya fib(n) {
         b = t
         i = i + 1
     }
-    prati b
+    nivartanam b
 }
 
+# asti_sampurna(n) — 1 if n is a perfect number (equals the sum of its proper divisors), else 0.
 prakriya asti_sampurna(n) {
     vitti x = n
-    yadi (x < 2) { prati 0 }
+    yadi (x < 2) { nivartanam 0 }
     vitti s = 1
     vitti d = 2
     # Division bound, not d * d: d * d overflows for x near MAX
@@ -97,9 +104,10 @@ prakriya asti_sampurna(n) {
         }
         d = d + 1
     }
-    prati s == x
+    nivartanam s == x
 }
 
+# collatz_charan(n) — steps for the Collatz sequence from n to reach 1; -1 if n < 1 or 3x+1 would overflow.
 prakriya collatz_charan(n) {
     vitti x = n
     vitti c = 0
@@ -108,13 +116,13 @@ prakriya collatz_charan(n) {
     # sentinel covers the 3x+1 overflow: 3x+1 overflows int64 when
     # x > (MAX-1)/3 = 3074457345618258602, and the wrapped value
     # would cycle forever instead of reaching 1.
-    yadi (x < 1) { prati 0 - 1 }
+    yadi (x < 1) { nivartanam 0 - 1 }
     yavat (x != 1) {
         yadi (x % 2 == 0) { x = x / 2 } anya {
-            yadi (x > 3074457345618258602) { prati 0 - 1 }
+            yadi (x > 3074457345618258602) { nivartanam 0 - 1 }
             x = 3 * x + 1
         }
         c = c + 1
     }
-    prati c
+    nivartanam c
 }

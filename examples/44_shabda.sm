@@ -2,7 +2,7 @@
 # likha() prints numbers (and varna literals); shabda() prints a
 # NUL-terminated varna held in a variable.
 prakriya abhivadana(name) {
-    prati name
+    nivartanam name
 }
 mukhya()
     vitti greeting = "Namaste!"

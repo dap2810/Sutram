@@ -10,7 +10,5 @@ mukhya()
         bhavana 3: { likha("Blue\n") }
         anya: { likha("Unknown\n") }
     }
-    likha("RED = ")
-    likha(RED)
-    likha("\n")
+    likha("RED = ", RED)
     likha("=== Done ===\n")

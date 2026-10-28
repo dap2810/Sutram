@@ -1,0 +1,9 @@
+FAIL  r11_sets_lists (six modules, > 64 KiB expanded) compiles and prints its expected output
+FAIL  a program and two modules, 126522 bytes in all (> 64 KiB, < 128 KiB), compiles and prints 3 (got rc=1 'Sutram Error: vistarit srot seema atikram')
+PASS  with a third module (> 128 KiB) it is refused with the limit message and nothing is written (got rc=1 'Sutram Error: vistarit srot seema atikram')
+PASS  41_recursion with nivartanam under --lang sanskrit prints its expected output
+PASS  41_recursion with प्रति under --lang sanskrit prints its expected output
+PASS  41_recursion with निवर्तनम् under --lang sanskrit prints its expected output
+PASS  the three spellings give one identical executable
+PASS  no prati left in the code of 282 lib/ and examples/ files (left: [])
+r54 nivartanam migration: 8 checks, 2 failed

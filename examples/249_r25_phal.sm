@@ -7,36 +7,36 @@
 # 1: division by zero; 2: an index outside the mala
 prakriya bhaj(a, b) {
     yadi (b == 0) {
-        prati dosh(1)
+        nivartanam dosh(1)
     }
-    prati siddhi(a / b)
+    nivartanam siddhi(a / b)
 }
 
 prakriya grah(vibhag s, i) {
     yadi (i < 0 || i >= pankti_len(s)) {
-        prati dosh(2)
+        nivartanam dosh(2)
     }
-    prati siddhi(s[i])
+    nivartanam siddhi(s[i])
 }
 
 # s[i] / s[j]: either step can fail, and the failure passes straight up
 prakriya anupat(vibhag s, i, j) {
     vitti a = prasar grah(s, i)
     vitti b = prasar grah(s, j)
-    prati siddhi(prasar bhaj(a, b))
+    nivartanam siddhi(prasar bhaj(a, b))
 }
 
 # the mean of s; an empty slice is a failure of its own (3)
 prakriya madhyaman(vibhag s) {
     vitti n = pankti_len(s)
     yadi (n == 0) {
-        prati dosh(3)
+        nivartanam dosh(3)
     }
     vitti t = 0
     chakra i = 0 tak n - 1 {
         t = t + s[i]
     }
-    prati siddhi(prasar bhaj(t, n))
+    nivartanam siddhi(prasar bhaj(t, n))
 }
 
 mukhya() {

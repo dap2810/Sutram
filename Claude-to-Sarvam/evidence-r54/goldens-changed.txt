@@ -1,0 +1,37 @@
+Goldens changed by this round: all by ROUND-52.patch (the nivartanam patches touch no golden).
+Check: each new golden equals its old golden with some empty lines deleted, and nothing else.
+
+OK   tests/expect/02_arith.out: 1 blank line(s) removed
+OK   tests/expect/05_func_params.out: 2 blank line(s) removed
+OK   tests/expect/06_rachana.out: 3 blank line(s) removed
+OK   tests/expect/07_module.out: 1 blank line(s) removed
+OK   tests/expect/08_demo.out: 6 blank line(s) removed
+OK   tests/expect/10_mathlib.out: 4 blank line(s) removed
+OK   tests/expect/11_forloop.out: 6 blank line(s) removed
+OK   tests/expect/13_negatives.out: 8 blank line(s) removed
+OK   tests/expect/14_strings.out: 1 blank line(s) removed
+OK   tests/expect/15_sutra_const.out: 5 blank line(s) removed
+OK   tests/expect/16_advanced.out: 1 blank line(s) removed
+OK   tests/expect/17_booleans.out: 3 blank line(s) removed
+OK   tests/expect/19_srijana_enum.out: 1 blank line(s) removed
+OK   tests/expect/201_madhava_library.out: 5 blank line(s) removed
+OK   tests/expect/202_brahmagupta_area.out: 4 blank line(s) removed
+OK   tests/expect/203_meru_with_kosh.out: 1 blank line(s) removed
+OK   tests/expect/21_break_continue.out: 1 blank line(s) removed
+OK   tests/expect/23_grahan_input.out: 2 blank line(s) removed
+OK   tests/expect/25_patterns.out: 10 blank line(s) removed
+OK   tests/expect/28_compound.out: 8 blank line(s) removed
+OK   tests/expect/32_bank_interest.out: 1 blank line(s) removed
+OK   tests/expect/34_incdec.out: 5 blank line(s) removed
+OK   tests/expect/35_comments.out: 2 blank line(s) removed
+OK   tests/expect/91_indian_number_theory.out: 4 blank line(s) removed
+OK   tests/expect/array_demo.out: 5 blank line(s) removed
+OK   tests/expect/char_ops.out: 3 blank line(s) removed
+OK   tests/expect/full_demo.out: 4 blank line(s) removed
+OK   tests/expect/func_demo.out: 1 blank line(s) removed
+OK   tests/expect/import_demo.out: 4 blank line(s) removed
+OK   tests/expect/mem_safe.out: 2 blank line(s) removed
+OK   tests/expect/number_game.out: 2 blank line(s) removed
+OK   tests/expect/strength_reduction.out: 6 blank line(s) removed
+
+32 goldens, 112 blank lines removed, 0 other changes

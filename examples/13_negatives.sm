@@ -7,45 +7,29 @@ mukhya()
     # Negative variables
     vitti x = -5
     vitti y = -10
-    likha("x = ")
-    likha(x)
-    likha("\n")
-    likha("y = ")
-    likha(y)
-    likha("\n")
+    likha("x = ", x)
+    likha("y = ", y)
 
     # Arithmetic with negatives
     vitti sum = x + y
-    likha("x + y = ")
-    likha(sum)
-    likha("\n")
+    likha("x + y = ", sum)
 
     vitti diff = x - y
-    likha("x - y = ")
-    likha(diff)
-    likha("\n")
+    likha("x - y = ", diff)
 
     vitti prod = x * 3
-    likha("x * 3 = ")
-    likha(prod)
-    likha("\n")
+    likha("x * 3 = ", prod)
 
     # Unary minus on expressions
     vitti z = -3 + 10
-    likha("-3 + 10 = ")
-    likha(z)
-    likha("\n")
+    likha("-3 + 10 = ", z)
 
     # Negation
     vitti w = 0 - x
-    likha("0 - x = ")
-    likha(w)
-    likha("\n")
+    likha("0 - x = ", w)
 
     # Direct negative print
-    likha("-42 = ")
-    likha(-42)
-    likha("\n")
+    likha("-42 = ", -42)
 
     # Comparison with negatives
     yadi (x < 0) {

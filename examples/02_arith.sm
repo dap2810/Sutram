@@ -3,6 +3,4 @@ mukhya()
     vitti x = 10
     vitti y = 20
     vitti z = x + y
-    likha("x + y = ")
-    likha(z)
-    likha("\n")
+    likha("x + y = ", z)

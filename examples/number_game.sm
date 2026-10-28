@@ -3,9 +3,7 @@ mukhya()
     vitti secret = 42
     vitti guess = 50
     likha("Guessing game!\n")
-    likha("Secret: ")
-    likha(secret)
-    likha("\n")
+    likha("Secret: ", secret)
     yadi (guess == secret) {
         likha("Correct!\n")
     } anya {
@@ -14,8 +12,6 @@ mukhya()
         } anya {
             likha("Too low!\n")
         }
-        likha("The answer was: ")
-        likha(secret)
-        likha("\n")
+        likha("The answer was: ", secret)
     }
     likha("Game over!\n")

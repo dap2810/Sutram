@@ -2,22 +2,22 @@
 # inference, integer promotion at calls, mixed returns, and float->int assignment.
 
 prakriya wrapper(dasham x) {
-    prati twice(x)
+    nivartanam twice(x)
 }
 
 prakriya twice(dasham x) {
-    prati x * 2
+    nivartanam x * 2
 }
 
 prakriya blend(dasham a, दशम b) {
-    prati (a + b) / 2.0
+    nivartanam (a + b) / 2.0
 }
 
 prakriya mixed(flag) {
     yadi (flag) {
-        prati 1.25
+        nivartanam 1.25
     }
-    prati 2
+    nivartanam 2
 }
 
 mukhya() {

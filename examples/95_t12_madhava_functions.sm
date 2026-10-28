@@ -23,7 +23,7 @@ prakriya madhava_pi(terms) {
         util_chinha = 0 - util_chinha
         k = k + 1
     }
-    prati root12 * sum
+    nivartanam root12 * sum
 }
 
 prakriya madhava_sin(dasham x, terms) {
@@ -35,7 +35,7 @@ prakriya madhava_sin(dasham x, terms) {
         s = s + t
         n = n + 1
     }
-    prati s
+    nivartanam s
 }
 
 prakriya madhava_cos(दशम x, terms) {
@@ -47,7 +47,7 @@ prakriya madhava_cos(दशम x, terms) {
         s = s + t
         n = n + 1
     }
-    prati s
+    nivartanam s
 }
 
 mukhya() {

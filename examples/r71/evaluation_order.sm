@@ -1,9 +1,9 @@
 prakriya stamp(a, v) {
     a[0] = a[0] * 10 + v
-    prati v
+    nivartanam v
 }
 prakriya collect(a, b, c) {
-    prati a * 100 + b * 10 + c
+    nivartanam a * 100 + b * 10 + c
 }
 mukhya() {
     mala a[1]

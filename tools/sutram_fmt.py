@@ -23,7 +23,9 @@ THE STYLE
   * a line comment is indented like code; an inline comment gets two spaces before it;
     comment text, string text and block comments are never changed
   * a braceless body (`prakriya f(a)` then `prati a` on the next line; a braceless
-    `mukhya()`) is indented one level; the braces are not added
+    `mukhya()`) is indented one level; the braces are not added. A comment after such a
+    body that heads the next top-level item (only comments and blank lines between
+    them) stays at column 0 - it describes that item (R54)
   * everything else, in particular the order and the number of statements, line breaks
     between statements, and the words themselves, is kept exactly as written
 
@@ -307,7 +309,7 @@ def format_text(text: str) -> str:
     body_mode = False     # inside a braceless mukhya / prakriya
     blank = 0
     last_was_open = False
-    for ln in lines:
+    for li, ln in enumerate(lines):
         code = [t for t in ln if t[0] not in ('comment', 'bcomment')]
         if not ln:
             blank += 1
@@ -334,6 +336,8 @@ def format_text(text: str) -> str:
             out.append('')
         blank = 0
         if first is None:          # a comment-only line
+            if body_mode and depth == 0 and paren == 0 and pending == 0 and _next_is_top(lines, li):
+                d = 0              # R54: it heads the next prakriya, not the braceless body above it
             out.append('    ' * max(d, 0) + join_tokens(ln))
             last_was_open = False
             continue
@@ -367,6 +371,15 @@ def format_text(text: str) -> str:
             continue
         res.append(l)
     return '\n'.join(res).rstrip('\n') + '\n'
+
+
+def _next_is_top(lines, i):
+    """R54: the next line with code after line i (comments and blank lines skipped) starts a top-level item."""
+    for ln in lines[i + 1:]:
+        code = [t for t in ln if t[0] not in ('comment', 'bcomment')]
+        if code:
+            return code[0][0] == 'word' and mean(code[0][1]) in TOPLEVEL_CORE
+    return True
 
 
 # ------------------------------------------------------------------- commands

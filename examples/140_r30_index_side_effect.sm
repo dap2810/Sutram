@@ -1,10 +1,10 @@
 # Index expression is effectful: the compiler must preserve evaluation order.
 prakriya badl_sanket(kosh dasham arr) {
     arr[0] = 9.0
-    prati 0
+    nivartanam 0
 }
 prakriya pad_pashchat(kosh dasham arr) {
-    prati arr[0]
+    nivartanam arr[0]
 }
 mukhya() {
     kosh dasham arr[1]

@@ -5,20 +5,12 @@ yoj varna
 mukhya()
     likha("=== Library Import Demo ===\n")
     likha("String: Namaste!\n")
-    likha("Number: ")
-    likha(42)
-    likha("\n")
+    likha("Number: ", 42)
     vitti x = 16
     vitti doubled = x * 2
-    likha("x * 2 = ")
-    likha(doubled)
-    likha("\n")
+    likha("x * 2 = ", doubled)
     vitti quad = x * 4
-    likha("x * 4 = ")
-    likha(quad)
-    likha("\n")
+    likha("x * 4 = ", quad)
     vitti s = "Sutram"
-    likha("Length: ")
-    likha(vartani_aayam(s))
-    likha("\n")
+    likha("Length: ", vartani_aayam(s))
     likha("=== Done ===\n")

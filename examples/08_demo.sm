@@ -2,28 +2,20 @@
 rachana Person = { age, score }
 
 prakriya dwigun(n)
-    prati n * 2
+    nivartanam n * 2
 
 mukhya()
     likha("=== Sutram Demo ===\n")
     vitti x = dwigun(21)
-    likha("double(21) = ")
-    likha(x)
-    likha("\n")
+    likha("double(21) = ", x)
     vitti p = nirmmita(16)
     p.age = 25
     p.score = 100
-    likha("Age: ")
-    likha(p.age)
-    likha("\n")
-    likha("Score: ")
-    likha(p.score)
-    likha("\n")
+    likha("Age: ", p.age)
+    likha("Score: ", p.score)
     vitti i = 1
     yavat (i < 4) {
-        likha("Loop: ")
-        likha(i)
-        likha("\n")
+        likha("Loop: ", i)
         i = i + 1
     }
     likha("=== Done ===\n")

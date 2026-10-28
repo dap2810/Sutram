@@ -1,21 +1,21 @@
 # 41 — recursion (v29)
 prakriya krama_fal(n) {
     yadi (n <= 1) {
-        prati 1
+        nivartanam 1
     }
-    prati n * krama_fal(n - 1)
+    nivartanam n * krama_fal(n - 1)
 }
 prakriya meru_ank(n) {
     yadi (n < 2) {
-        prati n
+        nivartanam n
     }
-    prati meru_ank(n - 1) + meru_ank(n - 2)
+    nivartanam meru_ank(n - 1) + meru_ank(n - 2)
 }
 prakriya shakti(base, exp) {
     yadi (exp == 0) {
-        prati 1
+        nivartanam 1
     }
-    prati base * shakti(base, exp - 1)
+    nivartanam base * shakti(base, exp - 1)
 }
 mukhya()
     likha(krama_fal(6))

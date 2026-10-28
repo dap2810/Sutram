@@ -1,15 +1,15 @@
 # Typed kosh parameters can be forwarded, participate in float-return inference,
 # and safely mutate shared length/data when no pointer replacement is required.
 prakriya aavaran(kosh dasham a) {
-    prati shirsh(a) + puchh(a)
+    nivartanam shirsh(a) + puchh(a)
 }
 
 prakriya shirsh(kosh dasham a) {
-    prati a[0]
+    nivartanam a[0]
 }
 
 prakriya puchh(kosh dasham a) {
-    prati kosh_pop(a)
+    nivartanam kosh_pop(a)
 }
 
 mukhya() {

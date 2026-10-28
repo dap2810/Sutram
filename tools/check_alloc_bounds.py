@@ -3,7 +3,7 @@
 
 Every `nirmmita(...)` in lib/*.smlib whose size is not a constant (R37: computed with a
 multiplication, directly or through a variable assigned from one; R39: any size) must, in the same prakriya and on an earlier line,
-be preceded by a constant bound on a count: `yadi (<count> > <constant>) { prati ... }`.
+be preceded by a constant bound on a count: `yadi (<count> > <constant>) { nivartanam ... }` (or `prati`, its alias).
 That is the R35/R36 form: the count is checked BEFORE it is multiplied, so a wrapped size
 never exists. A site that does not need one must be listed in EXEMPT below, with the reason
 (the R36 audit's verdicts). A new computed allocation with neither fails this check.
@@ -59,7 +59,7 @@ EXEMPT = {
 INT64_MAX = 2 ** 63 - 1
 
 LOWER = re.compile(r'yadi \(\s*(\w+)\s*<\s*\d+\s*\)')   # R39: c < 0, c < 1, c < 2 ...: a clamp or a return
-BOUND = re.compile(r'yadi \(\s*([\w\[\]]+)\s*>\s*(\d+)\s*\)\s*\{\s*prati')
+BOUND = re.compile(r'yadi \(\s*([\w\[\]]+)\s*>\s*(\d+)\s*\)\s*\{\s*(?:nivartanam|prati)\b')   # R54: lib/ says nivartanam; prati is its alias
 TERM = re.compile(r'[A-Za-z_]\w*(?:\[\d+\])?')
 CONST_SIZE = re.compile(r'^[\d\s*+]+$')
 

@@ -27,9 +27,7 @@ mukhya()
     vitti flags = 0
     flags = flags | 1
     flags = flags | 4
-    likha("Flags: ")
-    likha(flags)
-    likha("\n")
+    likha("Flags: ", flags)
 
     vitti check = flags & 4
     yadi (check != 0) {

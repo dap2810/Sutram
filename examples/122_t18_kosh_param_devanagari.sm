@@ -1,6 +1,6 @@
 # Devanagari type aliases are pratham-class in function parameter syntax.
 prakriya pratham(कोश दशम a) {
-    prati a[0]
+    nivartanam a[0]
 }
 
 mukhya() {

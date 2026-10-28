@@ -2,11 +2,11 @@
 prakriya madhya(kosh dasham a) {
     dasham total = a[0] + a[1] + a[2]
     a[1] = 4.0
-    prati total / kosh_len(a)
+    nivartanam total / kosh_len(a)
 }
 
 prakriya kacch_yog(kosh a) {
-    prati a[0] + a[1] + kosh_len(a)
+    nivartanam a[0] + a[1] + kosh_len(a)
 }
 
 mukhya() {

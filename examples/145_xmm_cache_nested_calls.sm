@@ -1,9 +1,9 @@
 # Recursion and nested calls keep the custom raw-qword ABI.
 prakriya punar(dasham x, n) {
     yadi (n <= 0) {
-        prati x
+        nivartanam x
     }
-    prati punar(x + 0.5, n - 1)
+    nivartanam punar(x + 0.5, n - 1)
 }
 mukhya() {
     dasham a = 2.0

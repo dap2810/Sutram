@@ -8,26 +8,26 @@ prakriya yog(vibhag s) {
     chakra i = 0 tak pankti_len(s) - 1 {
         t = t + s[i]
     }
-    prati t
+    nivartanam t
 }
 
 prakriya bhar(vibhag s, v) {
     chakra i = 0 tak pankti_len(s) - 1 {
         s[i] = v
     }
-    prati 0
+    nivartanam 0
 }
 
 # the sum of s, splitting it in halves: each call takes part of the array
 prakriya yog_vibhajya(vibhag s) {
     vitti n = pankti_len(s)
     yadi (n == 0) {
-        prati 0
+        nivartanam 0
     }
     yadi (n == 1) {
-        prati s[0]
+        nivartanam s[0]
     }
-    prati yog_vibhajya(s[:n / 2]) + yog_vibhajya(s[n / 2:])
+    nivartanam yog_vibhajya(s[:n / 2]) + yog_vibhajya(s[n / 2:])
 }
 
 mukhya() {
