@@ -13,9 +13,9 @@ prakriya puchh(kosh dasham a) {
 }
 
 mukhya() {
-    kosh dasham values[2]
-    kosh_push(values, 1.25)
-    kosh_push(values, 2.75)
-    likha(aavaran(values))
-    likha(kosh_len(values))
+    kosh dasham mulya[2]
+    kosh_push(mulya, 1.25)
+    kosh_push(mulya, 2.75)
+    likha(aavaran(mulya))
+    likha(kosh_len(mulya))
 }

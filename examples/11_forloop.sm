@@ -13,11 +13,11 @@ mukhya()
     likha("\n")
 
     # Sum 1 tak 10
-    vitti sum = 0
+    vitti sankalan = 0
     chakra j = 1 tak 10 {
-        sum = sum + j
+        sankalan = sankalan + j
     }
-    likha("Sum 1-10 = ", sum)
+    likha("Sum 1-10 = ", sankalan)
 
     # Multiplication table for 3
     likha("Table of 3:\n")

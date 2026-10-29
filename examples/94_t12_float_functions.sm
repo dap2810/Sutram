@@ -13,16 +13,16 @@ prakriya blend(dasham a, दशम b) {
     nivartanam (a + b) / 2.0
 }
 
-prakriya mixed(flag) {
-    yadi (flag) {
+prakriya mixed(dhvaj) {
+    yadi (dhvaj) {
         nivartanam 1.25
     }
     nivartanam 2
 }
 
 # Mixed ternary branches must normalize tak the inferred float return type.
-prakriya choose(flag) {
-    nivartanam flag ? 1.5 : 2
+prakriya choose(dhvaj) {
+    nivartanam dhvaj ? 1.5 : 2
 }
 
 mukhya() {

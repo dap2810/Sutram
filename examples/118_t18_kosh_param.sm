@@ -1,8 +1,8 @@
 # T18: typed kosh parameters keep element typing without changing the qword ABI.
 prakriya madhya(kosh dasham a) {
-    dasham total = a[0] + a[1] + a[2]
+    dasham sarva_yog = a[0] + a[1] + a[2]
     a[1] = 4.0
-    nivartanam total / kosh_len(a)
+    nivartanam sarva_yog / kosh_len(a)
 }
 
 prakriya kacch_yog(kosh a) {
@@ -10,12 +10,12 @@ prakriya kacch_yog(kosh a) {
 }
 
 mukhya() {
-    kosh dasham values[4]
-    kosh_push(values, 1.5)
-    kosh_push(values, 2.5)
-    kosh_push(values, 2.0)
-    likha(madhya(values))
-    likha(values[1])
+    kosh dasham mulya[4]
+    kosh_push(mulya, 1.5)
+    kosh_push(mulya, 2.5)
+    kosh_push(mulya, 2.0)
+    likha(madhya(mulya))
+    likha(mulya[1])
 
     kosh nums[2]
     kosh_push(nums, 3)

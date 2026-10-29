@@ -4,22 +4,22 @@
 yoj sankhyiki
 
 mukhya() {
-    kosh dasham xs[4]
-    kosh_push(xs, 2)
-    kosh_push(xs, 4)
-    kosh_push(xs, 4)
-    kosh_push(xs, 4)
-    kosh_push(xs, 5)
-    kosh_push(xs, 5)
-    kosh_push(xs, 7)
-    kosh_push(xs, 9)
+    kosh dasham ank_suchi[4]
+    kosh_push(ank_suchi, 2)
+    kosh_push(ank_suchi, 4)
+    kosh_push(ank_suchi, 4)
+    kosh_push(ank_suchi, 4)
+    kosh_push(ank_suchi, 5)
+    kosh_push(ank_suchi, 5)
+    kosh_push(ank_suchi, 7)
+    kosh_push(ank_suchi, 9)
 
-    likha(kosh_len(xs))
-    likha(yoga(xs))
-    likha(madhya(xs))
-    likha(prasaran(xs))
-    likha(vichalan(xs))
-    likha(laghutama(xs))
-    likha(adhikatama(xs))
-    likha(vyapti(xs))
+    likha(kosh_len(ank_suchi))
+    likha(yoga(ank_suchi))
+    likha(madhya(ank_suchi))
+    likha(prasaran(ank_suchi))
+    likha(vichalan(ank_suchi))
+    likha(laghutama(ank_suchi))
+    likha(adhikatama(ank_suchi))
+    likha(vyapti(ank_suchi))
 }

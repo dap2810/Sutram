@@ -11,8 +11,8 @@ mukhya()
     likha("y = ", y)
 
     # Arithmetic with negatives
-    vitti sum = x + y
-    likha("x + y = ", sum)
+    vitti sankalan = x + y
+    likha("x + y = ", sankalan)
 
     vitti diff = x - y
     likha("x - y = ", diff)

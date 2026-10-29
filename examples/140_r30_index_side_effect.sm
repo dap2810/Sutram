@@ -1,19 +1,19 @@
 # Index expression is effectful: the compiler must preserve evaluation order.
-prakriya badl_sanket(kosh dasham arr) {
-    arr[0] = 9.0
+prakriya badl_sanket(kosh dasham ank_mala) {
+    ank_mala[0] = 9.0
     nivartanam 0
 }
-prakriya pad_pashchat(kosh dasham arr) {
-    nivartanam arr[0]
+prakriya pad_pashchat(kosh dasham ank_mala) {
+    nivartanam ank_mala[0]
 }
 mukhya() {
-    kosh dasham arr[1]
-    kosh_push(arr, 2.0)
+    kosh dasham ank_mala[1]
+    kosh_push(ank_mala, 2.0)
     dasham delta = 1.5
-    dasham out = 0.0
-    out = arr[badl_sanket(arr)] + delta
-    likha(out)
-    likha(arr[0])
-    out = pad_pashchat(arr) - delta
-    likha(out)
+    dasham nirgat = 0.0
+    nirgat = ank_mala[badl_sanket(ank_mala)] + delta
+    likha(nirgat)
+    likha(ank_mala[0])
+    nirgat = pad_pashchat(ank_mala) - delta
+    likha(nirgat)
 }

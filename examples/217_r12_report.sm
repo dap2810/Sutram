@@ -15,22 +15,22 @@ mukhya() {
     scores[7] = 84
     vitti n = 8
     # compute stats
-    vitti sum = 0
+    vitti sankalan = 0
     vitti mn = scores[0]
     vitti mx = scores[0]
     vitti i = 0
     yavat (i < n) {
-        sum = sum + scores[i]
+        sankalan = sankalan + scores[i]
         yadi (scores[i] < mn) { mn = scores[i] }
         yadi (scores[i] > mx) { mx = scores[i] }
         i = i + 1
     }
-    vitti mean = sum / n
+    vitti mean = sankalan / n
     likha("=== Test Scores Report ===\n")
     likha("Count: ")
     likha(n)
     likha("\nSum:   ")
-    likha(sum)
+    likha(sankalan)
     likha("\nMean:  ")
     likha(mean)
     likha("\nMin:   ")
@@ -41,17 +41,17 @@ mukhya() {
     likha("-------------------------\n")
     likha("Padded scores:\n")
     # demonstrate pad_vam: right-align each score in width 6
-    vitti buf = nirmmita(32)
+    vitti koshtha = nirmmita(32)
     vitti row = nirmmita(64)
     i = 0
     yavat (i < n) {
-        vitti cnt = ank_tak_varna(scores[i], buf)
+        vitti cnt = ank_tak_varna(scores[i], koshtha)
         # pad buf in place tak width 6 (buf holds qword cells)
-        pad_vam(buf, cnt, 6, 32)
+        pad_vam(koshtha, cnt, 6, 32)
         # repack 6 qword cells tak bytes for printing
         vitti j = 0
         yavat (j < 6) {
-            akshar_rakh(row, j, buf[j])
+            akshar_rakh(row, j, koshtha[j])
             j = j + 1
         }
         likha(1, row, 6)

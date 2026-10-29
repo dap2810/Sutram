@@ -2,7 +2,7 @@
 # Before R7, `totl = 10` silently created a new variable totl, `total` kept 3,
 # and the program printed 3.
 mukhya() {
-    vitti total = 3
+    vitti sarva_yog = 3
     totl = 10
-    likha(total)
+    likha(sarva_yog)
 }

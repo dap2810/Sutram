@@ -1,8 +1,8 @@
 mukhya()
-    vitti sum = 0
+    vitti sankalan = 0
     chakra i = 1 tak 20 {
         yadi (i > 10) { krama }
         yadi (i % 2 == 0) { agrim }
-        sum = sum + i
+        sankalan = sankalan + i
     }
-    likha("Sum of odd numbers 1-10: ", sum)
+    likha("Sum of odd numbers 1-10: ", sankalan)

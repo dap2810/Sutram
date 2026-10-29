@@ -54,9 +54,9 @@ prakriya gahra(p) {
     chakra i = 1 tak 4 {
         t = t + i
     }
-    vitti arr = nirmmita(3 * 8)
-    arr[0] = 100
-    arr[2] = arr[0] + 7
+    vitti ank_mala = nirmmita(3 * 8)
+    ank_mala[0] = 100
+    ank_mala[2] = ank_mala[0] + 7
     vitti b = nirmmita(16)
     b.x = 3
     b.y = b.x * 4
@@ -66,7 +66,7 @@ prakriya gahra(p) {
     kosh_push(k, 9)
     kosh_push(k, 11)
     likha(t)
-    likha(arr[2])
+    likha(ank_mala[2])
     likha(b.y)
     likha(d)
     likha(k[1])

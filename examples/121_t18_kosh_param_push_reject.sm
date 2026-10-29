@@ -6,6 +6,6 @@ prakriya yuj_ek(kosh dasham a) {
 }
 
 mukhya() {
-    kosh dasham values[2]
-    likha(yuj_ek(values))
+    kosh dasham mulya[2]
+    likha(yuj_ek(mulya))
 }

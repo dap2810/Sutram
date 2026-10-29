@@ -1,25 +1,25 @@
 # R30: preserve indexed read order; right float register is never mutated.
-prakriya shunya_badl(kosh dasham xs) {
-    xs[0] = 100.0
+prakriya shunya_badl(kosh dasham ank_suchi) {
+    ank_suchi[0] = 100.0
     nivartanam 3.0
 }
 mukhya() {
-    kosh dasham xs[2]
-    kosh_push(xs, 2.0)
-    kosh_push(xs, 4.0)
+    kosh dasham ank_suchi[2]
+    kosh_push(ank_suchi, 2.0)
+    kosh_push(ank_suchi, 4.0)
     dasham weight = 1.5
     dasham phal = 0.0
-    phal = xs[0] + weight
+    phal = ank_suchi[0] + weight
     likha(phal)
-    phal = xs[1] - weight
+    phal = ank_suchi[1] - weight
     likha(phal)
-    phal = xs[0] * weight
+    phal = ank_suchi[0] * weight
     likha(phal)
-    phal = xs[1] / weight
+    phal = ank_suchi[1] / weight
     likha(phal)
-    phal = xs[0] + shunya_badl(xs)
+    phal = ank_suchi[0] + shunya_badl(ank_suchi)
     likha(phal)
-    likha(xs[0])
-    phal = shunya_badl(xs) + xs[0]
+    likha(ank_suchi[0])
+    phal = shunya_badl(ank_suchi) + ank_suchi[0]
     likha(phal)
 }

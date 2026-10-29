@@ -1,14 +1,14 @@
 # Typed kosh values must participate in T12 prakriya return inference.
 prakriya antim_mulya() {
-    kosh dasham values[1]
-    kosh_push(values, 2.5)
-    nivartanam kosh_pop(values)
+    kosh dasham mulya[1]
+    kosh_push(mulya, 2.5)
+    nivartanam kosh_pop(mulya)
 }
 
 prakriya sanket_mulya() {
-    kosh dasham values[1]
-    kosh_push(values, 1.25)
-    nivartanam values[0]
+    kosh dasham mulya[1]
+    kosh_push(mulya, 1.25)
+    nivartanam mulya[0]
 }
 
 mukhya() {

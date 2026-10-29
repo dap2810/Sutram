@@ -9,23 +9,23 @@ mukhya()
         root12 = (root12 + 12.0 / root12) / 2.0
         i = i + 1
     }
-    dasham sum = 0.0
+    dasham sankalan = 0.0
     dasham p3 = 1.0
     vitti k = 0
-    vitti util_chinha = 1
+    vitti chinha = 1
     yavat (k < 30) {
         dasham term = 1.0 / ((2.0 * k + 1.0) * p3)
-        yadi (util_chinha > 0) {
-            sum = sum + term
+        yadi (chinha > 0) {
+            sankalan = sankalan + term
         } anya {
-            sum = sum - term
+            sankalan = sankalan - term
         }
         p3 = p3 * 3.0
-        util_chinha = 0 - util_chinha
+        chinha = 0 - chinha
         k = k + 1
     }
     likha("pi  = ")
-    likha(root12 * sum)
+    likha(root12 * sankalan)
 
     # --- sine via Madhava's series: sin(x) = x - x^3/3! + x^5/5! - ... ---
     dasham x = 0.5

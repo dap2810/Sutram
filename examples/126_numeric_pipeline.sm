@@ -3,21 +3,21 @@
 yoj sankhyiki
 yoj madhava
 
-prakriya maap(kosh dasham values) {
+prakriya maap(kosh dasham mulya) {
     # 5 + 4 + 2 = 11 for the textbook dataset.
-    nivartanam madhya(values) + prasaran(values) + vichalan(values)
+    nivartanam madhya(mulya) + prasaran(mulya) + vichalan(mulya)
 }
 
 mukhya() {
-    kosh dasham values[4]
-    kosh_push(values, 2)
-    kosh_push(values, 4)
-    kosh_push(values, 4)
-    kosh_push(values, 4)
-    kosh_push(values, 5)
-    kosh_push(values, 5)
-    kosh_push(values, 7)
-    kosh_push(values, 9)
+    kosh dasham mulya[4]
+    kosh_push(mulya, 2)
+    kosh_push(mulya, 4)
+    kosh_push(mulya, 4)
+    kosh_push(mulya, 4)
+    kosh_push(mulya, 5)
+    kosh_push(mulya, 5)
+    kosh_push(mulya, 7)
+    kosh_push(mulya, 9)
 
     kosh dasham u[2]
     kosh_push(u, 3)
@@ -28,13 +28,13 @@ mukhya() {
 
     # Repeated full statistical pipelines: mala traversals, nested function
     # calls, floating-point arithmetic, Newton sqrt, branches and loops.
-    dasham total = 0.0
+    dasham sarva_yog = 0.0
     vitti i = 0
     yavat (i < 100000) {
-        total = total + maap(values)
+        sarva_yog = sarva_yog + maap(mulya)
         i = i + 1
     }
-    likha(total)
+    likha(sarva_yog)
     likha(bindu_gunan(u, v))
     likha(manak(u))
     likha(madhava_pi())

@@ -13,8 +13,8 @@ prakriya blend(dasham a, दशम b) {
     nivartanam (a + b) / 2.0
 }
 
-prakriya mixed(flag) {
-    yadi (flag) {
+prakriya mixed(dhvaj) {
+    yadi (dhvaj) {
         nivartanam 1.25
     }
     nivartanam 2

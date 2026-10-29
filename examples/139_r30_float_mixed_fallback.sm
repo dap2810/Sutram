@@ -8,13 +8,13 @@ mukhya() {
     dasham q = 5.0
     dasham spill = 6.0
     vitti offset = 2
-    dasham out = 0.0
-    out = v[0] + offset
-    likha(out)
-    out = v[0] + spill
-    likha(out)
-    out = (x + y * z) / q
-    likha(out)
-    out = v[0] - 4294967295
-    likha(out)
+    dasham nirgat = 0.0
+    nirgat = v[0] + offset
+    likha(nirgat)
+    nirgat = v[0] + spill
+    likha(nirgat)
+    nirgat = (x + y * z) / q
+    likha(nirgat)
+    nirgat = v[0] - 4294967295
+    likha(nirgat)
 }

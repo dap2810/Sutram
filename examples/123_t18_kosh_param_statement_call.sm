@@ -4,8 +4,8 @@ prakriya sparsh(kosh dasham a) {
 }
 
 mukhya() {
-    kosh dasham values[1]
-    kosh_push(values, 1.5)
-    sparsh(values)
-    likha(values[0])
+    kosh dasham mulya[1]
+    kosh_push(mulya, 1.5)
+    sparsh(mulya)
+    likha(mulya[0])
 }

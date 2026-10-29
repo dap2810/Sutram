@@ -1,26 +1,26 @@
 # Array demo — arr[i] syntax
 mukhya()
     likha("=== Array Demo ===\n")
-    vitti arr = nirmmita(128)
-    arr[0] = 10
-    arr[1] = 20
-    arr[2] = 30
-    arr[3] = 40
-    arr[4] = 50
+    vitti ank_mala = nirmmita(128)
+    ank_mala[0] = 10
+    ank_mala[1] = 20
+    ank_mala[2] = 30
+    ank_mala[3] = 40
+    ank_mala[4] = 50
     likha("Array values:\n")
     vitti i = 0
     yavat (i < 5) {
         likha("  arr[")
         likha(i)
-        likha("] = ", arr[i])
+        likha("] = ", ank_mala[i])
         i = i + 1
     }
     likha("Sum: ")
-    vitti sum = 0
+    vitti sankalan = 0
     i = 0
     yavat (i < 5) {
-        sum = sum + arr[i]
+        sankalan = sankalan + ank_mala[i]
         i = i + 1
     }
-    likha(sum)
+    likha(sankalan)
     likha("\n")

@@ -14,11 +14,11 @@ mukhya()
     x %= 7
     likha("x %= 7  -> ", x)
     likha("\nSum 1 to 10 using += :\n")
-    vitti total = 0
+    vitti sarva_yog = 0
     chakra i = 1 tak 10 {
-        total += i
+        sarva_yog += i
     }
-    likha("Total: ", total)
+    likha("Total: ", sarva_yog)
     likha("\nFactorial of 5 using *= :\n")
     vitti kramgun = 1
     chakra n = 1 tak 5 {
