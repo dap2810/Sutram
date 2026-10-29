@@ -1,0 +1,3 @@
+run 1: one store/block 59 cyc; eight stores (the whole 64 B written) 72 cyc
+run 2: one store/block 50 cyc; eight stores (the whole 64 B written) 75 cyc
+run 3: one store/block 62 cyc; eight stores (the whole 64 B written) 55 cyc

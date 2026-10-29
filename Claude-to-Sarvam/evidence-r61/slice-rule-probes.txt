@@ -1,0 +1,11 @@
+The existing escape rule for slices (src/r23_capabilities.inc, r23_check_return) probed with v261.
+A slice lives in its function's frame; returning one is refused. The kshetra rule would use the same mechanism.
+
+  slice returned directly            REFUSED  "vibhag prakriyayah na pratyarpaniyah"  (no line number)
+  vitti t = s; nivartanam t          REFUSED  (the kind follows a plain copy)
+  vitti t = s + 0; nivartanam t      COMPILES - laundered by arithmetic
+  g = s  (module global)             COMPILES - a store to a global is not checked
+  out[0] = s  (caller's mala)        COMPILES - a store through memory is not checked
+  likh8(out, s)                      COMPILES - a store through memory is not checked
+
+So today's rule catches the two direct forms and misses arithmetic and every store through memory.
