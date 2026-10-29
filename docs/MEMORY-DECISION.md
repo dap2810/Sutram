@@ -1,19 +1,26 @@
-# Memory: the decision, and the spec that is now fixed
+# Memory: the decision, the vocabulary, and the spec
 
 **Owner's decision, 29 October 2026. Compiler v261, changelog v414.**
+**The vocabulary rule is in `docs/VOCABULARY-RULE.md` and applies to every word from now on.**
 
 ---
 
-## The two words, decided
+## The vocabulary — five words, one new keyword
 
-| Word | Devanagari | Means | Used for |
+| Word | Devanagari | Level | Where it appears |
 |---|---|---|---|
-| **`kshetra`** | **क्षेत्र** | **region, field** | **the memory region — the block keyword** |
-| **`avayava`** | **अवयव** | **member, component, limb** | **a member of a `rachana` — replaces `kshetra` in the field diagnostics** |
+| **`kshetra`** | **क्षेत्र** | **the whole arena — the field** | **errors and documentation, not a keyword** |
+| **`mandapa`** | **मण्डप** | **the scratch block — a pavilion raised and struck** | **THE ONE NEW KEYWORD** |
+| **`avayava`** | **अवयव** | **a member of a `rachana`** | **replaces `kshetra` in the four field diagnostics** |
+| **`ardhamandapa` / `mahamandapa`** | **अर्धमण्डप / महामण्डप** | **size tiers** | **the compiler reports them; the programmer does not choose** |
+| **`garbhagriha`** | **गर्भगृह** | **what must survive** | **documentation only** |
 
-**Why this way round: `avayava` means "member", and a struct member IS a member. `kshetra` means region, and a memory arena IS a region.** **Each word goes where it fits best, and the reword improves the diagnostics rather than merely renaming them.**
+**Why this way: a `kshetra` contains `mandapa`s.** **A field contains pavilions.** **The Sanskrit already has the nesting, and we were making one word do both jobs.**
 
-**The four diagnostics that change (there are FOUR, not three — the hint at line 328 was missed at first):**
+**And `avayava` means "member", which is what a struct member is.** **So the reword improves the diagnostics rather than merely renaming them.**
+
+### The four diagnostics that change — there are FOUR, not three
+**The hint at line 328 was missed at first, and Claude and ChatGPT each found it independently.**
 
 | Line | Now | Becomes |
 |---|---|---|
@@ -22,11 +29,12 @@
 | `:328` (hint) | `kasyashchid api rachanayah kshetram nasti` | **`avayavah nasti`** |
 | `:827` | `rachana kshetra seema atikram` | **`rachana avayava seema atikram`** |
 
-**Plus the four Devanagari entries in `lang/sanskrit.sandesh`, the 32 cognate entries in the 10 frozen packs, 4 goldens and 2 test assertions.** **Claude's inventory: no identifier in `lib/`, `examples/` or `tests/` is named `kshetra`, so no program breaks. The collision was in diagnostics only.**
+**Plus 4 Devanagari entries in `lang/sanskrit.sandesh`, 32 cognate entries in the 10 frozen packs, 4 goldens, 2 test assertions.**
+**Collision-checked: `mandapa`, `avayava`, `ardhamandapa`, `mahamandapa` appear ZERO times in the compiler, the packs, or the code.** **`kshetra` appears only in the four diagnostics, 44 pack entries and 8 expected-output files — no program identifier.**
 
 ---
 
-## The five steps, fixed
+## The five steps
 
 ### Step 0 — the `kosh` leak. No new syntax.
 **In-place top-of-arena extension, plus 32 power-of-two intrusive freelist bins in `.bss`.**
@@ -35,18 +43,18 @@
 
 ### Step 1 — `nirmmita` becomes a contiguous bump. No new syntax.
 **Page sharing. Most of the ~1,000x.**
-**Fallback: if the reservation fails or the range is exhausted, run today's `mmap` unchanged — so the worst case is exactly today.**
+**Fallback: if the reservation fails or the range is exhausted, run today's `mmap` unchanged — the worst case is exactly today.**
 
 ### Step 2 — `dvi-mukha`. No new syntax.
 **One `.bss` range, two opposing cursors: persistent grows up from the start, scratch grows down from the end.**
 **They cannot overlap, so the `kosh`-growth escape is structurally impossible.**
 
-### Step 3 — the `kshetra` block. One new keyword.
+### Step 3 — the `mandapa` block. One new keyword.
 **The region is LEXICAL: a `nirmmita` emitted inside a block uses the scratch cursor; every other `nirmmita` — outside blocks, inside library bodies, and `kosh` growth of an outer `kosh` — uses the persistent cursor.**
 **The mark is a hidden local per nesting depth, so it is recursion-safe with no shadow stack.**
 **Entry 2 instructions, normal exit 2, `krama`/`agrim` 2 or 0.**
 **`nivartanam` is ALLOWED: evaluate the expression, then rewind, then return. Rejected only if the returned value is a scratch ADDRESS.**
-**Exhaustion: abort cleanly. Never fall back to `mmap` inside a block, because that allocation would not be freed on rewind.**
+**Exhaustion: abort cleanly with `kshetra purnam` — "the field is full". Never fall back to `mmap` inside a block, because that allocation would not be freed on rewind.**
 
 ### Step 4 — the check. No new syntax.
 **Three 4-bit fields per symbol, packed into a byte:**
@@ -63,25 +71,18 @@
 
 ## What "0 DIFFER" can and cannot mean
 
-**It cannot mean "nothing changed", and I should have said so earlier.** **Steps 0 to 2 change how `nirmmita` allocates, so they WILL change emitted bytes for existing programs.**
+**It cannot mean "nothing changed".** **Steps 0 to 2 change how `nirmmita` allocates, so they WILL change emitted bytes for existing programs.**
 
 **So the guard's claim is:**
-- **Against a post-Step-1 baseline: 0 DIFFER for programs that do not use a `kshetra` block.**
+- **Against a post-Step-1 baseline: 0 DIFFER for programs that do not use a `mandapa` block.**
 - **Against v261: a stated list of what changed, and every changed program produces the same OUTPUT.**
-
-**That is the honest form, and it is ChatGPT's point in its R136, which I am adopting.**
 
 ---
 
 ## The order of work
 
-**Wave 1 (independent, no allocator change):**
-- **the `kosh` leak fix**
-- **the `avayava` reword**
-- **the Sanskrit check on both words against the compiler and the pack**
-
+**Wave 1 (independent, no allocator change):** **the `kosh` leak fix · the `avayava` reword · the word verification.**
 **Wave 2:** **the contiguous bump, then the two cursors.**
-
-**Wave 3:** **the `kshetra` block and the check.**
+**Wave 3:** **the `mandapa` block and the check.**
 
 **Windows is the owner's own work.**
