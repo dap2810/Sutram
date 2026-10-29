@@ -1,3 +1,28 @@
+## v416 - Claude stopped Step 0, and both of its invariants were false
+
+**The `kosh` leak fix as designed was impossible, and it would have created a silent use-after-free.** **It did not ship, because the brief said "confirm both invariants before building" and both were false.**
+
+### What was false
+**"Capacities are always powers of two":** **`kosh k[3]` reaches 12, `kosh k[5]` reaches 10, `kosh k[1000000]` is 1000000.** **33 of 131 declarations are not a power of two.** **So the freelist bins have no size class to index.**
+
+**"The old buffer is dead after growth":** **`vitti a = k` makes `a` a second live `kosh`.** **After `k` grows, `a` and `k` are two working buffers.** **So recycling would hand a live buffer to a different `kosh` - `a` would read another vector's header.** **A silent use-after-free, exactly what R59 warned the `munmap`-on-move fix would create.**
+
+**And in-place extension could not exist in Step 0 at all, because there is no cursor yet.**
+
+### What survives
+**Only in-place extension, moved into Step 1 where a cursor exists.** **It is safe because it does not RELOCATE - `a` and `k` stay on the same buffer, which merely gets bigger.** **Nothing dangles, because nothing moved.**
+
+**The interleaved-`kosh` leak remains and is documented as a bounded leak.** **A bounded leak is better than a use-after-free.**
+
+### And the pattern, stated plainly
+**Both invariants were asserted and never checked against the tree.** **I passed them to Claude as "confirm both before building" - and that instruction is the only reason this did not ship.**
+
+**That is the same failure as the one-sentence scope rule, the fourth time this week: a claim that looked true, never measured, and caught by someone who checked.**
+
+### Meanwhile, two pieces are ready
+**Muse's `avayava` reword is complete as a patch** - four strings in both registers, no third collision, full-tree grep clean.
+**ChatGPT's K0 freeze is complete**, with an honest caveat that its verification was scoped rather than a full census.
+
 ## v415 - the vocabulary is settled: `kshetra` the field, `mandapa` the pavilion, `avayava` the member
 
 **Five words, one new keyword.** **And a standing rule for every word from now on.**
