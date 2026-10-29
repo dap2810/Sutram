@@ -1,3 +1,45 @@
+## v412 - I ran the tests myself instead of relaying Claude's numbers, and synced the four docs that were stale
+
+**The owner asked whether I had tested everything, updated everything, merged and audited.** **The honest answer was no on the last three,
+so I did them.**
+
+### I ran the checks myself, from a fresh clone, with the compiler built here
+| Check | Result |
+|---|---|
+| **Suite** | **NO-EXPECTATION=4 PASS=225** |
+| **Crash corpus** | **227 cases + manifest, 0 failed** |
+| **Library proofs** | **226 passed, 0 failed, 226 total** |
+| **Doc signatures** | **PASS** |
+| **Layers** | **14 core, 9 alloc, 1 std** |
+| **Alloc bounds** | **26 computed, 13 bounded before the multiply, 13 exempt** |
+| **Built-in packs** | **CURRENT: 11 keyword packs** |
+
+**So Claude's numbers are real.** **I had been relaying them for many rounds without checking one, which is the same failure as trusting a
+brief instead of reading the tree.**
+
+**One number I did NOT verify: gates 48 PASS.** **`tools/gates.sh` exceeds this sandbox's 300-second limit, so that stays Claude's
+measurement.** **Saying so is better than implying I checked it.**
+
+### Merge: not applicable, and that is worth stating
+**Claude pushes to `main` directly with git, not `--force`.** **There are no branches, so there is nothing to merge.** **The "merge" the
+owner has been asking about is the conceptual one - are all the collaborators' work on the same tree - and the answer is yes, because
+they all write to `main` and I read `main`.**
+
+### The docs that were stale, and are not now
+**Four pages still described an older project:**
+- **`PROJECT-MASTER.md`** - mentioned v237 and v261, and had **zero** occurrences of `nivartanam`
+- **`ROADMAP.md`** - zero
+- **`docs/PATH-TO-COMPLETION.md`** - v245 and v250, zero
+- **`docs/LANGUAGE-REFERENCE.md`** - content had `nivartanam` 20 times, but its version line still said v257
+
+**All four now carry a banner with the verified state, and the banner names `docs/WHATS-LEFT.md` as authoritative.**
+
+### Audit: what is covered and what is not
+**Covered:** 305 library names against their bodies (20 wrong, all fixed) · the Sanskrit pack (11 defects, 7 fixed, 4 verified by
+compiling) · 33 contract comments · the print forms and loop forms documented.
+**Not covered, and named rather than glossed:** the **818 undecided mutants** (the round that would have measured them was superseded) ·
+**`Sutram Error` -> `Sutram dosh`** (blocked on the IDE decision) · **Windows execution** (the NOT-RUN, and the owner's own test).
+
 ## v411 - Claude's R57: the 33 comments applied, Patch A stopped at two hunks, and why
 
 **The comments are in - commit `d0ff986`, guard 0 DIFFER on all three paths.** **So a comment cannot change a binary, and the proof is
