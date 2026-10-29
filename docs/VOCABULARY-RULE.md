@@ -86,3 +86,19 @@
 | **`garbhagriha`** | **गर्भगृह** | **the innermost sanctum — what must survive** | **documentation only, naming the persistent region** |
 
 **Five words, each at its own level, each readable from the others, and exactly one of them is a new keyword.**
+
+---
+
+## Parked, not rejected — the danda (`।`)
+
+**Raised by the owner and set aside on 29 October 2026, to be revisited after memory is finished.**
+
+**The idea: use `।` (U+0964, the danda) as an optional statement terminator, instead of `;`.**
+
+**Why it is interesting:** **it is the one punctuation mark that is genuinely pan-Indic — the same codepoint is used by Devanagari, Bengali, Gujarati, Gurmukhi and Odia, and historically by Telugu, Kannada and Malayalam.** **It is already in the project 30 times in the language packs and in 23 program files, inside output strings.** **And it has never been syntax — zero occurrences in the compiler.**
+
+**Why it is parked:** **by Rule 1 it does not pass — newline already terminates a statement, and 203 of 229 examples use no terminator at all. It adds identity, not clarity, and identity is a different justification than the three rules cover.**
+
+**If it is ever revived, the honest framing is a fourth rule: a SIGN may be adopted for identity rather than clarity, but only if it is pan-Indic, and only one of them.** **Do not add `॥`, do not add Devanagari numerals, do not add ॐ — none of those is shared, or punctuation, or respectful.**
+
+**Nothing about this is decided. It is recorded so it is not lost.**
