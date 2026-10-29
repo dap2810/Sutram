@@ -111,3 +111,30 @@ mukhya()
 **Braces remain optional everywhere, as they always were — but examples never show them on a `mandapa`.** **203 of the 229 examples use no braces at all, and `mukhya`/`prakriya` are written without them throughout, so this is the language's own norm rather than a new rule.**
 
 **And the deeper reason it is right: a `rachana` is the PLAN of a building — what it is made of. A `mandapa` is a HALL you walk into — where things happen.** **A plan is not a hall. A type definition is not a scope.**
+
+---
+
+## CORRECTION, 29 October — Step 0 as designed is impossible, and the plan changed
+
+**Claude stopped before building it, and was right.** **Both invariants that the `kosh` fix rested on are false in this compiler.**
+
+### Invariant 2 — "capacities are always powers of two": FALSE
+**`kosh k[3]` reaches capacity 12 after nine pushes.** **`kosh k[5]` reaches 10.** **`kosh k[1000000]` is 1000000.** **131 `kosh` declarations carry a literal capacity and 33 are not a power of two.**
+**So the freelist bins have no size class to index, and rounding capacities up would change goldens and change what programs mean.**
+
+### Invariant 1 — "the old buffer is dead after growth": FALSE
+**`vitti a = k` makes `a` a second live `kosh`.** **After `k` grows, `a` points at the old buffer and both work.** **Two live buffers.**
+**With recycling bins, that old buffer would be handed to the next `kosh` of that size — so `a` would read and write ANOTHER `kosh`'s header. A silent use-after-free, which is exactly what R59 warned the `munmap`-on-move fix would create. The bins were that fix under another name.**
+
+### And mechanism 1 could not exist in Step 0
+**In-place extension needs a cursor to compare against.** **In Step 0 there is none — every `kosh` buffer is its own `mmap`.**
+
+### What survives, and why
+**Only in-place extension, and it moves into Step 1 where a cursor exists.**
+**It is safe because it does not RELOCATE.** **`a = k` and then `k` grows in place means `a` and `k` still point at the same buffer, which is now larger.** **Nothing dangles, because nothing moved.**
+**It catches the single-vector-in-a-loop case, which is the common one.**
+
+**The interleaved-`kosh` leak remains, and it is documented as a bounded leak rather than fixed.** **A bounded leak is better than a use-after-free.**
+
+### The lesson, which is the same one as the one-sentence scope rule
+**The two invariants were ASSERTED, never checked against the tree.** **I passed them to Claude as "confirm both before building" — and both were false.** **That instruction is the only reason this did not ship.**
