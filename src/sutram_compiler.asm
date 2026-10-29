@@ -234,7 +234,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v262) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v263) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -11930,6 +11930,7 @@ gen_code:
     mov edi, FUNC_SPILL_BYTES
     call emit_u32
 
+    call r65_root_globals      ; R65: a --separate root with modules owns the arena globals
     ; R56: once-only ordered global initialization at process entry.
     ; This runs before mukhya and before any user function can be called.
     call r56_gen_global_initializers
@@ -15761,6 +15762,7 @@ gen_expr:
     call emit_byte
     mov dil, 0xD8
     call emit_byte
+    call r65_emit_kosh_extend  ; R65: grow in place when the kosh ends at the arena cursor
     ; Preserve old pointer, length, and new capacity across allocation.
     mov dil, 0x41
     call emit_byte
@@ -15905,6 +15907,14 @@ gen_expr:
     sub rax, 4
     lea rcx, [rel code_buf]
     mov [rcx+r15], eax
+    mov rdx, [rel r65_ext_patch] ; R65: the in-place extension's jmp .space, if emitted
+    cmp rdx, -1
+    je .r65_no_ext_patch
+    mov rax, [rel code_sz]
+    sub rax, rdx
+    sub rax, 4
+    mov [rcx+rdx], eax
+.r65_no_ext_patch:
     mov dil, 0x5A             ; pop value -> rdx
     call emit_byte
     mov dil, 0x4B             ; mov [r8+r9*8],rdx
@@ -19890,6 +19900,10 @@ emit_nirmmita_from_rax:
     cmp qword [rel r38_fail_n], 0  ; R38 --fail-alloc: the counted form
     jne r38_emit_faulty
 r38_nirm_seq:
+    call r65_active                ; R65 (Step 1): Linux ELF, not --object -> the arena bump,
+    test rax, rax                  ; with this sequence as its fallback
+    jnz r65_emit_nirm
+r38_nirm_mmap:
     ; mov rsi, rax (length) = 48 89 C6
     mov dil, 0x48
     call emit_byte
@@ -24099,6 +24113,7 @@ strcmp:
 %include "src/r38_fail_alloc.inc"
 %include "src/r45_debug.inc"
 %include "src/r52_yoj_hint.inc"
+%include "src/r65_arena.inc"   ; R65: the arena bump and in-place kosh growth
 
 itoa:
     mov rax, rdi

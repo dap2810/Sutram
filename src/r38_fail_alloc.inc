@@ -54,27 +54,27 @@ r38_emit_faulty:
     sub rax, [rel code_sz]
     sub rax, 4                     ; relative to the end of the instruction
     call r38_emit_d
-    mov dil, 0x75                  ; jnz +4
+    mov dil, 0x75                  ; jnz +7 (xor eax,eax; jmp rel32)
     call emit_byte
-    mov dil, 0x04
+    mov dil, 0x07
     call emit_byte
     mov dil, 0x31                  ; xor eax, eax
     call emit_byte
     mov dil, 0xC0
     call emit_byte
-    mov dil, 0xEB                  ; jmp short .done (patched below)
+    mov dil, 0xE9                  ; jmp .done, rel32 (patched below; R65: the arena sequence is ~196 bytes)
     call emit_byte
     mov rax, [rel code_sz]
     mov [rel r38_patch_at], rax
     xor edi, edi
-    call emit_byte
+    call emit_u32
     call r38_nirm_seq              ; the ordinary sequence
     mov rax, [rel code_sz]
     mov rcx, [rel r38_patch_at]
     sub rax, rcx
-    dec rax                        ; bytes after the rel8 field
+    sub rax, 4                     ; bytes after the rel32 field
     lea rdx, [rel code_buf]
-    mov [rdx + rcx], al            ; 45 bytes on Linux: fits a rel8
+    mov [rdx + rcx], eax
     ret
 
 r38_emit_d:                        ; emit eax, low byte first

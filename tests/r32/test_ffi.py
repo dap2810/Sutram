@@ -45,7 +45,9 @@ def table(path):
             _off, ln = struct.unpack_from('<2Q', data, pos)
             out[k].append(data[pos + 16:pos + 16 + ln].decode())
             pos += 16 + ln
-    return out
+    # R65: the arena's two hidden vitti (vitti:0kshetra_cur, vitti:0kshetra_end) are defined by the
+    # root and needed by a module; they are not prakriyas, so both lists leave them out.
+    return tuple([n for n in lst if not n.startswith('vitti:0')] for lst in out)
 
 
 def main(argv) -> int:

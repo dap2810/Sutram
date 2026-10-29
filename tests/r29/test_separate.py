@@ -52,7 +52,9 @@ def symbols(path):
         _off, ln = struct.unpack_from('<2Q', data, pos)
         names.append(data[pos + 16:pos + 16 + ln].decode())
         pos += 16 + ln
-    return names
+    # R65: the root object also defines the arena's two hidden vitti (vitti:0kshetra_cur,
+    # vitti:0kshetra_end) - names no program can write. They are not prakriyas; leave them out.
+    return [n for n in names if not n.startswith('vitti:0')]
 
 
 def run(exe, cwd):

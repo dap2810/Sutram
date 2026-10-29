@@ -276,6 +276,8 @@ r45_collect:
     lea rax, [rel r45_counter_name]
     cmp r13, rax                   ; the trace's own counter is not the program's
     je .g_next
+    cmp byte [r13], '0'            ; R65: a hidden global (a name no program can write,
+    je .g_next                     ; e.g. the arena's 0kshetra_cur) is not the program's either
     xor r14d, r14d                 ; any var_table entry of that name (even a closed
 .g_local:                          ; block's) would be what the name reads: not shown
     cmp r14, [rel var_cnt]
