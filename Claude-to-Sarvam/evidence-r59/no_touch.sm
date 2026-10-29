@@ -1,0 +1,22 @@
+# R59 WS1 (a): 100,000 blocks of 64 bytes, one nirmmita each, each touched.
+# t0/t1 hold rdtsc (cycle counter) read by yantra: rdtsc; shl rdx,32; or rax,rdx; mov rbx|r12,rax.
+mukhya() {
+    vitti t0 = 0
+    vitti t1 = 0
+    vitti i = 0
+    vitti p = 0
+    yantra("0F 31")
+    yantra("48 C1 E2 20")
+    yantra("48 09 D0")
+    yantra("48 89 C3")
+    yavat (i < 100000) {
+        p = nirmmita(64)
+        i = i + 1
+    }
+    yantra("0F 31")
+    yantra("48 C1 E2 20")
+    yantra("48 09 D0")
+    yantra("49 89 C4")
+    likha(t1 - t0)
+    likha(p > 0)
+}

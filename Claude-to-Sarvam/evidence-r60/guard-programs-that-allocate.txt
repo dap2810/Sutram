@@ -1,0 +1,1 @@
+486 guard programs that compile (v261, ELF): 248 contain the nirmmita sequence (mov r10d, 0x22), 238 never allocate.

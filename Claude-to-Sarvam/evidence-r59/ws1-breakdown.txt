@@ -1,0 +1,3 @@
+run 1: mmap only (no touch) 1177 cyc/alloc; getpid 229 cyc/call; check: 100000
+run 2: mmap only (no touch) 1423 cyc/alloc; getpid 262 cyc/call; check: 100000
+run 3: mmap only (no touch) 1148 cyc/alloc; getpid 222 cyc/call; check: 100000

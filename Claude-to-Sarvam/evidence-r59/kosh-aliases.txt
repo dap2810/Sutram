@@ -1,0 +1,9 @@
+Can a copy of a kosh pointer outlive a growth? (compiled and run with v261)
+A  vitti a = k; grow k; read a[0]                      COMPILES, prints 7 (the old block)
+B  m[0] = k (into a mala cell); grow k; read via m[0]    COMPILES, prints 7 (the old block)
+C  module-level kosh grown in a callee while passed      REFUSED by the compiler
+D  kosh returned from a function                        COMPILES, prints 5 (no growth after)
+E  kosh passed to a callee that keeps it in a global;   COMPILES, prints 7 (the old block)
+   grow k; read the global
+kosh_push on a parameter is refused by the compiler (src/sutram_compiler.asm .ge_call_koshpush).
+A module-level kosh cannot be grown inside a function: REFUSED.

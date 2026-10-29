@@ -1,0 +1,4 @@
+per_call: 	Maximum resident set size (kbytes): 400000
+one_block: 	Maximum resident set size (kbytes): 6272
+per_call_1000000: 	Maximum resident set size (kbytes): 4000000
+one_block_1000000: 	Maximum resident set size (kbytes): 62464

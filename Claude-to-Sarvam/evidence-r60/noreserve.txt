@@ -1,0 +1,2 @@
+One mmap(MAP_PRIVATE|MAP_ANONYMOUS|MAP_NORESERVE, PROT_READ|PROT_WRITE) at run time, then touch the first and the last byte:
+  8 GiB: exit 0;  1 TiB: exit 0;  16 TiB: exit 0.  Max RSS of the 16 TiB run: 392 KB.

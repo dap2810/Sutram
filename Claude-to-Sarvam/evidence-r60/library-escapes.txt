@@ -1,0 +1,5 @@
+305 library prakriya; 25 allocate (nirmmita, kosh/mala, or a *srij* constructor)
+4 RETURN the allocation to their caller - under "released when the call returns" each hands back a dangling pointer:
+  nighantu.nighantu_srij, nighantu.nighantu_vardh, suchi.suchi_srij, suchi.avali_srij
+6 more store it into memory the caller can reach (an out-parameter or another block): aadhar.brihat_ank_tak, sangrah.rakh_tak_mala, suchi.suchi_vardh, suchi.avali_pravesh, vakyank.ank_tak_varna, vakyank.ank_tak_aadhar_varna
+Also returning an allocation: mala.mala_nava (nivartanam nirmmita(sz)), sangrah.rakh_srij (nivartanam nighantu_srij(cap)), sangrah.rakh_vardh (nivartanam nighantu_vardh(...)). Total: 7 return + 6 store = 13 of the 25 allocating library prakriya. 36 example/test files call these constructors.

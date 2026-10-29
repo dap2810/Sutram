@@ -1,0 +1,8 @@
+226 library proofs with nirmmita returning 0xAA-filled (unzeroed) memory:
+  PASS: 221
+  FAIL: 3
+  CRASH: 0
+  HANG: 2
+FAIL: file_read, r39_scratch_from_set, r9_guard_cells
+HANG: r11_brihat_guards, r11_page_edges
+Control: the same per-proof harness with the normal v261 compiler: 225 pass, 1 not (file_read, which needs an input the harness does not supply). So the unzeroed-memory dependents are 4: r39_scratch_from_set, r9_guard_cells (wrong answer), r11_brihat_guards, r11_page_edges (hang). The suite (225) passes with unzeroed memory.

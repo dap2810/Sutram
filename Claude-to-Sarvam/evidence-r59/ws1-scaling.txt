@@ -1,0 +1,4 @@
+n=10000: per_call 63580140 (6358 cyc/alloc)  one_block 509034 (50 cyc/alloc)  ratio 124.9  last=9999
+n=100000: per_call 822101932 (8221 cyc/alloc)  one_block 5240196 (52 cyc/alloc)  ratio 156.9  last=99999
+n=200000: per_call 1271147814 (6355 cyc/alloc)  one_block 11518714 (57 cyc/alloc)  ratio 110.4  last=199999
+n=1000000: per_call 7006325212 (7006 cyc/alloc)  one_block 62197938 (62 cyc/alloc)  ratio 112.6  last=999999

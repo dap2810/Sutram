@@ -1,0 +1,4 @@
+kosh growth, 1,000,000 kosh_push (RSS by /usr/bin/time -v):
+  kosh k[1], grown by doubling:  len 1000000, cap 1048576, max RSS 16000 KB
+  kosh k[1000000], never grows:  len 1000000, cap 1000000, max RSS  7808 KB
+  abandoned by growth: about 8,192 KB = ~8.2 bytes per item (the geometric series of old blocks)

@@ -1,0 +1,11 @@
+The owner's .bss arena, tested with minimal NASM binaries (global _start; .bss resb N; touch byte 0; exit 0).
+Machine: 7 GB RAM, vm.overcommit_memory = 0, ulimit -v unlimited.
+  .bss 64M: file 4744 bytes; runs, exit 0
+  .bss 1G: file 4744 bytes; runs, exit 0
+  .bss 8G: file 4744 bytes; execve -> ENOMEM; the kernel kills the process with SIGSEGV (exit 139) before _start
+  .bss 64G: file 4744 bytes; execve -> ENOMEM; the kernel kills the process with SIGSEGV (exit 139) before _start
+  .bss 1T: file 4744 bytes; execve -> ENOMEM; the kernel kills the process with SIGSEGV (exit 139) before _start
+  .bss 64T: file 4744 bytes; execve -> ENOMEM; the kernel kills the process with SIGSEGV (exit 139) before _start
+  strace of the 8G binary: execve(...) = -1 ENOMEM (Cannot allocate memory) / +++ killed by SIGSEGV +++
+Under ulimit -v 4194304 (4 GiB): 64M and 1G run; 8G exit 139.
+For comparison, mmap(8 GiB) at run time on the same machine: ENOMEM (12), returned to the program.

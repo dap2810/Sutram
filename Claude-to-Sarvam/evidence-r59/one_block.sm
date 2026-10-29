@@ -1,0 +1,24 @@
+# R59 WS1 (b): the same 100,000 x 64 bytes from ONE nirmmita, by manual offsets (no region exists yet).
+mukhya() {
+    vitti t0 = 0
+    vitti t1 = 0
+    vitti i = 0
+    vitti p = 0
+    vitti base = 0
+    yantra("0F 31")
+    yantra("48 C1 E2 20")
+    yantra("48 09 D0")
+    yantra("48 89 C3")
+    base = nirmmita(100000 * 64)
+    yavat (i < 100000) {
+        p = base + i * 64
+        likh8(p, i)
+        i = i + 1
+    }
+    yantra("0F 31")
+    yantra("48 C1 E2 20")
+    yantra("48 09 D0")
+    yantra("49 89 C4")
+    likha(t1 - t0)
+    likha(pad8(p))
+}

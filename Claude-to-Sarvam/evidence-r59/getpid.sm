@@ -1,0 +1,21 @@
+# getpid (syscall 39) 100,000 times: the cost of entering the kernel at all.
+mukhya() {
+    vitti t0 = 0
+    vitti t1 = 0
+    vitti i = 0
+    yantra("0F 31")
+    yantra("48 C1 E2 20")
+    yantra("48 09 D0")
+    yantra("48 89 C3")
+    yavat (i < 100000) {
+        yantra("B8 27 00 00 00")
+        yantra("0F 05")
+        i = i + 1
+    }
+    yantra("0F 31")
+    yantra("48 C1 E2 20")
+    yantra("48 09 D0")
+    yantra("49 89 C4")
+    likha(t1 - t0)
+    likha(i)
+}
