@@ -1,3 +1,14 @@
+> **Status at v411, 29 October 2026 — read this before the page below.**
+>
+> **Compiler v261.** Suite **PASS=225** · crash corpus **227/0** · library proofs **226/226** · property proofs 86/86 · doc signatures PASS · layers 14/9/1 · alloc bounds 26 (13 bounded, 13 exempt) · built-in packs CURRENT · gates **48 PASS / 0 FAIL / 1 NOT-RUN**.
+> **The NOT-RUN is Windows execution, and that is the owner's own test.**
+>
+> **`nivartanam` is the return keyword; `prati` is a legacy alias.** 235 files across compiler, `lib/`, `examples/`, `tests/` and `docs/` — **zero goldens changed**, and a program written either way compiles to a byte-identical binary.
+> **Done and off every open list:** `likha` up to six values · 135 three-statement triples · the `lkhb` float bug · `arabhya ... paryantam` · **20 library names that described the wrong operation** · 7 wrong Devanagari words · 33 contract comments · Patch A's 12 variable names.
+> **The authoritative page is `docs/WHATS-LEFT.md`.** Where this page disagrees with it, that page is right.
+>
+> **And the memory question is answered:** `nirmmita` emits **`mmap` per allocation** on Linux and **`VirtualAlloc`** on Windows, and there is **no `munmap` anywhere** — nothing ever returns memory. See `docs/MEMORY-MODEL.md`.
+
 # Sutram — Roadmap
 
 Where the language goes next, kept separate from where it is now.
