@@ -1,0 +1,567 @@
+diff --git a/lang/bengali.sandesh b/lang/bengali.sandesh
+index f77d8214..daceb16a 100644
+--- a/lang/bengali.sandesh
++++ b/lang/bengali.sandesh
+@@ -35,13 +35,13 @@ r4_msg_hint_decl	"পরামর্শ: ব্যবহারের আগে 
+ r4_msg_hint_old	"পরামর্শ: '"
+ # "' puratanah kunjishabdah (v157 tah purvam); navinah: '"
+ r4_msg_hint_old2	"' পুরোনো মূলশব্দ (v157-এর আগের); নতুন: '"
+-# ": Sutram Error [E_UNKNOWN_FIELD]: agyat kshetra '"
++# ": Sutram Error [E_UNKNOWN_FIELD]: agyat avayava '"
+ r5_msg_field	": Sutram Error [E_UNKNOWN_FIELD]: অজানা ক্ষেত্র '"
+ # ": Sutram Error [E_DUPLICATE_NAME]: punah ghoshana '"
+ r7_msg_dup	": Sutram Error [E_DUPLICATE_NAME]: পুনরায় ঘোষণা '"
+ # "' purvam eva ghoshitam; navinam manam datum: "
+ r7_msg_dup_hint	"' আগেই ঘোষিত; নতুন মান দিতে: "
+-# ": Sutram Error [E_AMBIGUOUS_FIELD]: kshetra '"
++# ": Sutram Error [E_AMBIGUOUS_FIELD]: avayava '"
+ r7_msg_field_amb	": Sutram Error [E_AMBIGUOUS_FIELD]: ক্ষেত্র '"
+ # "' dvayoh rachanayoh bhinne sthane asti; pratyekasyam rachanayam bhinnam nama dadatu\n"
+ r7_msg_field_amb_hint	"' দুটি রচনায় ভিন্ন স্থানে আছে; প্রতিটি রচনায় ভিন্ন নাম রাখুন\n"
+@@ -61,7 +61,7 @@ r7_msg_mod_missing2	"\nপরামর্শ: <নাম>.smlib lib/ এ অথ
+ r7_msg_hint_block	"' কোনো খণ্ড { } বা {kw:chakra} এর ভিতরে ঘোষিত; তার বাইরে দেখা যায় না\n"
+ # "Sanket: '"
+ r5_msg_field_hint	"পরামর্শ: '"
+-# "' kasyashchid api rachanayah kshetram nasti\n"
++# "' kasyashchid api rachanayah avayavam nasti\n"
+ r5_msg_field_hint2	"' কোনো রচনার ক্ষেত্র নয়\n"
+ # "\nSutram Error: vyakaran dosh, pankti "
+ msg_err_line	"\nSutram Error: ব্যাকরণ ত্রুটি, পংক্তি "
+@@ -191,7 +191,7 @@ msg_continue_patch_overflow	"Sutram Error: {kw:chakra} এ {kw:agrim} এর স
+ msg_code_overflow	"Sutram Error: যন্ত্র-ভাষার সীমা অতিক্রম\n"
+ # "Sutram Error: rachana-suchi seema atikram\n"
+ msg_rachana_overflow	"Sutram Error: {kw:rachana}-তালিকার সীমা অতিক্রম\n"
+-# "Sutram Error: rachana kshetra seema atikram\n"
++# "Sutram Error: rachana avayava seema atikram\n"
+ msg_rachana_fields_overflow	"Sutram Error: {kw:rachana} ক্ষেত্রের সীমা অতিক্রম\n"
+ # "Sutram Error: khand gahrai seema atikram\n"
+ msg_block_nesting_overflow	"Sutram Error: খণ্ডের গভীরতার সীমা অতিক্রম\n"
+diff --git a/lang/gujarati.sandesh b/lang/gujarati.sandesh
+index 8578168f..8bd885d9 100644
+--- a/lang/gujarati.sandesh
++++ b/lang/gujarati.sandesh
+@@ -35,13 +35,13 @@ r4_msg_hint_decl	"સંકેત: ઉપયોગ પહેલાં ઘોષ
+ r4_msg_hint_old	"સંકેત: '"
+ # "' puratanah kunjishabdah (v157 tah purvam); navinah: '"
+ r4_msg_hint_old2	"' જૂનો મુખ્યશબ્દ છે (v157 પહેલાંનો); નવો: '"
+-# ": Sutram Error [E_UNKNOWN_FIELD]: agyat kshetra '"
++# ": Sutram Error [E_UNKNOWN_FIELD]: agyat avayava '"
+ r5_msg_field	": Sutram Error [E_UNKNOWN_FIELD]: અજ્ઞાત ક્ષેત્ર '"
+ # ": Sutram Error [E_DUPLICATE_NAME]: punah ghoshana '"
+ r7_msg_dup	": Sutram Error [E_DUPLICATE_NAME]: ફરી ઘોષણા '"
+ # "' purvam eva ghoshitam; navinam manam datum: "
+ r7_msg_dup_hint	"' પહેલેથી ઘોષિત છે; નવું મૂલ્ય આપવા માટે: "
+-# ": Sutram Error [E_AMBIGUOUS_FIELD]: kshetra '"
++# ": Sutram Error [E_AMBIGUOUS_FIELD]: avayava '"
+ r7_msg_field_amb	": Sutram Error [E_AMBIGUOUS_FIELD]: ક્ષેત્ર '"
+ # "' dvayoh rachanayoh bhinne sthane asti; pratyekasyam rachanayam bhinnam nama dadatu\n"
+ r7_msg_field_amb_hint	"' બે રચનાઓમાં જુદા સ્થાને છે; દરેક રચનામાં જુદું નામ રાખો\n"
+@@ -61,7 +61,7 @@ r7_msg_mod_missing2	"\nસંકેત: <નામ>.smlib lib/ માં અથ
+ r7_msg_hint_block	"' કોઈ ખંડ { } અથવા {kw:chakra} માં ઘોષિત છે; તેની બહાર દેખાતું નથી\n"
+ # "Sanket: '"
+ r5_msg_field_hint	"સંકેત: '"
+-# "' kasyashchid api rachanayah kshetram nasti\n"
++# "' kasyashchid api rachanayah avayavam nasti\n"
+ r5_msg_field_hint2	"' કોઈ રચનાનું ક્ષેત્ર નથી\n"
+ # "\nSutram Error: vyakaran dosh, pankti "
+ msg_err_line	"\nSutram Error: વ્યાકરણ દોષ, પંક્તિ "
+@@ -191,7 +191,7 @@ msg_continue_patch_overflow	"Sutram Error: {kw:chakra} માં {kw:agrim} ન
+ msg_code_overflow	"Sutram Error: યંત્ર-ભાષાની સીમા ઓળંગાઈ\n"
+ # "Sutram Error: rachana-suchi seema atikram\n"
+ msg_rachana_overflow	"Sutram Error: {kw:rachana}-સૂચિની સીમા ઓળંગાઈ\n"
+-# "Sutram Error: rachana kshetra seema atikram\n"
++# "Sutram Error: rachana avayava seema atikram\n"
+ msg_rachana_fields_overflow	"Sutram Error: {kw:rachana} ક્ષેત્રોની સીમા ઓળંગાઈ\n"
+ # "Sutram Error: khand gahrai seema atikram\n"
+ msg_block_nesting_overflow	"Sutram Error: ખંડ ઊંડાઈની સીમા ઓળંગાઈ\n"
+diff --git a/lang/hindi.sandesh b/lang/hindi.sandesh
+index 7b8e931e..c4a91106 100644
+--- a/lang/hindi.sandesh
++++ b/lang/hindi.sandesh
+@@ -35,13 +35,13 @@ r4_msg_hint_decl	"संकेत: प्रयोग से पहले घो
+ r4_msg_hint_old	"संकेत: '"
+ # "' puratanah kunjishabdah (v157 tah purvam); navinah: '"
+ r4_msg_hint_old2	"' पुराना कुंजीशब्द है (v157 से पहले का); नया: '"
+-# ": Sutram Error [E_UNKNOWN_FIELD]: agyat kshetra '"
++# ": Sutram Error [E_UNKNOWN_FIELD]: agyat avayava '"
+ r5_msg_field	": Sutram Error [E_UNKNOWN_FIELD]: अज्ञात क्षेत्र '"
+ # ": Sutram Error [E_DUPLICATE_NAME]: punah ghoshana '"
+ r7_msg_dup	": Sutram Error [E_DUPLICATE_NAME]: दोबारा घोषणा '"
+ # "' purvam eva ghoshitam; navinam manam datum: "
+ r7_msg_dup_hint	"' पहले से घोषित है; नया मान देने के लिए: "
+-# ": Sutram Error [E_AMBIGUOUS_FIELD]: kshetra '"
++# ": Sutram Error [E_AMBIGUOUS_FIELD]: avayava '"
+ r7_msg_field_amb	": Sutram Error [E_AMBIGUOUS_FIELD]: क्षेत्र '"
+ # "' dvayoh rachanayoh bhinne sthane asti; pratyekasyam rachanayam bhinnam nama dadatu\n"
+ r7_msg_field_amb_hint	"' दो संरचनाओं में अलग स्थान पर है; हर संरचना में अलग नाम रखें\n"
+@@ -61,7 +61,7 @@ r7_msg_mod_missing2	"\nसंकेत: <नाम>.smlib lib/ में या
+ r7_msg_hint_block	"' किसी खंड { } या {kw:chakra} के भीतर घोषित है; उसके बाहर दिखाई नहीं देता\n"
+ # "Sanket: '"
+ r5_msg_field_hint	"संकेत: '"
+-# "' kasyashchid api rachanayah kshetram nasti\n"
++# "' kasyashchid api rachanayah avayavam nasti\n"
+ r5_msg_field_hint2	"' किसी संरचना का क्षेत्र नहीं है\n"
+ # "\nSutram Error: vyakaran dosh, pankti "
+ msg_err_line	"\nSutram Error: व्याकरण दोष, पंक्ति "
+@@ -191,7 +191,7 @@ msg_continue_patch_overflow	"Sutram Error: {kw:chakra} में {kw:agrim} क
+ msg_code_overflow	"Sutram Error: यंत्र-भाषा की सीमा पार\n"
+ # "Sutram Error: rachana-suchi seema atikram\n"
+ msg_rachana_overflow	"Sutram Error: {kw:rachana}-सूची की सीमा पार\n"
+-# "Sutram Error: rachana kshetra seema atikram\n"
++# "Sutram Error: rachana avayava seema atikram\n"
+ msg_rachana_fields_overflow	"Sutram Error: {kw:rachana} क्षेत्रों की सीमा पार\n"
+ # "Sutram Error: khand gahrai seema atikram\n"
+ msg_block_nesting_overflow	"Sutram Error: खंड गहराई की सीमा पार\n"
+diff --git a/lang/kannada.sandesh b/lang/kannada.sandesh
+index f7389f06..ecb2fd06 100644
+--- a/lang/kannada.sandesh
++++ b/lang/kannada.sandesh
+@@ -35,13 +35,13 @@ r4_msg_hint_decl	"ಸೂಚನೆ: ಬಳಸುವ ಮೊದಲು ಘೋಷಣ
+ r4_msg_hint_old	"ಸೂಚನೆ: '"
+ # "' puratanah kunjishabdah (v157 tah purvam); navinah: '"
+ r4_msg_hint_old2	"' ಹಳೆಯ ಕೀಲಿಪದ (v157 ಕ್ಕಿಂತ ಹಿಂದಿನದು); ಹೊಸದು: '"
+-# ": Sutram Error [E_UNKNOWN_FIELD]: agyat kshetra '"
++# ": Sutram Error [E_UNKNOWN_FIELD]: agyat avayava '"
+ r5_msg_field	": Sutram Error [E_UNKNOWN_FIELD]: ಅಜ್ಞಾತ ಕ್ಷೇತ್ರ '"
+ # ": Sutram Error [E_DUPLICATE_NAME]: punah ghoshana '"
+ r7_msg_dup	": Sutram Error [E_DUPLICATE_NAME]: ಮರು-ಘೋಷಣೆ '"
+ # "' purvam eva ghoshitam; navinam manam datum: "
+ r7_msg_dup_hint	"' ಈಗಾಗಲೇ ಘೋಷಿತವಾಗಿದೆ; ಹೊಸ ಮೌಲ್ಯ ನೀಡಲು: "
+-# ": Sutram Error [E_AMBIGUOUS_FIELD]: kshetra '"
++# ": Sutram Error [E_AMBIGUOUS_FIELD]: avayava '"
+ r7_msg_field_amb	": Sutram Error [E_AMBIGUOUS_FIELD]: ಕ್ಷೇತ್ರ '"
+ # "' dvayoh rachanayoh bhinne sthane asti; pratyekasyam rachanayam bhinnam nama dadatu\n"
+ r7_msg_field_amb_hint	"' ಎರಡು ರಚನೆಗಳಲ್ಲಿ ಬೇರೆ ಬೇರೆ ಸ್ಥಾನದಲ್ಲಿದೆ; ಪ್ರತಿ ರಚನೆಯಲ್ಲಿ ಬೇರೆ ಹೆಸರು ಇಡಿ\n"
+@@ -61,7 +61,7 @@ r7_msg_mod_missing2	"\nಸೂಚನೆ: <ಹೆಸರು>.smlib lib/ ನಲ್
+ r7_msg_hint_block	"' ಒಂದು ಖಂಡ { } ಅಥವಾ {kw:chakra} ಒಳಗೆ ಘೋಷಿತವಾಗಿದೆ; ಅದರ ಹೊರಗೆ ಕಾಣುವುದಿಲ್ಲ\n"
+ # "Sanket: '"
+ r5_msg_field_hint	"ಸೂಚನೆ: '"
+-# "' kasyashchid api rachanayah kshetram nasti\n"
++# "' kasyashchid api rachanayah avayavam nasti\n"
+ r5_msg_field_hint2	"' ಯಾವುದೇ ರಚನೆಯ ಕ್ಷೇತ್ರವಲ್ಲ\n"
+ # "\nSutram Error: vyakaran dosh, pankti "
+ msg_err_line	"\nSutram Error: ವ್ಯಾಕರಣ ದೋಷ, ಸಾಲು "
+@@ -191,7 +191,7 @@ msg_continue_patch_overflow	"Sutram Error: {kw:chakra} ಒಳಗೆ {kw:agrim} 
+ msg_code_overflow	"Sutram Error: ಯಂತ್ರ ಭಾಷೆಯ ಮಿತಿ ಮೀರಿದೆ\n"
+ # "Sutram Error: rachana-suchi seema atikram\n"
+ msg_rachana_overflow	"Sutram Error: {kw:rachana} ಪಟ್ಟಿಯ ಮಿತಿ ಮೀರಿದೆ\n"
+-# "Sutram Error: rachana kshetra seema atikram\n"
++# "Sutram Error: rachana avayava seema atikram\n"
+ msg_rachana_fields_overflow	"Sutram Error: {kw:rachana} ಕ್ಷೇತ್ರಗಳ ಮಿತಿ ಮೀರಿದೆ\n"
+ # "Sutram Error: khand gahrai seema atikram\n"
+ msg_block_nesting_overflow	"Sutram Error: ಖಂಡದ ಆಳದ ಮಿತಿ ಮೀರಿದೆ\n"
+diff --git a/lang/malayalam.sandesh b/lang/malayalam.sandesh
+index 5e71c63a..79601d42 100644
+--- a/lang/malayalam.sandesh
++++ b/lang/malayalam.sandesh
+@@ -35,13 +35,13 @@ r4_msg_hint_decl	"സൂചന: ഉപയോഗിക്കുന്നതിന
+ r4_msg_hint_old	"സൂചന: '"
+ # "' puratanah kunjishabdah (v157 tah purvam); navinah: '"
+ r4_msg_hint_old2	"' പഴയ കീവാക്ക് (v157 ന് മുമ്പുള്ളത്); പുതിയത്: '"
+-# ": Sutram Error [E_UNKNOWN_FIELD]: agyat kshetra '"
++# ": Sutram Error [E_UNKNOWN_FIELD]: agyat avayava '"
+ r5_msg_field	": Sutram Error [E_UNKNOWN_FIELD]: അജ്ഞാത മണ്ഡലം '"
+ # ": Sutram Error [E_DUPLICATE_NAME]: punah ghoshana '"
+ r7_msg_dup	": Sutram Error [E_DUPLICATE_NAME]: വീണ്ടും പ്രഖ്യാപനം '"
+ # "' purvam eva ghoshitam; navinam manam datum: "
+ r7_msg_dup_hint	"' ഇതിനകം പ്രഖ്യാപിച്ചതാണ്; പുതിയ മൂല്യം നൽകാൻ: "
+-# ": Sutram Error [E_AMBIGUOUS_FIELD]: kshetra '"
++# ": Sutram Error [E_AMBIGUOUS_FIELD]: avayava '"
+ r7_msg_field_amb	": Sutram Error [E_AMBIGUOUS_FIELD]: മണ്ഡലം '"
+ # "' dvayoh rachanayoh bhinne sthane asti; pratyekasyam rachanayam bhinnam nama dadatu\n"
+ r7_msg_field_amb_hint	"' രണ്ട് ഘടനകളിൽ വ്യത്യസ്ത സ്ഥാനത്താണ്; ഓരോ ഘടനയിലും വേറെ പേര് നൽകുക\n"
+@@ -61,7 +61,7 @@ r7_msg_mod_missing2	"\nസൂചന: <പേര്>.smlib lib/ ൽ അല്ല
+ r7_msg_hint_block	"' ഒരു ഖണ്ഡം { } അല്ലെങ്കിൽ {kw:chakra} ഉള്ളിൽ പ്രഖ്യാപിച്ചതാണ്; അതിന് പുറത്ത് കാണില്ല\n"
+ # "Sanket: '"
+ r5_msg_field_hint	"സൂചന: '"
+-# "' kasyashchid api rachanayah kshetram nasti\n"
++# "' kasyashchid api rachanayah avayavam nasti\n"
+ r5_msg_field_hint2	"' ഒരു ഘടനയുടെയും മണ്ഡലമല്ല\n"
+ # "\nSutram Error: vyakaran dosh, pankti "
+ msg_err_line	"\nSutram Error: വ്യാകരണ പിശക്, വരി "
+@@ -191,7 +191,7 @@ msg_continue_patch_overflow	"Sutram Error: {kw:chakra} ഉള്ളിൽ {kw:ag
+ msg_code_overflow	"Sutram Error: യന്ത്രഭാഷ പരിധി കവിഞ്ഞു\n"
+ # "Sutram Error: rachana-suchi seema atikram\n"
+ msg_rachana_overflow	"Sutram Error: {kw:rachana} പട്ടിക പരിധി കവിഞ്ഞു\n"
+-# "Sutram Error: rachana kshetra seema atikram\n"
++# "Sutram Error: rachana avayava seema atikram\n"
+ msg_rachana_fields_overflow	"Sutram Error: {kw:rachana} മണ്ഡല പരിധി കവിഞ്ഞു\n"
+ # "Sutram Error: khand gahrai seema atikram\n"
+ msg_block_nesting_overflow	"Sutram Error: ഖണ്ഡ ആഴ പരിധി കവിഞ്ഞു\n"
+diff --git a/lang/marathi.sandesh b/lang/marathi.sandesh
+index 4bc3f4a3..a9f25018 100644
+--- a/lang/marathi.sandesh
++++ b/lang/marathi.sandesh
+@@ -35,13 +35,13 @@ r4_msg_hint_decl	"सूचना: वापरण्यापूर्वी 
+ r4_msg_hint_old	"सूचना: '"
+ # "' puratanah kunjishabdah (v157 tah purvam); navinah: '"
+ r4_msg_hint_old2	"' हा जुना कळशब्द आहे (v157 पूर्वीचा); नवीन: '"
+-# ": Sutram Error [E_UNKNOWN_FIELD]: agyat kshetra '"
++# ": Sutram Error [E_UNKNOWN_FIELD]: agyat avayava '"
+ r5_msg_field	": Sutram Error [E_UNKNOWN_FIELD]: अज्ञात क्षेत्र '"
+ # ": Sutram Error [E_DUPLICATE_NAME]: punah ghoshana '"
+ r7_msg_dup	": Sutram Error [E_DUPLICATE_NAME]: पुन्हा घोषणा '"
+ # "' purvam eva ghoshitam; navinam manam datum: "
+ r7_msg_dup_hint	"' आधीच घोषित आहे; नवीन मूल्य देण्यासाठी: "
+-# ": Sutram Error [E_AMBIGUOUS_FIELD]: kshetra '"
++# ": Sutram Error [E_AMBIGUOUS_FIELD]: avayava '"
+ r7_msg_field_amb	": Sutram Error [E_AMBIGUOUS_FIELD]: क्षेत्र '"
+ # "' dvayoh rachanayoh bhinne sthane asti; pratyekasyam rachanayam bhinnam nama dadatu\n"
+ r7_msg_field_amb_hint	"' दोन रचनांमध्ये वेगळ्या स्थानी आहे; प्रत्येक रचनेत वेगळे नाव ठेवा\n"
+@@ -61,7 +61,7 @@ r7_msg_mod_missing2	"\nसूचना: <नाव>.smlib lib/ मध्ये 
+ r7_msg_hint_block	"' एखाद्या खंडात { } किंवा {kw:chakra} मध्ये घोषित आहे; त्याबाहेर दिसत नाही\n"
+ # "Sanket: '"
+ r5_msg_field_hint	"सूचना: '"
+-# "' kasyashchid api rachanayah kshetram nasti\n"
++# "' kasyashchid api rachanayah avayavam nasti\n"
+ r5_msg_field_hint2	"' कोणत्याही रचनेचे क्षेत्र नाही\n"
+ # "\nSutram Error: vyakaran dosh, pankti "
+ msg_err_line	"\nSutram Error: व्याकरण दोष, ओळ "
+@@ -191,7 +191,7 @@ msg_continue_patch_overflow	"Sutram Error: {kw:chakra} मध्ये {kw:agrim
+ msg_code_overflow	"Sutram Error: यंत्र-भाषेची मर्यादा ओलांडली\n"
+ # "Sutram Error: rachana-suchi seema atikram\n"
+ msg_rachana_overflow	"Sutram Error: {kw:rachana}-सूचीची मर्यादा ओलांडली\n"
+-# "Sutram Error: rachana kshetra seema atikram\n"
++# "Sutram Error: rachana avayava seema atikram\n"
+ msg_rachana_fields_overflow	"Sutram Error: {kw:rachana} क्षेत्रांची मर्यादा ओलांडली\n"
+ # "Sutram Error: khand gahrai seema atikram\n"
+ msg_block_nesting_overflow	"Sutram Error: खंड खोलीची मर्यादा ओलांडली\n"
+diff --git a/lang/odia.sandesh b/lang/odia.sandesh
+index 5b1df979..ca885353 100644
+--- a/lang/odia.sandesh
++++ b/lang/odia.sandesh
+@@ -35,13 +35,13 @@ r4_msg_hint_decl	"ସୂଚନା: ବ୍ୟବହାର ପୂର୍ବରୁ 
+ r4_msg_hint_old	"ସୂଚନା: '"
+ # "' puratanah kunjishabdah (v157 tah purvam); navinah: '"
+ r4_msg_hint_old2	"' ପୁରୁଣା ମୂଳଶବ୍ଦ (v157 ପୂର୍ବର); ନୂଆ: '"
+-# ": Sutram Error [E_UNKNOWN_FIELD]: agyat kshetra '"
++# ": Sutram Error [E_UNKNOWN_FIELD]: agyat avayava '"
+ r5_msg_field	": Sutram Error [E_UNKNOWN_FIELD]: ଅଜଣା କ୍ଷେତ୍ର '"
+ # ": Sutram Error [E_DUPLICATE_NAME]: punah ghoshana '"
+ r7_msg_dup	": Sutram Error [E_DUPLICATE_NAME]: ପୁନର୍ବାର ଘୋଷଣା '"
+ # "' purvam eva ghoshitam; navinam manam datum: "
+ r7_msg_dup_hint	"' ପୂର୍ବରୁ ଘୋଷିତ; ନୂଆ ମୂଲ୍ୟ ଦେବା ପାଇଁ: "
+-# ": Sutram Error [E_AMBIGUOUS_FIELD]: kshetra '"
++# ": Sutram Error [E_AMBIGUOUS_FIELD]: avayava '"
+ r7_msg_field_amb	": Sutram Error [E_AMBIGUOUS_FIELD]: କ୍ଷେତ୍ର '"
+ # "' dvayoh rachanayoh bhinne sthane asti; pratyekasyam rachanayam bhinnam nama dadatu\n"
+ r7_msg_field_amb_hint	"' ଦୁଇଟି ସଂରଚନାରେ ଭିନ୍ନ ସ୍ଥାନରେ ଅଛି; ପ୍ରତ୍ୟେକ ସଂରଚନାରେ ଭିନ୍ନ ନାମ ରଖନ୍ତୁ\n"
+@@ -61,7 +61,7 @@ r7_msg_mod_missing2	"\nସୂଚନା: <ନାମ>.smlib lib/ ରେ କିମ
+ r7_msg_hint_block	"' କୌଣସି ଖଣ୍ଡ { } କିମ୍ବା {kw:chakra} ଭିତରେ ଘୋଷିତ; ତାହାର ବାହାରେ ଦେଖାଯାଏ ନାହିଁ\n"
+ # "Sanket: '"
+ r5_msg_field_hint	"ସୂଚନା: '"
+-# "' kasyashchid api rachanayah kshetram nasti\n"
++# "' kasyashchid api rachanayah avayavam nasti\n"
+ r5_msg_field_hint2	"' କୌଣସି ସଂରଚନାର କ୍ଷେତ୍ର ନୁହେଁ\n"
+ # "\nSutram Error: vyakaran dosh, pankti "
+ msg_err_line	"\nSutram Error: ବ୍ୟାକରଣ ତ୍ରୁଟି, ଧାଡ଼ି "
+@@ -191,7 +191,7 @@ msg_continue_patch_overflow	"Sutram Error: {kw:chakra} ରେ {kw:agrim} ର ସ
+ msg_code_overflow	"Sutram Error: ଯନ୍ତ୍ର-ଭାଷାର ସୀମା ଅତିକ୍ରମ\n"
+ # "Sutram Error: rachana-suchi seema atikram\n"
+ msg_rachana_overflow	"Sutram Error: {kw:rachana}-ତାଲିକାର ସୀମା ଅତିକ୍ରମ\n"
+-# "Sutram Error: rachana kshetra seema atikram\n"
++# "Sutram Error: rachana avayava seema atikram\n"
+ msg_rachana_fields_overflow	"Sutram Error: {kw:rachana} କ୍ଷେତ୍ରର ସୀମା ଅତିକ୍ରମ\n"
+ # "Sutram Error: khand gahrai seema atikram\n"
+ msg_block_nesting_overflow	"Sutram Error: ଖଣ୍ଡ ଗଭୀରତାର ସୀମା ଅତିକ୍ରମ\n"
+diff --git a/lang/punjabi.sandesh b/lang/punjabi.sandesh
+index c60986f8..ab52b41b 100644
+--- a/lang/punjabi.sandesh
++++ b/lang/punjabi.sandesh
+@@ -35,13 +35,13 @@ r4_msg_hint_decl	"ਸੰਕੇਤ: ਵਰਤੋਂ ਤੋਂ ਪਹਿਲਾਂ
+ r4_msg_hint_old	"ਸੰਕੇਤ: '"
+ # "' puratanah kunjishabdah (v157 tah purvam); navinah: '"
+ r4_msg_hint_old2	"' ਪੁਰਾਣਾ ਮੁੱਖ-ਸ਼ਬਦ ਹੈ (v157 ਤੋਂ ਪਹਿਲਾਂ ਦਾ); ਨਵਾਂ: '"
+-# ": Sutram Error [E_UNKNOWN_FIELD]: agyat kshetra '"
++# ": Sutram Error [E_UNKNOWN_FIELD]: agyat avayava '"
+ r5_msg_field	": Sutram Error [E_UNKNOWN_FIELD]: ਅਣਜਾਣ ਖੇਤਰ '"
+ # ": Sutram Error [E_DUPLICATE_NAME]: punah ghoshana '"
+ r7_msg_dup	": Sutram Error [E_DUPLICATE_NAME]: ਦੁਬਾਰਾ ਘੋਸ਼ਣਾ '"
+ # "' purvam eva ghoshitam; navinam manam datum: "
+ r7_msg_dup_hint	"' ਪਹਿਲਾਂ ਹੀ ਘੋਸ਼ਿਤ ਹੈ; ਨਵਾਂ ਮੁੱਲ ਦੇਣ ਲਈ: "
+-# ": Sutram Error [E_AMBIGUOUS_FIELD]: kshetra '"
++# ": Sutram Error [E_AMBIGUOUS_FIELD]: avayava '"
+ r7_msg_field_amb	": Sutram Error [E_AMBIGUOUS_FIELD]: ਖੇਤਰ '"
+ # "' dvayoh rachanayoh bhinne sthane asti; pratyekasyam rachanayam bhinnam nama dadatu\n"
+ r7_msg_field_amb_hint	"' ਦੋ ਰਚਨਾਵਾਂ ਵਿੱਚ ਵੱਖਰੀ ਥਾਂ ਤੇ ਹੈ; ਹਰ ਰਚਨਾ ਵਿੱਚ ਵੱਖਰਾ ਨਾਮ ਰੱਖੋ\n"
+@@ -61,7 +61,7 @@ r7_msg_mod_missing2	"\nਸੰਕੇਤ: <ਨਾਮ>.smlib lib/ ਵਿੱਚ ਜ
+ r7_msg_hint_block	"' ਕਿਸੇ ਖੰਡ { } ਜਾਂ {kw:chakra} ਵਿੱਚ ਘੋਸ਼ਿਤ ਹੈ; ਉਸ ਤੋਂ ਬਾਹਰ ਨਹੀਂ ਦਿਸਦਾ\n"
+ # "Sanket: '"
+ r5_msg_field_hint	"ਸੰਕੇਤ: '"
+-# "' kasyashchid api rachanayah kshetram nasti\n"
++# "' kasyashchid api rachanayah avayavam nasti\n"
+ r5_msg_field_hint2	"' ਕਿਸੇ ਰਚਨਾ ਦਾ ਖੇਤਰ ਨਹੀਂ ਹੈ\n"
+ # "\nSutram Error: vyakaran dosh, pankti "
+ msg_err_line	"\nSutram Error: ਵਿਆਕਰਨ ਦੋਸ਼, ਪੰਕਤੀ "
+@@ -191,7 +191,7 @@ msg_continue_patch_overflow	"Sutram Error: {kw:chakra} ਵਿੱਚ {kw:agrim} 
+ msg_code_overflow	"Sutram Error: ਯੰਤਰ ਭਾਸ਼ਾ ਦੀ ਸੀਮਾ ਪਾਰ\n"
+ # "Sutram Error: rachana-suchi seema atikram\n"
+ msg_rachana_overflow	"Sutram Error: {kw:rachana}-ਸੂਚੀ ਦੀ ਸੀਮਾ ਪਾਰ\n"
+-# "Sutram Error: rachana kshetra seema atikram\n"
++# "Sutram Error: rachana avayava seema atikram\n"
+ msg_rachana_fields_overflow	"Sutram Error: {kw:rachana} ਖੇਤਰਾਂ ਦੀ ਸੀਮਾ ਪਾਰ\n"
+ # "Sutram Error: khand gahrai seema atikram\n"
+ msg_block_nesting_overflow	"Sutram Error: ਖੰਡ ਡੂੰਘਾਈ ਦੀ ਸੀਮਾ ਪਾਰ\n"
+diff --git a/lang/sanskrit.sandesh b/lang/sanskrit.sandesh
+index de50e1f0..3e22ef97 100644
+--- a/lang/sanskrit.sandesh
++++ b/lang/sanskrit.sandesh
+@@ -35,14 +35,14 @@ r4_msg_hint_decl	"सूचना: प्रयोगात् पूर्व
+ r4_msg_hint_old	"सूचना: '"
+ # "' puratanah kunjishabdah (v157 tah purvam); navinah: '"
+ r4_msg_hint_old2	"' पुरातनः कुञ्जीशब्दः (v157 तः पूर्वम्); नवीनः - '"
+-# ": Sutram Error [E_UNKNOWN_FIELD]: agyat kshetra '"
+-r5_msg_field	": Sutram Error [E_UNKNOWN_FIELD]: अज्ञातं क्षेत्रम् '"
++# ": Sutram Error [E_UNKNOWN_FIELD]: agyat avayava '"
++r5_msg_field	": Sutram Error [E_UNKNOWN_FIELD]: अज्ञातः अवयवः '"
+ # ": Sutram Error [E_DUPLICATE_NAME]: punah ghoshana '"
+ r7_msg_dup	": Sutram Error [E_DUPLICATE_NAME]: पुनर्घोषणा '"
+ # "' purvam eva ghoshitam; navinam manam datum: "
+ r7_msg_dup_hint	"' पूर्वमेव घोषितम्; नूतनं मानं दातुम्: "
+-# ": Sutram Error [E_AMBIGUOUS_FIELD]: kshetra '"
+-r7_msg_field_amb	": Sutram Error [E_AMBIGUOUS_FIELD]: क्षेत्रम् '"
++# ": Sutram Error [E_AMBIGUOUS_FIELD]: avayava '"
++r7_msg_field_amb	": Sutram Error [E_AMBIGUOUS_FIELD]: अवयवः '"
+ # "' dvayoh rachanayoh bhinne sthane asti; pratyekasyam rachanayam bhinnam nama dadatu\n"
+ r7_msg_field_amb_hint	"' द्वयोः रचनयोः भिन्ने स्थाने अस्ति; प्रत्येकस्यां रचनायां भिन्नं नाम ददातु\n"
+ # "' asyam rachanayam purvam eva asti\n"
+@@ -61,8 +61,8 @@ r7_msg_mod_missing2	"\nसूचना: <नाम>.smlib lib/ मध्ये 
+ r7_msg_hint_block	"' कस्मिंश्चित् खण्डे { } {kw:chakra}-मध्ये वा घोषितम्; ततः बहिः न दृश्यते\n"
+ # "Sanket: '"
+ r5_msg_field_hint	"सूचना: '"
+-# "' kasyashchid api rachanayah kshetram nasti\n"
+-r5_msg_field_hint2	"' कस्याश्चिदपि रचनायाः क्षेत्रं नास्ति\n"
++# "' kasyashchid api rachanayah avayavam nasti\n"
++r5_msg_field_hint2	"' कस्याश्चिदपि रचनायाः अवयवो नास्ति\n"
+ # "\nSutram Error: vyakaran dosh, pankti "
+ msg_err_line	"\nSutram Error: व्याकरण-दोषः, पङ्क्तिः "
+ # ", shabd '"
+@@ -191,8 +191,8 @@ msg_continue_patch_overflow	"Sutram Error: {kw:chakra}-मध्ये {kw:agrim
+ msg_code_overflow	"Sutram Error: यन्त्र-भाषा-सीमातिक्रमः\n"
+ # "Sutram Error: rachana-suchi seema atikram\n"
+ msg_rachana_overflow	"Sutram Error: {kw:rachana}-सूची-सीमातिक्रमः\n"
+-# "Sutram Error: rachana kshetra seema atikram\n"
+-msg_rachana_fields_overflow	"Sutram Error: {kw:rachana}-क्षेत्र-सीमातिक्रमः\n"
++# "Sutram Error: rachana avayava seema atikram\n"
++msg_rachana_fields_overflow	"Sutram Error: {kw:rachana}-अवयव-सीमातिक्रमः\n"
+ # "Sutram Error: khand gahrai seema atikram\n"
+ msg_block_nesting_overflow	"Sutram Error: खण्ड-गभीरता-सीमातिक्रमः\n"
+ # "Sutram Error: khand kathan seema atikram\n"
+diff --git a/lang/tamil.sandesh b/lang/tamil.sandesh
+index ac2251d0..9711f6c5 100644
+--- a/lang/tamil.sandesh
++++ b/lang/tamil.sandesh
+@@ -35,13 +35,13 @@ r4_msg_hint_decl	"குறிப்பு: பயன்படுத்தும
+ r4_msg_hint_old	"குறிப்பு: '"
+ # "' puratanah kunjishabdah (v157 tah purvam); navinah: '"
+ r4_msg_hint_old2	"' பழைய முக்கியச்சொல் (v157 க்கு முந்தையது); புதியது: '"
+-# ": Sutram Error [E_UNKNOWN_FIELD]: agyat kshetra '"
++# ": Sutram Error [E_UNKNOWN_FIELD]: agyat avayava '"
+ r5_msg_field	": Sutram Error [E_UNKNOWN_FIELD]: அறியாத புலம் '"
+ # ": Sutram Error [E_DUPLICATE_NAME]: punah ghoshana '"
+ r7_msg_dup	": Sutram Error [E_DUPLICATE_NAME]: மீண்டும் அறிவிப்பு '"
+ # "' purvam eva ghoshitam; navinam manam datum: "
+ r7_msg_dup_hint	"' ஏற்கனவே அறிவிக்கப்பட்டது; புதிய மதிப்பு தர: "
+-# ": Sutram Error [E_AMBIGUOUS_FIELD]: kshetra '"
++# ": Sutram Error [E_AMBIGUOUS_FIELD]: avayava '"
+ r7_msg_field_amb	": Sutram Error [E_AMBIGUOUS_FIELD]: புலம் '"
+ # "' dvayoh rachanayoh bhinne sthane asti; pratyekasyam rachanayam bhinnam nama dadatu\n"
+ r7_msg_field_amb_hint	"' இரண்டு அமைப்புகளில் வெவ்வேறு இடத்தில் உள்ளது; ஒவ்வொரு அமைப்பிலும் வேறு பெயர் வையுங்கள்\n"
+@@ -61,7 +61,7 @@ r7_msg_mod_missing2	"\nகுறிப்பு: <பெயர்>.smlib lib/ 
+ r7_msg_hint_block	"' ஒரு தொகுதி { } அல்லது {kw:chakra} உள்ளே அறிவிக்கப்பட்டது; அதற்கு வெளியே தெரியாது\n"
+ # "Sanket: '"
+ r5_msg_field_hint	"குறிப்பு: '"
+-# "' kasyashchid api rachanayah kshetram nasti\n"
++# "' kasyashchid api rachanayah avayavam nasti\n"
+ r5_msg_field_hint2	"' எந்த அமைப்பின் புலமும் அல்ல\n"
+ # "\nSutram Error: vyakaran dosh, pankti "
+ msg_err_line	"\nSutram Error: இலக்கணப் பிழை, வரி "
+@@ -191,7 +191,7 @@ msg_continue_patch_overflow	"Sutram Error: {kw:chakra} இல் {kw:agrim} வ
+ msg_code_overflow	"Sutram Error: இயந்திர மொழி வரம்பு மீறல்\n"
+ # "Sutram Error: rachana-suchi seema atikram\n"
+ msg_rachana_overflow	"Sutram Error: {kw:rachana} பட்டியல் வரம்பு மீறல்\n"
+-# "Sutram Error: rachana kshetra seema atikram\n"
++# "Sutram Error: rachana avayava seema atikram\n"
+ msg_rachana_fields_overflow	"Sutram Error: {kw:rachana} புல வரம்பு மீறல்\n"
+ # "Sutram Error: khand gahrai seema atikram\n"
+ msg_block_nesting_overflow	"Sutram Error: தொகுதி ஆழ வரம்பு மீறல்\n"
+diff --git a/lang/telugu.sandesh b/lang/telugu.sandesh
+index 2b6bd3ff..eb120094 100644
+--- a/lang/telugu.sandesh
++++ b/lang/telugu.sandesh
+@@ -35,13 +35,13 @@ r4_msg_hint_decl	"సూచన: వాడే ముందు ప్రకటన
+ r4_msg_hint_old	"సూచన: '"
+ # "' puratanah kunjishabdah (v157 tah purvam); navinah: '"
+ r4_msg_hint_old2	"' పాత కీలకపదం (v157 కి ముందుది); కొత్తది: '"
+-# ": Sutram Error [E_UNKNOWN_FIELD]: agyat kshetra '"
++# ": Sutram Error [E_UNKNOWN_FIELD]: agyat avayava '"
+ r5_msg_field	": Sutram Error [E_UNKNOWN_FIELD]: తెలియని క్షేత్రం '"
+ # ": Sutram Error [E_DUPLICATE_NAME]: punah ghoshana '"
+ r7_msg_dup	": Sutram Error [E_DUPLICATE_NAME]: మళ్ళీ ప్రకటన '"
+ # "' purvam eva ghoshitam; navinam manam datum: "
+ r7_msg_dup_hint	"' ఇప్పటికే ప్రకటించబడింది; కొత్త విలువ ఇవ్వడానికి: "
+-# ": Sutram Error [E_AMBIGUOUS_FIELD]: kshetra '"
++# ": Sutram Error [E_AMBIGUOUS_FIELD]: avayava '"
+ r7_msg_field_amb	": Sutram Error [E_AMBIGUOUS_FIELD]: క్షేత్రం '"
+ # "' dvayoh rachanayoh bhinne sthane asti; pratyekasyam rachanayam bhinnam nama dadatu\n"
+ r7_msg_field_amb_hint	"' రెండు రచనల్లో వేర్వేరు స్థానాల్లో ఉంది; ప్రతి రచనలో వేరే పేరు పెట్టండి\n"
+@@ -61,7 +61,7 @@ r7_msg_mod_missing2	"\nసూచన: <పేరు>.smlib lib/ లో లేద
+ r7_msg_hint_block	"' ఒక ఖండం { } లేదా {kw:chakra} లోపల ప్రకటించబడింది; దాని బయట కనిపించదు\n"
+ # "Sanket: '"
+ r5_msg_field_hint	"సూచన: '"
+-# "' kasyashchid api rachanayah kshetram nasti\n"
++# "' kasyashchid api rachanayah avayavam nasti\n"
+ r5_msg_field_hint2	"' ఏ రచనకూ క్షేత్రం కాదు\n"
+ # "\nSutram Error: vyakaran dosh, pankti "
+ msg_err_line	"\nSutram Error: వ్యాకరణ దోషం, వరుస "
+@@ -191,7 +191,7 @@ msg_continue_patch_overflow	"Sutram Error: {kw:chakra} లో {kw:agrim} పర
+ msg_code_overflow	"Sutram Error: యంత్ర భాష పరిమితి దాటింది\n"
+ # "Sutram Error: rachana-suchi seema atikram\n"
+ msg_rachana_overflow	"Sutram Error: {kw:rachana} జాబితా పరిమితి దాటింది\n"
+-# "Sutram Error: rachana kshetra seema atikram\n"
++# "Sutram Error: rachana avayava seema atikram\n"
+ msg_rachana_fields_overflow	"Sutram Error: {kw:rachana} క్షేత్రాల పరిమితి దాటింది\n"
+ # "Sutram Error: khand gahrai seema atikram\n"
+ msg_block_nesting_overflow	"Sutram Error: ఖండ లోతు పరిమితి దాటింది\n"
+diff --git a/src/r11_sandesh.inc b/src/r11_sandesh.inc
+index 094e4c6e..c94f1657 100644
+--- a/src/r11_sandesh.inc
++++ b/src/r11_sandesh.inc
+@@ -3048,10 +3048,10 @@ r11_sanskrit_11 db ": Sutram Error [E_UNDEFINED_NAME]: ",224,164,133,224,164,156
+ r11_sanskrit_12 db 224,164,184,224,165,130,224,164,154,224,164,168,224,164,190,": ",224,164,170,224,165,141,224,164,176,224,164,175,224,165,139,224,164,151,224,164,190,224,164,164,224,165,141," ",224,164,170,224,165,130,224,164,176,224,165,141,224,164,181,224,164,130," ",224,164,152,224,165,139,224,164,183,224,164,163,224,164,190," ",224,164,134,224,164,181,224,164,182,224,165,141,224,164,175,224,164,149,224,165,128,": ",224,164,181,224,164,191,224,164,164,224,165,141,224,164,164,224,164,191," ",0
+ r11_sanskrit_13 db 224,164,184,224,165,130,224,164,154,224,164,168,224,164,190,": '",0
+ r11_sanskrit_14 db "' ",224,164,170,224,165,129,224,164,176,224,164,190,224,164,164,224,164,168,224,164,131," ",224,164,149,224,165,129,224,164,158,224,165,141,224,164,156,224,165,128,224,164,182,224,164,172,224,165,141,224,164,166,224,164,131," (v157 ",224,164,164,224,164,131," ",224,164,170,224,165,130,224,164,176,224,165,141,224,164,181,224,164,174,224,165,141,"); ",224,164,168,224,164,181,224,165,128,224,164,168,224,164,131," - '",0
+-r11_sanskrit_15 db ": Sutram Error [E_UNKNOWN_FIELD]: ",224,164,133,224,164,156,224,165,141,224,164,158,224,164,190,224,164,164,224,164,130," ",224,164,149,224,165,141,224,164,183,224,165,135,224,164,164,224,165,141,224,164,176,224,164,174,224,165,141," '",0
++r11_sanskrit_15 db ": Sutram Error [E_UNKNOWN_FIELD]: ",224,164,133,224,164,156,224,165,141,224,164,158,224,164,190,224,164,164,224,164,131," ",224,164,133,224,164,181,224,164,175,224,164,181,224,164,131," '",0
+ r11_sanskrit_16 db ": Sutram Error [E_DUPLICATE_NAME]: ",224,164,170,224,165,129,224,164,168,224,164,176,224,165,141,224,164,152,224,165,139,224,164,183,224,164,163,224,164,190," '",0
+ r11_sanskrit_17 db "' ",224,164,170,224,165,130,224,164,176,224,165,141,224,164,181,224,164,174,224,165,135,224,164,181," ",224,164,152,224,165,139,224,164,183,224,164,191,224,164,164,224,164,174,224,165,141,"; ",224,164,168,224,165,130,224,164,164,224,164,168,224,164,130," ",224,164,174,224,164,190,224,164,168,224,164,130," ",224,164,166,224,164,190,224,164,164,224,165,129,224,164,174,224,165,141,": ",0
+-r11_sanskrit_18 db ": Sutram Error [E_AMBIGUOUS_FIELD]: ",224,164,149,224,165,141,224,164,183,224,165,135,224,164,164,224,165,141,224,164,176,224,164,174,224,165,141," '",0
++r11_sanskrit_18 db ": Sutram Error [E_AMBIGUOUS_FIELD]: ",224,164,133,224,164,181,224,164,175,224,164,181,224,164,131," '",0
+ r11_sanskrit_19 db "' ",224,164,166,224,165,141,224,164,181,224,164,175,224,165,139,224,164,131," ",224,164,176,224,164,154,224,164,168,224,164,175,224,165,139,224,164,131," ",224,164,173,224,164,191,224,164,168,224,165,141,224,164,168,224,165,135," ",224,164,184,224,165,141,224,164,165,224,164,190,224,164,168,224,165,135," ",224,164,133,224,164,184,224,165,141,224,164,164,224,164,191,"; ",224,164,170,224,165,141,224,164,176,224,164,164,224,165,141,224,164,175,224,165,135,224,164,149,224,164,184,224,165,141,224,164,175,224,164,190,224,164,130," ",224,164,176,224,164,154,224,164,168,224,164,190,224,164,175,224,164,190,224,164,130," ",224,164,173,224,164,191,224,164,168,224,165,141,224,164,168,224,164,130," ",224,164,168,224,164,190,224,164,174," ",224,164,166,224,164,166,224,164,190,224,164,164,224,165,129,10,0
+ r11_sanskrit_20 db "' ",224,164,133,224,164,184,224,165,141,224,164,175,224,164,190,224,164,130," ",224,164,176,224,164,154,224,164,168,224,164,190,224,164,175,224,164,190,224,164,130," ",224,164,170,224,165,130,224,164,176,224,165,141,224,164,181,224,164,174,224,165,135,224,164,181," ",224,164,133,224,164,184,224,165,141,224,164,164,224,164,191,10,0
+ r11_sanskrit_21 db "' ",224,164,135,224,164,164,224,165,141,224,164,175,224,164,184,224,165,141,224,164,174,224,165,136," ",0
+@@ -3061,7 +3061,7 @@ r11_sanskrit_24 db "Sutram Error [E_MODULE_MISSING]: ",224,164,134,224,164,175,2
+ r11_sanskrit_25 db 10,224,164,184,224,165,130,224,164,154,224,164,168,224,164,190,": <",224,164,168,224,164,190,224,164,174,">.smlib lib/ ",224,164,174,224,164,167,224,165,141,224,164,175,224,165,135," ",224,164,184,224,165,141,224,164,176,224,165,139,224,164,164,"-",224,164,170,224,164,164,224,165,141,224,164,176,224,164,184,224,165,141,224,164,175," ",224,164,168,224,164,191,224,164,176,224,165,141,224,164,166,224,165,135,224,164,182,224,164,191,224,164,149,224,164,190,224,164,175,224,164,190,224,164,130," ",224,164,181,224,164,190," ",224,164,173,224,164,181,224,165,135,224,164,164,224,165,141,10,0
+ r11_sanskrit_26 db "' ",224,164,149,224,164,184,224,165,141,224,164,174,224,164,191,224,164,130,224,164,182,224,165,141,224,164,154,224,164,191,224,164,164,224,165,141," ",224,164,150,224,164,163,224,165,141,224,164,161,224,165,135," { } ",224,164,170,224,165,129,224,164,168,224,164,176,224,164,190,224,164,181,224,164,176,224,165,141,224,164,164,224,164,168,"-",224,164,174,224,164,167,224,165,141,224,164,175,224,165,135," ",224,164,181,224,164,190," ",224,164,152,224,165,139,224,164,183,224,164,191,224,164,164,224,164,174,224,165,141,"; ",224,164,164,224,164,164,224,164,131," ",224,164,172,224,164,185,224,164,191,224,164,131," ",224,164,168," ",224,164,166,224,165,131,224,164,182,224,165,141,224,164,175,224,164,164,224,165,135,10,0
+ r11_sanskrit_27 db 224,164,184,224,165,130,224,164,154,224,164,168,224,164,190,": '",0
+-r11_sanskrit_28 db "' ",224,164,149,224,164,184,224,165,141,224,164,175,224,164,190,224,164,182,224,165,141,224,164,154,224,164,191,224,164,166,224,164,170,224,164,191," ",224,164,176,224,164,154,224,164,168,224,164,190,224,164,175,224,164,190,224,164,131," ",224,164,149,224,165,141,224,164,183,224,165,135,224,164,164,224,165,141,224,164,176,224,164,130," ",224,164,168,224,164,190,224,164,184,224,165,141,224,164,164,224,164,191,10,0
++r11_sanskrit_28 db "' ",224,164,149,224,164,184,224,165,141,224,164,175,224,164,190,224,164,182,224,165,141,224,164,154,224,164,191,224,164,166,224,164,170,224,164,191," ",224,164,176,224,164,154,224,164,168,224,164,190,224,164,175,224,164,190,224,164,131," ",224,164,133,224,164,181,224,164,175,224,164,181,224,165,139," ",224,164,168,224,164,190,224,164,184,224,165,141,224,164,164,224,164,191,10,0
+ r11_sanskrit_29 db 10,"Sutram Error: ",224,164,181,224,165,141,224,164,175,224,164,190,224,164,149,224,164,176,224,164,163,"-",224,164,166,224,165,139,224,164,183,224,164,131,", ",224,164,170,224,164,153,224,165,141,224,164,149,224,165,141,224,164,164,224,164,191,224,164,131," ",0
+ r11_sanskrit_30 db ", ",224,164,182,224,164,172,224,165,141,224,164,166,224,164,131," '",0
+ r11_sanskrit_31 db 224,164,170,224,164,164,224,165,141,224,164,176,224,164,190,224,164,168,224,165,141,224,164,164,224,164,131,0
+@@ -3140,7 +3140,7 @@ r11_sanskrit_89 db "Sutram Error: ",224,164,170,224,165,129,224,164,168,224,164,
+ r11_sanskrit_90 db "Sutram Error: ",224,164,170,224,165,129,224,164,168,224,164,176,224,164,190,224,164,181,224,164,176,224,165,141,224,164,164,224,164,168,"-",224,164,174,224,164,167,224,165,141,224,164,175,224,165,135," ",224,164,137,224,164,166,224,165,141,224,164,166,224,165,135,224,164,182,224,165,141,224,164,175,"-",224,164,184,224,165,128,224,164,174,224,164,190,224,164,164,224,164,191,224,164,149,224,165,141,224,164,176,224,164,174,224,164,131,10,0
+ r11_sanskrit_91 db "Sutram Error: ",224,164,175,224,164,168,224,165,141,224,164,164,224,165,141,224,164,176,"-",224,164,173,224,164,190,224,164,183,224,164,190,"-",224,164,184,224,165,128,224,164,174,224,164,190,224,164,164,224,164,191,224,164,149,224,165,141,224,164,176,224,164,174,224,164,131,10,0
+ r11_sanskrit_92 db "Sutram Error: ",224,164,176,224,164,154,224,164,168,224,164,190,"-",224,164,184,224,165,130,224,164,154,224,165,128,"-",224,164,184,224,165,128,224,164,174,224,164,190,224,164,164,224,164,191,224,164,149,224,165,141,224,164,176,224,164,174,224,164,131,10,0
+-r11_sanskrit_93 db "Sutram Error: ",224,164,176,224,164,154,224,164,168,224,164,190,"-",224,164,149,224,165,141,224,164,183,224,165,135,224,164,164,224,165,141,224,164,176,"-",224,164,184,224,165,128,224,164,174,224,164,190,224,164,164,224,164,191,224,164,149,224,165,141,224,164,176,224,164,174,224,164,131,10,0
++r11_sanskrit_93 db "Sutram Error: ",224,164,176,224,164,154,224,164,168,224,164,190,"-",224,164,133,224,164,181,224,164,175,224,164,181,"-",224,164,184,224,165,128,224,164,174,224,164,190,224,164,164,224,164,191,224,164,149,224,165,141,224,164,176,224,164,174,224,164,131,10,0
+ r11_sanskrit_94 db "Sutram Error: ",224,164,150,224,164,163,224,165,141,224,164,161,"-",224,164,151,224,164,173,224,165,128,224,164,176,224,164,164,224,164,190,"-",224,164,184,224,165,128,224,164,174,224,164,190,224,164,164,224,164,191,224,164,149,224,165,141,224,164,176,224,164,174,224,164,131,10,0
+ r11_sanskrit_95 db "Sutram Error: ",224,164,150,224,164,163,224,165,141,224,164,161,"-",224,164,149,224,164,165,224,164,168,"-",224,164,184,224,165,128,224,164,174,224,164,190,224,164,164,224,164,191,224,164,149,224,165,141,224,164,176,224,164,174,224,164,131,10,0
+ r11_sanskrit_96 db "Sutram Error: ",224,164,170,224,165,141,224,164,176,224,164,149,224,165,141,224,164,176,224,164,191,224,164,175,224,164,190,224,164,175,224,164,190,224,164,131," ",224,164,170,224,165,129,224,164,168,224,164,131," ",224,164,170,224,165,130,224,164,176,224,165,141,224,164,181,224,164,152,224,165,139,224,164,183,224,164,163,224,164,190,10,0
+diff --git a/src/sutram_compiler.asm b/src/sutram_compiler.asm
+index e64bcce5..ffd40e3b 100644
+--- a/src/sutram_compiler.asm
++++ b/src/sutram_compiler.asm
+@@ -310,11 +310,11 @@ r54_builtin_arity_table:
+     r4_msg_hint_old db "Sanket: '",0
+     r4_msg_hint_old2 db "' puratanah kunjishabdah (v157 tah purvam); navinah: '",0
+     r4_msg_hint_old3 db "'",10,0
+-    r5_msg_field db ": Sutram Error [E_UNKNOWN_FIELD]: agyat kshetra '",0
++    r5_msg_field db ": Sutram Error [E_UNKNOWN_FIELD]: agyat avayava '",0
+     r7_msg_dup db ": Sutram Error [E_DUPLICATE_NAME]: punah ghoshana '",0
+     r7_msg_dup_hint db "' purvam eva ghoshitam; navinam manam datum: ",0
+     r7_msg_dup_hint2 db " = ...",10,0
+-    r7_msg_field_amb db ": Sutram Error [E_AMBIGUOUS_FIELD]: kshetra '",0
++    r7_msg_field_amb db ": Sutram Error [E_AMBIGUOUS_FIELD]: avayava '",0
+     r7_msg_field_amb_hint db "' dvayoh rachanayoh bhinne sthane asti; pratyekasyam rachanayam bhinnam nama dadatu",10,0
+     r7_msg_field_dup_hint db "' asyam rachanayam purvam eva asti",10,0
+     r7_msg_arity db ": Sutram Error [E_ARITY]: '",0
+@@ -325,7 +325,7 @@ r54_builtin_arity_table:
+     r7_msg_mod_missing2 db 10,"Sanket: naam.smlib lib/ madhye srota-patrasya nirdeshikayam va bhavet",10,0
+     r7_msg_hint_block db "' kasminshchit khande { } chakra-madhye va ghoshitam; tatah bahih na drishyate",10,0
+     r5_msg_field_hint db "Sanket: '",0
+-    r5_msg_field_hint2 db "' kasyashchid api rachanayah kshetram nasti",10,0
++    r5_msg_field_hint2 db "' kasyashchid api rachanayah avayavam nasti",10,0
+     r4_old_kw:
+         dq r4_o_anyatra, kw_anyatra, r4_o_punar, kw_punaravartana, r4_o_prati, kw_nivartanam
+         dq r4_o_udd, kw_uddeshya, r4_o_pankti, kw_pankti, r4_o_srij, kw_srijana
+@@ -824,7 +824,7 @@ r54_builtin_arity_table:
+     msg_continue_patch_overflow db "Sutram Error: chakra-madhye agrim seema atikram", 10, 0
+     msg_code_overflow db "Sutram Error: yantra-bhasha seema atikram", 10, 0
+     msg_rachana_overflow db "Sutram Error: rachana-suchi seema atikram", 10, 0
+-    msg_rachana_fields_overflow db "Sutram Error: rachana kshetra seema atikram", 10, 0
++    msg_rachana_fields_overflow db "Sutram Error: rachana avayava seema atikram", 10, 0
+     msg_block_nesting_overflow db "Sutram Error: khand gahrai seema atikram", 10, 0
+     msg_block_stmt_overflow db "Sutram Error: khand kathan seema atikram", 10, 0
+     r55_msg_proto_duplicate db "Sutram Error: punah prakriya purv-ghoshana",10,0
+diff --git a/tests/expect/106_rachana_field_capacity.out b/tests/expect/106_rachana_field_capacity.out
+index 50f17469..12220018 100644
+--- a/tests/expect/106_rachana_field_capacity.out
++++ b/tests/expect/106_rachana_field_capacity.out
+@@ -1 +1 @@
+-Sutram Error: rachana kshetra seema atikram
++Sutram Error: rachana avayava seema atikram
+diff --git a/tests/expect/224_unknown_field.out b/tests/expect/224_unknown_field.out
+index 9135ef86..9b027f1a 100644
+--- a/tests/expect/224_unknown_field.out
++++ b/tests/expect/224_unknown_field.out
+@@ -1,4 +1,4 @@
+-224_unknown_field.sm:7:13: Sutram Error [E_UNKNOWN_FIELD]: agyat kshetra 'w'
++224_unknown_field.sm:7:13: Sutram Error [E_UNKNOWN_FIELD]: agyat avayava 'w'
+       likha(p.w)
+               ^
+-Sanket: 'w' kasyashchid api rachanayah kshetram nasti
++Sanket: 'w' kasyashchid api rachanayah avayavam nasti
+diff --git a/tests/expect/234_ambiguous_field.out b/tests/expect/234_ambiguous_field.out
+index 44157054..ecf43582 100644
+--- a/tests/expect/234_ambiguous_field.out
++++ b/tests/expect/234_ambiguous_field.out
+@@ -1,4 +1,4 @@
+-234_ambiguous_field.sm:8:7: Sutram Error [E_AMBIGUOUS_FIELD]: kshetra 'x'
++234_ambiguous_field.sm:8:7: Sutram Error [E_AMBIGUOUS_FIELD]: avayava 'x'
+       b.x = 1
+         ^
+ Sanket: 'x' dvayoh rachanayoh bhinne sthane asti; pratyekasyam rachanayam bhinnam nama dadatu
+diff --git a/tests/r23/test_capabilities.py b/tests/r23/test_capabilities.py
+index 789827e2..3ebae4c8 100644
+--- a/tests/r23/test_capabilities.py
++++ b/tests/r23/test_capabilities.py
+@@ -59,11 +59,11 @@ CASES = [
+      ('out', '5\n5\n')),
+     ('no such method',
+      'rachana B = { x }\nmukhya() {\n    vitti b = nirmmita(8)\n    likha(b.nahi())\n}\n',
+-     ('compile-fail', "[E_UNKNOWN_FIELD]: agyat kshetra 'nahi'")),
++     ('compile-fail', "[E_UNKNOWN_FIELD]: agyat avayava 'nahi'")),
+     ('a method name in two rachanas',
+      'rachana A = { x }\nrachana B = { y }\nprakriya A.m(p) {\n    nivartanam 1\n}\nprakriya B.m(p) {\n    nivartanam 2\n}\n'
+      'mukhya() {\n    vitti b = nirmmita(8)\n    likha(b.m())\n}\n',
+-     ('compile-fail', "[E_AMBIGUOUS_FIELD]: kshetra 'm'")),
++     ('compile-fail', "[E_AMBIGUOUS_FIELD]: avayava 'm'")),
+     ('a method of an undeclared rachana',
+      'prakriya Nahi.m(p) {\n    nivartanam 1\n}\nmukhya() {\n    likha(1)\n}\n',
+      ('compile-fail', "[E_UNDEFINED_NAME]: agyat naam 'Nahi'")),
+diff --git a/tests/sandesh/expect/default/unknown_field.out b/tests/sandesh/expect/default/unknown_field.out
+index 300d10aa..4adb6990 100644
+--- a/tests/sandesh/expect/default/unknown_field.out
++++ b/tests/sandesh/expect/default/unknown_field.out
+@@ -1,5 +1,5 @@
+-unknown_field.sm:6:13: Sutram Error [E_UNKNOWN_FIELD]: agyat kshetra 'q'
++unknown_field.sm:6:13: Sutram Error [E_UNKNOWN_FIELD]: agyat avayava 'q'
+       likha(p.q)
+               ^
+-Sanket: 'q' kasyashchid api rachanayah kshetram nasti
++Sanket: 'q' kasyashchid api rachanayah avayavam nasti
+ [compile exit 1]
+diff --git a/tests/sandesh/expect/sanskrit/unknown_field.out b/tests/sandesh/expect/sanskrit/unknown_field.out
+index d5956152..90485230 100644
+--- a/tests/sandesh/expect/sanskrit/unknown_field.out
++++ b/tests/sandesh/expect/sanskrit/unknown_field.out
+@@ -1,6 +1,6 @@
+ भाषा-पुटः प्राप्तः: sanskrit
+-unknown_field.sm:6:13: Sutram Error [E_UNKNOWN_FIELD]: अज्ञातं क्षेत्रम् 'q'
++unknown_field.sm:6:13: Sutram Error [E_UNKNOWN_FIELD]: अज्ञातः अवयवः 'q'
+       likha(p.q)
+               ^
+-सूचना: 'q' कस्याश्चिदपि रचनायाः क्षेत्रं नास्ति
++सूचना: 'q' कस्याश्चिदपि रचनायाः अवयवो नास्ति
+ [compile exit 1]
