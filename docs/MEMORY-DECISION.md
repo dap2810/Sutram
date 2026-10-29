@@ -86,3 +86,28 @@
 **Wave 3:** **the `mandapa` block and the check.**
 
 **Windows is the owner's own work.**
+
+---
+
+## `mandapa` is an indentation block — no braces
+
+**The owner spotted that `mandapa { }` would look like `rachana Point = { x, y, z }`, and it would.**
+
+**`rachana` is a DECLARATION: a name, an `=`, and a member list on one line. Nothing executes.**
+**`mandapa` is a SCOPE: a bare opener, then indented code. It is a statement.**
+
+**Different things — so they should look different:**
+
+```
+rachana Point = { x, y, z }
+
+mukhya()
+    mandapa
+        vitti buf = nirmmita(1024)
+        likha("buf = ", buf)
+    # the pavilion is struck; the field remains
+```
+
+**Braces remain optional everywhere, as they always were — but examples never show them on a `mandapa`.** **203 of the 229 examples use no braces at all, and `mukhya`/`prakriya` are written without them throughout, so this is the language's own norm rather than a new rule.**
+
+**And the deeper reason it is right: a `rachana` is the PLAN of a building — what it is made of. A `mandapa` is a HALL you walk into — where things happen.** **A plan is not a hall. A type definition is not a scope.**
