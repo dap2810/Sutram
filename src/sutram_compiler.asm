@@ -234,7 +234,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v261) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v262) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -310,11 +310,11 @@ r54_builtin_arity_table:
     r4_msg_hint_old db "Sanket: '",0
     r4_msg_hint_old2 db "' puratanah kunjishabdah (v157 tah purvam); navinah: '",0
     r4_msg_hint_old3 db "'",10,0
-    r5_msg_field db ": Sutram Error [E_UNKNOWN_FIELD]: agyat kshetra '",0
+    r5_msg_field db ": Sutram Error [E_UNKNOWN_FIELD]: agyat avayava '",0
     r7_msg_dup db ": Sutram Error [E_DUPLICATE_NAME]: punah ghoshana '",0
     r7_msg_dup_hint db "' purvam eva ghoshitam; navinam manam datum: ",0
     r7_msg_dup_hint2 db " = ...",10,0
-    r7_msg_field_amb db ": Sutram Error [E_AMBIGUOUS_FIELD]: kshetra '",0
+    r7_msg_field_amb db ": Sutram Error [E_AMBIGUOUS_FIELD]: avayava '",0
     r7_msg_field_amb_hint db "' dvayoh rachanayoh bhinne sthane asti; pratyekasyam rachanayam bhinnam nama dadatu",10,0
     r7_msg_field_dup_hint db "' asyam rachanayam purvam eva asti",10,0
     r7_msg_arity db ": Sutram Error [E_ARITY]: '",0
@@ -325,7 +325,7 @@ r54_builtin_arity_table:
     r7_msg_mod_missing2 db 10,"Sanket: naam.smlib lib/ madhye srota-patrasya nirdeshikayam va bhavet",10,0
     r7_msg_hint_block db "' kasminshchit khande { } chakra-madhye va ghoshitam; tatah bahih na drishyate",10,0
     r5_msg_field_hint db "Sanket: '",0
-    r5_msg_field_hint2 db "' kasyashchid api rachanayah kshetram nasti",10,0
+    r5_msg_field_hint2 db "' kasyashchid api rachanayah avayavam nasti",10,0
     r4_old_kw:
         dq r4_o_anyatra, kw_anyatra, r4_o_punar, kw_punaravartana, r4_o_prati, kw_nivartanam
         dq r4_o_udd, kw_uddeshya, r4_o_pankti, kw_pankti, r4_o_srij, kw_srijana
@@ -824,7 +824,7 @@ r54_builtin_arity_table:
     msg_continue_patch_overflow db "Sutram Error: chakra-madhye agrim seema atikram", 10, 0
     msg_code_overflow db "Sutram Error: yantra-bhasha seema atikram", 10, 0
     msg_rachana_overflow db "Sutram Error: rachana-suchi seema atikram", 10, 0
-    msg_rachana_fields_overflow db "Sutram Error: rachana kshetra seema atikram", 10, 0
+    msg_rachana_fields_overflow db "Sutram Error: rachana avayava seema atikram", 10, 0
     msg_block_nesting_overflow db "Sutram Error: khand gahrai seema atikram", 10, 0
     msg_block_stmt_overflow db "Sutram Error: khand kathan seema atikram", 10, 0
     r55_msg_proto_duplicate db "Sutram Error: punah prakriya purv-ghoshana",10,0

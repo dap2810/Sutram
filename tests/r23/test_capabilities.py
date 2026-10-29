@@ -59,11 +59,11 @@ CASES = [
      ('out', '5\n5\n')),
     ('no such method',
      'rachana B = { x }\nmukhya() {\n    vitti b = nirmmita(8)\n    likha(b.nahi())\n}\n',
-     ('compile-fail', "[E_UNKNOWN_FIELD]: agyat kshetra 'nahi'")),
+     ('compile-fail', "[E_UNKNOWN_FIELD]: agyat avayava 'nahi'")),
     ('a method name in two rachanas',
      'rachana A = { x }\nrachana B = { y }\nprakriya A.m(p) {\n    nivartanam 1\n}\nprakriya B.m(p) {\n    nivartanam 2\n}\n'
      'mukhya() {\n    vitti b = nirmmita(8)\n    likha(b.m())\n}\n',
-     ('compile-fail', "[E_AMBIGUOUS_FIELD]: kshetra 'm'")),
+     ('compile-fail', "[E_AMBIGUOUS_FIELD]: avayava 'm'")),
     ('a method of an undeclared rachana',
      'prakriya Nahi.m(p) {\n    nivartanam 1\n}\nmukhya() {\n    likha(1)\n}\n',
      ('compile-fail', "[E_UNDEFINED_NAME]: agyat naam 'Nahi'")),

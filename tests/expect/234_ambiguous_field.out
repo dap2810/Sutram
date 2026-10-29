@@ -1,4 +1,4 @@
-234_ambiguous_field.sm:8:7: Sutram Error [E_AMBIGUOUS_FIELD]: kshetra 'x'
+234_ambiguous_field.sm:8:7: Sutram Error [E_AMBIGUOUS_FIELD]: avayava 'x'
       b.x = 1
         ^
 Sanket: 'x' dvayoh rachanayoh bhinne sthane asti; pratyekasyam rachanayam bhinnam nama dadatu
