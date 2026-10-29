@@ -168,9 +168,12 @@ def prop_bigint_divmod(compiler, rng):
         a = rng.randint(0, 999999)
         b = rng.randint(1, 9999)
         cases.append((a, b))
+    # R65: a is compared over 16 digits (brihat_tul(chk, a, 16)) and r is added over 16
+    # (brihat_yuj(qb, r, chk, 16)), so both must HOLD 16 cells. With 8 the proof read 8 cells
+    # past its own blocks; mmap's zeroed page slack hid that until nirmmita became a bump.
     lines = ["yoj brihat", "mukhya() {",
-             "    vitti a = nirmmita(8*8)", "    vitti b = nirmmita(8*8)",
-             "    vitti q = nirmmita(8*8)", "    vitti r = nirmmita(8*8)",
+             "    vitti a = nirmmita(16*8)", "    vitti b = nirmmita(8*8)",
+             "    vitti q = nirmmita(8*8)", "    vitti r = nirmmita(16*8)",
              "    vitti qb = nirmmita(16*8)", "    vitti chk = nirmmita(16*8)"]
     for a, b in cases:
         lines.append(f"    brihat_ank_se_laghu({a}, a, 8)")
