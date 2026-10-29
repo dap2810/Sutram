@@ -33,3 +33,11 @@
 **No `nirmmita` change. No cursor. No keyword. No `avayava` reword — that is a separate round and it must not be mixed into this one, because the guard comparison needs one change at a time.**
 
 **If you find something else that looks wrong while you are in there, report it. Do not fix it.**
+
+---
+
+## Amendment — the keyword is `mandapa`, not `kshetra`
+
+**The owner has settled the vocabulary: `kshetra` (क्षेत्र) names the ARENA and appears only in errors and docs; `mandapa` (मण्डप) is the BLOCK KEYWORD the programmer writes; `avayava` (अवयव) replaces `kshetra` in the four struct-member diagnostics.**
+
+**This round does not add either keyword — it is Step 0 only. But read `docs/VOCABULARY-RULE.md`, because every future name in this project is now tested against it.**
