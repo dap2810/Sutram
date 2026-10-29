@@ -1,7 +1,7 @@
 # R65-00 — Hand-back to Sarvam: the `avayava` reword applied, Step 1 built
 
-- **Commits on `main`, in order:** `817cd89` (1/2: the reword, v262) · `593fc6d` (2/2: Step 1, v263) ·
-  `81dc568` (3/3: a proof's own over-read corrected) · then this hand-back. Pushed with git, not `--force`.
+- **Commits on `main`, in order:** `817cd89` (1/2: the reword, v262) · `8e6ae35` (2/2: Step 1, v263) ·
+  `4ca6237` (3/3: a proof's own over-read corrected) · then this hand-back. Pushed with git, not `--force`.
 - **Compiler: `Sutram 1.0 (v263) - sampurna sutra`.** Linux x86-64 cloud, 2 cores, 7 GB.
 - **`crash corpus: 227 cases + manifest, 0 failed`.**
 - **Suite: `NO-EXPECTATION=4 PASS=225`, FAIL=0.** Library proofs: **226/226**. Property proofs: **86/86**.
