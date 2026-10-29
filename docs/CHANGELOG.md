@@ -1,3 +1,36 @@
+## v414 - the real number: an arena is about 1,000x faster than `nirmmita` as it is today
+
+**I measured the exact sequence `nirmmita` emits, not a strawman.** **`r38_nirm_seq` does `mmap` per call and never `munmap`s - so that
+is what I benchmarked against an arena.**
+
+**200,000 allocations of 64 bytes, `rdtsc` cycles, three runs:**
+
+| | Run 1 | Run 2 | Run 3 |
+|---|---|---|---|
+| **TODAY: `mmap` per `nirmmita`, never freed** | **50,126,173,152** | 56,996,467,638 | 47,723,581,180 |
+| **PROPOSED: one arena, bump pointer** | **39,713,212** | 60,867,004 | 53,320,344 |
+| **ratio** | **1,262x** | 936x | 895x |
+
+**So roughly 1,000x - and this time it is the real comparison.**
+
+**Per allocation that is about 250,000 cycles today against about 250 for a bump.** **The 250,000 is kernel page-table work for a fresh
+mapping; the 250 is a cache miss on memory the arena already owns.**
+
+### And the earlier 3,000x was measuring the wrong thing
+**My first benchmark included `munmap` on the "today" side.** **`nirmmita` does not `munmap` - it leaks.** **So the earlier figure
+overstated the gap by about 3x, and the honest number is 1,000x.**
+
+**That matters because the direction of the conclusion does not change but the reason does:** **today's cost is the `mmap`, not the
+release.** **The release is missing, and it is free to add - the arena gets both.**
+
+### What this settles and what it does not
+**Settled: allocation through `nirmmita` is roughly a thousand times more expensive than a bump, measured on the real emitted sequence.**
+**Not settled: whether a region is USABLE - that needs Muse's escape classification, because an object that outlives its region cannot
+live in one, however fast the allocation is.**
+
+**So the speed question is answered and the correctness question is open.** **That is the right order, and the open one is the one that
+decides.**
+
 ## v413 - the memory block begins: design written, three rounds issued, nothing implemented
 
 **`docs/MEMORY-DESIGN.md` is the authoritative page.** **Every fact in it is measured or read from the tree, and it says which is which.**
