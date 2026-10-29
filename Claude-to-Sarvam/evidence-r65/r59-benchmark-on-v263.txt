@@ -1,0 +1,4 @@
+run 1: v263 per-call nirmmita 60 cyc/alloc, one block 55 cyc/alloc; RSS per-call 6144 KB
+run 2: v263 per-call nirmmita 64 cyc/alloc, one block 54 cyc/alloc; RSS per-call 6144 KB
+run 3: v263 per-call nirmmita 44 cyc/alloc, one block 46 cyc/alloc; RSS per-call 6272 KB
+R59's two programs (evidence-r59/per_call.sm, one_block.sm: 100,000 x 64 B, each block touched), compiled by v263. Before (v261): per-call 4,600-8,200 cycles/alloc and 400,000 KB; one block 50-62 cycles and 6,272 KB.

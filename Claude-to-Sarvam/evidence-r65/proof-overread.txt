@@ -1,0 +1,4 @@
+tools/proof_props.py, 'bigint divmod reconstruct', as written before this round:
+  a = nirmmita(8*8), r = nirmmita(8*8), then brihat_tul(chk, a, 16) and brihat_yuj(qb, r, chk, 16):
+  both read 8 cells past their blocks. Measured (R65 scratch): as written, v261 PASS, v263 FAIL;
+  a with 16 cells only: v263 FAIL; a and r with 16 cells: v263 PASS. Fixed in commit 3/3; 86/86 on v261 and v263.

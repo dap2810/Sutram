@@ -1,0 +1,8 @@
+guard binaries = committed
+guardB-linux-elf.txt: 577 programs: 238 byte-identical, 91 refused identically, 248 DIFFER, 0 new
+guardB-linux-pe.txt: 577 programs: 486 byte-identical, 91 refused identically, 0 DIFFER, 0 new
+guardB-wine.txt: 577 programs: 486 byte-identical, 91 refused identically, 0 DIFFER, 0 new
+248 programs with changed bytes: 247 same output and exit code, 1 different
+  OUTPUT DIFFERS examples/217_r12_report.sm: old rc=0 189B, new rc=0 189B
+
+[exited with code 0]

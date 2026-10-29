@@ -1,0 +1,9 @@
+evidence-r65/kosh-alias.sm (kosh k[1]; kosh_push 7; vitti a = k; kosh_push 8, 9; then reads through a and k):
+  v261 (before): len(a)=1 len(k)=3 cap=4, then a[2] -> 'Sutram Error: mala ank seema atikram' (two buffers; a sees the old one)
+  v263 (after):  len(a)=3 len(k)=3 cap=4 a[2]=9 k[2]=9 (a == k) = 1   (one buffer, extended in place)
+
+evidence-r65/kosh-alias-odd-capacity.sm (kosh k[3], 100 pushes through k, read through a):
+  v263: len(a)=100 cap=192 a[99]=99 (a == k) = 1
+
+evidence-r65/append-1M.sm (1,000,000 kosh_push onto kosh k[1]), max RSS by /usr/bin/time -v:
+  v261: 16,000 KB (cap 1,048,576)      v263: 7,808 KB     a kosh k[1000000] that never grows: 7,808 KB on both

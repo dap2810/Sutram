@@ -1,0 +1,8 @@
+mukhya() {
+    vitti p = nirmmita(16)
+    vitti q = nirmmita(16)
+    likha(q - p)
+    likh8(p, 7)
+    likha(pad8(p))
+    likha(nirmmita(0))
+}

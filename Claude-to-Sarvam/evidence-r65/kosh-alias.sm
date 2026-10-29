@@ -1,0 +1,14 @@
+# R65 WS2: kosh k[1], an alias a = k, growth, then reads through both.
+mukhya() {
+    kosh k[1]
+    kosh_push(k, 7)
+    vitti a = k
+    kosh_push(k, 8)
+    kosh_push(k, 9)
+    likha(kosh_len(a))
+    likha(kosh_len(k))
+    likha(kosh_cap(k))
+    likha(a[2])
+    likha(k[2])
+    likha(a == k)
+}

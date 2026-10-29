@@ -1,0 +1,8 @@
+Muse's ROUND-64-avayava-reword.patch: git apply, 0 rejected hunks, 19 files.
+  src/sutram_compiler.asm: 4 default strings; src/r11_sandesh.inc regenerated
+  lang/sanskrit.sandesh: 4 entries (active pack)
+  the 10 frozen packs: comment lines only (the default text that precedes each entry); 0 translation lines changed
+  goldens: tests/expect/106_rachana_field_capacity.out, 224_unknown_field.out, 234_ambiguous_field.out,
+           tests/sandesh/expect/default/unknown_field.out, tests/sandesh/expect/sanskrit/unknown_field.out
+  tests/r23/test_capabilities.py: 2 assertions
+Guard v261 -> v262 (the reword alone): 577 programs, 486 byte-identical, 91 refused identically, 0 DIFFER on ELF, PE and Wine.

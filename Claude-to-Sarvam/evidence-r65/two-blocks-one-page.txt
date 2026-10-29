@@ -1,0 +1,1 @@
+two nirmmita(16): second - first = 16 (same page); nirmmita(0) = 0 (the fallback keeps EINVAL -> 0)

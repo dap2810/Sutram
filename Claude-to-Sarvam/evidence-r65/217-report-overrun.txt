@@ -1,0 +1,14 @@
+examples/217_r12_report.sm: the one program of 248 whose output changed (it has no golden: NO-EXPECTATION).
+
+  vitti koshtha = nirmmita(32)        # 32 bytes = 4 qword cells
+  ...
+  pad_vam(koshtha, cnt, 6, 32)        # lib/vakyank.smlib: 'Caller must allocate >= width cells' - width 6 = 48 bytes
+  vitti row = nirmmita(64)            # allocated right after koshtha
+
+pad_vam writes cells 4 and 5 of koshtha, 16 bytes past its 32-byte block. With one mmap per nirmmita those bytes
+were the unused rest of koshtha's own page. In the arena they are the first 16 bytes of row, which the program
+then prints: the 'Padded scores' lines read '     5' where they read '    85'.
+
+Old (v262) output lines 15-22:  85 92 78 95 88 76 90 84 (right-aligned in 6)
+New (v263) output lines 15-22:   5  2  8  5  8  6  0  4
+Both runs are deterministic. The example's bug is exposed, not caused; it is reported, not fixed (the brief).

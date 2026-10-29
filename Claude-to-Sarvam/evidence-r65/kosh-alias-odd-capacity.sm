@@ -1,0 +1,13 @@
+mukhya() {
+    kosh k[3]
+    vitti a = k
+    vitti i = 0
+    yavat (i < 100) {
+        kosh_push(k, i)
+        i = i + 1
+    }
+    likha(kosh_len(a))
+    likha(kosh_cap(a))
+    likha(a[99])
+    likha(a == k)
+}
