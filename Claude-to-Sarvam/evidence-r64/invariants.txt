@@ -1,0 +1,18 @@
+Step 0's two invariants, tested on the committed v261 compiler (programs beside this file).
+
+Invariant 2 - "kosh capacities are always powers of two": FALSE.
+  kosh k[1],       9 pushes -> kosh_cap = 16
+  kosh k[3],       9 pushes -> kosh_cap = 12
+  kosh k[5],       9 pushes -> kosh_cap = 10
+  kosh k[1000000], 9 pushes -> kosh_cap = 1000000
+  kosh k[6],       no push  -> kosh_cap = 6
+  The declared capacity is whatever the program writes; growth doubles it (src/sutram_compiler.asm:15729,
+  "newcap = cap ? cap*2 : 4"). In the tree: 131 kosh declarations with a literal capacity, 33 of them not a power
+  of two (3 x20, 5 x5, 6 x4, 9 x4). 10 programs print kosh_cap, so rounding capacities up would change goldens.
+
+Invariant 1 - "a kosh owns its backing buffer privately, so the old array is dead after growth": FALSE.
+  kosh k[1]; kosh_push(k, 7); vitti a = k; kosh_push(k, 8); kosh_push(k, 9)   # k grows: new buffer
+  a[0] = 99; likha(a[0]); likha(k[0])          -> 99 and 7: two live buffers, both readable and writable
+  kosh_push(a, 5); likha(kosh_len(a)); likha(kosh_len(k))   -> 2 and 3: the old buffer is still a working kosh
+  `vitti a = k` makes a second kosh handle (the compiler marks a as a kosh variable), and the old buffer stays live
+  through it. R59 (evidence-r59/kosh-aliases.txt) found the same through a mala cell and through a global.

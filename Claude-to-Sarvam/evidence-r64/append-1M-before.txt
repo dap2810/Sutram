@@ -1,0 +1,1 @@
+1,000,000 kosh_push onto kosh k[1], v261: max RSS 16,000 KB (cap 1,048,576). The same onto kosh k[1000000], which never grows: 7,808 KB. Abandoned by growth: ~8,192 KB, about 8.2 bytes per item. (R59, /usr/bin/time -v)

@@ -1,0 +1,13 @@
+mukhya() {
+    kosh k[1]
+    kosh_push(k, 7)
+    vitti a = k
+    kosh_push(k, 8)
+    kosh_push(k, 9)
+    a[0] = 99
+    likha(a[0])
+    likha(k[0])
+    kosh_push(a, 5)
+    likha(kosh_len(a))
+    likha(kosh_len(k))
+}
