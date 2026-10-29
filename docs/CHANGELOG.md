@@ -1,3 +1,31 @@
+## v415 - the vocabulary is settled: `kshetra` the field, `mandapa` the pavilion, `avayava` the member
+
+**Five words, one new keyword.** **And a standing rule for every word from now on.**
+
+### The vocabulary, and why it went this way
+**`kshetra` (क्षेत्र) names the whole arena - the field.** **`mandapa` (मण्डप) is the scratch block - a pavilion raised in the field and struck when it is done.** **`avayava` (अवयव) is a member of a `rachana`, and replaces `kshetra` in the four field diagnostics.**
+
+**The owner's insight: a `kshetra` contains `mandapa`s.** **A field contains pavilions.** **The Sanskrit already had the nesting built into it, and we were making one word do both jobs.**
+
+**And `avayava` means "member", which is what a struct member is - so the reword improves the diagnostics rather than merely renaming them.**
+
+### Collision-checked before proposing, this time
+**`mandapa`, `avayava`, `ardhamandapa`, `mahamandapa`: ZERO occurrences in the compiler, the language pack, the 11 `.sandesh` packs, or any program.** **`kshetra`: four diagnostics, 44 pack entries, 8 expected-output files, and no program identifier.**
+
+**That check exists because `kshetra` had already passed a dictionary check and failed a compiler check in the same week.**
+
+### The size tiers are reported, not chosen
+**`ardhamandapa` and `mahamandapa` earn their place as size classes the COMPILER reports - `ardhamandapa purnam` tells a programmer which tier ran out - not as boxes the programmer picks from.** **The programmer writes `mandapa` and the compiler decides the tier.**
+
+**That is the difference between a vocabulary that teaches and a vocabulary that burdens.**
+
+### And `docs/VOCABULARY-RULE.md` is now the standing test
+**Three rules: a new word must remove an ambiguity or replace an existing word; prefer a compound over a new root; and anything the compiler can name, the programmer should not have to choose.**
+
+**The budget it protects: 33 keywords and about 80 builtins is already ~113 words before a beginner can read someone else's program.** **For a language aimed at a school in India, that is a great deal, and every future word is expensive.**
+
+**Worth stating plainly: the vocabulary work this week was almost entirely SUBTRACTION.** **20 library names that described the wrong operation, two collisions caught, one prefix replaced by a real noun, seven wrong Devanagari words.** **That is the direction that made the language better, and the three rules protect it.**
+
 ## v414 - the real number: an arena is about 1,000x faster than `nirmmita` as it is today
 
 **I measured the exact sequence `nirmmita` emits, not a strawman.** **`r38_nirm_seq` does `mmap` per call and never `munmap`s - so that
