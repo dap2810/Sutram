@@ -1,3 +1,41 @@
+## v413 - the memory block begins: design written, three rounds issued, nothing implemented
+
+**`docs/MEMORY-DESIGN.md` is the authoritative page.** **Every fact in it is measured or read from the tree, and it says which is which.**
+
+### What is verified about `nirmmita` today
+**It emits `mmap` per allocation on Linux and `VirtualAlloc` per call on Windows.** **There is no `munmap` anywhere, and no `free` keyword
+at all.** **A plain `nirmmita` has NO header - the 16-byte header belongs to `kosh`, and I had claimed it was universal.** **ChatGPT
+corrected that.**
+
+### The measurement, and its limit
+**200,000 allocations of 64 bytes, three runs: `mmap`+`munmap` per allocation ~625,000 cycles, arena bump ~200, ratio about 3,000x.**
+**But that compared `mmap` against a strawman, not the real `nirmmita` against a region.** **So the design document says so, and the first
+round asks for the real measurement.**
+
+### The three options, and the one refusal
+**A: explicit allocate/free - small, but the leak becomes the programmer's problem.**
+**B: `kosa` regions - allocation stops being a syscall, nothing can leak, and the region boundary is lexical so the compiler knows every
+release at compile time.** **But an object cannot outlive its region, and that needs an escape check or it is a use-after-free
+generator.**
+**C: compile-time ownership - the strongest guarantee, and the biggest change to the language since it began.**
+**Refused: a garbage collector - it needs a runtime, and the promise is a native binary with no runtime.**
+
+### And the question nobody has measured
+**Muse R59 is asked to classify every `nirmmita` site: (a) allocated and released in one function, (b) allocated and RETURNED,
+(c) stored beyond its scope.** **If most are (a), a region is a clean win.** **If many are (b) or (c), a region is a trap and option A is
+the honest answer.**
+
+**That classification decides the design, and it is counting, not opinion.**
+
+### And the bug that is not a design question
+**`kosh` growth reallocates and abandons the old block - ~15.3 bytes per item.** **That is a bug today, whatever we decide.** **Claude is
+asked whether it can be fixed on its own by `munmap`-ing the old block, and what could go wrong if a `kosh` still referenced it.**
+
+### And the words wait
+**Nothing gets named until ChatGPT has checked `nyasa`, `pratyarpana`, `kosa`, `samskara` and `rna`.** **I have been wrong four times this
+session on Sanskrit, and `samskara` is the one I am most likely wrong about - it is a beautiful word, and that is exactly why I distrust
+it here.**
+
 ## v412 - I ran the tests myself instead of relaying Claude's numbers, and synced the four docs that were stale
 
 **The owner asked whether I had tested everything, updated everything, merged and audited.** **The honest answer was no on the last three,
