@@ -1,0 +1,6 @@
+# R71: nothing may follow mukhya's closing brace. Before R71 these lines were
+# never parsed - the program compiled, ran, and silently did not print 2.
+mukhya() {
+    likha(1)
+}
+likha(2)

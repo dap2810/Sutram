@@ -1,0 +1,103 @@
+# R71: every construct that takes a body, written with an indented body of
+# several statements and no braces. Each line printed is what the indentation
+# says; before R70 every one of these was wrong, refused or never ended.
+prakriya ank(c) {
+    yadi (c < 48 || c > 57) {
+        nivartanam dosh(1)
+    }
+    nivartanam siddhi(c - 48)
+}
+
+prakriya teen_jod(a)
+    vitti b = a + 1
+    b = b + 1
+    nivartanam b + 1
+
+mukhya()
+    vitti c = 0
+    # yadi: three statements; a false yadi skips all three
+    yadi (1 == 1)
+        c = c + 1
+        c = c + 1
+        c = c + 1
+    yadi (1 == 2)
+        c = c + 100
+        c = c + 100
+    likha("yadi ", c, "\n")
+    # yadi / anya yadi / anya
+    c = 0
+    vitti x = 2
+    yadi (x == 1)
+        c = c + 100
+        c = c + 100
+    anya yadi (x == 2)
+        c = c + 1
+        c = c + 1
+    anya
+        c = c + 1000
+        c = c + 1000
+    likha("anya yadi ", c, "\n")
+    # yavat
+    c = 0
+    vitti i = 0
+    yavat (i < 3)
+        c = c + 1
+        c = c + 1
+        i = i + 1
+    likha("yavat ", c, "\n")
+    # chakra, both spellings
+    c = 0
+    chakra k = 1 tak 3
+        c = c + 1
+        c = c + 1
+    chakra k = 1 arabhya 3 paryantam
+        c = c + 10
+        c = c + 10
+    likha("chakra ", c, "\n")
+    # kuru ... yavat
+    c = 0
+    i = 0
+    kuru
+        c = c + 1
+        c = c + 1
+        i = i + 1
+    yavat (i < 3)
+    likha("kuru ", c, "\n")
+    # guna with braces, its bhavana bodies indented
+    c = 0
+    guna (x) {
+        bhavana 1:
+            c = c + 100
+            c = c + 100
+        bhavana 2:
+            c = c + 1
+            c = c + 1
+            c = c + 1
+    }
+    likha("guna ", c, "\n")
+    # yadi dosh / anya
+    c = 0
+    yadi dosh (q = ank(65))
+        c = c + 1
+        c = c + 1
+    anya
+        c = c + 100
+        c = c + 100
+    likha("yadi dosh ", c, "\n")
+    # a prakriya written without braces
+    likha("prakriya ", teen_jod(1), "\n")
+    # nesting, and an indented body around a braced one
+    c = 0
+    i = 0
+    yavat (i < 2)
+        vitti j = 0
+        yadi (i == 1)
+            yavat (j < 2)
+                c = c + 10
+                j = j + 1
+        yadi (i == 0) {
+            c = c + 100
+        }
+        c = c + 1
+        i = i + 1
+    likha("nested ", c, "\n")
