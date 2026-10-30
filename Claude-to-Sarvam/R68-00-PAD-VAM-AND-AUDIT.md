@@ -1,7 +1,7 @@
 # R68-00 — `pad_vam`: the contract was wrong, not the body; the library audited for "allocate n, use more than n"
 
-- **Commits on `main`, in order:** `427ee9a` (1/3: `pad_vam`'s contract says `width + 1`; the roop padders' capacity
-  stated — comments only) · `93fb67d` (2/3: `217_r12_report` allocates the 22 cells its callees ask for) · `014fee9`
+- **Commits on `main`, in order:** `a5c6596` (1/3: `pad_vam`'s contract says `width + 1`; the roop padders' capacity
+  stated — comments only) · `58335cd` (2/3: `217_r12_report` allocates the 22 cells its callees ask for) · `37afdf0`
   (3/3: a property proof's own buffer one cell short — found by the audit, below) · then this hand-back. Pushed with git, not `--force`. **No compiler change: `Sutram 1.0 (v263) - sampurna sutra`**, same binary
   as `ace0a4e`. Linux x86-64 cloud, 2 cores, 7 GB.
 - **`crash corpus: 227 cases + manifest, 0 failed`.**
@@ -148,6 +148,11 @@ header promises, and whose contracts say "terminator at `out[n]`" or nothing: `k
 `roop_ank` (20 bytes worst), `roop_ank_aadhar` (65), `roop_ank_aadhar_saral` (66), `roop_ank_dhvaj` (68, with
 prefix and sign), `roop_sthir_mool` (22), `roop_chinhit` (21), `roop_sign_akshar` (21); and `pad_vam`, now with
 its line. The `khand` header's *"the caller allocates generously"* is not a number; these are the numbers.
+
+ChatGPT's R140 (`5aa0c13`, landed while this ran, source-only) reaches the same numbers independently where it
+looked: `pad_vam` width + 1, `217` at 176 bytes, `khand_bhed` sn + 2, `nighantu_kunjika` and `rakh_tak_mala` at
+`33·cap + 1`, `ank_tak_aadhar_varna` at 64 cells; it did not run anything, so the pack/unpack proof's short buffer
+is new here.
 
 Every caller of every one of these was traced and allocates enough (the tables in `evidence-r68/audit-*.md`).
 The tightest: `tools/proof_props.py:945` gives `nighantu_kunjika` 32 cells for a random worst case of 31.
