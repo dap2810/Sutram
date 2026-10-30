@@ -174,6 +174,7 @@ KW_VIBHAG    equ 32   ; R23 WS3: vibhag / विभाग = a slice parameter
 KW_SIDDHI    equ 33   ; R25: siddhi / सिद्धि = return success
 KW_DOSH      equ 34   ; R25: dosh / दोष = return failure
 KW_PRASAR    equ 35   ; R25: prasar / प्रसार = propagate a failure
+KW_MANDAPA   equ 36   ; R72: mandapa / मण्डप = the scratch block (Step 3; inert this round)
 AST_NISHKRIYA equ 26  ; inline asm statement node
 
 ; Builtin IDs
@@ -234,7 +235,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v267) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v268) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -383,6 +384,7 @@ r54_builtin_arity_table:
     r25_msg_prasar_call db "Sutram Error: prasar: phal-prakriya-ahvanam apekshitam", 10, 0
     r25_msg_prasar_where db "Sutram Error: prasar kevalam phal-prakriya-madhye mukhya-madhye va", 10, 0
     r26_msg_handle_call db "Sutram Error: yadi dosh: phal-prakriya-ahvanam apekshitam", 10, 0
+    r72_msg_escape db "Sutram Error [E_SCRATCH_ESCAPE]: asthayi smriti bahir na gacchati - mandapa-madhye nirmitam sthanam nivartanam na shakyate", 10, 0
     r28_msg_object_globals db "Sutram Error: vastu-patre ghatak-star vitti asamarthita", 10, 0
     r32_msg_ffi_bad db "Sutram Error: videshi-ghoshana-patram dushtam, pankti ", 0
     r32_msg_ffi_clash db "Sutram Error: videshi prakriya-nama anyatra api: ", 0
@@ -506,6 +508,7 @@ r54_builtin_arity_table:
         dq kw_siddhi,     TOK_KEYWORD, KW_SIDDHI
         dq kw_dosh,       TOK_KEYWORD, KW_DOSH
         dq kw_prasar,     TOK_KEYWORD, KW_PRASAR
+        dq kw_mandapa,    TOK_KEYWORD, KW_MANDAPA
         ; Devanagari equivalents (optional script)
         dq kw_dev_mukhya,    TOK_KEYWORD, KW_MUKHYA
         dq kw_dev_vitti,     TOK_KEYWORD, KW_VITTI
@@ -522,6 +525,7 @@ r54_builtin_arity_table:
         dq kw_dev_siddhi,    TOK_KEYWORD, KW_SIDDHI
         dq kw_dev_dosh,      TOK_KEYWORD, KW_DOSH
         dq kw_dev_prasar,    TOK_KEYWORD, KW_PRASAR
+        dq kw_dev_mandapa,   TOK_KEYWORD, KW_MANDAPA
     kw_table_end:
 
     ; Builtin table
@@ -720,6 +724,7 @@ r54_builtin_arity_table:
     kw_siddhi    db "siddhi", 0
     kw_dosh      db "dosh", 0
     kw_prasar    db "prasar", 0
+    kw_mandapa   db "mandapa", 0
 
     ; Devanagari keyword strings (UTF-8 encoded)
     kw_dev_mukhya    db 0xE0,0xA4,0xAE,0xE0,0xA5,0x81,0xE0,0xA4,0x96,0xE0,0xA5,0x8D,0xE0,0xA4,0xAF, 0
@@ -737,6 +742,7 @@ r54_builtin_arity_table:
     kw_dev_siddhi   db 224,164,184,224,164,191,224,164,166,224,165,141,224,164,167,224,164,191, 0
     kw_dev_dosh     db 224,164,166,224,165,139,224,164,183, 0
     kw_dev_prasar   db 224,164,170,224,165,141,224,164,176,224,164,184,224,164,190,224,164,176, 0
+    kw_dev_mandapa  db 0xE0,0xA4,0xAE,0xE0,0xA4,0xA3,0xE0,0xA5,0x8D,0xE0,0xA4,0xA1,0xE0,0xA4,0xAA, 0   ; मण्डप
             kw_dev_prakriya db 0xE0,0xA4,0xAA,0xE0,0xA5,0x8D,0xE0,0xA4,0xB0,0xE0,0xA4,0x95,0xE0,0xA5,0x8D,0xE0,0xA4,0xB0,0xE0,0xA4,0xBF,0xE0,0xA4,0xAF,0xE0,0xA4,0xBE, 0
     kw_dev_anyatra db 0xE0,0xA4,0x85,0xE0,0xA4,0xA8,0xE0,0xA5,0x8D,0xE0,0xA4,0xAF,0xE0,0xA4,0xA4,0xE0,0xA5,0x8D,0xE0,0xA4,0xB0, 0
     kw_dev_nivartanam db 0xE0,0xA4,0xA8,0xE0,0xA4,0xBF,0xE0,0xA4,0xB5,0xE0,0xA4,0xB0,0xE0,0xA5,0x8D,0xE0,0xA4,0xA4,0xE0,0xA4,0xA8,0xE0,0xA4,0xAE,0xE0,0xA5,0x8D, 0   ; R53: निवर्तनम्
@@ -984,6 +990,9 @@ section .bss
     cur_line    resq 1      ; current source line (error reporting)
     parse_error_kind resq 1 ; 0=generic, 1=too many function args, 2=duplicate function
     parse_block_depth resq 1 ; B10 audit: guarded recursive block nesting depth
+    r72_mdepth    resq 1      ; R72: mandapa nesting depth while parsing
+    r72_ncount    resq 1      ; R72: names given a nirmmita block inside the open mandapa(s)
+    r72_names     resq 256
     parse_expr_depth  resq 1 ; R17 R6: nesting depth of the expression being parsed
     orig_rsp    resq 1      ; original stack ptr at _start (for envp scan)
     ; Language pack support
@@ -7405,6 +7414,96 @@ r71_after_single:
 .ok:
     ret
 
+; ROUND-72 (Step 3, first half): the mandapa block - syntactically real, semantically INERT.
+;     mandapa
+;         <statements>          (an indented body, or { } - parse_body's rules)
+; This round the block emits nothing: it is the same AST_BLOCK a braced block is, so a
+; program with a mandapa block compiles to the same bytes as the program without it
+; (examples/263-265 pin that). No nirmmita is redirected to the scratch cursor yet, and
+; no mark/rewind is emitted - both arrive when the scratch path does.
+; One rule is enforced now, the one the design settled for nivartanam: inside a mandapa,
+; `nivartanam` may not return a block allocated inside it - neither `nivartanam
+; nirmmita(n)` nor `nivartanam x` where x was given `nirmmita(...)` (by vitti or =) inside
+; the open mandapa. Aliases (`y = x`), fields and calls are Step 4's check, not this one.
+r72_parse_mandapa:
+    call advance_tok               ; consume 'mandapa'
+    push qword [rel r72_ncount]    ; names noted inside this block end with it
+    inc qword [rel r72_mdepth]
+    call parse_body                ; rax = the block (indented, braced, or one statement)
+    dec qword [rel r72_mdepth]
+    pop qword [rel r72_ncount]
+    pop rbx                        ; parse_stmt's frame: its pushed rbx
+    ret
+
+; r72_is_nirm(rdi = expr) -> rax = 1 when the expression is a nirmmita(...) call
+r72_is_nirm:
+    xor eax, eax
+    test rdi, rdi
+    jz .r
+    cmp qword [rdi], AST_CALL
+    jne .r
+    cmp qword [rdi+8], BN_NIRMRITA
+    jne .r
+    mov eax, 1
+.r:
+    ret
+
+; r72_note_alloc(rdi = name, rsi = value expr): inside a mandapa, remember a name given a
+; nirmmita block. Preserves rax, rbx, rcx.
+r72_note_alloc:
+    cmp qword [rel r72_mdepth], 0
+    je .r
+    push rdi
+    mov rdi, rsi
+    call r72_is_nirm
+    pop rdi
+    test eax, eax
+    jz .r
+    mov rdx, [rel r72_ncount]
+    cmp rdx, 256
+    jae .r                         ; past 256 names the check is silent, not wrong: Step 4 owns it
+    lea rsi, [rel r72_names]
+    mov [rsi + rdx*8], rdi
+    inc qword [rel r72_ncount]
+.r:
+    ret
+
+; r72_check_return(rdi = the returned expression): refuse a scratch address.
+r72_check_return:
+    cmp qword [rel r72_mdepth], 0
+    je .ok
+    push rdi
+    call r72_is_nirm
+    pop rdi
+    test eax, eax
+    jnz .refuse
+    cmp qword [rdi], AST_VAR
+    jne .ok
+    mov r8, [rdi+8]                ; the returned name
+    xor ecx, ecx
+.scan:
+    cmp rcx, [rel r72_ncount]
+    jae .ok
+    lea rdx, [rel r72_names]
+    mov r9, [rdx + rcx*8]
+    xor edx, edx
+.cmp:
+    mov al, [r8 + rdx]
+    cmp al, [r9 + rdx]
+    jne .next
+    test al, al
+    jz .refuse
+    inc rdx
+    jmp .cmp
+.next:
+    inc rcx
+    jmp .scan
+.refuse:
+    lea rdi, [rel r72_msg_escape]
+    jmp capacity_fail
+.ok:
+    ret
+
 ; r70_line_indent(rdi = token) -> rax = the number of spaces/tabs that begin the
 ; token's source line. Clobbers rcx, rdx.
 r70_line_indent:
@@ -8988,6 +9087,8 @@ r45_parse_stmt_body:                ; R45: parse_stmt is the wrapper in src/r45_
     je .ps_while
     cmp rdx, KW_KURU
     je .ps_do_while
+    cmp rdx, KW_MANDAPA
+    je r72_parse_mandapa
     cmp rdx, KW_NIVARTANAM
     je .ps_return
     cmp rdx, KW_PUNARAVARTANA
@@ -9077,6 +9178,11 @@ r45_parse_stmt_body:                ; R45: parse_stmt is the wrapper in src/r45_
     call r7_declare_new      ; R7: duplicate check, then R4 declare
     pop rdi
     mov [rax+16], rcx         ; init expr
+    push rax
+    mov rdi, rbx                ; R72: a name given a nirmmita block inside a mandapa
+    mov rsi, rcx
+    call r72_note_alloc
+    pop rax
     call maybe_semi
     pop rbx
     ret
@@ -9963,6 +10069,8 @@ r45_parse_stmt_body:                ; R45: parse_stmt is the wrapper in src/r45_
 .ps_ret_parse:
     call parse_expr           ; rax = return value
     mov rbx, rax              ; save it
+    mov rdi, rax
+    call r72_check_return     ; R72: nivartanam may not return a block made inside a mandapa
     jmp .ps_ret_build
 .ps_ret_noexpr:
     xor rbx, rbx
@@ -10139,6 +10247,18 @@ push r12                  ; save r12 (parse_func_block uses it)
     mov qword [rax], AST_ASSIGN
     mov [rax+8], rbx          ; target
     mov [rax+16], rcx         ; value
+    cmp qword [rbx], AST_VAR  ; R72: x = nirmmita(...) inside a mandapa
+    jne .r72_assign_noted
+    push rax
+    push rbx
+    push rcx
+    mov rdi, [rbx+8]
+    mov rsi, rcx
+    call r72_note_alloc
+    pop rcx
+    pop rbx
+    pop rax
+.r72_assign_noted:
     cmp qword [rbx], AST_VAR  ; R4: `x = ...` declares x (after the RHS is parsed)
     jne .r4_assign_declared
     push rdi
