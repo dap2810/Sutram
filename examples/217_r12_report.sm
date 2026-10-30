@@ -41,7 +41,10 @@ mukhya() {
     likha("-------------------------\n")
     likha("Padded scores:\n")
     # demonstrate pad_vam: right-align each score in width 6
-    vitti koshtha = nirmmita(32)
+    # R68: ank_tak_varna's contract asks for >= 22 cells and pad_vam's for
+    # >= width + 1 = 7; 4 cells (32 bytes) satisfied neither, and the two
+    # cells past the block landed in `row` once nirmmita stopped page-padding.
+    vitti koshtha = nirmmita(22 * 8)
     vitti row = nirmmita(64)
     i = 0
     yavat (i < n) {
