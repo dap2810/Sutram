@@ -1,3 +1,35 @@
+## v422 - I tested the parser class myself on v265: eight cases, all correct, and one expectation of mine that was wrong
+
+### The class is closed, as far as I can construct it
+| Construct | Body | Result |
+|---|---|---|
+| **`yavat`** | **2 statements** | **pass** |
+| **`yadi`** | **2 statements** | **pass** |
+| **`prakriya`** | **2 statements + `nivartanam`** | **pass** |
+| **`yavat`** | **4 statements** | **pass** |
+| **`yavat` nested in `yadi`** | **2 + 2** | **pass** |
+| **`anya`** | **2 statements** | **pass** |
+| **`mukhya`** | **4 statements** | **pass** |
+
+**So the v265 fix handles multi-statement indented bodies everywhere I could construct one, including four statements and nesting.**
+
+### And `chakra`, where I was wrong
+**`chakra i = 0 tak 3` gave `s=12` where I expected `s=9`.** **12 is four iterations, not three.** **`tak` is INCLUSIVE - and `tests/expect/11_forloop.out` pins exactly that: `chakra i = 0 tak 5` expects `0 1 2 3 4 5`.**
+
+**So it is documented, tested and correct, and my expectation came from C habits rather than from this language's spec.**
+
+### Three times in one session, the same error
+1. **I assumed the allocator caused the loop hang.** **It was a parser bug from 264 versions earlier, found only by testing the baseline.**
+2. **I assumed `tak 3` meant three iterations.** **It means four, and a golden says so.**
+3. **Earlier I assumed a one-sentence scope rule was sufficient.** **Three parties disproved it in a day.**
+
+**All three are trusting an expectation instead of checking the artefact.** **And in all three the fix was the same: run it, or read it, rather than reason about it.**
+
+### What my eight tests do not establish
+**That no other construct has the same defect.** **I tested the seven I thought of.** **A construct nobody thought of is exactly the shape of the bug that shipped - nobody thought of allocating in a loop.**
+
+**So the durable answer is a test that counts statements per body against the source, not my eight cases.** **That is priced in the open round.**
+
 ## v421 - the loop bug was a PARSER bug, it predates the arena, and allocation is now 6 nanoseconds
 
 ### I was wrong about the cause
