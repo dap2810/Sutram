@@ -1,3 +1,31 @@
+## v423 - four silent parser drops in one session, all closed, and the census says no shipped code was wrong
+
+### What was found, in order
+1. **An indented body took ONE statement.** **Present for 264 versions.** **Found by me, diagnosed correctly by Claude after I blamed the allocator.**
+2. **Code written after `mukhya` was dropped.** **v266.**
+3. **The same-line rule** - a construct written on the header's own line. **v267.**
+4. **And whatever the goldens then caught, once every construct had one.**
+
+**All four share a shape: the program compiles, runs, and silently does less than it says.** **None of the four gates could see any of them.**
+
+### And the census says no shipped code was affected
+**Muse, across 2,189 control sites in `examples/`, `tests/` and `lib/`:**
+
+| Body form | Sites | Affected? |
+|---|---|---|
+| **Braced `{ ... }`** | **2,181** | **no** |
+| **Indented, one statement** | **2** | **no** |
+| **Indented, more than one statement** | **5** | **yes - and all five are in the test file written to reproduce the bug** |
+| **Same-line, no braces** | **1** | **no** |
+
+**So the bug was real for 264 versions and affected no program in the tree.** **And no golden locks it in, because no golden was recorded from a truncated body.**
+
+### The 6 ns, corrected
+**Claude reproduced it and got ~2 ns - the difference is whether the allocation is touched.** **2 ns for the bump itself, 6-8 ns once the page is faulted in.** **That decomposition is better than my single figure: it separates the allocator's cost from the memory's.**
+
+### And the lesson, which is now the pattern of this whole session
+**My eight hand-written tests showed the class was fixed for the seven constructs I thought of.** **Claude's "every construct as a golden" is what makes it STAY fixed.** **Testing what you thought of is not testing the class.**
+
 ## v422 - I tested the parser class myself on v265: eight cases, all correct, and one expectation of mine that was wrong
 
 ### The class is closed, as far as I can construct it
