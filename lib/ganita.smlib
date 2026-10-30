@@ -13,7 +13,11 @@
 # arithmetic module. See the notes above ganita_janchit_yuj.
 
 # kuttaka(a, b, c) -> x such that a*x is congruent to c (shesh b).
-# Requires mahattam_samapavartak(a, b) to divide c. Returns x (a particular solution).
+# Requires mahattam_samapavartak(a, b) to divide c. Returns x (a particular solution),
+# in [0, |b|) when b != 0.
+# R76: the solution is multiplied out modulo |b| without overflow (kuttaka_gun_shesh).
+# The old `old_s * mult` wrapped for |b| near 2^63: kuttaka(-2, -(2^63-1), 16) gave
+# 9223372036854775791, which is not a solution (9223372036854775799 is).
 prakriya kuttaka(a, b, c) {
     vitti old_r = a
     vitti r = b
@@ -30,14 +34,32 @@ prakriya kuttaka(a, b, c) {
     }
     yadi (old_r == 0) { nivartanam 0 }
     vitti mult = c / old_r
-    vitti res = old_s * mult
     vitti bb = b
     yadi (bb < 0) { bb = 0 - bb }
     yadi (bb > 0) {
-        res = res % bb
-        yadi (res < 0) { res = res + bb }
+        vitti x = old_s % bb
+        yadi (x < 0) { x = x + bb }
+        vitti y = mult % bb
+        yadi (y < 0) { y = y + bb }
+        nivartanam kuttaka_gun_shesh(x, y, bb)
     }
-    nivartanam res
+    nivartanam old_s * mult
+}
+
+# kuttaka_gun_shesh(x, y, m) — (x * y) shesh m for 0 <= x, y < m, m > 0, with no
+# intermediate value above m: double-and-add, one bit of y at a time (R76).
+prakriya kuttaka_gun_shesh(x, y, m) {
+    vitti r = 0
+    vitti a = x
+    vitti e = y
+    yavat (e > 0) {
+        yadi (e % 2 == 1) {
+            yadi (r >= m - a) { r = r - (m - a) } anya { r = r + a }
+        }
+        yadi (a >= m - a) { a = a - (m - a) } anya { a = a + a }
+        e = e / 2
+    }
+    nivartanam r
 }
 
 # integer vargit root (floor)

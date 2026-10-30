@@ -1,0 +1,37 @@
+# R76: known mathematical values for the behaviours no proof pinned (the mutant witnesses), each value
+# checked against exact arithmetic - not recorded from the implementation. Two of them were wrong
+# before R76: meru wrapped past 2^63 - 1 (meru(1000, 10) gave C(1000, 10) mod 2^64), and kuttaka's
+# product overflowed for |b| near 2^63 (kuttaka(-2, -(2^63 - 1), 16) gave ...791; ...799 is right).
+yoj ganita
+yoj ganit
+yoj chandas
+yoj ank
+yoj madhava
+mukhya() {
+    # meru(n, k) = C(n, k); -1 when C(n, k) > 2^63 - 1
+    likha(meru(1, 1), " ", meru(66, 33), "\n")
+    likha(meru(67, 33), " ", meru(1000, 10), "\n")
+    # C(n, 1) = n at 2^62; C(n, 0) = C(n, n) = 1 for a large n (the mutant witnesses)
+    likha(meru(4611686018427387904, 1), "\n")
+    likha(meru(3037000499, 0), " ", meru(3037000499, 3037000499), "\n")
+    # kuttaka(a, b, c): a*x == c (shesh |b|), x in [0, |b|)
+    likha(kuttaka(0 - 2, 0 - 9223372036854775807, 16), "\n")
+    likha(kuttaka(0 - 7819279541048604735, 0 - 2881118045913156764, 0 - 150), "\n")
+    likha(kuttaka(0, 0, 4611686018427387904), " ", kuttaka(0 - 9223372036854775807, 0, 12), "\n")
+    # kuttaka_gun_shesh(x, y, m) = x*y mod m without overflow: 2*3 mod 6 = 0; (M-1)(M-2) mod M = 2
+    likha(kuttaka_gun_shesh(2, 3, 6), " ", kuttaka_gun_shesh(9223372036854775806, 9223372036854775805, 9223372036854775807), "\n")
+    # ank_gan: digits of |n|
+    likha(ank_gan(0 - 9), " ", ank_gan(0 - 10), " ", ank_gan(9), "\n")
+    # seemit / ganit_seemit with lo > hi: hi when n >= lo (documented)
+    likha(seemit(3037000499, 3037000499, 0 - 1), " ", ganit_seemit(3037000499, 3037000499, 0 - 1), "\n")
+    # Brahmagupta: no quadrilateral with sides 16, 5, 4, 1000 -> 0; a 3-4-5 triangle -> 6
+    likha(brahmagupta_kshetr(16, 5, 4, 1000), " ", brahmagupta_kshetr(3, 4, 5, 0), "\n")
+    # n! saturates at 2^63 - 1
+    likha(ganita_paripurna_kramgun(1000000000), " ", ganita_paripurna_kramgun(20), "\n")
+    # Madhava's series against exact values: sin(pi/6) = 0.5, sin(pi/2) = 1, sin(-pi/2) = -1,
+    # cos(pi/3) = 0.5, cos(pi) = -1, atan(1) = pi/4, atan(-1) = -pi/4, atan(-sqrt(3)) = -pi/3
+    likha(madhava_sin(0.5235987755982988), " ", madhava_sin(1.5707963267948966), "\n")
+    likha(madhava_sin(0.0 - 1.5707963267948966), " ", madhava_cos(1.0471975511965976), "\n")
+    likha(madhava_cos(3.141592653589793), " ", madhava_atan(1.0), "\n")
+    likha(madhava_atan(0.0 - 1.0), " ", madhava_atan(0.0 - 1.7320508075688772), "\n")
+}

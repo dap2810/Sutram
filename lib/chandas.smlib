@@ -20,7 +20,10 @@ prakriya dwi_ghat(n) {
     nivartanam r
 }
 
-# meru(n, k) — the binomial coefficient C(n, k); 0 for k < 0 or k > n.
+# meru(n, k) — the binomial coefficient C(n, k); 0 for k < 0 or k > n;
+# -1 when C(n, k) is larger than 2^63 - 1 (R76: it used to wrap silently -
+# meru(1000, 10) returned C(1000, 10) mod 2^64; a binomial is never negative).
+# The largest row that always fits is n = 66 (C(66, 33) = 7219428434016265740).
 prakriya meru(n, k) {
     vitti top = n
     vitti r = k
@@ -42,7 +45,12 @@ prakriya meru(n, k) {
             g = b
             b = t
         }
-        res = (res / g) * (m / (i / g))
+        vitti x = res / g
+        vitti y = m / (i / g)
+        yadi (y != 0) {
+            yadi (x > 9223372036854775807 / y) { nivartanam 0 - 1 }   # the step, and so C(n, k), passes 2^63 - 1
+        }
+        res = x * y
         i = i + 1
     }
     nivartanam res

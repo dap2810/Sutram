@@ -4262,11 +4262,12 @@ def prop_numeric29(compiler, rng):
         lines.append("        prati 1")
         lines.append("    }")
 
-    # kuttaka: intermediate q*s wraps; the wrapped result is pinned
-    # against a Python wrapping simulation (exact result differs)
+    # kuttaka: R76 closed this gap - the product is taken modulo |b| without
+    # overflow, so the EXACT solution is pinned (a*x == c mod |b|, checked in
+    # Python). The old wrapped result was 2605677504891245458, not a solution.
     check("kuttaka(0 - 7819279541048604735, "
           "0 - 2881118045913156764, 0 - 150)",
-          2605677504891245458, "kuttaka wrap")
+          1483584605987376058, "kuttaka exact (R76)")
     # samasa: p*r overflows (2^80 wraps to 0)
     lines.append("    samasa(out, 1099511627776, 0, 1099511627776, 0, 0)")
     check("out[0]", 0, "samasa wrap 0")
