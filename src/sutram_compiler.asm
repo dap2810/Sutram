@@ -234,7 +234,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v266) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v267) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -7244,12 +7244,16 @@ parse_body:
     call r70_indent_body           ; R70: an indented body on the following lines is a block
     test rax, rax
     jnz .pb_ret
+    call cur_tok
+    push qword [rax+24]            ; R71: the line the one-statement body starts on
     call alloc_ast
     mov rbx, rax
     mov qword [rbx], AST_BLOCK
     call parse_stmt
     mov [rbx + 16], rax
     mov qword [rbx+8], 1
+    pop rdx
+    call r71_after_single          ; R71: a second statement on that line is refused
     mov rax, rbx
 .pb_ret:
     pop rbx
@@ -7367,6 +7371,39 @@ r70_indent_body:
 .nesting_overflow:
     lea rdi, [rel msg_block_nesting_overflow]
     jmp capacity_fail
+
+; r71_after_single(rdx = the line a one-statement body began on). C's rule makes
+;     yadi (c) a = 1; b = 2
+; run b unconditionally - the body silently holds fewer statements than the line
+; shows. R71 refuses a further statement on that line. What may follow on the same
+; line: end of input, '}' (an enclosing block closes), ')' , anya, yavat (the tail
+; of kuru), bhavana (the next case). Preserves rbx.
+r71_after_single:
+    call cur_tok
+    cmp qword [rax], TOK_EOF
+    je .ok
+    cmp rdx, [rax+24]
+    jne .ok                        ; the next statement is on a later line: as before
+    cmp qword [rax], TOK_DELIMITER
+    jne .kw
+    cmp qword [rax+8], '}'
+    je .ok
+    cmp qword [rax+8], ')'
+    je .ok
+    jmp parse_error
+.kw:
+    cmp qword [rax], TOK_KEYWORD
+    jne parse_error
+    mov rcx, [rax+16]
+    cmp rcx, KW_ANYATRA
+    je .ok
+    cmp rcx, KW_YAVAT
+    je .ok
+    cmp rcx, KW_BHAVANA
+    je .ok
+    jmp parse_error
+.ok:
+    ret
 
 ; r70_line_indent(rdi = token) -> rax = the number of spaces/tabs that begin the
 ; token's source line. Clobbers rcx, rdx.
