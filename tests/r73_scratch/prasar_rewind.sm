@@ -1,0 +1,31 @@
+# R74 (ChatGPT R146 F3): prasar failing out of two nested blocks, through two prakriya, 1,000,000 times: the failure code and the value arrive, and memory stays flat.
+prakriya failure(c)
+    yadi (c == 1)
+        nivartanam dosh(7)
+    nivartanam siddhi(c * 10)
+prakriya attempt(c)
+    mandapa
+        vitti b = nirmmita(64)
+        b[0] = 1
+        mandapa
+            vitti d = nirmmita(64)
+            vitti x = prasar failure(c)
+            nivartanam siddhi(x + b[0] + d[0])
+    nivartanam siddhi(0)
+prakriya deeper(c)
+    mandapa
+        vitti e = nirmmita(32)
+        vitti y = prasar attempt(c)
+        nivartanam siddhi(y)
+    nivartanam siddhi(0)
+mukhya()
+    vitti k = 0
+    vitti fails = 0
+    vitti sum = 0
+    yavat (k < 1000000)
+        yadi dosh (q = deeper(k % 2))
+            fails = fails + q
+        anya
+            sum = sum + q
+        k = k + 1
+    likha(fails, " ", sum, "\n")

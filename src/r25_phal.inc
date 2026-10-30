@@ -192,7 +192,18 @@ r25_gen_prasar:
     mov r12, [rel code_sz]          ; end of the jz
     cmp qword [rel in_function], 0
     je .main
-    ; return the failure as it is: rax = code, rdx = 1
+    ; return the failure as it is: rax = code, rdx = 1. R74 (R146 F3): inside a mandapa,
+    ; rewind to the prakriya's outermost block first, as nivartanam does.
+    cmp qword [rbx + 48], 0
+    je .no_rewind
+    push r12
+    push rbx
+    R23_EMIT 0x52                         ; push rdx
+    call r73_gen_ret_rewind               ; push rax ; end = mark ; pop rax
+    R23_EMIT 0x5A                         ; pop rdx
+    pop rbx
+    pop r12
+.no_rewind:
     R23_EMIT 0x48,0x8D,0x65,0xF8,0x5B,0x5D,0xC3   ; lea rsp,[rbp-8]; pop rbx; pop rbp; ret
     jmp .patch
 .main:

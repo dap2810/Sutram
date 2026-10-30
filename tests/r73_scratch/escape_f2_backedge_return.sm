@@ -1,0 +1,14 @@
+# R74 (ChatGPT R146 F2): a return read before the assignment, in a loop - refused.
+prakriya f()
+    mandapa
+        vitti b = nirmmita(8)
+        vitti q = 0
+        vitti i = 0
+        yavat (i < 3)
+            yadi (i == 2)
+                nivartanam q
+            q = b
+            i = i + 1
+    nivartanam 0
+mukhya()
+    likha(f())

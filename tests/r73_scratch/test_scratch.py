@@ -11,6 +11,9 @@
   * escape_*: refused with E_SCRATCH_ESCAPE, and the message carries the Sanket line naming the blind spots;
   * allowed_*: compiles and runs;
   * blind_call: compiles - a known blind spot, pinned here so a future check that catches it is noticed.
+  * R74: ChatGPT R146's F1 (store calls in expressions), F2 (loop back edges), F3 (prasar rewinds:
+    flat over 1,000,000 failures), F4 (negative sizes) - escape_f1_*, escape_f2_*, allowed_f*, prasar_rewind,
+    negative_size.
 Linux ELF only (PE output keeps the ordinary allocator; GUARD_PAGES builds turn the block off).
 Last line: `r73 scratch: N checks, M failed`.
 """
@@ -21,6 +24,9 @@ ROOT = os.path.dirname(os.path.dirname(HERE))
 EXPECT = {
     'loop_with': '499999500000', 'loop_without': '499999500000',
     'jumps': '250000000000\n5\n5050', 'reuse_zeroed': '0\n11', 'allowed_nested': '7', 'blind_call': '1',
+    # R74: ChatGPT R146's F1-F4, closed in v271
+    'allowed_f1_numbers': '42 41', 'allowed_f2_numbers': '123', 'prasar_rewind': '3500000 500000',
+    'negative_size': '0 0 0\n0 0\n123 456',
 }
 
 
@@ -64,10 +70,12 @@ def main():
             report(code == 1 and 'kshetra purnam' in text, f'full: kshetra purnam, exit 1 (exit {code})')
             continue
         want = EXPECT.get(n)
-        report(code == 0 and (want is None or text == want), f'{n}: output {text!r}' + (f', peak RSS {r} KB' if n in ('loop_with', 'loop_without', 'jumps') else ''))
+        report(code == 0 and (want is None or text == want), f'{n}: output {text!r}' + (f', peak RSS {r} KB' if n in ('loop_with', 'loop_without', 'jumps', 'prasar_rewind') else ''))
     if 'loop_with' in rss and 'loop_without' in rss:
         report(rss['loop_with'] < 4096 and rss['loop_without'] > 32768,
                f"memory: 1,000,000 x 64 B, with the block {rss['loop_with']} KB, without it {rss['loop_without']} KB")
+    if 'prasar_rewind' in rss:
+        report(rss['prasar_rewind'] < 4096, f"memory: 1,000,000 prasar failures out of blocks, {rss['prasar_rewind']} KB")
     if 'jumps' in rss:
         report(rss['jumps'] < 4096, f"memory: 1,000,000 agrim passes through a block, {rss['jumps']} KB")
     print(f'r73 scratch: {checks} checks, {failed} failed')

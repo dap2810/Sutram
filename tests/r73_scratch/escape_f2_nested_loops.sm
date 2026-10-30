@@ -1,0 +1,15 @@
+# R74 (ChatGPT R146 F2): the taint comes from an inner chakra, the escape is in the outer yavat - refused.
+mukhya()
+    vitti outside = 0
+    mandapa
+        vitti b = nirmmita(8)
+        vitti q = 0
+        vitti j = 0
+        yavat (j < 2)
+            vitti i = 0
+            yavat (i < 2)
+                i = i + 1
+            outside = q
+            chakra k = 1 tak 2
+                q = b
+            j = j + 1

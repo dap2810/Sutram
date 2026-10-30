@@ -1,0 +1,16 @@
+# R74 (ChatGPT R146 F2): the same shape with numbers only - allowed, prints 123.
+mukhya()
+    vitti outside = 0
+    mandapa
+        vitti b = nirmmita(8)
+        b[0] = 123
+        vitti q = 0
+        vitti i = 0
+        yavat (i < 2)
+            yadi (i == 1)
+                outside = q
+            q = b[0]
+            vitti local = b
+            local = local + 8
+            i = i + 1
+    likha(outside, "\n")

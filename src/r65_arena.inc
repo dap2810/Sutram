@@ -324,8 +324,10 @@ r65_emit_kosh_extend:
 
 ; ROUND-73: the scratch side of nirmmita (see r72_parse_mandapa in sutram_compiler.asm).
 section .data
-    ; mov rsi,rax ; test rsi,rsi ; jz .zero (rel32)
-    r73_s1 db 0x48,0x89,0xC6, 0x48,0x85,0xF6, 0x0F,0x84
+    ; mov rsi,rax ; test rsi,rsi ; jle .zero (rel32) - R74: a negative size is 0, as on the
+    ; ordinary path (R146 F4: with jz, -1 rounded to 0 bytes and the zeroing wrote one qword
+    ; into the block above)
+    r73_s1 db 0x48,0x89,0xC6, 0x48,0x85,0xF6, 0x0F,0x8E
     ; (mov rax,[end]) lea rdx,[rsi+15] ; and rdx,-16 ; sub rax,rdx ; jb .full (rel32)
     r73_s2 db 0x48,0x8D,0x56,0x0F, 0x48,0x83,0xE2,0xF0, 0x48,0x29,0xD0, 0x0F,0x82
     ; mov rdx,rax
@@ -406,7 +408,7 @@ r73_gen_rewind:
     ret
 
 ; r73_gen_scratch_nirm: rax (generated) = size -> rax = a zeroed block on the scratch side.
-;   mov rsi,rax ; test rsi,rsi ; jz .zero ; mov rax,[end] ; lea rdx,[rsi+15] ; and rdx,-16
+;   mov rsi,rax ; test rsi,rsi ; jle .zero ; mov rax,[end] ; lea rdx,[rsi+15] ; and rdx,-16
 ;   sub rax,rdx ; jb .full ; mov rdx,rax ; mov rax,[cur] ; cmp rdx,rax ; jb .full
 ;   mov rax,rdx ; mov [end],rax ; mov rdi,rax ; mov rcx,rsi ; mov rdx,rax ; xor eax,eax
 ;   rep stosb ; mov rax,rdx ; jmp .done
@@ -414,7 +416,7 @@ r73_gen_rewind:
 ;   .full: likha(kshetra purnam) ; exit(1)
 r73_gen_scratch_nirm:
     call r65_ensure_globals
-    R65_BYTES r73_s1               ; mov rsi,rax ; test rsi,rsi ; jz .zero
+    R65_BYTES r73_s1               ; mov rsi,rax ; test rsi,rsi ; jle .zero
     call .rel32                    ; A
     mov rdi, [rel r65_idx_end]
     call r56_emit_global_load      ; mov rax,[end]

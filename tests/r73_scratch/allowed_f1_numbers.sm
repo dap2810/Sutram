@@ -1,0 +1,11 @@
+# R74 (ChatGPT R146 F1): numbers read out of scratch, stored by kosh_push and likh8 in initializers - allowed.
+mukhya()
+    kosh saved[1]
+    vitti out = nirmmita(8)
+    mandapa
+        vitti b = nirmmita(16)
+        b[0] = 41
+        b[1] = 1
+        vitti n = kosh_push(saved, b[0] + b[1])
+        vitti ig = likh8(out, b[0])
+    likha(saved[0], " ", out[0], "\n")

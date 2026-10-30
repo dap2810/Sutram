@@ -1,0 +1,7 @@
+# R74 (ChatGPT R146 F1): kosh_push of an address plus 8 inside a condition - refused.
+mukhya()
+    kosh saved[1]
+    mandapa
+        vitti b = nirmmita(8)
+        yadi (kosh_push(saved, b + 8) > 0)
+            likha(1)

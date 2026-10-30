@@ -1,0 +1,6 @@
+# R74 (ChatGPT R146 F1): a store call inside an expression - refused (v270 compiled it).
+mukhya()
+    kosh saved[1]
+    mandapa
+        vitti b = nirmmita(8)
+        likha(kosh_push(saved, b))

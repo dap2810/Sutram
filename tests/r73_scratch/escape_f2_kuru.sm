@@ -1,0 +1,12 @@
+# R74 (ChatGPT R146 F2): kuru ... yavat - refused.
+mukhya()
+    vitti m = nirmmita(8)
+    mandapa
+        vitti b = nirmmita(8)
+        vitti q = 0
+        vitti i = 0
+        kuru
+            m[0] = q
+            q = b + 8
+            i = i + 1
+        yavat (i < 2)

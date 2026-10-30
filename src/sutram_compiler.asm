@@ -239,7 +239,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v270) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v271) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -1017,6 +1017,11 @@ section .bss
     r73_symbase   resq 1
     r73_fsave     resq 4 * 64
     r73_fsn       resq 1
+    r73_flows     resq 4 * 4096           ; R74: (kind, name, depth, value) seen inside a loop in a block
+    r73_flown     resq 1
+    r73_flowstk   resq 256                ; r73_flown at each enclosing loop's entry
+    r73_fflow     resq 64                 ; r73_flown at each prakriya's entry
+    r73_maxmode   resq 1                  ; 1 while a loop is re-checked: a name's taint is its largest
     parse_expr_depth  resq 1 ; R17 R6: nesting depth of the expression being parsed
     orig_rsp    resq 1      ; original stack ptr at _start (for envp scan)
     ; Language pack support
@@ -7578,15 +7583,294 @@ r73_loop_enter:
     lea rdx, [rel r73_loopstk]
     mov rax, [rel r72_mdepth]
     mov [rdx + rcx*8], rax
+    lea rdx, [rel r73_flowstk]
+    mov rax, [rel r73_flown]
+    mov [rdx + rcx*8], rax         ; R74: this loop's flows start here
 .full:
     inc qword [rel r73_loopn]
     pop rdx
     pop rcx
     pop rax
     ret
+; R74 (R146 F2): leaving a loop, check again every flow written inside it, with what the
+; whole loop does to each name, until nothing rises: the second pass sees what a later
+; statement carries round the back edge to an earlier one.
 r73_loop_leave:
     dec qword [rel r73_loopn]
+    push rax
+    push rcx
+    push rdx
+    push rsi
+    push rdi
+    push r8
+    push r9
+    push r10
+    push r11
+    mov rcx, [rel r73_loopn]
+    cmp rcx, 256
+    jae .out
+    lea rdx, [rel r73_flowstk]
+    mov rdi, [rdx + rcx*8]         ; this loop's first flow
+    cmp rdi, [rel r73_flown]
+    jae .trim
+    push rdi
+    call r73_fix
+    pop rdi
+.trim:
+    mov rcx, [rel r73_loopn]
+    cmp rcx, [rel r73_loopbase]
+    ja .out                        ; an enclosing loop of this prakriya checks them again
+    mov [rel r73_flown], rdi
+.out:
+    pop r11
+    pop r10
+    pop r9
+    pop r8
+    pop rdi
+    pop rsi
+    pop rdx
+    pop rcx
+    pop rax
     ret
+
+; r73_record(rdi = kind 1 into a variable / 2 into memory / 3 returned, rsi = name,
+; rdx = the variable's depth, rcx = the value): kept while inside a loop in a block.
+; Preserves rax, rbx.
+r73_record:
+    cmp qword [rel r72_mdepth], 0
+    je .r
+    push r8
+    push r9
+    mov r8, [rel r73_loopn]
+    cmp r8, [rel r73_loopbase]
+    jbe .out
+    mov r8, [rel r73_flown]
+    cmp r8, 4096
+    jae .full
+    shl r8, 5
+    lea r9, [rel r73_flows]
+    add r8, r9
+    mov [r8], rdi
+    mov [r8+8], rsi
+    mov [r8+16], rdx
+    mov [r8+24], rcx
+    inc qword [rel r73_flown]
+.out:
+    pop r9
+    pop r8
+.r:
+    ret
+.full:
+    lea rdi, [rel msg_var_table_overflow]
+    jmp capacity_fail
+
+; r73_fix(rdi = first flow): re-check flows [rdi, r73_flown) until no taint rises.
+r73_fix:
+    push rbx
+    push r12
+    push r13
+    push r14
+    mov r12, rdi
+    mov qword [rel r73_maxmode], 1
+.pass:
+    xor r14d, r14d                 ; nothing rose yet
+    mov r13, r12
+.next:
+    cmp r13, [rel r73_flown]
+    jae .done_pass
+    mov rbx, r13
+    shl rbx, 5
+    lea rax, [rel r73_flows]
+    add rbx, rax
+    mov rdi, [rbx+24]
+    call r73_taint
+    mov rcx, [rbx]
+    cmp rcx, 1
+    jne .not_var
+    cmp rax, [rbx+16]
+    ja r73_fail_var
+    mov rdi, [rbx+8]
+    mov rsi, rax
+    call r73_raise
+    or r14, rax
+    jmp .step
+.not_var:
+    test rax, rax
+    jz .step
+    cmp rcx, 3
+    je r73_fail_ret
+    jmp r73_fail_mem
+.step:
+    inc r13
+    jmp .next
+.done_pass:
+    test r14, r14
+    jnz .pass
+    mov qword [rel r73_maxmode], 0
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; r73_raise(rdi = name, rsi = taint) -> rax = 1 if any entry of that name rose. Every
+; entry of the name is raised (the names of closed blocks are still in the table; raising
+; them too can only refuse more).
+r73_raise:
+    push rbx
+    push r12
+    push r13
+    push r14
+    mov r12, rdi
+    mov r13, rsi
+    xor r14d, r14d                 ; 0 nothing rose, 1 rose
+    xor eax, eax
+    push rax                       ; [rsp] = found any
+    test r13, r13
+    jz .done
+    mov rbx, [rel r73_symbase]
+.scan:
+    cmp rbx, [rel r73_symn]
+    jae .end
+    lea rax, [rel r73_syms]
+    mov rcx, rbx
+    shl rcx, 4
+    add rax, rcx
+    push rax
+    mov rsi, [rax]
+    mov rdi, r12
+    call strcmp
+    test rax, rax
+    pop rax
+    jnz .skip
+    mov qword [rsp], 1
+    cmp r13, [rax+8]
+    jbe .skip
+    mov [rax+8], r13
+    mov r14d, 1
+.skip:
+    inc rbx
+    jmp .scan
+.end:
+    cmp qword [rsp], 0
+    jne .done
+    mov rdi, r12
+    mov rsi, r13
+    call r73_sym_set
+    mov r14d, 1
+.done:
+    pop rax
+    mov rax, r14
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; r73_sym_max(rdi = name) -> rax = the largest taint of any entry of that name
+r73_sym_max:
+    push rbx
+    push r12
+    push r13
+    mov r12, rdi
+    xor r13d, r13d
+    mov rbx, [rel r73_symbase]
+.scan:
+    cmp rbx, [rel r73_symn]
+    jae .out
+    lea rax, [rel r73_syms]
+    mov rcx, rbx
+    shl rcx, 4
+    add rax, rcx
+    push rax
+    mov rsi, [rax]
+    mov rdi, r12
+    call strcmp
+    test rax, rax
+    pop rax
+    jnz .skip
+    cmp r13, [rax+8]
+    jae .skip
+    mov r13, [rax+8]
+.skip:
+    inc rbx
+    jmp .scan
+.out:
+    mov rax, r13
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; r73_check_call(rax = an AST_CALL just built): kosh_push, likh8, likh8c, setchar and
+; memset store their later arguments; none of them may be a scratch address. Checked where
+; the call is built, so a store inside an initializer, an argument or a condition is seen
+; (R146 F1). Preserves rax, rbx, r12.
+r73_check_call:
+    cmp qword [rel r72_mdepth], 0
+    je .r
+    mov rcx, [rax+8]
+    cmp rcx, BN_KOSHPUSH
+    je .go
+    cmp rcx, BN_LIKH8
+    je .go
+    cmp rcx, BN_LIKH8C
+    je .go
+    cmp rcx, BN_SETCHAR
+    je .go
+    cmp rcx, BN_MEMSET
+    je .go
+.r:
+    ret
+.go:
+    push rax
+    push rbx
+    push r12
+    mov rbx, rax
+    mov r12, 1                     ; the first argument is where; the rest are what
+.arg:
+    cmp r12, [rbx+16]
+    jae .done
+    cmp r12, 5
+    jae .done
+    mov rdi, [rbx + 24 + r12*8]
+    call r73_check_stored
+    inc r12
+    jmp .arg
+.done:
+    pop r12
+    pop rbx
+    pop rax
+    ret
+
+; r73_check_stored(rdi = a value written into memory): refused if it is a scratch address;
+; remembered inside a loop. Preserves rax, rbx, r12.
+r73_check_stored:
+    cmp qword [rel r72_mdepth], 0
+    je .r
+    push rax
+    push rdi
+    call r73_taint
+    test rax, rax
+    jnz r73_fail_mem
+    pop rcx
+    mov rdi, 2
+    xor esi, esi
+    xor edx, edx
+    call r73_record
+    pop rax
+.r:
+    ret
+
+r73_fail_var:
+    lea rdi, [rel r73_msg_escape_var]
+    jmp capacity_fail
+r73_fail_mem:
+    lea rdi, [rel r73_msg_escape_mem]
+    jmp capacity_fail
+r73_fail_ret:
+    lea rdi, [rel r72_msg_escape]
+    jmp capacity_fail
 
 ; r73_func_enter / r73_func_leave: around a prakriya body. A prakriya is its own region:
 ; its blocks start at depth 1, its loops are its own, its names its own.
@@ -7608,6 +7892,15 @@ r73_func_enter:
     mov rax, [rel r73_symn]
     mov [rcx+24], rax
 .full:
+    lea rax, [rel r73_fflow]
+    mov rcx, [rel r73_fsn]
+    cmp rcx, 64
+    jae .nf
+    push rdx
+    mov rdx, [rel r73_flown]
+    mov [rax + rcx*8], rdx
+    pop rdx
+.nf:
     inc qword [rel r73_fsn]
     mov qword [rel r72_mdepth], 0
     mov rax, [rel r73_loopn]
@@ -7635,6 +7928,10 @@ r73_func_leave:
     mov [rel r73_symbase], rax
     mov rax, [rcx+24]
     mov [rel r73_symn], rax
+    mov rcx, [rel r73_fsn]
+    lea rax, [rel r73_fflow]
+    mov rax, [rax + rcx*8]
+    mov [rel r73_flown], rax       ; R74: a prakriya's flows are its own
 .r:
     pop rcx
     pop rax
@@ -7747,6 +8044,8 @@ r73_taint:
     ret
 .var:
     mov rdi, [rdi+8]
+    cmp qword [rel r73_maxmode], 0
+    jne r73_sym_max                ; R74: re-checking a loop - the name's largest taint
     call r73_sym_find
     test rax, rax
     jz .r
@@ -7799,6 +8098,12 @@ r73_note_decl:
     push rcx
     mov rbx, rdi
     push rsi
+    mov rdi, 1                     ; R74: remembered inside a loop, for the back edge
+    mov rcx, rsi
+    mov rsi, rbx
+    mov rdx, [rel r72_mdepth]
+    call r73_record
+    mov rdi, rbx
     call r73_sym_find
     pop rdi
     mov rcx, rax
@@ -7837,9 +8142,7 @@ r73_check_stmt:
     je .assign
     cmp rcx, AST_RETURN
     je .return
-    cmp rcx, AST_CALL
-    je .call
-    jmp .out
+    jmp .out                       ; R74: store calls are checked where they are built
 .assign:
     mov rdi, [rbx+16]
     call r73_taint
@@ -7851,6 +8154,11 @@ r73_check_stmt:
     call r73_var_depth
     cmp r12, rax
     ja .escape_var                 ; into a variable that outlives the block
+    mov rdx, rax                   ; R74: remembered inside a loop, for the back edge
+    mov edi, 1
+    mov rsi, [r13+8]
+    mov rcx, [rbx+16]
+    call r73_record
     mov rdi, [r13+8]
     call r73_sym_find
     test rax, rax
@@ -7869,25 +8177,22 @@ r73_check_stmt:
 .store_mem:
     test r12, r12
     jnz .escape_mem                ; into memory: a mala, a raw block, a field
+    mov edi, 2
+    xor esi, esi
+    xor edx, edx
+    mov rcx, [rbx+16]
+    call r73_record
     jmp .out
 .return:
     mov rdi, [rbx+8]
     call r73_taint
     test rax, rax
     jnz .escape_ret
-    jmp .out
-.call:
+    mov edi, 3
+    xor esi, esi
+    xor edx, edx
     mov rcx, [rbx+8]
-    cmp rcx, BN_LIKH8
-    je .call_store
-    cmp rcx, BN_KOSHPUSH
-    je .call_store
-    jmp .out
-.call_store:
-    mov rdi, [rbx+32]              ; the value stored
-    call r73_taint
-    test rax, rax
-    jnz .escape_mem
+    call r73_record
     jmp .out
 .out:
     mov rax, rbx
@@ -10367,7 +10672,8 @@ r45_parse_stmt_body:                ; R45: parse_stmt is the wrapper in src/r45_
     cmp rcx, '('
     jne parse_error
     call advance_tok
-    call parse_expr           ; rax = condition
+    call r73_loop_enter       ; R73: a krama/agrim's loop, for the rewind; R74: the condition
+    call parse_expr           ; rax = condition                runs every pass, so it is in the loop
     mov rbx, rax              ; save condition
     call cur_tok
     mov rcx, [rax+8]
@@ -10375,7 +10681,6 @@ r45_parse_stmt_body:                ; R45: parse_stmt is the wrapper in src/r45_
     jne parse_error
     call advance_tok
     ; Parse body — braces optional
-    call r73_loop_enter       ; R73: a krama/agrim's loop, for the rewind
     call parse_body            ; rax = body
     call r73_loop_leave
     push rax                  ; save body
@@ -10395,7 +10700,6 @@ r45_parse_stmt_body:                ; R45: parse_stmt is the wrapper in src/r45_
     call advance_tok          ; consume 'kuru'
     call r73_loop_enter       ; R73: a krama/agrim's loop, for the rewind
     call parse_body           ; rax = body block
-    call r73_loop_leave
     push rax                  ; save body
     call cur_tok
     cmp qword [rax], TOK_KEYWORD
@@ -10408,6 +10712,7 @@ r45_parse_stmt_body:                ; R45: parse_stmt is the wrapper in src/r45_
     jne parse_error
     call advance_tok
     call parse_expr           ; rax = condition
+    call r73_loop_leave       ; R74: after the condition, which runs every pass
     push rax                  ; save condition
     call cur_tok
     cmp qword [rax+8], ')'
@@ -11782,6 +12087,7 @@ parse_primary_inner:
     pop rcx
     mov qword [rax], AST_PRASAR
     mov [rax+8], rcx
+    call r73_ret_mark             ; R74 (R146 F3): a failure returns - inside a block, rewind first
     pop rbx
     ret
 .r25_prasar_not_call:
@@ -12373,6 +12679,7 @@ parse_primary_inner:
     dec rcx
     jnz .pp_pop_b
 .pp_no_pop_b:
+    call r73_check_call       ; R74 (R146 F1): a store call is checked wherever it is written
     pop r12                   ; restore r12
     pop rbx
     ret
@@ -12403,6 +12710,10 @@ parse_primary_inner:
     pop rdx                    ; first argument, destination address node
     mov [rax+16], rdx
     mov [rax+24], rcx
+    push rax
+    mov rdi, rcx
+    call r73_check_stored      ; R74: likh(addr, value) stores the value
+    pop rax
     pop r12                    ; restore r12
     pop rbx
     ret
