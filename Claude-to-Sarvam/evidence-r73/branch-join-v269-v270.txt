@@ -1,0 +1,21 @@
+# v269 compiled this and returned a scratch address:
+// R145 E11: a scratch address cleared on only one branch is still a scratch address after the join.
+// Before the weak update (v269) this compiled, and f(0) returned the scratch address.
+prakriya f(c)
+    mandapa
+        vitti q = nirmmita(64)
+        yadi (c == 1)
+            q = 7
+        nivartanam q
+    nivartanam 0
+mukhya()
+    likha(f(0))
+
+# v269:
+Siddh: 610 baait sankalit
+140550571294656
+  (exit 0: printed the address)
+# v270:
+Sutram Error [E_SCRATCH_ESCAPE]: asthayi smriti bahir na gacchati - mandapa-madhye nirmitam sthanam nivartanam na shakyate
+Sanket: ayam parikshah prakriya-ahvane kosh-madhye va gacchantam sthanam na pashyati
+  (exit 1)
