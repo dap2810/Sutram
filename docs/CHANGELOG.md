@@ -1,3 +1,17 @@
+## Compiler v273 (Claude, R75) - a negative size is an error; one known limit named
+
+- **`nirmmita` with a negative size.** Written as a number (`nirmmita(-1)`, `nirmmita(2 - 3 * 4)`), anywhere: refused
+  at compile time, `E_NIRMMITA_RNA`. Computed, inside a `mandapa`: the program stops with
+  `Sutram Error: nirmmita-parimanam rnatmakam - mandapa-madhye rnam parimanam na sambhavati`, exit 1. (v270 wrote a
+  qword into the block above; v271-v272 gave 0. Outside a block, and on Windows, a computed negative still gives 0.)
+- **A store inside an expression is checked** (since v271): `vitti out = kosh_push(k, buf) + 1` is refused;
+  `examples/270` is the golden. `out = (m[0] = buf) + 1` is not Sutram - an assignment is a statement.
+- **Known limit - a scratch address inside a `kosh`.** Putting one in directly is refused (`kosh_push(k, buf)`,
+  `k[i] = buf`, through an alias, in a `kosh` made inside or outside the block). **One way in is not seen: a
+  `prakriya` that returns the address it was given** (`kosh_push(k, adr(buf))`). That program compiles and reads
+  another block's data. Pinned by `tests/r73_scratch/blind_kosh_via_call.sm`; stated in `README.md` and
+  `docs/LANGUAGE-REFERENCE.md` §19. Closing it needs a summary of what each `prakriya` does with its parameters.
+
 ## v426 - I tested the composition myself: all five memory steps hold together
 
 **Every step had been verified alone. The joins had not. I ran the five.**

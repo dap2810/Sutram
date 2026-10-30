@@ -168,6 +168,23 @@ Windows target:
 | `ide/` | terminal IDE and Linux X11 GUI |
 | `ROADMAP.md` | what is done, what is planned, what is not attempted |
 
+## Memory
+
+**Sutram releases memory when a block ends, refuses the common escapes at compile time, and has no garbage collector and no runtime.**
+
+Three known gaps, in plain words:
+
+- **An address passed through a `prakriya` call is not followed.** If you give a scratch buffer to a function and
+  it keeps the address (stores it, or returns it so you can put it in a `kosh` or a variable), the compiler does
+  not see it, and the program later reads memory that another block is using. Pass scratch buffers to functions
+  to be read or written, never to be kept.
+- **Memory is released only on Linux.** In a Windows program a `mandapa` block works, but releases nothing.
+- **A block releases only what `nirmmita` asks for inside it.** A `kosh`'s storage, and what a called function
+  allocates, are not released by the block; and released memory is reused by the next block, not handed back to
+  the operating system.
+
+The details are in `docs/LANGUAGE-REFERENCE.md`, §19.
+
 ## Honest status
 
 The clean-project handoff reports a Linux baseline of **225 passing cases,

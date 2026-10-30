@@ -739,8 +739,10 @@ prakriya madhya(a, b, c)            # the middle of three numbers
 **Scalar scratch: `nirmmita` buffers of numbers, used inside the block.** Read the numbers out freely — into a
 variable, a `mala`, a `kosh`, a buffer made outside, a return value. That is how results leave a block.
 
-**Not a `kosh` of pointers.** A `kosh` used in a block works, and its storage is ordinary persistent memory — the
-block does not reclaim it, and a scratch address may not be pushed into it (below).
+**Not a `kosh` of pointers.** **A `kosh` — made inside the block or outside it — cannot be relied on to hold an
+address made in the block.** Putting one in directly (`kosh_push(k, buf)`, `k[i] = buf`) is refused; the one way
+it gets in unseen is through a `prakriya` that hands the address back (below). A `kosh` of *numbers* used in a
+block works; its storage is ordinary memory, which the block does not reclaim.
 
 ### Run time
 
@@ -748,7 +750,10 @@ block does not reclaim it, and a scratch address may not be pushed into it (belo
   program's 1 GiB field, zeroed, like any `nirmmita` buffer.
 - **Every exit gives it all back:** reaching the end of the body, `nivartanam`, `krama`, `agrim`, and a failure
   passed on by `prasar`. A later block reuses the same memory, and sees zeros, never the earlier block's data.
-- **A negative size** gives 0, as `nirmmita` does outside a block.
+- **A negative size** is an error: written as a number (`nirmmita(-1)`), the compiler refuses it —
+  `E_NIRMMITA_RNA`; computed (`nirmmita(n)` with `n` below 0), the program stops, exit 1:
+  `Sutram Error: nirmmita-parimanam rnatmakam - mandapa-madhye rnam parimanam na sambhavati`. (Outside a block, and in
+  a Windows program, a computed negative size still gives 0.)
 - **Measured (Linux x86-64, v270/v271):** 1,000,000 × `nirmmita(64)` in a loop — **264 KB** peak with the block,
   **62 MB** without it. A `kosh` outside the block filled with 1,000,000 numbers from inside it: **7.8 MB** (the
   `kosh` itself) against **78 MB** without the block. A block recursing 1,000 deep, 1,000 times: **2 MB**
@@ -780,8 +785,8 @@ refused too.
 
 ### What it does not see
 
-**An address passed to a `prakriya` that keeps it** — stores it somewhere, or returns it — and an address
-hidden inside a `kosh`. Those programs compile and are wrong: they read memory a later block reuses. Every
+**An address passed to a `prakriya` that keeps it** — stores it somewhere, or returns it, so that the caller
+can put it in a `kosh` or a variable. Those programs compile and are wrong: they read memory a later block reuses. Every
 `E_SCRATCH_ESCAPE` message ends with a `Sanket` line that says so. **So a program that compiles is not proved
 safe: the check refuses the escapes above, and no more.**
 
