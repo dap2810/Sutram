@@ -1,0 +1,11 @@
+// R145 E11: a scratch address cleared on only one branch is still a scratch address after the join.
+// Before the weak update (v269) this compiled, and f(0) returned the scratch address.
+prakriya f(c)
+    mandapa
+        vitti q = nirmmita(64)
+        yadi (c == 1)
+            q = 7
+        nivartanam q
+    nivartanam 0
+mukhya()
+    likha(f(0))

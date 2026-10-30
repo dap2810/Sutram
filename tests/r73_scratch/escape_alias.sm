@@ -1,0 +1,10 @@
+// R145 E02: an alias carries the taint - q = p, then q is returned.
+prakriya f()
+    mandapa
+        vitti p = nirmmita(64)
+        vitti q = 0
+        q = p
+        nivartanam q
+    nivartanam 0
+mukhya()
+    likha(f())

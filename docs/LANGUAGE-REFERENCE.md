@@ -726,10 +726,11 @@ prakriya madhya(a, b, c)
 | a buffer's address (or that address plus an offset) in a variable of the same block or a deeper one | allowed |
 | that address in a variable declared **outside** the block (or in an outer block) | **refused**: `E_SCRATCH_ESCAPE` |
 | that address stored **into memory** — a `mala` cell, a raw block, `likh8`, `kosh_push` | **refused**: `E_SCRATCH_ESCAPE` |
-| `nivartanam` of that address | **refused**: `E_SCRATCH_ESCAPE` |
+| `nivartanam` of that address (plain, `siddhi(...)` or `dosh(...)`), or of a copy of it (`q = p`) | **refused**: `E_SCRATCH_ESCAPE` |
+| a variable that once held that address, given a number later (`q = 7`) and then returned | **refused** (v270): the check does not decide which branch ran, so a name that has held a scratch address keeps that mark until its block ends |
 | any `kosh` inside the block | not supported in v1.0 |
 
-**What happens at run time (v269):** every `nirmmita` written inside the block takes memory from the scratch side
+**What happens at run time (v269 on):** every `nirmmita` written inside the block takes memory from the scratch side
 of the field, zeroed like any `nirmmita` block; when the block ends — by falling off its end, by `nivartanam`,
 `krama` or `agrim` — all of it is reclaimed at once. A loop that allocates 1,000,000 blocks of 64 bytes inside a
 `mandapa` peaks at **264 KB**; the same loop without the block peaks at **62 MB**. Asking a block for more than the
