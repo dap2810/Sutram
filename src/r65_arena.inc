@@ -24,6 +24,25 @@
 ; kosh growth (r65_emit_kosh_extend, before the copy path): if the kosh's data
 ; ends at the cursor, the cursor moves and the capacity field changes - no copy,
 ; no new block, and every alias of the buffer stays valid because nothing moved.
+;
+; ROUND-69 (Step 2, dvi-mukha): one range, two opposing cursors.
+;   0kshetra_cur   the persistent cursor: grows UP from the start of the range
+;   0kshetra_end   the scratch cursor: grows DOWN from the end of the range. It is
+;                  also the persistent side's limit, so the persistent fast path
+;                  is the same comparison as in Step 1: room = end - cur.
+;   0kshetra_sima  the range's true end: the scratch side's own limit when it
+;                  is ever full (end == sima means the scratch side is empty).
+; Nothing moves 0kshetra_end yet - the mandapa block that would (Step 3) does
+; not exist - so in v264 the scratch cursor is reserved, initialised and unused,
+; and every program allocates exactly as in Step 1. Because the persistent side
+; is bounded by the scratch cursor, a kosh growing on the persistent side can
+; never extend into scratch memory: the R61 case 4b cannot be expressed.
+; The reservation now sits before the fast path (the fast path jumps over it
+; once the arena exists), so no jump in the sequence needs more than rel8.
+;
+; GUARD_PAGES (nasm -dGUARD_PAGES; tools/guard_page.py, never shipped): every
+; nirmmita is its own mmap whose block ends flush against a PROT_NONE page, so
+; one byte read or written past any block is SIGSEGV. No arena, no kosh extension.
 ; ============================================================
 
 R65_ARENA equ 0x40000000            ; 1 GiB of address space; pages are committed on touch
@@ -31,29 +50,17 @@ R65_ARENA equ 0x40000000            ; 1 GiB of address space; pages are committe
 section .data
     r65_name_cur db "0kshetra_cur", 0
     r65_name_end db "0kshetra_end", 0
+    r65_name_sima db "0kshetra_sima", 0
     ; fast path, part 1 (before the first global load):  mov rsi,rax
     r65_t1 db 0x48,0x89,0xC6
-    ; part 2 (after mov rax,[cur]):  test rax,rax ; jz .reserve(+47) ; mov rdx,rax
-    r65_t2 db 0x48,0x85,0xC0, 0x74,0x2F, 0x48,0x89,0xC2
-    ; part 3 (after mov rax,[end]):  sub rax,rdx ; cmp rax,rsi ; jb .mmap(+115) ; test rsi,rsi ;
-    ;         jz .mmap(+110) ; lea rax,[rdx+rsi+15] ; and rax,-16
-    r65_t3 db 0x48,0x29,0xD0, 0x48,0x39,0xF0, 0x72,0x73, 0x48,0x85,0xF6, 0x74,0x6E
-    db 0x48,0x8D,0x44,0x32,0x0F, 0x48,0x83,0xE0,0xF0
-    ; part 4 (after mov [cur],rax):  mov rax,rdx ; jmp .done (rel32, patched to the end of the fallback)
+    ; after mov [cur],rax:  mov rax,rdx ; jmp .done (rel32, patched to the end of the fallback)
     r65_t4 db 0x48,0x89,0xD0, 0xE9
     ; .reserve: push rsi ; xor edi,edi ; mov esi,ARENA ; mov edx,3 ; mov r10d,0x4022 ;
     ;           mov r8,-1 ; xor r9d,r9d ; mov eax,9
     r65_t5 db 0x56, 0x31,0xFF, 0xBE,0x00,0x00,0x00,0x40, 0xBA,0x03,0x00,0x00,0x00
     db 0x41,0xBA,0x22,0x40,0x00,0x00, 0x49,0xC7,0xC0,0xFF,0xFF,0xFF,0xFF, 0x45,0x31,0xC9
     db 0xB8,0x09,0x00,0x00,0x00
-    ; part 6 (after syscall):  pop rsi ; cmp rax,-4095 ; jae .failed(+22)
-    r65_t6 db 0x5E, 0x48,0x3D,0x01,0xF0,0xFF,0xFF, 0x73,0x16
-    ; part 7 (after mov [cur],rax):  add rax,ARENA
-    r65_t7 db 0x48,0x05,0x00,0x00,0x00,0x40
-    ; part 8 (after mov [end],rax):  jmp .retry (-126, back to mov rax,[cur])
-    ; .failed:  mov eax,16
-    r65_t8 db 0xEB,0x82, 0xB8,0x10,0x00,0x00,0x00
-    ; .mmap (after the two stores):  mov rax,rsi   - then the old sequence
+    ; .mmap:  mov rax,rsi   - then the old sequence
     r65_t9 db 0x48,0x89,0xF0
     ; kosh extension, after newcap is in r11 (r8 = user ptr, r9 = len, r10 = cap):
     ;   lea rax,[r8+r10*8] ; add rax,15 ; and rax,-16 ; mov rdx,rax
@@ -65,11 +72,38 @@ section .data
     r65_k3 db 0x48,0x39,0xC2, 0x77,0x16, 0x48,0x89,0xD0
     ;   (mov [cur],rax)  mov [r8-8],r11 ; mov r10,r11 ; jmp .space (rel32, patched)
     r65_k4 db 0x4D,0x89,0x58,0xF8, 0x4D,0x89,0xDA, 0xE9
+    ; ROUND-69 sequence (rax = size on entry):
+    ;   mov rsi,rax ; mov rax,[cur] ; test rax,rax ; jnz .have (rel8, patched)
+    r69_n2 db 0x48,0x85,0xC0, 0x75,0x00
+    ; .reserve: r65_t5 (push rsi; mmap arguments; mov eax,9) ; syscall ; then
+    ;   pop rsi ; mov edx,ARENA ; cmp rax,-4095 ; jb .ok(+7) ; mov eax,16 ; xor edx,edx
+    r69_n3 db 0x5E, 0xBA,0x00,0x00,0x00,0x40, 0x48,0x3D,0x01,0xF0,0xFF,0xFF, 0x72,0x07
+    db 0xB8,0x10,0x00,0x00,0x00, 0x31,0xD2
+    ; .ok: mov [cur],rax ; mov rcx,rax ; add rax,rdx ; mov [end],rax ; mov [sima],rax ; mov rax,rcx
+    r69_n4 db 0x48,0x89,0xC1, 0x48,0x01,0xD0
+    r69_n5 db 0x48,0x89,0xC8
+    ; .have: mov rdx,rax ; mov rax,[end] ; then r69_n7
+    r69_n6 db 0x48,0x89,0xC2
+    ; sub rax,rdx ; cmp rax,rsi ; jb .mmap ; test rsi,rsi ; jz .mmap ; lea rax,[rdx+rsi+15] ; and rax,-16
+    r69_n7 db 0x48,0x29,0xD0, 0x48,0x39,0xF0, 0x72,0x00, 0x48,0x85,0xF6, 0x74,0x00
+    db 0x48,0x8D,0x44,0x32,0x0F, 0x48,0x83,0xE0,0xF0
+%ifdef GUARD_PAGES
+    ; rax = size: mmap(size rounded up to pages + one page), mprotect the last page
+    ; PROT_NONE, return guard - size; size 0 or a failed mmap -> 0.
+    r69_guard_seq db 0x53,0x48,0x89,0xC3,0x48,0x85,0xC0,0x74,0x52,0x48,0x8D,0xB0,0xFF,0x1F,0x00,0x00
+    db 0x48,0x81,0xE6,0x00,0xF0,0xFF,0xFF,0x31,0xFF,0xBA,0x03,0x00,0x00,0x00,0x41,0xBA
+    db 0x22,0x00,0x00,0x00,0x49,0xC7,0xC0,0xFF,0xFF,0xFF,0xFF,0x45,0x31,0xC9,0xB8,0x09
+    db 0x00,0x00,0x00,0x0F,0x05,0x48,0x3D,0x01,0xF0,0xFF,0xFF,0x73,0x1E,0x48,0x8D,0xBC
+    db 0x30,0x00,0xF0,0xFF,0xFF,0xBE,0x00,0x10,0x00,0x00,0x31,0xD2,0xB8,0x0A,0x00,0x00
+    db 0x00,0x57,0x0F,0x05,0x58,0x48,0x29,0xD8,0x5B,0xEB,0x03,0x31,0xC0,0x5B
+r69_guard_len equ 94
+%endif
 
 section .bss
     r65_ready     resq 1              ; the two globals are registered
     r65_idx_cur   resq 1              ; 0-based global indices for r56_emit_global_*
     r65_idx_end   resq 1
+    r65_idx_sima  resq 1
     r65_ext_patch resq 1              ; rel32 field of the extension's jmp .space, or -1
 
 section .text
@@ -80,11 +114,22 @@ section .text
 ; module vitti of the object - defined by the root, extern in a module object.
 r65_active:
     xor eax, eax
+%ifndef GUARD_PAGES
     cmp qword [rel target_pe], 0
     jne .no
     mov eax, 1
 .no:
+%endif
     ret
+
+%ifdef GUARD_PAGES
+; r69_emit_guard: the guard-page allocation sequence (rax = size -> rax = block or 0).
+r69_emit_guard:
+    lea rsi, [rel r69_guard_seq]
+    mov rcx, r69_guard_len
+    call r23_emit_bytes
+    ret
+%endif
 
 ; r65_root_globals: at the start of code generation. In --separate, a root with modules
 ; defines the two globals whether or not its own code allocates, because a module object
@@ -114,6 +159,8 @@ r65_ensure_globals:
     call .register
     lea rdi, [rel r65_name_end]
     call .register
+    lea rdi, [rel r65_name_sima]
+    call .register
     lea rdi, [rel r65_name_cur]
     call r56_global_index
     dec rax
@@ -122,6 +169,10 @@ r65_ensure_globals:
     call r56_global_index
     dec rax
     mov [rel r65_idx_end], rax
+    lea rdi, [rel r65_name_sima]
+    call r56_global_index
+    dec rax
+    mov [rel r65_idx_sima], rax
     mov qword [rel r65_ready], 1
     ; an object without mukhya (a module) does not own the arena: its two globals are extern
     cmp qword [rel r28_object_mode], 0
@@ -132,6 +183,8 @@ r65_ensure_globals:
     mov rax, [rel r65_idx_cur]
     mov byte [rcx + rax], 1
     mov rax, [rel r65_idx_end]
+    mov byte [rcx + rax], 1
+    mov rax, [rel r65_idx_sima]
     mov byte [rcx + rax], 1
 .owned:
     pop rbx
@@ -152,30 +205,68 @@ r65_ensure_globals:
     call r23_emit_bytes
 %endmacro
 r65_t1_len equ 3
-r65_t2_len equ 8
-r65_t3_len equ 22
 r65_t4_len equ 4
 r65_t5_len equ 34
-r65_t6_len equ 9
-r65_t7_len equ 6
-r65_t8_len equ 7
 r65_t9_len equ 3
 r65_k1_len equ 15
 r65_k2_len equ 17
 r65_k3_len equ 8
 r65_k4_len equ 8
+r69_n2_len equ 5
+r69_n3_len equ 21
+r69_n4_len equ 6
+r69_n5_len equ 3
+r69_n6_len equ 3
+r69_n7_len equ 22
 
-; r65_emit_nirm: the arena sequence; ends by emitting the old sequence as the fallback.
-; Generated-program rax = size on entry; rax = block (or 0) at .done.
+; r69_patch8: rdi = offset of a rel8 field in code_buf; the target is the current end of
+; code. The distance must fit a signed byte; the sequence is laid out so that it does.
+r69_patch8:
+    mov rax, [rel code_sz]
+    sub rax, rdi
+    dec rax
+    lea rdx, [rel code_buf]
+    mov [rdx + rdi], al
+    ret
+
+; r65_emit_nirm: the arena sequence (R69 layout); ends by emitting the old sequence as
+; the fallback. Generated-program rax = size on entry; rax = block (or 0) at .done.
+;   mov rsi,rax ; mov rax,[cur] ; test rax,rax ; jnz .have
+; .reserve (first call only):  mmap(0, ARENA, RW, PRIVATE|ANONYMOUS|NORESERVE)
+;   success: cur = base, end = sima = base + ARENA   (end = the scratch cursor, at the top)
+;   failure: cur = end = sima = 16                   (room 0 forever -> the old sequence)
+;   rax = cur, fall into .have
+; .have: rdx = cur ; room = end - cur ; size > room or size == 0 -> .mmap
+;   cur = align16(cur + size) ; rax = old cur ; jmp .done
+; .mmap: the old sequence, unchanged
 r65_emit_nirm:
     call r65_ensure_globals
-    R65_BYTES r65_t1
+    R65_BYTES r65_t1                   ; mov rsi,rax
     mov rdi, [rel r65_idx_cur]
-    call r56_emit_global_load          ; mov rax,[cur]      (.retry)
-    R65_BYTES r65_t2
+    call r56_emit_global_load          ; mov rax,[cur]
+    R65_BYTES r69_n2                   ; test rax,rax ; jnz .have
+    mov rax, [rel code_sz]
+    dec rax
+    push rax                           ; [rsp] = rel8 of jnz .have
+    R65_BYTES r65_t5                   ; .reserve: push rsi ; the mmap arguments
+    call emit_syscall
+    R65_BYTES r69_n3                   ; pop rsi ; edx = ARENA ; failure -> eax = 16, edx = 0
+    mov rdi, [rel r65_idx_cur]
+    call r56_emit_global_store         ; .ok: mov [cur],rax
+    R65_BYTES r69_n4                   ; mov rcx,rax ; add rax,rdx
+    mov rdi, [rel r65_idx_end]
+    call r56_emit_global_store         ; mov [end],rax   - the scratch cursor starts at the top
+    mov rdi, [rel r65_idx_sima]
+    call r56_emit_global_store         ; mov [sima],rax  - the range's true end
+    R65_BYTES r69_n5                   ; mov rax,rcx
+    pop rdi
+    call r69_patch8                    ; jnz .have lands here
+    R65_BYTES r69_n6                   ; .have: mov rdx,rax
     mov rdi, [rel r65_idx_end]
     call r56_emit_global_load          ; mov rax,[end]
-    R65_BYTES r65_t3
+    R65_BYTES r69_n7                   ; room check ; new cursor
+    mov rax, [rel code_sz]
+    push rax                           ; end of r69_n7: jb rel8 at -15, jz rel8 at -10
     mov rdi, [rel r65_idx_cur]
     call r56_emit_global_store         ; mov [cur],rax
     R65_BYTES r65_t4                   ; mov rax,rdx ; jmp .done (E9)
@@ -183,19 +274,16 @@ r65_emit_nirm:
     push rax                           ; the rel32 field of jmp .done
     xor edi, edi
     call emit_u32
-    R65_BYTES r65_t5                   ; .reserve: the mmap arguments
-    call emit_syscall
-    R65_BYTES r65_t6                   ; pop rsi ; cmp ; jae .failed
-    mov rdi, [rel r65_idx_cur]
-    call r56_emit_global_store         ; mov [cur],rax
-    R65_BYTES r65_t7                   ; add rax,ARENA
-    mov rdi, [rel r65_idx_end]
-    call r56_emit_global_store         ; mov [end],rax
-    R65_BYTES r65_t8                   ; jmp .retry ; .failed: mov eax,16
-    mov rdi, [rel r65_idx_cur]
-    call r56_emit_global_store
-    mov rdi, [rel r65_idx_end]
-    call r56_emit_global_store
+    pop rcx                            ; rel32 offset
+    pop rax                            ; end of r69_n7
+    push rcx
+    push rax
+    lea rdi, [rax - 15]                ; jb .mmap rel8
+    call r69_patch8
+    mov rax, [rsp]
+    lea rdi, [rax - 10]                ; jz .mmap rel8
+    call r69_patch8
+    pop rax
     R65_BYTES r65_t9                   ; .mmap: mov rax,rsi
     call r38_nirm_mmap                 ; the old sequence, unchanged; its end is .done
     pop rcx                            ; patch jmp .done

@@ -234,7 +234,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v263) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v264) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -19900,6 +19900,9 @@ emit_nirmmita_from_rax:
     cmp qword [rel r38_fail_n], 0  ; R38 --fail-alloc: the counted form
     jne r38_emit_faulty
 r38_nirm_seq:
+%ifdef GUARD_PAGES
+    jmp r69_emit_guard             ; R69: tools/guard_page.py's build - each block flush against PROT_NONE
+%endif
     call r65_active                ; R65 (Step 1): Linux ELF, not --object -> the arena bump,
     test rax, rax                  ; with this sequence as its fallback
     jnz r65_emit_nirm

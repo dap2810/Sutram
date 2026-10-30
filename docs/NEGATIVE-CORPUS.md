@@ -63,14 +63,14 @@ any compiler (re-pinned in ROUND-03 together with `manifest.json`):
 
 | Input | Required Git blob |
 |---|---|
-| `src/sutram_compiler.asm` | `2cef0233ef40d481af394b090977e557bc3a1ab9` |
+| `src/sutram_compiler.asm` | `bac58af8ea5e592841b625630ac5fe3ff83fdce3` |
 | `src/r68_compiler_entry.asm` | `42389aaf73179726d91e23359aee2199734036e1` |
 | `src/r68_diagnostics.inc` | `578dc6577b7a39f67475a2a58542664c16043278` |
 | `src/r68_unicode_helpers.inc` | `69103e059634aa6b5b871ce7c06c2f4b9c742ff1` |
 | `src/r66_indic_lexer.inc` | `998b6cb75a7e11cf6d488cf84a84a2154ffdebf0` |
 | `src/r67_stack_pair.inc` | `e8472bd1cad767cf06b0c00fcf88793419362db5` |
 | `lang/sanskrit.lang` | `27eda2b6a9be2cca76e375cfec9d73b865c7b4e8` |
-| `src/r11_sandesh.inc` | `eac364402457e202b91feea9e207bb27c19ebc62` |
+| `src/r11_sandesh.inc` | `6742d74c68b6dda1593a60483675f0ee33fff7e3` |
 | `src/r22_lang_builtin.inc` | `0fd5091c65e37b42cf4088441350716ab017797b` |
 | `src/r23_capabilities.inc` | `fb73a3609fa4207b3450f4b7beaf4af18d6d7fd5` |
 | `src/r25_phal.inc` | `a36bd286aa6beea0b854576945e6874ba8835af0` |
@@ -79,7 +79,7 @@ any compiler (re-pinned in ROUND-03 together with `manifest.json`):
 | `src/r38_fail_alloc.inc` | `073861fa6d2be5ee47bbbbd087f3999591f33e66` |
 | `src/r45_debug.inc` | `7db1a8dbf1cfcd57d75b2f3ffafeb5545668d595` |
 | `src/r52_yoj_hint.inc` | `45aa67ca7d747b8b68e58c2cf89194d8b723179f` |
-| `src/r65_arena.inc` | `25f2661100f4401c45fc3de2bc864a6ed199a90f` |
+| `src/r65_arena.inc` | `a1a2d88949f158e7843a31c61a87b2b59d4702a2` |
 | `src/r52_lib_index.inc` | `598b3d8a872bd24a993d6cd40a9098700199b347` |
 
 Build the R68 diagnostic entry, not just the bare compiler. An example on the
