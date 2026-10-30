@@ -1,3 +1,38 @@
+## v427 - Gemini found the byte-vs-qword trap, and named the real risk better than I did
+
+### Its headline finding was already closed - and that was my fault
+**Gemini reported that taint is laundered through indexing: `box[0] = nirmmita(64); outer = box[0]`.** **I tested it on v273 - REFUSED with `E_SCRATCH_ESCAPE`.**
+
+**So that hole was closed in a round after I wrote the brief.** **I sent Gemini a description of the check as of an earlier round instead of its current tested behaviour.** **The fault is mine.**
+
+### But two of its findings are real, and one I confirmed
+**The byte-versus-qword trap:**
+```
+vitti p = nirmmita(10)
+yavat (i < 10)
+    p[i] = i
+```
+**Compiles, runs, writes 80 bytes into a 10-byte block.** **`nirmmita` takes BYTES; `p[i]` indexes in 8-byte units.** **A student asking for "10" gets 10 bytes and writes 10 qwords.**
+
+**Nobody on this project noticed that in 273 versions, including me.**
+
+**Its two fixes are cheap: round allocations up to 8 bytes (nearly free, alignment is already required), and record `const_bytes` so `nirmmita(LITERAL)` catches an out-of-range constant index at compile time.**
+
+### And its answer to "the single biggest risk" is the best anyone has given
+**> "Silent partial compilation. When the parser meets an unexpected token it exits via `ret` instead of aborting. The student runs a binary that executes only half their program - and because they are a beginner, they do not suspect the compiler, they assume they are too dumb to understand loops."**
+
+**That is the exact shape of all four parser defects, and it explains why they were dangerous rather than annoying.**
+
+**The fix: assert EOF at the end of compilation, and assert a valid dedent at every block exit - never `ret` on an unexpected token.** **About 15 lines, and it makes the class structurally impossible rather than fixed case by case.**
+
+### And its structural verdict, which I accept
+**Asked whether a better design exists: no.** **With untyped 64-bit values, no runtime tags and no lifetime type system, the only alternatives are Zig-style arena handles (zero compile-time protection) or copy-out evacuation (impossible for general containers without runtime type descriptors).**
+
+**"Your dual-cursor lexical `mandapa` block with compile-time taint tracking is already at the structural Pareto frontier."**
+
+### And a process change, because the stale brief was my error
+**Every partner brief now opens with a `## Verified behaviour` block carrying the exact tested outputs of the check - not a remembered description.**
+
 ## Compiler v273 (Claude, R75) - a negative size is an error; one known limit named
 
 - **`nirmmita` with a negative size.** Written as a number (`nirmmita(-1)`, `nirmmita(2 - 3 * 4)`), anywhere: refused
