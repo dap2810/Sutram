@@ -1,3 +1,38 @@
+## v425 - the memory model is built, and I measured it: 65 MB down to 14 MB, and the check refuses the right things
+
+### Every part, verified by me on v270
+| Test | Result |
+|---|---|
+| **`outer = buf + 64`** | **REFUSED - `E_SCRATCH_ESCAPE`** |
+| **`m[0] = buf`** | **REFUSED** |
+| **plain block, no escape** | **compiles** |
+| **copy the DATA out, not the pointer** | **compiles** |
+| **1,000,000 x 64 B, no block** | **123.0 ms, 65,216 KB peak RSS** |
+| **1,000,000 x 64 B, in a `mandapa`** | **40.9 ms, 14,464 KB peak RSS** |
+
+### So the block is real
+**1,000,000 x 64 bytes is 64,000 KB.** **Without a block it accumulates all of it.** **With one, peak RSS stays at 14 MB - flat.** **And it is 3x faster, because the memory stays in cache instead of touching 64 MB.**
+
+### And the error is in the language
+```
+Sutram Error [E_SCRATCH_ESCAPE]: asthayi smriti bahir na gacchati -
+mandapa-madhye nirmitam sthanam nivartanam na shakyate
+```
+
+### Five steps, all five built
+1. **Step 0 - the `kosh` recycling bins: impossible, both invariants false. Dropped.**
+2. **Step 1 - the contiguous bump and in-place extension: built at v263.**
+3. **Step 2 - the two cursors: built at v264.**
+4. **Step 3 - the `mandapa` block: built at v268, inert at 508 bytes both ways.**
+5. **Step 4 - the escape check: built by v270.**
+
+**This is the first round where all five can be said to be done, and the first where the design's central claim is measured rather than argued.**
+
+### But the composition is untested
+**Each step was verified alone.** **A block inside a loop that grows an outer `kosh`; a `prakriya` taking a scratch pointer; two sibling blocks in sequence; a block that exhausts the range; and deep recursion with a block per frame - none of those have been run.**
+
+**So the round asks for the composition, and asks ChatGPT whether the sentence I want to put in the README is true of the compiler as it exists.**
+
 ## v424 - Step 3 done: the `mandapa` block exists, is inert, nests, and refuses one escape in Sanskrit
 
 ### Verified by me on v268, four tests
