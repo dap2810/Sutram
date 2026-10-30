@@ -1,3 +1,18 @@
+## Library (Claude, R76) - two wrong answers fixed; raw memory stated as unchecked
+
+- **`kuttaka` (Aryabhata) was wrong in every one of 438 random cases with a modulus above 2^40:** `old_s * mult` overflowed. On 600 random
+  cases it was right 162/162 times for small moduli and **0/438** for large ones; `tests/stdlib/numeric29` had
+  recorded a wrong answer (2605677504891245458; the solution is 1483584605987376058). Now the product is taken
+  modulo |b| without overflow (`kuttaka_gun_shesh`): 600/600.
+- **`meru(n, k)` (Pingala's C(n, k)) wrapped silently past 2^63 - 1** (`meru(1000, 10)` gave C(1000, 10) mod 2^64).
+  It now returns **-1** when the answer does not fit; all 2,556 values for n <= 70 checked.
+- **The Madhava functions had no sign error to fix:** the R15 "sign error" was a surviving *mutant* (a missing
+  test), killed since R18. sin/cos/atan match Python to the printed 6 places on 24,003 points from -100 to 100.
+- `tests/stdlib/r76_known_values` pins every behaviour a surviving mutant showed no proof pinned, each value
+  checked against exact arithmetic, not recorded from the implementation.
+- **`nirmmita` buffers are not bounds-checked** - now said in `docs/LANGUAGE-REFERENCE.md` §6c. `mala` and
+  `kosh` are.
+
 ## v427 - Gemini found the byte-vs-qword trap, and named the real risk better than I did
 
 ### Its headline finding was already closed - and that was my fault

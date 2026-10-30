@@ -27,7 +27,7 @@ Do not edit by hand.</p>
 <li><a href="#brihat"><code>brihat</code></a> — 13 functions</li>
 <li><a href="#chandas"><code>chandas</code></a> — 6 functions</li>
 <li><a href="#ganit"><code>ganit</code></a> — 18 functions</li>
-<li><a href="#ganita"><code>ganita</code></a> — 22 functions</li>
+<li><a href="#ganita"><code>ganita</code></a> — 23 functions</li>
 <li><a href="#gudh"><code>gudh</code></a> — 2 functions</li>
 <li><a href="#kalana"><code>kalana</code></a> — 6 functions</li>
 <li><a href="#khand"><code>khand</code></a> — 22 functions</li>
@@ -101,7 +101,7 @@ Do not edit by hand.</p>
 <table>
 <tr><th>Function</th><th>Description</th></tr>
 <tr><td><code>dwi_ghat(n)</code></td><td></td></tr>
-<tr><td><code>meru(n, k)</code></td><td>meru(n, k) — the binomial coefficient C(n, k); 0 for k &lt; 0 or k &gt; n.</td></tr>
+<tr><td><code>meru(n, k)</code></td><td>meru(n, k) — the binomial coefficient C(n, k); 0 for k &lt; 0 or k &gt; n; -1 when C(n, k) is larger than 2^63 - 1 (R76: it used to wrap silently - meru(1000, 10) returned C(1000, 10) mod 2^64; a binomial is never negative). The largest row that always fits is n = 66 (C(66, 33) = 7219428434016265740).</td></tr>
 <tr><td><code>matra_meru(n)</code></td><td>matra_meru(n) — the nth Fibonacci number (matra_meru(0) = 0, matra_meru(1) = 1).</td></tr>
 <tr><td><code>asti_guru(pat, i)</code></td><td>asti_guru(pat, i) — 1 if bit i of the integer pattern pat is set; 0 for i &lt; 0 or i &gt;= 64.</td></tr>
 <tr><td><code>guru_gan(pat)</code></td><td>guru_gan(pat) — count of set bits in pat (population count); negatives return 0.</td></tr>
@@ -131,10 +131,11 @@ Do not edit by hand.</p>
 <tr><td><code>ganit_seemit(v, lo, hi)</code></td><td>ganit_seemit(v, lo, hi): lo if v &lt; lo, hi if v &gt; hi, else v. Requires lo &lt;= hi. If lo &gt; hi: lo when v &lt; lo, otherwise hi (R9, F4: the old comment said lo always; ganit_seemit(4, 4, -2) is -2).</td></tr>
 </table>
 <h2 id="ganita"><code>ganita</code></h2>
-<p class="shesh-desc">layer: core After Aryabhata&#x27;s Kuttaka (~499 CE) and the Chakravala of Jayadeva and Bhaskara II (~1150 CE). KUTTAKA (&quot;the pulveriser&quot;) solves the linear indeterminate equation ax + by = c. It is the ancestor of the extended Euclidean algorithm. CHAKRAVALA (&quot;the wheel&quot;) solves x^2 - N*y^2 = 1 (Pell&#x27;s equation); N = 61 gives x = 1766319049, y = 226153980. CHECKED / SATURATING ARITHMETIC (R18) lives here too: ganita is the arithmetic module. See the notes above ganita_janchit_yuj. kuttaka(a, b, c) -&gt; x such that a*x is congruent to c (shesh b). Requires mahattam_samapavartak(a, b) to divide c. Returns x (a particular solution).</p>
+<p class="shesh-desc">layer: core After Aryabhata&#x27;s Kuttaka (~499 CE) and the Chakravala of Jayadeva and Bhaskara II (~1150 CE). KUTTAKA (&quot;the pulveriser&quot;) solves the linear indeterminate equation ax + by = c. It is the ancestor of the extended Euclidean algorithm. CHAKRAVALA (&quot;the wheel&quot;) solves x^2 - N*y^2 = 1 (Pell&#x27;s equation); N = 61 gives x = 1766319049, y = 226153980. CHECKED / SATURATING ARITHMETIC (R18) lives here too: ganita is the arithmetic module. See the notes above ganita_janchit_yuj. kuttaka(a, b, c) -&gt; x such that a*x is congruent to c (shesh b). Requires mahattam_samapavartak(a, b) to divide c. Returns x (a particular solution), in [0, |b|) when b != 0. R76: the solution is multiplied out modulo |b| without overflow (kuttaka_gun_shesh). The old `old_s * mult` wrapped for |b| near 2^63: kuttaka(-2, -(2^63-1), 16) gave 9223372036854775791, which is not a solution (9223372036854775799 is).</p>
 <table>
 <tr><th>Function</th><th>Description</th></tr>
 <tr><td><code>kuttaka(a, b, c)</code></td><td></td></tr>
+<tr><td><code>kuttaka_gun_shesh(x, y, m)</code></td><td>kuttaka_gun_shesh(x, y, m) — (x * y) shesh m for 0 &lt;= x, y &lt; m, m &gt; 0, with no intermediate value above m: double-and-add, one bit of y at a time (R76).</td></tr>
 <tr><td><code>ganita_vargmool(n)</code></td><td>integer vargit root (floor)</td></tr>
 <tr><td><code>ganita_nirapeksh(n)</code></td><td>ganita_nirapeksh(n) — absolute value of n (the ganita-module spelling of nirapeksh_mulya).</td></tr>
 <tr><td><code>chakravala(out, n)</code></td><td>chakravala(out, n): solves x^2 - n*y^2 = 1 for least positive x, y. Writes out[0] = x and out[1] = y; caller must supply at least 2 writable qword cells.</td></tr>
@@ -471,6 +472,6 @@ Do not edit by hand.</p>
 <tr><td><code>varna_viparyay(src, sn, out)</code></td><td>varna_viparyay(src, sn, out) — copy the cell array reversed into out (WS1, R20). Cell-array form of khand_viparyay: the same two-pointer vinimay, so it is safe in place (src == out works). Writes a 0 terminator cell at out[sn]. Returns sn. sn &lt;= 0 writes only the terminator, returns 0.</td></tr>
 <tr><td><code>varna_gan(hay, hn, needle, nn)</code></td><td>varna_gan(hay, hn, needle, nn) — count non-overlapping occurrences of needle in hay, over cell arrays (WS1, R20). Cell-array form of khand_gan. Empty needle returns 0. (Pointer arithmetic is in bytes: the suffix at cell pos is hay + pos * 8.)</td></tr>
 </table>
-<footer>24 modules, 305 functions. Generated from library sources.</footer>
+<footer>24 modules, 306 functions. Generated from library sources.</footer>
 </body>
 </html>

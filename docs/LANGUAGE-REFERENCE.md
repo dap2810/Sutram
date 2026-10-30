@@ -113,7 +113,7 @@ These are the **actual** builtin names the compiler accepts, taken from its tabl
 | `dvaram` | patra descriptor helper |
 | `paadh` | open a file |
 | `band` | close a handle |
-| `nirmmita` | allocate memory |
+| `nirmmita` | allocate memory: `nirmmita(n)` gives `n` bytes, zeroed. **Its cells are not bounds-checked** — writing past `n` bytes is your mistake, as in C (§6c) |
 | `smaran` | fill memory |
 | `smaran_cp` | copy memory |
 | `vartani_aayam` | varna length |
@@ -407,6 +407,21 @@ likha("done")           # back at the header's indentation: after the loop
 Read it aloud as **code** with Sanskrit vocabulary, not as poetry or automatically well-formed Sanskrit discourse. Pāṇini's `anuvṛtti` and `adhikāra` are useful formal-grammar analogies, **not mechanisms currently implemented merely because they have Sanskrit names**. No new parser feature or natural-language understanding is claimed.
 
 **Teaching example:** `examples/11_forloop.sm` already teaches a loop, but only the legacy `tak` spelling. After separately verifying the new form, update or extend that example to show the equivalent Sanskrit-oriented range without removing legacy coverage.
+### 6c. Raw memory is not bounds-checked
+
+**`nirmmita(n)` gives you `n` bytes. `b[i]` reads or writes 8 bytes at `b + 8*i`, and nothing checks that they
+are inside the `n`.** `vitti b = nirmmita(1)` then `b[0] = 5` writes 7 bytes that are not yours; `b[2]` on a
+16-byte buffer writes past it. The program may go on, crash, or change another buffer — exactly as in C.
+
+`mala` and `kosh` *are* checked (`Sutram Error: mala ank seema atikram`): they record their own length. A
+`nirmmita` buffer is a bare address, and an address can point into the middle of a buffer (`b + 8`), where no
+length is recorded. Use `mala` when you want the check; use `nirmmita` when you are managing bytes yourself, and
+allocate `count * 8` for `count` cells.
+
+To *find* such a mistake, build the compiler with guard pages (`nasm -dGUARD_PAGES`, as `tools/guard_page.py`
+does): every `nirmmita` block then ends against memory that cannot be touched, and a write past its end stops
+the program at once.
+
 ## 7. Command line
 
 | command | purpose |
