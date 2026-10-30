@@ -987,6 +987,10 @@ def prop_strb_pack_unpack(compiler, rng):
     for _ in range(8):
         s = "".join(rng.choice("abc") for _ in range(rng.randint(1, 8)))
         cases.append(s)
+    # R69: the longest length the generator allows, always - the fixed seed draws
+    # 6,1,5,3,4,3,1,5 and never 8, the one length at which an 8-cell `back` overran.
+    # Appended after the draws, so no other property's random stream moves.
+    cases.append("abcabcab")
     lines = ["yoj khand",
              "prakriya cells_match(a, b, n) {",
              "    vitti i = 0",
@@ -1021,6 +1025,13 @@ def prop_strb_pack_unpack(compiler, rng):
         lines.append(f"    khand_mukt(out, {n}, back)")
         lines.append(f"    yadi (cells_match(cells, back, {n}) == 0) {{")
         lines.append('        likha("FAIL strb_pack_unpack roundtrip\\n")')
+        lines.append("        prati 1")
+        lines.append("    }")
+        # R69: `out` is the next allocation after `back`; a terminator written past
+        # `back` lands in it, so check it is still the packed bytes - this catches the
+        # overrun on the ordinary compiler, not only under guard pages.
+        lines.append(f'    yadi (bytes_match(out, {n}, "{s}", {n}) == 0) {{')
+        lines.append('        likha("FAIL strb_pack_unpack: unpack wrote past back\\n")')
         lines.append("        prati 1")
         lines.append("    }")
         lines.append(f'    khand_mukt("{s}", {n}, back)')

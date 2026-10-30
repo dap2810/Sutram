@@ -1,0 +1,8 @@
+# R69 WS1.2: prop_strb_pack_unpack now always includes a length-8 case (the generator's maximum)
+# and checks that `out` (the allocation after `back`) is intact after khand_mukt.
+# Current tree (back = 9 cells), ordinary v263 compiler:
+86/86 properties hold
+# Same file with back reverted to 8 cells (R68's bug), ordinary v263 compiler:
+FAIL: strb pack/unpack roundtrip
+  FAIL strb_pack_unpack: unpack wrote past back
+85/86 properties hold
