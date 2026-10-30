@@ -1,0 +1,5 @@
+
+Sutram Error: vyakaran dosh, pankti 6:30, shabd 'c'
+      yadi (1 == 2) c = c + 1; c = c + 10
+                               ^
+Sanket: asmin sthane shabdam vyakaranam cha pashyatu.

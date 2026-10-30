@@ -1,0 +1,7 @@
+# R71: a one-statement body on its header's line may not be followed by a
+# second statement on that line. Before R71 the second statement silently ran
+# outside the yadi - the line said one thing and the program did another.
+mukhya()
+    vitti c = 0
+    yadi (1 == 2) c = c + 1; c = c + 10
+    likha(c)
