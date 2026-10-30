@@ -1,0 +1,28 @@
+# R74 composition 2: a prakriya that takes a scratch pointer and returns a value derived from it.
+# yoga(b) returns the sum of the DATA - a number - and is allowed: the value is not an address.
+# madhya(b) returns b + 8 - an address - and compiles too: the check does not follow an address
+# through a call (the stated blind spot). This file pins both, so a future check that catches
+# the second is noticed.
+prakriya yoga(p, n)
+    vitti s = 0
+    vitti i = 0
+    yavat (i < n)
+        s = s + p[i]
+        i = i + 1
+    nivartanam s
+
+prakriya madhya(p)
+    nivartanam p + 8
+
+mukhya()
+    vitti t = 0
+    mandapa
+        vitti b = nirmmita(4 * 8)
+        b[0] = 1
+        b[1] = 2
+        b[2] = 3
+        b[3] = 4
+        t = yoga(b, 4)
+        vitti c = madhya(b)
+        likha(c - b, "\n")
+    likha(t, "\n")

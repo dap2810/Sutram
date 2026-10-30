@@ -1,0 +1,22 @@
+# R74 composition 3: two sibling blocks in sequence, 1,000,000 times. The second must read
+# zeros, not the first block's data; and the pair must keep memory flat, which it can only do
+# if each block starts from a rewound cursor. (A program cannot print the two addresses to
+# compare them: carrying a scratch address out of its block is exactly what the check refuses.)
+mukhya()
+    vitti dirty = 0
+    vitti s = 0
+    vitti i = 0
+    yavat (i < 1000000)
+        mandapa
+            vitti b = nirmmita(64)
+            b[0] = i + 1
+            b[7] = 777
+            s = s + b[0]
+        mandapa
+            vitti c = nirmmita(64)
+            yadi (c[0] != 0 || c[7] != 0)
+                dirty = dirty + 1
+            c[0] = 5
+        i = i + 1
+    likha(dirty, "\n")
+    likha(s, "\n")

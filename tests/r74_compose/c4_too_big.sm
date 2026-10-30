@@ -1,0 +1,10 @@
+# R74 composition 4b: twelve 100 MB allocations in one block - 1,200 MB - more than the
+# 1 GiB field. Stops with kshetra purnam after the tenth, exit 1.
+mukhya()
+    mandapa
+        vitti i = 0
+        yavat (i < 12)
+            vitti b = nirmmita(100 * 1024 * 1024)
+            b[0] = i
+            i = i + 1
+        likha(i, "\n")

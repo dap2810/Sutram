@@ -1,0 +1,29 @@
+# R74: the scratch allocator's own writes stay inside each block. The guard-page build turns
+# mandapa into an ordinary block, so it cannot see the scratch path; this test does. For every
+# size 1..200 bytes: fill a first block with a pattern, allocate a second (scratch grows down,
+# so the second sits just below the first, and is zeroed), and check that every cell of the
+# first is intact and every whole cell of the second is zero. Prints the number of bad cells.
+mukhya()
+    vitti bad = 0
+    vitti sz = 1
+    yavat (sz <= 200)
+        mandapa
+            vitti a = nirmmita(64)
+            vitti i = 0
+            yavat (i < 8)
+                a[i] = 1000 + i
+                i = i + 1
+            vitti b = nirmmita(sz)
+            vitti j = 0
+            yavat (j < sz / 8)
+                yadi (b[j] != 0)
+                    bad = bad + 1
+                b[j] = 0 - 1
+                j = j + 1
+            vitti k = 0
+            yavat (k < 8)
+                yadi (a[k] != 1000 + k)
+                    bad = bad + 1
+                k = k + 1
+        sz = sz + 1
+    likha(bad, "\n")

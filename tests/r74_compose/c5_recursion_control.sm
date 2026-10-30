@@ -1,0 +1,22 @@
+# R74 composition 5, control: the same program with the block replaced by yadi (1 == 1).
+prakriya gahan(n)
+    yadi (n == 0)
+        nivartanam 0
+    vitti r = 0
+    yadi (1 == 1)
+        vitti b = nirmmita(64)
+        b[0] = n
+        b[7] = n * 3
+        r = gahan(n - 1)
+        yadi (b[0] != n || b[7] != n * 3)
+            nivartanam 0 - 1000000000
+        r = r + b[0]
+    nivartanam r
+
+mukhya()
+    vitti k = 0
+    vitti s = 0
+    yavat (k < 1000)
+        s = s + gahan(1000)
+        k = k + 1
+    likha(s, "\n")

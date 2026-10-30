@@ -1,0 +1,16 @@
+# R74 composition 4: a block that allocates 100 MB, twenty times in a loop. It fits (the field
+# is 1 GiB), every byte is written, and the twenty passes reuse the same 100 MB.
+mukhya()
+    vitti n = 100 * 1024 * 1024 / 8
+    vitti pass = 0
+    vitti s = 0
+    yavat (pass < 20)
+        mandapa
+            vitti b = nirmmita(n * 8)
+            vitti i = 0
+            yavat (i < n)
+                b[i] = pass
+                i = i + 512
+            s = s + b[n - 512]
+        pass = pass + 1
+    likha(s, "\n")
