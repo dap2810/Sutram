@@ -1,3 +1,30 @@
+## v424 - Step 3 done: the `mandapa` block exists, is inert, nests, and refuses one escape in Sanskrit
+
+### Verified by me on v268, four tests
+| Test | Result |
+|---|---|
+| **a block compiles and runs** | **`b=8`, `a=5`** |
+| **INERT - with block vs without** | **508 bytes both, BYTE-IDENTICAL** |
+| **nested blocks** | **`c=3`, `b=2`, `a=1`** |
+| **a block inside a loop** | **`t=0`, `t=10`, `t=20`** |
+| **`nivartanam` of a scratch address** | **REFUSED** |
+
+### And the error message is in the language the program is written in
+```
+Sutram Error [E_SCRATCH_ESCAPE]: asthayi smriti bahir na gacchati -
+mandapa-madhye nirmitam sthanam nivartanam na shakyate
+```
+
+**"Temporary memory does not go outside - a place created inside a mandapa cannot be returned."**
+
+### What the block does today, stated honestly
+**It scopes variables, it nests, and it refuses one escape.** **It does NOT redirect `nirmmita` to the scratch cursor, so it releases no memory.** **That is the correct order - a block that released memory without a check would be worse than no block - but it means the block is not yet the thing the design describes.**
+
+### And Step 4 begins with the limit stated up front
+**The check catches `outer = buf + 64` and `outer_mala[i] = buf`.** **It will NOT see a scratch pointer inside a `kosh` of pointers, and that must be said where a programmer hits it, not only in the design document.**
+
+**So the round asks ChatGPT the question the design rests on: does K0 REFUSE a `kosh` in a checked function, or does it merely decline to CHECK it?** **"We do not check this" is honest. "We refuse this" is a restriction, and it decides whether a programmer can put a list of strings in a block at all.**
+
 ## v423 - four silent parser drops in one session, all closed, and the census says no shipped code was wrong
 
 ### What was found, in order
