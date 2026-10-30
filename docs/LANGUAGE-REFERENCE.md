@@ -65,6 +65,7 @@ language has a pack of native words (see the `lang/` table at the end).
 | `prasar` | call a phal-prakriya, propagating its failure (R25; §18) |
 | `yadi` | if |
 | `yavat` | while |
+| `mandapa` (मण्डप) | a scratch block: temporary buffers of numbers for one piece of work (R72; §19) |
 
 ## 3. Operators and precedence
 
@@ -380,6 +381,25 @@ mukhya() {
 The endpoints in this example are **inclusive**; `arabhya` means 'starting from' and `paryantam` means 'up to'. Both are contextual words in the `chakra` grammar, **not reserved keywords**: they can still name variables. `arabhya` without the closing `paryantam` is invalid. `chakra` means wheel/cycle and is a technical loop marker; neither spelling makes the whole code a classical Sanskrit sentence.
 
 **Evidence:** `src/sutram_compiler.asm:9361-9415`, `tests/r52/test_r52.py:89-99`, `examples/11_forloop.sm` (legacy `tak` form). Test assertions are partner-maintained, not re-executed here.
+### 6a-2. Bodies without braces (v265–v267)
+
+Braces are optional on every body. Without them, **indentation decides**:
+
+```sutram
+yavat (i < 3)
+    likha("i=", i)      # these three lines are the loop body,
+    vitti p = nirmmita(64)
+    i = i + 1           # because they are indented deeper than `yavat`
+likha("done")           # back at the header's indentation: after the loop
+```
+
+- The body is every following line indented deeper than the header, at the body's indentation; it ends at the
+  first line indented less. A line indented between the header and the body is an error.
+- A body on the header's own line is one statement: `yadi (x == 0) likha("zero")`. A second statement on that
+  line (`yadi (c) a = 1; b = 2`) is an error — it would otherwise run outside the `yadi` (v267).
+- Nothing may follow `mukhya`'s closing `}` (v266). A `mukhya()` written without braces runs to the end of the file.
+- `guna` needs `{ }`; its `bhavana` bodies may be indented.
+
 ### 6b. Is Sutram speakable Sanskrit?
 
 **Yes, as Sanskrit-oriented technical instructions; no, not as complete Sanskrit prose.** Keywords such as `mukhya`, `vitti`, `chakra`, `yoj` and `nivartanam` are Sanskrit-origin vocabulary (some are modern technical metaphors or conventional forms). `chakra i = 0 arabhya 4 paryantam` is a speakable *range phrase*, but its identifiers, `=`, braces, and command sequence do not supply the Sanskrit cases, verb inflections, and agreement required of an ordinary grammatical sentence.
@@ -676,6 +696,44 @@ prakriya padh_ya(s, mool) {          # never fails: a bad number counts as the d
 **Not in this version:** keeping a
 result in a variable (it is consumed by `prasar` where it arrives); typed results (`phal<T>`); calling a
 phal-prakriya through a function value (the status is not checked there); `dasham` values in a result.
+
+## 19. The scratch block: `mandapa` (R72)
+
+**A `mandapa` gives you a few temporary buffers of numbers for one piece of work; when the block ends, they are
+gone. Use it for scratch arithmetic. It does not work with `kosh`.**
+
+```sutram
+prakriya madhya(a, b, c)
+    mandapa
+        vitti t = nirmmita(3 * 8)     # scratch: three numbers
+        t[0] = a
+        t[1] = b
+        t[2] = c
+        # ... sort t ...
+        nivartanam t[1]               # return a VALUE read from scratch - allowed
+    nivartanam 0
+```
+
+`mandapa` (Devanagari मण्डप) is a statement: the keyword, then an indented body (braces also work).
+
+| In a `mandapa` block, v1.0 | |
+|---|---|
+| numbers: scalar variables and arithmetic, a result returned or assigned outward | allowed |
+| `nirmmita(n)` buffers of numbers, used inside the block | allowed — this is what the block is for |
+| nested blocks, and loops inside a block | allowed |
+| `nivartanam` of a value | allowed |
+| `nivartanam` of a buffer allocated inside the block (`nivartanam b`, `nivartanam nirmmita(n)`) | **refused**: `E_SCRATCH_ESCAPE` |
+| any `kosh` | not supported in v1.0 |
+| keeping a scratch buffer's address anywhere that outlives the block | not supported in v1.0 |
+
+**What it is not.** It is not a way to manage the memory of code that uses `kosh` — most of a real program's
+growing memory — and a block around a call does not reclaim what the called function allocates inside itself
+(the block is lexical). For when it helps and when it does not, see `docs/MEMORY-DECISION.md`.
+
+**Status in this version (v268): the block is inert.** It parses, scopes its variables like any block, and
+refuses the scratch-address `nivartanam` — but it does not yet place its `nirmmita` on the scratch side or
+reclaim them, so a program with a `mandapa` block compiles to exactly the same program as without it. The
+memory is reclaimed from the release that turns the scratch side on; nothing you write changes then.
 
 ## Printing a string variable - READ THIS BEFORE YOU TRY IT
 
