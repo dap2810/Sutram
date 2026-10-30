@@ -1,3 +1,33 @@
+## v421 - the loop bug was a PARSER bug, it predates the arena, and allocation is now 6 nanoseconds
+
+### I was wrong about the cause
+**I tested v264, saw a hang, and assumed the newest change was at fault.** **Claude tested v261 - before the arena existed - and it hangs there too.**
+
+**The real bug: an indented body was parsed as ONE STATEMENT.** **So in my reproduction, `i = i + 1` was outside the loop and the counter never advanced.** **A parser bug, present through 264 versions.**
+
+**One test on the baseline would have told me that, and I did not run it.** **That is the same error as trusting a brief instead of reading the tree.**
+
+### Fixed at v265, and verified by me
+**`i=0 i=1 i=2 done`.** **Suite 227 (two new examples), gates 49 PASS / 0 FAIL / 1 NOT-RUN, guard 0 DIFFER on ELF, PE and Wine.** **And the fix changes no existing program, because no program in the tree wrote what it fixes.**
+
+### And the number the whole memory effort was for
+**1,000,000 allocations of 64 bytes on v265:**
+
+| | |
+|---|---|
+| **wall** | **6.4 ms** |
+| **per allocation** | **6 nanoseconds** |
+| **peak RSS** | **16 MB** |
+
+**The old path was one `mmap` plus first touch - about 250,000 cycles, ~62,500 ns.** **So roughly 10,000x.**
+
+**That is the first time this project has a number it can put beside another language's.** **And the honest framing stands: allocation is now competitive with C's `malloc`, not ahead of it.**
+
+### But the parser bug is a class, and it is now the more important question
+**A parser that silently accepts fewer statements than written is worse than a memory bug, because the program compiles, runs, and does less than it says.** **Nothing in the four gates could see it: the outputs were consistent, just wrong.**
+
+**So the next round asks what else the indentation parser gets wrong, and how many programs in the tree wrote multi-statement indented bodies that were silently truncated.** **Step 3 waits.**
+
 ## v420 - I ran it, and found a bug every gate passed: `nirmmita` in a loop clobbers a live variable
 
 **While the three were working, I built v264 and ran an allocation benchmark. It did not finish.**
