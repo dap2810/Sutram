@@ -1,0 +1,13 @@
+# R72 pair 2 (with): nested mandapa blocks, one written with braces.
+mukhya()
+    vitti s = 0
+    mandapa
+        vitti a = nirmmita(32)
+        a[1] = 5
+        mandapa {
+            vitti c = nirmmita(16)
+            c[0] = a[1] * 2
+            s = s + c[0]
+        }
+        s = s + a[1]
+    likha(s, "\n")

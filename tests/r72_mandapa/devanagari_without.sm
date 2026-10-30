@@ -1,0 +1,7 @@
+# R72 pair 4 (without): devanagari_with.sm with the मण्डप line removed.
+mukhya()
+    vitti s = 0
+    vitti b = nirmmita(8)
+    b[0] = 3
+    s = b[0]
+    likha(s, "\n")

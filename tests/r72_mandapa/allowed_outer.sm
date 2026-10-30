@@ -1,0 +1,13 @@
+# R72 allowed: returning a block allocated OUTSIDE the mandapa, from inside it.
+prakriya bana()
+    vitti p = nirmmita(16)
+    p[0] = 9
+    mandapa
+        vitti q = nirmmita(8)
+        q[0] = p[0]
+        nivartanam p
+    nivartanam 0
+
+mukhya()
+    vitti r = bana()
+    likha(r[0], "\n")

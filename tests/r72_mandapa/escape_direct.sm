@@ -1,0 +1,8 @@
+# R72 refusal: nivartanam nirmmita(...) inside a mandapa.
+prakriya bana()
+    mandapa
+        nivartanam nirmmita(8)
+    nivartanam 0
+
+mukhya()
+    likha(bana())

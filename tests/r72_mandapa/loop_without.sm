@@ -1,0 +1,14 @@
+# R72 pair 3 (without): loop_with.sm with the mandapa line removed.
+prakriya yoga(n)
+    vitti t = 0
+    vitti i = 0
+    yavat (i < n)
+        vitti b = nirmmita(64)
+        b[0] = i
+        t = t + b[0]
+        i = i + 1
+    nivartanam t
+    nivartanam 0
+
+mukhya()
+    likha(yoga(100), "\n")

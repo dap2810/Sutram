@@ -1,0 +1,10 @@
+# R72 refusal: a name given a block by `=` inside the mandapa, then returned in it.
+prakriya bana()
+    vitti p = 0
+    mandapa
+        p = nirmmita(16)
+        nivartanam p
+    nivartanam 0
+
+mukhya()
+    likha(bana())

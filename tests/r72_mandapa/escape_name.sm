@@ -1,0 +1,9 @@
+# R72 refusal: nivartanam inside a mandapa returning a block allocated in it.
+prakriya bana()
+    mandapa
+        vitti b = nirmmita(64)
+        nivartanam b
+    nivartanam 0
+
+mukhya()
+    likha(bana())

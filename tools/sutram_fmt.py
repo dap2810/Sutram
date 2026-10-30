@@ -68,10 +68,11 @@ DELIMS = set('()[]{},;.')
 DANDA = {'।', '॥'}        # । ॥ : statement terminators, like ;
 CORE = {'mukhya', 'vitti', 'anka', 'yadi', 'yavat', 'prati', 'nivartanam', 'sankhya', 'anya', 'prakriya', 'yoj',
         'rachana', 'chakra', 'tak', 'sutra', 'abhava', 'krama', 'agrim', 'purna', 'shunya', 'satya',
-        'ganana', 'guna', 'bhavana', 'mala', 'yantra', 'kuru', 'dasham', 'kosh', 'vibhag', 'siddhi', 'dosh', 'prasar'}
+        'ganana', 'guna', 'bhavana', 'mala', 'yantra', 'kuru', 'dasham', 'kosh', 'vibhag', 'siddhi', 'dosh', 'prasar',
+        'mandapa'}   # R72
 CALLLIKE_CORE = {'mukhya', 'yantra', 'abhava', 'siddhi', 'dosh'}   # R25: prati siddhi(v)     # keyword( ... ) written like a call
 TOPLEVEL_CORE = {'prakriya', 'rachana', 'yoj', 'mukhya'}
-HEADER_CORE = {'yadi', 'anya', 'yavat', 'chakra', 'kuru', 'guna', 'bhavana'}
+HEADER_CORE = {'yadi', 'anya', 'yavat', 'chakra', 'kuru', 'guna', 'bhavana', 'mandapa'}   # R72: mandapa
 
 
 def _load_words():

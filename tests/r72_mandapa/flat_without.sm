@@ -1,0 +1,7 @@
+# R72 pair 1 (without): flat_with.sm with the mandapa line removed.
+mukhya()
+    vitti s = 0
+    vitti b = nirmmita(64)
+    b[0] = 41
+    s = b[0] + 1
+    likha(s, "\n")

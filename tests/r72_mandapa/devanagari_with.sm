@@ -1,0 +1,8 @@
+# R72 pair 4 (with): the Devanagari keyword मण्डप.
+mukhya()
+    vitti s = 0
+    मण्डप
+        vitti b = nirmmita(8)
+        b[0] = 3
+        s = b[0]
+    likha(s, "\n")

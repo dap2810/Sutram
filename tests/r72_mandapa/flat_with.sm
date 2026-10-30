@@ -1,0 +1,9 @@
+# R72 pair 1 (with): a mandapa block around scratch work. Must compile to the same
+# bytes as flat_without.sm - the block is inert until the scratch cursor is used.
+mukhya()
+    vitti s = 0
+    mandapa
+        vitti b = nirmmita(64)
+        b[0] = 41
+        s = b[0] + 1
+    likha(s, "\n")

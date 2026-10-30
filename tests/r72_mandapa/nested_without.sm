@@ -1,0 +1,10 @@
+# R72 pair 2 (without): nested_with.sm with both mandapa lines removed.
+mukhya()
+    vitti s = 0
+    vitti a = nirmmita(32)
+    a[1] = 5
+    vitti c = nirmmita(16)
+    c[0] = a[1] * 2
+    s = s + c[0]
+    s = s + a[1]
+    likha(s, "\n")

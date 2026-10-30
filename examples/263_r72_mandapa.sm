@@ -1,0 +1,27 @@
+# R72: the mandapa block. In v1.0 a mandapa holds small scratch buffers of
+# numbers for one piece of work. This round the block is inert - it compiles to
+# exactly the same program as the same lines without it - so this example's
+# output is what it will be when the block starts reclaiming its memory.
+prakriya madhya(a, b, c)
+    # the middle of three numbers, worked out in a scratch buffer
+    mandapa
+        vitti t = nirmmita(3 * 8)
+        t[0] = a
+        t[1] = b
+        t[2] = c
+        vitti i = 0
+        yavat (i < 2)
+            vitti j = 0
+            yavat (j < 2 - i)
+                yadi (t[j] > t[j + 1])
+                    vitti x = t[j]
+                    t[j] = t[j + 1]
+                    t[j + 1] = x
+                j = j + 1
+            i = i + 1
+        nivartanam t[1]
+    nivartanam 0
+
+mukhya()
+    likha(madhya(9, 2, 5), "\n")
+    likha(madhya(1, 7, 3), "\n")
