@@ -1,7 +1,7 @@
 # R71-00 — The parser class: two more silent drops found and closed; the 6 ns checked; what is slow now
 
-- **Commits on `main`, in order:** `§1` (1/5 nothing after `mukhya`, **v266**) · `§2` (2/5 formatter) ·
-  `§3` (3/5 every construct as a golden) · `§4` (4/5 the same-line rule, **v267**) · `§5` (5/5 its golden) ·
+- **Commits on `main`, in order:** `ee98437` (1/5 nothing after `mukhya`, **v266**) · `75fcbae` (2/5 formatter) ·
+  `3f402a3` (3/5 every construct as a golden) · `b79479a` (4/5 the same-line rule, **v267**) · `7323b4e` (5/5 its golden) ·
   then this hand-back. Pushed with git, not `--force`.
 - **Compiler: `Sutram 1.0 (v267) - sampurna sutra`.** Linux x86-64 cloud, 2 cores, 7 GB.
 - **`crash corpus: 227 cases + manifest, 0 failed`.**
