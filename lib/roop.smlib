@@ -243,6 +243,10 @@ prakriya roop_ank_pre(v, base, upper, out) {
 }
 
 # --- padding / alignment ---
+# The three padders write bytes 0 .. width - 1 of `out` and then the 0
+# terminator at byte `width` (when width <= sn: the sn bytes copied, then the
+# terminator at byte `sn`), as every roop formatter does. `out` must hold
+# width + 1 bytes (sn + 1 when width <= sn). (R68: stated; the bodies were right.)
 # roop_pad_vam(src, sn, width, padbyte, out) — pad on the LEFT with
 # `padbyte` (32 space, 48 '0') to `width`. width <= sn: copy unchanged.
 prakriya roop_pad_vam(src, sn, width, padbyte, out) {

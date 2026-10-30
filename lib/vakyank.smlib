@@ -234,7 +234,10 @@ prakriya varna_tak_ank_aadhar(buf, n, base, ok) {
 # pad_vam(out, count, width, fill) — left-pad the `count` character codes
 # in mala `out` to `width` using fill character code `fill`, in place.
 # Returns the new count (width if width > count, else count).
-# Caller must allocate >= width cells.
+# When it pads it writes cells 0 .. width - 1 and then out[ width ] = 0, the
+# terminator every writer in this module leaves (as ank_tak_varna does at
+# out[ count ]); when width <= count it writes nothing. Caller must allocate
+# >= width + 1 cells (R68: the contract said `width`; the body was right).
 prakriya pad_vam(out, count, width, fill) {
     vitti dst = out
     vitti cnt = count
