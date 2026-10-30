@@ -1,0 +1,16 @@
+# R75: the one way a scratch address reaches a kosh unseen - through a prakriya that returns it.
+# A KNOWN LIMIT, pinned: this compiles, and prints 99 - the NEXT block's data, read through the kept address.
+# A future check that refuses it will fail this test; that is the point.
+prakriya adr(p)
+    nivartanam p
+mukhya()
+    kosh k[1]
+    mandapa
+        vitti buf = nirmmita(64)
+        buf[0] = 42
+        kosh_push(k, adr(buf))
+    mandapa
+        vitti other = nirmmita(64)
+        other[0] = 99
+    vitti p = k[0]
+    likha(p[0], "\n")

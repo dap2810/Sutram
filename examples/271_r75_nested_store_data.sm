@@ -1,0 +1,9 @@
+# R75: the same line storing a NUMBER read out of scratch - allowed. Prints 2, then 42.
+mukhya()
+    kosh saved[1]
+    mandapa
+        vitti buf = nirmmita(64)
+        buf[0] = 42
+        vitti out = kosh_push(saved, buf[0]) + 1
+        likha(out, "\n")
+    likha(saved[0], "\n")

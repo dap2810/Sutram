@@ -1,0 +1,5 @@
+# R75: a negative size written as a number is a compile error - E_NIRMMITA_RNA.
+mukhya()
+    mandapa
+        vitti p = nirmmita(-1)
+        likha("got it")

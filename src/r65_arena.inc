@@ -344,6 +344,8 @@ section .data
     db 0x48,0xC7,0x04,0xD0,0x00,0x00,0x00,0x00, 0x48,0xFF,0xC2, 0x48,0x39,0xCA, 0x72,0xF0, 0xE9
     ; .zero: xor eax,eax ; jmp .done (rel32)
     r73_s7 db 0x31,0xC0, 0xE9
+    ; R75: test rax,rax ; jns .ok (rel32)
+    r75_n1 db 0x48,0x85,0xC0, 0x0F,0x89
 section .text
 r73_s1_len equ 8
 r73_s2_len equ 13
@@ -352,6 +354,7 @@ r73_s4_len equ 5
 r73_s5_len equ 3
 r73_s6_len equ 27
 r73_s7_len equ 3
+r75_n1_len equ 5
 
 ; ---- code generation ----
 ; r73_gen_scrcur: the scratch cursor's value at block entry, reserving the arena first if
@@ -416,6 +419,7 @@ r73_gen_rewind:
 ;   .full: likha(kshetra purnam) ; exit(1)
 r73_gen_scratch_nirm:
     call r65_ensure_globals
+    call r75_gen_neg_check         ; R75: a computed negative size stops the program
     R65_BYTES r73_s1               ; mov rsi,rax ; test rsi,rsi ; jle .zero
     call .rel32                    ; A
     mov rdi, [rel r65_idx_end]
@@ -477,6 +481,41 @@ r73_gen_scratch_nirm:
     push rcx
     xor edi, edi
     jmp emit_u32                   ; returns to our caller with the offset on its stack
+
+; r75_gen_neg_check: rax (generated) = a size. test rax,rax ; jns .ok ; likha(the error) ;
+; exit(1) ; .ok:  - the size survives in rax on the .ok path.
+r75_gen_neg_check:
+    R65_BYTES r75_n1               ; test rax,rax ; jns (rel32)
+    mov rax, [rel code_sz]
+    push rax
+    xor edi, edi
+    call emit_u32
+    push rbx
+    call alloc_ast
+    mov qword [rax], AST_STR
+    lea rcx, [rel r75_msg_neg_run]
+    call r11_tr_rcx
+    mov [rax+8], rcx
+    push rax
+    call alloc_ast
+    pop rcx
+    mov qword [rax], AST_CALL
+    mov qword [rax+8], BN_LIKHA
+    mov qword [rax+16], 1
+    mov [rax+24], rcx
+    call gen_expr
+    pop rbx
+    mov dil, 0xB8                  ; mov eax,60 ; mov edi,1 ; syscall
+    call emit_byte
+    mov edi, 60
+    call emit_u32
+    mov dil, 0xBF
+    call emit_byte
+    mov edi, 1
+    call emit_u32
+    call emit_syscall
+    pop rdi
+    jmp r73_patch32                ; .ok
 
 ; r73_patch32(rdi = offset of a rel32 field): its target is the current end of code.
 r73_patch32:

@@ -12,8 +12,9 @@
   * allowed_*: compiles and runs;
   * blind_call: compiles - a known blind spot, pinned here so a future check that catches it is noticed.
   * R74: ChatGPT R146's F1 (store calls in expressions), F2 (loop back edges), F3 (prasar rewinds:
-    flat over 1,000,000 failures), F4 (negative sizes) - escape_f1_*, escape_f2_*, allowed_f*, prasar_rewind,
-    negative_size.
+    flat over 1,000,000 failures), F4 (negative sizes) - escape_f1_*, escape_f2_*, allowed_f*, prasar_rewind.
+  * R75: a negative size - negative_literal refused at compile time (E_NIRMMITA_RNA); negative_runtime
+    stops the program with the Sanskrit error, exit 1.
 Linux ELF only (PE output keeps the ordinary allocator; GUARD_PAGES builds turn the block off).
 Last line: `r73 scratch: N checks, M failed`.
 """
@@ -26,7 +27,7 @@ EXPECT = {
     'jumps': '250000000000\n5\n5050', 'reuse_zeroed': '0\n11', 'allowed_nested': '7', 'blind_call': '1',
     # R74: ChatGPT R146's F1-F4, closed in v271
     'allowed_f1_numbers': '42 41', 'allowed_f2_numbers': '123', 'prasar_rewind': '3500000 500000',
-    'negative_size': '0 0 0\n0 0\n123 456', 'allowed_global_number': '42',
+    'allowed_global_number': '42', 'blind_kosh_via_call': '99',
 }
 
 
@@ -56,6 +57,10 @@ def main():
     rss = {}
     for n in sorted(f[:-3] for f in os.listdir(HERE) if f.endswith('.sm')):
         c, out = build(n)
+        if n == 'negative_literal':
+            msg = c.stdout + c.stderr
+            report(c.returncode != 0 and 'E_NIRMMITA_RNA' in msg, f'{n}: refused with E_NIRMMITA_RNA')
+            continue
         if n.startswith('escape_'):
             msg = c.stdout + c.stderr
             report(c.returncode != 0 and 'E_SCRATCH_ESCAPE' in msg and 'Sanket' in msg,
@@ -66,6 +71,10 @@ def main():
             continue
         code, text, r = run(out)
         rss[n] = r
+        if n == 'negative_runtime':
+            report(code == 1 and text == '123\nSutram Error: nirmmita-parimanam rnatmakam - mandapa-madhye rnam parimanam na sambhavati',
+                   f'negative_runtime: stops with the error, exit 1 (exit {code}, output {text!r})')
+            continue
         if n == 'full':
             report(code == 1 and 'kshetra purnam' in text, f'full: kshetra purnam, exit 1 (exit {code})')
             continue

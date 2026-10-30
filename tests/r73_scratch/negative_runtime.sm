@@ -1,0 +1,12 @@
+# R75: a negative size computed at run time inside a block stops the program, exit 1
+# (v271/v272 gave 0; v270 wrote a qword into the block above). The outer block is not touched.
+mukhya()
+    mandapa
+        vitti owner = nirmmita(16)
+        owner[0] = 123
+        likha(owner[0], "\n")
+        vitti n = 3 - 4
+        mandapa
+            vitti bad = nirmmita(n)
+            likha(bad, "\n")
+        likha(owner[0], "\n")

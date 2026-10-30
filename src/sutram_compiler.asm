@@ -239,7 +239,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v272) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v273) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -395,6 +395,11 @@ r54_builtin_arity_table:
     r73_msg_escape_mem db "Sutram Error [E_SCRATCH_ESCAPE]: asthayi smriti bahir na gacchati - mandapa-madhye nirmitam sthanam smritau na likhyate", 10
     db "Sanket: ayam parikshah prakriya-ahvane kosh-madhye va gacchantam sthanam na pashyati", 10, 0
     r73_msg_full db "Sutram Error: kshetra purnam - mandapa-smritih samapta", 10, 0
+    ; R75: a negative size. Written as a number, refused when compiled; computed, refused
+    ; when a mandapa's nirmmita runs (it would otherwise give 0).
+    r75_msg_neg_lit db "Sutram Error [E_NIRMMITA_RNA]: nirmmita-parimanam rnatmakam - rnam parimanam na sambhavati", 10
+    db "Sanket: nirmmita(n) - n shunyam va dhanatmakam bhavet", 10, 0
+    r75_msg_neg_run db "Sutram Error: nirmmita-parimanam rnatmakam - mandapa-madhye rnam parimanam na sambhavati", 10, 0
     r73_mark_names:                 ; R73: "0m01".."0m32", the hidden mark of each block depth
 %assign r73_i 1
 %rep R73_MAXDEPTH
@@ -7932,6 +7937,87 @@ r73_check_late:
     pop rbx
     ret
 
+; r75_check_nirm_size(rax = an AST_CALL just built): nirmmita whose size is a constant
+; below zero - a literal, or + - * of literals - is a compile error. Preserves rax, rbx, r12.
+r75_check_nirm_size:
+    mov rcx, [rax+8]
+    cmp rcx, BN_NIRMRITA
+    je .go
+    cmp rcx, BN_NIRM_SCRATCH
+    jne .r
+.go:
+    cmp qword [rax+16], 1
+    jb .r
+    push rax
+    mov rdi, [rax+24]
+    call r75_const
+    test rdx, rdx
+    jz .not_const
+    test rax, rax
+    js .neg
+.not_const:
+    pop rax
+.r:
+    ret
+.neg:
+    lea rdi, [rel r75_msg_neg_lit]
+    jmp capacity_fail
+
+; r75_const(rdi = expr) -> rdx = 1 and rax = the value if it is a constant (a number,
+; or + - * of constants), else rdx = 0.
+r75_const:
+    xor edx, edx
+    test rdi, rdi
+    jz .r
+    mov rcx, [rdi]
+    cmp rcx, AST_NUM
+    je .num
+    cmp rcx, AST_BINOP
+    jne .r
+    mov rcx, [rdi+8]
+    cmp rcx, OP_ADD
+    je .bin
+    cmp rcx, OP_SUB
+    je .bin
+    cmp rcx, OP_MUL
+    je .bin
+.r:
+    ret
+.num:
+    mov rax, [rdi+8]
+    mov edx, 1
+    ret
+.bin:
+    push rdi
+    mov rdi, [rdi+16]
+    call r75_const
+    pop rdi
+    test rdx, rdx
+    jz .r
+    push rax
+    push rdi
+    mov rdi, [rdi+24]
+    call r75_const
+    pop rdi
+    pop rcx                        ; left value
+    test rdx, rdx
+    jz .r
+    mov r8, [rdi+8]
+    cmp r8, OP_ADD
+    je .add
+    cmp r8, OP_SUB
+    je .sub
+    imul rcx, rax
+    mov rax, rcx
+    ret
+.add:
+    add rax, rcx
+    ret
+.sub:
+    sub rcx, rax
+    mov rax, rcx
+    ret
+
 r73_fail_var:
     lea rdi, [rel r73_msg_escape_var]
     jmp capacity_fail
@@ -12761,6 +12847,7 @@ parse_primary_inner:
     jnz .pp_pop_b
 .pp_no_pop_b:
     call r73_check_call       ; R74 (R146 F1): a store call is checked wherever it is written
+    call r75_check_nirm_size  ; R75: nirmmita(-1) written as a number is refused here
     pop r12                   ; restore r12
     pop rbx
     ret

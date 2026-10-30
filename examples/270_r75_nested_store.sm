@@ -1,0 +1,11 @@
+# R75: a store nested inside an expression is checked like one standing alone.
+# `out = (m[0] = buf) + 1` is not Sutram - an assignment is a statement, not a value - so the
+# stores that can sit inside an expression are calls: kosh_push, likh8, likh8c, likh, setchar.
+# Here kosh_push stores a scratch address inside an initializer's arithmetic: refused,
+# E_SCRATCH_ESCAPE. (v270 compiled this; v271 checks every store call where it is built.)
+mukhya()
+    kosh saved[1]
+    mandapa
+        vitti buf = nirmmita(64)
+        vitti out = kosh_push(saved, buf) + 1
+        likha(out, "\n")
