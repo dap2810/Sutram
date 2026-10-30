@@ -1,0 +1,30 @@
+PASS  allowed_f1_numbers: output '42 41'
+PASS  allowed_f2_numbers: output '123'
+PASS  allowed_nested: output '7'
+PASS  blind_call: output '1'
+PASS  escape_alias: refused with E_SCRATCH_ESCAPE and the blind-spot note
+PASS  escape_branch_join: refused with E_SCRATCH_ESCAPE and the blind-spot note
+PASS  escape_dosh: refused with E_SCRATCH_ESCAPE and the blind-spot note
+PASS  escape_f1_in_condition: refused with E_SCRATCH_ESCAPE and the blind-spot note
+PASS  escape_f1_in_decl: refused with E_SCRATCH_ESCAPE and the blind-spot note
+PASS  escape_f1_in_likha: refused with E_SCRATCH_ESCAPE and the blind-spot note
+PASS  escape_f1_likh: refused with E_SCRATCH_ESCAPE and the blind-spot note
+PASS  escape_f2_backedge_return: refused with E_SCRATCH_ESCAPE and the blind-spot note
+PASS  escape_f2_backedge_store: refused with E_SCRATCH_ESCAPE and the blind-spot note
+PASS  escape_f2_chain: refused with E_SCRATCH_ESCAPE and the blind-spot note
+PASS  escape_f2_kuru: refused with E_SCRATCH_ESCAPE and the blind-spot note
+PASS  escape_f2_nested_loops: refused with E_SCRATCH_ESCAPE and the blind-spot note
+PASS  escape_kosh_push: refused with E_SCRATCH_ESCAPE and the blind-spot note
+PASS  escape_likh8: refused with E_SCRATCH_ESCAPE and the blind-spot note
+PASS  escape_nested: refused with E_SCRATCH_ESCAPE and the blind-spot note
+PASS  full: kshetra purnam, exit 1 (exit 1)
+PASS  jumps: output '250000000000\n5\n5050', peak RSS 264 KB
+PASS  loop_with: output '499999500000', peak RSS 264 KB
+PASS  loop_without: output '499999500000', peak RSS 62464 KB
+PASS  negative_size: output '0 0 0\n0 0\n123 456'
+PASS  prasar_rewind: output '3500000 500000', peak RSS 264 KB
+PASS  reuse_zeroed: output '0\n11'
+PASS  memory: 1,000,000 x 64 B, with the block 264 KB, without it 62464 KB
+PASS  memory: 1,000,000 prasar failures out of blocks, 264 KB
+PASS  memory: 1,000,000 agrim passes through a block, 264 KB
+r73 scratch: 29 checks, 0 failed

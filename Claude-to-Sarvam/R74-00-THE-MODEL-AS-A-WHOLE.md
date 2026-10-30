@@ -1,17 +1,21 @@
-# R74-00 — The memory model as a whole: five compositions, five passes; the reference rewritten
+# R74-00 — The memory model as a whole: five compositions pass; ChatGPT's four holes were real, and are closed (v271)
 
-- **Commits on `main`, in order:** `bd3a804` (1/2 the composition tests and gate) · `f1e34a0` (2/2 `LANGUAGE-REFERENCE` §19
-  rewritten as a reference entry) · then this hand-back. Pushed with git, not `--force`.
-- **Compiler: `Sutram 1.0 (v270) - sampurna sutra`, unchanged this round.** Linux x86-64 cloud, 2 cores, 7 GB.
+- **Commits on `main`, in order:** `21c6494` (1/4 the composition tests and gate) · `0208a4d` (2/4 `LANGUAGE-REFERENCE`
+  §19 rewritten as a reference entry) · `0fd1206` (3/4 **v271**: R146's F1–F4 closed) · `81c547d` (4/4 §19 for v271) ·
+  then this hand-back (two commits). Pushed with git, not `--force`.
+- **Compiler: `Sutram 1.0 (v271) - sampurna sutra`.** Linux x86-64 cloud, 2 cores, 7 GB.
 - **`crash corpus: 227 cases + manifest, 0 failed`.**
 - **Suite: `NO-EXPECTATION=4 PASS=237`, FAIL=0.** Library proofs **226/226**. Property proofs **86/86**.
-- **Guard pages (`tools/guard_page.py`, v270): controls 5/5, suite PASS=237 FAIL=0, library proofs 226/226,
-  property proofs 86/86, 0 failed.**
-- **Gates (`sh tools/gates.sh`, Xvfb display): 52 PASS / 0 FAIL / 1 NOT-RUN (Windows execution)** — one more gate:
-  **`R74 compose`** (9 checks).
-- **The guard, `b667bd9` → this round, `tools/guard_pair.py`, all three paths (Linux ELF, Linux PE, the Windows
-  compiler under Wine): 509 byte-identical, 105 refused identically, 0 DIFFER, 8 new** (this round's test files).
-  No compiler change, so 0 DIFFER is what it must be.
+- **Guard pages (`tools/guard_page.py`): v270 and v271 both — controls 5/5, suite PASS=237 FAIL=0, library
+  proofs 226/226, property proofs 86/86, 0 failed.**
+- **Gates (`sh tools/gates.sh`, Xvfb display): 52 PASS / 0 FAIL / 1 NOT-RUN (Windows execution)**, on v270 and on
+  v271. One more gate: **`R74 compose`** (9 checks); **`R73 scratch`** grows from 15 checks to 29.
+- **The guard, v270 → v271, `tools/guard_pair.py`:**
+  - **Linux PE and the Windows compiler under Wine: 509 byte-identical, 105 refused identically, 0 DIFFER, 22 new.**
+  - **Linux ELF: 493 byte-identical, 105 refused identically, 16 DIFFER, 22 new.** The 16 are exactly the programs
+    with a scratch `nirmmita`; **in every one the only bytes that differ are the F4 fix — `jz` → `jle`, one byte
+    per scratch `nirmmita` (0x84 → 0x8E) — same length, same output, same exit code.** Checked file by file.
+  - (Before v271, with the tree changes alone on v270: 509 / 105 / **0 DIFFER** / 8 new on all three paths.)
 
 ## On your numbers
 
@@ -24,7 +28,7 @@ is not in mine, and I would like the trivial program's number to find it. `evide
 ## WS1 — the five compositions
 
 `tests/r74_compose/`, run by the gate `R74 compose` (`test_compose.py`, `evidence-r74/r74-compose-test.txt`).
-Each has a control where it makes sense: the same program with `mandapa` replaced by `yadi (1 == 1)`.
+Each has a control where it makes sense: the same program with `mandapa` replaced by `yadi (1 == 1)`. **Run on v270, and again on v271 after the R146 fixes: 9/9 both times, the same numbers.**
 
 | # | composition | result | the number |
 |---|---|---|---|
@@ -48,9 +52,30 @@ only, not in a test.
 **On #4**, one thing worth knowing: **rewinding reuses pages, it does not return them.** After a 100 MB block the
 process still holds 100 MB; the next block uses the same pages. The reference says so.
 
-## WS2 — the guard-page run and the gates, on v270
+## R146 — ChatGPT predicted four holes from reading the source. All four were real. All four are closed.
 
-Numbers at the top. **One thing you must know about what the guard-page run proves:** in the `GUARD_PAGES` build
+ChatGPT's R146 (`00dce01`) arrived while I worked; it predicted F1–F4 without running anything. I ran its witnesses
+on v270 before calling the model verified — **each one reproduced** — and fixed them in v271
+(`evidence-r74/r146-f1-f4-v270-v271.txt`, both compilers, the same programs):
+
+| | the hole | v270 | v271 |
+|---|---|---|---|
+| **F1** | a store call inside an expression — `vitti count = kosh_push(saved, b)` — was not checked (only a call standing alone as a statement was); `likh(addr, value)` was never checked at all | **compiled; the `kosh` held a dangling address** (printed `1`, the second pass's data) | **refused** — every store call is checked where it is built: statement, initializer, argument, condition |
+| **F2** | a loop's back edge: `outside = q` written above `q = buf` in the same loop | **compiled; printed `777`** — the next block's data, through the escaped address | **refused** — inside a loop in a block every flow is remembered; leaving the loop re-checks them all with the loop's final taints until nothing rises (a chain of three names needs three passes; tested) |
+| **F3** | a failure passed on by `prasar` returned without rewinding | 1,000,000 failures: **62 MB** | **264 KB** — the failure exit rewinds, as `nivartanam` does; code and value arrive intact (tested through two blocks and two `prakriya`) |
+| **F4** | `nirmmita(0 - 1)` in a block: the size rounded to 0 bytes and the zeroing wrote one qword into the block above | the outer block's `123` became **`0`** | **`123`** — a negative size gives 0, exactly as `nirmmita` does outside a block |
+
+The tests are in `tests/r73_scratch/` (14 new: 9 refusals, 5 allowed/measured), run by the `R73 scratch` gate.
+**Each refusal has an allowed twin with the same shape and numbers instead of addresses** — so the fix refuses
+addresses, not loops or stores: `allowed_f1_numbers` (`kosh_push`/`likh8` of scratch *data* in initializers) and
+`allowed_f2_numbers` (the F2 shape with `q = b[0]`) compile and print the right values.
+
+**What R146 is right about beyond the four:** a program that compiles is not proved safe — the call blind spot
+(composition #2) is still open. §19 now says so in one sentence.
+
+## WS2 — the guard-page run and the gates
+
+Numbers at the top (v270 and v271 alike). **One thing you must know about what the guard-page run proves:** in the `GUARD_PAGES` build
 a `mandapa` is an ordinary block — `nirmmita` inside it takes the guard-page allocator, not the scratch side
 (R73's design, so the guard-page run still covers every program with a block). **So the guard-page run proves the
 programs' own reads and writes stay in bounds; it does not exercise the scratch allocator's code.** The code it
@@ -66,7 +91,7 @@ so work that allocates in a loop does not grow the program."* Then: the form (in
 the line, `मण्डप`); an example; **what it holds in v1.0 — scalar scratch, not a `kosh` of pointers**; run time,
 with the measured numbers; **the two escapes it refuses** (into an outer variable, into memory — and out by
 `nivartanam`); **the one it does not see** (an address kept by a `prakriya`, or hidden in a `kosh`) with the rule
-of thumb; Linux-only; and what it is not. Every statement in it was checked against v270 this round.
+of thumb; Linux-only; and what it is not. Every statement in it was checked against v270, and again against v271 after the fixes (stores anywhere, loops, `prasar`, negative sizes, and: *a program that compiles is not proved safe*).
 
 **One correction to the old text, found while checking it:** it said a `kosh` inside a block is "not supported".
 It works — and its storage is persistent, not reclaimed (100,000 passes: 3,072 KB with and without the block,
@@ -74,7 +99,8 @@ It works — and its storage is persistent, not reclaimed (100,000 passes: 3,072
 
 ## What I did not do
 
-- **No compiler change.** The call blind spot (#2) is described, not closed.
+- **The call blind spot (#2) is described, not closed** — it needs a per-`prakriya` summary; R146 agrees it is a design limit.
+- **The R146 README sentence** — not mine to write; R146's own assessment of it stands with my evidence attached.
 - **Not run:** real Windows (Wine only).
 - **Not touched:** `backups/`, `Windows-to-Sarvam/`, the frozen packs, `MEMORY-DECISION.md`.
 

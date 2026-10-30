@@ -1,0 +1,95 @@
+===== R146 f1 (ChatGPT's witness, unchanged)
+mukhya() {
+    kosh saved[1]
+    vitti i = 0
+    yavat (i < 2) {
+        mandapa {
+            vitti b = nirmmita(8)
+            b[0] = i
+            vitti count = kosh_push(saved, b)
+        }
+        i = i + 1
+    }
+    vitti first = saved[0]
+    likha(first[0])
+}
+--- v270:
+Siddh: 1356 baait sankalit
+1
+(peak 264 KB, exit 0)
+--- v271:
+Sutram Error [E_SCRATCH_ESCAPE]: asthayi smriti bahir na gacchati - mandapa-madhye nirmitam sthanam smritau na likhyate
+Sanket: ayam parikshah prakriya-ahvane kosh-madhye va gacchantam sthanam na pashyati
+===== R146 f2 (ChatGPT's witness, unchanged)
+mukhya() {
+    vitti outside = 0
+    mandapa {
+        vitti b = nirmmita(8)
+        b[0] = 123
+        vitti q = 0
+        vitti i = 0
+        yavat (i < 2) {
+            yadi (i == 1) { outside = q }
+            q = b
+            i = i + 1
+        }
+    }
+    mandapa {
+        vitti replacement = nirmmita(8)
+        replacement[0] = 777
+    }
+    likha(outside[0])
+}
+--- v270:
+Siddh: 982 baait sankalit
+777
+(peak 264 KB, exit 0)
+--- v271:
+Sutram Error [E_SCRATCH_ESCAPE]: asthayi smriti bahir na gacchati - mandapa-madhye nirmitam sthanam bahya-vittau na sthapyate
+Sanket: ayam parikshah prakriya-ahvane kosh-madhye va gacchantam sthanam na pashyati
+===== R146 f3 (ChatGPT's witness, one change: its never-taken anya branch, `nivartanam dosh(2)` from mukhya, counts instead)
+prakriya failure() { nivartanam dosh(1) }
+prakriya one_attempt() {
+    mandapa {
+        vitti b = nirmmita(64)
+        b[0] = 1
+        vitti x = prasar failure()
+        nivartanam siddhi(x)
+    }
+}
+mukhya() {
+    vitti attempts = 0
+    yavat (attempts < 1000000) {
+        yadi dosh (code = one_attempt()) {
+            attempts = attempts + 1
+        } anya {
+            attempts = attempts + 1
+        }
+    }
+    likha(attempts)
+}
+--- v270:
+Siddh: 737 baait sankalit
+1000000
+(peak 62464 KB, exit 0)
+--- v271:
+Siddh: 751 baait sankalit
+1000000
+(peak 264 KB, exit 0)
+===== R146 f4 (ChatGPT's witness, unchanged)
+mukhya() {
+    mandapa {
+        vitti owner = nirmmita(16)
+        owner[0] = 123
+        mandapa { vitti bad = nirmmita(0 - 1) }
+        likha(owner[0])
+    }
+}
+--- v270:
+Siddh: 901 baait sankalit
+0
+(peak 264 KB, exit 0)
+--- v271:
+Siddh: 901 baait sankalit
+123
+(peak 264 KB, exit 0)
