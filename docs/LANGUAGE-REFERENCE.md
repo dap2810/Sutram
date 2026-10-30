@@ -767,7 +767,7 @@ it — must not outlive its block:
 
 | | |
 |---|---|
-| **1. into a variable declared outside the block** — `outer = buf + 64` | refused |
+| **1. into a variable declared outside the block** — `outer = buf + 64`, and into a module `vitti` (`g = buf`), wherever in the file it is declared | refused |
 | **2. into memory** — `bahar[i] = buf`, a raw buffer's cell, `likh`, `likh8`, `kosh_push` — wherever the call is written: a statement, an initializer, an argument, a condition | refused |
 | and out by `nivartanam` — plain, `siddhi(...)`, `dosh(...)` | refused |
 | into a variable of the same block or a deeper one | allowed |
