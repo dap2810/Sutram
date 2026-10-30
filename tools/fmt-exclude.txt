@@ -16,3 +16,4 @@ tests/r51_check/lib/inner_r51.smlib
 tests/r51_check/nested_braces.sm
 tests/r56_check/after_main.sm
 tests/r69/pairs/all_registers.sm
+examples/259_r70_indent_ambiguous.sm

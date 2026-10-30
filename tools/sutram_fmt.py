@@ -307,6 +307,7 @@ def format_text(text: str) -> str:
     paren = 0
     pending = 0           # braceless statement bodies waiting (yadi (c) \n stmt)
     body_mode = False     # inside a braceless mukhya / prakriya
+    ind_stack = []        # R70: open indented bodies, each the source indentation of its lines
     blank = 0
     last_was_open = False
     for li, ln in enumerate(lines):
@@ -322,6 +323,11 @@ def format_text(text: str) -> str:
             out.append(ln[0][1]); last_was_open = False
             continue
         first = code[0] if code else None
+        if code and paren == 0:
+            # R70: an indented body ends at the first code line indented less than it
+            si = _src_indent(rawof.get(id(ln), ''))
+            while ind_stack and si < ind_stack[-1]:
+                ind_stack.pop()
         closes = first == ('delim', '}')
         top = first is not None and first[0] == 'word' and mean(first[1]) in TOPLEVEL_CORE
         if body_mode and top and depth == 0:
@@ -331,7 +337,11 @@ def format_text(text: str) -> str:
             d += 1
         if paren > 0:
             d += 1
-        d += pending
+        if code:
+            d += pending + len(ind_stack)
+        else:                      # a comment line: indented like the code at its own source indentation
+            si = _src_indent(rawof.get(id(ln), ''))
+            d += pending + sum(1 for e in ind_stack if e <= si)
         if blank and out and not last_was_open and not closes:
             out.append('')
         blank = 0
@@ -358,8 +368,17 @@ def format_text(text: str) -> str:
             pending = 0
         elif is_func and not ends_open and depth == 0 and code[-1] != ('delim', ';'):
             body_mode = True; pending = 0
-        elif is_header and ('delim', '{') not in code:
-            pending += 1
+        elif is_header and ('delim', '{') not in code and _header_open(code):
+            # R70: the body is on the following lines. Indented deeper than this header in
+            # the source, it is a block (the compiler's rule); otherwise one statement.
+            nxt = _next_code(lines, li)
+            here = _src_indent(rawof.get(id(ln), ''))
+            there = _src_indent(rawof.get(id(nxt), '')) if nxt is not None else -1
+            if there > here:
+                ind_stack.append(there)
+                pending = 0
+            else:
+                pending += 1
         else:
             pending = 0
     if depth != 0:
@@ -371,6 +390,40 @@ def format_text(text: str) -> str:
             continue
         res.append(l)
     return '\n'.join(res).rstrip('\n') + '\n'
+
+
+def _src_indent(raw: str) -> int:
+    """R70: the source line's indentation, spaces and tabs one column each (the compiler's count)."""
+    return len(raw) - len(raw.lstrip(' \t'))
+
+
+def _next_code(lines, i):
+    """R70: the next line with code after line i, or None."""
+    for ln in lines[i + 1:]:
+        if any(t[0] not in ('comment', 'bcomment') for t in ln):
+            return ln
+    return None
+
+
+def _header_open(code) -> bool:
+    """R70: a control header whose body is NOT on its own line: nothing follows the condition's
+    closing parenthesis (yadi/yavat/chakra/guna), or the line is a bare anya / kuru / label."""
+    if code and code[0][0] == 'word' and mean(code[0][1]) == 'anya':
+        rest = code[1:]
+        if not rest:
+            return True
+        if rest[0][0] == 'word' and mean(rest[0][1]) in HEADER_CORE:
+            return _header_open(rest)
+        return False
+    depth = 0
+    for k, t in enumerate(code):
+        if t == ('delim', '('):
+            depth += 1
+        elif t == ('delim', ')'):
+            depth -= 1
+            if depth == 0:
+                return k == len(code) - 1
+    return True
 
 
 def _next_is_top(lines, i):
