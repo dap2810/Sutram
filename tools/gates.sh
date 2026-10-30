@@ -102,6 +102,7 @@ run_gate() {                      # name, then the command
     "language packs")   case "$(tail -1 /tmp/g_out.$$)" in *"33/33"*) ok "$name (33/33)";; *) bad "$name" "$(tail -1 /tmp/g_out.$$)";; esac ;;
     "library proofs")   case "$(tail -1 /tmp/g_out.$$)" in *"0 failed"*) ok "$name ($(tail -1 /tmp/g_out.$$))";; *) bad "$name" "$(tail -1 /tmp/g_out.$$)";; esac ;;
     "property proofs")  case "$(tail -1 /tmp/g_out.$$)" in *"86/86"*) ok "$name (86/86)";; *) bad "$name" "$(tail -1 /tmp/g_out.$$)";; esac ;;
+    "guard pages")      line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/guard pages: //; s/, 0 failed//'))";; *) bad "$name" "${line:-no summary}";; esac ;;
     "module graph")     case "$(tail -1 /tmp/g_out.$$)" in *OK*) ok "$name";; *) bad "$name" "$(tail -1 /tmp/g_out.$$ | cut -c1-60)";; esac ;;
     "layer check")      case "$(tail -1 /tmp/g_out.$$)" in *"layers OK"*) ok "$name ($(tail -1 /tmp/g_out.$$ | sed 's/layers OK: //'))";; *) bad "$name" "$(tail -1 /tmp/g_out.$$)";; esac ;;
     "performance")
@@ -155,6 +156,7 @@ run_gate "codegen shapes"    python3 tools/codegen_gate.py ./sutram_compiler
 run_gate "language packs"    python3 tools/test_lang_packs.py ./sutram_compiler
 run_gate "library proofs"    python3 tools/proof_lib.py --compiler ./sutram_compiler
 run_gate "property proofs"   python3 tools/proof_props.py --compiler ./sutram_compiler
+run_gate "guard pages"       python3 tools/guard_page.py   # R69: every block flush against PROT_NONE; suite + both proof sets touch nothing they were not given; 4 control bugs must fault
 run_gate "layer check"       python3 tools/check_layers.py
 run_gate "stdlib inventory"  python3 tools/gen_stdlib_ref.py
 run_gate "module graph"      python3 -m unittest discover -s tests/module_graph -p 'test_*.py'

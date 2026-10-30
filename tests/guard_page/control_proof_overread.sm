@@ -1,0 +1,13 @@
+# guard-page control 2 (R65): the property proof "bigint divmod reconstruct"
+# before R65 allocated 8 cells and then compared 16. A READ past the block, no
+# write at all. Under GUARD_PAGES the read of cell 8 must fault.
+mukhya() {
+    vitti a = nirmmita(8 * 8)
+    vitti s = 0
+    vitti i = 0
+    yavat (i < 16) {
+        s = s + a[i]
+        i = i + 1
+    }
+    likha(s)
+}

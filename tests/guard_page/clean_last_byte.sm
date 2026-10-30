@@ -1,0 +1,8 @@
+# guard-page clean control: the same 13-byte block, written at its last byte and
+# read back. Under GUARD_PAGES it must run (exit 0, prints 7): the guard is exact,
+# not one byte too tight.
+mukhya() {
+    vitti b = nirmmita(13)
+    akshar_rakh(b, 12, 7)
+    likha(akshar(b, 12))
+}

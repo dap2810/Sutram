@@ -1,0 +1,7 @@
+# guard-page control 4: precision. A 13-byte block; byte 13 is one past it.
+# Under GUARD_PAGES the write must fault (the block ends on the byte, not the page).
+mukhya() {
+    vitti b = nirmmita(13)
+    akshar_rakh(b, 13, 1)
+    likha(akshar(b, 0))
+}

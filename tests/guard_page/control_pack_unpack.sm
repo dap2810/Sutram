@@ -1,0 +1,9 @@
+# guard-page control 3 (R68): prop_strb_pack_unpack before R68 gave khand_mukt
+# 8 cells for 8 bytes; khand_mukt writes cell 8 = 0. Under GUARD_PAGES that
+# terminator must fault.
+yoj khand
+mukhya() {
+    vitti back = nirmmita(8 * 8)
+    khand_mukt("abcdefgh", 8, back)
+    likha(back[7])
+}

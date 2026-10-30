@@ -1,0 +1,10 @@
+# guard-page control 1 (R65/R67): examples/217_r12_report.sm before R68. A 4-cell
+# block (32 bytes) handed to pad_vam with width 6, which writes cells 0..6.
+# Under GUARD_PAGES the write to cell 4 must fault.
+yoj vakyank
+mukhya() {
+    vitti koshtha = nirmmita(32)
+    vitti cnt = ank_tak_varna(85, koshtha)
+    pad_vam(koshtha, cnt, 6, 32)
+    likha(koshtha[0])
+}
