@@ -1,0 +1,1 @@
+6 programs with changed bytes: 6 same output and exit code, 0 different

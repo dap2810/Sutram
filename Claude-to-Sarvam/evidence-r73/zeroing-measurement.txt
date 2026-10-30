@@ -1,0 +1,3 @@
+# Zeroing a 64-byte scratch block: rep stosb vs a qword loop. The block-in-a-loop program (1,000,000 passes), v269 development build, median of 9:
+rep stosb: 118.5 ms;  stosb NOPped out (no zeroing): 4.7 ms;  no block (persistent path): 29.0 ms
+# After switching to the qword loop: < 10 ms (time(1) shows 0.00-0.01 s), peak RSS 264 KB.

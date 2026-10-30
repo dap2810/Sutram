@@ -1,0 +1,9 @@
+PASS  allowed_outer: compiles and runs
+PASS  devanagari: with and without the block, same output (3)
+PASS  escape_assigned: refused with E_SCRATCH_ESCAPE
+PASS  escape_direct: refused with E_SCRATCH_ESCAPE
+PASS  escape_name: refused with E_SCRATCH_ESCAPE
+PASS  flat: with and without the block, same output (42)
+PASS  loop: with and without the block, same output (4950)
+PASS  nested: with and without the block, same output (15)
+r72 mandapa: 8 checks, 0 failed
