@@ -32,6 +32,7 @@ TOKEN_CAP    equ 65537      ; max one token per source byte + EOF
 STR_POOL_CAP equ 65537      ; max lexeme bytes + terminators for 64 KiB source
 IMPORT_BUF_CAP equ 131072   ; expanded source cannot exceed source_buf (R54: was 65536; one file is still read up to 64 KiB)
 AST_NODE_SIZE equ 72
+R73_MAXDEPTH equ 32             ; R73: mandapa nesting depth
 BLOCK_STMT_CAP equ 256        ; B11: max statements stored in one AST_BLOCK
 AST_BLOCK_EXTRA equ (BLOCK_STMT_CAP * 8) - (AST_NODE_SIZE - 16)
 AST_HEAP_CAP equ 3145728      ; R53: 3 MiB compile-time AST heap for expanded modern stdlib (no runtime/codegen ABI change)
@@ -103,6 +104,8 @@ AST_SLICE     equ 41    ; R23 WS3: base[lo:hi]: [type][base_name][lo][hi][desc_o
 AST_PRASAR    equ 42    ; R25: prasar call: [type][AST_FUNCALL]
 R28_RELOC_CAP equ 4096
 %define R28_PE_PAD db 0          ; R28: one byte past the 16-byte boundary, the parity v237 had (see the template)
+AST_SCRCUR    equ 50    ; R73: the scratch cursor's value (a mandapa's mark at entry)
+AST_REWIND    equ 51    ; R73: end = a mark: [type][AST_VAR mark]
 AST_HANDLE    equ 43    ; R26: yadi dosh (q = call) {fail} anya {ok}: [type][name][call][fail][ok]
 R25_PHAL_CAP  equ 512
 R23_METHOD_CAP equ 256
@@ -222,6 +225,7 @@ BN_KOSHCLEAR equ 42 ; R63 kosh_clear(k) -> 0; reset logical length in place
 BN_KOSHEMPTY equ 43 ; R63 kosh_empty(k) -> 1 when length=0
 BN_KOSHPEEK equ 44  ; R63 kosh_peek(k) -> last element (without popping)
 BN_KOSHDEQUEUE equ 45 ; R63 kosh_dequeue(k) -> first element (FIFO)
+BN_NIRM_SCRATCH equ 90 ; R73: nirmmita written inside a mandapa - the scratch side
 
 ; ============================================================
 ; DATA
@@ -235,7 +239,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v268) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v269) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -384,7 +388,19 @@ r54_builtin_arity_table:
     r25_msg_prasar_call db "Sutram Error: prasar: phal-prakriya-ahvanam apekshitam", 10, 0
     r25_msg_prasar_where db "Sutram Error: prasar kevalam phal-prakriya-madhye mukhya-madhye va", 10, 0
     r26_msg_handle_call db "Sutram Error: yadi dosh: phal-prakriya-ahvanam apekshitam", 10, 0
-    r72_msg_escape db "Sutram Error [E_SCRATCH_ESCAPE]: asthayi smriti bahir na gacchati - mandapa-madhye nirmitam sthanam nivartanam na shakyate", 10, 0
+    r72_msg_escape db "Sutram Error [E_SCRATCH_ESCAPE]: asthayi smriti bahir na gacchati - mandapa-madhye nirmitam sthanam nivartanam na shakyate", 10
+    r73_msg_limit db "Sanket: ayam parikshah prakriya-ahvane kosh-madhye va gacchantam sthanam na pashyati", 10, 0
+    r73_msg_escape_var db "Sutram Error [E_SCRATCH_ESCAPE]: asthayi smriti bahir na gacchati - mandapa-madhye nirmitam sthanam bahya-vittau na sthapyate", 10
+    db "Sanket: ayam parikshah prakriya-ahvane kosh-madhye va gacchantam sthanam na pashyati", 10, 0
+    r73_msg_escape_mem db "Sutram Error [E_SCRATCH_ESCAPE]: asthayi smriti bahir na gacchati - mandapa-madhye nirmitam sthanam smritau na likhyate", 10
+    db "Sanket: ayam parikshah prakriya-ahvane kosh-madhye va gacchantam sthanam na pashyati", 10, 0
+    r73_msg_full db "Sutram Error: kshetra purnam - mandapa-smritih samapta", 10, 0
+    r73_mark_names:                 ; R73: "0m01".."0m32", the hidden mark of each block depth
+%assign r73_i 1
+%rep R73_MAXDEPTH
+    db '0', 'm', '0' + (r73_i / 10), '0' + (r73_i % 10), 0
+%assign r73_i r73_i + 1
+%endrep
     r28_msg_object_globals db "Sutram Error: vastu-patre ghatak-star vitti asamarthita", 10, 0
     r32_msg_ffi_bad db "Sutram Error: videshi-ghoshana-patram dushtam, pankti ", 0
     r32_msg_ffi_clash db "Sutram Error: videshi prakriya-nama anyatra api: ", 0
@@ -991,8 +1007,16 @@ section .bss
     parse_error_kind resq 1 ; 0=generic, 1=too many function args, 2=duplicate function
     parse_block_depth resq 1 ; B10 audit: guarded recursive block nesting depth
     r72_mdepth    resq 1      ; R72: mandapa nesting depth while parsing
-    r72_ncount    resq 1      ; R72: names given a nirmmita block inside the open mandapa(s)
-    r72_names     resq 256
+    r73_marks     resq R73_MAXDEPTH + 1   ; R73: the hidden mark name of the block at each depth
+    r73_seenidx   resq R73_MAXDEPTH + 1   ; R73: R4 declaration count when that block opened
+    r73_loopstk   resq 256                ; R73: block depth at each enclosing loop
+    r73_loopn     resq 1
+    r73_loopbase  resq 1
+    r73_syms      resq 2 * 1024           ; R73: (name, taint) - Step 4's val_taint
+    r73_symn      resq 1
+    r73_symbase   resq 1
+    r73_fsave     resq 4 * 64
+    r73_fsn       resq 1
     parse_expr_depth  resq 1 ; R17 R6: nesting depth of the expression being parsed
     orig_rsp    resq 1      ; original stack ptr at _start (for envp scan)
     ; Language pack support
@@ -7414,95 +7438,471 @@ r71_after_single:
 .ok:
     ret
 
-; ROUND-72 (Step 3, first half): the mandapa block - syntactically real, semantically INERT.
+; ROUND-72/73 (Steps 3 and 4): the mandapa block.
 ;     mandapa
 ;         <statements>          (an indented body, or { } - parse_body's rules)
-; This round the block emits nothing: it is the same AST_BLOCK a braced block is, so a
-; program with a mandapa block compiles to the same bytes as the program without it
-; (examples/263-265 pin that). No nirmmita is redirected to the scratch cursor yet, and
-; no mark/rewind is emitted - both arrive when the scratch path does.
-; One rule is enforced now, the one the design settled for nivartanam: inside a mandapa,
-; `nivartanam` may not return a block allocated inside it - neither `nivartanam
-; nirmmita(n)` nor `nivartanam x` where x was given `nirmmita(...)` (by vitti or =) inside
-; the open mandapa. Aliases (`y = x`), fields and calls are Step 4's check, not this one.
+; R73: the block is real. It becomes
+;     AST_BLOCK [ vitti 0mNN = <scratch cursor> ; <body> ; <rewind to 0mNN> ]
+; where 0mNN is a hidden local (one per nesting depth NN, so recursion-safe), every
+; nirmmita written lexically inside it takes the scratch side (BN_NIRM_SCRATCH), and the
+; rewind also runs before a nivartanam in a prakriya (to the outermost block's mark) and
+; before a krama/agrim that leaves blocks inside its loop (to the outermost one it leaves).
+; Step 4, the escape check, runs on every statement parsed inside a block (r73_check_stmt):
+;   var_depth  the block depth a name was declared at (from the R4 declaration list)
+;   val_taint  the block depth whose scratch a value points into (0 = not scratch)
+;   box_depth  where a container's storage lives - in v1.0 every container counts as
+;              outside, so a scratch address may never be stored INTO memory at all
+; A value with taint t may go into a variable only if that variable's depth is >= t, may
+; not be stored into memory, and may not be returned. Data read out of scratch (b[i],
+; akshar(b, i)) carries no taint: copying the data out is the point of the block.
+; What it cannot see is stated in the error itself: an address passed to a prakriya that
+; keeps it or returns it, and an address carried by a kosh.
 r72_parse_mandapa:
     call advance_tok               ; consume 'mandapa'
-    push qword [rel r72_ncount]    ; names noted inside this block end with it
+    mov rax, [rel r72_mdepth]
+    cmp rax, R73_MAXDEPTH - 1
+    jae .nesting
     inc qword [rel r72_mdepth]
-    call parse_body                ; rax = the block (indented, braced, or one statement)
+    mov rcx, [rel r72_mdepth]
+    mov rax, [rel r4_seen_count]
+    lea rdx, [rel r73_seenidx]
+    mov [rdx + rcx*8], rax         ; names declared from here on are at this depth
+    push rax                       ; the hidden name's scope opens here
+    lea rax, [rcx*4 + rcx - 5]
+    lea rdx, [rel r73_mark_names]
+    add rax, rdx                   ; "0mNN"
+    lea rdx, [rel r73_marks]
+    mov [rdx + rcx*8], rax
+    push rax                       ; [rsp] = mark name
+    mov rdi, rax
+    call r7_declare_new
+    call alloc_ast                 ; the cursor at entry
+    mov qword [rax], AST_SCRCUR
+    push rax
+    call alloc_ast
+    pop rcx
+    mov qword [rax], AST_DECL
+    mov rdx, [rsp]
+    mov [rax+8], rdx
+    mov [rax+16], rcx
+    push rax                       ; [rsp] = decl, [rsp+8] = name
+    call parse_body                ; the block's statements
+    push rax                       ; [rsp] = body
+    mov rdi, [rsp+16]
+    call r73_rewind_node           ; rax = rewind to this block's mark
+    push rax
+    call alloc_ast
+    mov qword [rax], AST_BLOCK
+    mov qword [rax+8], 3
+    pop rcx
+    mov [rax+32], rcx              ; rewind
+    pop rcx
+    mov [rax+24], rcx              ; body
+    pop rcx
+    mov [rax+16], rcx              ; decl
+    pop rcx                        ; name
+    pop rdi                        ; r4_seen_count at entry
+    push rax
+    call r7_close_block
     dec qword [rel r72_mdepth]
-    pop qword [rel r72_ncount]
+    pop rax
     pop rbx                        ; parse_stmt's frame: its pushed rbx
     ret
+.nesting:
+    lea rdi, [rel msg_block_nesting_overflow]
+    jmp capacity_fail
 
-; r72_is_nirm(rdi = expr) -> rax = 1 when the expression is a nirmmita(...) call
-r72_is_nirm:
+; r73_rewind_node(rdi = mark name) -> rax = AST_REWIND [8] = AST_VAR(name)
+r73_rewind_node:
+    push rdi
+    call alloc_ast
+    pop rdi
+    mov qword [rax], AST_VAR
+    mov [rax+8], rdi
+    push rax
+    call alloc_ast
+    pop rcx
+    mov qword [rax], AST_REWIND
+    mov [rax+8], rcx
+    ret
+
+; r73_ret_mark(rax = AST_RETURN): inside a block, the return rewinds to the outermost
+; block's mark of this prakriya first. Preserves rax.
+r73_ret_mark:
+    cmp qword [rel r72_mdepth], 0
+    je .r
+    push rax
+    mov rdi, [rel r73_marks + 8]   ; depth 1's mark
+    call alloc_ast
+    mov qword [rax], AST_VAR
+    mov [rax+8], rdi
+    mov rcx, rax
+    pop rax
+    mov [rax+48], rcx
+.r:
+    ret
+
+; r73_wrap_jump(rax = AST_BREAK / AST_CONTINUE) -> rax: when the jump leaves blocks
+; that are inside its loop, BLOCK [rewind to the outermost of them, the jump].
+r73_wrap_jump:
+    mov rcx, [rel r73_loopn]
+    cmp rcx, [rel r73_loopbase]
+    jbe .r                         ; not in a loop of this prakriya: nothing to leave
+    lea rdx, [rel r73_loopstk]
+    mov rdx, [rdx + rcx*8 - 8]     ; block depth at the loop
+    cmp [rel r72_mdepth], rdx
+    jbe .r                         ; no block between the jump and its loop
+    push rax
+    lea rcx, [rel r73_marks]
+    mov rdi, [rcx + rdx*8 + 8]     ; the outermost block inside the loop
+    call r73_rewind_node
+    push rax
+    call alloc_ast
+    mov qword [rax], AST_BLOCK
+    mov qword [rax+8], 2
+    pop rcx
+    mov [rax+16], rcx
+    pop rcx
+    mov [rax+24], rcx
+.r:
+    ret
+
+; r73_loop_enter / r73_loop_leave: around a loop body. Preserve every register.
+r73_loop_enter:
+    push rax
+    push rcx
+    push rdx
+    mov rcx, [rel r73_loopn]
+    cmp rcx, 256
+    jae .full
+    lea rdx, [rel r73_loopstk]
+    mov rax, [rel r72_mdepth]
+    mov [rdx + rcx*8], rax
+.full:
+    inc qword [rel r73_loopn]
+    pop rdx
+    pop rcx
+    pop rax
+    ret
+r73_loop_leave:
+    dec qword [rel r73_loopn]
+    ret
+
+; r73_func_enter / r73_func_leave: around a prakriya body. A prakriya is its own region:
+; its blocks start at depth 1, its loops are its own, its names its own.
+r73_func_enter:
+    push rax
+    push rcx
+    mov rcx, [rel r73_fsn]
+    cmp rcx, 64
+    jae .full
+    imul rcx, rcx, 32
+    lea rax, [rel r73_fsave]
+    add rcx, rax
+    mov rax, [rel r72_mdepth]
+    mov [rcx], rax
+    mov rax, [rel r73_loopbase]
+    mov [rcx+8], rax
+    mov rax, [rel r73_symbase]
+    mov [rcx+16], rax
+    mov rax, [rel r73_symn]
+    mov [rcx+24], rax
+.full:
+    inc qword [rel r73_fsn]
+    mov qword [rel r72_mdepth], 0
+    mov rax, [rel r73_loopn]
+    mov [rel r73_loopbase], rax
+    mov rax, [rel r73_symn]
+    mov [rel r73_symbase], rax
+    pop rcx
+    pop rax
+    ret
+r73_func_leave:
+    push rax
+    push rcx
+    dec qword [rel r73_fsn]
+    mov rcx, [rel r73_fsn]
+    cmp rcx, 64
+    jae .r
+    imul rcx, rcx, 32
+    lea rax, [rel r73_fsave]
+    add rcx, rax
+    mov rax, [rcx]
+    mov [rel r72_mdepth], rax
+    mov rax, [rcx+8]
+    mov [rel r73_loopbase], rax
+    mov rax, [rcx+16]
+    mov [rel r73_symbase], rax
+    mov rax, [rcx+24]
+    mov [rel r73_symn], rax
+.r:
+    pop rcx
+    pop rax
+    ret
+
+; r73_var_depth(rdi = name) -> rax = the block depth the name was declared at (0: before
+; any open block, a parameter, a module vitti, or not declared).
+r73_var_depth:
+    push rbx
+    push r12
+    push r13
+    mov r12, rdi
+    mov rbx, [rel r4_seen_base]    ; the FIRST entry: `x = ...` appends x again on every
+.scan:                             ; assignment (R4), and blocks truncate what they declared
+    cmp rbx, [rel r4_seen_count]
+    jae .zero
+    lea rdx, [rel r4_seen]
+    mov rsi, [rdx + rbx*8]
+    mov rdi, r12
+    call strcmp
+    test rax, rax
+    jz .hit
+    inc rbx
+    jmp .scan
+.hit:
+    mov r13, [rel r72_mdepth]      ; the deepest open block whose start precedes it
+.depth:
+    test r13, r13
+    jz .zero
+    lea rdx, [rel r73_seenidx]
+    cmp rbx, [rdx + r13*8]
+    jae .found
+    dec r13
+    jmp .depth
+.found:
+    mov rax, r13
+    jmp .out
+.zero:
+    xor eax, eax
+.out:
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; r73_sym_find(rdi = name) -> rax = the entry (name, taint), or 0
+r73_sym_find:
+    push rbx
+    push r12
+    mov r12, rdi
+    mov rbx, [rel r73_symn]
+.scan:
+    cmp rbx, [rel r73_symbase]
+    jbe .none
+    dec rbx
+    lea rax, [rel r73_syms]
+    mov rcx, rbx
+    shl rcx, 4
+    add rax, rcx
+    push rax
+    mov rsi, [rax]
+    mov rdi, r12
+    call strcmp
+    test rax, rax
+    pop rax
+    jnz .scan
+    jmp .out
+.none:
+    xor eax, eax
+.out:
+    pop r12
+    pop rbx
+    ret
+
+; r73_sym_set(rdi = name, rsi = taint): a fresh entry (a new binding, or a new value)
+r73_sym_set:
+    mov rcx, [rel r73_symn]
+    cmp rcx, 1024
+    jae .full
+    lea rax, [rel r73_syms]
+    shl rcx, 4
+    mov [rax + rcx], rdi
+    mov [rax + rcx + 8], rsi
+    inc qword [rel r73_symn]
+    ret
+.full:
+    lea rdi, [rel msg_var_table_overflow]
+    jmp capacity_fail
+
+; r73_taint(rdi = expr) -> rax = the block depth whose scratch the value points into
+r73_taint:
     xor eax, eax
     test rdi, rdi
     jz .r
-    cmp qword [rdi], AST_CALL
-    jne .r
-    cmp qword [rdi+8], BN_NIRMRITA
-    jne .r
-    mov eax, 1
+    mov rcx, [rdi]
+    cmp rcx, AST_CALL
+    je .call
+    cmp rcx, AST_VAR
+    je .var
+    cmp rcx, AST_BINOP
+    je .binop
+    cmp rcx, AST_TERNARY
+    je .tern
 .r:
     ret
-
-; r72_note_alloc(rdi = name, rsi = value expr): inside a mandapa, remember a name given a
-; nirmmita block. Preserves rax, rbx, rcx.
-r72_note_alloc:
-    cmp qword [rel r72_mdepth], 0
-    je .r
-    push rdi
-    mov rdi, rsi
-    call r72_is_nirm
-    pop rdi
-    test eax, eax
+.call:
+    cmp qword [rdi+8], BN_NIRM_SCRATCH
+    jne .r
+    mov rax, [rdi+40]              ; the depth it was written at
+    ret
+.var:
+    mov rdi, [rdi+8]
+    call r73_sym_find
+    test rax, rax
     jz .r
-    mov rdx, [rel r72_ncount]
-    cmp rdx, 256
-    jae .r                         ; past 256 names the check is silent, not wrong: Step 4 owns it
-    lea rsi, [rel r72_names]
-    mov [rsi + rdx*8], rdi
-    inc qword [rel r72_ncount]
-.r:
+    mov rax, [rax+8]
+    ret
+.binop:
+    mov rcx, [rdi+8]
+    cmp rcx, OP_EQ
+    jb .arith
+    cmp rcx, OP_NE
+    jbe .zero                      ; == <= < > >= != give a truth value, not an address
+    cmp rcx, OP_LAND
+    je .zero
+    cmp rcx, OP_LOR
+    je .zero
+.arith:
+    push rdi
+    mov rdi, [rdi+16]
+    call r73_taint
+    pop rdi
+    push rax
+    mov rdi, [rdi+24]
+    call r73_taint
+    pop rcx
+    cmp rax, rcx
+    cmovb rax, rcx
+    ret
+.tern:
+    push rdi
+    mov rdi, [rdi+24]
+    call r73_taint
+    pop rdi
+    push rax
+    mov rdi, [rdi+32]
+    call r73_taint
+    pop rcx
+    cmp rax, rcx
+    cmovb rax, rcx
+    ret
+.zero:
+    xor eax, eax
     ret
 
-; r72_check_return(rdi = the returned expression): refuse a scratch address.
-r72_check_return:
-    cmp qword [rel r72_mdepth], 0
-    je .ok
-    push rdi
-    call r72_is_nirm
+; r73_note_decl(rdi = name, rsi = initializer): a vitti declared with a value. A new
+; binding gets its own entry when it is in a block, or when an older binding of the
+; same name has one. Preserves rax, rbx, rcx.
+r73_note_decl:
+    push rax
+    push rbx
+    push rcx
+    mov rbx, rdi
+    push rsi
+    call r73_sym_find
     pop rdi
-    test eax, eax
-    jnz .refuse
-    cmp qword [rdi], AST_VAR
-    jne .ok
-    mov r8, [rdi+8]                ; the returned name
-    xor ecx, ecx
-.scan:
-    cmp rcx, [rel r72_ncount]
-    jae .ok
-    lea rdx, [rel r72_names]
-    mov r9, [rdx + rcx*8]
-    xor edx, edx
-.cmp:
-    mov al, [r8 + rdx]
-    cmp al, [r9 + rdx]
-    jne .next
-    test al, al
-    jz .refuse
-    inc rdx
-    jmp .cmp
-.next:
-    inc rcx
-    jmp .scan
-.refuse:
+    mov rcx, rax
+    push rcx
+    call r73_taint                 ; rax = taint of the initializer
+    pop rcx
+    test rax, rax
+    jnz .set
+    test rcx, rcx
+    jz .out                        ; untainted and nothing to shadow
+.set:
+    mov rdi, rbx
+    mov rsi, rax
+    call r73_sym_set
+.out:
+    pop rcx
+    pop rbx
+    pop rax
+    ret
+
+; r73_check_stmt(rax = a statement just parsed) -> rax unchanged. Step 4.
+r73_check_stmt:
+    test rax, rax
+    jz .ret
+    cmp qword [rel r73_symn], 0    ; nothing tainted has ever been seen, and no block
+    jne .go
+    cmp qword [rel r72_mdepth], 0
+    je .ret
+.go:
+    push rbx
+    push r12
+    push r13
+    mov rbx, rax
+    mov rcx, [rbx]
+    cmp rcx, AST_ASSIGN
+    je .assign
+    cmp rcx, AST_RETURN
+    je .return
+    cmp rcx, AST_CALL
+    je .call
+    jmp .out
+.assign:
+    mov rdi, [rbx+16]
+    call r73_taint
+    mov r12, rax                   ; the value's taint
+    mov r13, [rbx+8]               ; the target
+    cmp qword [r13], AST_VAR
+    jne .store_mem
+    mov rdi, [r13+8]
+    call r73_var_depth
+    cmp r12, rax
+    ja .escape_var                 ; into a variable that outlives the block
+    mov rdi, [r13+8]
+    call r73_sym_find
+    test rax, rax
+    jnz .update
+    test r12, r12
+    jz .out
+    mov rdi, [r13+8]
+    mov rsi, r12
+    call r73_sym_set
+    jmp .out
+.update:
+    mov [rax+8], r12
+    jmp .out
+.store_mem:
+    test r12, r12
+    jnz .escape_mem                ; into memory: a mala, a raw block, a field
+    jmp .out
+.return:
+    mov rdi, [rbx+8]
+    call r73_taint
+    test rax, rax
+    jnz .escape_ret
+    jmp .out
+.call:
+    mov rcx, [rbx+8]
+    cmp rcx, BN_LIKH8
+    je .call_store
+    cmp rcx, BN_KOSHPUSH
+    je .call_store
+    jmp .out
+.call_store:
+    mov rdi, [rbx+32]              ; the value stored
+    call r73_taint
+    test rax, rax
+    jnz .escape_mem
+    jmp .out
+.out:
+    mov rax, rbx
+    pop r13
+    pop r12
+    pop rbx
+.ret:
+    ret
+.escape_var:
+    lea rdi, [rel r73_msg_escape_var]
+    jmp capacity_fail
+.escape_mem:
+    lea rdi, [rel r73_msg_escape_mem]
+    jmp capacity_fail
+.escape_ret:
     lea rdi, [rel r72_msg_escape]
     jmp capacity_fail
-.ok:
-    ret
 
 ; r70_line_indent(rdi = token) -> rax = the number of spaces/tabs that begin the
 ; token's source line. Clobbers rcx, rdx.
@@ -9179,9 +9579,9 @@ r45_parse_stmt_body:                ; R45: parse_stmt is the wrapper in src/r45_
     pop rdi
     mov [rax+16], rcx         ; init expr
     push rax
-    mov rdi, rbx                ; R72: a name given a nirmmita block inside a mandapa
+    mov rdi, rbx                ; R73: the binding's taint (Step 4)
     mov rsi, rcx
-    call r72_note_alloc
+    call r73_note_decl
     pop rax
     call maybe_semi
     pop rbx
@@ -9577,7 +9977,9 @@ r45_parse_stmt_body:                ; R45: parse_stmt is the wrapper in src/r45_
     xor eax,eax               ; null body = prototype
     jmp .r55_body_ready
 .r55_parse_real_body:
+    call r73_func_enter       ; R73: a prakriya is its own region
     call parse_body           ; rax = real block node
+    call r73_func_leave
 .r55_body_ready:
     ; Build funcdef node: [AST_FUNCDEF][name_ptr][param_count][body]
     push rax                  ; save body
@@ -9699,7 +10101,9 @@ r45_parse_stmt_body:                ; R45: parse_stmt is the wrapper in src/r45_
     push rax                  ; save end expr
 .r52_for_body:
     ; Parse body
+    call r73_loop_enter       ; R73: a krama/agrim's loop, for the rewind
     call parse_body           ; rax = body block
+    call r73_loop_leave
     mov rdi, [rsp+16]         ; R7: r4_seen_count before the loop variable
     call r7_close_block       ; the loop variable ends with the loop
     push rax                  ; save body
@@ -9787,6 +10191,7 @@ r45_parse_stmt_body:                ; R45: parse_stmt is the wrapper in src/r45_
     pop rcx
     mov qword [rax], AST_BREAK
     mov qword [rax+8], 0
+    call r73_wrap_jump        ; R73: leaving blocks inside the loop rewinds them
     pop rbx
     ret
 
@@ -9799,6 +10204,7 @@ r45_parse_stmt_body:                ; R45: parse_stmt is the wrapper in src/r45_
     pop rcx
     mov qword [rax], AST_CONTINUE
     mov qword [rax+8], 0
+    call r73_wrap_jump        ; R73: leaving blocks inside the loop rewinds them
     pop rbx
     ret
 
@@ -9967,7 +10373,9 @@ r45_parse_stmt_body:                ; R45: parse_stmt is the wrapper in src/r45_
     jne parse_error
     call advance_tok
     ; Parse body — braces optional
+    call r73_loop_enter       ; R73: a krama/agrim's loop, for the rewind
     call parse_body            ; rax = body
+    call r73_loop_leave
     push rax                  ; save body
     push rbx                  ; save condition
     call alloc_ast
@@ -9983,7 +10391,9 @@ r45_parse_stmt_body:                ; R45: parse_stmt is the wrapper in src/r45_
     ; kuru { body } yavat (condition) ;
     ; Sanskrit-only do-while form: body executes once before the test.
     call advance_tok          ; consume 'kuru'
+    call r73_loop_enter       ; R73: a krama/agrim's loop, for the rewind
     call parse_body           ; rax = body block
+    call r73_loop_leave
     push rax                  ; save body
     call cur_tok
     cmp qword [rax], TOK_KEYWORD
@@ -10046,6 +10456,7 @@ r45_parse_stmt_body:                ; R45: parse_stmt is the wrapper in src/r45_
     mov qword [rax], AST_RETURN
     mov [rax+8], rbx
     mov [rax+16], rcx
+    call r73_ret_mark         ; R73: a return from inside a block rewinds it
     call maybe_semi
     pop rbx
     ret
@@ -10069,8 +10480,6 @@ r45_parse_stmt_body:                ; R45: parse_stmt is the wrapper in src/r45_
 .ps_ret_parse:
     call parse_expr           ; rax = return value
     mov rbx, rax              ; save it
-    mov rdi, rax
-    call r72_check_return     ; R72: nivartanam may not return a block made inside a mandapa
     jmp .ps_ret_build
 .ps_ret_noexpr:
     xor rbx, rbx
@@ -10080,6 +10489,7 @@ r45_parse_stmt_body:                ; R45: parse_stmt is the wrapper in src/r45_
     pop rbx
     mov qword [rax], AST_RETURN
     mov [rax+8], rbx
+    call r73_ret_mark         ; R73: a return from inside a block rewinds it
     call maybe_semi
     pop rbx
     ret
@@ -10247,18 +10657,6 @@ push r12                  ; save r12 (parse_func_block uses it)
     mov qword [rax], AST_ASSIGN
     mov [rax+8], rbx          ; target
     mov [rax+16], rcx         ; value
-    cmp qword [rbx], AST_VAR  ; R72: x = nirmmita(...) inside a mandapa
-    jne .r72_assign_noted
-    push rax
-    push rbx
-    push rcx
-    mov rdi, [rbx+8]
-    mov rsi, rcx
-    call r72_note_alloc
-    pop rcx
-    pop rbx
-    pop rax
-.r72_assign_noted:
     cmp qword [rbx], AST_VAR  ; R4: `x = ...` declares x (after the RHS is parsed)
     jne .r4_assign_declared
     push rdi
@@ -11948,6 +12346,14 @@ parse_primary_inner:
     pop rbx
     mov qword [rax], 8       ; AST_CALL
     mov [rax+8], rbx          ; builtin id
+    cmp rbx, BN_NIRMRITA      ; R73: written inside a mandapa -> the scratch side
+    jne .r73_not_scratch
+    mov rcx, [rel r72_mdepth]
+    test rcx, rcx
+    jz .r73_not_scratch
+    mov qword [rax+8], BN_NIRM_SCRATCH
+    mov [rax+40], rcx         ; the depth it belongs to (Step 4's taint)
+.r73_not_scratch:
     mov [rax+16], r12         ; arg count
     ; pop stashed args (pushed in order) into node slots in reverse
     mov rcx, r12
@@ -12927,6 +13333,12 @@ gen_stmt:
     je .gs_nishkriya
     cmp rax, AST_HANDLE
     je .gs_handle
+    cmp rax, AST_REWIND       ; R73: a mandapa's rewind
+    jne .r73_not_rewind
+    call r73_gen_rewind
+    pop rbx
+    ret
+.r73_not_rewind:
     ; Default: expression
     mov rax, rbx
     call gen_expr
@@ -14783,6 +15195,7 @@ gen_stmt:
     call emit_u32
     jmp .gs_ret_epilogue       ; in main → emit sys_exit
 .gs_ret_func:
+    call r73_gen_ret_rewind       ; R73: from inside a mandapa, rewind (rax kept)
     call r25_emit_return_status   ; R25: rdx = 0 for siddhi, 1 for dosh
     ; User function return: lea rsp,[rbp-8]; pop rbx; pop rbp; ret
     mov dil, 0x48             ; lea rsp, [rbp-8]
@@ -14804,6 +15217,7 @@ gen_stmt:
 
 .gs_ret_func_none:
     ; User function return with no value: xor rax; lea rsp,[rbp-8]; pop rbx; pop rbp; ret
+    call r73_gen_ret_rewind       ; R73: from inside a mandapa, rewind
     mov dil, 0x48             ; xor rax, rax
     call emit_byte
     mov dil, 0x31
@@ -15055,6 +15469,12 @@ gen_expr:
     mov rax, [rbx]            ; node type
     cmp rax, AST_NUM
     je .ge_num
+    cmp rax, AST_SCRCUR       ; R73: a mandapa's mark at entry
+    jne .r73_not_scrcur
+    call r73_gen_scrcur
+    pop rbx
+    ret
+.r73_not_scrcur:
     cmp rax, AST_FLOAT
     je .ge_float
     cmp rax, AST_VAR
@@ -15625,6 +16045,8 @@ gen_expr:
     je .ge_call_netacc
     cmp r12, BN_NIRMRITA
     je .ge_call_nirm
+    cmp r12, BN_NIRM_SCRATCH  ; R73: inside a mandapa
+    je .r73_ge_scratch
     cmp r12, BN_LIKH8
     je .ge_call_likh8
     cmp r12, BN_PAD8
@@ -17349,6 +17771,19 @@ gen_expr:
     ; nirmmita(size) → mmap(0, size, 3, 0x22, -1, 0)
     mov rax, [rbx+24]
     call gen_expr
+    call emit_nirmmita_from_rax
+    jmp .ge_call_done
+.r73_ge_scratch:
+    mov rax, [rbx+24]
+    call gen_expr
+    cmp qword [rel r38_fail_n], 0  ; --fail-alloc counts the ordinary path
+    jne .r73_ge_plain
+    call r65_active                ; not Linux ELF (PE, GUARD_PAGES): the ordinary nirmmita
+    test rax, rax
+    jz .r73_ge_plain
+    call r73_gen_scratch_nirm
+    jmp .ge_call_done
+.r73_ge_plain:
     call emit_nirmmita_from_rax
     jmp .ge_call_done
 

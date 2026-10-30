@@ -321,3 +321,187 @@ r65_emit_kosh_extend:
     call emit_u32                      ; rel32 to .space, patched by the caller
 .done:
     ret
+
+; ROUND-73: the scratch side of nirmmita (see r72_parse_mandapa in sutram_compiler.asm).
+section .data
+    ; mov rsi,rax ; test rsi,rsi ; jz .zero (rel32)
+    r73_s1 db 0x48,0x89,0xC6, 0x48,0x85,0xF6, 0x0F,0x84
+    ; (mov rax,[end]) lea rdx,[rsi+15] ; and rdx,-16 ; sub rax,rdx ; jb .full (rel32)
+    r73_s2 db 0x48,0x8D,0x56,0x0F, 0x48,0x83,0xE2,0xF0, 0x48,0x29,0xD0, 0x0F,0x82
+    ; mov rdx,rax
+    r73_s3 db 0x48,0x89,0xC2
+    ; (mov rax,[cur]) cmp rdx,rax ; jb .full (rel32)
+    r73_s4 db 0x48,0x39,0xC2, 0x0F,0x82
+    ; mov rax,rdx
+    r73_s5 db 0x48,0x89,0xD0
+    ; (mov [end],rax) zero it, a qword at a time (rep stosb measured ~110 ns per 64-byte
+    ; block on the test machine; this loop ~4 ns):
+    ; lea rcx,[rsi+7] ; shr rcx,3 ; xor edx,edx ; .z: mov qword [rax+rdx*8],0 ; inc rdx ;
+    ; cmp rdx,rcx ; jb .z ; jmp .done (rel32)
+    r73_s6 db 0x48,0x8D,0x4E,0x07, 0x48,0xC1,0xE9,0x03, 0x31,0xD2
+    db 0x48,0xC7,0x04,0xD0,0x00,0x00,0x00,0x00, 0x48,0xFF,0xC2, 0x48,0x39,0xCA, 0x72,0xF0, 0xE9
+    ; .zero: xor eax,eax ; jmp .done (rel32)
+    r73_s7 db 0x31,0xC0, 0xE9
+section .text
+r73_s1_len equ 8
+r73_s2_len equ 13
+r73_s3_len equ 3
+r73_s4_len equ 5
+r73_s5_len equ 3
+r73_s6_len equ 27
+r73_s7_len equ 3
+
+; ---- code generation ----
+; r73_gen_scrcur: the scratch cursor's value at block entry, reserving the arena first if
+; this is the program's first use of it. Not a Linux ELF build: 0 (the block is inert).
+r73_gen_scrcur:
+    call r65_active
+    test rax, rax
+    jnz .live
+    mov dil, 0x31                  ; xor eax, eax
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    ret
+.live:
+    call r65_ensure_globals
+    call r73_emit_reserve
+    mov rdi, [rel r65_idx_end]
+    call r56_emit_global_load      ; mov rax,[end]
+    ret
+
+; r73_emit_reserve: if the arena has not been reserved, reserve it (Step 2's sequence).
+r73_emit_reserve:
+    mov rdi, [rel r65_idx_cur]
+    call r56_emit_global_load      ; mov rax,[cur]
+    R65_BYTES r69_n2               ; test rax,rax ; jnz .have
+    mov rax, [rel code_sz]
+    dec rax
+    push rax
+    R65_BYTES r65_t5
+    call emit_syscall
+    R65_BYTES r69_n3
+    mov rdi, [rel r65_idx_cur]
+    call r56_emit_global_store
+    R65_BYTES r69_n4
+    mov rdi, [rel r65_idx_end]
+    call r56_emit_global_store
+    mov rdi, [rel r65_idx_sima]
+    call r56_emit_global_store
+    pop rdi
+    call r69_patch8                ; .have
+    ret
+
+; r73_gen_rewind(rbx = AST_REWIND): end = the mark. Not Linux ELF: nothing.
+r73_gen_rewind:
+    call r65_active
+    test rax, rax
+    jz .r
+    call r65_ensure_globals
+    mov rax, [rbx+8]
+    call gen_expr                  ; rax = the mark
+    mov rdi, [rel r65_idx_end]
+    call r56_emit_global_store
+.r:
+    ret
+
+; r73_gen_scratch_nirm: rax (generated) = size -> rax = a zeroed block on the scratch side.
+;   mov rsi,rax ; test rsi,rsi ; jz .zero ; mov rax,[end] ; lea rdx,[rsi+15] ; and rdx,-16
+;   sub rax,rdx ; jb .full ; mov rdx,rax ; mov rax,[cur] ; cmp rdx,rax ; jb .full
+;   mov rax,rdx ; mov [end],rax ; mov rdi,rax ; mov rcx,rsi ; mov rdx,rax ; xor eax,eax
+;   rep stosb ; mov rax,rdx ; jmp .done
+;   .zero: xor eax,eax ; jmp .done
+;   .full: likha(kshetra purnam) ; exit(1)
+r73_gen_scratch_nirm:
+    call r65_ensure_globals
+    R65_BYTES r73_s1               ; mov rsi,rax ; test rsi,rsi ; jz .zero
+    call .rel32                    ; A
+    mov rdi, [rel r65_idx_end]
+    call r56_emit_global_load      ; mov rax,[end]
+    R65_BYTES r73_s2               ; rdx = align16(size) ; end - rdx ; jb .full
+    call .rel32                    ; B
+    R65_BYTES r73_s3               ; mov rdx,rax
+    mov rdi, [rel r65_idx_cur]
+    call r56_emit_global_load      ; mov rax,[cur]
+    R65_BYTES r73_s4               ; cmp rdx,rax ; jb .full (would meet the persistent side)
+    call .rel32                    ; C
+    R65_BYTES r73_s5               ; mov rax,rdx
+    mov rdi, [rel r65_idx_end]
+    call r56_emit_global_store     ; mov [end],rax
+    R65_BYTES r73_s6               ; zero it (memory is reused) ; jmp .done
+    call .rel32                    ; D
+    mov rdi, [rsp + 24]            ; .zero: A
+    call r73_patch32
+    R65_BYTES r73_s7               ; xor eax,eax ; jmp .done
+    call .rel32                    ; E
+    mov rdi, [rsp + 24]            ; .full: B
+    call r73_patch32
+    mov rdi, [rsp + 16]            ; .full: C
+    call r73_patch32
+    push rbx
+    call alloc_ast
+    mov qword [rax], AST_STR
+    lea rcx, [rel r73_msg_full]
+    call r11_tr_rcx
+    mov [rax+8], rcx
+    push rax
+    call alloc_ast
+    pop rcx
+    mov qword [rax], AST_CALL
+    mov qword [rax+8], BN_LIKHA
+    mov qword [rax+16], 1
+    mov [rax+24], rcx
+    call gen_expr
+    pop rbx
+    mov dil, 0xB8                  ; mov eax,60 ; mov edi,1 ; syscall
+    call emit_byte
+    mov edi, 60
+    call emit_u32
+    mov dil, 0xBF
+    call emit_byte
+    mov edi, 1
+    call emit_u32
+    call emit_syscall
+    pop rdi                        ; .done: E
+    call r73_patch32
+    pop rdi                        ; .done: D
+    call r73_patch32
+    add rsp, 24                    ; C, B, A
+    ret
+.rel32:                            ; push the offset of a rel32 field and emit it (0)
+    pop rcx                        ; return address
+    mov rax, [rel code_sz]
+    push rax
+    push rcx
+    xor edi, edi
+    jmp emit_u32                   ; returns to our caller with the offset on its stack
+
+; r73_patch32(rdi = offset of a rel32 field): its target is the current end of code.
+r73_patch32:
+    mov rax, [rel code_sz]
+    sub rax, rdi
+    sub rax, 4
+    lea rdx, [rel code_buf]
+    mov [rdx + rdi], eax
+    ret
+
+; r73_gen_ret_rewind(rbx = AST_RETURN): a nivartanam inside a block rewinds to the
+; outermost block's mark of its prakriya, after the value is in rax.
+r73_gen_ret_rewind:
+    cmp qword [rbx+48], 0
+    je .r
+    call r65_active
+    test rax, rax
+    jz .r
+    mov dil, 0x50                  ; push rax (the value)
+    call emit_byte
+    push rbx
+    mov rax, [rbx+48]
+    call gen_expr                  ; rax = the mark
+    mov rdi, [rel r65_idx_end]
+    call r56_emit_global_store
+    pop rbx
+    mov dil, 0x58                  ; pop rax
+    call emit_byte
+.r:
+    ret

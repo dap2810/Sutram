@@ -96,7 +96,10 @@ section .text
 ; token). Otherwise a jump straight to the body - the ordinary parse.
 parse_stmt:
     cmp qword [rel r45_debug], 0
-    je r45_parse_stmt_body
+    jne .debug
+    call r45_parse_stmt_body
+    jmp r73_check_stmt             ; R73: Step 4, the escape check, on every statement
+.debug:
     call cur_tok
     push qword [rax+32]            ; the first token's source position
     call r45_parse_stmt_body
@@ -112,7 +115,7 @@ parse_stmt:
     mov [rsi + rcx + 8], rdx
     inc qword [rel r45_map_cnt]
 .done:
-    ret
+    jmp r73_check_stmt             ; R73: Step 4
 
 ; r45_gen_trap(rdi = statement node). Called by gen_stmt under --debug only.
 ; Emits the trap for that statement, if it is one with a recorded line of the
