@@ -1,3 +1,31 @@
+## v418 - 217 settled, the leak has a real number, and the allocator exposed a library bug
+
+### `217` is the example's bug, and the proof is decisive
+**`examples/217_r12_report.sm` allocates `nirmmita(32)` - four cells - then calls `pad_vam(koshtha, cnt, 6, 32)`, whose contract says the caller must allocate at least `width` cells. Width 6 is 48 bytes. So it writes cells 4 and 5, sixteen bytes past the block.**
+
+**On v261 those sixteen bytes were the zeroed rest of `koshtha`'s own page, so the over-write landed nowhere. On v263 they belong to the next allocation.**
+
+**And the deciding fact: the write past the block happens on v261 TOO.** **The old allocator only gave it somewhere harmless to land.** **Step 1 stands, and what changed is that a latent overflow stopped being masked.**
+
+### The leak now has a number, and the common case is zero
+| Case | v261 | v263 |
+|---|---|---|
+| **one `kosh`, grown in a loop** | 16,000 KB | **7,808 KB, 0 bytes abandoned** |
+| **two interleaved** | 32,128 KB | 32,000 KB, **8.39 B per append per `kosh`** |
+| **three round-robin** | 48,256 KB | 48,000 KB, **8.39 B** |
+
+**The formula: `abandoned = 8*(C - c0) + 16*g`.** **And the honest bound: worst case 16 bytes per append, typical 8.4, and abandoned memory never exceeds the memory in use.**
+
+**So the single-`kosh` case - the common one - now leaks nothing and halves peak memory.**
+
+### And ChatGPT found a second bug, in the library
+**`pad_vam` writes `dst[w] = 0` after filling positions 0 to w-1.** **So it writes one cell past its own stated width - which means the example's `nirmmita(48)` fix would still over-write, and every other caller does too.**
+
+**That is a library bug that the tighter allocator turned from harmless into corrupting.** **Claude is verifying and fixing it, and auditing `lib/` for the same shape.**
+
+### And ChatGPT's safety bar is accepted
+**"247/248 matching outputs are useful regression evidence, not sufficient evidence of safety."** **So v263 is not marked safe from the aggregate score.** **The bar needs stating as a number, and that is asked for.**
+
 ## v417 - Step 1 is built and shipped: v263, and 247 of 248 programs unchanged
 
 **Claude's R65 landed two commits on `main`: `817cd89` the `avayava` reword (v262), `8e6ae35` Step 1 (v263).**
