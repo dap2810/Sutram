@@ -1,0 +1,17 @@
+# R67 WS1 (3): the same allocation pattern as examples/217_r12_report.sm, in a minimal program.
+# koshtha is 32 bytes = 4 qword cells; pad_vam(..., 6, 32) needs 6 cells (lib/vakyank.smlib: "Caller must
+# allocate >= width cells"). row is allocated right after it and filled with 'R' (82) first.
+yoj vakyank
+mukhya() {
+    vitti koshtha = nirmmita(32)
+    vitti row = nirmmita(64)
+    vitti j = 0
+    yavat (j < 8) {
+        row[j] = 82
+        j = j + 1
+    }
+    vitti cnt = ank_tak_varna(85, koshtha)
+    pad_vam(koshtha, cnt, 6, 32)
+    likha("koshtha[4], koshtha[5] after pad_vam (cells past the 4-cell block): ", koshtha[4], " ", koshtha[5])
+    likha("row[0], row[1] (were 82 82 before pad_vam):                       ", row[0], " ", row[1])
+}

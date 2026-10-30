@@ -1,0 +1,11 @@
+646 .sm/.smlib files outside tests/negative; 81 declare or take a kosh; 131 kosh declarations.
+
+Q1  one kosh variable assigned to another (vitti x = k / x = k): 2 sites in 2 files
+    examples/252_r38_alias_kosh_oob.sm: w = v
+    examples/255_r42_alias_kosh_push.sm: w = v
+
+Q2  a kosh passed to a prakriya: 162 call sites; of which the callee STORES the parameter: 0
+
+Q3  a kosh stored into a mala cell, a field, a likh8 cell or another kosh: 0 sites
+
+Q4  kosh declarations unaffected by banning assignment: 131 - those in Q1 files

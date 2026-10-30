@@ -1,0 +1,13 @@
+mukhya() {
+    kosh k1[1000000]
+    kosh k2[1000000]
+    kosh k3[1000000]
+    vitti i = 0
+    yavat (i < 1000000) {
+        kosh_push(k1, i)
+        kosh_push(k2, i)
+        kosh_push(k3, i)
+        i = i + 1
+    }
+    likha(kosh_cap(k3))
+}

@@ -1,0 +1,10 @@
+examples/217_r12_report.sm under v261 and v263 (both deterministic):
+  old lines 15-22: '    85' '    92' '    78' '    95' '    88' '    76' '    90' '    84'
+  new lines 15-22: '     5' '     2' '     8' '     5' '     8' '     6' '     0' '     4'
+
+217-pattern-minimal.sm (nirmmita(32) koshtha, nirmmita(64) row filled with 82, pad_vam(koshtha, cnt, 6, 32)):
+  v261: koshtha[4], koshtha[5] after pad_vam = 56 53  ('8','5' - WRITTEN past the 4-cell block, into page padding); row[0], row[1] = 82 82
+  v263: koshtha[4], koshtha[5] after pad_vam = 56 53;  row[0], row[1] = 56 53  (the same write now lands in row)
+
+217-fixed-48.sm (the example with nirmmita(48)): v261 and v263 outputs identical, and identical to the original example's OLD output.
+217-koshtha-last.sm (the example with koshtha allocated after row, nothing after it): v263 gives the OLD output.
