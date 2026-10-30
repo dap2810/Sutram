@@ -1007,7 +1007,7 @@ def prop_strb_pack_unpack(compiler, rng):
              "}",
              "mukhya() {",
              "    vitti cells = nirmmita(8*8)",
-             "    vitti back = nirmmita(8*8)",
+             "    vitti back = nirmmita(9*8)",   # R68: khand_mukt writes back[n] = 0; n reaches 8
              "    vitti out = nirmmita(16)",
              "    vitti out2 = nirmmita(16)"]
     for s in cases:
