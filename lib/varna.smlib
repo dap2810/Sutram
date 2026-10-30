@@ -245,6 +245,9 @@ prakriya varna_pratisthap(src, sn, find, fn, repl, out) {
 # To recover segment i: walk from parts[0], skipping (1 + len) cells per
 # segment; the length is at the segment's start. Returns segment count
 # (capped at maxparts). Empty separator: no split (one segment).
+# maxparts <= 0: returns 0 and writes nothing (R69: the empty-input and
+# empty-separator paths used to write one segment and return 1 regardless).
+# Capacity: parts must hold sn + 1 cells (sn < 0: 1 cell); no terminator.
 prakriya varna_bhed(src, sn, sep, sepn, parts, maxparts) {
     vitti s = src
     vitti slen = sn
@@ -252,6 +255,7 @@ prakriya varna_bhed(src, sn, sep, sepn, parts, maxparts) {
     vitti splen = sepn
     vitti dst = parts
     vitti maxp = maxparts
+    yadi (maxp <= 0) { nivartanam 0 }
     # empty input: one empty segment
     yadi (slen == 0) {
         dst[0] = 0

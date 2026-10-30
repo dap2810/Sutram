@@ -198,6 +198,11 @@ prakriya khand_pratisthap(src, sn, find, fn, repl, out) {
 # [len0, b0, b1, ..., len1, b0, ...]; cells hold one byte value each.
 # Returns the segment count (capped at maxparts). Empty separator: no
 # split (one segment). Empty input: one empty segment.
+# maxparts <= 0: returns 0 and writes nothing (R69: the empty-input and
+# empty-separator paths used to write one segment and return 1 regardless).
+# Capacity: parts must hold sn + 2 cells (sn < 0: 2 cells). Each segment is
+# copied by khand_mukt, which writes a 0 cell after it; the last one lands
+# one cell past the segments, so the encoded segments' L cells are not enough.
 prakriya khand_bhed(src, sn, sep, sepn, parts, maxparts) {
     vitti s = src
     vitti slen = sn
@@ -218,6 +223,7 @@ prakriya khand_bhed(src, sn, sep, sepn, parts, maxparts) {
     vitti seglen = 0
     vitti sk = 0
     vitti ci = 0
+    yadi (maxp <= 0) { nivartanam 0 }
     yadi (slen == 0) {
         dst[0] = 0
         nivartanam 1
@@ -253,7 +259,8 @@ prakriya khand_bhed(src, sn, sep, sepn, parts, maxparts) {
             seglen = segend - segstart
             dst[wpos] = seglen
             # unpack writes a 0 cell at dst[wpos+1+seglen]; the next
-            # segment's length overwrites it (or it trails harmlessly).
+            # segment's length overwrites it, or it trails one cell past
+            # the segments - which is why the contract asks for sn + 2.
             # Cell index -> byte offset: (wpos + 1) * 8.
             khand_mukt(s + segstart, seglen, dst + (wpos + 1) * 8)
             wpos = wpos + 1 + seglen

@@ -1,0 +1,5 @@
+# r8_split_model's own header: 'The expectation is Python's str.split, truncated to maxparts'.
+# The same 300 cases, each input printed, both splitters scored against that model:
+old library (main before R69): 300 cases (60 with maxparts=0): 40 results differ from str.split truncated to maxparts {'varna_bhed empty input maxparts=0': 6, 'khand_bhed empty input maxparts=0': 6, 'varna_bhed empty separator maxparts=0': 14, 'khand_bhed empty separator maxparts=0': 14}
+new library (R69): 300 cases (60 with maxparts=0): 0 results differ from str.split truncated to maxparts {}
+# The 40 old differences are exactly the maxparts=0 empty-input and empty-separator paths; the golden had recorded them.
