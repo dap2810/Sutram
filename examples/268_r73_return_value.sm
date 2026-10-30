@@ -1,0 +1,26 @@
+# R73 test 5: a block that allocates and returns a computed VALUE. Allowed - and
+# the nivartanam rewinds the block first, so calling it a million times keeps
+# memory flat.
+prakriya varga_yoga(n)
+    mandapa
+        vitti t = nirmmita(n * 8)
+        vitti i = 0
+        yavat (i < n)
+            t[i] = i * i
+            i = i + 1
+        vitti s = 0
+        i = 0
+        yavat (i < n)
+            s = s + t[i]
+            i = i + 1
+        nivartanam s
+    nivartanam 0
+
+mukhya()
+    likha(varga_yoga(10), "\n")
+    vitti k = 0
+    vitti total = 0
+    yavat (k < 1000000)
+        total = total + varga_yoga(4)
+        k = k + 1
+    likha(total, "\n")

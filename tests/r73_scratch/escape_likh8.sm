@@ -1,0 +1,7 @@
+# R73: a scratch address written into memory with likh8. Refused.
+mukhya()
+    vitti m = nirmmita(16)
+    mandapa
+        vitti b = nirmmita(8)
+        likh8(m, b)
+    likha(1)

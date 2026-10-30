@@ -1,0 +1,8 @@
+# R73: an inner block's address into a variable of the outer block. Refused.
+mukhya()
+    mandapa
+        vitti p = 0
+        mandapa
+            vitti b = nirmmita(8)
+            p = b
+        likha(p)

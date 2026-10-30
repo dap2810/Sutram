@@ -1,0 +1,27 @@
+# R73 test 6, the one that decides whether the block is usable: work in scratch,
+# copy the DATA out into memory that outlives the block, return that. Allowed.
+# The result buffer is allocated before the block (persistent); the scratch
+# buffer is only read from. Data read out of scratch carries no taint.
+prakriya ulta(src, n)
+    vitti out = nirmmita(n * 8)
+    mandapa
+        vitti tmp = nirmmita(n * 8)
+        vitti i = 0
+        yavat (i < n)
+            tmp[i] = src[n - 1 - i]
+            i = i + 1
+        i = 0
+        yavat (i < n)
+            out[i] = tmp[i] * 10
+            i = i + 1
+    nivartanam out
+
+mukhya()
+    vitti a = nirmmita(4 * 8)
+    a[0] = 1
+    a[1] = 2
+    a[2] = 3
+    a[3] = 4
+    vitti r = ulta(a, 4)
+    likha(r[0], " ", r[1], "\n")
+    likha(r[2], " ", r[3], "\n")

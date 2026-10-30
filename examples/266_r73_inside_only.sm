@@ -1,0 +1,8 @@
+# R73 test 3: a scratch buffer used only inside its block. Allowed, no warning.
+mukhya()
+    mandapa
+        vitti buf = nirmmita(4 * 8)
+        buf[0] = 3
+        buf[1] = 4
+        buf[2] = buf[0] * buf[0] + buf[1] * buf[1]
+        likha(buf[2], "\n")

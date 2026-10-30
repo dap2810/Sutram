@@ -1,0 +1,7 @@
+# R73: a scratch address pushed into a kosh. Refused.
+mukhya()
+    kosh k[4]
+    mandapa
+        vitti b = nirmmita(8)
+        kosh_push(k, b)
+    likha(kosh_len(k))

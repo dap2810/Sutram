@@ -1,0 +1,34 @@
+# R73: agrim and krama leaving a block, and recursion through blocks. Each must
+# rewind: 1,000,000 passes with agrim keep memory flat.
+prakriya gahan(n)
+    yadi (n == 0)
+        nivartanam 0
+    mandapa
+        vitti b = nirmmita(32)
+        b[0] = n
+        vitti r = gahan(n - 1)
+        nivartanam b[0] + r
+    nivartanam 0
+
+mukhya()
+    vitti i = 0
+    vitti s = 0
+    yavat (i < 1000000)
+        i = i + 1
+        mandapa
+            vitti b = nirmmita(64)
+            b[0] = i
+            yadi (i % 2 == 0)
+                agrim
+            s = s + b[0]
+    likha(s, "\n")
+    vitti j = 0
+    yavat (j < 10)
+        mandapa
+            vitti c = nirmmita(16)
+            c[0] = j
+            yadi (j == 5)
+                krama
+        j = j + 1
+    likha(j, "\n")
+    likha(gahan(100), "\n")

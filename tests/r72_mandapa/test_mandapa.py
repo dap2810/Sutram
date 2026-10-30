@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""R72 (Step 3, first half): the mandapa block is syntactically real and semantically INERT.
+"""R72 (Step 3, first half), revised in R73: the mandapa block.
 
     python3 -B tests/r72_mandapa/test_mandapa.py --compiler ./sutram_compiler
 
-  * every X_with.sm / X_without.sm pair compiles to the SAME BYTES and prints the same output - a block
-    redirects no nirmmita and emits no mark or rewind until the scratch path exists;
+  * every X_with.sm / X_without.sm pair prints the same output and exits the same way. In R72 (v268) the two
+    compiled to the same bytes - the block was inert. From R73 (v269) a block's nirmmita takes the scratch
+    side and the block rewinds it, so the bytes differ by design; the OUTPUT may not;
   * escape_*.sm are refused with E_SCRATCH_ESCAPE: nivartanam inside a mandapa may not return a block
     allocated inside it;
   * allowed_*.sm compile and run: returning a block allocated OUTSIDE the mandapa, or a value read from
@@ -35,7 +36,7 @@ def main():
             a, ab = build(n)
             b, bb = build(base + '_without')
             checks += 1
-            ok = a.returncode == 0 and b.returncode == 0 and open(ab, 'rb').read() == open(bb, 'rb').read()
+            ok = a.returncode == 0 and b.returncode == 0
             if ok:
                 ra = subprocess.run([ab], capture_output=True, text=True, timeout=20)
                 rb = subprocess.run([bb], capture_output=True, text=True, timeout=20)
@@ -43,7 +44,7 @@ def main():
                 detail = ra.stdout.strip()
             else:
                 detail = (a.stdout + a.stderr + b.stdout + b.stderr).strip()[-160:]
-            print(('PASS' if ok else 'FAIL') + f'  {base}: with and without the block, same bytes and output ({detail})')
+            print(('PASS' if ok else 'FAIL') + f'  {base}: with and without the block, same output ({detail})')
             failed += not ok
         elif n.startswith('escape_'):
             c, _ = build(n)

@@ -121,6 +121,7 @@ run_gate() {                      # name, then the command
     "R25 error type")   line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r25 phal: //'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "R28 linker")       line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(grep -m1 'identity:' /tmp/g_out.$$ | sed 's/PASS  identity: //; s/ byte-identical.*//') identical; $(echo "$line" | sed 's/r28 link: //'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "R29 separate compilation") line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r29 separate: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c6-80)";; esac ;;
+    "R73 scratch")      line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r73 scratch: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "R72 mandapa")      line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r72 mandapa: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "R30 module vitti") line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r30 vitti: //'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c6-80)";; esac ;;
     "R31 incremental")  line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r31 incremental: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c6-80)";; esac ;;
@@ -184,7 +185,8 @@ run_gate "R45 debug"         python3 -B tests/r45/test_debug.py --compiler ./sut
 run_gate "R46 debug usable"  python3 -B tests/r46/test_debug_usable.py --compiler ./sutram_compiler   # R46: watch list, line range, statement count and summary, module vitti; a sign error found by the trace
 run_gate "Devanagari default" python3 -B tests/r50/test_devanagari_default.py --compiler ./sutram_compiler   # R50: Devanagari Sanskrit needs no flag; prati is प्रति
 run_gate "R53 nivartanam"    python3 -B tests/r53/test_nivartanam.py --compiler ./sutram_compiler   # R53: nivartanam the return keyword, prati the alias - the same binaries, both scripts
-run_gate "R72 mandapa"       python3 -B tests/r72_mandapa/test_mandapa.py --compiler ./sutram_compiler   # R72: the block is inert (with = without, byte for byte); a scratch address may not be returned
+run_gate "R72 mandapa"       python3 -B tests/r72_mandapa/test_mandapa.py --compiler ./sutram_compiler   # R72: with and without a block, the same output; a scratch address may not be returned
+run_gate "R73 scratch"       python3 -B tests/r73_scratch/test_scratch.py --compiler ./sutram_compiler   # R73: the block reclaims (1M x 64 B: flat memory), rewinds on every exit, refuses escapes, names its blind spots
 run_gate "R54 migration"     python3 -B tests/r54/test_r54.py --compiler ./sutram_compiler   # R54: lib/ and examples/ say nivartanam; the expanded source may be 128 KiB; प्रति still works
 run_gate "R52 additions"     python3 -B tests/r52/test_r52.py --compiler ./sutram_compiler   # R52: likha up to six values, lkhb dasham, the yoj hint, arabhya/paryantam
 run_gate "R52 lib index"     python3 tools/lib_index.py --check   # R52: src/r52_lib_index.inc (the yoj hint's names) is what lib/ declares

@@ -1,0 +1,9 @@
+# R73 test 2: a scratch address stored into a mala declared outside the block.
+# Refused: E_SCRATCH_ESCAPE.
+mukhya()
+    mala bahar[4]
+    vitti i = 1
+    mandapa
+        vitti buf = nirmmita(64)
+        bahar[i] = buf
+    likha(bahar[1])

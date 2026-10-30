@@ -1,0 +1,8 @@
+# R73 test 4: a number (not derived from scratch) assigned to an outer variable
+# inside a block. Allowed.
+mukhya()
+    vitti outer = 0
+    mandapa
+        vitti buf = nirmmita(16)
+        outer = 5
+    likha(outer, "\n")

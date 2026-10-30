@@ -1,0 +1,8 @@
+# R73 test 1: a scratch address, moved by arithmetic, stored in a variable that
+# outlives the block. Refused: E_SCRATCH_ESCAPE.
+mukhya()
+    vitti outer = 0
+    mandapa
+        vitti buf = nirmmita(128)
+        outer = buf + 64
+    likha(outer)

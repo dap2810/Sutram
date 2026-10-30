@@ -1,0 +1,14 @@
+# R73: scratch memory is reused after a rewind, and arrives zeroed like any
+# nirmmita block; nirmmita(0) is 0 inside a block too.
+mukhya()
+    vitti s = 0
+    mandapa
+        vitti b = nirmmita(13)
+        b[0] = 5
+        b[1] = 6
+        s = b[0] + b[1]
+    mandapa
+        vitti c = nirmmita(13)
+        s = s + c[0] + c[1]
+        likha(nirmmita(0), "\n")
+    likha(s, "\n")

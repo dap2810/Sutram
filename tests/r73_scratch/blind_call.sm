@@ -1,0 +1,13 @@
+# R73: a KNOWN BLIND SPOT, pinned so it is not forgotten. A prakriya that stores
+# the address it is given is not visible to the check: this compiles. The error
+# message's Sanket line says so wherever the check fires.
+prakriya rakh(m, p)
+    m[0] = p
+    nivartanam 0
+
+mukhya()
+    vitti m = nirmmita(16)
+    mandapa
+        vitti b = nirmmita(8)
+        rakh(m, b)
+    likha(1, "\n")

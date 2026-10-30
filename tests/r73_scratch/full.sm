@@ -1,0 +1,5 @@
+# R73: a block that asks for more than the field holds stops with kshetra purnam.
+mukhya()
+    mandapa
+        vitti b = nirmmita(2000000000)
+        likha(b, "\n")
