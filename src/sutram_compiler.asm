@@ -234,7 +234,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v265) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v266) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -6993,6 +6993,11 @@ parse_program:
     mov [rel ast_ptr], rax
     call r45_register_counter          ; R46: --debug's statement counter (a no-op without it)
     call parse_function
+    push rax                           ; R71: nothing may follow mukhya's body. Before R71 the
+    call cur_tok                       ; tokens after a braced mukhya's closing '}' were never
+    cmp qword [rax], TOK_EOF           ; parsed: a statement or a prakriya written there was
+    pop rax                            ; silently dropped (the program did less than it said)
+    jne parse_error
     mov [rel root_node], rax
     call r4_resolve_pending            ; R4: undefined names are errors
     call r23_resolve_methods           ; R23 WS2: q.m(...) calls the one Rachana.m
