@@ -326,8 +326,16 @@ def format_text(text: str) -> str:
         if code and paren == 0:
             # R70: an indented body ends at the first code line indented less than it
             si = _src_indent(rawof.get(id(ln), ''))
-            while ind_stack and si < ind_stack[-1]:
-                ind_stack.pop()
+            kuru_tail = False
+            while ind_stack and si < ind_stack[-1][0]:
+                kuru_tail = ind_stack.pop()[1] == 'kuru'
+            # R71: the `yavat (c)` that ends an indented kuru body closes it; it opens nothing
+            if kuru_tail and first[0] == 'word' and mean(first[1]) == 'yavat':
+                code_is_kuru_tail = True
+            else:
+                code_is_kuru_tail = False
+        else:
+            code_is_kuru_tail = False
         closes = first == ('delim', '}')
         top = first is not None and first[0] == 'word' and mean(first[1]) in TOPLEVEL_CORE
         if body_mode and top and depth == 0:
@@ -341,7 +349,7 @@ def format_text(text: str) -> str:
             d += pending + len(ind_stack)
         else:                      # a comment line: indented like the code at its own source indentation
             si = _src_indent(rawof.get(id(ln), ''))
-            d += pending + sum(1 for e in ind_stack if e <= si)
+            d += pending + sum(1 for e in ind_stack if e[0] <= si)
         if blank and out and not last_was_open and not closes:
             out.append('')
         blank = 0
@@ -368,6 +376,8 @@ def format_text(text: str) -> str:
             pending = 0
         elif is_func and not ends_open and depth == 0 and code[-1] != ('delim', ';'):
             body_mode = True; pending = 0
+        elif code_is_kuru_tail:
+            pending = 0
         elif is_header and ('delim', '{') not in code and _header_open(code):
             # R70: the body is on the following lines. Indented deeper than this header in
             # the source, it is a block (the compiler's rule); otherwise one statement.
@@ -375,7 +385,7 @@ def format_text(text: str) -> str:
             here = _src_indent(rawof.get(id(ln), ''))
             there = _src_indent(rawof.get(id(nxt), '')) if nxt is not None else -1
             if there > here:
-                ind_stack.append(there)
+                ind_stack.append((there, mean(first[1])))
                 pending = 0
             else:
                 pending += 1
