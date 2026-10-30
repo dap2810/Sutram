@@ -1,3 +1,26 @@
+## v417 - Step 1 is built and shipped: v263, and 247 of 248 programs unchanged
+
+**Claude's R65 landed two commits on `main`: `817cd89` the `avayava` reword (v262), `8e6ae35` Step 1 (v263).**
+
+### The reword is provably inert
+**577 programs, 486 byte-identical, 91 refused identically, 0 DIFFER on ELF, PE and Wine.** **19 files changed, 0 rejected hunks, and the ten frozen packs changed ONLY in their comment lines - zero translation lines touched.**
+
+### Step 1 changed what it had to change, and nothing else
+**248 programs changed bytes - every program that allocates - and 238 are byte-identical: the programs that neither allocate nor grow a `kosh`.** **247 of the 248 produce the same output and exit code.** **PE and Wine: 0 DIFFER.**
+
+**Suite PASS=225 · proofs 226/226 · property 86/86 · crash corpus 227/0 · linker, separate compilation, fail-alloc and corpus all pass.**
+
+### One program differs, and it is being investigated rather than excused
+**`examples/217_r12_report.sm`.** **Claude calls it "a bug in the example, exposed not caused".** **I have asked for the mechanism, and specifically: if the allocator were reverted, would the example still be wrong?** **If yes it is the example's bug; if no it is mine.** **One program differing is acceptable only if the program was already wrong.**
+
+### The gate FAIL was mine
+**47 PASS / 1 FAIL, and the FAIL was "doc counts" - because my own v411 banner in `PROJECT-MASTER.md` says "property proofs 86/86", which `tools/doc_counts_gate.py` reads as an impossible gate claim.** **Corrected to "86 of 86".** **Claude reported it rather than fixing docs prose, which was the right call.**
+
+### And ChatGPT's objection is now a question about the build, not the design
+**Its R138 recommended not shipping the growth optimization at all.** **It shipped before the review was read.** **So the question is now whether 247 of 248 unchanged is sufficient evidence - and I have asked ChatGPT what the evidence does NOT cover, rather than for a restatement of its recommendation.**
+
+**And its point that *"bounded leak must state a bound"* is right: I have been saying "bounded" without a figure.** **Both Claude and Muse are asked for bytes abandoned per append.**
+
 ## v416 - Claude stopped Step 0, and both of its invariants were false
 
 **The `kosh` leak fix as designed was impossible, and it would have created a silent use-after-free.** **It did not ship, because the brief said "confirm both invariants before building" and both were false.**
