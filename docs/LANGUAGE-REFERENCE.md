@@ -720,20 +720,30 @@ prakriya madhya(a, b, c)
 |---|---|
 | numbers: scalar variables and arithmetic, a result returned or assigned outward | allowed |
 | `nirmmita(n)` buffers of numbers, used inside the block | allowed — this is what the block is for |
-| nested blocks, and loops inside a block | allowed |
-| `nivartanam` of a value | allowed |
-| `nivartanam` of a buffer allocated inside the block (`nivartanam b`, `nivartanam nirmmita(n)`) | **refused**: `E_SCRATCH_ESCAPE` |
-| any `kosh` | not supported in v1.0 |
-| keeping a scratch buffer's address anywhere that outlives the block | not supported in v1.0 |
+| reading data out of a scratch buffer (`b[i]`, `akshar(b, i)`) into anything | allowed — copying the data out is the point |
+| nested blocks; loops inside a block; a block inside a loop; recursion through blocks | allowed |
+| `nivartanam`, `krama`, `agrim` from inside a block | allowed — each rewinds the blocks it leaves |
+| a buffer's address (or that address plus an offset) in a variable of the same block or a deeper one | allowed |
+| that address in a variable declared **outside** the block (or in an outer block) | **refused**: `E_SCRATCH_ESCAPE` |
+| that address stored **into memory** — a `mala` cell, a raw block, `likh8`, `kosh_push` | **refused**: `E_SCRATCH_ESCAPE` |
+| `nivartanam` of that address | **refused**: `E_SCRATCH_ESCAPE` |
+| any `kosh` inside the block | not supported in v1.0 |
+
+**What happens at run time (v269):** every `nirmmita` written inside the block takes memory from the scratch side
+of the field, zeroed like any `nirmmita` block; when the block ends — by falling off its end, by `nivartanam`,
+`krama` or `agrim` — all of it is reclaimed at once. A loop that allocates 1,000,000 blocks of 64 bytes inside a
+`mandapa` peaks at **264 KB**; the same loop without the block peaks at **62 MB**. Asking a block for more than the
+field holds stops the program: `Sutram Error: kshetra purnam`.
+
+**What the check cannot see — read this before you rely on it.** The compiler follows a scratch address through
+variables, arithmetic (`b + 64`) and the stores above. It does **not** follow one that you pass to a `prakriya`
+which keeps it (stores it somewhere, or returns it), and it does not look inside a `kosh` of addresses. Those
+programs compile and are wrong. Every `E_SCRATCH_ESCAPE` message ends with a `Sanket` line saying exactly this.
+**Rule of thumb: pass a scratch buffer to a function only to be read or written, never to be kept.**
 
 **What it is not.** It is not a way to manage the memory of code that uses `kosh` — most of a real program's
 growing memory — and a block around a call does not reclaim what the called function allocates inside itself
 (the block is lexical). For when it helps and when it does not, see `docs/MEMORY-DECISION.md`.
-
-**Status in this version (v268): the block is inert.** It parses, scopes its variables like any block, and
-refuses the scratch-address `nivartanam` — but it does not yet place its `nirmmita` on the scratch side or
-reclaim them, so a program with a `mandapa` block compiles to exactly the same program as without it. The
-memory is reclaimed from the release that turns the scratch side on; nothing you write changes then.
 
 ## Printing a string variable - READ THIS BEFORE YOU TRY IT
 
