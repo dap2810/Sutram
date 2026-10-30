@@ -1,0 +1,39 @@
+# WS3: lib/madhava.smlib against Python math, x from -100 to 100 in steps of 0.025 (24,003 values; printed to 6 places)
+yoj madhava
+mukhya() {
+    vitti i = 0 - 4000
+    yavat (i <= 4000) {
+        dasham x = i * 0.0025 * 10.0
+        likha(madhava_sin(x))
+        likha("\n")
+        likha(madhava_cos(x))
+        likha("\n")
+        likha(madhava_atan(x))
+        likha("\n")
+        i = i + 1
+    }
+}
+worst absolute error (the 6-decimal print rounds at 5e-7): {'sin': (4.99996457570262e-07, -74.5), 'cos': (4.999311613573809e-07, -8.05), 'atan': (4.999970963925904e-07, -30.825)}
+sign mismatches: 0
+
+# madhava_pi() - pi, times 1e12:
+3.141593
+0.000444
+1.414214
+
+# the R15 sign mutants are killed today (lib_mutant_score --only madhava): atan neg branch lines 100/104/124
+madhava_vargmool 8 / 13 survivors ['C1:<=-><@L14', 'C2:<-><=@L16', 'C3:<-><=@L18', 'N@L16', 'K:0@L17', 'K:1000@L18']
+madhava_pi 19 / 23 survivors ['C1:<-><=@L32', 'C2:>->>=@L34', 'K:1@L31', 'K:30@L32', 'K:0@L40']
+madhava_sin 22 / 26 survivors ['C1:>->>=@L55', 'C2:<-><=@L56', 'C3:<-><=@L60', 'N@L55', 'K:16@L60']
+madhava_cos 22 / 26 survivors ['C1:>->>=@L75', 'C2:<-><=@L76', 'C3:<-><=@L80', 'N@L75', 'K:16@L80']
+madhava_atan 42 / 47 survivors ['C1:<-><=@L98', 'C4:<-><=@L112', 'C5:>->>=@L114', 'K:1@L111', 'K:60@L112', 'K:0@L120']
+    ['C3:==->!=@L104', 'killed', 'tests/stdlib/r18_madhava_reduction.sm']
+    ['C6:==->!=@L124', 'killed', 'tests/stdlib/madhava_madhava_atan.sm']
+    ['A:-@L100', 'killed', 'tests/stdlib/r18_madhava_reduction.sm']
+    ['D@L100', 'killed', 'tests/stdlib/r18_madhava_reduction.sm']
+    ['N@L104', 'killed', 'tests/stdlib/r18_madhava_reduction.sm']
+    ['A:-@L104', 'killed', 'tests/stdlib/r18_madhava_reduction.sm']
+    ['K:1@L104', 'killed', 'tests/stdlib/r18_madhava_reduction.sm']
+    ['N@L124', 'killed', 'tests/stdlib/madhava_madhava_atan.sm']
+    ['A:-@L124', 'killed', 'proof_props: edge30 float']
+    ['K:1@L124', 'killed', 'proof_props: edge30 float']

@@ -1,0 +1,13 @@
+# WS3: kuttaka (600 random cases) and meru (every C(n,k), n <= 70) against Python's exact integers (crosscheck.py)
+--- shipped library (v273 tree):
+kuttaka: |b| <= 2^40: 162/162 correct;  |b| > 2^40: 0/438 correct
+meru: answers that fit in int64: 2500/2500 right;  answers too large: 0/56 reported as -1  (first: meru(67, 30) printed -8457053321527274480, true 9989690752182277136)
+--- R76 library:
+kuttaka: |b| <= 2^40: 162/162 correct;  |b| > 2^40: 438/438 correct
+meru: answers that fit in int64: 2500/2500 right;  answers too large: 56/56 reported as -1  (first: meru(67, 30) printed -1, true 9989690752182277136)
+
+# tests/stdlib/numeric29.out, first line: was 2605677504891245458 (a*x != c mod |b|), now 1483584605987376058 (checked)
+1c1
+< 2605677504891245458
+---
+> 1483584605987376058

@@ -1,0 +1,80 @@
+# WS3: every listed survivor, re-scored on v273, then a search for an input that tells it apart (witness_all.py)
+ank_gan  C2:<-><=@L17  NO-WITNESS  332 inputs
+ank_gan  K:0@L17  WITNESS  input (-9,) real 1 mutant 2
+avali_srij  C1:<-><=@L386  NO-WITNESS  6 inputs
+avali_srij  C2:>->>=@L387  NO-WITNESS  6 inputs
+avali_srij  C3:<-><=@L389  NO-WITNESS  6 inputs
+avali_srij  K:0@L383  NO-WITNESS  6 inputs
+avali_srij  K:0@L384  NO-WITNESS  6 inputs
+avali_srij  K:0@L385  NO-WITNESS  6 inputs
+avali_srij  K:1@L386  NO-WITNESS  6 inputs
+avali_srij  K:1@L386  NO-WITNESS  6 inputs
+avali_srij  K:1152921504606846975@L387  NO-WITNESS  6 inputs
+avali_srij  K:8@L388  NO-WITNESS  6 inputs
+avali_srij  K:0@L389  NO-WITNESS  6 inputs
+avali_srij  K:0@L389  NO-WITNESS  6 inputs
+avali_srij  K:0@L391  NO-WITNESS  6 inputs
+avali_srij  K:0@L391  NO-WITNESS  6 inputs
+avali_srij  K:0@L394  NO-WITNESS  6 inputs
+avali_srij  D@L394  NO-WITNESS  6 inputs
+avali_srij  K:3@L397  NO-WITNESS  6 inputs
+avali_srij  D@L397  NO-WITNESS  6 inputs
+brahmagupta_kshetr  C1:<-><=@L177  NO-WITNESS  600 inputs
+brahmagupta_kshetr  K:0@L177  WITNESS  input (16, 5, 4, 1000) real 0 mutant 1
+brahmagupta_kshetr  K:0@L177  WITNESS  input (16, 5, 4, 1000) real 0 mutant 1
+ganit_seemit  C1:<-><=@L175  WITNESS  input (3037000499, 3037000499, -1) real -1 mutant 3037000499
+ganit_seemit  C2:>->>=@L176  NO-WITNESS  600 inputs
+ganita_paripurna_kramgun  K:9223372036854775807@L566  WITNESS  input (1000000000,) real 9223372036854775807 mutant CRASH
+kuttaka  C3:<-><=@L35  NO-WITNESS  600 inputs
+kuttaka  C4:>->>=@L36  WITNESS  input (-9223372036854775807, 0, 12) real 0 mutant CRASH
+kuttaka  K:0@L31  WITNESS  input (0, 0, 4611686018427387904) real 0 mutant 1
+kuttaka  K:0@L35  WITNESS  input (-2, -9223372036854775807, 16) real 9223372036854775791 mutant -16
+kuttaka  K:0@L36  NO-WITNESS  600 inputs
+meru  C3:>->>=@L29  NO-WITNESS  358 inputs
+meru  N@L29  WITNESS  input (1000, 10) real 8501833471525307536 mutant 9075951505112705721
+meru  A:-@L29  WITNESS  input (1, 1) real 1 mutant 0
+seemit  C1:<-><=@L70  WITNESS  input (3037000499, 3037000499, -1) real -1 mutant 3037000499
+seemit  C2:>->>=@L71  NO-WITNESS  600 inputs
+suchi_srij  C1:<-><=@L51  NO-WITNESS  6 inputs
+suchi_srij  C2:>->>=@L52  NO-WITNESS  6 inputs
+suchi_srij  C3:<-><=@L54  NO-WITNESS  6 inputs
+suchi_srij  K:0@L48  NO-WITNESS  6 inputs
+suchi_srij  K:0@L49  NO-WITNESS  6 inputs
+suchi_srij  K:0@L50  NO-WITNESS  6 inputs
+suchi_srij  K:1@L51  NO-WITNESS  6 inputs
+suchi_srij  K:1@L51  NO-WITNESS  6 inputs
+suchi_srij  K:1152921504606846975@L52  NO-WITNESS  6 inputs
+suchi_srij  K:8@L53  NO-WITNESS  6 inputs
+suchi_srij  K:0@L54  NO-WITNESS  6 inputs
+suchi_srij  K:0@L54  NO-WITNESS  6 inputs
+suchi_srij  K:0@L56  NO-WITNESS  6 inputs
+suchi_srij  K:0@L56  NO-WITNESS  6 inputs
+suchi_srij  K:0@L59  NO-WITNESS  6 inputs
+suchi_srij  D@L59  NO-WITNESS  6 inputs
+madhava_vargmool  C1:<=-><@L14  NO-WITNESS  308 inputs
+madhava_vargmool  C2:<-><=@L16  NO-WITNESS  308 inputs
+madhava_vargmool  C3:<-><=@L18  NO-WITNESS  308 inputs
+madhava_vargmool  N@L16  NO-WITNESS  308 inputs
+madhava_vargmool  K:0@L17  NO-WITNESS  308 inputs
+madhava_vargmool  K:1000@L18  NO-WITNESS  308 inputs
+madhava_pi  C1:<-><=@L32  NO-WITNESS  1 inputs
+madhava_pi  C2:>->>=@L34  NO-WITNESS  1 inputs
+madhava_pi  K:1@L31  NO-WITNESS  1 inputs
+madhava_pi  K:30@L32  NO-WITNESS  1 inputs
+madhava_pi  K:0@L40  NO-WITNESS  1 inputs
+madhava_sin  C1:>->>=@L55  NO-WITNESS  308 inputs
+madhava_sin  C2:<-><=@L56  NO-WITNESS  308 inputs
+madhava_sin  C3:<-><=@L60  NO-WITNESS  308 inputs
+madhava_sin  N@L55  NO-WITNESS  308 inputs
+madhava_sin  K:16@L60  NO-WITNESS  308 inputs
+madhava_cos  C1:>->>=@L75  NO-WITNESS  308 inputs
+madhava_cos  C2:<-><=@L76  NO-WITNESS  308 inputs
+madhava_cos  C3:<-><=@L80  NO-WITNESS  308 inputs
+madhava_cos  N@L75  NO-WITNESS  308 inputs
+madhava_cos  K:16@L80  NO-WITNESS  308 inputs
+madhava_atan  C1:<-><=@L98  NO-WITNESS  308 inputs
+madhava_atan  C4:<-><=@L112  NO-WITNESS  308 inputs
+madhava_atan  C5:>->>=@L114  NO-WITNESS  308 inputs
+madhava_atan  K:1@L111  NO-WITNESS  308 inputs
+madhava_atan  K:60@L112  NO-WITNESS  308 inputs
+madhava_atan  K:0@L120  NO-WITNESS  308 inputs

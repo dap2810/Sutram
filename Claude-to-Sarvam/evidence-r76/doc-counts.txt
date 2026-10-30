@@ -1,0 +1,21 @@
+measured: 52 gates PASS, 0 FAIL, 1 NOT-RUN; suite PASS=240
+  the 6 documents should quote: gates 52, and suite 240
+NOTE    PROJECT-MASTER.md: library functions: says 305, measured 306  ('305 functions')
+NOTE    PROJECT-MASTER.md: library proofs: says 226, measured 227  ('Library proofs | **226 /')
+NOTE    PROJECT-MASTER.md: library proofs: says 226, measured 227  ('library proofs **226/')
+NOTE    PROJECT-MASTER.md: says 225 pass, measured 240
+NOTE    PROJECT-MASTER.md: says 48 PASS, measured 52
+NOTE    PROJECT-OVERVIEW.md: library functions: says 305, measured 306  ('305 functions')
+NOTE    PROJECT-OVERVIEW.md: says 225 pass, measured 240
+NOTE    README.md: library functions: says 305, measured 306  ('305 functions')
+NOTE    docs/sutram-design-parameters.html: library functions: says 305, measured 306  ('305 functions')
+NOTE    docs/sutram-design-parameters.html: library proofs: says 226, measured 227  ('226 library proofs')
+NOTE    docs/sutram-design-parameters.html: library proofs: says 226, measured 227  ('library 226 proofs')
+NOTE    docs/sutram-design-parameters.html: says 225 pass, measured 240
+NOTE    docs/sutram-project-status.html: library functions: says 305, measured 306  ('305 functions')
+NOTE    docs/sutram-project-status.html: library functions: says 305, measured 306  ('305</b><span>library functions')
+NOTE    docs/sutram-project-status.html: library proofs: says 226, measured 227  ('proof_lib.py</td><td>library behaviour against stated contra')
+NOTE    docs/sutram-project-status.html: says 225 pass, measured 240
+NOTE    docs/sutram-scorecard.html: library functions: says 305, measured 306  ('305 functions')
+NOTE    docs/sutram-scorecard.html: says 225 pass, measured 240
+doc counts: 18 document(s) behind - not a failure, but bump them

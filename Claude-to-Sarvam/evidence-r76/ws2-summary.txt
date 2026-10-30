@@ -1,0 +1,12 @@
+examples programs 244 ran 202 (others: compile refusals by design, interactive, or timeouts)
+  write nirmmita in their own text: 27
+  peak RSS > 512 KB: 0 
+  peak RSS > 1024 KB: 0 
+  peak RSS > 4096 KB: 0 
+  peak RSS > 16384 KB: 0 
+stdlib programs 226 ran 226 (others: compile refusals by design, interactive, or timeouts)
+  write nirmmita in their own text: 88
+  peak RSS > 512 KB: 0 
+  peak RSS > 1024 KB: 0 
+  peak RSS > 4096 KB: 0 
+  peak RSS > 16384 KB: 0 

@@ -1,0 +1,37 @@
+v273 tree -> R76 tree (same compiler; lib/ganita and lib/chandas changed): Linux ELF, and Linux PE run under Wine
+SAME    examples/102_ast_multimodule_capacity.sm: ELF same True; PE same True; new PE output == new ELF output True
+SAME    examples/202_brahmagupta_area.sm: ELF same True; PE same True; new PE output == new ELF output True
+SAME    examples/203_meru_with_kosh.sm: ELF same True; PE same True; new PE output == new ELF output True
+SAME    examples/88_pingala_chandas.sm: ELF same True; PE same True; new PE output == new ELF output True
+SAME    examples/91_indian_number_theory.sm: ELF same True; PE same True; new PE output == new ELF output True
+SAME    examples/99_ast_multimodule_capacity.sm: ELF same True; PE same True; new PE output == new ELF output True
+SAME    tests/stdlib/chakravala29.sm: ELF same True; PE same True; new PE output == new ELF output True
+SAME    tests/stdlib/chandas_dviguna.sm: ELF same True; PE same True; new PE output == new ELF output True
+SAME    tests/stdlib/chandas_guru_count.sm: ELF same True; PE same True; new PE output == new ELF output True
+SAME    tests/stdlib/chandas_is_guru.sm: ELF same True; PE same True; new PE output == new ELF output True
+SAME    tests/stdlib/chandas_matra_meru.sm: ELF same True; PE same True; new PE output == new ELF output True
+SAME    tests/stdlib/chandas_meru.sm: ELF same True; PE same True; new PE output == new ELF output True
+SAME    tests/stdlib/chandas_meru_pankti.sm: ELF same True; PE same True; new PE output == new ELF output True
+SAME    tests/stdlib/ganita_brahmagupta_area.sm: ELF same True; PE same True; new PE output == new ELF output True
+SAME    tests/stdlib/ganita_chakravala.sm: ELF same True; PE same True; new PE output == new ELF output True
+SAME    tests/stdlib/ganita_checked.sm: ELF same True; PE same True; new PE output == new ELF output True
+SAME    tests/stdlib/ganita_ganita_abs.sm: ELF same True; PE same True; new PE output == new ELF output True
+SAME    tests/stdlib/ganita_ganita_isqrt.sm: ELF same True; PE same True; new PE output == new ELF output True
+SAME    tests/stdlib/ganita_kuttaka.sm: ELF same True; PE same True; new PE output == new ELF output True
+SAME    tests/stdlib/ganita_samasa.sm: ELF same True; PE same True; new PE output == new ELF output True
+SAME    tests/stdlib/ganita_sat.sm: ELF same True; PE same True; new PE output == new ELF output True
+SAME    tests/stdlib/gaps19.sm: ELF same True; PE same True; new PE output == new ELF output True
+SAME    tests/stdlib/gaps20.sm: ELF same True; PE same True; new PE output == new ELF output True
+SAME    tests/stdlib/gaps21.sm: ELF same True; PE same True; new PE output == new ELF output True
+CHANGED tests/stdlib/numeric29.sm: ELF same False; PE same False; new PE output == new ELF output True
+SAME    tests/stdlib/numeric_hangfix.sm: ELF same True; PE same True; new PE output == new ELF output True
+SAME    tests/stdlib/r18_sign_digits_kramgun.sm: ELF same True; PE same True; new PE output == new ELF output True
+SAME    tests/stdlib/r48_meru_bada.sm: ELF same True; PE same True; new PE output == new ELF output True
+SAME    tests/stdlib/r8_chakravala_sweep.sm: ELF same True; PE same True; new PE output == new ELF output True
+SAME    tests/stdlib/r8_number_edges.sm: ELF same True; PE same True; new PE output == new ELF output True
+SAME    tests/stdlib/r8_result_flags.sm: ELF same True; PE same True; new PE output == new ELF output True
+SAME    tests/stdlib/result29.sm: ELF same True; PE same True; new PE output == new ELF output True
+SAME    tests/stdlib/result_chain.sm: ELF same True; PE same True; new PE output == new ELF output True
+SAME    tests/stdlib/safety24.sm: ELF same True; PE same True; new PE output == new ELF output True
+SAME    tests/stdlib/safety25.sm: ELF same True; PE same True; new PE output == new ELF output True
+35 DIFFER; output changed in: ['tests/stdlib/numeric29.sm']

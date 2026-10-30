@@ -1,0 +1,94 @@
+diff --git a/src/sutram_compiler.asm b/src/sutram_compiler.asm
+index 6678df3..b6e83b1 100644
+--- a/src/sutram_compiler.asm
++++ b/src/sutram_compiler.asm
+@@ -7937,6 +7937,32 @@ r73_check_late:
+     pop rbx
+     ret
+ 
++%ifdef R76_PROTO
++; R76 PROTOTYPE (not built by default): nirmmita(n) reserves n + 16 and returns base + 16 with
++; n / 8 (whole qwords) at [p - 8], the layout a mala uses - so a raw index can be checked.
++;   pre:  push rax ; test rax,rax ; jle +4 ; add rax,16
++;   post: pop rcx ; test rax,rax ; jz +12 ; shr rcx,3 ; mov [rax+8],rcx ; add rax,16
++r76_hdr_pre:
++    lea rsi, [rel r76_pre_b]
++    mov ecx, 10
++    jmp r23_emit_bytes
++r76_hdr_post:
++    lea rsi, [rel r76_post_b]
++    mov ecx, r76_post_len
++    jmp r23_emit_bytes
++section .data
++    r76_pre_b  db 0x50, 0x48,0x85,0xC0, 0x7E,0x04, 0x48,0x83,0xC0,0x10
++%ifdef R76_CEIL
++    ; pop rcx ; test rax,rax ; jz +16 ; add rcx,7 ; shr rcx,3 ; mov [rax+8],rcx ; add rax,16
++    r76_post_b db 0x59, 0x48,0x85,0xC0, 0x74,0x10, 0x48,0x83,0xC1,0x07, 0x48,0xC1,0xE9,0x03, 0x48,0x89,0x48,0x08, 0x48,0x83,0xC0,0x10
++r76_post_len equ 22
++%else
++    r76_post_b db 0x59, 0x48,0x85,0xC0, 0x74,0x0C, 0x48,0xC1,0xE9,0x03, 0x48,0x89,0x48,0x08, 0x48,0x83,0xC0,0x10
++r76_post_len equ 18
++%endif
++section .text
++%endif
++
+ ; r75_check_nirm_size(rax = an AST_CALL just built): nirmmita whose size is a constant
+ ; below zero - a literal, or + - * of literals - is a compile error. Preserves rax, rbx, r12.
+ r75_check_nirm_size:
+@@ -14564,6 +14590,9 @@ gen_stmt:
+     mov rax, [rbx+8]
+     mov rdi, [rax+8]
+     call is_array_var
++%ifdef R76_PROTO
++    mov eax, 1                ; R76 prototype: every raw index is checked against [p-8]
++%endif
+     mov r12, rax
+     test r12, r12
+     jz .gs_ai_no_len
+@@ -16370,6 +16399,9 @@ gen_expr:
+ .ge_index_check_pankti:
+     mov rdi, [rbx+8]
+     call is_array_var
++%ifdef R76_PROTO
++    mov eax, 1               ; R76 prototype: every raw index is checked against [p-8]
++%endif
+     mov r12, rax             ; 1=fixed pankti, 0=raw pointer
+     test r12, r12
+     jz .ge_index_no_len
+@@ -18252,7 +18284,13 @@ gen_expr:
+     ; nirmmita(size) → mmap(0, size, 3, 0x22, -1, 0)
+     mov rax, [rbx+24]
+     call gen_expr
++%ifdef R76_PROTO
++    call r76_hdr_pre
+     call emit_nirmmita_from_rax
++    call r76_hdr_post
++%else
++    call emit_nirmmita_from_rax
++%endif
+     jmp .ge_call_done
+ .r73_ge_scratch:
+     mov rax, [rbx+24]
+@@ -18262,10 +18300,22 @@ gen_expr:
+     call r65_active                ; not Linux ELF (PE, GUARD_PAGES): the ordinary nirmmita
+     test rax, rax
+     jz .r73_ge_plain
++%ifdef R76_PROTO
++    call r76_hdr_pre
++    call r73_gen_scratch_nirm
++    call r76_hdr_post
++%else
+     call r73_gen_scratch_nirm
++%endif
+     jmp .ge_call_done
+ .r73_ge_plain:
++%ifdef R76_PROTO
++    call r76_hdr_pre
++    call emit_nirmmita_from_rax
++    call r76_hdr_post
++%else
+     call emit_nirmmita_from_rax
++%endif
+     jmp .ge_call_done
+ 
+ .ge_call_likh8:

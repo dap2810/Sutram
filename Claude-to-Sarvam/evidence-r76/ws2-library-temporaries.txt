@@ -1,0 +1,11 @@
+library functions: 305 ; that call nirmmita: 26
+whose buffer looks temporary (not returned, not stored, not passed on as a last argument): 9
+   aadhar.smlib brihat_ank_tak ['w', 'rev']
+   brihat.smlib brihat_ghatmod ['t1', 'bcur']
+   roop.smlib roop_ank ['rev']
+   roop.smlib roop_ank_aadhar ['rev']
+   roop.smlib roop_sthir_mool ['rev']
+   sangrah.smlib rakh_tak_mala ['scratch', 'ptrs', 'lens']
+   shreni.smlib mil_shreni ['tmp']
+   vakyank.smlib ank_tak_varna ['rev']
+   vakyank.smlib ank_tak_aadhar_varna ['rev']

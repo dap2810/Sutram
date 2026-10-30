@@ -1,0 +1,39 @@
+# WS3: after the fixes, per mutant VARIANT (an id can name two mutants on one line)
+chandas.meru C3:>->>=@L32: yadi (r >= top - r) { r = top - r }  ->  no witness on 361 inputs
+chandas.meru C7:>->>=@L51: yadi (x >= 9223372036854775807 / y) { nivartanam 0 - 1 }   # the step, and so C(n, k), passes 2^63 - 1  ->  WITNESS input (4611686018427387904, 1) real 4611686018427387904 mutant -1
+chandas.meru N@L32: yadi ((r > top - r) == 0) { r = top - r }  ->  WITNESS input (3037000499, 0) real 1 mutant CRASH
+chandas.meru A:-@L32: yadi (r > top + r) { r = top - r }  ->  WITNESS input (3037000499, 3037000499) real 1 mutant CRASH
+chandas.meru K:0@L50: yadi (y != 1) {  ->  no witness on 361 inputs
+== chandas.meru: 34 killed, 5 survive
+ganita.kuttaka C3:<-><=@L38: yadi (bb <= 0) { bb = 0 - bb }  ->  no witness on 600 inputs
+ganita.kuttaka C5:<-><=@L41: yadi (x <= 0) { x = x + bb }  ->  no witness on 600 inputs
+ganita.kuttaka C6:<-><=@L43: yadi (y <= 0) { y = y + bb }  ->  no witness on 600 inputs
+ganita.kuttaka K:0@L38: yadi (bb < 1) { bb = 0 - bb }  ->  no witness on 600 inputs
+ganita.kuttaka K:0@L39: yadi (bb > 1) {  ->  no witness on 600 inputs
+ganita.kuttaka K:0@L41: yadi (x < 1) { x = x + bb }  ->  no witness on 600 inputs
+ganita.kuttaka K:0@L43: yadi (y < 1) { y = y + bb }  ->  no witness on 600 inputs
+== ganita.kuttaka: 31 killed, 7 survive
+ganita.kuttaka_gun_shesh C3:>=->>@L57: yadi (r > m - a) { r = r - (m - a) } anya { r = r + a }  ->  WITNESS input (5, 16, 5) real 0 mutant 5
+ganita.kuttaka_gun_shesh C4:>=->>@L59: yadi (a > m - a) { a = a - (m - a) } anya { a = a + a }  ->  WITNESS input (-9223372036854775807, 5, 4) real 9223372036854775801 mutant 9223372036854775805
+== ganita.kuttaka_gun_shesh: 21 killed, 2 survive
+
+## after the witness values joined r76_known_values:
+chandas.meru C3:>->>=@L32: yadi (r >= top - r) { r = top - r }  ->  no witness on 361 inputs
+chandas.meru K:0@L50: yadi (y != 1) {  ->  no witness on 361 inputs
+== chandas.meru: 37 killed, 2 survive
+ganita.kuttaka_gun_shesh C4:>=->>@L59: yadi (a > m - a) { a = a - (m - a) } anya { a = a + a }  ->  WITNESS input (-9223372036854775807, 5, 4) real 9223372036854775801 mutant 9223372036854775805
+== ganita.kuttaka_gun_shesh: 22 killed, 1 survive
+
+## the other witnessed functions:
+ank.ank_gan C2:<-><=@L17: yadi (x <= 0) { x = 0 - x }  ->  no witness on 332 inputs
+ank.ank_gan K:0@L17: yadi (x < 1) { x = 0 - x }  ->  no witness on 332 inputs
+== ank.ank_gan: 20 killed, 2 survive
+ank.seemit C2:>->>=@L71: yadi (x >= b) { nivartanam b }  ->  no witness on 600 inputs
+== ank.seemit: 3 killed, 1 survive
+ganit.ganit_seemit C2:>->>=@L176: yadi (x >= b) { nivartanam b }  ->  no witness on 600 inputs
+== ganit.ganit_seemit: 3 killed, 1 survive
+ganita.brahmagupta_kshetr C1:<-><=@L199: yadi (p <= 0) { nivartanam 0 }  ->  no witness on 600 inputs
+ganita.brahmagupta_kshetr K:0@L199: yadi (p < 1) { nivartanam 0 }  ->  no witness on 600 inputs
+== ganita.brahmagupta_kshetr: 14 killed, 2 survive
+ganita.ganita_paripurna_kramgun K:9223372036854775807@L588: vitti maxv = 9223372036854775808  ->  WITNESS input (1000000000,) real 9223372036854775807 mutant CRASH
+== ganita.ganita_paripurna_kramgun: 13 killed, 1 survive
