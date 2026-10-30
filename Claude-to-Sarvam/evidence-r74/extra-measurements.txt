@@ -1,0 +1,51 @@
+# Sibling blocks: the same address (evidence only - uses the known blind spot, an address through a call, on purpose)
+# evidence only: uses the known blind spot (an address through a call) on purpose, to print the addresses
+prakriya adr(p)
+    nivartanam p
+mukhya()
+    vitti a1 = 0
+    vitti a2 = 0
+    mandapa
+        vitti b = nirmmita(64)
+        a1 = adr(b)
+    mandapa
+        vitti c = nirmmita(64)
+        a2 = adr(c)
+    likha(a2 - a1, "\n")
+    likha(a1 % 4096, "\n")
+# output (a2 - a1, then a1 mod 4096):
+0
+
+4032
+
+
+# A kosh declared INSIDE a block, 100,000 passes: works; its storage is persistent (same RSS with and without the block)
+mukhya()
+    vitti s = 0
+    vitti i = 0
+    yavat (i < 100000)
+        mandapa
+            kosh k[1]
+            kosh_push(k, i)
+            kosh_push(k, 1)
+            s = s + k[0] + k[1]
+        i = i + 1
+    likha(s, "\n")
+5000050000
+
+with block: 3072 KB
+5000050000
+
+block replaced by yadi (1 == 1): 3072 KB
+
+# Baseline: a program that prints 0
+0
+
+264 KB
+# R73 loop_with / loop_without, three runs each
+with 264 KB 0.00 s
+without 62464 KB 0.02 s
+with 264 KB 0.00 s
+without 62464 KB 0.02 s
+with 264 KB 0.00 s
+without 62464 KB 0.02 s

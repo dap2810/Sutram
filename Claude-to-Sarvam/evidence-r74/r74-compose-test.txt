@@ -1,0 +1,10 @@
+PASS  c1_kosh_outside: output 1000000 / 1499998500000 / 0 2999997, exit 0, peak RSS 7808 KB
+PASS  c1_kosh_outside_control: output 1000000 / 1499998500000 / 0 2999997, exit 0, peak RSS 78464 KB
+PASS  c2_param: output 8 / 10, exit 0, peak RSS 264 KB
+PASS  c3_siblings: output 0 / 500000500000, exit 0, peak RSS 264 KB
+PASS  c4_100mb: output 190, exit 0, peak RSS 102400 KB
+PASS  c4_too_big: output Sutram Error: kshetra purnam - mandapa-smritih samapta, exit 1, peak RSS 1024000 KB
+PASS  c5_recursion: output 500500000, exit 0, peak RSS 2048 KB
+PASS  c5_recursion_control: output 500500000, exit 0, peak RSS 64512 KB
+PASS  c6_adjacent: output 0, exit 0, peak RSS 264 KB
+r74 compose: 9 checks, 0 failed
