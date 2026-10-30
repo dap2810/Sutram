@@ -1,0 +1,15 @@
+1. indented loop, nirmmita inside (the brief)
+  v264: i=0 i=0 i=0 i=0 i=0 
+  v265: i=0 i=1 i=2 done
+2. the same with braces
+  v264: i=0 i=1 i=2 done
+  v265: i=0 i=1 i=2 done
+3. indented loop, NO allocation (vitti q = i + 7 in its place)
+  v264: i=0 i=0 i=0 i=0 i=0 
+  v265: i=0 i=1 i=2 done
+4. indented loop, two statements, nothing else
+  v264: i=0 i=0 i=0 i=0 i=0 
+  v265: i=0 i=1 i=2 done
+5. indented loop, increment first
+  v264: 3 done
+  v265: 1 2 3 done

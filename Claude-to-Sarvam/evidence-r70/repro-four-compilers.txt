@@ -1,0 +1,5 @@
+# The brief's program on four compilers (timeout 1 s, first 5 lines)
+== v261 (before the arena): i=0 i=0 i=0 i=0 i=0 
+== v263: i=0 i=0 i=0 i=0 i=0 
+== v264: i=0 i=0 i=0 i=0 i=0 
+== v265: i=0 i=1 i=2 done

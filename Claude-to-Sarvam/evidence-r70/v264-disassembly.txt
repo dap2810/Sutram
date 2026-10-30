@@ -1,0 +1,61 @@
+# v264, the brief's program, objdump -M intel. i lives in rbx. The loop is 0x97..0x13c:
+# body = likha("i=", i) only (0x97-0x135), condition at 0x139, back-jump jl 0x97 at 0x140.
+# The nirmmita sequence starts at 0x146 - AFTER the loop - followed by i = i + 1. Nothing is clobbered:
+# the increment is simply not in the loop.
+  86:	48 81 ec 00 08 00 00 	sub    rsp,0x800
+  8d:	bb 00 00 00 00       	mov    ebx,0x0
+  92:	e9 a2 00 00 00       	jmp    0x139
+  97:	48 8d 05 02 00 00 00 	lea    rax,[rip+0x2]        # 0xa0
+  9e:	eb 03                	jmp    0xa3
+  a0:	69 3d 48 c7 c7 01 00 	imul   edi,DWORD PTR [rip+0x1c7c748],0x48000000        # 0x1c7c7f2
+  a7:	00 00 48 
+  aa:	89 c6                	mov    esi,eax
+  ac:	ba 02 00 00 00       	mov    edx,0x2
+  b1:	b8 01 00 00 00       	mov    eax,0x1
+  b6:	0f 05                	syscall
+  b8:	48 89 d8             	mov    rax,rbx
+  bb:	49 89 c0             	mov    r8,rax
+  be:	48 83 ec 20          	sub    rsp,0x20
+  c2:	4d 85 c0             	test   r8,r8
+  c5:	79 1c                	jns    0xe3
+  c7:	49 f7 d8             	neg    r8
+  ca:	c6 04 24 2d          	mov    BYTE PTR [rsp],0x2d
+  ce:	b8 01 00 00 00       	mov    eax,0x1
+  d3:	bf 01 00 00 00       	mov    edi,0x1
+  d8:	48 8d 34 24          	lea    rsi,[rsp]
+  dc:	ba 01 00 00 00       	mov    edx,0x1
+  e1:	0f 05                	syscall
+  e3:	48 8d 74 24 1f       	lea    rsi,[rsp+0x1f]
+  e8:	c6 06 0a             	mov    BYTE PTR [rsi],0xa
+  eb:	48 ff ce             	dec    rsi
+  ee:	4d 85 c0             	test   r8,r8
+  f1:	75 08                	jne    0xfb
+  f3:	c6 06 30             	mov    BYTE PTR [rsi],0x30
+  f6:	48 ff ce             	dec    rsi
+  f9:	eb 1e                	jmp    0x119
+  fb:	48 31 d2             	xor    rdx,rdx
+  fe:	4c 89 c0             	mov    rax,r8
+ 101:	b9 0a 00 00 00       	mov    ecx,0xa
+ 106:	48 f7 f1             	div    rcx
+ 109:	49 89 c0             	mov    r8,rax
+ 10c:	80 c2 30             	add    dl,0x30
+ 10f:	88 16                	mov    BYTE PTR [rsi],dl
+ 111:	48 ff ce             	dec    rsi
+ 114:	4d 85 c0             	test   r8,r8
+ 117:	75 e2                	jne    0xfb
+ 119:	48 8d 54 24 20       	lea    rdx,[rsp+0x20]
+ 11e:	48 29 f2             	sub    rdx,rsi
+ 121:	48 ff ca             	dec    rdx
+ 124:	48 ff c6             	inc    rsi
+ 127:	48 c7 c7 01 00 00 00 	mov    rdi,0x1
+ 12e:	b8 01 00 00 00       	mov    eax,0x1
+ 133:	0f 05                	syscall
+ 135:	48 83 c4 20          	add    rsp,0x20
+ 139:	48 89 d8             	mov    rax,rbx
+ 13c:	48 83 f8 03          	cmp    rax,0x3
+ 140:	0f 8c 51 ff ff ff    	jl     0x97
+ 146:	b8 40 00 00 00       	mov    eax,0x40
+ 14b:	48 89 c6             	mov    rsi,rax
+ 14e:	48 8b 05 fe 00 00 00 	mov    rax,QWORD PTR [rip+0xfe]        # 0x253
+ 155:	48 85 c0             	test   rax,rax
+ 158:	75 57                	jne    0x1b1

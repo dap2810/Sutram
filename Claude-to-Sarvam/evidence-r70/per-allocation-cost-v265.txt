@@ -1,0 +1,18 @@
+# v265, Linux x86-64 cloud. Cycle counts by rdtsc around the loop (R59's per_call.sm with N changed);
+N=1000 run 1: 126909 cycles total, 126 per allocation
+N=1000 run 2: 79758 cycles total, 79 per allocation
+N=1000 run 3: 64746 cycles total, 64 per allocation
+N=1000 run 4: 77984 cycles total, 77 per allocation
+N=1000 run 5: 115923 cycles total, 115 per allocation
+N=1000000 run 1: 94508246 cycles total, 94 per allocation
+N=1000000 run 2: 85911731 cycles total, 85 per allocation
+N=1000000 run 3: 79743255 cycles total, 79 per allocation
+N=1000000 run 4: 84848068 cycles total, 84 per allocation
+N=1000000 run 5: 75290240 cycles total, 75 per allocation
+# The brief's own program, indentation form, 1,000,000 allocations of 64 B each written:
+i=1000000
+  wall 0.03 s, peak RSS 62464 KB
+i=1000000
+  wall 0.03 s, peak RSS 62464 KB
+i=1000000
+  wall 0.03 s, peak RSS 62464 KB
