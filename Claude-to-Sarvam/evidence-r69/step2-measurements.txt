@@ -1,0 +1,11 @@
+# R69 Step 2 measurements (Linux x86-64 cloud, 2 cores, 7 GB). Output of the measuring script, copied.
+248 programs whose bytes changed (v263 -> v264):
+  total executable size: 2,128,646 -> 2,131,905 bytes (+3,259, +13.1 per program)
+  total run time, best of 3 each: 1.507 s -> 1.504 s (-0.2%)
+  summed peak RSS: 66,624 KB -> 66,240 KB
+# R59 per_call.sm / one_block.sm (100,000 x 64 B), 27 runs each, interleaved (bench-per-call.txt):
+v263 per-call median 81 min 72 | one-block median 76 min 68 (n=27)
+v264 per-call median 74 min 70 | one-block median 73 min 67 (n=27)
+# per_call RSS: v263 6272 KB, v264 6272 KB
+# The one-block program (one allocation, then a loop) is the loop's own cost; per-call minus one-block is
+# the allocation: within noise on both compilers.

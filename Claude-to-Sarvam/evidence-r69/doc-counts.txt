@@ -1,0 +1,4 @@
+measured: 49 gates PASS, 0 FAIL, 1 NOT-RUN; suite PASS=225
+  the 6 documents should quote: gates 49, and suite 225
+NOTE    PROJECT-MASTER.md: says 48 PASS, measured 49
+doc counts: 1 document(s) behind - not a failure, but bump them

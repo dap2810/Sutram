@@ -1,0 +1,79 @@
+# one nirmmita(40), v263 then v264 (objdump -M intel); the allocation sequence only
+  92:	48 89 c6             	mov    rsi,rax
+  95:	48 8b 05 84 01 00 00 	mov    rax,QWORD PTR [rip+0x184]        # 0x220
+  9c:	48 85 c0             	test   rax,rax
+  9f:	74 2f                	je     0xd0
+  a1:	48 89 c2             	mov    rdx,rax
+  a4:	48 8b 05 7d 01 00 00 	mov    rax,QWORD PTR [rip+0x17d]        # 0x228
+  ab:	48 29 d0             	sub    rax,rdx
+  ae:	48 39 f0             	cmp    rax,rsi
+  b1:	72 73                	jb     0x126
+  b3:	48 85 f6             	test   rsi,rsi
+  b6:	74 6e                	je     0x126
+  b8:	48 8d 44 32 0f       	lea    rax,[rdx+rsi*1+0xf]
+  bd:	48 83 e0 f0          	and    rax,0xfffffffffffffff0
+  c1:	48 89 05 58 01 00 00 	mov    QWORD PTR [rip+0x158],rax        # 0x220
+  c8:	48 89 d0             	mov    rax,rdx
+  cb:	e9 84 00 00 00       	jmp    0x154
+  d0:	56                   	push   rsi
+  d1:	31 ff                	xor    edi,edi
+  d3:	be 00 00 00 40       	mov    esi,0x40000000
+  d8:	ba 03 00 00 00       	mov    edx,0x3
+  dd:	41 ba 22 40 00 00    	mov    r10d,0x4022
+  e3:	49 c7 c0 ff ff ff ff 	mov    r8,0xffffffffffffffff
+  ea:	45 31 c9             	xor    r9d,r9d
+  ed:	b8 09 00 00 00       	mov    eax,0x9
+  f2:	0f 05                	syscall
+  f4:	5e                   	pop    rsi
+  f5:	48 3d 01 f0 ff ff    	cmp    rax,0xfffffffffffff001
+  fb:	73 16                	jae    0x113
+  fd:	48 89 05 1c 01 00 00 	mov    QWORD PTR [rip+0x11c],rax        # 0x220
+ 104:	48 05 00 00 00 40    	add    rax,0x40000000
+ 10a:	48 89 05 17 01 00 00 	mov    QWORD PTR [rip+0x117],rax        # 0x228
+ 111:	eb 82                	jmp    0x95
+ 113:	b8 10 00 00 00       	mov    eax,0x10
+ 118:	48 89 05 01 01 00 00 	mov    QWORD PTR [rip+0x101],rax        # 0x220
+ 11f:	48 89 05 02 01 00 00 	mov    QWORD PTR [rip+0x102],rax        # 0x228
+ 126:	48 89 f0             	mov    rax,rsi
+ 129:	48 89 c6             	mov    rsi,rax
+ 12c:	31 ff                	xor    edi,edi
+
+# v264
+  92:	48 89 c6             	mov    rsi,rax
+  95:	48 8b 05 85 01 00 00 	mov    rax,QWORD PTR [rip+0x185]        # 0x221
+  9c:	48 85 c0             	test   rax,rax
+  9f:	75 57                	jne    0xf8
+  a1:	56                   	push   rsi
+  a2:	31 ff                	xor    edi,edi
+  a4:	be 00 00 00 40       	mov    esi,0x40000000
+  a9:	ba 03 00 00 00       	mov    edx,0x3
+  ae:	41 ba 22 40 00 00    	mov    r10d,0x4022
+  b4:	49 c7 c0 ff ff ff ff 	mov    r8,0xffffffffffffffff
+  bb:	45 31 c9             	xor    r9d,r9d
+  be:	b8 09 00 00 00       	mov    eax,0x9
+  c3:	0f 05                	syscall
+  c5:	5e                   	pop    rsi
+  c6:	ba 00 00 00 40       	mov    edx,0x40000000
+  cb:	48 3d 01 f0 ff ff    	cmp    rax,0xfffffffffffff001
+  d1:	72 07                	jb     0xda
+  d3:	b8 10 00 00 00       	mov    eax,0x10
+  d8:	31 d2                	xor    edx,edx
+  da:	48 89 05 40 01 00 00 	mov    QWORD PTR [rip+0x140],rax        # 0x221
+  e1:	48 89 c1             	mov    rcx,rax
+  e4:	48 01 d0             	add    rax,rdx
+  e7:	48 89 05 3b 01 00 00 	mov    QWORD PTR [rip+0x13b],rax        # 0x229
+  ee:	48 89 05 3c 01 00 00 	mov    QWORD PTR [rip+0x13c],rax        # 0x231
+  f5:	48 89 c8             	mov    rax,rcx
+  f8:	48 89 c2             	mov    rdx,rax
+  fb:	48 8b 05 27 01 00 00 	mov    rax,QWORD PTR [rip+0x127]        # 0x229
+ 102:	48 29 d0             	sub    rax,rdx
+ 105:	48 39 f0             	cmp    rax,rsi
+ 108:	72 1d                	jb     0x127
+ 10a:	48 85 f6             	test   rsi,rsi
+ 10d:	74 18                	je     0x127
+ 10f:	48 8d 44 32 0f       	lea    rax,[rdx+rsi*1+0xf]
+ 114:	48 83 e0 f0          	and    rax,0xfffffffffffffff0
+ 118:	48 89 05 02 01 00 00 	mov    QWORD PTR [rip+0x102],rax        # 0x221
+ 11f:	48 89 d0             	mov    rax,rdx
+ 122:	e9 2e 00 00 00       	jmp    0x155
+ 127:	48 89 f0             	mov    rax,rsi

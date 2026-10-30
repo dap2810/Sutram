@@ -1,0 +1,2 @@
+70 programs with changed bytes: 69 same output and exit code, 1 different
+  OUTPUT DIFFERS tests/stdlib/r8_split_model.sm: old rc=0 7508B, new rc=0 6936B

@@ -1,0 +1,7 @@
+PASS  clean_last_byte.sm: runs clean
+PASS  control_217_overrun.sm: SIGSEGV, as it must
+PASS  control_one_byte_past.sm: SIGSEGV, as it must
+PASS  control_pack_unpack.sm: SIGSEGV, as it must
+PASS  control_proof_overread.sm: SIGSEGV, as it must
+guard pages: controls 5/5, suite PASS=225 FAIL=0, library proofs 226/226, property proofs 86/86, 0 failed
+exit 0
