@@ -1,0 +1,30 @@
+# ChatGPT R147 WS1.1-B: count * 8 wraps to 8 before nirmmita sees it. Compiled and run on v273.
+## in a mandapa:
+mukhya()
+    mandapa
+        vitti owner = nirmmita(64)
+        owner[0] = 123
+        vitti count = 2305843009213693953
+        vitti b = nirmmita(count * 8)
+        b[0] = 7
+        b[1] = 8
+        b[2] = 9
+        likha(owner[0], "\n")
+--- output (owner[0] was 123):
+9
+
+(exit 0)
+
+## the same with the block replaced by yadi (1 == 1):
+123
+
+(exit 0)
+
+## the root: a raw nirmmita buffer's index is not bounds-checked, block or not
+mukhya()
+    vitti b = nirmmita(16)
+    b[5] = 1
+    likha(b[5])
+--- output:
+1
+ (exit 0)

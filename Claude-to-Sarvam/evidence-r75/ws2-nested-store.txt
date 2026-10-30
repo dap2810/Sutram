@@ -1,0 +1,46 @@
+# WS2: is a store nested in an expression checked? v270 / v273
+## out = (m[0] = 5) + 1  (assignment as a value):
+
+Sutram Error: vyakaran dosh, pankti 3:23, shabd '='
+      vitti out = (m[0] = 5) + 1
+## examples/270_r75_nested_store.sm
+# R75: a store nested inside an expression is checked like one standing alone.
+# `out = (m[0] = buf) + 1` is not Sutram - an assignment is a statement, not a value - so the
+# stores that can sit inside an expression are calls: kosh_push, likh8, likh8c, likh, setchar.
+# Here kosh_push stores a scratch address inside an initializer's arithmetic: refused,
+# E_SCRATCH_ESCAPE. (v270 compiled this; v271 checks every store call where it is built.)
+mukhya()
+    kosh saved[1]
+    mandapa
+        vitti buf = nirmmita(64)
+        vitti out = kosh_push(saved, buf) + 1
+        likha(out, "\n")
+--- v270:
+Siddh: 1201 baait sankalit
+2
+
+--- v273:
+Sutram Error [E_SCRATCH_ESCAPE]: asthayi smriti bahir na gacchati - mandapa-madhye nirmitam sthanam smritau na likhyate
+Sanket: ayam parikshah prakriya-ahvane kosh-madhye va gacchantam sthanam na pashyati
+## examples/271_r75_nested_store_data.sm
+# R75: the same line storing a NUMBER read out of scratch - allowed. Prints 2, then 42.
+mukhya()
+    kosh saved[1]
+    mandapa
+        vitti buf = nirmmita(64)
+        buf[0] = 42
+        vitti out = kosh_push(saved, buf[0]) + 1
+        likha(out, "\n")
+    likha(saved[0], "\n")
+--- v270:
+Siddh: 1519 baait sankalit
+2
+
+42
+
+--- v273:
+Siddh: 1660 baait sankalit
+2
+
+42
+

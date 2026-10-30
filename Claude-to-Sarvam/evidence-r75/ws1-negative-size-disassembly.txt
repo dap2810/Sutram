@@ -1,0 +1,126 @@
+# WS1: what nirmmita(-1) does inside a mandapa - the emitted code, read (objdump of the compiled program).
+
+### v270: rsi = -1; jz not taken; rdx = (-1+15) & -16 = 0; end - 0 = end - THE CURSOR DOES NOT MOVE; the zero loop then stores one qword at [end] before testing its count (0), overwriting the first 8 bytes of the block above (R146 F4)
+  f7:	48 b8 ff ff ff ff ff 	movabs $0xffffffffffffffff,%rax
+  fe:	ff ff ff 
+ 101:	48 89 c6             	mov    %rax,%rsi
+ 104:	48 85 f6             	test   %rsi,%rsi
+ 107:	0f 84 54 00 00 00    	je     0x161
+ 10d:	48 8b 05 0c 01 00 00 	mov    0x10c(%rip),%rax        # 0x220
+ 114:	48 8d 56 0f          	lea    0xf(%rsi),%rdx
+ 118:	48 83 e2 f0          	and    $0xfffffffffffffff0,%rdx
+ 11c:	48 29 d0             	sub    %rdx,%rax
+ 11f:	0f 82 43 00 00 00    	jb     0x168
+ 125:	48 89 c2             	mov    %rax,%rdx
+ 128:	48 8b 05 e9 00 00 00 	mov    0xe9(%rip),%rax        # 0x218
+ 12f:	48 39 c2             	cmp    %rax,%rdx
+ 132:	0f 82 30 00 00 00    	jb     0x168
+ 138:	48 89 d0             	mov    %rdx,%rax
+ 13b:	48 89 05 de 00 00 00 	mov    %rax,0xde(%rip)        # 0x220
+ 142:	48 8d 4e 07          	lea    0x7(%rsi),%rcx
+ 146:	48 c1 e9 03          	shr    $0x3,%rcx
+ 14a:	31 d2                	xor    %edx,%edx
+ 14c:	48 c7 04 d0 00 00 00 	movq   $0x0,(%rax,%rdx,8)
+ 153:	00 
+ 154:	48 ff c2             	inc    %rdx
+ 157:	48 39 ca             	cmp    %rcx,%rdx
+ 15a:	72 f0                	jb     0x14c
+ 15c:	e9 69 00 00 00       	jmp    0x1ca
+ 161:	31 c0                	xor    %eax,%eax
+ 163:	e9 62 00 00 00       	jmp    0x1ca
+ 168:	48 8d 05 02 00 00 00 	lea    0x2(%rip),%rax        # 0x171
+ 16f:	eb 38                	jmp    0x1a9
+ 171:	53                   	push   %rbx
+ 172:	75 74                	jne    0x1e8
+ 174:	72 61                	jb     0x1d7
+ 176:	6d                   	insl   (%dx),%es:(%rdi)
+ 177:	20 45              	and    %al,0x72(%rbp)
+
+### v272: jle - a size <= 0 goes to .zero: p = 0, cursor untouched, nothing written
+  f7:	48 b8 ff ff ff ff ff 	movabs $0xffffffffffffffff,%rax
+  fe:	ff ff ff 
+ 101:	48 89 c6             	mov    %rax,%rsi
+ 104:	48 85 f6             	test   %rsi,%rsi
+ 107:	0f 8e 54 00 00 00    	jle    0x161
+ 10d:	48 8b 05 0c 01 00 00 	mov    0x10c(%rip),%rax        # 0x220
+ 114:	48 8d 56 0f          	lea    0xf(%rsi),%rdx
+ 118:	48 83 e2 f0          	and    $0xfffffffffffffff0,%rdx
+ 11c:	48 29 d0             	sub    %rdx,%rax
+ 11f:	0f 82 43 00 00 00    	jb     0x168
+ 125:	48 89 c2             	mov    %rax,%rdx
+ 128:	48 8b 05 e9 00 00 00 	mov    0xe9(%rip),%rax        # 0x218
+ 12f:	48 39 c2             	cmp    %rax,%rdx
+ 132:	0f 82 30 00 00 00    	jb     0x168
+ 138:	48 89 d0             	mov    %rdx,%rax
+ 13b:	48 89 05 de 00 00 00 	mov    %rax,0xde(%rip)        # 0x220
+ 142:	48 8d 4e 07          	lea    0x7(%rsi),%rcx
+ 146:	48 c1 e9 03          	shr    $0x3,%rcx
+ 14a:	31 d2                	xor    %edx,%edx
+ 14c:	48 c7 04 d0 00 00 00 	movq   $0x0,(%rax,%rdx,8)
+ 153:	00 
+ 154:	48 ff c2             	inc    %rdx
+ 157:	48 39 ca             	cmp    %rcx,%rdx
+ 15a:	72 f0                	jb     0x14c
+ 15c:	e9 69 00 00 00       	jmp    0x1ca
+ 161:	31 c0                	xor    %eax,%eax
+ 163:	e9 62 00 00 00       	jmp    0x1ca
+ 168:	48 8d 05 02 00 00 00 	lea    0x2(%rip),%rax        # 0x171
+ 16f:	eb 38                	jmp    0x1a9
+ 171:	53                   	push   %rbx
+ 172:	75 74                	jne    0x1e8
+ 174:	72 61                	jb     0x1d7
+ 176:	6d                   	insl   (%dx),%es:(%rdi)
+ 177:	20 45              	and    %al,0x72(%rbp)
+
+### v273, computed size (n = 0 - 1): test rax,rax ; jns over the error - otherwise likha(the Sanskrit error) and exit(1); the jle path stays for size 0
+  f2:	00 00                	add    %al,(%rax)
+  f4:	48 89 c3             	mov    %rax,%rbx
+  f7:	b8 10 00 00 00       	mov    $0x10,%eax
+  fc:	48 85 c0             	test   %rax,%rax
+  ff:	0f 89 84 00 00 00    	jns    0x189
+ 105:	48 8d 05 02 00 00 00 	lea    0x2(%rip),%rax        # 0x10e
+ 10c:	eb 5a                	jmp    0x168
+ 10e:	53                   	push   %rbx
+ 10f:	75 74                	jne    0x185
+ 111:	72 61                	jb     0x174
+ 113:	6d                   	insl   (%dx),%es:(%rdi)
+ 114:	20 45 72             	and    %al,0x72(%rbp)
+ 117:	72 6f                	jb     0x188
+ 119:	72 3a                	jb     0x155
+ 11b:	20 6e 69             	and    %ch,0x69(%rsi)
+ 11e:	72 6d                	jb     0x18d
+ 120:	6d                   	insl   (%dx),%es:(%rdi)
+ 121:	69 74 61 2d 70 61 72 	imul   $0x69726170,0x2d(%rcx,%riz,2),%esi
+ 128:	69 
+ 129:	6d                   	insl   (%dx),%es:(%rdi)
+ 12a:	61                   	(bad)
+ 12b:	6e                   	outsb  %ds:(%rsi),(%dx)
+ 12c:	61                   	(bad)
+ 12d:	6d                   	insl   (%dx),%es:(%rdi)
+ 12e:	20 72 6e             	and    %dh,0x6e(%rdx)
+ 131:	61                   	(bad)
+ 132:	74 6d                	je     0x1a1
+ 134:	61                   	(bad)
+ 135:	6b 61 6d 20          	imul   $0x20,0x6d(%rcx),%esp
+ 139:	2d 20 6d 61 6e       	sub    $0x6e616d20,%eax
+ 13e:	64 61                	fs (bad)
+ 140:	70 61                	jo     0x1a3
+ 142:	2d 6d 61 64 68       	sub    $0x6864616d,%eax
+ 147:	79 65                	jns    0x1ae
+ 149:	20 72 6e             	and    %dh,0x6e(%rdx)
+ 14c:	61                   	(bad)
+ 14d:	6d                   	insl   (%dx),%es:(%rdi)
+ 14e:	20 70 61             	and    %dh,0x61(%rax)
+ 151:	72 69                	jb     0x1bc
+ 153:	6d                   	insl   (%dx),%es:(%rdi)
+
+### v273, the literal:
+Sutram Error [E_NIRMMITA_RNA]: nirmmita-parimanam rnatmakam - rnam parimanam na sambhavati
+Sanket: nirmmita(n) - n shunyam va dhanatmakam bhavet
+### outputs: v270 / v272 / v273 on neg2 (a = 5, computed -1, c = 9):
+140591016968176 0 9
+ (exit 0)
+0 5 9
+ (exit 0)
+Sutram Error: nirmmita-parimanam rnatmakam - mandapa-madhye rnam parimanam na sambhavati
+ (exit 1)

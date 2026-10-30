@@ -1,0 +1,9 @@
+measured: 52 gates PASS, 0 FAIL, 1 NOT-RUN; suite PASS=240
+  the 6 documents should quote: gates 52, and suite 240
+NOTE    PROJECT-MASTER.md: says 225 pass, measured 240
+NOTE    PROJECT-MASTER.md: says 48 PASS, measured 52
+NOTE    PROJECT-OVERVIEW.md: says 225 pass, measured 240
+NOTE    docs/sutram-design-parameters.html: says 225 pass, measured 240
+NOTE    docs/sutram-project-status.html: says 225 pass, measured 240
+NOTE    docs/sutram-scorecard.html: says 225 pass, measured 240
+doc counts: 6 document(s) behind - not a failure, but bump them

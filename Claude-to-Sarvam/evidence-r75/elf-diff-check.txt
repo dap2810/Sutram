@@ -1,0 +1,29 @@
+v272 -> v273, Linux ELF: every DIFFER - does it allocate inside a mandapa, and do both builds behave the same?
+OK  examples/263_r72_mandapa.sm: block+nirmmita True, 1273 -> 1414 bytes (+141), same output and exit True
+OK  examples/266_r73_inside_only.sm: block+nirmmita True, 878 -> 1019 bytes (+141), same output and exit True
+OK  examples/267_r73_outer_number.sm: block+nirmmita True, 689 -> 830 bytes (+141), same output and exit True
+OK  examples/268_r73_return_value.sm: block+nirmmita True, 1127 -> 1268 bytes (+141), same output and exit True
+OK  examples/269_r73_copy_out.sm: block+nirmmita True, 2005 -> 2146 bytes (+141), same output and exit True
+OK  tests/r72_mandapa/allowed_outer.sm: block+nirmmita True, 1029 -> 1170 bytes (+141), same output and exit True
+OK  tests/r72_mandapa/devanagari_with.sm: block+nirmmita True, 734 -> 875 bytes (+141), same output and exit True
+OK  tests/r72_mandapa/flat_with.sm: block+nirmmita True, 737 -> 878 bytes (+141), same output and exit True
+OK  tests/r72_mandapa/loop_with.sm: block+nirmmita True, 842 -> 983 bytes (+141), same output and exit True
+OK  tests/r72_mandapa/nested_with.sm: block+nirmmita True, 1150 -> 1432 bytes (+282), same output and exit True
+OK  tests/r73_scratch/allowed_f1_numbers.sm: block+nirmmita True, 1952 -> 2093 bytes (+141), same output and exit True
+OK  tests/r73_scratch/allowed_f2_numbers.sm: block+nirmmita True, 795 -> 936 bytes (+141), same output and exit True
+OK  tests/r73_scratch/allowed_global_number.sm: block+nirmmita True, 757 -> 898 bytes (+141), same output and exit True
+OK  tests/r73_scratch/allowed_nested.sm: block+nirmmita True, 842 -> 983 bytes (+141), same output and exit True
+OK  tests/r73_scratch/blind_call.sm: block+nirmmita True, 975 -> 1116 bytes (+141), same output and exit True
+OK  tests/r73_scratch/full.sm: block+nirmmita True, 679 -> 820 bytes (+141), same output and exit True
+OK  tests/r73_scratch/jumps.sm: block+nirmmita True, 2074 -> 2497 bytes (+423), same output and exit True
+OK  tests/r73_scratch/loop_with.sm: block+nirmmita True, 779 -> 920 bytes (+141), same output and exit True
+OK  tests/r73_scratch/prasar_rewind.sm: block+nirmmita True, 2016 -> 2439 bytes (+423), same output and exit True
+OK  tests/r73_scratch/reuse_zeroed.sm: block+nirmmita True, 1540 -> 1963 bytes (+423), same output and exit True
+OK  tests/r74_compose/c1_kosh_outside.sm: block+nirmmita True, 2348 -> 2489 bytes (+141), same output and exit True
+OK  tests/r74_compose/c2_param.sm: block+nirmmita True, 1164 -> 1305 bytes (+141), same output and exit True
+OK  tests/r74_compose/c3_siblings.sm: block+nirmmita True, 1453 -> 1735 bytes (+282), same output and exit True
+OK  tests/r74_compose/c4_100mb.sm: block+nirmmita True, 827 -> 968 bytes (+141), same output and exit True
+OK  tests/r74_compose/c4_too_big.sm: block+nirmmita True, 731 -> 872 bytes (+141), same output and exit True
+OK  tests/r74_compose/c5_recursion.sm: block+nirmmita True, 1116 -> 1257 bytes (+141), same output and exit True
+OK  tests/r74_compose/c6_adjacent.sm: block+nirmmita True, 1194 -> 1476 bytes (+282), same output and exit True
+27 DIFFER, 0 not explained by the added negative-size check
