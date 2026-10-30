@@ -234,7 +234,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v264) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v265) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -7236,6 +7236,9 @@ parse_body:
     cmp rcx, '{'
     je .pb_braces
 .pb_single:
+    call r70_indent_body           ; R70: an indented body on the following lines is a block
+    test rax, rax
+    jnz .pb_ret
     call alloc_ast
     mov rbx, rax
     mov qword [rbx], AST_BLOCK
@@ -7243,12 +7246,147 @@ parse_body:
     mov [rbx + 16], rax
     mov qword [rbx+8], 1
     mov rax, rbx
+.pb_ret:
     pop rbx
     ret
 .pb_braces:
     call advance_tok
     call parse_block
     pop rbx
+    ret
+
+; ROUND-70: indentation blocks for yavat / yadi / anya / every parse_body user.
+; Before R70 a body without '{' was ONE statement, whatever the indentation said:
+;     yavat (i < 3)
+;         likha(i)
+;         i = i + 1          <- was AFTER the loop: the program looped forever
+; Rule (only when the body does not open with '{'):
+;   * the body's first token is on a LATER line than the token before it, and that
+;     line is indented deeper than the header line  ->  the body is every following
+;     statement whose line starts at that same indentation; it ends at the first line
+;     indented less (or at '}' / end of input);
+;   * a line indented less than the body but more than the header is ambiguous and
+;     is refused as a syntax error;
+;   * otherwise (body on the header's own line, or not indented deeper): one
+;     statement, as before.
+; Indentation counts leading spaces and tabs as one column each.
+; r70_indent_body -> rax = block node, or 0 when the rule does not apply (nothing consumed).
+r70_indent_body:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    mov rax, [rel token_idx]
+    test rax, rax
+    jz .none
+    call cur_tok
+    mov rbx, rax                   ; first body token
+    lea r12, [rax - TOKEN_SIZE]    ; the token before it
+    mov rax, [rbx+24]
+    cmp rax, [r12+24]
+    je .none                       ; same line as the header: one statement
+    mov rdi, r12
+    call r70_line_indent
+    mov r14, rax                   ; header indentation
+    mov rdi, rbx
+    call r70_line_indent
+    mov r15, rax                   ; body indentation
+    cmp r15, r14
+    jbe .none                      ; not indented deeper: one statement
+    mov rax, [rel parse_block_depth]
+    cmp rax, BLOCK_NESTING_CAP
+    jae .nesting_overflow
+    inc qword [rel parse_block_depth]
+    push qword [rel r4_seen_count] ; R7: names declared in this block end with it
+    call alloc_ast
+    mov rbx, rax
+    call reserve_ast_block_extra
+    mov qword [rbx], AST_BLOCK
+    xor r12, r12                   ; statement count
+.loop:
+    call cur_tok
+    mov rcx, [rax]
+    cmp rcx, TOK_EOF
+    je .done
+    cmp rcx, TOK_DELIMITER
+    jne .check
+    cmp qword [rax+8], '}'
+    je .done
+.check:
+    test r12, r12
+    jz .stmt                       ; the first statement is the one measured above
+    mov rcx, [rax+24]
+    lea rdx, [rax - TOKEN_SIZE]
+    cmp rcx, [rdx+24]
+    je .stmt                       ; continues the previous token's line (e.g. after ';')
+    mov rdi, rax
+    call r70_line_indent
+    cmp rax, r15
+    jae .stmt                      ; at (or deeper than) the body's indentation
+    cmp rax, r14
+    ja .ambiguous                  ; between header and body: refused
+    jmp .done                      ; dedent: the block ends
+.stmt:
+    cmp r12, BLOCK_STMT_CAP
+    jae .stmt_overflow
+    push r14                       ; the two indentations survive parse_stmt (nested blocks)
+    push r15
+    call parse_stmt
+    pop r15
+    pop r14
+    mov [rbx + 16 + r12*8], rax
+    inc r12
+    jmp .loop
+.done:
+    pop rdi
+    call r7_close_block
+    mov [rbx+8], r12
+    dec qword [rel parse_block_depth]
+    mov rax, rbx
+    jmp .out
+.none:
+    xor eax, eax
+.out:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+.ambiguous:
+    jmp parse_error
+.stmt_overflow:
+    lea rdi, [rel msg_block_stmt_overflow]
+    jmp capacity_fail
+.nesting_overflow:
+    lea rdi, [rel msg_block_nesting_overflow]
+    jmp capacity_fail
+
+; r70_line_indent(rdi = token) -> rax = the number of spaces/tabs that begin the
+; token's source line. Clobbers rcx, rdx.
+r70_line_indent:
+    mov rdx, [rdi+32]              ; the token's position in source_buf
+    lea rcx, [rel source_buf]
+.back:
+    cmp rdx, rcx
+    jbe .fwd
+    cmp byte [rdx-1], 10
+    je .fwd
+    dec rdx
+    jmp .back
+.fwd:
+    xor eax, eax
+.count:
+    movzx ecx, byte [rdx + rax]
+    cmp cl, ' '
+    je .more
+    cmp cl, 9
+    jne .r
+.more:
+    inc rax
+    jmp .count
+.r:
     ret
 
 ; R11: r11_tr(rdi = a message) -> rax = that message in the selected pack's
