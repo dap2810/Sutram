@@ -1,6 +1,6 @@
 # R70-00 — The loop is fixed. It was not the allocator: an indented body was one statement.
 
-- **Commits on `main`, in order:** `§C1` (1/3: the parser, **v265**) · `§C2` (2/3: the formatter) · `§C3`
+- **Commits on `main`, in order:** `f947ce9` (1/3: the parser, **v265**) · `f7fc23c` (2/3: the formatter) · `1a98f09`
   (3/3: the tests) · then this hand-back. Pushed with git, not `--force`.
 - **Compiler: `Sutram 1.0 (v265) - sampurna sutra`.** Linux x86-64 cloud, 2 cores, 7 GB.
 - **`crash corpus: 227 cases + manifest, 0 failed`.**
