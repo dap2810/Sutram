@@ -67,6 +67,36 @@
 **Rules: strict inside a function; a documented contract across a `prakriya` call.**
 **The contract is documented in three places a programmer will actually read: the error message itself (`Sutram Error [E_SCRATCH_ESCAPE]: asthayi smriti bahir na gacchati`), the keyword reference with a worked example, and four pinned negative tests.**
 
+### Step 2 as built (v264, R69)
+**The range is Step 1's: one 1 GiB `MAP_NORESERVE` reservation at the first `nirmmita`, not a `.bss` block** (R60 measured a large `.bss` failing `execve` with no message). **Three hidden module globals:** `0kshetra_cur` — the persistent cursor, growing up from the start; `0kshetra_end` — the scratch cursor, starting at the top of the range and, from Step 3, growing down; `0kshetra_sima` — the range's true end, the scratch side's own limit. **The persistent side is bounded by the scratch cursor, not by the end of the range, so the two sides cannot overlap by construction.** **In v264 nothing moves the scratch cursor — the block that would does not exist — so every program allocates exactly as it did in v263.**
+
+---
+
+## What a `mandapa` block can hold in v1.0 — and what it cannot
+
+**A `mandapa` block in v1.0 is scratch space for scalar work: a few temporary buffers of plain numbers that are used inside the block and gone when it ends.** **It is not a way to manage the memory of code that uses `kosh`, and it is not the memory model.** This is ChatGPT's K0 profile (R137-R140), adopted by the owner as the v1.0 scope (R141).
+
+| Inside a block, v1.0 | |
+|---|---|
+| scalar locals and arithmetic; a scalar result returned or assigned outward | **allowed** |
+| `nirmmita(n)` buffers of scalar cells, indexed where the checker can prove the index in range | **allowed** — this is what the block is for |
+| several such buffers, and a loop that repeats the block (each iteration rewinds) | **allowed** |
+| calling a helper that the checker has verified is scalar-only | **allowed** |
+| any `kosh` — declaring one, pushing, indexing, `kosh_len`, passing one, aliasing one | **refused** |
+| returning or storing a scratch address anywhere that outlives the block | **refused** (`E_SCRATCH_ESCAPE`) |
+| an index into a scratch buffer the checker cannot prove in range | **refused** |
+| a call to a helper that has not been verified | **refused** |
+
+**What this means for usefulness — stated here, not discovered later:**
+- **Most allocation in real Sutram code is `kosh` growth, and a block cannot touch a `kosh`.** The programs whose memory actually grows with their input are exactly the ones the block excludes. The `kosh` leak is handled by in-place extension (Step 1), not by the block.
+- **Because the region is lexical, a block in a CALLER does not reclaim what a LIBRARY function allocates inside its own body** — that `nirmmita` uses the persistent cursor. So wrapping a loop that calls `ank_tak_varna` in a `mandapa` does not reclaim `ank_tak_varna`'s scratch. (Muse counted that loop in `examples/217` as the one strong case among the examples; under the lexical rule it is not helped.)
+- **Where the block does help is inside the library itself.** Library functions that allocate a scratch buffer on every call and never release it include `ank_tak_varna` and `ank_tak_aadhar_varna` (vakyank), six roop formatters (`roop_ank`, `roop_ank_aadhar`, `roop_varg_ank`, `roop_sthir_mool`, `roop_chinhit`, `roop_sign_akshar`), `brihat_ank_tak` (aadhar) and the bigint division helpers in brihat. Each uses its scratch only inside its own body and returns a number or writes the caller's buffer. Those bodies are the first real users a v1.0 `mandapa` has — if the checker can prove their indexing, which is Step 4's work, not a given.
+- **In the examples as they stand, no program allocates in a loop that a caller-side block could reclaim.** For a program, the block is a small, explicit tool for temporary scalar buffers — not a feature that changes how most programs use memory.
+
+**A beginner should read: "`mandapa` gives you a few temporary buffers of numbers that disappear when the block ends. Use it for scratch arithmetic. It does not work with `kosh`."**
+
+**What would make it larger** — `kosh` inside a block, checked collections, borrowing — is a separately specified future design (lengths, aliasing, growth, lifetimes), not an exception to the v1.0 rules.
+
 ---
 
 ## What "0 DIFFER" can and cannot mean
