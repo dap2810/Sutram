@@ -1,0 +1,37 @@
+# R70: a loop body written by indentation, with an allocation inside it. Before
+# R70 a body without braces was ONE statement whatever the indentation said, so
+# this program printed i=0 forever (the increment was outside the loop). Every
+# body form below must print what its indentation says.
+mukhya()
+    vitti i = 0
+    yavat (i < 3)
+        likha("i=", i)
+        vitti p = nirmmita(64)
+        i = i + 1
+    likha("done")
+    # allocate after the increment: 1 2 3
+    vitti j = 0
+    yavat (j < 3)
+        j = j + 1
+        vitti q = nirmmita(64)
+        q[7] = j
+        likha(q[7])
+    # nested indented yadi / anya inside an indented loop
+    vitti k = 0
+    yavat (k < 4)
+        yadi (k % 2 == 0)
+            likha("even ", k)
+        anya
+            likha("odd ", k)
+        k = k + 1
+    # a body on the header's own line is still one statement
+    yadi (k == 4) likha("k=4")
+    # 1000 allocations in a loop, each written, the counter intact
+    vitti n = 0
+    vitti s = 0
+    yavat (n < 1000)
+        vitti b = nirmmita(64)
+        b[0] = n
+        s = s + b[0]
+        n = n + 1
+    likha("n=", n, " s=", s)

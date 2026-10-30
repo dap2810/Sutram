@@ -1,0 +1,8 @@
+# R70: a line indented less than the loop body but more than the loop header is
+# ambiguous - neither in the body nor after it - and is refused.
+mukhya()
+    vitti i = 0
+    yavat (i < 3)
+            likha(i)
+        i = i + 1
+    likha("done")
