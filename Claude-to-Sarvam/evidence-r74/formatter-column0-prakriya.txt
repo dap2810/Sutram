@@ -1,0 +1,21 @@
+# sutram-fmt before R74: a module vitti written at column 0 after a braceless prakriya was indented into it.
+# The compiler reads it as a module vitti (the program prints 6 = f() + g); the formatted text would not be the same program.
+prakriya f()
+    nivartanam 1
+vitti g = 5
+mukhya()
+    likha(f() + g)
+
+# formatter diff, before the fix:
+--- /tmp/claude-0/-home-claude/e35834e8-b611-5238-b1df-59668dfdca3d/scratchpad/r74/fd2.sm
++++ /tmp/claude-0/-home-claude/e35834e8-b611-5238-b1df-59668dfdca3d/scratchpad/r74/fd2.sm (formatted)
+@@ -1,5 +1,5 @@
+ prakriya f()
+     nivartanam 1
+-vitti g = 5
++    vitti g = 5
+ mukhya()
+     likha(f() + g)
+
+# after the fix:
+(no change)

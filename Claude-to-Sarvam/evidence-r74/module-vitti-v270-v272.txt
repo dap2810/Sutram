@@ -1,0 +1,70 @@
+===== glob
+vitti g = 0
+mukhya()
+    mandapa
+        vitti buf = nirmmita(64)
+        buf[0] = 42
+        g = buf + 64
+    mandapa
+        vitti other = nirmmita(128)
+        other[8] = 99
+    vitti p = g
+    likha(p[0], "\n")
+--- v270:
+Siddh: 999 baait sankalit
+/bin/bash: line 4: 28128 Segmentation fault      $G/r74/z.$v
+(exit 139)
+--- v272:
+Sutram Error [E_SCRATCH_ESCAPE]: asthayi smriti bahir na gacchati - mandapa-madhye nirmitam sthanam bahya-vittau na sthapyate
+Sanket: ayam parikshah prakriya-ahvane kosh-madhye va gacchantam sthanam na pashyati
+===== glob_loop
+vitti g = 0
+mukhya()
+    mandapa
+        vitti buf = nirmmita(64)
+        vitti q = 0
+        vitti i = 0
+        yavat (i < 2)
+            g = q
+            q = buf
+            i = i + 1
+--- v270:
+Siddh: 464 baait sankalit
+(exit 0)
+--- v272:
+Sutram Error [E_SCRATCH_ESCAPE]: asthayi smriti bahir na gacchati - mandapa-madhye nirmitam sthanam bahya-vittau na sthapyate
+Sanket: ayam parikshah prakriya-ahvane kosh-madhye va gacchantam sthanam na pashyati
+===== glob_later
+prakriya f()
+    mandapa
+        vitti buf = nirmmita(64)
+        g = buf
+    nivartanam 0
+vitti g = 0
+mukhya()
+    likha(f())
+--- v270:
+Siddh: 590 baait sankalit
+0
+(exit 0)
+--- v272:
+Sutram Error [E_SCRATCH_ESCAPE]: asthayi smriti bahir na gacchati - mandapa-madhye nirmitam sthanam bahya-vittau na sthapyate
+Sanket: ayam parikshah prakriya-ahvane kosh-madhye va gacchantam sthanam na pashyati
+===== glob_number
+vitti g = 0
+mukhya()
+    mandapa
+        vitti buf = nirmmita(64)
+        buf[3] = 42
+        g = buf[3]
+    likha(g, "\n")
+--- v270:
+Siddh: 637 baait sankalit
+42
+
+(exit 0)
+--- v272:
+Siddh: 637 baait sankalit
+42
+
+(exit 0)

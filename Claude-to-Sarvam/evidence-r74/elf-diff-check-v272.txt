@@ -1,0 +1,18 @@
+v270 -> v272, Linux ELF: every DIFFER, byte by byte, and run
+OK  examples/263_r72_mandapa.sm: same length True, 1 byte(s) differ, all jz->jle (0x84->0x8E) True, same output and exit True
+OK  examples/266_r73_inside_only.sm: same length True, 1 byte(s) differ, all jz->jle (0x84->0x8E) True, same output and exit True
+OK  examples/267_r73_outer_number.sm: same length True, 1 byte(s) differ, all jz->jle (0x84->0x8E) True, same output and exit True
+OK  examples/268_r73_return_value.sm: same length True, 1 byte(s) differ, all jz->jle (0x84->0x8E) True, same output and exit True
+OK  examples/269_r73_copy_out.sm: same length True, 1 byte(s) differ, all jz->jle (0x84->0x8E) True, same output and exit True
+OK  tests/r72_mandapa/allowed_outer.sm: same length True, 1 byte(s) differ, all jz->jle (0x84->0x8E) True, same output and exit True
+OK  tests/r72_mandapa/devanagari_with.sm: same length True, 1 byte(s) differ, all jz->jle (0x84->0x8E) True, same output and exit True
+OK  tests/r72_mandapa/flat_with.sm: same length True, 1 byte(s) differ, all jz->jle (0x84->0x8E) True, same output and exit True
+OK  tests/r72_mandapa/loop_with.sm: same length True, 1 byte(s) differ, all jz->jle (0x84->0x8E) True, same output and exit True
+OK  tests/r72_mandapa/nested_with.sm: same length True, 2 byte(s) differ, all jz->jle (0x84->0x8E) True, same output and exit True
+OK  tests/r73_scratch/allowed_nested.sm: same length True, 1 byte(s) differ, all jz->jle (0x84->0x8E) True, same output and exit True
+OK  tests/r73_scratch/blind_call.sm: same length True, 1 byte(s) differ, all jz->jle (0x84->0x8E) True, same output and exit True
+OK  tests/r73_scratch/full.sm: same length True, 1 byte(s) differ, all jz->jle (0x84->0x8E) True, same output and exit True
+OK  tests/r73_scratch/jumps.sm: same length True, 3 byte(s) differ, all jz->jle (0x84->0x8E) True, same output and exit True
+OK  tests/r73_scratch/loop_with.sm: same length True, 1 byte(s) differ, all jz->jle (0x84->0x8E) True, same output and exit True
+OK  tests/r73_scratch/reuse_zeroed.sm: same length True, 3 byte(s) differ, all jz->jle (0x84->0x8E) True, same output and exit True
+16 DIFFER, 0 not explained by the jz->jle byte

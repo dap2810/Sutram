@@ -1,21 +1,23 @@
-# R74-00 — The memory model as a whole: five compositions pass; ChatGPT's four holes were real, and are closed (v271)
+# R74-00 — The memory model as a whole: five compositions pass; five holes found by others were real, and are closed (v272)
 
-- **Commits on `main`, in order:** `21c6494` (1/4 the composition tests and gate) · `0208a4d` (2/4 `LANGUAGE-REFERENCE`
-  §19 rewritten as a reference entry) · `0fd1206` (3/4 **v271**: R146's F1–F4 closed) · `81c547d` (4/4 §19 for v271) ·
-  then this hand-back (two commits). Pushed with git, not `--force`.
-- **Compiler: `Sutram 1.0 (v271) - sampurna sutra`.** Linux x86-64 cloud, 2 cores, 7 GB.
+- **Commits on `main`, in order:** `38d032f` (the composition tests and gate) · `297558f` (`LANGUAGE-REFERENCE` §19
+  rewritten as a reference entry) · `641713b` (hand-back, first state) · `684079b` (**v271**: R146's F1–F4 closed) ·
+  `8593471` (§19 for v271) · `bb380e9` (hand-back) · `f314b08` (**v272**: the module-`vitti` hole Muse found; the
+  formatter fix) · `ffeec4e` (§19) · then this hand-back. Pushed with git, not `--force`.
+- **Compiler: `Sutram 1.0 (v272) - sampurna sutra`.** Linux x86-64 cloud, 2 cores, 7 GB.
 - **`crash corpus: 227 cases + manifest, 0 failed`.**
 - **Suite: `NO-EXPECTATION=4 PASS=237`, FAIL=0.** Library proofs **226/226**. Property proofs **86/86**.
-- **Guard pages (`tools/guard_page.py`): v270 and v271 both — controls 5/5, suite PASS=237 FAIL=0, library
+- **Guard pages (`tools/guard_page.py`), on v270, v271 and v272 alike: controls 5/5, suite PASS=237 FAIL=0, library
   proofs 226/226, property proofs 86/86, 0 failed.**
-- **Gates (`sh tools/gates.sh`, Xvfb display): 52 PASS / 0 FAIL / 1 NOT-RUN (Windows execution)**, on v270 and on
-  v271. One more gate: **`R74 compose`** (9 checks); **`R73 scratch`** grows from 15 checks to 29.
-- **The guard, v270 → v271, `tools/guard_pair.py`:**
-  - **Linux PE and the Windows compiler under Wine: 509 byte-identical, 105 refused identically, 0 DIFFER, 22 new.**
-  - **Linux ELF: 493 byte-identical, 105 refused identically, 16 DIFFER, 22 new.** The 16 are exactly the programs
+- **Gates (`sh tools/gates.sh`, Xvfb display): 52 PASS / 0 FAIL / 1 NOT-RUN (Windows execution)**, on v270, v271 and
+  v272. One more gate: **`R74 compose`** (9 checks); **`R73 scratch`** grows from 15 checks to 33.
+- **The guard, v270 → v272, `tools/guard_pair.py`:**
+  - **Linux PE and the Windows compiler under Wine: 509 byte-identical, 105 refused identically, 0 DIFFER, 26 new.**
+  - **Linux ELF: 493 byte-identical, 105 refused identically, 16 DIFFER, 26 new.** The 16 are exactly the programs
     with a scratch `nirmmita`; **in every one the only bytes that differ are the F4 fix — `jz` → `jle`, one byte
-    per scratch `nirmmita` (0x84 → 0x8E) — same length, same output, same exit code.** Checked file by file.
-  - (Before v271, with the tree changes alone on v270: 509 / 105 / **0 DIFFER** / 8 new on all three paths.)
+    per scratch `nirmmita` (0x84 → 0x8E) — same length, same output, same exit code.** Checked file by file
+    (`evidence-r74/elf-diff-check-v272.txt`). The v272 change itself alters no binary: it only refuses more.
+  - (v270 → v271 gave the same 16/0/0; the tree changes alone on v270, before any compiler change: 0 DIFFER on all three.)
 
 ## On your numbers
 
@@ -28,7 +30,7 @@ is not in mine, and I would like the trivial program's number to find it. `evide
 ## WS1 — the five compositions
 
 `tests/r74_compose/`, run by the gate `R74 compose` (`test_compose.py`, `evidence-r74/r74-compose-test.txt`).
-Each has a control where it makes sense: the same program with `mandapa` replaced by `yadi (1 == 1)`. **Run on v270, and again on v271 after the R146 fixes: 9/9 both times, the same numbers.**
+Each has a control where it makes sense: the same program with `mandapa` replaced by `yadi (1 == 1)`. **Run on v270, and again on v271 and v272 after the fixes: 9/9 every time, the same numbers.** Your own run (`docs/MEMORY-COMPOSITION-TEST.md`, 64 MB × 1,000 at 67 MB peak; 500 deep exact) agrees with these.
 
 | # | composition | result | the number |
 |---|---|---|---|
@@ -65,7 +67,7 @@ on v270 before calling the model verified — **each one reproduced** — and fi
 | **F3** | a failure passed on by `prasar` returned without rewinding | 1,000,000 failures: **62 MB** | **264 KB** — the failure exit rewinds, as `nivartanam` does; code and value arrive intact (tested through two blocks and two `prakriya`) |
 | **F4** | `nirmmita(0 - 1)` in a block: the size rounded to 0 bytes and the zeroing wrote one qword into the block above | the outer block's `123` became **`0`** | **`123`** — a negative size gives 0, exactly as `nirmmita` does outside a block |
 
-The tests are in `tests/r73_scratch/` (14 new: 9 refusals, 5 allowed/measured), run by the `R73 scratch` gate.
+The tests are in `tests/r73_scratch/` (13 files: 9 refusals, 4 allowed/measured), run by the `R73 scratch` gate.
 **Each refusal has an allowed twin with the same shape and numbers instead of addresses** — so the fix refuses
 addresses, not loops or stores: `allowed_f1_numbers` (`kosh_push`/`likh8` of scratch *data* in initializers) and
 `allowed_f2_numbers` (the F2 shape with `q = b[0]`) compile and print the right values.
@@ -73,9 +75,30 @@ addresses, not loops or stores: `allowed_f1_numbers` (`kosh_push`/`likh8` of scr
 **What R146 is right about beyond the four:** a program that compiles is not proved safe — the call blind spot
 (composition #2) is still open. §19 now says so in one sentence.
 
+## Muse's R74 — one more live hole, on v270 and v271: a module `vitti`. Closed in v272.
+
+`Muse-to-Sarvam/ROUND-74-BLIND-SPOTS-MEASURED.md` (`71c95f2`) measured the check on v270 and found **`g = buf + 64`
+compiles when `g` is a module-level `vitti`**, while the same assignment to a local is refused. I reproduced it on
+v270 and on my v271: compiled, and the program crashed reading through `g` after the block. **The cause:** R4
+records every `x = ...` as a sighting of `x`, so inside a `prakriya` the assignment itself was the global's *first*
+sighting, and the check placed the global at the block's depth. **v272: a module `vitti` is outside every block**;
+one declared further down the file than the `prakriya` that assigns it is checked when the whole program has been
+read. Refused: into a global, into a global round a loop back edge, into a global declared later. Allowed: a number
+read out of scratch into a global (prints 42). `evidence-r74/module-vitti-v270-v272.txt`.
+
+**Muse's other live miss — `stash(b)`, a `prakriya` that stores its argument in a global — is the call blind spot,
+still open,** as stated. Muse also measured that direct `kosh_push`, an alias through `q = b`, and a returned
+rachana are refused on v270; those hold on v272.
+
+**Found on the way, in a tool of mine:** `sutram-fmt` indented a module `vitti` written at column 0 after a braceless
+`prakriya` *into* that `prakriya` — the compiler reads it as a module `vitti`, so formatting changed the program.
+Fixed: a code line at column 0 ends a braceless `prakriya`'s body in the formatter, as in the compiler (a braceless
+`mukhya` still runs to the end of the file). The tree's formatting gate is unchanged (`FORMATTED`).
+`evidence-r74/formatter-column0-prakriya.txt`.
+
 ## WS2 — the guard-page run and the gates
 
-Numbers at the top (v270 and v271 alike). **One thing you must know about what the guard-page run proves:** in the `GUARD_PAGES` build
+Numbers at the top (v270, v271 and v272 alike). **One thing you must know about what the guard-page run proves:** in the `GUARD_PAGES` build
 a `mandapa` is an ordinary block — `nirmmita` inside it takes the guard-page allocator, not the scratch side
 (R73's design, so the guard-page run still covers every program with a block). **So the guard-page run proves the
 programs' own reads and writes stay in bounds; it does not exercise the scratch allocator's code.** The code it
@@ -91,7 +114,7 @@ so work that allocates in a loop does not grow the program."* Then: the form (in
 the line, `मण्डप`); an example; **what it holds in v1.0 — scalar scratch, not a `kosh` of pointers**; run time,
 with the measured numbers; **the two escapes it refuses** (into an outer variable, into memory — and out by
 `nivartanam`); **the one it does not see** (an address kept by a `prakriya`, or hidden in a `kosh`) with the rule
-of thumb; Linux-only; and what it is not. Every statement in it was checked against v270, and again against v271 after the fixes (stores anywhere, loops, `prasar`, negative sizes, and: *a program that compiles is not proved safe*).
+of thumb; Linux-only; and what it is not. Every statement in it was checked against v270, and again after the fixes (stores anywhere, loops, `prasar`, negative sizes, module `vitti`, and: *a program that compiles is not proved safe*).
 
 **One correction to the old text, found while checking it:** it said a `kosh` inside a block is "not supported".
 It works — and its storage is persistent, not reclaimed (100,000 passes: 3,072 KB with and without the block,
@@ -99,7 +122,7 @@ It works — and its storage is persistent, not reclaimed (100,000 passes: 3,072
 
 ## What I did not do
 
-- **The call blind spot (#2) is described, not closed** — it needs a per-`prakriya` summary; R146 agrees it is a design limit.
+- **The call blind spot (#2, and Muse's `stash`) is described, not closed** — it needs a per-`prakriya` summary of what each one does with its parameters; R146 agrees it is a design limit.
 - **The R146 README sentence** — not mine to write; R146's own assessment of it stands with my evidence attached.
 - **Not run:** real Windows (Wine only).
 - **Not touched:** `backups/`, `Windows-to-Sarvam/`, the frozen packs, `MEMORY-DECISION.md`.
