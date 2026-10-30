@@ -1,0 +1,4 @@
+== tree before R70 (96ba2ee)
+643 files scanned
+braceless header, body on the following lines indented deeper: 0
+braceless header with its body on the same line: 0

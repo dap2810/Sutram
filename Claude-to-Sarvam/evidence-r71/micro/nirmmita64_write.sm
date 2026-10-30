@@ -1,0 +1,11 @@
+mukhya() {
+    vitti s = 0
+    vitti i = 0
+    vitti p = 0
+    yavat (i < 10000000) {
+        p = nirmmita(64)
+        p[0] = i
+        i = i + 1
+    }
+    likha(s)
+}

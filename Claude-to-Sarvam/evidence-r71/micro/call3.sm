@@ -1,0 +1,18 @@
+prakriya l(x) {
+    prati x + 1
+}
+prakriya m(x) {
+    prati l(x)
+}
+prakriya o(x) {
+    prati m(x)
+}
+mukhya() {
+    vitti s = 0
+    vitti i = 0
+    yavat (i < 10000000) {
+        s = s + o(i)
+        i = i + 1
+    }
+    likha(s)
+}

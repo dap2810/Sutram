@@ -1,0 +1,47 @@
+# benchmarks/ on v265 vs the same programs in C (gcc -O0; gcc -O2 -fno-inline). ns per iteration (per call for fib). Median of 9.
+benchmark                  unit     Sutram      C -O0      C -O2  ns per unit; Sutram/C-O0
+bench_arith           iteration       8.42       6.88       4.87  x1.22   outputs agree: True
+bench_fib                  call       3.12       3.98       2.41  x0.78   outputs agree: True
+bench_loop            iteration       0.84       2.88       0.15  x0.29   outputs agree: True
+bench_nested          iteration       3.39       2.92       1.19  x1.16   outputs agree: True
+r46_hotcall_array     iteration       7.19       5.00       1.93  x1.44   outputs agree: True
+r46_hotcall_float     iteration       4.99       4.93       1.63  x1.01   outputs agree: True
+r46_hotcall_nested    iteration       9.01       7.37       2.34  x1.22   outputs agree: True
+r46_hotcall_stack     iteration       4.51       3.17       1.86  x1.43   outputs agree: True
+
+## bench_arith.c
+#include <stdio.h>
+int main(){long acc=1,i=1;while(i<=2000000){acc=(acc*3+i)%1000003;i=i+1;}printf("%ld\n",acc);}
+
+## bench_fib.c
+#include <stdio.h>
+long fib(long n){if(n<2)return n;return fib(n-1)+fib(n-2);}
+int main(){printf("%ld\n",fib(27));}
+
+## bench_loop.c
+#include <stdio.h>
+int main(){long s=0,i=1;while(i<=10000000){s=s+i;i=i+1;}printf("%ld\n",s);}
+
+## bench_nested.c
+#include <stdio.h>
+int main(){long t=0,i=0;while(i<2000){long j=0;while(j<2000){if((i+j)%3==0)t=t+1;j=j+1;}i=i+1;}printf("%ld\n",t);}
+
+## r46_hotcall_array.c
+#include <stdio.h>
+long leaf(long x){return x+3;} long bridge(long x){return leaf(x);}
+int main(){long nums[4]={7,11,13,17},i=0,sum=0;while(i<3000000){sum=sum+bridge(nums[i%4]);i=i+1;}printf("%ld\n",sum);}
+
+## r46_hotcall_float.c
+#include <stdio.h>
+double fl(double x){return x+1.5;} double fb(double x){return fl(x);}
+int main(){long i=0;double sum=0;while(i<4500000){sum=sum+fb(2.5);i=i+1;}printf("%f\n",sum);}
+
+## r46_hotcall_nested.c
+#include <stdio.h>
+long leaf(long x){return x+1;} long mid(long x){return leaf(x);} long outer(long x){return mid(x);}
+int main(){long i=0,sum=0;while(i<4500000){sum=sum+outer(i);i=i+1;}printf("%ld\n",sum);}
+
+## r46_hotcall_stack.c
+#include <stdio.h>
+long leaf(long x){return x+1;} long bridge(long x){return leaf(x);}
+int main(){long i=0,sum=0;while(i<6000000){sum=sum+bridge(i);i=i+1;}printf("%ld\n",sum);}

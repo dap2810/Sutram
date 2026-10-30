@@ -1,0 +1,31 @@
+# v267 (allocator as v264). 10,000,000 iterations each, median of 9; net = (time - empty loop) / N. Programs in micro/.
+  nirmmita64_write      331.3 ms   net  32.26 ns per operation
+  call3                  90.5 ms   net   8.18 ns per operation
+  mod                    36.3 ms   net   2.76 ns per operation
+  div                    32.9 ms   net   2.42 ns per operation
+  nirmmita64             32.5 ms   net   2.39 ns per operation
+  raw_index              31.1 ms   net   2.25 ns per operation
+  float_add              29.7 ms   net   2.10 ns per operation
+  call1                  28.8 ms   net   2.02 ns per operation
+  byte_read              26.8 ms   net   1.82 ns per operation
+  mala_index             26.3 ms   net   1.76 ns per operation
+  kosh_index             25.6 ms   net   1.69 ns per operation
+  compare_yadi           11.7 ms   net   0.30 ns per operation
+  mul                    11.2 ms   net   0.26 ns per operation
+  base                    8.6 ms   net   0.00 ns per operation
+
+# second pass: 15 interleaved rounds (programs shuffled each round); MIN time is the least-disturbed run
+  nirmmita64_write   min   268.7 ms  net  26.07 ns   | median   309.9 ms  net  30.16 ns
+  call3              min    89.9 ms  net   8.19 ns   | median    92.4 ms  net   8.40 ns
+  div                min    32.8 ms  net   2.48 ns   | median    33.7 ms  net   2.54 ns
+  mod                min    31.5 ms  net   2.35 ns   | median    33.0 ms  net   2.46 ns
+  float_add          min    29.3 ms  net   2.13 ns   | median    30.2 ms  net   2.19 ns
+  call1              min    28.2 ms  net   2.02 ns   | median    31.4 ms  net   2.31 ns
+  byte_read          min    26.5 ms  net   1.85 ns   | median    27.2 ms  net   1.89 ns
+  raw_index          min    26.4 ms  net   1.84 ns   | median    27.3 ms  net   1.90 ns
+  mala_index         min    26.3 ms  net   1.83 ns   | median    27.2 ms  net   1.89 ns
+  kosh_index         min    25.7 ms  net   1.77 ns   | median    27.2 ms  net   1.88 ns
+  nirmmita64         min    23.8 ms  net   1.58 ns   | median    24.9 ms  net   1.66 ns
+  mul                min    10.3 ms  net   0.23 ns   | median    11.1 ms  net   0.28 ns
+  compare_yadi       min    10.0 ms  net   0.20 ns   | median    10.3 ms  net   0.20 ns
+  base               min     8.0 ms  net   0.00 ns   | median     8.3 ms  net   0.00 ns

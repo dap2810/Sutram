@@ -1,0 +1,45 @@
+# R71 WS1: 1,000,000 nirmmita(64) in a braced loop; v265 and v261 (Linux x86-64 cloud, 2 cores). Programs below.
+b_empty    v265: wall median      1.12 ms  min      1.00 ms  peak RSS     264 KB  (n=21)
+b_empty    v261: wall median      1.09 ms  min      1.04 ms  peak RSS     264 KB  (n=3)
+b_notouch  v265: wall median      2.84 ms  min      2.68 ms  peak RSS     264 KB  (n=21)
+b_notouch  v261: wall median    619.03 ms  min    592.93 ms  peak RSS     264 KB  (n=3)
+b_touch    v265: wall median     32.56 ms  min     28.24 ms  peak RSS   62464 KB  (n=21)
+b_touch    v261: wall median   2519.45 ms  min   2513.52 ms  peak RSS 4000000 KB  (n=3)
+b_notouch v265: (2.84 - 1.12 ms loop+process) / 1e6 = 1.7 ns per allocation
+b_notouch v261: (619.03 - 1.12 ms loop+process) / 1e6 = 617.9 ns per allocation
+b_touch v265: (32.56 - 1.12 ms loop+process) / 1e6 = 31.4 ns per allocation
+b_touch v261: (2519.45 - 1.12 ms loop+process) / 1e6 = 2518.3 ns per allocation
+
+## b_empty.sm
+mukhya() {
+    vitti i = 0
+    vitti p = 0
+    yavat (i < 1000000) {
+        p = i
+        i = i + 1
+    }
+    likha(i, "\n")
+}
+
+## b_notouch.sm
+mukhya() {
+    vitti i = 0
+    vitti p = 0
+    yavat (i < 1000000) {
+        p = nirmmita(64)
+        i = i + 1
+    }
+    likha(i, "\n")
+}
+
+## b_touch.sm
+mukhya() {
+    vitti i = 0
+    vitti p = 0
+    yavat (i < 1000000) {
+        p = nirmmita(64)
+        p[0] = i
+        i = i + 1
+    }
+    likha(i, "\n")
+}

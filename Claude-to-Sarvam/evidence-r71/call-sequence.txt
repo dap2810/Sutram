@@ -1,0 +1,34 @@
+# v265: a call to f(x) { prati x + 1 } from a loop (objdump -M intel). Caller then callee.
+  a0:	50                   	push   rax
+  a1:	4c 89 e0             	mov    rax,r12
+  a4:	50                   	push   rax
+  a5:	5f                   	pop    rdi
+  a6:	41 54                	push   r12
+  a8:	41 55                	push   r13
+  aa:	41 56                	push   r14
+  ac:	41 57                	push   r15
+  ae:	e8 c8 00 00 00       	call   0x17b
+  b3:	41 5f                	pop    r15
+  b5:	41 5e                	pop    r14
+  b7:	41 5d                	pop    r13
+  b9:	41 5c                	pop    r12
+  bb:	5a                   	pop    rdx
+  bc:	48 87 d0             	xchg   rax,rdx
+  bf:	48 01 d0             	add    rax,rdx
+  c2:	48 89 c3             	mov    rbx,rax
+  c5:	49 ff c4             	inc    r12
+  c8:	4c 89 e0             	mov    rax,r12
+  cb:	50                   	push   rax
+...
+ 17b:	55                   	push   rbp
+ 17c:	48 89 e5             	mov    rbp,rsp
+ 17f:	53                   	push   rbx
+ 180:	57                   	push   rdi
+ 181:	48 81 ec 00 08 00 00 	sub    rsp,0x800
+ 188:	48 8b 45 f0          	mov    rax,QWORD PTR [rbp-0x10]
+ 18c:	48 ff c0             	inc    rax
+ 18f:	48 8d 65 f8          	lea    rsp,[rbp-0x8]
+ 193:	5b                   	pop    rbx
+ 194:	5d                   	pop    rbp
+ 195:	c3                   	ret
+ 196:	48 8d 65 f8          	lea    rsp,[rbp-0x8]
