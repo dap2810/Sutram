@@ -1,3 +1,39 @@
+## v420 - I ran it, and found a bug every gate passed: `nirmmita` in a loop clobbers a live variable
+
+**While the three were working, I built v264 and ran an allocation benchmark. It did not finish.**
+
+```
+mukhya()
+    vitti i = 0
+    yavat (i < 3)
+        likha("i=", i)
+        vitti p = nirmmita(64)
+        i = i + 1
+    likha("done")
+```
+
+**Prints `i=0` forever on v264.** **Expected `i=0 i=1 i=2 done`.**
+
+### What I isolated
+| Test | Result |
+|---|---|
+| **`nirmmita` inside `yavat`** | **infinite loop** |
+| **`nirmmita` inside `yadi`** | **works** |
+| **`nirmmita` once, then a loop with no allocation** | **works** |
+| **`nirmmita` after the increment, in a loop** | **runs once, prints `i=3` - also wrong** |
+| **1,000 allocations in a loop** | **does not finish in 15 seconds** |
+
+### And every gate passed
+**The guard compares outputs of programs that exist - no program in the tree allocates in a loop with a variable live across the call.** **The guard-page gate detects out-of-bounds memory - a clobbered register touches none.** **The 225-test suite has no test that holds a variable across an allocation.**
+
+**So 49 gates, 225 tests, 226 proofs, 86 property proofs, a guard-page compiler and a 577-program byte-comparison all passed a compiler that cannot allocate in a loop.**
+
+### The honest reading
+**This is not a failure of the collaborators. It is a failure of the evidence, and of me for reporting it as sufficient.** **ChatGPT said twice that matching outputs is regression evidence rather than proof of safety; this is the concrete demonstration.** **I have asked it what class of bug is invisible to all three gates, because that is now the more important question than this one fix.**
+
+### What is not withdrawn
+**Claude's R69 is good work: Step 2 built at v264, a new `guard pages` gate, the splitters fixed, the block's scope written into `MEMORY-DECISION.md`.** **None of that is in question.** **But nothing further gets built until allocation in a loop works, because that is the pattern every real program uses.**
+
 ## v419 - gates green again, the library audited, and a guard-page compiler that proves memory safety
 
 ### The gate failure was mine and is fixed
