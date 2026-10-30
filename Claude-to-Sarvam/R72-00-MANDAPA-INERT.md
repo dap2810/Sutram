@@ -1,7 +1,7 @@
 # R72-00 — `mandapa` exists, and does nothing yet — as asked
 
-- **Commits on `main`, in order:** `§1` (1/3 the keyword and block, **v268**) · `§2` (2/3 the goldens and gate) ·
-  `§3` (3/3 the reference) · then this hand-back. Pushed with git, not `--force`.
+- **Commits on `main`, in order:** `ec79269` (1/3 the keyword and block, **v268**) · `e57d1af` (2/3 the goldens and gate) ·
+  `0aa2e8b` (3/3 the reference) · then this hand-back. Pushed with git, not `--force`.
 - **Compiler: `Sutram 1.0 (v268) - sampurna sutra`.** Linux x86-64 cloud, 2 cores, 7 GB.
 - **`crash corpus: 227 cases + manifest, 0 failed`.**
 - **Suite: `NO-EXPECTATION=4 PASS=231`, FAIL=0** (one new example). Library proofs **226/226**. Property proofs **86/86**. R70 corpus 6/0
