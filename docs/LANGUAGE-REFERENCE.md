@@ -746,9 +746,10 @@ block does not reclaim it, and a scratch address may not be pushed into it (belo
 
 - **Entry** remembers the scratch cursor. Each `nirmmita` inside takes memory from the scratch side of the
   program's 1 GiB field, zeroed, like any `nirmmita` buffer.
-- **Every exit gives it all back:** reaching the end of the body, `nivartanam`, `krama`, `agrim`. A later block
-  reuses the same memory, and sees zeros, never the earlier block's data.
-- **Measured (Linux x86-64, v270):** 1,000,000 × `nirmmita(64)` in a loop — **264 KB** peak with the block,
+- **Every exit gives it all back:** reaching the end of the body, `nivartanam`, `krama`, `agrim`, and a failure
+  passed on by `prasar`. A later block reuses the same memory, and sees zeros, never the earlier block's data.
+- **A negative size** gives 0, as `nirmmita` does outside a block.
+- **Measured (Linux x86-64, v270/v271):** 1,000,000 × `nirmmita(64)` in a loop — **264 KB** peak with the block,
   **62 MB** without it. A `kosh` outside the block filled with 1,000,000 numbers from inside it: **7.8 MB** (the
   `kosh` itself) against **78 MB** without the block. A block recursing 1,000 deep, 1,000 times: **2 MB**
   against 64 MB.
@@ -767,19 +768,22 @@ it — must not outlive its block:
 | | |
 |---|---|
 | **1. into a variable declared outside the block** — `outer = buf + 64` | refused |
-| **2. into memory** — `bahar[i] = buf`, a raw buffer's cell, `likh8`, `kosh_push` | refused |
+| **2. into memory** — `bahar[i] = buf`, a raw buffer's cell, `likh`, `likh8`, `kosh_push` — wherever the call is written: a statement, an initializer, an argument, a condition | refused |
 | and out by `nivartanam` — plain, `siddhi(...)`, `dosh(...)` | refused |
 | into a variable of the same block or a deeper one | allowed |
 | a number read from scratch (`buf[i]`, `akshar(buf, i)`), anywhere | allowed |
 
 A name that has held a scratch address keeps that mark until its block ends, even after `q = 7`: the compiler
-does not work out which branch ran. Use a fresh name for the number.
+does not work out which branch ran. Use a fresh name for the number. **Loops are checked as loops:** a value
+that only becomes an address on a later pass (`outside = q` written above `q = buf` in the same loop) is
+refused too.
 
 ### What it does not see
 
 **An address passed to a `prakriya` that keeps it** — stores it somewhere, or returns it — and an address
 hidden inside a `kosh`. Those programs compile and are wrong: they read memory a later block reuses. Every
-`E_SCRATCH_ESCAPE` message ends with a `Sanket` line that says so.
+`E_SCRATCH_ESCAPE` message ends with a `Sanket` line that says so. **So a program that compiles is not proved
+safe: the check refuses the escapes above, and no more.**
 
 **Rule: pass a scratch buffer to a `prakriya` to be read or written, never to be kept.** A `prakriya` that
 returns a number computed from the buffer (`yoga(buf, n)`) is fine.
