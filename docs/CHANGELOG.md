@@ -1,3 +1,27 @@
+## v419 - gates green again, the library audited, and a guard-page compiler that proves memory safety
+
+### The gate failure was mine and is fixed
+**48 PASS / 0 FAIL / 1 NOT-RUN.** **My v411 banner said "property proofs 86/86", which `doc_counts_gate.py` read as an impossible gate claim.** **Corrected to "86 of 86".** **Claude reported it rather than editing docs prose, which was right.**
+
+### `pad_vam`: the contract was wrong, not the body
+**The function writes a terminator at `dst[w]`, so its contract should say `width + 1`.** **It said `width`, which made every caller allocate one cell short.** **A doc bug that became a bug in every caller.**
+
+**Three commits: the contract corrected; `217_r12_report` allocates the 22 cells its callees ask for; and a property proof's own buffer that was one cell short, found by the audit.**
+
+### And the audit's number
+**Across 305 library functions, 371 write sites and 419 call sites, nothing else writes past a block.** **One live finding beyond `217`: `proof_props.py` gave `khand_mukt` 8 cells for lengths up to 8 and it writes cell `n`, so `n = 8` was one past - the fixed seed never drew 8.**
+
+### The new thing: a guard-page compiler
+**Every `nirmmita` block ends flush against a `PROT_NONE` page, so one byte written or read past a block is a SIGSEGV.** **It runs the whole suite, all 226 library proofs and all 86 property proofs with ZERO faults - and faults on the two known bugs as controls.**
+
+**That is a better safety argument than "247 of 248 outputs unchanged", because it does not compare outputs; it proves nothing touches memory it does not own.**
+
+### And the block's scope, stated honestly
+**ChatGPT has said three times that K0 is scalar-scratch only and a checked function cannot contain `kosh`.** **So a `mandapa` block holds scalar scratch, not vectors - a smaller feature than earlier rounds described.** **That goes into `docs/MEMORY-DECISION.md` where a programmer will read it, not into a handback.**
+
+### Guard
+**577 programs, 485 byte-identical, 91 refused identically, 1 DIFFER, 0 new - on ELF, PE and Wine.** **The one DIFFER is `217`, whose source changed, and its output is byte-identical to the original on v261.**
+
 ## v418 - 217 settled, the leak has a real number, and the allocator exposed a library bug
 
 ### `217` is the example's bug, and the proof is decisive
