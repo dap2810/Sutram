@@ -1,0 +1,16 @@
+# original examples/217_r12_report.sm (ace0a4e) compiled by the guard-page compiler:
+=== Test Scores Report ===
+Count: 8
+
+Sum:   688
+
+Mean:  86
+
+Min:   76
+
+Max:   95
+
+Range: 19
+-------------------------
+Padded scores:
+[exit 139: SIGSEGV at the first pad_vam over-write]

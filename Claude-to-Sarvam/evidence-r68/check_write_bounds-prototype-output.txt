@@ -1,0 +1,19 @@
+# prototype on the current tree:
+samanvaya  ekaka_matrika          cap=n*n                    WITHIN   
+samanvaya  vivartana              cap=n*m                    WITHIN   
+samanvaya  matrika_yoga           cap=m*n                    WITHIN   
+samanvaya  skalar                 cap=m*n                    WITHIN   
+samanvaya  matrika_gunana         cap=m*p                    WITHIN   
+vakyank    ank_tak_varna          cap=22                     WITHIN   
+vakyank    pad_vam                cap=width + 1              WITHIN   
+7 contracts read
+
+# prototype on the old tree (ace0a4e), where pad_vam's contract said 'width':
+samanvaya  ekaka_matrika          cap=n*n                    WITHIN   
+samanvaya  vivartana              cap=n*m                    WITHIN   
+samanvaya  matrika_yoga           cap=m*n                    WITHIN   
+samanvaya  skalar                 cap=m*n                    WITHIN   
+samanvaya  matrika_gunana         cap=m*p                    WITHIN   
+vakyank    ank_tak_varna          cap=22                     WITHIN   
+vakyank    pad_vam                cap=width                  OVER     :257 out[w] = index 1, capacity 1 at count=0,width=1;
+7 contracts read

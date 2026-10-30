@@ -1,0 +1,1413 @@
+==============================================================================
+aadhar.smlib:20  prakriya brihat_ank_tak(x, n, base, out)
+   # brihat_ank_tak(x, n, base, out) — render n-digit bigint x in `base`
+   # into mala `out` as digit values (MSB first). Returns digit count.
+   # Caller provides at least 1 writable output cell when n <= 0, or
+   # at least 4*n cells when n > 0 (base-2 worst case).
+   # Base outside 2..16 returns 0 without dividing (older code could trap).
+   # -1 (out unchanged) if its scratch cannot be allocated (R38).
+   own: w = nirmmita(c * 8)
+   own: rev = nirmmita(c * 4 * 8)
+   :28 cell dst[0]   <- PARAM out
+        in: yadi (c < 1) {
+   :36 cell w[i]   <- OWN nirmmita(c * 8)
+        in: yavat (i < c) {
+   :40 cell dst[0]   <- PARAM out
+        in: yadi (brihat_asti_shunyank(w, c) == 1) {
+   :57 cell w[k]   <- OWN nirmmita(c * 8)
+        in: yavat (cont == 1) {
+        in: yavat (k >= 0) {
+   :61 cell rev[rlen]   <- OWN nirmmita(c * 4 * 8)
+        in: yavat (cont == 1) {
+   :67 cell dst[p]   <- PARAM out
+        in: yavat (p < rlen) {
+==============================================================================
+aadhar.smlib:78  prakriya brihat_ank_se(d, count, base, x, n)
+   # brihat_ank_se(d, count, base, x, n) — parse `count` digit values
+   # from mala `d` (MSB first) in `base` into n-digit bigint x.
+   # Returns 1 on success, 0 if a digit >= base. Base outside 2..16
+   # returns 0 (the old code accepted any base, so base 0/1/negative
+   # silently mis-parsed).
+   :97 cell dst[k]   <- PARAM x
+        in: yavat (p < cnt) {
+        in: yavat (k < c) {
+==============================================================================
+anukram.smlib:36  prakriya anukram_khip_i64(out, pos, cap, v)
+   # anukram_khip_i64(out, pos, cap, v) — write v as 8 LE bytes at
+   # out+pos. Returns pos + 8, or -1 if it would overrun cap.
+   :52 byte dst[p + i]   <- PARAM out
+        in: yavat (i < 8) {
+==============================================================================
+anukram.smlib:61  prakriya anukram_grah_i64(buf, pos, cap, out)
+   # anukram_grah_i64(buf, pos, cap, out) — read 8 LE bytes at buf+pos,
+   # write the value into out[0]. Returns pos + 8, or -1 on overrun.
+   :81 cell o[0]   <- PARAM out
+==============================================================================
+anukram.smlib:88  prakriya anukram_khip_aayam_purva(out, pos, cap, src, n)
+   # anukram_khip_aayam_purva(out, pos, cap, src, n) — write n as an 8-byte
+   # LE length followed by n payload bytes from src. Returns the new
+   # cursor, or -1 on overrun (n < 0 is also an error: -1).
+   :101 byte dst[p2 + i]   <- PARAM out
+        in: yavat (i < cnt) {
+==============================================================================
+anukram.smlib:110  prakriya anukram_grah_aayam_purva(buf, pos, cap, dst, out_n)
+   # anukram_grah_aayam_purva(buf, pos, cap, dst, out_n) — read a
+   # length-prefixed payload: length into out_n[0], payload into dst.
+   # Returns the new cursor, or -1 on overrun / negative length.
+   :125 byte d[i]   <- PARAM dst
+        in: yavat (i < cnt) {
+   :128 cell on[0]   <- PARAM out_n
+==============================================================================
+brihat.smlib:258  prakriya brihat_shesh(ank, shesh, res, n)
+   # brihat_shesh(ank, shesh, res, n) — res = ank % shesh, where ank has 2n digits
+   # Helper for powmod. Uses long division. shesh == 0 is defined, not a
+   # hang: no reduction is applied, so res is the low n digits of num.
+   # Returns 0, or -1 (res unchanged) if its n-digit scratch cannot be allocated.
+   own: tr = nirmmita(c * 8)
+==============================================================================
+brihat.smlib:322  prakriya brihat_ghatmod(base, exp, shesh, res, n)
+   # brihat_ghatmod(base, exp, shesh, res, n) — res = base^exp shesh shesh
+   # exp is a plain int and must be >= 0 (a negative exp returns 1:
+   # the loop never runs). shesh == 0 means "no reduction" (see
+   # brihat_shesh), so the result is base^exp truncated to n digits.
+   # res is n-digit. Returns 0, or -1 (res unchanged) if its scratch cannot be allocated.
+   own: t1 = nirmmita(c * 2 * 8)
+   own: bcur = nirmmita(c * 8)
+   own: tr = nirmmita(c * 8)
+==============================================================================
+chandas.smlib:98  prakriya meru_mala(a, n)
+   # meru_mala(a, n) — fills a[0..n] with the nth row of Pascal's triangle: a[i] = meru(n, i).
+   :101 cell a[i]   <- PARAM a
+        in: yavat (i <= n) {
+==============================================================================
+ganit.smlib:162  prakriya ganit_yadricch(state)
+   # ganit_yadricch(state): Knuth MMIX LCG — state = state * 6364136223846793005
+   # + 1442695040888963407 (shesh 2^64, plain wrapping arithmetic). `state`
+   # is a 1-cell array holding the seed; it is updated in place and the new
+   # state is returned. The full 64-bit state is returned (it may be
+   # negative); use nirapeksh_mulya or a modulo to map it to a range. Any seed
+   # works, including 0. Deterministic: the same seed always yields the
+   # same sequence. There is no entropy source in the language, so the
+   # caller owns the seed. Not secure randomness: never use it for keys or tokens.
+   :164 cell s[0]   <- PARAM state
+==============================================================================
+ganita.smlib:77  prakriya chakravala(out, n)
+   # chakravala(out, n): solves x^2 - n*y^2 = 1 for least positive x, y.
+   # Writes out[0] = x and out[1] = y; caller must supply at least 2 writable qword cells.
+   :84 cell out[0]   <- PARAM out
+        in: yadi (k == 0) {
+   :85 cell out[1]   <- PARAM out
+        in: yadi (k == 0) {
+   :152 cell out[0]   <- PARAM out
+   :153 cell out[1]   <- PARAM out
+==============================================================================
+ganita.smlib:161  prakriya samasa(out, a, b, c, d, n)
+   # samasa(out, a, b, c, d, n): Brahmagupta's composition law (bhavana / samasa).
+   # Given a^2 - n*b^2 = k1 and c^2 - n*d^2 = k2, composes them into a third:
+   #   (a^2 - n*b^2)(c^2 - n*d^2) = (a*c + n*b*d)^2 - n*(a*d + b*c)^2
+   # Writes out[0] = a*c + n*b*d and out[1] = a*d + b*c; requires 2 writable qword cells.
+   :167 cell out[0]   <- PARAM out
+   :168 cell out[1]   <- PARAM out
+==============================================================================
+ganita.smlib:217  prakriya ganita_janchit_yuj(a, b, ok)
+   # ganita_janchit_yuj(a, b, ok) — a + b; ok[0] 1, or 0 on overflow
+   # (returns 0 then).
+   :225 cell okp[0]   <- PARAM ok
+        in: yadi (x >= 0) {
+        in: yadi (y >= 0) {
+        in: yadi (s < 0) {
+   :232 cell okp[0]   <- PARAM ok
+        in: yadi (y < 0) {
+        in: yadi (s >= 0) {
+   :237 cell okp[0]   <- PARAM ok
+==============================================================================
+ganita.smlib:243  prakriya ganita_janchit_nyun(a, b, ok)
+   # ganita_janchit_nyun(a, b, ok) — a - b; ok[0] 1, or 0 on overflow
+   # (returns 0 then).
+   :251 cell okp[0]   <- PARAM ok
+        in: yadi (x >= 0) {
+        in: yadi (y < 0) {
+        in: yadi (d < 0) {
+   :258 cell okp[0]   <- PARAM ok
+        in: yadi (y >= 0) {
+        in: yadi (d >= 0) {
+   :263 cell okp[0]   <- PARAM ok
+==============================================================================
+ganita.smlib:270  prakriya ganita_janchit_gun(a, b, ok)
+   # ganita_janchit_gun(a, b, ok) — a * b; ok[0] 1, or 0 on overflow
+   # (returns 0 then). The check is m / a == b, with the INT64_MIN * -1
+   # case handled explicitly (the division itself would SIGFPE there).
+   :277 cell okp[0]   <- PARAM ok
+        in: yadi (x == 0) {
+   :281 cell okp[0]   <- PARAM ok
+        in: yadi (y == 0) {
+   :286 cell okp[0]   <- PARAM ok
+        in: yadi (x == minv) {
+        in: yadi (y == 0 - 1) {
+   :292 cell okp[0]   <- PARAM ok
+        in: yadi (y == minv) {
+        in: yadi (x == 0 - 1) {
+   :298 cell okp[0]   <- PARAM ok
+        in: yadi (m / x != y) {
+   :301 cell okp[0]   <- PARAM ok
+==============================================================================
+ganita.smlib:307  prakriya ganita_janchit_bhaj(a, b, ok)
+   # ganita_janchit_bhaj(a, b, ok) — truncating a / b; ok[0] 1, or 0 on
+   # division by zero or INT64_MIN / -1 (both would SIGFPE; returns 0).
+   :313 cell okp[0]   <- PARAM ok
+        in: yadi (y == 0) {
+   :318 cell okp[0]   <- PARAM ok
+        in: yadi (x == minv) {
+        in: yadi (y == 0 - 1) {
+   :322 cell okp[0]   <- PARAM ok
+==============================================================================
+ganita.smlib:328  prakriya ganita_janchit_shesh(a, b, ok)
+   # ganita_janchit_shesh(a, b, ok) — truncating a % b (remainder takes the
+   # dividend's util_chinha); ok[0] 1, or 0 on b == 0 or INT64_MIN % -1.
+   :334 cell okp[0]   <- PARAM ok
+        in: yadi (y == 0) {
+   :339 cell okp[0]   <- PARAM ok
+        in: yadi (x == minv) {
+        in: yadi (y == 0 - 1) {
+   :343 cell okp[0]   <- PARAM ok
+==============================================================================
+ganita.smlib:419  prakriya ganita_janchit_ghat(a, e, ok)
+   # ganita_janchit_ghat(a, e, ok) — a^e for e >= 0 via repeated
+   # checked multiplication (WS3, R19); ok[0] 1, or 0 if e < 0 (no
+   # integer ghat) or the result overflows (returns 0 then). 0^0 = 1
+   # by the empty-product convention. O(e), but the loop exits early
+   # on overflow for every |a| >= 2 (a^e overflows by e = 63 at the
+   # latest); only the trivial bases -1, 0, 1 run the full loop.
+   :426 cell okp[0]   <- PARAM ok
+        in: yadi (exp < 0) {
+   :434 cell okp[0]   <- PARAM ok
+==============================================================================
+ganita.smlib:442  prakriya ganita_janchit_kramgun(n, ok)
+   # ganita_janchit_kramgun(n, ok) — n! via repeated checked multiplication
+   # (WS3, R20); ok[0] 1, or 0 if n < 0 (no integer factorial) or the
+   # result overflows (returns 0 then). 0! = 1. 20! is the largest that
+   # fits (20! = 2432902008176640000); 21! overflows.
+   :448 cell okp[0]   <- PARAM ok
+        in: yadi (nn < 0) {
+   :456 cell okp[0]   <- PARAM ok
+==============================================================================
+ganita.smlib:534  prakriya ganita_janchit_nirapeksh(a, ok)
+   # ganita_janchit_nirapeksh(a, ok) — |a| (WS4, R24); ok[0] 1, or 0 on
+   # abs(INT64_MIN), which overflows (returns 0 then). The unary overflow
+   # the checked family did not cover: plain ganita_nirapeksh(MIN) silently
+   # wraps to MIN.
+   :539 cell okp[0]   <- PARAM ok
+        in: yadi (x == minv) {
+   :542 cell okp[0]   <- PARAM ok
+==============================================================================
+kalana.smlib:120  prakriya bahu_mula(kosh dasham c, dasham lo, dasham hi, kosh dasham ok)
+   # Bisection root of a polynomial on [lo, hi].
+   # CONTRACT: `ok` must already contain ONE element (call kosh_push(ok, 0.0) first).
+   # A kosh's capacity is not its length, so ok[0] is out of bounds until an element exists. Requires a sign change across the interval,
+   # which is checked and reported by returning a NaN-like sentinel of 0.0 with ok=0.
+   # ok is returned through a one-element kosh so the caller can tell success from failure.
+   :142 cell ok[0]   <- OTHER ok
+==============================================================================
+khand.smlib:39  prakriya khand_bandh(cells, n, out)
+   # khand_bandh(cells, n, out) — pack a qword-cell sequence (one byte value
+   # per cell, the varna_bhed/khand_bhed segment format) into contiguous
+   # bytes. Writes a 0 terminator at out[n]. Returns n. This is the
+   # boundary helper: hand-written repack loops (one per call site, each a
+   # chance to get the stride wrong) become one call. n <= 0 writes only
+   # the terminator and returns 0.
+   # POINTER ARITHMETIC IS IN BYTES: to pack starting at cell i of a cell
+   # array, pass cells + i*8, not cells + i.
+   :45 byte dst[0]   <- PARAM out
+        in: yadi (cnt <= 0) {
+   :49 byte dst[i]   <- PARAM out
+        in: yavat (i < cnt) {
+   :52 byte dst[cnt]   <- PARAM out
+==============================================================================
+khand.smlib:61  prakriya khand_mukt(bytes, n, out)
+   # khand_mukt(bytes, n, out) — the inverse: expand n contiguous bytes
+   # into qword cells (one byte value per cell). Writes a 0 terminator cell
+   # at out[n]. Returns n. n <= 0 writes only the terminator, returns 0.
+   # POINTER ARITHMETIC IS IN BYTES: to unpack into cell i of a cell
+   # array, pass out + i*8, not out + i.
+   :67 cell dst[0]   <- PARAM out
+        in: yadi (cnt <= 0) {
+   :71 cell dst[i]   <- PARAM out
+        in: yavat (i < cnt) {
+   :74 cell dst[cnt]   <- PARAM out
+==============================================================================
+khand.smlib:81  prakriya khand_pratilip(src, n, out)
+   # khand_pratilip(src, n, out) — copy n bytes verbatim ("make me a real byte
+   # string from this"). Writes a 0 terminator at out[n]. Returns n.
+   # n <= 0 writes only the terminator, returns 0.
+   :87 byte dst[0]   <- PARAM out
+        in: yadi (cnt <= 0) {
+   :91 byte dst[i]   <- PARAM out
+        in: yavat (i < cnt) {
+   :94 byte dst[cnt]   <- PARAM out
+==============================================================================
+khand.smlib:142  prakriya khand_pratisthap(src, sn, find, fn, repl, out)
+   # khand_pratisthap(src, sn, find, fn, repl, out) — copy src to out, replacing
+   # every (non-overlapping) occurrence of find with repl. repl is
+   # 0-terminated (its length is derived, so a literal works) — repl
+   # cannot be a slice; khand_pratilip a slice into a terminated buffer first
+   # (see header, slice-boundary rules). Returns the
+   # new byte count. Empty find: copy verbatim. Caller allocates generously.
+   :160 byte dst[wpos]   <- PARAM out
+        in: yadi (flen <= 0) {
+        in: yavat (rpos < slen) {
+   :164 byte dst[wpos]   <- PARAM out
+        in: yadi (flen <= 0) {
+   :181 byte dst[wpos]   <- PARAM out
+        in: yavat (rpos < slen) {
+        in: yadi (match == 1) {
+        in: yavat (k < rlen) {
+   :187 byte dst[wpos]   <- PARAM out
+        in: yavat (rpos < slen) {
+   :192 byte dst[wpos]   <- PARAM out
+==============================================================================
+khand.smlib:201  prakriya khand_bhed(src, sn, sep, sepn, parts, maxparts)
+   # khand_bhed(src, sn, sep, sepn, parts, maxparts) — split src on sep.
+   # Same length-prefixed segment format as varna_bhed (R9): parts holds
+   # [len0, b0, b1, ..., len1, b0, ...]; cells hold one byte value each.
+   # Returns the segment count (capped at maxparts). Empty separator: no
+   # split (one segment). Empty input: one empty segment.
+   :222 cell dst[0]   <- PARAM parts
+        in: yadi (slen == 0) {
+   :228 cell dst[0]   <- PARAM parts
+        in: yadi (splen <= 0) {
+   :254 cell dst[wpos]   <- PARAM parts
+        in: yavat (done == 0) {
+        in: yadi (nseg < maxp) {
+   :269 cell dst[wpos]   <- PARAM parts
+        in: yavat (done == 0) {
+        in: yadi (rpos >= slen) {
+        in: yadi (nseg < maxp) {
+==============================================================================
+khand.smlib:282  prakriya khand_yuj(parts, count, sep, sepn, out)
+   # khand_yuj(parts, count, sep, sepn, out) — inverse of khand_bhed for the
+   # length-prefixed format. Joins `count` segments with sep into a byte
+   # string. Returns the new byte count.
+   :306 byte dst[wpos]   <- PARAM out
+        in: yavat (si < cnt) {
+        in: yadi (si < cnt - 1) {
+        in: yavat (q < splen) {
+   :313 byte dst[wpos]   <- PARAM out
+==============================================================================
+khand.smlib:320  prakriya khand_chhid(src, sn, out)
+   # khand_chhid(src, sn, out) — strip leading/trailing ASCII spaces (32) only;
+   # tabs, newlines and multi-byte Unicode spaces are kept.
+   # Returns the new byte count.
+   :347 byte dst[wpos]   <- PARAM out
+        in: yavat (k < hi) {
+   :351 byte dst[wpos]   <- PARAM out
+==============================================================================
+khand.smlib:358  prakriya khand_unnat(src, sn, out)
+   # khand_unnat(src, sn, out) / khand_avanat — ASCII case conversion on byte
+   # strings. Returns the byte count. sn < 0: empty output (the old
+   # code wrote the terminator at out[-1], out of bounds).
+   :365 byte dst[0]   <- PARAM out
+        in: yadi (slen < 0) {
+   :373 byte dst[i]   <- PARAM out
+        in: yavat (i < slen) {
+   :376 byte dst[slen]   <- PARAM out
+==============================================================================
+khand.smlib:381  prakriya khand_avanat(src, sn, out)
+   # khand_avanat(src, sn, out) — copies src (sn bytes) to out with A-Z lowercased to a-z, NUL-terminated; returns sn (0 for sn < 0).
+   :388 byte dst[0]   <- PARAM out
+        in: yadi (slen < 0) {
+   :396 byte dst[i]   <- PARAM out
+        in: yavat (i < slen) {
+   :399 byte dst[slen]   <- PARAM out
+==============================================================================
+khand.smlib:466  prakriya khand_viparyay(src, sn, out)
+   # khand_viparyay(src, sn, out) — copy src reversed into out (WS3, R19).
+   # Two-pointer vinimay, so it is SAFE IN PLACE (src == out works). Writes
+   # a 0 terminator at out[sn]. Returns sn. sn <= 0 writes only the
+   # terminator, returns 0. Before this, reversing a byte string meant
+   # a hand-written loop at every call site.
+   :474 byte dst[0]   <- PARAM out
+        in: yadi (n <= 0) {
+   :481 byte dst[i]   <- PARAM out
+        in: yavat (i < j) {
+   :482 byte dst[j]   <- PARAM out
+        in: yavat (i < j) {
+   :487 byte dst[n / 2]   <- PARAM out
+        in: yadi (n % 2 == 1) {
+   :489 byte dst[n]   <- PARAM out
+==============================================================================
+nighantu.smlib:62  prakriya nighantu_koshtha_likh(m, slot, cap, key, keyn, val)
+   # nighantu_koshtha_likh(m, slot, cap, key, keyn, val) — store key+val at slot and
+   # mark it live (internal helper; keyn already truncated by the caller).
+   # NOTE: this deliberately does NOT use khand_pratilip for the key copy:
+   # khand_pratilip writes a 0 terminator at out[keyn], which for a full 32-byte
+   # key would land on the NEXT slot's first key byte. The explicit loop
+   # plus zero-fill stays exactly inside this slot.
+   :65 cell m[2 + slot]   <- PARAM m
+   :66 cell m[2 + cap + slot]   <- PARAM m
+   :67 cell m[2 + 2 * cap + slot]   <- PARAM m
+   :69 byte m[base + i]   <- PARAM m
+        in: yavat (i < keyn) {
+   :73 byte m[base + i]   <- PARAM m
+        in: yavat (i < 32) {
+==============================================================================
+nighantu.smlib:107  prakriya nighantu_srij(cap)
+   # nighantu_srij(cap) — allocate and clear a map of capacity cap (clamped to >= 1).
+   # Returns 0 if cap is so large the allocation size overflows (a
+   # wrapped size allocated a small buffer and then wrote cap state
+   # cells past it — SIGSEGV).
+   own: m = nirmmita(sz)
+   :118 cell m[0]   <- OWN nirmmita(sz)
+   :119 cell m[1]   <- OWN nirmmita(sz)
+   :121 cell m[2 + i]   <- OWN nirmmita(sz)
+        in: yavat (i < c) {
+==============================================================================
+nighantu.smlib:132  prakriya nighantu_khip(m, cap, key, keyn, val)
+   # nighantu_khip(m, cap, key, keyn, val) — insert or update key; returns 1 on
+   # success, 0 if the table is full (then the map is unchanged). Updating an
+   # existing key keeps nighantu_maap unchanged. cap < 1 or keyn < 0:
+   # returns 0 (cap 0 trapped with SIGFPE; negative keyn corrupted
+   # nighantu_kunjika_ashtak).
+   :142 cell m[2 + 2 * cap + slot]   <- PARAM m
+        in: yadi (slot >= 0) {
+   :153 cell m[1]   <- PARAM m
+==============================================================================
+nighantu.smlib:181  prakriya nighantu_apanay(m, cap, key, keyn)
+   # nighantu_apanay(m, cap, key, keyn) — delete key; 1 if removed, 0 if absent.
+   # Backward-shift deletion (Knuth 6.4R): after clearing the slot, each
+   # following live entry whose home bucket is NOT cyclically past the hole
+   # is shifted back into it, preserving every probe chain with no
+   # tombstones.
+   :196 cell m[2 + pos]   <- PARAM m
+   :197 cell m[1]   <- PARAM m
+   :222 cell m[2 + i]   <- PARAM m
+        in: yavat (m[2 + j] == 1) {
+        in: yadi (can_move == 1) {
+   :223 cell m[2 + cap + i]   <- PARAM m
+        in: yavat (m[2 + j] == 1) {
+        in: yadi (can_move == 1) {
+   :224 cell m[2 + 2 * cap + i]   <- PARAM m
+        in: yavat (m[2 + j] == 1) {
+        in: yadi (can_move == 1) {
+   :229 byte m[base_i + k]   <- PARAM m
+        in: yavat (m[2 + j] == 1) {
+        in: yadi (can_move == 1) {
+        in: yavat (k < 32) {
+   :232 cell m[2 + j]   <- PARAM m
+        in: yavat (m[2 + j] == 1) {
+        in: yadi (can_move == 1) {
+==============================================================================
+nighantu.smlib:250  prakriya nighantu_rikta(m)
+   # nighantu_rikta(m) — reset the map to empty IN PLACE (WS1, R19): same
+   # handle, same capacity, no leak, no re-allocation. Capacity is read
+   # from m[0]; no cap parameter, so a mismatched cap cannot corrupt
+   # the map. FULL ZERO, not a count reset: the count, every state
+   # flag, every keylen, every val, and every key byte are set to 0.
+   # After nighantu_rikta the buffer is indistinguishable from a freshly
+   # zeroed map. Merely resetting the count would leave the old keys
+   # readable through the key region to anyone holding the handle —
+   # the stale-segment hazard this closes. Returns 1.
+   :255 cell m[1]   <- PARAM m
+   :257 cell m[2 + i]   <- PARAM m
+        in: yavat (i < cap) {
+   :258 cell m[2 + cap + i]   <- PARAM m
+        in: yavat (i < cap) {
+   :259 cell m[2 + 2 * cap + i]   <- PARAM m
+        in: yavat (i < cap) {
+   :263 byte m[base + k]   <- PARAM m
+        in: yavat (i < cap) {
+        in: yavat (k < 32) {
+==============================================================================
+nighantu.smlib:279  prakriya nighantu_vardh(m, newcap)
+   # nighantu_vardh(m, newcap) — copy the map into a fresh map of capacity
+   # newcap, rehashing every entry (WS2, R20). Returns the new handle.
+   # Returns 0 and changes nothing if newcap < nighantu_maap(m) (no partial
+   # copy), or (R36) if the new map cannot be allocated. The old buffer is abandoned (the library has no free — same
+   # as re-init); rebind: m = nighantu_vardh(m, 32). Capacity is clamped
+   # to >= 1 by nighantu_srij. Before this, growing a fixed-capacity map
+   # meant a hand-written re-put loop over nighantu_kunjika_ashtak at every
+   # call site.
+   own: tmp = nirmmita(oldcap * 33 + 1)
+==============================================================================
+nighantu.smlib:333  prakriya nighantu_mil(dst, dcap, src, scap)
+   # nighantu_mil(dst, dcap, src, scap) — copy every entry of src into dst;
+   # src's values overwrite dst's on key conflict (WS3, R23). Returns the
+   # number of entries merged. If dst fills up, merging stops early and
+   # the return is less than nighantu_maap(src), the merge is incomplete.
+   # Destination map size alone cannot detect this: updates need not change it.
+   # Keys come from nighantu_kunjika_ashtak, so each is known to exist (no -1 ambiguity).
+   # R38: -1 (dst unchanged) if its scratch cannot be allocated.
+   own: tmp = nirmmita(src[0] * 33 + 1)
+==============================================================================
+nighantu.smlib:360  prakriya nighantu_mulya(m, out)
+   # nighantu_mulya(m, out) — write the live values into out (one qword cell
+   # each), in the same slot order as nighantu_kunjika / nighantu_kunjika_ashtak (WS2,
+   # R21). Returns the value count, which equals nighantu_maap(m). Caller
+   # allocates cap cells. Before this, collecting values meant a
+   # nighantu_kunjika_ashtak pass plus a nighantu_grah per key at every call site.
+   :366 cell out[n]   <- PARAM out
+        in: yavat (i < cap) {
+        in: yadi (m[2 + i] == 1) {
+==============================================================================
+nighantu.smlib:383  prakriya nighantu_kunjika(m, out)
+   # nighantu_kunjika(m, out) — write live keys into out in length-prefixed form
+   # [len0, b0, b1, ..., len1, b0, ...] (same shape as varna_bhed parts).
+   # Returns the key count, which equals nighantu_maap(m).
+   # NOTE: segments are QWORD CELLS (len in one cell, one byte per cell),
+   # kept for backward compatibility. New code should use nighantu_kunjika_ashtak
+   # below, which returns the same segments as packed bytes — the form
+   # every key consumer (nighantu_khip, nighantu_antah, khand_tul) actually
+   # takes. Passing a nighantu_kunjika segment straight to a byte-key consumer
+   # compiles and silently compares the wrong bytes (the R14 trap).
+   :395 cell out[wpos]   <- PARAM out
+        in: yavat (i < cap) {
+        in: yadi (m[2 + i] == 1) {
+==============================================================================
+nighantu.smlib:417  prakriya nighantu_kunjika_ashtak(m, out)
+   # nighantu_kunjika_ashtak(m, out) — R17. Same segments as nighantu_kunjika, but PACKED
+   # BYTES: [len-byte, bytes..., len-byte, bytes...], one length byte
+   # followed by the key's bytes, no terminator. Returns the key count,
+   # which equals nighantu_maap(m). Caller allocates cap * 33 bytes (each key
+   # is <= 32 bytes plus 1 length byte; at most cap keys).
+   # Keys are stored as packed bytes inside the map, so this is a straight
+   # byte copy — no unpack/pack round-trip. Segments can be passed
+   # directly to nighantu_khip / nighantu_antah / khand_tul with no repacking;
+   # that is the whole point (see nighantu_kunjika note above).
+   :429 byte out[wpos]   <- PARAM out
+        in: yavat (i < cap) {
+        in: yadi (m[2 + i] == 1) {
+   :432 byte out[wpos + 1 + k]   <- PARAM out
+        in: yavat (i < cap) {
+        in: yadi (m[2 + i] == 1) {
+        in: yavat (k < kl) {
+==============================================================================
+phal.smlib:33  prakriya phal_siddhi(out, v)
+   # phal_siddhi(out, v) — write the success Result [1, v] into out.
+   :35 cell o[0]   <- PARAM out
+   :36 cell o[1]   <- PARAM out
+==============================================================================
+phal.smlib:41  prakriya phal_dosh(out)
+   # phal_dosh(out) — write the failure Result [0, 0] into out.
+   :43 cell o[0]   <- PARAM out
+   :44 cell o[1]   <- PARAM out
+==============================================================================
+phal.smlib:69  prakriya phal_se_siddhi(out, v, ok)
+   # phal_se_siddhi(out, v, ok) — lift the ok convention into a
+   # Result: writes [ok[0], v] into out (value 0 on failure).
+   :72 cell o[0]   <- PARAM out
+        in: yadi (ok[0] == 1) {
+   :73 cell o[1]   <- PARAM out
+        in: yadi (ok[0] == 1) {
+   :75 cell o[0]   <- PARAM out
+   :76 cell o[1]   <- PARAM out
+==============================================================================
+phal.smlib:85  prakriya phal_janchit_yuj(out, a, b)
+   # phal_janchit_yuj/sub/mul/div/shesh(out, a, b) — the ganita
+   # checked operation, producing a Result in out instead of an
+   # ok out-parameter. On overflow (or div/shesh by zero, MIN/-1)
+   # the Result is failure [0, 0].
+   :92 cell o[1]   <- PARAM out
+        in: yadi (o[0] == 1) {
+   :94 cell o[1]   <- PARAM out
+==============================================================================
+phal.smlib:100  prakriya phal_janchit_nyun(out, a, b)
+   # phal_janchit_nyun(out, a, b) — checked subtraction: out[0] = ok flag, out[1] = a - b if ok else 0; returns out[0].
+   :107 cell o[1]   <- PARAM out
+        in: yadi (o[0] == 1) {
+   :109 cell o[1]   <- PARAM out
+==============================================================================
+phal.smlib:115  prakriya phal_janchit_gun(out, a, b)
+   # phal_janchit_gun(out, a, b) — checked multiplication: out[0] = ok flag, out[1] = a * b if ok else 0; returns out[0].
+   :122 cell o[1]   <- PARAM out
+        in: yadi (o[0] == 1) {
+   :124 cell o[1]   <- PARAM out
+==============================================================================
+phal.smlib:130  prakriya phal_janchit_bhaj(out, a, b)
+   # phal_janchit_bhaj(out, a, b) — checked division: out[0] = ok flag, out[1] = a / b if ok else 0; returns out[0].
+   :137 cell o[1]   <- PARAM out
+        in: yadi (o[0] == 1) {
+   :139 cell o[1]   <- PARAM out
+==============================================================================
+phal.smlib:145  prakriya phal_janchit_shesh(out, a, b)
+   # phal_janchit_shesh(out, a, b) — checked remainder: out[0] = ok flag, out[1] = a % b if ok else 0; returns out[0].
+   :152 cell o[1]   <- PARAM out
+        in: yadi (o[0] == 1) {
+   :154 cell o[1]   <- PARAM out
+==============================================================================
+phal.smlib:161  prakriya phal_janchit_ghat(out, a, e)
+   # phal_janchit_ghat(out, a, e) — ganita_janchit_ghat as a Result.
+   # Failure [0, 0] on e < 0 or overflow (see ganita_janchit_ghat).
+   :165 cell o[1]   <- PARAM out
+        in: yadi (o[0] == 1) {
+   :167 cell o[1]   <- PARAM out
+==============================================================================
+phal.smlib:174  prakriya phal_janchit_kramgun(out, n)
+   # phal_janchit_kramgun(out, n) — ganita_janchit_kramgun as a Result.
+   # Failure [0, 0] on n < 0 or overflow (21! overflows).
+   :178 cell o[1]   <- PARAM out
+        in: yadi (o[0] == 1) {
+   :180 cell o[1]   <- PARAM out
+==============================================================================
+phal.smlib:187  prakriya phal_janchit_nirapeksh(out, a)
+   # phal_janchit_nirapeksh(out, a) — ganita_janchit_nirapeksh as a Result.
+   # Failure [0, 0] on abs(MIN) (no int64 absolute value).
+   :191 cell o[1]   <- PARAM out
+        in: yadi (o[0] == 1) {
+   :193 cell o[1]   <- PARAM out
+==============================================================================
+roop.smlib:32  prakriya roop_ank(v, out)
+   # --- integer digits (private helper) ---
+   # roop_ank(v, out) — write the decimal digits of |v| (no util_chinha) into
+   # out as packed bytes. Returns the digit count. Internal; the public
+   # formatters below build on it.
+   own: rev = nirmmita(22 * 8)
+   :37 byte dst[0]   <- PARAM out
+        in: yadi (rev == 0) {
+   :43 byte dst[0]   <- PARAM out
+        in: yadi (val == 0) {
+   :44 byte dst[1]   <- PARAM out
+        in: yadi (val == 0) {
+   :56 cell rev[rlen]   <- OWN nirmmita(22 * 8)
+        in: yavat (val > 0) {
+   :62 byte dst[i]   <- PARAM out
+        in: yavat (i < rlen) {
+   :65 byte dst[rlen]   <- PARAM out
+==============================================================================
+roop.smlib:73  prakriya roop_ank_aadhar(v, base, upper, out)
+   # --- integer digits in a base (private helper) ---
+   # roop_ank_aadhar(v, base, upper, out) — write |v| in `base` (2..36)
+   # into out as packed bytes, no util_chinha, no prefix. `upper` 1 -> A-F/A-Z.
+   # Base outside 2..36 writes only the terminator and returns 0.
+   own: rev = nirmmita(70 * 8)
+   :80 byte dst[0]   <- PARAM out
+        in: yadi (rev == 0) {
+   :88 byte dst[0]   <- PARAM out
+        in: yadi (b < 2) {
+   :92 byte dst[0]   <- PARAM out
+        in: yadi (b > 36) {
+   :96 byte dst[0]   <- PARAM out
+        in: yadi (val == 0) {
+   :97 byte dst[1]   <- PARAM out
+        in: yadi (val == 0) {
+   :109 byte dst[hn]   <- PARAM out
+        in: yadi (val < 0) {
+        in: yadi (val == (0 - 9223372036854775807) - 1) {
+        in: yadi (lo < 10) {
+   :112 byte dst[hn]   <- PARAM out
+        in: yadi (val < 0) {
+        in: yadi (val == (0 - 9223372036854775807) - 1) {
+        in: yadi (up == 1) {
+   :114 byte dst[hn]   <- PARAM out
+        in: yadi (val < 0) {
+        in: yadi (val == (0 - 9223372036854775807) - 1) {
+   :117 byte dst[hn + 1]   <- PARAM out
+        in: yadi (val < 0) {
+        in: yadi (val == (0 - 9223372036854775807) - 1) {
+   :133 cell rev[rlen]   <- OWN nirmmita(70 * 8)
+        in: yavat (val > 0) {
+   :139 byte dst[i]   <- PARAM out
+        in: yavat (i < rlen) {
+   :142 byte dst[rlen]   <- PARAM out
+==============================================================================
+roop.smlib:150  prakriya roop_ank_aadhar_saral(v, base, out)
+   # roop_ank_aadhar_saral(v, base, out) — write v in `base` (2..36), lowercase
+   # digits, '-' for negatives, no prefix. Returns the byte count.
+   # Base outside 2..36: terminator only, returns 0. Digits are written
+   # directly at dst + neg, so the util_chinha just fills position 0.
+   :161 byte dst[0]   <- PARAM out
+        in: yadi (n == 0) {
+   :165 byte dst[0]   <- PARAM out
+        in: yadi (neg == 1) {
+==============================================================================
+roop.smlib:174  prakriya roop_ank_dhvaj(v, base, flags, out)
+   # roop_ank_dhvaj(v, base, flags, out) — roop_ank_aadhar_saral plus flags:
+   # bit 0 (1) = prefix: "0b" / "0o" / "0x" for bases 2 / 8 / 16
+   # (no prefix for other bases, including 10); bit 1 (2) = uppercase
+   # hex digits (the prefix itself stays lowercase). Returns byte count.
+   :196 byte dst[0]   <- PARAM out
+        in: yadi (n == 0) {
+   :202 byte dst[neg]   <- PARAM out
+        in: yadi (pre == 2) {
+==============================================================================
+roop.smlib:252  prakriya roop_pad_vam(src, sn, width, padbyte, out)
+   # --- padding / alignment ---
+   # The three padders write bytes 0 .. width - 1 of `out` and then the 0
+   # terminator at byte `width` (when width <= sn: the sn bytes copied, then the
+   # terminator at byte `sn`), as every roop formatter does. `out` must hold
+   # width + 1 bytes (sn + 1 when width <= sn). (R68: stated; the bodies were right.)
+   # roop_pad_vam(src, sn, width, padbyte, out) — pad on the LEFT with
+   # `padbyte` (32 space, 48 '0') to `width`. width <= sn: copy unchanged.
+   :263 byte dst[i]   <- PARAM out
+        in: yadi (w <= cnt) {
+        in: yavat (i < cnt) {
+   :266 byte dst[cnt]   <- PARAM out
+        in: yadi (w <= cnt) {
+   :272 byte dst[i]   <- PARAM out
+        in: yavat (i < npad) {
+   :277 byte dst[npad + i]   <- PARAM out
+        in: yavat (i < cnt) {
+   :280 byte dst[w]   <- PARAM out
+==============================================================================
+roop.smlib:285  prakriya roop_pad_dakshin(src, sn, width, padbyte, out)
+   # roop_pad_dakshin(src, sn, width, padbyte, out) — pad on the RIGHT.
+   :296 byte dst[i]   <- PARAM out
+        in: yadi (w <= cnt) {
+        in: yavat (i < cnt) {
+   :299 byte dst[cnt]   <- PARAM out
+        in: yadi (w <= cnt) {
+   :305 byte dst[i]   <- PARAM out
+        in: yavat (i < cnt) {
+   :310 byte dst[cnt + i]   <- PARAM out
+        in: yavat (i < npad) {
+   :313 byte dst[w]   <- PARAM out
+==============================================================================
+roop.smlib:319  prakriya roop_pad_madhya(src, sn, width, padbyte, out)
+   # roop_pad_madhya(src, sn, width, padbyte, out) — pad both sides to width;
+   # when width-sn is odd, the extra padding byte goes RIGHT.
+   :331 byte dst[i]   <- PARAM out
+        in: yadi (w <= cnt) {
+        in: yavat (i < cnt) {
+   :334 byte dst[cnt]   <- PARAM out
+        in: yadi (w <= cnt) {
+   :341 byte dst[i]   <- PARAM out
+        in: yavat (i < left) {
+   :346 byte dst[left + i]   <- PARAM out
+        in: yavat (i < cnt) {
+   :351 byte dst[left + cnt + i]   <- PARAM out
+        in: yavat (i < npad - left) {
+   :354 byte dst[w]   <- PARAM out
+==============================================================================
+roop.smlib:363  prakriya roop_varg_sahaya(src, sn, step, out)
+   # --- thousands grouping (private helper) ---
+   # roop_varg_sahaya(src, sn, step, out) — group the integer part of a digit
+   # string. step 2 = Indian (3, then 2s: 12,34,567), step 3 = international
+   # (3s: 1,234,567). A leading '-' or '+' is kept as a util_chinha; a '.' splits
+   # off a fraction, copied verbatim. Empty input copies to empty.
+   :375 byte dst[0]   <- PARAM out
+        in: yadi (cnt == 0) {
+   :392 byte dst[0]   <- PARAM out
+        in: yadi (start == 1) {
+   :401 byte dst[wpos]   <- PARAM out
+        in: yavat (i < dot) {
+   :407 byte dst[wpos]   <- PARAM out
+        in: yavat (i < dot) {
+        in: yadi (rem > 0) {
+        in: yadi (st == 3) {
+        in: yadi (rem % 3 == 0) {
+   :412 byte dst[wpos]   <- PARAM out
+        in: yavat (i < dot) {
+        in: yadi (rem > 0) {
+        in: yadi (rem == 3) {
+   :417 byte dst[wpos]   <- PARAM out
+        in: yavat (i < dot) {
+        in: yadi (rem > 0) {
+        in: yadi (rem > 3) {
+        in: yadi ((rem - 3) % 2 == 0) {
+   :429 byte dst[wpos]   <- PARAM out
+        in: yavat (k < cnt) {
+   :433 byte dst[wpos]   <- PARAM out
+==============================================================================
+roop.smlib:456  prakriya roop_varg_ank(v, indian, out)
+   # roop_varg_ank(v, indian, out) — format integer v, then group it.
+   # `indian` 1 -> Indian grouping, 0 -> international.
+   own: tmp = nirmmita(32)
+   :459 byte out[0]   <- PARAM out
+        in: yadi (tmp == 0) {
+   :464 byte out[0]   <- PARAM out
+        in: yadi (n == 0) {
+==============================================================================
+roop.smlib:478  prakriya roop_sthir_mool(dasham x, places, always_sign, out)
+   # --- fixed decimals (private helper) ---
+   # roop_sthir_mool(dasham x, places, always_sign, out) — |x| rounded HALF AWAY
+   # FROM ZERO to `places` digits after '.', exactly `places` digits
+   # emitted (zero-padded). places clamped to 0..9. `always_sign` 1 emits
+   # '+' for non-negative values. places 0 emits no '.'.
+   own: rev = nirmmita(22 * 8)
+   :496 byte dst[0]   <- PARAM out
+        in: yadi (rev == 0) {
+   :522 byte dst[0]   <- PARAM out
+        in: yadi (v == 0.0) {
+        in: yadi (v < 0.0) {
+   :536 byte dst[0]   <- PARAM out
+        in: yadi (scaled >= 9223372036854775807.0) {
+   :544 byte dst[0]   <- PARAM out
+        in: yadi (neg == 1) {
+   :548 byte dst[0]   <- PARAM out
+        in: yadi (asign == 1) {
+   :555 byte dst[0]   <- PARAM out
+        in: yadi (ndig == 0) {
+   :561 byte dst[wpos]   <- PARAM out
+        in: yadi (pl > 0) {
+   :565 cell rev[0]   <- OWN nirmmita(22 * 8)
+        in: yadi (pl > 0) {
+        in: yadi (fracpart == 0) {
+   :569 cell rev[rlen]   <- OWN nirmmita(22 * 8)
+        in: yadi (pl > 0) {
+        in: yavat (fracpart > 0) {
+   :576 byte dst[wpos]   <- PARAM out
+        in: yadi (pl > 0) {
+        in: yavat (k < pl - rlen) {
+   :582 byte dst[wpos]   <- PARAM out
+        in: yadi (pl > 0) {
+        in: yavat (k < rlen) {
+   :587 byte dst[wpos]   <- PARAM out
+==============================================================================
+roop.smlib:605  prakriya roop_chinhit(v, out)
+   # --- signed formatting ---
+   # roop_chinhit(v, out) — always a util_chinha: "+42" / "-42" / "+0".
+   own: tmp = nirmmita(32)
+   :612 byte dst[0]   <- PARAM out
+        in: yadi (tmp == 0) {
+   :617 byte dst[0]   <- PARAM out
+        in: yadi (n == 0) {
+   :623 byte dst[i]   <- PARAM out
+        in: yadi (val < 0) {
+        in: yavat (i < n) {
+   :626 byte dst[n]   <- PARAM out
+        in: yadi (val < 0) {
+   :629 byte dst[0]   <- PARAM out
+   :632 byte dst[i + 1]   <- PARAM out
+        in: yavat (i < n) {
+   :635 byte dst[n + 1]   <- PARAM out
+==============================================================================
+roop.smlib:642  prakriya roop_sign_akshar(v, signch, out)
+   # roop_sign_akshar(v, signch, out) — `signch` (a byte value, e.g. 32 for a
+   # blank, 43 for '+') in place of '+' for non-negative values; negatives
+   # always get '-'.
+   own: tmp = nirmmita(32)
+   :650 byte dst[0]   <- PARAM out
+        in: yadi (tmp == 0) {
+   :655 byte dst[0]   <- PARAM out
+        in: yadi (n == 0) {
+   :661 byte dst[i]   <- PARAM out
+        in: yadi (val < 0) {
+        in: yavat (i < n) {
+   :664 byte dst[n]   <- PARAM out
+        in: yadi (val < 0) {
+   :667 byte dst[0]   <- PARAM out
+   :670 byte dst[i + 1]   <- PARAM out
+        in: yavat (i < n) {
+   :673 byte dst[n + 1]   <- PARAM out
+==============================================================================
+samanvaya.smlib:32  prakriya ekaka_matrika(n, kosh dasham out)
+   # identity matrix: n x n, out must hold n*n elements
+   :38 cell out[i * n + j]   <- OTHER out
+        in: yavat (i < n) {
+        in: yavat (j < n) {
+        in: yadi (i == j) {
+   :40 cell out[i * n + j]   <- OTHER out
+        in: yavat (i < n) {
+        in: yavat (j < n) {
+==============================================================================
+samanvaya.smlib:50  prakriya vivartana(kosh dasham a, m, n, kosh dasham out)
+   # transpose: a is m x n, out must hold n*m elements
+   :55 cell out[j * m + i]   <- OTHER out
+        in: yavat (i < m) {
+        in: yavat (j < n) {
+==============================================================================
+samanvaya.smlib:66  prakriya matrika_yoga(kosh dasham a, kosh dasham b, m, n, kosh dasham out)
+   # element-wise sum: a and b are m x n, out must hold m*n elements.
+   # R37: -1 if m x n does not fit a, b and out (or m, n < 0); m * n is never
+   # formed until it is known to fit, so it cannot wrap to a small loop.
+   :72 cell out[k]   <- OTHER out
+        in: yavat (k < m * n) {
+==============================================================================
+samanvaya.smlib:79  prakriya skalar(kosh dasham a, dasham c, m, n, kosh dasham out)
+   # scalar multiple: out must hold m*n elements. R37: -1 if m x n does not fit.
+   :84 cell out[k]   <- OTHER out
+        in: yavat (k < m * n) {
+==============================================================================
+samanvaya.smlib:91  prakriya matrika_gunana(kosh dasham a, kosh dasham b, m, n, p, kosh dasham out)
+   # matrix product: a is m x n, b is n x p, out must hold m*p elements
+   :102 cell out[i * p + j]   <- OTHER out
+        in: yavat (i < m) {
+        in: yavat (j < p) {
+==============================================================================
+sangrah.smlib:63  prakriya rakh_samroop_diff(a, cap, b, bcap, out)
+   # rakh_samroop_diff(a, cap, b, bcap, out) — add every element that is in
+   # exactly one of a, b into out (fresh, empty, capacity >= cap + bcap
+   # for the worst case, disjoint sets). (a - b) union (b - a).
+   # Returns rakh_maap(out).
+   own: tmpa = nirmmita(a[0] * 33 + 1)
+   own: tmpb = nirmmita(b[0] * 33 + 1)
+==============================================================================
+sangrah.smlib:96  prakriya rakh_sangam(a, cap, b, bcap, out)
+   # rakh_sangam(a, cap, b, bcap, out) — add every element of a and of b into
+   # out (fresh, empty, capacity >= cap + bcap). Returns rakh_maap(out).
+   own: tmpa = nirmmita(a[0] * 33 + 1)
+   own: tmpb = nirmmita(b[0] * 33 + 1)
+==============================================================================
+sangrah.smlib:126  prakriya rakh_sampat(a, cap, b, bcap, out)
+   # rakh_sampat(a, cap, b, bcap, out) — add every element of a that is
+   # also in b into out (fresh, empty, capacity >= min(cap, bcap)).
+   # Returns rakh_maap(out).
+   own: tmpa = nirmmita(a[0] * 33 + 1)
+==============================================================================
+sangrah.smlib:148  prakriya rakh_bhed(a, cap, b, bcap, out)
+   # rakh_bhed(a, cap, b, bcap, out) — add every element of a that is
+   # NOT in b into out (fresh, empty, capacity >= cap). Returns
+   # rakh_maap(out).
+   own: tmpa = nirmmita(a[0] * 33 + 1)
+==============================================================================
+sangrah.smlib:194  prakriya rakh_asti_upasamuh(a, cap, b, bcap)
+   # rakh_asti_upasamuh(a, cap, b, bcap) — 1 if every element of a is in b, else
+   # 0. Empty a is a subset of everything.
+   own: tmpa = nirmmita(a[0] * 33 + 1)
+==============================================================================
+sangrah.smlib:217  prakriya rakh_tak_mala(s, cap, out)
+   # rakh_tak_mala(s, cap, out) — write the set's elements into out in
+   # length-prefixed form [len0, b0, b1, ..., len1, b0, ...] (same shape as
+   # nighantu_kunjika / khand_bhed parts), SORTED lexicographically by byte value
+   # (khand_tul), so output is deterministic regardless of insertion
+   # order or hash layout. Returns the element count.
+   own: tmp = nirmmita(s[0] * 33 + 1)
+   own: scratch = nirmmita(s[0] * 32 + 1)
+   own: ptrs = nirmmita(s[0] * 8)
+   own: lens = nirmmita(s[0] * 8)
+   :239 cell ptrs[i]   <- OWN nirmmita(s[0] * 8)
+        in: yavat (i < nk) {
+   :240 cell lens[i]   <- OWN nirmmita(s[0] * 8)
+        in: yavat (i < nk) {
+   :243 byte scratch[woff + k]   <- OWN nirmmita(s[0] * 32 + 1)
+        in: yavat (i < nk) {
+        in: yavat (k < seglen) {
+   :257 cell ptrs[j]   <- OWN nirmmita(s[0] * 8)
+        in: yavat (i < nk - 1) {
+        in: yavat (j < nk - 1 - i) {
+        in: yadi (khand_tul(scratch + ptrs[j], lens[j], scratch + ptrs[j + 1], lens[j + 1]) > 0) {
+   :258 cell ptrs[j + 1]   <- OWN nirmmita(s[0] * 8)
+        in: yavat (i < nk - 1) {
+        in: yavat (j < nk - 1 - i) {
+        in: yadi (khand_tul(scratch + ptrs[j], lens[j], scratch + ptrs[j + 1], lens[j + 1]) > 0) {
+   :260 cell lens[j]   <- OWN nirmmita(s[0] * 8)
+        in: yavat (i < nk - 1) {
+        in: yavat (j < nk - 1 - i) {
+        in: yadi (khand_tul(scratch + ptrs[j], lens[j], scratch + ptrs[j + 1], lens[j + 1]) > 0) {
+   :261 cell lens[j + 1]   <- OWN nirmmita(s[0] * 8)
+        in: yavat (i < nk - 1) {
+        in: yavat (j < nk - 1 - i) {
+        in: yadi (khand_tul(scratch + ptrs[j], lens[j], scratch + ptrs[j + 1], lens[j + 1]) > 0) {
+   :272 cell out[wpos]   <- PARAM out
+        in: yavat (i < nk) {
+==============================================================================
+shreni.smlib:6  prakriya vinimay(a, i, j)
+   # lib/shreni.smlib — Sutram standard library: sorting and searching
+   # layer: alloc
+   #
+   # Operates on `mala` integer arrays, in place. Scalar arguments are copied into
+   # locals before mutation; array elements are written directly.
+   :8 cell a[i]   <- PARAM a
+   :9 cell a[j]   <- PARAM a
+==============================================================================
+shreni.smlib:120  prakriya shankh_shreni(a, n)
+   # shankh_shreni(a, n) — sorts a[0..n-1] in place, ascending, by shell sort.
+   :131 cell a[j]   <- PARAM a
+        in: yavat (gap > 0) {
+        in: yavat (i < n) {
+        in: yavat (go == 1) {
+        in: yadi (j >= gap) {
+        in: yadi (a[j - gap] > temp) {
+   :140 cell a[j]   <- PARAM a
+        in: yavat (gap > 0) {
+        in: yavat (i < n) {
+==============================================================================
+shreni.smlib:148  prakriya nivesh_shreni(a, n)
+   # nivesh_shreni(a, n) — sorts a[0..n-1] in place, ascending, by insertion sort.
+   :161 cell arr[j + 1]   <- PARAM a
+        in: yavat (i < len) {
+        in: yavat (done == 0) {
+        in: yadi (arr[j] > key) {
+   :168 cell arr[j + 1]   <- PARAM a
+        in: yavat (i < len) {
+==============================================================================
+shreni.smlib:174  prakriya mil_shreni_punar(a, tmp, lo, hi)
+   # mil_shreni(a, n) — top-down merge sort using a temp buffer.
+   :193 cell tmp[k]   <- PARAM tmp
+        in: yavat (done == 0) {
+        in: yadi (iex == 1) {
+   :199 cell tmp[k]   <- PARAM tmp
+        in: yavat (done == 0) {
+        in: yadi (jex == 1) {
+   :204 cell tmp[k]   <- PARAM tmp
+        in: yavat (done == 0) {
+        in: yadi (a[j] < a[i]) {
+   :207 cell tmp[k]   <- PARAM tmp
+        in: yavat (done == 0) {
+   :216 cell a[c]   <- PARAM a
+        in: yavat (c < hi) {
+==============================================================================
+shreni.smlib:223  prakriya mil_shreni(a, n)
+   # mil_shreni(a, n) — merge sort; returns 0, or -1 (a unchanged) if its scratch cannot be allocated.
+   own: tmp = nirmmita(n * 8)
+==============================================================================
+suchi.smlib:46  prakriya suchi_srij(cap)
+   # suchi_srij(cap) — allocate an empty list. cap clamped to >= 1.
+   # Returns the list handle, or 0 on allocation failure — including
+   # a cap so large the data size overflows (a wrapped size returned
+   # a handle whose data pointer was bogus, segfaulting on push).
+   own: l = nirmmita(3 * 8)
+   own: d = nirmmita(sz)
+   :59 cell l[0]   <- OWN nirmmita(3 * 8)
+   :60 cell l[1]   <- OWN nirmmita(3 * 8)
+   :61 cell l[2]   <- OWN nirmmita(3 * 8)
+==============================================================================
+suchi.smlib:67  prakriya suchi_vardh(l)
+   # suchi_vardh(l) — private helper: dvigun l's capacity, copying the
+   # data. Returns 1 ok / 0 allocation failure (list unchanged).
+   own: nd = nirmmita(ncap * 8)
+   :78 cell nd[i]   <- OWN nirmmita(ncap * 8)
+        in: yavat (i < lst[0]) {
+   :81 cell lst[2]   <- PARAM l
+   :82 cell lst[1]   <- PARAM l
+==============================================================================
+suchi.smlib:87  prakriya suchi_khip(l, v)
+   # suchi_khip(l, v) — append v. Returns 1 ok / 0 allocation failure.
+   :95 cell lst[0]   <- PARAM l
+==============================================================================
+suchi.smlib:110  prakriya suchi_sangrah(l, i, v)
+   # suchi_sangrah(l, i, v) — set element i. Returns 1 ok / 0 out of bounds.
+   :117 cell d[idx]   <- OTHER d
+==============================================================================
+suchi.smlib:128  prakriya suchi_nivesh(l, i, v)
+   # suchi_nivesh(l, i, v) — insert v before index i (i == len
+   # appends). Returns 1 ok / 0 out of bounds or allocation failure.
+   :142 cell d[k]   <- OTHER d
+        in: yavat (k > idx) {
+   :145 cell d[idx]   <- OTHER d
+   :146 cell lst[0]   <- PARAM l
+==============================================================================
+suchi.smlib:152  prakriya suchi_apanay(l, i)
+   # suchi_apanay(l, i) — remove element i, shifting the rest left.
+   # Returns 1 ok / 0 out of bounds.
+   :162 cell d[k]   <- OTHER d
+        in: yavat (k < lst[0] - 1) {
+   :165 cell lst[0]   <- PARAM l
+==============================================================================
+suchi.smlib:173  prakriya suchi_vinimay(l, i, j)
+   # suchi_vinimay(l, i, j) — vinimay elements i and j (WS2, R20). Returns 1
+   # ok / 0 if either index is out of bounds (then nothing changes).
+   # Before this, swapping meant a temp variable plus two suchi_sangrah
+   # calls at every call site.
+   :185 cell d[a]   <- OTHER d
+   :186 cell d[b]   <- OTHER d
+==============================================================================
+suchi.smlib:193  prakriya suchi_viparyay(l)
+   # suchi_viparyay(l) — reverse the list in place (WS3, R20). Two-pointer
+   # vinimay, same shape as khand_viparyay. Returns 1. Before this, reversing
+   # a list meant a hand-written two-index loop at every call site.
+   :201 cell d[i]   <- OTHER d
+        in: yavat (i < j) {
+   :202 cell d[j]   <- OTHER d
+        in: yavat (i < j) {
+==============================================================================
+suchi.smlib:223  prakriya suchi_laghu(l, ok)
+   # suchi_laghu(l, ok) — smallest element (WS2, R21); ok[0] 1, or 0 if
+   # the list is empty (returns 0 then). Before this, the caller wrote
+   # the min loop by hand or called shreni.smlib's laghu on l[2] — which
+   # reads a stale cell on an empty list. The empty check here is the
+   # point.
+   :225 cell ok[0]   <- PARAM ok
+        in: yadi (l[0] == 0) {
+   :228 cell ok[0]   <- PARAM ok
+==============================================================================
+suchi.smlib:234  prakriya suchi_adhik(l, ok)
+   # suchi_adhik(l, ok) — largest element (WS2, R21); ok[0] 1, or 0 if
+   # the list is empty (returns 0 then). See suchi_laghu.
+   :236 cell ok[0]   <- PARAM ok
+        in: yadi (l[0] == 0) {
+   :239 cell ok[0]   <- PARAM ok
+==============================================================================
+suchi.smlib:285  prakriya suchi_rikta(l)
+   # suchi_rikta(l) — empty the list, keeping the allocated capacity.
+   # R19: also ZEROES the data cells (was: len reset only). The old
+   # elements were reachable after a clear to anyone reading the data
+   # array through l[2], so a len-only reset left stale values readable
+   # — the same hazard nighantu_rikta closes. Capacity never shrinks.
+   # Returns 1.
+   :289 cell d[i]   <- OTHER d
+        in: yavat (i < l[1]) {
+   :292 cell l[0]   <- PARAM l
+==============================================================================
+suchi.smlib:331  prakriya chay_apanay(l, ok)
+   # chay_apanay(l, ok) — pop the top value; sets ok[0] to 1 on success,
+   # 0 when the stack is empty (returns 0 then).
+   :337 cell okp[0]   <- PARAM ok
+        in: yadi (lst[0] == 0) {
+   :341 cell lst[0]   <- PARAM l
+   :343 cell okp[0]   <- PARAM ok
+==============================================================================
+suchi.smlib:348  prakriya chay_avalok(l, ok)
+   # chay_avalok(l, ok) — top value without removing it; ok[0] 1/0.
+   :353 cell okp[0]   <- PARAM ok
+        in: yadi (lst[0] == 0) {
+   :357 cell okp[0]   <- PARAM ok
+==============================================================================
+suchi.smlib:381  prakriya avali_srij(cap)
+   # avali_srij(cap) — allocate an empty queue. cap clamped to >= 1.
+   # Returns the queue handle, or 0 on allocation failure — including
+   # a cap so large the data size overflows (as suchi_srij).
+   own: q = nirmmita(4 * 8)
+   own: d = nirmmita(sz)
+   :394 cell q[0]   <- OWN nirmmita(4 * 8)
+   :395 cell q[1]   <- OWN nirmmita(4 * 8)
+   :396 cell q[2]   <- OWN nirmmita(4 * 8)
+   :397 cell q[3]   <- OWN nirmmita(4 * 8)
+==============================================================================
+suchi.smlib:404  prakriya avali_pravesh(q, v)
+   # avali_pravesh(q, v) — append v at the tail.
+   # Returns 1 ok / 0 allocation failure. A full queue grows: capacity doubles
+   # and the elements are copied, so that one append is not O(1).
+   own: nd = nirmmita(ncap * 8)
+   :422 cell nd[k]   <- OWN nirmmita(ncap * 8)
+        in: yadi (qu[0] == qu[1]) {
+        in: yavat (k < qu[0]) {
+   :425 cell qu[2]   <- PARAM q
+        in: yadi (qu[0] == qu[1]) {
+   :426 cell qu[1]   <- PARAM q
+        in: yadi (qu[0] == qu[1]) {
+   :427 cell qu[3]   <- PARAM q
+        in: yadi (qu[0] == qu[1]) {
+   :431 cell d[tail]   <- OTHER d
+   :432 cell qu[0]   <- PARAM q
+==============================================================================
+suchi.smlib:438  prakriya avali_nishkas(q, ok)
+   # avali_nishkas(q, ok) — remove and return the front value; sets
+   # ok[0] to 1 on success, 0 when the queue is empty (returns 0 then).
+   :444 cell okp[0]   <- PARAM ok
+        in: yadi (qu[0] == 0) {
+   :449 cell qu[3]   <- PARAM q
+   :450 cell qu[0]   <- PARAM q
+   :451 cell okp[0]   <- PARAM ok
+==============================================================================
+suchi.smlib:456  prakriya avali_avalok(q, ok)
+   # avali_avalok(q, ok) — front value without removing it; ok[0] 1/0.
+   :461 cell okp[0]   <- PARAM ok
+        in: yadi (qu[0] == 0) {
+   :465 cell okp[0]   <- PARAM ok
+==============================================================================
+suchi.smlib:475  prakriya avali_tak_mala(q, out)
+   # avali_tak_mala(q, out) — write the queue's elements into out in
+   # logical (FIFO) order, one qword cell each, WITHOUT mutating the
+   # queue (WS2, R23). Returns avali_maap(q). Caller allocates cap cells.
+   # Before, reading a queue non-destructively meant a hand-rolled ring
+   # scan with (head + k) % cap arithmetic at every call site, or
+   # dequeuing everything (which destroys the queue).
+   :480 cell out[k]   <- PARAM out
+        in: yavat (k < qu[0]) {
+==============================================================================
+suchi.smlib:508  prakriya avali_rikta(q)
+   # avali_rikta(q) — empty the queue in place (WS2, R19): same handle,
+   # same capacity, head reset to 0, and the ring data ZEROED — the
+   # dequeued dead space held stale values readable through q[2], the
+   # same hazard nighantu_rikta/suchi_rikta close. Capacity never shrinks.
+   # Returns 1.
+   :512 cell d[i]   <- OTHER d
+        in: yavat (i < q[1]) {
+   :515 cell q[0]   <- PARAM q
+   :516 cell q[3]   <- PARAM q
+==============================================================================
+vakyank.smlib:15  prakriya ank_tak_varna(n, out)
+   # ank_tak_varna(n, out) — write decimal representation of int n into mala out
+   # as character codes. Returns the character count (excluding terminator).
+   # out[ count ] is set to 0 as a terminator. Caller allocates >= 22 cells.
+   own: rev = nirmmita(22 * 8)
+   :22 cell dst[0]   <- PARAM out
+        in: yadi (val == (0 - 9223372036854775807) - 1) {
+   :23 cell dst[1]   <- PARAM out
+        in: yadi (val == (0 - 9223372036854775807) - 1) {
+   :24 cell dst[2]   <- PARAM out
+        in: yadi (val == (0 - 9223372036854775807) - 1) {
+   :25 cell dst[3]   <- PARAM out
+        in: yadi (val == (0 - 9223372036854775807) - 1) {
+   :26 cell dst[4]   <- PARAM out
+        in: yadi (val == (0 - 9223372036854775807) - 1) {
+   :27 cell dst[5]   <- PARAM out
+        in: yadi (val == (0 - 9223372036854775807) - 1) {
+   :28 cell dst[6]   <- PARAM out
+        in: yadi (val == (0 - 9223372036854775807) - 1) {
+   :29 cell dst[7]   <- PARAM out
+        in: yadi (val == (0 - 9223372036854775807) - 1) {
+   :30 cell dst[8]   <- PARAM out
+        in: yadi (val == (0 - 9223372036854775807) - 1) {
+   :31 cell dst[9]   <- PARAM out
+        in: yadi (val == (0 - 9223372036854775807) - 1) {
+   :32 cell dst[10]   <- PARAM out
+        in: yadi (val == (0 - 9223372036854775807) - 1) {
+   :33 cell dst[11]   <- PARAM out
+        in: yadi (val == (0 - 9223372036854775807) - 1) {
+   :34 cell dst[12]   <- PARAM out
+        in: yadi (val == (0 - 9223372036854775807) - 1) {
+   :35 cell dst[13]   <- PARAM out
+        in: yadi (val == (0 - 9223372036854775807) - 1) {
+   :36 cell dst[14]   <- PARAM out
+        in: yadi (val == (0 - 9223372036854775807) - 1) {
+   :37 cell dst[15]   <- PARAM out
+        in: yadi (val == (0 - 9223372036854775807) - 1) {
+   :38 cell dst[16]   <- PARAM out
+        in: yadi (val == (0 - 9223372036854775807) - 1) {
+   :39 cell dst[17]   <- PARAM out
+        in: yadi (val == (0 - 9223372036854775807) - 1) {
+   :40 cell dst[18]   <- PARAM out
+        in: yadi (val == (0 - 9223372036854775807) - 1) {
+   :41 cell dst[19]   <- PARAM out
+        in: yadi (val == (0 - 9223372036854775807) - 1) {
+   :42 cell dst[20]   <- PARAM out
+        in: yadi (val == (0 - 9223372036854775807) - 1) {
+   :53 cell dst[0]   <- PARAM out
+        in: yadi (rev == 0) {
+   :58 cell rev[0]   <- OWN nirmmita(22 * 8)
+        in: yadi (val == 0) {
+   :62 cell rev[rlen]   <- OWN nirmmita(22 * 8)
+        in: yavat (val > 0) {
+   :69 cell dst[0]   <- PARAM out
+        in: yadi (neg == 1) {
+   :74 cell dst[pos + p]   <- PARAM out
+        in: yavat (p < rlen) {
+   :77 cell dst[pos + rlen]   <- PARAM out
+==============================================================================
+vakyank.smlib:84  prakriya varna_tak_ank(buf, n, ok)
+   # varna_tak_ank(buf, n, ok) — parse first n character codes of mala buf as a
+   # decimal integer. Leading '-' negates. Returns the value; sets ok[0] to 1
+   # on success, 0 on malformed input (ok is a 1-cell mala).
+   :88 cell okp[0]   <- PARAM ok
+   :90 cell okp[0]   <- PARAM ok
+        in: yadi (cnt == 0) {
+   :99 cell okp[0]   <- PARAM ok
+        in: yadi (src[0] == 45) {
+        in: yadi (cnt == 1) {
+   :107 cell okp[0]   <- PARAM ok
+        in: yavat (p < cnt) {
+        in: yadi (c < 48) {
+   :111 cell okp[0]   <- PARAM ok
+        in: yavat (p < cnt) {
+        in: yadi (c > 57) {
+   :115 cell okp[0]   <- PARAM ok
+        in: yavat (p < cnt) {
+        in: yadi (val > 922337203685477580) {
+   :121 cell okp[0]   <- PARAM ok
+        in: yavat (p < cnt) {
+        in: yadi (val == 922337203685477580) {
+        in: yadi (neg == 1) {
+        in: yadi ((c - 48) > 8) {
+   :126 cell okp[0]   <- PARAM ok
+        in: yavat (p < cnt) {
+        in: yadi (val == 922337203685477580) {
+        in: yadi ((c - 48) > 7) {
+==============================================================================
+vakyank.smlib:142  prakriya ank_tak_aadhar_varna(n, base, out)
+   # ank_tak_aadhar_varna(n, base, out) — write n in any base 2..36 into out
+   # as character codes (0-9, a-z). Returns count. No util_chinha handling; n >= 0.
+   # Base outside 2..36: terminator only, returns 0 (base 0 trapped
+   # with SIGFPE, base 1 looped forever past the buffer).
+   own: rev = nirmmita(70 * 8)
+   :148 cell dst[0]   <- PARAM out
+        in: yadi (rev == 0) {
+   :153 cell dst[0]   <- PARAM out
+        in: yadi (b < 2) {
+   :157 cell dst[0]   <- PARAM out
+        in: yadi (b > 36) {
+   :161 cell dst[0]   <- PARAM out
+        in: yadi (val == 0) {
+   :162 cell dst[1]   <- PARAM out
+        in: yadi (val == 0) {
+   :168 cell rev[rlen]   <- OWN nirmmita(70 * 8)
+        in: yavat (val > 0) {
+        in: yadi (d < 10) {
+   :170 cell rev[rlen]   <- OWN nirmmita(70 * 8)
+        in: yavat (val > 0) {
+   :177 cell dst[p]   <- PARAM out
+        in: yavat (p < rlen) {
+   :180 cell dst[rlen]   <- PARAM out
+==============================================================================
+vakyank.smlib:186  prakriya varna_tak_ank_aadhar(buf, n, base, ok)
+   # varna_tak_ank_aadhar(buf, n, base, ok) — parse first n char codes of buf in
+   # `base` (2/8/10/16). Sets ok[0]. Returns value.
+   :191 cell okp[0]   <- PARAM ok
+   :193 cell okp[0]   <- PARAM ok
+        in: yadi (cnt == 0) {
+   :211 cell okp[0]   <- PARAM ok
+        in: yavat (p < cnt) {
+        in: yadi (d < 0) {
+   :215 cell okp[0]   <- PARAM ok
+        in: yavat (p < cnt) {
+        in: yadi (d >= b) {
+   :219 cell okp[0]   <- PARAM ok
+        in: yavat (p < cnt) {
+        in: yadi (val > 9223372036854775807 / b) {
+   :224 cell okp[0]   <- PARAM ok
+        in: yavat (p < cnt) {
+        in: yadi (val == 9223372036854775807 / b) {
+        in: yadi (d > 9223372036854775807 - val * b) {
+==============================================================================
+vakyank.smlib:241  prakriya pad_vam(out, count, width, fill)
+   # pad_vam(out, count, width, fill) — left-pad the `count` character codes
+   # in mala `out` to `width` using fill character code `fill`, in place.
+   # Returns the new count (width if width > count, else count).
+   # When it pads it writes cells 0 .. width - 1 and then out[ width ] = 0, the
+   # terminator every writer in this module leaves (as ank_tak_varna does at
+   # out[ count ]); when width <= count it writes nothing. Caller must allocate
+   # >= width + 1 cells (R68: the contract said `width`; the body was right).
+   :251 cell dst[p + shift]   <- PARAM out
+        in: yavat (p >= 0) {
+   :257 cell dst[q]   <- PARAM out
+        in: yavat (q < shift) {
+   :260 cell dst[w]   <- PARAM out
+==============================================================================
+vakyank.smlib:274  prakriya varna_tak_dashm(buf, n, ok)
+   # varna_tak_dashm(buf, n, ok): parse a decimal float from the first n character
+   # codes of mala buf, one code per cell (as varna_tak_ank; not a packed byte string).
+   # Grammar: [-] digits [. digits] [(e|E) [-] digits]; at least one digit
+   # in the integer or fraction part. No leading/trailing whitespace, no
+   # '+', no "inf"/"nan" — those are ok = 0 (same conventions as
+   # varna_tak_ank). On success ok[0] = 1 and the dasham value is returned.
+   # On malformed input or overflow (|value| > ~1.8e308) ok[0] = 0 and the
+   # return is 0.0. Extreme underflow returns 0.0 with ok[0] = 1 (as
+   # strtod does). Mantissa is accumulated in int64 (up to 18 significant
+   # digits); further digits only move the decimal exponent.
+   :278 cell okp[0]   <- PARAM ok
+   :280 cell okp[0]   <- PARAM ok
+        in: yadi (cnt == 0) {
+   :289 cell okp[0]   <- PARAM ok
+        in: yadi (src[0] == 45) {
+        in: yadi (cnt == 1) {
+   :304 cell okp[0]   <- PARAM ok
+        in: yavat ((p < cnt) && (done == 0)) {
+        in: yadi (c1 < 48) {
+   :308 cell okp[0]   <- PARAM ok
+        in: yavat ((p < cnt) && (done == 0)) {
+        in: yadi (c1 > 57) {
+   :331 cell okp[0]   <- PARAM ok
+        in: yadi (p < cnt) {
+        in: yadi (src[p] == 46) {
+        in: yavat ((p < cnt) && (done == 0)) {
+        in: yadi (c2 < 48) {
+   :335 cell okp[0]   <- PARAM ok
+        in: yadi (p < cnt) {
+        in: yadi (src[p] == 46) {
+        in: yavat ((p < cnt) && (done == 0)) {
+        in: yadi (c2 > 57) {
+   :350 cell okp[0]   <- PARAM ok
+        in: yadi (seen == 0) {
+   :360 cell okp[0]   <- PARAM ok
+        in: yadi (p < cnt) {
+   :372 cell okp[0]   <- PARAM ok
+        in: yadi (p < cnt) {
+        in: yadi (p >= cnt) {
+   :380 cell okp[0]   <- PARAM ok
+        in: yadi (p < cnt) {
+        in: yavat (p < cnt) {
+        in: yadi (c3 < 48) {
+   :384 cell okp[0]   <- PARAM ok
+        in: yadi (p < cnt) {
+        in: yavat (p < cnt) {
+        in: yadi (c3 > 57) {
+   :394 cell okp[0]   <- PARAM ok
+        in: yadi (p < cnt) {
+        in: yadi (eseen == 0) {
+   :404 cell okp[0]   <- PARAM ok
+        in: yadi (p != cnt) {
+   :411 cell okp[0]   <- PARAM ok
+        in: yadi (exp10 > 308) {
+   :437 cell okp[0]   <- PARAM ok
+        in: yadi (val != 0.0) {
+        in: yadi (val / 2.0 == val) {
+==============================================================================
+varna.smlib:189  prakriya varna_pratisthap(src, sn, find, fn, repl, out)
+   # varna_pratisthap(src, sn, find, fn, repl, out) — copy src to out,
+   # replacing every (non-overlapping) occurrence of find with repl.
+   # repl is 0-terminated (its length is derived) — repl cannot be a
+   # slice; copy the slice into a terminated cell array first (see
+   # strb.smlib header, slice-boundary rules). Returns the new count.
+   # Caller allocates generously.
+   :205 cell dst[wpos]   <- PARAM out
+        in: yadi (flen <= 0) {
+        in: yavat (rpos < slen) {
+   :209 cell dst[wpos]   <- PARAM out
+        in: yadi (flen <= 0) {
+   :227 cell dst[wpos]   <- PARAM out
+        in: yavat (rpos < slen) {
+        in: yadi (match == 1) {
+        in: yavat (k < rlen) {
+   :233 cell dst[wpos]   <- PARAM out
+        in: yavat (rpos < slen) {
+   :238 cell dst[wpos]   <- PARAM out
+==============================================================================
+varna.smlib:248  prakriya varna_bhed(src, sn, sep, sepn, parts, maxparts)
+   # varna_bhed(src, sn, sep, sepn, parts, maxparts) — split src on sep.
+   # parts is a flat buffer holding length-prefixed segments:
+   #   [len0, c0, c1, ..., len1, c0, ...]
+   # To recover segment i: walk from parts[0], skipping (1 + len) cells per
+   # segment; the length is at the segment's start. Returns segment count
+   # (capped at maxparts). Empty separator: no split (one segment).
+   :257 cell dst[0]   <- PARAM parts
+        in: yadi (slen == 0) {
+   :263 cell dst[0]   <- PARAM parts
+        in: yadi (splen <= 0) {
+   :266 cell dst[1 + ci]   <- PARAM parts
+        in: yadi (splen <= 0) {
+        in: yavat (ci < slen) {
+   :305 cell dst[wpos]   <- PARAM parts
+        in: yavat (done == 0) {
+        in: yadi (nseg < maxp) {
+   :309 cell dst[wpos]   <- PARAM parts
+        in: yavat (done == 0) {
+        in: yadi (nseg < maxp) {
+        in: yavat (sk < segend) {
+   :322 cell dst[wpos]   <- PARAM parts
+        in: yavat (done == 0) {
+        in: yadi (rpos >= slen) {
+        in: yadi (nseg < maxp) {
+==============================================================================
+varna.smlib:334  prakriya varna_yuj(parts, count, sep, sepn, out)
+   # varna_yuj(parts, count, sep, sepn, out) — inverse of varna_bhed for the
+   # length-prefixed format. Joins `count` segments with sep. Returns new count.
+   :348 cell dst[wpos]   <- PARAM out
+        in: yavat (si < cnt) {
+        in: yavat (k < seglen) {
+   :356 cell dst[wpos]   <- PARAM out
+        in: yavat (si < cnt) {
+        in: yadi (si < cnt - 1) {
+        in: yavat (q < splen) {
+   :363 cell dst[wpos]   <- PARAM out
+==============================================================================
+varna.smlib:369  prakriya varna_chhid(src, sn, out)
+   # varna_chhid(src, sn, out) — strip leading/trailing ASCII spaces (32).
+   # Returns new count.
+   :394 cell dst[wpos]   <- PARAM out
+        in: yavat (k < hi) {
+   :398 cell dst[wpos]   <- PARAM out
+==============================================================================
+varna.smlib:405  prakriya varna_unnat(src, sn, out)
+   # varna_unnat(src, sn, out) / varna_avanat — ASCII case conversion.
+   # sn < 0: empty output (the old code wrote the terminator at
+   # out[-1], an out-of-bounds write before the buffer).
+   :411 cell dst[0]   <- PARAM out
+        in: yadi (slen < 0) {
+   :419 cell dst[i]   <- PARAM out
+        in: yavat (i < slen) {
+   :422 cell dst[slen]   <- PARAM out
+==============================================================================
+varna.smlib:427  prakriya varna_avanat(src, sn, out)
+   # varna_avanat(src, sn, out) — copies src (sn qword cells) to out with A-Z lowercased, NUL-terminated; returns sn (0 for sn < 0).
+   :433 cell dst[0]   <- PARAM out
+        in: yadi (slen < 0) {
+   :441 cell dst[i]   <- PARAM out
+        in: yavat (i < slen) {
+   :444 cell dst[slen]   <- PARAM out
+==============================================================================
+varna.smlib:506  prakriya varna_viparyay(src, sn, out)
+   # varna_viparyay(src, sn, out) — copy the cell array reversed into out
+   # (WS1, R20). Cell-array form of khand_viparyay: the same two-pointer
+   # vinimay, so it is safe in place (src == out works). Writes a 0
+   # terminator cell at out[sn]. Returns sn. sn <= 0 writes only the
+   # terminator, returns 0.
+   :514 cell dst[0]   <- PARAM out
+        in: yadi (n <= 0) {
+   :521 cell dst[i]   <- PARAM out
+        in: yavat (i < j) {
+   :522 cell dst[j]   <- PARAM out
+        in: yavat (i < j) {
+   :527 cell dst[n / 2]   <- PARAM out
+        in: yadi (n % 2 == 1) {
+   :529 cell dst[n]   <- PARAM out
+==============================================================================
+prakriya with writes/allocations: 112, write sites: 371

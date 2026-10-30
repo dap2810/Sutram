@@ -1,0 +1,15 @@
+# tools/proof_props.py prop_strb_pack_unpack: back = nirmmita(8*8), khand_mukt(out, n, back) with n in 1..8
+# fixed seed draws n = 6,1,5,3,4,3,1,5 (never 8), so the committed run never wrote back[8].
+# Direct program, khand_mukt("abcdefgh", 8, back) under the guard-page compiler:
+#   back = 8 cells: SIGSEGV (exit 139)
+#   back = 9 cells: exit 0
+# after the fix (9*8): property proofs on v263 and under guard pages:
+86/86 properties hold
+yoj khand
+mukhya() {
+    vitti back = nirmmita(8*8)
+    vitti out = nirmmita(16)
+    khand_mukt("abcdefgh", 8, back)
+    likha(back[7])
+    likha("\n")
+}
