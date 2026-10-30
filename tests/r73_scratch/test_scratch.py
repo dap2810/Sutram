@@ -26,7 +26,7 @@ EXPECT = {
     'jumps': '250000000000\n5\n5050', 'reuse_zeroed': '0\n11', 'allowed_nested': '7', 'blind_call': '1',
     # R74: ChatGPT R146's F1-F4, closed in v271
     'allowed_f1_numbers': '42 41', 'allowed_f2_numbers': '123', 'prasar_rewind': '3500000 500000',
-    'negative_size': '0 0 0\n0 0\n123 456',
+    'negative_size': '0 0 0\n0 0\n123 456', 'allowed_global_number': '42',
 }
 
 

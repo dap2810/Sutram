@@ -1,0 +1,11 @@
+# R74: into a module vitti round a loop back edge - refused.
+vitti g = 0
+mukhya()
+    mandapa
+        vitti buf = nirmmita(64)
+        vitti q = 0
+        vitti i = 0
+        yavat (i < 2)
+            g = q
+            q = buf
+            i = i + 1

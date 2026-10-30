@@ -1,0 +1,12 @@
+# R74 (Muse R74): a scratch address into a module vitti - refused (v270/v271 compiled it; the read crashed).
+vitti g = 0
+mukhya()
+    mandapa
+        vitti buf = nirmmita(64)
+        buf[0] = 42
+        g = buf + 64
+    mandapa
+        vitti other = nirmmita(128)
+        other[8] = 99
+    vitti p = g
+    likha(p[0], "\n")

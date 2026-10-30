@@ -1,0 +1,10 @@
+# R74: into a module vitti declared below the prakriya - refused at the end of the program.
+prakriya f() {
+    mandapa
+        vitti buf = nirmmita(64)
+        g = buf
+    nivartanam 0
+}
+vitti g = 0
+mukhya()
+    likha(f())

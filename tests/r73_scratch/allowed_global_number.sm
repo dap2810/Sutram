@@ -1,0 +1,8 @@
+# R74: a number read out of scratch into a module vitti - allowed, prints 42.
+vitti g = 0
+mukhya()
+    mandapa
+        vitti buf = nirmmita(64)
+        buf[3] = 42
+        g = buf[3]
+    likha(g, "\n")

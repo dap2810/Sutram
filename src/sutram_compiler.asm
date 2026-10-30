@@ -239,7 +239,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v271) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v272) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -1022,6 +1022,8 @@ section .bss
     r73_flowstk   resq 256                ; r73_flown at each enclosing loop's entry
     r73_fflow     resq 64                 ; r73_flown at each prakriya's entry
     r73_maxmode   resq 1                  ; 1 while a loop is re-checked: a name's taint is its largest
+    r73_late      resq 256                ; R74: names given a scratch address - none may be a module vitti
+    r73_laten     resq 1
     parse_expr_depth  resq 1 ; R17 R6: nesting depth of the expression being parsed
     orig_rsp    resq 1      ; original stack ptr at _start (for envp scan)
     ; Language pack support
@@ -7038,6 +7040,7 @@ parse_program:
     jne parse_error
     mov [rel root_node], rax
     call r4_resolve_pending            ; R4: undefined names are errors
+    call r73_check_late                ; R74: a scratch address in a module vitti declared later
     call r23_resolve_methods           ; R23 WS2: q.m(...) calls the one Rachana.m
     call r7_check_arity                ; R7: a call with the wrong number of arguments is an error
     mov rax, [rel root_node]
@@ -7689,6 +7692,13 @@ r73_fix:
     jne .not_var
     cmp rax, [rbx+16]
     ja r73_fail_var
+    test rax, rax
+    jz .no_late
+    push rax
+    mov rdi, [rbx+8]
+    call r73_note_late
+    pop rax
+.no_late:
     mov rdi, [rbx+8]
     mov rsi, rax
     call r73_raise
@@ -7862,6 +7872,66 @@ r73_check_stored:
 .r:
     ret
 
+; r73_is_global(rdi = name) -> rax = 1 if a module-level vitti of that name is registered.
+; Preserves rbx, r12.
+r73_is_global:
+    push rbx
+    push r12
+    mov r12, rdi
+    xor ebx, ebx
+.scan:
+    cmp rbx, [rel r56_global_count]
+    jae .no
+    lea rcx, [rel r56_global_names]
+    mov rsi, [rcx + rbx*8]
+    mov rdi, r12
+    call strcmp
+    test rax, rax
+    jz .yes
+    inc rbx
+    jmp .scan
+.yes:
+    mov eax, 1
+    jmp .out
+.no:
+    xor eax, eax
+.out:
+    pop r12
+    pop rbx
+    ret
+
+; r73_note_late(rdi = name): remembered for r73_check_late. Preserves rbx, r12, r13.
+r73_note_late:
+    mov rcx, [rel r73_laten]
+    cmp rcx, 256
+    jae .full
+    lea rdx, [rel r73_late]
+    mov [rdx + rcx*8], rdi
+    inc qword [rel r73_laten]
+    ret
+.full:
+    lea rdi, [rel msg_var_table_overflow]
+    jmp capacity_fail
+
+; r73_check_late: end of the program. A name given a scratch address that turns out to be
+; a module vitti (declared below the prakriya that assigned it) is an escape.
+r73_check_late:
+    push rbx
+    xor ebx, ebx
+.next:
+    cmp rbx, [rel r73_laten]
+    jae .done
+    lea rcx, [rel r73_late]
+    mov rdi, [rcx + rbx*8]
+    call r73_is_global
+    test rax, rax
+    jnz r73_fail_var
+    inc rbx
+    jmp .next
+.done:
+    pop rbx
+    ret
+
 r73_fail_var:
     lea rdi, [rel r73_msg_escape_var]
     jmp capacity_fail
@@ -7944,6 +8014,10 @@ r73_var_depth:
     push r12
     push r13
     mov r12, rdi
+    call r73_is_global             ; R74 (Muse R74): a module vitti outlives every block. R4
+    test rax, rax                  ; lists `g = ...` as g's first sighting in the prakriya,
+    jnz .zero                      ; which put a global at the block's depth
+    mov rdi, r12
     mov rbx, [rel r4_seen_base]    ; the FIRST entry: `x = ...` appends x again on every
 .scan:                             ; assignment (R4), and blocks truncate what they declared
     cmp rbx, [rel r4_seen_count]
@@ -8154,6 +8228,13 @@ r73_check_stmt:
     call r73_var_depth
     cmp r12, rax
     ja .escape_var                 ; into a variable that outlives the block
+    test r12, r12
+    jz .not_late
+    mov rdi, [r13+8]
+    push rax
+    call r73_note_late             ; R74: a module vitti declared further down is checked at the end
+    pop rax
+.not_late:
     mov rdx, rax                   ; R74: remembered inside a loop, for the back edge
     mov edi, 1
     mov rsi, [r13+8]

@@ -308,6 +308,7 @@ def format_text(text: str) -> str:
     paren = 0
     pending = 0           # braceless statement bodies waiting (yadi (c) \n stmt)
     body_mode = False     # inside a braceless mukhya / prakriya
+    body_kind = ''        # R74: which - a braceless prakriya's body ends at column 0; mukhya's does not
     ind_stack = []        # R70: open indented bodies, each the source indentation of its lines
     blank = 0
     last_was_open = False
@@ -341,6 +342,11 @@ def format_text(text: str) -> str:
         top = first is not None and first[0] == 'word' and mean(first[1]) in TOPLEVEL_CORE
         if body_mode and top and depth == 0:
             body_mode = False
+        # R74: the compiler ends a braceless prakriya's body at the first code line written at
+        # column 0 (`vitti g = 0` after it is a module vitti); the formatter indented it into the body
+        if (body_mode and body_kind == 'prakriya' and code and paren == 0 and depth == 0
+                and _src_indent(rawof.get(id(ln), '')) == 0 and first != ('delim', '}')):
+            body_mode = False
         d = depth - (1 if closes else 0)
         if body_mode and not top:
             d += 1
@@ -355,7 +361,8 @@ def format_text(text: str) -> str:
             out.append('')
         blank = 0
         if first is None:          # a comment-only line
-            if body_mode and depth == 0 and paren == 0 and pending == 0 and _next_is_top(lines, li):
+            if body_mode and depth == 0 and paren == 0 and pending == 0 and (
+                    _next_is_top(lines, li) or (body_kind == 'prakriya' and _next_at_col0(lines, li, rawof))):
                 d = 0              # R54: it heads the next prakriya, not the braceless body above it
             out.append('    ' * max(d, 0) + join_tokens(ln))
             last_was_open = False
@@ -376,7 +383,7 @@ def format_text(text: str) -> str:
         if ends_open or paren > 0:
             pending = 0
         elif is_func and not ends_open and depth == 0 and code[-1] != ('delim', ';'):
-            body_mode = True; pending = 0
+            body_mode = True; pending = 0; body_kind = mean(first[1])
         elif code_is_kuru_tail:
             pending = 0
         elif is_header and ('delim', '{') not in code and _header_open(code):
@@ -435,6 +442,12 @@ def _header_open(code) -> bool:
             if depth == 0:
                 return k == len(code) - 1
     return True
+
+
+def _next_at_col0(lines, i, rawof):
+    """R74: the next line with code after line i starts at column 0."""
+    nxt = _next_code(lines, i)
+    return nxt is not None and _src_indent(rawof.get(id(nxt), '')) == 0
 
 
 def _next_is_top(lines, i):
