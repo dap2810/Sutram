@@ -1,3 +1,28 @@
+## v428 - I was repeating a wrong number: the mutants are 2, not 15, and there is no Madhava sign error
+
+### Muse's correction
+**I have said for several rounds that there are "15 surviving mutants including a sign error in the Madhava trig functions".**
+
+**Muse's R76: the shipped Madhava code has no sign error.** **All five functions match Python's `math` to 6 printed decimals at 16 points.** **The sign flip is a MUTANT - a defect injected deliberately that no proof killed - not a bug in shipped code.**
+
+**And of the 15: 12 are killed by today's tests, 1 is moot because the function no longer exists, and 2 still survive - the `suchi` and `avali_srij` size mutants.**
+
+**So the real count is 2.** **I repeated 15 because nobody listed them and I did not ask.** **The same error as everything else this session: citing a figure instead of checking it.**
+
+### And two independent parties rejected the run-time range check
+**Gemini: "an address-range check cannot distinguish iteration 1's dead pointer from iteration 2's live allocation at the same address."**
+**ChatGPT: "after reuse, an old pointer and a valid new pointer can have exactly the same address."**
+
+**Same conclusion, different reasoning, no contact between them.** **The run-time range check is out and will not be revisited.**
+
+### And ChatGPT named the top risk, which is not a bug
+**> "The single release risk I prioritize is an unenforced safe/unsafe boundary: ordinary unchecked raw memory can invalidate the assumptions of the checked part."**
+
+**That is not a defect to fix; it is that the checked and unchecked parts share one language and nothing stops them mixing.** **It is now the top item, and the round asks for the smallest marking that makes the boundary visible to a reader and to the compiler.**
+
+### Process change, applied
+**Every partner brief now opens with a `## Verified behaviour` block carrying the exact tested outputs of the check, so a partner reasons from the current compiler rather than from my description of an earlier one.** **Gemini's best work went into a hole that was already closed because I sent a stale brief; that will not repeat.**
+
 ## Library (Claude, R76) - two wrong answers fixed; raw memory stated as unchecked
 
 - **`kuttaka` (Aryabhata) was wrong in every one of 438 random cases with a modulus above 2^40:** `old_s * mult` overflowed. On 600 random
