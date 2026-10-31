@@ -1,0 +1,4 @@
+# R80 fixture: a module whose function divides by its argument, unguarded - for examples/281.
+prakriya r80_ausat(yog, n) {
+    nivartanam yog / n
+}

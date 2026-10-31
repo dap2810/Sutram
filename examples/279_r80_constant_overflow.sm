@@ -1,0 +1,4 @@
+# R80: arithmetic on written numbers whose answer does not fit is refused when compiled - the
+# textbook case 4000000000 * 4000000000 used to print -2446744073709551616.
+mukhya()
+    likha(4000000000 * 4000000000)

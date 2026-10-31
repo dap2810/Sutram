@@ -1,0 +1,6 @@
+# R80: a division by zero inside a module stops with the module's own file and line,
+# not a line counted through the merged program: "pankti 3 (r80_ausat.smlib)".
+yoj r80_ausat
+mukhya()
+    likha(r80_ausat(30, 3))
+    likha(r80_ausat(30, 0))

@@ -1,0 +1,8 @@
+# R80: dividing by zero used to crash (SIGFPE, exit 136, no message). Now the program stops with a
+# Sanskrit error that names the line - "division by zero is not possible" - and exit 1.
+mukhya()
+    vitti phal = 10
+    vitti bhag = 0
+    likha(phal / 2)
+    likha(phal / bhag)
+    likha("yah pankti na chalati\n")

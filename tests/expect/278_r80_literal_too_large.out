@@ -1,0 +1,4 @@
+278_r80_literal_too_large.sm:4:11: Sutram Error [E_ATIPRAVAH]: ankah 64-bit purnanka-seemam atikramati
+      likha(99999999999999999999)
+            ^
+Sanket: purnankah -9223372036854775808 tah 9223372036854775807 paryantam

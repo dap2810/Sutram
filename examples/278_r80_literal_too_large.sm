@@ -1,0 +1,4 @@
+# R80: a number written in the program that does not fit in a vitti used to wrap silently
+# (99999999999999999999 printed 7766279631452241919). Now it is refused when compiled: E_ATIPRAVAH.
+mukhya()
+    likha(99999999999999999999)

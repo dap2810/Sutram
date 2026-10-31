@@ -239,7 +239,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v275) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v276) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -363,6 +363,28 @@ r54_builtin_arity_table:
     msg_duplicate_func db "Sutram Error: punah prakriya paribhasha: ", 0
     msg_undefined_func db "Sutram Error: agyat prakriya: ", 0
     msg_array_oob db "Sutram Error: mala ank seema atikram", 10, 0
+    ; R80: arithmetic that used to lie - division by zero crashed (SIGFPE, exit 136, no message),
+    ; and a literal or a constant expression past int64 wrapped silently
+    ; Run time (the line is the user's: from the origin map, so a program with yoj is not offset
+    ; by the library's lines; a division inside another file names that file).
+    r80_msg_div_a db "Sutram Error [E_SHUNYA_BHAJAN]: pankti ", 0
+    r80_msg_div_b db " - shunye vibhajanam na sambhavati", 10, 0
+    r80_msg_mod_b db " - shunyena sheshah na sambhavati", 10, 0
+    r80_msg_in_a  db " (", 0
+    r80_msg_in_b  db ")", 0
+    ; Compile time: printed after file:line:col, then the source line and a caret, as every
+    ; other compile error.
+    r80_hdr_div   db ": Sutram Error [E_SHUNYA_BHAJAN]: ", 0
+    r80_txt_div   db "shunye vibhajanam na sambhavati", 10, 0
+    r80_txt_mod   db "shunyena sheshah na sambhavati", 10, 0
+    r80_hint_div  db "Sanket: bhajakah shunyam na bhavet", 10, 0
+    r80_hdr_ovf   db ": Sutram Error [E_ATIPRAVAH]: ", 0
+    r80_txt_lit   db "ankah 64-bit purnanka-seemam atikramati", 10, 0
+    r80_hint_lit  db "Sanket: purnankah -9223372036854775808 tah 9223372036854775807 paryantam", 10, 0
+    r80_txt_fold  db "sthira-gananayah phalam 64-bit purnanka-seemam atikramati", 10, 0
+    r80_hint_fold db "Sanket: purnankah -9223372036854775808 tah 9223372036854775807 paryantam; ganana punah likhyatam", 10, 0
+    align 8
+    r80_ten dq 10.0
     msg_kosh_required db "Sutram Error: kosh prakriya hetu kosh-vitti avashyak", 10, 0
 %ifdef SUTRAM_R65_TRAP_INT
     r65_msg_prefix db "Sutram Error [E_INTEGER_TRAP] ",0
@@ -1046,6 +1068,7 @@ section .bss
     r73_late      resq 256                ; R74: names given a scratch address - none may be a module vitti
     r78_ents      resq 6 * 4096           ; R78: p = nirmmita(CONST): name, function, R4 index, bytes, reassigned, dead
     r78_n         resq 1
+    r80_lit_ovf   resq 1                  ; R80: the number being lexed does not fit
     r78_fn        resq 1                  ; the function being parsed (a serial)
     r78_next      resq 1
     r78_fstk      resq 64
@@ -6463,6 +6486,8 @@ lex:
 
     xor r8, r8                 ; accumulated integer value / final bits
     xor r11d, r11d             ; T12: 0=integer token, 1=float token
+    mov qword [rel r80_lit_ovf], 0
+    xorpd xmm3, xmm3           ; R80: the integer part as a double too, for a dasham literal
     ; Hex?
     movzx rax, byte [r13]
     cmp al, '0'
@@ -6486,6 +6511,13 @@ lex:
     call is_hex
     test rax, rax
     jz .num_done
+    push rcx                   ; R80: a 17th hex digit does not fit in 64 bits
+    mov rcx, r8
+    shr rcx, 60
+    jz .r80_hex_ok
+    mov qword [rel r80_lit_ovf], 1
+.r80_hex_ok:
+    pop rcx
     imul r8, r8, 16
     movzx rax, byte [r13]
     call hexval
@@ -6532,6 +6564,11 @@ lex:
 .float_frac_done:
     ; Convert integer + fractional components to an IEEE-754 binary64 value.
     cvtsi2sd xmm0, r8
+    cmp qword [rel r80_lit_ovf], 0 ; R80: an integer part past int64 is fine for a dasham:
+    je .r80_frac_int_ok            ; take it from the double accumulated digit by digit
+    movapd xmm0, xmm3              ; (100000000000000000000.5 was -9223372036854.775808)
+    mov qword [rel r80_lit_ovf], 0
+.r80_frac_int_ok:
     cvtsi2sd xmm1, r9
     cvtsi2sd xmm2, r10
     divsd xmm1, xmm2
@@ -6540,11 +6577,43 @@ lex:
     mov r11d, 1
     jmp .num_done
 .dec_digit:
+    mulsd xmm3, [rel r80_ten]      ; R80: the same digit into the double
+    cvtsi2sd xmm4, rax
+    addsd xmm3, xmm4
     imul r8, r8, 10
-    add r8, rax              ; baseline integer wrap semantics unchanged
+    jno .r80_d1
+    mov qword [rel r80_lit_ovf], 1 ; R80: past 9223372036854775807
+.r80_d1:
+    add r8, rax
+    jno .r80_d2
+    mov qword [rel r80_lit_ovf], 1
+.r80_d2:
     add r13, rdx
     jmp .dec_loop
 .num_done:
+    cmp qword [rel r80_lit_ovf], 0  ; R80: the integer part (of an integer or a dasham) wrapped
+    je .r80_lit_ok
+    cmp r11d, 1
+    je .r80_lit_overflow
+    mov rax, 0x8000000000000000     ; 9223372036854775808 is allowed right after '-' (it is
+    cmp r8, rax                     ; then MIN, which fits): 0 - 9223372036854775808
+    jne .r80_lit_overflow
+    cmp qword [rel token_cnt], 0
+    je .r80_lit_overflow
+    cmp qword [r15 - TOKEN_SIZE], TOK_OPERATOR
+    jne .r80_lit_overflow
+    cmp qword [r15 - TOKEN_SIZE + 8], '-'
+    jne .r80_lit_overflow
+    mov qword [r15], TOK_NUMBER
+    mov [r15+8], r8
+    mov qword [r15+16], 1           ; marked: this literal is +2^63, to be negated
+    mov rax, [rel cur_line]
+    mov [r15+24], rax
+    mov [r15+32], r12
+    add r15, TOKEN_SIZE
+    inc qword [rel token_cnt]
+    jmp .lex_loop
+.r80_lit_ok:
     cmp r11d, 1
     jne .num_emit_int
     mov qword [r15], TOK_FLOAT
@@ -6560,6 +6629,12 @@ lex:
     add r15, TOKEN_SIZE
     inc qword [rel token_cnt]
     jmp .lex_loop
+.r80_lit_overflow:
+    mov rdi, r12                    ; the literal's first byte
+    lea rsi, [rel r80_hdr_ovf]
+    lea rdx, [rel r80_txt_lit]
+    lea rcx, [rel r80_hint_lit]
+    jmp r80_compile_error
 
 .try_operator:
     ; Check for string literal (double quote = 0x22)
@@ -7969,6 +8044,316 @@ r73_check_late:
     inc rbx
     jmp .next
 .done:
+    pop rbx
+    ret
+
+; ---------------------------------------------------------------- R80
+; r80_fold_overflow: a constant expression whose value does not fit in int64 (fold_const).
+r80_fold_overflow:
+    mov rdi, [rbx+32]              ; fold_const's rbx = the BINOP: the operator's position
+    lea rsi, [rel r80_hdr_ovf]
+    lea rdx, [rel r80_txt_fold]
+    lea rcx, [rel r80_hint_fold]
+    jmp r80_compile_error
+
+; r80_src_valid(rdi) -> ZF clear (jnz) when rdi points into source_buf (a token's position).
+; The BINOPs built by the other parse levels keep a line count in [32], not a position.
+r80_src_valid:
+    push rax
+    lea rax, [rel source_buf]
+    cmp rdi, rax
+    jb .no
+    add rax, [rel source_len]
+    cmp rdi, rax
+    ja .no
+    pop rax
+    or eax, 1                      ; ZF = 0
+    ret
+.no:
+    pop rax
+    xor eax, eax                   ; ZF = 1 (rax restored below is not needed by callers)
+    ret
+
+; r80_compile_error(rdi = position in source_buf, rsi = ": Sutram Error [..]: ", rdx = text,
+; rcx = Sanket line or 0): file:line:col: Sutram Error [..]: text / the source line / a caret /
+; Sanket - the form of every other compile error. Exits 1.
+r80_compile_error:
+    push rsi
+    push rdx
+    push rcx
+    call r80_src_valid
+    jz .nopos
+    push rdi
+    call r51_print_origin
+    pop rdi
+    mov rdi, [rsp+16]
+    call print_str_z
+    mov rdi, [rsp+8]
+    call print_str_z
+    call r51_print_original_context
+    jmp .hint
+.nopos:
+    mov rdi, [rel source_path_ptr]
+    call graph_print_file
+    mov rdi, [rsp+16]
+    call print_str_z
+    mov rdi, [rsp+8]
+    call print_str_z
+.hint:
+    mov rdi, [rsp]
+    test rdi, rdi
+    jz .exit
+    call print_str_z
+.exit:
+    mov rdi, 1
+    call os_exit
+
+; r80_line_of(rdi = a BINOP's [32]) -> rax = the line in the file the operator was written in
+; (0 if unknown), rcx = that file's path. Preserves the other registers it is given except rdx.
+r80_line_of:
+    call r80_src_valid
+    jz .unknown
+    push rsi
+    push rdi
+    push r8
+    push r9
+    push r10
+    push r11
+    call r51_origin_line_col
+    pop r11
+    pop r10
+    pop r9
+    pop r8
+    pop rdi
+    pop rsi
+    ret
+.unknown:
+    xor eax, eax
+    mov rcx, [rel source_path_ptr]
+    ret
+
+; r80_div_guard(rdi = 0 for /, 1 for %; rbx = the BINOP) - generated code has rax = dividend,
+; rcx = divisor. A divisor that is a constant other than 0 and -1 needs nothing (-> rax = -1).
+; A constant 0 is a compile error. Otherwise:
+;   test rcx,rcx ; jnz .nz ; <E_SHUNYA_BHAJAN, exit 1> ; .nz: cmp rcx,-1 ; jne .go ;
+;   neg rax (/) | xor eax,eax (%) ; jmp .done (rel32 -> rax) ; .go:
+; MIN / -1 is MIN and MIN % -1 is 0 - the wrap the other operators already follow - instead of
+; the hardware's SIGFPE. The caller patches .done with r80_div_done after the idiv.
+r80_div_guard:
+    push r12
+    push r13
+    push r14
+    mov r12, rdi
+    mov rdi, [rbx+24]
+    call r75_const
+    test rdx, rdx
+    jz .runtime
+    test rax, rax
+    jz .const_zero
+    cmp rax, -1
+    je .runtime
+    mov rax, -1
+    jmp .out
+.runtime:
+    mov dil, 0x48                  ; test rcx,rcx
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+    mov dil, 0xC9
+    call emit_byte
+    mov dil, 0x0F                  ; jnz rel32
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+    mov r13, [rel code_sz]
+    xor edi, edi
+    call emit_u32
+    mov rdi, r12
+    call r80_emit_div_fatal
+    mov rdi, r13
+    call r73_patch32               ; .nz
+    mov dil, 0x48                  ; cmp rcx,-1
+    call emit_byte
+    mov dil, 0x83
+    call emit_byte
+    mov dil, 0xF9
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0x0F                  ; jne rel32
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+    mov r13, [rel code_sz]
+    xor edi, edi
+    call emit_u32
+    test r12, r12
+    jnz .mod_m1
+    mov dil, 0x48                  ; neg rax
+    call emit_byte
+    mov dil, 0xF7
+    call emit_byte
+    mov dil, 0xD8
+    call emit_byte
+    jmp .jmp_done
+.mod_m1:
+    mov dil, 0x31                  ; xor eax,eax
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+.jmp_done:
+    mov dil, 0xE9                  ; jmp .done
+    call emit_byte
+    mov r14, [rel code_sz]
+    xor edi, edi
+    call emit_u32
+    mov rdi, r13
+    call r73_patch32               ; .go
+    mov rax, r14
+.out:
+    pop r14
+    pop r13
+    pop r12
+    ret
+.const_zero:
+    mov rdi, [rbx+32]
+    lea rsi, [rel r80_hdr_div]
+    lea rdx, [rel r80_txt_div]
+    test r12, r12
+    jz .cz
+    lea rdx, [rel r80_txt_mod]
+.cz:
+    lea rcx, [rel r80_hint_div]
+    jmp r80_compile_error
+
+; r80_div_done(rdi = the rel32 from r80_div_guard, or -1): .done is here.
+r80_div_done:
+    cmp rdi, -1
+    je .r
+    jmp r73_patch32
+.r:
+    ret
+
+; r80_emit_div_fatal(rdi = 0 /, 1 %; rbx = the BINOP): likha the error with its line, exit 1.
+; The line is the one in the file the division is written in; a file other than the program's
+; own is named after it: "pankti 12 (ganit.smlib)".
+r80_emit_div_fatal:
+    push rbx
+    push r12
+    push r13
+    push r14
+    mov r12, rdi
+    mov rdi, [rbx+32]
+    call r80_line_of
+    mov r13, rax                   ; the line (0: unknown)
+    mov r14, rcx                   ; its file
+    lea rcx, [rel r80_msg_div_a]
+    call r80_emit_likha_str
+    push r13
+    call alloc_ast
+    pop rdi
+    mov qword [rax], AST_NUM
+    mov [rax+8], rdi
+    push rax
+    call alloc_ast
+    pop rcx
+    mov qword [rax], AST_CALL
+    mov qword [rax+8], BN_LKHB
+    mov qword [rax+16], 1
+    mov [rax+24], rcx
+    call gen_expr
+    test r14, r14
+    jz .own
+    mov rdi, r14                   ; the file the division is in ...
+    call r80_basename
+    push rax
+    mov rdi, [rel r29_yoj_root]    ; ... against the program's own file (--separate: its root,
+    test rdi, rdi                  ; given for the program and each module alike)
+    jnz .prog
+    mov rdi, [rel source_path_ptr]
+.prog:
+    call r80_basename
+    mov rsi, rax
+    mov rdi, [rsp]
+    call strcmp
+    test rax, rax
+    jz .own_pop
+    lea rcx, [rel r80_msg_in_a]
+    call r80_emit_likha_str
+    pop rcx
+    call r80_emit_likha_raw
+    lea rcx, [rel r80_msg_in_b]
+    call r80_emit_likha_str
+    jmp .own
+.own_pop:
+    add rsp, 8
+.own:
+    lea rcx, [rel r80_msg_div_b]
+    test r12, r12
+    jz .m
+    lea rcx, [rel r80_msg_mod_b]
+.m:
+    call r80_emit_likha_str
+    mov dil, 0xB8                  ; mov eax,60 ; mov edi,1 ; syscall
+    call emit_byte
+    mov edi, 60
+    call emit_u32
+    mov dil, 0xBF
+    call emit_byte
+    mov edi, 1
+    call emit_u32
+    call emit_syscall
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; r80_basename(rdi = a path) -> rax = its last component (after the last / or \).
+r80_basename:
+    mov rax, rdi
+.l:
+    mov dl, [rdi]
+    test dl, dl
+    jz .d
+    inc rdi
+    cmp dl, '/'
+    je .s
+    cmp dl, 0x5C
+    jne .l
+.s:
+    mov rax, rdi
+    jmp .l
+.d:
+    ret
+
+; r80_emit_likha_raw(rcx = text): likha("text"), the text as it is (a file name).
+r80_emit_likha_raw:
+    push rbx
+    push rcx
+    call alloc_ast
+    pop rcx
+    mov qword [rax], AST_STR
+    jmp r80_emit_likha_tail
+
+; r80_emit_likha_str(rcx = message): emit likha("message").
+r80_emit_likha_str:
+    push rbx
+    push rcx
+    call alloc_ast
+    pop rcx
+    mov qword [rax], AST_STR
+    call r11_tr_rcx
+r80_emit_likha_tail:
+    mov [rax+8], rcx
+    push rax
+    call alloc_ast
+    pop rcx
+    mov qword [rax], AST_CALL
+    mov qword [rax+8], BN_LIKHA
+    mov qword [rax+16], 1
+    mov [rax+24], rcx
+    call gen_expr
     pop rbx
     ret
 
@@ -11617,6 +12002,8 @@ push r12                  ; save r12 (parse_func_block uses it)
 .ps_do_incdec:
     ; rbx = target AST node, r12 = OP_ADD or OP_SUB
     ; x++ → x = x + 1 ;  x-- → x = x - 1
+    call cur_tok
+    push qword [rax+32]       ; R80: the operator's source position
     call advance_tok          ; consume ++ or --
     ; Build NUM(1) node
     call alloc_ast
@@ -11626,12 +12013,7 @@ push r12                  ; save r12 (parse_func_block uses it)
     ; Build binop node: [AST_BINOP][op][left=target][right=NUM(1)]
     call alloc_ast
     mov qword [rax], AST_BINOP
-%ifdef SUTRAM_R65_TRAP_INT
-    push rcx                  ; unary-minus builder retains AST_NUM in RCX
-    mov rcx,[rel cur_line]
-    mov [rax+32],rcx          ; R65: parser-time BINOP source line
-    pop rcx
-%endif
+    pop qword [rax+32]        ; R80: [32] = the operator's position in source_buf
     mov [rax+8], r12          ; op
     mov [rax+16], rbx         ; left = target
     mov [rax+24], r13         ; right = 1
@@ -11648,18 +12030,15 @@ push r12                  ; save r12 (parse_func_block uses it)
 .ps_do_compound:
     ; rbx = target AST node, r12 = operator id
     ; Desugar: target op= rhs  →  target = target op rhs
+    call cur_tok
+    push qword [rax+32]       ; R80: the operator's source position
     call advance_tok          ; consume the compound operator
     call parse_expr           ; rax = rhs (rbx, r12 preserved)
     mov r13, rax              ; r13 = rhs
     ; Build binop node: [AST_BINOP][op][left=target][right=rhs]
     call alloc_ast            ; rax = binop node (rbx preserved)
     mov qword [rax], AST_BINOP
-%ifdef SUTRAM_R65_TRAP_INT
-    push rcx                  ; unary-minus builder retains AST_NUM in RCX
-    mov rcx,[rel cur_line]
-    mov [rax+32],rcx          ; R65: parser-time BINOP source line
-    pop rcx
-%endif
+    pop qword [rax+32]        ; R80: [32] = the operator's position in source_buf
     mov [rax+8], r12          ; op
     mov [rax+16], rbx         ; left = target
     mov [rax+24], r13         ; right = rhs
@@ -11786,12 +12165,10 @@ parse_lor:
     pop r14
     pop rbx
     mov qword [rax], AST_BINOP
-%ifdef SUTRAM_R65_TRAP_INT
     push rcx                  ; unary-minus builder retains AST_NUM in RCX
     mov rcx,[rel cur_line]
     mov [rax+32],rcx          ; R65: parser-time BINOP source line
     pop rcx
-%endif
     mov [rax+8], r14
     mov [rax+16], rbx
     mov [rax+24], r13
@@ -11835,12 +12212,10 @@ parse_land:
     pop r14
     pop rbx
     mov qword [rax], AST_BINOP
-%ifdef SUTRAM_R65_TRAP_INT
     push rcx                  ; unary-minus builder retains AST_NUM in RCX
     mov rcx,[rel cur_line]
     mov [rax+32],rcx          ; R65: parser-time BINOP source line
     pop rcx
-%endif
     mov [rax+8], r14
     mov [rax+16], rbx
     mov [rax+24], r13
@@ -11892,12 +12267,10 @@ parse_eq:
     pop r14
     pop rbx
     mov qword [rax], AST_BINOP
-%ifdef SUTRAM_R65_TRAP_INT
     push rcx                  ; unary-minus builder retains AST_NUM in RCX
     mov rcx,[rel cur_line]
     mov [rax+32],rcx          ; R65: parser-time BINOP source line
     pop rcx
-%endif
     mov [rax+8], r14
     mov [rax+16], rbx
     mov [rax+24], r13
@@ -11959,12 +12332,10 @@ parse_rel:
     pop r14
     pop rbx
     mov qword [rax], AST_BINOP
-%ifdef SUTRAM_R65_TRAP_INT
     push rcx                  ; unary-minus builder retains AST_NUM in RCX
     mov rcx,[rel cur_line]
     mov [rax+32],rcx          ; R65: parser-time BINOP source line
     pop rcx
-%endif
     mov [rax+8], r14
     mov [rax+16], rbx
     mov [rax+24], r13
@@ -12011,12 +12382,10 @@ parse_bitor:
     pop r14
     pop rbx
     mov qword [rax], AST_BINOP
-%ifdef SUTRAM_R65_TRAP_INT
     push rcx                  ; unary-minus builder retains AST_NUM in RCX
     mov rcx,[rel cur_line]
     mov [rax+32],rcx          ; R65: parser-time BINOP source line
     pop rcx
-%endif
     mov [rax+8], r14
     mov [rax+16], rbx
     mov [rax+24], r13
@@ -12063,12 +12432,10 @@ parse_bitxor:
     pop r14
     pop rbx
     mov qword [rax], AST_BINOP
-%ifdef SUTRAM_R65_TRAP_INT
     push rcx                  ; unary-minus builder retains AST_NUM in RCX
     mov rcx,[rel cur_line]
     mov [rax+32],rcx          ; R65: parser-time BINOP source line
     pop rcx
-%endif
     mov [rax+8], r14
     mov [rax+16], rbx
     mov [rax+24], r13
@@ -12115,12 +12482,10 @@ parse_bitand:
     pop r14
     pop rbx
     mov qword [rax], AST_BINOP
-%ifdef SUTRAM_R65_TRAP_INT
     push rcx                  ; unary-minus builder retains AST_NUM in RCX
     mov rcx,[rel cur_line]
     mov [rax+32],rcx          ; R65: parser-time BINOP source line
     pop rcx
-%endif
     mov [rax+8], r14
     mov [rax+16], rbx
     mov [rax+24], r13
@@ -12173,12 +12538,10 @@ parse_shift:
     pop r14
     pop rbx
     mov qword [rax], AST_BINOP
-%ifdef SUTRAM_R65_TRAP_INT
     push rcx                  ; unary-minus builder retains AST_NUM in RCX
     mov rcx,[rel cur_line]
     mov [rax+32],rcx          ; R65: parser-time BINOP source line
     pop rcx
-%endif
     mov [rax+8], r14
     mov [rax+16], rbx
     mov [rax+24], r13
@@ -12216,9 +12579,7 @@ parse_add:
 .a_sub:
     mov r12, OP_SUB
 .a_do:
-%ifdef SUTRAM_R65_TRAP_INT
-    push qword [rax+24]
-%endif
+    push qword [rax+32]       ; R80: the operator's source position, for the BINOP's messages
     call advance_tok
     call parse_mul            ; rax = right
     mov r13, rax              ; save right
@@ -12231,10 +12592,7 @@ parse_add:
     pop r14
     pop rbx
     mov qword [rax], AST_BINOP
-%ifdef SUTRAM_R65_TRAP_INT
-    ; Saved before advancing the operator token; not the lexer's EOF line.
-    pop qword [rax+32]
-%endif
+    pop qword [rax+32]        ; R80: [32] = the operator's position in source_buf (r80_line_of)
     mov [rax+8], r14
     mov [rax+16], rbx
     mov [rax+24], r13
@@ -12283,9 +12641,7 @@ parse_mul:
 .m_mod:
     mov r12, OP_MOD
 .m_do:
-%ifdef SUTRAM_R65_TRAP_INT
-    push qword [rax+24]
-%endif
+    push qword [rax+32]       ; R80: the operator's source position, for the BINOP's messages
     call advance_tok
     call parse_primary        ; rax = right
     mov r13, rax
@@ -12298,10 +12654,7 @@ parse_mul:
     pop r14
     pop rbx
     mov qword [rax], AST_BINOP
-%ifdef SUTRAM_R65_TRAP_INT
-    ; Saved before advancing the operator token; not the lexer's EOF line.
-    pop qword [rax+32]
-%endif
+    pop qword [rax+32]        ; R80: [32] = the operator's position in source_buf (r80_line_of)
     mov [rax+8], r14
     mov [rax+16], rbx
     mov [rax+24], r13
@@ -12401,16 +12754,32 @@ fold_const:
     jmp .fc_return            ; unknown op, return as-is
 .fc_add:
     add rax, rcx
+    jo r80_fold_overflow      ; R80: a constant expression past int64 is refused
     jmp .fc_make
 .fc_sub:
+    cmp qword [r13+16], 1     ; R80: x - 9223372036854775808 = x + MIN, which fits iff x >= 0
+    jne .r80_fc_sub
+    test rax, rax
+    js r80_fold_overflow
+    add rax, rcx
+    jmp .fc_make
+.r80_fc_sub:
     sub rax, rcx
+    jo r80_fold_overflow
     jmp .fc_make
 .fc_mul:
     imul rax, rcx
+    jo r80_fold_overflow
     jmp .fc_make
 .fc_div:
     test rcx, rcx
     jz .fc_return             ; division by zero, return as-is
+    cmp rcx, -1               ; R80: x / -1 is -x; MIN / -1 does not fit (idiv here crashed the
+    jne .r80_fc_div           ; compiler itself with SIGFPE, v275 and before)
+    neg rax
+    jo r80_fold_overflow
+    jmp .fc_make
+.r80_fc_div:
     xor rdx, rdx
     cqo
     idiv rcx
@@ -12418,6 +12787,11 @@ fold_const:
 .fc_mod:
     test rcx, rcx
     jz .fc_return
+    cmp rcx, -1               ; R80: x % -1 is 0 (MIN % -1 crashed the compiler)
+    jne .r80_fc_mod
+    xor eax, eax
+    jmp .fc_make
+.r80_fc_mod:
     xor rdx, rdx
     cqo
     idiv rcx
@@ -12590,6 +12964,7 @@ parse_primary_inner:
     cmp rcx, '-'
     jne .pp_check_delim
     ; Unary minus — consume '-' and parse the following expression
+    push qword [rax+32]       ; R80: the '-' token's source position
     call advance_tok          ; consume '-'
     call parse_primary        ; rax = inner expr
     ; Check if inner is a constant number — if so, negate directly
@@ -12600,13 +12975,27 @@ parse_primary_inner:
     jne .pp_neg_expr
     ; Negate constant
     mov rcx, [rax+8]
+    cmp qword [rax+16], 0     ; R80: -(MIN) does not fit - unless this is the literal
+    jne .r80_neg_ok           ; 9223372036854775808 itself (flagged), whose negation is MIN
+    mov rdx, 0x8000000000000000
+    cmp rcx, rdx
+    jne .r80_neg_ok
+    pop rdi                   ; -(0 - 9223372036854775808) wrapped to MIN silently
+    lea rsi, [rel r80_hdr_ovf]
+    lea rdx, [rel r80_txt_fold]
+    lea rcx, [rel r80_hint_fold]
+    jmp r80_compile_error
+.r80_neg_ok:
     neg rcx
     mov [rax+8], rcx
+    mov qword [rax+16], 0     ; R80: -9223372036854775808 is MIN, exactly
+    add rsp, 8                ; the '-' position
     pop rbx
     ret
 .pp_neg_float:
     ; IEEE-754 sign bit toggle for a literal.
     btc qword [rax+8], 63
+    add rsp, 8                ; the '-' position
     pop rbx
     ret
 .pp_neg_expr:
@@ -12621,12 +13010,7 @@ parse_primary_inner:
     pop rcx                   ; rcx = AST_NUM(0) (left)
     pop rdx                   ; rdx = expr (right)
     mov qword [rax], AST_BINOP
-%ifdef SUTRAM_R65_TRAP_INT
-    push rcx                  ; unary-minus builder retains AST_NUM in RCX
-    mov rcx,[rel cur_line]
-    mov [rax+32],rcx          ; R65: parser-time BINOP source line
-    pop rcx
-%endif
+    pop qword [rax+32]        ; R80: [32] = the '-' token's position in source_buf
     mov qword [rax+8], OP_SUB
     mov [rax+16], rcx         ; left = 0
     mov [rax+24], rdx         ; right = expr
@@ -12656,12 +13040,10 @@ parse_primary_inner:
     pop rdx                   ; rdx = AST_NUM(0)
     pop rcx                   ; rcx = expr
     mov qword [rax], AST_BINOP
-%ifdef SUTRAM_R65_TRAP_INT
     push rcx
     mov rcx,[rel cur_line]
     mov [rax+32],rcx
     pop rcx
-%endif
     mov qword [rax+8], OP_EQ
     mov [rax+16], rcx         ; left = expr
     mov [rax+24], rdx         ; right = 0
@@ -12820,12 +13202,14 @@ parse_primary_inner:
     cmp rcx, TOK_NUMBER
     jne .pp_ident
     mov rbx, [rax+8]         ; numeric value
+    push qword [rax+16]      ; R80: 1 = the literal 9223372036854775808 (after '-')
     call advance_tok
     push rbx
     call alloc_ast
     pop rbx
     mov qword [rax], AST_NUM
     mov [rax+8], rbx         ; value
+    pop qword [rax+16]
     pop rbx
     ret
 .pp_float:
@@ -21237,6 +21621,11 @@ gen_expr:
 %ifdef SUTRAM_R65_TRAP_INT
     lea rdi,[rel r65_msg_mod]
     call r65_emit_zero_guard
+    push qword -1
+%else
+    mov edi, 1                ; R80: no zero divisor, no MIN % -1 crash
+    call r80_div_guard
+    push rax
 %endif
     ; cqo (sign-extend rax into rdx:rax) = 48 99
     mov dil, 0x48
@@ -21257,6 +21646,8 @@ gen_expr:
     call emit_byte
     mov dil, 0xD0
     call emit_byte
+    pop rdi
+    call r80_div_done
     pop rbx
     ret
 .ge_and:
@@ -21442,6 +21833,11 @@ gen_expr:
 %ifdef SUTRAM_R65_TRAP_INT
     lea rdi,[rel r65_msg_div]
     call r65_emit_zero_guard
+    push qword -1
+%else
+    xor edi, edi              ; R80: no zero divisor, no MIN / -1 crash
+    call r80_div_guard
+    push rax
 %endif
     ; cqo (sign-extend) = 48 99
     mov dil, 0x48
@@ -21455,6 +21851,8 @@ gen_expr:
     call emit_byte
     mov dil, 0xF9
     call emit_byte
+    pop rdi
+    call r80_div_done
     pop rbx
     ret
 .ge_eq:
@@ -25497,8 +25895,10 @@ r65_emit_overflow_guard:
     mov r13,[rel code_sz]
     xor edi,edi
     call emit_u32
+    mov rdi,[rbx+32]               ; R80: [32] is the operator's position; r65 wants a line
+    call r80_line_of
+    mov rsi,rax
     mov rdi,r12
-    mov rsi,[rbx+32]
     call r65_emit_fatal
     mov rax,[rel code_sz]
     sub rax,r13
@@ -25529,8 +25929,10 @@ r65_emit_zero_guard:
     mov r13,[rel code_sz]
     xor edi,edi
     call emit_u32
+    mov rdi,[rbx+32]               ; R80: [32] is the operator's position; r65 wants a line
+    call r80_line_of
+    mov rsi,rax
     mov rdi,r12
-    mov rsi,[rbx+32]
     call r65_emit_fatal
     mov rax,[rel code_sz]
     sub rax,r13

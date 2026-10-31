@@ -40,6 +40,12 @@ def m_blank_ws(s):
             out.append(ind + '    ')
             out.append('\t')
     return '\n'.join(out)
+def blank_ws_line(s, n):
+    # R80: where m_blank_ws puts the program's line n - two lines are added after each indented line
+    # before it - so a run-time error that names its line ("pankti 7") is checked at the moved line.
+    # A line in another file ("pankti 3 (module.smlib)") is not moved: only the program is mutated.
+    ls = s.split('\n')[:n - 1]
+    return n + 2 * sum(1 for l in ls if l.startswith((' ', '\t')) and l.strip() and not l.strip().startswith('#'))
 def m_tabs(s):
     lines = s.split('\n')
     for l in lines:
@@ -120,7 +126,10 @@ def main():
                         try:
                             r = subprocess.run([binp], input=RT.STDIN.get(name, ''), capture_output=True, text=True,
                                                timeout=RT.TIMEOUT, cwd=RT.CWD.get(name, ROOT))
-                            ok = r.stdout == want_out and str(r.returncode) == want_code
+                            want = want_out
+                            if mname == 'blank_ws':
+                                want = re.sub(r'pankti (\d+)(?! \()', lambda m: 'pankti %d' % blank_ws_line(src, int(m.group(1))), want)
+                            ok = r.stdout == want and str(r.returncode) == want_code
                             why = f'output or exit differs (exit {r.returncode})'
                         except subprocess.TimeoutExpired:
                             ok, why = False, 'hangs'

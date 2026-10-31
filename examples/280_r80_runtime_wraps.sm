@@ -1,0 +1,17 @@
+# R80: the rules at run time, as the reference states them. Past the range, + - * wrap around
+# silently (as in C); the library's checked form says whether the answer fits (ok[0] = 0: it does
+# not); the smallest vitti divided by -1 wraps to itself instead of crashing; factorial 21! is -1.
+yoj ganita
+yoj ganit
+mukhya()
+    vitti x = 4000000000
+    likha(x * x)
+    vitti ok = nirmmita(8)
+    vitti g = ganita_janchit_gun(x, x, ok)
+    likha(ok[0])
+    vitti m = 0 - 9223372036854775808
+    vitti d = 0 - 1
+    likha(m / d)
+    likha(m % d)
+    likha(kramgun(20))
+    likha(kramgun(21))

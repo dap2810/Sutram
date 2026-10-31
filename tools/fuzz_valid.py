@@ -122,6 +122,43 @@ def binop(op: str, a: int, b: int) -> int:
     raise ValueError(op)
 
 
+FOLDED = {'+', '-', '*', '/', '%', '&', '|', '^'}
+
+
+def cconst(e):
+    """R80: the value the COMPILER folds e to (its fold_const and unary minus/not), or None when e is
+    not folded. Since v276 a folded + - * (or a negation, or MIN / -1) that leaves int64 is a compile
+    error (E_ATIPRAVAH); esrc writes such an operand as (1 ? A : 0) - same value, not folded - so the
+    program stays valid and keeps its run-time wraparound. Such a node is not constant either."""
+    k = e[0]
+    if k == 'lit':
+        return e[1]
+    if k == 'neg':
+        c = cconst(e[1])
+        return None if c is None or c == MINI else -c
+    if k == 'not':
+        c = cconst(e[1])
+        return None if c is None else int(c == 0)
+    if k == 'bin' and e[1] in FOLDED:
+        a, b = cconst(e[2]), cconst(e[3])
+        if a is None or b is None or fold_overflows(e[1], a, b) or (e[1] in '/%' and b == 0):
+            return None
+        return binop(e[1], a, b)
+    return None
+
+
+def fold_overflows(op, a, b) -> bool:
+    if op == '+': return not MINI <= a + b <= MAXI
+    if op == '-': return not MINI <= a - b <= MAXI
+    if op == '*': return not MINI <= a * b <= MAXI
+    if op == '/': return a == MINI and b == -1
+    return False
+
+
+def unfolded(src: str) -> str:
+    return '(1 ? ' + src + ' : 0)'
+
+
 def lit_src(n: int) -> str:
     if n == MINI:
         return '(-9223372036854775807 - 1)'
@@ -141,13 +178,20 @@ def esrc(e, minimal: bool, parent: int = 0, right: bool = False) -> str:
         return e[1]
     if k in ('neg', 'not'):
         inner = esrc(e[1], minimal, 11)
+        if k == 'neg' and cconst(e[1]) == MINI:
+            inner = unfolded(inner)            # R80: -(MIN) folded would be refused
         if inner.startswith('-') or inner.startswith('!'):
             inner = '(' + inner + ')'
         return ('-' if k == 'neg' else '!') + inner
     if k == 'bin':
         op, a, b = e[1], e[2], e[3]
         p = PREC[op]
-        s = esrc(a, minimal, p) + ' ' + op + ' ' + esrc(b, minimal, p, True)
+        left = esrc(a, minimal, p)
+        if op in FOLDED:
+            ca, cb = cconst(a), cconst(b)
+            if ca is not None and cb is not None and fold_overflows(op, ca, cb):
+                left = unfolded(left)          # R80: folded, this would be refused
+        s = left + ' ' + op + ' ' + esrc(b, minimal, p, True)
         if not minimal or p < parent or (p == parent and right):
             return '(' + s + ')'
         return s

@@ -1,0 +1,4 @@
+279_r80_constant_overflow.sm:4:22: Sutram Error [E_ATIPRAVAH]: sthira-gananayah phalam 64-bit purnanka-seemam atikramati
+      likha(4000000000 * 4000000000)
+                       ^
+Sanket: purnankah -9223372036854775808 tah 9223372036854775807 paryantam; ganana punah likhyatam
