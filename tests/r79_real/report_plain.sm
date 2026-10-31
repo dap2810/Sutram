@@ -1,0 +1,185 @@
+# R79: a real program - a class marks report - written the natural way, with no mandapa.
+# Input (stdin), one number per line: N, then for each student: roll, mark1, mark2, mark3 (0..100).
+# Output: per-subject statistics (mean, median, lowest, highest), a histogram of totals, the
+# grade counts, and every student ranked by total, in aligned columns.
+yoj roop
+
+# stambh(v, width): print v right-aligned in a column of `width` characters.
+prakriya stambh(v, width) {
+    vitti buf = nirmmita(32)
+    vitti n = roop_ank(v, buf)
+    vitti rikt = width - n
+    yavat (rikt > 0) {
+        likha(" ")
+        rikt = rikt - 1
+    }
+    shabda(buf)
+    nivartanam n
+}
+
+# shreni_varna(total): the grade letter for a total out of 300, as its character code.
+prakriya shreni_varna(total) {
+    yadi (total >= 270) { nivartanam 65 }
+    yadi (total >= 240) { nivartanam 66 }
+    yadi (total >= 210) { nivartanam 67 }
+    yadi (total >= 180) { nivartanam 68 }
+    nivartanam 70
+}
+
+# milan(keys, idx, lo, mid, hi): merge idx[lo..mid) and idx[mid..hi), highest key first;
+# equal keys keep roll order (the lower index first).
+prakriya milan(keys, idx, lo, mid, hi) {
+    vitti tmp = nirmmita((hi - lo) * 8)
+    vitti i = lo
+    vitti j = mid
+    vitti k = 0
+    yavat (i < mid && j < hi) {
+        yadi (keys[idx[j]] > keys[idx[i]]) {
+            tmp[k] = idx[j]
+            j = j + 1
+        } anya {
+            tmp[k] = idx[i]
+            i = i + 1
+        }
+        k = k + 1
+    }
+    yavat (i < mid) {
+        tmp[k] = idx[i]
+        i = i + 1
+        k = k + 1
+    }
+    yavat (j < hi) {
+        tmp[k] = idx[j]
+        j = j + 1
+        k = k + 1
+    }
+    k = 0
+    yavat (k < hi - lo) {
+        idx[lo + k] = tmp[k]
+        k = k + 1
+    }
+    nivartanam 0
+}
+
+prakriya kram(keys, idx, lo, hi) {
+    yadi (hi - lo < 2) { nivartanam 0 }
+    vitti mid = (lo + hi) / 2
+    kram(keys, idx, lo, mid)
+    kram(keys, idx, mid, hi)
+    milan(keys, idx, lo, mid, hi)
+    nivartanam 0
+}
+
+# madhyaka(vals, n): the median of n values (the lower middle for even n), from a sorted copy.
+prakriya madhyaka(vals, n) {
+    vitti copy = nirmmita(n * 8)
+    vitti idx = nirmmita(n * 8)
+    vitti i = 0
+    yavat (i < n) {
+        copy[i] = vals[i]
+        idx[i] = i
+        i = i + 1
+    }
+    kram(copy, idx, 0, n)
+    nivartanam copy[idx[n - 1 - (n - 1) / 2]]
+}
+
+prakriya vishay(naam, vals, n) {
+    vitti s = 0
+    vitti lo = 100
+    vitti hi = 0
+    vitti i = 0
+    yavat (i < n) {
+        s = s + vals[i]
+        yadi (vals[i] < lo) { lo = vals[i] }
+        yadi (vals[i] > hi) { hi = vals[i] }
+        i = i + 1
+    }
+    shabda(naam)
+    stambh(s / n, 8)
+    stambh(madhyaka(vals, n), 8)
+    stambh(lo, 8)
+    stambh(hi, 8)
+    likha("\n")
+    nivartanam 0
+}
+
+mukhya() {
+    vitti n = grahan()
+    vitti roll = nirmmita(n * 8)
+    vitti m1 = nirmmita(n * 8)
+    vitti m2 = nirmmita(n * 8)
+    vitti m3 = nirmmita(n * 8)
+    vitti total = nirmmita(n * 8)
+    vitti order = nirmmita(n * 8)
+    vitti i = 0
+    yavat (i < n) {
+        roll[i] = grahan()
+        m1[i] = grahan()
+        m2[i] = grahan()
+        m3[i] = grahan()
+        total[i] = m1[i] + m2[i] + m3[i]
+        order[i] = i
+        i = i + 1
+    }
+    likha("subject    mean  median  lowest highest\n")
+    vishay("ganita  ", m1, n)
+    vishay("vijnana ", m2, n)
+    vishay("bhasha  ", m3, n)
+    # histogram of totals, 10 bins of 30
+    vitti bins = nirmmita(10 * 8)
+    i = 0
+    yavat (i < n) {
+        vitti b = total[i] / 30
+        yadi (b > 9) { b = 9 }
+        bins[b] = bins[b] + 1
+        i = i + 1
+    }
+    likha("totals:\n")
+    i = 0
+    yavat (i < 10) {
+        stambh(i * 30, 4)
+        likha("-")
+        stambh(i * 30 + 29, 3)
+        stambh(bins[i], 8)
+        likha("\n")
+        i = i + 1
+    }
+    # grades
+    vitti grades = nirmmita(6 * 8)
+    i = 0
+    yavat (i < n) {
+        vitti g = shreni_varna(total[i]) - 65
+        grades[g] = grades[g] + 1
+        i = i + 1
+    }
+    likha("grades: A ")
+    lkhb(grades[0])
+    likha("  B ")
+    lkhb(grades[1])
+    likha("  C ")
+    lkhb(grades[2])
+    likha("  D ")
+    lkhb(grades[3])
+    likha("  F ")
+    lkhb(grades[5])
+    likha("\n")
+    # ranking
+    vitti letters = "ABCDEF"
+    kram(total, order, 0, n)
+    likha("rank   roll  ganita vijnana bhasha  total grade\n")
+    i = 0
+    yavat (i < n) {
+        vitti s = order[i]
+        stambh(i + 1, 4)
+        stambh(roll[s], 7)
+        stambh(m1[s], 8)
+        stambh(m2[s], 8)
+        stambh(m3[s], 7)
+        stambh(total[s], 7)
+        likha("     ")
+        likha(1, letters + shreni_varna(total[s]) - 65, 1)
+        likha("\n")
+        i = i + 1
+    }
+}

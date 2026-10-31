@@ -1,0 +1,31 @@
+# R78: the behaviours of suchi_srij and avali_srij that no proof pinned (their surviving mutants).
+# Each value is the documented contract, not a recording: cap is clamped to >= 1; a new list or queue
+# is empty; a new queue's head is 0, so it is first-in first-out from the start; a capacity whose size
+# would overflow is refused with 0.
+yoj suchi
+mukhya() {
+    vitti a = suchi_srij(0)
+    vitti b = suchi_srij(0 - 7)
+    vitti c = suchi_srij(5)
+    # capacity (cell 1): clamped to 1 for 0 and -7; 5 stays 5
+    likha(a[1], " ", b[1], " ", c[1], "\n")
+    # a new list is empty
+    likha(suchi_maap(a), " ", suchi_maap(c), "\n")
+    suchi_khip(a, 11)
+    suchi_khip(a, 22)
+    likha(suchi_maap(a), " ", suchi_grah(a, 0), " ", suchi_grah(a, 1), "\n")
+    # a capacity whose byte size would pass 2^63 - 1 is refused: 0
+    likha(suchi_srij(1152921504606846976), " ", avali_srij(1152921504606846976), "\n")
+    vitti q = avali_srij(0)
+    vitti r = avali_srij(3)
+    likha(q[1], " ", r[1], "\n")
+    likha(avali_maap(q), " ", avali_maap(r), "\n")
+    vitti ok = nirmmita(8)
+    avali_pravesh(r, 1)
+    avali_pravesh(r, 2)
+    avali_pravesh(r, 3)
+    likha(avali_nishkas(r, ok), " ", avali_nishkas(r, ok), " ", avali_nishkas(r, ok), "\n")
+    avali_pravesh(q, 7)
+    avali_pravesh(q, 8)
+    likha(avali_nishkas(q, ok), " ", avali_nishkas(q, ok), " ", avali_maap(q), "\n")
+}
