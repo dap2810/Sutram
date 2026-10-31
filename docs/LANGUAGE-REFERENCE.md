@@ -58,7 +58,7 @@ language has a pack of native words (see the `lang/` table at the end).
 | `ganana` | enum |
 | `sutra` | constant |
 | `agrim` | continue |
-| `vitti` | variable |
+| `vitti` | whole-number (integer) variable; for a fraction use `dasham` (§15) |
 | `vibhag` | slice parameter (R23; §17) |
 | `siddhi` | return success: `nivartanam siddhi(v)` (R25; §18) |
 | `dosh` | return failure: `nivartanam dosh(code)` (R25; §18) |
@@ -108,8 +108,9 @@ The library's number functions do not wrap on ordinary inputs (v276): `kramgun` 
 variance) return **−1** when the answer is too large to fit; `ghat` (power), `ghan` (cube) and `yog_seema` (range
 sum) return the largest or smallest `vitti`.
 
-**Not yet right:** `likha` of a `dasham` of about 9223372036854.775808 (9.2×10¹²) or more, or that far below
-zero, prints `-9223372036854.775808`, whatever the value — the printer scales by 10⁶ into a `vitti`.
+**Printing a large `dasham` (fixed in v279).** Up to v278, `likha` of a `dasham` of 9.2×10¹² or more (either
+sign), and of `inf` and `nan`, printed `-9223372036854.775808`, and from 9.0×10⁹ the last digits could be
+wrong. Every `dasham` now prints correctly — §15.
 
 Internal operator ids: `OP_ADD`=1, `OP_SUB`=2, `OP_MUL`=3, `OP_DIV`=4, `OP_EQ`=5, `OP_LE`=6, `OP_LT`=7, `OP_GT`=8, `OP_GE`=9, `OP_NE`=10, `OP_MOD`=11, `OP_AND`=12, `OP_OR`=13, `OP_XOR`=14, `OP_LAND`=15, `OP_LOR`=16, `OP_SHL`=17, `OP_SHR`=18
 
@@ -285,6 +286,7 @@ After `brihat_ank_se_laghu(1234, digits, 4)`, `pad8(digits + 0 * 8)` is `4`, `pa
 | type | declared with |
 |---|---|
 | integer | `vitti x = 5` / `anka x = 5` / `sankhya x = 5` |
+| float (binary64) | `dasham x = 3.5` / `दशम x = 3.5` — §15 |
 | constant | `sutra PI = 3` |
 | boolean | `satya flag = purna` |
 | mala | `mala a[10]` or `vitti a[10]`; index reads/stores are bounds-checked |
@@ -589,9 +591,34 @@ elevation.
 ## 15. Floating point (T12)
 
 `dasham` (दशम) declares a scalar IEEE-754 binary64 float. Decimal literals (`1.5`, `0.05`)
-work, as do mixed integer/float `+ - * /`, float comparisons in `yadi`/`yavat`, and printing via
-`likha` with six decimal places. Current boundaries: floats do not yet cross function
-boundaries (parameters/returns), no scientific notation, no float arrays.
+work, as do mixed integer/float `+ - * /`, float comparisons in `yadi`/`yavat`, typed `dasham`
+parameters and float returns (`examples/93_t12_float_functions.sm`), `kosh dasham` (§16), and
+printing via `likha` with six decimal places. There is no scientific notation in literals (`1e5`
+is refused).
+
+**A fraction needs `dasham`, not `vitti` (v279).** `vitti` holds whole numbers only:
+
+```sutram
+mukhya() {
+    vitti f = 3.5        # refused: E_DASHAM_VITTI - the .5 would be lost
+    dasham g = 3.5       # right: likha(g) prints 3.500000
+}
+```
+
+A **written** fraction (or a written float too large for a `vitti`) stored in a `vitti` — in a declaration
+or an assignment — is refused with `E_DASHAM_VITTI` at the number. A **computed** `dasham` value stored
+in a `vitti` is still converted, **truncating toward zero**: with `dasham x = 2.75`, `vitti a = x` is 2 and
+`vitti b = 0.0 - x` is −2 (`examples/r71/conversion.sm`). The library relies on this (`madhava`:
+`vitti k = x / pi2`). Up to v278 `vitti f = 3.5` silently held 3.
+
+Not covered by the refusal, and still silent: a written fraction pushed into or stored in an integer
+`kosh` (`kosh_push(a, 2.9)` stores 2 — `examples/112_t18_kosh_integer_conversion.sm`).
+
+**How `likha` prints a `dasham` (v279).** Six decimal places, rounded, for every value below 2⁶³
+(9.2×10¹⁸) — `10000000000000.0` prints `10000000000000.000000`. From 2⁶³ up it prints
+`d.dddddde+N` (`1.234568e+22`). Infinities print `inf` and `-inf`; NaN prints `nan`. A `nan` is
+printed correctly, but **comparisons with NaN are wrong**: `n == 5.0` is true when `n` is NaN — do
+not test for NaN with `==`. `examples/289_r87_float_print.sm` pins the printer.
 
 
 ## 16. Growable arrays (T18) — `kosh`

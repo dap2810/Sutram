@@ -1,0 +1,38 @@
+# R87: programs in the tree that convert a dasham into a vitti (scalar). Counted by a scratch build of v278 that
+# reports each float->int conversion it emits (emit_f64_to_i64_rax via emit_scalar_type_conversion), run over the
+# guard's 666 programs. Count = conversion sites in that program (including the library code it pulls in).
+# Only examples/r71/conversion.sm stored a WRITTEN fraction; every other site converts a computed value
+# (madhava: vitti k = x / pi2) and is unaffected by E_DASHAM_VITTI. Integer-kosh stores (example 112) are not counted here.
+
+2 examples/102_ast_multimodule_capacity.sm
+2 examples/112_t18_kosh_integer_conversion.sm
+2 examples/126_numeric_pipeline.sm
+2 examples/201_madhava_library.sm
+1 examples/93_t12_float_functions.sm
+1 examples/94_t12_float_functions.sm
+2 examples/99_ast_multimodule_capacity.sm
+2 examples/r71/conversion.sm
+1 tests/stdlib/fmt_fixed.sm
+1 tests/stdlib/fmt_group.sm
+1 tests/stdlib/fmt_int_base.sm
+1 tests/stdlib/fmt_min.sm
+1 tests/stdlib/fmt_pad.sm
+1 tests/stdlib/fmt_signed.sm
+2 tests/stdlib/madhava_madhava_atan.sm
+2 tests/stdlib/madhava_madhava_cos.sm
+2 tests/stdlib/madhava_madhava_pi.sm
+2 tests/stdlib/madhava_madhava_sin.sm
+2 tests/stdlib/madhava_madhava_sqrt.sm
+1 tests/stdlib/numeric29.sm
+1 tests/stdlib/r10_roop_suchi_edges.sm
+1 tests/stdlib/r11_misc_edges.sm
+2 tests/stdlib/r18_madhava_reduction.sm
+2 tests/stdlib/r76_known_values.sm
+8 tests/r33/kinds.sm
+3 tests/r33/modmain.sm
+8 tests/r34/ffi_bits.sm
+22 tests/r35/winffi.sm
+1 tests/r79_real/report_blocks.sm
+1 tests/r79_real/report_plain.sm
+
+30 programs

@@ -1,0 +1,7 @@
+# R87: property breadth26 checked only the whole part of each parsed float.
+# Its generated program wrote 'vitti want = 3.14159' (and f, diff, lim as vitti): all truncated, tolerance 0.
+# v279 refuses the written fraction, which is how this surfaced (property proofs 85/86). Fixed in tools/proof_props.py: dasham.
+# Demonstration on v278 - the parser's 3.9 compared against want 3.14159 (breadth26-vac.sm, T replaced by vitti or dasham):
+  T=vitti: PASS (missed it)
+  T=dasham: caught: 3.9 is not 3.14159
+# After the fix: 86/86 on v279 and 86/86 on v278 - the library's parser was right; the check was weak.

@@ -1,0 +1,76 @@
+==== literal.sm
+mukhya() {
+    likha("3.5 = ", 3.5)
+}
+  v278 elf: run exit 0: '3.5 = 3.500000\n'
+  v278 pe: run exit 0: '3.5 = 3.500000\n'
+  v279 elf: run exit 0: '3.5 = 3.500000\n'
+  v279 pe: run exit 0: '3.5 = 3.500000\n'
+==== vitti_literal.sm
+mukhya() {
+    vitti f = 3.5
+    likha("f=", f)
+}
+  v278 elf: run exit 0: 'f=3\n'
+  v278 pe: run exit 0: 'f=3\n'
+  v279 elf: compile exit 1: Sutram Error [E_DASHAM_VITTI]: dashamah sankhya purnanka-vittau na sthapyate - bhinnam lupyeta
+  v279 pe: compile exit 1: Sutram Error [E_DASHAM_VITTI]: dashamah sankhya purnanka-vittau na sthapyate - bhinnam lupyeta
+==== ws2_vitti.sm
+mukhya() {
+    vitti f = 3.5
+    vitti g = f * 2.0
+    likha(g)
+}
+  v278 elf: run exit 0: '6\n'
+  v278 pe: run exit 0: '6\n'
+  v279 elf: compile exit 1: Sutram Error [E_DASHAM_VITTI]: dashamah sankhya purnanka-vittau na sthapyate - bhinnam lupyeta
+  v279 pe: compile exit 1: Sutram Error [E_DASHAM_VITTI]: dashamah sankhya purnanka-vittau na sthapyate - bhinnam lupyeta
+==== ws2_dasham.sm
+mukhya() {
+    dasham f = 3.5
+    dasham g = f * 2.0
+    likha(g)
+}
+  v278 elf: run exit 0: '7.000000\n'
+  v278 pe: run exit 0: '7.000000\n'
+  v279 elf: run exit 0: '7.000000\n'
+  v279 pe: run exit 0: '7.000000\n'
+==== dasham_avg.sm
+mukhya() {
+    dasham a = 3.5
+    dasham b = 2.0
+    dasham c = a / b
+    likha(c)
+}
+  v278 elf: run exit 0: '1.750000\n'
+  v278 pe: run exit 0: '1.750000\n'
+  v279 elf: run exit 0: '1.750000\n'
+  v279 pe: run exit 0: '1.750000\n'
+==== computed_into_vitti.sm
+mukhya() {
+    dasham x = 2.75
+    vitti a = x
+    vitti b = 0.0 - x
+    likha("a=", a, " b=", b)
+}
+  v278 elf: run exit 0: 'a=2 b=-2\n'
+  v278 pe: run exit 0: 'a=2 b=-2\n'
+  v279 elf: run exit 0: 'a=2 b=-2\n'
+  v279 pe: run exit 0: 'a=2 b=-2\n'
+==== r156_large.sm
+mukhya() {
+    likha(10000000000000.0)
+}
+  v278 elf: run exit 0: '-9223372036854.775808\n'
+  v278 pe: run exit 0: '-9223372036854.775808\n'
+  v279 elf: run exit 0: '10000000000000.000000\n'
+  v279 pe: run exit 0: '10000000000000.000000\n'
+==== large_var.sm
+mukhya() {
+    dasham f = 10000000000000.0
+    likha(f)
+}
+  v278 elf: run exit 0: '-9223372036854.775808\n'
+  v278 pe: run exit 0: '-9223372036854.775808\n'
+  v279 elf: run exit 0: '10000000000000.000000\n'
+  v279 pe: run exit 0: '10000000000000.000000\n'

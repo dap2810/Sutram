@@ -239,7 +239,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v278) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v279) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -421,6 +421,10 @@ r54_builtin_arity_table:
     r82_m4 db " mandape rachitah; sa mandapah samaptah", 10, 0
     r82_m5 db "Sanket: mandape rachitah kosh mandapat bahih na jivati - mandape eva upayujyatam, mulyam nivartyatam", 10, 0
     r82_lname db "0kl", 0
+    ; R87: a written fraction stored into a whole-number vitti was silently truncated
+    r87_hdr db ": Sutram Error [E_DASHAM_VITTI]: ", 0
+    r87_txt db "dashamah sankhya purnanka-vittau na sthapyate - bhinnam lupyeta", 10, 0
+    r87_hint db "Sanket: vitti purnankanam eva; dashamaya 'dasham' likhyatam: dasham f = 3.5", 10, 0
     ; mov rdx,[r8-40] ; mov [rax],rdx ; mov rdx,[r8-32] ; mov [rax+8],rdx ; mov rdx,[r8-24] ;
     ; mov [rax+16],rdx ; mov [rax+24],r9 ; mov [rax+32],r11 ; lea r10,[rax+40]
     r82_grow_bytes db 0x49,0x8B,0x50,0xD8, 0x48,0x89,0x10, 0x49,0x8B,0x50,0xE0, 0x48,0x89,0x50,0x08
@@ -433,6 +437,8 @@ r54_builtin_arity_table:
     r82_c4 db 0x48,0x8B,0x11, 0x48,0x3B,0x50,0xE8, 0x0F,0x84  ; mov rdx,[rcx] ; cmp rdx,[rax-24] ; je
     r82_c5 db 0x48,0x8B,0x40,0xD8                             ; mov rax,[rax-40]
     r82_c_end:
+    align 16
+    r87_absmask dq 0x7FFFFFFFFFFFFFFF, 0x7FFFFFFFFFFFFFFF
     align 8
     r80_ten dq 10.0
     msg_kosh_required db "Sutram Error: kosh prakriya hetu kosh-vitti avashyak", 10, 0
@@ -757,32 +763,167 @@ r54_builtin_arity_table:
     ; Prefix ends immediately before the platform write syscall/call so the
     ; existing emit_syscall abstraction remains valid for ELF and PE.
     float_print_prefix_bytes:
-        db 0x66,0x48,0x0F,0x6E,0xC0                  ; movq xmm0, rax
-        db 0x48,0xC7,0xC1,0x40,0x42,0x0F,0x00       ; mov rcx, 1000000
-        db 0xF2,0x48,0x0F,0x2A,0xC9                  ; cvtsi2sd xmm1, rcx
-        db 0xF2,0x0F,0x59,0xC1                       ; mulsd xmm0, xmm1
-        db 0xF2,0x4C,0x0F,0x2D,0xC0                  ; cvtsd2si r8, xmm0
-        db 0x48,0x83,0xEC,0x40                       ; sub rsp, 64
-        db 0x48,0x8D,0x74,0x24,0x3F                  ; lea rsi,[rsp+63]
-        db 0xC6,0x06,0x0A                             ; newline
-        db 0x48,0xFF,0xCE                             ; dec rsi
-        db 0x45,0x31,0xC9                             ; xor r9d,r9d
-        db 0x4D,0x85,0xC0,0x79,0x06                  ; test r8,r8 / jns
-        db 0x49,0xF7,0xD8,0x41,0xB1,0x01             ; neg r8 / sign=1
-        db 0xB9,0x06,0x00,0x00,0x00                  ; six fractional digits
-        db 0x31,0xD2,0x4C,0x89,0xC0                  ; frac loop: xor edx,edx; mov rax,r8
-        db 0x41,0xBA,0x0A,0x00,0x00,0x00             ; mov r10d,10
-        db 0x49,0xF7,0xF2,0x49,0x89,0xC0             ; div r10; mov r8,rax
-        db 0x80,0xC2,0x30,0x88,0x16,0x48,0xFF,0xCE  ; digit/store/dec rsi
-        db 0xFF,0xC9,0x75,0xE3                       ; dec ecx; jnz frac loop
-        db 0xC6,0x06,0x2E,0x48,0xFF,0xCE             ; '.' / dec rsi
-        db 0x4D,0x85,0xC0,0x75,0x08                  ; test r8 / jnz integer loop
-        db 0xC6,0x06,0x30,0x48,0xFF,0xCE,0xEB,0x1E  ; integer zero / jump done
-        db 0x31,0xD2,0x4C,0x89,0xC0                  ; integer loop
-        db 0x41,0xBA,0x0A,0x00,0x00,0x00             ; mov r10d,10
-        db 0x49,0xF7,0xF2,0x49,0x89,0xC0             ; div r10; mov r8,rax
-        db 0x80,0xC2,0x30,0x88,0x16,0x48,0xFF,0xCE  ; digit/store/dec rsi
-        db 0x4D,0x85,0xC0,0x75,0xE2                  ; loop while nonzero
+        ; R87: the old template computed round(x * 10^6) into a 64-bit integer: inexact from
+        ; |x| = 9.0e9 (the product passes 2^53) and overflowing from 9.2e12 - 10000000000000.0,
+        ; inf and NaN printed -9223372036854.775808. Below 9.0e9 the old path is kept (same
+        ; digits); above, |x| < 2^63 prints its whole part and fraction apart, larger values as
+        ; d.dddddde+N, and inf, -inf, nan by name.
+        ; Position-independent (relative jumps only); the tail below is unchanged.
+        mov r11, rax                                 ; the bits
+        sub rsp, 64
+        lea rsi, [rsp+63]
+        mov byte [rsi], 10                           ; newline (not written by lkhb, R52)
+        dec rsi
+        xor r9d, r9d                                 ; sign
+        mov rcx, rax
+        shr rcx, 52
+        and ecx, 0x7FF
+        cmp ecx, 0x7FF
+        je .fp_special
+        movq xmm0, rax
+        mov rcx, 1000000
+        cvtsi2sd xmm1, rcx
+        mulsd xmm0, xmm1
+        cvtsd2si r8, xmm0                            ; round(x * 10^6), as before
+        mov rcx, r8                                  ; exact only while |x * 10^6| < 2^53: from
+        sar rcx, 63                                  ; 9.0e9 the product rounds (9223372036854.0
+        mov rdx, r8                                  ; printed 9223372036853.999616), and from 9.2e12
+        xor rdx, rcx                                 ; it overflows (the conversion's 2^63 value)
+        sub rdx, rcx
+        mov rcx, 0x20000000000000                    ; 2^53
+        cmp rdx, rcx
+        jae .fp_big
+        test r8, r8
+        jns .fp_pos
+        neg r8
+        mov r9b, 1
+.fp_pos:
+        xor edx, edx
+        mov rax, r8
+        mov ecx, 1000000
+        div rcx
+        mov r8, rdx                                  ; the six decimals
+        mov r11, rax                                 ; the whole part
+        jmp .fp_digits
+.fp_big:
+        mov rax, r11
+        btr rax, 63
+        jnc .fp_bpos
+        mov r9b, 1
+.fp_bpos:
+        movq xmm0, rax                               ; |x|
+        mov rcx, 0x43E0000000000000                  ; 2^63
+        movq xmm2, rcx
+        ucomisd xmm0, xmm2
+        jae .fp_expo
+        cvttsd2si r11, xmm0
+        cvtsi2sd xmm1, r11
+        subsd xmm0, xmm1
+        mov rcx, 1000000
+        cvtsi2sd xmm1, rcx
+        mulsd xmm0, xmm1
+        cvtsd2si r8, xmm0
+        cmp r8, 1000000
+        jb .fp_digits
+        sub r8, 1000000
+        inc r11
+        jmp .fp_digits
+.fp_expo:
+        xor edi, edi                                 ; the exponent
+        mov ecx, 10
+        cvtsi2sd xmm1, rcx
+.fp_ediv:
+        ucomisd xmm0, xmm1
+        jb .fp_edone
+        divsd xmm0, xmm1
+        inc edi
+        jmp .fp_ediv
+.fp_edone:
+        cvttsd2si r11, xmm0
+        cvtsi2sd xmm1, r11
+        subsd xmm0, xmm1
+        mov rcx, 1000000
+        cvtsi2sd xmm1, rcx
+        mulsd xmm0, xmm1
+        cvtsd2si r8, xmm0
+        cmp r8, 1000000
+        jb .fp_eput
+        sub r8, 1000000
+        inc r11
+        cmp r11, 10
+        jb .fp_eput
+        mov r11, 1
+        inc edi
+.fp_eput:
+        mov eax, edi                                 ; e+N, written right to left
+        mov ecx, 10
+.fp_eloop:
+        xor edx, edx
+        div ecx
+        add dl, '0'
+        mov [rsi], dl
+        dec rsi
+        test eax, eax
+        jnz .fp_eloop
+        mov byte [rsi], '+'
+        dec rsi
+        mov byte [rsi], 'e'
+        dec rsi
+        jmp .fp_digits
+.fp_special:
+        mov rcx, r11
+        shl rcx, 12
+        jnz .fp_nan
+        mov byte [rsi], 'f'
+        dec rsi
+        mov byte [rsi], 'n'
+        dec rsi
+        mov byte [rsi], 'i'
+        dec rsi
+        bt r11, 63
+        jnc .fp_tail
+        mov r9b, 1
+        jmp .fp_tail
+.fp_nan:
+        mov byte [rsi], 'n'
+        dec rsi
+        mov byte [rsi], 'a'
+        dec rsi
+        mov byte [rsi], 'n'
+        dec rsi
+        jmp .fp_tail
+.fp_digits:
+        mov ecx, 6
+.fp_frac:
+        xor edx, edx
+        mov rax, r8
+        mov r10d, 10
+        div r10
+        mov r8, rax
+        add dl, '0'
+        mov [rsi], dl
+        dec rsi
+        dec ecx
+        jnz .fp_frac
+        mov byte [rsi], '.'
+        dec rsi
+        test r11, r11
+        jnz .fp_int
+        mov byte [rsi], '0'
+        dec rsi
+        jmp .fp_tail
+.fp_int:
+        xor edx, edx
+        mov rax, r11
+        mov r10d, 10
+        div r10
+        mov r11, rax
+        add dl, '0'
+        mov [rsi], dl
+        dec rsi
+        test r11, r11
+        jnz .fp_int
+.fp_tail:
         db 0x45,0x84,0xC9,0x74,0x06                  ; test sign / jz
         db 0xC6,0x06,0x2D,0x48,0xFF,0xCE             ; '-' / dec rsi
         db 0x48,0xFF,0xC6                             ; inc rsi
@@ -8151,6 +8292,68 @@ r80_fold_overflow:
     lea rcx, [rel r80_hint_fold]
     jmp r80_compile_error
 
+; ---------------------------------------------------------------- R87
+; r87_check_float_literal(rbx = AST_DECL / AST_ASSIGN being generated). A written dasham number
+; with a fraction (or too large for 64 bits) stored into a whole-number vitti is E_DASHAM_VITTI:
+; `vitti f = 3.5` used to keep 3 without a word. A computed value (x / pi2) still converts,
+; toward zero, as the reference states - the library relies on it. Preserves all.
+r87_check_float_literal:
+    push rax
+    push rcx
+    push rdx
+    push rsi
+    push rdi
+    mov rax, [rbx]
+    cmp rax, AST_DECL
+    jne .assign
+    cmp qword [rbx+24], 0          ; a mala / kosh declaration
+    jne .out
+    cmp qword [rbx+32], 0          ; 0 = an integer vitti (1 dasham, 2/3 kosh)
+    jne .out
+    jmp .value
+.assign:
+    mov rax, [rbx+8]               ; the target: a plain name that is not a dasham
+    test rax, rax
+    jz .out
+    cmp qword [rax], AST_VAR
+    jne .out
+    mov rdi, [rax+8]
+    call is_float_var
+    test rax, rax
+    jnz .out
+.value:
+    mov rax, [rbx+16]
+    test rax, rax
+    jz .out
+    cmp qword [rax], AST_FLOAT
+    jne .out
+    movq xmm0, [rax+8]
+    mov rcx, 0x43E0000000000000    ; 2^63
+    movq xmm1, rcx
+    movapd xmm2, xmm0
+    andpd xmm2, [rel r87_absmask]
+    ucomisd xmm2, xmm1
+    jae .bad                       ; does not fit (or inf / NaN)
+    cvttsd2si rcx, xmm0
+    cvtsi2sd xmm1, rcx
+    ucomisd xmm0, xmm1
+    jne .bad                       ; has a fraction
+    jp .bad
+    jmp .out
+.bad:
+    mov rdi, [rax+56]
+    lea rsi, [rel r87_hdr]
+    lea rdx, [rel r87_txt]
+    lea rcx, [rel r87_hint]
+    jmp r80_compile_error
+.out:
+    pop rdi
+    pop rsi
+    pop rdx
+    pop rcx
+    pop rax
+    ret
+
 ; ---------------------------------------------------------------- R82
 ; A kosh made inside a mandapa lives as long as the block. Only in a program that declares
 ; a kosh inside a mandapa (r82_on; every other program compiles to the same bytes):
@@ -14337,12 +14540,14 @@ parse_primary_inner:
     ret
 .pp_float:
     mov rbx, [rax+8]         ; raw IEEE-754 binary64 bits
+    push qword [rax+32]      ; R87: where it is written
     call advance_tok
     push rbx
     call alloc_ast
     pop rbx
     mov qword [rax], AST_FLOAT
     mov [rax+8], rbx
+    pop qword [rax+56]
     pop rbx
     ret
 
@@ -15964,6 +16169,7 @@ gen_stmt:
 
 .gs_decl:
     ; [AST_DECL][name_ptr][init_ptr][array_size_expr_or_0][type_marker]
+    call r87_check_float_literal  ; R87: vitti f = 3.5 - a fraction into a whole-number vitti
     mov rdi, rbx              ; R23 WS3: vitti s = a[lo:hi] declares a slice
     call r23_mark_slice_decl
     ; R38: vitti b = a (a is a mala/kosh) marks b the same kind, so b[i] is
@@ -16228,6 +16434,7 @@ gen_stmt:
     ret
 
 .gs_assign:
+    call r87_check_float_literal  ; R87: f = 2.25 into a whole-number vitti
     ; R59 pre-emission peephole: an existing scalar's x=x has a side-effect-
     ; free AST_VAR RHS, so evaluating x and writing it back cannot alter
     ; memory/register state. Skip BOTH load and store before any code bytes

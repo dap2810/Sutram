@@ -1,6 +1,9 @@
+# R87: a written fraction stored in a vitti is refused (E_DASHAM_VITTI); a computed dasham
+# value stored in a vitti still converts, truncating toward zero - which this pins.
 mukhya() {
-    vitti a = 2.75
-    vitti b = -2.75
+    dasham x = 2.75
+    vitti a = x
+    vitti b = 0.0 - x
     dasham c = 2 + 0.5
     likha(a)
     likha(b)

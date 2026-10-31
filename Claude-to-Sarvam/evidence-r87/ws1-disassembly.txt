@@ -1,0 +1,20 @@
+# WS1: v278 (origin/main), emitted code for the declaration, ELF. objdump -D -b binary -m i386:x86-64 -M intel
+
+=== vitti_literal.v278  (source: vitti f = 3.5; likha("f=", f))
+  8d:	48 b8 00 00 00 00 00 	movabs rax,0x400c000000000000
+  94:	00 0c 40 
+  97:	66 48 0f 6e c0       	movq   xmm0,rax
+  9c:	f2 48 0f 2c c0       	cvttsd2si rax,xmm0
+  a1:	48 89 c3             	mov    rbx,rax
+  a4:	48 8d 05 02 00 00 00 	lea    rax,[rip+0x2]        # 0xad
+  ab:	eb 03                	jmp    0xb0
+
+=== dl.v278  (source: dasham f = 3.5; likha("f=", f))
+  8d:	48 b8 00 00 00 00 00 	movabs rax,0x400c000000000000
+  94:	00 0c 40 
+  97:	48 89 c3             	mov    rbx,rax
+  9a:	48 8d 05 02 00 00 00 	lea    rax,[rip+0x2]        # 0xa3
+  a1:	eb 03                	jmp    0xa6
+  a3:	66 3d 48 c7          	cmp    ax,0xc748
+  a7:	c7 01 00 00 00 48    	mov    DWORD PTR [rcx],0x48000000
+The 3.5 is 0x400c000000000000 in both. With vitti it is converted by cvttsd2si (truncate) before the store into rbx; with dasham the bits are stored as they are. The fraction is lost at the assignment - candidate 1, by the integer type, not by parsing, the store or the print.

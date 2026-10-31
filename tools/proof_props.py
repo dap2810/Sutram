@@ -3661,7 +3661,8 @@ def prop_breadth26(compiler, rng):
         lines.append(f"    yadi (ganit_seemit({v}, {lo}, {hi}) != {want}) {{")
         fail("seemit")
         lines.append("    }")
-    # float parse vs Python, tolerance 1e-9 relative
+    # float parse vs Python, tolerance 1e-9 relative. R87: these were `vitti`, which truncated both
+    # sides (want 3.14159 held 3, the tolerance 0), so only the whole part was checked.
     lines.append("    vitti buf = nirmmita(32 * 8)")
     for ci, s in enumerate(["0", "1", "-1", "3.14159", "0.5", "2.5", "-0.02",
               "100000", "123456.789", "1e10", "1.5e-5", ".5", "12.",
@@ -3669,7 +3670,7 @@ def prop_breadth26(compiler, rng):
         want = float(s)
         for j, ch in enumerate(s):
             lines.append(f"    buf[{j}] = {ord(ch)}")
-        lines.append(f"    vitti f{ci} = varna_tak_dashm(buf, {len(s)}, ok)")
+        lines.append(f"    dasham f{ci} = varna_tak_dashm(buf, {len(s)}, ok)")
         lines.append("    yadi (ok[0] != 1) {")
         fail(f"float ok {s}")
         lines.append("    }")
@@ -3679,10 +3680,10 @@ def prop_breadth26(compiler, rng):
             lines.append("    }")
         else:
             wlit = repr(want) if "e" not in repr(want) else f"{want:.15f}"
-            lines.append(f"    vitti want{ci} = {wlit}")
-            lines.append(f"    vitti diff{ci} = f{ci} - want{ci}")
+            lines.append(f"    dasham want{ci} = {wlit}")
+            lines.append(f"    dasham diff{ci} = f{ci} - want{ci}")
             lines.append(f"    yadi (diff{ci} < 0.0) {{ diff{ci} = 0.0 - diff{ci} }}")
-            lines.append(f"    vitti lim{ci} = want{ci}")
+            lines.append(f"    dasham lim{ci} = want{ci}")
             lines.append(f"    yadi (lim{ci} < 0.0) {{ lim{ci} = 0.0 - lim{ci} }}")
             lines.append(f"    lim{ci} = lim{ci} * 0.000000001")
             lines.append(f"    yadi (diff{ci} > lim{ci}) {{")

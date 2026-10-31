@@ -1,0 +1,21 @@
+# R87: dasham values print with six decimals - a literal, a variable, and a value computed
+# through variables. Before v279 every value from 9.2e12 up, and inf and nan, printed
+# -9223372036854.775808, and from 9.0e9 the last digits could be wrong.
+mukhya() {
+    likha("literal ", 3.5)
+    dasham f = 3.5
+    likha("variable ", f)
+    dasham g = f * 2.0
+    likha("computed ", g)
+    dasham a = 7.0
+    dasham b = 2.0
+    likha("average ", (a + b) / 2.0)
+    likha("negative ", 0.0 - f / 4.0)
+    likha("large ", 10000000000000.0)
+    likha("near 2^53/10^6 ", 9223372036854.0)
+    likha("above 2^63 ", 12345678901234567890123.0)
+    dasham z = 0.0
+    dasham inf = 1.0 / z
+    likha("inf ", inf, " ", 0.0 - inf)
+    likha("nan ", z / z)
+}

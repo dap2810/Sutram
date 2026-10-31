@@ -1,0 +1,6 @@
+# R87: vitti holds whole numbers. A written fraction stored in one would lose its fraction
+# (v278 printed 3 here), so it is refused: E_DASHAM_VITTI. Write dasham f = 3.5 instead.
+mukhya() {
+    vitti f = 3.5
+    likha("f=", f)
+}

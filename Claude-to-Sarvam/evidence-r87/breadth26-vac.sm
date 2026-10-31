@@ -1,0 +1,19 @@
+yoj vakyank
+mukhya() {
+    vitti ok = nirmmita(8)
+    vitti buf = nirmmita(32 * 8)
+    buf[0] = 51
+    buf[1] = 46
+    buf[2] = 57
+    T f = varna_tak_dashm(buf, 3, ok)
+    T want = 3.14159
+    T diff = f - want
+    yadi (diff < 0.0) { diff = 0.0 - diff }
+    T lim = want
+    lim = lim * 0.000000001
+    yadi (diff > lim) {
+        likha("caught: 3.9 is not 3.14159\n")
+        nivartanam 0
+    }
+    likha("PASS (missed it)\n")
+}
