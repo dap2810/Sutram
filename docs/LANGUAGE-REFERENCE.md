@@ -113,7 +113,7 @@ These are the **actual** builtin names the compiler accepts, taken from its tabl
 | `dvaram` | patra descriptor helper |
 | `paadh` | open a file |
 | `band` | close a handle |
-| `nirmmita` | allocate memory: `nirmmita(n)` gives `n` bytes, zeroed. **Its cells are not bounds-checked** — writing past `n` bytes is your mistake, as in C (§6c) |
+| `nirmmita` | allocate memory: `nirmmita(n)` gives `n` **bytes**, zeroed — `nirmmita(count * 8)` for `count` cells. Checked only when the size is a number and the name is never reassigned; otherwise writing past `n` bytes is your mistake, as in C (§6c) |
 | `smaran` | fill memory |
 | `smaran_cp` | copy memory |
 | `vartani_aayam` | varna length |
@@ -407,16 +407,25 @@ likha("done")           # back at the header's indentation: after the loop
 Read it aloud as **code** with Sanskrit vocabulary, not as poetry or automatically well-formed Sanskrit discourse. Pāṇini's `anuvṛtti` and `adhikāra` are useful formal-grammar analogies, **not mechanisms currently implemented merely because they have Sanskrit names**. No new parser feature or natural-language understanding is claimed.
 
 **Teaching example:** `examples/11_forloop.sm` already teaches a loop, but only the legacy `tak` spelling. After separately verifying the new form, update or extend that example to show the equivalent Sanskrit-oriented range without removing legacy coverage.
-### 6c. Raw memory is not bounds-checked
+### 6c. Raw memory: `nirmmita` counts bytes, `p[i]` counts 8-byte cells
 
-**`nirmmita(n)` gives you `n` bytes. `b[i]` reads or writes 8 bytes at `b + 8*i`, and nothing checks that they
-are inside the `n`.** `vitti b = nirmmita(1)` then `b[0] = 5` writes 7 bytes that are not yours; `b[2]` on a
-16-byte buffer writes past it. The program may go on, crash, or change another buffer — exactly as in C.
+**`nirmmita(n)` gives you `n` BYTES. `p[i]` is the 8 bytes at `p + 8*i`.** So `nirmmita(10)` holds one whole
+cell, not ten: for `count` cells, write **`nirmmita(count * 8)`**.
 
-`mala` and `kosh` *are* checked (`Sutram Error: mala ank seema atikram`): they record their own length. A
-`nirmmita` buffer is a bare address, and an address can point into the middle of a buffer (`b + 8`), where no
-length is recorded. Use `mala` when you want the check; use `nirmmita` when you are managing bytes yourself, and
-allocate `count * 8` for `count` cells.
+**What the compiler checks (v274):** when a name is declared `vitti p = nirmmita(SIZE)` with SIZE a number (or
+`+ - *` of numbers) and is **never assigned again in that function**, `p` is known to point at the start of SIZE
+bytes, and
+- **a constant index past the end is a compile error**:
+  `nirmmita(10)` then `p[9]` → `Sutram Error [E_NIRMMITA_SEEMA]: ... p[9] nirmmita(10) bahih` /
+  `Sanket: nirmmita bhaita-sankhyam ganayati, p[i] ashta-bhaita-ekakaih: p[9] hetu nirmmita(80) avashyakam`;
+- **a computed index is bounds-checked when the program runs**, like a `mala`'s: the loop
+  `yavat (i < 10) p[i] = i` over `nirmmita(10)` stops at `p[1]` with `Sutram Error: mala ank seema atikram`.
+
+**What it does not check:** a size computed at run time (`nirmmita(n)`), a name assigned again (`p = p + 8`), an
+address computed from `p` (`p + 8`, `arr + (pos + 1) * 8`), a parameter, a `likh8`/`akshar_rakh` store. Those are
+bare addresses: write past the bytes you asked for and the program may go on, crash, or change another buffer —
+exactly as in C. (A header on every block, so that *any* address could be checked, was built and measured in R76;
+it breaks the library's addresses into the middle of buffers. `mala` and `kosh` are always checked.)
 
 To *find* such a mistake, build the compiler with guard pages (`nasm -dGUARD_PAGES`, as `tools/guard_page.py`
 does): every `nirmmita` block then ends against memory that cannot be touched, and a write past its end stops

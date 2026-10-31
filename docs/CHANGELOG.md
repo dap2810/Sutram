@@ -1,3 +1,17 @@
+## Compiler v274 (Claude, R77-R79) - the byte-versus-qword trap is caught; no token can be dropped; a real program in blocks
+
+- **`nirmmita` counts bytes, `p[i]` counts 8-byte cells.** When `vitti p = nirmmita(SIZE)` has a written SIZE and
+  `p` is never assigned again in its function, a constant index past the end is a compile error
+  (`E_NIRMMITA_SEEMA`, `nirmmita(10)` then `p[9]` -> "p[9] hetu nirmmita(80) avashyakam"), and a computed index is
+  bounds-checked like a `mala`'s (the loop `p[i]`, i < 10, over `nirmmita(10)` stops at `p[1]`). No false alarm
+  in the suite, the 228 library proofs or the 86 properties; cost 0% on the shipped benchmarks, +17-19% on a tight
+  raw-write loop. **It found an overrun in our own test** (`tests/r73_scratch/reuse_zeroed`: 16 bytes into 13).
+- **No silent partial compilation:** 715 stray-token programs (every kind of body, indented and braced) and
+  every example saved 7 ways (CRLF, trailing spaces, whitespace-only lines, tabs, no/extra final newline, UTF-8
+  BOM) - 1,700 checks - refuse or run every statement. New gates `R77 stray`, `R77 format`.
+- **A real 185-line program in blocks** (`tests/r79_real/`): 185 MB -> 110 MB with blocks in the program alone,
+  -> 7 MB with the library's own temporaries in blocks too (the R76 patch, not yet landed). Gate `R79 real`.
+
 ## v428 - I was repeating a wrong number: the mutants are 2, not 15, and there is no Madhava sign error
 
 ### Muse's correction
