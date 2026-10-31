@@ -239,7 +239,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v281) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v282) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -438,6 +438,10 @@ r54_builtin_arity_table:
     r82_c4 db 0x48,0x8B,0x11, 0x48,0x3B,0x50,0xE8, 0x0F,0x84  ; mov rdx,[rcx] ; cmp rdx,[rax-24] ; je
     r82_c5 db 0x48,0x8B,0x40,0xD8                             ; mov rax,[rax-40]
     r82_c_end:
+    align 16
+    r94_hdr db ": Sutram Error [E_DASHAM_KRIYA]: ", 0
+    r94_txt db "dashama-sankhyayam % & | ^ << >> kriyah na sambhavanti", 10, 0
+    r94_hint db "Sanket: etah purnanka-kriyah - vitti upayujyatam", 10, 0
     align 16
     r87_absmask dq 0x7FFFFFFFFFFFFFFF, 0x7FFFFFFFFFFFFFFF
     align 8
@@ -8298,6 +8302,44 @@ r80_fold_overflow:
 ; with a fraction (or too large for 64 bits) stored into a whole-number vitti is E_DASHAM_VITTI:
 ; `vitti f = 3.5` used to keep 3 without a word. A computed value (x / pi2) still converts,
 ; toward zero, as the reference states - the library relies on it. Preserves all.
+; R94: r94_check_float_bitop(rdi = AST_BINOP). `%`, `&`, `|`, `^`, `<<` and `>>` have no dasham meaning
+; here; with a dasham operand the integer code ran on the IEEE-754 bits, so 5.5 % 2.0 printed
+; 6192449487634432. Refused: E_DASHAM_KRIYA at the operator. Other operators return untouched.
+r94_check_float_bitop:
+    push rbx
+    mov rbx, rdi
+    mov rax, [rbx+8]
+    cmp rax, OP_MOD
+    je .r94_operands
+    cmp rax, OP_AND
+    je .r94_operands
+    cmp rax, OP_OR
+    je .r94_operands
+    cmp rax, OP_XOR
+    je .r94_operands
+    cmp rax, OP_SHL
+    je .r94_operands
+    cmp rax, OP_SHR
+    jne .r94_out
+.r94_operands:
+    mov rdi, [rbx+16]
+    call expr_is_float
+    test rax, rax
+    jnz .r94_bad
+    mov rdi, [rbx+24]
+    call expr_is_float
+    test rax, rax
+    jz .r94_out
+.r94_bad:
+    mov rdi, [rbx+32]
+    lea rsi, [rel r94_hdr]
+    lea rdx, [rel r94_txt]
+    lea rcx, [rel r94_hint]
+    jmp r80_compile_error
+.r94_out:
+    pop rbx
+    ret
+
 r87_check_float_literal:
     push rax
     push rcx
@@ -22075,6 +22117,8 @@ gen_expr:
     call binop_needs_float
     test rax, rax
     jnz .ge_fbinop
+    mov rdi, rbx                   ; R94: % & | ^ << >> on a dasham worked on its bits
+    call r94_check_float_bitop
 %ifndef SUTRAM_R65_TRAP_INT
     ; In legacy mode retain R58 division strength reduction.
     mov rdi,rbx

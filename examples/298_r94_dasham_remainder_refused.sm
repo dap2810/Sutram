@@ -1,0 +1,7 @@
+# R94 (v282): % (and & | ^ << >>) are whole-number operators. With a dasham they ran on the
+# number's bits - 5.5 % 2.0 printed 6192449487634432. Now refused: E_DASHAM_KRIYA.
+mukhya() {
+    dasham x = 5.5
+    dasham y = 2.0
+    likha(x % y)
+}

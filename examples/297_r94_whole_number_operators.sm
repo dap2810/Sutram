@@ -1,0 +1,16 @@
+# R94: integer / truncates toward zero and % takes the sign of the left side; >> is a logical
+# shift (zeros come in, so a negative number turns large); 7 / 2 is 3 even when stored in a
+# dasham. Reference sections 3a and 15.
+mukhya() {
+    vitti a = 0 - 7
+    vitti b = 2
+    likha("-7 / 2 = ", a / b, " and -7 % 2 = ", a % b)
+    vitti c = 0 - 8
+    likha("-8 >> 1 = ", c >> 1)
+    dasham d = 7 / 2
+    likha("dasham d = 7 / 2 gives ", d)
+    dasham e = 7.0 / 2
+    likha("dasham e = 7.0 / 2 gives ", e)
+    dasham t = 0.1 + 0.2
+    likha("0.1 + 0.2 = ", t, " equal to 0.3: ", t == 0.3)
+}

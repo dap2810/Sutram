@@ -98,8 +98,10 @@ error.** In detail:
 |---|---|
 | `+` `-` `*` past the range, **at run time** | wraps around, silently (checking every operation measured +5% to +282% on the benchmarks, so it is not done) |
 | the same with **numbers written in the program** — `4000000000 * 4000000000`, `9223372036854775807 + 1`, `-(0 - 9223372036854775808)` | **refused when compiled**: `prog.sm:2:22: Sutram Error [E_ATIPRAVAH]: sthira-gananayah phalam 64-bit purnanka-seemam atikramati`, with the line and a caret under the operator |
-| a **written whole number** too large — `99999999999999999999`, `9223372036854775808`, `0x10000000000000000` | **refused when compiled**: `... [E_ATIPRAVAH]: ankah 64-bit purnanka-seemam atikramati`. (`0 - 9223372036854775808` and `-9223372036854775808` are allowed: they are the smallest `vitti`.) A `dasham` literal may be larger: `100000000000000000000.5` is that number. |
+| a **written whole number** too large — `99999999999999999999`, `9223372036854775808`, `0x10000000000000000` | **refused when compiled**: `... [E_ATIPRAVAH]: ankah 64-bit purnanka-seemam atikramati`. (`0 - 9223372036854775808` and `-9223372036854775808` are allowed: they are the smallest `vitti`.) A `dasham` literal may be larger, but it keeps only about 16 significant digits: `100000000000000000000.5` is `100000000000000000000.0` (the `.5` is lost; `==` between them is 1). |
 | `/` or `%` **by zero** (also a `dasham` divided by `0.0`, v280 — §15) | the program **stops**: `Sutram Error [E_SHUNYA_BHAJAN]: pankti 3 - shunye vibhajanam na sambhavati` (for `%`: `shunyena sheshah na sambhavati`), exit 1. The line is in your file; inside a module it is that module's line and name: `pankti 3 (r80_ausat.smlib)`. **Written as `/ 0`, it is refused when compiled.** |
+| `/` and `%` of negative numbers | `/` **truncates toward zero** and `%` **takes the sign of the left side**: `-7 / 2` is −3 and `-7 % 2` is −1; `-9 / 8` is −1 and `-9 % 8` is −1 (the same for a written divisor and a variable one). |
+| `<<` and `>>` | the shift count is taken **modulo 64**: `1 << 64` is 1, `1 << 63` is the smallest `vitti`. **`>>` is a logical shift** - it fills with zeros, so a negative number becomes a large positive one: `-8 >> 1` is 9223372036854775804. To halve a negative number, use `/ 2`. |
 | `/` and `%` by −1 | the smallest `vitti` divided by −1 wraps to itself; `% -1` is 0 (before v276 this crashed; written as numbers, `(0 - 9223372036854775808) / (0 - 1)` is refused) |
 | when you need to know | the library's checked arithmetic says whether the answer fits: `ganita_janchit_yuj` / `_nyun` / `_gun` (`ok[0]` is 1 or 0); `ganita_paripurna_*` stops at the largest or smallest `vitti` instead of wrapping |
 
@@ -594,7 +596,24 @@ elevation.
 work, as do mixed integer/float `+ - * /`, float comparisons in `yadi`/`yavat`, typed `dasham`
 parameters and float returns (`examples/93_t12_float_functions.sm`), `kosh dasham` (§16), and
 printing via `likha` with six decimal places. There is no scientific notation in literals (`1e5`
-is refused).
+is refused), and a literal needs digits on both sides of the point: write `0.5` and `5.0` - `.5` and `5.`
+are syntax errors (reported at the next line).
+
+**Whole numbers stay whole until a `dasham` is involved.** `dasham d = 7 / 2` is `3.000000`: `7 / 2` is
+integer division (3), then the 3 is stored. Write `7.0 / 2` or `7 / 2.0` for 3.5. The same with variables:
+`vitti i = 7; dasham d = i / 2` is 3.000000, `i / 2.0` is 3.500000. One `dasham` operand makes `+ - * /`
+and the comparisons work in `dasham`: `2 + 0.5` is 2.5, and `vitti i = 3; dasham d = 3.0; d == i` is 1.
+
+**`%`, `&`, `|`, `^`, `<<` and `>>` are whole-number operators (v282).** With a `dasham` operand they are
+refused: `Sutram Error [E_DASHAM_KRIYA]: dashama-sankhyayam % & | ^ << >> kriyah na sambhavanti`. Up to
+v281 they ran on the number's bits: `5.5 % 2.0` printed `6192449487634432`. (For `%` and `%=` the error gives the line and a
+caret; for `& | ^ << >>` only the file - those operators carry no position yet.)
+
+**A `dasham` is binary, not decimal.** `0.1 + 0.2` prints `0.300000`, but `0.1 + 0.2 == 0.3` is 0: neither is
+exactly representable, and the sums differ in the 17th digit. Compare with a tolerance. A whole number up to
+2⁵³ (9007199254740992) is exact; a `vitti` larger than that rounds when stored in a `dasham`, and
+`9223372036854775807` becomes 2⁶³ - which no longer fits a `vitti`, so storing it back stops the program
+(`E_DASHAM_VITTI`).
 
 **A fraction needs `dasham`, not `vitti` (v279).** `vitti` holds whole numbers only:
 
@@ -642,7 +661,19 @@ keeps its sign: `-1.500000e+19`. So squaring `100000000000000000000.0` (10²⁰)
 | 10²⁰ squared twice (10⁸⁰) | `1.000000e+80` |
 | `0.0 - 15000000000000000000.0` | `-1.500000e+19` |
 | `0.0000001` (below half of the sixth decimal) | `0.000000` |
-| overflow past the largest `dasham` | `inf` |
+| overflow past the largest `dasham` (about 1.8 × 10³⁰⁸) | `inf` |
+| `0.0 - 0.0`, and a tiny negative such as `0.0 - 0.0000001` | `0.000000` (no minus sign) |
+
+**A tiny number prints as `0.000000` but is not zero.** `0.000000001` squared five times is about 10⁻²⁸⁸:
+`likha` prints `0.000000`, `s == 0.0` is 0, and `1.0 / s` is `1.000000e+288`. Six decimals show the value
+to the nearest millionth, no more.
+
+**Where `inf` and NaN come from (v280).** Not from division by zero, which stops the program. `inf` comes from
+overflow: `100000000000000000000.0` squared four times is `inf` (1.0 × 10²⁰ → 10⁴⁰ → 10⁸⁰ → 10¹⁶⁰ → `inf`).
+NaN comes from `inf - inf`, `inf * 0.0` and `inf / inf`. `1.0 / inf` is 0. `inf` compares as an ordinary
+number - `inf == inf` and `inf > 0.0` are 1 - and `-inf` is below every number. `inf` and NaN are 8 bytes like any
+`dasham`: they go into and out of a `kosh dasham`, a function and a `mandapa` block unchanged (R94,
+`evidence-r94`). Stored in a `vitti` they stop the program (`E_DASHAM_VITTI`).
 
 **Dividing a `dasham` by zero stops the program (v280)** — `0.0` or `-0.0`, written or computed — with
 the same message as for `vitti`: `Sutram Error [E_SHUNYA_BHAJAN]: pankti 8 - shunye vibhajanam na

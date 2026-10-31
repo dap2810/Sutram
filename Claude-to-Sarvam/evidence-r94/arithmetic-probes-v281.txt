@@ -1,0 +1,83 @@
+# R94 WS2: arithmetic probes, each run on v281 (origin/main) - the behaviour the reference must describe
+# (probes.py; a probe whose first likha argument is not a string literal is raw write mode - int_div_neg)
+== int_wrap: exit 0: '-2446744073709551616\n'
+== int_div_neg: exit 0: ''
+== int_div_neg_const: exit 0: 'c -3 -1\n'
+== int_div_neg_pow2_8: exit 0: 'p -1 -1 -2\n'
+== min_div_m1: exit 0: 'm -9223372036854775808 0\n'
+== int_int_into_dasham: exit 0: '3.000000\n'
+== lit_int_div_into_dasham: exit 0: '3.000000\n'
+== mixed_int_float: exit 0: '2.500000\n'
+== mixed_int_dasham_var: exit 0: '3.500000\n'
+== vitti_from_mixed_whole: exit 0: '3\n'
+== cmp_int_float: exit 0: 'c 1 1 1\n'
+== cmp_dasham_vs_vitti_var: exit 0: 'e 1 0 1\n'
+== unary_minus_dasham: exit 0: '-2.500000\n'
+== dasham_mod: exit 0: '6192449487634432\n'
+== neg_zero_print: exit 0: '0.000000\n0.000000\n'
+== big_lit_half: exit 0: 'h 1 1.000000e+20\n'
+== lit_2_63: exit 0: '9.223372e+18\n'
+== inf_ops: exit 0: 'inf\nnan\n-inf\nnan\ni 1 1\n'
+== inf_div_inf: exit 0: 'nan\n0.000000\n'
+== nan_div_by_nan: exit 0: 'nan\n'
+== underflow: exit 0: '0.000000\nz 0\n'
+== div_by_tiny: exit 0: '1.000000e+288\n'
+== sci_literal: COMPILE 1: ["sci_literal.sm:2:17: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'e5'"]
+== dasham_literal_no_int_part: COMPILE 1: ["Sutram Error: vyakaran dosh, pankti 3:5, shabd 'likha'"]
+== dasham_literal_trailing_dot: COMPILE 1: ["Sutram Error: vyakaran dosh, pankti 4:1, shabd '}'"]
+== float_into_int_param: COMPILE 1: ["Sutram Error: vyakaran dosh, pankti 4:1, shabd 'prakriya'"]
+== round_half: exit 0: '0.000000\n0.000002\n2.500000\n2.000000\n'
+== precision_16: exit 0: '0.300000\ne 0\n'
+== big_int_to_dasham: exit 0: '9.223372e+18\n'
+== dasham_to_vitti_2_63: exit 1: 'Sutram Error [E_DASHAM_VITTI]: dashama-phalam purnanka-seemayam na bhavati\n'
+== likha_neg_dasham_multi: exit 0: 'v -2.250000 -4.500000\n'
+== int_shift: exit 0: '4611686018427387904 -9223372036854775808 1\n'
+== int_shift_neg: exit 0: 's 9223372036854775804 2305843009213693951\n'
+
+import subprocess, sys, os
+C='/tmp/claude-0/-home-claude/e35834e8-b611-5238-b1df-59668dfdca3d/scratchpad/r94/g/old/sutram_compiler'
+P = [
+ ('int_wrap', 'vitti x = 4000000000\n    likha(x * x)'),
+ ('int_div_neg', 'vitti a = 0 - 7\n    vitti b = 2\n    likha(a / b, " ", a % b)'),
+ ('int_div_neg_const', 'vitti a = 0 - 7\n    likha("c ", a / 2, " ", a % 2)'),
+ ('int_div_neg_pow2_8', 'vitti a = 0 - 9\n    likha("p ", a / 8, " ", a % 8, " ", a / 4)'),
+ ('min_div_m1', 'vitti m = 0 - 9223372036854775807 - 1\n    vitti d = 0 - 1\n    likha("m ", m / d, " ", m % d)'),
+ ('int_int_into_dasham', 'vitti i = 7\n    dasham d = i / 2\n    likha(d)'),
+ ('lit_int_div_into_dasham', 'dasham d = 7 / 2\n    likha(d)'),
+ ('mixed_int_float', 'dasham c = 2 + 0.5\n    likha(c)'),
+ ('mixed_int_dasham_var', 'vitti i = 7\n    dasham d = i / 2.0\n    likha(d)'),
+ ('vitti_from_mixed_whole', 'vitti v = 2 + 0.5 * 2\n    likha(v)'),
+ ('cmp_int_float', 'vitti i = 3\n    dasham d = 3.5\n    likha("c ", i < d, " ", i == 3.0, " ", d > 3)'),
+ ('cmp_dasham_vs_vitti_var', 'vitti i = 3\n    dasham d = 3.0\n    likha("e ", d == i, " ", d != i, " ", i == d)'),
+ ('unary_minus_dasham', 'dasham x = 2.5\n    dasham y = -x\n    likha(y)'),
+ ('dasham_mod', 'dasham x = 5.5\n    dasham y = 2.0\n    likha(x % y)'),
+ ('neg_zero_print', 'dasham z = 0.0\n    dasham n = 0.0 - z\n    likha(n)\n    likha(0.0 - 0.0000001)'),
+ ('big_lit_half', 'dasham b = 100000000000000000000.5\n    dasham c = 100000000000000000000.0\n    likha("h ", b == c, " ", b)'),
+ ('lit_2_63', 'dasham q = 9223372036854775808.0\n    likha(q)'),
+ ('inf_ops', 'dasham h = 100000000000000000000.0\n    h = h * h\n    h = h * h\n    h = h * h\n    h = h * h\n    likha(h)\n    likha(h * 0.0)\n    likha(0.0 - h)\n    likha(h - h)\n    likha("i ", h == h, " ", h > 0.0)'),
+ ('inf_div_inf', 'dasham h = 100000000000000000000.0\n    h = h * h\n    h = h * h\n    h = h * h\n    h = h * h\n    likha(h / h)\n    likha(1.0 / h)'),
+ ('nan_div_by_nan', 'dasham h = 100000000000000000000.0\n    h = h * h\n    h = h * h\n    h = h * h\n    h = h * h\n    dasham n = h - h\n    likha(1.0 / n)'),
+ ('underflow', 'dasham s = 0.000000001\n    s = s * s\n    s = s * s\n    s = s * s\n    s = s * s\n    s = s * s\n    likha(s)\n    likha("z ", s == 0.0)'),
+ ('div_by_tiny', 'dasham s = 0.000000001\n    s = s * s\n    s = s * s\n    s = s * s\n    s = s * s\n    s = s * s\n    likha(1.0 / s)'),
+ ('sci_literal', 'dasham x = 1e5\n    likha(x)'),
+ ('dasham_literal_no_int_part', 'dasham x = .5\n    likha(x)'),
+ ('dasham_literal_trailing_dot', 'dasham x = 5.\n    likha(x)'),
+ ('float_into_int_param', 'likha(f(2.0))\n}\nprakriya f(i) {\n    nivartanam i + 1'),
+ ('round_half', 'likha(0.0000005)\n    likha(0.0000015)\n    likha(2.5000005)\n    likha(1.9999995)'),
+ ('precision_16', 'likha(0.1 + 0.2)\n    dasham t = 0.1 + 0.2\n    likha("e ", t == 0.3)'),
+ ('big_int_to_dasham', 'vitti m = 9223372036854775807\n    dasham d = m\n    likha(d)'),
+ ('dasham_to_vitti_2_63', 'vitti m = 9223372036854775807\n    dasham d = m\n    vitti back = d\n    likha(back)'),
+ ('likha_neg_dasham_multi', 'dasham x = 0.0 - 2.25\n    likha("v ", x, " ", x * 2.0)'),
+ ('int_shift', 'vitti a = 1\n    likha(a << 62, " ", a << 63, " ", a << 64)'),
+ ('int_shift_neg', 'vitti a = 0 - 8\n    likha("s ", a >> 1, " ", a >> 3)'),
+]
+for name, body in P:
+    src = body if body.startswith('prakriya') else 'mukhya() {\n    ' + body + '\n}\n'
+    open(name + '.sm', 'w').write(src)
+    c = subprocess.run([C, name + '.sm', name], capture_output=True, text=True)
+    if c.returncode:
+        msg = [l for l in (c.stdout + c.stderr).splitlines() if 'Error' in l or 'dosh' in l][:1]
+        print(f'== {name}: COMPILE {c.returncode}: {msg}')
+        continue
+    r = subprocess.run(['./' + name], capture_output=True, text=True)
+    print(f'== {name}: exit {r.returncode}: {r.stdout!r}')

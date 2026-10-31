@@ -1,0 +1,10 @@
+kosh inf nan -inf
+len 23 last nan
+nan != nan in kosh 1 10
+store nan pop nan
+param inf nan
+mandapa inf nan inf
+mandapa param nan inf
+cmp 0 1 1
+block local nan 10
+after inf nan

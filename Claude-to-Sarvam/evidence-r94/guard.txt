@@ -1,0 +1,7 @@
+# R94 guard: origin/main (v281) -> v282
+elf: 677 programs: 546 byte-identical, 128 refused identically, 0 DIFFER, 3 new
+pe:  677 programs: 546 byte-identical, 128 refused identically, 0 DIFFER, 3 new
+NEW          examples/297_r94_whole_number_operators.sm
+NEW          examples/298_r94_dasham_remainder_refused.sm
+NEW          examples/299_r94_nonfinite_kosh_mandapa.sm
+wine (Windows compiler under Wine): 677 programs: 546 byte-identical, 128 refused identically, 0 DIFFER, 3 new; its 1092 outputs byte-identical to the Linux compiler's PE outputs
