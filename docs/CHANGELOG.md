@@ -47,6 +47,41 @@
 
 **Sutram has no overflow story and no divide-by-zero story.** **For a language aimed at school students, a silent negative square is worse than an error: the student concludes they do not understand arithmetic.**
 
+## Compiler v276 (Claude, R80) - division by zero stops with a message; written numbers that do not fit are refused; the library stops wrapping
+
+- **`/` or `%` by zero stops the program** with `Sutram Error [E_SHUNYA_BHAJAN]: pankti N - shunye vibhajanam na
+  sambhavati` (`%`: `shunyena sheshah na sambhavati`), exit 1. It was SIGFPE, exit 136, no message. N is the line
+  in the user's own file (a `yoj` does not offset it); inside a module, that module's line and name -
+  `pankti 3 (r80_ausat.smlib)`, `examples/281`. A divisor written as `0` is refused when compiled. **The smallest `vitti` divided by −1 no longer crashes** (it wraps to
+  itself; `% -1` is 0). A divisor that is a written number other than 0 or −1 gets no check: the shipped
+  benchmarks compile to the same bytes; a loop that divides by a variable costs +6%.
+- **A written whole number that does not fit in 64 bits is refused** (`E_ATIPRAVAH`): `99999999999999999999`
+  printed 7766279631452241919, `0x10000000000000000` printed 0. `-9223372036854775808` and
+  `0 - 9223372036854775808` (the smallest `vitti`) are still allowed. **A `dasham` literal past 2^63 now has its
+  value** (`100000000000000000000.5` was read as 7766279631452241919.5).
+- **Arithmetic on written numbers whose answer does not fit is refused** — `4000000000 * 4000000000`,
+  `9223372036854775807 + 1`, `-(0 - 9223372036854775808)` (`E_ATIPRAVAH`, "ganana punah likhyatam"), as
+  `file:line:col` with the source line and a caret, like every other compile error.
+- **The compiler itself no longer crashes on a written `MIN / -1`**: `(0 - 9223372036854775808) / (0 - 1)` killed
+  it with SIGFPE (exit 136, v275 and before); it is now refused (`E_ATIPRAVAH`), and a written `MIN % -1` is 0.
+- **`tools/fuzz_valid.py` writes an operand as `(1 ? A : 0)`** where folding two written numbers would now be
+  refused - the same value, not folded - so the generated programs stay valid and still test run-time wraparound
+  (seed 24: the same 1,376 output lines, 60/60 agree, on v275 and v276).
+- **Run-time `+ - *` still wrap, as in C — measured, not assumed:** checking every operation (the `trap` build)
+  costs +5.6% to +282% on the shipped benchmarks (+282% on `bench_loop`, +104% on `bench_nested`). Over the 10%
+  line, so not shipped. The reference says so in one sentence (§3a).
+- **The library stops wrapping on plausible input:** `kramgun` (21! and up), `fib` and `matra_meru` (93 and up),
+  `varg`/`vargit` (|n| > 3037000499), `dwi_ghat` (63 and up), `yog_tak` (n > 4294967295) now return −1 when the
+  answer does not fit; `ghat` and `ghan` return the largest or smallest `vitti`. Before, `kramgun(21)` was
+  −4249290049419214848 and `kramgun(25)` a wrong *positive* number. **After Muse's R80 audit, three more:**
+  `laghuttam_samapavartya` (lcm) and `purna_prasaran` (integer variance) return −1 when the answer does not fit
+  (lcm(4000000000, 4000000001) was a wrong positive; the variance of [2^31, −2^31] was negative, now exactly 2^62);
+  `yog_seema` halves before multiplying and saturates (yog_seema(0, 4294967295) was −2147483648 though it fits).
+  `tests/stdlib/r80_library_edges`. Examples 277–281.
+- **Frozen packs:** the two new messages are Sanskrit in every pack (no new pack text).
+- **Found, not fixed:** `likha` of a `dasham` from about ±9.2e12 prints `-9223372036854.775808` (v275 too; Muse's
+  R80 audit measured the threshold).
+
 ## Compiler v274-v275 (Claude, R77-R79) - the byte-versus-qword trap is caught; mixed indentation refused; a real program in blocks
 
 - **`nirmmita` counts bytes, `p[i]` counts 8-byte cells.** When `vitti p = nirmmita(SIZE)` has a written SIZE and
