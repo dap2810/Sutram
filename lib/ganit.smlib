@@ -4,16 +4,30 @@
 # Pure integer arithmetic, written only with verified language features.
 # Every function copies its parameters into locals before mutating them,
 # because the compiler currently faults on assignment to a parameter.
-prakriya varg(n)
-    nivartanam n * n
+prakriya varg(n) {
+    # R80: -1 when n * n is larger than 2^63 - 1 (it used to wrap: varg(3037000500) was negative)
+    vitti x = n
+    yadi (x > 3037000499 || x < 0 - 3037000499) { nivartanam 0 - 1 }
+    nivartanam x * x
+}
 
-# vargit(n) — n squared (n * n).
-prakriya vargit(n)
-    nivartanam n * n
+# vargit(n) — n squared (n * n); -1 when the square is larger than 2^63 - 1 (R80).
+prakriya vargit(n) {
+    # R80: -1 when n * n is larger than 2^63 - 1, as varg
+    vitti x = n
+    yadi (x > 3037000499 || x < 0 - 3037000499) { nivartanam 0 - 1 }
+    nivartanam x * x
+}
 
-# ghan(n) — n cubed (n * n * n).
-prakriya ghan(n)
-    nivartanam n * n * n
+# ghan(n) — n cubed (n * n * n); saturates at 2^63 - 1 / -2^63 past int64 (R80).
+prakriya ghan(n) {
+    # R80: past int64 the cube saturates - 2^63 - 1 for n > 2097151, -2^63 for n < -2097152
+    # ((-2097152)^3 is exactly -2^63). It used to wrap: ghan(10^9) was negative.
+    vitti x = n
+    yadi (x > 2097151) { nivartanam 9223372036854775807 }
+    yadi (x < 0 - 2097152) { nivartanam 0 - 9223372036854775807 - 1 }
+    nivartanam x * x * x
+}
 
 # nirapeksh_mulya(n) — absolute value of n (MIN wraps to MIN, as it cannot be negated).
 prakriya nirapeksh_mulya(n) {
@@ -57,42 +71,70 @@ prakriya mahattam_samapavartak(a, b) {
     nivartanam x
 }
 
-# laghuttam_samapavartya(a, b) — least common multiple of a and b, always non-negative (laghuttam_samapavartya(0, 0) = 0).
+# laghuttam_samapavartya(a, b) — least common multiple of a and b, always non-negative (laghuttam_samapavartya(0, 0) = 0);
+# -1 when it is larger than 2^63 - 1 (R80).
 prakriya laghuttam_samapavartya(a, b) {
     vitti g = mahattam_samapavartak(a, b)
     # mahattam_samapavartak(0, 0) is 0; without this guard (a / g) divides by zero and
     # the program traps (SIGFPE). laghuttam_samapavartya(0, 0) = 0 by convention.
     yadi (g == 0) { nivartanam 0 }
-    # laghuttam_samapavartya is non-negative by definition (the product (a / g) * b can
-    # be negative when exactly one input is). laghuttam_samapavartya(MIN, 2) still
-    # returns MIN: the true value 2^63 does not fit (wrapping).
-    vitti r = (a / g) * b
-    yadi (r < 0) { r = 0 - r }
-    nivartanam r
+    # R80: |a / g| * |b|, checked. It used to wrap and then take the absolute value - a plausible
+    # wrong POSITIVE: laghuttam_samapavartya(4000000000, 4000000001) was 2446744069709551616.
+    vitti q = a / g
+    vitti c = b
+    yadi (q == 0) { nivartanam 0 }
+    yadi (c == 0) { nivartanam 0 }
+    vitti minv = (0 - 9223372036854775807) - 1
+    yadi (q == minv) { nivartanam 0 - 1 }   # |MIN| alone does not fit
+    yadi (c == minv) { nivartanam 0 - 1 }
+    yadi (q < 0) { q = 0 - q }
+    yadi (c < 0) { c = 0 - c }
+    yadi (q > 9223372036854775807 / c) { nivartanam 0 - 1 }
+    nivartanam q * c
 }
 
-# ghat(base, e) — base raised to the power e (e >= 0; negative e returns 1, as the loop never runs).
+# ghat(base, e) — base raised to the power e (e >= 0; negative e returns 1, as the loop never runs);
+# saturates at 2^63 - 1 / -2^63 past int64 (R80), as ganita_paripurna_ghat.
 prakriya ghat(base, e) {
+    # R80: past int64 the power saturates - 2^63 - 1 when the answer is positive, -2^63 when it is
+    # negative (base < 0, e odd). It used to wrap: ghat(2, 63) was -2^63, ghat(3, 63) negative.
     vitti b = base
     vitti n = e
-    vitti r = 1
+    yadi (n <= 0) { nivartanam 1 }
+    vitti neg = 0
+    yadi (b < 0 && n % 2 == 1) { neg = 1 }
+    vitti minv = 0 - 9223372036854775807 - 1
+    yadi (b == minv) {
+        yadi (n == 1) { nivartanam minv }
+        yadi (neg == 1) { nivartanam minv }
+        nivartanam 9223372036854775807
+    }
+    vitti ab = b
+    yadi (ab < 0) { ab = 0 - ab }
+    vitti m = 1
     yavat (n > 0) {
-        r = r * b
+        yadi (ab != 0 && m > 9223372036854775807 / ab) {
+            yadi (neg == 1) { nivartanam minv }
+            nivartanam 9223372036854775807
+        }
+        m = m * ab
         n = n - 1
     }
-    nivartanam r
+    yadi (neg == 1) { nivartanam 0 - m }
+    nivartanam m
 }
 
-# kramgun(n) — n factorial (n!); 1 for n < 2; wraps past int64 for n >= 21.
+# kramgun(n) — n factorial (n!); 1 for n < 2; -1 for n >= 21, whose factorial is larger than
+# 2^63 - 1 (R80: it used to wrap - kramgun(21) was negative). ganita_paripurna_kramgun saturates instead.
 prakriya kramgun(n) {
     # Iterative: the recursive form overflowed the call stack at
-    # kramgun(100000) (SIGSEGV). Same values — multiplication
-    # commutes shesh 2^64, so wrapping at n >= 21 is identical.
+    # kramgun(100000) (SIGSEGV).
     vitti x = n
     vitti r = 1
     vitti i = 2
     yadi (x < 2) { nivartanam 1 }
     yavat (i <= x) {
+        yadi (r > 9223372036854775807 / i) { nivartanam 0 - 1 }   # R80: 21! and up do not fit
         r = r * i
         i = i + 1
     }
@@ -114,15 +156,17 @@ prakriya asti_abhajya(n) {
     nivartanam 1
 }
 
-# yog_tak(n) — sum 1 + 2 + ... + n, closed form n*(n+1)/2; 0 for n <= 0.
+# yog_tak(n) — sum 1 + 2 + ... + n, closed form n*(n+1)/2; 0 for n <= 0; -1 when the sum is larger
+# than 2^63 - 1 (n > 4294967295; R80).
 prakriya yog_tak(n) {
     # Closed form n*(n+1)/2 (the old loop took n iterations, so
     # yog_tak(4294967296) was ~4.3e9 iterations). Divide before
     # multiplying, by parity: even (n/2)*(n+1), odd n*(n/2+1).
-    # The wrapping value equals the loop's (pinned: yog_tak(
-    # 4294967296) == -9223372034707292160). n <= 0: 0, as the old loop.
+    # n <= 0: 0, as the old loop. R80: -1 for n > 4294967295, whose sum is larger than 2^63 - 1
+    # (it used to wrap - yog_tak(4294967296) was pinned at -9223372034707292160, a wrong answer).
     vitti x = n
     yadi (x <= 0) { nivartanam 0 }
+    yadi (x > 4294967295) { nivartanam 0 - 1 }
     yadi (x % 2 == 0) { nivartanam (x / 2) * (x + 1) }
     nivartanam x * (x / 2 + 1)
 }

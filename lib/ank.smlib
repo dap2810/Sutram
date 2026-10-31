@@ -72,7 +72,8 @@ prakriya seemit(n, lo, hi) {
     nivartanam x
 }
 
-# fib(n) — the nth Fibonacci number (fib(0) = 0, fib(1) = 1), iterative; wraps past int64.
+# fib(n) — the nth Fibonacci number (fib(0) = 0, fib(1) = 1), iterative; -1 for n >= 93, whose
+# Fibonacci number is larger than 2^63 - 1 (R80: it used to wrap - fib(93) was negative).
 prakriya fib(n) {
     vitti x = n
     yadi (x < 2) { nivartanam x }
@@ -80,6 +81,7 @@ prakriya fib(n) {
     vitti b = 1
     vitti i = 2
     yavat (i <= x) {
+        yadi (a > 9223372036854775807 - b) { nivartanam 0 - 1 }   # R80: fib(93) and up do not fit
         vitti t = a + b
         a = b
         b = t

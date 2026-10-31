@@ -1,0 +1,44 @@
+# R80 (after Muse's R80 library audit): three functions that gave wrong answers on plausible input.
+# lcm wrapped and then took |x| - a plausible wrong POSITIVE; the integer variance of [2^31, -2^31]
+# was negative; yog_seema(0, 2^32) was 2147483648. Now: lcm and variance -1 when the answer does not
+# fit, the range sum saturates by sign; every answer that fits is exact (checked against Python).
+# shesh(MIN, -1) was SIGFPE; v276's MIN % -1 is 0.
+yoj ganit
+yoj sadhan
+yoj sankhyiki
+mukhya()
+    likha(laghuttam_samapavartya(4000000000, 4000000001))
+    likha(laghuttam_samapavartya(4, 6))
+    likha(laghuttam_samapavartya(0 - 4, 6))
+    likha(laghuttam_samapavartya(0, 0))
+    likha(laghuttam_samapavartya(0, 5))
+    likha(laghuttam_samapavartya(3037000499, 3037000498))
+    likha(laghuttam_samapavartya(0 - 9223372036854775808, 2))
+    likha(yog_seema(0, 4294967296))
+    likha(yog_seema(1, 100))
+    likha(yog_seema(0 - 100, 50))
+    likha(yog_seema(0 - 4294967296, 0))
+    likha(yog_seema(0, 4294967295))
+    likha(yog_seema(0 - 4294967296, 4294967297))
+    likha(yog_seema(5, 4))
+    likha(yog_seema(9223372036854775807, 9223372036854775807))
+    likha(yog_seema(0 - 9223372036854775808, 9223372036854775807))
+    vitti xs = nirmmita(3 * 8)
+    xs[0] = 2147483648
+    xs[1] = 0 - 2147483648
+    likha(purna_prasaran(xs, 2))
+    xs[0] = 2
+    xs[1] = 4
+    likha(purna_prasaran(xs, 2))
+    xs[0] = 2147483647
+    xs[1] = 0 - 2147483647
+    likha(purna_prasaran(xs, 2))
+    xs[0] = 1
+    xs[1] = 2
+    xs[2] = 4
+    likha(purna_prasaran(xs, 3))
+    xs[0] = 3037000499
+    xs[1] = 0 - 3037000499
+    likha(purna_prasaran(xs, 2))
+    vitti m = 0 - 9223372036854775808
+    likha(shesh(m, 0 - 1))

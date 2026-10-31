@@ -177,18 +177,45 @@ prakriya purna_vyapti(xs, n) {
 }
 
 # --- integer population variance (truncated toward zero; uses the
-# truncated mean, so exact only when the mean is integral) ---
+# truncated mean, so exact only when the mean is integral); -1 when it
+# does not fit in int64, or when one squared deviation alone does not (R80) ---
 prakriya purna_prasaran(xs, n) {
     vitti m = 0
-    vitti acc = 0
+    vitti q = 0
+    vitti r = 0
     vitti i = 0
     vitti d = 0
+    vitti x = 0
+    vitti dd = 0
     yadi (n <= 0) { nivartanam 0 }
     m = purna_madhya(xs, n)
+    # R80: [2147483648, -2147483648] gave a NEGATIVE variance - the sum of squares (2^63) wrapped,
+    # though the variance (2^62) fits. Each square is split into dd / n and dd % n, so the sum is
+    # never formed: the answer is exact whenever it fits.
     yavat (i < n) {
-        d = xs[i] - m
-        acc = acc + d * d
+        x = xs[i]
+        yadi (x >= 0) {
+            yadi (m < 0) {
+                yadi (x > 9223372036854775807 + m) { nivartanam 0 - 1 }
+            }
+        } anya {
+            yadi (m > 0) {
+                yadi (x < (0 - 9223372036854775807) - 1 + m) { nivartanam 0 - 1 }
+            }
+        }
+        d = x - m
+        yadi (d < 0) { d = 0 - d }
+        yadi (d > 3037000499) { nivartanam 0 - 1 }
+        dd = d * d
+        yadi (q > 9223372036854775807 - dd / n) { nivartanam 0 - 1 }
+        q = q + dd / n
+        r = r + dd % n
+        yadi (r >= n) {
+            yadi (q == 9223372036854775807) { nivartanam 0 - 1 }
+            q = q + 1
+            r = r - n
+        }
         i = i + 1
     }
-    nivartanam acc / n
+    nivartanam q
 }

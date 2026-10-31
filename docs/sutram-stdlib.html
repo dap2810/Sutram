@@ -64,7 +64,7 @@ Do not edit by hand.</p>
 <tr><td><code>viparyay_ank(n)</code></td><td>viparyay_ank(n) — n with its decimal digits reversed, sign kept (e.g. -123 -&gt; -321).</td></tr>
 <tr><td><code>asti_viparyay_sam(n)</code></td><td>asti_viparyay_sam(n) — 1 if n reads the same backwards (a palindrome); negatives are never palindromes.</td></tr>
 <tr><td><code>seemit(n, lo, hi)</code></td><td>seemit(n, lo, hi) — n clamped into [lo, hi]: lo if n &lt; lo, hi if n &gt; hi, else n.</td></tr>
-<tr><td><code>fib(n)</code></td><td>fib(n) — the nth Fibonacci number (fib(0) = 0, fib(1) = 1), iterative; wraps past int64.</td></tr>
+<tr><td><code>fib(n)</code></td><td>fib(n) — the nth Fibonacci number (fib(0) = 0, fib(1) = 1), iterative; -1 for n &gt;= 93, whose Fibonacci number is larger than 2^63 - 1 (R80: it used to wrap - fib(93) was negative).</td></tr>
 <tr><td><code>asti_sampurna(n)</code></td><td>asti_sampurna(n) — 1 if n is a perfect number (equals the sum of its proper divisors), else 0.</td></tr>
 <tr><td><code>collatz_charan(n)</code></td><td>collatz_charan(n) — steps for the Collatz sequence from n to reach 1; -1 if n &lt; 1 or 3x+1 would overflow.</td></tr>
 </table>
@@ -97,12 +97,12 @@ Do not edit by hand.</p>
 <tr><td><code>brihat_ghatmod(base, exp, shesh, res, n)</code></td><td>brihat_ghatmod(base, exp, shesh, res, n) — res = base^exp shesh shesh exp is a plain int and must be &gt;= 0 (a negative exp returns 1: the loop never runs). shesh == 0 means &quot;no reduction&quot; (see brihat_shesh), so the result is base^exp truncated to n digits. res is n-digit. Returns 0, or -1 (res unchanged) if its scratch cannot be allocated.</td></tr>
 </table>
 <h2 id="chandas"><code>chandas</code></h2>
-<p class="shesh-desc">layer: core After Pingala&#x27;s Chandahśāstra (~2nd c. BCE). Sanskrit metre is built from two syllable weights — laghu (light) and guru (heavy) — so an n-syllable metre is a sequence of two choices: there are exactly 2^n of them. Pingala gave the doubling rule for 2^n, the Meru-prastāra (Pascal&#x27;s triangle) to count how many metres have exactly k guru syllables, and the mātrā-meru, which generates the Fibonacci numbers. A pattern is carried as an integer bitmask: bit i (LSB = first syllable) is 1 for guru, 0 for laghu. The integer value IS the pattern&#x27;s index in the prastāra.</p>
+<p class="shesh-desc">layer: core After Pingala&#x27;s Chandahśāstra (~2nd c. BCE). Sanskrit metre is built from two syllable weights — laghu (light) and guru (heavy) — so an n-syllable metre is a sequence of two choices: there are exactly 2^n of them. Pingala gave the doubling rule for 2^n, the Meru-prastāra (Pascal&#x27;s triangle) to count how many metres have exactly k guru syllables, and the mātrā-meru, which generates the Fibonacci numbers. A pattern is carried as an integer bitmask: bit i (LSB = first syllable) is 1 for guru, 0 for laghu. The integer value IS the pattern&#x27;s index in the prastāra. dwi_ghat(n) — 2^n, the number of n-syllable metres; -1 for n &gt;= 63, which does not fit in int64 (R80).</p>
 <table>
 <tr><th>Function</th><th>Description</th></tr>
 <tr><td><code>dwi_ghat(n)</code></td><td></td></tr>
 <tr><td><code>meru(n, k)</code></td><td>meru(n, k) — the binomial coefficient C(n, k); 0 for k &lt; 0 or k &gt; n; -1 when C(n, k) is larger than 2^63 - 1 (R76: it used to wrap silently - meru(1000, 10) returned C(1000, 10) mod 2^64; a binomial is never negative). The largest row that always fits is n = 66 (C(66, 33) = 7219428434016265740).</td></tr>
-<tr><td><code>matra_meru(n)</code></td><td>matra_meru(n) — the nth Fibonacci number (matra_meru(0) = 0, matra_meru(1) = 1).</td></tr>
+<tr><td><code>matra_meru(n)</code></td><td>matra_meru(n) — the nth Fibonacci number (matra_meru(0) = 0, matra_meru(1) = 1); -1 for n &gt;= 93, which does not fit in int64 (R80).</td></tr>
 <tr><td><code>asti_guru(pat, i)</code></td><td>asti_guru(pat, i) — 1 if bit i of the integer pattern pat is set; 0 for i &lt; 0 or i &gt;= 64.</td></tr>
 <tr><td><code>guru_gan(pat)</code></td><td>guru_gan(pat) — count of set bits in pat (population count); negatives return 0.</td></tr>
 <tr><td><code>meru_mala(a, n)</code></td><td>meru_mala(a, n) — fills a[0..n] with the nth row of Pascal&#x27;s triangle: a[i] = meru(n, i).</td></tr>
@@ -112,17 +112,17 @@ Do not edit by hand.</p>
 <table>
 <tr><th>Function</th><th>Description</th></tr>
 <tr><td><code>varg(n)</code></td><td></td></tr>
-<tr><td><code>vargit(n)</code></td><td>vargit(n) — n squared (n * n).</td></tr>
-<tr><td><code>ghan(n)</code></td><td>ghan(n) — n cubed (n * n * n).</td></tr>
+<tr><td><code>vargit(n)</code></td><td>vargit(n) — n squared (n * n); -1 when the square is larger than 2^63 - 1 (R80).</td></tr>
+<tr><td><code>ghan(n)</code></td><td>ghan(n) — n cubed (n * n * n); saturates at 2^63 - 1 / -2^63 past int64 (R80).</td></tr>
 <tr><td><code>nirapeksh_mulya(n)</code></td><td>nirapeksh_mulya(n) — absolute value of n (MIN wraps to MIN, as it cannot be negated).</td></tr>
 <tr><td><code>laghu2(a, b)</code></td><td>laghu2(a, b) — the smaller of a and b.</td></tr>
 <tr><td><code>adhik2(a, b)</code></td><td>adhik2(a, b) — the larger of a and b.</td></tr>
 <tr><td><code>mahattam_samapavartak(a, b)</code></td><td>mahattam_samapavartak(a, b) — greatest common divisor of a and b, always non-negative (mahattam_samapavartak(0, 0) = 0).</td></tr>
-<tr><td><code>laghuttam_samapavartya(a, b)</code></td><td>laghuttam_samapavartya(a, b) — least common multiple of a and b, always non-negative (laghuttam_samapavartya(0, 0) = 0).</td></tr>
-<tr><td><code>ghat(base, e)</code></td><td>ghat(base, e) — base raised to the power e (e &gt;= 0; negative e returns 1, as the loop never runs).</td></tr>
-<tr><td><code>kramgun(n)</code></td><td>kramgun(n) — n factorial (n!); 1 for n &lt; 2; wraps past int64 for n &gt;= 21.</td></tr>
+<tr><td><code>laghuttam_samapavartya(a, b)</code></td><td>laghuttam_samapavartya(a, b) — least common multiple of a and b, always non-negative (laghuttam_samapavartya(0, 0) = 0); -1 when it is larger than 2^63 - 1 (R80).</td></tr>
+<tr><td><code>ghat(base, e)</code></td><td>ghat(base, e) — base raised to the power e (e &gt;= 0; negative e returns 1, as the loop never runs); saturates at 2^63 - 1 / -2^63 past int64 (R80), as ganita_paripurna_ghat.</td></tr>
+<tr><td><code>kramgun(n)</code></td><td>kramgun(n) — n factorial (n!); 1 for n &lt; 2; -1 for n &gt;= 21, whose factorial is larger than 2^63 - 1 (R80: it used to wrap - kramgun(21) was negative). ganita_paripurna_kramgun saturates instead.</td></tr>
 <tr><td><code>asti_abhajya(n)</code></td><td>asti_abhajya(n) — 1 if n is prime, 0 otherwise (n &lt; 2 is not prime).</td></tr>
-<tr><td><code>yog_tak(n)</code></td><td>yog_tak(n) — sum 1 + 2 + ... + n, closed form n*(n+1)/2; 0 for n &lt;= 0.</td></tr>
+<tr><td><code>yog_tak(n)</code></td><td>yog_tak(n) — sum 1 + 2 + ... + n, closed form n*(n+1)/2; 0 for n &lt;= 0; -1 when the sum is larger than 2^63 - 1 (n &gt; 4294967295; R80).</td></tr>
 <tr><td><code>dvigun(n)</code></td><td>dvigun(n) — n doubled (n * 2).</td></tr>
 <tr><td><code>trigun(n)</code></td><td>trigun(n) — n tripled (n * 3).</td></tr>
 <tr><td><code>vardh(n)</code></td><td>vardh(n) — n incremented by 1 (n + 1).</td></tr>
@@ -308,7 +308,7 @@ Do not edit by hand.</p>
 <table>
 <tr><th>Function</th><th>Description</th></tr>
 <tr><td><code>antarveshan(a, b, t)</code></td><td></td></tr>
-<tr><td><code>yog_seema(start, end)</code></td><td>yog_seema(start, end) — sum of the integers from start to end inclusive; 0 if end &lt; start.</td></tr>
+<tr><td><code>yog_seema(start, end)</code></td><td>yog_seema(start, end) — sum of the integers from start to end inclusive; 0 if end &lt; start. Past int64 it saturates: 2^63 - 1 for a positive sum, -2^63 for a negative one (R80).</td></tr>
 <tr><td><code>shesh(a, b)</code></td><td>shesh(a, b) — remainder a % b computed as a - (a / b) * b; 0 if b == 0.</td></tr>
 <tr><td><code>bhaj_urdhva(a, b)</code></td><td>bhaj_urdhva(a, b) — ceiling division of a by b (rounds up when the remainder is nonzero); 0 if b == 0. That 0 cannot be told apart from a real quotient of 0: check b first.</td></tr>
 <tr><td><code>ank_chihna(n)</code></td><td>ank_chihna(n) — sign of n: 1 if n &gt; 0, -1 if n &lt; 0, 0 if n == 0.</td></tr>
@@ -369,7 +369,7 @@ Do not edit by hand.</p>
 <tr><td><code>purna_laghutama(xs, n)</code></td><td>--- integer minimum ---</td></tr>
 <tr><td><code>purna_adhikatama(xs, n)</code></td><td>--- integer maximum ---</td></tr>
 <tr><td><code>purna_vyapti(xs, n)</code></td><td>--- integer range (max - min) ---</td></tr>
-<tr><td><code>purna_prasaran(xs, n)</code></td><td>--- integer population variance (truncated toward zero; uses the truncated mean, so exact only when the mean is integral) ---</td></tr>
+<tr><td><code>purna_prasaran(xs, n)</code></td><td>--- integer population variance (truncated toward zero; uses the truncated mean, so exact only when the mean is integral); -1 when it does not fit in int64, or when one squared deviation alone does not (R80) ---</td></tr>
 </table>
 <h2 id="shreni"><code>shreni</code></h2>
 <p class="shesh-desc">layer: alloc Operates on `mala` integer arrays, in place. Scalar arguments are copied into locals before mutation; array elements are written directly.</p>

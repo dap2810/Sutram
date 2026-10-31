@@ -10,9 +10,39 @@ prakriya antarveshan(a, b, t)
     nivartanam a + (b - a) * t / 100
 
 # yog_seema(start, end) — sum of the integers from start to end inclusive; 0 if end < start.
+# Past int64 it saturates: 2^63 - 1 for a positive sum, -2^63 for a negative one (R80).
 prakriya yog_seema(start, end) {
     yadi (end < start) { nivartanam 0 }
-    nivartanam (start + end) * (end - start + 1) / 2
+    # R80: the old (start + end) * (end - start + 1) / 2 wrapped in the product before halving -
+    # yog_seema(0, 4294967296) was 2147483648. Halve the even factor first, then multiply checked.
+    vitti maxv = 9223372036854775807
+    vitti minv = (0 - 9223372036854775807) - 1
+    vitti a = start
+    vitti b = end
+    yadi (a > 0) {
+        yadi (b > maxv - a) { nivartanam maxv }   # start + end itself does not fit
+    }
+    yadi (a < 0) {
+        yadi (b < minv - a) { nivartanam minv }
+    }
+    vitti s = a + b
+    yadi (s == 0) { nivartanam 0 }
+    vitti n = 0
+    yadi (b - maxv + 1 > a) {                      # end - start + 1 does not fit: the sum cannot
+        yadi (s > 0) { nivartanam maxv }           # (more than 2^63 terms, s != 0)
+        nivartanam minv
+    }
+    n = b - a + 1
+    vitti x = s
+    vitti y = n
+    yadi (x % 2 == 0) { x = x / 2 } anya { y = y / 2 }   # s and n have opposite parity
+    vitti ax = x
+    yadi (ax < 0) { ax = 0 - ax }
+    yadi (ax > maxv / y) {
+        yadi (x > 0) { nivartanam maxv }
+        nivartanam minv
+    }
+    nivartanam x * y
 }
 
 # shesh(a, b) — remainder a % b computed as a - (a / b) * b; 0 if b == 0.

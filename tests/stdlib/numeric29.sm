@@ -1,3 +1,7 @@
+# numeric29: the library's behaviour past int64. R80: these lines used to pin WRAPPED values (varg,
+# vargit, ghan, ghat, kramgun, fib gave negative or zero answers); they now pin the contracts:
+# -1 when a square, factorial or Fibonacci number does not fit; cubes and powers saturate.
+# dvigun / trigun / vardh / viparyay_ank still wrap like the operators (inputs near 2^63 only).
 yoj ganita
 yoj ganit
 yoj ank

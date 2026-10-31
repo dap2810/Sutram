@@ -4276,19 +4276,30 @@ def prop_numeric29(compiler, rng):
     check("brahmagupta_kshetr(4611686018427387904, "
           "4611686018427387904, 4611686018427387904, "
           "4611686018427387904)", 0, "brahmagupta wrap")
-    # math plain wrapping
-    check("varg(4294967296)", 0, "varg wrap")
-    check("vargit(3037000500)", "0 - 9223372036709301616", "vargit wrap")
-    check("ghan(2097152)", "minv", "ghan 2^63")
-    check("ghan(2097153)", "0 - 9223358842708951039", "ghan wrap")
+    # math: R80 closed the wraps a student could reach - squares that do not fit are -1, cubes and
+    # powers saturate (they used to wrap: varg(4294967296) was 0, ghan(2097152) MIN, kramgun(21)
+    # and fib(93) negative). dvigun/trigun/vardh still wrap like the operators (inputs near MAX only).
+    check("varg(4294967296)", "0 - 1", "varg too large -> -1")
+    check("vargit(3037000500)", "0 - 1", "vargit too large -> -1")
+    check("vargit(3037000499)", 9223372030926249001, "vargit largest")
+    check("ghan(2097152)", 9223372036854775807, "ghan 2^63 saturates")
+    check("ghan(2097153)", 9223372036854775807, "ghan saturates")
+    check("ghan(0 - 2097152)", "minv", "ghan -2^63 exact")
+    check("ghan(2097151)", 9223358842721533951, "ghan largest")
     check("dvigun(9223372036854775807)", "0 - 2", "dvigun wrap")
     check("trigun(9223372036854775807)", 9223372036854775805,
           "trigun wrap")
     check("vardh(9223372036854775807)", "minv", "vardh wrap")
-    check("ghat(2, 63)", "minv", "ghat wrap")
-    check("ghat(3, 40)", "0 - 6289078614652622815", "ghat 3 40 wrap")
-    check("kramgun(21)", "0 - 4249290049419214848", "kramgun 21 wrap")
-    check("fib(93)", "0 - 6246583658587674878", "fib 93 wrap")
+    check("ghat(2, 63)", 9223372036854775807, "ghat 2 63 saturates")
+    check("ghat(2, 62)", 4611686018427387904, "ghat 2 62 exact")
+    check("ghat(3, 40)", 9223372036854775807, "ghat 3 40 saturates")
+    check("ghat(0 - 2, 63)", "minv", "ghat -2 63 exact")
+    check("ghat(0 - 3, 41)", "minv", "ghat -3 41 saturates")
+    check("ghat(0 - 3, 40)", 9223372036854775807, "ghat -3 40 saturates")
+    check("kramgun(21)", "0 - 1", "kramgun 21 -> -1")
+    check("kramgun(20)", 2432902008176640000, "kramgun 20 exact")
+    check("fib(93)", "0 - 1", "fib 93 -> -1")
+    check("fib(92)", 7540113804746346429, "fib 92 exact")
     check("viparyay_ank(1234567890123456789)",
           "0 - 8570200862721897295", "viparyay_ank wrap")
     # roop_sthir overflow -> 0 (empty); the largest fixed output is
@@ -4358,19 +4369,13 @@ def prop_edge30_int(compiler, rng):
     check("asti_viparyay_sam(0 - 121)", 0, "asti_viparyay_sam neg")
     check("asti_viparyay_sam(121)", 1, "asti_viparyay_sam 121")
     # math: kramgun iterative (no stack exhaustion), yog_tak closed form
-    check("kramgun(21)", "0 - 4249290049419214848", "kramgun 21 wrap")
-    fact100k = 1
-    for i in range(2, 100001):
-        fact100k = (fact100k * i) & ((1 << 64) - 1)
-    if fact100k >= (1 << 63):
-        fact100k -= (1 << 64)
-    check("kramgun(100000)", fact100k, "kramgun 100000")
+    check("kramgun(21)", "0 - 1", "kramgun 21 -> -1")
+    check("kramgun(100000)", "0 - 1", "kramgun 100000 -> -1 (no stack exhaustion)")
     check("yog_tak(10)", 55, "yog_tak 10")
     check("yog_tak(0)", 0, "yog_tak 0")
     check("yog_tak(0 - 5)", 0, "yog_tak neg")
     check("yog_tak(4294967295)", 9223372034707292160, "yog_tak 2^32-1")
-    check("yog_tak(4294967296)", "0 - 9223372034707292160",
-          "yog_tak 2^32 wrap")
+    check("yog_tak(4294967296)", "0 - 1", "yog_tak 2^32 -> -1 (R80; was a wrapped value)")
     # chandas: out-of-range bit index -> 0 (was SIGFPE at 64)
     check("asti_guru(5, 64)", 0, "asti_guru 64")
     check("asti_guru(5, 0 - 1)", 0, "asti_guru -1")

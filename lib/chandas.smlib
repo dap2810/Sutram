@@ -9,8 +9,10 @@
 #
 # A pattern is carried as an integer bitmask: bit i (LSB = first syllable) is 1 for
 # guru, 0 for laghu. The integer value IS the pattern's index in the prastāra.
+# dwi_ghat(n) — 2^n, the number of n-syllable metres; -1 for n >= 63, which does not fit in int64 (R80).
 prakriya dwi_ghat(n) {
     vitti x = n
+    yadi (x > 62) { nivartanam 0 - 1 }   # R80: 2^63 and up do not fit (dwi_ghat(63) was -2^63)
     vitti r = 1
     vitti i = 0
     yavat (i < x) {
@@ -56,7 +58,8 @@ prakriya meru(n, k) {
     nivartanam res
 }
 
-# matra_meru(n) — the nth Fibonacci number (matra_meru(0) = 0, matra_meru(1) = 1).
+# matra_meru(n) — the nth Fibonacci number (matra_meru(0) = 0, matra_meru(1) = 1); -1 for n >= 93,
+# which does not fit in int64 (R80).
 prakriya matra_meru(n) {
     vitti x = n
     yadi (x <= 0) { nivartanam 0 }
@@ -65,6 +68,7 @@ prakriya matra_meru(n) {
     vitti b = 1
     vitti i = 2
     yavat (i <= x) {
+        yadi (a > 9223372036854775807 - b) { nivartanam 0 - 1 }   # R80: n >= 93 does not fit
         vitti c = a + b
         a = b
         b = c
