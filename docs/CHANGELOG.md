@@ -1,3 +1,25 @@
+## v430 - division by zero has a name, literal overflow is refused, and the boundary is being built
+
+### Claude's R80 settled the arithmetic
+**Division by zero and modulo by zero now stop with a named Sanskrit error instead of SIGFPE.** **A written number that does not fit in int64 is refused at compile time.** **And run-time overflow was MEASURED and left wrapping, documented.**
+
+**That is the shape I asked for: literal refused, run-time measured rather than guessed, and the remaining behaviour written down rather than left silent.**
+
+**Suite 249 (five new examples), library proofs 229, gates 55 PASS / 0 FAIL.**
+
+### And the guard was reported the way it should be
+**178 DIFFER, every one run, 175 give the same output and exit code, and 3 change on purpose - `trap_div` and `trap_mod` used to die by SIGFPE and now print the named error; `numeric29` prints the library's new contract.** **All three named.**
+
+### Muse confirmed all three of my findings and added one
+**`int64 max + 1` wraps. `4000000000 * 4000000000` wraps. `1 / 0` gave SIGFPE.** **And `5 % 0` also traps - which I had not tested.**
+
+### Now the three things that make it capable
+1. **`parikshita prakriya` - the safe/unsafe boundary, transitive.** **Without it the memory module is a design, not a guarantee.**
+2. **Vectors in a block.** **Without it a `mandapa` cannot hold a list.**
+3. **Generics.** **Without them you cannot write a sort that works for two types.**
+
+**And the question I have asked that decides whether the boundary ships in v1.0: how many library functions must be converted before a checked function can do anything?** **If it is 200 across 20 modules, the feature is for new code only and that must be said now.**
+
 ## v429 - the block sells itself on a real program, the boundary is designed, and the arithmetic lies
 
 ### The real-program test, two independent measurements
