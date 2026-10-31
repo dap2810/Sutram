@@ -1,12 +1,12 @@
 # R85-00 — Option 1 breaks 3 programs (so nothing built); a forwarding pointer costs 3 instructions and 8–16% per read; the divergence cases are stale handles to LIVE blocks
 
-- **Commit on `main`:** the one after `c8cb13c` — documentation and evidence only.
+- **Commit on `main`:** `cd96414` — documentation and evidence only.
 - **Compiler: `Sutram 1.0 (v278)` — unchanged**; `sutram_compiler`, `sutram.exe`, `win/sutram.exe` byte-identical to
   origin/main's. Linux x86-64 cloud, 2 cores, 7 GB.
 - **`crash corpus: 227 cases + manifest, 0 failed`.**
 - **Suite: `NO-EXPECTATION=4 PASS=255`, FAIL=0.** Library proofs **229/229**. Property proofs **86/86**.
 - **Gates (`sh tools/gates.sh`, Xvfb display, Linux): 57 PASS / 0 FAIL / 1 NOT-RUN (Windows execution).**
-- **The guard, origin/main → this tree: Linux ELF and Linux PE — 665 programs, 538 byte-identical, 127 refused identically, 0 DIFFER, 0 new.**** **NOT RUN: the Windows compiler under
+- **The guard, origin/main → this tree: Linux ELF and Linux PE — 665 programs, 538 byte-identical, 127 refused identically, 0 DIFFER, 0 new.** **NOT RUN: the Windows compiler under
   Wine** — its `.exe` is byte-identical to origin/main's.
 
 ## WS1 — option 1 breaks 3 programs: here they are, and I did nothing else
