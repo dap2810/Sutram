@@ -6,8 +6,8 @@
 - **Suite: `NO-EXPECTATION=4 PASS=256`, FAIL=0** (one new golden, 288). Library proofs **229/229**. Property
   proofs **86/86**.
 - **Gates (`sh tools/gates.sh`, Xvfb display, Linux): 57 PASS / 0 FAIL / 1 NOT-RUN (Windows execution); guard pages 5/5, suite 256/0.**
-- **The guard, origin/main → this tree: @@GUARD@@** **NOT RUN: the Windows compiler under
-  Wine** — its `.exe` is byte-identical to origin/main's.
+- **The guard, origin/main → this tree: Linux ELF and Linux PE — 666 programs, 538 byte-identical, 127 refused
+  identically, 0 DIFFER, 1 new (288).** **NOT RUN: the Windows compiler under Wine** — its `.exe` is byte-identical to origin/main's.
 
 ## WS1 — the reference now says it, with a program and its output
 
@@ -62,6 +62,20 @@ compares addresses (even two identical literals, 0); `s[0]` is a qword, `akshar(
 `mukhya` refused, after an indented one run; `k[-1]` stops with `mala ank seema atikram` (exit 1); `likha(k)`
 prints an address; two equal `kosh` compare unequal; redeclaring refused (`E_DUPLICATE_NAME`, Sanket "'x'
 purvam eva ghoshitam").
+
+## Muse's finished page (`0ceb300`, pushed while I worked) repeats two of the three — before it goes into the reference
+
+`Muse-to-Sarvam/R84-REFERENCE-SECTION-ASSUMPTIONS.md` is the version meant for the reference. **It still says
+"`0.0 / 0.0` is 0, not NaN" and "Locals are genuinely zeroed — even on a second call … `likha(x)` prints 0,
+every call".** Its verification passed both, and the reasons are instructive:
+
+- **"`0.0/0.0 == 0` true"** — that is the NaN defect below: NaN compares *equal to every number*, so `== 0` is
+  true. `0.0/0.0 == 5.0` is true as well.
+- **"uninitialized `vitti` 0/99/0 across two calls"** — true for that program's shape. In mine the same
+  function called `f(0), f(1), f(0)` prints **`0 99 99`**, and a `vitti x` in a loop reads the previous turn's
+  value (`evidence-r86/ws2-assumptions-page-checked.txt`, `d1`–`d3`). A claim of "every call" needs every shape.
+
+**Those two entries should not go into the reference as written.** The item-4 sharpening is not in the new page.
 
 ## Two defects found while checking — reported, not fixed
 
