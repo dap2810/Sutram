@@ -1,0 +1,129 @@
+R85 WS2 - the price of a forwarding pointer, measured WITHOUT building it into the compiler: the k[i] read sequence v278 emits,
+copied into a standalone NASM loop, with and without the 3-instruction forward check (mov rdx,[k-24] ; test rdx,rdx ; jnz cold);
+'call' wraps the read in a prakriya with R82's entry check, as padh(kosh k, i) in R82's worst case.
+
+--- v278's k[i] read (objdump of a compiled 's = s + k[i]', in-bounds path):
+   31a:	50                   	push   %rax
+   31b:	48 89 d8             	mov    %rbx,%rax
+   31e:	50                   	push   %rax
+   31f:	48 8b 48 f0          	mov    -0x10(%rax),%rcx
+   323:	51                   	push   %rcx
+   324:	4c 89 e0             	mov    %r12,%rax
+   327:	48 3b 04 24          	cmp    (%rsp),%rax
+   32b:	0f 82 50 00 00 00    	jb     0x381
+   331:	48 8d 05 02 00 00 00 	lea    0x2(%rip),%rax        # 0x33a
+   381:	59                   	pop    %rcx
+   382:	48 c1 e0 03          	shl    $0x3,%rax
+   386:	59                   	pop    %rcx
+   387:	48 01 c8             	add    %rcx,%rax
+   38a:	48 8b 00             	mov    (%rax),%rax
+   38d:	5a                   	pop    %rdx
+   38e:	48 87 d0             	xchg   %rdx,%rax
+   391:	48 01 d0             	add    %rdx,%rax
+
+--- first layout (cold path inline, an extra jmp on the fast path):
+  200,000,000 iterations, 9 interleaved runs, median wall seconds (ns per iteration)
+    base     0.2662  (1.33 ns)
+    fwd      0.3849  (1.92 ns)
+    call     0.6290  (3.14 ns)
+    callfwd  0.5928  (2.96 ns)
+  forward check on a bare k[i] read:            +44.6%  (+0.59 ns per read)
+  forward check inside padh(kosh k,i) with R82: -5.8%  (-0.18 ns per call)
+
+--- second layout (cold path out of line, loop 64-aligned) - the one to read:
+  v2 (cold path out of line, loop and padh 64-aligned): 200,000,000 iterations, 15 interleaved runs, median
+    base.v2     0.2847 s  (1.42 ns)  spread 0.2153-0.3594
+    fwd.v2      0.3067 s  (1.53 ns)  spread 0.2502-0.4168
+    call.v2     0.5213 s  (2.61 ns)  spread 0.4591-0.6790
+    callfwd.v2  0.5974 s  (2.99 ns)  spread 0.4977-0.9346
+  forward check on a bare k[i] read:            +7.7%  (+0.11 ns per read)
+  forward check inside padh(kosh k,i) with R82: +14.6%  (+0.38 ns per call)
+
+The host is shared and noisy (see the spreads). By medians +7.7% / +14.6%; by best runs +16% / +8%. Read it as: 3 instructions,
+0.1-0.4 ns per access, 8-16% on a loop that does nothing but read a kosh.
+
+--- read2.mac (the read, with FWD) and call.asm (the harness)
+  | %macro call0 1
+  | %if FWD
+  |     mov rdx, [rax-24]              ; forward word
+  |     test rdx, rdx
+  |     jnz follow_cold                ; out of line: never taken here
+  | %endif
+  |     push rax
+  |     mov rcx, [rax-16]
+  |     push rcx
+  |     mov rax, rsi
+  |     cmp rax, [rsp]
+  |     jb %%ok
+  |     ud2
+  | %%ok:
+  |     pop rcx
+  |     shl rax, 3
+  |     pop rcx
+  |     add rax, rcx
+  |     mov rax, [rax]
+  | %ifidn %1, rax
+  | %else
+  |     add %1, rax
+  | %endif
+  | 
+  | %endmacro
+  | ; R85 WS2 price: the kosh read sequence v278 emits, in a loop - fwd=0 adds the 3-instruction forward check;
+  | ; call=1 wraps it in a call with R82's entry check (as padh(kosh k, i)).
+  | global _start
+  | section .bss
+  |     buf resq 64
+  | section .text
+  | _start:
+  |     lea rbx, [rel buf+40]          ; k: user pointer, header below it
+  |     mov qword [rbx-16], 16         ; len
+  |     mov qword [rbx-24], 0          ; forward word: 0 = not moved (fwd variant reads it)
+  |     mov qword [rbx-32], 0          ; R82 slot: 0 = made outside a block
+  |     mov r14, 200000000
+  |     xor r12, r12
+  |     xor r13, r13
+  | .loop:
+  | %if 1
+  |     mov rdi, rbx
+  |     mov rsi, r12
+  |     call padh
+  |     add r13, rax
+  | %else
+  |     mov rax, rbx
+  |     mov rsi, r12
+  |     call0 r13
+  | %endif
+  |     inc r12
+  |     and r12, 15
+  |     dec r14
+  |     jnz .loop
+  |     mov eax, 60
+  |     xor edi, edi
+  |     syscall
+  | %if 1
+  | padh:
+  |     push rbp
+  |     mov rbp, rsp
+  |     push rbx
+  |     push rdi
+  |     push rsi
+  |     mov rax, rdi                   ; R82 entry check (flag-on), as emitted
+  |     test rax, rax
+  |     jz .ok
+  |     mov rcx, [rax-32]
+  |     test rcx, rcx
+  |     jz .ok
+  |     cmp rcx, rsp
+  |     jb .ok
+  |     mov rdx, [rcx]
+  |     cmp rdx, [rax-24]
+  |     je .ok
+  | .ok:
+  |     mov rax, [rbp-16]
+  |     mov rsi, [rbp-24]
+  |     call0 rax
+  |     lea rsp, [rbp-8]
+  |     pop rbx
+  |     pop rbp
+  |     ret
+  | %endif

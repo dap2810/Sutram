@@ -1,0 +1,44 @@
+R85 WS3 - the R84 divergence cases under the guard-page build (every nirmmita its own mapping, ending on the byte before a
+PROT_NONE page): which kind of stale handle are they?
+
+=== s0.sm
+  guard-page: a[0]=111 k[0]=111 a[0]=999 k[0]=111 
+=== s1.sm
+  guard-page: a[0]=111 k[0]=111 a[0]=999 k[0]=111 
+=== s2.sm
+  guard-page: a[0]=999 k[0]=111 
+=== c1.sm
+  guard-page: a[0]=999 k[0]=111 
+=== c2.sm
+  not compiled: Sutram Error: kosh-tarke kosh_push asamarthitam
+=== c3.sm
+  guard-page: a[0]=999 k[0]=111 
+
+None faults. Why - one more program, in the guard-page build and the ordinary build:
+  | mukhya() {
+  |     kosh k[1]
+  |     kosh_push(k, 111)
+  |     vitti a = k
+  |     vitti p = nirmmita(8)
+  |     kosh_push(k, 222)
+  |     kosh_push(k, 333)
+  |     likha("a[0]=", a[0], " k[0]=", k[0])
+  |     vitti b = a + 0
+  |     likha("puraana khand, antim koshth: ", b[0])
+  |     likha("ek koshth aage:\n")
+  |     likha(b[1])
+  | }
+ guard-page build:
+    a[0]=111 k[0]=111
+    puraana khand, antim koshth: 111
+    ek koshth aage:
+    (exit -11 = SIGSEGV)
+ ordinary build:
+    a[0]=111 k[0]=111
+    puraana khand, antim koshth: 111
+    ek koshth aage:
+    0
+    (exit 0)
+
+The stale name reads its OLD block's last cell (111); one cell further is the guard page (SIGSEGV). So the old block is a LIVE, mapped allocation with its guard in place, not a freed one: these are
+stale handles reading a live block. Nothing frees a block in any build: no munmap / VirtualFree anywhere in src/.

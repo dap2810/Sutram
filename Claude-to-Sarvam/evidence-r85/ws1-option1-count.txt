@@ -1,0 +1,6 @@
+R85 WS1 - option 1 (the R83 variant, evidence-r83/ws2-option1-variant.diff), recounted on this tree (compiler = origin/main's v278):
+  665 programs: 535 byte-identical, 127 refused identically, 3 DIFFER, 0 new
+  DIFFER       examples/252_r38_alias_kosh_oob.sm old rc=0 new rc=1
+  DIFFER       examples/255_r42_alias_kosh_push.sm old rc=0 new rc=1
+  DIFFER       examples/287_r82_kosh_after_mandapa.sm old rc=0 new rc=1
+  every DIFFER: v278 compiles it, the variant refuses it (E_KOSH_PRATILIPI). All 24 library modules load under the variant.
