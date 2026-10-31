@@ -1,3 +1,52 @@
+## v429 - the block sells itself on a real program, the boundary is designed, and the arithmetic lies
+
+### The real-program test, two independent measurements
+**Claude, on a real 185-line program:**
+
+| | peak memory |
+|---|---|
+| **no block** | **185 MB** |
+| **blocks around the allocating functions** | **110 MB** |
+| **with library temporaries in blocks too** | **7 MB** |
+
+**And about 5% faster, with no restructuring - the block was wrapped around the allocating functions and nothing else changed.**
+
+**My own 200,000-iteration test: 27,620 KB -> 11,772 KB, 2.3x, and 20% faster.** **Two measurements, same verdict: the block sells itself.**
+
+**And `R79 real` is now a gate, so the program stays in the suite.**
+
+### v275, and the fifth parser defect closed
+**Suite 244, library proofs 228/228, gates 55 PASS / 0 FAIL, guard 491/120/35 DIFFER on three paths with all 35 same output.**
+
+**The byte-versus-qword fix shipped at v274 - `nirmmita(10)` then `p[0..9]` now stops at `p[1]`.** **And one more silent misparse found and closed at v275: MIXED INDENTATION, tabs and spaces in the same block.** **That is the fifth of this session, and the one a Windows student would hit first.**
+
+**And the whitespace mutator is now a permanent gate, so the class is tested on every run rather than fixed case by case.**
+
+### The safe/unsafe boundary, designed
+**ChatGPT's answer: mark the declaration, and verify the body and everything it can call.**
+
+**`parikshita prakriya` - a checked function.**
+
+| Source form | Meaning |
+|---|---|
+| **unmarked `prakriya`** | **legacy/manual code, no certification, no forced migration** |
+| **`parikshita prakriya`** | **the whole function is verified, and rejected if it cannot be** |
+| **`mandapa` in a marked function** | **lexical lifetime inside an already-checked function** |
+| **`mandapa` in unmarked code** | **existing behaviour, partial diagnostics, not a checked island** |
+
+**The key point: the boundary is TRANSITIVE.** **A checked function's guarantee holds because everything it calls is also checked.** **That is what closes the hole ChatGPT named.**
+
+### And what I found doing the real-program test
+**The program's total overflowed, so I tested the arithmetic directly:**
+
+| Program | Result |
+|---|---|
+| **`9223372036854775807 + 1`** | **`-9223372036854775808`** - silent wraparound |
+| **`4000000000 * 4000000000`** | **`-2446744073709551616`** - silent wraparound |
+| **`1 / 0`** | **SIGFPE, exit 136 - a crash, no message** |
+
+**Sutram has no overflow story and no divide-by-zero story.** **For a language aimed at school students, a silent negative square is worse than an error: the student concludes they do not understand arithmetic.**
+
 ## Compiler v274-v275 (Claude, R77-R79) - the byte-versus-qword trap is caught; mixed indentation refused; a real program in blocks
 
 - **`nirmmita` counts bytes, `p[i]` counts 8-byte cells.** When `vitti p = nirmmita(SIZE)` has a written SIZE and
